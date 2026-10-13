@@ -484,8 +484,8 @@ theorem translation_lattice_gram_posDef
   letI : DiscreteTopology L := hX.discreteTranslations
   letI : IsZLattice ℝ L := hX.isZLattice
   let rb : Module.Basis (Fin 2) ℝ V := b.ofZLatticeBasis ℝ L
-  change (Matrix.gram ℝ rb).PosDef
-  exact Matrix.posDef_gram_of_linearIndependent rb.linearIndependent
+  simpa only [rb, Module.Basis.ofZLatticeBasis_apply] using
+    (Matrix.posDef_gram_of_linearIndependent rb.linearIndependent)
 
 /-- Every crystallographic point-group action preserves the Gram matrix of an integral
 translation-lattice basis. This relates lattice symmetries directly to metric data, without
