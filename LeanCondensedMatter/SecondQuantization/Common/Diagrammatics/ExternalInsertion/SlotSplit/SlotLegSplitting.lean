@@ -1,5 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Core.Diagram
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Diagram
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Ordered
+import LeanCondensedMatter.Combinatorics.FiniteIndex.Block
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Split
 import LeanCondensedMatter.Combinatorics.SubsetSplit
 
@@ -69,6 +70,68 @@ theorem externalInsertionSlotLegSplitting_right_interaction
       (externalInsertionLegEquiv E S).symm
         (Sum.inr (⟨v.1, (Finset.mem_sdiff.mp v.2).1⟩, l)) := by
   simp [externalInsertionSlotLegSplitting]
+
+/-- The canonically ordered vacuum-sector legs retain their flat order when inserted
+into the ambient fixed-order external-insertion leg array. -/
+theorem externalInsertionSlotLegSplitting_orderedRight_strictMono
+    {E N : ℕ} (T : Finset (Fin N)) :
+    let S := (Finset.univ : Finset (Fin N)) \\ T
+    let order : QuarticVertexOrder S := (S.orderIsoOfFin rfl).toEquiv
+    StrictMono (fun p : Fin (2 * (2 * S.card)) =>
+      externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T)
+        (Sum.inr (orderedLegToDiagramLeg S order p))) := by
+  intro S order
+  let vertex : Fin S.card → Fin N := fun i => (S.orderIsoOfFin rfl i).1
+  have hvertex : StrictMono vertex := by
+    intro i j hij
+    exact (S.orderIsoOfFin rfl).strictMono hij
+  let hsource : 2 * (2 * S.card) = S.card * 4 := by omega
+  let htarget : 2 * (2 * N) = N * 4 := by omega
+  let block := FiniteIndex.blockMap hsource htarget vertex
+  have hblock : StrictMono block :=
+    FiniteIndex.blockMap_strictMono hsource htarget vertex hvertex
+  have huniv (v : Fin N) :
+      (((Finset.univ : Finset (Fin N)).orderIsoOfFin rfl).symm
+        ⟨v, Finset.mem_univ v⟩).val = v.val := by
+    rw [Finset.orderIsoOfFin_symm_apply, Fin.sort_univ, List.idxOf_finRange]
+  have hblock_val (p : Fin (2 * (2 * S.card))) :
+      (block p).val =
+        4 * (vertex (orderedQuarticLegEquiv S.card p).1).val +
+          (orderedQuarticLegEquiv S.card p).2.val := by
+    have h := FiniteIndex.eq_cast_mul_add_blockEquiv htarget (block p)
+    have hv := congrArg Fin.val h
+    simpa only [Fin.val_cast, Fin.val_mk, FiniteIndex.blockEquiv_blockMap,
+      Prod.fst, Prod.snd, Nat.mul_comm] using hv
+  have hslot_val (p : Fin (2 * (2 * S.card))) :
+      (externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T)
+        (Sum.inr (orderedLegToDiagramLeg S order p))).val =
+      2 * E + (orderedQuarticLegEquiv S.card p).2.val +
+        4 * (vertex (orderedQuarticLegEquiv S.card p).1).val := by
+    let leg := orderedQuarticLegEquiv S.card p
+    have hleg : orderedLegToDiagramLeg S order p =
+        (quarticLegEquiv S).symm (order leg.1, leg.2) := by
+      simp [orderedLegToDiagramLeg, leg]
+    rw [hleg]
+    have hright := externalInsertionSlotLegSplitting_right_interaction
+      (E := E) (Finset.subset_univ T) (order leg.1) leg.2
+    rw [hright]
+    change (externalInsertionInteractionLeg (E := E)
+      ⟨(order leg.1).1, Finset.mem_univ _⟩ leg.2).val = _
+    rw [externalInsertionInteractionLeg_val]
+    rw [huniv]
+    rfl
+  intro p q hpq
+  have hp := hslot_val p
+  have hq := hslot_val q
+  have hbp := hblock_val p
+  have hbq := hblock_val q
+  have hh := hblock hpq
+  change
+    (externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T)
+      (Sum.inr (orderedLegToDiagramLeg S order p))).val <
+    (externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T)
+      (Sum.inr (orderedLegToDiagramLeg S order q))).val
+  omega
 
 /-- Reconstruct an external-insertion diagram from an external-bearing piece and a quartic
 complementary piece. -/
