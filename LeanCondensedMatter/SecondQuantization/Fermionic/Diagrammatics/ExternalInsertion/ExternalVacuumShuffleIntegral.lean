@@ -176,9 +176,9 @@ private theorem externalInsertionOfSlotSplit_pairingInMixedOrder_eq_ofSplit_mixe
     (ext : ExternalInsertionDiagram (ExternalFieldLabel Mode)
       (QuarticVertexLabel Mode) E n T)
     (vac : QuarticDiagram (QuarticVertexLabel Mode) n
-      ((Finset.univ : Finset (Fin n)) \\ T))
+      ((Finset.univ : Finset (Fin n)) \ T))
     (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ) :
-    let S := (Finset.univ : Finset (Fin n)) \\ T
+    let S := (Finset.univ : Finset (Fin n)) \ T
     let order : QuarticVertexOrder S := (S.orderIsoOfFin rfl).toEquiv
     let localFixed := externalInsertionLeftMixedToFixedEquiv T externalTime σ
     let split :=
@@ -206,7 +206,7 @@ preserved by the physical time ordering. -/
 private theorem externalInsertionLeftMixedPosition_split_strictMono
     {E n : ℕ} (T : Finset (Fin n))
     (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ) :
-    let S := (Finset.univ : Finset (Fin n)) \\ T
+    let S := (Finset.univ : Finset (Fin n)) \ T
     let order : QuarticVertexOrder S := (S.orderIsoOfFin rfl).toEquiv
     let localFixed := externalInsertionLeftMixedToFixedEquiv T externalTime σ
     let split :=
