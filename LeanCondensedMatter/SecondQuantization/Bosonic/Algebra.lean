@@ -1,5 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.FockSpace
 import LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.NumberOperator
+import LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.FiniteModes
 
 set_option linter.style.header false
 
