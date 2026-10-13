@@ -513,6 +513,44 @@ theorem externalInsertionMixedTimeOrderedAtomicLegPosition_map_strictMono
     (positionEmbedding.strictMono
       ((Fin.castOrderIso hLocalLength.symm).strictMono hpq))
 
+/-- On an ordered vacuum-only time chamber, the canonical quartic leg order
+agrees with mixed-time atomic positions. -/
+theorem externalInsertionMixedTimeOrderedAtomicLegPosition_zero_strictMono_of_strictAnti
+    {n : ℕ} (σ : Fin n → ℝ) (hσ : StrictAnti σ) :
+    StrictMono (fun q : Fin (2 * (2 * n)) =>
+      externalInsertionMixedTimeOrderedAtomicLegPosition (E := 0)
+        (Fin.elim0 : Fin 0 → ℝ) σ
+        (Sum.inr
+          (⟨(orderedQuarticLegEquiv n q).1, Finset.mem_univ _⟩,
+            (orderedQuarticLegEquiv n q).2))) := by
+  let leg (q : Fin (2 * (2 * n))) : OrderedExternalInsertionLeg 0 n :=
+    Sum.inr (⟨(orderedQuarticLegEquiv n q).1, Finset.mem_univ _⟩,
+      (orderedQuarticLegEquiv n q).2)
+  let position (q : Fin (2 * (2 * n))) : Fin (2 * (2 * n + 0)) :=
+    externalInsertionMixedTimeOrderedAtomicLegPosition (E := 0)
+      (Fin.elim0 : Fin 0 → ℝ) σ (leg q)
+  have hlist :=
+    externalInsertionMixedTimeOrderedAtomicLegs_zero_eq_flattened_of_strictAnti σ hσ
+  have hcard : 2 * (2 * n) = 2 * (2 * n + 0) := by omega
+  have hforward (q : Fin (2 * (2 * n))) :
+      externalInsertionMixedTimeOrderedAtomicLegEquiv (E := 0)
+          (Fin.elim0 : Fin 0 → ℝ) σ (Fin.cast hcard q) = leg q := by
+    unfold externalInsertionMixedTimeOrderedAtomicLegEquiv
+    simp only [Equiv.trans_apply, List.Nodup.getEquivOfForallMemList_apply,
+      finCongr_apply]
+    rw [hlist]
+    simp [leg, List.get_ofFn]
+  have hposition (q : Fin (2 * (2 * n))) :
+      position q = Fin.cast hcard q := by
+    apply (externalInsertionMixedTimeOrderedAtomicLegEquiv (E := 0)
+      (Fin.elim0 : Fin 0 → ℝ) σ).injective
+    rw [externalInsertionMixedTimeOrderedAtomicLegEquiv_position]
+    exact (hforward q).symm
+  intro p q hpq
+  change position p < position q
+  rw [hposition p, hposition q]
+  exact (Fin.castOrderIso hcard).strictMono hpq
+
 /-- Permutation from the fixed flattened diagram-leg order to mixed-time atomic positions. -/
 noncomputable def externalInsertionStandardToMixedAtomicPositionEquiv {E n : ℕ}
     (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ) :
