@@ -4,6 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naoki Yano
 -/
 import Mathlib.LinearAlgebra.Matrix.Charpoly.Coeff
+import Mathlib.Basic.Real.Basic
 
 /-!
 # Two-dimensional Cayley–Hamilton identities
@@ -17,7 +18,7 @@ namespace Matrix
 /-- The quadratic Cayley–Hamilton identity for a real `2 × 2` matrix. -/
 theorem sq_sub_trace_smul_add_det_eq_zero (M : Matrix (Fin 2) (Fin 2) ℝ) :
     M ^ 2 - M.trace • M + M.det • 1 = 0 := by
-  simpa [Matrix.charpoly_fin_two, smul_def] using M.aeval_self_charpoly
+  simpa [Matrix.charpoly_fin_two] using M.aeval_self_charpoly
 
 /-- A real `2 × 2` matrix with determinant one and trace zero has fourth power one. -/
 theorem pow_four_eq_one_of_trace_zero_det_one (M : Matrix (Fin 2) (Fin 2) ℝ)
