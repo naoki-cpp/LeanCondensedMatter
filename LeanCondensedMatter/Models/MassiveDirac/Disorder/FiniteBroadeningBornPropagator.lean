@@ -15,8 +15,8 @@ The continuum Born self-energy already exists at finite cutoff and finite extern
 Σ_s(ε,η;Λ) = Σ₀,s I + Σ_z,s σ_z.
 ```
 
-This module puts those existing coefficients back into the massive-Dirac Dyson shift without first
-taking `η → 0⁺`. For either spectral side,
+This module constructs the finite-broadening massive-Dirac Green candidate from those
+coefficients without first taking `η → 0⁺`. For either spectral side,
 
 ```text
 ε̃_s = z_s(ε,η) - Σ₀,s,
