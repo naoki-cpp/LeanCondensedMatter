@@ -114,6 +114,40 @@ private theorem orderedExternalInsertionTimedEvents_pairwise {E n : ℕ}
           externalInsertionTimedEventRank)
   exact List.pairwise_insertionSort _ _
 
+/-- With no external events and strictly decreasing interaction times, the stable
+mixed-event sort leaves the canonical interaction-slot order unchanged. -/
+private theorem orderedExternalInsertionTimedEvents_zero_eq_canonical_of_strictAnti
+    {n : ℕ} (σ : Fin n → ℝ) (hσ : StrictAnti σ) :
+    orderedExternalInsertionTimedEvents (E := 0) (Fin.elim0 : Fin 0 → ℝ) σ =
+      canonicalExternalInsertionTimedEvents 0 n := by
+  unfold orderedExternalInsertionTimedEvents
+  apply List.Pairwise.insertionSort_eq
+  rw [canonicalExternalInsertionTimedEvents, List.pairwise_ofFn]
+  intro a b hab
+  cases ha :
+      (finSumFinEquiv : ExternalInsertionTimedEvent 0 n ≃ Fin (0 + n)).symm a with
+  | inl i => exact i.elim0
+  | inr i =>
+    cases hb :
+        (finSumFinEquiv : ExternalInsertionTimedEvent 0 n ≃ Fin (0 + n)).symm b with
+    | inl j => exact j.elim0
+    | inr j =>
+      have hai : (i : ℕ) = (a : ℕ) := by
+        have h := congrArg Fin.val
+          ((finSumFinEquiv : ExternalInsertionTimedEvent 0 n ≃ Fin (0 + n)).apply_symm_apply a)
+        rw [ha, finSumFinEquiv_apply_right] at h
+        simpa using h
+      have hbj : (j : ℕ) = (b : ℕ) := by
+        have h := congrArg Fin.val
+          ((finSumFinEquiv : ExternalInsertionTimedEvent 0 n ≃ Fin (0 + n)).apply_symm_apply b)
+        rw [hb, finSumFinEquiv_apply_right] at h
+        simpa using h
+      have hij : i < j := Fin.lt_def.mpr (by omega)
+      simp only [externalInsertionTimedEventBeforeOrEqual,
+        stableTimedEventBeforeOrEqual_iff]
+      left
+      simpa only [ha, hb, externalInsertionTimedEventTime] using hσ hij
+
 variable {E₁ E₂ m n : ℕ}
 
 private theorem externalInsertionTimedEventTime_map
