@@ -77,12 +77,9 @@ private theorem map_timedFieldOperator_mixedTimeOrderedAtomicFields {n : ℕ}
     (q : Fin n → QuarticVertexLabel Mode) (σ : Fin n → ℝ) :
     (mixedTimeOrderedAtomicFields i j τ τ' q σ).map (timedFieldOperator ε) =
       mixedTimeOrderedAtomicOperators ε i j τ τ' q σ := by
-  rw [mixedTimeOrderedAtomicFields, mixedTimeOrderedAtomicOperators]
-  induction orderedTwoPointTimedEvents τ τ' σ with
-  | nil => rfl
-  | cons event events ih =>
-      rw [List.flatMap_cons, List.map_append, List.flatMap_cons,
-        map_timedFieldOperator_twoPointTimedEventAtomicFields, ih]
+  simp only [mixedTimeOrderedAtomicFields, mixedTimeOrderedAtomicOperators,
+    List.map_flatMap]
+  simp_rw [map_timedFieldOperator_twoPointTimedEventAtomicFields]
 
 omit [LinearOrder Mode] in
 /-- The descriptor list has exactly the statistics-independent `4n + 2` atomic positions. -/
@@ -92,12 +89,9 @@ theorem mixedTimeOrderedAtomicFields_length {n : ℕ} (i j : Mode)
   have hlen :
       (mixedTimeOrderedAtomicFields i j τ τ' q σ).length =
         (mixedTimeOrderedAtomicLegs τ τ' σ).length := by
-    unfold mixedTimeOrderedAtomicFields mixedTimeOrderedAtomicLegs
-    induction orderedTwoPointTimedEvents τ τ' σ with
-    | nil => rfl
-    | cons event events ih =>
-        rw [List.flatMap_cons, List.flatMap_cons, List.length_append, List.length_append,
-          twoPointTimedEventAtomicFields_length, ih]
+    simp only [mixedTimeOrderedAtomicFields, mixedTimeOrderedAtomicLegs,
+      List.length_flatMap]
+    simp_rw [twoPointTimedEventAtomicFields_length]
   rw [hlen, mixedTimeOrderedAtomicLegs_length]
 
 /-- The `Fin (4n + 2)`-indexed time-labelled field family underlying the mixed operator list. -/
