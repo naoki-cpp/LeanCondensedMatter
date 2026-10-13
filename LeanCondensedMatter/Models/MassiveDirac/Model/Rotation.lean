@@ -66,15 +66,14 @@ theorem inPlaneSpinRotation_mul_inverse (angle : ℝ) :
 /-- The inverse spinor can also be placed on the left. -/
 theorem inPlaneSpinRotationInverse_mul (angle : ℝ) :
     inPlaneSpinRotationInverse angle * inPlaneSpinRotation angle = 1 := by
-  ext i j
-  fin_cases i <;> fin_cases j
-  · simp [inPlaneSpinRotation, inPlaneSpinRotationInverse,
-      Matrix.mul_apply, Fin.sum_univ_two]
-  · simp [inPlaneSpinRotation, inPlaneSpinRotationInverse,
-      Matrix.mul_apply, Fin.sum_univ_two]
-  · simp [inPlaneSpinRotation, inPlaneSpinRotationInverse,
-      Matrix.mul_apply, Fin.sum_univ_two]
-  · convert inPlaneSpinRotation_phases_mul angle using 1 <;> ring
+  calc
+    inPlaneSpinRotationInverse angle * inPlaneSpinRotation angle =
+        inPlaneSpinRotation angle * inPlaneSpinRotationInverse angle := by
+      ext i j
+      fin_cases i <;> fin_cases j <;>
+        simp [inPlaneSpinRotation, inPlaneSpinRotationInverse,
+          Matrix.mul_apply, Fin.sum_univ_two, mul_comm]
+    _ = 1 := inPlaneSpinRotation_mul_inverse angle
 
 /-- Rotating the Pauli-x axis produces the polar in-plane Pauli direction. -/
 theorem inPlaneSpinRotation_sigmaX (angle : ℝ) :
@@ -93,12 +92,15 @@ theorem inPlaneSpinRotation_sigmaY (angle : ℝ) :
     inPlaneSpinRotation angle * sigmaY * inPlaneSpinRotationInverse angle =
       -(((Real.sin angle : ℝ) : ℂ)) • sigmaX +
         (((Real.cos angle : ℝ) : ℂ)) • sigmaY := by
+  have hI : Complex.I ^ 2 = (-1 : ℂ) := by
+    simpa [pow_two] using Complex.I_mul_I
   ext i j
   fin_cases i <;> fin_cases j <;>
     simp [inPlaneSpinRotation, inPlaneSpinRotationInverse, sigmaX, sigmaY,
       InternalSpace.pauliX, InternalSpace.pauliY, Matrix.mul_apply,
       Fin.sum_univ_two, smul_eq_mul]
   all_goals ring_nf
+  all_goals simp [hI]
 
 /-- The mass Pauli axis is invariant under in-plane spinor rotation. -/
 theorem inPlaneSpinRotation_sigmaZ (angle : ℝ) :
@@ -138,12 +140,10 @@ theorem polarPauliMatrix_eq_spinRotation (a b d : ℂ) (angle : ℝ) :
               inPlaneSpinRotationInverse angle) := by
             rw [inPlaneSpinRotation_sigmaX, inPlaneSpinRotation_sigmaZ]
             simp [inPlaneSpinRotation_mul_inverse]
-            module
     _ = inPlaneSpinRotation angle *
         (a • (1 : Matrix2) + b • sigmaX + d • sigmaZ) *
           inPlaneSpinRotationInverse angle := by
             simp only [mul_add, add_mul, mul_smul_comm, smul_mul_assoc]
-            abel
 
 end
 
