@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Models.MassiveDirac.Model.Occupation
+import LeanCondensedMatter.Models.MassiveDirac.Model.FermiSurface
 import LeanCondensedMatter.Transport.Analysis.RelaxationTime
 import LeanCondensedMatter.Transport.Analysis.ContinuumMeasure
 import Mathlib.Tactic

@@ -1,7 +1,7 @@
 import LeanCondensedMatter.Transport.Analysis.AngularHarmonics
 import LeanCondensedMatter.Transport.Analysis.RelaxationTime
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.Damping
-import LeanCondensedMatter.Models.MassiveDirac.Model.Occupation
+import LeanCondensedMatter.Models.MassiveDirac.Model.FermiSurface
 import Mathlib.Analysis.SpecialFunctions.Integrals.Basic
 import Mathlib.Tactic
 
