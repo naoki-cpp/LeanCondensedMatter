@@ -312,10 +312,8 @@ private theorem tendsto_continuumBornRadialNormPolynomial_atTop
           (2 * probeEnergy * regulator) ^ 2)
       atTop atTop := by
   have hv2 : 0 < v ^ 2 := sq_pos_of_ne_zero hvelocity
-  have hp2 : Tendsto (fun p : ℝ => p ^ 2) atTop atTop :=
-    tendsto_pow_atTop (by norm_num)
   have hlead : Tendsto (fun p : ℝ => v ^ 2 * p ^ 2) atTop atTop :=
-    hp2.const_mul_atTop hv2
+    (tendsto_pow_atTop (by norm_num)).const_mul_atTop hv2
   have hshift :
       Tendsto
         (fun p : ℝ => v ^ 2 * p ^ 2 -
