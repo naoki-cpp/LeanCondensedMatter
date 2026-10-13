@@ -5,12 +5,18 @@ set_option linter.style.header false
 /-!
 # Spectral numerators of the spherical t2g Hamiltonian
 
-For the Cartesian spin-1 representation, `(k · L)^2` is represented by
-`|k|² I - k kᵀ`. We use real matrices and keep the spectral numerators
-unnormalized, so every statement also holds at `k = 0`. At nonzero momentum,
+For an assumed Cartesian spin-1 matrix representation, `(k · L)^2` is
+represented by `|k|² I - k kᵀ`. We use real matrices and keep the spectral
+numerators unnormalized, so every statement also holds at `k = 0`. At nonzero momentum,
 division by `|k|²` gives the two complementary spectral projectors used in
 Manchon et al., arXiv:2512.06355v1, Eq. (4). The paper's `r` band is the
 rank-two transverse subspace in this Cartesian representation.
+
+This file proves algebra inside the supplied three-by-three model. It does not
+construct atomic `d` orbitals, project physical `l = 2` angular momentum onto
+the `t₂g` subspace, or derive the momentum-dependent matrix from a crystal
+Hamiltonian. Those identifications are separate prerequisites for a physical
+orbital-to-band interpretation.
 -/
 
 namespace QuantumTheory.Models.OrbitalRelaxation
@@ -73,8 +79,9 @@ theorem transverseNumerator_mul_momentumOuter (k : Fin 3 → ℝ) :
   fin_cases i <;> fin_cases j <;>
     simp [momentumOuter, transverseNumerator, Matrix.mul_apply, Fin.sum_univ_three] <;> ring
 
-/-- Spherical t2g Hamiltonian, with `t` the kinetic coefficient and `r` the
-crystal-field splitting. -/
+/-- Assumed spherical `t₂g` matrix Hamiltonian, with `t` the kinetic coefficient
+and `r` the crystal-field splitting in the source model. This definition does
+not derive either coefficient or the model from orbital-indexed hopping. -/
 def t2gHamiltonian (t r : ℝ) (k : Fin 3 → ℝ) : OrbitalMatrix :=
   (t * momentumNormSq k) • (1 : OrbitalMatrix) + r • transverseNumerator k
 
