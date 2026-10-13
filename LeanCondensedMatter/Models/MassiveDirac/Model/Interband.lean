@@ -22,14 +22,16 @@ def interbandEnergyGap (band : Band) (v m px py : ℝ) : ℝ :=
 /-- In a two-band Dirac spectrum, the interband denominator is `2 s E`. -/
 theorem interbandEnergyGap_eq (band : Band) (v m px py : ℝ) :
     interbandEnergyGap band v m px py = 2 * bandSign band * energy v m px py := by
-  cases band <;> simp [interbandEnergyGap, bandEnergy] <;> ring
+  unfold interbandEnergyGap bandEnergy
+  rw [bandSign_oppositeBand]
+  ring
 
 /-- Exchanging the two bands reverses the interband energy denominator. -/
 @[simp] theorem interbandEnergyGap_oppositeBand
     (band : Band) (v m px py : ℝ) :
     interbandEnergyGap (oppositeBand band) v m px py =
       -interbandEnergyGap band v m px py := by
-  rw [interbandEnergyGap_eq, interbandEnergyGap_eq, bandSign_oppositeBand]
+  simp only [interbandEnergyGap, oppositeBand_oppositeBand]
   ring
 
 /-- The absolute interband gap is bounded below by `2|m|`, uniformly in momentum. -/
