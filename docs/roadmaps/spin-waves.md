@@ -19,7 +19,8 @@ long-wavelength dispersion are proved in
 [SpinWaveSpectrum](../../LeanCondensedMatter/Models/Heisenberg/SpinWaveSpectrum.lean).
 The exact local and finite many-site Holstein-Primakoff algebraic representations in
 SW3 are also `proved`. The quadratic ring's operator construction and polynomial
-decomposition are implemented; its Fourier diagonalization and SW4 onward remain targets.
+decomposition, finite Fourier diagonalization, and Fourier CCR are implemented.
+SW4 onward and exact-to-quadratic error estimates remain targets.
 Infinite-volume order, antiferromagnetic Bogoliubov diagonalization, and thin-film
 boundary modes are later work.
 
@@ -164,9 +165,23 @@ The physical ring requires N >= 3, although the algebraic formulas make sense fo
 any nonzero N. The directed-neighbor sum of Section 2.7 must be converted to this
 bond-once convention before transferring its coefficients.
 
-Prove the quadratic model's finite Fourier diagonalization and preservation of CCR
-on the bosonic algebraic domain. Its one-boson restriction must reproduce SW2 at
-2s = 1; this correspondence remains to be proved.
+[QuadraticMagnonFourier](../../LeanCondensedMatter/Models/Heisenberg/QuadraticMagnonFourier.lean)
+identifies the site excitation Hamiltonian with the algebraic second quantization
+of `oneMagnonLaplacian (J * twiceSpin)`. Its complete Fourier diagonalization is
+`excitationHamiltonian_eq_sum_fourier`: the excitation operator equals the sum of
+Fourier-mode number operators with energies
+2J(2s)(1 - cos(2πq/N)). This is an operator identity on unrestricted algebraic Fock
+space, including every finite-occupation sector, not an exact spin-Hamiltonian identity.
+
+[FiniteModes](../../LeanCondensedMatter/SecondQuantization/Bosonic/Algebra/FiniteModes.lean)
+defines creation linear in a finite one-particle vector and annihilation conjugate-linear
+in that vector. Their mixed commutator is the one-particle inner product times identity;
+the same-type commutators vanish. Thus the normalized Fourier fields preserve CCR.
+The pinned Mathlib survey reuses `OrthonormalBasis.sum_repr'` and the existing Fourier
+eigenbasis to diagonalize number-conserving second quantization for any complete finite
+orthonormal eigenbasis. No custom Fourier transform or completed Fock-space unitary is used.
+At 2s=1 the one-particle kernel is the SW2 Laplacian. Its intertwining with an actual
+one-boson state embedding remains to be proved.
 
 An error estimate between exact and quadratic dynamics is a separate target with
 specified states, occupation control, time interval, and norm or observable error.

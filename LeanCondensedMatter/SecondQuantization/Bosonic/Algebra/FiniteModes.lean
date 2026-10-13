@@ -60,9 +60,12 @@ theorem secondQuantization_eq_sum_of_eigenbasis {ι : Type*} [Fintype ι]
     secondQuantization T = ∑ q, ε q • (createVector (b q)).comp (annihilateVector (b q)) := by
   have hc (i j : Mode) :
       T (EuclideanSpace.single j 1) i = ∑ q, ε q * b q i * star (b q j) := by
-    have h := congrArg (fun v => T v i) (b.sum_repr' (EuclideanSpace.single j 1))
+    let ev : EuclideanSpace ℂ Mode →ₗ[ℂ] ℂ :=
+      (LinearMap.proj i).comp (WithLp.linearEquiv 2 ℂ (Mode → ℂ)).toLinearMap
+    have h := congrArg (fun v => ev (T v)) (b.sum_repr' (EuclideanSpace.single j 1))
     simp only [map_sum, map_smul, hT, EuclideanSpace.inner_single_right,
-      one_mul, PiLp.smul_apply, smul_eq_mul, Finset.sum_apply] at h
+      one_mul] at h
+    change (∑ q, star (b q j) * (ε q * b q i)) = T (EuclideanSpace.single j 1) i at h
     rw [← h]
     apply Finset.sum_congr rfl
     intro q _
