@@ -1,4 +1,4 @@
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Factorization.MixedComponentCrossing
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Factorization.ComponentMixedCrossing
 import LeanCondensedMatter.Combinatorics.FamilySlotShuffleSign
 import LeanCondensedMatter.Combinatorics.SigmaPermutationSign
 
