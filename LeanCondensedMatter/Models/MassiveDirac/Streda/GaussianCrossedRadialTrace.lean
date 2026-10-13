@@ -1198,11 +1198,9 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_x_eq_harm
   have hGreenAz :=
     finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient_eq_radialKernel_integral
       .z .advanced v m probeEnergy broadening disorderStrength hbar pMax radius hbroadening hdisorder hpMax
-  dsimp only [finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliKernel] at
-    htransverse
+  dsimp only [finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliKernel] at htransverse
   dsimp only [finiteCutoffContinuumBornDysonRadialGreenScalarKernel] at hGreenRscalar
-  dsimp only [finiteCutoffContinuumBornDysonRadialGreenPauliKernel] at
-    hGreenRx hGreenRz hGreenAx hGreenAz
+  dsimp only [finiteCutoffContinuumBornDysonRadialGreenPauliKernel] at hGreenRx hGreenRz hGreenAx hGreenAz
   dsimp only [finiteCutoffContinuumBornDysonRadialGreenScalarKernel] at hGreenAscalar
   simpa only [hxx, hyy, hscalarX, hscalarY, hzX, hzY, htransverse,
     hGreenRscalar, hGreenRx, hGreenRz, hGreenAscalar, hGreenAx, hGreenAz] using
@@ -1325,11 +1323,9 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_psi_eq_ha
   have hGreenRz :=
     finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient_eq_radialKernel_integral
       .z .retarded v m probeEnergy broadening disorderStrength hbar pMax radius hbroadening hdisorder hpMax
-  dsimp only [finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliKernel] at
-    htransverse
+  dsimp only [finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliKernel] at htransverse
   dsimp only [finiteCutoffContinuumBornDysonRadialGreenScalarKernel] at hGreenRscalar
-  dsimp only [finiteCutoffContinuumBornDysonRadialGreenPauliKernel] at
-    hGreenRx hGreenRz
+  dsimp only [finiteCutoffContinuumBornDysonRadialGreenPauliKernel] at hGreenRx hGreenRz
   simpa only [hxx, hyy, hscalarX, hscalarY, hzX, hzY, htransverse,
     hGreenRscalar, hGreenRx, hGreenRz] using
     (finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_psi_eq_explicit_pauli_components
