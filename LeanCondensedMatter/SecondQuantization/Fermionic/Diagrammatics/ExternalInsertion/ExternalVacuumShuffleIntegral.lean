@@ -853,7 +853,13 @@ theorem externalInsertionMixedSplit_relativePerm_sign_eq_local_mul_global
     apply Equiv.ext
     intro p
     rfl
-  rw [hrelative, Equiv.Perm.sign_trans,
+  have hassoc :
+      fixedSplit.symm.trans (localPerm.trans fixedSplit) =
+        (fixedSplit.symm.trans localPerm).trans fixedSplit := by
+    apply Equiv.ext
+    intro p
+    rfl
+  rw [hrelative, Equiv.Perm.sign_trans, hassoc,
     Equiv.Perm.sign_symm_trans_trans]
   exact mul_comm _ _
 
