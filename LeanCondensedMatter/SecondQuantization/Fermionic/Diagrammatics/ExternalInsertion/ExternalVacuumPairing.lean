@@ -863,10 +863,10 @@ theorem externalInsertionMixedSplit_relativePerm_sign_eq_local_mul_global
 
 omit [LinearOrder Mode] [Fintype Mode] in
 /-- The relative fixed/mixed support split sign is determined by the two
-inter-sector inversion counts, provided the fixed split is internally order-preserving in both sectors and
-the vacuum sector is in a strictly antitone time chamber. The fixed-split
-monotonicity assumptions and the parity of its inversion count require
-separate proofs; neither is silently inferred here. -/
+inter-sector inversion counts, provided the fixed external-support embedding is
+order-preserving and the vacuum sector is in a strictly antitone time chamber.
+The vacuum-side fixed embedding is monotone by the canonical block-order map.
+The external-side monotonicity and fixed-split inversion parity remain separate obligations. -/
 theorem externalInsertionMixedSplit_relativePerm_sign_eq_inversionCounts
     {E n : ℕ} (T : Finset (Fin n))
     (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ) :
@@ -887,7 +887,6 @@ theorem externalInsertionMixedSplit_relativePerm_sign_eq_inversionCounts
     let mixedSplit :=
       (Equiv.sumCongr localFixed (Equiv.refl (Fin (2 * (2 * S.card))))).trans split
     StrictMono (fun i : Fin (2 * (2 * T.card + E)) => fixedSplit (Sum.inl i)) →
-    StrictMono (fun j : Fin (2 * (2 * S.card)) => fixedSplit (Sum.inr j)) →
     StrictAnti (σ ∘ f) →
     Equiv.Perm.sign (fixedSplit.symm.trans mixedSplit) =
       (-1 : ℤˣ) ^
@@ -897,7 +896,19 @@ theorem externalInsertionMixedSplit_relativePerm_sign_eq_inversionCounts
           (∑ i : Fin (2 * (2 * T.card + E)),
             ∑ j : Fin (2 * (2 * S.card)),
               if mixedSplit (Sum.inr j) < mixedSplit (Sum.inl i) then 1 else 0)) := by
-  intro S order f localFixed fixedSplit split mixedSplit hfixedLeft hfixedRight htime
+  intro S order f localFixed fixedSplit split mixedSplit hfixedLeft htime
+  have hfixedRight : StrictMono
+      (fun j : Fin (2 * (2 * S.card)) => fixedSplit (Sum.inr j)) := by
+    intro a b hab
+    have hright :=
+      externalInsertionSlotLegSplitting_orderedRight_strictMono (E := E) T hab
+    change (Fin.cast (by simp)
+      (externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T)
+        (Sum.inr (orderedLegToDiagramLeg S order a)))).val <
+      (Fin.cast (by simp)
+      (externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T)
+        (Sum.inr (orderedLegToDiagramLeg S order b)))).val
+    simpa only [Fin.val_cast, Fin.lt_def] using hright
   have hmixedLeft : StrictMono
       (fun i : Fin (2 * (2 * T.card + E)) => mixedSplit (Sum.inl i)) :=
     externalInsertionLeftMixedPosition_split_strictMono T externalTime σ

@@ -98,6 +98,33 @@ theorem blockEquiv_lt_iff {total n k : ℕ} (h : total = n * k) (p q : Fin total
       rw [hp, hq, hblock]
       exact Nat.add_lt_add_right hlocal _
 
+/-- Reindex the blocks of a flattened fixed-width family without changing local coordinates. -/
+def blockMap {total₁ total₂ n₁ n₂ k : ℕ}
+    (h₁ : total₁ = n₁ * k) (h₂ : total₂ = n₂ * k)
+    (f : Fin n₁ → Fin n₂) : Fin total₁ → Fin total₂ :=
+  fun p => (blockEquiv h₂).symm (f (blockEquiv h₁ p).1, (blockEquiv h₁ p).2)
+
+@[simp]
+theorem blockEquiv_blockMap {total₁ total₂ n₁ n₂ k : ℕ}
+    (h₁ : total₁ = n₁ * k) (h₂ : total₂ = n₂ * k)
+    (f : Fin n₁ → Fin n₂) (p : Fin total₁) :
+    blockEquiv h₂ (blockMap h₁ h₂ f p) =
+      (f (blockEquiv h₁ p).1, (blockEquiv h₁ p).2) := by
+  simp only [blockMap, Equiv.apply_symm_apply]
+
+/-- An increasing map of block indices preserves the flattened row-major order
+when the local index in each block is unchanged. -/
+theorem blockMap_strictMono {total₁ total₂ n₁ n₂ k : ℕ}
+    (h₁ : total₁ = n₁ * k) (h₂ : total₂ = n₂ * k)
+    (f : Fin n₁ → Fin n₂) (hf : StrictMono f) :
+    StrictMono (blockMap h₁ h₂ f) := by
+  intro p q hpq
+  apply (blockEquiv_lt_iff h₂ _ _).2
+  simp only [blockEquiv_blockMap]
+  rcases (blockEquiv_lt_iff h₁ p q).1 hpq with hblock | ⟨hsame, hlocal⟩
+  · exact Or.inl (hf hblock)
+  · exact Or.inr ⟨congrArg f hsame, hlocal⟩
+
 /-- Flat coordinates in distinct blocks are ordered exactly by their block indices. -/
 theorem blockEquiv_symm_lt_symm_iff_fst_lt_of_ne {total n k : ℕ}
     (h : total = n * k) (i j : Fin n) (a b : Fin k) (hij : i ≠ j) :
