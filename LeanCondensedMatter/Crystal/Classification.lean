@@ -358,14 +358,14 @@ theorem pointGroup_sq_eq_one_of_trace_eq_neg_two
 point-group element itself. This is independent of crystallographic periodicity. -/
 theorem pointGroup_pow_eq_one_of_toMatrix_pow_eq_one
     (X : AtomicConfiguration E Species) (g : X.pointGroup (V := V))
-    (o : OrthonormalBasis (Fin 2) ℝ V) (n : ℕ)
-    (h : (LinearMap.toMatrix o.toBasis o.toBasis
+    (b : Module.Basis (Fin 2) ℝ V) (n : ℕ)
+    (h : (LinearMap.toMatrix b b
       (g : V ≃ₗᵢ[ℝ] V).toLinearEquiv.toLinearMap) ^ n = 1) :
     g ^ n = 1 := by
   let f : V ≃ₗᵢ[ℝ] V := g
   let T : V →ₗ[ℝ] V := f.toLinearEquiv.toLinearMap
   have hT : T ^ n = 1 := by
-    apply (LinearMap.toMatrix o.toBasis o.toBasis).injective
+    apply (LinearMap.toMatrix b b).injective
     rw [← LinearMap.toMatrix_pow, LinearMap.toMatrix_one]
     exact h
   have hpow_map (k : ℕ) : ∀ x : V, (T ^ k) x = (f ^ k) x := by
@@ -419,17 +419,17 @@ theorem pointGroup_rotation_power_of_det_one
     have hM : M ^ 3 = 1 :=
       M.pow_three_eq_one_of_trace_neg_one_det_one
         (by simpa [hz] using htraceM) hdetM
-    exact X.pointGroup_pow_eq_one_of_toMatrix_pow_eq_one g o 3 hM
+    exact X.pointGroup_pow_eq_one_of_toMatrix_pow_eq_one g o.toBasis 3 hM
   · right; right; right; left
     have hM : M ^ 4 = 1 :=
       M.pow_four_eq_one_of_trace_zero_det_one
         (by simpa [hz] using htraceM) hdetM
-    exact X.pointGroup_pow_eq_one_of_toMatrix_pow_eq_one g o 4 hM
+    exact X.pointGroup_pow_eq_one_of_toMatrix_pow_eq_one g o.toBasis 4 hM
   · right; right; right; right
     have hM : M ^ 6 = 1 :=
       M.pow_six_eq_one_of_trace_one_det_one
         (by simpa [hz] using htraceM) hdetM
-    exact X.pointGroup_pow_eq_one_of_toMatrix_pow_eq_one g o 6 hM
+    exact X.pointGroup_pow_eq_one_of_toMatrix_pow_eq_one g o.toBasis 6 hM
   · left
     exact X.pointGroup_eq_one_of_trace_eq_two g o (by simpa [hz] using htrace)
 
