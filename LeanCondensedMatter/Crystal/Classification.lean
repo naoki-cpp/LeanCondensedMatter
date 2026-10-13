@@ -279,10 +279,14 @@ theorem pointGroup_eq_one_of_trace_eq_two
     rw [LinearMap.trace_eq_sum_inner _ o, Fin.sum_univ_two] at htrace
     simpa only [f, LinearEquiv.coe_coe, LinearIsometryEquiv.coe_toLinearEquiv]
       using htrace
+  have hzero : inner ℝ (o 0) (f (o 0)) = 1 := by
+    linarith [hupper 0, hupper 1]
+  have hone : inner ℝ (o 1) (f (o 1)) = 1 := by
+    linarith [hupper 0, hupper 1]
   have heq (i : Fin 2) : inner ℝ (o i) (f (o i)) = 1 := by
     fin_cases i
-    · linarith [hupper 0, hupper 1]
-    · linarith [hupper 0, hupper 1]
+    · simpa using hzero
+    · simpa using hone
   have hfixed (i : Fin 2) : f (o i) = o i := by
     have heq' : o i = f (o i) :=
       (inner_eq_one_iff_of_norm_eq_one (o.norm_eq_one i)
@@ -291,8 +295,8 @@ theorem pointGroup_eq_one_of_trace_eq_two
   have hlinear : f.toLinearEquiv.toLinearMap = LinearMap.id := by
     apply o.toBasis.ext
     intro i
-    simpa only [LinearEquiv.coe_coe, LinearIsometryEquiv.coe_toLinearEquiv,
-      LinearMap.id_apply] using hfixed i
+    simpa only [OrthonormalBasis.coe_toBasis, LinearEquiv.coe_coe,
+      LinearIsometryEquiv.coe_toLinearEquiv, LinearMap.id_apply] using hfixed i
   apply Subtype.ext
   apply LinearIsometryEquiv.ext
   intro x
