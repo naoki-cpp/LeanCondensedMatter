@@ -34,7 +34,8 @@ theorem ExternalInsertionWickDiagram.relativeComponentShuffleSign_eq_external_mu
     (((Equiv.Perm.sign (d.relativeComponentShuffle externalTime σ) : ℤ) : ℂ)) =
       componentExternalOrderSign d blockOrder *
         (Common.Statistics.fermion.zetaInt : ℂ) ^
-          d.mixedInterComponentCrossingCount externalTime σ := by
+          (d.pairingInMixedOrder externalTime σ).interComponentCrossingCount
+          (d.componentMixedPairEquiv externalTime σ) := by
   let fixedShuffle :=
     FamilySlotShuffleTo.castTotalEquiv
       (m := 2 * (2 * (Finset.univ : Finset (Fin n)).card + E))
