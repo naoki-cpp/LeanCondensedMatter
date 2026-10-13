@@ -134,8 +134,8 @@ private theorem gaussianCrossedAngularTensorCoefficients_eval
     exact_mod_cast Real.sin_sq_add_cos_sq angle
   simp only [gaussianCrossedAngularTensorCoefficients,
     AngularHarmonicCoefficients.eval, smul_eq_mul, mul_zero,
-    add_zero, zero_add]
-  linear_combination ((tensor 0 1 + tensor 1 0) / 2) * htrig
+    add_zero]
+  linear_combination -((tensor 0 1 - tensor 1 0) / 2) * htrig
 
 /-- Source-pair-indexed radial X/Psi trace tensor. The existing radial trace
 uses only the `xy` entry; the angular average also requires the `yx` entry.
@@ -195,7 +195,6 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceIntegral_eq_radial
       (finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor
         diagram v m probeEnergy broadening disorderStrength hbar pMax radius))
   intro radius angle
-  dsimp only
   rw [hrotation radius angle]
   exact (gaussianCrossedAngularTensorCoefficients_eval
     (finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor
