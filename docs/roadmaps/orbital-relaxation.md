@@ -7,6 +7,10 @@ explicit models and hypotheses, not copied from approximate calculations.
 Finite matrix and conditional collision results do not yet prove either
 paper's full kinetic derivation.
 
+They also do not yet derive an orbital Bloch Hamiltonian from a crystal. Until
+the model-origin bridge below is proved, a theorem about a supplied `H(k)` is
+a theorem about that matrix model, not about a crystal built from atomic orbitals.
+
 Tracking issue: [#3360](https://github.com/naoki-cpp/LeanCondensedMatter/issues/3360).
 
 ## Target and boundary
@@ -76,6 +80,34 @@ by name alone. For `|k| > 0`, the radial and tangential spectral projectors are
 `Pᵣ = (k · L)² / |k|²` and `Pₜ = I - Pᵣ`. Their projector identities and the
 two-pole resolvent decomposition are exact finite-matrix targets.
 
+### Missing orbital-to-band bridge
+
+The repository has crystal sites, translation/lattice structure, a Bloch phase,
+and separate one-body hopping machinery. It does not yet combine them into a
+three-orbital-per-site Bloch Hamiltonian or derive this particular `H(k)` from
+one. A minimal bridge needs:
+
+1. An explicitly labeled local orbital fiber (`d_xy`, `d_yz`, `d_zx`) at each
+   crystal site and a specified inner product. State whether these are atomic
+   functions, symmetry-adapted Wannier functions, or abstract local basis
+   vectors; an orbital label alone does not identify a continuum wavefunction.
+2. A derivation or stated projection of the physical `l = 2` angular-momentum
+   operators onto that fiber. Fix phases, basis order, units, and the sign of
+   the effective `l = 1` representation. Its matrix similarity to a `p`-orbital
+   representation does not identify the underlying atomic orbitals.
+3. Translation-covariant orbital-indexed hopping, its Fourier/Bloch transform,
+   and a proof that its three-by-three fiber Hamiltonian has the chosen
+   symmetry. Crystal symmetry alone constrains allowed terms; it does not
+   determine the coefficients `t` and `r`.
+4. An explicit near-Γ, quadratic, spherical-approximation hypothesis or a
+   derived expansion with a controlled remainder that identifies the Bloch
+   fiber with `t |k|² I + r (k · L)²` up to an energy shift. Track which
+   conclusions concern the truncated model and which survive a remainder.
+
+The exact projector identities below can be proved before this bridge, but
+their physical interpretation stays conditional on it. This boundary is also
+needed before identifying a matrix expectation with a measured orbital moment.
+
 The paper assumes scalar, short-range, delta-like impurity scattering and
 uses a Born self-energy and ladder-equivalent kinetic equation. Its
 three-dimensional dipole rate, in the paper's notation, is
@@ -106,28 +138,34 @@ and transport-normalization assumptions.
 
 ## Work sequence
 
-1. **Finite orbital benchmark.** Define the spin-1 matrices and `Hₒₘ`, fix
+1. **Orbital-to-band foundations.** Specify the local three-orbital fiber and
+   projected orbital-angular-momentum convention, then connect
+   translation-covariant orbital hopping to a Bloch fiber. Record the
+   near-Γ spherical reduction as an explicit hypothesis or prove it with a
+   remainder bound. Until this is available, label model-specific matrix
+   results as conditional.
+2. **Finite orbital benchmark.** Define the spin-1 matrices and `Hₒₘ`, fix
    units and the off-diagonal sum convention, and prove Hermiticity, inversion
    symmetry, trace identities, and the relevant double-commutator identity.
-2. **Angular and collision benchmark.** Prove the needed moments of the
+3. **Angular and collision benchmark.** Prove the needed moments of the
    normalized sphere measure, including fourth-order moments. Specify an
    isotropic elastic collision operator and show its action on the degree-two
    polynomial subspace is multiplication by `-I₂`; distinguish this from the
    momentum relaxation mode `I₁`.
-3. **Orbital relaxation endpoint.** Under a stated second-order closure,
+4. **Orbital relaxation endpoint.** Under a stated second-order closure,
    derive the averaged orbital equation, its rate `Γₒ(k)`, and exponential
    decay. Keep a fixed-radius result separate from any Fermi-surface or
    finite-temperature average.
-4. **Multipolar finite benchmark.** Define the traceless quadrupole sector;
+5. **Multipolar finite benchmark.** Define the traceless quadrupole sector;
    prove the `t₂g` projector and resolvent identities; identify invariant
    dipole/quadrupole blocks of a specified kinetic generator; and prove the
    rational rate, both limiting scalings, and the three-dimensional rate ratio.
-5. **Disorder-to-kinetics bridge.** Specify the short-range impurity ensemble,
+6. **Disorder-to-kinetics bridge.** Specify the short-range impurity ensemble,
    self-energy, integration, and kinetic/ladder closure. Relate its lifetime to
    angular collision times only with an identification theorem. Track
    approximation and convergence hypotheses. Then address cylindrical coupled
    modes and spatial diffusion as separate targets.
-6. **Spin extension.** Add spin-1/2 on the tensor product, spin-orbit coupling,
+7. **Spin extension.** Add spin-1/2 on the tensor product, spin-orbit coupling,
    and a specified orbital band or projector. Treat the degenerate orbital
    subspace explicitly before deriving a spin rate. Strong spin-orbit coupling
    and total-angular-momentum relaxation form a later, distinct benchmark.
@@ -150,6 +188,11 @@ and should only be connected by a separate identification theorem. The finite
 spin-1 orbital module proves matrix and conditional-rate identities, but does
 not supply a Keldysh lesser Green function, a model-specific Born self-energy,
 or the multipolar kinetic closure.
+`Crystal.AtomicConfiguration` supplies site/species geometry;
+`Crystal.Brillouin` supplies the Bloch phase and Brillouin quotient; and the
+fermionic lattice modules supply one-body hopping. They do not currently
+provide the local `t₂g` orbital fiber, its physical `l = 2` projection, or a
+Bloch-transform theorem for orbital-indexed hopping.
 
 ## Source checks before stating the endpoint
 
