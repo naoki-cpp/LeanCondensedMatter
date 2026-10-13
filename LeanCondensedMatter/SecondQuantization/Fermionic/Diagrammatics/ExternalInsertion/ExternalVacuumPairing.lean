@@ -902,13 +902,13 @@ theorem externalInsertionMixedSplit_relativePerm_sign_eq_inversionCounts
     intro a b hab
     have hright :=
       externalInsertionSlotLegSplitting_orderedRight_strictMono (E := E) T hab
-    change ((finCongr (by simp)).symm
+    change (Fin.cast (by simp)
       (externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T)
         (Sum.inr (orderedLegToDiagramLeg S order a)))).val <
-      ((finCongr (by simp)).symm
+      (Fin.cast (by simp)
       (externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T)
         (Sum.inr (orderedLegToDiagramLeg S order b)))).val
-    simpa [finCongr] using hright
+    simpa only [Fin.val_cast] using hright
   have hmixedLeft : StrictMono
       (fun i : Fin (2 * (2 * T.card + E)) => mixedSplit (Sum.inl i)) :=
     externalInsertionLeftMixedPosition_split_strictMono T externalTime σ
