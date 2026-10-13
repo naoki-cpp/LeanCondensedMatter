@@ -101,6 +101,7 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceIntegral_eq_radial
             ((radius : ℂ) * (coefficients radius).constant) := by
       apply intervalIntegral.integral_congr
       intro radius _
+      dsimp only
       rw [intervalIntegral.integral_const_mul,
         (coefficients radius).integral_eval]
       simp only [smul_eq_mul]
