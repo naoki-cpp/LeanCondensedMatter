@@ -53,11 +53,6 @@ private theorem polarFourierZerothAngularKernel_zero :
     polarFourierZerothAngularKernel 0 = ((2 * Real.pi : ℝ) : ℂ) := by
   simp [polarFourierZerothAngularKernel, polarFourierRadialPhase]
 
-private theorem polarFourierFirstCosineAngularKernel_zero :
-    polarFourierFirstCosineAngularKernel 0 = 0 := by
-  have h := integral_cos_mul_complex (z := (1 : ℂ)) one_ne_zero (0 : ℝ) (2 * Real.pi)
-  simpa [polarFourierFirstCosineAngularKernel, polarFourierRadialPhase] using h
-
 private theorem finiteCutoffContinuumBornDysonScalarCoefficient_zero_disorder
     (side : SpectralSide)
     (v m px py probeEnergy broadening hbar pMax : ℝ) :
