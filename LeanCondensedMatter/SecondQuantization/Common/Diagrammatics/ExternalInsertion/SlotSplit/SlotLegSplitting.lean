@@ -93,6 +93,7 @@ theorem externalInsertionSlotLegSplitting_left_strictMono
         (Sum.inl (externalInsertionExternalLeg E T e)) <
       externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T)
         (Sum.inl (externalInsertionExternalLeg E T f))
+    unfold externalInsertionExternalLeg
     rw [externalInsertionSlotLegSplitting_external,
       externalInsertionSlotLegSplitting_external]
     simpa only [Fin.lt_def, externalInsertionExternalLeg_val] using hab
@@ -100,6 +101,7 @@ theorem externalInsertionSlotLegSplitting_left_strictMono
         (Sum.inl (externalInsertionExternalLeg E T e)) <
       externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T)
         (Sum.inl (externalInsertionInteractionLeg (E := E) w k))
+    unfold externalInsertionExternalLeg externalInsertionInteractionLeg
     rw [externalInsertionSlotLegSplitting_external,
       externalInsertionSlotLegSplitting_left_interaction]
     change (externalInsertionExternalLeg E (Finset.univ : Finset (Fin N)) e).val <
@@ -120,6 +122,7 @@ theorem externalInsertionSlotLegSplitting_left_strictMono
         (Sum.inl (externalInsertionInteractionLeg (E := E) v l)) <
       externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T)
         (Sum.inl (externalInsertionInteractionLeg (E := E) w k))
+    unfold externalInsertionInteractionLeg
     rw [externalInsertionSlotLegSplitting_left_interaction,
       externalInsertionSlotLegSplitting_left_interaction]
     change (externalInsertionInteractionLeg (E := E)
