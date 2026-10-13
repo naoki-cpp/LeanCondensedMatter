@@ -205,6 +205,13 @@ order for later sign-sensitive constructions. `ExternalInsertionDiagram.restrict
 combines that external-sector ordering with the extracted interaction sector and the
 partner-invariant restricted pairing to produce a standalone external-insertion diagram for any
 connected component.
+`Common.Diagrammatics.ExternalInsertion.SlotSplit.SlotLegSplitting` owns the timeless slot partition,
+diagram reconstruction, and split-diagram equivalence. External-support decomposition, connectivity,
+and fiber sums consume this structure without mixed-time ordering dependencies.
+`Common.Diagrammatics.ExternalInsertion.Pairing.SlotSplitMixedOrder` owns the corresponding
+mixed-time position, local-order preservation, and ordered vacuum pairing coherence used by
+fermionic shuffle integrals.
+
 Higher-point imaginary-time ordering is owned by
 `Common.ImaginaryTime.ExternalInsertionMixedOrder`. It orders the `2 * E` external events
 together with interaction events using the fixed external-first rank at equal times, expands that
