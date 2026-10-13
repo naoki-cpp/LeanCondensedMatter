@@ -58,12 +58,15 @@ private theorem binaryBlockShuffle_orderedBlockInversionCount
         if e (Sum.inr j) < e (Sum.inl i) then 1 else 0 := by
   classical
   let s := binaryBlockShuffle e hleft hright
+  have hoff : (Finset.univ : Finset Bool).offDiag =
+      {(false, true), (true, false)} := by decide
   have hbool : s.orderedBlockInversionCount binaryBlockOrder =
       s.blockInversionCount false true := by
-    simp [FamilySlotShuffleTo.orderedBlockInversionCount,
-      Finset.offDiag, binaryBlockOrder]
+    unfold FamilySlotShuffleTo.orderedBlockInversionCount
+    rw [hoff]
+    simp [binaryBlockOrder]
   change s.orderedBlockInversionCount binaryBlockOrder = _
-  rw [hbool, FamilySlotShuffleTo.blockInversionCount_of_ne (by decide)]
+  rw [hbool, FamilySlotShuffleTo.blockInversionCount_of_ne s (by decide)]
   rfl
 
 /-- For two order-preserving splittings of the same ambient finite positions,
