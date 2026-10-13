@@ -863,10 +863,9 @@ theorem externalInsertionMixedSplit_relativePerm_sign_eq_local_mul_global
 
 omit [LinearOrder Mode] [Fintype Mode] in
 /-- The relative fixed/mixed support split sign is determined by the two
-inter-sector inversion counts, provided the fixed external-support embedding is
-order-preserving and the vacuum sector is in a strictly antitone time chamber.
-The vacuum-side fixed embedding is monotone by the canonical block-order map.
-The external-side monotonicity and fixed-split inversion parity remain separate obligations. -/
+inter-sector inversion counts on strictly antitone vacuum time chambers.
+Both fixed-sector embeddings are now shown to preserve the canonical flattened
+order; the parity of the fixed inter-sector inversion count remains separate. -/
 theorem externalInsertionMixedSplit_relativePerm_sign_eq_inversionCounts
     {E n : ℕ} (T : Finset (Fin n))
     (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ) :
@@ -886,7 +885,6 @@ theorem externalInsertionMixedSplit_relativePerm_sign_eq_inversionCounts
         (externalInsertionMixedTimeAmbientPositionEquiv externalTime σ).symm
     let mixedSplit :=
       (Equiv.sumCongr localFixed (Equiv.refl (Fin (2 * (2 * S.card))))).trans split
-    StrictMono (fun i : Fin (2 * (2 * T.card + E)) => fixedSplit (Sum.inl i)) →
     StrictAnti (σ ∘ f) →
     Equiv.Perm.sign (fixedSplit.symm.trans mixedSplit) =
       (-1 : ℤˣ) ^
@@ -896,7 +894,19 @@ theorem externalInsertionMixedSplit_relativePerm_sign_eq_inversionCounts
           (∑ i : Fin (2 * (2 * T.card + E)),
             ∑ j : Fin (2 * (2 * S.card)),
               if mixedSplit (Sum.inr j) < mixedSplit (Sum.inl i) then 1 else 0)) := by
-  intro S order f localFixed fixedSplit split mixedSplit hfixedLeft htime
+  intro S order f localFixed fixedSplit split mixedSplit htime
+  have hfixedLeft : StrictMono
+      (fun i : Fin (2 * (2 * T.card + E)) => fixedSplit (Sum.inl i)) := by
+    intro a b hab
+    have hleft :=
+      externalInsertionSlotLegSplitting_left_strictMono (E := E) T hab
+    change (Fin.cast (by simp)
+      (externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T)
+        (Sum.inl a))).val <
+      (Fin.cast (by simp)
+      (externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T)
+        (Sum.inl b))).val
+    simpa only [Fin.val_cast, Fin.lt_def] using hleft
   have hfixedRight : StrictMono
       (fun j : Fin (2 * (2 * S.card)) => fixedSplit (Sum.inr j)) := by
     intro a b hab
