@@ -123,6 +123,134 @@ theorem continuous_polarFourierSecondCosineAngularKernel :
   unfold Function.uncurry polarFourierRadialPhase
   fun_prop
 
+/-- Derivative of the dimensionless radial Fourier phase with respect to the polar angle. -/
+private theorem polarFourierRadialPhase_hasDerivAt (z θ : ℝ) :
+    HasDerivAt (polarFourierRadialPhase z)
+      ((-Complex.I * (z : ℂ) * ((Real.sin θ : ℝ) : ℂ)) *
+        polarFourierRadialPhase z θ) θ := by
+  have hcos : HasDerivAt (fun t : ℝ => ((z * Real.cos t : ℝ) : ℂ))
+      ((-z * Real.sin θ : ℝ) : ℂ) θ := by
+    simpa using ((Real.hasDerivAt_cos θ).const_mul z).ofReal_comp
+  have harg : HasDerivAt
+      (fun t : ℝ => Complex.I * ((z * Real.cos t : ℝ) : ℂ))
+      (Complex.I * ((-z * Real.sin θ : ℝ) : ℂ)) θ :=
+    hcos.const_mul Complex.I
+  have hphase := (Complex.hasDerivAt_exp _).comp θ harg
+  convert hphase using 1
+  · rfl
+  · simp [polarFourierRadialPhase]
+    ring
+
+/-- Angular integration by parts: the first Fourier harmonic is constrained by the
+zeroth and second harmonics without assuming nonzero radial argument.
+
+With the unnormalized kernels used by the physical Fourier measure, this is
+`2 K1(z) = i z (K0(z) - K2(z))`. In Bessel notation this is the
+`J0 + J2 = 2 J1/z` recurrence, stated without division by `z`. -/
+theorem polarFourierFirstCosineAngularKernel_two_mul_eq_zeroth_sub_second (z : ℝ) :
+    2 * polarFourierFirstCosineAngularKernel z =
+      Complex.I * (z : ℂ) *
+        (polarFourierZerothAngularKernel z - polarFourierSecondCosineAngularKernel z) := by
+  let phase : ℝ → ℂ := polarFourierRadialPhase z
+  let sine : ℝ → ℂ := fun θ => ((Real.sin θ : ℝ) : ℂ)
+  let cosine : ℝ → ℂ := fun θ => ((Real.cos θ : ℝ) : ℂ)
+  have hcphase : Continuous phase := by
+    change Continuous (fun θ : ℝ =>
+      Complex.exp (Complex.I * (((z * Real.cos θ : ℝ) : ℂ))))
+    fun_prop
+  have hcsin : Continuous sine := by
+    dsimp [sine]
+    fun_prop
+  have hccos : Continuous cosine := by
+    dsimp [cosine]
+    fun_prop
+  have hcvprime : Continuous
+      (fun θ => (-Complex.I * (z : ℂ) * sine θ) * phase θ) :=
+    ((continuous_const.mul hcsin).mul hcphase)
+  have hsin : ∀ θ : ℝ, HasDerivAt sine (cosine θ) θ := by
+    intro θ
+    simpa [sine, cosine] using (Real.hasDerivAt_sin θ).ofReal_comp
+  have hphase : ∀ θ : ℝ, HasDerivAt phase
+      ((-Complex.I * (z : ℂ) * sine θ) * phase θ) θ := by
+    intro θ
+    exact polarFourierRadialPhase_hasDerivAt z θ
+  have hzero :
+      (∫ θ in (0 : ℝ)..(2 * Real.pi),
+        cosine θ * phase θ +
+          sine θ * ((-Complex.I * (z : ℂ) * sine θ) * phase θ)) = 0 := by
+    have h := intervalIntegral.integral_deriv_mul_eq_sub
+      (a := (0 : ℝ)) (b := 2 * Real.pi)
+      (u := sine) (v := phase) (u' := cosine)
+      (v' := fun θ => (-Complex.I * (z : ℂ) * sine θ) * phase θ)
+      (fun θ _ => hsin θ) (fun θ _ => hphase θ)
+      (hccos.intervalIntegrable _ _)
+      (hcvprime.intervalIntegrable _ _)
+    simpa [sine, cosine] using h
+  have hcosInt : IntervalIntegrable (fun θ : ℝ => cosine θ * phase θ)
+      volume 0 (2 * Real.pi) := by
+    exact (hccos.mul hcphase).intervalIntegrable _ _
+  have hsinSqInt : IntervalIntegrable
+      (fun θ : ℝ => phase θ * sine θ ^ 2) volume 0 (2 * Real.pi) := by
+    exact (hcphase.mul (hcsin.pow 2)).intervalIntegrable _ _
+  have hfirst :
+      (∫ θ in (0 : ℝ)..(2 * Real.pi), cosine θ * phase θ) =
+        (Complex.I * (z : ℂ)) *
+          (∫ θ in (0 : ℝ)..(2 * Real.pi), phase θ * sine θ ^ 2) := by
+    have h' : (∫ θ in (0 : ℝ)..(2 * Real.pi),
+        cosine θ * phase θ -
+          (Complex.I * (z : ℂ)) * (phase θ * sine θ ^ 2)) = 0 := by
+      convert hzero using 1
+      apply intervalIntegral.integral_congr
+      intro θ _
+      ring
+    rw [intervalIntegral.integral_sub hcosInt (hsinSqInt.const_mul _),
+      intervalIntegral.integral_const_mul, sub_eq_zero] at h'
+    exact h'
+  have htrig (θ : ℝ) :
+      2 * (phase θ * sine θ ^ 2) =
+        phase θ -
+          phase θ * (cosine θ ^ 2 - sine θ ^ 2) := by
+    have h : sine θ ^ 2 + cosine θ ^ 2 = 1 := by
+      change (((Real.sin θ : ℝ) : ℂ) ^ 2) + (((Real.cos θ : ℝ) : ℂ) ^ 2) = 1
+      exact_mod_cast Real.sin_sq_add_cos_sq θ
+    linear_combination (phase θ) * h
+  have hsecond :
+      2 * (∫ θ in (0 : ℝ)..(2 * Real.pi), phase θ * sine θ ^ 2) =
+        polarFourierZerothAngularKernel z -
+          polarFourierSecondCosineAngularKernel z := by
+    calc
+      2 * (∫ θ in (0 : ℝ)..(2 * Real.pi), phase θ * sine θ ^ 2) =
+          ∫ θ in (0 : ℝ)..(2 * Real.pi),
+            2 * (phase θ * sine θ ^ 2) := by
+        rw [intervalIntegral.integral_const_mul]
+      _ = ∫ θ in (0 : ℝ)..(2 * Real.pi),
+            phase θ - phase θ * (cosine θ ^ 2 - sine θ ^ 2) := by
+        apply intervalIntegral.integral_congr
+        intro θ _
+        exact htrig θ
+      _ = polarFourierZerothAngularKernel z -
+            polarFourierSecondCosineAngularKernel z := by
+        rw [intervalIntegral.integral_sub]
+        · rfl
+        · exact hcphase.intervalIntegrable _ _
+        · exact (hcphase.mul ((hccos.pow 2).sub (hcsin.pow 2))).intervalIntegrable _ _
+  have hfirstKernel :
+      polarFourierFirstCosineAngularKernel z =
+        (Complex.I * (z : ℂ)) *
+          (∫ θ in (0 : ℝ)..(2 * Real.pi), phase θ * sine θ ^ 2) := by
+    rw [polarFourierFirstCosineAngularKernel]
+    convert hfirst using 1
+    apply intervalIntegral.integral_congr
+    intro θ _
+    simp [cosine, phase, mul_comm]
+  calc
+    2 * polarFourierFirstCosineAngularKernel z =
+        (Complex.I * (z : ℂ)) *
+          (2 * (∫ θ in (0 : ℝ)..(2 * Real.pi), phase θ * sine θ ^ 2)) := by
+      rw [hfirstKernel]
+      ring
+    _ = _ := by rw [hsecond]
+
 /-- The sine first harmonic vanishes against the radial Fourier phase over one full angle. -/
 theorem integral_polarFourierRadialPhase_mul_sin_zero (z : ℝ) :
     (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi),
