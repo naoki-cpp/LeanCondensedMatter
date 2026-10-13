@@ -7,6 +7,7 @@ import LeanCondensedMatter.Crystal.Periodicity
 import LeanCondensedMatter.Crystal.PointGroup
 import Mathlib.Algebra.Module.Submodule.Map
 import Mathlib.LinearAlgebra.Matrix.GeneralLinearGroup.Defs
+import Mathlib.LinearAlgebra.Trace
 
 /-!
 # Classification-facing crystal symmetry
@@ -163,6 +164,42 @@ theorem pointGroupMatrixRepresentation_injective (X : AtomicConfiguration E Spec
     e.symm (X.pointGroupLatticeRepresentation (V := V) h) at hgh
   exact (X.pointGroupLatticeRepresentation_injective (V := V) hX)
     (e.symm.injective hgh)
+
+
+/-- The trace of a crystallographic point-group action is integral.
+
+A basis of the discrete translation lattice extends to a real basis of the ambient vector
+space. In this basis every diagonal coefficient of the point-group linear part is an integer.
+This basis-free trace integrality is the arithmetic input to the crystallographic restriction. -/
+theorem exists_int_trace_pointGroup (X : AtomicConfiguration E Species)
+    (hX : X.Periodic (V := V)) (g : X.pointGroup (V := V))
+    {ι : Type*} [Fintype ι] [DecidableEq ι]
+    (b : Module.Basis ι ℤ
+      (AddSubgroup.toIntSubmodule (X.translationSubgroup (V := V)))) :
+    ∃ z : ℤ, LinearMap.trace ℝ V
+      (g : V ≃ₗᵢ[ℝ] V).toLinearEquiv.toLinearMap = (z : ℝ) := by
+  let L : Submodule ℤ V :=
+    AddSubgroup.toIntSubmodule (X.translationSubgroup (V := V))
+  letI : DiscreteTopology L := hX.discreteTranslations
+  letI : IsZLattice ℝ L := hX.isZLattice
+  let rb : Module.Basis ι ℝ V := b.ofZLatticeBasis ℝ L
+  let T : V →ₗ[ℝ] V := (g : V ≃ₗᵢ[ℝ] V).toLinearEquiv.toLinearMap
+  let z : ℤ := ∑ i : ι, (b.repr (X.pointGroupLatticeEquiv (V := V) g (b i))) i
+  refine ⟨z, ?_⟩
+  change LinearMap.trace ℝ V T = (z : ℝ)
+  rw [LinearMap.trace_eq_matrix_trace ℝ rb T]
+  change (∑ i : ι, rb.repr (T (rb i)) i) = (z : ℝ)
+  rw [show (z : ℝ) =
+    ∑ i : ι, ((b.repr (X.pointGroupLatticeEquiv (V := V) g (b i))) i : ℝ) by
+      simp [z]]
+  apply Finset.sum_congr rfl
+  intro i _
+  have hi : T (rb i) =
+      ((X.pointGroupLatticeEquiv (V := V) g (b i) : L) : V) := by
+    rfl
+  rw [hi]
+  exact b.ofZLatticeBasis_repr_apply ℝ L
+    (X.pointGroupLatticeEquiv (V := V) g (b i)) i
 
 end
 
