@@ -85,14 +85,8 @@ private theorem angularGreenPauliKernel_eq_spinRotation
     simp only [polarPauliMatrix, Matrix.add_apply,
       Matrix.smul_apply, smul_eq_mul]
     ring
-  calc
-    _ = momentum • polarPauliMatrix (k0 * a) (k1 * b) (k0 * d) angle := hangular
-    _ = momentum •
-          (inPlaneSpinRotation angle *
-            polarPauliMatrix (k0 * a) (k1 * b) (k0 * d) 0 *
-            inPlaneSpinRotationInverse angle) := by
-          rw [polarPauliMatrix_eq_spinRotation]
-    _ = _ := by module
+  rw [hangular, polarPauliMatrix_eq_spinRotation]
+  simp only [mul_smul_comm, smul_mul_assoc]
 
 /-- The actual full-angle finite-cutoff Born-Dyson Green momentum kernel
 is the spinor conjugate of its radial-axis Pauli K0/K1 kernel. The
