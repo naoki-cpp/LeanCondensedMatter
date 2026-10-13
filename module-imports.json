@@ -2832,6 +2832,14 @@
       "externalImportCount": 3
     },
     {
+      "name": "LeanCondensedMatter.Models.OrbitalRelaxation.T2gProjectors",
+      "sourceFile": "LeanCondensedMatter/Models/OrbitalRelaxation/T2gProjectors.lean",
+      "imports": [
+        "LeanCondensedMatter.Models.OrbitalRelaxation.Finite"
+      ],
+      "externalImportCount": 0
+    },
+    {
       "name": "LeanCondensedMatter.Models.Parabolic2DEG.Green",
       "sourceFile": "LeanCondensedMatter/Models/Parabolic2DEG/Green.lean",
       "imports": [
@@ -2973,6 +2981,7 @@
         "LeanCondensedMatter.Models.MassiveDirac",
         "LeanCondensedMatter.Models.OrbitalRelaxation.AngularCollision",
         "LeanCondensedMatter.Models.OrbitalRelaxation.Finite",
+        "LeanCondensedMatter.Models.OrbitalRelaxation.T2gProjectors",
         "LeanCondensedMatter.Models.Parabolic2DEG",
         "LeanCondensedMatter.Models.RashbaExchange"
       ],
@@ -5121,6 +5130,17 @@
       "externalImportCount": 0
     },
     {
+      "name": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Pairing.SlotSplitMixedOrder",
+      "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Diagrammatics/ExternalInsertion/Pairing/SlotSplitMixedOrder.lean",
+      "imports": [
+        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Pairing.MixedOrder",
+        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.SlotLegSplitting",
+        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Ordered",
+        "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionMixedOrder"
+      ],
+      "externalImportCount": 0
+    },
+    {
       "name": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.ExternalSupportConnectivity",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Diagrammatics/ExternalInsertion/SlotSplit/ExternalSupportConnectivity.lean",
       "imports": [
@@ -5169,11 +5189,7 @@
         "LeanCondensedMatter.Combinatorics.PerfectPairing.Split",
         "LeanCondensedMatter.Combinatorics.SubsetSplit",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Core.Diagram",
-        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Pairing.MixedOrder",
-        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Diagram",
-        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Leg",
-        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Ordered",
-        "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionMixedOrder"
+        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Diagram"
       ],
       "externalImportCount": 0
     },
@@ -5211,6 +5227,7 @@
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Factorization.ComponentVertexProduct",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Pairing.ComponentPairEquiv",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Pairing.MixedOrder",
+        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Pairing.SlotSplitMixedOrder",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.ExternalSupportConnectivity",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.ExternalSupportDecomposition",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.ExternalSupportFiber",
@@ -6603,7 +6620,7 @@
         "LeanCondensedMatter.Analysis.OrderedSimplex.BinarySlotShuffle",
         "LeanCondensedMatter.Combinatorics.PerfectPairing.SplitNormalizedPairs",
         "LeanCondensedMatter.Combinatorics.SlotShuffle",
-        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.SlotLegSplitting",
+        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Pairing.SlotSplitMixedOrder",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Reindexing",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentIntegral",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.DiagramRegularity"
