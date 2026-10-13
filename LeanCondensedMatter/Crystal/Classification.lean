@@ -258,6 +258,47 @@ theorem exists_int_trace_pointGroup_bounded
   rw [hz] at hlo hhi
   exact ⟨z, by exact_mod_cast hlo, by exact_mod_cast hhi, hz⟩
 
+
+/-- In a two-dimensional inner-product space, a point-group isometry with trace two
+must be the identity. This rules out nontrivial unipotent/shear matrices at the endpoint
+of the crystallographic trace interval. -/
+theorem pointGroup_eq_one_of_trace_eq_two
+    (X : AtomicConfiguration E Species) (g : X.pointGroup (V := V))
+    (o : OrthonormalBasis (Fin 2) ℝ V)
+    (htrace : LinearMap.trace ℝ V
+      (g : V ≃ₗᵢ[ℝ] V).toLinearEquiv.toLinearMap = 2) :
+    g = 1 := by
+  let f : V ≃ₗᵢ[ℝ] V := g
+  have hupper (i : Fin 2) : inner ℝ (o i) (f (o i)) ≤ 1 := by
+    have h := abs_real_inner_le_norm (o i) (f (o i))
+    have hle : |inner ℝ (o i) (f (o i))| ≤ 1 := by
+      simpa [f] using h
+    exact (le_abs_self _).trans hle
+  have hsum : inner ℝ (o 0) (f (o 0)) +
+      inner ℝ (o 1) (f (o 1)) = 2 := by
+    rw [LinearMap.trace_eq_sum_inner _ o, Fin.sum_univ_two] at htrace
+    simpa only [f, LinearEquiv.coe_coe, LinearIsometryEquiv.coe_toLinearEquiv]
+      using htrace
+  have heq (i : Fin 2) : inner ℝ (o i) (f (o i)) = 1 := by
+    fin_cases i
+    · linarith [hupper 0, hupper 1]
+    · linarith [hupper 0, hupper 1]
+  have hfixed (i : Fin 2) : f (o i) = o i := by
+    have heq' : o i = f (o i) :=
+      (inner_eq_one_iff_of_norm_eq_one (o.norm_eq_one i)
+        (by simpa [f] using f.norm_map (o i))).mp (heq i)
+    exact heq'.symm
+  have hlinear : f.toLinearEquiv.toLinearMap = LinearMap.id := by
+    apply o.toBasis.ext
+    intro i
+    simpa only [LinearEquiv.coe_coe, LinearIsometryEquiv.coe_toLinearEquiv,
+      LinearMap.id_apply] using hfixed i
+  apply Subtype.ext
+  apply LinearIsometryEquiv.ext
+  intro x
+  have hx := LinearMap.congr_fun hlinear x
+  simpa [f] using hx
+
 end
 
 end Planar
