@@ -208,12 +208,6 @@ private theorem finiteCutoffContinuumBornDenominatorIntegralOfRegulator_eq_log_s
   rw [hmain]
   field_simp
 
-private theorem continuumBornDenominatorLogPrefactor_eq_ofReal (v : ℝ) :
-    -(((2 : ℂ) * (v : ℂ) ^ 2)⁻¹) =
-      ((-(((2 : ℝ) * v ^ 2)⁻¹) : ℝ) : ℂ) := by
-  push_cast
-  rfl
-
 /-- Exact arbitrary-regulator finite-cutoff real part of the shared denominator integral. -/
 private theorem finiteCutoffContinuumBornDenominatorIntegralOfRegulator_re_eq
     (v m probeEnergy regulator pMax : ℝ)
@@ -227,7 +221,8 @@ private theorem finiteCutoffContinuumBornDenominatorIntegralOfRegulator_re_eq
             ‖pauliGreenDenominatorOfRegulator v m 0 0 probeEnergy regulator‖) := by
   rw [finiteCutoffContinuumBornDenominatorIntegralOfRegulator_eq_log_sub_log
     v m probeEnergy regulator pMax hvelocity hprobeEnergy hregulator]
-  rw [continuumBornDenominatorLogPrefactor_eq_ofReal]
+  rw [show -(((2 : ℂ) * (v : ℂ) ^ 2)⁻¹) =
+    ((-(((2 : ℝ) * v ^ 2)⁻¹) : ℝ) : ℂ) from by push_cast; rfl]
   rw [Complex.re_ofReal_mul]
   simp [Complex.log_re]
 
@@ -264,7 +259,8 @@ private theorem finiteCutoffContinuumBornDenominatorIntegralOfRegulator_im_eq
           (pauliGreenDenominatorOfRegulator v m 0 0 probeEnergy regulator).arg) := by
   rw [finiteCutoffContinuumBornDenominatorIntegralOfRegulator_eq_log_sub_log
     v m probeEnergy regulator pMax hvelocity hprobeEnergy hregulator]
-  rw [continuumBornDenominatorLogPrefactor_eq_ofReal]
+  rw [show -(((2 : ℂ) * (v : ℂ) ^ 2)⁻¹) =
+    ((-(((2 : ℝ) * v ^ 2)⁻¹) : ℝ) : ℂ) from by push_cast; rfl]
   rw [Complex.im_ofReal_mul]
   simp [Complex.log_im]
 
