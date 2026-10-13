@@ -20,17 +20,6 @@ namespace Fermionic
 open Common Combinatorics
 open scoped BigOperators
 
-private theorem orderedBlockInversionCount_castTotalEquiv
-    {ι : Type*} [Fintype ι] {size : ι → ℕ} {m n : ℕ}
-    (h : m = n) (shuffle : FamilySlotShuffleTo size m)
-    (blockOrder : ι ≃ Fin (Fintype.card ι)) :
-    (FamilySlotShuffleTo.castTotalEquiv h shuffle).orderedBlockInversionCount blockOrder =
-      shuffle.orderedBlockInversionCount blockOrder := by
-  subst n
-  rfl
-
-
-
 variable {Mode : Type*}
 
 /-- The relative permutation between fixed and mixed component shuffles carries exactly the fixed
@@ -61,7 +50,8 @@ theorem ExternalInsertionWickDiagram.relativeComponentShuffleSign_eq_external_mu
   have hfixed :
       fixedShuffle.orderedBlockInversionCount blockOrder % 2 =
         d.componentExternalShuffle.orderedBlockInversionCount blockOrder % 2 := by
-    rw [orderedBlockInversionCount_castTotalEquiv]
+    change d.componentLegShuffle.orderedBlockInversionCount blockOrder % 2 =
+      d.componentExternalShuffle.orderedBlockInversionCount blockOrder % 2
     exact d.componentLegShuffle_orderedBlockInversionCount_mod_two_eq_external blockOrder
   have hmixed :=
     d.mixedInterComponentCrossingCount_mod_two_eq_orderedBlockInversionCount
