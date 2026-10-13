@@ -95,18 +95,22 @@ theorem ExternalInsertionWickDiagram.relativeComponentShuffleSign_mul_mixedPairi
     rw [d.mixedPairingValue_eq_inter_mul_prod_components]
   have hsignsquare :
       (Common.Statistics.fermion.zetaInt : ℂ) ^
-          d.mixedInterComponentCrossingCount externalTime σ *
+          (d.pairingInMixedOrder externalTime σ).interComponentCrossingCount
+          (d.componentMixedPairEquiv externalTime σ) *
         (Common.Statistics.fermion.zetaInt : ℂ) ^
-          d.mixedInterComponentCrossingCount externalTime σ = 1 := by
+          (d.pairingInMixedOrder externalTime σ).interComponentCrossingCount
+          (d.componentMixedPairEquiv externalTime σ) = 1 := by
     simp only [Common.Statistics.zetaInt_fermion, Int.cast_neg, Int.cast_one]
     rw [← mul_pow]
     norm_num
   calc
     _ = componentExternalOrderSign d blockOrder *
           (((Common.Statistics.fermion.zetaInt : ℂ) ^
-                d.mixedInterComponentCrossingCount externalTime σ *
+                (d.pairingInMixedOrder externalTime σ).interComponentCrossingCount
+          (d.componentMixedPairEquiv externalTime σ) *
               (Common.Statistics.fermion.zetaInt : ℂ) ^
-                d.mixedInterComponentCrossingCount externalTime σ) *
+                (d.pairingInMixedOrder externalTime σ).interComponentCrossingCount
+          (d.componentMixedPairEquiv externalTime σ)) *
             ∏ B : d.vertexGraph.componentPartition.parts,
               ExternalInsertionWickDiagram.mixedPairingValue (d.componentOrderedDiagram B) ε β
                 (d.componentExternalTime externalTime B)
