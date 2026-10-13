@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornRadialRealSpacePropagator
+import LeanCondensedMatter.Models.MassiveDirac.Model.Rotation
 
 set_option linter.style.header false
 
@@ -59,6 +60,88 @@ noncomputable def finiteCutoffContinuumBornDysonAngularGreenEntryKernel
       polarFourierFirstCosineAngularKernel (p * radius / hbar) *
         (((Real.cos angle : ℝ) : ℂ) * (b • sigmaX) i j +
           (((Real.sin angle : ℝ) : ℂ)) * (b • sigmaY) i j))
+
+/-- Algebraic rotation of a generic massive-Dirac K0/K1 momentum kernel.
+The same radial scalar coefficients multiply the polar Pauli matrix at every
+angle, and its radial-axis matrix is the K0/K1 Cartesian entry kernel. -/
+private theorem angularGreenPauliKernel_eq_spinRotation
+    (momentum k0 k1 a b d : ℂ) (angle : ℝ) :
+    (fun i j : Fin 2 =>
+      momentum *
+        (k0 * (a • (1 : Matrix2) + d • sigmaZ) i j +
+          k1 * ((((Real.cos angle : ℝ) : ℂ)) * (b • sigmaX) i j +
+            (((Real.sin angle : ℝ) : ℂ)) * (b • sigmaY) i j))) =
+      inPlaneSpinRotation angle *
+        (fun i j : Fin 2 =>
+          momentum * (!![k0 * (a + d), k1 * b;
+                          k1 * b, k0 * (a - d)] : Matrix2) i j) *
+        inPlaneSpinRotationInverse angle := by
+  let polar : ℝ → Matrix2 :=
+    polarPauliMatrix (k0 * a) (k1 * b) (k0 * d)
+  have hangular :
+      (fun i j : Fin 2 =>
+        momentum *
+          (k0 * (a • (1 : Matrix2) + d • sigmaZ) i j +
+            k1 * ((((Real.cos angle : ℝ) : ℂ)) * (b • sigmaX) i j +
+              (((Real.sin angle : ℝ) : ℂ)) * (b • sigmaY) i j))) =
+        momentum • polar angle := by
+    ext i j
+    simp only [polar, polarPauliMatrix, Matrix.add_apply,
+      Matrix.smul_apply, smul_eq_mul]
+    ring
+  have hradial :
+      (fun i j : Fin 2 =>
+        momentum * (!![k0 * (a + d), k1 * b;
+                        k1 * b, k0 * (a - d)] : Matrix2) i j) =
+        momentum • polar 0 := by
+    ext i j
+    fin_cases i <;> fin_cases j <;>
+      simp [polar, polarPauliMatrix, sigmaX, sigmaY, sigmaZ,
+        InternalSpace.pauliX, InternalSpace.pauliY,
+        InternalSpace.pauliZ, Matrix.smul_apply, smul_eq_mul] <;>
+      ring
+  calc
+    _ = momentum • polar angle := hangular
+    _ = momentum •
+          (inPlaneSpinRotation angle * polar 0 *
+            inPlaneSpinRotationInverse angle) := by
+          rw [polar, polarPauliMatrix_eq_spinRotation]
+    _ = inPlaneSpinRotation angle * (momentum • polar 0) *
+          inPlaneSpinRotationInverse angle := by
+          module
+    _ = _ := by rw [← hradial]
+
+/-- The full-angle Born-Dyson Green entry kernel is exactly the spinor
+conjugate of its **radial-axis** momentum kernel, with the K0/K1 radial
+coefficients and the single physical momentum factor unchanged.
+This establishes model-specific rotation covariance before performing any
+radial integral; it makes no assumptions about integrability or X/Psi traces. -/
+theorem finiteCutoffContinuumBornDysonAngularGreenEntryKernel_eq_spinRotation
+    (side : SpectralSide)
+    (v m probeEnergy broadening disorderStrength hbar pMax radius angle p : ℝ) :
+    (fun i j : Fin 2 =>
+      finiteCutoffContinuumBornDysonAngularGreenEntryKernel
+        side v m probeEnergy broadening disorderStrength hbar pMax
+        radius angle p i j) =
+      inPlaneSpinRotation angle *
+        (fun i j : Fin 2 =>
+          finiteCutoffContinuumBornDysonRadialGreenEntryKernel
+            side v m probeEnergy broadening disorderStrength hbar pMax
+            radius p i j) *
+        inPlaneSpinRotationInverse angle := by
+  let a := finiteCutoffContinuumBornDysonScalarCoefficient
+    side v m p 0 probeEnergy broadening disorderStrength hbar pMax
+  let b := finiteCutoffContinuumBornDysonPauliCoefficient .x
+    side v m p 0 probeEnergy broadening disorderStrength hbar pMax
+  let d := finiteCutoffContinuumBornDysonPauliCoefficient .z
+    side v m p 0 probeEnergy broadening disorderStrength hbar pMax
+  let k0 := polarFourierZerothAngularKernel (p * radius / hbar)
+  let k1 := polarFourierFirstCosineAngularKernel (p * radius / hbar)
+  simpa only [finiteCutoffContinuumBornDysonAngularGreenEntryKernel,
+    finiteCutoffContinuumBornDysonRadialGreenEntryKernel,
+    a, b, d, k0, k1] using
+    (angularGreenPauliKernel_eq_spinRotation
+      (p : ℂ) k0 k1 a b d angle)
 
 /-- At an arbitrary real-space polar angle, the massive-Dirac Born-Dyson
 Green matrix reduces entrywise to the canonical `K0`/`K1` channels.
