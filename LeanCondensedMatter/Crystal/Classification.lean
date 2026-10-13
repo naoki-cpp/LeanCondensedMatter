@@ -222,7 +222,7 @@ noncomputable section
 
 The bound is independent of a translation-lattice basis. It follows by summing the
 Cauchy–Schwarz bounds of the two diagonal coefficients in any orthonormal basis. -/
-theorem pointGroup_trace_bounds [InnerProductSpace ℝ V]
+theorem pointGroup_trace_bounds
     (X : AtomicConfiguration E Species) (g : X.pointGroup (V := V))
     (o : OrthonormalBasis (Fin 2) ℝ V) :
     -2 ≤ LinearMap.trace ℝ V (g : V ≃ₗᵢ[ℝ] V).toLinearEquiv.toLinearMap ∧
@@ -244,7 +244,7 @@ theorem pointGroup_trace_bounds [InnerProductSpace ℝ V]
 
 /-- The planar crystallographic trace is one of the five integers from `-2` to `2`.
 This is the arithmetic/geometric bridge used to restrict the allowed planar rotations. -/
-theorem exists_int_trace_pointGroup_bounded [InnerProductSpace ℝ V]
+theorem exists_int_trace_pointGroup_bounded
     [FiniteDimensional ℝ V]
     (X : AtomicConfiguration E Species)
     (hX : X.Periodic (V := V)) (g : X.pointGroup (V := V))
