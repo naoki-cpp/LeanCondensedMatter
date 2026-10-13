@@ -957,7 +957,10 @@ theorem externalInsertionOfSlotSplit_mixedPairingEvaluation_eq_positionInversion
         (hleftMono (localPairing.pairs_normalized pr.2))
     change kernel (pairEquiv (Sum.inl pr)).1.1
         (pairEquiv (Sum.inl pr)).1.2 = leftKernel pr.1.1 pr.1.2
-    rw [hpair, hposLeft, hposLeft]
+    rw [hpair]
+    change kernel (mixedSplit (Sum.inl pr.1.1))
+        (mixedSplit (Sum.inl pr.1.2)) = leftKernel pr.1.1 pr.1.2
+    rw [hposLeft, hposLeft]
     exact (externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_left_normalizedPair
       ε β T ext vac externalTime σ pr).2
   have hright : ∀ pr : (vac.pairingInOrder order).NormalizedPair,
@@ -971,7 +974,10 @@ theorem externalInsertionOfSlotSplit_mixedPairingEvaluation_eq_positionInversion
         (hrightMono ((vac.pairingInOrder order).pairs_normalized pr.2))
     change kernel (pairEquiv (Sum.inr pr)).1.1
         (pairEquiv (Sum.inr pr)).1.2 = rightKernel pr.1.1 pr.1.2
-    rw [hpair, hposRight, hposRight]
+    rw [hpair]
+    change kernel (mixedSplit (Sum.inr pr.1.1))
+        (mixedSplit (Sum.inr pr.1.2)) = rightKernel pr.1.1 pr.1.2
+    rw [hposRight, hposRight]
     exact externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_right_locality
       ε β T ext vac externalTime σ pr.1.1 pr.1.2
   have hpairing :
