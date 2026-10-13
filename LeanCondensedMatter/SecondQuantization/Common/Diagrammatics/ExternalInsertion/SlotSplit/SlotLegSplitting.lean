@@ -274,8 +274,7 @@ theorem externalInsertionSlotLegSplitting_fixedInversionCount_mod_two_eq_zero
       rw [hzero]
       exact dvd_zero 2
   | inr vl =>
-      let v := vl.1
-      let l := vl.2
+      rcases vl with ⟨v, l⟩
       have hdiv := Fintype.dvd_sum_equiv_fst_of_dvd_card
         (orderedQuarticLegEquiv S.card)
         (fun w : Fin S.card => if (order w).1 < v.1 then (1 : ℕ) else 0)
@@ -289,13 +288,7 @@ theorem externalInsertionSlotLegSplitting_fixedInversionCount_mod_two_eq_zero
       have hiff :=
         externalInsertionSlotLegSplitting_fixedRight_lt_leftInteraction_iff
           (E := E) T v l wk.1 wk.2
-      change (if externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T)
-          (Sum.inr (orderedLegToDiagramLeg S order
-            ((orderedQuarticLegEquiv S.card).symm (wk.1, wk.2)))) <
-          externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T)
-            (Sum.inl (externalInsertionInteractionLeg (E := E) v l))
-          then (1 : ℕ) else 0) =
-        (if (order wk.1).1 < v.1 then 1 else 0)
+      simp only [Prod.mk.eta, Equiv.apply_symm_apply]
       rw [hiff]
 
 /-- Reconstruct an external-insertion diagram from an external-bearing piece and a quartic
