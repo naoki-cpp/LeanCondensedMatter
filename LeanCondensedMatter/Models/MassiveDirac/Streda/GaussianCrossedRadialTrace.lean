@@ -306,6 +306,31 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficie
       finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel_pauliVectorCoefficient
         .z source v m probeEnergy broadening disorderStrength hbar pMax radius p
 
+/-- The zeroth-radius crossed-current block has neither a Pauli-scalar nor a
+longitudinal Pauli-z component. Both channels carry the first angular Fourier
+harmonic, which vanishes at the origin before momentum integration.
+
+This is an exact finite-broadening, finite-cutoff selection rule; it does not
+require a real-space regulator limit. -/
+theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrent_origin_scalar_and_z_eq_zero
+    (source : Fin 2)
+    (v m probeEnergy broadening disorderStrength hbar pMax : ℝ)
+    (hbroadening : broadening ≠ 0) (hdisorder : 0 ≤ disorderStrength)
+    (hpMax : 0 ≤ pMax) :
+    (finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentScalarCoefficient
+      source v m probeEnergy broadening disorderStrength hbar pMax 0 = 0) ∧
+    (finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient
+      .z source v m probeEnergy broadening disorderStrength hbar pMax 0 = 0) := by
+  constructor
+  · rw [finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentScalarCoefficient_eq_radialKernel_integral
+      source v m probeEnergy broadening disorderStrength hbar pMax 0
+      hbroadening hdisorder hpMax]
+    simp [finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentScalarKernel]
+  · rw [finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient_eq_radialKernel_integral
+      .z source v m probeEnergy broadening disorderStrength hbar pMax 0
+      hbroadening hdisorder hpMax]
+    simp [finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliKernel]
+
 /-- The pointwise transverse antisymmetry survives radial momentum integration in the
 physical finite-broadening finite-cutoff regime. It reduces the number of independent
 crossed-current coefficients needed for the `X` and `Psi` trace evaluations. -/
