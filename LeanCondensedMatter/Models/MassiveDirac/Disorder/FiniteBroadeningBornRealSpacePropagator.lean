@@ -3,23 +3,21 @@ import LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornRadi
 set_option linter.style.header false
 
 /-!
-# Finite-cutoff real-space Born-Dyson propagator
+# Two-dimensional real-space Born-Dyson propagator
 
-This module owns the two-dimensional real-space representation of the finite-cutoff
-finite-broadening Born-Dyson Green matrix. The matrix Fourier transform is performed entrywise through the generic two-dimensional
-physical-momentum polar Fourier transform, so the factor `d²p / (2πℏ)²` is already included in every
-real-space Green block.
+The finite-cutoff, finite-broadening Born-Dyson Green matrix is transformed entrywise by the
+generic two-dimensional physical-momentum polar Fourier transform, with measure
+`d²p / (2πℏ)²` already included in every real-space Green block.
 
-The generic Fourier reduction uses the model-independent constant/first/second harmonic kernels from
-`Transport.Analysis.PolarFourier` at an arbitrary polar point. The upstream `FiniteBroadeningBornRadialRealSpacePropagator` module constructs the exact
-one-dimensional radial Green matrix. On the real-space radial axis, the massive-Dirac Green matrix
-has vanishing second-harmonic coefficients and the first-sine channel is suppressed by the point
-angle, leaving the zeroth and first-cosine kernels. The Green matrix
-supplies one `AngularHarmonicCoefficients` value at each radial momentum; entrywise Fourier reduction
-consumes that common decomposition without rebuilding angular integrability.
+The model-independent constant, first, and second angular-harmonic kernels support an
+arbitrary polar real-space point. The radial-axis identity identifies this two-dimensional
+representation with the one-dimensional Green matrix defined upstream in
+`FiniteBroadeningBornRadialRealSpacePropagator`. The massive-Dirac Green matrix has vanishing
+second-harmonic coefficients, and its first-sine channel vanishes on the radial axis.
+The entrywise Fourier reduction reuses one `AngularHarmonicCoefficients` decomposition.
 
-No crossed-diagram topology, current vertex, real-space integration, cutoff removal, or conductivity
-normalization is introduced here.
+No crossed-diagram topology, current vertex, real-space integration, cutoff removal, or
+conductivity normalization is introduced here.
 -/
 
 namespace QuantumTheory.Models.MassiveDirac
