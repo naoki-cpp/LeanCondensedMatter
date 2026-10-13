@@ -113,6 +113,127 @@ theorem finiteGibbsBilinearCurrentCurrent_eq_four_fields
   rw [bilinearCurrentInsertion_comp_eq_four_fields]
   simp only [Common.finiteGibbsExpectation, map_sum, map_smul, smul_eq_mul]
 
+
+/-- The reversed imaginary-time chamber contains the opposite ordering of
+the two **even** current vertices. No extra fermionic minus sign is attached
+to exchanging two composite current operators. -/
+theorem timeOrderedBilinearCurrents_eq_four_fields_of_lt
+    (ε : Mode → ℝ) (jx jy : Mode → Mode → ℂ)
+    {τ τ' : ℝ} (h : τ < τ') :
+    timeOrderedBilinearCurrents ε jx jy τ τ' =
+      ∑ k : Mode, ∑ l : Mode, ∑ i : Mode, ∑ j : Mode,
+        (jy k l * jx i j) •
+          (((externalFieldOperator ε τ' (.creation k)).comp
+              (externalFieldOperator ε τ' (.annihilation l))).comp
+            ((externalFieldOperator ε τ (.creation i)).comp
+              (externalFieldOperator ε τ (.annihilation j)))) := by
+  rw [timeOrderedBilinearCurrents,
+    Common.timeOrderedProduct_of_lt Common.Statistics.boson _ _ h]
+  simp only [Common.Statistics.zetaInt_boson, Int.cast_one, one_smul]
+  exact bilinearCurrentInsertion_comp_eq_four_fields ε τ' τ jy jx
+
+/-- Equal-time current ordering uses the symmetric convention for **even**
+composite insertions, not the antisymmetric elementary-fermion rule. -/
+theorem timeOrderedBilinearCurrents_self_time
+    (ε : Mode → ℝ) (jx jy : Mode → Mode → ℂ) (τ : ℝ) :
+    timeOrderedBilinearCurrents ε jx jy τ τ =
+      (2⁻¹ : ℂ) •
+        ((bilinearCurrentInsertion ε τ jx).comp
+            (bilinearCurrentInsertion ε τ jy) +
+          (bilinearCurrentInsertion ε τ jy).comp
+            (bilinearCurrentInsertion ε τ jx)) := by
+  rw [timeOrderedBilinearCurrents,
+    Common.timeOrderedProduct_self_time Common.Statistics.boson]
+  simp only [Common.Statistics.zetaInt_boson, Int.cast_one, one_smul]
+
+/-- A normalized free-Gibbs expectation of a current insertion is the
+finite weighted sum of its two elementary fermionic fields. -/
+theorem finiteGibbsBilinearCurrent_eq_two_fields
+    (ε : Mode → ℝ) (β τ : ℝ) (kernel : Mode → Mode → ℂ) :
+    Common.finiteGibbsExpectation (fermionEnergy ε) β
+        (bilinearCurrentInsertion ε τ kernel) =
+      ∑ i : Mode, ∑ j : Mode,
+        kernel i j *
+          Common.finiteGibbsExpectation (fermionEnergy ε) β
+            ((externalFieldOperator ε τ (.creation i)).comp
+              (externalFieldOperator ε τ (.annihilation j))) := by
+  simp only [bilinearCurrentInsertion, Common.finiteGibbsExpectation,
+    map_sum, map_smul, smul_eq_mul]
+
+/-- Connectedness of the two *composite current insertions*:
+subtract their product of one-current expectations. This is deliberately
+not the connected four-elementary-fermion cumulant. -/
+noncomputable def finiteGibbsConnectedBilinearCurrentCorrelation
+    (ε : Mode → ℝ) (β τ τ' : ℝ)
+    (jx jy : Mode → Mode → ℂ) : ℂ :=
+  Common.finiteGibbsExpectation (fermionEnergy ε) β
+      ((bilinearCurrentInsertion ε τ jx).comp
+        (bilinearCurrentInsertion ε τ' jy)) -
+    Common.finiteGibbsExpectation (fermionEnergy ε) β
+        (bilinearCurrentInsertion ε τ jx) *
+      Common.finiteGibbsExpectation (fermionEnergy ε) β
+        (bilinearCurrentInsertion ε τ' jy)
+
+/-- The connected two-current correlator is the four-field sum with only
+the **disconnected current-vertex product** removed. Wick contractions
+joining the two current vertices survive even if the underlying four
+elementary fermion legs are not a single cumulant component. -/
+theorem finiteGibbsConnectedBilinearCurrentCorrelation_eq_four_fields
+    (ε : Mode → ℝ) (β τ τ' : ℝ)
+    (jx jy : Mode → Mode → ℂ) :
+    finiteGibbsConnectedBilinearCurrentCorrelation ε β τ τ' jx jy =
+      ∑ i : Mode, ∑ j : Mode, ∑ k : Mode, ∑ l : Mode,
+        (jx i j * jy k l) *
+          (Common.finiteGibbsExpectation (fermionEnergy ε) β
+              (((externalFieldOperator ε τ (.creation i)).comp
+                  (externalFieldOperator ε τ (.annihilation j))).comp
+                ((externalFieldOperator ε τ' (.creation k)).comp
+                  (externalFieldOperator ε τ' (.annihilation l)))) -
+            Common.finiteGibbsExpectation (fermionEnergy ε) β
+                ((externalFieldOperator ε τ (.creation i)).comp
+                  (externalFieldOperator ε τ (.annihilation j))) *
+              Common.finiteGibbsExpectation (fermionEnergy ε) β
+                ((externalFieldOperator ε τ' (.creation k)).comp
+                  (externalFieldOperator ε τ' (.annihilation l)))) := by
+  rw [finiteGibbsConnectedBilinearCurrentCorrelation,
+    finiteGibbsBilinearCurrentCurrent_eq_four_fields,
+    finiteGibbsBilinearCurrent_eq_two_fields,
+    finiteGibbsBilinearCurrent_eq_two_fields]
+  have hprod :
+      (∑ i : Mode, ∑ j : Mode,
+        jx i j *
+          Common.finiteGibbsExpectation (fermionEnergy ε) β
+            ((externalFieldOperator ε τ (.creation i)).comp
+              (externalFieldOperator ε τ (.annihilation j)))) *
+        (∑ k : Mode, ∑ l : Mode,
+          jy k l *
+            Common.finiteGibbsExpectation (fermionEnergy ε) β
+              ((externalFieldOperator ε τ' (.creation k)).comp
+                (externalFieldOperator ε τ' (.annihilation l)))) =
+      ∑ i : Mode, ∑ j : Mode, ∑ k : Mode, ∑ l : Mode,
+        (jx i j * jy k l) *
+          (Common.finiteGibbsExpectation (fermionEnergy ε) β
+              ((externalFieldOperator ε τ (.creation i)).comp
+                (externalFieldOperator ε τ (.annihilation j))) *
+            Common.finiteGibbsExpectation (fermionEnergy ε) β
+              ((externalFieldOperator ε τ' (.creation k)).comp
+                (externalFieldOperator ε τ' (.annihilation l)))) := by
+    rw [Finset.sum_mul]
+    apply Finset.sum_congr rfl
+    intro i _
+    rw [Finset.sum_mul]
+    apply Finset.sum_congr rfl
+    intro j _
+    rw [Finset.mul_sum]
+    apply Finset.sum_congr rfl
+    intro k _
+    rw [Finset.mul_sum]
+    apply Finset.sum_congr rfl
+    intro l _
+    ring
+  rw [hprod]
+  simp only [mul_sub, Finset.sum_sub_distrib]
+
 end
 end Transport
 end Fermionic
