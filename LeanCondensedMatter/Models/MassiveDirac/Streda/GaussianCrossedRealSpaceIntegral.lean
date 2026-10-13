@@ -104,8 +104,7 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceIntegral_eq_radial
       dsimp only
       rw [intervalIntegral.integral_const_mul,
         (coefficients radius).integral_eval]
-      simp only [smul_eq_mul]
-      ring
+      simp <;> ring
     _ = _ := by rw [intervalIntegral.integral_const_mul]
 
 /-- The finite-radius `Psi` integral remains real because its pointwise trace kernel is real. -/
