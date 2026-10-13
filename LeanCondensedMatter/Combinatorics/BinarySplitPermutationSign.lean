@@ -65,10 +65,7 @@ private theorem binaryBlockShuffle_orderedBlockInversionCount
   rw [hoff]
   have hfalse : binaryBlockOrder false < binaryBlockOrder true := by decide
   have htrue : ¬ binaryBlockOrder true < binaryBlockOrder false := by decide
-  simp only [Finset.sum_insert, Finset.sum_singleton,
-    Finset.mem_singleton, Prod.mk.injEq, Bool.true_ne_false,
-    Bool.false_ne_true, and_false, not_false_eq_true,
-    ↓reduceIte, hfalse, htrue]
+  simp [hfalse, htrue, Finset.sum_insert, Finset.sum_singleton]
   rw [FamilySlotShuffleTo.blockInversionCount_of_ne (by decide)]
   change (∑ i : Fin m, ∑ j : Fin n,
     if e (Sum.inr j) < e (Sum.inl i) then 1 else 0) = _
