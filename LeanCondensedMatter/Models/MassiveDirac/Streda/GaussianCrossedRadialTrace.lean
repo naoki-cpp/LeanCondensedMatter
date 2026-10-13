@@ -1094,9 +1094,40 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_psi_eq_ex
   simp [InternalSpace.pauliZConjugateVector, InternalSpace.dotProduct_pauliAxis,
     InternalSpace.pauliCross, cross_apply, InternalSpace.pauliAxisComponent, hoffdiag]; ring
 
-/-- The finite-regulator crossed X trace uses explicit K0/K2 diagonal-current moments and
-all four source-resolved K1 scalar/z moments. The transverse Pauli current is also
-an explicit K0 moment; all Green scalar/x/z components have K0/K1 radial integrals. -/
+/-- Local normalized radial Fourier recurrence consumed by the X and Psi trace reductions.
+The public upstream identity retains its division-free normalization. -/
+private theorem gaussianCrossedRadialFirstHarmonicIntegral_eq_difference
+    (hbar pMax radius : ℝ) (f : ℝ → ℂ) :
+    (∫ p in (0 : ℝ)..pMax,
+      (p : ℂ) *
+        (polarFourierFirstCosineAngularKernel (p * radius / hbar) * f p)) =
+      ((Complex.I * (((radius / hbar : ℝ) : ℂ)) / 2) *
+        ∫ p in (0 : ℝ)..pMax,
+          (p : ℂ) ^ 2 *
+            ((polarFourierZerothAngularKernel (p * radius / hbar) -
+                polarFourierSecondCosineAngularKernel (p * radius / hbar)) * f p)) := by
+  have h := integral_polarFourierFirstCosineAngularKernel_two_mul_eq_zeroth_sub_second
+    hbar pMax radius f
+  calc
+    (∫ p in (0 : ℝ)..pMax,
+        (p : ℂ) *
+          (polarFourierFirstCosineAngularKernel (p * radius / hbar) * f p)) =
+        (2 * (∫ p in (0 : ℝ)..pMax,
+          (p : ℂ) *
+            (polarFourierFirstCosineAngularKernel (p * radius / hbar) * f p))) / 2 := by
+      ring
+    _ = (Complex.I * (((radius / hbar : ℝ) : ℂ)) *
+        (∫ p in (0 : ℝ)..pMax,
+          (p : ℂ) ^ 2 *
+            ((polarFourierZerothAngularKernel (p * radius / hbar) -
+                polarFourierSecondCosineAngularKernel (p * radius / hbar)) * f p))) / 2 := by
+      rw [h]
+    _ = _ := by ring
+
+/-- The finite-regulator crossed X trace uses K0/K2 diagonal-current moments and
+the K0-K2 recurrence for all four scalar/z crossed-current first harmonics.
+The transverse current and scalar/z Green channels retain K0 moments, while
+the in-plane Green components use the same K0-K2 reduction. -/
 theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_x_eq_harmonic_components
     (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ)
     (hbroadening : broadening ≠ 0) (hdisorder : 0 ≤ disorderStrength)
@@ -1125,9 +1156,12 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_x_eq_harm
           .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax
       let a :=
         (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
-          ∫ p in (0 : ℝ)..pMax,
-            (p : ℂ) * (polarFourierFirstCosineAngularKernel (p * radius / hbar) *
-              ((aR p * bA p + aA p * bR p) * factor))
+          ((Complex.I * (((radius / hbar : ℝ) : ℂ)) / 2) *
+            ∫ p in (0 : ℝ)..pMax,
+              (p : ℂ) ^ 2 *
+                ((polarFourierZerothAngularKernel (p * radius / hbar) -
+                    polarFourierSecondCosineAngularKernel (p * radius / hbar)) *
+                ((aR p * bA p + aA p * bR p) * factor)))
       let b :=
         (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
           ∫ p in (0 : ℝ)..pMax,
@@ -1135,9 +1169,12 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_x_eq_harm
               aR p)
       let c :=
         (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
-          ∫ p in (0 : ℝ)..pMax,
-            (p : ℂ) * (polarFourierFirstCosineAngularKernel (p * radius / hbar) *
-              ((-Complex.I * (bR p * dA p - bA p * dR p)) * factor))
+          ((Complex.I * (((radius / hbar : ℝ) : ℂ)) / 2) *
+            ∫ p in (0 : ℝ)..pMax,
+              (p : ℂ) ^ 2 *
+                ((polarFourierZerothAngularKernel (p * radius / hbar) -
+                    polarFourierSecondCosineAngularKernel (p * radius / hbar)) *
+                ((-Complex.I * (bR p * dA p - bA p * dR p)) * factor)))
       let d :=
         (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
           ∫ p in (0 : ℝ)..pMax,
@@ -1163,21 +1200,30 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_x_eq_harm
               ((Complex.I * (aR p * dA p - aA p * dR p)) * factor))
       let uz :=
         (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
-          ∫ p in (0 : ℝ)..pMax,
-            (p : ℂ) * (polarFourierFirstCosineAngularKernel (p * radius / hbar) *
-              ((bR p * dA p + bA p * dR p) * factor))
+          ((Complex.I * (((radius / hbar : ℝ) : ℂ)) / 2) *
+            ∫ p in (0 : ℝ)..pMax,
+              (p : ℂ) ^ 2 *
+                ((polarFourierZerothAngularKernel (p * radius / hbar) -
+                    polarFourierSecondCosineAngularKernel (p * radius / hbar)) *
+                ((bR p * dA p + bA p * dR p) * factor)))
       let wx := -uy
       let wy := (isotropic - anisotropic) / 2
       let wz :=
         (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
-          ∫ p in (0 : ℝ)..pMax,
-            (p : ℂ) * (polarFourierFirstCosineAngularKernel (p * radius / hbar) *
-              ((-Complex.I * (aA p * bR p - aR p * bA p)) * factor))
+          ((Complex.I * (((radius / hbar : ℝ) : ℂ)) / 2) *
+            ∫ p in (0 : ℝ)..pMax,
+              (p : ℂ) ^ 2 *
+                ((polarFourierZerothAngularKernel (p * radius / hbar) -
+                    polarFourierSecondCosineAngularKernel (p * radius / hbar)) *
+                ((-Complex.I * (aA p * bR p - aR p * bA p)) * factor)))
       let grx :=
         (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
-          ∫ p in (0 : ℝ)..pMax,
-            (p : ℂ) * (polarFourierFirstCosineAngularKernel (p * radius / hbar) *
-              bR p)
+          ((Complex.I * (((radius / hbar : ℝ) : ℂ)) / 2) *
+            ∫ p in (0 : ℝ)..pMax,
+              (p : ℂ) ^ 2 *
+                ((polarFourierZerothAngularKernel (p * radius / hbar) -
+                    polarFourierSecondCosineAngularKernel (p * radius / hbar)) *
+                bR p))
       let grz :=
         (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
           ∫ p in (0 : ℝ)..pMax,
@@ -1185,9 +1231,12 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_x_eq_harm
               dR p)
       let gax :=
         (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
-          ∫ p in (0 : ℝ)..pMax,
-            (p : ℂ) * (polarFourierFirstCosineAngularKernel (p * radius / hbar) *
-              bA p)
+          ((Complex.I * (((radius / hbar : ℝ) : ℂ)) / 2) *
+            ∫ p in (0 : ℝ)..pMax,
+              (p : ℂ) ^ 2 *
+                ((polarFourierZerothAngularKernel (p * radius / hbar) -
+                    polarFourierSecondCosineAngularKernel (p * radius / hbar)) *
+                bA p))
       let gaz :=
         (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
           ∫ p in (0 : ℝ)..pMax,
@@ -1236,14 +1285,15 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_x_eq_harm
   dsimp only [finiteCutoffContinuumBornDysonRadialGreenScalarKernel] at hGreenRscalar
   dsimp only [finiteCutoffContinuumBornDysonRadialGreenPauliKernel] at hGreenRx hGreenRz hGreenAx hGreenAz
   dsimp only [finiteCutoffContinuumBornDysonRadialGreenScalarKernel] at hGreenAscalar
+  rw [gaussianCrossedRadialFirstHarmonicIntegral_eq_difference hbar pMax radius] at hscalarX hscalarY hzX hzY hGreenRx hGreenAx
   simpa only [hxx, hyy, hscalarX, hscalarY, hzX, hzY, htransverse,
     hGreenRscalar, hGreenRx, hGreenRz, hGreenAscalar, hGreenAx, hGreenAz] using
     (finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_x_eq_explicit_pauli_components
       v m probeEnergy broadening disorderStrength hbar pMax radius hbroadening hdisorder hpMax)
 
-/-- The finite-regulator crossed Psi trace uses explicit K0/K2 diagonal-current moments and
-all four source-resolved K1 scalar/z moments, the transverse K0 current, and the
-Green scalar/x/z K0/K1 moments. The conjugate partner and finite regulators remain. -/
+/-- The finite-regulator crossed Psi trace uses explicit K0/K2 diagonal-current
+moments and K0-K2 reductions of all first-harmonic current and Green terms.
+The transverse K0 current, conjugate partner, and finite regulators remain. -/
 theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_psi_eq_harmonic_components
     (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ)
     (hbroadening : broadening ≠ 0) (hdisorder : 0 ≤ disorderStrength)
@@ -1272,9 +1322,12 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_psi_eq_ha
           .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax
       let a :=
         (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
-          ∫ p in (0 : ℝ)..pMax,
-            (p : ℂ) * (polarFourierFirstCosineAngularKernel (p * radius / hbar) *
-              ((aR p * bA p + aA p * bR p) * factor))
+          ((Complex.I * (((radius / hbar : ℝ) : ℂ)) / 2) *
+            ∫ p in (0 : ℝ)..pMax,
+              (p : ℂ) ^ 2 *
+                ((polarFourierZerothAngularKernel (p * radius / hbar) -
+                    polarFourierSecondCosineAngularKernel (p * radius / hbar)) *
+                ((aR p * bA p + aA p * bR p) * factor)))
       let b :=
         (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
           ∫ p in (0 : ℝ)..pMax,
@@ -1283,9 +1336,12 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_psi_eq_ha
       let c := b
       let d :=
         -((((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
-          ∫ p in (0 : ℝ)..pMax,
-            (p : ℂ) * (polarFourierFirstCosineAngularKernel (p * radius / hbar) *
-              ((-Complex.I * (bR p * dA p - bA p * dR p)) * factor)))
+          ((Complex.I * (((radius / hbar : ℝ) : ℂ)) / 2) *
+            ∫ p in (0 : ℝ)..pMax,
+              (p : ℂ) ^ 2 *
+                ((polarFourierZerothAngularKernel (p * radius / hbar) -
+                    polarFourierSecondCosineAngularKernel (p * radius / hbar)) *
+                ((-Complex.I * (bR p * dA p - bA p * dR p)) * factor))))
       let isotropic :=
         (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
                 ∫ p in (0 : ℝ)..pMax,
@@ -1306,21 +1362,30 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_psi_eq_ha
               ((Complex.I * (aR p * dA p - aA p * dR p)) * factor))
       let uz :=
         (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
-          ∫ p in (0 : ℝ)..pMax,
-            (p : ℂ) * (polarFourierFirstCosineAngularKernel (p * radius / hbar) *
-              ((bR p * dA p + bA p * dR p) * factor))
+          ((Complex.I * (((radius / hbar : ℝ) : ℂ)) / 2) *
+            ∫ p in (0 : ℝ)..pMax,
+              (p : ℂ) ^ 2 *
+                ((polarFourierZerothAngularKernel (p * radius / hbar) -
+                    polarFourierSecondCosineAngularKernel (p * radius / hbar)) *
+                ((bR p * dA p + bA p * dR p) * factor)))
       let qx := -uy
       let qy := (isotropic - anisotropic) / 2
       let qz :=
         (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
-          ∫ p in (0 : ℝ)..pMax,
-            (p : ℂ) * (polarFourierFirstCosineAngularKernel (p * radius / hbar) *
-              ((-Complex.I * (aA p * bR p - aR p * bA p)) * factor))
+          ((Complex.I * (((radius / hbar : ℝ) : ℂ)) / 2) *
+            ∫ p in (0 : ℝ)..pMax,
+              (p : ℂ) ^ 2 *
+                ((polarFourierZerothAngularKernel (p * radius / hbar) -
+                    polarFourierSecondCosineAngularKernel (p * radius / hbar)) *
+                ((-Complex.I * (aA p * bR p - aR p * bA p)) * factor)))
       let grx :=
         (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
-          ∫ p in (0 : ℝ)..pMax,
-            (p : ℂ) * (polarFourierFirstCosineAngularKernel (p * radius / hbar) *
-              bR p)
+          ((Complex.I * (((radius / hbar : ℝ) : ℂ)) / 2) *
+            ∫ p in (0 : ℝ)..pMax,
+              (p : ℂ) ^ 2 *
+                ((polarFourierZerothAngularKernel (p * radius / hbar) -
+                    polarFourierSecondCosineAngularKernel (p * radius / hbar)) *
+                bR p))
       let grz :=
         (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
           ∫ p in (0 : ℝ)..pMax,
@@ -1361,6 +1426,7 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_psi_eq_ha
   simp only [ite_true] at htransverse
   dsimp only [finiteCutoffContinuumBornDysonRadialGreenScalarKernel] at hGreenRscalar
   dsimp only [finiteCutoffContinuumBornDysonRadialGreenPauliKernel] at hGreenRx hGreenRz
+  rw [gaussianCrossedRadialFirstHarmonicIntegral_eq_difference hbar pMax radius] at hscalarX hscalarY hzX hzY hGreenRx
   simpa only [hxx, hyy, hscalarX, hscalarY, hzX, hzY, htransverse,
     hGreenRscalar, hGreenRx, hGreenRz] using
     (finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_psi_eq_explicit_pauli_components
