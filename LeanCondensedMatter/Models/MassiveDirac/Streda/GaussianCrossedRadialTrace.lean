@@ -591,6 +591,39 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficie
             (finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliKernel_diagonal_harmonics
               v m probeEnergy broadening disorderStrength hbar pMax radius p).2
 
+/-- The traceless second angular Fourier harmonic vanishes at the origin.
+The result follows from the canonical full-angle harmonic integration theorem. -/
+private theorem polarFourierSecondCosineAngularKernel_zero :
+    polarFourierSecondCosineAngularKernel 0 = 0 := by
+  let coefficients : AngularHarmonicCoefficients ℂ :=
+    { constant := 0
+      firstCosine := 0
+      firstSine := 0
+      secondCosine := 1
+      secondMixed := 0 }
+  have h := coefficients.integral_eval
+  simpa [coefficients, AngularHarmonicCoefficients.eval,
+    polarFourierSecondCosineAngularKernel, polarFourierRadialPhase,
+    smul_eq_mul] using h
+
+/-- At zero real-space separation, rotational isotropy forces equality of the
+two diagonal in-plane crossed-current Pauli coefficients. This holds before any
+momentum-cutoff, broadening, or weak-disorder limit. -/
+theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient_origin_diagonal_eq
+    (v m probeEnergy broadening disorderStrength hbar pMax : ℝ)
+    (hbroadening : broadening ≠ 0) (hdisorder : 0 ≤ disorderStrength)
+    (hpMax : 0 ≤ pMax) :
+    finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient
+        .x 0 v m probeEnergy broadening disorderStrength hbar pMax 0 =
+      finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient
+        .y 1 v m probeEnergy broadening disorderStrength hbar pMax 0 := by
+  have h :=
+    (finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient_diagonal_harmonics
+      v m probeEnergy broadening disorderStrength hbar pMax 0
+      hbroadening hdisorder hpMax).2
+  dsimp only at h
+  simpa [polarFourierSecondCosineAngularKernel_zero, sub_eq_zero] using h
+
 /-- Reconstruct the two diagonal Pauli coefficients of the finite-cutoff crossed current
 from the independent isotropic `K0` and traceless `K2` radial integrals.
 Both coefficients inherit the existing physical momentum measure exactly once.
