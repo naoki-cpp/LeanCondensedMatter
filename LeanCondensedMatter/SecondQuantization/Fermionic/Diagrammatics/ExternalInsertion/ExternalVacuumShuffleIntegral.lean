@@ -168,6 +168,79 @@ private theorem externalInsertionLeftMixedPosition_fixed
               (Sum.inr ((T.orderIsoOfFin rfl v.1), l)))))
       rw [externalInsertionSlotLegSplitting_left_interaction, Equiv.apply_symm_apply]
 
+omit [LinearOrder Mode] [Fintype Mode] in
+/-- Express the assembled mixed-time pairing using the external half's own
+mixed-time positions. This local reindexing is needed before comparing the
+fermionic crossing sign with the mixed atomic-order permutation sign. -/
+private theorem externalInsertionOfSlotSplit_pairingInMixedOrder_eq_ofSplit_mixedExternal
+    {E n : ℕ} (T : Finset (Fin n))
+    (ext : ExternalInsertionDiagram (ExternalFieldLabel Mode)
+      (QuarticVertexLabel Mode) E n T)
+    (vac : QuarticDiagram (QuarticVertexLabel Mode) n
+      ((Finset.univ : Finset (Fin n)) \ T))
+    (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ) :
+    let S := (Finset.univ : Finset (Fin n)) \ T
+    let order : QuarticVertexOrder S := (S.orderIsoOfFin rfl).toEquiv
+    let localFixed := externalInsertionLeftMixedToFixedEquiv T externalTime σ
+    let split :=
+      ((Equiv.sumCongr (Equiv.refl (Fin (2 * (2 * T.card + E))))
+        (orderedLegToDiagramLeg S order)).trans
+        (externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T))).trans
+        (externalInsertionMixedTimeAmbientPositionEquiv externalTime σ).symm
+    (ExternalInsertionDiagram.ofSlotSplit (Finset.subset_univ T) ext vac).pairingInMixedOrder
+        externalTime σ =
+      Pairing.ofSplit
+        ((Equiv.sumCongr localFixed (Equiv.refl (Fin (2 * (2 * S.card))))).trans split)
+        (ext.pairing.transport localFixed) (vac.pairingInOrder order) := by
+  intro S order localFixed split
+  calc
+    _ = Pairing.ofSplit split ext.pairing (vac.pairingInOrder order) :=
+      ExternalInsertionDiagram.ofSlotSplit_pairingInMixedOrder_eq_ofSplit_orderedVacuum
+        T ext vac externalTime σ
+    _ = _ := (Pairing.ofSplit_reindex split ext.pairing
+      (vac.pairingInOrder order) localFixed
+      (Equiv.refl (Fin (2 * (2 * S.card))))).symm
+
+/-- The external half of the reindexed mixed-time slot splitting is strictly
+increasing. This does not assert that the original flattened external order is
+preserved by the physical time ordering. -/
+private theorem externalInsertionLeftMixedPosition_split_strictMono
+    {E n : ℕ} (T : Finset (Fin n))
+    (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ) :
+    let S := (Finset.univ : Finset (Fin n)) \ T
+    let order : QuarticVertexOrder S := (S.orderIsoOfFin rfl).toEquiv
+    let localFixed := externalInsertionLeftMixedToFixedEquiv T externalTime σ
+    let split :=
+      ((Equiv.sumCongr (Equiv.refl (Fin (2 * (2 * T.card + E))))
+        (orderedLegToDiagramLeg S order)).trans
+        (externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T))).trans
+        (externalInsertionMixedTimeAmbientPositionEquiv externalTime σ).symm
+    StrictMono (fun p : Fin (2 * (2 * T.card + E)) =>
+      ((Equiv.sumCongr localFixed (Equiv.refl (Fin (2 * (2 * S.card))))).trans split)
+        (Sum.inl p)) := by
+  intro S order localFixed split
+  have hposition (p : Fin (2 * (2 * T.card + E))) :
+      ((Equiv.sumCongr localFixed (Equiv.refl (Fin (2 * (2 * S.card))))).trans split)
+          (Sum.inl p) =
+        externalInsertionMixedTimeOrderedAtomicLegPosition externalTime σ
+          (orderedExternalInsertionLegMap (fun e => e)
+            (fun i : Fin T.card => (T.orderIsoOfFin rfl i).1)
+            (externalInsertionMixedTimeOrderedAtomicLegEquiv
+              externalTime
+              (σ ∘ fun i : Fin T.card => (T.orderIsoOfFin rfl i).1) p)) := by
+    apply (externalInsertionMixedTimeAmbientPositionEquiv externalTime σ).injective
+    simpa only [split, Equiv.trans_apply, Equiv.sumCongr_apply,
+      Sum.map_inl, Equiv.refl_apply, Equiv.apply_symm_apply] using
+        (externalInsertionLeftMixedPosition_fixed T externalTime σ p).symm
+  intro a b hab
+  change
+    ((Equiv.sumCongr localFixed (Equiv.refl (Fin (2 * (2 * S.card))))).trans split)
+        (Sum.inl a) <
+      ((Equiv.sumCongr localFixed (Equiv.refl (Fin (2 * (2 * S.card))))).trans split)
+        (Sum.inl b)
+  rw [hposition a, hposition b]
+  exact (externalInsertionLeftMixedPosition_strictMono T externalTime σ) hab
+
 /-- For an actual assembled pairing, every normalized pair on the external-support
 side becomes an ambient normalized mixed-time pair with the *same* endpoint order.
 Its concrete free-Gibbs contraction is precisely that of the external factor.

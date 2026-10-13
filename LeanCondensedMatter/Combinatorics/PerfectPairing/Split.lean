@@ -131,6 +131,41 @@ theorem Pairing.ofSplit_partner_inr (e : PositionSplitting a b n) (P : Pairing a
     (Pairing.ofSplit e P Q).partner (e (Sum.inr i)) = e (Sum.inr (Q.partner i)) := by
   simp [Pairing.ofSplit]
 
+/-- Reindexing the two local pairings and the corresponding sides of the position
+splitting leaves the assembled ambient pairing unchanged. Local permutations need not
+preserve either endpoint order. -/
+theorem Pairing.ofSplit_reindex
+    (e : PositionSplitting a b n) (P : Pairing a) (Q : Pairing b)
+    (left : Equiv.Perm (Fin (2 * a))) (right : Equiv.Perm (Fin (2 * b))) :
+    Pairing.ofSplit ((Equiv.sumCongr left right).trans e)
+        (P.transport left) (Q.transport right) =
+      Pairing.ofSplit e P Q := by
+  apply PairingOn.ext
+  apply Equiv.ext
+  intro z
+  obtain ⟨x, rfl⟩ := ((Equiv.sumCongr left right).trans e).surjective z
+  cases x with
+  | inl i =>
+      change
+        (Pairing.ofSplit ((Equiv.sumCongr left right).trans e)
+          (P.transport left) (Q.transport right)).partner
+          (((Equiv.sumCongr left right).trans e) (Sum.inl i)) =
+        (Pairing.ofSplit e P Q).partner (e (Sum.inl (left i)))
+      simp only [Pairing.ofSplit_partner_inl]
+      change e (Sum.inl (left ((P.transport left).partner i))) =
+        e (Sum.inl (P.partner (left i)))
+      rw [PairingOn.transport_partner, Equiv.apply_symm_apply]
+  | inr j =>
+      change
+        (Pairing.ofSplit ((Equiv.sumCongr left right).trans e)
+          (P.transport left) (Q.transport right)).partner
+          (((Equiv.sumCongr left right).trans e) (Sum.inr j)) =
+        (Pairing.ofSplit e P Q).partner (e (Sum.inr (right j)))
+      simp only [Pairing.ofSplit_partner_inr]
+      change e (Sum.inr (right ((Q.transport right).partner j))) =
+        e (Sum.inr (Q.partner (right j)))
+      rw [PairingOn.transport_partner, Equiv.apply_symm_apply]
+
 /-- An assembled pairing is split by the splitting it was assembled along. -/
 theorem Pairing.isSplit_ofSplit (e : PositionSplitting a b n) (P : Pairing a) (Q : Pairing b) :
     (Pairing.ofSplit e P Q).IsSplit e := fun i =>
