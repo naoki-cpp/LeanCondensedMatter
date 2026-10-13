@@ -100,8 +100,8 @@ theorem dysonVertexMoment_quarticInteraction_eq_sum_vertexLabel_pairingEvaluatio
             ∑ pairing : Pairing (2 * S.card),
               flatVertexLegPairingEvaluation ε β q τ pairing := by
         rw [← prod_ofFn_quarticLegOperatorForSequence_eq_quarticVertexSequenceInteractionPicture]
-        simpa only [flatVertexLegPairingEvaluation, flatVertexLegPairValue,
-          timedFieldOperator_quarticLegFieldForSequence] using
+        simpa only [flatVertexLegPairingEvaluation, Combinatorics.Pairing.evaluation,
+          flatVertexLegPairValue, timedFieldOperator_quarticLegFieldForSequence] using
           (freeGibbsDensityOperator_expectation_prod_timedFieldOperator_eq_sum_pairing
             ε β (2 * S.card) (quarticLegFieldForSequence q τ))
       rw [intervalIntegral.orderedSimplexIntegral_congr hpoint,
