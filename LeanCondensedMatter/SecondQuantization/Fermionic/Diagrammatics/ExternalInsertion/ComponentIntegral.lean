@@ -82,7 +82,7 @@ private theorem ExternalInsertionWickDiagram.componentInteractionTime_assembleIn
         B =
       shuffle.timeAssignment τ B := by
   funext j
-  unfold ExternalInsertionWickDiagram.componentInteractionTime
+  unfold Common.ExternalInsertionDiagram.componentInteractionTime
     FamilySlotShuffleTo.timeAssignment
   change
     τ ((d.assembleInteractionOrder d.canonicalComponentInteractionOrders shuffle).symm
@@ -114,7 +114,7 @@ theorem ExternalInsertionWickDiagram.sum_componentInteractionOrderShuffle_ordere
         (d.assembleInteractionOrder d.canonicalComponentInteractionOrders shuffle)) =
       componentExternalOrderSign d blockOrder *
         ∏ B : d.vertexGraph.componentPartition.parts,
-          (d.componentWickDiagram B).dysonAmplitude ε β g
+          (d.componentOrderedDiagram B).dysonAmplitude ε β g
             (d.componentExternalTime externalTime B) := by
   classical
   let size : d.vertexGraph.componentPartition.parts → ℕ :=
@@ -125,7 +125,7 @@ theorem ExternalInsertionWickDiagram.sum_componentInteractionOrderShuffle_ordere
   let localIntegrand : ∀ B : d.vertexGraph.componentPartition.parts,
       (Fin (size B) → ℝ) → ℂ :=
     fun B localσ =>
-      (d.componentWickDiagram B).dysonFixedTimeAmplitude ε β g
+      (d.componentOrderedDiagram B).dysonFixedTimeAmplitude ε β g
         (d.componentExternalTime externalTime B) localσ
   have hfactor (shuffle : d.ComponentInteractionOrderShuffle) :
       (fun τ =>
@@ -144,21 +144,21 @@ theorem ExternalInsertionWickDiagram.sum_componentInteractionOrderShuffle_ordere
     apply Finset.prod_congr rfl
     intro B _
     change
-      (d.componentWickDiagram B).dysonFixedTimeAmplitude ε β g
+      (d.componentOrderedDiagram B).dysonFixedTimeAmplitude ε β g
           (d.componentExternalTime externalTime B)
           (d.componentInteractionTime
             (fun v =>
               τ ((d.assembleInteractionOrder d.canonicalComponentInteractionOrders shuffle).symm
                 ⟨v, Finset.mem_univ v⟩))
             B) =
-        (d.componentWickDiagram B).dysonFixedTimeAmplitude ε β g
+        (d.componentOrderedDiagram B).dysonFixedTimeAmplitude ε β g
           (d.componentExternalTime externalTime B)
           (shuffle.timeAssignment τ B)
     rw [d.componentInteractionTime_assembleInteractionOrder shuffle τ B]
   have hlocal (B : d.vertexGraph.componentPartition.parts) :
       intervalIntegral.MeasurableLocallyBounded (localIntegrand B) := by
     simpa [size, localIntegrand] using
-      (d.componentWickDiagram B).measurableLocallyBounded_dysonFixedTimeAmplitude
+      (d.componentOrderedDiagram B).measurableLocallyBounded_dysonFixedTimeAmplitude
         ε β g (d.componentExternalTime externalTime B)
   have hTotal : (∑ B, size B) = (Finset.univ : Finset (Fin n)).card := by
     simpa [size] using
@@ -178,7 +178,7 @@ theorem ExternalInsertionWickDiagram.sum_componentInteractionOrderShuffle_ordere
                 ⟨v, Finset.mem_univ v⟩)))) =
       componentExternalOrderSign d blockOrder *
         ∏ B : d.vertexGraph.componentPartition.parts,
-          (d.componentWickDiagram B).dysonAmplitude ε β g
+          (d.componentOrderedDiagram B).dysonAmplitude ε β g
             (d.componentExternalTime externalTime B)
   rw [Finset.sum_congr rfl fun shuffle _ => by
     rw [hfactor shuffle, intervalIntegral.orderedSimplexIntegral_smul]]
@@ -186,7 +186,7 @@ theorem ExternalInsertionWickDiagram.sum_componentInteractionOrderShuffle_ordere
   apply congrArg (fun z : ℂ => componentExternalOrderSign d blockOrder * z)
   apply Finset.prod_congr rfl
   intro B _
-  exact d.componentWickDiagram B |>.orderedSimplexIntegral_dysonFixedTimeAmplitude
+  exact d.componentOrderedDiagram B |>.orderedSimplexIntegral_dysonFixedTimeAmplitude
     ε β g (d.componentExternalTime externalTime B)
 
 end Fermionic

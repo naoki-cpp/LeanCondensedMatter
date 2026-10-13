@@ -1,36 +1,34 @@
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentRestriction
-import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.MixedOrderData
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Pairing.MixedOrder
 import LeanCondensedMatter.Combinatorics.PerfectPairing.ComponentDecomposition
 
 set_option linter.style.header false
 
 /-!
-# Component-local fermionic external-insertion data
+# Component-local mixed-order external-insertion data
 
 A restricted external-insertion component retains its interaction vertices as a subset of the
-ambient slots. The concrete fermionic amplitude layer instead uses consecutive `Fin m` interaction
-slots. This module supplies the canonical increasing reindexing needed to apply the component diagram
+ambient slots. Standalone component diagrams use consecutive `Fin m` interaction slots. This module supplies the canonical increasing reindexing needed to apply the component diagram
 data to one connected component, together with the induced local external and interaction times.
 It identifies local canonical legs with their ambient counterparts and constructs the induced
-mixed-position embeddings and normalized-pair equivalences. Timed-field and thermal-kernel
-locality are proved in a separate Fermionic consumer module.
+mixed-position embeddings and normalized-pair equivalences. The labels are arbitrary; timed-field and thermal-kernel locality belong to Fermionic consumers.
 -/
 
 namespace SecondQuantization
-namespace Fermionic
+namespace Common
 
-open Common
-
-variable {Mode : Type*}
+variable {ExternalLabel InternalLabel : Type*}
 
 /-- Reindex one connected component by consecutive interaction slots while preserving the canonical
 component external order and restricted pairing. -/
-noncomputable def ExternalInsertionWickDiagram.componentWickDiagram {E n : ℕ}
-    (d : ExternalInsertionWickDiagram Mode E n)
+noncomputable def ExternalInsertionDiagram.componentOrderedDiagram {E n : ℕ}
+    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E n
+      (Finset.univ : Finset (Fin n)))
     (B : d.vertexGraph.componentPartition.parts) :
-    ExternalInsertionWickDiagram Mode (d.externalPairCount B)
+    ExternalInsertionDiagram ExternalLabel InternalLabel (d.externalPairCount B)
       (interactionSector
-        (B : Finset (ExternalInsertionVertex E (Finset.univ : Finset (Fin n))))).card := by
+        (B : Finset (ExternalInsertionVertex E (Finset.univ : Finset (Fin n))))).card
+      Finset.univ := by
   let T :=
     interactionSector
       (B : Finset (ExternalInsertionVertex E (Finset.univ : Finset (Fin n))))
@@ -42,16 +40,18 @@ noncomputable def ExternalInsertionWickDiagram.componentWickDiagram {E n : ℕ}
   }
 
 /-- External times of one component in its canonical increasing external-slot order. -/
-noncomputable def ExternalInsertionWickDiagram.componentExternalTime {E n : ℕ}
-    (d : ExternalInsertionWickDiagram Mode E n)
+noncomputable def ExternalInsertionDiagram.componentExternalTime {E n : ℕ}
+    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E n
+      (Finset.univ : Finset (Fin n)))
     (externalTime : Fin (2 * E) → ℝ)
     (B : d.vertexGraph.componentPartition.parts) :
     Fin (2 * d.externalPairCount B) → ℝ :=
   fun e => externalTime (d.externalSectorOrderIso B e).1
 
 /-- Interaction times of one component in canonical increasing local interaction-slot order. -/
-noncomputable def ExternalInsertionWickDiagram.componentInteractionTime {E n : ℕ}
-    (d : ExternalInsertionWickDiagram Mode E n) (σ : Fin n → ℝ)
+noncomputable def ExternalInsertionDiagram.componentInteractionTime {E n : ℕ}
+    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E n
+      (Finset.univ : Finset (Fin n))) (σ : Fin n → ℝ)
     (B : d.vertexGraph.componentPartition.parts) :
     Fin (interactionSector
       (B : Finset (ExternalInsertionVertex E (Finset.univ : Finset (Fin n))))).card → ℝ :=
@@ -61,18 +61,20 @@ noncomputable def ExternalInsertionWickDiagram.componentInteractionTime {E n : �
         rfl v).1
 
 @[simp]
-theorem ExternalInsertionWickDiagram.componentWickDiagram_externalLabel {E n : ℕ}
-    (d : ExternalInsertionWickDiagram Mode E n)
+theorem ExternalInsertionDiagram.componentOrderedDiagram_externalLabel {E n : ℕ}
+    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E n
+      (Finset.univ : Finset (Fin n)))
     (B : d.vertexGraph.componentPartition.parts)
     (e : Fin (2 * d.externalPairCount B)) :
-    (d.componentWickDiagram B).externalLabel e =
+    (d.componentOrderedDiagram B).externalLabel e =
       d.externalLabel (d.externalSectorOrderIso B e).1 := by
   rfl
 
 
 /-- Embed a component-local canonical atomic leg into the ambient canonical atomic-leg order. -/
-noncomputable def ExternalInsertionWickDiagram.componentOrderedLeg {E n : ℕ}
-    (d : ExternalInsertionWickDiagram Mode E n)
+noncomputable def ExternalInsertionDiagram.componentOrderedLeg {E n : ℕ}
+    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E n
+      (Finset.univ : Finset (Fin n)))
     (B : d.vertexGraph.componentPartition.parts) :
     OrderedExternalInsertionLeg (d.externalPairCount B)
         (interactionSector
@@ -86,8 +88,9 @@ noncomputable def ExternalInsertionWickDiagram.componentOrderedLeg {E n : ℕ}
           rfl v).1)
 
 /-- The canonical component-leg embedding is injective. -/
-theorem ExternalInsertionWickDiagram.componentOrderedLeg_injective {E n : ℕ}
-    (d : ExternalInsertionWickDiagram Mode E n)
+theorem ExternalInsertionDiagram.componentOrderedLeg_injective {E n : ℕ}
+    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E n
+      (Finset.univ : Finset (Fin n)))
     (B : d.vertexGraph.componentPartition.parts) :
     Function.Injective (d.componentOrderedLeg B) :=
   orderedExternalInsertionLegMap_injective
@@ -98,12 +101,13 @@ theorem ExternalInsertionWickDiagram.componentOrderedLeg_injective {E n : ℕ}
           rfl).injective)
 
 @[simp]
-theorem ExternalInsertionWickDiagram.componentWickDiagram_vertexLabelSequence {E n : ℕ}
-    (d : ExternalInsertionWickDiagram Mode E n)
+theorem ExternalInsertionDiagram.componentOrderedDiagram_vertexLabelSequence {E n : ℕ}
+    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E n
+      (Finset.univ : Finset (Fin n)))
     (B : d.vertexGraph.componentPartition.parts)
     (v : Fin (interactionSector
       (B : Finset (ExternalInsertionVertex E (Finset.univ : Finset (Fin n))))).card) :
-    (d.componentWickDiagram B).vertexLabelSequence v =
+    (d.componentOrderedDiagram B).vertexLabelSequence v =
       d.vertexLabelSequence
         ((interactionSector
           (B : Finset (ExternalInsertionVertex E (Finset.univ : Finset (Fin n))))).orderIsoOfFin
@@ -112,8 +116,9 @@ theorem ExternalInsertionWickDiagram.componentWickDiagram_vertexLabelSequence {E
 
 /-- Embed a component-local mixed-time atomic position into the ambient mixed-time atomic order by
 preserving the represented canonical leg. -/
-noncomputable def ExternalInsertionWickDiagram.componentMixedPosition {E n : ℕ}
-    (d : ExternalInsertionWickDiagram Mode E n)
+noncomputable def ExternalInsertionDiagram.componentMixedPosition {E n : ℕ}
+    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E n
+      (Finset.univ : Finset (Fin n)))
     (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ)
     (B : d.vertexGraph.componentPartition.parts) :
     Fin (2 * (2 * (interactionSector
@@ -128,8 +133,9 @@ noncomputable def ExternalInsertionWickDiagram.componentMixedPosition {E n : ℕ
           (d.componentInteractionTime σ B) p))
 
 /-- The canonical embedding of one component's mixed positions preserves their mixed-time order. -/
-theorem ExternalInsertionWickDiagram.componentMixedPosition_strictMono {E n : ℕ}
-    (d : ExternalInsertionWickDiagram Mode E n)
+theorem ExternalInsertionDiagram.componentMixedPosition_strictMono {E n : ℕ}
+    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E n
+      (Finset.univ : Finset (Fin n)))
     (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ)
     (B : d.vertexGraph.componentPartition.parts) :
     StrictMono (d.componentMixedPosition externalTime σ B) := by
@@ -158,8 +164,9 @@ theorem ExternalInsertionWickDiagram.componentMixedPosition_strictMono {E n : �
 
 /-- Flattening a component-local canonical leg and then embedding it into the ambient diagram
 agrees with embedding the canonical leg directly. -/
-private theorem ExternalInsertionWickDiagram.componentOrderedLeg_fixedPosition {E n : ℕ}
-    (d : ExternalInsertionWickDiagram Mode E n)
+private theorem ExternalInsertionDiagram.componentOrderedLeg_fixedPosition {E n : ℕ}
+    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E n
+      (Finset.univ : Finset (Fin n)))
     (B : d.vertexGraph.componentPartition.parts)
     (leg : OrderedExternalInsertionLeg (d.externalPairCount B)
       (interactionSector
@@ -216,14 +223,15 @@ private theorem ExternalInsertionWickDiagram.componentOrderedLeg_fixedPosition {
       rfl
 
 /-- The diagram partner map on canonical legs commutes with the canonical component-leg embedding. -/
-private theorem ExternalInsertionWickDiagram.atomicLegPartner_componentOrderedLeg {E n : ℕ}
-    (d : ExternalInsertionWickDiagram Mode E n)
+private theorem ExternalInsertionDiagram.atomicLegPartner_componentOrderedLeg {E n : ℕ}
+    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E n
+      (Finset.univ : Finset (Fin n)))
     (B : d.vertexGraph.componentPartition.parts)
     (leg : OrderedExternalInsertionLeg (d.externalPairCount B)
       (interactionSector
         (B : Finset (ExternalInsertionVertex E (Finset.univ : Finset (Fin n))))).card) :
     d.atomicLegPartner (d.componentOrderedLeg B leg) =
-      d.componentOrderedLeg B ((d.componentWickDiagram B).atomicLegPartner leg) := by
+      d.componentOrderedLeg B ((d.componentOrderedDiagram B).atomicLegPartner leg) := by
   let T :=
     interactionSector
       (B : Finset (ExternalInsertionVertex E (Finset.univ : Finset (Fin n))))
@@ -231,9 +239,9 @@ private theorem ExternalInsertionWickDiagram.atomicLegPartner_componentOrderedLe
   let h : 2 * T.card + d.externalPairCount B =
       2 * (Finset.univ : Finset (Fin T.card)).card + d.externalPairCount B := by
     simp
-  have hpair : (d.componentWickDiagram B).pairing =
+  have hpair : (d.componentOrderedDiagram B).pairing =
       Equiv.cast (congrArg Combinatorics.Pairing h) r.pairing := by
-    unfold ExternalInsertionWickDiagram.componentWickDiagram
+    unfold ExternalInsertionDiagram.componentOrderedDiagram
     dsimp [T, r]
   have hfin : (finCongr (by simp) :
       Fin (2 * (2 * (Finset.univ : Finset (Fin T.card)).card +
@@ -243,20 +251,21 @@ private theorem ExternalInsertionWickDiagram.atomicLegPartner_componentOrderedLe
     congr
   apply (externalInsertionLegEquiv E
     (Finset.univ : Finset (Fin n))).symm.injective
-  rw [ExternalInsertionWickDiagram.atomicLegPartner, Equiv.symm_apply_apply]
+  rw [ExternalInsertionDiagram.atomicLegPartner, Equiv.symm_apply_apply]
   rw [d.componentOrderedLeg_fixedPosition B leg,
     d.componentOrderedLeg_fixedPosition B
-      ((d.componentWickDiagram B).atomicLegPartner leg)]
-  unfold ExternalInsertionWickDiagram.atomicLegPartner
+      ((d.componentOrderedDiagram B).atomicLegPartner leg)]
+  unfold ExternalInsertionDiagram.atomicLegPartner
   simp only [Equiv.symm_apply_apply]
   rw [hpair, hfin, Combinatorics.Pairing.cast_partner h r.pairing]
   exact (d.componentDiagramLeg_restrictComponent_pairing_partner B _).symm
 
 /-- The ambient mixed-order pairing partner of an embedded component position is the embedding of
 the component mixed-order pairing partner. -/
-theorem ExternalInsertionWickDiagram.pairingInMixedOrder_partner_componentMixedPosition
+theorem ExternalInsertionDiagram.pairingInMixedOrder_partner_componentMixedPosition
     {E n : ℕ}
-    (d : ExternalInsertionWickDiagram Mode E n)
+    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E n
+      (Finset.univ : Finset (Fin n)))
     (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ)
     (B : d.vertexGraph.componentPartition.parts)
     (p : Fin (2 * (2 * (interactionSector
@@ -265,7 +274,7 @@ theorem ExternalInsertionWickDiagram.pairingInMixedOrder_partner_componentMixedP
     (d.pairingInMixedOrder externalTime σ).partner
         (d.componentMixedPosition externalTime σ B p) =
       d.componentMixedPosition externalTime σ B
-        (((d.componentWickDiagram B).pairingInMixedOrder
+        (((d.componentOrderedDiagram B).pairingInMixedOrder
           (d.componentExternalTime externalTime B)
           (d.componentInteractionTime σ B)).partner p) := by
   let localExternalTime := d.componentExternalTime externalTime B
@@ -274,13 +283,13 @@ theorem ExternalInsertionWickDiagram.pairingInMixedOrder_partner_componentMixedP
     externalInsertionMixedTimeOrderedAtomicLegEquiv
       localExternalTime localInteractionTime p
   have hLocal :
-      (d.componentWickDiagram B).atomicLegPartner localLeg =
+      (d.componentOrderedDiagram B).atomicLegPartner localLeg =
         externalInsertionMixedTimeOrderedAtomicLegEquiv
           localExternalTime localInteractionTime
-          (((d.componentWickDiagram B).pairingInMixedOrder
+          (((d.componentOrderedDiagram B).pairingInMixedOrder
             localExternalTime localInteractionTime).partner p) := by
     have hPartner :=
-      (d.componentWickDiagram B).pairingInMixedOrder_partner_legPosition
+      (d.componentOrderedDiagram B).pairingInMixedOrder_partner_legPosition
         localExternalTime localInteractionTime localLeg
     have hPosition :
         externalInsertionMixedTimeOrderedAtomicLegPosition
@@ -294,14 +303,15 @@ theorem ExternalInsertionWickDiagram.pairingInMixedOrder_partner_componentMixedP
       (externalInsertionMixedTimeOrderedAtomicLegEquiv
         localExternalTime localInteractionTime) hPartner.symm
     simpa [localLeg] using h
-  unfold ExternalInsertionWickDiagram.componentMixedPosition
+  unfold ExternalInsertionDiagram.componentMixedPosition
   rw [d.pairingInMixedOrder_partner_legPosition,
     d.atomicLegPartner_componentOrderedLeg B localLeg,
     hLocal]
 
-private noncomputable def ExternalInsertionWickDiagram.componentMixedToFixedPositionEquiv
+private noncomputable def ExternalInsertionDiagram.componentMixedToFixedPositionEquiv
     {E n : ℕ}
-    (d : ExternalInsertionWickDiagram Mode E n)
+    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E n
+      (Finset.univ : Finset (Fin n)))
     (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ)
     (B : d.vertexGraph.componentPartition.parts) :
     Fin (2 * (2 * (interactionSector
@@ -318,9 +328,10 @@ private noncomputable def ExternalInsertionWickDiagram.componentMixedToFixedPosi
 /-- The dependent sum of all component-local mixed positions is equivalent to the ambient
 mixed-position enumeration. This is obtained only by transporting the existing fixed component
 shuffle through the local and ambient mixed/fixed position equivalences. -/
-noncomputable def ExternalInsertionWickDiagram.componentMixedPositionEquiv
+noncomputable def ExternalInsertionDiagram.componentMixedPositionEquiv
     {E n : ℕ}
-    (d : ExternalInsertionWickDiagram Mode E n)
+    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E n
+      (Finset.univ : Finset (Fin n)))
     (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ) :
     (Σ B : d.vertexGraph.componentPartition.parts,
       Fin (2 * (2 * (interactionSector
@@ -335,9 +346,10 @@ noncomputable def ExternalInsertionWickDiagram.componentMixedPositionEquiv
 /-- The transported all-component position equivalence restricts on one component to the canonical
 `componentMixedPosition` embedding. -/
 @[simp]
-theorem ExternalInsertionWickDiagram.componentMixedPositionEquiv_apply
+theorem ExternalInsertionDiagram.componentMixedPositionEquiv_apply
     {E n : ℕ}
-    (d : ExternalInsertionWickDiagram Mode E n)
+    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E n
+      (Finset.univ : Finset (Fin n)))
     (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ)
     (B : d.vertexGraph.componentPartition.parts)
     (p : Fin (2 * (2 * (interactionSector
@@ -346,7 +358,7 @@ theorem ExternalInsertionWickDiagram.componentMixedPositionEquiv_apply
     d.componentMixedPositionEquiv externalTime σ ⟨B, p⟩ =
       d.componentMixedPosition externalTime σ B p := by
   apply (externalInsertionMixedTimeAmbientPositionEquiv externalTime σ).injective
-  simp only [ExternalInsertionWickDiagram.componentMixedPositionEquiv,
+  simp only [ExternalInsertionDiagram.componentMixedPositionEquiv,
     Equiv.trans_apply, Equiv.sigmaCongrRight_apply,
     ExternalInsertionDiagram.componentLegShuffle_slotEquiv_apply,
     Equiv.apply_symm_apply]
@@ -365,7 +377,7 @@ theorem ExternalInsertionWickDiagram.componentMixedPositionEquiv_apply
               (interactionSector
                 (B : Finset (ExternalInsertionVertex E
                   (Finset.univ : Finset (Fin n))))).card))).symm localLeg) := by
-    unfold ExternalInsertionWickDiagram.componentMixedToFixedPositionEquiv
+    unfold ExternalInsertionDiagram.componentMixedToFixedPositionEquiv
     apply Fin.ext
     change
       (externalInsertionMixedTimeAmbientPositionEquiv
@@ -414,47 +426,49 @@ theorem ExternalInsertionWickDiagram.componentMixedPositionEquiv_apply
     rw [externalInsertionLegEquiv_mixedTimeAmbientPositionEquiv,
       externalInsertionMixedTimeOrderedAtomicLegEquiv_position,
       Equiv.apply_symm_apply]
-  unfold ExternalInsertionWickDiagram.componentMixedPosition
+  unfold ExternalInsertionDiagram.componentMixedPosition
   exact hambient.symm
 
 /-- Component-local mixed-order normalized pairs, over all connected components, are equivalent to
 the ambient mixed-order normalized pairs. The position equivalence is only the fixed component
 shuffle transported through mixed/fixed position equivalences. -/
-noncomputable def ExternalInsertionWickDiagram.componentMixedPairEquiv
+noncomputable def ExternalInsertionDiagram.componentMixedPairEquiv
     {E n : ℕ}
-    (d : ExternalInsertionWickDiagram Mode E n)
+    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E n
+      (Finset.univ : Finset (Fin n)))
     (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ) :
     (Σ B : d.vertexGraph.componentPartition.parts,
-      ((d.componentWickDiagram B).pairingInMixedOrder
+      ((d.componentOrderedDiagram B).pairingInMixedOrder
         (d.componentExternalTime externalTime B)
         (d.componentInteractionTime σ B)).NormalizedPair) ≃
       (d.pairingInMixedOrder externalTime σ).NormalizedPair :=
   (d.pairingInMixedOrder externalTime σ).normalizedPairSigmaEquiv
     (fun B =>
-      (d.componentWickDiagram B).pairingInMixedOrder
+      (d.componentOrderedDiagram B).pairingInMixedOrder
         (d.componentExternalTime externalTime B)
         (d.componentInteractionTime σ B))
     (d.componentMixedPositionEquiv externalTime σ)
     (fun B p => by
-      simpa only [ExternalInsertionWickDiagram.componentMixedPositionEquiv_apply] using
+      simpa only [ExternalInsertionDiagram.componentMixedPositionEquiv_apply] using
         d.pairingInMixedOrder_partner_componentMixedPosition externalTime σ B p)
 
 /-- The all-component mixed pair equivalence maps a local normalized pair by applying
 `componentMixedPosition` to its two endpoints. -/
 @[simp]
-theorem ExternalInsertionWickDiagram.componentMixedPairEquiv_apply
+theorem ExternalInsertionDiagram.componentMixedPairEquiv_apply
     {E n : ℕ}
-    (d : ExternalInsertionWickDiagram Mode E n)
+    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E n
+      (Finset.univ : Finset (Fin n)))
     (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ)
     (B : d.vertexGraph.componentPartition.parts)
-    (pr : ((d.componentWickDiagram B).pairingInMixedOrder
+    (pr : ((d.componentOrderedDiagram B).pairingInMixedOrder
       (d.componentExternalTime externalTime B)
       (d.componentInteractionTime σ B)).NormalizedPair) :
     (d.componentMixedPairEquiv externalTime σ ⟨B, pr⟩).1 =
       (d.componentMixedPosition externalTime σ B pr.1.1,
         d.componentMixedPosition externalTime σ B pr.1.2) := by
   let componentPairing := fun C : d.vertexGraph.componentPartition.parts =>
-    (d.componentWickDiagram C).pairingInMixedOrder
+    (d.componentOrderedDiagram C).pairingInMixedOrder
       (d.componentExternalTime externalTime C)
       (d.componentInteractionTime σ C)
   let hpartner : ∀ C p,
@@ -463,20 +477,20 @@ theorem ExternalInsertionWickDiagram.componentMixedPairEquiv_apply
         d.componentMixedPositionEquiv externalTime σ
           ⟨C, (componentPairing C).partner p⟩ := by
     intro C p
-    simpa only [ExternalInsertionWickDiagram.componentMixedPositionEquiv_apply] using
+    simpa only [ExternalInsertionDiagram.componentMixedPositionEquiv_apply] using
       d.pairingInMixedOrder_partner_componentMixedPosition externalTime σ C p
-  simpa only [ExternalInsertionWickDiagram.componentMixedPairEquiv,
-    ExternalInsertionWickDiagram.componentMixedPositionEquiv_apply] using
+  simpa only [ExternalInsertionDiagram.componentMixedPairEquiv,
+    ExternalInsertionDiagram.componentMixedPositionEquiv_apply] using
     (Combinatorics.Pairing.normalizedPairSigmaEquiv_apply_of_strictMono
       (d.pairingInMixedOrder externalTime σ)
       componentPairing
       (d.componentMixedPositionEquiv externalTime σ)
       hpartner
       (fun C => by
-        simpa only [ExternalInsertionWickDiagram.componentMixedPositionEquiv_apply] using
+        simpa only [ExternalInsertionDiagram.componentMixedPositionEquiv_apply] using
           d.componentMixedPosition_strictMono externalTime σ C)
       B pr)
 
 
-end Fermionic
+end Common
 end SecondQuantization

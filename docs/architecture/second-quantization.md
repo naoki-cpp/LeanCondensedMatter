@@ -212,6 +212,14 @@ and fiber sums consume this structure without mixed-time ordering dependencies.
 mixed-time position, local-order preservation, and ordered vacuum pairing coherence used by
 fermionic shuffle integrals.
 
+`Common.Diagrammatics.ExternalInsertion.Components.MixedOrderData` owns the consecutive
+interaction-slot representation of each component (`componentOrderedDiagram`), its local times,
+and its mixed-position and normalized-pair equivalences for arbitrary external and internal labels.
+Full-slot label and leg-partner coordinates live in `Core.Ordered`; mixed-time partner coherence
+lives in `Pairing.MixedOrder`. The Fermionic `Diagram` module supplies the concrete
+`ExternalInsertionWickDiagram` label specialization, while thermal kernels, amplitudes, and exchange
+signs remain Fermionic consumers.
+
 Higher-point imaginary-time ordering is owned by
 `Common.ImaginaryTime.ExternalInsertionMixedOrder`. It orders the `2 * E` external events
 together with interaction events using the fixed external-first rank at equal times, expands that
