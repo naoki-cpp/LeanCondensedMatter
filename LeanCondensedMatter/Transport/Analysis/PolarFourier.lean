@@ -86,6 +86,11 @@ noncomputable def polarFourierFirstCosineAngularKernel (z : ℝ) : ℂ :=
   ∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi),
     polarFourierRadialPhase z θ * ((Real.cos θ : ℝ) : ℂ)
 
+/-- The zeroth full-angle Fourier phase has vanishing first cosine harmonic. -/
+@[simp] theorem polarFourierFirstCosineAngularKernel_zero :
+    polarFourierFirstCosineAngularKernel 0 = 0 := by
+  have h := integral_cos_mul_complex (z := (1 : ℂ)) one_ne_zero (0 : ℝ) (2 * Real.pi)
+  simpa [polarFourierFirstCosineAngularKernel, polarFourierRadialPhase] using h
 /-- Second cosine full-angle radial Fourier kernel, written as the `cos(2θ)` polynomial needed by
 quadratic angular products. At a Mathlib revision with Bessel support this can be identified with
 `-2π J₂(z)`. -/
