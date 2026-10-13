@@ -47,11 +47,6 @@ theorem twoPointTimedEventAtomicOperators_interaction {n : ℕ} (ε : Mode → �
         imaginaryTimeEvolve ε (σ v) (quarticLocalLegOperator (q v) l)) :=
   rfl
 
-/-- The number of atomic operators contributed by one mixed event. -/
-private def twoPointTimedEventAtomicArity {n : ℕ} : TwoPointTimedEvent n → ℕ
-  | .inl _ => 1
-  | .inr _ => 4
-
 /-- Expanding one mixed event into atomic operators preserves its represented operator product. -/
 private theorem prod_twoPointTimedEventAtomicOperators {n : ℕ} (ε : Mode → ℝ) (i j : Mode)
     (τ τ' : ℝ) (q : Fin n → QuarticVertexLabel Mode) (σ : Fin n → ℝ)
@@ -89,19 +84,9 @@ theorem mixedTimeOrderedVertexComp_eq_prod_atomicOperators {n : ℕ}
     mixedTimeOrderedVertexComp ε i j τ τ' q σ =
       twoPointExternalOrderSign τ τ' •
         List.prod (mixedTimeOrderedAtomicOperators ε i j τ τ' q σ) := by
-  have hprod : ∀ events : List (TwoPointTimedEvent n),
-      List.prod
-          (events.flatMap (twoPointTimedEventAtomicOperators ε i j τ τ' q σ)) =
-        List.prod
-          (events.map (twoPointTimedEventOperator ε i j τ τ' q σ)) := by
-    intro events
-    induction events with
-    | nil => rfl
-    | cons event events ih =>
-        rw [List.flatMap_cons, List.map_cons, List.prod_append, List.prod_cons]
-        simp only [Module.End.mul_eq_comp]
-        rw [prod_twoPointTimedEventAtomicOperators, ih]
-  rw [mixedTimeOrderedVertexComp, mixedTimeOrderedAtomicOperators, hprod]
+  simp only [mixedTimeOrderedVertexComp, mixedTimeOrderedAtomicOperators,
+    List.flatMap_def, List.prod_flatten, List.map_map,
+    prod_twoPointTimedEventAtomicOperators]
 
 end Fermionic
 end SecondQuantization
