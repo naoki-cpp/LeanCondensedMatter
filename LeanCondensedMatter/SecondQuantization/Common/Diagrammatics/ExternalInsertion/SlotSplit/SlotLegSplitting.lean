@@ -100,8 +100,15 @@ theorem externalInsertionSlotLegSplitting_orderedRight_strictMono
           (orderedQuarticLegEquiv S.card p).2.val := by
     have h := FiniteIndex.eq_cast_mul_add_blockEquiv htarget (block p)
     have hv := congrArg Fin.val h
-    simpa only [Fin.val_cast, Fin.val_mk, FiniteIndex.blockEquiv_blockMap,
-      Prod.fst, Prod.snd, Nat.mul_comm] using hv
+    have hmap : FiniteIndex.blockEquiv htarget (block p) =
+        (vertex (orderedQuarticLegEquiv S.card p).1,
+          (orderedQuarticLegEquiv S.card p).2) := by
+      change FiniteIndex.blockEquiv htarget
+        (FiniteIndex.blockMap hsource htarget vertex p) = _
+      exact FiniteIndex.blockEquiv_blockMap hsource htarget vertex p
+    rw [hmap] at hv
+    simpa only [Fin.val_cast, Fin.val_mk, Prod.fst, Prod.snd,
+      Nat.mul_comm] using hv
   have hslot_val (p : Fin (2 * (2 * S.card))) :
       (externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T)
         (Sum.inr (orderedLegToDiagramLeg S order p))).val =
@@ -110,7 +117,7 @@ theorem externalInsertionSlotLegSplitting_orderedRight_strictMono
     let leg := orderedQuarticLegEquiv S.card p
     have hleg : orderedLegToDiagramLeg S order p =
         (quarticLegEquiv S).symm (order leg.1, leg.2) := by
-      simp [orderedLegToDiagramLeg, leg]
+      simp [orderedLegToDiagramLeg, leg, Prod.map]
     rw [hleg]
     have hright := externalInsertionSlotLegSplitting_right_interaction
       (E := E) (Finset.subset_univ T) (order leg.1) leg.2
