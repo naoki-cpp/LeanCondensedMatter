@@ -297,8 +297,23 @@ theorem externalInsertionSlotLegSplitting_fixedInversionCount_mod_two_eq_zero
             externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T)
               (Sum.inl ((externalInsertionLegEquiv E T).symm (Sum.inr (v, l)))) ↔
             (order wk.1).1 < v.1 := by
-        simpa [externalInsertionInteractionLeg] using hiff
-      rw [hiff']
+        change
+          externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T)
+              (Sum.inr (orderedLegToDiagramLeg S order
+                ((orderedQuarticLegEquiv S.card).symm wk))) <
+            externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T)
+              (Sum.inl ((externalInsertionLegEquiv E T).symm (Sum.inr (v, l)))) ↔
+            (order wk.1).1 < v.1 at hiff
+        exact hiff
+      by_cases hlt : externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T)
+          (Sum.inr (orderedLegToDiagramLeg S order
+            ((orderedQuarticLegEquiv S.card).symm wk))) <
+          externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T)
+            (Sum.inl ((externalInsertionLegEquiv E T).symm (Sum.inr (v, l))))
+      · have horder := hiff'.mp hlt
+        simp [hlt, horder]
+      · have horder : ¬ (order wk.1).1 < v.1 := fun h => hlt (hiff'.mpr h)
+        simp [hlt, horder]
 
 /-- Reconstruct an external-insertion diagram from an external-bearing piece and a quartic
 complementary piece. -/
