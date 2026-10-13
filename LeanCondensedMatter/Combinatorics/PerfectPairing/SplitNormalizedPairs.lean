@@ -244,7 +244,7 @@ theorem Pairing.ofSplit_crossingCount_eq_intrasector_add_inter
           (Pairing.ofSplit e P Q).NormalizedPair =>
         if Crosses xy.1.1 xy.2.1 then (1 : ℕ) else 0)).symm
   rw [hsum, Fintype.sum_prod_type, Fintype.sum_sum_type]
-  simp_rw [Fintype.sum_sum_type]
+  simp_rw [Fintype.sum_sum_type, Finset.sum_add_distrib]
   unfold Pairing.ofSplitInterSectorCrossingCount
   dsimp [emb]
   omega
