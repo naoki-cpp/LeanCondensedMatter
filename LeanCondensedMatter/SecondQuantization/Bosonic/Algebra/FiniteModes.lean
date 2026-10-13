@@ -17,7 +17,8 @@ open scoped BigOperators InnerProductSpace
 noncomputable section
 variable {Mode : Type*} [Fintype Mode]
 
-local instance : DecidableEq Mode := Classical.decEq Mode
+/-- File-local classical decidable equality, kept out of public theorem signatures. -/
+local instance instDecidableEqFiniteModes : DecidableEq Mode := Classical.decEq Mode
 
 /-- Creation in a one-particle vector, as a finite linear combination of site creations. -/
 def createVector (v : EuclideanSpace ℂ Mode) : Module.End ℂ (FockSpace Mode) :=
