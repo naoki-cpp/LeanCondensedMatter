@@ -72,9 +72,9 @@ private theorem angularGreenPauliKernel_eq_spinRotation
           k1 * ((((Real.cos angle : ℝ) : ℂ)) * (b • sigmaX) i j +
             (((Real.sin angle : ℝ) : ℂ)) * (b • sigmaY) i j))) =
       inPlaneSpinRotation angle *
-        (fun i j : Fin 2 =>
+        ((fun i j : Fin 2 =>
           momentum * (!![k0 * (a + d), k1 * b;
-                          k1 * b, k0 * (a - d)] : Matrix2) i j) *
+                          k1 * b, k0 * (a - d)] : Matrix2) i j) : Matrix2) *
         inPlaneSpinRotationInverse angle := by
   let polar : ℝ → Matrix2 :=
     polarPauliMatrix (k0 * a) (k1 * b) (k0 * d)
@@ -99,7 +99,7 @@ private theorem angularGreenPauliKernel_eq_spinRotation
       simp [polar, polarPauliMatrix, sigmaX, sigmaY, sigmaZ,
         InternalSpace.pauliX, InternalSpace.pauliY,
         InternalSpace.pauliZ, Matrix.smul_apply, smul_eq_mul] <;>
-      ring
+      try ring
   calc
     _ = momentum • polar angle := hangular
     _ = momentum •
@@ -124,10 +124,10 @@ theorem finiteCutoffContinuumBornDysonAngularGreenEntryKernel_eq_spinRotation
         side v m probeEnergy broadening disorderStrength hbar pMax
         radius angle p i j) =
       inPlaneSpinRotation angle *
-        (fun i j : Fin 2 =>
+        ((fun i j : Fin 2 =>
           finiteCutoffContinuumBornDysonRadialGreenEntryKernel
             side v m probeEnergy broadening disorderStrength hbar pMax
-            radius p i j) *
+            radius p i j) : Matrix2) *
         inPlaneSpinRotationInverse angle := by
   let a := finiteCutoffContinuumBornDysonScalarCoefficient
     side v m p 0 probeEnergy broadening disorderStrength hbar pMax
