@@ -861,6 +861,135 @@ theorem externalInsertionOfSlotSplit_mixedPairingWeight_eq_positionInversions_mu
     Common.Statistics.fermion mixedSplit
     localPairing (vac.pairingInOrder order) hleft hright
 
+/-- The actual physical mixed-time pairing evaluation splits into its standalone
+external-support and ordered-vacuum evaluations, up to the fermionic sign of
+the right-before-left inter-sector positions. The external pairing is first
+transported into its own mixed-time atomic order; the vacuum vertices are in
+a strictly antitone chamber. Neither kernel is assumed symmetric under
+reversal of the pair endpoints. -/
+theorem externalInsertionOfSlotSplit_mixedPairingEvaluation_eq_positionInversions_mul_of_strictAnti
+    (ε : Mode → ℝ) (β : ℝ) {E n : ℕ} (T : Finset (Fin n))
+    (ext : ExternalInsertionDiagram (ExternalFieldLabel Mode)
+      (QuarticVertexLabel Mode) E n T)
+    (vac : QuarticDiagram (QuarticVertexLabel Mode) n
+      ((Finset.univ : Finset (Fin n)) \ T))
+    (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ) :
+    let S := (Finset.univ : Finset (Fin n)) \ T
+    let order : QuarticVertexOrder S := (S.orderIsoOfFin rfl).toEquiv
+    let f : Fin S.card → Fin n := fun i => (S.orderIsoOfFin rfl i).1
+    let fT : Fin T.card → Fin n := fun i => (T.orderIsoOfFin rfl i).1
+    let localFixed := externalInsertionLeftMixedToFixedEquiv T externalTime σ
+    let split :=
+      ((Equiv.sumCongr (Equiv.refl (Fin (2 * (2 * T.card + E))))
+        (orderedLegToDiagramLeg S order)).trans
+        (externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T))).trans
+        (externalInsertionMixedTimeAmbientPositionEquiv externalTime σ).symm
+    let mixedSplit :=
+      (Equiv.sumCongr localFixed (Equiv.refl (Fin (2 * (2 * S.card))))).trans split
+    let localPairing : Pairing (2 * T.card + E) := ext.pairing.transport localFixed
+    let d : ExternalInsertionWickDiagram Mode E n :=
+      ExternalInsertionDiagram.ofSlotSplit (Finset.subset_univ T) ext vac
+    let kernel := externalInsertionMixedTimeOrderedAtomicPairValue ε β
+      d.externalLabel externalTime d.vertexLabelSequence σ
+    let leftKernel := externalInsertionMixedTimeOrderedAtomicPairValue ε β
+      ext.externalLabel externalTime
+      (fun v => ext.vertexLabel (T.orderIsoOfFin rfl v)) (σ ∘ fT)
+    let rightKernel := flatVertexLegPairValue ε β
+      (fun v => vac.vertexLabel (S.orderIsoOfFin rfl v)) (σ ∘ f)
+    StrictAnti (σ ∘ f) →
+      (d.pairingInMixedOrder externalTime σ).evaluation
+          ((d.pairingInMixedOrder externalTime σ).weight Common.Statistics.fermion)
+          kernel =
+        (Common.Statistics.fermion.zetaInt : ℂ) ^
+          (∑ i : Fin (2 * (2 * T.card + E)),
+            ∑ j : Fin (2 * (2 * S.card)),
+              if mixedSplit (Sum.inr j) < mixedSplit (Sum.inl i) then 1 else 0) *
+          (localPairing.evaluation (localPairing.weight Common.Statistics.fermion)
+              leftKernel *
+            (vac.pairingInOrder order).evaluation
+              ((vac.pairingInOrder order).weight Common.Statistics.fermion)
+              rightKernel) := by
+  intro S order f fT localFixed split mixedSplit localPairing d kernel
+    leftKernel rightKernel htime
+  let pairEquiv := Pairing.ofSplitNormalizedPairEquiv
+    mixedSplit localPairing (vac.pairingInOrder order)
+  have hleftMono :
+      StrictMono (fun p : Fin (2 * (2 * T.card + E)) =>
+        mixedSplit (Sum.inl p)) :=
+    externalInsertionLeftMixedPosition_split_strictMono T externalTime σ
+  have hright0 :=
+    externalInsertionSlotLegSplitting_right_strictMono_of_localOrder T externalTime σ
+      (externalInsertionMixedTimeOrderedAtomicLegPosition_zero_strictMono_of_strictAnti
+        (σ ∘ f) htime)
+  have hrightMono :
+      StrictMono (fun q : Fin (2 * (2 * S.card)) =>
+        mixedSplit (Sum.inr q)) := by
+    simpa only [mixedSplit, split, Equiv.trans_apply, Equiv.sumCongr_apply,
+      Sum.map_inr, Equiv.refl_apply] using hright0
+  have hposLeft (p : Fin (2 * (2 * T.card + E))) :
+      mixedSplit (Sum.inl p) =
+        externalInsertionMixedTimeOrderedAtomicLegPosition externalTime σ
+          (orderedExternalInsertionLegMap (fun e => e) fT
+            (externalInsertionMixedTimeOrderedAtomicLegEquiv
+              externalTime (σ ∘ fT) p)) := by
+    apply (externalInsertionMixedTimeAmbientPositionEquiv externalTime σ).injective
+    simpa only [mixedSplit, split, Equiv.trans_apply, Equiv.sumCongr_apply,
+      Sum.map_inl, Equiv.refl_apply, Equiv.apply_symm_apply] using
+        (externalInsertionLeftMixedPosition_fixed T externalTime σ p).symm
+  have hposRight (q : Fin (2 * (2 * S.card))) :
+      mixedSplit (Sum.inr q) =
+        externalInsertionMixedTimeOrderedAtomicLegPosition externalTime σ
+          (Sum.inr
+            (⟨(order (orderedQuarticLegEquiv S.card q).1).1, Finset.mem_univ _⟩,
+              (orderedQuarticLegEquiv S.card q).2)) := by
+    simpa only [mixedSplit, split, Equiv.trans_apply, Equiv.sumCongr_apply,
+      Sum.map_inr, Equiv.refl_apply] using
+        (externalInsertionSlotLegSplitting_right_orderedMixedPosition
+          T externalTime σ q)
+  have hleft : ∀ pr : localPairing.NormalizedPair,
+      kernel (pairEquiv (Sum.inl pr)).1.1
+        (pairEquiv (Sum.inl pr)).1.2 =
+      leftKernel pr.1.1 pr.1.2 := by
+    intro pr
+    have hpair :=
+      Pairing.ofSplitNormalizedPairEquiv_pair_eq_of_lt
+        mixedSplit localPairing (vac.pairingInOrder order) (Sum.inl pr)
+        (hleftMono (localPairing.pairs_normalized pr.2))
+    change kernel (pairEquiv (Sum.inl pr)).1.1
+        (pairEquiv (Sum.inl pr)).1.2 = leftKernel pr.1.1 pr.1.2
+    rw [hpair]
+    change kernel (mixedSplit (Sum.inl pr.1.1))
+        (mixedSplit (Sum.inl pr.1.2)) = leftKernel pr.1.1 pr.1.2
+    rw [hposLeft, hposLeft]
+    exact (externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_left_normalizedPair
+      ε β T ext vac externalTime σ pr).2
+  have hright : ∀ pr : (vac.pairingInOrder order).NormalizedPair,
+      kernel (pairEquiv (Sum.inr pr)).1.1
+        (pairEquiv (Sum.inr pr)).1.2 =
+      rightKernel pr.1.1 pr.1.2 := by
+    intro pr
+    have hpair :=
+      Pairing.ofSplitNormalizedPairEquiv_pair_eq_of_lt
+        mixedSplit localPairing (vac.pairingInOrder order) (Sum.inr pr)
+        (hrightMono ((vac.pairingInOrder order).pairs_normalized pr.2))
+    change kernel (pairEquiv (Sum.inr pr)).1.1
+        (pairEquiv (Sum.inr pr)).1.2 = rightKernel pr.1.1 pr.1.2
+    rw [hpair]
+    change kernel (mixedSplit (Sum.inr pr.1.1))
+        (mixedSplit (Sum.inr pr.1.2)) = rightKernel pr.1.1 pr.1.2
+    rw [hposRight, hposRight]
+    exact externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_right_locality
+      ε β T ext vac externalTime σ pr.1.1 pr.1.2
+  have hpairing :
+      d.pairingInMixedOrder externalTime σ =
+        Pairing.ofSplit mixedSplit localPairing (vac.pairingInOrder order) :=
+    externalInsertionOfSlotSplit_pairingInMixedOrder_eq_ofSplit_mixedExternal
+      T ext vac externalTime σ
+  rw [hpairing]
+  exact Common.BlochDeDominicis.Pairing.evaluation_ofSplit_eq_positionInversions_mul
+    Common.Statistics.fermion mixedSplit localPairing (vac.pairingInOrder order)
+    kernel leftKernel rightKernel hleftMono hrightMono hleft hright
+
 /-- Summing the binary ordered-simplex shuffles of one arbitrary-external Dyson integrand and
 one fixed-order vacuum diagram gives the product of their independent Dyson contributions. -/
 theorem sum_slotShuffleExternalInsertionDysonIntegral_eq_mul_orderedVacuum
