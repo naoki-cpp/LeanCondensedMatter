@@ -17,6 +17,16 @@ Annotated reference list. One entry per source: full citation, what it is used f
     the ratio obtained from the stated definitions of `τₘ` and `τ*`; the roadmap fixes
     the convention algebraically before any Lean statement.
 
+- **Aurélien Manchon, Xiaobai Ning, Chi Sun, Tetsuya Sato, Takeo Kato, and Tatiana G.
+  Rappoport.** “Multipolar orbital relaxation of the t2g states.”
+  [arXiv:2512.06355v1](https://arxiv.org/abs/2512.06355) (2025).
+  - **Project use:** Second orbital-relaxation benchmark: radial/tangential spectral projectors,
+    dipolar and quadrupolar modes, the short-range-disorder crossover between DP-like and
+    EY-like scaling, and cylindrical-symmetry dipole–quadrupole coupling.
+  - **Caveat:** The claimed nonperturbative dependence is within a short-range-impurity
+    Born/ladder kinetic approximation. It neither proves a universal disorder law nor
+    identifies its scattering lifetime with the angular collision times of the Sohn model.
+
 ### Linear response and Kubo–Bastin–Středa transport
 
 - **Ryogo Kubo.** “Statistical-Mechanical Theory of Irreversible Processes. I. General Theory and
