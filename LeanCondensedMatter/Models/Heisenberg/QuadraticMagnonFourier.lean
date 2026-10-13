@@ -53,20 +53,19 @@ theorem excitationHamiltonian_eq_secondQuantization (J : ℝ) (twiceSpin : ℕ) 
   have hh : (∑ i : ZMod N, (create (i + 1)).comp (annihilate i)) =
       ∑ i : ZMod N, (create i).comp (annihilate (i - 1)) := by
     simpa using sum_shift (N := N) (fun i => (create i).comp (annihilate (i - 1)))
+  have hcoeff (i j : ZMod N) :
+      oneMagnonLaplacian (J * twiceSpin) (EuclideanSpace.single j 1) i =
+        ((J : ℂ) * twiceSpin) *
+          (2 * (if i = j then 1 else 0) - (if i - 1 = j then 1 else 0) -
+            (if i + 1 = j then 1 else 0)) := by
+    simp [oneMagnonLaplacian, PiLp.single_apply]
   have hrow (i : ZMod N) :
       (∑ j : ZMod N, oneMagnonLaplacian (J * twiceSpin) (EuclideanSpace.single j 1) i •
         (create i).comp (annihilate j)) =
       ((J : ℂ) * twiceSpin) • ((2 : ℂ) • numberOperator i -
         (create i).comp (annihilate (i - 1)) - (create i).comp (annihilate (i + 1))) := by
-    apply LinearMap.ext
-    intro ψ
-    apply Finsupp.ext
-    intro n
-    simp [oneMagnonLaplacian, PiLp.single_apply, mul_sub,
-      mul_ite, numberOperator,
-      LinearMap.sum_apply, Finset.sum_apply]
-    simp [Finset.sum_sub_distrib, ite_mul]
-    ring
+    simp [hcoeff, mul_sub, sub_smul, mul_ite, ite_smul,
+      Finset.sum_sub_distrib, numberOperator] <;> module
   unfold secondQuantization
   simp_rw [hrow]
   simp only [excitationHamiltonian, excitationBond, smul_sub, smul_add,
