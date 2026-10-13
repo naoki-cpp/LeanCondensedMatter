@@ -260,7 +260,7 @@ theorem Pairing.ofSplitInterSectorCrossingCount_mod_two_eq_pairEndpointInversion
         · simp [hlt, hgt]
     change _ % 2 = _ % 2
     rw [hindicator]
-    exact hcross.symm
+    simpa using hcross.symm
   have hsum :
       Pairing.ofSplitInterSectorCrossingCount e P Q =
         ∑ p : P.NormalizedPair, ∑ q : Q.NormalizedPair,
