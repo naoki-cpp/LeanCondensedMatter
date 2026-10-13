@@ -155,7 +155,8 @@ theorem polarFourierFirstCosineAngularKernel_two_mul_eq_zeroth_sub_second (z : �
   let sine : ℝ → ℂ := fun θ => ((Real.sin θ : ℝ) : ℂ)
   let cosine : ℝ → ℂ := fun θ => ((Real.cos θ : ℝ) : ℂ)
   have hcphase : Continuous phase := by
-    dsimp [phase, polarFourierRadialPhase]
+    change Continuous (fun θ : ℝ =>
+      Complex.exp (Complex.I * (((z * Real.cos θ : ℝ) : ℂ))))
     fun_prop
   have hcsin : Continuous sine := by
     dsimp [sine]
