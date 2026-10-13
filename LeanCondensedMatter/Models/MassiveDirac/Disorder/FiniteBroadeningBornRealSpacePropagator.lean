@@ -338,9 +338,9 @@ private theorem intervalIntegralMatrix2_spinRotation_conjugate
   ext i j
   fin_cases i <;> fin_cases j <;>
     simp [intervalIntegralMatrix2, inPlaneSpinRotation,
-      inPlaneSpinRotationInverse, Matrix.mul_apply, Fin.sum_univ_two,
-      intervalIntegral.integral_const_mul, intervalIntegral.integral_mul_const,
-      mul_assoc]
+      inPlaneSpinRotationInverse, Matrix.mul_apply, Matrix.vecMul_apply_eq_sum,
+      Fin.sum_univ_two, intervalIntegral.integral_const_mul,
+      intervalIntegral.integral_mul_const, mul_assoc]
 
 /-- At finite momentum cutoff, the fully integrated Born-Dyson Green matrix
 inherits the spinor SO(2) covariance of its exact K0/K1 polar Fourier kernel.
@@ -375,9 +375,27 @@ theorem finiteCutoffContinuumBornDysonRealSpaceGreenMatrix_polarPoint2D_spinRota
   have hpoint (θ p : ℝ) :
       angular θ p =
         inPlaneSpinRotation θ * base p * inPlaneSpinRotationInverse θ := by
-    simpa only [angular, base] using
-      (finiteCutoffContinuumBornDysonAngularGreenEntryKernel_eq_spinRotation
-        side v m probeEnergy broadening disorderStrength hbar pMax radius θ p)
+    change
+      (fun i j : Fin 2 =>
+        finiteCutoffContinuumBornDysonAngularGreenEntryKernel
+          side v m probeEnergy broadening disorderStrength hbar pMax
+          radius θ p i j) =
+        inPlaneSpinRotation θ *
+          ((p : ℂ) • polarPauliMatrix
+            (polarFourierZerothAngularKernel (p * radius / hbar) *
+              finiteCutoffContinuumBornDysonScalarCoefficient
+                side v m p 0 probeEnergy broadening disorderStrength hbar pMax)
+            (polarFourierFirstCosineAngularKernel (p * radius / hbar) *
+              finiteCutoffContinuumBornDysonPauliCoefficient .x
+                side v m p 0 probeEnergy broadening disorderStrength hbar pMax)
+            (polarFourierZerothAngularKernel (p * radius / hbar) *
+              finiteCutoffContinuumBornDysonPauliCoefficient .z
+                side v m p 0 probeEnergy broadening disorderStrength hbar pMax)
+            0) *
+          inPlaneSpinRotationInverse θ
+    exact
+      finiteCutoffContinuumBornDysonAngularGreenEntryKernel_eq_spinRotation
+        side v m probeEnergy broadening disorderStrength hbar pMax radius θ p
   have hU0 : inPlaneSpinRotation 0 = 1 := by
     ext i j
     fin_cases i <;> fin_cases j <;> simp [inPlaneSpinRotation]
