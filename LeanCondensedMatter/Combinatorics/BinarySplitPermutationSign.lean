@@ -61,9 +61,10 @@ private theorem binaryBlockShuffle_orderedBlockInversionCount
       {(false, true), (true, false)} := by decide
   rw [FamilySlotShuffleTo.orderedBlockInversionCount]
   simp only [hoff]
-  simp [FamilySlotShuffleTo.blockInversionCount,
-    binaryBlockShuffle, binaryBlockTagEquiv, binaryBlockOrder,
-    Finset.sum_comm]
+  set_option maxRecDepth 4096 in
+    simp [FamilySlotShuffleTo.blockInversionCount,
+      binaryBlockShuffle, binaryBlockTagEquiv, binaryBlockOrder,
+      Finset.sum_comm]
 
 /-- For two order-preserving splittings of the same ambient finite positions,
 the sign of the relative permutation is the sum of their respective
