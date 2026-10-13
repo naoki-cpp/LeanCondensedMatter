@@ -17,7 +17,8 @@ namespace Matrix
 
 /-- The quadratic Cayley–Hamilton identity for a real `2 × 2` matrix. -/
 theorem sq_sub_trace_smul_add_det_eq_zero (M : Matrix (Fin 2) (Fin 2) ℝ) :
-    M ^ 2 - M.trace • M + M.det • 1 = 0 := by
+    M ^ 2 - (algebraMap ℝ (Matrix (Fin 2) (Fin 2) ℝ)) M.trace * M +
+      (algebraMap ℝ (Matrix (Fin 2) (Fin 2) ℝ)) M.det = 0 := by
   simpa [Matrix.charpoly_fin_two] using M.aeval_self_charpoly
 
 /-- A real `2 × 2` matrix with determinant one and trace zero has fourth power one. -/
@@ -25,7 +26,7 @@ theorem pow_four_eq_one_of_trace_zero_det_one (M : Matrix (Fin 2) (Fin 2) ℝ)
     (htrace : M.trace = 0) (hdet : M.det = 1) : M ^ 4 = 1 := by
   have h := M.sq_sub_trace_smul_add_det_eq_zero
   rw [htrace, hdet] at h
-  simp only [zero_smul, one_smul, sub_zero] at h
+  simp only [map_zero, map_one, zero_mul, sub_zero] at h
   have hsq : M ^ 2 = -(1 : Matrix (Fin 2) (Fin 2) ℝ) := by
     calc
       M ^ 2 = (M ^ 2 + 1) - 1 := by simp
