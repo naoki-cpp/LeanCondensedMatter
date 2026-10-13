@@ -57,10 +57,13 @@ private theorem binaryBlockShuffle_orderedBlockInversionCount
       ∑ i : Fin m, ∑ j : Fin n,
         if e (Sum.inr j) < e (Sum.inl i) then 1 else 0 := by
   classical
-  simp [FamilySlotShuffleTo.orderedBlockInversionCount,
-    FamilySlotShuffleTo.blockInversionCount,
+  have hoff : (Finset.univ : Finset Bool).offDiag =
+      {(false, true), (true, false)} := by decide
+  rw [FamilySlotShuffleTo.orderedBlockInversionCount]
+  simp only [hoff]
+  simp [FamilySlotShuffleTo.blockInversionCount,
     binaryBlockShuffle, binaryBlockTagEquiv, binaryBlockOrder,
-    Finset.sum_offDiag, Finset.sum_ite, Finset.sum_comm]
+    Finset.sum_comm]
 
 /-- For two order-preserving splittings of the same ambient finite positions,
 the sign of the relative permutation is the sum of their respective
