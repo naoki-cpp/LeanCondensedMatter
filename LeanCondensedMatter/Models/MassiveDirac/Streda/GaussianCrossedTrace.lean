@@ -141,8 +141,8 @@ theorem gaussianCrossedTraceKernel_rotated_sources
       have hs : (starRingEnd ℂ) (s : ℂ) = (s : ℂ) := by simp
       rw [hc, hs] at hconj
       simp only [gaussianCrossedTraceKernel, ↓reduceIte,
-        if_neg h10, Matrix.mul_assoc]
-      rw [hamplitude, hconj]
+        ite_eq_right h10, Matrix.mul_assoc]
+      rw [hconj, hamplitude]
       ring
 
 /-- The trace-level `Psi` kernel is real by construction of its Hermitian-conjugate pair. -/
