@@ -2,6 +2,7 @@ import LeanCondensedMatter.Combinatorics.PerfectPairing.Split
 import LeanCondensedMatter.Combinatorics.PerfectPairing.PairEndpoints
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Evaluation
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Crossing
+import LeanCondensedMatter.Combinatorics.PerfectPairing.CrossingParity
 
 set_option linter.style.header false
 
