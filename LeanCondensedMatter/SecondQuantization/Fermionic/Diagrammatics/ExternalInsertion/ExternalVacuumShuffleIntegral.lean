@@ -830,6 +830,7 @@ theorem externalInsertionOfSlotSplit_mixedPairingWeight_eq_positionInversions_mu
         (externalInsertionMixedTimeAmbientPositionEquiv externalTime σ).symm
     let mixedSplit :=
       (Equiv.sumCongr localFixed (Equiv.refl (Fin (2 * (2 * S.card))))).trans split
+    let localPairing : Pairing (2 * T.card + E) := ext.pairing.transport localFixed
     StrictAnti (σ ∘ f) →
       ((ExternalInsertionDiagram.ofSlotSplit (Finset.subset_univ T) ext vac).pairingInMixedOrder
           externalTime σ).weight Common.Statistics.fermion =
@@ -837,9 +838,9 @@ theorem externalInsertionOfSlotSplit_mixedPairingWeight_eq_positionInversions_mu
           (∑ i : Fin (2 * (2 * T.card + E)),
             ∑ j : Fin (2 * (2 * S.card)),
               if mixedSplit (Sum.inr j) < mixedSplit (Sum.inl i) then 1 else 0) *
-          ((ext.pairing.transport localFixed).weight Common.Statistics.fermion *
+          (localPairing.weight Common.Statistics.fermion *
             (vac.pairingInOrder order).weight Common.Statistics.fermion) := by
-  intro S order f localFixed split mixedSplit htime
+  intro S order f localFixed split mixedSplit localPairing htime
   have hleft :
       StrictMono (fun i : Fin (2 * (2 * T.card + E)) =>
         mixedSplit (Sum.inl i)) :=
@@ -851,13 +852,13 @@ theorem externalInsertionOfSlotSplit_mixedPairingWeight_eq_positionInversions_mu
   have hright :
       StrictMono (fun j : Fin (2 * (2 * S.card)) =>
         mixedSplit (Sum.inr j)) := by
-    simpa only [mixedSplit, Equiv.trans_apply, Equiv.sumCongr_apply,
+    simpa only [mixedSplit, split, Equiv.trans_apply, Equiv.sumCongr_apply,
       Sum.map_inr, Equiv.refl_apply] using hright0
   rw [externalInsertionOfSlotSplit_pairingInMixedOrder_eq_ofSplit_mixedExternal
     T ext vac externalTime σ]
   exact Common.BlochDeDominicis.Pairing.weight_ofSplit_eq_positionInversions_mul
     Common.Statistics.fermion mixedSplit
-    (ext.pairing.transport localFixed) (vac.pairingInOrder order) hleft hright
+    localPairing (vac.pairingInOrder order) hleft hright
 
 /-- Summing the binary ordered-simplex shuffles of one arbitrary-external Dyson integrand and
 one fixed-order vacuum diagram gives the product of their independent Dyson contributions. -/
