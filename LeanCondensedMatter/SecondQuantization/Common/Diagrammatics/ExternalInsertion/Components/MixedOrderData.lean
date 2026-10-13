@@ -1,6 +1,7 @@
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentRestriction
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Pairing.MixedOrder
 import LeanCondensedMatter.Combinatorics.PerfectPairing.ComponentDecomposition
+import LeanCondensedMatter.Combinatorics.FamilySlotShuffle
 
 set_option linter.style.header false
 
@@ -428,6 +429,39 @@ theorem ExternalInsertionDiagram.componentMixedPositionEquiv_apply
       Equiv.apply_symm_apply]
   unfold ExternalInsertionDiagram.componentMixedPosition
   exact hambient.symm
+
+/-- The canonical family shuffle from component-local mixed atomic positions to the ambient
+mixed-time atomic positions. -/
+noncomputable def ExternalInsertionDiagram.componentMixedPositionShuffle
+    {E n : ℕ}
+    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E n
+      (Finset.univ : Finset (Fin n)))
+    (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ) :
+    Combinatorics.FamilySlotShuffleTo
+      (fun B : d.vertexGraph.componentPartition.parts =>
+        2 * (2 * (interactionSector
+          (B : Finset (ExternalInsertionVertex E (Finset.univ : Finset (Fin n))))).card +
+            d.externalPairCount B))
+      (2 * (2 * n + E)) where
+  slotEquiv := d.componentMixedPositionEquiv externalTime σ
+  strictMono := fun B => by
+    intro a b hab
+    simpa only [Common.ExternalInsertionDiagram.componentMixedPositionEquiv_apply] using
+      d.componentMixedPosition_strictMono externalTime σ B hab
+
+@[simp]
+theorem ExternalInsertionDiagram.componentMixedPositionShuffle_slotEquiv_apply
+    {E n : ℕ}
+    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E n
+      (Finset.univ : Finset (Fin n)))
+    (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ)
+    (B : d.vertexGraph.componentPartition.parts)
+    (p : Fin (2 * (2 * (interactionSector
+      (B : Finset (ExternalInsertionVertex E (Finset.univ : Finset (Fin n))))).card +
+        d.externalPairCount B))) :
+    (d.componentMixedPositionShuffle externalTime σ).slotEquiv ⟨B, p⟩ =
+      d.componentMixedPosition externalTime σ B p :=
+  d.componentMixedPositionEquiv_apply externalTime σ B p
 
 /-- Component-local mixed-order normalized pairs, over all connected components, are equivalent to
 the ambient mixed-order normalized pairs. The position equivalence is only the fixed component

@@ -20,39 +20,6 @@ open scoped BigOperators
 
 variable {ExternalLabel InternalLabel : Type*}
 
-/-- The canonical family shuffle from component-local mixed atomic positions to the ambient
-mixed-time atomic positions. -/
-noncomputable def ExternalInsertionDiagram.componentMixedPositionShuffle
-    {E n : ℕ}
-    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E n
-      (Finset.univ : Finset (Fin n)))
-    (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ) :
-    FamilySlotShuffleTo
-      (fun B : d.vertexGraph.componentPartition.parts =>
-        2 * (2 * (interactionSector
-          (B : Finset (ExternalInsertionVertex E (Finset.univ : Finset (Fin n))))).card +
-            d.externalPairCount B))
-      (2 * (2 * n + E)) where
-  slotEquiv := d.componentMixedPositionEquiv externalTime σ
-  strictMono := fun B => by
-    intro a b hab
-    simpa only [Common.ExternalInsertionDiagram.componentMixedPositionEquiv_apply] using
-      d.componentMixedPosition_strictMono externalTime σ B hab
-
-@[simp]
-theorem ExternalInsertionDiagram.componentMixedPositionShuffle_slotEquiv_apply
-    {E n : ℕ}
-    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E n
-      (Finset.univ : Finset (Fin n)))
-    (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ)
-    (B : d.vertexGraph.componentPartition.parts)
-    (p : Fin (2 * (2 * (interactionSector
-      (B : Finset (ExternalInsertionVertex E (Finset.univ : Finset (Fin n))))).card +
-        d.externalPairCount B))) :
-    (d.componentMixedPositionShuffle externalTime σ).slotEquiv ⟨B, p⟩ =
-      d.componentMixedPosition externalTime σ B p :=
-  d.componentMixedPositionEquiv_apply externalTime σ B p
-
 /-- Total oriented crossing count between distinct connected components in ambient mixed order. -/
 noncomputable def ExternalInsertionDiagram.mixedInterComponentCrossingCount
     {E n : ℕ}
