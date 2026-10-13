@@ -524,7 +524,7 @@ private theorem gram_matrix_congruence
       simp [inner_sum, sum_inner, inner_smul_left, inner_smul_right,
         mul_comm, mul_left_comm]
       rw [Finset.sum_comm]
-      simp only [Finset.mul_sum]
+      simp only [Finset.mul_sum, mul_left_comm]
     _ = ∑ l, (∑ k, A k i * inner ℝ (v k) (v l)) * A l j := by
       rw [Finset.sum_comm]
       simp only [Finset.sum_mul]
