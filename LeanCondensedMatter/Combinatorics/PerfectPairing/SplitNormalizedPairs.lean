@@ -2,6 +2,7 @@ import LeanCondensedMatter.Combinatorics.PerfectPairing.Split
 import LeanCondensedMatter.Combinatorics.PerfectPairing.PairEndpoints
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Evaluation
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Crossing
+import LeanCondensedMatter.Combinatorics.PerfectPairing.CrossingParity
 
 set_option linter.style.header false
 
@@ -214,6 +215,92 @@ noncomputable def Pairing.ofSplitInterSectorCrossingCount
       if Crosses (emb (Sum.inl p)).1 (emb (Sum.inr q)).1 then 1 else 0) +
     ∑ q : Q.NormalizedPair, ∑ p : P.NormalizedPair,
       if Crosses (emb (Sum.inr q)).1 (emb (Sum.inl p)).1 then 1 else 0
+
+/-- The parity of crossings between the two halves of an assembled pairing
+is the parity of the four endpoint-order inversions for each cross-sector
+pair of normalized pairs. The two crossing orientations are both counted;
+no order-preservation hypothesis is needed on either half. -/
+theorem Pairing.ofSplitInterSectorCrossingCount_mod_two_eq_pairEndpointInversionCount
+    (e : PositionSplitting a b n) (P : Pairing a) (Q : Pairing b) :
+    (Pairing.ofSplitInterSectorCrossingCount e P Q) % 2 =
+      (∑ p : P.NormalizedPair, ∑ q : Q.NormalizedPair,
+        pairEndpointInversionCount
+          (Pairing.ofSplitNormalizedPairEquiv e P Q (Sum.inl p)).1
+          (Pairing.ofSplitNormalizedPairEquiv e P Q (Sum.inr q)).1) % 2 := by
+  classical
+  let emb := Pairing.ofSplitNormalizedPairEquiv e P Q
+  have hpoint (p : P.NormalizedPair) (q : Q.NormalizedPair) :
+      Nat.ModEq 2
+        ((if Crosses (emb (Sum.inl p)).1 (emb (Sum.inr q)).1 then 1 else 0) +
+          (if Crosses (emb (Sum.inr q)).1 (emb (Sum.inl p)).1 then 1 else 0))
+        (pairEndpointInversionCount
+          (emb (Sum.inl p)).1 (emb (Sum.inr q)).1) := by
+    have hne : emb (Sum.inl p) ≠ emb (Sum.inr q) := by
+      intro h
+      have hsum := emb.injective h
+      cases hsum
+    have hEnds := (Pairing.ofSplit e P Q).normalizedPair_endpoints_ne_of_ne
+      (emb (Sum.inl p)) (emb (Sum.inr q)) hne
+    have hcross := pairEndpointInversionCount_mod_two_eq_crossesIndicator
+      (emb (Sum.inl p)).1 (emb (Sum.inr q)).1
+      ((Pairing.ofSplit e P Q).pairs_normalized (emb (Sum.inl p)).2)
+      ((Pairing.ofSplit e P Q).pairs_normalized (emb (Sum.inr q)).2)
+      hEnds.1 hEnds.2.1 hEnds.2.2.1 hEnds.2.2.2
+    have hindicator :
+        (if Crosses (emb (Sum.inl p)).1 (emb (Sum.inr q)).1 then 1 else 0) +
+          (if Crosses (emb (Sum.inr q)).1 (emb (Sum.inl p)).1 then 1 else 0) =
+        (if Crosses (emb (Sum.inl p)).1 (emb (Sum.inr q)).1 ∨
+          Crosses (emb (Sum.inr q)).1 (emb (Sum.inl p)).1 then 1 else 0) := by
+      by_cases hlt : Crosses (emb (Sum.inl p)).1 (emb (Sum.inr q)).1
+      · have hnot : ¬ Crosses (emb (Sum.inr q)).1 (emb (Sum.inl p)).1 :=
+          fun h => lt_asymm hlt.1 h.1
+        simp [hlt, hnot]
+      · by_cases hgt : Crosses (emb (Sum.inr q)).1 (emb (Sum.inl p)).1
+        · simp [hlt, hgt]
+        · simp [hlt, hgt]
+    change _ % 2 = _ % 2
+    have hmodIndicator :
+        (if Crosses (emb (Sum.inl p)).1 (emb (Sum.inr q)).1 ∨
+          Crosses (emb (Sum.inr q)).1 (emb (Sum.inl p)).1 then (1 : ℕ) else 0) % 2 =
+        (if Crosses (emb (Sum.inl p)).1 (emb (Sum.inr q)).1 ∨
+          Crosses (emb (Sum.inr q)).1 (emb (Sum.inl p)).1 then (1 : ℕ) else 0) := by
+      split_ifs <;> decide
+    rw [hindicator, hmodIndicator]
+    exact hcross.symm
+  have hsum :
+      Pairing.ofSplitInterSectorCrossingCount e P Q =
+        ∑ p : P.NormalizedPair, ∑ q : Q.NormalizedPair,
+          ((if Crosses (emb (Sum.inl p)).1 (emb (Sum.inr q)).1 then 1 else 0) +
+            (if Crosses (emb (Sum.inr q)).1 (emb (Sum.inl p)).1 then 1 else 0)) := by
+    change
+      (∑ p : P.NormalizedPair, ∑ q : Q.NormalizedPair,
+        if Crosses (emb (Sum.inl p)).1 (emb (Sum.inr q)).1 then 1 else 0) +
+      (∑ q : Q.NormalizedPair, ∑ p : P.NormalizedPair,
+        if Crosses (emb (Sum.inr q)).1 (emb (Sum.inl p)).1 then 1 else 0) = _
+    rw [Finset.sum_comm (f := fun q : Q.NormalizedPair =>
+      fun p : P.NormalizedPair =>
+        if Crosses (emb (Sum.inr q)).1 (emb (Sum.inl p)).1 then 1 else 0)]
+    rw [← Finset.sum_add_distrib]
+    apply Finset.sum_congr rfl
+    intro p _
+    rw [← Finset.sum_add_distrib]
+  rw [hsum]
+  simpa only [Nat.ModEq] using (Nat.ModEq.sum (n := 2)
+    (s := (Finset.univ : Finset P.NormalizedPair))
+    (f := fun p => ∑ q : Q.NormalizedPair,
+      ((if Crosses (emb (Sum.inl p)).1 (emb (Sum.inr q)).1 then 1 else 0) +
+        (if Crosses (emb (Sum.inr q)).1 (emb (Sum.inl p)).1 then 1 else 0)))
+    (g := fun p => ∑ q : Q.NormalizedPair,
+      pairEndpointInversionCount
+        (emb (Sum.inl p)).1 (emb (Sum.inr q)).1)
+    (fun p _ => Nat.ModEq.sum (n := 2)
+      (s := (Finset.univ : Finset Q.NormalizedPair))
+      (f := fun q =>
+        (if Crosses (emb (Sum.inl p)).1 (emb (Sum.inr q)).1 then 1 else 0) +
+          (if Crosses (emb (Sum.inr q)).1 (emb (Sum.inl p)).1 then 1 else 0))
+      (g := fun q => pairEndpointInversionCount
+        (emb (Sum.inl p)).1 (emb (Sum.inr q)).1)
+      (fun q _ => hpoint p q)))
 
 /-- Every crossing in a split pairing lies either within one sector or
 between the two sectors. No monotonicity of the splitting is required. -/
