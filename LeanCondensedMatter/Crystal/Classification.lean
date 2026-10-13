@@ -8,6 +8,7 @@ import LeanCondensedMatter.Crystal.PointGroup
 import Mathlib.Algebra.Module.Submodule.Map
 import Mathlib.LinearAlgebra.Matrix.GeneralLinearGroup.Defs
 import Mathlib.LinearAlgebra.Trace
+import Mathlib.Analysis.InnerProductSpace.Trace
 
 /-!
 # Classification-facing crystal symmetry
@@ -202,6 +203,50 @@ theorem exists_int_trace_pointGroup [FiniteDimensional ℝ V]
   rw [hi]
   exact b.ofZLatticeBasis_repr_apply ℝ L
     (X.pointGroupLatticeEquiv (V := V) g (b i)) i
+
+
+/-- In two Euclidean dimensions the trace of a point-group isometry lies in `[-2, 2]`.
+
+The bound is independent of a translation-lattice basis. It follows by summing the
+Cauchy–Schwarz bounds of the two diagonal coefficients in any orthonormal basis. -/
+theorem pointGroup_trace_bounds [InnerProductSpace ℝ V]
+    (X : AtomicConfiguration E Species) (g : X.pointGroup (V := V))
+    (o : OrthonormalBasis (Fin 2) ℝ V) :
+    -2 ≤ LinearMap.trace ℝ V (g : V ≃ₗᵢ[ℝ] V).toLinearEquiv.toLinearMap ∧
+      LinearMap.trace ℝ V (g : V ≃ₗᵢ[ℝ] V).toLinearEquiv.toLinearMap ≤ 2 := by
+  let T : V →ₗ[ℝ] V := (g : V ≃ₗᵢ[ℝ] V).toLinearEquiv.toLinearMap
+  have hcoord (i : Fin 2) :
+      -1 ≤ ⟪o i, (g : V ≃ₗᵢ[ℝ] V) (o i)⟫_ℝ ∧
+        ⟪o i, (g : V ≃ₗᵢ[ℝ] V) (o i)⟫_ℝ ≤ 1 := by
+    have h := abs_real_inner_le_norm (o i) ((g : V ≃ₗᵢ[ℝ] V) (o i))
+    have hle : |⟪o i, (g : V ≃ₗᵢ[ℝ] V) (o i)⟫_ℝ| ≤ 1 := by
+      simpa using h
+    exact abs_le.mp hle
+  have h0 := hcoord 0
+  have h1 := hcoord 1
+  change -2 ≤ LinearMap.trace ℝ V T ∧ LinearMap.trace ℝ V T ≤ 2
+  rw [LinearMap.trace_eq_sum_inner T o, Fin.sum_univ_two]
+  change -2 ≤ ⟪o 0, (g : V ≃ₗᵢ[ℝ] V) (o 0)⟫_ℝ +
+      ⟪o 1, (g : V ≃ₗᵢ[ℝ] V) (o 1)⟫_ℝ ∧
+    ⟪o 0, (g : V ≃ₗᵢ[ℝ] V) (o 0)⟫_ℝ +
+      ⟪o 1, (g : V ≃ₗᵢ[ℝ] V) (o 1)⟫_ℝ ≤ 2
+  constructor <;> linarith [h0.1, h0.2, h1.1, h1.2]
+
+/-- The planar crystallographic trace is one of the five integers from `-2` to `2`.
+This is the arithmetic/geometric bridge used to restrict the allowed planar rotations. -/
+theorem exists_int_trace_pointGroup_bounded [InnerProductSpace ℝ V]
+    [FiniteDimensional ℝ V]
+    (X : AtomicConfiguration E Species)
+    (hX : X.Periodic (V := V)) (g : X.pointGroup (V := V))
+    (b : Module.Basis (Fin 2) ℤ
+      (AddSubgroup.toIntSubmodule (X.translationSubgroup (V := V))))
+    (o : OrthonormalBasis (Fin 2) ℝ V) :
+    ∃ z : ℤ, -2 ≤ z ∧ z ≤ 2 ∧
+      LinearMap.trace ℝ V (g : V ≃ₗᵢ[ℝ] V).toLinearEquiv.toLinearMap = (z : ℝ) := by
+  obtain ⟨z, hz⟩ := X.exists_int_trace_pointGroup hX g b
+  obtain ⟨hlo, hhi⟩ := X.pointGroup_trace_bounds g o
+  rw [hz] at hlo hhi
+  exact ⟨z, by exact_mod_cast hlo, by exact_mod_cast hhi, hz⟩
 
 end
 
