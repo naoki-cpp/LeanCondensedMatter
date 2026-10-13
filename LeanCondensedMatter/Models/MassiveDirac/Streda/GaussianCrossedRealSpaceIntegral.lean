@@ -107,6 +107,99 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceIntegral_eq_radial
       simp; ring
     _ = _ := by rw [intervalIntegral.integral_const_mul]
 
+/-- Bilinear angular projection for the Cartesian `xy` response under a planar
+rotation. The constant angular coefficient is the antisymmetric part of the
+radial rank-two trace tensor, not its `xy` entry alone. -/
+private def gaussianCrossedAngularTensorCoefficients
+    (tensor : Fin 2 → Fin 2 → ℂ) : AngularHarmonicCoefficients ℂ :=
+  { constant := (tensor 0 1 - tensor 1 0) / 2
+    firstCosine := 0
+    firstSine := 0
+    secondCosine := (tensor 0 1 + tensor 1 0) / 2
+    secondMixed := tensor 0 0 - tensor 1 1 }
+
+/-- A rotated `xy` rank-two tensor contains only the constant and second
+angular harmonics. Its angular average projects onto the antisymmetric
+`xy-yx` sector. -/
+private theorem gaussianCrossedAngularTensorCoefficients_eval
+    (tensor : Fin 2 → Fin 2 → ℂ) (angle : ℝ) :
+    (gaussianCrossedAngularTensorCoefficients tensor).eval angle =
+      (((Real.cos angle : ℝ) : ℂ) ^ 2) * tensor 0 1 -
+        (((Real.sin angle : ℝ) : ℂ) ^ 2) * tensor 1 0 +
+        (((Real.cos angle : ℝ) : ℂ) * ((Real.sin angle : ℝ) : ℂ)) *
+          (tensor 0 0 - tensor 1 1) := by
+  have htrig :
+      (((Real.sin angle : ℝ) : ℂ) ^ 2) +
+        (((Real.cos angle : ℝ) : ℂ) ^ 2) = 1 := by
+    exact_mod_cast Real.sin_sq_add_cos_sq angle
+  simp only [gaussianCrossedAngularTensorCoefficients,
+    AngularHarmonicCoefficients.eval, smul_eq_mul, mul_zero,
+    add_zero]
+  linear_combination -((tensor 0 1 - tensor 1 0) / 2) * htrig
+
+/-- Source-pair-indexed radial X/Psi trace tensor. The existing radial trace
+uses only the `xy` entry; the angular average also requires the `yx` entry.
+The two Green functions and both real-space current blocks are the canonical
+finite-cutoff Born-Dyson objects, with no new normalization. -/
+noncomputable def finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor
+    (diagram : GaussianCrossedDiagram)
+    (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ)
+    (measured source : Fin 2) : ℂ :=
+  gaussianCrossedTraceKernel diagram
+    (fun ρ =>
+      finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix
+        .retarded v m probeEnergy broadening disorderStrength hbar pMax ρ)
+    (fun ρ =>
+      finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix
+        .advanced v m probeEnergy broadening disorderStrength hbar pMax ρ)
+    (fun axis ρ =>
+      finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock
+        (if axis = 0 then measured else source)
+        v m probeEnergy broadening disorderStrength hbar pMax ρ)
+    radius
+
+/-- If the full angular crossed trace transforms as the `xy` component of
+its canonical radial source-pair trace tensor under SO(2), the *complete*
+finite-radius real-space integral is the radial integral of the antisymmetric
+`xy-yx` sector.
+
+The rotation-covariance hypothesis is explicit: it is not implied by the
+previously proved radial-axis Fourier identities and must be discharged from
+the model's Green/current rotation laws. This theorem performs the angular
+projection, not the remaining radial or regulator limits. -/
+theorem finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceIntegral_eq_radial_antisymmetric_trace
+    (diagram : GaussianCrossedDiagram)
+    (v m probeEnergy broadening disorderStrength hbar pMax rMax : ℝ)
+    (hrotation : ∀ radius angle : ℝ,
+      let tensor := finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor
+        diagram v m probeEnergy broadening disorderStrength hbar pMax radius
+      finiteCutoffContinuumBornDysonGaussianCrossedTraceKernel
+          diagram v m probeEnergy broadening disorderStrength hbar pMax
+          (polarPoint2D radius angle) =
+        (((Real.cos angle : ℝ) : ℂ) ^ 2) * tensor 0 1 -
+          (((Real.sin angle : ℝ) : ℂ) ^ 2) * tensor 1 0 +
+          (((Real.cos angle : ℝ) : ℂ) * ((Real.sin angle : ℝ) : ℂ)) *
+            (tensor 0 0 - tensor 1 1)) :
+    finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceIntegral
+        diagram v m probeEnergy broadening disorderStrength hbar pMax rMax =
+      (((2 * Real.pi : ℝ) : ℂ)) *
+        ∫ radius in (0 : ℝ)..rMax,
+          (radius : ℂ) *
+            ((finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor
+                diagram v m probeEnergy broadening disorderStrength hbar pMax radius 0 1 -
+              finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor
+                diagram v m probeEnergy broadening disorderStrength hbar pMax radius 1 0) / 2) := by
+  apply finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceIntegral_eq_radial_harmonic_constant
+    diagram v m probeEnergy broadening disorderStrength hbar pMax rMax
+    (fun radius => gaussianCrossedAngularTensorCoefficients
+      (finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor
+        diagram v m probeEnergy broadening disorderStrength hbar pMax radius))
+  intro radius angle
+  rw [hrotation radius angle]
+  exact (gaussianCrossedAngularTensorCoefficients_eval
+    (finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor
+      diagram v m probeEnergy broadening disorderStrength hbar pMax radius) angle).symm
+
 /-- The finite-radius `Psi` integral remains real because its pointwise trace kernel is real. -/
 @[simp] theorem finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceIntegral_psi_im
     (v m probeEnergy broadening disorderStrength hbar pMax rMax : ℝ) :
