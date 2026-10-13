@@ -109,6 +109,42 @@ theorem Pairing.weight_ofSplit_eq_positionInversions_mul (s : Statistics)
       e left right)]
   ac_rfl
 
+/-- The signed evaluation of two independently paired sectors factorizes into their
+local evaluations and the right-before-left ambient position-shuffle sign.
+Both local position embeddings must preserve order, and the two kernel-locality
+hypotheses refer to *normalized ambient pairs*. No symmetry of pair kernels
+under endpoint exchange is used. -/
+theorem Pairing.evaluation_ofSplit_eq_positionInversions_mul (s : Statistics)
+    {a b n : ℕ} (e : PositionSplitting a b n)
+    (left : Pairing a) (right : Pairing b)
+    (value : Fin (2 * n) → Fin (2 * n) → ℂ)
+    (leftValue : Fin (2 * a) → Fin (2 * a) → ℂ)
+    (rightValue : Fin (2 * b) → Fin (2 * b) → ℂ)
+    (hleftMono : StrictMono (fun i : Fin (2 * a) => e (Sum.inl i)))
+    (hrightMono : StrictMono (fun j : Fin (2 * b) => e (Sum.inr j)))
+    (hleft : ∀ pr : left.NormalizedPair,
+      value (Pairing.ofSplitNormalizedPairEquiv e left right (Sum.inl pr)).1.1
+        (Pairing.ofSplitNormalizedPairEquiv e left right (Sum.inl pr)).1.2 =
+      leftValue pr.1.1 pr.1.2)
+    (hright : ∀ pr : right.NormalizedPair,
+      value (Pairing.ofSplitNormalizedPairEquiv e left right (Sum.inr pr)).1.1
+        (Pairing.ofSplitNormalizedPairEquiv e left right (Sum.inr pr)).1.2 =
+      rightValue pr.1.1 pr.1.2) :
+    (Pairing.ofSplit e left right).evaluation
+        ((Pairing.ofSplit e left right).weight s) value =
+      (s.zetaInt : ℂ) ^
+        (∑ i : Fin (2 * a), ∑ j : Fin (2 * b),
+          if e (Sum.inr j) < e (Sum.inl i) then 1 else 0) *
+        (left.evaluation (left.weight s) leftValue *
+          right.evaluation (right.weight s) rightValue) := by
+  rw [Pairing.evaluation,
+    Pairing.weight_ofSplit_eq_positionInversions_mul s e left right
+      hleftMono hrightMono,
+    Pairing.prod_pairs_ofSplit e left right value leftValue rightValue
+      hleft hright]
+  simp only [Pairing.evaluation]
+  ring
+
 /-- A finite-family version of `Pairing.weight_eq_mul_of_crossingCount_mod_two_eq`: once the global
 crossing count is identified modulo two with the sum of local crossing counts, the global exchange
 weight is the product of all local exchange weights. -/
