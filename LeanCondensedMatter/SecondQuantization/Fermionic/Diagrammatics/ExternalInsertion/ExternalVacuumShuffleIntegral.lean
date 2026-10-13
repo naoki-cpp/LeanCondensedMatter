@@ -230,7 +230,7 @@ private theorem externalInsertionLeftMixedPosition_split_strictMono
               (σ ∘ fun i : Fin T.card => (T.orderIsoOfFin rfl i).1) p)) := by
     apply (externalInsertionMixedTimeAmbientPositionEquiv externalTime σ).injective
     simpa only [split, Equiv.trans_apply, Equiv.sumCongr_apply,
-      Equiv.refl_apply, Equiv.apply_symm_apply] using
+      Sum.map_inl, Equiv.refl_apply, Equiv.apply_symm_apply] using
         (externalInsertionLeftMixedPosition_fixed T externalTime σ p).symm
   intro a b hab
   change
