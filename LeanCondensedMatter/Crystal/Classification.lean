@@ -512,7 +512,7 @@ theorem pointGroup_lattice_gram_invariant
 /-- A change of vector generators by a real matrix changes their Gram matrix by
 matrix congruence. Kept local to the crystallographic metric argument. -/
 private theorem gram_matrix_congruence
-    {ι : Type*} [Fintype ι] [DecidableEq ι]
+    {ι : Type*} [Fintype ι]
     (v : ι → V) (A : Matrix ι ι ℝ) :
     Matrix.gram ℝ (fun j => ∑ i, A i j • v i) =
       A.transpose * Matrix.gram ℝ v * A := by
@@ -522,7 +522,9 @@ private theorem gram_matrix_congruence
     inner ℝ (∑ k, A k i • v k) (∑ l, A l j • v l) =
         ∑ k, ∑ l, A k i * inner ℝ (v k) (v l) * A l j := by
       simp [inner_sum, sum_inner, inner_smul_left, inner_smul_right,
-        mul_comm, mul_left_comm, mul_assoc]
+        mul_comm, mul_left_comm]
+      rw [Finset.sum_comm]
+      simp [mul_comm, mul_left_comm, mul_assoc]
     _ = ∑ l, (∑ k, A k i * inner ℝ (v k) (v l)) * A l j := by
       rw [Finset.sum_comm]
       simp only [Finset.sum_mul]
