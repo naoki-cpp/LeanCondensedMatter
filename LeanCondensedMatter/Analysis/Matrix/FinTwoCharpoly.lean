@@ -91,6 +91,7 @@ theorem trace_eq_zero_of_mul_transpose_eq_one_det_neg_one
     simpa [a, b, c, d, Matrix.mul_apply, Fin.sum_univ_two] using h
   have hd : a * d - b * c = -1 := by
     simpa [a, b, c, d, Matrix.det_fin_two] using hdet
+  rw [Matrix.trace_fin_two]
   change a + d = 0
   linear_combination -d * h00 + b * h01 + a * hd
 
