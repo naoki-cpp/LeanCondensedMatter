@@ -66,8 +66,8 @@ private theorem binaryBlockShuffle_orderedBlockInversionCount
   have hfalse : binaryBlockOrder false < binaryBlockOrder true := by decide
   have htrue : ¬ binaryBlockOrder true < binaryBlockOrder false := by decide
   rw [Finset.sum_insert (by decide), Finset.sum_singleton,
-    if_pos hfalse, if_neg htrue, add_zero]
-  rw [FamilySlotShuffleTo.blockInversionCount_of_ne (by decide)]
+    ite_eq_left hfalse, ite_eq_right htrue, add_zero]
+  rw [s.blockInversionCount_of_ne (show false ≠ true by decide)]
   change (∑ i : Fin m, ∑ j : Fin n,
     if e (Sum.inr j) < e (Sum.inl i) then 1 else 0) = _
   rfl
