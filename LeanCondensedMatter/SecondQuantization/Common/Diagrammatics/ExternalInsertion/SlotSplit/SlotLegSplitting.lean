@@ -96,6 +96,8 @@ theorem externalInsertionSlotLegSplitting_left_strictMono
     unfold externalInsertionExternalLeg
     rw [externalInsertionSlotLegSplitting_external,
       externalInsertionSlotLegSplitting_external]
+    change (externalInsertionExternalLeg E (Finset.univ : Finset (Fin N)) e).val <
+      (externalInsertionExternalLeg E (Finset.univ : Finset (Fin N)) f).val
     simpa only [Fin.lt_def, externalInsertionExternalLeg_val] using hab
   · change externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T)
         (Sum.inl (externalInsertionExternalLeg E T e)) <
