@@ -1,5 +1,6 @@
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.ScalarCovariance
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.ScalarAngularWeights
+import LeanCondensedMatter.Models.MassiveDirac.Disorder.SingleParticleRate
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.TransportRate
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.ContinuumMeasurePrefactor
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornRealSpacePropagator
@@ -24,8 +25,9 @@ imaginary boundary analysis; `Born.Boundary` owns the finite metallic boundary v
 number together with its scalar and `σ_z` propagation; `Born.Damping` projects that complex API to
 the physical damping observables; `BornPropagator` feeds those damping channels into the
 weak-disorder propagator and owns its retarded-advanced radial denominator pair;
-`ScalarAngularWeights` owns the angular overlap and current-relaxation integrals; and `TransportRate`
-owns the microscopic upper-band single-particle and transport scattering scales. The finite-`η`
+`ScalarAngularWeights` owns the angular overlap and current-relaxation integrals;
+`SingleParticleRate` owns the Born single-particle rate and lifetime; and `TransportRate` owns
+the corresponding transport scattering rate and lifetime. The finite-`η`
 Born-Dyson layer propagates the same fixed-cutoff boundary through its effective energy, effective
 mass, and radial denominator before any weak-disorder or ultraviolet limit is taken.
 `FiniteBroadeningBornZeroBroadening` owns that propagator boundary together with the real Born
