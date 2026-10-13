@@ -355,19 +355,8 @@ theorem finiteCutoffContinuumBornDysonDenominator_ne_zero
   have hdetUnit : IsUnit M.det :=
     (Matrix.isUnit_iff_isUnit_det M).mp hmatrixUnit
   have hdet : M.det ≠ 0 := isUnit_iff_ne_zero.mp hdetUnit
-  have hI : Complex.I ^ 2 = (-1 : ℂ) := by
-    simpa [pow_two] using Complex.I_mul_I
-  have hdetEq :
-      M.det = finiteCutoffContinuumBornDysonDenominator
-        side v m px py probeEnergy broadening disorderStrength hbar pMax := by
-    dsimp [M]
-    rw [Matrix.det_fin_two]
-    simp [finiteCutoffContinuumBornDysonShiftMatrix,
-      finiteCutoffContinuumBornDysonDenominator, sigmaX, sigmaY, sigmaZ,
-      InternalSpace.pauliX, InternalSpace.pauliY, InternalSpace.pauliZ]
-    ring_nf
-    rw [hI]
-    ring
+  have hdetEq := finiteCutoffContinuumBornDysonShiftMatrix_det
+    side v m px py probeEnergy broadening disorderStrength hbar pMax
   rw [hdetEq] at hdet
   exact hdet
 
