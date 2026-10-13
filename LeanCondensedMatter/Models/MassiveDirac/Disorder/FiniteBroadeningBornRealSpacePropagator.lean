@@ -71,7 +71,7 @@ private theorem angularGreenPauliKernel_eq_spinRotation
         (k0 * (a • (1 : Matrix2) + d • sigmaZ) i j +
           k1 * ((((Real.cos angle : ℝ) : ℂ)) * (b • sigmaX) i j +
             (((Real.sin angle : ℝ) : ℂ)) * (b • sigmaY) i j))) =
-      inPlaneSpinRotation angle *
+      (inPlaneSpinRotation angle).mul
         ((fun i j : Fin 2 =>
           momentum * (!![k0 * (a + d), k1 * b;
                           k1 * b, k0 * (a - d)] : Matrix2) i j) : Matrix2) *
@@ -100,6 +100,7 @@ private theorem angularGreenPauliKernel_eq_spinRotation
         InternalSpace.pauliX, InternalSpace.pauliY,
         InternalSpace.pauliZ, Matrix.smul_apply, smul_eq_mul] <;>
       try ring
+    all_goals simp
   calc
     _ = momentum • polar angle := hangular
     _ = momentum •
