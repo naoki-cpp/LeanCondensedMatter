@@ -1,7 +1,5 @@
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Leg
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.LegFamily
 import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.Quartic
-import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.LocalLeg
 
 set_option linter.style.header false
 
@@ -12,14 +10,12 @@ set_option linter.style.header false
 namespace SecondQuantization
 namespace Fermionic
 
-open Combinatorics
 open Common
 
-variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
+variable {Mode : Type*} [LinearOrder Mode]
 
 /-! ## Flattening `Common.quarticVertexSequenceInteractionPicture` into a `4n`-atom `List.prod` -/
 
-omit [Fintype Mode] in
 /-- The ordered product of the flattened evolved quartic legs is exactly the Common
 interaction-picture quartic-vertex sequence. The row-major `4n` product decomposition is owned by
 `Common.prod_orderedQuarticLegFamily_eq_vertexProducts`; this theorem supplies only the fermionic
@@ -33,17 +29,17 @@ theorem prod_ofFn_quarticLegOperatorForSequence_eq_quarticVertexSequenceInteract
   change
     (List.ofFn (Common.orderedQuarticLegFamily
       (fun i : Fin n => fun l : Fin 4 =>
-        imaginaryTimeEvolve ε (τ i) (quarticLocalLegOperator (q i) l)))).prod = _
+        Common.heisenbergEvolve (fermionEnergy ε) (τ i)
+          (Common.quarticLocalLegOperator create annihilate (q i) l)))).prod =
+      (List.ofFn (fun i : Fin n =>
+        Common.heisenbergEvolve (fermionEnergy ε) (τ i)
+          (Common.quarticVertexOperator create annihilate (q i)))).prod
   rw [Common.prod_orderedQuarticLegFamily_eq_vertexProducts]
-  unfold Common.quarticVertexSequenceInteractionPicture
   apply congrArg List.prod
   apply congrArg List.ofFn
   funext i
-  symm
-  simpa [Common.interactionPicture, interactionPicture, quarticVertexOperator,
-    imaginaryTimeEvolve, quarticLocalLegOperator] using
-    (Common.heisenbergEvolve_quarticVertexOperator_eq_prod
-      (fermionEnergy ε) create annihilate (q i) (τ i))
+  exact (Common.heisenbergEvolve_quarticVertexOperator_eq_prod
+    (fermionEnergy ε) create annihilate (q i) (τ i)).symm
 
 end Fermionic
 end SecondQuantization
