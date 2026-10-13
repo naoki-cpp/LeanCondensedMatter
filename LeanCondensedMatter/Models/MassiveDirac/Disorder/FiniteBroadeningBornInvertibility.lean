@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Analysis.Operator.Spectral.DissipativeShift
 import LeanCondensedMatter.Transport.Analysis.ContinuumMeasure
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornDysonShift
 import Mathlib.Analysis.Normed.Operator.Banach
@@ -252,65 +253,25 @@ private theorem finiteCutoffContinuumBornDysonShiftOperator_injective
     Function.Injective
       (finiteCutoffContinuumBornDysonShiftOperator
         side v m px py probeEnergy broadening disorderStrength hbar pMax) := by
-  let shift := finiteCutoffContinuumBornDysonShiftOperator
-    side v m px py probeEnergy broadening disorderStrength hbar pMax
-  intro ψ φ hψφ
-  have hsub : shift (ψ - φ) = 0 := by
-    rw [map_sub, hψφ, sub_self]
-  have hzero : ψ - φ = 0 := by
-    by_contra hne
-    have hnorm : 0 < ‖ψ - φ‖ ^ 2 := by
-      exact sq_pos_of_pos (norm_pos_iff.mpr hne)
-    have hreg : side.regulator broadening ≠ 0 :=
-      side.regulator_ne_zero hbroadening
-    have hregSq : 0 < (side.regulator broadening) ^ 2 :=
-      sq_pos_of_ne_zero hreg
-    have hSigma := finiteCutoffContinuumBornSelfEnergy_dissipative
-      side v m probeEnergy broadening disorderStrength hbar pMax
-      hbroadening hdisorder hpMax (ψ - φ)
-    have hshiftApply :
-        spectralParameter side probeEnergy broadening • (ψ - φ) -
-            hamiltonianOperator v m px py (ψ - φ) -
-            finiteCutoffContinuumBornSelfEnergy
-              side v m probeEnergy broadening disorderStrength hbar pMax (ψ - φ) = 0 := by
-      simpa [shift, finiteCutoffContinuumBornDysonShiftOperator,
-        Algebra.algebraMap_eq_smul_one] using hsub
-    have hH :
-        (inner ℂ (ψ - φ) (hamiltonianOperator v m px py (ψ - φ))).im = 0 := by
-      exact (ContinuousLinearMap.isSelfAdjoint_iff_isSymmetric.mp
-        (hamiltonianOperator_isSelfAdjoint v m px py)).im_inner_self_apply (ψ - φ)
-    have himSelf : (inner ℂ (ψ - φ) (ψ - φ)).im = 0 :=
-      inner_self_im (𝕜 := ℂ) (ψ - φ)
-    have hreSelf : (inner ℂ (ψ - φ) (ψ - φ)).re = ‖ψ - φ‖ ^ 2 :=
-      (norm_sq_eq_re_inner (𝕜 := ℂ) (ψ - φ)).symm
-    have him := congrArg
-      (fun w : DiracHilbert => (inner ℂ (ψ - φ) w).im) hshiftApply
-    rw [inner_sub_right, inner_sub_right, inner_smul_right] at him
-    simp only [Complex.sub_im, Complex.mul_im, spectralParameter_re, spectralParameter_im,
-      himSelf, hreSelf, hH, mul_zero, zero_add, sub_zero] at him
-    have himZero :
-        side.regulator broadening * ‖ψ - φ‖ ^ 2 -
-            (inner ℂ (ψ - φ)
-              (finiteCutoffContinuumBornSelfEnergy
-                side v m probeEnergy broadening disorderStrength hbar pMax (ψ - φ))).im = 0 := by
-      simpa using him
-    have hbalance :
-        side.regulator broadening * ‖ψ - φ‖ ^ 2 =
-          (inner ℂ (ψ - φ)
-            (finiteCutoffContinuumBornSelfEnergy
-              side v m probeEnergy broadening disorderStrength hbar pMax (ψ - φ))).im :=
-      sub_eq_zero.mp himZero
-    rw [← hbalance] at hSigma
-    have hpositive :
-        0 < (side.regulator broadening) ^ 2 * ‖ψ - φ‖ ^ 2 :=
-      mul_pos hregSq hnorm
-    have hrewrite :
-        side.regulator broadening *
-            (side.regulator broadening * ‖ψ - φ‖ ^ 2) =
-          (side.regulator broadening) ^ 2 * ‖ψ - φ‖ ^ 2 := by ring
-    rw [hrewrite] at hSigma
-    linarith
-  exact sub_eq_zero.mp hzero
+  have hreg : (spectralParameter side probeEnergy broadening).im ≠ 0 := by
+    rw [spectralParameter_im]
+    exact side.regulator_ne_zero hbroadening
+  have hdiss : ∀ ψ : DiracHilbert,
+      (spectralParameter side probeEnergy broadening).im *
+        (inner ℂ ψ (finiteCutoffContinuumBornSelfEnergy
+          side v m probeEnergy broadening disorderStrength hbar pMax ψ)).im ≤ 0 := by
+    intro ψ
+    simpa only [spectralParameter_im] using
+      finiteCutoffContinuumBornSelfEnergy_dissipative
+        side v m probeEnergy broadening disorderStrength hbar pMax
+        hbroadening hdisorder hpMax ψ
+  simpa only [finiteCutoffContinuumBornDysonShiftOperator] using
+    QuantumTheory.dissipativeSpectralShift_injective
+      (hamiltonianOperator v m px py)
+      (finiteCutoffContinuumBornSelfEnergy
+        side v m probeEnergy broadening disorderStrength hbar pMax)
+      (hamiltonianOperator_isSelfAdjoint v m px py)
+      (spectralParameter side probeEnergy broadening) hreg hdiss
 
 private theorem finiteCutoffContinuumBornDysonShiftOperator_isUnit
     (side : SpectralSide)
