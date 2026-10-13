@@ -321,6 +321,48 @@ theorem finiteCutoffContinuumBornDysonDenominator_ne_zero
   rw [hdetEq] at hdet
   exact hdet
 
+/-- The explicit Born-Dyson propagator is also a left inverse of its shift.
+The analytic dissipativity hypothesis makes the shift a unit; the explicit
+right-inverse identity then identifies the propagator with its inverse. -/
+theorem finiteCutoffContinuumBornDysonGreenOperator_mul_shiftOperator
+    (side : SpectralSide)
+    (v m px py probeEnergy broadening disorderStrength hbar pMax : ℝ)
+    (hbroadening : broadening ≠ 0) (hdisorder : 0 ≤ disorderStrength)
+    (hpMax : 0 ≤ pMax) :
+    finiteCutoffContinuumBornDysonGreenOperator
+        side v m px py probeEnergy broadening disorderStrength hbar pMax *
+      finiteCutoffContinuumBornDysonShiftOperator
+        side v m px py probeEnergy broadening disorderStrength hbar pMax = 1 := by
+  have hden := finiteCutoffContinuumBornDysonDenominator_ne_zero
+    side v m px py probeEnergy broadening disorderStrength hbar pMax
+    hbroadening hdisorder hpMax
+  have hright := finiteCutoffContinuumBornDysonShiftOperator_mul_greenOperator
+    side v m px py probeEnergy broadening disorderStrength hbar pMax
+    hbroadening hden
+  have hunit := finiteCutoffContinuumBornDysonShiftOperator_isUnit
+    side v m px py probeEnergy broadening disorderStrength hbar pMax
+    hbroadening hdisorder hpMax
+  rcases hunit with ⟨u, hu⟩
+  have hright' : (u : DiracHilbert →L[ℂ] DiracHilbert) *
+      finiteCutoffContinuumBornDysonGreenOperator
+        side v m px py probeEnergy broadening disorderStrength hbar pMax = 1 := by
+    simpa only [hu] using hright
+  have hgreen :
+      finiteCutoffContinuumBornDysonGreenOperator
+        side v m px py probeEnergy broadening disorderStrength hbar pMax =
+      (↑u⁻¹ : DiracHilbert →L[ℂ] DiracHilbert) := by
+    calc
+      _ = (↑u⁻¹ : DiracHilbert →L[ℂ] DiracHilbert) *
+          ((u : DiracHilbert →L[ℂ] DiracHilbert) *
+            finiteCutoffContinuumBornDysonGreenOperator
+              side v m px py probeEnergy broadening disorderStrength hbar pMax) := by
+              rw [← mul_assoc]
+              simp
+      _ = (↑u⁻¹ : DiracHilbert →L[ℂ] DiracHilbert) := by rw [hright', mul_one]
+  rw [hgreen, ← hu]
+  simp
+
+
 end
 
 end QuantumTheory.Models.MassiveDirac
