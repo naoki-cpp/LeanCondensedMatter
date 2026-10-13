@@ -1,6 +1,7 @@
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Split
 import LeanCondensedMatter.Combinatorics.PerfectPairing.PairEndpoints
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Evaluation
+import LeanCondensedMatter.Combinatorics.PerfectPairing.Crossing
 
 set_option linter.style.header false
 
@@ -123,6 +124,143 @@ theorem Pairing.ofSplitNormalizedPairEquiv_pair_eq_of_lt
     cases pr with
     | inl p => exact (lt_asymm horder hnormalized).elim
     | inr p => exact (lt_asymm horder hnormalized).elim
+
+/-- A binary position splitting that is strictly increasing on the left
+preserves crossing relations between pairs belonging to that part. -/
+theorem Pairing.ofSplitNormalizedPairEquiv_crosses_inl_iff_of_strictMono
+    (e : PositionSplitting a b n) (P : Pairing a) (Q : Pairing b)
+    (hmono : StrictMono (fun i : Fin (2 * a) => e (Sum.inl i)))
+    (p q : P.NormalizedPair) :
+    Crosses
+        (Pairing.ofSplitNormalizedPairEquiv e P Q (Sum.inl p)).1
+        (Pairing.ofSplitNormalizedPairEquiv e P Q (Sum.inl q)).1 ↔
+      Crosses p.1 q.1 := by
+  have hp :=
+    Pairing.ofSplitNormalizedPairEquiv_pair_eq_of_lt e P Q (Sum.inl p)
+      (hmono (P.pairs_normalized p.2))
+  have hq :=
+    Pairing.ofSplitNormalizedPairEquiv_pair_eq_of_lt e P Q (Sum.inl q)
+      (hmono (P.pairs_normalized q.2))
+  rw [hp, hq]
+  exact crosses_map_iff (fun i => e (Sum.inl i)) hmono
+    p.1.1 p.1.2 q.1.1 q.1.2
+
+/-- A binary position splitting that is strictly increasing on the right
+preserves crossing relations between pairs belonging to that part. -/
+theorem Pairing.ofSplitNormalizedPairEquiv_crosses_inr_iff_of_strictMono
+    (e : PositionSplitting a b n) (P : Pairing a) (Q : Pairing b)
+    (hmono : StrictMono (fun i : Fin (2 * b) => e (Sum.inr i)))
+    (p q : Q.NormalizedPair) :
+    Crosses
+        (Pairing.ofSplitNormalizedPairEquiv e P Q (Sum.inr p)).1
+        (Pairing.ofSplitNormalizedPairEquiv e P Q (Sum.inr q)).1 ↔
+      Crosses p.1 q.1 := by
+  have hp :=
+    Pairing.ofSplitNormalizedPairEquiv_pair_eq_of_lt e P Q (Sum.inr p)
+      (hmono (Q.pairs_normalized p.2))
+  have hq :=
+    Pairing.ofSplitNormalizedPairEquiv_pair_eq_of_lt e P Q (Sum.inr q)
+      (hmono (Q.pairs_normalized q.2))
+  rw [hp, hq]
+  exact crosses_map_iff (fun i => e (Sum.inr i)) hmono
+    p.1.1 p.1.2 q.1.1 q.1.2
+
+/-- The ordered crossing count internal to the left part of an assembled
+pairing is its standalone crossing count. Inter-part crossings are excluded. -/
+theorem Pairing.ofSplitNormalizedPairEquiv_inl_crossingCount_eq
+    (e : PositionSplitting a b n) (P : Pairing a) (Q : Pairing b)
+    (hmono : StrictMono (fun i : Fin (2 * a) => e (Sum.inl i))) :
+    (∑ p : P.NormalizedPair, ∑ q : P.NormalizedPair,
+      if Crosses
+          (Pairing.ofSplitNormalizedPairEquiv e P Q (Sum.inl p)).1
+          (Pairing.ofSplitNormalizedPairEquiv e P Q (Sum.inl q)).1
+      then 1 else 0) = P.crossingCount := by
+  classical
+  rw [P.crossingCount_eq_sum_crosses, Fintype.sum_prod_type]
+  apply Finset.sum_congr rfl
+  intro p _
+  apply Finset.sum_congr rfl
+  intro q _
+  exact if_congr
+    (Pairing.ofSplitNormalizedPairEquiv_crosses_inl_iff_of_strictMono
+      e P Q hmono p q) rfl rfl
+
+/-- The ordered crossing count internal to the vacuum/right part of an
+assembled pairing is its standalone crossing count. Inter-part crossings remain separate. -/
+theorem Pairing.ofSplitNormalizedPairEquiv_inr_crossingCount_eq
+    (e : PositionSplitting a b n) (P : Pairing a) (Q : Pairing b)
+    (hmono : StrictMono (fun i : Fin (2 * b) => e (Sum.inr i))) :
+    (∑ p : Q.NormalizedPair, ∑ q : Q.NormalizedPair,
+      if Crosses
+          (Pairing.ofSplitNormalizedPairEquiv e P Q (Sum.inr p)).1
+          (Pairing.ofSplitNormalizedPairEquiv e P Q (Sum.inr q)).1
+      then 1 else 0) = Q.crossingCount := by
+  classical
+  rw [Q.crossingCount_eq_sum_crosses, Fintype.sum_prod_type]
+  apply Finset.sum_congr rfl
+  intro p _
+  apply Finset.sum_congr rfl
+  intro q _
+  exact if_congr
+    (Pairing.ofSplitNormalizedPairEquiv_crosses_inr_iff_of_strictMono
+      e P Q hmono p q) rfl rfl
+
+/-- Crossings between the two independent sectors of an assembled pairing.
+Both orientations are counted because `crossingCount` uses oriented pairs. -/
+noncomputable def Pairing.ofSplitInterSectorCrossingCount
+    (e : PositionSplitting a b n) (P : Pairing a) (Q : Pairing b) : ℕ :=
+  let emb := Pairing.ofSplitNormalizedPairEquiv e P Q
+  (∑ p : P.NormalizedPair, ∑ q : Q.NormalizedPair,
+      if Crosses (emb (Sum.inl p)).1 (emb (Sum.inr q)).1 then 1 else 0) +
+    ∑ q : Q.NormalizedPair, ∑ p : P.NormalizedPair,
+      if Crosses (emb (Sum.inr q)).1 (emb (Sum.inl p)).1 then 1 else 0
+
+/-- Every crossing in a split pairing lies either within one sector or
+between the two sectors. No monotonicity of the splitting is required. -/
+theorem Pairing.ofSplit_crossingCount_eq_intrasector_add_inter
+    (e : PositionSplitting a b n) (P : Pairing a) (Q : Pairing b) :
+    (Pairing.ofSplit e P Q).crossingCount =
+      (∑ p : P.NormalizedPair, ∑ q : P.NormalizedPair,
+        if Crosses
+            (Pairing.ofSplitNormalizedPairEquiv e P Q (Sum.inl p)).1
+            (Pairing.ofSplitNormalizedPairEquiv e P Q (Sum.inl q)).1
+        then 1 else 0) +
+      (∑ p : Q.NormalizedPair, ∑ q : Q.NormalizedPair,
+        if Crosses
+            (Pairing.ofSplitNormalizedPairEquiv e P Q (Sum.inr p)).1
+            (Pairing.ofSplitNormalizedPairEquiv e P Q (Sum.inr q)).1
+        then 1 else 0) +
+      Pairing.ofSplitInterSectorCrossingCount e P Q := by
+  classical
+  let emb := Pairing.ofSplitNormalizedPairEquiv e P Q
+  have hsum :
+      (Pairing.ofSplit e P Q).crossingCount =
+        ∑ xy : (P.NormalizedPair ⊕ Q.NormalizedPair) ×
+            (P.NormalizedPair ⊕ Q.NormalizedPair),
+          if Crosses (emb xy.1).1 (emb xy.2).1 then 1 else 0 := by
+    rw [Pairing.crossingCount_eq_sum_crosses]
+    exact (Equiv.sum_comp (Equiv.prodCongr emb emb)
+      (fun xy : (Pairing.ofSplit e P Q).NormalizedPair ×
+          (Pairing.ofSplit e P Q).NormalizedPair =>
+        if Crosses xy.1.1 xy.2.1 then (1 : ℕ) else 0)).symm
+  rw [hsum, Fintype.sum_prod_type, Fintype.sum_sum_type]
+  simp_rw [Fintype.sum_sum_type, Finset.sum_add_distrib]
+  unfold Pairing.ofSplitInterSectorCrossingCount
+  dsimp [emb]
+  omega
+
+/-- With strictly increasing embeddings of both sectors, the sole extra
+crossing count is the explicitly identified inter-sector contribution. -/
+theorem Pairing.ofSplit_crossingCount_eq_left_add_right_add_inter
+    (e : PositionSplitting a b n) (P : Pairing a) (Q : Pairing b)
+    (hleft : StrictMono (fun i : Fin (2 * a) => e (Sum.inl i)))
+    (hright : StrictMono (fun i : Fin (2 * b) => e (Sum.inr i))) :
+    (Pairing.ofSplit e P Q).crossingCount =
+      P.crossingCount + Q.crossingCount +
+        Pairing.ofSplitInterSectorCrossingCount e P Q := by
+  rw [Pairing.ofSplit_crossingCount_eq_intrasector_add_inter,
+    Pairing.ofSplitNormalizedPairEquiv_inl_crossingCount_eq e P Q hleft,
+    Pairing.ofSplitNormalizedPairEquiv_inr_crossingCount_eq e P Q hright]
 
 /-- The contraction product of a pairing reassembled from two independent parts splits into
 two local contraction products when the corresponding normalized pair values agree.
