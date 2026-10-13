@@ -508,6 +508,95 @@ theorem pointGroup_lattice_gram_invariant
     ((g : V ≃ₗᵢ[ℝ] V) (b j : V)) = inner ℝ (b i : V) (b j : V)
   exact LinearIsometryEquiv.inner_map_map (g : V ≃ₗᵢ[ℝ] V) (b i : V) (b j : V)
 
+
+/-- A change of vector generators by a real matrix changes their Gram matrix by
+matrix congruence. Kept local to the crystallographic metric argument. -/
+private theorem gram_matrix_congruence
+    {ι : Type*} [Fintype ι]
+    (v : ι → V) (A : Matrix ι ι ℝ) :
+    Matrix.gram ℝ (fun j => ∑ i, A i j • v i) =
+      A.transpose * Matrix.gram ℝ v * A := by
+  ext i j
+  simp only [Matrix.gram_apply, Matrix.mul_apply, Matrix.transpose_apply]
+  calc
+    inner ℝ (∑ k, A k i • v k) (∑ l, A l j • v l) =
+        ∑ k, ∑ l, A k i * inner ℝ (v k) (v l) * A l j := by
+      suffices h :
+          (∑ l, A l j * ∑ k, A k i * inner ℝ (v k) (v l)) =
+            ∑ k, ∑ l, A k i * (A l j * inner ℝ (v k) (v l)) by
+        simpa [inner_sum, sum_inner, inner_smul_left, inner_smul_right,
+          mul_comm, mul_left_comm] using h
+      rw [Finset.sum_comm]
+      simp only [Finset.mul_sum, mul_left_comm]
+    _ = ∑ l, (∑ k, A k i * inner ℝ (v k) (v l)) * A l j := by
+      rw [Finset.sum_comm]
+      simp only [Finset.sum_mul]
+
+/-- In integral coordinates, the metric of a periodic rank-two lattice is fixed by
+the point group: the coordinate matrix acts by `Aᵀ G A = G`.
+
+The matrix `A` is assembled from the `ℤ`-basis coordinates of the canonical
+lattice action. This introduces no new lattice or point-group representation. -/
+theorem pointGroup_lattice_gram_congruence
+    [FiniteDimensional ℝ V]
+    (X : AtomicConfiguration E Species) (hX : X.Periodic (V := V))
+    (g : X.pointGroup (V := V))
+    (b : Module.Basis (Fin 2) ℤ
+      (AddSubgroup.toIntSubmodule (X.translationSubgroup (V := V)))) :
+    let A : Matrix (Fin 2) (Fin 2) ℤ :=
+      Matrix.of fun i j => (b.repr (X.pointGroupLatticeEquiv (V := V) g (b j))) i
+    let G : Matrix (Fin 2) (Fin 2) ℝ :=
+      Matrix.gram ℝ (fun i => ((b i :
+        AddSubgroup.toIntSubmodule (X.translationSubgroup (V := V))) : V))
+    (A.map (Int.cast : ℤ → ℝ)).transpose * G * (A.map (Int.cast : ℤ → ℝ)) = G := by
+  let L : Submodule ℤ V :=
+    AddSubgroup.toIntSubmodule (X.translationSubgroup (V := V))
+  letI : DiscreteTopology L := hX.discreteTranslations
+  letI : IsZLattice ℝ L := hX.isZLattice
+  let rb : Module.Basis (Fin 2) ℝ V := b.ofZLatticeBasis ℝ L
+  let T : V →ₗ[ℝ] V := (g : V ≃ₗᵢ[ℝ] V).toLinearEquiv.toLinearMap
+  let A : Matrix (Fin 2) (Fin 2) ℤ :=
+    Matrix.of fun i j => (b.repr (X.pointGroupLatticeEquiv (V := V) g (b j))) i
+  let Ar : Matrix (Fin 2) (Fin 2) ℝ := A.map (Int.cast : ℤ → ℝ)
+  have hmap (j : Fin 2) :
+      T (rb j) = ((X.pointGroupLatticeEquiv (V := V) g (b j) : L) : V) := by
+    change (g : V ≃ₗᵢ[ℝ] V) (rb j) = _
+    rw [show rb j = ((b j : L) : V) from b.ofZLatticeBasis_apply ℝ L j]
+    rfl
+  have hAr : Ar = LinearMap.toMatrix rb rb T := by
+    ext i j
+    change ((b.repr (X.pointGroupLatticeEquiv (V := V) g (b j)) i : ℤ) : ℝ) =
+      (LinearMap.toMatrix rb rb T) i j
+    rw [LinearMap.toMatrix_apply, hmap]
+    exact (b.ofZLatticeBasis_repr_apply ℝ L
+      (X.pointGroupLatticeEquiv (V := V) g (b j)) i).symm
+  have hcomb (j : Fin 2) :
+      T (rb j) = ∑ i, Ar i j • rb i := by
+    simpa only [hAr, LinearMap.toMatrix_apply] using
+      (rb.sum_repr (T (rb j))).symm
+  have hGram : Matrix.gram ℝ (fun i => T (rb i)) =
+      Matrix.gram ℝ (fun i => rb i) := by
+    ext i j
+    change inner ℝ ((g : V ≃ₗᵢ[ℝ] V) (rb i))
+      ((g : V ≃ₗᵢ[ℝ] V) (rb j)) = inner ℝ (rb i) (rb j)
+    exact LinearIsometryEquiv.inner_map_map (g : V ≃ₗᵢ[ℝ] V) (rb i) (rb j)
+  have hb : (fun i : Fin 2 => ((b i : L) : V)) = (fun i => rb i) := by
+    funext i
+    exact (b.ofZLatticeBasis_apply ℝ L i).symm
+  change Ar.transpose * Matrix.gram ℝ (fun i => ((b i : L) : V)) * Ar =
+    Matrix.gram ℝ (fun i => ((b i : L) : V))
+  rw [hb]
+  calc
+    Ar.transpose * Matrix.gram ℝ (fun i => rb i) * Ar =
+        Matrix.gram ℝ (fun j => ∑ i, Ar i j • rb i) :=
+      (gram_matrix_congruence (V := V) (fun i => rb i) Ar).symm
+    _ = Matrix.gram ℝ (fun j => T (rb j)) := by
+      congr 1
+      funext j
+      exact (hcomb j).symm
+    _ = Matrix.gram ℝ (fun i => rb i) := hGram
+
+
 end
 
 end Planar
