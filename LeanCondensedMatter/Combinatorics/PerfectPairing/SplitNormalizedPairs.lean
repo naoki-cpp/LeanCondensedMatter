@@ -278,7 +278,7 @@ theorem Pairing.ofSplitInterSectorCrossingCount_mod_two_eq_pairEndpointInversion
     intro p _
     rw [← Finset.sum_add_distrib]
   rw [hsum]
-  exact (Nat.ModEq.sum (n := 2)
+  simpa only [Nat.ModEq] using (Nat.ModEq.sum (n := 2)
     (s := (Finset.univ : Finset P.NormalizedPair))
     (f := fun p => ∑ q : Q.NormalizedPair,
       ((if Crosses (emb (Sum.inl p)).1 (emb (Sum.inr q)).1 then 1 else 0) +
@@ -293,7 +293,7 @@ theorem Pairing.ofSplitInterSectorCrossingCount_mod_two_eq_pairEndpointInversion
           (if Crosses (emb (Sum.inr q)).1 (emb (Sum.inl p)).1 then 1 else 0))
       (g := fun q => pairEndpointInversionCount
         (emb (Sum.inl p)).1 (emb (Sum.inr q)).1)
-      (fun q _ => hpoint p q))).eq
+      (fun q _ => hpoint p q)))
 
 /-- Every crossing in a split pairing lies either within one sector or
 between the two sectors. No monotonicity of the splitting is required. -/
