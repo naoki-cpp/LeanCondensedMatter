@@ -807,6 +807,7 @@ theorem externalInsertionOfSlotSplit_prod_mixedPairContractions_eq_left_mul_flat
   exact externalInsertionMixedTimeOrderedAtomicLegPosition_zero_strictMono_of_strictAnti
     (σ ∘ f) htime
 
+omit [LinearOrder Mode] [Fintype Mode] in
 /-- On a strictly antitone vacuum chamber, the actual mixed-time fermionic
 crossing weight splits into the external mixed-order weight, the ordered vacuum
 weight, and the sign of the inter-sector atomic-position inversions.
