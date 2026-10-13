@@ -21,6 +21,8 @@ open scoped BigOperators InnerProductSpace
 noncomputable section
 variable {N : ℕ} [NeZero N]
 
+local instance : DecidableEq (ZMod N) := Classical.decEq _
+
 /-- The normalized Fourier fields obey the mixed bosonic CCR on the algebraic domain. -/
 theorem comm_fourier_annihilate_create (q r : ZMod N) :
     ScalarExchange.zetaCommutator (1 : ℂ)
@@ -37,8 +39,8 @@ private theorem sum_shift {A : Type*} [AddCommMonoid A] (f : ZMod N → A) :
   let e : Equiv.Perm (ZMod N) :=
     { toFun := fun i => i + 1
       invFun := fun i => i - 1
-      left_inv := by intro i; abel
-      right_inv := by intro i; abel }
+      left_inv := by intro i; simp
+      right_inv := by intro i; simp }
   exact Equiv.sum_comp e f
 
 /-- The site quadratic operator is the second quantization of the periodic Laplacian.
@@ -54,11 +56,16 @@ theorem excitationHamiltonian_eq_secondQuantization (J : ℝ) (twiceSpin : ℕ) 
   have hrow (i : ZMod N) :
       (∑ j : ZMod N, oneMagnonLaplacian (J * twiceSpin) (EuclideanSpace.single j 1) i •
         (create i).comp (annihilate j)) =
-      ((J : ℂ) * twiceSpin) • (2 • numberOperator i -
+      ((J : ℂ) * twiceSpin) • ((2 : ℂ) • numberOperator i -
         (create i).comp (annihilate (i - 1)) - (create i).comp (annihilate (i + 1))) := by
-    simp [oneMagnonLaplacian, PiLp.single_apply, mul_sub, sub_smul,
-      Finset.sum_sub_distrib, mul_ite, ite_smul, numberOperator]
-    module
+    apply LinearMap.ext
+    intro ψ
+    apply Finsupp.ext
+    intro n
+    simp [oneMagnonLaplacian, PiLp.single_apply, mul_sub,
+      Finset.sum_sub_distrib, mul_ite, numberOperator,
+      LinearMap.sum_apply, Finset.sum_apply, Finset.mul_sum]
+    ring
   unfold secondQuantization
   simp_rw [hrow]
   simp only [excitationHamiltonian, excitationBond, smul_sub, smul_add,
