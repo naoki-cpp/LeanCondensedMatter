@@ -87,6 +87,7 @@ private theorem angularGreenPauliKernel_eq_spinRotation
     ring
   rw [hangular, polarPauliMatrix_eq_spinRotation]
   simp only [mul_smul_comm, smul_mul_assoc]
+  rfl
 
 /-- The actual full-angle finite-cutoff Born-Dyson Green momentum kernel
 is the spinor conjugate of its radial-axis Pauli K0/K1 kernel. The
