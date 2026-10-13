@@ -21,6 +21,23 @@ semidirect-product decomposition is assumed.
 
 namespace LeanCondensedMatter.Crystal
 
+/-- The full linear-isometry symmetry group of an integral translation lattice.
+Unlike the point group of a labeled atomic configuration, this only depends on
+the lattice and is therefore unaffected by symmetry breaking in the motif. -/
+def latticePointGroup {V : Type*} [NormedAddCommGroup V] [NormedSpace ℝ V]
+    (L : Submodule ℤ V) : Subgroup (V ≃ₗᵢ[ℝ] V) where
+  carrier := {g | ∀ v : V, g v ∈ L ↔ v ∈ L}
+  one_mem' := by
+    intro v
+    rfl
+  mul_mem' := by
+    intro g h hg hh v
+    change g (h v) ∈ L ↔ v ∈ L
+    exact (hg (h v)).trans (hh v)
+  inv_mem' := by
+    intro g hg v
+    simpa using (hg (g⁻¹ v)).symm
+
 namespace AtomicConfiguration
 
 variable {V E Species : Type*}
