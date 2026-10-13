@@ -78,6 +78,19 @@ theorem pointGroup_mem_translationSubgroup_iff (X : AtomicConfiguration E Specie
   have h := X.symmetryLinearPart_mem_translationSubgroup_iff (V := V) s v
   simpa [hs] using h
 
+/-- A configuration point group is a subgroup of the intrinsic symmetry group of
+its derived translation lattice. The reverse inclusion need not hold: a species-labeled
+motif can break lattice rotations or reflections. -/
+theorem pointGroup_le_latticePointGroup (X : AtomicConfiguration E Species) :
+    X.pointGroup (V := V) ≤
+      latticePointGroup (V := V)
+        (AddSubgroup.toIntSubmodule (X.translationSubgroup (V := V))) := by
+  intro g hg
+  change ∀ v : V, g v ∈ X.translationSubgroup (V := V) ↔
+    v ∈ X.translationSubgroup (V := V)
+  intro v
+  exact X.pointGroup_mem_translationSubgroup_iff (V := V) ⟨g, hg⟩ v
+
 /-- A point-group element restricted to the translation lattice as a `ℤ`-linear automorphism. -/
 def pointGroupLatticeEquiv (X : AtomicConfiguration E Species)
     (g : X.pointGroup (V := V)) :
