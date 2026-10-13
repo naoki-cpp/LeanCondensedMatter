@@ -424,7 +424,7 @@ private theorem Pairing.ofSplit_pairEndpointInversionCount_eq_sum_positions
   all_goals simp only [hp, hq, pairEndpointInversionCount, Fin.sum_univ_two,
     Pairing.pairEndpointEquiv_apply, Pairing.pairEndpoint_zero,
     Pairing.pairEndpoint_one]
-  all_goals norm_num [Pairing.pairEndpoint, Fin.sum_univ_two] <;> ac_rfl
+  all_goals ac_rfl
 
 /-- The residual cross-sector crossing parity of a split pairing is exactly
 the parity of all ambient comparisons between positions from its two sides.
@@ -457,7 +457,7 @@ theorem Pairing.ofSplitInterSectorCrossingCount_mod_two_eq_positionInversionCoun
                 e (Sum.inl (P.pairEndpointEquiv x.1)) then 1 else 0 := by
         simp only [Fintype.sum_prod_type]
       _ = _ := by
-        simpa only [Fintype.sum_prod_type] using
+        simpa only [Fintype.sum_prod_type, Equiv.prodCongr_apply] using
           (Equiv.sum_comp
             (Equiv.prodCongr P.pairEndpointEquiv Q.pairEndpointEquiv)
             (fun x : Fin (2 * a) × Fin (2 * b) =>
