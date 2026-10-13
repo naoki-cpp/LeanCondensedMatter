@@ -45,8 +45,8 @@ private noncomputable def binaryBlockShuffle {m n total : ℕ}
   strictMono := by
     intro b
     cases b with
-    | false => simpa only [Equiv.trans_apply] using hleft
-    | true => simpa only [Equiv.trans_apply] using hright
+    | false => simpa [binaryBlockTagEquiv] using hleft
+    | true => simpa [binaryBlockTagEquiv] using hright
 
 private theorem binaryBlockShuffle_orderedBlockInversionCount
     {m n total : ℕ} (e : Fin m ⊕ Fin n ≃ Fin total)
@@ -57,11 +57,19 @@ private theorem binaryBlockShuffle_orderedBlockInversionCount
       ∑ i : Fin m, ∑ j : Fin n,
         if e (Sum.inr j) < e (Sum.inl i) then 1 else 0 := by
   classical
+  let s := binaryBlockShuffle e hleft hright
+  change s.orderedBlockInversionCount binaryBlockOrder = _
+  rw [FamilySlotShuffleTo.orderedBlockInversionCount]
   have hoff : (Finset.univ : Finset Bool).offDiag =
       {(false, true), (true, false)} := by decide
-  simp [FamilySlotShuffleTo.orderedBlockInversionCount,
-    FamilySlotShuffleTo.blockInversionCount,
-    binaryBlockShuffle, binaryBlockTagEquiv, binaryBlockOrder, hoff]
+  rw [hoff]
+  have hfalse : binaryBlockOrder false < binaryBlockOrder true := by decide
+  have htrue : ¬ binaryBlockOrder true < binaryBlockOrder false := by decide
+  simp [hfalse, htrue, Finset.sum_insert, Finset.sum_singleton]
+  rw [FamilySlotShuffleTo.blockInversionCount_of_ne (by decide)]
+  change (∑ i : Fin m, ∑ j : Fin n,
+    if e (Sum.inr j) < e (Sum.inl i) then 1 else 0) = _
+  rfl
 
 /-- For two order-preserving splittings of the same ambient finite positions,
 the sign of the relative permutation is the sum of their respective
