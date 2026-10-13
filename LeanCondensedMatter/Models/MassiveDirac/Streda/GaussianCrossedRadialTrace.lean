@@ -1124,9 +1124,10 @@ private theorem gaussianCrossedRadialFirstHarmonicIntegral_eq_difference
       rw [h]
     _ = _ := by ring
 
-/-- The finite-regulator crossed X trace uses explicit K0/K2 diagonal-current moments and
-all four source-resolved K1 scalar/z moments. The transverse Pauli current is also
-an explicit K0 moment; all Green scalar/x/z components have K0/K1 radial integrals. -/
+/-- The finite-regulator crossed X trace uses K0/K2 diagonal-current moments and
+the K0-K2 recurrence for all four scalar/z crossed-current first harmonics.
+The transverse current and scalar/z Green channels retain K0 moments, while
+the in-plane Green components use the same K0-K2 reduction. -/
 theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_x_eq_harmonic_components
     (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ)
     (hbroadening : broadening ≠ 0) (hdisorder : 0 ≤ disorderStrength)
@@ -1290,9 +1291,9 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_x_eq_harm
     (finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_x_eq_explicit_pauli_components
       v m probeEnergy broadening disorderStrength hbar pMax radius hbroadening hdisorder hpMax)
 
-/-- The finite-regulator crossed Psi trace uses explicit K0/K2 diagonal-current moments and
-all four source-resolved K1 scalar/z moments, the transverse K0 current, and the
-Green scalar/x/z K0/K1 moments. The conjugate partner and finite regulators remain. -/
+/-- The finite-regulator crossed Psi trace uses explicit K0/K2 diagonal-current
+moments and K0-K2 reductions of all first-harmonic current and Green terms.
+The transverse K0 current, conjugate partner, and finite regulators remain. -/
 theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_psi_eq_harmonic_components
     (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ)
     (hbroadening : broadening ≠ 0) (hdisorder : 0 ≤ disorderStrength)
