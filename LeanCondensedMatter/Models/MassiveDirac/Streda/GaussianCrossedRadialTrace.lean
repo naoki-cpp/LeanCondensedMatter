@@ -1094,6 +1094,36 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_psi_eq_ex
   simp [InternalSpace.pauliZConjugateVector, InternalSpace.dotProduct_pauliAxis,
     InternalSpace.pauliCross, cross_apply, InternalSpace.pauliAxisComponent, hoffdiag]; ring
 
+/-- Local normalized radial Fourier recurrence consumed by the X and Psi trace reductions.
+The public upstream identity retains its division-free normalization. -/
+private theorem gaussianCrossedRadialFirstHarmonicIntegral_eq_difference
+    (hbar pMax radius : ℝ) (f : ℝ → ℂ) :
+    (∫ p in (0 : ℝ)..pMax,
+      (p : ℂ) *
+        (polarFourierFirstCosineAngularKernel (p * radius / hbar) * f p)) =
+      ((Complex.I * (((radius / hbar : ℝ) : ℂ)) / 2) *
+        ∫ p in (0 : ℝ)..pMax,
+          (p : ℂ) ^ 2 *
+            ((polarFourierZerothAngularKernel (p * radius / hbar) -
+                polarFourierSecondCosineAngularKernel (p * radius / hbar)) * f p)) := by
+  have h := integral_polarFourierFirstCosineAngularKernel_two_mul_eq_zeroth_sub_second
+    hbar pMax radius f
+  calc
+    (∫ p in (0 : ℝ)..pMax,
+        (p : ℂ) *
+          (polarFourierFirstCosineAngularKernel (p * radius / hbar) * f p)) =
+        (2 * (∫ p in (0 : ℝ)..pMax,
+          (p : ℂ) *
+            (polarFourierFirstCosineAngularKernel (p * radius / hbar) * f p))) / 2 := by
+      ring
+    _ = (Complex.I * (((radius / hbar : ℝ) : ℂ)) *
+        (∫ p in (0 : ℝ)..pMax,
+          (p : ℂ) ^ 2 *
+            ((polarFourierZerothAngularKernel (p * radius / hbar) -
+                polarFourierSecondCosineAngularKernel (p * radius / hbar)) * f p))) / 2 := by
+      rw [h]
+    _ = _ := by ring
+
 /-- The finite-regulator crossed X trace uses explicit K0/K2 diagonal-current moments and
 all four source-resolved K1 scalar/z moments. The transverse Pauli current is also
 an explicit K0 moment; all Green scalar/x/z components have K0/K1 radial integrals. -/
@@ -1254,33 +1284,7 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_x_eq_harm
   dsimp only [finiteCutoffContinuumBornDysonRadialGreenScalarKernel] at hGreenRscalar
   dsimp only [finiteCutoffContinuumBornDysonRadialGreenPauliKernel] at hGreenRx hGreenRz hGreenAx hGreenAz
   dsimp only [finiteCutoffContinuumBornDysonRadialGreenScalarKernel] at hGreenAscalar
-  have hK1 (f : ℝ → ℂ) :
-      (∫ p in (0 : ℝ)..pMax,
-        (p : ℂ) *
-          (polarFourierFirstCosineAngularKernel (p * radius / hbar) * f p)) =
-        ((Complex.I * (((radius / hbar : ℝ) : ℂ)) / 2) *
-          ∫ p in (0 : ℝ)..pMax,
-            (p : ℂ) ^ 2 *
-              ((polarFourierZerothAngularKernel (p * radius / hbar) -
-                  polarFourierSecondCosineAngularKernel (p * radius / hbar)) * f p)) := by
-    have h := integral_polarFourierFirstCosineAngularKernel_two_mul_eq_zeroth_sub_second
-      hbar pMax radius f
-    calc
-      (∫ p in (0 : ℝ)..pMax,
-          (p : ℂ) *
-            (polarFourierFirstCosineAngularKernel (p * radius / hbar) * f p)) =
-          (2 * (∫ p in (0 : ℝ)..pMax,
-            (p : ℂ) *
-              (polarFourierFirstCosineAngularKernel (p * radius / hbar) * f p))) / 2 := by
-        ring
-      _ = (Complex.I * (((radius / hbar : ℝ) : ℂ)) *
-          (∫ p in (0 : ℝ)..pMax,
-            (p : ℂ) ^ 2 *
-              ((polarFourierZerothAngularKernel (p * radius / hbar) -
-                  polarFourierSecondCosineAngularKernel (p * radius / hbar)) * f p))) / 2 := by
-        rw [h]
-      _ = _ := by ring
-  rw [hK1] at hscalarX hscalarY hzX hzY hGreenRx hGreenAx
+  rw [gaussianCrossedRadialFirstHarmonicIntegral_eq_difference hbar pMax radius] at hscalarX hscalarY hzX hzY hGreenRx hGreenAx
   simpa only [hxx, hyy, hscalarX, hscalarY, hzX, hzY, htransverse,
     hGreenRscalar, hGreenRx, hGreenRz, hGreenAscalar, hGreenAx, hGreenAz] using
     (finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_x_eq_explicit_pauli_components
@@ -1421,33 +1425,7 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_psi_eq_ha
   simp only [ite_true] at htransverse
   dsimp only [finiteCutoffContinuumBornDysonRadialGreenScalarKernel] at hGreenRscalar
   dsimp only [finiteCutoffContinuumBornDysonRadialGreenPauliKernel] at hGreenRx hGreenRz
-  have hK1 (f : ℝ → ℂ) :
-      (∫ p in (0 : ℝ)..pMax,
-        (p : ℂ) *
-          (polarFourierFirstCosineAngularKernel (p * radius / hbar) * f p)) =
-        ((Complex.I * (((radius / hbar : ℝ) : ℂ)) / 2) *
-          ∫ p in (0 : ℝ)..pMax,
-            (p : ℂ) ^ 2 *
-              ((polarFourierZerothAngularKernel (p * radius / hbar) -
-                  polarFourierSecondCosineAngularKernel (p * radius / hbar)) * f p)) := by
-    have h := integral_polarFourierFirstCosineAngularKernel_two_mul_eq_zeroth_sub_second
-      hbar pMax radius f
-    calc
-      (∫ p in (0 : ℝ)..pMax,
-          (p : ℂ) *
-            (polarFourierFirstCosineAngularKernel (p * radius / hbar) * f p)) =
-          (2 * (∫ p in (0 : ℝ)..pMax,
-            (p : ℂ) *
-              (polarFourierFirstCosineAngularKernel (p * radius / hbar) * f p))) / 2 := by
-        ring
-      _ = (Complex.I * (((radius / hbar : ℝ) : ℂ)) *
-          (∫ p in (0 : ℝ)..pMax,
-            (p : ℂ) ^ 2 *
-              ((polarFourierZerothAngularKernel (p * radius / hbar) -
-                  polarFourierSecondCosineAngularKernel (p * radius / hbar)) * f p))) / 2 := by
-        rw [h]
-      _ = _ := by ring
-  rw [hK1] at hscalarX hscalarY hzX hzY hGreenRx
+  rw [gaussianCrossedRadialFirstHarmonicIntegral_eq_difference hbar pMax radius] at hscalarX hscalarY hzX hzY hGreenRx
   simpa only [hxx, hyy, hscalarX, hscalarY, hzX, hzY, htransverse,
     hGreenRscalar, hGreenRx, hGreenRz] using
     (finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_psi_eq_explicit_pauli_components
