@@ -36,7 +36,6 @@ def latticePointGroup {V : Type*} [NormedAddCommGroup V] [NormedSpace ℝ V]
     exact (hg (h v)).trans (hh v)
   inv_mem' := by
     intro g hg v
-    change g⁻¹ v ∈ L ↔ v ∈ L
     simpa using (hg (g⁻¹ v)).symm
 
 namespace AtomicConfiguration
