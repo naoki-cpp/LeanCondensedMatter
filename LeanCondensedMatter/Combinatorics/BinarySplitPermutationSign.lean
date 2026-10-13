@@ -64,7 +64,9 @@ private theorem binaryBlockShuffle_orderedBlockInversionCount
       s.blockInversionCount false true := by
     unfold FamilySlotShuffleTo.orderedBlockInversionCount
     rw [hoff]
-    simp [binaryBlockOrder]
+    have h01 : binaryBlockOrder false < binaryBlockOrder true := by decide
+    have h10 : ¬ binaryBlockOrder true < binaryBlockOrder false := by decide
+    simp only [h01, h10, ite_true, ite_false, add_zero]
   change s.orderedBlockInversionCount binaryBlockOrder = _
   rw [hbool, FamilySlotShuffleTo.blockInversionCount_of_ne s (by decide)]
   rfl
