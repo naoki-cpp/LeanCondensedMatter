@@ -138,11 +138,18 @@ private theorem im_inner_self_finiteCutoffContinuumBornGreenIntegralOfRegulator_
     change (L (∫ p in (0 : ℝ)..pMax,
       continuumBornRadialGreenKernelOfRegulator
         v m probeEnergy regulator p)).im = _
-    rw [← hmap]
-    rw [intervalIntegral.intervalIntegral_im hLint]
-    apply intervalIntegral.integral_congr
-    intro p _
-    simp [L, eval]
+    calc
+      _ = (∫ p in (0 : ℝ)..pMax,
+          L (continuumBornRadialGreenKernelOfRegulator
+            v m probeEnergy regulator p)).im := congrArg Complex.im hmap.symm
+      _ = ∫ p in (0 : ℝ)..pMax,
+          (L (continuumBornRadialGreenKernelOfRegulator
+            v m probeEnergy regulator p)).im :=
+            (intervalIntegral.intervalIntegral_im hLint).symm
+      _ = _ := by
+        apply intervalIntegral.integral_congr
+        intro p _
+        simp [L, eval]
   rw [hquad, ← intervalIntegral.integral_const_mul]
   apply intervalIntegral.integral_congr
   intro p _
