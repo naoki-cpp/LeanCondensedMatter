@@ -1,4 +1,4 @@
-import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentData
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.MixedOrderData
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.TimedField
 
 set_option linter.style.header false
@@ -34,9 +34,9 @@ theorem ExternalInsertionWickDiagram.externalInsertionMixedTimeOrderedAtomicPair
         (d.componentMixedPosition externalTime σ B a)
         (d.componentMixedPosition externalTime σ B b) =
       externalInsertionMixedTimeOrderedAtomicPairValue ε β
-        (d.componentWickDiagram B).externalLabel
+        (d.componentOrderedDiagram B).externalLabel
         (d.componentExternalTime externalTime B)
-        (d.componentWickDiagram B).vertexLabelSequence
+        (d.componentOrderedDiagram B).vertexLabelSequence
         (d.componentInteractionTime σ B) a b := by
   let fExternal : Fin (2 * d.externalPairCount B) → Fin (2 * E) :=
     fun e => (d.externalSectorOrderIso B e).1
@@ -45,12 +45,12 @@ theorem ExternalInsertionWickDiagram.externalInsertionMixedTimeOrderedAtomicPair
       (B : Finset (ExternalInsertionVertex E (Finset.univ : Finset (Fin n))))).orderIsoOfFin
         rfl v).1
   have hExternalLabel :
-      d.externalLabel ∘ fExternal = (d.componentWickDiagram B).externalLabel := rfl
+      d.externalLabel ∘ fExternal = (d.componentOrderedDiagram B).externalLabel := rfl
   have hExternalTime :
       externalTime ∘ fExternal = d.componentExternalTime externalTime B := rfl
   have hVertexLabel :
       d.vertexLabelSequence ∘ fInteraction =
-        (d.componentWickDiagram B).vertexLabelSequence := rfl
+        (d.componentOrderedDiagram B).vertexLabelSequence := rfl
   have hInteractionTime :
       σ ∘ fInteraction = d.componentInteractionTime σ B := rfl
   have h :=

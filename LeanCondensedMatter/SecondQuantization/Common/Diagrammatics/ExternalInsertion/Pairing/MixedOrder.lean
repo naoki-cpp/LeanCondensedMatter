@@ -1,4 +1,4 @@
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Core.Diagram
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Core.Ordered
 import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedOrderSignature
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Transport
 
@@ -59,6 +59,32 @@ theorem ExternalInsertionDiagram.mixedTimeAmbientPositionEquiv_partner {E n : �
   rw [PairingOn.transport_partner]
   exact (externalInsertionMixedTimeAmbientPositionEquiv externalTime σ).apply_symm_apply _
 
+
+/-- The mixed-order partner of the position selected by a canonical leg is the mixed position of
+that leg's diagram partner. -/
+theorem ExternalInsertionDiagram.pairingInMixedOrder_partner_legPosition {E n : ℕ}
+    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E n
+      (Finset.univ : Finset (Fin n)))
+    (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ)
+    (leg : OrderedExternalInsertionLeg E n) :
+    (d.pairingInMixedOrder externalTime σ).partner
+        (externalInsertionMixedTimeOrderedAtomicLegPosition externalTime σ leg) =
+      externalInsertionMixedTimeOrderedAtomicLegPosition externalTime σ
+        (d.atomicLegPartner leg) := by
+  have hpos :
+      externalInsertionMixedTimeAmbientPositionEquiv externalTime σ
+          (externalInsertionMixedTimeOrderedAtomicLegPosition externalTime σ leg) =
+        (externalInsertionLegEquiv E (Finset.univ : Finset (Fin n))).symm leg := by
+    apply (externalInsertionLegEquiv E (Finset.univ : Finset (Fin n))).injective
+    rw [externalInsertionLegEquiv_mixedTimeAmbientPositionEquiv,
+      externalInsertionMixedTimeOrderedAtomicLegEquiv_position,
+      Equiv.apply_symm_apply]
+  apply (externalInsertionMixedTimeOrderedAtomicLegEquiv externalTime σ).injective
+  rw [externalInsertionMixedTimeOrderedAtomicLegEquiv_position,
+    ← externalInsertionLegEquiv_mixedTimeAmbientPositionEquiv,
+    d.mixedTimeAmbientPositionEquiv_partner,
+    hpos,
+    ExternalInsertionDiagram.atomicLegPartner]
 
 end Common
 end SecondQuantization

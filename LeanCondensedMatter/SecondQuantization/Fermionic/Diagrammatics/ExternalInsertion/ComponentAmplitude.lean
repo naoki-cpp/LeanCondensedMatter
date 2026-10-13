@@ -24,12 +24,12 @@ open scoped BigOperators
 
 variable {Mode : Type*}
 
-private theorem ExternalInsertionWickDiagram.componentWickDiagram_vertexWeight_eq_restrictComponent
+private theorem ExternalInsertionWickDiagram.componentOrderedDiagram_vertexWeight_eq_restrictComponent
     {E n : ℕ}
     (d : ExternalInsertionWickDiagram Mode E n)
     (g : QuarticVertexLabel Mode → ℂ)
     (B : d.vertexGraph.componentPartition.parts) :
-    (d.componentWickDiagram B).vertexWeight g =
+    (d.componentOrderedDiagram B).vertexWeight g =
       (d.restrictComponent B).vertexWeight g := by
   classical
   let T :=
@@ -69,7 +69,7 @@ private theorem ExternalInsertionWickDiagram.mixedAtomicOrderSign_mul_mixedPairi
           externalInsertionMixedAtomicOrderSign
               (d.componentExternalTime externalTime B)
               (d.componentInteractionTime σ B) *
-            (d.componentWickDiagram B).mixedPairingValue ε β
+            ExternalInsertionWickDiagram.mixedPairingValue (d.componentOrderedDiagram B) ε β
               (d.componentExternalTime externalTime B)
               (d.componentInteractionTime σ B) := by
   classical
@@ -78,7 +78,7 @@ private theorem ExternalInsertionWickDiagram.mixedAtomicOrderSign_mul_mixedPairi
       (d.componentExternalTime externalTime B)
       (d.componentInteractionTime σ B)
   let localValue : d.vertexGraph.componentPartition.parts → ℂ := fun B =>
-    (d.componentWickDiagram B).mixedPairingValue ε β
+    ExternalInsertionWickDiagram.mixedPairingValue (d.componentOrderedDiagram B) ε β
       (d.componentExternalTime externalTime B)
       (d.componentInteractionTime σ B)
   let relativeSign : ℂ :=
@@ -133,18 +133,18 @@ theorem ExternalInsertionWickDiagram.fixedTimeAmplitude_eq_componentExternalOrde
     d.fixedTimeAmplitude ε β g externalTime σ =
       componentExternalOrderSign d blockOrder *
         ∏ B : d.vertexGraph.componentPartition.parts,
-          (d.componentWickDiagram B).fixedTimeAmplitude ε β g
+          ExternalInsertionWickDiagram.fixedTimeAmplitude (d.componentOrderedDiagram B) ε β g
             (d.componentExternalTime externalTime B)
             (d.componentInteractionTime σ B) := by
   classical
   have hvertex :
       d.vertexWeight g =
         ∏ B : d.vertexGraph.componentPartition.parts,
-          (d.componentWickDiagram B).vertexWeight g := by
+          (d.componentOrderedDiagram B).vertexWeight g := by
     rw [d.vertexWeight_eq_prod_components g]
     apply Finset.prod_congr rfl
     intro B _
-    exact (d.componentWickDiagram_vertexWeight_eq_restrictComponent g B).symm
+    exact (d.componentOrderedDiagram_vertexWeight_eq_restrictComponent g B).symm
   have horderPairing :=
     d.mixedAtomicOrderSign_mul_mixedPairingValue_eq_components
       ε β externalTime σ blockOrder
@@ -156,12 +156,12 @@ theorem ExternalInsertionWickDiagram.fixedTimeAmplitude_eq_componentExternalOrde
       ring
     _ = componentExternalOrderSign d blockOrder *
           ((∏ B : d.vertexGraph.componentPartition.parts,
-              (d.componentWickDiagram B).vertexWeight g) *
+              (d.componentOrderedDiagram B).vertexWeight g) *
             ∏ B : d.vertexGraph.componentPartition.parts,
               externalInsertionMixedAtomicOrderSign
                   (d.componentExternalTime externalTime B)
                   (d.componentInteractionTime σ B) *
-                (d.componentWickDiagram B).mixedPairingValue ε β
+                ExternalInsertionWickDiagram.mixedPairingValue (d.componentOrderedDiagram B) ε β
                   (d.componentExternalTime externalTime B)
                   (d.componentInteractionTime σ B)) := by
       rw [hvertex, horderPairing]
@@ -185,7 +185,7 @@ theorem ExternalInsertionWickDiagram.dysonFixedTimeAmplitude_eq_componentExterna
     d.dysonFixedTimeAmplitude ε β g externalTime σ =
       componentExternalOrderSign d blockOrder *
         ∏ B : d.vertexGraph.componentPartition.parts,
-          (d.componentWickDiagram B).dysonFixedTimeAmplitude ε β g
+          ExternalInsertionWickDiagram.dysonFixedTimeAmplitude (d.componentOrderedDiagram B) ε β g
             (d.componentExternalTime externalTime B)
             (d.componentInteractionTime σ B) := by
   classical

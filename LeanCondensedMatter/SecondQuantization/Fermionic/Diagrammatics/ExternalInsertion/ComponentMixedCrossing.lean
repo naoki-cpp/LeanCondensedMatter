@@ -1,4 +1,5 @@
-import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentData
+import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.Diagram
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.MixedOrderData
 import LeanCondensedMatter.Combinatorics.PerfectPairing.ComponentCrossing
 
 set_option linter.style.header false
@@ -38,7 +39,7 @@ noncomputable def ExternalInsertionWickDiagram.componentMixedPositionShuffle
   slotEquiv := d.componentMixedPositionEquiv externalTime σ
   strictMono := fun B => by
     intro a b hab
-    simpa only [ExternalInsertionWickDiagram.componentMixedPositionEquiv_apply] using
+    simpa only [Common.ExternalInsertionDiagram.componentMixedPositionEquiv_apply] using
       d.componentMixedPosition_strictMono externalTime σ B hab
 
 @[simp]
@@ -77,7 +78,7 @@ theorem ExternalInsertionWickDiagram.mixedInterComponentCrossingCount_mod_two_eq
     (d.pairingInMixedOrder externalTime σ)
     (d.componentMixedPairEquiv externalTime σ)
     (fun B =>
-      ((d.componentWickDiagram B).pairingInMixedOrder
+      ((d.componentOrderedDiagram B).pairingInMixedOrder
         (d.componentExternalTime externalTime B)
         (d.componentInteractionTime σ B)).pairEndpointEquiv)
     (d.componentMixedPositionShuffle externalTime σ)
