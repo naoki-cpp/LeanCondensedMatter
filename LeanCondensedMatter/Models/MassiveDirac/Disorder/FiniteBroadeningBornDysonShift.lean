@@ -278,40 +278,22 @@ theorem star_finiteCutoffContinuumBornDysonGreenOperator
   have hopposite := finiteCutoffContinuumBornDysonShiftOperator_mul_greenOperator
     side.opposite v m px py probeEnergy broadening disorderStrength hbar pMax
       hbroadening hdenOpposite
-  have hleft :
-      star (finiteCutoffContinuumBornDysonGreenOperator
-          side v m px py probeEnergy broadening disorderStrength hbar pMax) *
-        finiteCutoffContinuumBornDysonShiftOperator
-          side.opposite v m px py probeEnergy broadening disorderStrength hbar pMax = 1 := by
-    have hstar := congrArg star hside
-    rw [star_mul,
+  let G := finiteCutoffContinuumBornDysonGreenOperator
+    side v m px py probeEnergy broadening disorderStrength hbar pMax
+  let S := finiteCutoffContinuumBornDysonShiftOperator
+    side.opposite v m px py probeEnergy broadening disorderStrength hbar pMax
+  let Gopp := finiteCutoffContinuumBornDysonGreenOperator
+    side.opposite v m px py probeEnergy broadening disorderStrength hbar pMax
+  have hleft : star G * S = 1 := by
+    simpa only [G, S, star_mul, star_one,
       star_finiteCutoffContinuumBornDysonShiftOperator
-        side v m px py probeEnergy broadening disorderStrength hbar pMax hbroadening,
-      star_one] at hstar
-    exact hstar
+        side v m px py probeEnergy broadening disorderStrength hbar pMax hbroadening]
+      using congrArg star hside
+  change S * Gopp = 1 at hopposite
+  change star G = Gopp
   calc
-    star (finiteCutoffContinuumBornDysonGreenOperator
-        side v m px py probeEnergy broadening disorderStrength hbar pMax) =
-        star (finiteCutoffContinuumBornDysonGreenOperator
-          side v m px py probeEnergy broadening disorderStrength hbar pMax) * 1 := by
-      simp
-    _ = star (finiteCutoffContinuumBornDysonGreenOperator
-          side v m px py probeEnergy broadening disorderStrength hbar pMax) *
-        (finiteCutoffContinuumBornDysonShiftOperator
-            side.opposite v m px py probeEnergy broadening disorderStrength hbar pMax *
-          finiteCutoffContinuumBornDysonGreenOperator
-            side.opposite v m px py probeEnergy broadening disorderStrength hbar pMax) := by
-      rw [hopposite]
-    _ = (star (finiteCutoffContinuumBornDysonGreenOperator
-            side v m px py probeEnergy broadening disorderStrength hbar pMax) *
-          finiteCutoffContinuumBornDysonShiftOperator
-            side.opposite v m px py probeEnergy broadening disorderStrength hbar pMax) *
-        finiteCutoffContinuumBornDysonGreenOperator
-          side.opposite v m px py probeEnergy broadening disorderStrength hbar pMax := by
-      rw [mul_assoc]
-    _ = finiteCutoffContinuumBornDysonGreenOperator
-        side.opposite v m px py probeEnergy broadening disorderStrength hbar pMax := by
-      rw [hleft, one_mul]
+    star G = star G * (S * Gopp) := by rw [hopposite, mul_one]
+    _ = Gopp := by rw [← mul_assoc, hleft, one_mul]
 
 end
 
