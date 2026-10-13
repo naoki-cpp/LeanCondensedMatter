@@ -67,6 +67,7 @@
       "coveragePrefixes": [
         "LeanCondensedMatter.Models.MassiveDirac.Vertex.PauliRung",
         "LeanCondensedMatter.Models.MassiveDirac.Vertex.InPlaneLadder",
+        "LeanCondensedMatter.Models.MassiveDirac.Disorder.ScalarAngularWeights",
         "LeanCondensedMatter.Models.MassiveDirac.Disorder.TransportRate",
         "LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornPropagator",
         "LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertex",
@@ -81,6 +82,12 @@
           "modulePrefixes": [
             "LeanCondensedMatter.Models.MassiveDirac.Vertex.PauliRung",
             "LeanCondensedMatter.Models.MassiveDirac.Vertex.InPlaneLadder"
+          ]
+        },
+        {
+          "id": "disorderScalarAngularWeights",
+          "modulePrefixes": [
+            "LeanCondensedMatter.Models.MassiveDirac.Disorder.ScalarAngularWeights"
           ]
         },
         {
@@ -126,6 +133,7 @@
         {"upstream": "vertexCore", "downstream": "stredaFiniteBroadening"},
         {"upstream": "disorderFiniteBroadening", "downstream": "stredaFiniteBroadening"},
         {"upstream": "stredaFiniteBroadening", "downstream": "conductivityFiniteBroadening"},
+        {"upstream": "disorderScalarAngularWeights", "downstream": "disorderTransportRate"},
         {"upstream": "disorderTransportRate", "downstream": "longitudinalBornRelaxationTime"},
         {"upstream": "longitudinalRelaxationTime", "downstream": "longitudinalBornRelaxationTime"}
       ]
