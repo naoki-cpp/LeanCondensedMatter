@@ -11,6 +11,7 @@ import Mathlib.LinearAlgebra.Trace
 import Mathlib.Analysis.InnerProductSpace.Trace
 import LeanCondensedMatter.Analysis.Matrix.FinTwoCharpoly
 import Mathlib.Analysis.InnerProductSpace.PiL2
+import Mathlib.Analysis.InnerProductSpace.GramMatrix
 
 /-!
 # Classification-facing crystal symmetry
@@ -467,6 +468,45 @@ theorem pointGroup_crystallographic_restriction
   · right; left
     exact X.pointGroup_pow_eq_one_of_toMatrix_pow_eq_one g o.toBasis 2
       (M.sq_eq_one_of_mul_transpose_eq_one_det_neg_one horth hminus)
+
+
+/-- The Gram matrix of a basis of a rank-two periodic translation lattice is positive
+definite. This is the metric input for classifying Bravais lattice shapes. -/
+theorem translation_lattice_gram_posDef
+    [FiniteDimensional ℝ V]
+    (X : AtomicConfiguration E Species) (hX : X.Periodic (V := V))
+    (b : Module.Basis (Fin 2) ℤ
+      (AddSubgroup.toIntSubmodule (X.translationSubgroup (V := V)))) :
+    (Matrix.gram ℝ (fun i => ((b i :
+      AddSubgroup.toIntSubmodule (X.translationSubgroup (V := V))) : V))).PosDef := by
+  let L : Submodule ℤ V :=
+    AddSubgroup.toIntSubmodule (X.translationSubgroup (V := V))
+  letI : DiscreteTopology L := hX.discreteTranslations
+  letI : IsZLattice ℝ L := hX.isZLattice
+  let rb : Module.Basis (Fin 2) ℝ V := b.ofZLatticeBasis ℝ L
+  have hfun : (fun i : Fin 2 => ((b i : L) : V)) =
+      fun i => (b.ofZLatticeBasis ℝ L) i := by
+    funext i
+    exact (b.ofZLatticeBasis_apply ℝ L i).symm
+  rw [hfun]
+  exact Matrix.posDef_gram_of_linearIndependent rb.linearIndependent
+
+/-- Every crystallographic point-group action preserves the Gram matrix of an integral
+translation-lattice basis. This relates lattice symmetries directly to metric data, without
+choosing an orthonormal coordinate system or introducing another lattice structure. -/
+theorem pointGroup_lattice_gram_invariant
+    (X : AtomicConfiguration E Species)
+    (g : X.pointGroup (V := V))
+    (b : Module.Basis (Fin 2) ℤ
+      (AddSubgroup.toIntSubmodule (X.translationSubgroup (V := V)))) :
+    Matrix.gram ℝ (fun i => ((X.pointGroupLatticeEquiv (V := V) g (b i) :
+      AddSubgroup.toIntSubmodule (X.translationSubgroup (V := V))) : V)) =
+      Matrix.gram ℝ (fun i => ((b i :
+        AddSubgroup.toIntSubmodule (X.translationSubgroup (V := V))) : V)) := by
+  ext i j
+  change inner ℝ ((g : V ≃ₗᵢ[ℝ] V) (b i : V))
+    ((g : V ≃ₗᵢ[ℝ] V) (b j : V)) = inner ℝ (b i : V) (b j : V)
+  exact LinearIsometryEquiv.inner_map_map (g : V ≃ₗᵢ[ℝ] V) (b i : V) (b j : V)
 
 end
 
