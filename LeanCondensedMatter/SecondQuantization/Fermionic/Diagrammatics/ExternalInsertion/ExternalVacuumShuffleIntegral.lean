@@ -807,6 +807,60 @@ theorem externalInsertionOfSlotSplit_prod_mixedPairContractions_eq_left_mul_flat
   exact externalInsertionMixedTimeOrderedAtomicLegPosition_zero_strictMono_of_strictAnti
     (σ ∘ f) htime
 
+omit [LinearOrder Mode] [Fintype Mode] in
+/-- On a strictly antitone vacuum chamber, the actual mixed-time fermionic
+crossing weight splits into the external mixed-order weight, the ordered vacuum
+weight, and the sign of the inter-sector atomic-position inversions.
+The left sector is explicitly reordered into standalone mixed-time positions;
+its original flattened position order is not assumed to be preserved. -/
+theorem externalInsertionOfSlotSplit_mixedPairingWeight_eq_positionInversions_mul_of_strictAnti
+    {E n : ℕ} (T : Finset (Fin n))
+    (ext : ExternalInsertionDiagram (ExternalFieldLabel Mode)
+      (QuarticVertexLabel Mode) E n T)
+    (vac : QuarticDiagram (QuarticVertexLabel Mode) n
+      ((Finset.univ : Finset (Fin n)) \ T))
+    (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ) :
+    let S := (Finset.univ : Finset (Fin n)) \ T
+    let order : QuarticVertexOrder S := (S.orderIsoOfFin rfl).toEquiv
+    let f : Fin S.card → Fin n := fun i => (S.orderIsoOfFin rfl i).1
+    let localFixed := externalInsertionLeftMixedToFixedEquiv T externalTime σ
+    let split :=
+      ((Equiv.sumCongr (Equiv.refl (Fin (2 * (2 * T.card + E))))
+        (orderedLegToDiagramLeg S order)).trans
+        (externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T))).trans
+        (externalInsertionMixedTimeAmbientPositionEquiv externalTime σ).symm
+    let mixedSplit :=
+      (Equiv.sumCongr localFixed (Equiv.refl (Fin (2 * (2 * S.card))))).trans split
+    let localPairing : Pairing (2 * T.card + E) := ext.pairing.transport localFixed
+    StrictAnti (σ ∘ f) →
+      ((ExternalInsertionDiagram.ofSlotSplit (Finset.subset_univ T) ext vac).pairingInMixedOrder
+          externalTime σ).weight Common.Statistics.fermion =
+        (Common.Statistics.fermion.zetaInt : ℂ) ^
+          (∑ i : Fin (2 * (2 * T.card + E)),
+            ∑ j : Fin (2 * (2 * S.card)),
+              if mixedSplit (Sum.inr j) < mixedSplit (Sum.inl i) then 1 else 0) *
+          (localPairing.weight Common.Statistics.fermion *
+            (vac.pairingInOrder order).weight Common.Statistics.fermion) := by
+  intro S order f localFixed split mixedSplit localPairing htime
+  have hleft :
+      StrictMono (fun i : Fin (2 * (2 * T.card + E)) =>
+        mixedSplit (Sum.inl i)) :=
+    externalInsertionLeftMixedPosition_split_strictMono T externalTime σ
+  have hright0 :=
+    externalInsertionSlotLegSplitting_right_strictMono_of_localOrder T externalTime σ
+      (externalInsertionMixedTimeOrderedAtomicLegPosition_zero_strictMono_of_strictAnti
+        (σ ∘ f) htime)
+  have hright :
+      StrictMono (fun j : Fin (2 * (2 * S.card)) =>
+        mixedSplit (Sum.inr j)) := by
+    simpa only [mixedSplit, split, Equiv.trans_apply, Equiv.sumCongr_apply,
+      Sum.map_inr, Equiv.refl_apply] using hright0
+  rw [externalInsertionOfSlotSplit_pairingInMixedOrder_eq_ofSplit_mixedExternal
+    T ext vac externalTime σ]
+  exact Common.BlochDeDominicis.Pairing.weight_ofSplit_eq_positionInversions_mul
+    Common.Statistics.fermion mixedSplit
+    localPairing (vac.pairingInOrder order) hleft hright
+
 /-- Summing the binary ordered-simplex shuffles of one arbitrary-external Dyson integrand and
 one fixed-order vacuum diagram gives the product of their independent Dyson contributions. -/
 theorem sum_slotShuffleExternalInsertionDysonIntegral_eq_mul_orderedVacuum
