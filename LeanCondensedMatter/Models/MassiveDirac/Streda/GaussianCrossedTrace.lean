@@ -81,6 +81,70 @@ def gaussianCrossedTraceKernel {R : Type*} [Neg R]
             realSpaceCurrentBlock 1 (-r))
       amplitude + (starRingEnd ℂ) amplitude
 
+/-- The four-matrix trace is bilinear in the two current insertions.
+Rotating these two source currents by opposite plane-vector axes produces a
+constant antisymmetric term and the two traceless second harmonics. This
+algebraic fact applies to both crossed topologies before complex conjugation. -/
+private theorem trace_four_rotated_currents
+    (A B C D G H : Matrix2) (c s : ℝ) :
+    Matrix.trace
+      ((((c : ℂ) • A - (s : ℂ) • B) * G) *
+        ((s : ℂ) • C + (c : ℂ) • D) * H) =
+      (c : ℂ) ^ 2 * Matrix.trace (A * G * D * H) -
+        (s : ℂ) ^ 2 * Matrix.trace (B * G * C * H) +
+        ((c : ℂ) * (s : ℂ)) *
+          (Matrix.trace (A * G * C * H) -
+            Matrix.trace (B * G * D * H)) := by
+  simp [Matrix.trace, Matrix.mul_apply, Fin.sum_univ_two,
+    Matrix.add_apply, Matrix.sub_apply, Matrix.smul_apply]
+  ring
+
+/-- The four-current tensor values that enter a rotated crossed source pair.
+In the `Psi` branch the Hermitian-conjugate trace is included exactly as in
+the canonical crossed topology, so the rotation coefficients must be real. -/
+theorem gaussianCrossedTraceKernel_rotated_sources
+    {R : Type*} [Neg R] (diagram : GaussianCrossedDiagram)
+    (greenRetarded greenAdvanced : R → Matrix2)
+    (current : Fin 2 → R → Matrix2) (r : R) (c s : ℝ) :
+    gaussianCrossedTraceKernel diagram greenRetarded greenAdvanced
+        (fun axis ρ =>
+          if axis = 0 then
+            (c : ℂ) • current 0 ρ - (s : ℂ) • current 1 ρ
+          else
+            (s : ℂ) • current 0 ρ + (c : ℂ) • current 1 ρ) r =
+      (c : ℂ) ^ 2 *
+        gaussianCrossedTraceKernel diagram greenRetarded greenAdvanced current r -
+      (s : ℂ) ^ 2 *
+        gaussianCrossedTraceKernel diagram greenRetarded greenAdvanced
+          (fun axis ρ => if axis = 0 then current 1 ρ else current 0 ρ) r +
+      (c : ℂ) * (s : ℂ) *
+        (gaussianCrossedTraceKernel diagram greenRetarded greenAdvanced
+            (fun _ ρ => current 0 ρ) r -
+          gaussianCrossedTraceKernel diagram greenRetarded greenAdvanced
+            (fun _ ρ => current 1 ρ) r) := by
+  cases diagram with
+  | x =>
+      simp only [gaussianCrossedTraceKernel, ↓reduceIte]
+      exact trace_four_rotated_currents
+        (current 0 r) (current 1 r) (current 0 r) (current 1 r)
+        (greenRetarded (-r)) (greenAdvanced (-r)) c s
+  | psi =>
+      have h10 : (1 : Fin 2) ≠ 0 := by decide
+      have hamplitude := trace_four_rotated_currents
+        (current 0 r) (current 1 r)
+        (current 0 (-r)) (current 1 (-r))
+        (greenRetarded (-r) * greenRetarded r) (1 : Matrix2) c s
+      simp only [Matrix.mul_assoc, Matrix.mul_one] at hamplitude
+      have hconj := congrArg (starRingEnd ℂ) hamplitude
+      simp only [map_add, map_sub, map_mul, map_pow] at hconj
+      have hc : (starRingEnd ℂ) (c : ℂ) = (c : ℂ) := by simp
+      have hs : (starRingEnd ℂ) (s : ℂ) = (s : ℂ) := by simp
+      rw [hc, hs] at hconj
+      simp only [gaussianCrossedTraceKernel, ↓reduceIte,
+        ite_eq_right h10, Matrix.mul_assoc]
+      rw [hconj, hamplitude]
+      ring
+
 /-- The trace-level `Psi` kernel is real by construction of its Hermitian-conjugate pair. -/
 @[simp] theorem gaussianCrossedTraceKernel_psi_im {R : Type*} [Neg R]
     (greenRetarded greenAdvanced : R → Matrix2)
