@@ -30,7 +30,7 @@ open QuantumTheory.LinearResponse QuantumTheory.Transport
 noncomputable section
 
 variable {Site Ω ι : Type*}
-variable [LinearOrder Site] [Fintype Site] [Fintype Ω]
+variable [Fintype Site] [Fintype Ω]
 
 /-- Connected product of two supplied bounded current insertions in the
 normalized pure-point state of one exact disorder configuration. -/
@@ -168,7 +168,6 @@ theorem finiteDisorderAveragedConnectedCurrentCorrelation_eq_fourLegAverage
             rw [Finset.sum_comm]
             apply Finset.sum_congr rfl
             intro a _
-            rw [Finset.mul_sum]
             apply Finset.sum_congr rfl
             intro ω _
             ring
