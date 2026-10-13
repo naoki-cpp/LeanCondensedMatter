@@ -20,6 +20,8 @@ exchange identities. Finite-product peeling built from these relations lives in
 
 namespace ScalarExchange
 
+open scoped BigOperators
+
 /-- The fixed-sign bracket `[A,B]_ζ = A B - ζ B A` in an associative complex algebra. -/
 noncomputable def zetaCommutator {A : Type*} [Ring A] [Algebra ℂ A]
     (ζ : ℂ) (a b : A) : A :=
@@ -60,7 +62,7 @@ theorem zetaCommutator_sum_sum {A ι κ : Type*} [Ring A] [Algebra ℂ A]
     (ζ : ℂ) (s : Finset ι) (t : Finset κ) (a : ι → A) (b : κ → A) :
     zetaCommutator ζ (∑ i ∈ s, a i) (∑ j ∈ t, b j) =
       ∑ i ∈ s, ∑ j ∈ t, zetaCommutator ζ (a i) (b j) := by
-  have hs : (∑ j ∈ t, ∑ i ∈ s, b j * a i) = ∑ i ∈ s, ∑ j ∈ t, b j * a i :=
+  have hs : (∑ j ∈ t, ∑ i ∈ s, a i * b j) = ∑ i ∈ s, ∑ j ∈ t, a i * b j :=
     Finset.sum_comm
   simp only [zetaCommutator, Finset.sum_mul, Finset.mul_sum]
   rw [hs]

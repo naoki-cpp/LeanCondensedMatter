@@ -39,7 +39,7 @@ private theorem sum_shift {A : Type*} [AddCommMonoid A] (f : ZMod N → A) :
       invFun := fun i => i - 1
       left_inv := by intro i; abel
       right_inv := by intro i; abel }
-  exact e.sum_comp Finset.univ f (by simp)
+  exact Equiv.sum_comp e f
 
 /-- The site quadratic operator is the second quantization of the periodic Laplacian.
 At 2s=1 its one-particle operator is exactly the operator used in SW2. -/
