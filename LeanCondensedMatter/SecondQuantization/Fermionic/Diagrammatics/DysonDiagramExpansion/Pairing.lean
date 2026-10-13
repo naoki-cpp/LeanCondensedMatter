@@ -3,11 +3,9 @@ import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagr
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Flattening
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.LegFamily
 import LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.DysonVertexMoment
-import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeBoltzmannCore
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsDensityOperator
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.TimedFieldContraction
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsExpectationBridge
-import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.Induction
 
 set_option linter.style.header false
 
@@ -33,17 +31,6 @@ noncomputable def flatVertexLegPairValue {n : ℕ}
     (τ : Fin n → ℝ) (a b : Fin (2 * (2 * n))) : ℂ :=
   timedFieldPairContraction ε β
     (quarticLegFieldForSequence q τ a) (quarticLegFieldForSequence q τ b)
-
-private theorem flatVertexLegPairValue_eq_finiteGibbsExpectation {n : ℕ}
-    (ε : Mode → ℝ) (β : ℝ) (q : Fin n → QuarticVertexLabel Mode)
-    (τ : Fin n → ℝ) (a b : Fin (2 * (2 * n))) :
-    flatVertexLegPairValue ε β q τ a b =
-      Common.finiteGibbsExpectation (fermionEnergy ε) β
-        ((quarticLegOperatorForSequence ε q τ a).comp
-          (quarticLegOperatorForSequence ε q τ b)) := by
-  rw [flatVertexLegPairValue, timedFieldPairContraction,
-    timedFieldOperator_quarticLegFieldForSequence, timedFieldOperator_quarticLegFieldForSequence,
-    freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation]
 
 /-- Canonical scalar value of a flattened-leg pairing. -/
 noncomputable def flatVertexLegPairingEvaluation {n : ℕ}
@@ -112,31 +99,11 @@ theorem dysonVertexMoment_quarticInteraction_eq_sum_vertexLabel_pairingEvaluatio
               (Common.finiteHilbertOperatorAlgEquiv (Common.quarticVertexSequenceInteractionPicture (fermionEnergy ε) create annihilate S.card q τ)) =
             ∑ pairing : Pairing (2 * S.card),
               flatVertexLegPairingEvaluation ε β q τ pairing := by
-        rw [freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation,
-          ← prod_ofFn_quarticLegOperatorForSequence_eq_quarticVertexSequenceInteractionPicture]
-        have hgen :=
-          Common.BlochDeDominicis.finiteGibbsExpectation_prod_eq_sum_pairing
-            Common.Statistics.fermion (fermionEnergy ε) β (2 * S.card)
-            (quarticLegOperatorForSequence ε q τ) (quarticLegEnergyShiftForSequence ε q)
-            (fun i j => timedFieldCommutatorCoeff ε
-              (quarticLegFieldForSequence q τ i)
-              (quarticLegFieldForSequence q τ j))
-            (fun p => by
-              rw [← timedFieldOperator_quarticLegFieldForSequence ε q τ p]
-              simpa [quarticLegFieldForSequence, quarticLegEnergyShiftForSequence,
-                quarticLocalLegEnergyShift, Common.flatVertexIndex, Common.flatLocalLeg] using
-                (heisenbergEvolve_timedFieldOperator ε β
-                  (quarticLegFieldForSequence q τ p)))
-            (fun i j _ => by
-              rw [← timedFieldOperator_quarticLegFieldForSequence ε q τ i,
-                ← timedFieldOperator_quarticLegFieldForSequence ε q τ j]
-              exact zetaCommutator_timedFieldOperator ε
-                (quarticLegFieldForSequence q τ i)
-                (quarticLegFieldForSequence q τ j))
-            (fun i => one_sub_zetaInt_fermion_mul_exp_ne_zero
-              (quarticLegEnergyShiftForSequence ε q i) β)
-        simpa only [flatVertexLegPairingEvaluation, Combinatorics.Pairing.evaluation,
-          flatVertexLegPairValue_eq_finiteGibbsExpectation] using hgen
+        rw [← prod_ofFn_quarticLegOperatorForSequence_eq_quarticVertexSequenceInteractionPicture]
+        simpa only [flatVertexLegPairingEvaluation, flatVertexLegPairValue,
+          timedFieldOperator_quarticLegFieldForSequence] using
+          (freeGibbsDensityOperator_expectation_prod_timedFieldOperator_eq_sum_pairing
+            ε β (2 * S.card) (quarticLegFieldForSequence q τ))
       rw [intervalIntegral.orderedSimplexIntegral_congr hpoint,
         intervalIntegral.orderedSimplexIntegral_finsetSum _ S.card β _
           (fun pairing _ => continuous_flatVertexLegPairingEvaluation ε β q pairing)]
