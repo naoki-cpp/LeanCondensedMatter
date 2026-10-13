@@ -405,6 +405,65 @@ theorem Pairing.ofSplitInterSectorCrossingCount_mod_two_eq_positionInversions
   rw [Pairing.ofSplitInterSectorCrossingCount_mod_two_eq_pairEndpointInversionCount,
     Pairing.ofSplit_sum_pairEndpointInversionCount_eq_positionInversions]
 
+/-- Endpoint-order comparisons are invariant under the normalization of
+transported split pairs: pair normalization can swap either pair's endpoints,
+but their four cross-sector comparisons are counted without orientation. -/
+private theorem Pairing.ofSplit_pairEndpointInversionCount_eq_sum_positions
+    (e : PositionSplitting a b n) (P : Pairing a) (Q : Pairing b)
+    (p : P.NormalizedPair) (q : Q.NormalizedPair) :
+    pairEndpointInversionCount
+        (Pairing.ofSplitNormalizedPairEquiv e P Q (Sum.inl p)).1
+        (Pairing.ofSplitNormalizedPairEquiv e P Q (Sum.inr q)).1 =
+      ∑ i : Fin 2, ∑ j : Fin 2,
+        if e (Sum.inr (Q.pairEndpointEquiv (q, j))) <
+            e (Sum.inl (P.pairEndpointEquiv (p, i))) then 1 else 0 := by
+  rcases Pairing.ofSplitNormalizedPairEquiv_pair_eq_or_swap e P Q (Sum.inl p)
+    with hp | hp <;>
+  rcases Pairing.ofSplitNormalizedPairEquiv_pair_eq_or_swap e P Q (Sum.inr q)
+    with hq | hq
+  all_goals simp only [hp, hq, pairEndpointInversionCount, Fin.sum_univ_two,
+    Pairing.pairEndpointEquiv_apply, Pairing.pairEndpoint_zero,
+    Pairing.pairEndpoint_one]
+  all_goals norm_num [Pairing.pairEndpoint, Fin.sum_univ_two] <;> ac_rfl
+
+/-- The residual cross-sector crossing parity of a split pairing is exactly
+the parity of all ambient comparisons between positions from its two sides.
+This remains true when either side is reordered and when transported normalized
+pair endpoints are reversed. -/
+theorem Pairing.ofSplitInterSectorCrossingCount_mod_two_eq_positionInversionCount
+    (e : PositionSplitting a b n) (P : Pairing a) (Q : Pairing b) :
+    (Pairing.ofSplitInterSectorCrossingCount e P Q) % 2 =
+      (∑ i : Fin (2 * a), ∑ j : Fin (2 * b),
+        if e (Sum.inr j) < e (Sum.inl i) then 1 else 0) % 2 := by
+  classical
+  have hsum :
+      (∑ p : P.NormalizedPair, ∑ q : Q.NormalizedPair,
+        pairEndpointInversionCount
+          (Pairing.ofSplitNormalizedPairEquiv e P Q (Sum.inl p)).1
+          (Pairing.ofSplitNormalizedPairEquiv e P Q (Sum.inr q)).1) =
+      ∑ i : Fin (2 * a), ∑ j : Fin (2 * b),
+        if e (Sum.inr j) < e (Sum.inl i) then 1 else 0 := by
+    simp_rw [Pairing.ofSplit_pairEndpointInversionCount_eq_sum_positions]
+    calc
+      _ = ∑ p : P.NormalizedPair, ∑ i : Fin 2,
+            ∑ q : Q.NormalizedPair, ∑ j : Fin 2,
+              if e (Sum.inr (Q.pairEndpointEquiv (q, j))) <
+                  e (Sum.inl (P.pairEndpointEquiv (p, i))) then 1 else 0 := by
+        apply Finset.sum_congr rfl
+        intro p _
+        exact Finset.sum_comm
+      _ = ∑ x : (P.NormalizedPair × Fin 2) × (Q.NormalizedPair × Fin 2),
+            if e (Sum.inr (Q.pairEndpointEquiv x.2)) <
+                e (Sum.inl (P.pairEndpointEquiv x.1)) then 1 else 0 := by
+        simp only [Fintype.sum_prod_type]
+      _ = _ := by
+        simpa only [Fintype.sum_prod_type] using
+          (Equiv.sum_comp
+            (Equiv.prodCongr P.pairEndpointEquiv Q.pairEndpointEquiv)
+            (fun x : Fin (2 * a) × Fin (2 * b) =>
+              if e (Sum.inr x.2) < e (Sum.inl x.1) then (1 : ℕ) else 0))
+  rw [Pairing.ofSplitInterSectorCrossingCount_mod_two_eq_pairEndpointInversionCount, hsum]
+
 /-- Every crossing in a split pairing lies either within one sector or
 between the two sectors. No monotonicity of the splitting is required. -/
 theorem Pairing.ofSplit_crossingCount_eq_intrasector_add_inter
