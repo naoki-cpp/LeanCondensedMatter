@@ -179,8 +179,9 @@ private theorem externalInsertionSlotLegSplitting_fixedRight_lt_leftInteraction_
         (Sum.inl (externalInsertionInteractionLeg (E := E) v l)) ↔
       (order w).1 < v.1 := by
   intro S order
-  rw [externalInsertionSlotLegSplitting_fixedRight_apply,
-    externalInsertionSlotLegSplitting_left_interaction]
+  rw [externalInsertionSlotLegSplitting_fixedRight_apply]
+  unfold externalInsertionInteractionLeg
+  rw [externalInsertionSlotLegSplitting_left_interaction]
   change (externalInsertionInteractionLeg (E := E)
       (⟨(order w).1, Finset.mem_univ _⟩ :
         ↥(Finset.univ : Finset (Fin N))) k).val <
@@ -215,8 +216,9 @@ private theorem externalInsertionSlotLegSplitting_fixedRight_not_lt_leftExternal
       externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T)
         (Sum.inl (externalInsertionExternalLeg E T e)) := by
   intro S order
-  rw [externalInsertionSlotLegSplitting_fixedRight_apply,
-    externalInsertionSlotLegSplitting_external]
+  rw [externalInsertionSlotLegSplitting_fixedRight_apply]
+  unfold externalInsertionExternalLeg
+  rw [externalInsertionSlotLegSplitting_external]
   change ¬ (externalInsertionInteractionLeg (E := E)
       (⟨(order w).1, Finset.mem_univ _⟩ :
         ↥(Finset.univ : Finset (Fin N))) k).val <
@@ -260,9 +262,15 @@ theorem externalInsertionSlotLegSplitting_fixedInversionCount_mod_two_eq_zero
         let vl := orderedQuarticLegEquiv S.card j
         have hj : (orderedQuarticLegEquiv S.card).symm vl = j := by simp [vl]
         rw [← hj]
-        exact if_neg
+        exact ite_eq_right
           (externalInsertionSlotLegSplitting_fixedRight_not_lt_leftExternal
             (E := E) T e vl.1 vl.2)
+      change 2 ∣ (∑ j : Fin (2 * (2 * S.card)),
+        if externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T)
+              (Sum.inr (orderedLegToDiagramLeg S order j)) <
+            externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T)
+              (Sum.inl (externalInsertionExternalLeg E T e))
+          then 1 else 0)
       rw [hzero]
       exact dvd_zero 2
   | inr vl =>
@@ -281,8 +289,14 @@ theorem externalInsertionSlotLegSplitting_fixedInversionCount_mod_two_eq_zero
       have hiff :=
         externalInsertionSlotLegSplitting_fixedRight_lt_leftInteraction_iff
           (E := E) T v l wk.1 wk.2
-      simpa only [Equiv.apply_symm_apply] using
-        congrArg (fun p : Prop => if p then (1 : ℕ) else 0) (propext hiff)
+      change (if externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T)
+          (Sum.inr (orderedLegToDiagramLeg S order
+            ((orderedQuarticLegEquiv S.card).symm (wk.1, wk.2)))) <
+          externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T)
+            (Sum.inl (externalInsertionInteractionLeg (E := E) v l))
+          then (1 : ℕ) else 0) =
+        (if (order wk.1).1 < v.1 then 1 else 0)
+      rw [hiff]
 
 /-- Reconstruct an external-insertion diagram from an external-bearing piece and a quartic
 complementary piece. -/
