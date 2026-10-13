@@ -420,12 +420,10 @@ private theorem tendsto_arg_pauliGreenDenominator_zero_radial_broadening_zero
       (fun broadening : ℝ =>
         (pauliGreenDenominator side v m 0 0 probeEnergy broadening).arg)
       (nhdsWithin 0 (Set.Ioi 0)) (nhds 0) := by
-  have hmetalSq := mass_sq_lt_probe_sq m probeEnergy hmetal
   have hre : 0 < (pauliGreenDenominator side v m 0 0 probeEnergy 0).re := by
     rw [pauliGreenDenominator_radial_re]
-    nlinarith
+    nlinarith [mass_sq_lt_probe_sq m probeEnergy hmetal]
   have him : (pauliGreenDenominator side v m 0 0 probeEnergy 0).im = 0 := by
-    rw [pauliGreenDenominator_radial_im]
     simp
   have hslit : pauliGreenDenominator side v m 0 0 probeEnergy 0 ∈ Complex.slitPlane := by
     rw [Complex.mem_slitPlane_iff]
@@ -451,7 +449,6 @@ private theorem tendsto_arg_pauliGreenDenominator_cutoff_broadening_zero
     rw [pauliGreenDenominator_radial_re]
     nlinarith
   have him : (pauliGreenDenominator side v m pMax 0 probeEnergy 0).im = 0 := by
-    rw [pauliGreenDenominator_radial_im]
     simp
   have hden := tendsto_pauliGreenDenominator_radial_broadening_zero
     side v m probeEnergy pMax
