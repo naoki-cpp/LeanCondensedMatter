@@ -1659,7 +1659,7 @@
         "LeanCondensedMatter.Crystal.Periodicity",
         "LeanCondensedMatter.Crystal.PointGroup"
       ],
-      "externalImportCount": 3
+      "externalImportCount": 4
     },
     {
       "name": "LeanCondensedMatter.Crystal.Lattice",
@@ -2358,6 +2358,15 @@
       "externalImportCount": 0
     },
     {
+      "name": "LeanCondensedMatter.Models.MassiveDirac.Disorder.ScalarAngularWeights",
+      "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Disorder/ScalarAngularWeights.lean",
+      "imports": [
+        "LeanCondensedMatter.Models.MassiveDirac.Model.FermiSurfaceOverlap",
+        "LeanCondensedMatter.Transport.Analysis.AngularHarmonics"
+      ],
+      "externalImportCount": 2
+    },
+    {
       "name": "LeanCondensedMatter.Models.MassiveDirac.Disorder.ScalarCovariance",
       "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Disorder/ScalarCovariance.lean",
       "imports": [
@@ -2365,6 +2374,14 @@
         "LeanCondensedMatter.Transport.Disorder.Born"
       ],
       "externalImportCount": 0
+    },
+    {
+      "name": "LeanCondensedMatter.Models.MassiveDirac.Disorder.SingleParticleRate",
+      "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Disorder/SingleParticleRate.lean",
+      "imports": [
+        "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.Damping"
+      ],
+      "externalImportCount": 1
     },
     {
       "name": "LeanCondensedMatter.Models.MassiveDirac.Disorder.TMatrix.BornDysonLoop",
@@ -2397,12 +2414,11 @@
       "name": "LeanCondensedMatter.Models.MassiveDirac.Disorder.TransportRate",
       "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Disorder/TransportRate.lean",
       "imports": [
-        "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.Damping",
-        "LeanCondensedMatter.Models.MassiveDirac.Model.FermiSurfaceOverlap",
-        "LeanCondensedMatter.Transport.Analysis.AngularHarmonics",
+        "LeanCondensedMatter.Models.MassiveDirac.Disorder.ScalarAngularWeights",
+        "LeanCondensedMatter.Models.MassiveDirac.Disorder.SingleParticleRate",
         "LeanCondensedMatter.Transport.Analysis.RelaxationTime"
       ],
-      "externalImportCount": 2
+      "externalImportCount": 1
     },
     {
       "name": "LeanCondensedMatter.Models.MassiveDirac.Disorder",
@@ -2415,8 +2431,11 @@
         "LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexResponse",
         "LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningLadderZeroBroadeningTransverseWeakDisorder",
         "LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningLadderZeroBroadeningWeakDisorder",
+        "LeanCondensedMatter.Models.MassiveDirac.Disorder.ScalarAngularWeights",
         "LeanCondensedMatter.Models.MassiveDirac.Disorder.ScalarCovariance",
-        "LeanCondensedMatter.Models.MassiveDirac.Disorder.TMatrix"
+        "LeanCondensedMatter.Models.MassiveDirac.Disorder.SingleParticleRate",
+        "LeanCondensedMatter.Models.MassiveDirac.Disorder.TMatrix",
+        "LeanCondensedMatter.Models.MassiveDirac.Disorder.TransportRate"
       ],
       "externalImportCount": 0
     },
