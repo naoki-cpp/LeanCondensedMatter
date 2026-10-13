@@ -4,7 +4,8 @@ Status: accepted. `QuantumTheory.LocalizedSpin` owns the finite-spin configurati
 space, and `QuantumTheory.SpinHalf` its spin-1/2 Pauli representation.
 `Models.Heisenberg` owns the ring and one-magnon restriction; `Models.HolsteinPrimakoff`
 owns the exact capped occupation representation and its finite-spin action.
-Approximation and macroscopic interfaces remain targets; see the
+The quadratic ring model has an algebraic Fourier diagonalization.
+Approximation-error estimates and macroscopic interfaces remain targets; see the
 [roadmap](../roadmaps/spin-waves.md).
 
 Spin-wave physics connects finite quantum spins, bosonic approximations, and classical

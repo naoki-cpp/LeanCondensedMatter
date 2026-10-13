@@ -20,6 +20,8 @@ exchange identities. Finite-product peeling built from these relations lives in
 
 namespace ScalarExchange
 
+open scoped BigOperators
+
 /-- The fixed-sign bracket `[A,B]_ζ = A B - ζ B A` in an associative complex algebra. -/
 noncomputable def zetaCommutator {A : Type*} [Ring A] [Algebra ℂ A]
     (ζ : ℂ) (a b : A) : A :=
@@ -54,6 +56,17 @@ theorem zetaCommutator_smul_smul {A : Type*} [Ring A] [Algebra ℂ A]
     zetaCommutator ζ (c • a) (d • b) = (c * d) • zetaCommutator ζ a b := by
   simp only [zetaCommutator, smul_mul_assoc, mul_smul_comm, smul_smul, smul_sub]
   module
+
+/-- Finite sums expand bilinearly in both arguments of the fixed-sign bracket. -/
+theorem zetaCommutator_sum_sum {A ι κ : Type*} [Ring A] [Algebra ℂ A]
+    (ζ : ℂ) (s : Finset ι) (t : Finset κ) (a : ι → A) (b : κ → A) :
+    zetaCommutator ζ (∑ i ∈ s, a i) (∑ j ∈ t, b j) =
+      ∑ i ∈ s, ∑ j ∈ t, zetaCommutator ζ (a i) (b j) := by
+  have hs : (∑ j ∈ t, ∑ i ∈ s, a i * b j) = ∑ i ∈ s, ∑ j ∈ t, a i * b j :=
+    Finset.sum_comm
+  simp only [zetaCommutator, Finset.sum_mul, Finset.mul_sum]
+  rw [hs]
+  simp only [Finset.sum_sub_distrib, Finset.smul_sum]
 
 /-- Reorder a product from a supplied fixed-sign bracket value. -/
 theorem mul_eq_add_smul_mul_of_zetaCommutator_eq
