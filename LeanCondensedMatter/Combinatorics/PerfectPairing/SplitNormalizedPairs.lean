@@ -457,7 +457,7 @@ theorem Pairing.ofSplitInterSectorCrossingCount_mod_two_eq_positionInversionCoun
                 e (Sum.inl (P.pairEndpointEquiv x.1)) then 1 else 0 := by
         simp only [Fintype.sum_prod_type]
       _ = _ := by
-        simpa [Fintype.sum_prod_type, Equiv.prodCongr_apply, Prod.map] using
+        simpa only [Fintype.sum_prod_type, Equiv.prodCongr_apply, Prod.map] using
           (Equiv.sum_comp
             (Equiv.prodCongr P.pairEndpointEquiv Q.pairEndpointEquiv)
             (fun x : Fin (2 * a) × Fin (2 * b) =>
