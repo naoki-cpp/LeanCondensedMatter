@@ -23,6 +23,8 @@ namespace LeanCondensedMatter.Crystal
 namespace AtomicConfiguration
 
 variable {V E Species : Type*}
+
+section Generic
 variable [NormedAddCommGroup V] [NormedSpace ℝ V]
 variable [MetricSpace E] [NormedAddTorsor V E]
 
@@ -205,11 +207,21 @@ theorem exists_int_trace_pointGroup [FiniteDimensional ℝ V]
     (X.pointGroupLatticeEquiv (V := V) g (b i)) i
 
 
+end
+
+end Generic
+
+section Planar
+
+variable [NormedAddCommGroup V] [InnerProductSpace ℝ V]
+variable [MetricSpace E] [NormedAddTorsor V E]
+
+noncomputable section
+
 /-- In two Euclidean dimensions the trace of a point-group isometry lies in `[-2, 2]`.
 
 The bound is independent of a translation-lattice basis. It follows by summing the
 Cauchy–Schwarz bounds of the two diagonal coefficients in any orthonormal basis. -/
-omit [NormedSpace ℝ V] in
 theorem pointGroup_trace_bounds [InnerProductSpace ℝ V]
     (X : AtomicConfiguration E Species) (g : X.pointGroup (V := V))
     (o : OrthonormalBasis (Fin 2) ℝ V) :
@@ -232,7 +244,6 @@ theorem pointGroup_trace_bounds [InnerProductSpace ℝ V]
 
 /-- The planar crystallographic trace is one of the five integers from `-2` to `2`.
 This is the arithmetic/geometric bridge used to restrict the allowed planar rotations. -/
-omit [NormedSpace ℝ V] in
 theorem exists_int_trace_pointGroup_bounded [InnerProductSpace ℝ V]
     [FiniteDimensional ℝ V]
     (X : AtomicConfiguration E Species)
@@ -248,6 +259,8 @@ theorem exists_int_trace_pointGroup_bounded [InnerProductSpace ℝ V]
   exact ⟨z, by exact_mod_cast hlo, by exact_mod_cast hhi, hz⟩
 
 end
+
+end Planar
 
 end AtomicConfiguration
 
