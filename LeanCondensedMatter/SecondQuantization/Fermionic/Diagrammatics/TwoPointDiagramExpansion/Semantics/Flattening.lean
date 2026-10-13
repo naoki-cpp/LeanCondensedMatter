@@ -65,11 +65,14 @@ private theorem prod_twoPointTimedEventAtomicOperators {n : ℕ} (ε : Mode → 
   | inr v =>
       rw [twoPointTimedEventAtomicOperators_interaction,
         twoPointTimedEventOperator_interaction]
-      symm
-      simpa [Common.interactionPicture, interactionPicture, quarticVertexOperator, imaginaryTimeEvolve,
-        quarticLocalLegOperator] using
-        (Common.heisenbergEvolve_quarticVertexOperator_eq_prod
-          (fermionEnergy ε) create annihilate (q v) (σ v))
+      change
+        (List.ofFn (fun l : Fin 4 =>
+          Common.heisenbergEvolve (fermionEnergy ε) (σ v)
+            (Common.quarticLocalLegOperator create annihilate (q v) l))).prod =
+          Common.heisenbergEvolve (fermionEnergy ε) (σ v)
+            (Common.quarticVertexOperator create annihilate (q v))
+      exact (Common.heisenbergEvolve_quarticVertexOperator_eq_prod
+        (fermionEnergy ε) create annihilate (q v) (σ v)).symm
 
 /-- The complete atomic operator list in mixed imaginary-time order. -/
 noncomputable def mixedTimeOrderedAtomicOperators {n : ℕ} (ε : Mode → ℝ) (i j : Mode)
