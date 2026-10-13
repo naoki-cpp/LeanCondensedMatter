@@ -18,7 +18,8 @@ and [Models/Heisenberg](../../LeanCondensedMatter/Models/Heisenberg.lean). The s
 long-wavelength dispersion are proved in
 [SpinWaveSpectrum](../../LeanCondensedMatter/Models/Heisenberg/SpinWaveSpectrum.lean).
 The exact local and finite many-site Holstein-Primakoff algebraic representations in
-SW3 are also `proved`. The quadratic model and SW4 onward remain `idea`.
+SW3 are also `proved`. The quadratic ring's operator construction and polynomial
+decomposition are implemented; its Fourier diagonalization and SW4 onward remain targets.
 Infinite-volume order, antiferromagnetic Bogoliubov diagonalization, and thin-film
 boundary modes are later work.
 
@@ -150,11 +151,22 @@ submodule. Configuration and occupation coordinates use canonical equivalences r
 than a second oscillator representation.
 
 Keep this exact representation separate from the quadratic Hamiltonian obtained by
-expanding about the polarized state and retaining terms through degree two. Prove
-the quadratic model's finite Fourier diagonalization and preservation of CCR on the
-bosonic algebraic domain. Its bond-counting normalization must reproduce SW2 when
-specialized consistently. Reconcile the directed-neighbor sum of Section 2.7 with the
-bond-once sum of Section 2.5 before transferring numerical coefficients.
+expanding about the polarized state and retaining terms through degree two.
+[QuadraticMagnon](../../LeanCondensedMatter/Models/Heisenberg/QuadraticMagnon.lean)
+defines the zero-field ring model on unrestricted algebraic bosonic Fock space.
+With each bond counted once, its excitation bond is
+J(2s)(n_i + n_j - a_i† a_j - a_j† a_i), and its reference energy is -2JN s².
+`transverseReplacedBond_eq` and `sum_transverseReplacedBond` separate the quadratic
+terms from the longitudinal remainder -2J sum n_i n_(i+1), after replacing the
+transverse square-root factors by sqrt(2s). These identities do not estimate the
+error of that replacement. The vacuum eigenvalue equals the reference energy.
+The physical ring requires N >= 3, although the algebraic formulas make sense for
+any nonzero N. The directed-neighbor sum of Section 2.7 must be converted to this
+bond-once convention before transferring its coefficients.
+
+Prove the quadratic model's finite Fourier diagonalization and preservation of CCR
+on the bosonic algebraic domain. Its one-boson restriction must reproduce SW2 at
+2s = 1; this correspondence remains to be proved.
 
 An error estimate between exact and quadratic dynamics is a separate target with
 specified states, occupation control, time interval, and norm or observable error.
