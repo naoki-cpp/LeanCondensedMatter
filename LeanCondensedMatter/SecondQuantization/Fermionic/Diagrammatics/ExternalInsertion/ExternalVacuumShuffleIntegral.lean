@@ -168,6 +168,7 @@ private theorem externalInsertionLeftMixedPosition_fixed
               (Sum.inr ((T.orderIsoOfFin rfl v.1), l)))))
       rw [externalInsertionSlotLegSplitting_left_interaction, Equiv.apply_symm_apply]
 
+omit [LinearOrder Mode] [Fintype Mode] in
 /-- Express the assembled mixed-time pairing using the external half's own
 mixed-time positions. This local reindexing is needed before comparing the
 fermionic crossing sign with the mixed atomic-order permutation sign. -/
@@ -228,10 +229,15 @@ private theorem externalInsertionLeftMixedPosition_split_strictMono
               externalTime
               (σ ∘ fun i : Fin T.card => (T.orderIsoOfFin rfl i).1) p)) := by
     apply (externalInsertionMixedTimeAmbientPositionEquiv externalTime σ).injective
-    change externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T)
-        (Sum.inl (localFixed p)) = _
-    exact (externalInsertionLeftMixedPosition_fixed T externalTime σ p).symm
+    simpa only [split, Equiv.trans_apply, Equiv.sumCongr_apply,
+      Equiv.refl_apply, Equiv.apply_symm_apply] using
+        (externalInsertionLeftMixedPosition_fixed T externalTime σ p).symm
   intro a b hab
+  change
+    ((Equiv.sumCongr localFixed (Equiv.refl (Fin (2 * (2 * S.card))))).trans split)
+        (Sum.inl a) <
+      ((Equiv.sumCongr localFixed (Equiv.refl (Fin (2 * (2 * S.card))))).trans split)
+        (Sum.inl b)
   rw [hposition a, hposition b]
   exact (externalInsertionLeftMixedPosition_strictMono T externalTime σ) hab
 
