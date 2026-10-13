@@ -5027,7 +5027,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ {a b n : ℕ} (e : Combinatorics.PositionSplitting a b n) (P : Combinatorics.Pairing a) (Q : Combinatorics.Pairing b),\n  Combinatorics.Pairing.ofSplitInterSectorCrossingCount e P Q % 2 =\n    (∑ p,\n        ∑ q,\n          Combinatorics.pairEndpointInversionCount\n            ↑((Combinatorics.Pairing.ofSplitNormalizedPairEquiv e P Q) (Sum.inl p))\n            ↑((Combinatorics.Pairing.ofSplitNormalizedPairEquiv e P Q) (Sum.inr q))) %\n      2",
     "standardAxioms": [
       "Classical.choice",
@@ -5035,7 +5035,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -5046,7 +5046,9 @@
     "docString": "The parity of crossings between the two halves of an assembled pairing\nis the parity of the four endpoint-order inversions for each cross-sector\npair of normalized pairs. The two crossing orientations are both counted;\nno order-preservation hypothesis is needed on either half. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "Combinatorics.Pairing.ofSplitInterSectorCrossingCount_mod_two_eq_positionInversions"
+    ],
     "dependencies": [
       "Combinatorics.Pairing.normalizedPair_endpoints_ne_of_ne",
       "Combinatorics.Pairing.pairs_normalized",
@@ -5054,8 +5056,55 @@
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "Combinatorics.Pairing.ofSplitInterSectorCrossingCount_mod_two_eq_positionInversions"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {a b n : ℕ} (e : Combinatorics.PositionSplitting a b n) (P : Combinatorics.Pairing a) (Q : Combinatorics.Pairing b),\n  Combinatorics.Pairing.ofSplitInterSectorCrossingCount e P Q % 2 =\n    (∑ i, ∑ j, if e (Sum.inr j) < e (Sum.inl i) then 1 else 0) % 2",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "Combinatorics.Pairing.ofSplitInterSectorCrossingCount_mod_two_eq_positionInversions",
+    "module": "LeanCondensedMatter.Combinatorics.PerfectPairing.SplitNormalizedPairs",
+    "externalAxioms": [],
+    "docString": "The only residual crossing parity of a binary split is the parity of\nthe inter-sector position inversions, independently of the pairing chosen\ninside either half. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Common.BlochDeDominicis.Pairing.weight_ofSplit_eq_positionInversions_mul"
+    ],
+    "dependencies": [
+      "Combinatorics.Pairing.ofSplitInterSectorCrossingCount_mod_two_eq_pairEndpointInversionCount",
+      "Combinatorics.Pairing.ofSplit_sum_pairEndpointInversionCount_eq_positionInversions"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.BlochDeDominicis.Pairing.weight_ofSplit_eq_positionInversions_mul"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -5321,7 +5370,8 @@
     "directWrapperOf": null,
     "dependents": [
       "Combinatorics.Pairing.ofSplitNormalizedPairEquiv_pair_eq_of_lt",
-      "SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_right_normalizedPair"
+      "SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_right_normalizedPair",
+      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.SplitNormalizedPairs.0.Combinatorics.Pairing.ofSplit_pairEndpointInversionCount_eq_sum_localEndpoints"
     ],
     "dependencies": [
       "Combinatorics.Pairing.mem_pairs_iff",
@@ -5335,9 +5385,10 @@
     "completedMention": false,
     "compiledConsumers": [
       "Combinatorics.Pairing.ofSplitNormalizedPairEquiv_pair_eq_of_lt",
-      "SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_right_normalizedPair"
+      "SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_right_normalizedPair",
+      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.SplitNormalizedPairs.0.Combinatorics.Pairing.ofSplit_pairEndpointInversionCount_eq_sum_localEndpoints"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -5395,7 +5446,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ {a b n : ℕ} (e : Combinatorics.PositionSplitting a b n) (P : Combinatorics.Pairing a) (Q : Combinatorics.Pairing b),\n  (StrictMono fun i => e (Sum.inl i)) →\n    (StrictMono fun i => e (Sum.inr i)) →\n      (Combinatorics.Pairing.ofSplit e P Q).crossingCount =\n        P.crossingCount + Q.crossingCount + Combinatorics.Pairing.ofSplitInterSectorCrossingCount e P Q",
     "standardAxioms": [
       "Classical.choice",
@@ -5403,7 +5454,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -5414,7 +5465,9 @@
     "docString": "With strictly increasing embeddings of both sectors, the sole extra\ncrossing count is the explicitly identified inter-sector contribution. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "SecondQuantization.Common.BlochDeDominicis.Pairing.weight_ofSplit_eq_positionInversions_mul"
+    ],
     "dependencies": [
       "Combinatorics.Pairing.ofSplitNormalizedPairEquiv_inl_crossingCount_eq",
       "Combinatorics.Pairing.ofSplitNormalizedPairEquiv_inr_crossingCount_eq",
@@ -5422,8 +5475,10 @@
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "SecondQuantization.Common.BlochDeDominicis.Pairing.weight_ofSplit_eq_positionInversions_mul"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -5459,6 +5514,7 @@
     "dependents": [
       "Combinatorics.Pairing.isSplit_ofSplit",
       "Combinatorics.Pairing.ofSplitNormalizedPairEquiv_pair_eq_or_swap",
+      "Combinatorics.Pairing.ofSplit_reindex",
       "Combinatorics.Pairing.ofSplit_splitLeft_splitRight",
       "Combinatorics.Pairing.splitLeft_ofSplit",
       "SecondQuantization.Common.ExternalInsertionDiagram.ofSlotSplit_pairingInMixedOrder_eq_ofSplit_orderedVacuum",
@@ -5473,12 +5529,13 @@
     "compiledConsumers": [
       "Combinatorics.Pairing.isSplit_ofSplit",
       "Combinatorics.Pairing.ofSplitNormalizedPairEquiv_pair_eq_or_swap",
+      "Combinatorics.Pairing.ofSplit_reindex",
       "Combinatorics.Pairing.ofSplit_splitLeft_splitRight",
       "Combinatorics.Pairing.splitLeft_ofSplit",
       "SecondQuantization.Common.ExternalInsertionDiagram.ofSlotSplit_pairingInMixedOrder_eq_ofSplit_orderedVacuum",
       "SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_left_normalizedPair"
     ],
-    "compiledConsumerCount": 6,
+    "compiledConsumerCount": 7,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -5513,6 +5570,7 @@
     "directWrapperOf": null,
     "dependents": [
       "Combinatorics.Pairing.ofSplitNormalizedPairEquiv_pair_eq_or_swap",
+      "Combinatorics.Pairing.ofSplit_reindex",
       "Combinatorics.Pairing.ofSplit_splitLeft_splitRight",
       "Combinatorics.Pairing.splitRight_ofSplit",
       "SecondQuantization.Common.ExternalInsertionDiagram.ofSlotSplit_pairingInMixedOrder_eq_ofSplit_orderedVacuum",
@@ -5526,12 +5584,60 @@
     "completedMention": false,
     "compiledConsumers": [
       "Combinatorics.Pairing.ofSplitNormalizedPairEquiv_pair_eq_or_swap",
+      "Combinatorics.Pairing.ofSplit_reindex",
       "Combinatorics.Pairing.ofSplit_splitLeft_splitRight",
       "Combinatorics.Pairing.splitRight_ofSplit",
       "SecondQuantization.Common.ExternalInsertionDiagram.ofSlotSplit_pairingInMixedOrder_eq_ofSplit_orderedVacuum",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumPairing.0.SecondQuantization.Common.TwoPointDiagram.ofSlotSplit_atomicLegPartner_vacuumOrderedLeg"
     ],
-    "compiledConsumerCount": 5,
+    "compiledConsumerCount": 6,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {a b n : ℕ} (e : Combinatorics.PositionSplitting a b n) (P : Combinatorics.Pairing a) (Q : Combinatorics.Pairing b)\n  (left : Equiv.Perm (Fin (2 * a))) (right : Equiv.Perm (Fin (2 * b))),\n  Combinatorics.Pairing.ofSplit ((Equiv.sumCongr left right).trans e) (Combinatorics.PairingOn.transport P left)\n      (Combinatorics.PairingOn.transport Q right) =\n    Combinatorics.Pairing.ofSplit e P Q",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "Combinatorics.Pairing.ofSplit_reindex",
+    "module": "LeanCondensedMatter.Combinatorics.PerfectPairing.Split",
+    "externalAxioms": [],
+    "docString": "Reindexing the two local pairings and the corresponding sides of the position\nsplitting leaves the assembled ambient pairing unchanged. Local permutations need not\npreserve either endpoint order. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalVacuumShuffleIntegral.0.SecondQuantization.Fermionic.externalInsertionOfSlotSplit_pairingInMixedOrder_eq_ofSplit_mixedExternal"
+    ],
+    "dependencies": [
+      "Combinatorics.Pairing.ofSplit_partner_inl",
+      "Combinatorics.Pairing.ofSplit_partner_inr",
+      "Combinatorics.PairingOn.ext",
+      "Combinatorics.PairingOn.transport_partner"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalVacuumShuffleIntegral.0.SecondQuantization.Fermionic.externalInsertionOfSlotSplit_pairingInMixedOrder_eq_ofSplit_mixedExternal"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -5582,6 +5688,50 @@
       "SecondQuantization.Common.TwoPointDiagram.ofSlotSplit_slotSplit"
     ],
     "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {a b n : ℕ} (e : Combinatorics.PositionSplitting a b n) (P : Combinatorics.Pairing a) (Q : Combinatorics.Pairing b),\n  ∑ p,\n      ∑ q,\n        Combinatorics.pairEndpointInversionCount ↑((Combinatorics.Pairing.ofSplitNormalizedPairEquiv e P Q) (Sum.inl p))\n          ↑((Combinatorics.Pairing.ofSplitNormalizedPairEquiv e P Q) (Sum.inr q)) =\n    ∑ i, ∑ j, if e (Sum.inr j) < e (Sum.inl i) then 1 else 0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "Combinatorics.Pairing.ofSplit_sum_pairEndpointInversionCount_eq_positionInversions",
+    "module": "LeanCondensedMatter.Combinatorics.PerfectPairing.SplitNormalizedPairs",
+    "externalAxioms": [],
+    "docString": "The total of pairwise cross-sector endpoint inversions is exactly the\nnumber of positions from the right half that precede positions from the left\nhalf in an arbitrary binary position splitting. Both pair orientations and\nall pair enumeration choices disappear under endpoint reindexing. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "Combinatorics.Pairing.ofSplitInterSectorCrossingCount_mod_two_eq_positionInversions"
+    ],
+    "dependencies": [
+      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.SplitNormalizedPairs.0.Combinatorics.Pairing.ofSplit_pairEndpointInversionCount_eq_sum_localEndpoints"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "Combinatorics.Pairing.ofSplitInterSectorCrossingCount_mod_two_eq_positionInversions"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -5699,7 +5849,8 @@
       "Combinatorics.Pairing.ofSplitNormalizedPairEquiv_pair_eq_or_swap",
       "SecondQuantization.Common.TwoPointDiagram.externalPieceMixedPosition_externalPieceComponentPairEquiv",
       "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.ComponentDecomposition.0.Combinatorics.Pairing.componentPairEndpointEquiv_apply_one",
-      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Sign.0.Combinatorics.Pairing.pairSlotEquiv_one"
+      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Sign.0.Combinatorics.Pairing.pairSlotEquiv_one",
+      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.SplitNormalizedPairs.0.Combinatorics.Pairing.ofSplit_pairEndpointInversionCount_eq_sum_localEndpoints"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
@@ -5709,9 +5860,10 @@
       "Combinatorics.Pairing.ofSplitNormalizedPairEquiv_pair_eq_or_swap",
       "SecondQuantization.Common.TwoPointDiagram.externalPieceMixedPosition_externalPieceComponentPairEquiv",
       "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.ComponentDecomposition.0.Combinatorics.Pairing.componentPairEndpointEquiv_apply_one",
-      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Sign.0.Combinatorics.Pairing.pairSlotEquiv_one"
+      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Sign.0.Combinatorics.Pairing.pairSlotEquiv_one",
+      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.SplitNormalizedPairs.0.Combinatorics.Pairing.ofSplit_pairEndpointInversionCount_eq_sum_localEndpoints"
     ],
-    "compiledConsumerCount": 5,
+    "compiledConsumerCount": 6,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -5749,7 +5901,8 @@
       "Combinatorics.Pairing.ofSplitNormalizedPairEquiv_pair_eq_or_swap",
       "SecondQuantization.Common.TwoPointDiagram.externalPieceMixedPosition_externalPieceComponentPairEquiv",
       "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.ComponentDecomposition.0.Combinatorics.Pairing.componentPairEndpointEquiv_apply_zero",
-      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Sign.0.Combinatorics.Pairing.pairSlotEquiv_zero"
+      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Sign.0.Combinatorics.Pairing.pairSlotEquiv_zero",
+      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.SplitNormalizedPairs.0.Combinatorics.Pairing.ofSplit_pairEndpointInversionCount_eq_sum_localEndpoints"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
@@ -5759,9 +5912,10 @@
       "Combinatorics.Pairing.ofSplitNormalizedPairEquiv_pair_eq_or_swap",
       "SecondQuantization.Common.TwoPointDiagram.externalPieceMixedPosition_externalPieceComponentPairEquiv",
       "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.ComponentDecomposition.0.Combinatorics.Pairing.componentPairEndpointEquiv_apply_zero",
-      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Sign.0.Combinatorics.Pairing.pairSlotEquiv_zero"
+      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Sign.0.Combinatorics.Pairing.pairSlotEquiv_zero",
+      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.SplitNormalizedPairs.0.Combinatorics.Pairing.ofSplit_pairEndpointInversionCount_eq_sum_localEndpoints"
     ],
-    "compiledConsumerCount": 5,
+    "compiledConsumerCount": 6,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -6164,7 +6318,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ {a b n : ℕ} {R : Type u_1} [inst : CommMonoid R] (e : Combinatorics.PositionSplitting a b n)\n  (P : Combinatorics.Pairing a) (Q : Combinatorics.Pairing b) (value : Fin (2 * n) → Fin (2 * n) → R)\n  (leftValue : Fin (2 * a) → Fin (2 * a) → R) (rightValue : Fin (2 * b) → Fin (2 * b) → R),\n  (∀ (pr : P.NormalizedPair),\n      value (↑((Combinatorics.Pairing.ofSplitNormalizedPairEquiv e P Q) (Sum.inl pr))).1\n          (↑((Combinatorics.Pairing.ofSplitNormalizedPairEquiv e P Q) (Sum.inl pr))).2 =\n        leftValue (↑pr).1 (↑pr).2) →\n    (∀ (pr : Q.NormalizedPair),\n        value (↑((Combinatorics.Pairing.ofSplitNormalizedPairEquiv e P Q) (Sum.inr pr))).1\n            (↑((Combinatorics.Pairing.ofSplitNormalizedPairEquiv e P Q) (Sum.inr pr))).2 =\n          rightValue (↑pr).1 (↑pr).2) →\n      ∏ pr ∈ (Combinatorics.Pairing.ofSplit e P Q).pairs, value pr.1 pr.2 =\n        (∏ pr ∈ P.pairs, leftValue pr.1 pr.2) * ∏ pr ∈ Q.pairs, rightValue pr.1 pr.2",
     "standardAxioms": [
       "Classical.choice",
@@ -6172,7 +6326,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": true,
     "retainedMention": true,
@@ -6183,12 +6337,16 @@
     "docString": "The contraction product of a pairing reassembled from two independent parts splits into\ntwo local contraction products when the corresponding normalized pair values agree.\n\nThe slot splitting need not preserve the linear order of positions. The hypotheses refer to\nthe *normalized ambient pairs* given by `ofSplitNormalizedPairEquiv`, so that any reversal\nof a transported pair is handled by the local kernel comparison rather than silently dropped. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "SecondQuantization.Common.BlochDeDominicis.Pairing.evaluation_ofSplit_eq_positionInversions_mul"
+    ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "SecondQuantization.Common.BlochDeDominicis.Pairing.evaluation_ofSplit_eq_positionInversions_mul"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -6642,6 +6800,7 @@
     "dependents": [
       "Combinatorics.Pairing.eraseZeroPair_insertFirstPair",
       "Combinatorics.Pairing.insertFirstPair_eraseZeroPair",
+      "Combinatorics.Pairing.ofSplit_reindex",
       "Combinatorics.Pairing.ofSplit_splitLeft_splitRight",
       "Combinatorics.Pairing.splitLeft_ofSplit",
       "Combinatorics.Pairing.splitRight_ofSplit",
@@ -6661,6 +6820,7 @@
     "compiledConsumers": [
       "Combinatorics.Pairing.eraseZeroPair_insertFirstPair",
       "Combinatorics.Pairing.insertFirstPair_eraseZeroPair",
+      "Combinatorics.Pairing.ofSplit_reindex",
       "Combinatorics.Pairing.ofSplit_splitLeft_splitRight",
       "Combinatorics.Pairing.splitLeft_ofSplit",
       "Combinatorics.Pairing.splitRight_ofSplit",
@@ -6674,7 +6834,7 @@
       "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.sidePairing_sideMatching",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.restrictComponent_reassemble_pairing"
     ],
-    "compiledConsumerCount": 14,
+    "compiledConsumerCount": 15,
     "axioms": [
       "Quot.sound"
     ],
@@ -7076,6 +7236,7 @@
       "Combinatorics.Pairing.eraseZeroOrderIso_partner",
       "Combinatorics.Pairing.ofSplit_partner_inl",
       "Combinatorics.Pairing.ofSplit_partner_inr",
+      "Combinatorics.Pairing.ofSplit_reindex",
       "Combinatorics.PairingOn.restrictAlongEquiv_partner",
       "Combinatorics.PairingOn.transport_symm_transport",
       "Combinatorics.PairingOn.transport_trans",
@@ -7098,6 +7259,7 @@
       "Combinatorics.Pairing.eraseZeroOrderIso_partner",
       "Combinatorics.Pairing.ofSplit_partner_inl",
       "Combinatorics.Pairing.ofSplit_partner_inr",
+      "Combinatorics.Pairing.ofSplit_reindex",
       "Combinatorics.PairingOn.restrictAlongEquiv_partner",
       "Combinatorics.PairingOn.transport_symm_transport",
       "Combinatorics.PairingOn.transport_trans",
@@ -7113,7 +7275,7 @@
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_partner_bigLegEquiv_symm_sigma_mk",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumPairing.0.SecondQuantization.Common.TwoPointDiagram.ofSlotSplit_atomicLegPartner_vacuumOrderedLeg"
     ],
-    "compiledConsumerCount": 17,
+    "compiledConsumerCount": 18,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -24124,7 +24286,7 @@
       "QuantumTheory.Models.RashbaExchange.forceMatrixTraceNumerator_xy_eq",
       "QuantumTheory.Models.RashbaExchange.rashbaPauliCoefficients_dot_self",
       "_private.LeanCondensedMatter.Analysis.InternalSpace.Pauli.0.InternalSpace.pauliBasis_mul_pauliBasis",
-      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.TransportRate.0.QuantumTheory.Models.MassiveDirac.upperBandProjectorOverlap_eq"
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Model.FermiSurfaceOverlap.0.QuantumTheory.Models.MassiveDirac.upperBandProjectorOverlap_eq"
     ],
     "dependencies": [
       "_private.LeanCondensedMatter.Analysis.InternalSpace.Pauli.0.InternalSpace.sum_pauliAxis"
@@ -24142,7 +24304,7 @@
       "QuantumTheory.Models.RashbaExchange.forceMatrixTraceNumerator_xy_eq",
       "QuantumTheory.Models.RashbaExchange.rashbaPauliCoefficients_dot_self",
       "_private.LeanCondensedMatter.Analysis.InternalSpace.Pauli.0.InternalSpace.pauliBasis_mul_pauliBasis",
-      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.TransportRate.0.QuantumTheory.Models.MassiveDirac.upperBandProjectorOverlap_eq"
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Model.FermiSurfaceOverlap.0.QuantumTheory.Models.MassiveDirac.upperBandProjectorOverlap_eq"
     ],
     "compiledConsumerCount": 11,
     "axioms": [
@@ -25161,7 +25323,7 @@
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornRetardedUpperBandFermiProjection_eq",
       "QuantumTheory.Models.MassiveDirac.trace_bandProjector",
       "QuantumTheory.Models.RashbaExchange.trace_bandProjector",
-      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.TransportRate.0.QuantumTheory.Models.MassiveDirac.upperBandProjectorOverlap_eq"
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Model.FermiSurfaceOverlap.0.QuantumTheory.Models.MassiveDirac.upperBandProjectorOverlap_eq"
     ],
     "dependencies": [
       "InternalSpace.trace_pauliBasis"
@@ -25174,7 +25336,7 @@
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornRetardedUpperBandFermiProjection_eq",
       "QuantumTheory.Models.MassiveDirac.trace_bandProjector",
       "QuantumTheory.Models.RashbaExchange.trace_bandProjector",
-      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.TransportRate.0.QuantumTheory.Models.MassiveDirac.upperBandProjectorOverlap_eq"
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Model.FermiSurfaceOverlap.0.QuantumTheory.Models.MassiveDirac.upperBandProjectorOverlap_eq"
     ],
     "compiledConsumerCount": 6,
     "axioms": [
@@ -25255,7 +25417,7 @@
     "directWrapperOf": null,
     "dependents": [
       "InternalSpace.trace_pauliBasis_mul_pauliCombination",
-      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.TransportRate.0.QuantumTheory.Models.MassiveDirac.upperBandProjectorOverlap_eq"
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Model.FermiSurfaceOverlap.0.QuantumTheory.Models.MassiveDirac.upperBandProjectorOverlap_eq"
     ],
     "dependencies": [
       "InternalSpace.pauliCombination_mul_pauliCombination",
@@ -25265,7 +25427,7 @@
     "completedMention": false,
     "compiledConsumers": [
       "InternalSpace.trace_pauliBasis_mul_pauliCombination",
-      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.TransportRate.0.QuantumTheory.Models.MassiveDirac.upperBandProjectorOverlap_eq"
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Model.FermiSurfaceOverlap.0.QuantumTheory.Models.MassiveDirac.upperBandProjectorOverlap_eq"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -25840,6 +26002,44 @@
   },
   {
     "terminal": true,
+    "statement": "∀ {V : Type u_1} {E : Type u_2} {Species : Type u_3} [inst : NormedAddCommGroup V] [inst_1 : NormedSpace ℝ V]\n  [inst_2 : MetricSpace E] [inst_3 : NormedAddTorsor V E] [FiniteDimensional ℝ V]\n  (X : Crystal.AtomicConfiguration E Species),\n  X.Periodic →\n    ∀ (g : ↥X.pointGroup) (b : Module.Basis (Fin 2) ℤ ↥(AddSubgroup.toIntSubmodule X.translationSubgroup)),\n      ∃ z, (LinearMap.trace ℝ V) ↑(↑g).toLinearEquiv = ↑z",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "LeanCondensedMatter.Crystal.AtomicConfiguration.exists_int_trace_pointGroup",
+    "module": "LeanCondensedMatter.Crystal.Classification",
+    "externalAxioms": [],
+    "docString": "The trace of a crystallographic point-group action is integral.\n\nA basis of the discrete translation lattice extends to a real basis of the ambient vector\nspace. In this basis every diagonal coefficient of the point-group linear part is an integer.\nThis basis-free trace integrality is the arithmetic input to the crystallographic restriction. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
     "statement": "∀ {E : Type u_1} {Species : Type u_2} [inst : MetricSpace E] {X : Crystal.AtomicConfiguration E Species} {g : E ≃ᵢ E},\n  g ∈ X.symmetryGroup → ⇑g '' X.occupied = X.occupied",
     "standardAxioms": [
       "Classical.choice",
@@ -26160,8 +26360,50 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ {V : Type u_1} {E : Type u_2} {Species : Type u_3} [inst : NormedAddCommGroup V] [inst_1 : NormedSpace ℝ V]\n  [inst_2 : MetricSpace E] [inst_3 : NormedAddTorsor V E] (X : Crystal.AtomicConfiguration E Species),\n  X.Periodic → Function.Injective ⇑X.pointGroupLatticeRepresentation",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "LeanCondensedMatter.Crystal.AtomicConfiguration.pointGroupLatticeRepresentation_injective",
+    "module": "LeanCondensedMatter.Crystal.Classification",
+    "externalAxioms": [],
+    "docString": "For a full periodic configuration, the point-group action on the translation lattice is\nfaithful. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "LeanCondensedMatter.Crystal.AtomicConfiguration.pointGroupMatrixRepresentation_injective"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "LeanCondensedMatter.Crystal.AtomicConfiguration.pointGroupMatrixRepresentation_injective"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {V : Type u_1} {E : Type u_2} {Species : Type u_3} [inst : NormedAddCommGroup V] [inst_1 : NormedSpace ℝ V]\n  [inst_2 : MetricSpace E] [inst_3 : NormedAddTorsor V E] (X : Crystal.AtomicConfiguration E Species),\n  X.Periodic →\n    ∀ {ι : Type u_4} [inst_4 : Fintype ι] [inst_5 : DecidableEq ι]\n      (b : Module.Basis ι ℤ ↥(AddSubgroup.toIntSubmodule X.translationSubgroup)),\n      Function.Injective ⇑(X.pointGroupMatrixRepresentation b)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -26173,14 +26415,16 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "LeanCondensedMatter.Crystal.AtomicConfiguration.pointGroupLatticeRepresentation_injective",
+    "name": "LeanCondensedMatter.Crystal.AtomicConfiguration.pointGroupMatrixRepresentation_injective",
     "module": "LeanCondensedMatter.Crystal.Classification",
     "externalAxioms": [],
-    "docString": "For a full periodic configuration, the point-group action on the translation lattice is\nfaithful. ",
+    "docString": "For a periodic configuration, the matrix representation is faithful in any chosen\nintegral lattice basis. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [],
-    "dependencies": [],
+    "dependencies": [
+      "LeanCondensedMatter.Crystal.AtomicConfiguration.pointGroupLatticeRepresentation_injective"
+    ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [],
@@ -54809,7 +55053,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "QuantumTheory.Models.MassiveDirac.bandEnergy_upper_lt_fermi_iff_lt_metallicFermiRadius",
-    "module": "LeanCondensedMatter.Models.MassiveDirac.Model.Occupation",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Model.FermiSurface",
     "externalAxioms": [],
     "docString": "In the metallic-or-band-edge regime `|m| ≤ ε_F`, the upper band is occupied exactly below the\nexplicit Fermi radius. At `ε_F = |m|`, this occupied region is empty and `p_F = 0`. ",
     "directWrapperTargetModule": null,
@@ -55088,7 +55332,7 @@
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornRetardedUpperBandFermiProjection_eq",
       "QuantumTheory.Models.MassiveDirac.forceMatrixTraceNumerator_xy_eq",
       "QuantumTheory.Models.MassiveDirac.trace_bandProjector",
-      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.TransportRate.0.QuantumTheory.Models.MassiveDirac.upperBandProjectorOverlap_eq"
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Model.FermiSurfaceOverlap.0.QuantumTheory.Models.MassiveDirac.upperBandProjectorOverlap_eq"
     ],
     "dependencies": [
       "InternalSpace.pauliCombination_smul",
@@ -55100,7 +55344,7 @@
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornRetardedUpperBandFermiProjection_eq",
       "QuantumTheory.Models.MassiveDirac.forceMatrixTraceNumerator_xy_eq",
       "QuantumTheory.Models.MassiveDirac.trace_bandProjector",
-      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.TransportRate.0.QuantumTheory.Models.MassiveDirac.upperBandProjectorOverlap_eq"
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Model.FermiSurfaceOverlap.0.QuantumTheory.Models.MassiveDirac.upperBandProjectorOverlap_eq"
     ],
     "compiledConsumerCount": 4,
     "axioms": [
@@ -55268,7 +55512,8 @@
     "directWrapperOf": null,
     "dependents": [
       "QuantumTheory.Models.MassiveDirac.bastinXYBandBlockTrace_opposite_source_radial",
-      "QuantumTheory.Models.MassiveDirac.interbandEnergyGap_oppositeBand",
+      "QuantumTheory.Models.MassiveDirac.berryCurvature_oppositeBand",
+      "QuantumTheory.Models.MassiveDirac.interbandEnergyGap_eq",
       "QuantumTheory.Models.MassiveDirac.targetCenteredInterbandSpectatorCurrentFactor_radial_eq",
       "_private.LeanCondensedMatter.Models.MassiveDirac.Bastin.RadialDominatedConvergence.0.QuantumTheory.Models.MassiveDirac.stronglyMeasurable_radialInterbandPoleIntegrand"
     ],
@@ -55277,11 +55522,12 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.Models.MassiveDirac.bastinXYBandBlockTrace_opposite_source_radial",
-      "QuantumTheory.Models.MassiveDirac.interbandEnergyGap_oppositeBand",
+      "QuantumTheory.Models.MassiveDirac.berryCurvature_oppositeBand",
+      "QuantumTheory.Models.MassiveDirac.interbandEnergyGap_eq",
       "QuantumTheory.Models.MassiveDirac.targetCenteredInterbandSpectatorCurrentFactor_radial_eq",
       "_private.LeanCondensedMatter.Models.MassiveDirac.Bastin.RadialDominatedConvergence.0.QuantumTheory.Models.MassiveDirac.stronglyMeasurable_radialInterbandPoleIntegrand"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 5,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -55754,9 +56000,6 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Models.MassiveDirac.berryCurvature_massless",
-      "QuantumTheory.Models.MassiveDirac.berryCurvature_neg_mass",
-      "QuantumTheory.Models.MassiveDirac.berryCurvature_oppositeBand",
       "QuantumTheory.Models.MassiveDirac.forceMatrixBerryCurvature_eq_berryCurvature",
       "QuantumTheory.Models.MassiveDirac.radialCleanInterbandBastinPairLimitDensity_eq_energyDensity_mul_deriv"
     ],
@@ -55764,13 +56007,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Models.MassiveDirac.berryCurvature_massless",
-      "QuantumTheory.Models.MassiveDirac.berryCurvature_neg_mass",
-      "QuantumTheory.Models.MassiveDirac.berryCurvature_oppositeBand",
       "QuantumTheory.Models.MassiveDirac.forceMatrixBerryCurvature_eq_berryCurvature",
       "QuantumTheory.Models.MassiveDirac.radialCleanInterbandBastinPairLimitDensity_eq_energyDensity_mul_deriv"
     ],
-    "compiledConsumerCount": 5,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -55804,10 +56044,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [],
-    "dependencies": [
-      "QuantumTheory.Models.MassiveDirac.berryCurvature_lower",
-      "QuantumTheory.Models.MassiveDirac.berryCurvature_upper"
-    ],
+    "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [],
@@ -55846,8 +56083,6 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "QuantumTheory.Models.MassiveDirac.berryCurvature_lower",
-      "QuantumTheory.Models.MassiveDirac.berryCurvature_upper",
       "QuantumTheory.Models.MassiveDirac.energy_neg_mass"
     ],
     "crossModuleDirectWrapper": false,
@@ -55890,8 +56125,7 @@
       "QuantumTheory.Models.MassiveDirac.bastinInterbandBlockDifference_im_div_gap_sq_eq_neg_chargeSq_berryCurvature"
     ],
     "dependencies": [
-      "QuantumTheory.Models.MassiveDirac.berryCurvature_lower",
-      "QuantumTheory.Models.MassiveDirac.berryCurvature_upper"
+      "QuantumTheory.Models.MassiveDirac.bandSign_oppositeBand"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -55932,9 +56166,6 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Models.MassiveDirac.berryCurvature_massless",
-      "QuantumTheory.Models.MassiveDirac.berryCurvature_neg_mass",
-      "QuantumTheory.Models.MassiveDirac.berryCurvature_oppositeBand",
       "QuantumTheory.Models.MassiveDirac.forceMatrixBerryCurvature_eq_berryCurvature",
       "QuantumTheory.Models.MassiveDirac.radialCleanInterbandBastinPairLimitDensity_eq_energyDensity_mul_deriv"
     ],
@@ -55942,13 +56173,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Models.MassiveDirac.berryCurvature_massless",
-      "QuantumTheory.Models.MassiveDirac.berryCurvature_neg_mass",
-      "QuantumTheory.Models.MassiveDirac.berryCurvature_oppositeBand",
       "QuantumTheory.Models.MassiveDirac.forceMatrixBerryCurvature_eq_berryCurvature",
       "QuantumTheory.Models.MassiveDirac.radialCleanInterbandBastinPairLimitDensity_eq_energyDensity_mul_deriv"
     ],
-    "compiledConsumerCount": 5,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -56056,7 +56284,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "QuantumTheory.Models.MassiveDirac.coe_upperBandFermiSurfaceScalarOverlapWeight_eq_projectorTrace",
-    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.TransportRate",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Model.FermiSurfaceOverlap",
     "externalAxioms": [],
     "docString": "The real overlap weight embeds back into `ℂ` as exactly the projector trace on the Fermi circle.\nThis is the reality certificate for the physical scalar API whenever the Fermi radius is real and\nthe Fermi energy is nonzero. ",
     "directWrapperTargetModule": null,
@@ -56066,7 +56294,7 @@
       "QuantumTheory.Models.MassiveDirac.energy_metallicFermiRadius",
       "QuantumTheory.Models.MassiveDirac.energy_polar_eq_radial",
       "QuantumTheory.Models.MassiveDirac.metallicFermiRadius_sq",
-      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.TransportRate.0.QuantumTheory.Models.MassiveDirac.upperBandProjectorOverlap_eq"
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Model.FermiSurfaceOverlap.0.QuantumTheory.Models.MassiveDirac.upperBandProjectorOverlap_eq"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -58265,7 +58493,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "QuantumTheory.Models.MassiveDirac.energy_metallicFermiRadius",
-    "module": "LeanCondensedMatter.Models.MassiveDirac.Model.Occupation",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Model.FermiSurface",
     "externalAxioms": [],
     "docString": "The positive Dirac energy at the metallic Fermi radius is exactly `ε_F` whenever\n`|m| ≤ ε_F`. ",
     "directWrapperTargetModule": null,
@@ -58509,7 +58737,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "QuantumTheory.Models.MassiveDirac.energy_radial_eq_imp_eq_of_nonneg",
-    "module": "LeanCondensedMatter.Models.MassiveDirac.Model.Occupation",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Model.FermiSurface",
     "externalAxioms": [],
     "docString": "The positive massive-Dirac radial energy is injective on nonnegative momentum when `v ≠ 0`. ",
     "directWrapperTargetModule": null,
@@ -58553,7 +58781,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "QuantumTheory.Models.MassiveDirac.energy_radial_lt_of_lt_of_nonneg",
-    "module": "LeanCondensedMatter.Models.MassiveDirac.Model.Occupation",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Model.FermiSurface",
     "externalAxioms": [],
     "docString": "Positive radial energy is strictly increasing on the nonnegative axis when `v ≠ 0`. ",
     "directWrapperTargetModule": null,
@@ -59594,19 +59822,20 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
     "name": "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient_diagonal_harmonics",
-    "module": "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedRadialTrace",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedRadialHarmonics",
     "externalAxioms": [],
     "docString": "Finite-cutoff diagonal crossed-current Pauli coefficients split after radial momentum\nintegration into independent zeroth- and second-harmonic integrals. No momentum measure is\nadded beyond that already present in the real-space Fourier current blocks.\n\nThis does not evaluate the integrals or remove the regulators. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient_eq_diagonal_harmonic_integrals"
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient_eq_diagonal_harmonic_integrals",
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient_origin_diagonal_eq"
     ],
     "dependencies": [
       "QuantumTheory.Models.MassiveDirac.continuous_finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel",
@@ -59617,9 +59846,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient_eq_diagonal_harmonic_integrals"
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient_eq_diagonal_harmonic_integrals",
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient_origin_diagonal_eq"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -59647,7 +59877,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient_eq_diagonal_harmonic_integrals",
-    "module": "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedRadialTrace",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedRadialHarmonics",
     "externalAxioms": [],
     "docString": "Reconstruct the two diagonal Pauli coefficients of the finite-cutoff crossed current\nfrom the independent isotropic `K0` and traceless `K2` radial integrals.\nBoth coefficients inherit the existing physical momentum measure exactly once.\n\nThis inverts the integrated sum/difference identity without taking a cutoff or\nbroadening limit; no `X` or `Psi` diagram has been evaluated. ",
     "directWrapperTargetModule": null,
@@ -59737,7 +59967,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient_eq_radialKernel_integral",
-    "module": "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedRadialTrace",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedRadialCoefficients",
     "externalAxioms": [],
     "docString": "In the finite-broadening finite-cutoff regime, every radial Gaussian-crossed current Pauli component\nis the momentum-measure prefactor times the integral of its explicit pointwise Pauli-vector\nkernel. ",
     "directWrapperTargetModule": null,
@@ -59754,7 +59984,7 @@
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel_pauliVectorCoefficient",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient_eq_entryKernel_integrals",
       "QuantumTheory.Models.MassiveDirac.intervalIntegrable_finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel",
-      "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedRadialTrace.0.QuantumTheory.Models.MassiveDirac.pauliVectorCoefficient_prefactor_intervalIntegral"
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedRadialCoefficients.0.QuantumTheory.Models.MassiveDirac.pauliVectorCoefficient_prefactor_intervalIntegral"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -59767,6 +59997,47 @@
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_x_eq_harmonic_components"
     ],
     "compiledConsumerCount": 6,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (v m probeEnergy broadening disorderStrength hbar pMax : ℝ),\n  broadening ≠ 0 →\n    0 ≤ disorderStrength →\n      0 ≤ pMax →\n        QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient\n            InternalSpace.PauliAxis.x 0 v m probeEnergy broadening disorderStrength hbar pMax 0 =\n          QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient\n            InternalSpace.PauliAxis.y 1 v m probeEnergy broadening disorderStrength hbar pMax 0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient_origin_diagonal_eq",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedRadialHarmonics",
+    "externalAxioms": [],
+    "docString": "At zero real-space separation, rotational isotropy forces equality of the\ntwo diagonal in-plane crossed-current Pauli coefficients. This holds before any\nmomentum-cutoff, broadening, or weak-disorder limit. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient_diagonal_harmonics",
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedRadialHarmonics.0.QuantumTheory.Models.MassiveDirac.polarFourierSecondCosineAngularKernel_zero"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -59794,7 +60065,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient_y_zero_eq_neg_x_one",
-    "module": "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedRadialTrace",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedRadialHarmonics",
     "externalAxioms": [],
     "docString": "The pointwise transverse antisymmetry survives radial momentum integration in the\nphysical finite-broadening finite-cutoff regime. It reduces the number of independent\ncrossed-current coefficients needed for the `X` and `Psi` trace evaluations. ",
     "directWrapperTargetModule": null,
@@ -59969,7 +60240,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentScalarCoefficient_eq_radialKernel_integral",
-    "module": "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedRadialTrace",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedRadialCoefficients",
     "externalAxioms": [],
     "docString": "In the finite-broadening finite-cutoff regime, the radial Gaussian-crossed current scalar\ncoefficient is the momentum-measure prefactor times the integral of its explicit pointwise\nPauli scalar kernel. ",
     "directWrapperTargetModule": null,
@@ -59982,7 +60253,7 @@
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel_pauliScalarCoefficient",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentScalarCoefficient_eq_entryKernel_integrals",
       "QuantumTheory.Models.MassiveDirac.intervalIntegrable_finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel",
-      "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedRadialTrace.0.QuantumTheory.Models.MassiveDirac.pauliScalarCoefficient_prefactor_intervalIntegral"
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedRadialCoefficients.0.QuantumTheory.Models.MassiveDirac.pauliScalarCoefficient_prefactor_intervalIntegral"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -60018,7 +60289,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrent_first_harmonic_channels",
-    "module": "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedRadialTrace",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedRadialHarmonics",
     "externalAxioms": [],
     "docString": "The four non-diagonal first-harmonic channels of the regulated Gaussian-crossed\nradial current are exact source-resolved scalar momentum integrals. The source-x and\nsource-y Pauli-scalar and Pauli-z components all use the same Fourier K1 kernel,\nwith distinct spectral coefficient combinations and signs.\n\nThese finite-cutoff identities reuse the physical Fourier momentum measure and do\nnot evaluate the radial integrals or remove the regulators. ",
     "directWrapperTargetModule": null,
@@ -60065,7 +60336,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrent_origin_scalar_and_z_eq_zero",
-    "module": "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedRadialTrace",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedRadialHarmonics",
     "externalAxioms": [],
     "docString": "The zeroth-radius crossed-current block has neither a Pauli-scalar nor a\nlongitudinal Pauli-z component. Both channels carry the first angular Fourier\nharmonic, which vanishes at the origin before momentum integration.\n\nThis is an exact finite-broadening, finite-cutoff selection rule; it does not\nrequire a real-space regulator limit. ",
     "directWrapperTargetModule": null,
@@ -60284,7 +60555,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ),\n  broadening ≠ 0 →\n    0 ≤ disorderStrength →\n      0 ≤ pMax →\n        QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel\n            QuantumTheory.Models.MassiveDirac.GaussianCrossedDiagram.psi v m probeEnergy broadening disorderStrength\n            hbar pMax radius =\n          have factor :=\n            QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedCurrentFactor v m probeEnergy\n              broadening disorderStrength hbar pMax;\n          have aA := fun p =>\n            QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonScalarCoefficient\n              QuantumTheory.Transport.SpectralSide.advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax;\n          have aR := fun p =>\n            QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonScalarCoefficient\n              QuantumTheory.Transport.SpectralSide.retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax;\n          have dA := fun p =>\n            QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonPauliCoefficient InternalSpace.PauliAxis.z\n              QuantumTheory.Transport.SpectralSide.advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax;\n          have dR := fun p =>\n            QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonPauliCoefficient InternalSpace.PauliAxis.z\n              QuantumTheory.Transport.SpectralSide.retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax;\n          have bA := fun p =>\n            QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonPauliCoefficient InternalSpace.PauliAxis.x\n              QuantumTheory.Transport.SpectralSide.advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax;\n          have bR := fun p =>\n            QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonPauliCoefficient InternalSpace.PauliAxis.x\n              QuantumTheory.Transport.SpectralSide.retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax;\n          have a :=\n            ↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n              ∫ (p : ℝ) in 0..pMax,\n                ↑p *\n                  (QuantumTheory.Transport.polarFourierFirstCosineAngularKernel (p * radius / hbar) *\n                    ((aR p * bA p + aA p * bR p) * factor));\n          have b :=\n            ↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n              ∫ (p : ℝ) in 0..pMax,\n                ↑p * (QuantumTheory.Transport.polarFourierZerothAngularKernel (p * radius / hbar) * aR p);\n          have c := b;\n          have d :=\n            -(↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n                ∫ (p : ℝ) in 0..pMax,\n                  ↑p *\n                    (QuantumTheory.Transport.polarFourierFirstCosineAngularKernel (p * radius / hbar) *\n                      (-Complex.I * (bR p * dA p - bA p * dR p) * factor)));\n          have isotropic :=\n            ↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n              ∫ (p : ℝ) in 0..pMax,\n                2 * ↑p *\n                  (QuantumTheory.Transport.polarFourierZerothAngularKernel (p * radius / hbar) *\n                    ((aA p * aR p - dA p * dR p) * factor));\n          have anisotropic :=\n            ↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n              ∫ (p : ℝ) in 0..pMax,\n                2 * ↑p *\n                  (QuantumTheory.Transport.polarFourierSecondCosineAngularKernel (p * radius / hbar) *\n                    (bA p * bR p * factor));\n          have ux := (isotropic + anisotropic) / 2;\n          have uy :=\n            ↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n              ∫ (p : ℝ) in 0..pMax,\n                ↑p *\n                  (QuantumTheory.Transport.polarFourierZerothAngularKernel (p * radius / hbar) *\n                    (Complex.I * (aR p * dA p - aA p * dR p) * factor));\n          have uz :=\n            ↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n              ∫ (p : ℝ) in 0..pMax,\n                ↑p *\n                  (QuantumTheory.Transport.polarFourierFirstCosineAngularKernel (p * radius / hbar) *\n                    ((bR p * dA p + bA p * dR p) * factor));\n          have qx := -uy;\n          have qy := (isotropic - anisotropic) / 2;\n          have qz :=\n            ↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n              ∫ (p : ℝ) in 0..pMax,\n                ↑p *\n                  (QuantumTheory.Transport.polarFourierFirstCosineAngularKernel (p * radius / hbar) *\n                    (-Complex.I * (aA p * bR p - aR p * bA p) * factor));\n          have grx :=\n            ↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n              ∫ (p : ℝ) in 0..pMax,\n                ↑p * (QuantumTheory.Transport.polarFourierFirstCosineAngularKernel (p * radius / hbar) * bR p);\n          have grz :=\n            ↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n              ∫ (p : ℝ) in 0..pMax,\n                ↑p * (QuantumTheory.Transport.polarFourierZerothAngularKernel (p * radius / hbar) * dR p);\n          have amplitude :=\n            2 *\n              ((a * b - ux * grx + uz * grz) * (c * d + grx * qx - grz * qz) +\n                    (-a * grx + b * ux + Complex.I * uy * grz) * (c * qx + d * grx - Complex.I * grz * qy) +\n                  (b * uy - Complex.I * (uz * grx + ux * grz)) * (c * qy + Complex.I * (grz * qx + grx * qz)) +\n                (a * grz + b * uz + Complex.I * uy * grx) * (-c * qz + d * grz + Complex.I * grx * qy));\n          amplitude + (starRingEnd ℂ) amplitude",
+    "statement": "∀ (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ),\n  broadening ≠ 0 →\n    0 ≤ disorderStrength →\n      0 ≤ pMax →\n        QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel\n            QuantumTheory.Models.MassiveDirac.GaussianCrossedDiagram.psi v m probeEnergy broadening disorderStrength\n            hbar pMax radius =\n          have factor :=\n            QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedCurrentFactor v m probeEnergy\n              broadening disorderStrength hbar pMax;\n          have aA := fun p =>\n            QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonScalarCoefficient\n              QuantumTheory.Transport.SpectralSide.advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax;\n          have aR := fun p =>\n            QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonScalarCoefficient\n              QuantumTheory.Transport.SpectralSide.retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax;\n          have dA := fun p =>\n            QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonPauliCoefficient InternalSpace.PauliAxis.z\n              QuantumTheory.Transport.SpectralSide.advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax;\n          have dR := fun p =>\n            QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonPauliCoefficient InternalSpace.PauliAxis.z\n              QuantumTheory.Transport.SpectralSide.retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax;\n          have bA := fun p =>\n            QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonPauliCoefficient InternalSpace.PauliAxis.x\n              QuantumTheory.Transport.SpectralSide.advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax;\n          have bR := fun p =>\n            QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonPauliCoefficient InternalSpace.PauliAxis.x\n              QuantumTheory.Transport.SpectralSide.retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax;\n          have a :=\n            ↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n              (Complex.I * ↑(radius / hbar) / 2 *\n                ∫ (p : ℝ) in 0..pMax,\n                  ↑p ^ 2 *\n                    ((QuantumTheory.Transport.polarFourierZerothAngularKernel (p * radius / hbar) -\n                        QuantumTheory.Transport.polarFourierSecondCosineAngularKernel (p * radius / hbar)) *\n                      ((aR p * bA p + aA p * bR p) * factor)));\n          have b :=\n            ↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n              ∫ (p : ℝ) in 0..pMax,\n                ↑p * (QuantumTheory.Transport.polarFourierZerothAngularKernel (p * radius / hbar) * aR p);\n          have c := b;\n          have d :=\n            -(↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n                (Complex.I * ↑(radius / hbar) / 2 *\n                  ∫ (p : ℝ) in 0..pMax,\n                    ↑p ^ 2 *\n                      ((QuantumTheory.Transport.polarFourierZerothAngularKernel (p * radius / hbar) -\n                          QuantumTheory.Transport.polarFourierSecondCosineAngularKernel (p * radius / hbar)) *\n                        (-Complex.I * (bR p * dA p - bA p * dR p) * factor))));\n          have isotropic :=\n            ↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n              ∫ (p : ℝ) in 0..pMax,\n                2 * ↑p *\n                  (QuantumTheory.Transport.polarFourierZerothAngularKernel (p * radius / hbar) *\n                    ((aA p * aR p - dA p * dR p) * factor));\n          have anisotropic :=\n            ↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n              ∫ (p : ℝ) in 0..pMax,\n                2 * ↑p *\n                  (QuantumTheory.Transport.polarFourierSecondCosineAngularKernel (p * radius / hbar) *\n                    (bA p * bR p * factor));\n          have ux := (isotropic + anisotropic) / 2;\n          have uy :=\n            ↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n              ∫ (p : ℝ) in 0..pMax,\n                ↑p *\n                  (QuantumTheory.Transport.polarFourierZerothAngularKernel (p * radius / hbar) *\n                    (Complex.I * (aR p * dA p - aA p * dR p) * factor));\n          have uz :=\n            ↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n              (Complex.I * ↑(radius / hbar) / 2 *\n                ∫ (p : ℝ) in 0..pMax,\n                  ↑p ^ 2 *\n                    ((QuantumTheory.Transport.polarFourierZerothAngularKernel (p * radius / hbar) -\n                        QuantumTheory.Transport.polarFourierSecondCosineAngularKernel (p * radius / hbar)) *\n                      ((bR p * dA p + bA p * dR p) * factor)));\n          have qx := -uy;\n          have qy := (isotropic - anisotropic) / 2;\n          have qz :=\n            ↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n              (Complex.I * ↑(radius / hbar) / 2 *\n                ∫ (p : ℝ) in 0..pMax,\n                  ↑p ^ 2 *\n                    ((QuantumTheory.Transport.polarFourierZerothAngularKernel (p * radius / hbar) -\n                        QuantumTheory.Transport.polarFourierSecondCosineAngularKernel (p * radius / hbar)) *\n                      (-Complex.I * (aA p * bR p - aR p * bA p) * factor)));\n          have grx :=\n            ↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n              (Complex.I * ↑(radius / hbar) / 2 *\n                ∫ (p : ℝ) in 0..pMax,\n                  ↑p ^ 2 *\n                    ((QuantumTheory.Transport.polarFourierZerothAngularKernel (p * radius / hbar) -\n                        QuantumTheory.Transport.polarFourierSecondCosineAngularKernel (p * radius / hbar)) *\n                      bR p));\n          have grz :=\n            ↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n              ∫ (p : ℝ) in 0..pMax,\n                ↑p * (QuantumTheory.Transport.polarFourierZerothAngularKernel (p * radius / hbar) * dR p);\n          have amplitude :=\n            2 *\n              ((a * b - ux * grx + uz * grz) * (c * d + grx * qx - grz * qz) +\n                    (-a * grx + b * ux + Complex.I * uy * grz) * (c * qx + d * grx - Complex.I * grz * qy) +\n                  (b * uy - Complex.I * (uz * grx + ux * grz)) * (c * qy + Complex.I * (grz * qx + grx * qz)) +\n                (a * grz + b * uz + Complex.I * uy * grx) * (-c * qz + d * grz + Complex.I * grx * qy));\n          amplitude + (starRingEnd ℂ) amplitude",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -60299,7 +60570,7 @@
     "name": "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_psi_eq_harmonic_components",
     "module": "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedRadialTrace",
     "externalAxioms": [],
-    "docString": "The finite-regulator crossed Psi trace uses explicit K0/K2 diagonal-current moments and\nall four source-resolved K1 scalar/z moments, the transverse K0 current, and the\nGreen scalar/x/z K0/K1 moments. The conjugate partner and finite regulators remain. ",
+    "docString": "The finite-regulator crossed Psi trace uses explicit K0/K2 diagonal-current\nmoments and K0-K2 reductions of all first-harmonic current and Green terms.\nThe transverse K0 current, conjugate partner, and finite regulators remain. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [],
@@ -60309,7 +60580,8 @@
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrent_first_harmonic_channels",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_psi_eq_explicit_pauli_components",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient_eq_radialKernel_integral",
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenScalarCoefficient_eq_radialKernel_integral"
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenScalarCoefficient_eq_radialKernel_integral",
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedRadialTrace.0.QuantumTheory.Models.MassiveDirac.gaussianCrossedRadialFirstHarmonicIntegral_eq_difference"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -60553,7 +60825,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ),\n  broadening ≠ 0 →\n    0 ≤ disorderStrength →\n      0 ≤ pMax →\n        QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel\n            QuantumTheory.Models.MassiveDirac.GaussianCrossedDiagram.x v m probeEnergy broadening disorderStrength hbar\n            pMax radius =\n          have factor :=\n            QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedCurrentFactor v m probeEnergy\n              broadening disorderStrength hbar pMax;\n          have aA := fun p =>\n            QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonScalarCoefficient\n              QuantumTheory.Transport.SpectralSide.advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax;\n          have aR := fun p =>\n            QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonScalarCoefficient\n              QuantumTheory.Transport.SpectralSide.retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax;\n          have dA := fun p =>\n            QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonPauliCoefficient InternalSpace.PauliAxis.z\n              QuantumTheory.Transport.SpectralSide.advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax;\n          have dR := fun p =>\n            QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonPauliCoefficient InternalSpace.PauliAxis.z\n              QuantumTheory.Transport.SpectralSide.retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax;\n          have bA := fun p =>\n            QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonPauliCoefficient InternalSpace.PauliAxis.x\n              QuantumTheory.Transport.SpectralSide.advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax;\n          have bR := fun p =>\n            QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonPauliCoefficient InternalSpace.PauliAxis.x\n              QuantumTheory.Transport.SpectralSide.retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax;\n          have a :=\n            ↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n              ∫ (p : ℝ) in 0..pMax,\n                ↑p *\n                  (QuantumTheory.Transport.polarFourierFirstCosineAngularKernel (p * radius / hbar) *\n                    ((aR p * bA p + aA p * bR p) * factor));\n          have b :=\n            ↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n              ∫ (p : ℝ) in 0..pMax,\n                ↑p * (QuantumTheory.Transport.polarFourierZerothAngularKernel (p * radius / hbar) * aR p);\n          have c :=\n            ↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n              ∫ (p : ℝ) in 0..pMax,\n                ↑p *\n                  (QuantumTheory.Transport.polarFourierFirstCosineAngularKernel (p * radius / hbar) *\n                    (-Complex.I * (bR p * dA p - bA p * dR p) * factor));\n          have d :=\n            ↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n              ∫ (p : ℝ) in 0..pMax,\n                ↑p * (QuantumTheory.Transport.polarFourierZerothAngularKernel (p * radius / hbar) * aA p);\n          have isotropic :=\n            ↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n              ∫ (p : ℝ) in 0..pMax,\n                2 * ↑p *\n                  (QuantumTheory.Transport.polarFourierZerothAngularKernel (p * radius / hbar) *\n                    ((aA p * aR p - dA p * dR p) * factor));\n          have anisotropic :=\n            ↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n              ∫ (p : ℝ) in 0..pMax,\n                2 * ↑p *\n                  (QuantumTheory.Transport.polarFourierSecondCosineAngularKernel (p * radius / hbar) *\n                    (bA p * bR p * factor));\n          have ux := (isotropic + anisotropic) / 2;\n          have uy :=\n            ↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n              ∫ (p : ℝ) in 0..pMax,\n                ↑p *\n                  (QuantumTheory.Transport.polarFourierZerothAngularKernel (p * radius / hbar) *\n                    (Complex.I * (aR p * dA p - aA p * dR p) * factor));\n          have uz :=\n            ↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n              ∫ (p : ℝ) in 0..pMax,\n                ↑p *\n                  (QuantumTheory.Transport.polarFourierFirstCosineAngularKernel (p * radius / hbar) *\n                    ((bR p * dA p + bA p * dR p) * factor));\n          have wx := -uy;\n          have wy := (isotropic - anisotropic) / 2;\n          have wz :=\n            ↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n              ∫ (p : ℝ) in 0..pMax,\n                ↑p *\n                  (QuantumTheory.Transport.polarFourierFirstCosineAngularKernel (p * radius / hbar) *\n                    (-Complex.I * (aA p * bR p - aR p * bA p) * factor));\n          have grx :=\n            ↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n              ∫ (p : ℝ) in 0..pMax,\n                ↑p * (QuantumTheory.Transport.polarFourierFirstCosineAngularKernel (p * radius / hbar) * bR p);\n          have grz :=\n            ↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n              ∫ (p : ℝ) in 0..pMax,\n                ↑p * (QuantumTheory.Transport.polarFourierZerothAngularKernel (p * radius / hbar) * dR p);\n          have gax :=\n            ↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n              ∫ (p : ℝ) in 0..pMax,\n                ↑p * (QuantumTheory.Transport.polarFourierFirstCosineAngularKernel (p * radius / hbar) * bA p);\n          have gaz :=\n            ↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n              ∫ (p : ℝ) in 0..pMax,\n                ↑p * (QuantumTheory.Transport.polarFourierZerothAngularKernel (p * radius / hbar) * dA p);\n          2 *\n            ((a * b - ux * grx + uz * grz) * (c * d - wx * gax + wz * gaz) +\n                  (-a * grx + b * ux + Complex.I * uy * grz) * (-c * gax + d * wx + Complex.I * wy * gaz) +\n                (b * uy - Complex.I * (uz * grx + ux * grz)) * (d * wy - Complex.I * (wz * gax + wx * gaz)) +\n              (a * grz + b * uz + Complex.I * uy * grx) * (c * gaz + d * wz + Complex.I * wy * gax))",
+    "statement": "∀ (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ),\n  broadening ≠ 0 →\n    0 ≤ disorderStrength →\n      0 ≤ pMax →\n        QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel\n            QuantumTheory.Models.MassiveDirac.GaussianCrossedDiagram.x v m probeEnergy broadening disorderStrength hbar\n            pMax radius =\n          have factor :=\n            QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedCurrentFactor v m probeEnergy\n              broadening disorderStrength hbar pMax;\n          have aA := fun p =>\n            QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonScalarCoefficient\n              QuantumTheory.Transport.SpectralSide.advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax;\n          have aR := fun p =>\n            QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonScalarCoefficient\n              QuantumTheory.Transport.SpectralSide.retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax;\n          have dA := fun p =>\n            QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonPauliCoefficient InternalSpace.PauliAxis.z\n              QuantumTheory.Transport.SpectralSide.advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax;\n          have dR := fun p =>\n            QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonPauliCoefficient InternalSpace.PauliAxis.z\n              QuantumTheory.Transport.SpectralSide.retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax;\n          have bA := fun p =>\n            QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonPauliCoefficient InternalSpace.PauliAxis.x\n              QuantumTheory.Transport.SpectralSide.advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax;\n          have bR := fun p =>\n            QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonPauliCoefficient InternalSpace.PauliAxis.x\n              QuantumTheory.Transport.SpectralSide.retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax;\n          have a :=\n            ↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n              (Complex.I * ↑(radius / hbar) / 2 *\n                ∫ (p : ℝ) in 0..pMax,\n                  ↑p ^ 2 *\n                    ((QuantumTheory.Transport.polarFourierZerothAngularKernel (p * radius / hbar) -\n                        QuantumTheory.Transport.polarFourierSecondCosineAngularKernel (p * radius / hbar)) *\n                      ((aR p * bA p + aA p * bR p) * factor)));\n          have b :=\n            ↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n              ∫ (p : ℝ) in 0..pMax,\n                ↑p * (QuantumTheory.Transport.polarFourierZerothAngularKernel (p * radius / hbar) * aR p);\n          have c :=\n            ↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n              (Complex.I * ↑(radius / hbar) / 2 *\n                ∫ (p : ℝ) in 0..pMax,\n                  ↑p ^ 2 *\n                    ((QuantumTheory.Transport.polarFourierZerothAngularKernel (p * radius / hbar) -\n                        QuantumTheory.Transport.polarFourierSecondCosineAngularKernel (p * radius / hbar)) *\n                      (-Complex.I * (bR p * dA p - bA p * dR p) * factor)));\n          have d :=\n            ↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n              ∫ (p : ℝ) in 0..pMax,\n                ↑p * (QuantumTheory.Transport.polarFourierZerothAngularKernel (p * radius / hbar) * aA p);\n          have isotropic :=\n            ↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n              ∫ (p : ℝ) in 0..pMax,\n                2 * ↑p *\n                  (QuantumTheory.Transport.polarFourierZerothAngularKernel (p * radius / hbar) *\n                    ((aA p * aR p - dA p * dR p) * factor));\n          have anisotropic :=\n            ↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n              ∫ (p : ℝ) in 0..pMax,\n                2 * ↑p *\n                  (QuantumTheory.Transport.polarFourierSecondCosineAngularKernel (p * radius / hbar) *\n                    (bA p * bR p * factor));\n          have ux := (isotropic + anisotropic) / 2;\n          have uy :=\n            ↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n              ∫ (p : ℝ) in 0..pMax,\n                ↑p *\n                  (QuantumTheory.Transport.polarFourierZerothAngularKernel (p * radius / hbar) *\n                    (Complex.I * (aR p * dA p - aA p * dR p) * factor));\n          have uz :=\n            ↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n              (Complex.I * ↑(radius / hbar) / 2 *\n                ∫ (p : ℝ) in 0..pMax,\n                  ↑p ^ 2 *\n                    ((QuantumTheory.Transport.polarFourierZerothAngularKernel (p * radius / hbar) -\n                        QuantumTheory.Transport.polarFourierSecondCosineAngularKernel (p * radius / hbar)) *\n                      ((bR p * dA p + bA p * dR p) * factor)));\n          have wx := -uy;\n          have wy := (isotropic - anisotropic) / 2;\n          have wz :=\n            ↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n              (Complex.I * ↑(radius / hbar) / 2 *\n                ∫ (p : ℝ) in 0..pMax,\n                  ↑p ^ 2 *\n                    ((QuantumTheory.Transport.polarFourierZerothAngularKernel (p * radius / hbar) -\n                        QuantumTheory.Transport.polarFourierSecondCosineAngularKernel (p * radius / hbar)) *\n                      (-Complex.I * (aA p * bR p - aR p * bA p) * factor)));\n          have grx :=\n            ↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n              (Complex.I * ↑(radius / hbar) / 2 *\n                ∫ (p : ℝ) in 0..pMax,\n                  ↑p ^ 2 *\n                    ((QuantumTheory.Transport.polarFourierZerothAngularKernel (p * radius / hbar) -\n                        QuantumTheory.Transport.polarFourierSecondCosineAngularKernel (p * radius / hbar)) *\n                      bR p));\n          have grz :=\n            ↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n              ∫ (p : ℝ) in 0..pMax,\n                ↑p * (QuantumTheory.Transport.polarFourierZerothAngularKernel (p * radius / hbar) * dR p);\n          have gax :=\n            ↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n              (Complex.I * ↑(radius / hbar) / 2 *\n                ∫ (p : ℝ) in 0..pMax,\n                  ↑p ^ 2 *\n                    ((QuantumTheory.Transport.polarFourierZerothAngularKernel (p * radius / hbar) -\n                        QuantumTheory.Transport.polarFourierSecondCosineAngularKernel (p * radius / hbar)) *\n                      bA p));\n          have gaz :=\n            ↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n              ∫ (p : ℝ) in 0..pMax,\n                ↑p * (QuantumTheory.Transport.polarFourierZerothAngularKernel (p * radius / hbar) * dA p);\n          2 *\n            ((a * b - ux * grx + uz * grz) * (c * d - wx * gax + wz * gaz) +\n                  (-a * grx + b * ux + Complex.I * uy * grz) * (-c * gax + d * wx + Complex.I * wy * gaz) +\n                (b * uy - Complex.I * (uz * grx + ux * grz)) * (d * wy - Complex.I * (wz * gax + wx * gaz)) +\n              (a * grz + b * uz + Complex.I * uy * grx) * (c * gaz + d * wz + Complex.I * wy * gax))",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -60568,7 +60840,7 @@
     "name": "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_x_eq_harmonic_components",
     "module": "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedRadialTrace",
     "externalAxioms": [],
-    "docString": "The finite-regulator crossed X trace uses explicit K0/K2 diagonal-current moments and\nall four source-resolved K1 scalar/z moments. The transverse Pauli current is also\nan explicit K0 moment; all Green scalar/x/z components have K0/K1 radial integrals. ",
+    "docString": "The finite-regulator crossed X trace uses K0/K2 diagonal-current moments and\nthe K0-K2 recurrence for all four scalar/z crossed-current first harmonics.\nThe transverse current and scalar/z Green channels retain K0 moments, while\nthe in-plane Green components use the same K0-K2 reduction. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [],
@@ -60578,7 +60850,8 @@
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrent_first_harmonic_channels",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_x_eq_explicit_pauli_components",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient_eq_radialKernel_integral",
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenScalarCoefficient_eq_radialKernel_integral"
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenScalarCoefficient_eq_radialKernel_integral",
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedRadialTrace.0.QuantumTheory.Models.MassiveDirac.gaussianCrossedRadialFirstHarmonicIntegral_eq_difference"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -60718,6 +60991,91 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedTraceKernel_radialAxis_eq"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (diagram : QuantumTheory.Models.MassiveDirac.GaussianCrossedDiagram)\n  (v m probeEnergy broadening disorderStrength hbar pMax rMax : ℝ),\n  (∀ (radius angle : ℝ),\n      have tensor :=\n        QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor diagram v m\n          probeEnergy broadening disorderStrength hbar pMax radius;\n      QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedTraceKernel diagram v m probeEnergy\n          broadening disorderStrength hbar pMax (QuantumTheory.Transport.polarPoint2D radius angle) =\n        ↑(Real.cos angle) ^ 2 * tensor 0 1 - ↑(Real.sin angle) ^ 2 * tensor 1 0 +\n          ↑(Real.cos angle) * ↑(Real.sin angle) * (tensor 0 0 - tensor 1 1)) →\n    QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceIntegral diagram v m\n        probeEnergy broadening disorderStrength hbar pMax rMax =\n      ↑(2 * Real.pi) *\n        ∫ (radius : ℝ) in 0..rMax,\n          ↑radius *\n            ((QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor diagram v\n                  m probeEnergy broadening disorderStrength hbar pMax radius 0 1 -\n                QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor diagram\n                  v m probeEnergy broadening disorderStrength hbar pMax radius 1 0) /\n              2)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceIntegral_eq_radial_antisymmetric_trace",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedRealSpaceIntegral",
+    "externalAxioms": [],
+    "docString": "If the full angular crossed trace transforms as the `xy` component of\nits canonical radial source-pair trace tensor under SO(2), the *complete*\nfinite-radius real-space integral is the radial integral of the antisymmetric\n`xy-yx` sector.\n\nThe rotation-covariance hypothesis is explicit: it is not implied by the\npreviously proved radial-axis Fourier identities and must be discharged from\nthe model's Green/current rotation laws. This theorem performs the angular\nprojection, not the remaining radial or regulator limits. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceIntegral_eq_radial_harmonic_constant",
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedRealSpaceIntegral.0.QuantumTheory.Models.MassiveDirac.gaussianCrossedAngularTensorCoefficients_eval"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (diagram : QuantumTheory.Models.MassiveDirac.GaussianCrossedDiagram)\n  (v m probeEnergy broadening disorderStrength hbar pMax rMax : ℝ)\n  (coefficients : ℝ → QuantumTheory.Transport.AngularHarmonicCoefficients ℂ),\n  (∀ (radius angle : ℝ),\n      QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedTraceKernel diagram v m probeEnergy\n          broadening disorderStrength hbar pMax (QuantumTheory.Transport.polarPoint2D radius angle) =\n        (coefficients radius).eval angle) →\n    QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceIntegral diagram v m\n        probeEnergy broadening disorderStrength hbar pMax rMax =\n      ↑(2 * Real.pi) * ∫ (radius : ℝ) in 0..rMax, ↑radius * (coefficients radius).constant",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceIntegral_eq_radial_harmonic_constant",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedRealSpaceIntegral",
+    "externalAxioms": [],
+    "docString": "Finite real-space angular integration extracts only the constant harmonic of\nthe *full* crossed trace kernel. The supplied expansion is over the actual\npolar real-space point, not merely the radial-axis restriction.\n\nThis is an exact finite-regulator reduction conditional on a pointwise angular\nharmonic representation; proving that representation for the model's X/Psi\ntraces and evaluating the remaining radial integral are separate tasks. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceIntegral_eq_radial_antisymmetric_trace"
+    ],
+    "dependencies": [
+      "QuantumTheory.Transport.AngularHarmonicCoefficients.integral_eval"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceIntegral_eq_radial_antisymmetric_trace"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -61401,7 +61759,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient_eq_radialKernel_integral",
-    "module": "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedRadialTrace",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedRadialCoefficients",
     "externalAxioms": [],
     "docString": "In the finite-broadening finite-cutoff regime, every radial Green Pauli component is the momentum\nmeasure prefactor times the integral of its explicit pointwise Pauli-vector kernel. ",
     "directWrapperTargetModule": null,
@@ -61414,7 +61772,7 @@
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenEntryKernel_pauliVectorCoefficient",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient_eq_entryKernel_integrals",
       "QuantumTheory.Models.MassiveDirac.intervalIntegrable_finiteCutoffContinuumBornDysonRadialGreenEntryKernel",
-      "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedRadialTrace.0.QuantumTheory.Models.MassiveDirac.pauliVectorCoefficient_prefactor_intervalIntegral"
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedRadialCoefficients.0.QuantumTheory.Models.MassiveDirac.pauliVectorCoefficient_prefactor_intervalIntegral"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -61494,7 +61852,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenScalarCoefficient_eq_radialKernel_integral",
-    "module": "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedRadialTrace",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedRadialCoefficients",
     "externalAxioms": [],
     "docString": "In the finite-broadening finite-cutoff regime, the radial Green scalar coefficient is the momentum\nmeasure prefactor times the integral of its explicit pointwise Pauli scalar kernel. ",
     "directWrapperTargetModule": null,
@@ -61507,7 +61865,7 @@
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenEntryKernel_pauliScalarCoefficient",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenScalarCoefficient_eq_entryKernel_integrals",
       "QuantumTheory.Models.MassiveDirac.intervalIntegrable_finiteCutoffContinuumBornDysonRadialGreenEntryKernel",
-      "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedRadialTrace.0.QuantumTheory.Models.MassiveDirac.pauliScalarCoefficient_prefactor_intervalIntegral"
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedRadialCoefficients.0.QuantumTheory.Models.MassiveDirac.pauliScalarCoefficient_prefactor_intervalIntegral"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -63433,6 +63791,46 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
+    "terminal": true,
+    "statement": "∀ {R : Type u_1} [inst : Neg R] (diagram : QuantumTheory.Models.MassiveDirac.GaussianCrossedDiagram)\n  (greenRetarded greenAdvanced : R → QuantumTheory.Models.MassiveDirac.Matrix2)\n  (current : Fin 2 → R → QuantumTheory.Models.MassiveDirac.Matrix2) (r : R) (c s : ℝ),\n  QuantumTheory.Models.MassiveDirac.gaussianCrossedTraceKernel diagram greenRetarded greenAdvanced\n      (fun axis ρ => if axis = 0 then ↑c • current 0 ρ - ↑s • current 1 ρ else ↑s • current 0 ρ + ↑c • current 1 ρ) r =\n    ↑c ^ 2 *\n          QuantumTheory.Models.MassiveDirac.gaussianCrossedTraceKernel diagram greenRetarded greenAdvanced current r -\n        ↑s ^ 2 *\n          QuantumTheory.Models.MassiveDirac.gaussianCrossedTraceKernel diagram greenRetarded greenAdvanced\n            (fun axis ρ => if axis = 0 then current 1 ρ else current 0 ρ) r +\n      ↑c * ↑s *\n        (QuantumTheory.Models.MassiveDirac.gaussianCrossedTraceKernel diagram greenRetarded greenAdvanced\n            (fun x ρ => current 0 ρ) r -\n          QuantumTheory.Models.MassiveDirac.gaussianCrossedTraceKernel diagram greenRetarded greenAdvanced\n            (fun x ρ => current 1 ρ) r)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.MassiveDirac.gaussianCrossedTraceKernel_rotated_sources",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedTrace",
+    "externalAxioms": [],
+    "docString": "The four-current tensor values that enter a rotated crossed source pair.\nIn the `Psi` branch the Hermitian-conjugate trace is included exactly as in\nthe canonical crossed topology, so the rotation coefficients must be real. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedTrace.0.QuantumTheory.Models.MassiveDirac.trace_four_rotated_currents"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
     "terminal": false,
     "statement": "∀ (v m px py : ℝ),\n  QuantumTheory.Models.MassiveDirac.hamiltonianOperator v m px py =\n    ↑(v * px) • QuantumTheory.Models.MassiveDirac.matrixOperator QuantumTheory.Models.MassiveDirac.sigmaX +\n        ↑(v * py) • QuantumTheory.Models.MassiveDirac.matrixOperator QuantumTheory.Models.MassiveDirac.sigmaY +\n      ↑m • QuantumTheory.Models.MassiveDirac.matrixOperator QuantumTheory.Models.MassiveDirac.sigmaZ",
     "standardAxioms": [
@@ -64850,19 +65248,19 @@
     "dependents": [
       "QuantumTheory.Models.MassiveDirac.forceMatrixBerryCurvature_eq_berryCurvature",
       "QuantumTheory.Models.MassiveDirac.interbandEnergyGap_ne_zero_of_energy_ne_zero",
-      "QuantumTheory.Models.MassiveDirac.interbandEnergyGap_oppositeBand",
       "QuantumTheory.Models.MassiveDirac.two_mul_abs_mass_le_abs_interbandEnergyGap"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "QuantumTheory.Models.MassiveDirac.bandSign_oppositeBand"
+    ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.Models.MassiveDirac.forceMatrixBerryCurvature_eq_berryCurvature",
       "QuantumTheory.Models.MassiveDirac.interbandEnergyGap_ne_zero_of_energy_ne_zero",
-      "QuantumTheory.Models.MassiveDirac.interbandEnergyGap_oppositeBand",
       "QuantumTheory.Models.MassiveDirac.two_mul_abs_mass_le_abs_interbandEnergyGap"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -64949,8 +65347,7 @@
       "QuantumTheory.Models.MassiveDirac.bastinInterbandBlockDifference_im_div_gap_sq_eq_neg_chargeSq_berryCurvature"
     ],
     "dependencies": [
-      "QuantumTheory.Models.MassiveDirac.bandSign_oppositeBand",
-      "QuantumTheory.Models.MassiveDirac.interbandEnergyGap_eq"
+      "QuantumTheory.Models.MassiveDirac.oppositeBand_oppositeBand"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -65345,7 +65742,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "QuantumTheory.Models.MassiveDirac.isotropicFermiSurfaceMeanSquareVelocityX_eq",
-    "module": "LeanCondensedMatter.Models.MassiveDirac.Model.Occupation",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Model.FermiSurface",
     "externalAxioms": [],
     "docString": "In the metallic-or-band-edge regime, the isotropic Fermi-surface factor is\n\n`<v_x²>_FS = (v² / 2) * (1 - m² / ε_F²)`.\n",
     "directWrapperTargetModule": null,
@@ -65390,7 +65787,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "QuantumTheory.Models.MassiveDirac.isotropicFermiSurfaceMeanSquareVelocityX_pos",
-    "module": "LeanCondensedMatter.Models.MassiveDirac.Model.Occupation",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Model.FermiSurface",
     "externalAxioms": [],
     "docString": "In the strictly metallic regime `|m| < ε_F`, the isotropic Fermi-surface `v_x²` factor is\nstrictly positive when `v ≠ 0`. ",
     "directWrapperTargetModule": null,
@@ -65779,7 +66176,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "QuantumTheory.Models.MassiveDirac.metallicFermiRadius_nonneg",
-    "module": "LeanCondensedMatter.Models.MassiveDirac.Model.Occupation",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Model.FermiSurface",
     "externalAxioms": [],
     "docString": "The expression used for the metallic Fermi radius is always nonnegative. ",
     "directWrapperTargetModule": null,
@@ -65825,7 +66222,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "QuantumTheory.Models.MassiveDirac.metallicFermiRadius_sq",
-    "module": "LeanCondensedMatter.Models.MassiveDirac.Model.Occupation",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Model.FermiSurface",
     "externalAxioms": [],
     "docString": "Squaring the explicit metallic Fermi radius removes the square root and absolute value whenever\nthe Fermi energy lies at or above the mass magnitude. ",
     "directWrapperTargetModule": null,
@@ -66487,6 +66884,7 @@
     "dependents": [
       "QuantumTheory.Models.MassiveDirac.bastinInterbandBlockDifference_im_div_gap_sq_eq_neg_chargeSq_berryCurvature",
       "QuantumTheory.Models.MassiveDirac.bastinXYBandBlockTrace_opposite_source_radial",
+      "QuantumTheory.Models.MassiveDirac.interbandEnergyGap_oppositeBand",
       "QuantumTheory.Models.MassiveDirac.targetCenteredInterbandSpectatorCurrentFactor_radial_eq"
     ],
     "dependencies": [],
@@ -66495,9 +66893,10 @@
     "compiledConsumers": [
       "QuantumTheory.Models.MassiveDirac.bastinInterbandBlockDifference_im_div_gap_sq_eq_neg_chargeSq_berryCurvature",
       "QuantumTheory.Models.MassiveDirac.bastinXYBandBlockTrace_opposite_source_radial",
+      "QuantumTheory.Models.MassiveDirac.interbandEnergyGap_oppositeBand",
       "QuantumTheory.Models.MassiveDirac.targetCenteredInterbandSpectatorCurrentFactor_radial_eq"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 4,
     "axioms": [],
     "definitionallyEquivalentTo": [],
     "replacementCandidates": [],
@@ -67753,9 +68152,9 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "QuantumTheory.Models.MassiveDirac.radialEnergyDerivative_sq_metallicFermiRadius",
-    "module": "LeanCondensedMatter.Models.MassiveDirac.Model.Occupation",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Model.FermiSurface",
     "externalAxioms": [],
-    "docString": "At the occupation-derived metallic Fermi radius, the squared radial energy derivative has the\nstandard massive-Dirac Fermi-surface form\n`v^2 * (1 - m^2 / epsilon_F^2)`. ",
+    "docString": "At the metallic Fermi radius, the squared radial energy derivative has the\nstandard massive-Dirac Fermi-surface form\n`v^2 * (1 - m^2 / epsilon_F^2)`. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
@@ -67800,7 +68199,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "QuantumTheory.Models.MassiveDirac.radialEnergyDerivative_sq_metallicFermiRadius_pos",
-    "module": "LeanCondensedMatter.Models.MassiveDirac.Model.Occupation",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Model.FermiSurface",
     "externalAxioms": [],
     "docString": "In the strictly metallic regime `|m| < epsilon_F`, the squared Fermi-surface radial derivative\nis strictly positive when `v ≠ 0`. ",
     "directWrapperTargetModule": null,
@@ -78169,8 +78568,10 @@
     "directWrapperOf": null,
     "dependents": [
       "QuantumTheory.Models.MassiveDirac.continuumAngularGreenIntegralOfRegulator_eq",
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceIntegral_eq_radial_harmonic_constant",
       "QuantumTheory.Models.Parabolic2DEG.angularIntegratedCurrentProduct_eq_integral",
       "QuantumTheory.Transport.integral_complex_cos_mul_add_sin_mul_zero_two_pi",
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedRadialHarmonics.0.QuantumTheory.Models.MassiveDirac.polarFourierSecondCosineAngularKernel_zero",
       "_private.LeanCondensedMatter.Models.MassiveDirac.Vertex.PauliRung.0.QuantumTheory.Models.MassiveDirac.integral_polar_inPlane_modes"
     ],
     "dependencies": [
@@ -78183,11 +78584,13 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.Models.MassiveDirac.continuumAngularGreenIntegralOfRegulator_eq",
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceIntegral_eq_radial_harmonic_constant",
       "QuantumTheory.Models.Parabolic2DEG.angularIntegratedCurrentProduct_eq_integral",
       "QuantumTheory.Transport.integral_complex_cos_mul_add_sin_mul_zero_two_pi",
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedRadialHarmonics.0.QuantumTheory.Models.MassiveDirac.polarFourierSecondCosineAngularKernel_zero",
       "_private.LeanCondensedMatter.Models.MassiveDirac.Vertex.PauliRung.0.QuantumTheory.Models.MassiveDirac.integral_polar_inPlane_modes"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 6,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -82985,6 +83388,50 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
+    "terminal": false,
+    "statement": "∀ (hbar pMax radius : ℝ) (f : ℝ → ℂ),\n  2 *\n      ∫ (p : ℝ) in 0..pMax,\n        ↑p * (QuantumTheory.Transport.polarFourierFirstCosineAngularKernel (p * radius / hbar) * f p) =\n    Complex.I * ↑(radius / hbar) *\n      ∫ (p : ℝ) in 0..pMax,\n        ↑p ^ 2 *\n          ((QuantumTheory.Transport.polarFourierZerothAngularKernel (p * radius / hbar) -\n              QuantumTheory.Transport.polarFourierSecondCosineAngularKernel (p * radius / hbar)) *\n            f p)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.integral_polarFourierFirstCosineAngularKernel_two_mul_eq_zeroth_sub_second",
+    "module": "LeanCondensedMatter.Transport.Analysis.PolarFourier",
+    "externalAxioms": [],
+    "docString": "The unnormalized first-harmonic recurrence also holds after finite radial\nmomentum integration. This reduces any weighted K1 moment to K0/K2 moments\nwith one additional radial power, without division by the Fourier argument,\na regulator limit, or any assumption on the weight. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedRadialTrace.0.QuantumTheory.Models.MassiveDirac.gaussianCrossedRadialFirstHarmonicIntegral_eq_difference"
+    ],
+    "dependencies": [
+      "QuantumTheory.Transport.polarFourierFirstCosineAngularKernel_two_mul_eq_zeroth_sub_second"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedRadialTrace.0.QuantumTheory.Models.MassiveDirac.gaussianCrossedRadialFirstHarmonicIntegral_eq_difference"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
     "terminal": true,
     "statement": "∀ (z p : ℝ) (a b c : ℂ),\n  ∫ (θ : ℝ) in 0..2 * Real.pi,\n      ↑p * QuantumTheory.Transport.polarFourierRadialPhase z θ * (a + ↑(Real.cos θ) * b + ↑(Real.sin θ) * c) =\n    ↑p *\n      (QuantumTheory.Transport.polarFourierZerothAngularKernel z * a +\n        QuantumTheory.Transport.polarFourierFirstCosineAngularKernel z * b)",
     "standardAxioms": [
@@ -83885,6 +84332,50 @@
       "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedRealSpace.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel_neg_radius"
     ],
     "compiledConsumerCount": 3,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (z : ℝ),\n  2 * QuantumTheory.Transport.polarFourierFirstCosineAngularKernel z =\n    Complex.I * ↑z *\n      (QuantumTheory.Transport.polarFourierZerothAngularKernel z -\n        QuantumTheory.Transport.polarFourierSecondCosineAngularKernel z)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.polarFourierFirstCosineAngularKernel_two_mul_eq_zeroth_sub_second",
+    "module": "LeanCondensedMatter.Transport.Analysis.PolarFourier",
+    "externalAxioms": [],
+    "docString": "Angular integration by parts: the first Fourier harmonic is constrained by the\nzeroth and second harmonics without assuming nonzero radial argument.\n\nWith the unnormalized kernels used by the physical Fourier measure, this is\n`2 K1(z) = i z (K0(z) - K2(z))`. In Bessel notation this is the\n`J0 + J2 = 2 J1/z` recurrence, stated without division by `z`. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.integral_polarFourierFirstCosineAngularKernel_two_mul_eq_zeroth_sub_second"
+    ],
+    "dependencies": [
+      "_private.LeanCondensedMatter.Transport.Analysis.PolarFourier.0.QuantumTheory.Transport.polarFourierRadialPhase_hasDerivAt"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.integral_polarFourierFirstCosineAngularKernel_two_mul_eq_zeroth_sub_second"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -101345,6 +101836,47 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
+    "terminal": true,
+    "statement": "∀ (s : SecondQuantization.Common.Statistics) {a b n : ℕ} (e : Combinatorics.PositionSplitting a b n)\n  (left : Combinatorics.Pairing a) (right : Combinatorics.Pairing b) (value : Fin (2 * n) → Fin (2 * n) → ℂ)\n  (leftValue : Fin (2 * a) → Fin (2 * a) → ℂ) (rightValue : Fin (2 * b) → Fin (2 * b) → ℂ),\n  (StrictMono fun i => e (Sum.inl i)) →\n    (StrictMono fun j => e (Sum.inr j)) →\n      (∀ (pr : left.NormalizedPair),\n          value (↑((Combinatorics.Pairing.ofSplitNormalizedPairEquiv e left right) (Sum.inl pr))).1\n              (↑((Combinatorics.Pairing.ofSplitNormalizedPairEquiv e left right) (Sum.inl pr))).2 =\n            leftValue (↑pr).1 (↑pr).2) →\n        (∀ (pr : right.NormalizedPair),\n            value (↑((Combinatorics.Pairing.ofSplitNormalizedPairEquiv e left right) (Sum.inr pr))).1\n                (↑((Combinatorics.Pairing.ofSplitNormalizedPairEquiv e left right) (Sum.inr pr))).2 =\n              rightValue (↑pr).1 (↑pr).2) →\n          (Combinatorics.Pairing.ofSplit e left right).evaluation\n              (Combinatorics.Pairing.weight s (Combinatorics.Pairing.ofSplit e left right)) value =\n            (↑s.zetaInt ^ ∑ i, ∑ j, if e (Sum.inr j) < e (Sum.inl i) then 1 else 0) *\n              (left.evaluation (Combinatorics.Pairing.weight s left) leftValue *\n                right.evaluation (Combinatorics.Pairing.weight s right) rightValue)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.BlochDeDominicis.Pairing.evaluation_ofSplit_eq_positionInversions_mul",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.PairingWeight",
+    "externalAxioms": [],
+    "docString": "The signed evaluation of two independently paired sectors factorizes into their\nlocal evaluations and the right-before-left ambient position-shuffle sign.\nBoth local position embeddings must preserve order, and the two kernel-locality\nhypotheses refer to *normalized ambient pairs*. No symmetry of pair kernels\nunder endpoint exchange is used. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "Combinatorics.Pairing.prod_pairs_ofSplit",
+      "SecondQuantization.Common.BlochDeDominicis.Pairing.weight_ofSplit_eq_positionInversions_mul"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
     "terminal": false,
     "statement": "∀ {n : ℕ} (pairing : Combinatorics.Pairing n),\n  Combinatorics.Pairing.weight SecondQuantization.Common.Statistics.boson pairing = 1",
     "standardAxioms": [
@@ -101600,6 +102132,54 @@
   },
   {
     "terminal": false,
+    "statement": "∀ (s : SecondQuantization.Common.Statistics) {a b n : ℕ} (e : Combinatorics.PositionSplitting a b n)\n  (left : Combinatorics.Pairing a) (right : Combinatorics.Pairing b),\n  (StrictMono fun i => e (Sum.inl i)) →\n    (StrictMono fun j => e (Sum.inr j)) →\n      Combinatorics.Pairing.weight s (Combinatorics.Pairing.ofSplit e left right) =\n        (↑s.zetaInt ^ ∑ i, ∑ j, if e (Sum.inr j) < e (Sum.inl i) then 1 else 0) *\n          (Combinatorics.Pairing.weight s left * Combinatorics.Pairing.weight s right)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.BlochDeDominicis.Pairing.weight_ofSplit_eq_positionInversions_mul",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.PairingWeight",
+    "externalAxioms": [],
+    "docString": "The exchange-statistics weight of a binary assembled pairing is the product\nof the two local weights, multiplied by the parity sign of right-before-left\nambient position inversions. The two embeddings preserve local endpoint order;\nno ordering condition between the two sectors is imposed. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Common.BlochDeDominicis.Pairing.evaluation_ofSplit_eq_positionInversions_mul",
+      "SecondQuantization.Fermionic.externalInsertionOfSlotSplit_mixedPairingWeight_eq_positionInversions_mul_of_strictAnti"
+    ],
+    "dependencies": [
+      "Combinatorics.Pairing.ofSplitInterSectorCrossingCount_mod_two_eq_positionInversions",
+      "Combinatorics.Pairing.ofSplit_crossingCount_eq_left_add_right_add_inter",
+      "SecondQuantization.Common.BlochDeDominicis.zetaInt_pow_eq_of_mod_two_eq"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.BlochDeDominicis.Pairing.evaluation_ofSplit_eq_positionInversions_mul",
+      "SecondQuantization.Fermionic.externalInsertionOfSlotSplit_mixedPairingWeight_eq_positionInversions_mul_of_strictAnti"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {Config : Type u_1} [inst : Fintype Config] [inst_1 : Nonempty Config] (s : SecondQuantization.Common.Statistics)\n  (energy : Config → ℝ) (β : ℝ) (n : ℕ)\n  (C :\n    Fin (2 * n) → SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config)\n  (q : Fin (2 * n) → ℝ) (c : Fin (2 * n) → Fin (2 * n) → ℂ),\n  (∀ (i : Fin (2 * n)),\n      (SecondQuantization.Common.heisenbergEvolve energy (-β)) (C i) = Complex.exp ↑(q i * -β) • C i) →\n    (∀ (i j : Fin (2 * n)), i ≠ j → ScalarExchange.zetaCommutator (↑s.zetaInt) (C i) (C j) = c i j • LinearMap.id) →\n      (∀ (i : Fin (2 * n)), 1 - ↑s.zetaInt * Complex.exp ↑(q i * β) ≠ 0) →\n        SecondQuantization.Common.finiteGibbsExpectation energy β (List.ofFn C).prod =\n          ∑ pairing,\n            Combinatorics.Pairing.weight s pairing *\n              ∏ pr ∈ pairing.pairs, SecondQuantization.Common.finiteGibbsExpectation energy β (C pr.1 ∘ₗ C pr.2)",
     "standardAxioms": [
       "Classical.choice",
@@ -101709,6 +102289,7 @@
       "SecondQuantization.Common.BlochDeDominicis.ExpectationPairingRecursion.bloch_de_dominicis",
       "SecondQuantization.Common.BlochDeDominicis.Pairing.weight_eq_mul_of_crossingCount_mod_two_eq",
       "SecondQuantization.Common.BlochDeDominicis.Pairing.weight_eraseZeroPair",
+      "SecondQuantization.Common.BlochDeDominicis.Pairing.weight_ofSplit_eq_positionInversions_mul",
       "SecondQuantization.Common.BlochDeDominicis.zetaInt_pow_eq_prod_of_sum_mod_two_eq",
       "SecondQuantization.Fermionic.CompletedThermalLadder.completedFreeGibbsExpectation_cons_eq_gibbsRatio_mul_peel",
       "SecondQuantization.Fermionic.interComponentWeight_eq_componentExternalOrderSign"
@@ -101722,11 +102303,12 @@
       "SecondQuantization.Common.BlochDeDominicis.ExpectationPairingRecursion.bloch_de_dominicis",
       "SecondQuantization.Common.BlochDeDominicis.Pairing.weight_eq_mul_of_crossingCount_mod_two_eq",
       "SecondQuantization.Common.BlochDeDominicis.Pairing.weight_eraseZeroPair",
+      "SecondQuantization.Common.BlochDeDominicis.Pairing.weight_ofSplit_eq_positionInversions_mul",
       "SecondQuantization.Common.BlochDeDominicis.zetaInt_pow_eq_prod_of_sum_mod_two_eq",
       "SecondQuantization.Fermionic.CompletedThermalLadder.completedFreeGibbsExpectation_cons_eq_gibbsRatio_mul_peel",
       "SecondQuantization.Fermionic.interComponentWeight_eq_componentExternalOrderSign"
     ],
-    "compiledConsumerCount": 6,
+    "compiledConsumerCount": 7,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -102457,7 +103039,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": false,
+    "terminal": true,
     "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {E N : ℕ} (s : SecondQuantization.Common.Statistics)\n  {S : Finset (Fin N)} (d : SecondQuantization.Common.ExternalInsertionDiagram ExternalLabel InternalLabel E N S)\n  (pairValue : Fin (2 * (2 * S.card + E)) → Fin (2 * (2 * S.card + E)) → ℂ)\n  (localPairValue :\n    (B : ↥d.vertexGraph.componentPartition.parts) →\n      Fin (2 * (2 * (SecondQuantization.Common.interactionSector ↑B).card + d.externalPairCount B)) →\n        Fin (2 * (2 * (SecondQuantization.Common.interactionSector ↑B).card + d.externalPairCount B)) → ℂ),\n  (∀ (B : ↥d.vertexGraph.componentPartition.parts)\n      (a b : Fin (2 * (2 * (SecondQuantization.Common.interactionSector ↑B).card + d.externalPairCount B))),\n      pairValue (d.componentDiagramLeg B a) (d.componentDiagramLeg B b) = localPairValue B a b) →\n    d.pairing.evaluation (Combinatorics.Pairing.weight s d.pairing) pairValue =\n      ↑s.zetaInt ^ d.interComponentCrossingCount *\n        ∏ B,\n          (d.restrictComponent B).pairing.evaluation (Combinatorics.Pairing.weight s (d.restrictComponent B).pairing)\n            (localPairValue B)",
     "standardAxioms": [
       "Classical.choice",
@@ -102465,7 +103047,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -102476,9 +103058,7 @@
     "docString": "The scalar evaluation of an external-insertion pairing factors into the residual\ninter-component exchange weight and component-local pairing evaluations whenever the pair kernel is\nlocal under the canonical component leg embeddings. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.pairingEvaluation_eq_componentExternalOrderSign_mul_prod_components"
-    ],
+    "dependents": [],
     "dependencies": [
       "Combinatorics.Pairing.evaluation_eq_mul_prod_components",
       "SecondQuantization.Common.ExternalInsertionDiagram.componentPairEquiv_apply",
@@ -102486,10 +103066,8 @@
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.pairingEvaluation_eq_componentExternalOrderSign_mul_prod_components"
-    ],
-    "compiledConsumerCount": 1,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -103252,7 +103830,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -103264,7 +103842,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.externalInsertionOfSlotSplit_prod_mixedPairContractions_eq_left_mul_orientedVacuum"
+      "SecondQuantization.Fermionic.externalInsertionOfSlotSplit_prod_mixedPairContractions_eq_left_mul_orientedVacuum",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalVacuumShuffleIntegral.0.SecondQuantization.Fermionic.externalInsertionOfSlotSplit_pairingInMixedOrder_eq_ofSplit_mixedExternal"
     ],
     "dependencies": [
       "Combinatorics.Pairing.ofSplit_partner_inl",
@@ -103275,9 +103854,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.externalInsertionOfSlotSplit_prod_mixedPairContractions_eq_left_mul_orientedVacuum"
+      "SecondQuantization.Fermionic.externalInsertionOfSlotSplit_prod_mixedPairContractions_eq_left_mul_orientedVacuum",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalVacuumShuffleIntegral.0.SecondQuantization.Fermionic.externalInsertionOfSlotSplit_pairingInMixedOrder_eq_ofSplit_mixedExternal"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -103947,7 +104527,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -103959,8 +104539,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Common.ExternalInsertionDiagram.evaluation_eq_inter_mul_prod_components",
-      "SecondQuantization.Fermionic.pairingWeight_eq_componentExternalOrderSign_mul_prod_components"
+      "SecondQuantization.Common.ExternalInsertionDiagram.evaluation_eq_inter_mul_prod_components"
     ],
     "dependencies": [
       "SecondQuantization.Common.ExternalInsertionDiagram.crossingCount_eq_sum_components_add_inter"
@@ -103968,10 +104547,9 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.ExternalInsertionDiagram.evaluation_eq_inter_mul_prod_components",
-      "SecondQuantization.Fermionic.pairingWeight_eq_componentExternalOrderSign_mul_prod_components"
+      "SecondQuantization.Common.ExternalInsertionDiagram.evaluation_eq_inter_mul_prod_components"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -113696,7 +114274,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -113708,6 +114286,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "SecondQuantization.Fermionic.externalInsertionOfSlotSplit_mixedPairingWeight_eq_positionInversions_mul_of_strictAnti",
       "SecondQuantization.Fermionic.externalInsertionOfSlotSplit_prod_mixedPairContractions_eq_left_mul_flatVacuum_of_strictAnti"
     ],
     "dependencies": [
@@ -113719,9 +114298,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "SecondQuantization.Fermionic.externalInsertionOfSlotSplit_mixedPairingWeight_eq_positionInversions_mul_of_strictAnti",
       "SecondQuantization.Fermionic.externalInsertionOfSlotSplit_prod_mixedPairContractions_eq_left_mul_flatVacuum_of_strictAnti"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -113977,7 +114557,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -113989,6 +114569,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "SecondQuantization.Fermionic.externalInsertionOfSlotSplit_mixedPairingWeight_eq_positionInversions_mul_of_strictAnti",
       "SecondQuantization.Fermionic.externalInsertionOfSlotSplit_prod_mixedPairContractions_eq_left_mul_flatVacuum_of_localOrder"
     ],
     "dependencies": [
@@ -113999,9 +114580,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "SecondQuantization.Fermionic.externalInsertionOfSlotSplit_mixedPairingWeight_eq_positionInversions_mul_of_strictAnti",
       "SecondQuantization.Fermionic.externalInsertionOfSlotSplit_prod_mixedPairContractions_eq_left_mul_flatVacuum_of_localOrder"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -121325,6 +121907,7 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Common.timeOrderedProduct_swap",
+      "SecondQuantization.Fermionic.Transport.timeOrderedBilinearCurrents_eq_four_fields_of_lt",
       "SecondQuantization.Fermionic.twoPointTimeOrderedProduct_of_lt"
     ],
     "dependencies": [],
@@ -121332,9 +121915,10 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Common.timeOrderedProduct_swap",
+      "SecondQuantization.Fermionic.Transport.timeOrderedBilinearCurrents_eq_four_fields_of_lt",
       "SecondQuantization.Fermionic.twoPointTimeOrderedProduct_of_lt"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -121369,6 +121953,7 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Common.timeOrderedProduct_swap",
+      "SecondQuantization.Fermionic.Transport.timeOrderedBilinearCurrents_self_time",
       "SecondQuantization.Fermionic.twoPointTimeOrderedProduct_self_time"
     ],
     "dependencies": [],
@@ -121376,9 +121961,10 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Common.timeOrderedProduct_swap",
+      "SecondQuantization.Fermionic.Transport.timeOrderedBilinearCurrents_self_time",
       "SecondQuantization.Fermionic.twoPointTimeOrderedProduct_self_time"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -128283,16 +128869,18 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Fermionic.Transport.finiteGibbsBilinearCurrentCurrent_eq_four_fields",
-      "SecondQuantization.Fermionic.Transport.timeOrderedBilinearCurrents_eq_four_fields_of_gt"
+      "SecondQuantization.Fermionic.Transport.timeOrderedBilinearCurrents_eq_four_fields_of_gt",
+      "SecondQuantization.Fermionic.Transport.timeOrderedBilinearCurrents_eq_four_fields_of_lt"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Fermionic.Transport.finiteGibbsBilinearCurrentCurrent_eq_four_fields",
-      "SecondQuantization.Fermionic.Transport.timeOrderedBilinearCurrents_eq_four_fields_of_gt"
+      "SecondQuantization.Fermionic.Transport.timeOrderedBilinearCurrents_eq_four_fields_of_gt",
+      "SecondQuantization.Fermionic.Transport.timeOrderedBilinearCurrents_eq_four_fields_of_lt"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -128677,6 +129265,130 @@
   },
   {
     "terminal": true,
+    "statement": "∀ {Site : Type u_1} {Ω : Type u_2} {ι : Type u_3} [inst : Fintype Site] [inst_1 : Fintype Ω]\n  (ensemble : QuantumTheory.Transport.FiniteDisorderEnsemble) (hbar : ℝ) (hbar_pos : 0 < hbar)\n  (spectralData :\n    (ω : Ω) → QuantumTheory.LinearResponse.PurePointLehmannData (ensemble.configurationSystem hbar hbar_pos ω) ι)\n  (Jx Jy :\n    SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site →L[ℂ]\n      SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site),\n  SecondQuantization.Fermionic.Transport.finiteDisorderAveragedConnectedCurrentCorrelation ensemble hbar hbar_pos\n      spectralData Jx Jy =\n    ((ensemble.average fun ω =>\n          (QuantumTheory.LinearResponse.purePointNormalizedExpectation (ensemble.configurationSystem hbar hbar_pos ω)\n                (spectralData ω)).toContinuousLinearMap\n            (Jx * Jy)) -\n        (ensemble.average fun ω =>\n            (QuantumTheory.LinearResponse.purePointNormalizedExpectation (ensemble.configurationSystem hbar hbar_pos ω)\n                  (spectralData ω)).toContinuousLinearMap\n              Jx) *\n          ensemble.average fun ω =>\n            (QuantumTheory.LinearResponse.purePointNormalizedExpectation (ensemble.configurationSystem hbar hbar_pos ω)\n                  (spectralData ω)).toContinuousLinearMap\n              Jy) -\n      ((ensemble.average fun ω =>\n          (QuantumTheory.LinearResponse.purePointNormalizedExpectation (ensemble.configurationSystem hbar hbar_pos ω)\n                  (spectralData ω)).toContinuousLinearMap\n              Jx *\n            (QuantumTheory.LinearResponse.purePointNormalizedExpectation (ensemble.configurationSystem hbar hbar_pos ω)\n                  (spectralData ω)).toContinuousLinearMap\n              Jy) -\n        (ensemble.average fun ω =>\n            (QuantumTheory.LinearResponse.purePointNormalizedExpectation (ensemble.configurationSystem hbar hbar_pos ω)\n                  (spectralData ω)).toContinuousLinearMap\n              Jx) *\n          ensemble.average fun ω =>\n            (QuantumTheory.LinearResponse.purePointNormalizedExpectation (ensemble.configurationSystem hbar hbar_pos ω)\n                  (spectralData ω)).toContinuousLinearMap\n              Jy)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.Transport.finiteDisorderAveragedConnectedCurrentCorrelation_eq_annealed_sub_covariance",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.FiniteDisorderCurrentCorrelation",
+    "externalAxioms": [],
+    "docString": "Disorder-averaging a *connected* current response is different in\ngeneral from taking the connected response of the two disorder-averaged\none-point functions. The missing term is the disorder covariance of the\none-point currents. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "SecondQuantization.Fermionic.Transport.finiteDisorderAveragedConnectedCurrentCorrelation_eq_average_sub"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Site : Type u_1} {Ω : Type u_2} {ι : Type u_3} [inst : Fintype Site] [inst_1 : Fintype Ω]\n  (ensemble : QuantumTheory.Transport.FiniteDisorderEnsemble) (hbar : ℝ) (hbar_pos : 0 < hbar)\n  (spectralData :\n    (ω : Ω) → QuantumTheory.LinearResponse.PurePointLehmannData (ensemble.configurationSystem hbar hbar_pos ω) ι)\n  (Jx Jy :\n    SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site →L[ℂ]\n      SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site),\n  SecondQuantization.Fermionic.Transport.finiteDisorderAveragedConnectedCurrentCorrelation ensemble hbar hbar_pos\n      spectralData Jx Jy =\n    (ensemble.average fun ω =>\n        (QuantumTheory.LinearResponse.purePointNormalizedExpectation (ensemble.configurationSystem hbar hbar_pos ω)\n              (spectralData ω)).toContinuousLinearMap\n          (Jx * Jy)) -\n      ensemble.average fun ω =>\n        (QuantumTheory.LinearResponse.purePointNormalizedExpectation (ensemble.configurationSystem hbar hbar_pos ω)\n                (spectralData ω)).toContinuousLinearMap\n            Jx *\n          (QuantumTheory.LinearResponse.purePointNormalizedExpectation (ensemble.configurationSystem hbar hbar_pos ω)\n                (spectralData ω)).toContinuousLinearMap\n            Jy",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.Transport.finiteDisorderAveragedConnectedCurrentCorrelation_eq_average_sub",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.FiniteDisorderCurrentCorrelation",
+    "externalAxioms": [],
+    "docString": "Expanding the quenched connected correlation subtracts the\n*average of configuration-wise one-current products*, not the product\nof two separately disorder-averaged one-current expectations. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.Transport.finiteDisorderAveragedConnectedCurrentCorrelation_eq_annealed_sub_covariance",
+      "SecondQuantization.Fermionic.Transport.finiteDisorderAveragedConnectedCurrentCorrelation_eq_fourLegAverage"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.Transport.finiteDisorderAveragedConnectedCurrentCorrelation_eq_annealed_sub_covariance",
+      "SecondQuantization.Fermionic.Transport.finiteDisorderAveragedConnectedCurrentCorrelation_eq_fourLegAverage"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {Site : Type u_1} {Ω : Type u_2} {ι : Type u_3} [inst : Fintype Site] [inst_1 : Fintype Ω] {α : Type u_4}\n  [inst_2 : Fintype α] (ensemble : QuantumTheory.Transport.FiniteDisorderEnsemble) (hbar : ℝ) (hbar_pos : 0 < hbar)\n  (spectralData :\n    (ω : Ω) → QuantumTheory.LinearResponse.PurePointLehmannData (ensemble.configurationSystem hbar hbar_pos ω) ι)\n  (Jx Jy :\n    SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site →L[ℂ]\n      SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site)\n  (coefficient : α → ℂ) (fourLeg : Ω → α → ℂ),\n  (∀ (ω : Ω),\n      (QuantumTheory.LinearResponse.purePointNormalizedExpectation (ensemble.configurationSystem hbar hbar_pos ω)\n              (spectralData ω)).toContinuousLinearMap\n          (Jx * Jy) =\n        ∑ a, coefficient a * fourLeg ω a) →\n    SecondQuantization.Fermionic.Transport.finiteDisorderAveragedConnectedCurrentCorrelation ensemble hbar hbar_pos\n        spectralData Jx Jy =\n      (∑ a, coefficient a * ensemble.average fun ω => fourLeg ω a) -\n        ensemble.average fun ω =>\n          (QuantumTheory.LinearResponse.purePointNormalizedExpectation (ensemble.configurationSystem hbar hbar_pos ω)\n                  (spectralData ω)).toContinuousLinearMap\n              Jx *\n            (QuantumTheory.LinearResponse.purePointNormalizedExpectation (ensemble.configurationSystem hbar hbar_pos ω)\n                  (spectralData ω)).toContinuousLinearMap\n              Jy",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.Transport.finiteDisorderAveragedConnectedCurrentCorrelation_eq_fourLegAverage",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.FiniteDisorderCurrentCorrelation",
+    "externalAxioms": [],
+    "docString": "Once a genuine configuration-wise four-leg expansion has been proved,\nits **finite** diagram sum can be interchanged with the quenched average,\nwhile the configuration-wise disconnected current product stays inside\nthe average. This statement does not postulate Wick/Gaussian factorization\nor identify a formal Dyson coefficient with a physical response. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "SecondQuantization.Fermionic.Transport.finiteDisorderAveragedConnectedCurrentCorrelation_eq_average_sub"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
     "statement": "∀ {Site : Type u_1} {E : Type u_2} {Ω : Type u_3} {ι : Type u_4} [inst : LinearOrder Site] [inst_1 : Fintype Site]\n  [inst_2 : AddCommGroup E] [inst_3 : _root_.Module ℝ E] [inst_4 : Fintype Ω] [inst_5 : Fintype ι]\n  (ensemble : QuantumTheory.Transport.FiniteDisorderEnsemble) (hbar : ℝ) (hbar_pos : 0 < hbar)\n  (spectralData :\n    (ω : Ω) → QuantumTheory.LinearResponse.PurePointLehmannData (ensemble.configurationSystem hbar hbar_pos ω) ι)\n  (convention : QuantumTheory.Transport.PositiveVolume) (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)\n  (K : LocallyFiniteHopping Site) (q eta lowerEnergy upperEnergy : ℝ) (occupation : ℝ → ℂ),\n  (∀ (ω : Ω),\n      SecondQuantization.Fermionic.Transport.FiniteStaticPeierlsWardIdentity convention\n        (ensemble.configurationSystem hbar hbar_pos ω) (spectralData ω) geometry direction K q eta lowerEnergy\n        upperEnergy occupation) →\n    0 < eta →\n      SecondQuantization.Fermionic.Transport.finiteDisorderAveragedStaticConductivity ensemble hbar hbar_pos\n          spectralData convention geometry direction K q eta =\n        ensemble.average fun ω =>\n          QuantumTheory.Transport.regularizedBastinSpectralEnergyIntegral (ensemble.configurationSystem hbar hbar_pos ω)\n            (spectralData ω)\n            (SecondQuantization.Fermionic.Lattice.boundedDirectionalCurrent geometry direction\n              (↑(ensemble.configurationSystem hbar hbar_pos ω).hbar) (↑q) K)\n            (SecondQuantization.Fermionic.Lattice.boundedDirectionalCurrent geometry direction\n              (↑(ensemble.configurationSystem hbar hbar_pos ω).hbar) (↑q) K)\n            (QuantumTheory.Transport.kuboBastinEnergyBroadening (ensemble.configurationSystem hbar hbar_pos ω).hbar eta)\n            lowerEnergy upperEnergy occupation",
     "standardAxioms": [
       "Classical.choice",
@@ -128840,8 +129552,94 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] (ε : Mode → ℝ) (β τ τ' : ℝ)\n  (jx jy : Mode → Mode → ℂ),\n  SecondQuantization.Common.finiteGibbsExpectation (SecondQuantization.Fermionic.fermionEnergy ε) β\n      (SecondQuantization.Fermionic.Transport.bilinearCurrentInsertion ε τ jx ∘ₗ\n        SecondQuantization.Fermionic.Transport.bilinearCurrentInsertion ε τ' jy) =\n    ∑ i,\n      ∑ j,\n        ∑ k,\n          ∑ l,\n            jx i j * jy k l *\n              SecondQuantization.Common.finiteGibbsExpectation (SecondQuantization.Fermionic.fermionEnergy ε) β\n                ((SecondQuantization.Fermionic.externalFieldOperator ε τ\n                      (SecondQuantization.Fermionic.ExternalFieldLabel.creation i) ∘ₗ\n                    SecondQuantization.Fermionic.externalFieldOperator ε τ\n                      (SecondQuantization.Fermionic.ExternalFieldLabel.annihilation j)) ∘ₗ\n                  SecondQuantization.Fermionic.externalFieldOperator ε τ'\n                      (SecondQuantization.Fermionic.ExternalFieldLabel.creation k) ∘ₗ\n                    SecondQuantization.Fermionic.externalFieldOperator ε τ'\n                      (SecondQuantization.Fermionic.ExternalFieldLabel.annihilation l))",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.Transport.finiteGibbsBilinearCurrentCurrent_eq_four_fields",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.CurrentInsertions",
+    "externalAxioms": [],
+    "docString": "The physical finite free-Gibbs density-state expectation of two\ncurrent insertions is the corresponding weighted sum of four-field\nexpectations. This is the unconnected, configuration-free P1 boundary. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.Transport.finiteGibbsConnectedBilinearCurrentCorrelation_eq_four_fields"
+    ],
+    "dependencies": [
+      "SecondQuantization.Fermionic.Transport.bilinearCurrentInsertion_comp_eq_four_fields"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.Transport.finiteGibbsConnectedBilinearCurrentCorrelation_eq_four_fields"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] (ε : Mode → ℝ) (β τ : ℝ)\n  (kernel : Mode → Mode → ℂ),\n  SecondQuantization.Common.finiteGibbsExpectation (SecondQuantization.Fermionic.fermionEnergy ε) β\n      (SecondQuantization.Fermionic.Transport.bilinearCurrentInsertion ε τ kernel) =\n    ∑ i,\n      ∑ j,\n        kernel i j *\n          SecondQuantization.Common.finiteGibbsExpectation (SecondQuantization.Fermionic.fermionEnergy ε) β\n            (SecondQuantization.Fermionic.externalFieldOperator ε τ\n                (SecondQuantization.Fermionic.ExternalFieldLabel.creation i) ∘ₗ\n              SecondQuantization.Fermionic.externalFieldOperator ε τ\n                (SecondQuantization.Fermionic.ExternalFieldLabel.annihilation j))",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.Transport.finiteGibbsBilinearCurrent_eq_two_fields",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.CurrentInsertions",
+    "externalAxioms": [],
+    "docString": "A normalized free-Gibbs expectation of a current insertion is the\nfinite weighted sum of its two elementary fermionic fields. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.Transport.finiteGibbsConnectedBilinearCurrentCorrelation_eq_four_fields"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.Transport.finiteGibbsConnectedBilinearCurrentCorrelation_eq_four_fields"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] (ε : Mode → ℝ) (β τ τ' : ℝ)\n  (jx jy : Mode → Mode → ℂ),\n  SecondQuantization.Fermionic.Transport.finiteGibbsConnectedBilinearCurrentCorrelation ε β τ τ' jx jy =\n    ∑ i,\n      ∑ j,\n        ∑ k,\n          ∑ l,\n            jx i j * jy k l *\n              (SecondQuantization.Common.finiteGibbsExpectation (SecondQuantization.Fermionic.fermionEnergy ε) β\n                  ((SecondQuantization.Fermionic.externalFieldOperator ε τ\n                        (SecondQuantization.Fermionic.ExternalFieldLabel.creation i) ∘ₗ\n                      SecondQuantization.Fermionic.externalFieldOperator ε τ\n                        (SecondQuantization.Fermionic.ExternalFieldLabel.annihilation j)) ∘ₗ\n                    SecondQuantization.Fermionic.externalFieldOperator ε τ'\n                        (SecondQuantization.Fermionic.ExternalFieldLabel.creation k) ∘ₗ\n                      SecondQuantization.Fermionic.externalFieldOperator ε τ'\n                        (SecondQuantization.Fermionic.ExternalFieldLabel.annihilation l)) -\n                SecondQuantization.Common.finiteGibbsExpectation (SecondQuantization.Fermionic.fermionEnergy ε) β\n                    (SecondQuantization.Fermionic.externalFieldOperator ε τ\n                        (SecondQuantization.Fermionic.ExternalFieldLabel.creation i) ∘ₗ\n                      SecondQuantization.Fermionic.externalFieldOperator ε τ\n                        (SecondQuantization.Fermionic.ExternalFieldLabel.annihilation j)) *\n                  SecondQuantization.Common.finiteGibbsExpectation (SecondQuantization.Fermionic.fermionEnergy ε) β\n                    (SecondQuantization.Fermionic.externalFieldOperator ε τ'\n                        (SecondQuantization.Fermionic.ExternalFieldLabel.creation k) ∘ₗ\n                      SecondQuantization.Fermionic.externalFieldOperator ε τ'\n                        (SecondQuantization.Fermionic.ExternalFieldLabel.annihilation l)))",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -128853,15 +129651,16 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.Transport.finiteGibbsBilinearCurrentCurrent_eq_four_fields",
+    "name": "SecondQuantization.Fermionic.Transport.finiteGibbsConnectedBilinearCurrentCorrelation_eq_four_fields",
     "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.CurrentInsertions",
     "externalAxioms": [],
-    "docString": "The physical finite free-Gibbs density-state expectation of two\ncurrent insertions is the corresponding weighted sum of four-field\nexpectations. This is the unconnected, configuration-free P1 boundary. ",
+    "docString": "The connected two-current correlator is the four-field sum with only\nthe **disconnected current-vertex product** removed. Wick contractions\njoining the two current vertices survive even if the underlying four\nelementary fermion legs are not a single cumulant component. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "SecondQuantization.Fermionic.Transport.bilinearCurrentInsertion_comp_eq_four_fields"
+      "SecondQuantization.Fermionic.Transport.finiteGibbsBilinearCurrentCurrent_eq_four_fields",
+      "SecondQuantization.Fermionic.Transport.finiteGibbsBilinearCurrent_eq_two_fields"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -130371,6 +131170,87 @@
     "dependencies": [
       "SecondQuantization.Common.timeOrderedProduct_of_gt",
       "SecondQuantization.Fermionic.Transport.bilinearCurrentInsertion_comp_eq_four_fields"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] (ε : Mode → ℝ) (jx jy : Mode → Mode → ℂ)\n  {τ τ' : ℝ},\n  τ < τ' →\n    SecondQuantization.Fermionic.Transport.timeOrderedBilinearCurrents ε jx jy τ τ' =\n      ∑ k,\n        ∑ l,\n          ∑ i,\n            ∑ j,\n              (jy k l * jx i j) •\n                (SecondQuantization.Fermionic.externalFieldOperator ε τ'\n                      (SecondQuantization.Fermionic.ExternalFieldLabel.creation k) ∘ₗ\n                    SecondQuantization.Fermionic.externalFieldOperator ε τ'\n                      (SecondQuantization.Fermionic.ExternalFieldLabel.annihilation l)) ∘ₗ\n                  SecondQuantization.Fermionic.externalFieldOperator ε τ\n                      (SecondQuantization.Fermionic.ExternalFieldLabel.creation i) ∘ₗ\n                    SecondQuantization.Fermionic.externalFieldOperator ε τ\n                      (SecondQuantization.Fermionic.ExternalFieldLabel.annihilation j)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.Transport.timeOrderedBilinearCurrents_eq_four_fields_of_lt",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.CurrentInsertions",
+    "externalAxioms": [],
+    "docString": "The reversed imaginary-time chamber contains the opposite ordering of\nthe two **even** current vertices. No extra fermionic minus sign is attached\nto exchanging two composite current operators. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "SecondQuantization.Common.timeOrderedProduct_of_lt",
+      "SecondQuantization.Fermionic.Transport.bilinearCurrentInsertion_comp_eq_four_fields"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] (ε : Mode → ℝ) (jx jy : Mode → Mode → ℂ) (τ : ℝ),\n  SecondQuantization.Fermionic.Transport.timeOrderedBilinearCurrents ε jx jy τ τ =\n    2⁻¹ •\n      (SecondQuantization.Fermionic.Transport.bilinearCurrentInsertion ε τ jx ∘ₗ\n          SecondQuantization.Fermionic.Transport.bilinearCurrentInsertion ε τ jy +\n        SecondQuantization.Fermionic.Transport.bilinearCurrentInsertion ε τ jy ∘ₗ\n          SecondQuantization.Fermionic.Transport.bilinearCurrentInsertion ε τ jx)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.Transport.timeOrderedBilinearCurrents_self_time",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.CurrentInsertions",
+    "externalAxioms": [],
+    "docString": "Equal-time current ordering uses the symmetric convention for **even**\ncomposite insertions, not the antisymmetric elementary-fermion rule. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "SecondQuantization.Common.timeOrderedProduct_self_time"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -137663,6 +138543,50 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
+    "terminal": true,
+    "statement": "∀ {Mode : Type u_1} {E n : ℕ} (T : Finset (Fin n))\n  (ext :\n    SecondQuantization.Common.ExternalInsertionDiagram (SecondQuantization.Fermionic.ExternalFieldLabel Mode)\n      (SecondQuantization.Common.QuarticVertexLabel Mode) E n T)\n  (vac :\n    SecondQuantization.Common.QuarticDiagram (SecondQuantization.Common.QuarticVertexLabel Mode) n (Finset.univ \\ T))\n  (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ),\n  let S := Finset.univ \\ T;\n  have order := (S.orderIsoOfFin ⋯).toEquiv;\n  have f := fun i => ↑((S.orderIsoOfFin ⋯) i);\n  have localFixed := SecondQuantization.Fermionic.externalInsertionLeftMixedToFixedEquiv✝ T externalTime σ;\n  have split :=\n    (((Equiv.refl (Fin (2 * (2 * T.card + E)))).sumCongr\n              (SecondQuantization.Common.orderedLegToDiagramLeg S order)).trans\n          (SecondQuantization.Common.externalInsertionSlotLegSplitting ⋯)).trans\n      (SecondQuantization.Common.externalInsertionMixedTimeAmbientPositionEquiv externalTime σ).symm;\n  have mixedSplit := (localFixed.sumCongr (Equiv.refl (Fin (2 * (2 * S.card))))).trans split;\n  have localPairing := Combinatorics.PairingOn.transport ext.pairing localFixed;\n  StrictAnti (σ ∘ f) →\n    Combinatorics.Pairing.weight SecondQuantization.Common.Statistics.fermion\n        ((SecondQuantization.Common.ExternalInsertionDiagram.ofSlotSplit ⋯ ext vac).pairingInMixedOrder externalTime\n          σ) =\n      (↑SecondQuantization.Common.Statistics.fermion.zetaInt ^\n          ∑ i, ∑ j, if mixedSplit (Sum.inr j) < mixedSplit (Sum.inl i) then 1 else 0) *\n        (Combinatorics.Pairing.weight SecondQuantization.Common.Statistics.fermion localPairing *\n          Combinatorics.Pairing.weight SecondQuantization.Common.Statistics.fermion (vac.pairingInOrder order))",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.externalInsertionOfSlotSplit_mixedPairingWeight_eq_positionInversions_mul_of_strictAnti",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalVacuumShuffleIntegral",
+    "externalAxioms": [],
+    "docString": "On a strictly antitone vacuum chamber, the actual mixed-time fermionic\ncrossing weight splits into the external mixed-order weight, the ordered vacuum\nweight, and the sign of the inter-sector atomic-position inversions.\nThe left sector is explicitly reordered into standalone mixed-time positions;\nits original flattened position order is not assumed to be preserved. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "SecondQuantization.Common.BlochDeDominicis.Pairing.weight_ofSplit_eq_positionInversions_mul",
+      "SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegPosition_zero_strictMono_of_strictAnti",
+      "SecondQuantization.Common.externalInsertionSlotLegSplitting_right_strictMono_of_localOrder",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalVacuumShuffleIntegral.0.SecondQuantization.Fermionic.externalInsertionLeftMixedPosition_split_strictMono",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalVacuumShuffleIntegral.0.SecondQuantization.Fermionic.externalInsertionOfSlotSplit_pairingInMixedOrder_eq_ofSplit_mixedExternal"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
     "terminal": false,
     "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] (ε : Mode → ℝ) (β : ℝ) {E n : ℕ}\n  (T : Finset (Fin n))\n  (ext :\n    SecondQuantization.Common.ExternalInsertionDiagram (SecondQuantization.Fermionic.ExternalFieldLabel Mode)\n      (SecondQuantization.Common.QuarticVertexLabel Mode) E n T)\n  (vac :\n    SecondQuantization.Common.QuarticDiagram (SecondQuantization.Common.QuarticVertexLabel Mode) n (Finset.univ \\ T))\n  (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ),\n  let S := Finset.univ \\ T;\n  have order := (S.orderIsoOfFin ⋯).toEquiv;\n  have f := fun i => ↑((S.orderIsoOfFin ⋯) i);\n  have d := SecondQuantization.Common.ExternalInsertionDiagram.ofSlotSplit ⋯ ext vac;\n  have split :=\n    (((Equiv.refl (Fin (2 * (2 * T.card + E)))).sumCongr\n              (SecondQuantization.Common.orderedLegToDiagramLeg S order)).trans\n          (SecondQuantization.Common.externalInsertionSlotLegSplitting ⋯)).trans\n      (SecondQuantization.Common.externalInsertionMixedTimeAmbientPositionEquiv externalTime σ).symm;\n  have pairEquiv := Combinatorics.Pairing.ofSplitNormalizedPairEquiv split ext.pairing (vac.pairingInOrder order);\n  have kernel :=\n    SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicPairValue ε β d.externalLabel externalTime\n      d.vertexLabelSequence σ;\n  (StrictMono fun q =>\n      SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegPosition Fin.elim0 (σ ∘ f)\n        (Sum.inr\n          (⟨((SecondQuantization.Common.orderedQuarticLegEquiv S.card) q).1, ⋯⟩,\n            ((SecondQuantization.Common.orderedQuarticLegEquiv S.card) q).2))) →\n    ∏ pr ∈ (SecondQuantization.Common.ExternalInsertionDiagram.pairingInMixedOrder d externalTime σ).pairs,\n        kernel pr.1 pr.2 =\n      (∏ pr, kernel (↑(pairEquiv (Sum.inl pr))).1 (↑(pairEquiv (Sum.inl pr))).2) *\n        ∏ pr,\n          SecondQuantization.Fermionic.flatVertexLegPairValue ε β (fun v => vac.vertexLabel ((S.orderIsoOfFin ⋯) v))\n            (σ ∘ f) (↑pr).1 (↑pr).2",
     "standardAxioms": [
@@ -140400,7 +141324,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": false,
+    "terminal": true,
     "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {E N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.ExternalInsertionDiagram ExternalLabel InternalLabel E N S)\n  (blockOrder : ↥d.vertexGraph.componentPartition.parts ≃ Fin (Fintype.card ↥d.vertexGraph.componentPartition.parts)),\n  ↑SecondQuantization.Common.Statistics.fermion.zetaInt ^ d.interComponentCrossingCount =\n    SecondQuantization.Fermionic.componentExternalOrderSign d blockOrder",
     "standardAxioms": [
       "Classical.choice",
@@ -140419,10 +141343,7 @@
     "docString": "The residual inter-component fermionic pairing weight is exactly the exchange sign required to\nregroup the odd external insertions by connected component. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.pairingEvaluation_eq_componentExternalOrderSign_mul_prod_components",
-      "SecondQuantization.Fermionic.pairingWeight_eq_componentExternalOrderSign_mul_prod_components"
-    ],
+    "dependents": [],
     "dependencies": [
       "SecondQuantization.Common.BlochDeDominicis.zetaInt_pow_eq_of_mod_two_eq",
       "SecondQuantization.Common.ExternalInsertionDiagram.componentLegShuffle_orderedBlockInversionCount_mod_two_eq_external",
@@ -140430,11 +141351,8 @@
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.pairingEvaluation_eq_componentExternalOrderSign_mul_prod_components",
-      "SecondQuantization.Fermionic.pairingWeight_eq_componentExternalOrderSign_mul_prod_components"
-    ],
-    "compiledConsumerCount": 2,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -141461,88 +142379,6 @@
       "SecondQuantization.Fermionic.sum_vertexWeight_mul_orderedSimplexContribution_eq_pairingEvaluation"
     ],
     "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {E N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.ExternalInsertionDiagram ExternalLabel InternalLabel E N S)\n  (blockOrder : ↥d.vertexGraph.componentPartition.parts ≃ Fin (Fintype.card ↥d.vertexGraph.componentPartition.parts))\n  (pairValue : Fin (2 * (2 * S.card + E)) → Fin (2 * (2 * S.card + E)) → ℂ)\n  (localPairValue :\n    (B : ↥d.vertexGraph.componentPartition.parts) →\n      Fin (2 * (2 * (SecondQuantization.Common.interactionSector ↑B).card + d.externalPairCount B)) →\n        Fin (2 * (2 * (SecondQuantization.Common.interactionSector ↑B).card + d.externalPairCount B)) → ℂ),\n  (∀ (B : ↥d.vertexGraph.componentPartition.parts)\n      (a b : Fin (2 * (2 * (SecondQuantization.Common.interactionSector ↑B).card + d.externalPairCount B))),\n      pairValue (d.componentDiagramLeg B a) (d.componentDiagramLeg B b) = localPairValue B a b) →\n    d.pairing.evaluation (Combinatorics.Pairing.weight SecondQuantization.Common.Statistics.fermion d.pairing)\n        pairValue =\n      SecondQuantization.Fermionic.componentExternalOrderSign d blockOrder *\n        ∏ B,\n          (d.restrictComponent B).pairing.evaluation\n            (Combinatorics.Pairing.weight SecondQuantization.Common.Statistics.fermion (d.restrictComponent B).pairing)\n            (localPairValue B)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.pairingEvaluation_eq_componentExternalOrderSign_mul_prod_components",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentSign",
-    "externalAxioms": [],
-    "docString": "The canonical scalar evaluation of an arbitrary external-insertion pairing factors into the\nfermionic external-component order sign and the component-local pairing evaluations whenever the\npair kernel is local under the canonical component leg embeddings. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "SecondQuantization.Common.ExternalInsertionDiagram.evaluation_eq_inter_mul_prod_components",
-      "SecondQuantization.Fermionic.interComponentWeight_eq_componentExternalOrderSign"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {E N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.ExternalInsertionDiagram ExternalLabel InternalLabel E N S)\n  (blockOrder : ↥d.vertexGraph.componentPartition.parts ≃ Fin (Fintype.card ↥d.vertexGraph.componentPartition.parts)),\n  Combinatorics.Pairing.weight SecondQuantization.Common.Statistics.fermion d.pairing =\n    SecondQuantization.Fermionic.componentExternalOrderSign d blockOrder *\n      ∏ B, Combinatorics.Pairing.weight SecondQuantization.Common.Statistics.fermion (d.restrictComponent B).pairing",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.pairingWeight_eq_componentExternalOrderSign_mul_prod_components",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentSign",
-    "externalAxioms": [],
-    "docString": "Fermionic pairing weight factorization for arbitrary external-insertion components: the only\nglobal sign left after multiplying component-local pairing weights is the external-component order\nsign. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "SecondQuantization.Common.ExternalInsertionDiagram.weight_eq_inter_mul_prod_components",
-      "SecondQuantization.Fermionic.interComponentWeight_eq_componentExternalOrderSign"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -154066,6 +154902,52 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {a b n : ℕ} (e : Combinatorics.PositionSplitting a b n) (P : Combinatorics.Pairing a) (Q : Combinatorics.Pairing b)\n  (p : P.NormalizedPair) (q : Q.NormalizedPair),\n  Combinatorics.pairEndpointInversionCount ↑((Combinatorics.Pairing.ofSplitNormalizedPairEquiv e P Q) (Sum.inl p))\n      ↑((Combinatorics.Pairing.ofSplitNormalizedPairEquiv e P Q) (Sum.inr q)) =\n    ∑ i, ∑ j, if e (Sum.inr (Q.pairEndpointEquiv (q, j))) < e (Sum.inl (P.pairEndpointEquiv (p, i))) then 1 else 0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.SplitNormalizedPairs.0.Combinatorics.Pairing.ofSplit_pairEndpointInversionCount_eq_sum_localEndpoints",
+    "module": "LeanCondensedMatter.Combinatorics.PerfectPairing.SplitNormalizedPairs",
+    "externalAxioms": [],
+    "docString": "A cross-sector pair-endpoint inversion counts all four comparisons\nbetween the transported local endpoints. This remains true when ambient\nnormalization reverses either transported pair. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "Combinatorics.Pairing.ofSplit_sum_pairEndpointInversionCount_eq_positionInversions"
+    ],
+    "dependencies": [
+      "Combinatorics.Pairing.ofSplitNormalizedPairEquiv_pair_eq_or_swap",
+      "Combinatorics.Pairing.pairEndpoint_one",
+      "Combinatorics.Pairing.pairEndpoint_zero"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "Combinatorics.Pairing.ofSplit_sum_pairEndpointInversionCount_eq_positionInversions"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {n : ℕ} (Q : Combinatorics.Pairing n) {j j' : Fin (2 * (n + 1))},\n  j = j' → ∀ (hj : j ≠ 0) (hj' : j' ≠ 0), Q.insertFirstPair j hj = Q.insertFirstPair j' hj'",
     "standardAxioms": [
       "Classical.choice",
@@ -159799,53 +160681,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (v m px py qx qy : ℝ),\n  QuantumTheory.Models.MassiveDirac.energy v m px py ≠ 0 →\n    QuantumTheory.Models.MassiveDirac.energy v m qx qy ≠ 0 →\n      (QuantumTheory.Models.MassiveDirac.bandProjector QuantumTheory.Models.MassiveDirac.Band.upper v m px py *\n            QuantumTheory.Models.MassiveDirac.bandProjector QuantumTheory.Models.MassiveDirac.Band.upper v m qx\n              qy).trace =\n        ↑((1 +\n              (v ^ 2 * (px * qx + py * qy) + m ^ 2) /\n                (QuantumTheory.Models.MassiveDirac.energy v m px py *\n                  QuantumTheory.Models.MassiveDirac.energy v m qx qy)) /\n            2)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.TransportRate.0.QuantumTheory.Models.MassiveDirac.upperBandProjectorOverlap_eq",
-    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.TransportRate",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Models.MassiveDirac.coe_upperBandFermiSurfaceScalarOverlapWeight_eq_projectorTrace"
-    ],
-    "dependencies": [
-      "InternalSpace.dotProduct_pauliAxis",
-      "InternalSpace.trace_pauliCombination",
-      "InternalSpace.trace_pauliCombination_mul_pauliCombination",
-      "QuantumTheory.Models.MassiveDirac.bandProjector_eq_pauliCombination"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Models.MassiveDirac.coe_upperBandFermiSurfaceScalarOverlapWeight_eq_projectorTrace"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ (a b : ℂ) (gap : ℝ), gap ≠ 0 → (a / ↑gap * (b / ↑gap)).im = (a * b).im / gap ^ 2",
     "standardAxioms": [
       "Classical.choice",
@@ -159872,6 +160707,53 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.Models.MassiveDirac.pointwiseBerryCurvature_xy_eq_forceMatrixBerryCurvature"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (v m px py qx qy : ℝ),\n  QuantumTheory.Models.MassiveDirac.energy v m px py ≠ 0 →\n    QuantumTheory.Models.MassiveDirac.energy v m qx qy ≠ 0 →\n      (QuantumTheory.Models.MassiveDirac.bandProjector QuantumTheory.Models.MassiveDirac.Band.upper v m px py *\n            QuantumTheory.Models.MassiveDirac.bandProjector QuantumTheory.Models.MassiveDirac.Band.upper v m qx\n              qy).trace =\n        ↑((1 +\n              (v ^ 2 * (px * qx + py * qy) + m ^ 2) /\n                (QuantumTheory.Models.MassiveDirac.energy v m px py *\n                  QuantumTheory.Models.MassiveDirac.energy v m qx qy)) /\n            2)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Models.MassiveDirac.Model.FermiSurfaceOverlap.0.QuantumTheory.Models.MassiveDirac.upperBandProjectorOverlap_eq",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Model.FermiSurfaceOverlap",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.MassiveDirac.coe_upperBandFermiSurfaceScalarOverlapWeight_eq_projectorTrace"
+    ],
+    "dependencies": [
+      "InternalSpace.dotProduct_pauliAxis",
+      "InternalSpace.trace_pauliCombination",
+      "InternalSpace.trace_pauliCombination_mul_pauliCombination",
+      "QuantumTheory.Models.MassiveDirac.bandProjector_eq_pauliCombination"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.coe_upperBandFermiSurfaceScalarOverlapWeight_eq_projectorTrace"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -160998,8 +161880,8 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedRadialTrace.0.QuantumTheory.Models.MassiveDirac.pauliScalarCoefficient_prefactor_intervalIntegral",
-    "module": "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedRadialTrace",
+    "name": "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedRadialCoefficients.0.QuantumTheory.Models.MassiveDirac.pauliScalarCoefficient_prefactor_intervalIntegral",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedRadialCoefficients",
     "externalAxioms": [],
     "docString": null,
     "directWrapperTargetModule": null,
@@ -161042,8 +161924,8 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedRadialTrace.0.QuantumTheory.Models.MassiveDirac.pauliVectorCoefficient_prefactor_intervalIntegral",
-    "module": "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedRadialTrace",
+    "name": "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedRadialCoefficients.0.QuantumTheory.Models.MassiveDirac.pauliVectorCoefficient_prefactor_intervalIntegral",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedRadialCoefficients",
     "externalAxioms": [],
     "docString": null,
     "directWrapperTargetModule": null,
@@ -161058,6 +161940,96 @@
     "compiledConsumers": [
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient_eq_radialKernel_integral",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient_eq_radialKernel_integral"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "QuantumTheory.Transport.polarFourierSecondCosineAngularKernel 0 = 0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedRadialHarmonics.0.QuantumTheory.Models.MassiveDirac.polarFourierSecondCosineAngularKernel_zero",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedRadialHarmonics",
+    "externalAxioms": [],
+    "docString": "The traceless second angular Fourier harmonic vanishes at the origin.\nThe result follows from the canonical full-angle harmonic integration theorem. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient_origin_diagonal_eq"
+    ],
+    "dependencies": [
+      "QuantumTheory.Transport.AngularHarmonicCoefficients.integral_eval"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient_origin_diagonal_eq"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (hbar pMax radius : ℝ) (f : ℝ → ℂ),\n  ∫ (p : ℝ) in 0..pMax, ↑p * (QuantumTheory.Transport.polarFourierFirstCosineAngularKernel (p * radius / hbar) * f p) =\n    Complex.I * ↑(radius / hbar) / 2 *\n      ∫ (p : ℝ) in 0..pMax,\n        ↑p ^ 2 *\n          ((QuantumTheory.Transport.polarFourierZerothAngularKernel (p * radius / hbar) -\n              QuantumTheory.Transport.polarFourierSecondCosineAngularKernel (p * radius / hbar)) *\n            f p)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedRadialTrace.0.QuantumTheory.Models.MassiveDirac.gaussianCrossedRadialFirstHarmonicIntegral_eq_difference",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedRadialTrace",
+    "externalAxioms": [],
+    "docString": "Local normalized radial Fourier recurrence consumed by the X and Psi trace reductions.\nThe public upstream identity retains its division-free normalization. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_psi_eq_harmonic_components",
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_x_eq_harmonic_components"
+    ],
+    "dependencies": [
+      "QuantumTheory.Transport.integral_polarFourierFirstCosineAngularKernel_two_mul_eq_zeroth_sub_second"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_psi_eq_harmonic_components",
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_x_eq_harmonic_components"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -161250,6 +162222,48 @@
   },
   {
     "terminal": false,
+    "statement": "∀ (tensor : Fin 2 → Fin 2 → ℂ) (angle : ℝ),\n  (QuantumTheory.Models.MassiveDirac.gaussianCrossedAngularTensorCoefficients✝ tensor).eval angle =\n    ↑(Real.cos angle) ^ 2 * tensor 0 1 - ↑(Real.sin angle) ^ 2 * tensor 1 0 +\n      ↑(Real.cos angle) * ↑(Real.sin angle) * (tensor 0 0 - tensor 1 1)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedRealSpaceIntegral.0.QuantumTheory.Models.MassiveDirac.gaussianCrossedAngularTensorCoefficients_eval",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedRealSpaceIntegral",
+    "externalAxioms": [],
+    "docString": "A rotated `xy` rank-two tensor contains only the constant and second\nangular harmonics. Its angular average projects onto the antisymmetric\n`xy-yx` sector. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceIntegral_eq_radial_antisymmetric_trace"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceIntegral_eq_radial_antisymmetric_trace"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {f : ℝ → ℂ} {a b : ℝ}, (∀ (x : ℝ), (f x).im = 0) → (∫ (x : ℝ) in a..b, f x).im = 0",
     "standardAxioms": [
       "Classical.choice",
@@ -161276,6 +162290,48 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceIntegral_psi_im"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (A B C D G H : QuantumTheory.Models.MassiveDirac.Matrix2) (c s : ℝ),\n  ((↑c • A - ↑s • B) * G * (↑s • C + ↑c • D) * H).trace =\n    ↑c ^ 2 * (A * G * D * H).trace - ↑s ^ 2 * (B * G * C * H).trace +\n      ↑c * ↑s * ((A * G * C * H).trace - (B * G * D * H).trace)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedTrace.0.QuantumTheory.Models.MassiveDirac.trace_four_rotated_currents",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedTrace",
+    "externalAxioms": [],
+    "docString": "The four-matrix trace is bilinear in the two current insertions.\nRotating these two source currents by opposite plane-vector axes produces a\nconstant antisymmetric term and the two traceless second harmonics. This\nalgebraic fact applies to both crossed topologies before complex conjugation. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.MassiveDirac.gaussianCrossedTraceKernel_rotated_sources"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.gaussianCrossedTraceKernel_rotated_sources"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -178065,7 +179121,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -178077,7 +179133,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_left_normalizedPair"
+      "SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_left_normalizedPair",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalVacuumShuffleIntegral.0.SecondQuantization.Fermionic.externalInsertionLeftMixedPosition_split_strictMono"
     ],
     "dependencies": [
       "SecondQuantization.Common.externalInsertionLegEquiv_mixedTimeAmbientPositionEquiv",
@@ -178088,7 +179145,53 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_left_normalizedPair"
+      "SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_left_normalizedPair",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalVacuumShuffleIntegral.0.SecondQuantization.Fermionic.externalInsertionLeftMixedPosition_split_strictMono"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {E n : ℕ} (T : Finset (Fin n)) (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ),\n  let S := Finset.univ \\ T;\n  have order := (S.orderIsoOfFin ⋯).toEquiv;\n  have localFixed := SecondQuantization.Fermionic.externalInsertionLeftMixedToFixedEquiv✝ T externalTime σ;\n  have split :=\n    (((Equiv.refl (Fin (2 * (2 * T.card + E)))).sumCongr\n              (SecondQuantization.Common.orderedLegToDiagramLeg S order)).trans\n          (SecondQuantization.Common.externalInsertionSlotLegSplitting ⋯)).trans\n      (SecondQuantization.Common.externalInsertionMixedTimeAmbientPositionEquiv externalTime σ).symm;\n  StrictMono fun p => ((localFixed.sumCongr (Equiv.refl (Fin (2 * (2 * S.card))))).trans split) (Sum.inl p)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalVacuumShuffleIntegral.0.SecondQuantization.Fermionic.externalInsertionLeftMixedPosition_split_strictMono",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalVacuumShuffleIntegral",
+    "externalAxioms": [],
+    "docString": "The external half of the reindexed mixed-time slot splitting is strictly\nincreasing. This does not assert that the original flattened external order is\npreserved by the physical time ordering. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.externalInsertionOfSlotSplit_mixedPairingWeight_eq_positionInversions_mul_of_strictAnti"
+    ],
+    "dependencies": [
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalVacuumShuffleIntegral.0.SecondQuantization.Fermionic.externalInsertionLeftMixedPosition_fixed",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalVacuumShuffleIntegral.0.SecondQuantization.Fermionic.externalInsertionLeftMixedPosition_strictMono"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.externalInsertionOfSlotSplit_mixedPairingWeight_eq_positionInversions_mul_of_strictAnti"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -178112,7 +179215,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -178124,7 +179227,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_left_normalizedPair"
+      "SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_left_normalizedPair",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalVacuumShuffleIntegral.0.SecondQuantization.Fermionic.externalInsertionLeftMixedPosition_split_strictMono"
     ],
     "dependencies": [
       "SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegPosition_map_strictMono"
@@ -178132,9 +179236,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_left_normalizedPair"
+      "SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_left_normalizedPair",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalVacuumShuffleIntegral.0.SecondQuantization.Fermionic.externalInsertionLeftMixedPosition_split_strictMono"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -178178,6 +179283,51 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_left_normalizedPair"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} {E n : ℕ} (T : Finset (Fin n))\n  (ext :\n    SecondQuantization.Common.ExternalInsertionDiagram (SecondQuantization.Fermionic.ExternalFieldLabel Mode)\n      (SecondQuantization.Common.QuarticVertexLabel Mode) E n T)\n  (vac :\n    SecondQuantization.Common.QuarticDiagram (SecondQuantization.Common.QuarticVertexLabel Mode) n (Finset.univ \\ T))\n  (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ),\n  let S := Finset.univ \\ T;\n  have order := (S.orderIsoOfFin ⋯).toEquiv;\n  have localFixed := SecondQuantization.Fermionic.externalInsertionLeftMixedToFixedEquiv✝ T externalTime σ;\n  have split :=\n    (((Equiv.refl (Fin (2 * (2 * T.card + E)))).sumCongr\n              (SecondQuantization.Common.orderedLegToDiagramLeg S order)).trans\n          (SecondQuantization.Common.externalInsertionSlotLegSplitting ⋯)).trans\n      (SecondQuantization.Common.externalInsertionMixedTimeAmbientPositionEquiv externalTime σ).symm;\n  (SecondQuantization.Common.ExternalInsertionDiagram.ofSlotSplit ⋯ ext vac).pairingInMixedOrder externalTime σ =\n    Combinatorics.Pairing.ofSplit ((localFixed.sumCongr (Equiv.refl (Fin (2 * (2 * S.card))))).trans split)\n      (Combinatorics.PairingOn.transport ext.pairing localFixed) (vac.pairingInOrder order)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalVacuumShuffleIntegral.0.SecondQuantization.Fermionic.externalInsertionOfSlotSplit_pairingInMixedOrder_eq_ofSplit_mixedExternal",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalVacuumShuffleIntegral",
+    "externalAxioms": [],
+    "docString": "Express the assembled mixed-time pairing using the external half's own\nmixed-time positions. This local reindexing is needed before comparing the\nfermionic crossing sign with the mixed atomic-order permutation sign. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.externalInsertionOfSlotSplit_mixedPairingWeight_eq_positionInversions_mul_of_strictAnti"
+    ],
+    "dependencies": [
+      "Combinatorics.Pairing.ofSplit_reindex",
+      "SecondQuantization.Common.ExternalInsertionDiagram.ofSlotSplit_pairingInMixedOrder_eq_ofSplit_orderedVacuum"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.externalInsertionOfSlotSplit_mixedPairingWeight_eq_positionInversions_mul_of_strictAnti"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -181484,6 +182634,48 @@
       "QuantumTheory.Transport.polarFourierZerothAngularKernel_conj"
     ],
     "compiledConsumerCount": 3,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (z θ : ℝ),\n  HasDerivAt (QuantumTheory.Transport.polarFourierRadialPhase z)\n    (-Complex.I * ↑z * ↑(Real.sin θ) * QuantumTheory.Transport.polarFourierRadialPhase z θ) θ",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Transport.Analysis.PolarFourier.0.QuantumTheory.Transport.polarFourierRadialPhase_hasDerivAt",
+    "module": "LeanCondensedMatter.Transport.Analysis.PolarFourier",
+    "externalAxioms": [],
+    "docString": "Derivative of the dimensionless radial Fourier phase with respect to the polar angle. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.polarFourierFirstCosineAngularKernel_two_mul_eq_zeroth_sub_second"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.polarFourierFirstCosineAngularKernel_two_mul_eq_zeroth_sub_second"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",

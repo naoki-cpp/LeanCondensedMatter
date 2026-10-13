@@ -1659,7 +1659,7 @@
         "LeanCondensedMatter.Crystal.Periodicity",
         "LeanCondensedMatter.Crystal.PointGroup"
       ],
-      "externalImportCount": 1
+      "externalImportCount": 3
     },
     {
       "name": "LeanCondensedMatter.Crystal.Lattice",
@@ -2102,7 +2102,7 @@
       "name": "LeanCondensedMatter.Models.MassiveDirac.Conductivity.Longitudinal.RelaxationTime",
       "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Conductivity/Longitudinal/RelaxationTime.lean",
       "imports": [
-        "LeanCondensedMatter.Models.MassiveDirac.Model.Occupation",
+        "LeanCondensedMatter.Models.MassiveDirac.Model.FermiSurface",
         "LeanCondensedMatter.Transport.Analysis.ContinuumMeasure",
         "LeanCondensedMatter.Transport.Analysis.RelaxationTime"
       ],
@@ -2149,7 +2149,7 @@
       "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Disorder/Born/Damping.lean",
       "imports": [
         "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.Boundary",
-        "LeanCondensedMatter.Models.MassiveDirac.Model.Occupation",
+        "LeanCondensedMatter.Models.MassiveDirac.Model.FermiSurface",
         "LeanCondensedMatter.Transport.Analysis.ContinuumMeasure"
       ],
       "externalImportCount": 1
@@ -2398,7 +2398,7 @@
       "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Disorder/TransportRate.lean",
       "imports": [
         "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.Damping",
-        "LeanCondensedMatter.Models.MassiveDirac.Model.Occupation",
+        "LeanCondensedMatter.Models.MassiveDirac.Model.FermiSurfaceOverlap",
         "LeanCondensedMatter.Transport.Analysis.AngularHarmonics",
         "LeanCondensedMatter.Transport.Analysis.RelaxationTime"
       ],
@@ -2466,6 +2466,23 @@
       "externalImportCount": 0
     },
     {
+      "name": "LeanCondensedMatter.Models.MassiveDirac.Model.FermiSurface",
+      "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Model/FermiSurface.lean",
+      "imports": [
+        "LeanCondensedMatter.Models.MassiveDirac.Model.Kinematics"
+      ],
+      "externalImportCount": 1
+    },
+    {
+      "name": "LeanCondensedMatter.Models.MassiveDirac.Model.FermiSurfaceOverlap",
+      "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Model/FermiSurfaceOverlap.lean",
+      "imports": [
+        "LeanCondensedMatter.Models.MassiveDirac.Model.FermiSurface",
+        "LeanCondensedMatter.Models.MassiveDirac.Model.Spectral"
+      ],
+      "externalImportCount": 1
+    },
+    {
       "name": "LeanCondensedMatter.Models.MassiveDirac.Model.Interband",
       "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Model/Interband.lean",
       "imports": [
@@ -2486,7 +2503,7 @@
       "name": "LeanCondensedMatter.Models.MassiveDirac.Model.Occupation",
       "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Model/Occupation.lean",
       "imports": [
-        "LeanCondensedMatter.Models.MassiveDirac.Model.Kinematics",
+        "LeanCondensedMatter.Models.MassiveDirac.Model.FermiSurface",
         "LeanCondensedMatter.Transport.Analysis.ZeroTemperatureBandFilling"
       ],
       "externalImportCount": 0
@@ -2535,6 +2552,8 @@
       "imports": [
         "LeanCondensedMatter.Models.MassiveDirac.Model.Basic",
         "LeanCondensedMatter.Models.MassiveDirac.Model.Berry",
+        "LeanCondensedMatter.Models.MassiveDirac.Model.FermiSurface",
+        "LeanCondensedMatter.Models.MassiveDirac.Model.FermiSurfaceOverlap",
         "LeanCondensedMatter.Models.MassiveDirac.Model.Interband",
         "LeanCondensedMatter.Models.MassiveDirac.Model.Kinematics",
         "LeanCondensedMatter.Models.MassiveDirac.Model.Occupation",
@@ -2721,9 +2740,28 @@
       "externalImportCount": 0
     },
     {
+      "name": "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedRadialCoefficients",
+      "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Streda/GaussianCrossedRadialCoefficients.lean",
+      "imports": [
+        "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedRealSpace",
+        "LeanCondensedMatter.Transport.Analysis.ContinuumMeasure"
+      ],
+      "externalImportCount": 1
+    },
+    {
+      "name": "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedRadialHarmonics",
+      "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Streda/GaussianCrossedRadialHarmonics.lean",
+      "imports": [
+        "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedRadialCoefficients",
+        "LeanCondensedMatter.Transport.Analysis.ContinuumMeasure"
+      ],
+      "externalImportCount": 1
+    },
+    {
       "name": "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedRadialTrace",
       "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Streda/GaussianCrossedRadialTrace.lean",
       "imports": [
+        "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedRadialHarmonics",
         "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedRealSpace",
         "LeanCondensedMatter.Transport.Analysis.ContinuumMeasure"
       ],
@@ -2769,6 +2807,8 @@
         "LeanCondensedMatter.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderRadial",
         "LeanCondensedMatter.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderRadialDenominator",
         "LeanCondensedMatter.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderZeroBroadening",
+        "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedRadialCoefficients",
+        "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedRadialHarmonics",
         "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedRadialTrace",
         "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedRealSpace",
         "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedRealSpaceIntegral",
@@ -6586,7 +6626,7 @@
       "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentSign",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Diagrammatics/ExternalInsertion/ComponentSign.lean",
       "imports": [
-        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Factorization.ComponentEvaluation",
+        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Factorization.ComponentCrossing",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Factorization.ComponentShuffleParity"
       ],
       "externalImportCount": 0
@@ -7524,6 +7564,14 @@
       "externalImportCount": 0
     },
     {
+      "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.FiniteDisorderCurrentCorrelation",
+      "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Transport/FiniteDisorderCurrentCorrelation.lean",
+      "imports": [
+        "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.FiniteDisorderConductivity"
+      ],
+      "externalImportCount": 0
+    },
+    {
       "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.FrequencyResponse",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Transport/FrequencyResponse.lean",
       "imports": [
@@ -7671,6 +7719,7 @@
         "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.CurrentInsertions",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.FiniteConductivityTable",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.FiniteDisorderConductivity",
+        "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.FiniteDisorderCurrentCorrelation",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.FrequencyResponse",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.GeometricCurrentResponse",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.HarmonicSourceResponse",
