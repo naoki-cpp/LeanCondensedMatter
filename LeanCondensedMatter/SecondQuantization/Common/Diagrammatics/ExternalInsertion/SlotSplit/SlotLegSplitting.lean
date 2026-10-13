@@ -288,7 +288,8 @@ theorem externalInsertionSlotLegSplitting_fixedInversionCount_mod_two_eq_zero
       have hiff :=
         externalInsertionSlotLegSplitting_fixedRight_lt_leftInteraction_iff
           (E := E) T v l wk.1 wk.2
-      simp only [Prod.mk.eta, Equiv.apply_symm_apply]
+      dsimp only at hiff
+      simp only [Equiv.apply_symm_apply]
       rw [hiff]
 
 /-- Reconstruct an external-insertion diagram from an external-bearing piece and a quartic
