@@ -1,4 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Core.Diagram
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Leg
 import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.StableTimedEventOrder
 import Mathlib.Data.List.NodupEquivFin
 import Mathlib.Data.Fintype.EquivFin
@@ -113,6 +114,41 @@ private theorem orderedExternalInsertionTimedEvents_pairwise {E n : ℕ}
           (externalInsertionTimedEventTime externalTime σ)
           externalInsertionTimedEventRank)
   exact List.pairwise_insertionSort _ _
+
+/-- With no external events and strictly decreasing interaction times, the stable
+mixed-event sort leaves the canonical interaction-slot order unchanged. -/
+private theorem orderedExternalInsertionTimedEvents_zero_eq_canonical_of_strictAnti
+    {n : ℕ} (σ : Fin n → ℝ) (hσ : StrictAnti σ) :
+    orderedExternalInsertionTimedEvents (E := 0) (Fin.elim0 : Fin 0 → ℝ) σ =
+      canonicalExternalInsertionTimedEvents 0 n := by
+  classical
+  unfold orderedExternalInsertionTimedEvents
+  apply List.Pairwise.insertionSort_eq
+  rw [canonicalExternalInsertionTimedEvents, List.pairwise_ofFn]
+  intro a b hab
+  cases ha :
+      (finSumFinEquiv : ExternalInsertionTimedEvent 0 n ≃ Fin (0 + n)).symm a with
+  | inl i => exact i.elim0
+  | inr i =>
+    cases hb :
+        (finSumFinEquiv : ExternalInsertionTimedEvent 0 n ≃ Fin (0 + n)).symm b with
+    | inl j => exact j.elim0
+    | inr j =>
+      have hai : (i : ℕ) = (a : ℕ) := by
+        have h := congrArg Fin.val
+          ((finSumFinEquiv : ExternalInsertionTimedEvent 0 n ≃ Fin (0 + n)).apply_symm_apply a)
+        rw [ha, finSumFinEquiv_apply_right] at h
+        simpa using h
+      have hbj : (j : ℕ) = (b : ℕ) := by
+        have h := congrArg Fin.val
+          ((finSumFinEquiv : ExternalInsertionTimedEvent 0 n ≃ Fin (0 + n)).apply_symm_apply b)
+        rw [hb, finSumFinEquiv_apply_right] at h
+        simpa using h
+      have hij : i < j := Fin.lt_def.mpr (by omega)
+      simp only [externalInsertionTimedEventBeforeOrEqual,
+        stableTimedEventBeforeOrEqual_iff]
+      left
+      simpa only [ha, hb, externalInsertionTimedEventTime] using hσ hij
 
 variable {E₁ E₂ m n : ℕ}
 
@@ -288,6 +324,64 @@ private theorem externalInsertionTimedEventAtomicLegs_disjoint {E n : ℕ}
   cases a <;> cases b <;>
     simp_all [externalInsertionTimedEventAtomicLegs, ne_comm]
 
+/-- On the strictly ordered vacuum-only time chamber, mixed atomic legs are
+listed in the canonical flattened quartic-leg order. -/
+private theorem externalInsertionMixedTimeOrderedAtomicLegs_zero_eq_flattened_of_strictAnti
+    {n : ℕ} (σ : Fin n → ℝ) (hσ : StrictAnti σ) :
+    externalInsertionMixedTimeOrderedAtomicLegs (E := 0)
+        (Fin.elim0 : Fin 0 → ℝ) σ =
+      List.ofFn (fun q : Fin (2 * (2 * n)) =>
+        (Sum.inr
+          (⟨(orderedQuarticLegEquiv n q).1, Finset.mem_univ _⟩,
+            (orderedQuarticLegEquiv n q).2) : OrderedExternalInsertionLeg 0 n)) := by
+  classical
+  have hcanonical :
+      canonicalExternalInsertionTimedEvents 0 n =
+        List.ofFn (fun i : Fin n => (Sum.inr i : ExternalInsertionTimedEvent 0 n)) := by
+    unfold canonicalExternalInsertionTimedEvents
+    rw [List.ofFn_congr (Nat.zero_add n)]
+    apply congrArg List.ofFn
+    funext i
+    have hcast :
+        Fin.cast (Nat.zero_add n).symm i = Fin.natAdd 0 i := by
+      apply Fin.ext
+      simp
+    rw [hcast]
+    exact finSumFinEquiv_symm_apply_natAdd i
+  unfold externalInsertionMixedTimeOrderedAtomicLegs
+  rw [orderedExternalInsertionTimedEvents_zero_eq_canonical_of_strictAnti σ hσ,
+    hcanonical]
+  have hflat :
+      (List.ofFn (fun i : Fin n => (Sum.inr i : ExternalInsertionTimedEvent 0 n))).flatMap
+          externalInsertionTimedEventAtomicLegs =
+        (List.ofFn (fun i : Fin n =>
+          List.ofFn (fun j : Fin 4 =>
+            (Sum.inr (⟨i, Finset.mem_univ _⟩, j) :
+              OrderedExternalInsertionLeg 0 n)))).flatten := by
+    rw [List.flatMap_def, List.map_ofFn]
+    rfl
+  rw [hflat]
+  let g : Fin n → Fin 4 → OrderedExternalInsertionLeg 0 n :=
+    fun i j => Sum.inr (⟨i, Finset.mem_univ _⟩, j)
+  change (List.ofFn (fun i : Fin n => List.ofFn (g i))).flatten =
+    List.ofFn (orderedQuarticLegFamily g)
+  have hcard : 2 * (2 * n) = n * 4 := by omega
+  rw [List.ofFn_congr hcard (orderedQuarticLegFamily g), List.ofFn_mul]
+  apply congrArg List.flatten
+  apply congrArg List.ofFn
+  funext i
+  apply congrArg List.ofFn
+  funext j
+  change g i j =
+    g (orderedQuarticLegEquiv n
+      (Fin.cast hcard.symm
+        ⟨(i : ℕ) * 4 + (j : ℕ), Combinatorics.FiniteIndex.blockCoordinate_lt i j⟩)).1
+      (orderedQuarticLegEquiv n
+        (Fin.cast hcard.symm
+          ⟨(i : ℕ) * 4 + (j : ℕ), Combinatorics.FiniteIndex.blockCoordinate_lt i j⟩)).2
+  exact (congrArg (fun p : Fin n × Fin 4 => g p.1 p.2)
+    (Combinatorics.FiniteIndex.blockEquiv_cast_mul_add hcard i j)).symm
+
 private theorem externalInsertionMixedTimeOrderedAtomicLegs_nodup {E n : ℕ}
     (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ) :
     (externalInsertionMixedTimeOrderedAtomicLegs externalTime σ).Nodup := by
@@ -425,6 +519,42 @@ theorem externalInsertionMixedTimeOrderedAtomicLegPosition_map_strictMono
   exact (Fin.castOrderIso hAmbientLength).strictMono
     (positionEmbedding.strictMono
       ((Fin.castOrderIso hLocalLength.symm).strictMono hpq))
+
+/-- On an ordered vacuum-only time chamber, the canonical quartic leg order
+agrees with mixed-time atomic positions. -/
+theorem externalInsertionMixedTimeOrderedAtomicLegPosition_zero_strictMono_of_strictAnti
+    {n : ℕ} (σ : Fin n → ℝ) (hσ : StrictAnti σ) :
+    StrictMono (fun q : Fin (2 * (2 * n)) =>
+      externalInsertionMixedTimeOrderedAtomicLegPosition (E := 0)
+        (Fin.elim0 : Fin 0 → ℝ) σ
+        (Sum.inr
+          (⟨(orderedQuarticLegEquiv n q).1, Finset.mem_univ _⟩,
+            (orderedQuarticLegEquiv n q).2))) := by
+  let leg (q : Fin (2 * (2 * n))) : OrderedExternalInsertionLeg 0 n :=
+    Sum.inr (⟨(orderedQuarticLegEquiv n q).1, Finset.mem_univ _⟩,
+      (orderedQuarticLegEquiv n q).2)
+  let position (q : Fin (2 * (2 * n))) : Fin (2 * (2 * n + 0)) :=
+    externalInsertionMixedTimeOrderedAtomicLegPosition (E := 0)
+      (Fin.elim0 : Fin 0 → ℝ) σ (leg q)
+  have hlist :=
+    externalInsertionMixedTimeOrderedAtomicLegs_zero_eq_flattened_of_strictAnti σ hσ
+  have hcard : 2 * (2 * n) = 2 * (2 * n + 0) := by omega
+  have hforward (q : Fin (2 * (2 * n))) :
+      externalInsertionMixedTimeOrderedAtomicLegEquiv (E := 0)
+          (Fin.elim0 : Fin 0 → ℝ) σ (Fin.cast hcard q) = leg q := by
+    unfold externalInsertionMixedTimeOrderedAtomicLegEquiv
+    simp only [Equiv.trans_apply, List.Nodup.getEquivOfForallMemList_apply,
+      finCongr_apply]
+    simp [hlist, leg]
+  have hposition (q : Fin (2 * (2 * n))) :
+      position q = Fin.cast hcard q := by
+    apply (externalInsertionMixedTimeOrderedAtomicLegEquiv (E := 0)
+      (Fin.elim0 : Fin 0 → ℝ) σ).injective
+    rw [externalInsertionMixedTimeOrderedAtomicLegEquiv_position]
+    exact (hforward q).symm
+  intro p q hpq
+  change position p < position q
+  simpa only [hposition, Fin.lt_def, Fin.val_cast] using hpq
 
 /-- Permutation from the fixed flattened diagram-leg order to mixed-time atomic positions. -/
 noncomputable def externalInsertionStandardToMixedAtomicPositionEquiv {E n : ℕ}
