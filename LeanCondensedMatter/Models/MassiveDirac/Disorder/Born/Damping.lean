@@ -1,6 +1,6 @@
 import LeanCondensedMatter.Transport.Analysis.ContinuumMeasure
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.Boundary
-import LeanCondensedMatter.Models.MassiveDirac.Model.Occupation
+import LeanCondensedMatter.Models.MassiveDirac.Model.FermiSurface
 import Mathlib.Tactic
 
 set_option linter.style.header false
