@@ -342,8 +342,12 @@ private theorem externalInsertionMixedTimeOrderedAtomicLegs_zero_eq_flattened_of
     rw [List.ofFn_congr (Nat.zero_add n)]
     apply congrArg List.ofFn
     funext i
-    have h := finSumFinEquiv_symm_apply_natAdd (m := 0) i
-    simpa [Fin.natAdd] using h
+    have hcast :
+        Fin.cast (Nat.zero_add n).symm i = Fin.natAdd 0 i := by
+      apply Fin.ext
+      simp
+    rw [hcast]
+    exact finSumFinEquiv_symm_apply_natAdd i
   unfold externalInsertionMixedTimeOrderedAtomicLegs
   rw [orderedExternalInsertionTimedEvents_zero_eq_canonical_of_strictAnti σ hσ,
     hcanonical]
@@ -375,7 +379,8 @@ private theorem externalInsertionMixedTimeOrderedAtomicLegs_zero_eq_flattened_of
       (orderedQuarticLegEquiv n
         (Fin.cast hcard.symm
           ⟨(i : ℕ) * 4 + (j : ℕ), Combinatorics.FiniteIndex.blockCoordinate_lt i j⟩)).2
-  rw [Combinatorics.FiniteIndex.blockEquiv_cast_mul_add hcard i j]
+  exact (congrArg (fun p : Fin n × Fin 4 => g p.1 p.2)
+    (Combinatorics.FiniteIndex.blockEquiv_cast_mul_add hcard i j)).symm
 
 private theorem externalInsertionMixedTimeOrderedAtomicLegs_nodup {E n : ℕ}
     (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ) :
@@ -540,7 +545,7 @@ theorem externalInsertionMixedTimeOrderedAtomicLegPosition_zero_strictMono_of_st
     unfold externalInsertionMixedTimeOrderedAtomicLegEquiv
     simp only [Equiv.trans_apply, List.Nodup.getEquivOfForallMemList_apply,
       finCongr_apply]
-    simp [hlist, leg, List.get_ofFn]
+    simp [hlist, leg]
   have hposition (q : Fin (2 * (2 * n))) :
       position q = Fin.cast hcard q := by
     apply (externalInsertionMixedTimeOrderedAtomicLegEquiv (E := 0)
@@ -549,7 +554,7 @@ theorem externalInsertionMixedTimeOrderedAtomicLegPosition_zero_strictMono_of_st
     exact (hforward q).symm
   intro p q hpq
   change position p < position q
-  simpa only [hposition] using (Fin.castOrderIso hcard).strictMono hpq
+  simpa only [hposition, Fin.lt_def, Fin.val_cast] using hpq
 
 /-- Permutation from the fixed flattened diagram-leg order to mixed-time atomic positions. -/
 noncomputable def externalInsertionStandardToMixedAtomicPositionEquiv {E n : ℕ}
