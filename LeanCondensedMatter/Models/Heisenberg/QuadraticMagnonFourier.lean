@@ -63,8 +63,9 @@ theorem excitationHamiltonian_eq_secondQuantization (J : ℝ) (twiceSpin : ℕ) 
     apply Finsupp.ext
     intro n
     simp [oneMagnonLaplacian, PiLp.single_apply, mul_sub,
-      Finset.sum_sub_distrib, mul_ite, numberOperator,
+      mul_ite, numberOperator,
       LinearMap.sum_apply, Finset.sum_apply]
+    simp [Finset.sum_sub_distrib, ite_mul]
     ring
   unfold secondQuantization
   simp_rw [hrow]
