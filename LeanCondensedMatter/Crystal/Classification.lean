@@ -461,8 +461,9 @@ theorem pointGroup_crystallographic_restriction
     simpa only [Matrix.det_mul, Matrix.det_transpose, Matrix.det_one, pow_two] using h
   have hdetM : M.det = LinearMap.det T := LinearMap.det_toMatrix o.toBasis T
   rcases (sq_eq_one_iff.mp hdetSq) with hplus | hminus
-  · exact X.pointGroup_rotation_power_of_det_one hX g b o (by
-      simpa only [← hdetM] using hplus)
+  · apply X.pointGroup_rotation_power_of_det_one hX g b o
+    change LinearMap.det T = 1
+    exact hdetM.symm.trans hplus
   · right; left
     exact X.pointGroup_pow_eq_one_of_toMatrix_pow_eq_one g o.toBasis 2
       (M.sq_eq_one_of_mul_transpose_eq_one_det_neg_one horth hminus)
