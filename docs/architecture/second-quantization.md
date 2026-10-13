@@ -219,6 +219,11 @@ Full-slot label and leg-partner coordinates live in `Core.Ordered`; mixed-time p
 lives in `Pairing.MixedOrder`. The Fermionic `Diagram` module supplies the concrete
 `ExternalInsertionWickDiagram` label specialization, while thermal kernels, amplitudes, and exchange
 signs remain Fermionic consumers.
+`Fermionic.Diagrammatics.ExternalInsertion.ExternalVacuumPairing` owns thermal pair locality,
+normalized-endpoint transport, crossing signs, and pairing factorization for the external-support
+and vacuum slot split. `ExternalVacuumShuffleIntegral` owns the independent binary ordered-simplex
+integral product identity and consumes integrands and regularity directly, without importing the
+slot-split pairing factorization module.
 
 Higher-point imaginary-time ordering is owned by
 `Common.ImaginaryTime.ExternalInsertionMixedOrder`. It orders the `2 * E` external events
