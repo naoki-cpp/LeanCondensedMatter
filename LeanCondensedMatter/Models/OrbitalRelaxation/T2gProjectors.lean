@@ -37,14 +37,14 @@ theorem transverseNumerator_eq_orbitalHamiltonian (k : Fin 3 → ℝ) :
     transverseNumerator k = orbitalHamiltonian 1 1 k := by
   ext i j
   fin_cases i <;> fin_cases j <;>
-    simp [transverseNumerator, orbitalHamiltonian]
+    simp [transverseNumerator, orbitalHamiltonian] <;> ring
 
 theorem momentumOuter_add_transverseNumerator (k : Fin 3 → ℝ) :
     momentumOuter k + transverseNumerator k = momentumNormSq k • (1 : OrbitalMatrix) := by
   ext i j
   fin_cases i <;> fin_cases j <;>
     simp [momentumOuter, transverseNumerator, momentumNormSq, Matrix.add_apply,
-      Matrix.smul_apply, Matrix.one_apply, smul_eq_mul] <;> ring
+      Matrix.smul_apply, smul_eq_mul] <;> ring
 
 theorem momentumOuter_mul_self (k : Fin 3 → ℝ) :
     momentumOuter k * momentumOuter k = momentumNormSq k • momentumOuter k := by
@@ -76,7 +76,7 @@ theorem transverseNumerator_mul_momentumOuter (k : Fin 3 → ℝ) :
 /-- Spherical t2g Hamiltonian, with `t` the kinetic coefficient and `r` the
 crystal-field splitting. -/
 def t2gHamiltonian (t r : ℝ) (k : Fin 3 → ℝ) : OrbitalMatrix :=
-  t * momentumNormSq k • (1 : OrbitalMatrix) + r • transverseNumerator k
+  (t * momentumNormSq k) • (1 : OrbitalMatrix) + r • transverseNumerator k
 
 theorem t2gHamiltonian_spectral_decomposition (t r : ℝ) (k : Fin 3 → ℝ) :
     momentumNormSq k • t2gHamiltonian t r k =
@@ -85,6 +85,6 @@ theorem t2gHamiltonian_spectral_decomposition (t r : ℝ) (k : Fin 3 → ℝ) :
   ext i j
   fin_cases i <;> fin_cases j <;>
     simp [t2gHamiltonian, momentumNormSq, momentumOuter, transverseNumerator,
-      Matrix.add_apply, Matrix.smul_apply, Matrix.one_apply, smul_eq_mul] <;> ring
+      Matrix.add_apply, Matrix.smul_apply, smul_eq_mul] <;> ring_nf
 
 end QuantumTheory.Models.OrbitalRelaxation
