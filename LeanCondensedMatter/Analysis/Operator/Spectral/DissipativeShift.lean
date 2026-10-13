@@ -1,3 +1,4 @@
+import Mathlib.Analysis.CStarAlgebra.ContinuousLinearMap
 import Mathlib.Analysis.Normed.Operator.Banach
 import Mathlib.Tactic
 
@@ -19,7 +20,7 @@ noncomputable section
 /-- A self-adjoint Hamiltonian and a self-energy with the opposite signed
 imaginary quadratic form cannot cancel a nonreal spectral shift. -/
 theorem dissipativeSpectralShift_injective
-    {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
+    {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
     (hamiltonian selfEnergy : H →L[ℂ] H)
     (hself : IsSelfAdjoint hamiltonian)
     (z : ℂ) (hz : z.im ≠ 0)
