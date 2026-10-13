@@ -452,7 +452,7 @@ theorem pointGroup_crystallographic_restriction
   let M : Matrix (Fin 2) (Fin 2) ℝ := LinearMap.toMatrix o.toBasis o.toBasis T
   have hunit : M ∈ Matrix.unitaryGroup (Fin 2) ℝ := by
     exact LinearIsometryEquiv.toMatrix_mem_unitaryGroup (g : V ≃ₗᵢ[ℝ] V) o o
-  have horth : M * Mᵀ = 1 := by
+  have horth : M * M.transpose = 1 := by
     have h := Matrix.mem_unitaryGroup_iff.mp hunit
     simpa only [Matrix.star_eq_conjTranspose,
       Matrix.conjTranspose_eq_transpose_of_trivial] using h
