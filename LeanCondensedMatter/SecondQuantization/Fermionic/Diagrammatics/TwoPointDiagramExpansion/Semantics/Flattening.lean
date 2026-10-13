@@ -85,7 +85,7 @@ theorem mixedTimeOrderedVertexComp_eq_prod_atomicOperators {n : ℕ}
       twoPointExternalOrderSign τ τ' •
         List.prod (mixedTimeOrderedAtomicOperators ε i j τ τ' q σ) := by
   simp only [mixedTimeOrderedVertexComp, mixedTimeOrderedAtomicOperators,
-    List.flatMap_def, List.prod_flatten, List.map_map,
+    List.flatMap_def, List.prod_flatten, List.map_map, Function.comp_def,
     prod_twoPointTimedEventAtomicOperators]
 
 end Fermionic
