@@ -323,6 +323,58 @@ private theorem externalInsertionTimedEventAtomicLegs_disjoint {E n : ℕ}
   cases a <;> cases b <;>
     simp_all [externalInsertionTimedEventAtomicLegs, ne_comm]
 
+/-- On the strictly ordered vacuum-only time chamber, mixed atomic legs are
+listed in the canonical flattened quartic-leg order. -/
+private theorem externalInsertionMixedTimeOrderedAtomicLegs_zero_eq_flattened_of_strictAnti
+    {n : ℕ} (σ : Fin n → ℝ) (hσ : StrictAnti σ) :
+    externalInsertionMixedTimeOrderedAtomicLegs (E := 0)
+        (Fin.elim0 : Fin 0 → ℝ) σ =
+      List.ofFn (fun q : Fin (2 * (2 * n)) =>
+        (Sum.inr
+          (⟨(orderedQuarticLegEquiv n q).1, Finset.mem_univ _⟩,
+            (orderedQuarticLegEquiv n q).2) : OrderedExternalInsertionLeg 0 n)) := by
+  classical
+  have hcanonical :
+      canonicalExternalInsertionTimedEvents 0 n =
+        List.ofFn (fun i : Fin n => (Sum.inr i : ExternalInsertionTimedEvent 0 n)) := by
+    unfold canonicalExternalInsertionTimedEvents
+    apply congrArg List.ofFn
+    funext i
+    have h := finSumFinEquiv_symm_apply_natAdd (m := 0) i
+    simpa [Fin.natAdd] using h
+  unfold externalInsertionMixedTimeOrderedAtomicLegs
+  rw [orderedExternalInsertionTimedEvents_zero_eq_canonical_of_strictAnti σ hσ,
+    hcanonical]
+  have hflat :
+      (List.ofFn (fun i : Fin n => (Sum.inr i : ExternalInsertionTimedEvent 0 n))).flatMap
+          externalInsertionTimedEventAtomicLegs =
+        (List.ofFn (fun i : Fin n =>
+          List.ofFn (fun j : Fin 4 =>
+            (Sum.inr (⟨i, Finset.mem_univ _⟩, j) :
+              OrderedExternalInsertionLeg 0 n)))).flatten := by
+    rw [List.flatMap_def, List.map_ofFn]
+    rfl
+  rw [hflat]
+  let g : Fin n → Fin 4 → OrderedExternalInsertionLeg 0 n :=
+    fun i j => Sum.inr (⟨i, Finset.mem_univ _⟩, j)
+  change (List.ofFn (fun i : Fin n => List.ofFn (g i))).flatten =
+    List.ofFn (orderedQuarticLegFamily g)
+  have hcard : 2 * (2 * n) = n * 4 := by omega
+  rw [List.ofFn_congr hcard (orderedQuarticLegFamily g), List.ofFn_mul]
+  apply congrArg List.flatten
+  apply congrArg List.ofFn
+  funext i
+  apply congrArg List.ofFn
+  funext j
+  change g i j =
+    g (orderedQuarticLegEquiv n
+      (Fin.cast hcard.symm
+        ⟨(i : ℕ) * 4 + (j : ℕ), Combinatorics.FiniteIndex.blockCoordinate_lt i j⟩)).1
+      (orderedQuarticLegEquiv n
+        (Fin.cast hcard.symm
+          ⟨(i : ℕ) * 4 + (j : ℕ), Combinatorics.FiniteIndex.blockCoordinate_lt i j⟩)).2
+  rw [Combinatorics.FiniteIndex.blockEquiv_cast_mul_add hcard i j]
+
 private theorem externalInsertionMixedTimeOrderedAtomicLegs_nodup {E n : ℕ}
     (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ) :
     (externalInsertionMixedTimeOrderedAtomicLegs externalTime σ).Nodup := by
