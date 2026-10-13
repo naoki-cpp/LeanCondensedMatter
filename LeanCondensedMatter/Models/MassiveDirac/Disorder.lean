@@ -3,6 +3,7 @@ import LeanCondensedMatter.Models.MassiveDirac.Disorder.ScalarAngularWeights
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.SingleParticleRate
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.TransportRate
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.ContinuumMeasurePrefactor
+import LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornDysonShift
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornRadialRealSpacePropagator
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornRealSpacePropagator
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexResponse
@@ -34,8 +35,9 @@ mass, and radial denominator before any weak-disorder or ultraviolet limit is ta
 `FiniteBroadeningBornZeroBroadening` owns that propagator boundary together with the real Born
 renormalization and the denominator nonvanishing guarantee protected by the renormalization bound.
 
-`FiniteBroadeningBornPropagator` owns the Cartesian-to-polar representation used by the finite-
-external-broadening current rung. `FiniteBroadeningBornRadialRealSpacePropagator` owns the one-dimensional radial Green kernels,
+`FiniteBroadeningBornPropagator` owns the finite-broadening Dyson Green and its
+Cartesian-to-polar representation; `FiniteBroadeningBornDysonShift` proves inverse and adjoint
+identities for the Dyson shift, consumed by the dissipative invertibility analysis. `FiniteBroadeningBornRadialRealSpacePropagator` owns the one-dimensional radial Green kernels,
 integrals, and signed-radius inversion; `FiniteBroadeningBornRealSpacePropagator` owns the
 full-angle Fourier representation and its exact radial-axis identification, using the generic
 physical-momentum polar Fourier transform from `Transport.Analysis`. `FiniteBroadeningCurrentVertex` owns the direction-indexed
