@@ -96,7 +96,7 @@ private theorem trace_four_rotated_currents
           (Matrix.trace (A * G * C * H) -
             Matrix.trace (B * G * D * H)) := by
   simp [Matrix.trace, Matrix.mul_apply, Fin.sum_univ_two,
-    Matrix.add_apply, Matrix.sub_apply, Matrix.smul_apply, smul_eq_mul]
+    Matrix.add_apply, Matrix.sub_apply, Matrix.smul_apply]
   ring
 
 /-- The four-current tensor values that enter a rotated crossed source pair.
@@ -124,7 +124,7 @@ theorem gaussianCrossedTraceKernel_rotated_sources
             (fun _ ρ => current 1 ρ) r) := by
   cases diagram with
   | x =>
-      simp only [gaussianCrossedTraceKernel, ite_true, ite_false]
+      simp only [gaussianCrossedTraceKernel, ↓reduceIte]
       exact trace_four_rotated_currents
         (current 0 r) (current 1 r) (current 0 r) (current 1 r)
         (greenRetarded (-r)) (greenAdvanced (-r)) c s
@@ -135,8 +135,8 @@ theorem gaussianCrossedTraceKernel_rotated_sources
         (greenRetarded (-r) * greenRetarded r) (1 : Matrix2) c s
       simp only [Matrix.mul_assoc, Matrix.mul_one] at hamplitude
       have hconj := congrArg (starRingEnd ℂ) hamplitude
-      simp only [map_add, map_sub, map_mul, map_pow, map_ofReal] at hconj
-      simp only [gaussianCrossedTraceKernel, ite_true, ite_false]
+      simp [map_add, map_sub, map_mul, map_pow] at hconj
+      simp only [gaussianCrossedTraceKernel, ↓reduceIte, Matrix.mul_assoc]
       rw [hamplitude, hconj]
       ring
 
