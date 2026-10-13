@@ -120,6 +120,7 @@ private theorem orderedExternalInsertionTimedEvents_zero_eq_canonical_of_strictA
     {n : ℕ} (σ : Fin n → ℝ) (hσ : StrictAnti σ) :
     orderedExternalInsertionTimedEvents (E := 0) (Fin.elim0 : Fin 0 → ℝ) σ =
       canonicalExternalInsertionTimedEvents 0 n := by
+  classical
   unfold orderedExternalInsertionTimedEvents
   apply List.Pairwise.insertionSort_eq
   rw [canonicalExternalInsertionTimedEvents, List.pairwise_ofFn]
