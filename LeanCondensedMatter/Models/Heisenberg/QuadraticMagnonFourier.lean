@@ -65,7 +65,8 @@ theorem excitationHamiltonian_eq_secondQuantization (J : ℝ) (twiceSpin : ℕ) 
       ((J : ℂ) * twiceSpin) • ((2 : ℂ) • numberOperator i -
         (create i).comp (annihilate (i - 1)) - (create i).comp (annihilate (i + 1))) := by
     simp [hcoeff, mul_sub, sub_smul, mul_ite, ite_smul,
-      Finset.sum_sub_distrib, numberOperator] <;> module
+      Finset.sum_sub_distrib, numberOperator]
+    module
   unfold secondQuantization
   simp_rw [hrow]
   simp only [excitationHamiltonian, excitationBond, smul_sub, smul_add,
