@@ -208,12 +208,6 @@ private theorem finiteCutoffContinuumBornDenominatorIntegralOfRegulator_eq_log_s
   rw [hmain]
   field_simp
 
-private theorem continuumBornDenominatorLogPrefactor_eq_ofReal (v : ℝ) :
-    -(((2 : ℂ) * (v : ℂ) ^ 2)⁻¹) =
-      ((-(((2 : ℝ) * v ^ 2)⁻¹) : ℝ) : ℂ) := by
-  push_cast
-  rfl
-
 /-- Exact arbitrary-regulator finite-cutoff real part of the shared denominator integral. -/
 private theorem finiteCutoffContinuumBornDenominatorIntegralOfRegulator_re_eq
     (v m probeEnergy regulator pMax : ℝ)
@@ -227,7 +221,8 @@ private theorem finiteCutoffContinuumBornDenominatorIntegralOfRegulator_re_eq
             ‖pauliGreenDenominatorOfRegulator v m 0 0 probeEnergy regulator‖) := by
   rw [finiteCutoffContinuumBornDenominatorIntegralOfRegulator_eq_log_sub_log
     v m probeEnergy regulator pMax hvelocity hprobeEnergy hregulator]
-  rw [continuumBornDenominatorLogPrefactor_eq_ofReal]
+  rw [show -(((2 : ℂ) * (v : ℂ) ^ 2)⁻¹) =
+    ((-(((2 : ℝ) * v ^ 2)⁻¹) : ℝ) : ℂ) from by push_cast; rfl]
   rw [Complex.re_ofReal_mul]
   simp [Complex.log_re]
 
@@ -264,7 +259,8 @@ private theorem finiteCutoffContinuumBornDenominatorIntegralOfRegulator_im_eq
           (pauliGreenDenominatorOfRegulator v m 0 0 probeEnergy regulator).arg) := by
   rw [finiteCutoffContinuumBornDenominatorIntegralOfRegulator_eq_log_sub_log
     v m probeEnergy regulator pMax hvelocity hprobeEnergy hregulator]
-  rw [continuumBornDenominatorLogPrefactor_eq_ofReal]
+  rw [show -(((2 : ℂ) * (v : ℂ) ^ 2)⁻¹) =
+    ((-(((2 : ℝ) * v ^ 2)⁻¹) : ℝ) : ℂ) from by push_cast; rfl]
   rw [Complex.im_ofReal_mul]
   simp [Complex.log_im]
 
@@ -327,15 +323,13 @@ private theorem tendsto_continuumBornRadialNormPolynomial_atTop
         atTop atTop := by
     convert tendsto_atTop_add_const_right atTop
       (-(probeEnergy ^ 2 - regulator ^ 2 - m ^ 2)) hlead using 1
-  have hsq :
-      Tendsto
-        (fun p : ℝ =>
-          (v ^ 2 * p ^ 2 -
-            (probeEnergy ^ 2 - regulator ^ 2 - m ^ 2)) ^ 2)
-        atTop atTop := by
-    simpa [pow_two] using hshift.atTop_mul_atTop₀ hshift
   convert tendsto_atTop_add_const_right atTop
-    ((2 * probeEnergy * regulator) ^ 2) hsq using 1
+    ((2 * probeEnergy * regulator) ^ 2)
+    (show Tendsto
+      (fun p : ℝ => (v ^ 2 * p ^ 2 -
+        (probeEnergy ^ 2 - regulator ^ 2 - m ^ 2)) ^ 2)
+      atTop atTop from by
+        simpa [pow_two] using hshift.atTop_mul_atTop₀ hshift) using 1
   funext p
   ring
 
@@ -424,12 +418,10 @@ private theorem tendsto_arg_pauliGreenDenominator_zero_radial_broadening_zero
       (fun broadening : ℝ =>
         (pauliGreenDenominator side v m 0 0 probeEnergy broadening).arg)
       (nhdsWithin 0 (Set.Ioi 0)) (nhds 0) := by
-  have hmetalSq := mass_sq_lt_probe_sq m probeEnergy hmetal
   have hre : 0 < (pauliGreenDenominator side v m 0 0 probeEnergy 0).re := by
     rw [pauliGreenDenominator_radial_re]
-    nlinarith
+    nlinarith [mass_sq_lt_probe_sq m probeEnergy hmetal]
   have him : (pauliGreenDenominator side v m 0 0 probeEnergy 0).im = 0 := by
-    rw [pauliGreenDenominator_radial_im]
     simp
   have hslit : pauliGreenDenominator side v m 0 0 probeEnergy 0 ∈ Complex.slitPlane := by
     rw [Complex.mem_slitPlane_iff]
@@ -455,7 +447,6 @@ private theorem tendsto_arg_pauliGreenDenominator_cutoff_broadening_zero
     rw [pauliGreenDenominator_radial_re]
     nlinarith
   have him : (pauliGreenDenominator side v m pMax 0 probeEnergy 0).im = 0 := by
-    rw [pauliGreenDenominator_radial_im]
     simp
   have hden := tendsto_pauliGreenDenominator_radial_broadening_zero
     side v m probeEnergy pMax
