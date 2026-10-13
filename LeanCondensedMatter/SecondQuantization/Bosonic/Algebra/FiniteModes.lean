@@ -87,8 +87,11 @@ theorem secondQuantization_eq_sum_of_eigenbasis {ι : Type*} [Fintype ι]
       intro ψ
       apply Finsupp.ext
       intro n
-      simp [createVector, annihilateVector, LinearMap.sum_apply, map_sum,
-        Finset.sum_apply, map_smul, Finset.mul_sum, Finset.sum_mul]
+      suffices h :
+          (∑ i, ∑ j, (ε q * b q i * star (b q j)) * ((create i) ((annihilate j) ψ)) n) =
+            ∑ i, ∑ j, ε q * (b q i * (star (b q j) * ((create i) ((annihilate j) ψ)) n)) by
+        simpa [createVector, annihilateVector, LinearMap.sum_apply, map_sum,
+          Finset.sum_apply, map_smul, Finset.mul_sum] using h
       apply Finset.sum_congr rfl
       intro i _
       apply Finset.sum_congr rfl
