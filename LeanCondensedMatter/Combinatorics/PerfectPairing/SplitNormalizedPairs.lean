@@ -259,8 +259,14 @@ theorem Pairing.ofSplitInterSectorCrossingCount_mod_two_eq_pairEndpointInversion
         · simp [hlt, hgt]
         · simp [hlt, hgt]
     change _ % 2 = _ % 2
-    rw [hindicator]
-    simpa using hcross.symm
+    have hmodIndicator :
+        (if Crosses (emb (Sum.inl p)).1 (emb (Sum.inr q)).1 ∨
+          Crosses (emb (Sum.inr q)).1 (emb (Sum.inl p)).1 then (1 : ℕ) else 0) % 2 =
+        (if Crosses (emb (Sum.inl p)).1 (emb (Sum.inr q)).1 ∨
+          Crosses (emb (Sum.inr q)).1 (emb (Sum.inl p)).1 then (1 : ℕ) else 0) := by
+      split_ifs <;> decide
+    rw [hindicator, hmodIndicator]
+    exact hcross.symm
   have hsum :
       Pairing.ofSplitInterSectorCrossingCount e P Q =
         ∑ p : P.NormalizedPair, ∑ q : Q.NormalizedPair,
