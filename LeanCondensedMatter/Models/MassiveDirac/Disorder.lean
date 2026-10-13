@@ -3,6 +3,7 @@ import LeanCondensedMatter.Models.MassiveDirac.Disorder.ScalarAngularWeights
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.SingleParticleRate
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.TransportRate
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.ContinuumMeasurePrefactor
+import LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornRadialRealSpacePropagator
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornRealSpacePropagator
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexResponse
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.TMatrix
@@ -34,9 +35,10 @@ mass, and radial denominator before any weak-disorder or ultraviolet limit is ta
 renormalization and the denominator nonvanishing guarantee protected by the renormalization bound.
 
 `FiniteBroadeningBornPropagator` owns the Cartesian-to-polar representation used by the finite-
-external-broadening current rung. `FiniteBroadeningBornRealSpacePropagator` owns the corresponding
-finite-cutoff real-space Born-Dyson Green matrix, using the generic physical-momentum polar Fourier
-transform from `Transport.Analysis`. `FiniteBroadeningCurrentVertex` owns the direction-indexed
+external-broadening current rung. `FiniteBroadeningBornRadialRealSpacePropagator` owns the one-dimensional radial Green kernels,
+integrals, and signed-radius inversion; `FiniteBroadeningBornRealSpacePropagator` owns the
+full-angle Fourier representation and its exact radial-axis identification, using the generic
+physical-momentum polar Fourier transform from `Transport.Analysis`. `FiniteBroadeningCurrentVertex` owns the direction-indexed
 in-plane rung, its common RA denominator form, radial normalization, solved coefficient pair, and the
 determinant condition that licenses interpreting that pair as the actual ladder fixed point.
 `FiniteBroadeningCurrentVertexResponse` owns the source-indexed dressed current insertion and the
