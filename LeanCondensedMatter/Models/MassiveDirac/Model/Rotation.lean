@@ -100,7 +100,8 @@ theorem inPlaneSpinRotation_sigmaY (angle : ℝ) :
       InternalSpace.pauliX, InternalSpace.pauliY, Matrix.mul_apply,
       Fin.sum_univ_two, smul_eq_mul]
   all_goals ring_nf
-  all_goals simp [hI]
+  all_goals simp only [hI]
+  all_goals ring
 
 /-- The mass Pauli axis is invariant under in-plane spinor rotation. -/
 theorem inPlaneSpinRotation_sigmaZ (angle : ℝ) :
