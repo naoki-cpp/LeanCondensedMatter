@@ -90,7 +90,7 @@ theorem ExternalInsertionWickDiagram.mixedPairingValue_eq_inter_mul_prod_compone
         (d.pairingInMixedOrder externalTime σ).interComponentCrossingCount
           (d.componentMixedPairEquiv externalTime σ) *
       ∏ B : d.vertexGraph.componentPartition.parts,
-        (d.componentOrderedDiagram B).mixedPairingValue ε β
+        ExternalInsertionWickDiagram.mixedPairingValue (d.componentOrderedDiagram B) ε β
           (d.componentExternalTime externalTime B)
           (d.componentInteractionTime σ B) := by
   let pairing := d.pairingInMixedOrder externalTime σ
@@ -141,7 +141,7 @@ theorem ExternalInsertionWickDiagram.relativeComponentShuffleSign_mul_mixedPairi
         d.mixedPairingValue ε β externalTime σ =
       componentExternalOrderSign d blockOrder *
         ∏ B : d.vertexGraph.componentPartition.parts,
-          (d.componentOrderedDiagram B).mixedPairingValue ε β
+          ExternalInsertionWickDiagram.mixedPairingValue (d.componentOrderedDiagram B) ε β
             (d.componentExternalTime externalTime B)
             (d.componentInteractionTime σ B) := by
   conv_lhs =>
@@ -163,7 +163,7 @@ theorem ExternalInsertionWickDiagram.relativeComponentShuffleSign_mul_mixedPairi
               (Common.Statistics.fermion.zetaInt : ℂ) ^
                 d.mixedInterComponentCrossingCount externalTime σ) *
             ∏ B : d.vertexGraph.componentPartition.parts,
-              (d.componentOrderedDiagram B).mixedPairingValue ε β
+              ExternalInsertionWickDiagram.mixedPairingValue (d.componentOrderedDiagram B) ε β
                 (d.componentExternalTime externalTime B)
                 (d.componentInteractionTime σ B)) := by
       ac_rfl
