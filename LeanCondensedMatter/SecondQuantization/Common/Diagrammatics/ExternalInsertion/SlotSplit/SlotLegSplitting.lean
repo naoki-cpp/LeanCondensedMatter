@@ -75,7 +75,7 @@ theorem externalInsertionSlotLegSplitting_right_interaction
 into the ambient fixed-order external-insertion leg array. -/
 theorem externalInsertionSlotLegSplitting_orderedRight_strictMono
     {E N : ℕ} (T : Finset (Fin N)) :
-    let S := (Finset.univ : Finset (Fin N)) \\ T
+    let S := (Finset.univ : Finset (Fin N)) \ T
     let order : QuarticVertexOrder S := (S.orderIsoOfFin rfl).toEquiv
     StrictMono (fun p : Fin (2 * (2 * S.card)) =>
       externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T)
