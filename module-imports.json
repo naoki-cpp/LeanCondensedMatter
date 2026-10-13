@@ -1459,6 +1459,8 @@
       "name": "LeanCondensedMatter.Combinatorics.PerfectPairing.SplitNormalizedPairs",
       "sourceFile": "LeanCondensedMatter/Combinatorics/PerfectPairing/SplitNormalizedPairs.lean",
       "imports": [
+        "LeanCondensedMatter.Combinatorics.PerfectPairing.Crossing",
+        "LeanCondensedMatter.Combinatorics.PerfectPairing.CrossingParity",
         "LeanCondensedMatter.Combinatorics.PerfectPairing.Evaluation",
         "LeanCondensedMatter.Combinatorics.PerfectPairing.PairEndpoints",
         "LeanCondensedMatter.Combinatorics.PerfectPairing.Split"
@@ -1711,6 +1713,14 @@
         "LeanCondensedMatter.Crystal.Translation"
       ],
       "externalImportCount": 0
+    },
+    {
+      "name": "LeanCondensedMatter.Models.Heisenberg.QuadraticMagnon",
+      "sourceFile": "LeanCondensedMatter/Models/Heisenberg/QuadraticMagnon.lean",
+      "imports": [
+        "LeanCondensedMatter.Models.HolsteinPrimakoff"
+      ],
+      "externalImportCount": 1
     },
     {
       "name": "LeanCondensedMatter.Models.Heisenberg.SpinWaveSpectrum",
@@ -2808,6 +2818,14 @@
       "externalImportCount": 0
     },
     {
+      "name": "LeanCondensedMatter.Models.OrbitalRelaxation.AngularCollision",
+      "sourceFile": "LeanCondensedMatter/Models/OrbitalRelaxation/AngularCollision.lean",
+      "imports": [
+        "LeanCondensedMatter.Models.OrbitalRelaxation.Finite"
+      ],
+      "externalImportCount": 1
+    },
+    {
       "name": "LeanCondensedMatter.Models.OrbitalRelaxation.Finite",
       "sourceFile": "LeanCondensedMatter/Models/OrbitalRelaxation/Finite.lean",
       "imports": [],
@@ -2948,10 +2966,12 @@
       "name": "LeanCondensedMatter.Models",
       "sourceFile": "LeanCondensedMatter/Models.lean",
       "imports": [
+        "LeanCondensedMatter.Models.Heisenberg.QuadraticMagnon",
         "LeanCondensedMatter.Models.Heisenberg.SpinWaveSpectrum",
         "LeanCondensedMatter.Models.HolsteinPrimakoff.MultiSite",
         "LeanCondensedMatter.Models.KronigPenney",
         "LeanCondensedMatter.Models.MassiveDirac",
+        "LeanCondensedMatter.Models.OrbitalRelaxation.AngularCollision",
         "LeanCondensedMatter.Models.OrbitalRelaxation.Finite",
         "LeanCondensedMatter.Models.Parabolic2DEG",
         "LeanCondensedMatter.Models.RashbaExchange"
@@ -5660,6 +5680,7 @@
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/ImaginaryTime/ExternalInsertionMixedOrder.lean",
       "imports": [
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Core.Diagram",
+        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Leg",
         "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.StableTimedEventOrder"
       ],
       "externalImportCount": 3
@@ -6417,10 +6438,8 @@
       "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Flattening",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Diagrammatics/DysonDiagramExpansion/Flattening.lean",
       "imports": [
-        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Leg",
         "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.Quartic",
-        "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.LegFamily",
-        "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.LocalLeg"
+        "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.LegFamily"
       ],
       "externalImportCount": 0
     },
@@ -6440,13 +6459,11 @@
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Diagrammatics/DysonDiagramExpansion/Pairing.lean",
       "imports": [
         "LeanCondensedMatter.Combinatorics.PerfectPairing.Evaluation",
-        "LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.Induction",
         "LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsExpectationBridge",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Core",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Flattening",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.LegFamily",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.DysonVertexMoment",
-        "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeBoltzmannCore",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsDensityOperator",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.TimedFieldContraction"
       ],
@@ -6987,12 +7004,10 @@
       "imports": [
         "LeanCondensedMatter.Combinatorics.PerfectPairing.Evaluation",
         "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointMixedLegOrder",
-        "LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.Induction",
         "LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsExpectationBridge",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.LocalLeg",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Semantics.Flattening",
         "LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTime.TimedField",
-        "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeBoltzmannCore",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsDensityOperator",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.TimedFieldContraction"
       ],
@@ -7414,7 +7429,10 @@
       "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.TimedFieldContraction",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Thermal/TimedFieldContraction.lean",
       "imports": [
+        "LeanCondensedMatter.Combinatorics.PerfectPairing.Evaluation",
+        "LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.Induction",
         "LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTime.TimedField",
+        "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeBoltzmannCore",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsDensityOperator"
       ],
       "externalImportCount": 0
