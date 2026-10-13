@@ -251,6 +251,61 @@ theorem polarFourierFirstCosineAngularKernel_two_mul_eq_zeroth_sub_second (z : �
       ring
     _ = _ := by rw [hsecond]
 
+/-- The unnormalized first-harmonic recurrence also holds after finite radial
+momentum integration. This reduces any weighted K1 moment to K0/K2 moments
+with one additional radial power, without division by the Fourier argument,
+a regulator limit, or any assumption on the weight. -/
+theorem integral_polarFourierFirstCosineAngularKernel_two_mul_eq_zeroth_sub_second
+    (hbar pMax radius : ℝ) (f : ℝ → ℂ) :
+    2 * (∫ p in (0 : ℝ)..pMax,
+      (p : ℂ) *
+        (polarFourierFirstCosineAngularKernel (p * radius / hbar) * f p)) =
+      Complex.I * (((radius / hbar : ℝ) : ℂ)) *
+        ∫ p in (0 : ℝ)..pMax,
+          (p : ℂ) ^ 2 *
+            ((polarFourierZerothAngularKernel (p * radius / hbar) -
+                polarFourierSecondCosineAngularKernel (p * radius / hbar)) * f p) := by
+  calc
+    2 * (∫ p in (0 : ℝ)..pMax,
+        (p : ℂ) *
+          (polarFourierFirstCosineAngularKernel (p * radius / hbar) * f p)) =
+        ∫ p in (0 : ℝ)..pMax,
+          (2 : ℂ) * ((p : ℂ) *
+            (polarFourierFirstCosineAngularKernel (p * radius / hbar) * f p)) := by
+      rw [intervalIntegral.integral_const_mul]
+    _ = ∫ p in (0 : ℝ)..pMax,
+          (Complex.I * (((radius / hbar : ℝ) : ℂ))) *
+            ((p : ℂ) ^ 2 *
+              ((polarFourierZerothAngularKernel (p * radius / hbar) -
+                  polarFourierSecondCosineAngularKernel (p * radius / hbar)) * f p)) := by
+      apply intervalIntegral.integral_congr
+      intro p _
+      have hrec :=
+        polarFourierFirstCosineAngularKernel_two_mul_eq_zeroth_sub_second
+          (p * radius / hbar)
+      have hp : ((p * radius / hbar : ℝ) : ℂ) =
+          (p : ℂ) * (((radius / hbar : ℝ) : ℂ)) := by
+        calc
+          ((p * radius / hbar : ℝ) : ℂ) =
+              ((p * (radius / hbar) : ℝ) : ℂ) := by
+            congr 1
+            ring
+          _ = (p : ℂ) * (((radius / hbar : ℝ) : ℂ)) := by push_cast; rfl
+      rw [hp] at hrec
+      calc
+        (2 : ℂ) * ((p : ℂ) *
+            (polarFourierFirstCosineAngularKernel (p * radius / hbar) * f p)) =
+          (p : ℂ) *
+            (2 * polarFourierFirstCosineAngularKernel (p * radius / hbar)) * f p := by
+            ring
+        _ = (p : ℂ) *
+            (Complex.I * ((p : ℂ) * (((radius / hbar : ℝ) : ℂ))) *
+              (polarFourierZerothAngularKernel (p * radius / hbar) -
+                polarFourierSecondCosineAngularKernel (p * radius / hbar))) * f p := by
+            rw [hrec]
+        _ = _ := by ring
+    _ = _ := by rw [intervalIntegral.integral_const_mul]
+
 /-- The sine first harmonic vanishes against the radial Fourier phase over one full angle. -/
 theorem integral_polarFourierRadialPhase_mul_sin_zero (z : ℝ) :
     (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi),
