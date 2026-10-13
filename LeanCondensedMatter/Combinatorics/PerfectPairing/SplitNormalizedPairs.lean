@@ -328,10 +328,8 @@ theorem Pairing.ofSplitInterSectorCrossingCount_mod_two_eq_positionInversions
             (e (Sum.inr q.1.1), e (Sum.inr q.1.2)) := by
       rcases hp with hp | hp <;> rcases hq with hq | hq
       all_goals
-        simp only [emb] at hp hq
-        rw [hp, hq]
-        simp only [pairEndpointInversionCount, Prod.fst, Prod.snd]
-        ac_rfl
+        rw [hp, hq] <;>
+          simp only [pairEndpointInversionCount] <;> ac_rfl
     rw [hraw, pairEndpointInversionCount_eq_sum]
     simp only [Fin.sum_univ_two, Pairing.pairEndpointEquiv_apply,
       P.pairEndpoint_zero, P.pairEndpoint_one,
