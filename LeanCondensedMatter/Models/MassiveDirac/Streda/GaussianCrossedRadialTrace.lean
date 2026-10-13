@@ -1125,9 +1125,12 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_x_eq_harm
           .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax
       let a :=
         (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
-          ∫ p in (0 : ℝ)..pMax,
-            (p : ℂ) * (polarFourierFirstCosineAngularKernel (p * radius / hbar) *
-              ((aR p * bA p + aA p * bR p) * factor))
+          ((Complex.I * (((radius / hbar : ℝ) : ℂ)) / 2) *
+            ∫ p in (0 : ℝ)..pMax,
+              (p : ℂ) ^ 2 *
+                ((polarFourierZerothAngularKernel (p * radius / hbar) -
+                    polarFourierSecondCosineAngularKernel (p * radius / hbar)) *
+                ((aR p * bA p + aA p * bR p) * factor)))
       let b :=
         (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
           ∫ p in (0 : ℝ)..pMax,
@@ -1135,9 +1138,12 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_x_eq_harm
               aR p)
       let c :=
         (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
-          ∫ p in (0 : ℝ)..pMax,
-            (p : ℂ) * (polarFourierFirstCosineAngularKernel (p * radius / hbar) *
-              ((-Complex.I * (bR p * dA p - bA p * dR p)) * factor))
+          ((Complex.I * (((radius / hbar : ℝ) : ℂ)) / 2) *
+            ∫ p in (0 : ℝ)..pMax,
+              (p : ℂ) ^ 2 *
+                ((polarFourierZerothAngularKernel (p * radius / hbar) -
+                    polarFourierSecondCosineAngularKernel (p * radius / hbar)) *
+                ((-Complex.I * (bR p * dA p - bA p * dR p)) * factor)))
       let d :=
         (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
           ∫ p in (0 : ℝ)..pMax,
@@ -1163,21 +1169,30 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_x_eq_harm
               ((Complex.I * (aR p * dA p - aA p * dR p)) * factor))
       let uz :=
         (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
-          ∫ p in (0 : ℝ)..pMax,
-            (p : ℂ) * (polarFourierFirstCosineAngularKernel (p * radius / hbar) *
-              ((bR p * dA p + bA p * dR p) * factor))
+          ((Complex.I * (((radius / hbar : ℝ) : ℂ)) / 2) *
+            ∫ p in (0 : ℝ)..pMax,
+              (p : ℂ) ^ 2 *
+                ((polarFourierZerothAngularKernel (p * radius / hbar) -
+                    polarFourierSecondCosineAngularKernel (p * radius / hbar)) *
+                ((bR p * dA p + bA p * dR p) * factor)))
       let wx := -uy
       let wy := (isotropic - anisotropic) / 2
       let wz :=
         (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
-          ∫ p in (0 : ℝ)..pMax,
-            (p : ℂ) * (polarFourierFirstCosineAngularKernel (p * radius / hbar) *
-              ((-Complex.I * (aA p * bR p - aR p * bA p)) * factor))
+          ((Complex.I * (((radius / hbar : ℝ) : ℂ)) / 2) *
+            ∫ p in (0 : ℝ)..pMax,
+              (p : ℂ) ^ 2 *
+                ((polarFourierZerothAngularKernel (p * radius / hbar) -
+                    polarFourierSecondCosineAngularKernel (p * radius / hbar)) *
+                ((-Complex.I * (aA p * bR p - aR p * bA p)) * factor)))
       let grx :=
         (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
-          ∫ p in (0 : ℝ)..pMax,
-            (p : ℂ) * (polarFourierFirstCosineAngularKernel (p * radius / hbar) *
-              bR p)
+          ((Complex.I * (((radius / hbar : ℝ) : ℂ)) / 2) *
+            ∫ p in (0 : ℝ)..pMax,
+              (p : ℂ) ^ 2 *
+                ((polarFourierZerothAngularKernel (p * radius / hbar) -
+                    polarFourierSecondCosineAngularKernel (p * radius / hbar)) *
+                bR p))
       let grz :=
         (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
           ∫ p in (0 : ℝ)..pMax,
@@ -1185,9 +1200,12 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_x_eq_harm
               dR p)
       let gax :=
         (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
-          ∫ p in (0 : ℝ)..pMax,
-            (p : ℂ) * (polarFourierFirstCosineAngularKernel (p * radius / hbar) *
-              bA p)
+          ((Complex.I * (((radius / hbar : ℝ) : ℂ)) / 2) *
+            ∫ p in (0 : ℝ)..pMax,
+              (p : ℂ) ^ 2 *
+                ((polarFourierZerothAngularKernel (p * radius / hbar) -
+                    polarFourierSecondCosineAngularKernel (p * radius / hbar)) *
+                bA p))
       let gaz :=
         (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
           ∫ p in (0 : ℝ)..pMax,
@@ -1236,6 +1254,33 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_x_eq_harm
   dsimp only [finiteCutoffContinuumBornDysonRadialGreenScalarKernel] at hGreenRscalar
   dsimp only [finiteCutoffContinuumBornDysonRadialGreenPauliKernel] at hGreenRx hGreenRz hGreenAx hGreenAz
   dsimp only [finiteCutoffContinuumBornDysonRadialGreenScalarKernel] at hGreenAscalar
+  have hK1 (f : ℝ → ℂ) :
+      (∫ p in (0 : ℝ)..pMax,
+        (p : ℂ) *
+          (polarFourierFirstCosineAngularKernel (p * radius / hbar) * f p)) =
+        ((Complex.I * (((radius / hbar : ℝ) : ℂ)) / 2) *
+          ∫ p in (0 : ℝ)..pMax,
+            (p : ℂ) ^ 2 *
+              ((polarFourierZerothAngularKernel (p * radius / hbar) -
+                  polarFourierSecondCosineAngularKernel (p * radius / hbar)) * f p)) := by
+    have h := integral_polarFourierFirstCosineAngularKernel_two_mul_eq_zeroth_sub_second
+      hbar pMax radius f
+    calc
+      (∫ p in (0 : ℝ)..pMax,
+          (p : ℂ) *
+            (polarFourierFirstCosineAngularKernel (p * radius / hbar) * f p)) =
+          (2 * (∫ p in (0 : ℝ)..pMax,
+            (p : ℂ) *
+              (polarFourierFirstCosineAngularKernel (p * radius / hbar) * f p))) / 2 := by
+        ring
+      _ = (Complex.I * (((radius / hbar : ℝ) : ℂ)) *
+          (∫ p in (0 : ℝ)..pMax,
+            (p : ℂ) ^ 2 *
+              ((polarFourierZerothAngularKernel (p * radius / hbar) -
+                  polarFourierSecondCosineAngularKernel (p * radius / hbar)) * f p))) / 2 := by
+        rw [h]
+      _ = _ := by ring
+  rw [hK1] at hscalarX hscalarY hzX hzY hGreenRx hGreenAx
   simpa only [hxx, hyy, hscalarX, hscalarY, hzX, hzY, htransverse,
     hGreenRscalar, hGreenRx, hGreenRz, hGreenAscalar, hGreenAx, hGreenAz] using
     (finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_x_eq_explicit_pauli_components
@@ -1272,9 +1317,12 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_psi_eq_ha
           .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax
       let a :=
         (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
-          ∫ p in (0 : ℝ)..pMax,
-            (p : ℂ) * (polarFourierFirstCosineAngularKernel (p * radius / hbar) *
-              ((aR p * bA p + aA p * bR p) * factor))
+          ((Complex.I * (((radius / hbar : ℝ) : ℂ)) / 2) *
+            ∫ p in (0 : ℝ)..pMax,
+              (p : ℂ) ^ 2 *
+                ((polarFourierZerothAngularKernel (p * radius / hbar) -
+                    polarFourierSecondCosineAngularKernel (p * radius / hbar)) *
+                ((aR p * bA p + aA p * bR p) * factor)))
       let b :=
         (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
           ∫ p in (0 : ℝ)..pMax,
@@ -1283,9 +1331,12 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_psi_eq_ha
       let c := b
       let d :=
         -((((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
-          ∫ p in (0 : ℝ)..pMax,
-            (p : ℂ) * (polarFourierFirstCosineAngularKernel (p * radius / hbar) *
-              ((-Complex.I * (bR p * dA p - bA p * dR p)) * factor)))
+          ((Complex.I * (((radius / hbar : ℝ) : ℂ)) / 2) *
+            ∫ p in (0 : ℝ)..pMax,
+              (p : ℂ) ^ 2 *
+                ((polarFourierZerothAngularKernel (p * radius / hbar) -
+                    polarFourierSecondCosineAngularKernel (p * radius / hbar)) *
+                ((-Complex.I * (bR p * dA p - bA p * dR p)) * factor))))
       let isotropic :=
         (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
                 ∫ p in (0 : ℝ)..pMax,
@@ -1306,21 +1357,30 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_psi_eq_ha
               ((Complex.I * (aR p * dA p - aA p * dR p)) * factor))
       let uz :=
         (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
-          ∫ p in (0 : ℝ)..pMax,
-            (p : ℂ) * (polarFourierFirstCosineAngularKernel (p * radius / hbar) *
-              ((bR p * dA p + bA p * dR p) * factor))
+          ((Complex.I * (((radius / hbar : ℝ) : ℂ)) / 2) *
+            ∫ p in (0 : ℝ)..pMax,
+              (p : ℂ) ^ 2 *
+                ((polarFourierZerothAngularKernel (p * radius / hbar) -
+                    polarFourierSecondCosineAngularKernel (p * radius / hbar)) *
+                ((bR p * dA p + bA p * dR p) * factor)))
       let qx := -uy
       let qy := (isotropic - anisotropic) / 2
       let qz :=
         (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
-          ∫ p in (0 : ℝ)..pMax,
-            (p : ℂ) * (polarFourierFirstCosineAngularKernel (p * radius / hbar) *
-              ((-Complex.I * (aA p * bR p - aR p * bA p)) * factor))
+          ((Complex.I * (((radius / hbar : ℝ) : ℂ)) / 2) *
+            ∫ p in (0 : ℝ)..pMax,
+              (p : ℂ) ^ 2 *
+                ((polarFourierZerothAngularKernel (p * radius / hbar) -
+                    polarFourierSecondCosineAngularKernel (p * radius / hbar)) *
+                ((-Complex.I * (aA p * bR p - aR p * bA p)) * factor)))
       let grx :=
         (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
-          ∫ p in (0 : ℝ)..pMax,
-            (p : ℂ) * (polarFourierFirstCosineAngularKernel (p * radius / hbar) *
-              bR p)
+          ((Complex.I * (((radius / hbar : ℝ) : ℂ)) / 2) *
+            ∫ p in (0 : ℝ)..pMax,
+              (p : ℂ) ^ 2 *
+                ((polarFourierZerothAngularKernel (p * radius / hbar) -
+                    polarFourierSecondCosineAngularKernel (p * radius / hbar)) *
+                bR p))
       let grz :=
         (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
           ∫ p in (0 : ℝ)..pMax,
@@ -1361,6 +1421,33 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_psi_eq_ha
   simp only [ite_true] at htransverse
   dsimp only [finiteCutoffContinuumBornDysonRadialGreenScalarKernel] at hGreenRscalar
   dsimp only [finiteCutoffContinuumBornDysonRadialGreenPauliKernel] at hGreenRx hGreenRz
+  have hK1 (f : ℝ → ℂ) :
+      (∫ p in (0 : ℝ)..pMax,
+        (p : ℂ) *
+          (polarFourierFirstCosineAngularKernel (p * radius / hbar) * f p)) =
+        ((Complex.I * (((radius / hbar : ℝ) : ℂ)) / 2) *
+          ∫ p in (0 : ℝ)..pMax,
+            (p : ℂ) ^ 2 *
+              ((polarFourierZerothAngularKernel (p * radius / hbar) -
+                  polarFourierSecondCosineAngularKernel (p * radius / hbar)) * f p)) := by
+    have h := integral_polarFourierFirstCosineAngularKernel_two_mul_eq_zeroth_sub_second
+      hbar pMax radius f
+    calc
+      (∫ p in (0 : ℝ)..pMax,
+          (p : ℂ) *
+            (polarFourierFirstCosineAngularKernel (p * radius / hbar) * f p)) =
+          (2 * (∫ p in (0 : ℝ)..pMax,
+            (p : ℂ) *
+              (polarFourierFirstCosineAngularKernel (p * radius / hbar) * f p))) / 2 := by
+        ring
+      _ = (Complex.I * (((radius / hbar : ℝ) : ℂ)) *
+          (∫ p in (0 : ℝ)..pMax,
+            (p : ℂ) ^ 2 *
+              ((polarFourierZerothAngularKernel (p * radius / hbar) -
+                  polarFourierSecondCosineAngularKernel (p * radius / hbar)) * f p))) / 2 := by
+        rw [h]
+      _ = _ := by ring
+  rw [hK1] at hscalarX hscalarY hzX hzY hGreenRx
   simpa only [hxx, hyy, hscalarX, hscalarY, hzX, hzY, htransverse,
     hGreenRscalar, hGreenRx, hGreenRz] using
     (finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_psi_eq_explicit_pauli_components
