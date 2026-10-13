@@ -150,8 +150,8 @@ theorem Pairing.ofSplit_reindex
         (Pairing.ofSplit ((Equiv.sumCongr left right).trans e)
           (P.transport left) (Q.transport right)).partner
           (((Equiv.sumCongr left right).trans e) (Sum.inl i)) =
-        e (Sum.inl (P.partner (left i)))
-      rw [Pairing.ofSplit_partner_inl]
+        (Pairing.ofSplit e P Q).partner (e (Sum.inl (left i)))
+      simp only [Pairing.ofSplit_partner_inl]
       change e (Sum.inl (left ((P.transport left).partner i))) =
         e (Sum.inl (P.partner (left i)))
       rw [PairingOn.transport_partner, Equiv.apply_symm_apply]
@@ -160,8 +160,8 @@ theorem Pairing.ofSplit_reindex
         (Pairing.ofSplit ((Equiv.sumCongr left right).trans e)
           (P.transport left) (Q.transport right)).partner
           (((Equiv.sumCongr left right).trans e) (Sum.inr j)) =
-        e (Sum.inr (Q.partner (right j)))
-      rw [Pairing.ofSplit_partner_inr]
+        (Pairing.ofSplit e P Q).partner (e (Sum.inr (right j)))
+      simp only [Pairing.ofSplit_partner_inr]
       change e (Sum.inr (right ((Q.transport right).partner j))) =
         e (Sum.inr (Q.partner (right j)))
       rw [PairingOn.transport_partner, Equiv.apply_symm_apply]
