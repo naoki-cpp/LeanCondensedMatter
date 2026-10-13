@@ -146,9 +146,25 @@ theorem Pairing.ofSplit_reindex
   obtain ⟨x, rfl⟩ := ((Equiv.sumCongr left right).trans e).surjective z
   cases x with
   | inl i =>
-      simp [Pairing.ofSplit_partner_inl, PairingOn.transport_partner]
+      change
+        (Pairing.ofSplit ((Equiv.sumCongr left right).trans e)
+          (P.transport left) (Q.transport right)).partner
+          (((Equiv.sumCongr left right).trans e) (Sum.inl i)) =
+        e (Sum.inl (P.partner (left i)))
+      rw [Pairing.ofSplit_partner_inl]
+      change e (Sum.inl (left ((P.transport left).partner i))) =
+        e (Sum.inl (P.partner (left i)))
+      rw [PairingOn.transport_partner, Equiv.apply_symm_apply]
   | inr j =>
-      simp [Pairing.ofSplit_partner_inr, PairingOn.transport_partner]
+      change
+        (Pairing.ofSplit ((Equiv.sumCongr left right).trans e)
+          (P.transport left) (Q.transport right)).partner
+          (((Equiv.sumCongr left right).trans e) (Sum.inr j)) =
+        e (Sum.inr (Q.partner (right j)))
+      rw [Pairing.ofSplit_partner_inr]
+      change e (Sum.inr (right ((Q.transport right).partner j))) =
+        e (Sum.inr (Q.partner (right j)))
+      rw [PairingOn.transport_partner, Equiv.apply_symm_apply]
 
 /-- An assembled pairing is split by the splitting it was assembled along. -/
 theorem Pairing.isSplit_ofSplit (e : PositionSplitting a b n) (P : Pairing a) (Q : Pairing b) :
