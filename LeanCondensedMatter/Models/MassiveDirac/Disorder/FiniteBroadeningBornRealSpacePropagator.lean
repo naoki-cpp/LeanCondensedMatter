@@ -318,6 +318,148 @@ theorem finiteCutoffContinuumBornDysonRealSpaceGreenMatrix_radialAxis_eq
       (finiteCutoffPhysicalMomentumPolarFourier_polarPoint2D_harmonics
         hbar pMax radius 0 (entryHarmonics 1 1))
 
+
+/-- Conjugation by the diagonal two-band spinor rotation commutes with
+entrywise interval integration. Unlike a general matrix-integral linearity
+statement, this uses only scalar constant-factor rules: the rotation and its
+inverse are diagonal, so each entry has a single contributing summand.
+No integrability assumptions are needed for this algebraic identity. -/
+private theorem intervalIntegral_spinRotation_conjugate
+    (angle a b : ℝ) (f : ℝ → Matrix2) :
+    (fun i j : Fin 2 =>
+      ∫ p in a..b,
+        (inPlaneSpinRotation angle * f p * inPlaneSpinRotationInverse angle) i j) =
+      inPlaneSpinRotation angle *
+        ((fun i j : Fin 2 => ∫ p in a..b, f p i j) : Matrix2) *
+        inPlaneSpinRotationInverse angle := by
+  ext i j
+  fin_cases i <;> fin_cases j <;>
+    simp [inPlaneSpinRotation, inPlaneSpinRotationInverse,
+      Matrix.mul_apply, Fin.sum_univ_two, intervalIntegral.integral_const_mul,
+      intervalIntegral.integral_mul_const, mul_assoc]
+
+/-- The *integrated* real-space Born-Dyson Green matrix transforms by the
+same spinor conjugation as its angular K0/K1 momentum kernel. The radial
+reference is the exact two-dimensional Fourier Green matrix evaluated on
+the positive Cartesian axis; the canonical one-dimensional radial Green
+matrix is identified by the established radial-axis theorem below.
+
+This holds for finite cutoff and finite broadening at the level of
+interval integrals, with their existing zero-if-not-integrable convention:
+no unproved integrability or regulator limits are assumed. -/
+theorem finiteCutoffContinuumBornDysonRealSpaceGreenMatrix_polarPoint2D_spinRotation
+    (side : SpectralSide)
+    (v m probeEnergy broadening disorderStrength hbar pMax radius angle : ℝ) :
+    finiteCutoffContinuumBornDysonRealSpaceGreenMatrix
+        side v m probeEnergy broadening disorderStrength hbar pMax
+        (polarPoint2D radius angle) =
+      inPlaneSpinRotation angle *
+        finiteCutoffContinuumBornDysonRealSpaceGreenMatrix
+          side v m probeEnergy broadening disorderStrength hbar pMax
+          (polarPoint2D radius 0) *
+        inPlaneSpinRotationInverse angle := by
+  let base : ℝ → Matrix2 := fun p =>
+    let a := finiteCutoffContinuumBornDysonScalarCoefficient
+      side v m p 0 probeEnergy broadening disorderStrength hbar pMax
+    let b := finiteCutoffContinuumBornDysonPauliCoefficient .x
+      side v m p 0 probeEnergy broadening disorderStrength hbar pMax
+    let d := finiteCutoffContinuumBornDysonPauliCoefficient .z
+      side v m p 0 probeEnergy broadening disorderStrength hbar pMax
+    let k0 := polarFourierZerothAngularKernel (p * radius / hbar)
+    let k1 := polarFourierFirstCosineAngularKernel (p * radius / hbar)
+    (p : ℂ) • polarPauliMatrix (k0 * a) (k1 * b) (k0 * d) 0
+  have hpoint (θ p : ℝ) :
+      (fun i j : Fin 2 =>
+        finiteCutoffContinuumBornDysonAngularGreenEntryKernel
+          side v m probeEnergy broadening disorderStrength hbar pMax
+          radius θ p i j) =
+        inPlaneSpinRotation θ * base p * inPlaneSpinRotationInverse θ := by
+    simpa only [base] using
+      (finiteCutoffContinuumBornDysonAngularGreenEntryKernel_eq_spinRotation
+        side v m probeEnergy broadening disorderStrength hbar pMax radius θ p)
+  have hU0 : inPlaneSpinRotation 0 = 1 := by
+    ext i j
+    fin_cases i <;> fin_cases j <;>
+      simp [inPlaneSpinRotation]
+  have hU0inv : inPlaneSpinRotationInverse 0 = 1 := by
+    ext i j
+    fin_cases i <;> fin_cases j <;>
+      simp [inPlaneSpinRotationInverse]
+  have hpoint0 (p : ℝ) :
+      (fun i j : Fin 2 =>
+        finiteCutoffContinuumBornDysonAngularGreenEntryKernel
+          side v m probeEnergy broadening disorderStrength hbar pMax
+          radius 0 p i j) = base p := by
+    simpa only [hU0, hU0inv, one_mul, mul_one] using hpoint 0 p
+  let prefactor : ℂ := ((momentumMeasurePrefactor hbar : ℝ) : ℂ)
+  have hIntegral (θ : ℝ) :
+      finiteCutoffContinuumBornDysonRealSpaceGreenMatrix
+          side v m probeEnergy broadening disorderStrength hbar pMax
+          (polarPoint2D radius θ) =
+        prefactor •
+          ((fun i j : Fin 2 =>
+            ∫ p in (0 : ℝ)..pMax,
+              finiteCutoffContinuumBornDysonAngularGreenEntryKernel
+                side v m probeEnergy broadening disorderStrength hbar pMax
+                radius θ p i j) : Matrix2) := by
+    ext i j
+    simpa only [prefactor, Matrix.smul_apply, smul_eq_mul] using
+      (finiteCutoffContinuumBornDysonRealSpaceGreenMatrix_polarPoint2D_eq_angularKernel_integral
+        side v m probeEnergy broadening disorderStrength hbar pMax radius θ i j)
+  have hrot :
+      finiteCutoffContinuumBornDysonRealSpaceGreenMatrix
+          side v m probeEnergy broadening disorderStrength hbar pMax
+          (polarPoint2D radius angle) =
+        prefactor •
+          (inPlaneSpinRotation angle *
+            ((fun i j : Fin 2 => ∫ p in (0 : ℝ)..pMax, base p i j) : Matrix2) *
+            inPlaneSpinRotationInverse angle) := by
+    rw [hIntegral angle]
+    have hentries :
+        ((fun i j : Fin 2 =>
+          ∫ p in (0 : ℝ)..pMax,
+            finiteCutoffContinuumBornDysonAngularGreenEntryKernel
+              side v m probeEnergy broadening disorderStrength hbar pMax
+              radius angle p i j) : Matrix2) =
+        (fun i j : Fin 2 =>
+          ∫ p in (0 : ℝ)..pMax,
+            (inPlaneSpinRotation angle * base p *
+              inPlaneSpinRotationInverse angle) i j) := by
+      ext i j
+      apply intervalIntegral.integral_congr
+      intro p _
+      exact congrArg (fun M : Matrix2 => M i j) (hpoint angle p)
+    rw [hentries, intervalIntegral_spinRotation_conjugate]
+  have haxis :
+      finiteCutoffContinuumBornDysonRealSpaceGreenMatrix
+          side v m probeEnergy broadening disorderStrength hbar pMax
+          (polarPoint2D radius 0) =
+        prefactor •
+          ((fun i j : Fin 2 => ∫ p in (0 : ℝ)..pMax, base p i j) : Matrix2) := by
+    rw [hIntegral 0]
+    congr 1
+    ext i j
+    apply intervalIntegral.integral_congr
+    intro p _
+    exact congrArg (fun M : Matrix2 => M i j) (hpoint0 p)
+  rw [hrot, haxis]
+  simp only [mul_smul_comm, smul_mul_assoc]
+
+/-- Full model-specific SO(2) covariance relative to the canonical
+one-dimensional radial Green matrix, valid for retarded and advanced sides. -/
+theorem finiteCutoffContinuumBornDysonRealSpaceGreenMatrix_polarPoint2D_eq_radial_spinRotation
+    (side : SpectralSide)
+    (v m probeEnergy broadening disorderStrength hbar pMax radius angle : ℝ) :
+    finiteCutoffContinuumBornDysonRealSpaceGreenMatrix
+        side v m probeEnergy broadening disorderStrength hbar pMax
+        (polarPoint2D radius angle) =
+      inPlaneSpinRotation angle *
+        finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix
+          side v m probeEnergy broadening disorderStrength hbar pMax radius *
+        inPlaneSpinRotationInverse angle := by
+  rw [finiteCutoffContinuumBornDysonRealSpaceGreenMatrix_polarPoint2D_spinRotation,
+    finiteCutoffContinuumBornDysonRealSpaceGreenMatrix_radialAxis_eq]
+
 end
 
 end QuantumTheory.Models.MassiveDirac
