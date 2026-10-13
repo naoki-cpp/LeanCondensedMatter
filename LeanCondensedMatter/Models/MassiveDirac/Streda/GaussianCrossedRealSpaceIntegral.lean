@@ -68,6 +68,45 @@ noncomputable def finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceIntegral
     (finiteCutoffContinuumBornDysonGaussianCrossedTraceKernel
       diagram v m probeEnergy broadening disorderStrength hbar pMax)
 
+/-- Finite real-space angular integration extracts only the constant harmonic of
+the *full* crossed trace kernel. The supplied expansion is over the actual
+polar real-space point, not merely the radial-axis restriction.
+
+This is an exact finite-regulator reduction conditional on a pointwise angular
+harmonic representation; proving that representation for the model's X/Psi
+traces and evaluating the remaining radial integral are separate tasks. -/
+theorem finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceIntegral_eq_radial_harmonic_constant
+    (diagram : GaussianCrossedDiagram)
+    (v m probeEnergy broadening disorderStrength hbar pMax rMax : ℝ)
+    (coefficients : ℝ → AngularHarmonicCoefficients ℂ)
+    (hangle : ∀ radius angle : ℝ,
+      finiteCutoffContinuumBornDysonGaussianCrossedTraceKernel
+          diagram v m probeEnergy broadening disorderStrength hbar pMax
+          (polarPoint2D radius angle) =
+        (coefficients radius).eval angle) :
+    finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceIntegral
+        diagram v m probeEnergy broadening disorderStrength hbar pMax rMax =
+      (((2 * Real.pi : ℝ) : ℂ)) *
+        ∫ radius in (0 : ℝ)..rMax,
+          (radius : ℂ) * (coefficients radius).constant := by
+  unfold finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceIntegral
+    finiteRadiusPolarRealSpaceIntegral
+  simp_rw [hangle]
+  calc
+    (∫ radius in (0 : ℝ)..rMax,
+      ∫ angle in (0 : ℝ)..(2 * Real.pi),
+        (radius : ℂ) * (coefficients radius).eval angle) =
+        ∫ radius in (0 : ℝ)..rMax,
+          (((2 * Real.pi : ℝ) : ℂ)) *
+            ((radius : ℂ) * (coefficients radius).constant) := by
+      apply intervalIntegral.integral_congr
+      intro radius _
+      rw [intervalIntegral.integral_const_mul,
+        (coefficients radius).integral_eval]
+      simp only [smul_eq_mul]
+      ring
+    _ = _ := by rw [intervalIntegral.integral_const_mul]
+
 /-- The finite-radius `Psi` integral remains real because its pointwise trace kernel is real. -/
 @[simp] theorem finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceIntegral_psi_im
     (v m probeEnergy broadening disorderStrength hbar pMax rMax : ℝ) :
