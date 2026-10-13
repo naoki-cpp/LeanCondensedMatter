@@ -71,6 +71,89 @@ theorem externalInsertionSlotLegSplitting_right_interaction
         (Sum.inr (⟨v.1, (Finset.mem_sdiff.mp v.2).1⟩, l)) := by
   simp [externalInsertionSlotLegSplitting]
 
+/-- The external-support side of the canonical fixed slot splitting preserves the
+flattened order: external legs stay first, and the increasing support vertices retain
+the order of their four local legs. -/
+theorem externalInsertionSlotLegSplitting_left_strictMono
+    {E N : ℕ} (T : Finset (Fin N)) :
+    StrictMono (fun p : Fin (2 * (2 * T.card + E)) =>
+      externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T)
+        (Sum.inl p)) := by
+  let localEquiv := externalInsertionLegEquiv E T
+  intro a b hab
+  let la := localEquiv a
+  let lb := localEquiv b
+  have ha : localEquiv.symm la = a := by simp [la]
+  have hb : localEquiv.symm lb = b := by simp [lb]
+  rw [← ha, ← hb] at hab ⊢
+  rcases la with e | ⟨v, l⟩ <;> rcases lb with f | ⟨w, k⟩
+  · change (externalInsertionExternalLeg E T e).val <
+        (externalInsertionExternalLeg E T f).val at hab
+    change externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T)
+        (Sum.inl (externalInsertionExternalLeg E T e)) <
+      externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T)
+        (Sum.inl (externalInsertionExternalLeg E T f))
+    rw [externalInsertionSlotLegSplitting_external,
+      externalInsertionSlotLegSplitting_external]
+    simpa only [Fin.lt_def, externalInsertionExternalLeg_val] using hab
+  · change externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T)
+        (Sum.inl (externalInsertionExternalLeg E T e)) <
+      externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T)
+        (Sum.inl (externalInsertionInteractionLeg (E := E) w k))
+    rw [externalInsertionSlotLegSplitting_external,
+      externalInsertionSlotLegSplitting_left_interaction]
+    change (externalInsertionExternalLeg E (Finset.univ : Finset (Fin N)) e).val <
+      (externalInsertionInteractionLeg (E := E)
+        (⟨w.1, Finset.mem_univ _⟩ : ↥(Finset.univ : Finset (Fin N))) k).val
+    simp only [externalInsertionExternalLeg_val, externalInsertionInteractionLeg_val]
+    have he := e.isLt
+    omega
+  · change (externalInsertionInteractionLeg (E := E) v l).val <
+      (externalInsertionExternalLeg E T f).val at hab
+    simp only [externalInsertionInteractionLeg_val,
+      externalInsertionExternalLeg_val] at hab
+    have hf := f.isLt
+    omega
+  · change (externalInsertionInteractionLeg (E := E) v l).val <
+      (externalInsertionInteractionLeg (E := E) w k).val at hab
+    change externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T)
+        (Sum.inl (externalInsertionInteractionLeg (E := E) v l)) <
+      externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T)
+        (Sum.inl (externalInsertionInteractionLeg (E := E) w k))
+    rw [externalInsertionSlotLegSplitting_left_interaction,
+      externalInsertionSlotLegSplitting_left_interaction]
+    change (externalInsertionInteractionLeg (E := E)
+        (⟨v.1, Finset.mem_univ _⟩ : ↥(Finset.univ : Finset (Fin N))) l).val <
+      (externalInsertionInteractionLeg (E := E)
+        (⟨w.1, Finset.mem_univ _⟩ : ↥(Finset.univ : Finset (Fin N))) k).val
+    simp only [externalInsertionInteractionLeg_val] at hab ⊢
+    have huniv (x : Fin N) :
+        (((Finset.univ : Finset (Fin N)).orderIsoOfFin rfl).symm
+          ⟨x, Finset.mem_univ x⟩).val = x.val := by
+      rw [Finset.orderIsoOfFin_symm_apply, Fin.sort_univ, List.idxOf_finRange]
+    rw [huniv, huniv]
+    by_cases hvw : v = w
+    · subst w
+      omega
+    · have hrank_ne :
+          ((T.orderIsoOfFin rfl).symm v).val ≠
+            ((T.orderIsoOfFin rfl).symm w).val := by
+        intro h
+        apply hvw
+        exact (T.orderIsoOfFin rfl).symm.injective (Fin.ext h)
+      have hrank :
+          ((T.orderIsoOfFin rfl).symm v).val <
+            ((T.orderIsoOfFin rfl).symm w).val := by
+        have hl := l.isLt
+        have hk := k.isLt
+        omega
+      have hvertex : v.1 < w.1 := by
+        have h := (T.orderIsoOfFin rfl).strictMono (Fin.lt_def.mpr hrank)
+        simpa using h
+      have hl := l.isLt
+      have hk := k.isLt
+      omega
+
 /-- The canonically ordered vacuum-sector legs retain their flat order when inserted
 into the ambient fixed-order external-insertion leg array. -/
 theorem externalInsertionSlotLegSplitting_orderedRight_strictMono
