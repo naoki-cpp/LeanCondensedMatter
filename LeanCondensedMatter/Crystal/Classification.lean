@@ -303,6 +303,55 @@ theorem pointGroup_eq_one_of_trace_eq_two
   have hx := LinearMap.congr_fun hlinear x
   simpa [f] using hx
 
+
+/-- A planar point-group isometry with trace `-2` is the half-turn: it squares to the
+identity. Equality in the lower Cauchy–Schwarz bound forces it to negate every basis
+vector, hence every vector. -/
+theorem pointGroup_sq_eq_one_of_trace_eq_neg_two
+    (X : AtomicConfiguration E Species) (g : X.pointGroup (V := V))
+    (o : OrthonormalBasis (Fin 2) ℝ V)
+    (htrace : LinearMap.trace ℝ V
+      (g : V ≃ₗᵢ[ℝ] V).toLinearEquiv.toLinearMap = -2) :
+    g ^ 2 = 1 := by
+  let f : V ≃ₗᵢ[ℝ] V := g
+  have hlower (i : Fin 2) : -1 ≤ inner ℝ (o i) (f (o i)) := by
+    have h := abs_real_inner_le_norm (o i) (f (o i))
+    have hbound : |inner ℝ (o i) (f (o i))| ≤ 1 := by
+      simpa [f] using h
+    exact (abs_le.mp hbound).1
+  have hsum : inner ℝ (o 0) (f (o 0)) +
+      inner ℝ (o 1) (f (o 1)) = -2 := by
+    rw [LinearMap.trace_eq_sum_inner _ o, Fin.sum_univ_two] at htrace
+    simpa only [f, LinearEquiv.coe_coe, LinearIsometryEquiv.coe_toLinearEquiv]
+      using htrace
+  have hzero : inner ℝ (o 0) (f (o 0)) = -1 := by
+    linarith [hlower 0, hlower 1]
+  have hone : inner ℝ (o 1) (f (o 1)) = -1 := by
+    linarith [hlower 0, hlower 1]
+  have heq (i : Fin 2) : inner ℝ (o i) (f (o i)) = -1 := by
+    fin_cases i
+    · simpa using hzero
+    · simpa using hone
+  have hfixed (i : Fin 2) : f (o i) = -(o i) := by
+    have hi : o i = -(f (o i)) :=
+      (inner_eq_neg_one_iff_of_norm_eq_one (o.norm_eq_one i)
+        (by simpa [f] using f.norm_map (o i))).mp (heq i)
+    simpa using congrArg Neg.neg hi.symm
+  have hlinear : f.toLinearEquiv.toLinearMap = -(LinearMap.id : V →ₗ[ℝ] V) := by
+    apply o.toBasis.ext
+    intro i
+    simpa only [OrthonormalBasis.coe_toBasis, LinearEquiv.coe_coe,
+      LinearIsometryEquiv.coe_toLinearEquiv, LinearMap.neg_apply,
+      LinearMap.id_apply] using hfixed i
+  have hneg (x : V) : f x = -x := by
+    have hx := LinearMap.congr_fun hlinear x
+    simpa [f] using hx
+  apply Subtype.ext
+  apply LinearIsometryEquiv.ext
+  intro x
+  change f (f x) = x
+  rw [hneg (f x), hneg x, neg_neg]
+
 end
 
 end Planar
