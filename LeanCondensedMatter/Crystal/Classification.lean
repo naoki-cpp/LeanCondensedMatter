@@ -6,6 +6,7 @@ Authors: Naoki Yano
 import LeanCondensedMatter.Crystal.Periodicity
 import LeanCondensedMatter.Crystal.PointGroup
 import Mathlib.Algebra.Module.Submodule.Map
+import Mathlib.LinearAlgebra.Matrix.GeneralLinearGroup.Defs
 
 /-!
 # Classification-facing crystal symmetry
@@ -128,6 +129,40 @@ theorem pointGroupLatticeRepresentation_injective (X : AtomicConfiguration E Spe
   | zero => simp
   | add x y _ _ hx hy => simpa using congrArg₂ (· + ·) hx hy
   | smul a x _ hx => simpa using congrArg (a • ·) hx
+
+
+/-- After choosing an integral basis of the translation lattice, the point group acts by
+invertible integer matrices. Coordinates are selected here, not stored in the configuration.
+
+The index type may later be specialized to `Fin n`; no finite-dimensional assumption or
+chosen basis is needed for the preceding basis-free representation. -/
+def pointGroupMatrixRepresentation (X : AtomicConfiguration E Species)
+    {ι : Type*} [Fintype ι] [DecidableEq ι]
+    (b : Module.Basis ι ℤ
+      (AddSubgroup.toIntSubmodule (X.translationSubgroup (V := V)))) :
+    X.pointGroup (V := V) →* Matrix.GeneralLinearGroup ι ℤ :=
+  (((Matrix.GeneralLinearGroup.toLin' b).trans
+    (LinearMap.GeneralLinearGroup.generalLinearEquiv ℤ _)).symm.toMonoidHom).comp
+      (X.pointGroupLatticeRepresentation (V := V))
+
+/-- For a periodic configuration, the matrix representation is faithful in any chosen
+integral lattice basis. -/
+theorem pointGroupMatrixRepresentation_injective (X : AtomicConfiguration E Species)
+    (hX : X.Periodic (V := V))
+    {ι : Type*} [Fintype ι] [DecidableEq ι]
+    (b : Module.Basis ι ℤ
+      (AddSubgroup.toIntSubmodule (X.translationSubgroup (V := V)))) :
+    Function.Injective (X.pointGroupMatrixRepresentation (V := V) b) := by
+  intro g h hgh
+  let e : Matrix.GeneralLinearGroup ι ℤ ≃*
+      (AddSubgroup.toIntSubmodule (X.translationSubgroup (V := V)) ≃ₗ[ℤ]
+        AddSubgroup.toIntSubmodule (X.translationSubgroup (V := V))) :=
+    (Matrix.GeneralLinearGroup.toLin' b).trans
+      (LinearMap.GeneralLinearGroup.generalLinearEquiv ℤ _)
+  change e.symm (X.pointGroupLatticeRepresentation (V := V) g) =
+    e.symm (X.pointGroupLatticeRepresentation (V := V) h) at hgh
+  exact (X.pointGroupLatticeRepresentation_injective (V := V) hX)
+    (e.symm.injective hgh)
 
 end
 
