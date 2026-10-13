@@ -10,6 +10,7 @@ import Mathlib.LinearAlgebra.Matrix.GeneralLinearGroup.Defs
 import Mathlib.LinearAlgebra.Trace
 import Mathlib.Analysis.InnerProductSpace.Trace
 import LeanCondensedMatter.Analysis.Matrix.FinTwoCharpoly
+import Mathlib.Analysis.InnerProductSpace.PiL2
 
 /-!
 # Classification-facing crystal symmetry
@@ -432,6 +433,39 @@ theorem pointGroup_rotation_power_of_det_one
     exact X.pointGroup_pow_eq_one_of_toMatrix_pow_eq_one g o.toBasis 6 hM
   · left
     exact X.pointGroup_eq_one_of_trace_eq_two g o (by simpa [hz] using htrace)
+
+
+/-- The planar crystallographic restriction: every point-group element of a rank-two
+periodic configuration has order dividing one of `1`, `2`, `3`, `4`, or `6`.
+
+The determinant-one branch gives the crystallographic rotations; the determinant-minus-one
+branch is an orientation-reversing orthogonal map and hence a reflection of order two. -/
+theorem pointGroup_crystallographic_restriction
+    [FiniteDimensional ℝ V]
+    (X : AtomicConfiguration E Species) (hX : X.Periodic (V := V))
+    (g : X.pointGroup (V := V))
+    (b : Module.Basis (Fin 2) ℤ
+      (AddSubgroup.toIntSubmodule (X.translationSubgroup (V := V))))
+    (o : OrthonormalBasis (Fin 2) ℝ V) :
+    g = 1 ∨ g ^ 2 = 1 ∨ g ^ 3 = 1 ∨ g ^ 4 = 1 ∨ g ^ 6 = 1 := by
+  let T : V →ₗ[ℝ] V := (g : V ≃ₗᵢ[ℝ] V).toLinearEquiv.toLinearMap
+  let M : Matrix (Fin 2) (Fin 2) ℝ := LinearMap.toMatrix o.toBasis o.toBasis T
+  have hunit : M ∈ Matrix.unitaryGroup (Fin 2) ℝ := by
+    exact LinearIsometryEquiv.toMatrix_mem_unitaryGroup (g : V ≃ₗᵢ[ℝ] V) o o
+  have horth : M * Mᵀ = 1 := by
+    have h := Matrix.mem_unitaryGroup_iff.mp hunit
+    simpa only [Matrix.star_eq_conjTranspose,
+      Matrix.conjTranspose_eq_transpose_of_trivial] using h
+  have hdetSq : M.det ^ 2 = 1 := by
+    have h := congrArg Matrix.det horth
+    simpa only [Matrix.det_mul, Matrix.det_transpose, Matrix.det_one, pow_two] using h
+  have hdetM : M.det = LinearMap.det T := LinearMap.det_toMatrix o.toBasis T
+  rcases (sq_eq_one_iff.mp hdetSq) with hplus | hminus
+  · exact X.pointGroup_rotation_power_of_det_one hX g b o (by
+      simpa only [← hdetM] using hplus)
+  · right; left
+    exact X.pointGroup_pow_eq_one_of_toMatrix_pow_eq_one g o.toBasis 2
+      (M.sq_eq_one_of_mul_transpose_eq_one_det_neg_one horth hminus)
 
 end
 
