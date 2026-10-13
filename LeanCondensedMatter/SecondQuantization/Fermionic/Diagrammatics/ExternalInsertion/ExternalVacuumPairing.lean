@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Combinatorics.BinarySplitPermutationSign
 import LeanCondensedMatter.Combinatorics.PerfectPairing.SplitNormalizedPairs
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Pairing.SlotSplitMixedOrder
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Pairing
@@ -859,6 +860,59 @@ theorem externalInsertionMixedSplit_relativePerm_sign_eq_local_mul_global
   rw [hrelative, Equiv.Perm.sign_trans, hassoc,
     Equiv.Perm.sign_symm_trans_trans]
   exact mul_comm _ _
+
+omit [LinearOrder Mode] [Fintype Mode] in
+/-- The relative fixed/mixed support split sign is determined by the two
+inter-sector inversion counts, provided each sector is internally ordered.
+In particular, this statement does not discard the fixed-split contribution:
+its evenness must be established separately for quartic vertex blocks. -/
+theorem externalInsertionMixedSplit_relativePerm_sign_eq_inversionCounts
+    {E n : ℕ} (T : Finset (Fin n))
+    (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ)
+    (htime : StrictAnti (σ ∘ fun i : Fin T.card => (T.orderIsoOfFin rfl i).1)) :
+    let S := (Finset.univ : Finset (Fin n)) \ T
+    let order : QuarticVertexOrder S := (S.orderIsoOfFin rfl).toEquiv
+    let localFixed := externalInsertionLeftMixedToFixedEquiv T externalTime σ
+    let fixedSplit :=
+      ((Equiv.sumCongr (Equiv.refl (Fin (2 * (2 * T.card + E))))
+        (orderedLegToDiagramLeg S order)).trans
+        (externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T))).trans
+        (finCongr (by simp)).symm
+    let split :=
+      ((Equiv.sumCongr (Equiv.refl (Fin (2 * (2 * T.card + E))))
+        (orderedLegToDiagramLeg S order)).trans
+        (externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T))).trans
+        (externalInsertionMixedTimeAmbientPositionEquiv externalTime σ).symm
+    let mixedSplit :=
+      (Equiv.sumCongr localFixed (Equiv.refl (Fin (2 * (2 * S.card))))).trans split
+    Equiv.Perm.sign (fixedSplit.symm.trans mixedSplit) =
+      (-1 : ℤˣ) ^
+        ((∑ i : Fin (2 * (2 * T.card + E)),
+            ∑ j : Fin (2 * (2 * S.card)),
+              if fixedSplit (Sum.inr j) < fixedSplit (Sum.inl i) then 1 else 0) +
+          (∑ i : Fin (2 * (2 * T.card + E)),
+            ∑ j : Fin (2 * (2 * S.card)),
+              if mixedSplit (Sum.inr j) < mixedSplit (Sum.inl i) then 1 else 0)) := by
+  intro S order localFixed fixedSplit split mixedSplit
+  have hfixedLeft : StrictMono
+      (fun i : Fin (2 * (2 * T.card + E)) => fixedSplit (Sum.inl i)) := by
+    simpa only [fixedSplit, Equiv.trans_apply, Equiv.sumCongr_apply,
+      Equiv.refl_apply] using
+      externalInsertionSlotLegSplitting_left_strictMono (E := E) T
+  have hfixedRight : StrictMono
+      (fun j : Fin (2 * (2 * S.card)) => fixedSplit (Sum.inr j)) := by
+    simpa only [fixedSplit, Equiv.trans_apply, Equiv.sumCongr_apply,
+      Equiv.refl_apply] using
+      externalInsertionSlotLegSplitting_right_strictMono (E := E) T
+  have hmixedLeft : StrictMono
+      (fun i : Fin (2 * (2 * T.card + E)) => mixedSplit (Sum.inl i)) :=
+    externalInsertionLeftMixedPosition_split_strictMono T externalTime σ
+  have hmixedRight : StrictMono
+      (fun j : Fin (2 * (2 * S.card)) => mixedSplit (Sum.inr j)) :=
+    externalInsertionSlotLegSplitting_right_strictMono_of_localOrder
+      T externalTime σ htime
+  exact sign_relative_binarySplittings_eq_inversionCounts
+    fixedSplit mixedSplit hfixedLeft hfixedRight hmixedLeft hmixedRight
 
 omit [LinearOrder Mode] [Fintype Mode] in
 /-- On a strictly antitone vacuum chamber, the actual mixed-time fermionic
