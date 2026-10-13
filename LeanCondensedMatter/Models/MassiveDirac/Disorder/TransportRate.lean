@@ -1,8 +1,6 @@
-import LeanCondensedMatter.Transport.Analysis.AngularHarmonics
 import LeanCondensedMatter.Transport.Analysis.RelaxationTime
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.Damping
-import LeanCondensedMatter.Models.MassiveDirac.Model.FermiSurfaceOverlap
-import Mathlib.Analysis.SpecialFunctions.Integrals.Basic
+import LeanCondensedMatter.Models.MassiveDirac.Disorder.ScalarAngularWeights
 import Mathlib.Tactic
 
 set_option linter.style.header false
@@ -26,7 +24,8 @@ For `|m| < ε_F`, the gauge-independent upper-band projector overlap reduces to
 W(θ) = [1 + m²/ε_F² + (1 - m²/ε_F²) cos θ] / 2,
 ```
 
-so the unweighted and transport-weighted angular means give the relation between `τ_sp` and `τ_tr`.
+so the unweighted and transport-weighted angular means (derived in `ScalarAngularWeights`)
+give the relation between `τ_sp` and `τ_tr`.
 No Kubo ladder equation, Ward identity, crossed diagram, or identification with the exact disorder-
 averaged conductivity is claimed here.
 -/
@@ -164,65 +163,6 @@ theorem continuumBornUpperBandDampingEnergy_eq_hbar_div_two_lifetime
     v m fermiEnergy disorderStrength hbar hhbar]
   unfold continuumBornUpperBandSingleParticleLifetime
   field_simp [hrateNe]
-
-/-- Full-circle mean of the upper-band scalar-disorder overlap. This is the angular factor carried
-by the single-particle Born rate. -/
-def isotropicUpperBandSingleParticleAngularWeight
-    (v m fermiEnergy : ℝ) : ℝ :=
-  (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi),
-      upperBandFermiSurfaceScalarOverlapWeight v m fermiEnergy θ) /
-    (2 * Real.pi)
-
-/-- The unweighted scalar-disorder overlap average is `(1 + m²/ε_F²)/2`. -/
-theorem isotropicUpperBandSingleParticleAngularWeight_eq
-    (v m fermiEnergy : ℝ) :
-    isotropicUpperBandSingleParticleAngularWeight v m fermiEnergy =
-      (1 + m ^ 2 / fermiEnergy ^ 2) / 2 := by
-  rw [isotropicUpperBandSingleParticleAngularWeight]
-  have hrewrite :
-      (fun θ : ℝ => upperBandFermiSurfaceScalarOverlapWeight v m fermiEnergy θ) =
-        fun θ : ℝ =>
-          (1 + m ^ 2 / fermiEnergy ^ 2) / 2 +
-            ((1 - m ^ 2 / fermiEnergy ^ 2) / 2) * Real.cos θ +
-              0 * Real.cos θ ^ 2 := by
-    funext θ
-    unfold upperBandFermiSurfaceScalarOverlapWeight
-    ring
-  rw [hrewrite, integral_quadratic_cos_zero_two_pi]
-  have hpi : Real.pi ≠ 0 := ne_of_gt Real.pi_pos
-  field_simp [hpi]
-  ring
-
-/-- Full-circle transport angular weight. The factor `1 - cos θ` suppresses forward scattering
-because it does not relax the current direction. -/
-def isotropicUpperBandTransportAngularWeight
-    (v m fermiEnergy : ℝ) : ℝ :=
-  (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi),
-      upperBandFermiSurfaceScalarOverlapWeight v m fermiEnergy θ *
-        (1 - Real.cos θ)) /
-    (2 * Real.pi)
-
-/-- The scalar-disorder transport angular weight is `(1 + 3 m²/ε_F²)/4`. -/
-theorem isotropicUpperBandTransportAngularWeight_eq
-    (v m fermiEnergy : ℝ) :
-    isotropicUpperBandTransportAngularWeight v m fermiEnergy =
-      (1 + 3 * (m ^ 2 / fermiEnergy ^ 2)) / 4 := by
-  rw [isotropicUpperBandTransportAngularWeight]
-  have hrewrite :
-      (fun θ : ℝ =>
-        upperBandFermiSurfaceScalarOverlapWeight v m fermiEnergy θ *
-          (1 - Real.cos θ)) =
-        fun θ : ℝ =>
-          (1 + m ^ 2 / fermiEnergy ^ 2) / 2 +
-            (-(m ^ 2 / fermiEnergy ^ 2)) * Real.cos θ +
-              (-((1 - m ^ 2 / fermiEnergy ^ 2) / 2)) * Real.cos θ ^ 2 := by
-    funext θ
-    unfold upperBandFermiSurfaceScalarOverlapWeight
-    ring
-  rw [hrewrite, integral_quadratic_cos_zero_two_pi]
-  have hpi : Real.pi ≠ 0 := ne_of_gt Real.pi_pos
-  field_simp [hpi]
-  ring
 
 /-- Common continuum Born Fermi-circle rate prefactor after isolating the dimensionless projector
 angular weight. Its normalization is checked below against the already-derived self-energy rate. -/
