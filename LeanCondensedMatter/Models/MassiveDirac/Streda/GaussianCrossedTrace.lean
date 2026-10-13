@@ -129,14 +129,19 @@ theorem gaussianCrossedTraceKernel_rotated_sources
         (current 0 r) (current 1 r) (current 0 r) (current 1 r)
         (greenRetarded (-r)) (greenAdvanced (-r)) c s
   | psi =>
+      have h10 : (1 : Fin 2) ≠ 0 := by decide
       have hamplitude := trace_four_rotated_currents
         (current 0 r) (current 1 r)
         (current 0 (-r)) (current 1 (-r))
         (greenRetarded (-r) * greenRetarded r) (1 : Matrix2) c s
       simp only [Matrix.mul_assoc, Matrix.mul_one] at hamplitude
       have hconj := congrArg (starRingEnd ℂ) hamplitude
-      simp [map_add, map_sub, map_mul, map_pow] at hconj
-      simp only [gaussianCrossedTraceKernel, ↓reduceIte, Matrix.mul_assoc]
+      simp only [map_add, map_sub, map_mul, map_pow] at hconj
+      have hc : (starRingEnd ℂ) (c : ℂ) = (c : ℂ) := by simp
+      have hs : (starRingEnd ℂ) (s : ℂ) = (s : ℂ) := by simp
+      rw [hc, hs] at hconj
+      simp only [gaussianCrossedTraceKernel, ↓reduceIte,
+        if_neg h10, Matrix.mul_assoc]
       rw [hamplitude, hconj]
       ring
 
