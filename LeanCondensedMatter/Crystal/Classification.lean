@@ -9,6 +9,7 @@ import Mathlib.Algebra.Module.Submodule.Map
 import Mathlib.LinearAlgebra.Matrix.GeneralLinearGroup.Defs
 import Mathlib.LinearAlgebra.Trace
 import Mathlib.Analysis.InnerProductSpace.Trace
+import LeanCondensedMatter.Analysis.Matrix.FinTwoCharpoly
 
 /-!
 # Classification-facing crystal symmetry
@@ -351,6 +352,38 @@ theorem pointGroup_sq_eq_one_of_trace_eq_neg_two
   intro x
   change f (f x) = x
   rw [hneg (f x), hneg x, neg_neg]
+
+
+/-- A power identity for the matrix of a point-group linear part transfers to the
+point-group element itself. This is independent of crystallographic periodicity. -/
+theorem pointGroup_pow_eq_one_of_toMatrix_pow_eq_one
+    (X : AtomicConfiguration E Species) (g : X.pointGroup (V := V))
+    (o : OrthonormalBasis (Fin 2) ℝ V) (n : ℕ)
+    (h : (LinearMap.toMatrix o.toBasis o.toBasis
+      (g : V ≃ₗᵢ[ℝ] V).toLinearEquiv.toLinearMap) ^ n = 1) :
+    g ^ n = 1 := by
+  let f : V ≃ₗᵢ[ℝ] V := g
+  let T : V →ₗ[ℝ] V := f.toLinearEquiv.toLinearMap
+  have hT : T ^ n = 1 := by
+    apply (LinearMap.toMatrix o.toBasis o.toBasis).injective
+    rw [← LinearMap.toMatrix_pow, LinearMap.toMatrix_one]
+    exact h
+  have hpow_map (k : ℕ) : ∀ x : V, (T ^ k) x = (f ^ k) x := by
+    induction k with
+    | zero =>
+        intro x
+        simp
+    | succ k ih =>
+        intro x
+        rw [pow_succ, pow_succ, Module.End.mul_apply]
+        change (T ^ k) (T x) = (f ^ k) (f x)
+        exact ih (f x)
+  apply Subtype.ext
+  apply LinearIsometryEquiv.ext
+  intro x
+  change (f ^ n) x = x
+  rw [← hpow_map n x]
+  exact LinearMap.congr_fun hT x
 
 end
 
