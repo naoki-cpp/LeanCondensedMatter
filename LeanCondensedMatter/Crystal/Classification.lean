@@ -293,11 +293,15 @@ theorem restrict_ofIntegralLinearEquivGramPreserving [FiniteDimensional ℝ V]
       Matrix.gram ℝ (fun i => ((e (b i) : L) : V)) =
         Matrix.gram ℝ (fun i => ((b i : L) : V))) :
     restrict L (ofIntegralLinearEquivGramPreserving L b e hGram) = e := by
-  apply b.ext
-  intro i
-  apply Subtype.ext
-  change extendIntegralLinearEquiv L b e ((b i : L) : V) = ((e (b i) : L) : V)
-  exact extendIntegralLinearEquiv_apply_basis L b e i
+  have hLin :
+      (restrict L (ofIntegralLinearEquivGramPreserving L b e hGram)).toLinearMap =
+        e.toLinearMap := by
+    apply b.ext
+    intro i
+    apply Subtype.ext
+    change extendIntegralLinearEquiv L b e ((b i : L) : V) = ((e (b i) : L) : V)
+    exact extendIntegralLinearEquiv_apply_basis L b e i
+  exact LinearEquiv.ext (fun x => LinearMap.congr_fun hLin x)
 
 /-- Lifting a Gram-preserving unimodular integer matrix to an intrinsic lattice
 isometry and restricting to the lattice recovers Mathlib's original integral
@@ -313,15 +317,19 @@ theorem restrict_ofGLGramPreserving [FiniteDimensional ℝ V]
         ((A : Matrix ι ι ℤ).map (Int.cast : ℤ → ℝ)) = G) :
     restrict L (ofGLGramPreserving L b A hGram) =
       (Matrix.GeneralLinearGroup.toLin' b A).toLinearEquiv := by
-  apply b.ext
-  intro i
-  apply Subtype.ext
-  change
-    extendIntegralLinearEquiv L b
-      (Matrix.GeneralLinearGroup.toLin' b A).toLinearEquiv ((b i : L) : V) =
-        (((Matrix.GeneralLinearGroup.toLin' b A).toLinearEquiv (b i) : L) : V)
-  exact extendIntegralLinearEquiv_apply_basis L b
-    (Matrix.GeneralLinearGroup.toLin' b A).toLinearEquiv i
+  have hLin :
+      (restrict L (ofGLGramPreserving L b A hGram)).toLinearMap =
+        (Matrix.GeneralLinearGroup.toLin' b A).toLinearEquiv.toLinearMap := by
+    apply b.ext
+    intro i
+    apply Subtype.ext
+    change
+      extendIntegralLinearEquiv L b
+        (Matrix.GeneralLinearGroup.toLin' b A).toLinearEquiv ((b i : L) : V) =
+          (((Matrix.GeneralLinearGroup.toLin' b A).toLinearEquiv (b i) : L) : V)
+    exact extendIntegralLinearEquiv_apply_basis L b
+      (Matrix.GeneralLinearGroup.toLin' b A).toLinearEquiv i
+  exact LinearEquiv.ext (fun x => LinearMap.congr_fun hLin x)
 
 /-- In the chosen integral basis, the intrinsic lattice isometry obtained from
 a Gram-preserving integer matrix has *exactly* that matrix as its coordinate
