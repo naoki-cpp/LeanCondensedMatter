@@ -1,15 +1,15 @@
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Pairing.ComponentMixedPairEquiv
 import LeanCondensedMatter.Combinatorics.PerfectPairing.ComponentCrossing
-import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.PairingWeight
 
 set_option linter.style.header false
 
 /-!
-# Mixed-order component crossings and exchange weights
+# Mixed-order component crossings
 
 Component mixed positions form an order-preserving family shuffle into ambient mixed order.
-Crossing counts and their parity decompose through the component pairing equivalence; exchange
-weights factor for either statistics. Labels are arbitrary and no thermal kernel is used.
+Crossing counts and residual parity decompose through the component pairing equivalence.
+The statistics-generic exchange-weight conversion belongs to `BlochDeDominicis.PairingWeight`.
+Labels are arbitrary and no thermal kernel is used.
 -/
 
 namespace SecondQuantization
@@ -72,27 +72,6 @@ theorem ExternalInsertionDiagram.pairingInMixedOrder_crossingCount_eq_sum_compon
     (fun B => d.componentMixedPosition externalTime σ B)
     (fun B => d.componentMixedPosition_strictMono externalTime σ B)
     (fun B pr => by simpa using d.componentMixedPairEquiv_apply externalTime σ B pr)
-
-/-- The exchange-statistics weight of the mixed-order pairing factors into a residual
-inter-component weight and the standalone mixed-order component weights. -/
-theorem ExternalInsertionDiagram.pairingInMixedOrder_weight_eq_inter_mul_prod_components
-    {E n : ℕ}
-    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E n
-      (Finset.univ : Finset (Fin n)))
-    (s : Common.Statistics)
-    (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ) :
-    (d.pairingInMixedOrder externalTime σ).weight s =
-      (s.zetaInt : ℂ) ^
-        (d.pairingInMixedOrder externalTime σ).interComponentCrossingCount
-          (d.componentMixedPairEquiv externalTime σ) *
-      ∏ B : d.vertexGraph.componentPartition.parts,
-        ((d.componentOrderedDiagram B).pairingInMixedOrder
-          (d.componentExternalTime externalTime B)
-          (d.componentInteractionTime σ B)).weight s := by
-  simp only [Pairing.weight]
-  rw [d.pairingInMixedOrder_crossingCount_eq_sum_components_add_inter externalTime σ,
-    pow_add, ← Finset.prod_pow_eq_pow_sum]
-  ac_rfl
 
 end Common
 end SecondQuantization

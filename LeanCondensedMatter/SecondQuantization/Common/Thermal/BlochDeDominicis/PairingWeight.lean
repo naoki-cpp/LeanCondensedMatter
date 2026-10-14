@@ -158,6 +158,22 @@ theorem Pairing.weight_eq_prod_of_crossingCount_mod_two_eq (s : Statistics)
     zetaInt_pow_eq_prod_of_sum_mod_two_eq s pairing.crossingCount
       (fun i => (localPairing i).crossingCount) h
 
+/-- An exact decomposition of the crossing count gives a product of local exchange weights
+times the residual inter-component exchange weight. This is independent of the component
+geometry and applies to either exchange statistics. -/
+theorem Pairing.weight_eq_inter_mul_prod_of_crossingCount_eq (s : Statistics)
+    {ι : Type*} [Fintype ι] {n : ℕ} {localSize : ι → ℕ}
+    (pairing : Pairing n) (localPairing : ∀ B, Pairing (localSize B))
+    (inter : ℕ)
+    (hcrossing : pairing.crossingCount =
+      (∑ B, (localPairing B).crossingCount) + inter) :
+    pairing.weight s =
+      (s.zetaInt : ℂ) ^ inter * ∏ B, (localPairing B).weight s := by
+  classical
+  simp only [Pairing.weight]
+  rw [hcrossing, pow_add, ← Finset.prod_pow_eq_pow_sum]
+  ac_rfl
+
 /-- The exponent-recurrence version of `crossingsWithFirstPair_mod_two`: since the exchange sign
 `ζ` squares to `1`, matching parities give matching powers. -/
 theorem Pairing.weight_eraseZeroPair (s : Statistics) {n : ℕ} (pairing : Pairing (n + 1)) :
