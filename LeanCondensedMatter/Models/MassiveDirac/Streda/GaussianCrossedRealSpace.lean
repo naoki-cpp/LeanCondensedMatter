@@ -450,6 +450,11 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel_pa
         axis source v m probeEnergy broadening disorderStrength hbar pMax radius p := by
   have hI2 : Complex.I ^ 2 = (-1 : ℂ) := by
     simpa [pow_two] using Complex.I_mul_I
+  have hI3 : Complex.I ^ 3 = -Complex.I := by
+    calc
+      Complex.I ^ 3 = Complex.I ^ 2 * Complex.I := by ring
+      _ = (-1 : ℂ) * Complex.I := by rw [hI2]
+      _ = -Complex.I := by ring
   fin_cases source <;> cases axis <;>
     simp [InternalSpace.pauliVectorCoefficient,
       finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel,
@@ -728,8 +733,6 @@ private theorem gaussianCrossedAngularCurrentEntryKernel_sourceRotation
       InternalSpace.pauliZ, Matrix.smul_apply, Matrix.add_apply,
       smul_eq_mul]
   all_goals
-    simp only [← Complex.ofReal_cos, ← Complex.ofReal_sin]
-    simp only [← htrig]
     ring_nf
     simp only [hI2]
     ring
