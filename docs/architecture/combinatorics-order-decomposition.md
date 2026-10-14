@@ -93,6 +93,7 @@ summability, KMS rotation, and trace hypotheses remain with their respective the
 `Common.FintypeProduct` owns finite-product reindexing and counting.
 `Fintype.dvd_sum_equiv_fst_of_dvd_card` derives divisibility of a first-coordinate sum from
 divisibility of the repeated fiber's cardinality, using the existing multiplicity formula.
-Quartic and TwoPoint crossing-parity proofs supply their own uniform comparisons; the common
-counting law handles the four-leg multiplicity and evenness. Vertex-slot geometry and mixed-time
-order geometry remain separate downstream responsibilities.
+`PerfectPairing.ComponentCrossing` combines this counting law with the generic endpoint-inversion
+formula: constant comparison order over an even-sized fiber makes cross-component geometric
+crossing parity vanish. Quartic and TwoPoint supply their own fiber coordinates and uniform-order
+proofs; vertex-slot geometry and mixed-time order geometry remain separate downstream.
