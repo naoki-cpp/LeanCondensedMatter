@@ -25,21 +25,45 @@ theorem externalInsertionLeftMixedToFixedEquiv_eq_standardMixedPosition_symm
       (externalInsertionStandardToMixedAtomicPositionEquiv externalTime
         (σ ∘ fun i : Fin T.card => (T.orderIsoOfFin rfl i).1)).symm := by
   classical
+  let supportFixed :
+      OrderedExternalInsertionLeg E T.card ≃ Fin (2 * (2 * T.card + E)) :=
+    ((Equiv.sumCongr (Equiv.refl (Fin (2 * E)))
+      (((Equiv.subtypeUnivEquiv (fun i : Fin T.card => Finset.mem_univ i)).trans
+        (T.orderIsoOfFin rfl).toEquiv).prodCongr (Equiv.refl (Fin 4)))).trans
+      (externalInsertionLegEquiv E T).symm)
+  let standardFixed :
+      OrderedExternalInsertionLeg E T.card ≃ Fin (2 * (2 * T.card + E)) :=
+    (externalInsertionLegEquiv E (Finset.univ : Finset (Fin T.card))).symm.trans
+      (finCongr (by simp))
+  have hfixed : supportFixed = standardFixed := by
+    apply Equiv.ext
+    intro leg
+    cases leg with
+    | inl e =>
+        apply Fin.ext
+        change (externalInsertionExternalLeg E T e).val =
+          (Fin.cast (by simp)
+            (externalInsertionExternalLeg E
+              (Finset.univ : Finset (Fin T.card)) e)).val
+        simp
+    | inr vl =>
+        rcases vl with ⟨v, l⟩
+        apply Fin.ext
+        change (externalInsertionInteractionLeg (E := E)
+            (T.orderIsoOfFin rfl v.1) l).val =
+          (Fin.cast (by simp)
+            (externalInsertionInteractionLeg (E := E) v l)).val
+        simp [externalInsertionInteractionLeg_val,
+          Finset.orderIsoOfFin_symm_apply, Fin.sort_univ]
   apply Equiv.ext
   intro p
-  cases hleg : (externalInsertionMixedTimeOrderedAtomicLegEquiv externalTime
-      (σ ∘ fun i : Fin T.card => (T.orderIsoOfFin rfl i).1)) p with
-  | inl e =>
-      apply Fin.ext
-      simp [externalInsertionLeftMixedToFixedEquiv,
-        externalInsertionStandardToMixedAtomicPositionEquiv,
-        externalInsertionLegEquiv, hleg]
-  | inr vl =>
-      rcases vl with ⟨v, l⟩
-      apply Fin.ext
-      simp [externalInsertionLeftMixedToFixedEquiv,
-        externalInsertionStandardToMixedAtomicPositionEquiv,
-        externalInsertionLegEquiv, hleg, Fin.sort_univ]
+  change supportFixed
+      (externalInsertionMixedTimeOrderedAtomicLegEquiv externalTime
+        (σ ∘ fun i : Fin T.card => (T.orderIsoOfFin rfl i).1) p) =
+    standardFixed
+      (externalInsertionMixedTimeOrderedAtomicLegEquiv externalTime
+        (σ ∘ fun i : Fin T.card => (T.orderIsoOfFin rfl i).1) p)
+  rw [hfixed]
 
 end Fermionic
 end SecondQuantization
