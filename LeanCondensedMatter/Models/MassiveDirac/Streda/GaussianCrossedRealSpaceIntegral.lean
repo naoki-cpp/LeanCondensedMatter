@@ -454,9 +454,9 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_psi_antis
         InternalSpace.pauliVectorCoefficient, hsym] <;> ring
   have hamp :
       Matrix.trace
-          (Jx * (sigmaZ * GR * sigmaZ) * GR * (-sigmaZ * Jy * sigmaZ)) -
+          (Jx * (sigmaZ * GR * sigmaZ) * GR * (-(sigmaZ * Jy * sigmaZ))) -
         Matrix.trace
-          (Jy * (sigmaZ * GR * sigmaZ) * GR * (-sigmaZ * Jx * sigmaZ)) =
+          (Jy * (sigmaZ * GR * sigmaZ) * GR * (-(sigmaZ * Jx * sigmaZ))) =
         amplitude := by
     rw [hgreen]
     exact InternalSpace.trace_parity_antisymmetric_xz_pauliCoefficients
@@ -468,11 +468,11 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_psi_antis
     finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock_neg_radius]
   change
     (Matrix.trace
-      (Jx * (sigmaZ * GR * sigmaZ) * GR * (-sigmaZ * Jy * sigmaZ) -
-        Jy * (sigmaZ * GR * sigmaZ) * GR * (-sigmaZ * Jx * sigmaZ))) +
+      (Jx * (sigmaZ * GR * sigmaZ) * GR * (-(sigmaZ * Jy * sigmaZ)) -
+        Jy * (sigmaZ * GR * sigmaZ) * GR * (-(sigmaZ * Jx * sigmaZ)))) +
       (starRingEnd ℂ) (Matrix.trace
-        (Jx * (sigmaZ * GR * sigmaZ) * GR * (-sigmaZ * Jy * sigmaZ) -
-          Jy * (sigmaZ * GR * sigmaZ) * GR * (-sigmaZ * Jx * sigmaZ))) =
+        (Jx * (sigmaZ * GR * sigmaZ) * GR * (-(sigmaZ * Jy * sigmaZ)) -
+          Jy * (sigmaZ * GR * sigmaZ) * GR * (-(sigmaZ * Jx * sigmaZ)))) =
     amplitude + (starRingEnd ℂ) amplitude
   rw [Matrix.trace_sub, hamp]
 
