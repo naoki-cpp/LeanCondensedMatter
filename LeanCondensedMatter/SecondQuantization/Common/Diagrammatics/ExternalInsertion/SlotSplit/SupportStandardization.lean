@@ -66,7 +66,7 @@ theorem externalInsertionLegCongr_standardize
       apply Fin.ext
       change (externalInsertionExternalLeg E
           (Finset.univ : Finset (Fin T.card)) e).val =
-        (Fin.cast (by simp) (externalInsertionExternalLeg E T e)).val
+        (Fin.cast rfl (externalInsertionExternalLeg E T e)).val
       simp only [Fin.val_cast, externalInsertionExternalLeg_val]
   | inr vl =>
       rcases vl with ⟨v, l⟩
@@ -75,7 +75,7 @@ theorem externalInsertionLegCongr_standardize
       change (externalInsertionInteractionLeg (E := E)
           (⟨vFin, Finset.mem_univ vFin⟩ :
             ↥(Finset.univ : Finset (Fin T.card))) l).val =
-        (Fin.cast (by simp) (externalInsertionInteractionLeg (E := E) v l)).val
+        (Fin.cast rfl (externalInsertionInteractionLeg (E := E) v l)).val
       simp only [Fin.val_cast, externalInsertionInteractionLeg_val]
       have huniv :
           (((Finset.univ : Finset (Fin T.card)).orderIsoOfFin rfl).symm
