@@ -126,13 +126,19 @@ theorem FixedExternalTwoPointWickDiagram.fixedTimeAmplitude_eq_externalSign_mul_
             (fun _ => Iff.rfl)
             (fun pr => mixedTimeOrderedAtomicPairValue ε β i j τ τ' σ
               d.vertexLabelSequence pr.1 pr.2)
-        _ = _ := by
+        _ = ∏ B : d.1.vertexGraph.componentPartition.parts,
+              ∏ pr : d.1.MixedComponentPair τ τ' σ B,
+                mixedTimeOrderedAtomicPairValue ε β i j τ τ' σ
+                  d.vertexLabelSequence
+                  ((Equiv.sigmaFiberEquiv (d.1.mixedPairComponent τ τ' σ) ⟨B, pr⟩).1.1)
+                  ((Equiv.sigmaFiberEquiv (d.1.mixedPairComponent τ τ' σ) ⟨B, pr⟩).1.2) := by
           simpa only [Equiv.symm_symm] using
             (Fintype.prod_equiv_sigma
               (Equiv.sigmaFiberEquiv (d.1.mixedPairComponent τ τ' σ)).symm
               (fun pr : (d.1.pairingInMixedOrder τ τ' σ).NormalizedPair =>
                 mixedTimeOrderedAtomicPairValue ε β i j τ τ' σ
                   d.vertexLabelSequence pr.1.1 pr.1.2))
+        _ = _ := by rfl
     rw [hpairProduct,
       d.1.pairingInMixedOrder_weight_eq_external_mul_prod_vacuum]
     unfold FixedExternalTwoPointWickDiagram.mixedComponentPairingValue
