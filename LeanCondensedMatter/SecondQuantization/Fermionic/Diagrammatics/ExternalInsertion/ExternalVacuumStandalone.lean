@@ -49,7 +49,7 @@ theorem externalInsertionSupport_dysonFactor_eq_standardizedAmplitude
         (Equiv.subtypeUnivEquiv
           (fun i : Fin T.card => Finset.mem_univ i)).symm
     ((-1 : ℂ) ^ T.card * ext.vertexWeight g) * (localSign * localValue) =
-      (ext.slotCongr e : ExternalInsertionWickDiagram Mode E T.card).dysonFixedTimeAmplitude ε β g externalTime (σ ∘ fT) := by
+      ExternalInsertionWickDiagram.dysonFixedTimeAmplitude (ext.slotCongr e) ε β g externalTime (σ ∘ fT) := by
   intro fT localFixed localPairing localSign localKernel localValue e
   have hpair :
       (ext.slotCongr e).pairingInMixedOrder externalTime (σ ∘ fT) =
@@ -68,7 +68,7 @@ theorem externalInsertionSupport_dysonFactor_eq_standardizedAmplitude
           (ext.slotCongr e).vertexLabelSequence (σ ∘ fT) = localKernel := by
     simp only [localKernel, ExternalInsertionDiagram.slotCongr_externalLabel, hvertices]
   have hvalue :
-      (ext.slotCongr e : ExternalInsertionWickDiagram Mode E T.card).mixedPairingValue ε β externalTime (σ ∘ fT) =
+      ExternalInsertionWickDiagram.mixedPairingValue (ext.slotCongr e) ε β externalTime (σ ∘ fT) =
         localValue := by
     change ((ext.slotCongr e).pairingInMixedOrder externalTime (σ ∘ fT)).evaluation
       (((ext.slotCongr e).pairingInMixedOrder externalTime (σ ∘ fT)).weight
