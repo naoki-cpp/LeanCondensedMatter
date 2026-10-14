@@ -158,6 +158,131 @@ noncomputable def finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor
         v m probeEnergy broadening disorderStrength hbar pMax ρ)
     radius
 
+/-- A common in-plane spinor conjugation of the Green and current blocks
+cancels inside either Gaussian crossed trace topology, including the
+Hermitian-conjugate partner in the Psi diagram. -/
+private theorem gaussianCrossedTraceKernel_spinRotation_conjugate
+    (diagram : GaussianCrossedDiagram)
+    (greenRetarded greenAdvanced : ℝ → Matrix2)
+    (current : Fin 2 → ℝ → Matrix2)
+    (radius angle : ℝ) :
+    gaussianCrossedTraceKernel diagram
+        (fun ρ => inPlaneSpinRotation angle * greenRetarded ρ *
+          inPlaneSpinRotationInverse angle)
+        (fun ρ => inPlaneSpinRotation angle * greenAdvanced ρ *
+          inPlaneSpinRotationInverse angle)
+        (fun source ρ => inPlaneSpinRotation angle * current source ρ *
+          inPlaneSpinRotationInverse angle) radius =
+      gaussianCrossedTraceKernel diagram greenRetarded greenAdvanced current radius := by
+  have htrace (A B C D : Matrix2) :
+      Matrix.trace
+        ((inPlaneSpinRotation angle * A * inPlaneSpinRotationInverse angle) *
+          (inPlaneSpinRotation angle * B * inPlaneSpinRotationInverse angle) *
+          (inPlaneSpinRotation angle * C * inPlaneSpinRotationInverse angle) *
+          (inPlaneSpinRotation angle * D * inPlaneSpinRotationInverse angle)) =
+        Matrix.trace (A * B * C * D) := by
+    rw [inPlaneSpinRotation_conjugate_mul angle A B,
+      inPlaneSpinRotation_conjugate_mul angle (A * B) C,
+      inPlaneSpinRotation_conjugate_mul angle (A * B * C) D,
+      inPlaneSpinRotation_conjugate_trace]
+  cases diagram with
+  | x =>
+      simpa only [gaussianCrossedTraceKernel] using
+        htrace (current 0 radius) (greenRetarded (-radius))
+          (current 1 radius) (greenAdvanced (-radius))
+  | psi =>
+      have h := htrace (current 0 radius) (greenRetarded (-radius))
+        (greenRetarded radius) (current 1 (-radius))
+      simpa only [gaussianCrossedTraceKernel] using
+        congrArg (fun z : ℂ => z + (starRingEnd ℂ) z) h
+
+/-- Exact SO(2) rotation of the full Gaussian X/Psi trace, expressed in the
+canonical radial source-pair tensor. Both current insertions are rotated,
+while their common spinor conjugations cancel under the trace. -/
+theorem finiteCutoffContinuumBornDysonGaussianCrossedTraceKernel_polarPoint2D_eq_radial_tensor
+    (diagram : GaussianCrossedDiagram)
+    (v m probeEnergy broadening disorderStrength hbar pMax radius angle : ℝ)
+    (hbroadening : broadening ≠ 0) (hdisorder : 0 ≤ disorderStrength)
+    (hpMax : 0 ≤ pMax) :
+    let tensor := finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor
+      diagram v m probeEnergy broadening disorderStrength hbar pMax radius
+    finiteCutoffContinuumBornDysonGaussianCrossedTraceKernel
+        diagram v m probeEnergy broadening disorderStrength hbar pMax
+        (polarPoint2D radius angle) =
+      (((Real.cos angle : ℝ) : ℂ) ^ 2) * tensor 0 1 -
+        (((Real.sin angle : ℝ) : ℂ) ^ 2) * tensor 1 0 +
+        (((Real.cos angle : ℝ) : ℂ) * ((Real.sin angle : ℝ) : ℂ)) *
+          (tensor 0 0 - tensor 1 1) := by
+  let U := inPlaneSpinRotation angle
+  let Ui := inPlaneSpinRotationInverse angle
+  let greenR : ℝ → Matrix2 := fun ρ =>
+    finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix
+      .retarded v m probeEnergy broadening disorderStrength hbar pMax ρ
+  let greenA : ℝ → Matrix2 := fun ρ =>
+    finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix
+      .advanced v m probeEnergy broadening disorderStrength hbar pMax ρ
+  let current : Fin 2 → ℝ → Matrix2 := fun source ρ =>
+    finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock
+      source v m probeEnergy broadening disorderStrength hbar pMax ρ
+  let rotated : Fin 2 → ℝ → Matrix2 := fun source ρ =>
+    if source = 0 then
+      (((Real.cos angle : ℝ) : ℂ)) • current 0 ρ -
+        (((Real.sin angle : ℝ) : ℂ)) • current 1 ρ
+    else
+      (((Real.sin angle : ℝ) : ℂ)) • current 0 ρ +
+        (((Real.cos angle : ℝ) : ℂ)) • current 1 ρ
+  have hR (ρ : ℝ) :
+      finiteCutoffContinuumBornDysonRealSpaceGreenMatrix
+          .retarded v m probeEnergy broadening disorderStrength hbar pMax
+          (polarPoint2D ρ angle) = U * greenR ρ * Ui :=
+    finiteCutoffContinuumBornDysonRealSpaceGreenMatrix_polarPoint2D_eq_radial_spinRotation
+      .retarded v m probeEnergy broadening disorderStrength hbar pMax ρ angle
+  have hA (ρ : ℝ) :
+      finiteCutoffContinuumBornDysonRealSpaceGreenMatrix
+          .advanced v m probeEnergy broadening disorderStrength hbar pMax
+          (polarPoint2D ρ angle) = U * greenA ρ * Ui :=
+    finiteCutoffContinuumBornDysonRealSpaceGreenMatrix_polarPoint2D_eq_radial_spinRotation
+      .advanced v m probeEnergy broadening disorderStrength hbar pMax ρ angle
+  have hJ (source : Fin 2) (ρ : ℝ) :
+      finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceCurrentBlock
+          source v m probeEnergy broadening disorderStrength hbar pMax
+          (polarPoint2D ρ angle) = U * rotated source ρ * Ui := by
+    simpa only [U, Ui, rotated, current] using
+      (finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceCurrentBlock_polarPoint2D_sourceRotation
+        source v m probeEnergy broadening disorderStrength hbar pMax ρ angle
+        hbroadening hdisorder hpMax)
+  have hposition : -(polarPoint2D radius angle) =
+      polarPoint2D (-radius) angle := neg_polarPoint2D radius angle
+  have hbridge :
+      finiteCutoffContinuumBornDysonGaussianCrossedTraceKernel
+          diagram v m probeEnergy broadening disorderStrength hbar pMax
+          (polarPoint2D radius angle) =
+        gaussianCrossedTraceKernel diagram
+          (fun ρ => U * greenR ρ * Ui)
+          (fun ρ => U * greenA ρ * Ui)
+          (fun source ρ => U * rotated source ρ * Ui) radius := by
+    cases diagram with
+    | x =>
+        simp only [finiteCutoffContinuumBornDysonGaussianCrossedTraceKernel,
+          gaussianCrossedTraceKernel]
+        rw [hposition, hJ 0 radius, hJ 1 radius, hR (-radius), hA (-radius)]
+    | psi =>
+        simp only [finiteCutoffContinuumBornDysonGaussianCrossedTraceKernel,
+          gaussianCrossedTraceKernel]
+        rw [hposition, hJ 0 radius, hJ 1 (-radius), hR (-radius), hR radius]
+  calc
+    finiteCutoffContinuumBornDysonGaussianCrossedTraceKernel
+        diagram v m probeEnergy broadening disorderStrength hbar pMax
+        (polarPoint2D radius angle) =
+      gaussianCrossedTraceKernel diagram greenR greenA rotated radius := by
+        rw [hbridge]
+        exact gaussianCrossedTraceKernel_spinRotation_conjugate
+          diagram greenR greenA rotated radius angle
+    _ = _ := by
+      rw [gaussianCrossedTraceKernel_rotated_sources
+        diagram greenR greenA current radius (Real.cos angle) (Real.sin angle)]
+      rfl
+
 /-- If the full angular crossed trace transforms as the `xy` component of
 its canonical radial source-pair trace tensor under SO(2), the *complete*
 finite-radius real-space integral is the radial integral of the antisymmetric
