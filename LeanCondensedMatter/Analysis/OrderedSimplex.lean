@@ -1,6 +1,7 @@
 import LeanCondensedMatter.Analysis.OrderedSimplex.StrictAntiCongr
 import LeanCondensedMatter.Analysis.OrderedSimplex.BinarySlotShuffle
 import LeanCondensedMatter.Analysis.OrderedSimplex.FamilyShuffle
+import LeanCondensedMatter.Analysis.OrderedSimplex.PartitionOrderIntegral
 import LeanCondensedMatter.Analysis.OrderedSimplex.Integral
 
 set_option linter.style.header false
