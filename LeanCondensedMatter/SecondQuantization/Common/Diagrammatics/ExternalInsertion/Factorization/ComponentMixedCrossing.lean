@@ -20,15 +20,6 @@ open scoped BigOperators
 
 variable {ExternalLabel InternalLabel : Type*}
 
-/-- Total oriented crossing count between distinct connected components in ambient mixed order. -/
-noncomputable def ExternalInsertionDiagram.mixedInterComponentCrossingCount
-    {E n : ℕ}
-    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E n
-      (Finset.univ : Finset (Fin n)))
-    (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ) : ℕ :=
-  (d.pairingInMixedOrder externalTime σ).interComponentCrossingCount
-    (d.componentMixedPairEquiv externalTime σ)
-
 /-- The residual mixed-order inter-component crossing parity is the total inversion parity of the
 canonical mixed component-position shuffle. -/
 theorem ExternalInsertionDiagram.mixedInterComponentCrossingCount_mod_two_eq_orderedBlockInversionCount
@@ -39,7 +30,8 @@ theorem ExternalInsertionDiagram.mixedInterComponentCrossingCount_mod_two_eq_ord
     (blockOrder :
       d.vertexGraph.componentPartition.parts ≃
         Fin (Fintype.card d.vertexGraph.componentPartition.parts)) :
-    d.mixedInterComponentCrossingCount externalTime σ % 2 =
+    (d.pairingInMixedOrder externalTime σ).interComponentCrossingCount
+          (d.componentMixedPairEquiv externalTime σ) % 2 =
       (d.componentMixedPositionShuffle externalTime σ).orderedBlockInversionCount blockOrder % 2 := by
   exact Pairing.interComponentCrossingCount_mod_two_eq_orderedBlockInversionCount
     (d.pairingInMixedOrder externalTime σ)
