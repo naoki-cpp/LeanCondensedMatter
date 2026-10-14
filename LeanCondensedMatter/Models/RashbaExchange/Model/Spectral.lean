@@ -1,3 +1,4 @@
+import Mathlib.RingTheory.Idempotents
 import LeanCondensedMatter.Models.RashbaExchange.Model
 import Mathlib.Tactic
 
@@ -215,45 +216,50 @@ theorem hamiltonian_mul_bandProjector
   rw [InternalSpace.involution_mul_one_add Q hQ s hs]
   module
 
-/-- Away from the degeneracy, each band projector is idempotent. -/
-theorem bandProjector_mul_self
-    (params : Parameters) (band : Band) (px py : ℝ)
+/-- Away from the spin-orbit degeneracy, the matrix band projectors are
+a complete orthogonal family. Completeness alone remains valid at zero energy. -/
+theorem bandProjector_completeOrthogonalIdempotents
+    (params : Parameters) (px py : ℝ)
     (hE : spinOrbitEnergy params px py ≠ 0) :
-    bandProjector params band px py * bandProjector params band px py =
-      bandProjector params band px py := by
-  let Q := normalizedSpinHamiltonian params px py
-  let s : ℂ := ((bandSign band : ℝ) : ℂ)
-  have hQ : Q * Q = 1 := by
-    simpa [Q] using normalizedSpinHamiltonian_mul_self params px py hE
-  have hs : s ^ 2 = 1 := by
-    change (((bandSign band : ℝ) : ℂ) ^ 2) = 1
-    exact_mod_cast (bandSign_sq band)
-  have hP :
-      bandProjector params band px py =
-        (1 / 2 : ℂ) • ((1 : InternalSpace.PauliMatrix) + s • Q) := by
-    simpa [Q, s] using bandProjector_eq_normalized params band px py
-  rw [hP]
-  exact InternalSpace.involution_projector_mul_self Q hQ s hs
-
-/-- Away from the degeneracy, opposite-band projectors are orthogonal. -/
-theorem bandProjector_mul_oppositeBand
-    (params : Parameters) (band : Band) (px py : ℝ)
-    (hE : spinOrbitEnergy params px py ≠ 0) :
-    bandProjector params band px py *
-        bandProjector params (oppositeBand band) px py = 0 := by
-  have hresolve := bandProjector_add_oppositeBand params band px py
-  have hidem := bandProjector_mul_self params band px py hE
-  calc
-    bandProjector params band px py *
-        bandProjector params (oppositeBand band) px py =
+    CompleteOrthogonalIdempotents
+      (fun band : Band => bandProjector params band px py) := by
+  have hIdem : ∀ band : Band,
+      IsIdempotentElem (bandProjector params band px py) := by
+    intro band
+    let Q := normalizedSpinHamiltonian params px py
+    let s : ℂ := ((bandSign band : ℝ) : ℂ)
+    have hQ : Q * Q = 1 := by
+      simpa [Q] using normalizedSpinHamiltonian_mul_self params px py hE
+    have hs : s ^ 2 = 1 := by
+      change (((bandSign band : ℝ) : ℂ) ^ 2) = 1
+      exact_mod_cast (bandSign_sq band)
+    have hP :
+        bandProjector params band px py =
+          (1 / 2 : ℂ) • ((1 : InternalSpace.PauliMatrix) + s • Q) := by
+      simpa [Q, s] using bandProjector_eq_normalized params band px py
+    rw [hP]
+    exact InternalSpace.involution_projector_mul_self Q hQ s hs
+  have hOrth (band : Band) :
       bandProjector params band px py *
-          (bandProjector params band px py +
-            bandProjector params (oppositeBand band) px py) -
-        bandProjector params band px py * bandProjector params band px py := by
-          noncomm_ring
-    _ = bandProjector params band px py * 1 - bandProjector params band px py := by
-      rw [hresolve, hidem]
-    _ = 0 := by simp
+          bandProjector params (oppositeBand band) px py = 0 := by
+    have hresolve := bandProjector_add_oppositeBand params band px py
+    calc
+      bandProjector params band px py *
+          bandProjector params (oppositeBand band) px py =
+        bandProjector params band px py *
+            (bandProjector params band px py +
+              bandProjector params (oppositeBand band) px py) -
+          bandProjector params band px py * bandProjector params band px py := by
+            noncomm_ring
+      _ = bandProjector params band px py * 1 -
+            bandProjector params band px py := by
+        rw [hresolve, (hIdem band).eq]
+      _ = 0 := by simp
+  refine ⟨⟨hIdem, ?_⟩, sum_bandProjector_eq_one params px py⟩
+  intro i j hij
+  cases i <;> cases j <;> try exact (hij rfl).elim
+  · exact hOrth .lower
+  · exact hOrth .upper
 
 end
 

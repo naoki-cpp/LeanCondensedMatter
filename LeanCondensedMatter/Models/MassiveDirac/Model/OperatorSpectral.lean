@@ -57,24 +57,19 @@ noncomputable def currentBandBlockTrace
     (bandProjectorOperator target v m px py * currentOperator μ e v *
       bandProjectorOperator source v m px py * currentOperator ν e v)
 
-/-- The bounded massive-Dirac band projectors form a complete orthogonal family
-away from the band degeneracy. -/
+/-- The bounded-operator projectors inherit the complete orthogonal family
+from the matrix realization under the algebra equivalence. -/
 theorem bandProjectorOperator_completeOrthogonalIdempotents
     (v m px py : ℝ) (hE : energy v m px py ≠ 0) :
     CompleteOrthogonalIdempotents
       (fun band : Band => bandProjectorOperator band v m px py) := by
-  refine ⟨⟨?_, ?_⟩, ?_⟩
-  · intro band
-    simpa [IsIdempotentElem, bandProjectorOperator, matrixOperator] using
-      congrArg matrixOperator (bandProjector_mul_self band v m px py hE)
-  · intro i j hij
-    cases i <;> cases j <;> try exact (hij rfl).elim
-    · simpa [bandProjectorOperator, matrixOperator] using
-        congrArg matrixOperator (bandProjector_mul_oppositeBand .lower v m px py hE)
-    · simpa [bandProjectorOperator, matrixOperator] using
-        congrArg matrixOperator (bandProjector_mul_oppositeBand .upper v m px py hE)
-  · unfold bandProjectorOperator matrixOperator
-    rw [← map_sum, sum_bandProjector_eq_one v m px py, map_one]
+  let φ : Matrix2 ≃⋆ₐ[ℂ] (DiracHilbert →L[ℂ] DiracHilbert) :=
+    Matrix.toEuclideanCLM
+  change CompleteOrthogonalIdempotents
+    ((φ.toRingEquiv.toRingHom) ∘
+      (fun band : Band => bandProjector band v m px py))
+  exact (bandProjector_completeOrthogonalIdempotents v m px py hE).map
+    φ.toRingEquiv.toRingHom
 
 /-- The Hamiltonian acts on each operator projector with its band energy. -/
 theorem hamiltonianOperator_mul_bandProjectorOperator

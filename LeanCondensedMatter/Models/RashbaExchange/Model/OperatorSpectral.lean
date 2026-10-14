@@ -37,25 +37,21 @@ noncomputable def currentBandBlockTrace
       bandProjectorOperator params source px py *
       currentBoundedOperator params ν px py)
 
-/-- The bounded Rashba-exchange band projectors form a complete orthogonal
-family away from the spin-orbit band degeneracy. -/
+/-- The bounded-operator projectors inherit the complete orthogonal family
+from the matrix realization under the algebra equivalence. -/
 theorem bandProjectorOperator_completeOrthogonalIdempotents
     (params : Parameters) (px py : ℝ)
     (hE : spinOrbitEnergy params px py ≠ 0) :
     CompleteOrthogonalIdempotents
       (fun band : Band => bandProjectorOperator params band px py) := by
-  refine ⟨⟨?_, ?_⟩, ?_⟩
-  · intro band
-    simpa [IsIdempotentElem, bandProjectorOperator, matrixOperator] using
-      congrArg matrixOperator (bandProjector_mul_self params band px py hE)
-  · intro i j hij
-    cases i <;> cases j <;> try exact (hij rfl).elim
-    · simpa [bandProjectorOperator, matrixOperator] using
-        congrArg matrixOperator (bandProjector_mul_oppositeBand params .lower px py hE)
-    · simpa [bandProjectorOperator, matrixOperator] using
-        congrArg matrixOperator (bandProjector_mul_oppositeBand params .upper px py hE)
-  · unfold bandProjectorOperator matrixOperator
-    rw [← map_sum, sum_bandProjector_eq_one params px py, map_one]
+  let φ : InternalSpace.PauliMatrix ≃⋆ₐ[ℂ]
+      (EuclideanSpace ℂ (Fin 2) →L[ℂ] EuclideanSpace ℂ (Fin 2)) :=
+    Matrix.toEuclideanCLM
+  change CompleteOrthogonalIdempotents
+    ((φ.toRingEquiv.toRingHom) ∘
+      (fun band : Band => bandProjector params band px py))
+  exact (bandProjector_completeOrthogonalIdempotents params px py hE).map
+    φ.toRingEquiv.toRingHom
 
 /-- The Hamiltonian acts on each projector with its shifted band energy. -/
 theorem hamiltonianOperator_mul_bandProjectorOperator

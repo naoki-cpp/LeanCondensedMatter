@@ -1,3 +1,4 @@
+import Mathlib.RingTheory.Idempotents
 import LeanCondensedMatter.Models.MassiveDirac.Model.Basic
 
 set_option linter.style.header false
@@ -158,38 +159,46 @@ theorem hamiltonian_mul_bandProjector (band : Band) (v m px py : ℝ)
     InternalSpace.involution_mul_one_add Q hQ s hs, smul_smul]
   module
 
-/-- Away from the band degeneracy, each `P_s` is idempotent. -/
-theorem bandProjector_mul_self (band : Band) (v m px py : ℝ)
-    (hE : energy v m px py ≠ 0) :
-    bandProjector band v m px py * bandProjector band v m px py =
-      bandProjector band v m px py := by
-  let Q := normalizedHamiltonian v m px py
-  let s : ℂ := ((bandSign band : ℝ) : ℂ)
-  have hQ : Q * Q = 1 := by
-    simpa [Q] using normalizedHamiltonian_mul_self v m px py hE
-  have hs : s ^ 2 = 1 := by
-    change (((bandSign band : ℝ) : ℂ) ^ 2) = 1
-    exact_mod_cast (bandSign_sq band)
-  have hP :
-      bandProjector band v m px py = (1 / 2 : ℂ) • ((1 : Matrix2) + s • Q) := by
-    simpa [Q, s] using bandProjector_eq_normalizedHamiltonian band v m px py
-  rw [hP]
-  exact InternalSpace.involution_projector_mul_self Q hQ s hs
-
-/-- Away from the band degeneracy, opposite-band projectors are orthogonal in either order. -/
-theorem bandProjector_mul_oppositeBand
-    (band : Band) (v m px py : ℝ) (hE : energy v m px py ≠ 0) :
-    bandProjector band v m px py * bandProjector (oppositeBand band) v m px py = 0 := by
-  have hresolve := bandProjector_add_oppositeBand band v m px py
-  have hidem := bandProjector_mul_self band v m px py hE
-  calc
-    bandProjector band v m px py * bandProjector (oppositeBand band) v m px py =
-        bandProjector band v m px py *
-            (bandProjector band v m px py + bandProjector (oppositeBand band) v m px py) -
-          bandProjector band v m px py * bandProjector band v m px py := by noncomm_ring
-    _ = bandProjector band v m px py * 1 - bandProjector band v m px py := by
-      rw [hresolve, hidem]
-    _ = 0 := by simp
+/-- Away from the Dirac degeneracy, the matrix band projectors are a complete
+orthogonal family. Their completeness also holds at zero energy by
+`sum_bandProjector_eq_one`. -/
+theorem bandProjector_completeOrthogonalIdempotents
+    (v m px py : ℝ) (hE : energy v m px py ≠ 0) :
+    CompleteOrthogonalIdempotents
+      (fun band : Band => bandProjector band v m px py) := by
+  have hIdem : ∀ band : Band, IsIdempotentElem (bandProjector band v m px py) := by
+    intro band
+    let Q := normalizedHamiltonian v m px py
+    let s : ℂ := ((bandSign band : ℝ) : ℂ)
+    have hQ : Q * Q = 1 := by
+      simpa [Q] using normalizedHamiltonian_mul_self v m px py hE
+    have hs : s ^ 2 = 1 := by
+      change (((bandSign band : ℝ) : ℂ) ^ 2) = 1
+      exact_mod_cast (bandSign_sq band)
+    have hP :
+        bandProjector band v m px py = (1 / 2 : ℂ) • ((1 : Matrix2) + s • Q) := by
+      simpa [Q, s] using bandProjector_eq_normalizedHamiltonian band v m px py
+    rw [hP]
+    exact InternalSpace.involution_projector_mul_self Q hQ s hs
+  have hOrth (band : Band) :
+      bandProjector band v m px py *
+          bandProjector (oppositeBand band) v m px py = 0 := by
+    have hresolve := bandProjector_add_oppositeBand band v m px py
+    calc
+      bandProjector band v m px py * bandProjector (oppositeBand band) v m px py =
+          bandProjector band v m px py *
+              (bandProjector band v m px py +
+                bandProjector (oppositeBand band) v m px py) -
+            bandProjector band v m px py * bandProjector band v m px py := by
+          noncomm_ring
+      _ = bandProjector band v m px py * 1 - bandProjector band v m px py := by
+        rw [hresolve, (hIdem band).eq]
+      _ = 0 := by simp
+  refine ⟨⟨hIdem, ?_⟩, sum_bandProjector_eq_one v m px py⟩
+  intro i j hij
+  cases i <;> cases j <;> try exact (hij rfl).elim
+  · exact hOrth .lower
+  · exact hOrth .upper
 
 end
 
