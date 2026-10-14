@@ -80,7 +80,7 @@ supported interaction slots are not consecutive. -/
 theorem externalInsertionLeftMixedSign_eq_standalone
     {E n : ℕ} (T : Finset (Fin n))
     (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ) :
-    (((Equiv.Perm.sign
+    ((Equiv.Perm.sign
         (Equiv.sumCongr (externalInsertionLeftMixedToFixedEquiv T externalTime σ)
           (Equiv.refl
             (Fin (2 * (2 * ((Finset.univ : Finset (Fin n)) \ T).card))))) : ℤ) : ℂ) =
@@ -98,11 +98,11 @@ theorem externalInsertionLeftMixedSign_eq_standalone
     rw [externalInsertionLeftMixedToFixedEquiv_eq_standardMixedPosition_symm]
     simp only [Equiv.Perm.sign_sumCongr, Equiv.Perm.sign_refl,
       mul_one, Equiv.Perm.sign_symm]
-  change (((Equiv.Perm.sign
+  change ((Equiv.Perm.sign
       (Equiv.sumCongr (externalInsertionLeftMixedToFixedEquiv T externalTime σ)
         (Equiv.refl
           (Fin (2 * (2 * ((Finset.univ : Finset (Fin n)) \ T).card))))) : ℤ) : ℂ) =
-    (((Equiv.Perm.sign
+    ((Equiv.Perm.sign
       (externalInsertionStandardToMixedAtomicPositionEquiv externalTime
         (σ ∘ fun i : Fin T.card => (T.orderIsoOfFin rfl i).1)) : ℤ) : ℂ)
   exact congrArg (fun s : ℤˣ => ((s : ℤ) : ℂ)) hsign
