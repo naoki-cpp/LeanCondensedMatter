@@ -11,7 +11,7 @@ set_option linter.style.header false
 
 The component-local vertex orders and global shuffles are handled by the generic
 finite-partition order decomposition. The ordered-simplex family-shuffle identity factors
-time integrals, and the existing bosonic pairing factorization handles thermal contractions.
+the complete integrands, including Dyson signs, vertex weights, and static thermal pairing values.
 -/
 
 namespace SecondQuantization
@@ -47,6 +47,32 @@ private theorem QuarticDiagram.quarticVertexSequenceTimeFactor_assembleVertexOrd
   simp only [Combinatorics.FamilySlotShuffleTo.timeAssignment_apply]
   rw [← d.restrictComponent_vertexLabel_componentOrder orders shuffle B i]
 
+/-- Complete fixed-order integrand, with the time-independent Dyson prefactor and
+thermal pairing value included in the scalar multiplying the time factor. -/
+private noncomputable def QuarticDiagram.dysonThermalIntegrand
+    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
+    {N : ℕ} {S : Finset (Fin N)}
+    (d : Common.QuarticDiagram (QuarticVertexLabel Mode) N S)
+    (order : Common.QuarticVertexOrder S) (τ : Fin S.card → ℝ) : ℂ :=
+  ((-1 : ℂ) ^ S.card * d.vertexWeight g *
+    QuarticDiagram.orderedThermalPairingValue ε β d order) *
+      Common.quarticVertexSequenceTimeFactor ε (fun i => d.vertexLabel (order i)) τ
+
+omit [Finite Mode] in
+private theorem QuarticDiagram.orderedDysonThermalAmplitude_eq_integral
+    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
+    {N : ℕ} {S : Finset (Fin N)}
+    (d : Common.QuarticDiagram (QuarticVertexLabel Mode) N S)
+    (order : Common.QuarticVertexOrder S) (t : ℝ) :
+    QuarticDiagram.orderedDysonThermalAmplitude ε β g d order t =
+      intervalIntegral.orderedSimplexIntegral S.card t
+        (QuarticDiagram.dysonThermalIntegrand ε β g d order) := by
+  unfold QuarticDiagram.orderedDysonThermalAmplitude Common.quarticDysonSequenceCoeff
+    QuarticDiagram.dysonThermalIntegrand
+  rw [intervalIntegral.orderedSimplexIntegral_smul,
+    Common.QuarticDiagram.vertexWeight_eq_prod_vertexLabel_order d g order]
+  ring
+
 omit [Finite Mode] in
 /-- For fixed component-local vertex orders, summing the physical ordered Dyson amplitude over all
 order-preserving component shuffles gives the product of the corresponding component-local ordered
@@ -66,104 +92,31 @@ private theorem QuarticDiagram.sum_shuffle_orderedDysonThermalAmplitude_eq_prod_
   let localIntegrand :
       ∀ B : d.vertexGraph.componentPartitionOn.parts,
         (Fin (B : Finset (Fin N)).card → ℝ) → ℂ :=
-    fun B => Common.quarticVertexSequenceTimeFactor ε
-      (fun i => (d.restrictComponent B.2).vertexLabel (orders B i))
+    fun B => QuarticDiagram.dysonThermalIntegrand ε β g
+      (d.restrictComponent B.2) (orders B)
+  have hglobal (shuffle : d.ComponentShuffle) :
+      QuarticDiagram.dysonThermalIntegrand ε β g d
+          (d.assembleVertexOrder orders shuffle) =
+        shuffle.ambientIntegrand localIntegrand := by
+    funext τ
+    dsimp only [QuarticDiagram.dysonThermalIntegrand, localIntegrand]
+    rw [Common.QuarticDiagram.dysonSign_mul_vertexWeight_eq_prod_components d g,
+      QuarticDiagram.orderedThermalPairingValue_eq_prod_components ε β d orders shuffle,
+      QuarticDiagram.quarticVertexSequenceTimeFactor_assembleVertexOrder ε d orders shuffle τ]
+    simp only [FamilySlotShuffleTo.ambientIntegrand, Finset.prod_mul_distrib]
   have hcard :
-      (∑ B : d.vertexGraph.componentPartitionOn.parts, (B : Finset (Fin N)).card) = S.card := by
+      (∑ B : d.vertexGraph.componentPartitionOn.parts, (B : Finset (Fin N)).card) =
+        S.card := by
     rw [Finset.sum_coe_sort]
     exact d.vertexGraph.componentPartitionOn.sum_card_parts
-  have htime :
-      (∑ shuffle : d.ComponentShuffle,
-        intervalIntegral.orderedSimplexIntegral S.card t
-          (Common.quarticVertexSequenceTimeFactor ε
-            (fun i => d.vertexLabel (d.assembleVertexOrder orders shuffle i)))) =
-        ∏ B : d.vertexGraph.componentPartitionOn.parts,
-          intervalIntegral.orderedSimplexIntegral (B : Finset (Fin N)).card t
-            (localIntegrand B) := by
-    rw [show
-      (fun shuffle : d.ComponentShuffle =>
-        intervalIntegral.orderedSimplexIntegral S.card t
-          (Common.quarticVertexSequenceTimeFactor ε
-            (fun i => d.vertexLabel (d.assembleVertexOrder orders shuffle i)))) =
-        (fun shuffle : d.ComponentShuffle =>
-          intervalIntegral.orderedSimplexIntegral S.card t
-            (shuffle.ambientIntegrand localIntegrand)) by
-      funext shuffle
-      congr 1
-      funext τ
-      exact QuarticDiagram.quarticVertexSequenceTimeFactor_assembleVertexOrder
-        ε d orders shuffle τ]
-    exact Combinatorics.FamilySlotShuffleTo.sum_integral_eq_prod
-      (fun B : d.vertexGraph.componentPartitionOn.parts => (B : Finset (Fin N)).card)
-      S.card hcard t localIntegrand
-      (fun B => intervalIntegral.Continuous.measurableLocallyBounded
+  simp_rw [QuarticDiagram.orderedDysonThermalAmplitude_eq_integral, hglobal]
+  exact FamilySlotShuffleTo.sum_integral_eq_prod
+    (fun B : d.vertexGraph.componentPartitionOn.parts => (B : Finset (Fin N)).card)
+    S.card hcard t localIntegrand
+    (fun B => intervalIntegral.Continuous.measurableLocallyBounded
+      (continuous_const.mul
         (Common.continuous_quarticVertexSequenceTimeFactor ε
-          (fun i => (d.restrictComponent B.2).vertexLabel (orders B i))))
-  simp only [QuarticDiagram.orderedDysonThermalAmplitude, Common.quarticDysonSequenceCoeff]
-  have hpair (shuffle : d.ComponentShuffle) :
-      QuarticDiagram.orderedThermalPairingValue ε β d
-          (d.assembleVertexOrder orders shuffle) =
-        ∏ B : d.vertexGraph.componentPartitionOn.parts,
-          QuarticDiagram.orderedThermalPairingValue ε β
-            (d.restrictComponent B.2) (orders B) :=
-    QuarticDiagram.orderedThermalPairingValue_eq_prod_components ε β d orders shuffle
-  simp_rw [hpair]
-  have hvertex (shuffle : d.ComponentShuffle) :
-      (∏ i, g (d.vertexLabel (d.assembleVertexOrder orders shuffle i))) = d.vertexWeight g := by
-    unfold Common.QuarticDiagram.vertexWeight
-    exact Equiv.prod_comp (d.assembleVertexOrder orders shuffle) (fun v => g (d.vertexLabel v))
-  simp_rw [hvertex]
-  let pairingProduct : ℂ :=
-    ∏ B : d.vertexGraph.componentPartitionOn.parts,
-      QuarticDiagram.orderedThermalPairingValue ε β
-        (d.restrictComponent B.2) (orders B)
-  rw [show
-      (∑ shuffle : d.ComponentShuffle,
-        (-1 : ℂ) ^ S.card * d.vertexWeight g *
-            intervalIntegral.orderedSimplexIntegral S.card t
-              (Common.quarticVertexSequenceTimeFactor ε
-                (fun i => d.vertexLabel (d.assembleVertexOrder orders shuffle i))) *
-          pairingProduct) =
-        ((-1 : ℂ) ^ S.card * d.vertexWeight g) *
-          ((∑ shuffle : d.ComponentShuffle,
-            intervalIntegral.orderedSimplexIntegral S.card t
-              (Common.quarticVertexSequenceTimeFactor ε
-                (fun i => d.vertexLabel (d.assembleVertexOrder orders shuffle i)))) *
-            pairingProduct) by
-      calc
-        _ = ∑ shuffle : d.ComponentShuffle,
-            ((-1 : ℂ) ^ S.card * d.vertexWeight g) *
-              (intervalIntegral.orderedSimplexIntegral S.card t
-                (Common.quarticVertexSequenceTimeFactor ε
-                  (fun i => d.vertexLabel (d.assembleVertexOrder orders shuffle i))) *
-                pairingProduct) := by
-              apply Finset.sum_congr rfl
-              intro shuffle _
-              ring
-        _ = ((-1 : ℂ) ^ S.card * d.vertexWeight g) *
-            ∑ shuffle : d.ComponentShuffle,
-              (intervalIntegral.orderedSimplexIntegral S.card t
-                (Common.quarticVertexSequenceTimeFactor ε
-                  (fun i => d.vertexLabel (d.assembleVertexOrder orders shuffle i))) *
-                pairingProduct) := by
-              rw [Finset.mul_sum]
-        _ = _ := by
-              rw [Finset.sum_mul]]
-  rw [htime]
-  rw [Common.QuarticDiagram.dysonSign_mul_vertexWeight_eq_prod_components d g]
-  dsimp only [pairingProduct, localIntegrand]
-  rw [← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib]
-  apply Finset.prod_congr rfl
-  intro B _
-  change
-    ((-1 : ℂ) ^ (B : Finset (Fin N)).card *
-        (d.restrictComponent B.2).vertexWeight g) *
-        (_ * _) =
-      (((-1 : ℂ) ^ (B : Finset (Fin N)).card *
-        ∏ x, g ((d.restrictComponent B.2).vertexLabel (orders B x))) * _) * _
-  rw [Common.QuarticDiagram.vertexWeight_eq_prod_vertexLabel_order
-    (d.restrictComponent B.2) g (orders B)]
-  ring
+          (fun i => (d.restrictComponent B.2).vertexLabel (orders B i)))))
 
 omit [Finite Mode] in
 /-- The physical bosonic quartic Dyson diagram amplitude factors over the connected components of
