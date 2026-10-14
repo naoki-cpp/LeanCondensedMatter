@@ -82,7 +82,7 @@ private theorem QuarticDiagram.componentGeometricCrossingCount_mod_two_eq_zero
       rw [d.componentOrderedLeg_lt_iff_slot_lt shuffle C B (Ne.symm hBC) q p,
         d.componentOrderedLeg_lt_iff_slot_lt shuffle C B (Ne.symm hBC)
           (fiber.symm ((fiber q).1, 0)) p]
-      simp only [fiber, Equiv.apply_symm_apply, Prod.fst])
+      simp only [fiber, Equiv.apply_symm_apply])
     (by decide)
 
 /-- The assembled global crossing count has the same parity as the sum of component-local crossing
