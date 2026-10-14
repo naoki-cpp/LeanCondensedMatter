@@ -90,7 +90,7 @@ or consumer structure changes.
 - `QuantumTheory.Models.MassiveDirac.continuumAngularGreenIntegralOfRegulator_eq` — model-level angular-reduction identity removing the in-plane Pauli channels and producing the physical `2π` factor.
 - `QuantumTheory.Models.RashbaExchange.hamiltonianOperator_mul_bandProjectorOperator` — canonical band-projector eigenoperator identity for the Rashba-exchange Hamiltonian.
 - `QuantumTheory.Models.RashbaExchange.spinHamiltonian_mul_self` — canonical spectral identity that the traceless Rashba-exchange spin Hamiltonian squares to `E² I`.
-- `QuantumTheory.Models.RashbaExchange.sum_bandProjectorOperator_eq_one` — canonical resolution-of-identity theorem for the Rashba-exchange band projectors.
+- `QuantumTheory.Models.RashbaExchange.bandProjectorOperator_completeOrthogonalIdempotents` — canonical complete orthogonal idempotent family for the nondegenerate Rashba-exchange band projectors.
 - `QuantumTheory.Transport.adiabaticFrequencyDomainSusceptibility_eq_bastinSpectralVertexSum` — physical finite-system endpoint identifying the causal susceptibility with the Kubo–Bastin spectral vertex sum at positive switching rate.
 - `SecondQuantization.Common.sameTwoPointOrderChamber_iff_orderSignature_eq` — canonical equivalence between the geometric mixed-order chamber relation and the finite signature used for measurable chamber decomposition.
 - `QuantumMechanics.SingleParticle.Continuum.realL2MultiplicationOperator1D_symmetric` — deliberate continuum-quantum-mechanics specialization of the measure-space-independent `L2Multiplication.realMultiplicationOperator_symmetric`; the named one-dimensional Lebesgue-space statement is the stable API used by Hamiltonian symmetry and self-adjointness proofs.
@@ -248,8 +248,8 @@ or consumer structure changes.
 - `QuantumTheory.Models.MassiveDirac.pauliGreenOperatorOfRegulator_eq_closedForm` —
   canonical closed numerator/denominator form of the arbitrary-regulator Massive Dirac Green
   operator.
-- `QuantumTheory.Models.MassiveDirac.sum_bandProjectorOperator_eq_one` — canonical
-  completeness relation for the finite family of Massive Dirac band projectors.
+- `QuantumTheory.Models.MassiveDirac.bandProjectorOperator_completeOrthogonalIdempotents` — canonical
+  complete orthogonal idempotent family for nondegenerate Massive Dirac band projectors.
 - `SecondQuantization.Common.QuarticDiagram.blockVertex_subtypeSubtypeEquivSubtype` — one direction of the
   canonical inverse laws between the public block-vertex embedding and `Equiv.subtypeSubtypeEquivSubtype`, paired
   with `subtypeSubtypeEquivSubtype_blockVertex` rather than one-use proof routing.

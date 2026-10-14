@@ -37,32 +37,25 @@ noncomputable def currentBandBlockTrace
       bandProjectorOperator params source px py *
       currentBoundedOperator params ν px py)
 
-/-- The operator band projectors resolve the identity. -/
-theorem sum_bandProjectorOperator_eq_one
-    (params : Parameters) (px py : ℝ) :
-    ∑ band : Band, bandProjectorOperator params band px py = 1 := by
-  unfold bandProjectorOperator matrixOperator
-  rw [← map_sum, sum_bandProjector_eq_one params px py, map_one]
-
-/-- Operator projectors remain idempotent. -/
-theorem bandProjectorOperator_mul_self
-    (params : Parameters) (band : Band) (px py : ℝ)
+/-- The bounded Rashba-exchange band projectors form a complete orthogonal
+family away from the spin-orbit band degeneracy. -/
+theorem bandProjectorOperator_completeOrthogonalIdempotents
+    (params : Parameters) (px py : ℝ)
     (hE : spinOrbitEnergy params px py ≠ 0) :
-    bandProjectorOperator params band px py *
-        bandProjectorOperator params band px py =
-      bandProjectorOperator params band px py := by
-  simpa [bandProjectorOperator, matrixOperator] using
-    congrArg matrixOperator (bandProjector_mul_self params band px py hE)
-
-/-- Opposite-band operator projectors are orthogonal. -/
-theorem bandProjectorOperator_mul_oppositeBand
-    (params : Parameters) (band : Band) (px py : ℝ)
-    (hE : spinOrbitEnergy params px py ≠ 0) :
-    bandProjectorOperator params band px py *
-        bandProjectorOperator params (oppositeBand band) px py = 0 := by
-  simpa [bandProjectorOperator, matrixOperator] using
-    congrArg matrixOperator
-      (bandProjector_mul_oppositeBand params band px py hE)
+    CompleteOrthogonalIdempotents
+      (fun band : Band => bandProjectorOperator params band px py) := by
+  refine ⟨⟨?_, ?_⟩, ?_⟩
+  · intro band
+    simpa [IsIdempotentElem, bandProjectorOperator, matrixOperator] using
+      congrArg matrixOperator (bandProjector_mul_self params band px py hE)
+  · intro i j hij
+    cases i <;> cases j <;> try exact (hij rfl).elim
+    · simpa [bandProjectorOperator, matrixOperator] using
+        congrArg matrixOperator (bandProjector_mul_oppositeBand params .lower px py hE)
+    · simpa [bandProjectorOperator, matrixOperator] using
+        congrArg matrixOperator (bandProjector_mul_oppositeBand params .upper px py hE)
+  · unfold bandProjectorOperator matrixOperator
+    rw [← map_sum, sum_bandProjector_eq_one params px py, map_one]
 
 /-- The Hamiltonian acts on each projector with its shifted band energy. -/
 theorem hamiltonianOperator_mul_bandProjectorOperator
@@ -113,18 +106,10 @@ theorem projectorResolvent_sq
       ∑ band : Band,
         projectorResolventCoefficient z params band px py ^ 2 •
           bandProjectorOperator params band px py := by
-  have hproj : OrthogonalIdempotents
-      (fun band : Band => bandProjectorOperator params band px py) := by
-    refine ⟨?_, ?_⟩
-    · intro band
-      exact bandProjectorOperator_mul_self params band px py hE
-    · intro i j hij
-      cases i <;> cases j <;> try exact (hij rfl).elim
-      · exact bandProjectorOperator_mul_oppositeBand params .lower px py hE
-      · exact bandProjectorOperator_mul_oppositeBand params .upper px py hE
+  have hproj := bandProjectorOperator_completeOrthogonalIdempotents params px py hE
   classical
   simp [projectorResolvent, pow_two, Finset.sum_mul, Finset.mul_sum,
-    smul_smul, hproj.mul_eq]
+    smul_smul, hproj.toOrthogonalIdempotents.mul_eq]
 
 private theorem shiftedHamiltonian_mul_projectorResolvent
     (z : ℂ) (params : Parameters) (px py : ℝ)
@@ -140,7 +125,7 @@ private theorem shiftedHamiltonian_mul_projectorResolvent
         hamiltonianOperator params px py)
       (fun band : Band => bandProjectorOperator params band px py)
       (fun band : Band => z - ((bandEnergy params band px py : ℝ) : ℂ))
-      (sum_bandProjectorOperator_eq_one params px py)
+      (bandProjectorOperator_completeOrthogonalIdempotents params px py hE).complete
       (by
         intro band
         rw [sub_mul, hamiltonianOperator_mul_bandProjectorOperator params band px py hE]
