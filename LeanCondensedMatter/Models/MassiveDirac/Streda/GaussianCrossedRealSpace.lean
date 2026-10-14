@@ -448,10 +448,6 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel_pa
             source v m probeEnergy broadening disorderStrength hbar pMax radius p i j) axis =
       finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliKernel
         axis source v m probeEnergy broadening disorderStrength hbar pMax radius p := by
-  have hcosSq :
-      (((Real.cos angle : ℝ) : ℂ) ^ 2) =
-        1 - (((Real.sin angle : ℝ) : ℂ) ^ 2) := by
-    linear_combination htrig
   have hI2 : Complex.I ^ 2 = (-1 : ℂ) := by
     simpa [pow_two] using Complex.I_mul_I
   have hI3 : Complex.I ^ 3 = -Complex.I := by
@@ -719,6 +715,10 @@ private theorem gaussianCrossedAngularCurrentEntryKernel_sourceRotation
       (((Real.cos angle : ℝ) : ℂ) ^ 2) +
         (((Real.sin angle : ℝ) : ℂ) ^ 2) = 1 := by
     exact_mod_cast Real.cos_sq_add_sin_sq angle
+  have hcosSq :
+      (((Real.cos angle : ℝ) : ℂ) ^ 2) =
+        1 - (((Real.sin angle : ℝ) : ℂ) ^ 2) := by
+    linear_combination htrig
   have hI2 : Complex.I ^ 2 = (-1 : ℂ) := by
     simpa [pow_two] using Complex.I_mul_I
   have hI3 : Complex.I ^ 3 = -Complex.I := by
