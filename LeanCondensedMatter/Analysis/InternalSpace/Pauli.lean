@@ -381,6 +381,34 @@ theorem trace_four_antisymmetric_eq_pauliCoefficients
       (pauliVectorCoefficient A) (pauliVectorCoefficient B)
       (pauliVectorCoefficient C) (pauliVectorCoefficient D))
 
+/-- When the second and fourth Pauli vectors lie in the xz plane, the
+antisymmetric four-matrix trace reduces to scalar coefficients and oriented
+two-by-two minors. No Hermiticity or complex conjugation is assumed. -/
+theorem trace_four_antisymmetric_eq_xz_plane_minors
+    (A B C D : PauliMatrix)
+    (hB : pauliVectorCoefficient B .y = 0)
+    (hD : pauliVectorCoefficient D .y = 0) :
+    let a := pauliScalarCoefficient A
+    let b := pauliScalarCoefficient B
+    let c := pauliScalarCoefficient C
+    let d := pauliScalarCoefficient D
+    let u := pauliVectorCoefficient A
+    let v := pauliVectorCoefficient B
+    let w := pauliVectorCoefficient C
+    let x := pauliVectorCoefficient D
+    Matrix.trace (A * B * C * D) - Matrix.trace (C * B * A * D) =
+      4 * Complex.I *
+        ((a * w .y - c * u .y) * (v .x * x .z - v .z * x .x) +
+          b * (w .y * (u .x * x .z - u .z * x .x) +
+            u .y * (w .z * x .x - w .x * x .z)) +
+          d * (w .y * (u .z * v .x - u .x * v .z) +
+            u .y * (v .z * w .x - v .x * w .z))) := by
+  dsimp only
+  rw [trace_four_antisymmetric_eq_pauliCoefficients]
+  simp [dotProduct_pauliAxis, pauliCross, cross_apply, pauliAxisComponent,
+    hB, hD]
+  ring
+
 /-- Trace of four arbitrary complex two-level matrices expressed only through their canonical
 Pauli scalar/vector coefficients. -/
 theorem trace_four_eq_pauliCoefficients (A B C D : PauliMatrix) :

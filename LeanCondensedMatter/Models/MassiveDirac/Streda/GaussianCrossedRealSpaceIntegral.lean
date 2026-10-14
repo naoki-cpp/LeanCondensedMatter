@@ -268,6 +268,59 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_x_antisym
   rw [Matrix.sub_mul, Matrix.trace_sub]
   exact InternalSpace.trace_four_antisymmetric_eq_pauliCoefficients _ _ _ _
 
+/-- For the massive-Dirac radial Green blocks, both advanced and retarded
+Pauli vectors lie in the xz plane. Thus the antisymmetric X trace reduces
+to scalar coefficients and oriented two-component minors. This is an exact
+finite-cutoff radial identity, not a radial-integral evaluation. -/
+theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_x_antisymmetric_eq_xz_plane_minors
+    (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ) :
+    let Jx := finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock
+      0 v m probeEnergy broadening disorderStrength hbar pMax radius
+    let Jy := finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock
+      1 v m probeEnergy broadening disorderStrength hbar pMax radius
+    let GR := finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix
+      .retarded v m probeEnergy broadening disorderStrength hbar pMax (-radius)
+    let GA := finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix
+      .advanced v m probeEnergy broadening disorderStrength hbar pMax (-radius)
+    let a := InternalSpace.pauliScalarCoefficient Jx
+    let b := InternalSpace.pauliScalarCoefficient GR
+    let c := InternalSpace.pauliScalarCoefficient Jy
+    let d := InternalSpace.pauliScalarCoefficient GA
+    let u := InternalSpace.pauliVectorCoefficient Jx
+    let vr := InternalSpace.pauliVectorCoefficient GR
+    let w := InternalSpace.pauliVectorCoefficient Jy
+    let va := InternalSpace.pauliVectorCoefficient GA
+    finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor
+        .x v m probeEnergy broadening disorderStrength hbar pMax radius 0 1 -
+      finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor
+        .x v m probeEnergy broadening disorderStrength hbar pMax radius 1 0 =
+      4 * Complex.I *
+        ((a * w .y - c * u .y) * (vr .x * va .z - vr .z * va .x) +
+          b * (w .y * (u .x * va .z - u .z * va .x) +
+            u .y * (w .z * va .x - w .x * va .z)) +
+          d * (w .y * (u .z * vr .x - u .x * vr .z) +
+            u .y * (vr .z * w .x - vr .x * w .z))) := by
+  have hret_y :
+      InternalSpace.pauliVectorCoefficient
+          (finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix
+            .retarded v m probeEnergy broadening disorderStrength hbar pMax
+            (-radius)) .y = 0 := by
+    simp [finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix,
+      InternalSpace.pauliVectorCoefficient]
+  have hadv_y :
+      InternalSpace.pauliVectorCoefficient
+          (finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix
+            .advanced v m probeEnergy broadening disorderStrength hbar pMax
+            (-radius)) .y = 0 := by
+    simp [finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix,
+      InternalSpace.pauliVectorCoefficient]
+  rw [finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_antisymmetric_eq
+    .x v m probeEnergy broadening disorderStrength hbar pMax radius]
+  dsimp only
+  rw [Matrix.sub_mul, Matrix.trace_sub]
+  exact InternalSpace.trace_four_antisymmetric_eq_xz_plane_minors
+    _ _ _ _ hret_y hadv_y
+
 /-- A common in-plane spinor conjugation of the Green and current blocks
 cancels inside either Gaussian crossed trace topology, including the
 Hermitian-conjugate partner in the Psi diagram. -/
