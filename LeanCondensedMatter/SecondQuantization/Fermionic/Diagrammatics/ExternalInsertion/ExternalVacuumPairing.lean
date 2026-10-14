@@ -94,7 +94,7 @@ private theorem externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_lef
 
 /-- Map local mixed-time positions on the external-support side to the original
 flattened positions of the external diagram, using the increasing support-slot order. -/
-private noncomputable def externalInsertionLeftMixedToFixedEquiv
+noncomputable def externalInsertionLeftMixedToFixedEquiv
     {E n : ℕ} (T : Finset (Fin n))
     (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ) :
     Fin (2 * (2 * T.card + E)) ≃ Fin (2 * (2 * T.card + E)) :=
