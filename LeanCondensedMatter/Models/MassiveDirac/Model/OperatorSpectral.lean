@@ -1,3 +1,4 @@
+import Mathlib.RingTheory.Idempotents
 import LeanCondensedMatter.Models.MassiveDirac.Model.Operator
 import LeanCondensedMatter.Models.MassiveDirac.Model.Spectral
 import LeanCondensedMatter.Transport.Resolvent.Uniqueness
@@ -87,16 +88,6 @@ theorem hamiltonianOperator_mul_bandProjectorOperator
   unfold hamiltonianOperator bandProjectorOperator matrixOperator
   rw [← map_mul, hamiltonian_mul_bandProjector band v m px py hE, map_smul]
 
-private theorem shiftedHamiltonian_mul_bandProjectorOperator
-    (z : ℂ) (band : Band) (v m px py : ℝ) (hE : energy v m px py ≠ 0) :
-    (algebraMap ℂ (DiracHilbert →L[ℂ] DiracHilbert) z - hamiltonianOperator v m px py) *
-        bandProjectorOperator band v m px py =
-      (z - ((bandEnergy band v m px py : ℝ) : ℂ)) •
-        bandProjectorOperator band v m px py := by
-  rw [sub_mul]
-  rw [hamiltonianOperator_mul_bandProjectorOperator band v m px py hE]
-  simp [Algebra.algebraMap_eq_smul_one, sub_smul]
-
 /-- Scalar coefficient of band `band` in the gauge-free projector resolvent at spectral parameter
 `z`. -/
 noncomputable def projectorResolventCoefficient
@@ -136,19 +127,18 @@ theorem projectorResolvent_sq
       ∑ band : Band,
         projectorResolventCoefficient z band v m px py ^ 2 •
           bandProjectorOperator band v m px py := by
-  have hlu :
-      bandProjectorOperator .lower v m px py * bandProjectorOperator .upper v m px py = 0 := by
-    simpa using bandProjectorOperator_mul_oppositeBand .lower v m px py hE
-  have hul :
-      bandProjectorOperator .upper v m px py * bandProjectorOperator .lower v m px py = 0 := by
-    simpa using bandProjectorOperator_mul_oppositeBand .upper v m px py hE
-  simp only [projectorResolvent, sum_band]
-  rw [pow_two, add_mul, mul_add, mul_add]
-  simp only [smul_mul_assoc, mul_smul_comm, smul_smul]
-  rw [bandProjectorOperator_mul_self .lower v m px py hE]
-  rw [bandProjectorOperator_mul_self .upper v m px py hE]
-  rw [hlu, hul]
-  simp [pow_two]
+  have hproj : OrthogonalIdempotents
+      (fun band : Band => bandProjectorOperator band v m px py) := by
+    refine ⟨?_, ?_⟩
+    · intro band
+      exact bandProjectorOperator_mul_self band v m px py hE
+    · intro i j hij
+      cases i <;> cases j <;> try exact (hij rfl).elim
+      · exact bandProjectorOperator_mul_oppositeBand .lower v m px py hE
+      · exact bandProjectorOperator_mul_oppositeBand .upper v m px py hE
+  classical
+  simp [projectorResolvent, pow_two, Finset.sum_mul, Finset.mul_sum,
+    smul_smul, hproj.mul_eq]
 
 private theorem shiftedHamiltonian_mul_projectorResolvent
     (z : ℂ) (v m px py : ℝ) (hE : energy v m px py ≠ 0)
@@ -156,13 +146,18 @@ private theorem shiftedHamiltonian_mul_projectorResolvent
     (hupper : z - ((bandEnergy .upper v m px py : ℝ) : ℂ) ≠ 0) :
     (algebraMap ℂ (DiracHilbert →L[ℂ] DiracHilbert) z - hamiltonianOperator v m px py) *
         projectorResolvent z v m px py = 1 := by
-  simp only [projectorResolvent, sum_band]
-  rw [mul_add, mul_smul_comm, mul_smul_comm]
-  rw [shiftedHamiltonian_mul_bandProjectorOperator z .lower v m px py hE]
-  rw [shiftedHamiltonian_mul_bandProjectorOperator z .upper v m px py hE]
-  rw [smul_smul, smul_smul]
-  simp only [projectorResolventCoefficient, inv_mul_cancel₀ hlower, inv_mul_cancel₀ hupper, one_smul]
-  simpa only [sum_band] using sum_bandProjectorOperator_eq_one v m px py
+  simpa only [projectorResolvent, projectorResolventCoefficient] using
+    QuantumTheory.mul_sum_inv_smul_eq_one_of_diagonal_action
+      (algebraMap ℂ (DiracHilbert →L[ℂ] DiracHilbert) z -
+        hamiltonianOperator v m px py)
+      (fun band : Band => bandProjectorOperator band v m px py)
+      (fun band : Band => z - ((bandEnergy band v m px py : ℝ) : ℂ))
+      (sum_bandProjectorOperator_eq_one v m px py)
+      (by
+        intro band
+        rw [sub_mul, hamiltonianOperator_mul_bandProjectorOperator band v m px py hE]
+        simp [Algebra.algebraMap_eq_smul_one, sub_smul])
+      (by intro band; cases band <;> assumption)
 
 /-- The regulated massive-Dirac resolvent equals the gauge-free finite-projector expansion for any
 nonzero signed imaginary regulator. -/

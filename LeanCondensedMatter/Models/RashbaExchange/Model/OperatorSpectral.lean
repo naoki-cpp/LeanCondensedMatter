@@ -1,3 +1,4 @@
+import Mathlib.RingTheory.Idempotents
 import LeanCondensedMatter.Models.RashbaExchange.Operator
 import LeanCondensedMatter.Models.RashbaExchange.Model.Spectral
 import LeanCondensedMatter.Transport.Resolvent.Uniqueness
@@ -73,18 +74,6 @@ theorem hamiltonianOperator_mul_bandProjectorOperator
   unfold hamiltonianOperator bandProjectorOperator matrixOperator
   rw [← map_mul, hamiltonian_mul_bandProjector params band px py hE, map_smul]
 
-private theorem shiftedHamiltonian_mul_bandProjectorOperator
-    (z : ℂ) (params : Parameters) (band : Band) (px py : ℝ)
-    (hE : spinOrbitEnergy params px py ≠ 0) :
-    (algebraMap ℂ (EuclideanSpace ℂ (Fin 2) →L[ℂ] EuclideanSpace ℂ (Fin 2)) z -
-        hamiltonianOperator params px py) *
-        bandProjectorOperator params band px py =
-      (z - ((bandEnergy params band px py : ℝ) : ℂ)) •
-        bandProjectorOperator params band px py := by
-  rw [sub_mul]
-  rw [hamiltonianOperator_mul_bandProjectorOperator params band px py hE]
-  simp [Algebra.algebraMap_eq_smul_one, sub_smul]
-
 /-- Scalar coefficient of one band in the projector resolvent. -/
 noncomputable def projectorResolventCoefficient
     (z : ℂ) (params : Parameters) (band : Band) (px py : ℝ) : ℂ :=
@@ -124,23 +113,18 @@ theorem projectorResolvent_sq
       ∑ band : Band,
         projectorResolventCoefficient z params band px py ^ 2 •
           bandProjectorOperator params band px py := by
-  have hlu :
-      bandProjectorOperator params .lower px py *
-          bandProjectorOperator params .upper px py = 0 := by
-    simpa using bandProjectorOperator_mul_oppositeBand
-      params .lower px py hE
-  have hul :
-      bandProjectorOperator params .upper px py *
-          bandProjectorOperator params .lower px py = 0 := by
-    simpa using bandProjectorOperator_mul_oppositeBand
-      params .upper px py hE
-  simp only [projectorResolvent, sum_band]
-  rw [pow_two, add_mul, mul_add, mul_add]
-  simp only [smul_mul_assoc, mul_smul_comm, smul_smul]
-  rw [bandProjectorOperator_mul_self params .lower px py hE]
-  rw [bandProjectorOperator_mul_self params .upper px py hE]
-  rw [hlu, hul]
-  simp [pow_two]
+  have hproj : OrthogonalIdempotents
+      (fun band : Band => bandProjectorOperator params band px py) := by
+    refine ⟨?_, ?_⟩
+    · intro band
+      exact bandProjectorOperator_mul_self params band px py hE
+    · intro i j hij
+      cases i <;> cases j <;> try exact (hij rfl).elim
+      · exact bandProjectorOperator_mul_oppositeBand params .lower px py hE
+      · exact bandProjectorOperator_mul_oppositeBand params .upper px py hE
+  classical
+  simp [projectorResolvent, pow_two, Finset.sum_mul, Finset.mul_sum,
+    smul_smul, hproj.mul_eq]
 
 private theorem shiftedHamiltonian_mul_projectorResolvent
     (z : ℂ) (params : Parameters) (px py : ℝ)
@@ -150,16 +134,18 @@ private theorem shiftedHamiltonian_mul_projectorResolvent
     (algebraMap ℂ (EuclideanSpace ℂ (Fin 2) →L[ℂ] EuclideanSpace ℂ (Fin 2)) z -
         hamiltonianOperator params px py) *
         projectorResolvent z params px py = 1 := by
-  simp only [projectorResolvent, sum_band]
-  rw [mul_add, mul_smul_comm, mul_smul_comm]
-  rw [shiftedHamiltonian_mul_bandProjectorOperator
-    z params .lower px py hE]
-  rw [shiftedHamiltonian_mul_bandProjectorOperator
-    z params .upper px py hE]
-  rw [smul_smul, smul_smul]
-  simp only [projectorResolventCoefficient,
-    inv_mul_cancel₀ hlower, inv_mul_cancel₀ hupper, one_smul]
-  simpa only [sum_band] using sum_bandProjectorOperator_eq_one params px py
+  simpa only [projectorResolvent, projectorResolventCoefficient] using
+    QuantumTheory.mul_sum_inv_smul_eq_one_of_diagonal_action
+      (algebraMap ℂ (EuclideanSpace ℂ (Fin 2) →L[ℂ] EuclideanSpace ℂ (Fin 2)) z -
+        hamiltonianOperator params px py)
+      (fun band : Band => bandProjectorOperator params band px py)
+      (fun band : Band => z - ((bandEnergy params band px py : ℝ) : ℂ))
+      (sum_bandProjectorOperator_eq_one params px py)
+      (by
+        intro band
+        rw [sub_mul, hamiltonianOperator_mul_bandProjectorOperator params band px py hE]
+        simp [Algebra.algebraMap_eq_smul_one, sub_smul])
+      (by intro band; cases band <;> assumption)
 
 /-- At nonzero signed regulator, the canonical resolvent equals the gauge-free projector expansion. -/
 theorem resolvent_spectralParameterOfRegulator_eq_projectorResolvent
