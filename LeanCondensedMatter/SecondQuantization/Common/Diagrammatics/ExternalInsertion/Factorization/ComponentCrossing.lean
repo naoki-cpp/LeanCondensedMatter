@@ -1,6 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Pairing.ComponentPairEquiv
 import LeanCondensedMatter.Combinatorics.PerfectPairing.ComponentCrossing
-import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.PairingWeight
 
 set_option linter.style.header false
 
@@ -59,20 +58,6 @@ theorem ExternalInsertionDiagram.crossingCount_eq_sum_components_add_inter
     (d.componentDiagramLeg B)
     (d.componentDiagramLegOrderEmbedding B).strictMono
     (fun pr => by simpa using d.componentPairEquiv_apply B pr)
-
-/-- The exchange-statistics weight factors into the residual inter-component exchange sign and the
-product of component-local pairing weights. -/
-theorem ExternalInsertionDiagram.weight_eq_inter_mul_prod_components
-    (s : Statistics) {S : Finset (Fin N)}
-    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S) :
-    d.pairing.weight s =
-      (s.zetaInt : ℂ) ^ d.pairing.interComponentCrossingCount d.componentPairEquiv *
-        ∏ B : d.vertexGraph.componentPartition.parts, (d.restrictComponent B).pairing.weight s := by
-  classical
-  simp only [Combinatorics.Pairing.weight]
-  rw [d.crossingCount_eq_sum_components_add_inter, pow_add,
-    ← Finset.prod_pow_eq_pow_sum]
-  exact mul_comm _ _
 
 end Common
 end SecondQuantization
