@@ -851,6 +851,129 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceCurrentBlock_polar
       hbar pMax radius angle (entryHarmonics i j))
 
 
+/-- The exact finite-cutoff Gaussian-crossed real-space current is covariant
+under SO(2), including the oriented rotation of its Cartesian source index.
+Finite broadening and nonnegative disorder/cutoff ensure both radial source
+kernels are interval integrable; no regulator limit is involved. -/
+theorem finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceCurrentBlock_polarPoint2D_sourceRotation
+    (source : Fin 2)
+    (v m probeEnergy broadening disorderStrength hbar pMax radius angle : ℝ)
+    (hbroadening : broadening ≠ 0) (hdisorder : 0 ≤ disorderStrength)
+    (hpMax : 0 ≤ pMax) :
+    finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceCurrentBlock
+        source v m probeEnergy broadening disorderStrength hbar pMax
+        (polarPoint2D radius angle) =
+      inPlaneSpinRotation angle *
+        (if source = 0 then
+          (((Real.cos angle : ℝ) : ℂ)) •
+            finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock
+              0 v m probeEnergy broadening disorderStrength hbar pMax radius -
+          (((Real.sin angle : ℝ) : ℂ)) •
+            finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock
+              1 v m probeEnergy broadening disorderStrength hbar pMax radius
+        else
+          (((Real.sin angle : ℝ) : ℂ)) •
+            finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock
+              0 v m probeEnergy broadening disorderStrength hbar pMax radius +
+          (((Real.cos angle : ℝ) : ℂ)) •
+            finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock
+              1 v m probeEnergy broadening disorderStrength hbar pMax radius) *
+        inPlaneSpinRotationInverse angle := by
+  let radial : Fin 2 → ℝ → Matrix2 := fun src p i j =>
+    finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel
+      src v m probeEnergy broadening disorderStrength hbar pMax radius p i j
+  let angular : ℝ → Matrix2 := fun p i j =>
+    finiteCutoffContinuumBornDysonGaussianCrossedAngularCurrentEntryKernel
+      source v m probeEnergy broadening disorderStrength hbar pMax radius angle p i j
+  let prefactor : ℂ := ((momentumMeasurePrefactor hbar : ℝ) : ℂ)
+  let c : ℂ := ((Real.cos angle : ℝ) : ℂ)
+  let s : ℂ := ((Real.sin angle : ℝ) : ℂ)
+  have hradialInt (src : Fin 2) (i j : Fin 2) :
+      IntervalIntegrable (fun p : ℝ => radial src p i j)
+        MeasureTheory.volume 0 pMax :=
+    intervalIntegrable_finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel
+      src v m probeEnergy broadening disorderStrength hbar pMax radius
+      hbroadening hdisorder hpMax i j
+  have hradial (src : Fin 2) :
+      finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock
+          src v m probeEnergy broadening disorderStrength hbar pMax radius =
+        prefactor • intervalIntegralMatrix2 0 pMax (radial src) := by
+    ext i j
+    change
+      finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock
+          src v m probeEnergy broadening disorderStrength hbar pMax radius i j =
+        prefactor * (∫ p in (0 : ℝ)..pMax, radial src p i j)
+    exact finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock_apply_eq_entryKernel_integral
+      src v m probeEnergy broadening disorderStrength hbar pMax radius i j
+  have hangular :
+      finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceCurrentBlock
+          source v m probeEnergy broadening disorderStrength hbar pMax
+          (polarPoint2D radius angle) =
+        prefactor • intervalIntegralMatrix2 0 pMax angular := by
+    ext i j
+    change
+      finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceCurrentBlock
+          source v m probeEnergy broadening disorderStrength hbar pMax
+          (polarPoint2D radius angle) i j =
+        prefactor * (∫ p in (0 : ℝ)..pMax, angular p i j)
+    exact
+      finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceCurrentBlock_polarPoint2D_eq_angularKernel_integral
+        source v m probeEnergy broadening disorderStrength hbar pMax radius angle i j
+  have hpoint (p : ℝ) :
+      angular p =
+        inPlaneSpinRotation angle *
+          (if source = 0 then c • radial 0 p - s • radial 1 p
+          else s • radial 0 p + c • radial 1 p) *
+          inPlaneSpinRotationInverse angle := by
+    exact gaussianCrossedAngularCurrentEntryKernel_sourceRotation
+      source v m probeEnergy broadening disorderStrength hbar pMax radius angle p
+  have hmix :
+      intervalIntegralMatrix2 0 pMax (fun p =>
+          if source = 0 then c • radial 0 p - s • radial 1 p
+          else s • radial 0 p + c • radial 1 p) =
+        if source = 0 then
+          c • intervalIntegralMatrix2 0 pMax (radial 0) -
+            s • intervalIntegralMatrix2 0 pMax (radial 1)
+        else
+          s • intervalIntegralMatrix2 0 pMax (radial 0) +
+            c • intervalIntegralMatrix2 0 pMax (radial 1) := by
+    have hscaled (src : Fin 2) (t : ℂ) (i j : Fin 2) :
+        IntervalIntegrable (fun p : ℝ => (t • radial src p) i j)
+          MeasureTheory.volume 0 pMax := by
+      change IntervalIntegrable (fun p : ℝ => t * radial src p i j)
+        MeasureTheory.volume 0 pMax
+      exact (hradialInt src i j).const_mul t
+    by_cases hs : source = 0
+    · simp only [if_pos hs]
+      rw [intervalIntegralMatrix2_sub
+        0 pMax (fun p => c • radial 0 p) (fun p => s • radial 1 p)
+        (hscaled 0 c) (hscaled 1 s)]
+      rw [intervalIntegralMatrix2_smul, intervalIntegralMatrix2_smul]
+    · simp only [if_neg hs]
+      rw [intervalIntegralMatrix2_add
+        0 pMax (fun p => s • radial 0 p) (fun p => c • radial 1 p)
+        (hscaled 0 s) (hscaled 1 c)]
+      rw [intervalIntegralMatrix2_smul, intervalIntegralMatrix2_smul]
+  rw [hangular]
+  have hentries :
+      intervalIntegralMatrix2 0 pMax angular =
+        intervalIntegralMatrix2 0 pMax (fun p =>
+          inPlaneSpinRotation angle *
+            (if source = 0 then c • radial 0 p - s • radial 1 p
+            else s • radial 0 p + c • radial 1 p) *
+            inPlaneSpinRotationInverse angle) := by
+    ext i j
+    apply intervalIntegral.integral_congr
+    intro p _
+    exact congrArg (fun M : Matrix2 => M i j) (hpoint p)
+  rw [hentries, intervalIntegralMatrix2_spinRotation_conjugate, hmix]
+  rw [hradial 0, hradial 1]
+  by_cases hs : source = 0
+  · simp only [if_pos hs]
+    module
+  · simp only [if_neg hs]
+    module
+
 private theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel_neg_radius
     (source : Fin 2)
     (v m probeEnergy broadening disorderStrength hbar pMax radius p : ℝ)
