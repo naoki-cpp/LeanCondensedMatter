@@ -1,6 +1,7 @@
 import LeanCondensedMatter.Combinatorics.FamilySlotShuffleSign
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Factorization.MixedComponentShuffle
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Factorization.ComponentMixedCrossing
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Pairing.ComponentMixedPairEquiv
+import LeanCondensedMatter.Combinatorics.PerfectPairing.ComponentCrossing
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.Diagram
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentSign
 
@@ -56,8 +57,20 @@ theorem ExternalInsertionWickDiagram.relativeComponentShuffleSign_eq_external_mu
       d.componentExternalShuffle.orderedBlockInversionCount blockOrder % 2
     exact d.componentLegShuffle_orderedBlockInversionCount_mod_two_eq_external blockOrder
   have hmixed :=
-    d.mixedInterComponentCrossingCount_mod_two_eq_orderedBlockInversionCount
-      externalTime σ blockOrder
+    Pairing.interComponentCrossingCount_mod_two_eq_orderedBlockInversionCount
+      (d.pairingInMixedOrder externalTime σ)
+      (d.componentMixedPairEquiv externalTime σ)
+      (fun B =>
+        ((d.componentOrderedDiagram B).pairingInMixedOrder
+          (d.componentExternalTime externalTime B)
+          (d.componentInteractionTime σ B)).pairEndpointEquiv)
+      (d.componentMixedPositionShuffle externalTime σ)
+      (fun B p k => by
+        fin_cases k <;>
+          simp [ExternalInsertionDiagram.componentMixedPositionShuffle_slotEquiv_apply,
+            Pairing.pairEndpointEquiv_apply, Pairing.pairEndpoint, pairEndpointAt,
+            d.componentMixedPairEquiv_apply externalTime σ])
+      blockOrder
   rw [pow_eq_of_mod_two_eq (show ((-1 : ℂ) * -1) = 1 by norm_num) hfixed]
   rw [pow_eq_of_mod_two_eq (show ((-1 : ℂ) * -1) = 1 by norm_num) hmixed.symm]
   simp only [Common.Statistics.zetaInt_fermion, Int.cast_neg, Int.cast_one]

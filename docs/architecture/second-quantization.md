@@ -235,11 +235,12 @@ Full-slot label and leg-partner coordinates live in `Core.Ordered`; mixed-time p
 lives in `Pairing.MixedOrder`. The Fermionic `Diagram` module supplies the concrete
 `ExternalInsertionWickDiagram` label specialization, while thermal kernels, amplitudes, and exchange
 signs remain Fermionic consumers.
-`Common.Diagrammatics.ExternalInsertion.Factorization.ComponentMixedCrossing` identifies the
-mixed-order residual crossing parity with ordered block inversions for arbitrary labels.
-Fermionic pairing evaluation applies the exact generic crossing decomposition
-`Pairing.crossingCount_eq_sum_localCrossingCount_add_inter` directly, then uses the
-exchange-weight identity owned by `Common.Thermal.BlochDeDominicis.PairingWeight`.
+The generic `Pairing.interComponentCrossingCount_mod_two_eq_orderedBlockInversionCount`
+identifies residual crossing parity with the ordered block-inversion parity for both fixed and
+mixed component shuffles. Fermionic `ComponentSign` and `ComponentOrderSign` supply the
+respective endpoint coordinates directly. Fermionic pairing evaluation applies
+`Pairing.crossingCount_eq_sum_localCrossingCount_add_inter` for the exact crossing decomposition,
+then uses the exchange-weight identity in `Common.Thermal.BlochDeDominicis.PairingWeight`.
 `MixedComponentShuffle` owns the relative fixed/mixed permutation and its integer-unit sign
 decomposition. The Fermionic component modules attach the concrete exchange sign and thermal
 pair values.
