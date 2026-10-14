@@ -1,6 +1,6 @@
 import LeanCondensedMatter.Combinatorics.Common.FintypeProduct
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Components.ComponentDecomposition
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Components.ComponentVertexProduct
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.InteractionSector
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Semantics.Amplitude
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Factorization.MixedComponentPairingValue
@@ -99,7 +99,8 @@ theorem FixedExternalTwoPointWickDiagram.fixedTimeAmplitude_eq_externalSign_mul_
               ⟨v.1, Common.interactionSector_subset
                 (B : Finset (Common.TwoPointVertex
                   (Finset.univ : Finset (Fin n)))) v.2⟩) :=
-        d.1.prod_vertexLabel_eq_prod_componentInteractionParts g
+        Common.prod_eq_prod_interactionSectors d.1.vertexGraph
+          (fun v => g (d.1.vertexLabel v))
       _ = ∏ B : d.1.vertexGraph.componentPartition.parts,
           d.mixedComponentVertexWeight g B := rfl
   have hpairing :

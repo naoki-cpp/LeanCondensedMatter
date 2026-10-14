@@ -73,7 +73,7 @@ theorem FixedExternalTwoPointWickDiagram.dysonFixedTimeAmplitude_eq_externalSign
       (-1 : ℂ) ^ n = ∏ B : d.1.vertexGraph.componentPartition.parts, d.mixedComponentDysonSign B := by
     simpa [FixedExternalTwoPointWickDiagram.mixedComponentDysonSign,
       Finset.card_univ, Fintype.card_coe] using
-      (d.1.prod_vertexLabel_eq_prod_componentInteractionParts (fun _ => (-1 : ℂ)))
+      (Common.prod_eq_prod_interactionSectors d.1.vertexGraph (fun _ => (-1 : ℂ)))
   rw [hsign, d.fixedTimeAmplitude_eq_externalSign_mul_prod_components]
   unfold FixedExternalTwoPointWickDiagram.mixedComponentDysonFixedTimeValue
   rw [Finset.prod_mul_distrib]
