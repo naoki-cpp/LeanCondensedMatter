@@ -84,21 +84,15 @@ private theorem QuarticDiagram.sum_componentOrderedLeg_inversions_mod_two_eq_zer
           shuffle.slotEquiv ⟨B, i⟩ then 1 else 0)
     (by decide)
 
-/-- Both orientations of the crossing count between two distinct components add up to an even
-number. -/
-private theorem QuarticDiagram.componentCrossingCount_add_swap_mod_two_eq_zero
+/-- Distinct components have an even number of geometric crossings because each
+interaction vertex contributes a complete four-leg block. -/
+private theorem QuarticDiagram.componentGeometricCrossingCount_mod_two_eq_zero
     {S : Finset (Fin N)} (d : QuarticDiagram Label N S)
     (orders : d.ComponentVertexOrders) (shuffle : d.ComponentShuffle)
     (B C : d.vertexGraph.componentPartitionOn.parts) (hBC : B ≠ C) :
-    ((d.pairingInOrder (d.assembleVertexOrder orders shuffle)).componentCrossingCount
-        (d.componentPairEquiv orders shuffle) B C +
-      (d.pairingInOrder (d.assembleVertexOrder orders shuffle)).componentCrossingCount
-        (d.componentPairEquiv orders shuffle) C B) % 2 = 0 := by
+    (d.pairingInOrder (d.assembleVertexOrder orders shuffle)).componentGeometricCrossingCount
+        (d.componentPairEquiv orders shuffle) B C % 2 = 0 := by
   classical
-  have hor := Combinatorics.Pairing.componentGeometricCrossingCount_eq_oriented_add
-    (d.pairingInOrder (d.assembleVertexOrder orders shuffle))
-    (d.componentPairEquiv orders shuffle) B C
-  rw [← hor]
   have hcross :=
     Combinatorics.Pairing.componentGeometricCrossingCount_mod_two_eq_endpointInversionCount
       (d.pairingInOrder (d.assembleVertexOrder orders shuffle))
@@ -122,11 +116,11 @@ theorem QuarticDiagram.pairingInOrder_crossingCount_mod_two_eq_sum_components
     (d.pairingInOrder (d.assembleVertexOrder orders shuffle)).crossingCount % 2 =
       (∑ B : d.vertexGraph.componentPartitionOn.parts,
         ((d.restrictComponent B.2).pairingInOrder (orders B)).crossingCount) % 2 := by
-  rw [Combinatorics.Pairing.crossingCount_mod_two_eq_sum_componentCrossingCount
+  rw [Combinatorics.Pairing.crossingCount_mod_two_eq_sum_componentCrossingCount_of_geometric_even
     (d.pairingInOrder (d.assembleVertexOrder orders shuffle))
     (d.componentPairEquiv orders shuffle)
     (fun B C hBC =>
-      d.componentCrossingCount_add_swap_mod_two_eq_zero orders shuffle B C hBC)]
+      d.componentGeometricCrossingCount_mod_two_eq_zero orders shuffle B C hBC)]
   apply congrArg (fun n : ℕ => n % 2)
   apply Finset.sum_congr rfl
   intro B _
