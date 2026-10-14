@@ -450,7 +450,8 @@ theorem trace_parity_antisymmetric_xz_entries
           (A 0 1 - A 1 0) * (C 0 0 + C 1 1)) +
           2 * b * (A 0 1 * C 1 0 - A 1 0 * C 0 1)) := by
   dsimp only
-  simp [Matrix.trace, Matrix.mul_apply, Fin.sum_univ_two, pauliZ]
+  simp [Matrix.trace, Matrix.mul_apply, Matrix.vecMul_apply_eq_sum,
+    Fin.sum_univ_two, pauliZ]
   ring
 
 /-- The xz-plane parity-antisymmetric trace in canonical Pauli coefficients.
@@ -469,6 +470,7 @@ theorem trace_parity_antisymmetric_xz_pauliCoefficients
           pauliVectorCoefficient A .x * pauliVectorCoefficient C .y)) := by
   have hI : Complex.I ^ 2 = (-1 : ℂ) := by
     simpa [pow_two] using Complex.I_mul_I
+  dsimp only
   rw [trace_parity_antisymmetric_xz_entries]
   simp only [pauliScalarCoefficient, pauliVectorCoefficient]
   ring_nf
