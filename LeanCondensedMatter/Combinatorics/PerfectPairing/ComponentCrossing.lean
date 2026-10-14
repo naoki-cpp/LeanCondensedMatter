@@ -290,4 +290,19 @@ theorem Pairing.crossingCount_mod_two_eq_sum_componentCrossingCount [Fintype ι]
         pairing.componentCrossingCount e C B) % 2 = 0 % 2
       simpa using hpair B C hBC)
 
+
+/-- If geometric crossing counts between distinct components are even, the crossing count
+has the same parity as the sum of the component-internal crossing counts. -/
+theorem Pairing.crossingCount_mod_two_eq_sum_componentCrossingCount_of_geometricEven
+    [Fintype ι] (pairing : Pairing n)
+    (e : (Σ B : ι, F B) ≃ pairing.NormalizedPair)
+    (hEven : ∀ B C : ι, B ≠ C →
+      pairing.componentGeometricCrossingCount e B C % 2 = 0) :
+    pairing.crossingCount % 2 =
+      (∑ B : ι, pairing.componentCrossingCount e B B) % 2 := by
+  apply pairing.crossingCount_mod_two_eq_sum_componentCrossingCount e
+  intro B C hBC
+  rw [← pairing.componentGeometricCrossingCount_eq_oriented_add e B C]
+  exact hEven B C hBC
+
 end Combinatorics
