@@ -1289,13 +1289,6 @@ theorem externalInsertionOfSlotSplit_globalSign_mul_mixedPairingEvaluation_eq_lo
     let f : Fin S.card → Fin n := fun i => (S.orderIsoOfFin rfl i).1
     let fT : Fin T.card → Fin n := fun i => (T.orderIsoOfFin rfl i).1
     let localFixed := externalInsertionLeftMixedToFixedEquiv T externalTime σ
-    let split :=
-      ((Equiv.sumCongr (Equiv.refl (Fin (2 * (2 * T.card + E))))
-        (orderedLegToDiagramLeg S order)).trans
-        (externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T))).trans
-        (externalInsertionMixedTimeAmbientPositionEquiv externalTime σ).symm
-    let mixedSplit :=
-      (Equiv.sumCongr localFixed (Equiv.refl (Fin (2 * (2 * S.card))))).trans split
     let localPairing : Pairing (2 * T.card + E) := ext.pairing.transport localFixed
     let d : ExternalInsertionWickDiagram Mode E n :=
       ExternalInsertionDiagram.ofSlotSplit (Finset.subset_univ T) ext vac
@@ -1320,8 +1313,14 @@ theorem externalInsertionOfSlotSplit_globalSign_mul_mixedPairingEvaluation_eq_lo
             (vac.pairingInOrder order).evaluation
               ((vac.pairingInOrder order).weight Common.Statistics.fermion)
               rightKernel) := by
-  intro S order f fT localFixed split mixedSplit localPairing d kernel
-    leftKernel rightKernel htime
+  intro S order f fT localFixed localPairing d kernel leftKernel rightKernel htime
+  let split :=
+    ((Equiv.sumCongr (Equiv.refl (Fin (2 * (2 * T.card + E))))
+      (orderedLegToDiagramLeg S order)).trans
+      (externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T))).trans
+      (externalInsertionMixedTimeAmbientPositionEquiv externalTime σ).symm
+  let mixedSplit :=
+    (Equiv.sumCongr localFixed (Equiv.refl (Fin (2 * (2 * S.card))))).trans split
   let inversions : ℕ :=
     ∑ i : Fin (2 * (2 * T.card + E)),
       ∑ j : Fin (2 * (2 * S.card)),
