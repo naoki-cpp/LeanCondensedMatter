@@ -57,27 +57,24 @@ noncomputable def currentBandBlockTrace
     (bandProjectorOperator target v m px py * currentOperator μ e v *
       bandProjectorOperator source v m px py * currentOperator ν e v)
 
-/-- The finite sum of operator band projectors resolves the identity. -/
-theorem sum_bandProjectorOperator_eq_one (v m px py : ℝ) :
-    ∑ band : Band, bandProjectorOperator band v m px py = 1 := by
-  unfold bandProjectorOperator matrixOperator
-  rw [← map_sum, sum_bandProjector_eq_one v m px py, map_one]
-
-/-- Operator projectors remain idempotent after transport from `2 × 2` matrices. -/
-theorem bandProjectorOperator_mul_self
-    (band : Band) (v m px py : ℝ) (hE : energy v m px py ≠ 0) :
-    bandProjectorOperator band v m px py * bandProjectorOperator band v m px py =
-      bandProjectorOperator band v m px py := by
-  simpa [bandProjectorOperator, matrixOperator] using
-    congrArg matrixOperator (bandProjector_mul_self band v m px py hE)
-
-/-- Opposite-band operator projectors are orthogonal away from the Dirac degeneracy. -/
-theorem bandProjectorOperator_mul_oppositeBand
-    (band : Band) (v m px py : ℝ) (hE : energy v m px py ≠ 0) :
-    bandProjectorOperator band v m px py *
-        bandProjectorOperator (oppositeBand band) v m px py = 0 := by
-  simpa [bandProjectorOperator, matrixOperator] using
-    congrArg matrixOperator (bandProjector_mul_oppositeBand band v m px py hE)
+/-- The bounded massive-Dirac band projectors form a complete orthogonal family
+away from the band degeneracy. -/
+theorem bandProjectorOperator_completeOrthogonalIdempotents
+    (v m px py : ℝ) (hE : energy v m px py ≠ 0) :
+    CompleteOrthogonalIdempotents
+      (fun band : Band => bandProjectorOperator band v m px py) := by
+  refine ⟨⟨?_, ?_⟩, ?_⟩
+  · intro band
+    simpa [IsIdempotentElem, bandProjectorOperator, matrixOperator] using
+      congrArg matrixOperator (bandProjector_mul_self band v m px py hE)
+  · intro i j hij
+    cases i <;> cases j <;> try exact (hij rfl).elim
+    · simpa [bandProjectorOperator, matrixOperator] using
+        congrArg matrixOperator (bandProjector_mul_oppositeBand .lower v m px py hE)
+    · simpa [bandProjectorOperator, matrixOperator] using
+        congrArg matrixOperator (bandProjector_mul_oppositeBand .upper v m px py hE)
+  · unfold bandProjectorOperator matrixOperator
+    rw [← map_sum, sum_bandProjector_eq_one v m px py, map_one]
 
 /-- The Hamiltonian acts on each operator projector with its band energy. -/
 theorem hamiltonianOperator_mul_bandProjectorOperator
@@ -127,18 +124,10 @@ theorem projectorResolvent_sq
       ∑ band : Band,
         projectorResolventCoefficient z band v m px py ^ 2 •
           bandProjectorOperator band v m px py := by
-  have hproj : OrthogonalIdempotents
-      (fun band : Band => bandProjectorOperator band v m px py) := by
-    refine ⟨?_, ?_⟩
-    · intro band
-      exact bandProjectorOperator_mul_self band v m px py hE
-    · intro i j hij
-      cases i <;> cases j <;> try exact (hij rfl).elim
-      · exact bandProjectorOperator_mul_oppositeBand .lower v m px py hE
-      · exact bandProjectorOperator_mul_oppositeBand .upper v m px py hE
+  have hproj := bandProjectorOperator_completeOrthogonalIdempotents v m px py hE
   classical
   simp [projectorResolvent, pow_two, Finset.sum_mul, Finset.mul_sum,
-    smul_smul, hproj.mul_eq]
+    smul_smul, hproj.toOrthogonalIdempotents.mul_eq]
 
 private theorem shiftedHamiltonian_mul_projectorResolvent
     (z : ℂ) (v m px py : ℝ) (hE : energy v m px py ≠ 0)
@@ -152,7 +141,7 @@ private theorem shiftedHamiltonian_mul_projectorResolvent
         hamiltonianOperator v m px py)
       (fun band : Band => bandProjectorOperator band v m px py)
       (fun band : Band => z - ((bandEnergy band v m px py : ℝ) : ℂ))
-      (sum_bandProjectorOperator_eq_one v m px py)
+      (bandProjectorOperator_completeOrthogonalIdempotents v m px py hE).complete
       (by
         intro band
         rw [sub_mul, hamiltonianOperator_mul_bandProjectorOperator band v m px py hE]
