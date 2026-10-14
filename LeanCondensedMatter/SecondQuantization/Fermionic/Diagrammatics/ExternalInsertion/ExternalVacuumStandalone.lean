@@ -93,5 +93,47 @@ theorem externalInsertionSupport_dysonFactor_eq_standardizedAmplitude
   rw [← hsign, hweight, hvalue]
   ring
 
+
+/-- Pointwise Dyson factorization with the external-support sector expressed as
+a standalone diagram on its canonical consecutive slots. The vacuum factor
+retains its increasing complementary slot order and oriented Wick evaluation.
+The vacuum-time chamber hypothesis is the same as in the local split theorem. -/
+theorem externalInsertionOfSlotSplit_dysonFixedTimeAmplitude_eq_standalone_mul_vacuum
+    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
+    {E n : ℕ} (T : Finset (Fin n))
+    (ext : ExternalInsertionDiagram (ExternalFieldLabel Mode)
+      (QuarticVertexLabel Mode) E n T)
+    (vac : QuarticDiagram (QuarticVertexLabel Mode) n
+      ((Finset.univ : Finset (Fin n)) \ T))
+    (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ) :
+    let S := (Finset.univ : Finset (Fin n)) \ T
+    let order : QuarticVertexOrder S := (S.orderIsoOfFin rfl).toEquiv
+    let f : Fin S.card → Fin n := fun i => (S.orderIsoOfFin rfl i).1
+    let fT : Fin T.card → Fin n := fun i => (T.orderIsoOfFin rfl i).1
+    let e : ↥T ≃ ↥(Finset.univ : Finset (Fin T.card)) :=
+      (T.orderIsoOfFin rfl).toEquiv.symm.trans
+        (Equiv.subtypeUnivEquiv
+          (fun i : Fin T.card => Finset.mem_univ i)).symm
+    let vacuumKernel := flatVertexLegPairValue ε β
+      (fun v => vac.vertexLabel (S.orderIsoOfFin rfl v)) (σ ∘ f)
+    let vacuumValue : ℂ :=
+      (vac.pairingInOrder order).evaluation
+        ((vac.pairingInOrder order).weight Statistics.fermion) vacuumKernel
+    let d : ExternalInsertionWickDiagram Mode E n :=
+      ExternalInsertionDiagram.ofSlotSplit (Finset.subset_univ T) ext vac
+    StrictAnti (σ ∘ f) →
+      d.dysonFixedTimeAmplitude ε β g externalTime σ =
+        ExternalInsertionWickDiagram.dysonFixedTimeAmplitude
+          (ext.slotCongr e) ε β g externalTime (σ ∘ fT) *
+        (((-1 : ℂ) ^ S.card * vac.vertexWeight g) * vacuumValue) := by
+  intro S order f fT e vacuumKernel vacuumValue d htime
+  calc
+    _ = _ :=
+      externalInsertionOfSlotSplit_dysonFixedTimeAmplitude_eq_local_mul_vacuum
+        ε β g T ext vac externalTime σ htime
+    _ = _ := by
+      rw [externalInsertionSupport_dysonFactor_eq_standardizedAmplitude
+        ε β g T ext externalTime σ]
+
 end Fermionic
 end SecondQuantization
