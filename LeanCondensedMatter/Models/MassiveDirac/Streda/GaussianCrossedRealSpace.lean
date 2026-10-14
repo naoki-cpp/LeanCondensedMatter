@@ -684,6 +684,7 @@ noncomputable def finiteCutoffContinuumBornDysonGaussianCrossedAngularCurrentEnt
 the spinor conjugate of the corresponding rotated Cartesian source at
 the radial axis. This exact identity is pointwise in radial momentum,
 before the remaining finite-cutoff radial integration. -/
+set_option maxHeartbeats 1000000 in
 private theorem gaussianCrossedAngularCurrentEntryKernel_sourceRotation
     (source : Fin 2)
     (v m probeEnergy broadening disorderStrength hbar pMax radius angle p : ℝ) :
@@ -729,8 +730,7 @@ private theorem gaussianCrossedAngularCurrentEntryKernel_sourceRotation
       gaussianCrossedCurrentCoefficientVector, polarPauliInPlaneHarmonics,
       inPlaneSpinRotation, inPlaneSpinRotationInverse,
       sigmaX, sigmaY, sigmaZ, InternalSpace.pauliX, InternalSpace.pauliY,
-      InternalSpace.pauliZ, Matrix.mul_apply, Matrix.vecMul_apply_eq_sum,
-      Fin.sum_univ_two, Matrix.smul_apply, Matrix.sub_apply, Matrix.add_apply,
+      InternalSpace.pauliZ, Matrix.mul_apply, Fin.sum_univ_two, Matrix.smul_apply, Matrix.sub_apply, Matrix.add_apply,
       smul_eq_mul]
   all_goals
     simp only [← htrig]
