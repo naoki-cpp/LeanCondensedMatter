@@ -118,12 +118,12 @@ theorem QuarticDiagram.pairingInOrder_weight_eq_prod_components
     (d.pairingInOrder (d.assembleVertexOrder orders shuffle)).weight s =
       ∏ B : d.vertexGraph.componentPartitionOn.parts,
         ((d.restrictComponent B.2).pairingInOrder (orders B)).weight s := by
-  exact BlochDeDominicis.Pairing.weight_eq_prod_of_crossingCount_mod_two_eq
-    s
-    (d.pairingInOrder (d.assembleVertexOrder orders shuffle))
-    (fun B : d.vertexGraph.componentPartitionOn.parts =>
-      (d.restrictComponent B.2).pairingInOrder (orders B))
-    (d.pairingInOrder_crossingCount_mod_two_eq_sum_components orders shuffle)
+  simpa only [Pairing.weight] using
+    BlochDeDominicis.zetaInt_pow_eq_prod_of_sum_mod_two_eq s
+      (d.pairingInOrder (d.assembleVertexOrder orders shuffle)).crossingCount
+      (fun B : d.vertexGraph.componentPartitionOn.parts =>
+        ((d.restrictComponent B.2).pairingInOrder (orders B)).crossingCount)
+      (d.pairingInOrder_crossingCount_mod_two_eq_sum_components orders shuffle)
 
 end Common
 end SecondQuantization
