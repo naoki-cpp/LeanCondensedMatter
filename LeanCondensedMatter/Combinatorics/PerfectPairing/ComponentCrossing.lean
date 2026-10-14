@@ -70,7 +70,7 @@ position fiber. The compatibility hypothesis only requires that transporting suc
 ambient pairing agrees with selecting the corresponding endpoint of the decomposed normalized
 pair. -/
 theorem Pairing.componentGeometricCrossingCount_mod_two_eq_endpointInversionCount
-    {P : ι → Type*} [∀ B, Fintype (P B)] (pairing : Pairing n)
+    {P : ι → Type*} [∀ B, Finite (P B)] (pairing : Pairing n)
     (e : (Σ B : ι, F B) ≃ pairing.NormalizedPair)
     (endpointEquiv : ∀ B, F B × Fin 2 ≃ P B)
     (position : ∀ B, P B → Fin (2 * n))
@@ -169,7 +169,7 @@ theorem Pairing.componentGeometricCrossingCount_mod_two_eq_zero_of_even_fiber
     (hposition : ∀ B p k,
       position B (endpointEquiv B (p, k)) = pairEndpointAt (e ⟨B, p⟩).1 k)
     (B C : ι) (hBC : B ≠ C)
-    {β γ : Type*} [Fintype β] [Fintype γ]
+    {β γ : Type*} [Finite β] [Fintype γ]
     (fiber : P C ≃ β × γ) (reference : β → P C)
     (huniform : ∀ (p : P B) (q : P C),
       (position C q < position B p) =
@@ -177,6 +177,8 @@ theorem Pairing.componentGeometricCrossingCount_mod_two_eq_zero_of_even_fiber
     (hcard : 2 ∣ Fintype.card γ) :
     pairing.componentGeometricCrossingCount e B C % 2 = 0 := by
   classical
+  letI : (D : ι) → Fintype (P D) := fun D => Fintype.ofFinite (P D)
+  letI : Fintype β := Fintype.ofFinite β
   rw [pairing.componentGeometricCrossingCount_mod_two_eq_endpointInversionCount
     e endpointEquiv position hposition B C hBC]
   apply Nat.mod_eq_zero_of_dvd
