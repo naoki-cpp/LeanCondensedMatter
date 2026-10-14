@@ -173,6 +173,11 @@ Finite-partition sums of ordered-simplex integrals are owned by
 measurable boundedness and equality of assembled integrands with shuffled local products.
 Fermionic and Bosonic quartic amplitude proofs supply their own integrands and consume that theorem;
 local-order-fixed external-insertion shuffle sums use `FamilyShuffle` directly.
+Bosonic `Quartic.Thermal.Amplitude` owns scalar thermal pairing values and amplitudes;
+`Thermal.DysonExpansion.DysonAmplitude` owns their fixed-order and total time-integrated
+Dyson amplitudes. Factorization consumes these primitive definitions directly.
+`DysonExpansion.Pairing` owns the concrete Gibbs expectation and Dyson-to-pairing expansion
+bridges. The Moment consumer imports that bridge explicitly for its physical Gibbs coefficient.
 Fermionic modules should call those results directly instead of exposing parameter-substitution or
 proof-routing wrappers.
 

@@ -12,8 +12,8 @@ representation.  A finite list of quartic vertices is flattened to `4 n = 2 (2 n
 fields using the Common quartic-leg equivalence, and their ordered algebraic product is exposed for
 downstream thermal expectations.
 
-The concrete Gibbs/Wick theorem is owned by the bosonic thermal layer and is consumed directly at
-the diagram-amplitude boundary rather than being wrapped here.
+The concrete Gibbs/Wick theorem is owned by the bosonic thermal layer and is consumed directly by
+the physical Dyson-to-pairing expansion.
 -/
 
 namespace SecondQuantization

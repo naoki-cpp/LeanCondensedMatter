@@ -1,6 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.ThermalField
-import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.ConcreteExpectationRecursion
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Ordered
+import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.PairingWeight
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Evaluation
 
 set_option linter.style.header false
@@ -69,22 +69,6 @@ noncomputable def QuarticDiagram.orderedThermalWickSum
         (QuarticDiagram.orderedFreeThermalFieldFamily d order a)
         (QuarticDiagram.orderedFreeThermalFieldFamily d order b))
 
-variable [Fintype Mode]
-
-/-- The concrete Gibbs expectation of the ordered quartic local-leg product is exactly the sum over
-the pairing amplitudes carried by the existing quartic diagram combinatorics. -/
-theorem QuarticDiagram.freeGibbsExpectation_eq_orderedThermalWickSum
-    (ε : Mode → ℝ) (β : ℝ) (hpos : ∀ i, 0 < β * ε i)
-    {S : Finset (Fin N)}
-    (d : Common.QuarticDiagram (Common.QuarticVertexLabel Mode) N S)
-    (order : Common.QuarticVertexOrder S) :
-    freeGibbsExpectation ε β
-        (quarticFreeThermalOrderedProduct (fun i => d.vertexLabel (order i))) =
-      QuarticDiagram.orderedThermalWickSum ε β d order := by
-  have hwick := freeGibbsExpectation_eq_sum_pairing_concrete ε β hpos
-    (2 * S.card) (quarticFreeThermalFieldFamily fun i => d.vertexLabel (order i))
-  simpa [quarticFreeThermalOrderedProduct, QuarticDiagram.orderedFreeThermalFieldFamily,
-    QuarticDiagram.orderedThermalWickSum, Combinatorics.Pairing.evaluation] using hwick
 
 end
 end Bosonic
