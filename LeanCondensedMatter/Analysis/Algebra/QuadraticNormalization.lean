@@ -1,4 +1,5 @@
 import Mathlib.Tactic.FieldSimp
+import Mathlib.Data.Complex.Basic
 import Mathlib.Algebra.Algebra.Basic
 
 set_option linter.style.header false
