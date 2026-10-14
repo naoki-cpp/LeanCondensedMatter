@@ -225,6 +225,49 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_antisymme
   | psi =>
       exact gaussianCrossedTraceKernel_psi_sub_swapped greenR greenA current radius
 
+/-- The antisymmetric finite-regulator X radial trace contains only oriented
+Pauli triple products, with the symmetric Pauli-coefficient terms cancelled.
+This is a pointwise identity in the radial coordinate, not yet an evaluation
+of the remaining real-space integral or regulator limits. -/
+theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_x_antisymmetric_eq_pauli_triples
+    (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ) :
+    let Jx := finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock
+      0 v m probeEnergy broadening disorderStrength hbar pMax radius
+    let Jy := finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock
+      1 v m probeEnergy broadening disorderStrength hbar pMax radius
+    let GR := finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix
+      .retarded v m probeEnergy broadening disorderStrength hbar pMax (-radius)
+    let GA := finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix
+      .advanced v m probeEnergy broadening disorderStrength hbar pMax (-radius)
+    finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor
+        .x v m probeEnergy broadening disorderStrength hbar pMax radius 0 1 -
+      finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor
+        .x v m probeEnergy broadening disorderStrength hbar pMax radius 1 0 =
+      4 * Complex.I *
+        (InternalSpace.pauliScalarCoefficient Jx *
+            dotProduct (InternalSpace.pauliVectorCoefficient GR)
+              (InternalSpace.pauliCross (InternalSpace.pauliVectorCoefficient Jy)
+                (InternalSpace.pauliVectorCoefficient GA)) +
+          InternalSpace.pauliScalarCoefficient GR *
+            dotProduct (InternalSpace.pauliVectorCoefficient Jx)
+              (InternalSpace.pauliCross (InternalSpace.pauliVectorCoefficient Jy)
+                (InternalSpace.pauliVectorCoefficient GA)) +
+          InternalSpace.pauliScalarCoefficient Jy *
+            dotProduct
+              (InternalSpace.pauliCross (InternalSpace.pauliVectorCoefficient Jx)
+                (InternalSpace.pauliVectorCoefficient GR))
+              (InternalSpace.pauliVectorCoefficient GA) +
+          InternalSpace.pauliScalarCoefficient GA *
+            dotProduct
+              (InternalSpace.pauliCross (InternalSpace.pauliVectorCoefficient Jx)
+                (InternalSpace.pauliVectorCoefficient GR))
+              (InternalSpace.pauliVectorCoefficient Jy)) := by
+  rw [finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_antisymmetric_eq
+    .x v m probeEnergy broadening disorderStrength hbar pMax radius]
+  dsimp only
+  rw [Matrix.sub_mul, Matrix.trace_sub]
+  exact InternalSpace.trace_four_antisymmetric_eq_pauliCoefficients _ _ _ _
+
 /-- A common in-plane spinor conjugation of the Green and current blocks
 cancels inside either Gaussian crossed trace topology, including the
 Hermitian-conjugate partner in the Psi diagram. -/
