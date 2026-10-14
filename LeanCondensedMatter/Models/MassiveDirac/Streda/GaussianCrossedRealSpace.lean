@@ -727,8 +727,11 @@ private theorem gaussianCrossedAngularCurrentEntryKernel_sourceRotation
       _ = (-1 : ℂ) * Complex.I := by rw [hI2]
       _ = -Complex.I := by ring
   ext i j
-  rw [inPlaneSpinRotation_conjugate_apply]
-  fin_cases source <;> fin_cases i <;> fin_cases j <;>
+  fin_cases source <;> fin_cases i <;> fin_cases j
+  all_goals first
+    | rw [inPlaneSpinRotation_conjugate_diagonal]
+    | rw [inPlaneSpinRotation_conjugate_apply]
+  all_goals
     simp [finiteCutoffContinuumBornDysonGaussianCrossedAngularCurrentEntryKernel,
       finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel,
       gaussianCrossedCurrentCoefficientVector, polarPauliInPlaneHarmonics,
