@@ -4,13 +4,16 @@ import LeanCondensedMatter.Combinatorics.PerfectPairing.ComponentCrossing
 set_option linter.style.header false
 
 /-!
-# Crossing decomposition for external-insertion components
+# Residual crossing parity of external-insertion components
 
 For a generic external-insertion diagram, component-internal crossings need not account for the
 entire global crossing parity. Distinct connected components can interleave in the canonical ambient
 leg order, so their crossings contribute an explicit residual inter-component term.
 
-This module isolates that residual exactly. It does not assume the quartic-only parity cancellation.
+This module identifies the residual parity with the component-leg block inversions.
+Exact crossing-count decomposition follows directly from
+`Combinatorics.Pairing.crossingCount_eq_sum_localCrossingCount_add_inter`; no
+quartic-only parity cancellation is assumed.
 -/
 
 namespace SecondQuantization
@@ -39,25 +42,6 @@ theorem ExternalInsertionDiagram.interComponentCrossingCount_mod_two_eq_orderedB
           Pairing.pairEndpointEquiv_apply, Pairing.pairEndpoint, pairEndpointAt,
           d.componentPairEquiv_apply])
     blockOrder
-
-/-- The ambient crossing count is the sum of all component-local crossing counts plus the residual
-crossing count between distinct connected components. -/
-theorem ExternalInsertionDiagram.crossingCount_eq_sum_components_add_inter
-    {S : Finset (Fin N)}
-    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S) :
-    d.pairing.crossingCount =
-      (∑ B : d.vertexGraph.componentPartition.parts, (d.restrictComponent B).pairing.crossingCount) +
-        d.pairing.interComponentCrossingCount d.componentPairEquiv := by
-  rw [d.pairing.crossingCount_eq_sum_componentCrossingCount_diag_add_inter d.componentPairEquiv]
-  apply congrArg (fun n : ℕ => n + d.pairing.interComponentCrossingCount d.componentPairEquiv)
-  apply Finset.sum_congr rfl
-  intro B _
-  exact Combinatorics.Pairing.componentCrossingCount_self_eq
-    d.pairing (d.restrictComponent B).pairing d.componentPairEquiv B
-    (Equiv.refl (d.restrictComponent B).pairing.NormalizedPair)
-    (d.componentDiagramLeg B)
-    (d.componentDiagramLegOrderEmbedding B).strictMono
-    (fun pr => by simpa using d.componentPairEquiv_apply B pr)
 
 end Common
 end SecondQuantization
