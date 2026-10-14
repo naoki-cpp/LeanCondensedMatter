@@ -376,11 +376,26 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_x_antisym
           (finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock
             1 v m probeEnergy broadening disorderStrength hbar pMax radius) .x) := by ring
       _ = _ := by rw [hxy]
-  rw [finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_x_antisymmetric_eq_xz_plane_minors
-    v m probeEnergy broadening disorderStrength hbar pMax radius]
+  have hret_y :
+      InternalSpace.pauliVectorCoefficient
+          (finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix
+            .retarded v m probeEnergy broadening disorderStrength hbar pMax
+            (-radius)) .y = 0 := by
+    simp [finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix,
+      InternalSpace.pauliVectorCoefficient]
+  have hadv_y :
+      InternalSpace.pauliVectorCoefficient
+          (finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix
+            .advanced v m probeEnergy broadening disorderStrength hbar pMax
+            (-radius)) .y = 0 := by
+    simp [finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix,
+      InternalSpace.pauliVectorCoefficient]
+  rw [finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_antisymmetric_eq
+    .x v m probeEnergy broadening disorderStrength hbar pMax radius]
   dsimp only
-  rw [htrans]
-  ring
+  rw [Matrix.sub_mul, Matrix.trace_sub]
+  exact InternalSpace.trace_four_antisymmetric_eq_xz_plane_transverse_minors
+    _ _ _ _ hret_y hadv_y htrans
 
 /-- A common in-plane spinor conjugation of the Green and current blocks
 cancels inside either Gaussian crossed trace topology, including the
