@@ -74,7 +74,7 @@ theorem ExternalInsertionWickDiagram.mixedPairingValue_eq_inter_mul_prod_compone
         (fun B => d.componentMixedPosition externalTime σ B)
         (fun B => d.componentMixedPosition_strictMono externalTime σ B)
         (fun B pr => by
-          simpa using d.componentMixedPairEquiv_apply externalTime σ B pr)))
+          exact d.componentMixedPairEquiv_apply externalTime σ B pr)))
     (fun B pr => by
       rw [d.componentMixedPairEquiv_apply externalTime σ B pr]
       exact d.externalInsertionMixedTimeOrderedAtomicPairValue_componentMixedPosition
