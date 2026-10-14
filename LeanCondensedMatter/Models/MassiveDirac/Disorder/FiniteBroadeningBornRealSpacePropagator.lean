@@ -40,6 +40,44 @@ noncomputable def finiteCutoffContinuumBornDysonRealSpaceGreenMatrix
           probeEnergy broadening disorderStrength hbar pMax i j)
       r
 
+/-- The finite-broadening Born-Dyson Green *momentum* matrix is spinor covariant.
+This is pointwise in radial momentum and precedes any Fourier integration.
+The radial-axis reference is the same regulated Green matrix at momentum `(p, 0)`. -/
+theorem finiteCutoffContinuumBornDysonGreenMatrix_polar_spinRotation
+    (side : SpectralSide)
+    (v m probeEnergy broadening disorderStrength hbar pMax p angle : ℝ) :
+    finiteCutoffContinuumBornDysonGreenMatrix
+        side v m (p * Real.cos angle) (p * Real.sin angle)
+        probeEnergy broadening disorderStrength hbar pMax =
+      inPlaneSpinRotation angle *
+        finiteCutoffContinuumBornDysonGreenMatrix
+          side v m p 0 probeEnergy broadening disorderStrength hbar pMax *
+        inPlaneSpinRotationInverse angle := by
+  let a := finiteCutoffContinuumBornDysonScalarCoefficient
+    side v m p 0 probeEnergy broadening disorderStrength hbar pMax
+  let b := finiteCutoffContinuumBornDysonPauliCoefficient .x
+    side v m p 0 probeEnergy broadening disorderStrength hbar pMax
+  let d := finiteCutoffContinuumBornDysonPauliCoefficient .z
+    side v m p 0 probeEnergy broadening disorderStrength hbar pMax
+  have hpolar (θ : ℝ) :
+      finiteCutoffContinuumBornDysonGreenMatrix
+          side v m (p * Real.cos θ) (p * Real.sin θ)
+          probeEnergy broadening disorderStrength hbar pMax =
+        polarPauliMatrix a b d θ := by
+    apply (Matrix.toEuclideanCLM :
+      Matrix2 ≃⋆ₐ[ℂ] (DiracHilbert →L[ℂ] DiracHilbert)).injective
+    simpa [finiteCutoffContinuumBornDysonGreenOperator, polarPauliOperator,
+      matrixOperator, a, b, d] using
+      (finiteCutoffContinuumBornDysonGreenOperator_polar_eq
+        side v m p θ probeEnergy broadening disorderStrength hbar pMax)
+  have haxis :
+      finiteCutoffContinuumBornDysonGreenMatrix
+          side v m p 0 probeEnergy broadening disorderStrength hbar pMax =
+        polarPauliMatrix a b d 0 := by
+    simpa using hpolar 0
+  rw [hpolar angle, haxis]
+  exact polarPauliMatrix_eq_spinRotation a b d angle
+
 /-- Finite-cutoff angular Green entry kernel at an arbitrary polar real-space point.
 The constant Pauli channels carry `K0`; the in-plane Pauli vector rotates as
 `(cos angle, sin angle)` in the first Fourier harmonic `K1`. The physical
