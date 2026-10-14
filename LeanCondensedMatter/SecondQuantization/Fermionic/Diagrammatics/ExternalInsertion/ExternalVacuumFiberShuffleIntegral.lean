@@ -50,9 +50,9 @@ theorem externalInsertionVacuumDysonFactor_eq_shuffleOrderedData
     (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
     {m k : ℕ} (shuffle : SlotShuffle m k)
     (vac : QuarticDiagram (QuarticVertexLabel Mode) (m + k)
-      ((Finset.univ : Finset (Fin (m + k))) \\ shuffle.leftSlots))
+      ((Finset.univ : Finset (Fin (m + k))) \ shuffle.leftSlots))
     (σ : Fin (m + k) → ℝ) :
-    let S := (Finset.univ : Finset (Fin (m + k))) \\ shuffle.leftSlots
+    let S := (Finset.univ : Finset (Fin (m + k))) \ shuffle.leftSlots
     let order : QuarticVertexOrder S := (S.orderIsoOfFin rfl).toEquiv
     let f : Fin S.card → Fin (m + k) := fun i => (S.orderIsoOfFin rfl i).1
     let x : OrderedQuarticDiagramData (QuarticVertexLabel Mode) k :=
@@ -67,11 +67,11 @@ theorem externalInsertionVacuumDysonFactor_eq_shuffleOrderedData
           (fun i => σ (shuffle.slotEquiv (Sum.inr i))) x.2 := by
   dsimp only
   have h := quarticVacuumDysonFactor_orderIsoOfFin ε β g
-    ((Finset.univ : Finset (Fin (m + k))) \\ shuffle.leftSlots)
+    ((Finset.univ : Finset (Fin (m + k))) \ shuffle.leftSlots)
     shuffle.card_sdiff_leftSlots vac σ
   have htime :
       (fun i : Fin k =>
-          σ (((((Finset.univ : Finset (Fin (m + k))) \\ shuffle.leftSlots).orderIsoOfFin
+          σ (((((Finset.univ : Finset (Fin (m + k))) \ shuffle.leftSlots).orderIsoOfFin
             shuffle.card_sdiff_leftSlots) i).1)) =
         (fun i : Fin k => σ (shuffle.slotEquiv (Sum.inr i))) := by
     funext i
