@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Analysis.Algebra.QuadraticNormalization
 import Mathlib.RingTheory.Idempotents
 import LeanCondensedMatter.Models.RashbaExchange.Model
 import Mathlib.Tactic
@@ -118,10 +119,8 @@ private theorem normalizedSpinHamiltonian_mul_self
         (((spinOrbitEnergy params px py : ℝ) : ℂ) ^ 2) := by
     exact_mod_cast (spinOrbitEnergy_sq params px py).symm
   unfold normalizedSpinHamiltonian
-  rw [smul_mul_assoc, mul_smul_comm, smul_smul]
-  rw [spinHamiltonian_mul_self, hEnergySq, smul_smul]
-  field_simp [hEc]
-  simp
+  apply Algebra.inv_smul_mul_self_eq_one _ _ hEc
+  rw [spinHamiltonian_mul_self, hEnergySq]
 
 private theorem spinHamiltonian_eq_energy_smul_normalized
     (params : Parameters) (px py : ℝ)
