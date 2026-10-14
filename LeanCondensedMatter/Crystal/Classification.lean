@@ -355,7 +355,7 @@ theorem ofGLGramPreserving_basis_coordinates [FiniteDimensional ℝ V]
 integral lattice basis. This statement needs neither periodicity nor a choice
 of coordinate representation for the isometry. -/
 theorem gram_restrict
-    {ι : Type*} [Fintype ι]
+    {ι : Type*}
     (L : Submodule ℤ V) (b : Module.Basis ι ℤ L)
     (g : latticePointGroup L) :
     Matrix.gram ℝ (fun i => (((restrict L g) (b i) : L) : V)) =
@@ -384,6 +384,7 @@ theorem ofIntegralLinearEquivGramPreserving_restrict [FiniteDimensional ℝ V]
         (g : V ≃ₗᵢ[ℝ] V).toLinearEquiv.toLinearMap := by
     apply (b.ofZLatticeBasis ℝ L).ext
     intro i
+    rw [b.ofZLatticeBasis_apply ℝ L i]
     change extendIntegralLinearEquiv L b (restrict L g) ((b i : L) : V) =
       (g : V ≃ₗᵢ[ℝ] V) ((b i : L) : V)
     rw [extendIntegralLinearEquiv_apply_basis]
