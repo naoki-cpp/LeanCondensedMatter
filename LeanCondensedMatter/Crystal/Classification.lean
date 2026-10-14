@@ -108,6 +108,41 @@ theorem gram_congruence [FiniteDimensional ℝ V]
       exact (hcomb j).symm
     _ = Matrix.gram ℝ (fun i => rb i) := hGram
 
+/-- A real-linear automorphism that preserves a full basis Gram matrix is
+an isometry. If it also preserves lattice membership, it belongs to the
+intrinsic lattice point group. This separates the metric and arithmetic
+parts of constructing Bravais-lattice symmetries. -/
+def ofBasisGramPreservingLinearEquiv
+    {ι : Type*} [Fintype ι]
+    (L : Submodule ℤ V) (b : Module.Basis ι ℝ V)
+    (f : V ≃ₗ[ℝ] V)
+    (hL : ∀ x : V, f x ∈ L ↔ x ∈ L)
+    (hGram : Matrix.gram ℝ (fun i => f (b i)) =
+      Matrix.gram ℝ (fun i => b i)) :
+    latticePointGroup L := by
+  classical
+  have hBasis (i j : ι) :
+      inner ℝ (f (b i)) (f (b j)) = inner ℝ (b i) (b j) := by
+    have h := congrArg (fun G : Matrix ι ι ℝ => G i j) hGram
+    simpa [Matrix.gram_apply] using h
+  have hInner (x y : V) :
+      inner ℝ (f x) (f y) = inner ℝ x y := by
+    have hx := b.sum_repr x
+    have hy := b.sum_repr y
+    calc
+      inner ℝ (f x) (f y) =
+          inner ℝ (f (∑ i, b.repr x i • b i))
+            (f (∑ j, b.repr y j • b j)) := by rw [hx, hy]
+      _ = inner ℝ (∑ i, b.repr x i • f (b i))
+            (∑ j, b.repr y j • f (b j)) := by simp
+      _ = inner ℝ (∑ i, b.repr x i • b i)
+            (∑ j, b.repr y j • b j) := by
+          simp [sum_inner, inner_sum, inner_smul_left, inner_smul_right, hBasis]
+      _ = inner ℝ x y := by rw [hx, hy]
+  refine ⟨f.isometryOfInner hInner, ?_⟩
+  intro x
+  simpa only [LinearEquiv.coe_isometryOfInner] using hL x
+
 /-- A reflection across one integral basis axis makes the two basis vectors
 orthogonal. This is the rectangular Gram-metric constraint. -/
 theorem gram_offDiagonal_eq_zero_of_axisReflection
