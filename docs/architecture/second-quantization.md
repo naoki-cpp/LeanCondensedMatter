@@ -221,11 +221,13 @@ Full-slot label and leg-partner coordinates live in `Core.Ordered`; mixed-time p
 lives in `Pairing.MixedOrder`. The Fermionic `Diagram` module supplies the concrete
 `ExternalInsertionWickDiagram` label specialization, while thermal kernels, amplitudes, and exchange
 signs remain Fermionic consumers.
-`Common.Diagrammatics.ExternalInsertion.Factorization.ComponentMixedCrossing` owns crossing
-decomposition, crossing parity, and exchange-weight factorization for arbitrary labels and either
-statistics. `MixedComponentShuffle` owns the relative fixed/mixed permutation and its integer-unit
-sign decomposition. The Fermionic component modules consume these declarations to attach the
-concrete fermionic exchange sign and thermal pair values.
+`Common.Diagrammatics.ExternalInsertion.Factorization.ComponentMixedCrossing` owns the mixed-order
+crossing decomposition and residual crossing parity for arbitrary labels. The generic
+exchange-weight product identity is owned by `Common.Thermal.BlochDeDominicis.PairingWeight`;
+Fermionic pairing evaluation applies it to the mixed-order crossing decomposition.
+`MixedComponentShuffle` owns the relative fixed/mixed permutation and its integer-unit sign
+decomposition. The Fermionic component modules attach the concrete exchange sign and thermal
+pair values.
 `Fermionic.Diagrammatics.ExternalInsertion.ExternalVacuumPairing` owns thermal pair locality,
 normalized-endpoint transport, crossing signs, and pairing factorization for the external-support
 and vacuum slot split. `ExternalVacuumShuffleIntegral` owns the independent binary ordered-simplex
