@@ -157,6 +157,73 @@ theorem gram_hexagonal_constraints_of_sixthTurn
   simp [Matrix.mul_apply, Fin.sum_univ_two] at h00 h01
   constructor <;> linarith
 
+
+/-- For a symmetric planar Gram matrix, an integral basis-axis reflection
+preserves the metric exactly when that basis is orthogonal. -/
+theorem gram_axisReflection_iff (G : Matrix (Fin 2) (Fin 2) ℝ)
+    (hSymm : G 0 1 = G 1 0) :
+    (let A : Matrix (Fin 2) (Fin 2) ℝ := !![1, 0; 0, -1]
+      A.transpose * G * A = G) ↔ G 0 1 = 0 := by
+  constructor
+  · exact gram_offDiagonal_eq_zero_of_axisReflection G
+  · intro h
+    dsimp
+    ext i j
+    fin_cases i <;> fin_cases j <;>
+      simp [Matrix.mul_apply, Fin.sum_univ_two] <;> linarith
+
+/-- For a symmetric planar metric, the quarter-turn acts isometrically exactly
+when the two primitive vectors are orthogonal and have equal squared lengths. -/
+theorem gram_quarterTurn_iff (G : Matrix (Fin 2) (Fin 2) ℝ)
+    (hSymm : G 0 1 = G 1 0) :
+    (let A : Matrix (Fin 2) (Fin 2) ℝ := !![0, -1; 1, 0]
+      A.transpose * G * A = G) ↔
+      G 0 0 = G 1 1 ∧ G 0 1 = 0 := by
+  constructor
+  · exact gram_square_constraints_of_quarterTurn G hSymm
+  · rintro ⟨hDiag, hOff⟩
+    dsimp
+    ext i j
+    fin_cases i <;> fin_cases j <;>
+      simp [Matrix.mul_apply, Fin.sum_univ_two] <;> linarith
+
+/-- For a symmetric planar metric, the order-six integral rotation acts
+isometrically exactly when the primitive basis has the hexagonal Gram form. -/
+theorem gram_sixthTurn_iff (G : Matrix (Fin 2) (Fin 2) ℝ)
+    (hSymm : G 0 1 = G 1 0) :
+    (let A : Matrix (Fin 2) (Fin 2) ℝ := !![0, -1; 1, 1]
+      A.transpose * G * A = G) ↔
+      G 0 0 = G 1 1 ∧ 2 * G 0 1 = G 0 0 := by
+  constructor
+  · exact gram_hexagonal_constraints_of_sixthTurn G hSymm
+  · rintro ⟨hDiag, hOff⟩
+    dsimp
+    ext i j
+    fin_cases i <;> fin_cases j <;>
+      simp [Matrix.mul_apply, Fin.sum_univ_two] <;> linarith
+
+/-- Swapping two primitive basis vectors preserves a symmetric Gram matrix
+exactly when they have equal squared lengths. This is the rhombic primitive-basis
+condition relevant to the centered-rectangular Bravais class. It is not by
+itself an exhaustive characterization of that class. -/
+theorem gram_basisSwap_iff (G : Matrix (Fin 2) (Fin 2) ℝ)
+    (hSymm : G 0 1 = G 1 0) :
+    (let A : Matrix (Fin 2) (Fin 2) ℝ := !![0, 1; 1, 0]
+      A.transpose * G * A = G) ↔ G 0 0 = G 1 1 := by
+  constructor
+  · intro hInv
+    dsimp at hInv
+    have h00 := congrArg
+      (fun M : Matrix (Fin 2) (Fin 2) ℝ => M 0 0) hInv
+    have heq : G 1 1 = G 0 0 := by
+      simpa [Matrix.mul_apply, Fin.sum_univ_two] using h00
+    exact heq.symm
+  · intro hDiag
+    dsimp
+    ext i j
+    fin_cases i <;> fin_cases j <;>
+      simp [Matrix.mul_apply, Fin.sum_univ_two] <;> linarith
+
 end
 
 end latticePointGroup
