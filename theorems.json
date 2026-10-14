@@ -4797,8 +4797,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Common.ExternalInsertionDiagram.interComponentCrossingCount_mod_two_eq_orderedBlockInversionCount",
-      "SecondQuantization.Common.ExternalInsertionDiagram.mixedInterComponentCrossingCount_mod_two_eq_orderedBlockInversionCount"
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.relativeComponentShuffleSign_eq_external_mul_mixedInter",
+      "SecondQuantization.Fermionic.interComponentWeight_eq_componentExternalOrderSign"
     ],
     "dependencies": [
       "Combinatorics.FamilySlotShuffleTo.blockInversionCount_of_ne",
@@ -4809,8 +4809,8 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.ExternalInsertionDiagram.interComponentCrossingCount_mod_two_eq_orderedBlockInversionCount",
-      "SecondQuantization.Common.ExternalInsertionDiagram.mixedInterComponentCrossingCount_mod_two_eq_orderedBlockInversionCount"
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.relativeComponentShuffleSign_eq_external_mul_mixedInter",
+      "SecondQuantization.Fermionic.interComponentWeight_eq_componentExternalOrderSign"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -5592,8 +5592,8 @@
     "dependents": [
       "Combinatorics.Pairing.ofSplitNormalizedPairEquiv_crosses_inl_iff_of_strictMono",
       "Combinatorics.Pairing.ofSplitNormalizedPairEquiv_crosses_inr_iff_of_strictMono",
-      "SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_right_normalizedPair_of_lt",
-      "SecondQuantization.Fermionic.externalInsertionOfSlotSplit_mixedPairingEvaluation_eq_positionInversions_mul_of_strictAnti"
+      "SecondQuantization.Fermionic.externalInsertionOfSlotSplit_mixedPairingEvaluation_eq_positionInversions_mul_of_strictAnti",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalVacuumPairing.0.SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_right_normalizedPair_of_lt"
     ],
     "dependencies": [
       "Combinatorics.Pairing.ofSplitNormalizedPairEquiv_pair_eq_or_swap",
@@ -5604,8 +5604,8 @@
     "compiledConsumers": [
       "Combinatorics.Pairing.ofSplitNormalizedPairEquiv_crosses_inl_iff_of_strictMono",
       "Combinatorics.Pairing.ofSplitNormalizedPairEquiv_crosses_inr_iff_of_strictMono",
-      "SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_right_normalizedPair_of_lt",
-      "SecondQuantization.Fermionic.externalInsertionOfSlotSplit_mixedPairingEvaluation_eq_positionInversions_mul_of_strictAnti"
+      "SecondQuantization.Fermionic.externalInsertionOfSlotSplit_mixedPairingEvaluation_eq_positionInversions_mul_of_strictAnti",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalVacuumPairing.0.SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_right_normalizedPair_of_lt"
     ],
     "compiledConsumerCount": 4,
     "axioms": [
@@ -6118,7 +6118,7 @@
       "Combinatorics.Pairing.normalizedPair_endpoints_ne_of_ne",
       "Combinatorics.Pairing.ofSplitNormalizedPairEquiv_pair_eq_or_swap",
       "SecondQuantization.Common.TwoPointDiagram.externalPieceMixedPosition_externalPieceComponentPairEquiv",
-      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.ComponentDecomposition.0.Combinatorics.Pairing.componentPairEndpointEquiv_apply_one",
+      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.ComponentDecomposition.0.Combinatorics.Pairing.componentPairEndpointEquiv_partner",
       "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Sign.0.Combinatorics.Pairing.pairSlotEquiv_one",
       "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.SplitNormalizedPairs.0.Combinatorics.Pairing.ofSplit_pairEndpointInversionCount_eq_sum_localEndpoints"
     ],
@@ -6129,7 +6129,7 @@
       "Combinatorics.Pairing.normalizedPair_endpoints_ne_of_ne",
       "Combinatorics.Pairing.ofSplitNormalizedPairEquiv_pair_eq_or_swap",
       "SecondQuantization.Common.TwoPointDiagram.externalPieceMixedPosition_externalPieceComponentPairEquiv",
-      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.ComponentDecomposition.0.Combinatorics.Pairing.componentPairEndpointEquiv_apply_one",
+      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.ComponentDecomposition.0.Combinatorics.Pairing.componentPairEndpointEquiv_partner",
       "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Sign.0.Combinatorics.Pairing.pairSlotEquiv_one",
       "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.SplitNormalizedPairs.0.Combinatorics.Pairing.ofSplit_pairEndpointInversionCount_eq_sum_localEndpoints"
     ],
@@ -6170,7 +6170,7 @@
       "Combinatorics.Pairing.normalizedPair_endpoints_ne_of_ne",
       "Combinatorics.Pairing.ofSplitNormalizedPairEquiv_pair_eq_or_swap",
       "SecondQuantization.Common.TwoPointDiagram.externalPieceMixedPosition_externalPieceComponentPairEquiv",
-      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.ComponentDecomposition.0.Combinatorics.Pairing.componentPairEndpointEquiv_apply_zero",
+      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.ComponentDecomposition.0.Combinatorics.Pairing.componentPairEndpointEquiv_partner",
       "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Sign.0.Combinatorics.Pairing.pairSlotEquiv_zero",
       "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.SplitNormalizedPairs.0.Combinatorics.Pairing.ofSplit_pairEndpointInversionCount_eq_sum_localEndpoints"
     ],
@@ -6181,7 +6181,7 @@
       "Combinatorics.Pairing.normalizedPair_endpoints_ne_of_ne",
       "Combinatorics.Pairing.ofSplitNormalizedPairEquiv_pair_eq_or_swap",
       "SecondQuantization.Common.TwoPointDiagram.externalPieceMixedPosition_externalPieceComponentPairEquiv",
-      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.ComponentDecomposition.0.Combinatorics.Pairing.componentPairEndpointEquiv_apply_zero",
+      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.ComponentDecomposition.0.Combinatorics.Pairing.componentPairEndpointEquiv_partner",
       "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Sign.0.Combinatorics.Pairing.pairSlotEquiv_zero",
       "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.SplitNormalizedPairs.0.Combinatorics.Pairing.ofSplit_pairEndpointInversionCount_eq_sum_localEndpoints"
     ],
@@ -6276,7 +6276,6 @@
       "SecondQuantization.Common.TwoPointDiagram.externalPieceMixedPosition_externalPieceComponentPairEquiv",
       "SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_right_normalizedPair",
       "SecondQuantization.Fermionic.externalInsertionOfSlotSplit_mixedPairingEvaluation_eq_positionInversions_mul_of_strictAnti",
-      "SecondQuantization.Fermionic.externalInsertionOfSlotSplit_prod_mixedPairContractions_eq_left_mul_flatVacuum_of_localOrder",
       "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Sign.0.Combinatorics.sum_Ioi_pairEndpointInversionCount_mod_two_eq_crossingCount",
       "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.sidePair_of_gt"
     ],
@@ -6294,11 +6293,10 @@
       "SecondQuantization.Common.TwoPointDiagram.externalPieceMixedPosition_externalPieceComponentPairEquiv",
       "SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_right_normalizedPair",
       "SecondQuantization.Fermionic.externalInsertionOfSlotSplit_mixedPairingEvaluation_eq_positionInversions_mul_of_strictAnti",
-      "SecondQuantization.Fermionic.externalInsertionOfSlotSplit_prod_mixedPairContractions_eq_left_mul_flatVacuum_of_localOrder",
       "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Sign.0.Combinatorics.sum_Ioi_pairEndpointInversionCount_mod_two_eq_crossingCount",
       "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.sidePair_of_gt"
     ],
-    "compiledConsumerCount": 13,
+    "compiledConsumerCount": 12,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -23227,6 +23225,7 @@
       "SecondQuantization.Common.QuarticDiagram.dysonSign_mul_vertexWeight_eq_prod_components",
       "SecondQuantization.Common.TwoPointDiagram.prod_slotSplitVacuumComponents_eq_vacuumVertexProduct",
       "SecondQuantization.Common.prod_eq_prod_interactionSectors",
+      "SecondQuantization.Fermionic.FixedExternalTwoPointWickDiagram.fixedTimeAmplitude_eq_externalSign_mul_prod_components",
       "_private.LeanCondensedMatter.Permutation.ConnectedDecomposition.0.Combinatorics.kernelProduct_eq_prod_orbitBlocks"
     ],
     "dependencies": [],
@@ -23237,9 +23236,10 @@
       "SecondQuantization.Common.QuarticDiagram.dysonSign_mul_vertexWeight_eq_prod_components",
       "SecondQuantization.Common.TwoPointDiagram.prod_slotSplitVacuumComponents_eq_vacuumVertexProduct",
       "SecondQuantization.Common.prod_eq_prod_interactionSectors",
+      "SecondQuantization.Fermionic.FixedExternalTwoPointWickDiagram.fixedTimeAmplitude_eq_externalSign_mul_prod_components",
       "_private.LeanCondensedMatter.Permutation.ConnectedDecomposition.0.Combinatorics.kernelProduct_eq_prod_orbitBlocks"
     ],
-    "compiledConsumerCount": 5,
+    "compiledConsumerCount": 6,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -24642,6 +24642,7 @@
     "dependents": [
       "InternalSpace.pauliCombination_mul_pauliCombination",
       "InternalSpace.pauliShiftMatrix_mul_closedInverse",
+      "InternalSpace.trace_four_pauliAffine_antisymmetric",
       "InternalSpace.trace_pauliBasis_mul_pauliCombination",
       "QuantumTheory.Models.MassiveDirac.diracPauliCoefficients_dot_self",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_psi_eq_explicit_pauli_components",
@@ -24660,6 +24661,7 @@
     "compiledConsumers": [
       "InternalSpace.pauliCombination_mul_pauliCombination",
       "InternalSpace.pauliShiftMatrix_mul_closedInverse",
+      "InternalSpace.trace_four_pauliAffine_antisymmetric",
       "InternalSpace.trace_pauliBasis_mul_pauliCombination",
       "QuantumTheory.Models.MassiveDirac.diracPauliCoefficients_dot_self",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_psi_eq_explicit_pauli_components",
@@ -24670,7 +24672,7 @@
       "_private.LeanCondensedMatter.Analysis.InternalSpace.Pauli.0.InternalSpace.pauliBasis_mul_pauliBasis",
       "_private.LeanCondensedMatter.Models.MassiveDirac.Model.FermiSurfaceOverlap.0.QuantumTheory.Models.MassiveDirac.upperBandProjectorOverlap_eq"
     ],
-    "compiledConsumerCount": 11,
+    "compiledConsumerCount": 12,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -24692,7 +24694,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -24704,6 +24706,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "InternalSpace.trace_four_antisymmetric_eq_pauliCoefficients",
       "InternalSpace.trace_four_eq_pauliCoefficients"
     ],
     "dependencies": [
@@ -24712,9 +24715,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "InternalSpace.trace_four_antisymmetric_eq_pauliCoefficients",
       "InternalSpace.trace_four_eq_pauliCoefficients"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -25524,6 +25528,51 @@
   },
   {
     "terminal": false,
+    "statement": "∀ (A B C D : InternalSpace.PauliMatrix),\n  (A * B * C * D).trace - (C * B * A * D).trace =\n    4 * Complex.I *\n      (InternalSpace.pauliScalarCoefficient A *\n              InternalSpace.pauliVectorCoefficient B ⬝ᵥ\n                InternalSpace.pauliCross (InternalSpace.pauliVectorCoefficient C)\n                  (InternalSpace.pauliVectorCoefficient D) +\n            InternalSpace.pauliScalarCoefficient B *\n              InternalSpace.pauliVectorCoefficient A ⬝ᵥ\n                InternalSpace.pauliCross (InternalSpace.pauliVectorCoefficient C)\n                  (InternalSpace.pauliVectorCoefficient D) +\n          InternalSpace.pauliScalarCoefficient C *\n            InternalSpace.pauliCross (InternalSpace.pauliVectorCoefficient A)\n                (InternalSpace.pauliVectorCoefficient B) ⬝ᵥ\n              InternalSpace.pauliVectorCoefficient D +\n        InternalSpace.pauliScalarCoefficient D *\n          InternalSpace.pauliCross (InternalSpace.pauliVectorCoefficient A) (InternalSpace.pauliVectorCoefficient B) ⬝ᵥ\n            InternalSpace.pauliVectorCoefficient C)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "InternalSpace.trace_four_antisymmetric_eq_pauliCoefficients",
+    "module": "LeanCondensedMatter.Analysis.InternalSpace.Pauli",
+    "externalAxioms": [],
+    "docString": "The antisymmetric four-factor trace of arbitrary complex two-level\nmatrices is controlled only by oriented triple products of their canonical\nPauli coefficients. Symmetric terms cancel before specializing any model. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_x_antisymmetric_eq_pauli_triples"
+    ],
+    "dependencies": [
+      "InternalSpace.eq_pauliAffine_coefficients",
+      "InternalSpace.trace_four_pauliAffine_antisymmetric"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_x_antisymmetric_eq_pauli_triples"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ (A B C D : InternalSpace.PauliMatrix),\n  (A * B * C * D).trace =\n    have a := InternalSpace.pauliScalarCoefficient A;\n    have b := InternalSpace.pauliScalarCoefficient B;\n    have c := InternalSpace.pauliScalarCoefficient C;\n    have d := InternalSpace.pauliScalarCoefficient D;\n    have u := InternalSpace.pauliVectorCoefficient A;\n    have v := InternalSpace.pauliVectorCoefficient B;\n    have w := InternalSpace.pauliVectorCoefficient C;\n    have x := InternalSpace.pauliVectorCoefficient D;\n    2 *\n      ((a * b + u ⬝ᵥ v) * (c * d + w ⬝ᵥ x) +\n        (a • v + b • u + Complex.I • InternalSpace.pauliCross u v) ⬝ᵥ\n          (c • x + d • w + Complex.I • InternalSpace.pauliCross w x))",
     "standardAxioms": [
       "Classical.choice",
@@ -25578,7 +25627,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -25590,7 +25639,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "InternalSpace.trace_four_eq_pauliCoefficients"
+      "InternalSpace.trace_four_eq_pauliCoefficients",
+      "InternalSpace.trace_four_pauliAffine_antisymmetric"
     ],
     "dependencies": [
       "InternalSpace.pauliAffine_mul_pauliAffine",
@@ -25599,7 +25649,53 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "InternalSpace.trace_four_eq_pauliCoefficients"
+      "InternalSpace.trace_four_eq_pauliCoefficients",
+      "InternalSpace.trace_four_pauliAffine_antisymmetric"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (a b c d : ℂ) (u v w x : InternalSpace.PauliAxis → ℂ),\n  ((a • 1 + InternalSpace.pauliCombination u) * (b • 1 + InternalSpace.pauliCombination v) *\n            (c • 1 + InternalSpace.pauliCombination w) *\n          (d • 1 + InternalSpace.pauliCombination x)).trace -\n      ((c • 1 + InternalSpace.pauliCombination w) * (b • 1 + InternalSpace.pauliCombination v) *\n            (a • 1 + InternalSpace.pauliCombination u) *\n          (d • 1 + InternalSpace.pauliCombination x)).trace =\n    4 * Complex.I *\n      (a * v ⬝ᵥ InternalSpace.pauliCross w x + b * u ⬝ᵥ InternalSpace.pauliCross w x +\n          c * InternalSpace.pauliCross u v ⬝ᵥ x +\n        d * InternalSpace.pauliCross u v ⬝ᵥ w)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "InternalSpace.trace_four_pauliAffine_antisymmetric",
+    "module": "LeanCondensedMatter.Analysis.InternalSpace.Pauli",
+    "externalAxioms": [],
+    "docString": "Antisymmetrizing the first and third Pauli-affine insertions eliminates\nall scalar and bilinear (even-Pauli) trace terms. Only oriented Pauli\ntriple products remain; the dot and cross products are complex bilinear. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "InternalSpace.trace_four_antisymmetric_eq_pauliCoefficients"
+    ],
+    "dependencies": [
+      "InternalSpace.dotProduct_pauliAxis",
+      "InternalSpace.trace_four_pauliAffine"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "InternalSpace.trace_four_antisymmetric_eq_pauliCoefficients"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -28148,6 +28244,7 @@
     "directWrapperOf": null,
     "dependents": [
       "LeanCondensedMatter.Crystal.latticePointGroup.extendIntegralLinearEquiv_mem_iff",
+      "LeanCondensedMatter.Crystal.latticePointGroup.ofIntegralLinearEquivGramPreserving_restrict",
       "LeanCondensedMatter.Crystal.latticePointGroup.restrict_ofGLGramPreserving",
       "LeanCondensedMatter.Crystal.latticePointGroup.restrict_ofIntegralLinearEquivGramPreserving"
     ],
@@ -28156,10 +28253,11 @@
     "completedMention": false,
     "compiledConsumers": [
       "LeanCondensedMatter.Crystal.latticePointGroup.extendIntegralLinearEquiv_mem_iff",
+      "LeanCondensedMatter.Crystal.latticePointGroup.ofIntegralLinearEquivGramPreserving_restrict",
       "LeanCondensedMatter.Crystal.latticePointGroup.restrict_ofGLGramPreserving",
       "LeanCondensedMatter.Crystal.latticePointGroup.restrict_ofIntegralLinearEquivGramPreserving"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -28457,6 +28555,48 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
+    "terminal": false,
+    "statement": "∀ {V : Type u_1} [inst : NormedAddCommGroup V] [inst_1 : InnerProductSpace ℝ V] {ι : Type u_2} (L : Submodule ℤ V)\n  (b : Module.Basis ι ℤ ↥L) (g : ↥(Crystal.latticePointGroup L)),\n  (Matrix.gram ℝ fun i => ↑((Crystal.latticePointGroup.restrict L g) (b i))) = Matrix.gram ℝ fun i => ↑(b i)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "LeanCondensedMatter.Crystal.latticePointGroup.gram_restrict",
+    "module": "LeanCondensedMatter.Crystal.Classification",
+    "externalAxioms": [],
+    "docString": "Restricting an intrinsic lattice isometry preserves the Gram matrix of any\nintegral lattice basis. This statement needs neither periodicity nor a choice\nof coordinate representation for the isometry. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "LeanCondensedMatter.Crystal.latticePointGroup.ofIntegralLinearEquivGramPreserving_restrict"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "LeanCondensedMatter.Crystal.latticePointGroup.ofIntegralLinearEquivGramPreserving_restrict"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
     "terminal": true,
     "statement": "∀ (G : Matrix (Fin 2) (Fin 2) ℝ),\n  G 0 1 = G 1 0 →\n    ((have A := !![0, -1; 1, 1];\n      A.transpose * G * A = G) ↔\n      G 0 0 = G 1 1 ∧ 2 * G 0 1 = G 0 0)",
     "standardAxioms": [
@@ -28561,6 +28701,47 @@
     "dependents": [],
     "dependencies": [
       "LeanCondensedMatter.Crystal.latticePointGroup.restrict_ofGLGramPreserving"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {V : Type u_1} [inst : NormedAddCommGroup V] [inst_1 : InnerProductSpace ℝ V] [inst_2 : FiniteDimensional ℝ V]\n  {ι : Type u_2} [inst_3 : Fintype ι] (L : Submodule ℤ V) [inst_4 : DiscreteTopology ↥L] [inst_5 : IsZLattice ℝ L]\n  (b : Module.Basis ι ℤ ↥L) (g : ↥(Crystal.latticePointGroup L)),\n  Crystal.latticePointGroup.ofIntegralLinearEquivGramPreserving L b (Crystal.latticePointGroup.restrict L g) ⋯ = g",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "LeanCondensedMatter.Crystal.latticePointGroup.ofIntegralLinearEquivGramPreserving_restrict",
+    "module": "LeanCondensedMatter.Crystal.Classification",
+    "externalAxioms": [],
+    "docString": "Extending the restriction of an intrinsic lattice isometry back to the\nambient real vector space recovers the original isometry. Together with\n`restrict_ofIntegralLinearEquivGramPreserving`, this completes the\ncoordinate-free round trip between lattice symmetries and Gram-preserving\nintegral lattice automorphisms. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "LeanCondensedMatter.Crystal.latticePointGroup.extendIntegralLinearEquiv_apply_basis",
+      "LeanCondensedMatter.Crystal.latticePointGroup.gram_restrict"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -57050,7 +57231,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -57062,7 +57243,6 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Models.MassiveDirac.bandProjector_completeOrthogonalIdempotents",
       "QuantumTheory.Models.MassiveDirac.forceMatrixTraceNumerator_xy_eq"
     ],
     "dependencies": [
@@ -57072,10 +57252,9 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Models.MassiveDirac.bandProjector_completeOrthogonalIdempotents",
       "QuantumTheory.Models.MassiveDirac.forceMatrixTraceNumerator_xy_eq"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -57113,8 +57292,7 @@
     ],
     "dependencies": [
       "InternalSpace.involution_projector_mul_self",
-      "QuantumTheory.Models.MassiveDirac.bandProjector_add_oppositeBand",
-      "QuantumTheory.Models.MassiveDirac.bandSign_sq",
+      "QuantumTheory.Models.MassiveDirac.sum_band",
       "QuantumTheory.Models.MassiveDirac.sum_bandProjector_eq_one",
       "_private.LeanCondensedMatter.Models.MassiveDirac.Model.Spectral.0.QuantumTheory.Models.MassiveDirac.bandProjector_eq_normalizedHamiltonian",
       "_private.LeanCondensedMatter.Models.MassiveDirac.Model.Spectral.0.QuantumTheory.Models.MassiveDirac.normalizedHamiltonian_mul_self"
@@ -57285,7 +57463,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": true,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -57297,17 +57475,15 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Models.MassiveDirac.bandProjector_completeOrthogonalIdempotents",
       "QuantumTheory.Models.MassiveDirac.hamiltonian_mul_bandProjector"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Models.MassiveDirac.bandProjector_completeOrthogonalIdempotents",
       "QuantumTheory.Models.MassiveDirac.hamiltonian_mul_bandProjector"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -62868,6 +63044,92 @@
   },
   {
     "terminal": false,
+    "statement": "∀ (diagram : QuantumTheory.Models.MassiveDirac.GaussianCrossedDiagram)\n  (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ),\n  have greenR := fun ρ =>\n    QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix\n      QuantumTheory.Transport.SpectralSide.retarded v m probeEnergy broadening disorderStrength hbar pMax ρ;\n  have greenA := fun ρ =>\n    QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix\n      QuantumTheory.Transport.SpectralSide.advanced v m probeEnergy broadening disorderStrength hbar pMax ρ;\n  have current := fun source ρ =>\n    QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock source v\n      m probeEnergy broadening disorderStrength hbar pMax ρ;\n  QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor diagram v m\n        probeEnergy broadening disorderStrength hbar pMax radius 0 1 -\n      QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor diagram v m\n        probeEnergy broadening disorderStrength hbar pMax radius 1 0 =\n    match diagram with\n    | QuantumTheory.Models.MassiveDirac.GaussianCrossedDiagram.x =>\n      ((current 0 radius * greenR (-radius) * current 1 radius -\n            current 1 radius * greenR (-radius) * current 0 radius) *\n          greenA (-radius)).trace\n    | QuantumTheory.Models.MassiveDirac.GaussianCrossedDiagram.psi =>\n      have amplitude :=\n        (current 0 radius * greenR (-radius) * greenR radius * current 1 (-radius) -\n            current 1 radius * greenR (-radius) * greenR radius * current 0 (-radius)).trace;\n      amplitude + (starRingEnd ℂ) amplitude",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_antisymmetric_eq",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedRealSpaceIntegral",
+    "externalAxioms": [],
+    "docString": "The physically relevant antisymmetric radial source tensor reduces,\nwithout regulator assumptions, to one X trace of a difference or one Psi\ntrace-difference amplitude plus its Hermitian-conjugate partner. This is the\nexact remaining matrix algebra to be evaluated after angular projection. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_x_antisymmetric_eq_pauli_triples"
+    ],
+    "dependencies": [
+      "QuantumTheory.Models.MassiveDirac.gaussianCrossedTraceKernel_psi_sub_swapped",
+      "QuantumTheory.Models.MassiveDirac.gaussianCrossedTraceKernel_x_sub_swapped"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_x_antisymmetric_eq_pauli_triples"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ),\n  have Jx :=\n    QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock 0 v m\n      probeEnergy broadening disorderStrength hbar pMax radius;\n  have Jy :=\n    QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock 1 v m\n      probeEnergy broadening disorderStrength hbar pMax radius;\n  have GR :=\n    QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix\n      QuantumTheory.Transport.SpectralSide.retarded v m probeEnergy broadening disorderStrength hbar pMax (-radius);\n  have GA :=\n    QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix\n      QuantumTheory.Transport.SpectralSide.advanced v m probeEnergy broadening disorderStrength hbar pMax (-radius);\n  QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor\n        QuantumTheory.Models.MassiveDirac.GaussianCrossedDiagram.x v m probeEnergy broadening disorderStrength hbar pMax\n        radius 0 1 -\n      QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor\n        QuantumTheory.Models.MassiveDirac.GaussianCrossedDiagram.x v m probeEnergy broadening disorderStrength hbar pMax\n        radius 1 0 =\n    4 * Complex.I *\n      (InternalSpace.pauliScalarCoefficient Jx *\n              InternalSpace.pauliVectorCoefficient GR ⬝ᵥ\n                InternalSpace.pauliCross (InternalSpace.pauliVectorCoefficient Jy)\n                  (InternalSpace.pauliVectorCoefficient GA) +\n            InternalSpace.pauliScalarCoefficient GR *\n              InternalSpace.pauliVectorCoefficient Jx ⬝ᵥ\n                InternalSpace.pauliCross (InternalSpace.pauliVectorCoefficient Jy)\n                  (InternalSpace.pauliVectorCoefficient GA) +\n          InternalSpace.pauliScalarCoefficient Jy *\n            InternalSpace.pauliCross (InternalSpace.pauliVectorCoefficient Jx)\n                (InternalSpace.pauliVectorCoefficient GR) ⬝ᵥ\n              InternalSpace.pauliVectorCoefficient GA +\n        InternalSpace.pauliScalarCoefficient GA *\n          InternalSpace.pauliCross (InternalSpace.pauliVectorCoefficient Jx)\n              (InternalSpace.pauliVectorCoefficient GR) ⬝ᵥ\n            InternalSpace.pauliVectorCoefficient Jy)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_x_antisymmetric_eq_pauli_triples",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedRealSpaceIntegral",
+    "externalAxioms": [],
+    "docString": "The antisymmetric finite-regulator X radial trace contains only oriented\nPauli triple products, with the symmetric Pauli-coefficient terms cancelled.\nThis is a pointwise identity in the radial coordinate, not yet an evaluation\nof the remaining real-space integral or regulator limits. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "InternalSpace.trace_four_antisymmetric_eq_pauliCoefficients",
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_antisymmetric_eq"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ (source : Fin 2) (v m probeEnergy broadening disorderStrength hbar pMax radius angle : ℝ) (i j : Fin 2),\n  QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceCurrentBlock source v m\n      probeEnergy broadening disorderStrength hbar pMax (QuantumTheory.Transport.polarPoint2D radius angle) i j =\n    ↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n      ∫ (p : ℝ) in 0..pMax,\n        QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedAngularCurrentEntryKernel source\n          v m probeEnergy broadening disorderStrength hbar pMax radius angle p i j",
     "standardAxioms": [
       "Classical.choice",
@@ -66128,6 +66390,48 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {R : Type u_1} [inst : Neg R] (greenRetarded greenAdvanced : R → QuantumTheory.Models.MassiveDirac.Matrix2)\n  (current : Fin 2 → R → QuantumTheory.Models.MassiveDirac.Matrix2) (r : R),\n  QuantumTheory.Models.MassiveDirac.gaussianCrossedTraceKernel\n        QuantumTheory.Models.MassiveDirac.GaussianCrossedDiagram.psi greenRetarded greenAdvanced current r -\n      QuantumTheory.Models.MassiveDirac.gaussianCrossedTraceKernel\n        QuantumTheory.Models.MassiveDirac.GaussianCrossedDiagram.psi greenRetarded greenAdvanced\n        (fun axis ρ => if axis = 0 then current 1 ρ else current 0 ρ) r =\n    have amplitude :=\n      (current 0 r * greenRetarded (-r) * greenRetarded r * current 1 (-r) -\n          current 1 r * greenRetarded (-r) * greenRetarded r * current 0 (-r)).trace;\n    amplitude + (starRingEnd ℂ) amplitude",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.MassiveDirac.gaussianCrossedTraceKernel_psi_sub_swapped",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedTrace",
+    "externalAxioms": [],
+    "docString": "In the crossed Psi sector the antisymmetrized current insertion is\naccompanied by its complex-conjugate trace. Keeping that pair explicit\nisolates the real quantity whose cancellation must be shown downstream. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_antisymmetric_eq"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_antisymmetric_eq"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {R : Type u_1} [inst : Neg R] (diagram : QuantumTheory.Models.MassiveDirac.GaussianCrossedDiagram)\n  (greenRetarded greenAdvanced : R → QuantumTheory.Models.MassiveDirac.Matrix2)\n  (current : Fin 2 → R → QuantumTheory.Models.MassiveDirac.Matrix2) (r : R) (c s : ℝ),\n  QuantumTheory.Models.MassiveDirac.gaussianCrossedTraceKernel diagram greenRetarded greenAdvanced\n      (fun axis ρ => if axis = 0 then ↑c • current 0 ρ - ↑s • current 1 ρ else ↑s • current 0 ρ + ↑c • current 1 ρ) r =\n    ↑c ^ 2 *\n          QuantumTheory.Models.MassiveDirac.gaussianCrossedTraceKernel diagram greenRetarded greenAdvanced current r -\n        ↑s ^ 2 *\n          QuantumTheory.Models.MassiveDirac.gaussianCrossedTraceKernel diagram greenRetarded greenAdvanced\n            (fun axis ρ => if axis = 0 then current 1 ρ else current 0 ρ) r +\n      ↑c * ↑s *\n        (QuantumTheory.Models.MassiveDirac.gaussianCrossedTraceKernel diagram greenRetarded greenAdvanced\n            (fun x ρ => current 0 ρ) r -\n          QuantumTheory.Models.MassiveDirac.gaussianCrossedTraceKernel diagram greenRetarded greenAdvanced\n            (fun x ρ => current 1 ρ) r)",
     "standardAxioms": [
       "Classical.choice",
@@ -66156,6 +66460,48 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedTraceKernel_polarPoint2D_eq_radial_tensor"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {R : Type u_1} [inst : Neg R] (greenRetarded greenAdvanced : R → QuantumTheory.Models.MassiveDirac.Matrix2)\n  (current : Fin 2 → R → QuantumTheory.Models.MassiveDirac.Matrix2) (r : R),\n  QuantumTheory.Models.MassiveDirac.gaussianCrossedTraceKernel\n        QuantumTheory.Models.MassiveDirac.GaussianCrossedDiagram.x greenRetarded greenAdvanced current r -\n      QuantumTheory.Models.MassiveDirac.gaussianCrossedTraceKernel\n        QuantumTheory.Models.MassiveDirac.GaussianCrossedDiagram.x greenRetarded greenAdvanced\n        (fun axis ρ => if axis = 0 then current 1 ρ else current 0 ρ) r =\n    ((current 0 r * greenRetarded (-r) * current 1 r - current 1 r * greenRetarded (-r) * current 0 r) *\n        greenAdvanced (-r)).trace",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.MassiveDirac.gaussianCrossedTraceKernel_x_sub_swapped",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedTrace",
+    "externalAxioms": [],
+    "docString": "The antisymmetric source sector of the crossed X trace is a single\ntrace with an antisymmetrized pair of current insertions. This algebraic\nidentity precedes radial Fourier integration and does not assume a particular\nmassive-Dirac Green or current model. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_antisymmetric_eq"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_antisymmetric_eq"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -72155,6 +72501,7 @@
     "directWrapperOf": null,
     "dependents": [
       "QuantumTheory.Models.MassiveDirac.bandProjector_add_oppositeBand",
+      "QuantumTheory.Models.MassiveDirac.bandProjector_completeOrthogonalIdempotents",
       "QuantumTheory.Models.MassiveDirac.pointwiseBerryCurvature_xy_eq_forceMatrixBerryCurvature",
       "QuantumTheory.Models.MassiveDirac.projectorBastinTraceIntegrand_eq_band_sum",
       "QuantumTheory.Models.MassiveDirac.projectorBastinTraceIntegrand_eq_diagonal_add_interband",
@@ -72169,6 +72516,7 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.Models.MassiveDirac.bandProjector_add_oppositeBand",
+      "QuantumTheory.Models.MassiveDirac.bandProjector_completeOrthogonalIdempotents",
       "QuantumTheory.Models.MassiveDirac.pointwiseBerryCurvature_xy_eq_forceMatrixBerryCurvature",
       "QuantumTheory.Models.MassiveDirac.projectorBastinTraceIntegrand_eq_band_sum",
       "QuantumTheory.Models.MassiveDirac.projectorBastinTraceIntegrand_eq_diagonal_add_interband",
@@ -72178,7 +72526,7 @@
       "QuantumTheory.Models.MassiveDirac.zeroTemperatureOccupiedBerryWeightCutoff_eq",
       "QuantumTheory.Models.MassiveDirac.zeroTemperatureOccupiedCleanInterbandBastinPairCutoff_eq"
     ],
-    "compiledConsumerCount": 9,
+    "compiledConsumerCount": 10,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -78404,7 +78752,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -78416,7 +78764,6 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Models.RashbaExchange.bandProjector_completeOrthogonalIdempotents",
       "QuantumTheory.Models.RashbaExchange.forceMatrixTraceNumerator_xy_eq"
     ],
     "dependencies": [
@@ -78426,10 +78773,9 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Models.RashbaExchange.bandProjector_completeOrthogonalIdempotents",
       "QuantumTheory.Models.RashbaExchange.forceMatrixTraceNumerator_xy_eq"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -78467,8 +78813,7 @@
     ],
     "dependencies": [
       "InternalSpace.involution_projector_mul_self",
-      "QuantumTheory.Models.RashbaExchange.bandProjector_add_oppositeBand",
-      "QuantumTheory.Models.RashbaExchange.bandSign_sq",
+      "QuantumTheory.Models.RashbaExchange.sum_band",
       "QuantumTheory.Models.RashbaExchange.sum_bandProjector_eq_one",
       "_private.LeanCondensedMatter.Models.RashbaExchange.Model.Spectral.0.QuantumTheory.Models.RashbaExchange.bandProjector_eq_normalized",
       "_private.LeanCondensedMatter.Models.RashbaExchange.Model.Spectral.0.QuantumTheory.Models.RashbaExchange.normalizedSpinHamiltonian_mul_self"
@@ -78602,7 +78947,6 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Models.RashbaExchange.bandProjector_completeOrthogonalIdempotents",
       "QuantumTheory.Models.RashbaExchange.forceMatrixTraceNumerator_xy_eq",
       "QuantumTheory.Models.RashbaExchange.hamiltonian_mul_bandProjector"
     ],
@@ -78610,11 +78954,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Models.RashbaExchange.bandProjector_completeOrthogonalIdempotents",
       "QuantumTheory.Models.RashbaExchange.forceMatrixTraceNumerator_xy_eq",
       "QuantumTheory.Models.RashbaExchange.hamiltonian_mul_bandProjector"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -80329,6 +80672,7 @@
     "directWrapperOf": null,
     "dependents": [
       "QuantumTheory.Models.RashbaExchange.bandProjector_add_oppositeBand",
+      "QuantumTheory.Models.RashbaExchange.bandProjector_completeOrthogonalIdempotents",
       "QuantumTheory.Models.RashbaExchange.sum_bandProjector_eq_one"
     ],
     "dependencies": [],
@@ -80336,9 +80680,10 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.Models.RashbaExchange.bandProjector_add_oppositeBand",
+      "QuantumTheory.Models.RashbaExchange.bandProjector_completeOrthogonalIdempotents",
       "QuantumTheory.Models.RashbaExchange.sum_bandProjector_eq_one"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -106201,8 +106546,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Common.ExternalInsertionDiagram.mixedInterComponentCrossingCount_mod_two_eq_orderedBlockInversionCount",
-      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.mixedPairingValue_eq_inter_mul_prod_components"
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.mixedPairingValue_eq_inter_mul_prod_components",
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.relativeComponentShuffleSign_eq_external_mul_mixedInter"
     ],
     "dependencies": [
       "Combinatorics.Pairing.normalizedPairSigmaEquiv_apply_of_strictMono",
@@ -106213,8 +106558,8 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.ExternalInsertionDiagram.mixedInterComponentCrossingCount_mod_two_eq_orderedBlockInversionCount",
-      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.mixedPairingValue_eq_inter_mul_prod_components"
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.mixedPairingValue_eq_inter_mul_prod_components",
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.relativeComponentShuffleSign_eq_external_mul_mixedInter"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -106298,7 +106643,7 @@
     "directWrapperTargetModule": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.MixedOrderData",
     "directWrapperOf": "SecondQuantization.Common.ExternalInsertionDiagram.componentMixedPositionEquiv_apply",
     "dependents": [
-      "SecondQuantization.Common.ExternalInsertionDiagram.mixedInterComponentCrossingCount_mod_two_eq_orderedBlockInversionCount"
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.relativeComponentShuffleSign_eq_external_mul_mixedInter"
     ],
     "dependencies": [
       "SecondQuantization.Common.ExternalInsertionDiagram.componentMixedPositionEquiv_apply"
@@ -106306,7 +106651,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.ExternalInsertionDiagram.mixedInterComponentCrossingCount_mod_two_eq_orderedBlockInversionCount"
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.relativeComponentShuffleSign_eq_external_mul_mixedInter"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -106504,7 +106849,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Common.ExternalInsertionDiagram.interComponentCrossingCount_mod_two_eq_orderedBlockInversionCount"
+      "SecondQuantization.Fermionic.interComponentWeight_eq_componentExternalOrderSign"
     ],
     "dependencies": [
       "Combinatorics.Pairing.normalizedPairSigmaEquiv_apply_of_strictMono",
@@ -106513,7 +106858,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.ExternalInsertionDiagram.interComponentCrossingCount_mod_two_eq_orderedBlockInversionCount"
+      "SecondQuantization.Fermionic.interComponentWeight_eq_componentExternalOrderSign"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -106972,51 +107317,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {E N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.ExternalInsertionDiagram ExternalLabel InternalLabel E N S)\n  (blockOrder : ↥d.vertexGraph.componentPartition.parts ≃ Fin (Fintype.card ↥d.vertexGraph.componentPartition.parts)),\n  d.pairing.interComponentCrossingCount d.componentPairEquiv % 2 =\n    d.componentLegShuffle.orderedBlockInversionCount blockOrder % 2",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.ExternalInsertionDiagram.interComponentCrossingCount_mod_two_eq_orderedBlockInversionCount",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Factorization.ComponentCrossing",
-    "externalAxioms": [],
-    "docString": "The residual inter-component crossing parity is the total block-inversion parity of the\ncanonical component-leg shuffle, relative to any explicit ordering of the connected components. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.interComponentWeight_eq_componentExternalOrderSign"
-    ],
-    "dependencies": [
-      "Combinatorics.Pairing.interComponentCrossingCount_mod_two_eq_orderedBlockInversionCount",
-      "SecondQuantization.Common.ExternalInsertionDiagram.componentPairEquiv_apply"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.interComponentWeight_eq_componentExternalOrderSign"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {E N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.ExternalInsertionDiagram ExternalLabel InternalLabel E N S)\n  {B : Finset (SecondQuantization.Common.ExternalInsertionVertex E S)},\n  B ∈ d.vertexGraph.componentPartition.parts →\n    ∀ (leg : Fin (2 * (2 * S.card + E))),\n      d.legInComponent B leg ↔ SecondQuantization.Common.externalInsertionVertexOfLeg leg ∈ B",
     "standardAxioms": [
       "Classical.choice",
@@ -107095,52 +107395,6 @@
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.ExternalSupportSplit.0.SecondQuantization.Common.ExternalInsertionDiagram.exists_externalSupportLeftSlot_iff"
     ],
     "compiledConsumerCount": 4,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {E n : ℕ}\n  (d : SecondQuantization.Common.ExternalInsertionDiagram ExternalLabel InternalLabel E n Finset.univ)\n  (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ)\n  (blockOrder : ↥d.vertexGraph.componentPartition.parts ≃ Fin (Fintype.card ↥d.vertexGraph.componentPartition.parts)),\n  (d.pairingInMixedOrder externalTime σ).interComponentCrossingCount (d.componentMixedPairEquiv externalTime σ) % 2 =\n    (d.componentMixedPositionShuffle externalTime σ).orderedBlockInversionCount blockOrder % 2",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.ExternalInsertionDiagram.mixedInterComponentCrossingCount_mod_two_eq_orderedBlockInversionCount",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Factorization.ComponentMixedCrossing",
-    "externalAxioms": [],
-    "docString": "The residual mixed-order inter-component crossing parity is the total inversion parity of the\ncanonical mixed component-position shuffle. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.relativeComponentShuffleSign_eq_external_mul_mixedInter"
-    ],
-    "dependencies": [
-      "Combinatorics.Pairing.interComponentCrossingCount_mod_two_eq_orderedBlockInversionCount",
-      "SecondQuantization.Common.ExternalInsertionDiagram.componentMixedPairEquiv_apply",
-      "SecondQuantization.Common.ExternalInsertionDiagram.componentMixedPositionShuffle_slotEquiv_apply"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.relativeComponentShuffleSign_eq_external_mul_mixedInter"
-    ],
-    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -107867,7 +108121,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -107879,15 +108133,17 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Common.ExternalInsertionDiagram.standardizeVacuumFree_vertexWeight"
+      "SecondQuantization.Common.ExternalInsertionDiagram.standardizeVacuumFree_vertexWeight",
+      "SecondQuantization.Fermionic.externalInsertionSupport_dysonFactor_eq_standardizedAmplitude"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.ExternalInsertionDiagram.standardizeVacuumFree_vertexWeight"
+      "SecondQuantization.Common.ExternalInsertionDiagram.standardizeVacuumFree_vertexWeight",
+      "SecondQuantization.Fermionic.externalInsertionSupport_dysonFactor_eq_standardizedAmplitude"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -108191,7 +108447,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {E N : ℕ} (T : Finset (Fin N))\n  (d : SecondQuantization.Common.ExternalInsertionDiagram ExternalLabel InternalLabel E N T)\n  (externalTime : Fin (2 * E) → ℝ) (σ : Fin N → ℝ),\n  have e := (T.orderIsoOfFin ⋯).symm.trans (Equiv.subtypeUnivEquiv ⋯).symm;\n  have σT := σ ∘ fun i => ↑((T.orderIsoOfFin ⋯) i);\n  (SecondQuantization.Common.ExternalInsertionDiagram.slotCongr e d).pairingInMixedOrder externalTime σT =\n    Combinatorics.PairingOn.transport d.pairing\n      (Equiv.symm (SecondQuantization.Common.externalInsertionStandardToMixedAtomicPositionEquiv externalTime σT))",
     "standardAxioms": [
       "Classical.choice",
@@ -108199,7 +108455,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -108210,15 +108466,19 @@
     "docString": "The canonical external-support reindexing carries exactly the standalone\nmixed-time pairing; the original gap positions of the support contribute no\nextra pairing transport. No vacuum-free condition is required. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "SecondQuantization.Fermionic.externalInsertionSupport_dysonFactor_eq_standardizedAmplitude"
+    ],
     "dependencies": [
       "Combinatorics.PairingOn.transport_trans",
       "SecondQuantization.Common.externalInsertionLegCongr_standardize"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.externalInsertionSupport_dysonFactor_eq_standardizedAmplitude"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -108257,50 +108517,6 @@
     "completedMention": false,
     "compiledConsumers": [],
     "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {E N : ℕ} {M : Type u_3} [inst : CommMonoid M]\n  {S : Finset (Fin N)} (d : SecondQuantization.Common.ExternalInsertionDiagram ExternalLabel InternalLabel E N S)\n  (w : InternalLabel → M), d.vertexWeight w = ∏ B, (d.restrictComponent B).vertexWeight w",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.ExternalInsertionDiagram.vertexWeight_eq_prod_components",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Factorization.ComponentVertexProduct",
-    "externalAxioms": [],
-    "docString": "A commutative product of interaction-vertex-local weights factors over all connected\ncomponents, including components with an empty interaction sector. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.fixedTimeAmplitude_eq_componentExternalOrderSign_mul_prod_components"
-    ],
-    "dependencies": [
-      "SecondQuantization.Common.prod_eq_prod_interactionSectors"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.fixedTimeAmplitude_eq_componentExternalOrderSign_mul_prod_components"
-    ],
-    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -118293,7 +118509,6 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Fermionic.externalInsertionOfSlotSplit_mixedPairingEvaluation_eq_positionInversions_mul_of_strictAnti",
-      "SecondQuantization.Fermionic.externalInsertionOfSlotSplit_prod_mixedPairContractions_eq_left_mul_flatVacuum_of_strictAnti",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Factorization.SlotSplitMixedSign.0.SecondQuantization.Common.externalInsertionMixedSplit_relativePerm_sign_eq_inversionCounts"
     ],
     "dependencies": [
@@ -118306,10 +118521,9 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Fermionic.externalInsertionOfSlotSplit_mixedPairingEvaluation_eq_positionInversions_mul_of_strictAnti",
-      "SecondQuantization.Fermionic.externalInsertionOfSlotSplit_prod_mixedPairContractions_eq_left_mul_flatVacuum_of_strictAnti",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Factorization.SlotSplitMixedSign.0.SecondQuantization.Common.externalInsertionMixedSplit_relativePerm_sign_eq_inversionCounts"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -118730,8 +118944,8 @@
     "dependents": [
       "SecondQuantization.Common.externalInsertionSlotLegSplitting_right_strictMono_of_localOrder",
       "SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_right_normalizedPair",
-      "SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_right_normalizedPair_of_lt",
-      "SecondQuantization.Fermionic.externalInsertionOfSlotSplit_mixedPairingEvaluation_eq_positionInversions_mul_of_strictAnti"
+      "SecondQuantization.Fermionic.externalInsertionOfSlotSplit_mixedPairingEvaluation_eq_positionInversions_mul_of_strictAnti",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalVacuumPairing.0.SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_right_normalizedPair_of_lt"
     ],
     "dependencies": [
       "SecondQuantization.Common.externalInsertionSlotLegSplitting_right_mixedPosition"
@@ -118741,8 +118955,8 @@
     "compiledConsumers": [
       "SecondQuantization.Common.externalInsertionSlotLegSplitting_right_strictMono_of_localOrder",
       "SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_right_normalizedPair",
-      "SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_right_normalizedPair_of_lt",
-      "SecondQuantization.Fermionic.externalInsertionOfSlotSplit_mixedPairingEvaluation_eq_positionInversions_mul_of_strictAnti"
+      "SecondQuantization.Fermionic.externalInsertionOfSlotSplit_mixedPairingEvaluation_eq_positionInversions_mul_of_strictAnti",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalVacuumPairing.0.SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_right_normalizedPair_of_lt"
     ],
     "compiledConsumerCount": 4,
     "axioms": [
@@ -118779,7 +118993,6 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Fermionic.externalInsertionOfSlotSplit_mixedPairingEvaluation_eq_positionInversions_mul_of_strictAnti",
-      "SecondQuantization.Fermionic.externalInsertionOfSlotSplit_prod_mixedPairContractions_eq_left_mul_flatVacuum_of_localOrder",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Factorization.SlotSplitMixedSign.0.SecondQuantization.Common.externalInsertionMixedSplit_relativePerm_sign_eq_inversionCounts"
     ],
     "dependencies": [
@@ -118791,10 +119004,9 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Fermionic.externalInsertionOfSlotSplit_mixedPairingEvaluation_eq_positionInversions_mul_of_strictAnti",
-      "SecondQuantization.Fermionic.externalInsertionOfSlotSplit_prod_mixedPairContractions_eq_left_mul_flatVacuum_of_localOrder",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Factorization.SlotSplitMixedSign.0.SecondQuantization.Common.externalInsertionMixedSplit_relativePerm_sign_eq_inversionCounts"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -124574,8 +124786,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Common.ExternalInsertionDiagram.vertexWeight_eq_prod_components",
-      "SecondQuantization.Common.TwoPointDiagram.prod_vertexLabel_eq_prod_componentInteractionParts"
+      "SecondQuantization.Common.TwoPointDiagram.prod_vertexLabel_eq_prod_componentInteractionParts",
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.fixedTimeAmplitude_eq_componentExternalOrderSign_mul_prod_components"
     ],
     "dependencies": [
       "Fintype.prod_equiv_sigma",
@@ -124585,8 +124797,8 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.ExternalInsertionDiagram.vertexWeight_eq_prod_components",
-      "SecondQuantization.Common.TwoPointDiagram.prod_vertexLabel_eq_prod_componentInteractionParts"
+      "SecondQuantization.Common.TwoPointDiagram.prod_vertexLabel_eq_prod_componentInteractionParts",
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.fixedTimeAmplitude_eq_componentExternalOrderSign_mul_prod_components"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -130144,7 +130356,7 @@
       "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.dysonFixedTimeAmplitude_eq_componentExternalOrderSign_mul_prod_components"
     ],
     "dependencies": [
-      "SecondQuantization.Common.ExternalInsertionDiagram.vertexWeight_eq_prod_components",
+      "SecondQuantization.Common.prod_eq_prod_interactionSectors",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentAmplitude.0.SecondQuantization.Fermionic.ExternalInsertionWickDiagram.componentOrderedDiagram_vertexWeight_eq_restrictComponent",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentAmplitude.0.SecondQuantization.Fermionic.ExternalInsertionWickDiagram.mixedAtomicOrderSign_mul_mixedPairingValue_eq_components"
     ],
@@ -130287,6 +130499,7 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.sum_componentInteractionOrderShuffle_orderedDysonAmplitude_eq_componentExternalOrderSign_mul_prod_components",
+      "SecondQuantization.Fermionic.externalInsertionOfSlotSplit_dysonAmplitude_eq_integral_standalone_mul_vacuum",
       "SecondQuantization.Fermionic.sum_slotShuffleExternalInsertionDysonIntegral_eq_mul_orderedVacuum"
     ],
     "dependencies": [
@@ -130296,9 +130509,10 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.sum_componentInteractionOrderShuffle_orderedDysonAmplitude_eq_componentExternalOrderSign_mul_prod_components",
+      "SecondQuantization.Fermionic.externalInsertionOfSlotSplit_dysonAmplitude_eq_integral_standalone_mul_vacuum",
       "SecondQuantization.Fermionic.sum_slotShuffleExternalInsertionDysonIntegral_eq_mul_orderedVacuum"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -130336,9 +130550,11 @@
     ],
     "dependencies": [
       "Combinatorics.FamilySlotShuffleTo.relativePerm_sign_eq_orderedBlockInversionCount_add",
+      "Combinatorics.Pairing.interComponentCrossingCount_mod_two_eq_orderedBlockInversionCount",
       "Combinatorics.pow_eq_of_mod_two_eq",
       "SecondQuantization.Common.ExternalInsertionDiagram.componentLegShuffle_orderedBlockInversionCount_mod_two_eq_external",
-      "SecondQuantization.Common.ExternalInsertionDiagram.mixedInterComponentCrossingCount_mod_two_eq_orderedBlockInversionCount"
+      "SecondQuantization.Common.ExternalInsertionDiagram.componentMixedPairEquiv_apply",
+      "SecondQuantization.Common.ExternalInsertionDiagram.componentMixedPositionShuffle_slotEquiv_apply"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -130770,6 +130986,7 @@
       "SecondQuantization.Fermionic.FixedExternalTwoPointWickDiagram.dysonFixedTimeAmplitude_eq_externalSign_mul_prod_components"
     ],
     "dependencies": [
+      "Fintype.prod_equiv_sigma",
       "SecondQuantization.Common.TwoPointDiagram.pairingInMixedOrder_weight_eq_external_mul_prod_vacuum",
       "SecondQuantization.Common.TwoPointDiagram.prod_componentParts_eq_external_mul_prod_vacuum",
       "SecondQuantization.Common.TwoPointDiagram.prod_vertexLabel_eq_prod_componentInteractionParts",
@@ -142059,9 +142276,8 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_right_normalizedPair",
-      "SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_right_normalizedPair_of_lt",
       "SecondQuantization.Fermionic.externalInsertionOfSlotSplit_mixedPairingEvaluation_eq_positionInversions_mul_of_strictAnti",
-      "SecondQuantization.Fermionic.externalInsertionOfSlotSplit_vacuumPairingEvaluation_eq_flatVertex"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalVacuumPairing.0.SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_right_normalizedPair_of_lt"
     ],
     "dependencies": [
       "SecondQuantization.Common.ExternalInsertionDiagram.ofSlotSplit_vertexLabel_of_not_mem",
@@ -142071,11 +142287,10 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_right_normalizedPair",
-      "SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_right_normalizedPair_of_lt",
       "SecondQuantization.Fermionic.externalInsertionOfSlotSplit_mixedPairingEvaluation_eq_positionInversions_mul_of_strictAnti",
-      "SecondQuantization.Fermionic.externalInsertionOfSlotSplit_vacuumPairingEvaluation_eq_flatVertex"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalVacuumPairing.0.SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_right_normalizedPair_of_lt"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -142116,7 +142331,7 @@
       "Combinatorics.Pairing.pairs_normalized",
       "SecondQuantization.Common.externalInsertionSlotLegSplitting_right_orderedMixedPosition",
       "SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_right_locality",
-      "SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_right_normalizedPair_of_lt"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalVacuumPairing.0.SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_right_normalizedPair_of_lt"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -142137,8 +142352,50 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
+    "terminal": true,
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] (ε : Mode → ℝ) (β : ℝ),\n  0 ≤ β →\n    ∀ (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ) {E n : ℕ} (T : Finset (Fin n))\n      (ext :\n        SecondQuantization.Common.ExternalInsertionDiagram (SecondQuantization.Fermionic.ExternalFieldLabel Mode)\n          (SecondQuantization.Common.QuarticVertexLabel Mode) E n T)\n      (vac :\n        SecondQuantization.Common.QuarticDiagram (SecondQuantization.Common.QuarticVertexLabel Mode) n\n          (Finset.univ \\ T))\n      (externalTime : Fin (2 * E) → ℝ),\n      let S := Finset.univ \\ T;\n      have order := (S.orderIsoOfFin ⋯).toEquiv;\n      have f := fun i => ↑((S.orderIsoOfFin ⋯) i);\n      have fT := fun i => ↑((T.orderIsoOfFin ⋯) i);\n      have e := (T.orderIsoOfFin ⋯).symm.trans (Equiv.subtypeUnivEquiv ⋯).symm;\n      have d := SecondQuantization.Common.ExternalInsertionDiagram.ofSlotSplit ⋯ ext vac;\n      d.dysonAmplitude ε β g externalTime =\n        intervalIntegral.orderedSimplexIntegral n β fun σ =>\n          SecondQuantization.Fermionic.ExternalInsertionWickDiagram.dysonFixedTimeAmplitude\n              (SecondQuantization.Common.ExternalInsertionDiagram.slotCongr e ext) ε β g externalTime (σ ∘ fT) *\n            ((-1) ^ S.card * vac.vertexWeight g *\n              (vac.pairingInOrder order).evaluation\n                (Combinatorics.Pairing.weight SecondQuantization.Common.Statistics.fermion (vac.pairingInOrder order))\n                (SecondQuantization.Fermionic.flatVertexLegPairValue ε β\n                  (fun v => vac.vertexLabel ((S.orderIsoOfFin ⋯) v)) (σ ∘ f)))",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.externalInsertionOfSlotSplit_dysonAmplitude_eq_integral_standalone_mul_vacuum",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalVacuumIntegrated",
+    "externalAxioms": [],
+    "docString": "For any external-support slot set, the integrated full Dyson diagram is\nthe ordered-simplex integral of its standalone external-support Dyson factor\ntimes the ordered vacuum Dyson factor. This is the fixed-support analytic\nbridge before reindexing all supports by binary slot shuffles. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.orderedSimplexIntegral_dysonFixedTimeAmplitude",
+      "SecondQuantization.Fermionic.externalInsertionOfSlotSplit_dysonFixedTimeAmplitude_eq_standalone_mul_vacuum",
+      "intervalIntegral.orderedSimplexIntegral_congr_of_strictAnti"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] (ε : Mode → ℝ) (β : ℝ) {E n : ℕ}\n  (T : Finset (Fin n))\n  (ext :\n    SecondQuantization.Common.ExternalInsertionDiagram (SecondQuantization.Fermionic.ExternalFieldLabel Mode)\n      (SecondQuantization.Common.QuarticVertexLabel Mode) E n T)\n  (vac :\n    SecondQuantization.Common.QuarticDiagram (SecondQuantization.Common.QuarticVertexLabel Mode) n (Finset.univ \\ T))\n  (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ),\n  let S := Finset.univ \\ T;\n  have order := (S.orderIsoOfFin ⋯).toEquiv;\n  have f := fun i => ↑((S.orderIsoOfFin ⋯) i);\n  have d := SecondQuantization.Common.ExternalInsertionDiagram.ofSlotSplit ⋯ ext vac;\n  have splitting :=\n    (((Equiv.refl (Fin (2 * (2 * T.card + E)))).sumCongr\n              (SecondQuantization.Common.orderedLegToDiagramLeg S order)).trans\n          (SecondQuantization.Common.externalInsertionSlotLegSplitting ⋯)).trans\n      (SecondQuantization.Common.externalInsertionMixedTimeAmbientPositionEquiv externalTime σ).symm;\n  have pairEquiv := Combinatorics.Pairing.ofSplitNormalizedPairEquiv splitting ext.pairing (vac.pairingInOrder order);\n  have kernel :=\n    SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicPairValue ε β d.externalLabel externalTime\n      (SecondQuantization.Common.ExternalInsertionDiagram.vertexLabelSequence d) σ;\n  ∀ (pr : (vac.pairingInOrder order).NormalizedPair),\n    splitting (Sum.inr (↑pr).1) < splitting (Sum.inr (↑pr).2) →\n      kernel (↑(pairEquiv (Sum.inr pr))).1 (↑(pairEquiv (Sum.inr pr))).2 =\n        SecondQuantization.Fermionic.flatVertexLegPairValue ε β (fun v => vac.vertexLabel ((S.orderIsoOfFin ⋯) v))\n          (σ ∘ f) (↑pr).1 (↑pr).2",
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] (ε : Mode → ℝ) (β : ℝ)\n  (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ) {E n : ℕ} (T : Finset (Fin n))\n  (ext :\n    SecondQuantization.Common.ExternalInsertionDiagram (SecondQuantization.Fermionic.ExternalFieldLabel Mode)\n      (SecondQuantization.Common.QuarticVertexLabel Mode) E n T)\n  (vac :\n    SecondQuantization.Common.QuarticDiagram (SecondQuantization.Common.QuarticVertexLabel Mode) n (Finset.univ \\ T))\n  (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ),\n  let S := Finset.univ \\ T;\n  have order := (S.orderIsoOfFin ⋯).toEquiv;\n  have f := fun i => ↑((S.orderIsoOfFin ⋯) i);\n  have fT := fun i => ↑((T.orderIsoOfFin ⋯) i);\n  have localFixed :=\n    Equiv.symm (SecondQuantization.Common.externalInsertionStandardToMixedAtomicPositionEquiv externalTime (σ ∘ fT));\n  have localPairing := Combinatorics.PairingOn.transport ext.pairing localFixed;\n  have localSign := ↑↑(Equiv.Perm.sign (localFixed.sumCongr (Equiv.refl (Fin (2 * (2 * S.card))))));\n  have localKernel :=\n    SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicPairValue ε β ext.externalLabel externalTime\n      (fun v => ext.vertexLabel ((T.orderIsoOfFin ⋯) v)) (σ ∘ fT);\n  have localValue :=\n    localPairing.evaluation (Combinatorics.Pairing.weight SecondQuantization.Common.Statistics.fermion localPairing)\n      localKernel;\n  have vacuumKernel :=\n    SecondQuantization.Fermionic.flatVertexLegPairValue ε β (fun v => vac.vertexLabel ((S.orderIsoOfFin ⋯) v)) (σ ∘ f);\n  have vacuumValue :=\n    (vac.pairingInOrder order).evaluation\n      (Combinatorics.Pairing.weight SecondQuantization.Common.Statistics.fermion (vac.pairingInOrder order))\n      vacuumKernel;\n  have d := SecondQuantization.Common.ExternalInsertionDiagram.ofSlotSplit ⋯ ext vac;\n  StrictAnti (σ ∘ f) →\n    d.dysonFixedTimeAmplitude ε β g externalTime σ =\n      (-1) ^ T.card * ext.vertexWeight g * (localSign * localValue) * ((-1) ^ S.card * vac.vertexWeight g * vacuumValue)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -142150,24 +142407,23 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_right_normalizedPair_of_lt",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalVacuumPairing",
+    "name": "SecondQuantization.Fermionic.externalInsertionOfSlotSplit_dysonFixedTimeAmplitude_eq_local_mul_vacuum",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalVacuumAmplitude",
     "externalAxioms": [],
-    "docString": "The vacuum-side ambient normalized contraction agrees with its standalone\nquartic kernel whenever the transported endpoints retain their order.\n\nThis hypothesis is necessary: arbitrary mixed-time slot permutations can reverse\na pair, and a fermionic contraction kernel is not symmetric in its arguments. ",
+    "docString": "The Dyson-signed amplitude of a reassembled external/vacuum diagram factors\npointwise on strictly antitone vacuum chambers. The local factor retains the\nexternal support's genuine mixed-to-fixed reordering sign; the vacuum factor\nuses its increasing slot order and correctly oriented pairing evaluation. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_right_normalizedPair"
+      "SecondQuantization.Fermionic.externalInsertionOfSlotSplit_dysonFixedTimeAmplitude_eq_standalone_mul_vacuum"
     ],
     "dependencies": [
-      "Combinatorics.Pairing.ofSplitNormalizedPairEquiv_pair_eq_of_lt",
-      "SecondQuantization.Common.externalInsertionSlotLegSplitting_right_orderedMixedPosition",
-      "SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_right_locality"
+      "SecondQuantization.Common.ExternalInsertionDiagram.ofSlotSplit_dysonSign_mul_vertexWeight",
+      "SecondQuantization.Fermionic.externalInsertionOfSlotSplit_globalSign_mul_mixedPairingEvaluation_eq_localSign_mul"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_right_normalizedPair"
+      "SecondQuantization.Fermionic.externalInsertionOfSlotSplit_dysonFixedTimeAmplitude_eq_standalone_mul_vacuum"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -142183,34 +142439,38 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] (ε : Mode → ℝ) (β : ℝ)\n  (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ) {E n : ℕ} (T : Finset (Fin n))\n  (ext :\n    SecondQuantization.Common.ExternalInsertionDiagram (SecondQuantization.Fermionic.ExternalFieldLabel Mode)\n      (SecondQuantization.Common.QuarticVertexLabel Mode) E n T)\n  (vac :\n    SecondQuantization.Common.QuarticDiagram (SecondQuantization.Common.QuarticVertexLabel Mode) n (Finset.univ \\ T))\n  (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ),\n  let S := Finset.univ \\ T;\n  have order := (S.orderIsoOfFin ⋯).toEquiv;\n  have f := fun i => ↑((S.orderIsoOfFin ⋯) i);\n  have fT := fun i => ↑((T.orderIsoOfFin ⋯) i);\n  have localFixed :=\n    Equiv.symm (SecondQuantization.Common.externalInsertionStandardToMixedAtomicPositionEquiv externalTime (σ ∘ fT));\n  have localPairing := Combinatorics.PairingOn.transport ext.pairing localFixed;\n  have localSign := ↑↑(Equiv.Perm.sign (localFixed.sumCongr (Equiv.refl (Fin (2 * (2 * S.card))))));\n  have localKernel :=\n    SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicPairValue ε β ext.externalLabel externalTime\n      (fun v => ext.vertexLabel ((T.orderIsoOfFin ⋯) v)) (σ ∘ fT);\n  have localValue :=\n    localPairing.evaluation (Combinatorics.Pairing.weight SecondQuantization.Common.Statistics.fermion localPairing)\n      localKernel;\n  have vacuumKernel :=\n    SecondQuantization.Fermionic.flatVertexLegPairValue ε β (fun v => vac.vertexLabel ((S.orderIsoOfFin ⋯) v)) (σ ∘ f);\n  have vacuumValue :=\n    (vac.pairingInOrder order).evaluation\n      (Combinatorics.Pairing.weight SecondQuantization.Common.Statistics.fermion (vac.pairingInOrder order))\n      vacuumKernel;\n  have d := SecondQuantization.Common.ExternalInsertionDiagram.ofSlotSplit ⋯ ext vac;\n  StrictAnti (σ ∘ f) →\n    d.dysonFixedTimeAmplitude ε β g externalTime σ =\n      (-1) ^ T.card * ext.vertexWeight g * (localSign * localValue) * ((-1) ^ S.card * vac.vertexWeight g * vacuumValue)",
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] (ε : Mode → ℝ) (β : ℝ)\n  (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ) {E n : ℕ} (T : Finset (Fin n))\n  (ext :\n    SecondQuantization.Common.ExternalInsertionDiagram (SecondQuantization.Fermionic.ExternalFieldLabel Mode)\n      (SecondQuantization.Common.QuarticVertexLabel Mode) E n T)\n  (vac :\n    SecondQuantization.Common.QuarticDiagram (SecondQuantization.Common.QuarticVertexLabel Mode) n (Finset.univ \\ T))\n  (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ),\n  let S := Finset.univ \\ T;\n  have order := (S.orderIsoOfFin ⋯).toEquiv;\n  have f := fun i => ↑((S.orderIsoOfFin ⋯) i);\n  have fT := fun i => ↑((T.orderIsoOfFin ⋯) i);\n  have e := (T.orderIsoOfFin ⋯).symm.trans (Equiv.subtypeUnivEquiv ⋯).symm;\n  have vacuumKernel :=\n    SecondQuantization.Fermionic.flatVertexLegPairValue ε β (fun v => vac.vertexLabel ((S.orderIsoOfFin ⋯) v)) (σ ∘ f);\n  have vacuumValue :=\n    (vac.pairingInOrder order).evaluation\n      (Combinatorics.Pairing.weight SecondQuantization.Common.Statistics.fermion (vac.pairingInOrder order))\n      vacuumKernel;\n  have d := SecondQuantization.Common.ExternalInsertionDiagram.ofSlotSplit ⋯ ext vac;\n  StrictAnti (σ ∘ f) →\n    d.dysonFixedTimeAmplitude ε β g externalTime σ =\n      SecondQuantization.Fermionic.ExternalInsertionWickDiagram.dysonFixedTimeAmplitude\n          (SecondQuantization.Common.ExternalInsertionDiagram.slotCongr e ext) ε β g externalTime (σ ∘ fT) *\n        ((-1) ^ S.card * vac.vertexWeight g * vacuumValue)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.externalInsertionOfSlotSplit_dysonFixedTimeAmplitude_eq_local_mul_vacuum",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalVacuumAmplitude",
+    "name": "SecondQuantization.Fermionic.externalInsertionOfSlotSplit_dysonFixedTimeAmplitude_eq_standalone_mul_vacuum",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalVacuumStandalone",
     "externalAxioms": [],
-    "docString": "The Dyson-signed amplitude of a reassembled external/vacuum diagram factors\npointwise on strictly antitone vacuum chambers. The local factor retains the\nexternal support's genuine mixed-to-fixed reordering sign; the vacuum factor\nuses its increasing slot order and correctly oriented pairing evaluation. ",
+    "docString": "Pointwise Dyson factorization with the external-support sector expressed as\na standalone diagram on its canonical consecutive slots. The vacuum factor\nretains its increasing complementary slot order and oriented Wick evaluation.\nThe vacuum-time chamber hypothesis is the same as in the local split theorem. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "SecondQuantization.Fermionic.externalInsertionOfSlotSplit_dysonAmplitude_eq_integral_standalone_mul_vacuum"
+    ],
     "dependencies": [
-      "SecondQuantization.Common.ExternalInsertionDiagram.ofSlotSplit_dysonSign_mul_vertexWeight",
-      "SecondQuantization.Fermionic.externalInsertionOfSlotSplit_globalSign_mul_mixedPairingEvaluation_eq_localSign_mul"
+      "SecondQuantization.Fermionic.externalInsertionOfSlotSplit_dysonFixedTimeAmplitude_eq_local_mul_vacuum",
+      "SecondQuantization.Fermionic.externalInsertionSupport_dysonFactor_eq_standardizedAmplitude"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.externalInsertionOfSlotSplit_dysonAmplitude_eq_integral_standalone_mul_vacuum"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -142323,138 +142583,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] (ε : Mode → ℝ) (β : ℝ) {E n : ℕ}\n  (T : Finset (Fin n))\n  (ext :\n    SecondQuantization.Common.ExternalInsertionDiagram (SecondQuantization.Fermionic.ExternalFieldLabel Mode)\n      (SecondQuantization.Common.QuarticVertexLabel Mode) E n T)\n  (vac :\n    SecondQuantization.Common.QuarticDiagram (SecondQuantization.Common.QuarticVertexLabel Mode) n (Finset.univ \\ T))\n  (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ),\n  let S := Finset.univ \\ T;\n  have order := (S.orderIsoOfFin ⋯).toEquiv;\n  have f := fun i => ↑((S.orderIsoOfFin ⋯) i);\n  have d := SecondQuantization.Common.ExternalInsertionDiagram.ofSlotSplit ⋯ ext vac;\n  have split :=\n    (((Equiv.refl (Fin (2 * (2 * T.card + E)))).sumCongr\n              (SecondQuantization.Common.orderedLegToDiagramLeg S order)).trans\n          (SecondQuantization.Common.externalInsertionSlotLegSplitting ⋯)).trans\n      (SecondQuantization.Common.externalInsertionMixedTimeAmbientPositionEquiv externalTime σ).symm;\n  have pairEquiv := Combinatorics.Pairing.ofSplitNormalizedPairEquiv split ext.pairing (vac.pairingInOrder order);\n  have kernel :=\n    SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicPairValue ε β d.externalLabel externalTime\n      (SecondQuantization.Common.ExternalInsertionDiagram.vertexLabelSequence d) σ;\n  (StrictMono fun q =>\n      SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegPosition Fin.elim0 (σ ∘ f)\n        (Sum.inr\n          (⟨((SecondQuantization.Common.orderedQuarticLegEquiv S.card) q).1, ⋯⟩,\n            ((SecondQuantization.Common.orderedQuarticLegEquiv S.card) q).2))) →\n    ∏ pr ∈ (SecondQuantization.Common.ExternalInsertionDiagram.pairingInMixedOrder d externalTime σ).pairs,\n        kernel pr.1 pr.2 =\n      (∏ pr, kernel (↑(pairEquiv (Sum.inl pr))).1 (↑(pairEquiv (Sum.inl pr))).2) *\n        ∏ pr,\n          SecondQuantization.Fermionic.flatVertexLegPairValue ε β (fun v => vac.vertexLabel ((S.orderIsoOfFin ⋯) v))\n            (σ ∘ f) (↑pr).1 (↑pr).2",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.externalInsertionOfSlotSplit_prod_mixedPairContractions_eq_left_mul_flatVacuum_of_localOrder",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalVacuumPairing",
-    "externalAxioms": [],
-    "docString": "If the vacuum-only mixed leg positions preserve their flattened order, their\nambient mixed-time embedding has no reversed vacuum pairs. This directly identifies\nthe vacuum part of the *physical* free-Gibbs contraction product, leaving the\nexternal-sector and fermionic crossing/order signs separate. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.externalInsertionOfSlotSplit_prod_mixedPairContractions_eq_left_mul_flatVacuum_of_strictAnti"
-    ],
-    "dependencies": [
-      "Combinatorics.Pairing.pairs_normalized",
-      "SecondQuantization.Common.externalInsertionSlotLegSplitting_right_strictMono_of_localOrder",
-      "SecondQuantization.Fermionic.externalInsertionOfSlotSplit_prod_mixedPairContractions_eq_left_mul_flatVacuum_of_lt"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.externalInsertionOfSlotSplit_prod_mixedPairContractions_eq_left_mul_flatVacuum_of_strictAnti"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] (ε : Mode → ℝ) (β : ℝ) {E n : ℕ}\n  (T : Finset (Fin n))\n  (ext :\n    SecondQuantization.Common.ExternalInsertionDiagram (SecondQuantization.Fermionic.ExternalFieldLabel Mode)\n      (SecondQuantization.Common.QuarticVertexLabel Mode) E n T)\n  (vac :\n    SecondQuantization.Common.QuarticDiagram (SecondQuantization.Common.QuarticVertexLabel Mode) n (Finset.univ \\ T))\n  (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ),\n  let S := Finset.univ \\ T;\n  have order := (S.orderIsoOfFin ⋯).toEquiv;\n  have f := fun i => ↑((S.orderIsoOfFin ⋯) i);\n  have d := SecondQuantization.Common.ExternalInsertionDiagram.ofSlotSplit ⋯ ext vac;\n  have split :=\n    (((Equiv.refl (Fin (2 * (2 * T.card + E)))).sumCongr\n              (SecondQuantization.Common.orderedLegToDiagramLeg S order)).trans\n          (SecondQuantization.Common.externalInsertionSlotLegSplitting ⋯)).trans\n      (SecondQuantization.Common.externalInsertionMixedTimeAmbientPositionEquiv externalTime σ).symm;\n  have pairEquiv := Combinatorics.Pairing.ofSplitNormalizedPairEquiv split ext.pairing (vac.pairingInOrder order);\n  have kernel :=\n    SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicPairValue ε β d.externalLabel externalTime\n      (SecondQuantization.Common.ExternalInsertionDiagram.vertexLabelSequence d) σ;\n  (∀ (pr : (vac.pairingInOrder order).NormalizedPair), split (Sum.inr (↑pr).1) < split (Sum.inr (↑pr).2)) →\n    ∏ pr ∈ (SecondQuantization.Common.ExternalInsertionDiagram.pairingInMixedOrder d externalTime σ).pairs,\n        kernel pr.1 pr.2 =\n      (∏ pr, kernel (↑(pairEquiv (Sum.inl pr))).1 (↑(pairEquiv (Sum.inl pr))).2) *\n        ∏ pr,\n          SecondQuantization.Fermionic.flatVertexLegPairValue ε β (fun v => vac.vertexLabel ((S.orderIsoOfFin ⋯) v))\n            (σ ∘ f) (↑pr).1 (↑pr).2",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.externalInsertionOfSlotSplit_prod_mixedPairContractions_eq_left_mul_flatVacuum_of_lt",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalVacuumPairing",
-    "externalAxioms": [],
-    "docString": "When every transported vacuum pair retains its endpoint order, the\nvacuum factor in the actual assembled mixed-time Wick contraction product is\nthe standalone quartic free-Gibbs contraction product.\n\nThe external factor still uses ambient-normalized endpoints. If a vacuum pair\nis reversed by the mixed-time ordering, this theorem does not assume the\nfermionic contraction is invariant under that reversal. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.externalInsertionOfSlotSplit_prod_mixedPairContractions_eq_left_mul_flatVacuum_of_localOrder"
-    ],
-    "dependencies": [
-      "SecondQuantization.Fermionic.externalInsertionOfSlotSplit_prod_mixedPairContractions_eq_left_mul_orientedVacuum"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.externalInsertionOfSlotSplit_prod_mixedPairContractions_eq_left_mul_flatVacuum_of_localOrder"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
     "terminal": true,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] (ε : Mode → ℝ) (β : ℝ) {E n : ℕ}\n  (T : Finset (Fin n))\n  (ext :\n    SecondQuantization.Common.ExternalInsertionDiagram (SecondQuantization.Fermionic.ExternalFieldLabel Mode)\n      (SecondQuantization.Common.QuarticVertexLabel Mode) E n T)\n  (vac :\n    SecondQuantization.Common.QuarticDiagram (SecondQuantization.Common.QuarticVertexLabel Mode) n (Finset.univ \\ T))\n  (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ),\n  let S := Finset.univ \\ T;\n  have order := (S.orderIsoOfFin ⋯).toEquiv;\n  have f := fun i => ↑((S.orderIsoOfFin ⋯) i);\n  have d := SecondQuantization.Common.ExternalInsertionDiagram.ofSlotSplit ⋯ ext vac;\n  have split :=\n    (((Equiv.refl (Fin (2 * (2 * T.card + E)))).sumCongr\n              (SecondQuantization.Common.orderedLegToDiagramLeg S order)).trans\n          (SecondQuantization.Common.externalInsertionSlotLegSplitting ⋯)).trans\n      (SecondQuantization.Common.externalInsertionMixedTimeAmbientPositionEquiv externalTime σ).symm;\n  have pairEquiv := Combinatorics.Pairing.ofSplitNormalizedPairEquiv split ext.pairing (vac.pairingInOrder order);\n  have kernel :=\n    SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicPairValue ε β d.externalLabel externalTime\n      (SecondQuantization.Common.ExternalInsertionDiagram.vertexLabelSequence d) σ;\n  StrictAnti (σ ∘ f) →\n    ∏ pr ∈ (SecondQuantization.Common.ExternalInsertionDiagram.pairingInMixedOrder d externalTime σ).pairs,\n        kernel pr.1 pr.2 =\n      (∏ pr, kernel (↑(pairEquiv (Sum.inl pr))).1 (↑(pairEquiv (Sum.inl pr))).2) *\n        ∏ pr,\n          SecondQuantization.Fermionic.flatVertexLegPairValue ε β (fun v => vac.vertexLabel ((S.orderIsoOfFin ⋯) v))\n            (σ ∘ f) (↑pr).1 (↑pr).2",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.externalInsertionOfSlotSplit_prod_mixedPairContractions_eq_left_mul_flatVacuum_of_strictAnti",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalVacuumPairing",
-    "externalAxioms": [],
-    "docString": "On a strictly antitone vacuum time chamber, the actual assembled\nmixed-time Wick contraction product has the standalone quartic vacuum kernel\nfactor. No endpoint-exchange symmetry of the fermionic contraction is used. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegPosition_zero_strictMono_of_strictAnti",
-      "SecondQuantization.Fermionic.externalInsertionOfSlotSplit_prod_mixedPairContractions_eq_left_mul_flatVacuum_of_localOrder"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] (ε : Mode → ℝ) (β : ℝ) {E n : ℕ}\n  (T : Finset (Fin n))\n  (ext :\n    SecondQuantization.Common.ExternalInsertionDiagram (SecondQuantization.Fermionic.ExternalFieldLabel Mode)\n      (SecondQuantization.Common.QuarticVertexLabel Mode) E n T)\n  (vac :\n    SecondQuantization.Common.QuarticDiagram (SecondQuantization.Common.QuarticVertexLabel Mode) n (Finset.univ \\ T))\n  (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ),\n  let S := Finset.univ \\ T;\n  have order := (S.orderIsoOfFin ⋯).toEquiv;\n  have f := fun i => ↑((S.orderIsoOfFin ⋯) i);\n  have d := SecondQuantization.Common.ExternalInsertionDiagram.ofSlotSplit ⋯ ext vac;\n  have split :=\n    (((Equiv.refl (Fin (2 * (2 * T.card + E)))).sumCongr\n              (SecondQuantization.Common.orderedLegToDiagramLeg S order)).trans\n          (SecondQuantization.Common.externalInsertionSlotLegSplitting ⋯)).trans\n      (SecondQuantization.Common.externalInsertionMixedTimeAmbientPositionEquiv externalTime σ).symm;\n  have pairEquiv := Combinatorics.Pairing.ofSplitNormalizedPairEquiv split ext.pairing (vac.pairingInOrder order);\n  have kernel :=\n    SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicPairValue ε β d.externalLabel externalTime\n      (SecondQuantization.Common.ExternalInsertionDiagram.vertexLabelSequence d) σ;\n  ∏ pr ∈ (SecondQuantization.Common.ExternalInsertionDiagram.pairingInMixedOrder d externalTime σ).pairs,\n      kernel pr.1 pr.2 =\n    (∏ pr, kernel (↑(pairEquiv (Sum.inl pr))).1 (↑(pairEquiv (Sum.inl pr))).2) *\n      ∏ pr,\n        if split (Sum.inr (↑pr).1) < split (Sum.inr (↑pr).2) then\n          SecondQuantization.Fermionic.flatVertexLegPairValue ε β (fun v => vac.vertexLabel ((S.orderIsoOfFin ⋯) v))\n            (σ ∘ f) (↑pr).1 (↑pr).2\n        else\n          SecondQuantization.Fermionic.flatVertexLegPairValue ε β (fun v => vac.vertexLabel ((S.orderIsoOfFin ⋯) v))\n            (σ ∘ f) (↑pr).2 (↑pr).1",
     "standardAxioms": [
       "Classical.choice",
@@ -142462,7 +142591,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -142473,19 +142602,15 @@
     "docString": "Factor the actual ambient mixed-time contraction product without an\nendpoint-order assumption. Vacuum factors use the standalone physical kernel\nwith the orientation induced by the split; the external factors still require\ntheir own mixed-order identification. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.externalInsertionOfSlotSplit_prod_mixedPairContractions_eq_left_mul_flatVacuum_of_lt"
-    ],
+    "dependents": [],
     "dependencies": [
       "SecondQuantization.Common.ExternalInsertionDiagram.ofSlotSplit_pairingInMixedOrder_eq_ofSplit_orderedVacuum",
       "SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_right_normalizedPair"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.externalInsertionOfSlotSplit_prod_mixedPairContractions_eq_left_mul_flatVacuum_of_lt"
-    ],
-    "compiledConsumerCount": 1,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -142499,33 +142624,38 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] (ε : Mode → ℝ) (β : ℝ) {E n : ℕ}\n  (T : Finset (Fin n))\n  (ext :\n    SecondQuantization.Common.ExternalInsertionDiagram (SecondQuantization.Fermionic.ExternalFieldLabel Mode)\n      (SecondQuantization.Common.QuarticVertexLabel Mode) E n T)\n  (vac :\n    SecondQuantization.Common.QuarticDiagram (SecondQuantization.Common.QuarticVertexLabel Mode) n (Finset.univ \\ T))\n  (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ),\n  let S := Finset.univ \\ T;\n  have f := fun i => ↑((S.orderIsoOfFin ⋯) i);\n  have d := SecondQuantization.Common.ExternalInsertionDiagram.ofSlotSplit ⋯ ext vac;\n  (vac.pairing.evaluation (Combinatorics.Pairing.weight SecondQuantization.Common.Statistics.fermion vac.pairing)\n      fun a b =>\n      SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicPairValue ε β d.externalLabel externalTime\n        (SecondQuantization.Common.ExternalInsertionDiagram.vertexLabelSequence d) σ\n        (SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegPosition externalTime σ\n          (SecondQuantization.Common.orderedExternalInsertionLegMap Fin.elim0 f\n            (Sum.inr\n              (⟨((SecondQuantization.Common.orderedQuarticLegEquiv S.card) a).1, ⋯⟩,\n                ((SecondQuantization.Common.orderedQuarticLegEquiv S.card) a).2))))\n        (SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegPosition externalTime σ\n          (SecondQuantization.Common.orderedExternalInsertionLegMap Fin.elim0 f\n            (Sum.inr\n              (⟨((SecondQuantization.Common.orderedQuarticLegEquiv S.card) b).1, ⋯⟩,\n                ((SecondQuantization.Common.orderedQuarticLegEquiv S.card) b).2))))) =\n    SecondQuantization.Fermionic.flatVertexLegPairingEvaluation ε β (fun v => vac.vertexLabel ((S.orderIsoOfFin ⋯) v))\n      (σ ∘ f) vac.pairing",
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] (ε : Mode → ℝ) (β : ℝ)\n  (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ) {E n : ℕ} (T : Finset (Fin n))\n  (ext :\n    SecondQuantization.Common.ExternalInsertionDiagram (SecondQuantization.Fermionic.ExternalFieldLabel Mode)\n      (SecondQuantization.Common.QuarticVertexLabel Mode) E n T)\n  (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ),\n  have fT := fun i => ↑((T.orderIsoOfFin ⋯) i);\n  have localFixed :=\n    Equiv.symm (SecondQuantization.Common.externalInsertionStandardToMixedAtomicPositionEquiv externalTime (σ ∘ fT));\n  have localPairing := Combinatorics.PairingOn.transport ext.pairing localFixed;\n  have localSign := ↑↑(Equiv.Perm.sign (localFixed.sumCongr (Equiv.refl (Fin (2 * (2 * (Finset.univ \\ T).card))))));\n  have localKernel :=\n    SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicPairValue ε β ext.externalLabel externalTime\n      (fun v => ext.vertexLabel ((T.orderIsoOfFin ⋯) v)) (σ ∘ fT);\n  have localValue :=\n    localPairing.evaluation (Combinatorics.Pairing.weight SecondQuantization.Common.Statistics.fermion localPairing)\n      localKernel;\n  have e := (T.orderIsoOfFin ⋯).symm.trans (Equiv.subtypeUnivEquiv ⋯).symm;\n  (-1) ^ T.card * ext.vertexWeight g * (localSign * localValue) =\n    SecondQuantization.Fermionic.ExternalInsertionWickDiagram.dysonFixedTimeAmplitude\n      (SecondQuantization.Common.ExternalInsertionDiagram.slotCongr e ext) ε β g externalTime (σ ∘ fT)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.externalInsertionOfSlotSplit_vacuumPairingEvaluation_eq_flatVertex",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalVacuumPairing",
+    "name": "SecondQuantization.Fermionic.externalInsertionSupport_dysonFactor_eq_standardizedAmplitude",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalVacuumStandalone",
     "externalAxioms": [],
-    "docString": "Evaluating all vacuum-side Wick contractions of an assembled external-insertion\ndiagram on its inherited quartic pairing gives the standalone quartic pairing\nevaluation, including its fermionic crossing weight.\n\nHere both products use the *vacuum pairing's* normalized endpoints. Identifying these\nwith the ambient mixed-order pairing's normalized endpoints remains a separate step. ",
+    "docString": "The external-support Dyson factor in a slot split is precisely the Dyson\namplitude of the canonical standalone diagram on its consecutive support slots.\nThe complementary vacuum sector occurs only in the identity permutation used\nto express the local fermionic sign. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "SecondQuantization.Fermionic.externalInsertionOfSlotSplit_dysonFixedTimeAmplitude_eq_standalone_mul_vacuum"
+    ],
     "dependencies": [
-      "SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_right_locality"
+      "SecondQuantization.Common.ExternalInsertionDiagram.slotCongr_vertexWeight",
+      "SecondQuantization.Common.ExternalInsertionDiagram.supportSlotCongr_pairingInMixedOrder"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.externalInsertionOfSlotSplit_dysonFixedTimeAmplitude_eq_standalone_mul_vacuum"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -145081,9 +145211,10 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
+      "Combinatorics.Pairing.interComponentCrossingCount_mod_two_eq_orderedBlockInversionCount",
       "SecondQuantization.Common.BlochDeDominicis.zetaInt_pow_eq_of_mod_two_eq",
       "SecondQuantization.Common.ExternalInsertionDiagram.componentLegShuffle_orderedBlockInversionCount_mod_two_eq_external",
-      "SecondQuantization.Common.ExternalInsertionDiagram.interComponentCrossingCount_mod_two_eq_orderedBlockInversionCount"
+      "SecondQuantization.Common.ExternalInsertionDiagram.componentPairEquiv_apply"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -157099,94 +157230,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {ι : Type u_1} {m : ι → ℕ} (componentPairing : (B : ι) → Combinatorics.Pairing (m B)) (B : ι)\n  (pr : (componentPairing B).NormalizedPair),\n  (Combinatorics.Pairing.componentPairEndpointEquiv✝ componentPairing) (⟨B, pr⟩, 1) = ⟨B, (↑pr).2⟩",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.ComponentDecomposition.0.Combinatorics.Pairing.componentPairEndpointEquiv_apply_one",
-    "module": "LeanCondensedMatter.Combinatorics.PerfectPairing.ComponentDecomposition",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.ComponentDecomposition.0.Combinatorics.Pairing.componentPairEndpointEquiv_partner"
-    ],
-    "dependencies": [
-      "Combinatorics.Pairing.pairEndpoint_one"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.ComponentDecomposition.0.Combinatorics.Pairing.componentPairEndpointEquiv_partner"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {ι : Type u_1} {m : ι → ℕ} (componentPairing : (B : ι) → Combinatorics.Pairing (m B)) (B : ι)\n  (pr : (componentPairing B).NormalizedPair),\n  (Combinatorics.Pairing.componentPairEndpointEquiv✝ componentPairing) (⟨B, pr⟩, 0) = ⟨B, (↑pr).1⟩",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.ComponentDecomposition.0.Combinatorics.Pairing.componentPairEndpointEquiv_apply_zero",
-    "module": "LeanCondensedMatter.Combinatorics.PerfectPairing.ComponentDecomposition",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.ComponentDecomposition.0.Combinatorics.Pairing.componentPairEndpointEquiv_partner"
-    ],
-    "dependencies": [
-      "Combinatorics.Pairing.pairEndpoint_zero"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.ComponentDecomposition.0.Combinatorics.Pairing.componentPairEndpointEquiv_partner"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ {ι : Type u_1} {m : ι → ℕ} {n : ℕ} (global : Combinatorics.Pairing n)\n  (componentPairing : (B : ι) → Combinatorics.Pairing (m B)) (positionEquiv : (B : ι) × Fin (2 * m B) ≃ Fin (2 * n)),\n  (∀ (B : ι) (p : Fin (2 * m B)),\n      global.partner (positionEquiv ⟨B, p⟩) = positionEquiv ⟨B, (componentPairing B).partner p⟩) →\n    ∀ (x : (B : ι) × (componentPairing B).NormalizedPair),\n      global.partner (positionEquiv ((Combinatorics.Pairing.componentPairEndpointEquiv✝ componentPairing) (x, 0))) =\n        positionEquiv ((Combinatorics.Pairing.componentPairEndpointEquiv✝ componentPairing) (x, 1))",
     "standardAxioms": [
       "Classical.choice",
@@ -157210,8 +157253,8 @@
     ],
     "dependencies": [
       "Combinatorics.Pairing.mem_pairs_iff",
-      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.ComponentDecomposition.0.Combinatorics.Pairing.componentPairEndpointEquiv_apply_one",
-      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.ComponentDecomposition.0.Combinatorics.Pairing.componentPairEndpointEquiv_apply_zero"
+      "Combinatorics.Pairing.pairEndpoint_one",
+      "Combinatorics.Pairing.pairEndpoint_zero"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -183303,6 +183346,52 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] (ε : Mode → ℝ) (β : ℝ) {E n : ℕ}\n  (T : Finset (Fin n))\n  (ext :\n    SecondQuantization.Common.ExternalInsertionDiagram (SecondQuantization.Fermionic.ExternalFieldLabel Mode)\n      (SecondQuantization.Common.QuarticVertexLabel Mode) E n T)\n  (vac :\n    SecondQuantization.Common.QuarticDiagram (SecondQuantization.Common.QuarticVertexLabel Mode) n (Finset.univ \\ T))\n  (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ),\n  let S := Finset.univ \\ T;\n  have order := (S.orderIsoOfFin ⋯).toEquiv;\n  have f := fun i => ↑((S.orderIsoOfFin ⋯) i);\n  have d := SecondQuantization.Common.ExternalInsertionDiagram.ofSlotSplit ⋯ ext vac;\n  have splitting :=\n    (((Equiv.refl (Fin (2 * (2 * T.card + E)))).sumCongr\n              (SecondQuantization.Common.orderedLegToDiagramLeg S order)).trans\n          (SecondQuantization.Common.externalInsertionSlotLegSplitting ⋯)).trans\n      (SecondQuantization.Common.externalInsertionMixedTimeAmbientPositionEquiv externalTime σ).symm;\n  have pairEquiv := Combinatorics.Pairing.ofSplitNormalizedPairEquiv splitting ext.pairing (vac.pairingInOrder order);\n  have kernel :=\n    SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicPairValue ε β d.externalLabel externalTime\n      (SecondQuantization.Common.ExternalInsertionDiagram.vertexLabelSequence d) σ;\n  ∀ (pr : (vac.pairingInOrder order).NormalizedPair),\n    splitting (Sum.inr (↑pr).1) < splitting (Sum.inr (↑pr).2) →\n      kernel (↑(pairEquiv (Sum.inr pr))).1 (↑(pairEquiv (Sum.inr pr))).2 =\n        SecondQuantization.Fermionic.flatVertexLegPairValue ε β (fun v => vac.vertexLabel ((S.orderIsoOfFin ⋯) v))\n          (σ ∘ f) (↑pr).1 (↑pr).2",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalVacuumPairing.0.SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_right_normalizedPair_of_lt",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalVacuumPairing",
+    "externalAxioms": [],
+    "docString": "The vacuum-side ambient normalized contraction agrees with its standalone\nquartic kernel whenever the transported endpoints retain their order.\n\nThis hypothesis is necessary: arbitrary mixed-time slot permutations can reverse\na pair, and a fermionic contraction kernel is not symmetric in its arguments. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_right_normalizedPair"
+    ],
+    "dependencies": [
+      "Combinatorics.Pairing.ofSplitNormalizedPairEquiv_pair_eq_of_lt",
+      "SecondQuantization.Common.externalInsertionSlotLegSplitting_right_orderedMixedPosition",
+      "SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_right_locality"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_right_normalizedPair"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] {N : ℕ} (ε : Mode → ℝ) (β : ℝ)\n  {S : Finset (Fin N)} (d : SecondQuantization.Fermionic.QuarticWickDiagram Mode N S),\n  ∑ order, SecondQuantization.Fermionic.QuarticWickDiagram.orderedSimplexContribution ε β d order =\n    ∏ B,\n      ∑ order,\n        SecondQuantization.Fermionic.QuarticWickDiagram.orderedSimplexContribution ε β\n          (↑(SecondQuantization.Common.QuarticDiagram.restrictComponentConnected d ⋯)) order",
     "standardAxioms": [
       "Classical.choice",
@@ -189017,7 +189106,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -189029,6 +189118,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "SecondQuantization.Fermionic.externalInsertionOfSlotSplit_dysonAmplitude_eq_integral_standalone_mul_vacuum",
       "SecondQuantization.Fermionic.fixedExternalShuffleFiber_dysonAmplitude_eq_orderedSimplexIntegral"
     ],
     "dependencies": [
@@ -189038,9 +189128,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "SecondQuantization.Fermionic.externalInsertionOfSlotSplit_dysonAmplitude_eq_integral_standalone_mul_vacuum",
       "SecondQuantization.Fermionic.fixedExternalShuffleFiber_dysonAmplitude_eq_orderedSimplexIntegral"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
