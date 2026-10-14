@@ -75,6 +75,18 @@ theorem inPlaneSpinRotationInverse_mul (angle : ℝ) :
           Matrix.mul_apply, Fin.sum_univ_two, mul_comm]
     _ = 1 := inPlaneSpinRotation_mul_inverse angle
 
+/-- Entrywise conjugation by the diagonal in-plane spinor multiplies each
+matrix entry by the corresponding left and right spinor phases.
+This avoids expanding a full matrix product in Fourier-kernel proofs. -/
+theorem inPlaneSpinRotation_conjugate_apply
+    (angle : ℝ) (M : Matrix2) (i j : Fin 2) :
+    (inPlaneSpinRotation angle * M * inPlaneSpinRotationInverse angle) i j =
+      inPlaneSpinRotation angle i i * M i j *
+        inPlaneSpinRotationInverse angle j j := by
+  fin_cases i <;> fin_cases j <;>
+    simp [inPlaneSpinRotation, inPlaneSpinRotationInverse, Matrix.mul_apply,
+      Fin.sum_univ_two, mul_assoc]
+
 /-- Rotating the Pauli-x axis produces the polar in-plane Pauli direction. -/
 theorem inPlaneSpinRotation_sigmaX (angle : ℝ) :
     inPlaneSpinRotation angle * sigmaX * inPlaneSpinRotationInverse angle =
