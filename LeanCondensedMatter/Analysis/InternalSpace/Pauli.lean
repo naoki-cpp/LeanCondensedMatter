@@ -342,9 +342,13 @@ theorem trace_four_pauliAffine_antisymmetric
           b * dotProduct u (pauliCross w x) +
           c * dotProduct (pauliCross u v) x +
           d * dotProduct (pauliCross u v) w) := by
+  have hI : Complex.I ^ 2 = (-1 : ℂ) := by
+    simpa [pow_two] using Complex.I_mul_I
   rw [trace_four_pauliAffine, trace_four_pauliAffine]
   simp [dotProduct_pauliAxis, pauliCross, cross_apply, pauliAxisComponent,
-    Pi.add_apply, Pi.smul_apply, smul_eq_mul]
+    smul_eq_mul]
+  ring_nf
+  simp only [hI]
   ring
 
 /-- The antisymmetric four-factor trace of arbitrary complex two-level
