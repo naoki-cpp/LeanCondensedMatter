@@ -47,9 +47,11 @@ theorem bandProjectorOperator_completeOrthogonalIdempotents
   let φ : InternalSpace.PauliMatrix ≃⋆ₐ[ℂ]
       (EuclideanSpace ℂ (Fin 2) →L[ℂ] EuclideanSpace ℂ (Fin 2)) :=
     Matrix.toEuclideanCLM
-  simpa only [Function.comp_apply, bandProjectorOperator, matrixOperator, φ] using
-    (bandProjector_completeOrthogonalIdempotents params px py hE).map
-      φ.toRingEquiv.toRingHom
+  change CompleteOrthogonalIdempotents
+    ((φ.toRingEquiv.toRingHom) ∘
+      (fun band : Band => bandProjector params band px py))
+  exact (bandProjector_completeOrthogonalIdempotents params px py hE).map
+    φ.toRingEquiv.toRingHom
 
 /-- The Hamiltonian acts on each projector with its shifted band energy. -/
 theorem hamiltonianOperator_mul_bandProjectorOperator
