@@ -134,10 +134,12 @@ def ofBasisGramPreservingLinearEquiv
           inner ℝ (f (∑ i, b.repr x i • b i))
             (f (∑ j, b.repr y j • b j)) := by rw [hx, hy]
       _ = inner ℝ (∑ i, b.repr x i • f (b i))
-            (∑ j, b.repr y j • f (b j)) := by simp
+            (∑ j, b.repr y j • f (b j)) := by
+          simp only [map_sum, map_smul]
       _ = inner ℝ (∑ i, b.repr x i • b i)
             (∑ j, b.repr y j • b j) := by
-          simp [sum_inner, inner_sum, inner_smul_left, inner_smul_right, hBasis]
+          simp only [sum_inner, inner_sum, inner_smul_left, inner_smul_right]
+          simp only [hBasis]
       _ = inner ℝ x y := by rw [hx, hy]
   refine ⟨f.isometryOfInner hInner, ?_⟩
   intro x
