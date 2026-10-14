@@ -3866,20 +3866,18 @@
     "directWrapperOf": null,
     "dependents": [
       "Combinatorics.Pairing.componentGeometricCrossingCount_comm",
-      "Combinatorics.Pairing.interComponentCrossingCount_mod_two_eq_orderedBlockInversionCount",
-      "SecondQuantization.Common.TwoPointDiagram.pairingInMixedOrder_weight_eq_external_mul_prod_vacuum",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Factorization.ComponentGlobalCrossingParity.0.SecondQuantization.Common.QuarticDiagram.componentCrossingCount_add_swap_mod_two_eq_zero"
+      "Combinatorics.Pairing.crossingCount_mod_two_eq_sum_componentCrossingCount_of_geometric_even",
+      "Combinatorics.Pairing.interComponentCrossingCount_mod_two_eq_orderedBlockInversionCount"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
       "Combinatorics.Pairing.componentGeometricCrossingCount_comm",
-      "Combinatorics.Pairing.interComponentCrossingCount_mod_two_eq_orderedBlockInversionCount",
-      "SecondQuantization.Common.TwoPointDiagram.pairingInMixedOrder_weight_eq_external_mul_prod_vacuum",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Factorization.ComponentGlobalCrossingParity.0.SecondQuantization.Common.QuarticDiagram.componentCrossingCount_add_swap_mod_two_eq_zero"
+      "Combinatorics.Pairing.crossingCount_mod_two_eq_sum_componentCrossingCount_of_geometric_even",
+      "Combinatorics.Pairing.interComponentCrossingCount_mod_two_eq_orderedBlockInversionCount"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -3914,7 +3912,7 @@
     "directWrapperOf": null,
     "dependents": [
       "Combinatorics.Pairing.interComponentCrossingCount_mod_two_eq_orderedBlockInversionCount",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Factorization.ComponentGlobalCrossingParity.0.SecondQuantization.Common.QuarticDiagram.componentCrossingCount_add_swap_mod_two_eq_zero",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Factorization.ComponentGlobalCrossingParity.0.SecondQuantization.Common.QuarticDiagram.componentGeometricCrossingCount_mod_two_eq_zero",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentGeometricCrossingCount_mod_two_eq_zero_of_vacuum"
     ],
     "dependencies": [
@@ -3927,7 +3925,7 @@
     "completedMention": false,
     "compiledConsumers": [
       "Combinatorics.Pairing.interComponentCrossingCount_mod_two_eq_orderedBlockInversionCount",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Factorization.ComponentGlobalCrossingParity.0.SecondQuantization.Common.QuarticDiagram.componentCrossingCount_add_swap_mod_two_eq_zero",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Factorization.ComponentGlobalCrossingParity.0.SecondQuantization.Common.QuarticDiagram.componentGeometricCrossingCount_mod_two_eq_zero",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentGeometricCrossingCount_mod_two_eq_zero_of_vacuum"
     ],
     "compiledConsumerCount": 3,
@@ -4195,7 +4193,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -4207,12 +4205,57 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Common.QuarticDiagram.pairingInOrder_crossingCount_mod_two_eq_sum_components",
-      "SecondQuantization.Common.TwoPointDiagram.pairingInMixedOrder_weight_eq_external_mul_prod_vacuum"
+      "Combinatorics.Pairing.crossingCount_mod_two_eq_sum_componentCrossingCount_of_geometric_even"
     ],
     "dependencies": [
       "Combinatorics.Pairing.crossingCount_eq_sum_componentCrossingCount",
       "Combinatorics.fintype_sum_sum_modEq_diag_of_pair_add_modEq_zero"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "Combinatorics.Pairing.crossingCount_mod_two_eq_sum_componentCrossingCount_of_geometric_even"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {n : ℕ} {ι : Type u_1} {F : ι → Type u_2} [inst : (B : ι) → Fintype (F B)] [inst_1 : Fintype ι]\n  (pairing : Combinatorics.Pairing n) (e : (B : ι) × F B ≃ pairing.NormalizedPair),\n  (∀ (B C : ι), B ≠ C → pairing.componentGeometricCrossingCount e B C % 2 = 0) →\n    pairing.crossingCount % 2 = (∑ B, pairing.componentCrossingCount e B B) % 2",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "Combinatorics.Pairing.crossingCount_mod_two_eq_sum_componentCrossingCount_of_geometric_even",
+    "module": "LeanCondensedMatter.Combinatorics.PerfectPairing.ComponentCrossing",
+    "externalAxioms": [],
+    "docString": "If geometric crossing counts between distinct components are even, the crossing count\nhas the same parity as the sum of the component-internal crossing counts. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Common.QuarticDiagram.pairingInOrder_crossingCount_mod_two_eq_sum_components",
+      "SecondQuantization.Common.TwoPointDiagram.pairingInMixedOrder_weight_eq_external_mul_prod_vacuum"
+    ],
+    "dependencies": [
+      "Combinatorics.Pairing.componentGeometricCrossingCount_eq_oriented_add",
+      "Combinatorics.Pairing.crossingCount_mod_two_eq_sum_componentCrossingCount"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -56522,6 +56565,54 @@
   },
   {
     "terminal": false,
+    "statement": "∀ (v m px py : ℝ),\n  QuantumTheory.Models.MassiveDirac.energy v m px py ≠ 0 →\n    CompleteOrthogonalIdempotents fun band => QuantumTheory.Models.MassiveDirac.bandProjectorOperator band v m px py",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": true,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.MassiveDirac.bandProjectorOperator_completeOrthogonalIdempotents",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Model.OperatorSpectral",
+    "externalAxioms": [],
+    "docString": "The bounded massive-Dirac band projectors form a complete orthogonal family\naway from the band degeneracy. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.MassiveDirac.projectorResolvent_sq",
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Model.OperatorSpectral.0.QuantumTheory.Models.MassiveDirac.shiftedHamiltonian_mul_projectorResolvent"
+    ],
+    "dependencies": [
+      "QuantumTheory.Models.MassiveDirac.bandProjector_mul_oppositeBand",
+      "QuantumTheory.Models.MassiveDirac.bandProjector_mul_self",
+      "QuantumTheory.Models.MassiveDirac.sum_bandProjector_eq_one"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.projectorResolvent_sq",
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Model.OperatorSpectral.0.QuantumTheory.Models.MassiveDirac.shiftedHamiltonian_mul_projectorResolvent"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ (band : QuantumTheory.Models.MassiveDirac.Band) (v m px py : ℝ)\n  (hE : QuantumTheory.Models.MassiveDirac.energy v m px py ≠ 0),\n  QuantumTheory.Models.MassiveDirac.bandProjectorOperator band v m px py =\n    ((InnerProductSpace.rankOne ℂ)\n        ((QuantumTheory.Models.MassiveDirac.pointwiseEigenbasisData v m px py hE).eigenbasis band))\n      ((QuantumTheory.Models.MassiveDirac.pointwiseEigenbasisData v m px py hE).eigenbasis band)",
     "standardAxioms": [
       "Classical.choice",
@@ -56550,94 +56641,6 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.Models.MassiveDirac.forceMatrixTraceNumerator_eq_hamiltonianDerivativeMatrixElements"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (band : QuantumTheory.Models.MassiveDirac.Band) (v m px py : ℝ),\n  QuantumTheory.Models.MassiveDirac.energy v m px py ≠ 0 →\n    QuantumTheory.Models.MassiveDirac.bandProjectorOperator band v m px py *\n        QuantumTheory.Models.MassiveDirac.bandProjectorOperator (QuantumTheory.Models.MassiveDirac.oppositeBand band) v\n          m px py =\n      0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Models.MassiveDirac.bandProjectorOperator_mul_oppositeBand",
-    "module": "LeanCondensedMatter.Models.MassiveDirac.Model.OperatorSpectral",
-    "externalAxioms": [],
-    "docString": "Opposite-band operator projectors are orthogonal away from the Dirac degeneracy. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Models.MassiveDirac.projectorResolvent_sq"
-    ],
-    "dependencies": [
-      "QuantumTheory.Models.MassiveDirac.bandProjector_mul_oppositeBand"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Models.MassiveDirac.projectorResolvent_sq"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (band : QuantumTheory.Models.MassiveDirac.Band) (v m px py : ℝ),\n  QuantumTheory.Models.MassiveDirac.energy v m px py ≠ 0 →\n    QuantumTheory.Models.MassiveDirac.bandProjectorOperator band v m px py *\n        QuantumTheory.Models.MassiveDirac.bandProjectorOperator band v m px py =\n      QuantumTheory.Models.MassiveDirac.bandProjectorOperator band v m px py",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Models.MassiveDirac.bandProjectorOperator_mul_self",
-    "module": "LeanCondensedMatter.Models.MassiveDirac.Model.OperatorSpectral",
-    "externalAxioms": [],
-    "docString": "Operator projectors remain idempotent after transport from `2 × 2` matrices. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Models.MassiveDirac.projectorResolvent_sq"
-    ],
-    "dependencies": [
-      "QuantumTheory.Models.MassiveDirac.bandProjector_mul_self"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Models.MassiveDirac.projectorResolvent_sq"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -56815,7 +56818,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Models.MassiveDirac.bandProjectorOperator_mul_oppositeBand"
+      "QuantumTheory.Models.MassiveDirac.bandProjectorOperator_completeOrthogonalIdempotents"
     ],
     "dependencies": [
       "QuantumTheory.Models.MassiveDirac.bandProjector_add_oppositeBand",
@@ -56824,7 +56827,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Models.MassiveDirac.bandProjectorOperator_mul_oppositeBand"
+      "QuantumTheory.Models.MassiveDirac.bandProjectorOperator_completeOrthogonalIdempotents"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -56860,7 +56863,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Models.MassiveDirac.bandProjectorOperator_mul_self",
+      "QuantumTheory.Models.MassiveDirac.bandProjectorOperator_completeOrthogonalIdempotents",
       "QuantumTheory.Models.MassiveDirac.bandProjector_mul_oppositeBand"
     ],
     "dependencies": [
@@ -56872,7 +56875,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Models.MassiveDirac.bandProjectorOperator_mul_self",
+      "QuantumTheory.Models.MassiveDirac.bandProjectorOperator_completeOrthogonalIdempotents",
       "QuantumTheory.Models.MassiveDirac.bandProjector_mul_oppositeBand"
     ],
     "compiledConsumerCount": 2,
@@ -70268,8 +70271,7 @@
       "QuantumTheory.Models.MassiveDirac.projectorBastinTraceIntegrand_eq_band_sum"
     ],
     "dependencies": [
-      "QuantumTheory.Models.MassiveDirac.bandProjectorOperator_mul_oppositeBand",
-      "QuantumTheory.Models.MassiveDirac.bandProjectorOperator_mul_self"
+      "QuantumTheory.Models.MassiveDirac.bandProjectorOperator_completeOrthogonalIdempotents"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -71337,50 +71339,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (v m px py : ℝ), ∑ band, QuantumTheory.Models.MassiveDirac.bandProjectorOperator band v m px py = 1",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": true,
-    "retainedMention": true,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Models.MassiveDirac.sum_bandProjectorOperator_eq_one",
-    "module": "LeanCondensedMatter.Models.MassiveDirac.Model.OperatorSpectral",
-    "externalAxioms": [],
-    "docString": "The finite sum of operator band projectors resolves the identity. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.Models.MassiveDirac.Model.OperatorSpectral.0.QuantumTheory.Models.MassiveDirac.shiftedHamiltonian_mul_projectorResolvent"
-    ],
-    "dependencies": [
-      "QuantumTheory.Models.MassiveDirac.sum_bandProjector_eq_one"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.Models.MassiveDirac.Model.OperatorSpectral.0.QuantumTheory.Models.MassiveDirac.shiftedHamiltonian_mul_projectorResolvent"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ (v m px py : ℝ), ∑ band, QuantumTheory.Models.MassiveDirac.bandProjector band v m px py = 1",
     "standardAxioms": [
       "Classical.choice",
@@ -71400,8 +71358,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Models.MassiveDirac.bandProjector_add_oppositeBand",
-      "QuantumTheory.Models.MassiveDirac.sum_bandProjectorOperator_eq_one"
+      "QuantumTheory.Models.MassiveDirac.bandProjectorOperator_completeOrthogonalIdempotents",
+      "QuantumTheory.Models.MassiveDirac.bandProjector_add_oppositeBand"
     ],
     "dependencies": [
       "QuantumTheory.Models.MassiveDirac.sum_band",
@@ -71410,8 +71368,8 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Models.MassiveDirac.bandProjector_add_oppositeBand",
-      "QuantumTheory.Models.MassiveDirac.sum_bandProjectorOperator_eq_one"
+      "QuantumTheory.Models.MassiveDirac.bandProjectorOperator_completeOrthogonalIdempotents",
+      "QuantumTheory.Models.MassiveDirac.bandProjector_add_oppositeBand"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -77539,80 +77497,40 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (params : QuantumTheory.Models.RashbaExchange.Parameters) (band : QuantumTheory.Models.RashbaExchange.Band)\n  (px py : ℝ),\n  QuantumTheory.Models.RashbaExchange.spinOrbitEnergy params.toHamiltonianParameters px py ≠ 0 →\n    QuantumTheory.Models.RashbaExchange.bandProjectorOperator params band px py *\n        QuantumTheory.Models.RashbaExchange.bandProjectorOperator params\n          (QuantumTheory.Models.RashbaExchange.oppositeBand band) px py =\n      0",
+    "statement": "∀ (params : QuantumTheory.Models.RashbaExchange.Parameters) (px py : ℝ),\n  QuantumTheory.Models.RashbaExchange.spinOrbitEnergy params.toHamiltonianParameters px py ≠ 0 →\n    CompleteOrthogonalIdempotents fun band =>\n      QuantumTheory.Models.RashbaExchange.bandProjectorOperator params band px py",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedMention": true,
     "projectAxioms": [],
-    "name": "QuantumTheory.Models.RashbaExchange.bandProjectorOperator_mul_oppositeBand",
+    "name": "QuantumTheory.Models.RashbaExchange.bandProjectorOperator_completeOrthogonalIdempotents",
     "module": "LeanCondensedMatter.Models.RashbaExchange.Model.OperatorSpectral",
     "externalAxioms": [],
-    "docString": "Opposite-band operator projectors are orthogonal. ",
+    "docString": "The bounded Rashba-exchange band projectors form a complete orthogonal\nfamily away from the spin-orbit band degeneracy. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Models.RashbaExchange.projectorResolvent_sq"
+      "QuantumTheory.Models.RashbaExchange.projectorResolvent_sq",
+      "_private.LeanCondensedMatter.Models.RashbaExchange.Model.OperatorSpectral.0.QuantumTheory.Models.RashbaExchange.shiftedHamiltonian_mul_projectorResolvent"
     ],
     "dependencies": [
-      "QuantumTheory.Models.RashbaExchange.bandProjector_mul_oppositeBand"
+      "QuantumTheory.Models.RashbaExchange.bandProjector_mul_oppositeBand",
+      "QuantumTheory.Models.RashbaExchange.bandProjector_mul_self",
+      "QuantumTheory.Models.RashbaExchange.sum_bandProjector_eq_one"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Models.RashbaExchange.projectorResolvent_sq"
+      "QuantumTheory.Models.RashbaExchange.projectorResolvent_sq",
+      "_private.LeanCondensedMatter.Models.RashbaExchange.Model.OperatorSpectral.0.QuantumTheory.Models.RashbaExchange.shiftedHamiltonian_mul_projectorResolvent"
     ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (params : QuantumTheory.Models.RashbaExchange.Parameters) (band : QuantumTheory.Models.RashbaExchange.Band)\n  (px py : ℝ),\n  QuantumTheory.Models.RashbaExchange.spinOrbitEnergy params.toHamiltonianParameters px py ≠ 0 →\n    QuantumTheory.Models.RashbaExchange.bandProjectorOperator params band px py *\n        QuantumTheory.Models.RashbaExchange.bandProjectorOperator params band px py =\n      QuantumTheory.Models.RashbaExchange.bandProjectorOperator params band px py",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Models.RashbaExchange.bandProjectorOperator_mul_self",
-    "module": "LeanCondensedMatter.Models.RashbaExchange.Model.OperatorSpectral",
-    "externalAxioms": [],
-    "docString": "Operator projectors remain idempotent. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Models.RashbaExchange.projectorResolvent_sq"
-    ],
-    "dependencies": [
-      "QuantumTheory.Models.RashbaExchange.bandProjector_mul_self"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Models.RashbaExchange.projectorResolvent_sq"
-    ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -77739,7 +77657,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Models.RashbaExchange.bandProjectorOperator_mul_oppositeBand"
+      "QuantumTheory.Models.RashbaExchange.bandProjectorOperator_completeOrthogonalIdempotents"
     ],
     "dependencies": [
       "QuantumTheory.Models.RashbaExchange.bandProjector_add_oppositeBand",
@@ -77748,7 +77666,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Models.RashbaExchange.bandProjectorOperator_mul_oppositeBand"
+      "QuantumTheory.Models.RashbaExchange.bandProjectorOperator_completeOrthogonalIdempotents"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -77784,7 +77702,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Models.RashbaExchange.bandProjectorOperator_mul_self",
+      "QuantumTheory.Models.RashbaExchange.bandProjectorOperator_completeOrthogonalIdempotents",
       "QuantumTheory.Models.RashbaExchange.bandProjector_mul_oppositeBand"
     ],
     "dependencies": [
@@ -77796,7 +77714,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Models.RashbaExchange.bandProjectorOperator_mul_self",
+      "QuantumTheory.Models.RashbaExchange.bandProjectorOperator_completeOrthogonalIdempotents",
       "QuantumTheory.Models.RashbaExchange.bandProjector_mul_oppositeBand"
     ],
     "compiledConsumerCount": 2,
@@ -79296,8 +79214,7 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "QuantumTheory.Models.RashbaExchange.bandProjectorOperator_mul_oppositeBand",
-      "QuantumTheory.Models.RashbaExchange.bandProjectorOperator_mul_self"
+      "QuantumTheory.Models.RashbaExchange.bandProjectorOperator_completeOrthogonalIdempotents"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -79629,50 +79546,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (params : QuantumTheory.Models.RashbaExchange.Parameters) (px py : ℝ),\n  ∑ band, QuantumTheory.Models.RashbaExchange.bandProjectorOperator params band px py = 1",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": true,
-    "retainedMention": true,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Models.RashbaExchange.sum_bandProjectorOperator_eq_one",
-    "module": "LeanCondensedMatter.Models.RashbaExchange.Model.OperatorSpectral",
-    "externalAxioms": [],
-    "docString": "The operator band projectors resolve the identity. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.Models.RashbaExchange.Model.OperatorSpectral.0.QuantumTheory.Models.RashbaExchange.shiftedHamiltonian_mul_projectorResolvent"
-    ],
-    "dependencies": [
-      "QuantumTheory.Models.RashbaExchange.sum_bandProjector_eq_one"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.Models.RashbaExchange.Model.OperatorSpectral.0.QuantumTheory.Models.RashbaExchange.shiftedHamiltonian_mul_projectorResolvent"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ (params : QuantumTheory.Models.RashbaExchange.Parameters) (px py : ℝ),\n  ∑ band, QuantumTheory.Models.RashbaExchange.bandProjector params band px py = 1",
     "standardAxioms": [
       "Classical.choice",
@@ -79692,8 +79565,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Models.RashbaExchange.bandProjector_add_oppositeBand",
-      "QuantumTheory.Models.RashbaExchange.sum_bandProjectorOperator_eq_one"
+      "QuantumTheory.Models.RashbaExchange.bandProjectorOperator_completeOrthogonalIdempotents",
+      "QuantumTheory.Models.RashbaExchange.bandProjector_add_oppositeBand"
     ],
     "dependencies": [
       "QuantumTheory.Models.RashbaExchange.sum_band",
@@ -79702,8 +79575,8 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Models.RashbaExchange.bandProjector_add_oppositeBand",
-      "QuantumTheory.Models.RashbaExchange.sum_bandProjectorOperator_eq_one"
+      "QuantumTheory.Models.RashbaExchange.bandProjectorOperator_completeOrthogonalIdempotents",
+      "QuantumTheory.Models.RashbaExchange.bandProjector_add_oppositeBand"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -107851,7 +107724,7 @@
     "dependents": [
       "SecondQuantization.Common.QuarticDiagram.pairingInOrder_crossingCount_mod_two_eq_sum_components",
       "SecondQuantization.Common.QuarticDiagram.pairingInOrder_evaluation_eq_prod_components",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Factorization.ComponentGlobalCrossingParity.0.SecondQuantization.Common.QuarticDiagram.componentCrossingCount_add_swap_mod_two_eq_zero",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Factorization.ComponentGlobalCrossingParity.0.SecondQuantization.Common.QuarticDiagram.componentGeometricCrossingCount_mod_two_eq_zero",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Pairing.FixedOrderComponentPair.0.SecondQuantization.Common.QuarticDiagram.fixedOrderComponentPairEmbedding_apply"
     ],
     "dependencies": [
@@ -107864,7 +107737,7 @@
     "compiledConsumers": [
       "SecondQuantization.Common.QuarticDiagram.pairingInOrder_crossingCount_mod_two_eq_sum_components",
       "SecondQuantization.Common.QuarticDiagram.pairingInOrder_evaluation_eq_prod_components",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Factorization.ComponentGlobalCrossingParity.0.SecondQuantization.Common.QuarticDiagram.componentCrossingCount_add_swap_mod_two_eq_zero",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Factorization.ComponentGlobalCrossingParity.0.SecondQuantization.Common.QuarticDiagram.componentGeometricCrossingCount_mod_two_eq_zero",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Pairing.FixedOrderComponentPair.0.SecondQuantization.Common.QuarticDiagram.fixedOrderComponentPairEmbedding_apply"
     ],
     "compiledConsumerCount": 4,
@@ -108463,10 +108336,10 @@
     ],
     "dependencies": [
       "Combinatorics.Pairing.componentCrossingCount_self_eq",
-      "Combinatorics.Pairing.crossingCount_mod_two_eq_sum_componentCrossingCount",
+      "Combinatorics.Pairing.crossingCount_mod_two_eq_sum_componentCrossingCount_of_geometric_even",
       "SecondQuantization.Common.QuarticDiagram.componentOrderedLeg_strictMono",
       "SecondQuantization.Common.QuarticDiagram.componentPairEquiv_apply",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Factorization.ComponentGlobalCrossingParity.0.SecondQuantization.Common.QuarticDiagram.componentCrossingCount_add_swap_mod_two_eq_zero"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Factorization.ComponentGlobalCrossingParity.0.SecondQuantization.Common.QuarticDiagram.componentGeometricCrossingCount_mod_two_eq_zero"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -111435,8 +111308,7 @@
     ],
     "dependencies": [
       "Combinatorics.Pairing.componentGeometricCrossingCount_comm",
-      "Combinatorics.Pairing.componentGeometricCrossingCount_eq_oriented_add",
-      "Combinatorics.Pairing.crossingCount_mod_two_eq_sum_componentCrossingCount",
+      "Combinatorics.Pairing.crossingCount_mod_two_eq_sum_componentCrossingCount_of_geometric_even",
       "SecondQuantization.Common.BlochDeDominicis.zetaInt_pow_eq_prod_of_sum_mod_two_eq",
       "SecondQuantization.Common.TwoPointDiagram.componentIsVacuum_iff_ne_externalComponentPart",
       "SecondQuantization.Common.TwoPointDiagram.prod_componentParts_eq_external_mul_prod_vacuum",
@@ -140910,7 +140782,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {E n : ℕ} (T : Finset (Fin n)) (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ),\n  SecondQuantization.Fermionic.externalInsertionLeftMixedToFixedEquiv T externalTime σ =\n    Equiv.symm\n      (SecondQuantization.Common.externalInsertionStandardToMixedAtomicPositionEquiv externalTime\n        (σ ∘ fun i => ↑((T.orderIsoOfFin ⋯) i)))",
+    "statement": "∀ {E n : ℕ} (T : Finset (Fin n)) (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ),\n  ↑↑(Equiv.Perm.sign\n          ((SecondQuantization.Fermionic.externalInsertionLeftMixedToFixedEquiv T externalTime σ).sumCongr\n            (Equiv.refl (Fin (2 * (2 * (Finset.univ \\ T).card)))))) =\n    SecondQuantization.Fermionic.externalInsertionMixedAtomicOrderSign externalTime\n      (σ ∘ fun i => ↑((T.orderIsoOfFin ⋯) i))",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -140922,21 +140794,65 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.externalInsertionLeftMixedSign_eq_standalone",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalVacuumStandardization",
+    "externalAxioms": [],
+    "docString": "The external-sector sign left after cancelling the ambient/vacuum crossing\nparity is exactly the standalone mixed-time ordering sign, even when the\nsupported interaction slots are not consecutive. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "SecondQuantization.Fermionic.externalInsertionLeftMixedToFixedEquiv_eq_standardMixedPosition_symm"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {E n : ℕ} (T : Finset (Fin n)) (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ),\n  SecondQuantization.Fermionic.externalInsertionLeftMixedToFixedEquiv T externalTime σ =\n    Equiv.symm\n      (SecondQuantization.Common.externalInsertionStandardToMixedAtomicPositionEquiv externalTime\n        (σ ∘ fun i => ↑((T.orderIsoOfFin ⋯) i)))",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
     "name": "SecondQuantization.Fermionic.externalInsertionLeftMixedToFixedEquiv_eq_standardMixedPosition_symm",
     "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalVacuumStandardization",
     "externalAxioms": [],
     "docString": "In increasing support-slot coordinates, the external sector's mixed-to-fixed\nposition map is the inverse of the standard standalone mixed-time permutation. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "SecondQuantization.Fermionic.externalInsertionLeftMixedSign_eq_standalone"
+    ],
     "dependencies": [
       "SecondQuantization.Common.externalInsertionExternalLeg_val",
       "SecondQuantization.Common.externalInsertionInteractionLeg_val"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.externalInsertionLeftMixedSign_eq_standalone"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -163887,8 +163803,8 @@
       "QuantumTheory.Models.MassiveDirac.resolvent_spectralParameterOfRegulator_eq_projectorResolvent"
     ],
     "dependencies": [
+      "QuantumTheory.Models.MassiveDirac.bandProjectorOperator_completeOrthogonalIdempotents",
       "QuantumTheory.Models.MassiveDirac.hamiltonianOperator_mul_bandProjectorOperator",
-      "QuantumTheory.Models.MassiveDirac.sum_bandProjectorOperator_eq_one",
       "QuantumTheory.mul_sum_inv_smul_eq_one_of_diagonal_action"
     ],
     "crossModuleDirectWrapper": false,
@@ -165732,8 +165648,8 @@
       "QuantumTheory.Models.RashbaExchange.resolvent_spectralParameterOfRegulator_eq_projectorResolvent"
     ],
     "dependencies": [
+      "QuantumTheory.Models.RashbaExchange.bandProjectorOperator_completeOrthogonalIdempotents",
       "QuantumTheory.Models.RashbaExchange.hamiltonianOperator_mul_bandProjectorOperator",
-      "QuantumTheory.Models.RashbaExchange.sum_bandProjectorOperator_eq_one",
       "QuantumTheory.mul_sum_inv_smul_eq_one_of_diagonal_action"
     ],
     "crossModuleDirectWrapper": false,
@@ -176621,7 +176537,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Label : Type u_1} {N : ℕ} {S : Finset (Fin N)} (d : SecondQuantization.Common.QuarticDiagram Label N S)\n  (orders : d.ComponentVertexOrders) (shuffle : d.ComponentShuffle) (B C : ↥d.vertexGraph.componentPartitionOn.parts),\n  B ≠ C →\n    ((d.pairingInOrder (d.assembleVertexOrder orders shuffle)).componentCrossingCount\n            (d.componentPairEquiv orders shuffle) B C +\n          (d.pairingInOrder (d.assembleVertexOrder orders shuffle)).componentCrossingCount\n            (d.componentPairEquiv orders shuffle) C B) %\n        2 =\n      0",
+    "statement": "∀ {Label : Type u_1} {N : ℕ} {S : Finset (Fin N)} (d : SecondQuantization.Common.QuarticDiagram Label N S)\n  (orders : d.ComponentVertexOrders) (shuffle : d.ComponentShuffle) (B C : ↥d.vertexGraph.componentPartitionOn.parts),\n  B ≠ C →\n    (d.pairingInOrder (d.assembleVertexOrder orders shuffle)).componentGeometricCrossingCount\n          (d.componentPairEquiv orders shuffle) B C %\n        2 =\n      0",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -176633,17 +176549,16 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Factorization.ComponentGlobalCrossingParity.0.SecondQuantization.Common.QuarticDiagram.componentCrossingCount_add_swap_mod_two_eq_zero",
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Factorization.ComponentGlobalCrossingParity.0.SecondQuantization.Common.QuarticDiagram.componentGeometricCrossingCount_mod_two_eq_zero",
     "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Factorization.ComponentGlobalCrossingParity",
     "externalAxioms": [],
-    "docString": "Both orientations of the crossing count between two distinct components add up to an even\nnumber. ",
+    "docString": "Distinct components have an even number of geometric crossings because each\ninteraction vertex contributes a complete four-leg block. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Common.QuarticDiagram.pairingInOrder_crossingCount_mod_two_eq_sum_components"
     ],
     "dependencies": [
-      "Combinatorics.Pairing.componentGeometricCrossingCount_eq_oriented_add",
       "Combinatorics.Pairing.componentGeometricCrossingCount_mod_two_eq_endpointInversionCount",
       "SecondQuantization.Common.QuarticDiagram.componentPairEquiv_apply",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Factorization.ComponentGlobalCrossingParity.0.SecondQuantization.Common.QuarticDiagram.sum_componentOrderedLeg_inversions_mod_two_eq_zero"
@@ -176731,7 +176646,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Factorization.ComponentGlobalCrossingParity.0.SecondQuantization.Common.QuarticDiagram.componentCrossingCount_add_swap_mod_two_eq_zero"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Factorization.ComponentGlobalCrossingParity.0.SecondQuantization.Common.QuarticDiagram.componentGeometricCrossingCount_mod_two_eq_zero"
     ],
     "dependencies": [
       "Fintype.dvd_sum_equiv_fst_of_dvd_card",
@@ -176740,7 +176655,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Factorization.ComponentGlobalCrossingParity.0.SecondQuantization.Common.QuarticDiagram.componentCrossingCount_add_swap_mod_two_eq_zero"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Factorization.ComponentGlobalCrossingParity.0.SecondQuantization.Common.QuarticDiagram.componentGeometricCrossingCount_mod_two_eq_zero"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
