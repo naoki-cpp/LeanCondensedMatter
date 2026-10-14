@@ -159,7 +159,7 @@ noncomputable def extendIntegralLinearEquiv [FiniteDimensional ℝ V]
 every integer basis vector. -/
 @[simp]
 theorem extendIntegralLinearEquiv_apply_basis [FiniteDimensional ℝ V]
-    {ι : Type*} [Fintype ι]
+    {ι : Type*}
     (L : Submodule ℤ V) [DiscreteTopology L] [IsZLattice ℝ L]
     (b : Module.Basis ι ℤ L) (e : L ≃ₗ[ℤ] L) (i : ι) :
     extendIntegralLinearEquiv L b e ((b i : L) : V) = ((e (b i) : L) : V) := by
@@ -176,7 +176,7 @@ theorem extendIntegralLinearEquiv_apply_basis [FiniteDimensional ℝ V]
 /-- An integral-linear lattice automorphism extends to an ambient real-linear
 automorphism that preserves lattice membership in both directions. -/
 theorem extendIntegralLinearEquiv_mem_iff [FiniteDimensional ℝ V]
-    {ι : Type*} [Fintype ι]
+    {ι : Type*}
     (L : Submodule ℤ V) [DiscreteTopology L] [IsZLattice ℝ L]
     (b : Module.Basis ι ℤ L) (e : L ≃ₗ[ℤ] L) (x : V) :
     extendIntegralLinearEquiv L b e x ∈ L ↔ x ∈ L := by
