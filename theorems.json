@@ -24642,6 +24642,7 @@
     "dependents": [
       "InternalSpace.pauliCombination_mul_pauliCombination",
       "InternalSpace.pauliShiftMatrix_mul_closedInverse",
+      "InternalSpace.trace_four_antisymmetric_eq_xz_plane_minors",
       "InternalSpace.trace_four_pauliAffine_antisymmetric",
       "InternalSpace.trace_pauliBasis_mul_pauliCombination",
       "QuantumTheory.Models.MassiveDirac.diracPauliCoefficients_dot_self",
@@ -24661,6 +24662,7 @@
     "compiledConsumers": [
       "InternalSpace.pauliCombination_mul_pauliCombination",
       "InternalSpace.pauliShiftMatrix_mul_closedInverse",
+      "InternalSpace.trace_four_antisymmetric_eq_xz_plane_minors",
       "InternalSpace.trace_four_pauliAffine_antisymmetric",
       "InternalSpace.trace_pauliBasis_mul_pauliCombination",
       "QuantumTheory.Models.MassiveDirac.diracPauliCoefficients_dot_self",
@@ -24672,7 +24674,7 @@
       "_private.LeanCondensedMatter.Analysis.InternalSpace.Pauli.0.InternalSpace.pauliBasis_mul_pauliBasis",
       "_private.LeanCondensedMatter.Models.MassiveDirac.Model.FermiSurfaceOverlap.0.QuantumTheory.Models.MassiveDirac.upperBandProjectorOverlap_eq"
     ],
-    "compiledConsumerCount": 12,
+    "compiledConsumerCount": 13,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -25535,7 +25537,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -25547,6 +25549,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "InternalSpace.trace_four_antisymmetric_eq_xz_plane_minors",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_x_antisymmetric_eq_pauli_triples"
     ],
     "dependencies": [
@@ -25556,7 +25559,53 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "InternalSpace.trace_four_antisymmetric_eq_xz_plane_minors",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_x_antisymmetric_eq_pauli_triples"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (A B C D : InternalSpace.PauliMatrix),\n  InternalSpace.pauliVectorCoefficient B InternalSpace.PauliAxis.y = 0 →\n    InternalSpace.pauliVectorCoefficient D InternalSpace.PauliAxis.y = 0 →\n      have a := InternalSpace.pauliScalarCoefficient A;\n      have b := InternalSpace.pauliScalarCoefficient B;\n      have c := InternalSpace.pauliScalarCoefficient C;\n      have d := InternalSpace.pauliScalarCoefficient D;\n      have u := InternalSpace.pauliVectorCoefficient A;\n      have v := InternalSpace.pauliVectorCoefficient B;\n      have w := InternalSpace.pauliVectorCoefficient C;\n      have x := InternalSpace.pauliVectorCoefficient D;\n      (A * B * C * D).trace - (C * B * A * D).trace =\n        4 * Complex.I *\n          ((a * w InternalSpace.PauliAxis.y - c * u InternalSpace.PauliAxis.y) *\n                (v InternalSpace.PauliAxis.x * x InternalSpace.PauliAxis.z -\n                  v InternalSpace.PauliAxis.z * x InternalSpace.PauliAxis.x) +\n              b *\n                (w InternalSpace.PauliAxis.y *\n                    (u InternalSpace.PauliAxis.x * x InternalSpace.PauliAxis.z -\n                      u InternalSpace.PauliAxis.z * x InternalSpace.PauliAxis.x) +\n                  u InternalSpace.PauliAxis.y *\n                    (w InternalSpace.PauliAxis.z * x InternalSpace.PauliAxis.x -\n                      w InternalSpace.PauliAxis.x * x InternalSpace.PauliAxis.z)) +\n            d *\n              (w InternalSpace.PauliAxis.y *\n                  (u InternalSpace.PauliAxis.z * v InternalSpace.PauliAxis.x -\n                    u InternalSpace.PauliAxis.x * v InternalSpace.PauliAxis.z) +\n                u InternalSpace.PauliAxis.y *\n                  (v InternalSpace.PauliAxis.z * w InternalSpace.PauliAxis.x -\n                    v InternalSpace.PauliAxis.x * w InternalSpace.PauliAxis.z)))",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "InternalSpace.trace_four_antisymmetric_eq_xz_plane_minors",
+    "module": "LeanCondensedMatter.Analysis.InternalSpace.Pauli",
+    "externalAxioms": [],
+    "docString": "When the second and fourth Pauli vectors lie in the xz plane, the\nantisymmetric four-matrix trace reduces to scalar coefficients and oriented\ntwo-by-two minors. No Hermiticity or complex conjugation is assumed. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_x_antisymmetric_eq_xz_plane_minors"
+    ],
+    "dependencies": [
+      "InternalSpace.dotProduct_pauliAxis",
+      "InternalSpace.trace_four_antisymmetric_eq_pauliCoefficients"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_x_antisymmetric_eq_xz_plane_minors"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -63051,7 +63100,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -63063,7 +63112,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_x_antisymmetric_eq_pauli_triples"
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_x_antisymmetric_eq_pauli_triples",
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_x_antisymmetric_eq_xz_plane_minors"
     ],
     "dependencies": [
       "QuantumTheory.Models.MassiveDirac.gaussianCrossedTraceKernel_psi_sub_swapped",
@@ -63072,9 +63122,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_x_antisymmetric_eq_pauli_triples"
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_x_antisymmetric_eq_pauli_triples",
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_x_antisymmetric_eq_xz_plane_minors"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -63110,6 +63161,47 @@
     "dependents": [],
     "dependencies": [
       "InternalSpace.trace_four_antisymmetric_eq_pauliCoefficients",
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_antisymmetric_eq"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ),\n  have Jx :=\n    QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock 0 v m\n      probeEnergy broadening disorderStrength hbar pMax radius;\n  have Jy :=\n    QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock 1 v m\n      probeEnergy broadening disorderStrength hbar pMax radius;\n  have GR :=\n    QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix\n      QuantumTheory.Transport.SpectralSide.retarded v m probeEnergy broadening disorderStrength hbar pMax (-radius);\n  have GA :=\n    QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix\n      QuantumTheory.Transport.SpectralSide.advanced v m probeEnergy broadening disorderStrength hbar pMax (-radius);\n  have a := InternalSpace.pauliScalarCoefficient Jx;\n  have b := InternalSpace.pauliScalarCoefficient GR;\n  have c := InternalSpace.pauliScalarCoefficient Jy;\n  have d := InternalSpace.pauliScalarCoefficient GA;\n  have u := InternalSpace.pauliVectorCoefficient Jx;\n  have vr := InternalSpace.pauliVectorCoefficient GR;\n  have w := InternalSpace.pauliVectorCoefficient Jy;\n  have va := InternalSpace.pauliVectorCoefficient GA;\n  QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor\n        QuantumTheory.Models.MassiveDirac.GaussianCrossedDiagram.x v m probeEnergy broadening disorderStrength hbar pMax\n        radius 0 1 -\n      QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor\n        QuantumTheory.Models.MassiveDirac.GaussianCrossedDiagram.x v m probeEnergy broadening disorderStrength hbar pMax\n        radius 1 0 =\n    4 * Complex.I *\n      ((a * w InternalSpace.PauliAxis.y - c * u InternalSpace.PauliAxis.y) *\n            (vr InternalSpace.PauliAxis.x * va InternalSpace.PauliAxis.z -\n              vr InternalSpace.PauliAxis.z * va InternalSpace.PauliAxis.x) +\n          b *\n            (w InternalSpace.PauliAxis.y *\n                (u InternalSpace.PauliAxis.x * va InternalSpace.PauliAxis.z -\n                  u InternalSpace.PauliAxis.z * va InternalSpace.PauliAxis.x) +\n              u InternalSpace.PauliAxis.y *\n                (w InternalSpace.PauliAxis.z * va InternalSpace.PauliAxis.x -\n                  w InternalSpace.PauliAxis.x * va InternalSpace.PauliAxis.z)) +\n        d *\n          (w InternalSpace.PauliAxis.y *\n              (u InternalSpace.PauliAxis.z * vr InternalSpace.PauliAxis.x -\n                u InternalSpace.PauliAxis.x * vr InternalSpace.PauliAxis.z) +\n            u InternalSpace.PauliAxis.y *\n              (vr InternalSpace.PauliAxis.z * w InternalSpace.PauliAxis.x -\n                vr InternalSpace.PauliAxis.x * w InternalSpace.PauliAxis.z)))",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_x_antisymmetric_eq_xz_plane_minors",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedRealSpaceIntegral",
+    "externalAxioms": [],
+    "docString": "For the massive-Dirac radial Green blocks, both advanced and retarded\nPauli vectors lie in the xz plane. Thus the antisymmetric X trace reduces\nto scalar coefficients and oriented two-component minors. This is an exact\nfinite-cutoff radial identity, not a radial-integral evaluation. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "InternalSpace.trace_four_antisymmetric_eq_xz_plane_minors",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_antisymmetric_eq"
     ],
     "crossModuleDirectWrapper": false,
