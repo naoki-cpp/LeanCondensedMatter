@@ -1,6 +1,7 @@
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Core.Diagram
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Ordered
 import LeanCondensedMatter.Combinatorics.FiniteIndex.Block
+import LeanCondensedMatter.Combinatorics.Common.FintypeProduct
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Split
 import LeanCondensedMatter.Combinatorics.SubsetSplit
 
@@ -227,6 +228,180 @@ theorem externalInsertionSlotLegSplitting_orderedRight_strictMono
     (externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T)
       (Sum.inr (orderedLegToDiagramLeg S order q))).val
   omega
+
+/-- A sorted vacuum leg, inserted into the full fixed-order array, occupies
+the interaction-leg position of its original vertex. -/
+private theorem externalInsertionSlotLegSplitting_fixedRight_apply
+    {E N : ℕ} (T : Finset (Fin N))
+    (v : Fin ((Finset.univ : Finset (Fin N)) \ T).card) (l : Fin 4) :
+    let S := (Finset.univ : Finset (Fin N)) \ T
+    let order : QuarticVertexOrder S := (S.orderIsoOfFin rfl).toEquiv
+    externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T)
+        (Sum.inr (orderedLegToDiagramLeg S order
+          ((orderedQuarticLegEquiv S.card).symm (v, l)))) =
+      externalInsertionInteractionLeg (E := E)
+        (⟨(order v).1, Finset.mem_univ _⟩ :
+          ↥(Finset.univ : Finset (Fin N))) l := by
+  intro S order
+  have hleg :
+      orderedLegToDiagramLeg S order
+          ((orderedQuarticLegEquiv S.card).symm (v, l)) =
+        (quarticLegEquiv S).symm (order v, l) := by
+    simp [orderedLegToDiagramLeg, Prod.map]
+  rw [hleg]
+  exact externalInsertionSlotLegSplitting_right_interaction
+    (E := E) (Finset.subset_univ T) (order v) l
+
+/-- A vacuum interaction leg precedes a support interaction leg precisely when
+its ambient vertex precedes the support vertex; local quartic indices do not matter. -/
+private theorem externalInsertionSlotLegSplitting_fixedRight_lt_leftInteraction_iff
+    {E N : ℕ} (T : Finset (Fin N))
+    (v : ↥T) (l : Fin 4)
+    (w : Fin ((Finset.univ : Finset (Fin N)) \ T).card) (k : Fin 4) :
+    let S := (Finset.univ : Finset (Fin N)) \ T
+    let order : QuarticVertexOrder S := (S.orderIsoOfFin rfl).toEquiv
+    externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T)
+        (Sum.inr (orderedLegToDiagramLeg S order
+          ((orderedQuarticLegEquiv S.card).symm (w, k)))) <
+      externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T)
+        (Sum.inl (externalInsertionInteractionLeg (E := E) v l)) ↔
+      (order w).1 < v.1 := by
+  intro S order
+  rw [externalInsertionSlotLegSplitting_fixedRight_apply]
+  unfold externalInsertionInteractionLeg
+  rw [externalInsertionSlotLegSplitting_left_interaction]
+  change (externalInsertionInteractionLeg (E := E)
+      (⟨(order w).1, Finset.mem_univ _⟩ :
+        ↥(Finset.univ : Finset (Fin N))) k).val <
+      (externalInsertionInteractionLeg (E := E)
+      (⟨v.1, Finset.mem_univ _⟩ :
+        ↥(Finset.univ : Finset (Fin N))) l).val ↔
+    (order w).1 < v.1
+  simp only [externalInsertionInteractionLeg_val]
+  have huniv (x : Fin N) :
+      (((Finset.univ : Finset (Fin N)).orderIsoOfFin rfl).symm
+        ⟨x, Finset.mem_univ x⟩).val = x.val := by
+    rw [Finset.orderIsoOfFin_symm_apply, Fin.sort_univ, List.idxOf_finRange]
+  rw [huniv, huniv]
+  have hne : (order w).1 ≠ v.1 := by
+    intro h
+    have hw : (order w).1 ∉ T := (Finset.mem_sdiff.mp (order w).2).2
+    exact hw (h.symm ▸ v.2)
+  have hk := k.isLt
+  have hl := l.isLt
+  constructor <;> intro h <;> omega
+
+/-- A vacuum interaction leg never precedes an external leg in fixed flattened order. -/
+private theorem externalInsertionSlotLegSplitting_fixedRight_not_lt_leftExternal
+    {E N : ℕ} (T : Finset (Fin N))
+    (e : Fin (2 * E))
+    (w : Fin ((Finset.univ : Finset (Fin N)) \ T).card) (k : Fin 4) :
+    let S := (Finset.univ : Finset (Fin N)) \ T
+    let order : QuarticVertexOrder S := (S.orderIsoOfFin rfl).toEquiv
+    ¬ externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T)
+        (Sum.inr (orderedLegToDiagramLeg S order
+          ((orderedQuarticLegEquiv S.card).symm (w, k)))) <
+      externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T)
+        (Sum.inl (externalInsertionExternalLeg E T e)) := by
+  intro S order
+  rw [externalInsertionSlotLegSplitting_fixedRight_apply]
+  unfold externalInsertionExternalLeg
+  rw [externalInsertionSlotLegSplitting_external]
+  change ¬ (externalInsertionInteractionLeg (E := E)
+      (⟨(order w).1, Finset.mem_univ _⟩ :
+        ↥(Finset.univ : Finset (Fin N))) k).val <
+      (externalInsertionExternalLeg E (Finset.univ : Finset (Fin N)) e).val
+  simp only [externalInsertionExternalLeg_val, externalInsertionInteractionLeg_val]
+  have he := e.isLt
+  omega
+
+/-- The canonical support/vacuum split has an even fixed-order inter-sector
+inversion count: each vacuum vertex contributes four indistinguishable comparisons
+against any given support leg, and vacuum legs never precede external legs. -/
+theorem externalInsertionSlotLegSplitting_fixedInversionCount_mod_two_eq_zero
+    {E N : ℕ} (T : Finset (Fin N)) :
+    let S := (Finset.univ : Finset (Fin N)) \ T
+    let order : QuarticVertexOrder S := (S.orderIsoOfFin rfl).toEquiv
+    (∑ i : Fin (2 * (2 * T.card + E)),
+      ∑ j : Fin (2 * (2 * S.card)),
+        if externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T)
+              (Sum.inr (orderedLegToDiagramLeg S order j)) <
+            externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T)
+              (Sum.inl i)
+          then 1 else 0) % 2 = 0 := by
+  classical
+  intro S order
+  apply Nat.mod_eq_zero_of_dvd
+  refine Finset.dvd_sum fun i _ => ?_
+  let leg := externalInsertionLegEquiv E T i
+  have hi : (externalInsertionLegEquiv E T).symm leg = i := by simp [leg]
+  rw [← hi]
+  cases leg with
+  | inl e =>
+      have hzero :
+          (∑ j : Fin (2 * (2 * S.card)),
+            if externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T)
+                (Sum.inr (orderedLegToDiagramLeg S order j)) <
+              externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T)
+                (Sum.inl (externalInsertionExternalLeg E T e))
+              then 1 else 0) = 0 := by
+        apply Finset.sum_eq_zero
+        intro j _
+        let vl := orderedQuarticLegEquiv S.card j
+        have hj : (orderedQuarticLegEquiv S.card).symm vl = j := by simp [vl]
+        rw [← hj]
+        exact ite_eq_right
+          (externalInsertionSlotLegSplitting_fixedRight_not_lt_leftExternal
+            (E := E) T e vl.1 vl.2)
+      change 2 ∣ (∑ j : Fin (2 * (2 * S.card)),
+        if externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T)
+              (Sum.inr (orderedLegToDiagramLeg S order j)) <
+            externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T)
+              (Sum.inl (externalInsertionExternalLeg E T e))
+          then 1 else 0)
+      rw [hzero]
+      exact dvd_zero 2
+  | inr vl =>
+      rcases vl with ⟨v, l⟩
+      have hdiv := Fintype.dvd_sum_equiv_fst_of_dvd_card
+        (orderedQuarticLegEquiv S.card)
+        (fun w : Fin S.card => if (order w).1 < v.1 then (1 : ℕ) else 0)
+        (by decide : 2 ∣ Fintype.card (Fin 4))
+      convert hdiv using 1
+      apply Finset.sum_congr rfl
+      intro j _
+      let wk := orderedQuarticLegEquiv S.card j
+      have hj : (orderedQuarticLegEquiv S.card).symm wk = j := by simp [wk]
+      rw [← hj]
+      have hiff :=
+        externalInsertionSlotLegSplitting_fixedRight_lt_leftInteraction_iff
+          (E := E) T v l wk.1 wk.2
+      dsimp only at hiff
+      simp only [Equiv.apply_symm_apply]
+      have hiff' :
+          externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T)
+              (Sum.inr (orderedLegToDiagramLeg S order
+                ((orderedQuarticLegEquiv S.card).symm wk))) <
+            externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T)
+              (Sum.inl ((externalInsertionLegEquiv E T).symm (Sum.inr (v, l)))) ↔
+            (order wk.1).1 < v.1 := by
+        change
+          externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T)
+              (Sum.inr (orderedLegToDiagramLeg S order
+                ((orderedQuarticLegEquiv S.card).symm wk))) <
+            externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T)
+              (Sum.inl ((externalInsertionLegEquiv E T).symm (Sum.inr (v, l)))) ↔
+            (order wk.1).1 < v.1 at hiff
+        exact hiff
+      by_cases hlt : externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T)
+          (Sum.inr (orderedLegToDiagramLeg S order
+            ((orderedQuarticLegEquiv S.card).symm wk))) <
+          externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T)
+            (Sum.inl ((externalInsertionLegEquiv E T).symm (Sum.inr (v, l))))
+      · have horder := hiff'.mp hlt
+        simpa [horder] using hlt
+      · have horder : ¬ (order wk.1).1 < v.1 := fun h => hlt (hiff'.mpr h)
+        simpa [horder] using hlt
 
 /-- Reconstruct an external-insertion diagram from an external-bearing piece and a quartic
 complementary piece. -/
