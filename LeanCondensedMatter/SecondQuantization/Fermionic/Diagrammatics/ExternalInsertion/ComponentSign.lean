@@ -38,7 +38,7 @@ theorem interComponentWeight_eq_componentExternalOrderSign
     (blockOrder :
       d.vertexGraph.componentPartition.parts ≃
         Fin (Fintype.card d.vertexGraph.componentPartition.parts)) :
-    (Common.Statistics.fermion.zetaInt : ℂ) ^ d.interComponentCrossingCount =
+    (Common.Statistics.fermion.zetaInt : ℂ) ^ d.pairing.interComponentCrossingCount d.componentPairEquiv =
       componentExternalOrderSign d blockOrder := by
   unfold componentExternalOrderSign
   apply Common.BlochDeDominicis.zetaInt_pow_eq_of_mod_two_eq
