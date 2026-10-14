@@ -153,13 +153,9 @@ theorem hamiltonian_mul_bandProjector (band : Band) (v m px py : ℝ)
       (((bandEnergy band v m px py : ℝ) : ℂ)) =
         s * (((energy v m px py : ℝ) : ℂ)) := by
     simp [bandEnergy, s]
-  have hmul : Q * ((1 : Matrix2) + s • Q) = s • ((1 : Matrix2) + s • Q) := by
-    rw [mul_add, mul_one, mul_smul_comm, hQ]
-    rw [smul_add, smul_smul]
-    rw [show s * s = 1 by simpa [pow_two] using hs, one_smul]
-    module
   rw [hH, hP, hbandEnergy]
-  rw [smul_mul_assoc, mul_smul_comm, smul_smul, hmul, smul_smul]
+  rw [smul_mul_assoc, mul_smul_comm, smul_smul,
+    InternalSpace.involution_mul_one_add Q hQ s hs, smul_smul]
   module
 
 /-- Away from the band degeneracy, each `P_s` is idempotent. -/
@@ -177,26 +173,8 @@ theorem bandProjector_mul_self (band : Band) (v m px py : ℝ)
   have hP :
       bandProjector band v m px py = (1 / 2 : ℂ) • ((1 : Matrix2) + s • Q) := by
     simpa [Q, s] using bandProjector_eq_normalizedHamiltonian band v m px py
-  have hsqmul : (s • Q) * (s • Q) = (s * s) • (Q * Q) := by
-    calc
-      (s • Q) * (s • Q) = s • (Q * (s • Q)) := by rw [smul_mul_assoc]
-      _ = s • (s • (Q * Q)) := by rw [mul_smul_comm]
-      _ = (s * s) • (Q * Q) := by rw [smul_smul]
-  have hmul :
-      ((1 : Matrix2) + s • Q) * ((1 : Matrix2) + s • Q) =
-        (2 : ℂ) • ((1 : Matrix2) + s • Q) := by
-    calc
-      ((1 : Matrix2) + s • Q) * ((1 : Matrix2) + s • Q) =
-          1 + s • Q + s • Q + (s • Q) * (s • Q) := by
-        rw [add_mul, one_mul, mul_add, mul_one]
-        abel
-      _ = 1 + s • Q + s • Q + (s * s) • (Q * Q) := by rw [hsqmul]
-      _ = 1 + s • Q + s • Q + 1 := by
-        rw [hQ, show s * s = 1 by simpa [pow_two] using hs, one_smul]
-      _ = (2 : ℂ) • ((1 : Matrix2) + s • Q) := by module
   rw [hP]
-  rw [smul_mul_assoc, mul_smul_comm, smul_smul, hmul, smul_smul]
-  module
+  exact InternalSpace.involution_projector_mul_self Q hQ s hs
 
 /-- Away from the band degeneracy, opposite-band projectors are orthogonal in either order. -/
 theorem bandProjector_mul_oppositeBand

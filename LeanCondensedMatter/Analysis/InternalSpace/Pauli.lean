@@ -402,4 +402,26 @@ theorem pauliShiftMatrix_mul_closedInverse
   rw [mul_smul_comm, hquadratic, smul_smul]
   simp [hden]
 
+/-- An involution acts on the signed projector numerator by its sign. -/
+theorem involution_mul_one_add (Q : PauliMatrix) (hQ : Q * Q = 1)
+    (s : ℂ) (hs : s ^ 2 = 1) :
+    Q * ((1 : PauliMatrix) + s • Q) =
+      s • ((1 : PauliMatrix) + s • Q) := by
+  rw [mul_add, mul_one, mul_smul_comm, hQ]
+  rw [smul_add, smul_smul]
+  rw [show s * s = 1 by simpa [pow_two] using hs, one_smul]
+  module
+
+/-- The half-sum of the identity and a signed involution is idempotent. -/
+theorem involution_projector_mul_self (Q : PauliMatrix) (hQ : Q * Q = 1)
+    (s : ℂ) (hs : s ^ 2 = 1) :
+    ((1 / 2 : ℂ) • ((1 : PauliMatrix) + s • Q)) *
+        ((1 / 2 : ℂ) • ((1 : PauliMatrix) + s • Q)) =
+      (1 / 2 : ℂ) • ((1 : PauliMatrix) + s • Q) := by
+  rw [smul_mul_assoc, mul_smul_comm, smul_smul]
+  rw [add_mul, one_mul, smul_mul_assoc,
+    involution_mul_one_add Q hQ s hs, smul_smul]
+  rw [show s * s = 1 by simpa [pow_two] using hs, one_smul]
+  module
+
 end InternalSpace
