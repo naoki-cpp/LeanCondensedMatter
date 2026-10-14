@@ -442,9 +442,9 @@ theorem trace_parity_antisymmetric_xz_entries
     (A C : PauliMatrix) (b gx gz : ℂ) :
     let B : PauliMatrix := !![b + gz, gx; gx, b - gz]
     Matrix.trace
-        (A * (pauliZ * B * pauliZ) * B * (-pauliZ * C * pauliZ)) -
+        (A * (pauliZ * B * pauliZ) * B * (-(pauliZ * C * pauliZ))) -
       Matrix.trace
-        (C * (pauliZ * B * pauliZ) * B * (-pauliZ * A * pauliZ)) =
+        (C * (pauliZ * B * pauliZ) * B * (-(pauliZ * A * pauliZ))) =
       -2 * gz *
         (gx * ((A 0 0 + A 1 1) * (C 0 1 - C 1 0) -
           (A 0 1 - A 1 0) * (C 0 0 + C 1 1)) +
@@ -460,9 +460,9 @@ theorem trace_parity_antisymmetric_xz_pauliCoefficients
     (A C : PauliMatrix) (b gx gz : ℂ) :
     let B : PauliMatrix := !![b + gz, gx; gx, b - gz]
     Matrix.trace
-        (A * (pauliZ * B * pauliZ) * B * (-pauliZ * C * pauliZ)) -
+        (A * (pauliZ * B * pauliZ) * B * (-(pauliZ * C * pauliZ))) -
       Matrix.trace
-        (C * (pauliZ * B * pauliZ) * B * (-pauliZ * A * pauliZ)) =
+        (C * (pauliZ * B * pauliZ) * B * (-(pauliZ * A * pauliZ))) =
       8 * Complex.I * gz *
         (gx * (pauliScalarCoefficient A * pauliVectorCoefficient C .y -
           pauliScalarCoefficient C * pauliVectorCoefficient A .y) +
