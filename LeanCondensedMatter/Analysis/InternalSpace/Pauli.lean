@@ -322,6 +322,31 @@ theorem trace_four_pauliAffine
   rw [pauliAffine_mul_pauliAffine, pauliAffine_mul_pauliAffine,
     trace_pauliAffine_mul_pauliAffine]
 
+/-- Antisymmetrizing the first and third Pauli-affine insertions eliminates
+all scalar and bilinear (even-Pauli) trace terms. Only oriented Pauli
+triple products remain; the dot and cross products are complex bilinear. -/
+theorem trace_four_pauliAffine_antisymmetric
+    (a b c d : ℂ) (u v w x : PauliAxis → ℂ) :
+    Matrix.trace
+        ((a • (1 : PauliMatrix) + pauliCombination u) *
+          (b • (1 : PauliMatrix) + pauliCombination v) *
+          (c • (1 : PauliMatrix) + pauliCombination w) *
+          (d • (1 : PauliMatrix) + pauliCombination x)) -
+      Matrix.trace
+        ((c • (1 : PauliMatrix) + pauliCombination w) *
+          (b • (1 : PauliMatrix) + pauliCombination v) *
+          (a • (1 : PauliMatrix) + pauliCombination u) *
+          (d • (1 : PauliMatrix) + pauliCombination x)) =
+      4 * Complex.I *
+        (a * dotProduct v (pauliCross w x) +
+          b * dotProduct u (pauliCross w x) +
+          c * dotProduct (pauliCross u v) x +
+          d * dotProduct (pauliCross u v) w) := by
+  rw [trace_four_pauliAffine, trace_four_pauliAffine]
+  simp [dotProduct_pauliAxis, pauliCross, cross_apply, pauliAxisComponent,
+    Pi.add_apply, Pi.smul_apply, smul_eq_mul]
+  ring
+
 /-- Trace of four arbitrary complex two-level matrices expressed only through their canonical
 Pauli scalar/vector coefficients. -/
 theorem trace_four_eq_pauliCoefficients (A B C D : PauliMatrix) :
