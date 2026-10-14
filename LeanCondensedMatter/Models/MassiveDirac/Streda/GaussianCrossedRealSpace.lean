@@ -709,7 +709,7 @@ private theorem gaussianCrossedAngularCurrentEntryKernel_sourceRotation
           (((Real.cos angle : ℝ) : ℂ)) •
             (fun i j : Fin 2 =>
               finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel
-                1 v m probeEnergy broadening disorderStrength hbar pMax radius p i j)) *
+                1 v m probeEnergy broadening disorderStrength hbar pMax radius p i j) : Matrix2) *
         inPlaneSpinRotationInverse angle := by
   have htrig :
       (((Real.cos angle : ℝ) : ℂ) ^ 2) +
