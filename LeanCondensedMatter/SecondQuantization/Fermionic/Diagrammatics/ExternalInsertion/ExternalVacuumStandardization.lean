@@ -28,7 +28,7 @@ theorem externalInsertionLeftMixedToFixedEquiv_eq_standardMixedPosition_symm
   intro p
   simp [externalInsertionLeftMixedToFixedEquiv,
     externalInsertionStandardToMixedAtomicPositionEquiv,
-    externalInsertionLegEquiv, externalInsertionInteractionLegEquiv]
+    externalInsertionLegEquiv]
 
 end Fermionic
 end SecondQuantization
