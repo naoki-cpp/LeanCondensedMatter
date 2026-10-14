@@ -172,6 +172,37 @@ noncomputable def finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceCurrentB
             probeEnergy broadening disorderStrength hbar pMax) i j)
       r
 
+/-- The momentum-space `Gᴬ (F σ_source) Gᴿ` integrand of the Gaussian-crossed
+real-space current is spinor covariant when its current vertex is transported
+to the radial momentum axis. The Fourier phase and measure are not yet
+integrated; this does not assert real-space current-block covariance. -/
+theorem finiteCutoffContinuumBornDysonGaussianCrossedCurrentMomentumMatrix_polar_spinRotation
+    (source : Fin 2)
+    (v m probeEnergy broadening disorderStrength hbar pMax p angle : ℝ) :
+    let vertex : Matrix2 :=
+      finiteCutoffContinuumBornDysonGaussianCrossedCurrentFactor
+        v m probeEnergy broadening disorderStrength hbar pMax • directionPauli source
+    finiteCutoffContinuumBornDysonGreenMatrix
+        .advanced v m (p * Real.cos angle) (p * Real.sin angle)
+        probeEnergy broadening disorderStrength hbar pMax *
+      vertex *
+      finiteCutoffContinuumBornDysonGreenMatrix
+        .retarded v m (p * Real.cos angle) (p * Real.sin angle)
+        probeEnergy broadening disorderStrength hbar pMax =
+      inPlaneSpinRotation angle *
+        (finiteCutoffContinuumBornDysonGreenMatrix
+            .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax *
+          (inPlaneSpinRotationInverse angle * vertex * inPlaneSpinRotation angle) *
+          finiteCutoffContinuumBornDysonGreenMatrix
+            .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax) *
+        inPlaneSpinRotationInverse angle := by
+  dsimp only
+  rw [finiteCutoffContinuumBornDysonGreenMatrix_polar_spinRotation
+        .advanced v m probeEnergy broadening disorderStrength hbar pMax p angle,
+      finiteCutoffContinuumBornDysonGreenMatrix_polar_spinRotation
+        .retarded v m probeEnergy broadening disorderStrength hbar pMax p angle]
+  simp only [Matrix.mul_assoc]
+
 /-- One-dimensional radial-kernel representation of the Gaussian crossed current block on the
 positive real-space radial axis. Only the zeroth, first-cosine, and second-cosine channels survive. -/
 noncomputable def finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock
