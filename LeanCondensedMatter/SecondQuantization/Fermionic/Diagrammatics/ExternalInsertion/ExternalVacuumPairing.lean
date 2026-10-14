@@ -1337,7 +1337,7 @@ theorem externalInsertionOfSlotSplit_globalSign_mul_mixedPairingEvaluation_eq_lo
       externalInsertionMixedSplit_global_sign_mul_mixedInversionSign_eq_local
         T externalTime σ htime
     have h := congrArg (fun u : ℤˣ => ((u : ℤ) : ℂ)) hunits
-    simpa only [Units.val_mul, Units.val_pow_eq_pow_val, Units.val_neg,
+    simpa only [Units.val_mul, Units.val_pow_eq_pow_val, Units.val_neg, Units.val_one,
       Int.cast_mul, Int.cast_pow, Int.cast_neg, Int.cast_one,
       Common.Statistics.zetaInt_fermion] using h
   have hpair :
