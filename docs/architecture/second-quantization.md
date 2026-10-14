@@ -214,16 +214,18 @@ fermionic shuffle integrals.
 
 `Common.Diagrammatics.ExternalInsertion.Components.MixedOrderData` owns the consecutive
 interaction-slot representation of each component (`componentOrderedDiagram`), its local times,
-and its mixed-position and normalized-pair equivalences for arbitrary external and internal labels.
+and the mixed-position equivalence and order-preserving component shuffle for arbitrary labels.
+`Pairing.ComponentMixedPairEquiv` owns the normalized-pair equivalence and its ordered-endpoint
+evaluation, using the generic `Pairing.normalizedPairSigmaEquiv` construction.
 Full-slot label and leg-partner coordinates live in `Core.Ordered`; mixed-time partner coherence
 lives in `Pairing.MixedOrder`. The Fermionic `Diagram` module supplies the concrete
 `ExternalInsertionWickDiagram` label specialization, while thermal kernels, amplitudes, and exchange
 signs remain Fermionic consumers.
-`Common.Diagrammatics.ExternalInsertion.Factorization.ComponentMixedCrossing` owns the
-component mixed-position shuffle, crossing decomposition, crossing parity, and exchange-weight
-factorization for arbitrary labels and either statistics. `MixedComponentShuffle` owns the relative
-fixed/mixed permutation and its integer-unit sign decomposition. The Fermionic component modules
-consume these declarations to attach the concrete fermionic exchange sign and thermal pair values.
+`Common.Diagrammatics.ExternalInsertion.Factorization.ComponentMixedCrossing` owns crossing
+decomposition, crossing parity, and exchange-weight factorization for arbitrary labels and either
+statistics. `MixedComponentShuffle` owns the relative fixed/mixed permutation and its integer-unit
+sign decomposition. The Fermionic component modules consume these declarations to attach the
+concrete fermionic exchange sign and thermal pair values.
 `Fermionic.Diagrammatics.ExternalInsertion.ExternalVacuumPairing` owns thermal pair locality,
 normalized-endpoint transport, crossing signs, and pairing factorization for the external-support
 and vacuum slot split. `ExternalVacuumShuffleIntegral` owns the independent binary ordered-simplex

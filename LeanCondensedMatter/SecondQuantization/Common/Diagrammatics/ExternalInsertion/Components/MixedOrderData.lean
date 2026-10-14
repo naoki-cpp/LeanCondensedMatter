@@ -1,6 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentRestriction
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Pairing.MixedOrder
-import LeanCondensedMatter.Combinatorics.PerfectPairing.ComponentDecomposition
 import LeanCondensedMatter.Combinatorics.FamilySlotShuffle
 
 set_option linter.style.header false
@@ -12,7 +11,9 @@ A restricted external-insertion component retains its interaction vertices as a 
 ambient slots. Standalone component diagrams use consecutive `Fin m` interaction slots. This module supplies the canonical increasing reindexing needed to apply the component diagram
 data to one connected component, together with the induced local external and interaction times.
 It identifies local canonical legs with their ambient counterparts and constructs the induced
-mixed-position embeddings and normalized-pair equivalences. The labels are arbitrary; timed-field and thermal-kernel locality belong to Fermionic consumers.
+mixed-position embeddings and order-preserving family shuffle. The normalized-pair equivalence
+belongs to `Pairing.ComponentMixedPairEquiv`; timed-field and thermal-kernel locality belong to
+Fermionic consumers.
 -/
 
 namespace SecondQuantization
@@ -462,69 +463,6 @@ theorem ExternalInsertionDiagram.componentMixedPositionShuffle_slotEquiv_apply
     (d.componentMixedPositionShuffle externalTime σ).slotEquiv ⟨B, p⟩ =
       d.componentMixedPosition externalTime σ B p :=
   d.componentMixedPositionEquiv_apply externalTime σ B p
-
-/-- Component-local mixed-order normalized pairs, over all connected components, are equivalent to
-the ambient mixed-order normalized pairs. The position equivalence is only the fixed component
-shuffle transported through mixed/fixed position equivalences. -/
-noncomputable def ExternalInsertionDiagram.componentMixedPairEquiv
-    {E n : ℕ}
-    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E n
-      (Finset.univ : Finset (Fin n)))
-    (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ) :
-    (Σ B : d.vertexGraph.componentPartition.parts,
-      ((d.componentOrderedDiagram B).pairingInMixedOrder
-        (d.componentExternalTime externalTime B)
-        (d.componentInteractionTime σ B)).NormalizedPair) ≃
-      (d.pairingInMixedOrder externalTime σ).NormalizedPair :=
-  (d.pairingInMixedOrder externalTime σ).normalizedPairSigmaEquiv
-    (fun B =>
-      (d.componentOrderedDiagram B).pairingInMixedOrder
-        (d.componentExternalTime externalTime B)
-        (d.componentInteractionTime σ B))
-    (d.componentMixedPositionEquiv externalTime σ)
-    (fun B p => by
-      simpa only [ExternalInsertionDiagram.componentMixedPositionEquiv_apply] using
-        d.pairingInMixedOrder_partner_componentMixedPosition externalTime σ B p)
-
-/-- The all-component mixed pair equivalence maps a local normalized pair by applying
-`componentMixedPosition` to its two endpoints. -/
-@[simp]
-theorem ExternalInsertionDiagram.componentMixedPairEquiv_apply
-    {E n : ℕ}
-    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E n
-      (Finset.univ : Finset (Fin n)))
-    (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ)
-    (B : d.vertexGraph.componentPartition.parts)
-    (pr : ((d.componentOrderedDiagram B).pairingInMixedOrder
-      (d.componentExternalTime externalTime B)
-      (d.componentInteractionTime σ B)).NormalizedPair) :
-    (d.componentMixedPairEquiv externalTime σ ⟨B, pr⟩).1 =
-      (d.componentMixedPosition externalTime σ B pr.1.1,
-        d.componentMixedPosition externalTime σ B pr.1.2) := by
-  let componentPairing := fun C : d.vertexGraph.componentPartition.parts =>
-    (d.componentOrderedDiagram C).pairingInMixedOrder
-      (d.componentExternalTime externalTime C)
-      (d.componentInteractionTime σ C)
-  let hpartner : ∀ C p,
-      (d.pairingInMixedOrder externalTime σ).partner
-          (d.componentMixedPositionEquiv externalTime σ ⟨C, p⟩) =
-        d.componentMixedPositionEquiv externalTime σ
-          ⟨C, (componentPairing C).partner p⟩ := by
-    intro C p
-    simpa only [ExternalInsertionDiagram.componentMixedPositionEquiv_apply] using
-      d.pairingInMixedOrder_partner_componentMixedPosition externalTime σ C p
-  simpa only [ExternalInsertionDiagram.componentMixedPairEquiv,
-    ExternalInsertionDiagram.componentMixedPositionEquiv_apply] using
-    (Combinatorics.Pairing.normalizedPairSigmaEquiv_apply_of_strictMono
-      (d.pairingInMixedOrder externalTime σ)
-      componentPairing
-      (d.componentMixedPositionEquiv externalTime σ)
-      hpartner
-      (fun C => by
-        simpa only [ExternalInsertionDiagram.componentMixedPositionEquiv_apply] using
-          d.componentMixedPosition_strictMono externalTime σ C)
-      B pr)
-
 
 end Common
 end SecondQuantization

@@ -8,7 +8,7 @@ set_option linter.style.header false
 
 The canonical component mixed-position embedding preserves the concrete free-Gibbs pair contraction
 by specializing the general timed-field transport to the component external and interaction slots.
-The order and pairing correspondences live in the kernel-free component-data layer.
+The order and position correspondences live in the kernel-free Common component-data layer.
 -/
 
 namespace SecondQuantization
