@@ -732,10 +732,10 @@ private theorem gaussianCrossedAngularCurrentEntryKernel_sourceRotation
       sigmaX, sigmaY, sigmaZ, InternalSpace.pauliX, InternalSpace.pauliY,
       InternalSpace.pauliZ, Matrix.smul_apply, Matrix.add_apply,
       smul_eq_mul]
-  all_goals
-    ring_nf
-    simp only [hI2]
-    ring
+  all_goals try simp only [← Complex.ofReal_cos, ← Complex.ofReal_sin]
+  all_goals ring_nf
+  all_goals simp only [hI2]
+  all_goals ring
 
 /-- Arbitrary-angle polar Fourier representation of the model's crossed-current
 matrix. The underlying advanced-current-retarded Pauli sandwich is the same
