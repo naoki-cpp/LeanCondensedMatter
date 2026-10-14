@@ -1,4 +1,4 @@
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Factorization.ComponentMixedCrossing
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Pairing.ComponentMixedPairEquiv
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.PairingWeight
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentPairingLocality
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentOrderSign
@@ -68,7 +68,13 @@ theorem ExternalInsertionWickDiagram.mixedPairingValue_eq_inter_mul_prod_compone
     (BlochDeDominicis.Pairing.weight_eq_inter_mul_prod_of_crossingCount_eq
       Common.Statistics.fermion pairing localPairing
       (pairing.interComponentCrossingCount (d.componentMixedPairEquiv externalTime σ))
-      (d.pairingInMixedOrder_crossingCount_eq_sum_components_add_inter externalTime σ))
+      (Pairing.crossingCount_eq_sum_localCrossingCount_add_inter
+        pairing localPairing (d.componentMixedPairEquiv externalTime σ)
+        (fun B => Equiv.refl _)
+        (fun B => d.componentMixedPosition externalTime σ B)
+        (fun B => d.componentMixedPosition_strictMono externalTime σ B)
+        (fun B pr => by
+          simpa using d.componentMixedPairEquiv_apply externalTime σ B pr)))
     (fun B pr => by
       rw [d.componentMixedPairEquiv_apply externalTime σ B pr]
       exact d.externalInsertionMixedTimeOrderedAtomicPairValue_componentMixedPosition
