@@ -281,6 +281,76 @@ noncomputable def ofGLGramPreserving [FiniteDimensional ℝ V]
     _ = Matrix.gram ℝ (fun i => ((b i : L) : V)) := by
       exact hGram
 
+/-- The intrinsic lattice isometry constructed from an integral-linear
+automorphism restricts back to that automorphism. This makes the metric
+extension compatible with the original integral action. -/
+@[simp]
+theorem restrict_ofIntegralLinearEquivGramPreserving [FiniteDimensional ℝ V]
+    {ι : Type*} [Fintype ι]
+    (L : Submodule ℤ V) [DiscreteTopology L] [IsZLattice ℝ L]
+    (b : Module.Basis ι ℤ L) (e : L ≃ₗ[ℤ] L)
+    (hGram :
+      Matrix.gram ℝ (fun i => ((e (b i) : L) : V)) =
+        Matrix.gram ℝ (fun i => ((b i : L) : V))) :
+    restrict L (ofIntegralLinearEquivGramPreserving L b e hGram) = e := by
+  have hLin :
+      (restrict L (ofIntegralLinearEquivGramPreserving L b e hGram)).toLinearMap =
+        e.toLinearMap := by
+    apply b.ext
+    intro i
+    apply Subtype.ext
+    change extendIntegralLinearEquiv L b e ((b i : L) : V) = ((e (b i) : L) : V)
+    exact extendIntegralLinearEquiv_apply_basis L b e i
+  exact LinearEquiv.ext (fun x => LinearMap.congr_fun hLin x)
+
+/-- Lifting a Gram-preserving unimodular integer matrix to an intrinsic lattice
+isometry and restricting to the lattice recovers Mathlib's original integral
+linear automorphism represented by that matrix. -/
+@[simp]
+theorem restrict_ofGLGramPreserving [FiniteDimensional ℝ V]
+    {ι : Type*} [Fintype ι] [DecidableEq ι]
+    (L : Submodule ℤ V) [DiscreteTopology L] [IsZLattice ℝ L]
+    (b : Module.Basis ι ℤ L) (A : Matrix.GeneralLinearGroup ι ℤ)
+    (hGram :
+      let G := Matrix.gram ℝ (fun i => ((b i : L) : V))
+      ((A : Matrix ι ι ℤ).map (Int.cast : ℤ → ℝ)).transpose * G *
+        ((A : Matrix ι ι ℤ).map (Int.cast : ℤ → ℝ)) = G) :
+    restrict L (ofGLGramPreserving L b A hGram) =
+      (Matrix.GeneralLinearGroup.toLin' b A).toLinearEquiv := by
+  have hLin :
+      (restrict L (ofGLGramPreserving L b A hGram)).toLinearMap =
+        (Matrix.GeneralLinearGroup.toLin' b A).toLinearEquiv.toLinearMap := by
+    apply b.ext
+    intro i
+    apply Subtype.ext
+    change
+      extendIntegralLinearEquiv L b
+        (Matrix.GeneralLinearGroup.toLin' b A).toLinearEquiv ((b i : L) : V) =
+          (((Matrix.GeneralLinearGroup.toLin' b A).toLinearEquiv (b i) : L) : V)
+    exact extendIntegralLinearEquiv_apply_basis L b
+      (Matrix.GeneralLinearGroup.toLin' b A).toLinearEquiv i
+  exact LinearEquiv.ext (fun x => LinearMap.congr_fun hLin x)
+
+/-- In the chosen integral basis, the intrinsic lattice isometry obtained from
+a Gram-preserving integer matrix has *exactly* that matrix as its coordinate
+representation. This connects concrete planar symmetry matrices to geometry. -/
+theorem ofGLGramPreserving_basis_coordinates [FiniteDimensional ℝ V]
+    {ι : Type*} [Fintype ι] [DecidableEq ι]
+    (L : Submodule ℤ V) [DiscreteTopology L] [IsZLattice ℝ L]
+    (b : Module.Basis ι ℤ L) (A : Matrix.GeneralLinearGroup ι ℤ)
+    (hGram :
+      let G := Matrix.gram ℝ (fun i => ((b i : L) : V))
+      ((A : Matrix ι ι ℤ).map (Int.cast : ℤ → ℝ)).transpose * G *
+        ((A : Matrix ι ι ℤ).map (Int.cast : ℤ → ℝ)) = G)
+    (i j : ι) :
+    (b.repr (restrict L (ofGLGramPreserving L b A hGram) (b j))) i =
+      (A : Matrix ι ι ℤ) i j := by
+  rw [restrict_ofGLGramPreserving]
+  rw [Matrix.GeneralLinearGroup.toLin'_apply]
+  simp only [Module.Basis.repr_self, Finsupp.single_eq_pi_single,
+    Matrix.mulVec_single_one, Matrix.col_apply, Fintype.linearCombination_apply]
+  rw [Module.Basis.repr_sum_self]
+
 /-- A reflection across one integral basis axis makes the two basis vectors
 orthogonal. This is the rectangular Gram-metric constraint. -/
 theorem gram_offDiagonal_eq_zero_of_axisReflection
