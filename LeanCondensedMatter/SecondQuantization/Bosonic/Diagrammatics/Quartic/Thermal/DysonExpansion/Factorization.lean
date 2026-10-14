@@ -103,7 +103,8 @@ private theorem QuarticDiagram.sum_shuffle_orderedDysonThermalAmplitude_eq_prod_
     rw [Common.QuarticDiagram.dysonSign_mul_vertexWeight_eq_prod_components d g,
       QuarticDiagram.orderedThermalPairingValue_eq_prod_components ε β d orders shuffle,
       QuarticDiagram.quarticVertexSequenceTimeFactor_assembleVertexOrder ε d orders shuffle τ]
-    simp only [FamilySlotShuffleTo.ambientIntegrand, Finset.prod_mul_distrib]
+    simp only [FamilySlotShuffleTo.ambientIntegrand, QuarticDiagram.dysonThermalIntegrand,
+      Finset.prod_mul_distrib]
   have hcard :
       (∑ B : d.vertexGraph.componentPartitionOn.parts, (B : Finset (Fin N)).card) =
         S.card := by
