@@ -223,20 +223,6 @@ theorem finiteCutoffContinuumBornSelfEnergyOfRegulator_dissipative
               v m probeEnergy regulator pMax ψ)).im) := by ring
     _ ≤ 0 := mul_nonpos_of_nonneg_of_nonpos hscale hgreen
 
-private theorem finiteCutoffContinuumBornSelfEnergy_dissipative
-    (side : SpectralSide)
-    (v m probeEnergy broadening disorderStrength hbar pMax : ℝ)
-    (hbroadening : broadening ≠ 0) (hdisorder : 0 ≤ disorderStrength)
-    (hpMax : 0 ≤ pMax) (ψ : DiracHilbert) :
-    side.regulator broadening *
-      (inner ℂ ψ
-        (finiteCutoffContinuumBornSelfEnergy
-          side v m probeEnergy broadening disorderStrength hbar pMax ψ)).im ≤ 0 := by
-  simpa [finiteCutoffContinuumBornSelfEnergy] using
-    finiteCutoffContinuumBornSelfEnergyOfRegulator_dissipative
-      v m probeEnergy (side.regulator broadening) disorderStrength hbar pMax
-      (side.regulator_ne_zero hbroadening) hdisorder hpMax ψ
-
 private theorem finiteCutoffContinuumBornDysonShiftOperator_injective
     (side : SpectralSide)
     (v m px py probeEnergy broadening disorderStrength hbar pMax : ℝ)
@@ -253,10 +239,10 @@ private theorem finiteCutoffContinuumBornDysonShiftOperator_injective
         (inner ℂ ψ (finiteCutoffContinuumBornSelfEnergy
           side v m probeEnergy broadening disorderStrength hbar pMax ψ)).im ≤ 0 := by
     intro ψ
-    simpa only [spectralParameter_im] using
-      finiteCutoffContinuumBornSelfEnergy_dissipative
-        side v m probeEnergy broadening disorderStrength hbar pMax
-        hbroadening hdisorder hpMax ψ
+    simpa [spectralParameter_im, finiteCutoffContinuumBornSelfEnergy] using
+      finiteCutoffContinuumBornSelfEnergyOfRegulator_dissipative
+        v m probeEnergy (side.regulator broadening) disorderStrength hbar pMax
+        (side.regulator_ne_zero hbroadening) hdisorder hpMax ψ
   simpa only [finiteCutoffContinuumBornDysonShiftOperator] using
     QuantumTheory.dissipativeSpectralShift_injective
       (hamiltonianOperator v m px py)
