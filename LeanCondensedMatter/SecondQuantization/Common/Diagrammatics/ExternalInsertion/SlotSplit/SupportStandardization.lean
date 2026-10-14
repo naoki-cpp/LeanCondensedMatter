@@ -47,6 +47,22 @@ noncomputable def ExternalInsertionDiagram.standardizeVacuumFree
     ((T.orderIsoOfFin h).toEquiv.symm.trans
       (Equiv.subtypeUnivEquiv (fun i : Fin m => Finset.mem_univ i)).symm)
 
+/-- The standalone vacuum-free support diagram has the same vertex-weight product
+as the original support diagram, independent of the gaps in the ambient slots. -/
+theorem ExternalInsertionDiagram.standardizeVacuumFree_vertexWeight
+    {MWeight : Type*} [CommMonoid MWeight] (T : Finset (Fin N))
+    (d : {ext : ExternalInsertionDiagram ExternalLabel InternalLabel E N T //
+      HasNoVacuumComponent ext.vertexGraph}) (w : InternalLabel → MWeight) :
+    ((ExternalInsertionDiagram.standardizeVacuumFree T rfl) d).1.vertexWeight w =
+      d.1.vertexWeight w := by
+  classical
+  change (d.1.slotCongr
+    ((T.orderIsoOfFin rfl).toEquiv.symm.trans
+      (Equiv.subtypeUnivEquiv
+        (fun i : Fin T.card => Finset.mem_univ i)).symm)).vertexWeight w =
+      d.1.vertexWeight w
+  exact d.1.slotCongr_vertexWeight _ w
+
 /-- Standardize both halves of a shuffle fiber: vacuum-free external insertions and
 ordered quartic vacuum data. The vacuum complement uses the canonical quartic API. -/
 noncomputable def ExternalInsertionDiagram.standardizedSupportFiberDataEquiv
