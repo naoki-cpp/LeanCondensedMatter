@@ -168,6 +168,11 @@ physics-facing connected theorems
 ```
 
 Common owns component and shuffle structure when no fermionic sign or energy data is required.
+Finite-partition sums of ordered-simplex integrals are owned by
+`Analysis.OrderedSimplex.PartitionOrderIntegral`. Its factorization theorem requires local
+measurable boundedness and equality of assembled integrands with shuffled local products.
+Fermionic and Bosonic quartic amplitude proofs supply their own integrands and consume that theorem;
+local-order-fixed external-insertion shuffle sums use `FamilyShuffle` directly.
 Fermionic modules should call those results directly instead of exposing parameter-substitution or
 proof-routing wrappers.
 
