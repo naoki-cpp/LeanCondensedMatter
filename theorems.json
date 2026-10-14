@@ -1,5 +1,49 @@
 [
   {
+    "terminal": false,
+    "statement": "∀ {K : Type u_1} {A : Type u_2} [inst : Field K] [inst_1 : Semiring A] [inst_2 : Algebra K A] (H : A) (E : K),\n  E ≠ 0 → H * H = E ^ 2 • 1 → E⁻¹ • H * E⁻¹ • H = 1",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "Algebra.inv_smul_mul_self_eq_one",
+    "module": "LeanCondensedMatter.Analysis.Algebra.QuadraticNormalization",
+    "externalAxioms": [],
+    "docString": "If `H² = E² • 1` and `E ≠ 0`, then the normalized element\n`E⁻¹ • H` is an involution. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Model.Spectral.0.QuantumTheory.Models.MassiveDirac.normalizedHamiltonian_mul_self",
+      "_private.LeanCondensedMatter.Models.RashbaExchange.Model.Spectral.0.QuantumTheory.Models.RashbaExchange.normalizedSpinHamiltonian_mul_self"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Model.Spectral.0.QuantumTheory.Models.MassiveDirac.normalizedHamiltonian_mul_self",
+      "_private.LeanCondensedMatter.Models.RashbaExchange.Model.Spectral.0.QuantumTheory.Models.RashbaExchange.normalizedSpinHamiltonian_mul_self"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
     "terminal": true,
     "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {ι : Type u_2} [inst_3 : Fintype ι] {κ : Type u_3} (data : BerryGeometry.PointwiseEigenbasisData κ ι H) (μ : κ)\n  (n : ι), (data.berryConnection μ n n).im = 0",
     "standardAxioms": [
@@ -2763,9 +2807,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.sum_componentInteractionOrderShuffle_orderedDysonAmplitude_eq_componentExternalOrderSign_mul_prod_components",
-      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion.Factorization.0.SecondQuantization.Bosonic.QuarticDiagram.sum_shuffle_orderedDysonThermalAmplitude_eq_prod_components",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.Wick.AmplitudeFactorization.0.SecondQuantization.Fermionic.sum_orderedSimplexContribution_eq_prod_components"
+      "Finpartition.sum_order_orderedSimplexIntegral_eq_prod_sum_partOrders",
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.sum_componentInteractionOrderShuffle_orderedDysonAmplitude_eq_componentExternalOrderSign_mul_prod_components"
     ],
     "dependencies": [
       "_private.LeanCondensedMatter.Analysis.OrderedSimplex.FamilyShuffle.0.Combinatorics.FamilySlotShuffle.sum_integral_eq_prod",
@@ -2775,11 +2818,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.sum_componentInteractionOrderShuffle_orderedDysonAmplitude_eq_componentExternalOrderSign_mul_prod_components",
-      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion.Factorization.0.SecondQuantization.Bosonic.QuarticDiagram.sum_shuffle_orderedDysonThermalAmplitude_eq_prod_components",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.Wick.AmplitudeFactorization.0.SecondQuantization.Fermionic.sum_orderedSimplexContribution_eq_prod_components"
+      "Finpartition.sum_order_orderedSimplexIntegral_eq_prod_sum_partOrders",
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.sum_componentInteractionOrderShuffle_orderedDysonAmplitude_eq_componentExternalOrderSign_mul_prod_components"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -3911,9 +3953,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "Combinatorics.Pairing.interComponentCrossingCount_mod_two_eq_orderedBlockInversionCount",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Factorization.ComponentGlobalCrossingParity.0.SecondQuantization.Common.QuarticDiagram.componentGeometricCrossingCount_mod_two_eq_zero",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentGeometricCrossingCount_mod_two_eq_zero_of_vacuum"
+      "Combinatorics.Pairing.componentGeometricCrossingCount_mod_two_eq_zero_of_even_fiber",
+      "Combinatorics.Pairing.interComponentCrossingCount_mod_two_eq_orderedBlockInversionCount"
     ],
     "dependencies": [
       "Combinatorics.Pairing.normalizedPair_endpoints_ne_of_ne",
@@ -3924,11 +3965,57 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "Combinatorics.Pairing.interComponentCrossingCount_mod_two_eq_orderedBlockInversionCount",
+      "Combinatorics.Pairing.componentGeometricCrossingCount_mod_two_eq_zero_of_even_fiber",
+      "Combinatorics.Pairing.interComponentCrossingCount_mod_two_eq_orderedBlockInversionCount"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {n : ℕ} {ι : Type u_1} {F : ι → Type u_2} [inst : (B : ι) → Fintype (F B)] {P : ι → Type u_3}\n  [∀ (B : ι), Finite (P B)] (pairing : Combinatorics.Pairing n) (e : (B : ι) × F B ≃ pairing.NormalizedPair)\n  (endpointEquiv : (B : ι) → F B × Fin 2 ≃ P B) (position : (B : ι) → P B → Fin (2 * n)),\n  (∀ (B : ι) (p : F B) (k : Fin 2),\n      position B ((endpointEquiv B) (p, k)) = Combinatorics.pairEndpointAt (↑(e ⟨B, p⟩)) k) →\n    ∀ (B C : ι),\n      B ≠ C →\n        ∀ {β : Type u_4} {γ : Type u_5} [Finite β] [inst_3 : Fintype γ] (fiber : P C ≃ β × γ) (reference : β → P C),\n          (∀ (p : P B) (q : P C), (position C q < position B p) = (position C (reference (fiber q).1) < position B p)) →\n            2 ∣ Fintype.card γ → pairing.componentGeometricCrossingCount e B C % 2 = 0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "Combinatorics.Pairing.componentGeometricCrossingCount_mod_two_eq_zero_of_even_fiber",
+    "module": "LeanCondensedMatter.Combinatorics.PerfectPairing.ComponentCrossing",
+    "externalAxioms": [],
+    "docString": "A geometric crossing count between distinct components is even when one component's\npositions form even-sized fibers and their order relative to the other component is constant\nwithin each fiber. The result is independent of how the local pairing is represented. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Factorization.ComponentGlobalCrossingParity.0.SecondQuantization.Common.QuarticDiagram.componentGeometricCrossingCount_mod_two_eq_zero",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentGeometricCrossingCount_mod_two_eq_zero_of_vacuum"
     ],
-    "compiledConsumerCount": 3,
+    "dependencies": [
+      "Combinatorics.Pairing.componentGeometricCrossingCount_mod_two_eq_endpointInversionCount",
+      "Fintype.dvd_sum_equiv_fst_of_dvd_card"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Factorization.ComponentGlobalCrossingParity.0.SecondQuantization.Common.QuarticDiagram.componentGeometricCrossingCount_mod_two_eq_zero",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentGeometricCrossingCount_mod_two_eq_zero_of_vacuum"
+    ],
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -4110,7 +4197,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Common.ExternalInsertionDiagram.pairingInMixedOrder_crossingCount_eq_sum_components_add_inter"
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.mixedPairingValue_eq_inter_mul_prod_components"
     ],
     "dependencies": [
       "Combinatorics.Pairing.componentCrossingCount_self_eq",
@@ -4119,7 +4206,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.ExternalInsertionDiagram.pairingInMixedOrder_crossingCount_eq_sum_components_add_inter"
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.mixedPairingValue_eq_inter_mul_prod_components"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -22764,7 +22851,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -22776,10 +22863,55 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "Finpartition.sum_order_orderedSimplexIntegral_eq_prod_sum_partOrders"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "Finpartition.sum_order_orderedSimplexIntegral_eq_prod_sum_partOrders"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {α : Type u_1} [inst : DecidableEq α] {s : Finset α} (π : Finpartition s) (β : ℝ)\n  (globalIntegrand : Fin s.card ≃ ↥s → (Fin s.card → ℝ) → ℂ)\n  (localIntegrand : (B : ↥π.parts) → Fin (↑B).card ≃ ↥↑B → (Fin (↑B).card → ℝ) → ℂ),\n  (∀ (orders : π.PartOrders) (shuffle : π.PartShuffle),\n      globalIntegrand (π.assembleOrder orders shuffle) =\n        Combinatorics.FamilySlotShuffleTo.ambientIntegrand shuffle fun B => localIntegrand B (orders B)) →\n    (∀ (B : ↥π.parts) (order : Fin (↑B).card ≃ ↥↑B),\n        intervalIntegral.MeasurableLocallyBounded (localIntegrand B order)) →\n      ∑ order, intervalIntegral.orderedSimplexIntegral s.card β (globalIntegrand order) =\n        ∏ B, ∑ order, intervalIntegral.orderedSimplexIntegral (↑B).card β (localIntegrand B order)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "Finpartition.sum_order_orderedSimplexIntegral_eq_prod_sum_partOrders",
+    "module": "LeanCondensedMatter.Analysis.OrderedSimplex.PartitionOrderIntegral",
+    "externalAxioms": [],
+    "docString": "Sum the ordered-simplex integrals over every order of a finite set by factoring\nthrough a finite partition and its part-local order sums. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
       "SecondQuantization.Bosonic.QuarticDiagram.dysonThermalAmplitude_eq_prod_components",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.Wick.AmplitudeFactorization.0.SecondQuantization.Fermionic.sum_orderedSimplexContribution_eq_prod_components"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Combinatorics.FamilySlotShuffleTo.sum_integral_eq_prod",
+      "Finpartition.sum_order_eq_mul_prod_sum_partOrders"
+    ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
@@ -23043,9 +23175,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Common.externalInsertionSlotLegSplitting_fixedInversionCount_mod_two_eq_zero",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Factorization.ComponentGlobalCrossingParity.0.SecondQuantization.Common.QuarticDiagram.sum_componentOrderedLeg_inversions_mod_two_eq_zero",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentGeometricCrossingCount_mod_two_eq_zero_of_vacuum"
+      "Combinatorics.Pairing.componentGeometricCrossingCount_mod_two_eq_zero_of_even_fiber",
+      "SecondQuantization.Common.externalInsertionSlotLegSplitting_fixedInversionCount_mod_two_eq_zero"
     ],
     "dependencies": [
       "Fintype.sum_equiv_fst_eq_card_mul_sum"
@@ -23053,11 +23184,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.externalInsertionSlotLegSplitting_fixedInversionCount_mod_two_eq_zero",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Factorization.ComponentGlobalCrossingParity.0.SecondQuantization.Common.QuarticDiagram.sum_componentOrderedLeg_inversions_mod_two_eq_zero",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedComponentGeometricCrossingCount_mod_two_eq_zero_of_vacuum"
+      "Combinatorics.Pairing.componentGeometricCrossingCount_mod_two_eq_zero_of_even_fiber",
+      "SecondQuantization.Common.externalInsertionSlotLegSplitting_fixedInversionCount_mod_two_eq_zero"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -28003,7 +28133,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": true,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -28015,15 +28145,19 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "LeanCondensedMatter.Crystal.latticePointGroup.extendIntegralLinearEquiv_mem_iff"
+      "LeanCondensedMatter.Crystal.latticePointGroup.extendIntegralLinearEquiv_mem_iff",
+      "LeanCondensedMatter.Crystal.latticePointGroup.restrict_ofGLGramPreserving",
+      "LeanCondensedMatter.Crystal.latticePointGroup.restrict_ofIntegralLinearEquivGramPreserving"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "LeanCondensedMatter.Crystal.latticePointGroup.extendIntegralLinearEquiv_mem_iff"
+      "LeanCondensedMatter.Crystal.latticePointGroup.extendIntegralLinearEquiv_mem_iff",
+      "LeanCondensedMatter.Crystal.latticePointGroup.restrict_ofGLGramPreserving",
+      "LeanCondensedMatter.Crystal.latticePointGroup.restrict_ofIntegralLinearEquivGramPreserving"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -28390,6 +28524,130 @@
       "LeanCondensedMatter.Crystal.latticePointGroup.gram_quarterTurn_iff"
     ],
     "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {V : Type u_1} [inst : NormedAddCommGroup V] [inst_1 : InnerProductSpace ℝ V] [inst_2 : FiniteDimensional ℝ V]\n  {ι : Type u_2} [inst_3 : Fintype ι] [inst_4 : DecidableEq ι] (L : Submodule ℤ V) [inst_5 : DiscreteTopology ↥L]\n  [inst_6 : IsZLattice ℝ L] (b : Module.Basis ι ℤ ↥L) (A : GL ι ℤ)\n  (hGram :\n    have G := Matrix.gram ℝ fun i => ↑(b i);\n    ((↑A).map Int.cast).transpose * G * (↑A).map Int.cast = G)\n  (i j : ι),\n  (b.repr ((Crystal.latticePointGroup.restrict L (Crystal.latticePointGroup.ofGLGramPreserving L b A hGram)) (b j))) i =\n    ↑A i j",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "LeanCondensedMatter.Crystal.latticePointGroup.ofGLGramPreserving_basis_coordinates",
+    "module": "LeanCondensedMatter.Crystal.Classification",
+    "externalAxioms": [],
+    "docString": "In the chosen integral basis, the intrinsic lattice isometry obtained from\na Gram-preserving integer matrix has *exactly* that matrix as its coordinate\nrepresentation. This connects concrete planar symmetry matrices to geometry. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "LeanCondensedMatter.Crystal.latticePointGroup.restrict_ofGLGramPreserving"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {V : Type u_1} [inst : NormedAddCommGroup V] [inst_1 : InnerProductSpace ℝ V] [inst_2 : FiniteDimensional ℝ V]\n  {ι : Type u_2} [inst_3 : Fintype ι] [inst_4 : DecidableEq ι] (L : Submodule ℤ V) [inst_5 : DiscreteTopology ↥L]\n  [inst_6 : IsZLattice ℝ L] (b : Module.Basis ι ℤ ↥L) (A : GL ι ℤ)\n  (hGram :\n    have G := Matrix.gram ℝ fun i => ↑(b i);\n    ((↑A).map Int.cast).transpose * G * (↑A).map Int.cast = G),\n  Crystal.latticePointGroup.restrict L (Crystal.latticePointGroup.ofGLGramPreserving L b A hGram) =\n    ((Matrix.GeneralLinearGroup.toLin' b) A).toLinearEquiv",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "LeanCondensedMatter.Crystal.latticePointGroup.restrict_ofGLGramPreserving",
+    "module": "LeanCondensedMatter.Crystal.Classification",
+    "externalAxioms": [],
+    "docString": "Lifting a Gram-preserving unimodular integer matrix to an intrinsic lattice\nisometry and restricting to the lattice recovers Mathlib's original integral\nlinear automorphism represented by that matrix. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "LeanCondensedMatter.Crystal.latticePointGroup.ofGLGramPreserving_basis_coordinates"
+    ],
+    "dependencies": [
+      "LeanCondensedMatter.Crystal.latticePointGroup.extendIntegralLinearEquiv_apply_basis"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "LeanCondensedMatter.Crystal.latticePointGroup.ofGLGramPreserving_basis_coordinates"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {V : Type u_1} [inst : NormedAddCommGroup V] [inst_1 : InnerProductSpace ℝ V] [inst_2 : FiniteDimensional ℝ V]\n  {ι : Type u_2} [inst_3 : Fintype ι] (L : Submodule ℤ V) [inst_4 : DiscreteTopology ↥L] [inst_5 : IsZLattice ℝ L]\n  (b : Module.Basis ι ℤ ↥L) (e : ↥L ≃ₗ[ℤ] ↥L)\n  (hGram : (Matrix.gram ℝ fun i => ↑(e (b i))) = Matrix.gram ℝ fun i => ↑(b i)),\n  Crystal.latticePointGroup.restrict L (Crystal.latticePointGroup.ofIntegralLinearEquivGramPreserving L b e hGram) = e",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "LeanCondensedMatter.Crystal.latticePointGroup.restrict_ofIntegralLinearEquivGramPreserving",
+    "module": "LeanCondensedMatter.Crystal.Classification",
+    "externalAxioms": [],
+    "docString": "The intrinsic lattice isometry constructed from an integral-linear\nautomorphism restricts back to that automorphism. This makes the metric\nextension compatible with the original integral action. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "LeanCondensedMatter.Crystal.latticePointGroup.extendIntegralLinearEquiv_apply_basis"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -61994,7 +62252,8 @@
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentScalarCoefficient_eq_entryKernel_integrals",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock_neg_radius",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_psi_eq_scalar_radial_kernels",
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_x_eq_scalar_radial_kernels"
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_x_eq_scalar_radial_kernels",
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceCurrentBlock_polarPoint2D_sourceRotation"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
@@ -62004,9 +62263,10 @@
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentScalarCoefficient_eq_entryKernel_integrals",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock_neg_radius",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_psi_eq_scalar_radial_kernels",
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_x_eq_scalar_radial_kernels"
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_x_eq_scalar_radial_kernels",
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceCurrentBlock_polarPoint2D_sourceRotation"
     ],
-    "compiledConsumerCount": 5,
+    "compiledConsumerCount": 6,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -62565,7 +62825,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ (source : Fin 2) (v m probeEnergy broadening disorderStrength hbar pMax radius angle : ℝ) (i j : Fin 2),\n  QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceCurrentBlock source v m\n      probeEnergy broadening disorderStrength hbar pMax (QuantumTheory.Transport.polarPoint2D radius angle) i j =\n    ↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n      ∫ (p : ℝ) in 0..pMax,\n        QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedAngularCurrentEntryKernel source\n          v m probeEnergy broadening disorderStrength hbar pMax radius angle p i j",
     "standardAxioms": [
       "Classical.choice",
@@ -62573,7 +62833,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -62584,7 +62844,9 @@
     "docString": "Arbitrary-angle polar Fourier representation of the model's crossed-current\nmatrix. The underlying advanced-current-retarded Pauli sandwich is the same\nas in the radial-axis theorem, but both first harmonics and both second\nharmonics must be retained at nonzero polar angle. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceCurrentBlock_polarPoint2D_sourceRotation"
+    ],
     "dependencies": [
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGreenOperator_polar_eq",
       "QuantumTheory.Models.MassiveDirac.polarPauliMatrix_inPlane_sandwich_eq_harmonics",
@@ -62593,8 +62855,61 @@
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceCurrentBlock_polarPoint2D_sourceRotation"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (source : Fin 2) (v m probeEnergy broadening disorderStrength hbar pMax radius angle : ℝ),\n  broadening ≠ 0 →\n    0 ≤ disorderStrength →\n      0 ≤ pMax →\n        QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceCurrentBlock source v m\n            probeEnergy broadening disorderStrength hbar pMax (QuantumTheory.Transport.polarPoint2D radius angle) =\n          (QuantumTheory.Models.MassiveDirac.inPlaneSpinRotation angle *\n              if source = 0 then\n                ↑(Real.cos angle) •\n                    QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock\n                      0 v m probeEnergy broadening disorderStrength hbar pMax radius -\n                  ↑(Real.sin angle) •\n                    QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock\n                      1 v m probeEnergy broadening disorderStrength hbar pMax radius\n              else\n                ↑(Real.sin angle) •\n                    QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock\n                      0 v m probeEnergy broadening disorderStrength hbar pMax radius +\n                  ↑(Real.cos angle) •\n                    QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock\n                      1 v m probeEnergy broadening disorderStrength hbar pMax radius) *\n            QuantumTheory.Models.MassiveDirac.inPlaneSpinRotationInverse angle",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceCurrentBlock_polarPoint2D_sourceRotation",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedRealSpace",
+    "externalAxioms": [],
+    "docString": "The exact finite-cutoff Gaussian-crossed real-space current is covariant\nunder SO(2), including the oriented rotation of its Cartesian source index.\nFinite broadening and nonnegative disorder/cutoff ensure both radial source\nkernels are interval integrable; no regulator limit is involved. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedTraceKernel_polarPoint2D_eq_radial_tensor"
+    ],
+    "dependencies": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock_apply_eq_entryKernel_integral",
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceCurrentBlock_polarPoint2D_eq_angularKernel_integral",
+      "QuantumTheory.Models.MassiveDirac.intervalIntegrable_finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel",
+      "QuantumTheory.Models.MassiveDirac.intervalIntegralMatrix2_add",
+      "QuantumTheory.Models.MassiveDirac.intervalIntegralMatrix2_smul",
+      "QuantumTheory.Models.MassiveDirac.intervalIntegralMatrix2_spinRotation_conjugate",
+      "QuantumTheory.Models.MassiveDirac.intervalIntegralMatrix2_sub",
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedRealSpace.0.QuantumTheory.Models.MassiveDirac.gaussianCrossedAngularCurrentEntryKernel_sourceRotation"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedTraceKernel_polarPoint2D_eq_radial_tensor"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -62655,8 +62970,53 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ (diagram : QuantumTheory.Models.MassiveDirac.GaussianCrossedDiagram)\n  (v m probeEnergy broadening disorderStrength hbar pMax rMax : ℝ),\n  (∀ (radius angle : ℝ),\n      have tensor :=\n        QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor diagram v m\n          probeEnergy broadening disorderStrength hbar pMax radius;\n      QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedTraceKernel diagram v m probeEnergy\n          broadening disorderStrength hbar pMax (QuantumTheory.Transport.polarPoint2D radius angle) =\n        ↑(Real.cos angle) ^ 2 * tensor 0 1 - ↑(Real.sin angle) ^ 2 * tensor 1 0 +\n          ↑(Real.cos angle) * ↑(Real.sin angle) * (tensor 0 0 - tensor 1 1)) →\n    QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceIntegral diagram v m\n        probeEnergy broadening disorderStrength hbar pMax rMax =\n      ↑(2 * Real.pi) *\n        ∫ (radius : ℝ) in 0..rMax,\n          ↑radius *\n            ((QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor diagram v\n                  m probeEnergy broadening disorderStrength hbar pMax radius 0 1 -\n                QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor diagram\n                  v m probeEnergy broadening disorderStrength hbar pMax radius 1 0) /\n              2)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceIntegral_eq_radial_antisymmetric_trace",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedRealSpaceIntegral",
+    "externalAxioms": [],
+    "docString": "If the full angular crossed trace transforms as the `xy` component of\nits canonical radial source-pair trace tensor under SO(2), the *complete*\nfinite-radius real-space integral is the radial integral of the antisymmetric\n`xy-yx` sector.\n\nThe rotation-covariance hypothesis is explicit: it is not implied by the\npreviously proved radial-axis Fourier identities and must be discharged from\nthe model's Green/current rotation laws. This theorem performs the angular\nprojection, not the remaining radial or regulator limits. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceIntegral_eq_radial_antisymmetric_trace_of_regulated"
+    ],
+    "dependencies": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceIntegral_eq_radial_harmonic_constant",
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedRealSpaceIntegral.0.QuantumTheory.Models.MassiveDirac.gaussianCrossedAngularTensorCoefficients_eval"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceIntegral_eq_radial_antisymmetric_trace_of_regulated"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (diagram : QuantumTheory.Models.MassiveDirac.GaussianCrossedDiagram)\n  (v m probeEnergy broadening disorderStrength hbar pMax rMax : ℝ),\n  broadening ≠ 0 →\n    0 ≤ disorderStrength →\n      0 ≤ pMax →\n        QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceIntegral diagram v m\n            probeEnergy broadening disorderStrength hbar pMax rMax =\n          ↑(2 * Real.pi) *\n            ∫ (radius : ℝ) in 0..rMax,\n              ↑radius *\n                ((QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor\n                      diagram v m probeEnergy broadening disorderStrength hbar pMax radius 0 1 -\n                    QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor\n                      diagram v m probeEnergy broadening disorderStrength hbar pMax radius 1 0) /\n                  2)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -62668,16 +63028,16 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceIntegral_eq_radial_antisymmetric_trace",
+    "name": "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceIntegral_eq_radial_antisymmetric_trace_of_regulated",
     "module": "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedRealSpaceIntegral",
     "externalAxioms": [],
-    "docString": "If the full angular crossed trace transforms as the `xy` component of\nits canonical radial source-pair trace tensor under SO(2), the *complete*\nfinite-radius real-space integral is the radial integral of the antisymmetric\n`xy-yx` sector.\n\nThe rotation-covariance hypothesis is explicit: it is not implied by the\npreviously proved radial-axis Fourier identities and must be discharged from\nthe model's Green/current rotation laws. This theorem performs the angular\nprojection, not the remaining radial or regulator limits. ",
+    "docString": "The regulated Gaussian X/Psi real-space integral reduces unconditionally to\nthe antisymmetric radial source-pair tensor once the finite-broadening\nintegrability assumptions are supplied. This discharges the former\nmodel-specific angular-rotation hypothesis using the proved Green/current\nSO(2) covariance, without taking any regulator limit. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceIntegral_eq_radial_harmonic_constant",
-      "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedRealSpaceIntegral.0.QuantumTheory.Models.MassiveDirac.gaussianCrossedAngularTensorCoefficients_eval"
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceIntegral_eq_radial_antisymmetric_trace",
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedTraceKernel_polarPoint2D_eq_radial_tensor"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -62770,6 +63130,54 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedWeightedRealSpaceIntegral_psi_im"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (diagram : QuantumTheory.Models.MassiveDirac.GaussianCrossedDiagram)\n  (v m probeEnergy broadening disorderStrength hbar pMax radius angle : ℝ),\n  broadening ≠ 0 →\n    0 ≤ disorderStrength →\n      0 ≤ pMax →\n        have tensor :=\n          QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor diagram v m\n            probeEnergy broadening disorderStrength hbar pMax radius;\n        QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedTraceKernel diagram v m\n            probeEnergy broadening disorderStrength hbar pMax (QuantumTheory.Transport.polarPoint2D radius angle) =\n          ↑(Real.cos angle) ^ 2 * tensor 0 1 - ↑(Real.sin angle) ^ 2 * tensor 1 0 +\n            ↑(Real.cos angle) * ↑(Real.sin angle) * (tensor 0 0 - tensor 1 1)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedTraceKernel_polarPoint2D_eq_radial_tensor",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedRealSpaceIntegral",
+    "externalAxioms": [],
+    "docString": "Exact SO(2) rotation of the full Gaussian X/Psi trace, expressed in the\ncanonical radial source-pair tensor. Both current insertions are rotated,\nwhile their common spinor conjugations cancel under the trace. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceIntegral_eq_radial_antisymmetric_trace_of_regulated"
+    ],
+    "dependencies": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceCurrentBlock_polarPoint2D_sourceRotation",
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRealSpaceGreenMatrix_polarPoint2D_eq_radial_spinRotation",
+      "QuantumTheory.Models.MassiveDirac.gaussianCrossedTraceKernel_rotated_sources",
+      "QuantumTheory.Transport.neg_polarPoint2D",
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedRealSpaceIntegral.0.QuantumTheory.Models.MassiveDirac.gaussianCrossedTraceKernel_spinRotation_conjugate"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceIntegral_eq_radial_antisymmetric_trace_of_regulated"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -63735,7 +64143,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ (side : QuantumTheory.Transport.SpectralSide)\n  (v m probeEnergy broadening disorderStrength hbar pMax radius angle : ℝ),\n  QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRealSpaceGreenMatrix side v m probeEnergy broadening\n      disorderStrength hbar pMax (QuantumTheory.Transport.polarPoint2D radius angle) =\n    QuantumTheory.Models.MassiveDirac.inPlaneSpinRotation angle *\n        QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix side v m probeEnergy\n          broadening disorderStrength hbar pMax radius *\n      QuantumTheory.Models.MassiveDirac.inPlaneSpinRotationInverse angle",
     "standardAxioms": [
       "Classical.choice",
@@ -63743,7 +64151,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -63754,15 +64162,19 @@
     "docString": "Full model-specific SO(2) covariance relative to the canonical\none-dimensional radial Green matrix, valid for retarded and advanced sides. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedTraceKernel_polarPoint2D_eq_radial_tensor"
+    ],
     "dependencies": [
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRealSpaceGreenMatrix_polarPoint2D_spinRotation",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRealSpaceGreenMatrix_radialAxis_eq"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedTraceKernel_polarPoint2D_eq_radial_tensor"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -63801,7 +64213,7 @@
     "dependencies": [
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonAngularGreenEntryKernel_eq_spinRotation",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRealSpaceGreenMatrix_polarPoint2D_eq_angularKernel_integral",
-      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornRealSpacePropagator.0.QuantumTheory.Models.MassiveDirac.intervalIntegralMatrix2_spinRotation_conjugate"
+      "QuantumTheory.Models.MassiveDirac.intervalIntegralMatrix2_spinRotation_conjugate"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -65669,7 +66081,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ {R : Type u_1} [inst : Neg R] (diagram : QuantumTheory.Models.MassiveDirac.GaussianCrossedDiagram)\n  (greenRetarded greenAdvanced : R → QuantumTheory.Models.MassiveDirac.Matrix2)\n  (current : Fin 2 → R → QuantumTheory.Models.MassiveDirac.Matrix2) (r : R) (c s : ℝ),\n  QuantumTheory.Models.MassiveDirac.gaussianCrossedTraceKernel diagram greenRetarded greenAdvanced\n      (fun axis ρ => if axis = 0 then ↑c • current 0 ρ - ↑s • current 1 ρ else ↑s • current 0 ρ + ↑c • current 1 ρ) r =\n    ↑c ^ 2 *\n          QuantumTheory.Models.MassiveDirac.gaussianCrossedTraceKernel diagram greenRetarded greenAdvanced current r -\n        ↑s ^ 2 *\n          QuantumTheory.Models.MassiveDirac.gaussianCrossedTraceKernel diagram greenRetarded greenAdvanced\n            (fun axis ρ => if axis = 0 then current 1 ρ else current 0 ρ) r +\n      ↑c * ↑s *\n        (QuantumTheory.Models.MassiveDirac.gaussianCrossedTraceKernel diagram greenRetarded greenAdvanced\n            (fun x ρ => current 0 ρ) r -\n          QuantumTheory.Models.MassiveDirac.gaussianCrossedTraceKernel diagram greenRetarded greenAdvanced\n            (fun x ρ => current 1 ρ) r)",
     "standardAxioms": [
       "Classical.choice",
@@ -65677,7 +66089,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -65688,14 +66100,18 @@
     "docString": "The four-current tensor values that enter a rotated crossed source pair.\nIn the `Psi` branch the Hermitian-conjugate trace is included exactly as in\nthe canonical crossed topology, so the rotation coefficients must be real. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedTraceKernel_polarPoint2D_eq_radial_tensor"
+    ],
     "dependencies": [
       "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedTrace.0.QuantumTheory.Models.MassiveDirac.trace_four_rotated_currents"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedTraceKernel_polarPoint2D_eq_radial_tensor"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -67098,7 +67514,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ (angle : ℝ),\n  QuantumTheory.Models.MassiveDirac.inPlaneSpinRotationInverse angle *\n      QuantumTheory.Models.MassiveDirac.inPlaneSpinRotation angle =\n    1",
     "standardAxioms": [
       "Classical.choice",
@@ -67106,7 +67522,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -67117,14 +67533,18 @@
     "docString": "The inverse spinor can also be placed on the left. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "QuantumTheory.Models.MassiveDirac.inPlaneSpinRotation_conjugate_mul"
+    ],
     "dependencies": [
       "QuantumTheory.Models.MassiveDirac.inPlaneSpinRotation_mul_inverse"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.inPlaneSpinRotation_conjugate_mul"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -67215,6 +67635,185 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.Models.MassiveDirac.inPlaneSpinRotationInverse_directionPauli"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (angle : ℝ) (M : QuantumTheory.Models.MassiveDirac.Matrix2) (i j : Fin 2),\n  (QuantumTheory.Models.MassiveDirac.inPlaneSpinRotation angle * M *\n        QuantumTheory.Models.MassiveDirac.inPlaneSpinRotationInverse angle)\n      i j =\n    QuantumTheory.Models.MassiveDirac.inPlaneSpinRotation angle i i * M i j *\n      QuantumTheory.Models.MassiveDirac.inPlaneSpinRotationInverse angle j j",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.MassiveDirac.inPlaneSpinRotation_conjugate_apply",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Model.Rotation",
+    "externalAxioms": [],
+    "docString": "Entrywise conjugation by the diagonal in-plane spinor multiplies each\nmatrix entry by the corresponding left and right spinor phases.\nThis avoids expanding a full matrix product in Fourier-kernel proofs. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.MassiveDirac.inPlaneSpinRotation_conjugate_diagonal",
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedRealSpace.0.QuantumTheory.Models.MassiveDirac.gaussianCrossedAngularCurrentEntryKernel_sourceRotation"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.inPlaneSpinRotation_conjugate_diagonal",
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedRealSpace.0.QuantumTheory.Models.MassiveDirac.gaussianCrossedAngularCurrentEntryKernel_sourceRotation"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (angle : ℝ) (M : QuantumTheory.Models.MassiveDirac.Matrix2) (i : Fin 2),\n  (QuantumTheory.Models.MassiveDirac.inPlaneSpinRotation angle * M *\n        QuantumTheory.Models.MassiveDirac.inPlaneSpinRotationInverse angle)\n      i i =\n    M i i",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.MassiveDirac.inPlaneSpinRotation_conjugate_diagonal",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Model.Rotation",
+    "externalAxioms": [],
+    "docString": "Conjugation by the diagonal spinor fixes every diagonal entry. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.MassiveDirac.inPlaneSpinRotation_conjugate_trace",
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedRealSpace.0.QuantumTheory.Models.MassiveDirac.gaussianCrossedAngularCurrentEntryKernel_sourceRotation"
+    ],
+    "dependencies": [
+      "QuantumTheory.Models.MassiveDirac.inPlaneSpinRotation_conjugate_apply",
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Model.Rotation.0.QuantumTheory.Models.MassiveDirac.inPlaneSpinRotation_phases_mul"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.inPlaneSpinRotation_conjugate_trace",
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedRealSpace.0.QuantumTheory.Models.MassiveDirac.gaussianCrossedAngularCurrentEntryKernel_sourceRotation"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (angle : ℝ) (A B : QuantumTheory.Models.MassiveDirac.Matrix2),\n  QuantumTheory.Models.MassiveDirac.inPlaneSpinRotation angle * A *\n        QuantumTheory.Models.MassiveDirac.inPlaneSpinRotationInverse angle *\n      (QuantumTheory.Models.MassiveDirac.inPlaneSpinRotation angle * B *\n        QuantumTheory.Models.MassiveDirac.inPlaneSpinRotationInverse angle) =\n    QuantumTheory.Models.MassiveDirac.inPlaneSpinRotation angle * (A * B) *\n      QuantumTheory.Models.MassiveDirac.inPlaneSpinRotationInverse angle",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.MassiveDirac.inPlaneSpinRotation_conjugate_mul",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Model.Rotation",
+    "externalAxioms": [],
+    "docString": "Conjugation by an in-plane spinor is multiplicative. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedRealSpaceIntegral.0.QuantumTheory.Models.MassiveDirac.gaussianCrossedTraceKernel_spinRotation_conjugate"
+    ],
+    "dependencies": [
+      "QuantumTheory.Models.MassiveDirac.inPlaneSpinRotationInverse_mul"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedRealSpaceIntegral.0.QuantumTheory.Models.MassiveDirac.gaussianCrossedTraceKernel_spinRotation_conjugate"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (angle : ℝ) (M : QuantumTheory.Models.MassiveDirac.Matrix2),\n  (QuantumTheory.Models.MassiveDirac.inPlaneSpinRotation angle * M *\n        QuantumTheory.Models.MassiveDirac.inPlaneSpinRotationInverse angle).trace =\n    Matrix.trace M",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.MassiveDirac.inPlaneSpinRotation_conjugate_trace",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Model.Rotation",
+    "externalAxioms": [],
+    "docString": "Conjugation by an in-plane spinor preserves the two-band trace. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedRealSpaceIntegral.0.QuantumTheory.Models.MassiveDirac.gaussianCrossedTraceKernel_spinRotation_conjugate"
+    ],
+    "dependencies": [
+      "QuantumTheory.Models.MassiveDirac.inPlaneSpinRotation_conjugate_diagonal"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedRealSpaceIntegral.0.QuantumTheory.Models.MassiveDirac.gaussianCrossedTraceKernel_spinRotation_conjugate"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -67623,7 +68222,8 @@
     "directWrapperOf": null,
     "dependents": [
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient_eq_radialKernel_integral",
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentScalarCoefficient_eq_radialKernel_integral"
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentScalarCoefficient_eq_radialKernel_integral",
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceCurrentBlock_polarPoint2D_sourceRotation"
     ],
     "dependencies": [
       "QuantumTheory.Models.MassiveDirac.continuous_finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel"
@@ -67632,9 +68232,10 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient_eq_radialKernel_integral",
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentScalarCoefficient_eq_radialKernel_integral"
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentScalarCoefficient_eq_radialKernel_integral",
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceCurrentBlock_polarPoint2D_sourceRotation"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -67681,6 +68282,176 @@
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenScalarCoefficient_eq_radialKernel_integral"
     ],
     "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (a b : ℝ) (f g : ℝ → QuantumTheory.Models.MassiveDirac.Matrix2),\n  (∀ (i j : Fin 2), IntervalIntegrable (fun p => f p i j) MeasureTheory.volume a b) →\n    (∀ (i j : Fin 2), IntervalIntegrable (fun p => g p i j) MeasureTheory.volume a b) →\n      (QuantumTheory.Models.MassiveDirac.intervalIntegralMatrix2 a b fun p => f p + g p) =\n        QuantumTheory.Models.MassiveDirac.intervalIntegralMatrix2 a b f +\n          QuantumTheory.Models.MassiveDirac.intervalIntegralMatrix2 a b g",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.MassiveDirac.intervalIntegralMatrix2_add",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornRealSpacePropagator",
+    "externalAxioms": [],
+    "docString": "Entrywise interval integration is additive for interval-integrable matrices.\nThe assumptions matter: the default integral of a non-integrable function\nis zero, so unconditional additivity would be false. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceCurrentBlock_polarPoint2D_sourceRotation"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceCurrentBlock_polarPoint2D_sourceRotation"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (a b : ℝ) (c : ℂ) (f : ℝ → QuantumTheory.Models.MassiveDirac.Matrix2),\n  (QuantumTheory.Models.MassiveDirac.intervalIntegralMatrix2 a b fun p => c • f p) =\n    c • QuantumTheory.Models.MassiveDirac.intervalIntegralMatrix2 a b f",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.MassiveDirac.intervalIntegralMatrix2_smul",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornRealSpacePropagator",
+    "externalAxioms": [],
+    "docString": "Entrywise interval integration commutes with a fixed complex scalar. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceCurrentBlock_polarPoint2D_sourceRotation"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceCurrentBlock_polarPoint2D_sourceRotation"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (angle a b : ℝ) (f : ℝ → QuantumTheory.Models.MassiveDirac.Matrix2),\n  (QuantumTheory.Models.MassiveDirac.intervalIntegralMatrix2 a b fun p =>\n      QuantumTheory.Models.MassiveDirac.inPlaneSpinRotation angle * f p *\n        QuantumTheory.Models.MassiveDirac.inPlaneSpinRotationInverse angle) =\n    QuantumTheory.Models.MassiveDirac.inPlaneSpinRotation angle *\n        QuantumTheory.Models.MassiveDirac.intervalIntegralMatrix2 a b f *\n      QuantumTheory.Models.MassiveDirac.inPlaneSpinRotationInverse angle",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.MassiveDirac.intervalIntegralMatrix2_spinRotation_conjugate",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornRealSpacePropagator",
+    "externalAxioms": [],
+    "docString": "Diagonal spinor conjugation commutes with entrywise interval integration.\nEvery entry has only one nonzero summand, so scalar constant-factor integral\nrules suffice and no additional integrability assumptions are required. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceCurrentBlock_polarPoint2D_sourceRotation",
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRealSpaceGreenMatrix_polarPoint2D_spinRotation"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceCurrentBlock_polarPoint2D_sourceRotation",
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRealSpaceGreenMatrix_polarPoint2D_spinRotation"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (a b : ℝ) (f g : ℝ → QuantumTheory.Models.MassiveDirac.Matrix2),\n  (∀ (i j : Fin 2), IntervalIntegrable (fun p => f p i j) MeasureTheory.volume a b) →\n    (∀ (i j : Fin 2), IntervalIntegrable (fun p => g p i j) MeasureTheory.volume a b) →\n      (QuantumTheory.Models.MassiveDirac.intervalIntegralMatrix2 a b fun p => f p - g p) =\n        QuantumTheory.Models.MassiveDirac.intervalIntegralMatrix2 a b f -\n          QuantumTheory.Models.MassiveDirac.intervalIntegralMatrix2 a b g",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.MassiveDirac.intervalIntegralMatrix2_sub",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornRealSpacePropagator",
+    "externalAxioms": [],
+    "docString": "Subtraction likewise commutes with entrywise interval integration\nunder the same explicit analytic assumptions. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceCurrentBlock_polarPoint2D_sourceRotation"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceCurrentBlock_polarPoint2D_sourceRotation"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -86276,7 +87047,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -86288,6 +87059,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedTraceKernel_polarPoint2D_eq_radial_tensor",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedTraceKernel_radialAxis_eq"
     ],
     "dependencies": [
@@ -86297,9 +87069,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedTraceKernel_polarPoint2D_eq_radial_tensor",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedTraceKernel_radialAxis_eq"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -95584,8 +96357,13 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "Finpartition.sum_order_eq_mul_prod_sum_partOrders",
-      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion.Factorization.0.SecondQuantization.Bosonic.QuarticDiagram.sum_shuffle_orderedDysonThermalAmplitude_eq_prod_components"
+      "Finpartition.sum_order_orderedSimplexIntegral_eq_prod_sum_partOrders",
+      "SecondQuantization.Bosonic.QuarticDiagram.orderedThermalPairingValue_eq_prod_components",
+      "SecondQuantization.Common.QuarticDiagram.dysonSign_mul_vertexWeight_eq_prod_components",
+      "SecondQuantization.Common.continuous_quarticVertexSequenceTimeFactor",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion.Factorization.0.SecondQuantization.Bosonic.QuarticDiagram.orderedDysonThermalAmplitude_eq_integral",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion.Factorization.0.SecondQuantization.Bosonic.QuarticDiagram.quarticVertexSequenceTimeFactor_assembleVertexOrder",
+      "intervalIntegral.Continuous.measurableLocallyBounded"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -95795,8 +96573,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Bosonic.QuarticDiagram.orderedThermalAmplitude_eq_prod_components",
-      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion.Factorization.0.SecondQuantization.Bosonic.QuarticDiagram.sum_shuffle_orderedDysonThermalAmplitude_eq_prod_components"
+      "SecondQuantization.Bosonic.QuarticDiagram.dysonThermalAmplitude_eq_prod_components",
+      "SecondQuantization.Bosonic.QuarticDiagram.orderedThermalAmplitude_eq_prod_components"
     ],
     "dependencies": [
       "SecondQuantization.Bosonic.QuarticDiagram.freeThermalPairValue_componentOrderedLeg",
@@ -95805,8 +96583,8 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Bosonic.QuarticDiagram.orderedThermalAmplitude_eq_prod_components",
-      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion.Factorization.0.SecondQuantization.Bosonic.QuarticDiagram.sum_shuffle_orderedDysonThermalAmplitude_eq_prod_components"
+      "SecondQuantization.Bosonic.QuarticDiagram.dysonThermalAmplitude_eq_prod_components",
+      "SecondQuantization.Bosonic.QuarticDiagram.orderedThermalAmplitude_eq_prod_components"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -105464,7 +106242,6 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Common.ExternalInsertionDiagram.mixedInterComponentCrossingCount_mod_two_eq_orderedBlockInversionCount",
-      "SecondQuantization.Common.ExternalInsertionDiagram.pairingInMixedOrder_crossingCount_eq_sum_components_add_inter",
       "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.mixedPairingValue_eq_inter_mul_prod_components"
     ],
     "dependencies": [
@@ -105477,10 +106254,9 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Common.ExternalInsertionDiagram.mixedInterComponentCrossingCount_mod_two_eq_orderedBlockInversionCount",
-      "SecondQuantization.Common.ExternalInsertionDiagram.pairingInMixedOrder_crossingCount_eq_sum_components_add_inter",
       "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.mixedPairingValue_eq_inter_mul_prod_components"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -105607,7 +106383,7 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Common.ExternalInsertionDiagram.componentMixedPairEquiv_apply",
-      "SecondQuantization.Common.ExternalInsertionDiagram.pairingInMixedOrder_crossingCount_eq_sum_components_add_inter"
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.mixedPairingValue_eq_inter_mul_prod_components"
     ],
     "dependencies": [
       "SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegPosition_map_strictMono"
@@ -105616,7 +106392,7 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Common.ExternalInsertionDiagram.componentMixedPairEquiv_apply",
-      "SecondQuantization.Common.ExternalInsertionDiagram.pairingInMixedOrder_crossingCount_eq_sum_components_add_inter"
+      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.mixedPairingValue_eq_inter_mul_prod_components"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -106821,52 +107597,6 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": false,
-    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {E n : ℕ}\n  (d : SecondQuantization.Common.ExternalInsertionDiagram ExternalLabel InternalLabel E n Finset.univ)\n  (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ),\n  (d.pairingInMixedOrder externalTime σ).crossingCount =\n    ∑ B,\n        ((d.componentOrderedDiagram B).pairingInMixedOrder (d.componentExternalTime externalTime B)\n            (d.componentInteractionTime σ B)).crossingCount +\n      (d.pairingInMixedOrder externalTime σ).interComponentCrossingCount (d.componentMixedPairEquiv externalTime σ)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.ExternalInsertionDiagram.pairingInMixedOrder_crossingCount_eq_sum_components_add_inter",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Factorization.ComponentMixedCrossing",
-    "externalAxioms": [],
-    "docString": "The mixed-order crossing count is the sum of component-local mixed crossing counts and\nthe residual crossings between distinct components. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.mixedPairingValue_eq_inter_mul_prod_components"
-    ],
-    "dependencies": [
-      "Combinatorics.Pairing.crossingCount_eq_sum_localCrossingCount_add_inter",
-      "SecondQuantization.Common.ExternalInsertionDiagram.componentMixedPairEquiv_apply",
-      "SecondQuantization.Common.ExternalInsertionDiagram.componentMixedPosition_strictMono"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.mixedPairingValue_eq_inter_mul_prod_components"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
     "terminal": true,
     "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {E n : ℕ}\n  (d : SecondQuantization.Common.ExternalInsertionDiagram ExternalLabel InternalLabel E n Finset.univ)\n  (externalTime : Fin (2 * E) → ℝ) (σ υ : Fin n → ℝ),\n  SecondQuantization.Common.externalInsertionOrderSignature externalTime σ =\n      SecondQuantization.Common.externalInsertionOrderSignature externalTime υ →\n    d.pairingInMixedOrder externalTime σ = d.pairingInMixedOrder externalTime υ",
     "standardAxioms": [
@@ -107317,6 +108047,46 @@
     "dependents": [],
     "dependencies": [
       "SecondQuantization.Common.ExternalInsertionDiagram.slotCongr_vertexWeight"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {E N : ℕ} (T : Finset (Fin N))\n  (d : SecondQuantization.Common.ExternalInsertionDiagram ExternalLabel InternalLabel E N T),\n  (SecondQuantization.Common.ExternalInsertionDiagram.slotCongr\n        ((T.orderIsoOfFin ⋯).symm.trans (Equiv.subtypeUnivEquiv ⋯).symm) d).pairing =\n    Combinatorics.PairingOn.transport d.pairing (finCongr ⋯).symm",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.ExternalInsertionDiagram.standardize_pairing",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.SupportStandardization",
+    "externalAxioms": [],
+    "docString": "The pairing of a canonically reindexed support diagram is the original\npairing transported only by the canonical type-level cast of its pair count. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "SecondQuantization.Common.externalInsertionLegCongr_standardize"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -107886,9 +108656,9 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "SecondQuantization.Bosonic.QuarticDiagram.dysonThermalAmplitude_eq_prod_components",
       "SecondQuantization.Bosonic.QuarticDiagram.orderedThermalAmplitude_eq_prod_components",
-      "SecondQuantization.Fermionic.quarticWickDiagramAmplitude_eq_prod_components",
-      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion.Factorization.0.SecondQuantization.Bosonic.QuarticDiagram.sum_shuffle_orderedDysonThermalAmplitude_eq_prod_components"
+      "SecondQuantization.Fermionic.quarticWickDiagramAmplitude_eq_prod_components"
     ],
     "dependencies": [
       "Finpartition.pow_card_eq_prod_parts",
@@ -107898,9 +108668,9 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "SecondQuantization.Bosonic.QuarticDiagram.dysonThermalAmplitude_eq_prod_components",
       "SecondQuantization.Bosonic.QuarticDiagram.orderedThermalAmplitude_eq_prod_components",
-      "SecondQuantization.Fermionic.quarticWickDiagramAmplitude_eq_prod_components",
-      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion.Factorization.0.SecondQuantization.Bosonic.QuarticDiagram.sum_shuffle_orderedDysonThermalAmplitude_eq_prod_components"
+      "SecondQuantization.Fermionic.quarticWickDiagramAmplitude_eq_prod_components"
     ],
     "compiledConsumerCount": 3,
     "axioms": [
@@ -109086,7 +109856,7 @@
     "dependents": [
       "SecondQuantization.Fermionic.slotSplitDysonFixedTimeAmplitude_eq_external_mul_orderedVacuum",
       "SecondQuantization.Fermionic.sum_vertexWeight_mul_orderedSimplexContribution_eq_pairingEvaluation",
-      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion.Factorization.0.SecondQuantization.Bosonic.QuarticDiagram.sum_shuffle_orderedDysonThermalAmplitude_eq_prod_components"
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion.Factorization.0.SecondQuantization.Bosonic.QuarticDiagram.orderedDysonThermalAmplitude_eq_integral"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
@@ -109094,7 +109864,7 @@
     "compiledConsumers": [
       "SecondQuantization.Fermionic.slotSplitDysonFixedTimeAmplitude_eq_external_mul_orderedVacuum",
       "SecondQuantization.Fermionic.sum_vertexWeight_mul_orderedSimplexContribution_eq_pairingEvaluation",
-      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion.Factorization.0.SecondQuantization.Bosonic.QuarticDiagram.sum_shuffle_orderedDysonThermalAmplitude_eq_prod_components"
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion.Factorization.0.SecondQuantization.Bosonic.QuarticDiagram.orderedDysonThermalAmplitude_eq_integral"
     ],
     "compiledConsumerCount": 3,
     "axioms": [
@@ -115639,19 +116409,19 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "SecondQuantization.Bosonic.QuarticDiagram.dysonThermalAmplitude_eq_prod_components",
       "SecondQuantization.Common.continuous_quarticDysonSequenceCoeff",
       "SecondQuantization.Fermionic.continuous_freeGibbsDensityOperator_expectation_comp_quarticVertexSequenceInteractionPicture",
-      "SecondQuantization.Fermionic.continuous_matrixCoeff_quarticVertexSequenceInteractionPicture",
-      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion.Factorization.0.SecondQuantization.Bosonic.QuarticDiagram.sum_shuffle_orderedDysonThermalAmplitude_eq_prod_components"
+      "SecondQuantization.Fermionic.continuous_matrixCoeff_quarticVertexSequenceInteractionPicture"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "SecondQuantization.Bosonic.QuarticDiagram.dysonThermalAmplitude_eq_prod_components",
       "SecondQuantization.Common.continuous_quarticDysonSequenceCoeff",
       "SecondQuantization.Fermionic.continuous_freeGibbsDensityOperator_expectation_comp_quarticVertexSequenceInteractionPicture",
-      "SecondQuantization.Fermionic.continuous_matrixCoeff_quarticVertexSequenceInteractionPicture",
-      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion.Factorization.0.SecondQuantization.Bosonic.QuarticDiagram.sum_shuffle_orderedDysonThermalAmplitude_eq_prod_components"
+      "SecondQuantization.Fermionic.continuous_matrixCoeff_quarticVertexSequenceInteractionPicture"
     ],
     "compiledConsumerCount": 4,
     "axioms": [
@@ -116923,6 +117693,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "SecondQuantization.Common.externalInsertionLegCongr_standardize",
       "SecondQuantization.Common.externalInsertionSlotLegSplitting_left_strictMono",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentRestriction.0.SecondQuantization.Common.ExternalInsertionDiagram.componentDiagramLeg_strictMono",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.MixedOrderData.0.SecondQuantization.Common.ExternalInsertionDiagram.componentOrderedLeg_fixedPosition",
@@ -116935,6 +117706,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "SecondQuantization.Common.externalInsertionLegCongr_standardize",
       "SecondQuantization.Common.externalInsertionSlotLegSplitting_left_strictMono",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentRestriction.0.SecondQuantization.Common.ExternalInsertionDiagram.componentDiagramLeg_strictMono",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.MixedOrderData.0.SecondQuantization.Common.ExternalInsertionDiagram.componentOrderedLeg_fixedPosition",
@@ -116943,7 +117715,7 @@
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Pairing.SlotSplitMixedOrder.0.SecondQuantization.Common.externalInsertionSupportMixedPosition_eq_standard",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.SlotLegSplitting.0.SecondQuantization.Common.externalInsertionSlotLegSplitting_fixedRight_not_lt_leftExternal"
     ],
-    "compiledConsumerCount": 7,
+    "compiledConsumerCount": 8,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -116977,6 +117749,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "SecondQuantization.Common.externalInsertionLegCongr_standardize",
       "SecondQuantization.Common.externalInsertionSlotLegSplitting_left_strictMono",
       "SecondQuantization.Common.externalInsertionSlotLegSplitting_orderedRight_strictMono",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentRestriction.0.SecondQuantization.Common.ExternalInsertionDiagram.componentDiagramLeg_strictMono",
@@ -116992,6 +117765,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "SecondQuantization.Common.externalInsertionLegCongr_standardize",
       "SecondQuantization.Common.externalInsertionSlotLegSplitting_left_strictMono",
       "SecondQuantization.Common.externalInsertionSlotLegSplitting_orderedRight_strictMono",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentRestriction.0.SecondQuantization.Common.ExternalInsertionDiagram.componentDiagramLeg_strictMono",
@@ -117003,7 +117777,7 @@
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.SlotLegSplitting.0.SecondQuantization.Common.externalInsertionSlotLegSplitting_fixedRight_lt_leftInteraction_iff",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.SlotLegSplitting.0.SecondQuantization.Common.externalInsertionSlotLegSplitting_fixedRight_not_lt_leftExternal"
     ],
-    "compiledConsumerCount": 10,
+    "compiledConsumerCount": 11,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -117149,6 +117923,51 @@
       "SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_left_normalizedPair"
     ],
     "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {E N : ℕ} (T : Finset (Fin N)),\n  SecondQuantization.Common.externalInsertionLegCongr ((T.orderIsoOfFin ⋯).symm.trans (Equiv.subtypeUnivEquiv ⋯).symm) =\n    finCongr ⋯",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.externalInsertionLegCongr_standardize",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.SupportStandardization",
+    "externalAxioms": [],
+    "docString": "The increasing support-slot standardization preserves the actual flattened\nleg positions. Neither the external legs nor the internal four-leg blocks are\npermuted within their sectors. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Common.ExternalInsertionDiagram.standardize_pairing"
+    ],
+    "dependencies": [
+      "SecondQuantization.Common.externalInsertionExternalLeg_val",
+      "SecondQuantization.Common.externalInsertionInteractionLeg_val"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.ExternalInsertionDiagram.standardize_pairing"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -129418,10 +130237,11 @@
       "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.relativeComponentShuffleSign_mul_mixedPairingValue_eq_componentExternalOrderSign_mul_prod_components"
     ],
     "dependencies": [
+      "Combinatorics.Pairing.crossingCount_eq_sum_localCrossingCount_add_inter",
       "Combinatorics.Pairing.evaluation_eq_mul_prod_components",
       "SecondQuantization.Common.BlochDeDominicis.Pairing.weight_eq_inter_mul_prod_of_crossingCount_eq",
       "SecondQuantization.Common.ExternalInsertionDiagram.componentMixedPairEquiv_apply",
-      "SecondQuantization.Common.ExternalInsertionDiagram.pairingInMixedOrder_crossingCount_eq_sum_components_add_inter",
+      "SecondQuantization.Common.ExternalInsertionDiagram.componentMixedPosition_strictMono",
       "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.externalInsertionMixedTimeOrderedAtomicPairValue_componentMixedPosition"
     ],
     "crossModuleDirectWrapper": false,
@@ -162794,48 +163614,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (angle a b : ℝ) (f : ℝ → QuantumTheory.Models.MassiveDirac.Matrix2),\n  (QuantumTheory.Models.MassiveDirac.intervalIntegralMatrix2✝ a b fun p =>\n      QuantumTheory.Models.MassiveDirac.inPlaneSpinRotation angle * f p *\n        QuantumTheory.Models.MassiveDirac.inPlaneSpinRotationInverse angle) =\n    QuantumTheory.Models.MassiveDirac.inPlaneSpinRotation angle *\n        QuantumTheory.Models.MassiveDirac.intervalIntegralMatrix2✝ a b f *\n      QuantumTheory.Models.MassiveDirac.inPlaneSpinRotationInverse angle",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornRealSpacePropagator.0.QuantumTheory.Models.MassiveDirac.intervalIntegralMatrix2_spinRotation_conjugate",
-    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornRealSpacePropagator",
-    "externalAxioms": [],
-    "docString": "Diagonal spinor conjugation commutes with entrywise interval integration.\nEvery entry has only one nonzero summand, so scalar constant-factor integral\nrules suffice and no additional integrability assumptions are required. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRealSpaceGreenMatrix_polarPoint2D_spinRotation"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRealSpaceGreenMatrix_polarPoint2D_spinRotation"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ (side : QuantumTheory.Transport.SpectralSide) (v m probeEnergy disorderStrength hbar pMax : ℝ),\n  disorderStrength * QuantumTheory.Transport.fullAngleMomentumMeasurePrefactor hbar *\n      (QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDenominatorIntegralBoundaryValue side v m probeEnergy\n          pMax).re =\n    QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornBoundaryRealRenormalization v m probeEnergy\n      disorderStrength hbar pMax",
     "standardAxioms": [
       "Classical.choice",
@@ -164136,7 +164914,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -164148,15 +164926,17 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "QuantumTheory.Models.MassiveDirac.inPlaneSpinRotation_conjugate_diagonal",
       "QuantumTheory.Models.MassiveDirac.inPlaneSpinRotation_mul_inverse"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.inPlaneSpinRotation_conjugate_diagonal",
       "QuantumTheory.Models.MassiveDirac.inPlaneSpinRotation_mul_inverse"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -164286,6 +165066,7 @@
       "QuantumTheory.Models.MassiveDirac.hamiltonian_mul_bandProjector"
     ],
     "dependencies": [
+      "Algebra.inv_smul_mul_self_eq_one",
       "QuantumTheory.Models.MassiveDirac.energy_sq",
       "QuantumTheory.Models.MassiveDirac.hamiltonian_mul_self"
     ],
@@ -165220,6 +166001,51 @@
   },
   {
     "terminal": false,
+    "statement": "∀ (source : Fin 2) (v m probeEnergy broadening disorderStrength hbar pMax radius angle p : ℝ),\n  (fun i j =>\n      QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedAngularCurrentEntryKernel source v\n        m probeEnergy broadening disorderStrength hbar pMax radius angle p i j) =\n    (QuantumTheory.Models.MassiveDirac.inPlaneSpinRotation angle *\n        if source = 0 then\n          (↑(Real.cos angle) • fun i j =>\n              QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel 0\n                v m probeEnergy broadening disorderStrength hbar pMax radius p i j) -\n            ↑(Real.sin angle) • fun i j =>\n              QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel 1\n                v m probeEnergy broadening disorderStrength hbar pMax radius p i j\n        else\n          (↑(Real.sin angle) • fun i j =>\n              QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel 0\n                v m probeEnergy broadening disorderStrength hbar pMax radius p i j) +\n            ↑(Real.cos angle) • fun i j =>\n              QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel 1\n                v m probeEnergy broadening disorderStrength hbar pMax radius p i j) *\n      QuantumTheory.Models.MassiveDirac.inPlaneSpinRotationInverse angle",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedRealSpace.0.QuantumTheory.Models.MassiveDirac.gaussianCrossedAngularCurrentEntryKernel_sourceRotation",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedRealSpace",
+    "externalAxioms": [],
+    "docString": "The full-angle `K0/K1/K2` crossed-current Fourier integrand is\nthe spinor conjugate of the corresponding rotated Cartesian source at\nthe radial axis. This exact identity is pointwise in radial momentum,\nbefore the remaining finite-cutoff radial integration. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceCurrentBlock_polarPoint2D_sourceRotation"
+    ],
+    "dependencies": [
+      "QuantumTheory.Models.MassiveDirac.inPlaneSpinRotation_conjugate_apply",
+      "QuantumTheory.Models.MassiveDirac.inPlaneSpinRotation_conjugate_diagonal"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceCurrentBlock_polarPoint2D_sourceRotation"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ (source : Fin 2) (factor : ℂ),\n  QuantumTheory.Models.MassiveDirac.gaussianCrossedCurrentCoefficientVector✝ source factor 0 •\n        QuantumTheory.Models.MassiveDirac.sigmaX +\n      QuantumTheory.Models.MassiveDirac.gaussianCrossedCurrentCoefficientVector✝ source factor 1 •\n        QuantumTheory.Models.MassiveDirac.sigmaY =\n    factor • QuantumTheory.Models.MassiveDirac.directionPauli source",
     "standardAxioms": [
       "Classical.choice",
@@ -165290,6 +166116,51 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceIntegral_eq_radial_antisymmetric_trace"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (diagram : QuantumTheory.Models.MassiveDirac.GaussianCrossedDiagram)\n  (greenRetarded greenAdvanced : ℝ → QuantumTheory.Models.MassiveDirac.Matrix2)\n  (current : Fin 2 → ℝ → QuantumTheory.Models.MassiveDirac.Matrix2) (radius angle : ℝ),\n  QuantumTheory.Models.MassiveDirac.gaussianCrossedTraceKernel diagram\n      (fun ρ =>\n        QuantumTheory.Models.MassiveDirac.inPlaneSpinRotation angle * greenRetarded ρ *\n          QuantumTheory.Models.MassiveDirac.inPlaneSpinRotationInverse angle)\n      (fun ρ =>\n        QuantumTheory.Models.MassiveDirac.inPlaneSpinRotation angle * greenAdvanced ρ *\n          QuantumTheory.Models.MassiveDirac.inPlaneSpinRotationInverse angle)\n      (fun source ρ =>\n        QuantumTheory.Models.MassiveDirac.inPlaneSpinRotation angle * current source ρ *\n          QuantumTheory.Models.MassiveDirac.inPlaneSpinRotationInverse angle)\n      radius =\n    QuantumTheory.Models.MassiveDirac.gaussianCrossedTraceKernel diagram greenRetarded greenAdvanced current radius",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedRealSpaceIntegral.0.QuantumTheory.Models.MassiveDirac.gaussianCrossedTraceKernel_spinRotation_conjugate",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedRealSpaceIntegral",
+    "externalAxioms": [],
+    "docString": "A common in-plane spinor conjugation of the Green and current blocks\ncancels inside either Gaussian crossed trace topology, including the\nHermitian-conjugate partner in the Psi diagram. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedTraceKernel_polarPoint2D_eq_radial_tensor"
+    ],
+    "dependencies": [
+      "QuantumTheory.Models.MassiveDirac.inPlaneSpinRotation_conjugate_mul",
+      "QuantumTheory.Models.MassiveDirac.inPlaneSpinRotation_conjugate_trace"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedTraceKernel_polarPoint2D_eq_radial_tensor"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -165684,6 +166555,7 @@
       "QuantumTheory.Models.RashbaExchange.hamiltonian_mul_bandProjector"
     ],
     "dependencies": [
+      "Algebra.inv_smul_mul_self_eq_one",
       "QuantumTheory.Models.RashbaExchange.spinHamiltonian_mul_self",
       "QuantumTheory.Models.RashbaExchange.spinOrbitEnergy_sq"
     ],
@@ -173190,34 +174062,35 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) {N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.QuarticDiagram (SecondQuantization.Common.QuarticVertexLabel Mode) N S)\n  (orders : d.ComponentVertexOrders) (shuffle : d.ComponentShuffle) (τ : Fin S.card → ℝ),\n  SecondQuantization.Common.quarticVertexSequenceTimeFactor ε\n      (fun i => d.vertexLabel ((d.assembleVertexOrder orders shuffle) i)) τ =\n    Combinatorics.FamilySlotShuffleTo.ambientIntegrand shuffle\n      (fun B =>\n        SecondQuantization.Common.quarticVertexSequenceTimeFactor ε fun i =>\n          (d.restrictComponent ⋯).vertexLabel ((orders B) i))\n      τ",
+    "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (β : ℝ) (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ) {N : ℕ}\n  {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.QuarticDiagram (SecondQuantization.Common.QuarticVertexLabel Mode) N S)\n  (order : SecondQuantization.Common.QuarticVertexOrder S) (t : ℝ),\n  SecondQuantization.Bosonic.QuarticDiagram.orderedDysonThermalAmplitude ε β g d order t =\n    intervalIntegral.orderedSimplexIntegral S.card t\n      (SecondQuantization.Bosonic.QuarticDiagram.dysonThermalIntegrand✝ ε β g d order)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": true,
+    "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion.Factorization.0.SecondQuantization.Bosonic.QuarticDiagram.quarticVertexSequenceTimeFactor_assembleVertexOrder",
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion.Factorization.0.SecondQuantization.Bosonic.QuarticDiagram.orderedDysonThermalAmplitude_eq_integral",
     "module": "LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion.Factorization",
     "externalAxioms": [],
-    "docString": "The scalar quartic imaginary-time factor of an assembled global order is the family-shuffle\nintegrand of the corresponding component-local time factors. ",
+    "docString": null,
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion.Factorization.0.SecondQuantization.Bosonic.QuarticDiagram.sum_shuffle_orderedDysonThermalAmplitude_eq_prod_components"
+      "SecondQuantization.Bosonic.QuarticDiagram.dysonThermalAmplitude_eq_prod_components"
     ],
     "dependencies": [
-      "SecondQuantization.Common.QuarticDiagram.restrictComponent_vertexLabel_componentOrder"
+      "SecondQuantization.Common.QuarticDiagram.vertexWeight_eq_prod_vertexLabel_order",
+      "intervalIntegral.orderedSimplexIntegral_smul"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion.Factorization.0.SecondQuantization.Bosonic.QuarticDiagram.sum_shuffle_orderedDysonThermalAmplitude_eq_prod_components"
+      "SecondQuantization.Bosonic.QuarticDiagram.dysonThermalAmplitude_eq_prod_components"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -173234,7 +174107,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (β : ℝ) (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ) {N : ℕ}\n  {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.QuarticDiagram (SecondQuantization.Common.QuarticVertexLabel Mode) N S)\n  (orders : d.ComponentVertexOrders) (t : ℝ),\n  ∑ shuffle,\n      SecondQuantization.Bosonic.QuarticDiagram.orderedDysonThermalAmplitude ε β g d\n        (d.assembleVertexOrder orders shuffle) t =\n    ∏ B,\n      SecondQuantization.Bosonic.QuarticDiagram.orderedDysonThermalAmplitude ε β g (d.restrictComponent ⋯) (orders B) t",
+    "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) {N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.QuarticDiagram (SecondQuantization.Common.QuarticVertexLabel Mode) N S)\n  (orders : d.ComponentVertexOrders) (shuffle : d.ComponentShuffle) (τ : Fin S.card → ℝ),\n  SecondQuantization.Common.quarticVertexSequenceTimeFactor ε\n      (fun i => d.vertexLabel ((d.assembleVertexOrder orders shuffle) i)) τ =\n    Combinatorics.FamilySlotShuffleTo.ambientIntegrand shuffle\n      (fun B =>\n        SecondQuantization.Common.quarticVertexSequenceTimeFactor ε fun i =>\n          (d.restrictComponent ⋯).vertexLabel ((orders B) i))\n      τ",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -173246,23 +174119,17 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion.Factorization.0.SecondQuantization.Bosonic.QuarticDiagram.sum_shuffle_orderedDysonThermalAmplitude_eq_prod_components",
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion.Factorization.0.SecondQuantization.Bosonic.QuarticDiagram.quarticVertexSequenceTimeFactor_assembleVertexOrder",
     "module": "LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion.Factorization",
     "externalAxioms": [],
-    "docString": "For fixed component-local vertex orders, summing the physical ordered Dyson amplitude over all\norder-preserving component shuffles gives the product of the corresponding component-local ordered\nDyson amplitudes. ",
+    "docString": "The scalar quartic imaginary-time factor of an assembled global order is the family-shuffle\nintegrand of the corresponding component-local time factors. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Bosonic.QuarticDiagram.dysonThermalAmplitude_eq_prod_components"
     ],
     "dependencies": [
-      "Combinatorics.FamilySlotShuffleTo.sum_integral_eq_prod",
-      "SecondQuantization.Bosonic.QuarticDiagram.orderedThermalPairingValue_eq_prod_components",
-      "SecondQuantization.Common.QuarticDiagram.dysonSign_mul_vertexWeight_eq_prod_components",
-      "SecondQuantization.Common.QuarticDiagram.vertexWeight_eq_prod_vertexLabel_order",
-      "SecondQuantization.Common.continuous_quarticVertexSequenceTimeFactor",
-      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion.Factorization.0.SecondQuantization.Bosonic.QuarticDiagram.quarticVertexSequenceTimeFactor_assembleVertexOrder",
-      "intervalIntegral.Continuous.measurableLocallyBounded"
+      "SecondQuantization.Common.QuarticDiagram.restrictComponent_vertexLabel_componentOrder"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -176728,9 +177595,9 @@
       "SecondQuantization.Common.QuarticDiagram.pairingInOrder_crossingCount_mod_two_eq_sum_components"
     ],
     "dependencies": [
-      "Combinatorics.Pairing.componentGeometricCrossingCount_mod_two_eq_endpointInversionCount",
+      "Combinatorics.Pairing.componentGeometricCrossingCount_mod_two_eq_zero_of_even_fiber",
       "SecondQuantization.Common.QuarticDiagram.componentPairEquiv_apply",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Factorization.ComponentGlobalCrossingParity.0.SecondQuantization.Common.QuarticDiagram.sum_componentOrderedLeg_inversions_mod_two_eq_zero"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Factorization.ComponentGlobalCrossingParity.0.SecondQuantization.Common.QuarticDiagram.componentOrderedLeg_lt_iff_slot_lt"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -176771,55 +177638,10 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Factorization.ComponentGlobalCrossingParity.0.SecondQuantization.Common.QuarticDiagram.sum_componentOrderedLeg_inversions_mod_two_eq_zero"
-    ],
-    "dependencies": [
-      "Combinatorics.FiniteIndex.blockEquiv_symm_lt_symm_iff_fst_lt_of_ne"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Factorization.ComponentGlobalCrossingParity.0.SecondQuantization.Common.QuarticDiagram.sum_componentOrderedLeg_inversions_mod_two_eq_zero"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Label : Type u_1} {N : ℕ} {S : Finset (Fin N)} (d : SecondQuantization.Common.QuarticDiagram Label N S)\n  (shuffle : d.ComponentShuffle) (B C : ↥d.vertexGraph.componentPartitionOn.parts),\n  B ≠ C → (∑ p, ∑ q, if d.componentOrderedLeg shuffle C q < d.componentOrderedLeg shuffle B p then 1 else 0) % 2 = 0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Factorization.ComponentGlobalCrossingParity.0.SecondQuantization.Common.QuarticDiagram.sum_componentOrderedLeg_inversions_mod_two_eq_zero",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Factorization.ComponentGlobalCrossingParity",
-    "externalAxioms": [],
-    "docString": "Each leg of one component is preceded by whole four-leg vertex blocks of any other component, so\nthe total number of leg-order inversions between two distinct components is even. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Factorization.ComponentGlobalCrossingParity.0.SecondQuantization.Common.QuarticDiagram.componentGeometricCrossingCount_mod_two_eq_zero"
     ],
     "dependencies": [
-      "Fintype.dvd_sum_equiv_fst_of_dvd_card",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Factorization.ComponentGlobalCrossingParity.0.SecondQuantization.Common.QuarticDiagram.componentOrderedLeg_lt_iff_slot_lt"
+      "Combinatorics.FiniteIndex.blockEquiv_symm_lt_symm_iff_fst_lt_of_ne"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -177413,8 +178235,7 @@
       "SecondQuantization.Common.TwoPointDiagram.pairingInMixedOrder_weight_eq_external_mul_prod_vacuum"
     ],
     "dependencies": [
-      "Combinatorics.Pairing.componentGeometricCrossingCount_mod_two_eq_endpointInversionCount",
-      "Fintype.dvd_sum_equiv_fst_of_dvd_card",
+      "Combinatorics.Pairing.componentGeometricCrossingCount_mod_two_eq_zero_of_even_fiber",
       "SecondQuantization.Common.TwoPointDiagram.mixedComponentPairEndpointEquiv_apply_val",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedVacuumInteractionPosition_lt_uniform"
     ],
@@ -182501,8 +183322,7 @@
       "SecondQuantization.Fermionic.quarticWickDiagramAmplitude_eq_prod_components"
     ],
     "dependencies": [
-      "Combinatorics.FamilySlotShuffleTo.sum_integral_eq_prod",
-      "Finpartition.sum_order_eq_mul_prod_sum_partOrders",
+      "Finpartition.sum_order_orderedSimplexIntegral_eq_prod_sum_partOrders",
       "SecondQuantization.Fermionic.QuarticWickDiagram.contractionIntegrand_assembleVertexOrder_eq_prod_components",
       "SecondQuantization.Fermionic.continuous_contractionIntegrand",
       "intervalIntegral.Continuous.measurableLocallyBounded"
@@ -187357,9 +188177,9 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "SecondQuantization.Bosonic.QuarticDiagram.dysonThermalAmplitude_eq_prod_components",
       "SecondQuantization.Fermionic.sum_slotShuffleDysonIntegral_eq_external_mul_orderedVacuum",
       "SecondQuantization.Fermionic.sum_slotShuffleExternalInsertionDysonIntegral_eq_mul_orderedVacuum",
-      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion.Factorization.0.SecondQuantization.Bosonic.QuarticDiagram.sum_shuffle_orderedDysonThermalAmplitude_eq_prod_components",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.Wick.AmplitudeFactorization.0.SecondQuantization.Fermionic.sum_orderedSimplexContribution_eq_prod_components"
     ],
     "dependencies": [
@@ -187368,9 +188188,9 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "SecondQuantization.Bosonic.QuarticDiagram.dysonThermalAmplitude_eq_prod_components",
       "SecondQuantization.Fermionic.sum_slotShuffleDysonIntegral_eq_external_mul_orderedVacuum",
       "SecondQuantization.Fermionic.sum_slotShuffleExternalInsertionDysonIntegral_eq_mul_orderedVacuum",
-      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion.Factorization.0.SecondQuantization.Bosonic.QuarticDiagram.sum_shuffle_orderedDysonThermalAmplitude_eq_prod_components",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.Wick.AmplitudeFactorization.0.SecondQuantization.Fermionic.sum_orderedSimplexContribution_eq_prod_components"
     ],
     "compiledConsumerCount": 4,
@@ -188388,7 +189208,8 @@
       "SecondQuantization.Fermionic.fixedExternalShuffleFiber_dysonAmplitude_eq_orderedSimplexIntegral",
       "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_comp_dysonCoeff_quarticInteraction",
       "SecondQuantization.Fermionic.sum_slotShuffleDysonIntegral_eq_external_mul_orderedVacuum",
-      "SecondQuantization.Fermionic.sum_slotShuffleExternalInsertionDysonIntegral_eq_mul_orderedVacuum"
+      "SecondQuantization.Fermionic.sum_slotShuffleExternalInsertionDysonIntegral_eq_mul_orderedVacuum",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion.Factorization.0.SecondQuantization.Bosonic.QuarticDiagram.orderedDysonThermalAmplitude_eq_integral"
     ],
     "dependencies": [
       "intervalIntegral.orderedSimplexIntegral_succ"
@@ -188402,9 +189223,10 @@
       "SecondQuantization.Fermionic.fixedExternalShuffleFiber_dysonAmplitude_eq_orderedSimplexIntegral",
       "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_comp_dysonCoeff_quarticInteraction",
       "SecondQuantization.Fermionic.sum_slotShuffleDysonIntegral_eq_external_mul_orderedVacuum",
-      "SecondQuantization.Fermionic.sum_slotShuffleExternalInsertionDysonIntegral_eq_mul_orderedVacuum"
+      "SecondQuantization.Fermionic.sum_slotShuffleExternalInsertionDysonIntegral_eq_mul_orderedVacuum",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion.Factorization.0.SecondQuantization.Bosonic.QuarticDiagram.orderedDysonThermalAmplitude_eq_integral"
     ],
-    "compiledConsumerCount": 7,
+    "compiledConsumerCount": 8,
     "axioms": [
       "Classical.choice",
       "Quot.sound",

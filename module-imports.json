@@ -1,6 +1,12 @@
 {
   "modules": [
     {
+      "name": "LeanCondensedMatter.Analysis.Algebra.QuadraticNormalization",
+      "sourceFile": "LeanCondensedMatter/Analysis/Algebra/QuadraticNormalization.lean",
+      "imports": [],
+      "externalImportCount": 2
+    },
+    {
       "name": "LeanCondensedMatter.Analysis.Calculus.AlgebraicDerivative",
       "sourceFile": "LeanCondensedMatter/Analysis/Calculus/AlgebraicDerivative.lean",
       "imports": [],
@@ -911,6 +917,15 @@
       "externalImportCount": 0
     },
     {
+      "name": "LeanCondensedMatter.Analysis.OrderedSimplex.PartitionOrderIntegral",
+      "sourceFile": "LeanCondensedMatter/Analysis/OrderedSimplex/PartitionOrderIntegral.lean",
+      "imports": [
+        "LeanCondensedMatter.Analysis.OrderedSimplex.FamilyShuffle",
+        "LeanCondensedMatter.Combinatorics.FinpartitionOrderShuffle"
+      ],
+      "externalImportCount": 0
+    },
+    {
       "name": "LeanCondensedMatter.Analysis.OrderedSimplex.StrictAntiCongr",
       "sourceFile": "LeanCondensedMatter/Analysis/OrderedSimplex/StrictAntiCongr.lean",
       "imports": [
@@ -925,6 +940,7 @@
         "LeanCondensedMatter.Analysis.OrderedSimplex.BinarySlotShuffle",
         "LeanCondensedMatter.Analysis.OrderedSimplex.FamilyShuffle",
         "LeanCondensedMatter.Analysis.OrderedSimplex.Integral",
+        "LeanCondensedMatter.Analysis.OrderedSimplex.PartitionOrderIntegral",
         "LeanCondensedMatter.Analysis.OrderedSimplex.StrictAntiCongr"
       ],
       "externalImportCount": 0
@@ -1045,6 +1061,7 @@
       "name": "LeanCondensedMatter.Analysis",
       "sourceFile": "LeanCondensedMatter/Analysis.lean",
       "imports": [
+        "LeanCondensedMatter.Analysis.Algebra.QuadraticNormalization",
         "LeanCondensedMatter.Analysis.Calculus",
         "LeanCondensedMatter.Analysis.ConservationLaw",
         "LeanCondensedMatter.Analysis.DiscreteLattice",
@@ -1321,6 +1338,7 @@
       "name": "LeanCondensedMatter.Combinatorics.PerfectPairing.ComponentCrossing",
       "sourceFile": "LeanCondensedMatter/Combinatorics/PerfectPairing/ComponentCrossing.lean",
       "imports": [
+        "LeanCondensedMatter.Combinatorics.Common.FintypeProduct",
         "LeanCondensedMatter.Combinatorics.FamilySlotShuffle",
         "LeanCondensedMatter.Combinatorics.FiniteSumModEq",
         "LeanCondensedMatter.Combinatorics.PerfectPairing.CrossingParity"
@@ -2621,6 +2639,7 @@
       "name": "LeanCondensedMatter.Models.MassiveDirac.Model.Spectral",
       "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Model/Spectral.lean",
       "imports": [
+        "LeanCondensedMatter.Analysis.Algebra.QuadraticNormalization",
         "LeanCondensedMatter.Models.MassiveDirac.Model.Basic"
       ],
       "externalImportCount": 1
@@ -3042,6 +3061,7 @@
       "name": "LeanCondensedMatter.Models.RashbaExchange.Model.Spectral",
       "sourceFile": "LeanCondensedMatter/Models/RashbaExchange/Model/Spectral.lean",
       "imports": [
+        "LeanCondensedMatter.Analysis.Algebra.QuadraticNormalization",
         "LeanCondensedMatter.Models.RashbaExchange.Model"
       ],
       "externalImportCount": 2
@@ -4555,8 +4575,7 @@
       "name": "LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion.Factorization",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Bosonic/Diagrammatics/Quartic/Thermal/DysonExpansion/Factorization.lean",
       "imports": [
-        "LeanCondensedMatter.Analysis.OrderedSimplex.FamilyShuffle",
-        "LeanCondensedMatter.Combinatorics.FinpartitionOrderShuffle",
+        "LeanCondensedMatter.Analysis.OrderedSimplex.PartitionOrderIntegral",
         "LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.ComponentFactorization",
         "LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion.Pairing",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentDecompositionEquiv"
@@ -5525,7 +5544,6 @@
       "name": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Factorization.ComponentGlobalCrossingParity",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Diagrammatics/Quartic/Factorization/ComponentGlobalCrossingParity.lean",
       "imports": [
-        "LeanCondensedMatter.Combinatorics.Common.FintypeProduct",
         "LeanCondensedMatter.Combinatorics.PerfectPairing.ComponentCrossing",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Pairing.ComponentPairEquiv",
         "LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.PairingWeight"
@@ -5698,7 +5716,6 @@
       "name": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Diagrammatics/TwoPoint/Mixed/MixedComponentCrossingEven.lean",
       "imports": [
-        "LeanCondensedMatter.Combinatorics.Common.FintypeProduct",
         "LeanCondensedMatter.Combinatorics.PerfectPairing.CrossingParity",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Components.ComponentDecomposition",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossing"
@@ -6741,7 +6758,7 @@
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Diagrammatics/ExternalInsertion/ComponentPairingValue.lean",
       "imports": [
         "LeanCondensedMatter.Combinatorics.PerfectPairing.ComponentCrossing",
-        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Factorization.ComponentMixedCrossing",
+        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Pairing.ComponentMixedPairEquiv",
         "LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.PairingWeight",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentOrderSign",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentPairingLocality"
@@ -6964,8 +6981,7 @@
       "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.Wick.AmplitudeFactorization",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Diagrammatics/Quartic/Wick/AmplitudeFactorization.lean",
       "imports": [
-        "LeanCondensedMatter.Analysis.OrderedSimplex.FamilyShuffle",
-        "LeanCondensedMatter.Combinatorics.FinpartitionOrderShuffle",
+        "LeanCondensedMatter.Analysis.OrderedSimplex.PartitionOrderIntegral",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Ordered",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Factorization.ComponentVertexProduct",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.Wick.Amplitude",
