@@ -210,15 +210,9 @@ theorem hamiltonian_mul_bandProjector
   have hEnergy :
       (((bandEnergy params band px py : ℝ) : ℂ)) = ε + s * E := by
     simp [bandEnergy, ε, s, E]
-  have hQmul : Q * ((1 : InternalSpace.PauliMatrix) + s • Q) =
-      s • ((1 : InternalSpace.PauliMatrix) + s • Q) := by
-    rw [mul_add, mul_one, mul_smul_comm, hQ]
-    rw [smul_add, smul_smul]
-    rw [show s * s = 1 by simpa [pow_two] using hs, one_smul]
-    module
   rw [hH, hP, hEnergy]
   rw [add_mul, smul_mul_assoc, one_mul, smul_mul_assoc, mul_smul_comm]
-  rw [hQmul]
+  rw [InternalSpace.involution_mul_one_add Q hQ s hs]
   module
 
 /-- Away from the degeneracy, each band projector is idempotent. -/
@@ -238,16 +232,8 @@ theorem bandProjector_mul_self
       bandProjector params band px py =
         (1 / 2 : ℂ) • ((1 : InternalSpace.PauliMatrix) + s • Q) := by
     simpa [Q, s] using bandProjector_eq_normalized params band px py
-  have hsqmul : (s • Q) * (s • Q) = (s * s) • (Q * Q) := by
-    calc
-      (s • Q) * (s • Q) = s • (Q * (s • Q)) := by rw [smul_mul_assoc]
-      _ = s • (s • (Q * Q)) := by rw [mul_smul_comm]
-      _ = (s * s) • (Q * Q) := by rw [smul_smul]
   rw [hP]
-  rw [smul_mul_assoc, mul_smul_comm, smul_smul]
-  rw [add_mul, one_mul, mul_add, mul_one, hsqmul, hQ]
-  rw [show s * s = 1 by simpa [pow_two] using hs, one_smul]
-  module
+  exact InternalSpace.involution_projector_mul_self Q hQ s hs
 
 /-- Away from the degeneracy, opposite-band projectors are orthogonal. -/
 theorem bandProjector_mul_oppositeBand
