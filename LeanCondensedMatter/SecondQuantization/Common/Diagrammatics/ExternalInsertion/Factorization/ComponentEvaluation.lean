@@ -40,7 +40,7 @@ theorem ExternalInsertionDiagram.evaluation_eq_inter_mul_prod_components
       pairValue (d.componentDiagramLeg B a) (d.componentDiagramLeg B b) =
         localPairValue B a b) :
     d.pairing.evaluation (d.pairing.weight s) pairValue =
-      (s.zetaInt : ℂ) ^ d.interComponentCrossingCount *
+      (s.zetaInt : ℂ) ^ d.pairing.interComponentCrossingCount d.componentPairEquiv *
         ∏ B : d.vertexGraph.componentPartition.parts,
           (d.restrictComponent B).pairing.evaluation
             ((d.restrictComponent B).pairing.weight s)
@@ -48,7 +48,7 @@ theorem ExternalInsertionDiagram.evaluation_eq_inter_mul_prod_components
   classical
   exact Pairing.evaluation_eq_mul_prod_components
     d.pairing (fun B => (d.restrictComponent B).pairing) d.componentPairEquiv
-    (d.pairing.weight s) ((s.zetaInt : ℂ) ^ d.interComponentCrossingCount)
+    (d.pairing.weight s) ((s.zetaInt : ℂ) ^ d.pairing.interComponentCrossingCount d.componentPairEquiv)
     (fun B => (d.restrictComponent B).pairing.weight s) pairValue localPairValue
     (d.weight_eq_inter_mul_prod_components s)
     (fun B pr => by

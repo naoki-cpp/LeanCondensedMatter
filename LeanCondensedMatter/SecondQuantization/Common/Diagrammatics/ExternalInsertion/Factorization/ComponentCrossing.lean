@@ -21,14 +21,6 @@ open Combinatorics
 
 variable {ExternalLabel InternalLabel : Type*} {E N : ℕ}
 
-/-- Total oriented crossing count between distinct connected components of an external-insertion
-diagram. -/
-noncomputable def ExternalInsertionDiagram.interComponentCrossingCount
-    {S : Finset (Fin N)}
-    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S) : ℕ :=
-  d.pairing.interComponentCrossingCount d.componentPairEquiv
-
-
 /-- The residual inter-component crossing parity is the total block-inversion parity of the
 canonical component-leg shuffle, relative to any explicit ordering of the connected components. -/
 theorem ExternalInsertionDiagram.interComponentCrossingCount_mod_two_eq_orderedBlockInversionCount
@@ -36,7 +28,7 @@ theorem ExternalInsertionDiagram.interComponentCrossingCount_mod_two_eq_orderedB
     (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
     (blockOrder :
       d.vertexGraph.componentPartition.parts ≃ Fin (Fintype.card d.vertexGraph.componentPartition.parts)) :
-    d.interComponentCrossingCount % 2 =
+    d.pairing.interComponentCrossingCount d.componentPairEquiv % 2 =
       d.componentLegShuffle.orderedBlockInversionCount blockOrder % 2 := by
   exact d.pairing.interComponentCrossingCount_mod_two_eq_orderedBlockInversionCount
     d.componentPairEquiv
@@ -56,9 +48,9 @@ theorem ExternalInsertionDiagram.crossingCount_eq_sum_components_add_inter
     (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S) :
     d.pairing.crossingCount =
       (∑ B : d.vertexGraph.componentPartition.parts, (d.restrictComponent B).pairing.crossingCount) +
-        d.interComponentCrossingCount := by
+        d.pairing.interComponentCrossingCount d.componentPairEquiv := by
   rw [d.pairing.crossingCount_eq_sum_componentCrossingCount_diag_add_inter d.componentPairEquiv]
-  apply congrArg (fun n : ℕ => n + d.interComponentCrossingCount)
+  apply congrArg (fun n : ℕ => n + d.pairing.interComponentCrossingCount d.componentPairEquiv)
   apply Finset.sum_congr rfl
   intro B _
   exact Combinatorics.Pairing.componentCrossingCount_self_eq
@@ -74,7 +66,7 @@ theorem ExternalInsertionDiagram.weight_eq_inter_mul_prod_components
     (s : Statistics) {S : Finset (Fin N)}
     (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S) :
     d.pairing.weight s =
-      (s.zetaInt : ℂ) ^ d.interComponentCrossingCount *
+      (s.zetaInt : ℂ) ^ d.pairing.interComponentCrossingCount d.componentPairEquiv *
         ∏ B : d.vertexGraph.componentPartition.parts, (d.restrictComponent B).pairing.weight s := by
   classical
   simp only [Combinatorics.Pairing.weight]
