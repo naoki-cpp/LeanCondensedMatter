@@ -85,7 +85,7 @@ theorem inPlaneSpinRotation_conjugate_apply
         inPlaneSpinRotationInverse angle j j := by
   fin_cases i <;> fin_cases j <;>
     simp [inPlaneSpinRotation, inPlaneSpinRotationInverse, Matrix.mul_apply,
-      Fin.sum_univ_two, mul_assoc]
+      Matrix.vecMul_apply_eq_sum, Fin.sum_univ_two, mul_assoc]
 
 /-- Rotating the Pauli-x axis produces the polar in-plane Pauli direction. -/
 theorem inPlaneSpinRotation_sigmaX (angle : ℝ) :
