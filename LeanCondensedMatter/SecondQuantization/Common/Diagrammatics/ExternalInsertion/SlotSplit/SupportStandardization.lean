@@ -63,6 +63,9 @@ theorem externalInsertionLegCongr_standardize
   obtain ⟨x, rfl⟩ := (externalInsertionLegEquiv E T).symm.surjective p
   cases x with
   | inl e =>
+      simp only [externalInsertionLegCongr, Equiv.trans_apply,
+        Equiv.apply_symm_apply, Equiv.sumCongr_apply, Sum.map_inl,
+        Equiv.refl_apply]
       apply Fin.ext
       change (externalInsertionExternalLeg E
           (Finset.univ : Finset (Fin T.card)) e).val =
@@ -70,6 +73,9 @@ theorem externalInsertionLegCongr_standardize
       simp only [Fin.val_cast, externalInsertionExternalLeg_val]
   | inr vl =>
       rcases vl with ⟨v, l⟩
+      simp only [externalInsertionLegCongr, Equiv.trans_apply,
+        Equiv.apply_symm_apply, Equiv.sumCongr_apply, Sum.map_inr,
+        Equiv.prodCongr_apply, Equiv.refl_apply]
       let vFin : Fin T.card := (T.orderIsoOfFin rfl).symm v
       apply Fin.ext
       change (externalInsertionInteractionLeg (E := E)
