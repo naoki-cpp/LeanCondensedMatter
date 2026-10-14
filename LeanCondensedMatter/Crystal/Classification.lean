@@ -53,8 +53,9 @@ private theorem gram_matrix_congruence
       simp only [Finset.sum_mul]
 
 /-- A full-rank integral lattice's intrinsic point group preserves the Gram metric
-in every integral lattice basis. This applies in any finite lattice rank and does
-not refer to an atomic motif. -/
+in every integral lattice basis. Each column of the integral matrix contains
+the basis coordinates of an image basis vector. The result is rank-generic and
+independent of any atomic motif. -/
 theorem gram_congruence [FiniteDimensional ℝ V]
     {ι : Type*} [Fintype ι]
     (L : Submodule ℤ V) [DiscreteTopology L] [IsZLattice ℝ L]
