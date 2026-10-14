@@ -435,6 +435,24 @@ theorem trace_four_antisymmetric_eq_xz_plane_transverse_minors
   rw [htrans]
   ring
 
+/-- For an xz-plane two-level matrix, the antisymmetric trace with the
+parity-conjugated final insertion reduces to an entrywise two-current minor.
+The identity is purely algebraic and does not assume Hermiticity. -/
+theorem trace_parity_antisymmetric_xz_entries
+    (A C : PauliMatrix) (b gx gz : ℂ) :
+    let B : PauliMatrix := !![b + gz, gx; gx, b - gz]
+    Matrix.trace
+        (A * (pauliZ * B * pauliZ) * B * (-pauliZ * C * pauliZ)) -
+      Matrix.trace
+        (C * (pauliZ * B * pauliZ) * B * (-pauliZ * A * pauliZ)) =
+      -2 * gz *
+        (gx * ((A 0 0 + A 1 1) * (C 0 1 - C 1 0) -
+          (A 0 1 - A 1 0) * (C 0 0 + C 1 1)) +
+          2 * b * (A 0 1 * C 1 0 - A 1 0 * C 0 1)) := by
+  dsimp only
+  simp [Matrix.trace, Matrix.mul_apply, Fin.sum_univ_two, pauliZ]
+  ring
+
 /-- Trace of four arbitrary complex two-level matrices expressed only through their canonical
 Pauli scalar/vector coefficients. -/
 theorem trace_four_eq_pauliCoefficients (A B C D : PauliMatrix) :
