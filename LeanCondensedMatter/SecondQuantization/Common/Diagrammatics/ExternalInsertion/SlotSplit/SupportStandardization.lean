@@ -75,7 +75,7 @@ theorem externalInsertionLegCongr_standardize
       rcases vl with ⟨v, l⟩
       simp only [externalInsertionLegCongr, Equiv.trans_apply,
         Equiv.apply_symm_apply, Equiv.sumCongr_apply, Sum.map_inr,
-        Equiv.prodCongr_apply, Equiv.refl_apply]
+        Equiv.prodCongr_apply]
       let vFin : Fin T.card := (T.orderIsoOfFin rfl).symm v
       apply Fin.ext
       change (externalInsertionInteractionLeg (E := E)
@@ -89,7 +89,6 @@ theorem externalInsertionLegCongr_standardize
               ↥(Finset.univ : Finset (Fin T.card)))).val = vFin.val := by
         rw [Finset.orderIsoOfFin_symm_apply, Fin.sort_univ, List.idxOf_finRange]
       rw [huniv]
-      rfl
 
 /-- The pairing of a canonically reindexed support diagram is the original
 pairing transported only by the canonical type-level cast of its pair count. -/
