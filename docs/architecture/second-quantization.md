@@ -211,6 +211,10 @@ and fiber sums consume this structure without mixed-time ordering dependencies.
 `Common.Diagrammatics.ExternalInsertion.Pairing.SlotSplitMixedOrder` owns the corresponding
 mixed-time position, local-order preservation, and ordered vacuum pairing coherence used by
 fermionic shuffle integrals.
+It also owns support-side mixed-position embeddings and reassembly after local pairing reindexing.
+Support mixed-to-fixed coordinates use the inverse of the standalone standard-to-mixed permutation.
+`Factorization.SlotSplitMixedSign` owns the permutation sign cancellation on explicitly ordered
+vacuum chambers, independently of diagram labels, thermal kernels, and particle statistics.
 
 `Common.Diagrammatics.ExternalInsertion.Components.MixedOrderData` owns the consecutive
 interaction-slot representation of each component (`componentOrderedDiagram`), its local times,
