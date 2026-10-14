@@ -680,11 +680,12 @@ noncomputable def finiteCutoffContinuumBornDysonGaussianCrossedAngularCurrentEnt
           (((Real.cos angle : ℝ) : ℂ) * ((Real.sin angle : ℝ) : ℂ)) *
             harmonics.secondMixed i j))
 
+set_option maxHeartbeats 1000000
+
 /-- The full-angle `K0/K1/K2` crossed-current Fourier integrand is
 the spinor conjugate of the corresponding rotated Cartesian source at
 the radial axis. This exact identity is pointwise in radial momentum,
 before the remaining finite-cutoff radial integration. -/
-set_option maxHeartbeats 1000000 in
 private theorem gaussianCrossedAngularCurrentEntryKernel_sourceRotation
     (source : Fin 2)
     (v m probeEnergy broadening disorderStrength hbar pMax radius angle p : ℝ) :
@@ -733,10 +734,13 @@ private theorem gaussianCrossedAngularCurrentEntryKernel_sourceRotation
       InternalSpace.pauliZ, Matrix.mul_apply, Fin.sum_univ_two, Matrix.smul_apply, Matrix.sub_apply, Matrix.add_apply,
       smul_eq_mul]
   all_goals
+    simp only [← Complex.ofReal_cos, ← Complex.ofReal_sin]
     simp only [← htrig]
     ring_nf
     simp only [hI2, hI3]
     ring
+
+set_option maxHeartbeats 200000
 
 /-- Arbitrary-angle polar Fourier representation of the model's crossed-current
 matrix. The underlying advanced-current-retarded Pauli sandwich is the same
