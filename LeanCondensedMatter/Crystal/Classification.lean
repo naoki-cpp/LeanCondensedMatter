@@ -145,6 +145,103 @@ def ofBasisGramPreservingLinearEquiv
   intro x
   simpa only [LinearEquiv.coe_isometryOfInner] using hL x
 
+/-- Extend an integral-linear automorphism of a full lattice to an ambient
+real-linear automorphism by using the real bases induced by its source and image
+integer bases. No independent lattice or matrix representation is needed. -/
+noncomputable def extendIntegralLinearEquiv [FiniteDimensional ℝ V]
+    {ι : Type*}
+    (L : Submodule ℤ V) [DiscreteTopology L] [IsZLattice ℝ L]
+    (b : Module.Basis ι ℤ L) (e : L ≃ₗ[ℤ] L) : V ≃ₗ[ℝ] V :=
+  (b.ofZLatticeBasis ℝ L).repr.trans
+    (((b.map e).ofZLatticeBasis ℝ L).repr.symm)
+
+/-- The ambient extension agrees with the integral-linear automorphism on
+every integer basis vector. -/
+@[simp]
+theorem extendIntegralLinearEquiv_apply_basis [FiniteDimensional ℝ V]
+    {ι : Type*}
+    (L : Submodule ℤ V) [DiscreteTopology L] [IsZLattice ℝ L]
+    (b : Module.Basis ι ℤ L) (e : L ≃ₗ[ℤ] L) (i : ι) :
+    extendIntegralLinearEquiv L b e ((b i : L) : V) = ((e (b i) : L) : V) := by
+  let rb : Module.Basis ι ℝ V := b.ofZLatticeBasis ℝ L
+  let rb' : Module.Basis ι ℝ V := (b.map e).ofZLatticeBasis ℝ L
+  have hSource : rb i = ((b i : L) : V) :=
+    b.ofZLatticeBasis_apply ℝ L i
+  have hTarget : rb' i = ((e (b i) : L) : V) := by
+    simp only [rb', Module.Basis.ofZLatticeBasis_apply, Module.Basis.map_apply]
+  rw [← hSource, ← hTarget]
+  change (rb.repr.trans rb'.repr.symm) (rb i) = rb' i
+  simp
+
+/-- An integral-linear lattice automorphism extends to an ambient real-linear
+automorphism that preserves lattice membership in both directions. -/
+theorem extendIntegralLinearEquiv_mem_iff [FiniteDimensional ℝ V]
+    {ι : Type*}
+    (L : Submodule ℤ V) [DiscreteTopology L] [IsZLattice ℝ L]
+    (b : Module.Basis ι ℤ L) (e : L ≃ₗ[ℤ] L) (x : V) :
+    extendIntegralLinearEquiv L b e x ∈ L ↔ x ∈ L := by
+  classical
+  let rb : Module.Basis ι ℝ V := b.ofZLatticeBasis ℝ L
+  let rb' : Module.Basis ι ℝ V := (b.map e).ofZLatticeBasis ℝ L
+  let f : V ≃ₗ[ℝ] V := extendIntegralLinearEquiv L b e
+  have hb : Submodule.span ℤ (Set.range rb) = L :=
+    b.ofZLatticeBasis_span ℝ
+  have hb' : Submodule.span ℤ (Set.range rb') = L :=
+    (b.map e).ofZLatticeBasis_span ℝ
+  have hf (i : ι) : f (rb i) = rb' i := by
+    simpa only [f, rb, rb', Module.Basis.ofZLatticeBasis_apply,
+      Module.Basis.map_apply] using (extendIntegralLinearEquiv_apply_basis L b e i)
+  have hmap : Submodule.map (f.toLinearMap.restrictScalars ℤ) L = L := by
+    calc
+      Submodule.map (f.toLinearMap.restrictScalars ℤ) L =
+          Submodule.span ℤ
+            ((f.toLinearMap.restrictScalars ℤ) '' Set.range rb) := by
+        rw [← hb, Submodule.map_span]
+      _ = Submodule.span ℤ (Set.range (fun i => f (rb i))) := by
+        congr 1
+        ext v
+        constructor
+        · rintro ⟨w, ⟨i, rfl⟩, rfl⟩
+          exact ⟨i, rfl⟩
+        · rintro ⟨i, rfl⟩
+          exact ⟨rb i, ⟨i, rfl⟩, rfl⟩
+      _ = Submodule.span ℤ (Set.range rb') := by
+        have hFun : (fun i : ι => f (rb i)) = rb' := by
+          funext i
+          exact hf i
+        rw [hFun]
+      _ = L := hb'
+  change f x ∈ L ↔ x ∈ L
+  calc
+    f x ∈ L ↔ f x ∈ Submodule.map (f.toLinearMap.restrictScalars ℤ) L := by
+      rw [hmap]
+    _ ↔ x ∈ L := by
+      rw [Submodule.mem_map]
+      constructor
+      · rintro ⟨y, hy, hxy⟩
+        simpa [f.injective hxy] using hy
+      · intro hx
+        exact ⟨x, hx, rfl⟩
+
+/-- Every integral-linear automorphism of a full lattice preserving the
+Gram matrix of its integral basis determines an intrinsic lattice-point-group
+isometry. This is the converse to the intrinsic Gram congruence at the
+coordinate-free lattice-automorphism level. -/
+noncomputable def ofIntegralLinearEquivGramPreserving [FiniteDimensional ℝ V]
+    {ι : Type*} [Fintype ι]
+    (L : Submodule ℤ V) [DiscreteTopology L] [IsZLattice ℝ L]
+    (b : Module.Basis ι ℤ L) (e : L ≃ₗ[ℤ] L)
+    (hGram :
+      Matrix.gram ℝ (fun i => ((e (b i) : L) : V)) =
+        Matrix.gram ℝ (fun i => ((b i : L) : V))) :
+    latticePointGroup L :=
+  ofBasisGramPreservingLinearEquiv L (b.ofZLatticeBasis ℝ L)
+    (extendIntegralLinearEquiv L b e)
+    (extendIntegralLinearEquiv_mem_iff L b e)
+    (by
+      simpa only [Module.Basis.ofZLatticeBasis_apply,
+        extendIntegralLinearEquiv_apply_basis] using hGram)
+
 /-- A reflection across one integral basis axis makes the two basis vectors
 orthogonal. This is the rectangular Gram-metric constraint. -/
 theorem gram_offDiagonal_eq_zero_of_axisReflection
