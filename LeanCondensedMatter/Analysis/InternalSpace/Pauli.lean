@@ -409,6 +409,32 @@ theorem trace_four_antisymmetric_eq_xz_plane_minors
     hB, hD]
   ring
 
+/-- Antisymmetrized Pauli traces with xz-plane middle/final vectors and
+transversely related current vectors factor into three bilinear minors.
+The relation `w.x = -u.y` is explicit; no Hermiticity is needed. -/
+theorem trace_four_antisymmetric_eq_xz_plane_transverse_minors
+    (A B C D : PauliMatrix)
+    (hB : pauliVectorCoefficient B .y = 0)
+    (hD : pauliVectorCoefficient D .y = 0)
+    (htrans : pauliVectorCoefficient C .x = -pauliVectorCoefficient A .y) :
+    let a := pauliScalarCoefficient A
+    let b := pauliScalarCoefficient B
+    let c := pauliScalarCoefficient C
+    let d := pauliScalarCoefficient D
+    let u := pauliVectorCoefficient A
+    let v := pauliVectorCoefficient B
+    let w := pauliVectorCoefficient C
+    let x := pauliVectorCoefficient D
+    Matrix.trace (A * B * C * D) - Matrix.trace (C * B * A * D) =
+      4 * Complex.I *
+        ((a * w .y - c * u .y) * (v .x * x .z - v .z * x .x) +
+          (b * x .z - d * v .z) * (w .y * u .x + (u .y) ^ 2) +
+          (d * v .x - b * x .x) * (w .y * u .z - u .y * w .z)) := by
+  rw [trace_four_antisymmetric_eq_xz_plane_minors A B C D hB hD]
+  dsimp only
+  rw [htrans]
+  ring
+
 /-- Trace of four arbitrary complex two-level matrices expressed only through their canonical
 Pauli scalar/vector coefficients. -/
 theorem trace_four_eq_pauliCoefficients (A B C D : PauliMatrix) :
