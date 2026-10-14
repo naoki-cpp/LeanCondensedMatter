@@ -394,6 +394,37 @@ theorem ofIntegralLinearEquivGramPreserving_restrict [FiniteDimensional ℝ V]
   intro x
   exact LinearMap.congr_fun hLin x
 
+/-- A unimodular integer matrix is realized as the integral-coordinate action
+of an intrinsic lattice isometry if and only if it stabilizes the basis Gram
+matrix. This gives the rank-independent classification criterion used to
+identify symmetries of concrete Bravais metrics. -/
+theorem exists_basis_coordinates_iff_gram_congruence [FiniteDimensional ℝ V]
+    {ι : Type*} [Fintype ι] [DecidableEq ι]
+    (L : Submodule ℤ V) [DiscreteTopology L] [IsZLattice ℝ L]
+    (b : Module.Basis ι ℤ L) (A : Matrix.GeneralLinearGroup ι ℤ) :
+    (∃ g : latticePointGroup L, ∀ i j : ι,
+      (b.repr (restrict L g (b j))) i = (A : Matrix ι ι ℤ) i j) ↔
+      (let G := Matrix.gram ℝ (fun i => ((b i : L) : V))
+       ((A : Matrix ι ι ℤ).map (Int.cast : ℤ → ℝ)).transpose * G *
+         ((A : Matrix ι ι ℤ).map (Int.cast : ℤ → ℝ)) = G) := by
+  constructor
+  · rintro ⟨g, hg⟩
+    let M : Matrix ι ι ℤ :=
+      Matrix.of fun i j => (b.repr (restrict L g (b j))) i
+    have hM : M = (A : Matrix ι ι ℤ) := by
+      ext i j
+      exact hg i j
+    have hInv := gram_congruence L g b
+    change (M.map (Int.cast : ℤ → ℝ)).transpose *
+      Matrix.gram ℝ (fun i => ((b i : L) : V)) *
+        (M.map (Int.cast : ℤ → ℝ)) =
+      Matrix.gram ℝ (fun i => ((b i : L) : V)) at hInv
+    rw [hM] at hInv
+    exact hInv
+  · intro hGram
+    exact ⟨ofGLGramPreserving L b A hGram,
+      ofGLGramPreserving_basis_coordinates L b A hGram⟩
+
 /-- A reflection across one integral basis axis makes the two basis vectors
 orthogonal. This is the rectangular Gram-metric constraint. -/
 theorem gram_offDiagonal_eq_zero_of_axisReflection
