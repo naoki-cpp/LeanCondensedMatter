@@ -75,20 +75,15 @@ theorem ExternalInsertionDiagram.relativeComponentShuffle_sign_eq_mixedAtomic_mu
     rintro ⟨B, p⟩
     apply Fin.ext
     rfl
-  have hrelative :
-      d.relativeComponentShuffle externalTime σ =
-        ((fixedShuffle.slotEquiv.symm.trans
-            (Equiv.sigmaCongrRight localPerm)).trans
-          fixedShuffle.slotEquiv).trans globalPerm := by
-    unfold ExternalInsertionDiagram.relativeComponentShuffle
-      FamilySlotShuffleTo.relativePerm
-    change fixedShuffle.slotEquiv.symm.trans
-        (d.componentMixedPositionShuffle externalTime σ).slotEquiv = _
-    rw [hmixed]
-    apply Equiv.ext
-    intro p
-    rfl
-  rw [hrelative, Equiv.Perm.sign_trans,
+  change Equiv.Perm.sign
+    (fixedShuffle.slotEquiv.symm.trans
+      (d.componentMixedPositionShuffle externalTime σ).slotEquiv) = _
+  rw [hmixed]
+  change Equiv.Perm.sign
+    (((fixedShuffle.slotEquiv.symm.trans
+        (Equiv.sigmaCongrRight localPerm)).trans
+      fixedShuffle.slotEquiv).trans globalPerm) = _
+  rw [Equiv.Perm.sign_trans,
     Equiv.Perm.sign_symm_trans_trans,
     Equiv.Perm.sign_sigmaCongrRight]
   change Equiv.Perm.sign globalPerm *
