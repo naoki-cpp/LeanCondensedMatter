@@ -2623,7 +2623,7 @@
       "imports": [
         "LeanCondensedMatter.Models.MassiveDirac.Model.Basic"
       ],
-      "externalImportCount": 0
+      "externalImportCount": 1
     },
     {
       "name": "LeanCondensedMatter.Models.MassiveDirac.Model",
@@ -3044,7 +3044,7 @@
       "imports": [
         "LeanCondensedMatter.Models.RashbaExchange.Model"
       ],
-      "externalImportCount": 1
+      "externalImportCount": 2
     },
     {
       "name": "LeanCondensedMatter.Models.RashbaExchange.Model",
