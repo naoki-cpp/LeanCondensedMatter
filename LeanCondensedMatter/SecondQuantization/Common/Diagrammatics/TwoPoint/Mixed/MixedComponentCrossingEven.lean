@@ -1,6 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossing
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Components.ComponentDecomposition
-import LeanCondensedMatter.Combinatorics.Common.FintypeProduct
 import LeanCondensedMatter.Combinatorics.PerfectPairing.CrossingParity
 
 set_option linter.style.header false
@@ -174,35 +173,26 @@ private theorem
     (d.pairingInMixedOrder τ τ' σ).componentGeometricCrossingCount
         (Equiv.sigmaFiberEquiv (d.mixedPairComponent τ τ' σ)) B C % 2 = 0 := by
   classical
-  have hcross :=
-    Combinatorics.Pairing.componentGeometricCrossingCount_mod_two_eq_endpointInversionCount
-      (d.pairingInMixedOrder τ τ' σ)
-      (Equiv.sigmaFiberEquiv (d.mixedPairComponent τ τ' σ))
-      (fun D => d.mixedComponentPairEndpointEquiv τ τ' σ D)
-      (fun _ p => p.1)
-      (fun D p k => by
-        simpa [Combinatorics.Pairing.pairEndpoint, Combinatorics.pairEndpointAt] using
-          d.mixedComponentPairEndpointEquiv_apply_val τ τ' σ D p k)
-      B C hBC
-  rw [hcross]
-  apply Nat.mod_eq_zero_of_dvd
-  refine Finset.dvd_sum fun p _ => ?_
-  have hdiv := Fintype.dvd_sum_equiv_fst_of_dvd_card
+  exact Combinatorics.Pairing.componentGeometricCrossingCount_mod_two_eq_zero_of_even_fiber
+    (d.pairingInMixedOrder τ τ' σ)
+    (Equiv.sigmaFiberEquiv (d.mixedPairComponent τ τ' σ))
+    (fun D => d.mixedComponentPairEndpointEquiv τ τ' σ D)
+    (fun _ p => p.1)
+    (fun D p k => by
+      simpa [Combinatorics.Pairing.pairEndpoint, Combinatorics.pairEndpointAt] using
+        d.mixedComponentPairEndpointEquiv_apply_val τ τ' σ D p k)
+    B C hBC
     (d.mixedVacuumPositionDataEquiv τ τ' σ C hVac)
-    (fun v =>
-      if (d.mixedVacuumInteractionPosition τ τ' σ C hVac v 0).1 < p.1 then 1 else 0)
-    (d := 2) (by decide)
-  convert hdiv using 1
-  apply Finset.sum_congr rfl
-  intro q _
-  let vl := d.mixedVacuumPositionDataEquiv τ τ' σ C hVac q
-  have hq : d.mixedVacuumInteractionPosition τ τ' σ C hVac vl.1 vl.2 = q :=
-    (d.mixedVacuumPositionDataEquiv τ τ' σ C hVac).symm_apply_apply q
-  have huniform :=
-    d.mixedVacuumInteractionPosition_lt_uniform τ τ' σ B C hBC hVac p vl.1 vl.2
-  rw [hq] at huniform
-  simp only [vl] at huniform
-  simp only [huniform]
+    (fun v => d.mixedVacuumInteractionPosition τ τ' σ C hVac v 0)
+    (fun p q => by
+      let vl := d.mixedVacuumPositionDataEquiv τ τ' σ C hVac q
+      have hq : d.mixedVacuumInteractionPosition τ τ' σ C hVac vl.1 vl.2 = q :=
+        (d.mixedVacuumPositionDataEquiv τ τ' σ C hVac).symm_apply_apply q
+      have huniform :=
+        d.mixedVacuumInteractionPosition_lt_uniform τ τ' σ B C hBC hVac p vl.1 vl.2
+      rw [hq] at huniform
+      simpa only [vl] using huniform)
+    (by decide)
 
 /-- For full quartic two-point diagrams, mixed-time pairing weights factor unconditionally into the
 external component and all vacuum components, for arbitrary exchange statistics. -/

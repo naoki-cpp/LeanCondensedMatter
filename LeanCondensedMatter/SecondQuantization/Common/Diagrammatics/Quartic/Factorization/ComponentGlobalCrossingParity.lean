@@ -1,5 +1,4 @@
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Pairing.ComponentPairEquiv
-import LeanCondensedMatter.Combinatorics.Common.FintypeProduct
 import LeanCondensedMatter.Combinatorics.PerfectPairing.ComponentCrossing
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.PairingWeight
 
@@ -57,33 +56,6 @@ private theorem QuarticDiagram.componentOrderedLeg_lt_iff_slot_lt
     (orderedQuarticLegEquiv (B : Finset (Fin N)).card p).2
     (orderedQuarticLegEquiv (C : Finset (Fin N)).card q).2 hslot_ne
 
-/-- Each leg of one component is preceded by whole four-leg vertex blocks of any other component, so
-the total number of leg-order inversions between two distinct components is even. -/
-private theorem QuarticDiagram.sum_componentOrderedLeg_inversions_mod_two_eq_zero
-    {S : Finset (Fin N)} (d : QuarticDiagram Label N S) (shuffle : d.ComponentShuffle)
-    (B C : d.vertexGraph.componentPartitionOn.parts) (hBC : B ≠ C) :
-    (∑ p : Fin (2 * (2 * (B : Finset (Fin N)).card)),
-      ∑ q : Fin (2 * (2 * (C : Finset (Fin N)).card)),
-        if d.componentOrderedLeg shuffle C q < d.componentOrderedLeg shuffle B p
-        then 1 else 0) % 2 = 0 := by
-  classical
-  apply Nat.mod_eq_zero_of_dvd
-  rw [Finset.sum_comm]
-  refine Finset.dvd_sum fun q _ => ?_
-  simp_rw [d.componentOrderedLeg_lt_iff_slot_lt shuffle C B (Ne.symm hBC)]
-  change 2 ∣ ∑ x, (fun i : Fin (B : Finset (Fin N)).card =>
-    if shuffle.slotEquiv
-          ⟨C, (orderedQuarticLegEquiv (C : Finset (Fin N)).card q).1⟩ <
-        shuffle.slotEquiv ⟨B, i⟩ then 1 else 0)
-      ((orderedQuarticLegEquiv (B : Finset (Fin N)).card x).1)
-  exact Fintype.dvd_sum_equiv_fst_of_dvd_card
-    (orderedQuarticLegEquiv (B : Finset (Fin N)).card)
-    (fun i =>
-      if shuffle.slotEquiv
-            ⟨C, (orderedQuarticLegEquiv (C : Finset (Fin N)).card q).1⟩ <
-          shuffle.slotEquiv ⟨B, i⟩ then 1 else 0)
-    (by decide)
-
 /-- Distinct components have an even number of geometric crossings because each
 interaction vertex contributes a complete four-leg block. -/
 private theorem QuarticDiagram.componentGeometricCrossingCount_mod_two_eq_zero
@@ -93,20 +65,25 @@ private theorem QuarticDiagram.componentGeometricCrossingCount_mod_two_eq_zero
     (d.pairingInOrder (d.assembleVertexOrder orders shuffle)).componentGeometricCrossingCount
         (d.componentPairEquiv orders shuffle) B C % 2 = 0 := by
   classical
-  have hcross :=
-    Combinatorics.Pairing.componentGeometricCrossingCount_mod_two_eq_endpointInversionCount
-      (d.pairingInOrder (d.assembleVertexOrder orders shuffle))
-      (d.componentPairEquiv orders shuffle)
-      (fun B => ((d.restrictComponent B.2).pairingInOrder (orders B)).pairEndpointEquiv)
-      (fun B p => d.componentOrderedLeg shuffle B p)
-      (fun B p k => by
-        fin_cases k <;>
+  let fiber := orderedQuarticLegEquiv (C : Finset (Fin N)).card
+  exact Combinatorics.Pairing.componentGeometricCrossingCount_mod_two_eq_zero_of_even_fiber
+    (d.pairingInOrder (d.assembleVertexOrder orders shuffle))
+    (d.componentPairEquiv orders shuffle)
+    (fun D => ((d.restrictComponent D.2).pairingInOrder (orders D)).pairEndpointEquiv)
+    (fun D p => d.componentOrderedLeg shuffle D p)
+    (fun D p k => by
+      fin_cases k <;>
         simp [Combinatorics.Pairing.pairEndpointEquiv_apply,
           Combinatorics.Pairing.pairEndpoint, Combinatorics.pairEndpointAt,
           d.componentPairEquiv_apply])
-      B C hBC
-  rw [hcross]
-  exact d.sum_componentOrderedLeg_inversions_mod_two_eq_zero shuffle B C hBC
+    B C hBC
+    fiber (fun v => fiber.symm (v, 0))
+    (fun p q => by
+      rw [d.componentOrderedLeg_lt_iff_slot_lt shuffle C B (Ne.symm hBC) q p,
+        d.componentOrderedLeg_lt_iff_slot_lt shuffle C B (Ne.symm hBC)
+          (fiber.symm ((fiber q).1, 0)) p]
+      simp only [fiber, Equiv.apply_symm_apply])
+    (by decide)
 
 /-- The assembled global crossing count has the same parity as the sum of component-local crossing
 counts. -/
