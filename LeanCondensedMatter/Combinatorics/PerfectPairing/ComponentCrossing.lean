@@ -70,7 +70,7 @@ position fiber. The compatibility hypothesis only requires that transporting suc
 ambient pairing agrees with selecting the corresponding endpoint of the decomposed normalized
 pair. -/
 theorem Pairing.componentGeometricCrossingCount_mod_two_eq_endpointInversionCount
-    {P : ι → Type*} [∀ B, Finite (P B)] (pairing : Pairing n)
+    {P : ι → Type*} [∀ B, Fintype (P B)] (pairing : Pairing n)
     (e : (Σ B : ι, F B) ≃ pairing.NormalizedPair)
     (endpointEquiv : ∀ B, F B × Fin 2 ≃ P B)
     (position : ∀ B, P B → Fin (2 * n))
@@ -162,7 +162,7 @@ theorem Pairing.componentGeometricCrossingCount_mod_two_eq_endpointInversionCoun
 positions form even-sized fibers and their order relative to the other component is constant
 within each fiber. The result is independent of how the local pairing is represented. -/
 theorem Pairing.componentGeometricCrossingCount_mod_two_eq_zero_of_even_fiber
-    {P : ι → Type*} [∀ B, Fintype (P B)] (pairing : Pairing n)
+    {P : ι → Type*} [∀ B, Finite (P B)] (pairing : Pairing n)
     (e : (Σ B : ι, F B) ≃ pairing.NormalizedPair)
     (endpointEquiv : ∀ B, F B × Fin 2 ≃ P B)
     (position : ∀ B, P B → Fin (2 * n))
