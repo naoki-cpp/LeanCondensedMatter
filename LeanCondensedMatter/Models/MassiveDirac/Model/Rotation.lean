@@ -106,6 +106,28 @@ theorem inPlaneSpinRotation_conjugate_diagonal
             ring
       _ = M 1 1 := by rw [inPlaneSpinRotation_phases_mul]; simp
 
+/-- Conjugation by an in-plane spinor is multiplicative. -/
+theorem inPlaneSpinRotation_conjugate_mul
+    (angle : ℝ) (A B : Matrix2) :
+    (inPlaneSpinRotation angle * A * inPlaneSpinRotationInverse angle) *
+        (inPlaneSpinRotation angle * B * inPlaneSpinRotationInverse angle) =
+      inPlaneSpinRotation angle * (A * B) * inPlaneSpinRotationInverse angle := by
+  calc
+    _ = inPlaneSpinRotation angle *
+        (A * (inPlaneSpinRotationInverse angle * inPlaneSpinRotation angle) * B) *
+        inPlaneSpinRotationInverse angle := by simp only [Matrix.mul_assoc]
+    _ = _ := by rw [inPlaneSpinRotationInverse_mul]; simp
+
+/-- Conjugation by an in-plane spinor preserves the two-band trace. -/
+theorem inPlaneSpinRotation_conjugate_trace
+    (angle : ℝ) (M : Matrix2) :
+    Matrix.trace
+        (inPlaneSpinRotation angle * M * inPlaneSpinRotationInverse angle) =
+      Matrix.trace M := by
+  simp only [Matrix.trace, Fin.sum_univ_two, Matrix.diag]
+  rw [inPlaneSpinRotation_conjugate_diagonal,
+    inPlaneSpinRotation_conjugate_diagonal]
+
 /-- Rotating the Pauli-x axis produces the polar in-plane Pauli direction. -/
 theorem inPlaneSpinRotation_sigmaX (angle : ℝ) :
     inPlaneSpinRotation angle * sigmaX * inPlaneSpinRotationInverse angle =
