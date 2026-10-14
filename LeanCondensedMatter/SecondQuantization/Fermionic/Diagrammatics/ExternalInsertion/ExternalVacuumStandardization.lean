@@ -54,7 +54,7 @@ theorem externalInsertionLeftMixedToFixedEquiv_eq_standardMixedPosition_symm
           (Fin.cast (by simp)
             (externalInsertionInteractionLeg (E := E) v l)).val
         simp only [Fin.val_cast, externalInsertionInteractionLeg_val]
-        simp
+        rw [Finset.orderIsoOfFin_symm_apply, Fin.sort_univ, List.idxOf_finRange]
   apply Equiv.ext
   intro p
   change supportFixed
