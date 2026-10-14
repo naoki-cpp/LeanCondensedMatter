@@ -325,6 +325,32 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceIntegral_eq_radial
     (finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor
       diagram v m probeEnergy broadening disorderStrength hbar pMax radius) angle).symm
 
+/-- The regulated Gaussian X/Psi real-space integral reduces unconditionally to
+the antisymmetric radial source-pair tensor once the finite-broadening
+integrability assumptions are supplied. This discharges the former
+model-specific angular-rotation hypothesis using the proved Green/current
+SO(2) covariance, without taking any regulator limit. -/
+theorem finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceIntegral_eq_radial_antisymmetric_trace_of_regulated
+    (diagram : GaussianCrossedDiagram)
+    (v m probeEnergy broadening disorderStrength hbar pMax rMax : ℝ)
+    (hbroadening : broadening ≠ 0) (hdisorder : 0 ≤ disorderStrength)
+    (hpMax : 0 ≤ pMax) :
+    finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceIntegral
+        diagram v m probeEnergy broadening disorderStrength hbar pMax rMax =
+      (((2 * Real.pi : ℝ) : ℂ)) *
+        ∫ radius in (0 : ℝ)..rMax,
+          (radius : ℂ) *
+            ((finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor
+                diagram v m probeEnergy broadening disorderStrength hbar pMax radius 0 1 -
+              finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor
+                diagram v m probeEnergy broadening disorderStrength hbar pMax radius 1 0) / 2) := by
+  apply finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceIntegral_eq_radial_antisymmetric_trace
+    diagram v m probeEnergy broadening disorderStrength hbar pMax rMax
+  intro radius angle
+  exact finiteCutoffContinuumBornDysonGaussianCrossedTraceKernel_polarPoint2D_eq_radial_tensor
+    diagram v m probeEnergy broadening disorderStrength hbar pMax radius angle
+    hbroadening hdisorder hpMax
+
 /-- The finite-radius `Psi` integral remains real because its pointwise trace kernel is real. -/
 @[simp] theorem finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceIntegral_psi_im
     (v m probeEnergy broadening disorderStrength hbar pMax rMax : ℝ) :
