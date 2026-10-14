@@ -116,7 +116,7 @@ theorem QuarticDiagram.pairingInOrder_crossingCount_mod_two_eq_sum_components
     (d.pairingInOrder (d.assembleVertexOrder orders shuffle)).crossingCount % 2 =
       (∑ B : d.vertexGraph.componentPartitionOn.parts,
         ((d.restrictComponent B.2).pairingInOrder (orders B)).crossingCount) % 2 := by
-  rw [Combinatorics.Pairing.crossingCount_mod_two_eq_sum_componentCrossingCount_of_geometricEven
+  rw [Combinatorics.Pairing.crossingCount_mod_two_eq_sum_componentCrossingCount_of_geometric_even
     (d.pairingInOrder (d.assembleVertexOrder orders shuffle))
     (d.componentPairEquiv orders shuffle)
     (fun B C hBC =>
