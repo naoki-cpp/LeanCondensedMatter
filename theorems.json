@@ -60835,6 +60835,46 @@
   },
   {
     "terminal": true,
+    "statement": "∀ (source : Fin 2) (v m probeEnergy broadening disorderStrength hbar pMax p angle : ℝ),\n  have vertex :=\n    QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedCurrentFactor v m probeEnergy\n        broadening disorderStrength hbar pMax •\n      QuantumTheory.Models.MassiveDirac.directionPauli source;\n  QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGreenMatrix\n          QuantumTheory.Transport.SpectralSide.advanced v m (p * Real.cos angle) (p * Real.sin angle) probeEnergy\n          broadening disorderStrength hbar pMax *\n        vertex *\n      QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGreenMatrix\n        QuantumTheory.Transport.SpectralSide.retarded v m (p * Real.cos angle) (p * Real.sin angle) probeEnergy\n        broadening disorderStrength hbar pMax =\n    QuantumTheory.Models.MassiveDirac.inPlaneSpinRotation angle *\n        (QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGreenMatrix\n              QuantumTheory.Transport.SpectralSide.advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax *\n            (QuantumTheory.Models.MassiveDirac.inPlaneSpinRotationInverse angle * vertex *\n              QuantumTheory.Models.MassiveDirac.inPlaneSpinRotation angle) *\n          QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGreenMatrix\n            QuantumTheory.Transport.SpectralSide.retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax) *\n      QuantumTheory.Models.MassiveDirac.inPlaneSpinRotationInverse angle",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedCurrentMomentumMatrix_polar_spinRotation",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedRealSpace",
+    "externalAxioms": [],
+    "docString": "The momentum-space `Gᴬ (F σ_source) Gᴿ` integrand of the Gaussian-crossed\nreal-space current is spinor covariant when its current vertex is transported\nto the radial momentum axis. The Fourier phase and measure are not yet\nintegrated; this does not assert real-space current-block covariance. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGreenMatrix_polar_spinRotation"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
     "statement": "∀ (e v m probeEnergy broadening disorderStrength hbar pMax rMax : ℝ),\n  QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedOrderedXYConductivityTotal e v m\n      probeEnergy broadening disorderStrength hbar pMax rMax =\n    QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedOrderedXYConductivity\n        QuantumTheory.Models.MassiveDirac.GaussianCrossedDiagram.x e v m probeEnergy broadening disorderStrength hbar\n        pMax rMax +\n      QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedOrderedXYConductivity\n        QuantumTheory.Models.MassiveDirac.GaussianCrossedDiagram.psi e v m probeEnergy broadening disorderStrength hbar\n        pMax rMax",
     "standardAxioms": [
       "Classical.choice",
@@ -62667,6 +62707,51 @@
   },
   {
     "terminal": false,
+    "statement": "∀ (side : QuantumTheory.Transport.SpectralSide) (v m probeEnergy broadening disorderStrength hbar pMax p angle : ℝ),\n  QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGreenMatrix side v m (p * Real.cos angle)\n      (p * Real.sin angle) probeEnergy broadening disorderStrength hbar pMax =\n    QuantumTheory.Models.MassiveDirac.inPlaneSpinRotation angle *\n        QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGreenMatrix side v m p 0 probeEnergy broadening\n          disorderStrength hbar pMax *\n      QuantumTheory.Models.MassiveDirac.inPlaneSpinRotationInverse angle",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGreenMatrix_polar_spinRotation",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornRealSpacePropagator",
+    "externalAxioms": [],
+    "docString": "The finite-broadening Born-Dyson Green *momentum* matrix is spinor covariant.\nThis is pointwise in radial momentum and precedes any Fourier integration.\nThe radial-axis reference is the same regulated Green matrix at momentum `(p, 0)`. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedCurrentMomentumMatrix_polar_spinRotation"
+    ],
+    "dependencies": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGreenOperator_polar_eq",
+      "QuantumTheory.Models.MassiveDirac.polarPauliMatrix_eq_spinRotation"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedCurrentMomentumMatrix_polar_spinRotation"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ (side : QuantumTheory.Transport.SpectralSide) (v m p θ probeEnergy broadening disorderStrength hbar pMax : ℝ),\n  QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGreenOperator side v m (p * Real.cos θ)\n      (p * Real.sin θ) probeEnergy broadening disorderStrength hbar pMax =\n    QuantumTheory.Models.MassiveDirac.polarPauliOperator\n      (QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonScalarCoefficient side v m p 0 probeEnergy\n        broadening disorderStrength hbar pMax)\n      (QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonPauliCoefficient InternalSpace.PauliAxis.x side v\n        m p 0 probeEnergy broadening disorderStrength hbar pMax)\n      (QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonPauliCoefficient InternalSpace.PauliAxis.z side v\n        m p 0 probeEnergy broadening disorderStrength hbar pMax)\n      θ",
     "standardAxioms": [
       "Classical.choice",
@@ -62689,6 +62774,7 @@
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonAngularRetardedAdvancedInPlaneRungAction_eq",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceCurrentBlock_polarPoint2D_eq_angularKernel_integral",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceCurrentBlock_radialAxis_eq",
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGreenMatrix_polar_spinRotation",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRealSpaceGreenMatrix_polarPoint2D_eq_angularKernel_integral",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRealSpaceGreenMatrix_radialAxis_eq",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceIntegral_eq_radialCoefficient"
@@ -62702,11 +62788,12 @@
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonAngularRetardedAdvancedInPlaneRungAction_eq",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceCurrentBlock_polarPoint2D_eq_angularKernel_integral",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceCurrentBlock_radialAxis_eq",
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGreenMatrix_polar_spinRotation",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRealSpaceGreenMatrix_polarPoint2D_eq_angularKernel_integral",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRealSpaceGreenMatrix_radialAxis_eq",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceIntegral_eq_radialCoefficient"
     ],
-    "compiledConsumerCount": 6,
+    "compiledConsumerCount": 7,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -69564,6 +69651,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGreenMatrix_polar_spinRotation",
       "QuantumTheory.Models.MassiveDirac.polarPauliMatrix_sandwich_spinRotation",
       "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornRealSpacePropagator.0.QuantumTheory.Models.MassiveDirac.angularGreenPauliKernel_eq_spinRotation"
     ],
@@ -69575,10 +69663,11 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGreenMatrix_polar_spinRotation",
       "QuantumTheory.Models.MassiveDirac.polarPauliMatrix_sandwich_spinRotation",
       "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornRealSpacePropagator.0.QuantumTheory.Models.MassiveDirac.angularGreenPauliKernel_eq_spinRotation"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -105205,7 +105294,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "SecondQuantization.Common.ExternalInsertionDiagram.componentMixedPairEquiv_apply",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.MixedOrderData",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Pairing.ComponentMixedPairEquiv",
     "externalAxioms": [],
     "docString": "The all-component mixed pair equivalence maps a local normalized pair by applying\n`componentMixedPosition` to its two endpoints. ",
     "directWrapperTargetModule": null,
@@ -106260,7 +106349,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {E N : ℕ} {S T : Finset (Fin N)} (h : T ⊆ S)\n  (ext : SecondQuantization.Common.ExternalInsertionDiagram ExternalLabel InternalLabel E N T)\n  (vac : SecondQuantization.Common.QuarticDiagram InternalLabel N (S \\ T)) (w : InternalLabel → ℂ),\n  (-1) ^ S.card * (SecondQuantization.Common.ExternalInsertionDiagram.ofSlotSplit h ext vac).vertexWeight w =\n    (-1) ^ T.card * ext.vertexWeight w * ((-1) ^ (S \\ T).card * vac.vertexWeight w)",
     "standardAxioms": [
       "Classical.choice",
@@ -106268,7 +106357,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -106279,14 +106368,18 @@
     "docString": "Dyson interaction signs and local vertex weights split multiplicatively along the\nexternal-support/vacuum slot partition. This statement does not concern the fermionic\nmixed-time permutation or pairing-crossing sign. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "SecondQuantization.Fermionic.externalInsertionOfSlotSplit_dysonFixedTimeAmplitude_eq_local_mul_vacuum"
+    ],
     "dependencies": [
       "SecondQuantization.Common.ExternalInsertionDiagram.ofSlotSplit_vertexWeight"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.externalInsertionOfSlotSplit_dysonFixedTimeAmplitude_eq_local_mul_vacuum"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -140682,7 +140775,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {E n : ℕ} (T : Finset (Fin n)) (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ),\n  let S := Finset.univ \\ T;\n  have order := (S.orderIsoOfFin ⋯).toEquiv;\n  have f := fun i => ↑((S.orderIsoOfFin ⋯) i);\n  have localFixed := SecondQuantization.Fermionic.externalInsertionLeftMixedToFixedEquiv✝ T externalTime σ;\n  have split :=\n    (((Equiv.refl (Fin (2 * (2 * T.card + E)))).sumCongr\n              (SecondQuantization.Common.orderedLegToDiagramLeg S order)).trans\n          (SecondQuantization.Common.externalInsertionSlotLegSplitting ⋯)).trans\n      (SecondQuantization.Common.externalInsertionMixedTimeAmbientPositionEquiv externalTime σ).symm;\n  have mixedSplit := (localFixed.sumCongr (Equiv.refl (Fin (2 * (2 * S.card))))).trans split;\n  StrictAnti (σ ∘ f) →\n    (Equiv.Perm.sign (SecondQuantization.Common.externalInsertionStandardToMixedAtomicPositionEquiv externalTime σ) *\n        (-1) ^ ∑ i, ∑ j, if mixedSplit (Sum.inr j) < mixedSplit (Sum.inl i) then 1 else 0) =\n      Equiv.Perm.sign (localFixed.sumCongr (Equiv.refl (Fin (2 * (2 * S.card)))))",
+    "statement": "∀ {E n : ℕ} (T : Finset (Fin n)) (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ),\n  let S := Finset.univ \\ T;\n  have order := (S.orderIsoOfFin ⋯).toEquiv;\n  have f := fun i => ↑((S.orderIsoOfFin ⋯) i);\n  have localFixed := SecondQuantization.Fermionic.externalInsertionLeftMixedToFixedEquiv T externalTime σ;\n  have split :=\n    (((Equiv.refl (Fin (2 * (2 * T.card + E)))).sumCongr\n              (SecondQuantization.Common.orderedLegToDiagramLeg S order)).trans\n          (SecondQuantization.Common.externalInsertionSlotLegSplitting ⋯)).trans\n      (SecondQuantization.Common.externalInsertionMixedTimeAmbientPositionEquiv externalTime σ).symm;\n  have mixedSplit := (localFixed.sumCongr (Equiv.refl (Fin (2 * (2 * S.card))))).trans split;\n  StrictAnti (σ ∘ f) →\n    (Equiv.Perm.sign (SecondQuantization.Common.externalInsertionStandardToMixedAtomicPositionEquiv externalTime σ) *\n        (-1) ^ ∑ i, ∑ j, if mixedSplit (Sum.inr j) < mixedSplit (Sum.inl i) then 1 else 0) =\n      Equiv.Perm.sign (localFixed.sumCongr (Equiv.refl (Fin (2 * (2 * S.card)))))",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -140726,7 +140819,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {E n : ℕ} (T : Finset (Fin n)) (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ),\n  let S := Finset.univ \\ T;\n  have order := (S.orderIsoOfFin ⋯).toEquiv;\n  have f := fun i => ↑((S.orderIsoOfFin ⋯) i);\n  have localFixed := SecondQuantization.Fermionic.externalInsertionLeftMixedToFixedEquiv✝ T externalTime σ;\n  have split :=\n    (((Equiv.refl (Fin (2 * (2 * T.card + E)))).sumCongr\n              (SecondQuantization.Common.orderedLegToDiagramLeg S order)).trans\n          (SecondQuantization.Common.externalInsertionSlotLegSplitting ⋯)).trans\n      (SecondQuantization.Common.externalInsertionMixedTimeAmbientPositionEquiv externalTime σ).symm;\n  have mixedSplit := (localFixed.sumCongr (Equiv.refl (Fin (2 * (2 * S.card))))).trans split;\n  StrictAnti (σ ∘ f) →\n    Equiv.Perm.sign (localFixed.sumCongr (Equiv.refl (Fin (2 * (2 * S.card))))) *\n        Equiv.Perm.sign (SecondQuantization.Common.externalInsertionStandardToMixedAtomicPositionEquiv externalTime σ) =\n      (-1) ^ ∑ i, ∑ j, if mixedSplit (Sum.inr j) < mixedSplit (Sum.inl i) then 1 else 0",
+    "statement": "∀ {E n : ℕ} (T : Finset (Fin n)) (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ),\n  let S := Finset.univ \\ T;\n  have order := (S.orderIsoOfFin ⋯).toEquiv;\n  have f := fun i => ↑((S.orderIsoOfFin ⋯) i);\n  have localFixed := SecondQuantization.Fermionic.externalInsertionLeftMixedToFixedEquiv T externalTime σ;\n  have split :=\n    (((Equiv.refl (Fin (2 * (2 * T.card + E)))).sumCongr\n              (SecondQuantization.Common.orderedLegToDiagramLeg S order)).trans\n          (SecondQuantization.Common.externalInsertionSlotLegSplitting ⋯)).trans\n      (SecondQuantization.Common.externalInsertionMixedTimeAmbientPositionEquiv externalTime σ).symm;\n  have mixedSplit := (localFixed.sumCongr (Equiv.refl (Fin (2 * (2 * S.card))))).trans split;\n  StrictAnti (σ ∘ f) →\n    Equiv.Perm.sign (localFixed.sumCongr (Equiv.refl (Fin (2 * (2 * S.card))))) *\n        Equiv.Perm.sign (SecondQuantization.Common.externalInsertionStandardToMixedAtomicPositionEquiv externalTime σ) =\n      (-1) ^ ∑ i, ∑ j, if mixedSplit (Sum.inr j) < mixedSplit (Sum.inl i) then 1 else 0",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -140771,7 +140864,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {E n : ℕ} (T : Finset (Fin n)) (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ),\n  let S := Finset.univ \\ T;\n  have order := (S.orderIsoOfFin ⋯).toEquiv;\n  have f := fun i => ↑((S.orderIsoOfFin ⋯) i);\n  have localFixed := SecondQuantization.Fermionic.externalInsertionLeftMixedToFixedEquiv✝ T externalTime σ;\n  have fixedSplit :=\n    (((Equiv.refl (Fin (2 * (2 * T.card + E)))).sumCongr\n              (SecondQuantization.Common.orderedLegToDiagramLeg S order)).trans\n          (SecondQuantization.Common.externalInsertionSlotLegSplitting ⋯)).trans\n      (finCongr ⋯).symm;\n  have split :=\n    (((Equiv.refl (Fin (2 * (2 * T.card + E)))).sumCongr\n              (SecondQuantization.Common.orderedLegToDiagramLeg S order)).trans\n          (SecondQuantization.Common.externalInsertionSlotLegSplitting ⋯)).trans\n      (SecondQuantization.Common.externalInsertionMixedTimeAmbientPositionEquiv externalTime σ).symm;\n  have mixedSplit := (localFixed.sumCongr (Equiv.refl (Fin (2 * (2 * S.card))))).trans split;\n  StrictAnti (σ ∘ f) →\n    Equiv.Perm.sign (fixedSplit.symm.trans mixedSplit) =\n      (-1) ^\n        ((∑ i, ∑ j, if fixedSplit (Sum.inr j) < fixedSplit (Sum.inl i) then 1 else 0) +\n          ∑ i, ∑ j, if mixedSplit (Sum.inr j) < mixedSplit (Sum.inl i) then 1 else 0)",
+    "statement": "∀ {E n : ℕ} (T : Finset (Fin n)) (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ),\n  let S := Finset.univ \\ T;\n  have order := (S.orderIsoOfFin ⋯).toEquiv;\n  have f := fun i => ↑((S.orderIsoOfFin ⋯) i);\n  have localFixed := SecondQuantization.Fermionic.externalInsertionLeftMixedToFixedEquiv T externalTime σ;\n  have fixedSplit :=\n    (((Equiv.refl (Fin (2 * (2 * T.card + E)))).sumCongr\n              (SecondQuantization.Common.orderedLegToDiagramLeg S order)).trans\n          (SecondQuantization.Common.externalInsertionSlotLegSplitting ⋯)).trans\n      (finCongr ⋯).symm;\n  have split :=\n    (((Equiv.refl (Fin (2 * (2 * T.card + E)))).sumCongr\n              (SecondQuantization.Common.orderedLegToDiagramLeg S order)).trans\n          (SecondQuantization.Common.externalInsertionSlotLegSplitting ⋯)).trans\n      (SecondQuantization.Common.externalInsertionMixedTimeAmbientPositionEquiv externalTime σ).symm;\n  have mixedSplit := (localFixed.sumCongr (Equiv.refl (Fin (2 * (2 * S.card))))).trans split;\n  StrictAnti (σ ∘ f) →\n    Equiv.Perm.sign (fixedSplit.symm.trans mixedSplit) =\n      (-1) ^\n        ((∑ i, ∑ j, if fixedSplit (Sum.inr j) < fixedSplit (Sum.inl i) then 1 else 0) +\n          ∑ i, ∑ j, if mixedSplit (Sum.inr j) < mixedSplit (Sum.inl i) then 1 else 0)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -140820,7 +140913,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {E n : ℕ} (T : Finset (Fin n)) (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ),\n  let S := Finset.univ \\ T;\n  have order := (S.orderIsoOfFin ⋯).toEquiv;\n  have localFixed := SecondQuantization.Fermionic.externalInsertionLeftMixedToFixedEquiv✝ T externalTime σ;\n  have fixedSplit :=\n    (((Equiv.refl (Fin (2 * (2 * T.card + E)))).sumCongr\n              (SecondQuantization.Common.orderedLegToDiagramLeg S order)).trans\n          (SecondQuantization.Common.externalInsertionSlotLegSplitting ⋯)).trans\n      (finCongr ⋯).symm;\n  have split :=\n    (((Equiv.refl (Fin (2 * (2 * T.card + E)))).sumCongr\n              (SecondQuantization.Common.orderedLegToDiagramLeg S order)).trans\n          (SecondQuantization.Common.externalInsertionSlotLegSplitting ⋯)).trans\n      (SecondQuantization.Common.externalInsertionMixedTimeAmbientPositionEquiv externalTime σ).symm;\n  have mixedSplit := (localFixed.sumCongr (Equiv.refl (Fin (2 * (2 * S.card))))).trans split;\n  Equiv.Perm.sign (fixedSplit.symm.trans mixedSplit) =\n    Equiv.Perm.sign (localFixed.sumCongr (Equiv.refl (Fin (2 * (2 * S.card))))) *\n      Equiv.Perm.sign (SecondQuantization.Common.externalInsertionStandardToMixedAtomicPositionEquiv externalTime σ)",
+    "statement": "∀ {E n : ℕ} (T : Finset (Fin n)) (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ),\n  let S := Finset.univ \\ T;\n  have order := (S.orderIsoOfFin ⋯).toEquiv;\n  have localFixed := SecondQuantization.Fermionic.externalInsertionLeftMixedToFixedEquiv T externalTime σ;\n  have fixedSplit :=\n    (((Equiv.refl (Fin (2 * (2 * T.card + E)))).sumCongr\n              (SecondQuantization.Common.orderedLegToDiagramLeg S order)).trans\n          (SecondQuantization.Common.externalInsertionSlotLegSplitting ⋯)).trans\n      (finCongr ⋯).symm;\n  have split :=\n    (((Equiv.refl (Fin (2 * (2 * T.card + E)))).sumCongr\n              (SecondQuantization.Common.orderedLegToDiagramLeg S order)).trans\n          (SecondQuantization.Common.externalInsertionSlotLegSplitting ⋯)).trans\n      (SecondQuantization.Common.externalInsertionMixedTimeAmbientPositionEquiv externalTime σ).symm;\n  have mixedSplit := (localFixed.sumCongr (Equiv.refl (Fin (2 * (2 * S.card))))).trans split;\n  Equiv.Perm.sign (fixedSplit.symm.trans mixedSplit) =\n    Equiv.Perm.sign (localFixed.sumCongr (Equiv.refl (Fin (2 * (2 * S.card))))) *\n      Equiv.Perm.sign (SecondQuantization.Common.externalInsertionStandardToMixedAtomicPositionEquiv externalTime σ)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -140862,7 +140955,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {E n : ℕ} (T : Finset (Fin n)) (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ),\n  let S := Finset.univ \\ T;\n  have order := (S.orderIsoOfFin ⋯).toEquiv;\n  have f := fun i => ↑((S.orderIsoOfFin ⋯) i);\n  have localFixed := SecondQuantization.Fermionic.externalInsertionLeftMixedToFixedEquiv✝ T externalTime σ;\n  have fixedSplit :=\n    (((Equiv.refl (Fin (2 * (2 * T.card + E)))).sumCongr\n              (SecondQuantization.Common.orderedLegToDiagramLeg S order)).trans\n          (SecondQuantization.Common.externalInsertionSlotLegSplitting ⋯)).trans\n      (finCongr ⋯).symm;\n  have split :=\n    (((Equiv.refl (Fin (2 * (2 * T.card + E)))).sumCongr\n              (SecondQuantization.Common.orderedLegToDiagramLeg S order)).trans\n          (SecondQuantization.Common.externalInsertionSlotLegSplitting ⋯)).trans\n      (SecondQuantization.Common.externalInsertionMixedTimeAmbientPositionEquiv externalTime σ).symm;\n  have mixedSplit := (localFixed.sumCongr (Equiv.refl (Fin (2 * (2 * S.card))))).trans split;\n  StrictAnti (σ ∘ f) →\n    Equiv.Perm.sign (fixedSplit.symm.trans mixedSplit) =\n      (-1) ^ ∑ i, ∑ j, if mixedSplit (Sum.inr j) < mixedSplit (Sum.inl i) then 1 else 0",
+    "statement": "∀ {E n : ℕ} (T : Finset (Fin n)) (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ),\n  let S := Finset.univ \\ T;\n  have order := (S.orderIsoOfFin ⋯).toEquiv;\n  have f := fun i => ↑((S.orderIsoOfFin ⋯) i);\n  have localFixed := SecondQuantization.Fermionic.externalInsertionLeftMixedToFixedEquiv T externalTime σ;\n  have fixedSplit :=\n    (((Equiv.refl (Fin (2 * (2 * T.card + E)))).sumCongr\n              (SecondQuantization.Common.orderedLegToDiagramLeg S order)).trans\n          (SecondQuantization.Common.externalInsertionSlotLegSplitting ⋯)).trans\n      (finCongr ⋯).symm;\n  have split :=\n    (((Equiv.refl (Fin (2 * (2 * T.card + E)))).sumCongr\n              (SecondQuantization.Common.orderedLegToDiagramLeg S order)).trans\n          (SecondQuantization.Common.externalInsertionSlotLegSplitting ⋯)).trans\n      (SecondQuantization.Common.externalInsertionMixedTimeAmbientPositionEquiv externalTime σ).symm;\n  have mixedSplit := (localFixed.sumCongr (Equiv.refl (Fin (2 * (2 * S.card))))).trans split;\n  StrictAnti (σ ∘ f) →\n    Equiv.Perm.sign (fixedSplit.symm.trans mixedSplit) =\n      (-1) ^ ∑ i, ∑ j, if mixedSplit (Sum.inr j) < mixedSplit (Sum.inl i) then 1 else 0",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -141149,7 +141242,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] (ε : Mode → ℝ) (β : ℝ) {E n : ℕ}\n  (T : Finset (Fin n))\n  (ext :\n    SecondQuantization.Common.ExternalInsertionDiagram (SecondQuantization.Fermionic.ExternalFieldLabel Mode)\n      (SecondQuantization.Common.QuarticVertexLabel Mode) E n T)\n  (vac :\n    SecondQuantization.Common.QuarticDiagram (SecondQuantization.Common.QuarticVertexLabel Mode) n (Finset.univ \\ T))\n  (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ),\n  let S := Finset.univ \\ T;\n  have order := (S.orderIsoOfFin ⋯).toEquiv;\n  have f := fun i => ↑((S.orderIsoOfFin ⋯) i);\n  have fT := fun i => ↑((T.orderIsoOfFin ⋯) i);\n  have localFixed := SecondQuantization.Fermionic.externalInsertionLeftMixedToFixedEquiv✝ T externalTime σ;\n  have localPairing := Combinatorics.PairingOn.transport ext.pairing localFixed;\n  have d := SecondQuantization.Common.ExternalInsertionDiagram.ofSlotSplit ⋯ ext vac;\n  have kernel :=\n    SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicPairValue ε β d.externalLabel externalTime\n      (SecondQuantization.Common.ExternalInsertionDiagram.vertexLabelSequence d) σ;\n  have leftKernel :=\n    SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicPairValue ε β ext.externalLabel externalTime\n      (fun v => ext.vertexLabel ((T.orderIsoOfFin ⋯) v)) (σ ∘ fT);\n  have rightKernel :=\n    SecondQuantization.Fermionic.flatVertexLegPairValue ε β (fun v => vac.vertexLabel ((S.orderIsoOfFin ⋯) v)) (σ ∘ f);\n  StrictAnti (σ ∘ f) →\n    ↑↑(Equiv.Perm.sign (SecondQuantization.Common.externalInsertionStandardToMixedAtomicPositionEquiv externalTime σ)) *\n        (SecondQuantization.Common.ExternalInsertionDiagram.pairingInMixedOrder d externalTime σ).evaluation\n          (Combinatorics.Pairing.weight SecondQuantization.Common.Statistics.fermion\n            (SecondQuantization.Common.ExternalInsertionDiagram.pairingInMixedOrder d externalTime σ))\n          kernel =\n      ↑↑(Equiv.Perm.sign (localFixed.sumCongr (Equiv.refl (Fin (2 * (2 * S.card)))))) *\n        (localPairing.evaluation\n            (Combinatorics.Pairing.weight SecondQuantization.Common.Statistics.fermion localPairing) leftKernel *\n          (vac.pairingInOrder order).evaluation\n            (Combinatorics.Pairing.weight SecondQuantization.Common.Statistics.fermion (vac.pairingInOrder order))\n            rightKernel)",
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] (ε : Mode → ℝ) (β : ℝ)\n  (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ) {E n : ℕ} (T : Finset (Fin n))\n  (ext :\n    SecondQuantization.Common.ExternalInsertionDiagram (SecondQuantization.Fermionic.ExternalFieldLabel Mode)\n      (SecondQuantization.Common.QuarticVertexLabel Mode) E n T)\n  (vac :\n    SecondQuantization.Common.QuarticDiagram (SecondQuantization.Common.QuarticVertexLabel Mode) n (Finset.univ \\ T))\n  (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ),\n  let S := Finset.univ \\ T;\n  have order := (S.orderIsoOfFin ⋯).toEquiv;\n  have f := fun i => ↑((S.orderIsoOfFin ⋯) i);\n  have fT := fun i => ↑((T.orderIsoOfFin ⋯) i);\n  have localFixed := SecondQuantization.Fermionic.externalInsertionLeftMixedToFixedEquiv T externalTime σ;\n  have localPairing := Combinatorics.PairingOn.transport ext.pairing localFixed;\n  have localSign := ↑↑(Equiv.Perm.sign (localFixed.sumCongr (Equiv.refl (Fin (2 * (2 * S.card))))));\n  have localKernel :=\n    SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicPairValue ε β ext.externalLabel externalTime\n      (fun v => ext.vertexLabel ((T.orderIsoOfFin ⋯) v)) (σ ∘ fT);\n  have localValue :=\n    localPairing.evaluation (Combinatorics.Pairing.weight SecondQuantization.Common.Statistics.fermion localPairing)\n      localKernel;\n  have vacuumKernel :=\n    SecondQuantization.Fermionic.flatVertexLegPairValue ε β (fun v => vac.vertexLabel ((S.orderIsoOfFin ⋯) v)) (σ ∘ f);\n  have vacuumValue :=\n    (vac.pairingInOrder order).evaluation\n      (Combinatorics.Pairing.weight SecondQuantization.Common.Statistics.fermion (vac.pairingInOrder order))\n      vacuumKernel;\n  have d := SecondQuantization.Common.ExternalInsertionDiagram.ofSlotSplit ⋯ ext vac;\n  StrictAnti (σ ∘ f) →\n    d.dysonFixedTimeAmplitude ε β g externalTime σ =\n      (-1) ^ T.card * ext.vertexWeight g * (localSign * localValue) * ((-1) ^ S.card * vac.vertexWeight g * vacuumValue)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -141161,16 +141254,16 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.externalInsertionOfSlotSplit_globalSign_mul_mixedPairingEvaluation_eq_localSign_mul",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalVacuumPairing",
+    "name": "SecondQuantization.Fermionic.externalInsertionOfSlotSplit_dysonFixedTimeAmplitude_eq_local_mul_vacuum",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalVacuumAmplitude",
     "externalAxioms": [],
-    "docString": "The ambient mixed-time permutation sign cancels the inter-sector pairing\ncrossing sign on a strictly antitone vacuum chamber. The remaining sign is\nexactly the genuine external-support local reordering sign; the two standalone\npairing evaluations keep their normalized endpoint orientations. ",
+    "docString": "The Dyson-signed amplitude of a reassembled external/vacuum diagram factors\npointwise on strictly antitone vacuum chambers. The local factor retains the\nexternal support's genuine mixed-to-fixed reordering sign; the vacuum factor\nuses its increasing slot order and correctly oriented pairing evaluation. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "SecondQuantization.Fermionic.externalInsertionMixedSplit_global_sign_mul_mixedInversionSign_eq_local",
-      "SecondQuantization.Fermionic.externalInsertionOfSlotSplit_mixedPairingEvaluation_eq_positionInversions_mul_of_strictAnti"
+      "SecondQuantization.Common.ExternalInsertionDiagram.ofSlotSplit_dysonSign_mul_vertexWeight",
+      "SecondQuantization.Fermionic.externalInsertionOfSlotSplit_globalSign_mul_mixedPairingEvaluation_eq_localSign_mul"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -141190,7 +141283,52 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] (ε : Mode → ℝ) (β : ℝ) {E n : ℕ}\n  (T : Finset (Fin n))\n  (ext :\n    SecondQuantization.Common.ExternalInsertionDiagram (SecondQuantization.Fermionic.ExternalFieldLabel Mode)\n      (SecondQuantization.Common.QuarticVertexLabel Mode) E n T)\n  (vac :\n    SecondQuantization.Common.QuarticDiagram (SecondQuantization.Common.QuarticVertexLabel Mode) n (Finset.univ \\ T))\n  (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ),\n  let S := Finset.univ \\ T;\n  have order := (S.orderIsoOfFin ⋯).toEquiv;\n  have f := fun i => ↑((S.orderIsoOfFin ⋯) i);\n  have fT := fun i => ↑((T.orderIsoOfFin ⋯) i);\n  have localFixed := SecondQuantization.Fermionic.externalInsertionLeftMixedToFixedEquiv✝ T externalTime σ;\n  have split :=\n    (((Equiv.refl (Fin (2 * (2 * T.card + E)))).sumCongr\n              (SecondQuantization.Common.orderedLegToDiagramLeg S order)).trans\n          (SecondQuantization.Common.externalInsertionSlotLegSplitting ⋯)).trans\n      (SecondQuantization.Common.externalInsertionMixedTimeAmbientPositionEquiv externalTime σ).symm;\n  have mixedSplit := (localFixed.sumCongr (Equiv.refl (Fin (2 * (2 * S.card))))).trans split;\n  have localPairing := Combinatorics.PairingOn.transport ext.pairing localFixed;\n  have d := SecondQuantization.Common.ExternalInsertionDiagram.ofSlotSplit ⋯ ext vac;\n  have kernel :=\n    SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicPairValue ε β d.externalLabel externalTime\n      (SecondQuantization.Common.ExternalInsertionDiagram.vertexLabelSequence d) σ;\n  have leftKernel :=\n    SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicPairValue ε β ext.externalLabel externalTime\n      (fun v => ext.vertexLabel ((T.orderIsoOfFin ⋯) v)) (σ ∘ fT);\n  have rightKernel :=\n    SecondQuantization.Fermionic.flatVertexLegPairValue ε β (fun v => vac.vertexLabel ((S.orderIsoOfFin ⋯) v)) (σ ∘ f);\n  StrictAnti (σ ∘ f) →\n    (SecondQuantization.Common.ExternalInsertionDiagram.pairingInMixedOrder d externalTime σ).evaluation\n        (Combinatorics.Pairing.weight SecondQuantization.Common.Statistics.fermion\n          (SecondQuantization.Common.ExternalInsertionDiagram.pairingInMixedOrder d externalTime σ))\n        kernel =\n      (↑SecondQuantization.Common.Statistics.fermion.zetaInt ^\n          ∑ i, ∑ j, if mixedSplit (Sum.inr j) < mixedSplit (Sum.inl i) then 1 else 0) *\n        (localPairing.evaluation\n            (Combinatorics.Pairing.weight SecondQuantization.Common.Statistics.fermion localPairing) leftKernel *\n          (vac.pairingInOrder order).evaluation\n            (Combinatorics.Pairing.weight SecondQuantization.Common.Statistics.fermion (vac.pairingInOrder order))\n            rightKernel)",
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] (ε : Mode → ℝ) (β : ℝ) {E n : ℕ}\n  (T : Finset (Fin n))\n  (ext :\n    SecondQuantization.Common.ExternalInsertionDiagram (SecondQuantization.Fermionic.ExternalFieldLabel Mode)\n      (SecondQuantization.Common.QuarticVertexLabel Mode) E n T)\n  (vac :\n    SecondQuantization.Common.QuarticDiagram (SecondQuantization.Common.QuarticVertexLabel Mode) n (Finset.univ \\ T))\n  (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ),\n  let S := Finset.univ \\ T;\n  have order := (S.orderIsoOfFin ⋯).toEquiv;\n  have f := fun i => ↑((S.orderIsoOfFin ⋯) i);\n  have fT := fun i => ↑((T.orderIsoOfFin ⋯) i);\n  have localFixed := SecondQuantization.Fermionic.externalInsertionLeftMixedToFixedEquiv T externalTime σ;\n  have localPairing := Combinatorics.PairingOn.transport ext.pairing localFixed;\n  have d := SecondQuantization.Common.ExternalInsertionDiagram.ofSlotSplit ⋯ ext vac;\n  have kernel :=\n    SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicPairValue ε β d.externalLabel externalTime\n      (SecondQuantization.Common.ExternalInsertionDiagram.vertexLabelSequence d) σ;\n  have leftKernel :=\n    SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicPairValue ε β ext.externalLabel externalTime\n      (fun v => ext.vertexLabel ((T.orderIsoOfFin ⋯) v)) (σ ∘ fT);\n  have rightKernel :=\n    SecondQuantization.Fermionic.flatVertexLegPairValue ε β (fun v => vac.vertexLabel ((S.orderIsoOfFin ⋯) v)) (σ ∘ f);\n  StrictAnti (σ ∘ f) →\n    ↑↑(Equiv.Perm.sign (SecondQuantization.Common.externalInsertionStandardToMixedAtomicPositionEquiv externalTime σ)) *\n        (SecondQuantization.Common.ExternalInsertionDiagram.pairingInMixedOrder d externalTime σ).evaluation\n          (Combinatorics.Pairing.weight SecondQuantization.Common.Statistics.fermion\n            (SecondQuantization.Common.ExternalInsertionDiagram.pairingInMixedOrder d externalTime σ))\n          kernel =\n      ↑↑(Equiv.Perm.sign (localFixed.sumCongr (Equiv.refl (Fin (2 * (2 * S.card)))))) *\n        (localPairing.evaluation\n            (Combinatorics.Pairing.weight SecondQuantization.Common.Statistics.fermion localPairing) leftKernel *\n          (vac.pairingInOrder order).evaluation\n            (Combinatorics.Pairing.weight SecondQuantization.Common.Statistics.fermion (vac.pairingInOrder order))\n            rightKernel)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.externalInsertionOfSlotSplit_globalSign_mul_mixedPairingEvaluation_eq_localSign_mul",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalVacuumPairing",
+    "externalAxioms": [],
+    "docString": "The ambient mixed-time permutation sign cancels the inter-sector pairing\ncrossing sign on a strictly antitone vacuum chamber. The remaining sign is\nexactly the genuine external-support local reordering sign; the two standalone\npairing evaluations keep their normalized endpoint orientations. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.externalInsertionOfSlotSplit_dysonFixedTimeAmplitude_eq_local_mul_vacuum"
+    ],
+    "dependencies": [
+      "SecondQuantization.Fermionic.externalInsertionMixedSplit_global_sign_mul_mixedInversionSign_eq_local",
+      "SecondQuantization.Fermionic.externalInsertionOfSlotSplit_mixedPairingEvaluation_eq_positionInversions_mul_of_strictAnti"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.externalInsertionOfSlotSplit_dysonFixedTimeAmplitude_eq_local_mul_vacuum"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] (ε : Mode → ℝ) (β : ℝ) {E n : ℕ}\n  (T : Finset (Fin n))\n  (ext :\n    SecondQuantization.Common.ExternalInsertionDiagram (SecondQuantization.Fermionic.ExternalFieldLabel Mode)\n      (SecondQuantization.Common.QuarticVertexLabel Mode) E n T)\n  (vac :\n    SecondQuantization.Common.QuarticDiagram (SecondQuantization.Common.QuarticVertexLabel Mode) n (Finset.univ \\ T))\n  (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ),\n  let S := Finset.univ \\ T;\n  have order := (S.orderIsoOfFin ⋯).toEquiv;\n  have f := fun i => ↑((S.orderIsoOfFin ⋯) i);\n  have fT := fun i => ↑((T.orderIsoOfFin ⋯) i);\n  have localFixed := SecondQuantization.Fermionic.externalInsertionLeftMixedToFixedEquiv T externalTime σ;\n  have split :=\n    (((Equiv.refl (Fin (2 * (2 * T.card + E)))).sumCongr\n              (SecondQuantization.Common.orderedLegToDiagramLeg S order)).trans\n          (SecondQuantization.Common.externalInsertionSlotLegSplitting ⋯)).trans\n      (SecondQuantization.Common.externalInsertionMixedTimeAmbientPositionEquiv externalTime σ).symm;\n  have mixedSplit := (localFixed.sumCongr (Equiv.refl (Fin (2 * (2 * S.card))))).trans split;\n  have localPairing := Combinatorics.PairingOn.transport ext.pairing localFixed;\n  have d := SecondQuantization.Common.ExternalInsertionDiagram.ofSlotSplit ⋯ ext vac;\n  have kernel :=\n    SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicPairValue ε β d.externalLabel externalTime\n      (SecondQuantization.Common.ExternalInsertionDiagram.vertexLabelSequence d) σ;\n  have leftKernel :=\n    SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicPairValue ε β ext.externalLabel externalTime\n      (fun v => ext.vertexLabel ((T.orderIsoOfFin ⋯) v)) (σ ∘ fT);\n  have rightKernel :=\n    SecondQuantization.Fermionic.flatVertexLegPairValue ε β (fun v => vac.vertexLabel ((S.orderIsoOfFin ⋯) v)) (σ ∘ f);\n  StrictAnti (σ ∘ f) →\n    (SecondQuantization.Common.ExternalInsertionDiagram.pairingInMixedOrder d externalTime σ).evaluation\n        (Combinatorics.Pairing.weight SecondQuantization.Common.Statistics.fermion\n          (SecondQuantization.Common.ExternalInsertionDiagram.pairingInMixedOrder d externalTime σ))\n        kernel =\n      (↑SecondQuantization.Common.Statistics.fermion.zetaInt ^\n          ∑ i, ∑ j, if mixedSplit (Sum.inr j) < mixedSplit (Sum.inl i) then 1 else 0) *\n        (localPairing.evaluation\n            (Combinatorics.Pairing.weight SecondQuantization.Common.Statistics.fermion localPairing) leftKernel *\n          (vac.pairingInOrder order).evaluation\n            (Combinatorics.Pairing.weight SecondQuantization.Common.Statistics.fermion (vac.pairingInOrder order))\n            rightKernel)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -141244,7 +141382,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {Mode : Type u_1} {E n : ℕ} (T : Finset (Fin n))\n  (ext :\n    SecondQuantization.Common.ExternalInsertionDiagram (SecondQuantization.Fermionic.ExternalFieldLabel Mode)\n      (SecondQuantization.Common.QuarticVertexLabel Mode) E n T)\n  (vac :\n    SecondQuantization.Common.QuarticDiagram (SecondQuantization.Common.QuarticVertexLabel Mode) n (Finset.univ \\ T))\n  (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ),\n  let S := Finset.univ \\ T;\n  have order := (S.orderIsoOfFin ⋯).toEquiv;\n  have f := fun i => ↑((S.orderIsoOfFin ⋯) i);\n  have localFixed := SecondQuantization.Fermionic.externalInsertionLeftMixedToFixedEquiv✝ T externalTime σ;\n  have split :=\n    (((Equiv.refl (Fin (2 * (2 * T.card + E)))).sumCongr\n              (SecondQuantization.Common.orderedLegToDiagramLeg S order)).trans\n          (SecondQuantization.Common.externalInsertionSlotLegSplitting ⋯)).trans\n      (SecondQuantization.Common.externalInsertionMixedTimeAmbientPositionEquiv externalTime σ).symm;\n  have mixedSplit := (localFixed.sumCongr (Equiv.refl (Fin (2 * (2 * S.card))))).trans split;\n  have localPairing := Combinatorics.PairingOn.transport ext.pairing localFixed;\n  StrictAnti (σ ∘ f) →\n    Combinatorics.Pairing.weight SecondQuantization.Common.Statistics.fermion\n        ((SecondQuantization.Common.ExternalInsertionDiagram.ofSlotSplit ⋯ ext vac).pairingInMixedOrder externalTime\n          σ) =\n      (↑SecondQuantization.Common.Statistics.fermion.zetaInt ^\n          ∑ i, ∑ j, if mixedSplit (Sum.inr j) < mixedSplit (Sum.inl i) then 1 else 0) *\n        (Combinatorics.Pairing.weight SecondQuantization.Common.Statistics.fermion localPairing *\n          Combinatorics.Pairing.weight SecondQuantization.Common.Statistics.fermion (vac.pairingInOrder order))",
+    "statement": "∀ {Mode : Type u_1} {E n : ℕ} (T : Finset (Fin n))\n  (ext :\n    SecondQuantization.Common.ExternalInsertionDiagram (SecondQuantization.Fermionic.ExternalFieldLabel Mode)\n      (SecondQuantization.Common.QuarticVertexLabel Mode) E n T)\n  (vac :\n    SecondQuantization.Common.QuarticDiagram (SecondQuantization.Common.QuarticVertexLabel Mode) n (Finset.univ \\ T))\n  (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ),\n  let S := Finset.univ \\ T;\n  have order := (S.orderIsoOfFin ⋯).toEquiv;\n  have f := fun i => ↑((S.orderIsoOfFin ⋯) i);\n  have localFixed := SecondQuantization.Fermionic.externalInsertionLeftMixedToFixedEquiv T externalTime σ;\n  have split :=\n    (((Equiv.refl (Fin (2 * (2 * T.card + E)))).sumCongr\n              (SecondQuantization.Common.orderedLegToDiagramLeg S order)).trans\n          (SecondQuantization.Common.externalInsertionSlotLegSplitting ⋯)).trans\n      (SecondQuantization.Common.externalInsertionMixedTimeAmbientPositionEquiv externalTime σ).symm;\n  have mixedSplit := (localFixed.sumCongr (Equiv.refl (Fin (2 * (2 * S.card))))).trans split;\n  have localPairing := Combinatorics.PairingOn.transport ext.pairing localFixed;\n  StrictAnti (σ ∘ f) →\n    Combinatorics.Pairing.weight SecondQuantization.Common.Statistics.fermion\n        ((SecondQuantization.Common.ExternalInsertionDiagram.ofSlotSplit ⋯ ext vac).pairingInMixedOrder externalTime\n          σ) =\n      (↑SecondQuantization.Common.Statistics.fermion.zetaInt ^\n          ∑ i, ∑ j, if mixedSplit (Sum.inr j) < mixedSplit (Sum.inl i) then 1 else 0) *\n        (Combinatorics.Pairing.weight SecondQuantization.Common.Statistics.fermion localPairing *\n          Combinatorics.Pairing.weight SecondQuantization.Common.Statistics.fermion (vac.pairingInOrder order))",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -181996,7 +182134,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {E n : ℕ} (T : Finset (Fin n)) (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ) (p : Fin (2 * (2 * T.card + E))),\n  have f := fun i => ↑((T.orderIsoOfFin ⋯) i);\n  (SecondQuantization.Common.externalInsertionMixedTimeAmbientPositionEquiv externalTime σ)\n      (SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegPosition externalTime σ\n        (SecondQuantization.Common.orderedExternalInsertionLegMap (fun e => e) f\n          ((SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegEquiv externalTime (σ ∘ f)) p))) =\n    (SecondQuantization.Common.externalInsertionSlotLegSplitting ⋯)\n      (Sum.inl ((SecondQuantization.Fermionic.externalInsertionLeftMixedToFixedEquiv✝ T externalTime σ) p))",
+    "statement": "∀ {E n : ℕ} (T : Finset (Fin n)) (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ) (p : Fin (2 * (2 * T.card + E))),\n  have f := fun i => ↑((T.orderIsoOfFin ⋯) i);\n  (SecondQuantization.Common.externalInsertionMixedTimeAmbientPositionEquiv externalTime σ)\n      (SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegPosition externalTime σ\n        (SecondQuantization.Common.orderedExternalInsertionLegMap (fun e => e) f\n          ((SecondQuantization.Common.externalInsertionMixedTimeOrderedAtomicLegEquiv externalTime (σ ∘ f)) p))) =\n    (SecondQuantization.Common.externalInsertionSlotLegSplitting ⋯)\n      (Sum.inl ((SecondQuantization.Fermionic.externalInsertionLeftMixedToFixedEquiv T externalTime σ) p))",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -182047,7 +182185,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {E n : ℕ} (T : Finset (Fin n)) (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ),\n  let S := Finset.univ \\ T;\n  have order := (S.orderIsoOfFin ⋯).toEquiv;\n  have localFixed := SecondQuantization.Fermionic.externalInsertionLeftMixedToFixedEquiv✝ T externalTime σ;\n  have split :=\n    (((Equiv.refl (Fin (2 * (2 * T.card + E)))).sumCongr\n              (SecondQuantization.Common.orderedLegToDiagramLeg S order)).trans\n          (SecondQuantization.Common.externalInsertionSlotLegSplitting ⋯)).trans\n      (SecondQuantization.Common.externalInsertionMixedTimeAmbientPositionEquiv externalTime σ).symm;\n  StrictMono fun p => ((localFixed.sumCongr (Equiv.refl (Fin (2 * (2 * S.card))))).trans split) (Sum.inl p)",
+    "statement": "∀ {E n : ℕ} (T : Finset (Fin n)) (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ),\n  let S := Finset.univ \\ T;\n  have order := (S.orderIsoOfFin ⋯).toEquiv;\n  have localFixed := SecondQuantization.Fermionic.externalInsertionLeftMixedToFixedEquiv T externalTime σ;\n  have split :=\n    (((Equiv.refl (Fin (2 * (2 * T.card + E)))).sumCongr\n              (SecondQuantization.Common.orderedLegToDiagramLeg S order)).trans\n          (SecondQuantization.Common.externalInsertionSlotLegSplitting ⋯)).trans\n      (SecondQuantization.Common.externalInsertionMixedTimeAmbientPositionEquiv externalTime σ).symm;\n  StrictMono fun p => ((localFixed.sumCongr (Equiv.refl (Fin (2 * (2 * S.card))))).trans split) (Sum.inl p)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -182187,7 +182325,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} {E n : ℕ} (T : Finset (Fin n))\n  (ext :\n    SecondQuantization.Common.ExternalInsertionDiagram (SecondQuantization.Fermionic.ExternalFieldLabel Mode)\n      (SecondQuantization.Common.QuarticVertexLabel Mode) E n T)\n  (vac :\n    SecondQuantization.Common.QuarticDiagram (SecondQuantization.Common.QuarticVertexLabel Mode) n (Finset.univ \\ T))\n  (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ),\n  let S := Finset.univ \\ T;\n  have order := (S.orderIsoOfFin ⋯).toEquiv;\n  have localFixed := SecondQuantization.Fermionic.externalInsertionLeftMixedToFixedEquiv✝ T externalTime σ;\n  have split :=\n    (((Equiv.refl (Fin (2 * (2 * T.card + E)))).sumCongr\n              (SecondQuantization.Common.orderedLegToDiagramLeg S order)).trans\n          (SecondQuantization.Common.externalInsertionSlotLegSplitting ⋯)).trans\n      (SecondQuantization.Common.externalInsertionMixedTimeAmbientPositionEquiv externalTime σ).symm;\n  (SecondQuantization.Common.ExternalInsertionDiagram.ofSlotSplit ⋯ ext vac).pairingInMixedOrder externalTime σ =\n    Combinatorics.Pairing.ofSplit ((localFixed.sumCongr (Equiv.refl (Fin (2 * (2 * S.card))))).trans split)\n      (Combinatorics.PairingOn.transport ext.pairing localFixed) (vac.pairingInOrder order)",
+    "statement": "∀ {Mode : Type u_1} {E n : ℕ} (T : Finset (Fin n))\n  (ext :\n    SecondQuantization.Common.ExternalInsertionDiagram (SecondQuantization.Fermionic.ExternalFieldLabel Mode)\n      (SecondQuantization.Common.QuarticVertexLabel Mode) E n T)\n  (vac :\n    SecondQuantization.Common.QuarticDiagram (SecondQuantization.Common.QuarticVertexLabel Mode) n (Finset.univ \\ T))\n  (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ),\n  let S := Finset.univ \\ T;\n  have order := (S.orderIsoOfFin ⋯).toEquiv;\n  have localFixed := SecondQuantization.Fermionic.externalInsertionLeftMixedToFixedEquiv T externalTime σ;\n  have split :=\n    (((Equiv.refl (Fin (2 * (2 * T.card + E)))).sumCongr\n              (SecondQuantization.Common.orderedLegToDiagramLeg S order)).trans\n          (SecondQuantization.Common.externalInsertionSlotLegSplitting ⋯)).trans\n      (SecondQuantization.Common.externalInsertionMixedTimeAmbientPositionEquiv externalTime σ).symm;\n  (SecondQuantization.Common.ExternalInsertionDiagram.ofSlotSplit ⋯ ext vac).pairingInMixedOrder externalTime σ =\n    Combinatorics.Pairing.ofSplit ((localFixed.sumCongr (Equiv.refl (Fin (2 * (2 * S.card))))).trans split)\n      (Combinatorics.PairingOn.transport ext.pairing localFixed) (vac.pairingInOrder order)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
