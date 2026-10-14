@@ -108,6 +108,55 @@ theorem gram_congruence [FiniteDimensional ℝ V]
       exact (hcomb j).symm
     _ = Matrix.gram ℝ (fun i => rb i) := hGram
 
+/-- A reflection across one integral basis axis makes the two basis vectors
+orthogonal. This is the rectangular Gram-metric constraint. -/
+theorem gram_offDiagonal_eq_zero_of_axisReflection
+    (G : Matrix (Fin 2) (Fin 2) ℝ)
+    (hInv :
+      let A : Matrix (Fin 2) (Fin 2) ℝ := !![1, 0; 0, -1]
+      A.transpose * G * A = G) :
+    G 0 1 = 0 := by
+  dsimp at hInv
+  have h01 := congrArg
+    (fun M : Matrix (Fin 2) (Fin 2) ℝ => M 0 1) hInv
+  simp [Matrix.mul_apply, Fin.sum_univ_two] at h01
+  linarith
+
+/-- In a symmetric planar metric, invariance under the quarter-turn basis
+transformation forces equal squared lengths and orthogonal basis vectors. -/
+theorem gram_square_constraints_of_quarterTurn
+    (G : Matrix (Fin 2) (Fin 2) ℝ)
+    (hSymm : G 0 1 = G 1 0)
+    (hInv :
+      let A : Matrix (Fin 2) (Fin 2) ℝ := !![0, -1; 1, 0]
+      A.transpose * G * A = G) :
+    G 0 0 = G 1 1 ∧ G 0 1 = 0 := by
+  dsimp at hInv
+  have h00 := congrArg
+    (fun M : Matrix (Fin 2) (Fin 2) ℝ => M 0 0) hInv
+  have h01 := congrArg
+    (fun M : Matrix (Fin 2) (Fin 2) ℝ => M 0 1) hInv
+  simp [Matrix.mul_apply, Fin.sum_univ_two] at h00 h01
+  constructor <;> linarith
+
+/-- In a symmetric planar metric, invariance under the order-six integral
+rotation forces an equilateral primitive basis: equal squared lengths and
+twice the off-diagonal inner product equal to their common squared length. -/
+theorem gram_hexagonal_constraints_of_sixthTurn
+    (G : Matrix (Fin 2) (Fin 2) ℝ)
+    (hSymm : G 0 1 = G 1 0)
+    (hInv :
+      let A : Matrix (Fin 2) (Fin 2) ℝ := !![0, -1; 1, 1]
+      A.transpose * G * A = G) :
+    G 0 0 = G 1 1 ∧ 2 * G 0 1 = G 0 0 := by
+  dsimp at hInv
+  have h00 := congrArg
+    (fun M : Matrix (Fin 2) (Fin 2) ℝ => M 0 0) hInv
+  have h01 := congrArg
+    (fun M : Matrix (Fin 2) (Fin 2) ℝ => M 0 1) hInv
+  simp [Matrix.mul_apply, Fin.sum_univ_two] at h00 h01
+  constructor <;> linarith
+
 end
 
 end latticePointGroup
