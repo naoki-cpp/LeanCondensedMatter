@@ -68,6 +68,18 @@ theorem ExternalInsertionDiagram.slotCongr_externalLabel (e : ↥T ≃ ↥U)
     (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N T) :
     (d.slotCongr (M := M) e).externalLabel = d.externalLabel := rfl
 
+/-- Relabeling interaction slots preserves every commutative product of vertex weights.
+The result does not depend on any fermionic or time-ordering conventions. -/
+theorem ExternalInsertionDiagram.slotCongr_vertexWeight
+    {M : Type*} [CommMonoid M] (e : ↥T ≃ ↥U)
+    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N T)
+    (w : InternalLabel → M) :
+    (d.slotCongr e).vertexWeight w = d.vertexWeight w := by
+  classical
+  change (∏ v : ↥U, w (d.vertexLabel (e.symm v))) =
+    ∏ v : ↥T, w (d.vertexLabel v)
+  exact Equiv.prod_comp e.symm (fun v : ↥T => w (d.vertexLabel v))
+
 @[simp]
 theorem ExternalInsertionDiagram.slotCongr_vertexLabel (e : ↥T ≃ ↥U)
     (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N T) (v : ↥U) :
