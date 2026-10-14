@@ -3,6 +3,17 @@
 Track C owns dimension-independent analytic infrastructure used by quantum theory, transport, and
 second quantization.
 
+## Quadratic normalization
+
+On the pinned Mathlib v4.34.1, a source search did not identify a directly reusable
+normalization theorem taking `H * H = E ^ 2 • 1` and `E ≠ 0` to
+`(E⁻¹ • H) * (E⁻¹ • H) = 1` in an arbitrary complex algebra.
+`Analysis/Algebra/QuadraticNormalization.lean` therefore owns
+`Algebra.inv_smul_mul_self_eq_one` for complex semiring algebras; the
+Massive Dirac and Rashba-exchange spectral models supply their physical
+quadratic-energy identities as its hypotheses. Re-check this boundary
+when the pinned Mathlib is upgraded.
+
 ## Fixed-sign commutator algebra
 
 On the pinned Mathlib v4.33.1 (`0df444a360eaa60ab8c11dca51a86af692955474`), the ordinary
