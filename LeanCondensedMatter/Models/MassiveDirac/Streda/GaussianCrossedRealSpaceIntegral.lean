@@ -398,6 +398,84 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_x_antisym
   exact InternalSpace.trace_four_antisymmetric_eq_xz_plane_transverse_minors
     _ _ _ _ hret_y hadv_y htrans
 
+/-- The antisymmetric radial Psi amplitude reduces to two Pauli-coefficient
+minors after using Green/current inversion parity. The resulting quantity
+is still paired with its complex conjugate: no vanishing or radial limit is
+assumed. The radial Green matrix has no Pauli-y component identically. -/
+theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_psi_antisymmetric_eq_pauli_minors
+    (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ) :
+    let Jx := finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock
+      0 v m probeEnergy broadening disorderStrength hbar pMax radius
+    let Jy := finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock
+      1 v m probeEnergy broadening disorderStrength hbar pMax radius
+    let GR := finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix
+      .retarded v m probeEnergy broadening disorderStrength hbar pMax radius
+    let b := InternalSpace.pauliScalarCoefficient GR
+    let gx := InternalSpace.pauliVectorCoefficient GR .x
+    let gz := InternalSpace.pauliVectorCoefficient GR .z
+    let amplitude := 8 * Complex.I * gz *
+      (gx * (InternalSpace.pauliScalarCoefficient Jx *
+          InternalSpace.pauliVectorCoefficient Jy .y -
+        InternalSpace.pauliScalarCoefficient Jy *
+          InternalSpace.pauliVectorCoefficient Jx .y) +
+       b * (InternalSpace.pauliVectorCoefficient Jx .y *
+          InternalSpace.pauliVectorCoefficient Jy .x -
+        InternalSpace.pauliVectorCoefficient Jx .x *
+          InternalSpace.pauliVectorCoefficient Jy .y))
+    finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor
+        .psi v m probeEnergy broadening disorderStrength hbar pMax radius 0 1 -
+      finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor
+        .psi v m probeEnergy broadening disorderStrength hbar pMax radius 1 0 =
+      amplitude + (starRingEnd ℂ) amplitude := by
+  let Jx := finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock
+    0 v m probeEnergy broadening disorderStrength hbar pMax radius
+  let Jy := finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock
+    1 v m probeEnergy broadening disorderStrength hbar pMax radius
+  let GR := finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix
+    .retarded v m probeEnergy broadening disorderStrength hbar pMax radius
+  let b := InternalSpace.pauliScalarCoefficient GR
+  let gx := InternalSpace.pauliVectorCoefficient GR .x
+  let gz := InternalSpace.pauliVectorCoefficient GR .z
+  let amplitude : ℂ := 8 * Complex.I * gz *
+    (gx * (InternalSpace.pauliScalarCoefficient Jx *
+        InternalSpace.pauliVectorCoefficient Jy .y -
+      InternalSpace.pauliScalarCoefficient Jy *
+        InternalSpace.pauliVectorCoefficient Jx .y) +
+     b * (InternalSpace.pauliVectorCoefficient Jx .y *
+        InternalSpace.pauliVectorCoefficient Jy .x -
+      InternalSpace.pauliVectorCoefficient Jx .x *
+        InternalSpace.pauliVectorCoefficient Jy .y))
+  have hsym : GR 0 1 = GR 1 0 := by
+    rfl
+  have hgreen : GR = (!![b + gz, gx; gx, b - gz] : Matrix2) := by
+    ext i j
+    fin_cases i <;> fin_cases j <;>
+      simp [b, gx, gz, InternalSpace.pauliScalarCoefficient,
+        InternalSpace.pauliVectorCoefficient, hsym] <;> ring
+  have hamp :
+      Matrix.trace
+          (Jx * (sigmaZ * GR * sigmaZ) * GR * (-sigmaZ * Jy * sigmaZ)) -
+        Matrix.trace
+          (Jy * (sigmaZ * GR * sigmaZ) * GR * (-sigmaZ * Jx * sigmaZ)) =
+        amplitude := by
+    rw [hgreen]
+    exact InternalSpace.trace_parity_antisymmetric_xz_pauliCoefficients
+      Jx Jy b gx gz
+  rw [finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_antisymmetric_eq
+    .psi v m probeEnergy broadening disorderStrength hbar pMax radius]
+  dsimp only
+  simp_rw [finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix_neg_radius,
+    finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock_neg_radius]
+  change
+    (Matrix.trace
+      (Jx * (sigmaZ * GR * sigmaZ) * GR * (-sigmaZ * Jy * sigmaZ) -
+        Jy * (sigmaZ * GR * sigmaZ) * GR * (-sigmaZ * Jx * sigmaZ))) +
+      (starRingEnd ℂ) (Matrix.trace
+        (Jx * (sigmaZ * GR * sigmaZ) * GR * (-sigmaZ * Jy * sigmaZ) -
+          Jy * (sigmaZ * GR * sigmaZ) * GR * (-sigmaZ * Jx * sigmaZ))) =
+    amplitude + (starRingEnd ℂ) amplitude
+  rw [Matrix.trace_sub, hamp]
+
 /-- A common in-plane spinor conjugation of the Green and current blocks
 cancels inside either Gaussian crossed trace topology, including the
 Hermitian-conjugate partner in the Psi diagram. -/
