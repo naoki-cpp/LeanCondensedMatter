@@ -158,6 +158,73 @@ noncomputable def finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor
         v m probeEnergy broadening disorderStrength hbar pMax ρ)
     radius
 
+/-- The physically relevant antisymmetric radial source tensor reduces,
+without regulator assumptions, to one X trace of a difference or one Psi
+trace-difference amplitude plus its Hermitian-conjugate partner. This is the
+exact remaining matrix algebra to be evaluated after angular projection. -/
+theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_antisymmetric_eq
+    (diagram : GaussianCrossedDiagram)
+    (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ) :
+    let greenR : ℝ → Matrix2 := fun ρ =>
+      finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix
+        .retarded v m probeEnergy broadening disorderStrength hbar pMax ρ
+    let greenA : ℝ → Matrix2 := fun ρ =>
+      finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix
+        .advanced v m probeEnergy broadening disorderStrength hbar pMax ρ
+    let current : Fin 2 → ℝ → Matrix2 := fun source ρ =>
+      finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock
+        source v m probeEnergy broadening disorderStrength hbar pMax ρ
+    finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor
+        diagram v m probeEnergy broadening disorderStrength hbar pMax radius 0 1 -
+      finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor
+        diagram v m probeEnergy broadening disorderStrength hbar pMax radius 1 0 =
+      match diagram with
+      | .x =>
+          Matrix.trace
+            ((current 0 radius * greenR (-radius) * current 1 radius -
+                current 1 radius * greenR (-radius) * current 0 radius) *
+              greenA (-radius))
+      | .psi =>
+          let amplitude := Matrix.trace
+            (current 0 radius * greenR (-radius) * greenR radius * current 1 (-radius) -
+              current 1 radius * greenR (-radius) * greenR radius * current 0 (-radius))
+          amplitude + (starRingEnd ℂ) amplitude := by
+  dsimp only
+  let greenR : ℝ → Matrix2 := fun ρ =>
+    finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix
+      .retarded v m probeEnergy broadening disorderStrength hbar pMax ρ
+  let greenA : ℝ → Matrix2 := fun ρ =>
+    finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix
+      .advanced v m probeEnergy broadening disorderStrength hbar pMax ρ
+  let current : Fin 2 → ℝ → Matrix2 := fun source ρ =>
+    finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock
+      source v m probeEnergy broadening disorderStrength hbar pMax ρ
+  have hxy :
+      finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor
+          diagram v m probeEnergy broadening disorderStrength hbar pMax radius 0 1 =
+        gaussianCrossedTraceKernel diagram greenR greenA current radius := by
+    change gaussianCrossedTraceKernel diagram greenR greenA
+      (fun axis ρ => current (if axis = 0 then 0 else 1) ρ) radius = _
+    congr 1
+    funext axis ρ
+    fin_cases axis <;> rfl
+  have hyx :
+      finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor
+          diagram v m probeEnergy broadening disorderStrength hbar pMax radius 1 0 =
+        gaussianCrossedTraceKernel diagram greenR greenA
+          (fun axis ρ => if axis = 0 then current 1 ρ else current 0 ρ) radius := by
+    change gaussianCrossedTraceKernel diagram greenR greenA
+      (fun axis ρ => current (if axis = 0 then 1 else 0) ρ) radius = _
+    congr 1
+    funext axis ρ
+    fin_cases axis <;> rfl
+  rw [hxy, hyx]
+  cases diagram with
+  | x =>
+      exact gaussianCrossedTraceKernel_x_sub_swapped greenR greenA current radius
+  | psi =>
+      exact gaussianCrossedTraceKernel_psi_sub_swapped greenR greenA current radius
+
 /-- A common in-plane spinor conjugation of the Green and current blocks
 cancels inside either Gaussian crossed trace topology, including the
 Hermitian-conjugate partner in the Psi diagram. -/
