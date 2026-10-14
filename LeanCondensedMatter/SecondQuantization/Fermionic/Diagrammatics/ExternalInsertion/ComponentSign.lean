@@ -1,19 +1,16 @@
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Pairing.ComponentPairEquiv
-import LeanCondensedMatter.Combinatorics.PerfectPairing.ComponentCrossing
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Factorization.ComponentShuffleParity
-import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.PairingWeight
+import LeanCondensedMatter.SecondQuantization.Common.Algebra.Statistics
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentRestriction
 
 set_option linter.style.header false
 
 /-!
 # Fermionic external-component shuffle sign
 
-For an external-insertion diagram, the Common layer reduces the residual inter-component pairing
-crossing parity to the canonical shuffle of the odd external insertions. This file gives that
-external shuffle its fermionic exchange sign and identifies the residual pairing weight with it.
+The canonical external-insertion component shuffle groups external legs by connected component,
+preserving their increasing order within each block. Its ordered block-inversion count determines
+the fermionic exchange sign that remains in component amplitude factorization.
 
-The explicit component order is semantic input. A later time-ordering layer can supply that order
-without changing the sign transport proved here.
+The component order is explicit semantic input; time ordering is handled downstream.
 -/
 
 namespace SecondQuantization
@@ -33,32 +30,6 @@ noncomputable def componentExternalOrderSign
         Fin (Fintype.card d.vertexGraph.componentPartition.parts)) : ℂ :=
   (Common.Statistics.fermion.zetaInt : ℂ) ^
     d.componentExternalShuffle.orderedBlockInversionCount blockOrder
-
-/-- The residual inter-component fermionic pairing weight is exactly the exchange sign required to
-regroup the odd external insertions by connected component. -/
-theorem interComponentWeight_eq_componentExternalOrderSign
-    {S : Finset (Fin N)}
-    (d : Common.ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
-    (blockOrder :
-      d.vertexGraph.componentPartition.parts ≃
-        Fin (Fintype.card d.vertexGraph.componentPartition.parts)) :
-    (Common.Statistics.fermion.zetaInt : ℂ) ^ d.pairing.interComponentCrossingCount d.componentPairEquiv =
-      componentExternalOrderSign d blockOrder := by
-  unfold componentExternalOrderSign
-  apply Common.BlochDeDominicis.zetaInt_pow_eq_of_mod_two_eq
-  exact
-    (d.pairing.interComponentCrossingCount_mod_two_eq_orderedBlockInversionCount
-      d.componentPairEquiv
-      (fun B => (d.restrictComponent B).pairing.pairEndpointEquiv)
-      d.componentLegShuffle
-      (fun B p k => by
-        fin_cases k <;>
-          simp [Common.ExternalInsertionDiagram.componentLegShuffle_slotEquiv_apply,
-            Pairing.pairEndpointEquiv_apply, Pairing.pairEndpoint, pairEndpointAt,
-            d.componentPairEquiv_apply])
-      blockOrder).trans
-      (d.componentLegShuffle_orderedBlockInversionCount_mod_two_eq_external blockOrder)
-
 
 end Fermionic
 end SecondQuantization
