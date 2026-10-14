@@ -187,7 +187,7 @@ theorem Pairing.componentGeometricCrossingCount_mod_two_eq_zero_of_even_fiber
           if position C (reference v) < position B p then 1 else 0) (fiber q).1 := by
     apply Finset.sum_congr rfl
     intro q _
-    rw [huniform p q]
+    simpa only [huniform p q]
   rw [hsum]
   exact Fintype.dvd_sum_equiv_fst_of_dvd_card fiber
     (fun v : β => if position C (reference v) < position B p then 1 else 0) hcard
