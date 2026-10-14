@@ -73,5 +73,39 @@ theorem externalInsertionLeftMixedToFixedEquiv_eq_standardMixedPosition_symm
         (σ ∘ fun i : Fin T.card => (T.orderIsoOfFin rfl i).1) p)
   rw [hfixed]
 
+
+/-- The external-sector sign left after cancelling the ambient/vacuum crossing
+parity is exactly the standalone mixed-time ordering sign, even when the
+supported interaction slots are not consecutive. -/
+theorem externalInsertionLeftMixedSign_eq_standalone
+    {E n : ℕ} (T : Finset (Fin n))
+    (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ) :
+    (((Equiv.Perm.sign
+        (Equiv.sumCongr (externalInsertionLeftMixedToFixedEquiv T externalTime σ)
+          (Equiv.refl
+            (Fin (2 * (2 * ((Finset.univ : Finset (Fin n)) \ T).card))))) : ℤ) : ℂ) =
+      externalInsertionMixedAtomicOrderSign externalTime
+        (σ ∘ fun i : Fin T.card => (T.orderIsoOfFin rfl i).1) := by
+  classical
+  have hsign :
+      Equiv.Perm.sign
+          (Equiv.sumCongr (externalInsertionLeftMixedToFixedEquiv T externalTime σ)
+            (Equiv.refl
+              (Fin (2 * (2 * ((Finset.univ : Finset (Fin n)) \ T).card))))) =
+        Equiv.Perm.sign
+          (externalInsertionStandardToMixedAtomicPositionEquiv externalTime
+            (σ ∘ fun i : Fin T.card => (T.orderIsoOfFin rfl i).1)) := by
+    rw [externalInsertionLeftMixedToFixedEquiv_eq_standardMixedPosition_symm]
+    simp only [Equiv.Perm.sign_sumCongr, Equiv.Perm.sign_refl,
+      mul_one, Equiv.Perm.sign_symm]
+  change (((Equiv.Perm.sign
+      (Equiv.sumCongr (externalInsertionLeftMixedToFixedEquiv T externalTime σ)
+        (Equiv.refl
+          (Fin (2 * (2 * ((Finset.univ : Finset (Fin n)) \ T).card))))) : ℤ) : ℂ) =
+    (((Equiv.Perm.sign
+      (externalInsertionStandardToMixedAtomicPositionEquiv externalTime
+        (σ ∘ fun i : Fin T.card => (T.orderIsoOfFin rfl i).1)) : ℤ) : ℂ)
+  exact congrArg (fun s : ℤˣ => ((s : ℤ) : ℂ)) hsign
+
 end Fermionic
 end SecondQuantization
