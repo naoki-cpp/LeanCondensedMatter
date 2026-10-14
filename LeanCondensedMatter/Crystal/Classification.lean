@@ -242,6 +242,45 @@ noncomputable def ofIntegralLinearEquivGramPreserving [FiniteDimensional ℝ V]
       simpa only [Module.Basis.ofZLatticeBasis_apply,
         extendIntegralLinearEquiv_apply_basis] using hGram)
 
+/-- An invertible integer matrix preserving the metric of a full lattice basis
+induces an intrinsic lattice isometry. The matrix is interpreted using Mathlib's
+general linear group, not a separate crystallographic matrix group. -/
+noncomputable def ofGLGramPreserving [FiniteDimensional ℝ V]
+    {ι : Type*} [Fintype ι] [DecidableEq ι]
+    (L : Submodule ℤ V) [DiscreteTopology L] [IsZLattice ℝ L]
+    (b : Module.Basis ι ℤ L) (A : Matrix.GeneralLinearGroup ι ℤ)
+    (hGram :
+      let G := Matrix.gram ℝ (fun i => ((b i : L) : V))
+      ((A : Matrix ι ι ℤ).map (Int.cast : ℤ → ℝ)).transpose * G *
+        ((A : Matrix ι ι ℤ).map (Int.cast : ℤ → ℝ)) = G) :
+    latticePointGroup L := by
+  classical
+  let e : L ≃ₗ[ℤ] L := (Matrix.GeneralLinearGroup.toLin' b A).toLinearEquiv
+  let Ar : Matrix ι ι ℝ := (A : Matrix ι ι ℤ).map (Int.cast : ℤ → ℝ)
+  let v : ι → V := fun i => ((b i : L) : V)
+  have hBasis (j : ι) :
+      e (b j) = ∑ i, (A : Matrix ι ι ℤ) i j • b i := by
+    change (Matrix.GeneralLinearGroup.toLin' b A).toLinearEquiv (b j) = _
+    rw [Matrix.GeneralLinearGroup.toLin'_apply]
+    simp only [Module.Basis.repr_self, Finsupp.single_eq_pi_single,
+      Matrix.mulVec_single_one, Matrix.col_apply, Fintype.linearCombination_apply]
+  have hImage (j : ι) :
+      ((e (b j) : L) : V) = ∑ i, Ar i j • v i := by
+    have h := congrArg (fun x : L => (x : V)) (hBasis j)
+    simpa only [v, Ar, Matrix.map_apply, Submodule.coe_sum,
+      Submodule.coe_smul, Int.cast_smul_eq_zsmul] using h
+  apply ofIntegralLinearEquivGramPreserving L b e
+  calc
+    Matrix.gram ℝ (fun i => ((e (b i) : L) : V)) =
+        Matrix.gram ℝ (fun j => ∑ i, Ar i j • v i) := by
+      congr 1
+      funext j
+      exact hImage j
+    _ = Ar.transpose * Matrix.gram ℝ v * Ar :=
+      gram_matrix_congruence v Ar
+    _ = Matrix.gram ℝ (fun i => ((b i : L) : V)) := by
+      exact hGram
+
 /-- A reflection across one integral basis axis makes the two basis vectors
 orthogonal. This is the rectangular Gram-metric constraint. -/
 theorem gram_offDiagonal_eq_zero_of_axisReflection
