@@ -1,5 +1,6 @@
 import LeanCondensedMatter.Combinatorics.PerfectPairing.CrossingParity
 import LeanCondensedMatter.Combinatorics.FiniteSumModEq
+import LeanCondensedMatter.Combinatorics.Common.FintypeProduct
 import LeanCondensedMatter.Combinatorics.FamilySlotShuffle
 
 set_option linter.style.header false
@@ -156,6 +157,40 @@ theorem Pairing.componentGeometricCrossingCount_mod_two_eq_endpointInversionCoun
     _ = (∑ p : P B, ∑ q : P C,
           if position C q < position B p then 1 else 0) % 2 := by
       rw [Fintype.sum_prod_type]
+
+/-- A geometric crossing count between distinct components is even when one component's
+positions form even-sized fibers and their order relative to the other component is constant
+within each fiber. The result is independent of how the local pairing is represented. -/
+theorem Pairing.componentGeometricCrossingCount_mod_two_eq_zero_of_even_fiber
+    {P : ι → Type*} [∀ B, Fintype (P B)] (pairing : Pairing n)
+    (e : (Σ B : ι, F B) ≃ pairing.NormalizedPair)
+    (endpointEquiv : ∀ B, F B × Fin 2 ≃ P B)
+    (position : ∀ B, P B → Fin (2 * n))
+    (hposition : ∀ B p k,
+      position B (endpointEquiv B (p, k)) = pairEndpointAt (e ⟨B, p⟩).1 k)
+    (B C : ι) (hBC : B ≠ C)
+    {β γ : Type*} [Fintype β] [Fintype γ]
+    (fiber : P C ≃ β × γ) (reference : β → P C)
+    (huniform : ∀ (p : P B) (q : P C),
+      (position C q < position B p) =
+        (position C (reference (fiber q).1) < position B p))
+    (hcard : 2 ∣ Fintype.card γ) :
+    pairing.componentGeometricCrossingCount e B C % 2 = 0 := by
+  classical
+  rw [pairing.componentGeometricCrossingCount_mod_two_eq_endpointInversionCount
+    e endpointEquiv position hposition B C hBC]
+  apply Nat.mod_eq_zero_of_dvd
+  refine Finset.dvd_sum fun p _ => ?_
+  have hsum :
+      (∑ q : P C, if position C q < position B p then 1 else 0) =
+        ∑ q : P C, (fun v : β =>
+          if position C (reference v) < position B p then 1 else 0) (fiber q).1 := by
+    apply Finset.sum_congr rfl
+    intro q _
+    rw [huniform p q]
+  rw [hsum]
+  exact Fintype.dvd_sum_equiv_fst_of_dvd_card fiber
+    (fun v : β => if position C (reference v) < position B p then 1 else 0) hcard
 
 /-- The diagonal component crossing count agrees with a local pairing's crossing count when
 the component equivalence maps local normalized pairs by a strictly monotone ambient position
