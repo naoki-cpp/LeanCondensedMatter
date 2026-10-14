@@ -351,6 +351,49 @@ theorem ofGLGramPreserving_basis_coordinates [FiniteDimensional ℝ V]
     Matrix.mulVec_single_one, Matrix.col_apply, Fintype.linearCombination_apply]
   rw [Module.Basis.repr_sum_self]
 
+/-- Restricting an intrinsic lattice isometry preserves the Gram matrix of any
+integral lattice basis. This statement needs neither periodicity nor a choice
+of coordinate representation for the isometry. -/
+theorem gram_restrict
+    {ι : Type*}
+    (L : Submodule ℤ V) (b : Module.Basis ι ℤ L)
+    (g : latticePointGroup L) :
+    Matrix.gram ℝ (fun i => (((restrict L g) (b i) : L) : V)) =
+      Matrix.gram ℝ (fun i => ((b i : L) : V)) := by
+  ext i j
+  change inner ℝ ((g : V ≃ₗᵢ[ℝ] V) ((b i : L) : V))
+    ((g : V ≃ₗᵢ[ℝ] V) ((b j : L) : V)) =
+      inner ℝ ((b i : L) : V) ((b j : L) : V)
+  exact LinearIsometryEquiv.inner_map_map (g : V ≃ₗᵢ[ℝ] V) _ _
+
+/-- Extending the restriction of an intrinsic lattice isometry back to the
+ambient real vector space recovers the original isometry. Together with
+`restrict_ofIntegralLinearEquivGramPreserving`, this completes the
+coordinate-free round trip between lattice symmetries and Gram-preserving
+integral lattice automorphisms. -/
+@[simp]
+theorem ofIntegralLinearEquivGramPreserving_restrict [FiniteDimensional ℝ V]
+    {ι : Type*} [Fintype ι]
+    (L : Submodule ℤ V) [DiscreteTopology L] [IsZLattice ℝ L]
+    (b : Module.Basis ι ℤ L) (g : latticePointGroup L) :
+    ofIntegralLinearEquivGramPreserving L b (restrict L g)
+      (gram_restrict L b g) = g := by
+  have hLin :
+      (ofIntegralLinearEquivGramPreserving L b (restrict L g)
+        (gram_restrict L b g) : V ≃ₗᵢ[ℝ] V).toLinearEquiv.toLinearMap =
+        (g : V ≃ₗᵢ[ℝ] V).toLinearEquiv.toLinearMap := by
+    apply (b.ofZLatticeBasis ℝ L).ext
+    intro i
+    rw [b.ofZLatticeBasis_apply ℝ L i]
+    change extendIntegralLinearEquiv L b (restrict L g) ((b i : L) : V) =
+      (g : V ≃ₗᵢ[ℝ] V) ((b i : L) : V)
+    rw [extendIntegralLinearEquiv_apply_basis]
+    rfl
+  apply Subtype.ext
+  apply LinearIsometryEquiv.ext
+  intro x
+  exact LinearMap.congr_fun hLin x
+
 /-- A reflection across one integral basis axis makes the two basis vectors
 orthogonal. This is the rectangular Gram-metric constraint. -/
 theorem gram_offDiagonal_eq_zero_of_axisReflection
