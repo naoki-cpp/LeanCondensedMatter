@@ -115,13 +115,13 @@ theorem inPlaneSpinRotation_sigmaZ (angle : ℝ) :
   rw [hcomm, mul_assoc, inPlaneSpinRotation_mul_inverse, mul_one]
 
 /-- Reversing the rotation angle exchanges the diagonal spinor and its inverse. -/
-theorem inPlaneSpinRotation_neg (angle : ℝ) :
+private theorem inPlaneSpinRotation_neg (angle : ℝ) :
     inPlaneSpinRotation (-angle) = inPlaneSpinRotationInverse angle := by
   ext i j
   fin_cases i <;> fin_cases j <;>
     simp [inPlaneSpinRotation, inPlaneSpinRotationInverse]
 
-theorem inPlaneSpinRotationInverse_neg (angle : ℝ) :
+private theorem inPlaneSpinRotationInverse_neg (angle : ℝ) :
     inPlaneSpinRotationInverse (-angle) = inPlaneSpinRotation angle := by
   ext i j
   fin_cases i <;> fin_cases j <;>
@@ -146,6 +146,24 @@ theorem inPlaneSpinRotationInverse_sigmaY (angle : ℝ) :
   simpa [inPlaneSpinRotation_neg, inPlaneSpinRotationInverse_neg,
     Real.cos_neg, Real.sin_neg] using
     (inPlaneSpinRotation_sigmaY (-angle))
+
+/-- The physical source index picks the appropriate signed inverse spinor
+rotation of the two Cartesian current vertices. The x and y source laws
+remain in a single direction-indexed statement. -/
+theorem inPlaneSpinRotationInverse_directionPauli (source : Fin 2) (angle : ℝ) :
+    inPlaneSpinRotationInverse angle * directionPauli source *
+        inPlaneSpinRotation angle =
+      if source = 0 then
+        (((Real.cos angle : ℝ) : ℂ)) • directionPauli 0 -
+          (((Real.sin angle : ℝ) : ℂ)) • directionPauli 1
+      else
+        (((Real.sin angle : ℝ) : ℂ)) • directionPauli 0 +
+          (((Real.cos angle : ℝ) : ℂ)) • directionPauli 1 := by
+  fin_cases source
+  · simpa [directionPauli, inPlanePauliAxis, InternalSpace.pauliBasis] using
+      inPlaneSpinRotationInverse_sigmaX angle
+  · simpa [directionPauli, inPlanePauliAxis, InternalSpace.pauliBasis] using
+      inPlaneSpinRotationInverse_sigmaY angle
 
 /-- Polar Pauli matrices are conjugate to their radial-axis specialization
 under the physical in-plane spinor rotation. -/
