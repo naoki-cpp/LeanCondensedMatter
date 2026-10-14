@@ -50,7 +50,7 @@ explicit block order. It does not assume the residual parity is zero.
 The generic `Pairing.crossingCount_eq_sum_localCrossingCount_add_inter` additionally
 identifies the diagonal contributions with the crossing counts of any order-preserving
 component-local pairings, while retaining the exact inter-component remainder.
-`Pairing.crossingCount_mod_two_eq_sum_componentCrossingCount_of_geometricEven`
+`Pairing.crossingCount_mod_two_eq_sum_componentCrossingCount_of_geometric_even`
 expresses the common parity consequence of even geometric crossings between distinct
 components; Quartic and TwoPoint supply their own four-leg and mixed-time evenness proofs.
 
