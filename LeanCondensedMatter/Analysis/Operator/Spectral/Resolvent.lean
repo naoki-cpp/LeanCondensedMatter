@@ -61,6 +61,24 @@ theorem resolvent_eq_of_spectralShift_mul_eq_one_of_not_mem
         (algebraMap ℂ (H →L[ℂ] H) z - operator)) * candidate := by rw [mul_assoc]
     _ = candidate := by rw [hright, one_mul]
 
+/-- A finite family of diagonal action identities gives a right inverse when the
+corresponding projectors resolve the identity and all eigenvalues are nonzero. -/
+theorem mul_sum_inv_smul_eq_one_of_diagonal_action
+    {A ι : Type*} [Semiring A] [Algebra ℂ A] [Fintype ι]
+    (S : A) (P : ι → A) (d : ι → ℂ)
+    (hcomplete : ∑ i, P i = 1)
+    (haction : ∀ i, S * P i = d i • P i)
+    (hne : ∀ i, d i ≠ 0) :
+    S * (∑ i, (d i)⁻¹ • P i) = 1 := by
+  calc
+    S * (∑ i, (d i)⁻¹ • P i) = ∑ i, P i := by
+      rw [Finset.mul_sum]
+      apply Finset.sum_congr rfl
+      intro i _
+      rw [mul_smul_comm, haction i, smul_smul]
+      simp [hne i]
+    _ = 1 := hcomplete
+
 omit [CompleteSpace H] in
 /-- A resolvent acts on an eigenvector by the scalar resolvent factor. No self-adjointness is needed;
 only exclusion of the spectral parameter from the spectrum and the corresponding nonzero scalar
