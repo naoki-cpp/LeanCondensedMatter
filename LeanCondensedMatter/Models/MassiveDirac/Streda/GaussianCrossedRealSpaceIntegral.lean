@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedRealSpace
+import LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedRadialHarmonics
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic
 
 set_option linter.style.header false
