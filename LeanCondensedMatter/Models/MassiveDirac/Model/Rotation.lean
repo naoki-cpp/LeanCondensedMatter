@@ -124,7 +124,7 @@ theorem inPlaneSpinRotation_conjugate_trace
     Matrix.trace
         (inPlaneSpinRotation angle * M * inPlaneSpinRotationInverse angle) =
       Matrix.trace M := by
-  simp only [Matrix.trace, Fin.sum_univ_two]
+  simp only [Matrix.trace, Fin.sum_univ_two, Matrix.diag]
   rw [inPlaneSpinRotation_conjugate_diagonal,
     inPlaneSpinRotation_conjugate_diagonal]
 
