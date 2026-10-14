@@ -232,7 +232,7 @@ theorem TwoPointDiagram.pairingInMixedOrder_weight_eq_external_mul_prod_vacuum
       (d.pairingInMixedOrder τ τ' σ).crossingCount % 2 =
         (∑ B : d.vertexGraph.componentPartition.parts,
           d.mixedComponentCrossingCount τ τ' σ B) % 2 :=
-    pairing.crossingCount_mod_two_eq_sum_componentCrossingCount_of_geometricEven
+    pairing.crossingCount_mod_two_eq_sum_componentCrossingCount_of_geometric_even
       components hEven
   have hcomponents :
       (d.pairingInMixedOrder τ τ' σ).weight s =
