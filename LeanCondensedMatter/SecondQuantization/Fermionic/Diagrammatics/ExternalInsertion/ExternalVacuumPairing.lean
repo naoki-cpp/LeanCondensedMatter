@@ -992,22 +992,17 @@ theorem externalInsertionMixedSplit_relativePerm_sign_eq_mixedInversionCount
   simp
 
 omit [LinearOrder Mode] [Fintype Mode] in
-/-- On a strictly antitone vacuum-time chamber, the relative fixed/mixed
-support-vacuum permutation sign is exactly the sign of its mixed-order
-inter-sector inversions. The canonical fixed-order contribution disappears
-because each vacuum interaction vertex has four consecutive atomic legs. -/
-theorem externalInsertionMixedSplit_relativePerm_sign_eq_mixedInversionCount
+/-- The product of the genuine local external-support reordering sign and the
+ambient fixed-to-mixed atomic ordering sign equals the inter-sector inversion
+sign. The fixed-order support/vacuum inversions have already been proved even,
+so no fixed-split correction or internal monotonicity hypothesis remains. -/
+theorem externalInsertionMixedSplit_local_mul_global_sign_eq_mixedInversionCount
     {E n : ℕ} (T : Finset (Fin n))
     (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ) :
     let S := (Finset.univ : Finset (Fin n)) \ T
     let order : QuarticVertexOrder S := (S.orderIsoOfFin rfl).toEquiv
     let f : Fin S.card → Fin n := fun i => (S.orderIsoOfFin rfl i).1
     let localFixed := externalInsertionLeftMixedToFixedEquiv T externalTime σ
-    let fixedSplit :=
-      ((Equiv.sumCongr (Equiv.refl (Fin (2 * (2 * T.card + E))))
-        (orderedLegToDiagramLeg S order)).trans
-        (externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T))).trans
-        (finCongr (by simp)).symm
     let split :=
       ((Equiv.sumCongr (Equiv.refl (Fin (2 * (2 * T.card + E))))
         (orderedLegToDiagramLeg S order)).trans
@@ -1016,57 +1011,84 @@ theorem externalInsertionMixedSplit_relativePerm_sign_eq_mixedInversionCount
     let mixedSplit :=
       (Equiv.sumCongr localFixed (Equiv.refl (Fin (2 * (2 * S.card))))).trans split
     StrictAnti (σ ∘ f) →
-    Equiv.Perm.sign (fixedSplit.symm.trans mixedSplit) =
+    Equiv.Perm.sign
+        (Equiv.sumCongr localFixed (Equiv.refl (Fin (2 * (2 * S.card))))) *
+      Equiv.Perm.sign
+        (externalInsertionStandardToMixedAtomicPositionEquiv externalTime σ) =
       (-1 : ℤˣ) ^
         (∑ i : Fin (2 * (2 * T.card + E)),
           ∑ j : Fin (2 * (2 * S.card)),
             if mixedSplit (Sum.inr j) < mixedSplit (Sum.inl i) then 1 else 0) := by
-  intro S order f localFixed fixedSplit split mixedSplit htime
-  let fixedCount : ℕ :=
-    ∑ i : Fin (2 * (2 * T.card + E)),
-      ∑ j : Fin (2 * (2 * S.card)),
-        if fixedSplit (Sum.inr j) < fixedSplit (Sum.inl i) then 1 else 0
-  let mixedCount : ℕ :=
+  intro S order f localFixed split mixedSplit htime
+  let fixedSplit :
+      (Fin (2 * (2 * T.card + E)) ⊕ Fin (2 * (2 * S.card))) ≃
+        Fin (2 * (2 * n + E)) :=
+    ((Equiv.sumCongr (Equiv.refl (Fin (2 * (2 * T.card + E))))
+      (orderedLegToDiagramLeg S order)).trans
+      (externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T))).trans
+      (finCongr (by simp)).symm
+  calc
+    Equiv.Perm.sign
+          (Equiv.sumCongr localFixed (Equiv.refl (Fin (2 * (2 * S.card))))) *
+        Equiv.Perm.sign
+          (externalInsertionStandardToMixedAtomicPositionEquiv externalTime σ) =
+        Equiv.Perm.sign (fixedSplit.symm.trans mixedSplit) := by
+          exact (externalInsertionMixedSplit_relativePerm_sign_eq_local_mul_global
+            T externalTime σ).symm
+    _ = (-1 : ℤˣ) ^
+          (∑ i : Fin (2 * (2 * T.card + E)),
+            ∑ j : Fin (2 * (2 * S.card)),
+              if mixedSplit (Sum.inr j) < mixedSplit (Sum.inl i) then 1 else 0) :=
+        externalInsertionMixedSplit_relativePerm_sign_eq_mixedInversionCount
+          T externalTime σ htime
+
+omit [LinearOrder Mode] [Fintype Mode] in
+/-- The ambient time-order sign cancels the inter-sector crossing sign, leaving
+precisely the local external-support reordering sign. This is the sign identity
+consumed by the pointwise reassembled pairing and Dyson amplitudes. -/
+theorem externalInsertionMixedSplit_global_sign_mul_mixedInversionSign_eq_local
+    {E n : ℕ} (T : Finset (Fin n))
+    (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ) :
+    let S := (Finset.univ : Finset (Fin n)) \ T
+    let order : QuarticVertexOrder S := (S.orderIsoOfFin rfl).toEquiv
+    let f : Fin S.card → Fin n := fun i => (S.orderIsoOfFin rfl i).1
+    let localFixed := externalInsertionLeftMixedToFixedEquiv T externalTime σ
+    let split :=
+      ((Equiv.sumCongr (Equiv.refl (Fin (2 * (2 * T.card + E))))
+        (orderedLegToDiagramLeg S order)).trans
+        (externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T))).trans
+        (externalInsertionMixedTimeAmbientPositionEquiv externalTime σ).symm
+    let mixedSplit :=
+      (Equiv.sumCongr localFixed (Equiv.refl (Fin (2 * (2 * S.card))))).trans split
+    StrictAnti (σ ∘ f) →
+    Equiv.Perm.sign
+        (externalInsertionStandardToMixedAtomicPositionEquiv externalTime σ) *
+      (-1 : ℤˣ) ^
+        (∑ i : Fin (2 * (2 * T.card + E)),
+          ∑ j : Fin (2 * (2 * S.card)),
+            if mixedSplit (Sum.inr j) < mixedSplit (Sum.inl i) then 1 else 0) =
+      Equiv.Perm.sign
+        (Equiv.sumCongr localFixed (Equiv.refl (Fin (2 * (2 * S.card))))) := by
+  intro S order f localFixed split mixedSplit htime
+  let localSign : ℤˣ :=
+    Equiv.Perm.sign
+      (Equiv.sumCongr localFixed (Equiv.refl (Fin (2 * (2 * S.card)))))
+  let globalSign : ℤˣ :=
+    Equiv.Perm.sign
+      (externalInsertionStandardToMixedAtomicPositionEquiv externalTime σ)
+  let inversions : ℕ :=
     ∑ i : Fin (2 * (2 * T.card + E)),
       ∑ j : Fin (2 * (2 * S.card)),
         if mixedSplit (Sum.inr j) < mixedSplit (Sum.inl i) then 1 else 0
-  have hfixedCompare (i : Fin (2 * (2 * T.card + E)))
-      (j : Fin (2 * (2 * S.card))) :
-      (fixedSplit (Sum.inr j) < fixedSplit (Sum.inl i)) =
-        (externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T)
-            (Sum.inr (orderedLegToDiagramLeg S order j)) <
-          externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T)
-            (Sum.inl i)) := by
-    apply propext
-    change (Fin.cast (by simp)
-        (externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T)
-          (Sum.inr (orderedLegToDiagramLeg S order j)))) <
-      (Fin.cast (by simp)
-        (externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T)
-          (Sum.inl i))) ↔
-        (externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T)
-          (Sum.inr (orderedLegToDiagramLeg S order j))) <
-        (externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T)
-          (Sum.inl i))
-    simp only [Fin.lt_def, Fin.val_cast]
-  have hfixedEven : fixedCount % 2 = 0 := by
-    dsimp only [fixedCount]
-    simp_rw [hfixedCompare]
-    exact externalInsertionSlotLegSplitting_fixedInversionCount_mod_two_eq_zero (E := E) T
-  have hfixedSign : (-1 : ℤˣ) ^ fixedCount = 1 := by
-    obtain ⟨k, hk⟩ := Nat.dvd_of_mod_eq_zero hfixedEven
-    rw [hk, pow_mul]
-    norm_num
-  have hrelative :
-      Equiv.Perm.sign (fixedSplit.symm.trans mixedSplit) =
-        (-1 : ℤˣ) ^ (fixedCount + mixedCount) :=
-    externalInsertionMixedSplit_relativePerm_sign_eq_inversionCounts
+  have hsign : localSign * globalSign = (-1 : ℤˣ) ^ inversions :=
+    externalInsertionMixedSplit_local_mul_global_sign_eq_mixedInversionCount
       T externalTime σ htime
+  change globalSign * (-1 : ℤˣ) ^ inversions = localSign
   calc
-    Equiv.Perm.sign (fixedSplit.symm.trans mixedSplit) =
-        (-1 : ℤˣ) ^ (fixedCount + mixedCount) := hrelative
-    _ = (-1 : ℤˣ) ^ fixedCount * (-1 : ℤˣ) ^ mixedCount := pow_add _ _ _
-    _ = (-1 : ℤˣ) ^ mixedCount := by rw [hfixedSign, one_mul]
+    globalSign * (-1 : ℤˣ) ^ inversions =
+        globalSign * (localSign * globalSign) := by rw [hsign]
+    _ = localSign * (globalSign * globalSign) := by ac_rfl
+    _ = localSign := by rw [Int.units_mul_self, mul_one]
 
 omit [LinearOrder Mode] [Fintype Mode] in
 /-- On a strictly antitone vacuum chamber, the actual mixed-time fermionic
