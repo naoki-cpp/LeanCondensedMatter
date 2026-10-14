@@ -229,6 +229,11 @@ normalized-endpoint transport, crossing signs, and pairing factorization for the
 and vacuum slot split. `ExternalVacuumShuffleIntegral` owns the independent binary ordered-simplex
 integral product identity and consumes integrands and regularity directly, without importing the
 slot-split pairing factorization module.
+`Fermionic.Diagrammatics.ExternalInsertion.Integral` owns the basic ordered-simplex and Dyson
+amplitudes of one diagram, including explicitly ordered interaction slots. `ComponentIntegral`
+consumes these amplitudes for the component interaction-order shuffle factorization. `DysonSeries`
+and the binary shuffle-integral module consume `Integral` directly, without importing component
+factorization.
 
 Higher-point imaginary-time ordering is owned by
 `Common.ImaginaryTime.ExternalInsertionMixedOrder`. It orders the `2 * E` external events
