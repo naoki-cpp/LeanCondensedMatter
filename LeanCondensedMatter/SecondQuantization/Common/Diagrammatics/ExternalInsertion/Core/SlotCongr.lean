@@ -78,7 +78,7 @@ theorem ExternalInsertionDiagram.slotCongr_vertexWeight
   classical
   change (∏ v : ↥U, w (d.vertexLabel (e.symm v))) =
     ∏ v : ↥T, w (d.vertexLabel v)
-  exact (Equiv.prod_comp e.symm (fun v : ↥T => w (d.vertexLabel v))).symm
+  exact Equiv.prod_comp e.symm (fun v : ↥T => w (d.vertexLabel v))
 
 @[simp]
 theorem ExternalInsertionDiagram.slotCongr_vertexLabel (e : ↥T ≃ ↥U)
