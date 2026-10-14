@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Analysis.Algebra.QuadraticNormalization
 import Mathlib.RingTheory.Idempotents
 import LeanCondensedMatter.Models.MassiveDirac.Model.Basic
 
@@ -65,14 +66,8 @@ private theorem normalizedHamiltonian_mul_self
         (((energy v m px py : ℝ) : ℂ) ^ 2) := by
     exact_mod_cast (energy_sq v m px py).symm
   unfold normalizedHamiltonian
-  rw [smul_mul_assoc, mul_smul_comm, smul_smul]
-  rw [hamiltonian_mul_self, hEnergySq, smul_smul]
-  have hcoefficient :
-      ((((energy v m px py : ℝ) : ℂ)⁻¹ *
-          ((energy v m px py : ℝ) : ℂ)⁻¹) *
-          ((energy v m px py : ℝ) : ℂ) ^ 2) = 1 := by
-    field_simp [hEc]
-  rw [hcoefficient, one_smul]
+  apply Algebra.inv_smul_mul_self_eq_one _ _ hEc
+  rw [hamiltonian_mul_self, hEnergySq]
 
 /-- Away from the degeneracy, multiplying the normalized Hamiltonian by the positive energy
 recovers the original Hamiltonian. -/
