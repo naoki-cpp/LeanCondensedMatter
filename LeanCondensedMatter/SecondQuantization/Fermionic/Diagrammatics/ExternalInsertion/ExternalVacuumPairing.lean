@@ -1273,5 +1273,86 @@ theorem externalInsertionOfSlotSplit_mixedPairingEvaluation_eq_positionInversion
     Common.Statistics.fermion mixedSplit localPairing (vac.pairingInOrder order)
     kernel leftKernel rightKernel hleftMono hrightMono hleft hright
 
+/-- The ambient mixed-time permutation sign cancels the inter-sector pairing
+crossing sign on a strictly antitone vacuum chamber. The remaining sign is
+exactly the genuine external-support local reordering sign; the two standalone
+pairing evaluations keep their normalized endpoint orientations. -/
+theorem externalInsertionOfSlotSplit_globalSign_mul_mixedPairingEvaluation_eq_localSign_mul
+    (ε : Mode → ℝ) (β : ℝ) {E n : ℕ} (T : Finset (Fin n))
+    (ext : ExternalInsertionDiagram (ExternalFieldLabel Mode)
+      (QuarticVertexLabel Mode) E n T)
+    (vac : QuarticDiagram (QuarticVertexLabel Mode) n
+      ((Finset.univ : Finset (Fin n)) \ T))
+    (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ) :
+    let S := (Finset.univ : Finset (Fin n)) \ T
+    let order : QuarticVertexOrder S := (S.orderIsoOfFin rfl).toEquiv
+    let f : Fin S.card → Fin n := fun i => (S.orderIsoOfFin rfl i).1
+    let fT : Fin T.card → Fin n := fun i => (T.orderIsoOfFin rfl i).1
+    let localFixed := externalInsertionLeftMixedToFixedEquiv T externalTime σ
+    let split :=
+      ((Equiv.sumCongr (Equiv.refl (Fin (2 * (2 * T.card + E))))
+        (orderedLegToDiagramLeg S order)).trans
+        (externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T))).trans
+        (externalInsertionMixedTimeAmbientPositionEquiv externalTime σ).symm
+    let mixedSplit :=
+      (Equiv.sumCongr localFixed (Equiv.refl (Fin (2 * (2 * S.card))))).trans split
+    let localPairing : Pairing (2 * T.card + E) := ext.pairing.transport localFixed
+    let d : ExternalInsertionWickDiagram Mode E n :=
+      ExternalInsertionDiagram.ofSlotSplit (Finset.subset_univ T) ext vac
+    let kernel := externalInsertionMixedTimeOrderedAtomicPairValue ε β
+      d.externalLabel externalTime d.vertexLabelSequence σ
+    let leftKernel := externalInsertionMixedTimeOrderedAtomicPairValue ε β
+      ext.externalLabel externalTime
+      (fun v => ext.vertexLabel (T.orderIsoOfFin rfl v)) (σ ∘ fT)
+    let rightKernel := flatVertexLegPairValue ε β
+      (fun v => vac.vertexLabel (S.orderIsoOfFin rfl v)) (σ ∘ f)
+    StrictAnti (σ ∘ f) →
+      (((Equiv.Perm.sign
+          (externalInsertionStandardToMixedAtomicPositionEquiv externalTime σ) : ℤ) : ℂ)) *
+        (d.pairingInMixedOrder externalTime σ).evaluation
+          ((d.pairingInMixedOrder externalTime σ).weight Common.Statistics.fermion)
+          kernel =
+        (((Equiv.Perm.sign
+            (Equiv.sumCongr localFixed (Equiv.refl (Fin (2 * (2 * S.card))))) :
+            ℤ) : ℂ)) *
+          (localPairing.evaluation (localPairing.weight Common.Statistics.fermion)
+              leftKernel *
+            (vac.pairingInOrder order).evaluation
+              ((vac.pairingInOrder order).weight Common.Statistics.fermion)
+              rightKernel) := by
+  intro S order f fT localFixed split mixedSplit localPairing d kernel
+    leftKernel rightKernel htime
+  let inversions : ℕ :=
+    ∑ i : Fin (2 * (2 * T.card + E)),
+      ∑ j : Fin (2 * (2 * S.card)),
+        if mixedSplit (Sum.inr j) < mixedSplit (Sum.inl i) then 1 else 0
+  have hsign :
+      (((Equiv.Perm.sign
+          (externalInsertionStandardToMixedAtomicPositionEquiv externalTime σ) : ℤ) : ℂ)) *
+        (Common.Statistics.fermion.zetaInt : ℂ) ^ inversions =
+      (((Equiv.Perm.sign
+          (Equiv.sumCongr localFixed (Equiv.refl (Fin (2 * (2 * S.card))))) :
+          ℤ) : ℂ)) := by
+    have hunits :=
+      externalInsertionMixedSplit_global_sign_mul_mixedInversionSign_eq_local
+        T externalTime σ htime
+    have h := congrArg (fun u : ℤˣ => ((u : ℤ) : ℂ)) hunits
+    simpa only [Units.val_mul, Units.val_pow_eq_pow_val, Units.val_neg,
+      Int.cast_mul, Int.cast_pow, Int.cast_neg, Int.cast_one,
+      Common.Statistics.zetaInt_fermion] using h
+  have hpair :
+      (d.pairingInMixedOrder externalTime σ).evaluation
+          ((d.pairingInMixedOrder externalTime σ).weight Common.Statistics.fermion)
+          kernel =
+        (Common.Statistics.fermion.zetaInt : ℂ) ^ inversions *
+          (localPairing.evaluation (localPairing.weight Common.Statistics.fermion)
+              leftKernel *
+            (vac.pairingInOrder order).evaluation
+              ((vac.pairingInOrder order).weight Common.Statistics.fermion)
+              rightKernel) :=
+    externalInsertionOfSlotSplit_mixedPairingEvaluation_eq_positionInversions_mul_of_strictAnti
+      ε β T ext vac externalTime σ htime
+  rw [hpair, ← mul_assoc, hsign]
+
 end Fermionic
 end SecondQuantization
