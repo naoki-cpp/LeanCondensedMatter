@@ -321,6 +321,67 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_x_antisym
   exact InternalSpace.trace_four_antisymmetric_eq_xz_plane_minors
     _ _ _ _ hret_y hadv_y
 
+/-- Using the integrated transverse current relation, the antisymmetric
+X radial trace factors into three independent products of Pauli minors.
+Unlike the preceding xz-plane formula, the redundant source-y x component
+does not appear. This is at finite broadening and momentum cutoff. -/
+theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_x_antisymmetric_eq_transverse_minors
+    (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ)
+    (hbroadening : broadening ≠ 0) (hdisorder : 0 ≤ disorderStrength)
+    (hpMax : 0 ≤ pMax) :
+    let Jx := finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock
+      0 v m probeEnergy broadening disorderStrength hbar pMax radius
+    let Jy := finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock
+      1 v m probeEnergy broadening disorderStrength hbar pMax radius
+    let GR := finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix
+      .retarded v m probeEnergy broadening disorderStrength hbar pMax (-radius)
+    let GA := finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix
+      .advanced v m probeEnergy broadening disorderStrength hbar pMax (-radius)
+    let a := InternalSpace.pauliScalarCoefficient Jx
+    let b := InternalSpace.pauliScalarCoefficient GR
+    let c := InternalSpace.pauliScalarCoefficient Jy
+    let d := InternalSpace.pauliScalarCoefficient GA
+    let u := InternalSpace.pauliVectorCoefficient Jx
+    let vr := InternalSpace.pauliVectorCoefficient GR
+    let w := InternalSpace.pauliVectorCoefficient Jy
+    let va := InternalSpace.pauliVectorCoefficient GA
+    finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor
+        .x v m probeEnergy broadening disorderStrength hbar pMax radius 0 1 -
+      finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor
+        .x v m probeEnergy broadening disorderStrength hbar pMax radius 1 0 =
+      4 * Complex.I *
+        ((a * w .y - c * u .y) * (vr .x * va .z - vr .z * va .x) +
+          (b * va .z - d * vr .z) * (w .y * u .x + (u .y) ^ 2) +
+          (d * vr .x - b * va .x) * (w .y * u .z - u .y * w .z)) := by
+  have hxy :=
+    finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient_y_zero_eq_neg_x_one
+      v m probeEnergy broadening disorderStrength hbar pMax radius
+      hbroadening hdisorder hpMax
+  have htrans :
+      InternalSpace.pauliVectorCoefficient
+          (finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock
+            1 v m probeEnergy broadening disorderStrength hbar pMax radius) .x =
+        -InternalSpace.pauliVectorCoefficient
+          (finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock
+            0 v m probeEnergy broadening disorderStrength hbar pMax radius) .y := by
+    change
+      InternalSpace.pauliVectorCoefficient
+          (finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock
+            0 v m probeEnergy broadening disorderStrength hbar pMax radius) .y =
+        -InternalSpace.pauliVectorCoefficient
+          (finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock
+            1 v m probeEnergy broadening disorderStrength hbar pMax radius) .x at hxy
+    calc
+      _ = -(-InternalSpace.pauliVectorCoefficient
+          (finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock
+            1 v m probeEnergy broadening disorderStrength hbar pMax radius) .x) := by ring
+      _ = _ := by rw [hxy]
+  rw [finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_x_antisymmetric_eq_xz_plane_minors
+    v m probeEnergy broadening disorderStrength hbar pMax radius]
+  dsimp only
+  rw [htrans]
+  ring
+
 /-- A common in-plane spinor conjugation of the Green and current blocks
 cancels inside either Gaussian crossed trace topology, including the
 Hermitian-conjugate partner in the Psi diagram. -/
