@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Evaluation
-import LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.Amplitude
+import LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion.DysonAmplitude
 import LeanCondensedMatter.SecondQuantization.Bosonic.Perturbation.DysonGibbsSeries
 import LeanCondensedMatter.SecondQuantization.Bosonic.Perturbation.QuarticDysonExpansion
 import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.ConcreteExpectationRecursion
@@ -25,6 +25,23 @@ variable {Mode : Type*} [Finite Mode]
 
 /-- File-local classical equality matches the concrete free-thermal pair kernel. -/
 local instance instDecidableEqQuarticDysonExpansion : DecidableEq Mode := Classical.decEq Mode
+
+/-- The concrete Gibbs expectation of the ordered quartic local-leg product is exactly the sum over
+the pairing amplitudes carried by the existing quartic diagram combinatorics. -/
+omit [Finite Mode] in
+theorem QuarticDiagram.freeGibbsExpectation_eq_orderedThermalWickSum [Fintype Mode]
+    (ε : Mode → ℝ) (β : ℝ) (hpos : ∀ i, 0 < β * ε i)
+    {S : Finset (Fin N)}
+    (d : Common.QuarticDiagram (Common.QuarticVertexLabel Mode) N S)
+    (order : Common.QuarticVertexOrder S) :
+    freeGibbsExpectation ε β
+        (quarticFreeThermalOrderedProduct (fun i => d.vertexLabel (order i))) =
+      QuarticDiagram.orderedThermalWickSum ε β d order := by
+  have hwick := freeGibbsExpectation_eq_sum_pairing_concrete ε β hpos
+    (2 * S.card) (quarticFreeThermalFieldFamily fun i => d.vertexLabel (order i))
+  simpa [quarticFreeThermalOrderedProduct, QuarticDiagram.orderedFreeThermalFieldFamily,
+    QuarticDiagram.orderedThermalWickSum, Combinatorics.Pairing.evaluation] using hwick
+
 
 /-- Every finite bare quartic vertex sequence has a summable free-Gibbs numerator under the
 positive one-mode Boltzmann hypothesis. -/
@@ -114,17 +131,6 @@ theorem freeGibbsDysonCoeff_quarticInteractionOn_eq_sum_pairingEvaluation
       (fun i => (q i : QuarticVertexLabel Mode)) t * z) hwick
 
 
-/-- Fixed-order physical quartic Dyson diagram amplitude. The scalar Dyson sequence coefficient
-contains the ordered-simplex time integration and coupling product, while the diagram contributes
-one concrete bosonic thermal pairing value in the same vertex order. -/
-noncomputable def QuarticDiagram.orderedDysonThermalAmplitude
-    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
-    {N : ℕ} {S : Finset (Fin N)}
-    (d : Common.QuarticDiagram (QuarticVertexLabel Mode) N S)
-    (order : Common.QuarticVertexOrder S) (t : ℝ) : ℂ :=
-  Common.quarticDysonSequenceCoeff ε g (fun i => d.vertexLabel (order i)) t *
-    QuarticDiagram.orderedThermalPairingValue ε β d order
-
 omit [Finite Mode] in
 private theorem freeGibbsDysonCoeff_quarticInteraction_eq_sum_pairingEvaluation [Fintype Mode]
     (ε : Mode → ℝ) (β : ℝ) (hpos : ∀ i, 0 < β * ε i)
@@ -210,17 +216,6 @@ theorem freeGibbsDysonCoeff_quarticInteraction_eq_sum_orderedDysonThermalAmplitu
       intro d _
       rfl
 
-
-/-- Physical bosonic quartic Dyson diagram amplitude, summed over all global vertex orders.
-The ordered-simplex regions associated with these orders are the pieces that shuffle-factorize over
-connected components, so this physical amplitude is a sum over orders, with no factorial
-averaging. -/
-noncomputable def QuarticDiagram.dysonThermalAmplitude
-    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
-    {N : ℕ} {S : Finset (Fin N)}
-    (d : Common.QuarticDiagram (QuarticVertexLabel Mode) N S) (t : ℝ) : ℂ :=
-  ∑ order : Common.QuarticVertexOrder S,
-    QuarticDiagram.orderedDysonThermalAmplitude ε β g d order t
 
 omit [Finite Mode] in
 /-- The total physical quartic-diagram weight is the canonical vertex moment:
