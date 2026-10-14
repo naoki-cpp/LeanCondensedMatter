@@ -1,4 +1,4 @@
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Factorization.ComponentVertexProduct
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.InteractionSector
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.Amplitude
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentPairingValue
 
@@ -141,10 +141,18 @@ theorem ExternalInsertionWickDiagram.fixedTimeAmplitude_eq_componentExternalOrde
       d.vertexWeight g =
         ∏ B : d.vertexGraph.componentPartition.parts,
           (d.componentOrderedDiagram B).vertexWeight g := by
-    rw [d.vertexWeight_eq_prod_components g]
-    apply Finset.prod_congr rfl
-    intro B _
-    exact (d.componentOrderedDiagram_vertexWeight_eq_restrictComponent g B).symm
+    calc
+      d.vertexWeight g =
+          ∏ B : d.vertexGraph.componentPartition.parts,
+            (d.restrictComponent B).vertexWeight g := by
+        simpa only [Common.ExternalInsertionDiagram.vertexWeight,
+          Common.ExternalInsertionDiagram.restrictComponent] using
+          (Common.prod_eq_prod_interactionSectors d.vertexGraph
+            (fun v => g (d.vertexLabel v)))
+      _ = _ := by
+        apply Finset.prod_congr rfl
+        intro B _
+        exact (d.componentOrderedDiagram_vertexWeight_eq_restrictComponent g B).symm
   have horderPairing :=
     d.mixedAtomicOrderSign_mul_mixedPairingValue_eq_components
       ε β externalTime σ blockOrder
