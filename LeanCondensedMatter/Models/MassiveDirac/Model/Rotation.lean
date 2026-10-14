@@ -75,6 +75,37 @@ theorem inPlaneSpinRotationInverse_mul (angle : ℝ) :
           Matrix.mul_apply, Fin.sum_univ_two, mul_comm]
     _ = 1 := inPlaneSpinRotation_mul_inverse angle
 
+/-- Entrywise conjugation by the diagonal in-plane spinor multiplies each
+matrix entry by the corresponding left and right spinor phases.
+This avoids expanding a full matrix product in Fourier-kernel proofs. -/
+theorem inPlaneSpinRotation_conjugate_apply
+    (angle : ℝ) (M : Matrix2) (i j : Fin 2) :
+    (inPlaneSpinRotation angle * M * inPlaneSpinRotationInverse angle) i j =
+      inPlaneSpinRotation angle i i * M i j *
+        inPlaneSpinRotationInverse angle j j := by
+  fin_cases i <;> fin_cases j <;>
+    simp [inPlaneSpinRotation, inPlaneSpinRotationInverse, Matrix.mul_apply,
+      Matrix.vecMul_apply_eq_sum, Fin.sum_univ_two, mul_assoc]
+
+/-- Conjugation by the diagonal spinor fixes every diagonal entry. -/
+theorem inPlaneSpinRotation_conjugate_diagonal
+    (angle : ℝ) (M : Matrix2) (i : Fin 2) :
+    (inPlaneSpinRotation angle * M * inPlaneSpinRotationInverse angle) i i = M i i := by
+  rw [inPlaneSpinRotation_conjugate_apply]
+  fin_cases i
+  · simp [inPlaneSpinRotation, inPlaneSpinRotationInverse]
+  · change
+      ((((Real.cos angle : ℝ) : ℂ) + Complex.I * ((Real.sin angle : ℝ) : ℂ))) *
+          M 1 1 *
+          ((((Real.cos angle : ℝ) : ℂ) - Complex.I * ((Real.sin angle : ℝ) : ℂ))) =
+        M 1 1
+    calc
+      _ = M 1 1 *
+          (((((Real.cos angle : ℝ) : ℂ) + Complex.I * ((Real.sin angle : ℝ) : ℂ))) *
+            ((((Real.cos angle : ℝ) : ℂ) - Complex.I * ((Real.sin angle : ℝ) : ℂ)))) := by
+            ring
+      _ = M 1 1 := by rw [inPlaneSpinRotation_phases_mul]; simp
+
 /-- Rotating the Pauli-x axis produces the polar in-plane Pauli direction. -/
 theorem inPlaneSpinRotation_sigmaX (angle : ℝ) :
     inPlaneSpinRotation angle * sigmaX * inPlaneSpinRotationInverse angle =

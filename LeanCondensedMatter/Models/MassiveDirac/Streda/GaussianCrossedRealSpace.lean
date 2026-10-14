@@ -680,6 +680,71 @@ noncomputable def finiteCutoffContinuumBornDysonGaussianCrossedAngularCurrentEnt
           (((Real.cos angle : ℝ) : ℂ) * ((Real.sin angle : ℝ) : ℂ)) *
             harmonics.secondMixed i j))
 
+/-- The full-angle `K0/K1/K2` crossed-current Fourier integrand is
+the spinor conjugate of the corresponding rotated Cartesian source at
+the radial axis. This exact identity is pointwise in radial momentum,
+before the remaining finite-cutoff radial integration. -/
+private theorem gaussianCrossedAngularCurrentEntryKernel_sourceRotation
+    (source : Fin 2)
+    (v m probeEnergy broadening disorderStrength hbar pMax radius angle p : ℝ) :
+    (fun i j : Fin 2 =>
+      finiteCutoffContinuumBornDysonGaussianCrossedAngularCurrentEntryKernel
+        source v m probeEnergy broadening disorderStrength hbar pMax
+        radius angle p i j) =
+      inPlaneSpinRotation angle *
+        (if source = 0 then
+          (((Real.cos angle : ℝ) : ℂ)) •
+            (fun i j : Fin 2 =>
+              finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel
+                0 v m probeEnergy broadening disorderStrength hbar pMax radius p i j) -
+          (((Real.sin angle : ℝ) : ℂ)) •
+            (fun i j : Fin 2 =>
+              finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel
+                1 v m probeEnergy broadening disorderStrength hbar pMax radius p i j)
+        else
+          (((Real.sin angle : ℝ) : ℂ)) •
+            (fun i j : Fin 2 =>
+              finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel
+                0 v m probeEnergy broadening disorderStrength hbar pMax radius p i j) +
+          (((Real.cos angle : ℝ) : ℂ)) •
+            (fun i j : Fin 2 =>
+              finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel
+                1 v m probeEnergy broadening disorderStrength hbar pMax radius p i j) : Matrix2) *
+        inPlaneSpinRotationInverse angle := by
+  have htrig :
+      (((Real.cos angle : ℝ) : ℂ) ^ 2) +
+        (((Real.sin angle : ℝ) : ℂ) ^ 2) = 1 := by
+    exact_mod_cast Real.cos_sq_add_sin_sq angle
+  have hcosSq :
+      (((Real.cos angle : ℝ) : ℂ) ^ 2) =
+        1 - (((Real.sin angle : ℝ) : ℂ) ^ 2) := by
+    linear_combination htrig
+  have hI2 : Complex.I ^ 2 = (-1 : ℂ) := by
+    simpa [pow_two] using Complex.I_mul_I
+  have hI3 : Complex.I ^ 3 = -Complex.I := by
+    calc
+      Complex.I ^ 3 = Complex.I ^ 2 * Complex.I := by ring
+      _ = (-1 : ℂ) * Complex.I := by rw [hI2]
+      _ = -Complex.I := by ring
+  ext i j
+  fin_cases source <;> fin_cases i <;> fin_cases j
+  all_goals first
+    | rw [inPlaneSpinRotation_conjugate_diagonal]
+    | rw [inPlaneSpinRotation_conjugate_apply]
+  all_goals
+    simp [finiteCutoffContinuumBornDysonGaussianCrossedAngularCurrentEntryKernel,
+      finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel,
+      gaussianCrossedCurrentCoefficientVector, polarPauliInPlaneHarmonics,
+      inPlaneSpinRotation, inPlaneSpinRotationInverse,
+      sigmaX, sigmaY, sigmaZ, InternalSpace.pauliX, InternalSpace.pauliY,
+      InternalSpace.pauliZ, Matrix.smul_apply, Matrix.add_apply,
+      smul_eq_mul]
+  all_goals try simp only [← Complex.ofReal_cos, ← Complex.ofReal_sin]
+  all_goals ring_nf
+  all_goals simp only [hI2, hI3]
+  all_goals try simp only [hcosSq]
+  all_goals ring
+
 /-- Arbitrary-angle polar Fourier representation of the model's crossed-current
 matrix. The underlying advanced-current-retarded Pauli sandwich is the same
 as in the radial-axis theorem, but both first harmonics and both second
