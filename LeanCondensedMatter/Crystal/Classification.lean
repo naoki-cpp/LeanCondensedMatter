@@ -149,7 +149,7 @@ def ofBasisGramPreservingLinearEquiv
 real-linear automorphism by using the real bases induced by its source and image
 integer bases. No independent lattice or matrix representation is needed. -/
 noncomputable def extendIntegralLinearEquiv [FiniteDimensional ℝ V]
-    {ι : Type*} [Fintype ι]
+    {ι : Type*}
     (L : Submodule ℤ V) [DiscreteTopology L] [IsZLattice ℝ L]
     (b : Module.Basis ι ℤ L) (e : L ≃ₗ[ℤ] L) : V ≃ₗ[ℝ] V :=
   (b.ofZLatticeBasis ℝ L).repr.trans
