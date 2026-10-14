@@ -104,11 +104,7 @@ theorem Pairing.prod_pairs_eq_prod_components [Fintype ι]
           (fun pr => pairValue pr.1.1 pr.1.2))
     _ = ∏ B, ∏ pr : (componentPairing B).NormalizedPair,
           localPairValue B pr.1.1 pr.1.2 := by
-      apply Fintype.prod_congr
-      intro B
-      apply Fintype.prod_congr
-      intro pr
-      exact hvalue B pr
+      simp only [hvalue]
     _ = ∏ B, ∏ pr ∈ (componentPairing B).pairs,
           localPairValue B pr.1 pr.2 := by
       apply Fintype.prod_congr
