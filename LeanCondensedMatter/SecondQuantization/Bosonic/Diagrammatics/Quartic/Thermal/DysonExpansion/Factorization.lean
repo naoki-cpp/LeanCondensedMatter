@@ -92,6 +92,11 @@ theorem QuarticDiagram.dysonThermalAmplitude_eq_prod_components
     (fun B order => QuarticDiagram.dysonThermalIntegrand ε β g
       (d.restrictComponent B.2) order)
     (fun orders shuffle => by
+      change QuarticDiagram.dysonThermalIntegrand ε β g d
+          (d.assembleVertexOrder orders shuffle) =
+        shuffle.ambientIntegrand
+          (fun B : d.vertexGraph.componentPartitionOn.parts =>
+            QuarticDiagram.dysonThermalIntegrand ε β g (d.restrictComponent B.2) (orders B))
       funext τ
       dsimp only [QuarticDiagram.dysonThermalIntegrand]
       rw [Common.QuarticDiagram.dysonSign_mul_vertexWeight_eq_prod_components d g,
