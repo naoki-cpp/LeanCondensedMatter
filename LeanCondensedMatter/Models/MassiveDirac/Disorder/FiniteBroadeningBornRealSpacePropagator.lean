@@ -359,14 +359,50 @@ theorem finiteCutoffContinuumBornDysonRealSpaceGreenMatrix_radialAxis_eq
 
 /-- Entrywise interval integration of a complex two-band matrix. The interval
 integral's existing non-integrable convention is preserved entry by entry. -/
-private noncomputable def intervalIntegralMatrix2
+noncomputable def intervalIntegralMatrix2
     (a b : ℝ) (f : ℝ → Matrix2) : Matrix2 :=
   fun i j => ∫ p in a..b, f p i j
+
+/-- Entrywise interval integration commutes with a fixed complex scalar. -/
+theorem intervalIntegralMatrix2_smul
+    (a b : ℝ) (c : ℂ) (f : ℝ → Matrix2) :
+    intervalIntegralMatrix2 a b (fun p => c • f p) =
+      c • intervalIntegralMatrix2 a b f := by
+  ext i j
+  change (∫ p in a..b, c * f p i j) = c * (∫ p in a..b, f p i j)
+  rw [intervalIntegral.integral_const_mul]
+
+/-- Entrywise interval integration is additive for interval-integrable matrices.
+The assumptions matter: the default integral of a non-integrable function
+is zero, so unconditional additivity would be false. -/
+theorem intervalIntegralMatrix2_add
+    (a b : ℝ) (f g : ℝ → Matrix2)
+    (hf : ∀ i j, IntervalIntegrable (fun p => f p i j) MeasureTheory.volume a b)
+    (hg : ∀ i j, IntervalIntegrable (fun p => g p i j) MeasureTheory.volume a b) :
+    intervalIntegralMatrix2 a b (fun p => f p + g p) =
+      intervalIntegralMatrix2 a b f + intervalIntegralMatrix2 a b g := by
+  ext i j
+  change (∫ p in a..b, f p i j + g p i j) =
+    (∫ p in a..b, f p i j) + (∫ p in a..b, g p i j)
+  exact intervalIntegral.integral_add (hf i j) (hg i j)
+
+/-- Subtraction likewise commutes with entrywise interval integration
+under the same explicit analytic assumptions. -/
+theorem intervalIntegralMatrix2_sub
+    (a b : ℝ) (f g : ℝ → Matrix2)
+    (hf : ∀ i j, IntervalIntegrable (fun p => f p i j) MeasureTheory.volume a b)
+    (hg : ∀ i j, IntervalIntegrable (fun p => g p i j) MeasureTheory.volume a b) :
+    intervalIntegralMatrix2 a b (fun p => f p - g p) =
+      intervalIntegralMatrix2 a b f - intervalIntegralMatrix2 a b g := by
+  ext i j
+  change (∫ p in a..b, f p i j - g p i j) =
+    (∫ p in a..b, f p i j) - (∫ p in a..b, g p i j)
+  exact intervalIntegral.integral_sub (hf i j) (hg i j)
 
 /-- Diagonal spinor conjugation commutes with entrywise interval integration.
 Every entry has only one nonzero summand, so scalar constant-factor integral
 rules suffice and no additional integrability assumptions are required. -/
-private theorem intervalIntegralMatrix2_spinRotation_conjugate
+theorem intervalIntegralMatrix2_spinRotation_conjugate
     (angle a b : ℝ) (f : ℝ → Matrix2) :
     intervalIntegralMatrix2 a b
         (fun p => inPlaneSpinRotation angle * f p *
