@@ -41,6 +41,35 @@ noncomputable def finiteCutoffContinuumBornDysonGaussianCrossedOrderedXYConducti
     finiteCutoffContinuumBornDysonGaussianCrossedWeightedRealSpaceIntegral
       diagram v m probeEnergy broadening disorderStrength hbar pMax rMax
 
+/-- The physically normalized crossed Hall contribution reduces to the radial
+antisymmetric source-pair trace at finite momentum and real-space cutoffs.
+The existing Fourier measures remain inside the radial trace tensor, while
+the two disorder correlators and the trace-only Bastin prefactor occur once.
+This does not evaluate the radial integral or assert a regulator limit. -/
+theorem finiteCutoffContinuumBornDysonGaussianCrossedOrderedXYConductivity_eq_radial_antisymmetric_trace
+    (diagram : GaussianCrossedDiagram)
+    (e v m probeEnergy broadening disorderStrength hbar pMax rMax : ℝ)
+    (hbroadening : broadening ≠ 0) (hdisorder : 0 ≤ disorderStrength)
+    (hpMax : 0 ≤ pMax) :
+    finiteCutoffContinuumBornDysonGaussianCrossedOrderedXYConductivity
+        diagram e v m probeEnergy broadening disorderStrength hbar pMax rMax =
+      (((bastinStredaTraceConductivityPrefactor hbar * (e * v) ^ 2 : ℝ) : ℂ)) *
+        (((disorderStrength ^ 2 : ℝ) : ℂ)) * (((2 * Real.pi : ℝ) : ℂ)) *
+        ∫ radius in (0 : ℝ)..rMax,
+          (radius : ℂ) *
+            ((finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor
+                diagram v m probeEnergy broadening disorderStrength hbar pMax
+                radius 0 1 -
+              finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor
+                diagram v m probeEnergy broadening disorderStrength hbar pMax
+                radius 1 0) / 2) := by
+  unfold finiteCutoffContinuumBornDysonGaussianCrossedOrderedXYConductivity
+    finiteCutoffContinuumBornDysonGaussianCrossedWeightedRealSpaceIntegral
+  rw [finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceIntegral_eq_radial_antisymmetric_trace_of_regulated
+    diagram v m probeEnergy broadening disorderStrength hbar pMax rMax
+    hbroadening hdisorder hpMax]
+  ring
+
 /-- The physically normalized finite-cutoff finite-broadening Gaussian crossed correction.
 
 The two leading crossed topologies remain indexed upstream, but their physical response is exposed
