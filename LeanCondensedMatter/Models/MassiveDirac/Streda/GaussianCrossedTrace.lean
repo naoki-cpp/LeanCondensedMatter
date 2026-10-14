@@ -145,6 +145,62 @@ theorem gaussianCrossedTraceKernel_rotated_sources
       rw [hconj, hamplitude]
       ring
 
+/-- The antisymmetric source sector of the crossed X trace is a single
+trace with an antisymmetrized pair of current insertions. This algebraic
+identity precedes radial Fourier integration and does not assume a particular
+massive-Dirac Green or current model. -/
+theorem gaussianCrossedTraceKernel_x_sub_swapped
+    {R : Type*} [Neg R]
+    (greenRetarded greenAdvanced : R → Matrix2)
+    (current : Fin 2 → R → Matrix2) (r : R) :
+    gaussianCrossedTraceKernel .x greenRetarded greenAdvanced current r -
+      gaussianCrossedTraceKernel .x greenRetarded greenAdvanced
+        (fun axis ρ => if axis = 0 then current 1 ρ else current 0 ρ) r =
+      Matrix.trace
+        ((current 0 r * greenRetarded (-r) * current 1 r -
+            current 1 r * greenRetarded (-r) * current 0 r) *
+          greenAdvanced (-r)) := by
+  change
+    Matrix.trace (current 0 r * greenRetarded (-r) * current 1 r *
+      greenAdvanced (-r)) -
+      Matrix.trace (current 1 r * greenRetarded (-r) * current 0 r *
+        greenAdvanced (-r)) = _
+  rw [Matrix.sub_mul, Matrix.trace_sub]
+
+/-- In the crossed Psi sector the antisymmetrized current insertion is
+accompanied by its complex-conjugate trace. Keeping that pair explicit
+isolates the real quantity whose cancellation must be shown downstream. -/
+theorem gaussianCrossedTraceKernel_psi_sub_swapped
+    {R : Type*} [Neg R]
+    (greenRetarded greenAdvanced : R → Matrix2)
+    (current : Fin 2 → R → Matrix2) (r : R) :
+    gaussianCrossedTraceKernel .psi greenRetarded greenAdvanced current r -
+      gaussianCrossedTraceKernel .psi greenRetarded greenAdvanced
+        (fun axis ρ => if axis = 0 then current 1 ρ else current 0 ρ) r =
+      let amplitude := Matrix.trace
+        (current 0 r * greenRetarded (-r) * greenRetarded r * current 1 (-r) -
+          current 1 r * greenRetarded (-r) * greenRetarded r * current 0 (-r))
+      amplitude + (starRingEnd ℂ) amplitude := by
+  let a := Matrix.trace
+    (current 0 r * greenRetarded (-r) * greenRetarded r * current 1 (-r))
+  let b := Matrix.trace
+    (current 1 r * greenRetarded (-r) * greenRetarded r * current 0 (-r))
+  have htrace :
+      Matrix.trace
+        (current 0 r * greenRetarded (-r) * greenRetarded r * current 1 (-r) -
+          current 1 r * greenRetarded (-r) * greenRetarded r * current 0 (-r)) =
+        a - b := by
+    exact Matrix.trace_sub _ _
+  change (a + (starRingEnd ℂ) a) - (b + (starRingEnd ℂ) b) =
+    Matrix.trace
+      (current 0 r * greenRetarded (-r) * greenRetarded r * current 1 (-r) -
+        current 1 r * greenRetarded (-r) * greenRetarded r * current 0 (-r)) +
+      (starRingEnd ℂ) (Matrix.trace
+        (current 0 r * greenRetarded (-r) * greenRetarded r * current 1 (-r) -
+          current 1 r * greenRetarded (-r) * greenRetarded r * current 0 (-r)))
+  rw [htrace, map_sub]
+  abel
+
 /-- The trace-level `Psi` kernel is real by construction of its Hermitian-conjugate pair. -/
 @[simp] theorem gaussianCrossedTraceKernel_psi_im {R : Type*} [Neg R]
     (greenRetarded greenAdvanced : R → Matrix2)
