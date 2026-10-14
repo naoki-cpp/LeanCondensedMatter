@@ -245,20 +245,20 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_x_antisym
         .x v m probeEnergy broadening disorderStrength hbar pMax radius 1 0 =
       4 * Complex.I *
         (InternalSpace.pauliScalarCoefficient Jx *
-            InternalSpace.dotProduct (InternalSpace.pauliVectorCoefficient GR)
+            dotProduct (InternalSpace.pauliVectorCoefficient GR)
               (InternalSpace.pauliCross (InternalSpace.pauliVectorCoefficient Jy)
                 (InternalSpace.pauliVectorCoefficient GA)) +
           InternalSpace.pauliScalarCoefficient GR *
-            InternalSpace.dotProduct (InternalSpace.pauliVectorCoefficient Jx)
+            dotProduct (InternalSpace.pauliVectorCoefficient Jx)
               (InternalSpace.pauliCross (InternalSpace.pauliVectorCoefficient Jy)
                 (InternalSpace.pauliVectorCoefficient GA)) +
           InternalSpace.pauliScalarCoefficient Jy *
-            InternalSpace.dotProduct
+            dotProduct
               (InternalSpace.pauliCross (InternalSpace.pauliVectorCoefficient Jx)
                 (InternalSpace.pauliVectorCoefficient GR))
               (InternalSpace.pauliVectorCoefficient GA) +
           InternalSpace.pauliScalarCoefficient GA *
-            InternalSpace.dotProduct
+            dotProduct
               (InternalSpace.pauliCross (InternalSpace.pauliVectorCoefficient Jx)
                 (InternalSpace.pauliVectorCoefficient GR))
               (InternalSpace.pauliVectorCoefficient Jy)) := by
