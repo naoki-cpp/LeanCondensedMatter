@@ -1,4 +1,5 @@
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Factorization.ComponentCrossing
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Pairing.ComponentPairEquiv
+import LeanCondensedMatter.Combinatorics.PerfectPairing.ComponentCrossing
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Factorization.ComponentShuffleParity
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.PairingWeight
 
@@ -17,6 +18,8 @@ without changing the sign transport proved here.
 
 namespace SecondQuantization
 namespace Fermionic
+
+open Combinatorics
 
 variable {ExternalLabel InternalLabel : Type*} {E N : ℕ}
 
@@ -44,7 +47,16 @@ theorem interComponentWeight_eq_componentExternalOrderSign
   unfold componentExternalOrderSign
   apply Common.BlochDeDominicis.zetaInt_pow_eq_of_mod_two_eq
   exact
-    (d.interComponentCrossingCount_mod_two_eq_orderedBlockInversionCount blockOrder).trans
+    (d.pairing.interComponentCrossingCount_mod_two_eq_orderedBlockInversionCount
+      d.componentPairEquiv
+      (fun B => (d.restrictComponent B).pairing.pairEndpointEquiv)
+      d.componentLegShuffle
+      (fun B p k => by
+        fin_cases k <;>
+          simp [Common.ExternalInsertionDiagram.componentLegShuffle_slotEquiv_apply,
+            Pairing.pairEndpointEquiv_apply, Pairing.pairEndpoint, pairEndpointAt,
+            d.componentPairEquiv_apply])
+      blockOrder).trans
       (d.componentLegShuffle_orderedBlockInversionCount_mod_two_eq_external blockOrder)
 
 
