@@ -119,13 +119,13 @@ private theorem inPlaneSpinRotation_neg (angle : ℝ) :
     inPlaneSpinRotation (-angle) = inPlaneSpinRotationInverse angle := by
   ext i j
   fin_cases i <;> fin_cases j <;>
-    simp [inPlaneSpinRotation, inPlaneSpinRotationInverse]
+    simp [inPlaneSpinRotation, inPlaneSpinRotationInverse, sub_eq_add_neg]
 
 private theorem inPlaneSpinRotationInverse_neg (angle : ℝ) :
     inPlaneSpinRotationInverse (-angle) = inPlaneSpinRotation angle := by
   ext i j
   fin_cases i <;> fin_cases j <;>
-    simp [inPlaneSpinRotation, inPlaneSpinRotationInverse]
+    simp [inPlaneSpinRotation, inPlaneSpinRotationInverse, sub_eq_add_neg]
 
 /-- The inverse spinor rotates the Cartesian x-current vertex into the
 cosine/sine combination needed for rotating a source-indexed current block. -/
