@@ -7,8 +7,10 @@ set_option linter.style.header false
 # Mixed-order component crossings
 
 Component mixed positions form an order-preserving family shuffle into ambient mixed order.
-Crossing counts and residual parity decompose through the component pairing equivalence.
-The statistics-generic exchange-weight conversion belongs to `BlochDeDominicis.PairingWeight`.
+Residual crossing parity is related to ordered block inversions through the component pairing
+equivalence. The exact crossing decomposition is supplied directly by the generic
+`Pairing.crossingCount_eq_sum_localCrossingCount_add_inter`, while the statistics-generic
+exchange-weight conversion belongs to `BlochDeDominicis.PairingWeight`.
 Labels are arbitrary and no thermal kernel is used.
 -/
 
@@ -16,7 +18,6 @@ namespace SecondQuantization
 namespace Common
 
 open Combinatorics
-open scoped BigOperators
 
 variable {ExternalLabel InternalLabel : Type*}
 
@@ -47,31 +48,6 @@ theorem ExternalInsertionDiagram.mixedInterComponentCrossingCount_mod_two_eq_ord
           Pairing.pairEndpointEquiv_apply, Pairing.pairEndpoint, pairEndpointAt,
           d.componentMixedPairEquiv_apply externalTime σ])
     blockOrder
-
-/-- The mixed-order crossing count is the sum of component-local mixed crossing counts and
-the residual crossings between distinct components. -/
-theorem ExternalInsertionDiagram.pairingInMixedOrder_crossingCount_eq_sum_components_add_inter
-    {E n : ℕ}
-    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E n
-      (Finset.univ : Finset (Fin n)))
-    (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ) :
-    (d.pairingInMixedOrder externalTime σ).crossingCount =
-      (∑ B : d.vertexGraph.componentPartition.parts,
-        ((d.componentOrderedDiagram B).pairingInMixedOrder
-          (d.componentExternalTime externalTime B)
-          (d.componentInteractionTime σ B)).crossingCount) +
-      (d.pairingInMixedOrder externalTime σ).interComponentCrossingCount
-        (d.componentMixedPairEquiv externalTime σ) := by
-  exact Pairing.crossingCount_eq_sum_localCrossingCount_add_inter
-    (d.pairingInMixedOrder externalTime σ)
-    (fun B => (d.componentOrderedDiagram B).pairingInMixedOrder
-      (d.componentExternalTime externalTime B)
-      (d.componentInteractionTime σ B))
-    (d.componentMixedPairEquiv externalTime σ)
-    (fun B => Equiv.refl _)
-    (fun B => d.componentMixedPosition externalTime σ B)
-    (fun B => d.componentMixedPosition_strictMono externalTime σ B)
-    (fun B pr => by simpa using d.componentMixedPairEquiv_apply externalTime σ B pr)
 
 end Common
 end SecondQuantization
