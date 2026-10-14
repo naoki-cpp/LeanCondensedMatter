@@ -114,6 +114,39 @@ theorem inPlaneSpinRotation_sigmaZ (angle : ℝ) :
         Matrix.mul_apply, Fin.sum_univ_two]
   rw [hcomm, mul_assoc, inPlaneSpinRotation_mul_inverse, mul_one]
 
+/-- Reversing the rotation angle exchanges the diagonal spinor and its inverse. -/
+theorem inPlaneSpinRotation_neg (angle : ℝ) :
+    inPlaneSpinRotation (-angle) = inPlaneSpinRotationInverse angle := by
+  ext i j
+  fin_cases i <;> fin_cases j <;>
+    simp [inPlaneSpinRotation, inPlaneSpinRotationInverse]
+
+theorem inPlaneSpinRotationInverse_neg (angle : ℝ) :
+    inPlaneSpinRotationInverse (-angle) = inPlaneSpinRotation angle := by
+  ext i j
+  fin_cases i <;> fin_cases j <;>
+    simp [inPlaneSpinRotation, inPlaneSpinRotationInverse]
+
+/-- The inverse spinor rotates the Cartesian x-current vertex into the
+cosine/sine combination needed for rotating a source-indexed current block. -/
+theorem inPlaneSpinRotationInverse_sigmaX (angle : ℝ) :
+    inPlaneSpinRotationInverse angle * sigmaX * inPlaneSpinRotation angle =
+      (((Real.cos angle : ℝ) : ℂ)) • sigmaX -
+        (((Real.sin angle : ℝ) : ℂ)) • sigmaY := by
+  simpa [inPlaneSpinRotation_neg, inPlaneSpinRotationInverse_neg,
+    Real.cos_neg, Real.sin_neg, sub_eq_add_neg] using
+    (inPlaneSpinRotation_sigmaX (-angle))
+
+/-- The inverse spinor rotates the Cartesian y-current vertex into the
+orthogonal sine/cosine combination. -/
+theorem inPlaneSpinRotationInverse_sigmaY (angle : ℝ) :
+    inPlaneSpinRotationInverse angle * sigmaY * inPlaneSpinRotation angle =
+      (((Real.sin angle : ℝ) : ℂ)) • sigmaX +
+        (((Real.cos angle : ℝ) : ℂ)) • sigmaY := by
+  simpa [inPlaneSpinRotation_neg, inPlaneSpinRotationInverse_neg,
+    Real.cos_neg, Real.sin_neg] using
+    (inPlaneSpinRotation_sigmaY (-angle))
+
 /-- Polar Pauli matrices are conjugate to their radial-axis specialization
 under the physical in-plane spinor rotation. -/
 theorem polarPauliMatrix_eq_spinRotation (a b d : ℂ) (angle : ℝ) :
@@ -145,6 +178,25 @@ theorem polarPauliMatrix_eq_spinRotation (a b d : ℂ) (angle : ℝ) :
         (a • (1 : Matrix2) + b • sigmaX + d • sigmaZ) *
           inPlaneSpinRotationInverse angle := by
             simp only [mul_add, add_mul, mul_smul_comm, smul_mul_assoc]
+
+/-- A current vertex sandwiched between two polar massive-Dirac matrices
+transports to the radial axis by inverse spinor conjugation of that vertex.
+This is the algebraic input for the source-indexed Gaussian crossed current
+Fourier block; it makes no claim about integration or regulator limits. -/
+theorem polarPauliMatrix_sandwich_spinRotation
+    (aA bA dA aR bR dR : ℂ) (vertex : Matrix2) (angle : ℝ) :
+    polarPauliMatrix aA bA dA angle * vertex *
+        polarPauliMatrix aR bR dR angle =
+      inPlaneSpinRotation angle *
+        (polarPauliMatrix aA bA dA 0 *
+          (inPlaneSpinRotationInverse angle * vertex *
+            inPlaneSpinRotation angle) *
+          polarPauliMatrix aR bR dR 0) *
+        inPlaneSpinRotationInverse angle := by
+  rw [polarPauliMatrix_eq_spinRotation aA bA dA angle,
+    polarPauliMatrix_eq_spinRotation aR bR dR angle]
+  simp only [Matrix.mul_assoc]
+
 
 end
 
