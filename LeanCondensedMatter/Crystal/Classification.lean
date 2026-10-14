@@ -113,7 +113,7 @@ orthogonal. This is the rectangular Gram-metric constraint. -/
 theorem gram_offDiagonal_eq_zero_of_axisReflection
     (G : Matrix (Fin 2) (Fin 2) ℝ)
     (hInv :
-      let A : Matrix (Fin 2) (Fin 2) ℝ := !![1, 0; 0, -1];
+      let A : Matrix (Fin 2) (Fin 2) ℝ := !![1, 0; 0, -1]
       A.transpose * G * A = G) :
     G 0 1 = 0 := by
   dsimp at hInv
@@ -128,7 +128,7 @@ theorem gram_square_constraints_of_quarterTurn
     (G : Matrix (Fin 2) (Fin 2) ℝ)
     (hSymm : G 0 1 = G 1 0)
     (hInv :
-      let A : Matrix (Fin 2) (Fin 2) ℝ := !![0, -1; 1, 0];
+      let A : Matrix (Fin 2) (Fin 2) ℝ := !![0, -1; 1, 0]
       A.transpose * G * A = G) :
     G 0 0 = G 1 1 ∧ G 0 1 = 0 := by
   dsimp at hInv
@@ -146,7 +146,7 @@ theorem gram_hexagonal_constraints_of_sixthTurn
     (G : Matrix (Fin 2) (Fin 2) ℝ)
     (hSymm : G 0 1 = G 1 0)
     (hInv :
-      let A : Matrix (Fin 2) (Fin 2) ℝ := !![0, -1; 1, 1];
+      let A : Matrix (Fin 2) (Fin 2) ℝ := !![0, -1; 1, 1]
       A.transpose * G * A = G) :
     G 0 0 = G 1 1 ∧ 2 * G 0 1 = G 0 0 := by
   dsimp at hInv
@@ -162,7 +162,7 @@ theorem gram_hexagonal_constraints_of_sixthTurn
 preserves the metric exactly when that basis is orthogonal. -/
 theorem gram_axisReflection_iff (G : Matrix (Fin 2) (Fin 2) ℝ)
     (hSymm : G 0 1 = G 1 0) :
-    (let A : Matrix (Fin 2) (Fin 2) ℝ := !![1, 0; 0, -1]
+    (let A : Matrix (Fin 2) (Fin 2) ℝ := !![1, 0; 0, -1];
       A.transpose * G * A = G) ↔ G 0 1 = 0 := by
   constructor
   · exact gram_offDiagonal_eq_zero_of_axisReflection G
@@ -176,7 +176,7 @@ theorem gram_axisReflection_iff (G : Matrix (Fin 2) (Fin 2) ℝ)
 when the two primitive vectors are orthogonal and have equal squared lengths. -/
 theorem gram_quarterTurn_iff (G : Matrix (Fin 2) (Fin 2) ℝ)
     (hSymm : G 0 1 = G 1 0) :
-    (let A : Matrix (Fin 2) (Fin 2) ℝ := !![0, -1; 1, 0]
+    (let A : Matrix (Fin 2) (Fin 2) ℝ := !![0, -1; 1, 0];
       A.transpose * G * A = G) ↔
       G 0 0 = G 1 1 ∧ G 0 1 = 0 := by
   constructor
@@ -191,7 +191,7 @@ theorem gram_quarterTurn_iff (G : Matrix (Fin 2) (Fin 2) ℝ)
 isometrically exactly when the primitive basis has the hexagonal Gram form. -/
 theorem gram_sixthTurn_iff (G : Matrix (Fin 2) (Fin 2) ℝ)
     (hSymm : G 0 1 = G 1 0) :
-    (let A : Matrix (Fin 2) (Fin 2) ℝ := !![0, -1; 1, 1]
+    (let A : Matrix (Fin 2) (Fin 2) ℝ := !![0, -1; 1, 1];
       A.transpose * G * A = G) ↔
       G 0 0 = G 1 1 ∧ 2 * G 0 1 = G 0 0 := by
   constructor
