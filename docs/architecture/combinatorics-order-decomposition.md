@@ -47,6 +47,10 @@ crossing parity and a compatible family shuffle's ordered block-inversion parity
 decomposition, local endpoint equivalences, the shuffle, their endpoint compatibility, and an
 explicit block order. It does not assume the residual parity is zero.
 
+The generic `Pairing.crossingCount_eq_sum_localCrossingCount_add_inter` additionally
+identifies the diagonal contributions with the crossing counts of any order-preserving
+component-local pairings, while retaining the exact inter-component remainder.
+
 The canonical-leg-order and mixed-time-order external-insertion modules supply their own endpoint
 data and compatibility proofs. Endpoint inversion reindexing and off-diagonal parity summation
 remain in generic combinatorics; time ordering and physical exchange weights remain downstream.

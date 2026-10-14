@@ -252,6 +252,29 @@ theorem Pairing.crossingCount_eq_sum_componentCrossingCount_diag_add_inter [Fint
     Finset.sum_union (Finset.disjoint_diag_offDiag _), Finset.sum_diag]
   rfl
 
+/-- The crossing count of a pairing assembled from order-preserving local pairings is
+the sum of the local crossing counts and the residual crossings between components.
+The normalized-pair decomposition may use arbitrary component fibers. -/
+theorem Pairing.crossingCount_eq_sum_localCrossingCount_add_inter [Fintype ι]
+    {localSize : ι → ℕ} (pairing : Pairing n)
+    (localPairing : ∀ B, Pairing (localSize B))
+    (e : (Σ B : ι, F B) ≃ pairing.NormalizedPair)
+    (localEquiv : ∀ B, (localPairing B).NormalizedPair ≃ F B)
+    (position : ∀ B, Fin (2 * localSize B) → Fin (2 * n))
+    (hmono : ∀ B, StrictMono (position B))
+    (hpair : ∀ B (pr : (localPairing B).NormalizedPair),
+      (e ⟨B, localEquiv B pr⟩).1 =
+        (position B pr.1.1, position B pr.1.2)) :
+    pairing.crossingCount =
+      (∑ B : ι, (localPairing B).crossingCount) +
+        pairing.interComponentCrossingCount e := by
+  rw [pairing.crossingCount_eq_sum_componentCrossingCount_diag_add_inter e]
+  congr 1
+  apply Finset.sum_congr rfl
+  intro B _
+  exact pairing.componentCrossingCount_self_eq (localPairing B) e B
+    (localEquiv B) (position B) (hmono B) (hpair B)
+
 /-- When the two orientations between distinct components cancel modulo two, the crossing count has
 the parity of the sum of the component-internal crossing counts. -/
 theorem Pairing.crossingCount_mod_two_eq_sum_componentCrossingCount [Fintype ι]

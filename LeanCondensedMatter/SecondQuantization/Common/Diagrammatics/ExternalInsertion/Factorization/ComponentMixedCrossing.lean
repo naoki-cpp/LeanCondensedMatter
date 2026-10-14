@@ -62,25 +62,16 @@ theorem ExternalInsertionDiagram.pairingInMixedOrder_crossingCount_eq_sum_compon
           (d.componentInteractionTime σ B)).crossingCount) +
       (d.pairingInMixedOrder externalTime σ).interComponentCrossingCount
         (d.componentMixedPairEquiv externalTime σ) := by
-  rw [Pairing.crossingCount_eq_sum_componentCrossingCount_diag_add_inter
+  exact Pairing.crossingCount_eq_sum_localCrossingCount_add_inter
     (d.pairingInMixedOrder externalTime σ)
-    (d.componentMixedPairEquiv externalTime σ)]
-  apply congrArg (fun k : ℕ =>
-    k + (d.pairingInMixedOrder externalTime σ).interComponentCrossingCount
-      (d.componentMixedPairEquiv externalTime σ))
-  apply Finset.sum_congr rfl
-  intro B _
-  exact Pairing.componentCrossingCount_self_eq
-    (d.pairingInMixedOrder externalTime σ)
-    ((d.componentOrderedDiagram B).pairingInMixedOrder
+    (fun B => (d.componentOrderedDiagram B).pairingInMixedOrder
       (d.componentExternalTime externalTime B)
       (d.componentInteractionTime σ B))
-    (d.componentMixedPairEquiv externalTime σ) B
-    (Equiv.refl _)
-    (d.componentMixedPosition externalTime σ B)
-    (d.componentMixedPosition_strictMono externalTime σ B)
-    (fun pr => by
-      simpa using d.componentMixedPairEquiv_apply externalTime σ B pr)
+    (d.componentMixedPairEquiv externalTime σ)
+    (fun B => Equiv.refl _)
+    (fun B => d.componentMixedPosition externalTime σ B)
+    (fun B => d.componentMixedPosition_strictMono externalTime σ B)
+    (fun B pr => by simpa using d.componentMixedPairEquiv_apply externalTime σ B pr)
 
 /-- The exchange-statistics weight of the mixed-order pairing factors into a residual
 inter-component weight and the standalone mixed-order component weights. -/
