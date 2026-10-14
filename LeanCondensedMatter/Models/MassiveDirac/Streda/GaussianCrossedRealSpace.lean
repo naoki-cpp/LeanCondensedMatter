@@ -450,11 +450,6 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel_pa
         axis source v m probeEnergy broadening disorderStrength hbar pMax radius p := by
   have hI2 : Complex.I ^ 2 = (-1 : ℂ) := by
     simpa [pow_two] using Complex.I_mul_I
-  have hI3 : Complex.I ^ 3 = -Complex.I := by
-    calc
-      Complex.I ^ 3 = Complex.I ^ 2 * Complex.I := by ring
-      _ = (-1 : ℂ) * Complex.I := by rw [hI2]
-      _ = -Complex.I := by ring
   fin_cases source <;> cases axis <;>
     simp [InternalSpace.pauliVectorCoefficient,
       finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel,
@@ -680,8 +675,6 @@ noncomputable def finiteCutoffContinuumBornDysonGaussianCrossedAngularCurrentEnt
           (((Real.cos angle : ℝ) : ℂ) * ((Real.sin angle : ℝ) : ℂ)) *
             harmonics.secondMixed i j))
 
-set_option maxHeartbeats 1000000
-
 /-- The full-angle `K0/K1/K2` crossed-current Fourier integrand is
 the spinor conjugate of the corresponding rotated Cartesian source at
 the radial axis. This exact identity is pointwise in radial momentum,
@@ -725,22 +718,21 @@ private theorem gaussianCrossedAngularCurrentEntryKernel_sourceRotation
       _ = (-1 : ℂ) * Complex.I := by rw [hI2]
       _ = -Complex.I := by ring
   ext i j
+  rw [inPlaneSpinRotation_conjugate_apply]
   fin_cases source <;> fin_cases i <;> fin_cases j <;>
     simp [finiteCutoffContinuumBornDysonGaussianCrossedAngularCurrentEntryKernel,
       finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel,
       gaussianCrossedCurrentCoefficientVector, polarPauliInPlaneHarmonics,
       inPlaneSpinRotation, inPlaneSpinRotationInverse,
       sigmaX, sigmaY, sigmaZ, InternalSpace.pauliX, InternalSpace.pauliY,
-      InternalSpace.pauliZ, Matrix.mul_apply, Fin.sum_univ_two, Matrix.smul_apply, Matrix.sub_apply, Matrix.add_apply,
+      InternalSpace.pauliZ, Matrix.smul_apply, Matrix.add_apply,
       smul_eq_mul]
   all_goals
     simp only [← Complex.ofReal_cos, ← Complex.ofReal_sin]
     simp only [← htrig]
     ring_nf
-    simp only [hI2, hI3]
+    simp only [hI2]
     ring
-
-set_option maxHeartbeats 200000
 
 /-- Arbitrary-angle polar Fourier representation of the model's crossed-current
 matrix. The underlying advanced-current-retarded Pauli sandwich is the same
