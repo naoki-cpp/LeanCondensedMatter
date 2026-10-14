@@ -24,11 +24,22 @@ theorem externalInsertionLeftMixedToFixedEquiv_eq_standardMixedPosition_symm
     externalInsertionLeftMixedToFixedEquiv T externalTime σ =
       (externalInsertionStandardToMixedAtomicPositionEquiv externalTime
         (σ ∘ fun i : Fin T.card => (T.orderIsoOfFin rfl i).1)).symm := by
+  classical
   apply Equiv.ext
   intro p
-  simp [externalInsertionLeftMixedToFixedEquiv,
-    externalInsertionStandardToMixedAtomicPositionEquiv,
-    externalInsertionLegEquiv]
+  cases hleg : (externalInsertionMixedTimeOrderedAtomicLegEquiv externalTime
+      (σ ∘ fun i : Fin T.card => (T.orderIsoOfFin rfl i).1)) p with
+  | inl e =>
+      apply Fin.ext
+      simp [externalInsertionLeftMixedToFixedEquiv,
+        externalInsertionStandardToMixedAtomicPositionEquiv,
+        externalInsertionLegEquiv, hleg]
+  | inr vl =>
+      rcases vl with ⟨v, l⟩
+      apply Fin.ext
+      simp [externalInsertionLeftMixedToFixedEquiv,
+        externalInsertionStandardToMixedAtomicPositionEquiv,
+        externalInsertionLegEquiv, hleg, Fin.sort_univ]
 
 end Fermionic
 end SecondQuantization
