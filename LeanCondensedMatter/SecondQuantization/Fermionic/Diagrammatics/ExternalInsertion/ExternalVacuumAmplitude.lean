@@ -35,14 +35,7 @@ theorem externalInsertionOfSlotSplit_dysonFixedTimeAmplitude_eq_local_mul_vacuum
     let order : QuarticVertexOrder S := (S.orderIsoOfFin rfl).toEquiv
     let f : Fin S.card → Fin n := fun i => (S.orderIsoOfFin rfl i).1
     let fT : Fin T.card → Fin n := fun i => (T.orderIsoOfFin rfl i).1
-    let localFixed :=
-      (externalInsertionMixedTimeOrderedAtomicLegEquiv externalTime (σ ∘ fT)).trans
-        ((Equiv.sumCongr
-          (Equiv.refl (Fin (2 * E)))
-          (((Equiv.subtypeUnivEquiv
-            (fun i : Fin T.card => Finset.mem_univ i)).trans
-            (T.orderIsoOfFin rfl).toEquiv).prodCongr (Equiv.refl (Fin 4)))).trans
-          (externalInsertionLegEquiv E T).symm)
+    let localFixed := externalInsertionLeftMixedToFixedEquiv T externalTime σ
     let localPairing : Combinatorics.Pairing (2 * T.card + E) :=
       ext.pairing.transport localFixed
     let localSign : ℂ :=
@@ -64,8 +57,8 @@ theorem externalInsertionOfSlotSplit_dysonFixedTimeAmplitude_eq_local_mul_vacuum
       d.dysonFixedTimeAmplitude ε β g externalTime σ =
         (((-1 : ℂ) ^ T.card * ext.vertexWeight g) * (localSign * localValue)) *
           (((-1 : ℂ) ^ S.card * vac.vertexWeight g) * vacuumValue) := by
-  intro S order f fT localFixed localPairing localSign localKernel localValue
-    vacuumKernel vacuumValue d htime
+  intro S _order _f _fT _localFixed _localPairing localSign _localKernel localValue
+    _vacuumKernel vacuumValue d htime
   have hpair :
       externalInsertionMixedAtomicOrderSign externalTime σ *
           d.mixedPairingValue ε β externalTime σ =
