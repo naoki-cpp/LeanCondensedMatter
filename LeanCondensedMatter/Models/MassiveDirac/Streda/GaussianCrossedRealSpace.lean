@@ -203,6 +203,43 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedCurrentMomentumMatrix_polar
         .retarded v m probeEnergy broadening disorderStrength hbar pMax p angle]
   simp only [Matrix.mul_assoc]
 
+/-- The physical source direction rotates with the inverse spinor in the
+finite-cutoff Gaussian-crossed momentum integrand. Both Cartesian directions
+are handled by the same source index; the scalar ladder factor is unchanged.
+This is a pointwise identity before Fourier integration. -/
+theorem finiteCutoffContinuumBornDysonGaussianCrossedCurrentMomentumMatrix_polar_sourceRotation
+    (source : Fin 2)
+    (v m probeEnergy broadening disorderStrength hbar pMax p angle : ℝ) :
+    let factor := finiteCutoffContinuumBornDysonGaussianCrossedCurrentFactor
+      v m probeEnergy broadening disorderStrength hbar pMax
+    finiteCutoffContinuumBornDysonGreenMatrix
+        .advanced v m (p * Real.cos angle) (p * Real.sin angle)
+        probeEnergy broadening disorderStrength hbar pMax *
+      (factor • directionPauli source) *
+      finiteCutoffContinuumBornDysonGreenMatrix
+        .retarded v m (p * Real.cos angle) (p * Real.sin angle)
+        probeEnergy broadening disorderStrength hbar pMax =
+      inPlaneSpinRotation angle *
+        (finiteCutoffContinuumBornDysonGreenMatrix
+            .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax *
+          (factor •
+            if source = 0 then
+              (((Real.cos angle : ℝ) : ℂ)) • directionPauli 0 -
+                (((Real.sin angle : ℝ) : ℂ)) • directionPauli 1
+            else
+              (((Real.sin angle : ℝ) : ℂ)) • directionPauli 0 +
+                (((Real.cos angle : ℝ) : ℂ)) • directionPauli 1) *
+          finiteCutoffContinuumBornDysonGreenMatrix
+            .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax) *
+        inPlaneSpinRotationInverse angle := by
+  have h :=
+    finiteCutoffContinuumBornDysonGaussianCrossedCurrentMomentumMatrix_polar_spinRotation
+      source v m probeEnergy broadening disorderStrength hbar pMax p angle
+  dsimp only at h ⊢
+  rw [h]
+  simp only [mul_smul_comm, smul_mul_assoc,
+    inPlaneSpinRotationInverse_directionPauli]
+
 /-- One-dimensional radial-kernel representation of the Gaussian crossed current block on the
 positive real-space radial axis. Only the zeroth, first-cosine, and second-cosine channels survive. -/
 noncomputable def finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock
