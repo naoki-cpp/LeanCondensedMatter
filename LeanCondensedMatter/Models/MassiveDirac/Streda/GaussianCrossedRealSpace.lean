@@ -970,9 +970,11 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceCurrentBlock_polar
   rw [hradial 0, hradial 1]
   by_cases hs : source = 0
   · simp only [if_pos hs]
-    module
+    simp only [mul_smul_comm, smul_mul_assoc, smul_sub, smul_smul]
+    simp only [mul_comm prefactor c, mul_comm prefactor s]
   · simp only [if_neg hs]
-    module
+    simp only [mul_smul_comm, smul_mul_assoc, smul_add, smul_smul]
+    simp only [mul_comm prefactor c, mul_comm prefactor s]
 
 private theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel_neg_radius
     (source : Fin 2)
