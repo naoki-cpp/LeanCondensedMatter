@@ -45,7 +45,7 @@ theorem externalInsertionLeftMixedToFixedEquiv_eq_standardMixedPosition_symm
           (Fin.cast (by simp)
             (externalInsertionExternalLeg E
               (Finset.univ : Finset (Fin T.card)) e)).val
-        simp
+        simp only [Fin.val_cast, externalInsertionExternalLeg_val]
     | inr vl =>
         rcases vl with ⟨v, l⟩
         apply Fin.ext
@@ -53,8 +53,8 @@ theorem externalInsertionLeftMixedToFixedEquiv_eq_standardMixedPosition_symm
             (T.orderIsoOfFin rfl v.1) l).val =
           (Fin.cast (by simp)
             (externalInsertionInteractionLeg (E := E) v l)).val
-        simp [externalInsertionInteractionLeg_val,
-          Finset.orderIsoOfFin_symm_apply, Fin.sort_univ]
+        simp only [Fin.val_cast, externalInsertionInteractionLeg_val]
+        simp
   apply Equiv.ext
   intro p
   change supportFixed
