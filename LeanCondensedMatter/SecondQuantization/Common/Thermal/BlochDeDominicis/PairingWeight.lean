@@ -75,18 +75,6 @@ theorem zetaInt_pow_eq_prod_of_sum_mod_two_eq (s : Statistics)
     _ = ∏ i, (s.zetaInt : ℂ) ^ localExponent i := by
       rw [← Finset.prod_pow_eq_pow_sum]
 
-/-- Pairing weights multiply whenever the global crossing count has the same parity as the sum of
-two local crossing counts. This isolates sign factorization from the combinatorial parity proof. -/
-theorem Pairing.weight_eq_mul_of_crossingCount_mod_two_eq (s : Statistics)
-    {n nLeft nRight : ℕ} (pairing : Pairing n) (left : Pairing nLeft)
-    (right : Pairing nRight)
-    (h : pairing.crossingCount % 2 =
-      (left.crossingCount + right.crossingCount) % 2) :
-    pairing.weight s = left.weight s * right.weight s := by
-  simp only [Pairing.weight]
-  rw [← pow_add]
-  exact zetaInt_pow_eq_of_mod_two_eq s h
-
 /-- The exchange-statistics weight of a binary assembled pairing is the product
 of the two local weights, multiplied by the parity sign of right-before-left
 ambient position inversions. The two embeddings preserve local endpoint order;
@@ -144,19 +132,6 @@ theorem Pairing.evaluation_ofSplit_eq_positionInversions_mul (s : Statistics)
       hleft hright]
   simp only [Pairing.evaluation]
   ring
-
-/-- A finite-family version of `Pairing.weight_eq_mul_of_crossingCount_mod_two_eq`: once the global
-crossing count is identified modulo two with the sum of local crossing counts, the global exchange
-weight is the product of all local exchange weights. -/
-theorem Pairing.weight_eq_prod_of_crossingCount_mod_two_eq (s : Statistics)
-    {ι : Type*} [Fintype ι] {n : ℕ} {localSize : ι → ℕ}
-    (pairing : Pairing n) (localPairing : (i : ι) → Pairing (localSize i))
-    (h : pairing.crossingCount % 2 =
-      (∑ i, (localPairing i).crossingCount) % 2) :
-    pairing.weight s = ∏ i, (localPairing i).weight s := by
-  simpa only [Pairing.weight] using
-    zetaInt_pow_eq_prod_of_sum_mod_two_eq s pairing.crossingCount
-      (fun i => (localPairing i).crossingCount) h
 
 /-- An exact decomposition of the crossing count gives a product of local exchange weights
 times the residual inter-component exchange weight. This is independent of the component
