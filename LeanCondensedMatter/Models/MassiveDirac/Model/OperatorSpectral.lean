@@ -65,9 +65,11 @@ theorem bandProjectorOperator_completeOrthogonalIdempotents
       (fun band : Band => bandProjectorOperator band v m px py) := by
   let φ : Matrix2 ≃⋆ₐ[ℂ] (DiracHilbert →L[ℂ] DiracHilbert) :=
     Matrix.toEuclideanCLM
-  simpa only [Function.comp_apply, bandProjectorOperator, matrixOperator, φ] using
-    (bandProjector_completeOrthogonalIdempotents v m px py hE).map
-      φ.toRingEquiv.toRingHom
+  change CompleteOrthogonalIdempotents
+    ((φ.toRingEquiv.toRingHom) ∘
+      (fun band : Band => bandProjector band v m px py))
+  exact (bandProjector_completeOrthogonalIdempotents v m px py hE).map
+    φ.toRingEquiv.toRingHom
 
 /-- The Hamiltonian acts on each operator projector with its band energy. -/
 theorem hamiltonianOperator_mul_bandProjectorOperator
