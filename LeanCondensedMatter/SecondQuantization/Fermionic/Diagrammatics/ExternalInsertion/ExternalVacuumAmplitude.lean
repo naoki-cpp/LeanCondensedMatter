@@ -35,7 +35,8 @@ theorem externalInsertionOfSlotSplit_dysonFixedTimeAmplitude_eq_local_mul_vacuum
     let order : QuarticVertexOrder S := (S.orderIsoOfFin rfl).toEquiv
     let f : Fin S.card → Fin n := fun i => (S.orderIsoOfFin rfl i).1
     let fT : Fin T.card → Fin n := fun i => (T.orderIsoOfFin rfl i).1
-    let localFixed := externalInsertionLeftMixedToFixedEquiv T externalTime σ
+    let localFixed :=
+      (externalInsertionStandardToMixedAtomicPositionEquiv externalTime (σ ∘ fT)).symm
     let localPairing : Combinatorics.Pairing (2 * T.card + E) :=
       ext.pairing.transport localFixed
     let localSign : ℂ :=
