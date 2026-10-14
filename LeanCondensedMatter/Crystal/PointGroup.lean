@@ -38,6 +38,42 @@ def latticePointGroup {V : Type*} [NormedAddCommGroup V] [NormedSpace ℝ V]
     intro g hg v
     simpa using (hg (g⁻¹ v)).symm
 
+
+namespace latticePointGroup
+
+variable {V : Type*} [NormedAddCommGroup V] [NormedSpace ℝ V]
+
+/-- Restrict a linear isometry preserving an integral lattice to an integral-linear
+automorphism of the lattice itself. No lattice basis is required. -/
+def restrict (L : Submodule ℤ V) (g : latticePointGroup L) : L ≃ₗ[ℤ] L where
+  toFun v := ⟨(g : V ≃ₗᵢ[ℝ] V) v, (g.property v).2 v.property⟩
+  invFun v := ⟨((g⁻¹ : latticePointGroup L) : V ≃ₗᵢ[ℝ] V) v,
+    ((g⁻¹ : latticePointGroup L).property v).2 v.property⟩
+  left_inv v := by
+    apply Subtype.ext
+    simp
+  right_inv v := by
+    apply Subtype.ext
+    simp
+  map_add' x y := by
+    apply Subtype.ext
+    simp
+  map_smul' n x := by
+    apply Subtype.ext
+    simp
+
+/-- The canonical integral-linear representation of the intrinsic lattice point group. -/
+def representation (L : Submodule ℤ V) : latticePointGroup L →* (L ≃ₗ[ℤ] L) where
+  toFun := restrict L
+  map_one' := by
+    ext v
+    rfl
+  map_mul' g h := by
+    ext v
+    rfl
+
+end latticePointGroup
+
 namespace AtomicConfiguration
 
 variable {V E Species : Type*}
