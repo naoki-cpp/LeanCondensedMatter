@@ -7606,9 +7606,9 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
-    "retainedNeedsReview": true,
+    "retainedNeedsReview": false,
     "retainedMention": true,
     "projectAxioms": [],
     "name": "Combinatorics.PairingOn.transport_trans",
@@ -7618,7 +7618,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Common.ExternalInsertionDiagram.ofSlotSplit_pairingInMixedOrder_eq_ofSplit_orderedVacuum"
+      "SecondQuantization.Common.ExternalInsertionDiagram.ofSlotSplit_pairingInMixedOrder_eq_ofSplit_orderedVacuum",
+      "SecondQuantization.Common.ExternalInsertionDiagram.supportSlotCongr_pairingInMixedOrder"
     ],
     "dependencies": [
       "Combinatorics.PairingOn.ext",
@@ -7627,9 +7628,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.ExternalInsertionDiagram.ofSlotSplit_pairingInMixedOrder_eq_ofSplit_orderedVacuum"
+      "SecondQuantization.Common.ExternalInsertionDiagram.ofSlotSplit_pairingInMixedOrder_eq_ofSplit_orderedVacuum",
+      "SecondQuantization.Common.ExternalInsertionDiagram.supportSlotCongr_pairingInMixedOrder"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -61509,6 +61511,46 @@
   },
   {
     "terminal": true,
+    "statement": "∀ (diagram : QuantumTheory.Models.MassiveDirac.GaussianCrossedDiagram)\n  (e v m probeEnergy broadening disorderStrength hbar pMax rMax : ℝ),\n  broadening ≠ 0 →\n    0 ≤ disorderStrength →\n      0 ≤ pMax →\n        QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedOrderedXYConductivity diagram e v\n            m probeEnergy broadening disorderStrength hbar pMax rMax =\n          ↑(QuantumTheory.Transport.bastinStredaTraceConductivityPrefactor hbar * (e * v) ^ 2) *\n                ↑(disorderStrength ^ 2) *\n              ↑(2 * Real.pi) *\n            ∫ (radius : ℝ) in 0..rMax,\n              ↑radius *\n                ((QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor\n                      diagram v m probeEnergy broadening disorderStrength hbar pMax radius 0 1 -\n                    QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor\n                      diagram v m probeEnergy broadening disorderStrength hbar pMax radius 1 0) /\n                  2)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedOrderedXYConductivity_eq_radial_antisymmetric_trace",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Conductivity.Hall.GaussianCrossed",
+    "externalAxioms": [],
+    "docString": "The physically normalized crossed Hall contribution reduces to the radial\nantisymmetric source-pair trace at finite momentum and real-space cutoffs.\nThe existing Fourier measures remain inside the radial trace tensor, while\nthe two disorder correlators and the trace-only Bastin prefactor occur once.\nThis does not evaluate the radial integral or assert a regulator limit. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceIntegral_eq_radial_antisymmetric_trace_of_regulated"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
     "statement": "∀ (e v m probeEnergy broadening disorderStrength hbar pMax rMax : ℝ),\n  (QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedOrderedXYConductivity\n        QuantumTheory.Models.MassiveDirac.GaussianCrossedDiagram.psi e v m probeEnergy broadening disorderStrength hbar\n        pMax rMax).im =\n    0",
     "standardAxioms": [
       "Classical.choice",
@@ -63015,7 +63057,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ (diagram : QuantumTheory.Models.MassiveDirac.GaussianCrossedDiagram)\n  (v m probeEnergy broadening disorderStrength hbar pMax rMax : ℝ),\n  broadening ≠ 0 →\n    0 ≤ disorderStrength →\n      0 ≤ pMax →\n        QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceIntegral diagram v m\n            probeEnergy broadening disorderStrength hbar pMax rMax =\n          ↑(2 * Real.pi) *\n            ∫ (radius : ℝ) in 0..rMax,\n              ↑radius *\n                ((QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor\n                      diagram v m probeEnergy broadening disorderStrength hbar pMax radius 0 1 -\n                    QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor\n                      diagram v m probeEnergy broadening disorderStrength hbar pMax radius 1 0) /\n                  2)",
     "standardAxioms": [
       "Classical.choice",
@@ -63023,7 +63065,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -63034,15 +63076,19 @@
     "docString": "The regulated Gaussian X/Psi real-space integral reduces unconditionally to\nthe antisymmetric radial source-pair tensor once the finite-broadening\nintegrability assumptions are supplied. This discharges the former\nmodel-specific angular-rotation hypothesis using the proved Green/current\nSO(2) covariance, without taking any regulator limit. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedOrderedXYConductivity_eq_radial_antisymmetric_trace"
+    ],
     "dependencies": [
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceIntegral_eq_radial_antisymmetric_trace",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedTraceKernel_polarPoint2D_eq_radial_tensor"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedOrderedXYConductivity_eq_radial_antisymmetric_trace"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -96396,7 +96442,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "SecondQuantization.Bosonic.QuarticDiagram.freeGibbsExpectation_eq_orderedThermalWickSum",
-    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.Amplitude",
+    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion.Pairing",
     "externalAxioms": [],
     "docString": "The concrete Gibbs expectation of the ordered quartic local-leg product is exactly the sum over\nthe pairing amplitudes carried by the existing quartic diagram combinatorics. ",
     "directWrapperTargetModule": null,
@@ -105199,90 +105245,6 @@
   },
   {
     "terminal": true,
-    "statement": "∀ (s : SecondQuantization.Common.Statistics) {n nLeft nRight : ℕ} (pairing : Combinatorics.Pairing n)\n  (left : Combinatorics.Pairing nLeft) (right : Combinatorics.Pairing nRight),\n  pairing.crossingCount % 2 = (left.crossingCount + right.crossingCount) % 2 →\n    Combinatorics.Pairing.weight s pairing = Combinatorics.Pairing.weight s left * Combinatorics.Pairing.weight s right",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.BlochDeDominicis.Pairing.weight_eq_mul_of_crossingCount_mod_two_eq",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.PairingWeight",
-    "externalAxioms": [],
-    "docString": "Pairing weights multiply whenever the global crossing count has the same parity as the sum of\ntwo local crossing counts. This isolates sign factorization from the combinatorial parity proof. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "SecondQuantization.Common.BlochDeDominicis.zetaInt_pow_eq_of_mod_two_eq"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (s : SecondQuantization.Common.Statistics) {ι : Type u_1} [inst : Fintype ι] {n : ℕ} {localSize : ι → ℕ}\n  (pairing : Combinatorics.Pairing n) (localPairing : (i : ι) → Combinatorics.Pairing (localSize i)),\n  pairing.crossingCount % 2 = (∑ i, (localPairing i).crossingCount) % 2 →\n    Combinatorics.Pairing.weight s pairing = ∏ i, Combinatorics.Pairing.weight s (localPairing i)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.BlochDeDominicis.Pairing.weight_eq_prod_of_crossingCount_mod_two_eq",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.PairingWeight",
-    "externalAxioms": [],
-    "docString": "A finite-family version of `Pairing.weight_eq_mul_of_crossingCount_mod_two_eq`: once the global\ncrossing count is identified modulo two with the sum of local crossing counts, the global exchange\nweight is the product of all local exchange weights. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.QuarticDiagram.pairingInOrder_weight_eq_prod_components"
-    ],
-    "dependencies": [
-      "SecondQuantization.Common.BlochDeDominicis.zetaInt_pow_eq_prod_of_sum_mod_two_eq"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.QuarticDiagram.pairingInOrder_weight_eq_prod_components"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
     "statement": "∀ (s : SecondQuantization.Common.Statistics) {n : ℕ} (pairing : Combinatorics.Pairing (n + 1)),\n  Combinatorics.Pairing.weight s pairing =\n    ↑s.zetaInt ^ pairing.interveningPositionCount * Combinatorics.Pairing.weight s pairing.eraseZeroPair",
     "standardAxioms": [
       "Classical.choice",
@@ -105564,7 +105526,6 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Common.BlochDeDominicis.ExpectationPairingRecursion.bloch_de_dominicis",
-      "SecondQuantization.Common.BlochDeDominicis.Pairing.weight_eq_mul_of_crossingCount_mod_two_eq",
       "SecondQuantization.Common.BlochDeDominicis.Pairing.weight_eraseZeroPair",
       "SecondQuantization.Common.BlochDeDominicis.Pairing.weight_ofSplit_eq_positionInversions_mul",
       "SecondQuantization.Common.BlochDeDominicis.zetaInt_pow_eq_prod_of_sum_mod_two_eq",
@@ -105578,14 +105539,13 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Common.BlochDeDominicis.ExpectationPairingRecursion.bloch_de_dominicis",
-      "SecondQuantization.Common.BlochDeDominicis.Pairing.weight_eq_mul_of_crossingCount_mod_two_eq",
       "SecondQuantization.Common.BlochDeDominicis.Pairing.weight_eraseZeroPair",
       "SecondQuantization.Common.BlochDeDominicis.Pairing.weight_ofSplit_eq_positionInversions_mul",
       "SecondQuantization.Common.BlochDeDominicis.zetaInt_pow_eq_prod_of_sum_mod_two_eq",
       "SecondQuantization.Fermionic.CompletedThermalLadder.completedFreeGibbsExpectation_cons_eq_gibbsRatio_mul_peel",
       "SecondQuantization.Fermionic.interComponentWeight_eq_componentExternalOrderSign"
     ],
-    "compiledConsumerCount": 7,
+    "compiledConsumerCount": 6,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -105619,7 +105579,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Common.BlochDeDominicis.Pairing.weight_eq_prod_of_crossingCount_mod_two_eq",
+      "SecondQuantization.Common.QuarticDiagram.pairingInOrder_weight_eq_prod_components",
       "SecondQuantization.Common.TwoPointDiagram.pairingInMixedOrder_weight_eq_external_mul_prod_vacuum"
     ],
     "dependencies": [
@@ -105628,7 +105588,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.BlochDeDominicis.Pairing.weight_eq_prod_of_crossingCount_mod_two_eq",
+      "SecondQuantization.Common.QuarticDiagram.pairingInOrder_weight_eq_prod_components",
       "SecondQuantization.Common.TwoPointDiagram.pairingInMixedOrder_weight_eq_external_mul_prod_vacuum"
     ],
     "compiledConsumerCount": 2,
@@ -108232,6 +108192,47 @@
   },
   {
     "terminal": true,
+    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {E N : ℕ} (T : Finset (Fin N))\n  (d : SecondQuantization.Common.ExternalInsertionDiagram ExternalLabel InternalLabel E N T)\n  (externalTime : Fin (2 * E) → ℝ) (σ : Fin N → ℝ),\n  have e := (T.orderIsoOfFin ⋯).symm.trans (Equiv.subtypeUnivEquiv ⋯).symm;\n  have σT := σ ∘ fun i => ↑((T.orderIsoOfFin ⋯) i);\n  (SecondQuantization.Common.ExternalInsertionDiagram.slotCongr e d).pairingInMixedOrder externalTime σT =\n    Combinatorics.PairingOn.transport d.pairing\n      (Equiv.symm (SecondQuantization.Common.externalInsertionStandardToMixedAtomicPositionEquiv externalTime σT))",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.ExternalInsertionDiagram.supportSlotCongr_pairingInMixedOrder",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.SupportPairingStandardization",
+    "externalAxioms": [],
+    "docString": "The canonical external-support reindexing carries exactly the standalone\nmixed-time pairing; the original gap positions of the support contribute no\nextra pairing transport. No vacuum-free condition is required. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "Combinatorics.PairingOn.transport_trans",
+      "SecondQuantization.Common.externalInsertionLegCongr_standardize"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
     "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {E N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.ExternalInsertionDiagram ExternalLabel InternalLabel E N S)\n  (v : ↥(S \\ d.externallySupportedInteractionPart)), d.vacuumComplementDiagram.vertexLabel v = d.vertexLabel ⟨↑v, ⋯⟩",
     "standardAxioms": [
       "Classical.choice",
@@ -109314,7 +109315,7 @@
       "SecondQuantization.Fermionic.fixedExternalOfSlotSplit_prod_vacuumDysonFixedTimeValue_eq_quarticIntegrand"
     ],
     "dependencies": [
-      "SecondQuantization.Common.BlochDeDominicis.Pairing.weight_eq_prod_of_crossingCount_mod_two_eq",
+      "SecondQuantization.Common.BlochDeDominicis.zetaInt_pow_eq_prod_of_sum_mod_two_eq",
       "SecondQuantization.Common.QuarticDiagram.pairingInOrder_crossingCount_mod_two_eq_sum_components"
     ],
     "crossModuleDirectWrapper": false,
@@ -117944,7 +117945,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -117956,7 +117957,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Common.ExternalInsertionDiagram.standardize_pairing"
+      "SecondQuantization.Common.ExternalInsertionDiagram.standardize_pairing",
+      "SecondQuantization.Common.ExternalInsertionDiagram.supportSlotCongr_pairingInMixedOrder"
     ],
     "dependencies": [
       "SecondQuantization.Common.externalInsertionExternalLeg_val",
@@ -117965,9 +117967,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.ExternalInsertionDiagram.standardize_pairing"
+      "SecondQuantization.Common.ExternalInsertionDiagram.standardize_pairing",
+      "SecondQuantization.Common.ExternalInsertionDiagram.supportSlotCongr_pairingInMixedOrder"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
