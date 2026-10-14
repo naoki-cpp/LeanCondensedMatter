@@ -91,29 +91,15 @@ theorem pointGroup_le_latticePointGroup (X : AtomicConfiguration E Species) :
   intro v
   exact X.pointGroup_mem_translationSubgroup_iff (V := V) ⟨g, hg⟩ v
 
-/-- A point-group element restricted to the translation lattice as a `ℤ`-linear automorphism. -/
+/-- The configuration point-group action is the restriction of the intrinsic lattice
+point-group action. -/
 def pointGroupLatticeEquiv (X : AtomicConfiguration E Species)
     (g : X.pointGroup (V := V)) :
     AddSubgroup.toIntSubmodule (X.translationSubgroup (V := V)) ≃ₗ[ℤ]
-      AddSubgroup.toIntSubmodule (X.translationSubgroup (V := V)) where
-  toFun v :=
-    ⟨(g : V ≃ₗᵢ[ℝ] V) v,
-      (X.pointGroup_mem_translationSubgroup_iff (V := V) g v).2 v.property⟩
-  invFun v :=
-    ⟨((g⁻¹ : X.pointGroup (V := V)) : V ≃ₗᵢ[ℝ] V) v,
-      (X.pointGroup_mem_translationSubgroup_iff (V := V) g⁻¹ v).2 v.property⟩
-  left_inv v := by
-    apply Subtype.ext
-    simp
-  right_inv v := by
-    apply Subtype.ext
-    simp
-  map_add' x y := by
-    apply Subtype.ext
-    simp
-  map_smul' n x := by
-    apply Subtype.ext
-    simp
+      AddSubgroup.toIntSubmodule (X.translationSubgroup (V := V)) :=
+  latticePointGroup.restrict
+    (AddSubgroup.toIntSubmodule (X.translationSubgroup (V := V)))
+    ⟨(g : V ≃ₗᵢ[ℝ] V), X.pointGroup_le_latticePointGroup (V := V) g.property⟩
 
 /-- The integral representation of the point group on the translation lattice. -/
 def pointGroupLatticeRepresentation (X : AtomicConfiguration E Species) :
