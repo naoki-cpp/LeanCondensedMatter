@@ -25,18 +25,6 @@ private noncomputable def Pairing.componentPairEndpointEquiv
   (Equiv.sigmaProdDistrib (fun B => (componentPairing B).NormalizedPair) (Fin 2)).trans
     (Equiv.sigmaCongrRight fun B => (componentPairing B).pairEndpointEquiv)
 
-private theorem Pairing.componentPairEndpointEquiv_apply_zero
-    (componentPairing : ∀ B, Pairing (m B))
-    (B : ι) (pr : (componentPairing B).NormalizedPair) :
-    Pairing.componentPairEndpointEquiv componentPairing (⟨B, pr⟩, 0) = ⟨B, pr.1.1⟩ := by
-  simp [Pairing.componentPairEndpointEquiv]
-
-private theorem Pairing.componentPairEndpointEquiv_apply_one
-    (componentPairing : ∀ B, Pairing (m B))
-    (B : ι) (pr : (componentPairing B).NormalizedPair) :
-    Pairing.componentPairEndpointEquiv componentPairing (⟨B, pr⟩, 1) = ⟨B, pr.1.2⟩ := by
-  simp [Pairing.componentPairEndpointEquiv]
-
 private theorem Pairing.componentPairEndpointEquiv_partner
     (global : Pairing n) (componentPairing : ∀ B, Pairing (m B))
     (positionEquiv : (Σ B, Fin (2 * m B)) ≃ Fin (2 * n))
@@ -49,9 +37,9 @@ private theorem Pairing.componentPairEndpointEquiv_partner
       positionEquiv (Pairing.componentPairEndpointEquiv componentPairing (x, 1)) := by
   rcases x with ⟨B, pr⟩
   have hpr := ((componentPairing B).mem_pairs_iff pr.1.1 pr.1.2).1 pr.2
-  rw [Pairing.componentPairEndpointEquiv_apply_zero,
-    Pairing.componentPairEndpointEquiv_apply_one,
-    hpartner B pr.1.1, hpr.2]
+  simpa [Pairing.componentPairEndpointEquiv] using
+    (hpartner B pr.1.1).trans
+      (congrArg (fun p => positionEquiv ⟨B, p⟩) hpr.2)
 
 /-- Component-local normalized pairs are equivalent to the normalized pairs of a global pairing
 when the component position fibers partition the ambient positions and intertwine partner maps. -/
