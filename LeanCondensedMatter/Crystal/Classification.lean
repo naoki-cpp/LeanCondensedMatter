@@ -113,7 +113,7 @@ orthogonal. This is the rectangular Gram-metric constraint. -/
 theorem gram_offDiagonal_eq_zero_of_axisReflection
     (G : Matrix (Fin 2) (Fin 2) ℝ)
     (hInv :
-      let A : Matrix (Fin 2) (Fin 2) ℝ := !![1, 0; 0, -1]
+      let A : Matrix (Fin 2) (Fin 2) ℝ := !![1, 0; 0, -1];
       A.transpose * G * A = G) :
     G 0 1 = 0 := by
   dsimp at hInv
@@ -128,7 +128,7 @@ theorem gram_square_constraints_of_quarterTurn
     (G : Matrix (Fin 2) (Fin 2) ℝ)
     (hSymm : G 0 1 = G 1 0)
     (hInv :
-      let A : Matrix (Fin 2) (Fin 2) ℝ := !![0, -1; 1, 0]
+      let A : Matrix (Fin 2) (Fin 2) ℝ := !![0, -1; 1, 0];
       A.transpose * G * A = G) :
     G 0 0 = G 1 1 ∧ G 0 1 = 0 := by
   dsimp at hInv
@@ -146,7 +146,7 @@ theorem gram_hexagonal_constraints_of_sixthTurn
     (G : Matrix (Fin 2) (Fin 2) ℝ)
     (hSymm : G 0 1 = G 1 0)
     (hInv :
-      let A : Matrix (Fin 2) (Fin 2) ℝ := !![0, -1; 1, 1]
+      let A : Matrix (Fin 2) (Fin 2) ℝ := !![0, -1; 1, 1];
       A.transpose * G * A = G) :
     G 0 0 = G 1 1 ∧ 2 * G 0 1 = G 0 0 := by
   dsimp at hInv
@@ -208,7 +208,7 @@ condition relevant to the centered-rectangular Bravais class. It is not by
 itself an exhaustive characterization of that class. -/
 theorem gram_basisSwap_iff (G : Matrix (Fin 2) (Fin 2) ℝ)
     (hSymm : G 0 1 = G 1 0) :
-    (let A : Matrix (Fin 2) (Fin 2) ℝ := !![0, 1; 1, 0]
+    (let A : Matrix (Fin 2) (Fin 2) ℝ := !![0, 1; 1, 0];
       A.transpose * G * A = G) ↔ G 0 0 = G 1 1 := by
   constructor
   · intro hInv
