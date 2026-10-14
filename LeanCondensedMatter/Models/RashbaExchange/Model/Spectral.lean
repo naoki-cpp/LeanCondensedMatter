@@ -222,43 +222,21 @@ theorem bandProjector_completeOrthogonalIdempotents
     (hE : spinOrbitEnergy params px py ≠ 0) :
     CompleteOrthogonalIdempotents
       (fun band : Band => bandProjector params band px py) := by
-  have hIdem : ∀ band : Band,
-      IsIdempotentElem (bandProjector params band px py) := by
-    intro band
-    let Q := normalizedSpinHamiltonian params px py
-    let s : ℂ := ((bandSign band : ℝ) : ℂ)
-    have hQ : Q * Q = 1 := by
-      simpa [Q] using normalizedSpinHamiltonian_mul_self params px py hE
-    have hs : s ^ 2 = 1 := by
-      change (((bandSign band : ℝ) : ℂ) ^ 2) = 1
-      exact_mod_cast (bandSign_sq band)
-    have hP :
-        bandProjector params band px py =
-          (1 / 2 : ℂ) • ((1 : InternalSpace.PauliMatrix) + s • Q) := by
-      simpa [Q, s] using bandProjector_eq_normalized params band px py
-    rw [hP]
-    exact InternalSpace.involution_projector_mul_self Q hQ s hs
-  have hOrth (band : Band) :
-      bandProjector params band px py *
-          bandProjector params (oppositeBand band) px py = 0 := by
-    have hresolve := bandProjector_add_oppositeBand params band px py
-    calc
-      bandProjector params band px py *
-          bandProjector params (oppositeBand band) px py =
-        bandProjector params band px py *
-            (bandProjector params band px py +
-              bandProjector params (oppositeBand band) px py) -
-          bandProjector params band px py * bandProjector params band px py := by
-            noncomm_ring
-      _ = bandProjector params band px py * 1 -
-            bandProjector params band px py := by
-        rw [hresolve, (hIdem band).eq]
-      _ = 0 := by simp
-  refine ⟨⟨hIdem, ?_⟩, sum_bandProjector_eq_one params px py⟩
+  have hLower : IsIdempotentElem (bandProjector params .lower px py) := by
+    rw [bandProjector_eq_normalized]
+    exact InternalSpace.involution_projector_mul_self
+      (normalizedSpinHamiltonian params px py) (normalizedSpinHamiltonian_mul_self params px py hE)
+      (((bandSign Band.lower : ℝ) : ℂ)) (by norm_num [bandSign])
+  have hsum := sum_bandProjector_eq_one params px py
+  rw [sum_band] at hsum
+  have hUpper : bandProjector params .upper px py =
+      1 - bandProjector params .lower px py := eq_sub_of_add_eq' hsum
+  refine CompleteOrthogonalIdempotents.iff_ortho_complete.mpr
+    ⟨?_, sum_bandProjector_eq_one params px py⟩
   intro i j hij
   cases i <;> cases j <;> try exact (hij rfl).elim
-  · exact hOrth .lower
-  · exact hOrth .upper
+  · rw [hUpper, mul_sub, mul_one, hLower.eq, sub_self]
+  · rw [hUpper, sub_mul, one_mul, hLower.eq, sub_self]
 
 end
 
