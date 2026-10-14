@@ -992,6 +992,55 @@ theorem externalInsertionMixedSplit_relativePerm_sign_eq_mixedInversionCount
   simp
 
 omit [LinearOrder Mode] [Fintype Mode] in
+/-- The product of the genuine local external-support reordering sign and the
+ambient fixed-to-mixed atomic ordering sign equals the inter-sector inversion
+sign. The fixed-order support/vacuum inversions have already been proved even,
+so no fixed-split correction or internal monotonicity hypothesis remains. -/
+theorem externalInsertionMixedSplit_local_mul_global_sign_eq_mixedInversionCount
+    {E n : ℕ} (T : Finset (Fin n))
+    (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ) :
+    let S := (Finset.univ : Finset (Fin n)) \ T
+    let order : QuarticVertexOrder S := (S.orderIsoOfFin rfl).toEquiv
+    let f : Fin S.card → Fin n := fun i => (S.orderIsoOfFin rfl i).1
+    let localFixed := externalInsertionLeftMixedToFixedEquiv T externalTime σ
+    let split :=
+      ((Equiv.sumCongr (Equiv.refl (Fin (2 * (2 * T.card + E))))
+        (orderedLegToDiagramLeg S order)).trans
+        (externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T))).trans
+        (externalInsertionMixedTimeAmbientPositionEquiv externalTime σ).symm
+    let mixedSplit :=
+      (Equiv.sumCongr localFixed (Equiv.refl (Fin (2 * (2 * S.card))))).trans split
+    StrictAnti (σ ∘ f) →
+    Equiv.Perm.sign
+        (Equiv.sumCongr localFixed (Equiv.refl (Fin (2 * (2 * S.card))))) *
+      Equiv.Perm.sign
+        (externalInsertionStandardToMixedAtomicPositionEquiv externalTime σ) =
+      (-1 : ℤˣ) ^
+        (∑ i : Fin (2 * (2 * T.card + E)),
+          ∑ j : Fin (2 * (2 * S.card)),
+            if mixedSplit (Sum.inr j) < mixedSplit (Sum.inl i) then 1 else 0) := by
+  intro S order f localFixed split mixedSplit htime
+  let fixedSplit :=
+    ((Equiv.sumCongr (Equiv.refl (Fin (2 * (2 * T.card + E))))
+      (orderedLegToDiagramLeg S order)).trans
+      (externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T))).trans
+      (finCongr (by simp)).symm
+  calc
+    Equiv.Perm.sign
+          (Equiv.sumCongr localFixed (Equiv.refl (Fin (2 * (2 * S.card))))) *
+        Equiv.Perm.sign
+          (externalInsertionStandardToMixedAtomicPositionEquiv externalTime σ) =
+        Equiv.Perm.sign (fixedSplit.symm.trans mixedSplit) := by
+          exact (externalInsertionMixedSplit_relativePerm_sign_eq_local_mul_global
+            T externalTime σ).symm
+    _ = (-1 : ℤˣ) ^
+          (∑ i : Fin (2 * (2 * T.card + E)),
+            ∑ j : Fin (2 * (2 * S.card)),
+              if mixedSplit (Sum.inr j) < mixedSplit (Sum.inl i) then 1 else 0) :=
+        externalInsertionMixedSplit_relativePerm_sign_eq_mixedInversionCount
+          T externalTime σ htime
+
+omit [LinearOrder Mode] [Fintype Mode] in
 /-- On a strictly antitone vacuum chamber, the actual mixed-time fermionic
 crossing weight splits into the external mixed-order weight, the ordered vacuum
 weight, and the sign of the inter-sector atomic-position inversions.
