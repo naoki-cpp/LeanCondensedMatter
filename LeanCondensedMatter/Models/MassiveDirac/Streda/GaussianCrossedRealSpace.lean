@@ -944,12 +944,12 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceCurrentBlock_polar
         MeasureTheory.volume 0 pMax
       exact (hradialInt src i j).const_mul t
     by_cases hs : source = 0
-    · simp only [if_pos hs]
+    · simp only [hs, ite_true]
       rw [intervalIntegralMatrix2_sub
         0 pMax (fun p => c • radial 0 p) (fun p => s • radial 1 p)
         (hscaled 0 c) (hscaled 1 s)]
       rw [intervalIntegralMatrix2_smul, intervalIntegralMatrix2_smul]
-    · simp only [if_neg hs]
+    · simp only [hs, ite_false]
       rw [intervalIntegralMatrix2_add
         0 pMax (fun p => s • radial 0 p) (fun p => c • radial 1 p)
         (hscaled 0 s) (hscaled 1 c)]
@@ -981,9 +981,9 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceCurrentBlock_polar
         s • (prefactor • M) + c • (prefactor • N) := by
     simp only [smul_add, smul_smul, mul_comm prefactor c, mul_comm prefactor s]
   by_cases hs : source = 0
-  · simp only [if_pos hs]
+  · simp only [hs, ite_true]
     rw [htransport, hminus]
-  · simp only [if_neg hs]
+  · simp only [hs, ite_false]
     rw [htransport, hplus]
 
 private theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel_neg_radius
