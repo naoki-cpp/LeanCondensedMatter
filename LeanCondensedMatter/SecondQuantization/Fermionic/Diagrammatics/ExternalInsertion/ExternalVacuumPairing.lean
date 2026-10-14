@@ -1020,7 +1020,9 @@ theorem externalInsertionMixedSplit_local_mul_global_sign_eq_mixedInversionCount
           ∑ j : Fin (2 * (2 * S.card)),
             if mixedSplit (Sum.inr j) < mixedSplit (Sum.inl i) then 1 else 0) := by
   intro S order f localFixed split mixedSplit htime
-  let fixedSplit :=
+  let fixedSplit :
+      (Fin (2 * (2 * T.card + E)) ⊕ Fin (2 * (2 * S.card))) ≃
+        Fin (2 * (2 * n + E)) :=
     ((Equiv.sumCongr (Equiv.refl (Fin (2 * (2 * T.card + E))))
       (orderedLegToDiagramLeg S order)).trans
       (externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T))).trans
