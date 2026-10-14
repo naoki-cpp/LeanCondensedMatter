@@ -47,6 +47,63 @@ noncomputable def ExternalInsertionDiagram.standardizeVacuumFree
     ((T.orderIsoOfFin h).toEquiv.symm.trans
       (Equiv.subtypeUnivEquiv (fun i : Fin m => Finset.mem_univ i)).symm)
 
+/-- The increasing support-slot standardization preserves the actual flattened
+leg positions. Neither the external legs nor the internal four-leg blocks are
+permuted within their sectors. -/
+theorem externalInsertionLegCongr_standardize
+    (T : Finset (Fin N)) :
+    externalInsertionLegCongr (E := E)
+      ((T.orderIsoOfFin rfl).toEquiv.symm.trans
+        (Equiv.subtypeUnivEquiv
+          (fun i : Fin T.card => Finset.mem_univ i)).symm) =
+      finCongr (by simp) := by
+  classical
+  apply Equiv.ext
+  intro p
+  obtain ⟨x, rfl⟩ := (externalInsertionLegEquiv E T).symm.surjective p
+  cases x with
+  | inl e =>
+      apply Fin.ext
+      change (externalInsertionExternalLeg E
+          (Finset.univ : Finset (Fin T.card)) e).val =
+        (Fin.cast (by simp) (externalInsertionExternalLeg E T e)).val
+      simp only [Fin.val_cast, externalInsertionExternalLeg_val]
+  | inr vl =>
+      rcases vl with ⟨v, l⟩
+      let vFin : Fin T.card := (T.orderIsoOfFin rfl).symm v
+      apply Fin.ext
+      change (externalInsertionInteractionLeg (E := E)
+          (⟨vFin, Finset.mem_univ vFin⟩ :
+            ↥(Finset.univ : Finset (Fin T.card))) l).val =
+        (Fin.cast (by simp) (externalInsertionInteractionLeg (E := E) v l)).val
+      simp only [Fin.val_cast, externalInsertionInteractionLeg_val]
+      have huniv :
+          (((Finset.univ : Finset (Fin T.card)).orderIsoOfFin rfl).symm
+            (⟨vFin, Finset.mem_univ vFin⟩ :
+              ↥(Finset.univ : Finset (Fin T.card)))).val = vFin.val := by
+        rw [Finset.orderIsoOfFin_symm_apply, Fin.sort_univ, List.idxOf_finRange]
+      rw [huniv]
+      rfl
+
+/-- The pairing of a canonically reindexed support diagram is the original
+pairing transported only by the canonical type-level cast of its pair count. -/
+theorem ExternalInsertionDiagram.standardize_pairing
+    (T : Finset (Fin N))
+    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N T) :
+    (d.slotCongr
+      ((T.orderIsoOfFin rfl).toEquiv.symm.trans
+        (Equiv.subtypeUnivEquiv
+          (fun i : Fin T.card => Finset.mem_univ i)).symm)).pairing =
+      d.pairing.transport (finCongr (by simp)).symm := by
+  classical
+  change d.pairing.transport
+    (externalInsertionLegCongr (E := E)
+      ((T.orderIsoOfFin rfl).toEquiv.symm.trans
+        (Equiv.subtypeUnivEquiv
+          (fun i : Fin T.card => Finset.mem_univ i)).symm)).symm =
+      d.pairing.transport (finCongr (by simp)).symm
+  rw [externalInsertionLegCongr_standardize]
+
 /-- The standalone vacuum-free support diagram has the same vertex-weight product
 as the original support diagram, independent of the gaps in the ambient slots. -/
 theorem ExternalInsertionDiagram.standardizeVacuumFree_vertexWeight
