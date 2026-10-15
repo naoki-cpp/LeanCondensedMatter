@@ -2754,6 +2754,7 @@
       "name": "LeanCondensedMatter.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderLongitudinalSameSide",
       "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Streda/FiniteBroadeningBornLadderLongitudinalSameSide.lean",
       "imports": [
+        "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.Denominator",
         "LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornInvertibility",
         "LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornZeroBroadening"
       ],

@@ -3642,18 +3642,16 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Common.TwoPointDiagram.card_mixedVacuumComponentPair",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumPairImage.0.SecondQuantization.Common.TwoPointDiagram.slotSplitVacuumMixedPairEmbedding_surjective"
+      "SecondQuantization.Common.TwoPointDiagram.card_mixedVacuumComponentPair"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Common.TwoPointDiagram.card_mixedVacuumComponentPair",
-      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Sign.0.Combinatorics.Pairing.pairIndexEquiv",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumPairImage.0.SecondQuantization.Common.TwoPointDiagram.slotSplitVacuumMixedPairEmbedding_surjective"
+      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Sign.0.Combinatorics.Pairing.pairIndexEquiv"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -4554,6 +4552,50 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {n m : ℕ} (small : Combinatorics.Pairing n) (big : Combinatorics.Pairing m) (e : Fin (2 * n) ↪o Fin (2 * m))\n  (hpartner : ∀ (i : Fin (2 * n)), big.partner (e i) = e (small.partner i)) (pr : big.NormalizedPair),\n  (∃ i, e i = (↑pr).1) → ∃ q, (small.normalizedPairEmbedding big e hpartner) q = pr",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "Combinatorics.Pairing.exists_normalizedPairEmbedding_eq_of_firstEndpoint",
+    "module": "LeanCondensedMatter.Combinatorics.PerfectPairing.Embedding",
+    "externalAxioms": [],
+    "docString": "A normalized pair whose first endpoint lies in the range of a partner-preserving\norder embedding comes from a unique local normalized pair. This is the image\ncharacterization of the pairing restriction, without a cardinality argument. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Common.TwoPointDiagram.exists_slotSplitVacuumNormalizedPairEmbedding_eq_of_firstEndpoint"
+    ],
+    "dependencies": [
+      "Combinatorics.Pairing.mem_pairs_iff"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.TwoPointDiagram.exists_slotSplitVacuumNormalizedPairEmbedding_eq_of_firstEndpoint"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {n : ℕ} (pairing : Combinatorics.Pairing (n + 1)), pairing.firstPair ∈ pairing.pairs",
     "standardAxioms": [
       "Classical.choice",
@@ -4844,6 +4886,7 @@
     "dependents": [
       "Combinatorics.Pairing.crossingsWithFirstPair_mod_two",
       "Combinatorics.Pairing.eraseZeroPair_mem_pairs_iff",
+      "Combinatorics.Pairing.exists_normalizedPairEmbedding_eq_of_firstEndpoint",
       "Combinatorics.Pairing.firstPair_mem_pairs",
       "Combinatorics.Pairing.mem_pairs_map_iff",
       "Combinatorics.Pairing.normalizedPairSigmaEquiv_apply_of_strictMono",
@@ -4859,6 +4902,7 @@
     "compiledConsumers": [
       "Combinatorics.Pairing.crossingsWithFirstPair_mod_two",
       "Combinatorics.Pairing.eraseZeroPair_mem_pairs_iff",
+      "Combinatorics.Pairing.exists_normalizedPairEmbedding_eq_of_firstEndpoint",
       "Combinatorics.Pairing.firstPair_mem_pairs",
       "Combinatorics.Pairing.mem_pairs_map_iff",
       "Combinatorics.Pairing.normalizedPairSigmaEquiv_apply_of_strictMono",
@@ -4868,7 +4912,7 @@
       "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.EraseZero.0.Combinatorics.Pairing.mem_pairs_endpoints_mem_deletedPositions",
       "_private.LeanCondensedMatter.Permutation.PairingBridge.0.Combinatorics.exists_mem_pairs_inl_inl_of_not_isBipartite"
     ],
-    "compiledConsumerCount": 10,
+    "compiledConsumerCount": 11,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -10822,7 +10866,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {R : Type u_5} {Test' : Type u_6} {OneForm' : Type u_7} {Obs' : Type u_8} [inst : CommRing R]\n  [inst_1 : AddCommMonoid Test'] [inst_2 : _root_.Module R Test'] [inst_3 : AddCommMonoid OneForm']\n  [inst_4 : _root_.Module R OneForm'] [inst_5 : AddCommMonoid Obs'] [inst_6 : _root_.Module R Obs']\n  {δ : Obs' →ₗ[R] Obs'} {Q : Test' →ₗ[R] Obs'} {d : Test' →ₗ[R] OneForm'} (B : ConservationLaw.BalanceLaw δ Q d)\n  (sourceCurrent : OneForm' →ₗ[R] Obs') (hsource : ConservationLaw.IsDifferentialCurrent d B.source sourceCurrent),\n  (B.toDifferentialCurrentRepresentationOfSourceCurrent sourceCurrent hsource).current = B.current + sourceCurrent",
+    "statement": "∀ {R : Type u_5} {Test' : Type u_6} {OneForm' : Type u_7} {Obs' : Type u_8} [inst : CommRing R]\n  [inst_1 : AddCommMonoid Test'] [inst_2 : _root_.Module R Test'] [inst_3 : AddCommMonoid OneForm']\n  [inst_4 : _root_.Module R OneForm'] [inst_5 : AddCommMonoid Obs'] [inst_6 : _root_.Module R Obs']\n  {δ : Obs' →ₗ[R] Obs'} {Q : Test' →ₗ[R] Obs'} {d : Test' →ₗ[R] OneForm'} (B : ConservationLaw.BalanceLaw δ Q d)\n  (sourceCurrent : OneForm' →ₗ[R] Obs') (hsource : B.source = sourceCurrent ∘ₗ d),\n  (B.toDifferentialCurrentRepresentationOfSourceCurrent sourceCurrent hsource).current = B.current + sourceCurrent",
     "standardAxioms": [
       "Quot.sound",
       "propext"
@@ -10965,14 +11009,14 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ {𝕜 : Type u_1} {Test : Type u_2} {OneForm : Type u_3} {Obs : Type u_4} [inst : CommSemiring 𝕜]\n  [inst_1 : AddCommMonoid Test] [inst_2 : _root_.Module 𝕜 Test] [inst_3 : AddCommMonoid OneForm]\n  [inst_4 : _root_.Module 𝕜 OneForm] [inst_5 : AddCommMonoid Obs] [inst_6 : _root_.Module 𝕜 Obs]\n  {d : Test →ₗ[𝕜] OneForm} {J₁ J₂ : OneForm →ₗ[𝕜] Obs},\n  ConservationLaw.DifferentialCurrentEquivalent d J₁ J₂ ↔ J₁ ∘ₗ d = J₂ ∘ₗ d",
     "standardAxioms": [
       "Quot.sound",
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -10983,12 +11027,16 @@
     "docString": "Agreement on exact differentials is exactly equality after precomposition with `d`. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "QuantumMechanics.SingleParticle.currentEquivalent_nestedSymmetrizedCurrentFlux"
+    ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "QuantumMechanics.SingleParticle.currentEquivalent_nestedSymmetrizedCurrentFlux"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Quot.sound",
       "propext"
@@ -11112,9 +11160,7 @@
     "dependents": [
       "QuantumMechanics.SingleParticle.exists_current_eq_symmetrized_add_correction_add_invisible"
     ],
-    "dependencies": [
-      "ConservationLaw.IsDifferentialCurrent.currentEquivalent"
-    ],
+    "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
@@ -11314,216 +11360,6 @@
       "ConservationLaw.IntrinsicBalanceLaw.evolution_eq_source_of_differential_eq_zero"
     ],
     "compiledConsumerCount": 1,
-    "axioms": [
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {𝕜 : Type u_1} {Test : Type u_2} {OneForm : Type u_3} {Obs : Type u_4} [inst : CommSemiring 𝕜]\n  [inst_1 : AddCommMonoid Test] [inst_2 : _root_.Module 𝕜 Test] [inst_3 : AddCommMonoid OneForm]\n  [inst_4 : _root_.Module 𝕜 OneForm] [inst_5 : AddCommMonoid Obs] [inst_6 : _root_.Module 𝕜 Obs]\n  {d : Test →ₗ[𝕜] OneForm} {Φ : Test →ₗ[𝕜] Obs} {J₁ J₂ : OneForm →ₗ[𝕜] Obs},\n  ConservationLaw.IsDifferentialCurrent d Φ J₁ →\n    ConservationLaw.IsDifferentialCurrent d Φ J₂ → ConservationLaw.DifferentialCurrentEquivalent d J₁ J₂",
-    "standardAxioms": [],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "ConservationLaw.IsDifferentialCurrent.currentEquivalent",
-    "module": "LeanCondensedMatter.Analysis.ConservationLaw.CurrentEquivalence",
-    "externalAxioms": [],
-    "docString": "Any two current functionals representing the same intrinsic transport are equivalent on exact\ndifferentials.  This statement belongs to the current predicate itself and does not require\nbundling either current into a representation structure. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "ConservationLaw.DifferentialCurrentRepresentation.exists_current_eq_add_invisible",
-      "QuantumMechanics.SingleParticle.currentEquivalent_nestedSymmetrizedCurrentFlux"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "ConservationLaw.DifferentialCurrentRepresentation.exists_current_eq_add_invisible",
-      "QuantumMechanics.SingleParticle.currentEquivalent_nestedSymmetrizedCurrentFlux"
-    ],
-    "compiledConsumerCount": 2,
-    "axioms": [],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {𝕜 : Type u_1} {Test : Type u_2} {OneForm : Type u_3} {Obs : Type u_4} [inst : CommSemiring 𝕜]\n  [inst_1 : AddCommMonoid Test] [inst_2 : _root_.Module 𝕜 Test] [inst_3 : AddCommMonoid OneForm]\n  [inst_4 : _root_.Module 𝕜 OneForm] [inst_5 : AddCommMonoid Obs] [inst_6 : _root_.Module 𝕜 Obs]\n  {d : Test →ₗ[𝕜] OneForm} {Φ : Test →ₗ[𝕜] Obs} {J : OneForm →ₗ[𝕜] Obs},\n  ConservationLaw.IsDifferentialCurrent d Φ J → ∀ {f : Test}, d f = 0 → Φ f = 0",
-    "standardAxioms": [
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "ConservationLaw.IsDifferentialCurrent.eq_zero_of_map_eq_zero",
-    "module": "LeanCondensedMatter.Analysis.ConservationLaw.CurrentRepresentation",
-    "externalAxioms": [],
-    "docString": "A factorized transport functional vanishes on test objects annihilated by `d`. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {𝕜 : Type u_1} {Test : Type u_2} {OneForm : Type u_3} {Obs : Type u_4} [inst : CommSemiring 𝕜]\n  [inst_1 : AddCommMonoid Test] [inst_2 : _root_.Module 𝕜 Test] [inst_3 : AddCommMonoid OneForm]\n  [inst_4 : _root_.Module 𝕜 OneForm] [inst_5 : AddCommMonoid Obs] [inst_6 : _root_.Module 𝕜 Obs]\n  {d : Test →ₗ[𝕜] OneForm} {Φ : Test →ₗ[𝕜] Obs} {J : OneForm →ₗ[𝕜] Obs},\n  ConservationLaw.IsDifferentialCurrent d Φ J ↔ Φ = J ∘ₗ d",
-    "standardAxioms": [
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "ConservationLaw.IsDifferentialCurrent.iff_eq_comp",
-    "module": "LeanCondensedMatter.Analysis.ConservationLaw.CurrentRepresentation",
-    "externalAxioms": [],
-    "docString": "Factorization through `d` is equivalent to equality with the composite `J ∘ d`. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {𝕜 : Type u_1} {Test : Type u_2} {OneForm : Type u_3} {Obs : Type u_4} [inst : CommSemiring 𝕜]\n  [inst_1 : AddCommMonoid Test] [inst_2 : _root_.Module 𝕜 Test] [inst_3 : AddCommMonoid OneForm]\n  [inst_4 : _root_.Module 𝕜 OneForm] [inst_5 : AddCommMonoid Obs] [inst_6 : _root_.Module 𝕜 Obs]\n  {d : Test →ₗ[𝕜] OneForm} {Φ : Test →ₗ[𝕜] Obs} {J₁ J₂ : OneForm →ₗ[𝕜] Obs},\n  ConservationLaw.IsDifferentialCurrent d Φ J₁ →\n    ConservationLaw.DifferentialCurrentEquivalent d J₁ J₂ → ConservationLaw.IsDifferentialCurrent d Φ J₂",
-    "standardAxioms": [],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "ConservationLaw.IsDifferentialCurrent.of_currentEquivalent",
-    "module": "LeanCondensedMatter.Analysis.ConservationLaw.CurrentEquivalence",
-    "externalAxioms": [],
-    "docString": "Being a differential current is invariant under differential-current equivalence. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {𝕜 : Type u_1} {Test : Type u_2} {OneForm : Type u_3} {Obs : Type u_4} [inst : CommSemiring 𝕜]\n  [inst_1 : AddCommMonoid Test] [inst_2 : _root_.Module 𝕜 Test] [inst_3 : AddCommMonoid OneForm]\n  [inst_4 : _root_.Module 𝕜 OneForm] [inst_5 : AddCommMonoid Obs] [inst_6 : _root_.Module 𝕜 Obs] {Obs' : Type u_6}\n  [inst_7 : AddCommMonoid Obs'] [inst_8 : _root_.Module 𝕜 Obs'] {d : Test →ₗ[𝕜] OneForm} {Φ : Test →ₗ[𝕜] Obs}\n  {J : OneForm →ₗ[𝕜] Obs},\n  ConservationLaw.IsDifferentialCurrent d Φ J →\n    ∀ (L : Obs →ₗ[𝕜] Obs'), ConservationLaw.IsDifferentialCurrent d (L ∘ₗ Φ) (L ∘ₗ J)",
-    "standardAxioms": [
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "ConservationLaw.IsDifferentialCurrent.postcomp",
-    "module": "LeanCondensedMatter.Analysis.ConservationLaw.CurrentRepresentation",
-    "externalAxioms": [],
-    "docString": "Postcomposition by a linear observable map preserves a differential factorization. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumMechanics.SingleParticle.nestedSymmetrizedCurrentFlux_isDifferentialCurrent"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumMechanics.SingleParticle.nestedSymmetrizedCurrentFlux_isDifferentialCurrent"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {𝕜 : Type u_1} {Test : Type u_2} {OneForm : Type u_3} {Obs : Type u_4} [inst : CommSemiring 𝕜]\n  [inst_1 : AddCommMonoid Test] [inst_2 : _root_.Module 𝕜 Test] [inst_3 : AddCommMonoid OneForm]\n  [inst_4 : _root_.Module 𝕜 OneForm] [inst_5 : AddCommMonoid Obs] [inst_6 : _root_.Module 𝕜 Obs]\n  {d : Test →ₗ[𝕜] OneForm} {Φ : Test →ₗ[𝕜] Obs} {J : OneForm →ₗ[𝕜] Obs},\n  ConservationLaw.IsDifferentialCurrent d Φ J → ∀ (c : 𝕜), ConservationLaw.IsDifferentialCurrent d (c • Φ) (c • J)",
-    "standardAxioms": [
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "ConservationLaw.IsDifferentialCurrent.smul",
-    "module": "LeanCondensedMatter.Analysis.ConservationLaw.CurrentRepresentation",
-    "externalAxioms": [],
-    "docString": "Scalar multiplication preserves a differential factorization. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
     "axioms": [
       "propext"
     ],
@@ -34598,7 +34434,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (broadening : ℝ), broadening ≠ 0 → Continuous fun offset => Lorentzian.lorentzianSpectralKernel offset broadening",
+    "statement": "∀ (broadening : ℝ), broadening ≠ 0 → Continuous fun offset => Lorentzian.spectralKernel offset broadening",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -34610,24 +34446,24 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "Lorentzian.continuous_lorentzianSpectralKernel_fixed_broadening",
+    "name": "Lorentzian.continuous_spectralKernel_fixed_broadening",
     "module": "LeanCondensedMatter.Analysis.Lorentzian.Kernel",
     "externalAxioms": [],
     "docString": "For nonzero broadening the Lorentzian kernel is continuous as a function of energy offset. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "Lorentzian.intervalIntegrable_lorentzianSpectralKernel",
+      "Lorentzian.intervalIntegrable_spectralKernel",
       "_private.LeanCondensedMatter.Analysis.Lorentzian.Pole.0.Lorentzian.continuousOn_lorentzianRegularFactorErrorIntegrand",
-      "_private.LeanCondensedMatter.Analysis.Lorentzian.Pole.0.Lorentzian.lorentzianRegularFactorIntegral_eq_error_add_mass_smul_pole"
+      "_private.LeanCondensedMatter.Analysis.Lorentzian.Pole.0.Lorentzian.regularFactorIntegral_eq_error_add_mass_smul_pole"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "Lorentzian.intervalIntegrable_lorentzianSpectralKernel",
+      "Lorentzian.intervalIntegrable_spectralKernel",
       "_private.LeanCondensedMatter.Analysis.Lorentzian.Pole.0.Lorentzian.continuousOn_lorentzianRegularFactorErrorIntegrand",
-      "_private.LeanCondensedMatter.Analysis.Lorentzian.Pole.0.Lorentzian.lorentzianRegularFactorIntegral_eq_error_add_mass_smul_pole"
+      "_private.LeanCondensedMatter.Analysis.Lorentzian.Pole.0.Lorentzian.regularFactorIntegral_eq_error_add_mass_smul_pole"
     ],
     "compiledConsumerCount": 3,
     "axioms": [
@@ -34644,7 +34480,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (lower upper broadening : ℝ),\n  ∫ (offset : ℝ) in lower..upper, Lorentzian.lorentzianSpectralKernel offset broadening =\n    Real.arctan (upper / broadening) - Real.arctan (lower / broadening)",
+    "statement": "∀ (lower upper broadening : ℝ),\n  ∫ (offset : ℝ) in lower..upper, Lorentzian.spectralKernel offset broadening =\n    Real.arctan (upper / broadening) - Real.arctan (lower / broadening)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -34656,20 +34492,20 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "Lorentzian.integral_lorentzianSpectralKernel",
+    "name": "Lorentzian.integral_spectralKernel",
     "module": "LeanCondensedMatter.Analysis.Lorentzian.Kernel",
     "externalAxioms": [],
     "docString": "Exact finite-interval mass of the Lorentzian kernel. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "Lorentzian.integral_lorentzianSpectralKernel_symmetric"
+      "Lorentzian.integral_spectralKernel_symmetric"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "Lorentzian.integral_lorentzianSpectralKernel_symmetric"
+      "Lorentzian.integral_spectralKernel_symmetric"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -34686,7 +34522,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ (innerRadius outerRadius broadening : ℝ),\n  ∫ (offset : ℝ) in -outerRadius..outerRadius, Lorentzian.lorentzianSpectralKernel offset broadening =\n    (∫ (offset : ℝ) in -innerRadius..innerRadius, Lorentzian.lorentzianSpectralKernel offset broadening) +\n      Lorentzian.lorentzianSpectralTailMass innerRadius outerRadius broadening",
+    "statement": "∀ (innerRadius outerRadius broadening : ℝ),\n  ∫ (offset : ℝ) in -outerRadius..outerRadius, Lorentzian.spectralKernel offset broadening =\n    (∫ (offset : ℝ) in -innerRadius..innerRadius, Lorentzian.spectralKernel offset broadening) +\n      Lorentzian.spectralTailMass innerRadius outerRadius broadening",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -34698,7 +34534,7 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "Lorentzian.integral_lorentzianSpectralKernel_outer_eq_inner_add_tail",
+    "name": "Lorentzian.integral_spectralKernel_outer_eq_inner_add_tail",
     "module": "LeanCondensedMatter.Analysis.Lorentzian.Kernel",
     "externalAxioms": [],
     "docString": "The outer symmetric mass is the inner mass plus the spectral tail mass. ",
@@ -34724,7 +34560,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (radius broadening : ℝ),\n  ∫ (offset : ℝ) in -radius..radius, Lorentzian.lorentzianSpectralKernel offset broadening =\n    2 * Real.arctan (radius / broadening)",
+    "statement": "∀ (radius broadening : ℝ),\n  ∫ (offset : ℝ) in -radius..radius, Lorentzian.spectralKernel offset broadening = 2 * Real.arctan (radius / broadening)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -34736,26 +34572,26 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "Lorentzian.integral_lorentzianSpectralKernel_symmetric",
+    "name": "Lorentzian.integral_spectralKernel_symmetric",
     "module": "LeanCondensedMatter.Analysis.Lorentzian.Kernel",
     "externalAxioms": [],
     "docString": "On a symmetric interval the Lorentzian mass is `2 arctan(radius / η)`. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "Lorentzian.integral_lorentzianSpectralKernel_symmetric_lt_pi",
-      "Lorentzian.lorentzianSpectralTailMass_eq_two_mul_arctan_sub",
-      "Lorentzian.tendsto_integral_lorentzianSpectralKernel_symmetric"
+      "Lorentzian.integral_spectralKernel_symmetric_lt_pi",
+      "Lorentzian.spectralTailMass_eq_two_mul_arctan_sub",
+      "Lorentzian.tendsto_integral_spectralKernel_symmetric"
     ],
     "dependencies": [
-      "Lorentzian.integral_lorentzianSpectralKernel"
+      "Lorentzian.integral_spectralKernel"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "Lorentzian.integral_lorentzianSpectralKernel_symmetric_lt_pi",
-      "Lorentzian.lorentzianSpectralTailMass_eq_two_mul_arctan_sub",
-      "Lorentzian.tendsto_integral_lorentzianSpectralKernel_symmetric"
+      "Lorentzian.integral_spectralKernel_symmetric_lt_pi",
+      "Lorentzian.spectralTailMass_eq_two_mul_arctan_sub",
+      "Lorentzian.tendsto_integral_spectralKernel_symmetric"
     ],
     "compiledConsumerCount": 3,
     "axioms": [
@@ -34772,7 +34608,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (radius broadening : ℝ),\n  ∫ (offset : ℝ) in -radius..radius, Lorentzian.lorentzianSpectralKernel offset broadening ≤ Real.pi",
+    "statement": "∀ (radius broadening : ℝ), ∫ (offset : ℝ) in -radius..radius, Lorentzian.spectralKernel offset broadening ≤ Real.pi",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -34784,7 +34620,7 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "Lorentzian.integral_lorentzianSpectralKernel_symmetric_le_pi",
+    "name": "Lorentzian.integral_spectralKernel_symmetric_le_pi",
     "module": "LeanCondensedMatter.Analysis.Lorentzian.Kernel",
     "externalAxioms": [],
     "docString": "Every symmetric Lorentzian mass is at most `π`. ",
@@ -34795,7 +34631,7 @@
       "QuantumTheory.Models.MassiveDirac.norm_targetCenteredZeroTemperatureInterbandBastinPairIntegral_radial_le"
     ],
     "dependencies": [
-      "Lorentzian.integral_lorentzianSpectralKernel_symmetric_lt_pi"
+      "Lorentzian.integral_spectralKernel_symmetric_lt_pi"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -34818,7 +34654,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (radius broadening : ℝ),\n  ∫ (offset : ℝ) in -radius..radius, Lorentzian.lorentzianSpectralKernel offset broadening < Real.pi",
+    "statement": "∀ (radius broadening : ℝ), ∫ (offset : ℝ) in -radius..radius, Lorentzian.spectralKernel offset broadening < Real.pi",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -34830,23 +34666,23 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "Lorentzian.integral_lorentzianSpectralKernel_symmetric_lt_pi",
+    "name": "Lorentzian.integral_spectralKernel_symmetric_lt_pi",
     "module": "LeanCondensedMatter.Analysis.Lorentzian.Kernel",
     "externalAxioms": [],
     "docString": "Every symmetric Lorentzian mass is strictly smaller than `π`. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "Lorentzian.integral_lorentzianSpectralKernel_symmetric_le_pi",
+      "Lorentzian.integral_spectralKernel_symmetric_le_pi",
       "_private.LeanCondensedMatter.Analysis.Lorentzian.Pole.0.Lorentzian.tendsto_lorentzianRegularFactorErrorIntegral_zero"
     ],
     "dependencies": [
-      "Lorentzian.integral_lorentzianSpectralKernel_symmetric"
+      "Lorentzian.integral_spectralKernel_symmetric"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "Lorentzian.integral_lorentzianSpectralKernel_symmetric_le_pi",
+      "Lorentzian.integral_spectralKernel_symmetric_le_pi",
       "_private.LeanCondensedMatter.Analysis.Lorentzian.Pole.0.Lorentzian.tendsto_lorentzianRegularFactorErrorIntegral_zero"
     ],
     "compiledConsumerCount": 2,
@@ -34864,7 +34700,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (weight : ℝ → ℝ) (center value radius broadening : ℝ),\n  (∀ energy ∈ Set.uIcc (center - radius) (center + radius), weight energy = value) →\n    ∫ (energy : ℝ) in center - radius..center + radius,\n        weight energy * Lorentzian.lorentzianSpectralKernel (energy - center) broadening =\n      value * ∫ (offset : ℝ) in -radius..radius, Lorentzian.lorentzianSpectralKernel offset broadening",
+    "statement": "∀ (weight : ℝ → ℝ) (center value radius broadening : ℝ),\n  (∀ energy ∈ Set.uIcc (center - radius) (center + radius), weight energy = value) →\n    ∫ (energy : ℝ) in center - radius..center + radius,\n        weight energy * Lorentzian.spectralKernel (energy - center) broadening =\n      value * ∫ (offset : ℝ) in -radius..radius, Lorentzian.spectralKernel offset broadening",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -34876,20 +34712,20 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "Lorentzian.integral_weight_mul_lorentzian_of_eq_const_on",
+    "name": "Lorentzian.integral_weight_mul_spectralKernel_of_eq_const_on",
     "module": "LeanCondensedMatter.Analysis.Lorentzian.Weighted",
     "externalAxioms": [],
     "docString": "If a weight is constant on the centered integration window, it factors out exactly and the\nremaining energy integral is the centered Lorentzian mass. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "Lorentzian.tendsto_integral_weight_mul_lorentzian_of_eq_const_on"
+      "Lorentzian.tendsto_integral_weight_mul_spectralKernel_of_eq_const_on"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "Lorentzian.tendsto_integral_weight_mul_lorentzian_of_eq_const_on"
+      "Lorentzian.tendsto_integral_weight_mul_spectralKernel_of_eq_const_on"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -34906,7 +34742,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (lower upper broadening : ℝ),\n  broadening ≠ 0 →\n    IntervalIntegrable (fun offset => Lorentzian.lorentzianSpectralKernel offset broadening) MeasureTheory.volume lower\n      upper",
+    "statement": "∀ (lower upper broadening : ℝ),\n  broadening ≠ 0 →\n    IntervalIntegrable (fun offset => Lorentzian.spectralKernel offset broadening) MeasureTheory.volume lower upper",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -34918,7 +34754,7 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "Lorentzian.intervalIntegrable_lorentzianSpectralKernel",
+    "name": "Lorentzian.intervalIntegrable_spectralKernel",
     "module": "LeanCondensedMatter.Analysis.Lorentzian.Kernel",
     "externalAxioms": [],
     "docString": "At nonzero broadening the Lorentzian kernel is interval integrable on every finite interval. ",
@@ -34932,7 +34768,7 @@
       "_private.LeanCondensedMatter.Analysis.Lorentzian.Pole.0.Lorentzian.norm_lorentzianRegularFactorOuterErrorIntegral_le"
     ],
     "dependencies": [
-      "Lorentzian.continuous_lorentzianSpectralKernel_fixed_broadening"
+      "Lorentzian.continuous_spectralKernel_fixed_broadening"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -34958,7 +34794,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (offset broadening : ℝ),\n  broadening ≠ 0 →\n    (↑offset + ↑broadening * Complex.I)⁻¹ - (↑offset - ↑broadening * Complex.I)⁻¹ =\n      -2 * Complex.I * ↑(Lorentzian.lorentzianSpectralKernel offset broadening)",
+    "statement": "∀ (offset broadening : ℝ),\n  broadening ≠ 0 →\n    (↑offset + ↑broadening * Complex.I)⁻¹ - (↑offset - ↑broadening * Complex.I)⁻¹ =\n      -2 * Complex.I * ↑(Lorentzian.spectralKernel offset broadening)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -34970,7 +34806,7 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "Lorentzian.inv_add_I_sub_inv_sub_I_eq_lorentzian",
+    "name": "Lorentzian.inv_add_I_sub_inv_sub_I_eq_spectralKernel",
     "module": "LeanCondensedMatter.Analysis.Lorentzian.Kernel",
     "externalAxioms": [],
     "docString": "Elementary retarded-minus-advanced scalar resolvent identity. ",
@@ -35003,7 +34839,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (offset broadening : ℝ), 0 ≤ broadening → 0 ≤ Lorentzian.lorentzianSpectralKernel offset broadening",
+    "statement": "∀ (offset broadening : ℝ), 0 ≤ broadening → 0 ≤ Lorentzian.spectralKernel offset broadening",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -35015,7 +34851,7 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "Lorentzian.lorentzianSpectralKernel_nonneg",
+    "name": "Lorentzian.spectralKernel_nonneg",
     "module": "LeanCondensedMatter.Analysis.Lorentzian.Kernel",
     "externalAxioms": [],
     "docString": "For nonnegative broadening the Lorentzian spectral kernel is nonnegative. ",
@@ -35047,7 +34883,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ (innerRadius outerRadius broadening : ℝ),\n  Lorentzian.lorentzianSpectralTailMass innerRadius outerRadius broadening =\n    2 * (Real.arctan (outerRadius / broadening) - Real.arctan (innerRadius / broadening))",
+    "statement": "∀ (innerRadius outerRadius broadening : ℝ),\n  Lorentzian.spectralTailMass innerRadius outerRadius broadening =\n    2 * (Real.arctan (outerRadius / broadening) - Real.arctan (innerRadius / broadening))",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -35059,7 +34895,7 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "Lorentzian.lorentzianSpectralTailMass_eq_two_mul_arctan_sub",
+    "name": "Lorentzian.spectralTailMass_eq_two_mul_arctan_sub",
     "module": "LeanCondensedMatter.Analysis.Lorentzian.Kernel",
     "externalAxioms": [],
     "docString": "Exact arctangent form of the symmetric Lorentzian tail mass. ",
@@ -35067,7 +34903,7 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "Lorentzian.integral_lorentzianSpectralKernel_symmetric"
+      "Lorentzian.integral_spectralKernel_symmetric"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -35106,13 +34942,13 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "Lorentzian.tendsto_integral_lorentzianSpectralKernel_symmetric"
+      "Lorentzian.tendsto_integral_spectralKernel_symmetric"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "Lorentzian.tendsto_integral_lorentzianSpectralKernel_symmetric"
+      "Lorentzian.tendsto_integral_spectralKernel_symmetric"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -35129,7 +34965,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (radius : ℝ),\n  0 < radius →\n    Filter.Tendsto\n      (fun broadening => ∫ (offset : ℝ) in -radius..radius, Lorentzian.lorentzianSpectralKernel offset broadening)\n      (nhdsWithin 0 (Set.Ioi 0)) (nhds Real.pi)",
+    "statement": "∀ (radius : ℝ),\n  0 < radius →\n    Filter.Tendsto (fun broadening => ∫ (offset : ℝ) in -radius..radius, Lorentzian.spectralKernel offset broadening)\n      (nhdsWithin 0 (Set.Ioi 0)) (nhds Real.pi)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -35141,27 +34977,27 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "Lorentzian.tendsto_integral_lorentzianSpectralKernel_symmetric",
+    "name": "Lorentzian.tendsto_integral_spectralKernel_symmetric",
     "module": "LeanCondensedMatter.Analysis.Lorentzian.Kernel",
     "externalAxioms": [],
     "docString": "Every fixed positive symmetric neighborhood captures asymptotic Lorentzian mass `π` as the\nbroadening tends to zero from the positive side. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "Lorentzian.tendsto_integral_weight_mul_lorentzian_of_eq_const_on",
-      "Lorentzian.tendsto_lorentzianRegularFactorIntegral",
-      "Lorentzian.tendsto_lorentzianSpectralTailMass_zero"
+      "Lorentzian.tendsto_integral_weight_mul_spectralKernel_of_eq_const_on",
+      "Lorentzian.tendsto_regularFactorIntegral",
+      "Lorentzian.tendsto_spectralTailMass_zero"
     ],
     "dependencies": [
-      "Lorentzian.integral_lorentzianSpectralKernel_symmetric",
+      "Lorentzian.integral_spectralKernel_symmetric",
       "Lorentzian.tendsto_arctan_pos_div_broadening"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "Lorentzian.tendsto_integral_weight_mul_lorentzian_of_eq_const_on",
-      "Lorentzian.tendsto_lorentzianRegularFactorIntegral",
-      "Lorentzian.tendsto_lorentzianSpectralTailMass_zero"
+      "Lorentzian.tendsto_integral_weight_mul_spectralKernel_of_eq_const_on",
+      "Lorentzian.tendsto_regularFactorIntegral",
+      "Lorentzian.tendsto_spectralTailMass_zero"
     ],
     "compiledConsumerCount": 3,
     "axioms": [
@@ -35178,7 +35014,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ (weight : ℝ → ℝ) (center value radius : ℝ),\n  0 < radius →\n    (∀ energy ∈ Set.uIcc (center - radius) (center + radius), weight energy = value) →\n      Filter.Tendsto\n        (fun broadening =>\n          ∫ (energy : ℝ) in center - radius..center + radius,\n            weight energy * Lorentzian.lorentzianSpectralKernel (energy - center) broadening)\n        (nhdsWithin 0 (Set.Ioi 0)) (nhds (value * Real.pi))",
+    "statement": "∀ (weight : ℝ → ℝ) (center value radius : ℝ),\n  0 < radius →\n    (∀ energy ∈ Set.uIcc (center - radius) (center + radius), weight energy = value) →\n      Filter.Tendsto\n        (fun broadening =>\n          ∫ (energy : ℝ) in center - radius..center + radius,\n            weight energy * Lorentzian.spectralKernel (energy - center) broadening)\n        (nhdsWithin 0 (Set.Ioi 0)) (nhds (value * Real.pi))",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -35190,7 +35026,7 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "Lorentzian.tendsto_integral_weight_mul_lorentzian_of_eq_const_on",
+    "name": "Lorentzian.tendsto_integral_weight_mul_spectralKernel_of_eq_const_on",
     "module": "LeanCondensedMatter.Analysis.Lorentzian.Weighted",
     "externalAxioms": [],
     "docString": "Local-constant weights inherit the `π` Lorentzian mass in the positive zero-broadening limit. ",
@@ -35198,8 +35034,8 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "Lorentzian.integral_weight_mul_lorentzian_of_eq_const_on",
-      "Lorentzian.tendsto_integral_lorentzianSpectralKernel_symmetric"
+      "Lorentzian.integral_weight_mul_spectralKernel_of_eq_const_on",
+      "Lorentzian.tendsto_integral_spectralKernel_symmetric"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -35219,7 +35055,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (factor : ℝ × ℝ → ℂ) (radius : ℝ),\n  0 < radius →\n    ContinuousAt factor (0, 0) →\n      (∀ (broadening : ℝ),\n          broadening ≠ 0 → ContinuousOn (fun offset => factor (offset, broadening)) (Set.Icc (-radius) radius)) →\n        (∃ C, 0 ≤ C ∧ ∀ p ∈ Set.Icc (-radius) radius ×ˢ Set.Icc 0 1, ‖factor p - factor (0, 0)‖ ≤ C) →\n          Filter.Tendsto (fun broadening => Lorentzian.lorentzianRegularFactorIntegral factor radius broadening)\n            (nhdsWithin 0 (Set.Ioi 0)) (nhds (Real.pi • factor (0, 0)))",
+    "statement": "∀ (factor : ℝ × ℝ → ℂ) (radius : ℝ),\n  0 < radius →\n    ContinuousAt factor (0, 0) →\n      (∀ (broadening : ℝ),\n          broadening ≠ 0 → ContinuousOn (fun offset => factor (offset, broadening)) (Set.Icc (-radius) radius)) →\n        (∃ C, 0 ≤ C ∧ ∀ p ∈ Set.Icc (-radius) radius ×ˢ Set.Icc 0 1, ‖factor p - factor (0, 0)‖ ≤ C) →\n          Filter.Tendsto (fun broadening => Lorentzian.regularFactorIntegral factor radius broadening)\n            (nhdsWithin 0 (Set.Ioi 0)) (nhds (Real.pi • factor (0, 0)))",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -35231,7 +35067,7 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "Lorentzian.tendsto_lorentzianRegularFactorIntegral",
+    "name": "Lorentzian.tendsto_regularFactorIntegral",
     "module": "LeanCondensedMatter.Analysis.Lorentzian.Pole",
     "externalAxioms": [],
     "docString": "A Lorentzian approximate identity extracts the pole value of any complex regular factor that is\njointly continuous at `(0,0)`, has continuous nonzero-broadening slices on the fixed symmetric\nwindow, and has a uniform bound on its deviation from the pole value over that window for\n`0 ≤ broadening ≤ 1`. ",
@@ -35241,8 +35077,8 @@
       "QuantumTheory.Transport.tendsto_interbandPoleRegularFactorIntegral"
     ],
     "dependencies": [
-      "Lorentzian.tendsto_integral_lorentzianSpectralKernel_symmetric",
-      "_private.LeanCondensedMatter.Analysis.Lorentzian.Pole.0.Lorentzian.lorentzianRegularFactorIntegral_eq_error_add_mass_smul_pole",
+      "Lorentzian.tendsto_integral_spectralKernel_symmetric",
+      "_private.LeanCondensedMatter.Analysis.Lorentzian.Pole.0.Lorentzian.regularFactorIntegral_eq_error_add_mass_smul_pole",
       "_private.LeanCondensedMatter.Analysis.Lorentzian.Pole.0.Lorentzian.tendsto_lorentzianRegularFactorErrorIntegral_zero"
     ],
     "crossModuleDirectWrapper": false,
@@ -35265,7 +35101,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (innerRadius outerRadius : ℝ),\n  0 < innerRadius →\n    innerRadius ≤ outerRadius →\n      Filter.Tendsto (fun broadening => Lorentzian.lorentzianSpectralTailMass innerRadius outerRadius broadening)\n        (nhdsWithin 0 (Set.Ioi 0)) (nhds 0)",
+    "statement": "∀ (innerRadius outerRadius : ℝ),\n  0 < innerRadius →\n    innerRadius ≤ outerRadius →\n      Filter.Tendsto (fun broadening => Lorentzian.spectralTailMass innerRadius outerRadius broadening)\n        (nhdsWithin 0 (Set.Ioi 0)) (nhds 0)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -35277,7 +35113,7 @@
     "retainedNeedsReview": true,
     "retainedMention": true,
     "projectAxioms": [],
-    "name": "Lorentzian.tendsto_lorentzianSpectralTailMass_zero",
+    "name": "Lorentzian.tendsto_spectralTailMass_zero",
     "module": "LeanCondensedMatter.Analysis.Lorentzian.Kernel",
     "externalAxioms": [],
     "docString": "For fixed positive nested radii, all Lorentzian mass between the two windows vanishes as the\nbroadening tends to zero from the positive side. ",
@@ -35287,7 +35123,7 @@
       "_private.LeanCondensedMatter.Analysis.Lorentzian.Pole.0.Lorentzian.tendsto_lorentzianRegularFactorErrorIntegral_zero"
     ],
     "dependencies": [
-      "Lorentzian.tendsto_integral_lorentzianSpectralKernel_symmetric"
+      "Lorentzian.tendsto_integral_spectralKernel_symmetric"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -44501,7 +44337,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {Test : Type u_1} {OneForm : Type u_2} [inst : AddCommGroup Test] [inst_1 : _root_.Module ℂ Test]\n  [inst_2 : AddCommGroup OneForm] [inst_3 : _root_.Module ℂ OneForm] (V : Type u_3) [inst_4 : AddCommGroup V]\n  [inst_5 : _root_.Module ℂ V] (ℏ : ℝ) (h : V →ₗ[ℂ] V) (M : Test →ₗ[ℂ] V →ₗ[ℂ] V) (velocity : V →ₗ[ℂ] V)\n  (d : Test →ₗ[ℂ] OneForm) (N : OneForm →ₗ[ℂ] V →ₗ[ℂ] V) (q : ℂ)\n  (hvelocity :\n    ConservationLaw.IsDifferentialCurrent d (QuantumMechanics.SingleParticle.heisenbergLocalizationFunctional V ℏ h M)\n      (QuantumMechanics.SingleParticle.velocityLocalizationFlux V velocity N)),\n  (QuantumMechanics.SingleParticle.correctedSymmetrizedVelocityCurrentRepresentation V ℏ h M (q • LinearMap.id) velocity\n        d N hvelocity).current =\n    (QuantumMechanics.SingleParticle.operatorLocalCurrentPairing V N) (q • velocity)",
+    "statement": "∀ {Test : Type u_1} {OneForm : Type u_2} [inst : AddCommGroup Test] [inst_1 : _root_.Module ℂ Test]\n  [inst_2 : AddCommGroup OneForm] [inst_3 : _root_.Module ℂ OneForm] (V : Type u_3) [inst_4 : AddCommGroup V]\n  [inst_5 : _root_.Module ℂ V] (ℏ : ℝ) (h : V →ₗ[ℂ] V) (M : Test →ₗ[ℂ] V →ₗ[ℂ] V) (velocity : V →ₗ[ℂ] V)\n  (d : Test →ₗ[ℂ] OneForm) (N : OneForm →ₗ[ℂ] V →ₗ[ℂ] V) (q : ℂ)\n  (hvelocity :\n    QuantumMechanics.SingleParticle.heisenbergLocalizationFunctional V ℏ h M =\n      QuantumMechanics.SingleParticle.velocityLocalizationFlux V velocity N ∘ₗ d),\n  (QuantumMechanics.SingleParticle.correctedSymmetrizedVelocityCurrentRepresentation V ℏ h M (q • LinearMap.id) velocity\n        d N hvelocity).current =\n    (QuantumMechanics.SingleParticle.operatorLocalCurrentPairing V N) (q • velocity)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -44541,7 +44377,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {Test : Type u_1} {OneForm : Type u_2} [inst : AddCommGroup Test] [inst_1 : _root_.Module ℂ Test]\n  [inst_2 : AddCommGroup OneForm] [inst_3 : _root_.Module ℂ OneForm] (V : Type u_3) [inst_4 : AddCommGroup V]\n  [inst_5 : _root_.Module ℂ V] (ℏ : ℝ) (h : V →ₗ[ℂ] V) (M : Test →ₗ[ℂ] V →ₗ[ℂ] V) (m velocity : V →ₗ[ℂ] V)\n  (d : Test →ₗ[ℂ] OneForm) (N : OneForm →ₗ[ℂ] V →ₗ[ℂ] V),\n  ConservationLaw.IsDifferentialCurrent d (QuantumMechanics.SingleParticle.heisenbergLocalizationFunctional V ℏ h M)\n      (QuantumMechanics.SingleParticle.velocityLocalizationFlux V velocity N) →\n    ∀\n      (R :\n        ConservationLaw.DifferentialCurrentRepresentation d\n          (QuantumMechanics.SingleParticle.heisenbergTransportFunctional V ℏ h M m)),\n      ConservationLaw.DifferentialCurrentEquivalent d R.current\n        (ConservationLaw.nestedSymmetrizedCurrentFlux V velocity m N)",
+    "statement": "∀ {Test : Type u_1} {OneForm : Type u_2} [inst : AddCommGroup Test] [inst_1 : _root_.Module ℂ Test]\n  [inst_2 : AddCommGroup OneForm] [inst_3 : _root_.Module ℂ OneForm] (V : Type u_3) [inst_4 : AddCommGroup V]\n  [inst_5 : _root_.Module ℂ V] (ℏ : ℝ) (h : V →ₗ[ℂ] V) (M : Test →ₗ[ℂ] V →ₗ[ℂ] V) (m velocity : V →ₗ[ℂ] V)\n  (d : Test →ₗ[ℂ] OneForm) (N : OneForm →ₗ[ℂ] V →ₗ[ℂ] V),\n  QuantumMechanics.SingleParticle.heisenbergLocalizationFunctional V ℏ h M =\n      QuantumMechanics.SingleParticle.velocityLocalizationFlux V velocity N ∘ₗ d →\n    ∀\n      (R :\n        ConservationLaw.DifferentialCurrentRepresentation d\n          (QuantumMechanics.SingleParticle.heisenbergTransportFunctional V ℏ h M m)),\n      ConservationLaw.DifferentialCurrentEquivalent d R.current\n        (ConservationLaw.nestedSymmetrizedCurrentFlux V velocity m N)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -44557,13 +44393,13 @@
     "module": "LeanCondensedMatter.QuantumMechanics.SingleParticle.CorrectedCurrent",
     "externalAxioms": [],
     "docString": "Any other full current functional representing the same intrinsic transport is equivalent on\nexact differentials to the generic nested current flux. ",
-    "directWrapperTargetModule": "LeanCondensedMatter.Analysis.ConservationLaw.CurrentEquivalence",
-    "directWrapperOf": "ConservationLaw.IsDifferentialCurrent.currentEquivalent",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "ConservationLaw.IsDifferentialCurrent.currentEquivalent"
+      "ConservationLaw.DifferentialCurrentEquivalent.iff_comp_eq"
     ],
-    "crossModuleDirectWrapper": true,
+    "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [],
     "compiledConsumerCount": 0,
@@ -44581,7 +44417,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {Test : Type u_1} {OneForm : Type u_2} [inst : AddCommGroup Test] [inst_1 : _root_.Module ℂ Test]\n  [inst_2 : AddCommGroup OneForm] [inst_3 : _root_.Module ℂ OneForm] (V : Type u_3) [inst_4 : AddCommGroup V]\n  [inst_5 : _root_.Module ℂ V] (ℏ : ℝ) (h : V →ₗ[ℂ] V) (M : Test →ₗ[ℂ] V →ₗ[ℂ] V) (m velocity : V →ₗ[ℂ] V)\n  (d : Test →ₗ[ℂ] OneForm) (N : OneForm →ₗ[ℂ] V →ₗ[ℂ] V),\n  ConservationLaw.IsDifferentialCurrent d (QuantumMechanics.SingleParticle.heisenbergLocalizationFunctional V ℏ h M)\n      (QuantumMechanics.SingleParticle.velocityLocalizationFlux V velocity N) →\n    ∀\n      (R :\n        ConservationLaw.DifferentialCurrentRepresentation d\n          (QuantumMechanics.SingleParticle.heisenbergTransportFunctional V ℏ h M m)),\n      ∃ K,\n        ConservationLaw.DifferentialCurrentInvisible d K ∧\n          R.current =\n            ConservationLaw.symmetrizedCurrentFlux V velocity m N +\n                ConservationLaw.localizationCorrectionCurrentFlux V velocity m N +\n              K",
+    "statement": "∀ {Test : Type u_1} {OneForm : Type u_2} [inst : AddCommGroup Test] [inst_1 : _root_.Module ℂ Test]\n  [inst_2 : AddCommGroup OneForm] [inst_3 : _root_.Module ℂ OneForm] (V : Type u_3) [inst_4 : AddCommGroup V]\n  [inst_5 : _root_.Module ℂ V] (ℏ : ℝ) (h : V →ₗ[ℂ] V) (M : Test →ₗ[ℂ] V →ₗ[ℂ] V) (m velocity : V →ₗ[ℂ] V)\n  (d : Test →ₗ[ℂ] OneForm) (N : OneForm →ₗ[ℂ] V →ₗ[ℂ] V),\n  QuantumMechanics.SingleParticle.heisenbergLocalizationFunctional V ℏ h M =\n      QuantumMechanics.SingleParticle.velocityLocalizationFlux V velocity N ∘ₗ d →\n    ∀\n      (R :\n        ConservationLaw.DifferentialCurrentRepresentation d\n          (QuantumMechanics.SingleParticle.heisenbergTransportFunctional V ℏ h M m)),\n      ∃ K,\n        ConservationLaw.DifferentialCurrentInvisible d K ∧\n          R.current =\n            ConservationLaw.symmetrizedCurrentFlux V velocity m N +\n                ConservationLaw.localizationCorrectionCurrentFlux V velocity m N +\n              K",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -44755,13 +44591,13 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumMechanics.SingleParticle.nestedSymmetrizedCurrentFlux_isDifferentialCurrent"
+      "QuantumMechanics.SingleParticle.nestedSymmetrizedCurrentFlux_eq_comp"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumMechanics.SingleParticle.nestedSymmetrizedCurrentFlux_isDifferentialCurrent"
+      "QuantumMechanics.SingleParticle.nestedSymmetrizedCurrentFlux_eq_comp"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -44990,7 +44826,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {Test : Type u_1} {OneForm : Type u_2} [inst : AddCommGroup Test] [inst_1 : _root_.Module ℂ Test]\n  [inst_2 : AddCommGroup OneForm] [inst_3 : _root_.Module ℂ OneForm] (V : Type u_3) [inst_4 : AddCommGroup V]\n  [inst_5 : _root_.Module ℂ V] (ℏ : ℝ) (h : V →ₗ[ℂ] V) (M : Test →ₗ[ℂ] V →ₗ[ℂ] V) (m velocity : V →ₗ[ℂ] V)\n  (d : Test →ₗ[ℂ] OneForm) (N : OneForm →ₗ[ℂ] V →ₗ[ℂ] V),\n  ConservationLaw.IsDifferentialCurrent d (QuantumMechanics.SingleParticle.heisenbergLocalizationFunctional V ℏ h M)\n      (QuantumMechanics.SingleParticle.velocityLocalizationFlux V velocity N) →\n    ConservationLaw.IsDifferentialCurrent d (QuantumMechanics.SingleParticle.heisenbergTransportFunctional V ℏ h M m)\n      (ConservationLaw.nestedSymmetrizedCurrentFlux V velocity m N)",
+    "statement": "∀ {Test : Type u_1} {OneForm : Type u_2} [inst : AddCommGroup Test] [inst_1 : _root_.Module ℂ Test]\n  [inst_2 : AddCommGroup OneForm] [inst_3 : _root_.Module ℂ OneForm] (V : Type u_3) [inst_4 : AddCommGroup V]\n  [inst_5 : _root_.Module ℂ V] (ℏ : ℝ) (h : V →ₗ[ℂ] V) (M : Test →ₗ[ℂ] V →ₗ[ℂ] V) (m velocity : V →ₗ[ℂ] V)\n  (d : Test →ₗ[ℂ] OneForm) (N : OneForm →ₗ[ℂ] V →ₗ[ℂ] V),\n  QuantumMechanics.SingleParticle.heisenbergLocalizationFunctional V ℏ h M =\n      QuantumMechanics.SingleParticle.velocityLocalizationFlux V velocity N ∘ₗ d →\n    QuantumMechanics.SingleParticle.heisenbergTransportFunctional V ℏ h M m =\n      ConservationLaw.nestedSymmetrizedCurrentFlux V velocity m N ∘ₗ d",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -45002,7 +44838,7 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "QuantumMechanics.SingleParticle.nestedSymmetrizedCurrentFlux_isDifferentialCurrent",
+    "name": "QuantumMechanics.SingleParticle.nestedSymmetrizedCurrentFlux_eq_comp",
     "module": "LeanCondensedMatter.QuantumMechanics.SingleParticle.CorrectedCurrent",
     "externalAxioms": [],
     "docString": "A velocity representation of localizer evolution lifts to the generic nested current flux for\nan arbitrary transported operator `m`; no locality/commutation assumption on `m` is needed. ",
@@ -45010,7 +44846,6 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "ConservationLaw.IsDifferentialCurrent.postcomp",
       "QuantumMechanics.SingleParticle.heisenbergTransportFunctional_eq_symmetrizedProductRight_comp"
     ],
     "crossModuleDirectWrapper": false,
@@ -45159,7 +44994,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {Test : Type u_1} {OneForm : Type u_2} [inst : AddCommGroup Test] [inst_1 : _root_.Module ℂ Test]\n  [inst_2 : AddCommGroup OneForm] [inst_3 : _root_.Module ℂ OneForm] (V : Type u_3) [inst_4 : AddCommGroup V]\n  [inst_5 : _root_.Module ℂ V] (ℏ : ℝ) (h : V →ₗ[ℂ] V) (M : Test →ₗ[ℂ] V →ₗ[ℂ] V) (m velocity : V →ₗ[ℂ] V)\n  (d : Test →ₗ[ℂ] OneForm) (N : OneForm →ₗ[ℂ] V →ₗ[ℂ] V)\n  (hvelocity :\n    ConservationLaw.IsDifferentialCurrent d (QuantumMechanics.SingleParticle.heisenbergLocalizationFunctional V ℏ h M)\n      (QuantumMechanics.SingleParticle.velocityLocalizationFlux V velocity N))\n  (hcomm : ∀ (α : OneForm), ⁅N α, m⁆ = 0),\n  (QuantumMechanics.SingleParticle.symmetrizedVelocityCurrentRepresentation V ℏ h M m velocity d N hvelocity\n        hcomm).currentDensity =\n    QuantumMechanics.SingleParticle.symmetrizedVelocityCurrent V velocity m",
+    "statement": "∀ {Test : Type u_1} {OneForm : Type u_2} [inst : AddCommGroup Test] [inst_1 : _root_.Module ℂ Test]\n  [inst_2 : AddCommGroup OneForm] [inst_3 : _root_.Module ℂ OneForm] (V : Type u_3) [inst_4 : AddCommGroup V]\n  [inst_5 : _root_.Module ℂ V] (ℏ : ℝ) (h : V →ₗ[ℂ] V) (M : Test →ₗ[ℂ] V →ₗ[ℂ] V) (m velocity : V →ₗ[ℂ] V)\n  (d : Test →ₗ[ℂ] OneForm) (N : OneForm →ₗ[ℂ] V →ₗ[ℂ] V)\n  (hvelocity :\n    QuantumMechanics.SingleParticle.heisenbergLocalizationFunctional V ℏ h M =\n      QuantumMechanics.SingleParticle.velocityLocalizationFlux V velocity N ∘ₗ d)\n  (hcomm : ∀ (α : OneForm), ⁅N α, m⁆ = 0),\n  (QuantumMechanics.SingleParticle.symmetrizedVelocityCurrentRepresentation V ℏ h M m velocity d N hvelocity\n        hcomm).currentDensity =\n    QuantumMechanics.SingleParticle.symmetrizedVelocityCurrent V velocity m",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -59472,7 +59307,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (μ ν : Fin 2) (band : QuantumTheory.Models.MassiveDirac.Band) (e v m px py probeEnergy broadening : ℝ),\n  broadening ≠ 0 →\n    QuantumTheory.Models.MassiveDirac.bastinBandPairContribution μ ν\n        (QuantumTheory.Models.MassiveDirac.oppositeBand band) band e v m px py probeEnergy broadening =\n      -2 * Complex.I *\n          ↑(Lorentzian.lorentzianSpectralKernel\n              (probeEnergy - QuantumTheory.Models.MassiveDirac.bandEnergy band v m px py) broadening) *\n        QuantumTheory.Models.MassiveDirac.interbandSpectatorCurrentFactor μ ν band e v m px py probeEnergy broadening",
+    "statement": "∀ (μ ν : Fin 2) (band : QuantumTheory.Models.MassiveDirac.Band) (e v m px py probeEnergy broadening : ℝ),\n  broadening ≠ 0 →\n    QuantumTheory.Models.MassiveDirac.bastinBandPairContribution μ ν\n        (QuantumTheory.Models.MassiveDirac.oppositeBand band) band e v m px py probeEnergy broadening =\n      -2 * Complex.I *\n          ↑(Lorentzian.spectralKernel (probeEnergy - QuantumTheory.Models.MassiveDirac.bandEnergy band v m px py)\n              broadening) *\n        QuantumTheory.Models.MassiveDirac.interbandSpectatorCurrentFactor μ ν band e v m px py probeEnergy broadening",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -62738,6 +62573,48 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
+    "terminal": true,
+    "statement": "∀ (side : QuantumTheory.Transport.SpectralSide) (v m probeEnergy broadening disorderStrength hbar pMax : ℝ),\n  v ≠ 0 →\n    broadening ≠ 0 →\n      0 ≤ disorderStrength →\n        0 ≤ pMax →\n          0 <\n              (QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornEffectiveEnergy side v m probeEnergy\n                      broadening disorderStrength hbar pMax ^\n                    2 -\n                  QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornEffectiveMass side v m probeEnergy\n                      broadening disorderStrength hbar pMax ^\n                    2).re →\n            ∫ (p : ℝ) in 0..pMax,\n                ↑p *\n                  (QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominator side v m p 0 probeEnergy\n                      broadening disorderStrength hbar pMax)⁻¹ =\n              -(2 * ↑v ^ 2)⁻¹ *\n                (Complex.log\n                    (QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominator side v m pMax 0\n                      probeEnergy broadening disorderStrength hbar pMax) -\n                  Complex.log\n                    (QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominator side v m 0 0\n                      probeEnergy broadening disorderStrength hbar pMax))",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.MassiveDirac.finiteBroadeningBornDyson_singlePoleRadialIntegral_eq_log_of_center_re_pos",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderLongitudinalSameSide",
+    "externalAxioms": [],
+    "docString": "The finite-cutoff Born-Dyson single-pole radial integral is exactly\na difference of principal complex logarithms whenever the real part of\nits effective spectral center is positive. Finite-`η` invertibility\nexcludes all real momentum poles and supplies the required nonzero\nimaginary part of that center; no additional log-branch assumption is made.\nThis is before broadening and disorder limits. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominator_ne_zero",
+      "QuantumTheory.Models.MassiveDirac.integral_massiveDiracRadialDenominatorKernel_eq_log",
+      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialDenominator_center_im_ne_zero_of_re_pos"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
     "terminal": false,
     "statement": "∀ (side : QuantumTheory.Transport.SpectralSide) (v m probeEnergy broadening disorderStrength hbar pMax : ℝ),\n  v ≠ 0 →\n    broadening ≠ 0 →\n      0 ≤ disorderStrength →\n        0 ≤ pMax →\n          IntervalIntegrable\n              (fun p =>\n                ↑p *\n                    (QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominator side v m p 0\n                          probeEnergy broadening disorderStrength hbar pMax)⁻¹ ^\n                      2 *\n                  (QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornEffectiveEnergy side v m probeEnergy\n                        broadening disorderStrength hbar pMax ^\n                      2 -\n                    QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornEffectiveMass side v m probeEnergy\n                        broadening disorderStrength hbar pMax ^\n                      2))\n              MeasureTheory.volume 0 pMax ∧\n            ∫ (p : ℝ) in 0..pMax,\n                ↑p *\n                    (QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominator side v m p 0\n                          probeEnergy broadening disorderStrength hbar pMax)⁻¹ ^\n                      2 *\n                  (QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornEffectiveEnergy side v m probeEnergy\n                        broadening disorderStrength hbar pMax ^\n                      2 -\n                    QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornEffectiveMass side v m probeEnergy\n                        broadening disorderStrength hbar pMax ^\n                      2) =\n              QuantumTheory.Models.MassiveDirac.finiteBroadeningSameSideRadialEndpoint side v m probeEnergy broadening\n                disorderStrength hbar pMax",
     "standardAxioms": [
@@ -63204,6 +63081,7 @@
     "dependents": [
       "QuantumTheory.Models.MassiveDirac.continuous_finiteCutoffContinuumBornDysonPauliCoefficient_radial",
       "QuantumTheory.Models.MassiveDirac.continuous_finiteCutoffContinuumBornDysonScalarCoefficient_radial",
+      "QuantumTheory.Models.MassiveDirac.finiteBroadeningBornDyson_singlePoleRadialIntegral_eq_log_of_center_re_pos",
       "QuantumTheory.Models.MassiveDirac.finiteBroadeningSameSide_integrable_and_integral_eq_endpoint",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadial_ra_weighted_moment_mul_center_gap",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct_ne_zero"
@@ -63218,11 +63096,12 @@
     "compiledConsumers": [
       "QuantumTheory.Models.MassiveDirac.continuous_finiteCutoffContinuumBornDysonPauliCoefficient_radial",
       "QuantumTheory.Models.MassiveDirac.continuous_finiteCutoffContinuumBornDysonScalarCoefficient_radial",
+      "QuantumTheory.Models.MassiveDirac.finiteBroadeningBornDyson_singlePoleRadialIntegral_eq_log_of_center_re_pos",
       "QuantumTheory.Models.MassiveDirac.finiteBroadeningSameSide_integrable_and_integral_eq_endpoint",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadial_ra_weighted_moment_mul_center_gap",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct_ne_zero"
     ],
-    "compiledConsumerCount": 5,
+    "compiledConsumerCount": 6,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -71378,6 +71257,50 @@
   },
   {
     "terminal": false,
+    "statement": "∀ (v pMax : ℝ) (energy mass : ℂ),\n  v ≠ 0 →\n    (energy ^ 2 - mass ^ 2).im ≠ 0 →\n      ∫ (p : ℝ) in 0..pMax, QuantumTheory.Models.MassiveDirac.massiveDiracRadialDenominatorKernel v p energy mass =\n        -(2 * ↑v ^ 2)⁻¹ *\n          (Complex.log (QuantumTheory.Models.MassiveDirac.massiveDiracRadialDenominator v pMax energy mass) -\n            Complex.log (QuantumTheory.Models.MassiveDirac.massiveDiracRadialDenominator v 0 energy mass))",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.MassiveDirac.integral_massiveDiracRadialDenominatorKernel_eq_log",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.Denominator",
+    "externalAxioms": [],
+    "docString": "Exact finite-cutoff radial primitive for a massive-Dirac propagator with\narbitrary complex effective energy and mass. The nonzero imaginary part of\nthe squared-energy-minus-mass center keeps the whole radial path off the\nprincipal logarithm's branch cut. This extends the clean-regulator Born\nprimitive to the complex Dyson parameters used by crossed RA diagrams,\nwithout taking any disorder, broadening, or cutoff limit. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.MassiveDirac.finiteBroadeningBornDyson_singlePoleRadialIntegral_eq_log_of_center_re_pos",
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.Denominator.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDenominatorIntegralOfRegulator_eq_log_sub_log"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.finiteBroadeningBornDyson_singlePoleRadialIntegral_eq_log_of_center_re_pos",
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.Denominator.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDenominatorIntegralOfRegulator_eq_log_sub_log"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ (aR aA bR bA dR dA : ℂ) (coefficients : QuantumTheory.Models.MassiveDirac.InPlaneCoefficientVector),\n  ∫ (θ : ℝ) in 0..2 * Real.pi,\n      QuantumTheory.Models.MassiveDirac.polarPauliOperator aR bR dR θ *\n          QuantumTheory.Models.MassiveDirac.inPlanePauliVertexOperator coefficients *\n        QuantumTheory.Models.MassiveDirac.polarPauliOperator aA bA dA θ =\n    QuantumTheory.Models.MassiveDirac.inPlanePauliVertexOperator\n      (QuantumTheory.Models.MassiveDirac.inPlaneLadderAction\n        (QuantumTheory.Models.MassiveDirac.pauliRungAngularCoefficient aR aA dR dA) coefficients)",
     "standardAxioms": [
       "Classical.choice",
@@ -72409,6 +72332,48 @@
   },
   {
     "terminal": false,
+    "statement": "∀ (v : ℝ) (energy mass : ℂ),\n  v ≠ 0 →\n    0 < (energy ^ 2 - mass ^ 2).re →\n      (∀ (p : ℝ), QuantumTheory.Models.MassiveDirac.massiveDiracRadialDenominator v p energy mass ≠ 0) →\n        (energy ^ 2 - mass ^ 2).im ≠ 0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.MassiveDirac.massiveDiracRadialDenominator_center_im_ne_zero_of_re_pos",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.Denominator",
+    "externalAxioms": [],
+    "docString": "If the real part of the massive-Dirac spectral center is positive,\na real-axis pole would exist whenever its imaginary part vanished.\nThus nonvanishing of the quadratic denominator on the real momentum axis\nforces the center off the principal-log branch cut. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.MassiveDirac.finiteBroadeningBornDyson_singlePoleRadialIntegral_eq_log_of_center_re_pos"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.finiteBroadeningBornDyson_singlePoleRadialIntegral_eq_log_of_center_re_pos"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ (v p : ℝ) (energyR massR energyA massA : ℂ),\n  QuantumTheory.Models.MassiveDirac.massiveDiracRadialDenominator v p energyR massR ≠ 0 →\n    QuantumTheory.Models.MassiveDirac.massiveDiracRadialDenominator v p energyA massA ≠ 0 →\n      (energyA ^ 2 - massA ^ 2 - (energyR ^ 2 - massR ^ 2)) *\n          (QuantumTheory.Models.MassiveDirac.massiveDiracRetardedAdvancedRadialDenominatorProduct v p energyR massR\n              energyA massA)⁻¹ =\n        (QuantumTheory.Models.MassiveDirac.massiveDiracRadialDenominator v p energyR massR)⁻¹ -\n          (QuantumTheory.Models.MassiveDirac.massiveDiracRadialDenominator v p energyA massA)⁻¹",
     "standardAxioms": [
       "Classical.choice",
@@ -72798,7 +72763,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (band : QuantumTheory.Models.MassiveDirac.Band) (e v m p offset radius broadening : ℝ),\n  m ≠ 0 →\n    radius < 2 * |m| →\n      |offset| ≤ radius →\n        0 ≤ broadening →\n          ‖↑(Lorentzian.lorentzianSpectralKernel offset broadening) *\n                QuantumTheory.Models.MassiveDirac.targetCenteredInterbandSpectatorCurrentFactor band e v m p 0\n                  (offset, broadening)‖ ≤\n            QuantumTheory.Models.MassiveDirac.radialInterbandSpectatorUniformBound e v m radius *\n              Lorentzian.lorentzianSpectralKernel offset broadening",
+    "statement": "∀ (band : QuantumTheory.Models.MassiveDirac.Band) (e v m p offset radius broadening : ℝ),\n  m ≠ 0 →\n    radius < 2 * |m| →\n      |offset| ≤ radius →\n        0 ≤ broadening →\n          ‖↑(Lorentzian.spectralKernel offset broadening) *\n                QuantumTheory.Models.MassiveDirac.targetCenteredInterbandSpectatorCurrentFactor band e v m p 0\n                  (offset, broadening)‖ ≤\n            QuantumTheory.Models.MassiveDirac.radialInterbandSpectatorUniformBound e v m radius *\n              Lorentzian.spectralKernel offset broadening",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -72821,7 +72786,7 @@
       "QuantumTheory.Models.MassiveDirac.norm_zeroTemperatureOccupation_mul_lorentzian_mul_spectator_radial_le"
     ],
     "dependencies": [
-      "Lorentzian.lorentzianSpectralKernel_nonneg",
+      "Lorentzian.spectralKernel_nonneg",
       "QuantumTheory.Models.MassiveDirac.norm_targetCenteredInterbandSpectatorCurrentFactor_radial_le"
     ],
     "crossModuleDirectWrapper": false,
@@ -72956,7 +72921,7 @@
       "_private.LeanCondensedMatter.Models.MassiveDirac.Bastin.RadialDominatedConvergence.0.QuantumTheory.Models.MassiveDirac.norm_radialInterbandBastinPairDensity_le_dominatingConstant"
     ],
     "dependencies": [
-      "Lorentzian.integral_lorentzianSpectralKernel_symmetric_le_pi",
+      "Lorentzian.integral_spectralKernel_symmetric_le_pi",
       "QuantumTheory.Models.MassiveDirac.norm_targetCenteredInterbandSpectatorCurrentPoleIntegral_radial_le",
       "QuantumTheory.Models.MassiveDirac.radialInterbandSpectatorUniformBound_nonneg",
       "QuantumTheory.Models.MassiveDirac.targetCenteredInterbandBastinPairIntegral_eq_neg_two_i_mul_poleIntegral"
@@ -73030,7 +72995,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (band : QuantumTheory.Models.MassiveDirac.Band) (e v m p radius broadening : ℝ),\n  m ≠ 0 →\n    0 < radius →\n      radius < 2 * |m| →\n        0 < broadening →\n          ‖QuantumTheory.Models.MassiveDirac.targetCenteredInterbandSpectatorCurrentPoleIntegral band e v m p 0 radius\n                broadening‖ ≤\n            QuantumTheory.Models.MassiveDirac.radialInterbandSpectatorUniformBound e v m radius *\n              ∫ (offset : ℝ) in -radius..radius, Lorentzian.lorentzianSpectralKernel offset broadening",
+    "statement": "∀ (band : QuantumTheory.Models.MassiveDirac.Band) (e v m p radius broadening : ℝ),\n  m ≠ 0 →\n    0 < radius →\n      radius < 2 * |m| →\n        0 < broadening →\n          ‖QuantumTheory.Models.MassiveDirac.targetCenteredInterbandSpectatorCurrentPoleIntegral band e v m p 0 radius\n                broadening‖ ≤\n            QuantumTheory.Models.MassiveDirac.radialInterbandSpectatorUniformBound e v m radius *\n              ∫ (offset : ℝ) in -radius..radius, Lorentzian.spectralKernel offset broadening",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -73052,7 +73017,7 @@
       "QuantumTheory.Models.MassiveDirac.norm_targetCenteredInterbandBastinPairIntegral_radial_le"
     ],
     "dependencies": [
-      "Lorentzian.intervalIntegrable_lorentzianSpectralKernel",
+      "Lorentzian.intervalIntegrable_spectralKernel",
       "QuantumTheory.Models.MassiveDirac.norm_lorentzian_mul_targetCenteredInterbandSpectatorCurrentFactor_radial_le"
     ],
     "crossModuleDirectWrapper": false,
@@ -73095,7 +73060,7 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "Lorentzian.integral_lorentzianSpectralKernel_symmetric_le_pi",
+      "Lorentzian.integral_spectralKernel_symmetric_le_pi",
       "QuantumTheory.Models.MassiveDirac.norm_targetCenteredZeroTemperatureInterbandSpectatorCurrentPoleIntegral_radial_le",
       "QuantumTheory.Models.MassiveDirac.radialInterbandSpectatorUniformBound_nonneg",
       "QuantumTheory.Models.MassiveDirac.targetCenteredZeroTemperatureInterbandBastinPairIntegral_eq_neg_two_i_mul_poleIntegral"
@@ -73118,7 +73083,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (band : QuantumTheory.Models.MassiveDirac.Band) (e v m p fermiEnergy radius broadening : ℝ),\n  m ≠ 0 →\n    0 < radius →\n      radius < 2 * |m| →\n        0 < broadening →\n          ‖QuantumTheory.Models.MassiveDirac.targetCenteredZeroTemperatureInterbandSpectatorCurrentPoleIntegral band e v\n                m p 0 fermiEnergy radius broadening‖ ≤\n            QuantumTheory.Models.MassiveDirac.radialInterbandSpectatorUniformBound e v m radius *\n              ∫ (offset : ℝ) in -radius..radius, Lorentzian.lorentzianSpectralKernel offset broadening",
+    "statement": "∀ (band : QuantumTheory.Models.MassiveDirac.Band) (e v m p fermiEnergy radius broadening : ℝ),\n  m ≠ 0 →\n    0 < radius →\n      radius < 2 * |m| →\n        0 < broadening →\n          ‖QuantumTheory.Models.MassiveDirac.targetCenteredZeroTemperatureInterbandSpectatorCurrentPoleIntegral band e v\n                m p 0 fermiEnergy radius broadening‖ ≤\n            QuantumTheory.Models.MassiveDirac.radialInterbandSpectatorUniformBound e v m radius *\n              ∫ (offset : ℝ) in -radius..radius, Lorentzian.spectralKernel offset broadening",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -73140,7 +73105,7 @@
       "QuantumTheory.Models.MassiveDirac.norm_targetCenteredZeroTemperatureInterbandBastinPairIntegral_radial_le"
     ],
     "dependencies": [
-      "Lorentzian.intervalIntegrable_lorentzianSpectralKernel",
+      "Lorentzian.intervalIntegrable_spectralKernel",
       "QuantumTheory.Models.MassiveDirac.norm_zeroTemperatureOccupation_mul_lorentzian_mul_spectator_radial_le"
     ],
     "crossModuleDirectWrapper": false,
@@ -73163,7 +73128,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (band : QuantumTheory.Models.MassiveDirac.Band) (e v m p fermiEnergy offset radius broadening : ℝ),\n  m ≠ 0 →\n    radius < 2 * |m| →\n      |offset| ≤ radius →\n        0 ≤ broadening →\n          ‖↑(QuantumTheory.zeroTemperatureOccupation fermiEnergy\n                    (QuantumTheory.Models.MassiveDirac.bandEnergy band v m p 0 + offset)) *\n                (↑(Lorentzian.lorentzianSpectralKernel offset broadening) *\n                  QuantumTheory.Models.MassiveDirac.targetCenteredInterbandSpectatorCurrentFactor band e v m p 0\n                    (offset, broadening))‖ ≤\n            QuantumTheory.Models.MassiveDirac.radialInterbandSpectatorUniformBound e v m radius *\n              Lorentzian.lorentzianSpectralKernel offset broadening",
+    "statement": "∀ (band : QuantumTheory.Models.MassiveDirac.Band) (e v m p fermiEnergy offset radius broadening : ℝ),\n  m ≠ 0 →\n    radius < 2 * |m| →\n      |offset| ≤ radius →\n        0 ≤ broadening →\n          ‖↑(QuantumTheory.zeroTemperatureOccupation fermiEnergy\n                    (QuantumTheory.Models.MassiveDirac.bandEnergy band v m p 0 + offset)) *\n                (↑(Lorentzian.spectralKernel offset broadening) *\n                  QuantumTheory.Models.MassiveDirac.targetCenteredInterbandSpectatorCurrentFactor band e v m p 0\n                    (offset, broadening))‖ ≤\n            QuantumTheory.Models.MassiveDirac.radialInterbandSpectatorUniformBound e v m radius *\n              Lorentzian.spectralKernel offset broadening",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -75097,7 +75062,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (band : QuantumTheory.Models.MassiveDirac.Band) (v m px py probeEnergy broadening : ℝ),\n  broadening ≠ 0 →\n    QuantumTheory.Models.MassiveDirac.spectralDifferenceCoefficient band v m px py probeEnergy broadening =\n      -2 * Complex.I *\n        ↑(Lorentzian.lorentzianSpectralKernel\n            (probeEnergy - QuantumTheory.Models.MassiveDirac.bandEnergy band v m px py) broadening)",
+    "statement": "∀ (band : QuantumTheory.Models.MassiveDirac.Band) (v m px py probeEnergy broadening : ℝ),\n  broadening ≠ 0 →\n    QuantumTheory.Models.MassiveDirac.spectralDifferenceCoefficient band v m px py probeEnergy broadening =\n      -2 * Complex.I *\n        ↑(Lorentzian.spectralKernel (probeEnergy - QuantumTheory.Models.MassiveDirac.bandEnergy band v m px py)\n            broadening)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -91037,7 +91002,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (targetEnergy probeEnergy broadening : ℝ),\n  broadening ≠ 0 →\n    QuantumTheory.Transport.scalarSpectralDifferenceCoefficient targetEnergy probeEnergy broadening =\n      -2 * Complex.I * ↑(Lorentzian.lorentzianSpectralKernel (probeEnergy - targetEnergy) broadening)",
+    "statement": "∀ (targetEnergy probeEnergy broadening : ℝ),\n  broadening ≠ 0 →\n    QuantumTheory.Transport.scalarSpectralDifferenceCoefficient targetEnergy probeEnergy broadening =\n      -2 * Complex.I * ↑(Lorentzian.spectralKernel (probeEnergy - targetEnergy) broadening)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -91059,7 +91024,7 @@
       "QuantumTheory.Models.MassiveDirac.spectralDifferenceCoefficient_eq_lorentzian"
     ],
     "dependencies": [
-      "Lorentzian.inv_add_I_sub_inv_sub_I_eq_lorentzian",
+      "Lorentzian.inv_add_I_sub_inv_sub_I_eq_spectralKernel",
       "QuantumTheory.Transport.spectralParameter_advanced_ofRegulator",
       "QuantumTheory.Transport.spectralParameter_retarded_ofRegulator"
     ],
@@ -92002,7 +91967,7 @@
       "QuantumTheory.Transport.tendsto_interbandBastinPoleIntegral"
     ],
     "dependencies": [
-      "Lorentzian.tendsto_lorentzianRegularFactorIntegral",
+      "Lorentzian.tendsto_regularFactorIntegral",
       "QuantumTheory.Transport.continuousAt_interbandPoleRegularFactor_of_gap_add_offset_ne_zero",
       "QuantumTheory.Transport.gap_add_offset_ne_zero_on_targetWindow"
     ],
@@ -112277,15 +112242,15 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": false,
+    "terminal": true,
     "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {n : ℕ}\n  (d : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel n Finset.univ) (τ τ' : ℝ) (σ : Fin n → ℝ)\n  (B : ↥(SecondQuantization.Common.vacuumComponentParts d.vertexGraph)),\n  Fintype.card (d.MixedComponentPair τ τ' σ ↑B) = 2 * (SecondQuantization.Common.interactionSector ↑↑B).card",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -112296,19 +112261,15 @@
     "docString": "One ambient vacuum-component mixed pair fiber has twice as many elements as interaction vertices\nin that component. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumPairImage.0.SecondQuantization.Common.TwoPointDiagram.slotSplitVacuumMixedPairEmbedding_surjective"
-    ],
+    "dependents": [],
     "dependencies": [
       "Combinatorics.Pairing.card_normalizedPair",
       "SecondQuantization.Common.mem_vacuumComponentParts"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumPairImage.0.SecondQuantization.Common.TwoPointDiagram.slotSplitVacuumMixedPairEmbedding_surjective"
-    ],
-    "compiledConsumerCount": 1,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -112357,6 +112318,51 @@
       "SecondQuantization.Common.TwoPointDiagram.prod_componentParts_eq_external_mul_prod_vacuum"
     ],
     "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {n : ℕ} (T : Finset (Fin n))\n  (ext : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel n T)\n  (vac : SecondQuantization.Common.QuarticDiagram InternalLabel n (Finset.univ \\ T)) (τ τ' : ℝ) (σ : Fin n → ℝ)\n  (hσ : StrictAnti (σ ∘ SecondQuantization.Common.slotSplitVacuumSlot T))\n  (pr : ((SecondQuantization.Common.TwoPointDiagram.ofSlotSplit ⋯ ext vac).pairingInMixedOrder τ τ' σ).NormalizedPair),\n  (∃ p,\n      SecondQuantization.Common.mixedTimeOrderedQuarticLegMapPosition (SecondQuantization.Common.slotSplitVacuumSlot T)\n          τ τ' σ p =\n        (↑pr).1) →\n    ∃ q, (SecondQuantization.Common.TwoPointDiagram.slotSplitVacuumNormalizedPairEmbedding T ext vac τ τ' σ hσ) q = pr",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.TwoPointDiagram.exists_slotSplitVacuumNormalizedPairEmbedding_eq_of_firstEndpoint",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumPairing",
+    "externalAxioms": [],
+    "docString": "A mixed normalized pair starting in the vacuum leg embedding has a\npreimage in the standalone fixed-order quartic vacuum pairing. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumPairImage.0.SecondQuantization.Common.TwoPointDiagram.slotSplitVacuumMixedPairEmbedding_surjective"
+    ],
+    "dependencies": [
+      "Combinatorics.Pairing.exists_normalizedPairEmbedding_eq_of_firstEndpoint",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumPairing.0.SecondQuantization.Common.TwoPointDiagram.ofSlotSplit_pairingInMixedOrder_partner_vacuumOrderedLeg"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumPairImage.0.SecondQuantization.Common.TwoPointDiagram.slotSplitVacuumMixedPairEmbedding_surjective"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -113102,6 +113108,7 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Common.TwoPointDiagram.componentIsVacuum_iff_ne_externalComponentPart",
+      "SecondQuantization.Common.TwoPointDiagram.ofSlotSplit_vacuumLeg_mem_right",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.External.ExternalSlotSplit.0.SecondQuantization.Common.TwoPointDiagram.legInComponent_externalSlotLegSplitting_inl"
     ],
     "dependencies": [
@@ -113112,9 +113119,10 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Common.TwoPointDiagram.componentIsVacuum_iff_ne_externalComponentPart",
+      "SecondQuantization.Common.TwoPointDiagram.ofSlotSplit_vacuumLeg_mem_right",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.External.ExternalSlotSplit.0.SecondQuantization.Common.TwoPointDiagram.legInComponent_externalSlotLegSplitting_inl"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -113856,11 +113864,9 @@
     ],
     "dependencies": [
       "SecondQuantization.Common.TwoPointDiagram.slotSplitVacuumNormalizedPairEmbedding_apply",
-      "SecondQuantization.Common.mixedTimeOrderedAtomicLegEquiv_mixedTimeOrderedAtomicLegPosition",
-      "SecondQuantization.Common.slotSplitVacuumOrderedLeg_eq_slotSplitRight",
-      "SecondQuantization.Common.twoPointLegEquiv_mixedTimeAmbientPositionEquiv",
       "SecondQuantization.Common.twoPointVertexOfLeg_slotLegSplitting_inr_exact",
-      "SimpleGraph.componentBlock_mem_componentPartition"
+      "SimpleGraph.componentBlock_mem_componentPartition",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumPairImage.0.SecondQuantization.Common.slotSplitVacuumMixedPosition_eq_slotSplitRight"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -114086,6 +114092,56 @@
       "SecondQuantization.Common.isExternallyConnected_slotSplitExternal"
     ],
     "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {N : ℕ} {S T : Finset (Fin N)} (h : T ⊆ S)\n  (ext : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel N T)\n  (vac : SecondQuantization.Common.QuarticDiagram InternalLabel N (S \\ T)),\n  ext.IsExternallyConnected →\n    ∀ (i : Fin (2 * (2 * S.card + 1))),\n      SecondQuantization.Common.ComponentIsVacuum\n          ((SecondQuantization.Common.TwoPointDiagram.ofSlotSplit h ext vac).vertexGraph.componentBlock\n            (SecondQuantization.Common.twoPointVertexOfLeg i)) →\n        ∃ q, (SecondQuantization.Common.slotLegSplitting h) (Sum.inr q) = i",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.TwoPointDiagram.ofSlotSplit_vacuumLeg_mem_right",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumComponents",
+    "externalAxioms": [],
+    "docString": "Every leg in a vacuum component of a reassembled two-point diagram comes\nfrom the quartic side of the slot split. This characterization involves only\nthe graph and the fixed leg enumeration, not mixed times or their order. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumPairImage.0.SecondQuantization.Common.TwoPointDiagram.mixedVacuumPair_firstEndpoint_mem_vacuumLegRange"
+    ],
+    "dependencies": [
+      "SecondQuantization.Common.TwoPointDiagram.externalVertex_mem_externalComponentPart",
+      "SecondQuantization.Common.interactionSector_externalComponent_ofSlotSplit",
+      "SecondQuantization.Common.mem_interactionSector_subtype",
+      "SecondQuantization.Common.twoPointVertexOfLeg_slotLegSplitting_inl",
+      "SimpleGraph.componentBlock_eq_iff_mem",
+      "SimpleGraph.componentBlock_mem_componentPartition",
+      "SimpleGraph.self_mem_componentBlock"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumPairImage.0.SecondQuantization.Common.TwoPointDiagram.mixedVacuumPair_firstEndpoint_mem_vacuumLegRange"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -123497,10 +123553,10 @@
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
-    "retainedNeedsReview": true,
+    "retainedNeedsReview": false,
     "retainedMention": true,
     "projectAxioms": [],
     "name": "SecondQuantization.Common.interactionSector_externalComponent_ofSlotSplit",
@@ -123510,6 +123566,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "SecondQuantization.Common.TwoPointDiagram.ofSlotSplit_vacuumLeg_mem_right",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumComponents.0.SecondQuantization.Common.not_mem_left_of_mem_vacuumComponentPart"
     ],
     "dependencies": [
@@ -123521,9 +123578,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "SecondQuantization.Common.TwoPointDiagram.ofSlotSplit_vacuumLeg_mem_right",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumComponents.0.SecondQuantization.Common.not_mem_left_of_mem_vacuumComponentPart"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -123560,7 +123618,6 @@
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumComponentPair.0.SecondQuantization.Common.slotSplitVacuumNormalizedPairEmbedding_pairComponent",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumComponents.0.SecondQuantization.Common.slotSplitVacuumComponentPart_injective",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumComponents.0.SecondQuantization.Common.slotSplitVacuumComponentPart_surjective",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumPairImage.0.SecondQuantization.Common.TwoPointDiagram.slotSplitVacuumMixedPairEmbedding_surjective",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumVertexProduct.0.SecondQuantization.Common.TwoPointDiagram.prod_slotSplitVacuumComponentPart_eq_restrictComponent"
     ],
     "dependencies": [
@@ -123572,10 +123629,9 @@
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumComponentPair.0.SecondQuantization.Common.slotSplitVacuumNormalizedPairEmbedding_pairComponent",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumComponents.0.SecondQuantization.Common.slotSplitVacuumComponentPart_injective",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumComponents.0.SecondQuantization.Common.slotSplitVacuumComponentPart_surjective",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumPairImage.0.SecondQuantization.Common.TwoPointDiagram.slotSplitVacuumMixedPairEmbedding_surjective",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumVertexProduct.0.SecondQuantization.Common.TwoPointDiagram.prod_slotSplitVacuumComponentPart_eq_restrictComponent"
     ],
-    "compiledConsumerCount": 5,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -125003,6 +125059,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "SecondQuantization.Common.TwoPointDiagram.ofSlotSplit_vacuumLeg_mem_right",
       "SecondQuantization.Common.interactionSector_component_unique",
       "SecondQuantization.Common.isExternallyConnected_slotSplitExternal",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.External.ExternalSlotSplit.0.SecondQuantization.Common.TwoPointDiagram.exists_externalSlotLegSplitting_inl",
@@ -125018,6 +125075,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "SecondQuantization.Common.TwoPointDiagram.ofSlotSplit_vacuumLeg_mem_right",
       "SecondQuantization.Common.interactionSector_component_unique",
       "SecondQuantization.Common.isExternallyConnected_slotSplitExternal",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.External.ExternalSlotSplit.0.SecondQuantization.Common.TwoPointDiagram.exists_externalSlotLegSplitting_inl",
@@ -125027,7 +125085,7 @@
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumComponents.0.SecondQuantization.Common.not_mem_left_of_mem_vacuumComponentPart",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumComponents.0.SecondQuantization.Common.slotSplitVacuumComponentPart_surjective"
     ],
-    "compiledConsumerCount": 8,
+    "compiledConsumerCount": 9,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -125067,7 +125125,8 @@
       "SecondQuantization.Common.externallySupportedComponentParts_disjoint_vacuumComponentParts",
       "SecondQuantization.Common.hasNoVacuumComponent_iff_vacuumComponentParts_eq_empty",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumComponents.0.SecondQuantization.Common.not_mem_left_of_mem_vacuumComponentPart",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumComponents.0.SecondQuantization.Common.slotSplitVacuumComponentPart_surjective"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumComponents.0.SecondQuantization.Common.slotSplitVacuumComponentPart_surjective",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumPairImage.0.SecondQuantization.Common.TwoPointDiagram.mixedVacuumPair_firstEndpoint_mem_vacuumLegRange"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
@@ -125079,9 +125138,10 @@
       "SecondQuantization.Common.externallySupportedComponentParts_disjoint_vacuumComponentParts",
       "SecondQuantization.Common.hasNoVacuumComponent_iff_vacuumComponentParts_eq_empty",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumComponents.0.SecondQuantization.Common.not_mem_left_of_mem_vacuumComponentPart",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumComponents.0.SecondQuantization.Common.slotSplitVacuumComponentPart_surjective"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumComponents.0.SecondQuantization.Common.slotSplitVacuumComponentPart_surjective",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumPairImage.0.SecondQuantization.Common.TwoPointDiagram.mixedVacuumPair_firstEndpoint_mem_vacuumLegRange"
     ],
-    "compiledConsumerCount": 7,
+    "compiledConsumerCount": 8,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -125165,10 +125225,10 @@
     "dependents": [
       "SecondQuantization.Common.TwoPointDiagram.externalPieceMixedPosition_partner",
       "SecondQuantization.Common.TwoPointDiagram.mixedTimeOrderedAtomicLegEquiv_externalPieceMixedPosition",
-      "SecondQuantization.Common.TwoPointDiagram.ofSlotSplitVacuumNormalizedPairEmbedding_component",
       "SecondQuantization.Common.TwoPointDiagram.pairingInMixedOrder_partner_legPosition",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedPositionComponent_interactionLegPosition",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedVacuumInteractionPosition_val",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumPairImage.0.SecondQuantization.Common.slotSplitVacuumMixedPosition_eq_slotSplitRight",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Factorization.FiberVacuumIntegrand.0.SecondQuantization.Fermionic.fixedExternalOfSlotSplit_mixedAtomicOperator_vacuumOrderedLeg"
     ],
     "dependencies": [],
@@ -125177,10 +125237,10 @@
     "compiledConsumers": [
       "SecondQuantization.Common.TwoPointDiagram.externalPieceMixedPosition_partner",
       "SecondQuantization.Common.TwoPointDiagram.mixedTimeOrderedAtomicLegEquiv_externalPieceMixedPosition",
-      "SecondQuantization.Common.TwoPointDiagram.ofSlotSplitVacuumNormalizedPairEmbedding_component",
       "SecondQuantization.Common.TwoPointDiagram.pairingInMixedOrder_partner_legPosition",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedPositionComponent_interactionLegPosition",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedVacuumInteractionPosition_val",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumPairImage.0.SecondQuantization.Common.slotSplitVacuumMixedPosition_eq_slotSplitRight",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Factorization.FiberVacuumIntegrand.0.SecondQuantization.Fermionic.fixedExternalOfSlotSplit_mixedAtomicOperator_vacuumOrderedLeg"
     ],
     "compiledConsumerCount": 7,
@@ -127348,7 +127408,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": true,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -127360,17 +127420,15 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.fixedExternalOfSlotSplit_prod_vacuumDysonFixedTimeValue_eq_quarticIntegrand",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumPairImage.0.SecondQuantization.Common.TwoPointDiagram.slotSplitVacuumMixedPairEmbedding_surjective"
+      "SecondQuantization.Fermionic.fixedExternalOfSlotSplit_prod_vacuumDysonFixedTimeValue_eq_quarticIntegrand"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.fixedExternalOfSlotSplit_prod_vacuumDysonFixedTimeValue_eq_quarticIntegrand",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumPairImage.0.SecondQuantization.Common.TwoPointDiagram.slotSplitVacuumMixedPairEmbedding_surjective"
+      "SecondQuantization.Fermionic.fixedExternalOfSlotSplit_prod_vacuumDysonFixedTimeValue_eq_quarticIntegrand"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -127404,7 +127462,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Common.TwoPointDiagram.ofSlotSplitVacuumNormalizedPairEmbedding_component",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumPairImage.0.SecondQuantization.Common.slotSplitVacuumMixedPosition_eq_slotSplitRight",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumPairing.0.SecondQuantization.Common.TwoPointDiagram.ofSlotSplit_atomicLegPartner_vacuumOrderedLeg"
     ],
     "dependencies": [
@@ -127413,7 +127471,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.TwoPointDiagram.ofSlotSplitVacuumNormalizedPairEmbedding_component",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumPairImage.0.SecondQuantization.Common.slotSplitVacuumMixedPosition_eq_slotSplitRight",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumPairing.0.SecondQuantization.Common.TwoPointDiagram.ofSlotSplit_atomicLegPartner_vacuumOrderedLeg"
     ],
     "compiledConsumerCount": 2,
@@ -129107,18 +129165,18 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Common.TwoPointDiagram.mixedPositionComponent_externalPieceMixedPosition",
-      "SecondQuantization.Common.TwoPointDiagram.ofSlotSplitVacuumNormalizedPairEmbedding_component",
       "SecondQuantization.Common.TwoPointDiagram.pairingInMixedOrder_partner_legPosition",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedPositionComponent_interactionLegPosition"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedPositionComponent_interactionLegPosition",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumPairImage.0.SecondQuantization.Common.slotSplitVacuumMixedPosition_eq_slotSplitRight"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Common.TwoPointDiagram.mixedPositionComponent_externalPieceMixedPosition",
-      "SecondQuantization.Common.TwoPointDiagram.ofSlotSplitVacuumNormalizedPairEmbedding_component",
       "SecondQuantization.Common.TwoPointDiagram.pairingInMixedOrder_partner_legPosition",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedPositionComponent_interactionLegPosition"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven.0.SecondQuantization.Common.TwoPointDiagram.mixedPositionComponent_interactionLegPosition",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumPairImage.0.SecondQuantization.Common.slotSplitVacuumMixedPosition_eq_slotSplitRight"
     ],
     "compiledConsumerCount": 4,
     "axioms": [
@@ -129404,7 +129462,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ {N : ℕ} {S T : Finset (Fin N)} (h : T ⊆ S) (i : Fin (2 * (2 * T.card + 1))),\n  SecondQuantization.Common.twoPointVertexOfLeg ((SecondQuantization.Common.slotLegSplitting h) (Sum.inl i)) =\n    SecondQuantization.Common.slotSplitVertex h (SecondQuantization.Common.twoPointVertexOfLeg i)",
     "standardAxioms": [
       "Classical.choice",
@@ -129412,7 +129470,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -129423,15 +129481,19 @@
     "docString": "Left legs carry the ambient vertices of the corresponding external-piece vertices. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "SecondQuantization.Common.TwoPointDiagram.ofSlotSplit_vacuumLeg_mem_right"
+    ],
     "dependencies": [
       "SecondQuantization.Common.slotLegSplitting_external",
       "SecondQuantization.Common.slotLegSplitting_left_interaction"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "SecondQuantization.Common.TwoPointDiagram.ofSlotSplit_vacuumLeg_mem_right"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -134674,7 +134736,7 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "SecondQuantization.Fermionic.Transport.boundedIntrinsicFluxRetardedResponse_eq_comp_of_isDifferentialCurrent"
+      "SecondQuantization.Fermionic.Transport.boundedIntrinsicFluxRetardedResponse_eq_comp_of_factorization"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -134694,7 +134756,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Site : Type u_1} {Test : Type u_2} {OneForm : Type u_3} [inst : LinearOrder Site] [inst_1 : Fintype Site]\n  [inst_2 : AddCommGroup Test] [inst_3 : _root_.Module ℂ Test] [inst_4 : AddCommGroup OneForm]\n  [inst_5 : _root_.Module ℂ OneForm]\n  (system :\n    QuantumTheory.LinearResponse.BoundedFreeSystem (SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site))\n  (expectation :\n    QuantumTheory.LinearResponse.NormalizedExpectation\n      (SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site))\n  (source :\n    SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site →L[ℂ]\n      SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site)\n  (d : Test →ₗ[ℂ] OneForm) (Φ : Test →ₗ[ℂ] (Site →₀ ℂ) →ₗ[ℂ] Site →₀ ℂ) (J : OneForm →ₗ[ℂ] (Site →₀ ℂ) →ₗ[ℂ] Site →₀ ℂ),\n  ConservationLaw.IsDifferentialCurrent d Φ J →\n    ∀ (t s : ℝ),\n      SecondQuantization.Fermionic.Transport.boundedIntrinsicFluxRetardedResponse system expectation source Φ t s =\n        SecondQuantization.Fermionic.Transport.boundedIntrinsicFluxRetardedResponse system expectation source J t s ∘ₗ d",
+    "statement": "∀ {Site : Type u_1} {Test : Type u_2} {OneForm : Type u_3} [inst : LinearOrder Site] [inst_1 : Fintype Site]\n  [inst_2 : AddCommGroup Test] [inst_3 : _root_.Module ℂ Test] [inst_4 : AddCommGroup OneForm]\n  [inst_5 : _root_.Module ℂ OneForm]\n  (system :\n    QuantumTheory.LinearResponse.BoundedFreeSystem (SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site))\n  (expectation :\n    QuantumTheory.LinearResponse.NormalizedExpectation\n      (SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site))\n  (source :\n    SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site →L[ℂ]\n      SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site)\n  (d : Test →ₗ[ℂ] OneForm) (Φ : Test →ₗ[ℂ] (Site →₀ ℂ) →ₗ[ℂ] Site →₀ ℂ) (J : OneForm →ₗ[ℂ] (Site →₀ ℂ) →ₗ[ℂ] Site →₀ ℂ),\n  Φ = J ∘ₗ d →\n    ∀ (t s : ℝ),\n      SecondQuantization.Fermionic.Transport.boundedIntrinsicFluxRetardedResponse system expectation source Φ t s =\n        SecondQuantization.Fermionic.Transport.boundedIntrinsicFluxRetardedResponse system expectation source J t s ∘ₗ d",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -134706,7 +134768,7 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.Transport.boundedIntrinsicFluxRetardedResponse_eq_comp_of_isDifferentialCurrent",
+    "name": "SecondQuantization.Fermionic.Transport.boundedIntrinsicFluxRetardedResponse_eq_comp_of_factorization",
     "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.IntrinsicFluxResponse",
     "externalAxioms": [],
     "docString": "A differential-current representation identifies the intrinsic Kubo response with\nthe chosen current response precomposed by the differential. The equality is only on exact\ndifferentials; no equality of arbitrary current extensions is implied. ",
@@ -134776,7 +134838,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Site : Type u_1} {Test : Type u_2} {OneForm : Type u_3} [inst : LinearOrder Site] [inst_1 : Fintype Site]\n  [inst_2 : AddCommGroup Test] [inst_3 : _root_.Module ℂ Test] [inst_4 : AddCommGroup OneForm]\n  [inst_5 : _root_.Module ℂ OneForm]\n  (system :\n    QuantumTheory.LinearResponse.BoundedFreeSystem (SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site))\n  (expectation :\n    QuantumTheory.LinearResponse.NormalizedExpectation\n      (SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site))\n  (source :\n    SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site →L[ℂ]\n      SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site)\n  (d : Test →ₗ[ℂ] OneForm) (Φ : Test →ₗ[ℂ] (Site →₀ ℂ) →ₗ[ℂ] Site →₀ ℂ) (velocity m : (Site →₀ ℂ) →ₗ[ℂ] Site →₀ ℂ)\n  (N : OneForm →ₗ[ℂ] (Site →₀ ℂ) →ₗ[ℂ] Site →₀ ℂ),\n  ConservationLaw.IsDifferentialCurrent d Φ (ConservationLaw.nestedSymmetrizedCurrentFlux (Site →₀ ℂ) velocity m N) →\n    ∀ (t s : ℝ),\n      SecondQuantization.Fermionic.Transport.boundedIntrinsicFluxRetardedResponse system expectation source Φ t s =\n        SecondQuantization.Fermionic.Transport.boundedIntrinsicFluxRetardedResponse system expectation source\n              (ConservationLaw.symmetrizedCurrentFlux (Site →₀ ℂ) velocity m N) t s ∘ₗ\n            d +\n          SecondQuantization.Fermionic.Transport.boundedIntrinsicFluxRetardedResponse system expectation source\n              (ConservationLaw.localizationCorrectionCurrentFlux (Site →₀ ℂ) velocity m N) t s ∘ₗ\n            d",
+    "statement": "∀ {Site : Type u_1} {Test : Type u_2} {OneForm : Type u_3} [inst : LinearOrder Site] [inst_1 : Fintype Site]\n  [inst_2 : AddCommGroup Test] [inst_3 : _root_.Module ℂ Test] [inst_4 : AddCommGroup OneForm]\n  [inst_5 : _root_.Module ℂ OneForm]\n  (system :\n    QuantumTheory.LinearResponse.BoundedFreeSystem (SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site))\n  (expectation :\n    QuantumTheory.LinearResponse.NormalizedExpectation\n      (SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site))\n  (source :\n    SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site →L[ℂ]\n      SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site)\n  (d : Test →ₗ[ℂ] OneForm) (Φ : Test →ₗ[ℂ] (Site →₀ ℂ) →ₗ[ℂ] Site →₀ ℂ) (velocity m : (Site →₀ ℂ) →ₗ[ℂ] Site →₀ ℂ)\n  (N : OneForm →ₗ[ℂ] (Site →₀ ℂ) →ₗ[ℂ] Site →₀ ℂ),\n  Φ = ConservationLaw.nestedSymmetrizedCurrentFlux (Site →₀ ℂ) velocity m N ∘ₗ d →\n    ∀ (t s : ℝ),\n      SecondQuantization.Fermionic.Transport.boundedIntrinsicFluxRetardedResponse system expectation source Φ t s =\n        SecondQuantization.Fermionic.Transport.boundedIntrinsicFluxRetardedResponse system expectation source\n              (ConservationLaw.symmetrizedCurrentFlux (Site →₀ ℂ) velocity m N) t s ∘ₗ\n            d +\n          SecondQuantization.Fermionic.Transport.boundedIntrinsicFluxRetardedResponse system expectation source\n              (ConservationLaw.localizationCorrectionCurrentFlux (Site →₀ ℂ) velocity m N) t s ∘ₗ\n            d",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -134800,7 +134862,7 @@
     "dependencies": [
       "ConservationLaw.localizationCorrectionCurrentFlux_apply",
       "ConservationLaw.nestedSymmetrizedCurrentFlux_eq_symmetrized_add_correction",
-      "SecondQuantization.Fermionic.Transport.boundedIntrinsicFluxRetardedResponse_eq_comp_of_isDifferentialCurrent"
+      "SecondQuantization.Fermionic.Transport.boundedIntrinsicFluxRetardedResponse_eq_comp_of_factorization"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -134822,7 +134884,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Site : Type u_1} {Test : Type u_2} {OneForm : Type u_3} [inst : LinearOrder Site] [inst_1 : Fintype Site]\n  [inst_2 : AddCommGroup Test] [inst_3 : _root_.Module ℂ Test] [inst_4 : AddCommGroup OneForm]\n  [inst_5 : _root_.Module ℂ OneForm]\n  (system :\n    QuantumTheory.LinearResponse.BoundedFreeSystem (SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site))\n  (expectation :\n    QuantumTheory.LinearResponse.NormalizedExpectation\n      (SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site))\n  (source :\n    SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site →L[ℂ]\n      SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site)\n  (d : Test →ₗ[ℂ] OneForm) (Φ : Test →ₗ[ℂ] (Site →₀ ℂ) →ₗ[ℂ] Site →₀ ℂ) (velocity m : (Site →₀ ℂ) →ₗ[ℂ] Site →₀ ℂ)\n  (N : OneForm →ₗ[ℂ] (Site →₀ ℂ) →ₗ[ℂ] Site →₀ ℂ),\n  ConservationLaw.IsDifferentialCurrent d Φ (ConservationLaw.nestedSymmetrizedCurrentFlux (Site →₀ ℂ) velocity m N) →\n    (∀ (α : OneForm), ⁅N α, m⁆ = 0) →\n      ∀ (t s : ℝ),\n        SecondQuantization.Fermionic.Transport.boundedIntrinsicFluxRetardedResponse system expectation source Φ t s =\n          SecondQuantization.Fermionic.Transport.boundedIntrinsicFluxRetardedResponse system expectation source\n              (ConservationLaw.symmetrizedCurrentFlux (Site →₀ ℂ) velocity m N) t s ∘ₗ\n            d",
+    "statement": "∀ {Site : Type u_1} {Test : Type u_2} {OneForm : Type u_3} [inst : LinearOrder Site] [inst_1 : Fintype Site]\n  [inst_2 : AddCommGroup Test] [inst_3 : _root_.Module ℂ Test] [inst_4 : AddCommGroup OneForm]\n  [inst_5 : _root_.Module ℂ OneForm]\n  (system :\n    QuantumTheory.LinearResponse.BoundedFreeSystem (SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site))\n  (expectation :\n    QuantumTheory.LinearResponse.NormalizedExpectation\n      (SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site))\n  (source :\n    SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site →L[ℂ]\n      SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site)\n  (d : Test →ₗ[ℂ] OneForm) (Φ : Test →ₗ[ℂ] (Site →₀ ℂ) →ₗ[ℂ] Site →₀ ℂ) (velocity m : (Site →₀ ℂ) →ₗ[ℂ] Site →₀ ℂ)\n  (N : OneForm →ₗ[ℂ] (Site →₀ ℂ) →ₗ[ℂ] Site →₀ ℂ),\n  Φ = ConservationLaw.nestedSymmetrizedCurrentFlux (Site →₀ ℂ) velocity m N ∘ₗ d →\n    (∀ (α : OneForm), ⁅N α, m⁆ = 0) →\n      ∀ (t s : ℝ),\n        SecondQuantization.Fermionic.Transport.boundedIntrinsicFluxRetardedResponse system expectation source Φ t s =\n          SecondQuantization.Fermionic.Transport.boundedIntrinsicFluxRetardedResponse system expectation source\n              (ConservationLaw.symmetrizedCurrentFlux (Site →₀ ℂ) velocity m N) t s ∘ₗ\n            d",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -134867,7 +134929,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {Site : Type u_1} {Test : Type u_2} {OneForm : Type u_3} [inst : LinearOrder Site] [inst_1 : Fintype Site]\n  [inst_2 : AddCommGroup Test] [inst_3 : _root_.Module ℂ Test] [inst_4 : AddCommGroup OneForm]\n  [inst_5 : _root_.Module ℂ OneForm]\n  (system :\n    QuantumTheory.LinearResponse.BoundedFreeSystem (SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site))\n  (expectation :\n    QuantumTheory.LinearResponse.NormalizedExpectation\n      (SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site))\n  (source :\n    SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site →L[ℂ]\n      SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site)\n  (d : Test →ₗ[ℂ] OneForm) (Φ : Test →ₗ[ℂ] (Site →₀ ℂ) →ₗ[ℂ] Site →₀ ℂ) (velocity : (Site →₀ ℂ) →ₗ[ℂ] Site →₀ ℂ)\n  (N : OneForm →ₗ[ℂ] (Site →₀ ℂ) →ₗ[ℂ] Site →₀ ℂ) (q : ℂ),\n  ConservationLaw.IsDifferentialCurrent d Φ\n      (ConservationLaw.nestedSymmetrizedCurrentFlux (Site →₀ ℂ) velocity (q • LinearMap.id) N) →\n    ∀ (t s : ℝ),\n      SecondQuantization.Fermionic.Transport.boundedIntrinsicFluxRetardedResponse system expectation source Φ t s =\n        SecondQuantization.Fermionic.Transport.boundedIntrinsicFluxRetardedResponse system expectation source\n            (ConservationLaw.symmetrizedCurrentFlux (Site →₀ ℂ) velocity (q • LinearMap.id) N) t s ∘ₗ\n          d",
+    "statement": "∀ {Site : Type u_1} {Test : Type u_2} {OneForm : Type u_3} [inst : LinearOrder Site] [inst_1 : Fintype Site]\n  [inst_2 : AddCommGroup Test] [inst_3 : _root_.Module ℂ Test] [inst_4 : AddCommGroup OneForm]\n  [inst_5 : _root_.Module ℂ OneForm]\n  (system :\n    QuantumTheory.LinearResponse.BoundedFreeSystem (SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site))\n  (expectation :\n    QuantumTheory.LinearResponse.NormalizedExpectation\n      (SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site))\n  (source :\n    SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site →L[ℂ]\n      SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site)\n  (d : Test →ₗ[ℂ] OneForm) (Φ : Test →ₗ[ℂ] (Site →₀ ℂ) →ₗ[ℂ] Site →₀ ℂ) (velocity : (Site →₀ ℂ) →ₗ[ℂ] Site →₀ ℂ)\n  (N : OneForm →ₗ[ℂ] (Site →₀ ℂ) →ₗ[ℂ] Site →₀ ℂ) (q : ℂ),\n  Φ = ConservationLaw.nestedSymmetrizedCurrentFlux (Site →₀ ℂ) velocity (q • LinearMap.id) N ∘ₗ d →\n    ∀ (t s : ℝ),\n      SecondQuantization.Fermionic.Transport.boundedIntrinsicFluxRetardedResponse system expectation source Φ t s =\n        SecondQuantization.Fermionic.Transport.boundedIntrinsicFluxRetardedResponse system expectation source\n            (ConservationLaw.symmetrizedCurrentFlux (Site →₀ ℂ) velocity (q • LinearMap.id) N) t s ∘ₗ\n          d",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -151457,6 +151519,7 @@
     "dependents": [
       "SecondQuantization.Common.ExternalInsertionDiagram.legInComponent_iff_vertex_mem",
       "SecondQuantization.Common.TwoPointDiagram.legInComponent_iff_vertex_mem",
+      "SecondQuantization.Common.TwoPointDiagram.ofSlotSplit_vacuumLeg_mem_right",
       "SecondQuantization.Common.allExternalVerticesConnected_iff_supportedComponentParts_eq_singleton",
       "SecondQuantization.Common.componentMeetsExternal_iff_exists_eq_componentBlock",
       "SecondQuantization.Common.interactionSector_component_unique",
@@ -151468,12 +151531,13 @@
     "compiledConsumers": [
       "SecondQuantization.Common.ExternalInsertionDiagram.legInComponent_iff_vertex_mem",
       "SecondQuantization.Common.TwoPointDiagram.legInComponent_iff_vertex_mem",
+      "SecondQuantization.Common.TwoPointDiagram.ofSlotSplit_vacuumLeg_mem_right",
       "SecondQuantization.Common.allExternalVerticesConnected_iff_supportedComponentParts_eq_singleton",
       "SecondQuantization.Common.componentMeetsExternal_iff_exists_eq_componentBlock",
       "SecondQuantization.Common.interactionSector_component_unique",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumComponents.0.SecondQuantization.Common.not_mem_left_of_mem_vacuumComponentPart"
     ],
-    "compiledConsumerCount": 6,
+    "compiledConsumerCount": 7,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -151603,6 +151667,7 @@
       "SecondQuantization.Common.ExternalInsertionDiagram.externalComponentPartition_part_card_even",
       "SecondQuantization.Common.TwoPointDiagram.mixedComponentWeight_eq_of_comparisons",
       "SecondQuantization.Common.TwoPointDiagram.ofSlotSplitVacuumNormalizedPairEmbedding_component",
+      "SecondQuantization.Common.TwoPointDiagram.ofSlotSplit_vacuumLeg_mem_right",
       "SecondQuantization.Common.allExternalVerticesConnected_iff_supportedComponentParts_eq_singleton",
       "SecondQuantization.Common.componentBlock_slotSplitVacuumVertex_mem_vacuumComponentParts",
       "SecondQuantization.Common.hasNoVacuumComponent_iff_forall_component_meetsExternal",
@@ -151618,6 +151683,7 @@
       "SecondQuantization.Common.ExternalInsertionDiagram.externalComponentPartition_part_card_even",
       "SecondQuantization.Common.TwoPointDiagram.mixedComponentWeight_eq_of_comparisons",
       "SecondQuantization.Common.TwoPointDiagram.ofSlotSplitVacuumNormalizedPairEmbedding_component",
+      "SecondQuantization.Common.TwoPointDiagram.ofSlotSplit_vacuumLeg_mem_right",
       "SecondQuantization.Common.allExternalVerticesConnected_iff_supportedComponentParts_eq_singleton",
       "SecondQuantization.Common.componentBlock_slotSplitVacuumVertex_mem_vacuumComponentParts",
       "SecondQuantization.Common.hasNoVacuumComponent_iff_forall_component_meetsExternal",
@@ -151625,7 +151691,7 @@
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumComponentPair.0.SecondQuantization.Common.slotSplitVacuumNormalizedPairEmbedding_pairComponent",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumComponents.0.SecondQuantization.Common.not_mem_left_of_mem_vacuumComponentPart"
     ],
-    "compiledConsumerCount": 10,
+    "compiledConsumerCount": 11,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -151860,6 +151926,7 @@
       "SecondQuantization.Common.ExternalInsertionDiagram.allExternalVerticesConnected_two",
       "SecondQuantization.Common.TwoPointDiagram.externalVertex_mem_externalComponentPart",
       "SecondQuantization.Common.TwoPointDiagram.externalVerticesConnected",
+      "SecondQuantization.Common.TwoPointDiagram.ofSlotSplit_vacuumLeg_mem_right",
       "SecondQuantization.Common.allExternalVerticesConnected_iff_supportedComponentParts_eq_singleton",
       "SecondQuantization.Common.componentMeetsExternal_iff_exists_eq_componentBlock",
       "SecondQuantization.Common.hasNoVacuumComponent_iff_forall_component_meetsExternal",
@@ -151877,6 +151944,7 @@
       "SecondQuantization.Common.ExternalInsertionDiagram.allExternalVerticesConnected_two",
       "SecondQuantization.Common.TwoPointDiagram.externalVertex_mem_externalComponentPart",
       "SecondQuantization.Common.TwoPointDiagram.externalVerticesConnected",
+      "SecondQuantization.Common.TwoPointDiagram.ofSlotSplit_vacuumLeg_mem_right",
       "SecondQuantization.Common.allExternalVerticesConnected_iff_supportedComponentParts_eq_singleton",
       "SecondQuantization.Common.componentMeetsExternal_iff_exists_eq_componentBlock",
       "SecondQuantization.Common.hasNoVacuumComponent_iff_forall_component_meetsExternal",
@@ -151885,7 +151953,7 @@
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumComponentPair.0.SecondQuantization.Common.slotSplitVacuumNormalizedPairEmbedding_pairComponent",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumComponents.0.SecondQuantization.Common.not_mem_left_of_mem_vacuumComponentPart"
     ],
-    "compiledConsumerCount": 10,
+    "compiledConsumerCount": 11,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -153112,13 +153180,13 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "Lorentzian.inv_add_I_sub_inv_sub_I_eq_lorentzian"
+      "Lorentzian.inv_add_I_sub_inv_sub_I_eq_spectralKernel"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "Lorentzian.inv_add_I_sub_inv_sub_I_eq_lorentzian"
+      "Lorentzian.inv_add_I_sub_inv_sub_I_eq_spectralKernel"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -153154,13 +153222,13 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "Lorentzian.inv_add_I_sub_inv_sub_I_eq_lorentzian"
+      "Lorentzian.inv_add_I_sub_inv_sub_I_eq_spectralKernel"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "Lorentzian.inv_add_I_sub_inv_sub_I_eq_lorentzian"
+      "Lorentzian.inv_add_I_sub_inv_sub_I_eq_spectralKernel"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -153200,7 +153268,7 @@
       "_private.LeanCondensedMatter.Analysis.Lorentzian.Pole.0.Lorentzian.lorentzianRegularFactorErrorIntegral_eq_outer_add_inner"
     ],
     "dependencies": [
-      "Lorentzian.continuous_lorentzianSpectralKernel_fixed_broadening"
+      "Lorentzian.continuous_spectralKernel_fixed_broadening"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -153284,7 +153352,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "_private.LeanCondensedMatter.Analysis.Lorentzian.Pole.0.Lorentzian.lorentzianRegularFactorIntegral_eq_error_add_mass_smul_pole"
+      "_private.LeanCondensedMatter.Analysis.Lorentzian.Pole.0.Lorentzian.regularFactorIntegral_eq_error_add_mass_smul_pole"
     ],
     "dependencies": [
       "_private.LeanCondensedMatter.Analysis.Lorentzian.Pole.0.Lorentzian.continuousOn_lorentzianRegularFactorErrorIntegrand"
@@ -153292,7 +153360,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "_private.LeanCondensedMatter.Analysis.Lorentzian.Pole.0.Lorentzian.lorentzianRegularFactorIntegral_eq_error_add_mass_smul_pole"
+      "_private.LeanCondensedMatter.Analysis.Lorentzian.Pole.0.Lorentzian.regularFactorIntegral_eq_error_add_mass_smul_pole"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -153353,53 +153421,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (factor : ℝ × ℝ → ℂ) (radius broadening : ℝ),\n  0 ≤ radius →\n    broadening ≠ 0 →\n      ContinuousOn (fun offset => factor (offset, broadening)) (Set.Icc (-radius) radius) →\n        Lorentzian.lorentzianRegularFactorIntegral factor radius broadening =\n          Lorentzian.lorentzianRegularFactorErrorIntegral✝ factor radius broadening +\n            (∫ (offset : ℝ) in -radius..radius, Lorentzian.lorentzianSpectralKernel offset broadening) • factor (0, 0)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Analysis.Lorentzian.Pole.0.Lorentzian.lorentzianRegularFactorIntegral_eq_error_add_mass_smul_pole",
-    "module": "LeanCondensedMatter.Analysis.Lorentzian.Pole",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "Lorentzian.tendsto_lorentzianRegularFactorIntegral"
-    ],
-    "dependencies": [
-      "Lorentzian.continuous_lorentzianSpectralKernel_fixed_broadening",
-      "_private.LeanCondensedMatter.Analysis.Lorentzian.Pole.0.Lorentzian.intervalIntegrable_lorentzianRegularFactorErrorIntegrand",
-      "_private.LeanCondensedMatter.Analysis.Lorentzian.Pole.0.Lorentzian.real_smul_complex_eq_mul"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "Lorentzian.tendsto_lorentzianRegularFactorIntegral"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (innerRadius outerRadius broadening : ℝ),\n  broadening ≠ 0 →\n    Lorentzian.lorentzianSpectralOuterMass✝ innerRadius outerRadius broadening =\n      Lorentzian.lorentzianSpectralTailMass innerRadius outerRadius broadening",
+    "statement": "∀ (innerRadius outerRadius broadening : ℝ),\n  broadening ≠ 0 →\n    Lorentzian.lorentzianSpectralOuterMass✝ innerRadius outerRadius broadening =\n      Lorentzian.spectralTailMass innerRadius outerRadius broadening",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -153421,7 +153443,7 @@
       "_private.LeanCondensedMatter.Analysis.Lorentzian.Pole.0.Lorentzian.norm_lorentzianRegularFactorOuterErrorIntegral_le"
     ],
     "dependencies": [
-      "Lorentzian.intervalIntegrable_lorentzianSpectralKernel"
+      "Lorentzian.intervalIntegrable_spectralKernel"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -153443,7 +153465,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (factor : ℝ × ℝ → ℂ) (innerRadius broadening tolerance : ℝ),\n  0 ≤ innerRadius →\n    0 < broadening →\n      (∀ (offset : ℝ),\n          |offset| ≤ innerRadius → ‖Lorentzian.lorentzianRegularFactorError✝ factor offset broadening‖ ≤ tolerance) →\n        ‖∫ (offset : ℝ) in -innerRadius..innerRadius,\n              Lorentzian.lorentzianRegularFactorErrorIntegrand✝ factor broadening offset‖ ≤\n          tolerance * ∫ (offset : ℝ) in -innerRadius..innerRadius, Lorentzian.lorentzianSpectralKernel offset broadening",
+    "statement": "∀ (factor : ℝ × ℝ → ℂ) (innerRadius broadening tolerance : ℝ),\n  0 ≤ innerRadius →\n    0 < broadening →\n      (∀ (offset : ℝ),\n          |offset| ≤ innerRadius → ‖Lorentzian.lorentzianRegularFactorError✝ factor offset broadening‖ ≤ tolerance) →\n        ‖∫ (offset : ℝ) in -innerRadius..innerRadius,\n              Lorentzian.lorentzianRegularFactorErrorIntegrand✝ factor broadening offset‖ ≤\n          tolerance * ∫ (offset : ℝ) in -innerRadius..innerRadius, Lorentzian.spectralKernel offset broadening",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -153465,7 +153487,7 @@
       "_private.LeanCondensedMatter.Analysis.Lorentzian.Pole.0.Lorentzian.tendsto_lorentzianRegularFactorErrorIntegral_zero"
     ],
     "dependencies": [
-      "Lorentzian.intervalIntegrable_lorentzianSpectralKernel",
+      "Lorentzian.intervalIntegrable_spectralKernel",
       "_private.LeanCondensedMatter.Analysis.Lorentzian.Pole.0.Lorentzian.norm_lorentzian_mul_regularFactorError_le"
     ],
     "crossModuleDirectWrapper": false,
@@ -153488,7 +153510,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (factor : ℝ × ℝ → ℂ) (innerRadius outerRadius broadening C : ℝ),\n  0 ≤ innerRadius →\n    innerRadius ≤ outerRadius →\n      0 < broadening →\n        (∀ (offset : ℝ),\n            innerRadius ≤ |offset| →\n              |offset| ≤ outerRadius → ‖Lorentzian.lorentzianRegularFactorError✝ factor offset broadening‖ ≤ C) →\n          ‖Lorentzian.lorentzianRegularFactorOuterErrorIntegral✝ factor innerRadius outerRadius broadening‖ ≤\n            C * Lorentzian.lorentzianSpectralTailMass innerRadius outerRadius broadening",
+    "statement": "∀ (factor : ℝ × ℝ → ℂ) (innerRadius outerRadius broadening C : ℝ),\n  0 ≤ innerRadius →\n    innerRadius ≤ outerRadius →\n      0 < broadening →\n        (∀ (offset : ℝ),\n            innerRadius ≤ |offset| →\n              |offset| ≤ outerRadius → ‖Lorentzian.lorentzianRegularFactorError✝ factor offset broadening‖ ≤ C) →\n          ‖Lorentzian.lorentzianRegularFactorOuterErrorIntegral✝ factor innerRadius outerRadius broadening‖ ≤\n            C * Lorentzian.spectralTailMass innerRadius outerRadius broadening",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -153510,7 +153532,7 @@
       "_private.LeanCondensedMatter.Analysis.Lorentzian.Pole.0.Lorentzian.tendsto_lorentzianRegularFactorErrorIntegral_zero"
     ],
     "dependencies": [
-      "Lorentzian.intervalIntegrable_lorentzianSpectralKernel",
+      "Lorentzian.intervalIntegrable_spectralKernel",
       "_private.LeanCondensedMatter.Analysis.Lorentzian.Pole.0.Lorentzian.lorentzianSpectralOuterMass_eq_tailMass",
       "_private.LeanCondensedMatter.Analysis.Lorentzian.Pole.0.Lorentzian.norm_lorentzian_mul_regularFactorError_le"
     ],
@@ -153534,7 +153556,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (factor : ℝ × ℝ → ℂ) (offset broadening tolerance : ℝ),\n  0 ≤ broadening →\n    ‖Lorentzian.lorentzianRegularFactorError✝ factor offset broadening‖ ≤ tolerance →\n      ‖↑(Lorentzian.lorentzianSpectralKernel offset broadening) *\n            Lorentzian.lorentzianRegularFactorError✝ factor offset broadening‖ ≤\n        tolerance * Lorentzian.lorentzianSpectralKernel offset broadening",
+    "statement": "∀ (factor : ℝ × ℝ → ℂ) (offset broadening tolerance : ℝ),\n  0 ≤ broadening →\n    ‖Lorentzian.lorentzianRegularFactorError✝ factor offset broadening‖ ≤ tolerance →\n      ‖↑(Lorentzian.spectralKernel offset broadening) *\n            Lorentzian.lorentzianRegularFactorError✝ factor offset broadening‖ ≤\n        tolerance * Lorentzian.spectralKernel offset broadening",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -153557,7 +153579,7 @@
       "_private.LeanCondensedMatter.Analysis.Lorentzian.Pole.0.Lorentzian.norm_lorentzianRegularFactorOuterErrorIntegral_le"
     ],
     "dependencies": [
-      "Lorentzian.lorentzianSpectralKernel_nonneg"
+      "Lorentzian.spectralKernel_nonneg"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -153599,13 +153621,59 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "_private.LeanCondensedMatter.Analysis.Lorentzian.Pole.0.Lorentzian.lorentzianRegularFactorIntegral_eq_error_add_mass_smul_pole"
+      "_private.LeanCondensedMatter.Analysis.Lorentzian.Pole.0.Lorentzian.regularFactorIntegral_eq_error_add_mass_smul_pole"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "_private.LeanCondensedMatter.Analysis.Lorentzian.Pole.0.Lorentzian.lorentzianRegularFactorIntegral_eq_error_add_mass_smul_pole"
+      "_private.LeanCondensedMatter.Analysis.Lorentzian.Pole.0.Lorentzian.regularFactorIntegral_eq_error_add_mass_smul_pole"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (factor : ℝ × ℝ → ℂ) (radius broadening : ℝ),\n  0 ≤ radius →\n    broadening ≠ 0 →\n      ContinuousOn (fun offset => factor (offset, broadening)) (Set.Icc (-radius) radius) →\n        Lorentzian.regularFactorIntegral factor radius broadening =\n          Lorentzian.lorentzianRegularFactorErrorIntegral✝ factor radius broadening +\n            (∫ (offset : ℝ) in -radius..radius, Lorentzian.spectralKernel offset broadening) • factor (0, 0)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Analysis.Lorentzian.Pole.0.Lorentzian.regularFactorIntegral_eq_error_add_mass_smul_pole",
+    "module": "LeanCondensedMatter.Analysis.Lorentzian.Pole",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "Lorentzian.tendsto_regularFactorIntegral"
+    ],
+    "dependencies": [
+      "Lorentzian.continuous_spectralKernel_fixed_broadening",
+      "_private.LeanCondensedMatter.Analysis.Lorentzian.Pole.0.Lorentzian.intervalIntegrable_lorentzianRegularFactorErrorIntegrand",
+      "_private.LeanCondensedMatter.Analysis.Lorentzian.Pole.0.Lorentzian.real_smul_complex_eq_mul"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "Lorentzian.tendsto_regularFactorIntegral"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -153641,11 +153709,11 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "Lorentzian.tendsto_lorentzianRegularFactorIntegral"
+      "Lorentzian.tendsto_regularFactorIntegral"
     ],
     "dependencies": [
-      "Lorentzian.integral_lorentzianSpectralKernel_symmetric_lt_pi",
-      "Lorentzian.tendsto_lorentzianSpectralTailMass_zero",
+      "Lorentzian.integral_spectralKernel_symmetric_lt_pi",
+      "Lorentzian.tendsto_spectralTailMass_zero",
       "_private.LeanCondensedMatter.Analysis.Lorentzian.Pole.0.Lorentzian.exists_delta_norm_regularFactor_sub_pole_lt_of_coordinates",
       "_private.LeanCondensedMatter.Analysis.Lorentzian.Pole.0.Lorentzian.lorentzianRegularFactorErrorIntegral_eq_outer_add_inner",
       "_private.LeanCondensedMatter.Analysis.Lorentzian.Pole.0.Lorentzian.norm_integral_lorentzian_mul_regularFactorError_le",
@@ -153654,7 +153722,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "Lorentzian.tendsto_lorentzianRegularFactorIntegral"
+      "Lorentzian.tendsto_regularFactorIntegral"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -163627,7 +163695,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (band : QuantumTheory.Models.MassiveDirac.Band) (e v m broadening : ℝ),\n  m ≠ 0 →\n    MeasureTheory.StronglyMeasurable fun z =>\n      ↑(Lorentzian.lorentzianSpectralKernel z.2 broadening) *\n        QuantumTheory.Models.MassiveDirac.targetCenteredInterbandSpectatorCurrentFactor band e v m z.1 0\n          (z.2, broadening)",
+    "statement": "∀ (band : QuantumTheory.Models.MassiveDirac.Band) (e v m broadening : ℝ),\n  m ≠ 0 →\n    MeasureTheory.StronglyMeasurable fun z =>\n      ↑(Lorentzian.spectralKernel z.2 broadening) *\n        QuantumTheory.Models.MassiveDirac.targetCenteredInterbandSpectatorCurrentFactor band e v m z.1 0\n          (z.2, broadening)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -164068,15 +164136,15 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": false,
+    "terminal": true,
     "statement": "∀ (v m probeEnergy regulator : ℝ),\n  regulator ≠ 0 →\n    Continuous\n      (QuantumTheory.Models.MassiveDirac.continuumBornRadialDenominatorIntegrandOfRegulator v m probeEnergy regulator)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -164087,19 +164155,15 @@
     "docString": null,
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.Denominator.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDenominatorIntegralOfRegulator_eq_log_sub_log"
-    ],
+    "dependents": [],
     "dependencies": [
       "QuantumTheory.Models.MassiveDirac.continuous_inv_pauliGreenDenominatorOfRegulator_radial",
       "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.Denominator.0.QuantumTheory.Models.MassiveDirac.pauliGreenDenominatorOfRegulator_radial_eq"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.Denominator.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDenominatorIntegralOfRegulator_eq_log_sub_log"
-    ],
-    "compiledConsumerCount": 1,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -164137,9 +164201,8 @@
       "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.Denominator.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDenominatorIntegralOfRegulator_re_eq"
     ],
     "dependencies": [
-      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.Denominator.0.QuantumTheory.Models.MassiveDirac.continuous_continuumBornRadialDenominatorIntegrandOfRegulator",
-      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.Denominator.0.QuantumTheory.Models.MassiveDirac.pauliGreenDenominatorOfRegulator_radial_eq",
-      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.Denominator.0.QuantumTheory.Models.MassiveDirac.pauliGreenDenominatorOfRegulator_radial_im"
+      "QuantumTheory.Models.MassiveDirac.integral_massiveDiracRadialDenominatorKernel_eq_log",
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.Denominator.0.QuantumTheory.Models.MassiveDirac.pauliGreenDenominatorOfRegulator_radial_eq"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -164364,7 +164427,6 @@
     "directWrapperOf": null,
     "dependents": [
       "QuantumTheory.Models.MassiveDirac.pauliGreenDenominator_radial_im",
-      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.Denominator.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDenominatorIntegralOfRegulator_eq_log_sub_log",
       "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.Denominator.0.QuantumTheory.Models.MassiveDirac.pauliGreenDenominatorOfRegulator_radial_norm_eq_sqrt"
     ],
     "dependencies": [
@@ -164374,10 +164436,9 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.Models.MassiveDirac.pauliGreenDenominator_radial_im",
-      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.Denominator.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDenominatorIntegralOfRegulator_eq_log_sub_log",
       "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.Denominator.0.QuantumTheory.Models.MassiveDirac.pauliGreenDenominatorOfRegulator_radial_norm_eq_sqrt"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -181348,6 +181409,52 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
+    "terminal": false,
+    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {n : ℕ} (T : Finset (Fin n))\n  (ext : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel n T)\n  (vac : SecondQuantization.Common.QuarticDiagram InternalLabel n (Finset.univ \\ T)),\n  ext.IsExternallyConnected →\n    ∀ (τ τ' : ℝ) (σ : Fin n → ℝ)\n      (pr : (SecondQuantization.Common.TwoPointDiagram.ofSlotSplit ⋯ ext vac).MixedVacuumPair τ τ' σ),\n      ∃ p,\n        SecondQuantization.Common.mixedTimeOrderedQuarticLegMapPosition\n            (SecondQuantization.Common.slotSplitVacuumSlot T) τ τ' σ p =\n          (↑↑pr).1",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumPairImage.0.SecondQuantization.Common.TwoPointDiagram.mixedVacuumPair_firstEndpoint_mem_vacuumLegRange",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumPairImage",
+    "externalAxioms": [],
+    "docString": "A mixed pair in a vacuum component starts on the quartic side of the\nreassembled slot split. This is the transport of the time-independent\nvacuum-leg classification into mixed-time coordinates. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumPairImage.0.SecondQuantization.Common.TwoPointDiagram.slotSplitVacuumMixedPairEmbedding_surjective"
+    ],
+    "dependencies": [
+      "SecondQuantization.Common.TwoPointDiagram.ofSlotSplit_vacuumLeg_mem_right",
+      "SecondQuantization.Common.mem_vacuumComponentParts",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumPairImage.0.SecondQuantization.Common.slotSplitVacuumMixedPosition_eq_slotSplitRight"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumPairImage.0.SecondQuantization.Common.TwoPointDiagram.slotSplitVacuumMixedPairEmbedding_surjective"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
     "terminal": true,
     "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {n : ℕ} (T : Finset (Fin n))\n  (ext : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel n T)\n  (vac : SecondQuantization.Common.QuarticDiagram InternalLabel n (Finset.univ \\ T)),\n  ext.IsExternallyConnected →\n    ∀ (τ τ' : ℝ) (σ : Fin n → ℝ) (hσ : StrictAnti (σ ∘ SecondQuantization.Common.slotSplitVacuumSlot T)),\n      Function.Surjective\n        ⇑(SecondQuantization.Common.TwoPointDiagram.slotSplitVacuumMixedPairEmbedding✝ T ext vac τ τ' σ hσ)",
     "standardAxioms": [
@@ -181364,20 +181471,66 @@
     "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumPairImage.0.SecondQuantization.Common.TwoPointDiagram.slotSplitVacuumMixedPairEmbedding_surjective",
     "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumPairImage",
     "externalAxioms": [],
-    "docString": "Under external connectedness, every ambient mixed pair lying in a vacuum component comes from a\nunique normalized pair of the standalone quartic vacuum pairing. ",
+    "docString": "The restriction of a mixed vacuum-component pair to the complementary quartic\nsector is surjective on normalized pairs, without counting their cardinalities. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "Combinatorics.Pairing.card_normalizedPair",
-      "SecondQuantization.Common.TwoPointDiagram.card_mixedVacuumComponentPair",
-      "SecondQuantization.Common.interactionSector_slotSplitVacuumComponentPart",
-      "SecondQuantization.Common.slotSplitVacuumComponentEquiv_apply"
+      "SecondQuantization.Common.TwoPointDiagram.exists_slotSplitVacuumNormalizedPairEmbedding_eq_of_firstEndpoint",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumPairImage.0.SecondQuantization.Common.TwoPointDiagram.mixedVacuumPair_firstEndpoint_mem_vacuumLegRange"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [],
     "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {n : ℕ} (T : Finset (Fin n)) (τ τ' : ℝ) (σ : Fin n → ℝ) (p : Fin (2 * (2 * (Finset.univ \\ T).card))),\n  (SecondQuantization.Common.mixedTimeAmbientPositionEquiv τ τ' σ)\n      (SecondQuantization.Common.mixedTimeOrderedQuarticLegMapPosition (SecondQuantization.Common.slotSplitVacuumSlot T)\n        τ τ' σ p) =\n    (SecondQuantization.Common.slotLegSplitting ⋯)\n      (Sum.inr\n        ((SecondQuantization.Common.orderedLegToDiagramLeg (Finset.univ \\ T)\n            (SecondQuantization.Common.slotSplitVacuumOrder T))\n          p))",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumPairImage.0.SecondQuantization.Common.slotSplitVacuumMixedPosition_eq_slotSplitRight",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumPairImage",
+    "externalAxioms": [],
+    "docString": "The vacuum fixed-order leg embedding in mixed positions agrees with the\nright-side leg of the canonical diagram slot split after returning to fixed positions. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Common.TwoPointDiagram.ofSlotSplitVacuumNormalizedPairEmbedding_component",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumPairImage.0.SecondQuantization.Common.TwoPointDiagram.mixedVacuumPair_firstEndpoint_mem_vacuumLegRange"
+    ],
+    "dependencies": [
+      "SecondQuantization.Common.mixedTimeOrderedAtomicLegEquiv_mixedTimeOrderedAtomicLegPosition",
+      "SecondQuantization.Common.slotSplitVacuumOrderedLeg_eq_slotSplitRight",
+      "SecondQuantization.Common.twoPointLegEquiv_mixedTimeAmbientPositionEquiv"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.TwoPointDiagram.ofSlotSplitVacuumNormalizedPairEmbedding_component",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumPairImage.0.SecondQuantization.Common.TwoPointDiagram.mixedVacuumPair_firstEndpoint_mem_vacuumLegRange"
+    ],
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -181458,6 +181611,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "SecondQuantization.Common.TwoPointDiagram.exists_slotSplitVacuumNormalizedPairEmbedding_eq_of_firstEndpoint",
       "SecondQuantization.Common.TwoPointDiagram.slotSplitVacuumNormalizedPairEmbedding_crosses_iff"
     ],
     "dependencies": [
@@ -181467,10 +181621,11 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "SecondQuantization.Common.TwoPointDiagram.exists_slotSplitVacuumNormalizedPairEmbedding_eq_of_firstEndpoint",
       "SecondQuantization.Common.TwoPointDiagram.slotSplitVacuumNormalizedPairEmbedding",
       "SecondQuantization.Common.TwoPointDiagram.slotSplitVacuumNormalizedPairEmbedding_crosses_iff"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
