@@ -58,6 +58,18 @@ The canonical-leg-order and mixed-time-order external-insertion modules supply t
 data and compatibility proofs. Endpoint inversion reindexing and off-diagonal parity summation
 remain in generic combinatorics; time ordering and physical exchange weights remain downstream.
 
+## Binary pairing splits
+
+`PerfectPairing.SplitNormalizedPairs` owns the normalized-pair equivalence, endpoint orientation,
+and product factorization for an arbitrary binary position splitting. It does not import crossing
+geometry. `PerfectPairing.SplitCrossing` uses that equivalence to decompose crossing counts and
+identify the between-sector crossing parity with position-inversion parity. Strict monotonicity
+is required only when identifying within-sector counts with local pairing counts.
+
+The within-sector crossing sums use `sum_sum_crosses_eq_of_equiv` from `PerfectPairing.Crossing`.
+The binary parity laws allow endpoint reversals; the compatible-endpoint hypotheses of family
+component crossings do not replace those laws directly.
+
 ## Component-pair embeddings
 
 `PerfectPairing.Embedding` owns normalized-pair embeddings induced by partner-intertwining order
