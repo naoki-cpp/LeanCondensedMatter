@@ -1,4 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Moment
+import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.OrderedVacuum
 
 set_option linter.style.header false
 

@@ -248,7 +248,11 @@ pair values.
 `Fermionic.Diagrammatics.ExternalInsertion.ExternalVacuumPairing` owns thermal pair locality,
 normalized-endpoint transport, crossing signs, and pairing factorization for the external-support
 and vacuum slot split. `ExternalVacuumShuffleIntegral` owns the independent binary ordered-simplex
-integral product identity and consumes integrands and regularity directly, without importing the
+integral product identity. `Fermionic.Diagrammatics.DysonDiagramExpansion.OrderedVacuum`
+owns the vacuum-only ordered quartic Dyson integrand and its sum-to-normalized-partition
+coefficient identity, shared directly by TwoPoint and ExternalInsertion fiber consumers.
+The binary shuffle-integral module consumes these vacuum data and regularity directly,
+without importing the
 slot-split pairing factorization module.
 `Fermionic.Diagrammatics.ExternalInsertion.Integral` owns the basic ordered-simplex and Dyson
 amplitudes of one diagram, including explicitly ordered interaction slots. `ComponentIntegral`
