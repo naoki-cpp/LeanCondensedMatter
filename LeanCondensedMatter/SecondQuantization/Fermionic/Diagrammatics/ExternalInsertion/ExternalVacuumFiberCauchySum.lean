@@ -139,13 +139,14 @@ theorem externalInsertionFixedCardinalityFiberSum_eq_cauchyFactor
       intro ext _
       apply Finset.sum_congr rfl
       intro x _
+      have hl :
+          (((ExternalInsertionDiagram.externalSupportFiberEquiv
+              (Finset.subset_univ shuffle.leftSlots)).symm
+            ((ExternalInsertionDiagram.standardizedSupportFiberDataEquiv
+              (E := E) shuffle).symm (ext, x))).1.externalLabel =
+            ext.1.externalLabel := rfl
       dsimp only
-      rw [show
-        (((ExternalInsertionDiagram.externalSupportFiberEquiv
-            (Finset.subset_univ shuffle.leftSlots)).symm
-          ((ExternalInsertionDiagram.standardizedSupportFiberDataEquiv
-            (E := E) shuffle).symm (ext, x))).1.externalLabel =
-          ext.1.externalLabel from rfl]
+      rw [hl]
       split_ifs with h
       · exact externalInsertionStandardizedSupportFiber_dysonAmplitude_eq_shuffleIntegral
           ε β hβ g shuffle (ext, x) externalTime
