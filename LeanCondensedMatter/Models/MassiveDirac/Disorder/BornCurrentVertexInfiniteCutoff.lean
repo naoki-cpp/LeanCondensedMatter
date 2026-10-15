@@ -68,7 +68,7 @@ private theorem tendsto_finiteCutoffContinuumBornRARadialIntegral_atTop
         v m probeEnergy disorderStrength hbar)) := by
   unfold finiteCutoffContinuumBornRARadialIntegral continuumBornRARadialIntegralUVLimit
   simpa [continuumBornRADenominatorProduct, continuumBornRADenominatorCenter] using
-    tendsto_integral_radialQuadraticLorentzian_atTop
+    Real.tendsto_integral_radialQuadraticLorentzian_atTop
       v
       ((1 - continuumBornDampingScale v disorderStrength hbar ^ 2) *
         (probeEnergy ^ 2 - m ^ 2))

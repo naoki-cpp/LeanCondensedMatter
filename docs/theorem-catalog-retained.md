@@ -371,7 +371,7 @@ or consumer structure changes.
 - `QuantumTheory.Models.MassiveDirac.zeroTemperatureOccupiedBerryWeightCutoff_eq` — The
   canonical occupation-derived finite-cutoff response keeps the single-cone regulator term explicit,
   including the massless endpoint where both sides vanish.
-- `QuantumTheory.Transport.tendsto_integral_radialQuadraticLorentzian_atTop` — For nonzero radial
+- `Real.tendsto_integral_radialQuadraticLorentzian_atTop` — For nonzero radial
   scale and positive width, the radial quadratic Lorentzian integral converges as the upper cutoff
   tends to `+∞`.
 - `SecondQuantization.Bosonic.QuarticDiagram.orderedThermalAmplitude_eq_prod_components` — The

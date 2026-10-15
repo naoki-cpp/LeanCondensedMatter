@@ -8,7 +8,8 @@ set_option linter.style.header false
 /-!
 # Radial quadratic Lorentzian calculus
 
-This module owns the model-independent real analysis for radial integrals of the form
+These theorems belong to real analysis rather than to the transport namespace. They evaluate
+model-independent radial integrals of the form
 
 ```text
 ∫ p dp / ((A - v² p²)² + B²).
@@ -20,8 +21,7 @@ and the scaled one-sided zero-width crossing limit. No Hamiltonian, disorder mod
 or transport normalization appears here.
 -/
 
-namespace QuantumTheory
-namespace Transport
+namespace Real
 
 noncomputable section
 
@@ -183,5 +183,4 @@ theorem tendsto_integral_radialQuadraticLorentzian_atTop
 
 end
 
-end Transport
-end QuantumTheory
+end Real
