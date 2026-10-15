@@ -65,22 +65,24 @@ private theorem FixedExternalTwoPointWickDiagram.continuous_mixedComponentDysonF
             (mixedTimeOrderedAtomicLegEquiv τ τ' σ₀ pr.1.1.2))))
 
 /-- On the base chamber, the Dyson-signed representative agrees with the actual component factor. -/
-private theorem FixedExternalTwoPointWickDiagram.mixedComponentDysonFixedTimeChamberRepresentative_eq_of_sameOrderChamber
+private theorem FixedExternalTwoPointWickDiagram.mixedComponentDysonFixedTimeChamberRepresentative_eq_of_comparisons
     {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
     (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
     (τ τ' : ℝ) (σ₀ σ : Fin n → ℝ) (B : d.1.vertexGraph.componentPartition.parts)
-    (hChamber : SameTwoPointOrderChamber τ τ' σ₀ σ) :
+    (hSignature : twoPointOrderSignature τ τ' σ₀ =
+      twoPointOrderSignature τ τ' σ) :
     d.mixedComponentDysonFixedTimeChamberRepresentative ε β g τ τ' σ₀ B σ =
       d.mixedComponentDysonFixedTimeValue ε β g τ τ' σ B := by
   classical
+  have hComparisons := (twoPointOrderSignature_eq_iff τ τ' σ₀ σ).mp hSignature
   unfold FixedExternalTwoPointWickDiagram.mixedComponentDysonFixedTimeChamberRepresentative
     FixedExternalTwoPointWickDiagram.mixedComponentDysonFixedTimeValue
     FixedExternalTwoPointWickDiagram.mixedComponentFixedTimeValue
     FixedExternalTwoPointWickDiagram.mixedComponentPairingValue
   apply congrArg (fun z : ℂ =>
     d.mixedComponentDysonSign B * (d.mixedComponentVertexWeight g B * z))
-  rw [d.1.mixedComponentWeight_eq_of_sameOrderChamber
-    Common.Statistics.fermion τ τ' σ₀ σ B hChamber]
+  rw [d.1.mixedComponentWeight_eq_of_comparisons
+    Common.Statistics.fermion τ τ' σ₀ σ B hComparisons]
   apply congrArg (fun z : ℂ =>
     d.1.mixedComponentWeight Common.Statistics.fermion τ τ' σ B * z)
   let e := d.1.mixedComponentPairTimeEquiv τ τ' σ₀ σ B
@@ -94,8 +96,8 @@ private theorem FixedExternalTwoPointWickDiagram.mixedComponentDysonFixedTimeCha
       apply Fintype.prod_congr
       intro pr
       have hLegs :=
-        d.1.mixedComponentPairTimeEquiv_endpointLegs_eq_of_sameOrderChamber
-          τ τ' σ₀ σ B hChamber pr
+        d.1.mixedComponentPairTimeEquiv_endpointLegs_eq_of_comparisons
+          τ τ' σ₀ σ B hComparisons pr
       rw [d.mixedPairContractionValue_eq_orderedTwoPointLegPairContraction]
       rw [hLegs.1, hLegs.2]
     _ = ∏ q : d.1.MixedComponentPair τ τ' σ B,
@@ -133,13 +135,11 @@ theorem FixedExternalTwoPointWickDiagram.measurableLocallyBounded_dysonFixedTime
               ε β g τ τ' (intervalIntegral.finiteSignatureBase (twoPointOrderSignature τ τ') s) B
           · intro σ
             exact
-              (d.mixedComponentDysonFixedTimeChamberRepresentative_eq_of_sameOrderChamber
+              (d.mixedComponentDysonFixedTimeChamberRepresentative_eq_of_comparisons
                 ε β g τ τ' (intervalIntegral.finiteSignatureBase (twoPointOrderSignature τ τ')
                   (twoPointOrderSignature τ τ' σ)) σ B
-                (by
-                  rw [sameTwoPointOrderChamber_iff_orderSignature_eq]
-                  exact intervalIntegral.finiteSignatureBase_signature_eq
-                    (twoPointOrderSignature τ τ') σ)).symm)
+                (intervalIntegral.finiteSignatureBase_signature_eq
+                  (twoPointOrderSignature τ τ') σ)).symm)
   have heq : (fun σ : Fin n → ℝ => d.dysonFixedTimeAmplitude ε β g τ τ' σ) =
       fun σ : Fin n → ℝ =>
         twoPointExternalOrderSign τ τ' *

@@ -92,7 +92,7 @@ or consumer structure changes.
 - `QuantumTheory.Models.RashbaExchange.spinHamiltonian_mul_self` — canonical spectral identity that the traceless Rashba-exchange spin Hamiltonian squares to `E² I`.
 - `QuantumTheory.Models.RashbaExchange.bandProjectorOperator_completeOrthogonalIdempotents` — canonical complete orthogonal idempotent family for the nondegenerate Rashba-exchange band projectors.
 - `QuantumTheory.Transport.adiabaticFrequencyDomainSusceptibility_eq_bastinSpectralVertexSum` — physical finite-system endpoint identifying the causal susceptibility with the Kubo–Bastin spectral vertex sum at positive switching rate.
-- `SecondQuantization.Common.sameTwoPointOrderChamber_iff_orderSignature_eq` — canonical equivalence between the geometric mixed-order chamber relation and the finite signature used for measurable chamber decomposition.
+- `SecondQuantization.Common.twoPointOrderSignature_eq_iff` — agreement of strict event-time comparisons is equivalent to equality of finite signatures, including tied-time configurations.
 - `QuantumMechanics.SingleParticle.Continuum.realL2MultiplicationOperator1D_symmetric` — deliberate continuum-quantum-mechanics specialization of the measure-space-independent `L2Multiplication.realMultiplicationOperator_symmetric`; the named one-dimensional Lebesgue-space statement is the stable API used by Hamiltonian symmetry and self-adjointness proofs.
 - `QuantumTheory.Transport.im_inner_resolvent_spectralParameterOfRegulator_apply_self` — canonical
   dimension-independent signed-regulator Herglotz identity for a self-adjoint resolvent. Consumers
@@ -407,8 +407,6 @@ or consumer structure changes.
   chamberwise integration.
 - `SecondQuantization.Common.mixedTimeOrderedAtomicLegPosition_lt_uniform` — Legs in one mixed-time
   event block have identical comparison with every leg outside that block.
-- `SecondQuantization.Common.orderedTwoPointTimedEventPosition_lt_iff_of_sameOrderChamber` —
-  canonical order-chamber invariance theorem for ordered two-point timed-event positions.
 - `SecondQuantization.Common.support_finiteSupportIntervalIntegral_subset` — Coordinatewise
   reconstruction cannot create support outside the supplied finite set.
 - `SecondQuantization.Common.support_interactionPicture_apply_subset_reachableSupport_succ` —

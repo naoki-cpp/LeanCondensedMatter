@@ -1,4 +1,4 @@
-import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedOrderChamber
+import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointMixedOrder
 import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionMixedOrder
 import Mathlib.MeasureTheory.Constructions.BorelSpace.Order
 import Mathlib.MeasureTheory.MeasurableSpace.Constructions
@@ -6,11 +6,11 @@ import Mathlib.MeasureTheory.MeasurableSpace.Constructions
 set_option linter.style.header false
 
 /-!
-# Finite signatures for mixed-order chambers
+# Finite signatures for mixed-time event orders
 
-Mixed-order chambers for two-point and arbitrary even external insertions are determined by
-finitely many strict event-time comparisons. Their signature fibers are Borel measurable. This
-construction depends only on event ordering and not on particle statistics.
+Two-point and arbitrary-external mixed event orders are classified by finite sets of strict
+event-time comparisons. Equal-time configurations belong to signature fibers as well. These fibers
+are Borel measurable; the construction does not depend on particle statistics.
 -/
 
 namespace SecondQuantization
@@ -69,14 +69,16 @@ noncomputable def twoPointOrderSignature {n : ℕ} (τ τ' : ℝ) (σ : Fin n �
     TwoPointOrderSignature n :=
   strictOrderSignature (fun σ event => twoPointTimedEventTime τ τ' σ event) σ
 
-/-- Two interaction-time assignments lie in the same mixed-order chamber exactly when
-they determine the same finite strict-comparison signature. -/
-theorem sameTwoPointOrderChamber_iff_orderSignature_eq {n : ℕ}
+/-- Equality of finite signatures is exactly agreement of all strict two-point event-time
+comparisons, including the equality cases determined by their absence. -/
+theorem twoPointOrderSignature_eq_iff {n : ℕ}
     (τ τ' : ℝ) (σ υ : Fin n → ℝ) :
-    SameTwoPointOrderChamber τ τ' σ υ ↔
-      twoPointOrderSignature τ τ' σ = twoPointOrderSignature τ τ' υ := by
-  exact (strictOrderSignature_eq_iff
-    (fun σ event => twoPointTimedEventTime τ τ' σ event) σ υ).symm
+    twoPointOrderSignature τ τ' σ = twoPointOrderSignature τ τ' υ ↔
+      ∀ a b : TwoPointTimedEvent n,
+        (twoPointTimedEventTime τ τ' σ a < twoPointTimedEventTime τ τ' σ b ↔
+          twoPointTimedEventTime τ τ' υ a < twoPointTimedEventTime τ τ' υ b) := by
+  exact strictOrderSignature_eq_iff
+    (fun σ event => twoPointTimedEventTime τ τ' σ event) σ υ
 
 private theorem measurable_twoPointOrderSignature {n : ℕ} (τ τ' : ℝ) :
     Measurable (twoPointOrderSignature τ τ' :
@@ -121,23 +123,19 @@ noncomputable def externalInsertionOrderSignature {E n : ℕ}
   strictOrderSignature
     (fun σ event => externalInsertionTimedEventTime externalTime σ event) σ
 
-/-- Two interaction-time assignments have identical strict event-time comparisons. -/
-def SameExternalInsertionOrderChamber {E n : ℕ}
-    (externalTime : Fin (2 * E) → ℝ) (σ υ : Fin n → ℝ) : Prop :=
-  ∀ a b : ExternalInsertionTimedEvent E n,
-    (externalInsertionTimedEventTime externalTime σ a <
-      externalInsertionTimedEventTime externalTime σ b) ↔
-    (externalInsertionTimedEventTime externalTime υ a <
-      externalInsertionTimedEventTime externalTime υ b)
-
-/-- The finite comparison signature identifies arbitrary-external order chambers. -/
-theorem sameExternalInsertionOrderChamber_iff_orderSignature_eq {E n : ℕ}
+/-- Equality of finite signatures is exactly agreement of all strict event-time comparisons
+for arbitrary external insertions. -/
+theorem externalInsertionOrderSignature_eq_iff {E n : ℕ}
     (externalTime : Fin (2 * E) → ℝ) (σ υ : Fin n → ℝ) :
-    SameExternalInsertionOrderChamber externalTime σ υ ↔
-      externalInsertionOrderSignature externalTime σ =
-        externalInsertionOrderSignature externalTime υ := by
-  exact (strictOrderSignature_eq_iff
-    (fun σ event => externalInsertionTimedEventTime externalTime σ event) σ υ).symm
+    externalInsertionOrderSignature externalTime σ =
+        externalInsertionOrderSignature externalTime υ ↔
+      ∀ a b : ExternalInsertionTimedEvent E n,
+        (externalInsertionTimedEventTime externalTime σ a <
+            externalInsertionTimedEventTime externalTime σ b ↔
+          externalInsertionTimedEventTime externalTime υ a <
+            externalInsertionTimedEventTime externalTime υ b) := by
+  exact strictOrderSignature_eq_iff
+    (fun σ event => externalInsertionTimedEventTime externalTime σ event) σ υ
 
 private theorem measurable_externalInsertionOrderSignature {E n : ℕ}
     (externalTime : Fin (2 * E) → ℝ) :
@@ -161,8 +159,8 @@ theorem externalInsertionStandardToMixedAtomicPositionEquiv_eq_of_orderSignature
   have horder :=
     externalInsertionMixedTimeOrderedAtomicLegEquiv_eq_of_comparisons
       externalTime σ υ
-      ((sameExternalInsertionOrderChamber_iff_orderSignature_eq
-        externalTime σ υ).2 h)
+      ((externalInsertionOrderSignature_eq_iff
+        externalTime σ υ).mp h)
   unfold externalInsertionStandardToMixedAtomicPositionEquiv
   rw [horder]
 
@@ -172,7 +170,7 @@ def externalInsertionOrderSignatureFiber {E n : ℕ}
     (signature : ExternalInsertionOrderSignature E n) : Set (Fin n → ℝ) :=
   {σ | externalInsertionOrderSignature externalTime σ = signature}
 
-/-- Every arbitrary-external mixed-order chamber is Borel measurable. -/
+/-- Every arbitrary-external finite order-signature fiber is Borel measurable. -/
 theorem measurableSet_externalInsertionOrderSignatureFiber {E n : ℕ}
     (externalTime : Fin (2 * E) → ℝ)
     (signature : ExternalInsertionOrderSignature E n) :

@@ -7,7 +7,6 @@ import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.Quartic
 import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.StableTimedEventOrder
 import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionMixedOrder
 import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointMixedOrder
-import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedOrderChamber
 import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedOrderSignature
 import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointMixedLegOrder
 
@@ -20,5 +19,5 @@ Statistics-aware pair time ordering, basis-diagonal free evolution, fixed energy
 algebraic Heisenberg evolution, interaction-picture operators, KMS rotation identities, generic
 quartic-interaction evolution, the arbitrary-external mixed event/leg order, and the
 statistics-independent mixed two-point event/leg order with
-monotone slot transport, order chambers, and measurable finite signatures.
+monotone slot transport and measurable finite order signatures.
 -/
