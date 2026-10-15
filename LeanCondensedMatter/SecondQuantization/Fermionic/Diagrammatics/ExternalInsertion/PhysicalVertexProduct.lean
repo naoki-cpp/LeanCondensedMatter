@@ -134,6 +134,7 @@ private theorem externalInsertionMixedAtomicOperators_eq_ofFn {E n : ℕ}
         (externalInsertionMixedTimeOrderedAtomicLegEquiv externalTime σ p))
   rw [externalInsertionMixedTimeOrderedAtomicLegs_eq_ofFn]
   rw [List.map_ofFn]
+  rfl
 
 /-- **Vertex-to-atomic operator identity.** The mixed time-ordered product
 of full interaction-picture vertices and external fields is exactly the
