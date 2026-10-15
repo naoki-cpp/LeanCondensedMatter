@@ -87,8 +87,8 @@ noncomputable def vacuumNormalizedExternalInsertionDysonSeries {E : ℕ}
 /-- The vacuum-normalized arbitrary-external linked-cluster identity is equivalent to the
 coefficientwise Cauchy factorization by the normalized vacuum partition coefficients.
 
-This is a formal-series reduction, not the missing fermionic integrand factorization:
-the right-hand side still requires the physical support/vacuum shuffle proof. -/
+This equivalence is formal power-series algebra. The coefficientwise hypothesis
+is proved downstream using the external-support/vacuum fiber-shuffle factorization. -/
 theorem vacuumNormalizedExternalInsertionDysonSeries_eq_vacuumFree_iff_cauchy
     {E : ℕ}
     (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
