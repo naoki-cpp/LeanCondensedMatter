@@ -6,6 +6,7 @@ Authors: Naoki Yano
 import LeanCondensedMatter.Crystal.Periodicity
 import LeanCondensedMatter.Crystal.PointGroup
 import Mathlib.Algebra.Module.Submodule.Map
+import Mathlib.Algebra.Order.Floor.Ring
 import Mathlib.LinearAlgebra.Matrix.GeneralLinearGroup.Defs
 import Mathlib.LinearAlgebra.Trace
 import Mathlib.Analysis.InnerProductSpace.Trace
@@ -469,6 +470,63 @@ theorem gram_congruence_change_basis_iff
         _ = G := by rw [hPQ]; simp
     rw [hA, hG] at hBack
     exact hBack
+
+/-- An integer shear of a planar primitive basis is unimodular. -/
+theorem integerShear_det (n : ℤ) :
+    (Matrix.det (!![(1 : ℤ), -n; 0, 1] : Matrix (Fin 2) (Fin 2) ℤ)) = 1 := by
+  simp [Matrix.det_fin_two]
+
+/-- The elementary integral shear `e₂ ↦ e₂ - n e₁` changes the Gram
+coefficients by the standard binary-quadratic-form substitution. Together
+with `integerShear_det`, this is a primitive lattice-basis operation. -/
+theorem gram_integerShear
+    (G : Matrix (Fin 2) (Fin 2) ℝ)
+    (hSymm : G 0 1 = G 1 0) (n : ℤ) :
+    (let T : Matrix (Fin 2) (Fin 2) ℝ := !![1, -(n : ℝ); 0, 1];
+     T.transpose * G * T =
+       !![G 0 0, G 0 1 - (n : ℝ) * G 0 0;
+          G 0 1 - (n : ℝ) * G 0 0,
+          G 1 1 - 2 * (n : ℝ) * G 0 1 + (n : ℝ) ^ 2 * G 0 0]) := by
+  dsimp
+  ext i j
+  fin_cases i <;> fin_cases j <;>
+    simp [Matrix.mul_apply, Fin.sum_univ_two, ← hSymm] <;> ring
+
+/-- Every positive planar first Gram coefficient admits an integer shear
+that reduces the off-diagonal entry to at most half of that coefficient in
+absolute value. This is the size-reduction step of Gauss lattice reduction;
+it does not yet assert the ordering of the two diagonal coefficients. -/
+theorem exists_gram_integerShear_reduced
+    (G : Matrix (Fin 2) (Fin 2) ℝ)
+    (hSymm : G 0 1 = G 1 0) (hPos : 0 < G 0 0) :
+    ∃ n : ℤ,
+      |G 0 1 - (n : ℝ) * G 0 0| ≤ G 0 0 / 2 ∧
+      (let T : Matrix (Fin 2) (Fin 2) ℝ := !![1, -(n : ℝ); 0, 1];
+       T.transpose * G * T =
+         !![G 0 0, G 0 1 - (n : ℝ) * G 0 0;
+            G 0 1 - (n : ℝ) * G 0 0,
+            G 1 1 - 2 * (n : ℝ) * G 0 1 + (n : ℝ) ^ 2 * G 0 0]) := by
+  let a : ℝ := G 0 0
+  let b : ℝ := G 0 1
+  let x : ℝ := b / a + 1 / 2
+  let n : ℤ := ⌊x⌋
+  have ha : 0 < a := hPos
+  have hane : a ≠ 0 := ne_of_gt ha
+  have hnLow : (n : ℝ) ≤ x := Int.floor_le x
+  have hnHigh : x < (n : ℝ) + 1 := Int.lt_floor_add_one x
+  have hLower : -(a / 2) ≤ b - (n : ℝ) * a := by
+    have h := mul_le_mul_of_nonneg_right hnLow ha.le
+    change (n : ℝ) * a ≤ (b / a + 1 / 2) * a at h
+    rw [add_mul, div_mul_cancel₀ b hane] at h
+    nlinarith
+  have hUpper : b - (n : ℝ) * a ≤ a / 2 := by
+    have h := mul_lt_mul_of_pos_right hnHigh ha
+    change (b / a + 1 / 2) * a < ((n : ℝ) + 1) * a at h
+    rw [add_mul, div_mul_cancel₀ b hane] at h
+    nlinarith
+  refine ⟨n, ?_, gram_integerShear G hSymm n⟩
+  change |b - (n : ℝ) * a| ≤ a / 2
+  exact abs_le.mpr ⟨hLower, hUpper⟩
 
 /-- A reflection across one integral basis axis makes the two basis vectors
 orthogonal. This is the rectangular Gram-metric constraint. -/
