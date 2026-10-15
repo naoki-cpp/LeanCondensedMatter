@@ -113,8 +113,7 @@ theorem preconnected_iff_hasNoVacuumComponent_and_allExternalVerticesConnected
 /-- External connectivity alone can be expressed using any distinguished
 external vertex as an anchor, without reference to vacuum components. -/
 theorem allExternalVerticesConnected_iff_reachable_anchor
-    [Nonempty External] (G : SimpleGraph (External ⊕ Internal))
-    (anchor : External) :
+    (G : SimpleGraph (External ⊕ Internal)) (anchor : External) :
     AllExternalVerticesConnected G ↔
       ∀ e : External,
         G.Reachable (Sum.inl anchor : External ⊕ Internal) (Sum.inl e) := by
