@@ -449,8 +449,7 @@ theorem gram_congruence_change_basis_iff
             simp only [Matrix.transpose_mul, Matrix.mul_assoc]
       _ = P.transpose * (A.transpose * G * A) * P := by
         rw [hPQ]
-        simp only [Matrix.transpose_one, Matrix.one_mul, Matrix.mul_one,
-          Matrix.mul_assoc]
+        simp only [Matrix.transpose_one, Matrix.mul_one, Matrix.mul_assoc]
       _ = P.transpose * G * P := by rw [h]
   constructor
   · exact forward G A P Q hPQ
