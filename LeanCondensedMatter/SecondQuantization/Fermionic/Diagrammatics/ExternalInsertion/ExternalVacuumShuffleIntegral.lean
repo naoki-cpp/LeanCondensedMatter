@@ -1,6 +1,6 @@
 import LeanCondensedMatter.Analysis.OrderedSimplex.BinarySlotShuffle
 import LeanCondensedMatter.Combinatorics.SlotShuffle
-import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Pairing
+import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.OrderedVacuum
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.Integral
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.DiagramRegularity
 
@@ -34,8 +34,7 @@ theorem sum_slotShuffleExternalInsertionDysonIntegral_eq_mul_orderedVacuum
       intervalIntegral.orderedSimplexIntegral (m + k) β
         (shuffle.integrand
           (fun σ => ext.dysonFixedTimeAmplitude ε β g externalTime σ)
-          (fun σ => (-1 : ℂ) ^ k * (∏ q : Fin k, g (x.1 q)) *
-            flatVertexLegPairingEvaluation ε β x.1 σ x.2))) =
+          (orderedVacuumDysonIntegrand ε β g x))) =
       ext.dysonAmplitude ε β g externalTime *
         ((-1 : ℂ) ^ k * (∏ q : Fin k, g (x.1 q)) *
           intervalIntegral.orderedSimplexIntegral k β
@@ -57,14 +56,13 @@ theorem sum_slotShuffleExternalInsertionDysonIntegral_eq_mul_orderedVacuum
     _ = intervalIntegral.orderedSimplexIntegral m β
           (fun σ => ext.dysonFixedTimeAmplitude ε β g externalTime σ) *
         intervalIntegral.orderedSimplexIntegral k β
-          (fun σ => (-1 : ℂ) ^ k * (∏ q : Fin k, g (x.1 q)) *
-            flatVertexLegPairingEvaluation ε β x.1 σ x.2) :=
+          (orderedVacuumDysonIntegrand ε β g x) :=
       BinaryShuffle.sum_slotShuffle_orderedSimplexIntegral_integrand_eq_mul_of_measurableLocallyBounded
         m k β
         (fun σ => ext.dysonFixedTimeAmplitude ε β g externalTime σ)
-        (fun σ => (-1 : ℂ) ^ k * (∏ q : Fin k, g (x.1 q)) *
-          flatVertexLegPairingEvaluation ε β x.1 σ x.2) hext hvac
+        (orderedVacuumDysonIntegrand ε β g x) hext hvac
     _ = _ := by
+      unfold orderedVacuumDysonIntegrand
       rw [ext.orderedSimplexIntegral_dysonFixedTimeAmplitude ε β g externalTime,
         intervalIntegral.orderedSimplexIntegral_smul]
 

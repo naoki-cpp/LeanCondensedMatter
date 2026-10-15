@@ -1,5 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Factorization.ExternalPieceAmplitude
-import LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.DysonPartitionSeries
+import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.OrderedVacuum
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Factorization.FiberVacuumIntegrand
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.DiagramSumIntegral
 import LeanCondensedMatter.Analysis.OrderedSimplex.BinarySlotShuffle
@@ -16,9 +16,10 @@ vacuum diagram itself therefore cannot be held fixed across the shuffle sum.  It
 for the inherited increasing order, a vacuum diagram is exactly a slot-indexed label sequence and a
 pairing.
 
-This file also owns the pointwise external/vacuum product used by the shuffle bridge, then exposes
-the fixed-order vacuum integrand in order-only coordinates and transports the binary ordered-simplex
-product theorem to that representation.
+This module owns the pointwise external/vacuum product used by the shuffle bridge
+and the binary ordered-simplex product in these coordinates. The vacuum-only
+integrand and normalized partition coefficient identity are owned by
+`DysonDiagramExpansion.OrderedVacuum`.
 -/
 
 namespace SecondQuantization
@@ -60,14 +61,6 @@ private theorem fixedExternalOfSlotSplit_dysonFixedTimeAmplitude_eq_externalPiec
     simpa [d] using
       (fixedExternalOfSlotSplit_prod_vacuumDysonFixedTimeValue_eq_quarticIntegrand
         ε β g T ext hext vac τ τ' σ hσ)]
-
-/-- The Dyson-signed vacuum integrand written only in fixed ordered quartic data. -/
-noncomputable def orderedVacuumDysonIntegrand
-    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ) {k : ℕ}
-    (x : Common.OrderedQuarticDiagramData (QuarticVertexLabel Mode) k)
-    (σ : Fin k → ℝ) : ℂ :=
-  (-1 : ℂ) ^ k * (∏ q : Fin k, g (x.1 q)) *
-    flatVertexLegPairingEvaluation ε β x.1 σ x.2
 
 /-- Standardize the connected external half of a shuffle fiber onto `Fin m`. -/
 noncomputable def connectedFixedExternalShuffleLeftEquiv {m k : ℕ}
@@ -129,50 +122,6 @@ theorem slotSplitDysonFixedTimeAmplitude_eq_external_mul_orderedVacuum
   rw [Common.QuarticDiagram.vertexWeight_eq_prod_vertexLabel_order vac g (slotSplitVacuumOrder T),
     hcontraction]
   rfl
-
-/-- Summing the fixed-order Dyson contribution over ordered vacuum data gives the normalized vacuum
-Dyson coefficient.  This is the fixed-order vacuum theorem with the irrelevant ambient vertex set
-removed entirely. -/
-theorem sum_orderedVacuumDysonContribution_eq_normalizedDysonPartitionCoeff
-    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ) (k : ℕ) :
-    (∑ x : Common.OrderedQuarticDiagramData (QuarticVertexLabel Mode) k,
-      (-1 : ℂ) ^ k * (∏ q : Fin k, g (x.1 q)) *
-        intervalIntegral.orderedSimplexIntegral k β
-          (fun σ => flatVertexLegPairingEvaluation ε β x.1 σ x.2)) =
-      normalizedDysonPartitionCoeff ε β (quarticInteraction g) k := by
-  classical
-  have hkey :=
-    dysonVertexMoment_quarticInteraction_eq_sum_vertexLabel_pairingEvaluation
-      ε β g (Finset.univ : Finset (Fin k))
-  rw [Finset.card_univ, Fintype.card_fin] at hkey
-  calc
-    (∑ x : Common.OrderedQuarticDiagramData (QuarticVertexLabel Mode) k,
-      (-1 : ℂ) ^ k * (∏ q : Fin k, g (x.1 q)) *
-        intervalIntegral.orderedSimplexIntegral k β
-          (fun σ => flatVertexLegPairingEvaluation ε β x.1 σ x.2)) =
-        (-1 : ℂ) ^ k *
-          ∑ q : Fin k → QuarticVertexLabel Mode,
-            (∏ i, g (q i)) *
-              ∑ pairing : Combinatorics.Pairing (2 * k),
-                intervalIntegral.orderedSimplexIntegral k β
-                  (fun σ => flatVertexLegPairingEvaluation ε β q σ pairing) := by
-      rw [Fintype.sum_prod_type, Finset.mul_sum]
-      apply Finset.sum_congr rfl
-      intro q _
-      rw [Finset.mul_sum, Finset.mul_sum]
-      simp only [mul_assoc]
-    _ = normalizedDysonPartitionCoeff ε β (quarticInteraction g) k := by
-      have hfac : ((k.factorial : ℕ) : ℂ) ≠ 0 := by
-        exact_mod_cast Nat.factorial_ne_zero k
-      apply mul_left_cancel₀ hfac
-      have hconst :
-          PowerSeries.constantCoeff
-            (Common.dysonTraceSeries (fermionEnergy ε) β (quarticInteraction g)) =
-            freePartitionFunction ε β :=
-        constantCoeff_dysonPartitionSeries ε β (quarticInteraction g)
-      simpa [Common.dysonTraceVertexMoment, Common.normalizedDysonTraceCoeff,
-        normalizedDysonPartitionCoeff, dysonPartitionCoeff, hconst,
-        mul_assoc] using hkey.symm
 
 /-- The binary shuffle product theorem in ordered-data coordinates for the vacuum factor.
 
