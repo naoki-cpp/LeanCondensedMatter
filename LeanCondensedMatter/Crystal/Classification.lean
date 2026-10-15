@@ -482,7 +482,7 @@ with `integerShear_det`, this is a primitive lattice-basis operation. -/
 theorem gram_integerShear
     (G : Matrix (Fin 2) (Fin 2) ℝ)
     (hSymm : G 0 1 = G 1 0) (n : ℤ) :
-    (let T : Matrix (Fin 2) (Fin 2) ℝ := !![1, -(n : ℝ); 0, 1]
+    (let T : Matrix (Fin 2) (Fin 2) ℝ := !![1, -(n : ℝ); 0, 1];
      T.transpose * G * T =
        !![G 0 0, G 0 1 - (n : ℝ) * G 0 0;
           G 0 1 - (n : ℝ) * G 0 0,
@@ -501,7 +501,7 @@ theorem exists_gram_integerShear_reduced
     (hSymm : G 0 1 = G 1 0) (hPos : 0 < G 0 0) :
     ∃ n : ℤ,
       |G 0 1 - (n : ℝ) * G 0 0| ≤ G 0 0 / 2 ∧
-      (let T : Matrix (Fin 2) (Fin 2) ℝ := !![1, -(n : ℝ); 0, 1]
+      (let T : Matrix (Fin 2) (Fin 2) ℝ := !![1, -(n : ℝ); 0, 1];
        T.transpose * G * T =
          !![G 0 0, G 0 1 - (n : ℝ) * G 0 0;
             G 0 1 - (n : ℝ) * G 0 0,
