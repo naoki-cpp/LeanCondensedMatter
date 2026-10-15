@@ -1083,6 +1083,126 @@ theorem gram_shiftedConventionalCell_diagonal_iff
     fin_cases i <;> fin_cases j <;>
       simp [Matrix.mul_apply, Fin.sum_univ_two] <;> linarith
 
+/-- An integral matrix of determinant minus one fixing the first
+primitive basis vector is necessarily a shear-reflection. No metric
+hypothesis is needed for this arithmetic normal form. -/
+theorem integer_fixedFirst_reflection_normalform
+    (A : Matrix (Fin 2) (Fin 2) ℤ)
+    (hFirst : A 0 0 = 1 ∧ A 1 0 = 0)
+    (hDet : A.det = -1) :
+    A = !![1, A 0 1; 0, -1] := by
+  have h11 : A 1 1 = -1 := by
+    simpa [Matrix.det_fin_two, hFirst.1, hFirst.2] using hDet
+  ext i j
+  fin_cases i <;> fin_cases j <;>
+    simp [hFirst.1, hFirst.2, h11]
+
+/-- For an integral reflection fixing the first primitive vector,
+Gram preservation forces twice the off-diagonal coefficient to be an
+integer multiple of the first squared length. -/
+theorem gram_fixedFirst_reflection_relation
+    (G : Matrix (Fin 2) (Fin 2) ℝ)
+    (A : Matrix (Fin 2) (Fin 2) ℤ)
+    (hFirst : A 0 0 = 1 ∧ A 1 0 = 0)
+    (hDet : A.det = -1)
+    (hInv :
+      (A.map (Int.cast : ℤ → ℝ)).transpose * G *
+        (A.map (Int.cast : ℤ → ℝ)) = G) :
+    2 * G 0 1 = (A 0 1 : ℝ) * G 0 0 := by
+  have h11 : A 1 1 = -1 := by
+    have hNormal := integer_fixedFirst_reflection_normalform A hFirst hDet
+    have h := congrArg (fun M : Matrix (Fin 2) (Fin 2) ℤ => M 1 1) hNormal
+    simpa using h
+  have h01 := congrArg
+    (fun M : Matrix (Fin 2) (Fin 2) ℝ => M 0 1) hInv
+  simp [Matrix.mul_apply, Fin.sum_univ_two, Matrix.map_apply,
+    hFirst.1, hFirst.2, h11] at h01
+  linarith
+
+/-- Every determinant-minus-one integral Gram symmetry fixing the first
+primitive vector of a Gauss-reduced basis is one of the three standard
+reflections: axis reflection or a positive/negative unit shear-reflection.
+
+This is an exhaustive statement within the *fixed-first-vector* class;
+an arbitrary reflection need not fix that particular primitive vector. -/
+theorem gram_reduced_fixedFirst_reflection_cases
+    (G : Matrix (Fin 2) (Fin 2) ℝ)
+    (A : Matrix (Fin 2) (Fin 2) ℤ)
+    (hPos : 0 < G 0 0)
+    (hOff : 2 * |G 0 1| ≤ G 0 0)
+    (hFirst : A 0 0 = 1 ∧ A 1 0 = 0)
+    (hDet : A.det = -1)
+    (hInv :
+      (A.map (Int.cast : ℤ → ℝ)).transpose * G *
+        (A.map (Int.cast : ℤ → ℝ)) = G) :
+    (A 0 1 = -1 ∧ 2 * G 0 1 = -G 0 0) ∨
+      (A 0 1 = 0 ∧ G 0 1 = 0) ∨
+      (A 0 1 = 1 ∧ 2 * G 0 1 = G 0 0) := by
+  have hRelation :=
+    gram_fixedFirst_reflection_relation G A hFirst hDet hInv
+  have hBound : |G 0 1| ≤ G 0 0 / 2 := by linarith
+  have hAbs := abs_le.mp hBound
+  have hLower : -(G 0 0) ≤ (A 0 1 : ℝ) * G 0 0 := by
+    rw [← hRelation]
+    linarith [hAbs.1]
+  have hUpper : (A 0 1 : ℝ) * G 0 0 ≤ G 0 0 := by
+    rw [← hRelation]
+    linarith [hAbs.2]
+  have hIntBound : (-1 : ℝ) ≤ (A 0 1 : ℝ) ∧ (A 0 1 : ℝ) ≤ 1 := by
+    constructor
+    · apply (mul_le_mul_iff_of_pos_right hPos).mp
+      nlinarith [hLower]
+    · apply (mul_le_mul_iff_of_pos_right hPos).mp
+      nlinarith [hUpper]
+  have hZBound : (-1 : ℤ) ≤ A 0 1 ∧ A 0 1 ≤ 1 := by
+    exact_mod_cast hIntBound
+  have hCases : A 0 1 = -1 ∨ A 0 1 = 0 ∨ A 0 1 = 1 := by
+    omega
+  rcases hCases with hNeg | hZero | hOne
+  · left
+    constructor
+    · exact hNeg
+    · simpa [hNeg] using hRelation
+  · right
+    left
+    constructor
+    · exact hZero
+    · have h := hRelation
+      rw [hZero] at h
+      norm_num at h ⊢
+      linarith
+  · right
+    right
+    constructor
+    · exact hOne
+    · simpa [hOne] using hRelation
+
+/-- Conjugating a shear-reflection by an integral shear changes its shear
+coefficient by an even integer. This arithmetic identity exposes the
+parity invariant distinguishing the two integral reflection classes. -/
+theorem integer_fixedFirst_reflection_shear_conjugation (k n : ℤ) :
+    (!![1, -n; 0, 1] : Matrix (Fin 2) (Fin 2) ℤ) *
+        !![1, k; 0, -1] * !![1, n; 0, 1] =
+      !![1, k + 2 * n; 0, -1] := by
+  ext i j
+  fin_cases i <;> fin_cases j <;>
+    simp [Matrix.mul_apply, Fin.sum_univ_two] <;> ring
+
+/-- Every integer reflection fixing the first vector is shear-conjugate
+to one with coefficient zero or one. Thus the integer conjugacy class
+depends only on the shear coefficient modulo two. -/
+theorem integer_fixedFirst_reflection_parity_normalform (k : ℤ) :
+    ∃ n : ℤ,
+      (!![1, -n; 0, 1] : Matrix (Fin 2) (Fin 2) ℤ) *
+          !![1, k; 0, -1] * !![1, n; 0, 1] =
+        !![1, k % 2; 0, -1] ∧
+      (k % 2 = 0 ∨ k % 2 = 1) := by
+  refine ⟨-(k / 2), ?_, ?_⟩
+  · rw [integer_fixedFirst_reflection_shear_conjugation]
+    have hk : k + 2 * (-(k / 2)) = k % 2 := by omega
+    rw [hk]
+  · omega
+
 /-- The sum and difference of two primitive lattice vectors form an orthogonal
 conventional cell exactly when the vectors have equal squared lengths.
 
