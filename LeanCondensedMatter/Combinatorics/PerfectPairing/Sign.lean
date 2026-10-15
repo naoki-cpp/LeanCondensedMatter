@@ -391,53 +391,16 @@ theorem Pairing.presentsPairs_of_partner_blockPair (pairing : Pairing n)
     (h : ∀ k : Fin n, pairing.partner (blockPair τ k).1 = (blockPair τ k).2) :
     pairing.PresentsPairs τ := by
   classical
-  have hne : ∀ k : Fin n, (blockPair τ k).1 ≠ (blockPair τ k).2 := by
-    intro k heq
-    have := h k
-    rw [← heq] at this
-    exact absurd this (pairing.partner_ne _)
-  have hmem : ∀ k : Fin n,
-      (if (blockPair τ k).1 < (blockPair τ k).2 then blockPair τ k else (blockPair τ k).swap) ∈
-        pairing.pairs := by
-    intro k
-    rcases lt_trichotomy (blockPair τ k).1 (blockPair τ k).2 with hlt | heq | hgt
-    · rw [ite_eq_left hlt]
-      exact (pairing.mem_pairs_iff _ _).2 ⟨hlt, h k⟩
-    · exact absurd heq (hne k)
-    · rw [ite_eq_right (asymm hgt)]
-      refine (pairing.mem_pairs_iff _ _).2 ⟨hgt, ?_⟩
-      rw [← h k, pairing.partner_partner]
-  set f : Fin n → pairing.NormalizedPair := fun k => ⟨_, hmem k⟩ with hf
-  have hfirst : ∀ k : Fin n,
-      (f k).1 = blockPair τ k ∨ (f k).1 = (blockPair τ k).swap := by
-    intro k
-    by_cases hlt : (blockPair τ k).1 < (blockPair τ k).2
-    · exact Or.inl (by simp [hf, hlt])
-    · exact Or.inr (by simp [hf, hlt])
-  have hblockPos_inj : ∀ x y : Fin n × Fin 2, blockPos τ x = blockPos τ y → x = y := by
-    intro x y hxy
-    by_contra hxy'
-    exact blockPos_ne τ hxy' hxy
-  have hinj : Function.Injective f := by
-    intro k l hkl
-    have hpair : (f k).1 = (f l).1 := congrArg Subtype.val hkl
-    have hcoord : ∃ s : Fin 2, blockPos τ (k, 0) = blockPos τ (l, s) := by
-      rcases hfirst k with hk | hk <;> rcases hfirst l with hl | hl <;>
-        rw [hk, hl] at hpair
-      · exact ⟨0, congrArg Prod.fst hpair⟩
-      · exact ⟨1, congrArg Prod.fst hpair⟩
-      · exact ⟨1, congrArg Prod.snd hpair⟩
-      · exact ⟨0, congrArg Prod.snd hpair⟩
-    obtain ⟨s, hs⟩ := hcoord
-    exact congrArg Prod.fst (hblockPos_inj _ _ hs)
-  have hbij : Function.Bijective f :=
-    (Fintype.bijective_iff_injective_and_card f).2
-      ⟨hinj, by simp [pairing.card_normalizedPair]⟩
-  refine ⟨Equiv.ofBijective f hbij, fun k => ?_⟩
-  have hEk : ((Equiv.ofBijective f hbij) k : Fin (2 * n) × Fin (2 * n)) =
-      ((f k : pairing.NormalizedPair) : Fin (2 * n) × Fin (2 * n)) := rfl
-  rw [hEk]
-  rcases hfirst k with hk | hk
+  have hpartner : ∀ k : Fin n,
+      pairing.partner (τ ((pairSlotIndexEquiv n).symm (k, 0))) =
+        τ ((pairSlotIndexEquiv n).symm (k, 1)) := h
+  let e := pairing.normalizedPairEquivOfEndpointEquiv
+    (pairSlotIndexEquiv n).symm τ hpartner
+  refine ⟨e, fun k => ?_⟩
+  have horient : (e k).1 = blockPair τ k ∨ (e k).1 = (blockPair τ k).swap :=
+    pairing.normalizedPairOfEndpointEquiv_pair_eq_or_swap
+      (pairSlotIndexEquiv n).symm τ hpartner k
+  rcases horient with hk | hk
   · exact Or.inl hk.symm
   · exact Or.inr (by rw [hk, Prod.swap_swap])
 
