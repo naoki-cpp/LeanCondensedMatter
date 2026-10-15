@@ -270,13 +270,13 @@ its partner-transport theorem states that this embedding intertwines the restric
 pairing partners. The canonical leg order makes this map an `OrderEmbedding`; taken over all components these
 embeddings form `componentLegShuffle`, the order-preserving family shuffle onto the ambient leg
 set. Its generic block-inversion count is the canonical measure of inter-component leg exchange.
-The `componentPairEquiv` identifies the dependent sum of component-local normalized pairs with
-all ambient normalized pairs. Unlike the
-pure-quartic case, distinct external-insertion components can interleave in the ambient leg order, so
-their crossing contribution is retained explicitly as `interComponentCrossingCount`; the global
-crossing count and exchange weight split into local component terms plus this residual factor. A
-vacuum component has no external legs, so Common also reindexes its surviving legs as ordinary
-quartic legs and exposes the induced `QuarticDiagram`.
+For mixed-time pairings, `componentMixedPairEquiv` identifies the dependent sum of
+component-local normalized pairs with all ambient mixed-time normalized pairs via the generic
+`Pairing.normalizedPairSigmaEquiv`. Unlike the pure-quartic case, distinct external-insertion
+components can interleave in the ambient leg order, so mixed pairing evaluation retains the
+residual `Pairing.interComponentCrossingCount` exchange weight when factoring into local
+component contributions. A vacuum component has no external legs, so Common also reindexes its
+surviving legs as ordinary quartic legs and exposes the induced `QuarticDiagram`.
 
 The two-point expansion has its own internal layer order:
 
