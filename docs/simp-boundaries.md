@@ -256,7 +256,7 @@ The following current simp boundaries are Green:
 - `retardedAdvancedLadderCLM_apply`
 - `resummedLadderVertex_smul`
 - all current simp rules in `QuantumTheory/Occupation/ZeroTemperature`
-- all current simp rules in `Analysis/ZeroTemperatureBandFilling`
+- all current simp rules in `QuantumTheory/Occupation/BandFilling`
 - all current simp rules in `Models/MassiveDirac/Propagator/Symmetry`
 - all current simp rules in `Models/MassiveDirac/Vertex/InPlaneLadder`
 - `energySq_polar`

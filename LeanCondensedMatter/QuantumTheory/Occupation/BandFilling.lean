@@ -5,18 +5,17 @@ import Mathlib.Data.Set.Basic
 set_option linter.style.header false
 
 /-!
-# Zero-temperature band filling
+# Spectral zero-temperature band filling
 
 This module owns model-independent zero-temperature occupied regions, Fermi surfaces, and filled,
 empty, and partially filled band predicates under the repository's strict `energy < fermiEnergy`
 convention. It also connects those predicates to the generic `bandStateOccupation` composition.
 
-Lorentzian Fermi-edge integrals and broadening limits live in
-`Transport.Analysis.ZeroTemperatureLorentzian`.
+These definitions belong to the spectral occupation layer; transport-specific Lorentzian Fermi-edge
+integrals and broadening limits remain downstream in `Transport.Analysis.ZeroTemperatureLorentzian`.
 -/
 
 namespace QuantumTheory
-namespace Transport
 
 noncomputable section
 
@@ -108,5 +107,4 @@ theorem bandStateOccupation_zeroTemperature_eq_one_of_isFilledBand
     simp [h, hle]
 
 end
-end Transport
 end QuantumTheory

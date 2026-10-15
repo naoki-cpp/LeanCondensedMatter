@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Models.MassiveDirac.Model.Berry.Symmetry
-import LeanCondensedMatter.Transport.Analysis.ZeroTemperatureBandFilling
+import LeanCondensedMatter.QuantumTheory.Occupation.BandFilling
 import Mathlib.Analysis.SpecialFunctions.Integrals.Basic
 
 set_option linter.style.header false
@@ -32,9 +32,7 @@ namespace QuantumTheory.Models.MassiveDirac
 
 noncomputable section
 
-open QuantumTheory.Transport
-
-open MeasureTheory Set QuantumTheory.Transport
+open MeasureTheory Set
 open scoped Interval
 
 /-- Radially reduced Berry-weight density in positive-energy coordinates.

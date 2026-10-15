@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Models.MassiveDirac.Model.FermiSurface
-import LeanCondensedMatter.Transport.Analysis.ZeroTemperatureBandFilling
+import LeanCondensedMatter.QuantumTheory.Occupation.BandFilling
 
 set_option linter.style.header false
 
@@ -14,8 +14,6 @@ owned by `Model.FermiSurface`, independently of occupation or temperature.
 namespace QuantumTheory.Models.MassiveDirac
 
 noncomputable section
-
-open QuantumTheory.Transport
 
 /-- Massive-Dirac band energy regarded as a function on two-dimensional physical momentum. -/
 def bandEnergyOnMomentum (v m : ℝ) (band : Band) (p : ℝ × ℝ) : ℝ :=
