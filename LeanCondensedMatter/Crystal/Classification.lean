@@ -599,7 +599,7 @@ theorem finite_lattice_vectors_norm_le [FiniteDimensional ℝ V]
   have hCompact : IsCompact (Metric.closedBall (0 : L) R) :=
     isCompact_closedBall (0 : L) R
   have hFinite := hCompact.finite_of_discrete
-  simpa only [Metric.closedBall, Set.mem_setOf_eq, dist_zero_right] using hFinite
+  simpa only [Metric.closedBall, Set.mem_ofPred_eq, dist_zero_right] using hFinite
 
 /-- An infinite sequence of lattice vectors cannot remain bounded while its
 squared norms strictly decrease at every step. Applied to the first vectors
