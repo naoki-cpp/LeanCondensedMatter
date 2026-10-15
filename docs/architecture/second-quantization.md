@@ -216,8 +216,10 @@ combines that external-sector ordering with the extracted interaction sector and
 partner-invariant restricted pairing to produce a standalone external-insertion diagram for any
 connected component.
 `Common.Diagrammatics.ExternalInsertion.SlotSplit.SlotLegSplitting` owns the timeless slot partition,
-diagram reconstruction, and split-diagram equivalence. External-support decomposition, connectivity,
-and fiber sums consume this structure without mixed-time ordering dependencies.
+diagram restriction/reassembly, and their inverse laws. External-support decomposition,
+connectivity, and fiber sums consume this structure without ordering dependencies.
+`Common.Diagrammatics.ExternalInsertion.Factorization.FixedSlotSplitOrder` owns the fixed-order
+monotonicity of support/vacuum leg embeddings and the even inter-sector inversion count.
 `Common.Diagrammatics.ExternalInsertion.Pairing.SlotSplitMixedOrder` owns the corresponding
 mixed-time position, local-order preservation, and ordered vacuum pairing coherence used by
 fermionic shuffle integrals.
