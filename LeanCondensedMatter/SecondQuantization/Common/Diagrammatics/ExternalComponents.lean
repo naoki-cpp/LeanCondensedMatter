@@ -29,6 +29,15 @@ def HasNoVacuumComponent (G : SimpleGraph (External ⊕ Internal)) : Prop :=
   ∀ v : Internal, ∃ e : External,
     G.Reachable (Sum.inl e : External ⊕ Internal) (Sum.inr v)
 
+/-- Every pair of external vertices belongs to the same connected component.
+
+This property allows disconnected purely internal (vacuum) components. It is
+therefore distinct from both vacuum-freeness and whole-graph
+preconnectedness when more than two external legs are present. -/
+def AllExternalVerticesConnected (G : SimpleGraph (External ⊕ Internal)) : Prop :=
+  ∀ a b : External,
+    G.Reachable (Sum.inl a : External ⊕ Internal) (Sum.inl b)
+
 /-- Vacuum-freeness is invariant under a graph isomorphism preserving the external and
 internal sectors up to relabeling. -/
 theorem hasNoVacuumComponent_congr_iff
@@ -71,6 +80,48 @@ theorem hasNoVacuumComponent_of_preconnected [Nonempty External]
   intro v
   let e : External := Classical.choice inferInstance
   exact ⟨e, h _ _⟩
+
+/-- Full connectivity factors into two logically independent conditions:
+no vacuum component, and mutual connectivity of all external vertices.
+
+The nonempty external sector supplies an external anchor for every internal
+vertex. This holds independently of the graph's diagrammatic realization. -/
+theorem preconnected_iff_hasNoVacuumComponent_and_allExternalVerticesConnected
+    [Nonempty External] (G : SimpleGraph (External ⊕ Internal)) :
+    G.Preconnected ↔
+      HasNoVacuumComponent G ∧ AllExternalVerticesConnected G := by
+  constructor
+  · intro h
+    exact ⟨hasNoVacuumComponent_of_preconnected G h, fun _ _ => h _ _⟩
+  · rintro ⟨hVacuum, hExternal⟩
+    intro x y
+    cases x with
+    | inl a =>
+        cases y with
+        | inl b => exact hExternal a b
+        | inr v =>
+            obtain ⟨b, hb⟩ := hVacuum v
+            exact (hExternal a b).trans hb
+    | inr v =>
+        obtain ⟨a, ha⟩ := hVacuum v
+        cases y with
+        | inl b => exact ha.symm.trans (hExternal a b)
+        | inr w =>
+            obtain ⟨b, hb⟩ := hVacuum w
+            exact ha.symm.trans ((hExternal a b).trans hb)
+
+/-- External connectivity alone can be expressed using any distinguished
+external vertex as an anchor, without reference to vacuum components. -/
+theorem allExternalVerticesConnected_iff_reachable_anchor
+    (G : SimpleGraph (External ⊕ Internal)) (anchor : External) :
+    AllExternalVerticesConnected G ↔
+      ∀ e : External,
+        G.Reachable (Sum.inl anchor : External ⊕ Internal) (Sum.inl e) := by
+  constructor
+  · intro h e
+    exact h anchor e
+  · intro h a b
+    exact (h a).symm.trans (h b)
 
 section Finite
 
