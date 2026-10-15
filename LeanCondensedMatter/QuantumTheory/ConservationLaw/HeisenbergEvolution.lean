@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Analysis.ConservationLaw.BalanceLawAdapter
+import LeanCondensedMatter.Analysis.ConservationLaw.BalanceLaw
 import Mathlib.Algebra.Lie.OfAssociative
 
 set_option linter.style.header false
@@ -13,9 +13,9 @@ This module supplies only the quantum-mechanical normalization of algebraic comm
 ```
 
 It does not choose a localization map, transported quantity, position observable, velocity, or
-current representation. Any algebraic represented balance law is forgotten to its intrinsic
-transport semantics, scaled there, and then represented again using the correspondingly scaled
-chosen current extension.
+current representation. An existing represented balance law is normalized directly, scaling its
+chosen current and source together with the evolution. No temporary intrinsic representation is
+required for this operation.
 -/
 
 namespace QuantumTheory
@@ -42,8 +42,8 @@ theorem heisenbergEvolution_apply
       heisenbergScale ℏ • ⁅h, A⁆ :=
   rfl
 
-/-- Any represented balance law for algebraic commutator evolution acquires the physical Heisenberg
-normalization by scaling its intrinsic transport/source semantics and the chosen current extension. -/
+/-- Normalize a represented algebraic balance law to physical Heisenberg evolution by scaling
+its chosen current and source directly. -/
 noncomputable def heisenbergBalanceLaw
     {Test OneForm : Type*}
     [AddCommGroup Test] [Module ℂ Test]
@@ -53,15 +53,18 @@ noncomputable def heisenbergBalanceLaw
     (d : Test →ₗ[ℂ] OneForm)
     (B : _root_.ConservationLaw.BalanceLaw
       (LieAlgebra.ad ℂ (Module.End ℂ V) h) Q d) :
-    _root_.ConservationLaw.BalanceLaw (heisenbergEvolution V ℏ h) Q d := by
-  change _root_.ConservationLaw.BalanceLaw
-    (heisenbergScale ℏ • LieAlgebra.ad ℂ (Module.End ℂ V) h) Q d
-  refine
-    ((_root_.ConservationLaw.IntrinsicBalanceLaw.ofRepresented B).scaleEvolution
-      (heisenbergScale ℏ)).toRepresented
-      (heisenbergScale ℏ • B.current) ?_
-  exact _root_.ConservationLaw.IsDifferentialCurrent.smul
-    (d := d) (Φ := B.current.comp d) (J := B.current) (fun _ => rfl) (heisenbergScale ℏ)
+    _root_.ConservationLaw.BalanceLaw (heisenbergEvolution V ℏ h) Q d where
+  current := heisenbergScale ℏ • B.current
+  source := heisenbergScale ℏ • B.source
+  balance := by
+    intro f
+    change
+      (heisenbergScale ℏ • LieAlgebra.ad ℂ (Module.End ℂ V) h) (Q f) =
+        (heisenbergScale ℏ • B.current) (d f) +
+          (heisenbergScale ℏ • B.source) f
+    simp only [LinearMap.smul_apply]
+    rw [B.balance f]
+    exact smul_add (heisenbergScale ℏ) (B.current (d f)) (B.source f)
 
 end ConservationLaw
 end QuantumTheory
