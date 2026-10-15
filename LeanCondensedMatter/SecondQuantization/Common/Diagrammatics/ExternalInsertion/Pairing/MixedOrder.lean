@@ -25,23 +25,6 @@ noncomputable def ExternalInsertionDiagram.pairingInMixedOrder {E n : ℕ}
     Pairing (2 * n + E) :=
   d.pairing.transport (externalInsertionMixedTimeAmbientPositionEquiv externalTime σ)
 
-/-- Transporting a mixed-order partner back to the fixed flattened enumeration recovers the
-original diagram partner. -/
-theorem ExternalInsertionDiagram.mixedTimeAmbientPositionEquiv_partner {E n : ℕ}
-    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E n (Finset.univ : Finset (Fin n)))
-    (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ)
-    (p : Fin (2 * (2 * n + E))) :
-    externalInsertionMixedTimeAmbientPositionEquiv externalTime σ
-        ((d.pairingInMixedOrder externalTime σ).partner p) =
-      d.pairing.partner
-        (externalInsertionMixedTimeAmbientPositionEquiv externalTime σ p) := by
-  change (externalInsertionMixedTimeAmbientPositionEquiv externalTime σ)
-      ((d.pairing.transport (externalInsertionMixedTimeAmbientPositionEquiv externalTime σ)).partner p) =
-    d.pairing.partner (externalInsertionMixedTimeAmbientPositionEquiv externalTime σ p)
-  rw [PairingOn.transport_partner]
-  exact (externalInsertionMixedTimeAmbientPositionEquiv externalTime σ).apply_symm_apply _
-
-
 /-- The mixed-order partner of the position selected by a canonical leg is the mixed position of
 that leg's diagram partner. -/
 theorem ExternalInsertionDiagram.pairingInMixedOrder_partner_legPosition {E n : ℕ}
@@ -64,7 +47,9 @@ theorem ExternalInsertionDiagram.pairingInMixedOrder_partner_legPosition {E n : 
   apply (externalInsertionMixedTimeOrderedAtomicLegEquiv externalTime σ).injective
   rw [externalInsertionMixedTimeOrderedAtomicLegEquiv_position,
     ← externalInsertionLegEquiv_mixedTimeAmbientPositionEquiv,
-    d.mixedTimeAmbientPositionEquiv_partner,
+    ExternalInsertionDiagram.pairingInMixedOrder,
+    PairingOn.transport_partner,
+    Equiv.apply_symm_apply,
     hpos,
     ExternalInsertionDiagram.atomicLegPartner]
 
