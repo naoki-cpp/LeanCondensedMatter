@@ -67,9 +67,10 @@ theorem freeGibbsDensityOperator_expectation_mixedTimeOrderedVertexComp_eq_sum_p
       List.ofFn (mixedTimeOrderedAtomicFieldFamily i j τ τ' q σ) =
         mixedTimeOrderedAtomicFields i j τ τ' q σ := by
     let fields := mixedTimeOrderedAtomicFields i j τ τ' q σ
-    simpa only [mixedTimeOrderedAtomicFieldFamily, fields] using
-      (List.ofFn_congr (mixedTimeOrderedAtomicFields_length i j τ τ' q σ)
-        fields.get).symm.trans (List.ofFn_get fields)
+    have h : fields.length = 2 * (2 * n + 1) :=
+      mixedTimeOrderedAtomicFields_length i j τ τ' q σ
+    simpa [mixedTimeOrderedAtomicFieldFamily, fields] using
+      (List.ofFn_congr h fields.get).symm.trans (List.ofFn_get fields)
   have hoperators :
       List.ofFn (mixedTimeOrderedAtomicOperatorFamily ε i j τ τ' q σ) =
         mixedTimeOrderedAtomicOperators ε i j τ τ' q σ := by
