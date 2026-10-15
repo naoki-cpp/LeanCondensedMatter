@@ -46,13 +46,16 @@ noncomputable def toRepresented
     {d : Test →ₗ[𝕜] OneForm}
     (B : IntrinsicBalanceLaw δ Q d)
     (J : OneForm →ₗ[𝕜] Obs)
-    (hJ : IsDifferentialCurrent d B.transport J) :
+    (hJ : B.transport = J.comp d) :
     BalanceLaw δ Q d where
   current := J
   source := B.source
   balance := by
     intro f
-    rw [B.balance f, hJ f]
+    rw [B.balance f]
+    have hf := congrArg (fun L : Test →ₗ[𝕜] Obs => L f) hJ
+    simp only [LinearMap.comp_apply] at hf
+    rw [hf]
 
 /-- A chosen extension of intrinsic transport is precisely a differential current representation. -/
 def toDifferentialCurrentRepresentation
@@ -61,7 +64,7 @@ def toDifferentialCurrentRepresentation
     {d : Test →ₗ[𝕜] OneForm}
     (B : IntrinsicBalanceLaw δ Q d)
     (J : OneForm →ₗ[𝕜] Obs)
-    (hJ : IsDifferentialCurrent d B.transport J) :
+    (hJ : B.transport = J.comp d) :
     DifferentialCurrentRepresentation d B.transport where
   current := J
   isCurrent := hJ

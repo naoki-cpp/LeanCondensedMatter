@@ -77,9 +77,8 @@ theorem boundedIntrinsicFluxRetardedResponse_eq_symmetrized_add_correction
     (Φ : Test →ₗ[ℂ] ((Site →₀ ℂ) →ₗ[ℂ] (Site →₀ ℂ)))
     (velocity m : (Site →₀ ℂ) →ₗ[ℂ] (Site →₀ ℂ))
     (N : OneForm →ₗ[ℂ] ((Site →₀ ℂ) →ₗ[ℂ] (Site →₀ ℂ)))
-    (hΦ : _root_.ConservationLaw.IsDifferentialCurrent d Φ
-      (_root_.ConservationLaw.nestedSymmetrizedCurrentFlux
-        ((Site →₀ ℂ)) velocity m N))
+    (hΦ : Φ = (_root_.ConservationLaw.nestedSymmetrizedCurrentFlux
+        ((Site →₀ ℂ)) velocity m N).comp d)
     (t s : ℝ) :
     boundedIntrinsicFluxRetardedResponse system expectation source Φ t s =
       (boundedIntrinsicFluxRetardedResponse system expectation source
@@ -88,7 +87,7 @@ theorem boundedIntrinsicFluxRetardedResponse_eq_symmetrized_add_correction
       (boundedIntrinsicFluxRetardedResponse system expectation source
         (_root_.ConservationLaw.localizationCorrectionCurrentFlux
           ((Site →₀ ℂ)) velocity m N) t s).comp d := by
-  rw [boundedIntrinsicFluxRetardedResponse_eq_comp_of_isDifferentialCurrent
+  rw [boundedIntrinsicFluxRetardedResponse_eq_comp_of_factorization
     system expectation source d Φ
       (_root_.ConservationLaw.nestedSymmetrizedCurrentFlux
         ((Site →₀ ℂ)) velocity m N) hΦ t s]
@@ -109,9 +108,8 @@ theorem boundedIntrinsicFluxRetardedResponse_eq_symmetrized_of_commutes
     (Φ : Test →ₗ[ℂ] ((Site →₀ ℂ) →ₗ[ℂ] (Site →₀ ℂ)))
     (velocity m : (Site →₀ ℂ) →ₗ[ℂ] (Site →₀ ℂ))
     (N : OneForm →ₗ[ℂ] ((Site →₀ ℂ) →ₗ[ℂ] (Site →₀ ℂ)))
-    (hΦ : _root_.ConservationLaw.IsDifferentialCurrent d Φ
-      (_root_.ConservationLaw.nestedSymmetrizedCurrentFlux
-        ((Site →₀ ℂ)) velocity m N))
+    (hΦ : Φ = (_root_.ConservationLaw.nestedSymmetrizedCurrentFlux
+        ((Site →₀ ℂ)) velocity m N).comp d)
     (hcomm : ∀ α, ⁅N α, m⁆ = 0)
     (t s : ℝ) :
     boundedIntrinsicFluxRetardedResponse system expectation source Φ t s =
@@ -141,9 +139,8 @@ theorem boundedIntrinsicFluxRetardedResponse_eq_symmetrized_smul_id
     (velocity : (Site →₀ ℂ) →ₗ[ℂ] (Site →₀ ℂ))
     (N : OneForm →ₗ[ℂ] ((Site →₀ ℂ) →ₗ[ℂ] (Site →₀ ℂ)))
     (q : ℂ)
-    (hΦ : _root_.ConservationLaw.IsDifferentialCurrent d Φ
-      (_root_.ConservationLaw.nestedSymmetrizedCurrentFlux
-        ((Site →₀ ℂ)) velocity (q • LinearMap.id) N))
+    (hΦ : Φ = (_root_.ConservationLaw.nestedSymmetrizedCurrentFlux
+        ((Site →₀ ℂ)) velocity (q • LinearMap.id) N).comp d)
     (t s : ℝ) :
     boundedIntrinsicFluxRetardedResponse system expectation source Φ t s =
       (boundedIntrinsicFluxRetardedResponse system expectation source

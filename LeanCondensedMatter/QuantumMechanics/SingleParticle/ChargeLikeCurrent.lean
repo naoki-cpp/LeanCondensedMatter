@@ -58,9 +58,8 @@ theorem correctedSymmetrizedVelocityCurrentRepresentation_smul_id_current
     (d : Test →ₗ[ℂ] OneForm)
     (N : OneForm →ₗ[ℂ] (V →ₗ[ℂ] V))
     (q : ℂ)
-    (hvelocity : _root_.ConservationLaw.IsDifferentialCurrent d
-      (heisenbergLocalizationFunctional V ℏ h M)
-      (velocityLocalizationFlux V velocity N)) :
+    (hvelocity : heisenbergLocalizationFunctional V ℏ h M =
+      (velocityLocalizationFlux V velocity N).comp d) :
     (correctedSymmetrizedVelocityCurrentRepresentation
       V ℏ h M (q • LinearMap.id) velocity d N hvelocity).current =
       operatorLocalCurrentPairing V N (q • velocity) := by

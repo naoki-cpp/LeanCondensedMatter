@@ -41,18 +41,18 @@ abbrev SchwartzOneParticle1D := SchwartzKinetic1D.Space
 
 /-- The velocity-generated localization flux is a differential current for the concrete Schwartz
 Schrödinger localization transport. -/
-theorem schwartzVelocityLocalizationFlux_isDifferentialCurrent1D
+theorem schwartzVelocityLocalizationFlux_eq_comp1D
     (ℏ κ : ℝ) (potential : SchwartzOneParticle1D) :
-    _root_.ConservationLaw.IsDifferentialCurrent
-      SchwartzKinetic1D.derivative
-      (heisenbergLocalizationFunctional SchwartzOneParticle1D ℏ
+    (heisenbergLocalizationFunctional SchwartzOneParticle1D ℏ
         (SchwartzKinetic1D.schrodingerOperator κ potential)
-        SchwartzKinetic1D.multiplicationLinear)
+        SchwartzKinetic1D.multiplicationLinear) =
       (velocityLocalizationFlux SchwartzOneParticle1D
         (SchwartzKinetic1D.velocityOperator ℏ κ)
-        SchwartzKinetic1D.multiplicationLinear) := by
+        SchwartzKinetic1D.multiplicationLinear).comp SchwartzKinetic1D.derivative := by
+  apply LinearMap.ext
   intro f
-  rw [heisenbergLocalizationFunctional_apply, velocityLocalizationFlux_apply]
+  rw [heisenbergLocalizationFunctional_apply]
+  simp only [LinearMap.comp_apply, velocityLocalizationFlux_apply]
   apply LinearMap.ext
   intro ψ
   have h := congrArg
@@ -80,7 +80,7 @@ noncomputable def schwartzOperatorProbabilityCurrentRepresentation1D
     (SchwartzKinetic1D.velocityOperator ℏ κ)
     SchwartzKinetic1D.derivative
     SchwartzKinetic1D.multiplicationLinear
-    (schwartzVelocityLocalizationFlux_isDifferentialCurrent1D ℏ κ potential)
+    (schwartzVelocityLocalizationFlux_eq_comp1D ℏ κ potential)
     (fun α => by
       simp [LieRing.of_associative_ring_bracket, Module.End.mul_eq_comp])
 
@@ -112,7 +112,7 @@ noncomputable def schwartzOperatorChargeCurrentRepresentation1D
     (SchwartzKinetic1D.velocityOperator ℏ κ)
     SchwartzKinetic1D.derivative
     SchwartzKinetic1D.multiplicationLinear
-    (schwartzVelocityLocalizationFlux_isDifferentialCurrent1D ℏ κ potential)
+    (schwartzVelocityLocalizationFlux_eq_comp1D ℏ κ potential)
     (fun α => by
       simp [LieRing.of_associative_ring_bracket, Module.End.mul_eq_comp])
 

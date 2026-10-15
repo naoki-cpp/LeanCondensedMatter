@@ -71,10 +71,11 @@ def toDifferentialCurrentRepresentation
     DifferentialCurrentRepresentation d (δ.comp Q) where
   current := B.current
   isCurrent := by
+    apply LinearMap.ext
     intro f
     have h := B.balance f
     rw [hsource] at h
-    simpa using h
+    simpa only [LinearMap.comp_apply, LinearMap.zero_apply, add_zero] using h
 
 section CurrentSourceAmbiguity
 
@@ -154,13 +155,15 @@ noncomputable def toDifferentialCurrentRepresentationOfSourceCurrent
     {d : Test' →ₗ[R] OneForm'}
     (B : BalanceLaw δ Q d)
     (sourceCurrent : OneForm' →ₗ[R] Obs')
-    (hsource : IsDifferentialCurrent d B.source sourceCurrent) :
+    (hsource : B.source = sourceCurrent.comp d) :
     DifferentialCurrentRepresentation d (δ.comp Q) :=
   (B.shiftCurrentSource sourceCurrent).toDifferentialCurrentRepresentation (by
     apply LinearMap.ext
     intro f
     change B.source f + (-1 : R) • sourceCurrent (d f) = 0
-    rw [hsource f]
+    have hf := congrArg (fun L : Test' →ₗ[R] Obs' => L f) hsource
+    simp only [LinearMap.comp_apply] at hf
+    rw [hf]
     module)
 
 @[simp]
@@ -170,7 +173,7 @@ theorem toDifferentialCurrentRepresentationOfSourceCurrent_current
     {d : Test' →ₗ[R] OneForm'}
     (B : BalanceLaw δ Q d)
     (sourceCurrent : OneForm' →ₗ[R] Obs')
-    (hsource : IsDifferentialCurrent d B.source sourceCurrent) :
+    (hsource : B.source = sourceCurrent.comp d) :
     (B.toDifferentialCurrentRepresentationOfSourceCurrent sourceCurrent hsource).current =
       B.current + sourceCurrent :=
   rfl

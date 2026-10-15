@@ -68,9 +68,8 @@ noncomputable def symmetrizedVelocityCurrentRepresentation
     (m velocity : V →ₗ[ℂ] V)
     (d : Test →ₗ[ℂ] OneForm)
     (N : OneForm →ₗ[ℂ] (V →ₗ[ℂ] V))
-    (hvelocity : _root_.ConservationLaw.IsDifferentialCurrent d
-      (heisenbergLocalizationFunctional V ℏ h M)
-      (velocityLocalizationFlux V velocity N))
+    (hvelocity : heisenbergLocalizationFunctional V ℏ h M =
+      (velocityLocalizationFlux V velocity N).comp d)
     (hcomm : ∀ α, ⁅N α, m⁆ = 0) :
     _root_.ConservationLaw.LocalCurrentDensityRepresentation
       d
@@ -78,10 +77,14 @@ noncomputable def symmetrizedVelocityCurrentRepresentation
       (operatorLocalCurrentPairing V N) where
   currentDensity := symmetrizedVelocityCurrent V velocity m
   isCurrentDensity := by
+    apply LinearMap.ext
     intro f
+    have hv := congrArg
+      (fun L : Test →ₗ[ℂ] (V →ₗ[ℂ] V) => L f) hvelocity
+    simp only [LinearMap.comp_apply] at hv
     rw [heisenbergTransportFunctional_eq_symmetrizedProductRight_comp]
     simp only [LinearMap.comp_apply]
-    rw [hvelocity f]
+    rw [hv]
     rw [velocityLocalizationFlux_apply, operatorLocalCurrentPairing_apply]
     exact symmetrizedVelocityTransport_eq_of_localizer_commutes
       V (N (d f)) velocity m (hcomm (d f))
@@ -93,9 +96,8 @@ theorem symmetrizedVelocityCurrentRepresentation_currentDensity
     (m velocity : V →ₗ[ℂ] V)
     (d : Test →ₗ[ℂ] OneForm)
     (N : OneForm →ₗ[ℂ] (V →ₗ[ℂ] V))
-    (hvelocity : _root_.ConservationLaw.IsDifferentialCurrent d
-      (heisenbergLocalizationFunctional V ℏ h M)
-      (velocityLocalizationFlux V velocity N))
+    (hvelocity : heisenbergLocalizationFunctional V ℏ h M =
+      (velocityLocalizationFlux V velocity N).comp d)
     (hcomm : ∀ α, ⁅N α, m⁆ = 0) :
     (symmetrizedVelocityCurrentRepresentation V ℏ h M m velocity d N hvelocity hcomm).currentDensity =
       symmetrizedVelocityCurrent V velocity m :=
