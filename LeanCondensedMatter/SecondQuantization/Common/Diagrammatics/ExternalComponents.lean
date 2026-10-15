@@ -218,7 +218,6 @@ theorem allExternalVerticesConnected_iff_supportedComponentParts_eq_singleton
       change (B : Finset (External ⊕ Internal)) =
         G.componentBlock (Sum.inl anchor)
       rw [he]
-      symm
       exact (G.componentBlock_eq_iff_mem
         (G.componentBlock_mem_componentPartition (Sum.inl anchor))
         (Sum.inl e)).2
