@@ -563,6 +563,74 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrent_z_minor_eq_k0
   rw [hzX, hzY]
   ring
 
+/-- The retarded/advanced Green transverse minor in the physical X Hall
+amplitude has only K0 and K2 momentum moments. The first-harmonic
+in-plane components share the explicit factor `i * (radius / hbar) / 2`,
+which is factored out before the remaining real-space radius integral.
+
+This identity keeps the physical Fourier momentum measure in *each* Green
+block. It makes no assumption about the sign of `radius`, removes no
+regulator, and does not evaluate the remaining radial integral. -/
+theorem finiteCutoffContinuumBornDysonRadialGreen_ra_xz_minor_eq_harmonic_moments
+    (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ)
+    (hbroadening : broadening ≠ 0) (hdisorder : 0 ≤ disorderStrength)
+    (hpMax : 0 ≤ pMax) :
+    let prefactor := (((momentumMeasurePrefactor hbar : ℝ) : ℂ))
+    let bR := fun p : ℝ =>
+      finiteCutoffContinuumBornDysonPauliCoefficient .x
+        .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax
+    let bA := fun p : ℝ =>
+      finiteCutoffContinuumBornDysonPauliCoefficient .x
+        .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax
+    let dR := fun p : ℝ =>
+      finiteCutoffContinuumBornDysonPauliCoefficient .z
+        .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax
+    let dA := fun p : ℝ =>
+      finiteCutoffContinuumBornDysonPauliCoefficient .z
+        .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax
+    let first := Complex.I * (((radius / hbar : ℝ) : ℂ)) / 2
+    let secondMoment := fun f : ℝ → ℂ =>
+      prefactor * ∫ p in (0 : ℝ)..pMax,
+        (p : ℂ) ^ 2 *
+          ((polarFourierZerothAngularKernel (p * radius / hbar) -
+            polarFourierSecondCosineAngularKernel (p * radius / hbar)) * f p)
+    let zerothMoment := fun f : ℝ → ℂ =>
+      prefactor * ∫ p in (0 : ℝ)..pMax,
+        (p : ℂ) * (polarFourierZerothAngularKernel (p * radius / hbar) * f p)
+    finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient
+        .x .retarded v m probeEnergy broadening disorderStrength hbar pMax radius *
+      finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient
+        .z .advanced v m probeEnergy broadening disorderStrength hbar pMax radius -
+      finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient
+        .z .retarded v m probeEnergy broadening disorderStrength hbar pMax radius *
+      finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient
+        .x .advanced v m probeEnergy broadening disorderStrength hbar pMax radius =
+      first * (secondMoment bR * zerothMoment dA -
+        zerothMoment dR * secondMoment bA) := by
+  have hRx :=
+    finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient_eq_radialKernel_integral
+      .x .retarded v m probeEnergy broadening disorderStrength hbar pMax radius
+      hbroadening hdisorder hpMax
+  have hAx :=
+    finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient_eq_radialKernel_integral
+      .x .advanced v m probeEnergy broadening disorderStrength hbar pMax radius
+      hbroadening hdisorder hpMax
+  have hRz :=
+    finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient_eq_radialKernel_integral
+      .z .retarded v m probeEnergy broadening disorderStrength hbar pMax radius
+      hbroadening hdisorder hpMax
+  have hAz :=
+    finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient_eq_radialKernel_integral
+      .z .advanced v m probeEnergy broadening disorderStrength hbar pMax radius
+      hbroadening hdisorder hpMax
+  dsimp only [finiteCutoffContinuumBornDysonRadialGreenPauliKernel] at
+    hRx hAx hRz hAz
+  rw [gaussianCrossedRadialFirstHarmonicIntegral_eq_difference hbar pMax radius] at
+    hRx hAx
+  dsimp only at hRx hAx hRz hAz ⊢
+  rw [hRx, hAx, hRz, hAz]
+  ring
+
 /-- The finite-regulator crossed X trace uses K0/K2 diagonal-current moments and
 the K0-K2 recurrence for all four scalar/z crossed-current first harmonics.
 The transverse current and scalar/z Green channels retain K0 moments, while
