@@ -112,7 +112,7 @@ or consumer structure changes.
   multiple of the identity.
 - `QuantumMechanics.SingleParticle.correctedChargeCurrentFlux_eq` — physical charge-current
   specialization identifying the corrected current with the local pairing `q v`.
-- `Lorentzian.tendsto_lorentzianSpectralTailMass_zero` — model-independent analytic
+- `Lorentzian.tendsto_spectralTailMass_zero` — model-independent analytic
   approximate-identity result for vanishing Lorentzian mass between fixed nested positive windows.
 - `SecondQuantization.Fermionic.orderedSimplexContribution_eq_pairingEvaluation` — canonical
   representation theorem identifying one Wick diagram's fixed-order ordered-simplex contribution

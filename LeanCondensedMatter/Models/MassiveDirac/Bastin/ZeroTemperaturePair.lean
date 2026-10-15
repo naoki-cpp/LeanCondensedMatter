@@ -31,7 +31,7 @@ noncomputable def targetCenteredZeroTemperatureInterbandSpectatorCurrentPoleInte
   ∫ offset in -radius..radius,
     ((zeroTemperatureOccupation fermiEnergy
         (bandEnergy band v m px py + offset) : ℝ) : ℂ) *
-      ((Lorentzian.lorentzianSpectralKernel offset broadening : ℂ) *
+      ((Lorentzian.spectralKernel offset broadening : ℂ) *
         targetCenteredInterbandSpectatorCurrentFactor
           band e v m px py (offset, broadening))
 
@@ -67,7 +67,7 @@ theorem targetCenteredZeroTemperatureInterbandBastinPairIntegral_eq_neg_two_i_mu
       (-2 * Complex.I) *
         (((zeroTemperatureOccupation fermiEnergy
             (bandEnergy band v m px py + offset) : ℝ) : ℂ) *
-          ((Lorentzian.lorentzianSpectralKernel offset broadening : ℂ) *
+          ((Lorentzian.spectralKernel offset broadening : ℂ) *
             targetCenteredInterbandSpectatorCurrentFactor
               band e v m px py (offset, broadening)))
   rw [bastinBandPairContribution_opposite_source_eq_lorentzian
@@ -84,29 +84,29 @@ theorem norm_zeroTemperatureOccupation_mul_lorentzian_mul_spectator_radial_le
     (hbroadening : 0 ≤ broadening) :
     ‖((zeroTemperatureOccupation fermiEnergy
           (bandEnergy band v m p 0 + offset) : ℝ) : ℂ) *
-        ((Lorentzian.lorentzianSpectralKernel offset broadening : ℂ) *
+        ((Lorentzian.spectralKernel offset broadening : ℂ) *
           targetCenteredInterbandSpectatorCurrentFactor
             band e v m p 0 (offset, broadening))‖ ≤
       radialInterbandSpectatorUniformBound e v m radius *
-        Lorentzian.lorentzianSpectralKernel offset broadening := by
+        Lorentzian.spectralKernel offset broadening := by
   rw [norm_mul]
   calc
     ‖((zeroTemperatureOccupation fermiEnergy
           (bandEnergy band v m p 0 + offset) : ℝ) : ℂ)‖ *
-        ‖(Lorentzian.lorentzianSpectralKernel offset broadening : ℂ) *
+        ‖(Lorentzian.spectralKernel offset broadening : ℂ) *
           targetCenteredInterbandSpectatorCurrentFactor
             band e v m p 0 (offset, broadening)‖ ≤
-      1 * ‖(Lorentzian.lorentzianSpectralKernel offset broadening : ℂ) *
+      1 * ‖(Lorentzian.spectralKernel offset broadening : ℂ) *
           targetCenteredInterbandSpectatorCurrentFactor
             band e v m p 0 (offset, broadening)‖ := by
         exact mul_le_mul_of_nonneg_right
           (QuantumTheory.norm_zeroTemperatureOccupation_complex_le_one
             fermiEnergy (bandEnergy band v m p 0 + offset)) (norm_nonneg _)
-    _ = ‖(Lorentzian.lorentzianSpectralKernel offset broadening : ℂ) *
+    _ = ‖(Lorentzian.spectralKernel offset broadening : ℂ) *
           targetCenteredInterbandSpectatorCurrentFactor
             band e v m p 0 (offset, broadening)‖ := by ring
     _ ≤ radialInterbandSpectatorUniformBound e v m radius *
-        Lorentzian.lorentzianSpectralKernel offset broadening :=
+        Lorentzian.spectralKernel offset broadening :=
       norm_lorentzian_mul_targetCenteredInterbandSpectatorCurrentFactor_radial_le
         band e v m p offset radius broadening hm hradius hoffset hbroadening
 
@@ -120,21 +120,21 @@ theorem norm_targetCenteredZeroTemperatureInterbandSpectatorCurrentPoleIntegral_
         band e v m p 0 fermiEnergy radius broadening‖ ≤
       radialInterbandSpectatorUniformBound e v m radius *
         (∫ offset in -radius..radius,
-          Lorentzian.lorentzianSpectralKernel offset broadening) := by
+          Lorentzian.spectralKernel offset broadening) := by
   have hab : -radius ≤ radius := by linarith
-  have hkernelInt := Lorentzian.intervalIntegrable_lorentzianSpectralKernel
+  have hkernelInt := Lorentzian.intervalIntegrable_spectralKernel
     (-radius) radius broadening hbroadening.ne'
   unfold targetCenteredZeroTemperatureInterbandSpectatorCurrentPoleIntegral
   have hineq :
       ‖∫ offset in -radius..radius,
           ((zeroTemperatureOccupation fermiEnergy
               (bandEnergy band v m p 0 + offset) : ℝ) : ℂ) *
-            ((Lorentzian.lorentzianSpectralKernel offset broadening : ℂ) *
+            ((Lorentzian.spectralKernel offset broadening : ℂ) *
               targetCenteredInterbandSpectatorCurrentFactor
                 band e v m p 0 (offset, broadening))‖ ≤
         ∫ offset in -radius..radius,
           radialInterbandSpectatorUniformBound e v m radius *
-            Lorentzian.lorentzianSpectralKernel offset broadening := by
+            Lorentzian.spectralKernel offset broadening := by
     apply intervalIntegral.norm_integral_le_of_norm_le hab
     · filter_upwards with offset
       intro hoffset
@@ -160,7 +160,7 @@ theorem norm_targetCenteredZeroTemperatureInterbandBastinPairIntegral_radial_le
   have hpole :=
     norm_targetCenteredZeroTemperatureInterbandSpectatorCurrentPoleIntegral_radial_le
       band e v m p fermiEnergy radius broadening hm hradiusPos hradius hbroadening
-  have hmass := Lorentzian.integral_lorentzianSpectralKernel_symmetric_le_pi
+  have hmass := Lorentzian.integral_spectralKernel_symmetric_le_pi
     radius broadening
   have hC := radialInterbandSpectatorUniformBound_nonneg e v m radius
   have hpolePi :

@@ -30,10 +30,10 @@ noncomputable section
 open Filter MeasureTheory
 
 /-- Lorentzian-weighted fixed-window integral of a complex regular factor. -/
-noncomputable def lorentzianRegularFactorIntegral
+noncomputable def regularFactorIntegral
     (factor : ℝ × ℝ → ℂ) (radius broadening : ℝ) : ℂ :=
   ∫ offset in -radius..radius,
-    (lorentzianSpectralKernel offset broadening : ℂ) * factor (offset, broadening)
+    (spectralKernel offset broadening : ℂ) * factor (offset, broadening)
 
 private noncomputable def lorentzianRegularFactorError
     (factor : ℝ × ℝ → ℂ) (offset broadening : ℝ) : ℂ :=
@@ -41,7 +41,7 @@ private noncomputable def lorentzianRegularFactorError
 
 private noncomputable def lorentzianRegularFactorErrorIntegrand
     (factor : ℝ × ℝ → ℂ) (broadening offset : ℝ) : ℂ :=
-  (lorentzianSpectralKernel offset broadening : ℂ) *
+  (spectralKernel offset broadening : ℂ) *
     lorentzianRegularFactorError factor offset broadening
 
 private noncomputable def lorentzianRegularFactorErrorIntegral
@@ -83,9 +83,9 @@ private theorem continuousOn_lorentzianRegularFactorErrorIntegrand
       (lorentzianRegularFactorErrorIntegrand factor broadening)
       (Set.Icc (-radius) radius) := by
   have hkernelReal :=
-    continuous_lorentzianSpectralKernel_fixed_broadening broadening hbroadening
+    continuous_spectralKernel_fixed_broadening broadening hbroadening
   have hkernelComplex : Continuous
-      (fun offset : ℝ => (lorentzianSpectralKernel offset broadening : ℂ)) :=
+      (fun offset : ℝ => (spectralKernel offset broadening : ℂ)) :=
     Complex.continuous_ofReal.comp hkernelReal
   have herror : ContinuousOn
       (fun offset : ℝ => factor (offset, broadening) - factor (0, 0))
@@ -112,21 +112,21 @@ private theorem norm_lorentzian_mul_regularFactorError_le
     (factor : ℝ × ℝ → ℂ) (offset broadening tolerance : ℝ)
     (hbroadening : 0 ≤ broadening)
     (herror : ‖lorentzianRegularFactorError factor offset broadening‖ ≤ tolerance) :
-    ‖(lorentzianSpectralKernel offset broadening : ℂ) *
+    ‖(spectralKernel offset broadening : ℂ) *
         lorentzianRegularFactorError factor offset broadening‖ ≤
-      tolerance * lorentzianSpectralKernel offset broadening := by
-  have hkernel := lorentzianSpectralKernel_nonneg offset broadening hbroadening
+      tolerance * spectralKernel offset broadening := by
+  have hkernel := spectralKernel_nonneg offset broadening hbroadening
   have hnorm :
-      ‖(lorentzianSpectralKernel offset broadening : ℂ)‖ =
-        lorentzianSpectralKernel offset broadening := by
+      ‖(spectralKernel offset broadening : ℂ)‖ =
+        spectralKernel offset broadening := by
     rw [Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg hkernel]
   rw [norm_mul, hnorm]
   calc
-    lorentzianSpectralKernel offset broadening *
+    spectralKernel offset broadening *
         ‖lorentzianRegularFactorError factor offset broadening‖ ≤
-      lorentzianSpectralKernel offset broadening * tolerance :=
+      spectralKernel offset broadening * tolerance :=
         mul_le_mul_of_nonneg_left herror hkernel
-    _ = tolerance * lorentzianSpectralKernel offset broadening := by ring
+    _ = tolerance * spectralKernel offset broadening := by ring
 
 private theorem norm_integral_lorentzian_mul_regularFactorError_le
     (factor : ℝ × ℝ → ℂ) (innerRadius broadening tolerance : ℝ)
@@ -137,15 +137,15 @@ private theorem norm_integral_lorentzian_mul_regularFactorError_le
         lorentzianRegularFactorErrorIntegrand factor broadening offset‖ ≤
       tolerance *
         (∫ offset in -innerRadius..innerRadius,
-          lorentzianSpectralKernel offset broadening) := by
+          spectralKernel offset broadening) := by
   have hab : -innerRadius ≤ innerRadius := by linarith
-  have hkernelInt := intervalIntegrable_lorentzianSpectralKernel
+  have hkernelInt := intervalIntegrable_spectralKernel
     (-innerRadius) innerRadius broadening hbroadening.ne'
   have hineq :
       ‖∫ offset in -innerRadius..innerRadius,
           lorentzianRegularFactorErrorIntegrand factor broadening offset‖ ≤
         ∫ offset in -innerRadius..innerRadius,
-          tolerance * lorentzianSpectralKernel offset broadening := by
+          tolerance * spectralKernel offset broadening := by
     apply intervalIntegral.norm_integral_le_of_norm_le hab
     · filter_upwards with offset
       intro hoffset
@@ -160,24 +160,24 @@ private theorem norm_integral_lorentzian_mul_regularFactorError_le
 private def lorentzianSpectralOuterMass
     (innerRadius outerRadius broadening : ℝ) : ℝ :=
   (∫ offset in -outerRadius..-innerRadius,
-      lorentzianSpectralKernel offset broadening) +
+      spectralKernel offset broadening) +
     ∫ offset in innerRadius..outerRadius,
-      lorentzianSpectralKernel offset broadening
+      spectralKernel offset broadening
 
 private theorem lorentzianSpectralOuterMass_eq_tailMass
     (innerRadius outerRadius broadening : ℝ) (hbroadening : broadening ≠ 0) :
     lorentzianSpectralOuterMass innerRadius outerRadius broadening =
-      lorentzianSpectralTailMass innerRadius outerRadius broadening := by
-  have hleft := intervalIntegrable_lorentzianSpectralKernel
+      spectralTailMass innerRadius outerRadius broadening := by
+  have hleft := intervalIntegrable_spectralKernel
     (-outerRadius) (-innerRadius) broadening hbroadening
-  have hmiddle := intervalIntegrable_lorentzianSpectralKernel
+  have hmiddle := intervalIntegrable_spectralKernel
     (-innerRadius) innerRadius broadening hbroadening
-  have hright := intervalIntegrable_lorentzianSpectralKernel
+  have hright := intervalIntegrable_spectralKernel
     innerRadius outerRadius broadening hbroadening
   have hwhole := intervalIntegral.integral_add_adjacent_intervals
     (hleft.trans hmiddle) hright
   have hleftMiddle := intervalIntegral.integral_add_adjacent_intervals hleft hmiddle
-  unfold lorentzianSpectralOuterMass lorentzianSpectralTailMass
+  unfold lorentzianSpectralOuterMass spectralTailMass
   linarith
 
 private theorem norm_lorentzianRegularFactorOuterErrorIntegral_le
@@ -189,18 +189,18 @@ private theorem norm_lorentzianRegularFactorOuterErrorIntegral_le
       ‖lorentzianRegularFactorError factor offset broadening‖ ≤ C) :
     ‖lorentzianRegularFactorOuterErrorIntegral
         factor innerRadius outerRadius broadening‖ ≤
-      C * lorentzianSpectralTailMass innerRadius outerRadius broadening := by
+      C * spectralTailMass innerRadius outerRadius broadening := by
   have hleftOrder : -outerRadius ≤ -innerRadius := by linarith
   have hrightOrder : innerRadius ≤ outerRadius := hnested
-  have hleftKernel := intervalIntegrable_lorentzianSpectralKernel
+  have hleftKernel := intervalIntegrable_spectralKernel
     (-outerRadius) (-innerRadius) broadening hbroadening.ne'
-  have hrightKernel := intervalIntegrable_lorentzianSpectralKernel
+  have hrightKernel := intervalIntegrable_spectralKernel
     innerRadius outerRadius broadening hbroadening.ne'
   have hleftBound :
       ‖∫ offset in -outerRadius..-innerRadius,
           lorentzianRegularFactorErrorIntegrand factor broadening offset‖ ≤
         ∫ offset in -outerRadius..-innerRadius,
-          C * lorentzianSpectralKernel offset broadening := by
+          C * spectralKernel offset broadening := by
     apply intervalIntegral.norm_integral_le_of_norm_le hleftOrder
     · filter_upwards with offset
       intro hoffset
@@ -217,7 +217,7 @@ private theorem norm_lorentzianRegularFactorOuterErrorIntegral_le
       ‖∫ offset in innerRadius..outerRadius,
           lorentzianRegularFactorErrorIntegrand factor broadening offset‖ ≤
         ∫ offset in innerRadius..outerRadius,
-          C * lorentzianSpectralKernel offset broadening := by
+          C * spectralKernel offset broadening := by
     apply intervalIntegral.norm_integral_le_of_norm_le hrightOrder
     · filter_upwards with offset
       intro hoffset
@@ -239,15 +239,15 @@ private theorem norm_lorentzianRegularFactorOuterErrorIntegral_le
             lorentzianRegularFactorErrorIntegrand factor broadening offset‖ := by
       exact norm_add_le _ _
     _ ≤ (∫ offset in -outerRadius..-innerRadius,
-          C * lorentzianSpectralKernel offset broadening) +
+          C * spectralKernel offset broadening) +
         ∫ offset in innerRadius..outerRadius,
-          C * lorentzianSpectralKernel offset broadening :=
+          C * spectralKernel offset broadening :=
       add_le_add hleftBound hrightBound
     _ = C * lorentzianSpectralOuterMass innerRadius outerRadius broadening := by
       rw [intervalIntegral.integral_const_mul, intervalIntegral.integral_const_mul]
       unfold lorentzianSpectralOuterMass
       ring
-    _ = C * lorentzianSpectralTailMass innerRadius outerRadius broadening := by
+    _ = C * spectralTailMass innerRadius outerRadius broadening := by
       rw [lorentzianSpectralOuterMass_eq_tailMass innerRadius outerRadius broadening
         hbroadening.ne']
 
@@ -365,10 +365,10 @@ private theorem tendsto_lorentzianRegularFactorErrorIntegral_zero
   have htailTolerancePos : 0 < tailTolerance := by
     dsimp [tailTolerance]
     exact div_pos hε (mul_pos (by norm_num) hCOnePos)
-  have htail := tendsto_lorentzianSpectralTailMass_zero
+  have htail := tendsto_spectralTailMass_zero
     innerRadius radius hinnerPos hnested
   have htailClose : ∀ᶠ broadening : ℝ in nhdsWithin 0 (Set.Ioi 0),
-      dist (lorentzianSpectralTailMass innerRadius radius broadening) 0 <
+      dist (spectralTailMass innerRadius radius broadening) 0 <
         tailTolerance :=
     (Metric.tendsto_nhds.1 htail) tailTolerance htailTolerancePos
   filter_upwards [hetaPos, hetaSmall, htailClose] with broadening hbroadening hsmall htailCloseAt
@@ -398,8 +398,8 @@ private theorem tendsto_lorentzianRegularFactorErrorIntegral_zero
       ‖lorentzianRegularFactorErrorIntegral factor radius broadening‖ ≤
         tolerance *
             (∫ offset in -innerRadius..innerRadius,
-              lorentzianSpectralKernel offset broadening) +
-          C * lorentzianSpectralTailMass innerRadius radius broadening := by
+              spectralKernel offset broadening) +
+          C * spectralTailMass innerRadius radius broadening := by
     rw [hsplit]
     calc
       ‖lorentzianRegularFactorOuterErrorIntegral
@@ -411,10 +411,10 @@ private theorem tendsto_lorentzianRegularFactorErrorIntegral_zero
           ‖∫ offset in -innerRadius..innerRadius,
             lorentzianRegularFactorErrorIntegrand factor broadening offset‖ :=
         norm_add_le _ _
-      _ ≤ C * lorentzianSpectralTailMass innerRadius radius broadening +
+      _ ≤ C * spectralTailMass innerRadius radius broadening +
           tolerance *
             (∫ offset in -innerRadius..innerRadius,
-              lorentzianSpectralKernel offset broadening) := by
+              spectralKernel offset broadening) := by
         apply add_le_add
         · exact norm_lorentzianRegularFactorOuterErrorIntegral_le
             factor innerRadius radius broadening C hinnerNonneg hnested
@@ -423,38 +423,38 @@ private theorem tendsto_lorentzianRegularFactorErrorIntegral_zero
             factor innerRadius broadening tolerance hinnerNonneg hbroadening hlocalAt
       _ = tolerance *
             (∫ offset in -innerRadius..innerRadius,
-              lorentzianSpectralKernel offset broadening) +
-          C * lorentzianSpectralTailMass innerRadius radius broadening := by
+              spectralKernel offset broadening) +
+          C * spectralTailMass innerRadius radius broadening := by
         ring
   have hmassLtPi :=
-    integral_lorentzianSpectralKernel_symmetric_lt_pi innerRadius broadening
+    integral_spectralKernel_symmetric_lt_pi innerRadius broadening
   have hinnerTermLt :
       tolerance *
           (∫ offset in -innerRadius..innerRadius,
-            lorentzianSpectralKernel offset broadening) < ε / 4 := by
+            spectralKernel offset broadening) < ε / 4 := by
     have hmassLt :
         (∫ offset in -innerRadius..innerRadius,
-          lorentzianSpectralKernel offset broadening) < Real.pi + 1 := by
+          spectralKernel offset broadening) < Real.pi + 1 := by
       linarith
     calc
       tolerance *
           (∫ offset in -innerRadius..innerRadius,
-            lorentzianSpectralKernel offset broadening) <
+            spectralKernel offset broadening) <
         tolerance * (Real.pi + 1) :=
           mul_lt_mul_of_pos_left hmassLt htolerancePos
       _ = ε / 4 := by
         dsimp [tolerance]
         field_simp [ne_of_gt hpiOnePos]
   have htailLt :
-      lorentzianSpectralTailMass innerRadius radius broadening < tailTolerance := by
+      spectralTailMass innerRadius radius broadening < tailTolerance := by
     have habs :
-        |lorentzianSpectralTailMass innerRadius radius broadening| < tailTolerance := by
+        |spectralTailMass innerRadius radius broadening| < tailTolerance := by
       simpa [Real.dist_eq] using htailCloseAt
     exact lt_of_le_of_lt (le_abs_self _) habs
   have houterTermLe :
-      C * lorentzianSpectralTailMass innerRadius radius broadening ≤ ε / 4 := by
+      C * spectralTailMass innerRadius radius broadening ≤ ε / 4 := by
     calc
-      C * lorentzianSpectralTailMass innerRadius radius broadening ≤
+      C * spectralTailMass innerRadius radius broadening ≤
           C * tailTolerance :=
         mul_le_mul_of_nonneg_left (le_of_lt htailLt) hCnonneg
       _ ≤ (C + 1) * tailTolerance :=
@@ -467,8 +467,8 @@ private theorem tendsto_lorentzianRegularFactorErrorIntegral_zero
       ‖lorentzianRegularFactorErrorIntegral factor radius broadening‖ ≤
         tolerance *
             (∫ offset in -innerRadius..innerRadius,
-              lorentzianSpectralKernel offset broadening) +
-          C * lorentzianSpectralTailMass innerRadius radius broadening := hboundAt
+              spectralKernel offset broadening) +
+          C * spectralTailMass innerRadius radius broadening := hboundAt
       _ < ε / 4 + ε / 4 := add_lt_add_of_lt_of_le hinnerTermLt houterTermLe
       _ < ε := by linarith
   simpa [dist_eq_norm] using hnormLt
@@ -477,51 +477,51 @@ private theorem real_smul_complex_eq_mul (r : ℝ) (z : ℂ) :
     r • z = (r : ℂ) * z := by
   rfl
 
-private theorem lorentzianRegularFactorIntegral_eq_error_add_mass_smul_pole
+private theorem regularFactorIntegral_eq_error_add_mass_smul_pole
     (factor : ℝ × ℝ → ℂ) (radius broadening : ℝ)
     (hradius : 0 ≤ radius)
     (hbroadening : broadening ≠ 0)
     (hslice : ContinuousOn (fun offset : ℝ => factor (offset, broadening))
       (Set.Icc (-radius) radius)) :
-    lorentzianRegularFactorIntegral factor radius broadening =
+    regularFactorIntegral factor radius broadening =
       lorentzianRegularFactorErrorIntegral factor radius broadening +
         (∫ offset in -radius..radius,
-          lorentzianSpectralKernel offset broadening) • factor (0, 0) := by
+          spectralKernel offset broadening) • factor (0, 0) := by
   have herrorInt := intervalIntegrable_lorentzianRegularFactorErrorIntegrand
     factor radius broadening hradius hslice hbroadening
   have hkernelCont :=
-    continuous_lorentzianSpectralKernel_fixed_broadening broadening hbroadening
+    continuous_spectralKernel_fixed_broadening broadening hbroadening
   have hpoleInt : IntervalIntegrable
       (fun offset : ℝ =>
-        lorentzianSpectralKernel offset broadening • factor (0, 0))
+        spectralKernel offset broadening • factor (0, 0))
       MeasureTheory.volume (-radius) radius := by
     exact (hkernelCont.smul continuous_const).intervalIntegrable
       (μ := MeasureTheory.volume) (-radius) radius
-  unfold lorentzianRegularFactorIntegral
+  unfold regularFactorIntegral
   calc
     (∫ offset in -radius..radius,
-        (lorentzianSpectralKernel offset broadening : ℂ) * factor (offset, broadening)) =
+        (spectralKernel offset broadening : ℂ) * factor (offset, broadening)) =
       ∫ offset in -radius..radius,
         lorentzianRegularFactorErrorIntegrand factor broadening offset +
-          lorentzianSpectralKernel offset broadening • factor (0, 0) := by
+          spectralKernel offset broadening • factor (0, 0) := by
         apply intervalIntegral.integral_congr
         intro offset _
         unfold lorentzianRegularFactorErrorIntegrand lorentzianRegularFactorError
         change
-          (lorentzianSpectralKernel offset broadening : ℂ) * factor (offset, broadening) =
-            (lorentzianSpectralKernel offset broadening : ℂ) *
+          (spectralKernel offset broadening : ℂ) * factor (offset, broadening) =
+            (spectralKernel offset broadening : ℂ) *
                 (factor (offset, broadening) - factor (0, 0)) +
-              lorentzianSpectralKernel offset broadening • factor (0, 0)
+              spectralKernel offset broadening • factor (0, 0)
         rw [real_smul_complex_eq_mul]
         ring
     _ = (∫ offset in -radius..radius,
           lorentzianRegularFactorErrorIntegrand factor broadening offset) +
         ∫ offset in -radius..radius,
-          lorentzianSpectralKernel offset broadening • factor (0, 0) := by
+          spectralKernel offset broadening • factor (0, 0) := by
         exact intervalIntegral.integral_add herrorInt hpoleInt
     _ = lorentzianRegularFactorErrorIntegral factor radius broadening +
         (∫ offset in -radius..radius,
-          lorentzianSpectralKernel offset broadening) • factor (0, 0) := by
+          spectralKernel offset broadening) • factor (0, 0) := by
         unfold lorentzianRegularFactorErrorIntegral
         rw [intervalIntegral.integral_smul_const]
 
@@ -529,7 +529,7 @@ private theorem lorentzianRegularFactorIntegral_eq_error_add_mass_smul_pole
 jointly continuous at `(0,0)`, has continuous nonzero-broadening slices on the fixed symmetric
 window, and has a uniform bound on its deviation from the pole value over that window for
 `0 ≤ broadening ≤ 1`. -/
-theorem tendsto_lorentzianRegularFactorIntegral
+theorem tendsto_regularFactorIntegral
     (factor : ℝ × ℝ → ℂ) (radius : ℝ)
     (hradiusPos : 0 < radius)
     (hcontinuous : ContinuousAt factor (0, 0))
@@ -541,19 +541,19 @@ theorem tendsto_lorentzianRegularFactorIntegral
         ‖factor p - factor (0, 0)‖ ≤ C) :
     Tendsto
       (fun broadening : ℝ =>
-        lorentzianRegularFactorIntegral factor radius broadening)
+        regularFactorIntegral factor radius broadening)
       (nhdsWithin 0 (Set.Ioi 0))
       (nhds (Real.pi • factor (0, 0))) := by
   have herror := tendsto_lorentzianRegularFactorErrorIntegral_zero
     factor radius hradiusPos hcontinuous hslice hbound
-  have hmass := tendsto_integral_lorentzianSpectralKernel_symmetric radius hradiusPos
+  have hmass := tendsto_integral_spectralKernel_symmetric radius hradiusPos
   have hsmulContinuous : ContinuousAt
       (fun mass : ℝ => mass • factor (0, 0)) Real.pi := by
     fun_prop
   have hmassPole : Tendsto
       (fun broadening : ℝ =>
         (∫ offset in -radius..radius,
-          lorentzianSpectralKernel offset broadening) • factor (0, 0))
+          spectralKernel offset broadening) • factor (0, 0))
       (nhdsWithin 0 (Set.Ioi 0))
       (nhds (Real.pi • factor (0, 0))) := by
     exact hsmulContinuous.tendsto.comp hmass
@@ -561,7 +561,7 @@ theorem tendsto_lorentzianRegularFactorIntegral
       (fun broadening : ℝ =>
         lorentzianRegularFactorErrorIntegral factor radius broadening +
           (∫ offset in -radius..radius,
-            lorentzianSpectralKernel offset broadening) • factor (0, 0))
+            spectralKernel offset broadening) • factor (0, 0))
       (nhdsWithin 0 (Set.Ioi 0))
       (nhds (Real.pi • factor (0, 0))) := by
     simpa using herror.add hmassPole
@@ -573,7 +573,7 @@ theorem tendsto_lorentzianRegularFactorIntegral
     change Set.Ioi (0 : ℝ) ∈ nhdsWithin 0 (Set.Ioi 0)
     exact self_mem_nhdsWithin
   filter_upwards [hpositive, hclose] with broadening hbroadening hcloseAt
-  rw [lorentzianRegularFactorIntegral_eq_error_add_mass_smul_pole
+  rw [regularFactorIntegral_eq_error_add_mass_smul_pole
     factor radius broadening hradiusPos.le hbroadening.ne'
       (hslice broadening hbroadening.ne')]
   exact hcloseAt

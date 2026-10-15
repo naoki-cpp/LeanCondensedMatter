@@ -29,33 +29,33 @@ noncomputable section
 open Filter
 
 /-- Real Lorentzian kernel carrying the scalar retarded-minus-advanced spectral weight. -/
-def lorentzianSpectralKernel (offset broadening : ℝ) : ℝ :=
+def spectralKernel (offset broadening : ℝ) : ℝ :=
   broadening / (broadening ^ 2 + offset ^ 2)
 
 /-- For nonnegative broadening the Lorentzian spectral kernel is nonnegative. -/
-theorem lorentzianSpectralKernel_nonneg
+theorem spectralKernel_nonneg
     (offset broadening : ℝ) (hbroadening : 0 ≤ broadening) :
-    0 ≤ lorentzianSpectralKernel offset broadening := by
-  unfold lorentzianSpectralKernel
+    0 ≤ spectralKernel offset broadening := by
+  unfold spectralKernel
   positivity
 
 /-- For nonzero broadening the Lorentzian kernel is continuous as a function of energy offset. -/
-theorem continuous_lorentzianSpectralKernel_fixed_broadening
+theorem continuous_spectralKernel_fixed_broadening
     (broadening : ℝ) (hbroadening : broadening ≠ 0) :
-    Continuous (fun offset : ℝ => lorentzianSpectralKernel offset broadening) := by
+    Continuous (fun offset : ℝ => spectralKernel offset broadening) := by
   have hden : ∀ offset : ℝ, broadening ^ 2 + offset ^ 2 ≠ 0 := by
     intro offset
     nlinarith [sq_pos_of_ne_zero hbroadening]
-  unfold lorentzianSpectralKernel
+  unfold spectralKernel
   exact continuous_const.div
     ((continuous_const.pow 2).add (continuous_id.pow 2)) hden
 
 /-- At nonzero broadening the Lorentzian kernel is interval integrable on every finite interval. -/
-theorem intervalIntegrable_lorentzianSpectralKernel
+theorem intervalIntegrable_spectralKernel
     (lower upper broadening : ℝ) (hbroadening : broadening ≠ 0) :
-    IntervalIntegrable (fun offset : ℝ => lorentzianSpectralKernel offset broadening)
+    IntervalIntegrable (fun offset : ℝ => spectralKernel offset broadening)
       MeasureTheory.volume lower upper := by
-  exact (continuous_lorentzianSpectralKernel_fixed_broadening broadening hbroadening).intervalIntegrable
+  exact (continuous_spectralKernel_fixed_broadening broadening hbroadening).intervalIntegrable
     (μ := MeasureTheory.volume) lower upper
 
 private theorem complex_offset_add_I_ne_zero
@@ -75,11 +75,11 @@ private theorem complex_offset_sub_I_ne_zero
   exact hbroadening him
 
 /-- Elementary retarded-minus-advanced scalar resolvent identity. -/
-theorem inv_add_I_sub_inv_sub_I_eq_lorentzian
+theorem inv_add_I_sub_inv_sub_I_eq_spectralKernel
     (offset broadening : ℝ) (hbroadening : broadening ≠ 0) :
     ((offset : ℂ) + (broadening : ℂ) * Complex.I)⁻¹ -
         ((offset : ℂ) - (broadening : ℂ) * Complex.I)⁻¹ =
-      (-2 * Complex.I) * (lorentzianSpectralKernel offset broadening : ℂ) := by
+      (-2 * Complex.I) * (spectralKernel offset broadening : ℂ) := by
   have hplus := complex_offset_add_I_ne_zero offset broadening hbroadening
   have hminus := complex_offset_sub_I_ne_zero offset broadening hbroadening
   have hsumReal : broadening ^ 2 + offset ^ 2 ≠ 0 := by
@@ -93,7 +93,7 @@ theorem inv_add_I_sub_inv_sub_I_eq_lorentzian
       Complex.I ^ 3 = Complex.I ^ 2 * Complex.I := by ring
       _ = (-1 : ℂ) * Complex.I := by rw [hI]
       _ = -Complex.I := by ring
-  unfold lorentzianSpectralKernel
+  unfold spectralKernel
   push_cast
   field_simp [hplus, hminus, hsumPow]
   ring_nf
@@ -101,19 +101,19 @@ theorem inv_add_I_sub_inv_sub_I_eq_lorentzian
   ring
 
 /-- Exact finite-interval mass of the Lorentzian kernel. -/
-theorem integral_lorentzianSpectralKernel
+theorem integral_spectralKernel
     (lower upper broadening : ℝ) :
-    (∫ offset in lower..upper, lorentzianSpectralKernel offset broadening) =
+    (∫ offset in lower..upper, spectralKernel offset broadening) =
       Real.arctan (upper / broadening) - Real.arctan (lower / broadening) := by
-  simpa [lorentzianSpectralKernel, add_comm] using
+  simpa [spectralKernel, add_comm] using
     (integral_div_sq_add_sq (a := lower) (b := upper) (c := broadening))
 
 /-- On a symmetric interval the Lorentzian mass is `2 arctan(radius / η)`. -/
-theorem integral_lorentzianSpectralKernel_symmetric
+theorem integral_spectralKernel_symmetric
     (radius broadening : ℝ) :
-    (∫ offset in -radius..radius, lorentzianSpectralKernel offset broadening) =
+    (∫ offset in -radius..radius, spectralKernel offset broadening) =
       2 * Real.arctan (radius / broadening) := by
-  rw [integral_lorentzianSpectralKernel]
+  rw [integral_spectralKernel]
   rw [show (-radius) / broadening = -(radius / broadening) by ring]
   rw [Real.arctan_neg]
   ring
@@ -141,82 +141,82 @@ theorem tendsto_arctan_pos_div_broadening
   simpa only [div_eq_mul_inv] using harctan
 
 /-- Every symmetric Lorentzian mass is strictly smaller than `π`. -/
-theorem integral_lorentzianSpectralKernel_symmetric_lt_pi
+theorem integral_spectralKernel_symmetric_lt_pi
     (radius broadening : ℝ) :
     (∫ offset in -radius..radius,
-      lorentzianSpectralKernel offset broadening) < Real.pi := by
-  rw [integral_lorentzianSpectralKernel_symmetric]
+      spectralKernel offset broadening) < Real.pi := by
+  rw [integral_spectralKernel_symmetric]
   linarith [Real.arctan_lt_pi_div_two (radius / broadening)]
 
 /-- Every symmetric Lorentzian mass is at most `π`. -/
-theorem integral_lorentzianSpectralKernel_symmetric_le_pi
+theorem integral_spectralKernel_symmetric_le_pi
     (radius broadening : ℝ) :
     (∫ offset in -radius..radius,
-      lorentzianSpectralKernel offset broadening) ≤ Real.pi :=
-  le_of_lt (integral_lorentzianSpectralKernel_symmetric_lt_pi radius broadening)
+      spectralKernel offset broadening) ≤ Real.pi :=
+  le_of_lt (integral_spectralKernel_symmetric_lt_pi radius broadening)
 
 /-- Every fixed positive symmetric neighborhood captures asymptotic Lorentzian mass `π` as the
 broadening tends to zero from the positive side. -/
-theorem tendsto_integral_lorentzianSpectralKernel_symmetric
+theorem tendsto_integral_spectralKernel_symmetric
     (radius : ℝ) (hradius : 0 < radius) :
     Tendsto
       (fun broadening : ℝ =>
-        ∫ offset in -radius..radius, lorentzianSpectralKernel offset broadening)
+        ∫ offset in -radius..radius, spectralKernel offset broadening)
       (nhdsWithin 0 (Set.Ioi 0))
       (nhds Real.pi) := by
   have harctan := tendsto_arctan_pos_div_broadening radius hradius
   have hmass := (tendsto_const_nhds : Tendsto (fun _ : ℝ => (2 : ℝ))
       (nhdsWithin 0 (Set.Ioi 0)) (nhds 2)).mul harctan
   rw [show (2 : ℝ) * (Real.pi / 2) = Real.pi by ring] at hmass
-  simpa only [integral_lorentzianSpectralKernel_symmetric] using hmass
+  simpa only [integral_spectralKernel_symmetric] using hmass
 
 /-- Lorentzian spectral mass between an inner and outer symmetric window, represented as the
 outer-window mass minus the inner-window mass. -/
-def lorentzianSpectralTailMass (innerRadius outerRadius broadening : ℝ) : ℝ :=
+def spectralTailMass (innerRadius outerRadius broadening : ℝ) : ℝ :=
   (∫ offset in -outerRadius..outerRadius,
-      lorentzianSpectralKernel offset broadening) -
+      spectralKernel offset broadening) -
     (∫ offset in -innerRadius..innerRadius,
-      lorentzianSpectralKernel offset broadening)
+      spectralKernel offset broadening)
 
 /-- Exact arctangent form of the symmetric Lorentzian tail mass. -/
-theorem lorentzianSpectralTailMass_eq_two_mul_arctan_sub
+theorem spectralTailMass_eq_two_mul_arctan_sub
     (innerRadius outerRadius broadening : ℝ) :
-    lorentzianSpectralTailMass innerRadius outerRadius broadening =
+    spectralTailMass innerRadius outerRadius broadening =
       2 * (Real.arctan (outerRadius / broadening) -
         Real.arctan (innerRadius / broadening)) := by
-  rw [lorentzianSpectralTailMass,
-    integral_lorentzianSpectralKernel_symmetric,
-    integral_lorentzianSpectralKernel_symmetric]
+  rw [spectralTailMass,
+    integral_spectralKernel_symmetric,
+    integral_spectralKernel_symmetric]
   ring
 
 /-- The outer symmetric mass is the inner mass plus the spectral tail mass. -/
-theorem integral_lorentzianSpectralKernel_outer_eq_inner_add_tail
+theorem integral_spectralKernel_outer_eq_inner_add_tail
     (innerRadius outerRadius broadening : ℝ) :
     (∫ offset in -outerRadius..outerRadius,
-        lorentzianSpectralKernel offset broadening) =
+        spectralKernel offset broadening) =
       (∫ offset in -innerRadius..innerRadius,
-        lorentzianSpectralKernel offset broadening) +
-        lorentzianSpectralTailMass innerRadius outerRadius broadening := by
-  unfold lorentzianSpectralTailMass
+        spectralKernel offset broadening) +
+        spectralTailMass innerRadius outerRadius broadening := by
+  unfold spectralTailMass
   ring
 
 /-- For fixed positive nested radii, all Lorentzian mass between the two windows vanishes as the
 broadening tends to zero from the positive side. -/
-theorem tendsto_lorentzianSpectralTailMass_zero
+theorem tendsto_spectralTailMass_zero
     (innerRadius outerRadius : ℝ)
     (hinner : 0 < innerRadius) (hnested : innerRadius ≤ outerRadius) :
     Tendsto
       (fun broadening : ℝ =>
-        lorentzianSpectralTailMass innerRadius outerRadius broadening)
+        spectralTailMass innerRadius outerRadius broadening)
       (nhdsWithin 0 (Set.Ioi 0))
       (nhds 0) := by
   have houter : 0 < outerRadius := lt_of_lt_of_le hinner hnested
   have hOuterMass :=
-    tendsto_integral_lorentzianSpectralKernel_symmetric outerRadius houter
+    tendsto_integral_spectralKernel_symmetric outerRadius houter
   have hInnerMass :=
-    tendsto_integral_lorentzianSpectralKernel_symmetric innerRadius hinner
+    tendsto_integral_spectralKernel_symmetric innerRadius hinner
   have htail := hOuterMass.sub hInnerMass
-  simpa [lorentzianSpectralTailMass] using htail
+  simpa [spectralTailMass] using htail
 
 end
 
