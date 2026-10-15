@@ -108,6 +108,58 @@ theorem componentBlock_slotSplitVacuumVertex_mem_vacuumComponentParts
         simpa [slotSplitVertex] using hreach)
   exact SimpleGraph.not_reachable_sum_inl_inr _ _ hsum
 
+/-- Every leg in a vacuum component of a reassembled two-point diagram comes
+from the quartic side of the slot split. This characterization involves only
+the graph and the fixed leg enumeration, not mixed times or their order. -/
+theorem TwoPointDiagram.ofSlotSplit_vacuumLeg_mem_right
+    (hext : ext.IsExternallyConnected)
+    (i : Fin (2 * (2 * S.card + 1)))
+    (hVac : ComponentIsVacuum
+      ((TwoPointDiagram.ofSlotSplit h ext vac).vertexGraph.componentBlock
+        (twoPointVertexOfLeg i))) :
+    ∃ q : Fin (2 * (2 * (S \ T).card)),
+      slotLegSplitting h (Sum.inr q) = i := by
+  classical
+  let d := TwoPointDiagram.ofSlotSplit h ext vac
+  let split := slotLegSplitting h
+  have hi : split (split.symm i) = i := split.apply_symm_apply i
+  cases hside : split.symm i with
+  | inl p =>
+      have hleft : twoPointVertexOfLeg i ∈
+          d.vertexGraph.componentBlock (Sum.inl 0) := by
+        have hv : twoPointVertexOfLeg i =
+            slotSplitVertex h (twoPointVertexOfLeg p) := by
+          rw [← hi, hside]
+          exact twoPointVertexOfLeg_slotLegSplitting_inl h p
+        rw [hv]
+        cases hvertex : twoPointVertexOfLeg p with
+        | inl e =>
+            change (Sum.inl e : TwoPointVertex S) ∈
+              d.vertexGraph.componentBlock (Sum.inl 0)
+            exact d.externalVertex_mem_externalComponentPart e
+        | inr v =>
+            have hmem : (v : Fin N) ∈
+                interactionSector (d.vertexGraph.componentBlock (Sum.inl 0)) := by
+              rw [interactionSector_externalComponent_ofSlotSplit h ext vac hext]
+              exact v.2
+            change (Sum.inr ⟨v.1, h v.2⟩ : TwoPointVertex S) ∈
+              d.vertexGraph.componentBlock (Sum.inl 0)
+            exact (mem_interactionSector_subtype
+              (d.vertexGraph.componentBlock (Sum.inl 0))
+              ⟨v.1, h v.2⟩).1 (by simpa only using hmem)
+      have hblock : d.vertexGraph.componentBlock (twoPointVertexOfLeg i) =
+          d.vertexGraph.componentBlock (Sum.inl 0) :=
+        (d.vertexGraph.componentBlock_eq_iff_mem
+          (d.vertexGraph.componentBlock_mem_componentPartition (Sum.inl 0))
+          (twoPointVertexOfLeg i)).2 hleft
+      have hzero : (Sum.inl (0 : Fin 2) : TwoPointVertex S) ∈
+            d.vertexGraph.componentBlock (twoPointVertexOfLeg i) := by
+        rw [hblock]
+        exact d.vertexGraph.self_mem_componentBlock (Sum.inl 0)
+      exact False.elim (hVac ⟨0, hzero⟩)
+  | inr q =>
+      exact ⟨q, by rw [hside] at hi; exact hi⟩
+
 /-- Send a quartic vacuum-piece component to the corresponding ambient vacuum component. -/
 noncomputable def slotSplitVacuumComponentPart
     (C : vac.vertexGraph.componentPartitionOn.parts) :

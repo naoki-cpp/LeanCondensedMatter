@@ -49,16 +49,8 @@ theorem TwoPointDiagram.ofSlotSplitVacuumNormalizedPairEmbedding_component
       mixedTimeAmbientPositionEquiv τ τ' σ
           (mixedTimeOrderedQuarticLegMapPosition
             (slotSplitVacuumSlot T) τ τ' σ p) =
-        slotLegSplitting (Finset.subset_univ T) (Sum.inr q) := by
-    apply (twoPointLegEquiv (Finset.univ : Finset (Fin n))).injective
-    rw [twoPointLegEquiv_mixedTimeAmbientPositionEquiv]
-    change mixedTimeOrderedAtomicLegEquiv τ τ' σ
-        (mixedTimeOrderedAtomicLegPosition τ τ' σ
-          (orderedQuarticLegMapToTwoPointLeg (slotSplitVacuumSlot T) p)) = _
-    rw [mixedTimeOrderedAtomicLegEquiv_mixedTimeOrderedAtomicLegPosition]
-    simpa only [Equiv.apply_symm_apply] using
-      congrArg (twoPointLegEquiv (Finset.univ : Finset (Fin n)))
-        (slotSplitVacuumOrderedLeg_eq_slotSplitRight T p)
+        slotLegSplitting (Finset.subset_univ T) (Sum.inr q) :=
+    slotSplitVacuumMixedPosition_eq_slotSplitRight T τ τ' σ p
   have hvertex :
       twoPointVertexOfLeg
           (mixedTimeAmbientPositionEquiv τ τ' σ
@@ -100,9 +92,9 @@ private noncomputable def TwoPointDiagram.slotSplitVacuumMixedPairEmbedding
       T ext vac τ τ' σ hσ).injective
     exact congrArg Subtype.val hpq
 
-/-- A mixed pair in an ambient vacuum component starts at a leg of the quartic
-vacuum sector. The exclusion of left-sector legs uses external connectedness,
-not a comparison of the numbers of pairing edges. -/
+/-- A mixed pair in a vacuum component starts on the quartic side of the
+reassembled slot split. This is the transport of the time-independent
+vacuum-leg classification into mixed-time coordinates. -/
 private theorem TwoPointDiagram.mixedVacuumPair_firstEndpoint_mem_vacuumLegRange
     (T : Finset (Fin n))
     (ext : TwoPointDiagram ExternalLabel InternalLabel n T)
@@ -112,64 +104,21 @@ private theorem TwoPointDiagram.mixedVacuumPair_firstEndpoint_mem_vacuumLegRange
     (pr : (TwoPointDiagram.ofSlotSplit (Finset.subset_univ T) ext vac).MixedVacuumPair τ τ' σ) :
     ∃ p, mixedTimeOrderedQuarticLegMapPosition
       (slotSplitVacuumSlot T) τ τ' σ p = pr.1.1.1 := by
-  classical
   let d := TwoPointDiagram.ofSlotSplit (Finset.subset_univ T) ext vac
   let i := mixedTimeAmbientPositionEquiv τ τ' σ pr.1.1.1
-  let split := slotLegSplitting (Finset.subset_univ T)
-  have hi : split (split.symm i) = i := split.apply_symm_apply i
-  cases hside : split.symm i with
-  | inl p =>
-      have hleft : twoPointVertexOfLeg i ∈
-          d.vertexGraph.componentBlock (Sum.inl 0) := by
-        have hv :
-            twoPointVertexOfLeg i =
-              slotSplitVertex (Finset.subset_univ T) (twoPointVertexOfLeg p) := by
-          rw [← hi, hside]
-          exact twoPointVertexOfLeg_slotLegSplitting_inl (Finset.subset_univ T) p
-        rw [hv]
-        cases hvertex : twoPointVertexOfLeg p with
-        | inl e =>
-            change (Sum.inl e : TwoPointVertex (Finset.univ : Finset (Fin n))) ∈
-              d.vertexGraph.componentBlock (Sum.inl 0)
-            exact d.externalVertex_mem_externalComponentPart e
-        | inr v =>
-            have hmem : (v : Fin n) ∈
-                interactionSector (d.vertexGraph.componentBlock (Sum.inl 0)) := by
-              rw [interactionSector_externalComponent_ofSlotSplit
-                (Finset.subset_univ T) ext vac hext]
-              exact v.2
-            change (Sum.inr ⟨v.1, Finset.mem_univ _⟩ :
-              TwoPointVertex (Finset.univ : Finset (Fin n))) ∈
-                d.vertexGraph.componentBlock (Sum.inl 0)
-            exact (mem_interactionSector_subtype
-              (d.vertexGraph.componentBlock (Sum.inl 0))
-              ⟨v.1, Finset.mem_univ _⟩).1 hmem
-      have hVac : ComponentIsVacuum
-          (d.vertexGraph.componentBlock (twoPointVertexOfLeg i)) := by
-        exact (mem_vacuumComponentParts d.vertexGraph
-          (d.mixedPairComponent τ τ' σ pr.1)).1 pr.2
-      have hblock : d.vertexGraph.componentBlock (twoPointVertexOfLeg i) =
-          d.vertexGraph.componentBlock (Sum.inl 0) :=
-        (d.vertexGraph.componentBlock_eq_iff_mem
-          (d.vertexGraph.componentBlock_mem_componentPartition (Sum.inl 0))
-          (twoPointVertexOfLeg i)).2 hleft
-      have hzero : (Sum.inl (0 : Fin 2) :
-          TwoPointVertex (Finset.univ : Finset (Fin n))) ∈
-            d.vertexGraph.componentBlock (twoPointVertexOfLeg i) := by
-        rw [hblock]
-        exact d.vertexGraph.self_mem_componentBlock (Sum.inl 0)
-      exact False.elim (hVac ⟨0, hzero⟩)
-  | inr q =>
-      let p := (orderedLegToDiagramLeg
-        ((Finset.univ : Finset (Fin n)) \ T) (slotSplitVacuumOrder T)).symm q
-      refine ⟨p, ?_⟩
-      apply (mixedTimeAmbientPositionEquiv τ τ' σ).injective
-      rw [slotSplitVacuumMixedPosition_eq_slotSplitRight]
-      change split (Sum.inr ((orderedLegToDiagramLeg
-        ((Finset.univ : Finset (Fin n)) \ T) (slotSplitVacuumOrder T)) p)) = i
-      simpa only [p, Equiv.apply_symm_apply] using (by
-        rw [hside] at hi
-        exact hi)
+  have hVac : ComponentIsVacuum
+      (d.vertexGraph.componentBlock (twoPointVertexOfLeg i)) :=
+    (mem_vacuumComponentParts d.vertexGraph
+      (d.mixedPairComponent τ τ' σ pr.1)).1 pr.2
+  obtain ⟨q, hq⟩ :=
+    TwoPointDiagram.ofSlotSplit_vacuumLeg_mem_right
+      (Finset.subset_univ T) ext vac hext i hVac
+  let p := (orderedLegToDiagramLeg
+    ((Finset.univ : Finset (Fin n)) \ T) (slotSplitVacuumOrder T)).symm q
+  refine ⟨p, ?_⟩
+  apply (mixedTimeAmbientPositionEquiv τ τ' σ).injective
+  rw [slotSplitVacuumMixedPosition_eq_slotSplitRight]
+  simpa only [p, Equiv.apply_symm_apply] using hq
 
 /-- The restriction of a mixed vacuum-component pair to the complementary quartic
 sector is surjective on normalized pairs, without counting their cardinalities. -/
