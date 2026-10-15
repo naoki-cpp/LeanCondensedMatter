@@ -114,33 +114,6 @@ private theorem FixedExternalTwoPointWickDiagram.mixedComponentDysonFixedTimeCha
         (fun q : d.1.MixedComponentPair τ τ' σ B =>
           d.mixedPairContractionValue ε β τ τ' σ q.1)
 
-/-- A mixed-component Dyson fixed-time value is measurable by the finite mixed-order
-signature and its continuous chamber representatives. -/
-private theorem FixedExternalTwoPointWickDiagram.measurable_mixedComponentDysonFixedTimeValue
-    {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
-    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
-    (τ τ' : ℝ) (B : d.1.vertexGraph.componentPartition.parts) :
-    Measurable (fun σ : Fin n → ℝ =>
-      d.mixedComponentDysonFixedTimeValue ε β g τ τ' σ B) := by
-  apply intervalIntegral.measurable_of_finite_continuous_signature
-    (signature := twoPointOrderSignature τ τ')
-    (branch := fun s =>
-      d.mixedComponentDysonFixedTimeChamberRepresentative ε β g τ τ'
-        (intervalIntegral.finiteSignatureBase (twoPointOrderSignature τ τ') s) B)
-  · intro s
-    simpa [twoPointOrderSignatureFiber] using
-      measurableSet_twoPointOrderSignatureFiber τ τ' s
-  · intro s
-    exact d.continuous_mixedComponentDysonFixedTimeChamberRepresentative
-      ε β g τ τ'
-      (intervalIntegral.finiteSignatureBase (twoPointOrderSignature τ τ') s) B
-  · intro σ
-    exact (d.mixedComponentDysonFixedTimeChamberRepresentative_eq_of_sameOrderChamber
-      ε β g τ τ'
-      (intervalIntegral.finiteSignatureBase (twoPointOrderSignature τ τ')
-        (twoPointOrderSignature τ τ' σ)) σ B
-      (sameTwoPointOrderChamber_signatureBase τ τ' σ)).symm
-
 /-- The signed pointwise amplitude of one diagram is measurably locally bounded. -/
 theorem FixedExternalTwoPointWickDiagram.measurableLocallyBounded_dysonFixedTimeAmplitude
     {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
@@ -157,16 +130,18 @@ theorem FixedExternalTwoPointWickDiagram.measurableLocallyBounded_dysonFixedTime
       (intervalIntegral.MeasurableLocallyBounded.finsetProd Finset.univ
         (fun B σ => d.mixedComponentDysonFixedTimeValue ε β g τ τ' σ B)
         fun B _ => by
-          apply intervalIntegral.measurableLocallyBounded_of_finite_continuous_selection
-            (g := fun s : TwoPointOrderSignature n =>
+          apply intervalIntegral.measurableLocallyBounded_of_finite_continuous_signature
+            (signature := twoPointOrderSignature τ τ')
+            (branch := fun s : TwoPointOrderSignature n =>
               d.mixedComponentDysonFixedTimeChamberRepresentative ε β g τ τ'
                 (intervalIntegral.finiteSignatureBase (twoPointOrderSignature τ τ') s) B)
-          · exact d.measurable_mixedComponentDysonFixedTimeValue ε β g τ τ' B
+          · intro s
+            simpa [twoPointOrderSignatureFiber] using
+              measurableSet_twoPointOrderSignatureFiber τ τ' s
           · intro s
             exact d.continuous_mixedComponentDysonFixedTimeChamberRepresentative
               ε β g τ τ' (intervalIntegral.finiteSignatureBase (twoPointOrderSignature τ τ') s) B
           · intro σ
-            refine ⟨twoPointOrderSignature τ τ' σ, ?_⟩
             exact
               (d.mixedComponentDysonFixedTimeChamberRepresentative_eq_of_sameOrderChamber
                 ε β g τ τ' (intervalIntegral.finiteSignatureBase (twoPointOrderSignature τ τ')

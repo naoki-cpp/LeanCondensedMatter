@@ -207,4 +207,23 @@ theorem measurable_of_finite_continuous_signature
   intro s _
   exact Measurable.ite (hFiber s) (hContinuous s).measurable measurable_const
 
+
+/-- A measurable finite signature whose branches are continuous and agree with the
+integrand on each signature fiber gives measurable local boundedness. -/
+theorem measurableLocallyBounded_of_finite_continuous_signature
+    {ι : Type*} [Finite ι] {n : ℕ}
+    (signature : (Fin n → ℝ) → ι)
+    (hFiber : ∀ s : ι,
+      MeasurableSet {σ : Fin n → ℝ | signature σ = s})
+    (f : (Fin n → ℝ) → ℂ)
+    (branch : ι → (Fin n → ℝ) → ℂ)
+    (hContinuous : ∀ s, Continuous (branch s))
+    (hSelect : ∀ σ, f σ = branch (signature σ) σ) :
+    MeasurableLocallyBounded f :=
+  measurableLocallyBounded_of_finite_continuous_selection
+    f branch
+    (measurable_of_finite_continuous_signature
+      signature hFiber f branch hContinuous hSelect)
+    hContinuous (fun σ => ⟨signature σ, hSelect σ⟩)
+
 end intervalIntegral
