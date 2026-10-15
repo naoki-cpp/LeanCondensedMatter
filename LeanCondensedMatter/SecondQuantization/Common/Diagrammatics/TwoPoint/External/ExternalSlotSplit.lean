@@ -6,10 +6,10 @@ set_option linter.style.header false
 /-!
 # Every two-point diagram splits along its external component
 
-`TwoPointDiagram.slotSplitEquiv` takes apart any diagram whose pairing is split by
-`slotLegSplitting`, but says nothing about which diagrams those are. This module supplies the
-missing input: instantiating the slot set at the external component's interaction vertices always
-works, because a contraction never joins the external component to a vacuum component.
+`slotLegSplitting` partitions the diagram legs by a chosen set of interaction vertices.
+Choosing the interaction vertices of the external component gives a pairing-invariant split,
+because a contraction never joins that component to a vacuum component. This module restricts
+the original diagram to the external and vacuum sectors.
 
 The consequence is the binary decomposition itself — every two-point diagram is an externally
 connected piece together with one possibly disconnected vacuum piece, and reassembling them returns
@@ -124,8 +124,10 @@ noncomputable def TwoPointDiagram.externalVacuumSplit {S : Finset (Fin N)}
     TwoPointDiagram ExternalLabel InternalLabel N
         (interactionSector (d.vertexGraph.componentBlock (Sum.inl 0))) ×
       QuarticDiagram InternalLabel N (S \ interactionSector (d.vertexGraph.componentBlock (Sum.inl 0))) :=
-  TwoPointDiagram.slotSplitEquiv (interactionSector_subset (d.vertexGraph.componentBlock (Sum.inl 0)))
-    ⟨d, d.isSplit_externalSlotLegSplitting⟩
+  (d.slotSplitExternal (interactionSector_subset (d.vertexGraph.componentBlock (Sum.inl 0)))
+      d.isSplit_externalSlotLegSplitting,
+   d.slotSplitVacuum (interactionSector_subset (d.vertexGraph.componentBlock (Sum.inl 0)))
+      d.isSplit_externalSlotLegSplitting)
 
 /-- The canonical external split piece preserves the ambient external labels. -/
 @[simp]

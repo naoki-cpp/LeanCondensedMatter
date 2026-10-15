@@ -166,46 +166,6 @@ theorem TwoPointDiagram.slotSplitVacuum_ofSlotSplit (h : T ⊆ S)
       ⟨v.1, (Finset.mem_sdiff.mp v.2).1⟩ (Finset.mem_sdiff.mp v.2).2
   · exact Pairing.splitRight_ofSplit (slotLegSplitting h) ext.pairing vac.pairing
 
-/-- **The diagrams split by a slot leg splitting are exactly the pairs of pieces.**
-
-The reindexing engine of the binary external/vacuum decomposition: summing over two-point diagrams
-on `S` whose pairing does not cross the divide is summing over an external diagram on `T` and a
-vacuum diagram on `S \ T` independently.
-
-Nothing here mentions connectivity. Connectivity enters only in identifying which `T` a given
-diagram is split by, namely its external component's interaction vertices. -/
-noncomputable def TwoPointDiagram.slotSplitEquiv (h : T ⊆ S) :
-    {d : TwoPointDiagram ExternalLabel InternalLabel N S //
-        d.pairing.IsSplit (slotLegSplitting h)} ≃
-      TwoPointDiagram ExternalLabel InternalLabel N T × QuarticDiagram InternalLabel N (S \ T) where
-  toFun d := (d.1.slotSplitExternal h d.2, d.1.slotSplitVacuum h d.2)
-  invFun p :=
-    ⟨TwoPointDiagram.ofSlotSplit h p.1 p.2, Pairing.isSplit_ofSplit _ _ _⟩
-  left_inv d := Subtype.ext (TwoPointDiagram.ofSlotSplit_slotSplit h d.1 d.2)
-  right_inv p := by
-    obtain ⟨ext, vac⟩ := p
-    simp only [Prod.mk.injEq]
-    exact ⟨TwoPointDiagram.slotSplitExternal_ofSlotSplit h ext vac _,
-      TwoPointDiagram.slotSplitVacuum_ofSlotSplit h ext vac _⟩
-
-open Classical in
-/-- **Summing over split diagrams is summing over the two pieces independently.**
-
-The reindexing the binary external/vacuum factorization runs on: it turns one sum over diagrams into
-a double sum whose inner factors are supported on disjoint slot blocks, which is the shape the
-binary ordered-simplex shuffle identity consumes. -/
-theorem TwoPointDiagram.sum_slotSplit [Fintype ExternalLabel] [Fintype InternalLabel]
-    (h : T ⊆ S) {M : Type*} [AddCommMonoid M]
-    (F : TwoPointDiagram ExternalLabel InternalLabel N S → M) :
-    (∑ d : {d : TwoPointDiagram ExternalLabel InternalLabel N S //
-        d.pairing.IsSplit (slotLegSplitting h)}, F d.1) =
-      ∑ ext : TwoPointDiagram ExternalLabel InternalLabel N T,
-        ∑ vac : QuarticDiagram InternalLabel N (S \ T),
-          F (TwoPointDiagram.ofSlotSplit h ext vac) := by
-  rw [← Equiv.sum_comp (TwoPointDiagram.slotSplitEquiv h).symm (fun d => F d.1),
-    Fintype.sum_prod_type]
-  rfl
-
 end Decompose
 
 end Common
