@@ -270,7 +270,7 @@ noncomputable def FamilySlotShuffle.outerShuffle {size : Fin (k + 1) → ℕ}
 theorem FamilySlotShuffle.cons_outerShuffle_tailShuffle
     {size : Fin (k + 1) → ℕ} (shuffle : FamilySlotShuffle size) :
     FamilySlotShuffle.cons size shuffle.outerShuffle shuffle.tailShuffle = shuffle := by
-  apply FamilySlotShuffle.ext
+  apply FamilySlotShuffleTo.ext
   apply Equiv.ext
   rintro ⟨i, j⟩
   cases i using Fin.cases with
@@ -306,7 +306,7 @@ theorem FamilySlotShuffle.cons_injective (size : Fin (k + 1) → ℕ) :
       exact (outer₁.mem_leftSlots_iff x).2 ⟨j, (hleft j).trans hj⟩
   subst outer₂
   have htail : tail₁ = tail₂ := by
-    apply FamilySlotShuffle.ext
+    apply FamilySlotShuffleTo.ext
     apply Equiv.ext
     intro x
     have hx := congrArg

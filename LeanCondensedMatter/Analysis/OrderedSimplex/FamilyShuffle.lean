@@ -194,7 +194,7 @@ private noncomputable def reindexEquiv (e : ι ≃ κ) (size : κ → ℕ) :
               (shuffle.strictMono i hab) }
       left_inv := by
         intro shuffle
-        apply FamilySlotShuffle.ext
+        apply FamilySlotShuffleTo.ext
         apply Equiv.ext
         intro x
         change (finCongr hsum)
@@ -205,7 +205,7 @@ private noncomputable def reindexEquiv (e : ι ≃ κ) (size : κ → ℕ) :
         simp
       right_inv := by
         intro shuffle
-        apply FamilySlotShuffle.ext
+        apply FamilySlotShuffleTo.ext
         apply Equiv.ext
         intro x
         change (finCongr hsum.symm)
