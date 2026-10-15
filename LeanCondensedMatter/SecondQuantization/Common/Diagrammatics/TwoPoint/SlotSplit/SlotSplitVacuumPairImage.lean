@@ -13,6 +13,10 @@ pairs carried by vacuum components and packages the resulting equivalence. The g
 vacuum-pair type, component-fiber sum, and pair-cardinality facts are owned by
 `TwoPoint.Mixed.MixedComponentPairEquiv`, independently of slot splitting.
 
+The graph-level exclusion of external-side legs is proved without any time-order hypothesis
+in `TwoPoint.SlotSplit.SlotSplitVacuumComponents`. The mixed-time coordinate identification
+is local to this image comparison; `StrictAnti` is needed only for ordered pair endpoints.
+
 The construction is purely combinatorial and is stated for arbitrary external/internal labels.
 -/
 
@@ -22,6 +26,26 @@ namespace Common
 open Combinatorics
 
 variable {ExternalLabel InternalLabel : Type*} {n : ℕ}
+
+/-- The vacuum fixed-order leg embedding in mixed positions agrees with the
+right-side leg of the canonical diagram slot split after returning to fixed positions. -/
+private theorem slotSplitVacuumMixedPosition_eq_slotSplitRight
+    (T : Finset (Fin n)) (τ τ' : ℝ) (σ : Fin n → ℝ)
+    (p : Fin (2 * (2 * ((Finset.univ : Finset (Fin n)) \ T).card))) :
+    mixedTimeAmbientPositionEquiv τ τ' σ
+        (mixedTimeOrderedQuarticLegMapPosition (slotSplitVacuumSlot T) τ τ' σ p) =
+      slotLegSplitting (Finset.subset_univ T)
+        (Sum.inr (orderedLegToDiagramLeg
+          ((Finset.univ : Finset (Fin n)) \ T) (slotSplitVacuumOrder T) p)) := by
+  apply (twoPointLegEquiv (Finset.univ : Finset (Fin n))).injective
+  rw [twoPointLegEquiv_mixedTimeAmbientPositionEquiv]
+  change mixedTimeOrderedAtomicLegEquiv τ τ' σ
+      (mixedTimeOrderedAtomicLegPosition τ τ' σ
+        (orderedQuarticLegMapToTwoPointLeg (slotSplitVacuumSlot T) p)) = _
+  rw [mixedTimeOrderedAtomicLegEquiv_mixedTimeOrderedAtomicLegPosition]
+  simpa only [Equiv.apply_symm_apply] using
+    congrArg (twoPointLegEquiv (Finset.univ : Finset (Fin n)))
+      (slotSplitVacuumOrderedLeg_eq_slotSplitRight T p)
 
 /-- The first endpoint of an embedded quartic vacuum pair lies in the ambient component generated
 by the corresponding right-side quartic vertex. -/
@@ -49,16 +73,8 @@ theorem TwoPointDiagram.ofSlotSplitVacuumNormalizedPairEmbedding_component
       mixedTimeAmbientPositionEquiv τ τ' σ
           (mixedTimeOrderedQuarticLegMapPosition
             (slotSplitVacuumSlot T) τ τ' σ p) =
-        slotLegSplitting (Finset.subset_univ T) (Sum.inr q) := by
-    apply (twoPointLegEquiv (Finset.univ : Finset (Fin n))).injective
-    rw [twoPointLegEquiv_mixedTimeAmbientPositionEquiv]
-    change mixedTimeOrderedAtomicLegEquiv τ τ' σ
-        (mixedTimeOrderedAtomicLegPosition τ τ' σ
-          (orderedQuarticLegMapToTwoPointLeg (slotSplitVacuumSlot T) p)) = _
-    rw [mixedTimeOrderedAtomicLegEquiv_mixedTimeOrderedAtomicLegPosition]
-    simpa only [Equiv.apply_symm_apply] using
-      congrArg (twoPointLegEquiv (Finset.univ : Finset (Fin n)))
-        (slotSplitVacuumOrderedLeg_eq_slotSplitRight T p)
+        slotLegSplitting (Finset.subset_univ T) (Sum.inr q) :=
+    slotSplitVacuumMixedPosition_eq_slotSplitRight T τ τ' σ p
   have hvertex :
       twoPointVertexOfLeg
           (mixedTimeAmbientPositionEquiv τ τ' σ
@@ -100,8 +116,36 @@ private noncomputable def TwoPointDiagram.slotSplitVacuumMixedPairEmbedding
       T ext vac τ τ' σ hσ).injective
     exact congrArg Subtype.val hpq
 
-/-- Under external connectedness, every ambient mixed pair lying in a vacuum component comes from a
-unique normalized pair of the standalone quartic vacuum pairing. -/
+/-- A mixed pair in a vacuum component starts on the quartic side of the
+reassembled slot split. This is the transport of the time-independent
+vacuum-leg classification into mixed-time coordinates. -/
+private theorem TwoPointDiagram.mixedVacuumPair_firstEndpoint_mem_vacuumLegRange
+    (T : Finset (Fin n))
+    (ext : TwoPointDiagram ExternalLabel InternalLabel n T)
+    (vac : QuarticDiagram InternalLabel n ((Finset.univ : Finset (Fin n)) \ T))
+    (hext : ext.IsExternallyConnected)
+    (τ τ' : ℝ) (σ : Fin n → ℝ)
+    (pr : (TwoPointDiagram.ofSlotSplit (Finset.subset_univ T) ext vac).MixedVacuumPair τ τ' σ) :
+    ∃ p, mixedTimeOrderedQuarticLegMapPosition
+      (slotSplitVacuumSlot T) τ τ' σ p = pr.1.1.1 := by
+  let d := TwoPointDiagram.ofSlotSplit (Finset.subset_univ T) ext vac
+  let i := mixedTimeAmbientPositionEquiv τ τ' σ pr.1.1.1
+  have hVac : ComponentIsVacuum
+      (d.vertexGraph.componentBlock (twoPointVertexOfLeg i)) :=
+    (mem_vacuumComponentParts d.vertexGraph
+      (d.mixedPairComponent τ τ' σ pr.1)).1 pr.2
+  obtain ⟨q, hq⟩ :=
+    TwoPointDiagram.ofSlotSplit_vacuumLeg_mem_right
+      (Finset.subset_univ T) ext vac hext i hVac
+  let p := (orderedLegToDiagramLeg
+    ((Finset.univ : Finset (Fin n)) \ T) (slotSplitVacuumOrder T)).symm q
+  refine ⟨p, ?_⟩
+  apply (mixedTimeAmbientPositionEquiv τ τ' σ).injective
+  rw [slotSplitVacuumMixedPosition_eq_slotSplitRight]
+  simpa only [p, Equiv.apply_symm_apply] using hq
+
+/-- The restriction of a mixed vacuum-component pair to the complementary quartic
+sector is surjective on normalized pairs, without counting their cardinalities. -/
 private theorem TwoPointDiagram.slotSplitVacuumMixedPairEmbedding_surjective
     (T : Finset (Fin n))
     (ext : TwoPointDiagram ExternalLabel InternalLabel n T)
@@ -111,46 +155,15 @@ private theorem TwoPointDiagram.slotSplitVacuumMixedPairEmbedding_surjective
     (hσ : StrictAnti (σ ∘ slotSplitVacuumSlot T)) :
     Function.Surjective
       (TwoPointDiagram.slotSplitVacuumMixedPairEmbedding T ext vac τ τ' σ hσ) := by
-  let emb := TwoPointDiagram.slotSplitVacuumMixedPairEmbedding T ext vac τ τ' σ hσ
-  have hsource :
-      Fintype.card (vac.pairingInOrder (slotSplitVacuumOrder T)).NormalizedPair =
-        2 * ((Finset.univ : Finset (Fin n)) \ T).card := by
-    simpa using (vac.pairingInOrder (slotSplitVacuumOrder T)).card_normalizedPair
-  have htarget :
-      Fintype.card
-          ((TwoPointDiagram.ofSlotSplit (Finset.subset_univ T) ext vac).MixedVacuumPair τ τ' σ) =
-        2 * ((Finset.univ : Finset (Fin n)) \ T).card := by
-    let d := TwoPointDiagram.ofSlotSplit (Finset.subset_univ T) ext vac
-    let e := slotSplitVacuumComponentEquiv (Finset.subset_univ T) ext vac hext
-    let F : ↥(vacuumComponentParts d.vertexGraph) → ℕ := fun B =>
-      (interactionSector
-        (B.1 : Finset (TwoPointVertex (Finset.univ : Finset (Fin n))))).card
-    change Fintype.card (d.MixedVacuumPair τ τ' σ) = _
-    rw [← Fintype.card_congr (d.mixedVacuumPairSigmaEquiv τ τ' σ),
-      Fintype.card_sigma]
-    simp_rw [d.card_mixedVacuumComponentPair τ τ' σ]
-    rw [← Finset.mul_sum]
-    apply congrArg (2 * ·)
-    calc
-      (∑ B : ↥(vacuumComponentParts d.vertexGraph), F B) =
-          ∑ C : vac.vertexGraph.componentPartitionOn.parts, F (e C) :=
-        (Equiv.sum_comp e F).symm
-      _ = ∑ C : vac.vertexGraph.componentPartitionOn.parts,
-          (C : Finset (Fin n)).card := by
-        apply Fintype.sum_congr
-        intro C
-        change (interactionSector
-          ((e C).1.1 : Finset (TwoPointVertex
-            (Finset.univ : Finset (Fin n))))).card = _
-        rw [slotSplitVacuumComponentEquiv_apply,
-          interactionSector_slotSplitVacuumComponentPart]
-      _ = ((Finset.univ : Finset (Fin n)) \ T).card := by
-        rw [Finset.sum_coe_sort]
-        exact vac.vertexGraph.componentPartitionOn.sum_card_parts
-  have hbij : Function.Bijective emb :=
-    (Fintype.bijective_iff_injective_and_card emb).2
-      ⟨emb.injective, hsource.trans htarget.symm⟩
-  exact hbij.2
+  intro pr
+  obtain ⟨q, hq⟩ :=
+    TwoPointDiagram.exists_slotSplitVacuumNormalizedPairEmbedding_eq_of_firstEndpoint
+      T ext vac τ τ' σ hσ pr.1
+      (TwoPointDiagram.mixedVacuumPair_firstEndpoint_mem_vacuumLegRange
+        T ext vac hext τ τ' σ pr)
+  refine ⟨q, ?_⟩
+  apply Subtype.ext
+  exact hq
 
 /-- The fixed-order quartic vacuum normalized pairs are equivalent to all ambient mixed normalized
 pairs carried by vacuum components. -/
