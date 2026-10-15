@@ -805,6 +805,7 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedOrderedXYConductivity_psi_e
     InternalSpace.pauliVectorCoefficient
       (finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix
         .retarded v m probeEnergy broadening disorderStrength hbar pMax radius) .x = _ at hgr
+  dsimp only [finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient] at hs
   dsimp only at hs hgr ⊢
   rw [hs, hgr]
 
