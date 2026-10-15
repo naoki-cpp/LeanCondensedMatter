@@ -24,16 +24,6 @@ open Common
 
 variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
 
-/-- The representative of a realized signature has the same mixed event ordering. -/
-private theorem sameTwoPointOrderChamber_signatureBase {n : ℕ} (τ τ' : ℝ)
-    (σ : Fin n → ℝ) :
-    SameTwoPointOrderChamber τ τ'
-      (intervalIntegral.finiteSignatureBase (twoPointOrderSignature τ τ')
-        (twoPointOrderSignature τ τ' σ)) σ := by
-  rw [sameTwoPointOrderChamber_iff_orderSignature_eq]
-  exact intervalIntegral.finiteSignatureBase_signature_eq
-    (twoPointOrderSignature τ τ') σ
-
 /-- Fixed standard-leg contractions are continuous in the ambient interaction-time assignment. -/
 private theorem continuous_orderedTwoPointLegPairContraction
     {n : ℕ} (ε : Mode → ℝ) (β : ℝ) (i j : Mode) (τ τ' : ℝ)
@@ -146,7 +136,10 @@ theorem FixedExternalTwoPointWickDiagram.measurableLocallyBounded_dysonFixedTime
               (d.mixedComponentDysonFixedTimeChamberRepresentative_eq_of_sameOrderChamber
                 ε β g τ τ' (intervalIntegral.finiteSignatureBase (twoPointOrderSignature τ τ')
                   (twoPointOrderSignature τ τ' σ)) σ B
-                (sameTwoPointOrderChamber_signatureBase τ τ' σ)).symm)
+                (by
+                  rw [sameTwoPointOrderChamber_iff_orderSignature_eq]
+                  exact intervalIntegral.finiteSignatureBase_signature_eq
+                    (twoPointOrderSignature τ τ') σ)).symm)
   have heq : (fun σ : Fin n → ℝ => d.dysonFixedTimeAmplitude ε β g τ τ' σ) =
       fun σ : Fin n → ℝ =>
         twoPointExternalOrderSign τ τ' *
