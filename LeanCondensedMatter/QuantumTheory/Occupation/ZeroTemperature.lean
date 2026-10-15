@@ -10,10 +10,9 @@ set_option linter.style.header false
 This module owns the model-independent strict zero-temperature Fermi step and its pointwise basic
 properties. States below the Fermi energy are occupied and states at or above it are empty.
 
-Band-filling predicates live in `Transport.Analysis.ZeroTemperatureBandFilling`. Lorentzian
-finite-window and broadening-limit analysis lives in
-`Transport.Analysis.ZeroTemperatureLorentzian`. These depend on this scalar occupation law,
-not conversely.
+Band-filling predicates are owned by `QuantumTheory.Occupation.BandFilling`.
+Lorentzian finite-window and broadening-limit analysis remains downstream in
+`Transport.Analysis.ZeroTemperatureLorentzian`. Neither is required to define the scalar law.
 -/
 
 namespace QuantumTheory
