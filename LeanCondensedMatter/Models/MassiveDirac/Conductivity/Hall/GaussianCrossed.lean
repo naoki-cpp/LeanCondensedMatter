@@ -108,6 +108,7 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedOrderedXYConductivity_psi_e
   congr 1
   apply intervalIntegral.integral_congr
   intro radius _
+  dsimp only
   rw [finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_psi_antisymmetric_eq_transverse_minors
     v m probeEnergy broadening disorderStrength hbar pMax radius
     hbroadening hdisorder hpMax]
