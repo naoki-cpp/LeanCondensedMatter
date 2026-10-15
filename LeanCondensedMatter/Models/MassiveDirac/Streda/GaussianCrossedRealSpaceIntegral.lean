@@ -540,7 +540,7 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_psi_antis
           (gx * (a * w .y - c * u .y) -
             b * ((u .y) ^ 2 + u .x * w .y)) := by
     ring
-  rw [hfactor]
+  simp only [hfactor]
 
 /-- A common in-plane spinor conjugation of the Green and current blocks
 cancels inside either Gaussian crossed trace topology, including the
