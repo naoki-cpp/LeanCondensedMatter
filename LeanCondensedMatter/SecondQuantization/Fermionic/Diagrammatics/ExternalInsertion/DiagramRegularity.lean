@@ -135,7 +135,6 @@ theorem ExternalInsertionWickDiagram.measurableLocallyBounded_dysonFixedTimeAmpl
     exact d.continuous_dysonFixedTimeChamberRepresentative ε β g externalTime
       (intervalIntegral.finiteSignatureBase (externalInsertionOrderSignature externalTime) s)
   · intro σ
-    refine ⟨externalInsertionOrderSignature externalTime σ, ?_⟩
     exact (d.dysonFixedTimeChamberRepresentative_eq_of_sameChamber
       ε β g externalTime
       (intervalIntegral.finiteSignatureBase (externalInsertionOrderSignature externalTime)
