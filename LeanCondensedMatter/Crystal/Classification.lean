@@ -968,6 +968,121 @@ theorem gram_basisSwap_iff (G : Matrix (Fin 2) (Fin 2) ℝ)
     fin_cases i <;> fin_cases j <;>
       simp [Matrix.mul_apply, Fin.sum_univ_two] <;> linarith
 
+/-- The shear-reflection `e₁ ↦ e₁`, `e₂ ↦ e₁ - e₂` is a Gram
+isometry exactly when the primitive vectors meet the positive edge
+`2 G₀₁ = G₀₀` of the Gauss size-reduction inequality. The integral
+matrix is involutive and has determinant `-1`. -/
+theorem gram_shearReflection_positive_iff
+    (G : Matrix (Fin 2) (Fin 2) ℝ) (hSymm : G 0 1 = G 1 0) :
+    (let A : Matrix (Fin 2) (Fin 2) ℝ := !![1, 1; 0, -1];
+      A.transpose * G * A = G) ↔ 2 * G 0 1 = G 0 0 := by
+  constructor
+  · intro hInv
+    dsimp at hInv
+    have h01 := congrArg
+      (fun M : Matrix (Fin 2) (Fin 2) ℝ => M 0 1) hInv
+    simp [Matrix.mul_apply, Fin.sum_univ_two] at h01
+    linarith
+  · intro hOff
+    dsimp
+    ext i j
+    fin_cases i <;> fin_cases j <;>
+      simp [Matrix.mul_apply, Fin.sum_univ_two] <;> linarith
+
+/-- The opposite shear-reflection `e₂ ↦ -e₁ - e₂` is an isometry
+exactly on the negative size-reduction edge `2 G₀₁ = -G₀₀`. -/
+theorem gram_shearReflection_negative_iff
+    (G : Matrix (Fin 2) (Fin 2) ℝ) (hSymm : G 0 1 = G 1 0) :
+    (let A : Matrix (Fin 2) (Fin 2) ℝ := !![1, -1; 0, -1];
+      A.transpose * G * A = G) ↔ 2 * G 0 1 = -G 0 0 := by
+  constructor
+  · intro hInv
+    dsimp at hInv
+    have h01 := congrArg
+      (fun M : Matrix (Fin 2) (Fin 2) ℝ => M 0 1) hInv
+    simp [Matrix.mul_apply, Fin.sum_univ_two] at h01
+    linarith
+  · intro hOff
+    dsimp
+    ext i j
+    fin_cases i <;> fin_cases j <;>
+      simp [Matrix.mul_apply, Fin.sum_univ_two] <;> linarith
+
+/-- The two integral shear-reflections jointly characterize the
+sign-independent edge `2 |G₀₁| = G₀₀` for positive primitive metrics. -/
+theorem gram_shearReflection_either_iff
+    (G : Matrix (Fin 2) (Fin 2) ℝ)
+    (hSymm : G 0 1 = G 1 0) (hPos : 0 < G 0 0) :
+    ((let A : Matrix (Fin 2) (Fin 2) ℝ := !![1, 1; 0, -1];
+        A.transpose * G * A = G) ∨
+      (let A : Matrix (Fin 2) (Fin 2) ℝ := !![1, -1; 0, -1];
+        A.transpose * G * A = G)) ↔
+      2 * |G 0 1| = G 0 0 := by
+  constructor
+  · rintro (hInv | hInv)
+    · have hOff := (gram_shearReflection_positive_iff G hSymm).mp hInv
+      have hNonneg : 0 ≤ G 0 1 := by linarith
+      rw [abs_of_nonneg hNonneg]
+      exact hOff
+    · have hOff := (gram_shearReflection_negative_iff G hSymm).mp hInv
+      have hNonpos : G 0 1 ≤ 0 := by linarith
+      rw [abs_of_nonpos hNonpos]
+      linarith
+  · intro hAbs
+    rcases le_total (0 : ℝ) (G 0 1) with hNonneg | hNonpos
+    · left
+      apply (gram_shearReflection_positive_iff G hSymm).mpr
+      rwa [abs_of_nonneg hNonneg] at hAbs
+    · right
+      apply (gram_shearReflection_negative_iff G hSymm).mpr
+      rw [abs_of_nonpos hNonpos] at hAbs
+      linarith
+
+/-- Three explicitly exhibited kinds of integral reflection witness pick out
+the three walls of the planar Gauss-reduced metric region: an orthogonal
+primitive basis, equal primitive lengths, or the size-reduction edge.
+
+The result classifies these *standard witnesses*, not all possible reflection
+matrices up to integral conjugacy. That completeness statement requires an
+additional arithmetic argument. -/
+theorem gram_standard_reflection_walls_iff
+    (G : Matrix (Fin 2) (Fin 2) ℝ)
+    (hSymm : G 0 1 = G 1 0) (hPos : 0 < G 0 0) :
+    ((let A : Matrix (Fin 2) (Fin 2) ℝ := !![1, 0; 0, -1];
+        A.transpose * G * A = G) ∨
+      (let A : Matrix (Fin 2) (Fin 2) ℝ := !![0, 1; 1, 0];
+        A.transpose * G * A = G) ∨
+      ((let A : Matrix (Fin 2) (Fin 2) ℝ := !![1, 1; 0, -1];
+          A.transpose * G * A = G) ∨
+        (let A : Matrix (Fin 2) (Fin 2) ℝ := !![1, -1; 0, -1];
+          A.transpose * G * A = G))) ↔
+      G 0 1 = 0 ∨ G 0 0 = G 1 1 ∨ 2 * |G 0 1| = G 0 0 := by
+  rw [gram_axisReflection_iff G hSymm, gram_basisSwap_iff G hSymm,
+    gram_shearReflection_either_iff G hSymm hPos]
+
+/-- On the positive Gauss size-reduction edge, the index-two conventional
+cell with columns `e₁` and `2 e₂ - e₁` is orthogonal. Conversely,
+orthogonality of this conventional cell forces that edge condition.
+Unlike an integral primitive basis change, this matrix has determinant `2`. -/
+theorem gram_shiftedConventionalCell_diagonal_iff
+    (G : Matrix (Fin 2) (Fin 2) ℝ) (hSymm : G 0 1 = G 1 0) :
+    (let S : Matrix (Fin 2) (Fin 2) ℝ := !![1, -1; 0, 2];
+     S.transpose * G * S =
+       !![G 0 0, 0; 0, 4 * G 1 1 - G 0 0]) ↔
+      2 * G 0 1 = G 0 0 := by
+  constructor
+  · intro h
+    dsimp at h
+    have h01 := congrArg
+      (fun M : Matrix (Fin 2) (Fin 2) ℝ => M 0 1) h
+    simp [Matrix.mul_apply, Fin.sum_univ_two] at h01
+    linarith
+  · intro hEdge
+    dsimp
+    ext i j
+    fin_cases i <;> fin_cases j <;>
+      simp [Matrix.mul_apply, Fin.sum_univ_two] <;> linarith
+
 /-- The sum and difference of two primitive lattice vectors form an orthogonal
 conventional cell exactly when the vectors have equal squared lengths.
 
