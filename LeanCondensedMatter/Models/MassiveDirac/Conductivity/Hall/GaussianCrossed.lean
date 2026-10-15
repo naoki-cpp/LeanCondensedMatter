@@ -717,7 +717,6 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedOrderedXYConductivity_psi_e
              let b := InternalSpace.pauliScalarCoefficient GR
              let gz := InternalSpace.pauliVectorCoefficient GR .z
              let u := InternalSpace.pauliVectorCoefficient Jx
-             let w := InternalSpace.pauliVectorCoefficient Jy
              let factor := finiteCutoffContinuumBornDysonGaussianCrossedCurrentFactor
                 v m probeEnergy broadening disorderStrength hbar pMax
              let aA := fun p : ℝ =>
