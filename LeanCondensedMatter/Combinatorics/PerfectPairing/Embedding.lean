@@ -64,4 +64,28 @@ theorem Pairing.normalizedPairEmbedding_crosses_iff {n m : ℕ}
   change Crosses (e p.1.1, e p.1.2) (e q.1.1, e q.1.2) ↔ Crosses p.1 q.1
   exact crosses_map_iff e e.strictMono p.1.1 p.1.2 q.1.1 q.1.2
 
+/-- A normalized pair whose first endpoint lies in the range of a partner-preserving
+order embedding comes from a unique local normalized pair. This is the image
+characterization of the pairing restriction, without a cardinality argument. -/
+theorem Pairing.exists_normalizedPairEmbedding_eq_of_firstEndpoint
+    {n m : ℕ} (small : Pairing n) (big : Pairing m)
+    (e : Fin (2 * n) ↪o Fin (2 * m))
+    (hpartner : ∀ i, big.partner (e i) = e (small.partner i))
+    (pr : big.NormalizedPair)
+    (hfirst : ∃ i, e i = pr.1.1) :
+    ∃ q : small.NormalizedPair,
+      small.normalizedPairEmbedding big e hpartner q = pr := by
+  obtain ⟨a, ha⟩ := hfirst
+  have hpr := (big.mem_pairs_iff pr.1.1 pr.1.2).mp pr.2
+  have hb : e (small.partner a) = pr.1.2 := by
+    calc
+      e (small.partner a) = big.partner (e a) := (hpartner a).symm
+      _ = big.partner pr.1.1 := by rw [ha]
+      _ = pr.1.2 := hpr.2
+  have hab : a < small.partner a := e.lt_iff_lt.mp (by rw [ha, hb]; exact hpr.1)
+  refine ⟨⟨(a, small.partner a), (small.mem_pairs_iff a (small.partner a)).mpr
+    ⟨hab, rfl⟩⟩, ?_⟩
+  apply Subtype.ext
+  exact Prod.ext ha hb
+
 end Combinatorics

@@ -85,6 +85,26 @@ theorem slotSplitVacuumOrderedLeg_eq_slotSplitRight
   simp [orderedQuarticLegMapToTwoPointLeg, orderedQuarticLegToTwoPointLeg,
     slotSplitVacuumSlot]
 
+/-- The vacuum fixed-order leg embedding in mixed positions agrees with the
+right-side leg of the canonical diagram slot split after returning to fixed positions. -/
+theorem slotSplitVacuumMixedPosition_eq_slotSplitRight
+    (T : Finset (Fin n)) (τ τ' : ℝ) (σ : Fin n → ℝ)
+    (p : Fin (2 * (2 * ((Finset.univ : Finset (Fin n)) \ T).card))) :
+    mixedTimeAmbientPositionEquiv τ τ' σ
+        (mixedTimeOrderedQuarticLegMapPosition (slotSplitVacuumSlot T) τ τ' σ p) =
+      slotLegSplitting (Finset.subset_univ T)
+        (Sum.inr (orderedLegToDiagramLeg
+          ((Finset.univ : Finset (Fin n)) \ T) (slotSplitVacuumOrder T) p)) := by
+  apply (twoPointLegEquiv (Finset.univ : Finset (Fin n))).injective
+  rw [twoPointLegEquiv_mixedTimeAmbientPositionEquiv]
+  change mixedTimeOrderedAtomicLegEquiv τ τ' σ
+      (mixedTimeOrderedAtomicLegPosition τ τ' σ
+        (orderedQuarticLegMapToTwoPointLeg (slotSplitVacuumSlot T) p)) = _
+  rw [mixedTimeOrderedAtomicLegEquiv_mixedTimeOrderedAtomicLegPosition]
+  simpa only [Equiv.apply_symm_apply] using
+    congrArg (twoPointLegEquiv (Finset.univ : Finset (Fin n)))
+      (slotSplitVacuumOrderedLeg_eq_slotSplitRight T p)
+
 /-- The ambient standard-leg partner on the vacuum side of `ofSlotSplit` is the fixed-order
 quartic partner embedded back into the ambient two-point leg enumeration. -/
 private theorem TwoPointDiagram.ofSlotSplit_atomicLegPartner_vacuumOrderedLeg
@@ -147,6 +167,27 @@ noncomputable def TwoPointDiagram.slotSplitVacuumNormalizedPairEmbedding
       (slotSplitVacuumMixedOrderEmbedding T τ τ' σ hσ)
       (TwoPointDiagram.ofSlotSplit_pairingInMixedOrder_partner_vacuumOrderedLeg
         T ext vac τ τ' σ)
+
+/-- A mixed normalized pair starting in the vacuum leg embedding has a
+preimage in the standalone fixed-order quartic vacuum pairing. -/
+theorem TwoPointDiagram.exists_slotSplitVacuumNormalizedPairEmbedding_eq_of_firstEndpoint
+    (T : Finset (Fin n))
+    (ext : TwoPointDiagram ExternalLabel InternalLabel n T)
+    (vac : QuarticDiagram InternalLabel n ((Finset.univ : Finset (Fin n)) \ T))
+    (τ τ' : ℝ) (σ : Fin n → ℝ)
+    (hσ : StrictAnti (σ ∘ slotSplitVacuumSlot T))
+    (pr : ((TwoPointDiagram.ofSlotSplit (Finset.subset_univ T) ext vac).pairingInMixedOrder
+      τ τ' σ).NormalizedPair)
+    (hfirst : ∃ p,
+      mixedTimeOrderedQuarticLegMapPosition (slotSplitVacuumSlot T) τ τ' σ p = pr.1.1) :
+    ∃ q, TwoPointDiagram.slotSplitVacuumNormalizedPairEmbedding T ext vac τ τ' σ hσ q = pr := by
+  let d := TwoPointDiagram.ofSlotSplit (Finset.subset_univ T) ext vac
+  exact (vac.pairingInOrder (slotSplitVacuumOrder T)).
+    exists_normalizedPairEmbedding_eq_of_firstEndpoint
+      (d.pairingInMixedOrder τ τ' σ)
+      (slotSplitVacuumMixedOrderEmbedding T τ τ' σ hσ)
+      (TwoPointDiagram.ofSlotSplit_pairingInMixedOrder_partner_vacuumOrderedLeg
+        T ext vac τ τ' σ) pr hfirst
 
 @[simp]
 theorem TwoPointDiagram.slotSplitVacuumNormalizedPairEmbedding_apply
