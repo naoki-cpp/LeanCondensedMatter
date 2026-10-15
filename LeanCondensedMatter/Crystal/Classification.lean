@@ -728,7 +728,9 @@ theorem exists_gauss_reduced_basis [FiniteDimensional ℝ V]
     simp only [G, Matrix.gram_apply]
     simp only [Fin.isValue, AddSubgroupClass.coe_sub, SetLike.val_smul,
       inner_self_eq_norm_sq_to_K, RCLike.ofReal_real_eq_id, id_eq]
-    rw [inner_sub_right, inner_smul_right, real_inner_self_eq_norm_sq]
+    rw [inner_sub_right]
+    rw [← Int.cast_smul_eq_zsmul ℝ n ((c 0 : L) : V)]
+    rw [inner_smul_right, real_inner_self_eq_norm_sq]
   refine ⟨d, ?_⟩
   dsimp
   constructor
