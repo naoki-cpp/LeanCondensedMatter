@@ -608,7 +608,6 @@
       "path": "LeanCondensedMatter/Models/MassiveDirac.lean",
       "modules": [
         "LeanCondensedMatter.Models.MassiveDirac.Model",
-        "LeanCondensedMatter.Models.MassiveDirac.CurrentBridge",
         "LeanCondensedMatter.Models.MassiveDirac.Propagator",
         "LeanCondensedMatter.Models.MassiveDirac.Streda",
         "LeanCondensedMatter.Models.MassiveDirac.Bastin",
@@ -678,14 +677,6 @@
       "modules": [
         "LeanCondensedMatter.Transport.Disorder.Resolvent",
         "LeanCondensedMatter.Transport.Resolvent.SelfEnergy"
-      ]
-    },
-    {
-      "id": "massiveDiracGeneralizedCurrentBridge",
-      "path": "LeanCondensedMatter/Models/MassiveDirac/CurrentBridge.lean",
-      "modules": [
-        "LeanCondensedMatter.QuantumMechanics.SingleParticle.GeneralizedCurrent",
-        "LeanCondensedMatter.Models.MassiveDirac.Model.Operator"
       ]
     },
     {

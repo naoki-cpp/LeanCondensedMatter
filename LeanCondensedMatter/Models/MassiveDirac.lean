@@ -1,5 +1,4 @@
 import LeanCondensedMatter.Models.MassiveDirac.Model
-import LeanCondensedMatter.Models.MassiveDirac.CurrentBridge
 import LeanCondensedMatter.Models.MassiveDirac.Propagator
 import LeanCondensedMatter.Models.MassiveDirac.Streda
 import LeanCondensedMatter.Models.MassiveDirac.Bastin
