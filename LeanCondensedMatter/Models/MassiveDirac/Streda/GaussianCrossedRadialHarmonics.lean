@@ -304,6 +304,105 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficie
             (finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliKernel_diagonal_harmonics
               v m probeEnergy broadening disorderStrength hbar pMax radius p).2
 
+/-- Every finite-cutoff radial moment of the Born-Dyson RA double pole
+reduces, after multiplication by the momentum-independent spectral center gap,
+to a single-retarded-minus-single-advanced moment. This holds for arbitrary
+complex radial weights, including all Gaussian-crossed Fourier harmonics.
+No division by the center gap or broadening/cutoff limit is used. -/
+theorem finiteCutoffContinuumBornDysonRadial_ra_weighted_moment_mul_center_gap
+    (v m probeEnergy broadening disorderStrength hbar pMax : ℝ)
+    (hbroadening : broadening ≠ 0) (hdisorder : 0 ≤ disorderStrength)
+    (hpMax : 0 ≤ pMax) (weight : ℝ → ℂ) :
+    let energyR := finiteCutoffContinuumBornEffectiveEnergy
+      .retarded v m probeEnergy broadening disorderStrength hbar pMax
+    let energyA := finiteCutoffContinuumBornEffectiveEnergy
+      .advanced v m probeEnergy broadening disorderStrength hbar pMax
+    let massR := finiteCutoffContinuumBornEffectiveMass
+      .retarded v m probeEnergy broadening disorderStrength hbar pMax
+    let massA := finiteCutoffContinuumBornEffectiveMass
+      .advanced v m probeEnergy broadening disorderStrength hbar pMax
+    (energyA ^ 2 - massA ^ 2 - (energyR ^ 2 - massR ^ 2)) *
+        (∫ p in (0 : ℝ)..pMax, weight p *
+          (finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct
+            v m p probeEnergy broadening disorderStrength hbar pMax)⁻¹) =
+      ∫ p in (0 : ℝ)..pMax, weight p *
+        ((finiteCutoffContinuumBornDysonDenominator
+          .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax)⁻¹ -
+         (finiteCutoffContinuumBornDysonDenominator
+          .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax)⁻¹) := by
+  let energyR := finiteCutoffContinuumBornEffectiveEnergy
+    .retarded v m probeEnergy broadening disorderStrength hbar pMax
+  let energyA := finiteCutoffContinuumBornEffectiveEnergy
+    .advanced v m probeEnergy broadening disorderStrength hbar pMax
+  let massR := finiteCutoffContinuumBornEffectiveMass
+    .retarded v m probeEnergy broadening disorderStrength hbar pMax
+  let massA := finiteCutoffContinuumBornEffectiveMass
+    .advanced v m probeEnergy broadening disorderStrength hbar pMax
+  have hden (side : SpectralSide) (p : ℝ) :
+      massiveDiracRadialDenominator v p
+          (finiteCutoffContinuumBornEffectiveEnergy
+            side v m probeEnergy broadening disorderStrength hbar pMax)
+          (finiteCutoffContinuumBornEffectiveMass
+            side v m probeEnergy broadening disorderStrength hbar pMax) =
+        finiteCutoffContinuumBornDysonDenominator
+          side v m p 0 probeEnergy broadening disorderStrength hbar pMax := by
+    unfold massiveDiracRadialDenominator finiteCutoffContinuumBornDysonDenominator
+    push_cast
+    ring
+  have hgap (p : ℝ) :
+      (energyA ^ 2 - massA ^ 2 - (energyR ^ 2 - massR ^ 2)) *
+          (finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct
+            v m p probeEnergy broadening disorderStrength hbar pMax)⁻¹ =
+        (finiteCutoffContinuumBornDysonDenominator
+          .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax)⁻¹ -
+        (finiteCutoffContinuumBornDysonDenominator
+          .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax)⁻¹ := by
+    have hR : massiveDiracRadialDenominator v p energyR massR ≠ 0 := by
+      change massiveDiracRadialDenominator v p
+        (finiteCutoffContinuumBornEffectiveEnergy
+          .retarded v m probeEnergy broadening disorderStrength hbar pMax)
+        (finiteCutoffContinuumBornEffectiveMass
+          .retarded v m probeEnergy broadening disorderStrength hbar pMax) ≠ 0
+      rw [hden]
+      exact finiteCutoffContinuumBornDysonDenominator_ne_zero
+        .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax
+        hbroadening hdisorder hpMax
+    have hA : massiveDiracRadialDenominator v p energyA massA ≠ 0 := by
+      change massiveDiracRadialDenominator v p
+        (finiteCutoffContinuumBornEffectiveEnergy
+          .advanced v m probeEnergy broadening disorderStrength hbar pMax)
+        (finiteCutoffContinuumBornEffectiveMass
+          .advanced v m probeEnergy broadening disorderStrength hbar pMax) ≠ 0
+      rw [hden]
+      exact finiteCutoffContinuumBornDysonDenominator_ne_zero
+        .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax
+        hbroadening hdisorder hpMax
+    have hspectral :=
+      massiveDiracRadialDenominator_inv_product_mul_center_gap
+        v p energyR massR energyA massA hR hA
+    dsimp only [energyR, energyA, massR, massA] at hspectral
+    simpa only [massiveDiracRetardedAdvancedRadialDenominatorProduct,
+      hden, ← finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct_eq_mul]
+      using hspectral
+  dsimp only
+  calc
+    (energyA ^ 2 - massA ^ 2 - (energyR ^ 2 - massR ^ 2)) *
+        (∫ p in (0 : ℝ)..pMax, weight p *
+          (finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct
+            v m p probeEnergy broadening disorderStrength hbar pMax)⁻¹) =
+      ∫ p in (0 : ℝ)..pMax,
+        (energyA ^ 2 - massA ^ 2 - (energyR ^ 2 - massR ^ 2)) *
+          (weight p *
+            (finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct
+              v m p probeEnergy broadening disorderStrength hbar pMax)⁻¹) := by
+          rw [intervalIntegral.integral_const_mul]
+    _ = _ := by
+      apply intervalIntegral.integral_congr
+      intro p _
+      dsimp only
+      rw [← hgap p]
+      ring
+
 /-- The two independent diagonal Gaussian-crossed current harmonics have a
 single finite-broadening RA Dyson denominator. Their K0 numerator is the
 effective-energy product minus the effective-mass product, while the K2
