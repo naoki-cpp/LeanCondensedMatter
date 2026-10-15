@@ -19,7 +19,7 @@ Thus `α_R` has velocity dimension. `signedCharge` is the carrier charge itself,
 a negative value. The clean Hamiltonian and spectrum take only `HamiltonianParameters`;
 `Parameters` additionally stores response and normalization conditions. Consumers may apply
 occupation laws to energies relative to the chemical potential using the generic
-`Transport.bandStateOccupation` interface.
+`QuantumTheory.bandStateOccupation` interface.
 
 The two-dimensional momentum domain is the closed disk `p_x² + p_y² ≤ p_max²`; `p_max` is kept
 finite. No disorder, zero-broadening limit, or device-level Hall observable is introduced here.

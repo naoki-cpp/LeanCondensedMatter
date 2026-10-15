@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Analysis.Lorentzian.Weighted
-import LeanCondensedMatter.Transport.Analysis.ZeroTemperatureOccupation
+import LeanCondensedMatter.QuantumTheory.Occupation.ZeroTemperature
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic
 import Mathlib.Tactic
 
@@ -13,7 +13,7 @@ Lorentzian approximate identity. It records local occupied/unoccupied windows, e
 truncation at the Fermi level, arctangent formulas, broadening limits, and the isolated-pole weights
 `π`, `0`, and `π / 2`.
 
-The scalar Fermi step itself remains in `Transport.Analysis.ZeroTemperatureOccupation`.
+The scalar Fermi step is owned upstream by `QuantumTheory.Occupation.ZeroTemperature`.
 -/
 
 namespace QuantumTheory

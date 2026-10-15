@@ -1,5 +1,5 @@
-import LeanCondensedMatter.Transport.Analysis.BandOccupation
-import LeanCondensedMatter.Transport.Analysis.ZeroTemperatureOccupation
+import LeanCondensedMatter.QuantumTheory.Occupation.Band
+import LeanCondensedMatter.QuantumTheory.Occupation.ZeroTemperature
 import Mathlib.Data.Set.Basic
 
 set_option linter.style.header false

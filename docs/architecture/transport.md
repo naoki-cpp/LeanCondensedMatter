@@ -54,8 +54,9 @@ The main semantic boundaries are:
   on contact terms, physical volume, driving frequency normalization, or electric-field conversion;
 - generic Transport must not acquire model-specific assumptions from `Transport.Models`.
 
-`Analysis.BandOccupation` owns only arbitrary occupation-law composition with band energies.
-`Analysis.ZeroTemperatureOccupation` owns the strict scalar Fermi step and its pointwise properties;
+`QuantumTheory.Occupation.Band` owns arbitrary occupation-law composition with band energies, while
+`QuantumTheory.Occupation.ZeroTemperature` owns the strict scalar Fermi step and its pointwise
+properties. Neither requires transport theory.
 `Analysis.ZeroTemperatureBandFilling` owns zero-temperature occupied regions, Fermi surfaces, and
 filled/empty/partially-filled band predicates; and `Analysis.ZeroTemperatureLorentzian` owns the
 finite-window Fermi-edge integrals, arctangent formulas, broadening limits, and isolated-pole
