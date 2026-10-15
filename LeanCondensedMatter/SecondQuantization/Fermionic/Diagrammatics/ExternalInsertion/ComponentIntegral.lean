@@ -24,40 +24,6 @@ open scoped BigOperators
 
 variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
 
-omit [LinearOrder Mode] [Fintype Mode] in
-/-- Pulling an assembled global interaction order back to one component gives exactly that
-component's shuffle coordinates when the local component orders are canonical. -/
-private theorem ExternalInsertionWickDiagram.componentInteractionTime_assembleInteractionOrder
-    {E n : ℕ} (d : ExternalInsertionWickDiagram Mode E n)
-    (shuffle : d.ComponentInteractionOrderShuffle)
-    (τ : Fin (Finset.univ : Finset (Fin n)).card → ℝ)
-    (B : d.vertexGraph.componentPartition.parts) :
-    d.componentInteractionTime
-        (fun v =>
-          τ ((d.assembleInteractionOrder d.canonicalComponentInteractionOrders shuffle).symm
-            ⟨v, Finset.mem_univ v⟩))
-        B =
-      shuffle.timeAssignment τ B := by
-  funext j
-  unfold Common.ExternalInsertionDiagram.componentInteractionTime
-    FamilySlotShuffleTo.timeAssignment
-  change
-    τ ((d.assembleInteractionOrder d.canonicalComponentInteractionOrders shuffle).symm
-      ⟨((interactionSector
-        (B : Finset (ExternalInsertionVertex E
-          (Finset.univ : Finset (Fin n))))).orderIsoOfFin rfl j).1,
-        Finset.mem_univ _⟩) =
-      τ (shuffle.slotEquiv ⟨B, j⟩)
-  apply congrArg τ
-  have hslot :=
-    d.assembleInteractionOrder_symm_apply
-      d.canonicalComponentInteractionOrders shuffle B j
-  rw [← hslot]
-  apply congrArg
-    (d.assembleInteractionOrder d.canonicalComponentInteractionOrders shuffle).symm
-  apply Subtype.ext
-  rfl
-
 /-- The interaction-order shuffle orbit of an arbitrary external-insertion diagram factors into
 the fixed external regrouping sign times the product of the standalone component amplitudes. -/
 theorem ExternalInsertionWickDiagram.sum_componentInteractionOrderShuffle_orderedDysonAmplitude_eq_componentExternalOrderSign_mul_prod_components
@@ -111,7 +77,26 @@ theorem ExternalInsertionWickDiagram.sum_componentInteractionOrderShuffle_ordere
         ExternalInsertionWickDiagram.dysonFixedTimeAmplitude (d.componentOrderedDiagram B) ε β g
           (d.componentExternalTime externalTime B)
           (shuffle.timeAssignment τ B)
-    rw [d.componentInteractionTime_assembleInteractionOrder shuffle τ B]
+    apply congrArg (fun localσ =>
+      ExternalInsertionWickDiagram.dysonFixedTimeAmplitude (d.componentOrderedDiagram B) ε β g
+        (d.componentExternalTime externalTime B) localσ)
+    funext j
+    change
+      τ ((d.assembleInteractionOrder d.canonicalComponentInteractionOrders shuffle).symm
+        ⟨((interactionSector
+          (B : Finset (ExternalInsertionVertex E
+            (Finset.univ : Finset (Fin n))))).orderIsoOfFin rfl j).1,
+          Finset.mem_univ _⟩) =
+        τ (shuffle.slotEquiv ⟨B, j⟩)
+    apply congrArg τ
+    have hslot :=
+      d.assembleInteractionOrder_symm_apply
+        d.canonicalComponentInteractionOrders shuffle B j
+    rw [← hslot]
+    apply congrArg
+      (d.assembleInteractionOrder d.canonicalComponentInteractionOrders shuffle).symm
+    apply Subtype.ext
+    rfl
   have hlocal (B : d.vertexGraph.componentPartition.parts) :
       intervalIntegral.MeasurableLocallyBounded (localIntegrand B) := by
     simpa [size, localIntegrand] using
