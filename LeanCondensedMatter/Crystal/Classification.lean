@@ -1203,6 +1203,115 @@ theorem integer_fixedFirst_reflection_parity_normalform (k : ℤ) :
     rw [hk]
   · omega
 
+/-- In dimension two, an integral matrix with trace zero and
+determinant minus one is an involution. This is a matrix identity over
+`ℤ`, independently of the ambient real Gram metric. -/
+theorem integer_trace_zero_det_neg_one_sq
+    (A : Matrix (Fin 2) (Fin 2) ℤ)
+    (hTrace : A.trace = 0) (hDet : A.det = -1) :
+    A * A = 1 := by
+  have ht : A 0 0 + A 1 1 = 0 := by
+    simpa [Matrix.trace_fin_two] using hTrace
+  have hd : A 1 1 = -(A 0 0) := by omega
+  have hdet : A 0 0 * A 1 1 - A 0 1 * A 1 0 = -1 := by
+    simpa [Matrix.det_fin_two] using hDet
+  have hquad : A 0 0 * A 0 0 + A 0 1 * A 1 0 = 1 := by
+    rw [hd] at hdet
+    nlinarith
+  ext i j
+  fin_cases i <;> fin_cases j <;>
+    simp [Matrix.mul_apply, Fin.sum_univ_two, hd] <;> nlinarith [hquad]
+
+/-- A trace-zero determinant-minus-one integral matrix has a nonzero
+integer vector fixed by its action. The eigenvector is constructed
+directly from the entries, without extending scalars to the reals.
+A later primitive-vector completion will turn this into a unimodular
+change of basis for arbitrary integral reflections. -/
+theorem integer_trace_zero_det_neg_one_fixed_vector
+    (A : Matrix (Fin 2) (Fin 2) ℤ)
+    (hTrace : A.trace = 0) (hDet : A.det = -1) :
+    ∃ v : Fin 2 → ℤ, v ≠ 0 ∧ A.mulVec v = v := by
+  have ht : A 0 0 + A 1 1 = 0 := by
+    simpa [Matrix.trace_fin_two] using hTrace
+  have hd : A 1 1 = -(A 0 0) := by omega
+  have hdet : A 0 0 * A 1 1 - A 0 1 * A 1 0 = -1 := by
+    simpa [Matrix.det_fin_two] using hDet
+  have hquad : A 0 0 * A 0 0 + A 0 1 * A 1 0 = 1 := by
+    rw [hd] at hdet
+    nlinarith
+  by_cases ha : A 0 0 = -1
+  · let v : Fin 2 → ℤ := ![A 0 1, 1 - A 0 0]
+    refine ⟨v, ?_, ?_⟩
+    · intro hv
+      have hv1 := congrArg (fun w : Fin 2 → ℤ => w 1) hv
+      change 1 - A 0 0 = 0 at hv1
+      omega
+    · funext i
+      fin_cases i
+      · change A 0 0 * A 0 1 + A 0 1 * (1 - A 0 0) = A 0 1
+        ring
+      · change A 1 0 * A 0 1 + A 1 1 * (1 - A 0 0) = 1 - A 0 0
+        rw [hd]
+        nlinarith [hquad]
+  · let v : Fin 2 → ℤ := ![A 0 0 + 1, A 1 0]
+    refine ⟨v, ?_, ?_⟩
+    · intro hv
+      have hv0 := congrArg (fun w : Fin 2 → ℤ => w 0) hv
+      change A 0 0 + 1 = 0 at hv0
+      omega
+    · funext i
+      fin_cases i
+      · change A 0 0 * (A 0 0 + 1) + A 0 1 * A 1 0 = A 0 0 + 1
+        nlinarith [hquad]
+      · change A 1 0 * (A 0 0 + 1) + A 1 1 * A 1 0 = A 1 0
+        rw [hd]
+        ring
+
+/-- The same integral reflection also has a nonzero integer vector
+reversed by its action. The two eigendirections provide the arithmetic
+starting point for classifying arbitrary planar reflections. -/
+theorem integer_trace_zero_det_neg_one_reversed_vector
+    (A : Matrix (Fin 2) (Fin 2) ℤ)
+    (hTrace : A.trace = 0) (hDet : A.det = -1) :
+    ∃ v : Fin 2 → ℤ, v ≠ 0 ∧ A.mulVec v = -v := by
+  have ht : A 0 0 + A 1 1 = 0 := by
+    simpa [Matrix.trace_fin_two] using hTrace
+  have hd : A 1 1 = -(A 0 0) := by omega
+  have hdet : A 0 0 * A 1 1 - A 0 1 * A 1 0 = -1 := by
+    simpa [Matrix.det_fin_two] using hDet
+  have hquad : A 0 0 * A 0 0 + A 0 1 * A 1 0 = 1 := by
+    rw [hd] at hdet
+    nlinarith
+  by_cases ha : A 0 0 = 1
+  · let v : Fin 2 → ℤ := ![A 0 1, -(A 0 0 + 1)]
+    refine ⟨v, ?_, ?_⟩
+    · intro hv
+      have hv1 := congrArg (fun w : Fin 2 → ℤ => w 1) hv
+      change -(A 0 0 + 1) = 0 at hv1
+      omega
+    · funext i
+      fin_cases i
+      · change A 0 0 * A 0 1 + A 0 1 * (-(A 0 0 + 1)) = -(A 0 1)
+        ring
+      · change A 1 0 * A 0 1 + A 1 1 * (-(A 0 0 + 1)) =
+          -(-(A 0 0 + 1))
+        rw [hd]
+        nlinarith [hquad]
+  · let v : Fin 2 → ℤ := ![A 0 0 - 1, A 1 0]
+    refine ⟨v, ?_, ?_⟩
+    · intro hv
+      have hv0 := congrArg (fun w : Fin 2 → ℤ => w 0) hv
+      change A 0 0 - 1 = 0 at hv0
+      omega
+    · funext i
+      fin_cases i
+      · change A 0 0 * (A 0 0 - 1) + A 0 1 * A 1 0 =
+          -(A 0 0 - 1)
+        nlinarith [hquad]
+      · change A 1 0 * (A 0 0 - 1) + A 1 1 * A 1 0 = -(A 1 0)
+        rw [hd]
+        ring
+
 /-- The sum and difference of two primitive lattice vectors form an orthogonal
 conventional cell exactly when the vectors have equal squared lengths.
 
