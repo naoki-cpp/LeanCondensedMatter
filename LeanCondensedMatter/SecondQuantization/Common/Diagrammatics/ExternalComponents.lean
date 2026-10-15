@@ -222,7 +222,7 @@ theorem allExternalVerticesConnected_iff_supportedComponentParts_eq_singleton
       exact (G.componentBlock_eq_iff_mem
         (G.componentBlock_mem_componentPartition (Sum.inl anchor))
         (Sum.inl e)).2
-          ((G.mem_componentBlock (Sum.inl anchor) (Sum.inl e)).2 (h e))
+          ((G.mem_componentBlock (Sum.inl anchor) (Sum.inl e)).2 (h e).symm)
     · intro hB
       have heq : B =
           (⟨G.componentBlock (Sum.inl anchor),
@@ -243,9 +243,11 @@ theorem allExternalVerticesConnected_iff_supportedComponentParts_eq_singleton
     have heq : G.componentBlock (Sum.inl e) =
         G.componentBlock (Sum.inl anchor) :=
       congrArg Subtype.val (Finset.mem_singleton.mp hB)
-    apply (G.mem_componentBlock (Sum.inl anchor) (Sum.inl e)).1
-    rw [← heq]
-    exact G.self_mem_componentBlock (Sum.inl e)
+    have hreach : G.Reachable (Sum.inl e) (Sum.inl anchor) := by
+      apply (G.mem_componentBlock (Sum.inl anchor) (Sum.inl e)).1
+      rw [← heq]
+      exact G.self_mem_componentBlock (Sum.inl e)
+    exact hreach.symm
 
 open Classical in
 /-- The finite set of component parts containing no external vertex. -/
