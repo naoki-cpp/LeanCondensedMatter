@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Transport.Analysis.ContinuumMeasure
+import LeanCondensedMatter.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderLongitudinalSameSide
 import LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedRadialCoefficients
 import Mathlib.Tactic
 
@@ -401,6 +402,99 @@ theorem finiteCutoffContinuumBornDysonRadial_ra_weighted_moment_mul_center_gap
       intro p _
       dsimp only
       rw [← hgap p]
+      ring
+
+/-- At finite broadening and cutoff, the unweighted RA radial double-pole
+moment reduces to logarithmic boundary values of the retarded and advanced
+Dyson denominators. The spectral-center gap multiplies the moment, so the
+identity does not silently assume that the gap is invertible. Positive real
+parts of both spectral centers ensure the log-branch hypotheses by finite-η
+Dyson invertibility. This is a radial building block, not an evaluation
+of the nonzero-radius K0/K2 Fourier moments or an X/Psi conductivity. -/
+theorem finiteCutoffContinuumBornDysonRadial_ra_pole_moment_mul_center_gap_eq_log
+    (v m probeEnergy broadening disorderStrength hbar pMax : ℝ)
+    (hvelocity : v ≠ 0) (hbroadening : broadening ≠ 0)
+    (hdisorder : 0 ≤ disorderStrength) (hpMax : 0 ≤ pMax)
+    (hcenterR : 0 <
+      (finiteCutoffContinuumBornEffectiveEnergy
+          .retarded v m probeEnergy broadening disorderStrength hbar pMax ^ 2 -
+        finiteCutoffContinuumBornEffectiveMass
+          .retarded v m probeEnergy broadening disorderStrength hbar pMax ^ 2).re)
+    (hcenterA : 0 <
+      (finiteCutoffContinuumBornEffectiveEnergy
+          .advanced v m probeEnergy broadening disorderStrength hbar pMax ^ 2 -
+        finiteCutoffContinuumBornEffectiveMass
+          .advanced v m probeEnergy broadening disorderStrength hbar pMax ^ 2).re) :
+    let energyR := finiteCutoffContinuumBornEffectiveEnergy
+      .retarded v m probeEnergy broadening disorderStrength hbar pMax
+    let energyA := finiteCutoffContinuumBornEffectiveEnergy
+      .advanced v m probeEnergy broadening disorderStrength hbar pMax
+    let massR := finiteCutoffContinuumBornEffectiveMass
+      .retarded v m probeEnergy broadening disorderStrength hbar pMax
+    let massA := finiteCutoffContinuumBornEffectiveMass
+      .advanced v m probeEnergy broadening disorderStrength hbar pMax
+    (energyA ^ 2 - massA ^ 2 - (energyR ^ 2 - massR ^ 2)) *
+        (∫ p in (0 : ℝ)..pMax,
+          (p : ℂ) *
+            (finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct
+              v m p probeEnergy broadening disorderStrength hbar pMax)⁻¹) =
+      -(((2 : ℂ) * (v : ℂ) ^ 2)⁻¹) *
+        ((Complex.log (finiteCutoffContinuumBornDysonDenominator
+            .retarded v m pMax 0 probeEnergy broadening disorderStrength hbar pMax) -
+          Complex.log (finiteCutoffContinuumBornDysonDenominator
+            .retarded v m 0 0 probeEnergy broadening disorderStrength hbar pMax)) -
+         (Complex.log (finiteCutoffContinuumBornDysonDenominator
+            .advanced v m pMax 0 probeEnergy broadening disorderStrength hbar pMax) -
+          Complex.log (finiteCutoffContinuumBornDysonDenominator
+            .advanced v m 0 0 probeEnergy broadening disorderStrength hbar pMax))) := by
+  have hmoment :=
+    finiteCutoffContinuumBornDysonRadial_ra_weighted_moment_mul_center_gap
+      v m probeEnergy broadening disorderStrength hbar pMax
+      hbroadening hdisorder hpMax (fun p : ℝ => (p : ℂ))
+  have hint (side : SpectralSide) : IntervalIntegrable
+      (fun p : ℝ => (p : ℂ) *
+        (finiteCutoffContinuumBornDysonDenominator
+          side v m p 0 probeEnergy broadening disorderStrength hbar pMax)⁻¹)
+      volume 0 pMax := by
+    have hdenCont : Continuous
+        (fun p : ℝ => finiteCutoffContinuumBornDysonDenominator
+          side v m p 0 probeEnergy broadening disorderStrength hbar pMax) := by
+      unfold finiteCutoffContinuumBornDysonDenominator
+      fun_prop
+    have hdenNe (p : ℝ) :
+        finiteCutoffContinuumBornDysonDenominator
+          side v m p 0 probeEnergy broadening disorderStrength hbar pMax ≠ 0 :=
+      finiteCutoffContinuumBornDysonDenominator_ne_zero
+        side v m p 0 probeEnergy broadening disorderStrength hbar pMax
+        hbroadening hdisorder hpMax
+    exact ((Complex.continuous_ofReal.comp continuous_id).mul
+      (hdenCont.inv₀ hdenNe)).intervalIntegrable 0 pMax
+  have hR := finiteBroadeningBornDyson_singlePoleRadialIntegral_eq_log_of_center_re_pos
+    .retarded v m probeEnergy broadening disorderStrength hbar pMax
+    hvelocity hbroadening hdisorder hpMax hcenterR
+  have hA := finiteBroadeningBornDyson_singlePoleRadialIntegral_eq_log_of_center_re_pos
+    .advanced v m probeEnergy broadening disorderStrength hbar pMax
+    hvelocity hbroadening hdisorder hpMax hcenterA
+  dsimp only at hmoment ⊢
+  calc
+    _ = ∫ p in (0 : ℝ)..pMax, (p : ℂ) *
+        ((finiteCutoffContinuumBornDysonDenominator
+            .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax)⁻¹ -
+         (finiteCutoffContinuumBornDysonDenominator
+            .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax)⁻¹) :=
+      hmoment
+    _ = (∫ p in (0 : ℝ)..pMax, (p : ℂ) *
+        (finiteCutoffContinuumBornDysonDenominator
+          .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax)⁻¹) -
+      (∫ p in (0 : ℝ)..pMax, (p : ℂ) *
+        (finiteCutoffContinuumBornDysonDenominator
+          .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax)⁻¹) := by
+      rw [← intervalIntegral.integral_sub (hint .retarded) (hint .advanced)]
+      apply intervalIntegral.integral_congr
+      intro p _
+      ring
+    _ = _ := by
+      rw [hR, hA]
       ring
 
 /-- The two independent diagonal Gaussian-crossed current harmonics have a
