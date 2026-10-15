@@ -1,6 +1,7 @@
 import LeanCondensedMatter.Combinatorics.FamilySlotShuffleInversions
 import LeanCondensedMatter.SecondQuantization.Common.Algebra.Statistics
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentRestriction
+import Mathlib.Analysis.Complex.Basic
 
 set_option linter.style.header false
 
