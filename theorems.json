@@ -21642,8 +21642,7 @@
     "directWrapperOf": null,
     "dependents": [
       "Combinatorics.NormalizedSetFunction.moment_cumulant",
-      "_private.LeanCondensedMatter.Combinatorics.Cumulant.Independence.0.Finpartition.momentFromCumulant_splitCumulant_of_le_left",
-      "_private.LeanCondensedMatter.Combinatorics.Cumulant.Independence.0.Finpartition.momentFromCumulant_splitCumulant_of_le_right"
+      "_private.LeanCondensedMatter.Combinatorics.Cumulant.Independence.0.Finpartition.momentFromCumulant_splitCumulant_of_le"
     ],
     "dependencies": [
       "Finpartition.partitionProduct_top",
@@ -21653,10 +21652,9 @@
     "completedMention": false,
     "compiledConsumers": [
       "Combinatorics.NormalizedSetFunction.moment_cumulant",
-      "_private.LeanCondensedMatter.Combinatorics.Cumulant.Independence.0.Finpartition.momentFromCumulant_splitCumulant_of_le_left",
-      "_private.LeanCondensedMatter.Combinatorics.Cumulant.Independence.0.Finpartition.momentFromCumulant_splitCumulant_of_le_right"
+      "_private.LeanCondensedMatter.Combinatorics.Cumulant.Independence.0.Finpartition.momentFromCumulant_splitCumulant_of_le"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -21677,8 +21675,8 @@
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
     "simpLemma": true,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -21690,15 +21688,17 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "_private.LeanCondensedMatter.Combinatorics.Cumulant.Independence.0.Finpartition.momentFromCumulant_splitCumulant_eq",
       "_private.LeanCondensedMatter.Combinatorics.SetPartition.MobiusFormula.0.Finpartition.momentFromAtomCumulant_eq_atomMoment"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "_private.LeanCondensedMatter.Combinatorics.Cumulant.Independence.0.Finpartition.momentFromCumulant_splitCumulant_eq",
       "_private.LeanCondensedMatter.Combinatorics.SetPartition.MobiusFormula.0.Finpartition.momentFromAtomCumulant_eq_atomMoment"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -28850,6 +28850,50 @@
   },
   {
     "terminal": false,
+    "statement": "∀ (G : Matrix (Fin 2) (Fin 2) ℝ) (A : Matrix (Fin 2) (Fin 2) ℤ),\n  A 0 0 = 1 ∧ A 1 0 = 0 →\n    A.det = -1 → (A.map Int.cast).transpose * G * A.map Int.cast = G → 2 * G 0 1 = ↑(A 0 1) * G 0 0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "LeanCondensedMatter.Crystal.latticePointGroup.gram_fixedFirst_reflection_relation",
+    "module": "LeanCondensedMatter.Crystal.Classification",
+    "externalAxioms": [],
+    "docString": "For an integral reflection fixing the first primitive vector,\nGram preservation forces twice the off-diagonal coefficient to be an\ninteger multiple of the first squared length. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "LeanCondensedMatter.Crystal.latticePointGroup.gram_reduced_fixedFirst_reflection_cases"
+    ],
+    "dependencies": [
+      "LeanCondensedMatter.Crystal.latticePointGroup.integer_fixedFirst_reflection_normalform"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "LeanCondensedMatter.Crystal.latticePointGroup.gram_reduced_fixedFirst_reflection_cases"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ (G : Matrix (Fin 2) (Fin 2) ℝ),\n  G 0 1 = G 1 0 →\n    (have A := !![0, -1; 1, 1];\n      A.transpose * G * A = G) →\n      G 0 0 = G 1 1 ∧ 2 * G 0 1 = G 0 0",
     "standardAxioms": [
       "Classical.choice",
@@ -29039,6 +29083,46 @@
     "dependents": [],
     "dependencies": [
       "LeanCondensedMatter.Crystal.latticePointGroup.gram_square_constraints_of_quarterTurn"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (G : Matrix (Fin 2) (Fin 2) ℝ) (A : Matrix (Fin 2) (Fin 2) ℤ),\n  0 < G 0 0 →\n    2 * |G 0 1| ≤ G 0 0 →\n      A 0 0 = 1 ∧ A 1 0 = 0 →\n        A.det = -1 →\n          (A.map Int.cast).transpose * G * A.map Int.cast = G →\n            A 0 1 = -1 ∧ 2 * G 0 1 = -G 0 0 ∨ A 0 1 = 0 ∧ G 0 1 = 0 ∨ A 0 1 = 1 ∧ 2 * G 0 1 = G 0 0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "LeanCondensedMatter.Crystal.latticePointGroup.gram_reduced_fixedFirst_reflection_cases",
+    "module": "LeanCondensedMatter.Crystal.Classification",
+    "externalAxioms": [],
+    "docString": "Every determinant-minus-one integral Gram symmetry fixing the first\nprimitive vector of a Gauss-reduced basis is one of the three standard\nreflections: axis reflection or a positive/negative unit shear-reflection.\n\nThis is an exhaustive statement within the *fixed-first-vector* class;\nan arbitrary reflection need not fix that particular primitive vector. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "LeanCondensedMatter.Crystal.latticePointGroup.gram_fixedFirst_reflection_relation"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -29622,6 +29706,130 @@
     "completedMention": false,
     "compiledConsumers": [],
     "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (A : Matrix (Fin 2) (Fin 2) ℤ), A 0 0 = 1 ∧ A 1 0 = 0 → A.det = -1 → A = !![1, A 0 1; 0, -1]",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "LeanCondensedMatter.Crystal.latticePointGroup.integer_fixedFirst_reflection_normalform",
+    "module": "LeanCondensedMatter.Crystal.Classification",
+    "externalAxioms": [],
+    "docString": "An integral matrix of determinant minus one fixing the first\nprimitive basis vector is necessarily a shear-reflection. No metric\nhypothesis is needed for this arithmetic normal form. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "LeanCondensedMatter.Crystal.latticePointGroup.gram_fixedFirst_reflection_relation"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "LeanCondensedMatter.Crystal.latticePointGroup.gram_fixedFirst_reflection_relation"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (k : ℤ), ∃ n, !![1, -n; 0, 1] * !![1, k; 0, -1] * !![1, n; 0, 1] = !![1, k % 2; 0, -1] ∧ (k % 2 = 0 ∨ k % 2 = 1)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "LeanCondensedMatter.Crystal.latticePointGroup.integer_fixedFirst_reflection_parity_normalform",
+    "module": "LeanCondensedMatter.Crystal.Classification",
+    "externalAxioms": [],
+    "docString": "Every integer reflection fixing the first vector is shear-conjugate\nto one with coefficient zero or one. Thus the integer conjugacy class\ndepends only on the shear coefficient modulo two. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "LeanCondensedMatter.Crystal.latticePointGroup.integer_fixedFirst_reflection_shear_conjugation"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (k n : ℤ), !![1, -n; 0, 1] * !![1, k; 0, -1] * !![1, n; 0, 1] = !![1, k + 2 * n; 0, -1]",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "LeanCondensedMatter.Crystal.latticePointGroup.integer_fixedFirst_reflection_shear_conjugation",
+    "module": "LeanCondensedMatter.Crystal.Classification",
+    "externalAxioms": [],
+    "docString": "Conjugating a shear-reflection by an integral shear changes its shear\ncoefficient by an even integer. This arithmetic identity exposes the\nparity invariant distinguishing the two integral reflection classes. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "LeanCondensedMatter.Crystal.latticePointGroup.integer_fixedFirst_reflection_parity_normalform"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "LeanCondensedMatter.Crystal.latticePointGroup.integer_fixedFirst_reflection_parity_normalform"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -157804,9 +158012,9 @@
       "Finpartition.cumulantFromMoment_eq_splitCumulant_of_le"
     ],
     "dependencies": [
+      "Finpartition.momentFromCumulant_empty",
       "Finpartition.sum_Iic_partitionProduct_eq",
-      "_private.LeanCondensedMatter.Combinatorics.Cumulant.Independence.0.Finpartition.momentFromCumulant_splitCumulant_of_le_left",
-      "_private.LeanCondensedMatter.Combinatorics.Cumulant.Independence.0.Finpartition.momentFromCumulant_splitCumulant_of_le_right"
+      "_private.LeanCondensedMatter.Combinatorics.Cumulant.Independence.0.Finpartition.momentFromCumulant_splitCumulant_of_le"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -157828,7 +158036,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {α : Type u_1} [inst : DecidableEq α] {m : Finset α → ℂ} {A B T : Finset α},\n  T ≠ ⊥ → T ⊆ A → Finpartition.momentFromCumulant (Finpartition.splitCumulant m A B) T = m T",
+    "statement": "∀ {α : Type u_1} [inst : DecidableEq α] {m : Finset α → ℂ} {A B T : Finset α},\n  T ≠ ⊥ → T ⊆ A ∨ T ⊆ B → Finpartition.momentFromCumulant (Finpartition.splitCumulant m A B) T = m T",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -157840,51 +158048,7 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Combinatorics.Cumulant.Independence.0.Finpartition.momentFromCumulant_splitCumulant_of_le_left",
-    "module": "LeanCondensedMatter.Combinatorics.Cumulant.Independence",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.Combinatorics.Cumulant.Independence.0.Finpartition.momentFromCumulant_splitCumulant_eq"
-    ],
-    "dependencies": [
-      "Finpartition.momentFromCumulant_cumulantFromMoment"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.Combinatorics.Cumulant.Independence.0.Finpartition.momentFromCumulant_splitCumulant_eq"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {α : Type u_1} [inst : DecidableEq α] {m : Finset α → ℂ} {A B T : Finset α},\n  T ≠ ⊥ → T ⊆ B → Finpartition.momentFromCumulant (Finpartition.splitCumulant m A B) T = m T",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Combinatorics.Cumulant.Independence.0.Finpartition.momentFromCumulant_splitCumulant_of_le_right",
+    "name": "_private.LeanCondensedMatter.Combinatorics.Cumulant.Independence.0.Finpartition.momentFromCumulant_splitCumulant_of_le",
     "module": "LeanCondensedMatter.Combinatorics.Cumulant.Independence",
     "externalAxioms": [],
     "docString": null,
