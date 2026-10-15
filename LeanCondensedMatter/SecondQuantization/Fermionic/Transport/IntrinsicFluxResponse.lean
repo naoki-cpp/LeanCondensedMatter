@@ -47,7 +47,7 @@ noncomputable def boundedIntrinsicFluxRetardedResponse
 /-- A differential-current representation identifies the intrinsic Kubo response with
 the chosen current response precomposed by the differential. The equality is only on exact
 differentials; no equality of arbitrary current extensions is implied. -/
-theorem boundedIntrinsicFluxRetardedResponse_eq_comp_of_isDifferentialCurrent
+theorem boundedIntrinsicFluxRetardedResponse_eq_comp_of_factorization
     (system : QuantumTheory.LinearResponse.BoundedFreeSystem
       (FiniteLatticeHilbertFock Site))
     (expectation : QuantumTheory.LinearResponse.NormalizedExpectation
@@ -56,7 +56,7 @@ theorem boundedIntrinsicFluxRetardedResponse_eq_comp_of_isDifferentialCurrent
     (d : Test →ₗ[ℂ] OneForm)
     (Φ : Test →ₗ[ℂ] ((Site →₀ ℂ) →ₗ[ℂ] (Site →₀ ℂ)))
     (J : OneForm →ₗ[ℂ] ((Site →₀ ℂ) →ₗ[ℂ] (Site →₀ ℂ)))
-    (hΦ : _root_.ConservationLaw.IsDifferentialCurrent d Φ J)
+    (hΦ : Φ = J.comp d)
     (t s : ℝ) :
     boundedIntrinsicFluxRetardedResponse system expectation source Φ t s =
       (boundedIntrinsicFluxRetardedResponse system expectation source J t s).comp d := by
@@ -65,7 +65,10 @@ theorem boundedIntrinsicFluxRetardedResponse_eq_comp_of_isDifferentialCurrent
   change
     boundedOneBodyRetardedResponseLinearMap system expectation source t s (Φ f) =
       boundedOneBodyRetardedResponseLinearMap system expectation source t s (J (d f))
-  rw [hΦ f]
+  have hf := congrArg
+    (fun L : Test →ₗ[ℂ] ((Site →₀ ℂ) →ₗ[ℂ] (Site →₀ ℂ)) => L f) hΦ
+  simp only [LinearMap.comp_apply] at hf
+  rw [hf]
 
 /-- Equivalent full current functionals give the same retarded response on every exact
 differential.  No statement is made here for an arbitrary non-exact one-form. -/
@@ -103,7 +106,7 @@ theorem boundedIntrinsicFluxRetardedResponse_current_eq_of_eq_differential
       boundedIntrinsicFluxRetardedResponse system expectation source Φ t s f := by
   subst α
   exact (congrArg (fun response : Test →ₗ[ℂ] ℂ => response f)
-    (boundedIntrinsicFluxRetardedResponse_eq_comp_of_isDifferentialCurrent
+    (boundedIntrinsicFluxRetardedResponse_eq_comp_of_factorization
       system expectation source d Φ R.current R.isCurrent t s)).symm
 
 end

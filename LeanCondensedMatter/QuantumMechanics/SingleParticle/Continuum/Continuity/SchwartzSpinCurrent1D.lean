@@ -82,19 +82,19 @@ theorem schwartzSpinCurrentDensityLinear1D_apply
 
 /-- The componentwise velocity-generated flux is a differential current for the spinor Schrödinger
 localization transport. -/
-theorem schwartzSpinorVelocityLocalizationFlux_isDifferentialCurrent1D
+theorem schwartzSpinorVelocityLocalizationFlux_eq_comp1D
     (ℏ κ : ℝ) (potential : SchwartzTwoLevel1D.Spatial)
     (internalH : SchwartzTwoLevel1D.InternalMatrix) :
-    _root_.ConservationLaw.IsDifferentialCurrent
-      SchwartzTwoLevel1D.derivative
-      (heisenbergLocalizationFunctional SchwartzSpinorOneParticle1D ℏ
+    (heisenbergLocalizationFunctional SchwartzSpinorOneParticle1D ℏ
         (SchwartzTwoLevel1D.hamiltonian κ potential internalH)
-        SchwartzTwoLevel1D.multiplicationLinear)
+        SchwartzTwoLevel1D.multiplicationLinear) =
       (velocityLocalizationFlux SchwartzSpinorOneParticle1D
         (SchwartzTwoLevel1D.velocityOperator ℏ κ)
-        SchwartzTwoLevel1D.multiplicationLinear) := by
+        SchwartzTwoLevel1D.multiplicationLinear).comp SchwartzTwoLevel1D.derivative := by
+  apply LinearMap.ext
   intro f
-  rw [heisenbergLocalizationFunctional_apply, velocityLocalizationFlux_apply]
+  rw [heisenbergLocalizationFunctional_apply]
+  simp only [LinearMap.comp_apply, velocityLocalizationFlux_apply]
   apply LinearMap.ext
   intro ψ
   have h := congrArg
@@ -135,7 +135,7 @@ noncomputable def schwartzSpinCurrentRepresentation1D
     (SchwartzTwoLevel1D.velocityOperator ℏ κ)
     SchwartzTwoLevel1D.derivative
     SchwartzTwoLevel1D.multiplicationLinear
-    (schwartzSpinorVelocityLocalizationFlux_isDifferentialCurrent1D
+    (schwartzSpinorVelocityLocalizationFlux_eq_comp1D
       ℏ κ potential internalH)
     (fun α => schwartzSpin_localization_commutator_eq_zero α ℏ spinComponent)
 

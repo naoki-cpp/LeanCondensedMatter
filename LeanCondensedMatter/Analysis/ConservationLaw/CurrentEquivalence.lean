@@ -74,36 +74,6 @@ theorem iff_comp_eq
 
 end DifferentialCurrentEquivalent
 
-namespace IsDifferentialCurrent
-
-/-- Any two current functionals representing the same intrinsic transport are equivalent on exact
-differentials.  This statement belongs to the current predicate itself and does not require
-bundling either current into a representation structure. -/
-theorem currentEquivalent
-    {d : Test →ₗ[𝕜] OneForm} {Φ : Test →ₗ[𝕜] Obs}
-    {J₁ J₂ : OneForm →ₗ[𝕜] Obs}
-    (h₁ : IsDifferentialCurrent d Φ J₁)
-    (h₂ : IsDifferentialCurrent d Φ J₂) :
-    DifferentialCurrentEquivalent d J₁ J₂ := by
-  intro f
-  calc
-    J₁ (d f) = Φ f := (h₁ f).symm
-    _ = J₂ (d f) := h₂ f
-
-/-- Being a differential current is invariant under differential-current equivalence. -/
-theorem of_currentEquivalent
-    {d : Test →ₗ[𝕜] OneForm} {Φ : Test →ₗ[𝕜] Obs}
-    {J₁ J₂ : OneForm →ₗ[𝕜] Obs}
-    (h₁ : IsDifferentialCurrent d Φ J₁)
-    (h₁₂ : DifferentialCurrentEquivalent d J₁ J₂) :
-    IsDifferentialCurrent d Φ J₂ := by
-  intro f
-  calc
-    Φ f = J₁ (d f) := h₁ f
-    _ = J₂ (d f) := h₁₂ f
-
-end IsDifferentialCurrent
-
 namespace DifferentialCurrentRepresentation
 
 section Ring
@@ -125,7 +95,11 @@ theorem exists_current_eq_add_invisible
   refine ⟨R₁.current - R₂.current, ?_, ?_⟩
   · intro f
     change R₁.current (d f) - R₂.current (d f) = 0
-    rw [R₁.isCurrent.currentEquivalent R₂.isCurrent f]
+    have h : R₁.current.comp d = R₂.current.comp d :=
+      R₁.isCurrent.symm.trans R₂.isCurrent
+    have hf := congrArg (fun L : Test' →ₗ[R] Obs' => L f) h
+    simp only [LinearMap.comp_apply] at hf
+    rw [hf]
     simp
   · ext α
     change R₁.current α = R₂.current α + (R₁.current α - R₂.current α)
@@ -199,9 +173,12 @@ theorem currentDensityEquivalent
     (R₁ R₂ : LocalCurrentDensityRepresentation d Φ pairing) :
     CurrentDensityEquivalent d pairing R₁.currentDensity R₂.currentDensity := by
   intro f
-  calc
-    pairing R₁.currentDensity (d f) = Φ f := (R₁.isCurrentDensity f).symm
-    _ = pairing R₂.currentDensity (d f) := R₂.isCurrentDensity f
+  have h :
+      (pairing R₁.currentDensity).comp d =
+        (pairing R₂.currentDensity).comp d :=
+    R₁.isCurrentDensity.symm.trans R₂.isCurrentDensity
+  have hf := congrArg (fun L : Test →ₗ[𝕜] Obs => L f) h
+  simpa only [LinearMap.comp_apply] using hf
 
 end LocalCurrentDensityRepresentation
 

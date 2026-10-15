@@ -21,7 +21,7 @@ and a transport functional
 Φ : Test →ₗ[𝕜] Obs,
 ```
 
-`IsDifferentialCurrent d Φ J` records a chosen linear current extension with
+An equality `Φ = J.comp d` records a chosen linear current extension with
 `Φ(f) = J(d f)`. A strictly stronger `LocalCurrentDensityRepresentation` chooses a current
 density `j` and a supplied bilinear pairing such that `Φ(f) = pairing j (d f)`.
 
@@ -31,7 +31,7 @@ made merely from factorization through `d`.
 
 This module does not define current observables in general. Operator-level generalized currents,
 model-specific charge-current vertices, and response observables may exist without a weak
-differential representation. `IsDifferentialCurrent` records the additional local-balance fact
+differential representation. The composition equality records the additional local-balance fact
 that a supplied one-form functional represents `Φ` through `d`; it is not the root definition of
 every current operator.
 -/
@@ -45,52 +45,6 @@ variable [AddCommMonoid OneForm] [Module 𝕜 OneForm]
 variable [AddCommMonoid Obs] [Module 𝕜 Obs]
 variable [AddCommMonoid CurrentDensity] [Module 𝕜 CurrentDensity]
 
-/-- `J` is a differential current representing the transport functional `Φ` through `d` when
-`Φ(f) = J(d f)` for every test object. -/
-def IsDifferentialCurrent
-    (d : Test →ₗ[𝕜] OneForm) (Φ : Test →ₗ[𝕜] Obs) (J : OneForm →ₗ[𝕜] Obs) : Prop :=
-  ∀ f, Φ f = J (d f)
-
-namespace IsDifferentialCurrent
-
-/-- Factorization through `d` is equivalent to equality with the composite `J ∘ d`. -/
-theorem iff_eq_comp
-    {d : Test →ₗ[𝕜] OneForm} {Φ : Test →ₗ[𝕜] Obs} {J : OneForm →ₗ[𝕜] Obs} :
-    IsDifferentialCurrent d Φ J ↔ Φ = J.comp d := by
-  constructor
-  · intro h
-    exact LinearMap.ext h
-  · intro h f
-    rw [h]
-    rfl
-
-/-- A factorized transport functional vanishes on test objects annihilated by `d`. -/
-theorem eq_zero_of_map_eq_zero
-    {d : Test →ₗ[𝕜] OneForm} {Φ : Test →ₗ[𝕜] Obs} {J : OneForm →ₗ[𝕜] Obs}
-    (h : IsDifferentialCurrent d Φ J) {f : Test} (hf : d f = 0) :
-    Φ f = 0 := by
-  rw [h f, hf, map_zero]
-
-/-- Scalar multiplication preserves a differential factorization. -/
-theorem smul
-    {d : Test →ₗ[𝕜] OneForm} {Φ : Test →ₗ[𝕜] Obs} {J : OneForm →ₗ[𝕜] Obs}
-    (h : IsDifferentialCurrent d Φ J) (c : 𝕜) :
-    IsDifferentialCurrent d (c • Φ) (c • J) := by
-  intro f
-  simp [h f]
-
-/-- Postcomposition by a linear observable map preserves a differential factorization. -/
-theorem postcomp
-    {Obs' : Type*} [AddCommMonoid Obs'] [Module 𝕜 Obs']
-    {d : Test →ₗ[𝕜] OneForm} {Φ : Test →ₗ[𝕜] Obs} {J : OneForm →ₗ[𝕜] Obs}
-    (h : IsDifferentialCurrent d Φ J) (L : Obs →ₗ[𝕜] Obs') :
-    IsDifferentialCurrent d (L.comp Φ) (L.comp J) := by
-  intro f
-  simp only [LinearMap.comp_apply]
-  rw [h f]
-
-end IsDifferentialCurrent
-
 /-- Data of one chosen flux functional representing `Φ` through `d`.
 
 No locality or uniqueness claim is bundled into this structure. -/
@@ -99,7 +53,7 @@ structure DifferentialCurrentRepresentation
   /-- The chosen flux functional on differential-like test data. -/
   current : OneForm →ₗ[𝕜] Obs
   /-- Proof that `current` represents the transport through the differential. -/
-  isCurrent : IsDifferentialCurrent d Φ current
+  isCurrent : Φ = current.comp d
 
 /-- A bilinear pairing of a current density with 1-form-like test data.
 
@@ -118,7 +72,7 @@ structure LocalCurrentDensityRepresentation
   /-- The chosen local current density. -/
   currentDensity : CurrentDensity
   /-- Proof that `currentDensity` represents the transport through the supplied pairing. -/
-  isCurrentDensity : IsDifferentialCurrent d Φ (pairing currentDensity)
+  isCurrentDensity : Φ = (pairing currentDensity).comp d
 
 namespace LocalCurrentDensityRepresentation
 
