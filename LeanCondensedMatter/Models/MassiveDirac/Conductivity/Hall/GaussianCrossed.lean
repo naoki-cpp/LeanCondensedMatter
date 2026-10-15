@@ -172,7 +172,6 @@ private theorem psi_conjugate_triple_half_eq_real_channels (z q : ℂ) :
   · simp [Complex.mul_re, Complex.mul_im, Complex.add_re, Complex.neg_re]
     ring
   · simp [Complex.mul_re, Complex.mul_im, Complex.add_im, Complex.neg_im]
-    ring
 
 /-- The physically normalized regulated Psi crossed Hall conductivity is
 the radial integral of a *real-valued* minor kernel. In contrast to the
