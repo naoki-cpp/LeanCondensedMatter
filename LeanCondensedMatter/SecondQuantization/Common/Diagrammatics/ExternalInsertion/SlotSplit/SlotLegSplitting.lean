@@ -564,41 +564,6 @@ theorem ExternalInsertionDiagram.slotSplitVacuum_ofSlotSplit
   · exact Pairing.splitRight_ofSplit
       (externalInsertionSlotLegSplitting (E := E) h) ext.pairing vac.pairing
 
-/-- Diagrams split by a chosen interaction-slot divide are exactly independent external-insertion
-and quartic pieces. -/
-noncomputable def ExternalInsertionDiagram.slotSplitEquiv
-    (h : T ⊆ S) :
-    {d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S //
-      d.pairing.IsSplit (externalInsertionSlotLegSplitting (E := E) h)} ≃
-      ExternalInsertionDiagram ExternalLabel InternalLabel E N T ×
-        QuarticDiagram InternalLabel N (S \ T) where
-  toFun d := (d.1.slotSplitExternal h d.2, d.1.slotSplitVacuum h d.2)
-  invFun p :=
-    ⟨ExternalInsertionDiagram.ofSlotSplit h p.1 p.2,
-      Pairing.isSplit_ofSplit _ _ _⟩
-  left_inv d := Subtype.ext (ExternalInsertionDiagram.ofSlotSplit_slotSplit h d.1 d.2)
-  right_inv p := by
-    obtain ⟨ext, vac⟩ := p
-    simp only [Prod.mk.injEq]
-    exact ⟨ExternalInsertionDiagram.slotSplitExternal_ofSlotSplit h ext vac _,
-      ExternalInsertionDiagram.slotSplitVacuum_ofSlotSplit h ext vac _⟩
-
-open Classical in
-/-- Summing over split diagrams is summing independently over the external-insertion and quartic
-pieces. -/
-theorem ExternalInsertionDiagram.sum_slotSplit
-    [Fintype ExternalLabel] [Fintype InternalLabel]
-    (h : T ⊆ S) {M : Type*} [AddCommMonoid M]
-    (F : ExternalInsertionDiagram ExternalLabel InternalLabel E N S → M) :
-    (∑ d : {d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S //
-        d.pairing.IsSplit (externalInsertionSlotLegSplitting (E := E) h)}, F d.1) =
-      ∑ ext : ExternalInsertionDiagram ExternalLabel InternalLabel E N T,
-        ∑ vac : QuarticDiagram InternalLabel N (S \ T),
-          F (ExternalInsertionDiagram.ofSlotSplit h ext vac) := by
-  rw [← Equiv.sum_comp (ExternalInsertionDiagram.slotSplitEquiv h).symm (fun d => F d.1),
-    Fintype.sum_prod_type]
-  rfl
-
 end Decompose
 
 end Common
