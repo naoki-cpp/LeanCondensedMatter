@@ -152,6 +152,71 @@ theorem mem_externalComponentPartition_part
   rw [Finpartition.mem_part_ofSetoid_iff_rel]
   rfl
 
+/-- For a nonempty external sector, mutual external connectivity means that
+the external-component partition consists of exactly the full external set.
+
+Internal (vacuum) components do not appear in this partition. -/
+theorem allExternalVerticesConnected_iff_externalComponentPartition_parts_eq_singleton
+    [Nonempty External] (G : SimpleGraph (External ⊕ Internal)) :
+    AllExternalVerticesConnected G ↔
+      (externalComponentPartition G).parts =
+        {(Finset.univ : Finset External)} := by
+  classical
+  let a : External := Classical.choice inferInstance
+  constructor
+  · intro h
+    have hPart : (externalComponentPartition G).part a =
+        (Finset.univ : Finset External) := by
+      ext b
+      simp only [Finset.mem_univ, iff_true]
+      exact (mem_externalComponentPartition_part G a b).2 (h a b)
+    ext B
+    constructor
+    · intro hB
+      obtain ⟨b, -, hb⟩ :=
+        (externalComponentPartition G).part_surjOn hB
+      apply Finset.mem_singleton.mpr
+      rw [← hb]
+      ext e
+      simp only [Finset.mem_univ, iff_true]
+      exact (mem_externalComponentPartition_part G b e).2 (h b e)
+    · intro hB
+      have hEq : B = (Finset.univ : Finset External) :=
+        Finset.mem_singleton.mp hB
+      rw [hEq, ← hPart]
+      exact (externalComponentPartition G).part_mem.2 (Finset.mem_univ a)
+  · intro h a b
+    have hPart :
+        (externalComponentPartition G).part a =
+          (Finset.univ : Finset External) := by
+      have hMem :
+          (externalComponentPartition G).part a ∈
+            (externalComponentPartition G).parts :=
+        (externalComponentPartition G).part_mem.2 (Finset.mem_univ a)
+      rw [h] at hMem
+      exact Finset.mem_singleton.mp hMem
+    apply (mem_externalComponentPartition_part G a b).1
+    rw [hPart]
+    exact Finset.mem_univ b
+
+/-- A nonempty external sector is mutually connected precisely when its
+external-component partition has one block. This is the graph-level
+single-block criterion used by finite-set cumulant extraction. -/
+theorem allExternalVerticesConnected_iff_externalComponentPartition_parts_card_eq_one
+    [Nonempty External] (G : SimpleGraph (External ⊕ Internal)) :
+    AllExternalVerticesConnected G ↔
+      (externalComponentPartition G).parts.card = 1 := by
+  rw [allExternalVerticesConnected_iff_externalComponentPartition_parts_eq_singleton]
+  constructor
+  · intro h
+    rw [h]
+    simp
+  · intro h
+    obtain ⟨B, hB⟩ := Finset.card_eq_one.mp h
+    have hBS : B = (Finset.univ : Finset External) := by
+      simpa [hB] using (externalComponentPartition G).sup_parts
+    simpa [hBS] using hB
+
 end ExternalPartition
 
 section Finite
