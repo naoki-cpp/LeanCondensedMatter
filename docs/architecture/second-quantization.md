@@ -267,9 +267,9 @@ mixed-field-list representation. The mature two-point mixed-order representation
 
 `componentDiagramLeg` embeds its local flattened legs back into the ambient fixed enumeration, and
 its partner-transport theorem states that this embedding intertwines the restricted and ambient
-pairing partners. The canonical leg order makes this map an `OrderEmbedding`; taken over all components these
-embeddings form `componentLegShuffle`, the order-preserving family shuffle onto the ambient leg
-set. Its generic block-inversion count is the canonical measure of inter-component leg exchange.
+pairing partners. The component leg map is strictly monotone in the canonical flattened
+order; all component maps together form `componentLegShuffle`, the order-preserving family shuffle
+onto the ambient leg set. Its generic block-inversion count measures inter-component leg exchange.
 For mixed-time pairings, `componentMixedPairEquiv` identifies the dependent sum of
 component-local normalized pairs with all ambient mixed-time normalized pairs via the generic
 `Pairing.normalizedPairSigmaEquiv`. Unlike the pure-quartic case, distinct external-insertion
