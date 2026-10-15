@@ -139,7 +139,8 @@ theorem integral_massiveDiracRadialDenominatorKernel_eq_log
   have hdenIm (p : ℝ) :
       (massiveDiracRadialDenominator v p energy mass).im =
         (energy ^ 2 - mass ^ 2).im := by
-    simp [massiveDiracRadialDenominator]
+    unfold massiveDiracRadialDenominator
+    simp only [Complex.sub_im, Complex.ofReal_im, sub_zero]
   have hdenNe (p : ℝ) :
       massiveDiracRadialDenominator v p energy mass ≠ 0 := by
     intro hz
