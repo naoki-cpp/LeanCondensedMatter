@@ -86,7 +86,7 @@ private theorem momentFromCumulant_splitCumulant_eq {m : Finset α → ℂ} {A B
   classical
   obtain ⟨hAB, hm0, hfact⟩ := hind
   have hbase : momentFromCumulant (splitCumulant m A B) (⊥ : Finset α) = m ⊥ := by
-    simpa only [momentFromCumulant_empty] using hm0.symm
+    exact (momentFromCumulant_empty (splitCumulant m A B)).trans hm0.symm
   intro T hT
   by_cases hTA : T ≤ A
   · rcases eq_or_ne T ⊥ with rfl | hT0
