@@ -1248,9 +1248,11 @@ theorem integer_trace_zero_det_neg_one_fixed_vector
       omega
     · funext i
       fin_cases i
-      · change A 0 0 * A 0 1 + A 0 1 * (1 - A 0 0) = A 0 1
+      · simp only [Matrix.mulVec, dotProduct, Fin.sum_univ_two]
+        change A 0 0 * A 0 1 + A 0 1 * (1 - A 0 0) = A 0 1
         ring
-      · change A 1 0 * A 0 1 + A 1 1 * (1 - A 0 0) = 1 - A 0 0
+      · simp only [Matrix.mulVec, dotProduct, Fin.sum_univ_two]
+        change A 1 0 * A 0 1 + A 1 1 * (1 - A 0 0) = 1 - A 0 0
         rw [hd]
         nlinarith [hquad]
   · let v : Fin 2 → ℤ := ![A 0 0 + 1, A 1 0]
@@ -1261,9 +1263,11 @@ theorem integer_trace_zero_det_neg_one_fixed_vector
       omega
     · funext i
       fin_cases i
-      · change A 0 0 * (A 0 0 + 1) + A 0 1 * A 1 0 = A 0 0 + 1
+      · simp only [Matrix.mulVec, dotProduct, Fin.sum_univ_two]
+        change A 0 0 * (A 0 0 + 1) + A 0 1 * A 1 0 = A 0 0 + 1
         nlinarith [hquad]
-      · change A 1 0 * (A 0 0 + 1) + A 1 1 * A 1 0 = A 1 0
+      · simp only [Matrix.mulVec, dotProduct, Fin.sum_univ_two]
+        change A 1 0 * (A 0 0 + 1) + A 1 1 * A 1 0 = A 1 0
         rw [hd]
         ring
 
@@ -1291,9 +1295,11 @@ theorem integer_trace_zero_det_neg_one_reversed_vector
       omega
     · funext i
       fin_cases i
-      · change A 0 0 * A 0 1 + A 0 1 * (-(A 0 0 + 1)) = -(A 0 1)
+      · simp only [Matrix.mulVec, dotProduct, Fin.sum_univ_two]
+        change A 0 0 * A 0 1 + A 0 1 * (-(A 0 0 + 1)) = -(A 0 1)
         ring
-      · change A 1 0 * A 0 1 + A 1 1 * (-(A 0 0 + 1)) =
+      · simp only [Matrix.mulVec, dotProduct, Fin.sum_univ_two]
+        change A 1 0 * A 0 1 + A 1 1 * (-(A 0 0 + 1)) =
           -(-(A 0 0 + 1))
         rw [hd]
         nlinarith [hquad]
@@ -1305,10 +1311,12 @@ theorem integer_trace_zero_det_neg_one_reversed_vector
       omega
     · funext i
       fin_cases i
-      · change A 0 0 * (A 0 0 - 1) + A 0 1 * A 1 0 =
+      · simp only [Matrix.mulVec, dotProduct, Fin.sum_univ_two]
+        change A 0 0 * (A 0 0 - 1) + A 0 1 * A 1 0 =
           -(A 0 0 - 1)
         nlinarith [hquad]
-      · change A 1 0 * (A 0 0 - 1) + A 1 1 * A 1 0 = -(A 1 0)
+      · simp only [Matrix.mulVec, dotProduct, Fin.sum_univ_two]
+        change A 1 0 * (A 0 0 - 1) + A 1 1 * A 1 0 = -(A 1 0)
         rw [hd]
         ring
 
