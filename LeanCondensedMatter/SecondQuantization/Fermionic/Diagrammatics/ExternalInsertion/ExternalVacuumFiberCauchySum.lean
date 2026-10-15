@@ -40,6 +40,7 @@ private def vacuumFreeFixedExternalSubtypeEquiv {E m : ℕ}
     rcases d with ⟨⟨d, hl⟩, hd⟩
     rfl
 
+open Classical in
 private theorem vacuumFreeExternalInsertionDysonCoefficient_eq_sum_if
     {E m : ℕ} (ε : Mode → ℝ) (β : ℝ)
     (g : QuarticVertexLabel Mode → ℂ)
@@ -72,6 +73,7 @@ private theorem vacuumFreeExternalInsertionDysonCoefficient_eq_sum_if
         (fun ext : X => ext.1.dysonAmplitude ε β g externalTime)]
       simp only [Finset.sum_filter]
 
+omit [LinearOrder Mode] [Fintype Mode] in
 private theorem standardizedSupportFiber_externalLabel
     {E m k : ℕ} (shuffle : SlotShuffle m k)
     (q : {d : ExternalInsertionWickDiagram Mode E m //
@@ -85,6 +87,7 @@ private theorem standardizedSupportFiber_externalLabel
 
 /-- The sum over all fixed-cardinality external-support fibers is one factor
 of the Cauchy convolution with the normalized vacuum Dyson series. -/
+open Classical in
 theorem externalInsertionFixedCardinalityFiberSum_eq_cauchyFactor
     {E : ℕ} (ε : Mode → ℝ) (β : ℝ) (hβ : 0 ≤ β)
     (g : QuarticVertexLabel Mode → ℂ)
