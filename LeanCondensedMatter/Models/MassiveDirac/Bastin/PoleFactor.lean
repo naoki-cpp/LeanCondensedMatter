@@ -52,7 +52,7 @@ theorem spectralDifferenceCoefficient_eq_lorentzian
     (hbroadening : broadening ≠ 0) :
     spectralDifferenceCoefficient band v m px py probeEnergy broadening =
       (-2 * Complex.I) *
-        (Lorentzian.lorentzianSpectralKernel
+        (Lorentzian.spectralKernel
           (probeEnergy - bandEnergy band v m px py) broadening : ℂ) := by
   simpa [spectralDifferenceCoefficient, projectorResolventCoefficient,
     scalarSpectralDifferenceCoefficient, scalarResolventCoefficient] using
@@ -80,7 +80,7 @@ theorem bastinBandPairContribution_opposite_source_eq_lorentzian
     bastinBandPairContribution μ ν (oppositeBand band) band
         e v m px py probeEnergy broadening =
       (-2 * Complex.I) *
-        (Lorentzian.lorentzianSpectralKernel
+        (Lorentzian.spectralKernel
           (probeEnergy - bandEnergy band v m px py) broadening : ℂ) *
         interbandSpectatorCurrentFactor μ ν
           band e v m px py probeEnergy broadening := by

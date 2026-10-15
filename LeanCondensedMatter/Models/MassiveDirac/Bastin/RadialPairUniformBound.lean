@@ -26,29 +26,29 @@ theorem norm_lorentzian_mul_targetCenteredInterbandSpectatorCurrentFactor_radial
     (band : Band) (e v m p offset radius broadening : ℝ)
     (hm : m ≠ 0) (hradius : radius < 2 * |m|) (hoffset : |offset| ≤ radius)
     (hbroadening : 0 ≤ broadening) :
-    ‖(Lorentzian.lorentzianSpectralKernel offset broadening : ℂ) *
+    ‖(Lorentzian.spectralKernel offset broadening : ℂ) *
         targetCenteredInterbandSpectatorCurrentFactor
           band e v m p 0 (offset, broadening)‖ ≤
       radialInterbandSpectatorUniformBound e v m radius *
-        Lorentzian.lorentzianSpectralKernel offset broadening := by
-  have hkernel := Lorentzian.lorentzianSpectralKernel_nonneg
+        Lorentzian.spectralKernel offset broadening := by
+  have hkernel := Lorentzian.spectralKernel_nonneg
     offset broadening hbroadening
   have hnorm :
-      ‖(Lorentzian.lorentzianSpectralKernel offset broadening : ℂ)‖ =
-        Lorentzian.lorentzianSpectralKernel offset broadening := by
+      ‖(Lorentzian.spectralKernel offset broadening : ℂ)‖ =
+        Lorentzian.spectralKernel offset broadening := by
     rw [Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg hkernel]
   rw [norm_mul, hnorm]
   calc
-    Lorentzian.lorentzianSpectralKernel offset broadening *
+    Lorentzian.spectralKernel offset broadening *
         ‖targetCenteredInterbandSpectatorCurrentFactor
           band e v m p 0 (offset, broadening)‖ ≤
-      Lorentzian.lorentzianSpectralKernel offset broadening *
+      Lorentzian.spectralKernel offset broadening *
         radialInterbandSpectatorUniformBound e v m radius :=
       mul_le_mul_of_nonneg_left
         (norm_targetCenteredInterbandSpectatorCurrentFactor_radial_le
           band e v m p offset radius broadening hm hradius hoffset) hkernel
     _ = radialInterbandSpectatorUniformBound e v m radius *
-        Lorentzian.lorentzianSpectralKernel offset broadening := by ring
+        Lorentzian.spectralKernel offset broadening := by ring
 
 /-- Integrating over the fixed target window preserves the Lorentzian mass exactly in the upper
 bound. -/
@@ -60,20 +60,20 @@ theorem norm_targetCenteredInterbandSpectatorCurrentPoleIntegral_radial_le
         band e v m p 0 radius broadening‖ ≤
       radialInterbandSpectatorUniformBound e v m radius *
         (∫ offset in -radius..radius,
-          Lorentzian.lorentzianSpectralKernel offset broadening) := by
+          Lorentzian.spectralKernel offset broadening) := by
   have hab : -radius ≤ radius := by linarith
-  have hkernelInt := Lorentzian.intervalIntegrable_lorentzianSpectralKernel
+  have hkernelInt := Lorentzian.intervalIntegrable_spectralKernel
     (-radius) radius broadening hbroadening.ne'
   unfold targetCenteredInterbandSpectatorCurrentPoleIntegral
-    Lorentzian.lorentzianRegularFactorIntegral
+    Lorentzian.regularFactorIntegral
   have hineq :
       ‖∫ offset in -radius..radius,
-          (Lorentzian.lorentzianSpectralKernel offset broadening : ℂ) *
+          (Lorentzian.spectralKernel offset broadening : ℂ) *
             targetCenteredInterbandSpectatorCurrentFactor
               band e v m p 0 (offset, broadening)‖ ≤
         ∫ offset in -radius..radius,
           radialInterbandSpectatorUniformBound e v m radius *
-            Lorentzian.lorentzianSpectralKernel offset broadening := by
+            Lorentzian.spectralKernel offset broadening := by
     apply intervalIntegral.norm_integral_le_of_norm_le hab
     · filter_upwards with offset
       intro hoffset
@@ -112,7 +112,7 @@ theorem norm_targetCenteredInterbandBastinPairIntegral_radial_le
   have hpole :=
     norm_targetCenteredInterbandSpectatorCurrentPoleIntegral_radial_le
       band e v m p radius broadening hm hradiusPos hradius hbroadening
-  have hmass := Lorentzian.integral_lorentzianSpectralKernel_symmetric_le_pi
+  have hmass := Lorentzian.integral_spectralKernel_symmetric_le_pi
     radius broadening
   have hC := radialInterbandSpectatorUniformBound_nonneg e v m radius
   have hpolePi :
