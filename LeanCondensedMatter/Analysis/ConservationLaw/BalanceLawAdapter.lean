@@ -30,7 +30,9 @@ noncomputable def ofRepresented
     (B : BalanceLaw δ Q d) :
     IntrinsicBalanceLaw δ Q d where
   transport := B.current.comp d
-  transport_depends := IsDifferentialCurrent.dependsOnlyOnDifferential (fun _ => rfl)
+  transport_depends := by
+    intro f g hfg
+    exact congrArg B.current hfg
   source := B.source
   balance := by
     intro f
