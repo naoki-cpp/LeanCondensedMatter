@@ -6,7 +6,7 @@ import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.TotalParticleNumbe
 import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis
 import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.ConvergenceAwareGibbs
 import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.PurePointSummability
-import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.Completed
+import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.Completed.FreeGibbs
 
 set_option linter.style.header false
 

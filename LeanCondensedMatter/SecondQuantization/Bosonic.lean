@@ -1,7 +1,7 @@
 import LeanCondensedMatter.SecondQuantization.Bosonic.Algebra
 import LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace
 import LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics
-import LeanCondensedMatter.SecondQuantization.Bosonic.ImaginaryTime
+import LeanCondensedMatter.SecondQuantization.Bosonic.ImaginaryTime.ImaginaryTimeEvolution
 import LeanCondensedMatter.SecondQuantization.Bosonic.Perturbation
 import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal
 
