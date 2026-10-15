@@ -33,6 +33,29 @@ def massiveDiracRetardedAdvancedRadialDenominatorProduct
   massiveDiracRadialDenominator v p retardedEnergy retardedMass *
     massiveDiracRadialDenominator v p advancedEnergy advancedMass
 
+/-- The gap between two radial Dyson denominator centers converts their
+two-pole inverse into the difference of single-side resolvents. The radial
+momentum term cancels from the gap. No division by the center gap is needed. -/
+theorem massiveDiracRadialDenominator_inv_product_mul_center_gap
+    (v p : ℝ) (energyR massR energyA massA : ℂ)
+    (hR : massiveDiracRadialDenominator v p energyR massR ≠ 0)
+    (hA : massiveDiracRadialDenominator v p energyA massA ≠ 0) :
+    (energyA ^ 2 - massA ^ 2 - (energyR ^ 2 - massR ^ 2)) *
+      (massiveDiracRetardedAdvancedRadialDenominatorProduct
+        v p energyR massR energyA massA)⁻¹ =
+      (massiveDiracRadialDenominator v p energyR massR)⁻¹ -
+        (massiveDiracRadialDenominator v p energyA massA)⁻¹ := by
+  have hgap :
+      energyA ^ 2 - massA ^ 2 - (energyR ^ 2 - massR ^ 2) =
+        massiveDiracRadialDenominator v p energyA massA -
+          massiveDiracRadialDenominator v p energyR massR := by
+    unfold massiveDiracRadialDenominator
+    ring
+  rw [hgap]
+  unfold massiveDiracRetardedAdvancedRadialDenominatorProduct
+  field_simp
+  ring
+
 /-- Polar Jacobian divided by one radial massive-Dirac denominator. -/
 def massiveDiracRadialDenominatorKernel
     (v p : ℝ) (effectiveEnergy effectiveMass : ℂ) : ℂ :=
