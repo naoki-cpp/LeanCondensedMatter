@@ -105,14 +105,6 @@ theorem ExternalInsertionWickDiagram.relativeComponentShuffleSign_mul_mixedPairi
   set interCount :=
     (d.pairingInMixedOrder externalTime σ).interComponentCrossingCount
       (d.componentMixedPairEquiv externalTime σ)
-  have hsignsquare :
-      (Common.Statistics.fermion.zetaInt : ℂ) ^
-          interCount *
-        (Common.Statistics.fermion.zetaInt : ℂ) ^
-          interCount = 1 := by
-    simp only [Common.Statistics.zetaInt_fermion, Int.cast_neg, Int.cast_one]
-    rw [← mul_pow]
-    norm_num
   calc
     _ = componentExternalOrderSign d blockOrder *
           (((Common.Statistics.fermion.zetaInt : ℂ) ^
@@ -124,7 +116,8 @@ theorem ExternalInsertionWickDiagram.relativeComponentShuffleSign_mul_mixedPairi
                 (d.componentExternalTime externalTime B)
                 (d.componentInteractionTime σ B)) := by
       ac_rfl
-    _ = _ := by rw [hsignsquare, one_mul]
+    _ = _ := by
+      simp [Common.Statistics.zetaInt_fermion, ← mul_pow]
 
 end Fermionic
 end SecondQuantization
