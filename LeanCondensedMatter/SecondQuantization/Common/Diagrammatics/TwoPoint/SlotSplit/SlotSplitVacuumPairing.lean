@@ -182,8 +182,8 @@ theorem TwoPointDiagram.exists_slotSplitVacuumNormalizedPairEmbedding_eq_of_firs
       mixedTimeOrderedQuarticLegMapPosition (slotSplitVacuumSlot T) τ τ' σ p = pr.1.1) :
     ∃ q, TwoPointDiagram.slotSplitVacuumNormalizedPairEmbedding T ext vac τ τ' σ hσ q = pr := by
   let d := TwoPointDiagram.ofSlotSplit (Finset.subset_univ T) ext vac
-  exact (vac.pairingInOrder (slotSplitVacuumOrder T)).
-    exists_normalizedPairEmbedding_eq_of_firstEndpoint
+  exact Pairing.exists_normalizedPairEmbedding_eq_of_firstEndpoint
+      (vac.pairingInOrder (slotSplitVacuumOrder T))
       (d.pairingInMixedOrder τ τ' σ)
       (slotSplitVacuumMixedOrderEmbedding T τ τ' σ hσ)
       (TwoPointDiagram.ofSlotSplit_pairingInMixedOrder_partner_vacuumOrderedLeg
