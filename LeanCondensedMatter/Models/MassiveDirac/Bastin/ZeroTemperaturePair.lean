@@ -1,6 +1,6 @@
 import LeanCondensedMatter.Models.MassiveDirac.Bastin.RadialEnergyBridge
 import LeanCondensedMatter.Models.MassiveDirac.Bastin.RadialPairUniformBound
-import LeanCondensedMatter.Transport.Analysis.ZeroTemperatureOccupation
+import LeanCondensedMatter.QuantumTheory.Occupation.ZeroTemperature
 import Mathlib.Tactic
 
 set_option linter.style.header false
@@ -100,7 +100,7 @@ theorem norm_zeroTemperatureOccupation_mul_lorentzian_mul_spectator_radial_le
           targetCenteredInterbandSpectatorCurrentFactor
             band e v m p 0 (offset, broadening)‖ := by
         exact mul_le_mul_of_nonneg_right
-          (QuantumTheory.Transport.norm_zeroTemperatureOccupation_complex_le_one
+          (QuantumTheory.norm_zeroTemperatureOccupation_complex_le_one
             fermiEnergy (bandEnergy band v m p 0 + offset)) (norm_nonneg _)
     _ = ‖(lorentzianSpectralKernel offset broadening : ℂ) *
           targetCenteredInterbandSpectatorCurrentFactor

@@ -755,11 +755,6 @@
       "modules": ["LeanCondensedMatter.Transport.Resolvent.Spectral"]
     },
     {
-      "id": "rashbaExchangeCleanModelOccupationBoundary",
-      "path": "LeanCondensedMatter/Models/RashbaExchange/Model.lean",
-      "modules": ["LeanCondensedMatter.Transport.Analysis.BandOccupation"]
-    },
-    {
       "id": "rashbaExchangeCleanOperatorStredaBoundary",
       "path": "LeanCondensedMatter/Models/RashbaExchange/Operator.lean",
       "modules": ["LeanCondensedMatter.Transport.Streda.RetardedAdvanced"]

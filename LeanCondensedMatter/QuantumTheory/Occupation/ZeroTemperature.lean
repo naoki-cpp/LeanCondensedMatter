@@ -12,11 +12,11 @@ properties. States below the Fermi energy are occupied and states at or above it
 
 Band-filling predicates live in `Transport.Analysis.ZeroTemperatureBandFilling`. Lorentzian
 finite-window and broadening-limit analysis lives in
-`Transport.Analysis.ZeroTemperatureLorentzian`.
+`Transport.Analysis.ZeroTemperatureLorentzian`. These depend on this scalar occupation law,
+not conversely.
 -/
 
 namespace QuantumTheory
-namespace Transport
 
 noncomputable section
 
@@ -76,5 +76,4 @@ theorem zeroTemperatureOccupation_eq_zero_on_center_window
   linarith [henergy.1]
 
 end
-end Transport
 end QuantumTheory

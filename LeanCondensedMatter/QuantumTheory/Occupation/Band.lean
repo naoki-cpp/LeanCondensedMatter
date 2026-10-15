@@ -3,15 +3,14 @@ import Mathlib.Basic.Real.Basic
 set_option linter.style.header false
 
 /-!
-# Generic band-state occupation
+# Band occupation derived from a spectral energy law
 
 This module owns the model-independent composition of an arbitrary energy occupation law with a
-band-energy function. It contains no zero-temperature filling predicates or Fermi-edge analysis, so
-finite-temperature and other arbitrary-occupation consumers can depend on this layer alone.
+band-energy function. It is independent of transport response, zero-temperature filling predicates,
+and Fermi-edge integral analysis.
 -/
 
 namespace QuantumTheory
-namespace Transport
 
 noncomputable section
 
@@ -23,5 +22,4 @@ def bandStateOccupation
   occupation (energy band k)
 
 end
-end Transport
 end QuantumTheory

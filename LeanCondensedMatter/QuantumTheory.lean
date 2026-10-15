@@ -6,6 +6,8 @@ import LeanCondensedMatter.QuantumTheory.SpinfulLattice
 import LeanCondensedMatter.QuantumTheory.PeierlsPhase
 import LeanCondensedMatter.QuantumTheory.PeierlsLattice
 import LeanCondensedMatter.QuantumTheory.ConservationLaw.HeisenbergEvolution
+import LeanCondensedMatter.QuantumTheory.Occupation.Band
+import LeanCondensedMatter.QuantumTheory.Occupation.ZeroTemperature
 import LeanCondensedMatter.QuantumTheory.LinearResponse
 import LeanCondensedMatter.QuantumTheory.DensityOperator
 import LeanCondensedMatter.QuantumTheory.DensityOperator.Diagonal
@@ -20,7 +22,8 @@ set_option linter.style.header false
 # Quantum theory
 
 Particle-number-independent quantum theory: postulates, density operators and entropy, Gibbs states,
-abstract conservation-law evolution, Peierls phases and one-particle link response, and linear response.
+abstract conservation-law evolution, general spectral occupation laws, Peierls phases and
+one-particle link response, and linear response.
 
 Concrete first-quantized realizations are developed in QuantumMechanics, while statistics-specific
 many-body constructions are developed in SecondQuantization.
