@@ -22,7 +22,7 @@ namespace Fermionic
 
 open Common
 
-variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
+variable {Mode : Type*} [LinearOrder Mode]
 
 /-- One external field or one full quartic interaction-picture vertex. -/
 noncomputable def externalInsertionTimedEventOperator {E n : ℕ}
@@ -87,11 +87,13 @@ private theorem prod_externalInsertionTimedEventAtomicOperators {E n : ℕ}
         rw [List.map_ofFn]
         apply congrArg List.ofFn
         funext l
-        simpa only [orderedExternalInsertionLegField,
-          orderedExternalInsertionLegTime, orderedExternalInsertionLegFieldLabel,
-          quarticLocalLegOperator] using
-          (timedFieldOperator_quarticLocalLeg ε (σ v)
-            (Common.quarticLocalLeg (q v) l))
+        change
+          timedFieldOperator ε
+            ⟨σ v, quarticLocalLegExternalFieldLabel (Common.quarticLocalLeg (q v) l)⟩ =
+          imaginaryTimeEvolve ε (σ v)
+            (Common.quarticLocalLegOperator create annihilate (q v) l)
+        exact timedFieldOperator_quarticLocalLeg ε (σ v)
+          (Common.quarticLocalLeg (q v) l)
       rw [hlegs]
       change
         (List.ofFn (fun l : Fin 4 =>
@@ -126,6 +128,10 @@ private theorem externalInsertionMixedAtomicOperators_eq_ofFn {E n : ℕ}
       List.ofFn (fun p => f
         (externalInsertionMixedTimeOrderedAtomicLegEquiv externalTime σ p))
   rw [← List.map_flatMap]
+  change
+    (externalInsertionMixedTimeOrderedAtomicLegs externalTime σ).map f =
+      List.ofFn (fun p => f
+        (externalInsertionMixedTimeOrderedAtomicLegEquiv externalTime σ p))
   rw [externalInsertionMixedTimeOrderedAtomicLegs_eq_ofFn]
   rw [List.map_ofFn]
 
