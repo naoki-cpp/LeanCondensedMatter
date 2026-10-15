@@ -67,24 +67,15 @@ theorem partitionProduct_eq_mul_of_isIndependentAcross {m : Finset α → ℂ} {
 noncomputable def splitCumulant (m : Finset α → ℂ) (A B T : Finset α) : ℂ :=
   if T ≤ A ∨ T ≤ B then cumulantFromMoment m T else 0
 
-private theorem momentFromCumulant_splitCumulant_of_le_left {m : Finset α → ℂ}
-    {A B T : Finset α} (hT : T ≠ ⊥) (hTA : T ≤ A) :
+private theorem momentFromCumulant_splitCumulant_of_le {m : Finset α → ℂ}
+    {A B T : Finset α} (hT : T ≠ ⊥) (hTA : T ≤ A ∨ T ≤ B) :
     momentFromCumulant (splitCumulant m A B) T = m T := by
   have heq : ∀ π : Finpartition T,
       partitionProduct (splitCumulant m A B) π = partitionProduct (cumulantFromMoment m) π :=
     fun π => Finset.prod_congr rfl fun C hC => by
-      simp [splitCumulant, (π.le hC).trans hTA]
-  rw [momentFromCumulant]
-  simp_rw [heq]
-  exact momentFromCumulant_cumulantFromMoment m hT
-
-private theorem momentFromCumulant_splitCumulant_of_le_right {m : Finset α → ℂ}
-    {A B T : Finset α} (hT : T ≠ ⊥) (hTB : T ≤ B) :
-    momentFromCumulant (splitCumulant m A B) T = m T := by
-  have heq : ∀ π : Finpartition T,
-      partitionProduct (splitCumulant m A B) π = partitionProduct (cumulantFromMoment m) π :=
-    fun π => Finset.prod_congr rfl fun C hC => by
-      simp [splitCumulant, (π.le hC).trans hTB]
+      have hCregion : C ≤ A ∨ C ≤ B :=
+        hTA.imp (fun h => (π.le hC).trans h) (fun h => (π.le hC).trans h)
+      simp [splitCumulant, hCregion]
   rw [momentFromCumulant]
   simp_rw [heq]
   exact momentFromCumulant_cumulantFromMoment m hT
@@ -95,27 +86,16 @@ private theorem momentFromCumulant_splitCumulant_eq {m : Finset α → ℂ} {A B
   classical
   obtain ⟨hAB, hm0, hfact⟩ := hind
   have hbase : momentFromCumulant (splitCumulant m A B) (⊥ : Finset α) = m ⊥ := by
-    have htop_empty : (⊤ : Finpartition (⊥ : Finset α)).parts = ∅ :=
-      Finset.eq_empty_iff_forall_notMem.2 fun C hC =>
-        (⊤ : Finpartition (⊥ : Finset α)).ne_bot hC
-          (le_bot_iff.1 ((⊤ : Finpartition (⊥ : Finset α)).le hC))
-    have hall : ∀ π : Finpartition (⊥ : Finset α), π = ⊤ := fun π => Finpartition.ext
-      ((Finset.eq_empty_iff_forall_notMem.2 fun C hC =>
-          π.ne_bot hC (le_bot_iff.1 (π.le hC))).trans htop_empty.symm)
-    rw [momentFromCumulant,
-      Finset.sum_eq_single (⊤ : Finpartition (⊥ : Finset α))
-        (fun π _ hne => absurd (hall π) hne) (fun h => absurd (Finset.mem_univ _) h)]
-    rw [partitionProduct, htop_empty, Finset.prod_empty]
-    exact hm0.symm
+    exact (momentFromCumulant_empty (splitCumulant m A B)).trans hm0.symm
   intro T hT
   by_cases hTA : T ≤ A
   · rcases eq_or_ne T ⊥ with rfl | hT0
     · exact hbase
-    · exact momentFromCumulant_splitCumulant_of_le_left hT0 hTA
+    · exact momentFromCumulant_splitCumulant_of_le hT0 (Or.inl hTA)
   by_cases hTB : T ≤ B
   · rcases eq_or_ne T ⊥ with rfl | hT0
     · exact hbase
-    · exact momentFromCumulant_splitCumulant_of_le_right hT0 hTB
+    · exact momentFromCumulant_splitCumulant_of_le hT0 (Or.inr hTB)
   obtain ⟨x, hxT, hxA⟩ := Finset.not_subset.1 hTA
   have hxB : x ∈ B := (Finset.mem_union.1 (hT hxT)).resolve_left hxA
   have hTB' : T ⊓ B ≠ ⊥ := Finset.ne_empty_of_mem (Finset.mem_inter.2 ⟨hxT, hxB⟩)
@@ -154,8 +134,10 @@ private theorem momentFromCumulant_splitCumulant_eq {m : Finset α → ℂ} {A B
     exact hTA' (disjoint_self.1 (h ▸ hdisj.symm))
   rw [hsum, sum_Iic_partitionProduct_eq (splitCumulant m A B) σ₀, partitionProduct, hσ₀parts,
     Finset.prod_insert hne, Finset.prod_singleton,
-    momentFromCumulant_splitCumulant_of_le_right hTB' (inf_le_right : T ⊓ B ≤ B),
-    momentFromCumulant_splitCumulant_of_le_left hTA' (inf_le_right : T ⊓ A ≤ A), mul_comm]
+    momentFromCumulant_splitCumulant_of_le (A := A) (B := B) hTB'
+      (Or.inr (inf_le_right : T ⊓ B ≤ B)),
+    momentFromCumulant_splitCumulant_of_le (A := A) (B := B) hTA'
+      (Or.inl (inf_le_right : T ⊓ A ≤ A)), mul_comm]
   exact (hfact T hT).symm
 
 /-- The true cumulant agrees with `splitCumulant` on every nonempty subset of the two regions. -/
