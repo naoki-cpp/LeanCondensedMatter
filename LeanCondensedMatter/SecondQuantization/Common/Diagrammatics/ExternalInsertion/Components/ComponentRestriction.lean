@@ -369,19 +369,6 @@ private theorem ExternalInsertionDiagram.componentDiagramLeg_strictMono
       have hk := k.isLt
       omega
 
-/-- The canonical order embedding of one restricted component's flattened legs into the ambient
-external-insertion leg order. -/
-noncomputable def ExternalInsertionDiagram.componentDiagramLegOrderEmbedding
-    {S : Finset (Fin N)}
-    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
-    (B : d.vertexGraph.componentPartition.parts) :
-    Fin (2 * (2 * (interactionSector
-      (B : Finset (ExternalInsertionVertex E S))).card + d.externalPairCount B)) ↪o
-      Fin (2 * (2 * S.card + E)) :=
-  OrderEmbedding.ofStrictMono (d.componentDiagramLeg B)
-    (d.componentDiagramLeg_strictMono B)
-
-
 /-- The component-local leg embeddings, taken over every connected component, form the canonical
 order-preserving family shuffle onto the full ambient flattened-leg enumeration. -/
 noncomputable def ExternalInsertionDiagram.componentLegShuffle
@@ -407,7 +394,7 @@ noncomputable def ExternalInsertionDiagram.componentLegShuffle
           d.vertexGraph.componentPartition.parts))
   strictMono := fun B => by
     change StrictMono (fun p => d.componentDiagramLeg B p)
-    exact (d.componentDiagramLegOrderEmbedding B).strictMono
+    exact d.componentDiagramLeg_strictMono B
 
 @[simp]
 theorem ExternalInsertionDiagram.componentLegShuffle_slotEquiv_apply
