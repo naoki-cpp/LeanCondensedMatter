@@ -1,5 +1,4 @@
 import Mathlib.Algebra.BigOperators.Group.Finset.Basic
-import Mathlib.Algebra.BigOperators.ModEq
 import Mathlib.Data.Fintype.EquivFin
 import Mathlib.Data.Fintype.Perm
 import Mathlib.Data.Fintype.Sigma
@@ -14,7 +13,9 @@ set_option linter.style.header false
 into `Fin total`, preserving the order inside each block.  The canonical `FamilySlotShuffle size`
 specializes the ambient cardinality to `∑ i, size i` when the index type is finite.
 
-This module contains only the pure finite combinatorics; shuffled integrands and continuity live in
+This module owns the shuffle structure, finite instances, and cardinality transport.
+Inter-block inversion counts live in `FamilySlotShuffleInversions`; permutation signs live in
+`FamilySlotShuffleSign`. Shuffled integrands and continuity live in
 `Analysis/OrderedSimplex/FamilyShuffleIntegrand.lean`.
 -/
 
@@ -29,67 +30,6 @@ structure FamilySlotShuffleTo (size : ι → ℕ) (total : ℕ) where
   /-- Equivalence between tagged local slots and ambient slots. -/
   slotEquiv : (Σ i : ι, Fin (size i)) ≃ Fin total
   strictMono : ∀ i, StrictMono (fun j => slotEquiv ⟨i, j⟩)
-
-/-- Number of ambient-order inversions in which a slot of a distinct block `j` occurs
-before a slot of block `i`. The diagonal is zero, so this records only inter-block inversions.
-The orientation is explicit so consumers can choose the block order supplied by their own semantics
-rather than imposing an order on the family index type here. -/
-noncomputable def FamilySlotShuffleTo.blockInversionCount {size : ι → ℕ} {total : ℕ}
-    (shuffle : FamilySlotShuffleTo size total) (i j : ι) : ℕ := by
-  classical
-  exact if i = j then 0
-    else
-      ∑ p : Fin (size i), ∑ q : Fin (size j),
-        if shuffle.slotEquiv ⟨j, q⟩ < shuffle.slotEquiv ⟨i, p⟩ then 1 else 0
-
-@[simp]
-theorem FamilySlotShuffleTo.blockInversionCount_self {size : ι → ℕ} {total : ℕ}
-    (shuffle : FamilySlotShuffleTo size total) (i : ι) :
-    shuffle.blockInversionCount i i = 0 := by
-  classical
-  simp [FamilySlotShuffleTo.blockInversionCount]
-
-theorem FamilySlotShuffleTo.blockInversionCount_of_ne {size : ι → ℕ} {total : ℕ}
-    (shuffle : FamilySlotShuffleTo size total) {i j : ι} (hij : i ≠ j) :
-    shuffle.blockInversionCount i j =
-      ∑ p : Fin (size i), ∑ q : Fin (size j),
-        if shuffle.slotEquiv ⟨j, q⟩ < shuffle.slotEquiv ⟨i, p⟩ then 1 else 0 := by
-  classical
-  simp [FamilySlotShuffleTo.blockInversionCount, hij]
-
-/-- Total inter-block inversion count relative to an explicit ordering of the blocks.
-
-The order selects exactly one orientation of every unordered pair of distinct blocks. Keeping that
-choice explicit avoids imposing an arbitrary order on the family index type. -/
-noncomputable def FamilySlotShuffleTo.orderedBlockInversionCount [Fintype ι]
-    {size : ι → ℕ} {total : ℕ} (shuffle : FamilySlotShuffleTo size total)
-    (blockOrder : ι ≃ Fin (Fintype.card ι)) : ℕ :=
-  ∑ ij ∈ (Finset.univ : Finset ι).offDiag,
-    if blockOrder ij.1 < blockOrder ij.2
-    then shuffle.blockInversionCount ij.1 ij.2 else 0
-
-/-- Pointwise modular agreement of inter-block inversion counts transports to the total ordered
-inter-block inversion count for the same block order. -/
-theorem FamilySlotShuffleTo.orderedBlockInversionCount_modEq_of_blockInversionCount_modEq
-    [Fintype ι] {size₁ size₂ : ι → ℕ} {total₁ total₂ n : ℕ}
-    (σ : FamilySlotShuffleTo size₁ total₁)
-    (τ : FamilySlotShuffleTo size₂ total₂)
-    (blockOrder : ι ≃ Fin (Fintype.card ι))
-    (h : ∀ i j, i ≠ j →
-      Nat.ModEq n (σ.blockInversionCount i j) (τ.blockInversionCount i j)) :
-    Nat.ModEq n
-      (σ.orderedBlockInversionCount blockOrder)
-      (τ.orderedBlockInversionCount blockOrder) := by
-  classical
-  unfold FamilySlotShuffleTo.orderedBlockInversionCount
-  refine Nat.ModEq.sum (n := n) ?_
-  intro ij hij
-  simp only [Finset.mem_offDiag] at hij
-  by_cases hlt : blockOrder ij.1 < blockOrder ij.2
-  · simp only [hlt, ite_eq_left]
-    exact h ij.1 ij.2 hij.2.2
-  · simp only [hlt, ite_false]
-    exact Nat.ModEq.refl 0
 
 @[ext]
 theorem FamilySlotShuffleTo.ext {size : ι → ℕ} {total : ℕ}

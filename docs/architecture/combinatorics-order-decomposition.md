@@ -22,6 +22,17 @@ shuffle. A `Finpartition` instead indexes nonempty parts. The adapter retains th
 the partition-facing order and shuffle types while sharing the family extraction implementation.
 
 
+## Family-shuffle structure, inversion counts, and signs
+
+`FamilySlotShuffle` owns the order-preserving slot equivalence, finite instances, total-size
+transport, and empty-family construction. It does not define inversion counts or import modular
+arithmetic for those laws.
+
+`FamilySlotShuffleInversions` owns the inter-block inversion counts, their total relative to an
+explicit block order, and modular transport. `FamilySlotShuffleSign` derives relative permutation
+signs from those counts. Pairing component crossings and external-sector parity use the counts
+directly without importing the permutation-sign theorem.
+
 ## Binary ambient slots and recursive presentations
 
 `Combinatorics.SlotShuffle` owns order-preserving interleavings of two slot families, their left
