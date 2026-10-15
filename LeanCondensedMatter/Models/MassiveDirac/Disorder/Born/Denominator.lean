@@ -212,6 +212,34 @@ theorem integral_massiveDiracRadialDenominatorKernel_eq_log
   rw [hmain]
   field_simp
 
+/-- If the real part of the massive-Dirac spectral center is positive,
+a real-axis pole would exist whenever its imaginary part vanished.
+Thus nonvanishing of the quadratic denominator on the real momentum axis
+forces the center off the principal-log branch cut. -/
+theorem massiveDiracRadialDenominator_center_im_ne_zero_of_re_pos
+    (v : ℝ) (energy mass : ℂ) (hvelocity : v ≠ 0)
+    (hcenterRe : 0 < (energy ^ 2 - mass ^ 2).re)
+    (hden : ∀ p : ℝ, massiveDiracRadialDenominator v p energy mass ≠ 0) :
+    (energy ^ 2 - mass ^ 2).im ≠ 0 := by
+  intro him
+  let p : ℝ := Real.sqrt ((energy ^ 2 - mass ^ 2).re) / v
+  have hp : v ^ 2 * p ^ 2 = (energy ^ 2 - mass ^ 2).re := by
+    dsimp [p]
+    rw [div_pow]
+    have hpos : 0 ≤ (energy ^ 2).re - (mass ^ 2).re := by
+      simpa only [Complex.sub_re] using le_of_lt hcenterRe
+    rw [Real.sq_sqrt hpos]
+    field_simp
+  have hzero : massiveDiracRadialDenominator v p energy mass = 0 := by
+    apply Complex.ext
+    · simp only [massiveDiracRadialDenominator, Complex.sub_re,
+        Complex.ofReal_re, Complex.zero_re]
+      rw [Complex.sub_re] at hp
+      linarith
+    · simpa only [massiveDiracRadialDenominator, Complex.sub_im,
+        Complex.ofReal_im, sub_zero, Complex.zero_im] using him
+  exact hden p hzero
+
 /-- Explicit arbitrary-regulator finite-cutoff evaluation of the shared denominator integral. -/
 private theorem finiteCutoffContinuumBornDenominatorIntegralOfRegulator_eq_log_sub_log
     (v m probeEnergy regulator pMax : ℝ)
