@@ -1,4 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.InteractionSector
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Core.SlotCongr
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.Amplitude
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentPairingValue
 
@@ -36,22 +37,11 @@ private theorem ExternalInsertionWickDiagram.componentOrderedDiagram_vertexWeigh
     interactionSector
       (B : Finset (ExternalInsertionVertex E (Finset.univ : Finset (Fin n))))
   let r := d.restrictComponent B
-  change
-    (∏ v : ↥(Finset.univ : Finset (Fin T.card)),
-      g (r.vertexLabel (T.orderIsoOfFin rfl v.1))) =
-      ∏ v : ↥T, g (r.vertexLabel v)
-  let e : Fin T.card ≃ ↥(Finset.univ : Finset (Fin T.card)) :=
-    (Equiv.subtypeUnivEquiv (fun x => Finset.mem_univ x)).symm
-  calc
-    _ = ∏ v : Fin T.card, g (r.vertexLabel (T.orderIsoOfFin rfl v)) := by
-      simpa [e] using
-        (Equiv.prod_comp e
-          (fun v : ↥(Finset.univ : Finset (Fin T.card)) =>
-            g (r.vertexLabel (T.orderIsoOfFin rfl v.1)))).symm
-    _ = _ := by
-      simpa using
-        (Equiv.prod_comp (T.orderIsoOfFin rfl).toEquiv
-          (fun v : ↥T => g (r.vertexLabel v)))
+  let e : ↥T ≃ ↥(Finset.univ : Finset (Fin T.card)) :=
+    (T.orderIsoOfFin rfl).toEquiv.symm.trans
+      (Equiv.subtypeUnivEquiv (fun v : Fin T.card => Finset.mem_univ v)).symm
+  change (r.slotCongr e).vertexWeight g = r.vertexWeight g
+  exact r.slotCongr_vertexWeight e g
 
 variable [LinearOrder Mode] [Fintype Mode]
 
