@@ -106,17 +106,9 @@ theorem sum_partitionProduct_momentFromCumulant_partsCard_eq
       partitionProduct (momentFromCumulant κ) σ.1 =
         ∑ ρ : {ρ : Finpartition S // ρ ≤ σ.1}, partitionProduct κ ρ.1 := by
     intro σ
-    have hIic :
-        (∑ ρ : {ρ : Finpartition S // ρ ≤ σ.1}, partitionProduct κ ρ.1) =
-          ∑ ρ ∈ Finset.Iic σ.1, partitionProduct κ ρ := by
-      rw [← Finset.sum_coe_sort (Finset.Iic σ.1) (partitionProduct κ)]
-      refine Fintype.sum_equiv
-        (Equiv.subtypeEquivRight (fun ρ => Finset.mem_Iic (a := σ.1).symm))
-        (fun ρ : {ρ : Finpartition S // ρ ≤ σ.1} => partitionProduct κ ρ.1)
-        (fun ρ : {ρ : Finpartition S // ρ ∈ Finset.Iic σ.1} =>
-          partitionProduct κ ρ.1) fun x => ?_
-      rw [Equiv.subtypeEquivRight_apply]
-    rw [← sum_Iic_partitionProduct_eq κ σ.1, ← hIic]
+    rw [← sum_Iic_partitionProduct_eq κ σ.1,
+      Finset.sum_subtype (Finset.Iic σ.1)
+        (fun ρ => (Finset.mem_Iic : ρ ∈ Finset.Iic σ.1 ↔ ρ ≤ σ.1)) (partitionProduct κ)]
   calc
     (∑ σ : {σ : Finpartition S // σ.parts.card = k},
         partitionProduct (momentFromCumulant κ) σ.1) =
