@@ -3,7 +3,6 @@ import LeanCondensedMatter.Combinatorics.FiniteSumModEq
 import LeanCondensedMatter.Combinatorics.SumEquivPartition
 import LeanCondensedMatter.Combinatorics.SlotShuffle
 import LeanCondensedMatter.Combinatorics.BinaryShuffle
-import LeanCondensedMatter.Combinatorics.BinaryShuffleSlotEquiv
 import LeanCondensedMatter.Combinatorics.BinaryShuffleSlots
 import LeanCondensedMatter.Combinatorics.FamilySlotShuffle
 import LeanCondensedMatter.Combinatorics.FamilySlotShuffleInversions

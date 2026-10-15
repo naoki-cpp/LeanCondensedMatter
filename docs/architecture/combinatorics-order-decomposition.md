@@ -44,9 +44,9 @@ The ambient binomial-cardinality theorem follows from this direct equivalence.
 The construction reuses Mathlib's `Finset.orderIsoOfFin` and `subsetSumSdiffEquiv`, which is backed
 by `Equiv.Set.sumDiffSubset`. No dependent recursion that removes the first slot is needed.
 
-`BinaryShuffleSlots` maps the recursive presentation to ambient positions.
-`BinaryShuffleSlotEquiv` owns injectivity and the equivalence with that recursive presentation;
-it uses the ambient cardinality result. `FamilySlotShuffleDecomposition` consumes the ambient
+`BinaryShuffleSlots` owns the adapter from recursive binary shuffles to ambient slot shuffles:
+the slot coordinates, monotonicity, injectivity, the equivalence of presentations, and finite-sum
+transport. The equivalence uses the independent ambient cardinality result. `FamilySlotShuffleDecomposition` consumes the ambient
 module directly. The ordered-simplex product proof still uses recursive binary shuffles internally,
 while its integrand is attached to the ambient `SlotShuffle`.
 
