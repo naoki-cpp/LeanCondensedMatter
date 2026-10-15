@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Analysis.OrderedSimplex.BinarySlotShuffle
 import LeanCondensedMatter.Combinatorics.SlotShuffle
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.SupportStandardization
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.ExternalSupportFiber
@@ -99,9 +100,9 @@ private theorem externalSupportDysonFactor_orderIsoOfFin
       (T.orderIsoOfFin h).toEquiv.symm.trans
         (Equiv.subtypeUnivEquiv
           (fun i : Fin m => Finset.mem_univ i)).symm
-    (ext.slotCongr e).dysonFixedTimeAmplitude ε β g externalTime
+    ExternalInsertionWickDiagram.dysonFixedTimeAmplitude (ext.slotCongr e) ε β g externalTime
       (fun i => σ ((T.orderIsoOfFin rfl i).1)) =
-      (ext.slotCongr e').dysonFixedTimeAmplitude ε β g externalTime
+      ExternalInsertionWickDiagram.dysonFixedTimeAmplitude (ext.slotCongr e') ε β g externalTime
         (fun i => σ ((T.orderIsoOfFin h i).1)) := by
   cases h
   rfl
@@ -122,10 +123,10 @@ theorem externalInsertionSupportDysonFactor_eq_shuffleStandardizedData
           (fun i : Fin T.card => Finset.mem_univ i)).symm
     let f : Fin T.card → Fin (m + k) :=
       fun i => (T.orderIsoOfFin rfl i).1
-    (ext.1.slotCongr e).dysonFixedTimeAmplitude ε β g externalTime (σ ∘ f) =
+    ExternalInsertionWickDiagram.dysonFixedTimeAmplitude (ext.1.slotCongr e) ε β g externalTime (σ ∘ f) =
+      ExternalInsertionWickDiagram.dysonFixedTimeAmplitude
       ((ExternalInsertionDiagram.standardizeVacuumFree
-        T shuffle.card_leftSlots) ext).1.dysonFixedTimeAmplitude
-          ε β g externalTime
+        T shuffle.card_leftSlots) ext).1 ε β g externalTime
           (fun i => σ (shuffle.slotEquiv (Sum.inl i))) := by
   dsimp only
   have h := externalSupportDysonFactor_orderIsoOfFin ε β g
@@ -156,10 +157,10 @@ theorem externalInsertionStandardizedSupportFiber_dysonAmplitude_eq_shuffleInteg
       (E := E) shuffle).symm q
     let d := (ExternalInsertionDiagram.externalSupportFiberEquiv
       (Finset.subset_univ shuffle.leftSlots)).symm p
-    d.1.dysonAmplitude ε β g externalTime =
+    ExternalInsertionWickDiagram.dysonAmplitude d.1 ε β g externalTime =
       intervalIntegral.orderedSimplexIntegral (m + k) β
         (shuffle.integrand
-          (fun σ => q.1.1.dysonFixedTimeAmplitude ε β g externalTime σ)
+          (fun σ => ExternalInsertionWickDiagram.dysonFixedTimeAmplitude q.1.1 ε β g externalTime σ)
           (fun σ => (-1 : ℂ) ^ k * (∏ i : Fin k, g (q.2.1 i)) *
             flatVertexLegPairingEvaluation ε β q.2.1 σ q.2.2)) := by
   classical
@@ -193,10 +194,11 @@ theorem externalInsertionStandardizedSupportFiber_dysonAmplitude_eq_shuffleInteg
       quarticDiagramEquivOrderedData shuffle.sdiffLeftSlotsOrderEquiv p.2 = q.2 :=
     congrArg Prod.snd hp
   change
-    (p.1.1.slotCongr
-      ((shuffle.leftSlots.orderIsoOfFin rfl).toEquiv.symm.trans
-        (Equiv.subtypeUnivEquiv
-          (fun i : Fin shuffle.leftSlots.card => Finset.mem_univ i)).symm)).dysonFixedTimeAmplitude
+    ExternalInsertionWickDiagram.dysonFixedTimeAmplitude
+      (p.1.1.slotCongr
+        ((shuffle.leftSlots.orderIsoOfFin rfl).toEquiv.symm.trans
+          (Equiv.subtypeUnivEquiv
+            (fun i : Fin shuffle.leftSlots.card => Finset.mem_univ i)).symm))
       ε β g externalTime
       (σ ∘ fun i => (shuffle.leftSlots.orderIsoOfFin rfl i).1) *
     (((-1 : ℂ) ^
@@ -215,7 +217,7 @@ theorem externalInsertionStandardizedSupportFiber_dysonAmplitude_eq_shuffleInteg
             (σ ∘ fun i =>
               (((Finset.univ : Finset (Fin (m + k))) \ shuffle.leftSlots).orderIsoOfFin
                 rfl i).1))) =
-    q.1.1.dysonFixedTimeAmplitude ε β g externalTime
+    ExternalInsertionWickDiagram.dysonFixedTimeAmplitude q.1.1 ε β g externalTime
       (fun i => σ (shuffle.slotEquiv (Sum.inl i))) *
     ((-1 : ℂ) ^ k * (∏ i : Fin k, g (q.2.1 i)) *
       flatVertexLegPairingEvaluation ε β q.2.1
