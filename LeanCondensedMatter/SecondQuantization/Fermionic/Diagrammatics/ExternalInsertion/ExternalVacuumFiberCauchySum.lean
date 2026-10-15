@@ -72,7 +72,8 @@ private theorem vacuumFreeExternalInsertionDysonCoefficient_eq_sum_if
               ext.1.dysonAmplitude ε β g externalTime := by
             rw [Finset.sum_subtype
               (p := fun ext : X => ext.1.externalLabel = externalLabel)
-              (Finset.univ : Finset X)
+              ((Finset.univ : Finset X).filter
+                (fun ext => ext.1.externalLabel = externalLabel))
               (fun _ => by simp)
               (fun ext : X => ext.1.dysonAmplitude ε β g externalTime)]
         _ = _ := by
