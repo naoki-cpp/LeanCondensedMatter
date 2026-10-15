@@ -49,31 +49,5 @@ theorem ExternalInsertionDiagram.externalSupport_reconstruction
   d.ofSlotSplit_slotSplit d.externallySupportedInteractionPart_subset
     d.pairing_isSplit_externallySupportedInteractionPart
 
-/-- The canonical external-bearing diagram preserves every external label. -/
-@[simp]
-theorem ExternalInsertionDiagram.externalSupportDiagram_externalLabel
-    {S : Finset (Fin N)}
-    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
-    (e : Fin (2 * E)) :
-    d.externalSupportDiagram.externalLabel e = d.externalLabel e := rfl
-
-/-- Canonical external-bearing interaction labels agree with the ambient labels. -/
-@[simp]
-theorem ExternalInsertionDiagram.externalSupportDiagram_vertexLabel
-    {S : Finset (Fin N)}
-    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
-    (v : ↥d.externallySupportedInteractionPart) :
-    d.externalSupportDiagram.vertexLabel v =
-      d.vertexLabel ⟨v.1, d.externallySupportedInteractionPart_subset v.2⟩ := rfl
-
-/-- Canonical vacuum interaction labels agree with the ambient labels. -/
-@[simp]
-theorem ExternalInsertionDiagram.vacuumComplementDiagram_vertexLabel
-    {S : Finset (Fin N)}
-    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
-    (v : ↥(S \ d.externallySupportedInteractionPart)) :
-    d.vacuumComplementDiagram.vertexLabel v =
-      d.vertexLabel ⟨v.1, (Finset.mem_sdiff.mp v.2).1⟩ := rfl
-
 end Common
 end SecondQuantization
