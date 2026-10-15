@@ -864,6 +864,88 @@ theorem gram_sixthTurn_iff (G : Matrix (Fin 2) (Fin 2) ℝ)
     fin_cases i <;> fin_cases j <;>
       simp [Matrix.mul_apply, Fin.sum_univ_two] <;> linarith
 
+/-- The opposite orientation of the sixth-turn integral coordinate
+matrix preserves a symmetric planar Gram metric exactly when the primitive
+basis has equal squared lengths and a negative equilateral cross term. -/
+theorem gram_sixthTurn_opposite_iff (G : Matrix (Fin 2) (Fin 2) ℝ)
+    (hSymm : G 0 1 = G 1 0) :
+    (let A : Matrix (Fin 2) (Fin 2) ℝ := !![0, 1; -1, 1];
+      A.transpose * G * A = G) ↔
+      G 0 0 = G 1 1 ∧ 2 * G 0 1 = -G 0 0 := by
+  constructor
+  · intro hInv
+    dsimp at hInv
+    have h00 := congrArg
+      (fun M : Matrix (Fin 2) (Fin 2) ℝ => M 0 0) hInv
+    have h01 := congrArg
+      (fun M : Matrix (Fin 2) (Fin 2) ℝ => M 0 1) hInv
+    simp [Matrix.mul_apply, Fin.sum_univ_two] at h00 h01
+    constructor <;> linarith
+  · rintro ⟨hDiag, hOff⟩
+    dsimp
+    ext i j
+    fin_cases i <;> fin_cases j <;>
+      simp [Matrix.mul_apply, Fin.sum_univ_two] <;> linarith
+
+/-- For a positive symmetric planar Gram metric, one of the two sixth-turn
+integer matrices preserves the metric if and only if its two diagonal entries
+agree and the absolute off-diagonal entry is half their common value.
+The disjunction makes the hexagonal condition independent of the sign of
+the primitive-basis angle. -/
+theorem gram_sixthTurn_either_iff (G : Matrix (Fin 2) (Fin 2) ℝ)
+    (hSymm : G 0 1 = G 1 0) (hPos : 0 < G 0 0) :
+    ((let A : Matrix (Fin 2) (Fin 2) ℝ := !![0, -1; 1, 1];
+        A.transpose * G * A = G) ∨
+      (let A : Matrix (Fin 2) (Fin 2) ℝ := !![0, 1; -1, 1];
+        A.transpose * G * A = G)) ↔
+      G 0 0 = G 1 1 ∧ 2 * |G 0 1| = G 0 0 := by
+  constructor
+  · rintro (hInv | hInv)
+    · obtain ⟨hDiag, hOff⟩ := (gram_sixthTurn_iff G hSymm).mp hInv
+      have hNonneg : 0 ≤ G 0 1 := by linarith
+      refine ⟨hDiag, ?_⟩
+      rw [abs_of_nonneg hNonneg]
+      exact hOff
+    · obtain ⟨hDiag, hOff⟩ := (gram_sixthTurn_opposite_iff G hSymm).mp hInv
+      have hNonpos : G 0 1 ≤ 0 := by linarith
+      refine ⟨hDiag, ?_⟩
+      rw [abs_of_nonpos hNonpos]
+      linarith
+  · rintro ⟨hDiag, hAbs⟩
+    rcases le_total (0 : ℝ) (G 0 1) with hNonneg | hNonpos
+    · left
+      apply (gram_sixthTurn_iff G hSymm).mpr
+      refine ⟨hDiag, ?_⟩
+      rwa [abs_of_nonneg hNonneg] at hAbs
+    · right
+      apply (gram_sixthTurn_opposite_iff G hSymm).mpr
+      refine ⟨hDiag, ?_⟩
+      rw [abs_of_nonpos hNonpos] at hAbs
+      linarith
+
+/-- On the Gauss-reduced metric region, a sixth-turn integral symmetry exists
+in one of the two orientations exactly on the boundary where the shorter
+primitive vector is tied in squared length with one of the sum/difference
+vectors. Indeed their smaller squared length is
+`G₀₀ + G₁₁ - 2 * |G₀₁|`. -/
+theorem gram_reduced_sixthTurn_iff_boundary
+    (G : Matrix (Fin 2) (Fin 2) ℝ)
+    (hSymm : G 0 1 = G 1 0)
+    (hPos : 0 < G 0 0)
+    (hDiag : G 0 0 ≤ G 1 1)
+    (hOff : 2 * |G 0 1| ≤ G 0 0) :
+    ((let A : Matrix (Fin 2) (Fin 2) ℝ := !![0, -1; 1, 1];
+        A.transpose * G * A = G) ∨
+      (let A : Matrix (Fin 2) (Fin 2) ℝ := !![0, 1; -1, 1];
+        A.transpose * G * A = G)) ↔
+      G 0 0 + G 1 1 - 2 * |G 0 1| = G 0 0 := by
+  rw [gram_sixthTurn_either_iff G hSymm hPos]
+  constructor
+  · rintro ⟨hEq, hAbs⟩
+    linarith
+  · intro hBoundary
+    constructor <;> linarith
+
 /-- Swapping two primitive basis vectors preserves a symmetric Gram matrix
 exactly when they have equal squared lengths. This is the rhombic primitive-basis
 condition relevant to the centered-rectangular Bravais class. It is not by
