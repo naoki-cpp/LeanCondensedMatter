@@ -232,7 +232,7 @@ theorem tendsto_finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBou
     unfold boundaryRAWidth
     rw [hpref]
     field_simp [hvelocity, hgammaNe, ne_of_gt hQPos, Real.pi_ne_zero]
-  have hkernel := tendsto_scaled_integral_radialQuadraticLorentzian_nhdsGT_zero
+  have hkernel := Real.tendsto_scaled_integral_radialQuadraticLorentzian_nhdsGT_zero
     v pMax hvelocity hcenter0 hgap hcenterMax (by linarith) hwidth hscale
   rw [tendsto_pi_nhds]
   intro output

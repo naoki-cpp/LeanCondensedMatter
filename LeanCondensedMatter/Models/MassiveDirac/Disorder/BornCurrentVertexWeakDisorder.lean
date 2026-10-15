@@ -148,7 +148,7 @@ theorem tendsto_finiteCutoffContinuumBornRetardedAdvancedPauliXCurrentRungCoeffi
             v m pMax probeEnergy disorderStrength hbar)
       (nhdsWithin 0 (Set.Ioi 0)) (nhds Real.pi) := by
     simpa [continuumBornRetardedAdvancedCurrentRungArctanPhase] using
-      (tendsto_arctan_div_sub_arctan_div_nhdsGT_zero
+      (Real.tendsto_arctan_div_sub_arctan_div_nhdsGT_zero
         hcenter0 hdelta hcenterMax hcenterMaxNeg hwidth)
   have hpref :=
     tendsto_continuumBornRetardedAdvancedCurrentRungPrefactorFactor_disorder_zero

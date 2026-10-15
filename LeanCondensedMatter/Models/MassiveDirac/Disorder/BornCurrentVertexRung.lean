@@ -341,7 +341,7 @@ theorem finiteCutoffContinuumBornRetardedAdvancedPauliXCurrentRungCoefficient_x_
       (probeEnergy ^ 2 - m ^ 2)
   let B : ℝ :=
     continuumBornRADenominatorWidth v m probeEnergy disorderStrength hbar
-  have hradial := integral_radialQuadraticLorentzian_eq_arctan
+  have hradial := Real.integral_radialQuadraticLorentzian_eq_arctan
     v A B pMax hv hwidth
   unfold finiteCutoffContinuumBornRetardedAdvancedPauliXCurrentRungCoefficient
     continuumBornRetardedAdvancedPauliXCurrentRungRadialIntegrandReal
