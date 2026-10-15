@@ -22,6 +22,7 @@ import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalIn
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.PhysicalWickExpansion
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.PhysicalDysonIntegral
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.PhysicalVertexProduct
+import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.PhysicalVertexDyson
 
 set_option linter.style.header false
 
