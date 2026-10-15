@@ -597,7 +597,7 @@ centered-rectangular Bravais class. The matrix `S` has determinant `-2`,
 so this conventional cell is not an integral primitive basis change. -/
 theorem gram_sumDiff_diagonal_iff (G : Matrix (Fin 2) (Fin 2) ℝ)
     (hSymm : G 0 1 = G 1 0) :
-    (let S : Matrix (Fin 2) (Fin 2) ℝ := !![1, 1; 1, -1]
+    (let S : Matrix (Fin 2) (Fin 2) ℝ := !![1, 1; 1, -1];
      S.transpose * G * S =
        !![2 * (G 0 0 + G 0 1), 0;
           0, 2 * (G 0 0 - G 0 1)]) ↔ G 0 0 = G 1 1 := by
