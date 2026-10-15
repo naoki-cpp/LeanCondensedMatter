@@ -1164,6 +1164,7 @@
       "name": "LeanCondensedMatter.Combinatorics.Cumulant.Moment",
       "sourceFile": "LeanCondensedMatter/Combinatorics/Cumulant/Moment.lean",
       "imports": [
+        "LeanCondensedMatter.Combinatorics.FinpartitionProduct",
         "LeanCondensedMatter.Combinatorics.SetPartition.DistinguishedBlock",
         "LeanCondensedMatter.Combinatorics.SetPartition.Refinement"
       ],
@@ -1303,14 +1304,6 @@
       "sourceFile": "LeanCondensedMatter/Combinatorics/IncidenceAlgebra/Mobius.lean",
       "imports": [],
       "externalImportCount": 4
-    },
-    {
-      "name": "LeanCondensedMatter.Combinatorics.IncidenceAlgebra",
-      "sourceFile": "LeanCondensedMatter/Combinatorics/IncidenceAlgebra.lean",
-      "imports": [
-        "LeanCondensedMatter.Combinatorics.IncidenceAlgebra.Mobius"
-      ],
-      "externalImportCount": 0
     },
     {
       "name": "LeanCondensedMatter.Combinatorics.InvolutionCard",
@@ -1674,7 +1667,7 @@
         "LeanCondensedMatter.Combinatorics.FiniteIndex",
         "LeanCondensedMatter.Combinatorics.FiniteSumModEq",
         "LeanCondensedMatter.Combinatorics.FinpartitionOrderShuffle",
-        "LeanCondensedMatter.Combinatorics.IncidenceAlgebra",
+        "LeanCondensedMatter.Combinatorics.IncidenceAlgebra.Mobius",
         "LeanCondensedMatter.Combinatorics.InvolutionCard",
         "LeanCondensedMatter.Combinatorics.PerfectPairing",
         "LeanCondensedMatter.Combinatorics.SetPartition",
@@ -2076,6 +2069,7 @@
       "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Conductivity/Hall/GaussianCrossed.lean",
       "imports": [
         "LeanCondensedMatter.Models.MassiveDirac.Conductivity.Hall.NonCrossing",
+        "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedRadialTrace",
         "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedRealSpaceIntegral",
         "LeanCondensedMatter.Transport.Streda.ConductivityNormalization"
       ],
@@ -2182,15 +2176,6 @@
       "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Conductivity/Normalization.lean",
       "imports": [
         "LeanCondensedMatter.Transport.Streda.PhysicalMomentum2DNormalization"
-      ],
-      "externalImportCount": 0
-    },
-    {
-      "name": "LeanCondensedMatter.Models.MassiveDirac.CurrentBridge",
-      "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/CurrentBridge.lean",
-      "imports": [
-        "LeanCondensedMatter.Models.MassiveDirac.Model.Operator",
-        "LeanCondensedMatter.QuantumMechanics.SingleParticle.GeneralizedCurrent"
       ],
       "externalImportCount": 0
     },
@@ -2955,7 +2940,6 @@
         "LeanCondensedMatter.Models.MassiveDirac.Bastin",
         "LeanCondensedMatter.Models.MassiveDirac.Conductivity.Hall",
         "LeanCondensedMatter.Models.MassiveDirac.Conductivity.Longitudinal",
-        "LeanCondensedMatter.Models.MassiveDirac.CurrentBridge",
         "LeanCondensedMatter.Models.MassiveDirac.Disorder",
         "LeanCondensedMatter.Models.MassiveDirac.Model",
         "LeanCondensedMatter.Models.MassiveDirac.Propagator",
@@ -3632,17 +3616,9 @@
       "name": "LeanCondensedMatter.QuantumTheory.ConservationLaw.HeisenbergEvolution",
       "sourceFile": "LeanCondensedMatter/QuantumTheory/ConservationLaw/HeisenbergEvolution.lean",
       "imports": [
-        "LeanCondensedMatter.Analysis.ConservationLaw.BalanceLawAdapter"
+        "LeanCondensedMatter.Analysis.ConservationLaw.BalanceLaw"
       ],
       "externalImportCount": 1
-    },
-    {
-      "name": "LeanCondensedMatter.QuantumTheory.ConservationLaw",
-      "sourceFile": "LeanCondensedMatter/QuantumTheory/ConservationLaw.lean",
-      "imports": [
-        "LeanCondensedMatter.QuantumTheory.ConservationLaw.HeisenbergEvolution"
-      ],
-      "externalImportCount": 0
     },
     {
       "name": "LeanCondensedMatter.QuantumTheory.DensityOperator.Basic",
@@ -4364,7 +4340,7 @@
       "name": "LeanCondensedMatter.QuantumTheory",
       "sourceFile": "LeanCondensedMatter/QuantumTheory.lean",
       "imports": [
-        "LeanCondensedMatter.QuantumTheory.ConservationLaw",
+        "LeanCondensedMatter.QuantumTheory.ConservationLaw.HeisenbergEvolution",
         "LeanCondensedMatter.QuantumTheory.DensityOperator",
         "LeanCondensedMatter.QuantumTheory.DensityOperator.Diagonal",
         "LeanCondensedMatter.QuantumTheory.Entropy.Basic",
@@ -4685,14 +4661,6 @@
       "externalImportCount": 1
     },
     {
-      "name": "LeanCondensedMatter.SecondQuantization.Bosonic.ImaginaryTime",
-      "sourceFile": "LeanCondensedMatter/SecondQuantization/Bosonic/ImaginaryTime.lean",
-      "imports": [
-        "LeanCondensedMatter.SecondQuantization.Bosonic.ImaginaryTime.ImaginaryTimeEvolution"
-      ],
-      "externalImportCount": 0
-    },
-    {
       "name": "LeanCondensedMatter.SecondQuantization.Bosonic.Perturbation.DysonGibbsSeries",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Bosonic/Perturbation/DysonGibbsSeries.lean",
       "imports": [
@@ -4902,14 +4870,6 @@
       "externalImportCount": 0
     },
     {
-      "name": "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.Completed",
-      "sourceFile": "LeanCondensedMatter/SecondQuantization/Bosonic/Thermal/Completed.lean",
-      "imports": [
-        "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.Completed.FreeGibbs"
-      ],
-      "externalImportCount": 0
-    },
-    {
       "name": "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.ConvergenceAwareGibbs",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Bosonic/Thermal/ConvergenceAwareGibbs.lean",
       "imports": [
@@ -4987,7 +4947,7 @@
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Bosonic/Thermal.lean",
       "imports": [
         "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis",
-        "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.Completed",
+        "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.Completed.FreeGibbs",
         "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.ConvergenceAwareGibbs",
         "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.FreePartitionDeterminant",
         "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.ParticleNumberWeightSummable",
@@ -5005,7 +4965,7 @@
         "LeanCondensedMatter.SecondQuantization.Bosonic.Algebra",
         "LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace",
         "LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics",
-        "LeanCondensedMatter.SecondQuantization.Bosonic.ImaginaryTime",
+        "LeanCondensedMatter.SecondQuantization.Bosonic.ImaginaryTime.ImaginaryTimeEvolution",
         "LeanCondensedMatter.SecondQuantization.Bosonic.Perturbation",
         "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal"
       ],
