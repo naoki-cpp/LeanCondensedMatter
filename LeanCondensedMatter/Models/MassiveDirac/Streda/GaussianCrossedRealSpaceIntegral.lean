@@ -476,6 +476,85 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_psi_antis
     amplitude + (starRingEnd ℂ) amplitude
   rw [Matrix.trace_sub, hamp]
 
+/-- The finite-regulator Psi antisymmetric amplitude has only independent
+transverse crossed-current channels. The exact source symmetry eliminates the
+source-y Pauli-x coefficient. Its conjugate partner remains explicit; no Psi
+vanishing or regulator limit is inferred. -/
+theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_psi_antisymmetric_eq_transverse_minors
+    (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ)
+    (hbroadening : broadening ≠ 0) (hdisorder : 0 ≤ disorderStrength)
+    (hpMax : 0 ≤ pMax) :
+    let Jx := finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock
+      0 v m probeEnergy broadening disorderStrength hbar pMax radius
+    let Jy := finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock
+      1 v m probeEnergy broadening disorderStrength hbar pMax radius
+    let GR := finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix
+      .retarded v m probeEnergy broadening disorderStrength hbar pMax radius
+    let a := InternalSpace.pauliScalarCoefficient Jx
+    let b := InternalSpace.pauliScalarCoefficient GR
+    let c := InternalSpace.pauliScalarCoefficient Jy
+    let gx := InternalSpace.pauliVectorCoefficient GR .x
+    let gz := InternalSpace.pauliVectorCoefficient GR .z
+    let u := InternalSpace.pauliVectorCoefficient Jx
+    let w := InternalSpace.pauliVectorCoefficient Jy
+    let amplitude := 8 * Complex.I * gz *
+      (gx * (a * w .y - c * u .y) -
+        b * ((u .y) ^ 2 + u .x * w .y))
+    finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor
+        .psi v m probeEnergy broadening disorderStrength hbar pMax radius 0 1 -
+      finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor
+        .psi v m probeEnergy broadening disorderStrength hbar pMax radius 1 0 =
+      amplitude + (starRingEnd ℂ) amplitude := by
+  let Jx := finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock
+    0 v m probeEnergy broadening disorderStrength hbar pMax radius
+  let Jy := finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock
+    1 v m probeEnergy broadening disorderStrength hbar pMax radius
+  let GR := finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix
+    .retarded v m probeEnergy broadening disorderStrength hbar pMax radius
+  let a := InternalSpace.pauliScalarCoefficient Jx
+  let b := InternalSpace.pauliScalarCoefficient GR
+  let c := InternalSpace.pauliScalarCoefficient Jy
+  let gx := InternalSpace.pauliVectorCoefficient GR .x
+  let gz := InternalSpace.pauliVectorCoefficient GR .z
+  let u := InternalSpace.pauliVectorCoefficient Jx
+  let w := InternalSpace.pauliVectorCoefficient Jy
+  have hxy :=
+    finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient_y_zero_eq_neg_x_one
+      v m probeEnergy broadening disorderStrength hbar pMax radius
+      hbroadening hdisorder hpMax
+  have htrans : w .x = -u .y := by
+    change u .y = -w .x at hxy
+    calc
+      _ = -(-w .x) := by ring
+      _ = _ := by rw [hxy]
+  have hpsi :=
+    finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_psi_antisymmetric_eq_pauli_minors
+      v m probeEnergy broadening disorderStrength hbar pMax radius
+  change _ =
+    (8 * Complex.I * gz *
+      (gx * (a * w .y - c * u .y) +
+        b * (u .y * w .x - u .x * w .y))) +
+      (starRingEnd ℂ) (8 * Complex.I * gz *
+      (gx * (a * w .y - c * u .y) +
+        b * (u .y * w .x - u .x * w .y))) at hpsi
+  change _ =
+    (8 * Complex.I * gz *
+      (gx * (a * w .y - c * u .y) -
+        b * ((u .y) ^ 2 + u .x * w .y))) +
+      (starRingEnd ℂ) (8 * Complex.I * gz *
+      (gx * (a * w .y - c * u .y) -
+        b * ((u .y) ^ 2 + u .x * w .y)))
+  rw [hpsi, htrans]
+  have hfactor :
+      8 * Complex.I * gz *
+          (gx * (a * w .y - c * u .y) +
+            b * (u .y * (-u .y) - u .x * w .y)) =
+        8 * Complex.I * gz *
+          (gx * (a * w .y - c * u .y) -
+            b * ((u .y) ^ 2 + u .x * w .y)) := by
+    ring
+  simp only [hfactor]
+
 /-- A common in-plane spinor conjugation of the Green and current blocks
 cancels inside either Gaussian crossed trace topology, including the
 Hermitian-conjugate partner in the Psi diagram. -/
