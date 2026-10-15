@@ -710,8 +710,6 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedOrderedXYConductivity_psi_e
           (radius : ℂ) *
             (let Jx := finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock
                 0 v m probeEnergy broadening disorderStrength hbar pMax radius
-             let Jy := finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock
-                1 v m probeEnergy broadening disorderStrength hbar pMax radius
              let GR := finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix
                 .retarded v m probeEnergy broadening disorderStrength hbar pMax radius
              let b := InternalSpace.pauliScalarCoefficient GR
