@@ -70,6 +70,53 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedOrderedXYConductivity_eq_ra
     hbroadening hdisorder hpMax]
   ring
 
+/-- The regulated physical X Hall conductivity is the radial integral of the
+three independent transverse-current Pauli minors. The retarded/advanced
+Green blocks retain their signed radial arguments, and each Fourier block
+already carries its own physical momentum measure. No regulator limit or
+closed X value is asserted. -/
+theorem finiteCutoffContinuumBornDysonGaussianCrossedOrderedXYConductivity_x_eq_transverse_radial_integral
+    (e v m probeEnergy broadening disorderStrength hbar pMax rMax : ℝ)
+    (hbroadening : broadening ≠ 0) (hdisorder : 0 ≤ disorderStrength)
+    (hpMax : 0 ≤ pMax) :
+    finiteCutoffContinuumBornDysonGaussianCrossedOrderedXYConductivity
+        .x e v m probeEnergy broadening disorderStrength hbar pMax rMax =
+      (((bastinStredaTraceConductivityPrefactor hbar * (e * v) ^ 2 : ℝ) : ℂ)) *
+        (((disorderStrength ^ 2 : ℝ) : ℂ)) * (((2 * Real.pi : ℝ) : ℂ)) *
+        ∫ radius in (0 : ℝ)..rMax,
+          (radius : ℂ) *
+            (let Jx := finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock
+                0 v m probeEnergy broadening disorderStrength hbar pMax radius
+             let Jy := finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock
+                1 v m probeEnergy broadening disorderStrength hbar pMax radius
+             let GR := finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix
+                .retarded v m probeEnergy broadening disorderStrength hbar pMax (-radius)
+             let GA := finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix
+                .advanced v m probeEnergy broadening disorderStrength hbar pMax (-radius)
+             let a := InternalSpace.pauliScalarCoefficient Jx
+             let b := InternalSpace.pauliScalarCoefficient GR
+             let c := InternalSpace.pauliScalarCoefficient Jy
+             let d := InternalSpace.pauliScalarCoefficient GA
+             let u := InternalSpace.pauliVectorCoefficient Jx
+             let vr := InternalSpace.pauliVectorCoefficient GR
+             let w := InternalSpace.pauliVectorCoefficient Jy
+             let va := InternalSpace.pauliVectorCoefficient GA
+             2 * Complex.I *
+               ((a * w .y - c * u .y) * (vr .x * va .z - vr .z * va .x) +
+                 (b * va .z - d * vr .z) * (w .y * u .x + (u .y) ^ 2) +
+                 (d * vr .x - b * va .x) * (w .y * u .z - u .y * w .z))) := by
+  rw [finiteCutoffContinuumBornDysonGaussianCrossedOrderedXYConductivity_eq_radial_antisymmetric_trace
+    .x e v m probeEnergy broadening disorderStrength hbar pMax rMax
+    hbroadening hdisorder hpMax]
+  congr 1
+  apply intervalIntegral.integral_congr
+  intro radius _
+  dsimp only
+  rw [finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_x_antisymmetric_eq_transverse_minors
+    v m probeEnergy broadening disorderStrength hbar pMax radius
+    hbroadening hdisorder hpMax]
+  ring
+
 /-- The regulated physical Psi Hall contribution is the finite-radius integral
 of its transverse-current-reduced antisymmetric Pauli amplitude and its
 complex-conjugate partner. This is a substitution into the canonical
