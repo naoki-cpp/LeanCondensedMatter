@@ -46,7 +46,7 @@ noncomputable def externalInsertionMixedAtomicDysonCoefficient {E : ℕ}
                     (fun p : Fin (2 * (2 * n + E)) =>
                       timedFieldOperator ε
                         (externalInsertionMixedTimeOrderedAtomicFieldFamily
-                          externalLabel externalTime q σ p))))))
+                          externalLabel externalTime q σ p)))))))
 
 /-- The mixed-atomic free-Gibbs Dyson coefficient equals the existing
 integrated fixed-external Wick-diagram coefficient at every perturbative
