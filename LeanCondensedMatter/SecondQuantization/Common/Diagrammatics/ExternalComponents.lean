@@ -190,6 +190,64 @@ theorem mem_externallySupportedComponentParts
       ComponentMeetsExternal (B : Finset (External ⊕ Internal)) := by
   simp [externallySupportedComponentParts]
 
+/-- All external vertices are mutually reachable exactly when there is one
+externally supported component, namely the component containing a chosen external anchor.
+
+Pure-vacuum components are unrestricted. This characterizes the component
+selection needed for external cumulants without conflating it with
+whole-graph preconnectedness. -/
+theorem allExternalVerticesConnected_iff_supportedComponentParts_eq_singleton
+    (G : SimpleGraph (External ⊕ Internal)) (anchor : External) :
+    AllExternalVerticesConnected G ↔
+      externallySupportedComponentParts G =
+        { (⟨G.componentBlock (Sum.inl anchor),
+            G.componentBlock_mem_componentPartition (Sum.inl anchor)⟩ :
+              G.componentPartition.parts) } := by
+  classical
+  rw [allExternalVerticesConnected_iff_reachable_anchor G anchor]
+  constructor
+  · intro h
+    ext B
+    constructor
+    · intro hB
+      obtain ⟨e, he⟩ :=
+        (componentMeetsExternal_iff_exists_eq_componentBlock G B).mp
+          ((mem_externallySupportedComponentParts G B).mp hB)
+      apply Finset.mem_singleton.mpr
+      apply Subtype.ext
+      change (B : Finset (External ⊕ Internal)) =
+        G.componentBlock (Sum.inl anchor)
+      rw [he]
+      exact (G.componentBlock_eq_iff_mem
+        (G.componentBlock_mem_componentPartition (Sum.inl anchor))
+        (Sum.inl e)).2
+          ((G.mem_componentBlock (Sum.inl anchor) (Sum.inl e)).2 (h e).symm)
+    · intro hB
+      have heq : B =
+          (⟨G.componentBlock (Sum.inl anchor),
+              G.componentBlock_mem_componentPartition (Sum.inl anchor)⟩ :
+                G.componentPartition.parts) :=
+        Finset.mem_singleton.mp hB
+      subst B
+      exact (mem_externallySupportedComponentParts G _).2
+        ⟨anchor, G.self_mem_componentBlock (Sum.inl anchor)⟩
+  · intro h e
+    let B : G.componentPartition.parts :=
+      ⟨G.componentBlock (Sum.inl e),
+        G.componentBlock_mem_componentPartition (Sum.inl e)⟩
+    have hB : B ∈ externallySupportedComponentParts G :=
+      (mem_externallySupportedComponentParts G B).2
+        ⟨e, G.self_mem_componentBlock (Sum.inl e)⟩
+    rw [h] at hB
+    have heq : G.componentBlock (Sum.inl e) =
+        G.componentBlock (Sum.inl anchor) :=
+      congrArg Subtype.val (Finset.mem_singleton.mp hB)
+    have hreach : G.Reachable (Sum.inl e) (Sum.inl anchor) := by
+      apply (G.mem_componentBlock (Sum.inl anchor) (Sum.inl e)).1
+      rw [← heq]
+      exact G.self_mem_componentBlock (Sum.inl e)
+    exact hreach.symm
+
 open Classical in
 /-- The finite set of component parts containing no external vertex. -/
 noncomputable def vacuumComponentParts
