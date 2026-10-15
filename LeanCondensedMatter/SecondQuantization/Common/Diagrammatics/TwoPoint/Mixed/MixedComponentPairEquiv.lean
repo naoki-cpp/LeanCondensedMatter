@@ -9,7 +9,8 @@ set_option linter.style.header false
 
 The pairing partner preserves every full graph component of a two-point diagram. This module
 restricts that partner to mixed-time component positions, identifies normalized pairs within each
-component, and transports pairs through vacuum coordinates and between time assignments.
+component, groups vacuum-component pairs as a dependent disjoint union, and transports pairs
+through vacuum coordinates and between time assignments.
 Normalization may swap endpoint order. All constructions are statistics-independent.
 -/
 
@@ -54,6 +55,14 @@ abbrev TwoPointDiagram.MixedComponentPair
     (τ τ' : ℝ) (σ : Fin n → ℝ) (B : d.vertexGraph.componentPartition.parts) :=
   {pr : (d.pairingInMixedOrder τ τ' σ).NormalizedPair //
     d.mixedPairComponent τ τ' σ pr = B}
+
+/-- Normalized mixed-time pairs whose full ambient component is a vacuum component. -/
+abbrev TwoPointDiagram.MixedVacuumPair
+    {ExternalLabel InternalLabel : Type*} {n : ℕ}
+    (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
+    (τ τ' : ℝ) (σ : Fin n → ℝ) :=
+  {pr : (d.pairingInMixedOrder τ τ' σ).NormalizedPair //
+    d.mixedPairComponent τ τ' σ pr ∈ (vacuumComponentParts d.vertexGraph)}
 
 /-- The two selected endpoints of mixed component pairs are equivalent to all mixed positions of the
 component. -/
@@ -115,6 +124,50 @@ noncomputable def TwoPointDiagram.mixedVacuumComponentPairEquiv
             (fun q => by rw [d.mixedPositionComponent_partner])).partner pos)
       rw [PairingOn.restrict_partner_val, TwoPointDiagram.pairingInMixedOrder,
         PairingOn.transport_partner, Equiv.apply_symm_apply])
+
+/-- Ambient mixed vacuum pairs are the dependent disjoint union of the mixed pair fibers of the
+ambient vacuum components. -/
+noncomputable def TwoPointDiagram.mixedVacuumPairSigmaEquiv
+    {ExternalLabel InternalLabel : Type*} {n : ℕ}
+    (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
+    (τ τ' : ℝ) (σ : Fin n → ℝ) :
+    (Σ B : ↥(vacuumComponentParts d.vertexGraph), d.MixedComponentPair τ τ' σ B.1) ≃
+      d.MixedVacuumPair τ τ' σ := by
+  let f : d.MixedVacuumPair τ τ' σ → ↥(vacuumComponentParts d.vertexGraph) :=
+    fun pr => ⟨d.mixedPairComponent τ τ' σ pr.1, pr.2⟩
+  let fiberEquiv (B : ↥(vacuumComponentParts d.vertexGraph)) :
+      d.MixedComponentPair τ τ' σ B.1 ≃
+        {pr : d.MixedVacuumPair τ τ' σ // f pr = B} :=
+    { toFun := fun pr => by
+        refine ⟨⟨pr.1, ?_⟩, ?_⟩
+        · simpa only [pr.2] using B.2
+        · exact Subtype.ext pr.2
+      invFun := fun pr => ⟨pr.1.1, congrArg Subtype.val pr.2⟩
+      left_inv := by
+        intro pr
+        apply Subtype.ext
+        rfl
+      right_inv := by
+        intro pr
+        apply Subtype.ext
+        apply Subtype.ext
+        rfl
+    }
+  exact (Equiv.sigmaCongrRight fiberEquiv).trans (Equiv.sigmaFiberEquiv f)
+
+/-- One ambient vacuum-component mixed pair fiber has twice as many elements as interaction vertices
+in that component. -/
+theorem TwoPointDiagram.card_mixedVacuumComponentPair
+    {ExternalLabel InternalLabel : Type*} {n : ℕ}
+    (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
+    (τ τ' : ℝ) (σ : Fin n → ℝ) (B : ↥(vacuumComponentParts d.vertexGraph)) :
+    Fintype.card (d.MixedComponentPair τ τ' σ B.1) =
+      2 * (interactionSector
+        (B.1 : Finset (TwoPointVertex (Finset.univ : Finset (Fin n))))).card := by
+  let hVac : ComponentIsVacuum (B.1 : Finset (TwoPointVertex (Finset.univ : Finset (Fin n)))) :=
+    (mem_vacuumComponentParts d.vertexGraph B.1).1 B.2
+  rw [Fintype.card_congr (d.mixedVacuumComponentPairEquiv τ τ' σ B.1 hVac)]
+  simpa using (d.restrictedVacuumPairing B.1 hVac).card_normalizedPair
 
 /-- Canonical comparison of mixed normalized pairs in one component, obtained by restricting the
 global partner-preserving pair transport rather than splitting external and vacuum components. -/
