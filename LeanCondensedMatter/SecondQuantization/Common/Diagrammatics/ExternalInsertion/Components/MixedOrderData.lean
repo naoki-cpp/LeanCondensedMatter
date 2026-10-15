@@ -62,17 +62,6 @@ noncomputable def ExternalInsertionDiagram.componentInteractionTime {E n : ℕ}
       (B : Finset (ExternalInsertionVertex E (Finset.univ : Finset (Fin n))))).orderIsoOfFin
         rfl v).1
 
-@[simp]
-theorem ExternalInsertionDiagram.componentOrderedDiagram_externalLabel {E n : ℕ}
-    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E n
-      (Finset.univ : Finset (Fin n)))
-    (B : d.vertexGraph.componentPartition.parts)
-    (e : Fin (2 * d.externalPairCount B)) :
-    (d.componentOrderedDiagram B).externalLabel e =
-      d.externalLabel (d.externalSectorOrderIso B e).1 := by
-  rfl
-
-
 /-- Embed a component-local canonical atomic leg into the ambient canonical atomic-leg order. -/
 noncomputable def ExternalInsertionDiagram.componentOrderedLeg {E n : ℕ}
     (d : ExternalInsertionDiagram ExternalLabel InternalLabel E n
@@ -88,33 +77,6 @@ noncomputable def ExternalInsertionDiagram.componentOrderedLeg {E n : ℕ}
       ((interactionSector
         (B : Finset (ExternalInsertionVertex E (Finset.univ : Finset (Fin n))))).orderIsoOfFin
           rfl v).1)
-
-/-- The canonical component-leg embedding is injective. -/
-theorem ExternalInsertionDiagram.componentOrderedLeg_injective {E n : ℕ}
-    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E n
-      (Finset.univ : Finset (Fin n)))
-    (B : d.vertexGraph.componentPartition.parts) :
-    Function.Injective (d.componentOrderedLeg B) :=
-  orderedExternalInsertionLegMap_injective
-    (Subtype.val_injective.comp (d.externalSectorOrderIso B).injective)
-    (Subtype.val_injective.comp
-      ((interactionSector
-        (B : Finset (ExternalInsertionVertex E (Finset.univ : Finset (Fin n))))).orderIsoOfFin
-          rfl).injective)
-
-@[simp]
-theorem ExternalInsertionDiagram.componentOrderedDiagram_vertexLabelSequence {E n : ℕ}
-    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E n
-      (Finset.univ : Finset (Fin n)))
-    (B : d.vertexGraph.componentPartition.parts)
-    (v : Fin (interactionSector
-      (B : Finset (ExternalInsertionVertex E (Finset.univ : Finset (Fin n))))).card) :
-    (d.componentOrderedDiagram B).vertexLabelSequence v =
-      d.vertexLabelSequence
-        ((interactionSector
-          (B : Finset (ExternalInsertionVertex E (Finset.univ : Finset (Fin n))))).orderIsoOfFin
-            rfl v).1 := by
-  rfl
 
 /-- Embed a component-local mixed-time atomic position into the ambient mixed-time atomic order by
 preserving the represented canonical leg. -/
