@@ -586,6 +586,34 @@ theorem gram_basisSwap_iff (G : Matrix (Fin 2) (Fin 2) ℝ)
     fin_cases i <;> fin_cases j <;>
       simp [Matrix.mul_apply, Fin.sum_univ_two] <;> linarith
 
+/-- The sum and difference of two primitive lattice vectors form an orthogonal
+conventional cell exactly when the vectors have equal squared lengths.
+
+For a symmetric Gram metric `G`, the columns of `S = !![1, 1; 1, -1]`
+are the sum and difference of the primitive basis vectors. When `G₀₀ = G₁₁`,
+the conventional squared lengths are `2 * (G₀₀ + G₀₁)` and
+`2 * (G₀₀ - G₀₁)`. This is the metric relation underlying the
+centered-rectangular Bravais class. The matrix `S` has determinant `-2`,
+so this conventional cell is not an integral primitive basis change. -/
+theorem gram_sumDiff_diagonal_iff (G : Matrix (Fin 2) (Fin 2) ℝ)
+    (hSymm : G 0 1 = G 1 0) :
+    (let S : Matrix (Fin 2) (Fin 2) ℝ := !![1, 1; 1, -1];
+     S.transpose * G * S =
+       !![2 * (G 0 0 + G 0 1), 0;
+          0, 2 * (G 0 0 - G 0 1)]) ↔ G 0 0 = G 1 1 := by
+  constructor
+  · intro h
+    dsimp at h
+    have h01 := congrArg
+      (fun M : Matrix (Fin 2) (Fin 2) ℝ => M 0 1) h
+    simp [Matrix.mul_apply, Fin.sum_univ_two] at h01
+    linarith
+  · intro hDiag
+    dsimp
+    ext i j
+    fin_cases i <;> fin_cases j <;>
+      simp [Matrix.mul_apply, Fin.sum_univ_two] <;> linarith
+
 end
 
 end latticePointGroup
