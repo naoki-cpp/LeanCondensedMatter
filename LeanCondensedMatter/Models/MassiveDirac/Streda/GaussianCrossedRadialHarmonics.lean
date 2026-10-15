@@ -448,6 +448,80 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficie
   ring
 
 
+/-- The antisymmetric source-scalar/diagonal-current minor needed in the
+crossed X and Psi Hall amplitudes uses only the two K1 first-harmonic
+scalar-current moments, the isotropic K0 moment, the traceless K2 moment,
+and the independent transverse K0 current. The source-y diagonal channel
+is (K0 - K2)/2; there are no additional Fourier measures or regulator limits. -/
+theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrent_scalar_diagonal_minor_eq_harmonic_moments
+    (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ)
+    (hbroadening : broadening ≠ 0) (hdisorder : 0 ≤ disorderStrength)
+    (hpMax : 0 ≤ pMax) :
+    let factor := finiteCutoffContinuumBornDysonGaussianCrossedCurrentFactor
+      v m probeEnergy broadening disorderStrength hbar pMax
+    let aA := fun p : ℝ =>
+      finiteCutoffContinuumBornDysonScalarCoefficient
+        .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax
+    let aR := fun p : ℝ =>
+      finiteCutoffContinuumBornDysonScalarCoefficient
+        .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax
+    let dA := fun p : ℝ =>
+      finiteCutoffContinuumBornDysonPauliCoefficient .z
+        .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax
+    let dR := fun p : ℝ =>
+      finiteCutoffContinuumBornDysonPauliCoefficient .z
+        .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax
+    let bA := fun p : ℝ =>
+      finiteCutoffContinuumBornDysonPauliCoefficient .x
+        .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax
+    let bR := fun p : ℝ =>
+      finiteCutoffContinuumBornDysonPauliCoefficient .x
+        .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax
+    let isotropic :=
+      (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
+        ∫ p in (0 : ℝ)..pMax,
+          2 * (p : ℂ) * (polarFourierZerothAngularKernel (p * radius / hbar) *
+            ((aA p * aR p - dA p * dR p) * factor))
+    let anisotropic :=
+      (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
+        ∫ p in (0 : ℝ)..pMax,
+          2 * (p : ℂ) * (polarFourierSecondCosineAngularKernel (p * radius / hbar) *
+            (bA p * bR p * factor))
+    let firstX :=
+      (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
+        ∫ p in (0 : ℝ)..pMax,
+          (p : ℂ) * (polarFourierFirstCosineAngularKernel (p * radius / hbar) *
+            ((aR p * bA p + aA p * bR p) * factor))
+    let firstY :=
+      (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
+        ∫ p in (0 : ℝ)..pMax,
+          (p : ℂ) * (polarFourierFirstCosineAngularKernel (p * radius / hbar) *
+            ((-Complex.I * (bR p * dA p - bA p * dR p)) * factor))
+    let transverse :=
+      finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient
+        .y 0 v m probeEnergy broadening disorderStrength hbar pMax radius
+    finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentScalarCoefficient
+        0 v m probeEnergy broadening disorderStrength hbar pMax radius *
+      finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient
+        .y 1 v m probeEnergy broadening disorderStrength hbar pMax radius -
+      finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentScalarCoefficient
+        1 v m probeEnergy broadening disorderStrength hbar pMax radius *
+      transverse =
+      firstX * ((isotropic - anisotropic) / 2) - firstY * transverse := by
+  have hfirst :=
+    finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrent_first_harmonic_channels
+      v m probeEnergy broadening disorderStrength hbar pMax radius
+      hbroadening hdisorder hpMax
+  have hdiag :=
+    finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient_eq_diagonal_harmonic_integrals
+      v m probeEnergy broadening disorderStrength hbar pMax radius
+      hbroadening hdisorder hpMax
+  dsimp only at hfirst hdiag ⊢
+  rcases hfirst with ⟨hscalarX, hscalarY, _, _⟩
+  rcases hdiag with ⟨_, hyy⟩
+  rw [hscalarX, hscalarY, hyy]
+
+
 end
 
 end QuantumTheory.Models.MassiveDirac
