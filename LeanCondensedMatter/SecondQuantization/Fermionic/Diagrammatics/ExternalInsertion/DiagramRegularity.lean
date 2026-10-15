@@ -115,30 +115,6 @@ private theorem ExternalInsertionWickDiagram.dysonFixedTimeChamberRepresentative
   rw [hsign, hpair, hlegs]
   ring
 
-private theorem ExternalInsertionWickDiagram.measurable_dysonFixedTimeAmplitude
-    {E n : ℕ} (d : ExternalInsertionWickDiagram Mode E n)
-    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
-    (externalTime : Fin (2 * E) → ℝ) :
-    Measurable (fun σ : Fin n → ℝ =>
-      d.dysonFixedTimeAmplitude ε β g externalTime σ) := by
-  apply intervalIntegral.measurable_of_finite_continuous_signature
-    (signature := externalInsertionOrderSignature externalTime)
-    (branch := fun s =>
-      d.dysonFixedTimeChamberRepresentative ε β g externalTime
-        (intervalIntegral.finiteSignatureBase (externalInsertionOrderSignature externalTime) s))
-  · intro s
-    simpa [externalInsertionOrderSignatureFiber] using
-      measurableSet_externalInsertionOrderSignatureFiber externalTime s
-  · intro s
-    exact d.continuous_dysonFixedTimeChamberRepresentative ε β g externalTime
-      (intervalIntegral.finiteSignatureBase (externalInsertionOrderSignature externalTime) s)
-  · intro σ
-    exact (d.dysonFixedTimeChamberRepresentative_eq_of_sameChamber
-      ε β g externalTime
-      (intervalIntegral.finiteSignatureBase (externalInsertionOrderSignature externalTime)
-        (externalInsertionOrderSignature externalTime σ)) σ
-      (sameExternalInsertionOrderChamber_signatureBase externalTime σ)).symm
-
 /-- The arbitrary-external fermionic Dyson fixed-time integrand is measurable
 and uniformly bounded on each finite interaction-time cube. -/
 theorem ExternalInsertionWickDiagram.measurableLocallyBounded_dysonFixedTimeAmplitude
@@ -147,11 +123,14 @@ theorem ExternalInsertionWickDiagram.measurableLocallyBounded_dysonFixedTimeAmpl
     (externalTime : Fin (2 * E) → ℝ) :
     intervalIntegral.MeasurableLocallyBounded
       (fun σ : Fin n → ℝ => d.dysonFixedTimeAmplitude ε β g externalTime σ) := by
-  apply intervalIntegral.measurableLocallyBounded_of_finite_continuous_selection
-    (g := fun s : ExternalInsertionOrderSignature E n =>
+  apply intervalIntegral.measurableLocallyBounded_of_finite_continuous_signature
+    (signature := externalInsertionOrderSignature externalTime)
+    (branch := fun s =>
       d.dysonFixedTimeChamberRepresentative ε β g externalTime
         (intervalIntegral.finiteSignatureBase (externalInsertionOrderSignature externalTime) s))
-  · exact d.measurable_dysonFixedTimeAmplitude ε β g externalTime
+  · intro s
+    simpa [externalInsertionOrderSignatureFiber] using
+      measurableSet_externalInsertionOrderSignatureFiber externalTime s
   · intro s
     exact d.continuous_dysonFixedTimeChamberRepresentative ε β g externalTime
       (intervalIntegral.finiteSignatureBase (externalInsertionOrderSignature externalTime) s)
