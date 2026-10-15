@@ -92,10 +92,13 @@ theorem vacuumNormalizedExternalInsertionDysonSeries_eq_vacuumFreeExternalInsert
     (externalTime : Fin (2 * E) → ℝ) :
     vacuumNormalizedExternalInsertionDysonSeries ε β g externalLabel externalTime =
       vacuumFreeExternalInsertionDysonSeries ε β g externalLabel externalTime := by
-  exact (vacuumNormalizedExternalInsertionDysonSeries_eq_vacuumFree_iff_cauchy
-    ε β g externalLabel externalTime).2
-    (fun n => externalInsertionDysonCoefficient_eq_sum_vacuumFree_mul_normalizedDysonPartitionCoeff
-      ε β hβ g externalLabel externalTime n)
+  rw [vacuumNormalizedExternalInsertionDysonSeries]
+  apply PowerSeries.mul_inv_eq_of_eq_mul_of_constantCoeff_ne_zero
+  · rw [PowerSeries.constantCoeff_normalizeByConstantCoeff
+      (constantCoeff_dysonPartitionSeries_ne_zero ε β (quarticInteraction g))]
+    exact one_ne_zero
+  · exact externalInsertionDysonSeries_eq_vacuumFree_mul_normalizedDysonPartitionSeries
+      ε β hβ g externalLabel externalTime
 
 end Fermionic
 end SecondQuantization
