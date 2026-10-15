@@ -114,8 +114,6 @@ private theorem FixedExternalTwoPointWickDiagram.mixedComponentDysonFixedTimeCha
         (fun q : d.1.MixedComponentPair τ τ' σ B =>
           d.mixedPairContractionValue ε β τ τ' σ q.1)
 
-/-- A mixed-component Dyson fixed-time value is measurable by the finite mixed-order
-signature and its continuous chamber representatives. -/
 /-- The signed pointwise amplitude of one diagram is measurably locally bounded. -/
 theorem FixedExternalTwoPointWickDiagram.measurableLocallyBounded_dysonFixedTimeAmplitude
     {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
