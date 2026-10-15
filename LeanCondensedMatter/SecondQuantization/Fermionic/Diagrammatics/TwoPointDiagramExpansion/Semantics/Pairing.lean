@@ -3,20 +3,17 @@ import LeanCondensedMatter.Combinatorics.PerfectPairing.Evaluation
 import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointMixedLegOrder
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.LocalLeg
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Semantics.Flattening
-import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsDensityOperator
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.TimedFieldContraction
-import LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsExpectationBridge
 
 set_option linter.style.header false
 
 /-!
-# Pairing expansion for a two-point insertion
+# Mixed-time two-point field families and pairing values
 
-This module specializes the finite-temperature Wick theorem for time-labelled free fermionic
-fields to the `4n + 2` atomic operator list from `TwoPointDiagramExpansion.Flattening` and
-exposes the canonical free Gibbs pairing evaluator. The general Wick theorem is owned by
-`Fermionic.Thermal.TimedFieldContraction`, while reindexing pairings to
-`TwoPointWickDiagram` belongs to the next layer.
+Time-labelled field descriptors and the canonical density-state pair kernel define
+one scalar value for each pairing. Reindexing these positions into diagrams is
+separate from the physical Gibbs expectation expansion in Integration.DysonCoefficient.
+The kernel itself retains its density-state meaning.
 -/
 
 namespace SecondQuantization
@@ -43,39 +40,12 @@ private theorem twoPointTimedEventAtomicFields_length {n : ℕ} (i j : Mode)
       (twoPointTimedEventAtomicLegs event).length := by
   cases event <;> simp [twoPointTimedEventAtomicFields, twoPointTimedEventAtomicLegs]
 
-/-- Mapping one event's field descriptors to operators recovers its atomic operator list. -/
-private theorem map_timedFieldOperator_twoPointTimedEventAtomicFields {n : ℕ}
-    (ε : Mode → ℝ) (i j : Mode) (τ τ' : ℝ)
-    (q : Fin n → QuarticVertexLabel Mode) (σ : Fin n → ℝ)
-    (event : TwoPointTimedEvent n) :
-    (twoPointTimedEventAtomicFields i j τ τ' q σ event).map (timedFieldOperator ε) =
-      twoPointTimedEventAtomicOperators ε i j τ τ' q σ event := by
-  cases event with
-  | inl e =>
-      simp [twoPointTimedEventAtomicFields, timedFieldOperator, twoPointTimedEventAtomicOperators]
-  | inr v =>
-      rw [twoPointTimedEventAtomicFields, twoPointTimedEventAtomicOperators_interaction,
-        List.map_ofFn]
-      exact congrArg List.ofFn (funext fun l => by
-        simpa [Function.comp_def, quarticLocalLegOperator, Common.quarticLocalLegOperator] using
-          timedFieldOperator_quarticLocalLeg ε (σ v) (Common.quarticLocalLeg (q v) l))
-
 /-- The complete mixed-time-ordered list of time-labelled atomic fields. -/
 noncomputable def mixedTimeOrderedAtomicFields {n : ℕ} (i j : Mode)
     (τ τ' : ℝ) (q : Fin n → QuarticVertexLabel Mode) (σ : Fin n → ℝ) :
     List (TimedField Mode) :=
   (orderedTwoPointTimedEvents τ τ' σ).flatMap
     (twoPointTimedEventAtomicFields i j τ τ' q σ)
-
-/-- Mapping all mixed-time-ordered field descriptors to operators recovers the atomic operator list. -/
-private theorem map_timedFieldOperator_mixedTimeOrderedAtomicFields {n : ℕ}
-    (ε : Mode → ℝ) (i j : Mode) (τ τ' : ℝ)
-    (q : Fin n → QuarticVertexLabel Mode) (σ : Fin n → ℝ) :
-    (mixedTimeOrderedAtomicFields i j τ τ' q σ).map (timedFieldOperator ε) =
-      mixedTimeOrderedAtomicOperators ε i j τ τ' q σ := by
-  simp only [mixedTimeOrderedAtomicFields, mixedTimeOrderedAtomicOperators,
-    List.map_flatMap]
-  simp_rw [map_timedFieldOperator_twoPointTimedEventAtomicFields]
 
 omit [LinearOrder Mode] in
 /-- The descriptor list has exactly the statistics-independent `4n + 2` atomic positions. -/
@@ -103,30 +73,6 @@ noncomputable def mixedTimeOrderedAtomicOperatorFamily {n : ℕ} (ε : Mode → 
     Fin (2 * (2 * n + 1)) → OccupationFock Mode →ₗ[ℂ] OccupationFock Mode :=
   fun p => timedFieldOperator ε (mixedTimeOrderedAtomicFieldFamily i j τ τ' q σ p)
 
-omit [LinearOrder Mode] in
-/-- Rebuilding the descriptor list from its fixed-cardinality family recovers the original list. -/
-private theorem ofFn_mixedTimeOrderedAtomicFieldFamily_eq {n : ℕ}
-    (i j : Mode) (τ τ' : ℝ)
-    (q : Fin n → QuarticVertexLabel Mode) (σ : Fin n → ℝ) :
-    List.ofFn (mixedTimeOrderedAtomicFieldFamily i j τ τ' q σ) =
-      mixedTimeOrderedAtomicFields i j τ τ' q σ := by
-  let l := mixedTimeOrderedAtomicFields i j τ τ' q σ
-  have h : l.length = 2 * (2 * n + 1) :=
-    mixedTimeOrderedAtomicFields_length i j τ τ' q σ
-  simpa [mixedTimeOrderedAtomicFieldFamily, l] using
-    (List.ofFn_congr h l.get).symm.trans (List.ofFn_get l)
-
-/-- Rebuilding the operator list from its fixed-cardinality family recovers the flattened list. -/
-private theorem ofFn_mixedTimeOrderedAtomicOperatorFamily_eq {n : ℕ}
-    (ε : Mode → ℝ) (i j : Mode) (τ τ' : ℝ)
-    (q : Fin n → QuarticVertexLabel Mode) (σ : Fin n → ℝ) :
-    List.ofFn (mixedTimeOrderedAtomicOperatorFamily ε i j τ τ' q σ) =
-      mixedTimeOrderedAtomicOperators ε i j τ τ' q σ := by
-  change List.ofFn (fun p => timedFieldOperator ε
-    (mixedTimeOrderedAtomicFieldFamily i j τ τ' q σ p)) = _
-  rw [List.ofFn_comp', ofFn_mixedTimeOrderedAtomicFieldFamily_eq,
-    map_timedFieldOperator_mixedTimeOrderedAtomicFields]
-
 variable [Fintype Mode]
 
 /-- Canonical free Gibbs density-state contraction of two mixed-time atomic positions. -/
@@ -146,28 +92,6 @@ noncomputable def orderedTwoPointPairingValue {n : ℕ}
   pairing.evaluation (pairing.weight Common.Statistics.fermion)
     (mixedTimeOrderedAtomicPairValue ε β i j τ τ' σ q)
 
-/-- The mixed event-level density-state expectation is the external-order sign times the sum of
-canonical pairing evaluations. -/
-theorem freeGibbsDensityOperator_expectation_mixedTimeOrderedVertexComp_eq_sum_pairingValue
-    {n : ℕ} (ε : Mode → ℝ) (β : ℝ) (i j : Mode) (τ τ' : ℝ)
-    (q : Fin n → QuarticVertexLabel Mode) (σ : Fin n → ℝ) :
-    (freeGibbsDensityOperator ε β).expectation
-        (Common.finiteHilbertOperatorAlgEquiv (mixedTimeOrderedVertexComp ε i j τ τ' q σ)) =
-      twoPointExternalOrderSign τ τ' *
-        ∑ pairing : Pairing (2 * n + 1),
-          orderedTwoPointPairingValue ε β i j τ τ' σ q pairing := by
-  rw [freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation,
-    mixedTimeOrderedVertexComp_eq_prod_atomicOperators,
-    Common.finiteGibbsExpectation_smul]
-  have hwick :=
-    freeGibbsDensityOperator_expectation_prod_timedFieldOperator_eq_sum_pairing
-      ε β (2 * n + 1) (mixedTimeOrderedAtomicFieldFamily i j τ τ' q σ)
-  rw [freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation] at hwick
-  change Common.finiteGibbsExpectation (fermionEnergy ε) β
-    (List.prod (List.ofFn (mixedTimeOrderedAtomicOperatorFamily ε i j τ τ' q σ))) = _ at hwick
-  rw [ofFn_mixedTimeOrderedAtomicOperatorFamily_eq] at hwick
-  rw [hwick]
-  rfl
 
 end Fermionic
 end SecondQuantization
