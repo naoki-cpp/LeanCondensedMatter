@@ -1186,7 +1186,7 @@ theorem integer_fixedFirst_reflection_shear_conjugation (k n : ℤ) :
       !![1, k + 2 * n; 0, -1] := by
   ext i j
   fin_cases i <;> fin_cases j <;>
-    simp [Matrix.mul_apply, Fin.sum_univ_two] <;> ring
+    simp [Matrix.mul_apply, Fin.sum_univ_two]; ring
 
 /-- Every integer reflection fixing the first vector is shear-conjugate
 to one with coefficient zero or one. Thus the integer conjugacy class
