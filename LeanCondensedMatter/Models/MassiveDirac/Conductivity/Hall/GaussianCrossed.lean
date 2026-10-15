@@ -820,7 +820,7 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedOrderedXYConductivity_psi_e
         (((disorderStrength ^ 2 : ℝ) : ℂ)) * (((2 * Real.pi : ℝ) : ℂ)) *
         ∫ radius in (0 : ℝ)..rMax,
           (radius : ℂ) *
-            (             let factor := finiteCutoffContinuumBornDysonGaussianCrossedCurrentFactor
+            (let factor := finiteCutoffContinuumBornDysonGaussianCrossedCurrentFactor
                 v m probeEnergy broadening disorderStrength hbar pMax
              let aA := fun p : ℝ =>
                 finiteCutoffContinuumBornDysonScalarCoefficient
