@@ -5,7 +5,7 @@ import LeanCondensedMatter.QuantumTheory.SpinHalf.Finite
 import LeanCondensedMatter.QuantumTheory.SpinfulLattice
 import LeanCondensedMatter.QuantumTheory.PeierlsPhase
 import LeanCondensedMatter.QuantumTheory.PeierlsLattice
-import LeanCondensedMatter.QuantumTheory.ConservationLaw
+import LeanCondensedMatter.QuantumTheory.ConservationLaw.HeisenbergEvolution
 import LeanCondensedMatter.QuantumTheory.LinearResponse
 import LeanCondensedMatter.QuantumTheory.DensityOperator
 import LeanCondensedMatter.QuantumTheory.DensityOperator.Diagonal

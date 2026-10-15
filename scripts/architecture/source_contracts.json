@@ -48,7 +48,7 @@
         "LeanCondensedMatter/SecondQuantization/Fermionic/Transport/IntrinsicFluxResponse.lean",
         "LeanCondensedMatter/SecondQuantization/Fermionic/Transport/SymmetrizedVelocityCurrent.lean",
         "LeanCondensedMatter/SecondQuantization/Fermionic/Transport/CorrectedCurrentResponse.lean",
-        "LeanCondensedMatter/QuantumTheory/ConservationLaw.lean",
+        "LeanCondensedMatter/QuantumTheory/ConservationLaw/HeisenbergEvolution.lean",
         "LeanCondensedMatter/SecondQuantization/Fermionic/Transport.lean"
       ]
     },
@@ -722,11 +722,6 @@
         "LeanCondensedMatter.Models",
         "LeanCondensedMatter.SecondQuantization"
       ]
-    },
-    {
-      "id": "quantumConservationUmbrella",
-      "path": "LeanCondensedMatter/QuantumTheory/ConservationLaw.lean",
-      "modules": ["LeanCondensedMatter.QuantumTheory.ConservationLaw.HeisenbergEvolution"]
     }
   ],
   "forbiddenImports": [
