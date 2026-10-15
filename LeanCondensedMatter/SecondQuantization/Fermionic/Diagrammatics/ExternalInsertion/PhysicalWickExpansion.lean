@@ -136,11 +136,10 @@ theorem sum_fixedExternalInsertionWickDiagram_fixedTimeAmplitude_eq_mixedAtomicE
           pairing.evaluation (pairing.weight Common.Statistics.fermion)
             (externalInsertionMixedTimeOrderedAtomicPairValue ε β
               externalLabel externalTime q σ) := by
-    simpa only [externalInsertionMixedTimeOrderedAtomicPairValue] using
-      (freeGibbsDensityOperator_expectation_prod_timedFieldOperator_eq_sum_pairing
-        ε β (2 * n + E)
-        (externalInsertionMixedTimeOrderedAtomicFieldFamily
-          externalLabel externalTime q σ))
+    exact freeGibbsDensityOperator_expectation_prod_timedFieldOperator_eq_sum_pairing
+      ε β (2 * n + E)
+      (externalInsertionMixedTimeOrderedAtomicFieldFamily
+        externalLabel externalTime q σ)
   calc
     _ = ∑ x : (Fin n → QuarticVertexLabel Mode) × Pairing (2 * n + E), F x :=
       hreindex
@@ -158,6 +157,7 @@ theorem sum_fixedExternalInsertionWickDiagram_fixedTimeAmplitude_eq_mixedAtomicE
       intro q _
       rw [Finset.mul_sum]
       simp only [F]
+      rw [Finset.mul_sum]
       simp only [mul_assoc]
     _ = _ := by
       apply congrArg (fun z : ℂ => sign * z)
