@@ -109,3 +109,14 @@ divisibility of the repeated fiber's cardinality, using the existing multiplicit
 formula: constant comparison order over an even-sized fiber makes cross-component geometric
 crossing parity vanish. Quartic and TwoPoint supply their own fiber coordinates and uniform-order
 proofs; vertex-slot geometry and mixed-time order geometry remain separate downstream.
+
+## Partition products and moment transforms
+
+`Combinatorics.FinpartitionProduct` owns `Finpartition.partitionProduct` and its top-partition
+and `bind` laws over a commutative monoid. It does not depend on the moment transform or
+Möbius inversion.
+
+`Cumulant.Moment` owns sums over partitions and therefore requires a commutative semiring.
+Its distinguished-block product law is the adapter to the distinguished-block decomposition.
+`Cumulant.Inversion` adds the Möbius inverse over a commutative ring. Restriction and
+independence-specific product laws remain in `Cumulant.Independence`.

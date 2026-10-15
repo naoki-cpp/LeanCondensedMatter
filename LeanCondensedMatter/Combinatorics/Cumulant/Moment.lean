@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Combinatorics.FinpartitionProduct
 import LeanCondensedMatter.Combinatorics.SetPartition.Refinement
 import LeanCondensedMatter.Combinatorics.SetPartition.DistinguishedBlock
 import Mathlib.Algebra.BigOperators.Ring.Finset
@@ -18,10 +19,6 @@ semiring. Möbius inversion, which needs additive inverses, lives separately in
 variable {α R : Type*} [DecidableEq α] [CommSemiring R]
 
 namespace Finpartition
-
-/-- Product of `f` over the blocks of a partition. -/
-noncomputable def partitionProduct (f : Finset α → R) {S : Finset α} (π : Finpartition S) : R :=
-  ∏ B ∈ π.parts, f B
 
 /-- Moment transform of a finite-set cumulant function. -/
 noncomputable def momentFromCumulant (κ : Finset α → R) (S : Finset α) : R :=
@@ -69,21 +66,6 @@ theorem momentFromCumulant_eq_sum_blockContaining (κ : Finset α → R)
   rw [← Finset.mul_sum]
   rfl
 
-
-/-- Block products factor over a partition constructed by `bind`. -/
-theorem partitionProduct_bind (f : Finset α → R) {S : Finset α} (σ : Finpartition S)
-    (Q : ∀ B ∈ σ.parts, Finpartition B) :
-    partitionProduct f (σ.bind Q) = ∏ B ∈ σ.parts.attach, partitionProduct f (Q B.1 B.2) := by
-  classical
-  change ∏ C ∈ (σ.bind Q).parts, f C = _
-  apply Finset.prod_biUnion
-  rintro ⟨b, hb⟩ - ⟨c, hc⟩ - hbc
-  rw [Function.onFun, Finset.disjoint_left]
-  rintro d hdb hdc
-  rw [Ne, Subtype.mk_eq_mk] at hbc
-  exact (Q b hb).ne_bot hdb
-    (eq_bot_iff.2 <| (le_inf ((Q b hb).le hdb) <| (Q c hc).le hdc).trans <|
-      (σ.disjoint hb hc hbc).le_bot)
 
 /-- Sum of block products over refinements factors into blockwise moments. -/
 theorem sum_Iic_partitionProduct_eq (κ : Finset α → R) {S : Finset α} (π : Finpartition S) :
