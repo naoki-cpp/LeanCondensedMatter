@@ -15,8 +15,7 @@ No occupation convention, Hamiltonian, band structure, current operator, or tran
 appears here.
 -/
 
-namespace QuantumTheory
-namespace Transport
+namespace Lorentzian
 
 noncomputable section
 
@@ -75,5 +74,4 @@ theorem tendsto_integral_weight_mul_lorentzian_of_eq_const_on
 
 end
 
-end Transport
-end QuantumTheory
+end Lorentzian

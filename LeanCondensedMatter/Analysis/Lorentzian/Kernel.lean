@@ -22,8 +22,7 @@ No Hamiltonian, band structure, current operator, occupation function, conductiv
 or concrete transport model appears here.
 -/
 
-namespace QuantumTheory
-namespace Transport
+namespace Lorentzian
 
 noncomputable section
 
@@ -221,5 +220,4 @@ theorem tendsto_lorentzianSpectralTailMass_zero
 
 end
 
-end Transport
-end QuantumTheory
+end Lorentzian

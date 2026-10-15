@@ -32,16 +32,16 @@ theorem integral_zeroTemperatureOccupation_mul_lorentzian_of_fermi_mem
     (hright : fermiEnergy ≤ center + radius) :
     (∫ energy in center - radius..center + radius,
         zeroTemperatureOccupation fermiEnergy energy *
-          lorentzianSpectralKernel (energy - center) broadening) =
+          Lorentzian.lorentzianSpectralKernel (energy - center) broadening) =
       ∫ energy in center - radius..fermiEnergy,
-        lorentzianSpectralKernel (energy - center) broadening := by
+        Lorentzian.lorentzianSpectralKernel (energy - center) broadening := by
   calc
     (∫ energy in center - radius..center + radius,
         zeroTemperatureOccupation fermiEnergy energy *
-          lorentzianSpectralKernel (energy - center) broadening) =
+          Lorentzian.lorentzianSpectralKernel (energy - center) broadening) =
         ∫ energy in center - radius..center + radius,
           Set.indicator {energy : ℝ | energy ≤ fermiEnergy}
-            (fun energy => lorentzianSpectralKernel (energy - center) broadening) energy := by
+            (fun energy => Lorentzian.lorentzianSpectralKernel (energy - center) broadening) energy := by
       apply intervalIntegral.integral_congr_ae
       filter_upwards [(volume : Measure ℝ).ae_ne fermiEnergy] with energy hne
       intro _
@@ -51,7 +51,7 @@ theorem integral_zeroTemperatureOccupation_mul_lorentzian_of_fermi_mem
           lt_of_le_of_ne (not_lt.mp hlt) (Ne.symm hne)
         simp [zeroTemperatureOccupation, hlt, not_le.mpr hgt]
     _ = ∫ energy in center - radius..fermiEnergy,
-        lorentzianSpectralKernel (energy - center) broadening := by
+        Lorentzian.lorentzianSpectralKernel (energy - center) broadening := by
       exact intervalIntegral.integral_indicator ⟨hleft, hright⟩
 
 /-- Exact arctangent form of the Fermi-truncated finite-window integral. -/
@@ -61,24 +61,24 @@ theorem integral_zeroTemperatureOccupation_mul_lorentzian_eq_arctan_of_fermi_mem
     (hright : fermiEnergy ≤ center + radius) :
     (∫ energy in center - radius..center + radius,
         zeroTemperatureOccupation fermiEnergy energy *
-          lorentzianSpectralKernel (energy - center) broadening) =
+          Lorentzian.lorentzianSpectralKernel (energy - center) broadening) =
       Real.arctan ((fermiEnergy - center) / broadening) +
         Real.arctan (radius / broadening) := by
   rw [integral_zeroTemperatureOccupation_mul_lorentzian_of_fermi_mem
     center fermiEnergy radius broadening hleft hright]
   calc
     (∫ energy in center - radius..fermiEnergy,
-        lorentzianSpectralKernel (energy - center) broadening) =
+        Lorentzian.lorentzianSpectralKernel (energy - center) broadening) =
         ∫ offset in -radius..fermiEnergy - center,
-          lorentzianSpectralKernel offset broadening := by
-      let f : ℝ → ℝ := fun offset => lorentzianSpectralKernel offset broadening
+          Lorentzian.lorentzianSpectralKernel offset broadening := by
+      let f : ℝ → ℝ := fun offset => Lorentzian.lorentzianSpectralKernel offset broadening
       have hshift := intervalIntegral.integral_comp_sub_right
         (a := center - radius) (b := fermiEnergy) f center
       rw [show center - radius - center = -radius by ring] at hshift
       exact hshift
     _ = Real.arctan ((fermiEnergy - center) / broadening) +
         Real.arctan (radius / broadening) := by
-      rw [integral_lorentzianSpectralKernel]
+      rw [Lorentzian.integral_lorentzianSpectralKernel]
       rw [show (-radius) / broadening = -(radius / broadening) by ring,
         Real.arctan_neg]
       ring
@@ -90,7 +90,7 @@ private theorem tendsto_arctan_neg_div_broadening
       (nhdsWithin 0 (Set.Ioi 0))
       (nhds (-Real.pi / 2)) := by
   simpa only [neg_div, Real.arctan_neg, neg_neg] using
-    (tendsto_arctan_pos_div_broadening (-distance) (neg_pos.mpr hdistance)).neg
+    (Lorentzian.tendsto_arctan_pos_div_broadening (-distance) (neg_pos.mpr hdistance)).neg
 
 /-- Every fixed positive symmetric energy window around an occupied pole captures asymptotic
 zero-temperature Lorentzian weight `π`, whether or not the window crosses the Fermi level. -/
@@ -101,14 +101,14 @@ theorem tendsto_zeroTemperatureOccupation_lorentzian_occupied_finite_window
       (fun broadening : ℝ =>
         ∫ energy in center - radius..center + radius,
           zeroTemperatureOccupation fermiEnergy energy *
-            lorentzianSpectralKernel (energy - center) broadening)
+            Lorentzian.lorentzianSpectralKernel (energy - center) broadening)
       (nhdsWithin 0 (Set.Ioi 0))
       (nhds Real.pi) := by
   by_cases hright : fermiEnergy ≤ center + radius
   · have hleft : center - radius ≤ fermiEnergy := by linarith
-    have hfermi := tendsto_arctan_pos_div_broadening
+    have hfermi := Lorentzian.tendsto_arctan_pos_div_broadening
       (fermiEnergy - center) (by linarith)
-    have hradius' := tendsto_arctan_pos_div_broadening radius hradius
+    have hradius' := Lorentzian.tendsto_arctan_pos_div_broadening radius hradius
     have hsum := hfermi.add hradius'
     rw [show Real.pi / 2 + Real.pi / 2 = Real.pi by ring] at hsum
     refine hsum.congr' ?_
@@ -122,7 +122,7 @@ theorem tendsto_zeroTemperatureOccupation_lorentzian_occupied_finite_window
       rw [Set.uIcc_of_le hbounds] at henergy
       apply zeroTemperatureOccupation_eq_one
       exact lt_of_le_of_lt henergy.2 (lt_of_not_ge hright)
-    have h := tendsto_integral_weight_mul_lorentzian_of_eq_const_on
+    have h := Lorentzian.tendsto_integral_weight_mul_lorentzian_of_eq_const_on
       (zeroTemperatureOccupation fermiEnergy) center 1 radius hradius hweight
     simpa using h
 
@@ -135,14 +135,14 @@ theorem tendsto_zeroTemperatureOccupation_lorentzian_unoccupied_finite_window
       (fun broadening : ℝ =>
         ∫ energy in center - radius..center + radius,
           zeroTemperatureOccupation fermiEnergy energy *
-            lorentzianSpectralKernel (energy - center) broadening)
+            Lorentzian.lorentzianSpectralKernel (energy - center) broadening)
       (nhdsWithin 0 (Set.Ioi 0))
       (nhds 0) := by
   by_cases hleft : center - radius ≤ fermiEnergy
   · have hright : fermiEnergy ≤ center + radius := by linarith
     have hfermi := tendsto_arctan_neg_div_broadening
       (fermiEnergy - center) (by linarith)
-    have hradius' := tendsto_arctan_pos_div_broadening radius hradius
+    have hradius' := Lorentzian.tendsto_arctan_pos_div_broadening radius hradius
     have hsum := hfermi.add hradius'
     rw [show -Real.pi / 2 + Real.pi / 2 = 0 by ring] at hsum
     refine hsum.congr' ?_
@@ -156,7 +156,7 @@ theorem tendsto_zeroTemperatureOccupation_lorentzian_unoccupied_finite_window
       rw [Set.uIcc_of_le hbounds] at henergy
       apply zeroTemperatureOccupation_eq_zero
       exact le_trans (le_of_not_ge hleft) henergy.1
-    have h := tendsto_integral_weight_mul_lorentzian_of_eq_const_on
+    have h := Lorentzian.tendsto_integral_weight_mul_lorentzian_of_eq_const_on
       (zeroTemperatureOccupation fermiEnergy) center 0 radius hradius hweight
     simpa using h
 
@@ -166,13 +166,13 @@ theorem integral_zeroTemperatureOccupation_lorentzian_fermi_surface_eq_half_mass
     (fermiEnergy radius broadening : ℝ) (hradius : 0 ≤ radius) :
     (∫ energy in fermiEnergy - radius..fermiEnergy + radius,
         zeroTemperatureOccupation fermiEnergy energy *
-          lorentzianSpectralKernel (energy - fermiEnergy) broadening) =
+          Lorentzian.lorentzianSpectralKernel (energy - fermiEnergy) broadening) =
       (1 / 2 : ℝ) *
         (∫ offset in -radius..radius,
-          lorentzianSpectralKernel offset broadening) := by
+          Lorentzian.lorentzianSpectralKernel offset broadening) := by
   rw [integral_zeroTemperatureOccupation_mul_lorentzian_eq_arctan_of_fermi_mem
     fermiEnergy fermiEnergy radius broadening (by linarith) (by linarith),
-    integral_lorentzianSpectralKernel_symmetric]
+    Lorentzian.integral_lorentzianSpectralKernel_symmetric]
   simp
 
 /-- An exact Fermi-surface pole contributes half of the full Lorentzian mass in every fixed positive
@@ -183,10 +183,10 @@ theorem tendsto_zeroTemperatureOccupation_lorentzian_fermi_surface_finite_window
       (fun broadening : ℝ =>
         ∫ energy in fermiEnergy - radius..fermiEnergy + radius,
           zeroTemperatureOccupation fermiEnergy energy *
-            lorentzianSpectralKernel (energy - fermiEnergy) broadening)
+            Lorentzian.lorentzianSpectralKernel (energy - fermiEnergy) broadening)
       (nhdsWithin 0 (Set.Ioi 0))
       (nhds (Real.pi / 2)) := by
-  have hmass := tendsto_integral_lorentzianSpectralKernel_symmetric radius hradius
+  have hmass := Lorentzian.tendsto_integral_lorentzianSpectralKernel_symmetric radius hradius
   have hhalf :=
     (tendsto_const_nhds : Tendsto (fun _ : ℝ => (1 / 2 : ℝ))
       (nhdsWithin 0 (Set.Ioi 0)) (nhds (1 / 2 : ℝ))).mul hmass
@@ -225,7 +225,7 @@ theorem tendsto_zeroTemperatureOccupation_lorentzian_finite_window
       (fun broadening : ℝ =>
         ∫ energy in center - radius..center + radius,
           zeroTemperatureOccupation fermiEnergy energy *
-            lorentzianSpectralKernel (energy - center) broadening)
+            Lorentzian.lorentzianSpectralKernel (energy - center) broadening)
       (nhdsWithin 0 (Set.Ioi 0))
       (nhds (zeroTemperatureLorentzianPoleWeight fermiEnergy center)) := by
   rcases lt_trichotomy center fermiEnergy with hoccupied | heq | hunoccupied
