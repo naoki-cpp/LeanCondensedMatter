@@ -26,23 +26,6 @@ noncomputable def ExternalInsertionDiagram.pairingInMixedOrder {E n : ℕ}
     Pairing (2 * n + E) :=
   d.pairing.transport (externalInsertionMixedTimeAmbientPositionEquiv externalTime σ)
 
-/-- The mixed pairing is constant on each finite external-insertion order-signature
-fiber. This statement concerns only pairing transport; the time-dependent contraction kernel
-is not constant on those fibers. -/
-theorem ExternalInsertionDiagram.pairingInMixedOrder_eq_of_orderSignature_eq
-    {E n : ℕ}
-    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E n
-      (Finset.univ : Finset (Fin n)))
-    (externalTime : Fin (2 * E) → ℝ) (σ υ : Fin n → ℝ)
-    (h : externalInsertionOrderSignature externalTime σ =
-      externalInsertionOrderSignature externalTime υ) :
-    d.pairingInMixedOrder externalTime σ =
-      d.pairingInMixedOrder externalTime υ := by
-  unfold ExternalInsertionDiagram.pairingInMixedOrder
-    externalInsertionMixedTimeAmbientPositionEquiv
-  rw [externalInsertionStandardToMixedAtomicPositionEquiv_eq_of_orderSignature_eq
-    externalTime σ υ h]
-
 /-- Transporting a mixed-order partner back to the fixed flattened enumeration recovers the
 original diagram partner. -/
 theorem ExternalInsertionDiagram.mixedTimeAmbientPositionEquiv_partner {E n : ℕ}
