@@ -347,9 +347,9 @@
       ]
     },
     {
-      "id": "heisenbergBalanceAdapter",
+      "id": "heisenbergRepresentedBalance",
       "path": "LeanCondensedMatter/QuantumTheory/ConservationLaw/HeisenbergEvolution.lean",
-      "modules": ["LeanCondensedMatter.Analysis.ConservationLaw.BalanceLawAdapter"]
+      "modules": ["LeanCondensedMatter.Analysis.ConservationLaw.BalanceLaw"]
     },
     {
       "id": "correctedCurrentFluxLocalizationAlgebra",
