@@ -1495,11 +1495,18 @@
       "externalImportCount": 0
     },
     {
+      "name": "LeanCondensedMatter.Combinatorics.PerfectPairing.SplitCrossing",
+      "sourceFile": "LeanCondensedMatter/Combinatorics/PerfectPairing/SplitCrossing.lean",
+      "imports": [
+        "LeanCondensedMatter.Combinatorics.PerfectPairing.CrossingParity",
+        "LeanCondensedMatter.Combinatorics.PerfectPairing.SplitNormalizedPairs"
+      ],
+      "externalImportCount": 0
+    },
+    {
       "name": "LeanCondensedMatter.Combinatorics.PerfectPairing.SplitNormalizedPairs",
       "sourceFile": "LeanCondensedMatter/Combinatorics/PerfectPairing/SplitNormalizedPairs.lean",
       "imports": [
-        "LeanCondensedMatter.Combinatorics.PerfectPairing.Crossing",
-        "LeanCondensedMatter.Combinatorics.PerfectPairing.CrossingParity",
         "LeanCondensedMatter.Combinatorics.PerfectPairing.Evaluation",
         "LeanCondensedMatter.Combinatorics.PerfectPairing.PairEndpoints",
         "LeanCondensedMatter.Combinatorics.PerfectPairing.Split"
@@ -1553,6 +1560,7 @@
         "LeanCondensedMatter.Combinatorics.PerfectPairing.Restriction",
         "LeanCondensedMatter.Combinatorics.PerfectPairing.Sign",
         "LeanCondensedMatter.Combinatorics.PerfectPairing.Split",
+        "LeanCondensedMatter.Combinatorics.PerfectPairing.SplitCrossing",
         "LeanCondensedMatter.Combinatorics.PerfectPairing.SplitNormalizedPairs",
         "LeanCondensedMatter.Combinatorics.PerfectPairing.SumDecomposition",
         "LeanCondensedMatter.Combinatorics.PerfectPairing.Transport",
@@ -6900,6 +6908,35 @@
       "externalImportCount": 0
     },
     {
+      "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.PhysicalDysonIntegral",
+      "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Diagrammatics/ExternalInsertion/PhysicalDysonIntegral.lean",
+      "imports": [
+        "LeanCondensedMatter.Analysis.OrderedSimplex.MeasurableRegularityBounds",
+        "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.DiagramRegularity",
+        "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.PhysicalWickExpansion"
+      ],
+      "externalImportCount": 0
+    },
+    {
+      "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.PhysicalVertexDyson",
+      "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Diagrammatics/ExternalInsertion/PhysicalVertexDyson.lean",
+      "imports": [
+        "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.CauchySeries",
+        "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.PhysicalVertexProduct"
+      ],
+      "externalImportCount": 0
+    },
+    {
+      "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.PhysicalVertexProduct",
+      "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Diagrammatics/ExternalInsertion/PhysicalVertexProduct.lean",
+      "imports": [
+        "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.PhysicalDysonIntegral",
+        "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.LocalLeg",
+        "LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTime.InteractionPicture"
+      ],
+      "externalImportCount": 0
+    },
+    {
       "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.PhysicalWickExpansion",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Diagrammatics/ExternalInsertion/PhysicalWickExpansion.lean",
       "imports": [
@@ -6944,6 +6981,9 @@
         "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalVacuumStandalone",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.FixedExternalFiberSum",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.Integral",
+        "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.PhysicalDysonIntegral",
+        "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.PhysicalVertexDyson",
+        "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.PhysicalVertexProduct",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.PhysicalWickExpansion",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.TimedField"
       ],
