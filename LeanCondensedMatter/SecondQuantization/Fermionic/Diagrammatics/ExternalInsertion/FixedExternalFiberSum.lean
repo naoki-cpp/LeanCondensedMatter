@@ -53,17 +53,14 @@ theorem externalInsertionDysonCoefficient_eq_sum_externalSupportFiber
           if d.externalLabel = externalLabel then
             d.dysonAmplitude ε β g externalTime
           else 0 := by
-    calc
-      _ = ∑ d ∈ (Finset.univ : Finset (ExternalInsertionWickDiagram Mode E n)).filter
-            (fun d => d.externalLabel = externalLabel),
-            d.dysonAmplitude ε β g externalTime := by
-          rw [Finset.sum_subtype
-            (p := fun d : ExternalInsertionWickDiagram Mode E n =>
-              d.externalLabel = externalLabel)
-            _ (fun d => by simp)
-            (fun d => d.dysonAmplitude ε β g externalTime)]
-      _ = _ := by
-        simp only [Finset.sum_filter]
+    simpa only [Finset.sum_filter] using
+      (Finset.sum_subtype
+        (p := fun d : ExternalInsertionWickDiagram Mode E n =>
+          d.externalLabel = externalLabel)
+        ((Finset.univ : Finset (ExternalInsertionWickDiagram Mode E n)).filter
+          (fun d => d.externalLabel = externalLabel))
+        (fun _ => by simp)
+        (fun d => d.dysonAmplitude ε β g externalTime)).symm
   unfold externalInsertionDysonCoefficient
   rw [hfixed]
   rw [ExternalInsertionDiagram.sum_eq_sum_externalSupportFiber]
