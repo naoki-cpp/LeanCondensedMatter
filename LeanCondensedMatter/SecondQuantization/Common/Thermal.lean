@@ -2,6 +2,7 @@ import LeanCondensedMatter.SecondQuantization.Common.Algebra.DiagonalTrace
 import LeanCondensedMatter.SecondQuantization.Common.Algebra.FiniteTrace
 import LeanCondensedMatter.SecondQuantization.Common.Algebra.FiniteHilbertOperator
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsExpectationBridge
+import LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteCompletedGibbsCompatibility
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsCoordinate
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis
 import LeanCondensedMatter.QuantumTheory.Gibbs.PurePoint
