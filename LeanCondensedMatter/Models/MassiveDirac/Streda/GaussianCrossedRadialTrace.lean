@@ -504,6 +504,85 @@ private theorem gaussianCrossedRadialFirstHarmonicIntegral_eq_difference
       rw [h]
     _ = _ := by ring
 
+/-- At negative real-space radius, the retarded or advanced Green Pauli-x
+coefficient is a single K0-K2 momentum moment times the exact K1
+Fourier recurrence factor. This does not alter the Fourier momentum
+measure or take a regulator limit. -/
+theorem finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient_x_negRadius_eq_k0_sub_k2
+    (side : SpectralSide)
+    (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ)
+    (hbroadening : broadening ≠ 0) (hdisorder : 0 ≤ disorderStrength)
+    (hpMax : 0 ≤ pMax) :
+    let first := Complex.I * ((((-radius) / hbar : ℝ) : ℂ)) / 2
+    let moment :=
+      (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
+        ∫ p in (0 : ℝ)..pMax,
+          (p : ℂ) ^ 2 *
+            ((polarFourierZerothAngularKernel (p * (-radius) / hbar) -
+              polarFourierSecondCosineAngularKernel (p * (-radius) / hbar)) *
+              finiteCutoffContinuumBornDysonPauliCoefficient .x
+                side v m p 0 probeEnergy broadening disorderStrength hbar pMax)
+    finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient
+        .x side v m probeEnergy broadening disorderStrength hbar pMax (-radius) =
+      first * moment := by
+  have h :=
+    finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient_eq_radialKernel_integral
+      .x side v m probeEnergy broadening disorderStrength hbar pMax (-radius)
+      hbroadening hdisorder hpMax
+  dsimp only [finiteCutoffContinuumBornDysonRadialGreenPauliKernel] at h
+  rw [gaussianCrossedRadialFirstHarmonicIntegral_eq_difference hbar pMax (-radius)] at h
+  dsimp only
+  rw [h]
+  ring
+
+/-- Both X crossed Hall Green minors containing one Pauli-x component share
+the negative-radius K1 factor. The remaining Green scalar/Pauli-z
+coefficients use their independent K0 channels. These equalities hold
+before the radial Hall integration, with all finite regulators intact. -/
+theorem finiteCutoffContinuumBornDysonRadialGreen_x_minors_eq_k0_sub_k2
+    (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ)
+    (hbroadening : broadening ≠ 0) (hdisorder : 0 ≤ disorderStrength)
+    (hpMax : 0 ≤ pMax) :
+    let moment := fun side : SpectralSide =>
+      (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
+        ∫ p in (0 : ℝ)..pMax,
+          (p : ℂ) ^ 2 *
+            ((polarFourierZerothAngularKernel (p * (-radius) / hbar) -
+              polarFourierSecondCosineAngularKernel (p * (-radius) / hbar)) *
+              finiteCutoffContinuumBornDysonPauliCoefficient .x
+                side v m p 0 probeEnergy broadening disorderStrength hbar pMax)
+    let first := Complex.I * ((((-radius) / hbar : ℝ) : ℂ)) / 2
+    let rx := finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient
+      .x .retarded v m probeEnergy broadening disorderStrength hbar pMax (-radius)
+    let ax := finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient
+      .x .advanced v m probeEnergy broadening disorderStrength hbar pMax (-radius)
+    let rz := finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient
+      .z .retarded v m probeEnergy broadening disorderStrength hbar pMax (-radius)
+    let az := finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient
+      .z .advanced v m probeEnergy broadening disorderStrength hbar pMax (-radius)
+    let r0 := finiteCutoffContinuumBornDysonRadialGreenScalarCoefficient
+      .retarded v m probeEnergy broadening disorderStrength hbar pMax (-radius)
+    let a0 := finiteCutoffContinuumBornDysonRadialGreenScalarCoefficient
+      .advanced v m probeEnergy broadening disorderStrength hbar pMax (-radius)
+    (rx * az - rz * ax =
+      first * (moment .retarded * az - rz * moment .advanced)) ∧
+    (a0 * rx - r0 * ax =
+      first * (a0 * moment .retarded - r0 * moment .advanced)) := by
+  have hR :=
+    finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient_x_negRadius_eq_k0_sub_k2
+      .retarded v m probeEnergy broadening disorderStrength hbar pMax radius
+      hbroadening hdisorder hpMax
+  have hA :=
+    finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient_x_negRadius_eq_k0_sub_k2
+      .advanced v m probeEnergy broadening disorderStrength hbar pMax radius
+      hbroadening hdisorder hpMax
+  dsimp only at hR hA ⊢
+  constructor
+  · rw [hR, hA]
+    ring
+  · rw [hR, hA]
+    ring
+
 /-- The Pauli-z/source-current minor appearing in the regulated crossed X Hall
 trace has a common first-harmonic factor. The two source-z current coefficients
 reduce from K1 to K0-K2 momentum integrals via the exact Fourier recurrence.
