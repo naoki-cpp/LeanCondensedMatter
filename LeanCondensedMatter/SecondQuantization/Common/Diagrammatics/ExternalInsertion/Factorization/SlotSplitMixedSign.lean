@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Combinatorics.BinarySplitPermutationSign
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Factorization.FixedSlotSplitOrder
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Pairing.SlotSplitMixedOrder
 
 set_option linter.style.header false
