@@ -222,80 +222,28 @@ private theorem finiteCutoffContinuumBornDenominatorIntegralOfRegulator_eq_log_s
             (pauliGreenDenominatorOfRegulator v m pMax 0 probeEnergy regulator) -
           Complex.log
             (pauliGreenDenominatorOfRegulator v m 0 0 probeEnergy regulator)) := by
-  have hdenDeriv (p : ℝ) :
-      HasDerivAt
-        (fun q : ℝ => pauliGreenDenominatorOfRegulator v m q 0 probeEnergy regulator)
-        (-2 * (v : ℂ) ^ 2 * (p : ℂ)) p := by
-    have hcomplex :
-        HasDerivAt
-          (fun z : ℂ =>
-            spectralParameterOfRegulator probeEnergy regulator ^ 2 - (m : ℂ) ^ 2 -
-              (v : ℂ) ^ 2 * z ^ 2)
-          (-2 * (v : ℂ) ^ 2 * (p : ℂ)) (p : ℂ) := by
-      convert (hasDerivAt_const (p : ℂ)
-        (spectralParameterOfRegulator probeEnergy regulator ^ 2 - (m : ℂ) ^ 2)).sub
-          (((hasDerivAt_id (p : ℂ)).pow 2).const_mul ((v : ℂ) ^ 2)) using 1 <;>
-        first | rfl | (simp only [id]; ring)
-    have hreal := hcomplex.comp_ofReal
-    convert hreal using 1
-    funext q
-    exact pauliGreenDenominatorOfRegulator_radial_eq v m probeEnergy regulator q
-  have hlogDeriv (p : ℝ) :
-      HasDerivAt
-        (fun q : ℝ => Complex.log
-          (pauliGreenDenominatorOfRegulator v m q 0 probeEnergy regulator))
-        ((-2 : ℂ) * (v : ℂ) ^ 2 *
-          continuumBornRadialDenominatorIntegrandOfRegulator
-            v m probeEnergy regulator p) p := by
-    have hslit :
-        pauliGreenDenominatorOfRegulator v m p 0 probeEnergy regulator ∈
-          Complex.slitPlane := by
-      rw [Complex.mem_slitPlane_iff]
-      right
-      rw [pauliGreenDenominatorOfRegulator_radial_im]
-      exact mul_ne_zero (mul_ne_zero (by norm_num) hprobeEnergy) hregulator
-    have hlog := (hdenDeriv p).clog_real hslit
-    convert hlog using 1
-    unfold continuumBornRadialDenominatorIntegrandOfRegulator
-      massiveDiracRadialDenominatorKernel
-    have hden :
-        massiveDiracRadialDenominator v p
-            (spectralParameterOfRegulator probeEnergy regulator) (m : ℂ) =
-          pauliGreenDenominatorOfRegulator v m p 0 probeEnergy regulator := by
-      rw [pauliGreenDenominatorOfRegulator_radial_eq]
-      unfold massiveDiracRadialDenominator
-      push_cast
+  have hcenter :
+      (spectralParameterOfRegulator probeEnergy regulator ^ 2 - (m : ℂ) ^ 2).im ≠ 0 := by
+    have him :
+        (spectralParameterOfRegulator probeEnergy regulator ^ 2 - (m : ℂ) ^ 2).im =
+          2 * probeEnergy * regulator := by
+      simp [spectralParameterOfRegulator, pow_two]
       ring
-    rw [hden, div_eq_mul_inv]
+    rw [him]
+    exact mul_ne_zero (mul_ne_zero (by norm_num) hprobeEnergy) hregulator
+  have hden (p : ℝ) :
+      massiveDiracRadialDenominator v p
+          (spectralParameterOfRegulator probeEnergy regulator) (m : ℂ) =
+        pauliGreenDenominatorOfRegulator v m p 0 probeEnergy regulator := by
+    rw [pauliGreenDenominatorOfRegulator_radial_eq]
+    unfold massiveDiracRadialDenominator
+    push_cast
     ring
-  have hint : IntervalIntegrable
-      (fun p : ℝ =>
-        ((-2 : ℂ) * (v : ℂ) ^ 2) *
-          continuumBornRadialDenominatorIntegrandOfRegulator
-            v m probeEnergy regulator p)
-      volume 0 pMax :=
-    ((continuous_continuumBornRadialDenominatorIntegrandOfRegulator
-      v m probeEnergy regulator hregulator).const_mul
-        ((-2 : ℂ) * (v : ℂ) ^ 2)).intervalIntegrable 0 pMax
-  have hmain :
-      ((-2 : ℂ) * (v : ℂ) ^ 2) *
-          finiteCutoffContinuumBornDenominatorIntegralOfRegulator
-            v m probeEnergy regulator pMax =
-        Complex.log
-            (pauliGreenDenominatorOfRegulator v m pMax 0 probeEnergy regulator) -
-          Complex.log
-            (pauliGreenDenominatorOfRegulator v m 0 0 probeEnergy regulator) := by
-    have hftc := intervalIntegral.integral_eq_sub_of_hasDerivAt
-      (fun p _ => hlogDeriv p) hint
-    rw [← hftc]
-    unfold finiteCutoffContinuumBornDenominatorIntegralOfRegulator
-    rw [intervalIntegral.integral_const_mul]
-  have hv : (v : ℂ) ≠ 0 := Complex.ofReal_ne_zero.mpr hvelocity
-  have hcoeff : ((-2 : ℂ) * (v : ℂ) ^ 2) ≠ 0 := by
-    exact mul_ne_zero (by norm_num) (pow_ne_zero 2 hv)
-  apply (mul_left_cancel₀ hcoeff)
-  rw [hmain]
-  field_simp
+  have h := integral_massiveDiracRadialDenominatorKernel_eq_log
+    v pMax (spectralParameterOfRegulator probeEnergy regulator) (m : ℂ)
+    hvelocity hcenter
+  simpa only [finiteCutoffContinuumBornDenominatorIntegralOfRegulator,
+    continuumBornRadialDenominatorIntegrandOfRegulator, hden] using h
 
 /-- Exact arbitrary-regulator finite-cutoff real part of the shared denominator integral. -/
 private theorem finiteCutoffContinuumBornDenominatorIntegralOfRegulator_re_eq
