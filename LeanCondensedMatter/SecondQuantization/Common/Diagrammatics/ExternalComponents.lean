@@ -127,18 +127,18 @@ section ExternalPartition
 
 variable [Fintype External] [DecidableEq External]
 
+open Classical in
 /-- The partition of external vertices according to reachability in the full
 external/internal graph. Internal paths are retained when deciding whether two
 external vertices belong to the same block. -/
-open Classical in
 noncomputable def externalComponentPartition
     (G : SimpleGraph (External ⊕ Internal)) :
     Finpartition (Finset.univ : Finset External) :=
   Finpartition.ofSetoid {
     r := fun a b => G.Reachable (Sum.inl a) (Sum.inl b)
     iseqv := ⟨fun _ => SimpleGraph.Reachable.refl _,
-      fun _ _ h => h.symm,
-      fun _ _ _ hab hbc => hab.trans hbc⟩
+      fun h => h.symm,
+      fun hab hbc => hab.trans hbc⟩
   }
 
 /-- An external vertex lies in the block of another exactly when they are
@@ -150,6 +150,7 @@ theorem mem_externalComponentPartition_part
   classical
   unfold externalComponentPartition
   rw [Finpartition.mem_part_ofSetoid_iff_rel]
+  rfl
 
 end ExternalPartition
 
