@@ -455,9 +455,9 @@ theorem externalInsertionMixedTimeOrderedAtomicLegs_eq_ofFn {E n : ℕ}
       List.ofFn (fun p : Fin (2 * (2 * n + E)) =>
         legs.get (Fin.cast h.symm p)) = legs := by
     exact (List.ofFn_congr h legs.get).symm.trans (List.ofFn_get legs)
-  simpa only [externalInsertionMixedTimeOrderedAtomicLegEquiv,
-    Equiv.trans_apply, finCongr_apply,
-    List.Nodup.getEquivOfForallMemList_apply] using hlist.symm
+  change legs = List.ofFn (fun p : Fin (2 * (2 * n + E)) =>
+    legs.get (Fin.cast h.symm p))
+  exact hlist.symm
 
 /-- The mixed position occupied by a canonical external-insertion leg identity. -/
 noncomputable def externalInsertionMixedTimeOrderedAtomicLegPosition {E n : ℕ}
