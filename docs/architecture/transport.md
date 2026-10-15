@@ -177,6 +177,12 @@ normalization, real Born-renormalization bounds, and ladder determinant nonvanis
 at the result boundaries that consume them; the regime package is not a replacement for the scaling
 domain or for generic denominator APIs.
 
+The Středa-owned `FiniteBroadeningBornLadderRAIntegral` module integrates the source-`x`
+retarded-advanced current response as one in-plane vector and transports that vector through the
+fixed-disorder zero-broadening limit. The ordered `xy` response consumes its negative transverse
+projection; the longitudinal response consumes its longitudinal projection and separately subtracts
+the bare RR/AA remainder. Conductivity normalization remains downstream.
+
 The massive-Dirac continuum normalization keeps each physical factor at the narrowest owner.
 `Analysis.ContinuumMeasure` owns both the bare physical-momentum measure and its exact full-angle
 radial prefactor. `Disorder.ContinuumMeasurePrefactor` owns one external scalar-disorder line times

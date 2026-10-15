@@ -15,3 +15,7 @@ _Avoid_: full Středa response, exact disorder-averaged current
 **Ladder regularity**:
 The nonvanishing condition that allows a total algebraic ladder solution to be interpreted as the physical fixed-point solution. The algebraic solution itself exists independently of this interpretation condition.
 _Avoid_: existence of the ladder solution, disorder positivity
+
+**Integrated retarded-advanced current response**:
+The finite-cutoff Born-Dyson momentum-integrated response to a dressed source current, with measured directions kept together and current factors attached. Same-side RR/AA contributions and physical conductivity normalization remain separate.
+_Avoid_: full Středa response, conductivity, exact disorder average
