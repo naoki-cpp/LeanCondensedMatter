@@ -12,7 +12,7 @@ import LeanCondensedMatter.Analysis.OrderedSimplex
 import LeanCondensedMatter.Analysis.FunctionalCalculus.CFC
 import LeanCondensedMatter.Analysis.Lorentzian
 import LeanCondensedMatter.Analysis.Operator
-import LeanCondensedMatter.Analysis.InfiniteSum
+import LeanCondensedMatter.Analysis.InfiniteSum.FinsuppProduct
 import LeanCondensedMatter.Analysis.Calculus
 import LeanCondensedMatter.Analysis.ConservationLaw
 import LeanCondensedMatter.Analysis.Inequalities
