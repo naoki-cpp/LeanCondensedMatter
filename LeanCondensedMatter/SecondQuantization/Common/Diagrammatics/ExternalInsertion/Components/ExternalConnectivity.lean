@@ -47,6 +47,7 @@ theorem ExternalInsertionDiagram.allExternalVerticesConnected_two
       · simp only [Finset.mem_toLeft, Finset.mem_singleton]
         constructor
         · intro hx
+          exfalso
           apply hDisconnected
           exact ((d.vertexGraph.mem_componentBlock
             (Sum.inl (0 : Fin 2)) (Sum.inl (1 : Fin 2))).1 hx).symm
