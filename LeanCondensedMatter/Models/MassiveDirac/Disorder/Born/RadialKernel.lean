@@ -54,7 +54,6 @@ theorem massiveDiracRadialDenominator_inv_product_mul_center_gap
   rw [hgap]
   unfold massiveDiracRetardedAdvancedRadialDenominatorProduct
   field_simp
-  ring
 
 /-- Polar Jacobian divided by one radial massive-Dirac denominator. -/
 def massiveDiracRadialDenominatorKernel
