@@ -136,13 +136,13 @@ theorem inPlaneLadderAction_integrable_and_integral_eq
     (∫ p in a..b, inPlaneLadderAction (rung p) coefficients direction) =
       inPlaneLadderAction (fun i => ∫ p in a..b, rung p i) coefficients direction := by
   fin_cases direction
-  · simp only [inPlaneLadderAction_apply_x]
+  · simp only [Fin.zero_eta, inPlaneLadderAction_apply_x]
     constructor
     · exact ((hrung 0).mul_const (coefficients 0)).sub ((hrung 1).mul_const (coefficients 1))
     · rw [intervalIntegral.integral_sub ((hrung 0).mul_const (coefficients 0))
           ((hrung 1).mul_const (coefficients 1)),
         intervalIntegral.integral_mul_const, intervalIntegral.integral_mul_const]
-  · simp only [inPlaneLadderAction_apply_y]
+  · simp only [Fin.mk_one, inPlaneLadderAction_apply_y]
     constructor
     · exact ((hrung 1).mul_const (coefficients 0)).add ((hrung 0).mul_const (coefficients 1))
     · rw [intervalIntegral.integral_add ((hrung 1).mul_const (coefficients 0))
