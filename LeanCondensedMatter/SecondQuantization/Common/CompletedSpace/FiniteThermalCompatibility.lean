@@ -25,14 +25,14 @@ variable {Config : Type*} [Fintype Config] [Nonempty Config]
 on completed Fock space with the same density operator on the finite Hilbert realization. -/
 theorem completedFiniteHilbertEquiv_intertwines_finitePurePointGibbsDensity
     (energy : Config → ℝ) (β : ℝ) :
-    (completedFiniteHilbertContinuousEquiv
-      (Config := Config)).toContinuousLinearMap.comp
+    (completedFiniteHilbertEquiv
+      (Config := Config)).toContinuousLinearEquiv.toContinuousLinearMap.comp
         (finitePurePointGibbsDensityOperator
           (completedHilbertBasis (Config := Config)) energy β).op =
       (finitePurePointGibbsDensityOperator
         (finiteHilbertBasis (Config := Config)) energy β).op.comp
-        (completedFiniteHilbertContinuousEquiv
-          (Config := Config)).toContinuousLinearMap := by
+        (completedFiniteHilbertEquiv
+          (Config := Config)).toContinuousLinearEquiv.toContinuousLinearMap := by
   apply continuousLinearMap_ext_completedBasis
   intro c
   simp only [ContinuousLinearMap.comp_apply]

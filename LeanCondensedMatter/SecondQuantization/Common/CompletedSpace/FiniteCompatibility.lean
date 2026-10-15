@@ -28,11 +28,6 @@ noncomputable def completedFiniteHilbertEquiv :
     CompletedFock Config ≃ₗᵢ[ℂ] FiniteHilbertFock Config :=
   lpPiLpₗᵢ (fun _ : Config => ℂ) ℂ
 
-/-- Continuous-linear form of the canonical finite-configuration Hilbert-space equivalence. -/
-noncomputable def completedFiniteHilbertContinuousEquiv :
-    CompletedFock Config ≃L[ℂ] FiniteHilbertFock Config :=
-  (completedFiniteHilbertEquiv (Config := Config)).toContinuousLinearEquiv
-
 /-- The finite compatibility equivalence intertwines the algebraic-to-completed inclusion with the
 algebraic-to-finite-Hilbert equivalence. -/
 @[simp]
