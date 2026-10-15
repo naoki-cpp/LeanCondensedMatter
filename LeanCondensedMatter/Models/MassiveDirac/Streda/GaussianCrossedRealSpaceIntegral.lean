@@ -530,7 +530,20 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_psi_antis
   have hpsi :=
     finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_psi_antisymmetric_eq_pauli_minors
       v m probeEnergy broadening disorderStrength hbar pMax radius
-  dsimp only at hpsi ⊢
+  change _ =
+    (8 * Complex.I * gz *
+      (gx * (a * w .y - c * u .y) +
+        b * (u .y * w .x - u .x * w .y))) +
+      (starRingEnd ℂ) (8 * Complex.I * gz *
+      (gx * (a * w .y - c * u .y) +
+        b * (u .y * w .x - u .x * w .y))) at hpsi
+  change _ =
+    (8 * Complex.I * gz *
+      (gx * (a * w .y - c * u .y) -
+        b * ((u .y) ^ 2 + u .x * w .y))) +
+      (starRingEnd ℂ) (8 * Complex.I * gz *
+      (gx * (a * w .y - c * u .y) -
+        b * ((u .y) ^ 2 + u .x * w .y)))
   rw [hpsi, htrans]
   have hfactor :
       8 * Complex.I * gz *
