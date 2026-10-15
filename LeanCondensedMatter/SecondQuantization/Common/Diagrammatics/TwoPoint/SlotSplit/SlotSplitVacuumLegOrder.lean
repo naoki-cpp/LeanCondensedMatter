@@ -42,18 +42,6 @@ theorem slotSplitVacuumSlot_strictMono (T : Finset (Fin n)) :
   simpa [slotSplitVacuumSlot, slotSplitVacuumOrder] using
     (((Finset.univ : Finset (Fin n)) \ T).orderIsoOfFin rfl).strictMono hab
 
-/-- The order embedding of fixed-order vacuum legs into ambient mixed-order leg positions. -/
-private noncomputable def slotSplitVacuumMixedOrderEmbedding
-    (T : Finset (Fin n)) (τ τ' : ℝ) (σ : Fin n → ℝ)
-    (hσ : StrictAnti (σ ∘ slotSplitVacuumSlot T)) :
-    Fin (2 * (2 * ((Finset.univ : Finset (Fin n)) \ T).card)) ↪o
-      Fin (2 * (2 * n + 1)) :=
-  OrderEmbedding.ofStrictMono
-    (mixedTimeOrderedQuarticLegMapPosition (slotSplitVacuumSlot T) τ τ' σ)
-    (mixedTimeOrderedQuarticLegMapPosition_strictMono_of_strictAnti
-      (slotSplitVacuumSlot T) (slotSplitVacuumSlot_strictMono T)
-      τ τ' σ hσ)
-
 /-- A fixed-order quartic vacuum leg, viewed as an ambient standard two-point leg, is exactly the
 right-leg embedding of the canonical slot split. -/
 theorem slotSplitVacuumOrderedLeg_eq_slotSplitRight
@@ -101,6 +89,7 @@ theorem TwoPointDiagram.ofSlotSplit_pairing_partner_vacuumOrderedLeg
         (orderedQuarticLegMapToTwoPointLeg (slotSplitVacuumSlot T)
           ((vac.pairingInOrder (slotSplitVacuumOrder T)).partner p)) := by
   let d := TwoPointDiagram.ofSlotSplit (Finset.subset_univ T) ext vac
+  dsimp only [d]
   rw [slotSplitVacuumOrderedLeg_eq_slotSplitRight T p,
     slotSplitVacuumOrderedLeg_eq_slotSplitRight T
       ((vac.pairingInOrder (slotSplitVacuumOrder T)).partner p)]
