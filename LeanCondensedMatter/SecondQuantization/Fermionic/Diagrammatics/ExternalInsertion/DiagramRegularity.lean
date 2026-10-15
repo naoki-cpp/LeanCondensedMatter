@@ -76,12 +76,14 @@ private theorem ExternalInsertionWickDiagram.dysonFixedTimeChamberRepresentative
     {E n : ℕ} (d : ExternalInsertionWickDiagram Mode E n)
     (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
     (externalTime : Fin (2 * E) → ℝ) (σ₀ σ : Fin n → ℝ)
-    (h : SameExternalInsertionOrderChamber externalTime σ₀ σ) :
+    (hSignature : externalInsertionOrderSignature externalTime σ₀ =
+      externalInsertionOrderSignature externalTime σ) :
     d.dysonFixedTimeChamberRepresentative ε β g externalTime σ₀ σ =
       d.dysonFixedTimeAmplitude ε β g externalTime σ := by
   have hlegs :=
     externalInsertionMixedTimeOrderedAtomicLegEquiv_eq_of_comparisons
-      externalTime σ₀ σ h
+      externalTime σ₀ σ
+      ((externalInsertionOrderSignature_eq_iff externalTime σ₀ σ).mp hSignature)
   have hperm :
       externalInsertionStandardToMixedAtomicPositionEquiv externalTime σ₀ =
         externalInsertionStandardToMixedAtomicPositionEquiv externalTime σ := by
@@ -129,10 +131,8 @@ theorem ExternalInsertionWickDiagram.measurableLocallyBounded_dysonFixedTimeAmpl
       ε β g externalTime
       (intervalIntegral.finiteSignatureBase (externalInsertionOrderSignature externalTime)
         (externalInsertionOrderSignature externalTime σ)) σ
-      (by
-        rw [sameExternalInsertionOrderChamber_iff_orderSignature_eq]
-        exact intervalIntegral.finiteSignatureBase_signature_eq
-          (externalInsertionOrderSignature externalTime) σ)).symm
+      (intervalIntegral.finiteSignatureBase_signature_eq
+        (externalInsertionOrderSignature externalTime) σ)).symm
 
 end Fermionic
 end SecondQuantization
