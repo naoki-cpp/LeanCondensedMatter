@@ -11,7 +11,7 @@ set_option linter.style.header false
 /-!
 # Generic transport analysis
 
-Model-independent analytical tools used in transport calculations: angular harmonics, band
+Model-independent analytical tools used in transport calculations: angular harmonics,
 zero-temperature band filling and Fermi-edge formulas, finite-dimensional Fourier geometry,
 continuum momentum measures, polar Fourier reduction, and positive relaxation-time data.
 
