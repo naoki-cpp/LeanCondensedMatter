@@ -504,6 +504,65 @@ private theorem gaussianCrossedRadialFirstHarmonicIntegral_eq_difference
       rw [h]
     _ = _ := by ring
 
+/-- The Pauli-z/source-current minor appearing in the regulated crossed X Hall
+trace has a common first-harmonic factor. The two source-z current coefficients
+reduce from K1 to K0-K2 momentum integrals via the exact Fourier recurrence.
+
+The factor `i (radius / hbar) / 2` is retained without dividing by radius
+or assuming `hbar ≠ 0`. The finite cutoff, broadening, transverse current,
+and physical momentum measure remain unchanged. -/
+theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrent_z_minor_eq_k0_sub_k2
+    (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ)
+    (hbroadening : broadening ≠ 0) (hdisorder : 0 ≤ disorderStrength)
+    (hpMax : 0 ≤ pMax) :
+    let factor := finiteCutoffContinuumBornDysonGaussianCrossedCurrentFactor
+      v m probeEnergy broadening disorderStrength hbar pMax
+    let aA := fun p : ℝ =>
+      finiteCutoffContinuumBornDysonScalarCoefficient
+        .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax
+    let aR := fun p : ℝ =>
+      finiteCutoffContinuumBornDysonScalarCoefficient
+        .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax
+    let bA := fun p : ℝ =>
+      finiteCutoffContinuumBornDysonPauliCoefficient .x
+        .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax
+    let bR := fun p : ℝ =>
+      finiteCutoffContinuumBornDysonPauliCoefficient .x
+        .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax
+    let dA := fun p : ℝ =>
+      finiteCutoffContinuumBornDysonPauliCoefficient .z
+        .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax
+    let dR := fun p : ℝ =>
+      finiteCutoffContinuumBornDysonPauliCoefficient .z
+        .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax
+    let moment := fun f : ℝ → ℂ =>
+      (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
+        ∫ p in (0 : ℝ)..pMax,
+          (p : ℂ) ^ 2 *
+            ((polarFourierZerothAngularKernel (p * radius / hbar) -
+              polarFourierSecondCosineAngularKernel (p * radius / hbar)) * f p)
+    let zX := moment (fun p => (bR p * dA p + bA p * dR p) * factor)
+    let zY := moment (fun p => (-Complex.I * (aA p * bR p - aR p * bA p)) * factor)
+    let first := Complex.I * (((radius / hbar : ℝ) : ℂ)) / 2
+    let uY := finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient
+      .y 0 v m probeEnergy broadening disorderStrength hbar pMax radius
+    let wY := finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient
+      .y 1 v m probeEnergy broadening disorderStrength hbar pMax radius
+    wY * finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient
+        .z 0 v m probeEnergy broadening disorderStrength hbar pMax radius -
+      uY * finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient
+        .z 1 v m probeEnergy broadening disorderStrength hbar pMax radius =
+      first * (wY * zX - uY * zY) := by
+  have h :=
+    finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrent_first_harmonic_channels
+      v m probeEnergy broadening disorderStrength hbar pMax radius
+      hbroadening hdisorder hpMax
+  dsimp only at h ⊢
+  rcases h with ⟨_, _, hzX, hzY⟩
+  rw [gaussianCrossedRadialFirstHarmonicIntegral_eq_difference hbar pMax radius] at hzX hzY
+  rw [hzX, hzY]
+  ring
+
 /-- The finite-regulator crossed X trace uses K0/K2 diagonal-current moments and
 the K0-K2 recurrence for all four scalar/z crossed-current first harmonics.
 The transverse current and scalar/z Green channels retain K0 moments, while
