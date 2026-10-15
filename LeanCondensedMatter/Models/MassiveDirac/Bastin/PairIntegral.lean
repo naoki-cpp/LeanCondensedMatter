@@ -26,7 +26,7 @@ open Filter QuantumTheory.Transport
 /-- Lorentzian-weighted target-centered integral of the regular interband spectator/current factor. -/
 noncomputable def targetCenteredInterbandSpectatorCurrentPoleIntegral
     (band : Band) (e v m px py radius broadening : ℝ) : ℂ :=
-  lorentzianRegularFactorIntegral
+  Lorentzian.lorentzianRegularFactorIntegral
     (targetCenteredInterbandSpectatorCurrentFactor band e v m px py)
     radius broadening
 
@@ -67,7 +67,7 @@ theorem targetCenteredInterbandBastinPairIntegral_eq_neg_two_i_mul_poleIntegral
           band e v m px py radius broadening := by
   unfold targetCenteredInterbandBastinPairIntegral
     targetCenteredInterbandSpectatorCurrentPoleIntegral
-    QuantumTheory.Transport.lorentzianRegularFactorIntegral
+    Lorentzian.lorentzianRegularFactorIntegral
   rw [← intervalIntegral.integral_const_mul]
   apply intervalIntegral.integral_congr
   intro offset _
@@ -75,7 +75,7 @@ theorem targetCenteredInterbandBastinPairIntegral_eq_neg_two_i_mul_poleIntegral
     bastinBandPairContribution 0 1 (oppositeBand band) band e v m px py
         (bandEnergy band v m px py + offset) broadening =
       (-2 * Complex.I) *
-        ((lorentzianSpectralKernel offset broadening : ℂ) *
+        ((Lorentzian.lorentzianSpectralKernel offset broadening : ℂ) *
           targetCenteredInterbandSpectatorCurrentFactor
             band e v m px py (offset, broadening))
   rw [bastinBandPairContribution_opposite_source_eq_lorentzian

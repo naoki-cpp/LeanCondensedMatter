@@ -50,14 +50,14 @@ theorem scalarSpectralDifferenceCoefficient_eq_lorentzian
     (hbroadening : broadening ≠ 0) :
     scalarSpectralDifferenceCoefficient targetEnergy probeEnergy broadening =
       (-2 * Complex.I) *
-        (lorentzianSpectralKernel
+        (Lorentzian.lorentzianSpectralKernel
           (probeEnergy - targetEnergy) broadening : ℂ) := by
   unfold scalarSpectralDifferenceCoefficient scalarResolventCoefficient
     retardedSpectralParameter advancedSpectralParameter
   rw [spectralParameter_retarded_ofRegulator, spectralParameter_advanced_ofRegulator]
   unfold spectralParameterOfRegulator
   simpa [sub_eq_add_neg, add_assoc, add_left_comm, add_comm] using
-    inv_add_I_sub_inv_sub_I_eq_lorentzian
+    Lorentzian.inv_add_I_sub_inv_sub_I_eq_lorentzian
       (probeEnergy - targetEnergy) broadening hbroadening
 
 /-- Source-band scalar resolvent in coordinates centered at the target-band pole. -/
@@ -160,7 +160,7 @@ theorem continuousAt_interbandPoleRegularFactor_of_gap_add_offset_ne_zero
 /-- Lorentzian-weighted fixed-window integral of the regular interband factor. -/
 noncomputable def interbandPoleRegularFactorIntegral
     (gap : ℝ) (forward reverse : ℂ) (radius broadening : ℝ) : ℂ :=
-  lorentzianRegularFactorIntegral
+  Lorentzian.lorentzianRegularFactorIntegral
     (interbandPoleRegularFactor gap forward reverse) radius broadening
 
 /-- On a positive fixed window narrower than `|gap|`, the regular interband factor is extracted at
@@ -228,7 +228,7 @@ theorem tendsto_interbandPoleRegularFactorIntegral
     refine ⟨max C 0, le_max_right _ _, ?_⟩
     intro p hp
     exact le_trans (hC p hp) (le_max_left _ _)
-  have hgeneric := tendsto_lorentzianRegularFactorIntegral
+  have hgeneric := Lorentzian.tendsto_lorentzianRegularFactorIntegral
     factor radius hradiusPos hcontinuous hslice hbound
   simpa [factor, interbandPoleRegularFactorIntegral] using hgeneric
 

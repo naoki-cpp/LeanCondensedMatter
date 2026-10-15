@@ -23,8 +23,7 @@ Lorentzian mass and nested-window tail theorems from `LorentzianKernel`.  It doe
 Hamiltonians, current operators, occupations, conductivity conventions, or any concrete model.
 -/
 
-namespace QuantumTheory
-namespace Transport
+namespace Lorentzian
 
 noncomputable section
 
@@ -581,5 +580,4 @@ theorem tendsto_lorentzianRegularFactorIntegral
 
 end
 
-end Transport
-end QuantumTheory
+end Lorentzian

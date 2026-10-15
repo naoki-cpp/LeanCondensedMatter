@@ -87,16 +87,16 @@ private theorem stronglyMeasurable_radialInterbandPoleIntegrand
     (band : Band) (e v m broadening : ℝ) (hm : m ≠ 0) :
     StronglyMeasurable
       (fun z : ℝ × ℝ =>
-        (lorentzianSpectralKernel z.2 broadening : ℂ) *
+        (Lorentzian.lorentzianSpectralKernel z.2 broadening : ℂ) *
           targetCenteredInterbandSpectatorCurrentFactor
             band e v m z.1 0 (z.2, broadening)) := by
   have hfun :
       (fun z : ℝ × ℝ =>
-        (lorentzianSpectralKernel z.2 broadening : ℂ) *
+        (Lorentzian.lorentzianSpectralKernel z.2 broadening : ℂ) *
           targetCenteredInterbandSpectatorCurrentFactor
             band e v m z.1 0 (z.2, broadening)) =
       (fun z : ℝ × ℝ =>
-        (lorentzianSpectralKernel z.2 broadening : ℂ) *
+        (Lorentzian.lorentzianSpectralKernel z.2 broadening : ℂ) *
           (((((interbandEnergyGap band v m z.1 0 + z.2 : ℝ) : ℂ) +
               (broadening : ℂ) * Complex.I)⁻¹) ^ 2 +
             ((((interbandEnergyGap band v m z.1 0 + z.2 : ℝ) : ℂ) -
@@ -109,7 +109,7 @@ private theorem stronglyMeasurable_radialInterbandPoleIntegrand
     ring
   rw [hfun]
   apply Measurable.stronglyMeasurable
-  unfold QuantumTheory.Transport.lorentzianSpectralKernel
+  unfold Lorentzian.lorentzianSpectralKernel
     radialInterbandCurrentAmplitude interbandEnergyGap bandEnergy energy energySq
   measurability
 
@@ -124,7 +124,7 @@ private theorem stronglyMeasurable_targetCenteredInterbandBastinPairIntegral_rad
           band e v m p 0 radius broadening) := by
   have hab : -radius ≤ radius := by linarith
   let F : ℝ × ℝ → ℂ := fun z =>
-    (lorentzianSpectralKernel z.2 broadening : ℂ) *
+    (Lorentzian.lorentzianSpectralKernel z.2 broadening : ℂ) *
       targetCenteredInterbandSpectatorCurrentFactor
         band e v m z.1 0 (z.2, broadening)
   have hF : StronglyMeasurable F := by
@@ -147,7 +147,7 @@ private theorem stronglyMeasurable_targetCenteredInterbandBastinPairIntegral_rad
           ∫ offset : ℝ, F (p, offset) ∂(volume.restrict (Set.Ioc (-radius) radius))) := by
       funext p
       unfold targetCenteredInterbandSpectatorCurrentPoleIntegral
-        QuantumTheory.Transport.lorentzianRegularFactorIntegral
+        Lorentzian.lorentzianRegularFactorIntegral
       rw [intervalIntegral.integral_of_le hab]
     rw [heq]
     exact hparam
