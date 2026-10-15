@@ -183,7 +183,7 @@ theorem allExternalVerticesConnected_iff_externalComponentPartition_parts_eq_sin
     · intro hB
       have hEq : B = (Finset.univ : Finset External) :=
         Finset.mem_singleton.mp hB
-      rw [hEq, ← hPart]
+      rw [hEq.trans hPart.symm]
       exact (externalComponentPartition G).part_mem.2 (Finset.mem_univ a)
   · intro h a b
     have hPart :
