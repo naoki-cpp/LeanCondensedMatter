@@ -121,7 +121,7 @@ private theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMome
       intro p _
       exact hpointwise p
     _ = _ := by
-      simpa only [q, pref, solved, radialRung, finiteBroadeningOrderedXYMomentumEndpointForm,
+      simpa only [inPlaneLadderAction_apply_y, q, pref, solved, radialRung, finiteBroadeningOrderedXYMomentumEndpointForm,
         finiteCutoffContinuumBornDysonCurrentRungVector,
         finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficient] using
         congrArg (fun z : ℂ => (-2 : ℂ) * q ^ 2 * pref⁻¹ * z) hActionEq
