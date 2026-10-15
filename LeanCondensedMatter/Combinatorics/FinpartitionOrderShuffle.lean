@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Combinatorics.FamilyOrderShuffle
+import Mathlib.Algebra.Ring.Defs
 import Mathlib.Order.Partition.Finpartition
 import Mathlib.Data.Finset.Sort
 import Mathlib.Logic.Equiv.Set
