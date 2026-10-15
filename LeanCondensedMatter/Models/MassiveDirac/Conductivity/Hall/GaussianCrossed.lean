@@ -70,6 +70,48 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedOrderedXYConductivity_eq_ra
     hbroadening hdisorder hpMax]
   ring
 
+/-- The regulated physical Psi Hall contribution is the finite-radius integral
+of its transverse-current-reduced antisymmetric Pauli amplitude and its
+complex-conjugate partner. This is a substitution into the canonical
+diagram-indexed conductivity boundary, not a claim of Psi cancellation or
+of convergence after removing either cutoff. -/
+theorem finiteCutoffContinuumBornDysonGaussianCrossedOrderedXYConductivity_psi_eq_transverse_radial_integral
+    (e v m probeEnergy broadening disorderStrength hbar pMax rMax : ℝ)
+    (hbroadening : broadening ≠ 0) (hdisorder : 0 ≤ disorderStrength)
+    (hpMax : 0 ≤ pMax) :
+    finiteCutoffContinuumBornDysonGaussianCrossedOrderedXYConductivity
+        .psi e v m probeEnergy broadening disorderStrength hbar pMax rMax =
+      (((bastinStredaTraceConductivityPrefactor hbar * (e * v) ^ 2 : ℝ) : ℂ)) *
+        (((disorderStrength ^ 2 : ℝ) : ℂ)) * (((2 * Real.pi : ℝ) : ℂ)) *
+        ∫ radius in (0 : ℝ)..rMax,
+          (radius : ℂ) *
+            (let Jx := finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock
+                0 v m probeEnergy broadening disorderStrength hbar pMax radius
+             let Jy := finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock
+                1 v m probeEnergy broadening disorderStrength hbar pMax radius
+             let GR := finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix
+                .retarded v m probeEnergy broadening disorderStrength hbar pMax radius
+             let a := InternalSpace.pauliScalarCoefficient Jx
+             let b := InternalSpace.pauliScalarCoefficient GR
+             let c := InternalSpace.pauliScalarCoefficient Jy
+             let gx := InternalSpace.pauliVectorCoefficient GR .x
+             let gz := InternalSpace.pauliVectorCoefficient GR .z
+             let u := InternalSpace.pauliVectorCoefficient Jx
+             let w := InternalSpace.pauliVectorCoefficient Jy
+             let amplitude := 8 * Complex.I * gz *
+                (gx * (a * w .y - c * u .y) -
+                  b * ((u .y) ^ 2 + u .x * w .y))
+             (amplitude + (starRingEnd ℂ) amplitude) / 2) := by
+  rw [finiteCutoffContinuumBornDysonGaussianCrossedOrderedXYConductivity_eq_radial_antisymmetric_trace
+    .psi e v m probeEnergy broadening disorderStrength hbar pMax rMax
+    hbroadening hdisorder hpMax]
+  congr 1
+  apply intervalIntegral.integral_congr
+  intro radius _
+  rw [finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_psi_antisymmetric_eq_transverse_minors
+    v m probeEnergy broadening disorderStrength hbar pMax radius
+    hbroadening hdisorder hpMax]
+
 /-- The physically normalized finite-cutoff finite-broadening Gaussian crossed correction.
 
 The two leading crossed topologies remain indexed upstream, but their physical response is exposed
