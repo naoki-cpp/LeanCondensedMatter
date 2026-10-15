@@ -60,8 +60,8 @@ private theorem vacuumFreeExternalInsertionDysonCoefficient_eq_sum_if
       d.1.1.dysonAmplitude ε β g externalTime) =
         ∑ d : {d : X // d.1.externalLabel = externalLabel},
           d.1.1.dysonAmplitude ε β g externalTime := by
-        exact Equiv.sum_comp e (fun d : VacuumFreeFixedExternalInsertionWickDiagram
-          Mode E m externalLabel => d.1.1.dysonAmplitude ε β g externalTime)
+        exact (Equiv.sum_comp e (fun d : VacuumFreeFixedExternalInsertionWickDiagram
+          Mode E m externalLabel => d.1.1.dysonAmplitude ε β g externalTime)).symm
     _ = ∑ ext : X,
           if ext.1.externalLabel = externalLabel then
             ext.1.dysonAmplitude ε β g externalTime else 0 := by
