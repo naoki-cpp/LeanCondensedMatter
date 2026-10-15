@@ -20,32 +20,6 @@ open Combinatorics
 
 variable {ExternalLabel InternalLabel : Type*} {E N : ℕ}
 
-/-- The right-sector leg in a slot splitting occupies the mixed-time position
-of the same actual vacuum vertex leg in the full external-insertion diagram.
-
-The vertex here is the one given by the quartic leg equivalence of the
-complementary finset; no agreement with a separately chosen sorted slot
-enumeration is presumed. -/
-theorem externalInsertionSlotLegSplitting_right_mixedPosition
-    {E N : ℕ} (T : Finset (Fin N))
-    (externalTime : Fin (2 * E) → ℝ) (σ : Fin N → ℝ)
-    (v : ↥((Finset.univ : Finset (Fin N)) \ T)) (l : Fin 4) :
-    let S := (Finset.univ : Finset (Fin N)) \ T
-    let split :=
-      (externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T)).trans
-        (externalInsertionMixedTimeAmbientPositionEquiv externalTime σ).symm
-    split (Sum.inr ((quarticLegEquiv S).symm (v, l))) =
-      externalInsertionMixedTimeOrderedAtomicLegPosition externalTime σ
-        (Sum.inr (⟨v.1, Finset.mem_univ _⟩, l)) := by
-  intro S split
-  apply (externalInsertionMixedTimeAmbientPositionEquiv externalTime σ).injective
-  simp only [split, Equiv.trans_apply, Equiv.apply_symm_apply]
-  rw [externalInsertionSlotLegSplitting_right_interaction]
-  apply (externalInsertionLegEquiv E (Finset.univ : Finset (Fin N))).injective
-  rw [externalInsertionLegEquiv_mixedTimeAmbientPositionEquiv,
-    externalInsertionMixedTimeOrderedAtomicLegEquiv_position,
-    Equiv.apply_symm_apply]
-
 /-- The increasing vertex order of the vacuum complement gives the exact
 ambient mixed-time position of every ordered quartic vacuum leg. -/
 theorem externalInsertionSlotLegSplitting_right_orderedMixedPosition
@@ -78,9 +52,13 @@ theorem externalInsertionSlotLegSplitting_right_orderedMixedPosition
       (externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T)
         (Sum.inr (orderedLegToDiagramLeg S order p))) = _
   rw [hordered]
-  exact externalInsertionSlotLegSplitting_right_mixedPosition T externalTime σ
-    (order (orderedQuarticLegEquiv S.card p).1)
-    (orderedQuarticLegEquiv S.card p).2
+  apply (externalInsertionMixedTimeAmbientPositionEquiv externalTime σ).injective
+  simp only [Equiv.apply_symm_apply]
+  rw [externalInsertionSlotLegSplitting_right_interaction]
+  apply (externalInsertionLegEquiv E (Finset.univ : Finset (Fin N))).injective
+  rw [externalInsertionLegEquiv_mixedTimeAmbientPositionEquiv,
+    externalInsertionMixedTimeOrderedAtomicLegEquiv_position,
+    Equiv.apply_symm_apply]
 
 /-- If the standalone vacuum-only mixed ordering preserves the flattened quartic-leg
 order, its embedding into the full mixed-time family also preserves that order.
