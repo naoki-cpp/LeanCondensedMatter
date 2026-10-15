@@ -25,24 +25,6 @@ open scoped BigOperators
 
 variable {Mode : Type*}
 
-private theorem ExternalInsertionWickDiagram.componentOrderedDiagram_vertexWeight_eq_restrictComponent
-    {E n : ℕ}
-    (d : ExternalInsertionWickDiagram Mode E n)
-    (g : QuarticVertexLabel Mode → ℂ)
-    (B : d.vertexGraph.componentPartition.parts) :
-    (d.componentOrderedDiagram B).vertexWeight g =
-      (d.restrictComponent B).vertexWeight g := by
-  classical
-  let T :=
-    interactionSector
-      (B : Finset (ExternalInsertionVertex E (Finset.univ : Finset (Fin n))))
-  let r := d.restrictComponent B
-  let e : ↥T ≃ ↥(Finset.univ : Finset (Fin T.card)) :=
-    (T.orderIsoOfFin rfl).toEquiv.symm.trans
-      (Equiv.subtypeUnivEquiv (fun v : Fin T.card => Finset.mem_univ v)).symm
-  change (r.slotCongr e).vertexWeight g = r.vertexWeight g
-  exact r.slotCongr_vertexWeight e g
-
 variable [LinearOrder Mode] [Fintype Mode]
 
 private theorem ExternalInsertionWickDiagram.mixedAtomicOrderSign_mul_mixedPairingValue_eq_components
@@ -142,7 +124,15 @@ theorem ExternalInsertionWickDiagram.fixedTimeAmplitude_eq_componentExternalOrde
       _ = _ := by
         apply Finset.prod_congr rfl
         intro B _
-        exact (d.componentOrderedDiagram_vertexWeight_eq_restrictComponent g B).symm
+        let T :=
+          interactionSector
+            (B : Finset (ExternalInsertionVertex E (Finset.univ : Finset (Fin n))))
+        let r := d.restrictComponent B
+        let e : ↥T ≃ ↥(Finset.univ : Finset (Fin T.card)) :=
+          (T.orderIsoOfFin rfl).toEquiv.symm.trans
+            (Equiv.subtypeUnivEquiv (fun v : Fin T.card => Finset.mem_univ v)).symm
+        change r.vertexWeight g = (r.slotCongr e).vertexWeight g
+        exact (r.slotCongr_vertexWeight e g).symm
   have horderPairing :=
     d.mixedAtomicOrderSign_mul_mixedPairingValue_eq_components
       ε β externalTime σ blockOrder
