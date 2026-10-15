@@ -101,7 +101,6 @@ rules, or empty/zero cases. In particular this covers the current simp API in:
 - `BinaryShuffle`
 - `SlotShuffle`
 - `BinaryShuffleSlots`
-- `BinaryShuffleSlotEquiv`
 - `FamilySlotShuffle`
 - `FamilySlotShuffleDecomposition`
 - `FamilyOrderShuffle`
