@@ -5,7 +5,6 @@ import LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.Diagonal
 import LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.DiagonalAnalytic
 import LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.Heat
 import LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.FiniteCompatibility
-import LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.FiniteThermalCompatibility
 
 set_option linter.style.header false
 
