@@ -240,9 +240,7 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedOrderedXYConductivity_x_eq_
                 .retarded v m probeEnergy broadening disorderStrength hbar pMax (-radius)
              let GA := finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix
                 .advanced v m probeEnergy broadening disorderStrength hbar pMax (-radius)
-             let a := InternalSpace.pauliScalarCoefficient Jx
              let b := InternalSpace.pauliScalarCoefficient GR
-             let c := InternalSpace.pauliScalarCoefficient Jy
              let d := InternalSpace.pauliScalarCoefficient GA
              let u := InternalSpace.pauliVectorCoefficient Jx
              let vr := InternalSpace.pauliVectorCoefficient GR
