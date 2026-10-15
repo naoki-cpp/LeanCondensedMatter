@@ -647,25 +647,27 @@ private def integerShearCoordinates (n : ℤ) :
   invFun x := ![x 0 - n * x 1, x 1]
   left_inv x := by
     funext i
-    fin_cases i <;> simp <;> ring
+    fin_cases i <;> simp
   right_inv x := by
     funext i
-    fin_cases i <;> simp <;> ring
+    fin_cases i <;> simp
   map_add' x y := by
     funext i
-    fin_cases i <;> simp <;> ring
+    fin_cases i <;> simp; ring
   map_smul' r x := by
     funext i
-    fin_cases i <;> simp <;> ring
+    fin_cases i <;> simp; ring
 
 /-- Change the second vector of an integral basis by an integer multiple
 of its first vector, without changing the first vector or the lattice. -/
 private noncomputable def integerShearBasis
+    {L : Submodule ℤ V}
     (c : Module.Basis (Fin 2) ℤ L) (n : ℤ) :
     Module.Basis (Fin 2) ℤ L :=
   c.map (((c.equivFun).trans (integerShearCoordinates (-n))).trans c.equivFun.symm)
 
 private theorem integerShearBasis_apply_zero
+    {L : Submodule ℤ V}
     (c : Module.Basis (Fin 2) ℤ L) (n : ℤ) :
     integerShearBasis c n 0 = c 0 := by
   apply c.equivFun.injective
@@ -675,6 +677,7 @@ private theorem integerShearBasis_apply_zero
       Module.Basis.equivFun_self]
 
 private theorem integerShearBasis_apply_one
+    {L : Submodule ℤ V}
     (c : Module.Basis (Fin 2) ℤ L) (n : ℤ) :
     integerShearBasis c n 1 = c 1 - n • c 0 := by
   apply c.equivFun.injective
