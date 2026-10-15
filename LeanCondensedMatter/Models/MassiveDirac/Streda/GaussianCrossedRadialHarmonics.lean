@@ -304,6 +304,64 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficie
             (finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliKernel_diagonal_harmonics
               v m probeEnergy broadening disorderStrength hbar pMax radius p).2
 
+/-- The two independent diagonal Gaussian-crossed current harmonics have a
+single finite-broadening RA Dyson denominator. Their K0 numerator is the
+effective-energy product minus the effective-mass product, while the K2
+numerator is the squared in-plane Dirac momentum. The Fourier momentum
+measure and disorder/current factor are unchanged. No denominator is
+assumed nonzero and no regulator limit is taken. -/
+theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient_diagonal_ra_denominator_harmonics
+    (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ)
+    (hbroadening : broadening ≠ 0) (hdisorder : 0 ≤ disorderStrength)
+    (hpMax : 0 ≤ pMax) :
+    let factor := finiteCutoffContinuumBornDysonGaussianCrossedCurrentFactor
+      v m probeEnergy broadening disorderStrength hbar pMax
+    let energyA := finiteCutoffContinuumBornEffectiveEnergy
+      .advanced v m probeEnergy broadening disorderStrength hbar pMax
+    let energyR := finiteCutoffContinuumBornEffectiveEnergy
+      .retarded v m probeEnergy broadening disorderStrength hbar pMax
+    let massA := finiteCutoffContinuumBornEffectiveMass
+      .advanced v m probeEnergy broadening disorderStrength hbar pMax
+    let massR := finiteCutoffContinuumBornEffectiveMass
+      .retarded v m probeEnergy broadening disorderStrength hbar pMax
+    let denominator := fun p : ℝ =>
+      finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct
+        v m p probeEnergy broadening disorderStrength hbar pMax
+    let jxx := finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient
+          .x 0 v m probeEnergy broadening disorderStrength hbar pMax radius
+    let jyy := finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient
+          .y 1 v m probeEnergy broadening disorderStrength hbar pMax radius
+    (jxx + jyy =
+      (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
+        ∫ p in (0 : ℝ)..pMax,
+          2 * (p : ℂ) *
+            (polarFourierZerothAngularKernel (p * radius / hbar) *
+              ((denominator p)⁻¹ * (energyA * energyR - massA * massR) * factor))) ∧
+    (jxx - jyy =
+      (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
+        ∫ p in (0 : ℝ)..pMax,
+          2 * (p : ℂ) *
+            (polarFourierSecondCosineAngularKernel (p * radius / hbar) *
+              ((denominator p)⁻¹ * (((v * p : ℝ) : ℂ) ^ 2) * factor))) := by
+  have h :=
+    finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient_diagonal_harmonics
+      v m probeEnergy broadening disorderStrength hbar pMax radius
+      hbroadening hdisorder hpMax
+  dsimp only at h ⊢
+  constructor
+  · rw [h.1]
+    congr 1
+    apply intervalIntegral.integral_congr
+    intro p _
+    dsimp only
+    rw [finiteCutoffContinuumBornDysonRadial_ra_scalar_sub_z_product_eq]
+  · rw [h.2]
+    congr 1
+    apply intervalIntegral.integral_congr
+    intro p _
+    dsimp only
+    rw [finiteCutoffContinuumBornDysonRadial_ra_x_product_eq]
+
 /-- The traceless second angular Fourier harmonic vanishes at the origin.
 The result follows from the canonical full-angle harmonic integration theorem. -/
 private theorem polarFourierSecondCosineAngularKernel_zero :
