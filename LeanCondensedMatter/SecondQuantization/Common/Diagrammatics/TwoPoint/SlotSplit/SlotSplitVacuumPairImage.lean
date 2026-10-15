@@ -13,6 +13,10 @@ pairs carried by vacuum components and packages the resulting equivalence. The g
 vacuum-pair type, component-fiber sum, and pair-cardinality facts are owned by
 `TwoPoint.Mixed.MixedComponentPairEquiv`, independently of slot splitting.
 
+The graph-level exclusion of external-side legs is proved without any time-order hypothesis
+in `TwoPoint.SlotSplit.SlotSplitVacuumComponents`. The mixed-time coordinate identification
+is local to this image comparison; `StrictAnti` is needed only for ordered pair endpoints.
+
 The construction is purely combinatorial and is stated for arbitrary external/internal labels.
 -/
 
@@ -22,6 +26,26 @@ namespace Common
 open Combinatorics
 
 variable {ExternalLabel InternalLabel : Type*} {n : ℕ}
+
+/-- The vacuum fixed-order leg embedding in mixed positions agrees with the
+right-side leg of the canonical diagram slot split after returning to fixed positions. -/
+private theorem slotSplitVacuumMixedPosition_eq_slotSplitRight
+    (T : Finset (Fin n)) (τ τ' : ℝ) (σ : Fin n → ℝ)
+    (p : Fin (2 * (2 * ((Finset.univ : Finset (Fin n)) \ T).card))) :
+    mixedTimeAmbientPositionEquiv τ τ' σ
+        (mixedTimeOrderedQuarticLegMapPosition (slotSplitVacuumSlot T) τ τ' σ p) =
+      slotLegSplitting (Finset.subset_univ T)
+        (Sum.inr (orderedLegToDiagramLeg
+          ((Finset.univ : Finset (Fin n)) \ T) (slotSplitVacuumOrder T) p)) := by
+  apply (twoPointLegEquiv (Finset.univ : Finset (Fin n))).injective
+  rw [twoPointLegEquiv_mixedTimeAmbientPositionEquiv]
+  change mixedTimeOrderedAtomicLegEquiv τ τ' σ
+      (mixedTimeOrderedAtomicLegPosition τ τ' σ
+        (orderedQuarticLegMapToTwoPointLeg (slotSplitVacuumSlot T) p)) = _
+  rw [mixedTimeOrderedAtomicLegEquiv_mixedTimeOrderedAtomicLegPosition]
+  simpa only [Equiv.apply_symm_apply] using
+    congrArg (twoPointLegEquiv (Finset.univ : Finset (Fin n)))
+      (slotSplitVacuumOrderedLeg_eq_slotSplitRight T p)
 
 /-- The first endpoint of an embedded quartic vacuum pair lies in the ambient component generated
 by the corresponding right-side quartic vertex. -/

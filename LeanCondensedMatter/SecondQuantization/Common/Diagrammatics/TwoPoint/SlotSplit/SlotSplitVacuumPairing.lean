@@ -85,26 +85,6 @@ theorem slotSplitVacuumOrderedLeg_eq_slotSplitRight
   simp [orderedQuarticLegMapToTwoPointLeg, orderedQuarticLegToTwoPointLeg,
     slotSplitVacuumSlot]
 
-/-- The vacuum fixed-order leg embedding in mixed positions agrees with the
-right-side leg of the canonical diagram slot split after returning to fixed positions. -/
-theorem slotSplitVacuumMixedPosition_eq_slotSplitRight
-    (T : Finset (Fin n)) (τ τ' : ℝ) (σ : Fin n → ℝ)
-    (p : Fin (2 * (2 * ((Finset.univ : Finset (Fin n)) \ T).card))) :
-    mixedTimeAmbientPositionEquiv τ τ' σ
-        (mixedTimeOrderedQuarticLegMapPosition (slotSplitVacuumSlot T) τ τ' σ p) =
-      slotLegSplitting (Finset.subset_univ T)
-        (Sum.inr (orderedLegToDiagramLeg
-          ((Finset.univ : Finset (Fin n)) \ T) (slotSplitVacuumOrder T) p)) := by
-  apply (twoPointLegEquiv (Finset.univ : Finset (Fin n))).injective
-  rw [twoPointLegEquiv_mixedTimeAmbientPositionEquiv]
-  change mixedTimeOrderedAtomicLegEquiv τ τ' σ
-      (mixedTimeOrderedAtomicLegPosition τ τ' σ
-        (orderedQuarticLegMapToTwoPointLeg (slotSplitVacuumSlot T) p)) = _
-  rw [mixedTimeOrderedAtomicLegEquiv_mixedTimeOrderedAtomicLegPosition]
-  simpa only [Equiv.apply_symm_apply] using
-    congrArg (twoPointLegEquiv (Finset.univ : Finset (Fin n)))
-      (slotSplitVacuumOrderedLeg_eq_slotSplitRight T p)
-
 /-- The ambient standard-leg partner on the vacuum side of `ofSlotSplit` is the fixed-order
 quartic partner embedded back into the ambient two-point leg enumeration. -/
 private theorem TwoPointDiagram.ofSlotSplit_atomicLegPartner_vacuumOrderedLeg
