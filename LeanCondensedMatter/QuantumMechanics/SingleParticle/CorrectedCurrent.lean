@@ -75,7 +75,7 @@ theorem currentEquivalent_nestedSymmetrizedCurrentFlux
     (R : _root_.ConservationLaw.DifferentialCurrentRepresentation d
       (heisenbergTransportFunctional V ℏ h M m)) :
     _root_.ConservationLaw.DifferentialCurrentEquivalent d R.current
-      (_root_.ConservationLaw.nestedSymmetrizedCurrentFlux V velocity m N) :=
+      (_root_.ConservationLaw.nestedSymmetrizedCurrentFlux V velocity m N) := by
   apply (_root_.ConservationLaw.DifferentialCurrentEquivalent.iff_comp_eq).2
   exact R.isCurrent.symm.trans
     (correctedSymmetrizedVelocityCurrentRepresentation
