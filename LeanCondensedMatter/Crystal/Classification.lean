@@ -666,6 +666,7 @@ private noncomputable def integerShearBasis
     Module.Basis (Fin 2) ℤ L :=
   c.map (((c.equivFun).trans (integerShearCoordinates (-n))).trans c.equivFun.symm)
 
+omit [InnerProductSpace ℝ V] in
 private theorem integerShearBasis_apply_zero
     {L : Submodule ℤ V}
     (c : Module.Basis (Fin 2) ℤ L) (n : ℤ) :
@@ -676,6 +677,7 @@ private theorem integerShearBasis_apply_zero
     simp [integerShearBasis, integerShearCoordinates, Module.Basis.map_apply,
       Module.Basis.equivFun_self]
 
+omit [InnerProductSpace ℝ V] in
 private theorem integerShearBasis_apply_one
     {L : Submodule ℤ V}
     (c : Module.Basis (Fin 2) ℤ L) (n : ℤ) :
@@ -683,8 +685,7 @@ private theorem integerShearBasis_apply_one
   apply c.equivFun.injective
   ext i
   fin_cases i <;>
-    simp [integerShearBasis, integerShearCoordinates, Module.Basis.map_apply,
-      Module.Basis.equivFun_self] <;> ring
+    simp [integerShearBasis, integerShearCoordinates, Module.Basis.map_apply]
 
 /-- Every discrete rank-two integral lattice admits a Gauss-reduced primitive
 basis. Its Gram matrix has nondecreasing diagonal coefficients and its
@@ -725,16 +726,18 @@ theorem exists_gauss_reduced_basis [FiniteDimensional ℝ V]
       G 0 1 - (n : ℝ) * G 0 0 := by
     rw [hd0, hd1]
     simp only [G, Matrix.gram_apply]
-    simp [inner_sub_right, inner_smul_right, real_inner_self_eq_norm_sq]
+    simp [inner_sub_right]
+    rw [← Int.cast_smul_eq_zsmul ℝ n ((c 0 : L) : V)]
+    rw [inner_smul_right, real_inner_self_eq_norm_sq]
   refine ⟨d, ?_⟩
   dsimp
   constructor
-  · simp only [Matrix.gram_apply, real_inner_self_eq_norm_sq]
+  · simp only [real_inner_self_eq_norm_sq]
     rw [hd0]
     exact hSq
-  · simp only [Matrix.gram_apply, hOff]
+  · simp only [hOff]
     have hGdiag : G 0 0 = ‖c 0‖ ^ 2 := by
-      simp [G, Matrix.gram_apply, real_inner_self_eq_norm_sq]
+      simp [G, Matrix.gram_apply]
     have hh : 2 * |G 0 1 - (n : ℝ) * G 0 0| ≤ G 0 0 := by
       linarith [hn]
     rw [hd0]
