@@ -61,6 +61,7 @@ private noncomputable def fixedExternalInsertionWickDiagramEquivMixedData
           (externalInsertionMixedTimeAmbientPositionEquiv externalTime σ) = pairing
       exact PairingOn.transport_transport_symm _ _
 
+omit [LinearOrder Mode] [Fintype Mode] in
 /-- Rewrite a full-slot external-insertion diagram's interaction weight using
 the same consecutive interaction-label coordinates as the operator expansion. -/
 private theorem externalInsertionWickDiagram_vertexWeight_eq_prod
