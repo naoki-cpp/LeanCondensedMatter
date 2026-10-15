@@ -66,12 +66,17 @@ private theorem vacuumFreeExternalInsertionDysonCoefficient_eq_sum_if
     _ = ∑ ext : X,
           if ext.1.externalLabel = externalLabel then
             ext.1.dysonAmplitude ε β g externalTime else 0 := by
-      rw [Finset.sum_subtype
-        (p := fun ext : X => ext.1.externalLabel = externalLabel)
-        (Finset.univ : Finset X)
-        (fun _ => by simp)
-        (fun ext : X => ext.1.dysonAmplitude ε β g externalTime)]
-      simp only [Finset.sum_filter]
+      calc
+        _ = ∑ ext ∈ (Finset.univ : Finset X).filter
+              (fun ext => ext.1.externalLabel = externalLabel),
+              ext.1.dysonAmplitude ε β g externalTime := by
+            rw [Finset.sum_subtype
+              (p := fun ext : X => ext.1.externalLabel = externalLabel)
+              (Finset.univ : Finset X)
+              (fun _ => by simp)
+              (fun ext : X => ext.1.dysonAmplitude ε β g externalTime)]
+        _ = _ := by
+          simp only [Finset.sum_filter]
 
 omit [LinearOrder Mode] [Fintype Mode] in
 private theorem standardizedSupportFiber_externalLabel
