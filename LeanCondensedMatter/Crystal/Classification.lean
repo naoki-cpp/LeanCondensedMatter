@@ -639,6 +639,104 @@ theorem exists_basis_shortest_first_vector [FiniteDimensional ℝ V]
   have hSwap := hLeast (c.reindex (Equiv.swap (0 : Fin 2) 1))
   simpa [Module.Basis.reindex_apply] using hSwap
 
+
+/-- The elementary shear on the integer coordinate plane. -/
+private def integerShearCoordinates (n : ℤ) :
+    (Fin 2 → ℤ) ≃ₗ[ℤ] (Fin 2 → ℤ) where
+  toFun x := ![x 0 + n * x 1, x 1]
+  invFun x := ![x 0 - n * x 1, x 1]
+  left_inv x := by
+    funext i
+    fin_cases i <;> simp <;> ring
+  right_inv x := by
+    funext i
+    fin_cases i <;> simp <;> ring
+  map_add' x y := by
+    funext i
+    fin_cases i <;> simp <;> ring
+  map_smul' r x := by
+    funext i
+    fin_cases i <;> simp <;> ring
+
+/-- Change the second vector of an integral basis by an integer multiple
+of its first vector, without changing the first vector or the lattice. -/
+private noncomputable def integerShearBasis
+    (c : Module.Basis (Fin 2) ℤ L) (n : ℤ) :
+    Module.Basis (Fin 2) ℤ L :=
+  c.map (((c.equivFun).trans (integerShearCoordinates (-n))).trans c.equivFun.symm)
+
+private theorem integerShearBasis_apply_zero
+    (c : Module.Basis (Fin 2) ℤ L) (n : ℤ) :
+    integerShearBasis c n 0 = c 0 := by
+  apply c.equivFun.injective
+  ext i
+  fin_cases i <;>
+    simp [integerShearBasis, integerShearCoordinates, Module.Basis.map_apply,
+      Module.Basis.equivFun_self]
+
+private theorem integerShearBasis_apply_one
+    (c : Module.Basis (Fin 2) ℤ L) (n : ℤ) :
+    integerShearBasis c n 1 = c 1 - n • c 0 := by
+  apply c.equivFun.injective
+  ext i
+  fin_cases i <;>
+    simp [integerShearBasis, integerShearCoordinates, Module.Basis.map_apply,
+      Module.Basis.equivFun_self] <;> ring
+
+/-- Every discrete rank-two integral lattice admits a Gauss-reduced primitive
+basis. Its Gram matrix has nondecreasing diagonal coefficients and its
+off-diagonal coefficient is at most half the first diagonal coefficient
+in absolute value. The proof minimizes the first primitive basis vector
+globally and then uses an integral shear, which keeps that vector fixed. -/
+theorem exists_gauss_reduced_basis [FiniteDimensional ℝ V]
+    (L : Submodule ℤ V) [DiscreteTopology L]
+    (b : Module.Basis (Fin 2) ℤ L) :
+    ∃ d : Module.Basis (Fin 2) ℤ L,
+      let G := Matrix.gram ℝ (fun i => ((d i : L) : V))
+      G 0 0 ≤ G 1 1 ∧ 2 * |G 0 1| ≤ G 0 0 := by
+  classical
+  obtain ⟨c, hMinimal, _⟩ := exists_basis_shortest_first_vector L b
+  let G : Matrix (Fin 2) (Fin 2) ℝ :=
+    Matrix.gram ℝ (fun i => ((c i : L) : V))
+  have hSymm : G 0 1 = G 1 0 := by
+    simp only [G, Matrix.gram_apply]
+    exact real_inner_comm _ _
+  have hPos : 0 < G 0 0 := by
+    change 0 < inner ℝ ((c 0 : L) : V) ((c 0 : L) : V)
+    rw [real_inner_self_eq_norm_sq]
+    have hNonzero : (((c 0 : L) : V)) ≠ 0 := by
+      exact Subtype.coe_ne_coe.mpr (c.ne_zero 0)
+    exact sq_pos_of_pos (norm_pos_iff.mpr hNonzero)
+  obtain ⟨n, hn, _⟩ := exists_gram_integerShear_reduced G hSymm hPos
+  let d := integerShearBasis c n
+  have hd0 : d 0 = c 0 := integerShearBasis_apply_zero c n
+  have hd1 : d 1 = c 1 - n • c 0 := integerShearBasis_apply_one c n
+  have hNorm : ‖c 0‖ ≤ ‖d 1‖ := by
+    have h := hMinimal (d.reindex (Equiv.swap (0 : Fin 2) 1))
+    simpa [Module.Basis.reindex_apply] using h
+  have hSq : ‖c 0‖ ^ 2 ≤ ‖d 1‖ ^ 2 := by
+    have hh := mul_nonneg (sub_nonneg.mpr hNorm)
+      (add_nonneg (norm_nonneg (c 0)) (norm_nonneg (d 1)))
+    nlinarith
+  have hOff : inner ℝ ((d 0 : L) : V) ((d 1 : L) : V) =
+      G 0 1 - (n : ℝ) * G 0 0 := by
+    rw [hd0, hd1]
+    simp only [G, Matrix.gram_apply]
+    simp [inner_sub_right, inner_smul_right, real_inner_self_eq_norm_sq]
+  refine ⟨d, ?_⟩
+  dsimp
+  constructor
+  · simp only [Matrix.gram_apply, real_inner_self_eq_norm_sq]
+    rw [hd0]
+    exact hSq
+  · simp only [Matrix.gram_apply, hOff]
+    have hGdiag : G 0 0 = ‖c 0‖ ^ 2 := by
+      simp [G, Matrix.gram_apply, real_inner_self_eq_norm_sq]
+    have hh : 2 * |G 0 1 - (n : ℝ) * G 0 0| ≤ G 0 0 := by
+      linarith [hn]
+    rw [hd0]
+    simpa [real_inner_self_eq_norm_sq, hGdiag] using hh
+
 /-- An infinite sequence of lattice vectors cannot remain bounded while its
 squared norms strictly decrease at every step. Applied to the first vectors
 of successive primitive bases, this rules out infinitely many swap-and-shear
