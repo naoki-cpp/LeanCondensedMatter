@@ -133,8 +133,9 @@ theorem externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_left_normal
       (d.pairingInMixedOrder externalTime σ).partner (embed p) =
         embed (localPairing.partner p) := by
     apply (externalInsertionMixedTimeAmbientPositionEquiv externalTime σ).injective
-    rw [d.mixedTimeAmbientPositionEquiv_partner, hfixed,
-      hfixed (localPairing.partner p)]
+    rw [ExternalInsertionDiagram.pairingInMixedOrder,
+      PairingOn.transport_partner, Equiv.apply_symm_apply,
+      hfixed, hfixed (localPairing.partner p)]
     change (Pairing.ofSplit
         (externalInsertionSlotLegSplitting (E := E) (Finset.subset_univ T))
         ext.pairing vac.pairing).partner
