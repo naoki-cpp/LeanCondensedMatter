@@ -7,7 +7,10 @@ set_option linter.style.header false
 /-!
 # Products over the parts of a finite partition
 
-These lemmas express a product over a finite set as an iterated product over the parts of a
+This module owns `partitionProduct`, the product of a finite-set function over partition blocks,
+its top-partition evaluation, and its multiplicativity under `bind`.
+
+The remaining lemmas express a product over a finite set as an iterated product over the parts of a
 `Finpartition`, and factor a power whose exponent is the cardinality of the underlying set into the
 corresponding powers for each part. The mapped-subfinset equivalence also covers situations where
 only one sector of a larger partitioned type is being decomposed. Everything here is pure finite
@@ -18,6 +21,35 @@ structure is involved.
 namespace Finpartition
 
 variable {α M : Type*} [DecidableEq α] [CommMonoid M] {s : Finset α}
+
+/-- Product of `f` over the blocks of a partition. -/
+noncomputable def partitionProduct (f : Finset α → M) {S : Finset α} (π : Finpartition S) : M :=
+  ∏ B ∈ π.parts, f B
+
+@[simp]
+theorem partitionProduct_top {S : Finset α} (hS : S ≠ ∅) (f : Finset α → M) :
+    partitionProduct f (⊤ : Finpartition S) = f S := by
+  have hparts : (⊤ : Finpartition S).parts = {S} := by
+    apply Finset.eq_singleton_iff_unique_mem.2
+    refine ⟨?_, fun d hd => Finset.mem_singleton.1 (Finpartition.parts_top_subset S hd)⟩
+    obtain ⟨x, hx⟩ := (Finpartition.parts_nonempty_iff (P := (⊤ : Finpartition S))).2 hS
+    rwa [Finset.mem_singleton.1 (Finpartition.parts_top_subset S hx)] at hx
+  rw [partitionProduct, hparts, Finset.prod_singleton]
+
+/-- Block products factor over a partition constructed by `bind`. -/
+theorem partitionProduct_bind (f : Finset α → M) {S : Finset α} (σ : Finpartition S)
+    (Q : ∀ B ∈ σ.parts, Finpartition B) :
+    partitionProduct f (σ.bind Q) = ∏ B ∈ σ.parts.attach, partitionProduct f (Q B.1 B.2) := by
+  classical
+  change ∏ C ∈ (σ.bind Q).parts, f C = _
+  apply Finset.prod_biUnion
+  rintro ⟨b, hb⟩ - ⟨c, hc⟩ - hbc
+  rw [Function.onFun, Finset.disjoint_left]
+  rintro d hdb hdc
+  rw [Ne, Subtype.mk_eq_mk] at hbc
+  exact (Q b hb).ne_bot hdb
+    (eq_bot_iff.2 <| (le_inf ((Q b hb).le hdb) <| (Q c hc).le hdc).trans <|
+      (σ.disjoint hb hc hbc).le_bot)
 
 /-- Decompose a finite source set into subfinsets classified by the parts of `π` after applying
 `f`. The family `fiber B` may live in a different ambient type from the partition itself; it only

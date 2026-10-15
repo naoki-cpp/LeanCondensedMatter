@@ -23,16 +23,6 @@ namespace Finpartition
 noncomputable def cumulantFromMoment (m : Finset α → R) (S : Finset α) : R :=
   ∑ π : Finpartition S, mu R π ⊤ * partitionProduct m π
 
-@[simp]
-theorem partitionProduct_top {S : Finset α} (hS : S ≠ ∅) (f : Finset α → R) :
-    partitionProduct f (⊤ : Finpartition S) = f S := by
-  have hparts : (⊤ : Finpartition S).parts = {S} := by
-    apply Finset.eq_singleton_iff_unique_mem.2
-    refine ⟨?_, fun d hd => Finset.mem_singleton.1 (Finpartition.parts_top_subset S hd)⟩
-    obtain ⟨x, hx⟩ := (Finpartition.parts_nonempty_iff (P := (⊤ : Finpartition S))).2 hS
-    rwa [Finset.mem_singleton.1 (Finpartition.parts_top_subset S hx)] at hx
-  rw [partitionProduct, hparts, Finset.prod_singleton]
-
 /-- Pointwise Möbius inversion, away from the empty finite set. -/
 theorem cumulantFromMoment_momentFromCumulant (κ : Finset α → R)
     {S : Finset α} (hS : S ≠ ⊥) :
