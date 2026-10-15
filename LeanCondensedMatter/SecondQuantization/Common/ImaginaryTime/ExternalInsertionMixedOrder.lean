@@ -70,7 +70,7 @@ private theorem canonicalExternalInsertionTimedEvents_all_mem (E n : ℕ) :
 
 /-- All external and interaction events sorted by decreasing imaginary time.
 Equal-time events use the fixed flattened external-first rank. -/
-private noncomputable def orderedExternalInsertionTimedEvents {E n : ℕ}
+noncomputable def orderedExternalInsertionTimedEvents {E n : ℕ}
     (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ) :
     List (ExternalInsertionTimedEvent E n) := by
   classical
@@ -267,7 +267,7 @@ theorem orderedExternalInsertionLegMap_injective {E₁ E₂ m n : ℕ}
   · exact Function.injective_id
 
 /-- Atomic legs contributed by one mixed event. -/
-private def externalInsertionTimedEventAtomicLegs {E n : ℕ} :
+def externalInsertionTimedEventAtomicLegs {E n : ℕ} :
     ExternalInsertionTimedEvent E n → List (OrderedExternalInsertionLeg E n)
   | .inl e => [Sum.inl e]
   | .inr v => List.ofFn fun l : Fin 4 =>
@@ -283,7 +283,7 @@ private theorem externalInsertionTimedEventAtomicLegs_map
   cases event <;> simp [externalInsertionTimedEventAtomicLegs, orderedExternalInsertionLegMap]
 
 /-- Atomic leg identities in mixed-time event order. -/
-private noncomputable def externalInsertionMixedTimeOrderedAtomicLegs {E n : ℕ}
+noncomputable def externalInsertionMixedTimeOrderedAtomicLegs {E n : ℕ}
     (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ) :
     List (OrderedExternalInsertionLeg E n) :=
   (orderedExternalInsertionTimedEvents externalTime σ).flatMap
@@ -440,6 +440,24 @@ noncomputable def externalInsertionMixedTimeOrderedAtomicLegEquiv {E n : ℕ}
       (externalInsertionMixedTimeOrderedAtomicLegs externalTime σ)
       (externalInsertionMixedTimeOrderedAtomicLegs_nodup externalTime σ)
       (externalInsertionMixedTimeOrderedAtomicLegs_all_mem externalTime σ))
+
+/-- The mixed-time atomic leg enumeration agrees with the event-level
+flattened list. This is the interface needed to identify products of full
+time-ordered vertices with products of their individual atomic fields. -/
+theorem externalInsertionMixedTimeOrderedAtomicLegs_eq_ofFn {E n : ℕ}
+    (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ) :
+    externalInsertionMixedTimeOrderedAtomicLegs externalTime σ =
+      List.ofFn (externalInsertionMixedTimeOrderedAtomicLegEquiv externalTime σ) := by
+  let legs := externalInsertionMixedTimeOrderedAtomicLegs externalTime σ
+  have h : legs.length = 2 * (2 * n + E) :=
+    externalInsertionMixedTimeOrderedAtomicLegs_length externalTime σ
+  have hlist :
+      List.ofFn (fun p : Fin (2 * (2 * n + E)) =>
+        legs.get (Fin.cast h.symm p)) = legs := by
+    exact (List.ofFn_congr h legs.get).symm.trans (List.ofFn_get legs)
+  change legs = List.ofFn (fun p : Fin (2 * (2 * n + E)) =>
+    legs.get (Fin.cast h.symm p))
+  exact hlist.symm
 
 /-- The mixed position occupied by a canonical external-insertion leg identity. -/
 noncomputable def externalInsertionMixedTimeOrderedAtomicLegPosition {E n : ℕ}
