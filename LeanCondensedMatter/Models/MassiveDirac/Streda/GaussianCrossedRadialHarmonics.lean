@@ -461,6 +461,154 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficie
     dsimp only
     rw [finiteCutoffContinuumBornDysonRadial_ra_x_product_eq]
 
+/-- The two physical diagonal crossed-current harmonics, after multiplication
+by the finite-regulator RA spectral-center gap, become differences of
+single-side radial Dyson resolvent moments. The K0 and K2 weights retain
+their independent spectral numerator, current factor, and one momentum
+measure each. No division by the center gap or regulator limit is used. -/
+theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient_diagonal_spectral_difference
+    (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ)
+    (hbroadening : broadening ≠ 0) (hdisorder : 0 ≤ disorderStrength)
+    (hpMax : 0 ≤ pMax) :
+    let energyR := finiteCutoffContinuumBornEffectiveEnergy
+      .retarded v m probeEnergy broadening disorderStrength hbar pMax
+    let energyA := finiteCutoffContinuumBornEffectiveEnergy
+      .advanced v m probeEnergy broadening disorderStrength hbar pMax
+    let massR := finiteCutoffContinuumBornEffectiveMass
+      .retarded v m probeEnergy broadening disorderStrength hbar pMax
+    let massA := finiteCutoffContinuumBornEffectiveMass
+      .advanced v m probeEnergy broadening disorderStrength hbar pMax
+    let factor := finiteCutoffContinuumBornDysonGaussianCrossedCurrentFactor
+      v m probeEnergy broadening disorderStrength hbar pMax
+    let gap := energyA ^ 2 - massA ^ 2 - (energyR ^ 2 - massR ^ 2)
+    let jxx := finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient
+      .x 0 v m probeEnergy broadening disorderStrength hbar pMax radius
+    let jyy := finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient
+      .y 1 v m probeEnergy broadening disorderStrength hbar pMax radius
+    let k0Weight := fun p : ℝ =>
+      2 * (p : ℂ) * polarFourierZerothAngularKernel (p * radius / hbar) *
+        ((energyA * energyR - massA * massR) * factor)
+    let k2Weight := fun p : ℝ =>
+      2 * (p : ℂ) * polarFourierSecondCosineAngularKernel (p * radius / hbar) *
+        ((((v * p : ℝ) : ℂ) ^ 2) * factor)
+    (gap * (jxx + jyy) =
+      (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
+        ∫ p in (0 : ℝ)..pMax,
+          k0Weight p *
+            ((finiteCutoffContinuumBornDysonDenominator
+                .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax)⁻¹ -
+              (finiteCutoffContinuumBornDysonDenominator
+                .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax)⁻¹)) ∧
+    (gap * (jxx - jyy) =
+      (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
+        ∫ p in (0 : ℝ)..pMax,
+          k2Weight p *
+            ((finiteCutoffContinuumBornDysonDenominator
+                .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax)⁻¹ -
+              (finiteCutoffContinuumBornDysonDenominator
+                .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax)⁻¹)) := by
+  let energyR := finiteCutoffContinuumBornEffectiveEnergy
+    .retarded v m probeEnergy broadening disorderStrength hbar pMax
+  let energyA := finiteCutoffContinuumBornEffectiveEnergy
+    .advanced v m probeEnergy broadening disorderStrength hbar pMax
+  let massR := finiteCutoffContinuumBornEffectiveMass
+    .retarded v m probeEnergy broadening disorderStrength hbar pMax
+  let massA := finiteCutoffContinuumBornEffectiveMass
+    .advanced v m probeEnergy broadening disorderStrength hbar pMax
+  let factor := finiteCutoffContinuumBornDysonGaussianCrossedCurrentFactor
+    v m probeEnergy broadening disorderStrength hbar pMax
+  let gap := energyA ^ 2 - massA ^ 2 - (energyR ^ 2 - massR ^ 2)
+  let k0Weight : ℝ → ℂ := fun p =>
+    2 * (p : ℂ) * polarFourierZerothAngularKernel (p * radius / hbar) *
+      ((energyA * energyR - massA * massR) * factor)
+  let k2Weight : ℝ → ℂ := fun p =>
+    2 * (p : ℂ) * polarFourierSecondCosineAngularKernel (p * radius / hbar) *
+      ((((v * p : ℝ) : ℂ) ^ 2) * factor)
+  have hdiag :=
+    finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient_diagonal_ra_denominator_harmonics
+      v m probeEnergy broadening disorderStrength hbar pMax radius
+      hbroadening hdisorder hpMax
+  have hk0 :=
+    finiteCutoffContinuumBornDysonRadial_ra_weighted_moment_mul_center_gap
+      v m probeEnergy broadening disorderStrength hbar pMax
+      hbroadening hdisorder hpMax k0Weight
+  have hk2 :=
+    finiteCutoffContinuumBornDysonRadial_ra_weighted_moment_mul_center_gap
+      v m probeEnergy broadening disorderStrength hbar pMax
+      hbroadening hdisorder hpMax k2Weight
+  dsimp only at hdiag hk0 hk2 ⊢
+  have hweight0 :
+      (∫ p in (0 : ℝ)..pMax,
+        2 * (p : ℂ) *
+          (polarFourierZerothAngularKernel (p * radius / hbar) *
+            ((finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct
+              v m p probeEnergy broadening disorderStrength hbar pMax)⁻¹ *
+                (energyA * energyR - massA * massR) * factor))) =
+        ∫ p in (0 : ℝ)..pMax,
+          k0Weight p *
+            (finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct
+              v m p probeEnergy broadening disorderStrength hbar pMax)⁻¹ := by
+    apply intervalIntegral.integral_congr
+    intro p _
+    dsimp only [k0Weight]
+    ring
+  have hweight2 :
+      (∫ p in (0 : ℝ)..pMax,
+        2 * (p : ℂ) *
+          (polarFourierSecondCosineAngularKernel (p * radius / hbar) *
+            ((finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct
+              v m p probeEnergy broadening disorderStrength hbar pMax)⁻¹ *
+                (((v * p : ℝ) : ℂ) ^ 2) * factor))) =
+        ∫ p in (0 : ℝ)..pMax,
+          k2Weight p *
+            (finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct
+              v m p probeEnergy broadening disorderStrength hbar pMax)⁻¹ := by
+    apply intervalIntegral.integral_congr
+    intro p _
+    dsimp only [k2Weight]
+    ring
+  constructor
+  · calc
+      gap * (finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient
+              .x 0 v m probeEnergy broadening disorderStrength hbar pMax radius +
+            finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient
+              .y 1 v m probeEnergy broadening disorderStrength hbar pMax radius) =
+        (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
+          (gap * (∫ p in (0 : ℝ)..pMax,
+            2 * (p : ℂ) *
+              (polarFourierZerothAngularKernel (p * radius / hbar) *
+                ((finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct
+                  v m p probeEnergy broadening disorderStrength hbar pMax)⁻¹ *
+                    (energyA * energyR - massA * massR) * factor)))) := by
+          rw [hdiag.1]
+          ring
+      _ = (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
+          (gap * (∫ p in (0 : ℝ)..pMax, k0Weight p *
+            (finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct
+              v m p probeEnergy broadening disorderStrength hbar pMax)⁻¹)) := by
+          rw [hweight0]
+      _ = _ := by rw [hk0]
+  · calc
+      gap * (finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient
+              .x 0 v m probeEnergy broadening disorderStrength hbar pMax radius -
+            finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient
+              .y 1 v m probeEnergy broadening disorderStrength hbar pMax radius) =
+        (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
+          (gap * (∫ p in (0 : ℝ)..pMax,
+            2 * (p : ℂ) *
+              (polarFourierSecondCosineAngularKernel (p * radius / hbar) *
+                ((finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct
+                  v m p probeEnergy broadening disorderStrength hbar pMax)⁻¹ *
+                    (((v * p : ℝ) : ℂ) ^ 2) * factor)))) := by
+          rw [hdiag.2]
+          ring
+      _ = (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
+          (gap * (∫ p in (0 : ℝ)..pMax, k2Weight p *
+            (finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct
+              v m p probeEnergy broadening disorderStrength hbar pMax)⁻¹)) := by
+          rw [hweight2]
+      _ = _ := by rw [hk2]
+
 /-- The traceless second angular Fourier harmonic vanishes at the origin.
 The result follows from the canonical full-angle harmonic integration theorem. -/
 private theorem polarFourierSecondCosineAngularKernel_zero :
