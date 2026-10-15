@@ -21,16 +21,6 @@ open Common
 
 variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
 
-/-- The representative of a realized signature has the same mixed event ordering. -/
-private theorem sameExternalInsertionOrderChamber_signatureBase {E n : ℕ}
-    (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ) :
-    SameExternalInsertionOrderChamber externalTime
-      (intervalIntegral.finiteSignatureBase (externalInsertionOrderSignature externalTime)
-        (externalInsertionOrderSignature externalTime σ)) σ := by
-  rw [sameExternalInsertionOrderChamber_iff_orderSignature_eq]
-  exact intervalIntegral.finiteSignatureBase_signature_eq
-    (externalInsertionOrderSignature externalTime) σ
-
 /-- For two fixed canonical legs, the Gibbs contraction is continuous in all
 interaction-time coordinates. -/
 private theorem continuous_orderedExternalInsertionLegPairContraction
@@ -139,7 +129,10 @@ theorem ExternalInsertionWickDiagram.measurableLocallyBounded_dysonFixedTimeAmpl
       ε β g externalTime
       (intervalIntegral.finiteSignatureBase (externalInsertionOrderSignature externalTime)
         (externalInsertionOrderSignature externalTime σ)) σ
-      (sameExternalInsertionOrderChamber_signatureBase externalTime σ)).symm
+      (by
+        rw [sameExternalInsertionOrderChamber_iff_orderSignature_eq]
+        exact intervalIntegral.finiteSignatureBase_signature_eq
+          (externalInsertionOrderSignature externalTime) σ)).symm
 
 end Fermionic
 end SecondQuantization
