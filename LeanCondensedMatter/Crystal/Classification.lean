@@ -528,6 +528,61 @@ theorem exists_gram_integerShear_reduced
   change |b - (n : ℝ) * a| ≤ a / 2
   exact abs_le.mpr ⟨hLower, hUpper⟩
 
+/-- Swapping the planar basis vectors and then applying an integer shear
+is an integral primitive basis change of determinant minus one. -/
+theorem integerSwapShear_det (n : ℤ) :
+    (Matrix.det (!![(0 : ℤ), 1; 1, -n] : Matrix (Fin 2) (Fin 2) ℤ)) = -1 := by
+  simp [Matrix.det_fin_two]
+
+/-- Under the swap-and-shear primitive basis change
+`e₁' = e₂`, `e₂' = e₁ - n e₂`, the Gram coefficients transform
+by the binary quadratic form substitution with the shorter vector first. -/
+theorem gram_integerSwapShear
+    (G : Matrix (Fin 2) (Fin 2) ℝ)
+    (hSymm : G 0 1 = G 1 0) (n : ℤ) :
+    (let U : Matrix (Fin 2) (Fin 2) ℝ := !![0, 1; 1, -(n : ℝ)];
+     U.transpose * G * U =
+       !![G 1 1, G 0 1 - (n : ℝ) * G 1 1;
+          G 0 1 - (n : ℝ) * G 1 1,
+          G 0 0 - 2 * (n : ℝ) * G 0 1 + (n : ℝ) ^ 2 * G 1 1]) := by
+  dsimp
+  ext i j
+  fin_cases i <;> fin_cases j <;>
+    simp [Matrix.mul_apply, Fin.sum_univ_two, ← hSymm] <;> ring
+
+/-- If the second primitive vector is shorter than the first, swapping the
+vectors and size-reducing by an integer shear gives a new primitive basis
+whose first squared length strictly decreases and whose off-diagonal Gram
+coefficient is at most half that first squared length.
+
+This is the descent step of the Gauss algorithm. Termination requires an
+additional discreteness argument for the squared lengths of lattice vectors. -/
+theorem exists_gram_swapShear_descends
+    (G : Matrix (Fin 2) (Fin 2) ℝ)
+    (hSymm : G 0 1 = G 1 0)
+    (hPos : 0 < G 1 1) (hLess : G 1 1 < G 0 0) :
+    ∃ n : ℤ,
+      |G 0 1 - (n : ℝ) * G 1 1| ≤ G 1 1 / 2 ∧
+      (let U : Matrix (Fin 2) (Fin 2) ℝ := !![0, 1; 1, -(n : ℝ)];
+       (U.transpose * G * U) 0 0 < G 0 0 ∧
+       U.transpose * G * U =
+         !![G 1 1, G 0 1 - (n : ℝ) * G 1 1;
+            G 0 1 - (n : ℝ) * G 1 1,
+            G 0 0 - 2 * (n : ℝ) * G 0 1 + (n : ℝ) ^ 2 * G 1 1]) := by
+  let H : Matrix (Fin 2) (Fin 2) ℝ :=
+    !![G 1 1, G 0 1; G 0 1, G 0 0]
+  have hHSymm : H 0 1 = H 1 0 := by simp [H]
+  have hHPos : 0 < H 0 0 := by simpa [H] using hPos
+  obtain ⟨n, hn, _⟩ := exists_gram_integerShear_reduced H hHSymm hHPos
+  refine ⟨n, ?_, ?_⟩
+  · simpa [H] using hn
+  · have hGram := gram_integerSwapShear G hSymm n
+    dsimp at hGram ⊢
+    constructor
+    · rw [hGram]
+      simpa using hLess
+    · exact hGram
+
 /-- A reflection across one integral basis axis makes the two basis vectors
 orthogonal. This is the rectangular Gram-metric constraint. -/
 theorem gram_offDiagonal_eq_zero_of_axisReflection
