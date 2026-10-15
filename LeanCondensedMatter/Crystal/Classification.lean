@@ -13,6 +13,8 @@ import Mathlib.Analysis.InnerProductSpace.Trace
 import LeanCondensedMatter.Analysis.Matrix.FinTwoCharpoly
 import Mathlib.Analysis.InnerProductSpace.PiL2
 import Mathlib.Analysis.InnerProductSpace.GramMatrix
+import Mathlib.Analysis.Normed.Module.FiniteDimension
+import Mathlib.Topology.Algebra.OpenSubgroup
 
 /-!
 # Classification-facing crystal symmetry
@@ -582,6 +584,47 @@ theorem exists_gram_swapShear_descends
     · rw [hGram]
       simpa using hLess
     · exact hGram
+
+/-- A discrete integral submodule of a finite-dimensional real normed space
+has only finitely many vectors of bounded norm. In particular, the first
+squared length of any primitive lattice basis takes values in a finite set
+as long as it remains below a fixed bound. -/
+theorem finite_lattice_vectors_norm_le [FiniteDimensional ℝ V]
+    (L : Submodule ℤ V) [DiscreteTopology L] (R : ℝ) :
+    {x : L | ‖x‖ ≤ R}.Finite := by
+  have hClosed : IsClosed (L : Set V) := by
+    change IsClosed ((L.toAddSubgroup : AddSubgroup V) : Set V)
+    infer_instance
+  letI : ProperSpace L := ProperSpace.of_isClosed hClosed
+  have hCompact : IsCompact (Metric.closedBall (0 : L) R) :=
+    isCompact_closedBall (0 : L) R
+  have hFinite := hCompact.finite_of_discrete
+  simpa only [Metric.closedBall, Set.mem_ofPred_eq, dist_zero_right] using hFinite
+
+/-- An infinite sequence of lattice vectors cannot remain bounded while its
+squared norms strictly decrease at every step. Applied to the first vectors
+of successive primitive bases, this rules out infinitely many swap-and-shear
+descent steps from a fixed initial metric.
+
+The separate task of assembling a Gauss-reduced basis still has to track
+the basis transformations between steps. -/
+theorem not_exists_bounded_strict_norm_sq_descent [FiniteDimensional ℝ V]
+    (L : Submodule ℤ V) [DiscreteTopology L] (R : ℝ) :
+    ¬ ∃ v : ℕ → L,
+      (∀ n, ‖v n‖ ≤ R) ∧
+        (∀ n, ‖v (n + 1)‖ ^ 2 < ‖v n‖ ^ 2) := by
+  rintro ⟨v, hv, hdesc⟩
+  have hFinite : (Set.range v).Finite :=
+    (finite_lattice_vectors_norm_le L R).subset (by
+      rintro x ⟨n, rfl⟩
+      exact hv n)
+  have hStrict : StrictAnti (fun n : ℕ => ‖v n‖ ^ 2) :=
+    strictAnti_nat_of_succ_lt hdesc
+  have hInj : Function.Injective v := by
+    intro m n hmn
+    apply hStrict.injective
+    exact congrArg (fun x : L => ‖x‖ ^ 2) hmn
+  exact (Set.infinite_range_of_injective hInj) hFinite
 
 /-- A reflection across one integral basis axis makes the two basis vectors
 orthogonal. This is the rectangular Gram-metric constraint. -/
