@@ -204,7 +204,7 @@ or consumer structure changes.
 - `QuantumMechanics.SingleParticle.Continuum.realLInfMultiplier1D_coeFn` — continuum-vocabulary
   normalization theorem exposing the almost-everywhere representative of a bounded real multiplier;
   it is the bridge used by the probability-density layer.
-- `QuantumTheory.Transport.bandStateOccupation_zeroTemperature_eq_one_of_isFilledBand` — canonical
+- `QuantumTheory.bandStateOccupation_zeroTemperature_eq_one_of_isFilledBand` — canonical
   physical endpoint that every state of a filled band has unit zero-temperature occupation, paired
   with the retained empty-band theorem.
 - `SecondQuantization.Common.TwoPointDiagram.legInComponent_iff_vertex_mem` — semantic normalization

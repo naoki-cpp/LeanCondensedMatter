@@ -57,11 +57,11 @@ The main semantic boundaries are:
 `QuantumTheory.Occupation.Band` owns arbitrary occupation-law composition with band energies, while
 `QuantumTheory.Occupation.ZeroTemperature` owns the strict scalar Fermi step and its pointwise
 properties. Neither requires transport theory.
-`Analysis.ZeroTemperatureBandFilling` owns zero-temperature occupied regions, Fermi surfaces, and
-filled/empty/partially-filled band predicates; and `Analysis.ZeroTemperatureLorentzian` owns the
-finite-window Fermi-edge integrals, arctangent formulas, broadening limits, and isolated-pole
-weights. This split lets arbitrary-occupation and band-filling consumers avoid the heavier
-Lorentzian edge analysis.
+`QuantumTheory.Occupation.BandFilling` owns zero-temperature occupied regions, Fermi surfaces,
+filled/empty/partially-filled band predicates, and their correspondence to the spectral occupation
+law. These are independent of response theory. `Analysis.ZeroTemperatureLorentzian` owns the
+transport-side finite-window Fermi-edge integrals, arctangent formulas, broadening limits, and
+isolated-pole weights.
 
 `Analysis.ContinuumMeasure` owns the opt-in two-dimensional physical-momentum convention
 `d²p/(2πℏ)²` and its exact full-angle radial prefactor `2π/(2πℏ)²`; these are continuum conventions,
