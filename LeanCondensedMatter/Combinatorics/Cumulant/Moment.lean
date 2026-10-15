@@ -104,13 +104,8 @@ theorem sum_Iic_partitionProduct_eq (κ : Finset α → R) {S : Finset α} (π :
       (fun B q => partitionProduct κ q)
     rw [Fintype.piFinset_univ] at hdist
     exact hdist.symm
-  have hstep2 : (∑ ρ : {ρ : Finpartition S // ρ ≤ π}, partitionProduct κ ρ.1) =
-      ∑ ρ ∈ Finset.Iic π, partitionProduct κ ρ := by
-    rw [← Finset.sum_coe_sort (Finset.Iic π) (partitionProduct κ)]
-    refine Fintype.sum_equiv (Equiv.subtypeEquivRight (fun ρ => Finset.mem_Iic (a := π).symm))
-      (fun ρ : {ρ : Finpartition S // ρ ≤ π} => partitionProduct κ ρ.1)
-      (fun ρ : {ρ : Finpartition S // ρ ∈ Finset.Iic π} => partitionProduct κ ρ.1) fun x => ?_
-    rw [Equiv.subtypeEquivRight_apply]
-  rw [← hstep2, hstep1, partitionProduct, Finset.prod_coe_sort π.parts (momentFromCumulant κ)]
+  rw [Finset.sum_subtype (Finset.Iic π)
+    (fun ρ => (Finset.mem_Iic : ρ ∈ Finset.Iic π ↔ ρ ≤ π)) (partitionProduct κ),
+    hstep1, partitionProduct, Finset.prod_coe_sort π.parts (momentFromCumulant κ)]
 
 end Finpartition

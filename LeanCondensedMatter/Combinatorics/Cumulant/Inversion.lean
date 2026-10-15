@@ -77,16 +77,9 @@ theorem sum_Iic_mu_partitionProduct_eq (m : Finset α → R)
       (fun B q => mu R q ⊤ * partitionProduct m q)
     rw [Fintype.piFinset_univ] at hdist
     exact hdist.symm
-  have hstep2 :
-      (∑ ρ : {ρ : Finpartition S // ρ ≤ π}, mu R ρ.1 π * partitionProduct m ρ.1) =
-        ∑ ρ ∈ Finset.Iic π, mu R ρ π * partitionProduct m ρ := by
-    rw [← Finset.sum_coe_sort (Finset.Iic π) (fun ρ => mu R ρ π * partitionProduct m ρ)]
-    refine Fintype.sum_equiv (Equiv.subtypeEquivRight (fun ρ => Finset.mem_Iic (a := π).symm))
-      (fun ρ : {ρ : Finpartition S // ρ ≤ π} => mu R ρ.1 π * partitionProduct m ρ.1)
-      (fun ρ : {ρ : Finpartition S // ρ ∈ Finset.Iic π} =>
-        mu R ρ.1 π * partitionProduct m ρ.1) fun x => ?_
-    rw [Equiv.subtypeEquivRight_apply]
-  rw [← hstep2, hstep1, partitionProduct, Finset.prod_coe_sort π.parts (cumulantFromMoment m)]
+  rw [Finset.sum_subtype (Finset.Iic π)
+    (fun ρ => (Finset.mem_Iic : ρ ∈ Finset.Iic π ↔ ρ ≤ π)) (fun ρ => mu R ρ π * partitionProduct m ρ),
+    hstep1, partitionProduct, Finset.prod_coe_sort π.parts (cumulantFromMoment m)]
 
 /-- Reverse pointwise inversion, away from the empty finite set. -/
 theorem momentFromCumulant_cumulantFromMoment (m : Finset α → R)
