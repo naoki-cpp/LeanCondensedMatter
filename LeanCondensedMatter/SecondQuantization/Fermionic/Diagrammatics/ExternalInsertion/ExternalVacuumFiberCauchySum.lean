@@ -55,7 +55,7 @@ private theorem vacuumFreeExternalInsertionDysonCoefficient_eq_sum_if
   unfold vacuumFreeExternalInsertionDysonCoefficient
   let X := {d : ExternalInsertionWickDiagram Mode E m //
     HasNoVacuumComponent d.vertexGraph}
-  let e := vacuumFreeFixedExternalSubtypeEquiv (Mode := Mode) externalLabel
+  let e := vacuumFreeFixedExternalSubtypeEquiv (Mode := Mode) (m := m) externalLabel
   calc
     (∑ d : VacuumFreeFixedExternalInsertionWickDiagram Mode E m externalLabel,
       d.1.1.dysonAmplitude ε β g externalTime) =
@@ -85,9 +85,9 @@ private theorem standardizedSupportFiber_externalLabel
       (Finset.subset_univ shuffle.leftSlots)).symm p
     d.1.externalLabel = q.1.1.externalLabel := rfl
 
+open Classical in
 /-- The sum over all fixed-cardinality external-support fibers is one factor
 of the Cauchy convolution with the normalized vacuum Dyson series. -/
-open Classical in
 theorem externalInsertionFixedCardinalityFiberSum_eq_cauchyFactor
     {E : ℕ} (ε : Mode → ℝ) (β : ℝ) (hβ : 0 ≤ β)
     (g : QuarticVertexLabel Mode → ℂ)
@@ -148,6 +148,7 @@ theorem externalInsertionFixedCardinalityFiberSum_eq_cauchyFactor
       have hl := standardizedSupportFiber_externalLabel (Mode := Mode)
         shuffle (ext, x)
       dsimp only at hl
+      dsimp only
       rw [hl]
       split_ifs with h
       · exact externalInsertionStandardizedSupportFiber_dysonAmplitude_eq_shuffleIntegral
