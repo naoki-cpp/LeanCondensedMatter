@@ -177,6 +177,11 @@ normalization, real Born-renormalization bounds, and ladder determinant nonvanis
 at the result boundaries that consume them; the regime package is not a replacement for the scaling
 domain or for generic denominator APIs.
 
+The Hall and longitudinal Středa radial integrals use the shared integration law for
+`inPlaneLadderAction` from `Vertex.InPlaneLadder`. Their fixed-disorder zero-broadening proofs use
+the existing full-vector convergence law for the same action. The ordered Hall sign and the
+longitudinal bare RR/AA remainder remain with their respective response constructions.
+
 The massive-Dirac continuum normalization keeps each physical factor at the narrowest owner.
 `Analysis.ContinuumMeasure` owns both the bare physical-momentum measure and its exact full-angle
 radial prefactor. `Disorder.ContinuumMeasurePrefactor` owns one external scalar-disorder line times

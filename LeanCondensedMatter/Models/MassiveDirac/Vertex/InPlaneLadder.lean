@@ -1,5 +1,6 @@
 import LeanCondensedMatter.Transport.Disorder.Ladder
 import Mathlib.Topology.Instances.Matrix
+import Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic
 import Mathlib.Tactic
 
 set_option linter.style.header false
@@ -30,6 +31,7 @@ noncomputable section
 open QuantumTheory.Transport
 
 open Filter
+open scoped Interval
 
 /-- Two complex coefficients indexed by the in-plane Cartesian directions. -/
 abbrev InPlaneCoefficientVector := Fin 2 → ℂ
@@ -122,6 +124,30 @@ theorem tendsto_inPlaneLadderAction
     l (nhds ((inPlaneRotationMatrix rung₀).mulVec coefficients₀))
   exact (hmul.tendsto (inPlaneRotationMatrix rung₀, coefficients₀)).comp
     (hrungMatrix.prodMk_nhds hcoefficients)
+
+/-- Integrating the in-plane ladder action against a fixed coefficient vector amounts to
+integrating its rung vector. Integrability and the integral identity share the same hypotheses. -/
+theorem inPlaneLadderAction_integrable_and_integral_eq
+    (rung : ℝ → InPlaneCoefficientVector) (coefficients : InPlaneCoefficientVector)
+    (a b : ℝ) (hrung : ∀ i, IntervalIntegrable (fun p => rung p i) MeasureTheory.volume a b)
+    (direction : Fin 2) :
+    IntervalIntegrable (fun p => inPlaneLadderAction (rung p) coefficients direction)
+      MeasureTheory.volume a b ∧
+    (∫ p in a..b, inPlaneLadderAction (rung p) coefficients direction) =
+      inPlaneLadderAction (fun i => ∫ p in a..b, rung p i) coefficients direction := by
+  fin_cases direction
+  · simp only [Fin.zero_eta, inPlaneLadderAction_apply_x]
+    constructor
+    · exact ((hrung 0).mul_const (coefficients 0)).sub ((hrung 1).mul_const (coefficients 1))
+    · rw [intervalIntegral.integral_sub ((hrung 0).mul_const (coefficients 0))
+          ((hrung 1).mul_const (coefficients 1)),
+        intervalIntegral.integral_mul_const, intervalIntegral.integral_mul_const]
+  · simp only [Fin.mk_one, inPlaneLadderAction_apply_y]
+    constructor
+    · exact ((hrung 1).mul_const (coefficients 0)).add ((hrung 0).mul_const (coefficients 1))
+    · rw [intervalIntegral.integral_add ((hrung 1).mul_const (coefficients 0))
+          ((hrung 0).mul_const (coefficients 1)),
+        intervalIntegral.integral_mul_const, intervalIntegral.integral_mul_const]
 
 /-- Determinant of the shifted two-component ladder equation `I - L`. -/
 def inPlaneLadderDeterminant (rung : InPlaneCoefficientVector) : ℂ :=
