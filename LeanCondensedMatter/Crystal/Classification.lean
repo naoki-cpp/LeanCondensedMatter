@@ -425,6 +425,51 @@ theorem exists_basis_coordinates_iff_gram_congruence [FiniteDimensional ℝ V]
     exact ⟨ofGLGramPreserving L b A hGram,
       ofGLGramPreserving_basis_coordinates L b A hGram⟩
 
+/-- A Gram-metric stabilizer condition is invariant under an invertible
+change of coordinates. In a lattice basis change the matrices `P` and `Q`
+have integral entries and satisfy `Q = P⁻¹`; the statement only uses their
+real inverse relations. The symmetry matrix changes by conjugation, while
+the Gram matrix changes by congruence. -/
+theorem gram_congruence_change_basis_iff
+    {ι : Type*} [Fintype ι] [DecidableEq ι]
+    (G A P Q : Matrix ι ι ℝ)
+    (hPQ : P * Q = 1) (hQP : Q * P = 1) :
+    (A.transpose * G * A = G) ↔
+      (Q * A * P).transpose * (P.transpose * G * P) *
+        (Q * A * P) = P.transpose * G * P := by
+  have forward (G A P Q : Matrix ι ι ℝ)
+      (hPQ : P * Q = 1) (h : A.transpose * G * A = G) :
+      (Q * A * P).transpose * (P.transpose * G * P) *
+        (Q * A * P) = P.transpose * G * P := by
+    calc
+      (Q * A * P).transpose * (P.transpose * G * P) *
+          (Q * A * P) =
+        P.transpose * A.transpose * (P * Q).transpose *
+          G * (P * Q) * A * P := by
+            simp only [Matrix.transpose_mul, Matrix.mul_assoc]
+      _ = P.transpose * (A.transpose * G * A) * P := by
+        rw [hPQ]
+        simp only [Matrix.transpose_one, Matrix.mul_one, Matrix.mul_assoc]
+      _ = P.transpose * G * P := by rw [h]
+  constructor
+  · exact forward G A P Q hPQ
+  · intro h
+    have hBack := forward (P.transpose * G * P) (Q * A * P) Q P hQP h
+    have hA : P * (Q * A * P) * Q = A := by
+      calc
+        P * (Q * A * P) * Q = (P * Q) * A * (P * Q) := by
+          simp only [Matrix.mul_assoc]
+        _ = A := by rw [hPQ]; simp
+    have hG :
+        Q.transpose * (P.transpose * G * P) * Q = G := by
+      calc
+        Q.transpose * (P.transpose * G * P) * Q =
+            (P * Q).transpose * G * (P * Q) := by
+              simp only [Matrix.transpose_mul, Matrix.mul_assoc]
+        _ = G := by rw [hPQ]; simp
+    rw [hA, hG] at hBack
+    exact hBack
+
 /-- A reflection across one integral basis axis makes the two basis vectors
 orthogonal. This is the rectangular Gram-metric constraint. -/
 theorem gram_offDiagonal_eq_zero_of_axisReflection
