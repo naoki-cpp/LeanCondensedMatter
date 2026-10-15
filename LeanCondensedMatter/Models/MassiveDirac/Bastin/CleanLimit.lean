@@ -25,8 +25,6 @@ namespace QuantumTheory.Models.MassiveDirac
 
 noncomputable section
 
-open QuantumTheory.Transport
-
 /-- Named real clean-limit profile extracted from the opposite-source interband Bastin pair. -/
 def cleanInterbandBastinPairLimitDensity
     (band : Band) (e v m px py : ℝ) : ℝ :=
