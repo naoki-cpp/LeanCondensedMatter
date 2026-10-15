@@ -1,6 +1,7 @@
 import LeanCondensedMatter.Transport.Streda.ConductivityNormalization
 import LeanCondensedMatter.Models.MassiveDirac.Conductivity.Hall.NonCrossing
 import LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedRealSpaceIntegral
+import LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedRadialTrace
 
 set_option linter.style.header false
 
