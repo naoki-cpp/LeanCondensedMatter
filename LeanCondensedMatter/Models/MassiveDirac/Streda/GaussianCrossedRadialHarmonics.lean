@@ -399,6 +399,7 @@ theorem finiteCutoffContinuumBornDysonRadial_ra_weighted_moment_mul_center_gap
     _ = _ := by
       apply intervalIntegral.integral_congr
       intro p _
+      dsimp only
       rw [← hgap p]
       ring
 
