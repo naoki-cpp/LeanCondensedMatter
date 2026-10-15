@@ -225,8 +225,11 @@ theorem massiveDiracRadialDenominator_center_im_ne_zero_of_re_pos
   let p : ℝ := Real.sqrt ((energy ^ 2 - mass ^ 2).re) / v
   have hp : v ^ 2 * p ^ 2 = (energy ^ 2 - mass ^ 2).re := by
     dsimp [p]
-    rw [div_pow, Real.sq_sqrt (le_of_lt hcenterRe)]
-    field_simp
+    rw [div_pow]
+    have hpos : 0 ≤ (energy ^ 2).re - (mass ^ 2).re := by
+      simpa only [Complex.sub_re] using le_of_lt hcenterRe
+    rw [Real.sq_sqrt hpos]
+    field_simp <;> ring
   have hzero : massiveDiracRadialDenominator v p energy mass = 0 := by
     apply Complex.ext
     · simp only [massiveDiracRadialDenominator, Complex.sub_re,
