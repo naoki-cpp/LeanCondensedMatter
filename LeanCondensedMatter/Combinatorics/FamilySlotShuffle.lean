@@ -137,11 +137,6 @@ noncomputable def FamilySlotShuffleTo.castTotalEquiv {size : ι → ℕ} {m n : 
 abbrev FamilySlotShuffle [Fintype ι] (size : ι → ℕ) :=
   FamilySlotShuffleTo size (∑ i, size i)
 
-@[ext]
-theorem FamilySlotShuffle.ext [Fintype ι] {size : ι → ℕ} {σ τ : FamilySlotShuffle size}
-    (h : σ.slotEquiv = τ.slotEquiv) : σ = τ :=
-  FamilySlotShuffleTo.ext h
-
 /-- The unique shuffle of an empty family of slot blocks. -/
 noncomputable def FamilySlotShuffle.nil (size : Fin 0 → ℕ) : FamilySlotShuffle size where
   slotEquiv := Fintype.equivOfCardEq (by simp)
@@ -152,7 +147,7 @@ noncomputable instance FamilySlotShuffle.instUniqueZero (size : Fin 0 → ℕ) :
     Unique (FamilySlotShuffle size) where
   default := FamilySlotShuffle.nil size
   uniq shuffle := by
-    apply FamilySlotShuffle.ext
+    apply FamilySlotShuffleTo.ext
     apply Equiv.ext
     rintro ⟨i, _⟩
     exact Fin.elim0 i

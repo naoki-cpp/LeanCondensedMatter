@@ -46,59 +46,6 @@ private theorem sign_eq_neg_one_pow_permInversionCount {n : ℕ}
   have hij : i ≠ j := ne_of_lt (Finset.mem_Ioi.mp hj)
   exact ite_lt_eq_neg_one_pow (π i) (π j) (π.injective.ne hij)
 
-private noncomputable def familyBlockOf
-    {ι : Type*} {size : ι → ℕ} {total : ℕ}
-    (σ : FamilySlotShuffleTo size total) (x : Fin total) : ι :=
-  (σ.slotEquiv.symm x).1
-
-private theorem sum_familyBlockFiber_eq
-    {ι : Type*} [DecidableEq ι] {size : ι → ℕ} {total : ℕ}
-    (σ : FamilySlotShuffleTo size total) (i : ι) (f : Fin total → ℕ) :
-    (∑ x ∈ (Finset.univ : Finset (Fin total)) with familyBlockOf σ x = i, f x) =
-      ∑ p : Fin (size i), f (σ.slotEquiv ⟨i, p⟩) := by
-  classical
-  symm
-  refine Finset.sum_bij (fun p _ => σ.slotEquiv ⟨i, p⟩) ?_ ?_ ?_ ?_
-  · intro p _
-    rw [Finset.mem_filter]
-    refine ⟨Finset.mem_univ _, ?_⟩
-    unfold familyBlockOf
-    simp
-  · intro p _ q _ hpq
-    simpa using σ.slotEquiv.injective hpq
-  · intro x hx
-    rcases Finset.mem_filter.mp hx with ⟨_, hblock⟩
-    cases hsymm : σ.slotEquiv.symm x with
-    | mk j p =>
-        have hji : j = i := by
-          simpa [familyBlockOf, hsymm] using hblock
-        subst j
-        refine ⟨p, Finset.mem_univ _, ?_⟩
-        have h := σ.slotEquiv.apply_symm_apply x
-        rw [hsymm] at h
-        exact h
-  · intro p _
-    rfl
-
-private theorem sum_familyBlocks_eq
-    {ι : Type*} [Fintype ι] {size : ι → ℕ} {total : ℕ}
-    (σ : FamilySlotShuffleTo size total) (f : Fin total → ℕ) :
-    (∑ x : Fin total, f x) =
-      ∑ i : ι, ∑ p : Fin (size i), f (σ.slotEquiv ⟨i, p⟩) := by
-  classical
-  calc
-    (∑ x : Fin total, f x) =
-        ∑ i : ι,
-          ∑ x ∈ (Finset.univ : Finset (Fin total)) with familyBlockOf σ x = i, f x := by
-      simpa using
-        (Finset.sum_fiberwise_eq_sum_filter
-          (Finset.univ : Finset (Fin total)) (Finset.univ : Finset ι)
-          (familyBlockOf σ) f).symm
-    _ = ∑ i : ι, ∑ p : Fin (size i), f (σ.slotEquiv ⟨i, p⟩) := by
-      apply Finset.sum_congr rfl
-      intro i _
-      exact sum_familyBlockFiber_eq σ i f
-
 private noncomputable def familyBlockDisagreementCount
     {ι : Type*} {size : ι → ℕ} {total : ℕ}
     (σ τ : FamilySlotShuffleTo size total) (i j : ι) : ℕ :=
@@ -122,10 +69,10 @@ private theorem relativePerm_inversionCount_eq_sum_blockDisagreementCount
   classical
   unfold permInversionCount
   simp_rw [sum_Ioi_eq_sum_ite]
-  rw [sum_familyBlocks_eq σ]
+  rw [← Equiv.sum_comp σ.slotEquiv, Fintype.sum_sigma]
   apply Finset.sum_congr rfl
   intro i _
-  simp_rw [sum_familyBlocks_eq σ]
+  simp_rw [← Equiv.sum_comp σ.slotEquiv, Fintype.sum_sigma]
   rw [Finset.sum_comm]
   apply Finset.sum_congr rfl
   intro j _
