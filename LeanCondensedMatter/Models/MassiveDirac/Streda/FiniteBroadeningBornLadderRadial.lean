@@ -354,7 +354,8 @@ theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTrace
         0 1 e v m p probeEnergy broadening disorderStrength hbar pMax := by
   unfold finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient
   dsimp only
-  simp only [finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentCoefficientVector,
+  simp only [finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentCoefficientVector_x,
+    finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentCoefficientVector_y,
     Matrix.transpose_apply, inPlaneLadderAction_apply_x,
     inPlaneLadderAction_apply_y, inPlaneRotationMatrix_apply_x_x,
     inPlaneRotationMatrix_apply_x_y, inPlaneRotationMatrix_apply_y_x,
@@ -370,7 +371,8 @@ theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTrace
         0 0 e v m p probeEnergy broadening disorderStrength hbar pMax := by
   unfold finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient
   dsimp only
-  simp only [finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentCoefficientVector,
+  simp only [finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentCoefficientVector_x,
+    finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentCoefficientVector_y,
     Matrix.transpose_apply, inPlaneLadderAction_apply_x,
     inPlaneLadderAction_apply_y, inPlaneRotationMatrix_apply_x_x,
     inPlaneRotationMatrix_apply_x_y, inPlaneRotationMatrix_apply_y_x,

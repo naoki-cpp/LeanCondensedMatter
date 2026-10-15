@@ -110,7 +110,8 @@ private theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngu
       dsimp only
       unfold finiteCutoffContinuumBornDysonRetardedAdvancedAngularCoefficient
       simp only [finiteCutoffContinuumBornDysonRetardedAdvancedAngularRungVector,
-        finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentCoefficientVector,
+        finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentCoefficientVector_x,
+        finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentCoefficientVector_y,
         inPlaneLadderAction_apply_x, Matrix.transpose_apply,
         inPlaneRotationMatrix_apply_x_x, inPlaneRotationMatrix_apply_x_y,
         inPlaneRotationMatrix_apply_y_x, inPlaneRotationMatrix_apply_y_y,

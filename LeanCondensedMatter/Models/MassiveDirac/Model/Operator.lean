@@ -147,6 +147,12 @@ noncomputable def inPlaneCurrentOperator
     (e v : ℝ) (coefficients : Fin 2 → ℂ) : DiracHilbert →L[ℂ] DiracHilbert :=
   coefficients 0 • currentOperator 0 e v + coefficients 1 • currentOperator 1 e v
 
+/-- The operator realization is continuous in the complete in-plane coefficient vector. -/
+theorem continuous_inPlaneCurrentOperator (e v : ℝ) : Continuous (inPlaneCurrentOperator e v) := by
+  unfold inPlaneCurrentOperator
+  exact ((continuous_apply 0).smul_const (currentOperator 0 e v)).add
+    ((continuous_apply 1).smul_const (currentOperator 1 e v))
+
 /-- The physical in-plane current is the charge-velocity scale multiplying the corresponding
 in-plane Pauli vertex. -/
 theorem inPlaneCurrentOperator_eq_chargeVelocity_smul_inPlanePauliVertexOperator

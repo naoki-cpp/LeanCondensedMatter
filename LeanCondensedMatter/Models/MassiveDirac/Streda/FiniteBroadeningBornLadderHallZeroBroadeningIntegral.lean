@@ -81,17 +81,14 @@ private theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMome
     intro p
     rw [finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceRadialIntegrand_eq_denominatorForm]
     simp only [inPlaneLadderAction_apply_y]
-    dsimp [q, pref, solved, radialRung,
-      finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentCoefficientVector]
+    dsimp [q, pref, solved, radialRung]
     rw [finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungRadialIntegrand,
       finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungRadialIntegrand,
       finiteCutoffContinuumBornDysonRetardedAdvancedAngularCoefficient_eq_denominatorForm,
       finiteCutoffContinuumBornDysonRetardedAdvancedAngularCoefficient_eq_denominatorForm]
     unfold finiteCutoffContinuumBornDysonHallRetardedAdvancedDressedSurfaceRadialNumerator
     dsimp only
-    simp only [finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentCoefficientVector,
-      Matrix.transpose_apply, inPlaneRotationMatrix_apply_x_x,
-      inPlaneRotationMatrix_apply_y_x]
+    simp only [finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentCoefficientVector_x]
     have hprefEq :
         (continuumBornDisorderMeasurePrefactor disorderStrength hbar : ℂ) = pref := by
       rfl
