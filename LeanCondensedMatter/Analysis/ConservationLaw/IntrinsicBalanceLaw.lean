@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Analysis.ConservationLaw.DifferentialDependence
+import Mathlib.Logic.Function.Basic
 import Mathlib.Tactic.Module
 
 set_option linter.style.header false
@@ -58,7 +58,7 @@ structure IntrinsicBalanceLaw
   /-- Intrinsic transport/flux on differential test data. -/
   transport : Test →ₗ[𝕜] Obs
   /-- Transport is insensitive to changes of a test object that leave its differential fixed. -/
-  transport_depends : DependsOnlyOnDifferential d transport
+  transport_depends : Function.FactorsThrough transport d
   /-- Local source, sink, or torque functional. -/
   source : Test →ₗ[𝕜] Obs
   /-- The local balance identity. -/
@@ -73,7 +73,10 @@ theorem transport_eq_zero_of_differential_eq_zero
     {d : Test →ₗ[𝕜] OneForm}
     (B : IntrinsicBalanceLaw δ Q d) {f : Test} (hf : d f = 0) :
     B.transport f = 0 :=
-  B.transport_depends.eq_zero_of_map_eq_zero hf
+  calc
+    B.transport f = B.transport 0 :=
+      B.transport_depends (by simpa only [map_zero] using hf)
+    _ = 0 := map_zero B.transport
 
 /-- If the differential test vanishes, only the source can change the localized quantity. -/
 theorem evolution_eq_source_of_differential_eq_zero
@@ -125,7 +128,10 @@ noncomputable def scaleEvolution
     (B : IntrinsicBalanceLaw δ Q d) (c : 𝕜) :
     IntrinsicBalanceLaw (c • δ) Q d where
   transport := c • B.transport
-  transport_depends := B.transport_depends.smul c
+  transport_depends := by
+    intro f g hfg
+    simpa only [LinearMap.smul_apply] using
+      congrArg (fun y : Obs => c • y) (B.transport_depends hfg)
   source := c • B.source
   balance := by
     intro f
@@ -140,10 +146,13 @@ noncomputable def absorbSource
     {Q : Test →ₗ[𝕜] Obs}
     {d : Test →ₗ[𝕜] OneForm}
     (B : IntrinsicBalanceLaw δ Q d)
-    (hsource : DependsOnlyOnDifferential d B.source) :
+    (hsource : Function.FactorsThrough B.source d) :
     IntrinsicBalanceLaw δ Q d where
   transport := B.transport + B.source
-  transport_depends := B.transport_depends.add hsource
+  transport_depends := by
+    intro f g hfg
+    simp only [LinearMap.add_apply]
+    rw [B.transport_depends hfg, hsource hfg]
   source := 0
   balance := by
     intro f

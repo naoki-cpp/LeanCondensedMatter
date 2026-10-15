@@ -28,7 +28,6 @@
       "id": "generalizedCurrentOwners",
       "paths": [
         "LeanCondensedMatter/Analysis/Operator/SymmetrizedProduct.lean",
-        "LeanCondensedMatter/Analysis/ConservationLaw/DifferentialDependence.lean",
         "LeanCondensedMatter/Analysis/ConservationLaw/CurrentRepresentation.lean",
         "LeanCondensedMatter/Analysis/ConservationLaw/CurrentEquivalence.lean",
         "LeanCondensedMatter/Analysis/ConservationLaw/IntrinsicBalanceLaw.lean",
@@ -307,11 +306,6 @@
         "LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.PairingWeight",
         "LeanCondensedMatter.Combinatorics.PerfectPairing.FirstPairRecursion"
       ]
-    },
-    {
-      "id": "generalizedCurrentIntrinsicBalanceLaw",
-      "path": "LeanCondensedMatter/Analysis/ConservationLaw/IntrinsicBalanceLaw.lean",
-      "modules": ["LeanCondensedMatter.Analysis.ConservationLaw.DifferentialDependence"]
     },
     {
       "id": "generalizedCurrentEquivalence",

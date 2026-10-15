@@ -102,8 +102,8 @@ noncomputable def heisenbergIntrinsicSymmetricLocalizationBalanceLaw
     (M : Test →ₗ[ℂ] (V →ₗ[ℂ] V))
     (m : V →ₗ[ℂ] V)
     (d : Test →ₗ[ℂ] OneForm)
-    (htransport : _root_.ConservationLaw.DependsOnlyOnDifferential d
-      (heisenbergTransportFunctional V ℏ h M m)) :
+    (htransport : Function.FactorsThrough
+      (heisenbergTransportFunctional V ℏ h M m) d) :
     _root_.ConservationLaw.IntrinsicBalanceLaw
       (heisenbergEvolution V ℏ h)
       (_root_.ConservationLaw.localizedQuantityFunctional V M m)

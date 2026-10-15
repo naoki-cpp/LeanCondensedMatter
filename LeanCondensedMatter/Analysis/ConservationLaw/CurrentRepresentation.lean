@@ -1,4 +1,3 @@
-import LeanCondensedMatter.Analysis.ConservationLaw.DifferentialDependence
 import Mathlib.Tactic
 
 set_option linter.style.header false
@@ -7,8 +6,8 @@ set_option linter.style.header false
 # Weak current representations
 
 This module contains representation-specific infrastructure for weak transport functionals.
-The representation-independent predicate `DependsOnlyOnDifferential` is owned by
-`DifferentialDependence`.
+Intrinsic dependence on the differential without a chosen current is expressed directly by
+Mathlib's `Function.FactorsThrough` in `IntrinsicBalanceLaw`.
 
 For a linear differential-like map
 
@@ -89,15 +88,6 @@ theorem postcomp
   intro f
   simp only [LinearMap.comp_apply]
   rw [h f]
-
-/-- Choosing a differential current implies the representation-independent statement that transport
-depends only on differential data. -/
-theorem dependsOnlyOnDifferential
-    {d : Test →ₗ[𝕜] OneForm} {Φ : Test →ₗ[𝕜] Obs} {J : OneForm →ₗ[𝕜] Obs}
-    (h : IsDifferentialCurrent d Φ J) :
-    DependsOnlyOnDifferential d Φ := by
-  intro f g hfg
-  rw [h f, h g, hfg]
 
 end IsDifferentialCurrent
 
