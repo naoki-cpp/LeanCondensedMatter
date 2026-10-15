@@ -347,6 +347,7 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedOrderedXYConductivity_x_eq_
           1 v m probeEnergy broadening disorderStrength hbar pMax radius) .z = _ at hz
   dsimp only at hs hz ⊢
   rw [hs, hz]
+  ring
 
 /-- The regulated physical Psi Hall contribution is the finite-radius integral
 of its transverse-current-reduced antisymmetric Pauli amplitude and its
