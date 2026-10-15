@@ -229,7 +229,7 @@ theorem massiveDiracRadialDenominator_center_im_ne_zero_of_re_pos
     have hpos : 0 ≤ (energy ^ 2).re - (mass ^ 2).re := by
       simpa only [Complex.sub_re] using le_of_lt hcenterRe
     rw [Real.sq_sqrt hpos]
-    field_simp <;> ring
+    field_simp
   have hzero : massiveDiracRadialDenominator v p energy mass = 0 := by
     apply Complex.ext
     · simp only [massiveDiracRadialDenominator, Complex.sub_re,
