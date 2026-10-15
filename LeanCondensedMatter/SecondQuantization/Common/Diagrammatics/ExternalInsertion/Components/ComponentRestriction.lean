@@ -1,6 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Core.Diagram
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ComponentLegData
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Diagram
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Embedding
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Restriction
 import LeanCondensedMatter.Combinatorics.InvolutionCard
@@ -15,9 +14,9 @@ set_option linter.style.header false
 
 This module extracts the external and interaction sectors belonging to one connected component and
 restricts the ambient pairing to its legs. The generic restriction is again an
-`ExternalInsertionDiagram` on the component-local external and interaction sectors. For a vacuum
-component, no external leg is present, so the same ambient component can also be reindexed directly
-as the four local legs of an ordinary quartic diagram.
+`ExternalInsertionDiagram` on the component-local external and interaction sectors, including
+components with no external insertions. The canonical vacuum-complement quartic diagram is
+constructed separately by the external-support slot split.
 
 The construction is statistics-independent. Partner-invariant pairing restriction is owned by
 `Combinatorics.PerfectPairing.Restriction`, while external/vacuum component predicates are owned by
@@ -406,34 +405,6 @@ theorem ExternalInsertionDiagram.componentLegShuffle_slotEquiv_apply
     d.componentLegShuffle.slotEquiv ⟨B, p⟩ = d.componentDiagramLeg B p :=
   rfl
 
-
-/-- Restrict a vacuum component of an external-insertion diagram to an ordinary quartic diagram. -/
-noncomputable def ExternalInsertionDiagram.restrictVacuumComponent {S : Finset (Fin N)}
-    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
-    (B : d.vertexGraph.componentPartition.parts)
-    (hVac : ComponentIsVacuum (B : Finset (ExternalInsertionVertex E S))) :
-    QuarticDiagram InternalLabel N
-      (interactionSector
-        (B : Finset (ExternalInsertionVertex E S))) where
-  vertexLabel v :=
-    d.vertexLabel ⟨v.1, interactionSector_subset
-      (B : Finset (ExternalInsertionVertex E S)) v.2⟩
-  pairing := by
-    let legEquiv :
-        {leg : Fin (2 * (2 * S.card + E)) // d.legInComponent B leg} ≃
-          Fin (2 * (2 * (interactionSector
-            (B : Finset (ExternalInsertionVertex E S))).card)) :=
-      ((externalInsertionLegEquiv E S).subtypeEquiv fun leg =>
-          d.legInComponent_iff_unflattened B leg).trans
-        ((SecondQuantization.Common.vacuumComponentLegDataEquiv
-          (External := Fin (2 * E)) (Vertex := Fin N) (Local := Fin 4)
-          (B := (B : Finset (ExternalInsertionVertex E S))) hVac).trans
-          (quarticLegEquiv (interactionSector
-            (B : Finset (ExternalInsertionVertex E S)))).symm)
-    exact d.pairing.restrictAlongEquiv (d.legInComponent B)
-      (fun leg => d.legInComponent_partner_iff
-        (B : Finset (ExternalInsertionVertex E S)) leg)
-      legEquiv
 
 end Common
 end SecondQuantization
