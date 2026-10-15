@@ -160,6 +160,60 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedOrderedXYConductivity_psi_e
     v m probeEnergy broadening disorderStrength hbar pMax radius
     hbroadening hdisorder hpMax]
 
+/-- The conjugate-symmetric part of the Psi Pauli triple is a real scalar.
+The right-hand side is resolved into the real and imaginary Pauli minor
+channels, ready for radial scalar-kernel analysis. -/
+private theorem psi_conjugate_triple_half_eq_real_channels (z q : ℂ) :
+    (8 * Complex.I * z * q +
+        (starRingEnd ℂ) (8 * Complex.I * z * q)) / 2 =
+      ((-8 * (z.re * q.im + z.im * q.re) : ℝ) : ℂ) := by
+  apply (div_eq_iff (by norm_num : (2 : ℂ) ≠ 0)).2
+  apply Complex.ext
+  · simp [Complex.mul_re, Complex.mul_im, Complex.add_re, Complex.neg_re]
+    ring
+  · simp [Complex.mul_re, Complex.mul_im, Complex.add_im, Complex.neg_im]
+    ring
+
+/-- The physically normalized regulated Psi crossed Hall conductivity is
+the radial integral of a *real-valued* minor kernel. In contrast to the
+conjugate-symmetrized amplitude representation, the integrand uses only
+the real and imaginary parts of two independent scalar products.
+No cancellation, radial integration, or cutoff/broadening limit is asserted. -/
+theorem finiteCutoffContinuumBornDysonGaussianCrossedOrderedXYConductivity_psi_eq_real_minor_radial_integral
+    (e v m probeEnergy broadening disorderStrength hbar pMax rMax : ℝ)
+    (hbroadening : broadening ≠ 0) (hdisorder : 0 ≤ disorderStrength)
+    (hpMax : 0 ≤ pMax) :
+    finiteCutoffContinuumBornDysonGaussianCrossedOrderedXYConductivity
+        .psi e v m probeEnergy broadening disorderStrength hbar pMax rMax =
+      (((bastinStredaTraceConductivityPrefactor hbar * (e * v) ^ 2 : ℝ) : ℂ)) *
+        (((disorderStrength ^ 2 : ℝ) : ℂ)) * (((2 * Real.pi : ℝ) : ℂ)) *
+        ∫ radius in (0 : ℝ)..rMax,
+          (radius : ℂ) *
+            (let Jx := finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock
+                0 v m probeEnergy broadening disorderStrength hbar pMax radius
+             let Jy := finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock
+                1 v m probeEnergy broadening disorderStrength hbar pMax radius
+             let GR := finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix
+                .retarded v m probeEnergy broadening disorderStrength hbar pMax radius
+             let a := InternalSpace.pauliScalarCoefficient Jx
+             let b := InternalSpace.pauliScalarCoefficient GR
+             let c := InternalSpace.pauliScalarCoefficient Jy
+             let gx := InternalSpace.pauliVectorCoefficient GR .x
+             let gz := InternalSpace.pauliVectorCoefficient GR .z
+             let u := InternalSpace.pauliVectorCoefficient Jx
+             let w := InternalSpace.pauliVectorCoefficient Jy
+             let minor := gx * (a * w .y - c * u .y) -
+               b * ((u .y) ^ 2 + u .x * w .y)
+             ((-8 * (gz.re * minor.im + gz.im * minor.re) : ℝ) : ℂ)) := by
+  rw [finiteCutoffContinuumBornDysonGaussianCrossedOrderedXYConductivity_psi_eq_transverse_radial_integral
+    e v m probeEnergy broadening disorderStrength hbar pMax rMax
+    hbroadening hdisorder hpMax]
+  congr 1
+  apply intervalIntegral.integral_congr
+  intro radius _
+  dsimp only
+  rw [psi_conjugate_triple_half_eq_real_channels]
+
 /-- The physically normalized finite-cutoff finite-broadening Gaussian crossed correction.
 
 The two leading crossed topologies remain indexed upstream, but their physical response is exposed
