@@ -286,6 +286,13 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedOrderedXYConductivity_psi_e
     finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient_diagonal_product_eq_harmonic_squares
       v m probeEnergy broadening disorderStrength hbar pMax radius
       hbroadening hdisorder hpMax
+  change
+    InternalSpace.pauliVectorCoefficient
+        (finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock
+          0 v m probeEnergy broadening disorderStrength hbar pMax radius) .x *
+      InternalSpace.pauliVectorCoefficient
+        (finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock
+          1 v m probeEnergy broadening disorderStrength hbar pMax radius) .y = _ at hdiag
   dsimp only at hdiag ⊢
   rw [hdiag]
 
