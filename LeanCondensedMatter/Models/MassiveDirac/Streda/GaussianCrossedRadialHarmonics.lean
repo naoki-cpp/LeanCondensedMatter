@@ -395,6 +395,59 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficie
   · linear_combination (1 / 2 : ℂ) * h0 - (1 / 2 : ℂ) * h2
 
 
+/-- The diagonal source-current product entering both crossed Hall minors
+contains no mixed K0-K2 term. It is exactly a difference of squares of the
+integrated isotropic K0 and traceless K2 radial moments. The momentum
+measure is already included in both moments; no regulator is removed. -/
+theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient_diagonal_product_eq_harmonic_squares
+    (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ)
+    (hbroadening : broadening ≠ 0) (hdisorder : 0 ≤ disorderStrength)
+    (hpMax : 0 ≤ pMax) :
+    let factor := finiteCutoffContinuumBornDysonGaussianCrossedCurrentFactor
+      v m probeEnergy broadening disorderStrength hbar pMax
+    let aA := fun p : ℝ =>
+      finiteCutoffContinuumBornDysonScalarCoefficient
+        .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax
+    let aR := fun p : ℝ =>
+      finiteCutoffContinuumBornDysonScalarCoefficient
+        .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax
+    let dA := fun p : ℝ =>
+      finiteCutoffContinuumBornDysonPauliCoefficient .z
+        .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax
+    let dR := fun p : ℝ =>
+      finiteCutoffContinuumBornDysonPauliCoefficient .z
+        .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax
+    let bA := fun p : ℝ =>
+      finiteCutoffContinuumBornDysonPauliCoefficient .x
+        .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax
+    let bR := fun p : ℝ =>
+      finiteCutoffContinuumBornDysonPauliCoefficient .x
+        .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax
+    let isotropic :=
+      (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
+        ∫ p in (0 : ℝ)..pMax,
+          2 * (p : ℂ) * (polarFourierZerothAngularKernel (p * radius / hbar) *
+            ((aA p * aR p - dA p * dR p) * factor))
+    let anisotropic :=
+      (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
+        ∫ p in (0 : ℝ)..pMax,
+          2 * (p : ℂ) * (polarFourierSecondCosineAngularKernel (p * radius / hbar) *
+            (bA p * bR p * factor))
+    finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient
+        .x 0 v m probeEnergy broadening disorderStrength hbar pMax radius *
+      finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient
+        .y 1 v m probeEnergy broadening disorderStrength hbar pMax radius =
+      (isotropic ^ 2 - anisotropic ^ 2) / 4 := by
+  have h :=
+    finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient_eq_diagonal_harmonic_integrals
+      v m probeEnergy broadening disorderStrength hbar pMax radius
+      hbroadening hdisorder hpMax
+  dsimp only at h ⊢
+  rcases h with ⟨hxx, hyy⟩
+  rw [hxx, hyy]
+  ring
+
+
 end
 
 end QuantumTheory.Models.MassiveDirac
