@@ -506,6 +506,7 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedOrderedXYConductivity_x_eq_
       InternalSpace.pauliVectorCoefficient
         (finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix
           .advanced v m probeEnergy broadening disorderStrength hbar pMax (-radius)) .x = _ at hsx
+  dsimp only [finiteCutoffContinuumBornDysonRadialGreenScalarCoefficient] at hsx
   dsimp only at hxz hsx ⊢
   rw [hxz, hsx]
 
