@@ -140,7 +140,7 @@ theorem externalInsertionFixedCardinalityFiberSum_eq_cauchyFactor
       apply Finset.sum_congr rfl
       intro x _
       have hl :
-          (((ExternalInsertionDiagram.externalSupportFiberEquiv
+          ((ExternalInsertionDiagram.externalSupportFiberEquiv
               (Finset.subset_univ shuffle.leftSlots)).symm
             ((ExternalInsertionDiagram.standardizedSupportFiberDataEquiv
               (E := E) shuffle).symm (ext, x))).1.externalLabel =
