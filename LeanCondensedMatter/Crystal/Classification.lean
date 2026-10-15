@@ -14,6 +14,7 @@ import LeanCondensedMatter.Analysis.Matrix.FinTwoCharpoly
 import Mathlib.Analysis.InnerProductSpace.PiL2
 import Mathlib.Analysis.InnerProductSpace.GramMatrix
 import Mathlib.Analysis.Normed.Module.FiniteDimension
+import Mathlib.Data.Set.Finite.Lemmas
 import Mathlib.Topology.Algebra.OpenSubgroup
 
 /-!
@@ -600,6 +601,43 @@ theorem finite_lattice_vectors_norm_le [FiniteDimensional ℝ V]
     isCompact_closedBall (0 : L) R
   have hFinite := hCompact.finite_of_discrete
   simpa only [Metric.closedBall, Set.mem_ofPred_eq, dist_zero_right] using hFinite
+
+/-- Among all integral bases of a discrete planar lattice, there is a basis
+whose first vector has globally minimal norm. Its first vector is no longer
+than its second vector, because swapping the vectors is again an integral
+basis. This supplies the shortest-primitive-vector starting point for Gauss
+basis reduction without assuming a preselected reduced basis. -/
+theorem exists_basis_shortest_first_vector [FiniteDimensional ℝ V]
+    (L : Submodule ℤ V) [DiscreteTopology L]
+    (b : Module.Basis (Fin 2) ℤ L) :
+    ∃ c : Module.Basis (Fin 2) ℤ L,
+      (∀ d : Module.Basis (Fin 2) ℤ L, ‖c 0‖ ≤ ‖d 0‖) ∧
+        ‖c 0‖ ≤ ‖c 1‖ := by
+  classical
+  let S : Set L :=
+    {v | (∃ d : Module.Basis (Fin 2) ℤ L, d 0 = v) ∧ ‖v‖ ≤ ‖b 0‖}
+  have hFinite : S.Finite :=
+    (finite_lattice_vectors_norm_le L ‖b 0‖).subset (by
+      intro v hv
+      exact hv.2)
+  have hNonempty : S.Nonempty := by
+    refine ⟨b 0, ?_⟩
+    exact ⟨⟨b, rfl⟩, le_rfl⟩
+  obtain ⟨v, hv, hMinimal⟩ :=
+    Set.exists_min_image S (fun x : L => ‖x‖) hFinite hNonempty
+  obtain ⟨c, hc⟩ := hv.1
+  have hBound : ‖c 0‖ ≤ ‖b 0‖ := by
+    rw [hc]
+    exact hv.2
+  have hLeast (d : Module.Basis (Fin 2) ℤ L) : ‖c 0‖ ≤ ‖d 0‖ := by
+    by_cases hd : ‖d 0‖ ≤ ‖b 0‖
+    · have hdS : d 0 ∈ S := ⟨⟨d, rfl⟩, hd⟩
+      rw [hc]
+      exact hMinimal (d 0) hdS
+    · exact hBound.trans (le_of_lt (lt_of_not_ge hd))
+  refine ⟨c, hLeast, ?_⟩
+  have hSwap := hLeast (c.reindex (Equiv.swap (0 : Fin 2) 1))
+  simpa [Module.Basis.reindex_apply] using hSwap
 
 /-- An infinite sequence of lattice vectors cannot remain bounded while its
 squared norms strictly decrease at every step. Applied to the first vectors
