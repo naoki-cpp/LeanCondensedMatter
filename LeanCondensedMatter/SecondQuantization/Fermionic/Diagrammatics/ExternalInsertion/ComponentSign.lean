@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Combinatorics.FamilySlotShuffleInversions
 import LeanCondensedMatter.SecondQuantization.Common.Algebra.Statistics
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentRestriction
 
