@@ -119,6 +119,55 @@ noncomputable def finiteCutoffContinuumBornDysonPauliCoefficient
       (finiteCutoffContinuumBornEffectiveMass
         side v m probeEnergy broadening disorderStrength hbar pMax)
 
+/-- At fixed finite broadening and cutoff, the radial RA scalar-minus-mass
+coefficient product has the common physical Dyson denominator. This is a
+pointwise algebraic identity; no denominator nonvanishing or regulator limit
+is assumed. -/
+theorem finiteCutoffContinuumBornDysonRadial_ra_scalar_sub_z_product_eq
+    (v m p probeEnergy broadening disorderStrength hbar pMax : ℝ) :
+    finiteCutoffContinuumBornDysonScalarCoefficient
+        .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax *
+      finiteCutoffContinuumBornDysonScalarCoefficient
+        .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax -
+      finiteCutoffContinuumBornDysonPauliCoefficient .z
+        .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax *
+      finiteCutoffContinuumBornDysonPauliCoefficient .z
+        .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax =
+      (finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct
+        v m p probeEnergy broadening disorderStrength hbar pMax)⁻¹ *
+        (finiteCutoffContinuumBornEffectiveEnergy
+            .advanced v m probeEnergy broadening disorderStrength hbar pMax *
+          finiteCutoffContinuumBornEffectiveEnergy
+            .retarded v m probeEnergy broadening disorderStrength hbar pMax -
+          finiteCutoffContinuumBornEffectiveMass
+            .advanced v m probeEnergy broadening disorderStrength hbar pMax *
+          finiteCutoffContinuumBornEffectiveMass
+            .retarded v m probeEnergy broadening disorderStrength hbar pMax) := by
+  simp only [finiteCutoffContinuumBornDysonScalarCoefficient,
+    finiteCutoffContinuumBornDysonPauliCoefficient,
+    InternalSpace.pauliAxisComponent,
+    finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct_eq_mul,
+    mul_inv_rev]
+  ring
+
+/-- The radial RA in-plane Pauli product has the same common Dyson
+denominator and its numerator is the squared Dirac momentum. -/
+theorem finiteCutoffContinuumBornDysonRadial_ra_x_product_eq
+    (v m p probeEnergy broadening disorderStrength hbar pMax : ℝ) :
+    finiteCutoffContinuumBornDysonPauliCoefficient .x
+        .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax *
+      finiteCutoffContinuumBornDysonPauliCoefficient .x
+        .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax =
+      (finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct
+        v m p probeEnergy broadening disorderStrength hbar pMax)⁻¹ *
+        (((v * p : ℝ) : ℂ) ^ 2) := by
+  simp only [finiteCutoffContinuumBornDysonPauliCoefficient,
+    InternalSpace.pauliAxisComponent,
+    finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct_eq_mul,
+    mul_inv_rev]
+  push_cast
+  ring
+
 /-- Matrix form of the finite-`η` Born-Dyson propagator candidate. -/
 noncomputable def finiteCutoffContinuumBornDysonGreenMatrix
     (side : SpectralSide)
