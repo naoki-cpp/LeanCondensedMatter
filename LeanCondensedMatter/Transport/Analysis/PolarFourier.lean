@@ -19,8 +19,9 @@ two-dimensional polar specialization and angular reduction.
 
 The full-angle kernels below are the canonical intermediate for radial Fourier reduction. Constant,
 first, and second angular channels are supplied through `AngularHarmonicCoefficients`, shared with
-ordinary angular integration. The kernels remain explicit finite interval integrals rather than
-being identified with Bessel functions; the pinned Mathlib revision does not provide that API.
+ordinary angular integration. The kernels remain explicit finite interval integrals rather than being identified with
+Bessel functions. Mathlib v4.35.0 provides `Complex.besselJ` and parity/analyticity results, but
+not yet the angular integral representations required to prove those identifications.
 
 No model Hamiltonian, matrix representation, disorder approximation, real-space cutoff, or
 conductivity normalization is introduced here.
@@ -75,13 +76,13 @@ theorem physicalMomentumPolarFourierPhase_polarPoint2D
   push_cast
   ring_nf
 
-/-- Zeroth full-angle radial Fourier kernel. At a Mathlib revision with Bessel support this is the
-integral representation that can be identified with `2π J₀(z)`. -/
+/-- Zeroth full-angle radial Fourier kernel. A future integral-representation theorem should
+identify it with `2π J₀(z)` using Mathlib's `Complex.besselJ`. -/
 noncomputable def polarFourierZerothAngularKernel (z : ℝ) : ℂ :=
   ∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi), polarFourierRadialPhase z θ
 
-/-- First cosine full-angle radial Fourier kernel. At a Mathlib revision with Bessel support this is
-the integral representation that can be identified with `2π i J₁(z)`. -/
+/-- First cosine full-angle radial Fourier kernel. A future integral-representation theorem should
+identify it with `2π i J₁(z)` using Mathlib's `Complex.besselJ`. -/
 noncomputable def polarFourierFirstCosineAngularKernel (z : ℝ) : ℂ :=
   ∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi),
     polarFourierRadialPhase z θ * ((Real.cos θ : ℝ) : ℂ)
@@ -92,8 +93,8 @@ noncomputable def polarFourierFirstCosineAngularKernel (z : ℝ) : ℂ :=
   have h := integral_cos_mul_complex (z := (1 : ℂ)) one_ne_zero (0 : ℝ) (2 * Real.pi)
   simpa [polarFourierFirstCosineAngularKernel, polarFourierRadialPhase] using h
 /-- Second cosine full-angle radial Fourier kernel, written as the `cos(2θ)` polynomial needed by
-quadratic angular products. At a Mathlib revision with Bessel support this can be identified with
-`-2π J₂(z)`. -/
+quadratic angular products. A future integral-representation theorem should identify it with
+`-2π J₂(z)` using Mathlib's `Complex.besselJ`. -/
 noncomputable def polarFourierSecondCosineAngularKernel (z : ℝ) : ℂ :=
   ∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi),
     polarFourierRadialPhase z θ *

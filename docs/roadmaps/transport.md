@@ -54,11 +54,18 @@ arbitrary-`γ` analytic ownership. Side-indexed forms remain only where broadeni
 or RA vertex consumers require physical branch semantics, and those specializations consume
 `SpectralSide.regulator` rather than reconstructing the sign representation where practical.
 
-Finite-cutoff real-space Fourier reduction uses explicit full-angle zeroth, first-cosine, and
-second-cosine kernels as the canonical radial intermediate. The pinned Mathlib revision does not
-provide the Bessel special-function module, so the repository does not maintain a parallel local
-Bessel implementation; a later deliberate Mathlib upgrade should identify these kernels with the
-standard `J₀` / `J₁` / `J₂` API by theorem.
+Finite-cutoff real-space Fourier reduction uses explicit full-angle zeroth, first-cosine,
+and second-cosine kernels as the canonical radial intermediate. Mathlib v4.35.0 introduces
+`Complex.besselJ` in `Mathlib.Analysis.SpecialFunctions.Bessel`, including integer-order
+analyticity and parity laws. That module does **not** yet prove Bessel integral representations or
+the `J₀`/`J₁`/`J₂` recurrence, so it cannot replace the current angular-integral definitions
+or their directly proved symmetry and recurrence theorems.
+
+The next safe reduction step is to prove explicit, correctly normalized bridges
+`K₀(z) = 2π J₀(z)`, `K₁(z) = 2π i J₁(z)`, and `K₂(z) = -2π J₂(z)`
+for real `z`; only then can consumers reuse Mathlib's Bessel API and the redundant
+kernel-level parity proofs be removed. Do not introduce separate local Bessel definitions or
+assume the unfinished integral representation is already a Mathlib theorem.
 
 ## Harmonic and measure boundaries
 
