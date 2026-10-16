@@ -553,3 +553,9 @@ or consumer structure changes.
 - `QuantumTheory.Models.MassiveDirac.bandSign_upper` — canonical `[simp]` constructor evaluation of the upper-band energy sign; terminal status reflects the normal-form role, not dead API.
 - `QuantumTheory.Models.MassiveDirac.oppositeBand_lower` — canonical `[simp]` evaluation of band interchange on the lower band, providing the model's public two-band normalization.
 - `QuantumTheory.Models.MassiveDirac.oppositeBand_upper` — canonical `[simp]` evaluation of band interchange on the upper band, providing the model's public two-band normalization.
+- `QuantumTheory.Models.RashbaExchange.spinOrbitEnergy_sq` — canonical identity relating the positive spin-orbit/exchange splitting to its nonnegative defining quadratic polynomial; its simple nonnegativity proof is inlined.
+- `QuantumTheory.Models.RashbaExchange.sum_bandProjector_eq_one` — two-band completeness of the gauge-independent projectors, including the totalized zero-splitting boundary where idempotency is not assumed.
+- `QuantumTheory.Models.RashbaExchange.trace_bandProjector` — canonical `[simp]` trace-one rule for each Pauli-form band projector, independently useful even when no compiled consumer remains.
+- `QuantumTheory.Models.RashbaExchange.bandEnergy_injective` — nondegeneracy of the two Rashba-exchange bands when the spin-orbit energy is nonzero; this physical spectral endpoint is meaningful without an in-repository consumer.
+- `QuantumTheory.Models.RashbaExchange.hamiltonian_mul_bandProjector` — the band projector is an eigenspace projector for the model Hamiltonian away from degeneracy; keep this matrix-level spectral relation.
+- `QuantumTheory.Models.RashbaExchange.bandProjector_completeOrthogonalIdempotents` — completeness and orthogonal idempotency of the two band projectors under nonzero splitting; retain the model's algebraic spectral decomposition.
