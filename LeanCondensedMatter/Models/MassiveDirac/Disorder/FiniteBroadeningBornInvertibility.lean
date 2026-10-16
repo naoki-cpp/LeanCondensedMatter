@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Analysis.Operator.Spectral.DissipativeShift
+import LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.Denominator
 import LeanCondensedMatter.Transport.Analysis.ContinuumMeasure
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornDysonShift
 import Mathlib.Analysis.Normed.Operator.Banach
@@ -282,6 +283,64 @@ theorem finiteCutoffContinuumBornDysonDenominator_ne_zero
   have hdet : M.det ≠ 0 :=
     isUnit_iff_ne_zero.mp ((Matrix.isUnit_iff_isUnit_det M).mp hmatrixUnit)
   simpa only [M, finiteCutoffContinuumBornDysonShiftMatrix_det] using hdet
+
+
+/-- The finite-broadening retarded and advanced massive-Dirac Dyson spectral
+centers are distinct in the metallic-center region. The real part of the
+retarded center is positive, so if its imaginary part vanished there would
+be a pole at real momentum. Dyson invertibility excludes that pole; spectral
+conjugation then makes the advanced-minus-retarded center gap nonzero.
+No zero-broadening, disorder, or cutoff limit is taken. -/
+theorem finiteCutoffContinuumBornDysonRadial_center_gap_ne_zero_of_re_pos
+    (v m probeEnergy broadening disorderStrength hbar pMax : ℝ)
+    (hvelocity : v ≠ 0) (hbroadening : broadening ≠ 0)
+    (hdisorder : 0 ≤ disorderStrength) (hpMax : 0 ≤ pMax)
+    (hcenterR : 0 <
+      (finiteCutoffContinuumBornEffectiveEnergy
+          .retarded v m probeEnergy broadening disorderStrength hbar pMax ^ 2 -
+        finiteCutoffContinuumBornEffectiveMass
+          .retarded v m probeEnergy broadening disorderStrength hbar pMax ^ 2).re) :
+    (finiteCutoffContinuumBornEffectiveEnergy
+        .advanced v m probeEnergy broadening disorderStrength hbar pMax ^ 2 -
+      finiteCutoffContinuumBornEffectiveMass
+        .advanced v m probeEnergy broadening disorderStrength hbar pMax ^ 2) -
+    (finiteCutoffContinuumBornEffectiveEnergy
+        .retarded v m probeEnergy broadening disorderStrength hbar pMax ^ 2 -
+      finiteCutoffContinuumBornEffectiveMass
+        .retarded v m probeEnergy broadening disorderStrength hbar pMax ^ 2) ≠ 0 := by
+  let energyR := finiteCutoffContinuumBornEffectiveEnergy
+    .retarded v m probeEnergy broadening disorderStrength hbar pMax
+  let energyA := finiteCutoffContinuumBornEffectiveEnergy
+    .advanced v m probeEnergy broadening disorderStrength hbar pMax
+  let massR := finiteCutoffContinuumBornEffectiveMass
+    .retarded v m probeEnergy broadening disorderStrength hbar pMax
+  let massA := finiteCutoffContinuumBornEffectiveMass
+    .advanced v m probeEnergy broadening disorderStrength hbar pMax
+  have hden (p : ℝ) : massiveDiracRadialDenominator v p energyR massR ≠ 0 := by
+    have hx := finiteCutoffContinuumBornDysonDenominator_ne_zero
+      .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax
+      hbroadening hdisorder hpMax
+    simpa [massiveDiracRadialDenominator, finiteCutoffContinuumBornDysonDenominator,
+      energyR, massR] using hx
+  have him : (energyR ^ 2 - massR ^ 2).im ≠ 0 :=
+    massiveDiracRadialDenominator_center_im_ne_zero_of_re_pos
+      v energyR massR hvelocity hcenterR hden
+  have hstar : star (energyR ^ 2 - massR ^ 2) = energyA ^ 2 - massA ^ 2 := by
+    have hx := star_finiteCutoffContinuumBornDysonDenominator
+      .retarded v m 0 0 probeEnergy broadening disorderStrength hbar pMax hbroadening
+    simpa [finiteCutoffContinuumBornDysonDenominator, SpectralSide.opposite,
+      energyR, energyA, massR, massA] using hx
+  intro hgap
+  have heq : energyA ^ 2 - massA ^ 2 = energyR ^ 2 - massR ^ 2 :=
+    sub_eq_zero.mp hgap
+  have hs : star (energyR ^ 2 - massR ^ 2) = energyR ^ 2 - massR ^ 2 :=
+    hstar.trans heq
+  have hstarIm (z : ℂ) : (star z).im = -z.im := by simp
+  have himZero : (energyR ^ 2 - massR ^ 2).im = 0 := by
+    have h := congrArg Complex.im hs
+    rw [hstarIm] at h
+    linarith
+  exact him himZero
 
 end
 

@@ -881,6 +881,97 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficie
   · exact hxx
   · exact (congrArg (fun j : ℂ => gap * j) hsymm).symm.trans hxx
 
+/-- In the positive-real-spectral-center regime the finite-broadening RA
+center gap is nonzero. Hence both physical origin crossed-current diagonal
+coefficients have an explicit value, rather than only a gap-multiplied
+identity. The physical Fourier measure appears once. The formula does not
+evaluate nonzero-radius Fourier kernels or take disorder/regulator limits. -/
+theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient_origin_diagonal_eq_log
+    (v m probeEnergy broadening disorderStrength hbar pMax : ℝ)
+    (hvelocity : v ≠ 0) (hbroadening : broadening ≠ 0)
+    (hdisorder : 0 ≤ disorderStrength) (hpMax : 0 ≤ pMax)
+    (hcenterR : 0 <
+      (finiteCutoffContinuumBornEffectiveEnergy
+          .retarded v m probeEnergy broadening disorderStrength hbar pMax ^ 2 -
+        finiteCutoffContinuumBornEffectiveMass
+          .retarded v m probeEnergy broadening disorderStrength hbar pMax ^ 2).re)
+    (hcenterA : 0 <
+      (finiteCutoffContinuumBornEffectiveEnergy
+          .advanced v m probeEnergy broadening disorderStrength hbar pMax ^ 2 -
+        finiteCutoffContinuumBornEffectiveMass
+          .advanced v m probeEnergy broadening disorderStrength hbar pMax ^ 2).re) :
+    let energyR := finiteCutoffContinuumBornEffectiveEnergy
+      .retarded v m probeEnergy broadening disorderStrength hbar pMax
+    let energyA := finiteCutoffContinuumBornEffectiveEnergy
+      .advanced v m probeEnergy broadening disorderStrength hbar pMax
+    let massR := finiteCutoffContinuumBornEffectiveMass
+      .retarded v m probeEnergy broadening disorderStrength hbar pMax
+    let massA := finiteCutoffContinuumBornEffectiveMass
+      .advanced v m probeEnergy broadening disorderStrength hbar pMax
+    let gap := energyA ^ 2 - massA ^ 2 - (energyR ^ 2 - massR ^ 2)
+    let factor := finiteCutoffContinuumBornDysonGaussianCrossedCurrentFactor
+      v m probeEnergy broadening disorderStrength hbar pMax
+    let logDiff :=
+      (Complex.log (finiteCutoffContinuumBornDysonDenominator
+          .retarded v m pMax 0 probeEnergy broadening disorderStrength hbar pMax) -
+        Complex.log (finiteCutoffContinuumBornDysonDenominator
+          .retarded v m 0 0 probeEnergy broadening disorderStrength hbar pMax)) -
+      (Complex.log (finiteCutoffContinuumBornDysonDenominator
+          .advanced v m pMax 0 probeEnergy broadening disorderStrength hbar pMax) -
+        Complex.log (finiteCutoffContinuumBornDysonDenominator
+          .advanced v m 0 0 probeEnergy broadening disorderStrength hbar pMax))
+    let value := gap⁻¹ * ((((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
+      (((2 * Real.pi : ℝ) : ℂ)) *
+      ((energyA * energyR - massA * massR) * factor) *
+      (-(((2 : ℂ) * (v : ℂ) ^ 2)⁻¹) * logDiff))
+    (finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient
+        .x 0 v m probeEnergy broadening disorderStrength hbar pMax 0 = value) ∧
+      (finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient
+        .y 1 v m probeEnergy broadening disorderStrength hbar pMax 0 = value) := by
+  let energyR := finiteCutoffContinuumBornEffectiveEnergy
+    .retarded v m probeEnergy broadening disorderStrength hbar pMax
+  let energyA := finiteCutoffContinuumBornEffectiveEnergy
+    .advanced v m probeEnergy broadening disorderStrength hbar pMax
+  let massR := finiteCutoffContinuumBornEffectiveMass
+    .retarded v m probeEnergy broadening disorderStrength hbar pMax
+  let massA := finiteCutoffContinuumBornEffectiveMass
+    .advanced v m probeEnergy broadening disorderStrength hbar pMax
+  let gap := energyA ^ 2 - massA ^ 2 - (energyR ^ 2 - massR ^ 2)
+  let factor := finiteCutoffContinuumBornDysonGaussianCrossedCurrentFactor
+    v m probeEnergy broadening disorderStrength hbar pMax
+  let logDiff :=
+    (Complex.log (finiteCutoffContinuumBornDysonDenominator
+        .retarded v m pMax 0 probeEnergy broadening disorderStrength hbar pMax) -
+      Complex.log (finiteCutoffContinuumBornDysonDenominator
+        .retarded v m 0 0 probeEnergy broadening disorderStrength hbar pMax)) -
+    (Complex.log (finiteCutoffContinuumBornDysonDenominator
+        .advanced v m pMax 0 probeEnergy broadening disorderStrength hbar pMax) -
+      Complex.log (finiteCutoffContinuumBornDysonDenominator
+        .advanced v m 0 0 probeEnergy broadening disorderStrength hbar pMax))
+  let value := (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
+    (((2 * Real.pi : ℝ) : ℂ)) *
+    ((energyA * energyR - massA * massR) * factor) *
+    (-(((2 : ℂ) * (v : ℂ) ^ 2)⁻¹) * logDiff)
+  let jxx := finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient
+    .x 0 v m probeEnergy broadening disorderStrength hbar pMax 0
+  let jyy := finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient
+    .y 1 v m probeEnergy broadening disorderStrength hbar pMax 0
+  have hgap : gap ≠ 0 :=
+    finiteCutoffContinuumBornDysonRadial_center_gap_ne_zero_of_re_pos
+      v m probeEnergy broadening disorderStrength hbar pMax
+      hvelocity hbroadening hdisorder hpMax hcenterR
+  have h := finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient_origin_diagonal_mul_center_gap_eq_log
+    v m probeEnergy broadening disorderStrength hbar pMax
+    hvelocity hbroadening hdisorder hpMax hcenterR hcenterA
+  dsimp only at h ⊢
+  constructor
+  · calc
+      jxx = gap⁻¹ * (gap * jxx) := by field_simp [hgap]
+      _ = gap⁻¹ * value := by rw [h.1]
+  · calc
+      jyy = gap⁻¹ * (gap * jyy) := by field_simp [hgap]
+      _ = gap⁻¹ * value := by rw [h.2]
+
 /-- Reconstruct the two diagonal Pauli coefficients of the finite-cutoff crossed current
 from the independent isotropic `K0` and traceless `K2` radial integrals.
 Both coefficients inherit the existing physical momentum measure exactly once.
