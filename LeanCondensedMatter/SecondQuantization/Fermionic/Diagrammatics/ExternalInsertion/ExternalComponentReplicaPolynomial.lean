@@ -5,17 +5,18 @@ import Mathlib.Algebra.Polynomial.Eval.Defs
 set_option linter.style.header false
 
 /-!
-# External-component replica projection for fixed-label Wick diagrams
+# Replica polynomial counting externally supported components
 
 For a fixed perturbative order, weight every vacuum-free Wick diagram by a
 formal replica variable raised to its number of externally supported
-connected components. The coefficient linear in the replica variable keeps
-exactly the diagrams in which all external insertions are connected.
+connected components. Its coefficient of degree one selects exactly those diagrams in which all
+external insertions belong to one connected component (for a nonempty external family).
 
 The weight is the existing fully signed and integrated Dyson amplitude.
-This is an exact diagram-selection identity; it does *not* by itself identify
-the resulting polynomial with a physical source generating functional or
-prove a signed moment–cumulant factorization.
+The formal polynomial counts external-bearing connected components in each
+already vacuum-free diagram; it does not replicate the field algebra or the Gibbs
+state, analytically continue a replica number, or itself derive a physical source
+generating functional or a signed moment–cumulant factorization.
 -/
 
 namespace SecondQuantization
@@ -38,8 +39,8 @@ noncomputable def vacuumFreeExternalInsertionReplicaPolynomial {E : ℕ}
       Polynomial.X ^ (externalComponentPartition d.1.1.vertexGraph).parts.card
 
 open Classical in
-/-- The replica-linear coefficient is precisely the sum of signed amplitudes
-whose external vertices are all mutually connected. Pure vacuum components
+/-- For a nonempty family of external insertions, the degree-one coefficient is
+the sum of signed amplitudes whose external vertices are mutually connected. Pure vacuum components
 are excluded by the input diagram family, not by replica projection. -/
 theorem vacuumFreeExternalInsertionReplicaPolynomial_coeff_one
     {E : ℕ} (anchor : Fin (2 * E))
