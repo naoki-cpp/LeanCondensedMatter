@@ -230,8 +230,9 @@ theorem spectralTrace_pos (h : SpectralTraceClass T) (hpos : T.IsPositive) (hne 
     eigenvalue_nonneg_of_isPositive hpos.toLinearMap a
   have ha_pos : 0 < a.1.1 :=
     lt_of_le_of_ne ha_nonneg (Ne.symm a.1.2)
-  have hsum : Summable (fun b : EigenvectorIndex T => b.1.1) :=
-    summable_eigenvectorIndex h.summable
+  have hsum : Summable (fun b : EigenvectorIndex T => b.1.1) := by
+    have habs : Summable (fun b : EigenvectorIndex T => |b.1.1|) := h.summable
+    exact Summable.of_norm (by simpa only [Real.norm_eq_abs] using habs)
   have hle : a.1.1 ≤ spectralTrace T :=
     hsum.le_tsum a (fun b _ => eigenvalue_nonneg_of_isPositive hpos.toLinearMap b)
   exact lt_of_lt_of_le ha_pos hle
