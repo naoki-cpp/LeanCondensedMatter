@@ -78,7 +78,8 @@ theorem inPlaneLadderCLM_apply
     inPlaneLadderCLM rung coefficients = inPlaneLadderAction rung coefficients :=
   rfl
 
-private theorem continuous_inPlaneRotationMatrix :
+/-- The represented in-plane rotation depends continuously on the full coefficient vector. -/
+theorem continuous_inPlaneRotationMatrix :
     Continuous inPlaneRotationMatrix := by
   refine continuous_matrix fun i j => ?_
   fin_cases i <;> fin_cases j <;>

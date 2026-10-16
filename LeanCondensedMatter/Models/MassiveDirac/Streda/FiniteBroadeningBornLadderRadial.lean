@@ -354,11 +354,13 @@ theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTrace
         0 1 e v m p probeEnergy broadening disorderStrength hbar pMax := by
   unfold finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient
   dsimp only
-  simp only [finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentCoefficientVector,
+  simp only [finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentCoefficientVector_x,
+    finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentCoefficientVector_y,
     Matrix.transpose_apply, inPlaneLadderAction_apply_x,
     inPlaneLadderAction_apply_y, inPlaneRotationMatrix_apply_x_x,
     inPlaneRotationMatrix_apply_x_y, inPlaneRotationMatrix_apply_y_x,
-    inPlaneRotationMatrix_apply_y_y, inPlaneLadderBareXSource, inPlaneCoefficientVector]
+    inPlaneRotationMatrix_apply_y_y, inPlaneLadderBareXSource, inPlaneCoefficientVector,
+    Matrix.cons_val_zero, Matrix.cons_val_one]
   ring
 
 /-- Rotational closure makes the two diagonal radial coefficients equal. -/
@@ -370,11 +372,13 @@ theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTrace
         0 0 e v m p probeEnergy broadening disorderStrength hbar pMax := by
   unfold finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient
   dsimp only
-  simp only [finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentCoefficientVector,
+  simp only [finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentCoefficientVector_x,
+    finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentCoefficientVector_y,
     Matrix.transpose_apply, inPlaneLadderAction_apply_x,
     inPlaneLadderAction_apply_y, inPlaneRotationMatrix_apply_x_x,
     inPlaneRotationMatrix_apply_x_y, inPlaneRotationMatrix_apply_y_x,
-    inPlaneRotationMatrix_apply_y_y, inPlaneLadderBareXSource, inPlaneCoefficientVector]
+    inPlaneRotationMatrix_apply_y_y, inPlaneLadderBareXSource, inPlaneCoefficientVector,
+    Matrix.cons_val_zero, Matrix.cons_val_one]
   ring
 
 /-- The finite-`η` ordered `yx` radial Středa response is the negative of `xy`. -/

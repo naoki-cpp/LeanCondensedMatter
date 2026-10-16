@@ -182,6 +182,12 @@ The Hall and longitudinal Středa radial integrals use the shared integration la
 the existing full-vector convergence law for the same action. The ordered Hall sign and the
 longitudinal bare RR/AA remainder remain with their respective response constructions.
 
+`Disorder.FiniteBroadeningCurrentVertexResponse` owns the source-indexed dressed current,
+its source evaluations, and its fixed-disorder zero-broadening insertion. Continuity of the
+in-plane rotation and current realization belongs to `Vertex.InPlaneLadder` and `Model.Operator`.
+Středa trace adapters consume these results; the same-side remainder and conductivity normalization
+remain separate.
+
 The massive-Dirac continuum normalization keeps each physical factor at the narrowest owner.
 `Analysis.ContinuumMeasure` owns both the bare physical-momentum measure and its exact full-angle
 radial prefactor. `Disorder.ContinuumMeasurePrefactor` owns one external scalar-disorder line times

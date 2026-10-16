@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertex
+import LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningLadderZeroBroadening
 import LeanCondensedMatter.Models.MassiveDirac.Model.Operator
 import Mathlib.Tactic
 
@@ -17,15 +17,16 @@ regularity predicate is still required when a consumer interprets them as the ph
 vertex. The longitudinal factor is exposed separately for reduced crossed responses; it is not the
 full two-component dressed vertex.
 
-No Streda trace, Gaussian-crossed Fourier kernel, same-side remainder, conductivity normalization,
-or zero-broadening limit is owned here.
+The fixed-disorder zero-broadening boundary of the same insertion is owned here as well. No Streda
+trace, Gaussian-crossed Fourier kernel, same-side remainder, or conductivity normalization is owned
+here.
 -/
 
 namespace QuantumTheory.Models.MassiveDirac
 
 noncomputable section
 
-open QuantumTheory.Transport
+open QuantumTheory.Transport Filter
 
 /-! ## Source-indexed response insertion -/
 
@@ -36,6 +37,31 @@ noncomputable def finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCur
   Matrix.transpose (inPlaneRotationMatrix
     (finiteCutoffContinuumBornDysonLadderSolvedVector
       v m probeEnergy broadening disorderStrength hbar pMax)) source
+
+/-- The source-`x` dressed coefficients are the canonical solved ladder vector. -/
+theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentCoefficientVector_x
+    (v m probeEnergy broadening disorderStrength hbar pMax : ℝ) :
+    finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentCoefficientVector
+        0 v m probeEnergy broadening disorderStrength hbar pMax =
+      finiteCutoffContinuumBornDysonLadderSolvedVector
+        v m probeEnergy broadening disorderStrength hbar pMax := by
+  funext direction
+  fin_cases direction <;>
+    simp [finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentCoefficientVector,
+      Matrix.transpose, inPlaneRotationMatrix]
+
+/-- The source-`y` coefficients follow the same repository rotation convention as source `x`. -/
+theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentCoefficientVector_y
+    (v m probeEnergy broadening disorderStrength hbar pMax : ℝ) :
+    finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentCoefficientVector
+        1 v m probeEnergy broadening disorderStrength hbar pMax =
+      let solved := finiteCutoffContinuumBornDysonLadderSolvedVector
+        v m probeEnergy broadening disorderStrength hbar pMax;
+      inPlaneCoefficientVector (-(solved 1)) (solved 0) := by
+  funext direction
+  fin_cases direction <;>
+    simp [finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentCoefficientVector,
+      Matrix.transpose, inPlaneRotationMatrix, inPlaneCoefficientVector]
 
 /-- Source-indexed finite-cutoff finite-`η` Born-Dyson dressed current insertion. -/
 noncomputable def finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperator
@@ -65,16 +91,10 @@ theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperat
               v m probeEnergy broadening disorderStrength hbar pMax)
             hregular)
           inPlaneLadderBareXSource) := by
-  unfold finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperator
-    finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentCoefficientVector
-  unfold finiteCutoffContinuumBornDysonLadderSolvedVector
-  rw [inPlaneLadderSolvedVector_eq_resummedLadderVertex
-    (finiteCutoffContinuumBornDysonCurrentRungVector
-      v m probeEnergy broadening disorderStrength hbar pMax)
-    hregular]
-  congr 1
-  funext direction
-  fin_cases direction <;> simp [Matrix.transpose, inPlaneRotationMatrix]
+  rw [finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperator,
+    finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentCoefficientVector_x,
+    finiteCutoffContinuumBornDysonLadderSolvedVector,
+    inPlaneLadderSolvedVector_eq_resummedLadderVertex _ hregular]
 
 @[simp]
 theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperator_zero_disorder
@@ -86,6 +106,51 @@ theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperat
       finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentCoefficientVector,
       inPlaneCurrentOperator, Matrix.transpose, inPlaneRotationMatrix,
       inPlaneLadderBareXSource, inPlaneCoefficientVector]
+
+/-! ## Fixed-disorder zero-broadening insertion -/
+
+/-- Fixed-cutoff zero-broadening boundary of the source-indexed RA dressed current operator. -/
+noncomputable def finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperatorZeroBroadeningBoundary
+    (source : Fin 2)
+    (e v m probeEnergy disorderStrength hbar pMax : ℝ) :
+    DiracHilbert →L[ℂ] DiracHilbert :=
+  let solved := finiteCutoffContinuumBornDysonLadderSolvedVectorZeroBroadeningBoundary
+    v m probeEnergy disorderStrength hbar pMax
+  let dressed := Matrix.transpose (inPlaneRotationMatrix solved) source
+  inPlaneCurrentOperator e v dressed
+
+/-- At fixed positive disorder, every source-indexed RA dressed current approaches the current built
+from the solved zero-broadening ladder vector. -/
+theorem tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperator_broadening_zero_of_boundary_realRenormalization_lt_one
+    (source : Fin 2)
+    (e : ℝ) (regime : FixedCutoffMetallicBornRegime)
+    (hrenorm :
+      finiteCutoffContinuumBornBoundaryRealRenormalization
+        regime.v regime.m regime.probeEnergy regime.disorderStrength regime.hbar regime.pMax < 1)
+    (hdet :
+      finiteCutoffContinuumBornDysonLadderDeterminantZeroBroadeningBoundary
+        regime.v regime.m regime.probeEnergy regime.disorderStrength regime.hbar regime.pMax ≠ 0) :
+    Tendsto
+      (fun broadening : ℝ =>
+        finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperator
+          source e regime.v regime.m regime.probeEnergy broadening regime.disorderStrength regime.hbar regime.pMax)
+      (nhdsWithin 0 (Set.Ioi 0))
+      (nhds
+        (finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperatorZeroBroadeningBoundary
+          source e regime.v regime.m regime.probeEnergy regime.disorderStrength regime.hbar regime.pMax)) := by
+  have hSolved :=
+    tendsto_finiteCutoffContinuumBornDysonLadderSolvedVector_broadening_zero_of_boundary_realRenormalization_lt_one
+      regime hrenorm hdet
+  have hInsertion : Continuous fun coefficients : InPlaneCoefficientVector =>
+      inPlaneCurrentOperator e regime.v (Matrix.transpose (inPlaneRotationMatrix coefficients) source) := by
+    apply (continuous_inPlaneCurrentOperator e regime.v).comp
+    refine continuous_pi fun direction => ?_
+    exact (continuous_apply source).comp
+      ((continuous_apply direction).comp continuous_inPlaneRotationMatrix)
+  unfold finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperator
+    finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentCoefficientVector
+    finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperatorZeroBroadeningBoundary
+  exact (hInsertion.tendsto _).comp hSolved
 
 /-! ## Reduced longitudinal insertion -/
 
