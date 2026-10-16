@@ -44,10 +44,10 @@ noncomputable def ExternalInsertionDiagram.externalSupportFiberEquiv
     (⟨d.1.slotSplitExternal h
         (ExternalInsertionDiagram.pairing_isSplit_of_support_eq h d.2),
       by
-        have hd := d.2
-        subst T
+        obtain ⟨diagram, hd⟩ := d
+        subst hd
         simpa [ExternalInsertionDiagram.externalSupportDiagram] using
-          d.1.hasNoVacuumComponent_externalSupportDiagram⟩,
+          diagram.hasNoVacuumComponent_externalSupportDiagram⟩,
       d.1.slotSplitVacuum h
         (ExternalInsertionDiagram.pairing_isSplit_of_support_eq h d.2))
   invFun p :=
