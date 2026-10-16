@@ -45,9 +45,6 @@ def sign : SpectralSide → ℝ
 @[simp] theorem sign_retarded : sign .retarded = 1 := rfl
 @[simp] theorem sign_advanced : sign .advanced = -1 := rfl
 
-theorem sign_ne_zero (side : SpectralSide) : side.sign ≠ 0 := by
-  cases side <;> simp [sign]
-
 /-- Signed analytic regulator selected by a physical spectral side and real broadening parameter.
 This is the canonical physical-to-analytic boundary for retarded/advanced APIs; physical consumers
 impose positivity of the broadening where required. -/
@@ -64,7 +61,8 @@ def regulator (side : SpectralSide) (broadening : ℝ) : ℝ :=
 
 theorem regulator_ne_zero (side : SpectralSide) {broadening : ℝ}
     (hbroadening : broadening ≠ 0) : side.regulator broadening ≠ 0 := by
-  exact mul_ne_zero (sign_ne_zero side) hbroadening
+  unfold regulator
+  exact mul_ne_zero (by cases side <;> simp [sign]) hbroadening
 
 /-- The opposite physical boundary-value side. -/
 def opposite : SpectralSide → SpectralSide
