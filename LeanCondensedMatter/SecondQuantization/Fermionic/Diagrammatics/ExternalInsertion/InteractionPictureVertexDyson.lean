@@ -1,10 +1,10 @@
-import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.PhysicalVertexProduct
+import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.InteractionPictureVertexProduct
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.CauchySeries
 
 set_option linter.style.header false
 
 /-!
-# Physical vertex-level arbitrary-external Dyson coefficients
+# Interaction-picture quartic-vertex Dyson expansion
 
 The interaction-picture perturbation expansion is expressed directly through
 mixed-time-ordered products of full quartic interaction vertices and external
@@ -56,7 +56,7 @@ private theorem sum_externalInsertionMixedTimeOrderedVertexComp_expectation_eq_a
     Common.finiteGibbsExpectation_smul]
   ring
 
-/-- Physical order-n Dyson coefficient of full interaction-picture quartic
+/-- Order-n Dyson coefficient of full interaction-picture quartic
 vertices inserted among a fixed family of external fermionic fields.
 
 The Gibbs state is the normalized free density state; the Dyson (-1)^n
@@ -74,7 +74,7 @@ noncomputable def externalInsertionVertexDysonCoefficient {E : ℕ}
               (externalInsertionMixedTimeOrderedVertexComp
                 ε externalLabel externalTime q σ)))
 
-/-- The physical vertex-level Dyson coefficient is exactly the existing
+/-- The free-Gibbs interaction-picture vertex Dyson coefficient equals the
 integrated Wick-diagram coefficient at each finite perturbative order. -/
 theorem externalInsertionVertexDysonCoefficient_eq_externalInsertionDysonCoefficient
     {E : ℕ} (ε : Mode → ℝ) (β : ℝ)
@@ -100,7 +100,7 @@ theorem externalInsertionVertexDysonCoefficient_eq_externalInsertionDysonCoeffic
       externalInsertionMixedAtomicDysonCoefficient_eq_externalInsertionDysonCoefficient
         ε β g externalLabel externalTime n
 
-/-- Formal series of physical finite-temperature vertex-level Dyson coefficients. -/
+/-- Formal series of free-Gibbs interaction-picture vertex Dyson coefficients. -/
 noncomputable def externalInsertionVertexDysonSeries {E : ℕ}
     (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
     (externalLabel : Fin (2 * E) → ExternalFieldLabel Mode)
@@ -108,7 +108,7 @@ noncomputable def externalInsertionVertexDysonSeries {E : ℕ}
   PowerSeries.mk (externalInsertionVertexDysonCoefficient
     ε β g externalLabel externalTime)
 
-/-- The physical vertex-level Dyson formal series is the already-proved
+/-- The interaction-picture vertex Dyson formal series is the already-proved
 diagrammatic external-insertion series. -/
 theorem externalInsertionVertexDysonSeries_eq_externalInsertionDysonSeries
     {E : ℕ} (ε : Mode → ℝ) (β : ℝ)
@@ -123,7 +123,7 @@ theorem externalInsertionVertexDysonSeries_eq_externalInsertionDysonSeries
   exact externalInsertionVertexDysonCoefficient_eq_externalInsertionDysonCoefficient
     ε β g externalLabel externalTime n
 
-/-- The physical vertex-level formal Dyson series contains precisely the
+/-- The interaction-picture vertex Dyson formal series contains precisely the
 vacuum-free external contribution times the normalized vacuum partition
 series. Externally supported but mutually disconnected components remain. -/
 theorem externalInsertionVertexDysonSeries_eq_vacuumFree_mul_normalizedDysonPartitionSeries

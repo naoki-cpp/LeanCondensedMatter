@@ -1,22 +1,22 @@
 import LeanCondensedMatter.Analysis.OrderedSimplex.MeasurableRegularityBounds
-import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.PhysicalWickExpansion
+import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.FreeGibbsWickExpansion
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.DiagramRegularity
 
 set_option linter.style.header false
 
 /-!
-# Integrated physical mixed-atomic Dyson coefficient
+# Integrated free-Gibbs mixed-atomic Dyson coefficient
 
-The pointwise free-Gibbs Wick expansion is integrated over the ordered
+The pointwise free-Gibbs Wick-pairing identity is integrated over the ordered
 interaction-time simplex. Chamberwise measurable local boundedness of each
 Dyson-signed diagram integrand allows the finite diagram sum to be exchanged
 with the integral, without incorrectly assuming global continuity across
 external/interaction time crossings.
 
 The operator-side coefficient is defined using the existing mixed-time atomic
-field family. Equating that atomic product to a separately constructed
-time-ordered product of external fields and quartic interaction operators is
-the remaining operator-level step.
+field family. The equality with the time-ordered product of full
+interaction-picture quartic vertices and external fields is established in
+`InteractionPictureVertexProduct`, downstream of this module.
 -/
 
 namespace SecondQuantization
