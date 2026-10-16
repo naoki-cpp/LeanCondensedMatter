@@ -4,7 +4,7 @@ import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.TimedFieldContra
 set_option linter.style.header false
 
 /-!
-# Physical Wick expansion with arbitrary fixed external insertions
+# Free-Gibbs Wick expansion for fixed external insertions
 
 The mixed-time atomic product of free fermionic field operators has the same
 finite-temperature Gibbs expectation as the full pairing sum entering the
@@ -12,6 +12,7 @@ fixed-external Wick diagrams. The mixed-order fermionic sign and the quartic
 vertex weights are kept explicit; the Dyson sign and time integration are
 separate downstream operations.
 
+The state is the normalized *free* Gibbs state, not the interacting Gibbs state.
 This is a pointwise statement about the mixed-time atomic operator product,
 not yet an identification with a separately constructed time-ordered product
 of quartic interaction operators.

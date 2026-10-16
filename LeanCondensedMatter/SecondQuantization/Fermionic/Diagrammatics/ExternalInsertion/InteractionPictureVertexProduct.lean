@@ -1,4 +1,4 @@
-import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.PhysicalDysonIntegral
+import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.MixedAtomicDysonIntegral
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.LocalLeg
 import LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTime.InteractionPicture
 
@@ -10,7 +10,7 @@ set_option linter.style.header false
 The canonical stable mixed-event ordering is interpreted as an ordered product
 of full interaction-picture quartic vertices and individually evolved external
 fields. Expanding every quartic vertex into its four canonical legs recovers
-the mixed-time atomic operator product used in the physical Wick expansion.
+the mixed-time atomic operator product used in the free-Gibbs Wick expansion.
 
 The fermionic sign is the permutation of *all* atomic legs from fixed
 external-first order to mixed-time order; four-leg interaction vertices are
@@ -35,7 +35,7 @@ noncomputable def externalInsertionTimedEventOperator {E n : ℕ}
   | .inl e => externalFieldOperator ε (externalTime e) (externalLabel e)
   | .inr v => interactionPicture ε (quarticVertexOperator (q v)) (σ v)
 
-/-- Physical mixed-time-ordered vertex product, with the fermionic sign from
+/-- Signed mixed-time-ordered interaction-picture vertex product, with the fermionic sign from
 restoring the fixed external/interaction atomic order. -/
 noncomputable def externalInsertionMixedTimeOrderedVertexComp {E n : ℕ}
     (ε : Mode → ℝ)
