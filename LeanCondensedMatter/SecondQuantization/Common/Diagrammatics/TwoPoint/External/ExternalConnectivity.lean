@@ -109,8 +109,6 @@ theorem TwoPointDiagram.isExternallyConnected_iff_hasNoVacuumComponent
     d.IsExternallyConnected ↔ HasNoVacuumComponent d.vertexGraph := by
   simp [TwoPointDiagram.IsExternallyConnected, d.externalVerticesConnected]
 
-
-
 /-- For two one-legged external vertices, externally connected means the entire vertex graph
 is preconnected: the parity argument connects the external vertices, and vacuum-freeness
 places every interaction vertex in that same component. -/
@@ -129,7 +127,6 @@ theorem TwoPointDiagram.preconnected_iff_isExternallyConnected
     · exact d.externalVerticesConnected
     · exact d.externalVerticesConnected.symm
     · exact SimpleGraph.Reachable.refl _
-
 
 end Common
 end SecondQuantization
