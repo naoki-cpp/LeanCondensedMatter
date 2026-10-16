@@ -25,4 +25,7 @@ set_option linter.style.header false
 General mathematical infrastructure used throughout LeanCondensedMatter: scalar-exchange algebra,
 formal power series, Dyson and ordered-simplex analysis, Lorentzian identities, operator theory,
 infinite sums, calculus, abstract conservation laws, and analytic inequalities.
+
+The one-dimensional weak-conservation kernel is opt-in: import
+`LeanCondensedMatter.Analysis.ConservationLaw.WeakConservation1D` when needed.
 -/
