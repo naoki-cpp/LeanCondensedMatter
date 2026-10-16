@@ -14,9 +14,9 @@ model-independent radial integrals of the form
 ∫ p dp / ((A - v² p²)² + B²).
 ```
 
-For nonzero radial scale `v` and nonzero width `B`, the finite-interval integral is evaluated by an
-arctangent primitive. For positive width, the same formula gives the convergent `pMax → +∞` limit
-and the scaled one-sided zero-width crossing limit. No Hamiltonian, disorder model, current vertex,
+For nonzero radial scale `v` and nonzero width `B`, Mathlib's substitution formula and
+arctangent integral evaluate the finite-interval integral. For positive width, the same result
+gives the convergent `pMax → +∞` limit and the scaled one-sided zero-width crossing limit. No Hamiltonian, disorder model, current vertex,
 or transport normalization appears here.
 -/
 
@@ -132,19 +132,6 @@ theorem tendsto_scaled_integral_radialQuadraticLorentzian_nhdsGT_zero
     Real.arctan_neg]
   ring
 
-private theorem tendsto_radialQuadraticLorentzianArctanArgument_atTop
-    (v A B : ℝ) (hvelocity : v ≠ 0) (hB : 0 < B) :
-    Tendsto (fun p : ℝ => (v ^ 2 * p ^ 2 - A) / B) atTop atTop := by
-  have hv2 : 0 < v ^ 2 := sq_pos_of_ne_zero hvelocity
-  have hp2 : Tendsto (fun p : ℝ => p ^ 2) atTop atTop :=
-    tendsto_pow_atTop (by norm_num)
-  have hlead : Tendsto (fun p : ℝ => v ^ 2 * p ^ 2) atTop atTop :=
-    hp2.const_mul_atTop hv2
-  have hshift0 := tendsto_atTop_add_const_right atTop (-A) hlead
-  have hshift : Tendsto (fun p : ℝ => v ^ 2 * p ^ 2 - A) atTop atTop := by
-    simpa [sub_eq_add_neg] using hshift0
-  exact hshift.atTop_div_const hB
-
 /-- For nonzero radial scale and positive width, the radial quadratic Lorentzian integral converges
 as the upper cutoff tends to `+∞`. -/
 theorem tendsto_integral_radialQuadraticLorentzian_atTop
@@ -156,14 +143,22 @@ theorem tendsto_integral_radialQuadraticLorentzian_atTop
       (nhds
         ((2 * v ^ 2 * B)⁻¹ *
           (Real.pi / 2 + Real.arctan (A / B)))) := by
+  have harg : Tendsto (fun p : ℝ => (v ^ 2 * p ^ 2 - A) / B) atTop atTop := by
+    have hv2 : 0 < v ^ 2 := sq_pos_of_ne_zero hvelocity
+    have hp2 : Tendsto (fun p : ℝ => p ^ 2) atTop atTop :=
+      tendsto_pow_atTop (by norm_num)
+    have hlead : Tendsto (fun p : ℝ => v ^ 2 * p ^ 2) atTop atTop :=
+      hp2.const_mul_atTop hv2
+    have hshift0 := tendsto_atTop_add_const_right atTop (-A) hlead
+    have hshift : Tendsto (fun p : ℝ => v ^ 2 * p ^ 2 - A) atTop atTop := by
+      simpa [sub_eq_add_neg] using hshift0
+    exact hshift.atTop_div_const hB
   have harctan :
       Tendsto
         (fun pMax : ℝ => Real.arctan ((v ^ 2 * pMax ^ 2 - A) / B))
         atTop (nhds (Real.pi / 2)) := by
     simpa [Function.comp_def] using
-      (Real.tendsto_arctan_atTop.comp
-        (tendsto_radialQuadraticLorentzianArctanArgument_atTop
-          v A B hvelocity hB)).mono_right inf_le_left
+      (Real.tendsto_arctan_atTop.comp harg).mono_right inf_le_left
   have hsum := harctan.add
     (tendsto_const_nhds : Tendsto (fun _pMax : ℝ => Real.arctan (A / B))
       atTop (nhds (Real.arctan (A / B))))
