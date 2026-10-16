@@ -152,6 +152,15 @@ specialization from reaching `Combinatorics.Cumulant.Inversion`,
 the power-series or finite-set replica modules. Thus neither concrete proof route can silently
 depend on the other.
 
+## Higher-point diagram-selection boundary
+
+For arbitrary fixed external fields, `ExternalComponentReplicaPolynomial.lean` defines a
+finite-order polynomial weighted by the number of externally supported connected components.
+Its linear coefficient selects fully externally connected signed diagram amplitudes, starting
+from vacuum-free diagrams. This is an exact combinatorial selection statement, **not** a
+source-functional generating identity, an analytic replica-number continuation, or a general
+higher-point cumulant expansion. The latter bridges remain open.
+
 ## Open work
 
 - source-functional realizations of higher-point moments and their connected/cumulant normalization;
