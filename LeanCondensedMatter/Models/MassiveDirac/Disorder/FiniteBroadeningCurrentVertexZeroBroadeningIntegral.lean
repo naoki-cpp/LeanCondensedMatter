@@ -10,7 +10,8 @@ set_option linter.style.header false
 
 The fixed-radial-momentum `η → 0⁺` limits are owned upstream by
 `FiniteBroadeningCurrentVertexZeroBroadening`. This module owns the integrated boundary: an internal
-dominated-convergence bridge and compact domination from a nonvanishing boundary denominator. The
+dominated-convergence bridge, shared radial factorization of the current-rung entries, and
+compact domination from a nonvanishing boundary denominator. The
 model-specific real-renormalization condition and the denominator nonvanishing result it protects
 are consumed from the zero-broadening Born-Dyson propagator boundary.
 
@@ -33,6 +34,27 @@ noncomputable def finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoeff
   ∫ p in (0 : ℝ)..pMax,
     finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungRadialIntegrandZeroBroadeningBoundary
       i j v m p probeEnergy disorderStrength hbar pMax
+
+/-- All zero-broadening current-rung entries share the same radial integral; their angular
+numerators are independent of radial momentum. This total algebraic identity needs no regularity
+or metallic-domain hypothesis. -/
+theorem finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficientZeroBroadeningBoundary_eq_angularNumerator_mul_integral
+    (i j : Fin 2) (v m probeEnergy disorderStrength hbar pMax : ℝ) :
+    finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficientZeroBroadeningBoundary
+        i j v m probeEnergy disorderStrength hbar pMax =
+      finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumeratorZeroBroadeningBoundary
+          i j v m probeEnergy disorderStrength hbar pMax *
+        ∫ p in (0 : ℝ)..pMax,
+          (continuumBornDisorderMeasurePrefactor disorderStrength hbar : ℂ) * (p : ℂ) *
+            ((2 * Real.pi : ℝ) : ℂ) *
+            (finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProductZeroBroadeningBoundary
+              v m p probeEnergy disorderStrength hbar pMax)⁻¹ := by
+  unfold finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficientZeroBroadeningBoundary
+  rw [← intervalIntegral.integral_const_mul]
+  apply intervalIntegral.integral_congr
+  intro p _
+  unfold finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungRadialIntegrandZeroBroadeningBoundary
+  ring
 
 /-- Canonical zero-broadening boundary of the source-`σₓ` current rung. -/
 noncomputable def finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary

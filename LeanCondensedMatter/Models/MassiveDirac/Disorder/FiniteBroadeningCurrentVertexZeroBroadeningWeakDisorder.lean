@@ -104,16 +104,17 @@ private theorem currentRungBoundary_eq_lorentzianIntegral
               boundaryRAWidth v m probeEnergy disorderStrength hbar pMax ^ 2)) : ℝ) : ℂ) := by
   let A := boundaryRACenter v m probeEnergy disorderStrength hbar pMax
   let B := boundaryRAWidth v m probeEnergy disorderStrength hbar pMax
-  let N := finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumeratorZeroBroadeningBoundary
-    output 0 v m probeEnergy disorderStrength hbar pMax
   let scale := 2 * Real.pi * continuumBornDisorderMeasurePrefactor disorderStrength hbar
+  rw [finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficientZeroBroadeningBoundary_eq_angularNumerator_mul_integral]
+  congr 1
   have hintegrand (p : ℝ) :
-      finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungRadialIntegrandZeroBroadeningBoundary
-          output 0 v m p probeEnergy disorderStrength hbar pMax =
-        N * (((scale * (p / ((A - v ^ 2 * p ^ 2) ^ 2 + B ^ 2)) : ℝ)) : ℂ) := by
-    unfold finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungRadialIntegrandZeroBroadeningBoundary
+      (continuumBornDisorderMeasurePrefactor disorderStrength hbar : ℂ) * (p : ℂ) *
+          ((2 * Real.pi : ℝ) : ℂ) *
+          (finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProductZeroBroadeningBoundary
+            v m p probeEnergy disorderStrength hbar pMax)⁻¹ =
+        (((scale * (p / ((A - v ^ 2 * p ^ 2) ^ 2 + B ^ 2)) : ℝ)) : ℂ) := by
     rw [boundaryRAProduct_eq v m p probeEnergy disorderStrength hbar pMax hvelocity hhbar]
-    dsimp [A, B, N, scale]
+    dsimp [A, B, scale]
     push_cast
     simp [div_eq_mul_inv]
     ring
@@ -126,9 +127,8 @@ private theorem currentRungBoundary_eq_lorentzianIntegral
     exact RCLike.intervalIntegral_ofReal (𝕜 := ℂ) (μ := volume)
       (f := fun p : ℝ => scale * (p / ((A - v ^ 2 * p ^ 2) ^ 2 + B ^ 2)))
       (a := 0) (b := pMax)
-  unfold finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficientZeroBroadeningBoundary
   simp_rw [hintegrand]
-  rw [intervalIntegral.integral_const_mul, hcast, intervalIntegral.integral_const_mul]
+  rw [hcast, intervalIntegral.integral_const_mul]
 
 /-- At fixed cutoff beyond the metallic shell, the canonical zero-broadening source-`x` rung tends
 as one in-plane vector to `(κ, 0)`. -/
