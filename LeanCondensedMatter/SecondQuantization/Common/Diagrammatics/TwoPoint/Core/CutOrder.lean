@@ -100,7 +100,9 @@ theorem TwoPointDiagram.externalSource_componentBlocks_comparable
       (by simpa only [hdel₁] using ha)
       (by simpa only [hdel₁] using hb)
       (by simpa only [hdel₁] using hv)
-    simpa only [hdel₂] using hr
+    change (d.vertexGraph.deleteEdges {e₂}).Reachable root v at hr
+    rw [hdel₂] at hr
+    exact hr
   by_cases heq : e₁ = e₂
   · left
     have hgraph : H₁ = H₂ := by
@@ -109,7 +111,10 @@ theorem TwoPointDiagram.externalSource_componentBlocks_comparable
         _ = d.vertexGraph.deleteEdges {e₂} := by rw [heq]
         _ = H₂ := hdel₂
     intro v hv
-    simpa only [hgraph] using hv
+    change v ∈ H₁.componentBlock s₀ at hv
+    change v ∈ H₂.componentBlock s₀
+    rw [hgraph] at hv
+    exact hv
   · have hG : d.vertexGraph.Adj a b := by
       apply (d.isBridge_of_separatingCut hconnected cut₂ hsep₂).reachable_iff_adj.mp
       exact (d.preconnected_iff_isExternallyConnected).2 hconnected a b
@@ -117,7 +122,8 @@ theorem TwoPointDiagram.externalSource_componentBlocks_comparable
       rw [← hdel₁]
       apply (SimpleGraph.deleteEdges_adj).2
       refine ⟨hG, ?_⟩
-      simpa only [Set.mem_singleton_iff] using heq.symm
+      intro hbad
+      exact heq (Set.mem_singleton_iff.mp hbad).symm
     rcases hside a with h₀a | h₁a
     · have h₀b : H₁.Reachable s₀ b :=
         h₀a.trans (SimpleGraph.Adj.reachable hab)
