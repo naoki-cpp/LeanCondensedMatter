@@ -60,12 +60,56 @@ theorem TwoPointDiagram.vertexGraphWithoutPropagator_le_vertexGraph
   rcases h with ⟨hne, leg, _, _, hv, hw⟩
   exact ⟨hne, leg, hv, hw⟩
 
+/-- Removing a paired propagator does not depend on which of its two legs represents it.
+The statement is graph equality, so all subsequent connectivity tests inherit this invariance. -/
+theorem TwoPointDiagram.vertexGraphWithoutPropagator_partner
+    (d : TwoPointDiagram ExternalLabel InternalLabel N S)
+    (cut : Fin (2 * (2 * S.card + 1))) :
+    d.vertexGraphWithoutPropagator (d.pairing.partner cut) =
+      d.vertexGraphWithoutPropagator cut := by
+  apply SimpleGraph.ext
+  funext v w
+  apply propext
+  constructor
+  · rintro ⟨hvw, leg, hleg, hpartner, hv, hw⟩
+    refine ⟨hvw, leg, ?_, ?_, hv, hw⟩
+    · intro heq
+      exact hpartner (congrArg d.pairing.partner heq)
+    · intro heq
+      apply hleg
+      calc
+        leg = d.pairing.partner (d.pairing.partner leg) :=
+          (d.pairing.partner_involutive leg).symm
+        _ = d.pairing.partner cut := by rw [heq]
+  · rintro ⟨hvw, leg, hleg, hpartner, hv, hw⟩
+    refine ⟨hvw, leg, ?_, ?_, hv, hw⟩
+    · intro heq
+      apply hpartner
+      rw [heq, d.pairing.partner_involutive cut]
+    · intro heq
+      exact hleg (d.pairing.partner.injective heq)
+
 /-- A propagator is internal when both of its endpoints are interaction vertices. -/
 def TwoPointDiagram.IsInternalPropagator
     (d : TwoPointDiagram ExternalLabel InternalLabel N S)
     (leg : Fin (2 * (2 * S.card + 1))) : Prop :=
   (∃ v : ↥S, twoPointVertexOfLeg leg = Sum.inr v) ∧
     (∃ w : ↥S, twoPointVertexOfLeg (d.pairing.partner leg) = Sum.inr w)
+
+/-- Internal-propagator membership is independent of the chosen end of the paired line. -/
+theorem TwoPointDiagram.isInternalPropagator_partner_iff
+    (d : TwoPointDiagram ExternalLabel InternalLabel N S)
+    (cut : Fin (2 * (2 * S.card + 1))) :
+    d.IsInternalPropagator (d.pairing.partner cut) ↔
+      d.IsInternalPropagator cut := by
+  constructor
+  · rintro ⟨hleft, ⟨w, hw⟩⟩
+    rw [d.pairing.partner_involutive cut] at hw
+    exact ⟨⟨w, hw⟩, hleft⟩
+  · rintro ⟨⟨v, hv⟩, hright⟩
+    refine ⟨hright, ⟨v, ?_⟩⟩
+    rw [d.pairing.partner_involutive cut]
+    exact hv
 
 /-- A connected two-point diagram is one-particle reducible when cutting one internal
 propagator disconnects its external vertices. -/
@@ -86,6 +130,23 @@ def TwoPointDiagram.IsOneParticleIrreducible
       d.IsInternalPropagator cut →
         (d.vertexGraphWithoutPropagator cut).Reachable
           (Sum.inl (0 : Fin 2)) (Sum.inl (1 : Fin 2))
+
+/-- Among nonempty externally connected two-point diagrams, proper 1PI is precisely
+the absence of an external-separating internal propagator. -/
+theorem TwoPointDiagram.isOneParticleIrreducible_iff_not_isOneParticleReducible
+    (d : TwoPointDiagram ExternalLabel InternalLabel N S) :
+    d.IsOneParticleIrreducible ↔
+      S.Nonempty ∧ d.IsExternallyConnected ∧ ¬ d.IsOneParticleReducible := by
+  constructor
+  · rintro ⟨hne, hconnected, hcuts⟩
+    refine ⟨hne, hconnected, ?_⟩
+    rintro ⟨_, cut, hinternal, hseparates⟩
+    exact hseparates (hcuts cut hinternal)
+  · rintro ⟨hne, hconnected, hnotReducible⟩
+    refine ⟨hne, hconnected, ?_⟩
+    intro cut hinternal
+    by_contra hseparates
+    exact hnotReducible ⟨hconnected, cut, hinternal, hseparates⟩
 
 /-- Every proper 1PI two-point diagram is externally connected and hence vacuum-free. -/
 theorem TwoPointDiagram.IsOneParticleIrreducible.isExternallyConnected
