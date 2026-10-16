@@ -80,6 +80,12 @@ integral representation that can be identified with `2π J₀(z)`. -/
 noncomputable def polarFourierZerothAngularKernel (z : ℝ) : ℂ :=
   ∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi), polarFourierRadialPhase z θ
 
+/-- The unnormalized zeroth radial Fourier harmonic at the origin is the full
+angular measure `2π`, before the physical momentum prefactor is attached. -/
+@[simp] theorem polarFourierZerothAngularKernel_zero :
+    polarFourierZerothAngularKernel 0 = ((2 * Real.pi : ℝ) : ℂ) := by
+  simp [polarFourierZerothAngularKernel, polarFourierRadialPhase]
+
 /-- First cosine full-angle radial Fourier kernel. At a Mathlib revision with Bessel support this is
 the integral representation that can be identified with `2π i J₁(z)`. -/
 noncomputable def polarFourierFirstCosineAngularKernel (z : ℝ) : ℂ :=
@@ -98,6 +104,22 @@ noncomputable def polarFourierSecondCosineAngularKernel (z : ℝ) : ℂ :=
   ∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi),
     polarFourierRadialPhase z θ *
       ((((Real.cos θ : ℝ) : ℂ) ^ 2) - (((Real.sin θ : ℝ) : ℂ) ^ 2))
+
+/-- The traceless second angular Fourier harmonic vanishes at the origin.
+This is the canonical `J₂(0) = 0` initial condition, expressed using the
+full-angle Fourier kernel rather than an additional Bessel API. -/
+@[simp] theorem polarFourierSecondCosineAngularKernel_zero :
+    polarFourierSecondCosineAngularKernel 0 = 0 := by
+  let coefficients : AngularHarmonicCoefficients ℂ :=
+    { constant := 0
+      firstCosine := 0
+      firstSine := 0
+      secondCosine := 1
+      secondMixed := 0 }
+  have h := coefficients.integral_eval
+  simpa [coefficients, AngularHarmonicCoefficients.eval,
+    polarFourierSecondCosineAngularKernel, polarFourierRadialPhase,
+    smul_eq_mul] using h
 
 @[fun_prop]
 theorem continuous_polarFourierZerothAngularKernel :
@@ -770,6 +792,24 @@ theorem finiteCutoffPhysicalMomentumPolarFourier_polarPoint2D_harmonics
   simp_rw [physicalMomentumPolarFourierPhase_polarPoint2D]
   exact (coefficients p).integral_polarFourierRadialPhase_shifted
     (p * radius / hbar) p angle
+
+
+/-- At zero real-space separation, the physical polar Fourier transform of
+a finite harmonic field depends only on its angularly constant coefficient.
+Both first and second harmonics vanish *before* radial momentum integration,
+and the physical momentum prefactor is attached just once. No Bessel-function
+asymptotic or regulator limit is required. -/
+theorem finiteCutoffPhysicalMomentumPolarFourier_polarPoint2D_zero_harmonics
+    (hbar pMax angle : ℝ) (coefficients : ℝ → AngularHarmonicCoefficients ℂ) :
+    finiteCutoffPhysicalMomentumPolarFourier hbar pMax
+        (fun p θ => (coefficients p).eval θ) (polarPoint2D 0 angle) =
+      (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
+        ∫ p in (0 : ℝ)..pMax,
+          (p : ℂ) * (((2 * Real.pi : ℝ) : ℂ) * (coefficients p).constant) := by
+  rw [finiteCutoffPhysicalMomentumPolarFourier_polarPoint2D_harmonics]
+  simp [polarFourierZerothAngularKernel_zero,
+    polarFourierFirstCosineAngularKernel_zero,
+    polarFourierSecondCosineAngularKernel_zero]
 
 end
 
