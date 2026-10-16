@@ -7,6 +7,7 @@ Records without an explicit status have status **accepted**. Acceptance means th
 ## Foundations and module ownership
 
 - [0001 — Use Lean and Mathlib as the mathematical foundation](0001-lean-and-mathlib.md)
+- [0023 — Migrate to Lean's module system incrementally](0023-lean-module-system-migration.md)
 - [0002 — Assign modules by semantic responsibility](0002-semantic-ownership.md)
 - [0021 — Prefer intrinsic mathematical structures over case-specific representations](0021-intrinsic-mathematical-structures.md)
 
