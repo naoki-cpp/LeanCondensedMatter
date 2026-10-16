@@ -156,9 +156,32 @@ private theorem TwoPointDiagram.slotSplitVacuumMixedPairEmbedding_surjective
     Function.Surjective
       (TwoPointDiagram.slotSplitVacuumMixedPairEmbedding T ext vac τ τ' σ hσ) := by
   intro pr
-  obtain ⟨q, hq⟩ :=
-    TwoPointDiagram.exists_slotSplitVacuumNormalizedPairEmbedding_eq_of_firstEndpoint
-      T ext vac τ τ' σ hσ pr.1
+  obtain ⟨q, hq⟩ : ∃ q,
+      TwoPointDiagram.slotSplitVacuumNormalizedPairEmbedding T ext vac τ τ' σ hσ q =
+        pr.1 := by
+    let d := TwoPointDiagram.ofSlotSplit (Finset.subset_univ T) ext vac
+    let e : Fin (2 * (2 * ((Finset.univ : Finset (Fin n)) \ T).card)) ↪o
+        Fin (2 * (2 * n + 1)) :=
+      OrderEmbedding.ofStrictMono
+        (mixedTimeOrderedQuarticLegMapPosition (slotSplitVacuumSlot T) τ τ' σ)
+        (mixedTimeOrderedQuarticLegMapPosition_strictMono_of_strictAnti
+          (slotSplitVacuumSlot T) (slotSplitVacuumSlot_strictMono T)
+          τ τ' σ hσ)
+    have hpartner (i) :
+        (d.pairingInMixedOrder τ τ' σ).partner (e i) =
+          e ((vac.pairingInOrder (slotSplitVacuumOrder T)).partner i) := by
+      change (d.pairingInMixedOrder τ τ' σ).partner
+          (mixedTimeOrderedAtomicLegPosition τ τ' σ
+            (orderedQuarticLegMapToTwoPointLeg (slotSplitVacuumSlot T) i)) = _
+      rw [d.pairingInMixedOrder_partner_legPosition]
+      apply congrArg (mixedTimeOrderedAtomicLegPosition τ τ' σ)
+      apply (twoPointLegEquiv (Finset.univ : Finset (Fin n))).symm.injective
+      rw [TwoPointDiagram.atomicLegPartner, Equiv.symm_apply_apply]
+      exact TwoPointDiagram.ofSlotSplit_pairing_partner_vacuumOrderedLeg
+        T ext vac i
+    exact Pairing.exists_normalizedPairEmbedding_eq_of_firstEndpoint
+      (vac.pairingInOrder (slotSplitVacuumOrder T))
+      (d.pairingInMixedOrder τ τ' σ) e hpartner pr.1
       (TwoPointDiagram.mixedVacuumPair_firstEndpoint_mem_vacuumLegRange
         T ext vac hext τ τ' σ pr)
   refine ⟨q, ?_⟩
