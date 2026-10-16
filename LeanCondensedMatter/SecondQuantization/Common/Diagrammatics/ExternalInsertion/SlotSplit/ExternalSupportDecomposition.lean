@@ -3,16 +3,16 @@ import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInser
 set_option linter.style.header false
 
 /-!
-# Canonical external-support diagram decomposition
+# External-bearing / vacuum diagram decomposition
 
 Every external-insertion diagram splits canonically into an external-bearing diagram containing
 all externally supported interaction vertices and an ordinary quartic diagram containing the
 remaining vacuum interaction vertices. This module extracts the actual diagrams from the
 support-based split and records their exact reconstruction.
 
-The extracted external-bearing diagram may have several disconnected externally supported
-components. Proving that it has no *vacuum* components is the next step, before reindexing the
-diagram sum by vacuum-free fibers.
+The external-bearing diagram may contain multiple mutually disconnected components, each
+meeting at least one external insertion. Its absence of purely vacuum components is proved
+in `ExternalSupportConnectivity`; this does not imply full external connectedness.
 -/
 
 namespace SecondQuantization
@@ -22,7 +22,7 @@ variable {ExternalLabel InternalLabel : Type*} {E N : ℕ}
 
 /-- The external-bearing diagram obtained by retaining all connected components meeting the
 external sector. Multiple externally supported connected components are retained. -/
-noncomputable def ExternalInsertionDiagram.externalSupportDiagram
+noncomputable def ExternalInsertionDiagram.externalBearingDiagram
     {S : Finset (Fin N)}
     (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S) :
     ExternalInsertionDiagram ExternalLabel InternalLabel E N
@@ -32,7 +32,7 @@ noncomputable def ExternalInsertionDiagram.externalSupportDiagram
 
 /-- The ordinary quartic diagram formed by the vacuum components of an external-insertion
 diagram. -/
-noncomputable def ExternalInsertionDiagram.vacuumComplementDiagram
+noncomputable def ExternalInsertionDiagram.vacuumDiagram
     {S : Finset (Fin N)}
     (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S) :
     QuarticDiagram InternalLabel N (S \ d.externallySupportedInteractionPart) :=
@@ -40,12 +40,12 @@ noncomputable def ExternalInsertionDiagram.vacuumComplementDiagram
     d.pairing_isSplit_externallySupportedInteractionPart
 
 /-- The canonical external-bearing and vacuum diagrams reconstruct the original diagram. -/
-theorem ExternalInsertionDiagram.externalSupport_reconstruction
+theorem ExternalInsertionDiagram.externalBearing_vacuum_reconstruction
     {S : Finset (Fin N)}
     (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S) :
     ExternalInsertionDiagram.ofSlotSplit
         d.externallySupportedInteractionPart_subset
-        d.externalSupportDiagram d.vacuumComplementDiagram = d :=
+        d.externalBearingDiagram d.vacuumDiagram = d :=
   d.ofSlotSplit_slotSplit d.externallySupportedInteractionPart_subset
     d.pairing_isSplit_externallySupportedInteractionPart
 

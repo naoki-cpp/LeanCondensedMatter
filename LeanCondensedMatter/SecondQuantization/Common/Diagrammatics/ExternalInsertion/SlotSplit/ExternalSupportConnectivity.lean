@@ -4,7 +4,7 @@ import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.
 set_option linter.style.header false
 
 /-!
-# Vacuum-freeness of the canonical external-support diagram
+# Vacuum-freeness of the external-bearing diagram
 
 The slot splitting preserves and reflects reachability between vertices on its external-bearing
 side. Hence restricting a diagram to all components meeting the external sector leaves no vacuum
@@ -91,23 +91,23 @@ private theorem supportSlotVertex_reachable_iff (x y : ExternalInsertionVertex E
 
 /-- The canonical external-bearing diagram contains no pure-vacuum connected components.
 All components touching distinct external insertions are retained independently. -/
-theorem ExternalInsertionDiagram.hasNoVacuumComponent_externalSupportDiagram
+theorem ExternalInsertionDiagram.hasNoVacuumComponent_externalBearingDiagram
     {S : Finset (Fin N)}
     (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S) :
-    HasNoVacuumComponent d.externalSupportDiagram.vertexGraph := by
+    HasNoVacuumComponent d.externalBearingDiagram.vertexGraph := by
   classical
   intro v
   let T := d.externallySupportedInteractionPart
   let h : T ⊆ S := d.externallySupportedInteractionPart_subset
-  let ext := d.externalSupportDiagram
-  let vac := d.vacuumComplementDiagram
+  let ext := d.externalBearingDiagram
+  let vac := d.vacuumDiagram
   let vS : ↥S := ⟨v.1, h v.2⟩
   obtain ⟨e, he⟩ := (d.mem_externallySupportedInteractionPart vS).1 v.2
   have hreach : d.vertexGraph.Reachable (Sum.inl e) (Sum.inr vS) :=
     (d.vertexGraph.mem_componentBlock (Sum.inr vS) (Sum.inl e)).1 he
   refine ⟨e, ?_⟩
   apply (supportSlotVertex_reachable_iff h ext vac (Sum.inl e) (Sum.inr v)).1
-  rw [d.externalSupport_reconstruction]
+  rw [d.externalBearing_vacuum_reconstruction]
   simpa [supportSlotVertexEquiv] using hreach
 
 
