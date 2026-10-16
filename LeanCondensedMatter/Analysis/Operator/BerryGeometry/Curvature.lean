@@ -71,32 +71,6 @@ theorem berryCurvature_swap (μ ν : κ) (n : ι) :
     simpa only [Complex.conj_im] using h
   linarith
 
-/-- Completeness of the finite orthonormal eigenbasis expands the derivative-state curvature into
-band-resolved inner-product terms. -/
-private theorem berryCurvature_eq_sum_innerProducts (μ ν : κ) (n : ι) :
-    data.berryCurvature μ ν n =
-      ∑ m : ι,
-        -2 * (inner ℂ (data.eigenvectorDerivative μ n) (data.eigenbasis m) *
-          inner ℂ (data.eigenbasis m) (data.eigenvectorDerivative ν n)).im := by
-  have hsum := data.eigenbasis.sum_inner_mul_inner
-    (data.eigenvectorDerivative μ n) (data.eigenvectorDerivative ν n)
-  calc
-    data.berryCurvature μ ν n =
-        -2 * (inner ℂ (data.eigenvectorDerivative μ n)
-          (data.eigenvectorDerivative ν n)).im := rfl
-    _ = -2 * (∑ m : ι,
-          inner ℂ (data.eigenvectorDerivative μ n) (data.eigenbasis m) *
-            inner ℂ (data.eigenbasis m) (data.eigenvectorDerivative ν n)).im := by
-      rw [hsum]
-    _ = -2 * ∑ m : ι,
-          (inner ℂ (data.eigenvectorDerivative μ n) (data.eigenbasis m) *
-            inner ℂ (data.eigenbasis m) (data.eigenvectorDerivative ν n)).im := by
-      rw [Complex.im_sum]
-    _ = ∑ m : ι,
-        -2 * (inner ℂ (data.eigenvectorDerivative μ n) (data.eigenbasis m) *
-          inner ℂ (data.eigenbasis m) (data.eigenvectorDerivative ν n)).im := by
-      rw [Finset.mul_sum]
-
 /-- The band-diagonal completeness term has zero imaginary part. It therefore does not contribute
 to Berry curvature. -/
 private theorem diagonal_innerProduct_im_eq_zero (μ ν : κ) (n : ι) :
@@ -210,7 +184,10 @@ theorem berryCurvature_eq_sum_hamiltonianDerivativeMatrixElements [DecidableEq �
           (((data.energy n - data.energy m : ℝ) : ℂ))) *
           (data.hamiltonianDerivativeMatrixElement ν n m /
             (((data.energy n - data.energy m : ℝ) : ℂ)))).im := by
-  rw [data.berryCurvature_eq_sum_innerProducts]
+  have hsum := data.eigenbasis.sum_inner_mul_inner
+    (data.eigenvectorDerivative μ n) (data.eigenvectorDerivative ν n)
+  unfold berryCurvature
+  rw [hsum, Complex.im_sum, Finset.mul_sum]
   apply Finset.sum_congr rfl
   intro m _
   by_cases hmn : m = n
