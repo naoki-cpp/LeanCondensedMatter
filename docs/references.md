@@ -91,11 +91,16 @@ Annotated reference list. One entry per source: full citation, what it is used f
     `Models/MassiveDirac/Conductivity/Hall/NonCrossingMechanismClassification.lean`.
   - **Caveat:** The project formalizes ordered finite-cutoff ladder expressions, not the paper's
     full diagrammatic calculation or a general equivalence of mechanism decompositions.
-  - **Benchmark-only bridge:** `Hall/GaussianCrossed.lean` checks algebraically that the
+  - **Benchmark-only bridge:** `Hall/GaussianCrossedBenchmark.lean` checks algebraically that the
     non-crossing skew Eq. (12c) plus the crossed Eq. (17) target gives full skew Eq. (18),
     and that intrinsic Eq. (12a) + side-jump Eq. (12b) + skew Eq. (18) gives total Eq. (4).
     Neither identity evaluates the finite-broadening crossed `X/Ψ` integrals or proves their
     required sequential limits.
+  - **Eq. (18) source caveat:** The arXiv v3 PDF as displayed appears to omit the mass
+    factor `m` in the numerator of Eq. (18). The project's skew benchmark is instead
+    the mass-odd expression derived by adding the paper's Eqs. (12c) and (17). The
+    Lean theorem documents this discrepancy and proves mass-reversal parity; it does
+    not silently treat the displayed Eq. (18) as an identical formula.
 
 - **L. Smrčka and P. Středa.** “Transport coefficients in strong magnetic fields.” *Journal of
   Physics C: Solid State Physics* **10**(12), 2153–2161 (1977). DOI:
