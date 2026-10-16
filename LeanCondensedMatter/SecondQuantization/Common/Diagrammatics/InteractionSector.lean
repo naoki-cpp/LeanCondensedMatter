@@ -21,6 +21,7 @@ namespace Common
 
 variable {External Vertex : Type*}
 
+open Classical in
 /-- Ambient interaction vertices represented in the right summand of `B`.
 
 Extract the right summand with Mathlib's `Finset.toRight`, then forget the proof that
