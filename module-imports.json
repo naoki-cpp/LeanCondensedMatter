@@ -23,9 +23,7 @@
       "sourceFile": "LeanCondensedMatter/Analysis/Calculus.lean",
       "imports": [
         "LeanCondensedMatter.Analysis.Calculus.AlgebraicDerivative",
-        "LeanCondensedMatter.Analysis.Calculus.IntervalLocalization",
-        "LeanCondensedMatter.Analysis.ConservationLaw.CorrectedCurrentFlux",
-        "LeanCondensedMatter.Analysis.ConservationLaw.SymmetricLocalizationAlgebra"
+        "LeanCondensedMatter.Analysis.Calculus.IntervalLocalization"
       ],
       "externalImportCount": 0
     },
@@ -2047,12 +2045,20 @@
       "name": "LeanCondensedMatter.Models.MassiveDirac.Conductivity.Hall.GaussianCrossed",
       "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Conductivity/Hall/GaussianCrossed.lean",
       "imports": [
-        "LeanCondensedMatter.Models.MassiveDirac.Conductivity.Hall.NonCrossing",
+        "LeanCondensedMatter.Models.MassiveDirac.Conductivity.Hall.GaussianCrossedBenchmark",
         "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedRadialTrace",
         "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedRealSpaceIntegral",
         "LeanCondensedMatter.Transport.Streda.ConductivityNormalization"
       ],
       "externalImportCount": 0
+    },
+    {
+      "name": "LeanCondensedMatter.Models.MassiveDirac.Conductivity.Hall.GaussianCrossedBenchmark",
+      "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Conductivity/Hall/GaussianCrossedBenchmark.lean",
+      "imports": [
+        "LeanCondensedMatter.Models.MassiveDirac.Conductivity.Hall.NonCrossingMechanismClassification"
+      ],
+      "externalImportCount": 1
     },
     {
       "name": "LeanCondensedMatter.Models.MassiveDirac.Conductivity.Hall.Intrinsic.Conductivity",
@@ -5615,6 +5621,14 @@
       "externalImportCount": 0
     },
     {
+      "name": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.SeparatingPaths",
+      "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Diagrammatics/TwoPoint/Core/SeparatingPaths.lean",
+      "imports": [
+        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.CutComponents"
+      ],
+      "externalImportCount": 0
+    },
+    {
       "name": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.SlotCongr",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Diagrammatics/TwoPoint/Core/SlotCongr.lean",
       "imports": [
@@ -5812,6 +5826,7 @@
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.CutComponents",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.Diagram",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.OneParticleIrreducible",
+        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.SeparatingPaths",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.SlotCongr",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.External.ExternalConnectivity",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.External.ExternalPiece",
