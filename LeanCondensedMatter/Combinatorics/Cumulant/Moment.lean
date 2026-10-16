@@ -14,6 +14,10 @@ set_option linter.style.header false
 The moment transform only uses finite sums and products, so it is defined over a commutative
 semiring. Möbius inversion, which needs additive inverses, lives separately in
 `Combinatorics/Cumulant/Inversion.lean`.
+
+`weightedMomentFromCumulant` additionally retains an arbitrary partition-dependent coefficient.
+Unit coefficients recover the ordinary moment; arbitrary coefficients do not imply normalization
+or the ordinary Möbius-inversion identities.
 -/
 
 variable {α R : Type*} [DecidableEq α] [CommSemiring R]
@@ -23,6 +27,22 @@ namespace Finpartition
 /-- Moment transform of a finite-set cumulant function. -/
 noncomputable def momentFromCumulant (κ : Finset α → R) (S : Finset α) : R :=
   ∑ π : Finpartition S, partitionProduct κ π
+
+/-- A moment formed from connected-block weights with one additional
+partition-dependent (e.g. fermionic shuffle) factor. -/
+noncomputable def weightedMomentFromCumulant
+    (partitionWeight : ∀ S : Finset α, Finpartition S → R)
+    (κ : Finset α → R) (S : Finset α) : R :=
+  ∑ π : Finpartition S, partitionWeight S π * partitionProduct κ π
+
+/-- Unit partition weights recover the ordinary moment transform. -/
+theorem weightedMomentFromCumulant_one
+    (κ : Finset α → R) (S : Finset α) :
+    weightedMomentFromCumulant (fun _ _ => 1) κ S =
+      momentFromCumulant κ S := by
+  classical
+  simp [weightedMomentFromCumulant, momentFromCumulant]
+
 
 /-- The moment transform is normalized to `1` on the empty set, independently of the input
 cumulant value at the empty set. -/
