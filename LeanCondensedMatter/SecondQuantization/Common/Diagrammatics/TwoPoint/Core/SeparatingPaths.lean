@@ -78,6 +78,37 @@ noncomputable def TwoPointDiagram.separatingInternalEdges
         (Sum.inl (0 : Fin 2)) (Sum.inl (1 : Fin 2))).image fun cut =>
           s(twoPointVertexOfLeg cut, twoPointVertexOfLeg (d.pairing.partner cut))
 
+/-- For a nontrivial connected two-point diagram, 1PI is exactly the absence of
+internal separating edges. The finite family gives the cut-free criterion needed
+for the eventual 1PI block reconstruction. -/
+theorem TwoPointDiagram.isOneParticleIrreducible_iff_separatingInternalEdges_eq_empty
+    (d : TwoPointDiagram ExternalLabel InternalLabel N S) :
+    d.IsOneParticleIrreducible ↔
+      S.Nonempty ∧ d.IsExternallyConnected ∧ d.separatingInternalEdges = ∅ := by
+  classical
+  constructor
+  · intro h
+    refine ⟨h.1, h.2.1, ?_⟩
+    ext e
+    constructor
+    · intro he
+      rcases Finset.mem_image.mp he with ⟨cut, hcut, rfl⟩
+      obtain ⟨hinternal, hsep⟩ := (Finset.mem_filter.mp hcut).2
+      exact False.elim (hsep (h.2.2 cut hinternal))
+    · simp
+  · rintro ⟨hne, hconnected, hempty⟩
+    refine ⟨hne, hconnected, ?_⟩
+    intro cut hinternal
+    by_contra hsep
+    have hmem : s(twoPointVertexOfLeg cut,
+        twoPointVertexOfLeg (d.pairing.partner cut)) ∈
+        d.separatingInternalEdges := by
+      apply Finset.mem_image.mpr
+      refine ⟨cut, ?_, rfl⟩
+      exact Finset.mem_filter.mpr ⟨Finset.mem_univ _, ⟨hinternal, hsep⟩⟩
+    rw [hempty] at hmem
+    simpa using hmem
+
 /-- Every internal edge that separates the two external vertices occurs on any
 walk between them. In particular the set of separating edges does not depend on a
 chosen path. -/
