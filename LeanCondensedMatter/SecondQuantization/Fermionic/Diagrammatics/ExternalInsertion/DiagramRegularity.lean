@@ -21,23 +21,6 @@ open Common
 
 variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
 
-/-- For two fixed canonical legs, the Gibbs contraction is continuous in all
-interaction-time coordinates. -/
-private theorem continuous_orderedExternalInsertionLegPairContraction
-    {E n : ℕ} (ε : Mode → ℝ) (β : ℝ)
-    (externalLabel : Fin (2 * E) → ExternalFieldLabel Mode)
-    (externalTime : Fin (2 * E) → ℝ)
-    (q : Fin n → QuarticVertexLabel Mode)
-    (a b : OrderedExternalInsertionLeg E n) :
-    Continuous (fun σ : Fin n → ℝ =>
-      timedFieldPairContraction ε β
-        (orderedExternalInsertionLegField externalLabel externalTime q σ a)
-        (orderedExternalInsertionLegField externalLabel externalTime q σ b)) := by
-  rcases a with a | ⟨v, l⟩ <;> rcases b with b | ⟨w, k⟩ <;>
-    simp only [timedFieldPairContraction_eq, orderedExternalInsertionLegField,
-      orderedExternalInsertionLegTime, orderedExternalInsertionLegFieldLabel] <;>
-    fun_prop
-
 /-- Extend the Dyson integrand on a chamber to a globally continuous function by
 freezing the mixed-leg permutation and pairing, but not the field times. -/
 private noncomputable def ExternalInsertionWickDiagram.dysonFixedTimeChamberRepresentative
@@ -67,10 +50,14 @@ private theorem ExternalInsertionWickDiagram.continuous_dysonFixedTimeChamberRep
   apply continuous_const.mul
   apply continuous_finsetProd
   intro pr _
-  exact continuous_orderedExternalInsertionLegPairContraction
-    ε β d.externalLabel externalTime d.vertexLabelSequence
-    (externalInsertionMixedTimeOrderedAtomicLegEquiv externalTime σ₀ pr.1)
-    (externalInsertionMixedTimeOrderedAtomicLegEquiv externalTime σ₀ pr.2)
+  generalize ha :
+      externalInsertionMixedTimeOrderedAtomicLegEquiv externalTime σ₀ pr.1 = a
+  generalize hb :
+      externalInsertionMixedTimeOrderedAtomicLegEquiv externalTime σ₀ pr.2 = b
+  rcases a with a | ⟨v, l⟩ <;> rcases b with b | ⟨w, k⟩ <;>
+    simp only [timedFieldPairContraction_eq, orderedExternalInsertionLegField,
+      orderedExternalInsertionLegTime, orderedExternalInsertionLegFieldLabel] <;>
+    fun_prop
 
 private theorem ExternalInsertionWickDiagram.dysonFixedTimeChamberRepresentative_eq_of_sameChamber
     {E n : ℕ} (d : ExternalInsertionWickDiagram Mode E n)
