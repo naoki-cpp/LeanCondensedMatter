@@ -24,38 +24,6 @@ open Common
 
 variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
 
-/-- The coupling-weighted, mixed-time-ordered full-vertex expectation is
-the corresponding atomic-field expectation with the canonical fermionic
-permutation sign. The sign already belongs to the full vertex product. -/
-private theorem sum_externalInsertionMixedTimeOrderedVertexComp_expectation_eq_atomic
-    {E n : ℕ} (ε : Mode → ℝ) (β : ℝ)
-    (g : QuarticVertexLabel Mode → ℂ)
-    (externalLabel : Fin (2 * E) → ExternalFieldLabel Mode)
-    (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ) :
-    (∑ q : Fin n → QuarticVertexLabel Mode,
-      (∏ i : Fin n, g (q i)) *
-        (freeGibbsDensityOperator ε β).expectation
-          (Common.finiteHilbertOperatorAlgEquiv
-            (externalInsertionMixedTimeOrderedVertexComp
-              ε externalLabel externalTime q σ))) =
-      externalInsertionMixedAtomicOrderSign externalTime σ *
-        ∑ q : Fin n → QuarticVertexLabel Mode,
-          (∏ i : Fin n, g (q i)) *
-            (freeGibbsDensityOperator ε β).expectation
-              (Common.finiteHilbertOperatorAlgEquiv
-                (List.ofFn (fun p : Fin (2 * (2 * n + E)) =>
-                  timedFieldOperator ε
-                    (externalInsertionMixedTimeOrderedAtomicFieldFamily
-                      externalLabel externalTime q σ p))).prod) := by
-  classical
-  rw [Finset.mul_sum]
-  apply Finset.sum_congr rfl
-  intro q _
-  rw [externalInsertionMixedTimeOrderedVertexComp_eq_atomicProduct]
-  simp only [freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation,
-    Common.finiteGibbsExpectation_smul]
-  ring
-
 /-- Order-n Dyson coefficient of full interaction-picture quartic
 vertices inserted among a fixed family of external fermionic fields.
 
@@ -93,8 +61,14 @@ theorem externalInsertionVertexDysonCoefficient_eq_externalInsertionDysonCoeffic
         externalInsertionMixedAtomicDysonCoefficient
       apply intervalIntegral.orderedSimplexIntegral_congr
       intro σ
-      rw [sum_externalInsertionMixedTimeOrderedVertexComp_expectation_eq_atomic
-        ε β g externalLabel externalTime σ]
+      apply congrArg (fun z : ℂ => (-1 : ℂ) ^ n * z)
+      rw [Finset.mul_sum]
+      apply Finset.sum_congr rfl
+      intro q _
+      rw [externalInsertionMixedTimeOrderedVertexComp_eq_atomicProduct]
+      simp only [freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation,
+        Common.finiteGibbsExpectation_smul]
+      ring
     _ = externalInsertionDysonCoefficient
           ε β g externalLabel externalTime n :=
       externalInsertionMixedAtomicDysonCoefficient_eq_externalInsertionDysonCoefficient
