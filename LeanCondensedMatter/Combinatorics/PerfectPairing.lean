@@ -20,6 +20,7 @@ import LeanCondensedMatter.Combinatorics.PerfectPairing.InsertFirstPair
 import LeanCondensedMatter.Combinatorics.PerfectPairing.PairsDecomposition
 import LeanCondensedMatter.Combinatorics.PerfectPairing.SumDecomposition
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Transport
+import LeanCondensedMatter.Combinatorics.PerfectPairing.InvolutionCard
 
 set_option linter.style.header false
 
@@ -29,7 +30,8 @@ set_option linter.style.header false
 Importing this module provides the core pairing type, normalized endpoints, pairing presentations,
 the minimal bipartite matching API, scalar pairing evaluation, pairing-induced vertex graphs,
 partner-invariant restriction and reindexing, order-preserving pairing embeddings, component
-pair decompositions, transport, crossing statistics, erase/insert infrastructure, and the
+pair decompositions, transport, crossing statistics, fixed-point-free involution cardinalities,
+erase/insert infrastructure, and the
 first-pair product/sum decompositions used by the Bloch--de Dominicis development. The
 four-position enumeration, abstract first-pair recursion, and exchange-weighted sum backend remain
 separate modules and must be imported explicitly when needed.

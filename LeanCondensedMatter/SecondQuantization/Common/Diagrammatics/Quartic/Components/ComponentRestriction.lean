@@ -1,5 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Connected
-import LeanCondensedMatter.Combinatorics.SimpleGraphComponentPartition
+import LeanCondensedMatter.Combinatorics.SetPartition.GraphComponents
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Restriction
 
 set_option linter.style.header false

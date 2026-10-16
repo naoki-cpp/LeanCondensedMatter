@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Combinatorics.SimpleGraphComponentPartition
+import LeanCondensedMatter.Combinatorics.SetPartition.GraphComponents
 import Mathlib.Data.Finset.Sum
 
 set_option linter.style.header false

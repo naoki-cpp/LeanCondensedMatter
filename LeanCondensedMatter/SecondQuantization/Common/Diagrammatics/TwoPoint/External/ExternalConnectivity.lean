@@ -1,5 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Components.ComponentRestriction
-import LeanCondensedMatter.Combinatorics.InvolutionCard
+import LeanCondensedMatter.Combinatorics.PerfectPairing.InvolutionCard
 
 set_option linter.style.header false
 
