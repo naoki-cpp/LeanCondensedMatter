@@ -97,7 +97,7 @@ cumulants, and connected decompositions remain in `Combinatorics`.
 - Mathlib provides `SimpleGraph.reachableSetoid`, connected components, and
   `Finpartition.ofSetoid` / `Finpartition.ofSetSetoid`, but no graph-component `Finpartition`
   facade was found. The finite and ambient-finset graph component API therefore lives in
-  `Combinatorics/SimpleGraphComponentPartition.lean`; diagrammatic layers keep only semantic
+  `Combinatorics/SetPartition/GraphComponents.lean`; diagrammatic layers keep only semantic
   component definitions and consume these generic graph lemmas directly;
 - Mathlib supplies `finProdFinEquiv : Fin n × Fin k ≃ Fin (n * k)` and finite-product sum
   reindexing; the cast-aware fixed-width coordinate/order facts used by the project live in

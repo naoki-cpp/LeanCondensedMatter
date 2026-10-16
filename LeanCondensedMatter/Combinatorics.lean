@@ -9,13 +9,11 @@ import LeanCondensedMatter.Combinatorics.FamilySlotShuffleInversions
 import LeanCondensedMatter.Combinatorics.FamilySlotShuffleSign
 import LeanCondensedMatter.Combinatorics.FamilySlotShuffleDecomposition
 import LeanCondensedMatter.Combinatorics.FinpartitionOrderShuffle
-import LeanCondensedMatter.Combinatorics.SimpleGraphComponentPartition
 import LeanCondensedMatter.Combinatorics.IncidenceAlgebra.Mobius
 import LeanCondensedMatter.Combinatorics.SetPartition
 import LeanCondensedMatter.Combinatorics.Cumulant
 import LeanCondensedMatter.Combinatorics.PerfectPairing
 import LeanCondensedMatter.Combinatorics.SubsetSplit
-import LeanCondensedMatter.Combinatorics.InvolutionCard
 
 set_option linter.style.header false
 

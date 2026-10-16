@@ -1,5 +1,5 @@
-import LeanCondensedMatter.Combinatorics.FinpartitionProduct
-import LeanCondensedMatter.Combinatorics.SimpleGraphComponentPartition
+import LeanCondensedMatter.Combinatorics.SetPartition.FinpartitionProduct
+import LeanCondensedMatter.Combinatorics.SetPartition.GraphComponents
 import Mathlib.Data.Finset.Image
 import Mathlib.Data.Finset.Sum
 

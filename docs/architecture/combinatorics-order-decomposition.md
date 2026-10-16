@@ -128,7 +128,7 @@ proofs; vertex-slot geometry and mixed-time order geometry remain separate downs
 
 ## Partition products and moment transforms
 
-`Combinatorics.FinpartitionProduct` owns `Finpartition.partitionProduct` and its top-partition
+`Combinatorics.SetPartition.FinpartitionProduct` owns `Finpartition.partitionProduct` and its top-partition
 and `bind` laws over a commutative monoid. It does not depend on the moment transform or
 Möbius inversion.
 

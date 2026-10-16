@@ -2,10 +2,10 @@ import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInser
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ComponentLegData
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Embedding
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Restriction
-import LeanCondensedMatter.Combinatorics.InvolutionCard
+import LeanCondensedMatter.Combinatorics.PerfectPairing.InvolutionCard
 import LeanCondensedMatter.Combinatorics.FamilySlotShuffle
 import LeanCondensedMatter.Combinatorics.FamilySlotShuffleInversions
-import LeanCondensedMatter.Combinatorics.FinpartitionProduct
+import LeanCondensedMatter.Combinatorics.SetPartition.FinpartitionProduct
 import Mathlib.Data.Finset.Sort
 
 set_option linter.style.header false

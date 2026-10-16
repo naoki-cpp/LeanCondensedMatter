@@ -106,7 +106,7 @@ rules, or empty/zero cases. In particular this covers the current simp API in:
 - `FamilyOrderShuffle`
 - `FinpartitionOrderShuffle`
 - `FiniteIndex/DeletedPositions`
-- `SimpleGraphComponentPartition`
+- `SetPartition/GraphComponents`
 - `Cumulant/Normalized`
 - `Cumulant/Moment`
 - `Cumulant/Inversion`

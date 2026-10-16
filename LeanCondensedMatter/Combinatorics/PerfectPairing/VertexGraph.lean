@@ -1,7 +1,7 @@
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Split
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Transport
 import Mathlib.Combinatorics.SimpleGraph.Sum
-import LeanCondensedMatter.Combinatorics.SimpleGraphComponentPartition
+import LeanCondensedMatter.Combinatorics.SetPartition.GraphComponents
 
 set_option linter.style.header false
 

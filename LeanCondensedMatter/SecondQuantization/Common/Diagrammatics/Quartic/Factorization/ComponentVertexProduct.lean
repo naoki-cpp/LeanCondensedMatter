@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Combinatorics.FinpartitionProduct
+import LeanCondensedMatter.Combinatorics.SetPartition.FinpartitionProduct
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentConnected
 
 set_option linter.style.header false

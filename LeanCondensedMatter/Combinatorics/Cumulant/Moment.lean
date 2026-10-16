@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Combinatorics.FinpartitionProduct
+import LeanCondensedMatter.Combinatorics.SetPartition.FinpartitionProduct
 import LeanCondensedMatter.Combinatorics.SetPartition.Refinement
 import LeanCondensedMatter.Combinatorics.SetPartition.DistinguishedBlock
 import Mathlib.Algebra.BigOperators.Ring.Finset
