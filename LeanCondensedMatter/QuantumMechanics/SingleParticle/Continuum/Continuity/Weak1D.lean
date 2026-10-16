@@ -10,7 +10,7 @@ set_option linter.style.header false
 
 This module supplies the probability-density/current specializations of the generic
 one-dimensional weak conservation-law kernel.  The integration-by-parts theorem itself lives under
-`Analysis.Calculus.WeakConservation1D` and is independent of quantum mechanics.
+`Analysis.ConservationLaw.WeakConservation1D` and is independent of quantum mechanics.
 -/
 
 namespace QuantumMechanics
