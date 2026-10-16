@@ -611,3 +611,36 @@ or consumer structure changes.
 - `Finpartition.momentFromCumulant_eq_sum_blockContaining` — canonical distinguished-block recursion for finite-set moments, used by both Möbius-style formulas and the formal-log moment recurrence.
 - `Finpartition.sum_Iic_partitionProduct_eq` — factorization of the partition-product sum over a refinement interval into blockwise moments; the generic finite-partition identity underlies cumulant inversion and replica reindexing.
 - `Combinatorics.Pairing.card_normalizedPair` — cardinality of the normalized pair family, exactly half of the ambient positions; this is a core structural theorem of perfect pairings, not merely a counting step for current consumers.
+
+- `IncidenceAlgebra.mu_orderIso_apply` — Möbius invariance under order isomorphism for locally finite posets; this is the generic incidence-algebra transport theorem used by partition-lattice reductions.
+- `IncidenceAlgebra.map_mu_apply` — naturality of the Möbius function under a ring homomorphism, independent of any specific coefficient ring or combinatorial lattice.
+- `IncidenceAlgebra.mu_subtype_le_apply` — restriction of the Möbius function to a principal lower interval, a generic interval-closure property used in partition refinements.
+- `IncidenceAlgebra.mu_subtype_ge_apply` — restriction of the Möbius function to a principal upper interval, complementary to the lower-interval result and used by partition coarsenings.
+- `IncidenceAlgebra.mu_pi_finset_apply` — finite dependent-product factorization of the Möbius function, providing the reusable product decomposition behind partition-lattice Möbius factorization.
+- `Finpartition.mu_bot_top_eq_factorial` — explicit nonempty-partition-lattice Möbius value as a signed factorial; a standalone enumerative identity rather than proof routing.
+- `Finpartition.mu_bot_top_eq_factorial_ite` — total signed-factorial Möbius formula including the exceptional empty finite set, avoiding an implicit nonemptiness side condition.
+- `Finpartition.mu_to_top_eq_factorial` — explicit signed-factorial formula from an arbitrary finite partition to top, indexed by its block count.
+- `Finpartition.mu_eq_prod_factorial` — closed integer-valued Möbius formula for any interval of the finite-partition lattice, as a product over coarser blocks.
+- `Finpartition.cumulantFromMoment_empty` — canonical empty-set evaluation of the Möbius-defined cumulant transform; it supplies normalization for the bundled moment–cumulant interface.
+- `Finpartition.cumulantFromMoment_momentFromCumulant` — one direction of finite-set moment–cumulant inversion on nonempty sets, independent of normalized-function packaging.
+- `Finpartition.sum_Iic_mu_partitionProduct_eq` — incidence-algebra convolution identity over a refinement interval, factoring its Möbius-weighted sum into blockwise cumulants.
+- `Finpartition.momentFromCumulant_cumulantFromMoment` — converse finite-set moment–cumulant inversion on nonempty sets; both inverse identities define the generic transform equivalence.
+- `Combinatorics.Pairing.componentGeometricCrossingCount_eq_oriented_add` — decomposition of geometric inter-component crossings into the two oriented crossing counts; makes the asymmetry of oriented crossings explicit.
+- `Combinatorics.Pairing.componentGeometricCrossingCount_comm` — symmetry of geometric crossing count under exchange of components, unlike its oriented counterpart.
+- `Combinatorics.Pairing.componentGeometricCrossingCount_mod_two_eq_endpointInversionCount` — parity bridge between pairwise geometric crossings and endpoint-order inversions for distinct components.
+- `Combinatorics.Pairing.componentGeometricCrossingCount_mod_two_eq_zero_of_even_fiber` — general even-fiber cancellation criterion for geometric crossing parity, independent of particular diagram component types.
+- `Combinatorics.Pairing.componentCrossingCount_self_eq` — identifies diagonal component crossing count with a local pairing's crossing count under monotone endpoint transport.
+- `Combinatorics.Pairing.crossingCount_eq_sum_componentCrossingCount` — exact decomposition of the global crossing count as a double sum over oriented component crossings.
+- `Combinatorics.Pairing.interComponentCrossingCount_mod_two_eq_orderedBlockInversionCount` — parity identification of inter-component crossings with ordered family-shuffle block inversions, retaining explicit block order.
+- `Combinatorics.Pairing.crossingCount_eq_sum_localCrossingCount_add_inter` — additive crossing decomposition into local pairing counts and an inter-component residual, under strict local position monotonicity.
+- `Combinatorics.Pairing.crossingCount_mod_two_eq_sum_componentCrossingCount_of_geometric_even` — global crossing parity reduction to diagonal contributions when all off-diagonal geometric crossing counts are even.
+- `Combinatorics.Pairing.normalizedPairSigmaEquiv_apply_of_strictMono` — endpoint computation of the dependent-sum normalized-pair equivalence under strictly increasing component position maps, preserving orientation.
+- `Combinatorics.Pairing.prod_pairs_eq_prod_components` — generic product factorization over normalized pairing components, assuming kernel compatibility; independent of scalar evaluation weights.
+- `Combinatorics.Pairing.evaluation_eq_mul_prod_components` — semantic scalar evaluation factorization into a residual and component evaluations when both weights and pair kernels factor.
+- `Combinatorics.familyOrdersOfOrder_strictMono` — strict monotonicity of local orders extracted from a global order on dependent family fibers; a core property of order decomposition.
+- `Finpartition.assembleOrder_shuffleOfOrder` — reconstruction equation for a global order from its compatible local block orders and induced shuffle.
+- `Finpartition.partOrdersCompatible_partOrdersOfOrder` — compatibility of local orders extracted from a global ordering with the partition's original parts.
+- `Finpartition.sum_order_eq_mul_prod_sum_partOrders` — general finite-order sum factorization into a scalar, shuffle contribution, and block-local order sums under weight factorization.
+- `Combinatorics.Pairing.ofSplitInterSectorCrossingCount_mod_two_eq_positionInversions` — terminal binary pairing-split parity formula reducing inter-sector crossing parity to position inversions; used by thermal pairing weights.
+- `Combinatorics.Pairing.ofSplit_crossingCount_eq_left_add_right_add_inter` — terminal exact crossing-count decomposition for an order-preserving binary pairing split, retaining local counts and the residual.
+- `Combinatorics.FamilySlotShuffleTo.relativePerm_sign_eq_orderedBlockInversionCount_add` — sign identity for relative order-preserving family shuffles, expressed through both ordered block-inversion counts with explicit component order.
