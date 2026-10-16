@@ -190,7 +190,7 @@ private theorem X_pow_eq_sum_stirlingSecond_descPochhammer (b : ℕ) :
 /-- The replica polynomial in the descending-factorial basis.  The Stirling number of the second
 kind converts the monomial replica factor for a partition into the falling-factorial basis used by
 the fixed-order power-series replica polynomial. -/
-theorem replicaPolynomial_eq_sum_stirlingSecond_descPochhammer
+private theorem replicaPolynomial_eq_sum_stirlingSecond_descPochhammer
     {α : Type*} [DecidableEq α] (κ : Finset α → F) (S : Finset α) :
     replicaPolynomial κ S =
       ∑ π : Finpartition S, ∑ k ∈ Finset.range (π.parts.card + 1),
