@@ -26,9 +26,10 @@ open Filter QuantumTheory.Transport
 /-- Lorentzian-weighted target-centered integral of the regular interband spectator/current factor. -/
 noncomputable def targetCenteredInterbandSpectatorCurrentPoleIntegral
     (band : Band) (e v m px py radius broadening : ℝ) : ℂ :=
-  Lorentzian.regularFactorIntegral
-    (targetCenteredInterbandSpectatorCurrentFactor band e v m px py)
-    radius broadening
+  ∫ offset in -radius..radius,
+    (Lorentzian.spectralKernel offset broadening : ℂ) *
+      targetCenteredInterbandSpectatorCurrentFactor
+        band e v m px py (offset, broadening)
 
 /-- The model-specific pole integral is the generic isolated-interband regular-factor integral. -/
 private theorem targetCenteredInterbandSpectatorCurrentPoleIntegral_eq_interbandPoleRegularFactorIntegral
@@ -42,10 +43,11 @@ private theorem targetCenteredInterbandSpectatorCurrentPoleIntegral_eq_interband
         radius broadening := by
   unfold targetCenteredInterbandSpectatorCurrentPoleIntegral
     interbandPoleRegularFactorIntegral
+  apply intervalIntegral.integral_congr
+  intro offset _
   congr 1
-  funext p
   exact targetCenteredInterbandSpectatorCurrentFactor_eq_interbandPoleRegularFactor
-    band e v m px py p
+    band e v m px py (offset, broadening)
 
 /-- Fixed target-centered energy-window integral of the interband Bastin Hall pair whose source is
 the opposite band and whose target is `band`. -/
@@ -67,7 +69,6 @@ theorem targetCenteredInterbandBastinPairIntegral_eq_neg_two_i_mul_poleIntegral
           band e v m px py radius broadening := by
   unfold targetCenteredInterbandBastinPairIntegral
     targetCenteredInterbandSpectatorCurrentPoleIntegral
-    Lorentzian.regularFactorIntegral
   rw [← intervalIntegral.integral_const_mul]
   apply intervalIntegral.integral_congr
   intro offset _
