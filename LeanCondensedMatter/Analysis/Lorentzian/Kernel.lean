@@ -170,8 +170,9 @@ theorem tendsto_integral_spectralKernel_symmetric
   rw [show (2 : ℝ) * (Real.pi / 2) = Real.pi by ring] at hmass
   simpa only [integral_spectralKernel_symmetric] using hmass
 
-/-- Lorentzian spectral mass between an inner and outer symmetric window, represented as the
-outer-window mass minus the inner-window mass. -/
+/-- Signed difference between the outer and inner symmetric-window Lorentzian masses.
+For nonnegative broadening and nested nonnegative radii this is the mass in the two
+outer segments; without these conditions it need not be nonnegative. -/
 def spectralTailMass (innerRadius outerRadius broadening : ℝ) : ℝ :=
   (∫ offset in -outerRadius..outerRadius,
       spectralKernel offset broadening) -
@@ -187,17 +188,6 @@ theorem spectralTailMass_eq_two_mul_arctan_sub
   rw [spectralTailMass,
     integral_spectralKernel_symmetric,
     integral_spectralKernel_symmetric]
-  ring
-
-/-- The outer symmetric mass is the inner mass plus the spectral tail mass. -/
-theorem integral_spectralKernel_outer_eq_inner_add_tail
-    (innerRadius outerRadius broadening : ℝ) :
-    (∫ offset in -outerRadius..outerRadius,
-        spectralKernel offset broadening) =
-      (∫ offset in -innerRadius..innerRadius,
-        spectralKernel offset broadening) +
-        spectralTailMass innerRadius outerRadius broadening := by
-  unfold spectralTailMass
   ring
 
 /-- For fixed positive nested radii, all Lorentzian mass between the two windows vanishes as the
