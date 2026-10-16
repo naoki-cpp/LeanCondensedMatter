@@ -46,15 +46,12 @@ theorem excitationHamiltonian_isPositive (J : ℝ) (hJ : 0 ≤ J) :
   exact (LinearMap.isPositive_sum Finset.univ
     (fun i _ => id_sub_exchange_isPositive i (i + 1))).smul_of_nonneg (by exact_mod_cast hJ)
 
-theorem hamiltonian_isSymmetric (J : ℝ) :
-    (hamiltonian (N := N) J).IsSymmetric := by
+theorem hamiltonian_isSelfAdjoint (J : ℝ) : IsSelfAdjoint (hamiltonian (N := N) J) := by
+  apply (LinearMap.isSymmetric_iff_isSelfAdjoint _).mp
   apply LinearMap.isSymmetric_sum
   intro i _
   exact ((LinearMap.IsSymmetric.id.smul (by simp [map_ofNat])).sub
     (exchange_isSymmetric i (i + 1))).smul (by simp)
-
-theorem hamiltonian_isSelfAdjoint (J : ℝ) : IsSelfAdjoint (hamiltonian (N := N) J) :=
-  (LinearMap.isSymmetric_iff_isSelfAdjoint _).mp (hamiltonian_isSymmetric J)
 
 theorem hamiltonian_polarized (J : ℝ) :
     hamiltonian (N := N) J polarized = (groundEnergy N J : ℂ) • polarized := by
