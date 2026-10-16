@@ -1,5 +1,7 @@
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalComponents
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.InteractionSector
+import Mathlib.Logic.Equiv.Sum
+import Mathlib.Logic.Equiv.Prod
 
 set_option linter.style.header false
 
@@ -31,43 +33,25 @@ vertices paired with their local-leg data. -/
 noncomputable def componentLegDataEquiv
     {S : Finset Vertex} (B : Finset (External ⊕ ↥S)) :
     {leg : External ⊕ (↥S × Local) // componentLegVertex leg ∈ B} ≃
-      ↥(Finset.toLeft B) ⊕ (↥(interactionSector B) × Local) where
-  toFun leg := by
-    rcases leg with ⟨leg, hleg⟩
-    cases leg with
-    | inl e =>
-        exact Sum.inl ⟨e, Finset.mem_toLeft.2 hleg⟩
-    | inr p =>
-        exact Sum.inr
-          (⟨p.1.1, (mem_interactionSector_subtype B p.1).2 hleg⟩, p.2)
-  invFun leg := by
-    cases leg with
-    | inl e =>
-        exact ⟨Sum.inl e.1, Finset.mem_toLeft.1 e.2⟩
-    | inr p =>
-        let v : ↥S := ⟨p.1.1, interactionSector_subset B p.1.2⟩
-        exact ⟨Sum.inr (v, p.2), (mem_interactionSector_subtype B v).1 p.1.2⟩
-  left_inv leg := by
-    rcases leg with ⟨leg, hleg⟩
-    cases leg with
-    | inl e =>
-        apply Subtype.ext
-        rfl
-    | inr p =>
-        rcases p with ⟨v, l⟩
-        apply Subtype.ext
-        rfl
-  right_inv leg := by
-    cases leg with
-    | inl e =>
-        apply congrArg Sum.inl
-        exact Subtype.ext (by rfl)
-    | inr p =>
-        rcases p with ⟨v, l⟩
-        apply congrArg Sum.inr
-        apply Prod.ext
-        · exact Subtype.ext (by rfl)
-        · rfl
+      ↥(Finset.toLeft B) ⊕ (↥(interactionSector B) × Local) := by
+  let eLeft :
+      {e : External // (Sum.inl e : External ⊕ ↥S) ∈ B} ≃
+        ↥(Finset.toLeft B) :=
+    (Equiv.refl External).subtypeEquiv fun _ => Finset.mem_toLeft.symm
+  let eVertex :
+      {v : ↥S // (Sum.inr v : External ⊕ ↥S) ∈ B} ≃
+        ↥(interactionSector B) :=
+    (Equiv.subtypeEquivRight fun v : ↥S =>
+      (mem_interactionSector_subtype B v).symm).trans
+      (Equiv.subtypeSubtypeEquivSubtype fun hv => interactionSector_subset B hv)
+  let eRight :
+      {p : ↥S × Local // (Sum.inr p.1 : External ⊕ ↥S) ∈ B} ≃
+        ↥(interactionSector B) × Local :=
+    (Equiv.prodSubtypeFstEquivSubtypeProd).trans
+      (Equiv.prodCongr eVertex (Equiv.refl Local))
+  exact (Equiv.subtypeSum
+    (p := fun leg : External ⊕ (↥S × Local) => componentLegVertex leg ∈ B)).trans
+      (Equiv.sumCongr eLeft eRight)
 
 /-- If a component contains no external vertex, its legs are exactly its interaction vertices paired
 with their local-leg data. -/
