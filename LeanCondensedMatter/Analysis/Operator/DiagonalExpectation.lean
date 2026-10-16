@@ -57,6 +57,14 @@ theorem coe_diagonalExpectationValue_right
       coe_diagonalExpectationValue T hT x
     _ = inner ℂ x (T x) := hsym x x
 
+/-- The lossless diagonal expectation of the zero operator vanishes. -/
+theorem diagonalExpectationValue_zero
+    (h0 : IsSelfAdjoint (0 : H →L[ℂ] H)) (x : H) :
+    diagonalExpectationValue 0 h0 x = 0 := by
+  apply Complex.ofReal_injective
+  rw [coe_diagonalExpectationValue_right]
+  simp
+
 /-- A positive operator has a nonnegative lossless diagonal expectation. -/
 theorem diagonalExpectationValue_nonneg
     (T : H →L[ℂ] H) (hT : T.IsPositive) (x : H) :

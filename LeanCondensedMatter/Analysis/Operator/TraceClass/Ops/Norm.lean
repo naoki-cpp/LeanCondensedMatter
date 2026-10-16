@@ -17,24 +17,6 @@ namespace ContinuousLinearMap
 
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
 
-private theorem diagonalExpectationValue_zero
-    (h0 : IsSelfAdjoint (0 : H →L[ℂ] H)) (x : H) :
-    diagonalExpectationValue 0 h0 x = 0 := by
-  apply Complex.ofReal_injective
-  rw [coe_diagonalExpectationValue_right]
-  simp
-
-private theorem diagonalExpectationValue_abs_smul
-    (c : ℂ) (T : H →L[ℂ] H) (x : H) :
-    diagonalExpectationValue (CFC.abs (c • T)) (CFC.abs_nonneg (c • T)).isSelfAdjoint x =
-      ‖c‖ * diagonalExpectationValue (CFC.abs T) (CFC.abs_nonneg T).isSelfAdjoint x := by
-  apply Complex.ofReal_injective
-  rw [coe_diagonalExpectationValue_right, Complex.ofReal_mul,
-    coe_diagonalExpectationValue_right, CFC.abs_smul]
-  rw [smul_apply]
-  rw [RCLike.real_smul_eq_coe_smul (K := ℂ) ‖c‖ ((CFC.abs T) x)]
-  rw [inner_smul_right]
-  rfl
 
 /-- If `W` is a contraction, the absolute diagonal pairing with a trace-class operator is bounded
 by the trace norm. -/
