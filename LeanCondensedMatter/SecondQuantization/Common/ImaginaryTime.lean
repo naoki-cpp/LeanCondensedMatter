@@ -5,9 +5,9 @@ import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.InteractionPi
 import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.KMSRotation
 import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.Quartic
 import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.StableTimedEventOrder
-import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionMixedOrder
-import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointMixedOrder
-import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedOrderSignature
+import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionImaginaryTimeOrder
+import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointImaginaryTimeOrder
+import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ImaginaryTimeOrderSignature
 import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointMixedLegOrder
 
 set_option linter.style.header false
@@ -17,7 +17,7 @@ set_option linter.style.header false
 
 Statistics-aware pair time ordering, basis-diagonal free evolution, fixed energy-shift eigenoperators,
 algebraic Heisenberg evolution, interaction-picture operators, KMS rotation identities, generic
-quartic-interaction evolution, the arbitrary-external mixed event/leg order, and the
-statistics-independent mixed two-point event/leg order with
-monotone slot transport and measurable finite order signatures.
+quartic-interaction evolution, the arbitrary-external and two-point imaginary-time event/atomic-leg orderings,
+with monotone slot transport and measurable finite order signatures.
+These are ordering coordinates; fermionic exchange signs are supplied separately.
 -/

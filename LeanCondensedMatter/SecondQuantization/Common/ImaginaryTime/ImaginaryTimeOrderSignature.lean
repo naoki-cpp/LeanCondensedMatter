@@ -1,14 +1,14 @@
-import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointMixedOrder
-import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionMixedOrder
+import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointImaginaryTimeOrder
+import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ExternalInsertionImaginaryTimeOrder
 import Mathlib.MeasureTheory.Constructions.BorelSpace.Order
 import Mathlib.MeasureTheory.MeasurableSpace.Constructions
 
 set_option linter.style.header false
 
 /-!
-# Finite signatures for mixed-time event orders
+# Finite signatures of imaginary-time event orders
 
-Two-point and arbitrary-external mixed event orders are classified by finite sets of strict
+Two-point and arbitrary-external imaginary-time event orders are classified by finite sets of strict
 event-time comparisons. Equal-time configurations belong to signature fibers as well. These fibers
 are Borel measurable; the construction does not depend on particle statistics.
 -/

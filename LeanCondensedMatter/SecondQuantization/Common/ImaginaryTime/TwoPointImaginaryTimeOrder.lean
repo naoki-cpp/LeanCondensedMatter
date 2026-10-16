@@ -6,12 +6,15 @@ import Mathlib.Tactic.FinCases
 set_option linter.style.header false
 
 /-!
-# Statistics-independent mixed two-point event order
+# Imaginary-time event order for two-point insertions
 
 A two-point insertion contributes two distinguished external events together with `n` interaction
 events. This module orders those events by decreasing imaginary time, using a deterministic stable
 rank at equal times: external event `0`, external event `1`, then interaction slots in their supplied
 order.
+
+The construction only defines the event order and its deterministic equal-time convention.
+It does not implement the fermionic imaginary-time ordering operator: signs are downstream.
 
 The construction is purely order-theoretic. It does not know which operators the events represent,
 which statistics they obey, or which exchange factor an operator realization assigns when the two

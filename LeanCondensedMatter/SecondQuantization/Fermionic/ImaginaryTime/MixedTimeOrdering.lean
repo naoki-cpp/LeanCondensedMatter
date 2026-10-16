@@ -1,4 +1,4 @@
-import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointMixedOrder
+import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointImaginaryTimeOrder
 import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.QuarticInteraction
 import LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTime.ExternalField
 import LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTime.InteractionPicture

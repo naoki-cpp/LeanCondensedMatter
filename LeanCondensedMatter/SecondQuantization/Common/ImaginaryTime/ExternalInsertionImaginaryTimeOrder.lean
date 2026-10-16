@@ -8,9 +8,12 @@ import Mathlib.Basic.Real.Basic
 set_option linter.style.header false
 
 /-!
-# Mixed-time order for arbitrary external insertions
+# Imaginary-time event and atomic-leg order for external insertions
 
-This module provides only the ordering data needed by the higher-point fermionic consumer:
+This module supplies statistics-independent imaginary-time ordering coordinates for
+arbitrary external insertions. It does not assign fermionic exchange signs.
+
+The data are:
 
 * sort the `2 * E` external events together with `n` interaction events by imaginary time;
 * expand that event order to the corresponding atomic legs;
