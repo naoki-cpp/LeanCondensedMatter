@@ -17,18 +17,6 @@ namespace NormalizedSetFunction
 
 variable {α R : Type*} [DecidableEq α] [CommRing R]
 
-private theorem cumulantFromMoment_empty (m : Finset α → R) :
-    Finpartition.cumulantFromMoment m ∅ = 1 := by
-  classical
-  letI : Unique (Finpartition (∅ : Finset α)) :=
-    inferInstanceAs (Unique (Finpartition (⊥ : Finset α)))
-  rw [Finpartition.cumulantFromMoment, Fintype.sum_unique]
-  have hdefault_top : (default : Finpartition (∅ : Finset α)) = ⊤ :=
-    Subsingleton.elim _ _
-  have hparts_top : (⊤ : Finpartition (∅ : Finset α)).parts = ∅ := by simp
-  rw [hdefault_top]
-  simp [Finpartition.partitionProduct, hparts_top]
-
 /-- Moment transform on normalized finite-set functions. -/
 noncomputable def moment (κ : NormalizedSetFunction α R) : NormalizedSetFunction α R where
   toFun := Finpartition.momentFromCumulant κ
@@ -37,7 +25,7 @@ noncomputable def moment (κ : NormalizedSetFunction α R) : NormalizedSetFuncti
 /-- Cumulant transform on normalized finite-set functions. -/
 noncomputable def cumulant (m : NormalizedSetFunction α R) : NormalizedSetFunction α R where
   toFun := Finpartition.cumulantFromMoment m
-  map_empty := cumulantFromMoment_empty m
+  map_empty := Finpartition.cumulantFromMoment_empty m
 
 @[simp]
 theorem moment_apply (κ : NormalizedSetFunction α R) (S : Finset α) :

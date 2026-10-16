@@ -23,6 +23,21 @@ namespace Finpartition
 noncomputable def cumulantFromMoment (m : Finset α → R) (S : Finset α) : R :=
   ∑ π : Finpartition S, mu R π ⊤ * partitionProduct m π
 
+/-- The Möbius-inverse cumulant transform is normalized to `1` at the empty set,
+independently of the input moment function. -/
+@[simp]
+theorem cumulantFromMoment_empty (m : Finset α → R) :
+    cumulantFromMoment m ∅ = 1 := by
+  classical
+  letI : Unique (Finpartition (∅ : Finset α)) :=
+    inferInstanceAs (Unique (Finpartition (⊥ : Finset α)))
+  rw [cumulantFromMoment, Fintype.sum_unique]
+  have hdefault_top : (default : Finpartition (∅ : Finset α)) = ⊤ :=
+    Subsingleton.elim _ _
+  have hparts_top : (⊤ : Finpartition (∅ : Finset α)).parts = ∅ := by simp
+  rw [hdefault_top]
+  simp [Finpartition.partitionProduct, hparts_top]
+
 /-- Pointwise Möbius inversion, away from the empty finite set. -/
 theorem cumulantFromMoment_momentFromCumulant (κ : Finset α → R)
     {S : Finset α} (hS : S ≠ ⊥) :
