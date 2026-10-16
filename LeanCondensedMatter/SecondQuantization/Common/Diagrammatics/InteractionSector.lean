@@ -24,11 +24,12 @@ variable {External Vertex : Type*}
 open Classical in
 /-- Ambient interaction vertices represented in the right summand of `B`.
 
-Extract the right summand with Mathlib's `Finset.toRight`, then forget the proof that
-each vertex lies in `S`. The embedding preserves cardinality and membership. -/
+Use Mathlib's `Finset.toRight` to identify right-summand membership while retaining
+the ambient `S.filter` normal form. This avoids unfolding an injective `Finset.map`
+when downstream diagram equivalences are checked by definitional equality. -/
 noncomputable def interactionSector {S : Finset Vertex}
     (B : Finset (External ⊕ ↥S)) : Finset Vertex :=
-  B.toRight.map ⟨Subtype.val, Subtype.val_injective⟩
+  S.filter fun v => ∃ hv : v ∈ S, (⟨v, hv⟩ : ↥S) ∈ B.toRight
 
 /-- Membership in the interaction sector is membership of the corresponding right-summand vertex. -/
 theorem mem_interactionSector {S : Finset Vertex}
@@ -36,12 +37,13 @@ theorem mem_interactionSector {S : Finset Vertex}
     v ∈ interactionSector B ↔
       ∃ hv : v ∈ S, (Sum.inr ⟨v, hv⟩ : External ⊕ ↥S) ∈ B := by
   classical
-  simp only [interactionSector, Finset.mem_map, Finset.mem_toRight]
+  unfold interactionSector
+  rw [Finset.mem_filter]
   constructor
-  · rintro ⟨w, hw, rfl⟩
-    exact ⟨w.2, hw⟩
+  · rintro ⟨_, hv, hw⟩
+    exact ⟨hv, Finset.mem_toRight.1 hw⟩
   · rintro ⟨hv, hw⟩
-    exact ⟨⟨v, hv⟩, hw, rfl⟩
+    exact ⟨hv, hv, Finset.mem_toRight.2 hw⟩
 
 /-- Membership form for a vertex already carrying its ambient-membership proof. -/
 @[simp]
