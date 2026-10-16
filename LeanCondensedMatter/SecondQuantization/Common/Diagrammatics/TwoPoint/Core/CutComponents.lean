@@ -1,5 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.OneParticleIrreducible
 import LeanCondensedMatter.Combinatorics.SimpleGraphComponentPartition
+import Mathlib.Combinatorics.SimpleGraph.Operations
 
 set_option linter.style.header false
 
@@ -20,6 +21,49 @@ namespace SecondQuantization
 namespace Common
 
 variable {ExternalLabel InternalLabel : Type*} {N : ℕ} {S : Finset (Fin N)}
+
+/-- The original vertex graph is recovered by adjoining the edge underlying the removed
+paired propagator. This equality retains any parallel propagators in the cut graph and lets
+standard `SimpleGraph` edge-deletion and bridge theory be used downstream. -/
+theorem TwoPointDiagram.vertexGraph_eq_withoutPropagator_sup_edge
+    (d : TwoPointDiagram ExternalLabel InternalLabel N S)
+    (cut : Fin (2 * (2 * S.card + 1))) :
+    d.vertexGraph =
+      d.vertexGraphWithoutPropagator cut ⊔
+        SimpleGraph.edge (twoPointVertexOfLeg cut)
+          (twoPointVertexOfLeg (d.pairing.partner cut)) := by
+  apply SimpleGraph.ext
+  funext v w
+  apply propext
+  simp only [SimpleGraph.sup_adj]
+  constructor
+  · rintro ⟨hne, leg, hv, hw⟩
+    by_cases hleg : leg = cut
+    · right
+      subst leg
+      exact (SimpleGraph.edge_adj _ _ _ _).2
+        ⟨Or.inl ⟨hv.symm, hw.symm⟩, hne⟩
+    · by_cases hpartner : d.pairing.partner leg = cut
+      · right
+        have hlegEq : leg = d.pairing.partner cut := by
+          calc
+            leg = d.pairing.partner (d.pairing.partner leg) :=
+              (d.pairing.partner_involutive leg).symm
+            _ = d.pairing.partner cut := congrArg d.pairing.partner hpartner
+        exact (SimpleGraph.edge_adj _ _ _ _).2
+          ⟨Or.inr ⟨hv.symm.trans (congrArg twoPointVertexOfLeg hlegEq),
+            hw.symm.trans (congrArg twoPointVertexOfLeg hpartner)⟩, hne⟩
+      · left
+        exact ⟨hne, leg, hleg, hpartner, hv, hw⟩
+  · rintro (hremaining | hedge)
+    · rcases hremaining with ⟨hne, leg, _, _, hv, hw⟩
+      exact ⟨hne, leg, hv, hw⟩
+    · obtain ⟨hh, hne⟩ := (SimpleGraph.edge_adj _ _ _ _).1 hedge
+      rcases hh with ⟨hv, hw⟩ | ⟨hv, hw⟩
+      · exact ⟨hne, cut, hv.symm, hw.symm⟩
+      · refine ⟨hne, d.pairing.partner cut, hv.symm, ?_⟩
+        rw [d.pairing.partner_involutive cut]
+        exact hw.symm
 
 /-- The endpoints of any surviving propagator remain connected after cutting another line. -/
 theorem TwoPointDiagram.reachable_partner_withoutPropagator
