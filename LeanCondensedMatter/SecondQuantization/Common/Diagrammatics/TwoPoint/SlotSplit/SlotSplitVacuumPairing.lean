@@ -34,20 +34,6 @@ private noncomputable def slotSplitVacuumMixedOrderEmbedding
       (slotSplitVacuumSlot T) (slotSplitVacuumSlot_strictMono T)
       τ τ' σ hσ)
 
-/-- Mixed-time atomic leg identities inherit the timeless vacuum-side partner transport. -/
-private theorem TwoPointDiagram.ofSlotSplit_atomicLegPartner_vacuumOrderedLeg
-    (T : Finset (Fin n))
-    (ext : TwoPointDiagram ExternalLabel InternalLabel n T)
-    (vac : QuarticDiagram InternalLabel n ((Finset.univ : Finset (Fin n)) \ T))
-    (p : Fin (2 * (2 * ((Finset.univ : Finset (Fin n)) \ T).card))) :
-    let d := TwoPointDiagram.ofSlotSplit (Finset.subset_univ T) ext vac
-    d.atomicLegPartner (orderedQuarticLegMapToTwoPointLeg (slotSplitVacuumSlot T) p) =
-      orderedQuarticLegMapToTwoPointLeg (slotSplitVacuumSlot T)
-        ((vac.pairingInOrder (slotSplitVacuumOrder T)).partner p) := by
-  apply (twoPointLegEquiv (Finset.univ : Finset (Fin n))).symm.injective
-  rw [TwoPointDiagram.atomicLegPartner, Equiv.symm_apply_apply]
-  exact TwoPointDiagram.ofSlotSplit_pairing_partner_vacuumOrderedLeg T ext vac p
-
 /-- The mixed-order partner on a reassembled diagram is the mixed position of the corresponding
 fixed-order quartic vacuum partner. -/
 private theorem TwoPointDiagram.ofSlotSplit_pairingInMixedOrder_partner_vacuumOrderedLeg
@@ -67,9 +53,11 @@ private theorem TwoPointDiagram.ofSlotSplit_pairingInMixedOrder_partner_vacuumOr
   change (d.pairingInMixedOrder τ τ' σ).partner
       (mixedTimeOrderedAtomicLegPosition τ τ' σ
         (orderedQuarticLegMapToTwoPointLeg (slotSplitVacuumSlot T) p)) = _
-  rw [d.pairingInMixedOrder_partner_legPosition,
-    TwoPointDiagram.ofSlotSplit_atomicLegPartner_vacuumOrderedLeg T ext vac p]
-  rfl
+  rw [d.pairingInMixedOrder_partner_legPosition]
+  apply congrArg (mixedTimeOrderedAtomicLegPosition τ τ' σ)
+  apply (twoPointLegEquiv (Finset.univ : Finset (Fin n))).symm.injective
+  rw [TwoPointDiagram.atomicLegPartner, Equiv.symm_apply_apply]
+  exact TwoPointDiagram.ofSlotSplit_pairing_partner_vacuumOrderedLeg T ext vac p
 
 /-- Embed a normalized pair of the fixed-order quartic vacuum pairing into the ambient mixed
 pairing of `ofSlotSplit`. -/
