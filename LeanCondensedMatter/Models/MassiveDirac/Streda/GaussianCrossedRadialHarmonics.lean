@@ -867,20 +867,19 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficie
           rw [hrad]
           ring
       _ = _ := by rw [hlog]
-  constructor
-  · calc
-      gap * jxx = (gap * (jxx + jyy)) / 2 := by rw [← hsymm]; ring
-      _ = (measure * (2 * (((2 * Real.pi : ℝ) : ℂ)) *
-        ((energyA * energyR - massA * massR) * factor)) *
-        (-(((2 : ℂ) * (v : ℂ) ^ 2)⁻¹) * logDiff)) / 2 := by rw [hsum]
-      _ = _ := by ring
-  · rw [← hsymm]
+  have hxx :
+      gap * jxx = measure * (((2 * Real.pi : ℝ) : ℂ)) *
+        ((energyA * energyR - massA * massR) * factor) *
+        (-(((2 : ℂ) * (v : ℂ) ^ 2)⁻¹) * logDiff) := by
     calc
       gap * jxx = (gap * (jxx + jyy)) / 2 := by rw [← hsymm]; ring
       _ = (measure * (2 * (((2 * Real.pi : ℝ) : ℂ)) *
         ((energyA * energyR - massA * massR) * factor)) *
         (-(((2 : ℂ) * (v : ℂ) ^ 2)⁻¹) * logDiff)) / 2 := by rw [hsum]
       _ = _ := by ring
+  constructor
+  · exact hxx
+  · exact (congrArg (fun j : ℂ => gap * j) hsymm).symm.trans hxx
 
 /-- Reconstruct the two diagonal Pauli coefficients of the finite-cutoff crossed current
 from the independent isotropic `K0` and traceless `K2` radial integrals.
