@@ -206,7 +206,8 @@ private theorem star_finiteCutoffContinuumBornDysonShiftMatrix
       side.opposite v m px py probeEnergy broadening disorderStrength hbar pMax)
   exact (φ.map_star' _).trans hstar
 
-private theorem star_finiteCutoffContinuumBornDysonDenominator
+/-- Complex conjugation exchanges finite-broadening Dyson spectral denominators. -/
+theorem star_finiteCutoffContinuumBornDysonDenominator
     (side : SpectralSide)
     (v m px py probeEnergy broadening disorderStrength hbar pMax : ℝ)
     (hbroadening : broadening ≠ 0) :
