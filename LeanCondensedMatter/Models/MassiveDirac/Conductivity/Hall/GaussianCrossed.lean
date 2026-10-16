@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Transport.Streda.ConductivityNormalization
-import LeanCondensedMatter.Models.MassiveDirac.Conductivity.Hall.NonCrossingMechanismClassification
+import LeanCondensedMatter.Models.MassiveDirac.Conductivity.Hall.GaussianCrossedBenchmark
 import LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedRealSpaceIntegral
 import LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedRadialTrace
 
@@ -1174,92 +1174,6 @@ partner is included upstream and the remaining physical normalization is real. -
   rw [Complex.mul_im,
     finiteCutoffContinuumBornDysonGaussianCrossedWeightedRealSpaceIntegral_psi_im]
   simp only [Complex.ofReal_im, mul_zero, zero_mul, add_zero]
-
-
-/-- The exact closed-form crossed correction required to turn the proved non-crossing Ado result
-into the full Gaussian-disorder Ado benchmark.
-
-This is an algebraic *target identity*, not an evaluation of either crossed trace integral:
-the finite-regulator `X` and `Psi` kernels still require their own analytical limits. The
-correction on the left is the required sum of those contributions after taking those limits.
-In particular, the statement does not assert `Psi = 0` or identify an unevaluated crossed
-integral with this expression. -/
-theorem nonCrossingHallConductivity_add_gaussianCrossedTarget_eq_gaussianBenchmark
-    (e hbar m probeEnergy : ℝ) :
-    nonCrossingHallConductivity e hbar m probeEnergy +
-        (4 * e ^ 2 / planckFromReduced hbar) *
-          (probeEnergy * m * (probeEnergy ^ 2 - m ^ 2) /
-            (probeEnergy ^ 2 + 3 * m ^ 2) ^ 2) =
-      -(8 * e ^ 2 / planckFromReduced hbar) *
-        (probeEnergy * m ^ 3 /
-          (probeEnergy ^ 2 + 3 * m ^ 2) ^ 2) := by
-  unfold nonCrossingHallConductivity
-  ring
-
-
-/-- Ado et al., EPL 111, 37004 (2015), Eq. (18): the *full* Gaussian
-skew-scattering benchmark is the non-crossing skew term of Eq. (12c) plus
-the crossed X contribution of Eq. (17). The Psi contribution vanishes
-only at the evaluated massive-Dirac benchmark level.
-
-This is an algebraic identity between the quoted closed expressions.
-In particular, it does **not** establish that the regulated X/Psi
-real-space integrals converge to those expressions. -/
-theorem adoEq18SkewBenchmark_eq_nonCrossingSkew_add_crossedTarget
-    (e hbar m probeEnergy : ℝ) (hprobe : probeEnergy ≠ 0) :
-    (e ^ 2 / planckFromReduced hbar) *
-        (m * (probeEnergy ^ 2 - m ^ 2) * (5 * probeEnergy ^ 2 + 3 * m ^ 2) /
-          (2 * probeEnergy * (probeEnergy ^ 2 + 3 * m ^ 2) ^ 2)) =
-      -(e ^ 2 / planckFromReduced hbar) *
-          (3 * m * (probeEnergy ^ 2 - m ^ 2) ^ 2 /
-            (2 * probeEnergy * (probeEnergy ^ 2 + 3 * m ^ 2) ^ 2)) +
-        (4 * e ^ 2 / planckFromReduced hbar) *
-          (probeEnergy * m * (probeEnergy ^ 2 - m ^ 2) /
-            (probeEnergy ^ 2 + 3 * m ^ 2) ^ 2) := by
-  have hden : probeEnergy ^ 2 + 3 * m ^ 2 ≠ 0 := by
-    have hsq : 0 < probeEnergy ^ 2 := sq_pos_of_ne_zero hprobe
-    nlinarith [sq_nonneg m]
-  have hfrac :
-      m * (probeEnergy ^ 2 - m ^ 2) * (5 * probeEnergy ^ 2 + 3 * m ^ 2) /
-          (2 * probeEnergy * (probeEnergy ^ 2 + 3 * m ^ 2) ^ 2) =
-        -(3 * m * (probeEnergy ^ 2 - m ^ 2) ^ 2 /
-          (2 * probeEnergy * (probeEnergy ^ 2 + 3 * m ^ 2) ^ 2)) +
-        4 * probeEnergy * m * (probeEnergy ^ 2 - m ^ 2) /
-          (probeEnergy ^ 2 + 3 * m ^ 2) ^ 2 := by
-    field_simp [hprobe, hden]
-    ring
-  rw [hfrac]
-  ring
-
-/-- The full Gaussian-disorder Hall *benchmark* is the Ado intrinsic
-Eq. (12a) plus side-jump Eq. (12b) plus full skew Eq. (18) sum.
-
-This combines algebraic benchmark identities, not the unproved
-regulated-X/Psi-integral evaluation or an independent microscopic
-side-jump scattering derivation. -/
-theorem intrinsic_sideJumpType_adoEq18SkewBenchmark_sum_eq_gaussianBenchmark
-    (e hbar m probeEnergy : ℝ) (hhbar : hbar ≠ 0)
-    (hprobe : probeEnergy ≠ 0) :
-    intrinsicHallConductivity e hbar m probeEnergy +
-        (-(e ^ 2 / planckFromReduced hbar) *
-          (2 * m * (probeEnergy ^ 2 - m ^ 2) /
-            (probeEnergy * (probeEnergy ^ 2 + 3 * m ^ 2)))) +
-        (e ^ 2 / planckFromReduced hbar) *
-          (m * (probeEnergy ^ 2 - m ^ 2) *
-            (5 * probeEnergy ^ 2 + 3 * m ^ 2) /
-            (2 * probeEnergy * (probeEnergy ^ 2 + 3 * m ^ 2) ^ 2)) =
-      -(8 * e ^ 2 / planckFromReduced hbar) *
-        (probeEnergy * m ^ 3 /
-          (probeEnergy ^ 2 + 3 * m ^ 2) ^ 2) := by
-  rw [adoEq18SkewBenchmark_eq_nonCrossingSkew_add_crossedTarget
-    e hbar m probeEnergy hprobe]
-  rw [← nonCrossingHallConductivity_add_gaussianCrossedTarget_eq_gaussianBenchmark]
-  have hnc :=
-    intrinsic_sideJumpType_nonCrossingSkewType_sum_eq_nonCrossingHallConductivity
-      e hbar m probeEnergy hhbar hprobe
-  dsimp at hnc
-  rw [← hnc]
-  ring
 
 end
 
