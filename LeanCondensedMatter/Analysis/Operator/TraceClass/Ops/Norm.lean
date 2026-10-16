@@ -18,7 +18,6 @@ namespace ContinuousLinearMap
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
 
 
-
 /-- If `W` is a contraction, the absolute diagonal pairing with a trace-class operator is bounded
 by the trace norm. -/
 private theorem IsTraceClass.summable_norm_inner_left_and_tsum_le_traceNorm
