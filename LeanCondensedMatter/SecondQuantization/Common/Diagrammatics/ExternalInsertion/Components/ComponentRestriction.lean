@@ -117,6 +117,21 @@ noncomputable def ExternalInsertionDiagram.externalPairCount {S : Finset (Fin N)
   (Finset.toLeft
     (B : Finset (ExternalInsertionVertex E S))).card / 2
 
+
+/-- A pure-vacuum connected component has no local external pairs. -/
+theorem ExternalInsertionDiagram.externalPairCount_eq_zero_of_vacuum
+    {S : Finset (Fin N)}
+    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
+    (B : d.vertexGraph.componentPartition.parts)
+    (hB : ComponentIsVacuum (B : Finset (ExternalInsertionVertex E S))) :
+    d.externalPairCount B = 0 := by
+  have hEmpty :
+      (B : Finset (ExternalInsertionVertex E S)).toLeft = ∅ := by
+    by_contra hNonempty
+    obtain ⟨e, he⟩ := Finset.nonempty_iff_ne_empty.mpr hNonempty
+    exact hB ⟨e, Finset.mem_toLeft.mp he⟩
+  simp [ExternalInsertionDiagram.externalPairCount, hEmpty]
+
 /-- Increasing reindexing of a component's ambient external insertions by its local external slots. -/
 noncomputable def ExternalInsertionDiagram.externalSectorOrderIso {S : Finset (Fin N)}
     (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
