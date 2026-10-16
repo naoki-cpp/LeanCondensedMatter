@@ -207,10 +207,6 @@ theorem tendsto_finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBou
       finiteCutoffContinuumBornEffectiveEnergyZeroBroadeningBoundary,
       finiteCutoffContinuumBornEffectiveMassZeroBroadeningBoundary,
       pow_two, Complex.mul_re]
-  have hcenterMax :
-      Tendsto (fun disorderStrength => center disorderStrength - v ^ 2 * pMax ^ 2) l
-        (nhds (probeEnergy ^ 2 - m ^ 2 - v ^ 2 * pMax ^ 2)) :=
-    hcenter0.sub tendsto_const_nhds
   have hdenNe : 2 * Real.pi * (probeEnergy ^ 2 + m ^ 2) ≠ 0 :=
     mul_ne_zero (mul_ne_zero (by norm_num) Real.pi_ne_zero) (ne_of_gt hsum)
   have hscaleClosed := (tendsto_const_nhds.mul hQ).inv₀ hdenNe
@@ -233,7 +229,7 @@ theorem tendsto_finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBou
     rw [hpref]
     field_simp [hvelocity, hgammaNe, ne_of_gt hQPos, Real.pi_ne_zero]
   have hkernel := Real.tendsto_scaled_integral_radialQuadraticLorentzian_nhdsGT_zero
-    v pMax hvelocity hcenter0 hgap hcenterMax (by linarith) hwidth hscale
+    v pMax hvelocity hcenter0 hgap (by linarith) hwidth hscale
   rw [tendsto_pi_nhds]
   intro output
   let n0 : ℂ := ![(probeEnergy ^ 2 - m ^ 2 : ℝ), 0] output
