@@ -188,6 +188,11 @@ in-plane rotation and current realization belongs to `Vertex.InPlaneLadder` and 
 Středa trace adapters consume these results; the same-side remainder and conductivity normalization
 remain separate.
 
+`Disorder.FiniteBroadeningCurrentVertexZeroBroadeningIntegral` owns the common radial
+factorization of the zero-broadening current-rung entries. The weak-disorder Lorentzian reduction
+and the scaled transverse limit consume that identity, while keeping their distinct limit arguments
+and assumptions local.
+
 The massive-Dirac continuum normalization keeps each physical factor at the narrowest owner.
 `Analysis.ContinuumMeasure` owns both the bare physical-momentum measure and its exact full-angle
 radial prefactor. `Disorder.ContinuumMeasurePrefactor` owns one external scalar-disorder line times

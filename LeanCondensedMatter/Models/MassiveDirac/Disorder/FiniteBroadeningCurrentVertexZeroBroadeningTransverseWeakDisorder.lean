@@ -34,41 +34,8 @@ private theorem currentRungBoundary_yx_mul_xxNumerator_eq_xx_mul_yxNumerator
         v m probeEnergy disorderStrength hbar pMax 0 *
       finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumeratorZeroBroadeningBoundary
         1 0 v m probeEnergy disorderStrength hbar pMax := by
-  let common : ℝ → ℂ := fun p =>
-    (continuumBornDisorderMeasurePrefactor disorderStrength hbar : ℂ) * (p : ℂ) *
-      (((2 * Real.pi : ℝ) : ℂ)) *
-      (finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProductZeroBroadeningBoundary
-        v m p probeEnergy disorderStrength hbar pMax)⁻¹
-  let x := finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumeratorZeroBroadeningBoundary
-    0 0 v m probeEnergy disorderStrength hbar pMax
-  let y := finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumeratorZeroBroadeningBoundary
-    1 0 v m probeEnergy disorderStrength hbar pMax
-  have hx :
-      finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary
-          v m probeEnergy disorderStrength hbar pMax 0 =
-        x * ∫ p in (0 : ℝ)..pMax, common p := by
-    unfold finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary
-      finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficientZeroBroadeningBoundary
-    rw [← intervalIntegral.integral_const_mul]
-    apply intervalIntegral.integral_congr
-    intro p _
-    unfold finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungRadialIntegrandZeroBroadeningBoundary
-    dsimp [common, x]
-    ring
-  have hy :
-      finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary
-          v m probeEnergy disorderStrength hbar pMax 1 =
-        y * ∫ p in (0 : ℝ)..pMax, common p := by
-    unfold finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary
-      finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficientZeroBroadeningBoundary
-    rw [← intervalIntegral.integral_const_mul]
-    apply intervalIntegral.integral_congr
-    intro p _
-    unfold finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungRadialIntegrandZeroBroadeningBoundary
-    dsimp [common, y]
-    ring
-  rw [hx, hy]
-  dsimp [x, y]
+  simp only [finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary,
+    finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficientZeroBroadeningBoundary_eq_angularNumerator_mul_integral]
   ring
 
 /-- At fixed cutoff beyond the metallic shell, the transverse zero-broadening current-rung
