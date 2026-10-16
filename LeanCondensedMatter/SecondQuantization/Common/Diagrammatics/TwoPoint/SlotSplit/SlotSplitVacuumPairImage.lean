@@ -27,26 +27,6 @@ open Combinatorics
 
 variable {ExternalLabel InternalLabel : Type*} {n : ℕ}
 
-/-- The vacuum fixed-order leg embedding in mixed positions agrees with the
-right-side leg of the canonical diagram slot split after returning to fixed positions. -/
-private theorem slotSplitVacuumMixedPosition_eq_slotSplitRight
-    (T : Finset (Fin n)) (τ τ' : ℝ) (σ : Fin n → ℝ)
-    (p : Fin (2 * (2 * ((Finset.univ : Finset (Fin n)) \ T).card))) :
-    mixedTimeAmbientPositionEquiv τ τ' σ
-        (mixedTimeOrderedQuarticLegMapPosition (slotSplitVacuumSlot T) τ τ' σ p) =
-      slotLegSplitting (Finset.subset_univ T)
-        (Sum.inr (orderedLegToDiagramLeg
-          ((Finset.univ : Finset (Fin n)) \ T) (slotSplitVacuumOrder T) p)) := by
-  apply (twoPointLegEquiv (Finset.univ : Finset (Fin n))).injective
-  rw [twoPointLegEquiv_mixedTimeAmbientPositionEquiv]
-  change mixedTimeOrderedAtomicLegEquiv τ τ' σ
-      (mixedTimeOrderedAtomicLegPosition τ τ' σ
-        (orderedQuarticLegMapToTwoPointLeg (slotSplitVacuumSlot T) p)) = _
-  rw [mixedTimeOrderedAtomicLegEquiv_mixedTimeOrderedAtomicLegPosition]
-  simpa only [Equiv.apply_symm_apply] using
-    congrArg (twoPointLegEquiv (Finset.univ : Finset (Fin n)))
-      (slotSplitVacuumOrderedLeg_eq_slotSplitRight T p)
-
 /-- The first endpoint of an embedded quartic vacuum pair lies in the ambient component generated
 by the corresponding right-side quartic vertex. -/
 theorem TwoPointDiagram.ofSlotSplitVacuumNormalizedPairEmbedding_component
@@ -73,8 +53,10 @@ theorem TwoPointDiagram.ofSlotSplitVacuumNormalizedPairEmbedding_component
       mixedTimeAmbientPositionEquiv τ τ' σ
           (mixedTimeOrderedQuarticLegMapPosition
             (slotSplitVacuumSlot T) τ τ' σ p) =
-        slotLegSplitting (Finset.subset_univ T) (Sum.inr q) :=
-    slotSplitVacuumMixedPosition_eq_slotSplitRight T τ τ' σ p
+        slotLegSplitting (Finset.subset_univ T) (Sum.inr q) := by
+    simpa only [mixedTimeOrderedQuarticLegMapPosition,
+      mixedTimeAmbientPositionEquiv_mixedTimeOrderedAtomicLegPosition] using
+      (slotSplitVacuumOrderedLeg_eq_slotSplitRight T p)
   have hvertex :
       twoPointVertexOfLeg
           (mixedTimeAmbientPositionEquiv τ τ' σ
@@ -116,7 +98,9 @@ private theorem TwoPointDiagram.mixedVacuumPair_firstEndpoint_mem_vacuumLegRange
     ((Finset.univ : Finset (Fin n)) \ T) (slotSplitVacuumOrder T)).symm q
   refine ⟨p, ?_⟩
   apply (mixedTimeAmbientPositionEquiv τ τ' σ).injective
-  rw [slotSplitVacuumMixedPosition_eq_slotSplitRight]
+  simp only [mixedTimeOrderedQuarticLegMapPosition,
+    mixedTimeAmbientPositionEquiv_mixedTimeOrderedAtomicLegPosition,
+    slotSplitVacuumOrderedLeg_eq_slotSplitRight]
   simpa only [p, Equiv.apply_symm_apply] using hq
 
 /-- The fixed-order quartic vacuum normalized pairs are equivalent to all ambient mixed normalized
