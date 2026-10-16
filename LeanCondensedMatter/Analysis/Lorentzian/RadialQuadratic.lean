@@ -1,6 +1,5 @@
 import Mathlib.Analysis.SpecificLimits.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.ArctanDeriv
-import Mathlib.MeasureTheory.Integral.IntervalIntegral.FundThmCalculus
+import Mathlib.Analysis.SpecialFunctions.Integrals.Basic
 import Mathlib.Tactic
 
 set_option linter.style.header false
@@ -28,62 +27,55 @@ noncomputable section
 open Filter MeasureTheory
 open scoped Interval
 
-private def radialQuadraticLorentzianPrimitive (v A B p : ℝ) : ℝ :=
-  (2 * v ^ 2 * B)⁻¹ * Real.arctan ((v ^ 2 * p ^ 2 - A) / B)
-
-private theorem radialQuadraticLorentzianDenominator_ne_zero
-    (v A B p : ℝ) (hB : B ≠ 0) :
-    (A - v ^ 2 * p ^ 2) ^ 2 + B ^ 2 ≠ 0 := by
-  have hBsq : 0 < B ^ 2 := sq_pos_of_ne_zero hB
-  nlinarith [sq_nonneg (A - v ^ 2 * p ^ 2)]
-
-private theorem continuous_radialQuadraticLorentzianIntegrand
-    (v A B : ℝ) (hB : B ≠ 0) :
-    Continuous (fun p : ℝ => p / ((A - v ^ 2 * p ^ 2) ^ 2 + B ^ 2)) := by
-  have hden : Continuous (fun p : ℝ => (A - v ^ 2 * p ^ 2) ^ 2 + B ^ 2) := by
-    fun_prop
-  exact continuous_id.div hden
-    (fun p => radialQuadraticLorentzianDenominator_ne_zero v A B p hB)
-
-private theorem hasDerivAt_radialQuadraticLorentzianPrimitive
-    (v A B p : ℝ) (hvelocity : v ≠ 0) (hB : B ≠ 0) :
-    HasDerivAt (radialQuadraticLorentzianPrimitive v A B)
-      (p / ((A - v ^ 2 * p ^ 2) ^ 2 + B ^ 2)) p := by
-  have hu :
-      HasDerivAt (fun q : ℝ => (v ^ 2 * q ^ 2 - A) / B)
-        ((2 * v ^ 2 * p) / B) p := by
-    simpa [mul_assoc, mul_left_comm, mul_comm] using
-      ((((hasDerivAt_id p).pow 2).const_mul (v ^ 2)).sub_const A).div_const B
-  have hmain := hu.arctan.const_mul ((2 * v ^ 2 * B)⁻¹)
-  unfold radialQuadraticLorentzianPrimitive
-  convert hmain using 1
-  field_simp [hvelocity, hB]
-  ring
-
-private theorem integral_radialQuadraticLorentzian_eq_primitive_sub
-    (v A B pMax : ℝ) (hvelocity : v ≠ 0) (hB : B ≠ 0) :
-    (∫ p in (0 : ℝ)..pMax, p / ((A - v ^ 2 * p ^ 2) ^ 2 + B ^ 2)) =
-      radialQuadraticLorentzianPrimitive v A B pMax -
-        radialQuadraticLorentzianPrimitive v A B 0 := by
-  have hint : IntervalIntegrable
-      (fun p : ℝ => p / ((A - v ^ 2 * p ^ 2) ^ 2 + B ^ 2))
-      volume 0 pMax :=
-    (continuous_radialQuadraticLorentzianIntegrand v A B hB).intervalIntegrable 0 pMax
-  exact intervalIntegral.integral_eq_sub_of_hasDerivAt
-    (fun p _ => hasDerivAt_radialQuadraticLorentzianPrimitive v A B p hvelocity hB) hint
-
-/-- Exact finite-interval value of the radial quadratic Lorentzian integral. -/
+/-- Exact finite-interval value of the radial quadratic Lorentzian integral. This is a
+quadratic change of variables followed by Mathlib's integral of `(B² + u²)⁻¹`. -/
 theorem integral_radialQuadraticLorentzian_eq_arctan
     (v A B pMax : ℝ) (hvelocity : v ≠ 0) (hB : B ≠ 0) :
     (∫ p in (0 : ℝ)..pMax, p / ((A - v ^ 2 * p ^ 2) ^ 2 + B ^ 2)) =
       (2 * v ^ 2 * B)⁻¹ *
         (Real.arctan ((v ^ 2 * pMax ^ 2 - A) / B) + Real.arctan (A / B)) := by
-  rw [integral_radialQuadraticLorentzian_eq_primitive_sub v A B pMax hvelocity hB]
-  unfold radialQuadraticLorentzianPrimitive
-  have hzero : (v ^ 2 * (0 : ℝ) ^ 2 - A) / B = -(A / B) := by
-    ring
-  rw [hzero, Real.arctan_neg]
-  ring
+  have hv2 : v ^ 2 ≠ 0 := pow_ne_zero 2 hvelocity
+  have hden (u : ℝ) : B ^ 2 + u ^ 2 ≠ 0 := by
+    nlinarith [sq_pos_of_ne_zero hB, sq_nonneg u]
+  have hderiv (p : ℝ) :
+      HasDerivAt (fun q : ℝ => v ^ 2 * q ^ 2 - A) (2 * v ^ 2 * p) p := by
+    simpa [mul_assoc, mul_left_comm, mul_comm] using
+      ((((hasDerivAt_id p).pow 2).const_mul (v ^ 2)).sub_const A)
+  have hg : Continuous (fun u : ℝ => (B ^ 2 + u ^ 2)⁻¹) :=
+    ((continuous_const.add (continuous_id.pow 2))).inv₀ hden
+  have hsub :
+      (∫ p in (0 : ℝ)..pMax,
+        (B ^ 2 + (v ^ 2 * p ^ 2 - A) ^ 2)⁻¹ * (2 * v ^ 2 * p)) =
+      ∫ u in -A..(v ^ 2 * pMax ^ 2 - A), (B ^ 2 + u ^ 2)⁻¹ := by
+    simpa using
+      (intervalIntegral.integral_comp_mul_deriv
+        (a := (0 : ℝ)) (b := pMax)
+        (f := fun p : ℝ => v ^ 2 * p ^ 2 - A)
+        (f' := fun p : ℝ => 2 * v ^ 2 * p)
+        (g := fun u : ℝ => (B ^ 2 + u ^ 2)⁻¹)
+        (fun p _ => hderiv p) (by fun_prop) hg)
+  calc
+    (∫ p in (0 : ℝ)..pMax, p / ((A - v ^ 2 * p ^ 2) ^ 2 + B ^ 2)) =
+        (2 * v ^ 2)⁻¹ *
+          (∫ p in (0 : ℝ)..pMax,
+            (B ^ 2 + (v ^ 2 * p ^ 2 - A) ^ 2)⁻¹ * (2 * v ^ 2 * p)) := by
+      rw [← intervalIntegral.integral_const_mul]
+      apply intervalIntegral.integral_congr
+      intro p _
+      change p / ((A - v ^ 2 * p ^ 2) ^ 2 + B ^ 2) =
+        (2 * v ^ 2)⁻¹ * ((B ^ 2 + (v ^ 2 * p ^ 2 - A) ^ 2)⁻¹ * (2 * v ^ 2 * p))
+      rw [show (A - v ^ 2 * p ^ 2) ^ 2 + B ^ 2 =
+        B ^ 2 + (v ^ 2 * p ^ 2 - A) ^ 2 by ring]
+      field_simp [hv2, hden (v ^ 2 * p ^ 2 - A)]
+    _ = (2 * v ^ 2)⁻¹ *
+          (∫ u in -A..(v ^ 2 * pMax ^ 2 - A), (B ^ 2 + u ^ 2)⁻¹) := by
+      rw [hsub]
+    _ = (2 * v ^ 2 * B)⁻¹ *
+          (Real.arctan ((v ^ 2 * pMax ^ 2 - A) / B) + Real.arctan (A / B)) := by
+      rw [integral_inv_sq_add_sq hB]
+      rw [show (-A) / B = -(A / B) by ring, Real.arctan_neg]
+      field_simp [hv2, hB]
+      ring
 
 /-- If two continuously moving endpoints approach opposite sides of a resonance while a common
 positive width tends to zero, their arctangent phase difference tends to `π`. -/
