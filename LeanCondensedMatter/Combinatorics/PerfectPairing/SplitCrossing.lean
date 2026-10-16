@@ -18,7 +18,7 @@ variable {a b n : ℕ}
 
 /-- A binary position splitting that is strictly increasing on the left
 preserves crossing relations between pairs belonging to that part. -/
-theorem Pairing.ofSplitNormalizedPairEquiv_crosses_inl_iff_of_strictMono
+private theorem Pairing.ofSplitNormalizedPairEquiv_crosses_inl_iff_of_strictMono
     (e : PositionSplitting a b n) (P : Pairing a) (Q : Pairing b)
     (hmono : StrictMono (fun i : Fin (2 * a) => e (Sum.inl i)))
     (p q : P.NormalizedPair) :
@@ -38,7 +38,7 @@ theorem Pairing.ofSplitNormalizedPairEquiv_crosses_inl_iff_of_strictMono
 
 /-- A binary position splitting that is strictly increasing on the right
 preserves crossing relations between pairs belonging to that part. -/
-theorem Pairing.ofSplitNormalizedPairEquiv_crosses_inr_iff_of_strictMono
+private theorem Pairing.ofSplitNormalizedPairEquiv_crosses_inr_iff_of_strictMono
     (e : PositionSplitting a b n) (P : Pairing a) (Q : Pairing b)
     (hmono : StrictMono (fun i : Fin (2 * b) => e (Sum.inr i)))
     (p q : Q.NormalizedPair) :
@@ -58,7 +58,7 @@ theorem Pairing.ofSplitNormalizedPairEquiv_crosses_inr_iff_of_strictMono
 
 /-- The ordered crossing count internal to the left part of an assembled
 pairing is its standalone crossing count. Inter-part crossings are excluded. -/
-theorem Pairing.ofSplitNormalizedPairEquiv_inl_crossingCount_eq
+private theorem Pairing.ofSplitNormalizedPairEquiv_inl_crossingCount_eq
     (e : PositionSplitting a b n) (P : Pairing a) (Q : Pairing b)
     (hmono : StrictMono (fun i : Fin (2 * a) => e (Sum.inl i))) :
     (∑ p : P.NormalizedPair, ∑ q : P.NormalizedPair,
@@ -76,7 +76,7 @@ theorem Pairing.ofSplitNormalizedPairEquiv_inl_crossingCount_eq
 
 /-- The ordered crossing count internal to the right part of an
 assembled pairing is its standalone crossing count. Inter-part crossings remain separate. -/
-theorem Pairing.ofSplitNormalizedPairEquiv_inr_crossingCount_eq
+private theorem Pairing.ofSplitNormalizedPairEquiv_inr_crossingCount_eq
     (e : PositionSplitting a b n) (P : Pairing a) (Q : Pairing b)
     (hmono : StrictMono (fun i : Fin (2 * b) => e (Sum.inr i))) :
     (∑ p : Q.NormalizedPair, ∑ q : Q.NormalizedPair,
@@ -106,7 +106,7 @@ noncomputable def Pairing.ofSplitInterSectorCrossingCount
 is the parity of the four endpoint-order inversions for each cross-sector
 pair of normalized pairs. The two crossing orientations are both counted;
 no order-preservation hypothesis is needed on either half. -/
-theorem Pairing.ofSplitInterSectorCrossingCount_mod_two_eq_pairEndpointInversionCount
+private theorem Pairing.ofSplitInterSectorCrossingCount_mod_two_eq_pairEndpointInversionCount
     (e : PositionSplitting a b n) (P : Pairing a) (Q : Pairing b) :
     (Pairing.ofSplitInterSectorCrossingCount e P Q) % 2 =
       (∑ p : P.NormalizedPair, ∑ q : Q.NormalizedPair,
@@ -214,7 +214,7 @@ private theorem Pairing.ofSplit_pairEndpointInversionCount_eq_sum_localEndpoints
 number of positions from the right half that precede positions from the left
 half in an arbitrary binary position splitting. Both pair orientations and
 all pair enumeration choices disappear under endpoint reindexing. -/
-theorem Pairing.ofSplit_sum_pairEndpointInversionCount_eq_positionInversions
+private theorem Pairing.ofSplit_sum_pairEndpointInversionCount_eq_positionInversions
     (e : PositionSplitting a b n) (P : Pairing a) (Q : Pairing b) :
     (∑ p : P.NormalizedPair, ∑ q : Q.NormalizedPair,
       pairEndpointInversionCount
@@ -293,7 +293,7 @@ theorem Pairing.ofSplitInterSectorCrossingCount_mod_two_eq_positionInversions
 
 /-- Every crossing in a split pairing lies either within one sector or
 between the two sectors. No monotonicity of the splitting is required. -/
-theorem Pairing.ofSplit_crossingCount_eq_intrasector_add_inter
+private theorem Pairing.ofSplit_crossingCount_eq_intrasector_add_inter
     (e : PositionSplitting a b n) (P : Pairing a) (Q : Pairing b) :
     (Pairing.ofSplit e P Q).crossingCount =
       (∑ p : P.NormalizedPair, ∑ q : P.NormalizedPair,
