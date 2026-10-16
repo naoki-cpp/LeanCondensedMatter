@@ -160,8 +160,9 @@ theorem continuousAt_interbandPoleRegularFactor_of_gap_add_offset_ne_zero
 /-- Lorentzian-weighted fixed-window integral of the regular interband factor. -/
 noncomputable def interbandPoleRegularFactorIntegral
     (gap : ℝ) (forward reverse : ℂ) (radius broadening : ℝ) : ℂ :=
-  Lorentzian.regularFactorIntegral
-    (interbandPoleRegularFactor gap forward reverse) radius broadening
+  ∫ offset in -radius..radius,
+    (Lorentzian.spectralKernel offset broadening : ℂ) *
+      interbandPoleRegularFactor gap forward reverse (offset, broadening)
 
 /-- On a positive fixed window narrower than `|gap|`, the regular interband factor is extracted at
 the target pole by the Lorentzian approximate identity. -/
@@ -188,7 +189,7 @@ theorem tendsto_interbandPoleRegularFactorIntegral
     exact
       (continuousAt_interbandPoleRegularFactor_of_gap_add_offset_ne_zero
         gap forward reverse p hshift).continuousWithinAt
-  have hgeneric := Lorentzian.tendsto_regularFactorIntegral
+  have hgeneric := Lorentzian.tendsto_integral_spectralKernel_mul
     factor radius hradiusPos hrectangle
   simpa [factor, interbandPoleRegularFactorIntegral] using hgeneric
 

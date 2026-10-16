@@ -29,12 +29,6 @@ noncomputable section
 
 open Filter MeasureTheory
 
-/-- Lorentzian-weighted fixed-window integral of a complex regular factor. -/
-noncomputable def regularFactorIntegral
-    (factor : ℝ × ℝ → ℂ) (radius broadening : ℝ) : ℂ :=
-  ∫ offset in -radius..radius,
-    (spectralKernel offset broadening : ℂ) * factor (offset, broadening)
-
 private noncomputable def regularFactorError
     (factor : ℝ × ℝ → ℂ) (offset broadening : ℝ) : ℂ :=
   factor (offset, broadening) - factor (0, 0)
@@ -481,13 +475,14 @@ private theorem real_smul_complex_eq_mul (r : ℝ) (z : ℂ) :
     r • z = (r : ℂ) * z := by
   rfl
 
-private theorem regularFactorIntegral_eq_error_add_mass_smul_pole
+private theorem integral_spectralKernel_mul_eq_error_add_mass_smul_pole
     (factor : ℝ × ℝ → ℂ) (radius broadening : ℝ)
     (hradius : 0 ≤ radius)
     (hbroadening : broadening ≠ 0)
     (hslice : ContinuousOn (fun offset : ℝ => factor (offset, broadening))
       (Set.Icc (-radius) radius)) :
-    regularFactorIntegral factor radius broadening =
+    (∫ offset in -radius..radius,
+        (spectralKernel offset broadening : ℂ) * factor (offset, broadening)) =
       regularFactorErrorIntegral factor radius broadening +
         (∫ offset in -radius..radius,
           spectralKernel offset broadening) • factor (0, 0) := by
@@ -501,7 +496,6 @@ private theorem regularFactorIntegral_eq_error_add_mass_smul_pole
       MeasureTheory.volume (-radius) radius := by
     exact (hkernelCont.smul continuous_const).intervalIntegrable
       (μ := MeasureTheory.volume) (-radius) radius
-  unfold regularFactorIntegral
   calc
     (∫ offset in -radius..radius,
         (spectralKernel offset broadening : ℂ) * factor (offset, broadening)) =
@@ -533,7 +527,7 @@ private theorem regularFactorIntegral_eq_error_add_mass_smul_pole
 jointly continuous at `(0,0)`, has continuous nonzero-broadening slices on the fixed symmetric
 window, and has a uniform bound on its deviation from the pole value over that window for
 `0 ≤ broadening ≤ etaMax`. -/
-private theorem tendsto_regularFactorIntegral_of_bounded
+private theorem tendsto_integral_spectralKernel_mul_of_bounded
     (factor : ℝ × ℝ → ℂ) (radius etaMax : ℝ)
     (hradiusPos : 0 < radius) (hetaMax : 0 < etaMax)
     (hcontinuous : ContinuousWithinAt factor
@@ -546,7 +540,8 @@ private theorem tendsto_regularFactorIntegral_of_bounded
         ‖factor p - factor (0, 0)‖ ≤ C) :
     Tendsto
       (fun broadening : ℝ =>
-        regularFactorIntegral factor radius broadening)
+        ∫ offset in -radius..radius,
+          (spectralKernel offset broadening : ℂ) * factor (offset, broadening))
       (nhdsWithin 0 (Set.Ioi 0))
       (nhds (Real.pi • factor (0, 0))) := by
   have herror := tendsto_regularFactorErrorIntegral_zero
@@ -582,16 +577,16 @@ private theorem tendsto_regularFactorIntegral_of_bounded
     have hwithin : nhdsWithin 0 (Set.Ioi 0) ≤ nhds (0 : ℝ) := inf_le_left
     exact hwithin (Iio_mem_nhds hetaMax)
   filter_upwards [hpositive, hsmall, hclose] with broadening hbroadening hsmallAt hcloseAt
-  rw [regularFactorIntegral_eq_error_add_mass_smul_pole
+  rw [integral_spectralKernel_mul_eq_error_add_mass_smul_pole
     factor radius broadening hradiusPos.le hbroadening.ne'
       (hslice broadening hbroadening hsmallAt.le)]
   exact hcloseAt
 
 
-/-- A complex regular factor continuous on a compact nonnegative-broadening rectangle
-of any positive width has the canonical Lorentzian pole limit. No continuity for
-negative broadening or outside the integration window is required. -/
-theorem tendsto_regularFactorIntegral
+/-- The fixed-window convolution with the Lorentzian spectral kernel extracts the
+value at the pole for a factor continuous on a compact nonnegative-broadening
+rectangle of some positive width. No negative-broadening continuity is needed. -/
+theorem tendsto_integral_spectralKernel_mul
     (factor : ℝ × ℝ → ℂ) (radius : ℝ)
     (hradiusPos : 0 < radius)
     (hrectangle : ∃ etaMax : ℝ, 0 < etaMax ∧
@@ -599,7 +594,8 @@ theorem tendsto_regularFactorIntegral
         (Set.Icc (-radius) radius ×ˢ Set.Icc (0 : ℝ) etaMax)) :
     Tendsto
       (fun broadening : ℝ =>
-        regularFactorIntegral factor radius broadening)
+        ∫ offset in -radius..radius,
+          (spectralKernel offset broadening : ℂ) * factor (offset, broadening))
       (nhdsWithin 0 (Set.Ioi 0))
       (nhds (Real.pi • factor (0, 0))) := by
   rcases hrectangle with ⟨etaMax, hetaMax, hrectangle⟩
@@ -630,7 +626,7 @@ theorem tendsto_regularFactorIntegral
     refine ⟨max C 0, le_max_right _ _, ?_⟩
     intro p hp
     exact le_trans (hC p hp) (le_max_left _ _)
-  exact tendsto_regularFactorIntegral_of_bounded
+  exact tendsto_integral_spectralKernel_mul_of_bounded
     factor radius etaMax hradiusPos hetaMax hcontinuous hslice hbound
 
 end

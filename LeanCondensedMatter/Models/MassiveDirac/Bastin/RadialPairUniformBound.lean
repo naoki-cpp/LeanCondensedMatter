@@ -65,7 +65,6 @@ theorem norm_targetCenteredInterbandSpectatorCurrentPoleIntegral_radial_le
   have hkernelInt := Lorentzian.intervalIntegrable_spectralKernel
     (-radius) radius broadening hbroadening.ne'
   unfold targetCenteredInterbandSpectatorCurrentPoleIntegral
-    Lorentzian.regularFactorIntegral
   have hineq :
       ‖∫ offset in -radius..radius,
           (Lorentzian.spectralKernel offset broadening : ℂ) *
