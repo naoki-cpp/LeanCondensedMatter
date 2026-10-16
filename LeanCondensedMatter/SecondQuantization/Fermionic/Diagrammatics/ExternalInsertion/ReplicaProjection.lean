@@ -65,7 +65,9 @@ theorem vacuumFreeExternalInsertionReplicaPolynomial_coeff_one
     simp [hconn, hcard]
   · have hcard : (externalComponentPartition d.1.1.vertexGraph).parts.card ≠ 1 :=
       fun hc => hconn (hcriterion.mpr hc)
-    simp [hconn, hcard]
+    have hcard' : 1 ≠ (externalComponentPartition d.1.1.vertexGraph).parts.card :=
+      Ne.symm hcard
+    simp [hconn, hcard']
 
 end Fermionic
 end SecondQuantization
