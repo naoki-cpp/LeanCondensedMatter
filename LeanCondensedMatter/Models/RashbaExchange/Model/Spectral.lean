@@ -54,16 +54,12 @@ theorem rashbaPauliCoefficients_dot_self
   simp [rashbaPauliCoefficients, spinOrbitEnergySq, momentumSq2D]
   ring
 
-/-- The squared spin-orbit energy is nonnegative. -/
-theorem spinOrbitEnergySq_nonneg (params : Parameters) (px py : ℝ) :
-    0 ≤ spinOrbitEnergySq params px py := by
-  unfold spinOrbitEnergySq momentumSq2D
-  positivity
-
 /-- Squaring the positive spin-orbit energy recovers its defining polynomial. -/
 theorem spinOrbitEnergy_sq (params : Parameters) (px py : ℝ) :
     spinOrbitEnergy params px py ^ 2 = spinOrbitEnergySq params px py := by
-  exact Real.sq_sqrt (spinOrbitEnergySq_nonneg params px py)
+  exact Real.sq_sqrt (by
+    unfold spinOrbitEnergySq momentumSq2D
+    positivity)
 
 /-- The traceless spin Hamiltonian squares to `E² I`. -/
 theorem spinHamiltonian_mul_self (params : Parameters) (px py : ℝ) :
