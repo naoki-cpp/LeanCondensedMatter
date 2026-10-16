@@ -176,7 +176,8 @@ theorem adiabaticIntegrable_of_pos
       (S.piecewise
         (adiabaticFrequencySusceptibilityIntegrand system expectation A B ω η)
         (fun _ : ℝ => (0 : ℂ))) volume :=
-    Integrable.piecewise measurableSet_Ioi hintegrand integrableOn_zero
+    Integrable.piecewise (measurableSet_Ioi : MeasurableSet S).nullMeasurableSet
+      hintegrand integrableOn_zero
   refine hpiece.congr (Filter.Eventually.of_forall fun τ => ?_)
   by_cases hτ : τ ∈ S
   · simp [Set.piecewise, hτ]

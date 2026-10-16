@@ -1,7 +1,7 @@
 import Mathlib.Basic.Real.Basic
 import Mathlib.Logic.Equiv.Fin.Basic
 import Mathlib.Data.List.Sort
-import Mathlib.Data.Prod.Lex
+import Mathlib.Order.Prod.Lex.Basic
 
 set_option linter.style.header false
 
