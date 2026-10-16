@@ -18,21 +18,16 @@ namespace MultiplicativeWeight
 variable {α R : Type*} [DecidableEq α] [CommRing R]
 variable {D : ConnectedDecomposition α} (W : MultiplicativeWeight D R)
 
-/-- The cumulant of the total object weight is the connected-object contribution. -/
-theorem cumulantFromMoment_objectMoment {S : Finset α} (hS : S ≠ ∅) :
-    Finpartition.cumulantFromMoment W.objectMoment S = W.connectedContribution S := by
-  rw [show W.objectMoment = Finpartition.momentFromCumulant W.connectedContribution from
-    funext fun T => W.objectMoment_eq_momentFromCumulant T]
-  exact Finpartition.cumulantFromMoment_momentFromCumulant W.connectedContribution
-    (S := S) hS
-
 /-- On a nonempty set, the cumulant of the normalized object moment is the connected-object
 contribution. -/
 theorem normalizedObjectMoment_cumulant_eq_connectedContribution
     {S : Finset α} (hS : S ≠ ∅) :
     W.normalizedObjectMoment.cumulant S = W.connectedContribution S := by
   change Finpartition.cumulantFromMoment W.objectMoment S = W.connectedContribution S
-  exact W.cumulantFromMoment_objectMoment hS
+  rw [show W.objectMoment = Finpartition.momentFromCumulant W.connectedContribution from
+    funext fun T => W.objectMoment_eq_momentFromCumulant T]
+  exact Finpartition.cumulantFromMoment_momentFromCumulant W.connectedContribution
+    (S := S) hS
 
 end MultiplicativeWeight
 end Combinatorics
