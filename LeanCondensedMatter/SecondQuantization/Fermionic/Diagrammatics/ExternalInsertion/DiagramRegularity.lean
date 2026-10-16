@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Analysis.OrderedSimplex.MeasurableRegularity
-import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedOrderSignature
+import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.ImaginaryTimeOrderSignature
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.Amplitude
 
 set_option linter.style.header false
