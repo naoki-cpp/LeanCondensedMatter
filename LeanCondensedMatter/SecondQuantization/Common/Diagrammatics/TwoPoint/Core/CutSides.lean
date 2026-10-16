@@ -79,6 +79,35 @@ theorem TwoPointDiagram.reachable_external_side_withoutPropagator
       · exact Or.inl (h0b.trans hvb.symm)
     · exact False.elim (hsep (h0b.trans h1b.symm))
 
+/-- The removed propagator joins the two *different* canonical external sides of
+the cut, in one of its two orientations. No choice of representative leg is made
+by the conclusion. -/
+theorem TwoPointDiagram.separatingCut_endpoints_opposite_sides
+    (d : TwoPointDiagram ExternalLabel InternalLabel N S)
+    (hconnected : d.IsExternallyConnected)
+    (cut : Fin (2 * (2 * S.card + 1)))
+    (hsep : ¬ (d.vertexGraphWithoutPropagator cut).Reachable
+      (Sum.inl (0 : Fin 2)) (Sum.inl (1 : Fin 2))) :
+    ((d.vertexGraphWithoutPropagator cut).Reachable
+        (Sum.inl (0 : Fin 2)) (twoPointVertexOfLeg cut) ∧
+      (d.vertexGraphWithoutPropagator cut).Reachable
+        (Sum.inl (1 : Fin 2)) (twoPointVertexOfLeg (d.pairing.partner cut))) ∨
+    ((d.vertexGraphWithoutPropagator cut).Reachable
+        (Sum.inl (0 : Fin 2)) (twoPointVertexOfLeg (d.pairing.partner cut)) ∧
+      (d.vertexGraphWithoutPropagator cut).Reachable
+        (Sum.inl (1 : Fin 2)) (twoPointVertexOfLeg cut)) := by
+  have hends := d.separatingCut_endpoints_not_reachable hconnected cut hsep
+  rcases d.reachable_external_side_withoutPropagator hconnected cut hsep
+      (twoPointVertexOfLeg cut) with h0a | h1a
+  · rcases d.reachable_external_side_withoutPropagator hconnected cut hsep
+        (twoPointVertexOfLeg (d.pairing.partner cut)) with h0b | h1b
+    · exact False.elim (hends (h0a.symm.trans h0b))
+    · exact Or.inl ⟨h0a, h1b⟩
+  · rcases d.reachable_external_side_withoutPropagator hconnected cut hsep
+        (twoPointVertexOfLeg (d.pairing.partner cut)) with h0b | h1b
+    · exact Or.inr ⟨h0b, h1a⟩
+    · exact False.elim (hends (h1a.symm.trans h1b))
+
 /-- The two canonical external component blocks cover the whole vertex set and are disjoint.
 Consequently a separating cut has *exactly* two connected components. -/
 theorem TwoPointDiagram.external_componentBlocks_cover_and_disjoint
