@@ -2825,6 +2825,7 @@
       "name": "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedRadialHarmonics",
       "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Streda/GaussianCrossedRadialHarmonics.lean",
       "imports": [
+        "LeanCondensedMatter.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderLongitudinalSameSide",
         "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedRadialCoefficients",
         "LeanCondensedMatter.Transport.Analysis.ContinuumMeasure"
       ],
@@ -2902,7 +2903,7 @@
       "imports": [
         "LeanCondensedMatter.Transport.Disorder.Ladder"
       ],
-      "externalImportCount": 2
+      "externalImportCount": 3
     },
     {
       "name": "LeanCondensedMatter.Models.MassiveDirac.Vertex.PauliRung",
@@ -5128,7 +5129,7 @@
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalComponents",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.InteractionSector"
       ],
-      "externalImportCount": 0
+      "externalImportCount": 2
     },
     {
       "name": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalComponents",
@@ -5753,6 +5754,16 @@
       "externalImportCount": 0
     },
     {
+      "name": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumLegOrder",
+      "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Diagrammatics/TwoPoint/SlotSplit/SlotSplitVacuumLegOrder.lean",
+      "imports": [
+        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Ordered",
+        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Factorization.TwoPointLegEmbedding",
+        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotLegSplitting"
+      ],
+      "externalImportCount": 0
+    },
+    {
       "name": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumPairImage",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Diagrammatics/TwoPoint/SlotSplit/SlotSplitVacuumPairImage.lean",
       "imports": [
@@ -5767,10 +5778,8 @@
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Diagrammatics/TwoPoint/SlotSplit/SlotSplitVacuumPairing.lean",
       "imports": [
         "LeanCondensedMatter.Combinatorics.PerfectPairing.Embedding",
-        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Ordered",
-        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Factorization.TwoPointLegEmbedding",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedOrderPairing",
-        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotLegSplitting"
+        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumLegOrder"
       ],
       "externalImportCount": 0
     },
@@ -5807,6 +5816,7 @@
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitConnectivity",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumComponentPair",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumComponents",
+        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumLegOrder",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumPairImage",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumPairing",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumVertexProduct"
@@ -7238,7 +7248,7 @@
       "imports": [
         "LeanCondensedMatter.Analysis.OrderedSimplex.StrictAntiCongr",
         "LeanCondensedMatter.Combinatorics.SlotShuffle",
-        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumPairing",
+        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumLegOrder",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Factorization.FiberDecomposition",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberShuffleOrderedData"
       ],

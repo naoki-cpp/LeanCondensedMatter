@@ -5799,7 +5799,7 @@
       "Combinatorics.Pairing.ofSplit_reindex",
       "Combinatorics.Pairing.ofSplit_splitLeft_splitRight",
       "Combinatorics.Pairing.splitRight_ofSplit",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumPairing.0.SecondQuantization.Common.TwoPointDiagram.ofSlotSplit_atomicLegPartner_vacuumOrderedLeg"
+      "SecondQuantization.Common.TwoPointDiagram.ofSlotSplit_pairing_partner_vacuumOrderedLeg"
     ],
     "dependencies": [
       "Combinatorics.PairingOn.sumCongr_partner_inr",
@@ -5812,7 +5812,7 @@
       "Combinatorics.Pairing.ofSplit_reindex",
       "Combinatorics.Pairing.ofSplit_splitLeft_splitRight",
       "Combinatorics.Pairing.splitRight_ofSplit",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumPairing.0.SecondQuantization.Common.TwoPointDiagram.ofSlotSplit_atomicLegPartner_vacuumOrderedLeg"
+      "SecondQuantization.Common.TwoPointDiagram.ofSlotSplit_pairing_partner_vacuumOrderedLeg"
     ],
     "compiledConsumerCount": 5,
     "axioms": [
@@ -7463,12 +7463,12 @@
       "SecondQuantization.Common.ExternalInsertionDiagram.pairingInMixedOrder_partner_legPosition",
       "SecondQuantization.Common.QuarticDiagram.pairingInOrder_partner_componentOrderedLeg",
       "SecondQuantization.Common.TwoPointDiagram.mixedPositionComponent_partner",
+      "SecondQuantization.Common.TwoPointDiagram.ofSlotSplit_pairing_partner_vacuumOrderedLeg",
       "SecondQuantization.Common.TwoPointDiagram.pairingInMixedOrder_partner_legPosition",
       "SecondQuantization.Common.TwoPointDiagram.slotCongr_partner",
       "SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_left_normalizedPair",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_partner_bigLegEquiv_fst",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_partner_bigLegEquiv_symm_sigma_mk",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumPairing.0.SecondQuantization.Common.TwoPointDiagram.ofSlotSplit_atomicLegPartner_vacuumOrderedLeg"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_partner_bigLegEquiv_symm_sigma_mk"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
@@ -7485,12 +7485,12 @@
       "SecondQuantization.Common.ExternalInsertionDiagram.pairingInMixedOrder_partner_legPosition",
       "SecondQuantization.Common.QuarticDiagram.pairingInOrder_partner_componentOrderedLeg",
       "SecondQuantization.Common.TwoPointDiagram.mixedPositionComponent_partner",
+      "SecondQuantization.Common.TwoPointDiagram.ofSlotSplit_pairing_partner_vacuumOrderedLeg",
       "SecondQuantization.Common.TwoPointDiagram.pairingInMixedOrder_partner_legPosition",
       "SecondQuantization.Common.TwoPointDiagram.slotCongr_partner",
       "SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicPairValue_ofSlotSplit_left_normalizedPair",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_partner_bigLegEquiv_fst",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_partner_bigLegEquiv_symm_sigma_mk",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumPairing.0.SecondQuantization.Common.TwoPointDiagram.ofSlotSplit_atomicLegPartner_vacuumOrderedLeg"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble.0.SecondQuantization.Common.QuarticDiagram.reassemble_partner_bigLegEquiv_symm_sigma_mk"
     ],
     "compiledConsumerCount": 17,
     "axioms": [
@@ -62573,7 +62573,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ (side : QuantumTheory.Transport.SpectralSide) (v m probeEnergy broadening disorderStrength hbar pMax : ℝ),\n  v ≠ 0 →\n    broadening ≠ 0 →\n      0 ≤ disorderStrength →\n        0 ≤ pMax →\n          0 <\n              (QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornEffectiveEnergy side v m probeEnergy\n                      broadening disorderStrength hbar pMax ^\n                    2 -\n                  QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornEffectiveMass side v m probeEnergy\n                      broadening disorderStrength hbar pMax ^\n                    2).re →\n            ∫ (p : ℝ) in 0..pMax,\n                ↑p *\n                  (QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominator side v m p 0 probeEnergy\n                      broadening disorderStrength hbar pMax)⁻¹ =\n              -(2 * ↑v ^ 2)⁻¹ *\n                (Complex.log\n                    (QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominator side v m pMax 0\n                      probeEnergy broadening disorderStrength hbar pMax) -\n                  Complex.log\n                    (QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominator side v m 0 0\n                      probeEnergy broadening disorderStrength hbar pMax))",
     "standardAxioms": [
       "Classical.choice",
@@ -62581,7 +62581,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -62592,7 +62592,9 @@
     "docString": "The finite-cutoff Born-Dyson single-pole radial integral is exactly\na difference of principal complex logarithms whenever the real part of\nits effective spectral center is positive. Finite-`η` invertibility\nexcludes all real momentum poles and supplies the required nonzero\nimaginary part of that center; no additional log-branch assumption is made.\nThis is before broadening and disorder limits. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadial_ra_pole_moment_mul_center_gap_eq_log"
+    ],
     "dependencies": [
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominator_ne_zero",
       "QuantumTheory.Models.MassiveDirac.integral_massiveDiracRadialDenominatorKernel_eq_log",
@@ -62600,8 +62602,10 @@
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadial_ra_pole_moment_mul_center_gap_eq_log"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -63083,6 +63087,7 @@
       "QuantumTheory.Models.MassiveDirac.continuous_finiteCutoffContinuumBornDysonScalarCoefficient_radial",
       "QuantumTheory.Models.MassiveDirac.finiteBroadeningBornDyson_singlePoleRadialIntegral_eq_log_of_center_re_pos",
       "QuantumTheory.Models.MassiveDirac.finiteBroadeningSameSide_integrable_and_integral_eq_endpoint",
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadial_ra_pole_moment_mul_center_gap_eq_log",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadial_ra_weighted_moment_mul_center_gap",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct_ne_zero"
     ],
@@ -63098,10 +63103,11 @@
       "QuantumTheory.Models.MassiveDirac.continuous_finiteCutoffContinuumBornDysonScalarCoefficient_radial",
       "QuantumTheory.Models.MassiveDirac.finiteBroadeningBornDyson_singlePoleRadialIntegral_eq_log_of_center_re_pos",
       "QuantumTheory.Models.MassiveDirac.finiteBroadeningSameSide_integrable_and_integral_eq_endpoint",
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadial_ra_pole_moment_mul_center_gap_eq_log",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadial_ra_weighted_moment_mul_center_gap",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct_ne_zero"
     ],
-    "compiledConsumerCount": 6,
+    "compiledConsumerCount": 7,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -67126,6 +67132,48 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
+    "terminal": true,
+    "statement": "∀ (v m probeEnergy broadening disorderStrength hbar pMax : ℝ),\n  v ≠ 0 →\n    broadening ≠ 0 →\n      0 ≤ disorderStrength →\n        0 ≤ pMax →\n          0 <\n              (QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornEffectiveEnergy\n                      QuantumTheory.Transport.SpectralSide.retarded v m probeEnergy broadening disorderStrength hbar\n                      pMax ^\n                    2 -\n                  QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornEffectiveMass\n                      QuantumTheory.Transport.SpectralSide.retarded v m probeEnergy broadening disorderStrength hbar\n                      pMax ^\n                    2).re →\n            0 <\n                (QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornEffectiveEnergy\n                        QuantumTheory.Transport.SpectralSide.advanced v m probeEnergy broadening disorderStrength hbar\n                        pMax ^\n                      2 -\n                    QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornEffectiveMass\n                        QuantumTheory.Transport.SpectralSide.advanced v m probeEnergy broadening disorderStrength hbar\n                        pMax ^\n                      2).re →\n              have energyR :=\n                QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornEffectiveEnergy\n                  QuantumTheory.Transport.SpectralSide.retarded v m probeEnergy broadening disorderStrength hbar pMax;\n              have energyA :=\n                QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornEffectiveEnergy\n                  QuantumTheory.Transport.SpectralSide.advanced v m probeEnergy broadening disorderStrength hbar pMax;\n              have massR :=\n                QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornEffectiveMass\n                  QuantumTheory.Transport.SpectralSide.retarded v m probeEnergy broadening disorderStrength hbar pMax;\n              have massA :=\n                QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornEffectiveMass\n                  QuantumTheory.Transport.SpectralSide.advanced v m probeEnergy broadening disorderStrength hbar pMax;\n              (energyA ^ 2 - massA ^ 2 - (energyR ^ 2 - massR ^ 2)) *\n                  ∫ (p : ℝ) in 0..pMax,\n                    ↑p *\n                      (QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct\n                          v m p probeEnergy broadening disorderStrength hbar pMax)⁻¹ =\n                -(2 * ↑v ^ 2)⁻¹ *\n                  (Complex.log\n                        (QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominator\n                          QuantumTheory.Transport.SpectralSide.retarded v m pMax 0 probeEnergy broadening\n                          disorderStrength hbar pMax) -\n                      Complex.log\n                        (QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominator\n                          QuantumTheory.Transport.SpectralSide.retarded v m 0 0 probeEnergy broadening disorderStrength\n                          hbar pMax) -\n                    (Complex.log\n                        (QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominator\n                          QuantumTheory.Transport.SpectralSide.advanced v m pMax 0 probeEnergy broadening\n                          disorderStrength hbar pMax) -\n                      Complex.log\n                        (QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominator\n                          QuantumTheory.Transport.SpectralSide.advanced v m 0 0 probeEnergy broadening disorderStrength\n                          hbar pMax)))",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadial_ra_pole_moment_mul_center_gap_eq_log",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedRadialHarmonics",
+    "externalAxioms": [],
+    "docString": "At finite broadening and cutoff, the unweighted RA radial double-pole\nmoment reduces to logarithmic boundary values of the retarded and advanced\nDyson denominators. The spectral-center gap multiplies the moment, so the\nidentity does not silently assume that the gap is invertible. Positive real\nparts of both spectral centers ensure the log-branch hypotheses by finite-η\nDyson invertibility. This is a radial building block, not an evaluation\nof the nonzero-radius K0/K2 Fourier moments or an X/Psi conductivity. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.Models.MassiveDirac.finiteBroadeningBornDyson_singlePoleRadialIntegral_eq_log_of_center_re_pos",
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominator_ne_zero",
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadial_ra_weighted_moment_mul_center_gap"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
     "terminal": false,
     "statement": "∀ (v m p probeEnergy broadening disorderStrength hbar pMax : ℝ),\n  QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonScalarCoefficient\n          QuantumTheory.Transport.SpectralSide.advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax *\n        QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonScalarCoefficient\n          QuantumTheory.Transport.SpectralSide.retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax -\n      QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonPauliCoefficient InternalSpace.PauliAxis.z\n          QuantumTheory.Transport.SpectralSide.advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax *\n        QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonPauliCoefficient InternalSpace.PauliAxis.z\n          QuantumTheory.Transport.SpectralSide.retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax =\n    (QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct v m p\n          probeEnergy broadening disorderStrength hbar pMax)⁻¹ *\n      (QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornEffectiveEnergy\n            QuantumTheory.Transport.SpectralSide.advanced v m probeEnergy broadening disorderStrength hbar pMax *\n          QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornEffectiveEnergy\n            QuantumTheory.Transport.SpectralSide.retarded v m probeEnergy broadening disorderStrength hbar pMax -\n        QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornEffectiveMass\n            QuantumTheory.Transport.SpectralSide.advanced v m probeEnergy broadening disorderStrength hbar pMax *\n          QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornEffectiveMass\n            QuantumTheory.Transport.SpectralSide.retarded v m probeEnergy broadening disorderStrength hbar pMax)",
     "standardAxioms": [
@@ -67178,7 +67226,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -67190,7 +67238,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient_diagonal_spectral_difference"
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient_diagonal_spectral_difference",
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadial_ra_pole_moment_mul_center_gap_eq_log"
     ],
     "dependencies": [
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominator_ne_zero",
@@ -67199,9 +67248,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient_diagonal_spectral_difference"
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient_diagonal_spectral_difference",
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadial_ra_pole_moment_mul_center_gap_eq_log"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -69876,6 +69926,7 @@
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_x_eq_denominatorForm",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yx_eq_neg_xy",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yy_eq_xx",
+      "QuantumTheory.Models.MassiveDirac.inPlaneLadderAction_integrable_and_integral_eq",
       "QuantumTheory.Models.MassiveDirac.inPlaneLadderSolvedVector_eq_resummedLadderVertex",
       "QuantumTheory.Models.MassiveDirac.integral_polarPauliOperator_inPlane_eq",
       "QuantumTheory.Models.MassiveDirac.tendsto_disorderStrength_mul_finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceMomentumIntegralZeroBroadeningBoundary_disorder_zero",
@@ -69894,6 +69945,7 @@
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_x_eq_denominatorForm",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yx_eq_neg_xy",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yy_eq_xx",
+      "QuantumTheory.Models.MassiveDirac.inPlaneLadderAction_integrable_and_integral_eq",
       "QuantumTheory.Models.MassiveDirac.inPlaneLadderSolvedVector_eq_resummedLadderVertex",
       "QuantumTheory.Models.MassiveDirac.integral_polarPauliOperator_inPlane_eq",
       "QuantumTheory.Models.MassiveDirac.tendsto_disorderStrength_mul_finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceMomentumIntegralZeroBroadeningBoundary_disorder_zero",
@@ -69903,7 +69955,7 @@
       "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderRadial.0.QuantumTheory.Models.MassiveDirac.integral_polarPauli_directionTrace_eq",
       "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderRadialDenominator.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_y_eq_denominatorForm"
     ],
-    "compiledConsumerCount": 13,
+    "compiledConsumerCount": 14,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -69942,6 +69994,7 @@
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceIntegral_eq_radialCoefficient",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yx_eq_neg_xy",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yy_eq_xx",
+      "QuantumTheory.Models.MassiveDirac.inPlaneLadderAction_integrable_and_integral_eq",
       "QuantumTheory.Models.MassiveDirac.inPlaneLadderSolvedVector_eq_resummedLadderVertex",
       "QuantumTheory.Models.MassiveDirac.integral_polarPauliOperator_inPlane_eq",
       "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonLadderSolvedVectorZeroBroadeningBoundary_y_div_disorder_zero",
@@ -69958,6 +70011,7 @@
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceIntegral_eq_radialCoefficient",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yx_eq_neg_xy",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yy_eq_xx",
+      "QuantumTheory.Models.MassiveDirac.inPlaneLadderAction_integrable_and_integral_eq",
       "QuantumTheory.Models.MassiveDirac.inPlaneLadderSolvedVector_eq_resummedLadderVertex",
       "QuantumTheory.Models.MassiveDirac.integral_polarPauliOperator_inPlane_eq",
       "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonLadderSolvedVectorZeroBroadeningBoundary_y_div_disorder_zero",
@@ -69965,7 +70019,54 @@
       "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderHallZeroBroadeningIntegral.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral_y_eq_endpointForm",
       "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderRadial.0.QuantumTheory.Models.MassiveDirac.integral_polarPauli_directionTrace_eq"
     ],
-    "compiledConsumerCount": 11,
+    "compiledConsumerCount": 12,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (rung : ℝ → QuantumTheory.Models.MassiveDirac.InPlaneCoefficientVector)\n  (coefficients : QuantumTheory.Models.MassiveDirac.InPlaneCoefficientVector) (a b : ℝ),\n  (∀ (i : Fin 2), IntervalIntegrable (fun p => rung p i) MeasureTheory.volume a b) →\n    ∀ (direction : Fin 2),\n      IntervalIntegrable\n          (fun p => QuantumTheory.Models.MassiveDirac.inPlaneLadderAction (rung p) coefficients direction)\n          MeasureTheory.volume a b ∧\n        ∫ (p : ℝ) in a..b, QuantumTheory.Models.MassiveDirac.inPlaneLadderAction (rung p) coefficients direction =\n          QuantumTheory.Models.MassiveDirac.inPlaneLadderAction (fun i => ∫ (p : ℝ) in a..b, rung p i) coefficients\n            direction",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.MassiveDirac.inPlaneLadderAction_integrable_and_integral_eq",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Vertex.InPlaneLadder",
+    "externalAxioms": [],
+    "docString": "Integrating the in-plane ladder action against a fixed coefficient vector amounts to\nintegrating its rung vector. Integrability and the integral identity share the same hypotheses. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderHallZeroBroadeningIntegral.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral_y_eq_endpointForm",
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderLongitudinalZeroBroadeningIntegral.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral_x_eq_endpointForm"
+    ],
+    "dependencies": [
+      "QuantumTheory.Models.MassiveDirac.inPlaneLadderAction_apply_x",
+      "QuantumTheory.Models.MassiveDirac.inPlaneLadderAction_apply_y"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderHallZeroBroadeningIntegral.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral_y_eq_endpointForm",
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderLongitudinalZeroBroadeningIntegral.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral_x_eq_endpointForm"
+    ],
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -108598,6 +108699,7 @@
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Factorization.ComponentShuffleParity.0.SecondQuantization.Common.ExternalInsertionDiagram.componentLegPosition_external"
     ],
     "dependencies": [
+      "SecondQuantization.Common.interactionSector_subset",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentRestriction.0.SecondQuantization.Common.ExternalInsertionDiagram.legInComponent_iff_unflattened"
     ],
     "crossModuleDirectWrapper": false,
@@ -114021,7 +114123,7 @@
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": true,
+    "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": true,
     "simpLemma": true,
     "retainedNeedsReview": false,
@@ -114034,9 +114136,56 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumPairing.0.SecondQuantization.Common.TwoPointDiagram.ofSlotSplit_atomicLegPartner_vacuumOrderedLeg"
+      "SecondQuantization.Common.TwoPointDiagram.ofSlotSplit_pairing_partner_vacuumOrderedLeg"
     ],
     "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.TwoPointDiagram.ofSlotSplit_pairing_partner_vacuumOrderedLeg"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {n : ℕ} (T : Finset (Fin n))\n  (ext : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel n T)\n  (vac : SecondQuantization.Common.QuarticDiagram InternalLabel n (Finset.univ \\ T))\n  (p : Fin (2 * (2 * (Finset.univ \\ T).card))),\n  have d := SecondQuantization.Common.TwoPointDiagram.ofSlotSplit ⋯ ext vac;\n  d.pairing.partner\n      ((SecondQuantization.Common.twoPointLegEquiv Finset.univ).symm\n        (SecondQuantization.Common.orderedQuarticLegMapToTwoPointLeg (SecondQuantization.Common.slotSplitVacuumSlot T)\n          p)) =\n    (SecondQuantization.Common.twoPointLegEquiv Finset.univ).symm\n      (SecondQuantization.Common.orderedQuarticLegMapToTwoPointLeg (SecondQuantization.Common.slotSplitVacuumSlot T)\n        ((vac.pairingInOrder (SecondQuantization.Common.slotSplitVacuumOrder T)).partner p))",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.TwoPointDiagram.ofSlotSplit_pairing_partner_vacuumOrderedLeg",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumLegOrder",
+    "externalAxioms": [],
+    "docString": "Reassembling a slot split intertwines the fixed vacuum pairing partner and the\nambient fixed-leg pairing partner, without choosing an imaginary-time order. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumPairing.0.SecondQuantization.Common.TwoPointDiagram.ofSlotSplit_atomicLegPartner_vacuumOrderedLeg"
+    ],
+    "dependencies": [
+      "Combinatorics.Pairing.ofSplit_partner_inr",
+      "Combinatorics.PairingOn.transport_partner",
+      "SecondQuantization.Common.TwoPointDiagram.ofSlotSplit_pairing",
+      "SecondQuantization.Common.slotSplitVacuumOrderedLeg_eq_slotSplitRight"
+    ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
@@ -115087,6 +115236,90 @@
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.Quartic.0.SecondQuantization.Bosonic.algebraicToCompleted_mem_completedCreateDomain"
     ],
     "compiledConsumerCount": 5,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {External : Type u_1} {Internal : Type u_2} [inst : Fintype External] [inst_1 : DecidableEq External]\n  [Nonempty External] (G : SimpleGraph (External ⊕ Internal)),\n  SecondQuantization.Common.AllExternalVerticesConnected G ↔\n    (SecondQuantization.Common.externalComponentPartition G).parts.card = 1",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.allExternalVerticesConnected_iff_externalComponentPartition_parts_card_eq_one",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalComponents",
+    "externalAxioms": [],
+    "docString": "A nonempty external sector is mutually connected precisely when its\nexternal-component partition has one block. This is the graph-level\nsingle-block criterion used by finite-set cumulant extraction. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "SecondQuantization.Common.allExternalVerticesConnected_iff_externalComponentPartition_parts_eq_singleton"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {External : Type u_1} {Internal : Type u_2} [inst : Fintype External] [inst_1 : DecidableEq External]\n  [Nonempty External] (G : SimpleGraph (External ⊕ Internal)),\n  SecondQuantization.Common.AllExternalVerticesConnected G ↔\n    (SecondQuantization.Common.externalComponentPartition G).parts = {Finset.univ}",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.allExternalVerticesConnected_iff_externalComponentPartition_parts_eq_singleton",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalComponents",
+    "externalAxioms": [],
+    "docString": "For a nonempty external sector, mutual external connectivity means that\nthe external-component partition consists of exactly the full external set.\n\nInternal (vacuum) components do not appear in this partition. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Common.allExternalVerticesConnected_iff_externalComponentPartition_parts_card_eq_one"
+    ],
+    "dependencies": [
+      "SecondQuantization.Common.mem_externalComponentPartition_part"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.allExternalVerticesConnected_iff_externalComponentPartition_parts_card_eq_one"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -123666,6 +123899,7 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Common.ExternalInsertionDiagram.assembleInteractionOrder_symm_apply",
+      "SecondQuantization.Common.ExternalInsertionDiagram.componentDiagramLeg_external",
       "SecondQuantization.Common.ExternalInsertionDiagram.componentDiagramLeg_interaction",
       "SecondQuantization.Common.TwoPointDiagram.externalPieceOfCardEq_vertexLabel",
       "SecondQuantization.Common.TwoPointDiagram.prod_slotSplitVacuumComponents_eq_vacuumVertexProduct",
@@ -123686,9 +123920,11 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Common.ExternalInsertionDiagram.assembleInteractionOrder_symm_apply",
+      "SecondQuantization.Common.ExternalInsertionDiagram.componentDiagramLeg_external",
       "SecondQuantization.Common.ExternalInsertionDiagram.componentDiagramLeg_interaction",
       "SecondQuantization.Common.TwoPointDiagram.externalPieceOfCardEq_vertexLabel",
       "SecondQuantization.Common.TwoPointDiagram.prod_slotSplitVacuumComponents_eq_vacuumVertexProduct",
+      "SecondQuantization.Common.componentLegDataEquiv",
       "SecondQuantization.Common.prod_eq_prod_interactionSectors",
       "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.sum_componentInteractionOrderShuffle_orderedDysonAmplitude_eq_componentExternalOrderSign_mul_prod_components",
       "SecondQuantization.Fermionic.FixedExternalTwoPointWickDiagram.fixedTimeAmplitude_eq_externalSign_mul_prod_components",
@@ -123699,7 +123935,7 @@
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.External.ExternalSlotSplit.0.SecondQuantization.Common.TwoPointDiagram.legInComponent_externalSlotLegSplitting_inl",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumVertexProduct.0.SecondQuantization.Common.TwoPointDiagram.prod_slotSplitVacuumComponentPart_eq_restrictComponent"
     ],
-    "compiledConsumerCount": 13,
+    "compiledConsumerCount": 15,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -124911,7 +125147,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -124923,15 +125159,17 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Common.ExternalInsertionDiagram.externalComponentPartition_part_eq_toLeft_componentBlock"
+      "SecondQuantization.Common.ExternalInsertionDiagram.externalComponentPartition_part_eq_toLeft_componentBlock",
+      "SecondQuantization.Common.allExternalVerticesConnected_iff_externalComponentPartition_parts_eq_singleton"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.ExternalInsertionDiagram.externalComponentPartition_part_eq_toLeft_componentBlock"
+      "SecondQuantization.Common.ExternalInsertionDiagram.externalComponentPartition_part_eq_toLeft_componentBlock",
+      "SecondQuantization.Common.allExternalVerticesConnected_iff_externalComponentPartition_parts_eq_singleton"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -127456,14 +127694,14 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "SecondQuantization.Common.slotSplitVacuumOrderedLeg_eq_slotSplitRight",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumPairing",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumLegOrder",
     "externalAxioms": [],
     "docString": "A fixed-order quartic vacuum leg, viewed as an ambient standard two-point leg, is exactly the\nright-leg embedding of the canonical slot split. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumPairImage.0.SecondQuantization.Common.slotSplitVacuumMixedPosition_eq_slotSplitRight",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumPairing.0.SecondQuantization.Common.TwoPointDiagram.ofSlotSplit_atomicLegPartner_vacuumOrderedLeg"
+      "SecondQuantization.Common.TwoPointDiagram.ofSlotSplit_pairing_partner_vacuumOrderedLeg",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumPairImage.0.SecondQuantization.Common.slotSplitVacuumMixedPosition_eq_slotSplitRight"
     ],
     "dependencies": [
       "SecondQuantization.Common.slotLegSplitting_right_interaction"
@@ -127471,8 +127709,8 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumPairImage.0.SecondQuantization.Common.slotSplitVacuumMixedPosition_eq_slotSplitRight",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumPairing.0.SecondQuantization.Common.TwoPointDiagram.ofSlotSplit_atomicLegPartner_vacuumOrderedLeg"
+      "SecondQuantization.Common.TwoPointDiagram.ofSlotSplit_pairing_partner_vacuumOrderedLeg",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumPairImage.0.SecondQuantization.Common.slotSplitVacuumMixedPosition_eq_slotSplitRight"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -127502,7 +127740,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "SecondQuantization.Common.slotSplitVacuumSlot_strictMono",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumPairing",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumLegOrder",
     "externalAxioms": [],
     "docString": "The inherited vacuum-slot map is strictly increasing in ambient interaction-slot order. ",
     "directWrapperTargetModule": null,
@@ -167727,6 +167965,7 @@
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedAngularCoefficient_eq_denominatorForm",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct_ne_zero",
       "QuantumTheory.Models.MassiveDirac.inPlaneLadderAction_apply_y",
+      "QuantumTheory.Models.MassiveDirac.inPlaneLadderAction_integrable_and_integral_eq",
       "QuantumTheory.Models.MassiveDirac.inPlaneRotationMatrix_apply_x_x",
       "QuantumTheory.Models.MassiveDirac.inPlaneRotationMatrix_apply_y_x"
     ],
@@ -167953,6 +168192,7 @@
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_x_eq_denominatorForm",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceRadialIntegrand_eq_radialCoefficient",
       "QuantumTheory.Models.MassiveDirac.inPlaneLadderAction_apply_x",
+      "QuantumTheory.Models.MassiveDirac.inPlaneLadderAction_integrable_and_integral_eq",
       "QuantumTheory.Models.MassiveDirac.inPlaneRotationMatrix_apply_x_x",
       "QuantumTheory.Models.MassiveDirac.inPlaneRotationMatrix_apply_y_x"
     ],
@@ -181560,17 +181800,14 @@
     "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumPairing.0.SecondQuantization.Common.TwoPointDiagram.ofSlotSplit_atomicLegPartner_vacuumOrderedLeg",
     "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumPairing",
     "externalAxioms": [],
-    "docString": "The ambient standard-leg partner on the vacuum side of `ofSlotSplit` is the fixed-order\nquartic partner embedded back into the ambient two-point leg enumeration. ",
+    "docString": "Mixed-time atomic leg identities inherit the timeless vacuum-side partner transport. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumPairing.0.SecondQuantization.Common.TwoPointDiagram.ofSlotSplit_pairingInMixedOrder_partner_vacuumOrderedLeg"
     ],
     "dependencies": [
-      "Combinatorics.Pairing.ofSplit_partner_inr",
-      "Combinatorics.PairingOn.transport_partner",
-      "SecondQuantization.Common.TwoPointDiagram.ofSlotSplit_pairing",
-      "SecondQuantization.Common.slotSplitVacuumOrderedLeg_eq_slotSplitRight"
+      "SecondQuantization.Common.TwoPointDiagram.ofSlotSplit_pairing_partner_vacuumOrderedLeg"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
