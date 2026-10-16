@@ -186,6 +186,7 @@ theorem polarFourierZerothAngularKernel_hasDerivAt (z : ℝ) :
   have hrew :
       (∫ θ in (0 : ℝ)..(2 * Real.pi), derivative z θ) =
         Complex.I * polarFourierFirstCosineAngularKernel z := by
+    unfold polarFourierFirstCosineAngularKernel
     rw [← intervalIntegral.integral_const_mul]
     apply intervalIntegral.integral_congr
     intro θ _
