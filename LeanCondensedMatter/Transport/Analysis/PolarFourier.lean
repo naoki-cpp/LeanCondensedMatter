@@ -1,6 +1,7 @@
 import LeanCondensedMatter.Transport.Analysis.AngularHarmonics
 import LeanCondensedMatter.Transport.Analysis.ContinuumMeasure
 import LeanCondensedMatter.Transport.Analysis.FourierGeometry
+import Mathlib.Analysis.Calculus.ParametricIntervalIntegral
 import Mathlib.MeasureTheory.Integral.DominatedConvergence
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.Periodic
 import Mathlib.Tactic
@@ -122,6 +123,75 @@ theorem continuous_polarFourierSecondCosineAngularKernel :
   apply intervalIntegral.continuous_parametric_intervalIntegral_of_continuous'
   unfold Function.uncurry polarFourierRadialPhase
   fun_prop
+
+/-- The Fourier phase has unit norm for every real argument. -/
+private theorem norm_polarFourierRadialPhase (z θ : ℝ) :
+    ‖polarFourierRadialPhase z θ‖ = 1 := by
+  simp [polarFourierRadialPhase, Complex.norm_exp, Complex.mul_re]
+
+/-- The first nonzero-argument differential relation of the radial Fourier
+harmonics: the derivative of the zeroth angular kernel is `i` times the
+first-cosine kernel.
+
+Unlike an origin-only normalization, this identity holds for all real
+Fourier arguments and is a step toward identifying the Fourier kernels
+with the integer-order Bessel functions in Mathlib v4.35.0. -/
+theorem polarFourierZerothAngularKernel_hasDerivAt (z : ℝ) :
+    HasDerivAt polarFourierZerothAngularKernel
+      (Complex.I * polarFourierFirstCosineAngularKernel z) z := by
+  let derivative : ℝ → ℝ → ℂ := fun x θ =>
+    Complex.I * (((Real.cos θ : ℝ) : ℂ)) * polarFourierRadialPhase x θ
+  have hdiff (x θ : ℝ) :
+      HasDerivAt (fun t : ℝ => polarFourierRadialPhase t θ)
+        (derivative x θ) x := by
+    have hmul : HasDerivAt (fun t : ℝ => t * Real.cos θ)
+        (Real.cos θ) x := by
+      simpa using (hasDerivAt_id x).mul_const (Real.cos θ)
+    have harg : HasDerivAt
+        (fun t : ℝ => Complex.I * ((t * Real.cos θ : ℝ) : ℂ))
+        (Complex.I * (((Real.cos θ : ℝ) : ℂ))) x :=
+      hmul.ofReal_comp |>.const_mul Complex.I
+    have h := (Complex.hasDerivAt_exp _).comp x harg
+    convert h using 1
+    · rfl
+    · dsimp [derivative, polarFourierRadialPhase]
+      ring
+  have hcont (x : ℝ) :
+      Continuous (fun θ : ℝ => polarFourierRadialPhase x θ) := by
+    dsimp [polarFourierRadialPhase]
+    fun_prop
+  have hcont' (x : ℝ) : Continuous (derivative x) := by
+    dsimp [derivative]
+    fun_prop
+  have hbound (x θ : ℝ) : ‖derivative x θ‖ ≤ (1 : ℝ) := by
+    have hcos := Real.abs_cos_le_one θ
+    simpa [derivative, norm_mul, norm_polarFourierRadialPhase] using hcos
+  have hmain :
+      HasDerivAt
+        (fun x : ℝ => ∫ θ in (0 : ℝ)..(2 * Real.pi),
+          polarFourierRadialPhase x θ)
+        (∫ θ in (0 : ℝ)..(2 * Real.pi), derivative z θ) z := by
+    exact (intervalIntegral.hasDerivAt_integral_of_dominated_loc_of_deriv_le
+      (F := fun x θ => polarFourierRadialPhase x θ)
+      (F' := derivative)
+      (bound := fun _θ : ℝ => (1 : ℝ))
+      (s := Set.univ) (x₀ := z) (a := (0 : ℝ)) (b := 2 * Real.pi)
+      Filter.univ_mem
+      (Filter.Eventually.of_forall fun x => (hcont x).aestronglyMeasurable)
+      ((hcont z).intervalIntegrable _ _)
+      ((hcont' z).aestronglyMeasurable)
+      (Filter.Eventually.of_forall fun θ _ x _ => hbound x θ)
+      (intervalIntegrable_const)
+      (Filter.Eventually.of_forall fun θ _ x _ => hdiff x θ)).2
+  have hrew :
+      (∫ θ in (0 : ℝ)..(2 * Real.pi), derivative z θ) =
+        Complex.I * polarFourierFirstCosineAngularKernel z := by
+    rw [← intervalIntegral.integral_const_mul]
+    apply intervalIntegral.integral_congr
+    intro θ _
+    dsimp [derivative]
+    ring
+  simpa only [polarFourierZerothAngularKernel, hrew] using hmain
 
 /-- Derivative of the dimensionless radial Fourier phase with respect to the polar angle. -/
 private theorem polarFourierRadialPhase_hasDerivAt (z θ : ℝ) :
