@@ -43,8 +43,10 @@ noncomputable def TwoPointDiagram.vertexGraphWithoutPropagator
   symm := ⟨by
     rintro v w ⟨hne, leg, hleg, hpartner, hv, hw⟩
     refine ⟨hne.symm, d.pairing.partner leg, hpartner, ?_, hw, ?_⟩
-    · simpa only [d.pairing.partner_involutive] using hleg
-    · simpa only [d.pairing.partner_involutive] using hv⟩
+    · rw [d.pairing.partner_involutive leg]
+      exact hleg
+    · rw [d.pairing.partner_involutive leg]
+      exact hv⟩
   loopless := ⟨by
     rintro v ⟨hvv, -⟩
     exact hvv rfl⟩
@@ -99,7 +101,8 @@ def OneParticleIrreducibleTwoPointDiagram
 noncomputable instance OneParticleIrreducibleTwoPointDiagram.instFintype
     [Fintype ExternalLabel] [Fintype InternalLabel] :
     Fintype (OneParticleIrreducibleTwoPointDiagram ExternalLabel InternalLabel N S) :=
-  Fintype.ofFinite _
+  Fintype.ofFinite {d : TwoPointDiagram ExternalLabel InternalLabel N S //
+    d.IsOneParticleIrreducible}
 
 end Common
 end SecondQuantization
