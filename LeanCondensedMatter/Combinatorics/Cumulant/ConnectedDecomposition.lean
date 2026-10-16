@@ -123,8 +123,10 @@ noncomputable def connectedContribution (S : Finset α) : R :=
 theorem objectMoment_eq_momentFromCumulant (S : Finset α) :
     W.objectMoment S = Finpartition.momentFromCumulant W.connectedContribution S := by
   classical
-  simpa only [objectMoment, connectedContribution,
-    Finpartition.weightedMomentFromCumulant_one] using
+  change (∑ d : D.Object S, W.objectWeight d) =
+    Finpartition.momentFromCumulant
+      (fun T => ∑ d : D.ConnectedObject T, W.connectedWeight d) S
+  simpa only [Finpartition.weightedMomentFromCumulant_one] using
     (D.sum_objectWeight_eq_weightedMomentFromCumulant (fun _ _ => (1 : R))
       W.objectWeight W.connectedWeight
       (fun {S} d => by simpa only [one_mul] using W.weight_decompose d) S)
