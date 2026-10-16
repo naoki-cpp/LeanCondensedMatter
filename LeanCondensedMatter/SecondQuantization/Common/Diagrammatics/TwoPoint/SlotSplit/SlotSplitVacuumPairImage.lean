@@ -144,17 +144,23 @@ private theorem TwoPointDiagram.mixedVacuumPair_firstEndpoint_mem_vacuumLegRange
   rw [slotSplitVacuumMixedPosition_eq_slotSplitRight]
   simpa only [p, Equiv.apply_symm_apply] using hq
 
-/-- The restriction of a mixed vacuum-component pair to the complementary quartic
-sector is surjective on normalized pairs, without counting their cardinalities. -/
-private theorem TwoPointDiagram.slotSplitVacuumMixedPairEmbedding_surjective
+/-- The fixed-order quartic vacuum normalized pairs are equivalent to all ambient mixed normalized
+pairs carried by vacuum components. The graph-to-mixed-position characterization is kept
+separate; the one-use surjectivity proof is constructed directly here. -/
+noncomputable def TwoPointDiagram.slotSplitVacuumMixedPairEquiv
     (T : Finset (Fin n))
     (ext : TwoPointDiagram ExternalLabel InternalLabel n T)
     (vac : QuarticDiagram InternalLabel n ((Finset.univ : Finset (Fin n)) \ T))
     (hext : ext.IsExternallyConnected)
     (τ τ' : ℝ) (σ : Fin n → ℝ)
     (hσ : StrictAnti (σ ∘ slotSplitVacuumSlot T)) :
-    Function.Surjective
-      (TwoPointDiagram.slotSplitVacuumMixedPairEmbedding T ext vac τ τ' σ hσ) := by
+    (vac.pairingInOrder (slotSplitVacuumOrder T)).NormalizedPair ≃
+      (TwoPointDiagram.ofSlotSplit (Finset.subset_univ T) ext vac).MixedVacuumPair τ τ' σ :=
+by
+  refine Equiv.ofBijective
+    (TwoPointDiagram.slotSplitVacuumMixedPairEmbedding T ext vac τ τ' σ hσ)
+    ⟨(TwoPointDiagram.slotSplitVacuumMixedPairEmbedding T ext vac τ τ' σ hσ).injective,
+      ?_⟩
   intro pr
   obtain ⟨q, hq⟩ : ∃ q,
       TwoPointDiagram.slotSplitVacuumNormalizedPairEmbedding T ext vac τ τ' σ hσ q =
@@ -182,22 +188,6 @@ private theorem TwoPointDiagram.slotSplitVacuumMixedPairEmbedding_surjective
   refine ⟨q, ?_⟩
   apply Subtype.ext
   exact hq
-
-/-- The fixed-order quartic vacuum normalized pairs are equivalent to all ambient mixed normalized
-pairs carried by vacuum components. -/
-noncomputable def TwoPointDiagram.slotSplitVacuumMixedPairEquiv
-    (T : Finset (Fin n))
-    (ext : TwoPointDiagram ExternalLabel InternalLabel n T)
-    (vac : QuarticDiagram InternalLabel n ((Finset.univ : Finset (Fin n)) \ T))
-    (hext : ext.IsExternallyConnected)
-    (τ τ' : ℝ) (σ : Fin n → ℝ)
-    (hσ : StrictAnti (σ ∘ slotSplitVacuumSlot T)) :
-    (vac.pairingInOrder (slotSplitVacuumOrder T)).NormalizedPair ≃
-      (TwoPointDiagram.ofSlotSplit (Finset.subset_univ T) ext vac).MixedVacuumPair τ τ' σ :=
-  Equiv.ofBijective (TwoPointDiagram.slotSplitVacuumMixedPairEmbedding T ext vac τ τ' σ hσ)
-    ⟨(TwoPointDiagram.slotSplitVacuumMixedPairEmbedding T ext vac τ τ' σ hσ).injective,
-      TwoPointDiagram.slotSplitVacuumMixedPairEmbedding_surjective
-        T ext vac hext τ τ' σ hσ⟩
 
 @[simp]
 theorem TwoPointDiagram.slotSplitVacuumMixedPairEquiv_apply
