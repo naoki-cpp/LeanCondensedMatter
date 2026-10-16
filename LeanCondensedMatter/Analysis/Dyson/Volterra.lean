@@ -44,11 +44,6 @@ theorem hasSum_integrand_of_bound {V : ℝ → A} {β M σ : ℝ}
   have hmul := (hasSum_evolution_of_bound h lam hσ).mul_left (V σ)
   simpa only [integrand] using hmul.const_smul lam
 
-/-- The generic Volterra-integrand majorant is summable. -/
-theorem summable_integrandMajorant (M β : ℝ) (lam : ℂ) :
-    Summable (integrandMajorant M β lam) := by
-  exact (summable_majorant (‖lam‖ * M) β).mul_left (‖lam‖ * M)
-
 omit [CompleteSpace A] in
 /-- Uniform pointwise norm control of every generic Volterra-integrand term on `[0, β]`. -/
 theorem norm_integrand_le_of_bound {V : ℝ → A} {β M σ : ℝ}
@@ -90,7 +85,8 @@ theorem hasSum_intervalIntegral_integrand_of_bound {V : ℝ → A} {β M τ : �
         simpa [uIcc_of_le hτ.1] using (uIoc_subset_uIcc hσ)
       exact norm_integrand_le_of_bound h.toBoundedInteraction
         ⟨hσ'.1, hσ'.2.trans hτ.2⟩ lam n
-  · exact Filter.Eventually.of_forall fun _ _ => summable_integrandMajorant M β lam
+  · exact Filter.Eventually.of_forall fun _ _ =>
+      (summable_majorant (‖lam‖ * M) β).mul_left (‖lam‖ * M)
   · exact intervalIntegrable_const
   · exact Filter.Eventually.of_forall fun σ hσ => by
       have hσ' : σ ∈ Icc (0 : ℝ) τ := by
