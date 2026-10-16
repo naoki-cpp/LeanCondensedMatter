@@ -81,7 +81,10 @@ theorem sum_objectWeight_eq_signedMomentFromCumulant
   rw [hreindex, Fintype.sum_sigma, Finpartition.signedMomentFromCumulant]
   apply Finset.sum_congr rfl
   intro π _
-  simp only [Sigma.fst, Sigma.snd]
+  change (∑ y : ∀ B : π.parts, D.ConnectedObject (B : Finset α),
+      sign S π * ∏ B : π.parts, connectedWeight (y B)) =
+    sign S π * Finpartition.partitionProduct
+      (fun T => ∑ d : D.ConnectedObject T, connectedWeight d) π
   rw [← Finset.mul_sum]
   apply congrArg (fun z : R => sign S π * z)
   rw [Finpartition.partitionProduct,
