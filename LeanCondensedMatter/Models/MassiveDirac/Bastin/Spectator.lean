@@ -27,11 +27,11 @@ open Filter QuantumTheory.Transport
 interband energy gap exactly. -/
 theorem projectorResolventCoefficient_oppositeBand_at_bandEnergy
     (band : Band) (v m px py : ℝ) :
-    projectorResolventCoefficient
+    scalarResolventCoefficient
         ((bandEnergy band v m px py : ℝ) : ℂ)
-        (oppositeBand band) v m px py =
+        (bandEnergy (oppositeBand band) v m px py) =
       (((interbandEnergyGap band v m px py : ℝ) : ℂ))⁻¹ := by
-  simp [projectorResolventCoefficient, interbandEnergyGap]
+  simp [scalarResolventCoefficient, interbandEnergyGap]
 
 /-- On either spectral side, the opposite-band coefficient is a regular spectator at the selected
 band pole and converges to the inverse interband gap. -/
@@ -39,15 +39,15 @@ theorem tendsto_oppositeBandCoefficient_at_bandPole
     (side : SpectralSide) (band : Band) (v m px py : ℝ) (hE : energy v m px py ≠ 0) :
     Tendsto
       (fun broadening : ℝ =>
-        projectorResolventCoefficient
+        scalarResolventCoefficient
           (spectralParameter side (bandEnergy band v m px py) broadening)
-          (oppositeBand band) v m px py)
+          (bandEnergy (oppositeBand band) v m px py))
       (nhds 0)
       (nhds ((((interbandEnergyGap band v m px py : ℝ) : ℂ))⁻¹)) := by
-  have h := tendsto_projectorResolventCoefficient_zero
-    side (oppositeBand band) v m px py (bandEnergy band v m px py)
+  have h := tendsto_scalarResolventCoefficient_spectralParameter_zero
+    side (bandEnergy band v m px py) (bandEnergy (oppositeBand band) v m px py)
     (bandEnergy_ne_oppositeBandEnergy band v m px py hE)
-  simpa [projectorResolventCoefficient, interbandEnergyGap] using h
+  simpa [scalarResolventCoefficient, interbandEnergyGap] using h
 
 /-- Squaring the spectator on either spectral side produces the inverse squared interband gap in the
 zero-broadening limit. -/
@@ -55,9 +55,9 @@ theorem tendsto_oppositeBandCoefficient_sq_at_bandPole
     (side : SpectralSide) (band : Band) (v m px py : ℝ) (hE : energy v m px py ≠ 0) :
     Tendsto
       (fun broadening : ℝ =>
-        projectorResolventCoefficient
+        scalarResolventCoefficient
           (spectralParameter side (bandEnergy band v m px py) broadening)
-          (oppositeBand band) v m px py ^ 2)
+          (bandEnergy (oppositeBand band) v m px py) ^ 2)
       (nhds 0)
       (nhds (((((interbandEnergyGap band v m px py : ℝ) : ℂ))⁻¹) ^ 2)) := by
   have h := tendsto_oppositeBandCoefficient_at_bandPole side band v m px py hE

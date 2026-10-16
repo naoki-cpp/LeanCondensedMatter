@@ -27,21 +27,6 @@ open QuantumTheory.Transport
 
 open Filter QuantumTheory.Transport
 
-/-- At a probe energy away from the selected band, the scalar projector-resolvent coefficient on
-either spectral side tends to the ordinary real-energy coefficient as `η → 0`. -/
-theorem tendsto_projectorResolventCoefficient_zero
-    (side : SpectralSide) (band : Band) (v m px py probeEnergy : ℝ)
-    (hprobe : probeEnergy ≠ bandEnergy band v m px py) :
-    Tendsto
-      (fun broadening : ℝ =>
-        projectorResolventCoefficient
-          (spectralParameter side probeEnergy broadening) band v m px py)
-      (nhds 0)
-      (nhds (projectorResolventCoefficient (probeEnergy : ℂ) band v m px py)) := by
-  simpa [projectorResolventCoefficient, scalarResolventCoefficient] using
-    tendsto_scalarResolventCoefficient_spectralParameter_zero
-      side probeEnergy (bandEnergy band v m px py) hprobe
-
 /-- Off the selected band energy, the retarded-minus-advanced scalar spectral coefficient tends to
 zero pointwise. -/
 theorem tendsto_spectralDifferenceCoefficient_zero
@@ -51,10 +36,10 @@ theorem tendsto_spectralDifferenceCoefficient_zero
       (fun broadening : ℝ =>
         spectralDifferenceCoefficient band v m px py probeEnergy broadening)
       (nhds 0) (nhds 0) := by
-  have hret := tendsto_projectorResolventCoefficient_zero
-    .retarded band v m px py probeEnergy hprobe
-  have hadv := tendsto_projectorResolventCoefficient_zero
-    .advanced band v m px py probeEnergy hprobe
+  have hret := tendsto_scalarResolventCoefficient_spectralParameter_zero
+    .retarded probeEnergy (bandEnergy band v m px py) hprobe
+  have hadv := tendsto_scalarResolventCoefficient_spectralParameter_zero
+    .advanced probeEnergy (bandEnergy band v m px py) hprobe
   simpa only [spectralDifferenceCoefficient, retardedSpectralParameter,
     advancedSpectralParameter, spectralParameter_retarded_ofRegulator,
     spectralParameter_advanced_ofRegulator, sub_self] using hret.sub hadv
@@ -69,10 +54,10 @@ theorem tendsto_bastinBandPairContribution_zero
       (fun broadening : ℝ =>
         bastinBandPairContribution μ ν source target e v m px py probeEnergy broadening)
       (nhds 0) (nhds 0) := by
-  have hret := tendsto_projectorResolventCoefficient_zero
-    .retarded source v m px py probeEnergy hsource
-  have hadv := tendsto_projectorResolventCoefficient_zero
-    .advanced source v m px py probeEnergy hsource
+  have hret := tendsto_scalarResolventCoefficient_spectralParameter_zero
+    .retarded probeEnergy (bandEnergy source v m px py) hsource
+  have hadv := tendsto_scalarResolventCoefficient_spectralParameter_zero
+    .advanced probeEnergy (bandEnergy source v m px py) hsource
   have hdiff := tendsto_spectralDifferenceCoefficient_zero
     target v m px py probeEnergy htarget
   have hretTerm := (((hret.mul hret).mul hdiff).mul

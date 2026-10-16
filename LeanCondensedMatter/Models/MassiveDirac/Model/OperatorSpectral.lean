@@ -1,7 +1,6 @@
 import Mathlib.RingTheory.Idempotents
 import LeanCondensedMatter.Models.MassiveDirac.Model.Operator
 import LeanCondensedMatter.Models.MassiveDirac.Model.Spectral
-import LeanCondensedMatter.Transport.Resolvent.Uniqueness
 import LeanCondensedMatter.Transport.Resolvent.Spectral
 
 set_option linter.style.header false
@@ -19,9 +18,8 @@ Away from the band degeneracy,
 G(z) = ∑ₙ (z - Eₙ)⁻¹ Pₙ
 ```
 
-is a left inverse of `z I - H₀`. The operator-projector algebra, direction-indexed current band
-blocks, and finite-band scalar coefficient form of that spectral expansion, including its square and
-arbitrary nonzero signed-regulator realization, are therefore model-level spectral infrastructure.
+is the finite spectral expansion. This module owns the model projectors and their Hamiltonian
+action; general finite-sum and resolvent identities live upstream in Analysis and Transport.
 Kubo–Bastin, Středa, propagator, and disorder consumers remain downstream.
 -/
 
@@ -80,88 +78,12 @@ theorem hamiltonianOperator_mul_bandProjectorOperator
   unfold hamiltonianOperator bandProjectorOperator matrixOperator
   rw [← map_mul, hamiltonian_mul_bandProjector band v m px py hE, map_smul]
 
-/-- Scalar coefficient of band `band` in the gauge-free projector resolvent at spectral parameter
-`z`. -/
-noncomputable def projectorResolventCoefficient
-    (z : ℂ) (band : Band) (v m px py : ℝ) : ℂ :=
-  (z - ((bandEnergy band v m px py : ℝ) : ℂ))⁻¹
-
-/-- The model-local projector coefficient is the generic scalar spectral resolvent coefficient. -/
-theorem projectorResolventCoefficient_eq_scalarResolventCoefficient
-    (z : ℂ) (band : Band) (v m px py : ℝ) :
-    projectorResolventCoefficient z band v m px py =
-      scalarResolventCoefficient z (bandEnergy band v m px py) := by
-  rfl
-
-/-- The scalar projector-resolvent coefficient is continuous wherever its spectral denominator is
-nonzero. -/
-theorem continuousAt_projectorResolventCoefficient
-    (z : ℂ) (band : Band) (v m px py : ℝ)
-    (hden : z - ((bandEnergy band v m px py : ℝ) : ℂ) ≠ 0) :
-    ContinuousAt
-      (fun w : ℂ => projectorResolventCoefficient w band v m px py)
-      z := by
-  simpa only [projectorResolventCoefficient_eq_scalarResolventCoefficient] using
-    continuousAt_scalarResolventCoefficient
-      z (bandEnergy band v m px py) hden
-
 /-- Gauge-free finite-band spectral candidate for the resolvent of the massive-Dirac Hamiltonian. -/
 noncomputable def projectorResolvent
     (z : ℂ) (v m px py : ℝ) : DiracHilbert →L[ℂ] DiracHilbert :=
   ∑ band : Band,
-    projectorResolventCoefficient z band v m px py •
+    scalarResolventCoefficient z (bandEnergy band v m px py) •
       bandProjectorOperator band v m px py
-
-/-- Squaring the finite-band projector resolvent squares only its scalar spectral coefficients. -/
-theorem projectorResolvent_sq
-    (z : ℂ) (v m px py : ℝ) (hE : energy v m px py ≠ 0) :
-    projectorResolvent z v m px py ^ 2 =
-      ∑ band : Band,
-        projectorResolventCoefficient z band v m px py ^ 2 •
-          bandProjectorOperator band v m px py := by
-  have hproj := bandProjectorOperator_completeOrthogonalIdempotents v m px py hE
-  classical
-  simp [projectorResolvent, pow_two, Finset.sum_mul, Finset.mul_sum,
-    smul_smul, hproj.toOrthogonalIdempotents.mul_eq]
-
-private theorem shiftedHamiltonian_mul_projectorResolvent
-    (z : ℂ) (v m px py : ℝ) (hE : energy v m px py ≠ 0)
-    (hlower : z - ((bandEnergy .lower v m px py : ℝ) : ℂ) ≠ 0)
-    (hupper : z - ((bandEnergy .upper v m px py : ℝ) : ℂ) ≠ 0) :
-    (algebraMap ℂ (DiracHilbert →L[ℂ] DiracHilbert) z - hamiltonianOperator v m px py) *
-        projectorResolvent z v m px py = 1 := by
-  simpa only [projectorResolvent, projectorResolventCoefficient] using
-    QuantumTheory.mul_sum_inv_smul_eq_one_of_diagonal_action
-      (algebraMap ℂ (DiracHilbert →L[ℂ] DiracHilbert) z -
-        hamiltonianOperator v m px py)
-      (fun band : Band => bandProjectorOperator band v m px py)
-      (fun band : Band => z - ((bandEnergy band v m px py : ℝ) : ℂ))
-      (bandProjectorOperator_completeOrthogonalIdempotents v m px py hE).complete
-      (by
-        intro band
-        rw [sub_mul, hamiltonianOperator_mul_bandProjectorOperator band v m px py hE]
-        simp [Algebra.algebraMap_eq_smul_one, sub_smul])
-      (by intro band; cases band <;> assumption)
-
-/-- The regulated massive-Dirac resolvent equals the gauge-free finite-projector expansion for any
-nonzero signed imaginary regulator. -/
-theorem resolvent_spectralParameterOfRegulator_eq_projectorResolvent
-    (v m px py probeEnergy regulator : ℝ)
-    (hE : energy v m px py ≠ 0) (hregulator : regulator ≠ 0) :
-    resolvent (hamiltonianOperator v m px py)
-        (spectralParameterOfRegulator probeEnergy regulator) =
-      projectorResolvent (spectralParameterOfRegulator probeEnergy regulator) v m px py := by
-  apply resolvent_eq_of_spectralShift_mul_eq_one
-    (hamiltonianOperator v m px py)
-    (projectorResolvent (spectralParameterOfRegulator probeEnergy regulator) v m px py)
-    (hamiltonianOperator_isSelfAdjoint v m px py)
-    probeEnergy regulator hregulator
-  exact shiftedHamiltonian_mul_projectorResolvent
-    (spectralParameterOfRegulator probeEnergy regulator) v m px py hE
-    (spectralParameterOfRegulator_sub_real_ne_zero
-      probeEnergy regulator (bandEnergy .lower v m px py) hregulator)
-    (spectralParameterOfRegulator_sub_real_ne_zero
-      probeEnergy regulator (bandEnergy .upper v m px py) hregulator)
 
 end
 

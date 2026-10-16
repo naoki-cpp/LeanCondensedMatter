@@ -83,10 +83,12 @@ theorem bastinBandBlockTrace_swap
 /-- Difference of retarded and advanced scalar resolvent coefficients for one band. -/
 noncomputable def spectralDifferenceCoefficient
     (band : Band) (v m px py probeEnergy broadening : ℝ) : ℂ :=
-  projectorResolventCoefficient (retardedSpectralParameter probeEnergy broadening)
-      band v m px py -
-    projectorResolventCoefficient (advancedSpectralParameter probeEnergy broadening)
-      band v m px py
+  scalarResolventCoefficient
+      (retardedSpectralParameter probeEnergy broadening)
+      (bandEnergy band v m px py) -
+    scalarResolventCoefficient
+      (advancedSpectralParameter probeEnergy broadening)
+      (bandEnergy band v m px py)
 
 /-- Contribution of one ordered pair `(source,target)` to the projector-expanded Bastin trace for
 one ordered current-direction pair `(μ,ν)`. The reversed current ordering is kept in the same
@@ -94,10 +96,12 @@ canonical direction-indexed object. -/
 noncomputable def bastinBandPairContribution
     (μ ν : Fin 2) (source target : Band)
     (e v m px py probeEnergy broadening : ℝ) : ℂ :=
-  let r := projectorResolventCoefficient
-    (retardedSpectralParameter probeEnergy broadening) source v m px py
-  let a := projectorResolventCoefficient
-    (advancedSpectralParameter probeEnergy broadening) source v m px py
+  let r := scalarResolventCoefficient
+    (retardedSpectralParameter probeEnergy broadening)
+    (bandEnergy source v m px py)
+  let a := scalarResolventCoefficient
+    (advancedSpectralParameter probeEnergy broadening)
+    (bandEnergy source v m px py)
   let d := spectralDifferenceCoefficient target v m px py probeEnergy broadening
   r ^ 2 * d * bastinBandBlockTrace μ ν source target e v m px py -
     a ^ 2 * d * bastinBandBlockTrace ν μ source target e v m px py
@@ -124,11 +128,14 @@ theorem projectorBastinTraceIntegrand_eq_band_sum
         bastinBandPairContribution 0 1 source target e v m px py probeEnergy broadening := by
   unfold projectorBastinTraceIntegrand
   dsimp only [projectorBastinOperatorIntegrand]
-  rw [projectorResolvent_sq
-    (retardedSpectralParameter probeEnergy broadening) v m px py hE]
-  rw [projectorResolvent_sq
-    (advancedSpectralParameter probeEnergy broadening) v m px py hE]
-  simp only [projectorResolvent, sum_band]
+  unfold projectorResolvent
+  rw [QuantumTheory.sum_smul_sq_of_orthogonalIdempotents
+    (fun band => bandProjectorOperator band v m px py)
+    (bandProjectorOperator_completeOrthogonalIdempotents v m px py hE).toOrthogonalIdempotents]
+  rw [QuantumTheory.sum_smul_sq_of_orthogonalIdempotents
+    (fun band => bandProjectorOperator band v m px py)
+    (bandProjectorOperator_completeOrthogonalIdempotents v m px py hE).toOrthogonalIdempotents]
+  simp only [sum_band]
   unfold bastinBandPairContribution spectralDifferenceCoefficient bastinBandBlockTrace
   simp only [add_mul, sub_mul, mul_add, mul_sub, mul_smul_comm, smul_mul_assoc]
   simp only [map_add, map_sub, map_smul]

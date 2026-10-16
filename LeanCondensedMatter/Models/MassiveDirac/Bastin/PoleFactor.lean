@@ -33,13 +33,12 @@ open Filter QuantumTheory.Transport
 `s` is `gap + offset + i γˢ`. -/
 theorem projectorResolventCoefficient_targetOffset_oppositeBand
     (side : SpectralSide) (band : Band) (v m px py offset broadening : ℝ) :
-    projectorResolventCoefficient
-        (spectralParameter side
-          (bandEnergy band v m px py + offset) broadening)
-        (oppositeBand band) v m px py =
+    scalarResolventCoefficient
+        (spectralParameter side (bandEnergy band v m px py + offset) broadening)
+        (bandEnergy (oppositeBand band) v m px py) =
       ((((interbandEnergyGap band v m px py + offset : ℝ) : ℂ) +
           ((side.regulator broadening : ℝ) : ℂ) * Complex.I))⁻¹ := by
-  unfold projectorResolventCoefficient spectralParameter spectralParameterOfRegulator
+  unfold scalarResolventCoefficient spectralParameter spectralParameterOfRegulator
     interbandEnergyGap
   congr 1
   push_cast
@@ -54,8 +53,8 @@ theorem spectralDifferenceCoefficient_eq_lorentzian
       (-2 * Complex.I) *
         (Lorentzian.spectralKernel
           (probeEnergy - bandEnergy band v m px py) broadening : ℂ) := by
-  simpa [spectralDifferenceCoefficient, projectorResolventCoefficient,
-    scalarSpectralDifferenceCoefficient, scalarResolventCoefficient] using
+  simpa [spectralDifferenceCoefficient, scalarSpectralDifferenceCoefficient,
+    scalarResolventCoefficient] using
     scalarSpectralDifferenceCoefficient_eq_lorentzian
       (bandEnergy band v m px py) probeEnergy broadening hbroadening
 
@@ -63,12 +62,12 @@ theorem spectralDifferenceCoefficient_eq_lorentzian
 pair for an ordered current-direction pair `(μ,ν)`. The source band is fixed to the opposite band. -/
 noncomputable def interbandSpectatorCurrentFactor
     (μ ν : Fin 2) (band : Band) (e v m px py probeEnergy broadening : ℝ) : ℂ :=
-  let r := projectorResolventCoefficient
+  let r := scalarResolventCoefficient
     (retardedSpectralParameter probeEnergy broadening)
-    (oppositeBand band) v m px py
-  let a := projectorResolventCoefficient
+    (bandEnergy (oppositeBand band) v m px py)
+  let a := scalarResolventCoefficient
     (advancedSpectralParameter probeEnergy broadening)
-    (oppositeBand band) v m px py
+    (bandEnergy (oppositeBand band) v m px py)
   r ^ 2 * bastinBandBlockTrace μ ν (oppositeBand band) band e v m px py -
     a ^ 2 * bastinBandBlockTrace ν μ (oppositeBand band) band e v m px py
 
@@ -104,18 +103,18 @@ theorem tendsto_interbandSpectatorCurrentFactor_at_bandPole
           bastinInterbandBlockDifference μ ν band e v m px py)) := by
   have hret : Tendsto
       (fun broadening : ℝ =>
-        projectorResolventCoefficient
+        scalarResolventCoefficient
           (retardedSpectralParameter (bandEnergy band v m px py) broadening)
-          (oppositeBand band) v m px py ^ 2)
+          (bandEnergy (oppositeBand band) v m px py) ^ 2)
       (nhds 0)
       (nhds (((((interbandEnergyGap band v m px py : ℝ) : ℂ))⁻¹) ^ 2)) := by
     simpa only [retardedSpectralParameter] using
       tendsto_oppositeBandCoefficient_sq_at_bandPole .retarded band v m px py hE
   have hadv : Tendsto
       (fun broadening : ℝ =>
-        projectorResolventCoefficient
+        scalarResolventCoefficient
           (advancedSpectralParameter (bandEnergy band v m px py) broadening)
-          (oppositeBand band) v m px py ^ 2)
+          (bandEnergy (oppositeBand band) v m px py) ^ 2)
       (nhds 0)
       (nhds (((((interbandEnergyGap band v m px py : ℝ) : ℂ))⁻¹) ^ 2)) := by
     simpa only [advancedSpectralParameter] using
