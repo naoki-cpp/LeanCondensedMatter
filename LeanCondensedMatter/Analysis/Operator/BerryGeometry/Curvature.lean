@@ -187,7 +187,7 @@ theorem berryCurvature_eq_sum_hamiltonianDerivativeMatrixElements [DecidableEq �
   have hsum := data.eigenbasis.sum_inner_mul_inner
     (data.eigenvectorDerivative μ n) (data.eigenvectorDerivative ν n)
   unfold berryCurvature
-  rw [hsum, Complex.im_sum, Finset.mul_sum]
+  rw [← hsum, Complex.im_sum, Finset.mul_sum]
   apply Finset.sum_congr rfl
   intro m _
   by_cases hmn : m = n
