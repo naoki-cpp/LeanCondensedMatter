@@ -90,20 +90,6 @@ theorem TwoPointDiagram.componentBlock_partner_withoutPropagator
   (d.vertexGraphWithoutPropagator cut).componentBlock_eq_of_reachable
     (d.reachable_partner_withoutPropagator cut leg hleg hpartner)
 
-/-- A propagator separating the external vertices puts them into different cut-graph blocks. -/
-theorem TwoPointDiagram.externalComponentBlocks_ne_withoutPropagator
-    (d : TwoPointDiagram ExternalLabel InternalLabel N S)
-    (cut : Fin (2 * (2 * S.card + 1)))
-    (hcut : ¬ (d.vertexGraphWithoutPropagator cut).Reachable
-      (Sum.inl (0 : Fin 2)) (Sum.inl (1 : Fin 2))) :
-    (d.vertexGraphWithoutPropagator cut).componentBlock
-        (Sum.inl (0 : Fin 2)) ≠
-      (d.vertexGraphWithoutPropagator cut).componentBlock
-        (Sum.inl (1 : Fin 2)) := by
-  intro heq
-  exact hcut (((d.vertexGraphWithoutPropagator cut).componentBlock_eq_iff_reachable
-    (Sum.inl (0 : Fin 2)) (Sum.inl (1 : Fin 2))).1 heq)
-
 /-- No uncut propagator connects the two distinct external component blocks of a separating cut.
 
 The hypotheses say that the first endpoint is on the side of external vertex zero and the
@@ -126,16 +112,6 @@ theorem TwoPointDiagram.not_uncutPropagator_between_externalComponents
     (twoPointVertexOfLeg (d.pairing.partner leg))).1 hright
   exact hcut ((hl.trans
     (d.reachable_partner_withoutPropagator cut leg hleg hpartner)).trans hr)
-
-/-- The cut-graph connected-component partition does not depend on the endpoint used to name
-the removed paired propagator. -/
-theorem TwoPointDiagram.componentBlock_withoutPropagator_partner_cut
-    (d : TwoPointDiagram ExternalLabel InternalLabel N S)
-    (cut : Fin (2 * (2 * S.card + 1)))
-    (v : TwoPointVertex S) :
-    (d.vertexGraphWithoutPropagator (d.pairing.partner cut)).componentBlock v =
-      (d.vertexGraphWithoutPropagator cut).componentBlock v := by
-  rw [d.vertexGraphWithoutPropagator_partner]
 
 end Common
 end SecondQuantization
