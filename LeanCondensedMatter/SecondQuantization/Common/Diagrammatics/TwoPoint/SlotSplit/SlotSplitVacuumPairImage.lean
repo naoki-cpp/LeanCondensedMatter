@@ -160,13 +160,8 @@ private theorem TwoPointDiagram.slotSplitVacuumMixedPairEmbedding_surjective
       TwoPointDiagram.slotSplitVacuumNormalizedPairEmbedding T ext vac τ τ' σ hσ q =
         pr.1 := by
     let d := TwoPointDiagram.ofSlotSplit (Finset.subset_univ T) ext vac
-    let e : Fin (2 * (2 * ((Finset.univ : Finset (Fin n)) \ T).card)) ↪o
-        Fin (2 * (2 * n + 1)) :=
-      OrderEmbedding.ofStrictMono
-        (mixedTimeOrderedQuarticLegMapPosition (slotSplitVacuumSlot T) τ τ' σ)
-        (mixedTimeOrderedQuarticLegMapPosition_strictMono_of_strictAnti
-          (slotSplitVacuumSlot T) (slotSplitVacuumSlot_strictMono T)
-          τ τ' σ hσ)
+    let e := mixedTimeOrderedQuarticLegMapOrderEmbedding
+      (slotSplitVacuumSlot T) (slotSplitVacuumSlot_strictMono T) τ τ' σ hσ
     have hpartner (i) :
         (d.pairingInMixedOrder τ τ' σ).partner (e i) =
           e ((vac.pairingInOrder (slotSplitVacuumOrder T)).partner i) := by

@@ -204,6 +204,18 @@ graphs whose vertex type is an ambient-finset subtype. No family-specific forwar
 condition and the parity of the two one-legged external vertices proves that their component blocks
 always coincide.
 
+
+The two-point `Core.OneParticleIrreducible` predicate removes a selected *paired propagator*
+before checking external connectivity. Cutting an edge of the simple vertex graph would be
+incorrect when several propagators connect the same vertices. The definition excludes cuts of
+external propagators and the zero-interaction bare line. The fermionic integrated 1PI
+coefficients and formal series reuse the existing Wick-Dyson amplitudes; these objects still
+carry their unamputated external propagators. Their identification with the proper Dyson
+self-energy requires an amplitude-preserving decomposition into 1PI insertions, external-leg
+amputation, and a frequency/operator representation matching
+`QuantumTheory.Transport.IsSelfEnergy`. These further bridges are not established here.
+
+
 For an external-insertion component, Mathlib's `Finset.toLeft` is the canonical finite external
 sector, while `interactionSector` extracts its ambient interaction vertices. External support is
 exactly nonemptiness of `toLeft`. Every component carries an even number of external insertions,

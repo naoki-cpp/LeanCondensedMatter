@@ -136,5 +136,16 @@ theorem mixedTimeOrderedQuarticLegMapPosition_strictMono_of_strictAnti
   exact mixedTimeOrderedQuarticLegPosition_strictMono_of_strictAnti
     τ τ' (σ ∘ f) hσ hab
 
+/-- The mixed positions of quartic legs form an order embedding when their slot map
+preserves order and the inherited interaction times are strictly antitone. -/
+noncomputable def mixedTimeOrderedQuarticLegMapOrderEmbedding
+    {m n : ℕ} (f : Fin m → Fin n) (hf : StrictMono f)
+    (τ τ' : ℝ) (σ : Fin n → ℝ) (hσ : StrictAnti (σ ∘ f)) :
+    Fin (2 * (2 * m)) ↪o Fin (2 * (2 * n + 1)) :=
+  OrderEmbedding.ofStrictMono
+    (mixedTimeOrderedQuarticLegMapPosition f τ τ' σ)
+    (mixedTimeOrderedQuarticLegMapPosition_strictMono_of_strictAnti
+      f hf τ τ' σ hσ)
+
 end Common
 end SecondQuantization

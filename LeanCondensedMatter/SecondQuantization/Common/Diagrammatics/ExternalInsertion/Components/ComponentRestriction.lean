@@ -4,6 +4,7 @@ import LeanCondensedMatter.Combinatorics.PerfectPairing.Embedding
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Restriction
 import LeanCondensedMatter.Combinatorics.InvolutionCard
 import LeanCondensedMatter.Combinatorics.FamilySlotShuffle
+import LeanCondensedMatter.Combinatorics.FamilySlotShuffleInversions
 import LeanCondensedMatter.Combinatorics.FinpartitionProduct
 import Mathlib.Data.Finset.Sort
 
@@ -117,6 +118,21 @@ noncomputable def ExternalInsertionDiagram.externalPairCount {S : Finset (Fin N)
   (Finset.toLeft
     (B : Finset (ExternalInsertionVertex E S))).card / 2
 
+
+/-- A pure-vacuum connected component has no local external pairs. -/
+theorem ExternalInsertionDiagram.externalPairCount_eq_zero_of_vacuum
+    {S : Finset (Fin N)}
+    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
+    (B : d.vertexGraph.componentPartition.parts)
+    (hB : ComponentIsVacuum (B : Finset (ExternalInsertionVertex E S))) :
+    d.externalPairCount B = 0 := by
+  have hEmpty :
+      (B : Finset (ExternalInsertionVertex E S)).toLeft = ∅ := by
+    by_contra hNonempty
+    obtain ⟨e, he⟩ := Finset.nonempty_iff_ne_empty.mpr hNonempty
+    exact hB ⟨e, Finset.mem_toLeft.mp he⟩
+  simp [ExternalInsertionDiagram.externalPairCount, hEmpty]
+
 /-- Increasing reindexing of a component's ambient external insertions by its local external slots. -/
 noncomputable def ExternalInsertionDiagram.externalSectorOrderIso {S : Finset (Fin N)}
     (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
@@ -164,6 +180,37 @@ theorem ExternalInsertionDiagram.componentExternalShuffle_slotEquiv_apply
     d.componentExternalShuffle.slotEquiv ⟨B, e⟩ =
       (d.externalSectorOrderIso B e).1 := by
   rfl
+
+
+/-- Vacuum components do not contribute inversions with any other component when
+they occupy the left argument of the external-only shuffle. -/
+theorem ExternalInsertionDiagram.componentExternalShuffle_blockInversionCount_zero_of_left_vacuum
+    {S : Finset (Fin N)}
+    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
+    (B C : d.vertexGraph.componentPartition.parts)
+    (hB : ComponentIsVacuum (B : Finset (ExternalInsertionVertex E S))) :
+    d.componentExternalShuffle.blockInversionCount B C = 0 := by
+  classical
+  by_cases hBC : B = C
+  · subst C
+    exact d.componentExternalShuffle.blockInversionCount_self B
+  · rw [d.componentExternalShuffle.blockInversionCount_of_ne hBC]
+    simp [d.externalPairCount_eq_zero_of_vacuum B hB]
+
+/-- Vacuum components do not contribute inversions with any other component when
+they occupy the right argument of the external-only shuffle. -/
+theorem ExternalInsertionDiagram.componentExternalShuffle_blockInversionCount_zero_of_right_vacuum
+    {S : Finset (Fin N)}
+    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
+    (B C : d.vertexGraph.componentPartition.parts)
+    (hC : ComponentIsVacuum (C : Finset (ExternalInsertionVertex E S))) :
+    d.componentExternalShuffle.blockInversionCount B C = 0 := by
+  classical
+  by_cases hBC : B = C
+  · subst C
+    exact d.componentExternalShuffle.blockInversionCount_self B
+  · rw [d.componentExternalShuffle.blockInversionCount_of_ne hBC]
+    simp [d.externalPairCount_eq_zero_of_vacuum C hC]
 
 /-- Reindex the flattened legs of one component as the flattened legs of its local
 external-insertion diagram. -/

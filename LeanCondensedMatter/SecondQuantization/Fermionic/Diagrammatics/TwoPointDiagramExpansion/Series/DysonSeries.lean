@@ -1,5 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.DysonCoefficient
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.ConnectedCoefficient
+import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.OneParticleIrreducibleCoefficient
 import LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.DysonPartitionSeries
 import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.QuarticInteraction
 import Mathlib.RingTheory.PowerSeries.Basic
@@ -42,6 +43,12 @@ noncomputable def vacuumNormalizedTwoPointDysonSeries (ε : Mode → ℝ) (β : 
 noncomputable def connectedTwoPointDysonSeries (ε : Mode → ℝ) (β : ℝ)
     (g : QuarticVertexLabel Mode → ℂ) (i j : Mode) (τ τ' : ℝ) : PowerSeries ℂ :=
   PowerSeries.mk (connectedTwoPointDysonCoefficient ε β g i j τ τ')
+
+/-- The unamputated 1PI two-point diagram series. This is not yet the proper self-energy:
+the Dyson identification requires external-leg amputation and a 1PI insertion decomposition. -/
+noncomputable def oneParticleIrreducibleTwoPointDysonSeries (ε : Mode → ℝ) (β : ℝ)
+    (g : QuarticVertexLabel Mode → ℂ) (i j : Mode) (τ τ' : ℝ) : PowerSeries ℂ :=
+  PowerSeries.mk (oneParticleIrreducibleTwoPointDysonCoefficient ε β g i j τ τ')
 
 end Fermionic
 end SecondQuantization
