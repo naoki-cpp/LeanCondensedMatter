@@ -58,13 +58,13 @@ private noncomputable def regularFactorOuterErrorIntegral
       regularFactorErrorIntegrand factor broadening offset
 
 private theorem exists_delta_norm_regularFactor_sub_pole_lt_of_coordinates
-    (factor : ℝ × ℝ → ℂ) (radius ε : ℝ)
+    (factor : ℝ × ℝ → ℂ) (radius etaMax ε : ℝ)
     (hcontinuous : ContinuousWithinAt factor
-      (Set.Icc (-radius) radius ×ˢ Set.Icc (0 : ℝ) 1) (0, 0))
+      (Set.Icc (-radius) radius ×ˢ Set.Icc (0 : ℝ) etaMax) (0, 0))
     (hε : 0 < ε) :
     ∃ δ > 0, ∀ offset broadening : ℝ,
       (offset, broadening) ∈
-        Set.Icc (-radius) radius ×ˢ Set.Icc (0 : ℝ) 1 →
+        Set.Icc (-radius) radius ×ˢ Set.Icc (0 : ℝ) etaMax →
       |offset| < δ → |broadening| < δ →
         ‖factor (offset, broadening) - factor (0, 0)‖ < ε := by
   rw [Metric.continuousWithinAt_iff] at hcontinuous
@@ -307,15 +307,15 @@ private theorem regularFactorErrorIntegral_eq_outer_add_inner
   ring
 
 private theorem tendsto_regularFactorErrorIntegral_zero
-    (factor : ℝ × ℝ → ℂ) (radius : ℝ)
-    (hradiusPos : 0 < radius)
+    (factor : ℝ × ℝ → ℂ) (radius etaMax : ℝ)
+    (hradiusPos : 0 < radius) (hetaMax : 0 < etaMax)
     (hcontinuous : ContinuousWithinAt factor
-      (Set.Icc (-radius) radius ×ˢ Set.Icc (0 : ℝ) 1) (0, 0))
-    (hslice : ∀ broadening : ℝ, 0 < broadening → broadening ≤ 1 →
+      (Set.Icc (-radius) radius ×ˢ Set.Icc (0 : ℝ) etaMax) (0, 0))
+    (hslice : ∀ broadening : ℝ, 0 < broadening → broadening ≤ etaMax →
       ContinuousOn (fun offset : ℝ => factor (offset, broadening))
         (Set.Icc (-radius) radius))
     (hbound : ∃ C : ℝ, 0 ≤ C ∧
-      ∀ p ∈ Set.Icc (-radius) radius ×ˢ Set.Icc (0 : ℝ) 1,
+      ∀ p ∈ Set.Icc (-radius) radius ×ˢ Set.Icc (0 : ℝ) etaMax,
         ‖factor p - factor (0, 0)‖ ≤ C) :
     Tendsto
       (fun broadening : ℝ =>
@@ -331,7 +331,7 @@ private theorem tendsto_regularFactorErrorIntegral_zero
     dsimp [tolerance]
     positivity
   rcases exists_delta_norm_regularFactor_sub_pole_lt_of_coordinates
-      factor radius tolerance hcontinuous htolerancePos with ⟨δ, hδ, hlocal⟩
+      factor radius etaMax tolerance hcontinuous htolerancePos with ⟨δ, hδ, hlocal⟩
   let innerRadius : ℝ := min (radius / 2) (δ / 2)
   have hinnerPos : 0 < innerRadius := by
     dsimp [innerRadius]
@@ -347,10 +347,10 @@ private theorem tendsto_regularFactorErrorIntegral_zero
     calc
       min (radius / 2) (δ / 2) ≤ δ / 2 := min_le_right _ _
       _ < δ := by linarith
-  let etaRadius : ℝ := min δ 1
+  let etaRadius : ℝ := min δ etaMax
   have hetaRadiusPos : 0 < etaRadius := by
     dsimp [etaRadius]
-    exact lt_min_iff.mpr ⟨hδ, zero_lt_one⟩
+    exact lt_min_iff.mpr ⟨hδ, hetaMax⟩
   have hwithin_le : nhdsWithin 0 (Set.Ioi 0) ≤ nhds (0 : ℝ) := by
     exact inf_le_left
   have hetaSmall : ∀ᶠ broadening : ℝ in nhdsWithin 0 (Set.Ioi 0),
@@ -374,7 +374,7 @@ private theorem tendsto_regularFactorErrorIntegral_zero
   filter_upwards [hetaPos, hetaSmall, htailClose] with broadening hbroadening hsmall htailCloseAt
   have hbroadeningLtDelta : broadening < δ := by
     exact lt_of_lt_of_le hsmall (min_le_left _ _)
-  have hbroadeningLtOne : broadening < 1 := by
+  have hbroadeningLtEtaMax : broadening < etaMax := by
     exact lt_of_lt_of_le hsmall (min_le_right _ _)
   have hlocalAt : ∀ offset : ℝ, |offset| ≤ innerRadius →
       ‖regularFactorError factor offset broadening‖ ≤ tolerance := by
@@ -384,8 +384,8 @@ private theorem tendsto_regularFactorErrorIntegral_zero
       simpa [abs_of_pos hbroadening] using hbroadeningLtDelta
     have hoffsetWindow : |offset| ≤ radius := le_trans hoffset hnested
     have hmem : (offset, broadening) ∈
-        Set.Icc (-radius) radius ×ˢ Set.Icc (0 : ℝ) 1 :=
-      ⟨abs_le.mp hoffsetWindow, ⟨hbroadening.le, hbroadeningLtOne.le⟩⟩
+        Set.Icc (-radius) radius ×ˢ Set.Icc (0 : ℝ) etaMax :=
+      ⟨abs_le.mp hoffsetWindow, ⟨hbroadening.le, hbroadeningLtEtaMax.le⟩⟩
     have h := hlocal offset broadening hmem hoffsetLtDelta hbroadeningAbsLtDelta
     simpa [regularFactorError] using h.le
   have hannulusAt : ∀ offset : ℝ,
@@ -394,10 +394,10 @@ private theorem tendsto_regularFactorErrorIntegral_zero
     intro offset _ hoffsetOuter
     apply hC (offset, broadening)
     refine ⟨abs_le.mp hoffsetOuter, ?_⟩
-    exact ⟨hbroadening.le, hbroadeningLtOne.le⟩
+    exact ⟨hbroadening.le, hbroadeningLtEtaMax.le⟩
   have hsplit := regularFactorErrorIntegral_eq_outer_add_inner
     factor innerRadius radius broadening hinnerNonneg hnested hbroadening.ne'
-      (hslice broadening hbroadening hbroadeningLtOne.le)
+      (hslice broadening hbroadening hbroadeningLtEtaMax.le)
   have hboundAt :
       ‖regularFactorErrorIntegral factor radius broadening‖ ≤
         tolerance *
@@ -532,17 +532,17 @@ private theorem regularFactorIntegral_eq_error_add_mass_smul_pole
 /-- A Lorentzian approximate identity extracts the pole value of any complex regular factor that is
 jointly continuous at `(0,0)`, has continuous nonzero-broadening slices on the fixed symmetric
 window, and has a uniform bound on its deviation from the pole value over that window for
-`0 ≤ broadening ≤ 1`. -/
+`0 ≤ broadening ≤ etaMax`. -/
 private theorem tendsto_regularFactorIntegral_of_bounded
-    (factor : ℝ × ℝ → ℂ) (radius : ℝ)
-    (hradiusPos : 0 < radius)
+    (factor : ℝ × ℝ → ℂ) (radius etaMax : ℝ)
+    (hradiusPos : 0 < radius) (hetaMax : 0 < etaMax)
     (hcontinuous : ContinuousWithinAt factor
-      (Set.Icc (-radius) radius ×ˢ Set.Icc (0 : ℝ) 1) (0, 0))
-    (hslice : ∀ broadening : ℝ, 0 < broadening → broadening ≤ 1 →
+      (Set.Icc (-radius) radius ×ˢ Set.Icc (0 : ℝ) etaMax) (0, 0))
+    (hslice : ∀ broadening : ℝ, 0 < broadening → broadening ≤ etaMax →
       ContinuousOn (fun offset : ℝ => factor (offset, broadening))
         (Set.Icc (-radius) radius))
     (hbound : ∃ C : ℝ, 0 ≤ C ∧
-      ∀ p ∈ Set.Icc (-radius) radius ×ˢ Set.Icc (0 : ℝ) 1,
+      ∀ p ∈ Set.Icc (-radius) radius ×ˢ Set.Icc (0 : ℝ) etaMax,
         ‖factor p - factor (0, 0)‖ ≤ C) :
     Tendsto
       (fun broadening : ℝ =>
@@ -550,7 +550,7 @@ private theorem tendsto_regularFactorIntegral_of_bounded
       (nhdsWithin 0 (Set.Ioi 0))
       (nhds (Real.pi • factor (0, 0))) := by
   have herror := tendsto_regularFactorErrorIntegral_zero
-    factor radius hradiusPos hcontinuous hslice hbound
+    factor radius etaMax hradiusPos hetaMax hcontinuous hslice hbound
   have hmass := tendsto_integral_spectralKernel_symmetric radius hradiusPos
   have hsmulContinuous : ContinuousAt
       (fun mass : ℝ => mass • factor (0, 0)) Real.pi := by
@@ -578,9 +578,9 @@ private theorem tendsto_regularFactorIntegral_of_bounded
     change Set.Ioi (0 : ℝ) ∈ nhdsWithin 0 (Set.Ioi 0)
     exact self_mem_nhdsWithin
   have hsmall : ∀ᶠ broadening : ℝ in nhdsWithin 0 (Set.Ioi 0),
-      broadening < 1 := by
+      broadening < etaMax := by
     have hwithin : nhdsWithin 0 (Set.Ioi 0) ≤ nhds (0 : ℝ) := inf_le_left
-    exact hwithin (Iio_mem_nhds (by norm_num : (0 : ℝ) < 1))
+    exact hwithin (Iio_mem_nhds hetaMax)
   filter_upwards [hpositive, hsmall, hclose] with broadening hbroadening hsmallAt hcloseAt
   rw [regularFactorIntegral_eq_error_add_mass_smul_pole
     factor radius broadening hradiusPos.le hbroadening.ne'
@@ -588,24 +588,26 @@ private theorem tendsto_regularFactorIntegral_of_bounded
   exact hcloseAt
 
 
-/-- A complex regular factor continuous on the compact nonnegative-broadening rectangle
-has the canonical Lorentzian pole limit. In particular, no continuity for negative
-broadening or outside the integration window is required. -/
+/-- A complex regular factor continuous on a compact nonnegative-broadening rectangle
+of any positive width has the canonical Lorentzian pole limit. No continuity for
+negative broadening or outside the integration window is required. -/
 theorem tendsto_regularFactorIntegral
     (factor : ℝ × ℝ → ℂ) (radius : ℝ)
     (hradiusPos : 0 < radius)
-    (hrectangle : ContinuousOn factor
-      (Set.Icc (-radius) radius ×ˢ Set.Icc (0 : ℝ) 1)) :
+    (hrectangle : ∃ etaMax : ℝ, 0 < etaMax ∧
+      ContinuousOn factor
+        (Set.Icc (-radius) radius ×ˢ Set.Icc (0 : ℝ) etaMax)) :
     Tendsto
       (fun broadening : ℝ =>
         regularFactorIntegral factor radius broadening)
       (nhdsWithin 0 (Set.Ioi 0))
       (nhds (Real.pi • factor (0, 0))) := by
+  rcases hrectangle with ⟨etaMax, hetaMax, hrectangle⟩
   have hcontinuous : ContinuousWithinAt factor
-      (Set.Icc (-radius) radius ×ˢ Set.Icc (0 : ℝ) 1) (0, 0) := by
+      (Set.Icc (-radius) radius ×ˢ Set.Icc (0 : ℝ) etaMax) (0, 0) := by
     apply hrectangle
-    exact ⟨⟨by linarith, hradiusPos.le⟩, ⟨le_refl 0, zero_le_one⟩⟩
-  have hslice : ∀ broadening : ℝ, 0 < broadening → broadening ≤ 1 →
+    exact ⟨⟨by linarith, hradiusPos.le⟩, ⟨le_refl 0, hetaMax.le⟩⟩
+  have hslice : ∀ broadening : ℝ, 0 < broadening → broadening ≤ etaMax →
       ContinuousOn (fun offset : ℝ => factor (offset, broadening))
         (Set.Icc (-radius) radius) := by
     intro broadening hpos hle
@@ -615,13 +617,13 @@ theorem tendsto_regularFactorIntegral
       intro offset hoffset
       exact ⟨hoffset, ⟨hpos.le, hle⟩⟩)
   have hcompact : IsCompact
-      (Set.Icc (-radius) radius ×ˢ Set.Icc (0 : ℝ) 1) :=
+      (Set.Icc (-radius) radius ×ˢ Set.Icc (0 : ℝ) etaMax) :=
     isCompact_Icc.prod isCompact_Icc
   have hbound : ∃ C : ℝ, 0 ≤ C ∧
-      ∀ p ∈ Set.Icc (-radius) radius ×ˢ Set.Icc (0 : ℝ) 1,
+      ∀ p ∈ Set.Icc (-radius) radius ×ˢ Set.Icc (0 : ℝ) etaMax,
         ‖factor p - factor (0, 0)‖ ≤ C := by
     have hconstant : ContinuousOn (fun _ : ℝ × ℝ => factor (0, 0))
-        (Set.Icc (-radius) radius ×ˢ Set.Icc (0 : ℝ) 1) :=
+        (Set.Icc (-radius) radius ×ˢ Set.Icc (0 : ℝ) etaMax) :=
       continuousOn_const
     rcases hcompact.exists_bound_of_continuousOn
       (hrectangle.sub hconstant) with ⟨C, hC⟩
@@ -629,7 +631,7 @@ theorem tendsto_regularFactorIntegral
     intro p hp
     exact le_trans (hC p hp) (le_max_left _ _)
   exact tendsto_regularFactorIntegral_of_bounded
-    factor radius hradiusPos hcontinuous hslice hbound
+    factor radius etaMax hradiusPos hetaMax hcontinuous hslice hbound
 
 end
 
