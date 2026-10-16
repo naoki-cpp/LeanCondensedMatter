@@ -91,19 +91,6 @@ theorem abs_gap_sub_radius_le_abs_gap_add_offset
       _ = |gap + offset| + |offset| := by rw [abs_neg]
   linarith
 
-/-- A symmetric target-centered window narrower than the interband gap excludes the source pole. -/
-theorem gap_add_offset_ne_zero_on_targetWindow
-    (gap offset radius : ℝ)
-    (hradius : radius < |gap|)
-    (hoffset : |offset| ≤ radius) :
-    gap + offset ≠ 0 := by
-  have hlower := abs_gap_sub_radius_le_abs_gap_add_offset
-    gap offset radius hoffset
-  have hshiftAbs : 0 < |gap + offset| := by
-    have hpositive : 0 < |gap| - radius := sub_pos.mpr hradius
-    exact lt_of_lt_of_le hpositive hlower
-  exact abs_pos.mp hshiftAbs
-
 /-- Regular opposite-source interband current factor in target-centered coordinates. -/
 noncomputable def interbandPoleRegularFactor
     (gap : ℝ) (forward reverse : ℂ) (offsetBroadening : ℝ × ℝ) : ℂ :=
@@ -183,9 +170,10 @@ theorem tendsto_interbandPoleRegularFactorIntegral
         (Set.Icc (-radius) radius ×ˢ Set.Icc (0 : ℝ) etaMax) := by
     refine ⟨1, by norm_num, ?_⟩
     intro p hp
-    have hshift : gap + p.1 ≠ 0 :=
-      gap_add_offset_ne_zero_on_targetWindow
-        gap p.1 radius hradius (abs_le.mpr hp.1)
+    have hshift : gap + p.1 ≠ 0 := by
+      have hbound := abs_gap_sub_radius_le_abs_gap_add_offset
+        gap p.1 radius (abs_le.mpr hp.1)
+      exact abs_pos.mp (lt_of_lt_of_le (sub_pos.mpr hradius) hbound)
     exact
       (continuousAt_interbandPoleRegularFactor_of_gap_add_offset_ne_zero
         gap forward reverse p hshift).continuousWithinAt
