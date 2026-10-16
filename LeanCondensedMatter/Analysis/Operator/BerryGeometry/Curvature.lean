@@ -71,35 +71,9 @@ theorem berryCurvature_swap (μ ν : κ) (n : ι) :
     simpa only [Complex.conj_im] using h
   linarith
 
-/-- Completeness of the finite orthonormal eigenbasis expands the derivative-state curvature into
-band-resolved inner-product terms. -/
-theorem berryCurvature_eq_sum_innerProducts (μ ν : κ) (n : ι) :
-    data.berryCurvature μ ν n =
-      ∑ m : ι,
-        -2 * (inner ℂ (data.eigenvectorDerivative μ n) (data.eigenbasis m) *
-          inner ℂ (data.eigenbasis m) (data.eigenvectorDerivative ν n)).im := by
-  have hsum := data.eigenbasis.sum_inner_mul_inner
-    (data.eigenvectorDerivative μ n) (data.eigenvectorDerivative ν n)
-  calc
-    data.berryCurvature μ ν n =
-        -2 * (inner ℂ (data.eigenvectorDerivative μ n)
-          (data.eigenvectorDerivative ν n)).im := rfl
-    _ = -2 * (∑ m : ι,
-          inner ℂ (data.eigenvectorDerivative μ n) (data.eigenbasis m) *
-            inner ℂ (data.eigenbasis m) (data.eigenvectorDerivative ν n)).im := by
-      rw [hsum]
-    _ = -2 * ∑ m : ι,
-          (inner ℂ (data.eigenvectorDerivative μ n) (data.eigenbasis m) *
-            inner ℂ (data.eigenbasis m) (data.eigenvectorDerivative ν n)).im := by
-      rw [Complex.im_sum]
-    _ = ∑ m : ι,
-        -2 * (inner ℂ (data.eigenvectorDerivative μ n) (data.eigenbasis m) *
-          inner ℂ (data.eigenbasis m) (data.eigenvectorDerivative ν n)).im := by
-      rw [Finset.mul_sum]
-
 /-- The band-diagonal completeness term has zero imaginary part. It therefore does not contribute
 to Berry curvature. -/
-theorem diagonal_innerProduct_im_eq_zero (μ ν : κ) (n : ι) :
+private theorem diagonal_innerProduct_im_eq_zero (μ ν : κ) (n : ι) :
     (inner ℂ (data.eigenvectorDerivative μ n) (data.eigenbasis n) *
       inner ℂ (data.eigenbasis n) (data.eigenvectorDerivative ν n)).im = 0 := by
   have hμ := congrArg Complex.re (data.differentiatedOrthonormality μ n n)
@@ -124,7 +98,7 @@ theorem diagonal_innerProduct_im_eq_zero (μ ν : κ) (n : ι) :
   simp [Complex.mul_im, hμre, hνre]
 
 /-- The left derivative-state matrix element is the Hermitian-conjugate Born--Fock term. -/
-theorem innerDerivative_basis_eq_hamiltonianDerivativeMatrixElement_div
+private theorem innerDerivative_basis_eq_hamiltonianDerivativeMatrixElement_div
     (μ : κ) (hself : IsSelfAdjoint (data.hamiltonianDerivative μ))
     {m n : ι} (hmn : m ≠ n) (henergy : data.energy m ≠ data.energy n) :
     inner ℂ (data.eigenvectorDerivative μ n) (data.eigenbasis m) =
@@ -147,7 +121,7 @@ theorem innerDerivative_basis_eq_hamiltonianDerivativeMatrixElement_div
 /-- An off-diagonal completeness term equals the conventional force-matrix Berry-curvature term.
 The two real level-spacing factors are intentionally kept separate here; a downstream consumer may
 normalize them to a squared denominator if desired. -/
-theorem curvatureInnerTerm_eq_hamiltonianDerivativeMatrixElements
+private theorem curvatureInnerTerm_eq_hamiltonianDerivativeMatrixElements
     (μ ν : κ)
     (hselfμ : IsSelfAdjoint (data.hamiltonianDerivative μ))
     (hselfν : IsSelfAdjoint (data.hamiltonianDerivative ν))
@@ -210,7 +184,10 @@ theorem berryCurvature_eq_sum_hamiltonianDerivativeMatrixElements [DecidableEq �
           (((data.energy n - data.energy m : ℝ) : ℂ))) *
           (data.hamiltonianDerivativeMatrixElement ν n m /
             (((data.energy n - data.energy m : ℝ) : ℂ)))).im := by
-  rw [data.berryCurvature_eq_sum_innerProducts]
+  have hsum := data.eigenbasis.sum_inner_mul_inner
+    (data.eigenvectorDerivative μ n) (data.eigenvectorDerivative ν n)
+  unfold berryCurvature
+  rw [← hsum, Complex.im_sum, Finset.mul_sum]
   apply Finset.sum_congr rfl
   intro m _
   by_cases hmn : m = n
