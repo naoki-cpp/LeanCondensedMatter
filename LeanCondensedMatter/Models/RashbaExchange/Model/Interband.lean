@@ -128,24 +128,13 @@ theorem forceMatrixTraceNumerator_xy_eq
         a ^ 2 * (u .x * u .y) - Complex.I * a ^ 2 * u .z := by
     have hI : Complex.I ^ 2 = (-1 : ℂ) := by
       simpa [pow_two] using Complex.I_mul_I
-    let x : InternalSpace.PauliAxis → ℂ :=
-      fun axis => InternalSpace.pauliAxisComponent axis 0 (-a) 0
-    let y : InternalSpace.PauliAxis → ℂ :=
-      fun axis => InternalSpace.pauliAxisComponent axis a 0 0
-    have hx : InternalSpace.pauliCombination x = -(a • InternalSpace.pauliY) := by
-      simp [x, InternalSpace.pauliCombination_eq_components, InternalSpace.pauliAxisComponent]
-    have hy : InternalSpace.pauliCombination y = a • InternalSpace.pauliX := by
-      simp [y, InternalSpace.pauliCombination_eq_components, InternalSpace.pauliAxisComponent]
-    have h := InternalSpace.trace_four_pauliAffine 1 cx 1 cy ((-1 : ℂ) • u) x u y
-    simp only [InternalSpace.pauliCombination_smul, neg_one_smul, one_smul,
-      zero_smul, zero_add, hx, hy, ← sub_eq_add_neg] at h
-    simp only [smul_mul_assoc, mul_smul_comm, smul_smul, Matrix.trace_smul, smul_eq_mul]
-    rw [h]
-    simp [InternalSpace.dotProduct_pauliAxis, InternalSpace.pauliCross, cross_apply,
-      InternalSpace.pauliAxisComponent, x, y]
+    rw [InternalSpace.dotProduct_pauliAxis] at hnorm
+    simp [Matrix.trace, Matrix.mul_apply, InternalSpace.pauliCombination_eq_components,
+      InternalSpace.pauliX, InternalSpace.pauliY, InternalSpace.pauliZ,
+      sub_eq_add_neg]
     ring_nf
     simp [hI]
-    rw [InternalSpace.dotProduct_pauliAxis] at hnorm
+    ring_nf at hnorm
     linear_combination -(cx * cy / 2) * hnorm
   unfold forceMatrixTraceNumerator
   rw [hOppositeProjector, hProjector]
