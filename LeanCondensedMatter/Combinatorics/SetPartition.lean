@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Combinatorics.SetPartition.SingleBlock
 import LeanCondensedMatter.Combinatorics.SetPartition.Refinement
 import LeanCondensedMatter.Combinatorics.SetPartition.Coarsening
 import LeanCondensedMatter.Combinatorics.SetPartition.Mobius
@@ -10,6 +11,6 @@ set_option linter.style.header false
 /-!
 # Set partitions
 
-Set-partition theory: refinement and coarsening, Möbius inversion, distinguished blocks, Stirling
-numbers, and explicit Möbius formulas.
+Set-partition theory: single-block criteria, refinement and coarsening, Möbius inversion,
+distinguished blocks, Stirling numbers, and explicit Möbius formulas.
 -/
