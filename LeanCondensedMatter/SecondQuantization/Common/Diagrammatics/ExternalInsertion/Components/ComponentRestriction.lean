@@ -180,6 +180,37 @@ theorem ExternalInsertionDiagram.componentExternalShuffle_slotEquiv_apply
       (d.externalSectorOrderIso B e).1 := by
   rfl
 
+
+/-- Vacuum components do not contribute inversions with any other component when
+they occupy the left argument of the external-only shuffle. -/
+theorem ExternalInsertionDiagram.componentExternalShuffle_blockInversionCount_zero_of_left_vacuum
+    {S : Finset (Fin N)}
+    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
+    (B C : d.vertexGraph.componentPartition.parts)
+    (hB : ComponentIsVacuum (B : Finset (ExternalInsertionVertex E S))) :
+    d.componentExternalShuffle.blockInversionCount B C = 0 := by
+  classical
+  by_cases hBC : B = C
+  · subst C
+    exact d.componentExternalShuffle.blockInversionCount_self B
+  · rw [d.componentExternalShuffle.blockInversionCount_of_ne hBC]
+    simp [d.externalPairCount_eq_zero_of_vacuum B hB]
+
+/-- Vacuum components do not contribute inversions with any other component when
+they occupy the right argument of the external-only shuffle. -/
+theorem ExternalInsertionDiagram.componentExternalShuffle_blockInversionCount_zero_of_right_vacuum
+    {S : Finset (Fin N)}
+    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
+    (B C : d.vertexGraph.componentPartition.parts)
+    (hC : ComponentIsVacuum (C : Finset (ExternalInsertionVertex E S))) :
+    d.componentExternalShuffle.blockInversionCount B C = 0 := by
+  classical
+  by_cases hBC : B = C
+  · subst C
+    exact d.componentExternalShuffle.blockInversionCount_self B
+  · rw [d.componentExternalShuffle.blockInversionCount_of_ne hBC]
+    simp [d.externalPairCount_eq_zero_of_vacuum C hC]
+
 /-- Reindex the flattened legs of one component as the flattened legs of its local
 external-insertion diagram. -/
 private noncomputable def ExternalInsertionDiagram.componentBlockLegEquiv
