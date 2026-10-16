@@ -22,18 +22,6 @@ open Combinatorics
 
 variable {ExternalLabel InternalLabel : Type*} {n : ℕ}
 
-/-- The order embedding of fixed-order vacuum legs into ambient mixed-order leg positions. -/
-private noncomputable def slotSplitVacuumMixedOrderEmbedding
-    (T : Finset (Fin n)) (τ τ' : ℝ) (σ : Fin n → ℝ)
-    (hσ : StrictAnti (σ ∘ slotSplitVacuumSlot T)) :
-    Fin (2 * (2 * ((Finset.univ : Finset (Fin n)) \ T).card)) ↪o
-      Fin (2 * (2 * n + 1)) :=
-  OrderEmbedding.ofStrictMono
-    (mixedTimeOrderedQuarticLegMapPosition (slotSplitVacuumSlot T) τ τ' σ)
-    (mixedTimeOrderedQuarticLegMapPosition_strictMono_of_strictAnti
-      (slotSplitVacuumSlot T) (slotSplitVacuumSlot_strictMono T)
-      τ τ' σ hσ)
-
 /-- The mixed-order partner on a reassembled diagram is the mixed position of the corresponding
 fixed-order quartic vacuum partner. -/
 private theorem TwoPointDiagram.ofSlotSplit_pairingInMixedOrder_partner_vacuumOrderedLeg
@@ -74,7 +62,8 @@ noncomputable def TwoPointDiagram.slotSplitVacuumNormalizedPairEmbedding
   exact
     (vac.pairingInOrder (slotSplitVacuumOrder T)).normalizedPairEmbedding
       (d.pairingInMixedOrder τ τ' σ)
-      (slotSplitVacuumMixedOrderEmbedding T τ τ' σ hσ)
+      (mixedTimeOrderedQuarticLegMapOrderEmbedding
+        (slotSplitVacuumSlot T) (slotSplitVacuumSlot_strictMono T) τ τ' σ hσ)
       (TwoPointDiagram.ofSlotSplit_pairingInMixedOrder_partner_vacuumOrderedLeg
         T ext vac τ τ' σ)
 
@@ -112,7 +101,8 @@ theorem TwoPointDiagram.slotSplitVacuumNormalizedPairEmbedding_crosses_iff
   simpa only [TwoPointDiagram.slotSplitVacuumNormalizedPairEmbedding] using
     (vac.pairingInOrder (slotSplitVacuumOrder T)).normalizedPairEmbedding_crosses_iff
       (d.pairingInMixedOrder τ τ' σ)
-      (slotSplitVacuumMixedOrderEmbedding T τ τ' σ hσ)
+      (mixedTimeOrderedQuarticLegMapOrderEmbedding
+        (slotSplitVacuumSlot T) (slotSplitVacuumSlot_strictMono T) τ τ' σ hσ)
       (TwoPointDiagram.ofSlotSplit_pairingInMixedOrder_partner_vacuumOrderedLeg
         T ext vac τ τ' σ)
       p q
