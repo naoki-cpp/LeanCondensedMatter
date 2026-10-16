@@ -5,12 +5,15 @@ import LeanCondensedMatter.Analysis.Operator.DiagonalExpectation
 set_option linter.style.header false
 
 /-!
-# Spectral-trace basis formulas and cyclicity
+# Spectral-trace basis formulas and product commutation
 
-This module proves Hilbert-basis formulas and cyclicity for the spectral trace of compact
-self-adjoint operators. The arguments compare operators against a common Hilbert basis rather
-than choosing unrelated eigenbases for each operator. Diagonal matrix elements are transported
-through `selfAdjoint ℂ` before being treated as real scalars.
+The Hilbert-basis formulas compare compact self-adjoint operators against a common basis rather
+than choosing unrelated eigenbases. Diagonal matrix elements are transported through
+`selfAdjoint ℂ` before being treated as real scalars.
+
+For self-adjoint factors, a self-adjoint product already implies that the factors commute, so
+equality of their product spectral traces does not require spectral summability. This special
+case is not the general trace-cyclicity theorem for noncommuting bounded factors.
 -/
 
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
@@ -96,46 +99,27 @@ theorem hasSum_diagonalExpectationValue_eq_spectralTrace
     (Equiv.prodComm ι (EigenvectorIndex T)).tsum_eq (Function.uncurry f)
   rwa [hsymmeq, hS_eq] at hHS
 
-/-- Cyclicity of `spectralTrace` for two products satisfying the required hypotheses. -/
+/-- For self-adjoint operators, self-adjointness of the product forces the factors to
+commute. Their spectral traces therefore agree without compactness or summability assumptions. -/
 theorem spectralTrace_comp_comm {T' : H →L[ℂ] H}
     (hTsym : T.IsSymmetric) (hT'sym : T'.IsSymmetric)
-    (hTT' : IsCompactOperator (T * T')) (hTT'sym : (T * T' : H →L[ℂ] H).IsSymmetric)
-    (hT'T : IsCompactOperator (T' * T)) (hT'Tsym : (T' * T : H →L[ℂ] H).IsSymmetric)
-    (h1 : HasSummableRealEigenvalues (T * T'))
-    (h2 : HasSummableRealEigenvalues (T' * T)) :
+    (hTT'sym : (T * T' : H →L[ℂ] H).IsSymmetric) :
     spectralTrace (T * T') = spectralTrace (T' * T) := by
-  obtain ⟨w, d, -⟩ := exists_hilbertBasis (𝕜 := ℂ) (E := H)
-  let hTT'self : IsSelfAdjoint (T * T') :=
+  have hTself : IsSelfAdjoint T :=
+    ContinuousLinearMap.isSelfAdjoint_iff_isSymmetric.mpr hTsym
+  have hT'self : IsSelfAdjoint T' :=
+    ContinuousLinearMap.isSelfAdjoint_iff_isSymmetric.mpr hT'sym
+  have hTT'self : IsSelfAdjoint (T * T') :=
     ContinuousLinearMap.isSelfAdjoint_iff_isSymmetric.mpr hTT'sym
-  let hT'Tself : IsSelfAdjoint (T' * T) :=
-    ContinuousLinearMap.isSelfAdjoint_iff_isSymmetric.mpr hT'Tsym
-  have hs1 := hasSum_diagonalExpectationValue_eq_spectralTrace hTT' hTT'self h1 d
-  have hs2 := hasSum_diagonalExpectationValue_eq_spectralTrace hT'T hT'Tself h2 d
-  have hs1' :
-      HasSum (fun i => diagonalExpectationValue (T' * T) hT'Tself (d i))
-        (spectralTrace (T * T')) :=
-    HasSum.congr_fun hs1 fun i => by
-      symm
-      apply diagonalExpectationValue_eq_of_inner_eq hTT'self hT'Tself (d i)
-      simp only [mul_apply_eq_comp]
-      have h1' : (inner ℂ (d i) (T (T' (d i))) : ℂ) =
-          inner ℂ (T (d i)) (T' (d i)) :=
-        (hTsym (d i) (T' (d i))).symm
-      have h2' : (inner ℂ (d i) (T' (T (d i))) : ℂ) =
-          inner ℂ (T' (d i)) (T (d i)) :=
-        (hT'sym (d i) (T (d i))).symm
-      have hzdiag : IsSelfAdjoint (inner ℂ (d i) (T (T' (d i)))) := by
-        change IsSelfAdjoint (inner ℂ (d i) ((T * T') (d i)))
-        rw [← coe_diagonalExpectationValue_right (T * T') hTT'self (d i)]
-        exact Complex.conj_ofReal _
-      have hz : IsSelfAdjoint (inner ℂ (T (d i)) (T' (d i))) := by
-        rw [← h1']
-        exact hzdiag
-      have hconj : (inner ℂ (T' (d i)) (T (d i)) : ℂ) =
-          starRingEnd ℂ (inner ℂ (T (d i)) (T' (d i))) :=
-        (inner_conj_symm (T' (d i)) (T (d i))).symm
-      rw [h1', h2', hconj]
-      exact hz.symm
-  exact hs1'.unique hs2
+  have hcomm : T * T' = T' * T := by
+    calc
+      T * T' = ContinuousLinearMap.adjoint (T * T') := hTT'self.adjoint_eq.symm
+      _ = T' * T := by
+        rw [show ContinuousLinearMap.adjoint (T * T') = star (T * T') from
+          (ContinuousLinearMap.star_eq_adjoint (T * T')).symm,
+          star_mul, ContinuousLinearMap.star_eq_adjoint,
+          ContinuousLinearMap.star_eq_adjoint,
+          hT'self.adjoint_eq, hTself.adjoint_eq]
+  exact congrArg spectralTrace hcomm
 
 end ContinuousLinearMap
