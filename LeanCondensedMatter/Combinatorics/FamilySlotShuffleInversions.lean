@@ -151,9 +151,11 @@ theorem FamilySlotShuffleTo.orderedBlockInversionCount_modEq_of_even_sizes
   intro i _ j _ hij
   rcases lt_or_gt_of_ne (order₁.injective.ne hij) with h₁ | h₁ <;>
     rcases lt_or_gt_of_ne (order₂.injective.ne hij) with h₂ | h₂
-  · simp [h₁, h₂, (asymm h₁), (asymm h₂)]
+  · simpa [h₁, h₂, (asymm h₁), (asymm h₂)] using
+      (Nat.ModEq.refl (n := 2) (shuffle.blockInversionCount i j))
   · simpa [h₁, h₂, (asymm h₁), (asymm h₂)] using hflip i j hij
   · simpa [h₁, h₂, (asymm h₁), (asymm h₂)] using (hflip i j hij).symm
-  · simp [h₁, h₂, (asymm h₁), (asymm h₂)]
+  · simpa [h₁, h₂, (asymm h₁), (asymm h₂)] using
+      (Nat.ModEq.refl (n := 2) (shuffle.blockInversionCount j i))
 
 end Combinatorics
