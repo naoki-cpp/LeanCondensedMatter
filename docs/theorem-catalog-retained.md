@@ -18,6 +18,7 @@ or consumer structure changes.
 
 ## Retained declarations
 
+- `Dyson.hasSum_intervalIntegral_integrand_of_bound` — generic dominated-convergence result exchanging an interacting Dyson/Volterra series with the Bochner interval integral under explicit continuous bounded-interaction hypotheses; this is an independent analytic endpoint, not a disposable one-consumer proof wrapper.
 - `QuantumTheory.Transport.SpectralSide.sign_opposite` — canonical `[simp]` law for the retarded/advanced spectral-side involution; retaining the sign reversal provides a stable normalization rule independently of its current regulator consumer.
 - `QuantumTheory.Transport.spectralParameter_im` — canonical `[simp]` evaluation of the imaginary part of a side-indexed complex spectral parameter as its signed regulator; this is the physical-to-analytic boundary even with a single compiled private consumer.
 - `Combinatorics.PairingOn.sigmaCongrRight_partner` — retain public `[simp]`: canonical computation rule for the partner map of the dependent-sum pairing constructor.
