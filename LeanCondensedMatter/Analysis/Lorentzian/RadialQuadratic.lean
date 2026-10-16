@@ -103,15 +103,15 @@ theorem tendsto_arctan_div_sub_arctan_div_nhdsGT_zero
           (hg.neg_mul_atTop hb (tendsto_inv_nhdsGT_zero.comp hwidth)))
   simpa only [show Real.pi / 2 - (-(Real.pi / 2)) = Real.pi by ring] using hpos.sub hneg
 
-/-- A moving quadratic Lorentzian whose endpoints approach opposite sides of the resonance has a
-finite scaled zero-width limit once its external scale cancels the `1 / B` singularity. -/
+/-- A quadratic Lorentzian whose center approaches a value inside the fixed radial
+cutoff has a finite scaled zero-width limit once its external scale cancels
+the `1 / B` singularity. The outer-endpoint limit follows from center convergence. -/
 theorem tendsto_scaled_integral_radialQuadraticLorentzian_nhdsGT_zero
     {ι : Type*} {l : Filter ι}
-    (v pMax : ℝ) {center width scale : ι → ℝ} {a b scaleLimit : ℝ}
+    (v pMax : ℝ) {center width scale : ι → ℝ} {a scaleLimit : ℝ}
     (hvelocity : v ≠ 0)
     (hcenter0 : Tendsto center l (nhds a)) (ha : 0 < a)
-    (hcenterMax : Tendsto (fun x => center x - v ^ 2 * pMax ^ 2) l (nhds b))
-    (hb : b < 0)
+    (hcross : a - v ^ 2 * pMax ^ 2 < 0)
     (hwidth : Tendsto width l (nhdsWithin 0 (Set.Ioi 0)))
     (hscale : Tendsto (fun x => scale x * (2 * v ^ 2 * width x)⁻¹) l
       (nhds scaleLimit)) :
@@ -120,8 +120,12 @@ theorem tendsto_scaled_integral_radialQuadraticLorentzian_nhdsGT_zero
         ∫ p in (0 : ℝ)..pMax,
           p / ((center x - v ^ 2 * p ^ 2) ^ 2 + width x ^ 2))
       l (nhds (scaleLimit * Real.pi)) := by
+  have hcenterMax :
+      Tendsto (fun x => center x - v ^ 2 * pMax ^ 2) l
+        (nhds (a - v ^ 2 * pMax ^ 2)) :=
+    hcenter0.sub tendsto_const_nhds
   have hphase := tendsto_arctan_div_sub_arctan_div_nhdsGT_zero
-    hcenter0 ha hcenterMax hb hwidth
+    hcenter0 ha hcenterMax hcross hwidth
   apply Tendsto.congr' ?_ (hscale.mul hphase)
   filter_upwards [hwidth.eventually self_mem_nhdsWithin] with x hwidthPos
   rw [integral_radialQuadraticLorentzian_eq_arctan
