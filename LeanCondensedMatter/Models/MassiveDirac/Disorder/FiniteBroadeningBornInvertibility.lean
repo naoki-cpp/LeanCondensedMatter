@@ -335,12 +335,10 @@ theorem finiteCutoffContinuumBornDysonRadial_center_gap_ne_zero_of_re_pos
     sub_eq_zero.mp hgap
   have hs : star (energyR ^ 2 - massR ^ 2) = energyR ^ 2 - massR ^ 2 :=
     hstar.trans heq
+  have hstarIm (z : ℂ) : (star z).im = -z.im := by simp
   have himZero : (energyR ^ 2 - massR ^ 2).im = 0 := by
     have h := congrArg Complex.im hs
-    have hconj :
-        (star (energyR ^ 2 - massR ^ 2)).im =
-          -(energyR ^ 2 - massR ^ 2).im := by simp
-    rw [hconj] at h
+    rw [hstarIm] at h
     linarith
   exact him himZero
 
