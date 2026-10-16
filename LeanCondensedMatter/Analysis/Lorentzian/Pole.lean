@@ -471,10 +471,6 @@ private theorem tendsto_regularFactorErrorIntegral_zero
       _ < ε := by linarith
   simpa [dist_eq_norm] using hnormLt
 
-private theorem real_smul_complex_eq_mul (r : ℝ) (z : ℂ) :
-    r • z = (r : ℂ) * z := by
-  rfl
-
 private theorem integral_spectralKernel_mul_eq_error_add_mass_smul_pole
     (factor : ℝ × ℝ → ℂ) (radius broadening : ℝ)
     (hradius : 0 ≤ radius)
@@ -509,8 +505,7 @@ private theorem integral_spectralKernel_mul_eq_error_add_mass_smul_pole
           (spectralKernel offset broadening : ℂ) * factor (offset, broadening) =
             (spectralKernel offset broadening : ℂ) *
                 (factor (offset, broadening) - factor (0, 0)) +
-              spectralKernel offset broadening • factor (0, 0)
-        rw [real_smul_complex_eq_mul]
+              (spectralKernel offset broadening : ℂ) * factor (0, 0)
         ring
     _ = (∫ offset in -radius..radius,
           regularFactorErrorIntegrand factor broadening offset) +
@@ -523,10 +518,10 @@ private theorem integral_spectralKernel_mul_eq_error_add_mass_smul_pole
         unfold regularFactorErrorIntegral
         rw [intervalIntegral.integral_smul_const]
 
-/-- A Lorentzian approximate identity extracts the pole value of any complex regular factor that is
-jointly continuous at `(0,0)`, has continuous nonzero-broadening slices on the fixed symmetric
-window, and has a uniform bound on its deviation from the pole value over that window for
-`0 ≤ broadening ≤ etaMax`. -/
+/-- A Lorentzian approximate identity extracts the pole value for a complex factor
+continuous at the origin relative to a nonnegative-broadening rectangle, with continuous
+positive-broadening energy slices and a uniform bound on that rectangle.
+The positive upper regulator bound `etaMax` is arbitrary. -/
 private theorem tendsto_integral_spectralKernel_mul_of_bounded
     (factor : ℝ × ℝ → ℂ) (radius etaMax : ℝ)
     (hradiusPos : 0 < radius) (hetaMax : 0 < etaMax)
