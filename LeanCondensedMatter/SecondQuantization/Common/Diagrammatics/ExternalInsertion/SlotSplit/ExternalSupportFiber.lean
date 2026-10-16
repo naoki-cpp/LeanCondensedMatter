@@ -29,16 +29,6 @@ private theorem ExternalInsertionDiagram.pairing_isSplit_of_support_eq
   subst hd
   exact d.pairing_isSplit_externallySupportedInteractionPart
 
-private theorem ExternalInsertionDiagram.hasNoVacuumComponent_slotSplitExternal_of_support_eq
-    (h : T ⊆ S)
-    {d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S}
-    (hd : d.externallySupportedInteractionPart = T)
-    (hsplit : d.pairing.IsSplit (externalInsertionSlotLegSplitting (E := E) h)) :
-    HasNoVacuumComponent (d.slotSplitExternal h hsplit).vertexGraph := by
-  subst hd
-  simpa [ExternalInsertionDiagram.externalSupportDiagram] using
-    d.hasNoVacuumComponent_externalSupportDiagram
-
 /-- Fiber over a chosen externally supported interaction-slot subset.
 
 The inverse assembles the two diagrams without joining their pairings. Vacuum-freeness of the
@@ -53,8 +43,11 @@ noncomputable def ExternalInsertionDiagram.externalSupportFiberEquiv
   toFun d :=
     (⟨d.1.slotSplitExternal h
         (ExternalInsertionDiagram.pairing_isSplit_of_support_eq h d.2),
-      ExternalInsertionDiagram.hasNoVacuumComponent_slotSplitExternal_of_support_eq
-        h d.2 _⟩,
+      by
+        have hd := d.2
+        subst T
+        simpa [ExternalInsertionDiagram.externalSupportDiagram] using
+          d.1.hasNoVacuumComponent_externalSupportDiagram⟩,
       d.1.slotSplitVacuum h
         (ExternalInsertionDiagram.pairing_isSplit_of_support_eq h d.2))
   invFun p :=
