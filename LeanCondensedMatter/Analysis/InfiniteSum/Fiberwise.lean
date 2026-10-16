@@ -1,4 +1,8 @@
-import Mathlib.Analysis.Normed.Ring.InfiniteSum
+module
+
+public import Mathlib.Analysis.Normed.Ring.InfiniteSum
+
+public section
 
 set_option linter.style.header false
 

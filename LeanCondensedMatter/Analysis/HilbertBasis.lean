@@ -1,4 +1,8 @@
-import Mathlib.Analysis.InnerProductSpace.l2Space
+module
+
+public import Mathlib.Analysis.InnerProductSpace.l2Space
+
+public section
 
 set_option linter.style.header false
 
