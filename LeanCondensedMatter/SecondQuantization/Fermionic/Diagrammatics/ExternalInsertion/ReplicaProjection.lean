@@ -37,6 +37,7 @@ noncomputable def vacuumFreeExternalInsertionReplicaPolynomial {E : ℕ}
     Polynomial.C (d.1.1.dysonAmplitude ε β g externalTime) *
       Polynomial.X ^ (externalComponentPartition d.1.1.vertexGraph).parts.card
 
+open Classical in
 /-- The replica-linear coefficient is precisely the sum of signed amplitudes
 whose external vertices are all mutually connected. Pure vacuum components
 are excluded by the input diagram family, not by replica projection. -/
