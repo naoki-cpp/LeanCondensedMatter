@@ -25,12 +25,6 @@ private noncomputable def supportSlotVertexEquiv (h : T ⊆ S) :
   (Equiv.sumAssoc (Fin (2 * E)) ↥T ↥(S \ T)).trans
     (Equiv.sumCongr (Equiv.refl (Fin (2 * E))) (subsetSumSdiffEquiv h))
 
-private theorem supportSlotVertexEquiv_inr (h : T ⊆ S) (v : ↥(S \ T)) :
-    supportSlotVertexEquiv (E := E) h (Sum.inr v) =
-      (Sum.inr ⟨v.1, (Finset.mem_sdiff.mp v.2).1⟩ : ExternalInsertionVertex E S) := by
-  change (Sum.inr (subsetSumSdiffEquiv h (Sum.inr v)) : ExternalInsertionVertex E S) = _
-  rw [subsetSumSdiffEquiv_inr_apply]
-
 /-- Left legs retain the corresponding vertices under the splitting. -/
 private theorem supportSlotVertex_of_left_leg (h : T ⊆ S)
     (i : Fin (2 * (2 * T.card + E))) :
@@ -53,7 +47,12 @@ private theorem supportSlotVertex_of_right_leg (h : T ⊆ S)
     externalInsertionVertexOfLeg
         (externalInsertionSlotLegSplitting (E := E) h (Sum.inr i)) =
       supportSlotVertexEquiv (E := E) h (Sum.inr (vertexOfLeg i)) := by
-  rw [supportSlotVertexEquiv_inr]
+  change
+    externalInsertionVertexOfLeg
+        (externalInsertionSlotLegSplitting (E := E) h (Sum.inr i)) =
+      (Sum.inr (subsetSumSdiffEquiv h (Sum.inr (vertexOfLeg i))) :
+        ExternalInsertionVertex E S)
+  rw [subsetSumSdiffEquiv_inr_apply]
   obtain ⟨p, rfl⟩ := (quarticLegEquiv (S \ T)).symm.surjective i
   obtain ⟨v, l⟩ := p
   rw [externalInsertionSlotLegSplitting_right_interaction]
