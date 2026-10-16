@@ -548,3 +548,8 @@ or consumer structure changes.
 - `Models.Heisenberg.hamiltonian_eq_excitation_add_ground` — the exact decomposition into excitation Hamiltonian and polarized ground-state energy; this is an independent normalization identity, not merely a proof helper.
 - `Models.Heisenberg.excitationHamiltonian_oneMagnonKet` — the concrete nearest-neighbor one-magnon action of the excitation Hamiltonian; retain this lattice dynamics statement independently of its embedding consumer.
 - `Models.Heisenberg.excitationHamiltonian_comp_oneMagnonEmbedding` — the exact intertwining of the excitation Hamiltonian with the one-magnon discrete Laplacian; retain the invariant-subspace statement despite a single Fourier-mode consumer.
+- `QuantumTheory.Models.MassiveDirac.energySq_neg_momentum` — canonical `[simp]` invariance of the quadratic Dirac dispersion under simultaneous momentum reversal, reused by propagator calculations.
+- `QuantumTheory.Models.MassiveDirac.bandSign_lower` — canonical `[simp]` constructor evaluation of the lower-band energy sign; terminal status reflects the normal-form role, not dead API.
+- `QuantumTheory.Models.MassiveDirac.bandSign_upper` — canonical `[simp]` constructor evaluation of the upper-band energy sign; terminal status reflects the normal-form role, not dead API.
+- `QuantumTheory.Models.MassiveDirac.oppositeBand_lower` — canonical `[simp]` evaluation of band interchange on the lower band, providing the model's public two-band normalization.
+- `QuantumTheory.Models.MassiveDirac.oppositeBand_upper` — canonical `[simp]` evaluation of band interchange on the upper band, providing the model's public two-band normalization.

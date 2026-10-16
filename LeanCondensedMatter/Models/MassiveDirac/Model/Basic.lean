@@ -103,14 +103,6 @@ def energySq (v m px py : ℝ) : ℝ :=
     energySq v m (-px) (-py) = energySq v m px py := by
   simp [energySq]
 
-/-- The bilinear square of the Dirac Pauli coefficient vector is the dispersion polynomial. -/
-theorem diracPauliCoefficients_dot_self (v m px py : ℝ) :
-    dotProduct (diracPauliCoefficients v m px py) (diracPauliCoefficients v m px py) =
-      ((energySq v m px py : ℝ) : ℂ) := by
-  rw [InternalSpace.dotProduct_pauliAxis]
-  simp [diracPauliCoefficients, energySq]
-  ring
-
 /-- Positive Dirac energy `E = √(v²(pₓ²+pᵧ²)+m²)`. -/
 def energy (v m px py : ℝ) : ℝ :=
   Real.sqrt (energySq v m px py)
@@ -160,15 +152,12 @@ def bandEnergy (band : Band) (v m px py : ℝ) : ℝ :=
 def berryCurvature (band : Band) (v m px py : ℝ) : ℝ :=
   -(bandSign band * m * v ^ 2) / (2 * energy v m px py ^ 3)
 
-/-- The dispersion polynomial is nonnegative. -/
-theorem energySq_nonneg (v m px py : ℝ) : 0 ≤ energySq v m px py := by
-  unfold energySq
-  positivity
-
 /-- `E²` recovers the dispersion polynomial. -/
 theorem energy_sq (v m px py : ℝ) :
     energy v m px py ^ 2 = energySq v m px py := by
-  exact Real.sq_sqrt (energySq_nonneg v m px py)
+  exact Real.sq_sqrt (by
+    unfold energySq
+    positivity)
 
 /-- The positive Dirac energy is nonnegative for every momentum. -/
 theorem energy_nonneg (v m px py : ℝ) :
@@ -205,8 +194,13 @@ theorem energy_pos_of_mass_ne_zero (v m px py : ℝ) (hm : m ≠ 0) :
 theorem hamiltonian_mul_self (v m px py : ℝ) :
     hamiltonian v m px py * hamiltonian v m px py =
       ((energySq v m px py : ℝ) : ℂ) • (1 : Matrix2) := by
-  rw [hamiltonian_eq_pauliCombination, InternalSpace.pauliCombination_mul_self,
-    diracPauliCoefficients_dot_self]
+  have hdot :
+      dotProduct (diracPauliCoefficients v m px py) (diracPauliCoefficients v m px py) =
+        ((energySq v m px py : ℝ) : ℂ) := by
+    rw [InternalSpace.dotProduct_pauliAxis]
+    simp [diracPauliCoefficients, energySq]
+    ring
+  rw [hamiltonian_eq_pauliCombination, InternalSpace.pauliCombination_mul_self, hdot]
 
 @[simp] theorem bandSign_lower : bandSign .lower = -1 := rfl
 @[simp] theorem bandSign_upper : bandSign .upper = 1 := rfl
