@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Combinatorics.FamilySlotShuffleInversions
+import LeanCondensedMatter.Combinatorics.ExchangeSign
 import LeanCondensedMatter.SecondQuantization.Common.Algebra.Statistics
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentRestriction
 import Mathlib.Analysis.Complex.Basic
@@ -12,7 +13,9 @@ The canonical external-insertion component shuffle groups external legs by conne
 preserving their increasing order within each block. Its ordered block-inversion count determines
 the fermionic exchange sign that remains in component amplitude factorization.
 
-The component order is explicit semantic input; time ordering is handled downstream.
+The component order is explicit in the componentwise factorization formula, but the
+fermionic sign is invariant under that choice because each component has an
+even external-leg count. Time ordering is handled downstream.
 -/
 
 namespace SecondQuantization
@@ -33,6 +36,29 @@ noncomputable def componentExternalOrderSign
   (Common.Statistics.fermion.zetaInt : ℂ) ^
     d.componentExternalShuffle.orderedBlockInversionCount blockOrder
 
+
+
+/-- The fermionic external-component regrouping sign is independent of the
+chosen order of full graph components, including the vacuum components.
+
+Every component carries an even number of external fermion legs, so reversing
+two component blocks changes the inversion count by an even number. -/
+theorem componentExternalOrderSign_eq_of_blockOrder
+    {S : Finset (Fin N)}
+    (d : Common.ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
+    (order₁ order₂ :
+      d.vertexGraph.componentPartition.parts ≃
+        Fin (Fintype.card d.vertexGraph.componentPartition.parts)) :
+    componentExternalOrderSign d order₁ = componentExternalOrderSign d order₂ := by
+  have hmod :
+      Nat.ModEq 2
+        (d.componentExternalShuffle.orderedBlockInversionCount order₁)
+        (d.componentExternalShuffle.orderedBlockInversionCount order₂) :=
+    d.componentExternalShuffle.orderedBlockInversionCount_modEq_of_even_sizes
+      order₁ order₂ (fun B => ⟨d.externalPairCount B, by omega⟩)
+  unfold componentExternalOrderSign
+  change (-1 : ℂ) ^ _ = (-1 : ℂ) ^ _
+  exact pow_eq_of_mod_two_eq (by norm_num) hmod
 
 /-- The external-order fermionic sign only involves connected components
 meeting the external sector. Pure-vacuum components may occur anywhere in
