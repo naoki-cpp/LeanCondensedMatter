@@ -26,8 +26,10 @@ limit is exposed both in `ℏ` normalization and in the standard Ado non-crossin
 The Ado Eq. (12a-c) decomposition is connected theorem-by-theorem to the concrete ordered-`xy`
 ladder provenance. After conductivity normalization, the `r_y Γ_x` contribution is the intrinsic
 piece plus three quarters of the side-jump-type piece, while the `r_x Γ_y` contribution is the
-remaining quarter of the side-jump-type piece plus the Gaussian-skew-type piece. These mechanism
+remaining quarter of the side-jump-type piece plus the non-crossing-skew-type piece. These mechanism
 names remain theorem-level classifications rather than primitive conductivity definitions.
+The non-crossing skew term is Ado Eq. (12c), not the complete Gaussian-disorder skew
+scattering: crossed `X/Ψ` diagrams contribute an additional leading-order channel.
 
 The Gaussian crossed `X/Psi` route remains distinct from the non-crossing ladder. Its regulated
 real-space Fourier blocks carry their physical momentum measures upstream, so the conductivity
