@@ -360,7 +360,7 @@ private theorem tendsto_regularFactorErrorIntegral_zero
     dsimp [tailTolerance]
     exact div_pos hε (mul_pos (by norm_num) hCOnePos)
   have htail := tendsto_spectralTailMass_zero
-    innerRadius radius hinnerPos hnested
+    innerRadius radius hinnerPos hradiusPos
   have htailClose : ∀ᶠ broadening : ℝ in nhdsWithin 0 (Set.Ioi 0),
       dist (spectralTailMass innerRadius radius broadening) 0 <
         tailTolerance :=
