@@ -73,35 +73,53 @@ theorem TwoPointDiagram.ofSlotSplitVacuumNormalizedPairEmbedding_component
   rw [TwoPointDiagram.slotSplitVacuumNormalizedPairEmbedding_apply]
   exact congrArg d.vertexGraph.componentBlock hvertex
 
-/-- A mixed pair in a vacuum component starts on the quartic side of the
-reassembled slot split. This is the transport of the time-independent
-vacuum-leg classification into mixed-time coordinates. -/
-private theorem TwoPointDiagram.mixedVacuumPair_firstEndpoint_mem_vacuumLegRange
+/-- A mixed-time atomic position lies in a vacuum component of the assembled diagram
+exactly when it comes from a quartic leg on the right of the slot split.
+This does not depend on pair normalization or a time-order hypothesis. -/
+theorem TwoPointDiagram.ofSlotSplit_vacuumMixedPosition_mem_range_iff
     (T : Finset (Fin n))
     (ext : TwoPointDiagram ExternalLabel InternalLabel n T)
     (vac : QuarticDiagram InternalLabel n ((Finset.univ : Finset (Fin n)) \ T))
     (hext : ext.IsExternallyConnected)
     (τ τ' : ℝ) (σ : Fin n → ℝ)
-    (pr : (TwoPointDiagram.ofSlotSplit (Finset.subset_univ T) ext vac).MixedVacuumPair τ τ' σ) :
-    ∃ p, mixedTimeOrderedQuarticLegMapPosition
-      (slotSplitVacuumSlot T) τ τ' σ p = pr.1.1.1 := by
+    (i : Fin (2 * (2 * n + 1))) :
+    i ∈ Set.range (mixedTimeOrderedQuarticLegMapPosition (slotSplitVacuumSlot T) τ τ' σ) ↔
+      ComponentIsVacuum
+        ((TwoPointDiagram.ofSlotSplit (Finset.subset_univ T) ext vac).vertexGraph.componentBlock
+          (twoPointVertexOfLeg (mixedTimeAmbientPositionEquiv τ τ' σ i))) := by
   let d := TwoPointDiagram.ofSlotSplit (Finset.subset_univ T) ext vac
-  let i := mixedTimeAmbientPositionEquiv τ τ' σ pr.1.1.1
-  have hVac : ComponentIsVacuum
-      (d.vertexGraph.componentBlock (twoPointVertexOfLeg i)) :=
-    (mem_vacuumComponentParts d.vertexGraph
-      (d.mixedPairComponent τ τ' σ pr.1)).1 pr.2
-  obtain ⟨q, hq⟩ :=
-    TwoPointDiagram.ofSlotSplit_vacuumLeg_mem_right
-      (Finset.subset_univ T) ext vac hext i hVac
-  let p := (orderedLegToDiagramLeg
-    ((Finset.univ : Finset (Fin n)) \ T) (slotSplitVacuumOrder T)).symm q
-  refine ⟨p, ?_⟩
-  apply (mixedTimeAmbientPositionEquiv τ τ' σ).injective
-  simp only [mixedTimeOrderedQuarticLegMapPosition,
-    mixedTimeAmbientPositionEquiv_mixedTimeOrderedAtomicLegPosition,
-    slotSplitVacuumOrderedLeg_eq_slotSplitRight]
-  simpa only [p, Equiv.apply_symm_apply] using hq
+  constructor
+  · rintro ⟨p, rfl⟩
+    let q := orderedLegToDiagramLeg
+      ((Finset.univ : Finset (Fin n)) \ T) (slotSplitVacuumOrder T) p
+    have hpos :
+        mixedTimeAmbientPositionEquiv τ τ' σ
+            (mixedTimeOrderedQuarticLegMapPosition (slotSplitVacuumSlot T) τ τ' σ p) =
+          slotLegSplitting (Finset.subset_univ T) (Sum.inr q) := by
+      simpa only [mixedTimeOrderedQuarticLegMapPosition,
+        mixedTimeAmbientPositionEquiv_mixedTimeOrderedAtomicLegPosition] using
+        (slotSplitVacuumOrderedLeg_eq_slotSplitRight T p)
+    change ComponentIsVacuum (d.vertexGraph.componentBlock
+      (twoPointVertexOfLeg
+        (mixedTimeAmbientPositionEquiv τ τ' σ
+          (mixedTimeOrderedQuarticLegMapPosition (slotSplitVacuumSlot T) τ τ' σ p))))
+    rw [hpos, twoPointVertexOfLeg_slotLegSplitting_inr_exact]
+    exact (mem_vacuumComponentParts d.vertexGraph _).1
+      (componentBlock_slotSplitVacuumVertex_mem_vacuumComponentParts
+        (Finset.subset_univ T) ext vac (vertexOfLeg q))
+  · intro hVac
+    obtain ⟨q, hq⟩ :=
+      TwoPointDiagram.ofSlotSplit_vacuumLeg_mem_right
+        (Finset.subset_univ T) ext vac hext
+        (mixedTimeAmbientPositionEquiv τ τ' σ i) hVac
+    let p := (orderedLegToDiagramLeg
+      ((Finset.univ : Finset (Fin n)) \ T) (slotSplitVacuumOrder T)).symm q
+    refine ⟨p, ?_⟩
+    apply (mixedTimeAmbientPositionEquiv τ τ' σ).injective
+    simp only [mixedTimeOrderedQuarticLegMapPosition,
+      mixedTimeAmbientPositionEquiv_mixedTimeOrderedAtomicLegPosition,
+      slotSplitVacuumOrderedLeg_eq_slotSplitRight]
+    simpa only [p, Equiv.apply_symm_apply] using hq
 
 /-- The fixed-order quartic vacuum normalized pairs are equivalent to all ambient mixed normalized
 pairs carried by vacuum components. The graph-to-mixed-position characterization is kept
@@ -155,8 +173,10 @@ by
       exact Pairing.exists_normalizedPairEmbedding_eq_of_firstEndpoint
         (vac.pairingInOrder (slotSplitVacuumOrder T))
         (d.pairingInMixedOrder τ τ' σ) e hpartner pr.1
-        (TwoPointDiagram.mixedVacuumPair_firstEndpoint_mem_vacuumLegRange
-          T ext vac hext τ τ' σ pr)
+        ((TwoPointDiagram.ofSlotSplit_vacuumMixedPosition_mem_range_iff
+          T ext vac hext τ τ' σ pr.1.1.1).2
+          ((mem_vacuumComponentParts d.vertexGraph
+            (d.mixedPairComponent τ τ' σ pr.1)).1 pr.2))
     refine ⟨q, ?_⟩
     apply Subtype.ext
     exact hq
