@@ -1,7 +1,6 @@
 import LeanCondensedMatter.Analysis.Operator.TraceClass.AdjointConjugation
 import LeanCondensedMatter.Analysis.Operator.Unitary
-import LeanCondensedMatter.QuantumTheory.DensityOperator.Diagonal
-import LeanCondensedMatter.QuantumTheory.DensityOperator.DiagonalFormula
+import LeanCondensedMatter.QuantumTheory.DensityOperator.PureState
 import LeanCondensedMatter.QuantumTheory.DensityOperator.ObservableExpectation
 import LeanCondensedMatter.QuantumTheory.LinearResponse.PureStateDynamics
 
@@ -150,44 +149,11 @@ theorem expectation_evolveDensityOperator_eq_heisenberg
     (ρ : DensityOperator H) (A : H →L[ℂ] H) (t : ℝ) :
     (evolveDensityOperator system ρ t).expectation A =
       ρ.expectation (heisenbergEvolution system A t) := by
-  classical
-  obtain ⟨ι, b, w, hρ⟩ := ρ.exists_diagonal_hilbertBasis
-  let U : H ≃ₗᵢ[ℂ] H :=
-    Unitary.linearIsometryEquiv (freePropagatorUnitary system t)
-  let b' : HilbertBasis ι ℂ H :=
-    HilbertBasis.ofRepr (U.symm.trans b.repr)
-  have hb' (i : ι) : b' i = freePropagator system t (b i) := by
-    calc
-      b' i = U (b i) := by
-        apply b'.repr.injective
-        rw [b'.repr_self]
-        dsimp [b']
-        rw [LinearIsometryEquiv.symm_apply_apply, b.repr_self]
-      _ = freePropagator system t (b i) := by
-        rfl
-  have hρ' : ∀ i,
-      (evolveDensityOperator system ρ t).op (b' i) = (w i : ℂ) • b' i := by
-    intro i
-    rw [evolveDensityOperator_op]
-    change freePropagator system t
-        (ρ.op ((star (freePropagator system t)) (freePropagator system t (b i)))) =
-      (w i : ℂ) • freePropagator system t (b i)
-    have hcancel :
-        (star (freePropagator system t)) (freePropagator system t (b i)) = b i := by
-      have h := congrArg (fun U : H →L[ℂ] H => U (b i))
-        (star_mul_freePropagator system t)
-      change (star (freePropagator system t))
-        (freePropagator system t (b i)) = b i at h
-      exact h
-    rw [hcancel]
-    simpa using congrArg (fun x : H => freePropagator system t x) (hρ i)
-  rw [(evolveDensityOperator system ρ t).expectation_eq_tsum_diagonal A b' w hρ',
-    ρ.expectation_eq_tsum_diagonal (heisenbergEvolution system A t) b w hρ]
-  apply tsum_congr
-  intro i
-  apply congrArg (fun z : ℂ => (w i : ℂ) * z)
-  rw [hb' i]
-  exact inner_freePropagator_apply_eq_heisenbergEvolution system A (b i) t
+  rw [DensityOperator.expectation_apply, DensityOperator.expectation_apply]
+  simpa only [evolveDensityOperator, ContinuousLinearMap.adjointConjugate,
+    heisenbergEvolution, ← star_freePropagator system t, mul_assoc] using
+    (((ρ.isTraceClass.comp_right (star (freePropagator system t))).comp_right A).trace_comp_comm
+      (freePropagator system t)).symm
 
 /-- The lossless real density-state observable expectation is identical in the Schrödinger and
 Heisenberg pictures. -/
