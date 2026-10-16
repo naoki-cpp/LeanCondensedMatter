@@ -86,7 +86,7 @@ private theorem reachable_sup_edge_of_reachable
             ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩
           · exact hab
           · exact hab.symm
-      exact hxy'.trans ih
+      exact hxy'.trans (ih p.reachable)
 
 /-- If cutting one propagator separates the external vertices of a connected diagram, then
 its two endpoints also become disconnected. In particular, no parallel propagator survives
