@@ -82,17 +82,17 @@ theorem externalInsertionDysonSeries_eq_vacuumFree_mul_normalizedDysonPartitionS
   exact externalInsertionDysonCoefficient_eq_sum_vacuumFree_mul_normalizedDysonPartitionCoeff
     ε β hβ g externalLabel externalTime n
 
-/-- Vacuum normalization of the diagrammatic arbitrary-external Dyson series
+/-- Partition-function normalization of the diagrammatic arbitrary-external Dyson series
 removes exactly the pure-vacuum connected components. Distinct components
 meeting the external sector need not be connected to one another. -/
-theorem vacuumNormalizedExternalInsertionDysonSeries_eq_vacuumFreeExternalInsertionDysonSeries
+theorem partitionFunctionNormalizedExternalInsertionDysonSeries_eq_vacuumFreeExternalInsertionDysonSeries
     {E : ℕ} (ε : Mode → ℝ) (β : ℝ) (hβ : 0 ≤ β)
     (g : QuarticVertexLabel Mode → ℂ)
     (externalLabel : Fin (2 * E) → ExternalFieldLabel Mode)
     (externalTime : Fin (2 * E) → ℝ) :
-    vacuumNormalizedExternalInsertionDysonSeries ε β g externalLabel externalTime =
+    partitionFunctionNormalizedExternalInsertionDysonSeries ε β g externalLabel externalTime =
       vacuumFreeExternalInsertionDysonSeries ε β g externalLabel externalTime := by
-  rw [vacuumNormalizedExternalInsertionDysonSeries]
+  rw [partitionFunctionNormalizedExternalInsertionDysonSeries]
   apply PowerSeries.mul_inv_eq_of_eq_mul_of_constantCoeff_ne_zero
   · rw [PowerSeries.constantCoeff_normalizeByConstantCoeff
       (constantCoeff_dysonPartitionSeries_ne_zero ε β (quarticInteraction g))]

@@ -44,8 +44,7 @@ The connected perturbative line proves three finite-mode endpoints:
    `Tr(exp(-β(H₀ + λV)))`,
    `iteratedDeriv_analyticNormalizedLogPartitionFunction_eq_sum_connectedQuarticWickDiagramAmplitude`;
 3. the finite-mode two-point theorem
-   `vacuumNormalizedTwoPointDysonSeries_eq_connectedTwoPointDysonSeries`, where the identifier's
-   `vacuumNormalized` means normalization by the zero-external-leg Dyson partition series.
+   `partitionFunctionNormalizedTwoPointDysonSeries_eq_connectedTwoPointDysonSeries`, expressing normalization by the zero-external-leg Dyson partition series.
 
 The first two names deliberately identify the connected object on the right-hand side as the
 quartic Wick-diagram amplitude rather than using a generic `connectedAmplitude` label. The two-point

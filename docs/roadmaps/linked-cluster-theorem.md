@@ -74,14 +74,14 @@ two-point Dyson series
 Generic power-series inverse cancellation then gives
 
 ```lean
-vacuumNormalizedTwoPointDysonSeries_eq_connectedTwoPointDysonSeries
+partitionFunctionNormalizedTwoPointDysonSeries_eq_connectedTwoPointDysonSeries
 ```
 
 from `Fermionic/Diagrammatics/TwoPointDiagramExpansion/Series/CauchySeries.lean`.
 
-Here `vacuumNormalized` is the Lean identifier for division by the zero-external-leg Dyson partition
-series; it does not mean that the thermal state is a vacuum state. Vacuum normalization is distinct
-from full source connectedness for higher-point external insertions.
+Partition-function normalization divides by the free-state-normalized zero-external-leg Dyson
+partition series. It removes vacuum bubbles, not disconnected externally supported components.
+Thus the analogous higher-point quotient is not generally a connected correlation function.
 
 ## Statistics-independent moment boundary
 
@@ -154,7 +154,7 @@ depend on the other.
 
 ## Open work
 
-- pre-normalized arbitrary higher-point source moments and their vacuum normalization;
+- source-functional realizations of higher-point moments and their connected/cumulant normalization;
 - arbitrary higher-point and source-insertion connected expansions, including a source-functional layer if required by concrete consumers;
 - bosonic interacting Dyson convergence and analytic linked-cluster theory;
 - interacting completed-space perturbation theory with explicit product domains;
