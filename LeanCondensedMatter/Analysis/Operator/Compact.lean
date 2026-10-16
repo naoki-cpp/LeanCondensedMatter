@@ -1,6 +1,10 @@
-import Mathlib.Analysis.Normed.Operator.Compact.Basic
-import Mathlib.Analysis.InnerProductSpace.LinearMap
-import Mathlib.Analysis.RCLike.Lemmas
+module
+
+public import Mathlib.Analysis.Normed.Operator.Compact.Basic
+public import Mathlib.Analysis.InnerProductSpace.LinearMap
+public import Mathlib.Analysis.RCLike.Lemmas
+
+public section
 
 set_option linter.style.header false
 

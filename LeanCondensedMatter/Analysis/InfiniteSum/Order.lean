@@ -1,4 +1,8 @@
-import Mathlib.Topology.Algebra.InfiniteSum.Real
+module
+
+public import Mathlib.Topology.Algebra.InfiniteSum.Real
+
+public section
 
 set_option linter.style.header false
 

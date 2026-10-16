@@ -1,5 +1,9 @@
-import Mathlib.Algebra.BigOperators.Ring.Finset
-import Mathlib.Data.Fintype.BigOperators
+module
+
+public import Mathlib.Algebra.BigOperators.Ring.Finset
+public import Mathlib.Data.Fintype.BigOperators
+
+public section
 
 set_option linter.style.header false
 

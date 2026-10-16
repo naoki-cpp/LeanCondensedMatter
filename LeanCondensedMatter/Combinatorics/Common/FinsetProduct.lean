@@ -1,6 +1,10 @@
-import Mathlib.Data.Finset.Prod
-import Mathlib.Algebra.BigOperators.Group.Finset.Piecewise
-import Mathlib.Algebra.BigOperators.Group.Finset.Sigma
+module
+
+public import Mathlib.Data.Finset.Prod
+public import Mathlib.Algebra.BigOperators.Group.Finset.Piecewise
+public import Mathlib.Algebra.BigOperators.Group.Finset.Sigma
+
+public section
 
 set_option linter.style.header false
 

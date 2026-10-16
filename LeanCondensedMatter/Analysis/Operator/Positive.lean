@@ -1,4 +1,8 @@
-import Mathlib.Analysis.InnerProductSpace.Positive
+module
+
+public import Mathlib.Analysis.InnerProductSpace.Positive
+
+public section
 
 /-!
 # Positive continuous linear maps
