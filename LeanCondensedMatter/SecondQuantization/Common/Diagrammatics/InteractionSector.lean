@@ -22,11 +22,14 @@ namespace Common
 variable {External Vertex : Type*}
 
 open Classical in
-/-- Ambient interaction vertices represented in the right summand of `B`. -/
+/-- Ambient interaction vertices represented in the right summand of `B`.
+
+Use Mathlib's `Finset.toRight` to identify right-summand membership while retaining
+the ambient `S.filter` normal form. This avoids unfolding an injective `Finset.map`
+when downstream diagram equivalences are checked by definitional equality. -/
 noncomputable def interactionSector {S : Finset Vertex}
     (B : Finset (External ⊕ ↥S)) : Finset Vertex :=
-  S.filter fun v =>
-    ∃ hv : v ∈ S, (Sum.inr ⟨v, hv⟩ : External ⊕ ↥S) ∈ B
+  S.filter fun v => ∃ hv : v ∈ S, (⟨v, hv⟩ : ↥S) ∈ B.toRight
 
 /-- Membership in the interaction sector is membership of the corresponding right-summand vertex. -/
 theorem mem_interactionSector {S : Finset Vertex}
@@ -37,9 +40,10 @@ theorem mem_interactionSector {S : Finset Vertex}
   unfold interactionSector
   rw [Finset.mem_filter]
   constructor
-  · exact And.right
-  · intro h
-    exact ⟨h.choose, h⟩
+  · rintro ⟨_, hv, hw⟩
+    exact ⟨hv, Finset.mem_toRight.1 hw⟩
+  · rintro ⟨hv, hw⟩
+    exact ⟨hv, hv, Finset.mem_toRight.2 hw⟩
 
 /-- Membership form for a vertex already carrying its ambient-membership proof. -/
 @[simp]
