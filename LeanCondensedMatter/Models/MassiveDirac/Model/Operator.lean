@@ -150,8 +150,8 @@ noncomputable def inPlaneCurrentOperator
 /-- The operator realization is continuous in the complete in-plane coefficient vector. -/
 theorem continuous_inPlaneCurrentOperator (e v : ℝ) : Continuous (inPlaneCurrentOperator e v) := by
   unfold inPlaneCurrentOperator
-  exact ((continuous_apply 0).smul_const (currentOperator 0 e v)).add
-    ((continuous_apply 1).smul_const (currentOperator 1 e v))
+  exact ((continuous_apply 0).smul continuous_const).add
+    ((continuous_apply 1).smul continuous_const)
 
 /-- The physical in-plane current is the charge-velocity scale multiplying the corresponding
 in-plane Pauli vertex. -/
