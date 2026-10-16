@@ -26,24 +26,6 @@ open Combinatorics Common
 
 variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
 
-omit [Fintype Mode] in
-/-- Mapping one event's field descriptors to operators recovers its atomic operator list. -/
-private theorem map_timedFieldOperator_twoPointTimedEventAtomicFields {n : ℕ}
-    (ε : Mode → ℝ) (i j : Mode) (τ τ' : ℝ)
-    (q : Fin n → QuarticVertexLabel Mode) (σ : Fin n → ℝ)
-    (event : TwoPointTimedEvent n) :
-    (twoPointTimedEventAtomicFields i j τ τ' q σ event).map (timedFieldOperator ε) =
-      twoPointTimedEventAtomicOperators ε i j τ τ' q σ event := by
-  cases event with
-  | inl e =>
-      simp [twoPointTimedEventAtomicFields, timedFieldOperator, twoPointTimedEventAtomicOperators]
-  | inr v =>
-      rw [twoPointTimedEventAtomicFields, twoPointTimedEventAtomicOperators_interaction,
-        List.map_ofFn]
-      exact congrArg List.ofFn (funext fun l => by
-        simpa [Function.comp_def, quarticLocalLegOperator, Common.quarticLocalLegOperator] using
-          timedFieldOperator_quarticLocalLeg ε (σ v) (Common.quarticLocalLeg (q v) l))
-
 /-- The mixed event-level density-state expectation is the external-order sign times the sum of
 canonical pairing evaluations. -/
 theorem freeGibbsDensityOperator_expectation_mixedTimeOrderedVertexComp_eq_sum_pairingValue
@@ -78,7 +60,21 @@ theorem freeGibbsDensityOperator_expectation_mixedTimeOrderedVertexComp_eq_sum_p
       (mixedTimeOrderedAtomicFieldFamily i j τ τ' q σ p)) = _
     rw [List.ofFn_comp', hfields]
     simp only [mixedTimeOrderedAtomicFields, mixedTimeOrderedAtomicOperators, List.map_flatMap]
-    simp_rw [map_timedFieldOperator_twoPointTimedEventAtomicFields]
+    have hmap (event : TwoPointTimedEvent n) :
+        (twoPointTimedEventAtomicFields i j τ τ' q σ event).map (timedFieldOperator ε) =
+          twoPointTimedEventAtomicOperators ε i j τ τ' q σ event := by
+      cases event with
+      | inl e =>
+          simp [twoPointTimedEventAtomicFields, timedFieldOperator,
+            twoPointTimedEventAtomicOperators]
+      | inr v =>
+          rw [twoPointTimedEventAtomicFields, twoPointTimedEventAtomicOperators_interaction,
+            List.map_ofFn]
+          exact congrArg List.ofFn (funext fun l => by
+            simpa [Function.comp_def, quarticLocalLegOperator,
+              Common.quarticLocalLegOperator] using
+              timedFieldOperator_quarticLocalLeg ε (σ v) (Common.quarticLocalLeg (q v) l))
+    simp_rw [hmap]
   rw [hoperators] at hwick
   rw [hwick]
   rfl
