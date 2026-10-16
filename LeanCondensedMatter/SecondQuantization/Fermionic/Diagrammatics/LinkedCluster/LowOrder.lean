@@ -29,8 +29,9 @@ theorem factorial_mul_coeff_dysonFormalLogPartitionFunction_order_one
   rw [dysonFormalLogPartitionFunction]
   simpa only [
     coeff_normalizeByConstantCoeff_dysonPartitionSeries_eq_normalizedDysonPartitionCoeff] using
-    (Combinatorics.factorial_mul_coeff_logOf_normalizeByConstantCoeff_one_eq
-      (constantCoeff_dysonPartitionSeries_ne_zero ε β (quarticInteraction g)))
+    (Combinatorics.factorial_mul_coeff_logOf_one_eq
+      (PowerSeries.constantCoeff_normalizeByConstantCoeff
+        (constantCoeff_dysonPartitionSeries_ne_zero ε β (quarticInteraction g))))
 
 /-- At second order, the logarithm subtracts the product of two first-order contributions. -/
 theorem factorial_mul_coeff_dysonFormalLogPartitionFunction_order_two
@@ -43,8 +44,9 @@ theorem factorial_mul_coeff_dysonFormalLogPartitionFunction_order_two
   rw [dysonFormalLogPartitionFunction]
   simpa only [
     coeff_normalizeByConstantCoeff_dysonPartitionSeries_eq_normalizedDysonPartitionCoeff] using
-    (Combinatorics.factorial_mul_coeff_logOf_normalizeByConstantCoeff_two_eq
-      (constantCoeff_dysonPartitionSeries_ne_zero ε β (quarticInteraction g)))
+    (Combinatorics.factorial_mul_coeff_logOf_two_eq
+      (PowerSeries.constantCoeff_normalizeByConstantCoeff
+        (constantCoeff_dysonPartitionSeries_ne_zero ε β (quarticInteraction g))))
 
 /-- At third order, the logarithm removes the one-plus-two and three-singleton disconnected terms. -/
 theorem factorial_mul_coeff_dysonFormalLogPartitionFunction_order_three
@@ -59,8 +61,9 @@ theorem factorial_mul_coeff_dysonFormalLogPartitionFunction_order_three
   rw [dysonFormalLogPartitionFunction]
   simpa only [
     coeff_normalizeByConstantCoeff_dysonPartitionSeries_eq_normalizedDysonPartitionCoeff] using
-    (Combinatorics.factorial_mul_coeff_logOf_normalizeByConstantCoeff_three_eq
-      (constantCoeff_dysonPartitionSeries_ne_zero ε β (quarticInteraction g)))
+    (Combinatorics.factorial_mul_coeff_logOf_three_eq
+      (PowerSeries.constantCoeff_normalizeByConstantCoeff
+        (constantCoeff_dysonPartitionSeries_ne_zero ε β (quarticInteraction g))))
 
 end Fermionic
 end SecondQuantization
