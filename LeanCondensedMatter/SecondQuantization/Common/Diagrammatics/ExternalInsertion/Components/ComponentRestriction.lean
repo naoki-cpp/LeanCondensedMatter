@@ -4,6 +4,7 @@ import LeanCondensedMatter.Combinatorics.PerfectPairing.Embedding
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Restriction
 import LeanCondensedMatter.Combinatorics.InvolutionCard
 import LeanCondensedMatter.Combinatorics.FamilySlotShuffle
+import LeanCondensedMatter.Combinatorics.FamilySlotShuffleInversions
 import LeanCondensedMatter.Combinatorics.FinpartitionProduct
 import Mathlib.Data.Finset.Sort
 
