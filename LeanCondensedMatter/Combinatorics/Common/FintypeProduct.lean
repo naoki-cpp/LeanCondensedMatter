@@ -24,27 +24,16 @@ theorem prod_equiv_sigma {α ι M : Type*} [Fintype α] [Fintype ι]
     _ = ∏ i : ι, ∏ y : F i, f (e.symm ⟨i, y⟩) :=
       Fintype.prod_sigma _
 
-/-- Reindexing a finite type as `β × γ` counts a first-coordinate summand `card γ` times. -/
-theorem sum_equiv_fst_eq_card_mul_sum {α β γ : Type*}
-    [Fintype α] [Fintype β] [Fintype γ]
-    (e : α ≃ β × γ) (f : β → ℕ) :
-    (∑ x : α, f (e x).1) = card γ * ∑ y : β, f y := by
-  rw [← Equiv.sum_comp e.symm, sum_prod_type]
-  simp only [Equiv.apply_symm_apply]
-  calc
-    (∑ y : β, ∑ _z : γ, f y) = ∑ y : β, card γ * f y := by
-      apply Finset.sum_congr rfl
-      intro y _
-      simp
-    _ = card γ * ∑ y : β, f y := by rw [Finset.mul_sum]
-
 /-- A first-coordinate sum is divisible by every divisor of the repeated fiber's cardinality. -/
 theorem dvd_sum_equiv_fst_of_dvd_card {α β γ : Type*}
     [Fintype α] [Finite β] [Fintype γ]
     (e : α ≃ β × γ) (f : β → ℕ) {d : ℕ} (hcard : d ∣ card γ) :
     d ∣ ∑ x : α, f (e x).1 := by
   letI : Fintype β := Fintype.ofFinite β
-  rw [sum_equiv_fst_eq_card_mul_sum e f]
+  have hsum : (∑ x : α, f (e x).1) = card γ * ∑ y : β, f y := by
+    rw [← Equiv.sum_comp e.symm, sum_prod_type]
+    simp [Finset.mul_sum]
+  rw [hsum]
   obtain ⟨k, hk⟩ := hcard
   refine ⟨k * ∑ y : β, f y, ?_⟩
   rw [hk, Nat.mul_assoc]
