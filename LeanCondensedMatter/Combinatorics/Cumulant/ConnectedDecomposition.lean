@@ -12,6 +12,9 @@ A combinatorial object family may decompose uniquely into a partition of its ver
 connected object on every block. Weight data are layered separately, so the same decomposition can
 be reused with different coefficient rings and physical amplitudes.
 
+The finite-sum factorization retains an arbitrary partition-dependent coefficient. Multiplicative
+weights specialize that coefficient to one, giving the ordinary moment identity.
+
 This module stops at the moment transform and therefore only requires a commutative semiring.
 Möbius-inversion consequences live in `ConnectedDecompositionInversion.lean`.
 -/
@@ -45,6 +48,61 @@ structure MultiplicativeWeight {α : Type*} [DecidableEq α]
     objectWeight d =
       ∏ B : (D.decompose S d).1.parts, connectedWeight ((D.decompose S d).2 B)
 
+namespace ConnectedDecomposition
+
+attribute [local instance] ConnectedDecomposition.fintypeObject
+  ConnectedDecomposition.fintypeConnectedObject
+
+variable {α R : Type*} [DecidableEq α] [CommSemiring R]
+
+/-- A connected decomposition transports object weights to a partition-weighted moment.
+The partition coefficient is arbitrary; no normalization or Möbius inversion is assumed. -/
+theorem sum_objectWeight_eq_weightedMomentFromCumulant
+    (D : ConnectedDecomposition α)
+    (partitionWeight : ∀ S : Finset α, Finpartition S → R)
+    (objectWeight : ∀ {S : Finset α}, D.Object S → R)
+    (connectedWeight : ∀ {S : Finset α}, D.ConnectedObject S → R)
+    (hweight : ∀ {S : Finset α} (d : D.Object S),
+      objectWeight d =
+        partitionWeight S (D.decompose S d).1 *
+          ∏ B : (D.decompose S d).1.parts,
+            connectedWeight ((D.decompose S d).2 B))
+    (S : Finset α) :
+    (∑ d : D.Object S, objectWeight d) =
+      Finpartition.weightedMomentFromCumulant partitionWeight
+        (fun T => ∑ d : D.ConnectedObject T, connectedWeight d) S := by
+  classical
+  have hreindex :
+      (∑ d : D.Object S, objectWeight d) =
+        ∑ x : Σ π : Finpartition S,
+          ∀ B : π.parts, D.ConnectedObject (B : Finset α),
+          partitionWeight S x.1 * ∏ B : x.1.parts, connectedWeight (x.2 B) := by
+    rw [← Equiv.sum_comp (D.decompose S)
+      (fun x : Σ π : Finpartition S,
+        ∀ B : π.parts, D.ConnectedObject (B : Finset α) =>
+          partitionWeight S x.1 * ∏ B : x.1.parts, connectedWeight (x.2 B))]
+    exact Finset.sum_congr rfl fun d _ => hweight d
+  rw [hreindex, Fintype.sum_sigma, Finpartition.weightedMomentFromCumulant]
+  apply Finset.sum_congr rfl
+  intro π _
+  change (∑ y : ∀ B : π.parts, D.ConnectedObject (B : Finset α),
+      partitionWeight S π * ∏ B : π.parts, connectedWeight (y B)) =
+    partitionWeight S π * Finpartition.partitionProduct
+      (fun T => ∑ d : D.ConnectedObject T, connectedWeight d) π
+  rw [← Finset.mul_sum]
+  apply congrArg (fun z : R => partitionWeight S π * z)
+  rw [Finpartition.partitionProduct,
+    ← Finset.prod_coe_sort π.parts
+      (fun T => ∑ d : D.ConnectedObject T, connectedWeight d)]
+  have hdist := Finset.prod_univ_sum
+    (fun B : π.parts => (Finset.univ : Finset (D.ConnectedObject (B : Finset α))))
+    (fun B d => connectedWeight d)
+  rw [Fintype.piFinset_univ] at hdist
+  exact hdist.symm
+
+
+end ConnectedDecomposition
+
 namespace MultiplicativeWeight
 
 attribute [local instance] ConnectedDecomposition.fintypeObject
@@ -65,22 +123,13 @@ noncomputable def connectedContribution (S : Finset α) : R :=
 theorem objectMoment_eq_momentFromCumulant (S : Finset α) :
     W.objectMoment S = Finpartition.momentFromCumulant W.connectedContribution S := by
   classical
-  have hreindex : W.objectMoment S =
-      ∑ x : Σ π : Finpartition S, ∀ B : π.parts, D.ConnectedObject (B : Finset α),
-        ∏ B : x.1.parts, W.connectedWeight (x.2 B) := by
-    rw [objectMoment, ← Equiv.sum_comp (D.decompose S)
-      (fun x : Σ π : Finpartition S, ∀ B : π.parts, D.ConnectedObject (B : Finset α) =>
-        ∏ B : x.1.parts, W.connectedWeight (x.2 B))]
-    exact Finset.sum_congr rfl fun d _ => W.weight_decompose d
-  rw [hreindex, Fintype.sum_sigma, Finpartition.momentFromCumulant]
-  refine Finset.sum_congr rfl fun π _ => ?_
-  rw [Finpartition.partitionProduct,
-    ← Finset.prod_coe_sort π.parts W.connectedContribution]
-  have hdist := Finset.prod_univ_sum
-    (fun B : π.parts => (Finset.univ : Finset (D.ConnectedObject (B : Finset α))))
-    (fun B c => W.connectedWeight c)
-  rw [Fintype.piFinset_univ] at hdist
-  exact hdist.symm
+  change (∑ d : D.Object S, W.objectWeight d) =
+    Finpartition.momentFromCumulant
+      (fun T => ∑ d : D.ConnectedObject T, W.connectedWeight d) S
+  simpa only [Finpartition.weightedMomentFromCumulant_one] using
+    (D.sum_objectWeight_eq_weightedMomentFromCumulant (fun _ _ => (1 : R))
+      W.objectWeight W.connectedWeight
+      (fun {S} d => by simpa only [one_mul] using W.weight_decompose d) S)
 
 /-- The total object moment, bundled with its canonical empty-set normalization.
 This construction uses only the forward connected-decomposition moment theorem. -/
