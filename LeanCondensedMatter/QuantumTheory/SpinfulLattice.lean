@@ -1,7 +1,7 @@
 import LeanCondensedMatter.Analysis.DiscreteLattice
 import LeanCondensedMatter.Analysis.InternalSpace.Pauli
 import LeanCondensedMatter.QuantumTheory.SpinHalf
-import Mathlib.Data.Prod.Lex
+import Mathlib.Order.Prod.Lex.Basic
 
 set_option linter.style.header false
 
