@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Models.MassiveDirac.Model.OperatorSpectral
+import LeanCondensedMatter.Transport.Resolvent.Uniqueness
 
 set_option linter.style.header false
 
