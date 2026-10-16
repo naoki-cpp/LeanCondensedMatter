@@ -6,8 +6,8 @@ set_option linter.style.header false
 # Weak current representations
 
 This module contains representation-specific infrastructure for weak transport functionals.
-Intrinsic dependence on the differential without a chosen current is expressed directly by
-Mathlib's `Function.FactorsThrough` in `IntrinsicBalanceLaw`.
+Dependence on the differential without a chosen current is expressed directly by
+Mathlib's `Function.FactorsThrough` in `FluxBalanceLaw`.
 
 For a linear differential-like map
 

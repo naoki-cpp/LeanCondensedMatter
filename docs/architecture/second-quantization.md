@@ -353,7 +353,7 @@ Mathlib.Algebra.Lie.OfAssociative (`⁅A,B⁆`)
         ↓
 Analysis.ConservationLaw.CurrentRepresentation
         ↓
-Analysis.ConservationLaw.IntrinsicBalanceLaw
+Analysis.ConservationLaw.FluxBalanceLaw
         ↓
 QuantumTheory.ConservationLaw.HeisenbergEvolution
         ↓

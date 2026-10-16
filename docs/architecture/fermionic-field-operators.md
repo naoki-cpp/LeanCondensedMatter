@@ -44,7 +44,7 @@ SingleParticle.GeneralizedCurrent ───────────────�
                                                        ↓
 Analysis.ConservationLaw.CurrentRepresentation         │
         ↓                                              │
-Analysis.ConservationLaw.IntrinsicBalanceLaw           │
+Analysis.ConservationLaw.FluxBalanceLaw           │
         ↓                                              │
 QuantumTheory.ConservationLaw.HeisenbergEvolution      │
         ↓                                              │
@@ -61,14 +61,14 @@ downstream.
 
 Current semantics are layered rather than identified with one operator formula. The operator
 `1/2 {v,m}` exists before any weak-current representation is chosen.
-`IntrinsicBalanceLaw.transport` is the representation-independent exact-differential transport;
-`IsDifferentialCurrent d Φ J` is the proposition that a one-form functional `J` represents
+`FluxBalanceLaw.transport` is the representation-independent exact-differential transport;
+the equality `Φ = J.comp d` states that a one-form functional `J` represents
 transport `Φ` through `d`; `DifferentialCurrentRepresentation.current` bundles one such `J` with
 its `isCurrent` proof; and `LocalCurrentDensityRepresentation.currentDensity` exists only after
 supplying a local pairing, with its representation proof exposed as `isCurrentDensity`.
 Under the stated localization hypotheses, the generalized operator becomes one such current-density
 representation. When localizer evolution admits the supplied velocity representation, the nested
-flux represents the intrinsic transport and decomposes into the symmetrized flux plus the
+flux represents the test-space transport and decomposes into the symmetrized flux plus the
 localization correction.
 
 Fermionic second quantization consumes those definitions and owns only representation-specific lifts.

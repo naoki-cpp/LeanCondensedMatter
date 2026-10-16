@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Analysis.ConservationLaw.CurrentRepresentation
-import LeanCondensedMatter.Analysis.ConservationLaw.IntrinsicBalanceLaw
+import LeanCondensedMatter.Analysis.ConservationLaw.FluxBalanceLaw
 import LeanCondensedMatter.Analysis.ConservationLaw.SymmetricLocalizationAlgebra
 import LeanCondensedMatter.QuantumTheory.ConservationLaw.HeisenbergEvolution
 
@@ -104,7 +104,7 @@ noncomputable def heisenbergIntrinsicSymmetricLocalizationBalanceLaw
     (d : Test →ₗ[ℂ] OneForm)
     (htransport : Function.FactorsThrough
       (heisenbergTransportFunctional V ℏ h M m) d) :
-    _root_.ConservationLaw.IntrinsicBalanceLaw
+    _root_.ConservationLaw.FluxBalanceLaw
       (heisenbergEvolution V ℏ h)
       (_root_.ConservationLaw.localizedQuantityFunctional V M m)
       d where

@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Analysis.ConservationLaw.CorrectedCurrentFlux
-import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.IntrinsicFluxResponse
+import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.FluxResponse
 import LeanCondensedMatter.QuantumTheory.LinearResponse.ResponseChannel
 
 set_option linter.style.header false
@@ -18,7 +18,7 @@ to the bounded finite-lattice causal Kubo response.  It does not import first-qu
 mechanics: `velocity`, `m`, and the operator-valued one-form localizer `N` are supplied one-body
 operators/data.
 
-When an intrinsic transport `Φ` factors through `J_nested ∘ d`, its exact-flux response decomposes
+When representation-independent transport `Φ` factors through `J_nested ∘ d`, its exact-flux response decomposes
 canonically into symmetrized and localization-correction responses. The same bounded corrected
 current also defines a response channel with independent source and observable-variation inputs.
 This remains a statement on exact differential data; no uniqueness of arbitrary/global current
@@ -65,9 +65,9 @@ noncomputable def correctedCurrentResponseChannel
   source := source
   observableVariation := observableVariation
 
-/-- An intrinsic exact-flux response represented by the nested current decomposes into
+/-- An differential-dependent flux response represented by the nested current decomposes into
 symmetrized plus localization-correction responses. -/
-theorem boundedIntrinsicFluxRetardedResponse_eq_symmetrized_add_correction
+theorem boundedFluxRetardedResponse_eq_symmetrized_add_correction
     (system : QuantumTheory.LinearResponse.BoundedFreeSystem
       (FiniteLatticeHilbertFock Site))
     (expectation : QuantumTheory.LinearResponse.NormalizedExpectation
@@ -80,25 +80,25 @@ theorem boundedIntrinsicFluxRetardedResponse_eq_symmetrized_add_correction
     (hΦ : Φ = (_root_.ConservationLaw.nestedSymmetrizedCurrentFlux
         ((Site →₀ ℂ)) velocity m N).comp d)
     (t s : ℝ) :
-    boundedIntrinsicFluxRetardedResponse system expectation source Φ t s =
-      (boundedIntrinsicFluxRetardedResponse system expectation source
+    boundedFluxRetardedResponse system expectation source Φ t s =
+      (boundedFluxRetardedResponse system expectation source
         (_root_.ConservationLaw.symmetrizedCurrentFlux
           ((Site →₀ ℂ)) velocity m N) t s).comp d +
-      (boundedIntrinsicFluxRetardedResponse system expectation source
+      (boundedFluxRetardedResponse system expectation source
         (_root_.ConservationLaw.localizationCorrectionCurrentFlux
           ((Site →₀ ℂ)) velocity m N) t s).comp d := by
-  rw [boundedIntrinsicFluxRetardedResponse_eq_comp_of_factorization
+  rw [boundedFluxRetardedResponse_eq_comp_of_factorization
     system expectation source d Φ
       (_root_.ConservationLaw.nestedSymmetrizedCurrentFlux
         ((Site →₀ ℂ)) velocity m N) hΦ t s]
   rw [_root_.ConservationLaw.nestedSymmetrizedCurrentFlux_eq_symmetrized_add_correction
     ((Site →₀ ℂ)) velocity m N]
   ext f
-  simp [boundedIntrinsicFluxRetardedResponse]
+  simp [boundedFluxRetardedResponse]
 
 /-- When all supplied localizers commute with `m`, the correction disappears and the intrinsic
 exact-flux response is represented by the symmetrized current flux alone. -/
-theorem boundedIntrinsicFluxRetardedResponse_eq_symmetrized_of_commutes
+theorem boundedFluxRetardedResponse_eq_symmetrized_of_commutes
     (system : QuantumTheory.LinearResponse.BoundedFreeSystem
       (FiniteLatticeHilbertFock Site))
     (expectation : QuantumTheory.LinearResponse.NormalizedExpectation
@@ -112,11 +112,11 @@ theorem boundedIntrinsicFluxRetardedResponse_eq_symmetrized_of_commutes
         ((Site →₀ ℂ)) velocity m N).comp d)
     (hcomm : ∀ α, ⁅N α, m⁆ = 0)
     (t s : ℝ) :
-    boundedIntrinsicFluxRetardedResponse system expectation source Φ t s =
-      (boundedIntrinsicFluxRetardedResponse system expectation source
+    boundedFluxRetardedResponse system expectation source Φ t s =
+      (boundedFluxRetardedResponse system expectation source
         (_root_.ConservationLaw.symmetrizedCurrentFlux
           ((Site →₀ ℂ)) velocity m N) t s).comp d := by
-  rw [boundedIntrinsicFluxRetardedResponse_eq_symmetrized_add_correction
+  rw [boundedFluxRetardedResponse_eq_symmetrized_add_correction
     system expectation source d Φ velocity m N hΦ t s]
   have hcorr :
       _root_.ConservationLaw.localizationCorrectionCurrentFlux
@@ -124,11 +124,11 @@ theorem boundedIntrinsicFluxRetardedResponse_eq_symmetrized_of_commutes
     _root_.ConservationLaw.localizationCorrectionCurrentFlux_eq_zero_of_commutes
       ((Site →₀ ℂ)) velocity m N hcomm
   rw [hcorr]
-  simp [boundedIntrinsicFluxRetardedResponse]
+  simp [boundedFluxRetardedResponse]
 
 /-- Charge-like quantities `m = q I` are a specialization of the commuting case: their correction
 response vanishes identically on exact fluxes. -/
-theorem boundedIntrinsicFluxRetardedResponse_eq_symmetrized_smul_id
+theorem boundedFluxRetardedResponse_eq_symmetrized_smul_id
     (system : QuantumTheory.LinearResponse.BoundedFreeSystem
       (FiniteLatticeHilbertFock Site))
     (expectation : QuantumTheory.LinearResponse.NormalizedExpectation
@@ -142,11 +142,11 @@ theorem boundedIntrinsicFluxRetardedResponse_eq_symmetrized_smul_id
     (hΦ : Φ = (_root_.ConservationLaw.nestedSymmetrizedCurrentFlux
         ((Site →₀ ℂ)) velocity (q • LinearMap.id) N).comp d)
     (t s : ℝ) :
-    boundedIntrinsicFluxRetardedResponse system expectation source Φ t s =
-      (boundedIntrinsicFluxRetardedResponse system expectation source
+    boundedFluxRetardedResponse system expectation source Φ t s =
+      (boundedFluxRetardedResponse system expectation source
         (_root_.ConservationLaw.symmetrizedCurrentFlux
           ((Site →₀ ℂ)) velocity (q • LinearMap.id) N) t s).comp d := by
-  apply boundedIntrinsicFluxRetardedResponse_eq_symmetrized_of_commutes
+  apply boundedFluxRetardedResponse_eq_symmetrized_of_commutes
     system expectation source d Φ velocity (q • LinearMap.id) N hΦ
   intro α
   simp [LieRing.of_associative_ring_bracket, Module.End.mul_eq_comp]

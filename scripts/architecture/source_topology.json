@@ -103,7 +103,7 @@
         {"id": "zetaCommutator", "modulePrefixes": ["LeanCondensedMatter.Analysis.ScalarExchange"]},
         {"id": "symmetrizedProduct", "modulePrefixes": ["LeanCondensedMatter.Analysis.Operator.SymmetrizedProduct"]},
         {"id": "currentRepresentation", "modulePrefixes": ["LeanCondensedMatter.Analysis.ConservationLaw.CurrentRepresentation"]},
-        {"id": "intrinsicBalanceLaw", "modulePrefixes": ["LeanCondensedMatter.Analysis.ConservationLaw.IntrinsicBalanceLaw"]},
+        {"id": "fluxBalanceLaw", "modulePrefixes": ["LeanCondensedMatter.Analysis.ConservationLaw.FluxBalanceLaw"]},
         {"id": "balanceLaw", "modulePrefixes": ["LeanCondensedMatter.Analysis.ConservationLaw.BalanceLaw"]},
         {"id": "balanceLawAdapter", "modulePrefixes": ["LeanCondensedMatter.Analysis.ConservationLaw.BalanceLawAdapter"]},
         {"id": "symmetricLocalizationAlgebra", "modulePrefixes": ["LeanCondensedMatter.Analysis.ConservationLaw.SymmetricLocalizationAlgebra"]},
@@ -111,7 +111,7 @@
       ],
       "edges": [
         {"upstream": "currentRepresentation", "downstream": "balanceLaw"},
-        {"upstream": "intrinsicBalanceLaw", "downstream": "balanceLawAdapter"},
+        {"upstream": "fluxBalanceLaw", "downstream": "balanceLawAdapter"},
         {"upstream": "balanceLaw", "downstream": "balanceLawAdapter"},
         {"upstream": "symmetrizedProduct", "downstream": "symmetricLocalizationAlgebra"},
         {"upstream": "symmetricLocalizationAlgebra", "downstream": "correctedCurrentFlux"}
@@ -128,7 +128,7 @@
           "LeanCondensedMatter.Analysis.ScalarExchange",
           "LeanCondensedMatter.Analysis.Operator.SymmetrizedProduct",
           "LeanCondensedMatter.Analysis.ConservationLaw.CurrentRepresentation",
-          "LeanCondensedMatter.Analysis.ConservationLaw.IntrinsicBalanceLaw",
+          "LeanCondensedMatter.Analysis.ConservationLaw.FluxBalanceLaw",
           "LeanCondensedMatter.Analysis.ConservationLaw.BalanceLaw",
           "LeanCondensedMatter.Analysis.ConservationLaw.BalanceLawAdapter",
           "LeanCondensedMatter.Analysis.ConservationLaw.SymmetricLocalizationAlgebra",
@@ -169,15 +169,15 @@
       "sourceRoots": ["LeanCondensedMatter/SecondQuantization/Fermionic/Transport"],
       "layers": [
         {"id": "boundedOneBodyResponse", "modulePrefixes": ["LeanCondensedMatter.SecondQuantization.Fermionic.Transport.BoundedOneBodyResponse"]},
-        {"id": "intrinsicFluxResponse", "modulePrefixes": ["LeanCondensedMatter.SecondQuantization.Fermionic.Transport.IntrinsicFluxResponse"]},
+        {"id": "fluxResponse", "modulePrefixes": ["LeanCondensedMatter.SecondQuantization.Fermionic.Transport.FluxResponse"]},
         {"id": "symmetrizedVelocity", "modulePrefixes": ["LeanCondensedMatter.SecondQuantization.Fermionic.Transport.SymmetrizedVelocityCurrent"]},
         {"id": "correctedCurrentResponse", "modulePrefixes": ["LeanCondensedMatter.SecondQuantization.Fermionic.Transport.CorrectedCurrentResponse"]},
         {"id": "spinCurrentResponse", "modulePrefixes": ["LeanCondensedMatter.SecondQuantization.Fermionic.Transport.SpinCurrentResponse"]}
       ],
       "edges": [
-        {"upstream": "boundedOneBodyResponse", "downstream": "intrinsicFluxResponse"},
+        {"upstream": "boundedOneBodyResponse", "downstream": "fluxResponse"},
         {"upstream": "boundedOneBodyResponse", "downstream": "symmetrizedVelocity"},
-        {"upstream": "intrinsicFluxResponse", "downstream": "correctedCurrentResponse"},
+        {"upstream": "fluxResponse", "downstream": "correctedCurrentResponse"},
         {"upstream": "symmetrizedVelocity", "downstream": "spinCurrentResponse"}
       ]
     },
