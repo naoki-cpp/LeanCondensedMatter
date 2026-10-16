@@ -22,6 +22,20 @@ namespace ContinuousLinearMap
 
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
 
+/-- The lossless diagonal expectation of the operator absolute value scales by the norm
+of a complex scalar. -/
+theorem diagonalExpectationValue_abs_smul
+    (c : ℂ) (T : H →L[ℂ] H) (x : H) :
+    diagonalExpectationValue (CFC.abs (c • T)) (CFC.abs_nonneg (c • T)).isSelfAdjoint x =
+      ‖c‖ * diagonalExpectationValue (CFC.abs T) (CFC.abs_nonneg T).isSelfAdjoint x := by
+  apply Complex.ofReal_injective
+  rw [coe_diagonalExpectationValue_right, Complex.ofReal_mul,
+    coe_diagonalExpectationValue_right, CFC.abs_smul]
+  rw [smul_apply]
+  rw [RCLike.real_smul_eq_coe_smul (K := ℂ) ‖c‖ ((CFC.abs T) x)]
+  rw [inner_smul_right]
+  rfl
+
 /-- Trace-class membership with respect to a Hilbert basis: the diagonal series of `|T|` is
 summable. -/
 def IsTraceClassWrt {ι : Type*} (d : HilbertBasis ι ℂ H) (T : H →L[ℂ] H) : Prop :=
