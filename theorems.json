@@ -94,8 +94,8 @@
     "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": true,
     "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "BerryGeometry.PointwiseEigenbasisData.berryCurvature_eq_sum_hamiltonianDerivativeMatrixElements",
     "module": "LeanCondensedMatter.Analysis.Operator.BerryGeometry.Curvature",
@@ -107,56 +107,13 @@
       "QuantumTheory.Models.MassiveDirac.pointwiseBerryCurvature_xy_eq_forceMatrixBerryCurvature"
     ],
     "dependencies": [
-      "BerryGeometry.PointwiseEigenbasisData.berryCurvature_eq_sum_innerProducts",
-      "BerryGeometry.PointwiseEigenbasisData.curvatureInnerTerm_eq_hamiltonianDerivativeMatrixElements",
-      "BerryGeometry.PointwiseEigenbasisData.diagonal_innerProduct_im_eq_zero"
+      "_private.LeanCondensedMatter.Analysis.Operator.BerryGeometry.Curvature.0.BerryGeometry.PointwiseEigenbasisData.curvatureInnerTerm_eq_hamiltonianDerivativeMatrixElements",
+      "_private.LeanCondensedMatter.Analysis.Operator.BerryGeometry.Curvature.0.BerryGeometry.PointwiseEigenbasisData.diagonal_innerProduct_im_eq_zero"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.Models.MassiveDirac.pointwiseBerryCurvature_xy_eq_forceMatrixBerryCurvature"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {ι : Type u_2} [inst_3 : Fintype ι] {κ : Type u_3} (data : BerryGeometry.PointwiseEigenbasisData κ ι H) (μ ν : κ)\n  (n : ι),\n  data.berryCurvature μ ν n =\n    ∑ m,\n      -2 *\n        (inner ℂ (data.eigenvectorDerivative μ n) (data.eigenbasis m) *\n            inner ℂ (data.eigenbasis m) (data.eigenvectorDerivative ν n)).im",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "BerryGeometry.PointwiseEigenbasisData.berryCurvature_eq_sum_innerProducts",
-    "module": "LeanCondensedMatter.Analysis.Operator.BerryGeometry.Curvature",
-    "externalAxioms": [],
-    "docString": "Completeness of the finite orthonormal eigenbasis expands the derivative-state curvature into\nband-resolved inner-product terms. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "BerryGeometry.PointwiseEigenbasisData.berryCurvature_eq_sum_hamiltonianDerivativeMatrixElements"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "BerryGeometry.PointwiseEigenbasisData.berryCurvature_eq_sum_hamiltonianDerivativeMatrixElements"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -271,8 +228,8 @@
     "directWrapperOf": null,
     "dependents": [
       "BerryGeometry.PointwiseEigenbasisData.bornFock_berryConnection",
-      "BerryGeometry.PointwiseEigenbasisData.curvatureInnerTerm_eq_hamiltonianDerivativeMatrixElements",
-      "BerryGeometry.PointwiseEigenbasisData.innerDerivative_basis_eq_hamiltonianDerivativeMatrixElement_div"
+      "_private.LeanCondensedMatter.Analysis.Operator.BerryGeometry.Curvature.0.BerryGeometry.PointwiseEigenbasisData.curvatureInnerTerm_eq_hamiltonianDerivativeMatrixElements",
+      "_private.LeanCondensedMatter.Analysis.Operator.BerryGeometry.Curvature.0.BerryGeometry.PointwiseEigenbasisData.innerDerivative_basis_eq_hamiltonianDerivativeMatrixElement_div"
     ],
     "dependencies": [
       "BerryGeometry.PointwiseEigenbasisData.inner_hamiltonian_right"
@@ -281,98 +238,10 @@
     "completedMention": false,
     "compiledConsumers": [
       "BerryGeometry.PointwiseEigenbasisData.bornFock_berryConnection",
-      "BerryGeometry.PointwiseEigenbasisData.curvatureInnerTerm_eq_hamiltonianDerivativeMatrixElements",
-      "BerryGeometry.PointwiseEigenbasisData.innerDerivative_basis_eq_hamiltonianDerivativeMatrixElement_div"
+      "_private.LeanCondensedMatter.Analysis.Operator.BerryGeometry.Curvature.0.BerryGeometry.PointwiseEigenbasisData.curvatureInnerTerm_eq_hamiltonianDerivativeMatrixElements",
+      "_private.LeanCondensedMatter.Analysis.Operator.BerryGeometry.Curvature.0.BerryGeometry.PointwiseEigenbasisData.innerDerivative_basis_eq_hamiltonianDerivativeMatrixElement_div"
     ],
     "compiledConsumerCount": 3,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {ι : Type u_2} [inst_3 : Fintype ι] {κ : Type u_3} (data : BerryGeometry.PointwiseEigenbasisData κ ι H) (μ ν : κ),\n  IsSelfAdjoint (data.hamiltonianDerivative μ) →\n    IsSelfAdjoint (data.hamiltonianDerivative ν) →\n      ∀ {m n : ι},\n        m ≠ n →\n          data.energy m ≠ data.energy n →\n            -2 *\n                (inner ℂ (data.eigenvectorDerivative μ n) (data.eigenbasis m) *\n                    inner ℂ (data.eigenbasis m) (data.eigenvectorDerivative ν n)).im =\n              2 *\n                (data.hamiltonianDerivativeMatrixElement μ m n / ↑(data.energy n - data.energy m) *\n                    (data.hamiltonianDerivativeMatrixElement ν n m / ↑(data.energy n - data.energy m))).im",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "BerryGeometry.PointwiseEigenbasisData.curvatureInnerTerm_eq_hamiltonianDerivativeMatrixElements",
-    "module": "LeanCondensedMatter.Analysis.Operator.BerryGeometry.Curvature",
-    "externalAxioms": [],
-    "docString": "An off-diagonal completeness term equals the conventional force-matrix Berry-curvature term.\nThe two real level-spacing factors are intentionally kept separate here; a downstream consumer may\nnormalize them to a squared denominator if desired. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "BerryGeometry.PointwiseEigenbasisData.berryCurvature_eq_sum_hamiltonianDerivativeMatrixElements"
-    ],
-    "dependencies": [
-      "BerryGeometry.PointwiseEigenbasisData.bornFock_inner",
-      "BerryGeometry.PointwiseEigenbasisData.innerDerivative_basis_eq_hamiltonianDerivativeMatrixElement_div",
-      "BerryGeometry.PointwiseEigenbasisData.star_hamiltonianDerivativeMatrixElement"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "BerryGeometry.PointwiseEigenbasisData.berryCurvature_eq_sum_hamiltonianDerivativeMatrixElements"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {ι : Type u_2} [inst_3 : Fintype ι] {κ : Type u_3} (data : BerryGeometry.PointwiseEigenbasisData κ ι H) (μ ν : κ)\n  (n : ι),\n  (inner ℂ (data.eigenvectorDerivative μ n) (data.eigenbasis n) *\n        inner ℂ (data.eigenbasis n) (data.eigenvectorDerivative ν n)).im =\n    0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "BerryGeometry.PointwiseEigenbasisData.diagonal_innerProduct_im_eq_zero",
-    "module": "LeanCondensedMatter.Analysis.Operator.BerryGeometry.Curvature",
-    "externalAxioms": [],
-    "docString": "The band-diagonal completeness term has zero imaginary part. It therefore does not contribute\nto Berry curvature. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "BerryGeometry.PointwiseEigenbasisData.berryCurvature_eq_sum_hamiltonianDerivativeMatrixElements"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "BerryGeometry.PointwiseEigenbasisData.berryCurvature_eq_sum_hamiltonianDerivativeMatrixElements"
-    ],
-    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -413,51 +282,6 @@
     "completedMention": false,
     "compiledConsumers": [],
     "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {ι : Type u_2} [inst_3 : Fintype ι] {κ : Type u_3} (data : BerryGeometry.PointwiseEigenbasisData κ ι H) (μ : κ),\n  IsSelfAdjoint (data.hamiltonianDerivative μ) →\n    ∀ {m n : ι},\n      m ≠ n →\n        data.energy m ≠ data.energy n →\n          inner ℂ (data.eigenvectorDerivative μ n) (data.eigenbasis m) =\n            data.hamiltonianDerivativeMatrixElement μ n m / ↑(data.energy n - data.energy m)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "BerryGeometry.PointwiseEigenbasisData.innerDerivative_basis_eq_hamiltonianDerivativeMatrixElement_div",
-    "module": "LeanCondensedMatter.Analysis.Operator.BerryGeometry.Curvature",
-    "externalAxioms": [],
-    "docString": "The left derivative-state matrix element is the Hermitian-conjugate Born--Fock term. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "BerryGeometry.PointwiseEigenbasisData.curvatureInnerTerm_eq_hamiltonianDerivativeMatrixElements"
-    ],
-    "dependencies": [
-      "BerryGeometry.PointwiseEigenbasisData.bornFock_inner",
-      "BerryGeometry.PointwiseEigenbasisData.star_hamiltonianDerivativeMatrixElement"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "BerryGeometry.PointwiseEigenbasisData.curvatureInnerTerm_eq_hamiltonianDerivativeMatrixElements"
-    ],
-    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -527,8 +351,8 @@
     "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": true,
     "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "BerryGeometry.PointwiseEigenbasisData.star_berryConnection",
     "module": "LeanCondensedMatter.Analysis.Operator.BerryGeometry.Connection",
@@ -579,15 +403,15 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "BerryGeometry.PointwiseEigenbasisData.curvatureInnerTerm_eq_hamiltonianDerivativeMatrixElements",
-      "BerryGeometry.PointwiseEigenbasisData.innerDerivative_basis_eq_hamiltonianDerivativeMatrixElement_div"
+      "_private.LeanCondensedMatter.Analysis.Operator.BerryGeometry.Curvature.0.BerryGeometry.PointwiseEigenbasisData.curvatureInnerTerm_eq_hamiltonianDerivativeMatrixElements",
+      "_private.LeanCondensedMatter.Analysis.Operator.BerryGeometry.Curvature.0.BerryGeometry.PointwiseEigenbasisData.innerDerivative_basis_eq_hamiltonianDerivativeMatrixElement_div"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "BerryGeometry.PointwiseEigenbasisData.curvatureInnerTerm_eq_hamiltonianDerivativeMatrixElements",
-      "BerryGeometry.PointwiseEigenbasisData.innerDerivative_basis_eq_hamiltonianDerivativeMatrixElement_div"
+      "_private.LeanCondensedMatter.Analysis.Operator.BerryGeometry.Curvature.0.BerryGeometry.PointwiseEigenbasisData.curvatureInnerTerm_eq_hamiltonianDerivativeMatrixElements",
+      "_private.LeanCondensedMatter.Analysis.Operator.BerryGeometry.Curvature.0.BerryGeometry.PointwiseEigenbasisData.innerDerivative_basis_eq_hamiltonianDerivativeMatrixElement_div"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -1630,31 +1454,35 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
-    "statement": "∀ {α : Type u_1} {R : Type u_2} [inst : DecidableEq α] [inst_1 : CommSemiring R]\n  (D : Combinatorics.ConnectedDecomposition α) (sign : (S : Finset α) → Finpartition S → R)\n  (objectWeight : {S : Finset α} → D.Object S → R) (connectedWeight : {S : Finset α} → D.ConnectedObject S → R),\n  (∀ {S : Finset α} (d : D.Object S),\n      objectWeight d = sign S ((D.decompose S) d).fst * ∏ B, connectedWeight (((D.decompose S) d).snd B)) →\n    ∀ (S : Finset α),\n      ∑ d, objectWeight d = Finpartition.signedMomentFromCumulant sign (fun T => ∑ d, connectedWeight d) S",
+    "terminal": false,
+    "statement": "∀ {α : Type u_1} {R : Type u_2} [inst : DecidableEq α] [inst_1 : CommSemiring R]\n  (D : Combinatorics.ConnectedDecomposition α) (partitionWeight : (S : Finset α) → Finpartition S → R)\n  (objectWeight : {S : Finset α} → D.Object S → R) (connectedWeight : {S : Finset α} → D.ConnectedObject S → R),\n  (∀ {S : Finset α} (d : D.Object S),\n      objectWeight d = partitionWeight S ((D.decompose S) d).fst * ∏ B, connectedWeight (((D.decompose S) d).snd B)) →\n    ∀ (S : Finset α),\n      ∑ d, objectWeight d = Finpartition.weightedMomentFromCumulant partitionWeight (fun T => ∑ d, connectedWeight d) S",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "Combinatorics.ConnectedDecomposition.sum_objectWeight_eq_signedMomentFromCumulant",
-    "module": "LeanCondensedMatter.Combinatorics.Cumulant.SignedConnectedDecomposition",
+    "name": "Combinatorics.ConnectedDecomposition.sum_objectWeight_eq_weightedMomentFromCumulant",
+    "module": "LeanCondensedMatter.Combinatorics.Cumulant.ConnectedDecomposition",
     "externalAxioms": [],
-    "docString": "Finite connected decomposition yields a signed partition-moment identity,\nprovided the full-object weight factors into the sign of the external-block\npartition and the product of its connected-object weights.\n\nUnlike the unsigned `MultiplicativeWeight` theorem, this retains the sign\nrather than assuming it equals one. It is an exact finite combinatorial\nidentity; no source or analytic Dyson-series identification is asserted. ",
+    "docString": "A connected decomposition transports object weights to a partition-weighted moment.\nThe partition coefficient is arbitrary; no normalization or Möbius inversion is assumed. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "Combinatorics.MultiplicativeWeight.objectMoment_eq_momentFromCumulant"
+    ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "Combinatorics.MultiplicativeWeight.objectMoment_eq_momentFromCumulant"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -3402,7 +3230,10 @@
       "Combinatorics.factorial_mul_coeff_logOf_eq_connectedContribution_replica",
       "Combinatorics.permutationSum_eq_momentFromCumulant"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "Combinatorics.ConnectedDecomposition.sum_objectWeight_eq_weightedMomentFromCumulant",
+      "Finpartition.weightedMomentFromCumulant_one"
+    ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
@@ -4579,8 +4410,8 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "Combinatorics.PairingOn.partner_partner",
-      "Combinatorics.even_card_of_fixedPointFreeInvolution"
+      "Combinatorics.PairingOn.even_card",
+      "Combinatorics.PairingOn.partner_partner"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -7021,6 +6852,7 @@
     "directWrapperTargetModule": "LeanCondensedMatter.Combinatorics.InvolutionCard",
     "directWrapperOf": "Combinatorics.even_card_of_fixedPointFreeInvolution",
     "dependents": [
+      "Combinatorics.Pairing.even_card_of_partner_mem",
       "SecondQuantization.Common.ExternalInsertionDiagram.externalSector_card_even",
       "SecondQuantization.Common.TwoPointDiagram.externalVerticesConnected"
     ],
@@ -7030,10 +6862,11 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "Combinatorics.Pairing.even_card_of_partner_mem",
       "SecondQuantization.Common.ExternalInsertionDiagram.externalSector_card_even",
       "SecondQuantization.Common.TwoPointDiagram.externalVerticesConnected"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -9266,7 +9099,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -9278,17 +9111,15 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "Combinatorics.Pairing.even_card_of_partner_mem",
       "Combinatorics.PairingOn.even_card"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "Combinatorics.Pairing.even_card_of_partner_mem",
       "Combinatorics.PairingOn.even_card"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -10531,7 +10362,7 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Common.ExternalInsertionDiagram.externallySupportedInteractionPart_ofSlotSplit",
-      "SecondQuantization.Common.ExternalInsertionDiagram.hasNoVacuumComponent_externalSupportDiagram",
+      "SecondQuantization.Common.ExternalInsertionDiagram.hasNoVacuumComponent_externalBearingDiagram",
       "SecondQuantization.Common.ExternalInsertionDiagram.ofSlotSplit_vertexWeight",
       "SecondQuantization.Common.externalInsertionSlotLegSplitting_left_interaction",
       "SecondQuantization.Common.slotLegSplitting_left_interaction",
@@ -10543,7 +10374,7 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Common.ExternalInsertionDiagram.externallySupportedInteractionPart_ofSlotSplit",
-      "SecondQuantization.Common.ExternalInsertionDiagram.hasNoVacuumComponent_externalSupportDiagram",
+      "SecondQuantization.Common.ExternalInsertionDiagram.hasNoVacuumComponent_externalBearingDiagram",
       "SecondQuantization.Common.ExternalInsertionDiagram.ofSlotSplit_vertexWeight",
       "SecondQuantization.Common.externalInsertionSlotLegSplitting_left_interaction",
       "SecondQuantization.Common.slotLegSplitting_left_interaction",
@@ -22321,44 +22152,6 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
-    "statement": "∀ {α : Type u_1} {R : Type u_2} [inst : DecidableEq α] [inst_1 : CommSemiring R] (κ : Finset α → R) (S : Finset α),\n  Finpartition.signedMomentFromCumulant (fun x x_1 => 1) κ S = Finpartition.momentFromCumulant κ S",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "Finpartition.signedMomentFromCumulant_one",
-    "module": "LeanCondensedMatter.Combinatorics.Cumulant.SignedConnectedDecomposition",
-    "externalAxioms": [],
-    "docString": "With unit partition signs, the signed moment reduces to the ordinary\npartition moment. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
     "terminal": false,
     "statement": "∀ {α : Type u_1} {R : Type u_2} [inst : DecidableEq α] [inst_1 : CommRing R] (m : Finset α → R) {S : Finset α}\n  (π : Finpartition S),\n  ∑ ρ ≤ π, (IncidenceAlgebra.mu R) ρ π * Finpartition.partitionProduct m ρ =\n    Finpartition.partitionProduct (Finpartition.cumulantFromMoment m) π",
     "standardAxioms": [
@@ -22621,6 +22414,48 @@
     "completedMention": false,
     "compiledConsumers": [
       "Combinatorics.replicaCoeffPolynomial_eq_replicaPolynomial"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {α : Type u_1} {R : Type u_2} [inst : DecidableEq α] [inst_1 : CommSemiring R] (κ : Finset α → R) (S : Finset α),\n  Finpartition.weightedMomentFromCumulant (fun x x_1 => 1) κ S = Finpartition.momentFromCumulant κ S",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "Finpartition.weightedMomentFromCumulant_one",
+    "module": "LeanCondensedMatter.Combinatorics.Cumulant.Moment",
+    "externalAxioms": [],
+    "docString": "Unit partition weights recover the ordinary moment transform. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "Combinatorics.MultiplicativeWeight.objectMoment_eq_momentFromCumulant"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "Combinatorics.MultiplicativeWeight.objectMoment_eq_momentFromCumulant"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -34537,7 +34372,7 @@
     "dependents": [
       "Lorentzian.intervalIntegrable_spectralKernel",
       "_private.LeanCondensedMatter.Analysis.Lorentzian.Pole.0.Lorentzian.continuousOn_regularFactorErrorIntegrand",
-      "_private.LeanCondensedMatter.Analysis.Lorentzian.Pole.0.Lorentzian.regularFactorIntegral_eq_error_add_mass_smul_pole"
+      "_private.LeanCondensedMatter.Analysis.Lorentzian.Pole.0.Lorentzian.integral_spectralKernel_mul_eq_error_add_mass_smul_pole"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
@@ -34545,7 +34380,7 @@
     "compiledConsumers": [
       "Lorentzian.intervalIntegrable_spectralKernel",
       "_private.LeanCondensedMatter.Analysis.Lorentzian.Pole.0.Lorentzian.continuousOn_regularFactorErrorIntegrand",
-      "_private.LeanCondensedMatter.Analysis.Lorentzian.Pole.0.Lorentzian.regularFactorIntegral_eq_error_add_mass_smul_pole"
+      "_private.LeanCondensedMatter.Analysis.Lorentzian.Pole.0.Lorentzian.integral_spectralKernel_mul_eq_error_add_mass_smul_pole"
     ],
     "compiledConsumerCount": 3,
     "axioms": [
@@ -34590,44 +34425,6 @@
       "Lorentzian.integral_spectralKernel_symmetric"
     ],
     "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ (innerRadius outerRadius broadening : ℝ),\n  ∫ (offset : ℝ) in -outerRadius..outerRadius, Lorentzian.spectralKernel offset broadening =\n    (∫ (offset : ℝ) in -innerRadius..innerRadius, Lorentzian.spectralKernel offset broadening) +\n      Lorentzian.spectralTailMass innerRadius outerRadius broadening",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "Lorentzian.integral_spectralKernel_outer_eq_inner_add_tail",
-    "module": "LeanCondensedMatter.Analysis.Lorentzian.Kernel",
-    "externalAxioms": [],
-    "docString": "The outer symmetric mass is the inner mass plus the spectral tail mass. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -35047,6 +34844,50 @@
   },
   {
     "terminal": false,
+    "statement": "∀ (factor : ℝ × ℝ → ℂ) (radius : ℝ),\n  0 < radius →\n    (∃ etaMax, 0 < etaMax ∧ ContinuousOn factor (Set.Icc (-radius) radius ×ˢ Set.Icc 0 etaMax)) →\n      Filter.Tendsto\n        (fun broadening =>\n          ∫ (offset : ℝ) in -radius..radius,\n            ↑(Lorentzian.spectralKernel offset broadening) * factor (offset, broadening))\n        (nhdsWithin 0 (Set.Ioi 0)) (nhds (Real.pi • factor (0, 0)))",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "Lorentzian.tendsto_integral_spectralKernel_mul",
+    "module": "LeanCondensedMatter.Analysis.Lorentzian.Pole",
+    "externalAxioms": [],
+    "docString": "The fixed-window convolution with the Lorentzian spectral kernel extracts the\nvalue at the pole for a factor continuous on a compact nonnegative-broadening\nrectangle of some positive width. No negative-broadening continuity is needed. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.tendsto_interbandPoleRegularFactorIntegral"
+    ],
+    "dependencies": [
+      "_private.LeanCondensedMatter.Analysis.Lorentzian.Pole.0.Lorentzian.tendsto_integral_spectralKernel_mul_of_bounded"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.tendsto_interbandPoleRegularFactorIntegral"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ (radius : ℝ),\n  0 < radius →\n    Filter.Tendsto (fun broadening => ∫ (offset : ℝ) in -radius..radius, Lorentzian.spectralKernel offset broadening)\n      (nhdsWithin 0 (Set.Ioi 0)) (nhds Real.pi)",
     "standardAxioms": [
       "Classical.choice",
@@ -35068,7 +34909,7 @@
     "dependents": [
       "Lorentzian.tendsto_integral_weight_mul_spectralKernel_of_eq_const_on",
       "Lorentzian.tendsto_spectralTailMass_zero",
-      "_private.LeanCondensedMatter.Analysis.Lorentzian.Pole.0.Lorentzian.tendsto_regularFactorIntegral_of_bounded"
+      "_private.LeanCondensedMatter.Analysis.Lorentzian.Pole.0.Lorentzian.tendsto_integral_spectralKernel_mul_of_bounded"
     ],
     "dependencies": [
       "Lorentzian.integral_spectralKernel_symmetric",
@@ -35079,7 +34920,7 @@
     "compiledConsumers": [
       "Lorentzian.tendsto_integral_weight_mul_spectralKernel_of_eq_const_on",
       "Lorentzian.tendsto_spectralTailMass_zero",
-      "_private.LeanCondensedMatter.Analysis.Lorentzian.Pole.0.Lorentzian.tendsto_regularFactorIntegral_of_bounded"
+      "_private.LeanCondensedMatter.Analysis.Lorentzian.Pole.0.Lorentzian.tendsto_integral_spectralKernel_mul_of_bounded"
     ],
     "compiledConsumerCount": 3,
     "axioms": [
@@ -35123,50 +34964,6 @@
     "completedMention": false,
     "compiledConsumers": [],
     "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (factor : ℝ × ℝ → ℂ) (radius : ℝ),\n  0 < radius →\n    ContinuousOn factor (Set.Icc (-radius) radius ×ˢ Set.Icc 0 1) →\n      Filter.Tendsto (fun broadening => Lorentzian.regularFactorIntegral factor radius broadening)\n        (nhdsWithin 0 (Set.Ioi 0)) (nhds (Real.pi • factor (0, 0)))",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "Lorentzian.tendsto_regularFactorIntegral",
-    "module": "LeanCondensedMatter.Analysis.Lorentzian.Pole",
-    "externalAxioms": [],
-    "docString": "A complex regular factor continuous on the compact nonnegative-broadening rectangle\nhas the canonical Lorentzian pole limit. In particular, no continuity for negative\nbroadening or outside the integration window is required. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.tendsto_interbandPoleRegularFactorIntegral"
-    ],
-    "dependencies": [
-      "_private.LeanCondensedMatter.Analysis.Lorentzian.Pole.0.Lorentzian.tendsto_regularFactorIntegral_of_bounded"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.tendsto_interbandPoleRegularFactorIntegral"
-    ],
-    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -72338,7 +72135,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Models.MassiveDirac.orderedXYRungSolvedProvenanceConductivityLimit_eq_intrinsic_sideJumpType_gaussianSkewType_partition"
+      "QuantumTheory.Models.MassiveDirac.orderedXYRungSolvedProvenanceConductivityLimit_eq_intrinsic_sideJumpType_nonCrossingSkewType_partition"
     ],
     "dependencies": [
       "QuantumTheory.Models.MassiveDirac.intrinsicHallConductivity_eq_massiveDirac"
@@ -72346,7 +72143,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Models.MassiveDirac.orderedXYRungSolvedProvenanceConductivityLimit_eq_intrinsic_sideJumpType_gaussianSkewType_partition"
+      "QuantumTheory.Models.MassiveDirac.orderedXYRungSolvedProvenanceConductivityLimit_eq_intrinsic_sideJumpType_nonCrossingSkewType_partition"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -72453,7 +72250,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ (e hbar m probeEnergy : ℝ),\n  hbar ≠ 0 →\n    probeEnergy ≠ 0 →\n      have sideJumpType :=\n        -(e ^ 2 / QuantumTheory.Models.MassiveDirac.planckFromReduced hbar) *\n          (2 * m * (probeEnergy ^ 2 - m ^ 2) / (probeEnergy * (probeEnergy ^ 2 + 3 * m ^ 2)));\n      have gaussianSkewType :=\n        -(e ^ 2 / QuantumTheory.Models.MassiveDirac.planckFromReduced hbar) *\n          (3 * m * (probeEnergy ^ 2 - m ^ 2) ^ 2 / (2 * probeEnergy * (probeEnergy ^ 2 + 3 * m ^ 2) ^ 2));\n      QuantumTheory.Models.MassiveDirac.intrinsicHallConductivity e hbar m probeEnergy + sideJumpType +\n          gaussianSkewType =\n        QuantumTheory.Models.MassiveDirac.nonCrossingHallConductivity e hbar m probeEnergy",
+    "statement": "∀ (e hbar m probeEnergy : ℝ),\n  hbar ≠ 0 →\n    probeEnergy ≠ 0 →\n      have sideJumpType :=\n        -(e ^ 2 / QuantumTheory.Models.MassiveDirac.planckFromReduced hbar) *\n          (2 * m * (probeEnergy ^ 2 - m ^ 2) / (probeEnergy * (probeEnergy ^ 2 + 3 * m ^ 2)));\n      have nonCrossingSkewType :=\n        -(e ^ 2 / QuantumTheory.Models.MassiveDirac.planckFromReduced hbar) *\n          (3 * m * (probeEnergy ^ 2 - m ^ 2) ^ 2 / (2 * probeEnergy * (probeEnergy ^ 2 + 3 * m ^ 2) ^ 2));\n      QuantumTheory.Models.MassiveDirac.intrinsicHallConductivity e hbar m probeEnergy + sideJumpType +\n          nonCrossingSkewType =\n        QuantumTheory.Models.MassiveDirac.nonCrossingHallConductivity e hbar m probeEnergy",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -72465,10 +72262,10 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "QuantumTheory.Models.MassiveDirac.intrinsic_sideJumpType_gaussianSkewType_sum_eq_nonCrossingHallConductivity",
+    "name": "QuantumTheory.Models.MassiveDirac.intrinsic_sideJumpType_nonCrossingSkewType_sum_eq_nonCrossingHallConductivity",
     "module": "LeanCondensedMatter.Models.MassiveDirac.Conductivity.Hall.NonCrossingMechanismClassification",
     "externalAxioms": [],
-    "docString": "The theorem-level intrinsic, side-jump-type, and Gaussian-skew-type pieces sum to the completed\nnon-crossing Hall conductivity. ",
+    "docString": "The theorem-level intrinsic, side-jump-type, and non-crossing-skew-type pieces sum to the completed\nnon-crossing Hall conductivity. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [],
@@ -73258,7 +73055,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Models.MassiveDirac.intrinsic_sideJumpType_gaussianSkewType_sum_eq_nonCrossingHallConductivity",
+      "QuantumTheory.Models.MassiveDirac.intrinsic_sideJumpType_nonCrossingSkewType_sum_eq_nonCrossingHallConductivity",
       "QuantumTheory.Models.MassiveDirac.nonCrossingHallConductivity_sub_intrinsicHallConductivity_eq_ado_eq12bc"
     ],
     "dependencies": [
@@ -73267,7 +73064,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Models.MassiveDirac.intrinsic_sideJumpType_gaussianSkewType_sum_eq_nonCrossingHallConductivity",
+      "QuantumTheory.Models.MassiveDirac.intrinsic_sideJumpType_nonCrossingSkewType_sum_eq_nonCrossingHallConductivity",
       "QuantumTheory.Models.MassiveDirac.nonCrossingHallConductivity_sub_intrinsicHallConductivity_eq_ado_eq12bc"
     ],
     "compiledConsumerCount": 2,
@@ -73881,7 +73678,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ (e hbar m probeEnergy : ℝ),\n  hbar ≠ 0 →\n    probeEnergy ≠ 0 →\n      have sideJumpType :=\n        -(e ^ 2 / QuantumTheory.Models.MassiveDirac.planckFromReduced hbar) *\n          (2 * m * (probeEnergy ^ 2 - m ^ 2) / (probeEnergy * (probeEnergy ^ 2 + 3 * m ^ 2)));\n      have gaussianSkewType :=\n        -(e ^ 2 / QuantumTheory.Models.MassiveDirac.planckFromReduced hbar) *\n          (3 * m * (probeEnergy ^ 2 - m ^ 2) ^ 2 / (2 * probeEnergy * (probeEnergy ^ 2 + 3 * m ^ 2) ^ 2));\n      QuantumTheory.Models.MassiveDirac.inPlaneCoefficientVector\n          ↑(-e ^ 2 * probeEnergy * m / (Real.pi * hbar * (probeEnergy ^ 2 + 3 * m ^ 2)))\n          ↑(-e ^ 2 * probeEnergy * m * (probeEnergy ^ 2 - m ^ 2) /\n              (Real.pi * hbar * (probeEnergy ^ 2 + 3 * m ^ 2) ^ 2)) =\n        QuantumTheory.Models.MassiveDirac.inPlaneCoefficientVector\n          ↑(QuantumTheory.Models.MassiveDirac.intrinsicHallConductivity e hbar m probeEnergy + 3 / 4 * sideJumpType)\n          ↑(1 / 4 * sideJumpType + gaussianSkewType)",
+    "statement": "∀ (e hbar m probeEnergy : ℝ),\n  hbar ≠ 0 →\n    probeEnergy ≠ 0 →\n      have sideJumpType :=\n        -(e ^ 2 / QuantumTheory.Models.MassiveDirac.planckFromReduced hbar) *\n          (2 * m * (probeEnergy ^ 2 - m ^ 2) / (probeEnergy * (probeEnergy ^ 2 + 3 * m ^ 2)));\n      have nonCrossingSkewType :=\n        -(e ^ 2 / QuantumTheory.Models.MassiveDirac.planckFromReduced hbar) *\n          (3 * m * (probeEnergy ^ 2 - m ^ 2) ^ 2 / (2 * probeEnergy * (probeEnergy ^ 2 + 3 * m ^ 2) ^ 2));\n      QuantumTheory.Models.MassiveDirac.inPlaneCoefficientVector\n          ↑(-e ^ 2 * probeEnergy * m / (Real.pi * hbar * (probeEnergy ^ 2 + 3 * m ^ 2)))\n          ↑(-e ^ 2 * probeEnergy * m * (probeEnergy ^ 2 - m ^ 2) /\n              (Real.pi * hbar * (probeEnergy ^ 2 + 3 * m ^ 2) ^ 2)) =\n        QuantumTheory.Models.MassiveDirac.inPlaneCoefficientVector\n          ↑(QuantumTheory.Models.MassiveDirac.intrinsicHallConductivity e hbar m probeEnergy + 3 / 4 * sideJumpType)\n          ↑(1 / 4 * sideJumpType + nonCrossingSkewType)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -73893,10 +73690,10 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "QuantumTheory.Models.MassiveDirac.orderedXYRungSolvedProvenanceConductivityLimit_eq_intrinsic_sideJumpType_gaussianSkewType_partition",
+    "name": "QuantumTheory.Models.MassiveDirac.orderedXYRungSolvedProvenanceConductivityLimit_eq_intrinsic_sideJumpType_nonCrossingSkewType_partition",
     "module": "LeanCondensedMatter.Models.MassiveDirac.Conductivity.Hall.NonCrossingMechanismClassification",
     "externalAxioms": [],
-    "docString": "The physically normalized concrete provenance vector partitions the Ado Eq. (12) mechanisms\nfrom I. A. Ado et al., *EPL* **111**, 37004 (2015),\n[doi:10.1209/0295-5075/111/37004](https://doi.org/10.1209/0295-5075/111/37004).\nThe paper's Eqs. (12a-c) are the intrinsic, side-jump, and non-crossing-skew components; the\ntheorem below only formalizes the ordered finite-cutoff provenance partition.\nThe side-jump-type term is shared between the two provenance components rather than attached to only\none of them. The `sideJumpType` and `gaussianSkewType` names are local to this theorem statement and\ndo not create primitive mechanism APIs. ",
+    "docString": "The physically normalized concrete provenance vector partitions the Ado Eq. (12) mechanisms\nfrom I. A. Ado et al., *EPL* **111**, 37004 (2015),\n[doi:10.1209/0295-5075/111/37004](https://doi.org/10.1209/0295-5075/111/37004).\nThe paper's Eqs. (12a-c) are the intrinsic, side-jump, and non-crossing-skew components; the\ntheorem below algebraically partitions the weak-disorder limit of the ordered finite-cutoff\nladder provenance. This does not derive separate microscopic side-jump collision or\nskew-scattering kernels.\nThe side-jump-type term is shared between the two provenance components rather than attached to only\none of them. The `sideJumpType` and `nonCrossingSkewType` names are local to this theorem statement and\ndo not create primitive mechanism APIs. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [],
@@ -92577,7 +92374,7 @@
       "QuantumTheory.Transport.tendsto_interbandBastinPoleIntegral"
     ],
     "dependencies": [
-      "Lorentzian.tendsto_regularFactorIntegral",
+      "Lorentzian.tendsto_integral_spectralKernel_mul",
       "QuantumTheory.Transport.continuousAt_interbandPoleRegularFactor_of_gap_add_offset_ne_zero",
       "QuantumTheory.Transport.gap_add_offset_ne_zero_on_targetWindow"
     ],
@@ -109826,6 +109623,52 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
+    "terminal": false,
+    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {E N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.ExternalInsertionDiagram ExternalLabel InternalLabel E N S),\n  SecondQuantization.Common.ExternalInsertionDiagram.ofSlotSplit ⋯ d.externalBearingDiagram d.vacuumDiagram = d",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.ExternalInsertionDiagram.externalBearing_vacuum_reconstruction",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.ExternalSupportDecomposition",
+    "externalAxioms": [],
+    "docString": "The canonical external-bearing and vacuum diagrams reconstruct the original diagram. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Common.ExternalInsertionDiagram.hasNoVacuumComponent_externalBearingDiagram"
+    ],
+    "dependencies": [
+      "SecondQuantization.Common.ExternalInsertionDiagram.externallySupportedInteractionPart_subset",
+      "SecondQuantization.Common.ExternalInsertionDiagram.ofSlotSplit_slotSplit",
+      "SecondQuantization.Common.ExternalInsertionDiagram.pairing_isSplit_externallySupportedInteractionPart"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.ExternalInsertionDiagram.hasNoVacuumComponent_externalBearingDiagram"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
     "terminal": true,
     "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {E N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.ExternalInsertionDiagram ExternalLabel InternalLabel E N S),\n  ∀ B ∈ (SecondQuantization.Common.externalComponentPartition d.vertexGraph).parts, Even B.card",
     "standardAxioms": [
@@ -110051,52 +109894,6 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": false,
-    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {E N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.ExternalInsertionDiagram ExternalLabel InternalLabel E N S),\n  SecondQuantization.Common.ExternalInsertionDiagram.ofSlotSplit ⋯ d.externalSupportDiagram d.vacuumComplementDiagram =\n    d",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.ExternalInsertionDiagram.externalSupport_reconstruction",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.ExternalSupportDecomposition",
-    "externalAxioms": [],
-    "docString": "The canonical external-bearing and vacuum diagrams reconstruct the original diagram. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.ExternalInsertionDiagram.hasNoVacuumComponent_externalSupportDiagram"
-    ],
-    "dependencies": [
-      "SecondQuantization.Common.ExternalInsertionDiagram.externallySupportedInteractionPart_subset",
-      "SecondQuantization.Common.ExternalInsertionDiagram.ofSlotSplit_slotSplit",
-      "SecondQuantization.Common.ExternalInsertionDiagram.pairing_isSplit_externallySupportedInteractionPart"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.ExternalInsertionDiagram.hasNoVacuumComponent_externalSupportDiagram"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
     "terminal": true,
     "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {E N : ℕ} {S T : Finset (Fin N)} (h : T ⊆ S)\n  (ext : SecondQuantization.Common.ExternalInsertionDiagram ExternalLabel InternalLabel E N T)\n  (vac : SecondQuantization.Common.QuarticDiagram InternalLabel N (S \\ T)),\n  SecondQuantization.Common.HasNoVacuumComponent ext.vertexGraph →\n    (SecondQuantization.Common.ExternalInsertionDiagram.ofSlotSplit h ext vac).externallySupportedInteractionPart = T",
     "standardAxioms": [
@@ -110162,9 +109959,9 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Common.ExternalInsertionDiagram.externalSupport_reconstruction",
+      "SecondQuantization.Common.ExternalInsertionDiagram.externalBearing_vacuum_reconstruction",
       "SecondQuantization.Common.ExternalInsertionDiagram.externallySupportedInteractionPart_ofSlotSplit",
-      "SecondQuantization.Common.ExternalInsertionDiagram.hasNoVacuumComponent_externalSupportDiagram",
+      "SecondQuantization.Common.ExternalInsertionDiagram.hasNoVacuumComponent_externalBearingDiagram",
       "SecondQuantization.Common.ExternalInsertionDiagram.hasNoVacuumComponent_iff_externallySupportedInteractionPart_eq",
       "SecondQuantization.Common.ExternalInsertionDiagram.pairing_isSplit_externallySupportedInteractionPart",
       "SecondQuantization.Common.ExternalInsertionDiagram.sum_eq_sum_externalSupportFiber",
@@ -110174,14 +109971,14 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.ExternalInsertionDiagram.externalSupportDiagram",
-      "SecondQuantization.Common.ExternalInsertionDiagram.externalSupport_reconstruction",
+      "SecondQuantization.Common.ExternalInsertionDiagram.externalBearingDiagram",
+      "SecondQuantization.Common.ExternalInsertionDiagram.externalBearing_vacuum_reconstruction",
       "SecondQuantization.Common.ExternalInsertionDiagram.externallySupportedInteractionPart_ofSlotSplit",
-      "SecondQuantization.Common.ExternalInsertionDiagram.hasNoVacuumComponent_externalSupportDiagram",
+      "SecondQuantization.Common.ExternalInsertionDiagram.hasNoVacuumComponent_externalBearingDiagram",
       "SecondQuantization.Common.ExternalInsertionDiagram.hasNoVacuumComponent_iff_externallySupportedInteractionPart_eq",
       "SecondQuantization.Common.ExternalInsertionDiagram.pairing_isSplit_externallySupportedInteractionPart",
       "SecondQuantization.Common.ExternalInsertionDiagram.sum_eq_sum_externalSupportFiber",
-      "SecondQuantization.Common.ExternalInsertionDiagram.vacuumComplementDiagram",
+      "SecondQuantization.Common.ExternalInsertionDiagram.vacuumDiagram",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.ExternalSupportSplit.0.SecondQuantization.Common.ExternalInsertionDiagram.exists_externalSupportLeftSlot_iff"
     ],
     "compiledConsumerCount": 9,
@@ -110199,7 +109996,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {E N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.ExternalInsertionDiagram ExternalLabel InternalLabel E N S),\n  SecondQuantization.Common.HasNoVacuumComponent d.externalSupportDiagram.vertexGraph",
+    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {E N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.ExternalInsertionDiagram ExternalLabel InternalLabel E N S),\n  SecondQuantization.Common.HasNoVacuumComponent d.externalBearingDiagram.vertexGraph",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -110211,7 +110008,7 @@
     "retainedNeedsReview": true,
     "retainedMention": true,
     "projectAxioms": [],
-    "name": "SecondQuantization.Common.ExternalInsertionDiagram.hasNoVacuumComponent_externalSupportDiagram",
+    "name": "SecondQuantization.Common.ExternalInsertionDiagram.hasNoVacuumComponent_externalBearingDiagram",
     "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.ExternalSupportConnectivity",
     "externalAxioms": [],
     "docString": "The canonical external-bearing diagram contains no pure-vacuum connected components.\nAll components touching distinct external insertions are retained independently. ",
@@ -110220,7 +110017,7 @@
     "dependents": [],
     "dependencies": [
       "Combinatorics.subsetSumSdiffEquiv_inl_apply",
-      "SecondQuantization.Common.ExternalInsertionDiagram.externalSupport_reconstruction",
+      "SecondQuantization.Common.ExternalInsertionDiagram.externalBearing_vacuum_reconstruction",
       "SecondQuantization.Common.ExternalInsertionDiagram.externallySupportedInteractionPart_subset",
       "SecondQuantization.Common.ExternalInsertionDiagram.mem_externallySupportedInteractionPart",
       "SimpleGraph.mem_componentBlock",
@@ -110350,7 +110147,7 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Common.ExternalInsertionDiagram.externallySupportedInteractionPart_ofSlotSplit",
-      "SecondQuantization.Common.ExternalInsertionDiagram.hasNoVacuumComponent_externalSupportDiagram",
+      "SecondQuantization.Common.ExternalInsertionDiagram.hasNoVacuumComponent_externalBearingDiagram",
       "SecondQuantization.Common.ExternalInsertionDiagram.hasNoVacuumComponent_iff_externallySupportedInteractionPart_eq",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.ExternalSupportSplit.0.SecondQuantization.Common.ExternalInsertionDiagram.exists_externalSupportLeftSlot_iff"
     ],
@@ -110359,7 +110156,7 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Common.ExternalInsertionDiagram.externallySupportedInteractionPart_ofSlotSplit",
-      "SecondQuantization.Common.ExternalInsertionDiagram.hasNoVacuumComponent_externalSupportDiagram",
+      "SecondQuantization.Common.ExternalInsertionDiagram.hasNoVacuumComponent_externalBearingDiagram",
       "SecondQuantization.Common.ExternalInsertionDiagram.hasNoVacuumComponent_iff_externallySupportedInteractionPart_eq",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.ExternalSupportSplit.0.SecondQuantization.Common.ExternalInsertionDiagram.exists_externalSupportLeftSlot_iff"
     ],
@@ -110526,7 +110323,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Common.ExternalInsertionDiagram.externalSupport_reconstruction"
+      "SecondQuantization.Common.ExternalInsertionDiagram.externalBearing_vacuum_reconstruction"
     ],
     "dependencies": [
       "Combinatorics.Pairing.ofSplit_splitLeft_splitRight",
@@ -110537,7 +110334,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.ExternalInsertionDiagram.externalSupport_reconstruction"
+      "SecondQuantization.Common.ExternalInsertionDiagram.externalBearing_vacuum_reconstruction"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -110808,7 +110605,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Common.ExternalInsertionDiagram.externalSupport_reconstruction",
+      "SecondQuantization.Common.ExternalInsertionDiagram.externalBearing_vacuum_reconstruction",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.ExternalSupportFiber.0.SecondQuantization.Common.ExternalInsertionDiagram.pairing_isSplit_of_support_eq"
     ],
     "dependencies": [
@@ -110819,9 +110616,9 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.ExternalInsertionDiagram.externalSupportDiagram",
-      "SecondQuantization.Common.ExternalInsertionDiagram.externalSupport_reconstruction",
-      "SecondQuantization.Common.ExternalInsertionDiagram.vacuumComplementDiagram",
+      "SecondQuantization.Common.ExternalInsertionDiagram.externalBearingDiagram",
+      "SecondQuantization.Common.ExternalInsertionDiagram.externalBearing_vacuum_reconstruction",
+      "SecondQuantization.Common.ExternalInsertionDiagram.vacuumDiagram",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.ExternalSupportFiber.0.SecondQuantization.Common.ExternalInsertionDiagram.pairing_isSplit_of_support_eq"
     ],
     "compiledConsumerCount": 4,
@@ -113152,6 +112949,47 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
+    "terminal": true,
+    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel N S)\n  (cut leg : Fin (2 * (2 * S.card + 1))),\n  leg ≠ cut →\n    d.pairing.partner leg ≠ cut →\n      (d.vertexGraphWithoutPropagator cut).componentBlock (SecondQuantization.Common.twoPointVertexOfLeg leg) =\n        (d.vertexGraphWithoutPropagator cut).componentBlock\n          (SecondQuantization.Common.twoPointVertexOfLeg (d.pairing.partner leg))",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.TwoPointDiagram.componentBlock_partner_withoutPropagator",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.CutComponents",
+    "externalAxioms": [],
+    "docString": "After removing one propagator, every other paired line stays within one component block. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "SecondQuantization.Common.TwoPointDiagram.reachable_partner_withoutPropagator",
+      "SimpleGraph.componentBlock_eq_of_reachable"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
     "terminal": false,
     "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel N S)\n  (B : ↥d.vertexGraph.componentPartition.parts),\n  SecondQuantization.Common.ComponentIsVacuum ↑B ↔ B ≠ d.externalComponentPart",
     "standardAxioms": [
@@ -113982,6 +113820,7 @@
     "dependents": [
       "SecondQuantization.Common.TwoPointDiagram.externalComponent_zero_eq_one",
       "SecondQuantization.Common.TwoPointDiagram.isExternallyConnected_iff_hasNoVacuumComponent",
+      "SecondQuantization.Common.TwoPointDiagram.preconnected_iff_isExternallyConnected",
       "SecondQuantization.Common.interactionSector_externalComponent_ofSlotSplit"
     ],
     "dependencies": [
@@ -113997,9 +113836,51 @@
     "compiledConsumers": [
       "SecondQuantization.Common.TwoPointDiagram.externalComponent_zero_eq_one",
       "SecondQuantization.Common.TwoPointDiagram.isExternallyConnected_iff_hasNoVacuumComponent",
+      "SecondQuantization.Common.TwoPointDiagram.preconnected_iff_isExternallyConnected",
       "SecondQuantization.Common.interactionSector_externalComponent_ofSlotSplit"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 4,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel N S),\n  d.IsExternallyConnected →\n    ∀ (cut : Fin (2 * (2 * S.card + 1))),\n      ¬(d.vertexGraphWithoutPropagator cut).Reachable (Sum.inl 0) (Sum.inl 1) →\n        d.vertexGraph.IsBridge\n          s(SecondQuantization.Common.twoPointVertexOfLeg cut,\n            SecondQuantization.Common.twoPointVertexOfLeg (d.pairing.partner cut))",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.TwoPointDiagram.isBridge_of_separatingCut",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.CutComponents",
+    "externalAxioms": [],
+    "docString": "Every external-separating internal line is a bridge in the original vertex graph.\nThe conclusion is expressed by Mathlib's canonical `SimpleGraph.IsBridge` predicate. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "SecondQuantization.Common.TwoPointDiagram.separatingCut_endpoints_not_reachable",
+      "SecondQuantization.Common.TwoPointDiagram.vertexGraph_eq_withoutPropagator_sup_edge"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -114059,7 +113940,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel N S),\n  d.vertexGraph.Preconnected → d.IsExternallyConnected",
     "standardAxioms": [
       "Classical.choice",
@@ -114067,7 +113948,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -114078,14 +113959,18 @@
     "docString": "Global preconnectedness implies connectedness relative to the two external vertices. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "SecondQuantization.Common.TwoPointDiagram.preconnected_iff_isExternallyConnected"
+    ],
     "dependencies": [
       "SecondQuantization.Common.hasNoVacuumComponent_of_preconnected"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "SecondQuantization.Common.TwoPointDiagram.preconnected_iff_isExternallyConnected"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -114740,6 +114625,47 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
+    "terminal": true,
+    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel N S)\n  (cut leg : Fin (2 * (2 * S.card + 1))),\n  ¬(d.vertexGraphWithoutPropagator cut).Reachable (Sum.inl 0) (Sum.inl 1) →\n    leg ≠ cut →\n      d.pairing.partner leg ≠ cut →\n        ¬(SecondQuantization.Common.twoPointVertexOfLeg leg ∈\n              (d.vertexGraphWithoutPropagator cut).componentBlock (Sum.inl 0) ∧\n            SecondQuantization.Common.twoPointVertexOfLeg (d.pairing.partner leg) ∈\n              (d.vertexGraphWithoutPropagator cut).componentBlock (Sum.inl 1))",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.TwoPointDiagram.not_uncutPropagator_between_externalComponents",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.CutComponents",
+    "externalAxioms": [],
+    "docString": "No uncut propagator connects the two distinct external component blocks of a separating cut.\n\nThe hypotheses say that the first endpoint is on the side of external vertex zero and the\nsecond endpoint is on the side of external vertex one. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "SecondQuantization.Common.TwoPointDiagram.reachable_partner_withoutPropagator",
+      "SimpleGraph.mem_componentBlock"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
     "terminal": false,
     "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {n : ℕ} (T : Finset (Fin n))\n  (ext : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel n T)\n  (vac : SecondQuantization.Common.QuarticDiagram InternalLabel n (Finset.univ \\ T)) (τ τ' : ℝ) (σ : Fin n → ℝ)\n  (hσ : StrictAnti (σ ∘ SecondQuantization.Common.slotSplitVacuumSlot T))\n  (pr : (vac.pairingInOrder (SecondQuantization.Common.slotSplitVacuumOrder T)).NormalizedPair),\n  let d := SecondQuantization.Common.TwoPointDiagram.ofSlotSplit ⋯ ext vac;\n  have q :=\n    (SecondQuantization.Common.orderedLegToDiagramLeg (Finset.univ \\ T)\n        (SecondQuantization.Common.slotSplitVacuumOrder T))\n      (↑pr).1;\n  d.mixedPairComponent τ τ' σ\n      ((SecondQuantization.Common.TwoPointDiagram.slotSplitVacuumNormalizedPairEmbedding T ext vac τ τ' σ hσ) pr) =\n    ⟨d.vertexGraph.componentBlock\n        (SecondQuantization.Common.slotSplitVacuumVertex (SecondQuantization.Common.vertexOfLeg q)),\n      ⋯⟩",
     "standardAxioms": [
@@ -115053,15 +114979,15 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": false,
+    "terminal": true,
     "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {N : ℕ} {S T : Finset (Fin N)} (h : T ⊆ S)\n  (ext : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel N T)\n  (vac : SecondQuantization.Common.QuarticDiagram InternalLabel N (S \\ T)),\n  ext.IsExternallyConnected →\n    ∀ (i : Fin (2 * (2 * S.card + 1))),\n      SecondQuantization.Common.ComponentIsVacuum\n          ((SecondQuantization.Common.TwoPointDiagram.ofSlotSplit h ext vac).vertexGraph.componentBlock\n            (SecondQuantization.Common.twoPointVertexOfLeg i)) →\n        ∃ q, (SecondQuantization.Common.slotLegSplitting h) (Sum.inr q) = i",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -115072,9 +114998,7 @@
     "docString": "Every leg in a vacuum component of a reassembled two-point diagram comes\nfrom the quartic side of the slot split. This characterization involves only\nthe graph and the fixed leg enumeration, not mixed times or their order. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumPairImage.0.SecondQuantization.Common.TwoPointDiagram.mixedVacuumPair_firstEndpoint_mem_vacuumLegRange"
-    ],
+    "dependents": [],
     "dependencies": [
       "SecondQuantization.Common.TwoPointDiagram.externalVertex_mem_externalComponentPart",
       "SecondQuantization.Common.interactionSector_externalComponent_ofSlotSplit",
@@ -115086,10 +115010,8 @@
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumPairImage.0.SecondQuantization.Common.TwoPointDiagram.mixedVacuumPair_firstEndpoint_mem_vacuumLegRange"
-    ],
-    "compiledConsumerCount": 1,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -115293,6 +115215,48 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
+    "terminal": true,
+    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel N S),\n  d.vertexGraph.Preconnected ↔ d.IsExternallyConnected",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.TwoPointDiagram.preconnected_iff_isExternallyConnected",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.External.ExternalConnectivity",
+    "externalAxioms": [],
+    "docString": "For two one-legged external vertices, externally connected means the entire vertex graph\nis preconnected: the parity argument connects the external vertices, and vacuum-freeness\nplaces every interaction vertex in that same component. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "SecondQuantization.Common.TwoPointDiagram.externalVerticesConnected",
+      "SecondQuantization.Common.TwoPointDiagram.isExternallyConnected_of_preconnected",
+      "SecondQuantization.Common.preconnected_iff_hasNoVacuumComponent_and_allExternalVerticesConnected"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
     "terminal": false,
     "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {N : ℕ} {M : Type u_3} [inst : CommMonoid M]\n  {S : Finset (Fin N)} (d : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel N S)\n  (f : ↥d.vertexGraph.componentPartition.parts → M),\n  ∏ B, f B = f d.externalComponentPart * (SecondQuantization.Common.vacuumComponentParts d.vertexGraph).prod f",
     "standardAxioms": [
@@ -115390,6 +115354,50 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel N S)\n  (cut leg : Fin (2 * (2 * S.card + 1))),\n  leg ≠ cut →\n    d.pairing.partner leg ≠ cut →\n      (d.vertexGraphWithoutPropagator cut).Reachable (SecondQuantization.Common.twoPointVertexOfLeg leg)\n        (SecondQuantization.Common.twoPointVertexOfLeg (d.pairing.partner leg))",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.TwoPointDiagram.reachable_partner_withoutPropagator",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.CutComponents",
+    "externalAxioms": [],
+    "docString": "The endpoints of any surviving propagator remain connected after cutting another line. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Common.TwoPointDiagram.componentBlock_partner_withoutPropagator",
+      "SecondQuantization.Common.TwoPointDiagram.not_uncutPropagator_between_externalComponents"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.TwoPointDiagram.componentBlock_partner_withoutPropagator",
+      "SecondQuantization.Common.TwoPointDiagram.not_uncutPropagator_between_externalComponents"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel N S)\n  (B : Finset (SecondQuantization.Common.TwoPointVertex S)) (leg : { leg // d.legInComponent B leg }),\n  ↑((d.restrictedPartner B) leg) = d.pairing.partner ↑leg",
     "standardAxioms": [
       "Classical.choice",
@@ -115423,6 +115431,51 @@
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.External.ExternalSlotSplit.0.SecondQuantization.Common.TwoPointDiagram.externalComponentLegEquiv_partner"
     ],
     "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel N S),\n  d.IsExternallyConnected →\n    ∀ (cut : Fin (2 * (2 * S.card + 1))),\n      ¬(d.vertexGraphWithoutPropagator cut).Reachable (Sum.inl 0) (Sum.inl 1) →\n        ¬(d.vertexGraphWithoutPropagator cut).Reachable (SecondQuantization.Common.twoPointVertexOfLeg cut)\n            (SecondQuantization.Common.twoPointVertexOfLeg (d.pairing.partner cut))",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.TwoPointDiagram.separatingCut_endpoints_not_reachable",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.CutComponents",
+    "externalAxioms": [],
+    "docString": "If cutting one propagator separates the external vertices of a connected diagram, then\nits two endpoints also become disconnected. In particular, no parallel propagator survives\nbetween those endpoints. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Common.TwoPointDiagram.isBridge_of_separatingCut"
+    ],
+    "dependencies": [
+      "SecondQuantization.Common.TwoPointDiagram.vertexGraph_eq_withoutPropagator_sup_edge",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.CutComponents.0.SecondQuantization.Common.reachable_sup_edge_of_reachable"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.TwoPointDiagram.isBridge_of_separatingCut"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -115878,6 +115931,50 @@
     "completedMention": false,
     "compiledConsumers": [],
     "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel N S) (cut : Fin (2 * (2 * S.card + 1))),\n  d.vertexGraph =\n    d.vertexGraphWithoutPropagator cut ⊔\n      SimpleGraph.edge (SecondQuantization.Common.twoPointVertexOfLeg cut)\n        (SecondQuantization.Common.twoPointVertexOfLeg (d.pairing.partner cut))",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.TwoPointDiagram.vertexGraph_eq_withoutPropagator_sup_edge",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.CutComponents",
+    "externalAxioms": [],
+    "docString": "The original vertex graph is recovered by adjoining the edge underlying the removed\npaired propagator. This equality retains any parallel propagators in the cut graph and lets\nstandard `SimpleGraph` edge-deletion and bridge theory be used downstream. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Common.TwoPointDiagram.isBridge_of_separatingCut",
+      "SecondQuantization.Common.TwoPointDiagram.separatingCut_endpoints_not_reachable"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.TwoPointDiagram.isBridge_of_separatingCut",
+      "SecondQuantization.Common.TwoPointDiagram.separatingCut_endpoints_not_reachable"
+    ],
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -126250,8 +126347,7 @@
       "SecondQuantization.Common.externallySupportedComponentParts_disjoint_vacuumComponentParts",
       "SecondQuantization.Common.hasNoVacuumComponent_iff_vacuumComponentParts_eq_empty",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumComponents.0.SecondQuantization.Common.not_mem_left_of_mem_vacuumComponentPart",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumComponents.0.SecondQuantization.Common.slotSplitVacuumComponentPart_surjective",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumPairImage.0.SecondQuantization.Common.TwoPointDiagram.mixedVacuumPair_firstEndpoint_mem_vacuumLegRange"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumComponents.0.SecondQuantization.Common.slotSplitVacuumComponentPart_surjective"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
@@ -126263,10 +126359,9 @@
       "SecondQuantization.Common.externallySupportedComponentParts_disjoint_vacuumComponentParts",
       "SecondQuantization.Common.hasNoVacuumComponent_iff_vacuumComponentParts_eq_empty",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumComponents.0.SecondQuantization.Common.not_mem_left_of_mem_vacuumComponentPart",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumComponents.0.SecondQuantization.Common.slotSplitVacuumComponentPart_surjective",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumPairImage.0.SecondQuantization.Common.TwoPointDiagram.mixedVacuumPair_firstEndpoint_mem_vacuumLegRange"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumComponents.0.SecondQuantization.Common.slotSplitVacuumComponentPart_surjective"
     ],
-    "compiledConsumerCount": 8,
+    "compiledConsumerCount": 7,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -126301,8 +126396,7 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Common.TwoPointDiagram.ofSlotSplitVacuumNormalizedPairEmbedding_component",
-      "SecondQuantization.Common.TwoPointDiagram.pairingInMixedOrder_partner_legPosition",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumPairImage.0.SecondQuantization.Common.TwoPointDiagram.mixedVacuumPair_firstEndpoint_mem_vacuumLegRange"
+      "SecondQuantization.Common.TwoPointDiagram.pairingInMixedOrder_partner_legPosition"
     ],
     "dependencies": [
       "SecondQuantization.Common.mixedTimeOrderedAtomicLegEquiv_mixedTimeOrderedAtomicLegPosition",
@@ -126312,10 +126406,9 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Common.TwoPointDiagram.ofSlotSplitVacuumNormalizedPairEmbedding_component",
-      "SecondQuantization.Common.TwoPointDiagram.pairingInMixedOrder_partner_legPosition",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumPairImage.0.SecondQuantization.Common.TwoPointDiagram.mixedVacuumPair_firstEndpoint_mem_vacuumLegRange"
+      "SecondQuantization.Common.TwoPointDiagram.pairingInMixedOrder_partner_legPosition"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -127955,7 +128048,7 @@
       "Classical.choice"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -127967,7 +128060,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Common.ExternalInsertionDiagram.preconnected_iff_hasNoVacuumComponent_two"
+      "SecondQuantization.Common.ExternalInsertionDiagram.preconnected_iff_hasNoVacuumComponent_two",
+      "SecondQuantization.Common.TwoPointDiagram.preconnected_iff_isExternallyConnected"
     ],
     "dependencies": [
       "SecondQuantization.Common.hasNoVacuumComponent_of_preconnected"
@@ -127975,9 +128069,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.ExternalInsertionDiagram.preconnected_iff_hasNoVacuumComponent_two"
+      "SecondQuantization.Common.ExternalInsertionDiagram.preconnected_iff_hasNoVacuumComponent_two",
+      "SecondQuantization.Common.TwoPointDiagram.preconnected_iff_isExternallyConnected"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice"
     ],
@@ -128639,8 +128734,7 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Common.TwoPointDiagram.ofSlotSplitVacuumNormalizedPairEmbedding_component",
-      "SecondQuantization.Common.TwoPointDiagram.ofSlotSplit_pairing_partner_vacuumOrderedLeg",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumPairImage.0.SecondQuantization.Common.TwoPointDiagram.mixedVacuumPair_firstEndpoint_mem_vacuumLegRange"
+      "SecondQuantization.Common.TwoPointDiagram.ofSlotSplit_pairing_partner_vacuumOrderedLeg"
     ],
     "dependencies": [
       "SecondQuantization.Common.slotLegSplitting_right_interaction"
@@ -128649,10 +128743,9 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Common.TwoPointDiagram.ofSlotSplitVacuumNormalizedPairEmbedding_component",
-      "SecondQuantization.Common.TwoPointDiagram.ofSlotSplit_pairing_partner_vacuumOrderedLeg",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumPairImage.0.SecondQuantization.Common.TwoPointDiagram.mixedVacuumPair_firstEndpoint_mem_vacuumLegRange"
+      "SecondQuantization.Common.TwoPointDiagram.ofSlotSplit_pairing_partner_vacuumOrderedLeg"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -151640,7 +151733,7 @@
     "dependents": [
       "SecondQuantization.Fermionic.flatVertexLegPairValue_eq",
       "SecondQuantization.Fermionic.orderedQuarticPairValue_eq",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.DiagramRegularity.0.SecondQuantization.Fermionic.continuous_orderedExternalInsertionLegPairContraction",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.DiagramRegularity.0.SecondQuantization.Fermionic.ExternalInsertionWickDiagram.continuous_dysonFixedTimeChamberRepresentative",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Analysis.DiagramRegularity.0.SecondQuantization.Fermionic.continuous_orderedTwoPointLegPairContraction"
     ],
     "dependencies": [
@@ -151653,7 +151746,7 @@
     "compiledConsumers": [
       "SecondQuantization.Fermionic.flatVertexLegPairValue_eq",
       "SecondQuantization.Fermionic.orderedQuarticPairValue_eq",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.DiagramRegularity.0.SecondQuantization.Fermionic.continuous_orderedExternalInsertionLegPairContraction",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.DiagramRegularity.0.SecondQuantization.Fermionic.ExternalInsertionWickDiagram.continuous_dysonFixedTimeChamberRepresentative",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Analysis.DiagramRegularity.0.SecondQuantization.Fermionic.continuous_orderedTwoPointLegPairContraction"
     ],
     "compiledConsumerCount": 4,
@@ -152599,9 +152692,9 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "SecondQuantization.Fermionic.vacuumFreeExternalInsertionReplicaPolynomial_coeff_one",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ReplicaProjection",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalComponentReplicaPolynomial",
     "externalAxioms": [],
-    "docString": "The replica-linear coefficient is precisely the sum of signed amplitudes\nwhose external vertices are all mutually connected. Pure vacuum components\nare excluded by the input diagram family, not by replica projection. ",
+    "docString": "For a nonempty family of external insertions, the degree-one coefficient is\nthe sum of signed amplitudes whose external vertices are mutually connected. Pure vacuum components\nare excluded by the input diagram family, not by replica projection. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [],
@@ -152882,6 +152975,7 @@
     "directWrapperOf": null,
     "dependents": [
       "Combinatorics.Pairing.vertexGraph_componentBlock_partner",
+      "SecondQuantization.Common.TwoPointDiagram.componentBlock_partner_withoutPropagator",
       "SimpleGraph.componentBlock_eq_iff_reachable"
     ],
     "dependencies": [
@@ -152891,9 +152985,10 @@
     "completedMention": false,
     "compiledConsumers": [
       "Combinatorics.Pairing.vertexGraph_componentBlock_partner",
+      "SecondQuantization.Common.TwoPointDiagram.componentBlock_partner_withoutPropagator",
       "SimpleGraph.componentBlock_eq_iff_reachable"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -152992,8 +153087,9 @@
       "SecondQuantization.Common.ExternalInsertionDiagram.allExternalVerticesConnected_two",
       "SecondQuantization.Common.ExternalInsertionDiagram.externalComponentPartition_part_eq_toLeft_componentBlock",
       "SecondQuantization.Common.ExternalInsertionDiagram.externallySupportedInteractionPart_ofSlotSplit",
-      "SecondQuantization.Common.ExternalInsertionDiagram.hasNoVacuumComponent_externalSupportDiagram",
+      "SecondQuantization.Common.ExternalInsertionDiagram.hasNoVacuumComponent_externalBearingDiagram",
       "SecondQuantization.Common.ExternalInsertionDiagram.hasNoVacuumComponent_iff_externallySupportedInteractionPart_eq",
+      "SecondQuantization.Common.TwoPointDiagram.not_uncutPropagator_between_externalComponents",
       "SecondQuantization.Common.allExternalVerticesConnected_iff_supportedComponentParts_eq_singleton",
       "SecondQuantization.Common.componentBlock_slotSplitVacuumVertex_mem_vacuumComponentParts",
       "SecondQuantization.Common.hasNoVacuumComponent_iff_forall_component_meetsExternal",
@@ -153012,8 +153108,9 @@
       "SecondQuantization.Common.ExternalInsertionDiagram.allExternalVerticesConnected_two",
       "SecondQuantization.Common.ExternalInsertionDiagram.externalComponentPartition_part_eq_toLeft_componentBlock",
       "SecondQuantization.Common.ExternalInsertionDiagram.externallySupportedInteractionPart_ofSlotSplit",
-      "SecondQuantization.Common.ExternalInsertionDiagram.hasNoVacuumComponent_externalSupportDiagram",
+      "SecondQuantization.Common.ExternalInsertionDiagram.hasNoVacuumComponent_externalBearingDiagram",
       "SecondQuantization.Common.ExternalInsertionDiagram.hasNoVacuumComponent_iff_externallySupportedInteractionPart_eq",
+      "SecondQuantization.Common.TwoPointDiagram.not_uncutPropagator_between_externalComponents",
       "SecondQuantization.Common.allExternalVerticesConnected_iff_supportedComponentParts_eq_singleton",
       "SecondQuantization.Common.componentBlock_slotSplitVacuumVertex_mem_vacuumComponentParts",
       "SecondQuantization.Common.hasNoVacuumComponent_iff_forall_component_meetsExternal",
@@ -153025,7 +153122,7 @@
       "SimpleGraph.self_mem_componentBlock",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.External.ExternalConnectivity.0.SecondQuantization.Common.TwoPointDiagram.externalOne_not_mem_externalComponentPart"
     ],
-    "compiledConsumerCount": 15,
+    "compiledConsumerCount": 16,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -154555,7 +154652,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (factor : ℝ × ℝ → ℂ) (radius ε : ℝ),\n  ContinuousWithinAt factor (Set.Icc (-radius) radius ×ˢ Set.Icc 0 1) (0, 0) →\n    0 < ε →\n      ∃ δ > 0,\n        ∀ (offset broadening : ℝ),\n          (offset, broadening) ∈ Set.Icc (-radius) radius ×ˢ Set.Icc 0 1 →\n            |offset| < δ → |broadening| < δ → ‖factor (offset, broadening) - factor (0, 0)‖ < ε",
+    "statement": "∀ (factor : ℝ × ℝ → ℂ) (radius etaMax ε : ℝ),\n  ContinuousWithinAt factor (Set.Icc (-radius) radius ×ˢ Set.Icc 0 etaMax) (0, 0) →\n    0 < ε →\n      ∃ δ > 0,\n        ∀ (offset broadening : ℝ),\n          (offset, broadening) ∈ Set.Icc (-radius) radius ×ˢ Set.Icc 0 etaMax →\n            |offset| < δ → |broadening| < δ → ‖factor (offset, broadening) - factor (0, 0)‖ < ε",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -154597,6 +154694,52 @@
   },
   {
     "terminal": false,
+    "statement": "∀ (factor : ℝ × ℝ → ℂ) (radius broadening : ℝ),\n  0 ≤ radius →\n    broadening ≠ 0 →\n      ContinuousOn (fun offset => factor (offset, broadening)) (Set.Icc (-radius) radius) →\n        ∫ (offset : ℝ) in -radius..radius,\n            ↑(Lorentzian.spectralKernel offset broadening) * factor (offset, broadening) =\n          Lorentzian.regularFactorErrorIntegral✝ factor radius broadening +\n            (∫ (offset : ℝ) in -radius..radius, Lorentzian.spectralKernel offset broadening) • factor (0, 0)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Analysis.Lorentzian.Pole.0.Lorentzian.integral_spectralKernel_mul_eq_error_add_mass_smul_pole",
+    "module": "LeanCondensedMatter.Analysis.Lorentzian.Pole",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.Analysis.Lorentzian.Pole.0.Lorentzian.tendsto_integral_spectralKernel_mul_of_bounded"
+    ],
+    "dependencies": [
+      "Lorentzian.continuous_spectralKernel_fixed_broadening",
+      "_private.LeanCondensedMatter.Analysis.Lorentzian.Pole.0.Lorentzian.intervalIntegrable_regularFactorErrorIntegrand",
+      "_private.LeanCondensedMatter.Analysis.Lorentzian.Pole.0.Lorentzian.real_smul_complex_eq_mul"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.Analysis.Lorentzian.Pole.0.Lorentzian.tendsto_integral_spectralKernel_mul_of_bounded"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ (factor : ℝ × ℝ → ℂ) (radius broadening : ℝ),\n  0 ≤ radius →\n    ContinuousOn (fun offset => factor (offset, broadening)) (Set.Icc (-radius) radius) →\n      broadening ≠ 0 →\n        IntervalIntegrable (Lorentzian.regularFactorErrorIntegrand✝ factor broadening) MeasureTheory.volume (-radius)\n          radius",
     "standardAxioms": [
       "Classical.choice",
@@ -154616,7 +154759,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "_private.LeanCondensedMatter.Analysis.Lorentzian.Pole.0.Lorentzian.regularFactorIntegral_eq_error_add_mass_smul_pole"
+      "_private.LeanCondensedMatter.Analysis.Lorentzian.Pole.0.Lorentzian.integral_spectralKernel_mul_eq_error_add_mass_smul_pole"
     ],
     "dependencies": [
       "_private.LeanCondensedMatter.Analysis.Lorentzian.Pole.0.Lorentzian.continuousOn_regularFactorErrorIntegrand"
@@ -154624,7 +154767,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "_private.LeanCondensedMatter.Analysis.Lorentzian.Pole.0.Lorentzian.regularFactorIntegral_eq_error_add_mass_smul_pole"
+      "_private.LeanCondensedMatter.Analysis.Lorentzian.Pole.0.Lorentzian.integral_spectralKernel_mul_eq_error_add_mass_smul_pole"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -154841,13 +154984,13 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "_private.LeanCondensedMatter.Analysis.Lorentzian.Pole.0.Lorentzian.regularFactorIntegral_eq_error_add_mass_smul_pole"
+      "_private.LeanCondensedMatter.Analysis.Lorentzian.Pole.0.Lorentzian.integral_spectralKernel_mul_eq_error_add_mass_smul_pole"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "_private.LeanCondensedMatter.Analysis.Lorentzian.Pole.0.Lorentzian.regularFactorIntegral_eq_error_add_mass_smul_pole"
+      "_private.LeanCondensedMatter.Analysis.Lorentzian.Pole.0.Lorentzian.integral_spectralKernel_mul_eq_error_add_mass_smul_pole"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -154908,36 +155051,36 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (factor : ℝ × ℝ → ℂ) (radius broadening : ℝ),\n  0 ≤ radius →\n    broadening ≠ 0 →\n      ContinuousOn (fun offset => factor (offset, broadening)) (Set.Icc (-radius) radius) →\n        Lorentzian.regularFactorIntegral factor radius broadening =\n          Lorentzian.regularFactorErrorIntegral✝ factor radius broadening +\n            (∫ (offset : ℝ) in -radius..radius, Lorentzian.spectralKernel offset broadening) • factor (0, 0)",
+    "statement": "∀ (factor : ℝ × ℝ → ℂ) (radius etaMax : ℝ),\n  0 < radius →\n    0 < etaMax →\n      ContinuousWithinAt factor (Set.Icc (-radius) radius ×ˢ Set.Icc 0 etaMax) (0, 0) →\n        (∀ (broadening : ℝ),\n            0 < broadening →\n              broadening ≤ etaMax →\n                ContinuousOn (fun offset => factor (offset, broadening)) (Set.Icc (-radius) radius)) →\n          (∃ C, 0 ≤ C ∧ ∀ p ∈ Set.Icc (-radius) radius ×ˢ Set.Icc 0 etaMax, ‖factor p - factor (0, 0)‖ ≤ C) →\n            Filter.Tendsto\n              (fun broadening =>\n                ∫ (offset : ℝ) in -radius..radius,\n                  ↑(Lorentzian.spectralKernel offset broadening) * factor (offset, broadening))\n              (nhdsWithin 0 (Set.Ioi 0)) (nhds (Real.pi • factor (0, 0)))",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": true,
+    "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Analysis.Lorentzian.Pole.0.Lorentzian.regularFactorIntegral_eq_error_add_mass_smul_pole",
+    "name": "_private.LeanCondensedMatter.Analysis.Lorentzian.Pole.0.Lorentzian.tendsto_integral_spectralKernel_mul_of_bounded",
     "module": "LeanCondensedMatter.Analysis.Lorentzian.Pole",
     "externalAxioms": [],
-    "docString": null,
+    "docString": "A Lorentzian approximate identity extracts the pole value of any complex regular factor that is\njointly continuous at `(0,0)`, has continuous nonzero-broadening slices on the fixed symmetric\nwindow, and has a uniform bound on its deviation from the pole value over that window for\n`0 ≤ broadening ≤ etaMax`. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "_private.LeanCondensedMatter.Analysis.Lorentzian.Pole.0.Lorentzian.tendsto_regularFactorIntegral_of_bounded"
+      "Lorentzian.tendsto_integral_spectralKernel_mul"
     ],
     "dependencies": [
-      "Lorentzian.continuous_spectralKernel_fixed_broadening",
-      "_private.LeanCondensedMatter.Analysis.Lorentzian.Pole.0.Lorentzian.intervalIntegrable_regularFactorErrorIntegrand",
-      "_private.LeanCondensedMatter.Analysis.Lorentzian.Pole.0.Lorentzian.real_smul_complex_eq_mul"
+      "Lorentzian.tendsto_integral_spectralKernel_symmetric",
+      "_private.LeanCondensedMatter.Analysis.Lorentzian.Pole.0.Lorentzian.integral_spectralKernel_mul_eq_error_add_mass_smul_pole",
+      "_private.LeanCondensedMatter.Analysis.Lorentzian.Pole.0.Lorentzian.tendsto_regularFactorErrorIntegral_zero"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "_private.LeanCondensedMatter.Analysis.Lorentzian.Pole.0.Lorentzian.tendsto_regularFactorIntegral_of_bounded"
+      "Lorentzian.tendsto_integral_spectralKernel_mul"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -154954,7 +155097,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (factor : ℝ × ℝ → ℂ) (radius : ℝ),\n  0 < radius →\n    ContinuousWithinAt factor (Set.Icc (-radius) radius ×ˢ Set.Icc 0 1) (0, 0) →\n      (∀ (broadening : ℝ),\n          0 < broadening →\n            broadening ≤ 1 → ContinuousOn (fun offset => factor (offset, broadening)) (Set.Icc (-radius) radius)) →\n        (∃ C, 0 ≤ C ∧ ∀ p ∈ Set.Icc (-radius) radius ×ˢ Set.Icc 0 1, ‖factor p - factor (0, 0)‖ ≤ C) →\n          Filter.Tendsto (fun broadening => Lorentzian.regularFactorErrorIntegral✝ factor radius broadening)\n            (nhdsWithin 0 (Set.Ioi 0)) (nhds 0)",
+    "statement": "∀ (factor : ℝ × ℝ → ℂ) (radius etaMax : ℝ),\n  0 < radius →\n    0 < etaMax →\n      ContinuousWithinAt factor (Set.Icc (-radius) radius ×ˢ Set.Icc 0 etaMax) (0, 0) →\n        (∀ (broadening : ℝ),\n            0 < broadening →\n              broadening ≤ etaMax →\n                ContinuousOn (fun offset => factor (offset, broadening)) (Set.Icc (-radius) radius)) →\n          (∃ C, 0 ≤ C ∧ ∀ p ∈ Set.Icc (-radius) radius ×ˢ Set.Icc 0 etaMax, ‖factor p - factor (0, 0)‖ ≤ C) →\n            Filter.Tendsto (fun broadening => Lorentzian.regularFactorErrorIntegral✝ factor radius broadening)\n              (nhdsWithin 0 (Set.Ioi 0)) (nhds 0)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -154973,7 +155116,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "_private.LeanCondensedMatter.Analysis.Lorentzian.Pole.0.Lorentzian.tendsto_regularFactorIntegral_of_bounded"
+      "_private.LeanCondensedMatter.Analysis.Lorentzian.Pole.0.Lorentzian.tendsto_integral_spectralKernel_mul_of_bounded"
     ],
     "dependencies": [
       "Lorentzian.integral_spectralKernel_symmetric_lt_pi",
@@ -154986,53 +155129,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "_private.LeanCondensedMatter.Analysis.Lorentzian.Pole.0.Lorentzian.tendsto_regularFactorIntegral_of_bounded"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (factor : ℝ × ℝ → ℂ) (radius : ℝ),\n  0 < radius →\n    ContinuousWithinAt factor (Set.Icc (-radius) radius ×ˢ Set.Icc 0 1) (0, 0) →\n      (∀ (broadening : ℝ),\n          0 < broadening →\n            broadening ≤ 1 → ContinuousOn (fun offset => factor (offset, broadening)) (Set.Icc (-radius) radius)) →\n        (∃ C, 0 ≤ C ∧ ∀ p ∈ Set.Icc (-radius) radius ×ˢ Set.Icc 0 1, ‖factor p - factor (0, 0)‖ ≤ C) →\n          Filter.Tendsto (fun broadening => Lorentzian.regularFactorIntegral factor radius broadening)\n            (nhdsWithin 0 (Set.Ioi 0)) (nhds (Real.pi • factor (0, 0)))",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Analysis.Lorentzian.Pole.0.Lorentzian.tendsto_regularFactorIntegral_of_bounded",
-    "module": "LeanCondensedMatter.Analysis.Lorentzian.Pole",
-    "externalAxioms": [],
-    "docString": "A Lorentzian approximate identity extracts the pole value of any complex regular factor that is\njointly continuous at `(0,0)`, has continuous nonzero-broadening slices on the fixed symmetric\nwindow, and has a uniform bound on its deviation from the pole value over that window for\n`0 ≤ broadening ≤ 1`. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "Lorentzian.tendsto_regularFactorIntegral"
-    ],
-    "dependencies": [
-      "Lorentzian.tendsto_integral_spectralKernel_symmetric",
-      "_private.LeanCondensedMatter.Analysis.Lorentzian.Pole.0.Lorentzian.regularFactorIntegral_eq_error_add_mass_smul_pole",
-      "_private.LeanCondensedMatter.Analysis.Lorentzian.Pole.0.Lorentzian.tendsto_regularFactorErrorIntegral_zero"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "Lorentzian.tendsto_regularFactorIntegral"
+      "_private.LeanCondensedMatter.Analysis.Lorentzian.Pole.0.Lorentzian.tendsto_integral_spectralKernel_mul_of_bounded"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -155330,6 +155427,139 @@
     "completedMention": false,
     "compiledConsumers": [],
     "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {ι : Type u_2} [inst_3 : Fintype ι] {κ : Type u_3} (data : BerryGeometry.PointwiseEigenbasisData κ ι H) (μ ν : κ),\n  IsSelfAdjoint (data.hamiltonianDerivative μ) →\n    IsSelfAdjoint (data.hamiltonianDerivative ν) →\n      ∀ {m n : ι},\n        m ≠ n →\n          data.energy m ≠ data.energy n →\n            -2 *\n                (inner ℂ (data.eigenvectorDerivative μ n) (data.eigenbasis m) *\n                    inner ℂ (data.eigenbasis m) (data.eigenvectorDerivative ν n)).im =\n              2 *\n                (data.hamiltonianDerivativeMatrixElement μ m n / ↑(data.energy n - data.energy m) *\n                    (data.hamiltonianDerivativeMatrixElement ν n m / ↑(data.energy n - data.energy m))).im",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Analysis.Operator.BerryGeometry.Curvature.0.BerryGeometry.PointwiseEigenbasisData.curvatureInnerTerm_eq_hamiltonianDerivativeMatrixElements",
+    "module": "LeanCondensedMatter.Analysis.Operator.BerryGeometry.Curvature",
+    "externalAxioms": [],
+    "docString": "An off-diagonal completeness term equals the conventional force-matrix Berry-curvature term.\nThe two real level-spacing factors are intentionally kept separate here; a downstream consumer may\nnormalize them to a squared denominator if desired. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "BerryGeometry.PointwiseEigenbasisData.berryCurvature_eq_sum_hamiltonianDerivativeMatrixElements"
+    ],
+    "dependencies": [
+      "BerryGeometry.PointwiseEigenbasisData.bornFock_inner",
+      "BerryGeometry.PointwiseEigenbasisData.star_hamiltonianDerivativeMatrixElement",
+      "_private.LeanCondensedMatter.Analysis.Operator.BerryGeometry.Curvature.0.BerryGeometry.PointwiseEigenbasisData.innerDerivative_basis_eq_hamiltonianDerivativeMatrixElement_div"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "BerryGeometry.PointwiseEigenbasisData.berryCurvature_eq_sum_hamiltonianDerivativeMatrixElements"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {ι : Type u_2} [inst_3 : Fintype ι] {κ : Type u_3} (data : BerryGeometry.PointwiseEigenbasisData κ ι H) (μ ν : κ)\n  (n : ι),\n  (inner ℂ (data.eigenvectorDerivative μ n) (data.eigenbasis n) *\n        inner ℂ (data.eigenbasis n) (data.eigenvectorDerivative ν n)).im =\n    0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Analysis.Operator.BerryGeometry.Curvature.0.BerryGeometry.PointwiseEigenbasisData.diagonal_innerProduct_im_eq_zero",
+    "module": "LeanCondensedMatter.Analysis.Operator.BerryGeometry.Curvature",
+    "externalAxioms": [],
+    "docString": "The band-diagonal completeness term has zero imaginary part. It therefore does not contribute\nto Berry curvature. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "BerryGeometry.PointwiseEigenbasisData.berryCurvature_eq_sum_hamiltonianDerivativeMatrixElements"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "BerryGeometry.PointwiseEigenbasisData.berryCurvature_eq_sum_hamiltonianDerivativeMatrixElements"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {ι : Type u_2} [inst_3 : Fintype ι] {κ : Type u_3} (data : BerryGeometry.PointwiseEigenbasisData κ ι H) (μ : κ),\n  IsSelfAdjoint (data.hamiltonianDerivative μ) →\n    ∀ {m n : ι},\n      m ≠ n →\n        data.energy m ≠ data.energy n →\n          inner ℂ (data.eigenvectorDerivative μ n) (data.eigenbasis m) =\n            data.hamiltonianDerivativeMatrixElement μ n m / ↑(data.energy n - data.energy m)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Analysis.Operator.BerryGeometry.Curvature.0.BerryGeometry.PointwiseEigenbasisData.innerDerivative_basis_eq_hamiltonianDerivativeMatrixElement_div",
+    "module": "LeanCondensedMatter.Analysis.Operator.BerryGeometry.Curvature",
+    "externalAxioms": [],
+    "docString": "The left derivative-state matrix element is the Hermitian-conjugate Born--Fock term. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.Analysis.Operator.BerryGeometry.Curvature.0.BerryGeometry.PointwiseEigenbasisData.curvatureInnerTerm_eq_hamiltonianDerivativeMatrixElements"
+    ],
+    "dependencies": [
+      "BerryGeometry.PointwiseEigenbasisData.bornFock_inner",
+      "BerryGeometry.PointwiseEigenbasisData.star_hamiltonianDerivativeMatrixElement"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.Analysis.Operator.BerryGeometry.Curvature.0.BerryGeometry.PointwiseEigenbasisData.curvatureInnerTerm_eq_hamiltonianDerivativeMatrixElements"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -180145,14 +180375,14 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Common.ExternalInsertionDiagram.externallySupportedInteractionPart_ofSlotSplit",
-      "SecondQuantization.Common.ExternalInsertionDiagram.hasNoVacuumComponent_externalSupportDiagram"
+      "SecondQuantization.Common.ExternalInsertionDiagram.hasNoVacuumComponent_externalBearingDiagram"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Common.ExternalInsertionDiagram.externallySupportedInteractionPart_ofSlotSplit",
-      "SecondQuantization.Common.ExternalInsertionDiagram.hasNoVacuumComponent_externalSupportDiagram"
+      "SecondQuantization.Common.ExternalInsertionDiagram.hasNoVacuumComponent_externalBearingDiagram"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -181500,6 +181730,46 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {V : Type u_3} (G : SimpleGraph V) (a b : V),\n  G.Reachable a b → ∀ {u v : V}, (G ⊔ SimpleGraph.edge a b).Reachable u v → G.Reachable u v",
+    "standardAxioms": [
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.CutComponents.0.SecondQuantization.Common.reachable_sup_edge_of_reachable",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.CutComponents",
+    "externalAxioms": [],
+    "docString": "Adding an edge between already reachable vertices does not alter graph reachability.\nThis elementary graph argument is kept local until the 1PI cut decomposition needs a more\ngeneral reusable formulation. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Common.TwoPointDiagram.separatingCut_endpoints_not_reachable"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.TwoPointDiagram.separatingCut_endpoints_not_reachable"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel N S),\n  ¬d.ExternalVerticesConnected → Sum.inl 1 ∉ ↑d.externalComponentPart",
     "standardAxioms": [
       "Classical.choice",
@@ -182530,49 +182800,6 @@
       "SecondQuantization.Common.mem_interactionSector_subtype",
       "SecondQuantization.Common.mem_vacuumComponentParts",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumComponents.0.SecondQuantization.Common.not_mem_left_of_mem_vacuumComponentPart"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {n : ℕ} (T : Finset (Fin n))\n  (ext : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel n T)\n  (vac : SecondQuantization.Common.QuarticDiagram InternalLabel n (Finset.univ \\ T)),\n  ext.IsExternallyConnected →\n    ∀ (τ τ' : ℝ) (σ : Fin n → ℝ)\n      (pr : (SecondQuantization.Common.TwoPointDiagram.ofSlotSplit ⋯ ext vac).MixedVacuumPair τ τ' σ),\n      ∃ p,\n        SecondQuantization.Common.mixedTimeOrderedQuarticLegMapPosition\n            (SecondQuantization.Common.slotSplitVacuumSlot T) τ τ' σ p =\n          (↑↑pr).1",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumPairImage.0.SecondQuantization.Common.TwoPointDiagram.mixedVacuumPair_firstEndpoint_mem_vacuumLegRange",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumPairImage",
-    "externalAxioms": [],
-    "docString": "A mixed pair in a vacuum component starts on the quartic side of the\nreassembled slot split. This is the transport of the time-independent\nvacuum-leg classification into mixed-time coordinates. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "SecondQuantization.Common.TwoPointDiagram.ofSlotSplit_vacuumLeg_mem_right",
-      "SecondQuantization.Common.mem_vacuumComponentParts",
-      "SecondQuantization.Common.mixedTimeAmbientPositionEquiv_mixedTimeOrderedAtomicLegPosition",
-      "SecondQuantization.Common.slotSplitVacuumOrderedLeg_eq_slotSplitRight"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -186573,7 +186800,7 @@
       "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.measurableLocallyBounded_dysonFixedTimeAmplitude"
     ],
     "dependencies": [
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.DiagramRegularity.0.SecondQuantization.Fermionic.continuous_orderedExternalInsertionLegPairContraction"
+      "SecondQuantization.Fermionic.timedFieldPairContraction_eq"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -186624,50 +186851,6 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.measurableLocallyBounded_dysonFixedTimeAmplitude"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] {E n : ℕ} (ε : Mode → ℝ) (β : ℝ)\n  (externalLabel : Fin (2 * E) → SecondQuantization.Fermionic.ExternalFieldLabel Mode) (externalTime : Fin (2 * E) → ℝ)\n  (q : Fin n → SecondQuantization.Common.QuarticVertexLabel Mode)\n  (a b : SecondQuantization.Common.OrderedExternalInsertionLeg E n),\n  Continuous fun σ =>\n    SecondQuantization.Fermionic.timedFieldPairContraction ε β\n      (SecondQuantization.Fermionic.orderedExternalInsertionLegField externalLabel externalTime q σ a)\n      (SecondQuantization.Fermionic.orderedExternalInsertionLegField externalLabel externalTime q σ b)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.DiagramRegularity.0.SecondQuantization.Fermionic.continuous_orderedExternalInsertionLegPairContraction",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.DiagramRegularity",
-    "externalAxioms": [],
-    "docString": "For two fixed canonical legs, the Gibbs contraction is continuous in all\ninteraction-time coordinates. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.DiagramRegularity.0.SecondQuantization.Fermionic.ExternalInsertionWickDiagram.continuous_dysonFixedTimeChamberRepresentative"
-    ],
-    "dependencies": [
-      "SecondQuantization.Fermionic.timedFieldPairContraction_eq"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.DiagramRegularity.0.SecondQuantization.Fermionic.ExternalInsertionWickDiagram.continuous_dysonFixedTimeChamberRepresentative"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
