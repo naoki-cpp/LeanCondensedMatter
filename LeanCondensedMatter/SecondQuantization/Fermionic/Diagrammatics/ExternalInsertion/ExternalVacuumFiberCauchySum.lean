@@ -66,18 +66,13 @@ private theorem vacuumFreeExternalInsertionDysonCoefficient_eq_sum_if
     _ = ∑ ext : X,
           if ext.1.externalLabel = externalLabel then
             ext.1.dysonAmplitude ε β g externalTime else 0 := by
-      calc
-        _ = ∑ ext ∈ (Finset.univ : Finset X).filter
-              (fun ext => ext.1.externalLabel = externalLabel),
-              ext.1.dysonAmplitude ε β g externalTime := by
-            rw [Finset.sum_subtype
-              (p := fun ext : X => ext.1.externalLabel = externalLabel)
-              ((Finset.univ : Finset X).filter
-                (fun ext => ext.1.externalLabel = externalLabel))
-              (fun _ => by simp)
-              (fun ext : X => ext.1.dysonAmplitude ε β g externalTime)]
-        _ = _ := by
-          simp only [Finset.sum_filter]
+      simpa only [Finset.sum_filter] using
+        (Finset.sum_subtype
+          (p := fun ext : X => ext.1.externalLabel = externalLabel)
+          ((Finset.univ : Finset X).filter
+            (fun ext => ext.1.externalLabel = externalLabel))
+          (fun _ => by simp)
+          (fun ext : X => ext.1.dysonAmplitude ε β g externalTime)).symm
 
 open Classical in
 /-- The sum over all fixed-cardinality external-support fibers is one factor
