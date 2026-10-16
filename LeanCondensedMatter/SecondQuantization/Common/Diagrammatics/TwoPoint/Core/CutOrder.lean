@@ -189,8 +189,10 @@ theorem TwoPointDiagram.externalSource_componentBlocks_eq_iff_edge_eq
     have hends := d.separatingCut_endpoints_not_reachable hconnected cut₂ hsep₂
     have hneEnds : a ≠ b := by
       intro hab
-      exact hends (by simpa [hab] using
-        (SimpleGraph.Reachable.refl a : H₂.Reachable a a))
+      apply hends
+      change H₂.Reachable a b
+      rw [hab]
+      exact SimpleGraph.Reachable.refl _
     have hG : d.vertexGraph.Adj a b := ⟨hneEnds, cut₂, rfl, rfl⟩
     have hab : H₁.Adj a b := by
       rw [← hdel₁]
