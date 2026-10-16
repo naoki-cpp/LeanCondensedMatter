@@ -57,8 +57,9 @@ theorem componentExternalOrderSign_eq_of_blockOrder
     d.componentExternalShuffle.orderedBlockInversionCount_modEq_of_even_sizes
       order₁ order₂ (fun B => ⟨d.externalPairCount B, by omega⟩)
   unfold componentExternalOrderSign
-  change (-1 : ℂ) ^ _ = (-1 : ℂ) ^ _
-  exact pow_eq_of_mod_two_eq (by norm_num) hmod
+  exact pow_eq_of_mod_two_eq
+    (ζ := (Common.Statistics.fermion.zetaInt : ℂ))
+    (by norm_num [Common.Statistics.zetaInt_fermion]) hmod
 
 /-- The external-order fermionic sign only involves connected components
 meeting the external sector. Pure-vacuum components may occur anywhere in
