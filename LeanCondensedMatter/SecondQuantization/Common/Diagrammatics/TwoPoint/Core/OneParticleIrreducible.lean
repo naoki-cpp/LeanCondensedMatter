@@ -68,7 +68,8 @@ theorem TwoPointDiagram.vertexGraphWithoutPropagator_partner
     d.vertexGraphWithoutPropagator (d.pairing.partner cut) =
       d.vertexGraphWithoutPropagator cut := by
   apply SimpleGraph.ext
-  intro v w
+  funext v w
+  apply propext
   constructor
   · rintro ⟨hvw, leg, hleg, hpartner, hv, hw⟩
     refine ⟨hvw, leg, ?_, ?_, hv, hw⟩
@@ -102,10 +103,13 @@ theorem TwoPointDiagram.isInternalPropagator_partner_iff
     d.IsInternalPropagator (d.pairing.partner cut) ↔
       d.IsInternalPropagator cut := by
   constructor
-  · rintro ⟨hleft, hright⟩
-    exact ⟨by simpa only [d.pairing.partner_involutive] using hright, hleft⟩
-  · rintro ⟨hleft, hright⟩
-    exact ⟨hright, by simpa only [d.pairing.partner_involutive] using hleft⟩
+  · rintro ⟨hleft, ⟨w, hw⟩⟩
+    rw [d.pairing.partner_involutive cut] at hw
+    exact ⟨⟨w, hw⟩, hleft⟩
+  · rintro ⟨⟨v, hv⟩, hright⟩
+    refine ⟨hright, ⟨v, ?_⟩⟩
+    rw [d.pairing.partner_involutive cut]
+    exact hv
 
 /-- A connected two-point diagram is one-particle reducible when cutting one internal
 propagator disconnects its external vertices. -/
