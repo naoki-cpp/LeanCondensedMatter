@@ -11,7 +11,7 @@ set_option linter.style.header false
 
 This module connects the concrete ordered-`xy` ladder provenance isolated upstream to the Ado et al.
 EPL 111, 37004 (2015), Eq. (12a-c) non-crossing decomposition (intrinsic, side-jump, and
-non-crossing skew)
+non-crossing skew scattering)
 ([doi:10.1209/0295-5075/111/37004](https://doi.org/10.1209/0295-5075/111/37004)).
 That paper is also the model-specific provenance for the crossed `X`/`Psi` correction, which is
 separate from Eq. (12a-c) in the paper (see its Eqs. (17-18)). The theorem-level expressions below
@@ -28,11 +28,14 @@ map one-to-one to mechanisms. Instead, with `P₀` the `r_y Γ_x` contribution a
 
 ```text
 P₀ = intrinsic + 3/4 · side-jump-type,
-P₁ = 1/4 · side-jump-type + Gaussian-skew-type.
+P₁ = 1/4 · side-jump-type + non-crossing-skew-type.
 ```
 
-Thus the side-jump-type contribution is distributed across both ladder provenance terms. This
-classification uses the repository `Gᴿ Γ Gᴬ` orientation already fixed by the upstream Středa chain.
+Thus the side-jump-type contribution is distributed across both ladder provenance terms. The
+`nonCrossingSkewType` contribution is specifically the paper's Eq. (12c), denoted
+`σ_xy^(ss-nc)`, rather than all skew scattering from Gaussian disorder: crossed Gaussian `X/Ψ`
+diagrams also contribute to skew scattering at leading order. This classification uses the
+repository `Gᴿ Γ Gᴬ` orientation already fixed by the upstream Středa chain.
 Crossed `X/Ψ` diagrams and non-Gaussian `C3` skew scattering remain outside this module.
 -/
 
@@ -132,17 +135,19 @@ theorem tendsto_finiteCutoffContinuumBornDysonOrderedXYRungSolvedProvenanceCondu
 from I. A. Ado et al., *EPL* **111**, 37004 (2015),
 [doi:10.1209/0295-5075/111/37004](https://doi.org/10.1209/0295-5075/111/37004).
 The paper's Eqs. (12a-c) are the intrinsic, side-jump, and non-crossing-skew components; the
-theorem below only formalizes the ordered finite-cutoff provenance partition.
+theorem below algebraically partitions the weak-disorder limit of the ordered finite-cutoff
+ladder provenance. This does not derive separate microscopic side-jump collision or
+skew-scattering kernels.
 The side-jump-type term is shared between the two provenance components rather than attached to only
-one of them. The `sideJumpType` and `gaussianSkewType` names are local to this theorem statement and
+one of them. The `sideJumpType` and `nonCrossingSkewType` names are local to this theorem statement and
 do not create primitive mechanism APIs. -/
-theorem orderedXYRungSolvedProvenanceConductivityLimit_eq_intrinsic_sideJumpType_gaussianSkewType_partition
+theorem orderedXYRungSolvedProvenanceConductivityLimit_eq_intrinsic_sideJumpType_nonCrossingSkewType_partition
     (e hbar m probeEnergy : ℝ) (hhbar : hbar ≠ 0) (hprobe : probeEnergy ≠ 0) :
     let sideJumpType : ℝ :=
       -(e ^ 2 / planckFromReduced hbar) *
         (2 * m * (probeEnergy ^ 2 - m ^ 2) /
           (probeEnergy * (probeEnergy ^ 2 + 3 * m ^ 2)))
-    let gaussianSkewType : ℝ :=
+    let nonCrossingSkewType : ℝ :=
       -(e ^ 2 / planckFromReduced hbar) *
         (3 * m * (probeEnergy ^ 2 - m ^ 2) ^ 2 /
           (2 * probeEnergy * (probeEnergy ^ 2 + 3 * m ^ 2) ^ 2))
@@ -154,7 +159,7 @@ theorem orderedXYRungSolvedProvenanceConductivityLimit_eq_intrinsic_sideJumpType
       inPlaneCoefficientVector
         (((intrinsicHallConductivity e hbar m probeEnergy +
           (3 / 4 : ℝ) * sideJumpType : ℝ) : ℂ))
-        ((((1 / 4 : ℝ) * sideJumpType + gaussianSkewType : ℝ) : ℂ)) := by
+        ((((1 / 4 : ℝ) * sideJumpType + nonCrossingSkewType : ℝ) : ℂ)) := by
   dsimp
   have hprobeSq : 0 < probeEnergy ^ 2 := sq_pos_of_ne_zero hprobe
   have hden : probeEnergy ^ 2 + 3 * m ^ 2 ≠ 0 := by
@@ -190,19 +195,19 @@ theorem orderedXYRungSolvedProvenanceConductivityLimit_eq_intrinsic_sideJumpType
   · simpa [inPlaneCoefficientVector] using congrArg Complex.ofReal hx
   · simpa [inPlaneCoefficientVector] using congrArg Complex.ofReal hy
 
-/-- The theorem-level intrinsic, side-jump-type, and Gaussian-skew-type pieces sum to the completed
+/-- The theorem-level intrinsic, side-jump-type, and non-crossing-skew-type pieces sum to the completed
 non-crossing Hall conductivity. -/
-theorem intrinsic_sideJumpType_gaussianSkewType_sum_eq_nonCrossingHallConductivity
+theorem intrinsic_sideJumpType_nonCrossingSkewType_sum_eq_nonCrossingHallConductivity
     (e hbar m probeEnergy : ℝ) (hhbar : hbar ≠ 0) (hprobe : probeEnergy ≠ 0) :
     let sideJumpType : ℝ :=
       -(e ^ 2 / planckFromReduced hbar) *
         (2 * m * (probeEnergy ^ 2 - m ^ 2) /
           (probeEnergy * (probeEnergy ^ 2 + 3 * m ^ 2)))
-    let gaussianSkewType : ℝ :=
+    let nonCrossingSkewType : ℝ :=
       -(e ^ 2 / planckFromReduced hbar) *
         (3 * m * (probeEnergy ^ 2 - m ^ 2) ^ 2 /
           (2 * probeEnergy * (probeEnergy ^ 2 + 3 * m ^ 2) ^ 2))
-    intrinsicHallConductivity e hbar m probeEnergy + sideJumpType + gaussianSkewType =
+    intrinsicHallConductivity e hbar m probeEnergy + sideJumpType + nonCrossingSkewType =
       nonCrossingHallConductivity e hbar m probeEnergy := by
   dsimp
   rw [nonCrossingHallConductivity_eq_ado_eq12_sum e hbar m probeEnergy hhbar hprobe]

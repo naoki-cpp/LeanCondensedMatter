@@ -84,8 +84,10 @@ Annotated reference list. One entry per source: full citation, what it is used f
   massive Dirac fermions.” *EPL* **111**(3), 37004 (2015). DOI:
   [10.1209/0295-5075/111/37004](https://doi.org/10.1209/0295-5075/111/37004).
   - **Project use:** Model-specific provenance for the Eq. (12a–c) non-crossing intrinsic,
-    side-jump, and skew components; the crossed `X`/`Psi` disorder-line correction is treated
-    separately in the paper's Eqs. (17–18) and documented in
+    side-jump, and **non-crossing skew** components (respectively). Equation (12c) is
+    `σ_xy^(ss-nc)`, not all Gaussian-disorder skew scattering: the crossed `X`/`Psi` contributions
+    also enter the skew-scattering mechanism at leading order and are treated separately
+    in the paper's Eqs. (17–18) and documented in
     `Models/MassiveDirac/Conductivity/Hall/NonCrossingMechanismClassification.lean`.
   - **Caveat:** The project formalizes ordered finite-cutoff ladder expressions, not the paper's
     full diagrammatic calculation or a general equivalence of mechanism decompositions.
