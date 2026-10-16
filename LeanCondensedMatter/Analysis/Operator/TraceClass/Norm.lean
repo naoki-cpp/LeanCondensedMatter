@@ -67,6 +67,14 @@ theorem traceNorm_proof_irrel {T : H →L[ℂ] H} (hT hT' : IsTraceClass T) :
     hT.traceNorm = hT'.traceNorm := by
   exact IsHilbertSchmidt.normSq_proof_irrel hT hT'
 
+/-- Equal trace-class operators have equal trace norms, independently of the
+chosen proofs of trace-class membership. -/
+theorem traceNorm_congr
+    {S R : H →L[ℂ] H} (hS : IsTraceClass S) (hR : IsTraceClass R) (hSR : S = R) :
+    hS.traceNorm = hR.traceNorm := by
+  subst R
+  exact IsTraceClass.traceNorm_proof_irrel _ _
+
 /-- The trace norm is nonnegative. -/
 theorem traceNorm_nonneg {T : H →L[ℂ] H} (hT : IsTraceClass T) :
     0 ≤ hT.traceNorm :=
