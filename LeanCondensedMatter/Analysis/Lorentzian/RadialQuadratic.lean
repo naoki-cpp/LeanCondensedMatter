@@ -39,7 +39,8 @@ theorem integral_radialQuadraticLorentzian_eq_arctan
     nlinarith [sq_pos_of_ne_zero hB, sq_nonneg u]
   have hderiv (p : ℝ) :
       HasDerivAt (fun q : ℝ => v ^ 2 * q ^ 2 - A) (2 * v ^ 2 * p) p := by
-    convert ((((hasDerivAt_id p).pow 2).const_mul (v ^ 2)).sub_const A) using 1 <;> ring
+    simpa [mul_assoc, mul_left_comm, mul_comm] using
+      ((((hasDerivAt_id p).pow 2).const_mul (v ^ 2)).sub_const A)
   have hg : Continuous (fun u : ℝ => (B ^ 2 + u ^ 2)⁻¹) :=
     ((continuous_const.add (continuous_id.pow 2))).inv₀ hden
   have hsub :
@@ -66,7 +67,6 @@ theorem integral_radialQuadraticLorentzian_eq_arctan
       rw [show (A - v ^ 2 * p ^ 2) ^ 2 + B ^ 2 =
         B ^ 2 + (v ^ 2 * p ^ 2 - A) ^ 2 by ring]
       field_simp [hv2, hden (v ^ 2 * p ^ 2 - A)]
-      ring
     _ = (2 * v ^ 2)⁻¹ *
           (∫ u in -A..(v ^ 2 * pMax ^ 2 - A), (B ^ 2 + u ^ 2)⁻¹) := by
       rw [hsub]
