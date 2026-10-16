@@ -294,7 +294,7 @@
       "name": "LeanCondensedMatter.Analysis.Lorentzian.RadialQuadratic",
       "sourceFile": "LeanCondensedMatter/Analysis/Lorentzian/RadialQuadratic.lean",
       "imports": [],
-      "externalImportCount": 4
+      "externalImportCount": 3
     },
     {
       "name": "LeanCondensedMatter.Analysis.Lorentzian.Weighted",
@@ -5604,6 +5604,15 @@
       "externalImportCount": 1
     },
     {
+      "name": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.CutOrder",
+      "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Diagrammatics/TwoPoint/Core/CutOrder.lean",
+      "imports": [
+        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.CutSides",
+        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.SeparatingPaths"
+      ],
+      "externalImportCount": 0
+    },
+    {
       "name": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.CutSides",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Diagrammatics/TwoPoint/Core/CutSides.lean",
       "imports": [
@@ -5833,6 +5842,7 @@
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Components.ComponentDecomposition",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Components.ComponentRestriction",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.CutComponents",
+        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.CutOrder",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.CutSides",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.Diagram",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.OneParticleIrreducible",
