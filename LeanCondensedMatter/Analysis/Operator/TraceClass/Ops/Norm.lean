@@ -161,12 +161,6 @@ private theorem traceNorm_comp_left_le_of_norm_le_one
             (ContinuousLinearMap.adjoint W) (U (d i)) (T (d i))
     _ ≤ hT.traceNorm := hpair.2
 
-private theorem traceNorm_eq_of_eq
-    {S R : H →L[ℂ] H} (hS : IsTraceClass S) (hR : IsTraceClass R) (hSR : S = R) :
-    hS.traceNorm = hR.traceNorm := by
-  subst R
-  exact IsTraceClass.traceNorm_proof_irrel _ _
-
 /-- Left multiplication by a bounded operator scales the trace norm by at most its
 operator norm. -/
 theorem traceNorm_comp_left_le
@@ -177,7 +171,7 @@ theorem traceNorm_comp_left_le
     have hzero :
         (hT.comp_left (0 : H →L[ℂ] H)).traceNorm =
           (isTraceClass_zero (H := H)).traceNorm :=
-      traceNorm_eq_of_eq (hT.comp_left (0 : H →L[ℂ] H))
+      traceNorm_congr (hT.comp_left (0 : H →L[ℂ] H))
         (isTraceClass_zero (H := H)) (by simp)
     rw [hzero, traceNorm_zero]
     simp
@@ -198,7 +192,7 @@ theorem traceNorm_comp_left_le
     calc
       (hT.comp_left W).traceNorm =
           ((hT.comp_left W₀).smul (‖W‖ : ℂ)).traceNorm :=
-        traceNorm_eq_of_eq (hT.comp_left W)
+        traceNorm_congr (hT.comp_left W)
           ((hT.comp_left W₀).smul (‖W‖ : ℂ)) hprod
       _ = ‖(‖W‖ : ℂ)‖ * (hT.comp_left W₀).traceNorm :=
         (hT.comp_left W₀).traceNorm_smul (‖W‖ : ℂ)
@@ -224,7 +218,7 @@ theorem traceNorm_comp_right_le
         (hT.comp_right W).adjoint.traceNorm :=
       (hT.comp_right W).traceNorm_adjoint.symm
     _ = (hT.adjoint.comp_left (ContinuousLinearMap.adjoint W)).traceNorm :=
-      traceNorm_eq_of_eq (hT.comp_right W).adjoint
+      traceNorm_congr (hT.comp_right W).adjoint
         (hT.adjoint.comp_left (ContinuousLinearMap.adjoint W)) hprodAdj
     _ ≤ ‖ContinuousLinearMap.adjoint W‖ * hT.adjoint.traceNorm := hleft
     _ = ‖W‖ * hT.traceNorm := by
