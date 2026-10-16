@@ -105,17 +105,27 @@ theorem regularizedBastinTraceIntegrand_eq_projectorBastinTraceIntegrand
   have hretarded :
       retardedResolvent (hamiltonianOperator v m px py) probeEnergy broadening =
         projectorResolvent (retardedSpectralParameter probeEnergy broadening) v m px py := by
-    simpa only [retardedResolvent, retardedSpectralParameter,
+    simpa only [projectorResolvent, retardedResolvent, retardedSpectralParameter,
       spectralResolvent_retarded_ofRegulator, spectralParameter_retarded_ofRegulator] using
-      resolvent_spectralParameterOfRegulator_eq_projectorResolvent
-        v m px py probeEnergy broadening hE hbroadening
+      resolvent_spectralParameterOfRegulator_eq_sum
+        (hamiltonianOperator v m px py) (hamiltonianOperator_isSelfAdjoint v m px py)
+        (fun band => bandProjectorOperator band v m px py)
+        (fun band => bandEnergy band v m px py)
+        (bandProjectorOperator_completeOrthogonalIdempotents v m px py hE).complete
+        (fun band => hamiltonianOperator_mul_bandProjectorOperator band v m px py hE)
+        probeEnergy broadening hbroadening
   have hadvanced :
       advancedResolvent (hamiltonianOperator v m px py) probeEnergy broadening =
         projectorResolvent (advancedSpectralParameter probeEnergy broadening) v m px py := by
-    simpa only [advancedResolvent, advancedSpectralParameter,
+    simpa only [projectorResolvent, advancedResolvent, advancedSpectralParameter,
       spectralResolvent_advanced_ofRegulator, spectralParameter_advanced_ofRegulator] using
-      resolvent_spectralParameterOfRegulator_eq_projectorResolvent
-        v m px py probeEnergy (-broadening) hE
+      resolvent_spectralParameterOfRegulator_eq_sum
+        (hamiltonianOperator v m px py) (hamiltonianOperator_isSelfAdjoint v m px py)
+        (fun band => bandProjectorOperator band v m px py)
+        (fun band => bandEnergy band v m px py)
+        (bandProjectorOperator_completeOrthogonalIdempotents v m px py hE).complete
+        (fun band => hamiltonianOperator_mul_bandProjectorOperator band v m px py hE)
+        probeEnergy (-broadening)
         (neg_ne_zero.mpr hbroadening)
   rw [hretarded, hadvanced]
   congr 1

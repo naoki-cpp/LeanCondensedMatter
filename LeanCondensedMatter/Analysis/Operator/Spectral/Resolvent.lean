@@ -1,3 +1,4 @@
+import Mathlib.RingTheory.Idempotents
 import Mathlib.Analysis.CStarAlgebra.ContinuousLinearMap
 import Mathlib.Analysis.CStarAlgebra.Spectrum
 import Mathlib.Analysis.Normed.Algebra.GelfandFormula
@@ -78,6 +79,34 @@ theorem mul_sum_inv_smul_eq_one_of_diagonal_action
       rw [mul_smul_comm, haction i, smul_smul]
       simp [hne i]
     _ = 1 := hcomplete
+
+/-- Squaring a finite linear combination of orthogonal idempotents squares its coefficients. -/
+theorem sum_smul_sq_of_orthogonalIdempotents
+    {A ι : Type*} [Semiring A] [Algebra ℂ A] [Fintype ι]
+    (P : ι → A) (hP : OrthogonalIdempotents P) (c : ι → ℂ) :
+    (∑ i, c i • P i) ^ 2 = ∑ i, c i ^ 2 • P i := by
+  classical
+  simp [pow_two, Finset.sum_mul, Finset.mul_sum, smul_smul, hP.mul_eq]
+
+omit [CompleteSpace H] in
+/-- A finite resolution of the identity by eigenoperators gives the canonical resolvent.
+Orthogonality is not needed: completeness and the diagonal action suffice. -/
+theorem resolvent_eq_sum_inv_smul_of_diagonal_action
+    {ι : Type*} [Fintype ι]
+    (operator : H →L[ℂ] H) (P : ι → H →L[ℂ] H) (eigenvalue : ι → ℂ)
+    (hcomplete : ∑ i, P i = 1)
+    (haction : ∀ i, operator * P i = eigenvalue i • P i)
+    (z : ℂ) (hz : z ∉ spectrum ℂ operator)
+    (hne : ∀ i, z - eigenvalue i ≠ 0) :
+    resolvent operator z = ∑ i, (z - eigenvalue i)⁻¹ • P i := by
+  apply resolvent_eq_of_spectralShift_mul_eq_one_of_not_mem operator _ z hz
+  apply mul_sum_inv_smul_eq_one_of_diagonal_action
+      (algebraMap ℂ (H →L[ℂ] H) z - operator) P
+      (fun i => z - eigenvalue i) hcomplete
+  · intro i
+    rw [sub_mul, haction i]
+    simp [Algebra.algebraMap_eq_smul_one, sub_smul]
+  · exact hne
 
 omit [CompleteSpace H] in
 /-- A resolvent acts on an eigenvector by the scalar resolvent factor. No self-adjointness is needed;
