@@ -65,6 +65,60 @@ theorem TwoPointDiagram.vertexGraph_eq_withoutPropagator_sup_edge
         rw [d.pairing.partner_involutive cut]
         exact hw.symm
 
+/-- Adding an edge between already reachable vertices does not alter graph reachability.
+This elementary graph argument is kept local until the 1PI cut decomposition needs a more
+general reusable formulation. -/
+private theorem reachable_sup_edge_of_reachable
+    {V : Type*} (G : SimpleGraph V) (a b : V)
+    (hab : G.Reachable a b) {u v : V}
+    (h : (G ⊔ SimpleGraph.edge a b).Reachable u v) :
+    G.Reachable u v := by
+  refine h.elim ?_
+  intro p
+  induction p with
+  | nil =>
+      exact SimpleGraph.Reachable.refl _
+  | @cons x y z hxy p ih =>
+      have hxy' : G.Reachable x y := by
+        rcases (SimpleGraph.sup_adj G (SimpleGraph.edge a b) x y).1 hxy with hG | hEdge
+        · exact SimpleGraph.Adj.reachable hG
+        · rcases ((SimpleGraph.edge_adj a b x y).1 hEdge).1 with
+            ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩
+          · exact hab
+          · exact hab.symm
+      exact hxy'.trans ih
+
+/-- If cutting one propagator separates the external vertices of a connected diagram, then
+its two endpoints also become disconnected. In particular, no parallel propagator survives
+between those endpoints. -/
+theorem TwoPointDiagram.separatingCut_endpoints_not_reachable
+    (d : TwoPointDiagram ExternalLabel InternalLabel N S)
+    (hconnected : d.IsExternallyConnected)
+    (cut : Fin (2 * (2 * S.card + 1)))
+    (hsep : ¬ (d.vertexGraphWithoutPropagator cut).Reachable
+      (Sum.inl (0 : Fin 2)) (Sum.inl (1 : Fin 2))) :
+    ¬ (d.vertexGraphWithoutPropagator cut).Reachable
+      (twoPointVertexOfLeg cut) (twoPointVertexOfLeg (d.pairing.partner cut)) := by
+  intro hab
+  have hfull : d.vertexGraph.Reachable
+      (Sum.inl (0 : Fin 2)) (Sum.inl (1 : Fin 2)) := hconnected.2
+  rw [d.vertexGraph_eq_withoutPropagator_sup_edge cut] at hfull
+  exact hsep (reachable_sup_edge_of_reachable _ _ _ hab hfull)
+
+/-- Every external-separating internal line is a bridge in the original vertex graph.
+The conclusion is expressed by Mathlib's canonical `SimpleGraph.IsBridge` predicate. -/
+theorem TwoPointDiagram.isBridge_of_separatingCut
+    (d : TwoPointDiagram ExternalLabel InternalLabel N S)
+    (hconnected : d.IsExternallyConnected)
+    (cut : Fin (2 * (2 * S.card + 1)))
+    (hsep : ¬ (d.vertexGraphWithoutPropagator cut).Reachable
+      (Sum.inl (0 : Fin 2)) (Sum.inl (1 : Fin 2))) :
+    d.vertexGraph.IsBridge
+      s(twoPointVertexOfLeg cut, twoPointVertexOfLeg (d.pairing.partner cut)) := by
+  rw [d.vertexGraph_eq_withoutPropagator_sup_edge cut, SimpleGraph.isBridge_sup_edge]
+  exact SimpleGraph.IsBridge.of_not_reachable
+    (d.separatingCut_endpoints_not_reachable hconnected cut hsep)
+
 /-- The endpoints of any surviving propagator remain connected after cutting another line. -/
 theorem TwoPointDiagram.reachable_partner_withoutPropagator
     (d : TwoPointDiagram ExternalLabel InternalLabel N S)
