@@ -62,21 +62,6 @@ private noncomputable def fixedExternalInsertionWickDiagramEquivMixedData
           (externalInsertionMixedTimeAmbientPositionEquiv externalTime σ) = pairing
       exact PairingOn.transport_transport_symm _ _
 
-omit [LinearOrder Mode] [Fintype Mode] in
-/-- Rewrite a full-slot external-insertion diagram's interaction weight using
-the same consecutive interaction-label coordinates as the operator expansion. -/
-private theorem externalInsertionWickDiagram_vertexWeight_eq_prod
-    {E n : ℕ} (d : ExternalInsertionWickDiagram Mode E n)
-    (g : QuarticVertexLabel Mode → ℂ) :
-    d.vertexWeight g = ∏ i : Fin n, g (d.vertexLabelSequence i) := by
-  classical
-  change
-    (∏ v : ↥(Finset.univ : Finset (Fin n)), g (d.vertexLabel v)) =
-      ∏ i : Fin n, g (d.vertexLabel ⟨i, Finset.mem_univ i⟩)
-  let e : Fin n ≃ ↥(Finset.univ : Finset (Fin n)) :=
-    (Equiv.subtypeUnivEquiv (fun i : Fin n => Finset.mem_univ i)).symm
-  exact (Equiv.prod_comp e (fun v => g (d.vertexLabel v))).symm
-
 /-- The fixed-external Wick-diagram sum is the vertex-weighted free-Gibbs
 expectation of the mixed-time atomic operator product, with the fermionic
 permutation sign restoring the canonical external/interaction leg order. -/
@@ -125,7 +110,15 @@ theorem sum_fixedExternalInsertionWickDiagram_fixedTimeAmplitude_eq_mixedAtomicE
               ((d.1.pairingInMixedOrder externalTime σ).weight Common.Statistics.fermion)
               (externalInsertionMixedTimeOrderedAtomicPairValue ε β
                 externalLabel externalTime d.1.vertexLabelSequence σ)
-        rw [externalInsertionWickDiagram_vertexWeight_eq_prod d.1 g, d.2]
+        have hweight :
+            d.1.vertexWeight g = ∏ i : Fin n, g (d.1.vertexLabelSequence i) := by
+          change
+            (∏ v : ↥(Finset.univ : Finset (Fin n)), g (d.1.vertexLabel v)) =
+              ∏ i : Fin n, g (d.1.vertexLabel ⟨i, Finset.mem_univ i⟩)
+          let e : Fin n ≃ ↥(Finset.univ : Finset (Fin n)) :=
+            (Equiv.subtypeUnivEquiv (fun i : Fin n => Finset.mem_univ i)).symm
+          exact (Equiv.prod_comp e (fun v => g (d.1.vertexLabel v))).symm
+        rw [hweight, d.2]
       _ = _ := Equiv.sum_comp e F
   have hwick (q : Fin n → QuarticVertexLabel Mode) :
       (freeGibbsDensityOperator ε β).expectation
