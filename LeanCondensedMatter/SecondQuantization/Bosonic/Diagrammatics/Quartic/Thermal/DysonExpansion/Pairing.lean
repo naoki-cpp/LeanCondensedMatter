@@ -26,11 +26,9 @@ variable {Mode : Type*} [Finite Mode]
 /-- File-local classical equality matches the concrete free-thermal pair kernel. -/
 local instance instDecidableEqQuarticDysonExpansion : DecidableEq Mode := Classical.decEq Mode
 
-omit [Finite Mode] in
-set_option linter.unusedFintypeInType false in
 /-- The concrete Gibbs expectation of the ordered quartic local-leg product is exactly the sum over
 the pairing amplitudes carried by the existing quartic diagram combinatorics. -/
-theorem QuarticDiagram.freeGibbsExpectation_eq_orderedThermalWickSum [Fintype Mode]
+theorem QuarticDiagram.freeGibbsExpectation_eq_orderedThermalWickSum
     (ε : Mode → ℝ) (β : ℝ) (hpos : ∀ i, 0 < β * ε i)
     {S : Finset (Fin N)}
     (d : Common.QuarticDiagram (Common.QuarticVertexLabel Mode) N S)
@@ -38,6 +36,7 @@ theorem QuarticDiagram.freeGibbsExpectation_eq_orderedThermalWickSum [Fintype Mo
     freeGibbsExpectation ε β
         (quarticFreeThermalOrderedProduct (fun i => d.vertexLabel (order i))) =
       QuarticDiagram.orderedThermalWickSum ε β d order := by
+  letI := Fintype.ofFinite Mode
   have hwick := freeGibbsExpectation_eq_sum_pairing_concrete ε β hpos
     (2 * S.card) (quarticFreeThermalFieldFamily fun i => d.vertexLabel (order i))
   simpa [quarticFreeThermalOrderedProduct, QuarticDiagram.orderedFreeThermalFieldFamily,
