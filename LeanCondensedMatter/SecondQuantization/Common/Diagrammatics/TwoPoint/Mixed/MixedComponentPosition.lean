@@ -42,6 +42,18 @@ theorem twoPointLegEquiv_mixedTimeAmbientPositionEquiv {n : ℕ}
   apply Fin.ext
   rfl
 
+/-- Returning the mixed-time position of an atomic leg to the standard flattened
+coordinate recovers its fixed two-point leg position. -/
+theorem mixedTimeAmbientPositionEquiv_mixedTimeOrderedAtomicLegPosition {n : ℕ}
+    (τ τ' : ℝ) (σ : Fin n → ℝ) (leg : OrderedTwoPointLeg n) :
+    mixedTimeAmbientPositionEquiv τ τ' σ
+        (mixedTimeOrderedAtomicLegPosition τ τ' σ leg) =
+      (twoPointLegEquiv (Finset.univ : Finset (Fin n))).symm leg := by
+  apply (twoPointLegEquiv (Finset.univ : Finset (Fin n))).injective
+  rw [twoPointLegEquiv_mixedTimeAmbientPositionEquiv,
+    mixedTimeOrderedAtomicLegEquiv_mixedTimeOrderedAtomicLegPosition,
+    Equiv.apply_symm_apply]
+
 /-- The full diagram component containing one mixed-time atomic position. -/
 noncomputable def TwoPointDiagram.mixedPositionComponent {n : ℕ}
     (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
