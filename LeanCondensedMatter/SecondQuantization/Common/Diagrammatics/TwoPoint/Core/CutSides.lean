@@ -25,21 +25,24 @@ private theorem reachable_one_endpoint_of_reachable_sup_edge
     {V : Type*} (G : SimpleGraph V) (a b x : V)
     (h : (G ⊔ SimpleGraph.edge a b).Reachable x a) :
     G.Reachable x a ∨ G.Reachable x b := by
-  refine h.elim ?_
-  intro p
-  induction p with
-  | nil =>
-      exact Or.inl (SimpleGraph.Reachable.refl _)
-  | @cons u v w huv p ih =>
-      have htail : G.Reachable v a ∨ G.Reachable v b := ih p.reachable
-      rcases (SimpleGraph.sup_adj G (SimpleGraph.edge a b) u v).1 huv with hG | hedge
-      · rcases htail with ha | hb
-        · exact Or.inl ((SimpleGraph.Adj.reachable hG).trans ha)
-        · exact Or.inr ((SimpleGraph.Adj.reachable hG).trans hb)
-      · rcases ((SimpleGraph.edge_adj a b u v).1 hedge).1 with
-          ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩
-        · exact Or.inl (SimpleGraph.Reachable.refl _)
-        · exact Or.inr (SimpleGraph.Reachable.refl _)
+  have transport {u v : V}
+      (p : (G ⊔ SimpleGraph.edge a b).Walk u v)
+      (hv : G.Reachable v a ∨ G.Reachable v b) :
+      G.Reachable u a ∨ G.Reachable u b := by
+    induction p with
+    | nil =>
+        exact hv
+    | @cons u v w huv p ih =>
+        have htail : G.Reachable v a ∨ G.Reachable v b := ih hv
+        rcases (SimpleGraph.sup_adj G (SimpleGraph.edge a b) u v).1 huv with hG | hedge
+        · rcases htail with ha | hb
+          · exact Or.inl ((SimpleGraph.Adj.reachable hG).trans ha)
+          · exact Or.inr ((SimpleGraph.Adj.reachable hG).trans hb)
+        · rcases ((SimpleGraph.edge_adj a b u v).1 hedge).1 with
+            ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩
+          · exact Or.inl (SimpleGraph.Reachable.refl _)
+          · exact Or.inr (SimpleGraph.Reachable.refl _)
+  exact h.elim fun p => transport p (Or.inl (SimpleGraph.Reachable.refl a))
 
 /-- Every vertex of an externally connected two-point diagram belongs to one of
 the two external connected components after a separating propagator is cut.
