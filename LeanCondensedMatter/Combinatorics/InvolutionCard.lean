@@ -1,5 +1,5 @@
 import Mathlib.Combinatorics.SimpleGraph.Matching
-import LeanCondensedMatter.Combinatorics.PerfectPairing.Core
+import LeanCondensedMatter.Combinatorics.PerfectPairing.Restriction
 
 set_option linter.style.header false
 
@@ -50,14 +50,10 @@ carries half as many pairs — the hypothesis a two-part splitting of the positi
 theorem Pairing.even_card_of_partner_mem {n : ℕ} (P : Pairing n) {A : Finset (Fin (2 * n))}
     (hA : ∀ x ∈ A, P.partner x ∈ A) : Even A.card := by
   classical
-  have hinv : Function.Involutive (fun x : ↥A => (⟨P.partner x, hA x x.2⟩ : ↥A)) := by
-    intro x
-    exact Subtype.ext (P.partner_partner (x : Fin (2 * n)))
-  have hne : ∀ x : ↥A, (Function.Involutive.toPerm _ hinv) x ≠ x := by
-    intro x hx
-    exact P.partner_ne (x : Fin (2 * n)) (congrArg Subtype.val hx)
-  have hcard := even_card_of_fixedPointFreeInvolution
-    (Function.Involutive.toPerm _ hinv) hinv hne
+  have hinvariant (x : Fin (2 * n)) : x ∈ A ↔ P.partner x ∈ A := by
+    refine ⟨hA x, fun hx => ?_⟩
+    simpa only [P.partner_partner] using hA (P.partner x) hx
+  have hcard := (P.restrict (fun x => x ∈ A) hinvariant).even_card
   rwa [Fintype.card_coe] at hcard
 
 end Combinatorics
