@@ -192,7 +192,6 @@ theorem TwoPointDiagram.externalSource_componentBlocks_eq_iff_edge_eq
       apply hends
       change H₂.Reachable a b
       rw [hab]
-      exact SimpleGraph.Reachable.refl _
     have hG : d.vertexGraph.Adj a b := ⟨hneEnds, cut₂, rfl, rfl⟩
     have hab : H₁.Adj a b := by
       rw [← hdel₁]
