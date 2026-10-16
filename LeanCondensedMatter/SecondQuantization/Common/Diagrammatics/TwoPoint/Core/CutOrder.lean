@@ -150,5 +150,110 @@ theorem TwoPointDiagram.externalSource_componentBlocks_comparable
       exact (H₂.mem_componentBlock s₀ v).2
         (transport s₀ v hna hnb hv₁).symm
 
+
+/-- Two external-separating cuts have the same source-side component block
+exactly when they represent the same undirected graph edge.
+
+The conclusion identifies *edges*, not pairing-leg representatives: the two
+legs of one propagator represent the same cut. No external walk is chosen. -/
+theorem TwoPointDiagram.externalSource_componentBlocks_eq_iff_edge_eq
+    (d : TwoPointDiagram ExternalLabel InternalLabel N S)
+    (hconnected : d.IsExternallyConnected)
+    (cut₁ cut₂ : Fin (2 * (2 * S.card + 1)))
+    (hsep₁ : ¬ (d.vertexGraphWithoutPropagator cut₁).Reachable
+      (Sum.inl (0 : Fin 2)) (Sum.inl (1 : Fin 2)))
+    (hsep₂ : ¬ (d.vertexGraphWithoutPropagator cut₂).Reachable
+      (Sum.inl (0 : Fin 2)) (Sum.inl (1 : Fin 2))) :
+    (d.vertexGraphWithoutPropagator cut₁).componentBlock (Sum.inl (0 : Fin 2)) =
+        (d.vertexGraphWithoutPropagator cut₂).componentBlock (Sum.inl (0 : Fin 2)) ↔
+      s(twoPointVertexOfLeg cut₁, twoPointVertexOfLeg (d.pairing.partner cut₁)) =
+        s(twoPointVertexOfLeg cut₂, twoPointVertexOfLeg (d.pairing.partner cut₂)) := by
+  classical
+  let s₀ : TwoPointVertex S := Sum.inl (0 : Fin 2)
+  let t₁ : TwoPointVertex S := Sum.inl (1 : Fin 2)
+  let H₁ := d.vertexGraphWithoutPropagator cut₁
+  let H₂ := d.vertexGraphWithoutPropagator cut₂
+  let e₁ : Sym2 (TwoPointVertex S) :=
+    s(twoPointVertexOfLeg cut₁, twoPointVertexOfLeg (d.pairing.partner cut₁))
+  let a : TwoPointVertex S := twoPointVertexOfLeg cut₂
+  let b : TwoPointVertex S := twoPointVertexOfLeg (d.pairing.partner cut₂)
+  let e₂ : Sym2 (TwoPointVertex S) := s(a, b)
+  have hdel₁ : d.vertexGraph.deleteEdges {e₁} = H₁ :=
+    d.deleteEdges_eq_vertexGraphWithoutPropagator_of_separatingCut hconnected cut₁ hsep₁
+  have hdel₂ : d.vertexGraph.deleteEdges {e₂} = H₂ :=
+    d.deleteEdges_eq_vertexGraphWithoutPropagator_of_separatingCut hconnected cut₂ hsep₂
+  change H₁.componentBlock s₀ = H₂.componentBlock s₀ ↔ e₁ = e₂
+  constructor
+  · intro heq
+    by_contra hne
+    have hends := d.separatingCut_endpoints_not_reachable hconnected cut₂ hsep₂
+    have hneEnds : a ≠ b := by
+      intro hab
+      apply hends
+      change H₂.Reachable a b
+      rw [hab]
+    have hG : d.vertexGraph.Adj a b := ⟨hneEnds, cut₂, rfl, rfl⟩
+    have hab : H₁.Adj a b := by
+      rw [← hdel₁]
+      apply (SimpleGraph.deleteEdges_adj).2
+      refine ⟨hG, ?_⟩
+      intro hbad
+      exact hne (Set.mem_singleton_iff.mp hbad).symm
+    have hreach (v : TwoPointVertex S) :
+        H₁.Reachable s₀ v ↔ H₂.Reachable s₀ v := by
+      constructor
+      · intro hv
+        have hm : v ∈ H₁.componentBlock s₀ :=
+          (H₁.mem_componentBlock s₀ v).2 hv.symm
+        rw [heq] at hm
+        exact ((H₂.mem_componentBlock s₀ v).1 hm).symm
+      · intro hv
+        have hm : v ∈ H₂.componentBlock s₀ :=
+          (H₂.mem_componentBlock s₀ v).2 hv.symm
+        rw [← heq] at hm
+        exact ((H₁.mem_componentBlock s₀ v).1 hm).symm
+    rcases d.separatingCut_endpoints_opposite_sides hconnected cut₂ hsep₂ with
+      ⟨ha, hb⟩ | ⟨hb, ha⟩
+    · have hsa : H₁.Reachable s₀ a := (hreach a).2 ha
+      have hsb : H₂.Reachable s₀ b :=
+        (hreach b).1 (hsa.trans (SimpleGraph.Adj.reachable hab))
+      exact hsep₂ (hsb.trans hb.symm)
+    · have hsb : H₁.Reachable s₀ b := (hreach b).2 hb
+      have hsa : H₂.Reachable s₀ a :=
+        (hreach a).1 (hsb.trans (SimpleGraph.Adj.reachable hab.symm))
+      exact hsep₂ (hsa.trans ha.symm)
+  · intro heq
+    have hgraph : H₁ = H₂ := by
+      calc
+        H₁ = d.vertexGraph.deleteEdges {e₁} := hdel₁.symm
+        _ = d.vertexGraph.deleteEdges {e₂} := by rw [heq]
+        _ = H₂ := hdel₂
+    rw [hgraph]
+
+/-- Distinct separating *edges* have strictly nested source-side components.
+Thus inclusion gives a path-independent strict total comparison of the cut
+edges, with the two legs of each propagator correctly identified. -/
+theorem TwoPointDiagram.externalSource_componentBlocks_strict_comparable_of_edge_ne
+    (d : TwoPointDiagram ExternalLabel InternalLabel N S)
+    (hconnected : d.IsExternallyConnected)
+    (cut₁ cut₂ : Fin (2 * (2 * S.card + 1)))
+    (hsep₁ : ¬ (d.vertexGraphWithoutPropagator cut₁).Reachable
+      (Sum.inl (0 : Fin 2)) (Sum.inl (1 : Fin 2)))
+    (hsep₂ : ¬ (d.vertexGraphWithoutPropagator cut₂).Reachable
+      (Sum.inl (0 : Fin 2)) (Sum.inl (1 : Fin 2)))
+    (hne : s(twoPointVertexOfLeg cut₁, twoPointVertexOfLeg (d.pairing.partner cut₁)) ≠
+      s(twoPointVertexOfLeg cut₂, twoPointVertexOfLeg (d.pairing.partner cut₂))) :
+    (d.vertexGraphWithoutPropagator cut₁).componentBlock (Sum.inl (0 : Fin 2)) ⊂
+      (d.vertexGraphWithoutPropagator cut₂).componentBlock (Sum.inl (0 : Fin 2)) ∨
+    (d.vertexGraphWithoutPropagator cut₂).componentBlock (Sum.inl (0 : Fin 2)) ⊂
+      (d.vertexGraphWithoutPropagator cut₁).componentBlock (Sum.inl (0 : Fin 2)) := by
+  have hinj :=
+    (d.externalSource_componentBlocks_eq_iff_edge_eq hconnected cut₁ cut₂ hsep₁ hsep₂).1
+  rcases d.externalSource_componentBlocks_comparable hconnected cut₁ cut₂ hsep₁ hsep₂ with
+    hsubset | hsubset
+  · exact Or.inl (lt_of_le_of_ne hsubset (fun heq => hne (hinj heq)))
+  · exact Or.inr (lt_of_le_of_ne hsubset (fun heq => hne (hinj heq.symm)))
+
+
 end Common
 end SecondQuantization
