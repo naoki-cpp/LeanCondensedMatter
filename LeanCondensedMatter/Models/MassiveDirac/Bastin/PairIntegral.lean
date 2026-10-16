@@ -45,9 +45,8 @@ private theorem targetCenteredInterbandSpectatorCurrentPoleIntegral_eq_interband
     interbandPoleRegularFactorIntegral
   apply intervalIntegral.integral_congr
   intro offset _
-  congr 1
-  exact targetCenteredInterbandSpectatorCurrentFactor_eq_interbandPoleRegularFactor
-    band e v m px py (offset, broadening)
+  rw [targetCenteredInterbandSpectatorCurrentFactor_eq_interbandPoleRegularFactor
+    band e v m px py (offset, broadening)]
 
 /-- Fixed target-centered energy-window integral of the interband Bastin Hall pair whose source is
 the opposite band and whose target is `band`. -/
