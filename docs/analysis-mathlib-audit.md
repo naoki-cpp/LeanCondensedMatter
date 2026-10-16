@@ -1,7 +1,7 @@
-# Analysis inventory against Mathlib 4.34
+# Analysis inventory against Mathlib 4.35
 
 Current mapping between project analysis infrastructure and the repository-pinned Mathlib revision
-`v4.34.1`. This document describes the present API, not the sequence of refactors that produced it.
+`v4.35.0`. This document describes the present API, not the sequence of refactors that produced it.
 
 ## Classification
 
@@ -181,6 +181,26 @@ Current general-purpose candidates include:
 - `HilbertBasis.hasSum_norm_sq_inner`.
 
 Each candidate must be rechecked against the then-current Mathlib API before submission.
+
+## Mathlib 4.35 API overlap assessment
+
+The following checks distinguish genuinely new Mathlib APIs from older primitives already
+used in local proofs. A similarly named theorem is not enough to justify deleting a
+canonical project API; the statements, hypotheses, and in-repository consumers must agree.
+
+| Mathlib 4.35 API | Project area | Current disposition |
+|---|---|---|
+| `Finset.prod_extend`, `Finset.prod_extend_one_of_injective`, `Finset.prod_eq_prod_extend` | `Combinatorics/Common/FinsetProduct`, `Combinatorics/Common/FintypeProduct`, and finite-product factorization clients | **Inspect as a possible simplification**, not a direct deletion: the new results extend functions along injections with a unit default, while `Fintype.prod_equiv_sigma` reindexes an equivalence and splits a dependent sum. |
+| `List.Interleaves` and its order lemmas | `Combinatorics/ListFlatMapOrder` and shuffle/order modules | **Different interface**: interleaving two lists with a relation is not automatically the ordering of arbitrary blocks of a duplicate-free `List.flatMap`. A reusable bridge would be needed before dropping the existing theorems. |
+| `HilbertBasis.hasSum_inner_mul_inner` | `Analysis/HilbertBasis` | **Retain** `hasSum_norm_sq_inner`: Mathlib provides the complex-valued inner-product identity, while consumers need a real-valued norm-square `HasSum`. No identical directly usable norm-square lemma was found in the pinned `l2Space` source. |
+| `HasSum.prod_fiberwise`, `Summable.prod_symm` | `Analysis/InfiniteSum/Fiberwise` | **Retain provisionally**: the local theorem bundles row/column summability and equality in one API used by trace and measurement proofs. Replacing it at each consumer must reduce proof code rather than duplicate the same steps. |
+| Existing product-of-series primitives | `Analysis/InfiniteSum/FinsuppProduct` | **Retain** `Finsupp.hasSum_prod_nonneg`, `Finsupp.hasSum_prod`, and the geometric specialization: no theorem with their finite-`Finsupp` multisum statement was found in the pinned Mathlib product/sum APIs surveyed. |
+
+For the newly introduced candidates, see
+[Mathlib finite-product extension](https://github.com/leanprover-community/mathlib4/blob/v4.35.0/Mathlib/Algebra/BigOperators/Group/Finset/Basic.lean)
+and [list interleaving](https://github.com/leanprover-community/mathlib4/blob/v4.35.0/Mathlib/Data/List/Interleave.lean).
+These are **source-level assessments, not compiled replacement proofs**; do not remove
+a declaration without checking its current uses and compiling affected consumers.
 
 ## Remaining technical debt
 
