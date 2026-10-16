@@ -16,7 +16,6 @@ namespace ContinuousLinearMap
 
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
 
-
 /-- The zero bounded operator is trace class. -/
 theorem isTraceClass_zero : IsTraceClass (0 : H →L[ℂ] H) := by
   obtain ⟨w, d, -⟩ := exists_hilbertBasis (𝕜 := ℂ) (E := H)
