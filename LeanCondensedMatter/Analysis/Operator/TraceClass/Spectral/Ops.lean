@@ -5,12 +5,15 @@ import LeanCondensedMatter.Analysis.Operator.DiagonalExpectation
 set_option linter.style.header false
 
 /-!
-# Spectral-trace basis formulas and cyclicity
+# Spectral-trace basis formulas and product commutation
 
-This module proves Hilbert-basis formulas and cyclicity for the spectral trace of compact
-self-adjoint operators. The arguments compare operators against a common Hilbert basis rather
-than choosing unrelated eigenbases for each operator. Diagonal matrix elements are transported
-through `selfAdjoint ℂ` before being treated as real scalars.
+The Hilbert-basis formulas compare compact self-adjoint operators against a common basis rather
+than choosing unrelated eigenbases. Diagonal matrix elements are transported through
+`selfAdjoint ℂ` before being treated as real scalars.
+
+For self-adjoint factors, a self-adjoint product already implies that the factors commute, so
+equality of their product spectral traces does not require spectral summability. This special
+case is not the general trace-cyclicity theorem for noncommuting bounded factors.
 -/
 
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
