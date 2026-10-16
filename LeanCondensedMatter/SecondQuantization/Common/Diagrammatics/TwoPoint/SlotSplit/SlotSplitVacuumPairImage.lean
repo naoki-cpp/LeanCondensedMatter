@@ -156,11 +156,12 @@ private theorem TwoPointDiagram.slotSplitVacuumMixedPairEmbedding_surjective
     Function.Surjective
       (TwoPointDiagram.slotSplitVacuumMixedPairEmbedding T ext vac τ τ' σ hσ) := by
   intro pr
-  obtain ⟨q, hq⟩ :=
-    TwoPointDiagram.exists_slotSplitVacuumNormalizedPairEmbedding_eq_of_firstEndpoint
-      T ext vac τ τ' σ hσ pr.1
-      (TwoPointDiagram.mixedVacuumPair_firstEndpoint_mem_vacuumLegRange
-        T ext vac hext τ τ' σ pr)
+  obtain ⟨q, hq⟩ : ∃ q,
+      TwoPointDiagram.slotSplitVacuumNormalizedPairEmbedding T ext vac τ τ' σ hσ q =
+        pr.1 := by
+    apply Pairing.exists_normalizedPairEmbedding_eq_of_firstEndpoint
+    exact TwoPointDiagram.mixedVacuumPair_firstEndpoint_mem_vacuumLegRange
+      T ext vac hext τ τ' σ pr
   refine ⟨q, ?_⟩
   apply Subtype.ext
   exact hq
