@@ -177,12 +177,6 @@ theorem tendsto_interbandPoleRegularFactorIntegral
       (nhds
         (Real.pi • interbandPoleRegularFactor gap forward reverse (0, 0))) := by
   let factor : ℝ × ℝ → ℂ := interbandPoleRegularFactor gap forward reverse
-  have hgap : gap ≠ 0 := by
-    exact abs_pos.mp (lt_trans hradiusPos hradius)
-  have hcontinuous : ContinuousAt factor (0, 0) := by
-    simpa [factor] using
-      continuousAt_interbandPoleRegularFactor_of_gap_add_offset_ne_zero
-        gap forward reverse (0, 0) (by simpa using hgap)
   have hrectangle : ContinuousOn factor
       (Set.Icc (-radius) radius ×ˢ Set.Icc (0 : ℝ) 1) := by
     intro p hp
@@ -193,7 +187,7 @@ theorem tendsto_interbandPoleRegularFactorIntegral
       (continuousAt_interbandPoleRegularFactor_of_gap_add_offset_ne_zero
         gap forward reverse p hshift).continuousWithinAt
   have hgeneric := Lorentzian.tendsto_regularFactorIntegral
-    factor radius hradiusPos hcontinuous hrectangle
+    factor radius hradiusPos hrectangle
   simpa [factor, interbandPoleRegularFactorIntegral] using hgeneric
 
 /-- Canonical isolated interband Bastin pole integral after exact factorization of the target-band

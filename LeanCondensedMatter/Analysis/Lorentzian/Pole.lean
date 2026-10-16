@@ -8,9 +8,9 @@ set_option linter.style.header false
 # Regular-factor extraction for a Lorentzian pole
 
 This module packages the model-independent analytic core behind isolated-pole Kubo–Bastin limits.
-For a complex regular factor `F(offset, broadening)`, a fixed positive symmetric window, joint
-continuity at the pole, continuity of the fixed-broadening slices on that window, and a uniform
-rectangle bound on the deviation from the pole value imply
+For a complex regular factor `F(offset, broadening)`, a fixed positive symmetric window and
+continuity on the closed positive-broadening rectangle suffice to extract its value at the
+pole,
 
 ```text
 ∫ L_η(x) F(x, η) dx  →  π F(0, 0)
@@ -58,20 +58,24 @@ private noncomputable def regularFactorOuterErrorIntegral
       regularFactorErrorIntegrand factor broadening offset
 
 private theorem exists_delta_norm_regularFactor_sub_pole_lt_of_coordinates
-    (factor : ℝ × ℝ → ℂ) (ε : ℝ)
-    (hcontinuous : ContinuousAt factor (0, 0)) (hε : 0 < ε) :
+    (factor : ℝ × ℝ → ℂ) (radius ε : ℝ)
+    (hcontinuous : ContinuousWithinAt factor
+      (Set.Icc (-radius) radius ×ˢ Set.Icc (0 : ℝ) 1) (0, 0))
+    (hε : 0 < ε) :
     ∃ δ > 0, ∀ offset broadening : ℝ,
+      (offset, broadening) ∈
+        Set.Icc (-radius) radius ×ˢ Set.Icc (0 : ℝ) 1 →
       |offset| < δ → |broadening| < δ →
         ‖factor (offset, broadening) - factor (0, 0)‖ < ε := by
-  rw [Metric.continuousAt_iff] at hcontinuous
+  rw [Metric.continuousWithinAt_iff] at hcontinuous
   rcases hcontinuous ε hε with ⟨δ, hδ, hclose⟩
   refine ⟨δ, hδ, ?_⟩
-  intro offset broadening hoffset hbroadening
+  intro offset broadening hmem hoffset hbroadening
   have hdist : dist (offset, broadening) (0, 0) < δ := by
     rw [Prod.dist_eq]
     simp only [Real.dist_eq, sub_zero]
     exact max_lt hoffset hbroadening
-  have h := hclose hdist
+  have h := hclose hmem hdist
   simpa [dist_eq_norm] using h
 
 private theorem continuousOn_regularFactorErrorIntegrand
@@ -305,7 +309,8 @@ private theorem regularFactorErrorIntegral_eq_outer_add_inner
 private theorem tendsto_regularFactorErrorIntegral_zero
     (factor : ℝ × ℝ → ℂ) (radius : ℝ)
     (hradiusPos : 0 < radius)
-    (hcontinuous : ContinuousAt factor (0, 0))
+    (hcontinuous : ContinuousWithinAt factor
+      (Set.Icc (-radius) radius ×ˢ Set.Icc (0 : ℝ) 1) (0, 0))
     (hslice : ∀ broadening : ℝ, 0 < broadening → broadening ≤ 1 →
       ContinuousOn (fun offset : ℝ => factor (offset, broadening))
         (Set.Icc (-radius) radius))
@@ -326,7 +331,7 @@ private theorem tendsto_regularFactorErrorIntegral_zero
     dsimp [tolerance]
     positivity
   rcases exists_delta_norm_regularFactor_sub_pole_lt_of_coordinates
-      factor tolerance hcontinuous htolerancePos with ⟨δ, hδ, hlocal⟩
+      factor radius tolerance hcontinuous htolerancePos with ⟨δ, hδ, hlocal⟩
   let innerRadius : ℝ := min (radius / 2) (δ / 2)
   have hinnerPos : 0 < innerRadius := by
     dsimp [innerRadius]
@@ -377,7 +382,11 @@ private theorem tendsto_regularFactorErrorIntegral_zero
     have hoffsetLtDelta : |offset| < δ := lt_of_le_of_lt hoffset hinnerLtDelta
     have hbroadeningAbsLtDelta : |broadening| < δ := by
       simpa [abs_of_pos hbroadening] using hbroadeningLtDelta
-    have h := hlocal offset broadening hoffsetLtDelta hbroadeningAbsLtDelta
+    have hoffsetWindow : |offset| ≤ radius := le_trans hoffset hnested
+    have hmem : (offset, broadening) ∈
+        Set.Icc (-radius) radius ×ˢ Set.Icc (0 : ℝ) 1 :=
+      ⟨abs_le.mp hoffsetWindow, ⟨hbroadening.le, hbroadeningLtOne.le⟩⟩
+    have h := hlocal offset broadening hmem hoffsetLtDelta hbroadeningAbsLtDelta
     simpa [regularFactorError] using h.le
   have hannulusAt : ∀ offset : ℝ,
       innerRadius ≤ |offset| → |offset| ≤ radius →
@@ -527,7 +536,8 @@ window, and has a uniform bound on its deviation from the pole value over that w
 private theorem tendsto_regularFactorIntegral_of_bounded
     (factor : ℝ × ℝ → ℂ) (radius : ℝ)
     (hradiusPos : 0 < radius)
-    (hcontinuous : ContinuousAt factor (0, 0))
+    (hcontinuous : ContinuousWithinAt factor
+      (Set.Icc (-radius) radius ×ˢ Set.Icc (0 : ℝ) 1) (0, 0))
     (hslice : ∀ broadening : ℝ, 0 < broadening → broadening ≤ 1 →
       ContinuousOn (fun offset : ℝ => factor (offset, broadening))
         (Set.Icc (-radius) radius))
@@ -578,14 +588,12 @@ private theorem tendsto_regularFactorIntegral_of_bounded
   exact hcloseAt
 
 
-/-- A uniformly continuous complex regular factor on the compact positive-broadening window
-has the canonical Lorentzian pole limit. Only continuity at the pole and on the finite
-positive-broadening rectangle is required: the uniform bound and continuity of the energy
-slices used by the estimate follow from this compact-domain continuity. -/
+/-- A complex regular factor continuous on the compact nonnegative-broadening rectangle
+has the canonical Lorentzian pole limit. In particular, no continuity for negative
+broadening or outside the integration window is required. -/
 theorem tendsto_regularFactorIntegral
     (factor : ℝ × ℝ → ℂ) (radius : ℝ)
     (hradiusPos : 0 < radius)
-    (hcontinuous : ContinuousAt factor (0, 0))
     (hrectangle : ContinuousOn factor
       (Set.Icc (-radius) radius ×ˢ Set.Icc (0 : ℝ) 1)) :
     Tendsto
@@ -593,6 +601,10 @@ theorem tendsto_regularFactorIntegral
         regularFactorIntegral factor radius broadening)
       (nhdsWithin 0 (Set.Ioi 0))
       (nhds (Real.pi • factor (0, 0))) := by
+  have hcontinuous : ContinuousWithinAt factor
+      (Set.Icc (-radius) radius ×ˢ Set.Icc (0 : ℝ) 1) (0, 0) := by
+    apply hrectangle
+    exact ⟨⟨by linarith, hradiusPos.le⟩, ⟨le_refl 0, zero_le_one⟩⟩
   have hslice : ∀ broadening : ℝ, 0 < broadening → broadening ≤ 1 →
       ContinuousOn (fun offset : ℝ => factor (offset, broadening))
         (Set.Icc (-radius) radius) := by
