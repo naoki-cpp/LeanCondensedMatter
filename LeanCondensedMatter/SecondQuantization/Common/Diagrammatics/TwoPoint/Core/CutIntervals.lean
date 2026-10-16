@@ -227,13 +227,17 @@ theorem TwoPointDiagram.isInteriorLeg_partner_iff
     have hmem' :=
       (d.verticesBetweenCuts_partner_iff earlier later leg he hpe hl hpl).1 hmem
     refine ⟨hmem', hpe, ?_, hpl, ?_⟩
-    · simpa only [d.pairing.partner_involutive] using he
-    · simpa only [d.pairing.partner_involutive] using hl
+    · rw [d.pairing.partner_involutive leg]
+      exact he
+    · rw [d.pairing.partner_involutive leg]
+      exact hl
   · rintro ⟨hmem, hpe, he', hpl, hl'⟩
     have he : leg ≠ earlier := by
-      simpa only [d.pairing.partner_involutive] using he'
+      rw [d.pairing.partner_involutive leg] at he'
+      exact he'
     have hl : leg ≠ later := by
-      simpa only [d.pairing.partner_involutive] using hl'
+      rw [d.pairing.partner_involutive leg] at hl'
+      exact hl'
     exact ⟨(d.verticesBetweenCuts_partner_iff earlier later leg he hpe hl hpl).2
       (by simpa only [d.pairing.partner_involutive] using hmem),
       he, hpe, hl, hpl⟩
