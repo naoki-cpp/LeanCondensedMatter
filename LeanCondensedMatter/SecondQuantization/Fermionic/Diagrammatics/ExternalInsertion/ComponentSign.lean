@@ -33,6 +33,61 @@ noncomputable def componentExternalOrderSign
   (Common.Statistics.fermion.zetaInt : ℂ) ^
     d.componentExternalShuffle.orderedBlockInversionCount blockOrder
 
+
+/-- The external-order fermionic sign only involves connected components
+meeting the external sector. Pure-vacuum components may occur anywhere in
+the explicit block order but contribute no inversions. -/
+theorem componentExternalOrderSign_eq_supportedParts
+    {S : Finset (Fin N)}
+    (d : Common.ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
+    (blockOrder :
+      d.vertexGraph.componentPartition.parts ≃
+        Fin (Fintype.card d.vertexGraph.componentPartition.parts)) :
+    componentExternalOrderSign d blockOrder =
+      (Common.Statistics.fermion.zetaInt : ℂ) ^
+        (∑ BC ∈ (Common.externallySupportedComponentParts d.vertexGraph).offDiag,
+          if blockOrder BC.1 < blockOrder BC.2 then
+            d.componentExternalShuffle.blockInversionCount BC.1 BC.2 else 0) := by
+  classical
+  let supported := Common.externallySupportedComponentParts d.vertexGraph
+  let allParts : Finset d.vertexGraph.componentPartition.parts := Finset.univ
+  let weight : d.vertexGraph.componentPartition.parts ×
+      d.vertexGraph.componentPartition.parts → ℕ := fun BC =>
+    if blockOrder BC.1 < blockOrder BC.2 then
+      d.componentExternalShuffle.blockInversionCount BC.1 BC.2 else 0
+  have hsub : supported.offDiag ⊆ allParts.offDiag := by
+    intro BC hBC
+    exact Finset.mem_offDiag.mpr
+      ⟨Finset.mem_univ _, Finset.mem_univ _, (Finset.mem_offDiag.mp hBC).2.2⟩
+  have hzero (BC : d.vertexGraph.componentPartition.parts ×
+      d.vertexGraph.componentPartition.parts)
+      (hBC : BC ∈ allParts.offDiag) (hnot : BC ∉ supported.offDiag) :
+      weight BC = 0 := by
+    have hne : BC.1 ≠ BC.2 := (Finset.mem_offDiag.mp hBC).2.2
+    by_cases hB : BC.1 ∈ supported
+    · by_cases hC : BC.2 ∈ supported
+      · exact (hnot (Finset.mem_offDiag.mpr ⟨hB, hC, hne⟩)).elim
+      · have hVac : Common.ComponentIsVacuum
+            (BC.2 : Finset (Common.ExternalInsertionVertex E S)) :=
+          fun h => hC ((Common.mem_externallySupportedComponentParts
+            d.vertexGraph BC.2).2 h)
+        simp [weight,
+          d.componentExternalShuffle_blockInversionCount_zero_of_right_vacuum
+            BC.1 BC.2 hVac]
+    · have hVac : Common.ComponentIsVacuum
+          (BC.1 : Finset (Common.ExternalInsertionVertex E S)) :=
+        fun h => hB ((Common.mem_externallySupportedComponentParts
+          d.vertexGraph BC.1).2 h)
+      simp [weight,
+        d.componentExternalShuffle_blockInversionCount_zero_of_left_vacuum
+          BC.1 BC.2 hVac]
+  change (Common.Statistics.fermion.zetaInt : ℂ) ^
+      (∑ BC ∈ allParts.offDiag, weight BC) =
+    (Common.Statistics.fermion.zetaInt : ℂ) ^
+      (∑ BC ∈ supported.offDiag, weight BC)
+  exact congrArg (fun k : ℕ => (Common.Statistics.fermion.zetaInt : ℂ) ^ k)
+    (Finset.sum_subset hsub hzero).symm
+
 /-- A diagram with all external insertions in one connected component has no
 external regrouping sign, even if additional pure-vacuum components remain.
 
