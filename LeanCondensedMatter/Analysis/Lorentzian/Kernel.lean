@@ -190,17 +190,17 @@ theorem spectralTailMass_eq_two_mul_arctan_sub
     integral_spectralKernel_symmetric]
   ring
 
-/-- For fixed positive nested radii, all Lorentzian mass between the two windows vanishes as the
-broadening tends to zero from the positive side. -/
+/-- For any two fixed positive radii, the difference of their Lorentzian
+symmetric-window masses tends to zero as broadening approaches zero
+from the positive side. No nesting condition on the radii is needed. -/
 theorem tendsto_spectralTailMass_zero
     (innerRadius outerRadius : ℝ)
-    (hinner : 0 < innerRadius) (hnested : innerRadius ≤ outerRadius) :
+    (hinner : 0 < innerRadius) (houter : 0 < outerRadius) :
     Tendsto
       (fun broadening : ℝ =>
         spectralTailMass innerRadius outerRadius broadening)
       (nhdsWithin 0 (Set.Ioi 0))
       (nhds 0) := by
-  have houter : 0 < outerRadius := lt_of_lt_of_le hinner hnested
   have hOuterMass :=
     tendsto_integral_spectralKernel_symmetric outerRadius houter
   have hInnerMass :=
