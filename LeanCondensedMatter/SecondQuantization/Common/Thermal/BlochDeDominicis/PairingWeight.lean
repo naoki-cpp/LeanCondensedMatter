@@ -1,6 +1,8 @@
 import LeanCondensedMatter.SecondQuantization.Common.Algebra.Statistics
 import LeanCondensedMatter.Combinatorics.ExchangeSign
-import LeanCondensedMatter.Combinatorics.PerfectPairing
+import LeanCondensedMatter.Combinatorics.PerfectPairing.SplitCrossing
+import LeanCondensedMatter.Combinatorics.PerfectPairing.CrossingEraseZero
+import LeanCondensedMatter.Combinatorics.PerfectPairing.Evaluation
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Examples.Four
 import Mathlib.Basic.Complex.Basic
 

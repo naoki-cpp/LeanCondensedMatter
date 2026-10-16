@@ -1,5 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Leg
-import LeanCondensedMatter.Combinatorics.PerfectPairing
+import LeanCondensedMatter.Combinatorics.PerfectPairing.Core
 
 set_option linter.style.header false
 

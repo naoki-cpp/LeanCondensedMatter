@@ -83,6 +83,11 @@ component crossings do not replace those laws directly.
 
 ## Component-pair embeddings
 
+The quartic diagram data module imports only `PerfectPairing.Core`; the two-point diagram data
+module imports `PerfectPairing.VertexGraph`. Thermal pairing weights import the split-crossing,
+first-pair crossing, and evaluation leaves they use. The full `PerfectPairing` umbrella remains
+an aggregate entry point rather than a dependency of these foundational consumers.
+
 `PerfectPairing.Embedding` owns normalized-pair embeddings induced by partner-intertwining order
 embeddings, including preservation and reflection of crossings. Quartic fixed-order component pairs
 use that construction with the canonical component-local vertex orders and component shuffle.

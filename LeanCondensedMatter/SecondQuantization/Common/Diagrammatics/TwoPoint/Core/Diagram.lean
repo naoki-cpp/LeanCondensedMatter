@@ -1,4 +1,3 @@
-import LeanCondensedMatter.Combinatorics.PerfectPairing
 import LeanCondensedMatter.Combinatorics.PerfectPairing.VertexGraph
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalComponents
 import Mathlib.Combinatorics.SimpleGraph.Connectivity.Connected
