@@ -183,53 +183,17 @@ theorem tendsto_interbandPoleRegularFactorIntegral
     simpa [factor] using
       continuousAt_interbandPoleRegularFactor_of_gap_add_offset_ne_zero
         gap forward reverse (0, 0) (by simpa using hgap)
-  have hslice : ∀ broadening : ℝ, broadening ≠ 0 →
-      ContinuousOn (fun offset : ℝ => factor (offset, broadening))
-        (Set.Icc (-radius) radius) := by
-    intro broadening _ offset hoffset
-    have hshift : gap + offset ≠ 0 :=
-      gap_add_offset_ne_zero_on_targetWindow
-        gap offset radius hradius (abs_le.mpr hoffset)
-    have hfactor :=
-      continuousAt_interbandPoleRegularFactor_of_gap_add_offset_ne_zero
-        gap forward reverse (offset, broadening) hshift
-    have hpair : ContinuousAt (fun x : ℝ => (x, broadening)) offset := by
-      fun_prop
-    have hcomp : ContinuousAt
-        (fun x : ℝ => factor (x, broadening)) offset := by
-      change Filter.Tendsto
-        (fun x : ℝ => interbandPoleRegularFactor
-          gap forward reverse (x, broadening))
-        (nhds offset)
-        (nhds
-          (interbandPoleRegularFactor gap forward reverse (offset, broadening)))
-      exact Filter.Tendsto.comp hfactor hpair
-    exact hcomp.continuousWithinAt
-  have hbound : ∃ C : ℝ, 0 ≤ C ∧
-      ∀ p ∈ Set.Icc (-radius) radius ×ˢ Set.Icc (0 : ℝ) 1,
-        ‖factor p - factor (0, 0)‖ ≤ C := by
-    have hcompact : IsCompact
-        (Set.Icc (-radius) radius ×ˢ Set.Icc (0 : ℝ) 1) :=
-      isCompact_Icc.prod isCompact_Icc
-    have hfactorContinuous : ContinuousOn factor
-        (Set.Icc (-radius) radius ×ˢ Set.Icc (0 : ℝ) 1) := by
-      intro p hp
-      have hshift : gap + p.1 ≠ 0 :=
-        gap_add_offset_ne_zero_on_targetWindow
-          gap p.1 radius hradius (abs_le.mpr hp.1)
-      exact
-        (continuousAt_interbandPoleRegularFactor_of_gap_add_offset_ne_zero
-          gap forward reverse p hshift).continuousWithinAt
-    have hconstant : ContinuousOn (fun _ : ℝ × ℝ => factor (0, 0))
-        (Set.Icc (-radius) radius ×ˢ Set.Icc (0 : ℝ) 1) :=
-      continuousOn_const
-    rcases hcompact.exists_bound_of_continuousOn
-      (hfactorContinuous.sub hconstant) with ⟨C, hC⟩
-    refine ⟨max C 0, le_max_right _ _, ?_⟩
+  have hrectangle : ContinuousOn factor
+      (Set.Icc (-radius) radius ×ˢ Set.Icc (0 : ℝ) 1) := by
     intro p hp
-    exact le_trans (hC p hp) (le_max_left _ _)
+    have hshift : gap + p.1 ≠ 0 :=
+      gap_add_offset_ne_zero_on_targetWindow
+        gap p.1 radius hradius (abs_le.mpr hp.1)
+    exact
+      (continuousAt_interbandPoleRegularFactor_of_gap_add_offset_ne_zero
+        gap forward reverse p hshift).continuousWithinAt
   have hgeneric := Lorentzian.tendsto_regularFactorIntegral
-    factor radius hradiusPos hcontinuous hslice hbound
+    factor radius hradiusPos hcontinuous hrectangle
   simpa [factor, interbandPoleRegularFactorIntegral] using hgeneric
 
 /-- Canonical isolated interband Bastin pole integral after exact factorization of the target-band
