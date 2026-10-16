@@ -14235,8 +14235,8 @@
       "ContinuousLinearMap.IsTraceClass.trace_smul"
     ],
     "dependencies": [
-      "ContinuousLinearMap.isTraceClass_iff_isTraceClassWrt",
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Basic.0.ContinuousLinearMap.diagonalExpectationValue_abs_smul"
+      "ContinuousLinearMap.diagonalExpectationValue_abs_smul",
+      "ContinuousLinearMap.isTraceClass_iff_isTraceClassWrt"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -14950,7 +14950,7 @@
     "dependencies": [
       "ContinuousLinearMap.IsTraceClass.smul",
       "ContinuousLinearMap.IsTraceClass.traceNorm_eq_tsum_diagonalExpectationValue",
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Norm.0.ContinuousLinearMap.diagonalExpectationValue_abs_smul"
+      "ContinuousLinearMap.diagonalExpectationValue_abs_smul"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -14996,8 +14996,8 @@
     ],
     "dependencies": [
       "ContinuousLinearMap.IsTraceClass.traceNorm_eq_tsum_diagonalExpectationValue",
-      "ContinuousLinearMap.isTraceClass_zero",
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Norm.0.ContinuousLinearMap.diagonalExpectationValue_zero"
+      "ContinuousLinearMap.diagonalExpectationValue_zero",
+      "ContinuousLinearMap.isTraceClass_zero"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -15132,10 +15132,10 @@
     "dependencies": [
       "ContinuousLinearMap.IsTraceClass.comp_left",
       "ContinuousLinearMap.IsTraceClass.comp_right",
+      "ContinuousLinearMap.IsTraceClass.trace_eq_innerHS_of_factorization",
       "ContinuousLinearMap.innerHS_comp_right",
       "ContinuousLinearMap.isHilbertSchmidt_comp_right",
-      "ContinuousLinearMap.isTraceClass_iff_exists_hilbertSchmidt_factorization",
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Cyclicity.0.ContinuousLinearMap.IsTraceClass.trace_eq_innerHS_of_factorization"
+      "ContinuousLinearMap.isTraceClass_iff_exists_hilbertSchmidt_factorization"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -15185,6 +15185,51 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.DensityOperator.expectation_id"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {T A B : H →L[ℂ] H} (hT : T.IsTraceClass),\n  ContinuousLinearMap.adjoint A * B = T →\n    ∀ {ι : Type u_2} (d : HilbertBasis ι ℂ H), hT.trace = ContinuousLinearMap.innerHS d A B",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "ContinuousLinearMap.IsTraceClass.trace_eq_innerHS_of_factorization",
+    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Trace",
+    "externalAxioms": [],
+    "docString": "The trace of a Hilbert--Schmidt factorization `T = A† B` is the\nHilbert--Schmidt inner product of its factors in any Hilbert basis. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "ContinuousLinearMap.IsTraceClass.trace_comp_comm"
+    ],
+    "dependencies": [
+      "ContinuousLinearMap.IsTraceClass.trace_eq_tsum_inner",
+      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Trace.0.ContinuousLinearMap.diagonal_eq_hilbertSchmidt_inner"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "ContinuousLinearMap.IsTraceClass.trace_comp_comm"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -15274,12 +15319,12 @@
       "ContinuousLinearMap.IsTraceClass.norm_trace_le_traceNorm",
       "ContinuousLinearMap.IsTraceClass.trace_add",
       "ContinuousLinearMap.IsTraceClass.trace_congr",
+      "ContinuousLinearMap.IsTraceClass.trace_eq_innerHS_of_factorization",
       "ContinuousLinearMap.IsTraceClass.trace_eq_spectralTrace",
       "ContinuousLinearMap.IsTraceClass.trace_im_eq_zero_of_isSelfAdjoint",
       "ContinuousLinearMap.IsTraceClass.trace_smul",
       "ContinuousLinearMap.IsTraceClass.trace_zero",
-      "QuantumTheory.DensityOperator.expectation_eq_linearMap_trace",
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Cyclicity.0.ContinuousLinearMap.IsTraceClass.trace_eq_innerHS_of_factorization"
+      "QuantumTheory.DensityOperator.expectation_eq_linearMap_trace"
     ],
     "dependencies": [
       "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Trace.0.ContinuousLinearMap.trace_tsum_eq"
@@ -15291,12 +15336,12 @@
       "ContinuousLinearMap.IsTraceClass.norm_trace_le_traceNorm",
       "ContinuousLinearMap.IsTraceClass.trace_add",
       "ContinuousLinearMap.IsTraceClass.trace_congr",
+      "ContinuousLinearMap.IsTraceClass.trace_eq_innerHS_of_factorization",
       "ContinuousLinearMap.IsTraceClass.trace_eq_spectralTrace",
       "ContinuousLinearMap.IsTraceClass.trace_im_eq_zero_of_isSelfAdjoint",
       "ContinuousLinearMap.IsTraceClass.trace_smul",
       "ContinuousLinearMap.IsTraceClass.trace_zero",
-      "QuantumTheory.DensityOperator.expectation_eq_linearMap_trace",
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Cyclicity.0.ContinuousLinearMap.IsTraceClass.trace_eq_innerHS_of_factorization"
+      "QuantumTheory.DensityOperator.expectation_eq_linearMap_trace"
     ],
     "compiledConsumerCount": 10,
     "axioms": [
@@ -16190,9 +16235,11 @@
       "ContinuousLinearMap.IsTraceClass.traceNorm_eq_tsum_norm_inner_left_of_polar",
       "ContinuousLinearMap.IsTraceClass.trace_eq_spectralTrace",
       "ContinuousLinearMap.diagonalExpectationValue_abs_eq_norm_sq_sqrt_abs",
+      "ContinuousLinearMap.diagonalExpectationValue_abs_smul",
       "ContinuousLinearMap.diagonalExpectationValue_add",
       "ContinuousLinearMap.diagonalExpectationValue_eq_of_inner_eq",
       "ContinuousLinearMap.diagonalExpectationValue_nonneg",
+      "ContinuousLinearMap.diagonalExpectationValue_zero",
       "ContinuousLinearMap.hasSum_eigen_expansion_diagonalExpectationValue",
       "ContinuousLinearMap.spectralTrace_comp_comm",
       "HilbertBasis.diagonalOp_isTraceClass",
@@ -16208,10 +16255,6 @@
       "QuantumTheory.summable_eigenvalue_mul_energy_and_tsum",
       "QuantumTheory.vonNeumannEntropy_gibbs_diagonal",
       "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Factorization.Basic.0.ContinuousLinearMap.isTraceClass_of_hilbertSchmidt_factorization",
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Basic.0.ContinuousLinearMap.diagonalExpectationValue_abs_smul",
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Basic.0.ContinuousLinearMap.diagonalExpectationValue_zero",
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Norm.0.ContinuousLinearMap.diagonalExpectationValue_abs_smul",
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Norm.0.ContinuousLinearMap.diagonalExpectationValue_zero",
       "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Bundled.0.ContinuousLinearMap.exists_abs_diagonal_hilbertBasis",
       "_private.LeanCondensedMatter.QuantumTheory.POVM.Born.0.QuantumTheory.hasSum_probabilityKernel_eigenvector",
       "_private.LeanCondensedMatter.QuantumTheory.POVM.Born.0.QuantumTheory.hasSum_probabilityKernel_outcome"
@@ -16227,9 +16270,11 @@
       "ContinuousLinearMap.IsTraceClass.traceNorm_eq_tsum_norm_inner_left_of_polar",
       "ContinuousLinearMap.IsTraceClass.trace_eq_spectralTrace",
       "ContinuousLinearMap.diagonalExpectationValue_abs_eq_norm_sq_sqrt_abs",
+      "ContinuousLinearMap.diagonalExpectationValue_abs_smul",
       "ContinuousLinearMap.diagonalExpectationValue_add",
       "ContinuousLinearMap.diagonalExpectationValue_eq_of_inner_eq",
       "ContinuousLinearMap.diagonalExpectationValue_nonneg",
+      "ContinuousLinearMap.diagonalExpectationValue_zero",
       "ContinuousLinearMap.hasSum_eigen_expansion_diagonalExpectationValue",
       "ContinuousLinearMap.spectralTrace_comp_comm",
       "HilbertBasis.diagonalOp_isTraceClass",
@@ -16245,15 +16290,11 @@
       "QuantumTheory.summable_eigenvalue_mul_energy_and_tsum",
       "QuantumTheory.vonNeumannEntropy_gibbs_diagonal",
       "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Factorization.Basic.0.ContinuousLinearMap.isTraceClass_of_hilbertSchmidt_factorization",
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Basic.0.ContinuousLinearMap.diagonalExpectationValue_abs_smul",
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Basic.0.ContinuousLinearMap.diagonalExpectationValue_zero",
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Norm.0.ContinuousLinearMap.diagonalExpectationValue_abs_smul",
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Norm.0.ContinuousLinearMap.diagonalExpectationValue_zero",
       "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Bundled.0.ContinuousLinearMap.exists_abs_diagonal_hilbertBasis",
       "_private.LeanCondensedMatter.QuantumTheory.POVM.Born.0.QuantumTheory.hasSum_probabilityKernel_eigenvector",
       "_private.LeanCondensedMatter.QuantumTheory.POVM.Born.0.QuantumTheory.hasSum_probabilityKernel_outcome"
     ],
-    "compiledConsumerCount": 30,
+    "compiledConsumerCount": 28,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -16338,6 +16379,52 @@
     "compiledConsumers": [
       "ContinuousLinearMap.IsTraceClass.traceNorm_eq_tsum_diagonalExpectationValue",
       "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.General.0.ContinuousLinearMap.isTraceClassWrt_iff_isHilbertSchmidtWrt_sqrt_abs"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H] (c : ℂ)\n  (T : H →L[ℂ] H) (x : H),\n  (CFC.abs (c • T)).diagonalExpectationValue ⋯ x = ‖c‖ * (CFC.abs T).diagonalExpectationValue ⋯ x",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "ContinuousLinearMap.diagonalExpectationValue_abs_smul",
+    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.General",
+    "externalAxioms": [],
+    "docString": "The lossless diagonal expectation of the operator absolute value scales by the norm\nof a complex scalar. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "ContinuousLinearMap.IsTraceClass.smul",
+      "ContinuousLinearMap.IsTraceClass.traceNorm_smul"
+    ],
+    "dependencies": [
+      "ContinuousLinearMap.coe_diagonalExpectationValue_right"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "ContinuousLinearMap.IsTraceClass.smul",
+      "ContinuousLinearMap.IsTraceClass.traceNorm_smul"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -16475,6 +16562,52 @@
       "_private.LeanCondensedMatter.QuantumTheory.POVM.Born.0.QuantumTheory.probabilityKernel_nonneg"
     ],
     "compiledConsumerCount": 5,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (h0 : IsSelfAdjoint 0) (x : H), ContinuousLinearMap.diagonalExpectationValue 0 h0 x = 0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "ContinuousLinearMap.diagonalExpectationValue_zero",
+    "module": "LeanCondensedMatter.Analysis.Operator.DiagonalExpectation",
+    "externalAxioms": [],
+    "docString": "The lossless diagonal expectation of the zero operator vanishes. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "ContinuousLinearMap.IsTraceClass.traceNorm_zero",
+      "ContinuousLinearMap.isTraceClass_zero"
+    ],
+    "dependencies": [
+      "ContinuousLinearMap.coe_diagonalExpectationValue_right"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "ContinuousLinearMap.IsTraceClass.traceNorm_zero",
+      "ContinuousLinearMap.isTraceClass_zero"
+    ],
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -17816,8 +17949,8 @@
       "ContinuousLinearMap.IsTraceClass.trace_zero"
     ],
     "dependencies": [
-      "ContinuousLinearMap.isTraceClass_iff_isTraceClassWrt",
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Basic.0.ContinuousLinearMap.diagonalExpectationValue_zero"
+      "ContinuousLinearMap.diagonalExpectationValue_zero",
+      "ContinuousLinearMap.isTraceClass_iff_isTraceClassWrt"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -82009,8 +82142,8 @@
     "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": false,
     "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "QuantumTheory.Models.RashbaExchange.bandEnergy_injective",
     "module": "LeanCondensedMatter.Models.RashbaExchange.Model.Spectral",
@@ -82178,8 +82311,8 @@
     "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": true,
     "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "QuantumTheory.Models.RashbaExchange.bandProjector_completeOrthogonalIdempotents",
     "module": "LeanCondensedMatter.Models.RashbaExchange.Model.Spectral",
@@ -83420,8 +83553,8 @@
     "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": true,
     "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "QuantumTheory.Models.RashbaExchange.hamiltonian_mul_bandProjector",
     "module": "LeanCondensedMatter.Models.RashbaExchange.Model.Spectral",
@@ -83943,48 +84076,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (params : QuantumTheory.Models.RashbaExchange.Parameters) (px py : ℝ),\n  0 ≤ QuantumTheory.Models.RashbaExchange.spinOrbitEnergySq params.toHamiltonianParameters px py",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Models.RashbaExchange.spinOrbitEnergySq_nonneg",
-    "module": "LeanCondensedMatter.Models.RashbaExchange.Model.Spectral",
-    "externalAxioms": [],
-    "docString": "The squared spin-orbit energy is nonnegative. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Models.RashbaExchange.spinOrbitEnergy_sq"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Models.RashbaExchange.spinOrbitEnergy_sq"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ (params : QuantumTheory.Models.RashbaExchange.Parameters) (px py : ℝ),\n  QuantumTheory.Models.RashbaExchange.spinOrbitEnergy params.toHamiltonianParameters px py ^ 2 =\n    QuantumTheory.Models.RashbaExchange.spinOrbitEnergySq params.toHamiltonianParameters px py",
     "standardAxioms": [
       "Classical.choice",
@@ -83995,7 +84086,7 @@
     "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "QuantumTheory.Models.RashbaExchange.spinOrbitEnergy_sq",
     "module": "LeanCondensedMatter.Models.RashbaExchange.Model.Spectral",
@@ -84007,9 +84098,7 @@
       "QuantumTheory.Models.RashbaExchange.forceMatrixTraceNumerator_xy_eq",
       "_private.LeanCondensedMatter.Models.RashbaExchange.Model.Spectral.0.QuantumTheory.Models.RashbaExchange.normalizedSpinHamiltonian_mul_self"
     ],
-    "dependencies": [
-      "QuantumTheory.Models.RashbaExchange.spinOrbitEnergySq_nonneg"
-    ],
+    "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
@@ -84087,7 +84176,7 @@
     "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "QuantumTheory.Models.RashbaExchange.sum_bandProjector_eq_one",
     "module": "LeanCondensedMatter.Models.RashbaExchange.Model.Spectral",
@@ -84171,8 +84260,8 @@
     "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": false,
     "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "QuantumTheory.Models.RashbaExchange.trace_bandProjector",
     "module": "LeanCondensedMatter.Models.RashbaExchange.Model.Spectral",
@@ -113839,6 +113928,47 @@
   },
   {
     "terminal": true,
+    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel N S),\n  d.IsExternallyConnected →\n    ∀ (cut : Fin (2 * (2 * S.card + 1))),\n      ¬(d.vertexGraphWithoutPropagator cut).Reachable (Sum.inl 0) (Sum.inl 1) →\n        (d.vertexGraphWithoutPropagator cut).componentBlock (Sum.inl 0) ∪\n              (d.vertexGraphWithoutPropagator cut).componentBlock (Sum.inl 1) =\n            Finset.univ ∧\n          Disjoint ((d.vertexGraphWithoutPropagator cut).componentBlock (Sum.inl 0))\n            ((d.vertexGraphWithoutPropagator cut).componentBlock (Sum.inl 1))",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.TwoPointDiagram.external_componentBlocks_cover_and_disjoint",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.CutSides",
+    "externalAxioms": [],
+    "docString": "The two canonical external component blocks cover the whole vertex set and are disjoint.\nConsequently a separating cut has *exactly* two connected components. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "SecondQuantization.Common.TwoPointDiagram.reachable_external_side_withoutPropagator",
+      "SimpleGraph.mem_componentBlock"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
     "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel N S),\n  d.IsExternallyConnected →\n    ∀ (cut : Fin (2 * (2 * S.card + 1))),\n      ¬(d.vertexGraphWithoutPropagator cut).Reachable (Sum.inl 0) (Sum.inl 1) →\n        d.vertexGraph.IsBridge\n          s(SecondQuantization.Common.twoPointVertexOfLeg cut,\n            SecondQuantization.Common.twoPointVertexOfLeg (d.pairing.partner cut))",
     "standardAxioms": [
       "Classical.choice",
@@ -115280,7 +115410,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel N S),\n  d.vertexGraph.Preconnected ↔ d.IsExternallyConnected",
     "standardAxioms": [
       "Classical.choice",
@@ -115288,7 +115418,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -115299,7 +115429,9 @@
     "docString": "For two one-legged external vertices, externally connected means the entire vertex graph\nis preconnected: the parity argument connects the external vertices, and vacuum-freeness\nplaces every interaction vertex in that same component. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "SecondQuantization.Common.TwoPointDiagram.reachable_external_side_withoutPropagator"
+    ],
     "dependencies": [
       "SecondQuantization.Common.TwoPointDiagram.externalVerticesConnected",
       "SecondQuantization.Common.TwoPointDiagram.isExternallyConnected_of_preconnected",
@@ -115307,8 +115439,10 @@
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "SecondQuantization.Common.TwoPointDiagram.reachable_external_side_withoutPropagator"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -115405,6 +115539,54 @@
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Factorization.FiberVacuumIntegrand.0.SecondQuantization.Fermionic.fixedExternalOfSlotSplit_prod_vacuumDysonSign_mul_vertexWeight"
     ],
     "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel N S),\n  d.IsExternallyConnected →\n    ∀ (cut : Fin (2 * (2 * S.card + 1))),\n      ¬(d.vertexGraphWithoutPropagator cut).Reachable (Sum.inl 0) (Sum.inl 1) →\n        ∀ (v : SecondQuantization.Common.TwoPointVertex S),\n          (d.vertexGraphWithoutPropagator cut).Reachable (Sum.inl 0) v ∨\n            (d.vertexGraphWithoutPropagator cut).Reachable (Sum.inl 1) v",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.TwoPointDiagram.reachable_external_side_withoutPropagator",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.CutSides",
+    "externalAxioms": [],
+    "docString": "Every vertex of an externally connected two-point diagram belongs to one of\nthe two external connected components after a separating propagator is cut.\n\nTogether with the separation hypothesis, this proves that the cut graph has\nexactly two components. The result includes the interaction vertices, so it\nrules out a third disconnected component becoming isolated by this cut. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Common.TwoPointDiagram.external_componentBlocks_cover_and_disjoint",
+      "SecondQuantization.Common.TwoPointDiagram.separatingCut_endpoints_opposite_sides"
+    ],
+    "dependencies": [
+      "SecondQuantization.Common.TwoPointDiagram.preconnected_iff_isExternallyConnected",
+      "SecondQuantization.Common.TwoPointDiagram.vertexGraph_eq_withoutPropagator_sup_edge",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.CutSides.0.SecondQuantization.Common.reachable_one_endpoint_of_reachable_sup_edge"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.TwoPointDiagram.external_componentBlocks_cover_and_disjoint",
+      "SecondQuantization.Common.TwoPointDiagram.separatingCut_endpoints_opposite_sides"
+    ],
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -115530,7 +115712,8 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Common.TwoPointDiagram.deleteEdges_eq_vertexGraphWithoutPropagator_of_separatingCut",
-      "SecondQuantization.Common.TwoPointDiagram.isBridge_of_separatingCut"
+      "SecondQuantization.Common.TwoPointDiagram.isBridge_of_separatingCut",
+      "SecondQuantization.Common.TwoPointDiagram.separatingCut_endpoints_opposite_sides"
     ],
     "dependencies": [
       "SecondQuantization.Common.TwoPointDiagram.vertexGraph_eq_withoutPropagator_sup_edge",
@@ -115540,9 +115723,51 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Common.TwoPointDiagram.deleteEdges_eq_vertexGraphWithoutPropagator_of_separatingCut",
-      "SecondQuantization.Common.TwoPointDiagram.isBridge_of_separatingCut"
+      "SecondQuantization.Common.TwoPointDiagram.isBridge_of_separatingCut",
+      "SecondQuantization.Common.TwoPointDiagram.separatingCut_endpoints_opposite_sides"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 3,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel N S),\n  d.IsExternallyConnected →\n    ∀ (cut : Fin (2 * (2 * S.card + 1))),\n      ¬(d.vertexGraphWithoutPropagator cut).Reachable (Sum.inl 0) (Sum.inl 1) →\n        (d.vertexGraphWithoutPropagator cut).Reachable (Sum.inl 0) (SecondQuantization.Common.twoPointVertexOfLeg cut) ∧\n            (d.vertexGraphWithoutPropagator cut).Reachable (Sum.inl 1)\n              (SecondQuantization.Common.twoPointVertexOfLeg (d.pairing.partner cut)) ∨\n          (d.vertexGraphWithoutPropagator cut).Reachable (Sum.inl 0)\n              (SecondQuantization.Common.twoPointVertexOfLeg (d.pairing.partner cut)) ∧\n            (d.vertexGraphWithoutPropagator cut).Reachable (Sum.inl 1)\n              (SecondQuantization.Common.twoPointVertexOfLeg cut)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.TwoPointDiagram.separatingCut_endpoints_opposite_sides",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.CutSides",
+    "externalAxioms": [],
+    "docString": "The removed propagator joins the two *different* canonical external sides of\nthe cut, in one of its two orientations. No choice of representative leg is made\nby the conclusion. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "SecondQuantization.Common.TwoPointDiagram.reachable_external_side_withoutPropagator",
+      "SecondQuantization.Common.TwoPointDiagram.separatingCut_endpoints_not_reachable"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -116121,6 +116346,7 @@
     "dependents": [
       "SecondQuantization.Common.TwoPointDiagram.deleteEdges_eq_vertexGraphWithoutPropagator_of_separatingCut",
       "SecondQuantization.Common.TwoPointDiagram.isBridge_of_separatingCut",
+      "SecondQuantization.Common.TwoPointDiagram.reachable_external_side_withoutPropagator",
       "SecondQuantization.Common.TwoPointDiagram.separatingCut_endpoints_not_reachable"
     ],
     "dependencies": [],
@@ -116129,9 +116355,10 @@
     "compiledConsumers": [
       "SecondQuantization.Common.TwoPointDiagram.deleteEdges_eq_vertexGraphWithoutPropagator_of_separatingCut",
       "SecondQuantization.Common.TwoPointDiagram.isBridge_of_separatingCut",
+      "SecondQuantization.Common.TwoPointDiagram.reachable_external_side_withoutPropagator",
       "SecondQuantization.Common.TwoPointDiagram.separatingCut_endpoints_not_reachable"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -153334,6 +153561,7 @@
       "SecondQuantization.Common.ExternalInsertionDiagram.externallySupportedInteractionPart_ofSlotSplit",
       "SecondQuantization.Common.ExternalInsertionDiagram.hasNoVacuumComponent_externalBearingDiagram",
       "SecondQuantization.Common.ExternalInsertionDiagram.hasNoVacuumComponent_iff_externallySupportedInteractionPart_eq",
+      "SecondQuantization.Common.TwoPointDiagram.external_componentBlocks_cover_and_disjoint",
       "SecondQuantization.Common.TwoPointDiagram.not_uncutPropagator_between_externalComponents",
       "SecondQuantization.Common.allExternalVerticesConnected_iff_supportedComponentParts_eq_singleton",
       "SecondQuantization.Common.componentBlock_slotSplitVacuumVertex_mem_vacuumComponentParts",
@@ -153355,6 +153583,7 @@
       "SecondQuantization.Common.ExternalInsertionDiagram.externallySupportedInteractionPart_ofSlotSplit",
       "SecondQuantization.Common.ExternalInsertionDiagram.hasNoVacuumComponent_externalBearingDiagram",
       "SecondQuantization.Common.ExternalInsertionDiagram.hasNoVacuumComponent_iff_externallySupportedInteractionPart_eq",
+      "SecondQuantization.Common.TwoPointDiagram.external_componentBlocks_cover_and_disjoint",
       "SecondQuantization.Common.TwoPointDiagram.not_uncutPropagator_between_externalComponents",
       "SecondQuantization.Common.allExternalVerticesConnected_iff_supportedComponentParts_eq_singleton",
       "SecondQuantization.Common.componentBlock_slotSplitVacuumVertex_mem_vacuumComponentParts",
@@ -153367,7 +153596,7 @@
       "SimpleGraph.self_mem_componentBlock",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.External.ExternalConnectivity.0.SecondQuantization.Common.TwoPointDiagram.externalOne_not_mem_externalComponentPart"
     ],
-    "compiledConsumerCount": 16,
+    "compiledConsumerCount": 17,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -156686,50 +156915,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {T A B : H →L[ℂ] H} (hT : T.IsTraceClass),\n  ContinuousLinearMap.adjoint A * B = T →\n    ∀ {ι : Type u_2} (d : HilbertBasis ι ℂ H), hT.trace = ContinuousLinearMap.innerHS d A B",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Cyclicity.0.ContinuousLinearMap.IsTraceClass.trace_eq_innerHS_of_factorization",
-    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Cyclicity",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "ContinuousLinearMap.IsTraceClass.trace_comp_comm"
-    ],
-    "dependencies": [
-      "ContinuousLinearMap.IsTraceClass.trace_eq_tsum_inner"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "ContinuousLinearMap.IsTraceClass.trace_comp_comm"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {A B T : H →L[ℂ] H}, A.IsHilbertSchmidt → B.IsHilbertSchmidt → ContinuousLinearMap.adjoint A * B = T → T.IsTraceClass",
     "standardAxioms": [
       "Classical.choice",
@@ -156851,94 +157036,6 @@
     "completedMention": false,
     "compiledConsumers": [
       "ContinuousLinearMap.IsTraceClass.add"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H] (c : ℂ)\n  (T : H →L[ℂ] H) (x : H),\n  (CFC.abs (c • T)).diagonalExpectationValue ⋯ x = ‖c‖ * (CFC.abs T).diagonalExpectationValue ⋯ x",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Basic.0.ContinuousLinearMap.diagonalExpectationValue_abs_smul",
-    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Basic",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "ContinuousLinearMap.IsTraceClass.smul"
-    ],
-    "dependencies": [
-      "ContinuousLinearMap.coe_diagonalExpectationValue_right"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "ContinuousLinearMap.IsTraceClass.smul"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (h0 : IsSelfAdjoint 0) (x : H), ContinuousLinearMap.diagonalExpectationValue 0 h0 x = 0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Basic.0.ContinuousLinearMap.diagonalExpectationValue_zero",
-    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Basic",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "ContinuousLinearMap.isTraceClass_zero"
-    ],
-    "dependencies": [
-      "ContinuousLinearMap.coe_diagonalExpectationValue_right"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "ContinuousLinearMap.isTraceClass_zero"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -157148,94 +157245,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H] (c : ℂ)\n  (T : H →L[ℂ] H) (x : H),\n  (CFC.abs (c • T)).diagonalExpectationValue ⋯ x = ‖c‖ * (CFC.abs T).diagonalExpectationValue ⋯ x",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Norm.0.ContinuousLinearMap.diagonalExpectationValue_abs_smul",
-    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Norm",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "ContinuousLinearMap.IsTraceClass.traceNorm_smul"
-    ],
-    "dependencies": [
-      "ContinuousLinearMap.coe_diagonalExpectationValue_right"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "ContinuousLinearMap.IsTraceClass.traceNorm_smul"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (h0 : IsSelfAdjoint 0) (x : H), ContinuousLinearMap.diagonalExpectationValue 0 h0 x = 0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Norm.0.ContinuousLinearMap.diagonalExpectationValue_zero",
-    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Norm",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "ContinuousLinearMap.IsTraceClass.traceNorm_zero"
-    ],
-    "dependencies": [
-      "ContinuousLinearMap.coe_diagonalExpectationValue_right"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "ContinuousLinearMap.IsTraceClass.traceNorm_zero"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {T : H →L[ℂ] H}, IsSelfAdjoint T → ∀ {v : H} {c : ℝ}, ↑T v = ↑c • v → (CFC.abs T) v = ↑|c| • v",
     "standardAxioms": [
       "Classical.choice",
@@ -157392,6 +157401,7 @@
     "directWrapperOf": null,
     "dependents": [
       "ContinuousLinearMap.IsTraceClass.summable_trace_diagonal",
+      "ContinuousLinearMap.IsTraceClass.trace_eq_innerHS_of_factorization",
       "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Trace.0.ContinuousLinearMap.trace_tsum_eq"
     ],
     "dependencies": [],
@@ -157399,9 +157409,10 @@
     "completedMention": false,
     "compiledConsumers": [
       "ContinuousLinearMap.IsTraceClass.summable_trace_diagonal",
+      "ContinuousLinearMap.IsTraceClass.trace_eq_innerHS_of_factorization",
       "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Trace.0.ContinuousLinearMap.trace_tsum_eq"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -181919,6 +181930,46 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Common.TwoPointDiagram.separatingCut_endpoints_not_reachable"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {V : Type u_3} (G : SimpleGraph V) (a b x : V),\n  (G ⊔ SimpleGraph.edge a b).Reachable x a → G.Reachable x a ∨ G.Reachable x b",
+    "standardAxioms": [
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.CutSides.0.SecondQuantization.Common.reachable_one_endpoint_of_reachable_sup_edge",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.CutSides",
+    "externalAxioms": [],
+    "docString": "If a walk from `x` to `a` uses edges of a graph together with the one\nedge `a-b`, then `x` was already connected to `a` or `b` in the original graph. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Common.TwoPointDiagram.reachable_external_side_withoutPropagator"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.TwoPointDiagram.reachable_external_side_withoutPropagator"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
