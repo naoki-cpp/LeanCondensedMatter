@@ -53,12 +53,6 @@ theorem eigenvalue_nonneg_of_isPositive {T : H →L[ℂ] H} (hpos : (T : H →�
   exact eigenvalue_nonneg_of_nonneg hne hpos.re_inner_nonneg_right
 
 omit [CompleteSpace H] in
-theorem summable_eigenvectorIndex {S : H →L[ℂ] H} (hS : HasSummableRealEigenvalues S) :
-    Summable (fun a : EigenvectorIndex S => a.1.1) := by
-  have hS' : Summable (fun a : EigenvectorIndex S => |a.1.1|) := hS
-  exact Summable.of_norm (by simpa only [Real.norm_eq_abs] using hS')
-
-omit [CompleteSpace H] in
 /-- Splits the spectral-trace `tsum` over `EigenvectorIndex S` into an outer sum over the
 base nonzero eigenvalues and an inner finite sum over each eigenspace's basis vectors. -/
 theorem tsum_eigenvectorIndex_eq_tsum_mul_finrank {S : H →L[ℂ] H}
