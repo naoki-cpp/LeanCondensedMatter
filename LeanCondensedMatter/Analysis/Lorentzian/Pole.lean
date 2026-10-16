@@ -306,7 +306,7 @@ private theorem tendsto_regularFactorErrorIntegral_zero
     (factor : ℝ × ℝ → ℂ) (radius : ℝ)
     (hradiusPos : 0 < radius)
     (hcontinuous : ContinuousAt factor (0, 0))
-    (hslice : ∀ broadening : ℝ, broadening ≠ 0 →
+    (hslice : ∀ broadening : ℝ, 0 < broadening → broadening ≤ 1 →
       ContinuousOn (fun offset : ℝ => factor (offset, broadening))
         (Set.Icc (-radius) radius))
     (hbound : ∃ C : ℝ, 0 ≤ C ∧
@@ -388,7 +388,7 @@ private theorem tendsto_regularFactorErrorIntegral_zero
     exact ⟨hbroadening.le, hbroadeningLtOne.le⟩
   have hsplit := regularFactorErrorIntegral_eq_outer_add_inner
     factor innerRadius radius broadening hinnerNonneg hnested hbroadening.ne'
-      (hslice broadening hbroadening.ne')
+      (hslice broadening hbroadening hbroadeningLtOne.le)
   have hboundAt :
       ‖regularFactorErrorIntegral factor radius broadening‖ ≤
         tolerance *
@@ -524,11 +524,11 @@ private theorem regularFactorIntegral_eq_error_add_mass_smul_pole
 jointly continuous at `(0,0)`, has continuous nonzero-broadening slices on the fixed symmetric
 window, and has a uniform bound on its deviation from the pole value over that window for
 `0 ≤ broadening ≤ 1`. -/
-theorem tendsto_regularFactorIntegral
+private theorem tendsto_regularFactorIntegral_of_bounded
     (factor : ℝ × ℝ → ℂ) (radius : ℝ)
     (hradiusPos : 0 < radius)
     (hcontinuous : ContinuousAt factor (0, 0))
-    (hslice : ∀ broadening : ℝ, broadening ≠ 0 →
+    (hslice : ∀ broadening : ℝ, 0 < broadening → broadening ≤ 1 →
       ContinuousOn (fun offset : ℝ => factor (offset, broadening))
         (Set.Icc (-radius) radius))
     (hbound : ∃ C : ℝ, 0 ≤ C ∧
@@ -567,11 +567,57 @@ theorem tendsto_regularFactorIntegral
       0 < broadening := by
     change Set.Ioi (0 : ℝ) ∈ nhdsWithin 0 (Set.Ioi 0)
     exact self_mem_nhdsWithin
-  filter_upwards [hpositive, hclose] with broadening hbroadening hcloseAt
+  have hsmall : ∀ᶠ broadening : ℝ in nhdsWithin 0 (Set.Ioi 0),
+      broadening < 1 := by
+    have hwithin : nhdsWithin 0 (Set.Ioi 0) ≤ nhds (0 : ℝ) := inf_le_left
+    exact hwithin (Iio_mem_nhds (by norm_num : (0 : ℝ) < 1))
+  filter_upwards [hpositive, hsmall, hclose] with broadening hbroadening hsmallAt hcloseAt
   rw [regularFactorIntegral_eq_error_add_mass_smul_pole
     factor radius broadening hradiusPos.le hbroadening.ne'
-      (hslice broadening hbroadening.ne')]
+      (hslice broadening hbroadening hsmallAt.le)]
   exact hcloseAt
+
+
+/-- A uniformly continuous complex regular factor on the compact positive-broadening window
+has the canonical Lorentzian pole limit. Only continuity at the pole and on the finite
+positive-broadening rectangle is required: the uniform bound and continuity of the energy
+slices used by the estimate follow from this compact-domain continuity. -/
+theorem tendsto_regularFactorIntegral
+    (factor : ℝ × ℝ → ℂ) (radius : ℝ)
+    (hradiusPos : 0 < radius)
+    (hcontinuous : ContinuousAt factor (0, 0))
+    (hrectangle : ContinuousOn factor
+      (Set.Icc (-radius) radius ×ˢ Set.Icc (0 : ℝ) 1)) :
+    Tendsto
+      (fun broadening : ℝ =>
+        regularFactorIntegral factor radius broadening)
+      (nhdsWithin 0 (Set.Ioi 0))
+      (nhds (Real.pi • factor (0, 0))) := by
+  have hslice : ∀ broadening : ℝ, 0 < broadening → broadening ≤ 1 →
+      ContinuousOn (fun offset : ℝ => factor (offset, broadening))
+        (Set.Icc (-radius) radius) := by
+    intro broadening hpos hle
+    have hpath : ContinuousOn (fun offset : ℝ => (offset, broadening))
+        (Set.Icc (-radius) radius) := by fun_prop
+    exact hrectangle.comp hpath (by
+      intro offset hoffset
+      exact ⟨hoffset, ⟨hpos.le, hle⟩⟩)
+  have hcompact : IsCompact
+      (Set.Icc (-radius) radius ×ˢ Set.Icc (0 : ℝ) 1) :=
+    isCompact_Icc.prod isCompact_Icc
+  have hbound : ∃ C : ℝ, 0 ≤ C ∧
+      ∀ p ∈ Set.Icc (-radius) radius ×ˢ Set.Icc (0 : ℝ) 1,
+        ‖factor p - factor (0, 0)‖ ≤ C := by
+    have hconstant : ContinuousOn (fun _ : ℝ × ℝ => factor (0, 0))
+        (Set.Icc (-radius) radius ×ˢ Set.Icc (0 : ℝ) 1) :=
+      continuousOn_const
+    rcases hcompact.exists_bound_of_continuousOn
+      (hrectangle.sub hconstant) with ⟨C, hC⟩
+    refine ⟨max C 0, le_max_right _ _, ?_⟩
+    intro p hp
+    exact le_trans (hC p hp) (le_max_left _ _)
+  exact tendsto_regularFactorIntegral_of_bounded
+    factor radius hradiusPos hcontinuous hslice hbound
 
 end
 
