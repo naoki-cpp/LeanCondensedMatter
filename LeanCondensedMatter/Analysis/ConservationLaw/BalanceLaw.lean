@@ -18,7 +18,7 @@ so that
 δ (Q f) = J (d f) + S f.
 ```
 
-The representation-independent transport semantics belong to `IntrinsicBalanceLaw`.  `BalanceLaw`
+The test-space flux semantics belong to `FluxBalanceLaw`.  `BalanceLaw`
 is the explicit represented adapter: it remembers how the transport on exact differential data is
 extended to all one-form-like inputs, and it owns operations that genuinely depend on that chosen
 extension, including current/source shifts and current factorization.
@@ -46,7 +46,7 @@ variable [AddCommMonoid Obs] [Module 𝕜 Obs]
 /-- A represented local balance law `δ(Q f) = J(d f) + S(f)`.
 
 `current` is one chosen extension to all one-form-like data.  The balance equation constrains it
-only on exact differential data `d f`; see `IntrinsicBalanceLaw` for the representation-independent
+only on exact differential data `d f`; see `FluxBalanceLaw` for the representation-independent
 transport object.  The current/source split need not be unique; see `BalanceLaw.shiftCurrentSource`. -/
 structure BalanceLaw
     (δ : Obs →ₗ[𝕜] Obs)

@@ -4,9 +4,9 @@ import Mathlib.Tactic.Module
 set_option linter.style.header false
 
 /-!
-# Intrinsic transport balance laws
+# Flux balance laws independent of the choice of current
 
-This module is the semantic owner of representation-independent local balance identities. It
+This module is the semantic owner of local balance identities without a chosen current extension. It
 separates the transport content of a local balance law from a chosen extension of that transport to
 all one-form-like test data.
 
@@ -18,7 +18,7 @@ Q : Test → Obs
 δ : Obs → Obs
 ```
 
-the intrinsic transport object is a linear functional
+the differential-dependent transport/flux is a linear functional
 
 ```text
 Φ : Test → Obs
@@ -35,8 +35,11 @@ A full current functional `J : OneForm → Obs` is downstream representation dat
 on exact differential data; an extension of that flux away from `range d` need not be unique.
 
 `ConservationLaw.BalanceLaw` is retained as the represented form carrying such a chosen `J`.
-`IntrinsicBalanceLaw` records the representation-independent transport and source split and owns
+`FluxBalanceLaw` records the representation-independent transport and source split and owns
 the generic evolution, source-free, uniqueness, and scaling results.
+
+The word *flux* describes a term in the balance equation, not an intrinsic
+(Berry-curvature or disorder-independent) transport mechanism.
 -/
 
 namespace ConservationLaw
@@ -51,11 +54,11 @@ variable [AddCommMonoid Obs] [Module 𝕜 Obs]
 
 `transport` is defined on test objects themselves and is required only to depend on their
 differentials.  A full `OneForm → Obs` current is deliberately not part of this structure. -/
-structure IntrinsicBalanceLaw
+structure FluxBalanceLaw
     (δ : Obs →ₗ[𝕜] Obs)
     (Q : Test →ₗ[𝕜] Obs)
     (d : Test →ₗ[𝕜] OneForm) where
-  /-- Intrinsic transport/flux on differential test data. -/
+  /-- Flux defined on test data, without choosing a full one-form current. -/
   transport : Test →ₗ[𝕜] Obs
   /-- Transport is insensitive to changes of a test object that leave its differential fixed. -/
   transport_depends : Function.FactorsThrough transport d
@@ -64,14 +67,14 @@ structure IntrinsicBalanceLaw
   /-- The local balance identity. -/
   balance : ∀ f, δ (Q f) = transport f + source f
 
-namespace IntrinsicBalanceLaw
+namespace FluxBalanceLaw
 
-/-- Intrinsic transport vanishes on test objects annihilated by the differential. -/
+/-- Representation-independent transport vanishes on test objects annihilated by the differential. -/
 theorem transport_eq_zero_of_differential_eq_zero
     {δ : Obs →ₗ[𝕜] Obs}
     {Q : Test →ₗ[𝕜] Obs}
     {d : Test →ₗ[𝕜] OneForm}
-    (B : IntrinsicBalanceLaw δ Q d) {f : Test} (hf : d f = 0) :
+    (B : FluxBalanceLaw δ Q d) {f : Test} (hf : d f = 0) :
     B.transport f = 0 :=
   calc
     B.transport f = B.transport 0 :=
@@ -83,7 +86,7 @@ theorem evolution_eq_source_of_differential_eq_zero
     {δ : Obs →ₗ[𝕜] Obs}
     {Q : Test →ₗ[𝕜] Obs}
     {d : Test →ₗ[𝕜] OneForm}
-    (B : IntrinsicBalanceLaw δ Q d) {f : Test} (hf : d f = 0) :
+    (B : FluxBalanceLaw δ Q d) {f : Test} (hf : d f = 0) :
     δ (Q f) = B.source f := by
   rw [B.balance f, B.transport_eq_zero_of_differential_eq_zero hf, zero_add]
 
@@ -92,41 +95,41 @@ theorem evolution_eq_zero_of_differential_eq_zero_of_source_eq_zero
     {δ : Obs →ₗ[𝕜] Obs}
     {Q : Test →ₗ[𝕜] Obs}
     {d : Test →ₗ[𝕜] OneForm}
-    (B : IntrinsicBalanceLaw δ Q d) {f : Test}
+    (B : FluxBalanceLaw δ Q d) {f : Test}
     (hf : d f = 0) (hsource : B.source f = 0) :
     δ (Q f) = 0 := by
   rw [B.evolution_eq_source_of_differential_eq_zero hf, hsource]
 
-/-- In a source-free law, intrinsic flux is exactly the localized evolution. -/
+/-- In a source-free law, transport flux is exactly the localized evolution. -/
 theorem sourceFreeFlux_eq_evolution
     {δ : Obs →ₗ[𝕜] Obs}
     {Q : Test →ₗ[𝕜] Obs}
     {d : Test →ₗ[𝕜] OneForm}
-    (B : IntrinsicBalanceLaw δ Q d) (hsource : B.source = 0) (f : Test) :
+    (B : FluxBalanceLaw δ Q d) (hsource : B.source = 0) (f : Test) :
     B.transport f = δ (Q f) := by
   have h := B.balance f
   rw [hsource] at h
   simpa using h.symm
 
-/-- Source-free intrinsic flux is unique for fixed evolution, localized quantity, and differential. -/
+/-- Source-free transport flux is unique for fixed evolution, localized quantity, and differential. -/
 theorem sourceFreeFlux_unique
     {δ : Obs →ₗ[𝕜] Obs}
     {Q : Test →ₗ[𝕜] Obs}
     {d : Test →ₗ[𝕜] OneForm}
-    (B₁ B₂ : IntrinsicBalanceLaw δ Q d)
+    (B₁ B₂ : FluxBalanceLaw δ Q d)
     (hsource₁ : B₁.source = 0) (hsource₂ : B₂.source = 0) (f : Test) :
     B₁.transport f = B₂.transport f := by
   calc
     B₁.transport f = δ (Q f) := B₁.sourceFreeFlux_eq_evolution hsource₁ f
     _ = B₂.transport f := (B₂.sourceFreeFlux_eq_evolution hsource₂ f).symm
 
-/-- Scaling the evolution scales intrinsic transport and source. -/
+/-- Scaling the evolution scales representation-independent transport and source. -/
 noncomputable def scaleEvolution
     {δ : Obs →ₗ[𝕜] Obs}
     {Q : Test →ₗ[𝕜] Obs}
     {d : Test →ₗ[𝕜] OneForm}
-    (B : IntrinsicBalanceLaw δ Q d) (c : 𝕜) :
-    IntrinsicBalanceLaw (c • δ) Q d where
+    (B : FluxBalanceLaw δ Q d) (c : 𝕜) :
+    FluxBalanceLaw (c • δ) Q d where
   transport := c • B.transport
   transport_depends := by
     intro f g hfg
@@ -145,9 +148,9 @@ noncomputable def absorbSource
     {δ : Obs →ₗ[𝕜] Obs}
     {Q : Test →ₗ[𝕜] Obs}
     {d : Test →ₗ[𝕜] OneForm}
-    (B : IntrinsicBalanceLaw δ Q d)
+    (B : FluxBalanceLaw δ Q d)
     (hsource : Function.FactorsThrough B.source d) :
-    IntrinsicBalanceLaw δ Q d where
+    FluxBalanceLaw δ Q d where
   transport := B.transport + B.source
   transport_depends := by
     intro f g hfg
@@ -159,6 +162,6 @@ noncomputable def absorbSource
     rw [B.balance f]
     simp
 
-end IntrinsicBalanceLaw
+end FluxBalanceLaw
 
 end ConservationLaw
