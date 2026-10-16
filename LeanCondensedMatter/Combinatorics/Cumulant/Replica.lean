@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Combinatorics.SetPartition.SingleBlock
 import LeanCondensedMatter.Combinatorics.Cumulant.Moment
 import LeanCondensedMatter.Combinatorics.SetPartition.Stirling
 import Mathlib.Algebra.Polynomial.Coeff
@@ -33,16 +34,6 @@ noncomputable def replicaPolynomial (κ : Finset α → R) (S : Finset α) : Pol
   ∑ π : Finpartition S,
     Polynomial.C (partitionProduct κ π) * Polynomial.X ^ π.parts.card
 
-private theorem finpartition_eq_indiscrete_of_card_parts_eq_one
-    {S : Finset α} (hS : S ≠ ∅) (π : Finpartition S) (hπ : π.parts.card = 1) :
-    π = indiscrete hS := by
-  obtain ⟨B, hparts⟩ := Finset.card_eq_one.mp hπ
-  have hBS : B = S := by
-    simpa [hparts] using π.sup_parts
-  subst B
-  apply Finpartition.ext
-  simpa using hparts
-
 /-- For nonempty support, the coefficient linear in the replica count is exactly the one-block
 contribution. -/
 theorem replicaPolynomial_coeff_one (κ : Finset α → R) {S : Finset α} (hS : S ≠ ∅) :
@@ -55,7 +46,9 @@ theorem replicaPolynomial_coeff_one (κ : Finset α → R) {S : Finset α} (hS :
   rw [Fintype.sum_eq_single (Finpartition.indiscrete hS) (fun π hπ => by
     have hcard : 1 ≠ π.parts.card := by
       intro h
-      exact hπ (finpartition_eq_indiscrete_of_card_parts_eq_one hS π h.symm)
+      apply hπ
+      apply Finpartition.ext
+      simpa using (Finpartition.parts_eq_singleton_of_card_eq_one π h.symm)
     simp [hcard])]
   simp [partitionProduct]
 
