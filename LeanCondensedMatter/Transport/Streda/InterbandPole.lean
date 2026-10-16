@@ -177,8 +177,10 @@ theorem tendsto_interbandPoleRegularFactorIntegral
       (nhds
         (Real.pi • interbandPoleRegularFactor gap forward reverse (0, 0))) := by
   let factor : ℝ × ℝ → ℂ := interbandPoleRegularFactor gap forward reverse
-  have hrectangle : ContinuousOn factor
-      (Set.Icc (-radius) radius ×ˢ Set.Icc (0 : ℝ) 1) := by
+  have hrectangle : ∃ etaMax : ℝ, 0 < etaMax ∧
+      ContinuousOn factor
+        (Set.Icc (-radius) radius ×ˢ Set.Icc (0 : ℝ) etaMax) := by
+    refine ⟨1, by norm_num, ?_⟩
     intro p hp
     have hshift : gap + p.1 ≠ 0 :=
       gap_add_offset_ne_zero_on_targetWindow
