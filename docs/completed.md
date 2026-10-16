@@ -17,10 +17,10 @@ architectural context and later infinite-dimensional or convergence-aware extens
 | Fermionic Dyson Linked Cluster Theorem, finite-mode formal/algebraic form via replica bridge | Combined | `SecondQuantization.Fermionic.factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_sum_connectedQuarticWickDiagramAmplitude` | `LeanCondensedMatter/SecondQuantization/Fermionic/Diagrammatics/LinkedCluster/Theorem.lean` |
 | Finite-configuration Dyson series equals the interacting partition function | D | `SecondQuantization.Common.hasSum_dysonTraceCoeff_analyticDysonPartitionFunction`, `SecondQuantization.Common.hasFPowerSeriesAt_analyticDysonPartitionFunction` | `LeanCondensedMatter/SecondQuantization/Common/Perturbation/AnalyticDysonPartitionFunction.lean` |
 | Analytic finite-dimensional fermionic Linked Cluster Theorem | Combined | `SecondQuantization.Fermionic.iteratedDeriv_analyticNormalizedLogPartitionFunction_eq_sum_connectedQuarticWickDiagramAmplitude` | `LeanCondensedMatter/SecondQuantization/Fermionic/Diagrammatics/LinkedCluster/Analytic.lean` |
-| Finite-mode fermionic two-point linked-cluster theorem | D | `SecondQuantization.Fermionic.vacuumNormalizedTwoPointDysonSeries_eq_connectedTwoPointDysonSeries` | `LeanCondensedMatter/SecondQuantization/Fermionic/Diagrammatics/TwoPointDiagramExpansion/Series/CauchySeries.lean` |
+| Finite-mode fermionic two-point linked-cluster theorem | D | `SecondQuantization.Fermionic.partitionFunctionNormalizedTwoPointDysonSeries_eq_connectedTwoPointDysonSeries` | `LeanCondensedMatter/SecondQuantization/Fermionic/Diagrammatics/TwoPointDiagramExpansion/Series/CauchySeries.lean` |
 
 The finite-mode fermionic line is complete through both the zero-external-leg/partition-function
-linked-cluster theorem and the vacuum-normalized two-point series: the latter equals the formal series
+linked-cluster theorem and the partition-function-normalized two-point series: the latter equals the formal series
 formed from externally connected two-point diagrams. The analytic log-partition theorem additionally
 identifies logarithmic derivatives of the genuine finite-dimensional interacting partition function
 with connected quartic diagram amplitudes.

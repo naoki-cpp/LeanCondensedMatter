@@ -13,7 +13,7 @@ set_option linter.style.header false
 The canonical external-slot fiber decomposition first identifies each order-`n` two-point Dyson
 coefficient with the Cauchy convolution of externally connected coefficients and normalized vacuum
 coefficients. That physical factorization is then lifted to formal power series; generic
-power-series normalization cancels the vacuum factor.
+power-series division by the normalized partition function cancels the vacuum factor.
 -/
 
 namespace SecondQuantization
@@ -88,14 +88,14 @@ theorem twoPointDysonSeries_eq_connectedTwoPointDysonSeries_mul_normalizedDysonP
 
 /-- **Finite-mode fermionic two-point linked-cluster theorem.** For the imaginary-time Dyson series
 built from free Gibbs expectations and a quartic interaction, with the repository's canonical
-time-order/equal-time convention, vacuum normalization leaves exactly the sum of externally
+time-order/equal-time convention, partition-function normalization leaves exactly the sum of externally
 connected two-point diagrams. -/
-theorem vacuumNormalizedTwoPointDysonSeries_eq_connectedTwoPointDysonSeries
+theorem partitionFunctionNormalizedTwoPointDysonSeries_eq_connectedTwoPointDysonSeries
     (ε : Mode → ℝ) (β : ℝ) (hβ : 0 ≤ β)
     (g : QuarticVertexLabel Mode → ℂ) (i j : Mode) (τ τ' : ℝ) :
-    vacuumNormalizedTwoPointDysonSeries ε β g i j τ τ' =
+    partitionFunctionNormalizedTwoPointDysonSeries ε β g i j τ τ' =
       connectedTwoPointDysonSeries ε β g i j τ τ' := by
-  rw [vacuumNormalizedTwoPointDysonSeries]
+  rw [partitionFunctionNormalizedTwoPointDysonSeries]
   apply PowerSeries.mul_inv_eq_of_eq_mul_of_constantCoeff_ne_zero
   · rw [PowerSeries.constantCoeff_normalizeByConstantCoeff
       (constantCoeff_dysonPartitionSeries_ne_zero ε β (quarticInteraction g))]

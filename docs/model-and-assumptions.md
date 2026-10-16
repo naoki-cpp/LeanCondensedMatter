@@ -119,14 +119,14 @@ SecondQuantization.Fermionic.
 SecondQuantization.Fermionic.
   iteratedDeriv_analyticNormalizedLogPartitionFunction_eq_sum_connectedQuarticWickDiagramAmplitude
 SecondQuantization.Fermionic.
-  vacuumNormalizedTwoPointDysonSeries_eq_connectedTwoPointDysonSeries
+  partitionFunctionNormalizedTwoPointDysonSeries_eq_connectedTwoPointDysonSeries
 ```
 
 The first theorem is purely formal/coefficientwise. The second identifies derivatives of the genuine
 finite-dimensional normalized log partition function with the same connected quartic Wick-diagram
 amplitudes. The third is the two-external-leg analogue after division by the zero-external-leg Dyson
-partition series; `vacuumNormalized` is an identifier for that algebraic normalization, not a claim
-that the thermal state is the vacuum.
+partition series. This is a formal partition-function quotient, not a claim that the
+thermal state is the vacuum.
 
 The statistics-independent normalized moment boundary is expressed by
 `Combinatorics.NormalizedSetFunction`, `Combinatorics.powerSeriesMomentSetFunction`, and

@@ -51,11 +51,11 @@ iteratedDeriv_analyticNormalizedLogPartitionFunction_eq_sum_connectedQuarticWick
 for the finite-dimensional analytic log-partition theorem, and
 
 ```lean
-vacuumNormalizedTwoPointDysonSeries_eq_connectedTwoPointDysonSeries
+partitionFunctionNormalizedTwoPointDysonSeries_eq_connectedTwoPointDysonSeries
 ```
 
-for the two-external-leg linked-cluster theorem. In the last identifier, `vacuumNormalized` denotes
-normalization by the zero-external-leg Dyson partition series; the state itself is finite-temperature.
+for the two-external-leg linked-cluster theorem. Here the partition-function normalization
+cancels vacuum bubbles while retaining the finite-temperature Gibbs-state setting.
 
 The general higher-point/source-insertion connected expansion remains open.
 
@@ -72,10 +72,11 @@ uses `Combinatorics.factorial_mul_coeff_logOf_eq_connectedContribution`. The rep
 boundary internally to the forward moment relation and does not use cumulant inversion. The
 canonical finite-mode fermionic formal linked-cluster endpoint consumes the replica route.
 
-There is currently no separate source-functional wrapper. Vacuum normalization of unnormalized
-external-insertion moments, Grassmann variables, and arbitrary higher-point/source diagram
-expansions remain outside the implementation; a source API should be added only when those concrete
-consumers require it.
+There is currently no separate source-functional wrapper. Division by the normalized
+zero-external-leg Dyson partition series is available for arbitrary fixed external insertions;
+this removes vacuum-only components but does not make a higher-point function connected.
+A source-functional cumulant expansion, Grassmann-variable formalization, and connected
+higher-point/source identities remain open; a source API should be added only for concrete consumers.
 
 ## Completed fermionic representation
 

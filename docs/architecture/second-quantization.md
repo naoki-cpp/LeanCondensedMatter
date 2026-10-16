@@ -336,7 +336,7 @@ The external-leg line has also reached the finite-mode two-point endpoint
 
 ```lean
 SecondQuantization.Fermionic.
-  vacuumNormalizedTwoPointDysonSeries_eq_connectedTwoPointDysonSeries
+  partitionFunctionNormalizedTwoPointDysonSeries_eq_connectedTwoPointDysonSeries
 ```
 
 in `TwoPointDiagramExpansion/Series/CauchySeries.lean`. This means the next correlation-function

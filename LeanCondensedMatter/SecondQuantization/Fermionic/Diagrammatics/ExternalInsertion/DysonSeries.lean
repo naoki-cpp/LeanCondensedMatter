@@ -13,7 +13,8 @@ This module fixes the external fermionic field labels and packages the integrate
 into perturbative coefficients and formal power series. The vacuum-free series only removes pure
 vacuum connected components; distinct externally supported components remain allowed.
 
-The coefficientwise factorization against the normalized vacuum partition series is downstream.
+The coefficientwise factorization against the free-state-normalized, zero-external-leg
+Dyson partition series is downstream.
 -/
 
 namespace SecondQuantization
@@ -71,11 +72,14 @@ noncomputable def vacuumFreeExternalInsertionDysonSeries {E : ℕ}
   PowerSeries.mk (vacuumFreeExternalInsertionDysonCoefficient
     ε β g externalLabel externalTime)
 
-/-- Vacuum-normalized arbitrary-external Dyson series.
+/-- Partition-function-normalized arbitrary-external Dyson series.
+
+The normalization cancels only vacuum connected components. It does not enforce
+connectivity among distinct externally supported components.
 
 The partition series is normalized to constant coefficient one because the diagram amplitudes use
 free Gibbs expectations, exactly as in the two-point expansion. -/
-noncomputable def vacuumNormalizedExternalInsertionDysonSeries {E : ℕ}
+noncomputable def partitionFunctionNormalizedExternalInsertionDysonSeries {E : ℕ}
     (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
     (externalLabel : Fin (2 * E) → ExternalFieldLabel Mode)
     (externalTime : Fin (2 * E) → ℝ) : PowerSeries ℂ :=
