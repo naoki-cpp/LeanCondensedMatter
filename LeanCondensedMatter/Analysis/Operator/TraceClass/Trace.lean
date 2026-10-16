@@ -74,6 +74,17 @@ theorem trace_eq_tsum_inner {T : H →L[ℂ] H} (hT : IsTraceClass T)
   unfold trace
   exact trace_tsum_eq _ d T hT
 
+/-- The trace of a Hilbert--Schmidt factorization `T = A† B` is the
+Hilbert--Schmidt inner product of its factors in any Hilbert basis. -/
+theorem trace_eq_innerHS_of_factorization
+    {T A B : H →L[ℂ] H} (hT : IsTraceClass T)
+    (hfactor : ContinuousLinearMap.adjoint A * B = T)
+    {ι : Type*} (d : HilbertBasis ι ℂ H) :
+    hT.trace = innerHS d A B := by
+  rw [hT.trace_eq_tsum_inner d]
+  unfold innerHS
+  exact tsum_congr fun i => diagonal_eq_hilbertSchmidt_inner hfactor (d i)
+
 /-- The canonical trace depends only on the underlying operator, not on the supplied
 trace-class witnesses. -/
 theorem trace_congr {T R : H →L[ℂ] H}
