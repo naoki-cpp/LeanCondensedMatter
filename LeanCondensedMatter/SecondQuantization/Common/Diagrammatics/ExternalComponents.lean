@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Combinatorics.SetPartition.SingleBlock
 import LeanCondensedMatter.Combinatorics.SimpleGraphComponentPartition
 import Mathlib.Data.Finset.Sum
 
@@ -212,10 +213,8 @@ theorem allExternalVerticesConnected_iff_externalComponentPartition_parts_card_e
     rw [h]
     simp
   · intro h
-    obtain ⟨B, hB⟩ := Finset.card_eq_one.mp h
-    have hBS : B = (Finset.univ : Finset External) := by
-      simpa [hB] using (externalComponentPartition G).sup_parts
-    simpa [hBS] using hB
+    exact Finpartition.parts_eq_singleton_of_card_eq_one
+      (externalComponentPartition G) h
 
 end ExternalPartition
 
