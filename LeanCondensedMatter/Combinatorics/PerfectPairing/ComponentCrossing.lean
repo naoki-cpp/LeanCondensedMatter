@@ -295,12 +295,12 @@ theorem Pairing.crossingCount_eq_sum_localCrossingCount_add_inter [Fintype ι]
     pairing.crossingCount =
         (∑ B : ι, pairing.componentCrossingCount e B B) +
           pairing.interComponentCrossingCount e := by
-    classical
-    rw [pairing.crossingCount_eq_sum_componentCrossingCount e]
-    simp_rw [← Finset.sum_product']
-    rw [← Finset.diag_union_offDiag,
-      Finset.sum_union (Finset.disjoint_diag_offDiag _), Finset.sum_diag]
-    rfl
+      classical
+      rw [pairing.crossingCount_eq_sum_componentCrossingCount e]
+      simp_rw [← Finset.sum_product']
+      rw [← Finset.diag_union_offDiag,
+        Finset.sum_union (Finset.disjoint_diag_offDiag _), Finset.sum_diag]
+      rfl
     _ = (∑ B : ι, (localPairing B).crossingCount) +
         pairing.interComponentCrossingCount e := by
       congr 1
