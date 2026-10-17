@@ -233,6 +233,59 @@ theorem polarFourierZerothAngularKernel_eq_tsum_exp_integrals (z : ℝ) :
       exact NormedSpace.expSeries_div_hasSum_exp _
   simpa only [polarFourierZerothAngularKernel, term] using hseries.tsum_eq.symm
 
+/-- Integral exponential coefficients are the corresponding real cosine moments,
+multiplied by the scalar Fourier coefficient. -/
+theorem polarFourierZerothAngularKernel_eq_tsum_moments (z : ℝ) :
+    polarFourierZerothAngularKernel z =
+      ∑' n : ℕ, (Complex.I * (z : ℂ)) ^ n / (Nat.factorial n : ℂ) *
+        (polarFourierCosineMoment n : ℂ) := by
+  rw [polarFourierZerothAngularKernel_eq_tsum_exp_integrals]
+  congr 1
+  funext n
+  have hcos :
+      (∫ θ in (0 : ℝ)..(2 * Real.pi),
+        (((Real.cos θ : ℝ) : ℂ) ^ n)) =
+        (polarFourierCosineMoment n : ℂ) := by
+    simp only [← Complex.ofReal_pow, intervalIntegral.integral_ofReal,
+      polarFourierCosineMoment]
+  have hterm (θ : ℝ) :
+      (Complex.I * (((z * Real.cos θ : ℝ) : ℂ))) ^ n /
+          (Nat.factorial n : ℂ) =
+        ((Complex.I * (z : ℂ)) ^ n / (Nat.factorial n : ℂ)) *
+          (((Real.cos θ : ℝ) : ℂ) ^ n) := by
+    have heq :
+        Complex.I * (((z * Real.cos θ : ℝ) : ℂ)) =
+          (Complex.I * (z : ℂ)) * ((Real.cos θ : ℝ) : ℂ) := by
+      push_cast
+      ring
+    rw [heq, mul_pow]
+    ring
+  calc
+    (∫ θ in (0 : ℝ)..(2 * Real.pi),
+        (Complex.I * (((z * Real.cos θ : ℝ) : ℂ))) ^ n /
+          (Nat.factorial n : ℂ)) =
+      ∫ θ in (0 : ℝ)..(2 * Real.pi),
+        ((Complex.I * (z : ℂ)) ^ n / (Nat.factorial n : ℂ)) *
+          (((Real.cos θ : ℝ) : ℂ) ^ n) := by
+      apply intervalIntegral.integral_congr
+      intro θ _
+      exact hterm θ
+    _ = ((Complex.I * (z : ℂ)) ^ n / (Nat.factorial n : ℂ)) *
+        (∫ θ in (0 : ℝ)..(2 * Real.pi),
+          (((Real.cos θ : ℝ) : ℂ) ^ n)) := by
+      rw [intervalIntegral.integral_const_mul]
+    _ = _ := by rw [hcos]
+
+/-- The zeroth-order regularized hypergeometric coefficient of Mathlib's Bessel function
+is a reciprocal square of a factorial. -/
+theorem polarFourierBesselZeroCoeff (n : ℕ) :
+    Complex.regularizedHGFunCoeff 0 {(1 : ℂ)} n =
+      1 / (Nat.factorial n : ℂ) ^ 2 := by
+  have hgamma : Complex.Gamma ((1 : ℂ) + (n : ℂ)) =
+      (Nat.factorial n : ℂ) := by
+    simpa only [add_comm] using Complex.Gamma_nat_eq_factorial n
+  simp [Complex.regularizedHGFunCoeff, hgamma, pow_two]
+
 /-- The zeroth radial Fourier kernel is normalized by the full polar angle at the origin. -/
 @[simp] theorem polarFourierZerothAngularKernel_zero :
     polarFourierZerothAngularKernel 0 = ((2 * Real.pi : ℝ) : ℂ) := by
