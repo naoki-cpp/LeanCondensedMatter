@@ -127,18 +127,9 @@ theorem exactSecondMoment_mul_of_commutes
   intro ω _
   rw [smul_mul_assoc]
   apply congrArg (fun operator : H →L[ℂ] H => (ensemble.probability ω : ℂ) • operator)
-  calc
-    ((ensemble.impurityPotential ω).1 * kernel *
-        (ensemble.impurityPotential ω).1) * right =
-      (ensemble.impurityPotential ω).1 * kernel *
-        ((ensemble.impurityPotential ω).1 * right) := by
-          rw [mul_assoc]
-    _ = (ensemble.impurityPotential ω).1 * kernel *
-        (right * (ensemble.impurityPotential ω).1) := by
-          rw [(hcommute ω).eq]
-    _ = (ensemble.impurityPotential ω).1 * (kernel * right) *
-        (ensemble.impurityPotential ω).1 := by
-          simp only [mul_assoc]
+  simpa only [mul_assoc] using
+    congrArg (fun operator : H →L[ℂ] H =>
+      (ensemble.impurityPotential ω).1 * kernel * operator) (hcommute ω).eq
 
 /-- Left equivariance of the exact second moment. If every impurity potential commutes with a
 bounded operator, that operator can be moved through the left side of the second-moment action. -/
@@ -155,18 +146,9 @@ theorem mul_exactSecondMoment_of_commutes
   intro ω _
   rw [mul_smul_comm]
   apply congrArg (fun operator : H →L[ℂ] H => (ensemble.probability ω : ℂ) • operator)
-  calc
-    left * ((ensemble.impurityPotential ω).1 * kernel *
-        (ensemble.impurityPotential ω).1) =
-      (left * (ensemble.impurityPotential ω).1) * kernel *
-        (ensemble.impurityPotential ω).1 := by
-          simp only [mul_assoc]
-    _ = ((ensemble.impurityPotential ω).1 * left) * kernel *
-        (ensemble.impurityPotential ω).1 := by
-          rw [← (hcommute ω).eq]
-    _ = (ensemble.impurityPotential ω).1 * (left * kernel) *
-        (ensemble.impurityPotential ω).1 := by
-          simp only [mul_assoc]
+  simpa only [mul_assoc] using
+    congrArg (fun operator : H →L[ℂ] H =>
+      operator * kernel * (ensemble.impurityPotential ω).1) (hcommute ω).eq.symm
 
 /-- Exact centered-disorder property `E[Vω] = 0`. The second moment is computed canonically and is
 not stored as additional data. -/
