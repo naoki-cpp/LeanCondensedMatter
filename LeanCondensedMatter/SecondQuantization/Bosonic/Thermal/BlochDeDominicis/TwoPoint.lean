@@ -115,26 +115,16 @@ theorem summable_imaginaryTimeEvolveFree_comp_create_mul_annihilate_diag
     rw [matrixCoeff_imaginaryTimeEvolveFree_comp_create_removeOccupation,
       matrixCoeff_annihilate, ite_eq_left rfl, mul_right_comm, sqrt_natCast_mul_self]
   rw [← hginj.summable_iff hvanish, hcomp]
-  have h := (hasSum_particleNumber_boltzmannWeight ε β hpos i).mapL Complex.ofRealCLM
-  have heq : (fun n : Occupation Mode => Complex.ofRealCLM ((n i : ℝ) * boltzmannWeight ε β n)) =
-      fun n : Occupation Mode => (n i : ℂ) * Complex.exp ((-β * freeEigenvalue ε n : ℝ) : ℂ) := by
-    funext n
-    simp [Complex.ofRealCLM_apply, boltzmannWeight]
-  rw [heq] at h
-  exact h.summable
+  simpa [boltzmannWeight] using
+    Complex.summable_ofReal.mpr
+      (summable_particleNumber_boltzmannWeight ε β hpos i)
 
 /-- The Boltzmann-weighted diagonal partition series is summable over `ℂ`. -/
 theorem summable_imaginaryTimeEvolveFree_self (ε : Mode → ℝ) (β : ℝ) (hpos : ∀ i, 0 < β * ε i) :
     Summable (fun n : Occupation Mode =>
       Common.matrixCoeff (imaginaryTimeEvolveFree ε (-β)) n n) := by
-  have h := (hasSum_boltzmannWeight ε β hpos).mapL Complex.ofRealCLM
-  have heq : (fun n : Occupation Mode => Complex.ofRealCLM (boltzmannWeight ε β n)) =
-      fun n : Occupation Mode => Common.matrixCoeff (imaginaryTimeEvolveFree ε (-β)) n n := by
-    funext n
-    rw [matrixCoeff_imaginaryTimeEvolveFree_self]
-    simp [Complex.ofRealCLM_apply, boltzmannWeight]
-  rw [heq] at h
-  exact h.summable
+  simpa [matrixCoeff_imaginaryTimeEvolveFree_self, boltzmannWeight] using
+    Complex.summable_ofReal.mpr (summable_boltzmannWeight ε β hpos)
 
 /-- The uncutoff bosonic two-point identity obtained from the Common Bloch–de Dominicis base case.
 For `i = j`, division by the nonzero partition sum gives
