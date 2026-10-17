@@ -1,6 +1,6 @@
 # Finite-family order decomposition
 
-`Combinatorics.FamilyOrderShuffle` owns the decomposition of a global finite order into local
+`Combinatorics.Shuffle.FamilyOrderShuffle` owns the decomposition of a global finite order into local
 fiber orders and an order-preserving family shuffle. Its sized API accepts an explicit block-size
 function together with a proof that each size is the cardinality of its fiber. The canonical
 `Fintype.card` API is a specialization of that seam.
@@ -10,7 +10,7 @@ function together with a proof that each size is the cardinality of its fiber. T
 The slot-image, increasing-enumeration, and uniqueness implementation remains private to the
 family module.
 
-`FinpartitionOrderShuffle` is the semantic adapter for a finite partition. It keeps
+`Shuffle.FinpartitionOrderShuffle` is the semantic adapter for a finite partition. It keeps
 `Finset.card` in the partition-facing `PartOrders` and `PartShuffle` types, so downstream
 diagrammatic APIs do not acquire cardinality casts. The adapter uses the sized family API with
 `F B := ↥(B : Finset α)` and `Fintype.card ↥B = B.card`.
@@ -28,14 +28,14 @@ the partition-facing order and shuffle types while sharing the family extraction
 transport, and empty-family construction. It does not define inversion counts or import modular
 arithmetic for those laws.
 
-`FamilySlotShuffleInversions` owns the inter-block inversion counts, their total relative to an
-explicit block order, and modular transport. `FamilySlotShuffleSign` derives relative permutation
+`Shuffle.FamilySlotShuffleInversions` owns the inter-block inversion counts, their total relative to an
+explicit block order, and modular transport. `Shuffle.FamilySlotShuffleSign` derives relative permutation
 signs from those counts. Pairing component crossings and external-sector parity use the counts
 directly without importing the permutation-sign theorem.
 
 ## Binary ambient slots and recursive presentations
 
-`Combinatorics.SlotShuffle` owns order-preserving interleavings of two slot families, their left
+`Combinatorics.Shuffle.SlotShuffle` owns order-preserving interleavings of two slot families, their left
 and right position sets, complement enumeration, and uniqueness from the left position set.
 `slotShuffleLeftSlotSetEquiv` constructs its inverse by increasing enumeration of the left set
 and its complement, independently of recursive binary shuffles and their cardinality.
@@ -44,9 +44,9 @@ The ambient binomial-cardinality theorem follows from this direct equivalence.
 The construction reuses Mathlib's `Finset.orderIsoOfFin` and `subsetSumSdiffEquiv`, which is backed
 by `Equiv.Set.sumDiffSubset`. No dependent recursion that removes the first slot is needed.
 
-`BinaryShuffleSlots` owns the adapter from recursive binary shuffles to ambient slot shuffles:
+`Shuffle.BinaryShuffleSlots` owns the adapter from recursive binary shuffles to ambient slot shuffles:
 the slot coordinates, monotonicity, injectivity, the equivalence of presentations, and finite-sum
-transport. The equivalence uses the independent ambient cardinality result. `FamilySlotShuffleDecomposition` consumes the ambient
+transport. The equivalence uses the independent ambient cardinality result. `Shuffle.FamilySlotShuffleDecomposition` consumes the ambient
 module directly. The ordered-simplex product proof still uses recursive binary shuffles internally,
 while its integrand is attached to the ambient `SlotShuffle`.
 

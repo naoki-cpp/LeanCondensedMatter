@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Combinatorics.FamilySlotShuffle
+import LeanCondensedMatter.Combinatorics.Shuffle.FamilySlotShuffle
 import Mathlib.Data.Finset.Sort
 
 set_option linter.style.header false

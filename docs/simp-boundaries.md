@@ -98,13 +98,13 @@ rules, or empty/zero cases. In particular this covers the current simp API in:
 
 - `SubsetSplit`
 - `SumEquivPartition`
-- `BinaryShuffle`
-- `SlotShuffle`
-- `BinaryShuffleSlots`
-- `FamilySlotShuffle`
-- `FamilySlotShuffleDecomposition`
-- `FamilyOrderShuffle`
-- `FinpartitionOrderShuffle`
+- `Shuffle/BinaryShuffle`
+- `Shuffle/SlotShuffle`
+- `Shuffle/BinaryShuffleSlots`
+- `Shuffle/FamilySlotShuffle`
+- `Shuffle/FamilySlotShuffleDecomposition`
+- `Shuffle/FamilyOrderShuffle`
+- `Shuffle/FinpartitionOrderShuffle`
 - `FiniteIndex/DeletedPositions`
 - `SetPartition/GraphComponents`
 - `Cumulant/Normalized`

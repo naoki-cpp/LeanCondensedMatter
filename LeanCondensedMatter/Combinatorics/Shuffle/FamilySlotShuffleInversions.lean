@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Combinatorics.FamilySlotShuffle
+import LeanCondensedMatter.Combinatorics.Shuffle.FamilySlotShuffle
 import LeanCondensedMatter.Combinatorics.FiniteSumModEq
 import Mathlib.Algebra.BigOperators.ModEq
 import Mathlib.Tactic

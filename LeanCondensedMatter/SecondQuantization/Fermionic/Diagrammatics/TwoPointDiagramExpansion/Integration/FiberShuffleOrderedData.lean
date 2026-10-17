@@ -3,7 +3,7 @@ import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagr
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Factorization.FiberVacuumIntegrand
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.DiagramSumIntegral
 import LeanCondensedMatter.Analysis.OrderedSimplex.BinarySlotShuffle
-import LeanCondensedMatter.Combinatorics.SlotShuffle
+import LeanCondensedMatter.Combinatorics.Shuffle.SlotShuffle
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Reindexing
 
 set_option linter.style.header false

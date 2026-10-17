@@ -1,5 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.MixedOrderData
-import LeanCondensedMatter.Combinatorics.FamilySlotShuffleSign
+import LeanCondensedMatter.Combinatorics.Shuffle.FamilySlotShuffleSign
 import LeanCondensedMatter.Combinatorics.SigmaPermutationSign
 
 set_option linter.style.header false

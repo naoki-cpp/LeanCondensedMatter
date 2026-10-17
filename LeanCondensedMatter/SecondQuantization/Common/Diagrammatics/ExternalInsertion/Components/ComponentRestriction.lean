@@ -3,8 +3,8 @@ import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ComponentLegD
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Embedding
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Restriction
 import LeanCondensedMatter.Combinatorics.PerfectPairing.InvolutionCard
-import LeanCondensedMatter.Combinatorics.FamilySlotShuffle
-import LeanCondensedMatter.Combinatorics.FamilySlotShuffleInversions
+import LeanCondensedMatter.Combinatorics.Shuffle.FamilySlotShuffle
+import LeanCondensedMatter.Combinatorics.Shuffle.FamilySlotShuffleInversions
 import LeanCondensedMatter.Combinatorics.SetPartition.FinpartitionProduct
 import Mathlib.Data.Finset.Sort
 
