@@ -68,15 +68,8 @@ private theorem coeff_log_complex_of_pos (m : ℕ) (hm : 0 < m) :
 
 private theorem neg_pow_mul_neg_one_pow_succ (ζ : ℂ) (m : ℕ) :
     (-ζ) ^ m * (-1 : ℂ) ^ (m + 1) = -ζ ^ m := by
-  induction m with
-  | zero => simp
-  | succ m ih =>
-      rw [pow_succ (-ζ), pow_succ (-1 : ℂ) (m + 1)]
-      calc
-        (-ζ) ^ m * -ζ * ((-1 : ℂ) ^ (m + 1) * -1) =
-            ((-ζ) ^ m * (-1 : ℂ) ^ (m + 1)) * ((-ζ) * -1) := by ring
-        _ = (-ζ ^ m) * ζ := by rw [ih]; ring
-        _ = -ζ ^ (m + 1) := by rw [pow_succ]; ring
+  rw [pow_succ (-1 : ℂ), ← mul_assoc, ← mul_pow]
+  simp
 
 /-- Division-free formal trace-log identity for arbitrary exchange weight.
 
