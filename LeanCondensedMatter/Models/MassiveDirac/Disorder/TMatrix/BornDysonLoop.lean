@@ -49,10 +49,6 @@ theorem finiteCutoffContinuumBornDysonGreenLoopMatrix_apply_eq_radial_integral
     finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix_apply_eq_entryKernel_integral
       side v m probeEnergy broadening disorderStrength hbar pMax 0 i j
 
-private theorem polarFourierZerothAngularKernel_zero :
-    polarFourierZerothAngularKernel 0 = ((2 * Real.pi : ℝ) : ℂ) := by
-  simp [polarFourierZerothAngularKernel, polarFourierRadialPhase]
-
 private theorem finiteCutoffContinuumBornDysonScalarCoefficient_zero_disorder
     (side : SpectralSide)
     (v m px py probeEnergy broadening hbar pMax : ℝ) :
