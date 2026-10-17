@@ -20,13 +20,8 @@ private theorem diagonal_eq_hilbertSchmidt_inner
     {T A B : H →L[ℂ] H} (hfactor : ContinuousLinearMap.adjoint A * B = T)
     (x : H) :
     inner ℂ x (T x) = inner ℂ (A x) (B x) := by
-  calc
-    inner ℂ x (T x) = inner ℂ x ((ContinuousLinearMap.adjoint A * B) x) := by
-      rw [hfactor]
-    _ = inner ℂ x ((ContinuousLinearMap.adjoint A) (B x)) := by
-      rw [mul_apply_eq_comp]
-    _ = inner ℂ (A x) (B x) :=
-      ContinuousLinearMap.adjoint_inner_right A x (B x)
+  rw [← hfactor, mul_apply_eq_comp]
+  exact ContinuousLinearMap.adjoint_inner_right A x (B x)
 
 /-- The complex diagonal series of a trace-class operator is absolutely summable in every Hilbert
 basis. -/
@@ -91,10 +86,7 @@ theorem trace_congr {T R : H →L[ℂ] H}
     (hT : IsTraceClass T) (hR : IsTraceClass R) (h : T = R) :
     hT.trace = hR.trace := by
   subst R
-  obtain ⟨w, d, -⟩ := exists_hilbertBasis (𝕜 := ℂ) (E := H)
-  calc
-    hT.trace = ∑' i, inner ℂ (d i) (T (d i)) := hT.trace_eq_tsum_inner d
-    _ = hR.trace := (hR.trace_eq_tsum_inner d).symm
+  exact congrArg (fun p : IsTraceClass T => p.trace) (Subsingleton.elim hT hR)
 
 /-- The diagonal series sums to the trace in every Hilbert basis. -/
 theorem hasSum_trace {T : H →L[ℂ] H} (hT : IsTraceClass T)
