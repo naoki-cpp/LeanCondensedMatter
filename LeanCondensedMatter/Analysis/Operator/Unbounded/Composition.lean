@@ -1,4 +1,8 @@
-import Mathlib.LinearAlgebra.LinearPMap
+module
+
+public import Mathlib.LinearAlgebra.LinearPMap
+
+public section
 
 set_option linter.style.header false
 

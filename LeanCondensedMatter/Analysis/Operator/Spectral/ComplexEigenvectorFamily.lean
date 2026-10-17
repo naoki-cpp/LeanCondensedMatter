@@ -1,4 +1,8 @@
-import Mathlib.Analysis.InnerProductSpace.Spectrum
+module
+
+public import Mathlib.Analysis.InnerProductSpace.Spectrum
+
+public section
 
 set_option linter.style.header false
 
@@ -18,7 +22,7 @@ variable {T : H →L[ℂ] H}
 
 /-- The index type formed from every nonzero complex eigenvalue of `T` and a basis index in its
 finite-dimensional eigenspace. -/
-def ComplexEigenvectorIndex (T : H →L[ℂ] H) : Type :=
+@[expose] def ComplexEigenvectorIndex (T : H →L[ℂ] H) : Type :=
   Σ z : { z : ℂ // z ≠ 0 },
     Fin (Module.finrank ℂ (Module.End.eigenspace (T : H →ₗ[ℂ] H) z.1))
 
