@@ -155,66 +155,6 @@ variable {ι κ : Type*} [Fintype ι] [Fintype κ]
 
 noncomputable section
 
-/-- Reindex family slot shuffles along an equivalence of their finite block-index types. -/
-private noncomputable def reindexEquiv (e : ι ≃ κ) (size : κ → ℕ) :
-    FamilySlotShuffle size ≃ FamilySlotShuffle (fun i => size (e i)) := by
-  let hsum : (∑ i : ι, size (e i)) = ∑ j : κ, size j := Equiv.sum_comp e size
-  let localEquiv : (Σ i : ι, Fin (size (e i))) ≃ (Σ j : κ, Fin (size j)) :=
-    e.sigmaCongrLeft (β := fun j : κ => Fin (size j))
-  exact
-    { toFun := fun shuffle =>
-        { slotEquiv := localEquiv.trans (shuffle.slotEquiv.trans (finCongr hsum.symm))
-          strictMono := by
-            intro i a b hab
-            change (finCongr hsum.symm)
-                (shuffle.slotEquiv (localEquiv ⟨i, a⟩)) <
-              (finCongr hsum.symm)
-                (shuffle.slotEquiv (localEquiv ⟨i, b⟩))
-            simpa [localEquiv] using
-              (Fin.castOrderIso hsum.symm).strictMono
-                (shuffle.strictMono (e i) hab) }
-      invFun := fun shuffle =>
-        { slotEquiv := localEquiv.symm.trans (shuffle.slotEquiv.trans (finCongr hsum))
-          strictMono := by
-            intro j
-            obtain ⟨i, rfl⟩ := e.surjective j
-            intro a b hab
-            have ha : localEquiv.symm ⟨e i, a⟩ = ⟨i, a⟩ := by
-              apply localEquiv.injective
-              simp [localEquiv]
-            have hb : localEquiv.symm ⟨e i, b⟩ = ⟨i, b⟩ := by
-              apply localEquiv.injective
-              simp [localEquiv]
-            change (finCongr hsum)
-                (shuffle.slotEquiv (localEquiv.symm ⟨e i, a⟩)) <
-              (finCongr hsum)
-                (shuffle.slotEquiv (localEquiv.symm ⟨e i, b⟩))
-            rw [ha, hb]
-            exact (Fin.castOrderIso hsum).strictMono
-              (shuffle.strictMono i hab) }
-      left_inv := by
-        intro shuffle
-        apply FamilySlotShuffleTo.ext
-        apply Equiv.ext
-        intro x
-        change (finCongr hsum)
-            ((finCongr hsum.symm)
-              (shuffle.slotEquiv (localEquiv (localEquiv.symm x)))) =
-          shuffle.slotEquiv x
-        rw [localEquiv.apply_symm_apply]
-        simp
-      right_inv := by
-        intro shuffle
-        apply FamilySlotShuffleTo.ext
-        apply Equiv.ext
-        intro x
-        change (finCongr hsum.symm)
-            ((finCongr hsum)
-              (shuffle.slotEquiv (localEquiv.symm (localEquiv x)))) =
-          shuffle.slotEquiv x
-        rw [localEquiv.symm_apply_apply]
-        simp }
-
 /-- Finite-family ordered-simplex shuffle product identity for an arbitrary finite block-index type,
 under measurable local boundedness. -/
 private theorem FamilySlotShuffle.sum_integral_eq_prod
@@ -232,7 +172,7 @@ private theorem FamilySlotShuffle.sum_integral_eq_prod
         orderedSimplexIntegral (∑ i, size i) β (shuffle.ambientIntegrand localIntegrand)) =
       ∑ shuffle : FamilySlotShuffle size,
         orderedSimplexIntegral (∑ j, sizeFin j) β
-          ((reindexEquiv e size shuffle).ambientIntegrand localFin) := by
+          ((FamilySlotShuffle.reindexEquiv e size shuffle).ambientIntegrand localFin) := by
             apply Fintype.sum_congr
             intro shuffle
             symm
@@ -246,18 +186,18 @@ private theorem FamilySlotShuffle.sum_integral_eq_prod
             have hterm : ∀ i : Fin (Fintype.card ι),
                 localIntegrand (e i) (fun a =>
                   (fun z => τ (Fin.cast hsum z))
-                    ((reindexEquiv e size shuffle).slotEquiv ⟨i, a⟩)) =
+                    ((FamilySlotShuffle.reindexEquiv e size shuffle).slotEquiv ⟨i, a⟩)) =
                   localIntegrand (e i) (fun a => τ (shuffle.slotEquiv ⟨e i, a⟩)) := by
               intro i
               apply congrArg (localIntegrand (e i))
               funext a
-              simp [reindexEquiv]
+              simp [FamilySlotShuffle.reindexEquiv]
             simp_rw [hterm]
             exact Equiv.prod_comp e
               (fun j => localIntegrand j (fun a => τ (shuffle.slotEquiv ⟨j, a⟩)))
     _ = ∑ shuffle : FamilySlotShuffle sizeFin,
         orderedSimplexIntegral (∑ j, sizeFin j) β (shuffle.ambientIntegrand localFin) :=
-      Equiv.sum_comp (reindexEquiv e size)
+      Equiv.sum_comp (FamilySlotShuffle.reindexEquiv e size)
         (fun shuffle => orderedSimplexIntegral (∑ j, sizeFin j) β
           (shuffle.ambientIntegrand localFin))
     _ = ∏ j, orderedSimplexIntegral (sizeFin j) β (localFin j) :=

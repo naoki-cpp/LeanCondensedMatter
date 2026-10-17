@@ -13,7 +13,7 @@ set_option linter.style.header false
 into `Fin total`, preserving the order inside each block.  The canonical `FamilySlotShuffle size`
 specializes the ambient cardinality to `∑ i, size i` when the index type is finite.
 
-This module owns the shuffle structure, finite instances, and cardinality transport.
+This module owns the shuffle structure, finite instances, index reindexing, and cardinality transport.
 Inter-block inversion counts live in `FamilySlotShuffleInversions`; permutation signs live in
 `FamilySlotShuffleSign`. Shuffled integrands and continuity live in
 `Analysis/OrderedSimplex/FamilyShuffleIntegrand.lean`.
@@ -76,6 +76,66 @@ noncomputable def FamilySlotShuffleTo.castTotalEquiv {size : ι → ℕ} {m n : 
 /-- A family shuffle whose ambient cardinality is exactly the sum of its local block sizes. -/
 abbrev FamilySlotShuffle [Fintype ι] (size : ι → ℕ) :=
   FamilySlotShuffleTo size (∑ i, size i)
+
+section Reindex
+
+variable {κ : Type*} [Fintype ι] [Fintype κ]
+
+/-- Reindex family slot shuffles along an equivalence of their finite block-index types. -/
+noncomputable def FamilySlotShuffle.reindexEquiv (e : ι ≃ κ) (size : κ → ℕ) :
+    FamilySlotShuffle size ≃ FamilySlotShuffle (fun i => size (e i)) := by
+  let hsum : (∑ i : ι, size (e i)) = ∑ j : κ, size j := Equiv.sum_comp e size
+  let localEquiv : (Σ i : ι, Fin (size (e i))) ≃ (Σ j : κ, Fin (size j)) :=
+    e.sigmaCongrLeft (β := fun j : κ => Fin (size j))
+  exact
+    { toFun := fun shuffle =>
+        { slotEquiv := localEquiv.trans (shuffle.slotEquiv.trans (finCongr hsum.symm))
+          strictMono := by
+            intro i a b hab
+            change (finCongr hsum.symm)
+                (shuffle.slotEquiv (localEquiv ⟨i, a⟩)) <
+              (finCongr hsum.symm)
+                (shuffle.slotEquiv (localEquiv ⟨i, b⟩))
+            simpa [localEquiv] using
+              (Fin.castOrderIso hsum.symm).strictMono
+                (shuffle.strictMono (e i) hab) }
+      invFun := fun shuffle =>
+        { slotEquiv := localEquiv.symm.trans (shuffle.slotEquiv.trans (finCongr hsum))
+          strictMono := by
+            intro j
+            obtain ⟨i, rfl⟩ := e.surjective j
+            intro a b hab
+            have ha : localEquiv.symm ⟨e i, a⟩ = ⟨i, a⟩ := by
+              apply localEquiv.injective
+              simp [localEquiv]
+            have hb : localEquiv.symm ⟨e i, b⟩ = ⟨i, b⟩ := by
+              apply localEquiv.injective
+              simp [localEquiv]
+            change (finCongr hsum)
+                (shuffle.slotEquiv (localEquiv.symm ⟨e i, a⟩)) <
+              (finCongr hsum)
+                (shuffle.slotEquiv (localEquiv.symm ⟨e i, b⟩))
+            rw [ha, hb]
+            exact (Fin.castOrderIso hsum).strictMono
+              (shuffle.strictMono i hab) }
+      left_inv := by
+        intro shuffle
+        apply FamilySlotShuffleTo.ext
+        apply Equiv.ext
+        intro x
+        simp [localEquiv]
+      right_inv := by
+        intro shuffle
+        apply FamilySlotShuffleTo.ext
+        apply Equiv.ext
+        intro x
+        change (finCongr hsum.symm)
+            ((finCongr hsum) (shuffle.slotEquiv (localEquiv.symm (localEquiv x)))) =
+          shuffle.slotEquiv x
+        rw [localEquiv.symm_apply_apply]
+        simp }
+
+end Reindex
 
 /-- The unique shuffle of an empty family of slot blocks. -/
 noncomputable def FamilySlotShuffle.nil (size : Fin 0 → ℕ) : FamilySlotShuffle size where
