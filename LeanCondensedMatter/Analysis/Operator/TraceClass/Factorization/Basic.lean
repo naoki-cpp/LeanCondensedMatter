@@ -54,13 +54,9 @@ theorem exists_controlled_hilbertSchmidt_factorization
     rw [← ContinuousLinearMap.star_eq_adjoint, norm_star]
     exact hUnorm
   have hAnorm_le : hA.normSq ≤ IsHilbertSchmidt.normSq hT := by
-    have hraw := IsHilbertSchmidt.normSq_comp_right_le hS (ContinuousLinearMap.adjoint U)
-    have hraw' :
-        hA.normSq ≤ ‖ContinuousLinearMap.adjoint U‖ ^ 2 * hS.normSq := by
-      exact (IsHilbertSchmidt.normSq_proof_irrel hA
-        (isHilbertSchmidt_comp_right hS (ContinuousLinearMap.adjoint U))) ▸ hraw
     calc
-      hA.normSq ≤ ‖ContinuousLinearMap.adjoint U‖ ^ 2 * hS.normSq := hraw'
+      hA.normSq ≤ ‖ContinuousLinearMap.adjoint U‖ ^ 2 * hS.normSq :=
+        IsHilbertSchmidt.normSq_comp_right_le hS (ContinuousLinearMap.adjoint U)
       _ ≤ 1 ^ 2 * hS.normSq := by
         exact mul_le_mul_of_nonneg_right
           (pow_le_pow_left₀ (norm_nonneg _) hAdjUnorm 2) hS.normSq_nonneg
