@@ -120,7 +120,7 @@ theorem polarFourierCosineMoment_add_two (n : ℕ) :
     polarFourierCosineMoment (n + 2) =
       ((n : ℝ) + 1) / ((n : ℝ) + 2) * polarFourierCosineMoment n := by
   simpa [polarFourierCosineMoment] using
-    (intervalIntegral.integral_cos_pow (a := (0 : ℝ)) (b := 2 * Real.pi) n)
+    (integral_cos_pow (a := (0 : ℝ)) (b := 2 * Real.pi) n)
 
 /-- Closed finite-product formula for every even full-angle cosine moment. -/
 theorem polarFourierCosineMoment_even (n : ℕ) :
