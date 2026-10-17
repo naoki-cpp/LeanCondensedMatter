@@ -40,23 +40,23 @@ theorem mem_naturalCompDomain_iff (g : F →ₗ.[R] G) (f : E →ₗ.[R] F) (x :
   · rintro ⟨hx, hg⟩
     exact ⟨⟨x, hx⟩, hg, rfl⟩
 
-private theorem naturalCompDomain_le_right (g : F →ₗ.[R] G) (f : E →ₗ.[R] F) :
-    naturalCompDomain g f ≤ f.domain := by
-  intro x hx
-  rcases (mem_naturalCompDomain_iff g f x).1 hx with ⟨hxf, _⟩
-  exact hxf
-
 /-- Compose two partially defined linear maps on their natural operator-product domain. -/
-@[expose] def compOnDomain (g : F →ₗ.[R] G) (f : E →ₗ.[R] F) : E →ₗ.[R] G where
-  domain := naturalCompDomain g f
-  toFun :=
-    g.toFun.comp <|
-      LinearMap.codRestrict g.domain
-        (f.toFun.comp (Submodule.inclusion (naturalCompDomain_le_right g f)))
-        (fun x => by
-          rcases (mem_naturalCompDomain_iff g f x).1 x.2 with ⟨hx, hg⟩
-          change f ⟨(x : E), naturalCompDomain_le_right g f x.2⟩ ∈ g.domain
-          simpa only using hg)
+@[expose] def compOnDomain (g : F →ₗ.[R] G) (f : E →ₗ.[R] F) : E →ₗ.[R] G := by
+  have hdomain : naturalCompDomain g f ≤ f.domain := by
+    intro x hx
+    rcases (mem_naturalCompDomain_iff g f x).1 hx with ⟨hxf, _⟩
+    exact hxf
+  exact {
+    domain := naturalCompDomain g f
+    toFun :=
+      g.toFun.comp <|
+        LinearMap.codRestrict g.domain
+          (f.toFun.comp (Submodule.inclusion hdomain))
+          (fun x => by
+            rcases (mem_naturalCompDomain_iff g f x).1 x.2 with ⟨hx, hg⟩
+            change f ⟨(x : E), hdomain x.2⟩ ∈ g.domain
+            simpa only using hg)
+  }
 
 @[simp]
 theorem compOnDomain_domain (g : F →ₗ.[R] G) (f : E →ₗ.[R] F) :
