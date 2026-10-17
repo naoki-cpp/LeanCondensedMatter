@@ -202,7 +202,7 @@ private theorem prod_sidePairing_pairs {R : Type*} [CommMonoid R] (e : SideSplit
 /-! ## Private side-listing sign machinery -/
 
 private noncomputable def sideListingEquiv (m : ℕ) : Fin (2 * m) ≃ Fin m ⊕ Fin m :=
-  (pairSlotIndexEquiv m).trans (blockSideEquiv m)
+  (FiniteIndex.blockEquiv (by ring : 2 * m = m * 2)).trans (blockSideEquiv m)
 
 private noncomputable def sideListingPerm (e : SideSplitting m) (σ : Equiv.Perm (Fin m)) :
     Equiv.Perm (Fin (2 * m)) :=
