@@ -16,61 +16,21 @@ namespace Combinatorics
 
 variable {a b n : ℕ}
 
-/-- The ordered crossing count internal to the left part of an assembled
-pairing is its standalone crossing count. Inter-part crossings are excluded. -/
-private theorem Pairing.ofSplitNormalizedPairEquiv_inl_crossingCount_eq
-    (e : PositionSplitting a b n) (P : Pairing a) (Q : Pairing b)
-    (hmono : StrictMono (fun i : Fin (2 * a) => e (Sum.inl i))) :
-    (∑ p : P.NormalizedPair, ∑ q : P.NormalizedPair,
-      if Crosses
-          (Pairing.ofSplitNormalizedPairEquiv e P Q (Sum.inl p)).1
-          (Pairing.ofSplitNormalizedPairEquiv e P Q (Sum.inl q)).1
-      then 1 else 0) = P.crossingCount := by
+/-- A strictly increasing position embedding preserves the double crossing count of
+normalized pairs when their endpoints are transported in their normalized order. -/
+private theorem Pairing.sum_sum_crosses_map_eq_crossingCount {m n : ℕ} (R : Pairing m)
+    (f : Fin (2 * m) → Fin (2 * n)) (hmono : StrictMono f)
+    (pairImage : R.NormalizedPair → Fin (2 * n) × Fin (2 * n))
+    (himage : ∀ p : R.NormalizedPair,
+      pairImage p = (f p.1.1, f p.1.2)) :
+    (∑ p : R.NormalizedPair, ∑ q : R.NormalizedPair,
+      if Crosses (pairImage p) (pairImage q) then 1 else 0) = R.crossingCount := by
   classical
-  rw [P.crossingCount_eq_sum_crosses, Fintype.sum_prod_type]
-  exact sum_sum_crosses_eq_of_equiv
-    (fun p : P.NormalizedPair =>
-      (Pairing.ofSplitNormalizedPairEquiv e P Q (Sum.inl p)).1)
-    (fun p : P.NormalizedPair => p.1) (Equiv.refl _)
-    (by
-      intro p q
-      have hp :=
-        Pairing.ofSplitNormalizedPairEquiv_pair_eq_of_lt e P Q (Sum.inl p)
-          (hmono (P.pairs_normalized p.2))
-      have hq :=
-        Pairing.ofSplitNormalizedPairEquiv_pair_eq_of_lt e P Q (Sum.inl q)
-          (hmono (P.pairs_normalized q.2))
-      rw [hp, hq]
-      exact crosses_map_iff (fun i => e (Sum.inl i)) hmono
-        p.1.1 p.1.2 q.1.1 q.1.2)
-
-/-- The ordered crossing count internal to the right part of an
-assembled pairing is its standalone crossing count. Inter-part crossings remain separate. -/
-private theorem Pairing.ofSplitNormalizedPairEquiv_inr_crossingCount_eq
-    (e : PositionSplitting a b n) (P : Pairing a) (Q : Pairing b)
-    (hmono : StrictMono (fun i : Fin (2 * b) => e (Sum.inr i))) :
-    (∑ p : Q.NormalizedPair, ∑ q : Q.NormalizedPair,
-      if Crosses
-          (Pairing.ofSplitNormalizedPairEquiv e P Q (Sum.inr p)).1
-          (Pairing.ofSplitNormalizedPairEquiv e P Q (Sum.inr q)).1
-      then 1 else 0) = Q.crossingCount := by
-  classical
-  rw [Q.crossingCount_eq_sum_crosses, Fintype.sum_prod_type]
-  exact sum_sum_crosses_eq_of_equiv
-    (fun p : Q.NormalizedPair =>
-      (Pairing.ofSplitNormalizedPairEquiv e P Q (Sum.inr p)).1)
-    (fun p : Q.NormalizedPair => p.1) (Equiv.refl _)
-    (by
-      intro p q
-      have hp :=
-        Pairing.ofSplitNormalizedPairEquiv_pair_eq_of_lt e P Q (Sum.inr p)
-          (hmono (Q.pairs_normalized p.2))
-      have hq :=
-        Pairing.ofSplitNormalizedPairEquiv_pair_eq_of_lt e P Q (Sum.inr q)
-          (hmono (Q.pairs_normalized q.2))
-      rw [hp, hq]
-      exact crosses_map_iff (fun i => e (Sum.inr i)) hmono
-        p.1.1 p.1.2 q.1.1 q.1.2)
+  rw [R.crossingCount_eq_sum_crosses, Fintype.sum_prod_type]
+  exact sum_sum_crosses_eq_of_equiv pairImage (fun p : R.NormalizedPair => p.1)
+    (Equiv.refl _) (fun p q => by
+      rw [himage p, himage q]
+      exact crosses_map_iff f hmono p.1.1 p.1.2 q.1.1 q.1.2)
 
 /-- Crossings between the two independent sectors of an assembled pairing.
 Both orientations are counted because `crossingCount` uses oriented pairs. -/
@@ -270,7 +230,15 @@ theorem Pairing.ofSplit_crossingCount_eq_left_add_right_add_inter
     dsimp [emb]
     omega
   rw [hdecomp,
-    Pairing.ofSplitNormalizedPairEquiv_inl_crossingCount_eq e P Q hleft,
-    Pairing.ofSplitNormalizedPairEquiv_inr_crossingCount_eq e P Q hright]
+    P.sum_sum_crosses_map_eq_crossingCount
+      (fun i => e (Sum.inl i)) hleft
+      (fun p => (Pairing.ofSplitNormalizedPairEquiv e P Q (Sum.inl p)).1)
+      (fun p => Pairing.ofSplitNormalizedPairEquiv_pair_eq_of_lt e P Q (Sum.inl p)
+        (hleft (P.pairs_normalized p.2))),
+    Q.sum_sum_crosses_map_eq_crossingCount
+      (fun i => e (Sum.inr i)) hright
+      (fun p => (Pairing.ofSplitNormalizedPairEquiv e P Q (Sum.inr p)).1)
+      (fun p => Pairing.ofSplitNormalizedPairEquiv_pair_eq_of_lt e P Q (Sum.inr p)
+        (hright (Q.pairs_normalized p.2)))]
 
 end Combinatorics
