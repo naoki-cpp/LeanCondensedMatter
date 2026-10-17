@@ -10,18 +10,16 @@ The momentum variables `px, py` are physical momenta. With this convention
 
 ```text
 H(p) = p²/(2 m_eff) I + α_R (p_y σ_x - p_x σ_y) + Δ σ_z,
-v_i = ∂H/∂p_i,
-j_i = q v_i.
+v_i = ∂H/∂p_i.
 ```
 
-Thus `α_R` has velocity dimension. `signedCharge` is the carrier charge itself, so electrons use
-a negative value. The clean Hamiltonian and spectrum take only `HamiltonianParameters`;
-`Parameters` additionally stores response and normalization conditions. Consumers may apply
-occupation laws to energies relative to the chemical potential using the generic
-`QuantumTheory.bandStateOccupation` interface.
+Thus `α_R` has velocity dimension. The clean Hamiltonian, spectrum, velocity and Berry
+curvature use only `HamiltonianParameters`. The signed carrier charge, chemical potential,
+finite broadening, momentum cutoff and continuum normalization are owned downstream by
+`ResponseParameters`; the current vertex is defined in `Operator`.
 
-The two-dimensional momentum domain is the closed disk `p_x² + p_y² ≤ p_max²`; `p_max` is kept
-finite. No disorder, zero-broadening limit, or device-level Hall observable is introduced here.
+The finite momentum disk and all response or device-level Hall observables are downstream.
+No disorder or limiting procedure is assumed in this clean model.
 -/
 
 namespace QuantumTheory.Models.RashbaExchange
@@ -36,32 +34,6 @@ structure HamiltonianParameters where
   rashbaVelocity : ℝ
   /-- Exchange splitting multiplying σ_z. -/
   exchangeSplitting : ℝ
-
-/-- The Hamiltonian parameters together with finite response and normalization data. -/
-structure Parameters extends HamiltonianParameters where
-  /-- Chemical potential used as the Green-function probe energy. -/
-  chemicalPotential : ℝ
-  /-- Finite radial physical-momentum cutoff. -/
-  momentumCutoff : ℝ
-  /-- Positive retarded/advanced spectral broadening. -/
-  broadening : ℝ
-  /-- Signed carrier charge in the convention j = q v. -/
-  signedCharge : ℝ
-  /-- Reduced Planck constant. -/
-  hbar : ℝ
-  /-- Explicit normalization multiplying the two-dimensional momentum integral. -/
-  momentumMeasureNormalization : ℝ
-
-/-- Forget the response/normalization conditions, retaining the clean Hamiltonian data. -/
-instance : Coe Parameters HamiltonianParameters where
-  coe params := params.toHamiltonianParameters
-
-/-- Regular finite-parameter regime used by analytic statements about the benchmark. -/
-structure Parameters.IsRegular (params : Parameters) : Prop where
-  effectiveMass_pos : 0 < params.effectiveMass
-  momentumCutoff_nonneg : 0 ≤ params.momentumCutoff
-  broadening_pos : 0 < params.broadening
-  hbar_pos : 0 < params.hbar
 
 /-- The lower and upper eigenvalue branches of the two-band Hamiltonian. -/
 inductive Band where
@@ -103,11 +75,6 @@ def oppositeBand : Band → Band
 @[simp] theorem bandSign_sq (band : Band) : bandSign band ^ 2 = 1 := by
   cases band <;> simp [bandSign]
 
-/-- Membership in the finite closed momentum disk. -/
-def inMomentumDomain (params : Parameters) (px py : ℝ) : Prop :=
-  px ^ 2 + py ^ 2 ≤ params.momentumCutoff ^ 2
-
-
 /-- Scalar parabolic kinetic energy. -/
 def kineticEnergy (params : HamiltonianParameters) (px py : ℝ) : ℝ :=
   (px ^ 2 + py ^ 2) / (2 * params.effectiveMass)
@@ -143,10 +110,6 @@ def velocityOperator (params : HamiltonianParameters) (direction : Fin 2) (px py
   else
     (((py / params.effectiveMass : ℝ) : ℂ)) • (1 : InternalSpace.PauliMatrix) +
       ((params.rashbaVelocity : ℝ) : ℂ) • InternalSpace.pauliX
-
-/-- Charge-current matrix operator in the convention j_i = q v_i. -/
-def currentOperator (params : Parameters) (direction : Fin 2) (px py : ℝ) : InternalSpace.PauliMatrix :=
-  (((params.signedCharge : ℝ) : ℂ)) • velocityOperator params direction px py
 
 /-- Berry curvature in physical-momentum coordinates. For the stated Rashba convention,
 `Ω_b = -s_b Δ α_R² / (2 |d|³)`. -/
