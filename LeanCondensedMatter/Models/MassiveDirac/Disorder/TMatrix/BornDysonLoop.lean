@@ -124,75 +124,15 @@ private theorem finiteCutoffContinuumBornDysonGreenLoopMatrix_zero_disorder_eq_c
     (continuous_continuumBornRadialIntegrandOfRegulator
       .z v m probeEnergy (side.regulator broadening) hregulator).intervalIntegrable 0 pMax
   funext i j
-  fin_cases i <;> fin_cases j
-  · have hsigmaZ : sigmaZ 0 0 = 1 := rfl
-    simp only [Matrix.add_apply, Matrix.smul_apply]
-    simp only [Fin.zero_eta, Fin.isValue, Matrix.one_apply_eq, smul_eq_mul, mul_one]
-    rw [hsigmaZ]
-    rw [finiteCutoffContinuumBornDysonGreenLoopMatrix_apply_eq_radial_integral]
-    have hkernel (p : ℝ) :
-        finiteCutoffContinuumBornDysonRadialGreenEntryKernel
-            side v m probeEnergy broadening 0 hbar pMax 0 p 0 0 =
-          ((2 * Real.pi : ℝ) : ℂ) *
-            (continuumBornRadialIntegrandOfRegulator
-                .scalar v m probeEnergy (side.regulator broadening) p +
-              continuumBornRadialIntegrandOfRegulator
-                .z v m probeEnergy (side.regulator broadening) p) := by
-      simpa [InternalSpace.pauliZ] using
-        finiteCutoffContinuumBornDysonRadialGreenEntryKernel_zero_disorder_zero_radius
-          side v m probeEnergy broadening hbar pMax p 0 0
-    simp_rw [hkernel]
-    rw [intervalIntegral.integral_const_mul,
-      intervalIntegral.integral_add hscalar hz]
-    unfold finiteCutoffContinuumBornIntegralOfRegulator fullAngleMomentumMeasurePrefactor
-    push_cast
-    ring
-  · simp only [Matrix.add_apply, Matrix.smul_apply]
-    simp only [Fin.zero_eta, Fin.isValue, Fin.mk_one, ne_eq, zero_ne_one, not_false_eq_true,
-      Matrix.one_apply_ne, smul_eq_mul, mul_zero, zero_add, InternalSpace.pauliZ]
-    rw [finiteCutoffContinuumBornDysonGreenLoopMatrix_apply_eq_radial_integral]
-    have hkernel (p : ℝ) :
-        finiteCutoffContinuumBornDysonRadialGreenEntryKernel
-            side v m probeEnergy broadening 0 hbar pMax 0 p 0 1 = 0 := by
-      simpa [InternalSpace.pauliZ] using
-        finiteCutoffContinuumBornDysonRadialGreenEntryKernel_zero_disorder_zero_radius
-          side v m probeEnergy broadening hbar pMax p 0 1
-    simp_rw [hkernel]
-    simp
-  · simp only [Matrix.add_apply, Matrix.smul_apply]
-    simp only [Fin.mk_one, Fin.isValue, Fin.zero_eta, ne_eq, one_ne_zero, not_false_eq_true,
-      Matrix.one_apply_ne, smul_eq_mul, mul_zero, zero_add, InternalSpace.pauliZ]
-    rw [finiteCutoffContinuumBornDysonGreenLoopMatrix_apply_eq_radial_integral]
-    have hkernel (p : ℝ) :
-        finiteCutoffContinuumBornDysonRadialGreenEntryKernel
-            side v m probeEnergy broadening 0 hbar pMax 0 p 1 0 = 0 := by
-      simpa [InternalSpace.pauliZ] using
-        finiteCutoffContinuumBornDysonRadialGreenEntryKernel_zero_disorder_zero_radius
-          side v m probeEnergy broadening hbar pMax p 1 0
-    simp_rw [hkernel]
-    simp
-  · have hsigmaZ : sigmaZ 1 1 = -1 := rfl
-    simp only [Matrix.add_apply, Matrix.smul_apply]
-    simp only [Fin.mk_one, Fin.isValue, Matrix.one_apply_eq, smul_eq_mul, mul_one]
-    rw [hsigmaZ]
-    rw [finiteCutoffContinuumBornDysonGreenLoopMatrix_apply_eq_radial_integral]
-    have hkernel (p : ℝ) :
-        finiteCutoffContinuumBornDysonRadialGreenEntryKernel
-            side v m probeEnergy broadening 0 hbar pMax 0 p 1 1 =
-          ((2 * Real.pi : ℝ) : ℂ) *
-            (continuumBornRadialIntegrandOfRegulator
-                .scalar v m probeEnergy (side.regulator broadening) p -
-              continuumBornRadialIntegrandOfRegulator
-                .z v m probeEnergy (side.regulator broadening) p) := by
-      simpa [InternalSpace.pauliZ, sub_eq_add_neg] using
-        finiteCutoffContinuumBornDysonRadialGreenEntryKernel_zero_disorder_zero_radius
-          side v m probeEnergy broadening hbar pMax p 1 1
-    simp_rw [hkernel]
-    rw [intervalIntegral.integral_const_mul,
-      intervalIntegral.integral_sub hscalar hz]
-    unfold finiteCutoffContinuumBornIntegralOfRegulator fullAngleMomentumMeasurePrefactor
-    push_cast
-    ring
+  rw [finiteCutoffContinuumBornDysonGreenLoopMatrix_apply_eq_radial_integral]
+  simp_rw [finiteCutoffContinuumBornDysonRadialGreenEntryKernel_zero_disorder_zero_radius]
+  simp only [Matrix.add_apply, Matrix.smul_apply, smul_eq_mul]
+  rw [intervalIntegral.integral_const_mul,
+    intervalIntegral.integral_add (hscalar.mul_const _) (hz.mul_const _),
+    intervalIntegral.integral_mul_const, intervalIntegral.integral_mul_const]
+  unfold finiteCutoffContinuumBornIntegralOfRegulator fullAngleMomentumMeasurePrefactor
+  push_cast
+  ring
 
 /-- At zero Born disorder strength, the concrete T-matrix loop is exactly the canonical finite-cutoff
 clean radial Green integral with the physical angular/momentum measure attached once. -/
