@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Analysis.Operator.DiagonalExpectation
 import LeanCondensedMatter.Analysis.Operator.Compact
 import LeanCondensedMatter.Analysis.Operator.Positive
 import Mathlib.Analysis.InnerProductSpace.l2Space
@@ -110,5 +111,18 @@ theorem diagonalOp_isPositive (b : HilbertBasis ι ℂ H) (a : ι → ℝ)
     (F := F) (T := diagonalOp b (fun i => (a i : ℂ)))
   · exact hasSum_diagonalTerm b (fun i => (a i : ℂ)) hac
   · exact Filter.Eventually.of_forall hFpos
+
+/-- The lossless diagonal expectation of a positive diagonal operator is its real coefficient. -/
+theorem diagonalExpectationValue_diagonalOp (b : HilbertBasis ι ℂ H) (a : ι → ℝ)
+    (ha : Summable fun i => ‖a i‖) (ha_nonneg : ∀ i, 0 ≤ a i) (i : ι) :
+    ContinuousLinearMap.diagonalExpectationValue
+      (diagonalOp b (fun j => (a j : ℂ)))
+      (diagonalOp_isPositive b a ha ha_nonneg).isSelfAdjoint (b i) = a i := by
+  apply Complex.ofReal_injective
+  rw [ContinuousLinearMap.coe_diagonalExpectationValue_right]
+  have hac : Summable fun j => ‖(a j : ℂ)‖ := by simpa using ha
+  rw [diagonalOp_apply_basis b (fun j => (a j : ℂ)) hac i]
+  rw [inner_smul_right, inner_self_eq_norm_sq_to_K, b.orthonormal.1 i]
+  simp
 
 end HilbertBasis
