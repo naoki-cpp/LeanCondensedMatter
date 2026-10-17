@@ -93,49 +93,25 @@ theorem integral_cos_sq_zero_two_pi :
 private theorem integral_complex_cos_sq_sub_sin_sq_zero_two_pi :
     (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi),
       ((Real.cos θ : ℂ) ^ 2) - ((Real.sin θ : ℂ) ^ 2)) = 0 := by
-  calc
-    (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi),
-        ((Real.cos θ : ℂ) ^ 2) - ((Real.sin θ : ℂ) ^ 2)) =
-        (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi),
-          (((Real.cos θ ^ 2 - Real.sin θ ^ 2 : ℝ) : ℂ))) := by
-            apply intervalIntegral.integral_congr
-            intro θ _
-            push_cast
-            rfl
-    _ = (((∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi),
-          Real.cos θ ^ 2 - Real.sin θ ^ 2) : ℝ) : ℂ) := by
-            exact @intervalIntegral.integral_ofReal
-              (0 : ℝ) (2 * Real.pi) volume
-              (fun θ : ℝ => Real.cos θ ^ 2 - Real.sin θ ^ 2)
-    _ = 0 := by
-      rw [integral_cos_sq_sub_sin_sq]
-      simp
+  have hreal :
+      (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi), Real.cos θ ^ 2 - Real.sin θ ^ 2) = 0 := by
+    rw [integral_cos_sq_sub_sin_sq]
+    simp
+  simpa only [hreal, Complex.ofReal_zero, Complex.ofReal_sub, Complex.ofReal_pow] using
+    (@intervalIntegral.integral_ofReal (0 : ℝ) (2 * Real.pi) volume
+      (fun θ : ℝ => Real.cos θ ^ 2 - Real.sin θ ^ 2))
 
 /-- The complexified mixed second harmonic integrates to zero over a full polar angle. -/
 private theorem integral_complex_cos_mul_sin_zero_two_pi :
     (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi),
       ((Real.cos θ : ℝ) : ℂ) * ((Real.sin θ : ℝ) : ℂ)) = 0 := by
-  calc
-    (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi),
-        ((Real.cos θ : ℝ) : ℂ) * ((Real.sin θ : ℝ) : ℂ)) =
-        (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi),
-          (((Real.sin θ * Real.cos θ : ℝ) : ℂ))) := by
-            apply intervalIntegral.integral_congr
-            intro θ _
-            push_cast
-            ring
-    _ = (((∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi),
-          Real.sin θ * Real.cos θ) : ℝ) : ℂ) := by
-            exact @intervalIntegral.integral_ofReal
-              (0 : ℝ) (2 * Real.pi) volume
-              (fun θ : ℝ => Real.sin θ * Real.cos θ)
-    _ = 0 := by
-      have hreal :
-          (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi), Real.sin θ * Real.cos θ) = 0 := by
-        simpa using
-          (integral_sin_pow_mul_cos_pow_odd (a := (0 : ℝ)) (b := 2 * Real.pi) 1 0)
-      rw [hreal]
-      simp
+  have hreal :
+      (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi), Real.sin θ * Real.cos θ) = 0 := by
+    simpa using
+      (integral_sin_pow_mul_cos_pow_odd (a := (0 : ℝ)) (b := 2 * Real.pi) 1 0)
+  simpa only [hreal, Complex.ofReal_zero, Complex.ofReal_mul, mul_comm] using
+    (@intervalIntegral.integral_ofReal (0 : ℝ) (2 * Real.pi) volume
+      (fun θ : ℝ => Real.sin θ * Real.cos θ))
 
 /-- Ordinary full-angle integration of the canonical constant/first/second harmonic decomposition.
 All nonconstant channels vanish. -/
