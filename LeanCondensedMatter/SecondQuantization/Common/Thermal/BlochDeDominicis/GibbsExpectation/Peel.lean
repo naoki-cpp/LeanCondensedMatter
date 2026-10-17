@@ -42,7 +42,8 @@ theorem finiteGibbsExpectation_peel_indexed (energy : Config → ℝ) (β q1 : �
     field_simp [hZ, hne']
     linear_combination (norm := ring_nf) h
   rw [hpeel]
-  congr 1
+  apply congrArg (fun x : ℂ =>
+    x / (1 - ζ ^ l.length * Complex.exp ((q1 * β : ℝ) : ℂ)))
   change (finiteGibbsExpectationLinearMap energy β)
     (ScalarExchange.peelSumWithCoefficients ζ l) = _
   rw [ScalarExchange.peelSumWithCoefficients_eq_sum, map_sum]
