@@ -1,6 +1,10 @@
-import Mathlib.Analysis.CStarAlgebra.ContinuousLinearMap
-import Mathlib.Analysis.Normed.Operator.Banach
-import Mathlib.Tactic
+module
+
+public import Mathlib.Analysis.CStarAlgebra.ContinuousLinearMap
+public import Mathlib.Analysis.Normed.Operator.Banach
+public import Mathlib.Tactic
+
+public section
 
 set_option linter.style.header false
 

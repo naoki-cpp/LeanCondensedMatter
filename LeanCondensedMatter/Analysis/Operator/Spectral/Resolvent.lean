@@ -1,7 +1,11 @@
-import Mathlib.RingTheory.Idempotents
-import Mathlib.Analysis.CStarAlgebra.ContinuousLinearMap
-import Mathlib.Analysis.CStarAlgebra.Spectrum
-import Mathlib.Analysis.Normed.Algebra.GelfandFormula
+module
+
+public import Mathlib.RingTheory.Idempotents
+public import Mathlib.Analysis.CStarAlgebra.ContinuousLinearMap
+public import Mathlib.Analysis.CStarAlgebra.Spectrum
+public import Mathlib.Analysis.Normed.Algebra.GelfandFormula
+
+public section
 
 set_option linter.style.header false
 
