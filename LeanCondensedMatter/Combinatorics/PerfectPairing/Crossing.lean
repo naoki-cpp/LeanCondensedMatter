@@ -84,19 +84,27 @@ theorem Pairing.crossingCount_eq_sum_crosses {n : ℕ} (pairing : Pairing n) :
       ∑ x : pairing.NormalizedPair × pairing.NormalizedPair,
         if Crosses x.1.1 x.2.1 then 1 else 0 := by
   classical
-  rw [Pairing.crossingCount, ← Finset.sum_boole (R := ℕ)]
-  simp only [Finset.sum_product, Fintype.sum_prod_type]
   calc
-    (∑ p ∈ pairing.pairs, ∑ q ∈ pairing.pairs,
-      if Crosses p q then 1 else 0) =
-        ∑ p ∈ pairing.pairs.attach, ∑ q ∈ pairing.pairs.attach,
-          if Crosses p.1 q.1 then 1 else 0 := by
-      symm
-      rw [Finset.sum_attach]
-      apply Finset.sum_congr rfl
-      intro p _
-      rw [Finset.sum_attach]
-    _ = _ := by rw [Finset.attach_eq_univ]
+    pairing.crossingCount =
+        ∑ x ∈ pairing.pairs.product pairing.pairs,
+          if Crosses x.1 x.2 then 1 else 0 := by
+      simpa [Pairing.crossingCount] using
+        (Finset.sum_boole (R := ℕ)
+          (fun x : (Fin (2 * n) × Fin (2 * n)) × (Fin (2 * n) × Fin (2 * n)) =>
+            Crosses x.1 x.2) (pairing.pairs.product pairing.pairs)).symm
+    _ = _ := by
+      simp only [Finset.sum_product, Fintype.sum_prod_type]
+      calc
+        (∑ p ∈ pairing.pairs, ∑ q ∈ pairing.pairs,
+          if Crosses p q then 1 else 0) =
+            ∑ p ∈ pairing.pairs.attach, ∑ q ∈ pairing.pairs.attach,
+              if Crosses p.1 q.1 then 1 else 0 := by
+          symm
+          rw [Finset.sum_attach]
+          apply Finset.sum_congr rfl
+          intro p _
+          rw [Finset.sum_attach]
+        _ = _ := by rw [Finset.attach_eq_univ]
 
 /-- The number of pairs crossing `firstPair`. -/
 def Pairing.crossingsWithFirstPair {n : ℕ} (pairing : Pairing (n + 1)) : ℕ :=
