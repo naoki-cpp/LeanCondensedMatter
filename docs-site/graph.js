@@ -3,6 +3,7 @@ import { declarationAllowed } from "./declaration-model.js";
 import { curvedEdgePath } from "./graph-edge.js";
 import { buildModuleGraphCatalog } from "./module-import-map.js";
 import { renderLeanMath, renderLeanSourceFallback } from "./lean-math.js";
+import { renderStatement } from "./statement-view.js";
 import {
   BRANCH_COLORS,
   ROOT_NODE_COLOR,
@@ -841,7 +842,7 @@ function renderDetails(name) {
 
   ui.detail.append(element("h3", "", "Statement"));
   const statement = element("div", "math-presentation");
-  renderLeanMath(statement, entry.statement);
+  renderStatement(statement, entry);
   ui.detail.append(statement);
   appendDefinitionBody(entry);
 
