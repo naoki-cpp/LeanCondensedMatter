@@ -44,14 +44,8 @@ theorem traceNorm_le_half_normSq_add_of_factorization
   have hterm (i : w) :
       inner ℂ (U (d i)) (T (d i)) =
         inner ℂ ((A * U) (d i)) (B (d i)) := by
-    calc
-      inner ℂ (U (d i)) (T (d i)) =
-          inner ℂ (U (d i)) ((ContinuousLinearMap.adjoint A * B) (d i)) := by rw [hfactor]
-      _ = inner ℂ (U (d i)) ((ContinuousLinearMap.adjoint A) (B (d i))) := by
-        rw [mul_apply_eq_comp]
-      _ = inner ℂ (A (U (d i))) (B (d i)) :=
-        ContinuousLinearMap.adjoint_inner_right A (U (d i)) (B (d i))
-      _ = inner ℂ ((A * U) (d i)) (B (d i)) := by rw [mul_apply_eq_comp]
+    rw [← hfactor, mul_apply_eq_comp, mul_apply_eq_comp]
+    exact ContinuousLinearMap.adjoint_inner_right A (U (d i)) (B (d i))
   have hsumInner : Summable (fun i => inner ℂ (U (d i)) (T (d i))) :=
     (hAU.summable_inner_apply hB d).congr fun i => (hterm i).symm
   have hnormSummable : Summable (fun i => ‖inner ℂ (U (d i)) (T (d i))‖) :=
