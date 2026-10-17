@@ -144,53 +144,38 @@ theorem tendsto_finiteCutoffContinuumBornDysonLongitudinalLadderActionZeroBroade
       (nhds
         (((probeEnergy ^ 2 - m ^ 2) /
           (probeEnergy ^ 2 + 3 * m ^ 2) : ℝ) : ℂ)) := by
-  have hrung :=
-    tendsto_finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary_disorder_zero
+  have hsolved :=
+    tendsto_finiteCutoffContinuumBornDysonLadderSolvedVectorZeroBroadeningBoundary_disorder_zero
       v m probeEnergy hbar pMax hvelocity hhbar hmetal hcutoff
-  let κ : ℂ := continuumBornRetardedAdvancedPauliXWeakDisorderCurrentRungCoefficient
-    m probeEnergy
-  let targetRung := inPlaneCoefficientVector κ 0
-  have hdet := weakDisorderTargetLadderDeterminant_ne_zero m probeEnergy hmetal
-  have hsolved :
-      Tendsto
-        (fun disorderStrength : ℝ =>
-          finiteCutoffContinuumBornDysonLadderSolvedVectorZeroBroadeningBoundary
-            v m probeEnergy disorderStrength hbar pMax)
-        (nhdsWithin 0 (Set.Ioi 0))
-        (nhds (inPlaneLadderSolvedVector targetRung)) := by
-    simpa [finiteCutoffContinuumBornDysonLadderSolvedVectorZeroBroadeningBoundary,
-      targetRung, κ] using tendsto_inPlaneLadderSolvedVector hrung hdet
-  have haction := tendsto_inPlaneLadderAction hrung hsolved
   have hprobe : 0 < probeEnergy := lt_of_le_of_lt (abs_nonneg m) hmetal
-  have hsum : probeEnergy ^ 2 + m ^ 2 ≠ 0 := by
-    nlinarith [sq_pos_of_ne_zero (ne_of_gt hprobe), sq_nonneg m]
   have hden : probeEnergy ^ 2 + 3 * m ^ 2 ≠ 0 := by
     nlinarith [sq_pos_of_ne_zero (ne_of_gt hprobe), sq_nonneg m]
   have htarget :
-      inPlaneLadderAction targetRung (inPlaneLadderSolvedVector targetRung) 0 =
+      (((2 * (probeEnergy ^ 2 + m ^ 2) /
+        (probeEnergy ^ 2 + 3 * m ^ 2) : ℝ) : ℂ)) - 1 =
         (((probeEnergy ^ 2 - m ^ 2) /
           (probeEnergy ^ 2 + 3 * m ^ 2) : ℝ) : ℂ) := by
-    rw [inPlaneLadderAction_apply_x,
-      inPlaneLadderSolvedVector_zero_transverse κ
-        (by simpa [κ] using weakDisorderTargetOneMinusRung_ne_zero m probeEnergy hmetal)]
-    simp only [targetRung, inPlaneCoefficientVector, Matrix.cons_val_zero,
-      Complex.ofReal_div, Complex.ofReal_sub, Complex.ofReal_pow, Complex.ofReal_add,
-      Complex.ofReal_mul, Complex.ofReal_ofNat]
-    have hreal :
-        continuumBornRetardedAdvancedPauliXWeakDisorderCurrentRungCoefficient m probeEnergy *
-            (1 - continuumBornRetardedAdvancedPauliXWeakDisorderCurrentRungCoefficient
-              m probeEnergy)⁻¹ =
-          (probeEnergy ^ 2 - m ^ 2) / (probeEnergy ^ 2 + 3 * m ^ 2) := by
-      rw [inv_one_sub_continuumBornRetardedAdvancedPauliXWeakDisorderCurrentRungCoefficient
-        m probeEnergy hden]
-      unfold continuumBornRetardedAdvancedPauliXWeakDisorderCurrentRungCoefficient
-      field_simp [hsum, hden]
-    have hrealCast := congrArg Complex.ofReal hreal
-    push_cast at hrealCast
-    simpa [κ] using hrealCast
-  have hactionX := tendsto_pi_nhds.mp haction 0
-  rw [htarget] at hactionX
-  exact hactionX
+    have hreal : 2 * (probeEnergy ^ 2 + m ^ 2) /
+        (probeEnergy ^ 2 + 3 * m ^ 2) - 1 =
+        (probeEnergy ^ 2 - m ^ 2) / (probeEnergy ^ 2 + 3 * m ^ 2) := by
+      field_simp [hden]
+      ring
+    exact_mod_cast hreal
+  have hlimit := (tendsto_pi_nhds.mp hsolved 0).sub_const (1 : ℂ)
+  simp only [inPlaneCoefficientVector, Matrix.cons_val_zero, htarget] at hlimit
+  apply Tendsto.congr' ?_ hlimit
+  filter_upwards
+    [eventually_finiteCutoffContinuumBornDysonLadderDeterminantZeroBroadeningBoundary_ne_zero_disorder_zero
+      v m probeEnergy hbar pMax hvelocity hhbar hmetal hcutoff] with disorderStrength hdet
+  have hfixed := congrArg (fun coefficients : InPlaneCoefficientVector => coefficients 0)
+    (inPlaneLadderSolvedVector_fixedPoint
+      (finiteCutoffContinuumBornDysonCurrentRungVectorZeroBroadeningBoundary
+        v m probeEnergy disorderStrength hbar pMax) hdet)
+  simp only [Pi.add_apply, inPlaneLadderBareXSource,
+    inPlaneCoefficientVector, Matrix.cons_val_zero] at hfixed
+  apply sub_eq_iff_eq_add.mpr
+  simpa only [finiteCutoffContinuumBornDysonLadderSolvedVectorZeroBroadeningBoundary,
+    add_comm] using hfixed
 
 end
 
