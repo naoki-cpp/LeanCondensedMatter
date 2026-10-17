@@ -889,7 +889,8 @@ private theorem polarFourierRadialPhase_neg_eq_shift_pi (z θ : ℝ) :
       polarFourierZerothAngularKernel z := by
   simp only [polarFourierZerothAngularKernel_eq_besselJ, Complex.ofReal_neg]
   congr 1
-  exact (Complex.even_besselJ (a := (0 : ℤ)) (by norm_num)) (z : ℂ)
+  simpa only [Int.cast_zero] using
+    (Complex.even_besselJ (a := (0 : ℤ)) (by norm_num)) (z : ℂ)
 
 /-- The first-cosine full-angle radial Fourier kernel is odd in its radial argument. -/
 @[simp] theorem polarFourierFirstCosineAngularKernel_neg (z : ℝ) :
