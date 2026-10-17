@@ -4,24 +4,18 @@ import Mathlib.LinearAlgebra.Matrix.DotProduct
 set_option linter.style.header false
 
 /-!
-# Finite-dimensional Fourier geometry
+# Physical finite-dimensional Fourier geometry
 
-This module owns the dimension-independent Euclidean coordinate geometry used by continuum
-transport Fourier transforms. Vectors are represented as indexed coordinate families `Fin n → ℝ`,
-matching the existing transport model APIs.
-
-The physical Fourier phase is defined as `exp(i p·r / ℏ)` in arbitrary finite dimension.
-Radial scaling is also dimension-independent. Polar or spherical coordinate charts, angular
-harmonics, Jacobians, and continuum-measure normalizations remain in downstream analysis modules.
+This module owns the finite-dimensional physical Fourier phase `exp(i p·r / ℏ)` and a
+radial-coordinate scaling helper. Vectors are indexed coordinate families `Fin n → ℝ`.
+Model-specific dispersion formulas do not belong here. Polar or spherical coordinate charts,
+angular harmonics, Jacobians, and continuum-measure normalizations remain downstream.
 -/
 
 namespace QuantumTheory
 namespace Transport
 
 noncomputable section
-
-/-- Squared Euclidean norm of a two-dimensional Cartesian momentum coordinate. -/
-def momentumSq2D (px py : ℝ) : ℝ := px ^ 2 + py ^ 2
 
 /-- Radial scaling of an arbitrary finite-dimensional direction. No unit-norm condition is bundled
 here; a spherical-coordinate layer may supply one when it needs an actual point on a sphere. -/

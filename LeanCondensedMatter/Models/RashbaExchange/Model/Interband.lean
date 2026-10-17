@@ -16,8 +16,6 @@ namespace QuantumTheory.Models.RashbaExchange
 
 noncomputable section
 
-open QuantumTheory.Transport
-
 /-- Energy denominator between one band and its opposite partner. -/
 def interbandEnergyGap
     (params : Parameters) (band : Band) (px py : ℝ) : ℝ :=
@@ -105,7 +103,7 @@ theorem forceMatrixTraceNumerator_xy_eq
     rw [InternalSpace.dotProduct_pauliAxis]
     simp [u, rashbaPauliCoefficients]
     have hsq := spinOrbitEnergy_sq params px py
-    unfold spinOrbitEnergySq momentumSq2D at hsq
+    unfold spinOrbitEnergySq at hsq
     field_simp [hEc]
     have hreal :
         bandSign band ^ 2 *

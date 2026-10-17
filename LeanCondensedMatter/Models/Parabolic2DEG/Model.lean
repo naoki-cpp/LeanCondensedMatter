@@ -1,4 +1,3 @@
-import LeanCondensedMatter.Transport.Analysis.FourierGeometry
 import Mathlib.Analysis.InnerProductSpace.Adjoint
 import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Tactic
@@ -31,8 +30,6 @@ explicit rather than being inferred from that dispersion.
 namespace QuantumTheory.Models.Parabolic2DEG
 
 noncomputable section
-
-open QuantumTheory.Transport
 
 /-- Effective mass determining the clean parabolic band, Hamiltonian and group velocity. -/
 structure HamiltonianParameters where
@@ -92,11 +89,11 @@ def momentumComponent (direction : Fin 2) (px py : ℝ) : ℝ :=
 
 /-- Finite radial momentum domain encoded by the cutoff stored in `params`. -/
 def MomentumInDomain (params : Parameters) (px py : ℝ) : Prop :=
-  momentumSq2D px py ≤ params.momentumCutoff ^ 2
+  px ^ 2 + py ^ 2 ≤ params.momentumCutoff ^ 2
 
 /-- Parabolic band energy `ε(p) = |p|² / (2 m_eff)`. -/
 def bandEnergy (params : HamiltonianParameters) (px py : ℝ) : ℝ :=
-  momentumSq2D px py / (2 * params.effectiveMass)
+  (px ^ 2 + py ^ 2) / (2 * params.effectiveMass)
 
 /-- Cartesian group-velocity component `v_i = p_i / m_eff`. -/
 def velocityComponent

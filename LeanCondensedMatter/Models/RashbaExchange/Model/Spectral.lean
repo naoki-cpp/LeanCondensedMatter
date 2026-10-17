@@ -30,8 +30,6 @@ namespace QuantumTheory.Models.RashbaExchange
 
 noncomputable section
 
-open QuantumTheory.Transport
-
 /-- The traceless spin-orbit/exchange part `d·σ` of the Hamiltonian. -/
 def spinHamiltonian (params : Parameters) (px py : ℝ) : InternalSpace.PauliMatrix :=
   InternalSpace.pauliCombination (rashbaPauliCoefficients params px py)
@@ -51,14 +49,14 @@ theorem rashbaPauliCoefficients_dot_self
         (rashbaPauliCoefficients params px py) =
       ((spinOrbitEnergySq params px py : ℝ) : ℂ) := by
   rw [InternalSpace.dotProduct_pauliAxis]
-  simp [rashbaPauliCoefficients, spinOrbitEnergySq, momentumSq2D]
+  simp [rashbaPauliCoefficients, spinOrbitEnergySq]
   ring
 
 /-- Squaring the positive spin-orbit energy recovers its defining polynomial. -/
 theorem spinOrbitEnergy_sq (params : Parameters) (px py : ℝ) :
     spinOrbitEnergy params px py ^ 2 = spinOrbitEnergySq params px py := by
   exact Real.sq_sqrt (by
-    unfold spinOrbitEnergySq momentumSq2D
+    unfold spinOrbitEnergySq
     positivity)
 
 /-- The traceless spin Hamiltonian squares to `E² I`. -/
