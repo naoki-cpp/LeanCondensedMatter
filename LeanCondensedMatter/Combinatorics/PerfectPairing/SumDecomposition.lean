@@ -12,12 +12,6 @@ smaller pairing obtained by erasing that first pair.
 
 namespace Combinatorics
 
-private theorem Pairing.insertFirstPair_congr {n : ℕ} (Q : Pairing n)
-    {j j' : Fin (2 * (n + 1))} (h : j = j') (hj : j ≠ (0 : Fin (2 * (n + 1))))
-    (hj' : j' ≠ (0 : Fin (2 * (n + 1)))) : Q.insertFirstPair j hj = Q.insertFirstPair j' hj' := by
-  subst h
-  rfl
-
 /-- A sum over `Pairing (n + 1)`, reindexed as a double sum over a peeled position and the smaller
 pairing. -/
 theorem Pairing.sum_eq_sum_sum_insertFirstPair {n : ℕ} {M : Type*} [AddCommMonoid M]
@@ -42,7 +36,6 @@ theorem Pairing.sum_eq_sum_sum_insertFirstPair {n : ℕ} {M : Type*} [AddCommMon
     have hxVal := congrArg Subtype.val hxSubtype
     rw [finSuccAboveEquiv_apply] at hxVal
     simpa using hxVal
-  simp only [Pairing.equivSigma, Equiv.coe_fn_symm_mk]
-  exact congrArg F (Q.insertFirstPair_congr hx.symm _ _)
+  simp only [Pairing.equivSigma, Equiv.coe_fn_symm_mk, hx]
 
 end Combinatorics
