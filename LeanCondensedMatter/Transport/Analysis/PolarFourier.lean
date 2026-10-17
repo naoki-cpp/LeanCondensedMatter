@@ -505,6 +505,83 @@ theorem polarFourierZerothAngularKernel_hasDerivAt (z : ℝ) :
   rw [← hrew]
   exact hmain
 
+/-- The derivative of the regularized hypergeometric series with bottom parameter 1
+has bottom parameter 2. This is the coefficient identity behind `J₀' = -J₁`. -/
+private theorem regularizedHGFun_zero_one_hasDerivAt (w : ℂ) :
+    HasDerivAt (Complex.regularizedHGFun 0 {(1 : ℂ)})
+      (Complex.regularizedHGFun 0 {(2 : ℂ)} w) w := by
+  let p := Complex.regularizedHGFunSeries 0 {(1 : ℂ)}
+  have hcoeff (n : ℕ) :
+      ((n + 1 : ℕ) : ℂ) * Complex.regularizedHGFunCoeff 0 {(1 : ℂ)} (n + 1) =
+        Complex.regularizedHGFunCoeff 0 {(2 : ℂ)} n := by
+    have hg : Complex.Gamma ((2 : ℂ) + (n : ℂ)) =
+        (Nat.factorial (n + 1) : ℂ) := by
+      convert Complex.Gamma_nat_eq_factorial (n + 1) using 1 <;> push_cast <;> ring
+    rw [polarFourierBesselZeroCoeff]
+    have htwo : Complex.regularizedHGFunCoeff 0 {(2 : ℂ)} n =
+        1 / ((Nat.factorial n : ℂ) * (Nat.factorial (n + 1) : ℂ)) := by
+      simp [Complex.regularizedHGFunCoeff, hg]
+    rw [htwo, Nat.factorial_succ]
+    push_cast
+    have hn : (n + 1 : ℂ) ≠ 0 := by exact_mod_cast Nat.succ_ne_zero n
+    have hf : (Nat.factorial n : ℂ) ≠ 0 := by
+      exact_mod_cast Nat.factorial_ne_zero n
+    field_simp
+    ring
+  have hradius : ‖w‖ₑ < p.radius := by
+    simp [p]
+  have hderivRadius : ‖w‖ₑ < p.derivSeries.radius :=
+    lt_of_lt_of_le hradius p.radius_le_radius_derivSeries
+  have hsummable : Summable (fun n : ℕ => p.derivSeries n (fun _ => w)) :=
+    p.derivSeries.summable (by simpa only [Metric.mem_eball, edist_zero_right,
+      edist_eq_enorm] using hderivRadius)
+  have hsum :
+      (p.derivSeries.sum w) (1 : ℂ) =
+        Complex.regularizedHGFun 0 {(2 : ℂ)} w := by
+    calc
+      (p.derivSeries.sum w) (1 : ℂ) =
+          ∑' n : ℕ, (p.derivSeries n (fun _ => w)) (1 : ℂ) := by
+        exact hsummable.tsum_apply 1
+      _ = ∑' n : ℕ,
+          (((n + 1 : ℕ) : ℂ) *
+            Complex.regularizedHGFunCoeff 0 {(1 : ℂ)} (n + 1)) * w ^ n := by
+        apply tsum_congr
+        intro n
+        simp only [FormalMultilinearSeries.apply_eq_pow_smul_coeff,
+          ContinuousLinearMap.smul_apply,
+          FormalMultilinearSeries.derivSeries_coeff_one,
+          Complex.regularizedHGFunSeries_coeff, smul_eq_mul, nsmul_eq_mul,
+          Nat.cast_add, Nat.cast_one]
+        ring
+      _ = ∑' n : ℕ, Complex.regularizedHGFunCoeff 0 {(2 : ℂ)} n * w ^ n := by
+        apply tsum_congr
+        intro n
+        rw [hcoeff]
+      _ = Complex.regularizedHGFun 0 {(2 : ℂ)} w := by
+        rw [Complex.regularizedHGFun, Complex.regularizedHGFunSeries,
+          ← FormalMultilinearSeries.ofScalarsSum,
+          FormalMultilinearSeries.ofScalars_sum_eq]
+        simp only [smul_eq_mul]
+  have hderiv : HasDerivAt (Complex.regularizedHGFun 0 {(1 : ℂ)})
+      ((p.derivSeries.sum w) 1) w := by
+    change HasDerivAt p.sum ((p.derivSeries.sum w) 1) w
+    exact (p.hasFDerivAt_sum hradius).hasDerivAt
+  rw [hsum] at hderiv
+  exact hderiv
+
+/-- Derivative of the zeroth complex Bessel function obtained from its
+regularized hypergeometric coefficients. -/
+private theorem besselJ_zero_hasDerivAt (w : ℂ) :
+    HasDerivAt (Complex.besselJ 0) (-Complex.besselJ 1 w) w := by
+  have harg : HasDerivAt (fun t : ℂ => -(t / 2) ^ 2) (-(w / 2)) w := by
+    convert (((hasDerivAt_id w).div_const (2 : ℂ)).pow 2).neg using 1 <;> ring
+  have h := (regularizedHGFun_zero_one_hasDerivAt (-(w / 2) ^ 2)).comp w harg
+  convert h using 1
+  · funext t
+    simp [Complex.besselJ_def]
+  · simp [Complex.besselJ_def]
+    ring
+
 /-- Derivative of the dimensionless radial Fourier phase with respect to the polar angle. -/
 private theorem polarFourierRadialPhase_hasDerivAt (z θ : ℝ) :
     HasDerivAt (polarFourierRadialPhase z)
