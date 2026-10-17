@@ -104,12 +104,8 @@ theorem normSq_comp_right_le (hT : IsHilbertSchmidt T) (B : H →L[ℂ] H) :
       ← ContinuousLinearMap.star_eq_adjoint, star_mul]
   have hadjNormEq :
       (isHilbertSchmidt_adjoint hTB).normSq = hleft.normSq := by
-    obtain ⟨w, d, -⟩ := exists_hilbertBasis (𝕜 := ℂ) (E := H)
-    rw [(isHilbertSchmidt_adjoint hTB).normSq_eq_tsum_norm_sq_apply d,
-      hleft.normSq_eq_tsum_norm_sq_apply d]
-    apply tsum_congr
-    intro i
     rw [hadj_eq]
+    exact IsHilbertSchmidt.normSq_proof_irrel _ _
   calc
     (isHilbertSchmidt_comp_right hT B).normSq = hTB.normSq :=
       IsHilbertSchmidt.normSq_proof_irrel _ _
