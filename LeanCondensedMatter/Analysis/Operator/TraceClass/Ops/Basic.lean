@@ -76,12 +76,8 @@ theorem IsTraceClass.comp_left (W : H →L[ℂ] H) {T : H →L[ℂ] H}
 theorem IsTraceClass.comp_right {T : H →L[ℂ] H} (hT : IsTraceClass T)
     (W : H →L[ℂ] H) :
     IsTraceClass (T * W) := by
-  obtain ⟨A, B, hA, hB, hfactor⟩ :=
-    (isTraceClass_iff_exists_hilbertSchmidt_factorization (T := T)).mp hT
-  have hBW : IsHilbertSchmidt (B * W) := isHilbertSchmidt_comp_right hB W
-  apply (isTraceClass_iff_exists_hilbertSchmidt_factorization (T := T * W)).mpr
-  refine ⟨A, B * W, hA, hBW, ?_⟩
-  rw [← mul_assoc, hfactor]
+  simpa only [← ContinuousLinearMap.star_eq_adjoint, star_mul, star_star] using
+    ((hT.adjoint.comp_left (ContinuousLinearMap.adjoint W)).adjoint)
 
 /-- Pairing the image of a Hilbert basis by a bounded operator with a trace-class operator gives an
 absolutely summable complex series. -/
