@@ -87,6 +87,24 @@ linked-cluster development.
 Generic power-series logarithm algebra remains in `Analysis/PowerSeries`; finite partitions,
 cumulants, and connected decompositions remain in `Combinatorics`.
 
+## Fixed-width blocks and Stirling enumeration
+
+Mathlib supplies `finProdFinEquiv` for the underlying finite-index bijection. The
+project's `FiniteIndex/Block.lean` keeps its equality-cast-aware coordinate reconstruction,
+lexicographic order characterization `blockEquiv_lt_iff`, and the order-preserving
+`blockMap` interface: these are not supplied by the underlying equivalence alone.
+The internal arithmetic lemmas stay private; downstream pairing and diagrammatic code
+uses the public coordinate/order facts.
+
+Mathlib's `Nat.stirlingSecond` and `Nat.stirlingSecond_succ_succ` supply the
+number and its recurrence, but do not directly count the subtype of `Finpartition s`
+with exactly `k` blocks. `SetPartition/Stirling.lean` proves
+`Finpartition.card_parts_eq_stirlingSecond` using distinguished-block decomposition.
+The binomial-convolution and reflected-index identities remain private proof lemmas.
+`Finpartition.card_coarsenings_parts_eq_stirlingSecond` is a separate transport of
+this count through `coarseningsEquivBlockPartitions`; neither public counting theorem
+is only a wrapper around Mathlib's recurrence.
+
 ## Ownership boundary
 
 - finite-set off-diagonal sum congruences modulo `n` belong in
