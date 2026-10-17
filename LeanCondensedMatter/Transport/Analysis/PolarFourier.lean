@@ -7,6 +7,7 @@ import Mathlib.Analysis.SpecialFunctions.Bessel
 import Mathlib.Analysis.SpecificLimits.Normed
 import Mathlib.MeasureTheory.Integral.DominatedConvergence
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.Periodic
+import Mathlib.Topology.Algebra.InfiniteSum.ContinuousEval
 import Mathlib.Tactic
 
 set_option linter.style.header false
@@ -527,32 +528,30 @@ private theorem regularizedHGFun_zero_one_hasDerivAt (w : ℂ) :
     have hf : (Nat.factorial n : ℂ) ≠ 0 := by
       exact_mod_cast Nat.factorial_ne_zero n
     field_simp
-    ring
   have hradius : ‖w‖ₑ < p.radius := by
     simp [p]
-  have hderivRadius : ‖w‖ₑ < p.derivSeries.radius :=
-    lt_of_lt_of_le hradius p.radius_le_radius_derivSeries
+  have hderivRadius : p.derivSeries.radius = ⊤ := by
+    apply top_unique
+    simpa [p] using p.radius_le_radius_derivSeries
   have hsummable : Summable (fun n : ℕ => p.derivSeries n (fun _ => w)) :=
-    p.derivSeries.summable (by simpa only [Metric.mem_eball, edist_zero_right,
-      edist_eq_enorm] using hderivRadius)
+    p.derivSeries.summable (by simp [hderivRadius])
   have hsum :
       (p.derivSeries.sum w) (1 : ℂ) =
         Complex.regularizedHGFun 0 {(2 : ℂ)} w := by
     calc
       (p.derivSeries.sum w) (1 : ℂ) =
           ∑' n : ℕ, (p.derivSeries n (fun _ => w)) (1 : ℂ) := by
-        exact hsummable.tsum_apply 1
+        exact tsum_apply hsummable 1
       _ = ∑' n : ℕ,
           (((n + 1 : ℕ) : ℂ) *
             Complex.regularizedHGFunCoeff 0 {(1 : ℂ)} (n + 1)) * w ^ n := by
         apply tsum_congr
         intro n
         simp only [FormalMultilinearSeries.apply_eq_pow_smul_coeff,
-          ContinuousLinearMap.smul_apply,
-          FormalMultilinearSeries.derivSeries_coeff_one,
-          Complex.regularizedHGFunSeries_coeff, smul_eq_mul, nsmul_eq_mul,
-          Nat.cast_add, Nat.cast_one]
-        ring
+          smul_apply, FormalMultilinearSeries.derivSeries_coeff_one,
+          smul_eq_mul, nsmul_eq_mul, Nat.cast_add, Nat.cast_one]
+        simp only [p, Complex.regularizedHGFunSeries_coeff]
+        ring_nf
       _ = ∑' n : ℕ, Complex.regularizedHGFunCoeff 0 {(2 : ℂ)} n * w ^ n := by
         apply tsum_congr
         intro n
@@ -574,7 +573,10 @@ regularized hypergeometric coefficients. -/
 private theorem besselJ_zero_hasDerivAt (w : ℂ) :
     HasDerivAt (Complex.besselJ 0) (-Complex.besselJ 1 w) w := by
   have harg : HasDerivAt (fun t : ℂ => -(t / 2) ^ 2) (-(w / 2)) w := by
-    convert (((hasDerivAt_id w).div_const (2 : ℂ)).pow 2).neg using 1 <;> ring
+    convert (((hasDerivAt_id w).div_const (2 : ℂ)).pow 2).neg using 1
+    · funext t
+      ring
+    · ring
   have h := (regularizedHGFun_zero_one_hasDerivAt (-(w / 2) ^ 2)).comp w harg
   convert h using 1
   · funext t
