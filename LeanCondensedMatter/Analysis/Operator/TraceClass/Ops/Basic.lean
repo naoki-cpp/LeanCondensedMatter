@@ -65,11 +65,8 @@ theorem IsTraceClass.comp_left (W : H →L[ℂ] H) {T : H →L[ℂ] H}
   apply (isTraceClass_iff_exists_hilbertSchmidt_factorization (T := W * T)).mpr
   refine ⟨A', B, hA', hB, ?_⟩
   have hAdjA' : ContinuousLinearMap.adjoint A' = W * ContinuousLinearMap.adjoint A := by
-    rw [show ContinuousLinearMap.adjoint A' = star A' from
-      (ContinuousLinearMap.star_eq_adjoint A').symm]
     dsimp [A']
-    rw [star_mul, ContinuousLinearMap.star_eq_adjoint,
-      ContinuousLinearMap.adjoint_adjoint, ContinuousLinearMap.star_eq_adjoint]
+    simp only [← ContinuousLinearMap.star_eq_adjoint, star_mul, star_star]
   rw [hAdjA', mul_assoc, hfactor]
 
 /-- Right composition by a bounded operator preserves trace-class membership. -/
