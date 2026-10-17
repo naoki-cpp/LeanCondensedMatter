@@ -93,7 +93,8 @@ theorem Pairing.crossingCount_eq_sum_crosses {n : ℕ} (pairing : Pairing n) :
             Crosses x.1 x.2) (pairing.pairs.product pairing.pairs)).symm
     _ = ∑ p ∈ pairing.pairs, ∑ q ∈ pairing.pairs,
           if Crosses p q then 1 else 0 := by
-      exact Finset.sum_product' (β := ℕ) _ _ _
+      exact Finset.sum_product' pairing.pairs pairing.pairs
+        (fun p q => if Crosses p q then (1 : ℕ) else 0)
     _ = ∑ p ∈ pairing.pairs.attach, ∑ q ∈ pairing.pairs.attach,
           if Crosses p.1 q.1 then 1 else 0 := by
       calc
