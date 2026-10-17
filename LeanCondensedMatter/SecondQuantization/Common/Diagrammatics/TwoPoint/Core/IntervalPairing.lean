@@ -345,7 +345,7 @@ theorem TwoPointDiagram.intervalAugmentedPairing_partner_external
   change ((intervalBoundaryPairing.sumCongr
     (d.interiorPairing earlier later)).transport e.symm).partner
       (e (Sum.inl (Sum.inl i))) = e (Sum.inl (Sum.inr i))
-  simp [PairingOn.transport_partner, intervalBoundaryPairing] <;> rfl
+  simp [PairingOn.transport_partner, intervalBoundaryPairing]; rfl
 
 /-- Interior edges of the augmented pairing retain the same partner as
 the ambient pairing, expressed using the canonical incident-leg embedding.
