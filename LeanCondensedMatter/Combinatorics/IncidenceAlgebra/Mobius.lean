@@ -208,7 +208,7 @@ theorem mu_subtype_ge_apply {R α : Type*} [CommRing R]
 end IncidenceAlgebra
 
 /-- Split a finite dependent product at one distinguished index. -/
-noncomputable def piInsertOrderIso {ι : Type*} [DecidableEq ι] (β : ι → Type*)
+private noncomputable def piInsertOrderIso {ι : Type*} [DecidableEq ι] (β : ι → Type*)
     [∀ i, Preorder (β i)] {j : ι} {s : Finset ι} (hjs : j ∉ s) :
     (∀ i : (insert j s : Finset ι), β i) ≃o β j × ∀ i : s, β i := by
   rw [Finset.insert_eq]
@@ -231,15 +231,6 @@ noncomputable def piInsertOrderIso {ι : Type*} [DecidableEq ι] (β : ι → Ty
   · intro h
     exact ⟨h _, fun i => h _⟩
 
-/-- Split a product over the subtype of an inserted finite set. -/
-theorem prod_subtype_insert_eq {ι M : Type*} [DecidableEq ι] [CommMonoid M] {j : ι} {s : Finset ι}
-    (hjs : j ∉ s) (g : ∀ _i : ↥(insert j s), M) :
-    ∏ i : ↥(insert j s), g i =
-      g ⟨j, mem_insert_self j s⟩ * ∏ i : s, g ⟨i.1, mem_insert_of_mem i.2⟩ := by
-  rw [Finset.prod_coe_sort_eq_attach, Finset.attach_insert,
-    Finset.prod_insert (by simp [hjs]),
-    Finset.prod_image (fun a _ b _ h => Subtype.ext (by simpa using congrArg Subtype.val h)),
-    Finset.prod_coe_sort_eq_attach]
 
 namespace IncidenceAlgebra
 
@@ -264,9 +255,18 @@ theorem mu_pi_finset_apply {R ι : Type*} [CommRing R] [DecidableEq ι]
       (show (piInsertOrderIso β hjs x).2 = fun i : s => x ⟨i.1, mem_insert_of_mem i.2⟩ from rfl),
       (show (piInsertOrderIso β hjs y).2 = fun i : s => y ⟨i.1, mem_insert_of_mem i.2⟩ from rfl)]
       at hmu
+    have hprod :
+        (∏ i : ↥(insert j s), mu R (x i) (y i)) =
+          mu R (x ⟨j, mem_insert_self j s⟩) (y ⟨j, mem_insert_self j s⟩) *
+            ∏ i : s, mu R (x ⟨i.1, mem_insert_of_mem i.2⟩)
+              (y ⟨i.1, mem_insert_of_mem i.2⟩) := by
+      rw [Finset.prod_coe_sort_eq_attach, Finset.attach_insert,
+        Finset.prod_insert (by simp [hjs]),
+        Finset.prod_image (fun a _ b _ h => Subtype.ext (by simpa using congrArg Subtype.val h)),
+        Finset.prod_coe_sort_eq_attach]
     rw [hmu,
       ih (fun i => x ⟨i.1, mem_insert_of_mem i.2⟩)
         (fun i => y ⟨i.1, mem_insert_of_mem i.2⟩),
-      prod_subtype_insert_eq hjs (fun i => mu R (x i) (y i))]
+      hprod]
 
 end IncidenceAlgebra
