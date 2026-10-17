@@ -2,6 +2,7 @@ import LeanCondensedMatter.Transport.Analysis.AngularHarmonics
 import LeanCondensedMatter.Transport.Analysis.ContinuumMeasure
 import LeanCondensedMatter.Transport.Analysis.FourierGeometry
 import Mathlib.Analysis.Calculus.ParametricIntervalIntegral
+import Mathlib.Analysis.SpecialFunctions.Integrals.Basic
 import Mathlib.MeasureTheory.Integral.DominatedConvergence
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.Periodic
 import Mathlib.Tactic
@@ -100,6 +101,53 @@ noncomputable def polarFourierSecondCosineAngularKernel (z : ℝ) : ℂ :=
   ∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi),
     polarFourierRadialPhase z θ *
       ((((Real.cos θ : ℝ) : ℂ) ^ 2) - (((Real.sin θ : ℝ) : ℂ) ^ 2))
+
+/-- The real cosine moment over a full polar revolution. Its explicit even moments
+are the coefficients in the Fourier--Bessel expansion of the zeroth kernel. -/
+noncomputable def polarFourierCosineMoment (n : ℕ) : ℝ :=
+  ∫ θ in (0 : ℝ)..(2 * Real.pi), Real.cos θ ^ n
+
+@[simp] theorem polarFourierCosineMoment_zero :
+    polarFourierCosineMoment 0 = 2 * Real.pi := by
+  simp [polarFourierCosineMoment]
+
+@[simp] theorem polarFourierCosineMoment_one :
+    polarFourierCosineMoment 1 = 0 := by
+  simp [polarFourierCosineMoment]
+
+/-- The full-period cosine moments satisfy the standard reduction formula. -/
+theorem polarFourierCosineMoment_add_two (n : ℕ) :
+    polarFourierCosineMoment (n + 2) =
+      ((n : ℝ) + 1) / ((n : ℝ) + 2) * polarFourierCosineMoment n := by
+  simpa [polarFourierCosineMoment] using
+    (intervalIntegral.integral_cos_pow (a := (0 : ℝ)) (b := 2 * Real.pi) n)
+
+/-- Closed finite-product formula for every even full-angle cosine moment. -/
+theorem polarFourierCosineMoment_even (n : ℕ) :
+    polarFourierCosineMoment (2 * n) =
+      (2 * Real.pi) *
+        ∏ k ∈ Finset.range n, ((2 * (k : ℝ) + 1) / (2 * (k : ℝ) + 2)) := by
+  induction n with
+  | zero => simp
+  | succ n ih =>
+      have hindex : 2 * (n + 1) = 2 * n + 2 := by omega
+      rw [hindex, polarFourierCosineMoment_add_two, ih, Finset.prod_range_succ]
+      push_cast
+      ring
+
+/-- Every odd full-angle cosine moment vanishes. -/
+@[simp] theorem polarFourierCosineMoment_odd (n : ℕ) :
+    polarFourierCosineMoment (2 * n + 1) = 0 := by
+  induction n with
+  | zero => simpa using polarFourierCosineMoment_one
+  | succ n ih =>
+      have hindex : 2 * (n + 1) + 1 = (2 * n + 1) + 2 := by omega
+      rw [hindex, polarFourierCosineMoment_add_two, ih, mul_zero]
+
+/-- The zeroth radial Fourier kernel is normalized by the full polar angle at the origin. -/
+@[simp] theorem polarFourierZerothAngularKernel_zero :
+    polarFourierZerothAngularKernel 0 = ((2 * Real.pi : ℝ) : ℂ) := by
+  simp [polarFourierZerothAngularKernel, polarFourierRadialPhase]
 
 @[fun_prop]
 theorem continuous_polarFourierZerothAngularKernel :
