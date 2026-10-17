@@ -20,23 +20,17 @@ Convergence for basis-independent Hilbert--Schmidt operators is exposed by
 noncomputable def innerHS {ι : Type*} (d : HilbertBasis ι ℂ H) (S T : H →L[ℂ] H) : ℂ :=
   ∑' i, (inner ℂ (S (d i)) (T (d i)) : ℂ)
 
-omit [CompleteSpace H] in
-private theorem summable_inner_apply_of_isHilbertSchmidtWrt {ι : Type*} (d : HilbertBasis ι ℂ H)
-    {S T : H →L[ℂ] H} (hS : IsHilbertSchmidtWrt d S) (hT : IsHilbertSchmidtWrt d T) :
-    Summable (fun i => (inner ℂ (S (d i)) (T (d i)) : ℂ)) := by
-  refine Summable.of_norm_bounded ((hS.add hT).div_const 2) fun i => ?_
-  have hab : ‖S (d i)‖ * ‖T (d i)‖ ≤ (‖S (d i)‖ ^ 2 + ‖T (d i)‖ ^ 2) / 2 := by
-    nlinarith [sq_nonneg (‖S (d i)‖ - ‖T (d i)‖)]
-  exact (norm_inner_le_norm (S (d i)) (T (d i))).trans hab
-
 namespace IsHilbertSchmidt
 
 /-- The Hilbert--Schmidt diagonal pairing is summable in every Hilbert basis. -/
 theorem summable_inner_apply {S T : H →L[ℂ] H} (hS : IsHilbertSchmidt S)
     (hT : IsHilbertSchmidt T) {ι : Type*} (d : HilbertBasis ι ℂ H) :
-    Summable (fun i => (inner ℂ (S (d i)) (T (d i)) : ℂ)) :=
-  summable_inner_apply_of_isHilbertSchmidtWrt d
-    (hS.summable_norm_sq_apply d) (hT.summable_norm_sq_apply d)
+    Summable (fun i => (inner ℂ (S (d i)) (T (d i)) : ℂ)) := by
+  refine Summable.of_norm_bounded
+    (((hS.summable_norm_sq_apply d).add (hT.summable_norm_sq_apply d)).div_const 2)
+    fun i => ?_
+  exact (norm_inner_le_norm (S (d i)) (T (d i))).trans (by
+    nlinarith [sq_nonneg (‖S (d i)‖ - ‖T (d i)‖)])
 
 /-- The Hilbert--Schmidt diagonal pairing sums to `innerHS` in every Hilbert basis. -/
 theorem hasSum_innerHS {S T : H →L[ℂ] H} (hS : IsHilbertSchmidt S)
