@@ -45,12 +45,12 @@ theorem lie_schrodinger_localization_eq_kinetic
   rw [schrodingerOperator]
   ext ψ
   simp only [LinearMap.sub_apply, LinearMap.add_apply, LinearMap.comp_apply, map_add]
-  have hcomm := congrArg (fun T : Space →ₗ[ℂ] Space => T ψ)
-    (multiplicationOperator_comp_comm potential f)
   have hcomm' :
       multiplicationOperator potential (multiplicationOperator f ψ) =
         multiplicationOperator f (multiplicationOperator potential ψ) := by
-    simpa only [LinearMap.comp_apply] using hcomm
+    ext x
+    change potential x * (f x * ψ x) = f x * (potential x * ψ x)
+    ring
   rw [hcomm']
   abel
 

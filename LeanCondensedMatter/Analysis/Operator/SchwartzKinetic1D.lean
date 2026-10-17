@@ -1,5 +1,4 @@
 import Mathlib.Analysis.Distribution.SchwartzSpace.Deriv
-import Mathlib.Algebra.Lie.OfAssociative
 import Mathlib.Tactic
 
 set_option linter.style.header false
@@ -14,7 +13,6 @@ The concrete physical specialization lives in `QuantumMechanics.SingleParticle.C
 
 namespace SchwartzKinetic1D
 
-attribute [local instance 100] LieRing.ofAssociativeRing
 
 noncomputable section
 
@@ -81,14 +79,6 @@ theorem secondDerivative_multiplication_apply (f ψ : Space) :
   rw [map_add]
   rw [derivative_multiplication_apply, derivative_multiplication_apply]
   module
-
-/-- Multiplication operators commute on Schwartz space. -/
-theorem multiplicationOperator_comp_comm (f g : Space) :
-    (multiplicationOperator f).comp (multiplicationOperator g) =
-      (multiplicationOperator g).comp (multiplicationOperator f) := by
-  ext ψ x
-  change f x * (g x * ψ x) = g x * (f x * ψ x)
-  ring
 
 
 end
