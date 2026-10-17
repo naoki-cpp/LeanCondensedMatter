@@ -345,7 +345,7 @@ theorem TwoPointDiagram.intervalAugmentedPairing_partner_external
   change ((intervalBoundaryPairing.sumCongr
     (d.interiorPairing earlier later)).transport e.symm).partner
       (e (Sum.inl (Sum.inl i))) = e (Sum.inl (Sum.inr i))
-  simp [PairingOn.transport_partner, intervalBoundaryPairing]
+  simp [PairingOn.transport_partner, intervalBoundaryPairing] <;> rfl
 
 /-- Interior edges of the augmented pairing retain the same partner as
 the ambient pairing, expressed using the canonical incident-leg embedding.
@@ -484,7 +484,7 @@ theorem TwoPointDiagram.intervalBlock_partner_equiv
           twoPointVertexOfLeg later ∉ d.verticesBetweenCuts earlier later))
     (hne : earlier ≠ later)
     (hpne : d.pairing.partner earlier ≠ later)
-    (p : Fin (2 * (2 * interactionSector (d.verticesBetweenCuts earlier later).card + 1))) :
+    (p : Fin (2 * (2 * (interactionSector (d.verticesBetweenCuts earlier later)).card + 1))) :
     (d.intervalBlockLegEquiv earlier later hsepLater) ((d.intervalBlock boundaryLabels earlier later hsepLater hEarlier hLater hne hpne).pairing.partner p) =
       (d.intervalAugmentedPairing earlier later hEarlier hLater hne hpne).partner ((d.intervalBlockLegEquiv earlier later hsepLater) p) := by
   simp only [TwoPointDiagram.intervalBlock, PairingOn.transport_partner,
@@ -515,11 +515,11 @@ theorem TwoPointDiagram.intervalBlock_partner_external
     (hne : earlier ≠ later)
     (hpne : d.pairing.partner earlier ≠ later) (i : Fin 2) :
     (d.intervalBlockLegEquiv earlier later hsepLater) ((d.intervalBlock boundaryLabels earlier later hsepLater hEarlier hLater hne hpne).pairing.partner
-        (twoPointExternalLeg interactionSector (d.verticesBetweenCuts earlier later) i)) =
+        (twoPointExternalLeg (interactionSector (d.verticesBetweenCuts earlier later)) i)) =
       Sum.inr ((d.intervalBoundaryInteriorLegEquiv earlier later hEarlier hLater hne hpne) (Sum.inl i)) := by
   rw [d.intervalBlock_partner_equiv boundaryLabels earlier later
     hsepLater hEarlier hLater hne hpne]
-  have he : (d.intervalBlockLegEquiv earlier later hsepLater) (twoPointExternalLeg interactionSector (d.verticesBetweenCuts earlier later) i) = Sum.inl i := by
+  have he : (d.intervalBlockLegEquiv earlier later hsepLater) (twoPointExternalLeg (interactionSector (d.verticesBetweenCuts earlier later)) i) = Sum.inl i := by
     simp [TwoPointDiagram.intervalBlockLegEquiv, twoPointExternalLeg]
   rw [he, d.intervalAugmentedPairing_partner_external earlier later
     hEarlier hLater hne hpne]
