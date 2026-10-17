@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Models.RashbaExchange.Model
+import LeanCondensedMatter.Models.RashbaExchange.ResponseParameters
 import Mathlib.Analysis.InnerProductSpace.PiL2
 import Mathlib.Analysis.CStarAlgebra.Matrix
 import Mathlib.Analysis.Matrix.Hermitian
@@ -34,6 +34,10 @@ noncomputable def velocityBoundedOperator
     (params : HamiltonianParameters) (direction : Fin 2) (px py : ℝ) :
     EuclideanSpace ℂ (Fin 2) →L[ℂ] EuclideanSpace ℂ (Fin 2) :=
   matrixOperator (velocityOperator params direction px py)
+
+/-- Charge-current matrix operator in the convention j_i = q v_i. -/
+def currentOperator (params : Parameters) (direction : Fin 2) (px py : ℝ) : InternalSpace.PauliMatrix :=
+  (((params.signedCharge : ℝ) : ℂ)) • velocityOperator params direction px py
 
 /-- Bounded charge-current operator consumed by response kernels. -/
 noncomputable def currentBoundedOperator
