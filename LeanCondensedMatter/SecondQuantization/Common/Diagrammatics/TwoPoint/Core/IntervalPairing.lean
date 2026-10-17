@@ -381,7 +381,8 @@ theorem TwoPointDiagram.strictCuts_boundaryData
     intro heq
     apply hpne
     have h := congrArg d.pairing.partner heq
-    simpa only [d.pairing.partner_involutive] using h.symm
+    rw [d.pairing.partner_involutive later] at h
+    exact h.symm
   exact ⟨hne, hpne,
     d.earlierCut_endpoints_opposite_interval_sides
       hconnected earlier later hstrict.le hsepEarlier hne hpne,
