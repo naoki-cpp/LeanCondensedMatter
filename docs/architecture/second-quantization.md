@@ -407,6 +407,14 @@ This algebraic coordinate layer is dimension-independent. Ordinary `LinearMap.tr
 for finite configuration types; possibly infinite occupation bases use `tsumTrace` together with
 explicit summability hypotheses.
 
+Normalized two-point trace algebra is owned by
+`Common/Thermal/BlochDeDominicis/GibbsExpectation/TwoPointTrace.lean`. Its theorem accepts arbitrary
+configuration types, a summable partition diagonal and rotated double series, and explicit nonzero
+partition and exchange denominators. The finite Gibbs expectation specializes it using automatic
+finite summability and the density-state trace bridge. The concrete bosonic two-point expectation
+supplies its occupation-space summability proofs; no countability or product-domain closure is
+assumed by the common theorem.
+
 ## Finite operator realizations
 
 Finite-dimensional operator transport has two intentionally distinct canonical realizations. Analytic

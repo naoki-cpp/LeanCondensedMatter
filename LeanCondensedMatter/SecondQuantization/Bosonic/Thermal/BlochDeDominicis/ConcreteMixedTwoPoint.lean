@@ -1,6 +1,8 @@
 import LeanCondensedMatter.Analysis.Exponential
+import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.GibbsExpectation.TwoPointTrace
 import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.FreeKMSRotation
-import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.NormalizedTwoPoint
+import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.TwoPoint
+import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.ConvergenceAwareGibbs
 import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.OrderedProductSummable
 
 set_option linter.style.header false
@@ -32,16 +34,34 @@ theorem freeGibbsExpectation_annihilate_comp_create_concrete
     (ε : Mode → ℝ) (β : ℝ) (hpos : ∀ k, 0 < β * ε k) (i j : Mode) :
     freeGibbsExpectation ε β ((annihilate i).comp (create j)) =
       if i = j then (1 - Complex.exp (((-(ε i) * β : ℝ) : ℂ)))⁻¹ else 0 := by
-  have hSumm : freeGibbsSummable ε β ((annihilate i).comp (create j)) := by
-    simpa [FreeThermalField.orderedProduct, FreeThermalField.operator,
-      Module.End.mul_eq_comp] using
-      (FreeThermalField.freeGibbsSummable_orderedProduct ε β hpos
-        [.annihilate i, .create j])
   have hden : 1 - Complex.exp (((-(ε i) * β : ℝ) : ℂ)) ≠ 0 :=
     sub_ne_zero.mpr (Ne.symm (Complex.exp_ne_one_of_re_ne_zero (by
       change -(ε i) * β ≠ 0
       nlinarith [hpos i])))
-  rw [freeGibbsExpectation_annihilate_comp_create_eq ε β hpos i j hSumm hden]
+  have hvalue :
+      freeGibbsExpectation ε β ((annihilate i).comp (create j)) =
+        (if i = j then (1 : ℂ) else 0) /
+          (1 - Complex.exp ((-(ε i) * β : ℝ) : ℂ)) := by
+    have hC1 : Common.heisenbergEvolve (freeEigenvalue ε) (-β) (annihilate i) =
+        Complex.exp ((-(ε i) * (-β) : ℝ) : ℂ) • annihilate i := by
+      have h := imaginaryTimeEvolve_annihilate ε (-β) i
+      rwa [show ((-(ε i) * (-β) : ℝ) : ℂ) = -((-β : ℝ) : ℂ) * (ε i : ℂ) by push_cast; ring]
+    have hcomm : ScalarExchange.zetaCommutator (1 : ℂ) (annihilate i) (create j) =
+        (if i = j then (1 : ℂ) else 0) •
+          (LinearMap.id : FockSpace Mode →ₗ[ℂ] FockSpace Mode) := by
+      simpa using comm_annihilate_create i j
+    have hSummD := summable_imaginaryTimeEvolveFree_self ε β hpos
+    have hRotate :=
+      summable_imaginaryTimeEvolveFree_comp_create_mul_annihilate ε β hpos i j
+    simpa only [freeGibbsExpectation, freeGibbsPartition, imaginaryTimeEvolveFree, one_mul] using
+      Common.normalizedTsumTrace_comp_eq_div_of_zetaCommutator
+        (freeEigenvalue ε) β (-(ε i)) (1 : ℂ)
+        (if i = j then (1 : ℂ) else 0) (annihilate i) (create j)
+        hC1 hcomm (by simpa only [imaginaryTimeEvolveFree] using hSummD)
+        (by simpa only [imaginaryTimeEvolveFree] using hRotate)
+        (by simpa only [freeGibbsPartition, imaginaryTimeEvolveFree] using
+          freeGibbsPartition_ne_zero ε β hpos) (by simpa only [one_mul] using hden)
+  rw [hvalue]
   by_cases hij : i = j <;> simp [hij]
 
 /-- Concrete KMS-rotated creation/annihilation contraction. -/

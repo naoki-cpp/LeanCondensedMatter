@@ -1,6 +1,6 @@
 import LeanCondensedMatter.Analysis.ScalarExchange.Basic
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsCoordinate
-import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.Unnormalized.PeelFirstTrace
+import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.GibbsExpectation.TwoPointTrace
 import LeanCondensedMatter.SecondQuantization.Common.Algebra.ExchangeCommutator
 
 set_option linter.style.header false
@@ -8,8 +8,8 @@ set_option linter.style.header false
 /-!
 # The genuine normalized 2-point Bloch–de Dominicis value
 
-Applies the general trace peel identity to a singleton coefficient-paired tail and divides by
-the nonzero partition function to obtain the normalized finite-temperature two-point value.
+Specializes the normalized summable trace identity to finite configurations, where summability
+is automatic, and identifies the trace ratio with the canonical finite Gibbs state expectation.
 -/
 
 namespace SecondQuantization
@@ -30,16 +30,14 @@ theorem finiteGibbsExpectation_comp_eq_div_of_zetaCommutator (energy : Config �
     (hne : (1 : ℂ) - ζ * Complex.exp ((q1 * β : ℝ) : ℂ) ≠ 0) :
     finiteGibbsExpectation energy β (C1.comp Cj) =
       c1j / (1 - ζ * Complex.exp ((q1 * β : ℝ) : ℂ)) := by
-  have h := traceFock_diagonalEvolution_comp_peel energy β q1 ζ C1 [(Cj, c1j)] hC1
-    (by simpa using hcomm)
-  simp only [List.length_cons, List.length_nil, List.map_cons, List.map_nil,
-    List.prod_cons, List.prod_nil, mul_one,
-    ScalarExchange.peelSumWithCoefficients, mul_zero, smul_zero, add_zero] at h
-  simp only [Module.End.one_eq_id, LinearMap.comp_smul, LinearMap.comp_id,
-    map_smul, smul_eq_mul] at h
-  have hZ := traceFock_diagonalEvolution_ne_zero energy β
-  rw [finiteGibbsExpectation_eq_trace_div, div_eq_div_iff hZ hne]
-  linear_combination h
+  classical
+  rw [finiteGibbsExpectation_eq_trace_div]
+  have hZ : tsumTrace (diagonalEvolution energy (-β)) ≠ 0 := by
+    simpa only [tsumTrace, tsum_fintype, traceFock_eq_sum_matrixCoeff] using
+      traceFock_diagonalEvolution_ne_zero energy β
+  simpa only [tsumTrace, tsum_fintype, traceFock_eq_sum_matrixCoeff] using
+    normalizedTsumTrace_comp_eq_div_of_zetaCommutator energy β q1 ζ c1j C1 Cj
+      hC1 hcomm Summable.of_finite Summable.of_finite hZ hne
 
 /-- **The `Statistics`-indexed presentation**, in terms of `exchangeCommutator s` rather than a
 raw `ζ : ℂ` bracket — the form callers already holding a `Statistics` value should reach for. -/
