@@ -141,10 +141,9 @@ theorem freeGibbsDensityOperator_expectation_create_comp_annihilate
       if i = j then 1 / (Complex.exp ((β : ℂ) * (ε i : ℂ)) + 1) else 0 := by
   have hknown := freeGibbsDensityOperator_expectation_annihilate_comp_create ε β i j
   rw [freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation] at hknown ⊢
+  simp only [Common.finiteGibbsExpectation] at hknown ⊢
   have h := congrArg (Common.finiteGibbsExpectationLinearMap (fermionEnergy ε) β)
     (anticomm_annihilate_create (Mode := Mode) i j)
-  change Common.finiteGibbsExpectationLinearMap (fermionEnergy ε) β
-    ((annihilate i).comp (create j)) = _ at hknown
   simp only [ScalarExchange.zetaCommutator, Module.End.mul_eq_comp,
     neg_one_smul, sub_neg_eq_add, map_add] at h
   rcases eq_or_ne i j with rfl | hij
