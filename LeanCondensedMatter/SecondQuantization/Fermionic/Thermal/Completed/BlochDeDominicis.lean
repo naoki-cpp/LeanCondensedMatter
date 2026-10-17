@@ -133,10 +133,9 @@ variable {Mode : Type*} [LinearOrder Mode]
 namespace CompletedThermalLadder
 
 /-- Right-associated bounded product of completed thermal ladder operators. -/
-noncomputable def operatorProduct : List (CompletedThermalLadder Mode) →
-    CompletedFockSpace Mode →L[ℂ] CompletedFockSpace Mode
-  | [] => ContinuousLinearMap.id ℂ (CompletedFockSpace Mode)
-  | C :: t => C.operator.comp (operatorProduct t)
+noncomputable def operatorProduct (l : List (CompletedThermalLadder Mode)) :
+    CompletedFockSpace Mode →L[ℂ] CompletedFockSpace Mode :=
+  (l.map operator).prod
 
 @[simp]
 theorem operatorProduct_nil :
@@ -146,25 +145,13 @@ theorem operatorProduct_nil :
 @[simp]
 theorem operatorProduct_cons (C : CompletedThermalLadder Mode)
     (t : List (CompletedThermalLadder Mode)) :
-    operatorProduct (C :: t) = C.operator.comp (operatorProduct t) := rfl
+    operatorProduct (C :: t) = C.operator.comp (operatorProduct t) := by
+  simp only [operatorProduct, List.map_cons, List.prod_cons, ContinuousLinearMap.mul_def]
 
 /-- Products respect list concatenation. -/
 theorem operatorProduct_append (l₁ l₂ : List (CompletedThermalLadder Mode)) :
     operatorProduct (l₁ ++ l₂) = (operatorProduct l₁).comp (operatorProduct l₂) := by
-  induction l₁ with
-  | nil => simp
-  | cons C t ih =>
-      rw [List.cons_append, operatorProduct_cons, operatorProduct_cons, ih,
-        ContinuousLinearMap.comp_assoc]
-
-private theorem operatorProduct_eq_prod
-    (l : List (CompletedThermalLadder Mode)) :
-    operatorProduct l = (l.map operator).prod := by
-  induction l with
-  | nil => rfl
-  | cons C t ih =>
-      rw [operatorProduct_cons, List.map_cons, List.prod_cons, ih]
-      rfl
+  simp [operatorProduct, List.map_append, List.prod_append, ContinuousLinearMap.mul_def]
 
 private theorem operator_mul_operator_eq_exchange
     (C D : CompletedThermalLadder Mode) :
@@ -187,8 +174,7 @@ private theorem operator_comp_operatorProduct_eq_peelSum
   have h := ScalarExchange.mul_prod_eq_peelSum
     operator anticommutatorValue (-1 : ℂ)
     operator_mul_operator_eq_exchange C₁ l
-  rw [← operatorProduct_eq_prod l] at h
-  simpa [ContinuousLinearMap.mul_def] using h
+  simpa [operatorProduct, ContinuousLinearMap.mul_def] using h
 
 /-- Canonical completed free-Gibbs expectation of an ordered thermal-ladder list. -/
 noncomputable def completedFreeGibbsExpectation
@@ -245,7 +231,7 @@ private theorem completedFreeGibbsExpectation_peelSum_eq_sum
   apply Finset.sum_congr rfl
   intro j _
   rw [map_smul]
-  simp only [smul_eq_mul, completedFreeGibbsExpectation, ← operatorProduct_eq_prod]
+  simp only [smul_eq_mul, completedFreeGibbsExpectation, operatorProduct]
 
 end CompletedThermalLadder
 
