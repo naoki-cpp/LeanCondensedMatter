@@ -44,20 +44,16 @@ theorem lie_hamiltonian_localization_eq_spatial
     (κ : ℝ) (potential : Spatial) (internalH : InternalMatrix) (f : Spatial) :
     ⁅hamiltonian κ potential internalH, multiplicationOperator f⁆ =
       ⁅spatialHamiltonian κ potential, multiplicationOperator f⁆ := by
-  simp only [LieRing.of_associative_ring_bracket, Module.End.mul_eq_comp]
-  rw [hamiltonian]
-  apply LinearMap.ext
-  intro ψ
-  simp only [LinearMap.sub_apply, LinearMap.add_apply, LinearMap.comp_apply, map_add]
-  have hcomm := congrArg (fun T : State →ₗ[ℂ] State => T ψ)
-    (spatialLift_comp_internalOperator_comm
-      (SchwartzKinetic1D.multiplicationOperator f) internalH)
-  have hcomm' :
-      internalOperator internalH (multiplicationOperator f ψ) =
-        multiplicationOperator f (internalOperator internalH ψ) := by
-    simpa [multiplicationOperator] using hcomm.symm
-  rw [hcomm']
-  abel
+  rw [hamiltonian, add_lie]
+  have h := lie_spatialLift_internalOperator_eq_zero
+    (SchwartzKinetic1D.multiplicationOperator f) internalH
+  have hzero : ⁅internalOperator internalH, multiplicationOperator f⁆ = 0 := by
+    change ⁅internalOperator internalH,
+      spatialLift (SchwartzKinetic1D.multiplicationOperator f)⁆ = 0
+    simp only [LieRing.of_associative_ring_bracket, Module.End.mul_eq_comp,
+      sub_eq_zero] at h ⊢
+    exact h.symm
+  rw [hzero, add_zero]
 
 /-- The two-level state localization has the same first-order Heisenberg current identity as the scalar
 Schwartz model, independently of the internal Hamiltonian matrix. -/
@@ -83,20 +79,8 @@ theorem lie_hamiltonian_internalOperator_eq_internal
     (κ : ℝ) (potential : Spatial) (internalH S : InternalMatrix) :
     ⁅hamiltonian κ potential internalH, internalOperator S⁆ =
       ⁅internalOperator internalH, internalOperator S⁆ := by
-  simp only [LieRing.of_associative_ring_bracket, Module.End.mul_eq_comp]
-  rw [hamiltonian]
-  apply LinearMap.ext
-  intro ψ
-  simp only [LinearMap.sub_apply, LinearMap.add_apply, LinearMap.comp_apply, map_add]
-  have hcomm := congrArg (fun T : State →ₗ[ℂ] State => T ψ)
-    (spatialLift_comp_internalOperator_comm
-      (SchwartzSchrodinger1D.schrodingerOperator κ potential) S)
-  have hcomm' :
-      spatialHamiltonian κ potential (internalOperator S ψ) =
-        internalOperator S (spatialHamiltonian κ potential ψ) := by
-    simpa [spatialHamiltonian] using hcomm
-  rw [hcomm']
-  abel
+  simp only [hamiltonian, add_lie, spatialHamiltonian,
+    lie_spatialLift_internalOperator_eq_zero, zero_add]
 end
 end SchwartzTwoLevelSchrodinger1D
 end Continuum

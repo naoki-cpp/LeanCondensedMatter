@@ -85,22 +85,15 @@ theorem internalOperatorLinear_apply (S : InternalMatrix) :
     internalOperatorLinear S = internalOperator S :=
   rfl
 
-/-- Spatial and internal operators commute because they act on independent factors. -/
-theorem spatialLift_comp_internalOperator_comm
-    (A : Spatial →ₗ[ℂ] Spatial) (S : InternalMatrix) :
-    (spatialLift A).comp (internalOperator S) =
-      (internalOperator S).comp (spatialLift A) := by
-  apply LinearMap.ext
-  intro ψ
-  funext a
-  simp [internalOperator]
-
 /-- Componentwise spatial operators Lie-commute with internal matrix operators. -/
 theorem lie_spatialLift_internalOperator_eq_zero
     (A : Spatial →ₗ[ℂ] Spatial) (S : InternalMatrix) :
     ⁅spatialLift A, internalOperator S⁆ = 0 := by
-  simp only [LieRing.of_associative_ring_bracket, Module.End.mul_eq_comp]
-  rw [spatialLift_comp_internalOperator_comm, sub_self]
+  simp only [LieRing.of_associative_ring_bracket, Module.End.mul_eq_comp, sub_eq_zero]
+  apply LinearMap.ext
+  intro ψ
+  funext a
+  simp [internalOperator]
 
 /-- Two-level multiplication by a scalar Schwartz localizer. -/
 noncomputable def multiplicationOperator (f : Spatial) : State →ₗ[ℂ] State :=
