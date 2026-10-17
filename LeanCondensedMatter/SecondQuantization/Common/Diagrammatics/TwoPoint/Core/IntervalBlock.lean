@@ -66,7 +66,7 @@ noncomputable def TwoPointDiagram.intervalInteractionLegEquiv
     apply Prod.ext
     · apply Subtype.ext
       exact congrArg (fun x => (x.1 : ↥S).1) hpair
-    · exact congrArg Prod.snd hpair
+    · exact congrArg (fun x : ↥S × Fin 4 => x.2) hpair
   · rintro ⟨leg, hleg⟩
     cases h : twoPointLegEquiv S leg with
     | inl e =>
