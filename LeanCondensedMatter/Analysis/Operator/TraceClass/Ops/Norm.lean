@@ -41,28 +41,18 @@ private theorem IsTraceClass.summable_norm_inner_left_and_tsum_le_traceNorm
       inner ℂ (W x) (T x) = inner ℂ ((A * W) x) (B x) := by
     rw [← hfactor, mul_apply_eq_comp, mul_apply_eq_comp]
     exact ContinuousLinearMap.adjoint_inner_right A (W x) (B x)
+  have hpair := hAW.summable_norm_inner_apply_and_tsum_le hB d
   have hnormSummable :
-      Summable (fun i => ‖inner ℂ (W (d i)) (T (d i))‖) := by
-    have hpair := hAW.summable_inner_apply hB d
-    exact (hpair.congr fun i => (hpoint (d i)).symm).norm
-  have hAWhas : HasSum (fun i => ‖(A * W) (d i)‖ ^ 2) hAW.normSq :=
-    hAW.hasSum_norm_sq_apply d
-  have hBhas : HasSum (fun i => ‖B (d i)‖ ^ 2) hB.normSq :=
-    hB.hasSum_norm_sq_apply d
-  have hmajorHas :
-      HasSum (fun i => (‖(A * W) (d i)‖ ^ 2 + ‖B (d i)‖ ^ 2) / 2)
-        ((hAW.normSq + hB.normSq) / 2) :=
-    (hAWhas.add hBhas).div_const 2
-  have hpoint_le (i : ι) :
-      ‖inner ℂ (W (d i)) (T (d i))‖ ≤
-        (‖(A * W) (d i)‖ ^ 2 + ‖B (d i)‖ ^ 2) / 2 := by
-    rw [hpoint]
-    exact (norm_inner_le_norm ((A * W) (d i)) (B (d i))).trans (by
-      nlinarith [sq_nonneg (‖(A * W) (d i)‖ - ‖B (d i)‖)])
+      Summable (fun i => ‖inner ℂ (W (d i)) (T (d i))‖) :=
+    hpair.1.congr fun i => (congrArg norm (hpoint (d i))).symm
   have hsum_le :
       (∑' i, ‖inner ℂ (W (d i)) (T (d i))‖) ≤
-        (hAW.normSq + hB.normSq) / 2 :=
-    (hnormSummable.tsum_le_tsum hpoint_le hmajorHas.summable).trans_eq hmajorHas.tsum_eq
+        (hAW.normSq + hB.normSq) / 2 := by
+    calc
+      (∑' i, ‖inner ℂ (W (d i)) (T (d i))‖) =
+          ∑' i, ‖inner ℂ ((A * W) (d i)) (B (d i))‖ :=
+        tsum_congr fun i => congrArg norm (hpoint (d i))
+      _ ≤ (hAW.normSq + hB.normSq) / 2 := hpair.2
   refine ⟨hnormSummable, hsum_le.trans ?_⟩
   linarith
 
