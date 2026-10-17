@@ -115,14 +115,14 @@ section CurrentDensity
 variable {CurrentDensity : Type*}
 variable [AddCommMonoid CurrentDensity] [Module 𝕜 CurrentDensity]
 
-/-- Two current densities are weakly equivalent when they pair equally against every exact test
-1-form `d f`. -/
+/-- Two current densities are weakly equivalent when their paired current functionals
+agree on every exact test 1-form `d f`. -/
 def CurrentDensityEquivalent
     (d : Test →ₗ[𝕜] OneForm)
     (pairing : LocalCurrentPairing (𝕜 := 𝕜) (OneForm := OneForm) (Obs := Obs)
       (CurrentDensity := CurrentDensity))
     (j₁ j₂ : CurrentDensity) : Prop :=
-  ∀ f, pairing j₁ (d f) = pairing j₂ (d f)
+  DifferentialCurrentEquivalent d (pairing j₁) (pairing j₂)
 
 namespace CurrentDensityEquivalent
 
@@ -132,9 +132,8 @@ theorem refl
     (pairing : LocalCurrentPairing (𝕜 := 𝕜) (OneForm := OneForm) (Obs := Obs)
       (CurrentDensity := CurrentDensity))
     (j : CurrentDensity) :
-    CurrentDensityEquivalent d pairing j j := by
-  intro f
-  rfl
+    CurrentDensityEquivalent d pairing j j :=
+  DifferentialCurrentEquivalent.refl d (pairing j)
 
 /-- Weak current-density equivalence is symmetric. -/
 theorem symm
@@ -143,9 +142,8 @@ theorem symm
       (CurrentDensity := CurrentDensity)}
     {j₁ j₂ : CurrentDensity}
     (h : CurrentDensityEquivalent d pairing j₁ j₂) :
-    CurrentDensityEquivalent d pairing j₂ j₁ := by
-  intro f
-  exact (h f).symm
+    CurrentDensityEquivalent d pairing j₂ j₁ :=
+  DifferentialCurrentEquivalent.symm h
 
 /-- Weak current-density equivalence is transitive. -/
 theorem trans
@@ -155,9 +153,8 @@ theorem trans
     {j₁ j₂ j₃ : CurrentDensity}
     (h₁₂ : CurrentDensityEquivalent d pairing j₁ j₂)
     (h₂₃ : CurrentDensityEquivalent d pairing j₂ j₃) :
-    CurrentDensityEquivalent d pairing j₁ j₃ := by
-  intro f
-  exact (h₁₂ f).trans (h₂₃ f)
+    CurrentDensityEquivalent d pairing j₁ j₃ :=
+  DifferentialCurrentEquivalent.trans h₁₂ h₂₃
 
 end CurrentDensityEquivalent
 
@@ -171,14 +168,9 @@ theorem currentDensityEquivalent
     {pairing : LocalCurrentPairing (𝕜 := 𝕜) (OneForm := OneForm) (Obs := Obs)
       (CurrentDensity := CurrentDensity)}
     (R₁ R₂ : LocalCurrentDensityRepresentation d Φ pairing) :
-    CurrentDensityEquivalent d pairing R₁.currentDensity R₂.currentDensity := by
-  intro f
-  have h :
-      (pairing R₁.currentDensity).comp d =
-        (pairing R₂.currentDensity).comp d :=
-    R₁.isCurrentDensity.symm.trans R₂.isCurrentDensity
-  have hf := congrArg (fun L : Test →ₗ[𝕜] Obs => L f) h
-  simpa only [LinearMap.comp_apply] using hf
+    CurrentDensityEquivalent d pairing R₁.currentDensity R₂.currentDensity :=
+  DifferentialCurrentEquivalent.iff_comp_eq.mpr
+    (R₁.isCurrentDensity.symm.trans R₂.isCurrentDensity)
 
 end LocalCurrentDensityRepresentation
 
