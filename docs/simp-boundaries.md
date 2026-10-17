@@ -96,8 +96,8 @@ All current `@[simp]` declarations under `LeanCondensedMatter/Combinatorics/` ar
 constructor equations, equivalence round trips, partner involutions, canonical membership/cardinality
 rules, or empty/zero cases. In particular this covers the current simp API in:
 
-- `SubsetSplit`
-- `SumEquivPartition`
+- `SetPartition/SubsetSplit`
+- `SetPartition/SumEquivPartition`
 - `Shuffle/BinaryShuffle`
 - `Shuffle/SlotShuffle`
 - `Shuffle/BinaryShuffleSlots`

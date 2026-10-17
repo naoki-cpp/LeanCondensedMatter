@@ -94,6 +94,11 @@ cumulants, and connected decompositions remain in `Combinatorics`.
   owning it;
 - set partitions, pairings, cumulants, Möbius inversion, shuffle/reindexing, generic finite product
   identities, and fixed-width finite-index block coordinates/order facts belong in `Combinatorics`;
+- `Combinatorics/SetPartition/SubsetSplit.lean` and
+  `Combinatorics/SetPartition/SumEquivPartition.lean` own reusable two-part decompositions:
+  a finite subset and its relative complement, or the two images of a sum equivalence.
+  These primitives are independent of the partition lattice and are imported directly by
+  shuffle, pairing, and diagrammatic consumers;
 - `Combinatorics/Shuffle/` owns order-preserving binary and finite-family shuffles, their signs,
   inversion counts, recursive decompositions, and finite-partition order adapters;
 - Mathlib provides `SimpleGraph.reachableSetoid`, connected components, and

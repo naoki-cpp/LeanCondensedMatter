@@ -1,5 +1,5 @@
-import LeanCondensedMatter.Combinatorics.SumEquivPartition
-import LeanCondensedMatter.Combinatorics.SubsetSplit
+import LeanCondensedMatter.Combinatorics.SetPartition.SumEquivPartition
+import LeanCondensedMatter.Combinatorics.SetPartition.SubsetSplit
 import Mathlib.Data.Finset.Powerset
 import Mathlib.Data.Finset.Sort
 import Mathlib.Data.Fintype.Perm

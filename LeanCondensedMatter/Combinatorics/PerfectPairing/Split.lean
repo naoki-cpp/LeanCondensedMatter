@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Restriction
-import LeanCondensedMatter.Combinatorics.SumEquivPartition
+import LeanCondensedMatter.Combinatorics.SetPartition.SumEquivPartition
 
 set_option linter.style.header false
 

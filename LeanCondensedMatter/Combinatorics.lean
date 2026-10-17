@@ -1,6 +1,5 @@
 import LeanCondensedMatter.Combinatorics.FiniteIndex
 import LeanCondensedMatter.Combinatorics.FiniteSumModEq
-import LeanCondensedMatter.Combinatorics.SumEquivPartition
 import LeanCondensedMatter.Combinatorics.Shuffle.SlotShuffle
 import LeanCondensedMatter.Combinatorics.Shuffle.BinaryShuffle
 import LeanCondensedMatter.Combinatorics.Shuffle.BinaryShuffleSlots
@@ -13,7 +12,6 @@ import LeanCondensedMatter.Combinatorics.IncidenceAlgebra.Mobius
 import LeanCondensedMatter.Combinatorics.SetPartition
 import LeanCondensedMatter.Combinatorics.Cumulant
 import LeanCondensedMatter.Combinatorics.PerfectPairing
-import LeanCondensedMatter.Combinatorics.SubsetSplit
 
 set_option linter.style.header false
 
