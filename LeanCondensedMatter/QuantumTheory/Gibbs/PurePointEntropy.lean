@@ -18,14 +18,6 @@ open ContinuousLinearMap
 
 variable {ι H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
 
-private theorem purePointGibbsProbability_le_one [Nonempty ι]
-    (E : ι → ℝ) (β : ℝ) (hsum : PurePointGibbsSummable E β) (i : ι) :
-    purePointGibbsProbability E β i ≤ 1 := by
-  exact
-    Real.normalizedWeight_le_one (purePointBoltzmannWeight E β)
-      (purePointBoltzmannWeight_summable E β hsum) (purePointBoltzmannWeight_nonneg E β)
-      (purePointPartitionFunction_pos E β hsum) i
-
 private theorem log_purePointGibbsProbability [Nonempty ι]
     (E : ι → ℝ) (β : ℝ) (hsum : PurePointGibbsSummable E β) (i : ι) :
     Real.log (purePointGibbsProbability E β i) =
@@ -64,7 +56,10 @@ theorem summable_norm_negMulLog_purePointGibbsProbability [Nonempty ι]
     rw [Real.norm_eq_abs,
       abs_of_nonneg (Real.negMulLog_nonneg
         (purePointGibbsProbability_nonneg E β i)
-        (purePointGibbsProbability_le_one E β hsum i))]
+        (Real.normalizedWeight_le_one (purePointBoltzmannWeight E β)
+          (purePointBoltzmannWeight_summable E β hsum)
+          (purePointBoltzmannWeight_nonneg E β)
+          (purePointPartitionFunction_pos E β hsum) i))]
 
 /-- A countable pure-point Gibbs state with absolutely integrable energy has finite von Neumann
 entropy and satisfies `S = β ⟨E⟩ + log Z`. -/
