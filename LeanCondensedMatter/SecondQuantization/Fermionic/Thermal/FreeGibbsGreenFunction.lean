@@ -37,7 +37,8 @@ noncomputable def freeGibbsGreenFunction (ε : Mode → ℝ) (β : ℝ)
 
 /-! ## BDD mixed contractions -/
 
-private theorem freeGibbsDensityOperator_expectation_annihilate_comp_create_bdd
+/-- `⟨c_i c_j†⟩₀,β = δᵢⱼ (1 - f_i)`. -/
+theorem freeGibbsDensityOperator_expectation_annihilate_comp_create
     (ε : Mode → ℝ) (β : ℝ) (i j : Mode) :
     (freeGibbsDensityOperator ε β).expectation
         (Common.finiteHilbertOperatorAlgEquiv ((annihilate i).comp (create j))) =
@@ -85,7 +86,7 @@ theorem freeGibbsGreenFunction_of_gt_self (ε : Mode → ℝ) (β : ℝ) (i : Mo
     imaginaryTimeEvolve_annihilate, imaginaryTimeEvolve_create, LinearMap.smul_comp,
     LinearMap.comp_smul, smul_smul,
     map_smul, map_smul, smul_eq_mul,
-    freeGibbsDensityOperator_expectation_annihilate_comp_create_bdd, ite_eq_left rfl]
+    freeGibbsDensityOperator_expectation_annihilate_comp_create, ite_eq_left rfl]
   rw [show Complex.exp (-(τ : ℂ) * (ε i : ℂ)) * Complex.exp ((τ' : ℂ) * (ε i : ℂ)) =
       Complex.exp (-(τ - τ' : ℝ) * (ε i : ℂ)) by
     rw [← Complex.exp_add]; congr 1; push_cast; ring]
@@ -120,7 +121,7 @@ theorem freeGibbsGreenFunction_self_time_self (ε : Mode → ℝ) (β : ℝ) (i 
     show (τ : ℂ) * (ε i : ℂ) + -(τ : ℂ) * (ε i : ℂ) = 0 by ring, Complex.exp_zero, one_smul,
     show (create i).comp (annihilate i) = numberOperator i from rfl]
   simp only [map_smul, map_add]
-  rw [freeGibbsDensityOperator_expectation_annihilate_comp_create_bdd,
+  rw [freeGibbsDensityOperator_expectation_annihilate_comp_create,
     freeGibbsDensityOperator_expectation_numberOperator]
   simp only [smul_eq_mul, one_mul, neg_mul]
   have hE : Complex.exp ((β : ℂ) * (ε i : ℂ)) + 1 ≠ 0 := by
@@ -138,38 +139,26 @@ theorem freeGibbsDensityOperator_expectation_create_comp_annihilate
     (freeGibbsDensityOperator ε β).expectation
         (Common.finiteHilbertOperatorAlgEquiv ((create j).comp (annihilate i))) =
       if i = j then 1 / (Complex.exp ((β : ℂ) * (ε i : ℂ)) + 1) else 0 := by
-  rw [freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation]
-  have hC :
-      Common.heisenbergEvolve (fermionEnergy ε) (-β) (create j) =
-        Complex.exp (((ε j) * (-β) : ℝ) : ℂ) • create j := by
-    simpa [mul_comm] using
-      (Common.heisenbergEvolve_eq_smul_of_carriesShift
-        (fermionEnergy ε) (ε j) (-β) (create j) (carriesEnergyShift_create ε j))
-  have hcomm :
-      Common.exchangeCommutator Common.Statistics.fermion (create j) (annihilate i) =
-        (if i = j then (1 : ℂ) else 0) •
-          (LinearMap.id : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) := by
-    simpa [Common.exchangeCommutator, Common.Statistics.zetaInt_fermion, eq_comm] using
-      (anticomm_create_annihilate (Mode := Mode) j i)
-  have hne := one_sub_zetaInt_fermion_mul_exp_ne_zero (ε j) β
-  have h := Common.finiteGibbsExpectation_comp_eq_div_of_exchangeCommutator
-    (fermionEnergy ε) β (ε j) Common.Statistics.fermion
-    (if i = j then (1 : ℂ) else 0) (create j) (annihilate i) hC hcomm hne
+  have hknown := freeGibbsDensityOperator_expectation_annihilate_comp_create ε β i j
+  rw [freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation] at hknown ⊢
+  simp only [Common.finiteGibbsExpectation] at hknown ⊢
+  have h := congrArg (Common.finiteGibbsExpectationLinearMap (fermionEnergy ε) β)
+    (anticomm_annihilate_create (Mode := Mode) i j)
+  simp only [ScalarExchange.zetaCommutator, Module.End.mul_eq_comp,
+    neg_one_smul, sub_neg_eq_add, map_add] at h
   rcases eq_or_ne i j with rfl | hij
-  · rw [ite_eq_left rfl] at h ⊢
-    simpa [Common.Statistics.zetaInt_fermion, mul_comm, add_comm] using h
-  · rw [ite_eq_right hij] at h ⊢
-    simpa [hij] using h
-
-/-- `⟨c_i c_j†⟩₀,β = δᵢⱼ (1 - f_i)`. -/
-theorem freeGibbsDensityOperator_expectation_annihilate_comp_create
-    (ε : Mode → ℝ) (β : ℝ) (i j : Mode) :
-    (freeGibbsDensityOperator ε β).expectation
-        (Common.finiteHilbertOperatorAlgEquiv ((annihilate i).comp (create j))) =
-      if i = j then
-        Complex.exp ((β : ℂ) * (ε i : ℂ)) / (Complex.exp ((β : ℂ) * (ε i : ℂ)) + 1)
-      else 0 :=
-  freeGibbsDensityOperator_expectation_annihilate_comp_create_bdd ε β i j
+  · simp only [ite_true] at h hknown ⊢
+    rw [hknown] at h
+    have hid : Common.finiteGibbsExpectationLinearMap (fermionEnergy ε) β LinearMap.id = 1 :=
+      Common.finiteGibbsExpectation_id (fermionEnergy ε) β
+    rw [hid] at h
+    have hne : Complex.exp ((β : ℂ) * (ε i : ℂ)) + 1 ≠ 0 := by
+      simpa [Common.Statistics.zetaInt_fermion, add_comm] using
+        (one_sub_zetaInt_fermion_mul_exp_ne_zero β (ε i))
+    field_simp [hne] at h ⊢
+    linear_combination h
+  · simp only [ite_eq_right hij, map_zero] at h hknown ⊢
+    simpa only [hknown, zero_add] using h
 
 /-- `G₀,ᵢⱼ(τ, τ') = 0` for `i ≠ j`, at arbitrary imaginary times. -/
 theorem freeGibbsGreenFunction_of_ne (ε : Mode → ℝ) (β : ℝ) {i j : Mode} (hij : i ≠ j)
