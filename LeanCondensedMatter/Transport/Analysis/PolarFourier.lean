@@ -3,6 +3,8 @@ import LeanCondensedMatter.Transport.Analysis.ContinuumMeasure
 import LeanCondensedMatter.Transport.Analysis.FourierGeometry
 import Mathlib.Analysis.Calculus.ParametricIntervalIntegral
 import Mathlib.Analysis.SpecialFunctions.Integrals.Basic
+import Mathlib.Analysis.SpecialFunctions.Bessel
+import Mathlib.Analysis.SpecificLimits.Normed
 import Mathlib.MeasureTheory.Integral.DominatedConvergence
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.Periodic
 import Mathlib.Tactic
@@ -176,6 +178,60 @@ theorem polarFourierCosineMoment_even_factorial (n : ℕ) :
   | succ n ih =>
       have hindex : 2 * (n + 1) + 1 = (2 * n + 1) + 2 := by omega
       rw [hindex, polarFourierCosineMoment_add_two, ih, mul_zero]
+
+/-- Expand the radial Fourier phase in its exponential series and commute the
+uniformly dominated series with integration over the finite angular interval.
+This is the analytic step in the Fourier--Bessel integral representation. -/
+theorem polarFourierZerothAngularKernel_eq_tsum_exp_integrals (z : ℝ) :
+    polarFourierZerothAngularKernel z =
+      ∑' n : ℕ, ∫ θ in (0 : ℝ)..(2 * Real.pi),
+        (Complex.I * (((z * Real.cos θ : ℝ) : ℂ))) ^ n /
+          (Nat.factorial n : ℂ) := by
+  let term : ℕ → ℝ → ℂ := fun n θ =>
+    (Complex.I * (((z * Real.cos θ : ℝ) : ℂ))) ^ n /
+      (Nat.factorial n : ℂ)
+  have hbound (n : ℕ) (θ : ℝ) :
+      ‖term n θ‖ ≤ |z| ^ n / (Nat.factorial n : ℝ) := by
+    have hnorm :
+        ‖Complex.I * (((z * Real.cos θ : ℝ) : ℂ))‖ ≤ |z| := by
+      calc
+        ‖Complex.I * (((z * Real.cos θ : ℝ) : ℂ))‖ =
+            |z| * |Real.cos θ| := by simp [Complex.norm_real, abs_mul]
+        _ ≤ |z| * 1 :=
+          mul_le_mul_of_nonneg_left (Real.abs_cos_le_one θ) (abs_nonneg z)
+        _ = |z| := by ring
+    calc
+      ‖term n θ‖ =
+          ‖Complex.I * (((z * Real.cos θ : ℝ) : ℂ))‖ ^ n /
+            (Nat.factorial n : ℝ) := by simp [term, norm_div]
+      _ ≤ |z| ^ n / (Nat.factorial n : ℝ) := by gcongr
+  have hseries :
+      HasSum
+        (fun n : ℕ => ∫ θ in (0 : ℝ)..(2 * Real.pi), term n θ)
+        (∫ θ in (0 : ℝ)..(2 * Real.pi), polarFourierRadialPhase z θ) := by
+    apply intervalIntegral.hasSum_integral_of_dominated_convergence
+      (F := term) (f := polarFourierRadialPhase z)
+      (bound := fun n (_ : ℝ) => |z| ^ n / (Nat.factorial n : ℝ))
+    · intro n
+      have hc : Continuous (term n) := by
+        dsimp [term]
+        fun_prop
+      exact hc.aestronglyMeasurable
+    · intro n
+      filter_upwards [] with θ hθ
+      exact hbound n θ
+    · filter_upwards [] with θ hθ
+      exact Real.summable_pow_div_factorial |z|
+    · exact intervalIntegrable_const
+    · filter_upwards [] with θ hθ
+      change HasSum
+        (fun n : ℕ =>
+          (Complex.I * (((z * Real.cos θ : ℝ) : ℂ))) ^ n /
+            (Nat.factorial n : ℂ))
+        (Complex.exp (Complex.I * (((z * Real.cos θ : ℝ) : ℂ))))
+      rw [Complex.exp_eq_exp_ℂ]
+      exact NormedSpace.expSeries_div_hasSum_exp _
+  simpa only [polarFourierZerothAngularKernel, term] using hseries.tsum_eq.symm
 
 /-- The zeroth radial Fourier kernel is normalized by the full polar angle at the origin. -/
 @[simp] theorem polarFourierZerothAngularKernel_zero :
