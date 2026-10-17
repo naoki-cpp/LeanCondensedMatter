@@ -669,6 +669,7 @@ private def declarationGraph (audit : Json) : CommandElabM Json := do
     let fields : List (String × Json) := [
       ("name", .str name.toString), ("module", .str moduleName.toString),
       ("kind", .str kind), ("generated", .bool ranges.isNone),
+      ("projection", .bool (env.isProjectionFn name)),
       ("statement", .str statement), ("docString", docString.map Json.str |>.getD .null),
       ("sourceFile", .str sourceFile),
       ("sourceLine", sourceLine.map (fun n => Json.num n) |>.getD .null),

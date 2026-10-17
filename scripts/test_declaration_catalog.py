@@ -19,7 +19,7 @@ def fixture():
         ("d", "def", [], []),
     ]:
         rows.append(dict(name=name, module="LeanCondensedMatter.Fixture", kind=kind,
-                         generated=False, sourceFile="LeanCondensedMatter/Fixture.lean",
+                         generated=False, projection=False, sourceFile="LeanCondensedMatter/Fixture.lean",
                          sourceLine=1, sourceColumn=0, statement="Nat",
                          typeDependencies=types, valueDependencies=values,
                          dependencies=sorted(set(types + values)), dependents=[]))
@@ -74,10 +74,13 @@ class CatalogTests(unittest.TestCase):
             "## Retained declarations\n"
             "- `a` — retained proof\n"
             "- `c`\n  — explanation wrapped onto the next line\n"
-            "## Other retained API contracts (not theorem declarations)\n"
+            "## Other retained API contracts (outside theorem audit)\n"
             "- **`b`** — a public definition\n"
+            "- **`p`** — a proof-valued structure field\n"
         )
         rows = fixture()
+        rows.append(dict(rows[2], name="p", projection=True, typeDependencies=[],
+                         valueDependencies=[], dependencies=[], dependents=[]))
         theorems = [{"name": "a", "retainedMention": True},
                     {"name": "c", "retainedMention": True}]
         validate_retained_catalog(document, rows, theorems)
@@ -86,11 +89,17 @@ class CatalogTests(unittest.TestCase):
             document.replace("- `a` —", "- `missing` —"),
             document.replace("- `a` —", "- `b` —"),
             document.replace("- **`b`**", "- **`c`**"),
+            document.replace("- **`p`**", "- **`a`**"),
+            document.replace("- `a` —", "- `p` —"),
             document + "- **`b`** — duplicated\n",
             document.replace("- `c`", "- `a`"),
         ]:
             with self.subTest(bad=bad), self.assertRaises(AssertionError):
                 validate_retained_catalog(bad, rows, theorems)
+        rows[-1]["projection"] = False
+        with self.assertRaises(AssertionError):
+            validate_retained_catalog(document, rows, theorems)
+        rows[-1]["projection"] = True
         with self.assertRaises(AssertionError):
             validate_retained_catalog(document, rows,
                                       [{"name": "a", "retainedMention": True},

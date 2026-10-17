@@ -14,6 +14,7 @@ def validate(declarations, theorems):
     for row in declarations:
         assert row["kind"] in kinds
         assert isinstance(row["generated"], bool)
+        assert isinstance(row["projection"], bool)
         assert row["module"] == "LeanCondensedMatter" or row["module"].startswith("LeanCondensedMatter.")
         assert row["sourceFile"] == row["module"].replace(".", "/") + ".lean"
         assert isinstance(row["statement"], str)
@@ -43,7 +44,7 @@ def validate(declarations, theorems):
 def validate_retained_catalog(document, declarations, theorems):
     """Check all retained names against compiled declarations, not source-text matches."""
     theorem_header = "## Retained declarations\n"
-    other_header = "## Other retained API contracts (not theorem declarations)\n"
+    other_header = "## Other retained API contracts (outside theorem audit)\n"
     assert document.count(theorem_header) == 1
     assert document.count(other_header) == 1
     theorem_section, other_section = document.split(theorem_header, 1)[1].split(
@@ -71,12 +72,16 @@ def validate_retained_catalog(document, declarations, theorems):
     unknown = sorted(set(names) - set(declared))
     assert not unknown, ("stale retained declarations", unknown)
 
-    non_theorems = sorted(name for name in theorem_names
-                          if declared[name]["kind"] != "theorem")
-    assert not non_theorems, ("non-theorems listed as retained theorems", non_theorems)
+    invalid_theorems = sorted(name for name in theorem_names
+                              if declared[name]["kind"] != "theorem" or
+                              declared[name]["projection"])
+    assert not invalid_theorems, ("non-auditable retained theorem entries", invalid_theorems)
+    # Lean stores proof-valued structure fields as theorem-kind projections. They are
+    # structural APIs, not independently audited theorem declarations.
     wrong_other = sorted(name for name in api_names
-                         if declared[name]["kind"] == "theorem")
-    assert not wrong_other, ("theorems listed as other APIs", wrong_other)
+                         if declared[name]["kind"] == "theorem" and
+                         not declared[name]["projection"])
+    assert not wrong_other, ("non-projection theorems listed as other APIs", wrong_other)
 
     audit_names = {row["name"] for row in theorems if row["retainedMention"]}
     assert audit_names == set(theorem_names), (

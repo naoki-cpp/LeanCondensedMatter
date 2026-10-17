@@ -7,7 +7,7 @@ of an independently useful mathematical or physical fact, a deliberate simplific
 a stable domain-level API.
 
 The theorem entries in the list below have been semantically reviewed and are intentionally retained
-when structural audit signals might otherwise suggest removing them. Non-theorem API contracts are
+when structural audit signals might otherwise suggest removing them. Other structural API contracts are
 listed separately at the end of this document and are not retained theorem exceptions.
 
 `scripts/TheoremCatalog.lean` records full-name mentions and unambiguous
@@ -681,10 +681,12 @@ or consumer structure changes.
 - `Combinatorics.Pairing.normalizedPairOfEndpointEquiv_pair_eq_or_swap` — the abstract endpoint transport chooses either original orientation or its swap; the general transport theorem must not assume order preservation.
 - `Combinatorics.Pairing.normalizedPairSubtypeEndpointEquiv_apply_val` — simp projection formula for the endpoint equivalence restricted to partner-invariant position subsets; used by mixed diagram components.
 
-## Other retained API contracts (not theorem declarations)
+## Other retained API contracts (outside theorem audit)
 
-These items are mathematical interfaces worth retaining, but they are **not theorem declarations**.
-They are deliberately excluded from the theorem-audit suppression list.
+These structural interfaces are worth retaining, but they are not independent proof declarations
+for theorem-audit suppression. Lean compiles proof-valued structure-field projections as
+`kind = theorem`; `TheoremCatalog.lean` deliberately excludes those projections from its theorem
+audit. The definition listed here also lies outside that audit.
 
 - **`QuantumTheory.Transport.FiniteDisorderEnsemble.probability_sum`** — structure-field normalization of the finite disorder ensemble: all configuration probability weights sum to one.
 - **`LocallyFiniteHopping.self_mem`** — structure-field locality invariant: each site belongs to its own finite incident neighborhood.
