@@ -23,7 +23,8 @@ noncomputable def PairingOn.restrict {α : Type*} (pairing : PairingOn α)
   partner_involutive := by
     intro i
     apply Subtype.ext
-    simp only [Equiv.Perm.subtypePerm_apply, pairing.partner_involutive]
+    simp only [Equiv.Perm.subtypePerm_apply]
+    exact pairing.partner_involutive i
   partner_ne := by
     intro i hi
     apply pairing.partner_ne i
@@ -37,7 +38,8 @@ theorem PairingOn.restrict_partner_val {α : Type*} (pairing : PairingOn α)
     (i : {i : α // p i}) :
     (((pairing.restrict p hpartner).partner i : {i : α // p i}) : α) =
       pairing.partner i :=
-  congrArg Subtype.val (Equiv.Perm.subtypePerm_apply _ _ i)
+  congrArg Subtype.val
+    (Equiv.Perm.subtypePerm_apply pairing.partner (fun x => (hpartner x).symm) i)
 
 /-- Restrict a pairing to a partner-invariant subtype and transport the result along an arbitrary
 equivalence to the target type. -/
