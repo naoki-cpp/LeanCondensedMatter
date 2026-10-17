@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Models.RashbaExchange.Operator
+import LeanCondensedMatter.Models.RashbaExchange.ResponseParameters
 import LeanCondensedMatter.Transport.Streda.RetardedAdvanced
 
 set_option linter.style.header false
@@ -6,9 +7,9 @@ set_option linter.style.header false
 /-!
 # Finite-broadening Green operators for the Rashba-exchange model
 
-The clean Hamiltonian and bounded current vertices are defined upstream in `Operator`. This
-module realizes the model's retarded/advanced resolvents at a supplied chemical potential and
-spectral broadening, using the generic Středa resolvent API.
+The clean bounded Hamiltonian is defined in `Operator` and the chemical potential and
+broadening are supplied by `ResponseParameters`. This module realizes retarded/advanced
+resolvents through the generic Středa resolvent API without importing charge-current vertices.
 -/
 
 namespace QuantumTheory.Models.RashbaExchange
