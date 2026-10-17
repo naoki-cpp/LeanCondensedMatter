@@ -815,9 +815,6 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficie
   let denominator := fun p : ℝ =>
     finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct
       v m p probeEnergy broadening disorderStrength hbar pMax
-  have hk0 : polarFourierZerothAngularKernel 0 =
-      (((2 * Real.pi : ℝ) : ℂ)) := by
-    simp [polarFourierZerothAngularKernel, polarFourierRadialPhase]
   have hdiag :=
     (finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient_diagonal_ra_denominator_harmonics
       v m probeEnergy broadening disorderStrength hbar pMax 0
@@ -848,7 +845,7 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficie
     rw [← intervalIntegral.integral_const_mul]
     apply intervalIntegral.integral_congr
     intro p _
-    simp only [mul_zero, zero_div, hk0]
+    simp only [mul_zero, zero_div, polarFourierZerothAngularKernel_zero]
     ring
   have hsum :
       gap * (jxx + jyy) =
