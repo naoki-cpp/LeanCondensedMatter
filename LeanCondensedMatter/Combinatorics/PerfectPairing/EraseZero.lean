@@ -60,7 +60,7 @@ theorem Pairing.eraseZeroOrderIso_partner {n : ℕ} (pairing : Pairing (n + 1))
     pairing.partner (pairing.eraseZeroOrderIso i) := by
   simp [Pairing.eraseZeroOrderIso, Pairing.eraseZeroPair, PairingOn.restrictAlongEquiv]
 
-theorem Pairing.eraseZeroPair_mem_pairs_iff {n : ℕ} (pairing : Pairing (n + 1))
+private theorem Pairing.eraseZeroPair_mem_pairs_iff {n : ℕ} (pairing : Pairing (n + 1))
     (i k : Fin (2 * n)) :
     (i, k) ∈ (pairing.eraseZeroPair).pairs ↔
       ((pairing.eraseZeroOrderIso i : Fin (2 * (n + 1))),
