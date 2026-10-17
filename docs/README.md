@@ -11,7 +11,7 @@ design, and remaining work.
 | Understand the project and contribution rules | [Project guide](../PROJECT.md) and [conventions](conventions.md) |
 | Find a domain and its vocabulary | [Context map](../CONTEXT-MAP.md) |
 | Understand physical models and assumptions | [Models and assumptions](model-and-assumptions.md) |
-| Browse declarations | [Declaration Explorer](https://naoki-cpp.github.io/LeanCondensedMatter/) |
+| Browse declarations | [Declaration Explorer](https://naoki-cpp.github.io/LeanCondensedMatter/) and [its glossary](glossary/declaration-explorer/CONTEXT.md) |
 | Find current targets and proved milestones | [Roadmap](roadmap.md) and [completed targets](completed.md) |
 | Understand design rationale | [Architecture decision records](adr/README.md) |
 

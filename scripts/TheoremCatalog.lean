@@ -671,6 +671,7 @@ private def declarationGraph (audit : Json) : CommandElabM Json := do
       ("kind", .str kind), ("generated", .bool ranges.isNone),
       ("statement", .str statement), ("docString", docString.map Json.str |>.getD .null),
       ("sourceFile", .str sourceFile),
+      ("declarationStartLine", ranges.map (fun r => Json.num r.range.pos.line) |>.getD .null),
       ("sourceLine", sourceLine.map (fun n => Json.num n) |>.getD .null),
       ("sourceColumn", ranges.map (fun r => Json.num r.selectionRange.pos.column) |>.getD .null),
       ("sourceEndLine", ranges.map (fun r => Json.num r.range.endPos.line) |>.getD .null),

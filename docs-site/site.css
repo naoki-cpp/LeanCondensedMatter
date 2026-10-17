@@ -334,6 +334,34 @@ select:disabled {
   border: 1px solid var(--line);
   border-radius: 10px;
 }
+.math-presentation, .definition-body-content { min-width: 0; }
+.math-formula {
+  min-width: 0;
+  padding: 13px;
+  overflow-x: auto;
+  color: #eef2ff;
+  background: rgba(0, 0, 0, 0.24);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+}
+.math-formula mjx-container[display="true"] { margin: 0 !important; }
+.math-fallback-note { margin: 0 0 8px; color: var(--muted); font-size: 12px; line-height: 1.5; }
+.lean-source, .definition-body {
+  margin-top: 10px;
+  border: 1px solid var(--line);
+  border-radius: 9px;
+}
+.lean-source summary, .definition-body summary {
+  padding: 9px 11px;
+  color: var(--cyan);
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.lean-source pre { margin: 0 8px 8px; }
+.definition-body { margin-top: 20px; padding-top: 4px; }
+.definition-body-content { padding: 0 8px 9px; }
+.definition-body-content .math-formula { max-height: 560px; overflow: auto; }
 .docstring, .wrapper-target { font-size: 13px; line-height: 1.65; color: #c8d2eb; }
 .wrapper-target code { color: var(--accent-strong); overflow-wrap: anywhere; }
 

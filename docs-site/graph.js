@@ -2,6 +2,7 @@ import { createModuleOverview } from "./module-overview.js";
 import { declarationAllowed } from "./declaration-model.js";
 import { curvedEdgePath } from "./graph-edge.js";
 import { buildModuleGraphCatalog } from "./module-import-map.js";
+import { renderLeanMath, renderLeanSourceFallback } from "./lean-math.js";
 import {
   BRANCH_COLORS,
   ROOT_NODE_COLOR,
@@ -15,6 +16,8 @@ const MAX_NODES = 80;
 const SEARCH_LIMIT = 10;
 const CATALOG_URL = "https://raw.githubusercontent.com/naoki-cpp/LeanCondensedMatter/graph-data/declarations.json";
 const MODULES_URL = "https://raw.githubusercontent.com/naoki-cpp/LeanCondensedMatter/graph-data/module-imports.json";
+const SOURCE_BASE_URL = "https://raw.githubusercontent.com/naoki-cpp/LeanCondensedMatter/main/";
+const definitionSourceRequests = new Map();
 const MIN_BRANCH_ARC = 52;
 const MIN_LEAF_ARC = 22;
 
@@ -91,6 +94,8 @@ function normalizeEntry(entry) {
     sourceUrl: typeof entry.sourceUrl === "string" ? entry.sourceUrl : null,
     sourceFile: typeof entry.sourceFile === "string" ? entry.sourceFile : null,
     sourceLine: Number.isInteger(entry.sourceLine) ? entry.sourceLine : null,
+    declarationStartLine: Number.isInteger(entry.declarationStartLine) ? entry.declarationStartLine : null,
+    sourceEndLine: Number.isInteger(entry.sourceEndLine) ? entry.sourceEndLine : null,
   };
 }
 
@@ -681,6 +686,120 @@ function renderModuleDetails(entry) {
   ui.detail.append(relationSection("Imported by", entry.dependents));
 }
 
+function loadDefinitionSource(sourceFile) {
+  if (!definitionSourceRequests.has(sourceFile)) {
+    const path = sourceFile.split("/").map(encodeURIComponent).join("/");
+    const request = fetch(SOURCE_BASE_URL + path, { cache: "no-store" })
+      .then((response) => {
+        if (!response.ok) throw new Error("failed to load Lean source: " + response.status);
+        return response.text();
+      })
+      .catch((error) => {
+        definitionSourceRequests.delete(sourceFile);
+        throw error;
+      });
+    definitionSourceRequests.set(sourceFile, request);
+  }
+  return definitionSourceRequests.get(sourceFile);
+}
+
+function findDefinitionAssignment(source) {
+  let blockCommentDepth = 0;
+  let inString = false;
+  let escaped = false;
+  let nesting = 0;
+  for (let index = 0; index < source.length; index += 1) {
+    const pair = source.slice(index, index + 2);
+    const character = source[index];
+
+    if (blockCommentDepth > 0) {
+      if (pair === "/-") {
+        blockCommentDepth += 1;
+        index += 1;
+      } else if (pair === "-/") {
+        blockCommentDepth -= 1;
+        index += 1;
+      }
+      continue;
+    }
+    if (inString) {
+      if (escaped) escaped = false;
+      else if (character === "\\") escaped = true;
+      else if (character === '"') inString = false;
+      continue;
+    }
+    if (pair === "--") {
+      const lineEnd = source.indexOf("\n", index + 2);
+      if (lineEnd < 0) return -1;
+      index = lineEnd;
+      continue;
+    }
+    if (pair === "/-") {
+      blockCommentDepth = 1;
+      index += 1;
+      continue;
+    }
+    if (character === '"') {
+      inString = true;
+      continue;
+    }
+    if (character === "(" || character === "[" || character === "{") nesting += 1;
+    else if (character === ")" || character === "]" || character === "}") nesting = Math.max(0, nesting - 1);
+    else if (nesting === 0 && pair === ":=") return index + 2;
+  }
+  return -1;
+}
+
+function extractDefinitionBody(source) {
+  const assignmentEnd = findDefinitionAssignment(source);
+  if (assignmentEnd < 0) return null;
+  if (/^\s*\|/mu.test(source.slice(0, assignmentEnd))) return null;
+  const body = source.slice(assignmentEnd).trim();
+  return body || null;
+}
+
+function declarationSourceRange(entry, source) {
+  const firstLine = entry.declarationStartLine ?? entry.sourceLine;
+  const lastLine = entry.sourceEndLine ?? firstLine;
+  if (!Number.isInteger(firstLine) || firstLine < 1 || !Number.isInteger(lastLine) || lastLine < firstLine) return null;
+  const lines = source.split(/\r?\n/u);
+  return lines.slice(firstLine - 1, lastLine).join("\n");
+}
+
+function appendDefinitionBody(entry) {
+  if (entry.kind !== "def" && entry.kind !== "abbrev") return;
+  const firstSourceLine = entry.declarationStartLine ?? entry.sourceLine;
+  if (!entry.sourceFile || !Number.isInteger(firstSourceLine) || !Number.isInteger(entry.sourceEndLine)) return;
+
+  const disclosure = element("details", "definition-body");
+  const summary = element("summary", "", "Definition body");
+  const content = element("div", "definition-body-content");
+  content.setAttribute("aria-live", "polite");
+  disclosure.append(summary, content);
+  disclosure.addEventListener("toggle", async () => {
+    if (!disclosure.open || disclosure.dataset.state === "loading" || disclosure.dataset.state === "loaded") return;
+    disclosure.dataset.state = "loading";
+    content.textContent = "Loading definition body…";
+    try {
+      const source = await loadDefinitionSource(entry.sourceFile);
+      const sourceRange = declarationSourceRange(entry, source);
+      if (!sourceRange) throw new Error("definition source range is unavailable");
+      const body = extractDefinitionBody(sourceRange);
+      if (!content.isConnected) return;
+      disclosure.dataset.state = "loaded";
+      content.replaceChildren();
+      if (body) renderLeanMath(content, body);
+      else renderLeanSourceFallback(content, sourceRange, "This definition uses Lean syntax that cannot be isolated as a formula.");
+    } catch (error) {
+      if (!content.isConnected) return;
+      disclosure.dataset.state = "";
+      content.replaceChildren(element("p", "error-message", "Definition source could not be loaded."));
+      console.error(error);
+    }
+  });
+  ui.detail.append(disclosure);
+}
+
 function renderDetails(name) {
   const entry = state.byName.get(name);
   ui.detail.replaceChildren();
@@ -721,9 +840,10 @@ function renderDetails(name) {
   if (actions.childElementCount > 0) ui.detail.append(actions);
 
   ui.detail.append(element("h3", "", "Statement"));
-  const statement = document.createElement("pre");
-  statement.textContent = entry.statement;
+  const statement = element("div", "math-presentation");
+  renderLeanMath(statement, entry.statement);
   ui.detail.append(statement);
+  appendDefinitionBody(entry);
 
   if (entry.docString) {
     ui.detail.append(element("h3", "", "Documentation"));
