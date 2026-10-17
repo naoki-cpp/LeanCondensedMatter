@@ -564,5 +564,58 @@ theorem TwoPointDiagram.intervalFacingLeg_ne_of_pair_ne
     · exact hpne (ha.symm.trans (h.trans hb))
     · exact hne (d.pairing.partner.injective (ha.symm.trans (h.trans hb)))
 
+/-- Interior legs cannot coincide with either boundary-facing representative.
+This is the disjointness complement to the exhaustive interval-leg classification. -/
+theorem TwoPointDiagram.isInteriorLeg_ne_intervalFacingLeg
+    (d : TwoPointDiagram ExternalLabel InternalLabel N S)
+    (earlier later cut leg : Fin (2 * (2 * S.card + 1)))
+    (hcut : cut = earlier ∨ cut = later)
+    (hinterior : d.IsInteriorLeg earlier later leg) :
+    leg ≠ d.intervalFacingLeg earlier later cut := by
+  intro heq
+  rcases hinterior with ⟨_, he, hpe, hl, hpl⟩
+  rcases d.intervalFacingLeg_eq_cut_or_partner earlier later cut with hf | hf
+  · rcases hcut with rfl | rfl
+    · exact he (heq.trans hf)
+    · exact hl (heq.trans hf)
+  · have hp : d.pairing.partner leg = cut := by
+      rw [heq, hf, d.pairing.partner_involutive cut]
+    rcases hcut with rfl | rfl
+    · exact hpe hp
+    · exact hpl hp
+
+/-- The legs incident to a cut interval split as a disjoint union of all
+uncut interior legs and the two facing boundary legs. This finite-set
+identity is the domain decomposition needed to insert replacement external
+legs and transport the pairing to a standard two-point leg space. -/
+theorem TwoPointDiagram.intervalIncidentLegs_eq_interior_union_boundary
+    (d : TwoPointDiagram ExternalLabel InternalLabel N S)
+    (earlier later : Fin (2 * (2 * S.card + 1)))
+    (hEarlier :
+      (twoPointVertexOfLeg earlier ∈ d.verticesBetweenCuts earlier later ∧
+          twoPointVertexOfLeg (d.pairing.partner earlier) ∉
+            d.verticesBetweenCuts earlier later) ∨
+        (twoPointVertexOfLeg (d.pairing.partner earlier) ∈
+            d.verticesBetweenCuts earlier later ∧
+          twoPointVertexOfLeg earlier ∉ d.verticesBetweenCuts earlier later))
+    (hLater :
+      (twoPointVertexOfLeg later ∈ d.verticesBetweenCuts earlier later ∧
+          twoPointVertexOfLeg (d.pairing.partner later) ∉
+            d.verticesBetweenCuts earlier later) ∨
+        (twoPointVertexOfLeg (d.pairing.partner later) ∈
+            d.verticesBetweenCuts earlier later ∧
+          twoPointVertexOfLeg later ∉ d.verticesBetweenCuts earlier later)) :
+    ((Finset.univ : Finset (Fin (2 * (2 * S.card + 1)))).filter
+        (fun leg => twoPointVertexOfLeg leg ∈ d.verticesBetweenCuts earlier later)) =
+      ((Finset.univ : Finset (Fin (2 * (2 * S.card + 1)))).filter
+        (d.IsInteriorLeg earlier later)) ∪
+          {d.intervalFacingLeg earlier later earlier,
+           d.intervalFacingLeg earlier later later} := by
+  classical
+  ext leg
+  simpa only [Finset.mem_filter, Finset.mem_univ, true_and,
+    Finset.mem_union, Finset.mem_insert, Finset.mem_singleton] using
+    (d.mem_verticesBetweenCuts_iff_interior_or_boundary earlier later leg hEarlier hLater)
+
 end Common
 end SecondQuantization
