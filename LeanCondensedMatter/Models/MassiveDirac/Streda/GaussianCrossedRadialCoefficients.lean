@@ -114,12 +114,17 @@ theorem finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient_eq_radialKerne
       side v m probeEnergy broadening disorderStrength hbar pMax radius
       hbroadening hdisorder hpMax i j
   rw [finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient_eq_entryKernel_integrals]
-  rw [pauliVectorCoefficient_prefactor_intervalIntegral
+  have hmove := pauliVectorCoefficient_prefactor_intervalIntegral
     (axis := axis)
     (prefactor := (((momentumMeasurePrefactor hbar : ℝ) : ℂ)))
     (kernel := fun p i j => finiteCutoffContinuumBornDysonRadialGreenEntryKernel
       side v m probeEnergy broadening disorderStrength hbar pMax radius p i j)
-    (hkernel := hentry)]
+    (hkernel := hentry)
+  trans (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
+    ∫ p in (0 : ℝ)..pMax, InternalSpace.pauliVectorCoefficient
+      (finiteCutoffContinuumBornDysonRadialGreenEntryKernel
+        side v m probeEnergy broadening disorderStrength hbar pMax radius p) axis
+  · cases axis <;> exact hmove
   apply congrArg (fun z : ℂ => (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) * z)
   apply intervalIntegral.integral_congr
   intro p _
@@ -182,12 +187,17 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficie
       source v m probeEnergy broadening disorderStrength hbar pMax radius
       hbroadening hdisorder hpMax i j
   rw [finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient_eq_entryKernel_integrals]
-  rw [pauliVectorCoefficient_prefactor_intervalIntegral
+  have hmove := pauliVectorCoefficient_prefactor_intervalIntegral
     (axis := axis)
     (prefactor := (((momentumMeasurePrefactor hbar : ℝ) : ℂ)))
     (kernel := fun p i j => finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel
       source v m probeEnergy broadening disorderStrength hbar pMax radius p i j)
-    (hkernel := hentry)]
+    (hkernel := hentry)
+  trans (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
+    ∫ p in (0 : ℝ)..pMax, InternalSpace.pauliVectorCoefficient
+      (finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel
+        source v m probeEnergy broadening disorderStrength hbar pMax radius p) axis
+  · cases axis <;> exact hmove
   apply congrArg (fun z : ℂ => (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) * z)
   apply intervalIntegral.integral_congr
   intro p _
