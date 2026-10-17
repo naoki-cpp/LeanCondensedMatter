@@ -37,15 +37,14 @@ theorem pairEndpointInversionCount_eq_sum {n : ℕ}
   simp [pairEndpointInversionCount, pairEndpointAt, Fin.sum_univ_two,
     add_assoc, add_comm, add_left_comm]
 
-/-- Two normalized pairs with disjoint endpoints cross in one orientation exactly when their four
-cross-pair endpoint comparisons have odd parity. -/
-private theorem pairEndpointInversionCount_mod_two_eq_one_iff_crosses {n : ℕ}
+/-- Indicator-valued form of crossing parity. -/
+theorem pairEndpointInversionCount_mod_two_eq_crossesIndicator {n : ℕ}
     (left right : Fin (2 * n) × Fin (2 * n))
     (hleft : left.1 < left.2) (hright : right.1 < right.2)
     (h11 : left.1 ≠ right.1) (h12 : left.1 ≠ right.2)
     (h21 : left.2 ≠ right.1) (h22 : left.2 ≠ right.2) :
-    pairEndpointInversionCount left right % 2 = 1 ↔
-      Crosses left right ∨ Crosses right left := by
+    pairEndpointInversionCount left right % 2 =
+      if Crosses left right ∨ Crosses right left then 1 else 0 := by
   rcases left with ⟨a, b⟩
   rcases right with ⟨c, d⟩
   simp only at hleft hright h11 h12 h21 h22 ⊢
@@ -55,27 +54,5 @@ private theorem pairEndpointInversionCount_mod_two_eq_one_iff_crosses {n : ℕ}
   by_cases hdb : d < b <;>
   simp [pairEndpointInversionCount, Crosses, hca, hda, hcb, hdb] <;>
   omega
-
-/-- Indicator-valued form of crossing parity. -/
-theorem pairEndpointInversionCount_mod_two_eq_crossesIndicator {n : ℕ}
-    (left right : Fin (2 * n) × Fin (2 * n))
-    (hleft : left.1 < left.2) (hright : right.1 < right.2)
-    (h11 : left.1 ≠ right.1) (h12 : left.1 ≠ right.2)
-    (h21 : left.2 ≠ right.1) (h22 : left.2 ≠ right.2) :
-    pairEndpointInversionCount left right % 2 =
-      if Crosses left right ∨ Crosses right left then 1 else 0 := by
-  by_cases hcross : Crosses left right ∨ Crosses right left
-  · simp [hcross,
-      (pairEndpointInversionCount_mod_two_eq_one_iff_crosses
-        left right hleft hright h11 h12 h21 h22).2 hcross]
-  · have hne : pairEndpointInversionCount left right % 2 ≠ 1 := by
-      intro h
-      exact hcross ((pairEndpointInversionCount_mod_two_eq_one_iff_crosses
-        left right hleft hright h11 h12 h21 h22).1 h)
-    have hlt : pairEndpointInversionCount left right % 2 < 2 :=
-      Nat.mod_lt _ (by omega)
-    simp [hcross]
-    omega
-
 
 end Combinatorics
