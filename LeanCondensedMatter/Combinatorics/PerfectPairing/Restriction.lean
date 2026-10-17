@@ -15,38 +15,20 @@ responsible only for the invariant predicate and their domain-specific reindexin
 
 namespace Combinatorics
 
-private noncomputable def PairingOn.restrictPartnerPerm {α : Type*} (pairing : PairingOn α)
-    (p : α → Prop) (hpartner : ∀ i, p i ↔ p (pairing.partner i)) :
-    Equiv.Perm {i : α // p i} :=
-  pairing.partner.subtypePerm fun i => (hpartner i).symm
-
-private theorem PairingOn.restrictPartnerPerm_val {α : Type*} (pairing : PairingOn α)
-    (p : α → Prop) (hpartner : ∀ i, p i ↔ p (pairing.partner i))
-    (i : {i : α // p i}) :
-    ((pairing.restrictPartnerPerm p hpartner i : {i : α // p i}) : α) =
-      pairing.partner i :=
-  congrArg Subtype.val (Equiv.Perm.subtypePerm_apply _ _ i)
-
-private theorem PairingOn.restrictPartnerPerm_involutive {α : Type*} (pairing : PairingOn α)
-    (p : α → Prop) (hpartner : ∀ i, p i ↔ p (pairing.partner i)) :
-    Function.Involutive (pairing.restrictPartnerPerm p hpartner) := fun i => by
-  apply Subtype.ext
-  rw [pairing.restrictPartnerPerm_val, pairing.restrictPartnerPerm_val,
-    pairing.partner_involutive]
-
-private theorem PairingOn.restrictPartnerPerm_ne_self {α : Type*} (pairing : PairingOn α)
-    (p : α → Prop) (hpartner : ∀ i, p i ↔ p (pairing.partner i))
-    (i : {i : α // p i}) :
-    pairing.restrictPartnerPerm p hpartner i ≠ i := fun h =>
-  pairing.partner_ne i (by rw [← pairing.restrictPartnerPerm_val p hpartner, h])
-
 /-- Restrict a pairing to a partner-invariant subtype. -/
 noncomputable def PairingOn.restrict {α : Type*} (pairing : PairingOn α)
     (p : α → Prop) (hpartner : ∀ i, p i ↔ p (pairing.partner i)) :
     PairingOn {i : α // p i} where
-  partner := pairing.restrictPartnerPerm p hpartner
-  partner_involutive := pairing.restrictPartnerPerm_involutive p hpartner
-  partner_ne := pairing.restrictPartnerPerm_ne_self p hpartner
+  partner := pairing.partner.subtypePerm fun i => (hpartner i).symm
+  partner_involutive := by
+    intro i
+    apply Subtype.ext
+    simp only [Equiv.Perm.subtypePerm_apply, pairing.partner_involutive]
+  partner_ne := by
+    intro i hi
+    apply pairing.partner_ne i
+    have hv := congrArg Subtype.val hi
+    simpa only [Equiv.Perm.subtypePerm_apply] using hv
 
 /-- The restricted pairing has the ambient partner as its underlying value. -/
 @[simp]
@@ -55,7 +37,7 @@ theorem PairingOn.restrict_partner_val {α : Type*} (pairing : PairingOn α)
     (i : {i : α // p i}) :
     (((pairing.restrict p hpartner).partner i : {i : α // p i}) : α) =
       pairing.partner i :=
-  pairing.restrictPartnerPerm_val p hpartner i
+  congrArg Subtype.val (Equiv.Perm.subtypePerm_apply _ _ i)
 
 /-- Restrict a pairing to a partner-invariant subtype and transport the result along an arbitrary
 equivalence to the target type. -/
