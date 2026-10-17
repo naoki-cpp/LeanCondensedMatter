@@ -30,28 +30,9 @@ private noncomputable def Pairing.pairSlotEquiv (pairing : Pairing n) :
     Fin n × Fin 2 ≃ Fin (2 * n) :=
   (pairing.pairIndexEquiv.prodCongr (Equiv.refl (Fin 2))).trans pairing.pairEndpointEquiv
 
-private theorem Pairing.pairSlotEquiv_zero (pairing : Pairing n) (k : Fin n) :
-    pairing.pairSlotEquiv (k, 0) = (pairing.pairIndexEquiv k).1.1 := by
-  change pairing.pairEndpoint (pairing.pairIndexEquiv k, 0) = _
-  simp
-
-private theorem Pairing.pairSlotEquiv_one (pairing : Pairing n) (k : Fin n) :
-    pairing.pairSlotEquiv (k, 1) = (pairing.pairIndexEquiv k).1.2 := by
-  change pairing.pairEndpoint (pairing.pairIndexEquiv k, 1) = _
-  simp
-
 /-- The permutation of ambient positions that lists the normalized pairs one after another. -/
 noncomputable def Pairing.pairPerm (pairing : Pairing n) : Equiv.Perm (Fin (2 * n)) :=
   (pairSlotIndexEquiv n).trans pairing.pairSlotEquiv
-
-private theorem Pairing.pairPerm_apply (pairing : Pairing n) (p : Fin (2 * n)) :
-    pairing.pairPerm p = pairing.pairSlotEquiv (pairSlotIndexEquiv n p) :=
-  rfl
-
-private theorem Pairing.pairPerm_pairSlotIndexEquiv_symm (pairing : Pairing n)
-    (x : Fin n × Fin 2) :
-    pairing.pairPerm ((pairSlotIndexEquiv n).symm x) = pairing.pairSlotEquiv x := by
-  rw [Pairing.pairPerm_apply, Equiv.apply_symm_apply]
 
 private theorem prod_Ioi_eq_prod_ite {M : Type*} [CommMonoid M] {m : ℕ}
     (i : Fin m) (g : Fin m → M) :
@@ -245,9 +226,11 @@ private theorem sign_eq_pow_blockInversions (τ : Equiv.Perm (Fin (2 * n))) :
 
 private theorem blockPair_pairPerm (pairing : Pairing n) (k : Fin n) :
     blockPair pairing.pairPerm k = (pairing.pairIndexEquiv k).1 := by
-  rw [blockPair, blockPos, blockPos, Pairing.pairPerm_pairSlotIndexEquiv_symm,
-    Pairing.pairPerm_pairSlotIndexEquiv_symm, pairing.pairSlotEquiv_zero,
-    pairing.pairSlotEquiv_one]
+  simp only [blockPair, blockPos, Pairing.pairPerm, Equiv.trans_apply,
+    Equiv.apply_symm_apply]
+  change (pairing.pairEndpoint (pairing.pairIndexEquiv k, 0),
+    pairing.pairEndpoint (pairing.pairIndexEquiv k, 1)) = _
+  rw [pairing.pairEndpoint_zero, pairing.pairEndpoint_one]
 
 private theorem sum_univ_eq_sum_Ioi_add_sum_Iio {m : ℕ} (k : Fin m) (f : Fin m → ℕ)
     (hk : f k = 0) :
