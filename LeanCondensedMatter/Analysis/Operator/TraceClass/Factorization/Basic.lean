@@ -61,30 +61,6 @@ theorem exists_controlled_hilbertSchmidt_factorization
 
 end IsTraceClass
 
-/-- A product `A† B` of Hilbert--Schmidt operators is trace class. -/
-private theorem isTraceClass_of_hilbertSchmidt_factorization
-    {A B T : H →L[ℂ] H} (hA : IsHilbertSchmidt A) (hB : IsHilbertSchmidt B)
-    (hfactor : ContinuousLinearMap.adjoint A * B = T) :
-    IsTraceClass T := by
-  obtain ⟨w, d, -⟩ := exists_hilbertBasis (𝕜 := ℂ) (E := H)
-  obtain ⟨U, -, hUright, -⟩ := exists_leftPolarFactor T
-  have hAU : IsHilbertSchmidt (A * U) := isHilbertSchmidt_comp_right hA U
-  have hsum := hAU.summable_inner_apply hB d
-  have hpoint (i : w) :
-      ((diagonalExpectationValue (CFC.abs T) (CFC.abs_nonneg T).isSelfAdjoint (d i) : ℝ) : ℂ) =
-        inner ℂ ((A * U) (d i)) (B (d i)) := by
-    rw [coe_diagonalExpectationValue_right, ← hUright, mul_apply_eq_comp,
-      ContinuousLinearMap.adjoint_inner_right U (d i) (T (d i))]
-    rw [← hfactor, mul_apply_eq_comp, mul_apply_eq_comp]
-    exact ContinuousLinearMap.adjoint_inner_right A (U (d i)) (B (d i))
-  have hcast :
-      Summable (fun i =>
-        ((diagonalExpectationValue (CFC.abs T) (CFC.abs_nonneg T).isSelfAdjoint (d i) : ℝ) : ℂ)) :=
-    hsum.congr fun i => (hpoint i).symm
-  apply (isTraceClass_iff_isTraceClassWrt d T).mpr
-  rw [IsTraceClassWrt]
-  exact Complex.summable_ofReal.mp hcast
-
 /-- A bounded operator is trace class exactly when it admits a factorization `A† B` with
 Hilbert--Schmidt factors. -/
 theorem isTraceClass_iff_exists_hilbertSchmidt_factorization {T : H →L[ℂ] H} :
@@ -97,6 +73,23 @@ theorem isTraceClass_iff_exists_hilbertSchmidt_factorization {T : H →L[ℂ] H}
       hT.exists_controlled_hilbertSchmidt_factorization
     exact ⟨A, B, hA, hB, hfactor⟩
   · rintro ⟨A, B, hA, hB, hfactor⟩
-    exact isTraceClass_of_hilbertSchmidt_factorization hA hB hfactor
+    obtain ⟨w, d, -⟩ := exists_hilbertBasis (𝕜 := ℂ) (E := H)
+    obtain ⟨U, -, hUright, -⟩ := exists_leftPolarFactor T
+    have hAU : IsHilbertSchmidt (A * U) := isHilbertSchmidt_comp_right hA U
+    have hsum := hAU.summable_inner_apply hB d
+    have hpoint (i : w) :
+        ((diagonalExpectationValue (CFC.abs T) (CFC.abs_nonneg T).isSelfAdjoint (d i) : ℝ) : ℂ) =
+          inner ℂ ((A * U) (d i)) (B (d i)) := by
+      rw [coe_diagonalExpectationValue_right, ← hUright, mul_apply_eq_comp,
+        ContinuousLinearMap.adjoint_inner_right U (d i) (T (d i))]
+      rw [← hfactor, mul_apply_eq_comp, mul_apply_eq_comp]
+      exact ContinuousLinearMap.adjoint_inner_right A (U (d i)) (B (d i))
+    have hcast :
+        Summable (fun i =>
+          ((diagonalExpectationValue (CFC.abs T) (CFC.abs_nonneg T).isSelfAdjoint (d i) : ℝ) : ℂ)) :=
+      hsum.congr fun i => (hpoint i).symm
+    apply (isTraceClass_iff_isTraceClassWrt d T).mpr
+    rw [IsTraceClassWrt]
+    exact Complex.summable_ofReal.mp hcast
 
 end ContinuousLinearMap
