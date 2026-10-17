@@ -36,25 +36,17 @@ theorem peierlsReversePhase_zero (ℏ q : ℂ) :
     peierlsReversePhase ℏ q 0 = 1 := by
   simp [peierlsReversePhase]
 
-private theorem hasDerivAt_exp_const_mul_zero (c : ℂ) :
-    HasDerivAt (fun A : ℂ => Complex.exp (c * A)) c 0 := by
-  simpa using (hasDerivAt_const_mul (x := (0 : ℂ)) c).cexp
-
 /-- The forward Peierls phase has derivative `-i q / ℏ` at zero. -/
 theorem hasDerivAt_peierlsForwardPhase_zero (ℏ q : ℂ) :
     HasDerivAt (peierlsForwardPhase ℏ q) (-(peierlsCoupling ℏ q)) 0 := by
-  change HasDerivAt
-    (fun A : ℂ => Complex.exp (-(peierlsCoupling ℏ q) * A))
-    (-(peierlsCoupling ℏ q)) 0
-  exact hasDerivAt_exp_const_mul_zero (-(peierlsCoupling ℏ q))
+  simpa [peierlsForwardPhase] using
+    (hasDerivAt_const_mul (x := (0 : ℂ)) (-(peierlsCoupling ℏ q))).cexp
 
 /-- The reverse Peierls phase has derivative `i q / ℏ` at zero. -/
 theorem hasDerivAt_peierlsReversePhase_zero (ℏ q : ℂ) :
     HasDerivAt (peierlsReversePhase ℏ q) (peierlsCoupling ℏ q) 0 := by
-  change HasDerivAt
-    (fun A : ℂ => Complex.exp (peierlsCoupling ℏ q * A))
-    (peierlsCoupling ℏ q) 0
-  exact hasDerivAt_exp_const_mul_zero (peierlsCoupling ℏ q)
+  simpa [peierlsReversePhase] using
+    (hasDerivAt_const_mul (x := (0 : ℂ)) (peierlsCoupling ℏ q)).cexp
 
 end PeierlsPhase
 end QuantumTheory
