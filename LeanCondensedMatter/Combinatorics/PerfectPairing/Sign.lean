@@ -18,8 +18,8 @@ namespace Combinatorics
 
 variable {n : ℕ}
 
-/-- Split an ambient position into the index of its two-element block and the slot inside it. -/
-def pairSlotIndexEquiv (n : ℕ) : Fin (2 * n) ≃ Fin n × Fin 2 :=
+/-- Local shorthand for the generic finite-index block equivalence with block width two. -/
+private def pairSlotIndexEquiv (n : ℕ) : Fin (2 * n) ≃ Fin n × Fin 2 :=
   FiniteIndex.blockEquiv (by ring)
 
 private noncomputable def Pairing.pairIndexEquiv (pairing : Pairing n) :
@@ -114,7 +114,8 @@ def blockPair (τ : Equiv.Perm (Fin (2 * n))) (k : Fin n) : Fin (2 * n) × Fin (
 implementation detail, so this is how a caller outside this module computes a `blockPair`. -/
 theorem blockPair_apply (τ : Equiv.Perm (Fin (2 * n))) (k : Fin n) :
     blockPair τ k =
-      (τ ((pairSlotIndexEquiv n).symm (k, 0)), τ ((pairSlotIndexEquiv n).symm (k, 1))) :=
+      (τ ((FiniteIndex.blockEquiv (by ring : 2 * n = n * 2)).symm (k, 0)),
+        τ ((FiniteIndex.blockEquiv (by ring : 2 * n = n * 2)).symm (k, 1))) :=
   rfl
 
 private theorem blockPos_ne (τ : Equiv.Perm (Fin (2 * n))) {x y : Fin n × Fin 2} (h : x ≠ y) :
