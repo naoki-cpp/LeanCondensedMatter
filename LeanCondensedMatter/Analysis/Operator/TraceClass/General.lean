@@ -63,15 +63,6 @@ theorem diagonalExpectationValue_abs_eq_norm_sq_sqrt_abs
   rw [hinner, inner_self_eq_norm_sq_to_K]
   norm_cast
 
-/-- Trace-class membership with respect to a basis is equivalent to the Hilbert--Schmidt property
-of `sqrt(|T|)` with respect to that basis. -/
-private theorem isTraceClassWrt_iff_isHilbertSchmidtWrt_sqrt_abs
-    {ι : Type*} (d : HilbertBasis ι ℂ H) (T : H →L[ℂ] H) :
-    IsTraceClassWrt d T ↔
-      IsHilbertSchmidtWrt d (CFC.sqrt (CFC.abs T)) := by
-  unfold IsTraceClassWrt IsHilbertSchmidtWrt
-  simpa only [diagonalExpectationValue_abs_eq_norm_sq_sqrt_abs]
-
 /-- A bounded operator is trace class when `sqrt(|T|)` is Hilbert--Schmidt. The equivalent
 Hilbert-basis diagonal criterion is `isTraceClass_iff_isTraceClassWrt`. -/
 def IsTraceClass (T : H →L[ℂ] H) : Prop :=
@@ -82,8 +73,8 @@ Hilbert basis. -/
 theorem isTraceClass_iff_isTraceClassWrt {ι : Type*} (d : HilbertBasis ι ℂ H)
     (T : H →L[ℂ] H) :
     IsTraceClass T ↔ IsTraceClassWrt d T := by
-  unfold IsTraceClass
-  rw [isTraceClassWrt_iff_isHilbertSchmidtWrt_sqrt_abs]
-  exact isHilbertSchmidt_iff_isHilbertSchmidtWrt d (CFC.sqrt (CFC.abs T))
+  unfold IsTraceClass IsTraceClassWrt
+  simpa only [IsHilbertSchmidtWrt, diagonalExpectationValue_abs_eq_norm_sq_sqrt_abs] using
+    (isHilbertSchmidt_iff_isHilbertSchmidtWrt d (CFC.sqrt (CFC.abs T)))
 
 end ContinuousLinearMap
