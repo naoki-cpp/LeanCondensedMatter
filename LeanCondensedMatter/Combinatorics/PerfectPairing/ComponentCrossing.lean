@@ -127,10 +127,6 @@ theorem Pairing.componentGeometricCrossingCount_mod_two_eq_endpointInversionCoun
     apply Finset.sum_congr rfl
     intro j _
     rw [hposition B p i, hposition C q j]
-  let endpointPairEquiv :
-      ((F B × F C) × (Fin 2 × Fin 2)) ≃ P B × P C :=
-    (Equiv.prodProdProdComm _ _ _ _).trans
-      (Equiv.prodCongr (endpointEquiv B) (endpointEquiv C))
   have hreindex :
       (∑ x : (F B × F C) × (Fin 2 × Fin 2),
         if position C (endpointEquiv C (x.1.2, x.2.2)) <
@@ -138,25 +134,13 @@ theorem Pairing.componentGeometricCrossingCount_mod_two_eq_endpointInversionCoun
         then 1 else 0) =
         ∑ x : P B × P C,
           if position C x.2 < position B x.1 then 1 else 0 := by
-    refine Fintype.sum_equiv endpointPairEquiv
-      (fun x => if position C (endpointEquiv C (x.1.2, x.2.2)) <
-        position B (endpointEquiv B (x.1.1, x.2.1)) then 1 else 0)
-      (fun x => if position C x.2 < position B x.1 then 1 else 0) ?_
+    refine Fintype.sum_equiv
+      ((Equiv.prodProdProdComm _ _ _ _).trans
+        (Equiv.prodCongr (endpointEquiv B) (endpointEquiv C)))
+      _ _ ?_
     intro x
     rfl
-  calc
-    pairing.componentGeometricCrossingCount e B C % 2 =
-        (∑ x : F B × F C,
-          pairEndpointInversionCount (e ⟨B, x.1⟩).1 (e ⟨C, x.2⟩).1) % 2 := hparity
-    _ = (∑ x : (F B × F C) × (Fin 2 × Fin 2),
-          if position C (endpointEquiv C (x.1.2, x.2.2)) <
-            position B (endpointEquiv B (x.1.1, x.2.1))
-          then 1 else 0) % 2 := by rw [hsum]
-    _ = (∑ x : P B × P C,
-          if position C x.2 < position B x.1 then 1 else 0) % 2 := by rw [hreindex]
-    _ = (∑ p : P B, ∑ q : P C,
-          if position C q < position B p then 1 else 0) % 2 := by
-      rw [Fintype.sum_prod_type]
+  rw [hparity, hsum, hreindex, Fintype.sum_prod_type]
 
 /-- A geometric crossing count between distinct components is even when one component's
 positions form even-sized fibers and their order relative to the other component is constant
