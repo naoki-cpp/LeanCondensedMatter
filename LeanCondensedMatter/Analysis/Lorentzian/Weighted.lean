@@ -41,7 +41,7 @@ theorem integral_weight_mul_spectralKernel_of_ae_eq_const_on
       filter_upwards [hweight] with energy hweight henergy
       change weight energy * spectralKernel (energy - center) broadening =
         value * spectralKernel (energy - center) broadening
-      rw [hweight henergy]
+      rw [hweight (Set.uIoc_subset_uIcc henergy)]
     _ = ∫ offset in -radius..radius,
         value * spectralKernel offset broadening := by
       let f : ℝ → ℝ := fun offset => value * spectralKernel offset broadening
