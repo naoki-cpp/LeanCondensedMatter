@@ -39,8 +39,6 @@ theorem integral_weight_mul_spectralKernel_of_ae_eq_const_on
           value * spectralKernel (energy - center) broadening := by
       apply intervalIntegral.integral_congr_ae
       filter_upwards [hweight] with energy hweight henergy
-      change weight energy * spectralKernel (energy - center) broadening =
-        value * spectralKernel (energy - center) broadening
       rw [hweight (Set.uIoc_subset_uIcc henergy)]
     _ = ∫ offset in -radius..radius,
         value * spectralKernel offset broadening := by
