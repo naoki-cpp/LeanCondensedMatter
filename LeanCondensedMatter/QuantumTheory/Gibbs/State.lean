@@ -73,26 +73,18 @@ theorem gibbsOp_ne_zero [Nontrivial H] (Hop : Observable H) (β : ℝ) :
   rw [← coe_gibbsOpUnit]
   exact Units.ne_zero _
 
-/-- In finite dimension, the Gibbs operator has summable nonzero real eigenvalues
-automatically. -/
-private theorem gibbsOp_hasSummableRealEigenvalues [FiniteDimensional ℂ H]
-    (Hop : Observable H) (β : ℝ) :
-    HasSummableRealEigenvalues (gibbsOp Hop β) := by
-  have hcompact : IsCompactOperator (gibbsOp Hop β) :=
-    isCompactOperator_of_locallyCompactSpace_dom _
-  letI : Finite (EigenvectorIndex (gibbsOp Hop β)) :=
-    (orthonormal_eigenvectorFamily hcompact
-      (gibbsOp_isPositive Hop β).isSelfAdjoint.isSymmetric).linearIndependent.finite
-  exact Summable.of_finite
-
 /-- In finite dimension, the Gibbs operator carries canonical positive spectral-trace-class data. -/
 theorem gibbsOp_spectralTraceClass [FiniteDimensional ℂ H]
     (Hop : Observable H) (β : ℝ) :
     SpectralTraceClass (gibbsOp Hop β) := by
   have hcompact : IsCompactOperator (gibbsOp Hop β) :=
     isCompactOperator_of_locallyCompactSpace_dom _
-  exact SpectralTraceClass.ofPositive hcompact (gibbsOp_isPositive Hop β)
-    (gibbsOp_hasSummableRealEigenvalues Hop β)
+  have hsummable : HasSummableRealEigenvalues (gibbsOp Hop β) := by
+    letI : Finite (EigenvectorIndex (gibbsOp Hop β)) :=
+      (orthonormal_eigenvectorFamily hcompact
+        (gibbsOp_isPositive Hop β).isSelfAdjoint.isSymmetric).linearIndependent.finite
+    exact Summable.of_finite
+  exact SpectralTraceClass.ofPositive hcompact (gibbsOp_isPositive Hop β) hsummable
 
 /-- The normalized bounded-Hamiltonian Gibbs density operator. -/
 noncomputable def gibbsState [Nontrivial H] [FiniteDimensional ℂ H]
