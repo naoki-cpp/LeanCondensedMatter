@@ -113,8 +113,8 @@ private theorem Pairing.ofSplitInterSectorCrossingCount_mod_two_eq_pairEndpointI
       ((Pairing.ofSplit e P Q).pairs_normalized (emb (Sum.inr q)).2)
       hEnds.1 hEnds.2.1 hEnds.2.2.1 hEnds.2.2.2
     change _ % 2 = _ % 2
-    rw [crossesIndicator_add]
-    simpa using hcross.symm
+    rw [crossesIndicator_add, hcross]
+    split_ifs <;> decide
   have hsum :
       Pairing.ofSplitInterSectorCrossingCount e P Q =
         ∑ p : P.NormalizedPair, ∑ q : Q.NormalizedPair,
