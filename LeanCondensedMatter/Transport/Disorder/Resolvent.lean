@@ -140,25 +140,9 @@ theorem configurationGreenOfRegulator_eq_secondOrder_add_exactRemainder_left
   have hdyson := configurationGreenOfRegulator_eq_free_add_dyson_left
     ensemble energy regulator hregulator ω
   calc
-    ensemble.configurationGreenOfRegulator energy regulator ω =
-        ensemble.freeGreenOfRegulator energy regulator +
-          ensemble.freeGreenOfRegulator energy regulator *
-            (ensemble.impurityPotential ω).1 *
-              ensemble.configurationGreenOfRegulator energy regulator ω := hdyson
-    _ = ensemble.freeGreenOfRegulator energy regulator +
-          ensemble.freeGreenOfRegulator energy regulator *
-            (ensemble.impurityPotential ω).1 *
-              (ensemble.freeGreenOfRegulator energy regulator +
-                ensemble.freeGreenOfRegulator energy regulator *
-                  (ensemble.impurityPotential ω).1 *
-                    ensemble.configurationGreenOfRegulator energy regulator ω) := by
-      exact congrArg
-        (fun green : H →L[ℂ] H =>
-          ensemble.freeGreenOfRegulator energy regulator +
-            ensemble.freeGreenOfRegulator energy regulator *
-              (ensemble.impurityPotential ω).1 * green)
-        hdyson
+    _ = _ := hdyson
     _ = _ := by
+      nth_rw 1 [hdyson]
       noncomm_ring
 
 /-- Exact right-oriented second-order Dyson expansion at an arbitrary nonzero signed regulator. -/
@@ -177,25 +161,9 @@ theorem configurationGreenOfRegulator_eq_secondOrder_add_exactRemainder_right
   have hdyson := configurationGreenOfRegulator_eq_free_add_dyson_right
     ensemble energy regulator hregulator ω
   calc
-    ensemble.configurationGreenOfRegulator energy regulator ω =
-        ensemble.freeGreenOfRegulator energy regulator +
-          ensemble.configurationGreenOfRegulator energy regulator ω *
-            (ensemble.impurityPotential ω).1 *
-              ensemble.freeGreenOfRegulator energy regulator := hdyson
-    _ = ensemble.freeGreenOfRegulator energy regulator +
-          (ensemble.freeGreenOfRegulator energy regulator +
-            ensemble.configurationGreenOfRegulator energy regulator ω *
-              (ensemble.impurityPotential ω).1 *
-                ensemble.freeGreenOfRegulator energy regulator) *
-            (ensemble.impurityPotential ω).1 *
-              ensemble.freeGreenOfRegulator energy regulator := by
-      exact congrArg
-        (fun green : H →L[ℂ] H =>
-          ensemble.freeGreenOfRegulator energy regulator + green *
-            (ensemble.impurityPotential ω).1 *
-              ensemble.freeGreenOfRegulator energy regulator)
-        hdyson
+    _ = _ := hdyson
     _ = _ := by
+      nth_rw 1 [hdyson]
       noncomm_ring
 
 end FiniteDisorderEnsemble
