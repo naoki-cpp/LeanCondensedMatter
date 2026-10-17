@@ -1,36 +1,18 @@
 import Mathlib.Analysis.Distribution.SchwartzSpace.Deriv
-import Mathlib.Algebra.Lie.OfAssociative
 import Mathlib.Tactic
 
 set_option linter.style.header false
 
 /-!
-# One-dimensional Schwartz kinetic and localization operators
+# Complex Schwartz differentiation and multiplication
 
-This module contains the analysis-only operator identity underlying the conventional current for a
-one-dimensional Schrödinger Hamiltonian. On complex Schwartz space, let `D` be differentiation,
-`M_f` multiplication by a Schwartz test function, and
-
-```text
-H = -κ D² + M_V,
-v = 2 (i/ℏ) (-κ) D.
-```
-
-Then the local multiplication potential commutes with `M_f`, and the Heisenberg motion of the
-localizer satisfies
-
-```text
-(i/ℏ) [H, M_f] = 1/2 {M_(D f), v}.
-```
-
-Everything here is a linear endomorphism of Schwartz space in its natural Fréchet setting; no `L²`
-unbounded-operator domain statement is made. The module is independent of quantum mechanics and
-second quantization so both layers may reuse the same identity.
+Generic linear endomorphisms of complex Schwartz space and their product/commutation identities.
+No Schrödinger Hamiltonian, velocity, Planck constant, or one-particle current is defined here.
+The concrete physical specialization lives in `QuantumMechanics.SingleParticle.Continuum.SchwartzSchrodinger1D`.
 -/
 
 namespace SchwartzKinetic1D
 
-attribute [local instance 100] LieRing.ofAssociativeRing
 
 noncomputable section
 
@@ -98,63 +80,6 @@ theorem secondDerivative_multiplication_apply (f ψ : Space) :
   rw [derivative_multiplication_apply, derivative_multiplication_apply]
   module
 
-/-- Kinetic Schrödinger operator `-κ D²` on Schwartz space. -/
-noncomputable def kineticOperator (κ : ℝ) : Space →ₗ[ℂ] Space :=
-  (-(κ : ℂ)) • derivative.comp derivative
-
-/-- Multiplication-potential Schrödinger operator `-κ D² + M_V` on Schwartz space. -/
-noncomputable def schrodingerOperator (κ : ℝ) (potential : Space) : Space →ₗ[ℂ] Space :=
-  kineticOperator κ + multiplicationOperator potential
-
-/-- Velocity associated with `H = -κ D² + V`, namely `v = -2 i κ D / ℏ`. -/
-noncomputable def velocityOperator (ℏ κ : ℝ) : Space →ₗ[ℂ] Space :=
-  ((2 : ℂ) * (Complex.I / (ℏ : ℂ)) * (-(κ : ℂ))) • derivative
-
-/-- Multiplication operators commute on Schwartz space. -/
-theorem multiplicationOperator_comp_comm (f g : Space) :
-    (multiplicationOperator f).comp (multiplicationOperator g) =
-      (multiplicationOperator g).comp (multiplicationOperator f) := by
-  ext ψ x
-  change f x * (g x * ψ x) = g x * (f x * ψ x)
-  ring
-
-/-- The local multiplication potential contributes no localization commutator. -/
-theorem lie_schrodinger_localization_eq_kinetic
-    (κ : ℝ) (potential f : Space) :
-    ⁅schrodingerOperator κ potential, multiplicationOperator f⁆ =
-      ⁅kineticOperator κ, multiplicationOperator f⁆ := by
-  simp only [LieRing.of_associative_ring_bracket, Module.End.mul_eq_comp]
-  rw [schrodingerOperator]
-  ext ψ
-  simp only [LinearMap.sub_apply, LinearMap.add_apply, LinearMap.comp_apply, map_add]
-  have hcomm := congrArg (fun T : Space →ₗ[ℂ] Space => T ψ)
-    (multiplicationOperator_comp_comm potential f)
-  have hcomm' :
-      multiplicationOperator potential (multiplicationOperator f ψ) =
-        multiplicationOperator f (multiplicationOperator potential ψ) := by
-    simpa only [LinearMap.comp_apply] using hcomm
-  rw [hcomm']
-  abel
-
-/-- Schrödinger localization has the standard first-order Heisenberg current form
-`(i/ℏ)[H,M_f] = 1/2 {M_(D f),v}` on complex Schwartz space. -/
-theorem heisenberg_localization_eq_symmetrized_velocity
-    (ℏ κ : ℝ) (potential f : Space) :
-    (Complex.I / (ℏ : ℂ)) •
-        ⁅schrodingerOperator κ potential, multiplicationOperator f⁆ =
-      (1 / 2 : ℂ) •
-        ((multiplicationOperator (derivative f)).comp (velocityOperator ℏ κ) +
-          (velocityOperator ℏ κ).comp (multiplicationOperator (derivative f))) := by
-  rw [lie_schrodinger_localization_eq_kinetic]
-  apply LinearMap.ext
-  intro ψ
-  simp only [LieRing.of_associative_ring_bracket, Module.End.mul_eq_comp,
-    LinearMap.smul_apply, LinearMap.sub_apply, LinearMap.comp_apply,
-    LinearMap.add_apply, kineticOperator, velocityOperator]
-  rw [secondDerivative_multiplication_apply]
-  rw [derivative_multiplication_apply]
-  simp only [map_smul]
-  module
 
 end
 end SchwartzKinetic1D

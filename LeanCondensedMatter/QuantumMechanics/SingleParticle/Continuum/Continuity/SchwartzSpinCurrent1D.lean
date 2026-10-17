@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Analysis.Operator.SchwartzTwoLevel1D
+import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.SchwartzTwoLevelSchrodinger1D
 import LeanCondensedMatter.QuantumTheory.SpinHalf
 import LeanCondensedMatter.QuantumMechanics.SingleParticle.SymmetrizedVelocityCurrent
 
@@ -68,7 +68,7 @@ noncomputable def schwartzSpinCurrentDensityLinear1D
     QuantumTheory.SpinHalf.SpinSpace →ₗ[ℝ]
       (SchwartzSpinorOneParticle1D →ₗ[ℂ] SchwartzSpinorOneParticle1D) :=
   ((symmetrizedVelocityCurrentLinear SchwartzSpinorOneParticle1D
-      (SchwartzTwoLevel1D.velocityOperator ℏ κ)).restrictScalars ℝ).comp
+      (SchwartzTwoLevelSchrodinger1D.velocityOperator ℏ κ)).restrictScalars ℝ).comp
     (schwartzSpinOperatorLinear ℏ)
 
 @[simp]
@@ -76,7 +76,7 @@ theorem schwartzSpinCurrentDensityLinear1D_apply
     (ℏ κ : ℝ) (spinComponent : QuantumTheory.SpinHalf.SpinSpace) :
     schwartzSpinCurrentDensityLinear1D ℏ κ spinComponent =
       symmetrizedVelocityCurrent SchwartzSpinorOneParticle1D
-        (SchwartzTwoLevel1D.velocityOperator ℏ κ)
+        (SchwartzTwoLevelSchrodinger1D.velocityOperator ℏ κ)
         (schwartzSpinOperator ℏ spinComponent) :=
   rfl
 
@@ -86,10 +86,10 @@ theorem schwartzSpinorVelocityLocalizationFlux_eq_comp1D
     (ℏ κ : ℝ) (potential : SchwartzTwoLevel1D.Spatial)
     (internalH : SchwartzTwoLevel1D.InternalMatrix) :
     (heisenbergLocalizationFunctional SchwartzSpinorOneParticle1D ℏ
-        (SchwartzTwoLevel1D.hamiltonian κ potential internalH)
+        (SchwartzTwoLevelSchrodinger1D.hamiltonian κ potential internalH)
         SchwartzTwoLevel1D.multiplicationLinear) =
       (velocityLocalizationFlux SchwartzSpinorOneParticle1D
-        (SchwartzTwoLevel1D.velocityOperator ℏ κ)
+        (SchwartzTwoLevelSchrodinger1D.velocityOperator ℏ κ)
         SchwartzTwoLevel1D.multiplicationLinear).comp SchwartzTwoLevel1D.derivative := by
   apply LinearMap.ext
   intro f
@@ -99,7 +99,7 @@ theorem schwartzSpinorVelocityLocalizationFlux_eq_comp1D
   intro ψ
   have h := congrArg
     (fun T : SchwartzSpinorOneParticle1D →ₗ[ℂ] SchwartzSpinorOneParticle1D => T ψ)
-    (SchwartzTwoLevel1D.heisenberg_localization_eq_symmetrized_velocity
+    (SchwartzTwoLevelSchrodinger1D.heisenberg_localization_eq_symmetrized_velocity
       ℏ κ potential internalH f)
   simpa [heisenbergScale, _root_.ConservationLaw.symmetrizedProduct_apply] using h
 
@@ -123,16 +123,16 @@ noncomputable def schwartzSpinCurrentRepresentation1D
     _root_.ConservationLaw.LocalCurrentDensityRepresentation
       SchwartzTwoLevel1D.derivative
       (heisenbergTransportFunctional SchwartzSpinorOneParticle1D ℏ
-        (SchwartzTwoLevel1D.hamiltonian κ potential internalH)
+        (SchwartzTwoLevelSchrodinger1D.hamiltonian κ potential internalH)
         SchwartzTwoLevel1D.multiplicationLinear
         (schwartzSpinOperator ℏ spinComponent))
       (operatorLocalCurrentPairing SchwartzSpinorOneParticle1D
         SchwartzTwoLevel1D.multiplicationLinear) :=
   symmetrizedVelocityCurrentRepresentation SchwartzSpinorOneParticle1D ℏ
-    (SchwartzTwoLevel1D.hamiltonian κ potential internalH)
+    (SchwartzTwoLevelSchrodinger1D.hamiltonian κ potential internalH)
     SchwartzTwoLevel1D.multiplicationLinear
     (schwartzSpinOperator ℏ spinComponent)
-    (SchwartzTwoLevel1D.velocityOperator ℏ κ)
+    (SchwartzTwoLevelSchrodinger1D.velocityOperator ℏ κ)
     SchwartzTwoLevel1D.derivative
     SchwartzTwoLevel1D.multiplicationLinear
     (schwartzSpinorVelocityLocalizationFlux_eq_comp1D
@@ -147,62 +147,33 @@ theorem schwartzSpinCurrentRepresentation1D_currentDensity
       schwartzSpinCurrentDensityLinear1D ℏ κ spinComponent :=
   rfl
 
-/-- In the internal-spin model the velocity and spin operators commute. -/
-theorem schwartzSpin_velocity_commutator_eq_zero
-    (ℏ κ : ℝ) (spinComponent : QuantumTheory.SpinHalf.SpinSpace) :
-    ⁅SchwartzTwoLevel1D.velocityOperator ℏ κ,
-      schwartzSpinOperator ℏ spinComponent⁆ = 0 := by
-  change
-    ⁅SchwartzTwoLevel1D.spatialLift (SchwartzKinetic1D.velocityOperator ℏ κ),
-      SchwartzTwoLevel1D.internalOperator
-        (QuantumTheory.SpinHalf.spinMatrix ℏ spinComponent)⁆ = 0
-  exact SchwartzTwoLevel1D.lie_spatialLift_internalOperator_eq_zero
-    (SchwartzKinetic1D.velocityOperator ℏ κ)
-    (QuantumTheory.SpinHalf.spinMatrix ℏ spinComponent)
-
 /-- The symmetrized spin current simplifies from `1/2 {v,S(n)}` to `v S(n)`. -/
 theorem symmetrizedSpinCurrent_eq_velocity_comp_spin
     (ℏ κ : ℝ) (spinComponent : QuantumTheory.SpinHalf.SpinSpace) :
     symmetrizedVelocityCurrent SchwartzSpinorOneParticle1D
-        (SchwartzTwoLevel1D.velocityOperator ℏ κ)
+        (SchwartzTwoLevelSchrodinger1D.velocityOperator ℏ κ)
         (schwartzSpinOperator ℏ spinComponent) =
-      (SchwartzTwoLevel1D.velocityOperator ℏ κ).comp
+      (SchwartzTwoLevelSchrodinger1D.velocityOperator ℏ κ).comp
         (schwartzSpinOperator ℏ spinComponent) := by
-  exact _root_.ConservationLaw.symmetrizedProduct_eq_comp_of_commutes
-    (SchwartzTwoLevel1D.velocityOperator ℏ κ)
-    (schwartzSpinOperator ℏ spinComponent)
-    (schwartzSpin_velocity_commutator_eq_zero ℏ κ spinComponent)
+  apply _root_.ConservationLaw.symmetrizedProduct_eq_comp_of_commutes
+  change
+    ⁅SchwartzTwoLevel1D.spatialLift (SchwartzSchrodinger1D.velocityOperator ℏ κ),
+      SchwartzTwoLevel1D.internalOperator
+        (QuantumTheory.SpinHalf.spinMatrix ℏ spinComponent)⁆ = 0
+  exact SchwartzTwoLevel1D.lie_spatialLift_internalOperator_eq_zero
+    (SchwartzSchrodinger1D.velocityOperator ℏ κ)
+    (QuantumTheory.SpinHalf.spinMatrix ℏ spinComponent)
 
 /-- The current density stored in the local representation is exactly `v S(n)`. -/
 theorem schwartzSpinCurrentRepresentation1D_currentDensity_eq_velocity_comp_spin
     (ℏ κ : ℝ) (potential : SchwartzTwoLevel1D.Spatial)
     (internalH : SchwartzTwoLevel1D.InternalMatrix) (spinComponent : QuantumTheory.SpinHalf.SpinSpace) :
     (schwartzSpinCurrentRepresentation1D ℏ κ potential internalH spinComponent).currentDensity =
-      (SchwartzTwoLevel1D.velocityOperator ℏ κ).comp
+      (SchwartzTwoLevelSchrodinger1D.velocityOperator ℏ κ).comp
         (schwartzSpinOperator ℏ spinComponent) := by
   rw [schwartzSpinCurrentRepresentation1D_currentDensity,
     schwartzSpinCurrentDensityLinear1D_apply]
   exact symmetrizedSpinCurrent_eq_velocity_comp_spin ℏ κ spinComponent
-
-/-- The spin commutator of the full Hamiltonian is entirely the commutator with the internal
-Hamiltonian matrix. -/
-theorem lie_schwartzSpinorHamiltonian_spinAlong
-    (κ : ℝ) (potential : SchwartzTwoLevel1D.Spatial)
-    (internalH : SchwartzTwoLevel1D.InternalMatrix)
-    (ℏ : ℝ) (spinComponent : QuantumTheory.SpinHalf.SpinSpace) :
-    ⁅SchwartzTwoLevel1D.hamiltonian κ potential internalH,
-        schwartzSpinOperator ℏ spinComponent⁆ =
-      ⁅SchwartzTwoLevel1D.internalOperator internalH,
-        schwartzSpinOperator ℏ spinComponent⁆ := by
-  change
-    ⁅SchwartzTwoLevel1D.hamiltonian κ potential internalH,
-      SchwartzTwoLevel1D.internalOperator
-        (QuantumTheory.SpinHalf.spinMatrix ℏ spinComponent)⁆ =
-      ⁅SchwartzTwoLevel1D.internalOperator internalH,
-        SchwartzTwoLevel1D.internalOperator
-          (QuantumTheory.SpinHalf.spinMatrix ℏ spinComponent)⁆
-  exact SchwartzTwoLevel1D.lie_hamiltonian_internalOperator_eq_internal
-    κ potential internalH (QuantumTheory.SpinHalf.spinMatrix ℏ spinComponent)
 
 /-- The canonical localized spin source/torque is generated only by the internal Hamiltonian
 commutator `[H_internal,S(n)]`. -/
@@ -211,7 +182,7 @@ theorem schwartzSpin_sourceCommutator_eq_internal
     (internalH : SchwartzTwoLevel1D.InternalMatrix)
     (ℏ : ℝ) (spinComponent : QuantumTheory.SpinHalf.SpinSpace) (f : SchwartzTwoLevel1D.Spatial) :
     _root_.ConservationLaw.sourceCommutator SchwartzSpinorOneParticle1D
-        (SchwartzTwoLevel1D.hamiltonian κ potential internalH)
+        (SchwartzTwoLevelSchrodinger1D.hamiltonian κ potential internalH)
         SchwartzTwoLevel1D.multiplicationLinear
         (schwartzSpinOperator ℏ spinComponent) f =
       _root_.ConservationLaw.symmetrizedProduct
@@ -219,8 +190,18 @@ theorem schwartzSpin_sourceCommutator_eq_internal
         ⁅SchwartzTwoLevel1D.internalOperator internalH,
           schwartzSpinOperator ℏ spinComponent⁆ := by
   rw [_root_.ConservationLaw.sourceCommutator]
-  rw [lie_schwartzSpinorHamiltonian_spinAlong]
-  rfl
+  change
+    _root_.ConservationLaw.symmetrizedProduct
+        (SchwartzTwoLevel1D.multiplicationOperator f)
+        ⁅SchwartzTwoLevelSchrodinger1D.hamiltonian κ potential internalH,
+          SchwartzTwoLevel1D.internalOperator
+            (QuantumTheory.SpinHalf.spinMatrix ℏ spinComponent)⁆ =
+      _root_.ConservationLaw.symmetrizedProduct
+        (SchwartzTwoLevel1D.multiplicationOperator f)
+        ⁅SchwartzTwoLevel1D.internalOperator internalH,
+          SchwartzTwoLevel1D.internalOperator
+            (QuantumTheory.SpinHalf.spinMatrix ℏ spinComponent)⁆
+  rw [SchwartzTwoLevelSchrodinger1D.lie_hamiltonian_internalOperator_eq_internal]
 
 /-- If the internal Hamiltonian conserves the selected spin component, the local spin source
 vanishes and the balance law reduces to pure transport. -/
@@ -231,7 +212,7 @@ theorem schwartzSpin_sourceCommutator_eq_zero_of_internal_commutes
     (hcomm : ⁅SchwartzTwoLevel1D.internalOperator internalH,
       schwartzSpinOperator ℏ spinComponent⁆ = 0) :
     _root_.ConservationLaw.sourceCommutator SchwartzSpinorOneParticle1D
-        (SchwartzTwoLevel1D.hamiltonian κ potential internalH)
+        (SchwartzTwoLevelSchrodinger1D.hamiltonian κ potential internalH)
         SchwartzTwoLevel1D.multiplicationLinear
         (schwartzSpinOperator ℏ spinComponent) f = 0 := by
   rw [schwartzSpin_sourceCommutator_eq_internal]

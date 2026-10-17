@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Analysis.Operator.SchwartzKinetic1D
+import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.SchwartzSchrodinger1D
 import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Continuity.CurrentRepresentation1D
 import Mathlib.Tactic
 
@@ -56,13 +56,13 @@ theorem schwartzRealInnerProductDensity1D_apply
 /-- Local real expectation density of the concrete Schwartz velocity operator. -/
 noncomputable def schwartzVelocityExpectationCurrent1D
     (ℏ κ : ℝ) (ψ : SchwartzMap ℝ ℂ) : SchwartzMap ℝ ℝ :=
-  schwartzRealInnerProductDensity1D ψ (SchwartzKinetic1D.velocityOperator ℏ κ ψ)
+  schwartzRealInnerProductDensity1D ψ (SchwartzSchrodinger1D.velocityOperator ℏ κ ψ)
 
 @[simp]
 theorem schwartzVelocityExpectationCurrent1D_apply
     (ℏ κ : ℝ) (ψ : SchwartzMap ℝ ℂ) (x : ℝ) :
     schwartzVelocityExpectationCurrent1D ℏ κ ψ x =
-      (star (ψ x) * (SchwartzKinetic1D.velocityOperator ℏ κ ψ) x).re :=
+      (star (ψ x) * (SchwartzSchrodinger1D.velocityOperator ℏ κ ψ) x).re :=
   schwartzRealInnerProductDensity1D_apply ψ _ x
 
 private theorem velocityScalar_eq
@@ -92,7 +92,7 @@ theorem schwartzProbabilityCurrent1D_eq_velocityExpectation
       schwartzVelocityExpectationCurrent1D ℏ κ ψ := by
   ext x
   rw [schwartzProbabilityCurrent1D_apply, schwartzVelocityExpectationCurrent1D_apply]
-  simp only [SchwartzKinetic1D.velocityOperator, LinearMap.smul_apply]
+  simp only [SchwartzSchrodinger1D.velocityOperator, LinearMap.smul_apply]
   exact probabilityCurrentValue1D_eq_velocityExpectation ℏ κ hℏ
     (ψ x) (schwartzSpatialDerivative1D ψ x)
 
