@@ -46,6 +46,41 @@ theorem TwoPointDiagram.mem_verticesBetweenCuts_iff
   classical
   simp [verticesBetweenCuts]
 
+/-- The intermediate interval is exactly the overlap of the later cut's source
+component and the earlier cut's target component. The latter equality uses
+external connectivity: after deleting a separating propagator, there are
+only the two external components. -/
+theorem TwoPointDiagram.verticesBetweenCuts_eq_source_inter_target
+    (d : TwoPointDiagram ExternalLabel InternalLabel N S)
+    (hconnected : d.IsExternallyConnected)
+    (earlier later : Fin (2 * (2 * S.card + 1)))
+    (hsepEarlier : ¬ (d.vertexGraphWithoutPropagator earlier).Reachable
+      (Sum.inl (0 : Fin 2)) (Sum.inl (1 : Fin 2))) :
+    d.verticesBetweenCuts earlier later =
+      (d.vertexGraphWithoutPropagator later).componentBlock (Sum.inl (0 : Fin 2)) ∩
+        (d.vertexGraphWithoutPropagator earlier).componentBlock (Sum.inl (1 : Fin 2)) := by
+  classical
+  ext v
+  rw [d.mem_verticesBetweenCuts_iff earlier later v, Finset.mem_inter]
+  constructor
+  · rintro ⟨hlater, hnotEarlier⟩
+    refine ⟨hlater, ?_⟩
+    rcases d.reachable_external_side_withoutPropagator hconnected earlier
+        hsepEarlier v with hsource | htarget
+    · exact False.elim (hnotEarlier
+        (((d.vertexGraphWithoutPropagator earlier).mem_componentBlock
+          (Sum.inl (0 : Fin 2)) v).2 hsource.symm))
+    · exact ((d.vertexGraphWithoutPropagator earlier).mem_componentBlock
+        (Sum.inl (1 : Fin 2)) v).2 htarget.symm
+  · rintro ⟨hlater, htarget⟩
+    refine ⟨hlater, ?_⟩
+    intro hearlier
+    have hsource := ((d.vertexGraphWithoutPropagator earlier).mem_componentBlock
+      (Sum.inl (0 : Fin 2)) v).1 hearlier
+    have hend := ((d.vertexGraphWithoutPropagator earlier).mem_componentBlock
+      (Sum.inl (1 : Fin 2)) v).1 htarget
+    exact hsepEarlier (hsource.symm.trans hend)
+
 /-- A strictly ordered pair of separating cuts leaves at least one vertex
 between them. No arbitrary external path is involved. -/
 theorem TwoPointDiagram.verticesBetweenCuts_ne_empty_of_ssubset
