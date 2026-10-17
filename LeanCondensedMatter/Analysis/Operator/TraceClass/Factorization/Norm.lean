@@ -43,28 +43,15 @@ theorem traceNorm_le_half_normSq_add_of_factorization
         inner ℂ ((A * U) (d i)) (B (d i)) := by
     rw [← hfactor, mul_apply_eq_comp, mul_apply_eq_comp]
     exact ContinuousLinearMap.adjoint_inner_right A (U (d i)) (B (d i))
-  have hsumInner : Summable (fun i => inner ℂ (U (d i)) (T (d i))) :=
-    (hAU.summable_inner_apply hB d).congr fun i => (hterm i).symm
-  have hnormSummable : Summable (fun i => ‖inner ℂ (U (d i)) (T (d i))‖) :=
-    hsumInner.norm
-  have hAUhas : HasSum (fun i => ‖(A * U) (d i)‖ ^ 2) hAU.normSq :=
-    hAU.hasSum_norm_sq_apply d
-  have hBhas : HasSum (fun i => ‖B (d i)‖ ^ 2) hB.normSq :=
-    hB.hasSum_norm_sq_apply d
-  have hmajorHas :
-      HasSum (fun i => (‖(A * U) (d i)‖ ^ 2 + ‖B (d i)‖ ^ 2) / 2)
-        ((hAU.normSq + hB.normSq) / 2) :=
-    (hAUhas.add hBhas).div_const 2
-  have hpoint_le (i : w) :
-      ‖inner ℂ (U (d i)) (T (d i))‖ ≤
-        (‖(A * U) (d i)‖ ^ 2 + ‖B (d i)‖ ^ 2) / 2 := by
-    rw [hterm]
-    exact (norm_inner_le_norm ((A * U) (d i)) (B (d i))).trans (by
-      nlinarith [sq_nonneg (‖(A * U) (d i)‖ - ‖B (d i)‖)])
+  have hpair := hAU.summable_norm_inner_apply_and_tsum_le hB d
   rw [hT.traceNorm_eq_tsum_norm_inner_left_of_polar U hUright d]
   calc
-    (∑' i, ‖inner ℂ (U (d i)) (T (d i))‖) ≤ (hAU.normSq + hB.normSq) / 2 :=
-      (hnormSummable.tsum_le_tsum hpoint_le hmajorHas.summable).trans_eq hmajorHas.tsum_eq
+    (∑' i, ‖inner ℂ (U (d i)) (T (d i))‖) =
+        ∑' i, ‖inner ℂ ((A * U) (d i)) (B (d i))‖ := by
+      apply tsum_congr
+      intro i
+      rw [hterm]
+    _ ≤ (hAU.normSq + hB.normSq) / 2 := hpair.2
     _ ≤ (hA.normSq + hB.normSq) / 2 := by linarith
 
 /-- Every trace-class operator admits a Hilbert--Schmidt factorization whose two squared
