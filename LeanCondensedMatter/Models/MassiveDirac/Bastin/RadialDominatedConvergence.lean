@@ -123,46 +123,20 @@ private theorem stronglyMeasurable_targetCenteredInterbandBastinPairIntegral_rad
         targetCenteredInterbandBastinPairIntegral
           band e v m p 0 radius broadening) := by
   have hab : -radius ≤ radius := by linarith
-  let F : ℝ × ℝ → ℂ := fun z =>
-    (Lorentzian.spectralKernel z.2 broadening : ℂ) *
-      targetCenteredInterbandSpectatorCurrentFactor
-        band e v m z.1 0 (z.2, broadening)
-  have hF : StronglyMeasurable F := by
-    dsimp [F]
-    exact stronglyMeasurable_radialInterbandPoleIntegrand
-      band e v m broadening hm
-  have hparam : StronglyMeasurable
+  have hIntegral : StronglyMeasurable
       (fun p : ℝ =>
-        ∫ offset : ℝ, F (p, offset) ∂(volume.restrict (Set.Ioc (-radius) radius))) :=
-    hF.integral_prod_right'
-  have hpole : StronglyMeasurable
-      (fun p : ℝ =>
-        targetCenteredInterbandSpectatorCurrentPoleIntegral
-          band e v m p 0 radius broadening) := by
-    have heq :
-        (fun p : ℝ =>
-          targetCenteredInterbandSpectatorCurrentPoleIntegral
-            band e v m p 0 radius broadening) =
-        (fun p : ℝ =>
-          ∫ offset : ℝ, F (p, offset) ∂(volume.restrict (Set.Ioc (-radius) radius))) := by
-      funext p
-      unfold targetCenteredInterbandSpectatorCurrentPoleIntegral
-      rw [intervalIntegral.integral_of_le hab]
-    rw [heq]
-    exact hparam
-  have heqPair :
-      (fun p : ℝ =>
-        targetCenteredInterbandBastinPairIntegral
-          band e v m p 0 radius broadening) =
-      (fun p : ℝ =>
-        (-2 * Complex.I) *
-          targetCenteredInterbandSpectatorCurrentPoleIntegral
-            band e v m p 0 radius broadening) := by
-    funext p
-    exact targetCenteredInterbandBastinPairIntegral_eq_neg_two_i_mul_poleIntegral
-      band e v m p 0 radius broadening hbroadening.ne'
-  rw [heqPair]
-  exact hpole.const_mul (-2 * Complex.I : ℂ)
+        ∫ offset : ℝ,
+          (Lorentzian.spectralKernel offset broadening : ℂ) *
+            targetCenteredInterbandSpectatorCurrentFactor
+              band e v m p 0 (offset, broadening)
+            ∂(volume.restrict (Set.Ioc (-radius) radius))) :=
+    (stronglyMeasurable_radialInterbandPoleIntegrand
+      band e v m broadening hm).integral_prod_right'
+  simp_rw [targetCenteredInterbandBastinPairIntegral_eq_neg_two_i_mul_poleIntegral
+    band e v m _ 0 radius broadening hbroadening.ne']
+  simpa only [targetCenteredInterbandSpectatorCurrentPoleIntegral,
+    intervalIntegral.integral_of_le hab] using
+    hIntegral.const_mul (-2 * Complex.I : ℂ)
 
 /-- The real radial Bastin density is strongly measurable for positive broadening. -/
 private theorem stronglyMeasurable_radialInterbandBastinPairDensity
