@@ -216,10 +216,13 @@ noncomputable def TwoPointDiagram.intervalBlockLegEquiv
       (d.intervalInteractionLegEquiv earlier later hsepLater))
 
 /-- Make a standalone two-point pairing diagram on an interval, replacing
-the two cut propagators by external legs. This applies even when the two
-cuts are not consecutive (such a block need not be 1PI). -/
+the two cut propagators by external legs. The caller supplies labels for
+these artificial boundary ports: they are not inherited from the original
+physical external vertices. This applies even when the two cuts are not
+consecutive (such a block need not be 1PI). -/
 noncomputable def TwoPointDiagram.intervalBlock
     (d : TwoPointDiagram ExternalLabel InternalLabel N S)
+    (boundaryLabels : Fin 2 → ExternalLabel)
     (earlier later : Fin (2 * (2 * S.card + 1)))
     (hsepLater : ¬ (d.vertexGraphWithoutPropagator later).Reachable
       (Sum.inl (0 : Fin 2)) (Sum.inl (1 : Fin 2)))
@@ -241,7 +244,7 @@ noncomputable def TwoPointDiagram.intervalBlock
     (hpne : d.pairing.partner earlier ≠ later) :
     TwoPointDiagram ExternalLabel InternalLabel N
       (interactionSector (d.verticesBetweenCuts earlier later)) where
-  externalLabel := d.externalLabel
+  externalLabel := boundaryLabels
   vertexLabel v := d.vertexLabel
     ⟨v.1, interactionSector_subset (d.verticesBetweenCuts earlier later) v.2⟩
   pairing :=
@@ -251,6 +254,7 @@ noncomputable def TwoPointDiagram.intervalBlock
 @[simp]
 theorem TwoPointDiagram.intervalBlock_externalLabel
     (d : TwoPointDiagram ExternalLabel InternalLabel N S)
+    (boundaryLabels : Fin 2 → ExternalLabel)
     (earlier later : Fin (2 * (2 * S.card + 1)))
     (hsepLater : ¬ (d.vertexGraphWithoutPropagator later).Reachable
       (Sum.inl (0 : Fin 2)) (Sum.inl (1 : Fin 2)))
@@ -270,8 +274,8 @@ theorem TwoPointDiagram.intervalBlock_externalLabel
           twoPointVertexOfLeg later ∉ d.verticesBetweenCuts earlier later))
     (hne : earlier ≠ later)
     (hpne : d.pairing.partner earlier ≠ later) :
-    (d.intervalBlock earlier later hsepLater hEarlier hLater hne hpne).externalLabel =
-      d.externalLabel := rfl
+    (d.intervalBlock boundaryLabels earlier later hsepLater hEarlier hLater hne hpne).externalLabel =
+      boundaryLabels := rfl
 
 end Common
 end SecondQuantization
