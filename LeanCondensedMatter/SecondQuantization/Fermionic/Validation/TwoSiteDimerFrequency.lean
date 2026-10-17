@@ -81,12 +81,12 @@ theorem twoSiteDimerGroundState_lehmannResponse_frequency
   unfold finiteLehmannTableResponse
   rw [Fintype.sum_prod_type]
   simp only [Fin.sum_univ_two, Fin.isValue, LehmannTransitionData.frequencyTerm,
-    finiteLehmannTableTransitionData_energyGap, finiteLehmannTableTransitionData_weight,
+    finiteLehmannTableTransitionData_energyGap,
     twoSiteDimerGroundStateLehmannTable_energy_zero, sub_neg_eq_add,
     twoSiteDimerGroundStateLehmannTable_energy_one, orderedLehmannEnergyGap,
     twoSiteDimerGroundStateTransitionWeight_zero_one,
     twoSiteDimerGroundStateTransitionWeight_one_zero,
-    finiteLehmannTableTransitionWeight_diag, sub_self]
+    finiteLehmannTableTransitionData_weight_diag, sub_self]
   simp only [lehmannTerm, zero_mul, zero_add, add_zero]
   rw [hgapMinus, hgapPlus]
   rw [twoSiteDimerFrequencyDenominator_eq_transitionProduct]

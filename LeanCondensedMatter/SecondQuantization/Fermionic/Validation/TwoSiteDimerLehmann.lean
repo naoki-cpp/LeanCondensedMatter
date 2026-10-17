@@ -102,17 +102,17 @@ theorem twoSiteDimerEnergyBasisCurrent_one_zero :
 
 @[simp]
 theorem twoSiteDimerGroundStateTransitionWeight_zero_one :
-    finiteLehmannTableTransitionWeight 1
-        twoSiteDimerGroundStateLehmannTable (0, 1) = Complex.I := by
-  norm_num [finiteLehmannTableTransitionWeight, finiteLehmannTableTransitionData,
+    (finiteLehmannTableTransitionData 1
+        twoSiteDimerGroundStateLehmannTable (0, 1)).weight = Complex.I := by
+  norm_num [finiteLehmannTableTransitionData,
     orderedLehmannTransitionWeight, twoSiteDimerGroundStateLehmannTable,
     twoSiteDimerEnergyBasisCurrent]
 
 @[simp]
 theorem twoSiteDimerGroundStateTransitionWeight_one_zero :
-    finiteLehmannTableTransitionWeight 1
-        twoSiteDimerGroundStateLehmannTable (1, 0) = -Complex.I := by
-  norm_num [finiteLehmannTableTransitionWeight, finiteLehmannTableTransitionData,
+    (finiteLehmannTableTransitionData 1
+        twoSiteDimerGroundStateLehmannTable (1, 0)).weight = -Complex.I := by
+  norm_num [finiteLehmannTableTransitionData,
     orderedLehmannTransitionWeight, twoSiteDimerGroundStateLehmannTable,
     twoSiteDimerEnergyBasisCurrent]
 
@@ -125,10 +125,10 @@ theorem twoSiteDimerGroundState_lehmannResponse_zero_one :
   unfold finiteLehmannTableResponse
   rw [Fintype.sum_prod_type]
   simp only [Fin.sum_univ_two, Fin.isValue, LehmannTransitionData.frequencyTerm,
-    finiteLehmannTableTransitionData_energyGap, finiteLehmannTableTransitionData_weight,
+    finiteLehmannTableTransitionData_energyGap,
     twoSiteDimerGroundStateLehmannTable_energy_zero, sub_neg_eq_add,
     twoSiteDimerGroundStateLehmannTable_energy_one, neg_add_cancel,
-    finiteLehmannTableTransitionWeight_diag,
+    finiteLehmannTableTransitionData_weight_diag,
     twoSiteDimerGroundStateTransitionWeight_zero_one,
     twoSiteDimerGroundStateTransitionWeight_one_zero, sub_self]
   apply Complex.ext <;>
