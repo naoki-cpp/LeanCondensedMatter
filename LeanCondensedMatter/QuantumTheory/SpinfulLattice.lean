@@ -32,35 +32,22 @@ abbrev SpinfulSite (Site : Type*) := Site ×ₗ Fin 2
 def spinfulSite {Site : Type*} (x : Site) (s : Fin 2) : SpinfulSite Site :=
   toLex (x, s)
 
-/-- Apply one internal `2 × 2` matrix identically at every spatial lattice site. -/
-noncomputable def internalOneBody
-    {Site : Type*} [Fintype Site] (S : InternalSpace.PauliMatrix) :
-    (SpinfulSite Site →₀ ℂ) →ₗ[ℂ] (SpinfulSite Site →₀ ℂ) := by
-  classical
-  exact ∑ x : Site, ∑ a : Fin 2, ∑ b : Fin 2,
-    S a b • matrixUnit (spinfulSite x a) (spinfulSite x b)
-
 /-- Applying an internal matrix identically at every site is complex-linear in that matrix. -/
 noncomputable def internalOneBodyLinear
     {Site : Type*} [Fintype Site] :
     InternalSpace.PauliMatrix →ₗ[ℂ]
       ((SpinfulSite Site →₀ ℂ) →ₗ[ℂ] (SpinfulSite Site →₀ ℂ)) where
-  toFun := internalOneBody
+  toFun := fun S => ∑ x : Site, ∑ a : Fin 2, ∑ b : Fin 2,
+    S a b • matrixUnit (spinfulSite x a) (spinfulSite x b)
   map_add' := by
     classical
     intro S T
-    simp [internalOneBody, add_smul, Finset.sum_add_distrib]
+    simp [add_smul, Finset.sum_add_distrib]
   map_smul' := by
     classical
     intro c S
-    simp_rw [internalOneBody, Matrix.smul_apply, RingHom.id_apply,
+    simp_rw [Matrix.smul_apply, RingHom.id_apply,
       Finset.smul_sum, smul_smul, smul_eq_mul]
-
-@[simp]
-theorem internalOneBodyLinear_apply
-    {Site : Type*} [Fintype Site] (S : InternalSpace.PauliMatrix) :
-    internalOneBodyLinear (Site := Site) S = internalOneBody S :=
-  rfl
 
 variable {Site : Type*} [Fintype Site]
 
