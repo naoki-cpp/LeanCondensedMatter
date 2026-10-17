@@ -84,7 +84,7 @@ theorem Pairing.crossingCount_eq_sum_crosses {n : ℕ} (pairing : Pairing n) :
       ∑ x : pairing.NormalizedPair × pairing.NormalizedPair,
         if Crosses x.1.1 x.2.1 then 1 else 0 := by
   classical
-  rw [Pairing.crossingCount, ← Finset.sum_boole]
+  rw [Pairing.crossingCount, ← Finset.sum_boole (R := ℕ)]
   simp only [Finset.sum_product, Fintype.sum_prod_type]
   calc
     (∑ p ∈ pairing.pairs, ∑ q ∈ pairing.pairs,
