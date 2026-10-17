@@ -134,19 +134,6 @@ private theorem hasSum_prod_finSucc_option
     hhead.mul htail' hmul
   exact hasSum_prod_option_reindex (finSuccFamily f) (finSuccFamily a) hprod
 
-private theorem hasSum_prod_fin_succ
-    {k : ℕ} {R : Type*} [NormedCommRing R] [CompleteSpace R]
-    (f : Fin (k + 1) → ℕ → R) (a : Fin (k + 1) → R)
-    (hhead : HasSum (f 0) (a 0))
-    (htail : HasSum (fun n : Fin k →₀ ℕ => ∏ i : Fin k, f i.succ (n i))
-      (∏ i : Fin k, a i.succ))
-    (habsHead : Summable (fun n => ‖f 0 n‖))
-    (habsTail : Summable (fun n : Fin k →₀ ℕ => ‖∏ i : Fin k, f i.succ (n i)‖)) :
-    HasSum (fun n : Fin (k + 1) →₀ ℕ => ∏ i : Fin (k + 1), f i (n i))
-      (∏ i : Fin (k + 1), a i) :=
-  hasSum_prod_finSucc_reindex f a
-    (hasSum_prod_finSucc_option f a hhead htail habsHead habsTail)
-
 /-! ## The nonnegative-real case -/
 
 section Nonneg
@@ -160,7 +147,8 @@ private theorem hasSum_prod_nonneg_fin_succ
       (∏ i : Fin k, b i.succ)) :
     HasSum (fun n : Fin (k + 1) →₀ ℕ => ∏ i : Fin (k + 1), g i (n i))
       (∏ i : Fin (k + 1), b i) := by
-  apply hasSum_prod_fin_succ g b (hg 0) htail
+  apply hasSum_prod_finSucc_reindex g b
+  apply hasSum_prod_finSucc_option g b (hg 0) htail
   · rw [show (fun n => ‖g 0 n‖) = g 0 from
       funext fun n => Real.norm_of_nonneg (hnn 0 n)]
     exact (hg 0).summable
@@ -220,7 +208,8 @@ private theorem hasSum_prod_fin_succ_general
   have habsTail : Summable
       (fun n : Fin k →₀ ℕ => ‖∏ i : Fin k, f i.succ (n i)‖) :=
     summable_norm_prod (fun i : Fin k => f i.succ) (fun i => habs i.succ)
-  exact hasSum_prod_fin_succ f a (hf 0) htail (habs 0) habsTail
+  exact hasSum_prod_finSucc_reindex f a
+    (hasSum_prod_finSucc_option f a (hf 0) htail (habs 0) habsTail)
 
 private theorem hasSum_prod_fin (k : ℕ) (f : Fin k → ℕ → R) (a : Fin k → R)
     (hf : ∀ i, HasSum (f i) (a i)) (habs : ∀ i, Summable (fun n => ‖f i n‖)) :
