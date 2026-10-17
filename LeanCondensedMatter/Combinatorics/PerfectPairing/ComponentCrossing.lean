@@ -127,12 +127,20 @@ theorem Pairing.componentGeometricCrossingCount_mod_two_eq_endpointInversionCoun
     apply Finset.sum_congr rfl
     intro j _
     rw [hposition B p i, hposition C q j]
-  rw [hparity, hsum, ← Fintype.sum_prod_type]
-  exact congrArg (· % 2) <|
-    Fintype.sum_equiv
+  have hreindex :
+      (∑ x : (F B × F C) × (Fin 2 × Fin 2),
+        if position C (endpointEquiv C (x.1.2, x.2.2)) <
+          position B (endpointEquiv B (x.1.1, x.2.1))
+        then 1 else 0) =
+        ∑ x : P B × P C,
+          if position C x.2 < position B x.1 then 1 else 0 := by
+    refine Fintype.sum_equiv
       ((Equiv.prodProdProdComm _ _ _ _).trans
         (Equiv.prodCongr (endpointEquiv B) (endpointEquiv C)))
-      _ _ (fun _ => rfl)
+      _ _ ?_
+    intro x
+    rfl
+  rw [hparity, hsum, hreindex, Fintype.sum_prod_type]
 
 /-- A geometric crossing count between distinct components is even when one component's
 positions form even-sized fibers and their order relative to the other component is constant
