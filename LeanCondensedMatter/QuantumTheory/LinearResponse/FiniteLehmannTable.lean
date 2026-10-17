@@ -51,30 +51,18 @@ noncomputable def finiteLehmannTableTransitionData
     (table.probability mn.1) (table.probability mn.2)
     (table.matrixA mn.1 mn.2) (table.matrixB mn.2 mn.1)
 
-/-- The physical transition weight `(i/ℏ)(pₘ-pₙ)AₘₙBₙₘ` read only from a scalar table.
-
-This compatibility accessor is the `weight` projection of the canonical transition record. -/
-def finiteLehmannTableTransitionWeight
-    {ι : Type*} (hbar : ℝ) (table : FiniteLehmannTable ι) (mn : ι × ι) : ℂ :=
-  (finiteLehmannTableTransitionData hbar table mn).weight
-
 @[simp]
 theorem finiteLehmannTableTransitionData_energyGap
     {ι : Type*} (hbar : ℝ) (table : FiniteLehmannTable ι) (mn : ι × ι) :
     (finiteLehmannTableTransitionData hbar table mn).energyGap =
       orderedLehmannEnergyGap (table.energy mn.1) (table.energy mn.2) := rfl
 
-theorem finiteLehmannTableTransitionData_weight
-    {ι : Type*} (hbar : ℝ) (table : FiniteLehmannTable ι) (mn : ι × ι) :
-    (finiteLehmannTableTransitionData hbar table mn).weight =
-      finiteLehmannTableTransitionWeight hbar table mn := rfl
-
 /-- Diagonal transitions vanish already at the scalar-table level. -/
 @[simp]
-theorem finiteLehmannTableTransitionWeight_diag
+theorem finiteLehmannTableTransitionData_weight_diag
     {ι : Type*} (hbar : ℝ) (table : FiniteLehmannTable ι) (i : ι) :
-    finiteLehmannTableTransitionWeight hbar table (i, i) = 0 := by
-  simp [finiteLehmannTableTransitionWeight, finiteLehmannTableTransitionData]
+    (finiteLehmannTableTransitionData hbar table (i, i)).weight = 0 := by
+  simp [finiteLehmannTableTransitionData]
 
 /-- Fixed-rate finite Lehmann response evaluated from scalar spectral data. -/
 noncomputable def finiteLehmannTableResponse

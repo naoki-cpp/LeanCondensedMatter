@@ -191,16 +191,16 @@ private theorem twoSiteGappedBenchmarkLehmannTable_energy_one :
   norm_num [twoSiteGappedBenchmarkLehmannTable]
 
 private theorem twoSiteGappedBenchmarkTransitionWeight_zero_one :
-    finiteLehmannTableTransitionWeight 1
-        twoSiteGappedBenchmarkLehmannTable (0, 1) = Complex.I := by
-  norm_num [finiteLehmannTableTransitionWeight, finiteLehmannTableTransitionData,
+    (finiteLehmannTableTransitionData 1
+        twoSiteGappedBenchmarkLehmannTable (0, 1)).weight = Complex.I := by
+  norm_num [finiteLehmannTableTransitionData,
     orderedLehmannTransitionWeight, twoSiteGappedBenchmarkLehmannTable,
     twoSiteDimerEnergyBasisCurrent]
 
 private theorem twoSiteGappedBenchmarkTransitionWeight_one_zero :
-    finiteLehmannTableTransitionWeight 1
-        twoSiteGappedBenchmarkLehmannTable (1, 0) = -Complex.I := by
-  norm_num [finiteLehmannTableTransitionWeight, finiteLehmannTableTransitionData,
+    (finiteLehmannTableTransitionData 1
+        twoSiteGappedBenchmarkLehmannTable (1, 0)).weight = -Complex.I := by
+  norm_num [finiteLehmannTableTransitionData,
     orderedLehmannTransitionWeight, twoSiteGappedBenchmarkLehmannTable,
     twoSiteDimerEnergyBasisCurrent]
 
@@ -244,12 +244,12 @@ theorem twoSiteGappedBenchmark_lehmannResponse_zero_one :
   unfold finiteLehmannTableResponse
   rw [Fintype.sum_prod_type]
   simp only [Fin.sum_univ_two, Fin.isValue, LehmannTransitionData.frequencyTerm,
-    finiteLehmannTableTransitionData_energyGap, finiteLehmannTableTransitionData_weight,
+    finiteLehmannTableTransitionData_energyGap,
     twoSiteGappedBenchmarkLehmannTable_energy_zero,
     twoSiteGappedBenchmarkLehmannTable_energy_one,
     twoSiteGappedBenchmarkTransitionWeight_zero_one,
     twoSiteGappedBenchmarkTransitionWeight_one_zero,
-    finiteLehmannTableTransitionWeight_diag, sub_self]
+    finiteLehmannTableTransitionData_weight_diag, sub_self]
   apply Complex.ext <;>
     norm_num [lehmannTerm, lehmannDenominator, Complex.normSq]
 
