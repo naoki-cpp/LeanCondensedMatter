@@ -21,6 +21,18 @@ instance decidableCrosses {n : ℕ}
   inferInstanceAs (Decidable (
     left.1 < right.1 ∧ right.1 < left.2 ∧ left.2 < right.2))
 
+/-- The two oriented crossing indicators are disjoint, so their sum counts geometric crossings
+without double counting. -/
+theorem crossesIndicator_add {n : ℕ}
+    (left right : Fin (2 * n) × Fin (2 * n)) :
+    (if Crosses left right then (1 : ℕ) else 0) +
+      (if Crosses right left then 1 else 0) =
+        (if Crosses left right ∨ Crosses right left then 1 else 0) := by
+  by_cases hleft : Crosses left right
+  · have hright : ¬ Crosses right left := fun h => lt_asymm hleft.1 h.1
+    simp [hleft, hright]
+  · simp [hleft]
+
 /-- A strictly monotone embedding preserves and reflects the crossing relation. -/
 theorem crosses_map_iff {n m : ℕ} (f : Fin (2 * n) → Fin (2 * m)) (hf : StrictMono f)
     (a b c e : Fin (2 * n)) :
