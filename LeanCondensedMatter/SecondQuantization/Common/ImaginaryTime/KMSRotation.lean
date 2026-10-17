@@ -1,5 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.DiagonalEvolution
-import LeanCondensedMatter.SecondQuantization.Common.Algebra.FiniteTrace
+import LeanCondensedMatter.SecondQuantization.Common.Algebra.DiagonalTrace
 
 set_option linter.style.header false
 
@@ -9,7 +9,7 @@ set_option linter.style.header false
 The common Bloch–de Dominicis induction uses trace cyclicity together with the KMS-type relation to
 move a ladder operator from the end of an operator product to its front while picking up an
 eigenvalue-dependent weight. This file packages that statistics-independent step by combining
-`Common.traceFock_comp_comm`/`Common.tsumTrace_comp_comm` with
+`Common.tsumTrace_comp_comm` with
 `Common.diagonalEvolution_comp_eq_smul_comp_diagonalEvolution`:
 
 `Tr[e^{-βH₀} (A C)] = e^{qβ} Tr[e^{-βH₀} (C A)]`.
@@ -19,9 +19,9 @@ This matches the physics reference notes' derivation (`quantum-statistical-mecha
 the role of `Ĉ₂⋯Ĉ_{2n}`, `C` plays the role of `Ĉ₁`, and `w₁ = e^{qβ}` is `C`'s eigenvalue-shift
 weight (`q = -εᵢ` for `annihilate i`, `q = εᵢ` for `create i`).
 
-Both a `[Fintype Config]` version (`traceFock_diagonalEvolution_comp_rotate`) and a `tsum`,
-summability-hypothesis-gated version usable on an infinite `Config`
-(`tsumTrace_diagonalEvolution_comp_rotate`) are proved below. The general trace peel identity combining this rotation with scalar exchange lives in
+The configuration-general `tsumTrace_diagonalEvolution_comp_rotate` theorem takes the necessary
+double-series summability condition explicitly. In finite configurations it is automatic. The
+trace peel identity combining this rotation with scalar exchange lives in
 `Common/Thermal/BlochDeDominicis/Unnormalized/PeelFirstTrace.lean`.
 -/
 
@@ -46,41 +46,10 @@ private theorem comp_diagonalEvolution_eq_smul_diagonalEvolution_comp
     rw [← Complex.exp_add, ← Complex.ofReal_add]; norm_num, one_smul] at h2
   exact h2.symm
 
-/-- **The KMS-type trace rotation**: `Tr[e^{-βH₀} (A C)] = e^{qβ} Tr[e^{-βH₀} (C A)]`, for any
-operator `A` and any operator `C` with eigenvalue-shift `q` under `heisenbergEvolve`. Combines
-`traceFock_comp_comm` (cyclicity) with `comp_diagonalEvolution_eq_smul_diagonalEvolution_comp` (the
-KMS-type relation) exactly as the physics reference notes' `⟨Ĉ₂⋯Ĉ_{2n}Ĉ₁⟩ = w₁⟨Ĉ₁Ĉ₂⋯Ĉ_{2n}⟩` step
-does. -/
-theorem traceFock_diagonalEvolution_comp_rotate [Fintype Config]
-    (energy : Config → ℝ) (β q : ℝ) (A C : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
-    (hC : heisenbergEvolve energy (-β) C = Complex.exp ((q * (-β) : ℝ) : ℂ) • C) :
-    traceFock ((diagonalEvolution energy (-β)).comp (A.comp C)) =
-      Complex.exp ((q * β : ℝ) : ℂ) •
-        traceFock ((diagonalEvolution energy (-β)).comp (C.comp A)) := by
-  have hKMS' := comp_diagonalEvolution_eq_smul_diagonalEvolution_comp energy (-β) q C hC
-  rw [show ((-(q * -β) : ℝ) : ℂ) = ((q * β : ℝ) : ℂ) by push_cast; ring] at hKMS'
-  calc traceFock ((diagonalEvolution energy (-β)).comp (A.comp C))
-      = traceFock (((diagonalEvolution energy (-β)).comp A).comp C) := by
-        rw [LinearMap.comp_assoc]
-    _ = traceFock (C.comp ((diagonalEvolution energy (-β)).comp A)) := traceFock_comp_comm _ _
-    _ = traceFock ((C.comp (diagonalEvolution energy (-β))).comp A) := by
-        rw [LinearMap.comp_assoc]
-    _ = traceFock ((Complex.exp ((q * β : ℝ) : ℂ) •
-          ((diagonalEvolution energy (-β)).comp C)).comp A) := by rw [hKMS']
-    _ = traceFock (Complex.exp ((q * β : ℝ) : ℂ) •
-          (((diagonalEvolution energy (-β)).comp C).comp A)) := by rw [LinearMap.smul_comp]
-    _ = Complex.exp ((q * β : ℝ) : ℂ) •
-          traceFock (((diagonalEvolution energy (-β)).comp C).comp A) := by
-        rw [(traceFock (Config := Config)).map_smul, smul_eq_mul]
-    _ = Complex.exp ((q * β : ℝ) : ℂ) •
-          traceFock ((diagonalEvolution energy (-β)).comp (C.comp A)) := by
-        rw [LinearMap.comp_assoc]
-
-/-- **The `tsum` KMS-type trace rotation**: the `[Fintype Config]`-free analogue of
-`traceFock_diagonalEvolution_comp_rotate`, built from `Common.tsumTrace_comp_comm` instead of
-`traceFock_comp_comm`. This lets the rotation step operate on a genuine bosonic occupation type at
-the cost of the explicit double-summability hypothesis `h`, unlike the `[Fintype Config]` case
-where summability is automatic. -/
+/-- The KMS-type trace rotation on any configuration type, obtained from
+`Common.tsumTrace_comp_comm`. The double-series summability hypothesis `h` is explicit; finite
+configuration spaces discharge it automatically, while infinite bosonic occupation spaces require
+analytic estimates. -/
 theorem tsumTrace_diagonalEvolution_comp_rotate
     (energy : Config → ℝ) (β q : ℝ) (A C : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
     (hC : heisenbergEvolve energy (-β) C = Complex.exp ((q * (-β) : ℝ) : ℂ) • C)
