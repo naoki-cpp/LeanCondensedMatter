@@ -62,10 +62,16 @@ analyticity and parity laws. The project now proves the normalized zeroth-kernel
 using cosine moments and justified termwise integration. Consequently, the zeroth-kernel
 evenness theorem can be obtained from Mathlib's integer-order Bessel parity.
 
-The remaining bridge goals are `K₁(z) = 2π i J₁(z)` and `K₂(z) = -2π J₂(z)`.
-Until those are proved, retain the direct angular-integral definitions and the
-first/second-harmonic symmetry and recurrence theorems. Do not add separate local
-Bessel definitions or assume the integral representation is a theorem already in Mathlib.
+The first-cosine bridge is also proved:
+`polarFourierFirstCosineAngularKernel_eq_besselJ` gives
+`K₁(z) = 2π i J₁(z)` by comparing the derivative of the J₀ bridge with the
+existing derivative of the angular kernel. The needed special-function
+derivative is established from Mathlib's regularized hypergeometric series.
+
+The remaining bridge goal is `K₂(z) = -2π J₂(z)`. Retain the explicit
+angular-integral definitions for the physical Fourier-reduction API and the
+second-harmonic symmetry and recurrence theorems until a J₂ bridge is proved.
+Do not introduce separate local Bessel definitions.
 
 ## Harmonic and measure boundaries
 

@@ -7,6 +7,7 @@ import Mathlib.Analysis.SpecialFunctions.Bessel
 import Mathlib.Analysis.SpecificLimits.Normed
 import Mathlib.MeasureTheory.Integral.DominatedConvergence
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.Periodic
+import Mathlib.Topology.Algebra.InfiniteSum.ContinuousEval
 import Mathlib.Tactic
 
 set_option linter.style.header false
@@ -24,9 +25,9 @@ two-dimensional polar specialization and angular reduction.
 The full-angle kernels below are the canonical intermediate for radial Fourier reduction. Constant,
 first, and second angular channels are supplied through `AngularHarmonicCoefficients`, shared with
 ordinary angular integration. The kernels remain explicit finite interval integrals to preserve
-their angular reduction API. The zeroth kernel is identified with `2π * Complex.besselJ 0`
-by `polarFourierZerothAngularKernel_eq_besselJ`; first and second harmonics still await
-analogous Bessel bridges.
+their angular reduction API. The zeroth and first-cosine kernels are identified with
+`2π * Complex.besselJ 0` and `2π * Complex.I * Complex.besselJ 1` respectively;
+the second-cosine harmonic still awaits its Bessel bridge.
 
 No model Hamiltonian, matrix representation, disorder approximation, real-space cutoff, or
 conductivity normalization is introduced here.
@@ -86,8 +87,8 @@ theorem physicalMomentumPolarFourierPhase_polarPoint2D
 noncomputable def polarFourierZerothAngularKernel (z : ℝ) : ℂ :=
   ∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi), polarFourierRadialPhase z θ
 
-/-- First cosine full-angle radial Fourier kernel. A future integral-representation theorem should
-identify it with `2π i J₁(z)` using Mathlib's `Complex.besselJ`. -/
+/-- First cosine full-angle radial Fourier kernel, identified with `2π i J₁(z)`
+by `polarFourierFirstCosineAngularKernel_eq_besselJ`. -/
 noncomputable def polarFourierFirstCosineAngularKernel (z : ℝ) : ℂ :=
   ∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi),
     polarFourierRadialPhase z θ * ((Real.cos θ : ℝ) : ℂ)
@@ -439,9 +440,9 @@ private theorem norm_polarFourierRadialPhase (z θ : ℝ) :
 harmonics: the derivative of the zeroth angular kernel is `i` times the
 first-cosine kernel.
 
-Unlike an origin-only normalization, this identity holds for all real
-Fourier arguments and is a step toward identifying the Fourier kernels
-with the integer-order Bessel functions in Mathlib v4.35.0. -/
+Unlike an origin-only normalization, this holds for every real Fourier
+argument. Together with the J₀ Bessel bridge and the hypergeometric-series
+derivative, it yields the first-harmonic Bessel identity. -/
 theorem polarFourierZerothAngularKernel_hasDerivAt (z : ℝ) :
     HasDerivAt polarFourierZerothAngularKernel
       (Complex.I * polarFourierFirstCosineAngularKernel z) z := by
@@ -504,6 +505,118 @@ theorem polarFourierZerothAngularKernel_hasDerivAt (z : ℝ) :
     (Complex.I * polarFourierFirstCosineAngularKernel z) z
   rw [← hrew]
   exact hmain
+
+/-- The derivative of the regularized hypergeometric series with bottom parameter 1
+has bottom parameter 2. This is the coefficient identity behind `J₀' = -J₁`. -/
+private theorem regularizedHGFun_zero_one_hasDerivAt (w : ℂ) :
+    HasDerivAt (Complex.regularizedHGFun 0 {(1 : ℂ)})
+      (Complex.regularizedHGFun 0 {(2 : ℂ)} w) w := by
+  let p := Complex.regularizedHGFunSeries 0 {(1 : ℂ)}
+  have hcoeff (n : ℕ) :
+      ((n + 1 : ℕ) : ℂ) * Complex.regularizedHGFunCoeff 0 {(1 : ℂ)} (n + 1) =
+        Complex.regularizedHGFunCoeff 0 {(2 : ℂ)} n := by
+    have hg : Complex.Gamma ((2 : ℂ) + (n : ℂ)) =
+        (Nat.factorial (n + 1) : ℂ) := by
+      convert Complex.Gamma_nat_eq_factorial (n + 1) using 1
+      push_cast
+      ring
+    rw [polarFourierBesselZeroCoeff]
+    have htwo : Complex.regularizedHGFunCoeff 0 {(2 : ℂ)} n =
+        1 / ((Nat.factorial n : ℂ) * (Nat.factorial (n + 1) : ℂ)) := by
+      simp [Complex.regularizedHGFunCoeff, hg]
+    rw [htwo, Nat.factorial_succ]
+    push_cast
+    have hn : (n + 1 : ℂ) ≠ 0 := by exact_mod_cast Nat.succ_ne_zero n
+    have hf : (Nat.factorial n : ℂ) ≠ 0 := by
+      exact_mod_cast Nat.factorial_ne_zero n
+    field_simp
+  have hradius : ‖w‖ₑ < p.radius := by
+    simp [p]
+  have hderivRadius : p.derivSeries.radius = ⊤ := by
+    apply top_unique
+    simpa [p] using p.radius_le_radius_derivSeries
+  have hsummable : Summable (fun n : ℕ => p.derivSeries n (fun _ => w)) :=
+    p.derivSeries.summable (by simp [hderivRadius])
+  have hsum :
+      (p.derivSeries.sum w) (1 : ℂ) =
+        Complex.regularizedHGFun 0 {(2 : ℂ)} w := by
+    calc
+      (p.derivSeries.sum w) (1 : ℂ) =
+          ∑' n : ℕ, (p.derivSeries n (fun _ => w)) (1 : ℂ) := by
+        exact tsum_apply hsummable 1
+      _ = ∑' n : ℕ,
+          (((n + 1 : ℕ) : ℂ) *
+            Complex.regularizedHGFunCoeff 0 {(1 : ℂ)} (n + 1)) * w ^ n := by
+        apply tsum_congr
+        intro n
+        simp only [FormalMultilinearSeries.apply_eq_pow_smul_coeff,
+          smul_apply, FormalMultilinearSeries.derivSeries_coeff_one,
+          smul_eq_mul, nsmul_eq_mul, Nat.cast_add, Nat.cast_one]
+        simp only [p, Complex.regularizedHGFunSeries_coeff]
+        ring_nf
+      _ = ∑' n : ℕ, Complex.regularizedHGFunCoeff 0 {(2 : ℂ)} n * w ^ n := by
+        apply tsum_congr
+        intro n
+        rw [hcoeff]
+      _ = Complex.regularizedHGFun 0 {(2 : ℂ)} w := by
+        rw [Complex.regularizedHGFun, Complex.regularizedHGFunSeries,
+          ← FormalMultilinearSeries.ofScalarsSum,
+          FormalMultilinearSeries.ofScalars_sum_eq]
+        simp only [smul_eq_mul]
+  have hderiv : HasDerivAt (Complex.regularizedHGFun 0 {(1 : ℂ)})
+      ((p.derivSeries.sum w) 1) w := by
+    change HasDerivAt p.sum ((p.derivSeries.sum w) 1) w
+    exact (p.hasFDerivAt_sum hradius).hasDerivAt
+  rw [hsum] at hderiv
+  exact hderiv
+
+/-- Derivative of the zeroth complex Bessel function obtained from its
+regularized hypergeometric coefficients. -/
+private theorem besselJ_zero_hasDerivAt (w : ℂ) :
+    HasDerivAt (Complex.besselJ 0) (-Complex.besselJ 1 w) w := by
+  have harg : HasDerivAt (fun t : ℂ => -(t / 2) ^ 2) (-(w / 2)) w := by
+    convert (((hasDerivAt_id w).div_const (2 : ℂ)).pow 2).neg using 1
+    · funext t
+      simp only [Pi.neg_apply, Pi.pow_apply, id_eq]
+    · simp only [id_eq]
+      ring_nf
+  have h := (regularizedHGFun_zero_one_hasDerivAt (-(w / 2) ^ 2)).comp w harg
+  convert h using 1
+  · funext t
+    simp [Complex.besselJ_def]
+  · simp [Complex.besselJ_def]
+    ring
+
+/-- The first angular Fourier harmonic is the correctly normalized Bessel function
+`J₁`, for every real radial Fourier argument. -/
+theorem polarFourierFirstCosineAngularKernel_eq_besselJ (z : ℝ) :
+    polarFourierFirstCosineAngularKernel z =
+      ((2 * Real.pi : ℝ) : ℂ) * Complex.I * Complex.besselJ 1 (z : ℂ) := by
+  have hfun :
+      (fun t : ℝ => ((2 * Real.pi : ℝ) : ℂ) *
+        Complex.besselJ 0 (t : ℂ)) = polarFourierZerothAngularKernel := by
+    funext t
+    exact (polarFourierZerothAngularKernel_eq_besselJ t).symm
+  have hJ := ((besselJ_zero_hasDerivAt (z : ℂ)).comp_ofReal).const_mul
+    ((2 * Real.pi : ℝ) : ℂ)
+  change HasDerivAt
+    (fun t : ℝ => ((2 * Real.pi : ℝ) : ℂ) * Complex.besselJ 0 (t : ℂ))
+    (((2 * Real.pi : ℝ) : ℂ) * -Complex.besselJ 1 (z : ℂ)) z at hJ
+  rw [hfun] at hJ
+  have hderiv := (polarFourierZerothAngularKernel_hasDerivAt z).unique hJ
+  have hI : (-Complex.I) * Complex.I = (1 : ℂ) := by
+    calc
+      _ = -(Complex.I ^ 2) := by ring
+      _ = 1 := by rw [Complex.I_sq]; ring
+  calc
+    polarFourierFirstCosineAngularKernel z =
+        ((-Complex.I) * Complex.I) * polarFourierFirstCosineAngularKernel z := by
+      rw [hI, one_mul]
+    _ = (-Complex.I) * (Complex.I * polarFourierFirstCosineAngularKernel z) := by
+      ring
+    _ = ((2 * Real.pi : ℝ) : ℂ) * Complex.I * Complex.besselJ 1 (z : ℂ) := by
+      rw [hderiv]
+      ring
 
 /-- Derivative of the dimensionless radial Fourier phase with respect to the polar angle. -/
 private theorem polarFourierRadialPhase_hasDerivAt (z θ : ℝ) :
