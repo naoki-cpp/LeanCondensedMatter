@@ -2958,9 +2958,7 @@
     {
       "name": "LeanCondensedMatter.Models.Parabolic2DEG.Model",
       "sourceFile": "LeanCondensedMatter/Models/Parabolic2DEG/Model.lean",
-      "imports": [
-        "LeanCondensedMatter.Transport.Analysis.FourierGeometry"
-      ],
+      "imports": [],
       "externalImportCount": 3
     },
     {
@@ -3037,8 +3035,7 @@
       "name": "LeanCondensedMatter.Models.RashbaExchange.Model",
       "sourceFile": "LeanCondensedMatter/Models/RashbaExchange/Model.lean",
       "imports": [
-        "LeanCondensedMatter.Analysis.InternalSpace.Pauli",
-        "LeanCondensedMatter.Transport.Analysis.FourierGeometry"
+        "LeanCondensedMatter.Analysis.InternalSpace.Pauli"
       ],
       "externalImportCount": 1
     },
