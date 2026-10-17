@@ -68,8 +68,8 @@ theorem TwoPointDiagram.verticesBetweenCuts_eq_source_inter_target
     rcases d.reachable_external_side_withoutPropagator hconnected earlier
         hsepEarlier v with hsource | htarget
     · exact False.elim (hnotEarlier
-        ((d.vertexGraphWithoutPropagator earlier).mem_componentBlock
-          (Sum.inl (0 : Fin 2)) v |>.2 hsource.symm))
+        (((d.vertexGraphWithoutPropagator earlier).mem_componentBlock
+          (Sum.inl (0 : Fin 2)) v).2 hsource.symm))
     · exact ((d.vertexGraphWithoutPropagator earlier).mem_componentBlock
         (Sum.inl (1 : Fin 2)) v).2 htarget.symm
   · rintro ⟨hlater, htarget⟩
