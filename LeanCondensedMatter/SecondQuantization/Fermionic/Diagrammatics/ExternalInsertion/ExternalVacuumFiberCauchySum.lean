@@ -170,7 +170,7 @@ theorem externalInsertionFixedCardinalityFiberSum_eq_cauchyFactor
           if ext.1.externalLabel = externalLabel then
             ext.1.dysonAmplitude ε β g externalTime else 0) *
         (∑ x : Y, vacuum x) := by
-      rw [← Finset.sum_mul]
+      rw [Finset.sum_mul]
       apply Finset.sum_congr rfl
       intro ext _
       rw [Finset.mul_sum]
