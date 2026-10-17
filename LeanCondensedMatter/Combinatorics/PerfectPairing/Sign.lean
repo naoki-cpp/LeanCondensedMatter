@@ -34,14 +34,6 @@ private noncomputable def Pairing.pairSlotEquiv (pairing : Pairing n) :
 noncomputable def Pairing.pairPerm (pairing : Pairing n) : Equiv.Perm (Fin (2 * n)) :=
   (pairSlotIndexEquiv n).trans pairing.pairSlotEquiv
 
-private theorem prod_Ioi_eq_prod_ite {M : Type*} [CommMonoid M] {m : ℕ}
-    (i : Fin m) (g : Fin m → M) :
-    (∏ j ∈ Finset.Ioi i, g j) = ∏ j : Fin m, if i < j then g j else 1 := by
-  rw [← Finset.prod_filter]
-  congr 1
-  ext j
-  simp
-
 private theorem sign_eq_prod_prod_blockSlots (σ : Equiv.Perm (Fin (2 * n))) :
     Equiv.Perm.sign σ =
       ∏ x : Fin n × Fin 2, ∏ y : Fin n × Fin 2,
@@ -56,7 +48,11 @@ private theorem sign_eq_prod_prod_blockSlots (σ : Equiv.Perm (Fin (2 * n))) :
       Equiv.Perm.sign_eq_prod_prod_Ioi σ
     _ = ∏ i : Fin (2 * n), ∏ j : Fin (2 * n),
           (if i < j then (if σ i < σ j then (1 : ℤˣ) else -1) else 1) :=
-      Finset.prod_congr rfl fun i _ => prod_Ioi_eq_prod_ite i _
+      Finset.prod_congr rfl fun i _ => by
+        rw [← Finset.prod_filter]
+        congr 1
+        ext j
+        simp
     _ = ∏ x : Fin n × Fin 2, ∏ j : Fin (2 * n),
           (if (pairSlotIndexEquiv n).symm x < j then
               (if σ ((pairSlotIndexEquiv n).symm x) < σ j then (1 : ℤˣ) else -1)
@@ -312,15 +308,6 @@ def Pairing.PresentsPairs (pairing : Pairing n) (τ : Equiv.Perm (Fin (2 * n))) 
   ∃ e : Fin n ≃ pairing.NormalizedPair, ∀ k : Fin n,
     blockPair τ k = (e k).1 ∨ blockPair τ k = (e k).1.swap
 
-private theorem pairEndpointInversionCount_blockPair_eq {pairing : Pairing n}
-    {τ : Equiv.Perm (Fin (2 * n))} {e : Fin n ≃ pairing.NormalizedPair}
-    (hpres : ∀ k : Fin n, blockPair τ k = (e k).1 ∨ blockPair τ k = (e k).1.swap)
-    (k l : Fin n) :
-    pairEndpointInversionCount (blockPair τ k) (blockPair τ l) =
-      pairEndpointInversionCount (e k).1 (e l).1 := by
-  rcases hpres k with hk | hk <;> rcases hpres l with hl | hl <;>
-    simp only [hk, hl, pairEndpointInversionCount, Prod.swap] <;> ac_rfl
-
 /-- **Sign under presentation.** If a permutation's two-element blocks carry the normalized pairs of
 `pairing`, each in either endpoint order, its sign is `-1` to the number of reversed blocks times
 `-1` to `pairing`'s crossing count. -/
@@ -337,8 +324,9 @@ theorem Pairing.sign_eq_of_presentsPairs (pairing : Pairing n) (τ : Equiv.Perm 
   have heq : (∑ k : Fin n, ∑ l ∈ Finset.Ioi k,
       pairEndpointInversionCount (blockPair τ k) (blockPair τ l)) =
         ∑ k : Fin n, ∑ l ∈ Finset.Ioi k, pairEndpointInversionCount (e k).1 (e l).1 :=
-    Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ =>
-      pairEndpointInversionCount_blockPair_eq hpres k l
+    Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => by
+      rcases hpres k with hk | hk <;> rcases hpres l with hl | hl <;>
+        simp only [hk, hl, pairEndpointInversionCount, Prod.swap] <;> ac_rfl
   rw [heq]
   exact sum_Ioi_pairEndpointInversionCount_mod_two_eq_crossingCount pairing e
 
