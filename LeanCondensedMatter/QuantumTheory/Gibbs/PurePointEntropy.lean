@@ -52,14 +52,7 @@ theorem summable_norm_negMulLog_purePointGibbsProbability [Nonempty ι]
       Real.negMulLog (purePointGibbsProbability E β i) := by
     exact ((hEnergy.mul_left β).add (hProb.mul_left (Real.log Z))).congr
       (fun i => (hterm i).symm)
-  exact hEntropy.congr fun i => by
-    rw [Real.norm_eq_abs,
-      abs_of_nonneg (Real.negMulLog_nonneg
-        (purePointGibbsProbability_nonneg E β i)
-        (Real.normalizedWeight_le_one (purePointBoltzmannWeight E β)
-          (purePointBoltzmannWeight_summable E β hsum)
-          (purePointBoltzmannWeight_nonneg E β)
-          (purePointPartitionFunction_pos E β hsum) i))]
+  exact hEntropy.norm
 
 /-- A countable pure-point Gibbs state with absolutely integrable energy has finite von Neumann
 entropy and satisfies `S = β ⟨E⟩ + log Z`. -/
