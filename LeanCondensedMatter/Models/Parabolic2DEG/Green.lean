@@ -85,7 +85,7 @@ theorem continuous_greenScalar_radial
     Continuous (fun p : ℝ => greenScalar side params p 0) := by
   have hden :
       Continuous (fun p : ℝ => greenDenominator side params p 0) := by
-    unfold greenDenominator bandEnergy momentumSq2D spectralParameter
+    unfold greenDenominator bandEnergy spectralParameter
     fun_prop
   exact hden.inv₀ (fun p =>
     greenDenominator_ne_zero side params p 0 hbroadening)
