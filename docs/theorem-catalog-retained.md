@@ -644,3 +644,25 @@ or consumer structure changes.
 - `Combinatorics.Pairing.ofSplitInterSectorCrossingCount_mod_two_eq_positionInversions` — terminal binary pairing-split parity formula reducing inter-sector crossing parity to position inversions; used by thermal pairing weights.
 - `Combinatorics.Pairing.ofSplit_crossingCount_eq_left_add_right_add_inter` — terminal exact crossing-count decomposition for an order-preserving binary pairing split, retaining local counts and the residual.
 - `Combinatorics.FamilySlotShuffleTo.relativePerm_sign_eq_orderedBlockInversionCount_add` — sign identity for relative order-preserving family shuffles, expressed through both ordered block-inversion counts with explicit component order.
+
+- `Combinatorics.BinaryShuffle.leftSlot_strictMono` — strict order-preservation of left recursive slots; it supplies the canonical left component of the order-preserving binary-shuffle representation.
+- `Combinatorics.BinaryShuffle.rightSlot_strictMono` — strict order-preservation of right recursive slots, dual to the left identity and needed to construct the ambient slot shuffle.
+- `Combinatorics.BinaryShuffle.leftSlot_ne_rightSlot` — separation of left and right ambient positions in the recursive shuffle; it is the disjointness invariant behind the tagged-slot injection.
+- `Combinatorics.BinaryShuffle.slotEquiv_injective` — injectivity of the recursive shuffle representation as an ambient slot equivalence; distinct recursive insertion histories cannot describe the same ordered interleaving.
+- `Combinatorics.BinaryShuffle.sum_slotShuffle` — canonical equivalence-based finite-sum reindexing between recursive binary shuffles and order-preserving ambient slot shuffles, used across ordered-simplex and diagrammatic integrations.
+- `Combinatorics.SlotShuffle.mem_rightSlots_iff_not_mem_leftSlots` — complement characterization of right ambient slots, a structural partition invariant rather than a caller-specific simplification.
+- `Combinatorics.SlotShuffle.card_sdiff_leftSlots` — cardinality of the complement of the left slot set, supplying the right-side cardinality witness for `Finset.orderIsoOfFin`.
+- `Combinatorics.SlotShuffle.sdiffLeftSlots_orderEmbOfFin` — the increasing enumeration of the complement of left slots agrees pointwise with the right shuffle slot map; this is the canonical order interface used in shuffle geometry.
+- `Combinatorics.SlotShuffle.eq_of_leftSlots_eq` — uniqueness of an order-preserving slot shuffle from the set of its left positions; a substantial reconstruction principle reused by the family-shuffle decomposition.
+- `Combinatorics.FamilySlotShuffle.mem_tailSlots_iff_not_mem_headSlots` — generic head-versus-tail complement identity for multi-component shuffles; avoids imposing arbitrary component order on tail slots.
+- `Combinatorics.FamilySlotShuffle.tailSlotSubtypeEquiv_val` — simp-style evaluation law for the tail-slot subtype equivalence, fixing its concrete embedding into ambient positions.
+- `Combinatorics.FamilySlotShuffle.tailSlots_set_eq_compl_headSlots` — set-level equality of tail positions with the complement of the head positions, needed as a typed bridge to `Equiv.Set.sumCompl`.
+- `Combinatorics.FamilySlotShuffle.outerSlotEquiv_apply_inl` — simp evaluation of the binary head/tail outer equivalence on the head component, connecting the extracted and original shuffle coordinates.
+- `Combinatorics.FamilySlotShuffle.outerSlotEquiv_apply_inr` — simp evaluation of the same outer equivalence on the tail component through its increasing finite-set enumeration.
+- `Combinatorics.FamilySlotShuffle.card_tailSlots` — tail position cardinality needed to build the canonical ordered tail permutation and reconstruct the family shuffle.
+- `Combinatorics.FamilySlotShuffleTo.blockInversionCount_of_ne` — the explicit cross-block inversion sum on distinct component indices; retaining the non-diagonal simplification keeps the invariant usable without unfolding its conditional definition.
+- `Combinatorics.FamilySlotShuffleTo.blockInversionCount_add_swap` — pairwise inversion-complement identity: the two block orientations together count every cross-block slot pair exactly once.
+- `Combinatorics.FamilySlotShuffleTo.orderedBlockInversionCount_modEq_of_even_sizes` — parity independence of arbitrary component ordering when every component has even size, derived from the orientation-complement identity; used in fermionic component signs.
+- `Combinatorics.pow_eq_of_mod_two_eq` — generic monoid law for powers of an involutive exchange scalar depending only on parity, used in multiple bosonic/fermionic and pairing-sign modules.
+- `Combinatorics.subsetSumSdiffEquiv_inl_apply` — simp evaluation of the left branch of the finite-set subset/complement equivalence, preserving the explicit proof of subset inclusion in the ambient type.
+- `Combinatorics.subsetSumSdiffEquiv_inr_apply` — simp evaluation of the relative-complement branch of the same equivalence, used by leg and connectivity splittings.
