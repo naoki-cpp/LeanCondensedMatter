@@ -33,9 +33,8 @@ private theorem tsumTrace_rotate_of_comp_eq_smul
       Common.tsumTrace ((D.comp A).comp C)) :
     Common.tsumTrace (D.comp (C.comp A)) =
       q * Common.tsumTrace (D.comp (A.comp C)) := by
-  rw [← LinearMap.comp_assoc D C A, hmove, LinearMap.smul_comp,
-    Common.tsumTrace_smul, LinearMap.comp_assoc C D A, hcyclic,
-    LinearMap.comp_assoc D A C]
+  rw [← LinearMap.comp_assoc, hmove, LinearMap.smul_comp,
+    Common.tsumTrace_smul, LinearMap.comp_assoc, hcyclic, LinearMap.comp_assoc]
 
 /-- The KMS factor of a free thermal field. -/
 noncomputable def FreeThermalField.kmsFactor (ε : Mode → ℝ) (β : ℝ) :
