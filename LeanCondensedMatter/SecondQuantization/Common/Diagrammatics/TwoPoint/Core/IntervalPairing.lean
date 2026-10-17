@@ -248,5 +248,108 @@ theorem TwoPointDiagram.intervalBlock_externalLabel
     (d.intervalBlock boundaryLabels earlier later hsepLater hEarlier hLater hne hpne).externalLabel =
       boundaryLabels := rfl
 
+section PartnerCorrespondence
+
+variable (d : TwoPointDiagram ExternalLabel InternalLabel N S)
+    (boundaryLabels : Fin 2 → ExternalLabel)
+    (earlier later : Fin (2 * (2 * S.card + 1)))
+    (hsepLater : ¬ (d.vertexGraphWithoutPropagator later).Reachable
+      (Sum.inl (0 : Fin 2)) (Sum.inl (1 : Fin 2)))
+    (hEarlier : d.HasIntervalBoundaryEndpoint earlier later earlier)
+    (hLater : d.HasIntervalBoundaryEndpoint earlier later later)
+    (hne : earlier ≠ later)
+    (hpne : d.pairing.partner earlier ≠ later)
+
+/-- Each new external port is paired with its interval-facing cut endpoint. -/
+theorem TwoPointDiagram.intervalAugmentedPairing_partner_external (i : Fin 2) :
+    (d.intervalAugmentedPairing earlier later hEarlier hLater hne hpne).partner
+      (Sum.inl i) =
+        Sum.inr ((d.intervalBoundaryInteriorLegEquiv earlier later
+          hEarlier hLater hne hpne) (Sum.inl i)) := by
+  let e := d.intervalAugmentedLegEquiv earlier later hEarlier hLater hne hpne
+  have hl : e (Sum.inl (Sum.inl i)) = Sum.inl i := rfl
+  have hr : e (Sum.inl (Sum.inr i)) =
+      Sum.inr ((d.intervalBoundaryInteriorLegEquiv earlier later
+        hEarlier hLater hne hpne) (Sum.inl i)) := rfl
+  rw [← hl, ← hr]
+  change ((intervalBoundaryPairing.sumCongr
+    (d.interiorPairing earlier later)).transport e.symm).partner
+      (e (Sum.inl (Sum.inl i))) = e (Sum.inl (Sum.inr i))
+  simp [PairingOn.transport_partner, intervalBoundaryPairing]; rfl
+
+/-- The augmented pairing preserves the restricted interior partner. -/
+theorem TwoPointDiagram.intervalAugmentedPairing_partner_interior
+    (i : {leg : Fin (2 * (2 * S.card + 1)) // d.IsInteriorLeg earlier later leg}) :
+    (d.intervalAugmentedPairing earlier later hEarlier hLater hne hpne).partner
+      (Sum.inr ((d.intervalBoundaryInteriorLegEquiv earlier later
+        hEarlier hLater hne hpne) (Sum.inr i))) =
+        Sum.inr ((d.intervalBoundaryInteriorLegEquiv earlier later
+          hEarlier hLater hne hpne)
+          (Sum.inr ((d.interiorPairing earlier later).partner i))) := by
+  let e := d.intervalAugmentedLegEquiv earlier later hEarlier hLater hne hpne
+  have hl : e (Sum.inr i) =
+      Sum.inr ((d.intervalBoundaryInteriorLegEquiv earlier later
+        hEarlier hLater hne hpne) (Sum.inr i)) := rfl
+  have hr : e (Sum.inr ((d.interiorPairing earlier later).partner i)) =
+      Sum.inr ((d.intervalBoundaryInteriorLegEquiv earlier later
+        hEarlier hLater hne hpne)
+        (Sum.inr ((d.interiorPairing earlier later).partner i))) := rfl
+  rw [← hl, ← hr]
+  change ((intervalBoundaryPairing.sumCongr
+    (d.interiorPairing earlier later)).transport e.symm).partner
+      (e (Sum.inr i)) = e (Sum.inr ((d.interiorPairing earlier later).partner i))
+  simp [PairingOn.transport_partner]
+
+/-- The flattened block's partner is conjugate to the augmented pairing. -/
+theorem TwoPointDiagram.intervalBlock_partner_equiv
+    (p : Fin (2 * (2 * (interactionSector
+      (d.verticesBetweenCuts earlier later)).card + 1))) :
+    (d.intervalBlockLegEquiv earlier later hsepLater)
+      ((d.intervalBlock boundaryLabels earlier later hsepLater
+        hEarlier hLater hne hpne).pairing.partner p) =
+      (d.intervalAugmentedPairing earlier later hEarlier hLater hne hpne).partner
+        ((d.intervalBlockLegEquiv earlier later hsepLater) p) := by
+  simp only [TwoPointDiagram.intervalBlock, PairingOn.transport_partner,
+    Equiv.apply_symm_apply]
+
+/-- The standalone block's new external leg connects to its boundary endpoint. -/
+theorem TwoPointDiagram.intervalBlock_partner_external (i : Fin 2) :
+    (d.intervalBlockLegEquiv earlier later hsepLater)
+      ((d.intervalBlock boundaryLabels earlier later hsepLater
+        hEarlier hLater hne hpne).pairing.partner
+          (twoPointExternalLeg (interactionSector
+            (d.verticesBetweenCuts earlier later)) i)) =
+      Sum.inr ((d.intervalBoundaryInteriorLegEquiv earlier later
+        hEarlier hLater hne hpne) (Sum.inl i)) := by
+  rw [d.intervalBlock_partner_equiv boundaryLabels earlier later
+    hsepLater hEarlier hLater hne hpne]
+  have he : (d.intervalBlockLegEquiv earlier later hsepLater)
+      (twoPointExternalLeg (interactionSector
+        (d.verticesBetweenCuts earlier later)) i) = Sum.inl i := by
+    simp [TwoPointDiagram.intervalBlockLegEquiv, twoPointExternalLeg]
+  rw [he, d.intervalAugmentedPairing_partner_external earlier later
+    hEarlier hLater hne hpne]
+
+/-- The block keeps each interior propagator's partner under leg reindexing.
+`interiorPairing_partner_val` identifies it with the ambient partner. -/
+theorem TwoPointDiagram.intervalBlock_partner_interior
+    (i : {leg : Fin (2 * (2 * S.card + 1)) // d.IsInteriorLeg earlier later leg}) :
+    (d.intervalBlockLegEquiv earlier later hsepLater)
+      ((d.intervalBlock boundaryLabels earlier later hsepLater
+        hEarlier hLater hne hpne).pairing.partner
+          ((d.intervalBlockLegEquiv earlier later hsepLater).symm
+            (Sum.inr ((d.intervalBoundaryInteriorLegEquiv earlier later
+              hEarlier hLater hne hpne) (Sum.inr i))))) =
+      Sum.inr ((d.intervalBoundaryInteriorLegEquiv earlier later
+        hEarlier hLater hne hpne)
+        (Sum.inr ((d.interiorPairing earlier later).partner i))) := by
+  rw [d.intervalBlock_partner_equiv boundaryLabels earlier later
+    hsepLater hEarlier hLater hne hpne,
+    Equiv.apply_symm_apply,
+    d.intervalAugmentedPairing_partner_interior earlier later
+      hEarlier hLater hne hpne]
+
+end PartnerCorrespondence
+
 end Common
 end SecondQuantization
