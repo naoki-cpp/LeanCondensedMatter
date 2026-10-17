@@ -584,11 +584,11 @@ theorem TwoPointDiagram.isInteriorLeg_ne_intervalFacingLeg
     · exact hpe hp
     · exact hpl hp
 
+open Classical in
 /-- The legs incident to a cut interval split as a disjoint union of all
 uncut interior legs and the two facing boundary legs. This finite-set
 identity is the domain decomposition needed to insert replacement external
 legs and transport the pairing to a standard two-point leg space. -/
-open Classical in
 theorem TwoPointDiagram.intervalIncidentLegs_eq_interior_union_boundary
     (d : TwoPointDiagram ExternalLabel InternalLabel N S)
     (earlier later : Fin (2 * (2 * S.card + 1)))
