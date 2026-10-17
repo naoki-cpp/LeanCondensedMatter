@@ -39,7 +39,7 @@ theorem POVM.hasSum_inner_apply (P : POVM H M) (x : H) :
 noncomputable def probSelfAdjoint
     (P : POVM H M) (ρ : DensityOperator H) (m : M) : selfAdjoint ℂ :=
   ⟨ρ.expectation (P.E m),
-    ρ.expectation_isSelfAdjoint_of_isPositive (P.pos m)⟩
+    ρ.expectation_isSelfAdjoint_of_isSymmetric (P.pos m).isSelfAdjoint.isSymmetric⟩
 
 /-- The canonical nonnegative Born probability. The real value is obtained losslessly from the
 proved-self-adjoint complex expectation, and positivity of the effect supplies the nonnegativity
@@ -60,7 +60,7 @@ theorem DensityOperator.expectation_effect_eq_probNNReal
   apply Complex.ext
   · rfl
   · simpa [probNNReal, probSelfAdjoint, Complex.selfAdjointEquiv] using
-      ρ.expectation_im_eq_zero_of_isPositive (P.pos m)
+      ρ.expectation_im_eq_zero_of_isSymmetric (P.pos m).isSelfAdjoint.isSymmetric
 
 private noncomputable def probabilityKernel (P : POVM H M)
     (ρ : DensityOperator H) (a : EigenvectorIndex ρ.op) (m : M) : ℝ :=
