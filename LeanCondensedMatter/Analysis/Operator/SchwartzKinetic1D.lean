@@ -21,7 +21,7 @@ namespace SchwartzKinetic1D
 noncomputable section
 
 /-- Complex Schwartz functions on the real line. -/
-@[expose] abbrev Space := SchwartzMap ℝ ℂ
+abbrev Space := SchwartzMap ℝ ℂ
 
 /-- Spatial differentiation on complex Schwartz space. -/
 @[expose] noncomputable def derivative : Space →ₗ[ℂ] Space :=
