@@ -288,6 +288,118 @@ theorem polarFourierBesselZeroCoeff (n : ℕ) :
     simpa only [add_comm] using Complex.Gamma_nat_eq_factorial n
   simp [Complex.regularizedHGFunCoeff, hgamma, pow_two]
 
+/-- A full-period cosine moment is bounded by the length of its integration interval. -/
+theorem polarFourierCosineMoment_norm_le (n : ℕ) :
+    ‖polarFourierCosineMoment n‖ ≤ 2 * Real.pi := by
+  have h := intervalIntegral.norm_integral_le_of_norm_le_const
+    (a := (0 : ℝ)) (b := 2 * Real.pi) (C := (1 : ℝ))
+    (f := fun θ : ℝ => Real.cos θ ^ n) (by
+      intro θ _
+      simp only [Real.norm_eq_abs, abs_pow]
+      exact pow_le_one₀ (abs_nonneg _) (Real.abs_cos_le_one θ))
+  simpa only [polarFourierCosineMoment, one_mul, sub_zero,
+    abs_of_nonneg (mul_nonneg (by norm_num : (0 : ℝ) ≤ 2) Real.pi_pos.le)]
+    using h
+
+/-- The moment expansion of the full-angle Fourier kernel is absolutely summable. -/
+theorem polarFourierZerothMoments_summable (z : ℝ) :
+    Summable (fun n : ℕ =>
+      (Complex.I * (z : ℂ)) ^ n / (Nat.factorial n : ℂ) *
+        (polarFourierCosineMoment n : ℂ)) := by
+  have hs := (Real.summable_pow_div_factorial |z|).mul_left (2 * Real.pi)
+  apply Summable.of_norm_bounded hs
+  intro n
+  have hfact : (0 : ℝ) ≤ (Nat.factorial n : ℝ) := by positivity
+  have hpow : (0 : ℝ) ≤ |z| ^ n := pow_nonneg (abs_nonneg z) _
+  have hmoment := polarFourierCosineMoment_norm_le n
+  calc
+    ‖(Complex.I * (z : ℂ)) ^ n / (Nat.factorial n : ℂ) *
+        (polarFourierCosineMoment n : ℂ)‖ =
+        (|z| ^ n / (Nat.factorial n : ℝ)) *
+          ‖polarFourierCosineMoment n‖ := by
+      simp only [norm_mul, norm_div, norm_pow, Complex.norm_I,
+        Complex.norm_real, Complex.norm_natCast, Real.norm_eq_abs,
+        one_mul]
+    _ ≤ (|z| ^ n / (Nat.factorial n : ℝ)) * (2 * Real.pi) :=
+      mul_le_mul_of_nonneg_left hmoment (div_nonneg hpow hfact)
+    _ = (2 * Real.pi) * (|z| ^ n / (Nat.factorial n : ℝ)) := by ring
+
+/-- Mathlib's integer-order Bessel function has the expected coefficient expansion. -/
+theorem polarFourierBesselJZero_eq_tsum (z : ℂ) :
+    Complex.besselJ 0 z =
+      ∑' n : ℕ, Complex.regularizedHGFunCoeff 0 {(1 : ℂ)} n *
+        (-(z / 2) ^ 2) ^ n := by
+  rw [Complex.besselJ_def]
+  simp only [Complex.cpow_zero, one_mul, zero_add]
+  change (Complex.regularizedHGFunSeries 0 {(1 : ℂ)}).sum (-(z / 2) ^ 2) = _
+  rw [Complex.regularizedHGFunSeries, ← FormalMultilinearSeries.ofScalarsSum,
+    FormalMultilinearSeries.ofScalars_sum_eq]
+  simp only [smul_eq_mul]
+
+/-- The coefficient of each even Fourier moment agrees with the corresponding
+coefficient in the zeroth Bessel series. -/
+theorem polarFourierZerothMoment_even_eq_bessel (z : ℝ) (n : ℕ) :
+    (Complex.I * (z : ℂ)) ^ (2 * n) / (Nat.factorial (2 * n) : ℂ) *
+      (polarFourierCosineMoment (2 * n) : ℂ) =
+      ((2 * Real.pi : ℝ) : ℂ) *
+        (Complex.regularizedHGFunCoeff 0 {(1 : ℂ)} n *
+          (-((z : ℂ) / 2) ^ 2) ^ n) := by
+  rw [polarFourierCosineMoment_even_factorial, polarFourierBesselZeroCoeff]
+  push_cast
+  have hI : (Complex.I * (z : ℂ)) ^ (2 * n) = (-(z : ℂ) ^ 2) ^ n := by
+    rw [pow_mul, mul_pow, Complex.I_sq]
+    ring
+  have hdiv : (-((z : ℂ) / 2) ^ 2) ^ n =
+      (-(z : ℂ) ^ 2) ^ n / (4 : ℂ) ^ n := by
+    rw [← div_pow]
+    congr 1
+    ring
+  rw [hI, hdiv]
+  have hfac : (Nat.factorial (2 * n) : ℂ) ≠ 0 := by
+    exact_mod_cast Nat.factorial_ne_zero (2 * n)
+  have hfacn : (Nat.factorial n : ℂ) ≠ 0 := by
+    exact_mod_cast Nat.factorial_ne_zero n
+  have hfour : (4 : ℂ) ^ n ≠ 0 := pow_ne_zero _ (by norm_num)
+  field_simp
+
+/-- The full-angle zeroth Fourier kernel is exactly \(2π J₀\), with Mathlib's Bessel
+function and no restriction on the real radial argument. -/
+theorem polarFourierZerothAngularKernel_eq_besselJ (z : ℝ) :
+    polarFourierZerothAngularKernel z =
+      ((2 * Real.pi : ℝ) : ℂ) * Complex.besselJ 0 (z : ℂ) := by
+  let f : ℕ → ℂ := fun n =>
+    (Complex.I * (z : ℂ)) ^ n / (Nat.factorial n : ℂ) *
+      (polarFourierCosineMoment n : ℂ)
+  have hf : Summable f := polarFourierZerothMoments_summable z
+  have he : Summable (fun n : ℕ => f (2 * n)) :=
+    hf.comp_injective (by intro a b hab; omega)
+  have ho : Summable (fun n : ℕ => f (2 * n + 1)) :=
+    hf.comp_injective (by
+      intro a b hab
+      change 2 * a + 1 = 2 * b + 1 at hab
+      omega)
+  have hodd (n : ℕ) : f (2 * n + 1) = 0 := by
+    simp [f]
+  calc
+    polarFourierZerothAngularKernel z = ∑' n : ℕ, f n := by
+      exact polarFourierZerothAngularKernel_eq_tsum_moments z
+    _ = (∑' n : ℕ, f (2 * n)) + ∑' n : ℕ, f (2 * n + 1) :=
+      (tsum_even_add_odd he ho).symm
+    _ = ∑' n : ℕ, f (2 * n) := by
+      simp only [hodd, tsum_zero, add_zero]
+    _ = ∑' n : ℕ, ((2 * Real.pi : ℝ) : ℂ) *
+        (Complex.regularizedHGFunCoeff 0 {(1 : ℂ)} n *
+          (-((z : ℂ) / 2) ^ 2) ^ n) := by
+      apply tsum_congr
+      intro n
+      exact polarFourierZerothMoment_even_eq_bessel z n
+    _ = ((2 * Real.pi : ℝ) : ℂ) *
+        (∑' n : ℕ, Complex.regularizedHGFunCoeff 0 {(1 : ℂ)} n *
+          (-((z : ℂ) / 2) ^ 2) ^ n) := by
+      rw [tsum_mul_left]
+    _ = ((2 * Real.pi : ℝ) : ℂ) * Complex.besselJ 0 (z : ℂ) := by
+      rw [polarFourierBesselJZero_eq_tsum]
+
 /-- The zeroth radial Fourier kernel is normalized by the full polar angle at the origin. -/
 @[simp] theorem polarFourierZerothAngularKernel_zero :
     polarFourierZerothAngularKernel 0 = ((2 * Real.pi : ℝ) : ℂ) := by
