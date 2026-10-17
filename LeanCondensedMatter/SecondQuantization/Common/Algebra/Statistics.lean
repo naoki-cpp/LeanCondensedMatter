@@ -1,4 +1,8 @@
-import Mathlib.Data.Int.Basic
+module
+
+public import Mathlib.Data.Int.Basic
+
+public section
 
 set_option linter.style.header false
 
@@ -27,7 +31,7 @@ namespace Statistics
 /-- **The exchange sign** `ζ`: `+1` for bosons, `-1` for fermions. This is the sign that appears
 in the (anti)commutation relations `a_i a_j† - ζ a_j† a_i = δᵢⱼ` unifying CCR (`ζ = 1`) and CAR
 (`ζ = -1`). -/
-def zetaInt : Statistics → ℤ
+@[expose] def zetaInt : Statistics → ℤ
   | boson => 1
   | fermion => -1
 
