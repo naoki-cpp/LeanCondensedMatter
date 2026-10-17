@@ -37,6 +37,10 @@ magnetization dynamics. The [glossary](docs/glossary/magnetism/CONTEXT.md) fixes
 the [roadmap](docs/roadmaps/spin-waves.md) records unimplemented targets, and
 [ADR 0022](docs/adr/0022-spin-wave-model-boundaries.md) specifies the approved boundaries.
 
+### Declaration Explorer
+
+This tooling context lets readers find declarations and inspect their statements, dependencies, and source. The [Declaration Explorer glossary](docs/glossary/declaration-explorer/CONTEXT.md) owns its presentation vocabulary; Lean declarations remain authoritative for mathematical meaning.
+
 ## Relationships
 
 - `Analysis`, `Combinatorics`, and `Permutation` provide reusable mathematics to the physics contexts; physical assumptions remain downstream.
