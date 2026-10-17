@@ -90,17 +90,13 @@ abbrev BandHilbert := ℂ
 def momentumComponent (direction : Fin 2) (px py : ℝ) : ℝ :=
   if direction = 0 then px else py
 
-/-- Backward-compatible model-local name for the common two-dimensional momentum square. -/
-def momentumSq (px py : ℝ) : ℝ :=
-  momentumSq2D px py
-
 /-- Finite radial momentum domain encoded by the cutoff stored in `params`. -/
 def MomentumInDomain (params : Parameters) (px py : ℝ) : Prop :=
-  momentumSq px py ≤ params.momentumCutoff ^ 2
+  momentumSq2D px py ≤ params.momentumCutoff ^ 2
 
 /-- Parabolic band energy `ε(p) = |p|² / (2 m_eff)`. -/
 def bandEnergy (params : HamiltonianParameters) (px py : ℝ) : ℝ :=
-  momentumSq px py / (2 * params.effectiveMass)
+  momentumSq2D px py / (2 * params.effectiveMass)
 
 /-- Cartesian group-velocity component `v_i = p_i / m_eff`. -/
 def velocityComponent
