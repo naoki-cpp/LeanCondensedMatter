@@ -1,5 +1,4 @@
 import LeanCondensedMatter.Analysis.InternalSpace.Pauli
-import LeanCondensedMatter.Transport.Analysis.FourierGeometry
 import Mathlib.Tactic
 
 set_option linter.style.header false
@@ -28,8 +27,6 @@ finite. No disorder, zero-broadening limit, or device-level Hall observable is i
 namespace QuantumTheory.Models.RashbaExchange
 
 noncomputable section
-
-open QuantumTheory.Transport
 
 /-- The three parameters determining the clean Rashba-exchange Hamiltonian and spectrum. -/
 structure HamiltonianParameters where
@@ -108,16 +105,16 @@ def oppositeBand : Band → Band
 
 /-- Membership in the finite closed momentum disk. -/
 def inMomentumDomain (params : Parameters) (px py : ℝ) : Prop :=
-  momentumSq2D px py ≤ params.momentumCutoff ^ 2
+  px ^ 2 + py ^ 2 ≤ params.momentumCutoff ^ 2
 
 
 /-- Scalar parabolic kinetic energy. -/
 def kineticEnergy (params : HamiltonianParameters) (px py : ℝ) : ℝ :=
-  momentumSq2D px py / (2 * params.effectiveMass)
+  (px ^ 2 + py ^ 2) / (2 * params.effectiveMass)
 
 /-- Squared magnitude of the Rashba-exchange Pauli vector. -/
 def spinOrbitEnergySq (params : HamiltonianParameters) (px py : ℝ) : ℝ :=
-  params.rashbaVelocity ^ 2 * momentumSq2D px py + params.exchangeSplitting ^ 2
+  params.rashbaVelocity ^ 2 * (px ^ 2 + py ^ 2) + params.exchangeSplitting ^ 2
 
 /-- Magnitude of the Rashba-exchange Pauli vector. -/
 def spinOrbitEnergy (params : HamiltonianParameters) (px py : ℝ) : ℝ :=
