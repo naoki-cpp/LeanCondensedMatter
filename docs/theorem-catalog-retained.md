@@ -6,8 +6,9 @@ public theorem should be removed. A declaration remains public when it is the ca
 of an independently useful mathematical or physical fact, a deliberate simplification boundary, or
 a stable domain-level API.
 
-Declarations listed here have been semantically reviewed and are intentionally retained despite one
-or more audit signals. `scripts/TheoremCatalog.lean` records full-name mentions and unambiguous
+The theorem entries in the list below have been semantically reviewed and are intentionally retained
+when structural audit signals might otherwise suggest removing them. Non-theorem API contracts are
+listed separately at the end of this document and are not retained theorem exceptions. `scripts/TheoremCatalog.lean` records full-name mentions and unambiguous
 short-name mentions from this document as the
 `retainedMention` attribute. Retained declarations keep their structural attributes in the full
 catalog but are omitted from terminal, single-consumer, and direct-wrapper review queues so those
@@ -338,8 +339,6 @@ or consumer structure changes.
 - `QuantumTheory.finiteDimensional_of_gibbsOp_isCompact` — bounded-Gibbs obstruction theorem:
   compactness of the invertible Gibbs exponential forces finite dimensionality, documenting why the
   bounded Gibbs API is explicitly finite-dimensional.
-- `QuantumTheory.Transport.FiniteDisorderEnsemble.probability_sum` — structure-level normalization
-  invariant stating that the finite disorder probabilities sum to one.
 - `QuantumTheory.Transport.FiniteDisorderEnsemble.star_averagedGreenOfRegulator` — Adjointing the
   exact finite disorder-averaged Green operator reverses the signed regulator.
 - `QuantumTheory.Models.MassiveDirac.bandProjectorOperator_ne_zero` — Every band projector
@@ -386,11 +385,11 @@ or consumer structure changes.
 - `SecondQuantization.Common.TwoPointDiagram.mixedComponentCrossingCount_externalComponentPart` —
   The crossing count internal to the ambient external component equals the crossing count of the
   standalone external-piece pairing.
-- `SecondQuantization.Common.TwoPointDiagram.mixedComponentPairTimeEquiv_endpointLegs_eq_of_sameOrderChamber` —
-  Inside one order chamber, canonical transport of a normalized component pair preserves the two
-  underlying standard atomic legs in their normalized order.
-- `SecondQuantization.Common.TwoPointDiagram.mixedComponentWeight_eq_of_sameOrderChamber` —
-  Component exchange-statistics weight is constant on one chamber.
+- `SecondQuantization.Common.TwoPointDiagram.mixedComponentPairTimeEquiv_endpointLegs_eq_of_comparisons` —
+  When all strict time-event comparisons agree, canonical transport of a normalized component
+  pair preserves the underlying standard atomic legs in normalized order.
+- `SecondQuantization.Common.TwoPointDiagram.mixedComponentWeight_eq_of_comparisons` —
+  Component exchange-statistics weight is unchanged when every strict time-event comparison agrees.
 - `SecondQuantization.Common.TwoPointDiagram.prod_slotSplitVacuumComponents_eq_vacuumVertexProduct` —
   The product of arbitrary vertex-local weights over all ambient vacuum components is exactly the
   product over all vertices of the standalone quartic vacuum piece.
@@ -447,9 +446,6 @@ or consumer structure changes.
   For an externally connected left piece and strictly decreasing inherited vacuum times, the
   complete product of ambient vacuum-component Dyson fixed-time values is exactly the standalone
   fixed-order quartic vacuum integrand, including its Dyson sign and vertex-weight prefactor.
-- `LocallyFiniteHopping.self_mem` — defining locality
-  invariant of `LocallyFiniteHopping`: every site lies in its finite incident neighborhood. The
-  generated projection is part of the model contract even when it has no compiled theorem consumer.
 - `LocallyFiniteHopping.operator_latticeKet` — canonical
   `[simp]` evaluation of the hopping operator on a localized site ket.
 - `LocallyFiniteHopping.amplitude_eq` — canonical `[simp]`
@@ -682,4 +678,12 @@ or consumer structure changes.
 - `Combinatorics.Pairing.pairEndpoint_one` — simp evaluation of the second endpoint of a normalized pair, paired with the zero-endpoint rule for finite endpoint reindexing.
 - `Combinatorics.Pairing.normalizedPairOfEndpointEquiv_pair_eq_or_swap` — the abstract endpoint transport chooses either original orientation or its swap; the general transport theorem must not assume order preservation.
 - `Combinatorics.Pairing.normalizedPairSubtypeEndpointEquiv_apply_val` — simp projection formula for the endpoint equivalence restricted to partner-invariant position subsets; used by mixed diagram components.
-- `Combinatorics.SlotShuffle.sdiffLeftSlotsOrderEquiv` — canonical increasing-order equivalence from the right shuffle slots to the complement of the left slots; this typed bridge is reused in two independent diagram-standardization modules and should remain public rather than being expanded at both call sites.
+
+## Other retained API contracts (not theorem declarations)
+
+These items are mathematical interfaces worth retaining, but they are **not theorem declarations**.
+They are deliberately excluded from the theorem-audit suppression list.
+
+- **`QuantumTheory.Transport.FiniteDisorderEnsemble.probability_sum`** — structure-field normalization of the finite disorder ensemble: all configuration probability weights sum to one.
+- **`LocallyFiniteHopping.self_mem`** — structure-field locality invariant: each site belongs to its own finite incident neighborhood.
+- **`Combinatorics.SlotShuffle.sdiffLeftSlotsOrderEquiv`** — public finite-set order equivalence used by two independent diagram-standardization modules.
