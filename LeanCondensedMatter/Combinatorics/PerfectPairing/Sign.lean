@@ -259,7 +259,7 @@ private theorem sum_univ_eq_sum_Ioi_add_sum_Iio {m : ℕ} (k : Fin m) (f : Fin m
     simpa only [Finset.compl_singleton] using (Finset.Ioi_disjUnion_Iio k)
   calc
     (∑ l : Fin m, f l) = (∑ l ∈ Finset.univ.erase k, f l) + f k := by
-      exact (Finset.sum_erase_add Finset.univ k (Finset.mem_univ k)).symm
+      exact (Finset.sum_erase_add Finset.univ f (Finset.mem_univ k)).symm
     _ = (∑ l ∈ Finset.Ioi k, f l) + (∑ l ∈ Finset.Iio k, f l) := by
       rw [← hpartition, Finset.sum_disjUnion, hk, add_zero]
 
