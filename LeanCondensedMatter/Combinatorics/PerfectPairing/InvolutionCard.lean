@@ -26,13 +26,7 @@ theorem even_card_of_fixedPointFreeInvolution {α : Type*} [Fintype α]
       _ = x := hp x⟩
   have hadjIrrefl : Std.Irrefl adj := ⟨fun x h => hne x h⟩
   let G : SimpleGraph α := ⟨adj, hadjSymm, hadjIrrefl⟩
-  let M : G.Subgraph :=
-    { verts := Set.univ
-      Adj := adj
-      adj_sub := fun h => h
-      edge_vert := fun _ => Set.mem_univ _
-      symm := hadjSymm }
-  have hM : M.IsPerfectMatching := by
+  have hM : (⊤ : G.Subgraph).IsPerfectMatching := by
     rw [SimpleGraph.Subgraph.isPerfectMatching_iff]
     intro x
     refine ⟨p x, rfl, fun y hy => ?_⟩
