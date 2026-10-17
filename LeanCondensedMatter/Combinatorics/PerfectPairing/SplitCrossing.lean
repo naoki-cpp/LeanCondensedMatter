@@ -200,47 +200,24 @@ private theorem Pairing.ofSplit_sum_pairEndpointInversionCount_eq_positionInvers
     intro q _
     exact Pairing.ofSplit_pairEndpointInversionCount_eq_sum_localEndpoints e P Q p q
   rw [hlocal]
-  have hswap :
-      (∑ p : P.NormalizedPair, ∑ q : Q.NormalizedPair,
-        ∑ i : Fin 2, ∑ j : Fin 2,
-          if e (Sum.inr (Q.pairEndpointEquiv (q, j))) <
-              e (Sum.inl (P.pairEndpointEquiv (p, i))) then 1 else 0) =
-        ∑ p : P.NormalizedPair, ∑ i : Fin 2,
-          ∑ q : Q.NormalizedPair, ∑ j : Fin 2,
-            if e (Sum.inr (Q.pairEndpointEquiv (q, j))) <
-                e (Sum.inl (P.pairEndpointEquiv (p, i))) then 1 else 0 := by
-    apply Finset.sum_congr rfl
-    intro p _
-    rw [Finset.sum_comm]
-  rw [hswap]
-  have hproduct :
-      (∑ p : P.NormalizedPair, ∑ i : Fin 2,
-        ∑ q : Q.NormalizedPair, ∑ j : Fin 2,
-          if e (Sum.inr (Q.pairEndpointEquiv (q, j))) <
-              e (Sum.inl (P.pairEndpointEquiv (p, i))) then 1 else 0) =
-        ∑ x : P.NormalizedPair × Fin 2,
-          ∑ y : Q.NormalizedPair × Fin 2,
-            if e (Sum.inr (Q.pairEndpointEquiv y)) <
-                e (Sum.inl (P.pairEndpointEquiv x)) then 1 else 0 := by
-    simp only [Fintype.sum_prod_type]
-  rw [hproduct]
-  refine Fintype.sum_equiv P.pairEndpointEquiv
-    (fun x : P.NormalizedPair × Fin 2 =>
-      ∑ y : Q.NormalizedPair × Fin 2,
-        if e (Sum.inr (Q.pairEndpointEquiv y)) <
-            e (Sum.inl (P.pairEndpointEquiv x)) then 1 else 0)
-    (fun i : Fin (2 * a) =>
-      ∑ j : Fin (2 * b),
-        if e (Sum.inr j) < e (Sum.inl i) then 1 else 0) ?_
-  intro x
-  refine Fintype.sum_equiv Q.pairEndpointEquiv
-    (fun y : Q.NormalizedPair × Fin 2 =>
-      if e (Sum.inr (Q.pairEndpointEquiv y)) <
-          e (Sum.inl (P.pairEndpointEquiv x)) then 1 else 0)
-    (fun j : Fin (2 * b) =>
-      if e (Sum.inr j) < e (Sum.inl (P.pairEndpointEquiv x)) then 1 else 0) ?_
-  intro y
-  rfl
+  calc
+    (∑ p : P.NormalizedPair, ∑ q : Q.NormalizedPair,
+      ∑ i : Fin 2, ∑ j : Fin 2,
+        if e (Sum.inr (Q.pairEndpointEquiv (q, j))) <
+            e (Sum.inl (P.pairEndpointEquiv (p, i))) then 1 else 0) =
+        ∑ x : (P.NormalizedPair × Q.NormalizedPair) × (Fin 2 × Fin 2),
+          if e (Sum.inr (Q.pairEndpointEquiv (x.1.2, x.2.2))) <
+              e (Sum.inl (P.pairEndpointEquiv (x.1.1, x.2.1))) then 1 else 0 := by
+      simp only [Fintype.sum_prod_type]
+    _ = ∑ x : Fin (2 * a) × Fin (2 * b),
+          if e (Sum.inr x.2) < e (Sum.inl x.1) then 1 else 0 := by
+      refine Fintype.sum_equiv
+        ((Equiv.prodProdProdComm _ _ _ _).trans
+          (Equiv.prodCongr P.pairEndpointEquiv Q.pairEndpointEquiv))
+        _ _ ?_
+      intro x
+      rfl
+    _ = _ := by rw [Fintype.sum_prod_type]
 
 /-- The only residual crossing parity of a binary split is the parity of
 the inter-sector position inversions, independently of the pairing chosen
