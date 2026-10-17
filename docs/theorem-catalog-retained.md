@@ -666,3 +666,20 @@ or consumer structure changes.
 - `Combinatorics.pow_eq_of_mod_two_eq` — generic monoid law for powers of an involutive exchange scalar depending only on parity, used in multiple bosonic/fermionic and pairing-sign modules.
 - `Combinatorics.subsetSumSdiffEquiv_inl_apply` — simp evaluation of the left branch of the finite-set subset/complement equivalence, preserving the explicit proof of subset inclusion in the ambient type.
 - `Combinatorics.subsetSumSdiffEquiv_inr_apply` — simp evaluation of the relative-complement branch of the same equivalence, used by leg and connectivity splittings.
+
+- `SimpleGraph.mem_componentBlock` — identifies graph-component block membership with reachability; the canonical bridge from graph connectivity to finite partition membership.
+- `SimpleGraph.self_mem_componentBlock` — simp-friendly fact that each vertex belongs to its own connected component, used to connect reflexive reachability with block reasoning.
+- `SimpleGraph.componentBlock_mem_componentPartition` — connects a chosen vertex's component block to the parts of the canonical component partition, used when indexing over partition blocks.
+- `SimpleGraph.componentBlock_eq_of_reachable` — reachable vertices yield equal connected-component blocks, an order-free uniqueness property useful for graph decompositions.
+- `SimpleGraph.componentBlock_eq_iff_mem` — a vertex lies in a component partition part exactly when its component block equals that part; used in interaction-sector and diagrammatic component APIs.
+- `SimpleGraph.mem_componentBlockOn` — characterizes ambient finite-set graph-component membership by subtype membership and reachability, enabling component reasoning without changing vertex type.
+- `SimpleGraph.componentBlockOn_eq_of_reachable` — transports reachability to equality of ambient component blocks for graphs whose vertices are finite-set subtypes; reused by pairing graphs and quartic components.
+- `Finpartition.bind_le` — independently refining every block always yields a refinement of the starting partition; this defines the inverse of the refinement-fiber equivalence.
+- `Finpartition.mem_restrict_iff` — explicit formula for membership in a partition restricted to a subset; supports bind/restrict inversion and downstream cumulant independence proofs.
+- `Finpartition.eq_of_inf_ne_bot` — uniqueness of a partition block containing the same nonempty subset, the disjointness argument that makes local refinement reconstruction well-defined.
+- `Finpartition.partitionProduct_bind` — multiplicativity of block products under partition bind, the algebraic backbone of blockwise moment-cumulant factorization.
+- `Combinatorics.Pairing.pairEndpoint_zero` — simp evaluation of the first endpoint of a normalized pair, exposing the endpoint indexing convention of the pairing equivalence.
+- `Combinatorics.Pairing.pairEndpoint_one` — simp evaluation of the second endpoint of a normalized pair, paired with the zero-endpoint rule for finite endpoint reindexing.
+- `Combinatorics.Pairing.normalizedPairOfEndpointEquiv_pair_eq_or_swap` — the abstract endpoint transport chooses either original orientation or its swap; the general transport theorem must not assume order preservation.
+- `Combinatorics.Pairing.normalizedPairSubtypeEndpointEquiv_apply_val` — simp projection formula for the endpoint equivalence restricted to partner-invariant position subsets; used by mixed diagram components.
+- `Combinatorics.SlotShuffle.sdiffLeftSlotsOrderEquiv` — canonical increasing-order equivalence from the right shuffle slots to the complement of the left slots; this typed bridge is reused in two independent diagram-standardization modules and should remain public rather than being expanded at both call sites.
