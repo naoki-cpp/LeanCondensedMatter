@@ -9,9 +9,9 @@ set_option linter.style.header false
 /-!
 # Bounded-operator realization of the Rashba-exchange model
 
-This module lifts the clean Rashba Hamiltonian, velocity, and current matrices to bounded
-operators. Finite-broadening Green resolvents and response-specific assumptions are kept in the
-separate `Green` module.
+This module lifts the Rashba Hamiltonian and velocity matrices to bounded operators using
+only clean `HamiltonianParameters`. The charge-current realization uses the extended response
+`Parameters`; finite-broadening Green resolvents stay in the separate `Green` module.
 -/
 
 namespace QuantumTheory.Models.RashbaExchange
@@ -25,13 +25,13 @@ noncomputable def matrixOperator (M : InternalSpace.PauliMatrix) :
     InternalSpace.PauliMatrix ≃⋆ₐ[ℂ] (EuclideanSpace ℂ (Fin 2) →L[ℂ] EuclideanSpace ℂ (Fin 2))) M
 
 /-- Bounded-operator realization of the model Hamiltonian. -/
-noncomputable def hamiltonianOperator (params : Parameters) (px py : ℝ) :
+noncomputable def hamiltonianOperator (params : HamiltonianParameters) (px py : ℝ) :
     EuclideanSpace ℂ (Fin 2) →L[ℂ] EuclideanSpace ℂ (Fin 2) :=
   matrixOperator (hamiltonian params px py)
 
 /-- Bounded-operator realization of the matrix velocity operator. -/
 noncomputable def velocityBoundedOperator
-    (params : Parameters) (direction : Fin 2) (px py : ℝ) :
+    (params : HamiltonianParameters) (direction : Fin 2) (px py : ℝ) :
     EuclideanSpace ℂ (Fin 2) →L[ℂ] EuclideanSpace ℂ (Fin 2) :=
   matrixOperator (velocityOperator params direction px py)
 
@@ -63,7 +63,7 @@ theorem currentBoundedOperator_rashba_zero
       smul_smul]
 
 /-- The explicit Rashba-exchange Hamiltonian matrix is Hermitian for real model parameters. -/
-theorem hamiltonian_isHermitian (params : Parameters) (px py : ℝ) :
+theorem hamiltonian_isHermitian (params : HamiltonianParameters) (px py : ℝ) :
     (hamiltonian params px py).IsHermitian := by
   let u : InternalSpace.PauliAxis → ℝ
     | .x => params.rashbaVelocity * py
@@ -85,7 +85,7 @@ theorem hamiltonian_isHermitian (params : Parameters) (px py : ℝ) :
 
 /-- The bounded Rashba-exchange Hamiltonian is self-adjoint, providing the analytic provenance
 required by the generic finite-broadening Středa/Bastin layer. -/
-theorem hamiltonianOperator_isSelfAdjoint (params : Parameters) (px py : ℝ) :
+theorem hamiltonianOperator_isSelfAdjoint (params : HamiltonianParameters) (px py : ℝ) :
     IsSelfAdjoint (hamiltonianOperator params px py) := by
   simpa [hamiltonianOperator, matrixOperator] using
     (hamiltonian_isHermitian params px py).isSelfAdjoint.map
