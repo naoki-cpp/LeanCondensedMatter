@@ -105,6 +105,11 @@ cumulants, and connected decompositions remain in `Combinatorics`.
   reindexing; the cast-aware fixed-width coordinate/order facts used by the project live in
   `Combinatorics/FiniteIndex/Block.lean`, while generic counting through an equivalence with a
   finite product lives in `Combinatorics/Common/FintypeProduct.lean`;
+- duplicate-free flattened-list block order belongs in
+  `Combinatorics/Common/ListFlatMapOrder.lean`, independently of its imaginary-time consumer;
+- signs of fiberwise permutations on dependent sums belong in
+  `Permutation/SigmaPermutationSign.lean`, under `Equiv.Perm`, independently of the
+  diagrammatic relative-shuffle consumer;
 - generic formal power-series algebra and the formal-log/cumulant bridge live in
   `Analysis/PowerSeries`; pure set-partition theorems should not acquire new power-series
   dependencies;
