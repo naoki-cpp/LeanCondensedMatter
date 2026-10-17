@@ -1,4 +1,8 @@
-import Mathlib.Data.Finset.Sort
+module
+
+public import Mathlib.Data.Finset.Sort
+
+public section
 
 set_option linter.style.header false
 
@@ -14,7 +18,7 @@ namespace FiniteIndex
 
 /-- Positions left after deleting `0` and a position `j`. Distinctness is needed only when
 proving that the result has cardinality `2 * n`. -/
-def deletedPositions (n : ℕ) (j : Fin (2 * (n + 1))) : Finset (Fin (2 * (n + 1))) :=
+@[expose] def deletedPositions (n : ℕ) (j : Fin (2 * (n + 1))) : Finset (Fin (2 * (n + 1))) :=
   (Finset.univ.erase 0).erase j
 
 @[simp]
@@ -24,7 +28,7 @@ theorem card_deletedPositions (n : ℕ) (j : Fin (2 * (n + 1)))
   simp [deletedPositions, Nat.mul_succ, hzero]
 
 /-- Increasing bijection from `Fin (2 * n)` onto the remaining positions. -/
-noncomputable def deletedPositionsOrderIso (n : ℕ) (j : Fin (2 * (n + 1)))
+@[expose] noncomputable def deletedPositionsOrderIso (n : ℕ) (j : Fin (2 * (n + 1)))
     (hzero : j ≠ (0 : Fin (2 * (n + 1)))) :
     Fin (2 * n) ≃o deletedPositions n j :=
   (deletedPositions n j).orderIsoOfFin (card_deletedPositions n j hzero)
