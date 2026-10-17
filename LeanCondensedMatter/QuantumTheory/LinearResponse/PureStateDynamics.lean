@@ -22,18 +22,8 @@ variable (system : BoundedFreeSystem H)
 @[simp]
 theorem norm_freePropagator_apply (t : ℝ) (x : H) :
     ‖freePropagator system t x‖ = ‖x‖ := by
-  have hcomp :
-      ContinuousLinearMap.adjoint (freePropagator system t) ∘SL
-          freePropagator system t = 1 := by
-    ext y
-    have h := congrArg (fun U : H →L[ℂ] H => U y)
-      (star_mul_freePropagator system t)
-    change ContinuousLinearMap.adjoint (freePropagator system t)
-        (freePropagator system t y) = y at h
-    exact h
-  exact
-    ((ContinuousLinearMap.norm_map_iff_adjoint_comp_self
-      (freePropagator system t)).2 hcomp) x
+  exact ContinuousLinearMap.norm_map_of_mem_unitary
+    (freePropagator_mem_unitary system t) x
 
 /-- Multiplication of a normalized state representative by a unit complex phase. -/
 def phaseState (c : ℂ) (hc : ‖c‖ = 1) (ψ : StateVector H) : StateVector H :=
