@@ -682,3 +682,4 @@ or consumer structure changes.
 - `Combinatorics.Pairing.pairEndpoint_one` — simp evaluation of the second endpoint of a normalized pair, paired with the zero-endpoint rule for finite endpoint reindexing.
 - `Combinatorics.Pairing.normalizedPairOfEndpointEquiv_pair_eq_or_swap` — the abstract endpoint transport chooses either original orientation or its swap; the general transport theorem must not assume order preservation.
 - `Combinatorics.Pairing.normalizedPairSubtypeEndpointEquiv_apply_val` — simp projection formula for the endpoint equivalence restricted to partner-invariant position subsets; used by mixed diagram components.
+- `Combinatorics.SlotShuffle.sdiffLeftSlotsOrderEquiv` — canonical increasing-order equivalence from the right shuffle slots to the complement of the left slots; this typed bridge is reused in two independent diagram-standardization modules and should remain public rather than being expanded at both call sites.
