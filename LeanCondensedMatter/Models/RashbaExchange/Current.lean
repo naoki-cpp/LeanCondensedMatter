@@ -18,6 +18,7 @@ namespace QuantumTheory.Models.RashbaExchange
 
 noncomputable section
 
+open ContinuousLinearMap
 open QuantumTheory.Transport
 
 /-- Charge-current matrix operator in the convention j_i = q v_i. -/
