@@ -51,16 +51,7 @@ theorem traceNorm_eq_tsum_norm_inner_left_of_polar {T : H →L[ℂ] H}
     exact ContinuousLinearMap.adjoint_inner_right U (d i) (T (d i))
   have hnonneg := diagonalExpectationValue_nonneg
     (CFC.abs T) (nonneg_iff_isPositive.mp (CFC.abs_nonneg T)) (d i)
-  have hcastNorm :
-      ‖(diagonalExpectationValue (CFC.abs T)
-        (CFC.abs_nonneg T).isSelfAdjoint (d i) : ℂ)‖ =
-        diagonalExpectationValue (CFC.abs T) (CFC.abs_nonneg T).isSelfAdjoint (d i) := by
-    rw [Complex.norm_real, Real.norm_of_nonneg hnonneg]
-  calc
-    diagonalExpectationValue (CFC.abs T) (CFC.abs_nonneg T).isSelfAdjoint (d i) =
-        ‖(diagonalExpectationValue (CFC.abs T)
-          (CFC.abs_nonneg T).isSelfAdjoint (d i) : ℂ)‖ := hcastNorm.symm
-    _ = ‖inner ℂ (U (d i)) (T (d i))‖ := by rw [hdiag]
+  rw [← hdiag, Complex.norm_real, Real.norm_of_nonneg hnonneg]
 
 /-- The trace norm is independent of the proof of trace-class membership. -/
 theorem traceNorm_proof_irrel {T : H →L[ℂ] H} (hT hT' : IsTraceClass T) :
