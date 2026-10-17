@@ -1,3 +1,4 @@
+import LeanCondensedMatter.SecondQuantization.Common.Algebra.DiagonalTrace
 import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.DiagonalEvolution
 import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.TwoPoint
 
