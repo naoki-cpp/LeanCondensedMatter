@@ -1,6 +1,10 @@
-import LeanCondensedMatter.Analysis.Operator.AdjointConjugation
-import LeanCondensedMatter.Analysis.Operator.Spectral.EigenvectorFamily
-import Mathlib.LinearAlgebra.Dimension.Finrank
+module
+
+public import LeanCondensedMatter.Analysis.Operator.AdjointConjugation
+public import LeanCondensedMatter.Analysis.Operator.Spectral.EigenvectorFamily
+public import Mathlib.LinearAlgebra.Dimension.Finrank
+
+public section
 
 set_option linter.style.header false
 
@@ -19,7 +23,7 @@ variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteS
 namespace ContinuousLinearMap
 
 /-- Package the two-sided adjoint inverse laws as Mathlib's unitary subtype. -/
-def unitaryOfAdjointInverse (U : H →L[ℂ] H)
+@[expose] def unitaryOfAdjointInverse (U : H →L[ℂ] H)
     (hleft : star U * U = 1) (hright : U * star U = 1) :
     unitary (H →L[ℂ] H) :=
   ⟨U, Unitary.mem_iff.mpr ⟨hleft, hright⟩⟩
