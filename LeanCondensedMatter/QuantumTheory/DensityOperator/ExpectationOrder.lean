@@ -20,12 +20,6 @@ open scoped ComplexOrder
 
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
 
-omit [CompleteSpace H] in
-private theorem inner_apply_im_eq_zero_of_isSymmetric
-    {A : H →L[ℂ] H} (hA : (A : H →ₗ[ℂ] H).IsSymmetric) (x : H) :
-    (inner ℂ x (A x) : ℂ).im = 0 := by
-  simpa using hA.im_inner_self_apply x
-
 /-- The expectation of a symmetric bounded observable has zero imaginary part. -/
 theorem DensityOperator.expectation_im_eq_zero_of_isSymmetric
     (ρ : DensityOperator H) {A : H →L[ℂ] H}
@@ -40,7 +34,12 @@ theorem DensityOperator.expectation_im_eq_zero_of_isSymmetric
         ∑' _a : EigenvectorIndex ρ.op, (0 : ℝ) := by
       apply tsum_congr
       intro a
-      simp [Complex.mul_im, inner_apply_im_eq_zero_of_isSymmetric hA]
+      have him :
+          (inner ℂ (eigenvectorFamily ρ.spectralTraceClass.compact a)
+            (A (eigenvectorFamily ρ.spectralTraceClass.compact a)) : ℂ).im = 0 := by
+        simpa using
+          hA.im_inner_self_apply (eigenvectorFamily ρ.spectralTraceClass.compact a)
+      simp [Complex.mul_im, him]
     _ = 0 := tsum_zero
 
 /-- The expectation of a symmetric bounded observable is a self-adjoint complex scalar. -/
