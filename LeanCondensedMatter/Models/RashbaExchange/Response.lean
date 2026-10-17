@@ -131,8 +131,9 @@ theorem cleanBastinPointResponse_rashba_zero_swap
   apply intervalIntegral.integral_congr
   intro energy _
   apply congrArg (fun z : ℂ => occupation energy * z)
-  simp [regularizedBastinTraceIntegrand, regularizedBastinOperatorIntegrand,
-    smul_smul, mul_comm]
+  by_cases hmeasured : measured = 0 <;> by_cases hsource : source = 0 <;>
+    simp [regularizedBastinTraceIntegrand, regularizedBastinOperatorIntegrand,
+      hmeasured, hsource, smul_smul, mul_comm]
 
 /-- The full finite-broadening Hall projection vanishes pointwise when the Rashba coupling is zero. -/
 @[simp] theorem antisymmetricCleanBastinPointResponse_rashba_zero
