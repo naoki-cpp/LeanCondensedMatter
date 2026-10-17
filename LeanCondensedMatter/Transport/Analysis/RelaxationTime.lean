@@ -1,4 +1,8 @@
-import Mathlib.Basic.Real.Basic
+module
+
+public import Mathlib.Basic.Real.Basic
+
+public section
 
 set_option linter.style.header false
 

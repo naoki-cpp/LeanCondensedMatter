@@ -1,4 +1,8 @@
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
+module
+
+public import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
+
+public section
 
 set_option linter.style.header false
 
@@ -22,12 +26,12 @@ namespace Transport
 
 /-- The `ℏ`-dependent prefactor in the two-dimensional physical-momentum continuum measure
 `d²p / (2πℏ)²`. This is a continuum convention rather than a generic transport invariant. -/
-noncomputable def momentumMeasurePrefactor (hbar : ℝ) : ℝ :=
+@[expose] noncomputable def momentumMeasurePrefactor (hbar : ℝ) : ℝ :=
   1 / (2 * Real.pi * hbar) ^ 2
 
 /-- The physical-momentum measure prefactor after an exact full-angle reduction,
 `2π /(2πℏ)²`. The radial Jacobian `p` remains part of the radial integrand. -/
-noncomputable def fullAngleMomentumMeasurePrefactor (hbar : ℝ) : ℝ :=
+@[expose] noncomputable def fullAngleMomentumMeasurePrefactor (hbar : ℝ) : ℝ :=
   2 * Real.pi * momentumMeasurePrefactor hbar
 
 end Transport

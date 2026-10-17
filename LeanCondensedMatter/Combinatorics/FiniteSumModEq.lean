@@ -1,8 +1,15 @@
-import Mathlib.Algebra.BigOperators.Group.Finset.Sigma
-import Mathlib.Algebra.BigOperators.ModEq
-import Mathlib.Data.Finset.Prod
-import Mathlib.Data.ZMod.Basic
-import Mathlib.Tactic.Ring
+module
+
+public import Mathlib.Algebra.BigOperators.Group.Finset.Sigma
+public import Mathlib.Algebra.BigOperators.ModEq
+public import Mathlib.Data.Finset.Prod
+public import Mathlib.Data.ZMod.Basic
+public import Mathlib.Tactic.Ring
+
+-- Used only to rewrite casts of finite sums in proofs; not part of this module's public API.
+import Mathlib.Algebra.BigOperators.Ring.Finset
+
+public section
 
 set_option linter.style.header false
 
@@ -66,7 +73,7 @@ theorem finset_sum_offDiag_modEq_of_pair_add_modEq {α : Type*}
         ∑ p ∈ s.offDiag, (g p.1 p.2 : ZMod n) := by
     rw [Finset.sum_sub_distrib] at hzero
     exact sub_eq_zero.mp hzero
-  simpa using hsum
+  simpa only [Nat.cast_sum] using hsum
 
 /-- An ordering selects one representative from each unordered pair in an off-diagonal sum.
 
