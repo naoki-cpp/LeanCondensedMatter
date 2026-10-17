@@ -159,7 +159,6 @@ theorem polarFourierCosineMoment_even_factorial (n : ℕ) :
           push_cast
           ring
         rw [Finset.prod_range_succ, ih, hfac2, hfacn, pow_succ]
-        push_cast
         have hfact : (Nat.factorial n : ℝ) ≠ 0 := by exact_mod_cast Nat.factorial_ne_zero n
         have hpow : (4 : ℝ) ^ n ≠ 0 := pow_ne_zero _ (by norm_num)
         have hden : 2 * (n : ℝ) + 2 ≠ 0 := by positivity
