@@ -2,20 +2,19 @@ import LeanCondensedMatter.SecondQuantization.Bosonic.ImaginaryTime.ImaginaryTim
 import LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.CCR
 import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.ParticleNumberWeightSummable
 import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.DiagonalEvolution
-import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.Unnormalized.PeelFirstTrace
 
 set_option linter.style.header false
 set_option linter.unusedFintypeInType false
 
 /-!
-# Uncutoff bosonic two-point function
+# Summability for the uncutoff bosonic two-point function
 
-This module instantiates the Common Bloch–de Dominicis two-point identity on the algebraic bosonic
-Fock space. Since `Occupation Mode` is infinite even for finite `Mode`, the proof supplies explicit
-summability results for the partition series and the rotated two-point double series.
+Since `Occupation Mode` is infinite even for finite `Mode`, this module supplies summability
+results for the partition series and the rotated two-point double series. ConcreteMixedTwoPoint
+uses these results to instantiate the Common normalized summable trace identity.
 
-The construction combines free imaginary-time evolution, the canonical commutation relations, and
-particle-number-weighted Boltzmann summability.
+The estimates combine free imaginary-time evolution and particle-number-weighted Boltzmann
+summability.
 -/
 
 namespace SecondQuantization
@@ -126,56 +125,6 @@ theorem summable_imaginaryTimeEvolveFree_self (ε : Mode → ℝ) (β : ℝ) (hp
   simpa [matrixCoeff_imaginaryTimeEvolveFree_self, boltzmannWeight] using
     Complex.summable_ofReal.mpr (summable_boltzmannWeight ε β hpos)
 
-/-- The uncutoff bosonic two-point identity obtained from the Common Bloch–de Dominicis base case.
-For `i = j`, division by the nonzero partition sum gives
-`⟨aᵢaᵢ†⟩_β = (1 - e^{-βεᵢ})⁻¹`; combining this with the number-operator reordering identity yields
-the Bose–Einstein occupation number. -/
-theorem tsumTrace_imaginaryTimeEvolveFree_comp_annihilate_comp_create
-    (ε : Mode → ℝ) (β : ℝ) (hpos : ∀ k, 0 < β * ε k) (i j : Mode) :
-    (1 - Complex.exp ((-(ε i) * β : ℝ) : ℂ)) *
-        Common.tsumTrace
-          ((imaginaryTimeEvolveFree ε (-β)).comp ((annihilate i).comp (create j))) =
-      (if i = j then (1 : ℂ) else 0) * Common.tsumTrace (imaginaryTimeEvolveFree ε (-β)) := by
-  unfold imaginaryTimeEvolveFree
-  have hC1 : Common.heisenbergEvolve (freeEigenvalue ε) (-β) (annihilate i) =
-      Complex.exp ((-(ε i) * (-β) : ℝ) : ℂ) • annihilate i := by
-    have h := imaginaryTimeEvolve_annihilate ε (-β) i
-    rwa [show ((-(ε i) * (-β) : ℝ) : ℂ) = -((-β : ℝ) : ℂ) * (ε i : ℂ) by push_cast; ring]
-  have hcomm : ScalarExchange.zetaCommutator (1 : ℂ) (annihilate i) (create j) =
-      (if i = j then (1 : ℂ) else 0) •
-        (LinearMap.id : FockSpace Mode →ₗ[ℂ] FockSpace Mode) := by
-    simpa using comm_annihilate_create i j
-  have hSummD := summable_imaginaryTimeEvolveFree_self ε β hpos
-  have hRotate : Summable (Function.uncurry (fun n k =>
-      Common.matrixCoeff ((imaginaryTimeEvolveFree ε (-β)).comp (create j)) n k *
-        Common.matrixCoeff (annihilate i) k n)) := by
-    by_cases hij : i = j
-    · subst hij
-      exact summable_imaginaryTimeEvolveFree_comp_create_mul_annihilate_diag ε β hpos i
-    · have hzero : Function.uncurry (fun n k =>
-          Common.matrixCoeff ((imaginaryTimeEvolveFree ε (-β)).comp (create j)) n k *
-            Common.matrixCoeff (annihilate i) k n) = 0 := by
-        funext p
-        simp only [Function.uncurry, Pi.zero_apply]
-        exact matrixCoeff_imaginaryTimeEvolveFree_comp_create_mul_matrixCoeff_annihilate_of_ne
-          hij ε (-β) p.1 p.2
-      rw [hzero]
-      exact summable_zero
-  have hPeel := hSummD.mul_left (if i = j then (1 : ℂ) else 0)
-  have hthm := Common.tsumTrace_diagonalEvolution_comp_peel (freeEigenvalue ε) β (-(ε i))
-    (1 : ℂ) (annihilate i) [(create j, if i = j then (1 : ℂ) else 0)] hC1
-    (by simpa using hcomm)
-    (by simpa only [ScalarExchange.peelSumWithCoefficients, List.map_nil, List.prod_nil,
-      mul_zero, smul_zero, add_zero, Module.End.one_eq_id, LinearMap.comp_smul,
-      LinearMap.comp_id, ← Common.matrixCoeffLinear_apply, map_smul, smul_eq_mul,
-      imaginaryTimeEvolveFree] using hPeel)
-    (by simpa only [List.map_cons, List.map_nil, List.prod_cons, List.prod_nil, mul_one,
-      imaginaryTimeEvolveFree] using hRotate)
-  simp only [List.length_cons, List.length_nil, List.map_cons, List.map_nil,
-    List.prod_cons, List.prod_nil, one_pow, one_mul, mul_one,
-    ScalarExchange.peelSumWithCoefficients, mul_zero, smul_zero, add_zero] at hthm
-  simpa only [Module.End.one_eq_id, LinearMap.comp_smul, LinearMap.comp_id,
-    Common.tsumTrace_smul] using hthm
 
 end
 end Bosonic

@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Analysis.Exponential
+import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.GibbsExpectation.TwoPointTrace
 import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.FreeKMSRotation
 import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.TwoPoint
 import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.ConvergenceAwareGibbs
@@ -41,15 +42,38 @@ theorem freeGibbsExpectation_annihilate_comp_create_concrete
       freeGibbsExpectation ε β ((annihilate i).comp (create j)) =
         (if i = j then (1 : ℂ) else 0) /
           (1 - Complex.exp ((-(ε i) * β : ℝ) : ℂ)) := by
-    apply (eq_div_iff hden).2
-    rw [mul_comm]
-    have htrace :=
-      tsumTrace_imaginaryTimeEvolveFree_comp_annihilate_comp_create ε β hpos i j
-    have hZ := freeGibbsPartition_ne_zero ε β hpos
-    unfold freeGibbsExpectation
-    rw [← mul_div_assoc]
-    apply (div_eq_iff hZ).2
-    simpa [freeGibbsPartition] using htrace
+    have hC1 : Common.heisenbergEvolve (freeEigenvalue ε) (-β) (annihilate i) =
+        Complex.exp ((-(ε i) * (-β) : ℝ) : ℂ) • annihilate i := by
+      have h := imaginaryTimeEvolve_annihilate ε (-β) i
+      rwa [show ((-(ε i) * (-β) : ℝ) : ℂ) = -((-β : ℝ) : ℂ) * (ε i : ℂ) by push_cast; ring]
+    have hcomm : ScalarExchange.zetaCommutator (1 : ℂ) (annihilate i) (create j) =
+        (if i = j then (1 : ℂ) else 0) •
+          (LinearMap.id : FockSpace Mode →ₗ[ℂ] FockSpace Mode) := by
+      simpa using comm_annihilate_create i j
+    have hSummD := summable_imaginaryTimeEvolveFree_self ε β hpos
+    have hRotate : Summable (Function.uncurry (fun n k =>
+        Common.matrixCoeff ((imaginaryTimeEvolveFree ε (-β)).comp (create j)) n k *
+          Common.matrixCoeff (annihilate i) k n)) := by
+      by_cases hij : i = j
+      · subst hij
+        exact summable_imaginaryTimeEvolveFree_comp_create_mul_annihilate_diag ε β hpos i
+      · have hzero : Function.uncurry (fun n k =>
+            Common.matrixCoeff ((imaginaryTimeEvolveFree ε (-β)).comp (create j)) n k *
+              Common.matrixCoeff (annihilate i) k n) = 0 := by
+          funext p
+          simp only [Function.uncurry, Pi.zero_apply]
+          exact matrixCoeff_imaginaryTimeEvolveFree_comp_create_mul_matrixCoeff_annihilate_of_ne
+            hij ε (-β) p.1 p.2
+        rw [hzero]
+        exact summable_zero
+    simpa only [freeGibbsExpectation, freeGibbsPartition, imaginaryTimeEvolveFree, one_mul] using
+      Common.normalizedTsumTrace_comp_eq_div_of_zetaCommutator
+        (freeEigenvalue ε) β (-(ε i)) (1 : ℂ)
+        (if i = j then (1 : ℂ) else 0) (annihilate i) (create j)
+        hC1 hcomm (by simpa only [imaginaryTimeEvolveFree] using hSummD)
+        (by simpa only [imaginaryTimeEvolveFree] using hRotate)
+        (by simpa only [freeGibbsPartition, imaginaryTimeEvolveFree] using
+          freeGibbsPartition_ne_zero ε β hpos) (by simpa only [one_mul] using hden)
   rw [hvalue]
   by_cases hij : i = j <;> simp [hij]
 
