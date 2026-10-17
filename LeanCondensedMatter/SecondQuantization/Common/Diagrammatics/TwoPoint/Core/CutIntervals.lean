@@ -81,6 +81,36 @@ theorem TwoPointDiagram.verticesBetweenCuts_eq_source_inter_target
       (Sum.inl (1 : Fin 2)) v).1 htarget
     exact hsepEarlier (hsource.symm.trans hend)
 
+/-- Two vertices within a cut interval are connected when either
+boundary propagator is individually removed. The stronger claim of a
+single path that avoids *both* boundary cuts is separate. -/
+theorem TwoPointDiagram.verticesBetweenCuts_reachable_without_each_cut
+    (d : TwoPointDiagram ExternalLabel InternalLabel N S)
+    (hconnected : d.IsExternallyConnected)
+    (earlier later : Fin (2 * (2 * S.card + 1)))
+    (hsepEarlier : ¬ (d.vertexGraphWithoutPropagator earlier).Reachable
+      (Sum.inl (0 : Fin 2)) (Sum.inl (1 : Fin 2)))
+    (u v : TwoPointVertex S)
+    (hu : u ∈ d.verticesBetweenCuts earlier later)
+    (hv : v ∈ d.verticesBetweenCuts earlier later) :
+    (d.vertexGraphWithoutPropagator earlier).Reachable u v ∧
+      (d.vertexGraphWithoutPropagator later).Reachable u v := by
+  rw [d.verticesBetweenCuts_eq_source_inter_target
+    hconnected earlier later hsepEarlier] at hu hv
+  obtain ⟨huLater, huEarlier⟩ := Finset.mem_inter.mp hu
+  obtain ⟨hvLater, hvEarlier⟩ := Finset.mem_inter.mp hv
+  constructor
+  · exact
+      (((d.vertexGraphWithoutPropagator earlier).mem_componentBlock
+        (Sum.inl (1 : Fin 2)) u).1 huEarlier).trans
+      (((d.vertexGraphWithoutPropagator earlier).mem_componentBlock
+        (Sum.inl (1 : Fin 2)) v).1 hvEarlier).symm
+  · exact
+      (((d.vertexGraphWithoutPropagator later).mem_componentBlock
+        (Sum.inl (0 : Fin 2)) u).1 huLater).trans
+      (((d.vertexGraphWithoutPropagator later).mem_componentBlock
+        (Sum.inl (0 : Fin 2)) v).1 hvLater).symm
+
 /-- A strictly ordered pair of separating cuts leaves at least one vertex
 between them. No arbitrary external path is involved. -/
 theorem TwoPointDiagram.verticesBetweenCuts_ne_empty_of_ssubset
