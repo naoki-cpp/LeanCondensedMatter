@@ -164,6 +164,125 @@ private def intervalBoundaryPairing : PairingOn (Fin 2 ⊕ Fin 2) :=
     · rintro (i | i) <;> rfl
     · rintro (i | i) <;> simp)
 
+/-- Reindex the two new external ports, the two boundary ends and the
+unchanged interior legs into the augmented two-point leg domain. This
+equivalence also specifies the conjugation used by the pairing. -/
+noncomputable def TwoPointDiagram.intervalAugmentedLegEquiv
+    (d : TwoPointDiagram ExternalLabel InternalLabel N S)
+    (earlier later : Fin (2 * (2 * S.card + 1)))
+    (hEarlier :
+      (twoPointVertexOfLeg earlier ∈ d.verticesBetweenCuts earlier later ∧
+          twoPointVertexOfLeg (d.pairing.partner earlier) ∉
+            d.verticesBetweenCuts earlier later) ∨
+        (twoPointVertexOfLeg (d.pairing.partner earlier) ∈
+            d.verticesBetweenCuts earlier later ∧
+          twoPointVertexOfLeg earlier ∉ d.verticesBetweenCuts earlier later))
+    (hLater :
+      (twoPointVertexOfLeg later ∈ d.verticesBetweenCuts earlier later ∧
+          twoPointVertexOfLeg (d.pairing.partner later) ∉
+            d.verticesBetweenCuts earlier later) ∨
+        (twoPointVertexOfLeg (d.pairing.partner later) ∈
+            d.verticesBetweenCuts earlier later ∧
+          twoPointVertexOfLeg later ∉ d.verticesBetweenCuts earlier later))
+    (hne : earlier ≠ later)
+    (hpne : d.pairing.partner earlier ≠ later) :
+    ((Fin 2 ⊕ Fin 2) ⊕ {leg : Fin (2 * (2 * S.card + 1)) // d.IsInteriorLeg earlier later leg}) ≃
+      (Fin 2 ⊕ {leg : Fin (2 * (2 * S.card + 1)) //
+        twoPointVertexOfLeg leg ∈ d.verticesBetweenCuts earlier later}) :=
+  (Equiv.sumAssoc (Fin 2) (Fin 2) {leg : Fin (2 * (2 * S.card + 1)) // d.IsInteriorLeg earlier later leg}).trans
+    (Equiv.sumCongr (Equiv.refl (Fin 2))
+      (d.intervalBoundaryInteriorLegEquiv earlier later hEarlier hLater hne hpne))
+
+@[simp]
+theorem TwoPointDiagram.intervalAugmentedLegEquiv_external
+    (d : TwoPointDiagram ExternalLabel InternalLabel N S)
+    (earlier later : Fin (2 * (2 * S.card + 1)))
+    (hEarlier :
+      (twoPointVertexOfLeg earlier ∈ d.verticesBetweenCuts earlier later ∧
+          twoPointVertexOfLeg (d.pairing.partner earlier) ∉
+            d.verticesBetweenCuts earlier later) ∨
+        (twoPointVertexOfLeg (d.pairing.partner earlier) ∈
+            d.verticesBetweenCuts earlier later ∧
+          twoPointVertexOfLeg earlier ∉ d.verticesBetweenCuts earlier later))
+    (hLater :
+      (twoPointVertexOfLeg later ∈ d.verticesBetweenCuts earlier later ∧
+          twoPointVertexOfLeg (d.pairing.partner later) ∉
+            d.verticesBetweenCuts earlier later) ∨
+        (twoPointVertexOfLeg (d.pairing.partner later) ∈
+            d.verticesBetweenCuts earlier later ∧
+          twoPointVertexOfLeg later ∉ d.verticesBetweenCuts earlier later))
+    (hne : earlier ≠ later)
+    (hpne : d.pairing.partner earlier ≠ later) (i : Fin 2) :
+    (d.intervalAugmentedLegEquiv earlier later hEarlier hLater hne hpne) (Sum.inl (Sum.inl i)) = Sum.inl i := rfl
+
+@[simp]
+theorem TwoPointDiagram.intervalAugmentedLegEquiv_boundary
+    (d : TwoPointDiagram ExternalLabel InternalLabel N S)
+    (earlier later : Fin (2 * (2 * S.card + 1)))
+    (hEarlier :
+      (twoPointVertexOfLeg earlier ∈ d.verticesBetweenCuts earlier later ∧
+          twoPointVertexOfLeg (d.pairing.partner earlier) ∉
+            d.verticesBetweenCuts earlier later) ∨
+        (twoPointVertexOfLeg (d.pairing.partner earlier) ∈
+            d.verticesBetweenCuts earlier later ∧
+          twoPointVertexOfLeg earlier ∉ d.verticesBetweenCuts earlier later))
+    (hLater :
+      (twoPointVertexOfLeg later ∈ d.verticesBetweenCuts earlier later ∧
+          twoPointVertexOfLeg (d.pairing.partner later) ∉
+            d.verticesBetweenCuts earlier later) ∨
+        (twoPointVertexOfLeg (d.pairing.partner later) ∈
+            d.verticesBetweenCuts earlier later ∧
+          twoPointVertexOfLeg later ∉ d.verticesBetweenCuts earlier later))
+    (hne : earlier ≠ later)
+    (hpne : d.pairing.partner earlier ≠ later) (i : Fin 2) :
+    (d.intervalAugmentedLegEquiv earlier later hEarlier hLater hne hpne) (Sum.inl (Sum.inr i)) =
+      Sum.inr ((d.intervalBoundaryInteriorLegEquiv earlier later hEarlier hLater hne hpne) (Sum.inl i)) := rfl
+
+@[simp]
+theorem TwoPointDiagram.intervalAugmentedLegEquiv_interior
+    (d : TwoPointDiagram ExternalLabel InternalLabel N S)
+    (earlier later : Fin (2 * (2 * S.card + 1)))
+    (hEarlier :
+      (twoPointVertexOfLeg earlier ∈ d.verticesBetweenCuts earlier later ∧
+          twoPointVertexOfLeg (d.pairing.partner earlier) ∉
+            d.verticesBetweenCuts earlier later) ∨
+        (twoPointVertexOfLeg (d.pairing.partner earlier) ∈
+            d.verticesBetweenCuts earlier later ∧
+          twoPointVertexOfLeg earlier ∉ d.verticesBetweenCuts earlier later))
+    (hLater :
+      (twoPointVertexOfLeg later ∈ d.verticesBetweenCuts earlier later ∧
+          twoPointVertexOfLeg (d.pairing.partner later) ∉
+            d.verticesBetweenCuts earlier later) ∨
+        (twoPointVertexOfLeg (d.pairing.partner later) ∈
+            d.verticesBetweenCuts earlier later ∧
+          twoPointVertexOfLeg later ∉ d.verticesBetweenCuts earlier later))
+    (hne : earlier ≠ later)
+    (hpne : d.pairing.partner earlier ≠ later) (i : {leg : Fin (2 * (2 * S.card + 1)) // d.IsInteriorLeg earlier later leg}) :
+    (d.intervalAugmentedLegEquiv earlier later hEarlier hLater hne hpne) (Sum.inr i) =
+      Sum.inr ((d.intervalBoundaryInteriorLegEquiv earlier later hEarlier hLater hne hpne) (Sum.inr i)) := rfl
+
+@[simp]
+theorem TwoPointDiagram.intervalBoundaryInteriorLegEquiv_interior_val
+    (d : TwoPointDiagram ExternalLabel InternalLabel N S)
+    (earlier later : Fin (2 * (2 * S.card + 1)))
+    (hEarlier :
+      (twoPointVertexOfLeg earlier ∈ d.verticesBetweenCuts earlier later ∧
+          twoPointVertexOfLeg (d.pairing.partner earlier) ∉
+            d.verticesBetweenCuts earlier later) ∨
+        (twoPointVertexOfLeg (d.pairing.partner earlier) ∈
+            d.verticesBetweenCuts earlier later ∧
+          twoPointVertexOfLeg earlier ∉ d.verticesBetweenCuts earlier later))
+    (hLater :
+      (twoPointVertexOfLeg later ∈ d.verticesBetweenCuts earlier later ∧
+          twoPointVertexOfLeg (d.pairing.partner later) ∉
+            d.verticesBetweenCuts earlier later) ∨
+        (twoPointVertexOfLeg (d.pairing.partner later) ∈
+            d.verticesBetweenCuts earlier later ∧
+          twoPointVertexOfLeg later ∉ d.verticesBetweenCuts earlier later))
+    (hne : earlier ≠ later)
+    (hpne : d.pairing.partner earlier ≠ later) (i : {leg : Fin (2 * (2 * S.card + 1)) // d.IsInteriorLeg earlier later leg}) :
+    ((d.intervalBoundaryInteriorLegEquiv earlier later hEarlier hLater hne hpne) (Sum.inr i)).1 = i.1 := rfl
+
 /-- The interval pairing before flattening its legs: the new external
 ends are paired to the old boundary ends and the remaining edges retain
 their exact ambient pairing. -/
@@ -189,17 +308,81 @@ noncomputable def TwoPointDiagram.intervalAugmentedPairing
     PairingOn (Fin 2 ⊕
       {leg : Fin (2 * (2 * S.card + 1)) //
         twoPointVertexOfLeg leg ∈ d.verticesBetweenCuts earlier later}) := by
-  let I := {leg : Fin (2 * (2 * S.card + 1)) //
-    d.IsInteriorLeg earlier later leg}
-  let e : ((Fin 2 ⊕ Fin 2) ⊕ I) ≃
-      (Fin 2 ⊕ {leg : Fin (2 * (2 * S.card + 1)) //
-        twoPointVertexOfLeg leg ∈ d.verticesBetweenCuts earlier later}) :=
-    (Equiv.sumAssoc (Fin 2) (Fin 2) I).trans
-      (Equiv.sumCongr (Equiv.refl (Fin 2))
-        (d.intervalBoundaryInteriorLegEquiv earlier later
-          hEarlier hLater hne hpne))
   exact (intervalBoundaryPairing.sumCongr
-    (d.interiorPairing earlier later)).transport e.symm
+    (d.interiorPairing earlier later)).transport
+      (d.intervalAugmentedLegEquiv earlier later hEarlier hLater hne hpne).symm
+
+/-- A new external leg is paired to the corresponding interval-facing
+boundary leg. The injection into the incident-leg subtype retains the ambient
+identity of that boundary endpoint. -/
+theorem TwoPointDiagram.intervalAugmentedPairing_partner_external
+    (d : TwoPointDiagram ExternalLabel InternalLabel N S)
+    (earlier later : Fin (2 * (2 * S.card + 1)))
+    (hEarlier :
+      (twoPointVertexOfLeg earlier ∈ d.verticesBetweenCuts earlier later ∧
+          twoPointVertexOfLeg (d.pairing.partner earlier) ∉
+            d.verticesBetweenCuts earlier later) ∨
+        (twoPointVertexOfLeg (d.pairing.partner earlier) ∈
+            d.verticesBetweenCuts earlier later ∧
+          twoPointVertexOfLeg earlier ∉ d.verticesBetweenCuts earlier later))
+    (hLater :
+      (twoPointVertexOfLeg later ∈ d.verticesBetweenCuts earlier later ∧
+          twoPointVertexOfLeg (d.pairing.partner later) ∉
+            d.verticesBetweenCuts earlier later) ∨
+        (twoPointVertexOfLeg (d.pairing.partner later) ∈
+            d.verticesBetweenCuts earlier later ∧
+          twoPointVertexOfLeg later ∉ d.verticesBetweenCuts earlier later))
+    (hne : earlier ≠ later)
+    (hpne : d.pairing.partner earlier ≠ later) (i : Fin 2) :
+    (d.intervalAugmentedPairing earlier later hEarlier hLater hne hpne).partner
+      (Sum.inl i) =
+        Sum.inr ((d.intervalBoundaryInteriorLegEquiv earlier later hEarlier hLater hne hpne) (Sum.inl i)) := by
+  let e := d.intervalAugmentedLegEquiv earlier later hEarlier hLater hne hpne
+  have hl : e (Sum.inl (Sum.inl i)) = Sum.inl i := rfl
+  have hr : e (Sum.inl (Sum.inr i)) =
+      Sum.inr ((d.intervalBoundaryInteriorLegEquiv earlier later hEarlier hLater hne hpne) (Sum.inl i)) := rfl
+  rw [← hl, ← hr]
+  change ((intervalBoundaryPairing.sumCongr
+    (d.interiorPairing earlier later)).transport e.symm).partner
+      (e (Sum.inl (Sum.inl i))) = e (Sum.inl (Sum.inr i))
+  simp [PairingOn.transport_partner, intervalBoundaryPairing]
+
+/-- Interior edges of the augmented pairing retain the same partner as
+the ambient pairing, expressed using the canonical incident-leg embedding.
+The underlying ambient partner is given by `interiorPairing_partner_val`. -/
+theorem TwoPointDiagram.intervalAugmentedPairing_partner_interior
+    (d : TwoPointDiagram ExternalLabel InternalLabel N S)
+    (earlier later : Fin (2 * (2 * S.card + 1)))
+    (hEarlier :
+      (twoPointVertexOfLeg earlier ∈ d.verticesBetweenCuts earlier later ∧
+          twoPointVertexOfLeg (d.pairing.partner earlier) ∉
+            d.verticesBetweenCuts earlier later) ∨
+        (twoPointVertexOfLeg (d.pairing.partner earlier) ∈
+            d.verticesBetweenCuts earlier later ∧
+          twoPointVertexOfLeg earlier ∉ d.verticesBetweenCuts earlier later))
+    (hLater :
+      (twoPointVertexOfLeg later ∈ d.verticesBetweenCuts earlier later ∧
+          twoPointVertexOfLeg (d.pairing.partner later) ∉
+            d.verticesBetweenCuts earlier later) ∨
+        (twoPointVertexOfLeg (d.pairing.partner later) ∈
+            d.verticesBetweenCuts earlier later ∧
+          twoPointVertexOfLeg later ∉ d.verticesBetweenCuts earlier later))
+    (hne : earlier ≠ later)
+    (hpne : d.pairing.partner earlier ≠ later) (i : {leg : Fin (2 * (2 * S.card + 1)) // d.IsInteriorLeg earlier later leg}) :
+    (d.intervalAugmentedPairing earlier later hEarlier hLater hne hpne).partner
+      (Sum.inr ((d.intervalBoundaryInteriorLegEquiv earlier later hEarlier hLater hne hpne) (Sum.inr i))) =
+        Sum.inr ((d.intervalBoundaryInteriorLegEquiv earlier later hEarlier hLater hne hpne) (Sum.inr ((d.interiorPairing earlier later).partner i))) := by
+  let e := d.intervalAugmentedLegEquiv earlier later hEarlier hLater hne hpne
+  have hl : e (Sum.inr i) =
+      Sum.inr ((d.intervalBoundaryInteriorLegEquiv earlier later hEarlier hLater hne hpne) (Sum.inr i)) := rfl
+  have hr : e (Sum.inr ((d.interiorPairing earlier later).partner i)) =
+      Sum.inr ((d.intervalBoundaryInteriorLegEquiv earlier later hEarlier hLater hne hpne) (Sum.inr ((d.interiorPairing earlier later).partner i))) := rfl
+  rw [← hl, ← hr]
+  change ((intervalBoundaryPairing.sumCongr
+    (d.interiorPairing earlier later)).transport e.symm).partner
+      (e (Sum.inr i)) =
+        e (Sum.inr ((d.interiorPairing earlier later).partner i))
+  simp [PairingOn.transport_partner]
 
 /-- The standard flattened block-leg space is identified with a new pair
 of external legs together with all ambient legs incident to the interval. -/
