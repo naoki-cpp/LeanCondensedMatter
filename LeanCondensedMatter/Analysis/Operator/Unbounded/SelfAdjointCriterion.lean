@@ -1,4 +1,8 @@
-import Mathlib.Analysis.InnerProductSpace.LinearPMap
+module
+
+public import Mathlib.Analysis.InnerProductSpace.LinearPMap
+
+public section
 
 set_option linter.style.header false
 
