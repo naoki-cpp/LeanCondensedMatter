@@ -120,28 +120,14 @@ theorem eq_resummedLadderVertex_of_fixedPoint
   let inverse : V →L[ℂ] V := ↑(hinvertible.unit⁻¹)
   have hleft : inverse * (1 - ladder) = 1 := by
     simpa [inverse] using hinvertible.val_inv_mul
-  have hleftInverse : Function.LeftInverse inverse
-      (fun vertex : V => (1 - ladder) vertex) := by
-    intro vertex
-    change (inverse * (1 - ladder)) vertex = vertex
-    rw [hleft]
-    simp
-  have hinjectiveShifted : Function.Injective
-      (fun vertex : V => (1 - ladder) vertex) := hleftInverse.injective
-  have hinjective : Function.Injective
-      (fun vertex : V => vertex - ladder vertex) := by
-    intro left right h
-    apply hinjectiveShifted
-    simpa using h
-  apply hinjective
-  have hfixedShifted : dressedVertex - ladder dressedVertex = bareVertex :=
-    (sub_eq_iff_eq_add).2 hfixed
-  have hresummedShifted :
-      resummedLadderVertex ladder hinvertible bareVertex -
-          ladder (resummedLadderVertex ladder hinvertible bareVertex) = bareVertex :=
-    (sub_eq_iff_eq_add).2
-      (resummedLadderVertex_fixedPoint ladder hinvertible bareVertex)
-  exact hfixedShifted.trans hresummedShifted.symm
+  have hshifted : (1 - ladder) dressedVertex = bareVertex := by
+    simpa using ((sub_eq_iff_eq_add).2 hfixed)
+  change dressedVertex = inverse bareVertex
+  calc
+    dressedVertex = (inverse * (1 - ladder)) dressedVertex := by
+      rw [hleft]
+      rfl
+    _ = inverse bareVertex := congrArg inverse hshifted
 
 end
 end Transport
