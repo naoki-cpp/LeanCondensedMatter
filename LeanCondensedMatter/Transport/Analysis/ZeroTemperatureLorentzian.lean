@@ -122,8 +122,9 @@ theorem tendsto_zeroTemperatureOccupation_lorentzian_occupied_finite_window
       rw [Set.uIcc_of_le hbounds] at henergy
       apply zeroTemperatureOccupation_eq_one
       exact lt_of_le_of_lt henergy.2 (lt_of_not_ge hright)
-    have h := Lorentzian.tendsto_integral_weight_mul_spectralKernel_of_eq_const_on
-      (zeroTemperatureOccupation fermiEnergy) center 1 radius hradius hweight
+    have h := Lorentzian.tendsto_integral_weight_mul_spectralKernel_of_ae_eq_const_on
+      (zeroTemperatureOccupation fermiEnergy) center 1 radius hradius
+      (Filter.Eventually.of_forall hweight)
     simpa using h
 
 /-- Every fixed positive symmetric energy window around an unoccupied pole has asymptotic
@@ -156,8 +157,9 @@ theorem tendsto_zeroTemperatureOccupation_lorentzian_unoccupied_finite_window
       rw [Set.uIcc_of_le hbounds] at henergy
       apply zeroTemperatureOccupation_eq_zero
       exact le_trans (le_of_not_ge hleft) henergy.1
-    have h := Lorentzian.tendsto_integral_weight_mul_spectralKernel_of_eq_const_on
-      (zeroTemperatureOccupation fermiEnergy) center 0 radius hradius hweight
+    have h := Lorentzian.tendsto_integral_weight_mul_spectralKernel_of_ae_eq_const_on
+      (zeroTemperatureOccupation fermiEnergy) center 0 radius hradius
+      (Filter.Eventually.of_forall hweight)
     simpa using h
 
 /-- On a symmetric window centered exactly at the Fermi energy, zero-temperature occupation keeps
