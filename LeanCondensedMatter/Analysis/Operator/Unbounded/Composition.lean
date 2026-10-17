@@ -47,7 +47,7 @@ private theorem naturalCompDomain_le_right (g : F →ₗ.[R] G) (f : E →ₗ.[R
   exact hxf
 
 /-- Compose two partially defined linear maps on their natural operator-product domain. -/
-def compOnDomain (g : F →ₗ.[R] G) (f : E →ₗ.[R] F) : E →ₗ.[R] G where
+@[expose] def compOnDomain (g : F →ₗ.[R] G) (f : E →ₗ.[R] F) : E →ₗ.[R] G where
   domain := naturalCompDomain g f
   toFun :=
     g.toFun.comp <|
