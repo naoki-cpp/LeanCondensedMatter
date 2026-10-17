@@ -1,4 +1,8 @@
-import Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic
+module
+
+public import Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic
+
+public section
 
 set_option linter.style.header false
 

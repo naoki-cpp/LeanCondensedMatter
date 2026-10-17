@@ -1,4 +1,8 @@
-import Mathlib.Analysis.InnerProductSpace.Adjoint
+module
+
+public import Mathlib.Analysis.InnerProductSpace.Adjoint
+
+public section
 
 set_option linter.style.header false
 
@@ -16,7 +20,7 @@ variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteS
 namespace ContinuousLinearMap
 
 /-- Conjugation of a bounded operator by another bounded operator and its adjoint. -/
-noncomputable def adjointConjugate (U T : H →L[ℂ] H) : H →L[ℂ] H :=
+@[expose] noncomputable def adjointConjugate (U T : H →L[ℂ] H) : H →L[ℂ] H :=
   U * T * star U
 
 /-- Adjoint conjugation transports a rank-one operator by applying the conjugating operator to both
