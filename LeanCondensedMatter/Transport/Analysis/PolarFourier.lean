@@ -196,14 +196,16 @@ theorem polarFourierZerothAngularKernel_eq_tsum_exp_integrals (z : ℝ) :
         ‖Complex.I * (((z * Real.cos θ : ℝ) : ℂ))‖ ≤ |z| := by
       calc
         ‖Complex.I * (((z * Real.cos θ : ℝ) : ℂ))‖ =
-            |z| * |Real.cos θ| := by simp [Complex.norm_real, abs_mul]
+            |z| * |Real.cos θ| := by
+          simp only [norm_mul, Complex.norm_I, one_mul, Complex.norm_real,
+            Real.norm_eq_abs, abs_mul]
         _ ≤ |z| * 1 :=
           mul_le_mul_of_nonneg_left (Real.abs_cos_le_one θ) (abs_nonneg z)
         _ = |z| := by ring
     calc
       ‖term n θ‖ =
           ‖Complex.I * (((z * Real.cos θ : ℝ) : ℂ))‖ ^ n /
-            (Nat.factorial n : ℝ) := by simp [term, norm_div]
+            (Nat.factorial n : ℝ) := by simp [term]
       _ ≤ |z| ^ n / (Nat.factorial n : ℝ) := by gcongr
   have hseries :
       HasSum
