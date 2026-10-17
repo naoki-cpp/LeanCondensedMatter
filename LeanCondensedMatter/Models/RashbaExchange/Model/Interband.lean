@@ -6,10 +6,10 @@ set_option linter.style.header false
 /-!
 # Interband spectral algebra for the Rashba-exchange model
 
-This module isolates the energy gap and gauge-independent interband velocity trace used by the
-Berry and Bastin Hall channels.  The scalar parabolic dispersion shifts both bands and contributes
-identity pieces to the velocities; the exact interband trace below proves that those pieces cancel
-from the Hall numerator.
+This module isolates the clean energy gap and gauge-independent interband velocity trace used by
+Berry and Bastin Hall calculations. These definitions require only `HamiltonianParameters`.
+The scalar parabolic dispersion shifts both bands and contributes identity pieces to the
+velocities; the exact interband trace below proves that those pieces cancel from the Hall numerator.
 -/
 
 namespace QuantumTheory.Models.RashbaExchange
@@ -18,34 +18,34 @@ noncomputable section
 
 /-- Energy denominator between one band and its opposite partner. -/
 def interbandEnergyGap
-    (params : Parameters) (band : Band) (px py : ℝ) : ℝ :=
+    (params : HamiltonianParameters) (band : Band) (px py : ℝ) : ℝ :=
   bandEnergy params band px py -
     bandEnergy params (oppositeBand band) px py
 
 /-- The scalar kinetic shift cancels from the interband gap. -/
 theorem interbandEnergyGap_eq
-    (params : Parameters) (band : Band) (px py : ℝ) :
+    (params : HamiltonianParameters) (band : Band) (px py : ℝ) :
     interbandEnergyGap params band px py =
       2 * bandSign band * spinOrbitEnergy params px py := by
   cases band <;>
     simp [interbandEnergyGap, bandEnergy, bandSign] <;> ring
 
 @[simp] theorem interbandEnergyGap_oppositeBand
-    (params : Parameters) (band : Band) (px py : ℝ) :
+    (params : HamiltonianParameters) (band : Band) (px py : ℝ) :
     interbandEnergyGap params (oppositeBand band) px py =
       -interbandEnergyGap params band px py := by
   rw [interbandEnergyGap_eq, interbandEnergyGap_eq, bandSign_oppositeBand]
   ring
 
 theorem interbandEnergyGap_ne_zero_of_spinOrbitEnergy_ne_zero
-    (params : Parameters) (band : Band) (px py : ℝ)
+    (params : HamiltonianParameters) (band : Band) (px py : ℝ)
     (hE : spinOrbitEnergy params px py ≠ 0) :
     interbandEnergyGap params band px py ≠ 0 := by
   rw [interbandEnergyGap_eq]
   cases band <;> simp [bandSign, hE]
 
 theorem bandEnergy_ne_oppositeBandEnergy
-    (params : Parameters) (band : Band) (px py : ℝ)
+    (params : HamiltonianParameters) (band : Band) (px py : ℝ)
     (hE : spinOrbitEnergy params px py ≠ 0) :
     bandEnergy params band px py ≠
       bandEnergy params (oppositeBand band) px py := by
@@ -57,7 +57,7 @@ theorem bandEnergy_ne_oppositeBandEnergy
 /-- Gauge-independent interband velocity numerator
 `Tr(P_op v_μ P_band v_ν)`. -/
 def forceMatrixTraceNumerator
-    (params : Parameters) (μ ν : Fin 2) (band : Band) (px py : ℝ) : ℂ :=
+    (params : HamiltonianParameters) (μ ν : Fin 2) (band : Band) (px py : ℝ) : ℂ :=
   Matrix.trace
     (bandProjector params (oppositeBand band) px py *
       velocityOperator params μ px py *
@@ -67,7 +67,7 @@ def forceMatrixTraceNumerator
 /-- Exact x-y interband velocity trace.  The terms proportional to `p_i/m_eff I` cancel once the
 projectors are nondegenerate, leaving only the Rashba/exchange Pauli geometry. -/
 theorem forceMatrixTraceNumerator_xy_eq
-    (params : Parameters) (band : Band) (px py : ℝ)
+    (params : HamiltonianParameters) (band : Band) (px py : ℝ)
     (hE : spinOrbitEnergy params px py ≠ 0) :
     forceMatrixTraceNumerator params 0 1 band px py =
       -(((params.rashbaVelocity ^ 4 * px * py /
@@ -157,14 +157,14 @@ theorem forceMatrixTraceNumerator_xy_eq
 
 /-- The force-matrix expression for the x-y Berry curvature. -/
 def forceMatrixBerryCurvature
-    (params : Parameters) (band : Band) (px py : ℝ) : ℝ :=
+    (params : HamiltonianParameters) (band : Band) (px py : ℝ) : ℝ :=
   2 * (forceMatrixTraceNumerator params 0 1 band px py).im /
     interbandEnergyGap params band px py ^ 2
 
 /-- The gauge-independent force-matrix curvature equals the model's closed Berry-curvature formula
 away from the band degeneracy. -/
 theorem forceMatrixBerryCurvature_eq_berryCurvature
-    (params : Parameters) (band : Band) (px py : ℝ)
+    (params : HamiltonianParameters) (band : Band) (px py : ℝ)
     (hE : spinOrbitEnergy params px py ≠ 0) :
     forceMatrixBerryCurvature params band px py =
       berryCurvature params band px py := by
