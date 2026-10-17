@@ -2,7 +2,7 @@ import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Leg
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Diagram
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Split
-import LeanCondensedMatter.Combinatorics.SubsetSplit
+import LeanCondensedMatter.Combinatorics.SetPartition.SubsetSplit
 
 set_option linter.style.header false
 

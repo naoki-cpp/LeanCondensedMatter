@@ -41,8 +41,12 @@ and right position sets, complement enumeration, and uniqueness from the left po
 and its complement, independently of recursive binary shuffles and their cardinality.
 The ambient binomial-cardinality theorem follows from this direct equivalence.
 
-The construction reuses Mathlib's `Finset.orderIsoOfFin` and `subsetSumSdiffEquiv`, which is backed
-by `Equiv.Set.sumDiffSubset`. No dependent recursion that removes the first slot is needed.
+The construction reuses Mathlib's `Finset.orderIsoOfFin` and the generic
+`Combinatorics.SetPartition.SubsetSplit` equivalence `subsetSumSdiffEquiv`, which is backed
+by `Equiv.Set.sumDiffSubset`. The companion `Combinatorics.SetPartition.SumEquivPartition`
+module owns the finite images and subtype reindexing induced by an equivalence of a binary sum.
+These two-part decomposition primitives do not depend on the partition lattice or on shuffles;
+consumers import their leaves directly. No dependent recursion that removes the first slot is needed.
 
 `Shuffle.BinaryShuffleSlots` owns the adapter from recursive binary shuffles to ambient slot shuffles:
 the slot coordinates, monotonicity, injectivity, the equivalence of presentations, and finite-sum
