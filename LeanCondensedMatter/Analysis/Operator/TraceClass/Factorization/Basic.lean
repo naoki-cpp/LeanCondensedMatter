@@ -40,12 +40,8 @@ theorem exists_controlled_hilbertSchmidt_factorization
   have hA : IsHilbertSchmidt A :=
     isHilbertSchmidt_comp_right hS (ContinuousLinearMap.adjoint U)
   have hAdjA : ContinuousLinearMap.adjoint A = U * S := by
-    rw [show ContinuousLinearMap.adjoint A = star A from
-      (ContinuousLinearMap.star_eq_adjoint A).symm]
-    dsimp [A]
-    rw [star_mul, ContinuousLinearMap.star_eq_adjoint,
-      ContinuousLinearMap.adjoint_adjoint, ContinuousLinearMap.star_eq_adjoint,
-      hSself.adjoint_eq]
+    simpa only [A, ← ContinuousLinearMap.star_eq_adjoint, star_mul, star_star,
+      (ContinuousLinearMap.star_eq_adjoint S).trans hSself.adjoint_eq]
   have hfactor : ContinuousLinearMap.adjoint A * S = T := by
     rw [hAdjA, mul_assoc, hSS, hUleft]
   have hSnorm : hS.normSq = IsHilbertSchmidt.normSq hT :=
