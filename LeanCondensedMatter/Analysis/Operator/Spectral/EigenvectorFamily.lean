@@ -1,7 +1,11 @@
-import LeanCondensedMatter.Analysis.Operator.Spectral.ComplexEigenvectorFamily
-import Mathlib.Analysis.InnerProductSpace.PiL2
-import Mathlib.Analysis.InnerProductSpace.l2Space
-import Mathlib.Analysis.InnerProductSpace.Positive
+module
+
+public import LeanCondensedMatter.Analysis.Operator.Spectral.ComplexEigenvectorFamily
+public import Mathlib.Analysis.InnerProductSpace.PiL2
+public import Mathlib.Analysis.InnerProductSpace.l2Space
+public import Mathlib.Analysis.InnerProductSpace.Positive
+
+public section
 
 set_option linter.style.header false
 
@@ -30,7 +34,7 @@ variable {T : H →L[ℂ] H}
 /-- The index type gluing together an orthonormal basis of each nonzero eigenspace of `T`: a
 nonzero real eigenvalue `μ`, together with an index into a chosen orthonormal basis of the
 (finite-dimensional, for `μ ≠ 0`) eigenspace `eigenspace T μ`. -/
-def EigenvectorIndex (T : H →L[ℂ] H) : Type :=
+@[expose] def EigenvectorIndex (T : H →L[ℂ] H) : Type :=
   Σ μ : { μ : ℝ // μ ≠ 0 }, Fin (Module.finrank ℂ (Module.End.eigenspace (T : H →ₗ[ℂ] H) (μ.1 : ℂ)))
 
 /-- A nonzero real eigenspace of a compact operator is finite-dimensional. -/
