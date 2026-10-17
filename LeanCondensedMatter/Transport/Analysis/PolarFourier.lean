@@ -582,6 +582,36 @@ private theorem besselJ_zero_hasDerivAt (w : ℂ) :
   · simp [Complex.besselJ_def]
     ring
 
+/-- The first angular Fourier harmonic is the correctly normalized Bessel function
+`J₁`, for every real radial Fourier argument. -/
+theorem polarFourierFirstCosineAngularKernel_eq_besselJ (z : ℝ) :
+    polarFourierFirstCosineAngularKernel z =
+      ((2 * Real.pi : ℝ) : ℂ) * Complex.I * Complex.besselJ 1 (z : ℂ) := by
+  have hfun :
+      (fun t : ℝ => ((2 * Real.pi : ℝ) : ℂ) *
+        Complex.besselJ 0 (t : ℂ)) = polarFourierZerothAngularKernel := by
+    funext t
+    exact (polarFourierZerothAngularKernel_eq_besselJ t).symm
+  have hJ := ((besselJ_zero_hasDerivAt (z : ℂ)).comp_ofReal).const_mul
+    ((2 * Real.pi : ℝ) : ℂ)
+  change HasDerivAt
+    (fun t : ℝ => ((2 * Real.pi : ℝ) : ℂ) * Complex.besselJ 0 (t : ℂ))
+    (((2 * Real.pi : ℝ) : ℂ) * -Complex.besselJ 1 (z : ℂ)) z at hJ
+  rw [hfun] at hJ
+  have hderiv := (polarFourierZerothAngularKernel_hasDerivAt z).unique hJ
+  have hI : (-Complex.I) * Complex.I = (1 : ℂ) := by
+    rw [← neg_mul, ← pow_two, Complex.I_sq]
+    ring
+  calc
+    polarFourierFirstCosineAngularKernel z =
+        ((-Complex.I) * Complex.I) * polarFourierFirstCosineAngularKernel z := by
+      rw [hI, one_mul]
+    _ = (-Complex.I) * (Complex.I * polarFourierFirstCosineAngularKernel z) := by
+      ring
+    _ = ((2 * Real.pi : ℝ) : ℂ) * Complex.I * Complex.besselJ 1 (z : ℂ) := by
+      rw [hderiv]
+      ring
+
 /-- Derivative of the dimensionless radial Fourier phase with respect to the polar angle. -/
 private theorem polarFourierRadialPhase_hasDerivAt (z θ : ℝ) :
     HasDerivAt (polarFourierRadialPhase z)
