@@ -329,9 +329,8 @@ theorem polarFourierBesselJZero_eq_tsum (z : ℂ) :
     Complex.besselJ 0 z =
       ∑' n : ℕ, Complex.regularizedHGFunCoeff 0 {(1 : ℂ)} n *
         (-(z / 2) ^ 2) ^ n := by
-  change (z / 2) ^ (0 : ℂ) *
-      Complex.regularizedHGFun 0 {(1 : ℂ)} (-(z / 2) ^ 2) = _
-  rw [Complex.cpow_zero, one_mul]
+  rw [Complex.besselJ_def]
+  simp only [Complex.cpow_zero, one_mul, zero_add]
   change (Complex.regularizedHGFunSeries 0 {(1 : ℂ)}).sum (-(z / 2) ^ 2) = _
   rw [Complex.regularizedHGFunSeries, ← FormalMultilinearSeries.ofScalarsSum,
     FormalMultilinearSeries.ofScalars_sum_eq]
@@ -352,6 +351,7 @@ theorem polarFourierZerothMoment_even_eq_bessel (z : ℝ) (n : ℕ) :
     ring
   have hdiv : (-((z : ℂ) / 2) ^ 2) ^ n =
       (-(z : ℂ) ^ 2) ^ n / (4 : ℂ) ^ n := by
+    rw [← div_pow]
     congr 1
     ring
   rw [hI, hdiv]
@@ -361,7 +361,6 @@ theorem polarFourierZerothMoment_even_eq_bessel (z : ℝ) (n : ℕ) :
     exact_mod_cast Nat.factorial_ne_zero n
   have hfour : (4 : ℂ) ^ n ≠ 0 := pow_ne_zero _ (by norm_num)
   field_simp
-  ring
 
 /-- The full-angle zeroth Fourier kernel is exactly \(2π J₀\), with Mathlib's Bessel
 function and no restriction on the real radial argument. -/
@@ -375,7 +374,10 @@ theorem polarFourierZerothAngularKernel_eq_besselJ (z : ℝ) :
   have he : Summable (fun n : ℕ => f (2 * n)) :=
     hf.comp_injective (by intro a b hab; omega)
   have ho : Summable (fun n : ℕ => f (2 * n + 1)) :=
-    hf.comp_injective (by intro a b hab; omega)
+    hf.comp_injective (by
+      intro a b hab
+      change 2 * a + 1 = 2 * b + 1 at hab
+      omega)
   have hodd (n : ℕ) : f (2 * n + 1) = 0 := by
     simp [f]
   calc
