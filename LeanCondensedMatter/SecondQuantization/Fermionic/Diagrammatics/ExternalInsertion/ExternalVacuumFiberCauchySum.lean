@@ -170,23 +170,13 @@ theorem externalInsertionFixedCardinalityFiberSum_eq_cauchyFactor
           if ext.1.externalLabel = externalLabel then
             ext.1.dysonAmplitude ε β g externalTime else 0) *
         (∑ x : Y, vacuum x) := by
-      calc
-        _ = ∑ ext : X, ∑ x : Y,
-            (if ext.1.externalLabel = externalLabel then
-              ext.1.dysonAmplitude ε β g externalTime else 0) * vacuum x := by
-          apply Finset.sum_congr rfl
-          intro ext _
-          apply Finset.sum_congr rfl
-          intro x _
-          split_ifs <;> simp
-        _ = ∑ ext : X,
-            (if ext.1.externalLabel = externalLabel then
-              ext.1.dysonAmplitude ε β g externalTime else 0) *
-                (∑ x : Y, vacuum x) := by
-          apply Finset.sum_congr rfl
-          intro ext _
-          exact (Finset.mul_sum _ _ _).symm
-        _ = _ := (Finset.sum_mul _ _ _).symm
+      rw [Finset.sum_mul]
+      apply Finset.sum_congr rfl
+      intro ext _
+      rw [Finset.mul_sum]
+      apply Finset.sum_congr rfl
+      intro x _
+      split_ifs <;> simp
     _ = vacuumFreeExternalInsertionDysonCoefficient
           ε β g externalLabel externalTime m *
         normalizedDysonPartitionCoeff ε β (quarticInteraction g) k := by
