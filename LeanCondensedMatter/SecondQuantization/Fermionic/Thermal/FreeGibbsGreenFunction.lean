@@ -145,7 +145,8 @@ theorem freeGibbsDensityOperator_expectation_create_comp_annihilate
     (anticomm_annihilate_create (Mode := Mode) i j)
   change Common.finiteGibbsExpectationLinearMap (fermionEnergy ε) β
     ((annihilate i).comp (create j)) = _ at hknown
-  simp only [ScalarExchange.zetaCommutator, neg_one_smul, sub_neg_eq_add, map_add] at h
+  simp only [ScalarExchange.zetaCommutator, Module.End.mul_eq_comp,
+    neg_one_smul, sub_neg_eq_add, map_add] at h
   rcases eq_or_ne i j with rfl | hij
   · simp only [ite_true] at h hknown ⊢
     rw [hknown] at h
@@ -157,7 +158,7 @@ theorem freeGibbsDensityOperator_expectation_create_comp_annihilate
         (one_sub_zetaInt_fermion_mul_exp_ne_zero β (ε i))
     field_simp [hne] at h ⊢
     linear_combination h
-  · simp only [if_neg hij, map_zero] at h hknown ⊢
+  · simp only [ite_eq_right hij, map_zero] at h hknown ⊢
     simpa only [hknown, zero_add] using h
 
 /-- `G₀,ᵢⱼ(τ, τ') = 0` for `i ≠ j`, at arbitrary imaginary times. -/
