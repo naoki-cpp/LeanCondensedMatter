@@ -1,5 +1,6 @@
 """Validate compiled declaration graph and the unchanged theorem audit projection."""
 import json
+import re
 from pathlib import Path
 import sys
 
@@ -13,6 +14,7 @@ def validate(declarations, theorems):
     for row in declarations:
         assert row["kind"] in kinds
         assert isinstance(row["generated"], bool)
+        assert isinstance(row["projection"], bool)
         assert row["module"] == "LeanCondensedMatter" or row["module"].startswith("LeanCondensedMatter.")
         assert row["sourceFile"] == row["module"].replace(".", "/") + ".lean"
         assert isinstance(row["statement"], str)
@@ -38,11 +40,64 @@ def validate(declarations, theorems):
         assert set(theorem["dependencies"]) <= set(row["valueDependencies"])
 
 
+
+def validate_retained_catalog(document, declarations, theorems):
+    """Check all retained names against compiled declarations, not source-text matches."""
+    theorem_header = "## Retained declarations\n"
+    other_header = "## Other retained API contracts (outside theorem audit)\n"
+    assert document.count(theorem_header) == 1
+    assert document.count(other_header) == 1
+    theorem_section, other_section = document.split(theorem_header, 1)[1].split(
+        other_header, 1
+    )
+
+    theorem_lines = [line for line in theorem_section.splitlines()
+                     if line.startswith("- ")]
+    api_lines = [line for line in other_section.splitlines()
+                 if line.startswith("- ")]
+    theorem_names = []
+    for line in theorem_lines:
+        match = re.fullmatch(r"- `([^`]+)`(?: —.*)?", line)
+        assert match is not None, ("invalid retained theorem entry", line)
+        theorem_names.append(match.group(1))
+    api_names = []
+    for line in api_lines:
+        match = re.fullmatch(r"- \*\*`([^`]+)`\*\* — .+", line)
+        assert match is not None, ("invalid non-theorem API entry", line)
+        api_names.append(match.group(1))
+
+    names = theorem_names + api_names
+    assert len(names) == len(set(names)), "duplicate retained declaration names"
+    declared = {row["name"]: row for row in declarations}
+    unknown = sorted(set(names) - set(declared))
+    assert not unknown, ("stale retained declarations", unknown)
+
+    invalid_theorems = sorted(name for name in theorem_names
+                              if declared[name]["kind"] != "theorem" or
+                              declared[name]["projection"])
+    assert not invalid_theorems, ("non-auditable retained theorem entries", invalid_theorems)
+    # Lean stores proof-valued structure fields as theorem-kind projections. They are
+    # structural APIs, not independently audited theorem declarations.
+    wrong_other = sorted(name for name in api_names
+                         if declared[name]["kind"] == "theorem" and
+                         not declared[name]["projection"])
+    assert not wrong_other, ("non-projection theorems listed as other APIs", wrong_other)
+
+    audit_names = {row["name"] for row in theorems if row["retainedMention"]}
+    assert audit_names == set(theorem_names), (
+        "retainedMention disagrees with the retained theorem list",
+        sorted(audit_names - set(theorem_names)),
+        sorted(set(theorem_names) - audit_names),
+    )
+
+
 def main():
     directory = Path(sys.argv[1]) if len(sys.argv) > 1 else Path("docs/generated")
     declarations = json.loads((directory / "declarations.json").read_text(encoding="utf-8"))
     theorems = json.loads((directory / "theorems.json").read_text(encoding="utf-8"))
     validate(declarations, theorems)
+    retained = Path("docs/theorem-catalog-retained.md").read_text(encoding="utf-8")
+    validate_retained_catalog(retained, declarations, theorems)
     # Resolve the module through its source filename so moves do not weaken this acceptance check.
     rows = [row for row in declarations if row["sourceFile"].endswith("/MixedComponentCrossing.lean")
             and not row["generated"]]

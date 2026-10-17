@@ -6,8 +6,11 @@ public theorem should be removed. A declaration remains public when it is the ca
 of an independently useful mathematical or physical fact, a deliberate simplification boundary, or
 a stable domain-level API.
 
-Declarations listed here have been semantically reviewed and are intentionally retained despite one
-or more audit signals. `scripts/TheoremCatalog.lean` records full-name mentions and unambiguous
+The theorem entries in the list below have been semantically reviewed and are intentionally retained
+when structural audit signals might otherwise suggest removing them. Other structural API contracts are
+listed separately at the end of this document and are not retained theorem exceptions.
+
+`scripts/TheoremCatalog.lean` records full-name mentions and unambiguous
 short-name mentions from this document as the
 `retainedMention` attribute. Retained declarations keep their structural attributes in the full
 catalog but are omitted from terminal, single-consumer, and direct-wrapper review queues so those
@@ -338,8 +341,6 @@ or consumer structure changes.
 - `QuantumTheory.finiteDimensional_of_gibbsOp_isCompact` — bounded-Gibbs obstruction theorem:
   compactness of the invertible Gibbs exponential forces finite dimensionality, documenting why the
   bounded Gibbs API is explicitly finite-dimensional.
-- `QuantumTheory.Transport.FiniteDisorderEnsemble.probability_sum` — structure-level normalization
-  invariant stating that the finite disorder probabilities sum to one.
 - `QuantumTheory.Transport.FiniteDisorderEnsemble.star_averagedGreenOfRegulator` — Adjointing the
   exact finite disorder-averaged Green operator reverses the signed regulator.
 - `QuantumTheory.Models.MassiveDirac.bandProjectorOperator_ne_zero` — Every band projector
@@ -386,11 +387,11 @@ or consumer structure changes.
 - `SecondQuantization.Common.TwoPointDiagram.mixedComponentCrossingCount_externalComponentPart` —
   The crossing count internal to the ambient external component equals the crossing count of the
   standalone external-piece pairing.
-- `SecondQuantization.Common.TwoPointDiagram.mixedComponentPairTimeEquiv_endpointLegs_eq_of_sameOrderChamber` —
-  Inside one order chamber, canonical transport of a normalized component pair preserves the two
-  underlying standard atomic legs in their normalized order.
-- `SecondQuantization.Common.TwoPointDiagram.mixedComponentWeight_eq_of_sameOrderChamber` —
-  Component exchange-statistics weight is constant on one chamber.
+- `SecondQuantization.Common.TwoPointDiagram.mixedComponentPairTimeEquiv_endpointLegs_eq_of_comparisons` —
+  When all strict time-event comparisons agree, canonical transport of a normalized component
+  pair preserves the underlying standard atomic legs in normalized order.
+- `SecondQuantization.Common.TwoPointDiagram.mixedComponentWeight_eq_of_comparisons` —
+  Component exchange-statistics weight is unchanged when every strict time-event comparison agrees.
 - `SecondQuantization.Common.TwoPointDiagram.prod_slotSplitVacuumComponents_eq_vacuumVertexProduct` —
   The product of arbitrary vertex-local weights over all ambient vacuum components is exactly the
   product over all vertices of the standalone quartic vacuum piece.
@@ -447,9 +448,6 @@ or consumer structure changes.
   For an externally connected left piece and strictly decreasing inherited vacuum times, the
   complete product of ambient vacuum-component Dyson fixed-time values is exactly the standalone
   fixed-order quartic vacuum integrand, including its Dyson sign and vertex-weight prefactor.
-- `LocallyFiniteHopping.self_mem` — defining locality
-  invariant of `LocallyFiniteHopping`: every site lies in its finite incident neighborhood. The
-  generated projection is part of the model contract even when it has no compiled theorem consumer.
 - `LocallyFiniteHopping.operator_latticeKet` — canonical
   `[simp]` evaluation of the hopping operator on a localized site ket.
 - `LocallyFiniteHopping.amplitude_eq` — canonical `[simp]`
@@ -512,7 +510,6 @@ or consumer structure changes.
 - `PowerSeries.coeff_one_logOf` — The first coefficient of the formal logarithm of a normalized complex power series equals its first original coefficient; retain as a general power-series identity.
 - `Combinatorics.BinaryShuffle.card_eq_choose` — canonical binomial-cardinality formula for recursively constructed binary shuffles. It is used source-level to prove the bijectivity of `BinaryShuffle.slotShuffleEquiv`, even though this proof-only dependency is absent from the compiled-consumer count.
 - `Combinatorics.NormalizedSetFunction.cumulant_apply` — canonical `[simp]` evaluation rule for the normalized cumulant transform; it complements the retained `moment_apply` rule and exposes the underlying finite-set cumulant without unfolding the bundled function.
-- `Combinatorics.MultiplicativeWeight.normalizedObjectMoment_cumulant_eq_connectedContribution` — generic connected-object Möbius-inversion identity under commutative-ring coefficients. The power-series cumulant bridge specializes this endpoint; inlining it into that analytic consumer would lose the statistics-independent combinatorial statement.
 - `Combinatorics.MultiplicativeWeight.normalizedObjectMoment_apply` — canonical `[simp]` evaluation rule connecting the normalized object-moment bundle to the original weighted object sum; it is the stable boundary between the connected-decomposition construction and the normalized finite-set function interface.
 - `Combinatorics.Pairing.prod_pairs_ofSplit` — general factorization theorem for contraction products on pairings assembled from two independent parts. Its comparison hypotheses explicitly account for possible endpoint reversal when the position splitting is not order preserving.
 - `Combinatorics.Pairing.isSplit_inr` — intrinsic closure of the right part of a split pairing, derived from the left-closure definition and the involutive partner map; retain this symmetric mathematical consequence as an independently usable split-pairing fact.
@@ -580,7 +577,6 @@ or consumer structure changes.
 - `Combinatorics.FiniteIndex.blockEquiv_symm_lt_symm_iff_snd_lt_of_fst_eq` — canonical same-block order characterization under the flattened block equivalence; exposing the local-index order directly avoids reopening the general lexicographic proof at the sole consumer.
 - `Combinatorics.sign_relative_binarySplittings_eq_inversionCounts` — explicit binary-splitting sign formula specialized from the general family-shuffle sign theorem; retain the mathematical two-sector inversion-count interface without publishing its private Bool-indexed construction.
 - `List.idxOf_flatMap_block_lt_uniform` — generic uniformity of comparisons with an outside element across one block of a duplicate-free flattened list. The inductive ordering argument is reusable outside the present mixed-event proof.
-- `Finpartition.blockContainingEquivPowerset` — canonical equivalence between subsets of a finite set containing a distinguished element and subsets of its complement. Its current counting consumer uses the equivalence internally, but the bijection is a standalone combinatorial fact, not a proof-stage forwarding wrapper.
 - `Finpartition.card_parts_eq_stirlingSecond` — canonical enumerative endpoint counting finite set partitions with exactly `k` blocks by the second-kind Stirling number; its lack of additional external consumers does not make the enumeration a proof helper.
 - `Finpartition.card_coarsenings_parts_eq_stirlingSecond` — count of `k`-block coarsenings of an existing finite partition, obtained by transporting to a partition of its block set; retain this distinct relative-enumeration theorem.
 - `SimpleGraph.componentBlock_eq_iff_reachable` — canonical equivalence between equality of graph component blocks and reachability of their base vertices; it is the set-valued component API's characteristic theorem.
@@ -684,18 +680,30 @@ or consumer structure changes.
 - `Combinatorics.Pairing.pairEndpoint_one` — simp evaluation of the second endpoint of a normalized pair, paired with the zero-endpoint rule for finite endpoint reindexing.
 - `Combinatorics.Pairing.normalizedPairOfEndpointEquiv_pair_eq_or_swap` — the abstract endpoint transport chooses either original orientation or its swap; the general transport theorem must not assume order preservation.
 - `Combinatorics.Pairing.normalizedPairSubtypeEndpointEquiv_apply_val` — simp projection formula for the endpoint equivalence restricted to partner-invariant position subsets; used by mixed diagram components.
-- `Combinatorics.SlotShuffle.sdiffLeftSlotsOrderEquiv` — canonical increasing-order equivalence from the right shuffle slots to the complement of the left slots; this typed bridge is reused in two independent diagram-standardization modules and should remain public rather than being expanded at both call sites.
 
+- `Combinatorics.MultiplicativeWeight.normalizedObjectMoment_cumulant_eq_connectedContribution` — generic connected-object Möbius-inversion identity under commutative-ring coefficients. The power-series cumulant bridge specializes this endpoint; inlining it into that analytic consumer would lose the statistics-independent combinatorial statement.
 - `Combinatorics.Pairing.eraseZeroOrderIso_partner` — intertwining of the surviving positions' partner involution with the original one under the increasing deletion order-isomorphism; reused by insertion and erasure proofs.
 - `Combinatorics.Pairing.pairs_erase_firstPair_eq_image` — exact characterization of the remaining normalized pairs as the embedded pairs of the smaller pairing after deleting the distinguished pair; used in products and crossing decomposition.
-- `Combinatorics.Pairing.eraseZeroPairEmbedding` — canonical embedding of the smaller pairing's ordered pair positions into the ambient pairing; unlike a caller-specific cast it preserves the pair index abstraction.
-- `Combinatorics.Pairing.eraseZeroOrderIso` — canonical strictly increasing equivalence between surviving positions and the smaller finite index type after removing zero and its partner.
-- `Combinatorics.Pairing.eraseZeroPair` — canonical pairing obtained from restricting a fixed-point-free involution away from position zero and its partner, the recursive datum of the first-pair decomposition.
 - `Combinatorics.Pairing.insertFirstPair_partner_zero` — computational rule for the partner of zero after inserting a distinguished first pair, used in the inverse recursive decomposition and pairing recursion.
-- `Combinatorics.Pairing.insertFirstPair` — canonical inverse construction to deleting the distinguished first pair, reconstituting a larger pairing from a smaller pairing and a chosen nonzero partner.
-- `Combinatorics.Pairing.equivSigma` — bijective recursion identifying a pairing on 2(n+1) positions with the partner of zero and a pairing on 2n positions; underlies pairing-sum decompositions.
-- `Combinatorics.Pairing.interveningPositionCount` — geometric count of ambient positions strictly between zero and its partner, the invariant appearing in the crossing-parity recursion.
-- `Finpartition.coarseningsEquivBlockPartitions` — structural equivalence identifying coarsenings of a finite partition with partitions of its block set; used to reduce coarsening counts to Stirling numbers.
-- `Finpartition.coarseningsOrderIsoBlockPartitions` — order-isomorphism strengthening the coarsening/block-partition equivalence, enabling transport of incidence-algebra Möbius functions across the upper interval.
-- `Finpartition.refinementsEquivFiberPartitions` — structural equivalence between refinements and independent partitions of each original block, supplying the block-factorized combinatorics of moments and cumulants.
-- `Finpartition.refinementsOrderIsoFiberPartitions` — order-preserving refinement equivalence, needed to transport interval structures and multiplicative Möbius coefficients to the product of block lattices.
+
+## Other retained API contracts (outside theorem audit)
+
+These structural interfaces are worth retaining, but they are not independent proof declarations
+for theorem-audit suppression. Lean compiles proof-valued structure-field projections as
+`kind = theorem`; `TheoremCatalog.lean` deliberately excludes those projections from its theorem
+audit. The definition listed here also lies outside that audit.
+
+- **`QuantumTheory.Transport.FiniteDisorderEnsemble.probability_sum`** — structure-field normalization of the finite disorder ensemble: all configuration probability weights sum to one.
+- **`LocallyFiniteHopping.self_mem`** — structure-field locality invariant: each site belongs to its own finite incident neighborhood.
+- **`Combinatorics.SlotShuffle.sdiffLeftSlotsOrderEquiv`** — public finite-set order equivalence used by two independent diagram-standardization modules.
+- **`Finpartition.blockContainingEquivPowerset`** — canonical equivalence between subsets of a finite set containing a distinguished element and subsets of its complement. Its current counting consumer uses the equivalence internally, but the bijection is a standalone combinatorial fact, not a proof-stage forwarding wrapper.
+- **`Combinatorics.Pairing.eraseZeroPairEmbedding`** — canonical embedding of the smaller pairing's ordered pair positions into the ambient pairing; unlike a caller-specific cast it preserves the pair index abstraction.
+- **`Combinatorics.Pairing.eraseZeroOrderIso`** — canonical strictly increasing equivalence between surviving positions and the smaller finite index type after removing zero and its partner.
+- **`Combinatorics.Pairing.eraseZeroPair`** — canonical pairing obtained from restricting a fixed-point-free involution away from position zero and its partner, the recursive datum of the first-pair decomposition.
+- **`Combinatorics.Pairing.insertFirstPair`** — canonical inverse construction to deleting the distinguished first pair, reconstituting a larger pairing from a smaller pairing and a chosen nonzero partner.
+- **`Combinatorics.Pairing.equivSigma`** — bijective recursion identifying a pairing on 2(n+1) positions with the partner of zero and a pairing on 2n positions; underlies pairing-sum decompositions.
+- **`Combinatorics.Pairing.interveningPositionCount`** — geometric count of ambient positions strictly between zero and its partner, the invariant appearing in the crossing-parity recursion.
+- **`Finpartition.coarseningsEquivBlockPartitions`** — structural equivalence identifying coarsenings of a finite partition with partitions of its block set; used to reduce coarsening counts to Stirling numbers.
+- **`Finpartition.coarseningsOrderIsoBlockPartitions`** — order-isomorphism strengthening the coarsening/block-partition equivalence, enabling transport of incidence-algebra Möbius functions across the upper interval.
+- **`Finpartition.refinementsEquivFiberPartitions`** — structural equivalence between refinements and independent partitions of each original block, supplying the block-factorized combinatorics of moments and cumulants.
+- **`Finpartition.refinementsOrderIsoFiberPartitions`** — order-preserving refinement equivalence, needed to transport interval structures and multiplicative Möbius coefficients to the product of block lattices.
