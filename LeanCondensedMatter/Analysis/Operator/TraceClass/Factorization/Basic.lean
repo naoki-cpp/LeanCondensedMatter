@@ -81,19 +81,10 @@ private theorem isTraceClass_of_hilbertSchmidt_factorization
   have hpoint (i : w) :
       ((diagonalExpectationValue (CFC.abs T) (CFC.abs_nonneg T).isSelfAdjoint (d i) : ℝ) : ℂ) =
         inner ℂ ((A * U) (d i)) (B (d i)) := by
-    rw [coe_diagonalExpectationValue_right, ← hUright, mul_apply_eq_comp]
-    calc
-      inner ℂ (d i) ((ContinuousLinearMap.adjoint U) (T (d i))) =
-          inner ℂ (U (d i)) (T (d i)) :=
-        ContinuousLinearMap.adjoint_inner_right U (d i) (T (d i))
-      _ = inner ℂ (U (d i)) ((ContinuousLinearMap.adjoint A * B) (d i)) := by
-        rw [hfactor]
-      _ = inner ℂ (U (d i)) ((ContinuousLinearMap.adjoint A) (B (d i))) := by
-        rw [mul_apply_eq_comp]
-      _ = inner ℂ (A (U (d i))) (B (d i)) :=
-        ContinuousLinearMap.adjoint_inner_right A (U (d i)) (B (d i))
-      _ = inner ℂ ((A * U) (d i)) (B (d i)) := by
-        rw [mul_apply_eq_comp]
+    rw [coe_diagonalExpectationValue_right, ← hUright, mul_apply_eq_comp,
+      ContinuousLinearMap.adjoint_inner_right U (d i) (T (d i))]
+    rw [← hfactor, mul_apply_eq_comp, mul_apply_eq_comp]
+    exact ContinuousLinearMap.adjoint_inner_right A (U (d i)) (B (d i))
   have hcast :
       Summable (fun i =>
         ((diagonalExpectationValue (CFC.abs T) (CFC.abs_nonneg T).isSelfAdjoint (d i) : ℝ) : ℂ)) :=
