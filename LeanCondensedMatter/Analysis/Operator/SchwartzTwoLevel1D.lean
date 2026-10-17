@@ -137,10 +137,6 @@ theorem multiplicationLinear_apply (f : Spatial) :
     multiplicationLinear f = multiplicationOperator f :=
   rfl
 
-/-- The scalar Schwartz derivative used as the localization differential. -/
-noncomputable def derivative : Spatial →ₗ[ℂ] Spatial :=
-  SchwartzKinetic1D.derivative
-
 
 end
 end SchwartzTwoLevel1D

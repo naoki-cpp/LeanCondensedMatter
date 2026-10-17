@@ -6,8 +6,8 @@ set_option linter.style.header false
 /-!
 # Operator current representations for the one-dimensional Schwartz Schrödinger model
 
-This module connects the analysis-only Schwartz localization identity to the generalized one-body
-transport API. For
+This module connects the Schwartz localization identity, specialized to a one-particle Schrödinger
+Hamiltonian, to the generalized one-body transport API. For
 
 ```text
 H = -κ D² + M_V,
@@ -15,7 +15,7 @@ M_f ψ = f ψ,
 v = -2 i κ D / ℏ,
 ```
 
-the analysis layer proves
+the Schrödinger operator module proves
 
 ```text
 (i/ℏ) [H, M_f] = 1/2 {M_(D f), v}.
