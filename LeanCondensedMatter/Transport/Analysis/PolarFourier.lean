@@ -23,9 +23,10 @@ two-dimensional polar specialization and angular reduction.
 
 The full-angle kernels below are the canonical intermediate for radial Fourier reduction. Constant,
 first, and second angular channels are supplied through `AngularHarmonicCoefficients`, shared with
-ordinary angular integration. The kernels remain explicit finite interval integrals rather than being identified with
-Bessel functions. Mathlib v4.35.0 provides `Complex.besselJ` and parity/analyticity results, but
-not yet the angular integral representations required to prove those identifications.
+ordinary angular integration. The kernels remain explicit finite interval integrals to preserve
+their angular reduction API. The zeroth kernel is identified with `2π * Complex.besselJ 0`
+by `polarFourierZerothAngularKernel_eq_besselJ`; first and second harmonics still await
+analogous Bessel bridges.
 
 No model Hamiltonian, matrix representation, disorder approximation, real-space cutoff, or
 conductivity normalization is introduced here.
@@ -80,8 +81,8 @@ theorem physicalMomentumPolarFourierPhase_polarPoint2D
   push_cast
   ring_nf
 
-/-- Zeroth full-angle radial Fourier kernel. A future integral-representation theorem should
-identify it with `2π J₀(z)` using Mathlib's `Complex.besselJ`. -/
+/-- Zeroth full-angle radial Fourier kernel, identified with `2π J₀(z)` by
+`polarFourierZerothAngularKernel_eq_besselJ`. -/
 noncomputable def polarFourierZerothAngularKernel (z : ℝ) : ℂ :=
   ∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi), polarFourierRadialPhase z θ
 
@@ -886,15 +887,9 @@ private theorem polarFourierRadialPhase_neg_eq_shift_pi (z θ : ℝ) :
 @[simp] theorem polarFourierZerothAngularKernel_neg (z : ℝ) :
     polarFourierZerothAngularKernel (-z) =
       polarFourierZerothAngularKernel z := by
-  let f : ℝ → ℂ := fun θ => polarFourierRadialPhase z θ
-  have hf : Function.Periodic f (2 * Real.pi) := by
-    intro θ
-    dsimp [f]
-    unfold polarFourierRadialPhase
-    rw [Real.cos_add_two_pi]
-  unfold polarFourierZerothAngularKernel
-  simp_rw [polarFourierRadialPhase_neg_eq_shift_pi]
-  simpa [f] using intervalIntegral_fullPeriod_comp_sub_eq f hf Real.pi
+  simp only [polarFourierZerothAngularKernel_eq_besselJ, Complex.ofReal_neg]
+  congr 1
+  exact (Complex.even_besselJ (a := (0 : ℤ)) (by norm_num)) (z : ℂ)
 
 /-- The first-cosine full-angle radial Fourier kernel is odd in its radial argument. -/
 @[simp] theorem polarFourierFirstCosineAngularKernel_neg (z : ℝ) :
