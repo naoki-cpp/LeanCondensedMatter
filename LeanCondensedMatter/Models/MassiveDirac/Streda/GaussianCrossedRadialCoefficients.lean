@@ -116,6 +116,7 @@ theorem finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient_eq_radialKerne
   rw [finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient_eq_entryKernel_integrals]
   rw [pauliVectorCoefficient_prefactor_intervalIntegral
     (axis := axis)
+    (prefactor := (((momentumMeasurePrefactor hbar : ℝ) : ℂ)))
     (kernel := fun p i j => finiteCutoffContinuumBornDysonRadialGreenEntryKernel
       side v m probeEnergy broadening disorderStrength hbar pMax radius p i j)
     (hkernel := hentry)]
@@ -183,6 +184,7 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficie
   rw [finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient_eq_entryKernel_integrals]
   rw [pauliVectorCoefficient_prefactor_intervalIntegral
     (axis := axis)
+    (prefactor := (((momentumMeasurePrefactor hbar : ℝ) : ℂ)))
     (kernel := fun p i j => finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel
       source v m probeEnergy broadening disorderStrength hbar pMax radius p i j)
     (hkernel := hentry)]
