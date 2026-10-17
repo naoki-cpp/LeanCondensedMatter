@@ -15967,8 +15967,7 @@
       "ContinuousLinearMap.diagonalExpectationValue_nonneg",
       "ContinuousLinearMap.diagonalExpectationValue_zero",
       "ContinuousLinearMap.hasSum_eigen_expansion_diagonalExpectationValue",
-      "HilbertBasis.diagonalOp_isTraceClass",
-      "HilbertBasis.spectralTrace_diagonalOp_eq_tsum",
+      "HilbertBasis.diagonalExpectationValue_diagonalOp",
       "QuantumTheory.DensityOperator.hasSum_diagonal_weights",
       "QuantumTheory.DensityOperator.hasSum_observableExpectation_diagonal",
       "QuantumTheory.energyExpValue_eq_tsum_common_eigenbasis",
@@ -16001,8 +16000,7 @@
       "ContinuousLinearMap.diagonalExpectationValue_nonneg",
       "ContinuousLinearMap.diagonalExpectationValue_zero",
       "ContinuousLinearMap.hasSum_eigen_expansion_diagonalExpectationValue",
-      "HilbertBasis.diagonalOp_isTraceClass",
-      "HilbertBasis.spectralTrace_diagonalOp_eq_tsum",
+      "HilbertBasis.diagonalExpectationValue_diagonalOp",
       "QuantumTheory.DensityOperator.hasSum_diagonal_weights",
       "QuantumTheory.DensityOperator.hasSum_observableExpectation_diagonal",
       "QuantumTheory.energyExpValue_eq_tsum_common_eigenbasis",
@@ -16018,7 +16016,7 @@
       "_private.LeanCondensedMatter.QuantumTheory.POVM.Born.0.QuantumTheory.hasSum_probabilityKernel_eigenvector",
       "_private.LeanCondensedMatter.QuantumTheory.POVM.Born.0.QuantumTheory.hasSum_probabilityKernel_outcome"
     ],
-    "compiledConsumerCount": 27,
+    "compiledConsumerCount": 26,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -23007,6 +23005,54 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {ι : Type u_1} {H : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] (b : HilbertBasis ι ℂ H) (a : ι → ℝ) (ha : Summable fun i => ‖a i‖)\n  (ha_nonneg : ∀ (i : ι), 0 ≤ a i) (i : ι), (b.diagonalOp fun j => ↑(a j)).diagonalExpectationValue ⋯ (b i) = a i",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "HilbertBasis.diagonalExpectationValue_diagonalOp",
+    "module": "LeanCondensedMatter.Analysis.Operator.Diagonal",
+    "externalAxioms": [],
+    "docString": "The lossless diagonal expectation of a positive diagonal operator is its real coefficient. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "HilbertBasis.diagonalOp_isTraceClass",
+      "HilbertBasis.spectralTrace_diagonalOp_eq_tsum"
+    ],
+    "dependencies": [
+      "ContinuousLinearMap.coe_diagonalExpectationValue_right",
+      "HilbertBasis.diagonalOp_apply_basis",
+      "HilbertBasis.diagonalOp_isPositive"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "HilbertBasis.diagonalOp_isTraceClass",
+      "HilbertBasis.spectralTrace_diagonalOp_eq_tsum"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {ι : Type u_1} {H : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] (b : HilbertBasis ι ℂ H) (a : ι → ℝ),\n  (Summable fun i => ‖a i‖) → (∀ (i : ι), 0 ≤ a i) → (b.diagonalOp fun i => ↑(a i)).SpectralTraceClass",
     "standardAxioms": [
       "Classical.choice",
@@ -23074,9 +23120,8 @@
     "directWrapperOf": null,
     "dependents": [
       "Fredholm.diagonalDet_eq_det_one_add_diagonalOp",
-      "HilbertBasis.diagonalOp_isTraceClass",
+      "HilbertBasis.diagonalExpectationValue_diagonalOp",
       "HilbertBasis.one_add_diagonalOp_apply_basis",
-      "HilbertBasis.spectralTrace_diagonalOp_eq_tsum",
       "QuantumTheory.DensityOperator.entropyOp_isTraceClass_of_diagonal",
       "QuantumTheory.diagonalDensityOperator_apply_basis",
       "QuantumTheory.isTraceClass_iff_purePointGibbsSummable_of_basis_action"
@@ -23088,14 +23133,13 @@
     "completedMention": false,
     "compiledConsumers": [
       "Fredholm.diagonalDet_eq_det_one_add_diagonalOp",
-      "HilbertBasis.diagonalOp_isTraceClass",
+      "HilbertBasis.diagonalExpectationValue_diagonalOp",
       "HilbertBasis.one_add_diagonalOp_apply_basis",
-      "HilbertBasis.spectralTrace_diagonalOp_eq_tsum",
       "QuantumTheory.DensityOperator.entropyOp_isTraceClass_of_diagonal",
       "QuantumTheory.diagonalDensityOperator_apply_basis",
       "QuantumTheory.isTraceClass_iff_purePointGibbsSummable_of_basis_action"
     ],
-    "compiledConsumerCount": 7,
+    "compiledConsumerCount": 6,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -23170,6 +23214,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "HilbertBasis.diagonalExpectationValue_diagonalOp",
       "HilbertBasis.diagonalOpSpectralTraceClass",
       "HilbertBasis.diagonalOp_isTraceClass"
     ],
@@ -23180,11 +23225,12 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "HilbertBasis.diagonalExpectationValue_diagonalOp",
       "HilbertBasis.diagonalOpSpectralTraceClass",
       "HilbertBasis.diagonalOp_isTraceClass",
       "QuantumTheory.diagonalDensityOperator"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -23222,9 +23268,8 @@
       "QuantumTheory.isTraceClass_iff_purePointGibbsSummable_of_basis_action"
     ],
     "dependencies": [
-      "ContinuousLinearMap.coe_diagonalExpectationValue_right",
       "ContinuousLinearMap.isTraceClass_iff_isTraceClassWrt",
-      "HilbertBasis.diagonalOp_apply_basis",
+      "HilbertBasis.diagonalExpectationValue_diagonalOp",
       "HilbertBasis.diagonalOp_isPositive"
     ],
     "crossModuleDirectWrapper": false,
@@ -23496,9 +23541,8 @@
     "dependencies": [
       "ContinuousLinearMap.SpectralTraceClass.hasSum_diagonalExpectationValue",
       "ContinuousLinearMap.SpectralTraceClass.isSelfAdjoint",
-      "ContinuousLinearMap.coe_diagonalExpectationValue_right",
-      "HilbertBasis.diagonalOpSpectralTraceClass",
-      "HilbertBasis.diagonalOp_apply_basis"
+      "HilbertBasis.diagonalExpectationValue_diagonalOp",
+      "HilbertBasis.diagonalOpSpectralTraceClass"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,

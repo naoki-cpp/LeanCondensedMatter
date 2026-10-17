@@ -375,6 +375,7 @@
       "sourceFile": "LeanCondensedMatter/Analysis/Operator/Diagonal.lean",
       "imports": [
         "LeanCondensedMatter.Analysis.Operator.Compact",
+        "LeanCondensedMatter.Analysis.Operator.DiagonalExpectation",
         "LeanCondensedMatter.Analysis.Operator.Positive"
       ],
       "externalImportCount": 3
