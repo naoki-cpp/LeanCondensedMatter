@@ -31,12 +31,9 @@ theorem traceNorm_le_half_normSq_add_of_factorization
   obtain ⟨U, -, hUright, hUnorm⟩ := exists_leftPolarFactor T
   have hAU : IsHilbertSchmidt (A * U) := isHilbertSchmidt_comp_right hA U
   have hAUnorm_le : hAU.normSq ≤ hA.normSq := by
-    have hraw := IsHilbertSchmidt.normSq_comp_right_le hA U
-    have hraw' : hAU.normSq ≤ ‖U‖ ^ 2 * hA.normSq := by
-      exact (IsHilbertSchmidt.normSq_proof_irrel hAU
-        (isHilbertSchmidt_comp_right hA U)) ▸ hraw
     calc
-      hAU.normSq ≤ ‖U‖ ^ 2 * hA.normSq := hraw'
+      hAU.normSq ≤ ‖U‖ ^ 2 * hA.normSq :=
+        IsHilbertSchmidt.normSq_comp_right_le hA U
       _ ≤ 1 ^ 2 * hA.normSq := by
         exact mul_le_mul_of_nonneg_right
           (pow_le_pow_left₀ (norm_nonneg U) hUnorm 2) hA.normSq_nonneg
