@@ -51,36 +51,6 @@ theorem DensityOperator.expectation_isSelfAdjoint_of_isSymmetric
   (Complex.im_eq_zero_iff_isSelfAdjoint _).mp
     (ρ.expectation_im_eq_zero_of_isSymmetric hA)
 
-omit [CompleteSpace H] in
-private theorem inner_apply_im_eq_zero_of_isPositive
-    {A : H →L[ℂ] H} (hA : A.IsPositive) (x : H) :
-    (inner ℂ x (A x) : ℂ).im = 0 := by
-  have hreal := Complex.eq_coe_norm_of_nonneg (hA.inner_nonneg_right x)
-  exact congrArg Complex.im hreal
-
-/-- The expectation of a positive observable has zero imaginary part. -/
-theorem DensityOperator.expectation_im_eq_zero_of_isPositive
-    (ρ : DensityOperator H) {A : H →L[ℂ] H} (hA : A.IsPositive) :
-    (ρ.expectation A).im = 0 := by
-  rw [ρ.expectation_eq_spectral_tsum, Complex.im_tsum (ρ.summable_expectation_term A)]
-  calc
-    (∑' a : EigenvectorIndex ρ.op,
-        ((a.1.1 : ℂ) *
-          (inner ℂ (eigenvectorFamily ρ.spectralTraceClass.compact a)
-            (A (eigenvectorFamily ρ.spectralTraceClass.compact a)) : ℂ)).im) =
-        ∑' _a : EigenvectorIndex ρ.op, (0 : ℝ) := by
-      apply tsum_congr
-      intro a
-      simp [Complex.mul_im, inner_apply_im_eq_zero_of_isPositive hA]
-    _ = 0 := tsum_zero
-
-/-- The expectation of a positive observable is a self-adjoint complex scalar. -/
-theorem DensityOperator.expectation_isSelfAdjoint_of_isPositive
-    (ρ : DensityOperator H) {A : H →L[ℂ] H} (hA : A.IsPositive) :
-    IsSelfAdjoint (ρ.expectation A) :=
-  (Complex.im_eq_zero_iff_isSelfAdjoint _).mp
-    (ρ.expectation_im_eq_zero_of_isPositive hA)
-
 /-- The real part of the expectation of a positive observable is nonnegative. -/
 theorem DensityOperator.expectation_re_nonneg_of_isPositive
     (ρ : DensityOperator H) {A : H →L[ℂ] H} (hA : A.IsPositive) :
@@ -97,7 +67,7 @@ theorem DensityOperator.expectation_nonneg_of_isPositive
     (ρ : DensityOperator H) {A : H →L[ℂ] H} (hA : A.IsPositive) :
     0 ≤ ρ.expectation A := by
   exact (Complex.re_nonneg_iff_nonneg
-    (ρ.expectation_isSelfAdjoint_of_isPositive hA)).mp
+    (ρ.expectation_isSelfAdjoint_of_isSymmetric hA.isSelfAdjoint.isSymmetric)).mp
       (ρ.expectation_re_nonneg_of_isPositive hA)
 
 end QuantumTheory
