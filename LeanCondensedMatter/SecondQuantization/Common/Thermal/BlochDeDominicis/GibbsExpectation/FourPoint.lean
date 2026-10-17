@@ -43,8 +43,10 @@ theorem finiteGibbsExpectation_comp_comp_comp_eq_div_of_zetaCommutator
     · simpa [ScalarExchange.zetaCommutator, Module.End.mul_eq_comp] using hcomm14
   have hz : traceFock (0 : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) = 0 :=
     (traceFock (Config := Config)).map_zero
-  have h := traceFock_diagonalEvolution_comp_peel energy β q1 ζ C1
+  have h := tsumTrace_diagonalEvolution_comp_peel energy β q1 ζ C1
     [(C2, c12), (C3, c13), (C4, c14)] hC1 hmem
+    Summable.of_finite Summable.of_finite
+  simp only [tsumTrace, tsum_fintype, traceFock_eq_sum_matrixCoeff] at h
   have hZ := traceFock_diagonalEvolution_ne_zero energy β
   simp only [ScalarExchange.peelSumWithCoefficients, List.map_cons, List.map_nil,
     List.prod_cons, List.prod_nil,
