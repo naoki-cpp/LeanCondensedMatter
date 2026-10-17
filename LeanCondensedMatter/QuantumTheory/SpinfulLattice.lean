@@ -72,18 +72,6 @@ noncomputable def spinOneBodyLinear
   ((internalOneBodyLinear (Site := Site)).restrictScalars ℝ).comp
     (QuantumTheory.SpinHalf.spinMatrix spinScale)
 
-/-- One-particle spin-1/2 observable associated with a spin-space component vector. -/
-noncomputable def spinOneBody
-    (spinScale : ℝ) (spinComponent : QuantumTheory.SpinHalf.SpinSpace) :
-    (SpinfulSite Site →₀ ℂ) →ₗ[ℂ] (SpinfulSite Site →₀ ℂ) :=
-  spinOneBodyLinear spinScale spinComponent
-
-@[simp]
-theorem spinOneBodyLinear_apply
-    (spinScale : ℝ) (spinComponent : QuantumTheory.SpinHalf.SpinSpace) :
-    spinOneBodyLinear (Site := Site) spinScale spinComponent =
-      spinOneBody (Site := Site) spinScale spinComponent :=
-  rfl
 
 end
 end SpinfulLattice

@@ -66,7 +66,7 @@ theorem boundedSpinCurrentLinear_apply
     (velocity : (SpinfulSite Site →₀ ℂ) →ₗ[ℂ] (SpinfulSite Site →₀ ℂ))
     (spinScale : ℝ) (spinComponent : QuantumTheory.SpinHalf.SpinSpace) :
     boundedSpinCurrentLinear velocity spinScale spinComponent =
-      boundedSymmetrizedVelocityCurrent velocity (spinOneBody spinScale spinComponent) :=
+      boundedSymmetrizedVelocityCurrent velocity (spinOneBodyLinear spinScale spinComponent) :=
   rfl
 
 /-- Neutral fixed-observable response channel for a finite spin current selected by a spin-space component vector and driven by an electric bond-current source. -/
