@@ -38,14 +38,6 @@ theorem purePointGibbsCompetitor_probability [Nonempty ι]
     (purePointGibbsCompetitor E β hsum hint).probability i =
       purePointGibbsProbability E β i := rfl
 
-private theorem purePointGibbsCompetitor_eq_of_probability_eq
-    {E : ι → ℝ} {p q : PurePointGibbsCompetitor E}
-    (h : p.probability = q.probability) : p = q := by
-  cases p
-  cases q
-  cases h
-  rfl
-
 private theorem purePointGibbs_entropy_le_and_eq_iff
     [Nonempty ι] (E : ι → ℝ) (β : ℝ)
     (hsum : PurePointGibbsSummable E β) (p : PurePointGibbsCompetitor E) :
@@ -236,10 +228,14 @@ theorem purePointGibbs_helmholtzFreeEnergy_eq_iff_eq_competitor
       p = purePointGibbsCompetitor E β hsum hint := by
   constructor
   · intro hfree
-    apply purePointGibbsCompetitor_eq_of_probability_eq
-    funext i
-    exact (purePointGibbs_helmholtzFreeEnergy_eq_iff_probability_eq
-      E β hβ hsum p).mp hfree i
+    have hprob : p.probability =
+        (purePointGibbsCompetitor E β hsum hint).probability := by
+      funext i
+      exact (purePointGibbs_helmholtzFreeEnergy_eq_iff_probability_eq
+        E β hβ hsum p).mp hfree i
+    cases p
+    cases hprob
+    rfl
   · rintro rfl
     exact purePointGibbsCompetitor_helmholtzFreeEnergy_eq E β hβ hsum hint
 

@@ -147,16 +147,21 @@ momentum measure is attached by the loop realization exactly once; the mean-pote
 separate. TMatrix is the package entry point for these two responsibilities.
 ## Concrete models
 
-The `Models.RashbaExchange` family owns its Rashba-exchange Hamiltonian, finite spectral data,
-clean bounded-operator realizations in `Operator`, retarded/advanced resolvents in `Green`,
-Berry/force-matrix bridges, and finite Bastin/Středa response. Generic trace, measure, and conductivity constructions remain upstream
+The `Models.RashbaExchange` family owns its clean Rashba-exchange Hamiltonian and spectral
+identities in `Model`, `Model/Spectral`, and `Model/Interband`. The finite-response bundle
+and momentum disk live in `ResponseParameters`. The bounded Hamiltonian and velocity, together
+with the charge-current vertices, are defined in `Operator`; retarded/advanced resolvents are
+in `Green`. Berry/force-matrix bridges and finite Bastin/Středa response stay in model-owned
+downstream modules. Generic trace, measure, and conductivity constructions remain upstream
 under `Transport`.
 
 `Models.Parabolic2DEG` is the public route for the finite isotropic parabolic-band
 normalization benchmark. It keeps effective mass, chemical potential, radial cutoff, positive
 spectral broadening, signed charge/current convention, reduced Planck constant, and momentum-measure
-normalization explicit. Its clean Hamiltonian and current vertices are in `Model`, while
-`Green` owns the finite-broadening scalar/operator resolvents. The pointwise response consumes the
+normalization explicit. `Model` owns only the clean Hamiltonian and velocity;
+`ResponseParameters` owns the finite-response parameter bundle and cutoff domain;
+`Green` owns finite-broadening scalar/operator resolvents; and `Response` owns
+charge-current vertices together with the finite conductivity calculation. The pointwise response consumes the
 common finite-broadening Středa surface kernel `RA - (RR + AA)/2` through these operators. The reduced
 finite-cutoff response remains a response-level object until the named `ℏ/(2π)` Kubo trace
 prefactor is attached; only then is it exposed through `Core.ConductivityTensor`. No thermodynamic,

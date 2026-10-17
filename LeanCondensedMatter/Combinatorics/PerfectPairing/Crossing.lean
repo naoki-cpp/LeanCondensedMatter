@@ -6,8 +6,7 @@ set_option linter.style.header false
 # Crossings and crossing counts
 
 Two normalized pairs `(a, b)` and `(c, d)` cross when `a < c < b < d`. The canonical public
-crossing representation uses `Pairing.NormalizedPair`; raw pairs with membership witnesses are
-kept only as a private proof device.
+crossing representation uses `Pairing.NormalizedPair`.
 -/
 
 namespace Combinatorics
@@ -78,67 +77,40 @@ def Pairing.crossingCount {n : ℕ} (pairing : Pairing n) : ℕ :=
   ((pairing.pairs.product pairing.pairs).filter fun pairPair =>
     Crosses pairPair.1 pairPair.2).card
 
-/-- The finite type of ordered normalized pair-of-pairs that contribute to `crossingCount`. -/
-private abbrev Pairing.CrossingPair {n : ℕ} (pairing : Pairing n) :=
-  {pairPair : pairing.NormalizedPair × pairing.NormalizedPair //
-    Crosses pairPair.1.1 pairPair.2.1}
-
-private abbrev RawCrossingPair {n : ℕ} (pairing : Pairing n) :=
-  {pairPair :
-      (Fin (2 * n) × Fin (2 * n)) × (Fin (2 * n) × Fin (2 * n)) //
-    pairPair.1 ∈ pairing.pairs ∧ pairPair.2 ∈ pairing.pairs ∧
-      Crosses pairPair.1 pairPair.2}
-
-private def crossingPairEquivRaw {n : ℕ} (pairing : Pairing n) :
-    pairing.CrossingPair ≃ RawCrossingPair pairing where
-  toFun z := ⟨(z.1.1.1, z.1.2.1), z.1.1.2, z.1.2.2, z.2⟩
-  invFun z := ⟨(⟨z.1.1, z.2.1⟩, ⟨z.1.2, z.2.2.1⟩), z.2.2.2⟩
-  left_inv _ := rfl
-  right_inv _ := rfl
-
-/-- `crossingCount` is the cardinality of the canonical crossing-pair type. -/
-private theorem Pairing.crossingCount_eq_card_crossingPair {n : ℕ} (pairing : Pairing n) :
-    pairing.crossingCount = Fintype.card pairing.CrossingPair := by
-  have hraw : pairing.crossingCount = Fintype.card (RawCrossingPair pairing) := by
-    rw [Pairing.crossingCount]
-    symm
-    exact Fintype.card_of_subtype
-      (p := fun pairPair :
-          (Fin (2 * n) × Fin (2 * n)) × (Fin (2 * n) × Fin (2 * n)) =>
-        pairPair.1 ∈ pairing.pairs ∧ pairPair.2 ∈ pairing.pairs ∧
-          Crosses pairPair.1 pairPair.2)
-      ((pairing.pairs.product pairing.pairs).filter fun pairPair =>
-        Crosses pairPair.1 pairPair.2)
-      (fun pairPair => by
-        simp only [Finset.mem_filter, Finset.product_eq_sprod, Finset.mem_product]
-        constructor
-        · rintro ⟨⟨hleft, hright⟩, hcross⟩
-          exact ⟨hleft, hright, hcross⟩
-        · rintro ⟨hleft, hright, hcross⟩
-          exact ⟨⟨hleft, hright⟩, hcross⟩)
-  calc
-    pairing.crossingCount = Fintype.card (RawCrossingPair pairing) := hraw
-    _ = Fintype.card pairing.CrossingPair :=
-      (Fintype.card_congr (crossingPairEquivRaw pairing)).symm
-
 /-- `crossingCount` as a `0`-or-`1` sum over all ordered normalized-pair pairs. -/
 theorem Pairing.crossingCount_eq_sum_crosses {n : ℕ} (pairing : Pairing n) :
     pairing.crossingCount =
       ∑ x : pairing.NormalizedPair × pairing.NormalizedPair,
         if Crosses x.1.1 x.2.1 then 1 else 0 := by
   classical
-  rw [pairing.crossingCount_eq_card_crossingPair]
-  have hcard :
-      Fintype.card pairing.CrossingPair =
-        ((Finset.univ : Finset (pairing.NormalizedPair × pairing.NormalizedPair)).filter
-          fun x => Crosses x.1.1 x.2.1).card := by
-    exact Fintype.card_of_subtype
-      (p := fun x : pairing.NormalizedPair × pairing.NormalizedPair => Crosses x.1.1 x.2.1)
-      ((Finset.univ : Finset (pairing.NormalizedPair × pairing.NormalizedPair)).filter
-        fun x => Crosses x.1.1 x.2.1)
-      (fun x => by simp)
-  rw [hcard]
-  simp
+  calc
+    pairing.crossingCount =
+        ∑ x ∈ pairing.pairs.product pairing.pairs,
+          if Crosses x.1 x.2 then 1 else 0 := by
+      simpa [Pairing.crossingCount] using
+        (Finset.sum_boole (R := ℕ)
+          (fun x : (Fin (2 * n) × Fin (2 * n)) × (Fin (2 * n) × Fin (2 * n)) =>
+            Crosses x.1 x.2) (pairing.pairs.product pairing.pairs)).symm
+    _ = ∑ p ∈ pairing.pairs, ∑ q ∈ pairing.pairs,
+          if Crosses p q then 1 else 0 := by
+      exact Finset.sum_product' pairing.pairs pairing.pairs
+        (fun p q => if Crosses p q then (1 : ℕ) else 0)
+    _ = ∑ p ∈ pairing.pairs.attach, ∑ q ∈ pairing.pairs.attach,
+          if Crosses p.1 q.1 then 1 else 0 := by
+      calc
+        (∑ p ∈ pairing.pairs, ∑ q ∈ pairing.pairs,
+          if Crosses p q then 1 else 0) =
+            ∑ p ∈ pairing.pairs.attach, ∑ q ∈ pairing.pairs,
+              if Crosses p.1 q then 1 else 0 :=
+          (Finset.sum_attach pairing.pairs
+            (fun p => ∑ q ∈ pairing.pairs, if Crosses p q then (1 : ℕ) else 0)).symm
+        _ = _ := by
+          apply Finset.sum_congr rfl
+          intro p _
+          exact (Finset.sum_attach pairing.pairs
+            (fun q => if Crosses p.1 q then (1 : ℕ) else 0)).symm
+    _ = _ := by
+      simp only [Finset.attach_eq_univ, Fintype.sum_prod_type]
 
 /-- The number of pairs crossing `firstPair`. -/
 def Pairing.crossingsWithFirstPair {n : ℕ} (pairing : Pairing (n + 1)) : ℕ :=

@@ -34,6 +34,35 @@ open MeasureTheory
 open QuantumTheory.Transport
 open scoped Interval
 
+/-- Cartesian electrical-current component in the explicit convention `j_i = q v_i`. -/
+def currentComponent
+    (params : Parameters) (direction : Fin 2) (px py : ℝ) : ℝ :=
+  params.signedCharge * velocityComponent params direction px py
+
+/-- One-band current operator, represented as scalar multiplication by the named current component. -/
+noncomputable def currentOperator
+    (params : Parameters) (direction : Fin 2) (px py : ℝ) :
+    BandHilbert →L[ℂ] BandHilbert :=
+  (((currentComponent params direction px py : ℝ) : ℂ)) •
+    (1 : BandHilbert →L[ℂ] BandHilbert)
+
+/-- The bounded current vertex is the signed carrier charge multiplying the bounded velocity. -/
+@[simp]
+theorem currentOperator_eq_charge_smul_velocityOperator
+    (params : Parameters) (direction : Fin 2) (px py : ℝ) :
+    currentOperator params direction px py =
+      (((params.signedCharge : ℝ) : ℂ)) • velocityOperator params direction px py := by
+  unfold currentOperator velocityOperator currentComponent
+  push_cast
+  module
+
+/-- The current operator is self-adjoint because the signed charge and velocity are real. -/
+theorem currentOperator_isSelfAdjoint
+    (params : Parameters) (direction : Fin 2) (px py : ℝ) :
+    IsSelfAdjoint (currentOperator params direction px py) := by
+  simp [currentOperator, isSelfAdjoint_iff]
+
+
 /-- Predicate stating that the explicitly stored measure normalization is the canonical
 two-dimensional physical-momentum convention owned by `Transport.Analysis.ContinuumMeasure`. -/
 def UsesCanonicalMomentumMeasure (params : Parameters) : Prop :=
