@@ -123,23 +123,13 @@ noncomputable def FamilySlotShuffle.reindexEquiv (e : ι ≃ κ) (size : κ → 
         apply FamilySlotShuffleTo.ext
         apply Equiv.ext
         intro x
-        change (finCongr hsum)
-            ((finCongr hsum.symm)
-              (shuffle.slotEquiv (localEquiv (localEquiv.symm x)))) =
-          shuffle.slotEquiv x
-        rw [localEquiv.apply_symm_apply]
-        simp
+        simp [localEquiv]
       right_inv := by
         intro shuffle
         apply FamilySlotShuffleTo.ext
         apply Equiv.ext
         intro x
-        change (finCongr hsum.symm)
-            ((finCongr hsum)
-              (shuffle.slotEquiv (localEquiv.symm (localEquiv x)))) =
-          shuffle.slotEquiv x
-        rw [localEquiv.symm_apply_apply]
-        simp }
+        simp [localEquiv] }
 
 end Reindex
 
