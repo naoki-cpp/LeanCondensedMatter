@@ -71,11 +71,11 @@ class CatalogTests(unittest.TestCase):
 
     def test_retained_catalog_names_match_compiled_kind_and_mentions(self):
         document = (
-            "## Retained declarations\\n"
-            "- `a` — retained proof\\n"
-            "- `c`\\n  — explanation wrapped onto the next line\\n"
-            "## Other retained API contracts (not theorem declarations)\\n"
-            "- **`b`** — a public definition\\n"
+            "## Retained declarations\n"
+            "- `a` — retained proof\n"
+            "- `c`\n  — explanation wrapped onto the next line\n"
+            "## Other retained API contracts (not theorem declarations)\n"
+            "- **`b`** — a public definition\n"
         )
         rows = fixture()
         theorems = [{"name": "a", "retainedMention": True},
@@ -86,7 +86,7 @@ class CatalogTests(unittest.TestCase):
             document.replace("- `a` —", "- `missing` —"),
             document.replace("- `a` —", "- `b` —"),
             document.replace("- **`b`**", "- **`c`**"),
-            document + "- **`b`** — duplicated\\n",
+            document + "- **`b`** — duplicated\n",
             document.replace("- `c`", "- `a`"),
         ]:
             with self.subTest(bad=bad), self.assertRaises(AssertionError):
