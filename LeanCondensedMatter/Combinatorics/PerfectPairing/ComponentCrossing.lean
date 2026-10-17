@@ -1,7 +1,7 @@
 import LeanCondensedMatter.Combinatorics.PerfectPairing.CrossingParity
 import LeanCondensedMatter.Combinatorics.FiniteSumModEq
 import LeanCondensedMatter.Combinatorics.Common.FintypeProduct
-import LeanCondensedMatter.Combinatorics.FamilySlotShuffleInversions
+import LeanCondensedMatter.Combinatorics.Shuffle.FamilySlotShuffleInversions
 
 set_option linter.style.header false
 

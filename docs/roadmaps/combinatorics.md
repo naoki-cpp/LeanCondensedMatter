@@ -94,6 +94,8 @@ cumulants, and connected decompositions remain in `Combinatorics`.
   owning it;
 - set partitions, pairings, cumulants, Möbius inversion, shuffle/reindexing, generic finite product
   identities, and fixed-width finite-index block coordinates/order facts belong in `Combinatorics`;
+- `Combinatorics/Shuffle/` owns order-preserving binary and finite-family shuffles, their signs,
+  inversion counts, recursive decompositions, and finite-partition order adapters;
 - Mathlib provides `SimpleGraph.reachableSetoid`, connected components, and
   `Finpartition.ofSetoid` / `Finpartition.ofSetSetoid`, but no graph-component `Finpartition`
   facade was found. The finite and ambient-finset graph component API therefore lives in

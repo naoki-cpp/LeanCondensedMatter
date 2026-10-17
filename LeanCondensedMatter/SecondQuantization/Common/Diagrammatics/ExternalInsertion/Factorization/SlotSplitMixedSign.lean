@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Combinatorics.BinarySplitPermutationSign
+import LeanCondensedMatter.Combinatorics.Shuffle.BinarySplitPermutationSign
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Factorization.FixedSlotSplitOrder
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Pairing.SlotSplitMixedOrder
 

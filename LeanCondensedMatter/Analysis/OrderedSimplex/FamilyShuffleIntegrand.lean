@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Analysis.OrderedSimplex.MeasurableRegularity
-import LeanCondensedMatter.Combinatorics.FamilySlotShuffle
+import LeanCondensedMatter.Combinatorics.Shuffle.FamilySlotShuffle
 import Mathlib.Analysis.Complex.Basic
 
 set_option linter.style.header false

@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Analysis.OrderedSimplex.FamilyShuffle
-import LeanCondensedMatter.Combinatorics.FinpartitionOrderShuffle
+import LeanCondensedMatter.Combinatorics.Shuffle.FinpartitionOrderShuffle
 
 set_option linter.style.header false
 

@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Combinatorics.FinpartitionOrderShuffle
+import LeanCondensedMatter.Combinatorics.Shuffle.FinpartitionOrderShuffle
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Ordered
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentRestriction
 

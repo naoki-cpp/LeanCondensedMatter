@@ -1,5 +1,5 @@
-import LeanCondensedMatter.Combinatorics.FamilySlotShuffle
-import LeanCondensedMatter.Combinatorics.SlotShuffle
+import LeanCondensedMatter.Combinatorics.Shuffle.FamilySlotShuffle
+import LeanCondensedMatter.Combinatorics.Shuffle.SlotShuffle
 import LeanCondensedMatter.Combinatorics.SumEquivPartition
 import Mathlib.Algebra.BigOperators.Fin
 import Mathlib.Data.Finset.Sort

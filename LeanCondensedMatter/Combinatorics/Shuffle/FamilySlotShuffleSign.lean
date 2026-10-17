@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Combinatorics.FamilySlotShuffleInversions
+import LeanCondensedMatter.Combinatorics.Shuffle.FamilySlotShuffleInversions
 import LeanCondensedMatter.Combinatorics.ExchangeSign
 import LeanCondensedMatter.Combinatorics.FiniteSumModEq
 import Mathlib.GroupTheory.Perm.Fin

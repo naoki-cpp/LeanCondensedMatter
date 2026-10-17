@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Combinatorics.FamilySlotShuffleSign
+import LeanCondensedMatter.Combinatorics.Shuffle.FamilySlotShuffleSign
 
 set_option linter.style.header false
 

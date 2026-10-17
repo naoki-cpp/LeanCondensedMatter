@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Combinatorics.FamilyOrderShuffle
+import LeanCondensedMatter.Combinatorics.Shuffle.FamilyOrderShuffle
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentRestriction
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Ordered
 

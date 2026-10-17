@@ -1,5 +1,5 @@
-import LeanCondensedMatter.Combinatorics.BinaryShuffle
-import LeanCondensedMatter.Combinatorics.SlotShuffle
+import LeanCondensedMatter.Combinatorics.Shuffle.BinaryShuffle
+import LeanCondensedMatter.Combinatorics.Shuffle.SlotShuffle
 import Mathlib.Data.Fintype.EquivFin
 
 set_option linter.style.header false
