@@ -253,21 +253,15 @@ private theorem sum_univ_eq_sum_Ioi_add_sum_Iio {m : ℕ} (k : Fin m) (f : Fin m
     (hk : f k = 0) :
     ∑ l : Fin m, f l = ∑ l ∈ Finset.Ioi k, f l + ∑ l ∈ Finset.Iio k, f l := by
   classical
-  have hsplit :
-      (∑ l ∈ Finset.univ.filter (fun l => l < k), f l) +
-          ∑ l ∈ Finset.univ.filter (fun l => ¬ l < k), f l =
-        ∑ l : Fin m, f l :=
-    Finset.sum_filter_add_sum_filter_not Finset.univ (fun l => l < k) f
-  have hIio : Finset.univ.filter (fun l => l < k) = Finset.Iio k := by
-    ext l
-    simp
-  have hIci : Finset.univ.filter (fun l => ¬ l < k) = Finset.Ici k := by
-    ext l
-    simp [not_lt]
-  have hIci_sum : ∑ l ∈ Finset.Ici k, f l = ∑ l ∈ Finset.Ioi k, f l := by
-    rw [← Finset.Ioi_insert, Finset.sum_insert (by simp), hk, zero_add]
-  rw [hIio, hIci, hIci_sum] at hsplit
-  omega
+  have hpartition :
+      (Finset.Ioi k).disjUnion (Finset.Iio k) (Finset.disjoint_Ioi_Iio k) =
+        (Finset.univ.erase k) := by
+    simpa only [Finset.compl_singleton] using (Finset.Ioi_disjUnion_Iio k)
+  calc
+    (∑ l : Fin m, f l) = (∑ l ∈ Finset.univ.erase k, f l) + f k := by
+      exact (Finset.sum_erase_add Finset.univ f (Finset.mem_univ k)).symm
+    _ = (∑ l ∈ Finset.Ioi k, f l) + (∑ l ∈ Finset.Iio k, f l) := by
+      rw [← hpartition, Finset.sum_disjUnion, hk, add_zero]
 
 private noncomputable def crossIndicator (pairing : Pairing n) (e : Fin n ≃ pairing.NormalizedPair)
     (k l : Fin n) : ℕ :=
