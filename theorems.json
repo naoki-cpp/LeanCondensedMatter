@@ -3947,9 +3947,7 @@
       "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Sign.0.Combinatorics.crossingCount_eq_sum_sum_crossIndicator",
       "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.SplitCrossing.0.Combinatorics.Pairing.sum_sum_crosses_map_eq_crossingCount"
     ],
-    "dependencies": [
-      "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Crossing.0.Combinatorics.Pairing.crossingCount_eq_card_crossingPair"
-    ],
+    "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
@@ -16144,7 +16142,7 @@
     "directWrapperOf": null,
     "dependents": [
       "ContinuousLinearMap.IsTraceClass.traceNorm_eq_tsum_diagonalExpectationValue",
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.General.0.ContinuousLinearMap.isTraceClassWrt_iff_isHilbertSchmidtWrt_sqrt_abs"
+      "ContinuousLinearMap.isTraceClass_iff_isTraceClassWrt"
     ],
     "dependencies": [
       "ContinuousLinearMap.coe_diagonalExpectationValue_right"
@@ -16153,7 +16151,7 @@
     "completedMention": false,
     "compiledConsumers": [
       "ContinuousLinearMap.IsTraceClass.traceNorm_eq_tsum_diagonalExpectationValue",
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.General.0.ContinuousLinearMap.isTraceClassWrt_iff_isHilbertSchmidtWrt_sqrt_abs"
+      "ContinuousLinearMap.isTraceClass_iff_isTraceClassWrt"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -17658,8 +17656,8 @@
       "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Factorization.Basic.0.ContinuousLinearMap.isTraceClass_of_hilbertSchmidt_factorization"
     ],
     "dependencies": [
-      "ContinuousLinearMap.isHilbertSchmidt_iff_isHilbertSchmidtWrt",
-      "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.General.0.ContinuousLinearMap.isTraceClassWrt_iff_isHilbertSchmidtWrt_sqrt_abs"
+      "ContinuousLinearMap.diagonalExpectationValue_abs_eq_norm_sq_sqrt_abs",
+      "ContinuousLinearMap.isHilbertSchmidt_iff_isHilbertSchmidtWrt"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -80475,7 +80473,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "QuantumTheory.Models.Parabolic2DEG.Parameters.IsRegular.broadening_ne_zero",
-    "module": "LeanCondensedMatter.Models.Parabolic2DEG.Model",
+    "module": "LeanCondensedMatter.Models.Parabolic2DEG.ResponseParameters",
     "externalAxioms": [],
     "docString": null,
     "directWrapperTargetModule": null,
@@ -80517,7 +80515,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "QuantumTheory.Models.Parabolic2DEG.Parameters.IsRegular.effectiveMass_ne_zero",
-    "module": "LeanCondensedMatter.Models.Parabolic2DEG.Model",
+    "module": "LeanCondensedMatter.Models.Parabolic2DEG.ResponseParameters",
     "externalAxioms": [],
     "docString": null,
     "directWrapperTargetModule": null,
@@ -80555,7 +80553,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "QuantumTheory.Models.Parabolic2DEG.Parameters.IsRegular.hbar_ne_zero",
-    "module": "LeanCondensedMatter.Models.Parabolic2DEG.Model",
+    "module": "LeanCondensedMatter.Models.Parabolic2DEG.ResponseParameters",
     "externalAxioms": [],
     "docString": null,
     "directWrapperTargetModule": null,
@@ -80877,7 +80875,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "QuantumTheory.Models.Parabolic2DEG.currentOperator_eq_charge_smul_velocityOperator",
-    "module": "LeanCondensedMatter.Models.Parabolic2DEG.Model",
+    "module": "LeanCondensedMatter.Models.Parabolic2DEG.Response",
     "externalAxioms": [],
     "docString": "The bounded current vertex is the signed carrier charge multiplying the bounded velocity. ",
     "directWrapperTargetModule": null,
@@ -80919,7 +80917,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "QuantumTheory.Models.Parabolic2DEG.currentOperator_isSelfAdjoint",
-    "module": "LeanCondensedMatter.Models.Parabolic2DEG.Model",
+    "module": "LeanCondensedMatter.Models.Parabolic2DEG.Response",
     "externalAxioms": [],
     "docString": "The current operator is self-adjoint because the signed charge and velocity are real. ",
     "directWrapperTargetModule": null,
@@ -95769,8 +95767,7 @@
     "dependents": [],
     "dependencies": [
       "QuantumTheory.purePointGibbsCompetitor_helmholtzFreeEnergy_eq",
-      "QuantumTheory.purePointGibbs_helmholtzFreeEnergy_eq_iff_probability_eq",
-      "_private.LeanCondensedMatter.QuantumTheory.Gibbs.PurePointUniqueness.0.QuantumTheory.purePointGibbsCompetitor_eq_of_probability_eq"
+      "QuantumTheory.purePointGibbs_helmholtzFreeEnergy_eq_iff_probability_eq"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -114180,6 +114177,47 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
+    "terminal": true,
+    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel N S)\n  (boundaryLabels : Fin 2 → ExternalLabel) (earlier later : Fin (2 * (2 * S.card + 1)))\n  (hsepLater : ¬(d.vertexGraphWithoutPropagator later).Reachable (Sum.inl 0) (Sum.inl 1))\n  (hEarlier : d.HasIntervalBoundaryEndpoint earlier later earlier)\n  (hLater : d.HasIntervalBoundaryEndpoint earlier later later) (hne : earlier ≠ later)\n  (hpne : d.pairing.partner earlier ≠ later) (i : Fin 2),\n  ∃ v,\n    (d.intervalBlock boundaryLabels earlier later hsepLater hEarlier hLater hne hpne).vertexGraph.Adj (Sum.inl i)\n      (Sum.inr v)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.TwoPointDiagram.intervalBlock_external_adjacent_interaction",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.IntervalConnectivity",
+    "externalAxioms": [],
+    "docString": "Each replacement external vertex is adjacent to an interaction vertex\nin the standalone interval block, not to the other external vertex. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "SecondQuantization.Common.TwoPointDiagram.intervalBlock_partner_external",
+      "SecondQuantization.Common.twoPointVertexOfLeg_externalLeg"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
     "terminal": false,
     "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel N S)\n  (boundaryLabels : Fin 2 → ExternalLabel) (earlier later : Fin (2 * (2 * S.card + 1)))\n  (hsepLater : ¬(d.vertexGraphWithoutPropagator later).Reachable (Sum.inl 0) (Sum.inl 1))\n  (hEarlier : d.HasIntervalBoundaryEndpoint earlier later earlier)\n  (hLater : d.HasIntervalBoundaryEndpoint earlier later later) (hne : earlier ≠ later)\n  (hpne : d.pairing.partner earlier ≠ later)\n  (p : Fin (2 * (2 * (SecondQuantization.Common.interactionSector (d.verticesBetweenCuts earlier later)).card + 1))),\n  (d.intervalBlockLegEquiv earlier later hsepLater)\n      ((d.intervalBlock boundaryLabels earlier later hsepLater hEarlier hLater hne hpne).pairing.partner p) =\n    (d.intervalAugmentedPairing earlier later hEarlier hLater hne hpne).partner\n      ((d.intervalBlockLegEquiv earlier later hsepLater) p)",
     "standardAxioms": [
@@ -114226,7 +114264,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel N S)\n  (boundaryLabels : Fin 2 → ExternalLabel) (earlier later : Fin (2 * (2 * S.card + 1)))\n  (hsepLater : ¬(d.vertexGraphWithoutPropagator later).Reachable (Sum.inl 0) (Sum.inl 1))\n  (hEarlier : d.HasIntervalBoundaryEndpoint earlier later earlier)\n  (hLater : d.HasIntervalBoundaryEndpoint earlier later later) (hne : earlier ≠ later)\n  (hpne : d.pairing.partner earlier ≠ later) (i : Fin 2),\n  (d.intervalBlockLegEquiv earlier later hsepLater)\n      ((d.intervalBlock boundaryLabels earlier later hsepLater hEarlier hLater hne hpne).pairing.partner\n        (SecondQuantization.Common.twoPointExternalLeg\n          (SecondQuantization.Common.interactionSector (d.verticesBetweenCuts earlier later)) i)) =\n    Sum.inr ((d.intervalBoundaryInteriorLegEquiv earlier later hEarlier hLater hne hpne) (Sum.inl i))",
     "standardAxioms": [
       "Classical.choice",
@@ -114234,7 +114272,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -114245,15 +114283,19 @@
     "docString": "The standalone block's new external leg connects to its boundary endpoint. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "SecondQuantization.Common.TwoPointDiagram.intervalBlock_external_adjacent_interaction"
+    ],
     "dependencies": [
       "SecondQuantization.Common.TwoPointDiagram.intervalAugmentedPairing_partner_external",
       "SecondQuantization.Common.TwoPointDiagram.intervalBlock_partner_equiv"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "SecondQuantization.Common.TwoPointDiagram.intervalBlock_external_adjacent_interaction"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -132391,7 +132433,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ {N : ℕ} (S : Finset (Fin N)) (e : Fin 2),\n  SecondQuantization.Common.twoPointVertexOfLeg (SecondQuantization.Common.twoPointExternalLeg S e) = Sum.inl e",
     "standardAxioms": [
       "Classical.choice",
@@ -132399,7 +132441,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": true,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -132410,12 +132452,16 @@
     "docString": null,
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "SecondQuantization.Common.TwoPointDiagram.intervalBlock_external_adjacent_interaction"
+    ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "SecondQuantization.Common.TwoPointDiagram.intervalBlock_external_adjacent_interaction"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -158031,50 +158077,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {ι : Type u_2} (d : HilbertBasis ι ℂ H) (T : H →L[ℂ] H),\n  ContinuousLinearMap.IsTraceClassWrt d T ↔ ContinuousLinearMap.IsHilbertSchmidtWrt d (CFC.sqrt (CFC.abs T))",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.General.0.ContinuousLinearMap.isTraceClassWrt_iff_isHilbertSchmidtWrt_sqrt_abs",
-    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.General",
-    "externalAxioms": [],
-    "docString": "Trace-class membership with respect to a basis is equivalent to the Hilbert--Schmidt property\nof `sqrt(|T|)` with respect to that basis. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "ContinuousLinearMap.isTraceClass_iff_isTraceClassWrt"
-    ],
-    "dependencies": [
-      "ContinuousLinearMap.diagonalExpectationValue_abs_eq_norm_sq_sqrt_abs"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "ContinuousLinearMap.isTraceClass_iff_isTraceClassWrt"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {T : H →L[ℂ] H},\n  T.IsTraceClass →\n    ∀ (W : H →L[ℂ] H) {ι : Type u_2} (d : HilbertBasis ι ℂ H), Summable fun i => inner ℂ (W (d i)) (T (d i))",
     "standardAxioms": [
       "Classical.choice",
@@ -161838,48 +161840,6 @@
       "Combinatorics.Pairing.normalizedPairSigmaEquiv_apply_of_strictMono"
     ],
     "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {n : ℕ} (pairing : Combinatorics.Pairing n),\n  pairing.crossingCount = Fintype.card (Combinatorics.Pairing.CrossingPair✝ pairing)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.Crossing.0.Combinatorics.Pairing.crossingCount_eq_card_crossingPair",
-    "module": "LeanCondensedMatter.Combinatorics.PerfectPairing.Crossing",
-    "externalAxioms": [],
-    "docString": "`crossingCount` is the cardinality of the canonical crossing-pair type. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "Combinatorics.Pairing.crossingCount_eq_sum_crosses"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "Combinatorics.Pairing.crossingCount_eq_sum_crosses"
-    ],
-    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -176394,48 +176354,6 @@
       "QuantumTheory.vonNeumannEntropy_purePointGibbsDensityOperator"
     ],
     "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {ι : Type u_1} {E : ι → ℝ} {p q : QuantumTheory.PurePointGibbsCompetitor E}, p.probability = q.probability → p = q",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.QuantumTheory.Gibbs.PurePointUniqueness.0.QuantumTheory.purePointGibbsCompetitor_eq_of_probability_eq",
-    "module": "LeanCondensedMatter.QuantumTheory.Gibbs.PurePointUniqueness",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.purePointGibbs_helmholtzFreeEnergy_eq_iff_eq_competitor"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.purePointGibbs_helmholtzFreeEnergy_eq_iff_eq_competitor"
-    ],
-    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",

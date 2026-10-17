@@ -2950,7 +2950,7 @@
       "name": "LeanCondensedMatter.Models.Parabolic2DEG.Green",
       "sourceFile": "LeanCondensedMatter/Models/Parabolic2DEG/Green.lean",
       "imports": [
-        "LeanCondensedMatter.Models.Parabolic2DEG.Model",
+        "LeanCondensedMatter.Models.Parabolic2DEG.ResponseParameters",
         "LeanCondensedMatter.Transport.Resolvent.Spectral"
       ],
       "externalImportCount": 1
@@ -2975,12 +2975,21 @@
       "externalImportCount": 2
     },
     {
+      "name": "LeanCondensedMatter.Models.Parabolic2DEG.ResponseParameters",
+      "sourceFile": "LeanCondensedMatter/Models/Parabolic2DEG/ResponseParameters.lean",
+      "imports": [
+        "LeanCondensedMatter.Models.Parabolic2DEG.Model"
+      ],
+      "externalImportCount": 0
+    },
+    {
       "name": "LeanCondensedMatter.Models.Parabolic2DEG",
       "sourceFile": "LeanCondensedMatter/Models/Parabolic2DEG.lean",
       "imports": [
         "LeanCondensedMatter.Models.Parabolic2DEG.Green",
         "LeanCondensedMatter.Models.Parabolic2DEG.Model",
-        "LeanCondensedMatter.Models.Parabolic2DEG.Response"
+        "LeanCondensedMatter.Models.Parabolic2DEG.Response",
+        "LeanCondensedMatter.Models.Parabolic2DEG.ResponseParameters"
       ],
       "externalImportCount": 0
     },
@@ -5666,6 +5675,14 @@
       "externalImportCount": 0
     },
     {
+      "name": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.IntervalConnectivity",
+      "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Diagrammatics/TwoPoint/Core/IntervalConnectivity.lean",
+      "imports": [
+        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.IntervalPairing"
+      ],
+      "externalImportCount": 0
+    },
+    {
       "name": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.IntervalPairing",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Diagrammatics/TwoPoint/Core/IntervalPairing.lean",
       "imports": [
@@ -5891,6 +5908,7 @@
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.CutSides",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.Diagram",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.IntervalBlock",
+        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.IntervalConnectivity",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.IntervalPairing",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.OneParticleIrreducible",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.SeparatingPaths",
