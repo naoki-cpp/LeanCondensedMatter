@@ -30,7 +30,7 @@ theorem finiteGibbsExpectation_peel (energy : Config → ℝ) (β q1 : ℝ) (ζ 
         (1 - ζ ^ l.length * Complex.exp ((q1 * β : ℝ) : ℂ)) := by
   have h := tsumTrace_diagonalEvolution_comp_peel energy β q1 ζ C1 l hC1 hcomm
     Summable.of_finite Summable.of_finite
-  simp only [tsumTrace, tsum_fintype, traceFock_eq_sum_matrixCoeff] at h
+  simp only [tsumTrace, tsum_fintype, ← traceFock_eq_sum_matrixCoeff] at h
   have hZ := traceFock_diagonalEvolution_ne_zero energy β
   have hne' : (1 : ℂ) - ζ ^ l.length * Complex.exp ((β * q1 : ℝ) : ℂ) ≠ 0 := by
     rwa [mul_comm β q1]

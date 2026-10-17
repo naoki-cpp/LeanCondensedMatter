@@ -46,7 +46,7 @@ theorem finiteGibbsExpectation_comp_comp_comp_eq_div_of_zetaCommutator
   have h := tsumTrace_diagonalEvolution_comp_peel energy β q1 ζ C1
     [(C2, c12), (C3, c13), (C4, c14)] hC1 hmem
     Summable.of_finite Summable.of_finite
-  simp only [tsumTrace, tsum_fintype, traceFock_eq_sum_matrixCoeff] at h
+  simp only [tsumTrace, tsum_fintype, ← traceFock_eq_sum_matrixCoeff] at h
   have hZ := traceFock_diagonalEvolution_ne_zero energy β
   simp only [ScalarExchange.peelSumWithCoefficients, List.map_cons, List.map_nil,
     List.prod_cons, List.prod_nil,
