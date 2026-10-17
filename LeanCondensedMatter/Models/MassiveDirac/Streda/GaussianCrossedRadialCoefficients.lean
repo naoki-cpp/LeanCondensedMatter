@@ -114,52 +114,22 @@ theorem finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient_eq_radialKerne
       side v m probeEnergy broadening disorderStrength hbar pMax radius
       hbroadening hdisorder hpMax i j
   rw [finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient_eq_entryKernel_integrals]
-  cases axis with
-  | x =>
-    simp only
-    have hmove := pauliVectorCoefficient_prefactor_intervalIntegral
-      (axis := .x)
-      (kernel := fun p i j => finiteCutoffContinuumBornDysonRadialGreenEntryKernel
-        side v m probeEnergy broadening disorderStrength hbar pMax radius p i j)
-      (prefactor := (((momentumMeasurePrefactor hbar : ℝ) : ℂ)))
-      (a := 0) (b := pMax) (hkernel := hentry)
-    simp only at hmove
-    rw [hmove]
-    apply congrArg (fun z : ℂ => (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) * z)
-    apply intervalIntegral.integral_congr
-    intro p _
-    exact finiteCutoffContinuumBornDysonRadialGreenEntryKernel_pauliVectorCoefficient
-      .x side v m probeEnergy broadening disorderStrength hbar pMax radius p
-  | y =>
-    simp only
-    have hmove := pauliVectorCoefficient_prefactor_intervalIntegral
-      (axis := .y)
-      (kernel := fun p i j => finiteCutoffContinuumBornDysonRadialGreenEntryKernel
-        side v m probeEnergy broadening disorderStrength hbar pMax radius p i j)
-      (prefactor := (((momentumMeasurePrefactor hbar : ℝ) : ℂ)))
-      (a := 0) (b := pMax) (hkernel := hentry)
-    simp only at hmove
-    rw [hmove]
-    apply congrArg (fun z : ℂ => (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) * z)
-    apply intervalIntegral.integral_congr
-    intro p _
-    exact finiteCutoffContinuumBornDysonRadialGreenEntryKernel_pauliVectorCoefficient
-      .y side v m probeEnergy broadening disorderStrength hbar pMax radius p
-  | z =>
-    simp only
-    have hmove := pauliVectorCoefficient_prefactor_intervalIntegral
-      (axis := .z)
-      (kernel := fun p i j => finiteCutoffContinuumBornDysonRadialGreenEntryKernel
-        side v m probeEnergy broadening disorderStrength hbar pMax radius p i j)
-      (prefactor := (((momentumMeasurePrefactor hbar : ℝ) : ℂ)))
-      (a := 0) (b := pMax) (hkernel := hentry)
-    simp only at hmove
-    rw [hmove]
-    apply congrArg (fun z : ℂ => (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) * z)
-    apply intervalIntegral.integral_congr
-    intro p _
-    exact finiteCutoffContinuumBornDysonRadialGreenEntryKernel_pauliVectorCoefficient
-      .z side v m probeEnergy broadening disorderStrength hbar pMax radius p
+  have hmove := pauliVectorCoefficient_prefactor_intervalIntegral
+    (axis := axis)
+    (prefactor := (((momentumMeasurePrefactor hbar : ℝ) : ℂ)))
+    (kernel := fun p i j => finiteCutoffContinuumBornDysonRadialGreenEntryKernel
+      side v m probeEnergy broadening disorderStrength hbar pMax radius p i j)
+    (hkernel := hentry)
+  trans (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
+    ∫ p in (0 : ℝ)..pMax, InternalSpace.pauliVectorCoefficient
+      (finiteCutoffContinuumBornDysonRadialGreenEntryKernel
+        side v m probeEnergy broadening disorderStrength hbar pMax radius p) axis
+  · cases axis <;> exact hmove
+  apply congrArg (fun z : ℂ => (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) * z)
+  apply intervalIntegral.integral_congr
+  intro p _
+  exact finiteCutoffContinuumBornDysonRadialGreenEntryKernel_pauliVectorCoefficient
+    axis side v m probeEnergy broadening disorderStrength hbar pMax radius p
 
 /-- In the finite-broadening finite-cutoff regime, the radial Gaussian-crossed current scalar
 coefficient is the momentum-measure prefactor times the integral of its explicit pointwise
@@ -217,58 +187,22 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficie
       source v m probeEnergy broadening disorderStrength hbar pMax radius
       hbroadening hdisorder hpMax i j
   rw [finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient_eq_entryKernel_integrals]
-  cases axis with
-  | x =>
-    simp only
-    have hmove := pauliVectorCoefficient_prefactor_intervalIntegral
-      (axis := .x)
-      (kernel := fun p i j =>
-        finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel
-          source v m probeEnergy broadening disorderStrength hbar pMax radius p i j)
-      (prefactor := (((momentumMeasurePrefactor hbar : ℝ) : ℂ)))
-      (a := 0) (b := pMax) (hkernel := hentry)
-    simp only at hmove
-    rw [hmove]
-    apply congrArg (fun z : ℂ => (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) * z)
-    apply intervalIntegral.integral_congr
-    intro p _
-    exact
-      finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel_pauliVectorCoefficient
-        .x source v m probeEnergy broadening disorderStrength hbar pMax radius p
-  | y =>
-    simp only
-    have hmove := pauliVectorCoefficient_prefactor_intervalIntegral
-      (axis := .y)
-      (kernel := fun p i j =>
-        finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel
-          source v m probeEnergy broadening disorderStrength hbar pMax radius p i j)
-      (prefactor := (((momentumMeasurePrefactor hbar : ℝ) : ℂ)))
-      (a := 0) (b := pMax) (hkernel := hentry)
-    simp only at hmove
-    rw [hmove]
-    apply congrArg (fun z : ℂ => (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) * z)
-    apply intervalIntegral.integral_congr
-    intro p _
-    exact
-      finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel_pauliVectorCoefficient
-        .y source v m probeEnergy broadening disorderStrength hbar pMax radius p
-  | z =>
-    simp only
-    have hmove := pauliVectorCoefficient_prefactor_intervalIntegral
-      (axis := .z)
-      (kernel := fun p i j =>
-        finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel
-          source v m probeEnergy broadening disorderStrength hbar pMax radius p i j)
-      (prefactor := (((momentumMeasurePrefactor hbar : ℝ) : ℂ)))
-      (a := 0) (b := pMax) (hkernel := hentry)
-    simp only at hmove
-    rw [hmove]
-    apply congrArg (fun z : ℂ => (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) * z)
-    apply intervalIntegral.integral_congr
-    intro p _
-    exact
-      finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel_pauliVectorCoefficient
-        .z source v m probeEnergy broadening disorderStrength hbar pMax radius p
+  have hmove := pauliVectorCoefficient_prefactor_intervalIntegral
+    (axis := axis)
+    (prefactor := (((momentumMeasurePrefactor hbar : ℝ) : ℂ)))
+    (kernel := fun p i j => finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel
+      source v m probeEnergy broadening disorderStrength hbar pMax radius p i j)
+    (hkernel := hentry)
+  trans (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
+    ∫ p in (0 : ℝ)..pMax, InternalSpace.pauliVectorCoefficient
+      (finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel
+        source v m probeEnergy broadening disorderStrength hbar pMax radius p) axis
+  · cases axis <;> exact hmove
+  apply congrArg (fun z : ℂ => (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) * z)
+  apply intervalIntegral.integral_congr
+  intro p _
+  exact finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel_pauliVectorCoefficient
+    axis source v m probeEnergy broadening disorderStrength hbar pMax radius p
 
 
 end
