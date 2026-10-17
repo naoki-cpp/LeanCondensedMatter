@@ -13185,6 +13185,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "ContinuousLinearMap.IsTraceClass.comp_right",
       "ContinuousLinearMap.IsTraceClass.traceNorm_adjoint",
       "ContinuousLinearMap.IsTraceClass.traceNorm_comp_right_le",
       "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Norm.0.ContinuousLinearMap.IsTraceClass.traceNorm_adjoint_le"
@@ -13195,11 +13196,12 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "ContinuousLinearMap.IsTraceClass.comp_right",
       "ContinuousLinearMap.IsTraceClass.traceNorm_adjoint",
       "ContinuousLinearMap.IsTraceClass.traceNorm_comp_right_le",
       "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Norm.0.ContinuousLinearMap.IsTraceClass.traceNorm_adjoint_le"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -13325,6 +13327,7 @@
     "directWrapperOf": null,
     "dependents": [
       "ContinuousLinearMap.IsTraceClass.adjointConjugate",
+      "ContinuousLinearMap.IsTraceClass.comp_right",
       "ContinuousLinearMap.IsTraceClass.traceNorm_comp_left_le",
       "ContinuousLinearMap.IsTraceClass.traceNorm_comp_right_le",
       "ContinuousLinearMap.IsTraceClass.trace_adjointConjugate",
@@ -13342,6 +13345,7 @@
     "completedMention": false,
     "compiledConsumers": [
       "ContinuousLinearMap.IsTraceClass.adjointConjugate",
+      "ContinuousLinearMap.IsTraceClass.comp_right",
       "ContinuousLinearMap.IsTraceClass.traceNorm_comp_left_le",
       "ContinuousLinearMap.IsTraceClass.traceNorm_comp_right_le",
       "ContinuousLinearMap.IsTraceClass.trace_adjointConjugate",
@@ -13351,7 +13355,7 @@
       "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Basic.0.ContinuousLinearMap.IsTraceClass.summable_inner_left",
       "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Norm.0.ContinuousLinearMap.IsTraceClass.traceNorm_comp_left_le_of_norm_le_one"
     ],
-    "compiledConsumerCount": 9,
+    "compiledConsumerCount": 10,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -13400,8 +13404,8 @@
       "_private.LeanCondensedMatter.QuantumTheory.DensityOperator.Expectation.0.QuantumTheory.densityExpectationTrace_smul"
     ],
     "dependencies": [
-      "ContinuousLinearMap.isHilbertSchmidt_comp_right",
-      "ContinuousLinearMap.isTraceClass_iff_exists_hilbertSchmidt_factorization"
+      "ContinuousLinearMap.IsTraceClass.adjoint",
+      "ContinuousLinearMap.IsTraceClass.comp_left"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -17346,7 +17350,6 @@
     "dependents": [
       "ContinuousLinearMap.IsHilbertSchmidt.normSq_comp_right_le",
       "ContinuousLinearMap.IsTraceClass.comp_left",
-      "ContinuousLinearMap.IsTraceClass.comp_right",
       "ContinuousLinearMap.IsTraceClass.exists_controlled_hilbertSchmidt_factorization",
       "ContinuousLinearMap.IsTraceClass.traceNorm_le_half_normSq_add_of_factorization",
       "ContinuousLinearMap.IsTraceClass.trace_comp_comm",
@@ -17363,7 +17366,6 @@
     "compiledConsumers": [
       "ContinuousLinearMap.IsHilbertSchmidt.normSq_comp_right_le",
       "ContinuousLinearMap.IsTraceClass.comp_left",
-      "ContinuousLinearMap.IsTraceClass.comp_right",
       "ContinuousLinearMap.IsTraceClass.exists_controlled_hilbertSchmidt_factorization",
       "ContinuousLinearMap.IsTraceClass.traceNorm_le_half_normSq_add_of_factorization",
       "ContinuousLinearMap.IsTraceClass.trace_comp_comm",
@@ -17371,7 +17373,7 @@
       "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Factorization.Basic.0.ContinuousLinearMap.isTraceClass_of_hilbertSchmidt_factorization",
       "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Norm.0.ContinuousLinearMap.IsTraceClass.summable_norm_inner_left_and_tsum_le_traceNorm"
     ],
-    "compiledConsumerCount": 9,
+    "compiledConsumerCount": 8,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -17495,7 +17497,6 @@
     "dependents": [
       "ContinuousLinearMap.IsTraceClass.adjoint",
       "ContinuousLinearMap.IsTraceClass.comp_left",
-      "ContinuousLinearMap.IsTraceClass.comp_right",
       "ContinuousLinearMap.IsTraceClass.isCompact",
       "ContinuousLinearMap.IsTraceClass.summable_trace_diagonal",
       "ContinuousLinearMap.IsTraceClass.trace_comp_comm",
@@ -17510,13 +17511,12 @@
     "compiledConsumers": [
       "ContinuousLinearMap.IsTraceClass.adjoint",
       "ContinuousLinearMap.IsTraceClass.comp_left",
-      "ContinuousLinearMap.IsTraceClass.comp_right",
       "ContinuousLinearMap.IsTraceClass.isCompact",
       "ContinuousLinearMap.IsTraceClass.summable_trace_diagonal",
       "ContinuousLinearMap.IsTraceClass.trace_comp_comm",
       "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Trace.0.ContinuousLinearMap.trace_tsum_eq"
     ],
-    "compiledConsumerCount": 7,
+    "compiledConsumerCount": 6,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -37968,6 +37968,90 @@
   },
   {
     "terminal": true,
+    "statement": "∀ (ℏ κ : ℝ) (potential f : SchwartzKinetic1D.Space),\n  (Complex.I / ↑ℏ) •\n      ⁅QuantumMechanics.SingleParticle.Continuum.SchwartzSchrodinger1D.schrodingerOperator κ potential,\n        SchwartzKinetic1D.multiplicationOperator f⁆ =\n    (1 / 2) •\n      (SchwartzKinetic1D.multiplicationOperator (SchwartzKinetic1D.derivative f) ∘ₗ\n          QuantumMechanics.SingleParticle.Continuum.SchwartzSchrodinger1D.velocityOperator ℏ κ +\n        QuantumMechanics.SingleParticle.Continuum.SchwartzSchrodinger1D.velocityOperator ℏ κ ∘ₗ\n          SchwartzKinetic1D.multiplicationOperator (SchwartzKinetic1D.derivative f))",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumMechanics.SingleParticle.Continuum.SchwartzSchrodinger1D.heisenberg_localization_eq_symmetrized_velocity",
+    "module": "LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.SchwartzSchrodinger1D",
+    "externalAxioms": [],
+    "docString": "Schrödinger localization has the standard first-order Heisenberg current form\n`(i/ℏ)[H,M_f] = 1/2 {M_(D f),v}` on complex Schwartz space. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumMechanics.SingleParticle.Continuum.SchwartzSchrodinger1D.lie_schrodinger_localization_eq_kinetic",
+      "SchwartzKinetic1D.derivative_multiplication_apply",
+      "SchwartzKinetic1D.secondDerivative_multiplication_apply"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (κ : ℝ) (potential f : SchwartzKinetic1D.Space),\n  ⁅QuantumMechanics.SingleParticle.Continuum.SchwartzSchrodinger1D.schrodingerOperator κ potential,\n      SchwartzKinetic1D.multiplicationOperator f⁆ =\n    ⁅QuantumMechanics.SingleParticle.Continuum.SchwartzSchrodinger1D.kineticOperator κ,\n      SchwartzKinetic1D.multiplicationOperator f⁆",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumMechanics.SingleParticle.Continuum.SchwartzSchrodinger1D.lie_schrodinger_localization_eq_kinetic",
+    "module": "LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.SchwartzSchrodinger1D",
+    "externalAxioms": [],
+    "docString": "The local multiplication potential contributes no localization commutator. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumMechanics.SingleParticle.Continuum.SchwartzSchrodinger1D.heisenberg_localization_eq_symmetrized_velocity"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumMechanics.SingleParticle.Continuum.SchwartzSchrodinger1D.heisenberg_localization_eq_symmetrized_velocity"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
     "statement": "∀ (q ℏ κ : ℝ),\n  ℏ ≠ 0 →\n    ∀ (ψ ψx : ℂ),\n      QuantumMechanics.SingleParticle.Continuum.chargeCurrentValue1D q ℏ κ ψ ψx =\n        q * (star ψ * (2 * (Complex.I / ↑ℏ) * -↑κ * ψx)).re",
     "standardAxioms": [
       "Classical.choice",
@@ -43517,7 +43601,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (ℏ κ : ℝ) (ψ : SchwartzMap ℝ ℂ) (x : ℝ),\n  (QuantumMechanics.SingleParticle.Continuum.schwartzVelocityExpectationCurrent1D ℏ κ ψ) x =\n    (star (ψ x) * ((SchwartzKinetic1D.velocityOperator ℏ κ) ψ) x).re",
+    "statement": "∀ (ℏ κ : ℝ) (ψ : SchwartzMap ℝ ℂ) (x : ℝ),\n  (QuantumMechanics.SingleParticle.Continuum.schwartzVelocityExpectationCurrent1D ℏ κ ψ) x =\n    (star (ψ x) * ((QuantumMechanics.SingleParticle.Continuum.SchwartzSchrodinger1D.velocityOperator ℏ κ) ψ) x).re",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -89332,6 +89416,260 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
+    "terminal": false,
+    "statement": "∀ (n : ℕ),\n  QuantumTheory.Transport.polarFourierCosineMoment (n + 2) =\n    (↑n + 1) / (↑n + 2) * QuantumTheory.Transport.polarFourierCosineMoment n",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.polarFourierCosineMoment_add_two",
+    "module": "LeanCondensedMatter.Transport.Analysis.PolarFourier",
+    "externalAxioms": [],
+    "docString": "The full-period cosine moments satisfy the standard reduction formula. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.polarFourierCosineMoment_even",
+      "QuantumTheory.Transport.polarFourierCosineMoment_odd"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.polarFourierCosineMoment_even",
+      "QuantumTheory.Transport.polarFourierCosineMoment_odd"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (n : ℕ),\n  QuantumTheory.Transport.polarFourierCosineMoment (2 * n) =\n    2 * Real.pi * ∏ k ∈ Finset.range n, (2 * ↑k + 1) / (2 * ↑k + 2)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.polarFourierCosineMoment_even",
+    "module": "LeanCondensedMatter.Transport.Analysis.PolarFourier",
+    "externalAxioms": [],
+    "docString": "Closed finite-product formula for every even full-angle cosine moment. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.polarFourierCosineMoment_even_factorial"
+    ],
+    "dependencies": [
+      "QuantumTheory.Transport.polarFourierCosineMoment_add_two",
+      "QuantumTheory.Transport.polarFourierCosineMoment_zero"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.polarFourierCosineMoment_even_factorial"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (n : ℕ),\n  QuantumTheory.Transport.polarFourierCosineMoment (2 * n) =\n    2 * Real.pi * ↑(2 * n).factorial / (4 ^ n * ↑n.factorial ^ 2)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.polarFourierCosineMoment_even_factorial",
+    "module": "LeanCondensedMatter.Transport.Analysis.PolarFourier",
+    "externalAxioms": [],
+    "docString": "The even full-angle cosine moment in factorial form, ready for the\ncoefficient comparison with Mathlib's regularized hypergeometric Bessel series. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.Transport.polarFourierCosineMoment_even"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (n : ℕ), QuantumTheory.Transport.polarFourierCosineMoment (2 * n + 1) = 0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.polarFourierCosineMoment_odd",
+    "module": "LeanCondensedMatter.Transport.Analysis.PolarFourier",
+    "externalAxioms": [],
+    "docString": "Every odd full-angle cosine moment vanishes. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.Transport.polarFourierCosineMoment_add_two",
+      "QuantumTheory.Transport.polarFourierCosineMoment_one"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "QuantumTheory.Transport.polarFourierCosineMoment 1 = 0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.polarFourierCosineMoment_one",
+    "module": "LeanCondensedMatter.Transport.Analysis.PolarFourier",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.polarFourierCosineMoment_odd"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.polarFourierCosineMoment_odd"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "QuantumTheory.Transport.polarFourierCosineMoment 0 = 2 * Real.pi",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.polarFourierCosineMoment_zero",
+    "module": "LeanCondensedMatter.Transport.Analysis.PolarFourier",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.polarFourierCosineMoment_even"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.polarFourierCosineMoment_even"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
     "terminal": true,
     "statement": "∀ (z : ℝ),\n  (starRingEnd ℂ) (QuantumTheory.Transport.polarFourierFirstCosineAngularKernel z) =\n    -QuantumTheory.Transport.polarFourierFirstCosineAngularKernel z",
     "standardAxioms": [
@@ -89718,6 +90056,48 @@
       "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedRealSpace.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel_neg_radius"
     ],
     "compiledConsumerCount": 3,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "QuantumTheory.Transport.polarFourierZerothAngularKernel 0 = ↑(2 * Real.pi)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.polarFourierZerothAngularKernel_zero",
+    "module": "LeanCondensedMatter.Transport.Analysis.PolarFourier",
+    "externalAxioms": [],
+    "docString": "The zeroth radial Fourier kernel is normalized by the full polar angle at the origin. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.TMatrix.BornDysonLoop.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenEntryKernel_zero_disorder_zero_radius"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.TMatrix.BornDysonLoop.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenEntryKernel_zero_disorder_zero_radius"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -97933,103 +98313,17 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SchwartzKinetic1D.heisenberg_localization_eq_symmetrized_velocity",
+      "QuantumMechanics.SingleParticle.Continuum.SchwartzSchrodinger1D.heisenberg_localization_eq_symmetrized_velocity",
       "SchwartzKinetic1D.secondDerivative_multiplication_apply"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SchwartzKinetic1D.heisenberg_localization_eq_symmetrized_velocity",
+      "QuantumMechanics.SingleParticle.Continuum.SchwartzSchrodinger1D.heisenberg_localization_eq_symmetrized_velocity",
       "SchwartzKinetic1D.secondDerivative_multiplication_apply"
     ],
     "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ (ℏ κ : ℝ) (potential f : SchwartzKinetic1D.Space),\n  (Complex.I / ↑ℏ) • ⁅SchwartzKinetic1D.schrodingerOperator κ potential, SchwartzKinetic1D.multiplicationOperator f⁆ =\n    (1 / 2) •\n      (SchwartzKinetic1D.multiplicationOperator (SchwartzKinetic1D.derivative f) ∘ₗ\n          SchwartzKinetic1D.velocityOperator ℏ κ +\n        SchwartzKinetic1D.velocityOperator ℏ κ ∘ₗ\n          SchwartzKinetic1D.multiplicationOperator (SchwartzKinetic1D.derivative f))",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SchwartzKinetic1D.heisenberg_localization_eq_symmetrized_velocity",
-    "module": "LeanCondensedMatter.Analysis.Operator.SchwartzKinetic1D",
-    "externalAxioms": [],
-    "docString": "Schrödinger localization has the standard first-order Heisenberg current form\n`(i/ℏ)[H,M_f] = 1/2 {M_(D f),v}` on complex Schwartz space. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "SchwartzKinetic1D.derivative_multiplication_apply",
-      "SchwartzKinetic1D.lie_schrodinger_localization_eq_kinetic",
-      "SchwartzKinetic1D.secondDerivative_multiplication_apply"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (κ : ℝ) (potential f : SchwartzKinetic1D.Space),\n  ⁅SchwartzKinetic1D.schrodingerOperator κ potential, SchwartzKinetic1D.multiplicationOperator f⁆ =\n    ⁅SchwartzKinetic1D.kineticOperator κ, SchwartzKinetic1D.multiplicationOperator f⁆",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SchwartzKinetic1D.lie_schrodinger_localization_eq_kinetic",
-    "module": "LeanCondensedMatter.Analysis.Operator.SchwartzKinetic1D",
-    "externalAxioms": [],
-    "docString": "The local multiplication potential contributes no localization commutator. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SchwartzKinetic1D.heisenberg_localization_eq_symmetrized_velocity"
-    ],
-    "dependencies": [
-      "SchwartzKinetic1D.multiplicationOperator_comp_comm"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SchwartzKinetic1D.heisenberg_localization_eq_symmetrized_velocity"
-    ],
-    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -98082,48 +98376,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (f g : SchwartzKinetic1D.Space),\n  SchwartzKinetic1D.multiplicationOperator f ∘ₗ SchwartzKinetic1D.multiplicationOperator g =\n    SchwartzKinetic1D.multiplicationOperator g ∘ₗ SchwartzKinetic1D.multiplicationOperator f",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SchwartzKinetic1D.multiplicationOperator_comp_comm",
-    "module": "LeanCondensedMatter.Analysis.Operator.SchwartzKinetic1D",
-    "externalAxioms": [],
-    "docString": "Multiplication operators commute on Schwartz space. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SchwartzKinetic1D.lie_schrodinger_localization_eq_kinetic"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SchwartzKinetic1D.lie_schrodinger_localization_eq_kinetic"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ (f ψ : SchwartzKinetic1D.Space),\n  SchwartzKinetic1D.derivative (SchwartzKinetic1D.derivative ((SchwartzKinetic1D.multiplicationOperator f) ψ)) =\n    (SchwartzKinetic1D.multiplicationOperator (SchwartzKinetic1D.derivative (SchwartzKinetic1D.derivative f))) ψ +\n        2 •\n          (SchwartzKinetic1D.multiplicationOperator (SchwartzKinetic1D.derivative f)) (SchwartzKinetic1D.derivative ψ) +\n      (SchwartzKinetic1D.multiplicationOperator f) (SchwartzKinetic1D.derivative (SchwartzKinetic1D.derivative ψ))",
     "standardAxioms": [
       "Classical.choice",
@@ -98143,7 +98395,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SchwartzKinetic1D.heisenberg_localization_eq_symmetrized_velocity"
+      "QuantumMechanics.SingleParticle.Continuum.SchwartzSchrodinger1D.heisenberg_localization_eq_symmetrized_velocity"
     ],
     "dependencies": [
       "SchwartzKinetic1D.derivative_multiplication_apply"
@@ -98151,7 +98403,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SchwartzKinetic1D.heisenberg_localization_eq_symmetrized_velocity"
+      "QuantumMechanics.SingleParticle.Continuum.SchwartzSchrodinger1D.heisenberg_localization_eq_symmetrized_velocity"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -168943,9 +169195,9 @@
     ],
     "dependencies": [
       "QuantumTheory.Transport.polarFourierFirstCosineAngularKernel_zero",
+      "QuantumTheory.Transport.polarFourierZerothAngularKernel_zero",
       "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.TMatrix.BornDysonLoop.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonPauliCoefficient_z_zero_disorder",
-      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.TMatrix.BornDysonLoop.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonScalarCoefficient_zero_disorder",
-      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.TMatrix.BornDysonLoop.0.QuantumTheory.Models.MassiveDirac.polarFourierZerothAngularKernel_zero"
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.TMatrix.BornDysonLoop.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonScalarCoefficient_zero_disorder"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -168992,48 +169244,6 @@
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominator_zero_disorder",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornSelfEnergyCoefficient_zero_disorder"
     ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.TMatrix.BornDysonLoop.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenEntryKernel_zero_disorder_zero_radius"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "QuantumTheory.Transport.polarFourierZerothAngularKernel 0 = ↑(2 * Real.pi)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.TMatrix.BornDysonLoop.0.QuantumTheory.Models.MassiveDirac.polarFourierZerothAngularKernel_zero",
-    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.TMatrix.BornDysonLoop",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.TMatrix.BornDysonLoop.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenEntryKernel_zero_disorder_zero_radius"
-    ],
-    "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [

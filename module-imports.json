@@ -467,7 +467,7 @@
       "name": "LeanCondensedMatter.Analysis.Operator.SchwartzKinetic1D",
       "sourceFile": "LeanCondensedMatter/Analysis/Operator/SchwartzKinetic1D.lean",
       "imports": [],
-      "externalImportCount": 3
+      "externalImportCount": 2
     },
     {
       "name": "LeanCondensedMatter.Analysis.Operator.SchwartzTwoLevel1D",
@@ -1200,7 +1200,7 @@
       "name": "LeanCondensedMatter.Combinatorics.FiniteSumModEq",
       "sourceFile": "LeanCondensedMatter/Combinatorics/FiniteSumModEq.lean",
       "imports": [],
-      "externalImportCount": 5
+      "externalImportCount": 6
     },
     {
       "name": "LeanCondensedMatter.Combinatorics.IncidenceAlgebra.Mobius",
@@ -3221,8 +3221,8 @@
       "name": "LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Continuity.OperatorCurrentBridge1D",
       "sourceFile": "LeanCondensedMatter/QuantumMechanics/SingleParticle/Continuum/Continuity/OperatorCurrentBridge1D.lean",
       "imports": [
-        "LeanCondensedMatter.Analysis.Operator.SchwartzKinetic1D",
-        "LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Continuity.CurrentRepresentation1D"
+        "LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Continuity.CurrentRepresentation1D",
+        "LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.SchwartzSchrodinger1D"
       ],
       "externalImportCount": 1
     },
@@ -3246,7 +3246,7 @@
       "name": "LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Continuity.SchwartzCurrent1D",
       "sourceFile": "LeanCondensedMatter/QuantumMechanics/SingleParticle/Continuum/Continuity/SchwartzCurrent1D.lean",
       "imports": [
-        "LeanCondensedMatter.Analysis.Operator.SchwartzKinetic1D",
+        "LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.SchwartzSchrodinger1D",
         "LeanCondensedMatter.QuantumMechanics.SingleParticle.SymmetrizedVelocityCurrent"
       ],
       "externalImportCount": 0
@@ -3263,7 +3263,7 @@
       "name": "LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Continuity.SchwartzSpinCurrent1D",
       "sourceFile": "LeanCondensedMatter/QuantumMechanics/SingleParticle/Continuum/Continuity/SchwartzSpinCurrent1D.lean",
       "imports": [
-        "LeanCondensedMatter.Analysis.Operator.SchwartzTwoLevel1D",
+        "LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.SchwartzTwoLevelSchrodinger1D",
         "LeanCondensedMatter.QuantumMechanics.SingleParticle.SymmetrizedVelocityCurrent",
         "LeanCondensedMatter.QuantumTheory.SpinHalf"
       ],
@@ -3482,6 +3482,23 @@
         "LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Probability.Basic1D"
       ],
       "externalImportCount": 1
+    },
+    {
+      "name": "LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.SchwartzSchrodinger1D",
+      "sourceFile": "LeanCondensedMatter/QuantumMechanics/SingleParticle/Continuum/SchwartzSchrodinger1D.lean",
+      "imports": [
+        "LeanCondensedMatter.Analysis.Operator.SchwartzKinetic1D"
+      ],
+      "externalImportCount": 2
+    },
+    {
+      "name": "LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.SchwartzTwoLevelSchrodinger1D",
+      "sourceFile": "LeanCondensedMatter/QuantumMechanics/SingleParticle/Continuum/SchwartzTwoLevelSchrodinger1D.lean",
+      "imports": [
+        "LeanCondensedMatter.Analysis.Operator.SchwartzTwoLevel1D",
+        "LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.SchwartzSchrodinger1D"
+      ],
+      "externalImportCount": 2
     },
     {
       "name": "LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum",
@@ -8220,7 +8237,7 @@
         "LeanCondensedMatter.Transport.Analysis.ContinuumMeasure",
         "LeanCondensedMatter.Transport.Analysis.FourierGeometry"
       ],
-      "externalImportCount": 4
+      "externalImportCount": 5
     },
     {
       "name": "LeanCondensedMatter.Transport.Analysis.RelaxationTime",
