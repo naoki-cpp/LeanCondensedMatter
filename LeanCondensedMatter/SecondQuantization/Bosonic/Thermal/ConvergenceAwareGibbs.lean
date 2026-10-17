@@ -194,16 +194,9 @@ theorem freeGibbsPartition_eq_tsum (ε : Mode → ℝ) (β : ℝ)
       ((∑' n : Occupation Mode, boltzmannWeight ε β n : ℝ) : ℂ) := by
   unfold freeGibbsPartition Common.tsumTrace
   have h := (hasSum_boltzmannWeight ε β hpos).mapL Complex.ofRealCLM
-  have hpoint :
-      (fun n : Occupation Mode => Complex.ofRealCLM (boltzmannWeight ε β n)) =
-        fun n : Occupation Mode =>
-          Common.matrixCoeff (imaginaryTimeEvolveFree ε (-β)) n n := by
-    funext n
-    rw [matrixCoeff_imaginaryTimeEvolveFree_self]
-    simp [Complex.ofRealCLM_apply, boltzmannWeight]
-  rw [hpoint] at h
   rw [tsum_boltzmannWeight ε β hpos]
-  simpa [Complex.ofRealCLM_apply] using h.tsum_eq
+  simpa [Complex.ofRealCLM_apply, matrixCoeff_imaginaryTimeEvolveFree_self,
+    boltzmannWeight] using h.tsum_eq
 
 /-- The free bosonic partition series is nonzero under the explicit positive-energy/temperature
 hypothesis. -/
