@@ -48,11 +48,7 @@ theorem Pairing.componentGeometricCrossingCount_eq_oriented_add (pairing : Pairi
   rw [Pairing.componentGeometricCrossingCount, hswap,
     Pairing.componentCrossingCount, ← Finset.sum_add_distrib]
   refine Finset.sum_congr rfl fun x _ => ?_
-  by_cases hbc : Crosses (e ⟨B, x.1⟩).1 (e ⟨C, x.2⟩).1
-  · have hcb : ¬ Crosses (e ⟨C, x.2⟩).1 (e ⟨B, x.1⟩).1 :=
-      fun h => lt_asymm hbc.1 h.1
-    simp [hbc, hcb]
-  · simp [hbc]
+  exact (crossesIndicator_add _ _).symm
 
 /-- The geometric crossing count between two components does not depend on their order. -/
 theorem Pairing.componentGeometricCrossingCount_comm (pairing : Pairing n)

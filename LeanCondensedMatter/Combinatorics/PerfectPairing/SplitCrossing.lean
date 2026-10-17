@@ -112,27 +112,9 @@ private theorem Pairing.ofSplitInterSectorCrossingCount_mod_two_eq_pairEndpointI
       ((Pairing.ofSplit e P Q).pairs_normalized (emb (Sum.inl p)).2)
       ((Pairing.ofSplit e P Q).pairs_normalized (emb (Sum.inr q)).2)
       hEnds.1 hEnds.2.1 hEnds.2.2.1 hEnds.2.2.2
-    have hindicator :
-        (if Crosses (emb (Sum.inl p)).1 (emb (Sum.inr q)).1 then 1 else 0) +
-          (if Crosses (emb (Sum.inr q)).1 (emb (Sum.inl p)).1 then 1 else 0) =
-        (if Crosses (emb (Sum.inl p)).1 (emb (Sum.inr q)).1 ∨
-          Crosses (emb (Sum.inr q)).1 (emb (Sum.inl p)).1 then 1 else 0) := by
-      by_cases hlt : Crosses (emb (Sum.inl p)).1 (emb (Sum.inr q)).1
-      · have hnot : ¬ Crosses (emb (Sum.inr q)).1 (emb (Sum.inl p)).1 :=
-          fun h => lt_asymm hlt.1 h.1
-        simp [hlt, hnot]
-      · by_cases hgt : Crosses (emb (Sum.inr q)).1 (emb (Sum.inl p)).1
-        · simp [hlt, hgt]
-        · simp [hlt, hgt]
     change _ % 2 = _ % 2
-    have hmodIndicator :
-        (if Crosses (emb (Sum.inl p)).1 (emb (Sum.inr q)).1 ∨
-          Crosses (emb (Sum.inr q)).1 (emb (Sum.inl p)).1 then (1 : ℕ) else 0) % 2 =
-        (if Crosses (emb (Sum.inl p)).1 (emb (Sum.inr q)).1 ∨
-          Crosses (emb (Sum.inr q)).1 (emb (Sum.inl p)).1 then (1 : ℕ) else 0) := by
-      split_ifs <;> decide
-    rw [hindicator, hmodIndicator]
-    exact hcross.symm
+    rw [crossesIndicator_add]
+    simpa using hcross.symm
   have hsum :
       Pairing.ofSplitInterSectorCrossingCount e P Q =
         ∑ p : P.NormalizedPair, ∑ q : Q.NormalizedPair,
