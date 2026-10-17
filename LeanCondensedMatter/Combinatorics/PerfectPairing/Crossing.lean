@@ -93,14 +93,21 @@ theorem Pairing.crossingCount_eq_sum_crosses {n : ℕ} (pairing : Pairing n) :
             Crosses x.1 x.2) (pairing.pairs.product pairing.pairs)).symm
     _ = ∑ p ∈ pairing.pairs, ∑ q ∈ pairing.pairs,
           if Crosses p q then 1 else 0 := by
-      exact Finset.sum_product' _ _ _
+      exact Finset.sum_product' (β := ℕ) _ _ _
     _ = ∑ p ∈ pairing.pairs.attach, ∑ q ∈ pairing.pairs.attach,
           if Crosses p.1 q.1 then 1 else 0 := by
-      symm
-      rw [Finset.sum_attach]
-      apply Finset.sum_congr rfl
-      intro p _
-      rw [Finset.sum_attach]
+      calc
+        (∑ p ∈ pairing.pairs, ∑ q ∈ pairing.pairs,
+          if Crosses p q then 1 else 0) =
+            ∑ p ∈ pairing.pairs.attach, ∑ q ∈ pairing.pairs,
+              if Crosses p.1 q then 1 else 0 :=
+          (Finset.sum_attach pairing.pairs
+            (fun p => ∑ q ∈ pairing.pairs, if Crosses p q then (1 : ℕ) else 0)).symm
+        _ = _ := by
+          apply Finset.sum_congr rfl
+          intro p _
+          exact (Finset.sum_attach pairing.pairs
+            (fun q => if Crosses p.1 q then (1 : ℕ) else 0)).symm
     _ = _ := by
       simp only [Finset.attach_eq_univ, Fintype.sum_prod_type]
 
