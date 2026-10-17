@@ -159,7 +159,7 @@ theorem innerHS_comp_right {ι : Type*} (d : HilbertBasis ι ℂ H)
   have hAdjTW :
       ContinuousLinearMap.adjoint (T * W) =
         ContinuousLinearMap.adjoint W * ContinuousLinearMap.adjoint T := by
-    simp only [← ContinuousLinearMap.star_eq_adjoint, star_mul, star_star]
+    simp only [← ContinuousLinearMap.star_eq_adjoint, star_mul]
   have hAdjSW :
       ContinuousLinearMap.adjoint (S * ContinuousLinearMap.adjoint W) =
         W * ContinuousLinearMap.adjoint S := by
