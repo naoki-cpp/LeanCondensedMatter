@@ -517,7 +517,9 @@ private theorem regularizedHGFun_zero_one_hasDerivAt (w : ℂ) :
         Complex.regularizedHGFunCoeff 0 {(2 : ℂ)} n := by
     have hg : Complex.Gamma ((2 : ℂ) + (n : ℂ)) =
         (Nat.factorial (n + 1) : ℂ) := by
-      convert Complex.Gamma_nat_eq_factorial (n + 1) using 1 <;> push_cast <;> ring
+      convert Complex.Gamma_nat_eq_factorial (n + 1) using 1
+      push_cast
+      ring
     rw [polarFourierBesselZeroCoeff]
     have htwo : Complex.regularizedHGFunCoeff 0 {(2 : ℂ)} n =
         1 / ((Nat.factorial n : ℂ) * (Nat.factorial (n + 1) : ℂ)) := by
@@ -575,8 +577,9 @@ private theorem besselJ_zero_hasDerivAt (w : ℂ) :
   have harg : HasDerivAt (fun t : ℂ => -(t / 2) ^ 2) (-(w / 2)) w := by
     convert (((hasDerivAt_id w).div_const (2 : ℂ)).pow 2).neg using 1
     · funext t
+      simp only [Pi.neg_apply, Pi.pow_apply, id_eq]
       ring
-    · ring
+    · simp only [id_eq]
   have h := (regularizedHGFun_zero_one_hasDerivAt (-(w / 2) ^ 2)).comp w harg
   convert h using 1
   · funext t
@@ -602,8 +605,9 @@ theorem polarFourierFirstCosineAngularKernel_eq_besselJ (z : ℝ) :
   rw [hfun] at hJ
   have hderiv := (polarFourierZerothAngularKernel_hasDerivAt z).unique hJ
   have hI : (-Complex.I) * Complex.I = (1 : ℂ) := by
-    rw [← neg_mul, ← pow_two, Complex.I_sq]
-    ring
+    calc
+      _ = -(Complex.I ^ 2) := by ring
+      _ = 1 := by rw [Complex.I_sq]; ring
   calc
     polarFourierFirstCosineAngularKernel z =
         ((-Complex.I) * Complex.I) * polarFourierFirstCosineAngularKernel z := by
