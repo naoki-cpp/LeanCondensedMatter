@@ -9,9 +9,10 @@ set_option linter.style.header false
 /-!
 # Bounded-operator spectral resolvent of the Rashba-exchange model
 
-Gauge-free band projectors are transported to the bounded-operator realization and used to build the
-finite two-band projector resolvent.  Away from the band degeneracy, this candidate equals the
-canonical resolvent at every nonzero signed imaginary regulator.
+Gauge-free band projectors, their operator identities, and the finite-band spectral resolvent
+candidate depend only on clean `HamiltonianParameters`. The separate current-band block uses
+response `Parameters` for the signed charge. Away from the band degeneracy, the spectral
+candidate equals the canonical resolvent at every nonzero signed imaginary regulator.
 -/
 
 namespace QuantumTheory.Models.RashbaExchange
@@ -23,7 +24,7 @@ open QuantumTheory.Transport
 
 /-- Band projector transported to the bounded-operator representation. -/
 noncomputable def bandProjectorOperator
-    (params : Parameters) (band : Band) (px py : ℝ) :
+    (params : HamiltonianParameters) (band : Band) (px py : ℝ) :
     EuclideanSpace ℂ (Fin 2) →L[ℂ] EuclideanSpace ℂ (Fin 2) :=
   matrixOperator (bandProjector params band px py)
 
@@ -39,7 +40,7 @@ noncomputable def currentBandBlockTrace
 /-- The bounded-operator projectors inherit the complete orthogonal family
 from the matrix realization under the algebra equivalence. -/
 theorem bandProjectorOperator_completeOrthogonalIdempotents
-    (params : Parameters) (px py : ℝ)
+    (params : HamiltonianParameters) (px py : ℝ)
     (hE : spinOrbitEnergy params px py ≠ 0) :
     CompleteOrthogonalIdempotents
       (fun band : Band => bandProjectorOperator params band px py) := by
@@ -54,7 +55,7 @@ theorem bandProjectorOperator_completeOrthogonalIdempotents
 
 /-- The Hamiltonian acts on each projector with its shifted band energy. -/
 theorem hamiltonianOperator_mul_bandProjectorOperator
-    (params : Parameters) (band : Band) (px py : ℝ)
+    (params : HamiltonianParameters) (band : Band) (px py : ℝ)
     (hE : spinOrbitEnergy params px py ≠ 0) :
     hamiltonianOperator params px py * bandProjectorOperator params band px py =
       (((bandEnergy params band px py : ℝ) : ℂ)) •
@@ -64,7 +65,7 @@ theorem hamiltonianOperator_mul_bandProjectorOperator
 
 /-- Gauge-free finite-band spectral candidate for the resolvent. -/
 noncomputable def projectorResolvent
-    (z : ℂ) (params : Parameters) (px py : ℝ) :
+    (z : ℂ) (params : HamiltonianParameters) (px py : ℝ) :
     EuclideanSpace ℂ (Fin 2) →L[ℂ] EuclideanSpace ℂ (Fin 2) :=
   ∑ band : Band,
     scalarResolventCoefficient z (bandEnergy params band px py) •
