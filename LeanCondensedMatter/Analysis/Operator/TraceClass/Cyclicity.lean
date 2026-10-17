@@ -22,9 +22,6 @@ theorem trace_comp_comm {T : H →L[ℂ] H} (hT : IsTraceClass T) (W : H →L[�
   obtain ⟨A, B, hA, hB, hfactor⟩ :=
     (isTraceClass_iff_exists_hilbertSchmidt_factorization (T := T)).mp hT
   obtain ⟨ι, d, -⟩ := exists_hilbertBasis (𝕜 := ℂ) (E := H)
-  have hBW : IsHilbertSchmidt (B * W) := isHilbertSchmidt_comp_right hB W
-  have hAW : IsHilbertSchmidt (A * ContinuousLinearMap.adjoint W) :=
-    isHilbertSchmidt_comp_right hA (ContinuousLinearMap.adjoint W)
   have hfactorRight :
       ContinuousLinearMap.adjoint A * (B * W) = T * W := by
     rw [← mul_assoc, hfactor]
