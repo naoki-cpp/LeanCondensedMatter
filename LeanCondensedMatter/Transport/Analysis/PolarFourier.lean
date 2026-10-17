@@ -578,8 +578,7 @@ private theorem besselJ_zero_hasDerivAt (w : ℂ) :
     convert (((hasDerivAt_id w).div_const (2 : ℂ)).pow 2).neg using 1
     · funext t
       simp only [Pi.neg_apply, Pi.pow_apply, id_eq]
-      ring
-    · simp only [id_eq]
+    · ring_nf
   have h := (regularizedHGFun_zero_one_hasDerivAt (-(w / 2) ^ 2)).comp w harg
   convert h using 1
   · funext t
