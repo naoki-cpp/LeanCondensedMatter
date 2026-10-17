@@ -29,12 +29,9 @@ private theorem IsTraceClass.summable_norm_inner_left_and_tsum_le_traceNorm
     hT.exists_hilbertSchmidt_factorization_normSq_eq_traceNorm
   have hAW : IsHilbertSchmidt (A * W) := isHilbertSchmidt_comp_right hA W
   have hAWnorm : hAW.normSq ≤ hT.traceNorm := by
-    have hraw := IsHilbertSchmidt.normSq_comp_right_le hA W
-    have hraw' : hAW.normSq ≤ ‖W‖ ^ 2 * hA.normSq := by
-      exact (IsHilbertSchmidt.normSq_proof_irrel hAW
-        (isHilbertSchmidt_comp_right hA W)) ▸ hraw
     calc
-      hAW.normSq ≤ ‖W‖ ^ 2 * hA.normSq := hraw'
+      hAW.normSq ≤ ‖W‖ ^ 2 * hA.normSq :=
+        IsHilbertSchmidt.normSq_comp_right_le hA W
       _ ≤ 1 ^ 2 * hA.normSq := by
         exact mul_le_mul_of_nonneg_right
           (pow_le_pow_left₀ (norm_nonneg W) hW 2) hA.normSq_nonneg
