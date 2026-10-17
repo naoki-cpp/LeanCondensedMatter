@@ -268,5 +268,159 @@ theorem TwoPointDiagram.interiorPairing_partner_val
     d.pairing.restrict_partner_val (d.IsInteriorLeg earlier later)
       (d.isInteriorLeg_partner_iff earlier later) leg
 
+
+/-- For the later of two nested cuts, exactly one paired endpoint lies inside
+the interval: the endpoint on its source-external side. The cut is represented
+by either of its paired legs, with no choice of an external walk. -/
+theorem TwoPointDiagram.laterCut_endpoints_opposite_interval_sides
+    (d : TwoPointDiagram ExternalLabel InternalLabel N S)
+    (hconnected : d.IsExternallyConnected)
+    (earlier later : Fin (2 * (2 * S.card + 1)))
+    (hnested :
+      (d.vertexGraphWithoutPropagator earlier).componentBlock (Sum.inl (0 : Fin 2)) ⊆
+        (d.vertexGraphWithoutPropagator later).componentBlock (Sum.inl (0 : Fin 2)))
+    (hsep : ¬ (d.vertexGraphWithoutPropagator later).Reachable
+      (Sum.inl (0 : Fin 2)) (Sum.inl (1 : Fin 2)))
+    (hne : later ≠ earlier)
+    (hpne : d.pairing.partner later ≠ earlier) :
+    (twoPointVertexOfLeg later ∈ d.verticesBetweenCuts earlier later ∧
+        twoPointVertexOfLeg (d.pairing.partner later) ∉
+          d.verticesBetweenCuts earlier later) ∨
+      (twoPointVertexOfLeg (d.pairing.partner later) ∈
+          d.verticesBetweenCuts earlier later ∧
+        twoPointVertexOfLeg later ∉ d.verticesBetweenCuts earlier later) := by
+  let H := d.vertexGraphWithoutPropagator later
+  let s₀ : TwoPointVertex S := Sum.inl (0 : Fin 2)
+  let t₁ : TwoPointVertex S := Sum.inl (1 : Fin 2)
+  let a := twoPointVertexOfLeg later
+  let b := twoPointVertexOfLeg (d.pairing.partner later)
+  have hinvariant := sourceSide_mem_partner_iff d earlier later hne hpne
+  have hnotTarget {v : TwoPointVertex S}
+      (hv : H.Reachable t₁ v) :
+      v ∉ H.componentBlock s₀ := by
+    intro hmem
+    have hsource : H.Reachable s₀ v :=
+      ((H.mem_componentBlock s₀ v).1 hmem).symm
+    exact hsep (hsource.trans hv.symm)
+  rcases d.separatingCut_endpoints_opposite_sides hconnected later hsep with
+    ⟨ha, hb⟩ | ⟨hb, ha⟩
+  · left
+    have hasource : a ∈ H.componentBlock s₀ :=
+      (H.mem_componentBlock s₀ a).2 ha.symm
+    have hnotb : b ∉ H.componentBlock s₀ := hnotTarget hb
+    have hnota : a ∉
+        (d.vertexGraphWithoutPropagator earlier).componentBlock s₀ := by
+      intro hmem
+      exact hnotb (hnested (hinvariant.mp hmem))
+    exact ⟨(d.mem_verticesBetweenCuts_iff earlier later a).2
+      ⟨hasource, hnota⟩,
+      fun h => hnotb ((d.mem_verticesBetweenCuts_iff earlier later b).1 h).1⟩
+  · right
+    have hbsource : b ∈ H.componentBlock s₀ :=
+      (H.mem_componentBlock s₀ b).2 hb.symm
+    have hnota : a ∉ H.componentBlock s₀ := hnotTarget ha
+    have hnotb : b ∉
+        (d.vertexGraphWithoutPropagator earlier).componentBlock s₀ := by
+      intro hmem
+      exact hnota (hnested (hinvariant.mpr hmem))
+    exact ⟨(d.mem_verticesBetweenCuts_iff earlier later b).2
+      ⟨hbsource, hnotb⟩,
+      fun h => hnota ((d.mem_verticesBetweenCuts_iff earlier later a).1 h).1⟩
+
+/-- The earlier separating cut also has exactly one endpoint in the interval:
+the endpoint on the target-external side of that cut.
+
+The nesting condition makes the earlier propagator survive the later cut and
+therefore keeps its two endpoints on the same later source side. -/
+theorem TwoPointDiagram.earlierCut_endpoints_opposite_interval_sides
+    (d : TwoPointDiagram ExternalLabel InternalLabel N S)
+    (hconnected : d.IsExternallyConnected)
+    (earlier later : Fin (2 * (2 * S.card + 1)))
+    (hnested :
+      (d.vertexGraphWithoutPropagator earlier).componentBlock (Sum.inl (0 : Fin 2)) ⊆
+        (d.vertexGraphWithoutPropagator later).componentBlock (Sum.inl (0 : Fin 2)))
+    (hsep : ¬ (d.vertexGraphWithoutPropagator earlier).Reachable
+      (Sum.inl (0 : Fin 2)) (Sum.inl (1 : Fin 2)))
+    (hne : earlier ≠ later)
+    (hpne : d.pairing.partner earlier ≠ later) :
+    (twoPointVertexOfLeg earlier ∈ d.verticesBetweenCuts earlier later ∧
+        twoPointVertexOfLeg (d.pairing.partner earlier) ∉
+          d.verticesBetweenCuts earlier later) ∨
+      (twoPointVertexOfLeg (d.pairing.partner earlier) ∈
+          d.verticesBetweenCuts earlier later ∧
+        twoPointVertexOfLeg earlier ∉ d.verticesBetweenCuts earlier later) := by
+  let H := d.vertexGraphWithoutPropagator earlier
+  let K := d.vertexGraphWithoutPropagator later
+  let s₀ : TwoPointVertex S := Sum.inl (0 : Fin 2)
+  let t₁ : TwoPointVertex S := Sum.inl (1 : Fin 2)
+  let a := twoPointVertexOfLeg earlier
+  let b := twoPointVertexOfLeg (d.pairing.partner earlier)
+  have hinvariant := sourceSide_mem_partner_iff d later earlier hne hpne
+  have hnotTarget {v : TwoPointVertex S}
+      (hv : H.Reachable t₁ v) :
+      v ∉ H.componentBlock s₀ := by
+    intro hmem
+    have hsource : H.Reachable s₀ v :=
+      ((H.mem_componentBlock s₀ v).1 hmem).symm
+    exact hsep (hsource.trans hv.symm)
+  rcases d.separatingCut_endpoints_opposite_sides hconnected earlier hsep with
+    ⟨ha, hb⟩ | ⟨hb, ha⟩
+  · right
+    have hasource : a ∈ H.componentBlock s₀ :=
+      (H.mem_componentBlock s₀ a).2 ha.symm
+    have hbsource : b ∈ K.componentBlock s₀ :=
+      hinvariant.mp (hnested hasource)
+    have hnotb : b ∉ H.componentBlock s₀ := hnotTarget hb
+    exact ⟨(d.mem_verticesBetweenCuts_iff earlier later b).2
+      ⟨hbsource, hnotb⟩,
+      fun h => ((d.mem_verticesBetweenCuts_iff earlier later a).1 h).2 hasource⟩
+  · left
+    have hbsource : b ∈ H.componentBlock s₀ :=
+      (H.mem_componentBlock s₀ b).2 hb.symm
+    have hasource : a ∈ K.componentBlock s₀ :=
+      hinvariant.mpr (hnested hbsource)
+    have hnota : a ∉ H.componentBlock s₀ := hnotTarget ha
+    exact ⟨(d.mem_verticesBetweenCuts_iff earlier later a).2
+      ⟨hasource, hnota⟩,
+      fun h => ((d.mem_verticesBetweenCuts_iff earlier later b).1 h).2 hbsource⟩
+
+/-- Choose the interval-facing leg of a paired cut by membership in the
+canonical intermediate vertex region, rather than by a path orientation.
+For a boundary cut, the previous lemmas show that the choice is unique. -/
+noncomputable def TwoPointDiagram.intervalFacingLeg
+    (d : TwoPointDiagram ExternalLabel InternalLabel N S)
+    (earlier later cut : Fin (2 * (2 * S.card + 1))) :
+    Fin (2 * (2 * S.card + 1)) := by
+  classical
+  exact if twoPointVertexOfLeg cut ∈ d.verticesBetweenCuts earlier later
+    then cut else d.pairing.partner cut
+
+/-- Exactly one of the two endpoints of a cut lies in the interval if and only
+if the selected interval-facing leg is inside and its partner is outside. -/
+theorem TwoPointDiagram.intervalFacingLeg_mem_and_partner_not_mem
+    (d : TwoPointDiagram ExternalLabel InternalLabel N S)
+    (earlier later cut : Fin (2 * (2 * S.card + 1)))
+    (hends :
+      (twoPointVertexOfLeg cut ∈ d.verticesBetweenCuts earlier later ∧
+          twoPointVertexOfLeg (d.pairing.partner cut) ∉
+            d.verticesBetweenCuts earlier later) ∨
+        (twoPointVertexOfLeg (d.pairing.partner cut) ∈
+            d.verticesBetweenCuts earlier later ∧
+          twoPointVertexOfLeg cut ∉ d.verticesBetweenCuts earlier later)) :
+    twoPointVertexOfLeg (d.intervalFacingLeg earlier later cut) ∈
+        d.verticesBetweenCuts earlier later ∧
+      twoPointVertexOfLeg (d.pairing.partner (d.intervalFacingLeg earlier later cut)) ∉
+        d.verticesBetweenCuts earlier later := by
+  classical
+  unfold TwoPointDiagram.intervalFacingLeg
+  split_ifs with h
+  · rcases hends with ⟨_, hout⟩ | ⟨_, hout⟩
+    · exact ⟨h, hout⟩
+    · exact False.elim (hout h)
+  · rcases hends with ⟨hin, _⟩ | ⟨hin, hout⟩
+    · exact False.elim (h hin)
+    · rw [d.pairing.partner_involutive cut]
+      exact ⟨hin, hout⟩
+
 end Common
 end SecondQuantization
