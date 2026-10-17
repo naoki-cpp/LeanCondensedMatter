@@ -18,12 +18,6 @@ case is not the general trace-cyclicity theorem for noncommuting bounded factors
 
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
 
-omit [CompleteSpace H] in
-private theorem inner_mul_inner_conj_eq_norm_sq (x y : H) :
-    (inner ℂ x y * inner ℂ y x : ℂ) = ((‖(inner ℂ x y : ℂ)‖ ^ 2 : ℝ) : ℂ) := by
-  rw [show (inner ℂ y x : ℂ) = starRingEnd ℂ (inner ℂ x y) from (inner_conj_symm y x).symm,
-    Complex.mul_conj, Complex.normSq_eq_norm_sq]
-
 namespace ContinuousLinearMap
 
 variable {T : H →L[ℂ] H}
@@ -47,7 +41,9 @@ theorem hasSum_eigen_expansion_diagonalExpectationValue
       have hstep : (innerSL ℂ x ((a.1.1 : ℂ) • (inner ℂ (e a) x : ℂ) • e a) : ℂ)
           = (a.1.1 : ℂ) * (inner ℂ (e a) x * inner ℂ x (e a) : ℂ) := by
         simp
-      rw [hstep, inner_mul_inner_conj_eq_norm_sq, Complex.ofReal_pow]
+      rw [hstep, show (inner ℂ x (e a) : ℂ) =
+          starRingEnd ℂ (inner ℂ (e a) x) from (inner_conj_symm x (e a)).symm,
+        Complex.mul_conj, Complex.normSq_eq_norm_sq, Complex.ofReal_pow]
   rw [← coe_diagonalExpectationValue_right T hTself x] at hs'
   exact Complex.hasSum_ofReal.mp hs'
 
@@ -115,11 +111,9 @@ theorem spectralTrace_comp_comm {T' : H →L[ℂ] H}
     calc
       T * T' = ContinuousLinearMap.adjoint (T * T') := hTT'self.adjoint_eq.symm
       _ = T' * T := by
-        rw [show ContinuousLinearMap.adjoint (T * T') = star (T * T') from
-          (ContinuousLinearMap.star_eq_adjoint (T * T')).symm,
-          star_mul, ContinuousLinearMap.star_eq_adjoint,
-          ContinuousLinearMap.star_eq_adjoint,
-          hT'self.adjoint_eq, hTself.adjoint_eq]
+        simp only [← ContinuousLinearMap.star_eq_adjoint, star_mul,
+          (ContinuousLinearMap.star_eq_adjoint T').trans hT'self.adjoint_eq,
+          (ContinuousLinearMap.star_eq_adjoint T).trans hTself.adjoint_eq]
   exact congrArg spectralTrace hcomm
 
 end ContinuousLinearMap
