@@ -56,18 +56,6 @@ private theorem log_purePointPartitionFunction_fermionEnergy_eq_sum
       (f := fun i => 1 + Real.exp (-β * ε i))
       (fun i _ => ne_of_gt (by positivity)))
 
-omit [LinearOrder Mode] [Fintype Mode] in
-private theorem sum_purePointBoltzmannWeight_powerset_eq_prod
-    (ε : Mode → ℝ) (β : ℝ) (s : Finset Mode) :
-    ∑ t ∈ s.powerset, purePointBoltzmannWeight (fermionEnergy ε) β t =
-      ∏ j ∈ s, (1 + Real.exp (-β * ε j)) := by
-  simp_rw [purePointBoltzmannWeight, fermionEnergy, Finset.mul_sum, Real.exp_sum]
-  have h := Finset.prod_add
-    (fun j => Real.exp (-β * ε j)) (fun _ => (1 : ℝ)) s
-  simp only [Finset.prod_const_one, mul_one] at h
-  rw [← h]
-  exact Finset.prod_congr rfl fun j _ => add_comm _ _
-
 omit [LinearOrder Mode] in
 /-- The total probability of configurations containing mode `i` is its Fermi–Dirac occupation. -/
 theorem sum_freeGibbsConfigurationProbability_filter_mem
@@ -75,52 +63,15 @@ theorem sum_freeGibbsConfigurationProbability_filter_mem
     ∑ n ∈ (Finset.univ : Finset (Occupation Mode)).filter (i ∈ ·),
         freeGibbsConfigurationProbability ε β n =
       fermiDiracOccupation ε β i := by
-  let P : ℝ := ∏ j ∈ Finset.univ.erase i, (1 + Real.exp (-β * ε j))
-  have hfilter_not :
-      (Finset.univ : Finset (Occupation Mode)).filter (i ∉ ·) =
-        (Finset.univ.erase i : Finset Mode).powerset := by
-    ext t
-    simp [Finset.mem_powerset, Finset.subset_erase]
-  have hsum_not :
-      ∑ n ∈ (Finset.univ : Finset (Occupation Mode)).filter (i ∉ ·),
-          purePointBoltzmannWeight (fermionEnergy ε) β n = P := by
-    rw [hfilter_not]
-    exact sum_purePointBoltzmannWeight_powerset_eq_prod ε β (Finset.univ.erase i)
-  have hZ :
-      purePointPartitionFunction (fermionEnergy ε) β =
-        (1 + Real.exp (-β * ε i)) * P := by
-    rw [purePointPartitionFunction_fermionEnergy_eq_prod]
-    change (∏ j, (1 + Real.exp (-β * ε j))) =
-      (1 + Real.exp (-β * ε i)) *
-        ∏ j ∈ Finset.univ.erase i, (1 + Real.exp (-β * ε j))
-    exact (Finset.mul_prod_erase
-      (Finset.univ : Finset Mode)
-      (fun j => 1 + Real.exp (-β * ε j))
-      (Finset.mem_univ i)).symm
-  have hPpos : 0 < P := by
-    apply Finset.prod_pos
-    intro j hj
-    positivity
-  have hnum :
-      ∑ n ∈ (Finset.univ : Finset (Occupation Mode)).filter (i ∈ ·),
-          purePointBoltzmannWeight (fermionEnergy ε) β n =
-        Real.exp (-β * ε i) * P := by
-    have hsplit :
-        (∑ n ∈ (Finset.univ : Finset (Occupation Mode)).filter (i ∈ ·),
-            purePointBoltzmannWeight (fermionEnergy ε) β n) +
-          (∑ n ∈ (Finset.univ : Finset (Occupation Mode)).filter (i ∉ ·),
-            purePointBoltzmannWeight (fermionEnergy ε) β n) =
-          purePointPartitionFunction (fermionEnergy ε) β := by
-      rw [purePointPartitionFunction, tsum_fintype]
-      exact Finset.sum_filter_add_sum_filter_not
-        (Finset.univ : Finset (Occupation Mode)) (i ∈ ·)
-        (purePointBoltzmannWeight (fermionEnergy ε) β)
-    rw [hsum_not, hZ] at hsplit
-    linear_combination hsplit
-  simp_rw [freeGibbsConfigurationProbability, purePointGibbsProbability]
-  rw [← Finset.mul_sum, hnum, hZ, fermiDiracOccupation]
-  rw [show -β * ε i = -(β * ε i) by ring, Real.exp_neg]
-  field_simp [hPpos.ne', Real.exp_ne_zero]
+  letI : LinearOrder Mode :=
+    LinearOrder.lift' (Fintype.equivFin Mode) (Fintype.equivFin Mode).injective
+  have h := freeGibbsDensityOperator_expectation_numberOperator ε β i
+  rw [freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation,
+    Common.finiteGibbsExpectation_eq_sum, numberOperator_eq_diagonalOperator] at h
+  apply Complex.ofReal_injective
+  push_cast
+  simpa [Common.matrixCoeff_diagonalOperator, Finset.sum_filter, mul_ite,
+    freeGibbsConfigurationProbability, fermiDiracOccupation] using h
 
 omit [LinearOrder Mode] in
 /-- The free-fermion Gibbs mean energy is the mode-energy sum weighted by Fermi–Dirac occupations. -/
