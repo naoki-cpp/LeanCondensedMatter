@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Models.RashbaExchange.Model
+import LeanCondensedMatter.Models.RashbaExchange.ResponseParameters
 import LeanCondensedMatter.Models.RashbaExchange.Model.Spectral
 import LeanCondensedMatter.Models.RashbaExchange.Model.Interband
 import LeanCondensedMatter.Models.RashbaExchange.Model.OperatorSpectral
