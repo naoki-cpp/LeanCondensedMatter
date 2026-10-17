@@ -321,19 +321,8 @@ theorem restrict_ofGLGramPreserving [FiniteDimensional ℝ V]
         ((A : Matrix ι ι ℤ).map (Int.cast : ℤ → ℝ)) = G) :
     restrict L (ofGLGramPreserving L b A hGram) =
       (Matrix.GeneralLinearGroup.toLin' b A).toLinearEquiv := by
-  have hLin :
-      (restrict L (ofGLGramPreserving L b A hGram)).toLinearMap =
-        (Matrix.GeneralLinearGroup.toLin' b A).toLinearEquiv.toLinearMap := by
-    apply b.ext
-    intro i
-    apply Subtype.ext
-    change
-      extendIntegralLinearEquiv L b
-        (Matrix.GeneralLinearGroup.toLin' b A).toLinearEquiv ((b i : L) : V) =
-          (((Matrix.GeneralLinearGroup.toLin' b A).toLinearEquiv (b i) : L) : V)
-    exact extendIntegralLinearEquiv_apply_basis L b
-      (Matrix.GeneralLinearGroup.toLin' b A).toLinearEquiv i
-  exact LinearEquiv.ext (fun x => LinearMap.congr_fun hLin x)
+  unfold ofGLGramPreserving
+  apply restrict_ofIntegralLinearEquivGramPreserving
 
 /-- In the chosen integral basis, the intrinsic lattice isometry obtained from
 a Gram-preserving integer matrix has *exactly* that matrix as its coordinate
@@ -1278,47 +1267,18 @@ theorem integer_trace_zero_det_neg_one_reversed_vector
     (A : Matrix (Fin 2) (Fin 2) ℤ)
     (hTrace : A.trace = 0) (hDet : A.det = -1) :
     ∃ v : Fin 2 → ℤ, v ≠ 0 ∧ A.mulVec v = -v := by
-  have ht : A 0 0 + A 1 1 = 0 := by
-    simpa [Matrix.trace_fin_two] using hTrace
-  have hd : A 1 1 = -(A 0 0) := by omega
-  have hdet : A 0 0 * A 1 1 - A 0 1 * A 1 0 = -1 := by
+  have ht : (-A).trace = 0 := by
+    have ht := hTrace
+    simp only [Matrix.trace_fin_two, Matrix.neg_apply] at ht ⊢
+    omega
+  have hd : (-A).det = -1 := by
     simpa [Matrix.det_fin_two] using hDet
-  have hquad : A 0 0 * A 0 0 + A 0 1 * A 1 0 = 1 := by
-    rw [hd] at hdet
-    nlinarith
-  by_cases ha : A 0 0 = 1
-  · let v : Fin 2 → ℤ := ![A 0 1, -(A 0 0 + 1)]
-    refine ⟨v, ?_, ?_⟩
-    · intro hv
-      have hv1 := congrArg (fun w : Fin 2 → ℤ => w 1) hv
-      change -(A 0 0 + 1) = 0 at hv1
-      omega
-    · funext i
-      fin_cases i
-      · simp only [Matrix.mulVec, dotProduct, Fin.sum_univ_two]
-        change A 0 0 * A 0 1 + A 0 1 * (-(A 0 0 + 1)) = -(A 0 1)
-        ring
-      · simp only [Matrix.mulVec, dotProduct, Fin.sum_univ_two]
-        change A 1 0 * A 0 1 + A 1 1 * (-(A 0 0 + 1)) =
-          -(-(A 0 0 + 1))
-        rw [hd]
-        nlinarith [hquad]
-  · let v : Fin 2 → ℤ := ![A 0 0 - 1, A 1 0]
-    refine ⟨v, ?_, ?_⟩
-    · intro hv
-      have hv0 := congrArg (fun w : Fin 2 → ℤ => w 0) hv
-      change A 0 0 - 1 = 0 at hv0
-      omega
-    · funext i
-      fin_cases i
-      · simp only [Matrix.mulVec, dotProduct, Fin.sum_univ_two]
-        change A 0 0 * (A 0 0 - 1) + A 0 1 * A 1 0 =
-          -(A 0 0 - 1)
-        nlinarith [hquad]
-      · simp only [Matrix.mulVec, dotProduct, Fin.sum_univ_two]
-        change A 1 0 * (A 0 0 - 1) + A 1 1 * A 1 0 = -(A 1 0)
-        rw [hd]
-        ring
+  obtain ⟨v, hv, hAv⟩ := integer_trace_zero_det_neg_one_fixed_vector (-A) ht hd
+  refine ⟨v, hv, ?_⟩
+  funext i
+  have hi := congrFun hAv i
+  simp [Matrix.mulVec, dotProduct, Fin.sum_univ_two] at hi ⊢
+  linarith
 
 /-- The sum and difference of two primitive lattice vectors form an orthogonal
 conventional cell exactly when the vectors have equal squared lengths.
