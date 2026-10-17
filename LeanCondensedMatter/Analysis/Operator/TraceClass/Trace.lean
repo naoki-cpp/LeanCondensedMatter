@@ -91,10 +91,7 @@ theorem trace_congr {T R : H →L[ℂ] H}
     (hT : IsTraceClass T) (hR : IsTraceClass R) (h : T = R) :
     hT.trace = hR.trace := by
   subst R
-  obtain ⟨w, d, -⟩ := exists_hilbertBasis (𝕜 := ℂ) (E := H)
-  calc
-    hT.trace = ∑' i, inner ℂ (d i) (T (d i)) := hT.trace_eq_tsum_inner d
-    _ = hR.trace := (hR.trace_eq_tsum_inner d).symm
+  exact congrArg (fun p : IsTraceClass T => p.trace) (Subsingleton.elim hT hR)
 
 /-- The diagonal series sums to the trace in every Hilbert basis. -/
 theorem hasSum_trace {T : H →L[ℂ] H} (hT : IsTraceClass T)
