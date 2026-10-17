@@ -70,7 +70,7 @@ theorem finset_sum_offDiag_modEq_of_pair_add_modEq {α : Type*}
         ∑ p ∈ s.offDiag, (g p.1 p.2 : ZMod n) := by
     rw [Finset.sum_sub_distrib] at hzero
     exact sub_eq_zero.mp hzero
-  simpa using hsum
+  simpa only [Nat.cast_sum] using hsum
 
 /-- An ordering selects one representative from each unordered pair in an off-diagonal sum.
 
