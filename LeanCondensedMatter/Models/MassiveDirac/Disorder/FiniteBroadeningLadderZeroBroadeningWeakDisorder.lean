@@ -158,7 +158,8 @@ theorem tendsto_finiteCutoffContinuumBornDysonLongitudinalLadderActionZeroBroade
     have hreal : 2 * (probeEnergy ^ 2 + m ^ 2) /
         (probeEnergy ^ 2 + 3 * m ^ 2) - 1 =
         (probeEnergy ^ 2 - m ^ 2) / (probeEnergy ^ 2 + 3 * m ^ 2) := by
-      field_simp [hden] <;> ring
+      field_simp [hden]
+      ring
     exact_mod_cast hreal
   have hlimit := (tendsto_pi_nhds.mp hsolved 0).sub_const (1 : ℂ)
   simp only [inPlaneCoefficientVector, Matrix.cons_val_zero, htarget] at hlimit
