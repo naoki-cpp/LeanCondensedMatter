@@ -26,89 +26,15 @@ noncomputable section
 
 variable {Mode : Type*}
 
-/-- Unnormalized KMS rotation of an annihilation operator through the free Gibbs weight. -/
-theorem freeGibbsTsum_annihilate_rotate (ε : Mode → ℝ) (β : ℝ) (i : Mode)
-    (A : FockSpace Mode →ₗ[ℂ] FockSpace Mode) :
-    Common.tsumTrace
-        ((imaginaryTimeEvolveFree ε (-β)).comp ((annihilate i).comp A)) =
-      Complex.exp ((β : ℂ) * (ε i : ℂ)) *
-        Common.tsumTrace
-          ((imaginaryTimeEvolveFree ε (-β)).comp (A.comp (annihilate i))) := by
-  let D := imaginaryTimeEvolveFree ε (-β)
-  let q : ℂ := Complex.exp ((β : ℂ) * (ε i : ℂ))
-  have hmove : D.comp (annihilate i) = q • ((annihilate i).comp D) := by
-    dsimp [D, q]
-    have h := imaginaryTimeEvolveFree_comp_annihilate ε (-β) i
-    have hexp : -((-β : ℝ) : ℂ) * (ε i : ℂ) = (β : ℂ) * (ε i : ℂ) := by
-      push_cast
-      ring
-    rwa [hexp] at h
-  calc
-    Common.tsumTrace (D.comp ((annihilate i).comp A)) =
-        Common.tsumTrace ((D.comp (annihilate i)).comp A) := by
-      rw [LinearMap.comp_assoc]
-    _ = Common.tsumTrace ((q • ((annihilate i).comp D)).comp A) := by rw [hmove]
-    _ = Common.tsumTrace (q • (((annihilate i).comp D).comp A)) := by
-      rw [LinearMap.smul_comp]
-    _ = q * Common.tsumTrace (((annihilate i).comp D).comp A) :=
-      Common.tsumTrace_smul q (((annihilate i).comp D).comp A)
-    _ = q * Common.tsumTrace ((annihilate i).comp (D.comp A)) := by
-      rw [LinearMap.comp_assoc]
-    _ = q * Common.tsumTrace ((D.comp A).comp (annihilate i)) := by
-      rw [tsumTrace_annihilate_comp]
-    _ = q * Common.tsumTrace (D.comp (A.comp (annihilate i))) := by
-      rw [LinearMap.comp_assoc]
-
-/-- Unnormalized KMS rotation of a creation operator through the free Gibbs weight. -/
-theorem freeGibbsTsum_create_rotate (ε : Mode → ℝ) (β : ℝ) (i : Mode)
-    (A : FockSpace Mode →ₗ[ℂ] FockSpace Mode) :
-    Common.tsumTrace
-        ((imaginaryTimeEvolveFree ε (-β)).comp ((create i).comp A)) =
-      Complex.exp (-(β : ℂ) * (ε i : ℂ)) *
-        Common.tsumTrace
-          ((imaginaryTimeEvolveFree ε (-β)).comp (A.comp (create i))) := by
-  let D := imaginaryTimeEvolveFree ε (-β)
-  let q : ℂ := Complex.exp (-(β : ℂ) * (ε i : ℂ))
-  have hmove : D.comp (create i) = q • ((create i).comp D) := by
-    dsimp [D, q]
-    have h := imaginaryTimeEvolveFree_comp_create ε (-β) i
-    have hexp : (((-β : ℝ) : ℂ) * (ε i : ℂ)) = -(β : ℂ) * (ε i : ℂ) := by
-      push_cast
-      ring
-    rwa [hexp] at h
-  calc
-    Common.tsumTrace (D.comp ((create i).comp A)) =
-        Common.tsumTrace ((D.comp (create i)).comp A) := by
-      rw [LinearMap.comp_assoc]
-    _ = Common.tsumTrace ((q • ((create i).comp D)).comp A) := by rw [hmove]
-    _ = Common.tsumTrace (q • (((create i).comp D).comp A)) := by
-      rw [LinearMap.smul_comp]
-    _ = q * Common.tsumTrace (((create i).comp D).comp A) :=
-      Common.tsumTrace_smul q (((create i).comp D).comp A)
-    _ = q * Common.tsumTrace ((create i).comp (D.comp A)) := by
-      rw [LinearMap.comp_assoc]
-    _ = q * Common.tsumTrace ((D.comp A).comp (create i)) := by
-      rw [tsumTrace_create_comp]
-    _ = q * Common.tsumTrace (D.comp (A.comp (create i))) := by
-      rw [LinearMap.comp_assoc]
-
-/-- Normalized free-Gibbs KMS rotation for annihilation. -/
-theorem freeGibbsExpectation_annihilate_rotate (ε : Mode → ℝ) (β : ℝ) (i : Mode)
-    (A : FockSpace Mode →ₗ[ℂ] FockSpace Mode) :
-    freeGibbsExpectation ε β ((annihilate i).comp A) =
-      Complex.exp ((β : ℂ) * (ε i : ℂ)) *
-        freeGibbsExpectation ε β (A.comp (annihilate i)) := by
-  unfold freeGibbsExpectation
-  rw [freeGibbsTsum_annihilate_rotate, mul_div_assoc]
-
-/-- Normalized free-Gibbs KMS rotation for creation. -/
-theorem freeGibbsExpectation_create_rotate (ε : Mode → ℝ) (β : ℝ) (i : Mode)
-    (A : FockSpace Mode →ₗ[ℂ] FockSpace Mode) :
-    freeGibbsExpectation ε β ((create i).comp A) =
-      Complex.exp (-(β : ℂ) * (ε i : ℂ)) *
-        freeGibbsExpectation ε β (A.comp (create i)) := by
-  unfold freeGibbsExpectation
-  rw [freeGibbsTsum_create_rotate, mul_div_assoc]
+private theorem tsumTrace_rotate_of_comp_eq_smul
+    (D C A : FockSpace Mode →ₗ[ℂ] FockSpace Mode) (q : ℂ)
+    (hmove : D.comp C = q • (C.comp D))
+    (hcyclic : Common.tsumTrace (C.comp (D.comp A)) =
+      Common.tsumTrace ((D.comp A).comp C)) :
+    Common.tsumTrace (D.comp (C.comp A)) =
+      q * Common.tsumTrace (D.comp (A.comp C)) := by
+  rw [← LinearMap.comp_assoc, hmove, LinearMap.smul_comp,
+    Common.tsumTrace_smul, LinearMap.comp_assoc, hcyclic, LinearMap.comp_assoc]
 
 /-- The KMS factor of a free thermal field. -/
 noncomputable def FreeThermalField.kmsFactor (ε : Mode → ℝ) (β : ℝ) :
@@ -122,11 +48,24 @@ theorem FreeThermalField.freeGibbsExpectation_operator_comp_rotate
     (A : FockSpace Mode →ₗ[ℂ] FockSpace Mode) :
     freeGibbsExpectation ε β (C.operator.comp A) =
       C.kmsFactor ε β * freeGibbsExpectation ε β (A.comp C.operator) := by
-  cases C with
-  | annihilate i =>
-      exact freeGibbsExpectation_annihilate_rotate ε β i A
-  | create i =>
-      exact freeGibbsExpectation_create_rotate ε β i A
+  have hmove :
+      (imaginaryTimeEvolveFree ε (-β)).comp C.operator =
+        C.kmsFactor ε β • (C.operator.comp (imaginaryTimeEvolveFree ε (-β))) := by
+    cases C with
+    | annihilate i =>
+        simpa only [FreeThermalField.operator, FreeThermalField.kmsFactor,
+          Complex.ofReal_neg, neg_neg] using imaginaryTimeEvolveFree_comp_annihilate ε (-β) i
+    | create i =>
+        simpa only [FreeThermalField.operator, FreeThermalField.kmsFactor,
+          Complex.ofReal_neg] using imaginaryTimeEvolveFree_comp_create ε (-β) i
+  have hcyclic :
+      Common.tsumTrace (C.operator.comp ((imaginaryTimeEvolveFree ε (-β)).comp A)) =
+        Common.tsumTrace (((imaginaryTimeEvolveFree ε (-β)).comp A).comp C.operator) := by
+    cases C with
+    | annihilate i => exact tsumTrace_annihilate_comp i _
+    | create i => exact tsumTrace_create_comp i _
+  unfold freeGibbsExpectation
+  rw [tsumTrace_rotate_of_comp_eq_smul _ _ _ _ hmove hcyclic, mul_div_assoc]
 
 end
 end Bosonic
