@@ -2,7 +2,6 @@ import Mathlib.RingTheory.Idempotents
 import LeanCondensedMatter.Models.RashbaExchange.Operator
 import LeanCondensedMatter.Models.RashbaExchange.Model.Spectral
 import LeanCondensedMatter.Transport.Resolvent.Spectral
-import LeanCondensedMatter.Analysis.Operator.FiniteTrace
 
 set_option linter.style.header false
 
@@ -10,9 +9,9 @@ set_option linter.style.header false
 # Bounded-operator spectral resolvent of the Rashba-exchange model
 
 Gauge-free band projectors, their operator identities, and the finite-band spectral resolvent
-candidate depend only on clean `HamiltonianParameters`. The separate current-band block uses
-response `Parameters` for the signed charge. Away from the band degeneracy, the spectral
-candidate equals the canonical resolvent at every nonzero signed imaginary regulator.
+candidate depend only on clean `HamiltonianParameters`. Charge-current band blocks are
+owned by `Current`. Away from the band degeneracy, the spectral candidate equals the canonical
+resolvent at every nonzero signed imaginary regulator.
 -/
 
 namespace QuantumTheory.Models.RashbaExchange
@@ -27,15 +26,6 @@ noncomputable def bandProjectorOperator
     (params : HamiltonianParameters) (band : Band) (px py : ℝ) :
     EuclideanSpace ℂ (Fin 2) →L[ℂ] EuclideanSpace ℂ (Fin 2) :=
   matrixOperator (bandProjector params band px py)
-
-/-- Ordered current band block `Tr(P_target j_μ P_source j_ν)`. -/
-noncomputable def currentBandBlockTrace
-    (params : Parameters) (μ ν : Fin 2) (source target : Band) (px py : ℝ) : ℂ :=
-  finiteDimensionalOperatorTrace
-    (bandProjectorOperator params target px py *
-      currentBoundedOperator params μ px py *
-      bandProjectorOperator params source px py *
-      currentBoundedOperator params ν px py)
 
 /-- The bounded-operator projectors inherit the complete orthogonal family
 from the matrix realization under the algebra equivalence. -/
