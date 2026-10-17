@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Models.RashbaExchange.ResponseParameters
+import LeanCondensedMatter.Models.RashbaExchange.Model
 import Mathlib.Analysis.InnerProductSpace.PiL2
 import Mathlib.Analysis.CStarAlgebra.Matrix
 import Mathlib.Analysis.Matrix.Hermitian
@@ -9,9 +9,10 @@ set_option linter.style.header false
 /-!
 # Bounded-operator realization of the Rashba-exchange model
 
-This module lifts the Rashba Hamiltonian and velocity matrices to bounded operators using
-only clean `HamiltonianParameters`. The charge-current realization uses the extended response
-`Parameters`; finite-broadening Green resolvents stay in the separate `Green` module.
+The clean Rashba Hamiltonian and velocity matrices are lifted to bounded operators using
+only `HamiltonianParameters`. Their self-adjointness is proved here. Charge-current matrices
+and their bounded realizations are owned by `Current`; finite-broadening Green resolvents
+are defined in the separate `Green` module.
 -/
 
 namespace QuantumTheory.Models.RashbaExchange
@@ -34,37 +35,6 @@ noncomputable def velocityBoundedOperator
     (params : HamiltonianParameters) (direction : Fin 2) (px py : ℝ) :
     EuclideanSpace ℂ (Fin 2) →L[ℂ] EuclideanSpace ℂ (Fin 2) :=
   matrixOperator (velocityOperator params direction px py)
-
-/-- Charge-current matrix operator in the convention j_i = q v_i. -/
-def currentOperator (params : Parameters) (direction : Fin 2) (px py : ℝ) : InternalSpace.PauliMatrix :=
-  (((params.signedCharge : ℝ) : ℂ)) • velocityOperator params direction px py
-
-/-- Bounded charge-current operator consumed by response kernels. -/
-noncomputable def currentBoundedOperator
-    (params : Parameters) (direction : Fin 2) (px py : ℝ) :
-    EuclideanSpace ℂ (Fin 2) →L[ℂ] EuclideanSpace ℂ (Fin 2) :=
-  matrixOperator (currentOperator params direction px py)
-
-@[simp] theorem currentBoundedOperator_eq_charge_smul_velocity
-    (params : Parameters) (direction : Fin 2) (px py : ℝ) :
-    currentBoundedOperator params direction px py =
-      (((params.signedCharge : ℝ) : ℂ)) •
-        velocityBoundedOperator params direction px py := by
-  unfold currentBoundedOperator velocityBoundedOperator currentOperator matrixOperator
-  rw [map_smul]
-
-/-- When the Rashba coupling vanishes, each in-plane charge-current vertex is a scalar multiple of
-the identity. This is the operator-level degeneracy used by the Hall-response zero theorem. -/
-theorem currentBoundedOperator_rashba_zero
-    (params : Parameters) (direction : Fin 2) (px py : ℝ)
-    (hAlpha : params.rashbaVelocity = 0) :
-    currentBoundedOperator params direction px py =
-      (((params.signedCharge *
-        (if direction = 0 then px / params.effectiveMass else py / params.effectiveMass) : ℝ) : ℂ)) •
-        (1 : EuclideanSpace ℂ (Fin 2) →L[ℂ] EuclideanSpace ℂ (Fin 2)) := by
-  fin_cases direction <;>
-    simp [currentBoundedOperator, currentOperator, velocityOperator, matrixOperator, hAlpha,
-      smul_smul]
 
 /-- The explicit Rashba-exchange Hamiltonian matrix is Hermitian for real model parameters. -/
 theorem hamiltonian_isHermitian (params : HamiltonianParameters) (px py : ℝ) :
