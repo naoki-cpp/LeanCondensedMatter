@@ -42,14 +42,8 @@ private theorem IsTraceClass.summable_norm_inner_left_and_tsum_le_traceNorm
       _ = hT.traceNorm := hAnorm
   have hpoint (x : H) :
       inner ℂ (W x) (T x) = inner ℂ ((A * W) x) (B x) := by
-    calc
-      inner ℂ (W x) (T x) =
-          inner ℂ (W x) ((ContinuousLinearMap.adjoint A * B) x) := by rw [hfactor]
-      _ = inner ℂ (W x) ((ContinuousLinearMap.adjoint A) (B x)) := by
-        rw [mul_apply_eq_comp]
-      _ = inner ℂ (A (W x)) (B x) :=
-        ContinuousLinearMap.adjoint_inner_right A (W x) (B x)
-      _ = inner ℂ ((A * W) x) (B x) := by rw [mul_apply_eq_comp]
+    rw [← hfactor, mul_apply_eq_comp, mul_apply_eq_comp]
+    exact ContinuousLinearMap.adjoint_inner_right A (W x) (B x)
   have hnormSummable :
       Summable (fun i => ‖inner ℂ (W (d i)) (T (d i))‖) := by
     have hpair := hAW.summable_inner_apply hB d
@@ -150,15 +144,9 @@ private theorem traceNorm_comp_left_le_of_norm_le_one
       apply tsum_congr
       intro i
       apply congrArg norm
-      simp only [mul_apply_eq_comp]
-      calc
-        inner ℂ (U (d i)) (W (T (d i))) =
-            inner ℂ (U (d i))
-              ((ContinuousLinearMap.adjoint (ContinuousLinearMap.adjoint W)) (T (d i))) := by
-          rw [ContinuousLinearMap.adjoint_adjoint]
-        _ = inner ℂ ((ContinuousLinearMap.adjoint W) (U (d i))) (T (d i)) :=
-          ContinuousLinearMap.adjoint_inner_right
-            (ContinuousLinearMap.adjoint W) (U (d i)) (T (d i))
+      simpa only [mul_apply_eq_comp, ContinuousLinearMap.adjoint_adjoint] using
+        (ContinuousLinearMap.adjoint_inner_right
+          (ContinuousLinearMap.adjoint W) (U (d i)) (T (d i)))
     _ ≤ hT.traceNorm := hpair.2
 
 /-- Left multiplication by a bounded operator scales the trace norm by at most its
@@ -208,9 +196,7 @@ theorem traceNorm_comp_right_le
   have hprodAdj :
       ContinuousLinearMap.adjoint (T * W) =
         ContinuousLinearMap.adjoint W * ContinuousLinearMap.adjoint T := by
-    rw [show ContinuousLinearMap.adjoint (T * W) = star (T * W) from
-      (ContinuousLinearMap.star_eq_adjoint (T * W)).symm]
-    rw [star_mul, ContinuousLinearMap.star_eq_adjoint, ContinuousLinearMap.star_eq_adjoint]
+    simp only [← ContinuousLinearMap.star_eq_adjoint, star_mul]
   have hleft :=
     hT.adjoint.traceNorm_comp_left_le (ContinuousLinearMap.adjoint W)
   calc
