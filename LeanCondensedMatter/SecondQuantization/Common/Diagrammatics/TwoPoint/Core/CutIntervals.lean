@@ -452,8 +452,8 @@ theorem TwoPointDiagram.intervalFacingLeg_partner
   classical
   unfold TwoPointDiagram.intervalFacingLeg
   rcases hends with ⟨hin, hout⟩ | ⟨hin, hout⟩
-  · simp only [if_pos hin, if_neg hout, d.pairing.partner_involutive]
-  · simp only [if_neg hout, if_pos hin, d.pairing.partner_involutive]
+  · simp [hin, hout]
+  · simp [hin, hout]
 
 /-- A leg of a boundary propagator belonging to the interval is necessarily
 the canonical interval-facing representative. -/
