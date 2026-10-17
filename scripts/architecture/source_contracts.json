@@ -584,6 +584,7 @@
         "LeanCondensedMatter.Models.RashbaExchange.Model.Interband",
         "LeanCondensedMatter.Models.RashbaExchange.Model.OperatorSpectral",
         "LeanCondensedMatter.Models.RashbaExchange.Operator",
+        "LeanCondensedMatter.Models.RashbaExchange.Current",
         "LeanCondensedMatter.Models.RashbaExchange.Green",
         "LeanCondensedMatter.Models.RashbaExchange.Response",
         "LeanCondensedMatter.Models.RashbaExchange.Bastin.Berry"

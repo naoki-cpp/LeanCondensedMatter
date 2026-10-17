@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Models.RashbaExchange.Model.OperatorSpectral
+import LeanCondensedMatter.Models.RashbaExchange.Current
 import LeanCondensedMatter.Models.RashbaExchange.Model.Interband
 import LeanCondensedMatter.Transport.Streda.TraceKernel
 
