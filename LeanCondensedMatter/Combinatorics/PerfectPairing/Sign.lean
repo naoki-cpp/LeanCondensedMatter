@@ -228,20 +228,6 @@ private theorem blockPair_pairPerm (pairing : Pairing n) (k : Fin n) :
     pairing.pairEndpoint (pairing.pairIndexEquiv k, 1)) = _
   rw [pairing.pairEndpoint_zero, pairing.pairEndpoint_one]
 
-private theorem sum_univ_eq_sum_Ioi_add_sum_Iio {m : ℕ} (k : Fin m) (f : Fin m → ℕ)
-    (hk : f k = 0) :
-    ∑ l : Fin m, f l = ∑ l ∈ Finset.Ioi k, f l + ∑ l ∈ Finset.Iio k, f l := by
-  classical
-  have hpartition :
-      (Finset.Ioi k).disjUnion (Finset.Iio k) (Finset.disjoint_Ioi_Iio k) =
-        (Finset.univ.erase k) := by
-    simpa only [Finset.compl_singleton] using (Finset.Ioi_disjUnion_Iio k)
-  calc
-    (∑ l : Fin m, f l) = (∑ l ∈ Finset.univ.erase k, f l) + f k := by
-      exact (Finset.sum_erase_add Finset.univ f (Finset.mem_univ k)).symm
-    _ = (∑ l ∈ Finset.Ioi k, f l) + (∑ l ∈ Finset.Iio k, f l) := by
-      rw [← hpartition, Finset.sum_disjUnion, hk, add_zero]
-
 private noncomputable def crossIndicator (pairing : Pairing n) (e : Fin n ≃ pairing.NormalizedPair)
     (k l : Fin n) : ℕ :=
   if Crosses (e k).1 (e l).1 then 1 else 0
@@ -269,8 +255,10 @@ private theorem crossingCount_eq_sum_Ioi_crossIndicator (pairing : Pairing n)
     (∑ k : Fin n, ∑ l : Fin n, crossIndicator pairing e k l) =
         ∑ k : Fin n, (∑ l ∈ Finset.Ioi k, crossIndicator pairing e k l +
           ∑ l ∈ Finset.Iio k, crossIndicator pairing e k l) :=
-      Finset.sum_congr rfl fun k _ =>
-        sum_univ_eq_sum_Ioi_add_sum_Iio k (crossIndicator pairing e k) (hdiag k)
+      Finset.sum_congr rfl fun k _ => by
+        rw [← Finset.sum_erase_add Finset.univ (crossIndicator pairing e k)
+          (Finset.mem_univ k), hdiag k, add_zero,
+          ← Finset.compl_singleton, ← Finset.Ioi_disjUnion_Iio, Finset.sum_disjUnion]
     _ = (∑ k : Fin n, ∑ l ∈ Finset.Ioi k, crossIndicator pairing e k l) +
           ∑ k : Fin n, ∑ l ∈ Finset.Iio k, crossIndicator pairing e k l :=
       Finset.sum_add_distrib
