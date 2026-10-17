@@ -97,9 +97,10 @@ private theorem integral_complex_cos_sq_sub_sin_sq_zero_two_pi :
       (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi), Real.cos θ ^ 2 - Real.sin θ ^ 2) = 0 := by
     rw [integral_cos_sq_sub_sin_sq]
     simp
-  simpa only [hreal, Complex.ofReal_zero, Complex.ofReal_sub, Complex.ofReal_pow] using
+  simpa only [Complex.ofReal_zero, Complex.ofReal_sub, Complex.ofReal_pow] using
     (@intervalIntegral.integral_ofReal (0 : ℝ) (2 * Real.pi) volume
-      (fun θ : ℝ => Real.cos θ ^ 2 - Real.sin θ ^ 2))
+      (fun θ : ℝ => Real.cos θ ^ 2 - Real.sin θ ^ 2)).trans
+        (congrArg (fun x : ℝ => (x : ℂ)) hreal)
 
 /-- The complexified mixed second harmonic integrates to zero over a full polar angle. -/
 private theorem integral_complex_cos_mul_sin_zero_two_pi :
@@ -109,9 +110,10 @@ private theorem integral_complex_cos_mul_sin_zero_two_pi :
       (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi), Real.sin θ * Real.cos θ) = 0 := by
     simpa using
       (integral_sin_pow_mul_cos_pow_odd (a := (0 : ℝ)) (b := 2 * Real.pi) 1 0)
-  simpa only [hreal, Complex.ofReal_zero, Complex.ofReal_mul, mul_comm] using
+  simpa only [Complex.ofReal_zero, Complex.ofReal_mul, mul_comm] using
     (@intervalIntegral.integral_ofReal (0 : ℝ) (2 * Real.pi) volume
-      (fun θ : ℝ => Real.sin θ * Real.cos θ))
+      (fun θ : ℝ => Real.sin θ * Real.cos θ)).trans
+        (congrArg (fun x : ℝ => (x : ℂ)) hreal)
 
 /-- Ordinary full-angle integration of the canonical constant/first/second harmonic decomposition.
 All nonconstant channels vanish. -/
