@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Analysis.Operator.SchwartzKinetic1D
+import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.SchwartzSchrodinger1D
 import LeanCondensedMatter.QuantumMechanics.SingleParticle.SymmetrizedVelocityCurrent
 
 set_option linter.style.header false
@@ -44,10 +44,10 @@ Schrödinger localization transport. -/
 theorem schwartzVelocityLocalizationFlux_eq_comp1D
     (ℏ κ : ℝ) (potential : SchwartzOneParticle1D) :
     (heisenbergLocalizationFunctional SchwartzOneParticle1D ℏ
-        (SchwartzKinetic1D.schrodingerOperator κ potential)
+        (SchwartzSchrodinger1D.schrodingerOperator κ potential)
         SchwartzKinetic1D.multiplicationLinear) =
       (velocityLocalizationFlux SchwartzOneParticle1D
-        (SchwartzKinetic1D.velocityOperator ℏ κ)
+        (SchwartzSchrodinger1D.velocityOperator ℏ κ)
         SchwartzKinetic1D.multiplicationLinear).comp SchwartzKinetic1D.derivative := by
   apply LinearMap.ext
   intro f
@@ -57,7 +57,7 @@ theorem schwartzVelocityLocalizationFlux_eq_comp1D
   intro ψ
   have h := congrArg
     (fun T : SchwartzOneParticle1D →ₗ[ℂ] SchwartzOneParticle1D => T ψ)
-    (SchwartzKinetic1D.heisenberg_localization_eq_symmetrized_velocity ℏ κ potential f)
+    (SchwartzSchrodinger1D.heisenberg_localization_eq_symmetrized_velocity ℏ κ potential f)
   simpa [SchwartzKinetic1D.multiplicationLinear, heisenbergScale,
     LieRing.of_associative_ring_bracket, Module.End.mul_eq_comp,
     _root_.ConservationLaw.symmetrizedProduct_apply] using h
@@ -69,15 +69,15 @@ noncomputable def schwartzOperatorProbabilityCurrentRepresentation1D
     _root_.ConservationLaw.LocalCurrentDensityRepresentation
       SchwartzKinetic1D.derivative
       (heisenbergTransportFunctional SchwartzOneParticle1D ℏ
-        (SchwartzKinetic1D.schrodingerOperator κ potential)
+        (SchwartzSchrodinger1D.schrodingerOperator κ potential)
         SchwartzKinetic1D.multiplicationLinear LinearMap.id)
       (operatorLocalCurrentPairing SchwartzOneParticle1D
         SchwartzKinetic1D.multiplicationLinear) :=
   symmetrizedVelocityCurrentRepresentation SchwartzOneParticle1D ℏ
-    (SchwartzKinetic1D.schrodingerOperator κ potential)
+    (SchwartzSchrodinger1D.schrodingerOperator κ potential)
     SchwartzKinetic1D.multiplicationLinear
     LinearMap.id
-    (SchwartzKinetic1D.velocityOperator ℏ κ)
+    (SchwartzSchrodinger1D.velocityOperator ℏ κ)
     SchwartzKinetic1D.derivative
     SchwartzKinetic1D.multiplicationLinear
     (schwartzVelocityLocalizationFlux_eq_comp1D ℏ κ potential)
@@ -88,11 +88,11 @@ noncomputable def schwartzOperatorProbabilityCurrentRepresentation1D
 theorem schwartzOperatorProbabilityCurrentRepresentation1D_currentDensity
     (ℏ κ : ℝ) (potential : SchwartzOneParticle1D) :
     (schwartzOperatorProbabilityCurrentRepresentation1D ℏ κ potential).currentDensity =
-      SchwartzKinetic1D.velocityOperator ℏ κ := by
+      SchwartzSchrodinger1D.velocityOperator ℏ κ := by
   change symmetrizedVelocityCurrent SchwartzOneParticle1D
-      (SchwartzKinetic1D.velocityOperator ℏ κ) LinearMap.id = _
+      (SchwartzSchrodinger1D.velocityOperator ℏ κ) LinearMap.id = _
   exact symmetrizedVelocityCurrent_id SchwartzOneParticle1D
-    (SchwartzKinetic1D.velocityOperator ℏ κ)
+    (SchwartzSchrodinger1D.velocityOperator ℏ κ)
 
 /-- Charge transport (`m = q I`) on the Schwartz Schrödinger model is locally represented by
 `q v`. -/
@@ -101,15 +101,15 @@ noncomputable def schwartzOperatorChargeCurrentRepresentation1D
     _root_.ConservationLaw.LocalCurrentDensityRepresentation
       SchwartzKinetic1D.derivative
       (heisenbergTransportFunctional SchwartzOneParticle1D ℏ
-        (SchwartzKinetic1D.schrodingerOperator κ potential)
+        (SchwartzSchrodinger1D.schrodingerOperator κ potential)
         SchwartzKinetic1D.multiplicationLinear (q • LinearMap.id))
       (operatorLocalCurrentPairing SchwartzOneParticle1D
         SchwartzKinetic1D.multiplicationLinear) :=
   symmetrizedVelocityCurrentRepresentation SchwartzOneParticle1D ℏ
-    (SchwartzKinetic1D.schrodingerOperator κ potential)
+    (SchwartzSchrodinger1D.schrodingerOperator κ potential)
     SchwartzKinetic1D.multiplicationLinear
     (q • LinearMap.id)
-    (SchwartzKinetic1D.velocityOperator ℏ κ)
+    (SchwartzSchrodinger1D.velocityOperator ℏ κ)
     SchwartzKinetic1D.derivative
     SchwartzKinetic1D.multiplicationLinear
     (schwartzVelocityLocalizationFlux_eq_comp1D ℏ κ potential)
@@ -120,11 +120,11 @@ noncomputable def schwartzOperatorChargeCurrentRepresentation1D
 theorem schwartzOperatorChargeCurrentRepresentation1D_currentDensity
     (q : ℂ) (ℏ κ : ℝ) (potential : SchwartzOneParticle1D) :
     (schwartzOperatorChargeCurrentRepresentation1D q ℏ κ potential).currentDensity =
-      q • SchwartzKinetic1D.velocityOperator ℏ κ := by
+      q • SchwartzSchrodinger1D.velocityOperator ℏ κ := by
   change _root_.ConservationLaw.symmetrizedProduct
-      (SchwartzKinetic1D.velocityOperator ℏ κ) (q • LinearMap.id) = _
+      (SchwartzSchrodinger1D.velocityOperator ℏ κ) (q • LinearMap.id) = _
   exact _root_.ConservationLaw.symmetrizedProduct_smul_id
-    (SchwartzKinetic1D.velocityOperator ℏ κ) q
+    (SchwartzSchrodinger1D.velocityOperator ℏ κ) q
 
 end
 end Continuum
