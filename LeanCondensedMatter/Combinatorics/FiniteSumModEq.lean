@@ -6,6 +6,9 @@ public import Mathlib.Data.Finset.Prod
 public import Mathlib.Data.ZMod.Basic
 public import Mathlib.Tactic.Ring
 
+-- Used only to rewrite casts of finite sums in proofs; not part of this module's public API.
+import Mathlib.Algebra.BigOperators.Ring.Finset
+
 public section
 
 set_option linter.style.header false
