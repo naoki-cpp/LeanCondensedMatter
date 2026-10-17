@@ -4739,6 +4739,7 @@
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Bosonic/Thermal/BlochDeDominicis/ConcreteMixedTwoPoint.lean",
       "imports": [
         "LeanCondensedMatter.Analysis.Exponential",
+        "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.FreeKMSRotation",
         "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.NormalizedTwoPoint",
         "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.OrderedProductSummable"
       ],
@@ -5668,6 +5669,15 @@
       "externalImportCount": 0
     },
     {
+      "name": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.IntervalPairing",
+      "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Diagrammatics/TwoPoint/Core/IntervalPairing.lean",
+      "imports": [
+        "LeanCondensedMatter.Combinatorics.PerfectPairing.Restriction",
+        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.IntervalBlock"
+      ],
+      "externalImportCount": 0
+    },
+    {
       "name": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.OneParticleIrreducible",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Diagrammatics/TwoPoint/Core/OneParticleIrreducible.lean",
       "imports": [
@@ -5884,6 +5894,7 @@
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.CutSides",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.Diagram",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.IntervalBlock",
+        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.IntervalPairing",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.OneParticleIrreducible",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.SeparatingPaths",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.SlotCongr",
@@ -8237,7 +8248,7 @@
         "LeanCondensedMatter.Transport.Analysis.ContinuumMeasure",
         "LeanCondensedMatter.Transport.Analysis.FourierGeometry"
       ],
-      "externalImportCount": 5
+      "externalImportCount": 7
     },
     {
       "name": "LeanCondensedMatter.Transport.Analysis.RelaxationTime",
