@@ -1,6 +1,10 @@
-import Mathlib.Algebra.Ring.Defs
-import Mathlib.Data.Nat.Basic
-import Mathlib.Tactic.Conv
+module
+
+public import Mathlib.Algebra.Ring.Defs
+public import Mathlib.Data.Nat.Basic
+public import Mathlib.Tactic.Conv
+
+public section
 
 set_option linter.style.header false
 

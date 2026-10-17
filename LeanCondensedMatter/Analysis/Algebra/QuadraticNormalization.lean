@@ -1,5 +1,9 @@
-import Mathlib.Tactic.FieldSimp
-import Mathlib.Algebra.Algebra.Basic
+module
+
+public import Mathlib.Tactic.FieldSimp
+public import Mathlib.Algebra.Algebra.Basic
+
+public section
 
 set_option linter.style.header false
 

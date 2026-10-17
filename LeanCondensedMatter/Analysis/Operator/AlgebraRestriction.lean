@@ -1,6 +1,10 @@
-import Mathlib.Algebra.Algebra.Equiv
-import Mathlib.Algebra.Algebra.Subalgebra.Basic
-import Mathlib.Algebra.Module.Submodule.LinearMap
+module
+
+public import Mathlib.Algebra.Algebra.Equiv
+public import Mathlib.Algebra.Algebra.Subalgebra.Basic
+public import Mathlib.Algebra.Module.Submodule.LinearMap
+
+public section
 
 set_option linter.style.header false
 
@@ -16,7 +20,7 @@ namespace Subalgebra
 variable {R V : Type*} [CommSemiring R] [AddCommMonoid V] [Module R V]
 
 /-- The action of an endomorphism subalgebra on a submodule it preserves. -/
-def restrictEnd (S : Subalgebra R (Module.End R V)) (p : Submodule R V)
+@[expose] def restrictEnd (S : Subalgebra R (Module.End R V)) (p : Submodule R V)
     (hS : ∀ A ∈ S, ∀ x ∈ p, A x ∈ p) : S →ₐ[R] Module.End R p where
   toFun A := A.val.restrict (hS A.val A.property)
   map_one' := by apply LinearMap.ext; intro x; apply Subtype.ext; rfl
