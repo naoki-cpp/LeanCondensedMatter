@@ -23,6 +23,8 @@ the gauge-independent band projectors are
 P_s = 1/2 (I + s d·σ / E).
 ```
 
+The spin Hamiltonian, projectors and their spectral identities require only the clean
+`HamiltonianParameters`; response and regularization parameters are not used here.
 All projector identities that require separated bands are stated under `E ≠ 0`.
 -/
 
@@ -31,12 +33,12 @@ namespace QuantumTheory.Models.RashbaExchange
 noncomputable section
 
 /-- The traceless spin-orbit/exchange part `d·σ` of the Hamiltonian. -/
-def spinHamiltonian (params : Parameters) (px py : ℝ) : InternalSpace.PauliMatrix :=
+def spinHamiltonian (params : HamiltonianParameters) (px py : ℝ) : InternalSpace.PauliMatrix :=
   InternalSpace.pauliCombination (rashbaPauliCoefficients params px py)
 
 /-- The model Hamiltonian is a scalar kinetic shift plus the traceless spin Hamiltonian. -/
 theorem hamiltonian_eq_kinetic_add_spinHamiltonian
-    (params : Parameters) (px py : ℝ) :
+    (params : HamiltonianParameters) (px py : ℝ) :
     hamiltonian params px py =
       (((kineticEnergy params px py : ℝ) : ℂ)) • (1 : InternalSpace.PauliMatrix) +
         spinHamiltonian params px py := by
@@ -44,7 +46,7 @@ theorem hamiltonian_eq_kinetic_add_spinHamiltonian
 
 /-- The Pauli-vector quadratic invariant is exactly the squared spin-orbit energy. -/
 theorem rashbaPauliCoefficients_dot_self
-    (params : Parameters) (px py : ℝ) :
+    (params : HamiltonianParameters) (px py : ℝ) :
     dotProduct (rashbaPauliCoefficients params px py)
         (rashbaPauliCoefficients params px py) =
       ((spinOrbitEnergySq params px py : ℝ) : ℂ) := by
@@ -53,14 +55,14 @@ theorem rashbaPauliCoefficients_dot_self
   ring
 
 /-- Squaring the positive spin-orbit energy recovers its defining polynomial. -/
-theorem spinOrbitEnergy_sq (params : Parameters) (px py : ℝ) :
+theorem spinOrbitEnergy_sq (params : HamiltonianParameters) (px py : ℝ) :
     spinOrbitEnergy params px py ^ 2 = spinOrbitEnergySq params px py := by
   exact Real.sq_sqrt (by
     unfold spinOrbitEnergySq
     positivity)
 
 /-- The traceless spin Hamiltonian squares to `E² I`. -/
-theorem spinHamiltonian_mul_self (params : Parameters) (px py : ℝ) :
+theorem spinHamiltonian_mul_self (params : HamiltonianParameters) (px py : ℝ) :
     spinHamiltonian params px py * spinHamiltonian params px py =
       ((spinOrbitEnergySq params px py : ℝ) : ℂ) •
         (1 : InternalSpace.PauliMatrix) := by
@@ -69,7 +71,7 @@ theorem spinHamiltonian_mul_self (params : Parameters) (px py : ℝ) :
     rashbaPauliCoefficients_dot_self]
 
 /-- Gauge-independent projector onto one Rashba-exchange band. -/
-def bandProjector (params : Parameters) (band : Band) (px py : ℝ) :
+def bandProjector (params : HamiltonianParameters) (band : Band) (px py : ℝ) :
     InternalSpace.PauliMatrix :=
   (1 / 2 : ℂ) •
     ((1 : InternalSpace.PauliMatrix) +
@@ -78,7 +80,7 @@ def bandProjector (params : Parameters) (band : Band) (px py : ℝ) :
 
 /-- Pauli/Bloch form of the band projector. -/
 theorem bandProjector_eq_pauliCombination
-    (params : Parameters) (band : Band) (px py : ℝ) :
+    (params : HamiltonianParameters) (band : Band) (px py : ℝ) :
     bandProjector params band px py =
       (1 / 2 : ℂ) •
         ((1 : InternalSpace.PauliMatrix) +
@@ -90,19 +92,19 @@ theorem bandProjector_eq_pauliCombination
 
 /-- Every band projector has trace one. -/
 @[simp] theorem trace_bandProjector
-    (params : Parameters) (band : Band) (px py : ℝ) :
+    (params : HamiltonianParameters) (band : Band) (px py : ℝ) :
     Matrix.trace (bandProjector params band px py) = 1 := by
   rw [bandProjector_eq_pauliCombination, Matrix.trace_smul, Matrix.trace_add,
     InternalSpace.trace_pauliCombination]
   norm_num [Matrix.trace]
 
 private noncomputable def normalizedSpinHamiltonian
-    (params : Parameters) (px py : ℝ) : InternalSpace.PauliMatrix :=
+    (params : HamiltonianParameters) (px py : ℝ) : InternalSpace.PauliMatrix :=
   (((spinOrbitEnergy params px py : ℝ) : ℂ)⁻¹) •
     spinHamiltonian params px py
 
 private theorem normalizedSpinHamiltonian_mul_self
-    (params : Parameters) (px py : ℝ)
+    (params : HamiltonianParameters) (px py : ℝ)
     (hE : spinOrbitEnergy params px py ≠ 0) :
     normalizedSpinHamiltonian params px py *
         normalizedSpinHamiltonian params px py = 1 := by
@@ -117,7 +119,7 @@ private theorem normalizedSpinHamiltonian_mul_self
   rw [spinHamiltonian_mul_self, hEnergySq]
 
 private theorem spinHamiltonian_eq_energy_smul_normalized
-    (params : Parameters) (px py : ℝ)
+    (params : HamiltonianParameters) (px py : ℝ)
     (hE : spinOrbitEnergy params px py ≠ 0) :
     spinHamiltonian params px py =
       (((spinOrbitEnergy params px py : ℝ) : ℂ)) •
@@ -129,7 +131,7 @@ private theorem spinHamiltonian_eq_energy_smul_normalized
   simp [hEc]
 
 private theorem bandProjector_eq_normalized
-    (params : Parameters) (band : Band) (px py : ℝ) :
+    (params : HamiltonianParameters) (band : Band) (px py : ℝ) :
     bandProjector params band px py =
       (1 / 2 : ℂ) •
         ((1 : InternalSpace.PauliMatrix) +
@@ -138,7 +140,7 @@ private theorem bandProjector_eq_normalized
 
 /-- The two band projectors resolve the identity, including at the totalized `E = 0` value. -/
 theorem sum_bandProjector_eq_one
-    (params : Parameters) (px py : ℝ) :
+    (params : HamiltonianParameters) (px py : ℝ) :
     ∑ band : Band, bandProjector params band px py = 1 := by
   simp only [sum_band]
   rw [bandProjector_eq_normalized, bandProjector_eq_normalized]
@@ -148,7 +150,7 @@ theorem sum_bandProjector_eq_one
 
 /-- Either projector plus its opposite-band partner resolves the identity. -/
 theorem bandProjector_add_oppositeBand
-    (params : Parameters) (band : Band) (px py : ℝ) :
+    (params : HamiltonianParameters) (band : Band) (px py : ℝ) :
     bandProjector params band px py +
         bandProjector params (oppositeBand band) px py = 1 := by
   cases band
@@ -159,7 +161,7 @@ theorem bandProjector_add_oppositeBand
 
 /-- Away from the degeneracy, the two band energies are distinct. -/
 theorem bandEnergy_injective
-    (params : Parameters) (px py : ℝ)
+    (params : HamiltonianParameters) (px py : ℝ)
     (hE : spinOrbitEnergy params px py ≠ 0) :
     Function.Injective (fun band : Band => bandEnergy params band px py) := by
   intro a b hab
@@ -178,7 +180,7 @@ theorem bandEnergy_injective
 /-- Away from the degeneracy, the Hamiltonian acts on `P_s` with the corresponding shifted band
 energy `ε₀+sE`. -/
 theorem hamiltonian_mul_bandProjector
-    (params : Parameters) (band : Band) (px py : ℝ)
+    (params : HamiltonianParameters) (band : Band) (px py : ℝ)
     (hE : spinOrbitEnergy params px py ≠ 0) :
     hamiltonian params px py * bandProjector params band px py =
       (((bandEnergy params band px py : ℝ) : ℂ)) •
@@ -212,7 +214,7 @@ theorem hamiltonian_mul_bandProjector
 /-- Away from the spin-orbit degeneracy, the matrix band projectors are
 a complete orthogonal family. Completeness alone remains valid at zero energy. -/
 theorem bandProjector_completeOrthogonalIdempotents
-    (params : Parameters) (px py : ℝ)
+    (params : HamiltonianParameters) (px py : ℝ)
     (hE : spinOrbitEnergy params px py ≠ 0) :
     CompleteOrthogonalIdempotents
       (fun band : Band => bandProjector params band px py) := by
