@@ -57,7 +57,7 @@ variable {Mode : Type*} [Fintype Mode] [DecidableEq Mode]
 
 /-- The canonical normalized free-boson pair kernel.
 
-The `annihilate/create` entry is the two-point value proved in `NormalizedTwoPoint`.  The reverse
+The `annihilate/create` entry is the two-point value proved in `ConcreteMixedTwoPoint`. The reverse
 entry is its KMS-rotated Bose occupation value.  Equal-type entries vanish. -/
 def freeThermalPairValue (ε : Mode → ℝ) (β : ℝ) :
     FreeThermalField Mode → FreeThermalField Mode → ℂ

@@ -1,6 +1,7 @@
 import LeanCondensedMatter.Analysis.Exponential
 import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.FreeKMSRotation
-import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.NormalizedTwoPoint
+import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.TwoPoint
+import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.ConvergenceAwareGibbs
 import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.OrderedProductSummable
 
 set_option linter.style.header false
@@ -32,16 +33,24 @@ theorem freeGibbsExpectation_annihilate_comp_create_concrete
     (ε : Mode → ℝ) (β : ℝ) (hpos : ∀ k, 0 < β * ε k) (i j : Mode) :
     freeGibbsExpectation ε β ((annihilate i).comp (create j)) =
       if i = j then (1 - Complex.exp (((-(ε i) * β : ℝ) : ℂ)))⁻¹ else 0 := by
-  have hSumm : freeGibbsSummable ε β ((annihilate i).comp (create j)) := by
-    simpa [FreeThermalField.orderedProduct, FreeThermalField.operator,
-      Module.End.mul_eq_comp] using
-      (FreeThermalField.freeGibbsSummable_orderedProduct ε β hpos
-        [.annihilate i, .create j])
   have hden : 1 - Complex.exp (((-(ε i) * β : ℝ) : ℂ)) ≠ 0 :=
     sub_ne_zero.mpr (Ne.symm (Complex.exp_ne_one_of_re_ne_zero (by
       change -(ε i) * β ≠ 0
       nlinarith [hpos i])))
-  rw [freeGibbsExpectation_annihilate_comp_create_eq ε β hpos i j hSumm hden]
+  have hvalue :
+      freeGibbsExpectation ε β ((annihilate i).comp (create j)) =
+        (if i = j then (1 : ℂ) else 0) /
+          (1 - Complex.exp ((-(ε i) * β : ℝ) : ℂ)) := by
+    apply (eq_div_iff hden).2
+    rw [mul_comm]
+    have htrace :=
+      tsumTrace_imaginaryTimeEvolveFree_comp_annihilate_comp_create ε β hpos i j
+    have hZ := freeGibbsPartition_ne_zero ε β hpos
+    unfold freeGibbsExpectation
+    rw [← mul_div_assoc]
+    apply (div_eq_iff hZ).2
+    simpa [freeGibbsPartition] using htrace
+  rw [hvalue]
   by_cases hij : i = j <;> simp [hij]
 
 /-- Concrete KMS-rotated creation/annihilation contraction. -/

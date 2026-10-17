@@ -1,6 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.LadderTraceCyclicity
 import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.TwoPoint
-import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.NormalizedTwoPoint
 import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.ConcreteMixedTwoPoint
 import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.FreeThermalField
 import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.ConcretePairKernel
