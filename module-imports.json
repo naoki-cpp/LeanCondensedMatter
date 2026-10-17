@@ -2997,6 +2997,7 @@
       "name": "LeanCondensedMatter.Models.RashbaExchange.Bastin.Berry",
       "sourceFile": "LeanCondensedMatter/Models/RashbaExchange/Bastin/Berry.lean",
       "imports": [
+        "LeanCondensedMatter.Models.RashbaExchange.Current",
         "LeanCondensedMatter.Models.RashbaExchange.Model.Interband",
         "LeanCondensedMatter.Models.RashbaExchange.Model.OperatorSpectral",
         "LeanCondensedMatter.Transport.Streda.TraceKernel"
@@ -3004,10 +3005,21 @@
       "externalImportCount": 0
     },
     {
+      "name": "LeanCondensedMatter.Models.RashbaExchange.Current",
+      "sourceFile": "LeanCondensedMatter/Models/RashbaExchange/Current.lean",
+      "imports": [
+        "LeanCondensedMatter.Analysis.Operator.FiniteTrace",
+        "LeanCondensedMatter.Models.RashbaExchange.Model.OperatorSpectral",
+        "LeanCondensedMatter.Models.RashbaExchange.ResponseParameters"
+      ],
+      "externalImportCount": 1
+    },
+    {
       "name": "LeanCondensedMatter.Models.RashbaExchange.Green",
       "sourceFile": "LeanCondensedMatter/Models/RashbaExchange/Green.lean",
       "imports": [
         "LeanCondensedMatter.Models.RashbaExchange.Operator",
+        "LeanCondensedMatter.Models.RashbaExchange.ResponseParameters",
         "LeanCondensedMatter.Transport.Streda.RetardedAdvanced"
       ],
       "externalImportCount": 0
@@ -3024,7 +3036,6 @@
       "name": "LeanCondensedMatter.Models.RashbaExchange.Model.OperatorSpectral",
       "sourceFile": "LeanCondensedMatter/Models/RashbaExchange/Model/OperatorSpectral.lean",
       "imports": [
-        "LeanCondensedMatter.Analysis.Operator.FiniteTrace",
         "LeanCondensedMatter.Models.RashbaExchange.Model.Spectral",
         "LeanCondensedMatter.Models.RashbaExchange.Operator",
         "LeanCondensedMatter.Transport.Resolvent.Spectral"
@@ -3052,7 +3063,7 @@
       "name": "LeanCondensedMatter.Models.RashbaExchange.Operator",
       "sourceFile": "LeanCondensedMatter/Models/RashbaExchange/Operator.lean",
       "imports": [
-        "LeanCondensedMatter.Models.RashbaExchange.ResponseParameters"
+        "LeanCondensedMatter.Models.RashbaExchange.Model"
       ],
       "externalImportCount": 4
     },
@@ -3060,6 +3071,7 @@
       "name": "LeanCondensedMatter.Models.RashbaExchange.Response",
       "sourceFile": "LeanCondensedMatter/Models/RashbaExchange/Response.lean",
       "imports": [
+        "LeanCondensedMatter.Models.RashbaExchange.Current",
         "LeanCondensedMatter.Models.RashbaExchange.Green",
         "LeanCondensedMatter.Transport.Analysis.ContinuumMeasure",
         "LeanCondensedMatter.Transport.Core.ConductivityTensor",
@@ -3081,6 +3093,7 @@
       "sourceFile": "LeanCondensedMatter/Models/RashbaExchange.lean",
       "imports": [
         "LeanCondensedMatter.Models.RashbaExchange.Bastin.Berry",
+        "LeanCondensedMatter.Models.RashbaExchange.Current",
         "LeanCondensedMatter.Models.RashbaExchange.Green",
         "LeanCondensedMatter.Models.RashbaExchange.Model",
         "LeanCondensedMatter.Models.RashbaExchange.Model.Interband",
@@ -4755,8 +4768,10 @@
       "imports": [
         "LeanCondensedMatter.Analysis.Exponential",
         "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.FreeKMSRotation",
-        "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.NormalizedTwoPoint",
-        "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.OrderedProductSummable"
+        "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.OrderedProductSummable",
+        "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.TwoPoint",
+        "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.ConvergenceAwareGibbs",
+        "LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.GibbsExpectation.TwoPointTrace"
       ],
       "externalImportCount": 0
     },
@@ -4801,15 +4816,6 @@
       "externalImportCount": 2
     },
     {
-      "name": "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.NormalizedTwoPoint",
-      "sourceFile": "LeanCondensedMatter/SecondQuantization/Bosonic/Thermal/BlochDeDominicis/NormalizedTwoPoint.lean",
-      "imports": [
-        "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.TwoPoint",
-        "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.ConvergenceAwareGibbs"
-      ],
-      "externalImportCount": 0
-    },
-    {
       "name": "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.OperatorPeel",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Bosonic/Thermal/BlochDeDominicis/OperatorPeel.lean",
       "imports": [
@@ -4836,8 +4842,7 @@
         "LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.CCR",
         "LeanCondensedMatter.SecondQuantization.Bosonic.ImaginaryTime.ImaginaryTimeEvolution",
         "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.ParticleNumberWeightSummable",
-        "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.DiagonalEvolution",
-        "LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.Unnormalized.PeelFirstTrace"
+        "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.DiagonalEvolution"
       ],
       "externalImportCount": 0
     },
@@ -4852,7 +4857,6 @@
         "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.FreeFirstPair",
         "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.FreeKMSRotation",
         "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.FreePeelIndexed",
-        "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.NormalizedTwoPoint",
         "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.OperatorPeel",
         "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.OrderedProductSummable",
         "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.TwoPoint",
@@ -4894,6 +4898,7 @@
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Bosonic/Thermal/ConvergenceAwareGibbs.lean",
       "imports": [
         "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.TwoPoint",
+        "LeanCondensedMatter.SecondQuantization.Common.Algebra.DiagonalTrace",
         "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.DiagonalEvolution"
       ],
       "externalImportCount": 0
@@ -6001,7 +6006,7 @@
       "name": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.KMSRotation",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/ImaginaryTime/KMSRotation.lean",
       "imports": [
-        "LeanCondensedMatter.SecondQuantization.Common.Algebra.FiniteTrace",
+        "LeanCondensedMatter.SecondQuantization.Common.Algebra.DiagonalTrace",
         "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.DiagonalEvolution"
       ],
       "externalImportCount": 0
@@ -6274,8 +6279,16 @@
       "imports": [
         "LeanCondensedMatter.Analysis.ScalarExchange.Basic",
         "LeanCondensedMatter.SecondQuantization.Common.Algebra.ExchangeCommutator",
-        "LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.Unnormalized.PeelFirstTrace",
+        "LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.GibbsExpectation.TwoPointTrace",
         "LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsCoordinate"
+      ],
+      "externalImportCount": 0
+    },
+    {
+      "name": "LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.GibbsExpectation.TwoPointTrace",
+      "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Thermal/BlochDeDominicis/GibbsExpectation/TwoPointTrace.lean",
+      "imports": [
+        "LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.Unnormalized.PeelFirstTrace"
       ],
       "externalImportCount": 0
     },
