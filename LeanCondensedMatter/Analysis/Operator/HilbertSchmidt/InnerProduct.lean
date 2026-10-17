@@ -159,17 +159,11 @@ theorem innerHS_comp_right {ι : Type*} (d : HilbertBasis ι ℂ H)
   have hAdjTW :
       ContinuousLinearMap.adjoint (T * W) =
         ContinuousLinearMap.adjoint W * ContinuousLinearMap.adjoint T := by
-    rw [show ContinuousLinearMap.adjoint (T * W) = star (T * W) from
-      (ContinuousLinearMap.star_eq_adjoint (T * W)).symm]
-    rw [star_mul, ContinuousLinearMap.star_eq_adjoint, ContinuousLinearMap.star_eq_adjoint]
+    simp only [← ContinuousLinearMap.star_eq_adjoint, star_mul]
   have hAdjSW :
       ContinuousLinearMap.adjoint (S * ContinuousLinearMap.adjoint W) =
         W * ContinuousLinearMap.adjoint S := by
-    rw [show ContinuousLinearMap.adjoint (S * ContinuousLinearMap.adjoint W) =
-      star (S * ContinuousLinearMap.adjoint W) from
-      (ContinuousLinearMap.star_eq_adjoint (S * ContinuousLinearMap.adjoint W)).symm]
-    rw [star_mul, ContinuousLinearMap.star_eq_adjoint,
-      ContinuousLinearMap.adjoint_adjoint, ContinuousLinearMap.star_eq_adjoint]
+    simp only [← ContinuousLinearMap.star_eq_adjoint, star_mul, star_star]
   unfold innerHS
   calc
     (∑' i, (inner ℂ (S (d i)) ((T * W) (d i)) : ℂ)) =
