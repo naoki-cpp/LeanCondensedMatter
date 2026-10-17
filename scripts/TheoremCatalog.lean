@@ -627,7 +627,7 @@ private partial def presentationInstanceRoot (value : Expr) : MetaM (Option Stri
   | .mdata _ body | .proj _ _ body => presentationInstanceRoot body
   | .app .. =>
       let some name := value.getAppFn.constName? | return none
-      let some projection := Lean.getProjectionFnInfo? (← getEnv) name | return none
+      let some projection ← Lean.getProjectionFnInfo? name | return none
       let arguments := value.getAppArgs
       if arguments.size != projection.numParams + 1 then return none
       let some major := arguments[projection.numParams]? | return none
@@ -689,9 +689,9 @@ private def presentationTree (value : Expr) : MetaM Json :=
   (presentationExpression value).run' 128
 
 private def structuredStatement (name : Name) (info : ConstantInfo) : MetaM Json := do
-  forallTelescope info.type fun variables conclusion => do
+  forallTelescope info.type fun parameters conclusion => do
     let mut binders := #[]
-    for parameter in variables do
+    for parameter in parameters do
       let declaration ← parameter.fvarId!.getDecl
       let role ← if declaration.binderInfo == .instImplicit then pure "instance"
         else if ← isProp declaration.type then pure "assumption"
@@ -710,7 +710,7 @@ private def structuredStatement (name : Name) (info : ConstantInfo) : MetaM Json
         ("instanceRoots", .arr ((← presentationInstanceRoots declaration.type).map Json.str))]
     let mut fields := #[]
     if let some structureInfo := getStructureInfo? (← getEnv) name then
-      let structureType := mkAppN (mkConst name (info.levelParams.map Level.param)) variables
+      let structureType := mkAppN (mkConst name (info.levelParams.map Level.param)) parameters
       fields ← withLocalDeclD `self structureType fun self => do
         let mut result := #[]
         for fieldName in structureInfo.fieldNames do
