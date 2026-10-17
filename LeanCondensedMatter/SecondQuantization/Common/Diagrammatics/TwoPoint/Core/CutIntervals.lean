@@ -422,5 +422,201 @@ theorem TwoPointDiagram.intervalFacingLeg_mem_and_partner_not_mem
     · rw [d.pairing.partner_involutive cut]
       exact ⟨hin, hout⟩
 
+/-- The interval-facing representative of a propagator is always one of its
+two paired legs. -/
+theorem TwoPointDiagram.intervalFacingLeg_eq_cut_or_partner
+    (d : TwoPointDiagram ExternalLabel InternalLabel N S)
+    (earlier later cut : Fin (2 * (2 * S.card + 1))) :
+    d.intervalFacingLeg earlier later cut = cut ∨
+      d.intervalFacingLeg earlier later cut = d.pairing.partner cut := by
+  classical
+  unfold TwoPointDiagram.intervalFacingLeg
+  split_ifs
+  · exact Or.inl rfl
+  · exact Or.inr rfl
+
+/-- For a boundary propagator with exactly one endpoint in the interval,
+the facing leg is independent of which paired leg names that propagator. -/
+theorem TwoPointDiagram.intervalFacingLeg_partner
+    (d : TwoPointDiagram ExternalLabel InternalLabel N S)
+    (earlier later cut : Fin (2 * (2 * S.card + 1)))
+    (hends :
+      (twoPointVertexOfLeg cut ∈ d.verticesBetweenCuts earlier later ∧
+          twoPointVertexOfLeg (d.pairing.partner cut) ∉
+            d.verticesBetweenCuts earlier later) ∨
+        (twoPointVertexOfLeg (d.pairing.partner cut) ∈
+            d.verticesBetweenCuts earlier later ∧
+          twoPointVertexOfLeg cut ∉ d.verticesBetweenCuts earlier later)) :
+    d.intervalFacingLeg earlier later (d.pairing.partner cut) =
+      d.intervalFacingLeg earlier later cut := by
+  classical
+  unfold TwoPointDiagram.intervalFacingLeg
+  rcases hends with ⟨hin, hout⟩ | ⟨hin, hout⟩
+  · simp [hin, hout]
+  · simp [hin, hout]
+
+/-- A leg of a boundary propagator belonging to the interval is necessarily
+the canonical interval-facing representative. -/
+theorem TwoPointDiagram.intervalBoundaryLeg_eq_facing
+    (d : TwoPointDiagram ExternalLabel InternalLabel N S)
+    (earlier later cut leg : Fin (2 * (2 * S.card + 1)))
+    (hends :
+      (twoPointVertexOfLeg cut ∈ d.verticesBetweenCuts earlier later ∧
+          twoPointVertexOfLeg (d.pairing.partner cut) ∉
+            d.verticesBetweenCuts earlier later) ∨
+        (twoPointVertexOfLeg (d.pairing.partner cut) ∈
+            d.verticesBetweenCuts earlier later ∧
+          twoPointVertexOfLeg cut ∉ d.verticesBetweenCuts earlier later))
+    (hpair : leg = cut ∨ leg = d.pairing.partner cut)
+    (hmem : twoPointVertexOfLeg leg ∈ d.verticesBetweenCuts earlier later) :
+    leg = d.intervalFacingLeg earlier later cut := by
+  classical
+  rcases hpair with rfl | rfl
+  · simp [TwoPointDiagram.intervalFacingLeg, hmem]
+  · have hnot : twoPointVertexOfLeg cut ∉ d.verticesBetweenCuts earlier later := by
+      rcases hends with ⟨_, hout⟩ | ⟨_, hout⟩
+      · exact False.elim (hout hmem)
+      · exact hout
+    simp [TwoPointDiagram.intervalFacingLeg, hnot]
+
+/-- Every leg incident to the interval is either paired to another interior
+leg or is one of the two uniquely identified, interval-facing boundary legs.
+This is an exhaustive partition at the level of ambient flattened legs,
+before replacing the boundary propagators with new external legs. -/
+theorem TwoPointDiagram.mem_verticesBetweenCuts_iff_interior_or_boundary
+    (d : TwoPointDiagram ExternalLabel InternalLabel N S)
+    (earlier later leg : Fin (2 * (2 * S.card + 1)))
+    (hEarlier :
+      (twoPointVertexOfLeg earlier ∈ d.verticesBetweenCuts earlier later ∧
+          twoPointVertexOfLeg (d.pairing.partner earlier) ∉
+            d.verticesBetweenCuts earlier later) ∨
+        (twoPointVertexOfLeg (d.pairing.partner earlier) ∈
+            d.verticesBetweenCuts earlier later ∧
+          twoPointVertexOfLeg earlier ∉ d.verticesBetweenCuts earlier later))
+    (hLater :
+      (twoPointVertexOfLeg later ∈ d.verticesBetweenCuts earlier later ∧
+          twoPointVertexOfLeg (d.pairing.partner later) ∉
+            d.verticesBetweenCuts earlier later) ∨
+        (twoPointVertexOfLeg (d.pairing.partner later) ∈
+            d.verticesBetweenCuts earlier later ∧
+          twoPointVertexOfLeg later ∉ d.verticesBetweenCuts earlier later)) :
+    twoPointVertexOfLeg leg ∈ d.verticesBetweenCuts earlier later ↔
+      d.IsInteriorLeg earlier later leg ∨
+        leg = d.intervalFacingLeg earlier later earlier ∨
+        leg = d.intervalFacingLeg earlier later later := by
+  classical
+  constructor
+  · intro hmem
+    by_cases he : leg = earlier
+    · exact Or.inr (Or.inl
+        (d.intervalBoundaryLeg_eq_facing earlier later earlier leg hEarlier
+          (Or.inl he) hmem))
+    by_cases hpe : d.pairing.partner leg = earlier
+    · have hleg : leg = d.pairing.partner earlier := by
+        calc
+          leg = d.pairing.partner (d.pairing.partner leg) :=
+            (d.pairing.partner_involutive leg).symm
+          _ = d.pairing.partner earlier := congrArg d.pairing.partner hpe
+      exact Or.inr (Or.inl
+        (d.intervalBoundaryLeg_eq_facing earlier later earlier leg hEarlier
+          (Or.inr hleg) hmem))
+    by_cases hl : leg = later
+    · exact Or.inr (Or.inr
+        (d.intervalBoundaryLeg_eq_facing earlier later later leg hLater
+          (Or.inl hl) hmem))
+    by_cases hpl : d.pairing.partner leg = later
+    · have hleg : leg = d.pairing.partner later := by
+        calc
+          leg = d.pairing.partner (d.pairing.partner leg) :=
+            (d.pairing.partner_involutive leg).symm
+          _ = d.pairing.partner later := congrArg d.pairing.partner hpl
+      exact Or.inr (Or.inr
+        (d.intervalBoundaryLeg_eq_facing earlier later later leg hLater
+          (Or.inr hleg) hmem))
+    exact Or.inl ⟨hmem, he, hpe, hl, hpl⟩
+  · rintro (hinterior | hleft | hright)
+    · exact hinterior.1
+    · rw [hleft]
+      exact (d.intervalFacingLeg_mem_and_partner_not_mem earlier later earlier hEarlier).1
+    · rw [hright]
+      exact (d.intervalFacingLeg_mem_and_partner_not_mem earlier later later hLater).1
+
+/-- Facing legs for different paired boundary propagators are different.
+Unlike comparing raw cut legs, this also covers either representative of
+each cut. -/
+theorem TwoPointDiagram.intervalFacingLeg_ne_of_pair_ne
+    (d : TwoPointDiagram ExternalLabel InternalLabel N S)
+    (earlier later : Fin (2 * (2 * S.card + 1)))
+    (hne : earlier ≠ later)
+    (hpne : d.pairing.partner earlier ≠ later) :
+    d.intervalFacingLeg earlier later earlier ≠
+      d.intervalFacingLeg earlier later later := by
+  intro h
+  rcases d.intervalFacingLeg_eq_cut_or_partner earlier later earlier with ha | ha
+  · rcases d.intervalFacingLeg_eq_cut_or_partner earlier later later with hb | hb
+    · exact hne (ha.symm.trans (h.trans hb))
+    · have h' : earlier = d.pairing.partner later :=
+        ha.symm.trans (h.trans hb)
+      apply hpne
+      exact (congrArg d.pairing.partner h').trans
+        (d.pairing.partner_involutive later)
+  · rcases d.intervalFacingLeg_eq_cut_or_partner earlier later later with hb | hb
+    · exact hpne (ha.symm.trans (h.trans hb))
+    · exact hne (d.pairing.partner.injective (ha.symm.trans (h.trans hb)))
+
+/-- Interior legs cannot coincide with either boundary-facing representative.
+This is the disjointness complement to the exhaustive interval-leg classification. -/
+theorem TwoPointDiagram.isInteriorLeg_ne_intervalFacingLeg
+    (d : TwoPointDiagram ExternalLabel InternalLabel N S)
+    (earlier later cut leg : Fin (2 * (2 * S.card + 1)))
+    (hcut : cut = earlier ∨ cut = later)
+    (hinterior : d.IsInteriorLeg earlier later leg) :
+    leg ≠ d.intervalFacingLeg earlier later cut := by
+  intro heq
+  rcases hinterior with ⟨_, he, hpe, hl, hpl⟩
+  rcases d.intervalFacingLeg_eq_cut_or_partner earlier later cut with hf | hf
+  · rcases hcut with rfl | rfl
+    · exact he (heq.trans hf)
+    · exact hl (heq.trans hf)
+  · have hp : d.pairing.partner leg = cut := by
+      rw [heq, hf, d.pairing.partner_involutive cut]
+    rcases hcut with rfl | rfl
+    · exact hpe hp
+    · exact hpl hp
+
+open Classical in
+/-- The legs incident to a cut interval split as a disjoint union of all
+uncut interior legs and the two facing boundary legs. This finite-set
+identity is the domain decomposition needed to insert replacement external
+legs and transport the pairing to a standard two-point leg space. -/
+theorem TwoPointDiagram.intervalIncidentLegs_eq_interior_union_boundary
+    (d : TwoPointDiagram ExternalLabel InternalLabel N S)
+    (earlier later : Fin (2 * (2 * S.card + 1)))
+    (hEarlier :
+      (twoPointVertexOfLeg earlier ∈ d.verticesBetweenCuts earlier later ∧
+          twoPointVertexOfLeg (d.pairing.partner earlier) ∉
+            d.verticesBetweenCuts earlier later) ∨
+        (twoPointVertexOfLeg (d.pairing.partner earlier) ∈
+            d.verticesBetweenCuts earlier later ∧
+          twoPointVertexOfLeg earlier ∉ d.verticesBetweenCuts earlier later))
+    (hLater :
+      (twoPointVertexOfLeg later ∈ d.verticesBetweenCuts earlier later ∧
+          twoPointVertexOfLeg (d.pairing.partner later) ∉
+            d.verticesBetweenCuts earlier later) ∨
+        (twoPointVertexOfLeg (d.pairing.partner later) ∈
+            d.verticesBetweenCuts earlier later ∧
+          twoPointVertexOfLeg later ∉ d.verticesBetweenCuts earlier later)) :
+    ((Finset.univ : Finset (Fin (2 * (2 * S.card + 1)))).filter
+        (fun leg => twoPointVertexOfLeg leg ∈ d.verticesBetweenCuts earlier later)) =
+      ((Finset.univ : Finset (Fin (2 * (2 * S.card + 1)))).filter
+        (d.IsInteriorLeg earlier later)) ∪
+          {d.intervalFacingLeg earlier later earlier,
+           d.intervalFacingLeg earlier later later} := by
+  classical
+  ext leg
+  simpa only [Finset.mem_filter, Finset.mem_univ, true_and,
+    Finset.mem_union, Finset.mem_insert, Finset.mem_singleton] using
+    (d.mem_verticesBetweenCuts_iff_interior_or_boundary earlier later leg hEarlier hLater)
+
 end Common
 end SecondQuantization
