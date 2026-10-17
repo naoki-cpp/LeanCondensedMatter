@@ -80,21 +80,11 @@ theorem helmholtzFreeEnergy_eq_iff_eq_gibbsState [Nontrivial H] [FiniteDimension
     have hspan_top : Submodule.span ℂ (Set.range d) = ⊤ :=
       Submodule.orthogonal_eq_bot_iff.mp hcomplete
     apply DensityOperator.ext
-    apply ContinuousLinearMap.ext
-    intro x
-    have hx : x ∈ Submodule.span ℂ (Set.range d) := by
-      rw [hspan_top]
-      exact Submodule.mem_top
-    have hspan_le :
-        Submodule.span ℂ (Set.range d) ≤
-          LinearMap.ker ((ρ.op : H →ₗ[ℂ] H) - (σ.op : H →ₗ[ℂ] H)) := by
-      rw [Submodule.span_le]
-      rintro y ⟨a, rfl⟩
-      change ρ.op (d a) - σ.op (d a) = 0
-      exact sub_eq_zero.mpr (honFamily a)
-    have hxker := hspan_le hx
-    change ρ.op x - σ.op x = 0 at hxker
-    exact sub_eq_zero.mp hxker
+    apply ContinuousLinearMap.ext_on
+      (Submodule.dense_iff_topologicalClosure_eq_top.mpr
+        (show (Submodule.span ℂ (Set.range d)).topologicalClosure = ⊤ from by simp [hspan_top]))
+    rintro _ ⟨a, rfl⟩
+    exact honFamily a
   · intro hρ
     rw [hρ]
     exact gibbsState_helmholtzFreeEnergy_eq Hop β hβ
