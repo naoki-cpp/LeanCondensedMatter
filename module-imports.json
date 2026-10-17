@@ -3052,7 +3052,7 @@
       "name": "LeanCondensedMatter.Models.RashbaExchange.Operator",
       "sourceFile": "LeanCondensedMatter/Models/RashbaExchange/Operator.lean",
       "imports": [
-        "LeanCondensedMatter.Models.RashbaExchange.Model"
+        "LeanCondensedMatter.Models.RashbaExchange.ResponseParameters"
       ],
       "externalImportCount": 4
     },
@@ -3069,6 +3069,14 @@
       "externalImportCount": 2
     },
     {
+      "name": "LeanCondensedMatter.Models.RashbaExchange.ResponseParameters",
+      "sourceFile": "LeanCondensedMatter/Models/RashbaExchange/ResponseParameters.lean",
+      "imports": [
+        "LeanCondensedMatter.Models.RashbaExchange.Model"
+      ],
+      "externalImportCount": 0
+    },
+    {
       "name": "LeanCondensedMatter.Models.RashbaExchange",
       "sourceFile": "LeanCondensedMatter/Models/RashbaExchange.lean",
       "imports": [
@@ -3079,7 +3087,8 @@
         "LeanCondensedMatter.Models.RashbaExchange.Model.OperatorSpectral",
         "LeanCondensedMatter.Models.RashbaExchange.Model.Spectral",
         "LeanCondensedMatter.Models.RashbaExchange.Operator",
-        "LeanCondensedMatter.Models.RashbaExchange.Response"
+        "LeanCondensedMatter.Models.RashbaExchange.Response",
+        "LeanCondensedMatter.Models.RashbaExchange.ResponseParameters"
       ],
       "externalImportCount": 0
     },
@@ -8263,7 +8272,7 @@
         "LeanCondensedMatter.Transport.Analysis.ContinuumMeasure",
         "LeanCondensedMatter.Transport.Analysis.FourierGeometry"
       ],
-      "externalImportCount": 7
+      "externalImportCount": 8
     },
     {
       "name": "LeanCondensedMatter.Transport.Analysis.RelaxationTime",
