@@ -58,10 +58,10 @@ noncomputable def TwoPointDiagram.intervalInteractionLegEquiv
   · intro p q hpq
     have hflat : (f p).1 = (f q).1 := congrArg Subtype.val hpq
     have hpair :
-        (⟨p.1.1, interactionSector_subset
-          (d.verticesBetweenCuts earlier later) p.1.2⟩ : ↥S, p.2) =
-        (⟨q.1.1, interactionSector_subset
-          (d.verticesBetweenCuts earlier later) q.1.2⟩ : ↥S, q.2) :=
+        ((⟨p.1.1, interactionSector_subset
+          (d.verticesBetweenCuts earlier later) p.1.2⟩ : ↥S), p.2) =
+        ((⟨q.1.1, interactionSector_subset
+          (d.verticesBetweenCuts earlier later) q.1.2⟩ : ↥S), q.2) :=
       twoPointInteractionLeg_injective S (by simpa [f] using hflat)
     apply Prod.ext
     · apply Subtype.ext
