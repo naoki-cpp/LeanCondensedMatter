@@ -320,23 +320,8 @@ private theorem sum_Ioi_pairEndpointInversionCount_mod_two_eq_crossingCount (pai
     (e k).1 (e l).1
     (pairing.pairs_normalized (e k).2) (pairing.pairs_normalized (e l).2)
     hEnds.1 hEnds.2.1 hEnds.2.2.1 hEnds.2.2.2
-  rw [hmod, crossIndicator, crossIndicator]
-  by_cases hA : Crosses (e k).1 (e l).1
-  · have hB : ¬ Crosses (e l).1 (e k).1 := fun h => lt_asymm hA.1 h.1
-    simp [hA, hB]
-  · by_cases hB : Crosses (e l).1 (e k).1 <;> simp [hA, hB]
-
-private theorem pairEndpointInversionCount_swap_left {n : ℕ}
-    (left right : Fin (2 * n) × Fin (2 * n)) :
-    pairEndpointInversionCount left.swap right = pairEndpointInversionCount left right := by
-  simp only [pairEndpointInversionCount, Prod.swap]
-  ac_rfl
-
-private theorem pairEndpointInversionCount_swap_right {n : ℕ}
-    (left right : Fin (2 * n) × Fin (2 * n)) :
-    pairEndpointInversionCount left right.swap = pairEndpointInversionCount left right := by
-  simp only [pairEndpointInversionCount, Prod.swap]
-  ac_rfl
+  rw [hmod, crossIndicator, crossIndicator, crossesIndicator_add]
+  split_ifs <;> decide
 
 /-- A permutation of ambient positions **presents** a pairing when its two-element blocks are
 exactly the normalized pairs of `pairing`, each in either endpoint order. -/
@@ -351,7 +336,7 @@ private theorem pairEndpointInversionCount_blockPair_eq {pairing : Pairing n}
     pairEndpointInversionCount (blockPair τ k) (blockPair τ l) =
       pairEndpointInversionCount (e k).1 (e l).1 := by
   rcases hpres k with hk | hk <;> rcases hpres l with hl | hl <;>
-    simp [hk, hl, pairEndpointInversionCount_swap_left, pairEndpointInversionCount_swap_right]
+    simp only [hk, hl, pairEndpointInversionCount, Prod.swap] <;> ac_rfl
 
 /-- **Sign under presentation.** If a permutation's two-element blocks carry the normalized pairs of
 `pairing`, each in either endpoint order, its sign is `-1` to the number of reversed blocks times
