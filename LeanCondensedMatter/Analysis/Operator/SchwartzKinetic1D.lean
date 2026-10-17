@@ -1,5 +1,9 @@
-import Mathlib.Analysis.Distribution.SchwartzSpace.Deriv
-import Mathlib.Tactic
+module
+
+public import Mathlib.Analysis.Distribution.SchwartzSpace.Deriv
+public import Mathlib.Tactic
+
+public section
 
 set_option linter.style.header false
 
@@ -17,10 +21,10 @@ namespace SchwartzKinetic1D
 noncomputable section
 
 /-- Complex Schwartz functions on the real line. -/
-abbrev Space := SchwartzMap ℝ ℂ
+@[expose] abbrev Space := SchwartzMap ℝ ℂ
 
 /-- Spatial differentiation on complex Schwartz space. -/
-noncomputable def derivative : Space →ₗ[ℂ] Space :=
+@[expose] noncomputable def derivative : Space →ₗ[ℂ] Space :=
   (SchwartzMap.derivCLM ℂ ℂ).toLinearMap
 
 @[simp]
@@ -29,7 +33,7 @@ theorem derivative_apply (f : Space) (x : ℝ) :
   rfl
 
 /-- Multiplication by a fixed complex Schwartz function. -/
-noncomputable def multiplicationOperator (f : Space) : Space →ₗ[ℂ] Space where
+@[expose] noncomputable def multiplicationOperator (f : Space) : Space →ₗ[ℂ] Space where
   toFun := fun ψ => SchwartzMap.pairing (ContinuousLinearMap.mul ℂ ℂ) f ψ
   map_add' := by
     intro ψ χ
@@ -46,7 +50,7 @@ theorem multiplicationOperator_apply (f ψ : Space) (x : ℝ) :
   rfl
 
 /-- The multiplication operator depends complex-linearly on its Schwartz multiplier. -/
-noncomputable def multiplicationLinear : Space →ₗ[ℂ] (Space →ₗ[ℂ] Space) where
+@[expose] noncomputable def multiplicationLinear : Space →ₗ[ℂ] (Space →ₗ[ℂ] Space) where
   toFun := multiplicationOperator
   map_add' := by
     intro f g
