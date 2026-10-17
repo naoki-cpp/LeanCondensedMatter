@@ -39,13 +39,19 @@ theorem peierlsReversePhase_zero (ℏ q : ℂ) :
 /-- The forward Peierls phase has derivative `-i q / ℏ` at zero. -/
 theorem hasDerivAt_peierlsForwardPhase_zero (ℏ q : ℂ) :
     HasDerivAt (peierlsForwardPhase ℏ q) (-(peierlsCoupling ℏ q)) 0 := by
-  simpa [peierlsForwardPhase] using
+  change HasDerivAt
+    (fun A : ℂ => Complex.exp (-(peierlsCoupling ℏ q) * A))
+    (-(peierlsCoupling ℏ q)) 0
+  simpa using
     (hasDerivAt_const_mul (x := (0 : ℂ)) (-(peierlsCoupling ℏ q))).cexp
 
 /-- The reverse Peierls phase has derivative `i q / ℏ` at zero. -/
 theorem hasDerivAt_peierlsReversePhase_zero (ℏ q : ℂ) :
     HasDerivAt (peierlsReversePhase ℏ q) (peierlsCoupling ℏ q) 0 := by
-  simpa [peierlsReversePhase] using
+  change HasDerivAt
+    (fun A : ℂ => Complex.exp (peierlsCoupling ℏ q * A))
+    (peierlsCoupling ℏ q) 0
+  simpa using
     (hasDerivAt_const_mul (x := (0 : ℂ)) (peierlsCoupling ℏ q)).cexp
 
 end PeierlsPhase
