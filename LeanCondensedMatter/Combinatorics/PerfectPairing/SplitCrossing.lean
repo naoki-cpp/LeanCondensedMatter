@@ -280,24 +280,38 @@ theorem Pairing.ofSplit_crossingCount_eq_left_add_right_add_inter
     (Pairing.ofSplit e P Q).crossingCount =
       P.crossingCount + Q.crossingCount +
         Pairing.ofSplitInterSectorCrossingCount e P Q := by
-  classical
-  let emb := Pairing.ofSplitNormalizedPairEquiv e P Q
-  have hsum :
+  have hdecomp :
       (Pairing.ofSplit e P Q).crossingCount =
-        ∑ xy : (P.NormalizedPair ⊕ Q.NormalizedPair) ×
-            (P.NormalizedPair ⊕ Q.NormalizedPair),
-          if Crosses (emb xy.1).1 (emb xy.2).1 then 1 else 0 := by
-    rw [Pairing.crossingCount_eq_sum_crosses]
-    exact (Equiv.sum_comp (Equiv.prodCongr emb emb)
-      (fun xy : (Pairing.ofSplit e P Q).NormalizedPair ×
-          (Pairing.ofSplit e P Q).NormalizedPair =>
-        if Crosses xy.1.1 xy.2.1 then (1 : ℕ) else 0)).symm
-  rw [hsum, Fintype.sum_prod_type, Fintype.sum_sum_type]
-  simp_rw [Fintype.sum_sum_type, Finset.sum_add_distrib]
-  unfold Pairing.ofSplitInterSectorCrossingCount
-  dsimp [emb]
-  rw [Pairing.ofSplitNormalizedPairEquiv_inl_crossingCount_eq e P Q hleft,
+        (∑ p : P.NormalizedPair, ∑ q : P.NormalizedPair,
+          if Crosses
+              (Pairing.ofSplitNormalizedPairEquiv e P Q (Sum.inl p)).1
+              (Pairing.ofSplitNormalizedPairEquiv e P Q (Sum.inl q)).1
+          then 1 else 0) +
+        (∑ p : Q.NormalizedPair, ∑ q : Q.NormalizedPair,
+          if Crosses
+              (Pairing.ofSplitNormalizedPairEquiv e P Q (Sum.inr p)).1
+              (Pairing.ofSplitNormalizedPairEquiv e P Q (Sum.inr q)).1
+          then 1 else 0) +
+        Pairing.ofSplitInterSectorCrossingCount e P Q := by
+    classical
+    let emb := Pairing.ofSplitNormalizedPairEquiv e P Q
+    have hsum :
+        (Pairing.ofSplit e P Q).crossingCount =
+          ∑ xy : (P.NormalizedPair ⊕ Q.NormalizedPair) ×
+              (P.NormalizedPair ⊕ Q.NormalizedPair),
+            if Crosses (emb xy.1).1 (emb xy.2).1 then 1 else 0 := by
+      rw [Pairing.crossingCount_eq_sum_crosses]
+      exact (Equiv.sum_comp (Equiv.prodCongr emb emb)
+        (fun xy : (Pairing.ofSplit e P Q).NormalizedPair ×
+            (Pairing.ofSplit e P Q).NormalizedPair =>
+          if Crosses xy.1.1 xy.2.1 then (1 : ℕ) else 0)).symm
+    rw [hsum, Fintype.sum_prod_type, Fintype.sum_sum_type]
+    simp_rw [Fintype.sum_sum_type, Finset.sum_add_distrib]
+    unfold Pairing.ofSplitInterSectorCrossingCount
+    dsimp [emb]
+    omega
+  rw [hdecomp,
+    Pairing.ofSplitNormalizedPairEquiv_inl_crossingCount_eq e P Q hleft,
     Pairing.ofSplitNormalizedPairEquiv_inr_crossingCount_eq e P Q hright]
-  omega
 
 end Combinatorics
