@@ -351,5 +351,42 @@ theorem TwoPointDiagram.intervalBlock_partner_interior
 
 end PartnerCorrespondence
 
+/-- Strictly nested, external-separating cuts have two distinct interval-facing
+endpoints. This packages exactly the boundary data needed by `intervalBlock`
+without assuming either endpoint orientation. -/
+theorem TwoPointDiagram.strictCuts_boundaryData
+    (d : TwoPointDiagram ExternalLabel InternalLabel N S)
+    (hconnected : d.IsExternallyConnected)
+    (earlier later : Fin (2 * (2 * S.card + 1)))
+    (hstrict :
+      (d.vertexGraphWithoutPropagator earlier).componentBlock (Sum.inl (0 : Fin 2)) ⊂
+        (d.vertexGraphWithoutPropagator later).componentBlock (Sum.inl (0 : Fin 2)))
+    (hsepEarlier : ¬ (d.vertexGraphWithoutPropagator earlier).Reachable
+      (Sum.inl (0 : Fin 2)) (Sum.inl (1 : Fin 2)))
+    (hsepLater : ¬ (d.vertexGraphWithoutPropagator later).Reachable
+      (Sum.inl (0 : Fin 2)) (Sum.inl (1 : Fin 2))) :
+    earlier ≠ later ∧ d.pairing.partner earlier ≠ later ∧
+      d.HasIntervalBoundaryEndpoint earlier later earlier ∧
+      d.HasIntervalBoundaryEndpoint earlier later later := by
+  have hne : earlier ≠ later := by
+    intro heq
+    subst later
+    exact (lt_irrefl _) hstrict
+  have hpne : d.pairing.partner earlier ≠ later := by
+    intro heq
+    subst later
+    rw [d.vertexGraphWithoutPropagator_partner] at hstrict
+    exact (lt_irrefl _) hstrict
+  have hpne' : d.pairing.partner later ≠ earlier := by
+    intro heq
+    apply hpne
+    have h := congrArg d.pairing.partner heq
+    simpa only [d.pairing.partner_involutive] using h.symm
+  exact ⟨hne, hpne,
+    d.earlierCut_endpoints_opposite_interval_sides
+      hconnected earlier later hstrict.le hsepEarlier hne hpne,
+    d.laterCut_endpoints_opposite_interval_sides
+      hconnected earlier later hstrict.le hsepLater hne.symm hpne'⟩
+
 end Common
 end SecondQuantization
