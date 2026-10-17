@@ -137,13 +137,9 @@ Hilbert–Schmidt (`isHilbertSchmidt_comp_left`), so its adjoint `T * B` is Hilb
 (`isHilbertSchmidt_adjoint` again, using `T†† = T`). -/
 theorem isHilbertSchmidt_comp_right {T : H →L[ℂ] H} (hT : IsHilbertSchmidt T)
     (B : H →L[ℂ] H) : IsHilbertSchmidt (T * B) := by
-  have hadj : IsHilbertSchmidt (ContinuousLinearMap.adjoint B * ContinuousLinearMap.adjoint T) :=
-    isHilbertSchmidt_comp_left (ContinuousLinearMap.adjoint B) (isHilbertSchmidt_adjoint hT)
-  have heq : ContinuousLinearMap.adjoint
-      (ContinuousLinearMap.adjoint B * ContinuousLinearMap.adjoint T) = T * B := by
-    rw [← ContinuousLinearMap.star_eq_adjoint, ← ContinuousLinearMap.star_eq_adjoint,
-      ← ContinuousLinearMap.star_eq_adjoint, star_mul, star_star, star_star]
-  have hadj' := isHilbertSchmidt_adjoint hadj
-  rwa [heq] at hadj'
+  simpa only [← ContinuousLinearMap.star_eq_adjoint, star_mul, star_star] using
+    (isHilbertSchmidt_adjoint
+      (isHilbertSchmidt_comp_left (ContinuousLinearMap.adjoint B)
+        (isHilbertSchmidt_adjoint hT)))
 
 end ContinuousLinearMap
