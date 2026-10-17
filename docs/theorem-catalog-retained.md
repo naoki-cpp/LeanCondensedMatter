@@ -8,7 +8,9 @@ a stable domain-level API.
 
 The theorem entries in the list below have been semantically reviewed and are intentionally retained
 when structural audit signals might otherwise suggest removing them. Non-theorem API contracts are
-listed separately at the end of this document and are not retained theorem exceptions. `scripts/TheoremCatalog.lean` records full-name mentions and unambiguous
+listed separately at the end of this document and are not retained theorem exceptions.
+
+`scripts/TheoremCatalog.lean` records full-name mentions and unambiguous
 short-name mentions from this document as the
 `retainedMention` attribute. Retained declarations keep their structural attributes in the full
 catalog but are omitted from terminal, single-consumer, and direct-wrapper review queues so those
