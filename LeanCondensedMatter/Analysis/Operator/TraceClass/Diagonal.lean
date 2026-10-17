@@ -22,8 +22,6 @@ variable {ι H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [Comple
 theorem diagonalOp_isTraceClass (b : HilbertBasis ι ℂ H) (a : ι → ℝ)
     (ha : Summable fun i => ‖a i‖) (ha_nonneg : ∀ i, 0 ≤ a i) :
     IsTraceClass (diagonalOp b (fun i => (a i : ℂ))) := by
-  let hac : Summable fun i => ‖(a i : ℂ)‖ := by
-    simpa using ha
   let T : H →L[ℂ] H := diagonalOp b (fun i => (a i : ℂ))
   let hpos : T.IsPositive := diagonalOp_isPositive b a ha ha_nonneg
   have hdiag :
@@ -31,12 +29,7 @@ theorem diagonalOp_isTraceClass (b : HilbertBasis ι ℂ H) (a : ι → ℝ)
     have hpoint :
         (fun i => diagonalExpectationValue T hpos.isSelfAdjoint (b i)) = a := by
       funext i
-      apply Complex.ofReal_injective
-      rw [coe_diagonalExpectationValue_right]
-      rw [show T (b i) = (a i : ℂ) • b i by
-        simpa [T] using diagonalOp_apply_basis b (fun i => (a i : ℂ)) hac i]
-      rw [inner_smul_right, inner_self_eq_norm_sq_to_K, b.orthonormal.1 i]
-      simp
+      simpa [T] using diagonalExpectationValue_diagonalOp b a ha ha_nonneg i
     rw [hpoint]
     exact Summable.of_norm ha
   apply (isTraceClass_iff_isTraceClassWrt b T).mpr
