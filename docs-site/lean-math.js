@@ -152,6 +152,10 @@ export function leanPrettyToTex(source) {
 }
 
 const mathJaxReady = new Promise((resolve) => {
+  if (typeof document === "undefined") {
+    resolve(false);
+    return;
+  }
   const script = document.querySelector("script[data-math-renderer]");
   if (!script) {
     resolve(false);
@@ -208,6 +212,10 @@ export function renderLeanSourceFallback(container, source, reason) {
 
 export function renderLeanMath(container, source) {
   const tex = leanPrettyToTex(source);
+  renderTexMath(container, tex, source);
+}
+
+export function renderTexMath(container, tex, source, { includeSource = true } = {}) {
   if (tex === null) {
     renderLeanSourceFallback(container, source, "Formula rendering is not available for this Lean syntax.");
     return;
@@ -220,14 +228,16 @@ export function renderLeanMath(container, source) {
   formula.textContent = "Rendering formula…";
   container.append(formula);
 
-  const exact = document.createElement("details");
-  exact.className = "lean-source";
-  const summary = document.createElement("summary");
-  summary.textContent = "Lean notation";
-  const pre = document.createElement("pre");
-  pre.textContent = source;
-  exact.append(summary, pre);
-  container.append(exact);
+  if (includeSource) {
+    const exact = document.createElement("details");
+    exact.className = "lean-source";
+    const summary = document.createElement("summary");
+    summary.textContent = "Lean notation";
+    const pre = document.createElement("pre");
+    pre.textContent = source;
+    exact.append(summary, pre);
+    container.append(exact);
+  }
 
   mathJaxReady.then(async (available) => {
     if (!container.isConnected) return;

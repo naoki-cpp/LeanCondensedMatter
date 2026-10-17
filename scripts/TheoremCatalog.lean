@@ -620,6 +620,111 @@ private def json (entries : Array CatalogEntry) : Json :=
       ("retainedNeedsReview", .bool entry.retainedNeedsReview)
     ]
 
+/-- Follow only actual structure projections, not arbitrary expressions mentioning an instance. -/
+private partial def presentationInstanceRoot (value : Expr) : MetaM (Option String) := do
+  match value with
+  | .fvar id => return some id.name.toString
+  | .mdata _ body | .proj _ _ body => presentationInstanceRoot body
+  | .app .. =>
+      let some name := value.getAppFn.constName? | return none
+      let some projection := Lean.getProjectionFnInfo? (← getEnv) name | return none
+      let arguments := value.getAppArgs
+      if arguments.size != projection.numParams + 1 then return none
+      let some major := arguments[projection.numParams]? | return none
+      presentationInstanceRoot major
+  | _ => return none
+
+private def presentationInstanceRoots (value : Expr) : MetaM (Array String) := do
+  let mut result := #[]
+  let mut fnType ← inferType value.getAppFn
+  for argument in value.getAppArgs do
+    let .forallE _ _ body binderInfo ← whnf fnType | return #[]
+    if binderInfo == .instImplicit then
+      if let some root ← presentationInstanceRoot argument then
+        result := result.push root
+    fnType := body.instantiate1 argument
+  return result
+
+private def presentationText (value : Expr) : MetaM String := do
+  return (← ppExpr value).pretty
+
+private def presentationTypeName (value : Expr) : MetaM String := do
+  return ((← inferType value).getAppFn.constName?).map Name.toString |>.getD ""
+
+/-- Serialize only type expressions, never declaration values or proof bodies. Implicit
+application arguments are omitted from the display tree; their projection roots are recorded
+separately for checking setting summaries. Each tree has a fixed node budget. -/
+private partial def presentationExpression (value : Expr) : StateT Nat MetaM Json := do
+  let fallback : MetaM Json := do
+    return Json.mkObj [("kind", .str "text"), ("text", .str (← presentationText value))]
+  let remaining ← get
+  if remaining == 0 then return ← liftM fallback
+  set (remaining - 1)
+  match value with
+  | .mdata _ body => presentationExpression body
+  | .fvar id =>
+      return .mkObj [("kind", .str "var"), ("id", .str id.name.toString),
+        ("name", .str (← liftM <| presentationText value))]
+  | .const name _ =>
+      return .mkObj [("kind", .str "const"), ("name", .str name.toString)]
+  | .sort level =>
+      return .mkObj [("kind", .str "sort"), ("isProp", .bool (level == .zero))]
+  | .app .. =>
+      let fn := value.getAppFn
+      let mut fnType ← liftM <| inferType fn
+      let mut arguments := #[]
+      for argument in value.getAppArgs do
+        let .forallE _ _ body binderInfo ← liftM <| whnf fnType
+          | return ← liftM fallback
+        if binderInfo == .default then
+          arguments := arguments.push (← presentationExpression argument)
+        fnType := body.instantiate1 argument
+      return .mkObj [("kind", .str "app"), ("fn", ← presentationExpression fn),
+        ("args", .arr arguments),
+        ("argumentType", .str (← liftM <| presentationTypeName (value.getAppArgs.back!))),
+        ("resultType", .str (← liftM <| presentationTypeName value))]
+  | _ => return ← liftM fallback
+
+private def presentationTree (value : Expr) : MetaM Json :=
+  (presentationExpression value).run' 128
+
+private def structuredStatement (name : Name) (info : ConstantInfo) : MetaM Json := do
+  forallTelescope info.type fun variables conclusion => do
+    let mut binders := #[]
+    for parameter in variables do
+      let declaration ← parameter.fvarId!.getDecl
+      let role ← if declaration.binderInfo == .instImplicit then pure "instance"
+        else if ← isProp declaration.type then pure "assumption"
+        else pure (match declaration.type with
+          | .sort (.succ _) => "type"
+          | .sort (.param _) => "type"
+          | .sort (.max _ _) => "type"
+          | .sort (.imax _ _) => "type"
+          | _ => "variable")
+      binders := binders.push <| .mkObj [
+        ("id", .str parameter.fvarId!.name.toString),
+        ("name", .str (← presentationText parameter)), ("role", .str role),
+        ("implicit", .bool (declaration.binderInfo != .default)),
+        ("type", ← presentationTree declaration.type),
+        ("typeText", .str (← presentationText declaration.type)),
+        ("instanceRoots", .arr ((← presentationInstanceRoots declaration.type).map Json.str))]
+    let mut fields := #[]
+    if let some structureInfo := getStructureInfo? (← getEnv) name then
+      let structureType := mkAppN (mkConst name (info.levelParams.map Level.param)) variables
+      fields ← withLocalDeclD `self structureType fun self => do
+        let mut result := #[]
+        for fieldName in structureInfo.fieldNames do
+          let projection ← mkProjection self fieldName
+          let fieldType ← inferType projection
+          result := result.push <| .mkObj [
+            ("name", .str fieldName.toString),
+            ("type", ← presentationTree fieldType),
+            ("typeText", .str (← presentationText fieldType))]
+        return result
+    return .mkObj [("version", .num 1), ("binders", .arr binders),
+      ("conclusion", (← presentationTree conclusion).setObjVal! "text" (.str (← presentationText conclusion))),
+      ("fields", .arr fields)]
+
 /-- The declaration graph includes every compiled project constant. Source ranges are queried
 directly: Lean's convenience range lookup inherits ranges for generated recursors. -/
 private def declarationGraph (audit : Json) : CommandElabM Json := do
@@ -664,6 +769,12 @@ private def declarationGraph (audit : Json) : CommandElabM Json := do
       | some statement => pure statement
       | none => liftTermElabM do return (← ppExpr info.type).pretty
     let docString ← liftIO <| findDocString? env name
+    let presentation ← liftTermElabM do
+      if ranges.isNone then return Json.null
+      try
+        structuredStatement name info
+      catch _ =>
+        pure Json.null
     let sourceFile := moduleName.toString.replace "." "/" ++ ".lean"
     let sourceLine := ranges.map fun r => r.selectionRange.pos.line
     let fields : List (String × Json) := [
@@ -671,6 +782,7 @@ private def declarationGraph (audit : Json) : CommandElabM Json := do
       ("kind", .str kind), ("generated", .bool ranges.isNone),
       ("projection", .bool (env.isProjectionFn name)),
       ("statement", .str statement), ("docString", docString.map Json.str |>.getD .null),
+      ("structuredStatement", presentation),
       ("sourceFile", .str sourceFile),
       ("declarationStartLine", ranges.map (fun r => Json.num r.range.pos.line) |>.getD .null),
       ("sourceLine", sourceLine.map (fun n => Json.num n) |>.getD .null),

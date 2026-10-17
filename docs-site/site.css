@@ -335,6 +335,14 @@ select:disabled {
   border-radius: 10px;
 }
 .math-presentation, .definition-body-content { min-width: 0; }
+.statement-row { display: flex; align-items: baseline; gap: 10px; margin: 8px 0; min-width: 0; }
+.statement-variable { flex: 0 0 auto; color: var(--cyan); overflow-wrap: anywhere; max-width: 35%; }
+.statement-expression { flex: 1; min-width: 0; }
+.statement-setting { color: #eef2ff; line-height: 1.6; }
+.statement-symbols { margin: 8px 12px; font-size: 12px; }
+.statement-symbols dt { color: var(--cyan); margin-top: 8px; }
+.statement-symbols dd { margin: 3px 0 0; overflow-wrap: anywhere; color: var(--muted); }
+.math-presentation h4 { margin: 18px 0 8px; color: var(--muted); }
 .math-formula {
   min-width: 0;
   padding: 13px;
