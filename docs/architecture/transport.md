@@ -155,8 +155,10 @@ under `Transport`.
 `Models.Parabolic2DEG` is the public route for the finite isotropic parabolic-band
 normalization benchmark. It keeps effective mass, chemical potential, radial cutoff, positive
 spectral broadening, signed charge/current convention, reduced Planck constant, and momentum-measure
-normalization explicit. Its clean Hamiltonian and current vertices are in `Model`, while
-`Green` owns the finite-broadening scalar/operator resolvents. The pointwise response consumes the
+normalization explicit. `Model` owns only the clean Hamiltonian and velocity;
+`ResponseParameters` owns the finite-response parameter bundle and cutoff domain;
+`Green` owns finite-broadening scalar/operator resolvents; and `Response` owns
+charge-current vertices together with the finite conductivity calculation. The pointwise response consumes the
 common finite-broadening Středa surface kernel `RA - (RR + AA)/2` through these operators. The reduced
 finite-cutoff response remains a response-level object until the named `ℏ/(2π)` Kubo trace
 prefactor is attached; only then is it exposed through `Core.ConductivityTensor`. No thermodynamic,

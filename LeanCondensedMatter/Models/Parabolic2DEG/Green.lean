@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Models.Parabolic2DEG.Model
+import LeanCondensedMatter.Models.Parabolic2DEG.ResponseParameters
 import LeanCondensedMatter.Transport.Resolvent.Spectral
 import Mathlib.Tactic
 
@@ -7,7 +7,8 @@ set_option linter.style.header false
 /-!
 # Finite-broadening Green functions for the parabolic 2DEG
 
-The clean one-band Hamiltonian and current vertices are owned by `Model`.
+The clean one-band Hamiltonian and velocity are owned by `Model`; the shared finite-response
+parameter bundle lives in `ResponseParameters`, while charge-current vertices live in `Response`.
 This module supplies the model-specific scalar and bounded-operator Green functions through the
 generic signed spectral resolvent. Finite positive broadening and probe energy remain explicit.
 -/
