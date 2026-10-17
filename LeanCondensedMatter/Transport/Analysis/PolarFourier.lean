@@ -135,6 +135,40 @@ theorem polarFourierCosineMoment_even (n : ℕ) :
       push_cast
       ring
 
+/-- The even full-angle cosine moment in factorial form, ready for the
+coefficient comparison with Mathlib's regularized hypergeometric Bessel series. -/
+theorem polarFourierCosineMoment_even_factorial (n : ℕ) :
+    polarFourierCosineMoment (2 * n) =
+      (2 * Real.pi) * ((2 * n)! : ℝ) / ((4 : ℝ) ^ n * (n! : ℝ) ^ 2) := by
+  rw [polarFourierCosineMoment_even]
+  have hprod (n : ℕ) :
+      (∏ k ∈ Finset.range n, ((2 * (k : ℝ) + 1) / (2 * (k : ℝ) + 2))) =
+        ((2 * n)! : ℝ) / ((4 : ℝ) ^ n * (n! : ℝ) ^ 2) := by
+    induction n with
+    | zero => norm_num
+    | succ n ih =>
+        have hfac2 :
+            ((2 * (n + 1))! : ℝ) =
+              (2 * (n : ℝ) + 2) * (2 * (n : ℝ) + 1) * ((2 * n)! : ℝ) := by
+          have hindex : 2 * (n + 1) = (2 * n + 1) + 1 := by omega
+          rw [hindex, Nat.factorial_succ, Nat.factorial_succ]
+          push_cast
+          ring
+        have hfacn : ((n + 1)! : ℝ) = ((n : ℝ) + 1) * (n! : ℝ) := by
+          rw [Nat.factorial_succ]
+          push_cast
+          ring
+        rw [Finset.prod_range_succ, ih, hfac2, hfacn, pow_succ]
+        push_cast
+        have hfact : (n! : ℝ) ≠ 0 := by exact_mod_cast Nat.factorial_ne_zero n
+        have hpow : (4 : ℝ) ^ n ≠ 0 := pow_ne_zero _ (by norm_num)
+        have hden : 2 * (n : ℝ) + 2 ≠ 0 := by positivity
+        have hsucc : (n : ℝ) + 1 ≠ 0 := by positivity
+        field_simp [hfact, hpow, hden, hsucc]
+        ring
+  rw [hprod]
+  ring
+
 /-- Every odd full-angle cosine moment vanishes. -/
 @[simp] theorem polarFourierCosineMoment_odd (n : ℕ) :
     polarFourierCosineMoment (2 * n + 1) = 0 := by
