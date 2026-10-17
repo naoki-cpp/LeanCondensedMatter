@@ -1,6 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointImaginaryTimeOrder
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.Diagram
-import LeanCondensedMatter.Combinatorics.ListFlatMapOrder
+import LeanCondensedMatter.Combinatorics.Common.ListFlatMapOrder
 import Mathlib.Data.List.NodupEquivFin
 import Mathlib.Data.Fintype.EquivFin
 
