@@ -165,7 +165,8 @@ theorem polarFourierZerothAngularKernel_hasDerivAt (z : ℝ) :
     fun_prop
   have hbound (x θ : ℝ) : ‖derivative x θ‖ ≤ (1 : ℝ) := by
     have hcos := Real.abs_cos_le_one θ
-    simpa [derivative, norm_mul, norm_polarFourierRadialPhase] using hcos
+    simpa only [derivative, norm_mul, norm_polarFourierRadialPhase,
+      Complex.norm_I, Complex.norm_real, Real.norm_eq_abs, one_mul, mul_one] using hcos
   have hmain :
       HasDerivAt
         (fun x : ℝ => ∫ θ in (0 : ℝ)..(2 * Real.pi),
@@ -192,7 +193,11 @@ theorem polarFourierZerothAngularKernel_hasDerivAt (z : ℝ) :
     intro θ _
     dsimp [derivative]
     ring
-  simpa only [polarFourierZerothAngularKernel, hrew] using hmain
+  change HasDerivAt
+    (fun x : ℝ => ∫ θ in (0 : ℝ)..(2 * Real.pi), polarFourierRadialPhase x θ)
+    (Complex.I * polarFourierFirstCosineAngularKernel z) z
+  rw [← hrew]
+  exact hmain
 
 /-- Derivative of the dimensionless radial Fourier phase with respect to the polar angle. -/
 private theorem polarFourierRadialPhase_hasDerivAt (z θ : ℝ) :
