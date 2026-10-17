@@ -31,11 +31,7 @@ theorem trace_comp_comm {T : H →L[ℂ] H} (hT : IsTraceClass T) (W : H →L[�
   have hAdjAW :
       ContinuousLinearMap.adjoint (A * ContinuousLinearMap.adjoint W) =
         W * ContinuousLinearMap.adjoint A := by
-    rw [show ContinuousLinearMap.adjoint (A * ContinuousLinearMap.adjoint W) =
-      star (A * ContinuousLinearMap.adjoint W) from
-      (ContinuousLinearMap.star_eq_adjoint (A * ContinuousLinearMap.adjoint W)).symm]
-    rw [star_mul, ContinuousLinearMap.star_eq_adjoint,
-      ContinuousLinearMap.adjoint_adjoint, ContinuousLinearMap.star_eq_adjoint]
+    simp only [← ContinuousLinearMap.star_eq_adjoint, star_mul, star_star]
   have hfactorLeft :
       ContinuousLinearMap.adjoint (A * ContinuousLinearMap.adjoint W) * B = W * T := by
     rw [hAdjAW, mul_assoc, hfactor]
