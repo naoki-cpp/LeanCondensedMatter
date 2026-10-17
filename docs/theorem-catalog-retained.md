@@ -683,3 +683,17 @@ or consumer structure changes.
 - `Combinatorics.Pairing.normalizedPairOfEndpointEquiv_pair_eq_or_swap` — the abstract endpoint transport chooses either original orientation or its swap; the general transport theorem must not assume order preservation.
 - `Combinatorics.Pairing.normalizedPairSubtypeEndpointEquiv_apply_val` — simp projection formula for the endpoint equivalence restricted to partner-invariant position subsets; used by mixed diagram components.
 - `Combinatorics.SlotShuffle.sdiffLeftSlotsOrderEquiv` — canonical increasing-order equivalence from the right shuffle slots to the complement of the left slots; this typed bridge is reused in two independent diagram-standardization modules and should remain public rather than being expanded at both call sites.
+
+- `Combinatorics.Pairing.eraseZeroOrderIso_partner` — intertwining of the surviving positions' partner involution with the original one under the increasing deletion order-isomorphism; reused by insertion and erasure proofs.
+- `Combinatorics.Pairing.pairs_erase_firstPair_eq_image` — exact characterization of the remaining normalized pairs as the embedded pairs of the smaller pairing after deleting the distinguished pair; used in products and crossing decomposition.
+- `Combinatorics.Pairing.eraseZeroPairEmbedding` — canonical embedding of the smaller pairing's ordered pair positions into the ambient pairing; unlike a caller-specific cast it preserves the pair index abstraction.
+- `Combinatorics.Pairing.eraseZeroOrderIso` — canonical strictly increasing equivalence between surviving positions and the smaller finite index type after removing zero and its partner.
+- `Combinatorics.Pairing.eraseZeroPair` — canonical pairing obtained from restricting a fixed-point-free involution away from position zero and its partner, the recursive datum of the first-pair decomposition.
+- `Combinatorics.Pairing.insertFirstPair_partner_zero` — computational rule for the partner of zero after inserting a distinguished first pair, used in the inverse recursive decomposition and pairing recursion.
+- `Combinatorics.Pairing.insertFirstPair` — canonical inverse construction to deleting the distinguished first pair, reconstituting a larger pairing from a smaller pairing and a chosen nonzero partner.
+- `Combinatorics.Pairing.equivSigma` — bijective recursion identifying a pairing on 2(n+1) positions with the partner of zero and a pairing on 2n positions; underlies pairing-sum decompositions.
+- `Combinatorics.Pairing.interveningPositionCount` — geometric count of ambient positions strictly between zero and its partner, the invariant appearing in the crossing-parity recursion.
+- `Finpartition.coarseningsEquivBlockPartitions` — structural equivalence identifying coarsenings of a finite partition with partitions of its block set; used to reduce coarsening counts to Stirling numbers.
+- `Finpartition.coarseningsOrderIsoBlockPartitions` — order-isomorphism strengthening the coarsening/block-partition equivalence, enabling transport of incidence-algebra Möbius functions across the upper interval.
+- `Finpartition.refinementsEquivFiberPartitions` — structural equivalence between refinements and independent partitions of each original block, supplying the block-factorized combinatorics of moments and cumulants.
+- `Finpartition.refinementsOrderIsoFiberPartitions` — order-preserving refinement equivalence, needed to transport interval structures and multiplicative Möbius coefficients to the product of block lattices.
