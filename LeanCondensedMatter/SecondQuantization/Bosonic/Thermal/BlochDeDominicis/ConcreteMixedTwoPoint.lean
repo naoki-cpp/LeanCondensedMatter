@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Analysis.Exponential
+import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.FreeKMSRotation
 import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.NormalizedTwoPoint
 import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.OrderedProductSummable
 
@@ -11,7 +12,7 @@ set_option linter.unusedFintypeInType false
 Under the standard positive one-mode Boltzmann exponent assumption, summability of the mixed product
 `aᵢ aⱼ†` follows from the general finite ordered-product summability theorem on the infinite
 occupation space. The Bose denominator is nonzero under the same positivity hypothesis. The reverse
-contraction follows from the canonical commutation relation and linearity on the free-Gibbs domain.
+contraction follows from the uniform free-field KMS rotation.
 -/
 
 namespace SecondQuantization
@@ -51,53 +52,17 @@ theorem freeGibbsExpectation_create_comp_annihilate_concrete
         Complex.exp (((-(ε j) * β : ℝ) : ℂ)) *
           (1 - Complex.exp (((-(ε j) * β : ℝ) : ℂ)))⁻¹
       else 0 := by
-  have hreorder :
-      (annihilate j).comp (create i) =
-        (if j = i then (LinearMap.id : FockSpace Mode →ₗ[ℂ] FockSpace Mode) else 0) +
-          (create i).comp (annihilate j) := by
-    simpa [Module.End.mul_eq_comp] using
-      (ScalarExchange.mul_eq_add_smul_mul_of_zetaCommutator_eq (1 : ℂ)
-        (comm_annihilate_create j i))
+  have hrotate := FreeThermalField.freeGibbsExpectation_operator_comp_rotate
+    ε β (.create i) (annihilate j)
+  simp only [FreeThermalField.operator, FreeThermalField.kmsFactor] at hrotate
+  rw [hrotate, freeGibbsExpectation_annihilate_comp_create_concrete ε β hpos j i]
   by_cases hij : i = j
   · subst j
-    have hA : freeGibbsSummable ε β ((annihilate i).comp (create i)) := by
-      simpa [FreeThermalField.orderedProduct, FreeThermalField.operator,
-        Module.End.mul_eq_comp] using
-        (FreeThermalField.freeGibbsSummable_orderedProduct ε β hpos
-          [.annihilate i, .create i])
-    have hId := linearMap_id_mem_freeGibbsDomain ε β hpos
-    have hop : (create i).comp (annihilate i) =
-        (annihilate i).comp (create i) -
-          (LinearMap.id : FockSpace Mode →ₗ[ℂ] FockSpace Mode) := by
-      apply (eq_sub_iff_add_eq).2
-      simpa [add_comm] using hreorder.symm
-    rw [ite_eq_left rfl, hop, sub_eq_add_neg]
-    have hnegId : -(LinearMap.id : FockSpace Mode →ₗ[ℂ] FockSpace Mode) ∈
-        freeGibbsDomain ε β := (freeGibbsDomain ε β).neg_mem hId
-    rw [freeGibbsExpectation_add ε β hA hnegId]
-    have hnegExpectation :
-        freeGibbsExpectation ε β
-            (-(LinearMap.id : FockSpace Mode →ₗ[ℂ] FockSpace Mode)) = -1 := by
-      rw [show -(LinearMap.id : FockSpace Mode →ₗ[ℂ] FockSpace Mode) =
-          (-1 : ℂ) • (LinearMap.id : FockSpace Mode →ₗ[ℂ] FockSpace Mode) by simp,
-        freeGibbsExpectation_smul, freeGibbsExpectation_id ε β hpos]
+    have harg : -(β : ℂ) * (ε i : ℂ) = ((-(ε i) * β : ℝ) : ℂ) := by
+      push_cast
       ring
-    rw [hnegExpectation,
-      freeGibbsExpectation_annihilate_comp_create_concrete ε β hpos i i]
-    simp only [ite_true]
-    have hden : 1 - Complex.exp (((-(ε i) * β : ℝ) : ℂ)) ≠ 0 :=
-      sub_ne_zero.mpr (Ne.symm (Complex.exp_ne_one_of_re_ne_zero (by
-        change -(ε i) * β ≠ 0
-        nlinarith [hpos i])))
-    have harg : (-(ε i) * β : ℝ) = -(ε i * β) := by ring
-    rw [harg] at hden
-    field_simp [hden]
-    ring
-  · have hop : (create i).comp (annihilate j) = (annihilate j).comp (create i) := by
-      simpa [Ne.symm hij] using hreorder.symm
-    rw [ite_eq_right hij, hop,
-      freeGibbsExpectation_annihilate_comp_create_concrete ε β hpos j i]
-    simp [Ne.symm hij]
+    simp only [ite_true, harg]
+  · simp [hij, Ne.symm hij]
 
 end
 end Bosonic
