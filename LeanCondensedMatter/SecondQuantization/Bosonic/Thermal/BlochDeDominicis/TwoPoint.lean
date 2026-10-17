@@ -87,7 +87,7 @@ private theorem matrixCoeff_imaginaryTimeEvolveFree_comp_create_mul_matrixCoeff_
   · rw [ite_eq_right hk, mul_zero]
 
 /-- The rotated equal-mode two-point double series is summable. -/
-theorem summable_imaginaryTimeEvolveFree_comp_create_mul_annihilate_diag
+private theorem summable_imaginaryTimeEvolveFree_comp_create_mul_annihilate_diag
     (ε : Mode → ℝ) (β : ℝ) (hpos : ∀ k, 0 < β * ε k) (i : Mode) :
     Summable (Function.uncurry (fun n k =>
       Common.matrixCoeff ((imaginaryTimeEvolveFree ε (-β)).comp (create i)) n k *
@@ -117,6 +117,25 @@ theorem summable_imaginaryTimeEvolveFree_comp_create_mul_annihilate_diag
   simpa [boltzmannWeight] using
     Complex.summable_ofReal.mpr
       (summable_particleNumber_boltzmannWeight ε β hpos i)
+
+/-- The rotated mixed-mode two-point double series is summable, including distinct modes. -/
+theorem summable_imaginaryTimeEvolveFree_comp_create_mul_annihilate
+    (ε : Mode → ℝ) (β : ℝ) (hpos : ∀ k, 0 < β * ε k) (i j : Mode) :
+    Summable (Function.uncurry (fun n k =>
+      Common.matrixCoeff ((imaginaryTimeEvolveFree ε (-β)).comp (create j)) n k *
+        Common.matrixCoeff (annihilate i) k n)) := by
+  by_cases hij : i = j
+  · subst j
+    exact summable_imaginaryTimeEvolveFree_comp_create_mul_annihilate_diag ε β hpos i
+  · have hzero : Function.uncurry (fun n k =>
+        Common.matrixCoeff ((imaginaryTimeEvolveFree ε (-β)).comp (create j)) n k *
+          Common.matrixCoeff (annihilate i) k n) = 0 := by
+      funext p
+      simp only [Function.uncurry, Pi.zero_apply]
+      exact matrixCoeff_imaginaryTimeEvolveFree_comp_create_mul_matrixCoeff_annihilate_of_ne
+        hij ε (-β) p.1 p.2
+    rw [hzero]
+    exact summable_zero
 
 /-- The Boltzmann-weighted diagonal partition series is summable over `ℂ`. -/
 theorem summable_imaginaryTimeEvolveFree_self (ε : Mode → ℝ) (β : ℝ) (hpos : ∀ i, 0 < β * ε i) :

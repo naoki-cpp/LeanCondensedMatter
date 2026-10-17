@@ -51,21 +51,8 @@ theorem freeGibbsExpectation_annihilate_comp_create_concrete
           (LinearMap.id : FockSpace Mode →ₗ[ℂ] FockSpace Mode) := by
       simpa using comm_annihilate_create i j
     have hSummD := summable_imaginaryTimeEvolveFree_self ε β hpos
-    have hRotate : Summable (Function.uncurry (fun n k =>
-        Common.matrixCoeff ((imaginaryTimeEvolveFree ε (-β)).comp (create j)) n k *
-          Common.matrixCoeff (annihilate i) k n)) := by
-      by_cases hij : i = j
-      · subst hij
-        exact summable_imaginaryTimeEvolveFree_comp_create_mul_annihilate_diag ε β hpos i
-      · have hzero : Function.uncurry (fun n k =>
-            Common.matrixCoeff ((imaginaryTimeEvolveFree ε (-β)).comp (create j)) n k *
-              Common.matrixCoeff (annihilate i) k n) = 0 := by
-          funext p
-          simp only [Function.uncurry, Pi.zero_apply]
-          exact matrixCoeff_imaginaryTimeEvolveFree_comp_create_mul_matrixCoeff_annihilate_of_ne
-            hij ε (-β) p.1 p.2
-        rw [hzero]
-        exact summable_zero
+    have hRotate :=
+      summable_imaginaryTimeEvolveFree_comp_create_mul_annihilate ε β hpos i j
     simpa only [freeGibbsExpectation, freeGibbsPartition, imaginaryTimeEvolveFree, one_mul] using
       Common.normalizedTsumTrace_comp_eq_div_of_zetaCommutator
         (freeEigenvalue ε) β (-(ε i)) (1 : ℂ)
