@@ -28,8 +28,8 @@ j_ψ(x) = Re (star (ψ x) * (v ψ)(x)).
 ```
 
 The charge-current statement follows by real charge scaling.  The bridge is owned by the concrete
-single-particle layer and depends only on the shared analysis operator, so it introduces no
-dependency from `QuantumMechanics` to `SecondQuantization`.
+single-particle layer and uses the physical Schrödinger velocity specialization together with
+shared Schwartz analysis; it introduces no `SecondQuantization` dependency.
 -/
 
 namespace QuantumMechanics
