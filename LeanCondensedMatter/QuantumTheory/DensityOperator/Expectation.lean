@@ -45,21 +45,6 @@ private noncomputable def densityExpectationTrace
     (ρ : DensityOperator H) (A : H →L[ℂ] H) : ℂ :=
   (ρ.isTraceClass.comp_right A).trace
 
-private theorem densityExpectationTrace_add
-    (ρ : DensityOperator H) (A B : H →L[ℂ] H) :
-    densityExpectationTrace ρ (A + B) =
-      densityExpectationTrace ρ A + densityExpectationTrace ρ B := by
-  unfold densityExpectationTrace
-  simpa only [mul_add] using
-    (ρ.isTraceClass.comp_right A).trace_add (ρ.isTraceClass.comp_right B)
-
-private theorem densityExpectationTrace_smul
-    (ρ : DensityOperator H) (c : ℂ) (A : H →L[ℂ] H) :
-    densityExpectationTrace ρ (c • A) = c * densityExpectationTrace ρ A := by
-  unfold densityExpectationTrace
-  simpa only [mul_smul_comm] using
-    (ρ.isTraceClass.comp_right A).trace_smul c
-
 private theorem densityExpectationTrace_norm_le
     (ρ : DensityOperator H) (A : H →L[ℂ] H) :
     ‖densityExpectationTrace ρ A‖ ≤ ‖A‖ := by
@@ -78,9 +63,17 @@ noncomputable def DensityOperator.expectation (ρ : DensityOperator H) :
     (H →L[ℂ] H) →L[ℂ] ℂ :=
   IsBoundedLinearMap.toContinuousLinearMap
     (fun A : H →L[ℂ] H => densityExpectationTrace ρ A)
-    { map_add := densityExpectationTrace_add ρ
+    { map_add := fun A B => by
+        unfold densityExpectationTrace
+        simpa only [mul_add] using
+          (ρ.isTraceClass.comp_right A).trace_add (ρ.isTraceClass.comp_right B)
       map_smul := fun c A => by
-        simpa only [smul_eq_mul] using densityExpectationTrace_smul ρ c A
+        simpa only [smul_eq_mul] using
+          (show densityExpectationTrace ρ (c • A) =
+            c * densityExpectationTrace ρ A by
+              unfold densityExpectationTrace
+              simpa only [mul_smul_comm] using
+                (ρ.isTraceClass.comp_right A).trace_smul c)
       bound := ⟨1, zero_lt_one, fun A => by simpa using densityExpectationTrace_norm_le ρ A⟩ }
 
 /-- The canonical expectation is the general trace-class trace `Tr(ρA)`. -/
