@@ -38,12 +38,11 @@ theorem purePointGibbsCompetitor_probability [Nonempty ι]
     (purePointGibbsCompetitor E β hsum hint).probability i =
       purePointGibbsProbability E β i := rfl
 
-private theorem purePointGibbs_entropy_le_and_eq_iff
+private theorem purePointGibbs_entropy_eq_iff
     [Nonempty ι] (E : ι → ℝ) (β : ℝ)
     (hsum : PurePointGibbsSummable E β) (p : PurePointGibbsCompetitor E) :
-    p.entropy ≤ β * p.energy + Real.log (purePointPartitionFunction E β) ∧
-      (p.entropy = β * p.energy + Real.log (purePointPartitionFunction E β) ↔
-        ∀ i, p.probability i = purePointGibbsProbability E β i) := by
+    p.entropy = β * p.energy + Real.log (purePointPartitionFunction E β) ↔
+      ∀ i, p.probability i = purePointGibbsProbability E β i := by
   let Z := purePointPartitionFunction E β
   let q := purePointBoltzmannWeight E β
   have hZpos : 0 < Z := by
@@ -70,7 +69,7 @@ private theorem purePointGibbs_entropy_le_and_eq_iff
       p.probability q E β Z p.hasSum_one hEnergy hqsum
   have hqsum_le : ∑' i, q i ≤ Z := by
     rfl
-  obtain ⟨hEntropySummable, hmainRaw⟩ :=
+  obtain ⟨hEntropySummable, _⟩ :=
     Real.summable_negMulLog_and_tsum_le_gibbs
       p.probability q E β Z p.nonneg p.hasSum_one hEnergy
       hqsum hqsum_le (fun i => purePointBoltzmannWeight_pos E β i) hZpos hlog
@@ -92,9 +91,6 @@ private theorem purePointGibbs_entropy_le_and_eq_iff
         rw [hqZ]
         simp only [PurePointGibbsCompetitor.energy]
         ring
-  have hmain : p.entropy ≤ β * p.energy + Real.log Z := by
-    simpa only [PurePointGibbsCompetitor.entropy, PurePointGibbsCompetitor.energy] using hmainRaw
-  refine ⟨by simpa [Z] using hmain, ?_⟩
   constructor
   · intro heq
     have heqZ : p.entropy = β * p.energy + Real.log Z := by
@@ -116,16 +112,11 @@ private theorem purePointGibbs_entropy_le_and_eq_iff
     have hqpos : 0 < q i := by
       simpa [q] using purePointBoltzmannWeight_pos E β i
     have hqZpos : 0 < q i / Z := div_pos hqpos hZpos
-    have hlog : -Real.log (q i) = β * E i := by
-      simp [q, purePointBoltzmannWeight]
     have henergylog :
         β * (p.probability i * E i) =
           -p.probability i * Real.log (q i) := by
-      calc
-        β * (p.probability i * E i) =
-            p.probability i * (β * E i) := by ring
-        _ = p.probability i * (-Real.log (q i)) := by rw [← hlog]
-        _ = -p.probability i * Real.log (q i) := by ring
+      simp only [q, purePointBoltzmannWeight, Real.log_exp]
+      ring
     have hlogdiv : Real.log (q i / Z) = Real.log (q i) - Real.log Z :=
       Real.log_div hqpos.ne' hZpos.ne'
     have hscalar :
@@ -149,29 +140,14 @@ private theorem purePointGibbs_entropy_le_and_eq_iff
       intro i
       have hqpos : 0 < q i := by
         simpa [q] using purePointBoltzmannWeight_pos E β i
-      have hqZpos : 0 < q i / Z := div_pos hqpos hZpos
       have hpq : p.probability i = q i / Z := by
         calc
           p.probability i = purePointGibbsProbability E β i := hp i
           _ = q i / Z := by
             simp [q, Z, purePointGibbsProbability, div_eq_mul_inv, mul_comm]
-      have hscalar :=
-        (Real.gibbs_scalar_ineq_eq_iff (p.probability i) (q i / Z)
-          (p.nonneg i) hqZpos).mpr hpq
-      have hlog : -Real.log (q i) = β * E i := by
-        simp [q, purePointBoltzmannWeight]
-      have henergylog :
-          β * (p.probability i * E i) =
-            -p.probability i * Real.log (q i) := by
-        calc
-          β * (p.probability i * E i) =
-              p.probability i * (β * E i) := by ring
-          _ = p.probability i * (-Real.log (q i)) := by rw [← hlog]
-          _ = -p.probability i * Real.log (q i) := by ring
-      have hlogdiv : Real.log (q i / Z) = Real.log (q i) - Real.log Z :=
-        Real.log_div hqpos.ne' hZpos.ne'
-      rw [hlogdiv] at hscalar
-      nlinarith [hscalar, henergylog]
+      rw [hpq, Real.negMulLog, Real.log_div hqpos.ne' hZpos.ne']
+      simp only [q, purePointBoltzmannWeight, Real.log_exp]
+      ring
     calc
       p.entropy = ∑' i, Real.negMulLog (p.probability i) := rfl
       _ = ∑' i, (β * (p.probability i * E i) + p.probability i * Real.log Z -
@@ -188,7 +164,7 @@ theorem purePointGibbs_helmholtzFreeEnergy_eq_iff_probability_eq
         -(1 / β) * Real.log (purePointPartitionFunction E β) ↔
       ∀ i, p.probability i = purePointGibbsProbability E β i := by
   have hβne : β ≠ 0 := ne_of_gt hβ
-  have hcore := (purePointGibbs_entropy_le_and_eq_iff E β hsum p).2
+  have hcore := purePointGibbs_entropy_eq_iff E β hsum p
   constructor
   · intro hfree
     apply hcore.mp
