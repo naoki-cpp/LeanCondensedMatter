@@ -25,9 +25,9 @@ two-dimensional polar specialization and angular reduction.
 The full-angle kernels below are the canonical intermediate for radial Fourier reduction. Constant,
 first, and second angular channels are supplied through `AngularHarmonicCoefficients`, shared with
 ordinary angular integration. The kernels remain explicit finite interval integrals to preserve
-their angular reduction API. The zeroth kernel is identified with `2π * Complex.besselJ 0`
-by `polarFourierZerothAngularKernel_eq_besselJ`; first and second harmonics still await
-analogous Bessel bridges.
+their angular reduction API. The zeroth and first-cosine kernels are identified with
+`2π * Complex.besselJ 0` and `2π * Complex.I * Complex.besselJ 1` respectively;
+the second-cosine harmonic still awaits its Bessel bridge.
 
 No model Hamiltonian, matrix representation, disorder approximation, real-space cutoff, or
 conductivity normalization is introduced here.
@@ -87,8 +87,8 @@ theorem physicalMomentumPolarFourierPhase_polarPoint2D
 noncomputable def polarFourierZerothAngularKernel (z : ℝ) : ℂ :=
   ∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi), polarFourierRadialPhase z θ
 
-/-- First cosine full-angle radial Fourier kernel. A future integral-representation theorem should
-identify it with `2π i J₁(z)` using Mathlib's `Complex.besselJ`. -/
+/-- First cosine full-angle radial Fourier kernel, identified with `2π i J₁(z)`
+by `polarFourierFirstCosineAngularKernel_eq_besselJ`. -/
 noncomputable def polarFourierFirstCosineAngularKernel (z : ℝ) : ℂ :=
   ∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi),
     polarFourierRadialPhase z θ * ((Real.cos θ : ℝ) : ℂ)
@@ -440,9 +440,9 @@ private theorem norm_polarFourierRadialPhase (z θ : ℝ) :
 harmonics: the derivative of the zeroth angular kernel is `i` times the
 first-cosine kernel.
 
-Unlike an origin-only normalization, this identity holds for all real
-Fourier arguments and is a step toward identifying the Fourier kernels
-with the integer-order Bessel functions in Mathlib v4.35.0. -/
+Unlike an origin-only normalization, this holds for every real Fourier
+argument. Together with the J₀ Bessel bridge and the hypergeometric-series
+derivative, it yields the first-harmonic Bessel identity. -/
 theorem polarFourierZerothAngularKernel_hasDerivAt (z : ℝ) :
     HasDerivAt polarFourierZerothAngularKernel
       (Complex.I * polarFourierFirstCosineAngularKernel z) z := by
