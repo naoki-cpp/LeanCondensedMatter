@@ -40,43 +40,31 @@ def probabilityCurrentDivergenceValue {d : ℕ} (ℏ κ : ℝ) (ψ : ℂ)
     (secondDerivatives : Fin d → ℂ) : ℝ :=
   ∑ i, probabilityCurrentDivergenceValue1D ℏ κ ψ (secondDerivatives i)
 
-/-- The one-dimensional current-divergence value is additive in the second derivative. -/
-private theorem probabilityCurrentDivergenceValue1D_add
-    (ℏ κ : ℝ) (ψ a b : ℂ) :
-    probabilityCurrentDivergenceValue1D ℏ κ ψ (a + b) =
-      probabilityCurrentDivergenceValue1D ℏ κ ψ a +
-        probabilityCurrentDivergenceValue1D ℏ κ ψ b := by
-  simp only [probabilityCurrentDivergenceValue1D_eq_coordinates, Complex.add_re,
-    Complex.add_im]
-  ring
-
-/-- The one-dimensional current-divergence value vanishes at zero second derivative. -/
-private theorem probabilityCurrentDivergenceValue1D_zero
-    (ℏ κ : ℝ) (ψ : ℂ) :
-    probabilityCurrentDivergenceValue1D ℏ κ ψ 0 = 0 := by
-  simp [probabilityCurrentDivergenceValue1D_eq_coordinates]
-
-/-- Finite coordinate sums commute with the pointwise current-divergence value. -/
-private theorem probabilityCurrentDivergenceValue1D_sum
-    {ι : Type*} (s : Finset ι) (ℏ κ : ℝ) (ψ : ℂ) (f : ι → ℂ) :
-    probabilityCurrentDivergenceValue1D ℏ κ ψ (∑ i ∈ s, f i) =
-      ∑ i ∈ s, probabilityCurrentDivergenceValue1D ℏ κ ψ (f i) := by
-  classical
-  induction s using Finset.induction_on with
-  | empty => simp [probabilityCurrentDivergenceValue1D_zero]
-  | @insert a s ha ih =>
-      simp [ha, probabilityCurrentDivergenceValue1D_add, ih]
-
 /-- The coordinate divergence equals the one-dimensional divergence formula evaluated on the
 pointwise Laplacian value `∑ i, ∂ᵢ²ψ`. -/
 theorem probabilityCurrentDivergenceValue_eq_laplacian
     {d : ℕ} (ℏ κ : ℝ) (ψ : ℂ) (secondDerivatives : Fin d → ℂ) :
     probabilityCurrentDivergenceValue ℏ κ ψ secondDerivatives =
       probabilityCurrentDivergenceValue1D ℏ κ ψ (∑ i, secondDerivatives i) := by
+  have hzero : probabilityCurrentDivergenceValue1D ℏ κ ψ 0 = 0 := by
+    simp [probabilityCurrentDivergenceValue1D_eq_coordinates]
+  have hadd (u v : ℂ) :
+      probabilityCurrentDivergenceValue1D ℏ κ ψ (u + v) =
+        probabilityCurrentDivergenceValue1D ℏ κ ψ u +
+          probabilityCurrentDivergenceValue1D ℏ κ ψ v := by
+    simp only [probabilityCurrentDivergenceValue1D_eq_coordinates, Complex.add_re,
+      Complex.add_im]
+    ring
+  have hsum (s : Finset (Fin d)) :
+      probabilityCurrentDivergenceValue1D ℏ κ ψ (∑ i ∈ s, secondDerivatives i) =
+        ∑ i ∈ s, probabilityCurrentDivergenceValue1D ℏ κ ψ (secondDerivatives i) := by
+    classical
+    induction s using Finset.induction_on with
+    | empty => simp [hzero]
+    | @insert a s ha ih => simp [ha, hadd, ih]
   unfold probabilityCurrentDivergenceValue
   symm
-  simpa using probabilityCurrentDivergenceValue1D_sum
-    (s := Finset.univ) ℏ κ ψ secondDerivatives
+  simpa using hsum Finset.univ
 
 /-- Pointwise finite-dimensional probability balance from the scalar-potential Schrödinger equation.
 
