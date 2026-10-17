@@ -149,10 +149,11 @@ separate. TMatrix is the package entry point for these two responsibilities.
 
 The `Models.RashbaExchange` family owns its clean Rashba-exchange Hamiltonian and spectral
 identities in `Model`, `Model/Spectral`, and `Model/Interband`. The finite-response bundle
-and momentum disk live in `ResponseParameters`. The bounded Hamiltonian and velocity, together
-with the charge-current vertices, are defined in `Operator`; retarded/advanced resolvents are
-in `Green`. Berry/force-matrix bridges and finite Bastin/Středa response stay in model-owned
-downstream modules. Generic trace, measure, and conductivity constructions remain upstream
+and momentum disk live in `ResponseParameters`. The clean bounded Hamiltonian and velocity are defined in `Operator`; their band-projector
+spectral identities are in `Model/OperatorSpectral`. The signed charge and bounded current
+vertices, including ordered projector-current traces, live in `Current`; retarded/advanced
+resolvents are in `Green`. Berry/force-matrix bridges and finite Bastin/Středa response stay
+in model-owned downstream modules. Generic trace, measure, and conductivity constructions remain upstream
 under `Transport`.
 
 `Models.Parabolic2DEG` is the public route for the finite isotropic parabolic-band
