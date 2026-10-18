@@ -1,5 +1,4 @@
 import LeanCondensedMatter.QuantumTheory.DensityOperator.DiagonalFormula
-import LeanCondensedMatter.QuantumTheory.Gibbs.DiagonalEnergy
 import Mathlib.Analysis.SpecialFunctions.Exp
 
 /-!
@@ -110,20 +109,6 @@ theorem purePointGibbsDensityOperator_apply_basis [Nonempty ι]
 a bounded `Observable`.  State existence alone does not imply this stronger weighted summability. -/
 def PurePointGibbsEnergyIntegrable (E : ι → ℝ) (β : ℝ) : Prop :=
   Summable fun i => ‖purePointGibbsProbability E β i * E i‖
-
-/-- When the same energy data do come from a bounded observable, the generic bounded expectation
-API gives the expected weighted pure-point energy series.  Genuinely unbounded energy data should
-instead carry `PurePointGibbsEnergyIntegrable` explicitly. -/
-theorem energyExpValue_purePointGibbsDensityOperator_eq_tsum [Nonempty ι]
-    (b : HilbertBasis ι ℂ H) (E : ι → ℝ) (β : ℝ)
-    (hsum : PurePointGibbsSummable E β) (Hop : Observable H)
-    (hE : ∀ i, Hop.1 (b i) = (E i : ℂ) • b i) :
-    energyExpValue (purePointGibbsDensityOperator b E β hsum) Hop =
-      ∑' i, purePointGibbsProbability E β i * E i := by
-  exact energyExpValue_eq_tsum_common_eigenbasis
-    (purePointGibbsDensityOperator b E β hsum) Hop b
-    (purePointGibbsProbability E β) E
-    (purePointGibbsDensityOperator_apply_basis b E β hsum) hE
 
 /-- On a finite spectral index, the Boltzmann summability hypothesis is automatic. -/
 theorem purePointGibbsSummable_of_finite [Finite ι] (E : ι → ℝ) (β : ℝ) :
