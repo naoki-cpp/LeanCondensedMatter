@@ -1146,24 +1146,6 @@ theorem integral_polarFourierRadialPhase_first_harmonics
   simpa [coefficients, AngularHarmonicCoefficients.eval, smul_eq_mul] using
     coefficients.integral_polarFourierRadialPhase z p
 
-private theorem intervalIntegral_fullPeriod_comp_sub_eq
-    (f : ℝ → ℂ) (hf : Function.Periodic f (2 * Real.pi)) (angle : ℝ) :
-    (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi), f (θ - angle)) =
-      ∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi), f θ := by
-  rw [intervalIntegral.integral_comp_sub_right]
-  have h := hf.intervalIntegral_add_eq (-angle) 0
-  simpa [sub_eq_add_neg, add_comm, add_left_comm, add_assoc] using h
-
-/-- Reversing the radial Fourier argument is equivalent to shifting the polar angle by π. -/
-private theorem polarFourierRadialPhase_neg_eq_shift_pi (z θ : ℝ) :
-    polarFourierRadialPhase (-z) θ =
-      polarFourierRadialPhase z (θ - Real.pi) := by
-  unfold polarFourierRadialPhase
-  apply congrArg Complex.exp
-  rw [Real.cos_sub_pi]
-  push_cast
-  ring
-
 /-- The zeroth full-angle radial Fourier kernel is even in its radial argument. -/
 @[simp] theorem polarFourierZerothAngularKernel_neg (z : ℝ) :
     polarFourierZerothAngularKernel (-z) =
@@ -1177,50 +1159,23 @@ private theorem polarFourierRadialPhase_neg_eq_shift_pi (z θ : ℝ) :
 @[simp] theorem polarFourierFirstCosineAngularKernel_neg (z : ℝ) :
     polarFourierFirstCosineAngularKernel (-z) =
       -polarFourierFirstCosineAngularKernel z := by
-  let f : ℝ → ℂ := fun θ =>
-    polarFourierRadialPhase z θ * ((Real.cos θ : ℝ) : ℂ)
-  have hf : Function.Periodic f (2 * Real.pi) := by
-    intro θ
-    dsimp [f]
-    unfold polarFourierRadialPhase
-    rw [Real.cos_add_two_pi]
-  have hpoint (θ : ℝ) :
-      polarFourierRadialPhase (-z) θ * ((Real.cos θ : ℝ) : ℂ) =
-        -f (θ - Real.pi) := by
-    rw [polarFourierRadialPhase_neg_eq_shift_pi]
-    dsimp [f]
-    rw [Real.cos_sub_pi]
-    push_cast
-    ring
-  unfold polarFourierFirstCosineAngularKernel
-  simp_rw [hpoint]
-  rw [intervalIntegral.integral_neg,
-    intervalIntegral_fullPeriod_comp_sub_eq f hf Real.pi]
+  have hodd : Complex.besselJ 1 (-(z : ℂ)) =
+      -Complex.besselJ 1 (z : ℂ) := by
+    simpa only [Int.cast_one] using
+      (Complex.odd_besselJ (a := (1 : ℤ)) (by norm_num)) (z : ℂ)
+  simp only [polarFourierFirstCosineAngularKernel_eq_besselJ, Complex.ofReal_neg,
+    hodd]
+  ring
 
 /-- The second-cosine full-angle radial Fourier kernel is even in its radial argument. -/
 @[simp] theorem polarFourierSecondCosineAngularKernel_neg (z : ℝ) :
     polarFourierSecondCosineAngularKernel (-z) =
       polarFourierSecondCosineAngularKernel z := by
-  let f : ℝ → ℂ := fun θ =>
-    polarFourierRadialPhase z θ *
-      ((((Real.cos θ : ℝ) : ℂ) ^ 2) - (((Real.sin θ : ℝ) : ℂ) ^ 2))
-  have hf : Function.Periodic f (2 * Real.pi) := by
-    intro θ
-    dsimp [f]
-    unfold polarFourierRadialPhase
-    rw [Real.cos_add_two_pi, Real.sin_add_two_pi]
-  have hpoint (θ : ℝ) :
-      polarFourierRadialPhase (-z) θ *
-          ((((Real.cos θ : ℝ) : ℂ) ^ 2) - (((Real.sin θ : ℝ) : ℂ) ^ 2)) =
-        f (θ - Real.pi) := by
-    rw [polarFourierRadialPhase_neg_eq_shift_pi]
-    dsimp [f]
-    rw [Real.cos_sub_pi, Real.sin_sub_pi]
-    push_cast
-    ring
-  unfold polarFourierSecondCosineAngularKernel
-  simp_rw [hpoint]
-  simpa [f] using intervalIntegral_fullPeriod_comp_sub_eq f hf Real.pi
+  have heven : Complex.besselJ 2 (-(z : ℂ)) =
+      Complex.besselJ 2 (z : ℂ) := by
+    simpa using (Complex.even_besselJ (a := (2 : ℤ)) (by norm_num)) (z : ℂ)
+  simp only [polarFourierSecondCosineAngularKernel_eq_besselJ, Complex.ofReal_neg,
+    heven]
 
 /-- Complex conjugation of the angular Fourier phase reverses its radial argument. -/
 private theorem polarFourierRadialPhase_conj (z θ : ℝ) :
