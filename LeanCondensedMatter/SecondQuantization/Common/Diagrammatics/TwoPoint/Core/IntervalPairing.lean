@@ -352,12 +352,9 @@ theorem TwoPointDiagram.intervalBlock_partner_external (i : Fin 2) :
         hEarlier hLater hne hpne) (Sum.inl i)) := by
   rw [d.intervalBlock_partner_equiv boundaryLabels earlier later
     hsepLater hEarlier hLater hne hpne]
-  have he : (d.intervalBlockLegEquiv earlier later hsepLater)
-      (twoPointExternalLeg (interactionSector
-        (d.verticesBetweenCuts earlier later)) i) = Sum.inl i := by
-    simp [TwoPointDiagram.intervalBlockLegEquiv, twoPointExternalLeg]
-  rw [he, d.intervalAugmentedPairing_partner_external earlier later
-    hEarlier hLater hne hpne]
+  rw [d.intervalBlockLegEquiv_external earlier later hsepLater i,
+    d.intervalAugmentedPairing_partner_external earlier later
+      hEarlier hLater hne hpne]
 
 /-- The block keeps each interior propagator's partner under leg reindexing.
 `interiorPairing_partner_val` identifies it with the ambient partner. -/
