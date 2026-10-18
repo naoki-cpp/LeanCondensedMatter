@@ -89,12 +89,13 @@ theorem integral_purePointAdiabaticTransitionIntegrand_Ioi_zero
       (purePointTransitionData system data A B mn).energyGap hη]
   rfl
 
-/-- The countable transition sum may be exchanged with the causal fixed-rate Bochner integral. -/
+/-- Absolute summability of transition weights suffices to exchange the countable transition sum
+with the causal fixed-positive-rate Bochner integral. -/
 theorem integral_tsum_purePointAdiabaticTransitionIntegrand_Ioi_zero
     [Countable ι]
     (data : PurePointLehmannData system ι)
     (A B : H →L[ℂ] H) (omega eta : ℝ) (hη : 0 < eta)
-    (hsum : PurePointTimeDomainSummable system data A B) :
+    (hsum : PurePointLehmannSummable system data A B) :
     (∫ τ : ℝ in Ioi 0,
       ∑' mn : ι × ι,
         purePointAdiabaticTransitionIntegrand system data A B omega eta mn τ) =
@@ -121,7 +122,7 @@ theorem integral_tsum_purePointAdiabaticTransitionIntegrand_Ioi_zero
       ∫ τ : ℝ in Ioi 0,
         ‖purePointAdiabaticTransitionIntegrand system data A B omega eta mn τ‖ := by
     let C : ℝ := ∫ τ : ℝ in Ioi 0, ‖adiabaticFrequencyPhase omega eta τ‖
-    apply ((hsum.lehmannSummable system data A B).mul_left C).congr
+    apply (hsum.mul_left C).congr
     intro mn
     symm
     calc
@@ -177,7 +178,7 @@ theorem adiabaticFrequencyDomainSusceptibilityOfPositiveRate_purePoint_eq_lehman
         rw [tsum_mul_left]
     _ = purePointLehmannSeries system data A B omega eta :=
       integral_tsum_purePointAdiabaticTransitionIntegrand_Ioi_zero
-        system data A B omega eta hη hsum
+        system data A B omega eta hη (hsum.lehmannSummable system data A B)
 
 /-- In finite dimension, the physical susceptibility is the conventional finite double Lehmann
 sum. -/
