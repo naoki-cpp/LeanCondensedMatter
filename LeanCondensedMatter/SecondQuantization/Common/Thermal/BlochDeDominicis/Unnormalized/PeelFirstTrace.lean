@@ -70,26 +70,18 @@ theorem tsumTrace_diagonalEvolution_comp_peel
     have := summable_matrixCoeff_diag_comp_of_summable_uncurry
       ((diagonalEvolution energy (-β)).comp (List.prod (l.map Prod.fst))) C1 hRotate
     rwa [LinearMap.comp_assoc] at this
-  have hDcomm : (diagonalEvolution energy (-β)).comp (C1.comp (List.prod (l.map Prod.fst))) =
-      (diagonalEvolution energy (-β)).comp (ScalarExchange.peelSumWithCoefficients ζ l) +
-        ζ ^ l.length • ((diagonalEvolution energy (-β)).comp
-          ((List.prod (l.map Prod.fst)).comp C1)) := by
-    rw [hopeq, LinearMap.comp_add, LinearMap.comp_smul]
-  have hpoint : (fun n => matrixCoeff ((diagonalEvolution energy (-β)).comp
-      (C1.comp (List.prod (l.map Prod.fst)))) n n) =
-      fun n => matrixCoeff ((diagonalEvolution energy (-β)).comp (ScalarExchange.peelSumWithCoefficients ζ l)) n n +
-        ζ ^ l.length * matrixCoeff ((diagonalEvolution energy (-β)).comp
-          ((List.prod (l.map Prod.fst)).comp C1)) n n := by
-    funext n
-    rw [hDcomm]
-    simpa only [← matrixCoeffLinear_apply, map_add, map_smul, smul_eq_mul]
+  have hscaled : Summable (fun n =>
+      matrixCoeff (ζ ^ l.length • ((diagonalEvolution energy (-β)).comp
+        ((List.prod (l.map Prod.fst)).comp C1))) n n) := by
+    simpa only [← matrixCoeffLinear_apply, map_smul, smul_eq_mul] using
+      hSummDCjC1.mul_left (ζ ^ l.length)
   have hstep : tsumTrace ((diagonalEvolution energy (-β)).comp
       (C1.comp (List.prod (l.map Prod.fst)))) =
       tsumTrace ((diagonalEvolution energy (-β)).comp (ScalarExchange.peelSumWithCoefficients ζ l)) +
         ζ ^ l.length * tsumTrace ((diagonalEvolution energy (-β)).comp
           ((List.prod (l.map Prod.fst)).comp C1)) := by
-    rw [tsumTrace, tsumTrace, tsumTrace, hpoint,
-      (hPeel.hasSum.add ((hSummDCjC1.mul_left (ζ ^ l.length)).hasSum)).tsum_eq, tsum_mul_left]
+    rw [hopeq, LinearMap.comp_add, LinearMap.comp_smul,
+      tsumTrace_add hPeel hscaled, tsumTrace_smul]
   rw [hrot, smul_eq_mul] at hstep
   linear_combination hstep
 
