@@ -1,7 +1,7 @@
 module
 
 public import LeanCondensedMatter.Analysis.Operator.SchwartzKinetic1D
-public import Mathlib.Algebra.Lie.OfAssociative
+import Mathlib.Algebra.Lie.OfAssociative
 import Mathlib.Tactic
 
 public section
