@@ -189,9 +189,7 @@ theorem adiabaticFrequencyDomainSusceptibilityOfPositiveRate_purePoint_eq_finite
     adiabaticFrequencyDomainSusceptibilityOfPositiveRate system
         (purePointNormalizedExpectation system data) A B omega eta hη =
       ∑ mn : ι × ι,
-        lehmannTerm system.hbar omega eta
-          (data.energy mn.1 - data.energy mn.2)
-          ((purePointTransitionData system data A B mn).weight) := by
+        (purePointTransitionData system data A B mn).frequencyTerm omega eta := by
   rw [adiabaticFrequencyDomainSusceptibilityOfPositiveRate_purePoint_eq_lehmannSeries
     system data A B omega eta hη
       (purePointTimeDomainSummable_of_finite system data A B)]

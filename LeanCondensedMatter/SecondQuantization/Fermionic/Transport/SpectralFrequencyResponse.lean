@@ -71,19 +71,19 @@ theorem purePointDirectionalCurrentLehmannTerm_of_equal_energy
     (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
     (K : LocallyFiniteHopping Site) (q ω η : ℝ) {m n : ι}
     (henergy : data.energy m = data.energy n) :
-    lehmannTerm system.hbar ω η
-        (data.energy m - data.energy n)
-        ((purePointTransitionData system data
+    (purePointTransitionData system data
           (boundedDirectionalCurrent geometry direction
             (system.hbar : ℂ) (q : ℂ) K)
           (boundedDirectionalCurrent geometry direction
-            (system.hbar : ℂ) (q : ℂ) K) (m, n)).weight) =
+            (system.hbar : ℂ) (q : ℂ) K) (m, n)).frequencyTerm ω η =
       (purePointTransitionData system data
           (boundedDirectionalCurrent geometry direction
             (system.hbar : ℂ) (q : ℂ) K)
           (boundedDirectionalCurrent geometry direction
             (system.hbar : ℂ) (q : ℂ) K) (m, n)).weight *
         ((η : ℂ) - Complex.I * (ω : ℂ))⁻¹ := by
+  simp only [QuantumTheory.LinearResponse.LehmannTransitionData.frequencyTerm,
+    purePointTransitionData_energyGap, orderedLehmannEnergyGap]
   have hgap : data.energy m - data.energy n = 0 := sub_eq_zero.mpr henergy
   rw [hgap]
   simp [lehmannTerm, lehmannDenominator]
@@ -100,13 +100,11 @@ theorem infiniteTimeAdiabaticDirectionalRetardedCoefficient_purePoint_eq_finite_
         system (purePointNormalizedExpectation system data)
         geometry direction K q ω η =
       ∑ mn : ι × ι,
-        lehmannTerm system.hbar ω η
-          (data.energy mn.1 - data.energy mn.2)
-          ((purePointTransitionData system data
+        (purePointTransitionData system data
             (boundedDirectionalCurrent geometry direction
               (system.hbar : ℂ) (q : ℂ) K)
             (boundedDirectionalCurrent geometry direction
-              (system.hbar : ℂ) (q : ℂ) K) mn).weight) := by
+              (system.hbar : ℂ) (q : ℂ) K) mn).frequencyTerm ω η := by
   rw [infiniteTimeAdiabaticDirectionalRetardedCoefficient_eq_susceptibility]
   simpa [adiabaticFrequencyDomainSusceptibilityOfPositiveRate] using
     (adiabaticFrequencyDomainSusceptibilityOfPositiveRate_purePoint_eq_finite_sum
@@ -128,13 +126,11 @@ theorem infiniteTimeAdiabaticDirectionalCoefficient_purePoint_eq_finite_sum
         system (purePointNormalizedExpectation system data)
         geometry direction K q ω η =
       (∑ mn : ι × ι,
-        lehmannTerm system.hbar ω η
-          (data.energy mn.1 - data.energy mn.2)
-          ((purePointTransitionData system data
+        (purePointTransitionData system data
             (boundedDirectionalCurrent geometry direction
               (system.hbar : ℂ) (q : ℂ) K)
             (boundedDirectionalCurrent geometry direction
-              (system.hbar : ℂ) (q : ℂ) K) mn).weight)) +
+              (system.hbar : ℂ) (q : ℂ) K) mn).frequencyTerm ω η) +
         purePointNormalizedExpectation system data
           (boundedDirectionalContact geometry direction
             (system.hbar : ℂ) (q : ℂ) K) := by
@@ -155,13 +151,11 @@ theorem hasInfiniteObservationTimeLimit_directional_purePoint_finite_sum
         system (purePointNormalizedExpectation system data)
           geometry direction K q ω η)
       ((∑ mn : ι × ι,
-        lehmannTerm system.hbar ω η
-          (data.energy mn.1 - data.energy mn.2)
-          ((purePointTransitionData system data
+        (purePointTransitionData system data
             (boundedDirectionalCurrent geometry direction
               (system.hbar : ℂ) (q : ℂ) K)
             (boundedDirectionalCurrent geometry direction
-              (system.hbar : ℂ) (q : ℂ) K) mn).weight)) +
+              (system.hbar : ℂ) (q : ℂ) K) mn).frequencyTerm ω η) +
         purePointNormalizedExpectation system data
           (boundedDirectionalContact geometry direction
             (system.hbar : ℂ) (q : ℂ) K)) := by

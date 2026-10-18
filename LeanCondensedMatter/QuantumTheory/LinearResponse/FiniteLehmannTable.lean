@@ -1,4 +1,4 @@
-import LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann
+import LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann.Transition
 
 set_option linter.style.header false
 
@@ -13,12 +13,10 @@ Eₙ, pₙ, Aₘₙ = ⟨m|A|n⟩, Bₘₙ = ⟨m|B|n⟩.
 ```
 
 `FiniteLehmannTable` stores exactly these quantities.  `finiteLehmannTableTransitionData` is the
-explicit scalar adapter to the canonical `LehmannTransitionData` seam in `Lehmann.lean`; evaluation
+explicit scalar adapter to the canonical `LehmannTransitionData` seam in `Lehmann/Transition.lean`; evaluation
 then uses the record's fixed-rate frequency term.
 
-The bridge `finiteLehmannTableOfPurePoint` constructs a table from the theorem-level
-`PurePointLehmannData` API and bounded observables.  The main equality proves that evaluating the
-scalar table is exactly the existing finite pure-point Lehmann series.
+The operator-to-table adapter is owned separately by `Lehmann/PurePointTable.lean`.
 
 This layer intentionally carries no SecondQuantization or conductivity-specific data.  Contact
 terms and finite-volume electric-field normalization belong to the downstream transport wrapper.
@@ -71,42 +69,6 @@ noncomputable def finiteLehmannTableResponse
   ∑ mn : ι × ι,
     (finiteLehmannTableTransitionData hbar table mn).frequencyTerm omega eta
 
-variable {H ι : Type*}
-variable [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
-
-/-- Forget an operator-level pure-point response problem to the scalar data needed for finite
-Lehmann evaluation. -/
-noncomputable def finiteLehmannTableOfPurePoint
-    (system : BoundedFreeSystem H)
-    (data : PurePointLehmannData system ι)
-    (A B : H →L[ℂ] H) : FiniteLehmannTable ι where
-  energy := data.energy
-  probability := data.probability
-  matrixA := fun m n => inner ℂ (data.basis m) (A (data.basis n))
-  matrixB := fun m n => inner ℂ (data.basis m) (B (data.basis n))
-
-/-- The scalar adapter preserves the canonical ordered transition exactly. -/
-@[simp]
-theorem finiteLehmannTableTransitionData_ofPurePoint
-    (system : BoundedFreeSystem H)
-    (data : PurePointLehmannData system ι)
-    (A B : H →L[ℂ] H) (mn : ι × ι) :
-    finiteLehmannTableTransitionData system.hbar
-        (finiteLehmannTableOfPurePoint system data A B) mn =
-      purePointTransitionData system data A B mn := rfl
-
-/-- For a finite spectral index, scalar-table evaluation is exactly the theorem-level pure-point
-Lehmann series.  This is the main operator-to-calculation bridge. -/
-theorem finiteLehmannTableResponse_ofPurePoint
-    [Fintype ι]
-    (system : BoundedFreeSystem H)
-    (data : PurePointLehmannData system ι)
-    (A B : H →L[ℂ] H) (omega eta : ℝ) :
-    finiteLehmannTableResponse system.hbar omega eta
-        (finiteLehmannTableOfPurePoint system data A B) =
-      purePointLehmannSeries system data A B omega eta := by
-  rw [purePointLehmannSeries_eq_finite_sum]
-  simp [finiteLehmannTableResponse, LehmannTransitionData.frequencyTerm]
 
 end
 end LinearResponse

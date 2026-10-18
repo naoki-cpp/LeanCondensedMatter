@@ -52,9 +52,7 @@ private theorem finitePurePointPhysicalSusceptibilityExtension_eq_finite_sum
     (A B : H →L[ℂ] H) (omega eta : ℝ) :
     finitePurePointPhysicalSusceptibilityExtension system data A B omega eta =
       Finset.univ.sum fun mn : ι × ι =>
-        lehmannTerm system.hbar omega eta
-          (data.energy mn.1 - data.energy mn.2)
-          ((purePointTransitionData system data A B mn).weight) := by
+        (purePointTransitionData system data A B mn).frequencyTerm omega eta := by
   by_cases hη : 0 < eta
   · simp only [finitePurePointPhysicalSusceptibilityExtension, dite_eq_left hη]
     exact adiabaticFrequencyDomainSusceptibilityOfPositiveRate_purePoint_eq_finite_sum
@@ -87,7 +85,6 @@ private theorem finite_purePointPhysicalSusceptibility_has_both_local_iterated_l
   have hfun : finitePurePointPhysicalSusceptibilityExtension system data A B = F := by
     funext omega eta
     rw [finitePurePointPhysicalSusceptibilityExtension_eq_finite_sum]
-    simp [F, LehmannTransitionData.frequencyTerm]
   rw [hfun]
   simpa [F, LehmannTransitionData.frequencyTerm] using
     finite_purePointLehmann_has_both_local_iterated_limits
