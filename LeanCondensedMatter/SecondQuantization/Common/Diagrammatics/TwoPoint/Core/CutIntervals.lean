@@ -196,6 +196,80 @@ theorem TwoPointDiagram.mem_verticesBetweenCuts_iff_of_doubleCut_reachable
     exact ⟨(member_iff later hLater).mpr hl,
       fun he => hn ((member_iff earlier hEarlier).mp he)⟩
 
+/-- Vertices in the interval remain connected after *both* boundary
+propagators are deleted. A simple path avoiding the earlier cut cannot
+cross the later separating bridge: both endpoints lie on its source side.
+Mathlib's trail lemma eliminates that second boundary edge. -/
+theorem TwoPointDiagram.verticesBetweenCuts_reachable_without_both_cuts
+    (d : TwoPointDiagram ExternalLabel InternalLabel N S)
+    (hconnected : d.IsExternallyConnected)
+    (earlier later : Fin (2 * (2 * S.card + 1)))
+    (hsepEarlier : ¬ (d.vertexGraphWithoutPropagator earlier).Reachable
+      (Sum.inl (0 : Fin 2)) (Sum.inl (1 : Fin 2)))
+    (hsepLater : ¬ (d.vertexGraphWithoutPropagator later).Reachable
+      (Sum.inl (0 : Fin 2)) (Sum.inl (1 : Fin 2)))
+    (u v : TwoPointVertex S)
+    (hu : u ∈ d.verticesBetweenCuts earlier later)
+    (hv : v ∈ d.verticesBetweenCuts earlier later) :
+    (d.vertexGraphWithoutPropagator earlier ⊓
+      d.vertexGraphWithoutPropagator later).Reachable u v := by
+  let G := d.vertexGraph
+  let H₁ := d.vertexGraphWithoutPropagator earlier
+  let H₂ := d.vertexGraphWithoutPropagator later
+  let a := twoPointVertexOfLeg later
+  let b := twoPointVertexOfLeg (d.pairing.partner later)
+  let e : Sym2 (TwoPointVertex S) := s(a, b)
+  let source : TwoPointVertex S := Sum.inl (0 : Fin 2)
+  let target : TwoPointVertex S := Sum.inl (1 : Fin 2)
+  have hle : H₁ ≤ G := d.vertexGraphWithoutPropagator_le_vertexGraph earlier
+  have hG₂ : H₂ = G.deleteEdges {e} :=
+    (d.deleteEdges_eq_vertexGraphWithoutPropagator_of_separatingCut
+      hconnected later hsepLater).symm
+  have hdrop : H₁.deleteEdges {e} ≤ H₂ := by
+    rw [hG₂]
+    exact SimpleGraph.deleteEdges_mono hle
+  have hsrcU : H₂.Reachable source u :=
+    (((H₂.mem_componentBlock source u).1
+      ((d.mem_verticesBetweenCuts_iff earlier later u).1 hu).1).symm)
+  have hsrcV : H₂.Reachable source v :=
+    (((H₂.mem_componentBlock source v).1
+      ((d.mem_verticesBetweenCuts_iff earlier later v).1 hv).1).symm)
+  obtain ⟨p, hp⟩ :=
+    ((d.verticesBetweenCuts_reachable_without_each_cut
+      hconnected earlier later hsepEarlier u v hu hv).1).exists_isPath
+  have havoid (x y : TwoPointVertex S) (he : s(x, y) = e)
+      (hy : H₂.Reachable target y) : e ∉ p.edges := by
+    have hd : H₁.deleteEdges {s(x, y)} ≤ H₂ := by
+      rw [he]
+      exact hdrop
+    have hnot (z : TwoPointVertex S) (hz : H₂.Reachable source z) :
+        ¬ (H₁.deleteEdges {s(x, y)}).Reachable z y := by
+      intro hzy
+      exact hsepLater
+        ((hz.trans (SimpleGraph.Reachable.mono hd hzy)).trans hy.symm)
+    have habsent : s(x, y) ∉ p.edges :=
+      hp.isTrail.notMem_edges_of_not_reachable
+        (hnot u hsrcU) (hnot v hsrcV)
+    simpa only [he] using habsent
+  have hnotE : e ∉ p.edges := by
+    rcases d.separatingCut_endpoints_opposite_sides
+        hconnected later hsepLater with ⟨_, hb⟩ | ⟨_, ha⟩
+    · exact havoid a b rfl hb
+    · exact havoid b a Sym2.eq_swap ha
+  have hreach : (H₁.deleteEdges {e}).Reachable u v :=
+    (SimpleGraph.reachable_deleteEdges_iff_exists_walk).2 ⟨p, hnotE⟩
+  have hgraph : H₁.deleteEdges {e} = H₁ ⊓ H₂ := by
+    apply SimpleGraph.ext
+    funext x y
+    apply propext
+    change (H₁.deleteEdges {e}).Adj x y ↔
+      (H₁.Adj x y ∧ H₂.Adj x y)
+    rw [SimpleGraph.deleteEdges_adj, hG₂, SimpleGraph.deleteEdges_adj]
+    exact ⟨fun h => ⟨h.1, ⟨hle h.1, h.2⟩⟩,
+      fun h => ⟨h.1, h.2.2⟩⟩
+  rw [hgraph] at hreach
+  exact hreach
+
 /-- A strictly ordered pair of separating cuts leaves at least one vertex
 between them. No arbitrary external path is involved. -/
 theorem TwoPointDiagram.verticesBetweenCuts_ne_empty_of_ssubset
