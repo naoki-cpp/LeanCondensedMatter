@@ -1,9 +1,5 @@
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Crossing
 import LeanCondensedMatter.Combinatorics.PerfectPairing.PairEndpoints
-import Mathlib.Algebra.BigOperators.Group.Finset.Sigma
-import Mathlib.Algebra.BigOperators.ModEq
-import Mathlib.Data.Finset.Prod
-import Mathlib.Data.ZMod.Basic
 
 set_option linter.style.header false
 
