@@ -654,13 +654,9 @@ private theorem regularizedHGFun_one_sub_two_eq_mul_three (w : ℂ) :
       exact_mod_cast Nat.factorial_ne_zero n
     have hn2' : (2 : ℂ) + (n : ℂ) ≠ 0 := by simpa [add_comm] using hn2
     field_simp [hn2']
-    calc
-      1 - ((2 : ℂ) + (n : ℂ))⁻¹ =
-          (((2 : ℂ) + (n : ℂ)) * (((2 : ℂ) + (n : ℂ))⁻¹)) -
-            (((2 : ℂ) + (n : ℂ))⁻¹) := by
-        rw [mul_inv_cancel₀ hn2']
-      _ = (n : ℂ) * (((2 : ℂ) + (n : ℂ))⁻¹) +
-          (((2 : ℂ) + (n : ℂ))⁻¹) := by ring
+    rw [show (n : ℂ) + 1 + 1 = (n : ℂ) + 2 by ring]
+    field_simp [hn2]
+    ring
   have hzero : c1 0 = c2 0 := by
     rw [show c1 0 = 1 / (Nat.factorial 0 : ℂ) ^ 2 by
       exact polarFourierBesselZeroCoeff 0, hc2]
