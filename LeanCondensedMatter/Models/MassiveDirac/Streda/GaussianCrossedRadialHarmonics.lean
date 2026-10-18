@@ -703,8 +703,6 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficie
           rw [hweight2]
       _ = _ := by rw [hk2]
 
-/-- The traceless second angular Fourier harmonic vanishes at the origin.
-The result follows from the canonical full-angle harmonic integration theorem. -/
 /-- At zero real-space separation, rotational isotropy forces equality of the
 two diagonal in-plane crossed-current Pauli coefficients. This holds before any
 momentum-cutoff, broadening, or weak-disorder limit. -/
