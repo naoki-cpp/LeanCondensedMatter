@@ -68,43 +68,18 @@ theorem hasDerivAt_affinePerturbedExpectation_zero_of_bound_kubo
         expectation (heisenbergEvolution system A₁ t))
       0 := by
   have hfixed :=
-    hasDerivAt_timeDependentPerturbedExpectationFunctional_apply_zero_of_bound
-      system expectation A₀ hM hV ht
+    hasDerivAt_timeDependentPerturbedExpectationFunctional_apply_zero_of_bound_kubo
+      system expectation hVself A₀ hM hV ht hInt
   have hcontact :=
     hasDerivAt_timeDependentPerturbedExpectationFunctional_apply_zero_of_bound
       system expectation A₁ hM hV ht
   have hsource : HasDerivAt (fun lam : ℝ => (lam : ℂ)) 1 0 :=
     (hasDerivAt_id (x := (0 : ℝ))).ofReal_comp
   have hsum := hfixed.add (hsource.mul hcontact)
-  have hbase :
-      HasDerivAt
-        (fun lam : ℝ => affinePerturbedExpectation system expectation V A₀ A₁ lam t)
-        (expectation
-            (star (timeDependentPropagatorFirstVariation system V t) *
-                heisenbergEvolution system A₀ t +
-              heisenbergEvolution system A₀ t *
-                timeDependentPropagatorFirstVariation system V t) +
-          expectation (heisenbergEvolution system A₁ t))
-        0 := by
-    rw [hasDerivAt_iff_tendsto]
-    rw [hasDerivAt_iff_tendsto] at hsum
-    simpa [affinePerturbedExpectation, timeDependentPerturbedObservable,
-      heisenbergEvolution, mul_add, add_mul] using hsum
-  have hK := star_timeDependentPropagatorFirstVariation_eq_neg_of_isSelfAdjoint
-    system V hVself t
-  have hself :
-      HasDerivAt
-        (fun lam : ℝ => affinePerturbedExpectation system expectation V A₀ A₁ lam t)
-        (expectation
-            ⁅heisenbergEvolution system A₀ t,
-              timeDependentPropagatorFirstVariation system V t⁆ +
-          expectation (heisenbergEvolution system A₁ t))
-        0 := by
-    simpa [LieRing.of_associative_ring_bracket, hK, sub_eq_add_neg,
-      add_comm, add_left_comm, add_assoc] using hbase
-  rw [expectation_commutator_firstVariation_eq_integral
-    system expectation V A₀ t hInt] at hself
-  exact hself
+  rw [hasDerivAt_iff_tendsto]
+  rw [hasDerivAt_iff_tendsto] at hsum
+  simpa [affinePerturbedExpectation, timeDependentPerturbedObservable,
+    heisenbergEvolution, mul_add, add_mul] using hsum
 
 /-- Scalar-source specialization written as a causal retarded response plus the contact term. -/
 theorem hasDerivAt_affineSourceCoupledExpectation_zero_of_bound_retarded
