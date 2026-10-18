@@ -23,6 +23,48 @@ namespace Common
 
 variable {ExternalLabel InternalLabel : Type*} {N : ℕ} {S : Finset (Fin N)}
 
+/-- Removing two external-separating propagators is represented by
+intersecting their individual cut graphs. The separation assumptions rule
+out parallel propagators between the endpoints of either cut, so deleting
+the two underlying simple-graph edges is faithful to the paired-leg cuts. -/
+theorem TwoPointDiagram.vertexGraphWithoutTwoPropagators
+    (d : TwoPointDiagram ExternalLabel InternalLabel N S)
+    (hconnected : d.IsExternallyConnected)
+    (earlier later : Fin (2 * (2 * S.card + 1)))
+    (hsepEarlier : ¬ (d.vertexGraphWithoutPropagator earlier).Reachable
+      (Sum.inl (0 : Fin 2)) (Sum.inl (1 : Fin 2)))
+    (hsepLater : ¬ (d.vertexGraphWithoutPropagator later).Reachable
+      (Sum.inl (0 : Fin 2)) (Sum.inl (1 : Fin 2))) :
+    d.vertexGraphWithoutPropagator earlier ⊓
+        d.vertexGraphWithoutPropagator later =
+      d.vertexGraph.deleteEdges
+        {s(twoPointVertexOfLeg earlier,
+          twoPointVertexOfLeg (d.pairing.partner earlier)),
+         s(twoPointVertexOfLeg later,
+          twoPointVertexOfLeg (d.pairing.partner later))} := by
+  rw [← d.deleteEdges_eq_vertexGraphWithoutPropagator_of_separatingCut
+        hconnected earlier hsepEarlier,
+      ← d.deleteEdges_eq_vertexGraphWithoutPropagator_of_separatingCut
+        hconnected later hsepLater]
+  apply SimpleGraph.ext
+  funext u v
+  apply propext
+  change
+    ((d.vertexGraph.deleteEdges
+      {s(twoPointVertexOfLeg earlier,
+        twoPointVertexOfLeg (d.pairing.partner earlier))}).Adj u v ∧
+     (d.vertexGraph.deleteEdges
+      {s(twoPointVertexOfLeg later,
+        twoPointVertexOfLeg (d.pairing.partner later))}).Adj u v) ↔
+    (d.vertexGraph.deleteEdges
+      {s(twoPointVertexOfLeg earlier,
+        twoPointVertexOfLeg (d.pairing.partner earlier)),
+       s(twoPointVertexOfLeg later,
+        twoPointVertexOfLeg (d.pairing.partner later))}).Adj u v
+  simp only [SimpleGraph.deleteEdges_adj, Set.mem_insert_iff,
+    Set.mem_singleton_iff]
+  tauto
+
 /-- Vertices between two cuts: the source component of the later cut minus
 the source component of the earlier cut. When the cuts are not ordered this
 difference still makes sense, but it need not be a nonempty interval. -/
