@@ -74,18 +74,18 @@ through continuous functional calculus. The bounded-Hamiltonian `gibbsState` API
 finite-dimensional; compactness and spectral summability of the Gibbs operator, together with its
 positive nonzero trace, are derived internally.
 
-For Hamiltonians represented instead by pure-point spectral data, `QuantumTheory.Gibbs.PurePoint`
+For Hamiltonians represented by a complete energy eigenbasis, `QuantumTheory.Gibbs.Eigenbasis`
 constructs the density state directly from a Hilbert basis and real energies. Its canonical API is
 
 ```text
-purePointBoltzmannWeight
-purePointPartitionFunction
-purePointGibbsProbability
-purePointGibbsDensityOperator
+eigenbasisBoltzmannWeight
+eigenbasisPartitionFunction
+eigenbasisGibbsProbability
+eigenbasisGibbsDensityOperator
 ```
 
-with `PurePointGibbsSummable` as the explicit state-existence hypothesis. On a finite spectral index,
-`finitePurePointGibbsDensityOperator` is the direct specialization and requires no independent finite
+with `EigenbasisGibbsSummable` as the explicit state-existence hypothesis. On a finite spectral index,
+`finiteEigenbasisGibbsDensityOperator` is the direct specialization and requires no independent finite
 Gibbs-state implementation.
 
 The Helmholtz free-energy theorem proves the Gibbs lower bound under its stated hypotheses, and the
@@ -228,8 +228,8 @@ and later thermodynamic limits is documented in
 | Von Neumann entropy | `QuantumTheory.vonNeumannEntropy` | `QuantumTheory/Entropy.lean` |
 | Gibbs operator | `QuantumTheory.gibbsOp` | `QuantumTheory/Gibbs/State.lean` |
 | Gibbs state | `QuantumTheory.gibbsState` | `QuantumTheory/Gibbs/State.lean` |
-| Pure-point Gibbs state | `QuantumTheory.purePointGibbsDensityOperator` | `QuantumTheory/Gibbs/PurePoint.lean` |
-| Finite pure-point Gibbs state | `QuantumTheory.finitePurePointGibbsDensityOperator` | `QuantumTheory/Gibbs/PurePoint.lean` |
+| Energy-eigenbasis Gibbs state | `QuantumTheory.eigenbasisGibbsDensityOperator` | `QuantumTheory/Gibbs/Eigenbasis.lean` |
+| Finite energy-eigenbasis Gibbs state | `QuantumTheory.finiteEigenbasisGibbsDensityOperator` | `QuantumTheory/Gibbs/Eigenbasis.lean` |
 | Energy expectation | `QuantumTheory.energyExpValue` | `QuantumTheory/Gibbs/EnergyExpectation.lean` |
 | Algebraic Fock core | `SecondQuantization.Common.AlgebraicFock` | `SecondQuantization/Common/Algebra/AlgebraicFock.lean` |
 | Completed fermionic Fock space | `SecondQuantization.Fermionic.CompletedFockSpace` | `SecondQuantization/Fermionic/CompletedSpace/Basic.lean` |

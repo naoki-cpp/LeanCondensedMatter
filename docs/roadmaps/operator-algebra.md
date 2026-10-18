@@ -180,11 +180,11 @@ Kβ (b i) = exp (-β E i) • b i
 ```
 
 The quantum Gibbs layer now uses this basis action at the general trace-class boundary:
-`isTraceClass_iff_purePointGibbsSummable_of_basis_action` identifies `IsTraceClass Kβ` exactly
+`isTraceClass_iff_eigenbasisGibbsSummable_of_basis_action` identifies `IsTraceClass Kβ` exactly
 with Boltzmann summability, and
-`heatTrace_eq_purePointPartitionFunction_of_basis_action` identifies the canonical complex trace
+`heatTrace_eq_eigenbasisPartitionFunction_of_basis_action` identifies the canonical complex trace
 with the pure-point partition function. For explicit pure-point heat data,
-`inv_partition_smul_heat_eq_purePointGibbsDensityOperator_op` gives the direct operator-level
+`inv_partition_smul_heat_eq_eigenbasisGibbsDensityOperator_op` gives the direct operator-level
 normalization identity. `DensityOperator.normalizePositive` remains the canonical normalization
 boundary for arbitrary positive nonzero trace-class heat data, but the explicit pure-point
 compatibility theorem no longer needs to route through it. A general spectral-data-first boundary
@@ -195,7 +195,7 @@ The current Gibbs variational and uniqueness proofs do **not** extend to this bo
 replacing the normalized state. They quantify over an arbitrary density operator and use bounded
 Hamiltonian matrix elements on every density eigenvector, together with Peierls--Bogoliubov for the
 bounded operator exponential. For unbounded pure-point energy data, the existing
-`PurePointGibbsEnergyIntegrable` condition controls only the Gibbs distribution itself; it does not
+`EigenbasisGibbsEnergyIntegrable` condition controls only the Gibbs distribution itself; it does not
 define finite energy for an arbitrary competing density state. A genuine extension therefore needs
 a competitor-side finite-energy/domain condition and an inequality mechanism that remains valid
 there. In the diagonal/classical subcase this can be developed directly from countable probability

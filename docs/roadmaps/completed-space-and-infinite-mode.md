@@ -30,14 +30,14 @@ bounded map.
 ## Thermal boundary
 
 Completed thermal specializations live under `SecondQuantization.Fermionic.Thermal.Completed`, while
-the state-level pure-point Gibbs construction is owned by `QuantumTheory.Gibbs.PurePoint`.
+the state-level pure-point Gibbs construction is owned by `QuantumTheory.Gibbs.Eigenbasis`.
 
 The completed free-fermion route includes:
 
-- pure-point Gibbs states under explicit `PurePointGibbsSummable` hypotheses;
+- pure-point Gibbs states under explicit `EigenbasisGibbsSummable` hypotheses;
 - occupation-basis formulas for bounded expectations and an explicit integrability domain for the
   completed total-number expectation;
-- generic unbounded energy expectation through `QuantumTheory.Gibbs.PurePointExpectation`;
+- generic unbounded energy expectation through `QuantumTheory.Gibbs.EigenbasisExpectation`;
 - a one-particle sufficient condition for free-fermion Gibbs summability and the corresponding
   partition-product identity;
 - bounded thermal ladder packaging, Gibbs intertwining, KMS rotation, CAR peel, and the completed
