@@ -1,4 +1,4 @@
-import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.Unnormalized.PeelFirst
+import LeanCondensedMatter.Analysis.ScalarExchange.Peel
 import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.KMSRotation
 
 set_option linter.style.header false
@@ -6,8 +6,8 @@ set_option linter.style.header false
 /-!
 # Trace-level peel-first identity from KMS cyclicity
 
-Combining the operator-algebra peel identity with KMS cyclicity for an arbitrary-length remaining
-product gives a self-referential trace equation. Moving `C₁` from the end of the product back to
+Combining the generic scalar-exchange product identity with KMS cyclicity for an arbitrary-length
+remaining product gives a self-referential trace equation. Moving `C₁` from the end of the product back to
 the front contributes `w₁ = exp(q₁ β)`, while the exchange algebra contributes
 `ζ ^ l.length`, yielding
 
@@ -49,7 +49,20 @@ theorem tsumTrace_diagonalEvolution_comp_peel
         tsumTrace ((diagonalEvolution energy (-β)).comp
           (C1.comp (List.prod (l.map Prod.fst)))) =
       tsumTrace ((diagonalEvolution energy (-β)).comp (ScalarExchange.peelSumWithCoefficients ζ l)) := by
-  have hopeq := comp_prod_eq_of_zetaCommutator ζ C1 l hcomm
+  have hExchange : ∀ p ∈ l,
+      C1 * p.1 = p.2 • (1 : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) +
+        ζ • (p.1 * C1) := by
+    intro p hp
+    have hcomm' : C1 * p.1 - ζ • (p.1 * C1) =
+        p.2 • (1 : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) := by
+      simpa only [ScalarExchange.zetaCommutator, Module.End.mul_eq_comp,
+        Module.End.one_eq_id] using hcomm p hp
+    exact (sub_eq_iff_eq_add).mp hcomm'
+  have hopeq : C1.comp ((l.map Prod.fst).prod) =
+      ScalarExchange.peelSumWithCoefficients ζ l +
+        ζ ^ l.length • ((l.map Prod.fst).prod.comp C1) := by
+    simpa only [Module.End.mul_eq_comp, Module.End.one_eq_id] using
+      ScalarExchange.mul_prod_eq_peelSumWithCoefficients ζ C1 l hExchange
   have hrot := tsumTrace_diagonalEvolution_comp_rotate energy β q1
     (List.prod (l.map Prod.fst)) C1 hC1 hRotate
   have hSummDCjC1 : Summable (fun n => matrixCoeff
