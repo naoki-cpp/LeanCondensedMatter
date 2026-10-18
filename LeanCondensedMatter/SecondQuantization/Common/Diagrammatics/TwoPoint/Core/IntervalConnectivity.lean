@@ -120,5 +120,28 @@ theorem TwoPointDiagram.intervalVertices_doubleCut_adj_iff
     exact ⟨⟨hne, leg, he, hpe, hleg, hpartner⟩,
       ⟨hne, leg, hl, hpl, hleg, hpartner⟩⟩
 
+/-- As graphs on the interval's own vertex subtype, removing both
+boundary propagators changes nothing: the induced double-cut graph
+equals the graph induced from the original diagram. In particular,
+any interval-confined path can be used unchanged after both cuts. -/
+theorem TwoPointDiagram.intervalVertices_induce_doubleCut_eq
+    (d : TwoPointDiagram ExternalLabel InternalLabel N S)
+    (earlier later : Fin (2 * (2 * S.card + 1)))
+    (hEarlier : d.HasIntervalBoundaryEndpoint earlier later earlier)
+    (hLater : d.HasIntervalBoundaryEndpoint earlier later later) :
+    SimpleGraph.induce
+        (↑(d.verticesBetweenCuts earlier later) : Set (TwoPointVertex S))
+        (d.vertexGraphWithoutPropagator earlier ⊓
+          d.vertexGraphWithoutPropagator later) =
+      SimpleGraph.induce
+        (↑(d.verticesBetweenCuts earlier later) : Set (TwoPointVertex S))
+        d.vertexGraph := by
+  apply SimpleGraph.ext
+  funext u v
+  apply propext
+  simpa only [SimpleGraph.induce_adj] using
+    (d.intervalVertices_doubleCut_adj_iff earlier later hEarlier hLater
+      u.1 v.1 u.2 v.2)
+
 end Common
 end SecondQuantization
