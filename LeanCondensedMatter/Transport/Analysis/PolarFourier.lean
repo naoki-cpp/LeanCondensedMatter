@@ -653,8 +653,13 @@ private theorem regularizedHGFun_one_sub_two_eq_mul_three (w : ℂ) :
     have hf : (Nat.factorial n : ℂ) ≠ 0 := by
       exact_mod_cast Nat.factorial_ne_zero n
     have hn2' : (2 : ℂ) + (n : ℂ) ≠ 0 := by simpa [add_comm] using hn2
-    field_simp [hn2']
-    ring
+    calc
+      1 - ((2 : ℂ) + (n : ℂ))⁻¹ =
+          (((2 : ℂ) + (n : ℂ)) * (((2 : ℂ) + (n : ℂ))⁻¹)) -
+            (((2 : ℂ) + (n : ℂ))⁻¹) := by
+        rw [mul_inv_cancel₀ hn2']
+      _ = (n : ℂ) * (((2 : ℂ) + (n : ℂ))⁻¹) +
+          (((2 : ℂ) + (n : ℂ))⁻¹) := by ring
   have hzero : c1 0 = c2 0 := by
     rw [show c1 0 = 1 / (Nat.factorial 0 : ℂ) ^ 2 by
       exact polarFourierBesselZeroCoeff 0, hc2]
@@ -707,12 +712,14 @@ private theorem besselJ_zero_one_two_recurrence (z : ℂ) :
     change (z / 2) ^ (1 : ℂ) *
       Complex.regularizedHGFun 0 {((1 : ℂ) + 1)} (-(z / 2) ^ 2) = _
     simp only [Complex.cpow_one, one_add_one_eq_two]
+    rfl
   have h2 : Complex.besselJ 2 z =
       (z / 2) ^ 2 * Complex.regularizedHGFun 0 {(3 : ℂ)} w := by
     change (z / 2) ^ (2 : ℂ) *
       Complex.regularizedHGFun 0 {((2 : ℂ) + 1)} (-(z / 2) ^ 2) = _
-    simp only [Complex.cpow_two]
-    norm_num
+    have ha : (2 : ℂ) + 1 = 3 := by norm_num
+    rw [ha, Complex.cpow_two]
+    rfl
   rw [h0, h1, h2]
   dsimp [w] at h
   calc
