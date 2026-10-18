@@ -36,18 +36,6 @@ def AheBornRtaParameters.bornRtaLongitudinalCoefficient
       (params.fermiEnergy ^ 2 - params.m ^ 2) /
     (Real.pi * (params.fermiEnergy ^ 2 + 3 * params.m ^ 2))
 
-/-- The microscopic Born-RTA conductivity has the explicit `1/W` closed form. -/
-theorem AheBornRtaParameters.bornRtaLongitudinalConductivity_eq
-    (params : AheBornRtaParameters) :
-    params.bornRtaLongitudinalConductivity =
-      params.e ^ 2 * params.hbar * params.v ^ 2 *
-          (params.fermiEnergy ^ 2 - params.m ^ 2) /
-        (Real.pi * params.disorderStrength *
-          (params.fermiEnergy ^ 2 + 3 * params.m ^ 2)) := by
-  exact zeroTemperatureRelaxationTimeLongitudinalConductivity_bornTransportLifetime_eq
-    params.e params.hbar params.v params.m params.fermiEnergy params.disorderStrength
-    params.velocity_ne_zero params.hbar_pos params.disorder_pos params.metallic
-
 /-- Multiplication by disorder strength removes the Drude divergence and gives the finite
 coefficient used in the weak-disorder scaling limit. -/
 theorem AheBornRtaParameters.disorderStrength_mul_bornRtaLongitudinalConductivity_eq
