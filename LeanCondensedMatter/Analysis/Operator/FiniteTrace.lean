@@ -2,6 +2,7 @@ module
 
 public import Mathlib.Algebra.Star.BigOperators
 public import Mathlib.Analysis.Calculus.Deriv.Comp
+import Mathlib.Analysis.Calculus.FDeriv.Linear
 public import Mathlib.Analysis.CStarAlgebra.Matrix
 public import Mathlib.Analysis.InnerProductSpace.Trace
 public import Mathlib.Analysis.InnerProductSpace.Adjoint
