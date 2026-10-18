@@ -68,10 +68,14 @@ The first-cosine bridge is also proved:
 existing derivative of the angular kernel. The needed special-function
 derivative is established from Mathlib's regularized hypergeometric series.
 
-The remaining bridge goal is `K₂(z) = -2π J₂(z)`. Retain the explicit
-angular-integral definitions for the physical Fourier-reduction API and the
-second-harmonic symmetry and recurrence theorems until a J₂ bridge is proved.
-Do not introduce separate local Bessel definitions.
+The second-cosine bridge is also established:
+`polarFourierSecondCosineAngularKernel_eq_besselJ` gives
+`K₂(z) = -2π J₂(z)`. Its proof connects the angular-integration-by-parts
+recurrence to the Bessel recurrence `2 J₁(z) = z (J₀(z) + J₂(z))`, derived
+from regularized hypergeometric coefficients; the origin is handled by the
+canonical angular harmonic evaluation. All three full-angle Bessel bridges
+are now proved for real arguments. Retain the explicit angular-integral
+definitions as the Fourier-reduction API. Do not introduce local Bessel definitions.
 
 ## Harmonic and measure boundaries
 
