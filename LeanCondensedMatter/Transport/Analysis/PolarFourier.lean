@@ -850,6 +850,61 @@ theorem polarFourierFirstCosineAngularKernel_two_mul_eq_zeroth_sub_second (z : �
       ring
     _ = _ := by rw [hsecond]
 
+/-- The second-cosine angular Fourier kernel vanishes at zero radial argument. -/
+@[simp] theorem polarFourierSecondCosineAngularKernel_zero :
+    polarFourierSecondCosineAngularKernel 0 = 0 := by
+  let coefficients : AngularHarmonicCoefficients ℂ :=
+    { constant := 0
+      firstCosine := 0
+      firstSine := 0
+      secondCosine := 1
+      secondMixed := 0 }
+  have h := coefficients.integral_eval
+  simpa [coefficients, AngularHarmonicCoefficients.eval,
+    polarFourierSecondCosineAngularKernel, polarFourierRadialPhase,
+    smul_eq_mul] using h
+
+/-- The second cosine angular Fourier kernel is the normalized Bessel function
+`-2π J₂`, for every real radial argument. -/
+theorem polarFourierSecondCosineAngularKernel_eq_besselJ (z : ℝ) :
+    polarFourierSecondCosineAngularKernel z =
+      -(((2 * Real.pi : ℝ) : ℂ) * Complex.besselJ 2 (z : ℂ)) := by
+  by_cases hz : z = 0
+  · subst z
+    simp [Complex.besselJ_zero]
+  · have hzc : (z : ℂ) ≠ 0 := by exact_mod_cast hz
+    have hfactor : Complex.I * (z : ℂ) ≠ 0 :=
+      mul_ne_zero Complex.I_ne_zero hzc
+    have hK := polarFourierFirstCosineAngularKernel_two_mul_eq_zeroth_sub_second z
+    rw [polarFourierFirstCosineAngularKernel_eq_besselJ,
+      polarFourierZerothAngularKernel_eq_besselJ] at hK
+    have hJ := besselJ_zero_one_two_recurrence (z : ℂ)
+    have hmain :
+        (Complex.I * (z : ℂ)) * polarFourierSecondCosineAngularKernel z =
+          (Complex.I * (z : ℂ)) *
+            (-(((2 * Real.pi : ℝ) : ℂ) * Complex.besselJ 2 (z : ℂ))) := by
+      calc
+        (Complex.I * (z : ℂ)) * polarFourierSecondCosineAngularKernel z =
+            (Complex.I * (z : ℂ)) *
+                (((2 * Real.pi : ℝ) : ℂ) * Complex.besselJ 0 (z : ℂ)) -
+              2 * (((2 * Real.pi : ℝ) : ℂ) * Complex.I *
+                Complex.besselJ 1 (z : ℂ)) := by
+            linear_combination hK
+        _ = (Complex.I * (z : ℂ)) *
+            (((2 * Real.pi : ℝ) : ℂ) * Complex.besselJ 0 (z : ℂ)) -
+              (((2 * Real.pi : ℝ) : ℂ) * Complex.I) *
+                (2 * Complex.besselJ 1 (z : ℂ)) := by ring
+        _ = (Complex.I * (z : ℂ)) *
+            (((2 * Real.pi : ℝ) : ℂ) * Complex.besselJ 0 (z : ℂ)) -
+              (((2 * Real.pi : ℝ) : ℂ) * Complex.I) *
+                ((z : ℂ) *
+                  (Complex.besselJ 0 (z : ℂ) + Complex.besselJ 2 (z : ℂ))) := by
+            rw [hJ]
+        _ = (Complex.I * (z : ℂ)) *
+            (-(((2 * Real.pi : ℝ) : ℂ) * Complex.besselJ 2 (z : ℂ))) := by
+          ring
+    exact (mul_left_cancel₀ hfactor) hmain
+
 /-- The unnormalized first-harmonic recurrence also holds after finite radial
 momentum integration. This reduces any weighted K1 moment to K0/K2 moments
 with one additional radial power, without division by the Fourier argument,
