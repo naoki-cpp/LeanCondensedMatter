@@ -58,6 +58,67 @@ theorem TwoPointDiagram.intervalBlock_external_adjacent_interaction
         simp [twoPointVertexOfLeg, hz]
 
 
+/-- An ambient interior propagator between two interval interaction slots
+remains a propagator between the corresponding vertices of the reconstructed
+block. The original partner is transported, not recomputed. -/
+theorem TwoPointDiagram.intervalBlock_adj_interaction_of_interior_partner
+    (d : TwoPointDiagram ExternalLabel InternalLabel N S)
+    (boundaryLabels : Fin 2 → ExternalLabel)
+    (earlier later : Fin (2 * (2 * S.card + 1)))
+    (hsepLater : ¬ (d.vertexGraphWithoutPropagator later).Reachable
+      (Sum.inl (0 : Fin 2)) (Sum.inl (1 : Fin 2)))
+    (hEarlier : d.HasIntervalBoundaryEndpoint earlier later earlier)
+    (hLater : d.HasIntervalBoundaryEndpoint earlier later later)
+    (hne : earlier ≠ later)
+    (hpne : d.pairing.partner earlier ≠ later)
+    (v w : ↥(interactionSector (d.verticesBetweenCuts earlier later)))
+    (lv lw : Fin 4)
+    (hvw : v ≠ w)
+    (hinterior : d.IsInteriorLeg earlier later
+      ((d.intervalInteractionLegEquiv earlier later hsepLater) (v, lv)).1)
+    (hpartner : d.pairing.partner
+      ((d.intervalInteractionLegEquiv earlier later hsepLater) (v, lv)).1 =
+        ((d.intervalInteractionLegEquiv earlier later hsepLater) (w, lw)).1) :
+    (d.intervalBlock boundaryLabels earlier later hsepLater
+      hEarlier hLater hne hpne).vertexGraph.Adj (Sum.inr v) (Sum.inr w) := by
+  let E := d.intervalBlockLegEquiv earlier later hsepLater
+  let I := d.intervalInteractionLegEquiv earlier later hsepLater
+  let b := d.intervalBlock boundaryLabels earlier later
+    hsepLater hEarlier hLater hne hpne
+  let i : {leg : Fin (2 * (2 * S.card + 1)) //
+      d.IsInteriorLeg earlier later leg} := ⟨(I (v, lv)).1, hinterior⟩
+  have hev : E (twoPointInteractionLeg v lv) =
+      Sum.inr (⟨i.1, i.2.1⟩ : {leg : Fin (2 * (2 * S.card + 1)) //
+        twoPointVertexOfLeg leg ∈ d.verticesBetweenCuts earlier later}) := by
+    simpa only [i] using
+      (d.intervalBlockLegEquiv_interaction earlier later hsepLater v lv)
+  have hsrc : E.symm (Sum.inr (⟨i.1, i.2.1⟩ :
+        {leg : Fin (2 * (2 * S.card + 1)) //
+          twoPointVertexOfLeg leg ∈ d.verticesBetweenCuts earlier later})) =
+      twoPointInteractionLeg v lv :=
+    E.injective (by simpa only [Equiv.apply_symm_apply] using hev.symm)
+  have hp : E (b.pairing.partner (twoPointInteractionLeg v lv)) =
+      Sum.inr (⟨d.pairing.partner i.1,
+        ((d.isInteriorLeg_partner_iff earlier later i.1).mp i.2).1⟩ :
+          {leg : Fin (2 * (2 * S.card + 1)) //
+            twoPointVertexOfLeg leg ∈ d.verticesBetweenCuts earlier later}) := by
+    rw [← hsrc]
+    exact d.intervalBlock_partner_interior_ambient boundaryLabels earlier later
+      hsepLater hEarlier hLater hne hpne i
+  have hew : E (twoPointInteractionLeg w lw) =
+      Sum.inr (⟨d.pairing.partner i.1,
+        ((d.isInteriorLeg_partner_iff earlier later i.1).mp i.2).1⟩ :
+          {leg : Fin (2 * (2 * S.card + 1)) //
+            twoPointVertexOfLeg leg ∈ d.verticesBetweenCuts earlier later}) := by
+    rw [d.intervalBlockLegEquiv_interaction earlier later hsepLater w lw]
+    exact congrArg Sum.inr (Subtype.ext (by simpa only [i] using hpartner.symm))
+  have hpblock : b.pairing.partner (twoPointInteractionLeg v lv) =
+      twoPointInteractionLeg w lw := E.injective (hp.trans hew.symm)
+  change (b.pairing.vertexGraph twoPointVertexOfLeg).Adj (Sum.inr v) (Sum.inr w)
+  exact ⟨fun h => hvw (Sum.inr.inj h), twoPointInteractionLeg v lv,
+    twoPointVertexOfLeg_interactionLeg v lv,
+    by rw [hpblock]; exact twoPointVertexOfLeg_interactionLeg w lw⟩
+
 /-- On vertices of a cut interval, deleting either (or both) boundary
 propagators does not change adjacency. Each boundary propagator has
 exactly one endpoint in the interval, so neither can join two vertices
