@@ -57,5 +57,68 @@ theorem TwoPointDiagram.intervalBlock_external_adjacent_interaction
       · change twoPointVertexOfLeg p = Sum.inr vl.1
         simp [twoPointVertexOfLeg, hz]
 
+
+/-- On vertices of a cut interval, deleting either (or both) boundary
+propagators does not change adjacency. Each boundary propagator has
+exactly one endpoint in the interval, so neither can join two vertices
+of the interval. -/
+theorem TwoPointDiagram.intervalVertices_doubleCut_adj_iff
+    (d : TwoPointDiagram ExternalLabel InternalLabel N S)
+    (earlier later : Fin (2 * (2 * S.card + 1)))
+    (hEarlier : d.HasIntervalBoundaryEndpoint earlier later earlier)
+    (hLater : d.HasIntervalBoundaryEndpoint earlier later later)
+    (u v : TwoPointVertex S)
+    (hu : u ∈ d.verticesBetweenCuts earlier later)
+    (hv : v ∈ d.verticesBetweenCuts earlier later) :
+    (d.vertexGraphWithoutPropagator earlier ⊓
+      d.vertexGraphWithoutPropagator later).Adj u v ↔
+        d.vertexGraph.Adj u v := by
+  constructor
+  · intro h
+    change (d.vertexGraphWithoutPropagator earlier).Adj u v ∧
+      (d.vertexGraphWithoutPropagator later).Adj u v at h
+    exact d.vertexGraphWithoutPropagator_le_vertexGraph earlier h.1
+  · rintro ⟨hne, leg, hleg, hpartner⟩
+    have hlegMem : twoPointVertexOfLeg leg ∈
+        d.verticesBetweenCuts earlier later := by
+      simpa only [hleg] using hu
+    have hpartnerMem : twoPointVertexOfLeg (d.pairing.partner leg) ∈
+        d.verticesBetweenCuts earlier later := by
+      simpa only [hpartner] using hv
+    have admissible (cut : Fin (2 * (2 * S.card + 1)))
+        (hcut : d.HasIntervalBoundaryEndpoint earlier later cut) :
+        leg ≠ cut ∧ d.pairing.partner leg ≠ cut := by
+      have hnotBoth :
+          ¬ (twoPointVertexOfLeg cut ∈ d.verticesBetweenCuts earlier later ∧
+            twoPointVertexOfLeg (d.pairing.partner cut) ∈
+              d.verticesBetweenCuts earlier later) := by
+        rintro ⟨hc, hpc⟩
+        rcases hcut with ⟨_, hout⟩ | ⟨_, hout⟩
+        · exact hout hpc
+        · exact hout hc
+      constructor
+      · intro h
+        subst leg
+        exact hnotBoth ⟨hlegMem, hpartnerMem⟩
+      · intro h
+        apply hnotBoth
+        constructor
+        · rw [← h]
+          exact hpartnerMem
+        · have hp : d.pairing.partner cut = leg := by
+            calc
+              d.pairing.partner cut =
+                  d.pairing.partner (d.pairing.partner leg) :=
+                    congrArg d.pairing.partner h.symm
+              _ = leg := d.pairing.partner_involutive leg
+          rw [hp]
+          exact hlegMem
+    obtain ⟨he, hpe⟩ := admissible earlier hEarlier
+    obtain ⟨hl, hpl⟩ := admissible later hLater
+    change (d.vertexGraphWithoutPropagator earlier).Adj u v ∧
+      (d.vertexGraphWithoutPropagator later).Adj u v
+    exact ⟨⟨hne, leg, he, hpe, hleg, hpartner⟩,
+      ⟨hne, leg, hl, hpl, hleg, hpartner⟩⟩
+
 end Common
 end SecondQuantization
