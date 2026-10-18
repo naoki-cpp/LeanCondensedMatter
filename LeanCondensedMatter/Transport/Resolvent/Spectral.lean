@@ -30,14 +30,6 @@ representation-independent scalar factor that appears in every finite-projector 
 noncomputable def scalarResolventCoefficient (z : ℂ) (eigenvalue : ℝ) : ℂ :=
   (z - (eigenvalue : ℂ))⁻¹
 
-/-- The scalar resolvent coefficient is continuous wherever its spectral denominator is nonzero. -/
-theorem continuousAt_scalarResolventCoefficient
-    (z : ℂ) (eigenvalue : ℝ)
-    (hden : z - (eigenvalue : ℂ) ≠ 0) :
-    ContinuousAt (fun w : ℂ => scalarResolventCoefficient w eigenvalue) z := by
-  unfold scalarResolventCoefficient
-  exact (continuousAt_id.sub continuousAt_const).inv₀ hden
-
 private theorem complex_spectral_offset_ne_zero
     (probeEnergy eigenvalue : ℝ) (hprobe : probeEnergy ≠ eigenvalue) :
     (((probeEnergy - eigenvalue : ℝ) : ℂ)) ≠ 0 := by
