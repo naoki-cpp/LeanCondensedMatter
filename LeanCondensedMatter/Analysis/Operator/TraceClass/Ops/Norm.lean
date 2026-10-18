@@ -30,12 +30,7 @@ private theorem IsTraceClass.summable_norm_inner_left_and_tsum_le_traceNorm
   have hAW : IsHilbertSchmidt (A * W) := isHilbertSchmidt_comp_right hA W
   have hAWnorm : hAW.normSq ≤ hT.traceNorm := by
     calc
-      hAW.normSq ≤ ‖W‖ ^ 2 * hA.normSq :=
-        IsHilbertSchmidt.normSq_comp_right_le hA W
-      _ ≤ 1 ^ 2 * hA.normSq := by
-        exact mul_le_mul_of_nonneg_right
-          (pow_le_pow_left₀ (norm_nonneg W) hW 2) hA.normSq_nonneg
-      _ = hA.normSq := by rw [one_pow, one_mul]
+      hAW.normSq ≤ hA.normSq := hA.normSq_comp_right_le_of_norm_le_one W hW
       _ = hT.traceNorm := hAnorm
   have hpoint (x : H) :
       inner ℂ (W x) (T x) = inner ℂ ((A * W) x) (B x) := by
