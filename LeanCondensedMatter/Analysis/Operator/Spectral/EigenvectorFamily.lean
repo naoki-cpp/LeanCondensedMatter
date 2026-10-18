@@ -427,7 +427,7 @@ theorem hasSum_eigenvectorFamily (hT : IsCompactOperator T) (hT' : T.IsSymmetric
   set b := eigenvectorHilbertBasis hT hT'
   have hb : ∀ a, (b a : H) = eigenvectorFamily hT a := fun a => by
     have hsub : b a = eigenvectorFamilyInClosure hT a := by
-      simpa only [b] using congrFun (HilbertBasis.coe_mk
+      simpa only [b, eigenvectorHilbertBasis] using congrFun (HilbertBasis.coe_mk
         (orthonormal_eigenvectorFamilyInClosure hT hT')
         (dense_eigenvectorFamilyInClosure hT)) a
     exact congrArg Subtype.val hsub
