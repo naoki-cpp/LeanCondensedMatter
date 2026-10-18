@@ -71,7 +71,11 @@ theorem summable_matrixCoeff_diag_comp_of_summable_uncurry
     (A B : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
     (h : Summable (Function.uncurry (fun n k => matrixCoeff A n k * matrixCoeff B k n))) :
     Summable (fun n => matrixCoeff (A.comp B) n n) := by
-  simpa only [matrixCoeff_comp_eq_tsum] using h.prod
+  have hrow : (fun n => matrixCoeff (A.comp B) n n) =
+      fun n => ∑' k, matrixCoeff A n k * matrixCoeff B k n :=
+    funext fun n => matrixCoeff_comp_eq_tsum A B n n
+  rw [hrow]
+  exact h.prod
 
 end Common
 end SecondQuantization
