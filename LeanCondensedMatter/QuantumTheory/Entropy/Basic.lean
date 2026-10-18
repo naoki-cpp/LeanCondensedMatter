@@ -96,13 +96,6 @@ theorem hasSum_negMulLog_eigenvalues (ρ : DensityOperator H)
   simpa only [Function.comp_apply] using
     HasSum.congr_fun hrestricted fun a => (hpoint a).symm
 
-/-- The entropy operator's lossless real trace is the sum of `-λ log λ`. -/
-theorem entropyOp_realTrace_eq_tsum (ρ : DensityOperator H)
-    (htrace : IsTraceClass (entropyOp ρ)) :
-    htrace.realTrace (entropyOp_isSelfAdjoint ρ) =
-      ∑' a : EigenvectorIndex ρ.op, Real.negMulLog a.1.1 :=
-  (hasSum_negMulLog_eigenvalues ρ htrace).tsum_eq.symm
-
 /-- The von Neumann entropy of a density operator, allowing the value `∞`. -/
 noncomputable def vonNeumannEntropy (ρ : DensityOperator H) : ENNReal :=
   ∑' a : EigenvectorIndex ρ.op, ENNReal.ofReal (Real.negMulLog a.1.1)
@@ -127,7 +120,7 @@ theorem vonNeumannEntropy_eq_ofReal_entropyOp_realTrace (ρ : DensityOperator H)
       ENNReal.ofReal (htrace.realTrace (entropyOp_isSelfAdjoint ρ)) := by
   rw [vonNeumannEntropy]
   symm
-  rw [entropyOp_realTrace_eq_tsum ρ htrace]
+  rw [(hasSum_negMulLog_eigenvalues ρ htrace).tsum_eq.symm]
   exact ENNReal.ofReal_tsum_of_nonneg
     (fun a => Real.negMulLog_nonneg (ρ.eigenvalue_nonneg a) (ρ.eigenvalue_le_one a))
     (hasSum_negMulLog_eigenvalues ρ htrace).summable
