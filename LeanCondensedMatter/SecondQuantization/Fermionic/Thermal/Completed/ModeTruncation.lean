@@ -256,10 +256,10 @@ theorem tendsto_completedFreeModeRetainedExpectation
       inner ℂ (completedBasisState n) (A (completedBasisState n))
   have hterm : Summable term := by
     simpa [term] using
-      (completedFreeGibbsDensityOperator ε β hsum).summable_expectation_diagonal
+      ((completedFreeGibbsDensityOperator ε β hsum).hasSum_expectation_diagonal
         A completedOccupationHilbertBasis (purePointGibbsProbability (fermionEnergy ε) β)
         (fun n => by
-          simpa using completedFreeGibbsDensityOperator_apply_basis ε β hsum n)
+          simpa using completedFreeGibbsDensityOperator_apply_basis ε β hsum n)).summable
   have hpoint : ∀ n : Occupation Mode,
       Tendsto (fun S : Finset Mode => if n ⊆ S then term n else 0) atTop (𝓝 (term n)) := by
     intro n

@@ -308,11 +308,9 @@ private def diagonalOwnerRequirements : Array OwnerRequirement :=
   let formulaModule := `LeanCondensedMatter.QuantumTheory.DensityOperator.DiagonalFormula
   #[
     { declaration := `QuantumTheory.DensityOperator.hasSum_expectation_diagonal, moduleName := formulaModule },
-    { declaration := `QuantumTheory.DensityOperator.summable_expectation_diagonal, moduleName := formulaModule },
     { declaration := `QuantumTheory.DensityOperator.expectation_eq_tsum_diagonal, moduleName := formulaModule },
     { declaration := `QuantumTheory.DensityOperator.observableExpectation_eq_tsum_diagonal, moduleName := formulaModule },
     { declaration := `QuantumTheory.DensityOperator.hasSum_diagonal_weights, moduleName := formulaModule },
-    { declaration := `QuantumTheory.DensityOperator.summable_diagonal_weights, moduleName := formulaModule },
     { declaration := `QuantumTheory.DensityOperator.diagonal_weight_le_one, moduleName := formulaModule },
     { declaration := `QuantumTheory.normalizedDiagonalWeight, moduleName := formulaModule },
     { declaration := `QuantumTheory.summable_norm_normalizedDiagonalWeight, moduleName := formulaModule },
