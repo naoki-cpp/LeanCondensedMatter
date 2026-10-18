@@ -123,31 +123,23 @@ theorem resolvent_apply_eigenvector
     resolvent operator z v = (z - eigenvalue)⁻¹ • v := by
   let S : H →L[ℂ] H := algebraMap ℂ (H →L[ℂ] H) z - operator
   let G : H →L[ℂ] H := resolvent operator z
-  have hSG : S * G = 1 := by
-    simpa [S, G] using spectralShift_mul_resolvent_of_not_mem operator z hz
   have hGS : G * S = 1 := by
     simpa [S, G] using resolvent_mul_spectralShift_of_not_mem operator z hz
   have hS_v : S v = (z - eigenvalue) • v := by
     change z • v - operator v = _
     rw [hv]
     exact (sub_smul z eigenvalue v).symm
-  have hS_injective : Function.Injective S := by
-    intro x y hxy
+  have hscalar : (z - eigenvalue) • G v = v := by
     calc
-      x = (G * S) x := by rw [hGS]; simp
-      _ = G (S x) := rfl
-      _ = G (S y) := congrArg G hxy
-      _ = (G * S) y := rfl
-      _ = y := by rw [hGS]; simp
-  apply hS_injective
+      (z - eigenvalue) • G v = G ((z - eigenvalue) • v) :=
+        (map_smul G (z - eigenvalue) v).symm
+      _ = G (S v) := congrArg G hS_v.symm
+      _ = (G * S) v := rfl
+      _ = v := by rw [hGS]; simp
   calc
-    S (G v) = v := by
-      change (S * G) v = v
-      rw [hSG]
-      simp
-    _ = S ((z - eigenvalue)⁻¹ • v) := by
-      rw [map_smul, hS_v, ← mul_smul]
-      simp [hshift]
+    G v = (z - eigenvalue)⁻¹ • ((z - eigenvalue) • G v) := by
+      rw [smul_smul, inv_mul_cancel₀ hshift, one_smul]
+    _ = (z - eigenvalue)⁻¹ • v := by rw [hscalar]
 
 end
 
