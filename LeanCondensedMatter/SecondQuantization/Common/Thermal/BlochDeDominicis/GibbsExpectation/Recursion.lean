@@ -47,6 +47,9 @@ noncomputable def finiteGibbsExpectationRecursion (s : Statistics)
     rw [List.ofFn_succ, List.prod_cons, Module.End.mul_eq_comp]
     set l : List ((AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) × ℂ) :=
       List.ofFn (fun i : Fin (2 * m + 1) => (C i.succ, c 0 i.succ)) with hl
+    have hlmap : l.map Prod.fst = List.ofFn (fun i : Fin (2 * m + 1) => C i.succ) := by
+      rw [hl, List.map_ofFn]
+      rfl
     have hcommL : ∀ p ∈ l, ScalarExchange.zetaCommutator (s.zetaInt : ℂ) (C 0) p.1 =
         p.2 • (LinearMap.id : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) := by
       intro p hp
@@ -62,12 +65,12 @@ noncomputable def finiteGibbsExpectationRecursion (s : Statistics)
       exact hne 0
     have hpeel := finiteGibbsExpectation_peel_indexed energy β (q 0) (s.zetaInt : ℂ) (C 0) l
       (hC 0) hcommL hne0
+    rw [hlmap] at hpeel
     rw [hzl] at hpeel
-    rw [hl, List.map_ofFn, List.sum_getElem_eraseIdx_ofFn
+    rw [hl, List.sum_getElem_eraseIdx_ofFn
       (fun i : Fin (2 * m + 1) => (C i.succ, c 0 i.succ))
       (fun i p rest => (s.zetaInt : ℂ) ^ i * p.2 *
         finiteGibbsExpectation energy β (List.prod (rest.map Prod.fst)))] at hpeel
-    simp only [Function.comp_def, Prod.fst] at hpeel
     rw [hpeel, Finset.sum_div]
     refine Finset.sum_congr rfl fun j _ => ?_
     have h2 : finiteGibbsExpectation energy β ((C 0).comp (C j.succ)) =
