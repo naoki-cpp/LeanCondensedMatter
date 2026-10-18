@@ -1,5 +1,9 @@
-import Mathlib.Analysis.InnerProductSpace.Positive
-import Mathlib.LinearAlgebra.Complex.Module
+module
+
+public import Mathlib.Analysis.InnerProductSpace.Positive
+public import Mathlib.LinearAlgebra.Complex.Module
+
+public section
 
 /-!
 # Lossless diagonal expectations
@@ -74,7 +78,7 @@ theorem diagonalExpectationValue_nonneg
   exact_mod_cast hcomplex
 
 /-- The diagonal expectation of a positive operator, with nonnegativity carried in the codomain. -/
-noncomputable def diagonalExpectationNNReal
+@[expose] noncomputable def diagonalExpectationNNReal
     (T : H →L[ℂ] H) (hT : T.IsPositive) (x : H) : NNReal :=
   ⟨diagonalExpectationValue T hT.isSelfAdjoint x,
     diagonalExpectationValue_nonneg T hT x⟩
