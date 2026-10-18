@@ -63,11 +63,10 @@ private theorem hasSum_prod_finSucc_option
   have hmul : Summable
       (fun p : ℕ × (Fin k →₀ ℕ) => f 0 p.1 * tail p.2) :=
     summable_mul_of_summable_norm habsHead habsTail
-  have htail' : HasSum tail (∏ i : Fin k, a i.succ) := htail
   have hprod : HasSum
       (fun p : ℕ × (Fin k →₀ ℕ) => f 0 p.1 * tail p.2)
       (a 0 * ∏ i : Fin k, a i.succ) :=
-    hhead.mul htail' hmul
+    hhead.mul (show HasSum tail (∏ i : Fin k, a i.succ) from htail) hmul
   convert ((Equiv.hasSum_iff Finsupp.optionEquiv).mpr hprod) using 1
   · funext n
     simp only [Function.comp_apply, Finsupp.optionEquiv_apply, Fintype.prod_option,
