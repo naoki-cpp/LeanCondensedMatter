@@ -1050,8 +1050,9 @@ theorem AngularHarmonicCoefficients.integral_polarFourierRadialPhase
         intervalIntegral.integral_mul_const,
         intervalIntegral.integral_mul_const,
         intervalIntegral.integral_mul_const,
-        integral_polarFourierRadialPhase_mul_sin_zero,
-        integral_polarFourierRadialPhase_mul_cos_mul_sin_zero]
+        integral_polarFourierRadialPhase_mul_sin_zero]
+      simp_rw [mul_assoc]
+      rw [integral_polarFourierRadialPhase_mul_cos_mul_sin_zero]
       simp [polarFourierZerothAngularKernel, polarFourierFirstCosineAngularKernel,
         polarFourierSecondCosineAngularKernel]
 
