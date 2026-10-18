@@ -95,7 +95,7 @@ private theorem hasSum_prod_finSucc_option
     simp only [Function.comp_apply, Finsupp.optionEquiv_apply]
     rw [Fintype.prod_option]
     congr 1
-  · rw [Fintype.prod_option]
+  · simp only [Fintype.prod_option, finSuccFamily]
 
 /-! ## The nonnegative-real case -/
 
