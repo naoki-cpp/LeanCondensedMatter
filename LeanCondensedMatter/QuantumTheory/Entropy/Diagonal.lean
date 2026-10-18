@@ -83,13 +83,4 @@ theorem DensityOperator.vonNeumannEntropy_ne_top_and_toReal_eq_of_hasSum_diagona
     exact ENNReal.ofReal_ne_top
   · rw [hEntropyBridge, ENNReal.toReal_ofReal htrace_nonneg, htrace_eq]
 
-/-- Real-trace form of `hasSum_entropyOp_diagonal`. -/
-theorem entropyOp_realTrace_eq_tsum_diagonal (ρ : DensityOperator H)
-    (b : HilbertBasis ι ℂ H) (w : ι → ℝ)
-    (happly : ∀ i, ρ.op (b i) = (w i : ℂ) • b i)
-    (htrace : IsTraceClass (entropyOp ρ)) :
-    htrace.realTrace (entropyOp_isSelfAdjoint ρ) =
-      ∑' i, Real.negMulLog (w i) :=
-  (hasSum_entropyOp_diagonal ρ b w happly htrace).tsum_eq.symm
-
 end QuantumTheory
