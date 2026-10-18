@@ -95641,7 +95641,7 @@
       "SecondQuantization.Fermionic.completedFreeModeTruncatedGibbsProbability_eq_ratio_mul",
       "SecondQuantization.Fermionic.tendsto_completedFreeModeTruncatedGibbsProbability",
       "SecondQuantization.Fermionic.tendsto_completedFreeModeTruncationNormalizationRatio",
-      "_private.LeanCondensedMatter.QuantumTheory.Gibbs.PurePointEntropy.0.QuantumTheory.log_purePointGibbsProbability",
+      "_private.LeanCondensedMatter.QuantumTheory.Gibbs.PurePointEntropy.0.QuantumTheory.negMulLog_purePointGibbsProbability",
       "_private.LeanCondensedMatter.QuantumTheory.Gibbs.PurePointUniqueness.0.QuantumTheory.purePointGibbs_entropy_eq_iff"
     ],
     "dependencies": [
@@ -95661,7 +95661,7 @@
       "SecondQuantization.Fermionic.completedFreeModeTruncatedGibbsProbability_eq_ratio_mul",
       "SecondQuantization.Fermionic.tendsto_completedFreeModeTruncatedGibbsProbability",
       "SecondQuantization.Fermionic.tendsto_completedFreeModeTruncationNormalizationRatio",
-      "_private.LeanCondensedMatter.QuantumTheory.Gibbs.PurePointEntropy.0.QuantumTheory.log_purePointGibbsProbability",
+      "_private.LeanCondensedMatter.QuantumTheory.Gibbs.PurePointEntropy.0.QuantumTheory.negMulLog_purePointGibbsProbability",
       "_private.LeanCondensedMatter.QuantumTheory.Gibbs.PurePointUniqueness.0.QuantumTheory.purePointGibbs_entropy_eq_iff"
     ],
     "compiledConsumerCount": 11,
@@ -96307,7 +96307,7 @@
     "dependents": [],
     "dependencies": [
       "QuantumTheory.hasSum_purePointGibbsProbability",
-      "_private.LeanCondensedMatter.QuantumTheory.Gibbs.PurePointEntropy.0.QuantumTheory.log_purePointGibbsProbability"
+      "_private.LeanCondensedMatter.QuantumTheory.Gibbs.PurePointEntropy.0.QuantumTheory.negMulLog_purePointGibbsProbability"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -96546,7 +96546,7 @@
       "QuantumTheory.hasSum_purePointGibbsEnergyExpectation",
       "QuantumTheory.hasSum_purePointGibbsProbability",
       "QuantumTheory.purePointGibbsDensityOperator_apply_basis",
-      "_private.LeanCondensedMatter.QuantumTheory.Gibbs.PurePointEntropy.0.QuantumTheory.log_purePointGibbsProbability"
+      "_private.LeanCondensedMatter.QuantumTheory.Gibbs.PurePointEntropy.0.QuantumTheory.negMulLog_purePointGibbsProbability"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -113522,8 +113522,8 @@
     "dependencies": [
       "SecondQuantization.Common.TwoPointDiagram.externalOne_not_mem_verticesBetweenCuts",
       "SecondQuantization.Common.TwoPointDiagram.externalZero_not_mem_verticesBetweenCuts",
-      "SecondQuantization.Common.TwoPointDiagram.mem_interactionSector_verticesBetweenCuts_iff",
-      "SecondQuantization.Common.TwoPointDiagram.verticesBetweenCuts_ne_empty_of_ssubset"
+      "SecondQuantization.Common.TwoPointDiagram.verticesBetweenCuts_ne_empty_of_ssubset",
+      "SecondQuantization.Common.mem_interactionSector_subtype"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -114911,50 +114911,6 @@
       "SecondQuantization.Common.TwoPointDiagram.restrictedPartner_val"
     ],
     "compiledConsumerCount": 4,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel N S)\n  (earlier later : Fin (2 * (2 * S.card + 1))) (v : ↥S),\n  ↑v ∈ SecondQuantization.Common.interactionSector (d.verticesBetweenCuts earlier later) ↔\n    Sum.inr v ∈ d.verticesBetweenCuts earlier later",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.TwoPointDiagram.mem_interactionSector_verticesBetweenCuts_iff",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.CutIntervals",
-    "externalAxioms": [],
-    "docString": "The interaction vertices between two cuts are the existing generic\ninteraction-sector extraction of their intermediate vertex region. ",
-    "directWrapperTargetModule": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.InteractionSector",
-    "directWrapperOf": "SecondQuantization.Common.mem_interactionSector_subtype",
-    "dependents": [
-      "SecondQuantization.Common.TwoPointDiagram.interactionSector_verticesBetweenCuts_nonempty"
-    ],
-    "dependencies": [
-      "SecondQuantization.Common.mem_interactionSector_subtype"
-    ],
-    "crossModuleDirectWrapper": true,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.TwoPointDiagram.interactionSector_verticesBetweenCuts_nonempty"
-    ],
-    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -127660,7 +127616,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Common.TwoPointDiagram.mem_interactionSector_verticesBetweenCuts_iff",
+      "SecondQuantization.Common.TwoPointDiagram.interactionSector_verticesBetweenCuts_nonempty",
       "SecondQuantization.Common.TwoPointDiagram.ofSlotSplit_vacuumLeg_mem_right",
       "SecondQuantization.Common.interactionSector_component_unique",
       "SecondQuantization.Common.isExternallyConnected_slotSplitExternal",
@@ -127677,7 +127633,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.TwoPointDiagram.mem_interactionSector_verticesBetweenCuts_iff",
+      "SecondQuantization.Common.TwoPointDiagram.interactionSector_verticesBetweenCuts_nonempty",
       "SecondQuantization.Common.TwoPointDiagram.ofSlotSplit_vacuumLeg_mem_right",
       "SecondQuantization.Common.interactionSector_component_unique",
       "SecondQuantization.Common.isExternallyConnected_slotSplitExternal",
@@ -174744,7 +174700,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {ι : Type u_1} [Nonempty ι] (E : ι → ℝ) (β : ℝ),\n  QuantumTheory.PurePointGibbsSummable E β →\n    ∀ (i : ι),\n      Real.log (QuantumTheory.purePointGibbsProbability E β i) =\n        -β * E i - Real.log (QuantumTheory.purePointPartitionFunction E β)",
+    "statement": "∀ {ι : Type u_1} [Nonempty ι] (E : ι → ℝ) (β : ℝ),\n  QuantumTheory.PurePointGibbsSummable E β →\n    ∀ (i : ι),\n      (QuantumTheory.purePointGibbsProbability E β i).negMulLog =\n        β * (QuantumTheory.purePointGibbsProbability E β i * E i) +\n          Real.log (QuantumTheory.purePointPartitionFunction E β) * QuantumTheory.purePointGibbsProbability E β i",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -174756,10 +174712,10 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.QuantumTheory.Gibbs.PurePointEntropy.0.QuantumTheory.log_purePointGibbsProbability",
+    "name": "_private.LeanCondensedMatter.QuantumTheory.Gibbs.PurePointEntropy.0.QuantumTheory.negMulLog_purePointGibbsProbability",
     "module": "LeanCondensedMatter.QuantumTheory.Gibbs.PurePointEntropy",
     "externalAxioms": [],
-    "docString": null,
+    "docString": "The pointwise Shannon-entropy identity for normalized pure-point Gibbs weights. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
