@@ -40,15 +40,9 @@ theorem DensityOperator.summable_expectation_term (ρ : DensityOperator H) (A : 
   rw [norm_mul, Complex.norm_real]
   exact mul_le_mul_of_nonneg_left hle (abs_nonneg _)
 
-/-- The unbundled canonical trace expectation used to construct `DensityOperator.expectation`. -/
-private noncomputable def densityExpectationTrace
-    (ρ : DensityOperator H) (A : H →L[ℂ] H) : ℂ :=
-  (ρ.isTraceClass.comp_right A).trace
-
-private theorem densityExpectationTrace_norm_le
+private theorem trace_comp_right_norm_le
     (ρ : DensityOperator H) (A : H →L[ℂ] H) :
-    ‖densityExpectationTrace ρ A‖ ≤ ‖A‖ := by
-  unfold densityExpectationTrace
+    ‖(ρ.isTraceClass.comp_right A).trace‖ ≤ ‖A‖ := by
   calc
     ‖(ρ.isTraceClass.comp_right A).trace‖ ≤
         (ρ.isTraceClass.comp_right A).traceNorm :=
@@ -62,19 +56,14 @@ Its canonical value on `A` is the general trace-class trace `Tr(ρA)`. -/
 noncomputable def DensityOperator.expectation (ρ : DensityOperator H) :
     (H →L[ℂ] H) →L[ℂ] ℂ :=
   IsBoundedLinearMap.toContinuousLinearMap
-    (fun A : H →L[ℂ] H => densityExpectationTrace ρ A)
+    (fun A : H →L[ℂ] H => (ρ.isTraceClass.comp_right A).trace)
     { map_add := fun A B => by
-        unfold densityExpectationTrace
         simpa only [mul_add] using
           (ρ.isTraceClass.comp_right A).trace_add (ρ.isTraceClass.comp_right B)
       map_smul := fun c A => by
-        simpa only [smul_eq_mul] using
-          (show densityExpectationTrace ρ (c • A) =
-            c * densityExpectationTrace ρ A by
-              unfold densityExpectationTrace
-              simpa only [mul_smul_comm] using
-                (ρ.isTraceClass.comp_right A).trace_smul c)
-      bound := ⟨1, zero_lt_one, fun A => by simpa using densityExpectationTrace_norm_le ρ A⟩ }
+        simpa only [smul_eq_mul, mul_smul_comm] using
+          (ρ.isTraceClass.comp_right A).trace_smul c
+      bound := ⟨1, zero_lt_one, fun A => by simpa using trace_comp_right_norm_le ρ A⟩ }
 
 /-- The canonical expectation is the general trace-class trace `Tr(ρA)`. -/
 theorem DensityOperator.expectation_apply (ρ : DensityOperator H) (A : H →L[ℂ] H) :
@@ -151,7 +140,7 @@ theorem DensityOperator.expectation_eq_spectral_tsum
 /-- Expectations are contractive in the operator norm. -/
 theorem DensityOperator.norm_expectation_le (ρ : DensityOperator H) (A : H →L[ℂ] H) :
     ‖ρ.expectation A‖ ≤ ‖A‖ :=
-  densityExpectationTrace_norm_le ρ A
+  trace_comp_right_norm_le ρ A
 
 /-- The expectation of the identity operator is one. -/
 @[simp]
