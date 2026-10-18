@@ -50,14 +50,6 @@ theorem localizedQuantityFunctional_apply
     localizedQuantityFunctional V M m f = localizedQuantity V M m f :=
   rfl
 
-/-- When localization commutes with the quantity, symmetric localization reduces to `M f ∘ m`. -/
-theorem localizedQuantity_eq_comp_of_commutes
-    (M : Test →ₗ[ℂ] (V →ₗ[ℂ] V)) (m : V →ₗ[ℂ] V) (f : Test)
-    (hcomm : ⁅M f, m⁆ = 0) :
-    localizedQuantity V M m f = (M f).comp m := by
-  simpa [localizedQuantity] using
-    (symmetrizedProduct_eq_comp_of_commutes (M f) m hcomm)
-
 /-- Charge-like quantities `q I` reduce to scalar multiplication under symmetric localization. -/
 @[simp]
 theorem localizedQuantity_smul_id
@@ -173,15 +165,5 @@ theorem sourceCommutator_smul_id
     sourceCommutator V h M (q • LinearMap.id) f = 0 := by
   apply sourceCommutator_eq_zero_of_commutes V h M (q • LinearMap.id) f
   simp [LieRing.of_associative_ring_bracket, Module.End.mul_eq_comp]
-
-/-- For `m = q I`, the transport functional is `q` times the bare localization commutator. -/
-theorem transportFunctional_smul_id
-    (h : V →ₗ[ℂ] V)
-    (M : Test →ₗ[ℂ] (V →ₗ[ℂ] V)) (q : ℂ) :
-    transportFunctional V h M (q • LinearMap.id) =
-      q • localizationCommutatorFunctional V h M := by
-  apply LinearMap.ext
-  intro f
-  simp [transportFunctional, localizationCommutatorFunctional]
 
 end ConservationLaw
