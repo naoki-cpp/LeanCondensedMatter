@@ -85,7 +85,6 @@ private theorem finite_purePointPhysicalSusceptibility_has_both_local_iterated_l
   have hfun : finitePurePointPhysicalSusceptibilityExtension system data A B = F := by
     funext omega eta
     rw [finitePurePointPhysicalSusceptibilityExtension_eq_finite_sum]
-    simp [F, LehmannTransitionData.frequencyTerm]
   rw [hfun]
   simpa [F, LehmannTransitionData.frequencyTerm] using
     finite_purePointLehmann_has_both_local_iterated_limits
