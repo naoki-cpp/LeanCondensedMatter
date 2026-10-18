@@ -1,5 +1,6 @@
 import LeanCondensedMatter.Combinatorics.PerfectPairing.SplitNormalizedPairs
 import LeanCondensedMatter.Combinatorics.PerfectPairing.CrossingParity
+import Mathlib.Algebra.BigOperators.ModEq
 
 set_option linter.style.header false
 
