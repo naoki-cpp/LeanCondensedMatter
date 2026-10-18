@@ -262,15 +262,6 @@ noncomputable def purePointTransitionData
     (inner ℂ (data.basis mn.1) (A (data.basis mn.2)))
     (inner ℂ (data.basis mn.2) (B (data.basis mn.1)))
 
-/-- The physical spectral weight
-`(i / ℏ) (pₘ - pₙ) Aₘₙ Bₙₘ` of one pure-point transition.
-
-This compatibility accessor is the `weight` projection of the canonical transition record. -/
-noncomputable def purePointTransitionWeight
-    (data : PurePointLehmannData system ι)
-    (A B : H →L[ℂ] H) (mn : ι × ι) : ℂ :=
-  (purePointTransitionData system data A B mn).weight
-
 @[simp]
 theorem purePointTransitionData_energyGap
     (data : PurePointLehmannData system ι)
@@ -280,11 +271,11 @@ theorem purePointTransitionData_energyGap
 
 /-- Diagonal pure-point transitions have zero physical weight. -/
 @[simp]
-theorem purePointTransitionWeight_diag
+theorem purePointTransitionData_weight_diag
     (data : PurePointLehmannData system ι)
     (A B : H →L[ℂ] H) (i : ι) :
-    purePointTransitionWeight system data A B (i, i) = 0 := by
-  simp [purePointTransitionWeight, purePointTransitionData]
+    (purePointTransitionData system data A B (i, i)).weight = 0 := by
+  simp [purePointTransitionData]
 
 /-- Absolute-summability condition for the countable pure-point transition weights. -/
 def PurePointLehmannSummable
@@ -308,8 +299,8 @@ theorem summable_purePointLehmannSeries_of_pos
     Summable fun mn : ι × ι =>
       lehmannTerm system.hbar omega eta
         (data.energy mn.1 - data.energy mn.2)
-        (purePointTransitionWeight system data A B mn) := by
-  simpa [LehmannTransitionData.frequencyTerm, purePointTransitionWeight] using
+        ((purePointTransitionData system data A B mn).weight) := by
+  simpa [LehmannTransitionData.frequencyTerm] using
     LehmannTransitionData.summable_frequencyTerm_of_pos
       omega eta (purePointTransitionData system data A B) hsum heta
 
@@ -329,9 +320,8 @@ theorem purePointLehmannSeries_eq_finite_sum
       ∑ mn : ι × ι,
         lehmannTerm system.hbar omega eta
           (data.energy mn.1 - data.energy mn.2)
-          (purePointTransitionWeight system data A B mn) := by
-  simp [purePointLehmannSeries, LehmannTransitionData.frequencyTerm,
-    purePointTransitionWeight]
+          ((purePointTransitionData system data A B mn).weight) := by
+  simp [purePointLehmannSeries, LehmannTransitionData.frequencyTerm]
 
 end
 end LinearResponse

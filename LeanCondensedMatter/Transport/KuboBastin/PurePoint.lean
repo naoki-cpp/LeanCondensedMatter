@@ -90,7 +90,7 @@ theorem purePointLehmannVertexTerm_eq_bastinSpectral
     (omega eta : ℝ) (heta : 0 < eta) (mn : ι × ι) :
     lehmannTerm system.hbar omega eta
         (data.energy mn.1 - data.energy mn.2)
-        (purePointTransitionWeight system data measured source mn) =
+        ((purePointTransitionData system data measured source mn).weight) =
       purePointKuboBastinSpectralVertexTerm
         system data measured source omega eta mn := by
   have hhbar : system.hbar ≠ 0 := ne_of_gt system.hbar_pos
@@ -139,7 +139,7 @@ theorem purePointLehmannVertexTerm_eq_bastinSpectral
     system.hbar omega eta (data.energy mn.1) (data.energy mn.2) hhbar]
   unfold purePointKuboBastinSpectralVertexTerm
   rw [hinner]
-  simp only [purePointTransitionWeight, purePointTransitionData,
+  simp only [purePointTransitionData,
     orderedLehmannTransitionData_weight, orderedLehmannTransitionWeight]
   field_simp [hhbar, hhbarComplex, hshift]
 
