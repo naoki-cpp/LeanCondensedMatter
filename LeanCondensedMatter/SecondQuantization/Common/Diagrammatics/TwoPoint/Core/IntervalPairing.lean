@@ -356,29 +356,9 @@ theorem TwoPointDiagram.intervalBlock_partner_external (i : Fin 2) :
     d.intervalAugmentedPairing_partner_external earlier later
       hEarlier hLater hne hpne]
 
-/-- The block keeps each interior propagator's partner under leg reindexing.
-`interiorPairing_partner_val` identifies it with the ambient partner. -/
-theorem TwoPointDiagram.intervalBlock_partner_interior
-    (i : {leg : Fin (2 * (2 * S.card + 1)) // d.IsInteriorLeg earlier later leg}) :
-    (d.intervalBlockLegEquiv earlier later hsepLater)
-      ((d.intervalBlock boundaryLabels earlier later hsepLater
-        hEarlier hLater hne hpne).pairing.partner
-          ((d.intervalBlockLegEquiv earlier later hsepLater).symm
-            (Sum.inr ((d.intervalBoundaryInteriorLegEquiv earlier later
-              hEarlier hLater hne hpne) (Sum.inr i))))) =
-      Sum.inr ((d.intervalBoundaryInteriorLegEquiv earlier later
-        hEarlier hLater hne hpne)
-        (Sum.inr ((d.interiorPairing earlier later).partner i))) := by
-  rw [d.intervalBlock_partner_equiv boundaryLabels earlier later
-    hsepLater hEarlier hLater hne hpne,
-    Equiv.apply_symm_apply,
-    d.intervalAugmentedPairing_partner_interior earlier later
-      hEarlier hLater hne hpne]
-
-/-- The partner of an interior leg in a standalone block is the original
-ambient partner, once both legs are expressed through the interval leg
-equivalence. Unlike the structural partner equation, this exposes the
-ambient leg coordinates directly for graph-incidence arguments. -/
+/-- Under interval-block reindexing, the partner of an interior leg
+agrees with its ambient pairing partner. This concrete incidence
+equation subsumes the intermediate restricted-pairing representation. -/
 theorem TwoPointDiagram.intervalBlock_partner_interior_ambient
     (i : {leg : Fin (2 * (2 * S.card + 1)) // d.IsInteriorLeg earlier later leg}) :
     (d.intervalBlockLegEquiv earlier later hsepLater)
@@ -391,8 +371,21 @@ theorem TwoPointDiagram.intervalBlock_partner_interior_ambient
         ((d.isInteriorLeg_partner_iff earlier later i.1).mp i.2).1⟩ :
         {leg : Fin (2 * (2 * S.card + 1)) //
           twoPointVertexOfLeg leg ∈ d.verticesBetweenCuts earlier later}) := by
-  have h := d.intervalBlock_partner_interior boundaryLabels earlier later
-    hsepLater hEarlier hLater hne hpne i
+  have h :
+      (d.intervalBlockLegEquiv earlier later hsepLater)
+        ((d.intervalBlock boundaryLabels earlier later hsepLater
+          hEarlier hLater hne hpne).pairing.partner
+            ((d.intervalBlockLegEquiv earlier later hsepLater).symm
+              (Sum.inr ((d.intervalBoundaryInteriorLegEquiv earlier later
+                hEarlier hLater hne hpne) (Sum.inr i))))) =
+        Sum.inr ((d.intervalBoundaryInteriorLegEquiv earlier later
+          hEarlier hLater hne hpne)
+          (Sum.inr ((d.interiorPairing earlier later).partner i))) := by
+    rw [d.intervalBlock_partner_equiv boundaryLabels earlier later
+      hsepLater hEarlier hLater hne hpne,
+      Equiv.apply_symm_apply,
+      d.intervalAugmentedPairing_partner_interior earlier later
+        hEarlier hLater hne hpne]
   change
     (d.intervalBlockLegEquiv earlier later hsepLater)
       ((d.intervalBlock boundaryLabels earlier later hsepLater
