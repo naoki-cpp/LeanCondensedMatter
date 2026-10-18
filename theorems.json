@@ -30370,9 +30370,7 @@
       "LinearPMap.resolventApproximationEvolution_zero",
       "QuantumTheory.LinearResponse.freePropagator_zero"
     ],
-    "dependencies": [
-      "_private.LeanCondensedMatter.Analysis.Operator.BoundedUnitaryEvolution.0.LinearPMap.unitaryTimeCoefficient_zero"
-    ],
+    "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
@@ -92772,7 +92770,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "QuantumTheory.energyExpValue_purePointGibbsDensityOperator_eq_tsum",
-    "module": "LeanCondensedMatter.QuantumTheory.Gibbs.PurePoint",
+    "module": "LeanCondensedMatter.QuantumTheory.Gibbs.PurePointExpectation",
     "externalAxioms": [],
     "docString": "When the same energy data do come from a bounded observable, the generic bounded expectation\nAPI gives the expected weighted pure-point energy series.  Genuinely unbounded energy data should\ninstead carry `PurePointGibbsEnergyIntegrable` explicitly. ",
     "directWrapperTargetModule": null,
@@ -156670,48 +156668,6 @@
     "completedMention": false,
     "compiledConsumers": [
       "LinearPMap.boundedUnitaryEvolution_add"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "LinearPMap.unitaryTimeCoefficient✝ 0 = 0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Analysis.Operator.BoundedUnitaryEvolution.0.LinearPMap.unitaryTimeCoefficient_zero",
-    "module": "LeanCondensedMatter.Analysis.Operator.BoundedUnitaryEvolution",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "LinearPMap.boundedUnitaryEvolution_zero"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "LinearPMap.boundedUnitaryEvolution_zero"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
