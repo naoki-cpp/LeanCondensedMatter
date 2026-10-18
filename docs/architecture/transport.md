@@ -26,6 +26,9 @@ LeanCondensedMatter.Models
 `LeanCondensedMatter.Transport` does not import concrete `Models` or the opt-in
 `Transport.Analysis` package. Representation-independent analysis such as finite-dimensional trace,
 generic spectral resolvent algebra, and Lorentzian analysis stays under `LeanCondensedMatter.Analysis`.
+`Analysis.Operator.FiniteTrace` owns the continuous ordinary trace, cyclicity, matrix/operator
+transport, and differentiation laws. Transport consumers attach response meaning and normalization
+separately; the trace module has no disorder or conductivity semantics.
 
 ## Generic owners
 
@@ -53,6 +56,12 @@ The main semantic boundaries are:
   `QuantumTheory.LinearResponse.FiniteLehmannTable`; the generic Lehmann evaluator does not depend
   on contact terms, physical volume, driving frequency normalization, or electric-field conversion;
 - generic Transport must not acquire model-specific assumptions from `Transport.Models`.
+
+`QuantumTheory.LinearResponse.FiniteLehmannTable` evaluates each transition through the canonical
+`finiteLehmannTableTransitionData` record. Its `.weight`, `.energyGap`, and frequency evaluation
+belong to that transition data; concrete validation and conductivity adapters consume those fields.
+The diagonal-weight vanishing theorem remains a canonical simplification rule, independently of
+any response or physical conductivity prefactor.
 
 `QuantumTheory.Occupation.Band` owns arbitrary occupation-law composition with band energies, while
 `QuantumTheory.Occupation.ZeroTemperature` owns the strict scalar Fermi step and its pointwise

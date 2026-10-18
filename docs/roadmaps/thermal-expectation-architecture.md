@@ -35,7 +35,8 @@ The reusable finite coordinate layer is split by responsibility:
 | `Common/Thermal/FiniteGibbsCoordinate.lean` | Complex Boltzmann weights, diagonal-evolution traces, and trace-ratio formulas. |
 | `Common/Algebra/DiagonalTrace.lean` | Summability-aware diagonal trace infrastructure. |
 | `Common/Algebra/FiniteTrace.lean` | Canonical finite algebraic Fock trace and unnormalized scalar weight sums. |
-| `Common/Thermal/BlochDeDominicis/GibbsExpectation/` | Pairing-specific finite Gibbs two-point, peel, four-point, and recursion formulas. |
+| `Common/Thermal/BlochDeDominicis/NormalizedTwoPointTrace.lean` | Statistics-independent normalized two-point diagonal trace identity with explicit summability and nonzero denominators. |
+| `Common/Thermal/BlochDeDominicis/GibbsExpectation/` | Finite density-state specializations: two-point, peel, four-point, and recursion formulas. |
 
 Raw `weightSum` formulas are scalar coordinate infrastructure, not normalized-state models. The finite Gibbs expectation retains the canonical pure-point density state as its physical
 meaning. For finite fermionic mode types,
@@ -64,6 +65,11 @@ The finite Gibbs implementation specializes the generic recursion using the fini
 state, imaginary-time evolution, trace-ratio identity, and KMS/exchange relations. The finite
 density-state specialization depends directly on `fermionEnergy` and the generic pure-point state;
 finite complex Boltzmann coordinates are a separate proof/perturbation lane.
+
+`Fermionic.Thermal.FreeEntropy` derives the finite occupation marginal from the canonical
+number-operator expectation. The mean energy then uses this marginal, while the binary-entropy
+formula specializes the generic pure-point Gibbs entropy identity. These are thermodynamic
+consequences of the same density state, not a separate probability-state construction.
 
 `Fermionic.Thermal.PurePointSummability` owns the representation-independent theorem that
 one-particle Gibbs summability implies summability over fermionic occupation configurations.
@@ -123,8 +129,9 @@ implementations.
 
 ## Open work
 
-- discharge the bosonic KMS/exchange recurrence on useful summable operator families;
-- prove bosonic product-domain closure and a justified operator-integration boundary;
+- extend the established free-field product summability and KMS/exchange recurrence to further
+  operator families with explicit domain conditions;
+- establish a justified bosonic operator-integration boundary;
 - build completed bosonic Fock/operator-domain theory;
 - extend connected expansions from the proved fermionic two-point case to higher/source insertions;
 - formulate infinite-mode and thermodynamic-limit results with explicit analytic hypotheses.
@@ -143,11 +150,21 @@ rotation. Bosonic and completed fermionic first-pair reductions apply it with re
 `1` and `-1` respectively. Their KMS proofs, denominator nonvanishing, and fermionic odd-tail
 sign proof remain in the representation-specific consumers. The algebraic identity assumes only
 a field and the two scalar equalities, and introduces no thermal-state contract.
-Finite normalized two-point values and the bosonic two-point diagonal trace identity apply the
-same general trace peel theorem to a singleton coefficient-paired tail. The singleton peel's
-diagonal summability follows by multiplying the partition-function diagonal series by the exchange
-coefficient; rotation still requires its existing double-series summability. No separate two-point
-trace induction or additional analytic assumption is used.
+
+`Common/Thermal/BlochDeDominicis/NormalizedTwoPointTrace.lean` applies the general trace peel
+theorem to a singleton coefficient-paired tail. Its
+`normalizedTsumTrace_comp_eq_div_of_zetaCommutator` accepts an arbitrary configuration type;
+finite types are included without a countability assumption. Partition-diagonal summability,
+rotated double-series summability, and nonzero partition and exchange denominators remain explicit.
+The singleton peel's diagonal summability follows by multiplying the partition diagonal series
+by the exchange coefficient.
+
+The finite Gibbs two-point theorem supplies automatic finite summability and the canonical
+density-state trace bridge. `Bosonic/Thermal/BlochDeDominicis/ConcreteMixedTwoPoint.lean`
+consumes the same common theorem with occupation-space summability and denominator proofs;
+`TwoPoint.lean` owns the supporting analytic estimates. Neither consumer defines another normalized
+state. This shared trace identity does not imply closure of arbitrary summable operators under
+composition.
 
 ## Exponential denominators
 
@@ -157,6 +174,6 @@ proofs use this fact directly, supplying positivity or negativity of the exponen
 explicit positive Boltzmann-exponent hypothesis. No representation-specific denominator theorem
 is needed.
 
-In pinned Mathlib `d13f23b723b8a846827a245b89c10fc7d3f11612`, `Complex.norm_exp` and
-`Real.exp_eq_one_iff` provide the norm and real-exponential steps. The shared theorem combines
-those existing results; it does not require a classification of complex exponential periods.
+Mathlib's `Complex.norm_exp` and `Real.exp_eq_one_iff` provide the norm and real-exponential steps.
+The shared theorem combines those existing results; it does not require a classification of complex
+exponential periods.
