@@ -1,34 +1,56 @@
-import LeanCondensedMatter.QuantumTheory.LinearResponse.LehmannLimits
+import LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann.Limits
+import LeanCondensedMatter.QuantumTheory.LinearResponse.PurePointFrequencyDomain
+import LeanCondensedMatter.QuantumTheory.LinearResponse.InfiniteTimeAdiabatic
 
 set_option linter.style.header false
 
-/-!
-# Physical finite-dimensional Lehmann limits
-
-The fixed-positive-rate susceptibility carries a proof that the switching rate is positive, while
-an iterated-limit predicate is most conveniently stated for a total function of the real rate.  For
-a finite pure-point system, this module defines a canonical total extension: at positive rate it is
-the physical susceptibility, and outside the physical region it is the finite Lehmann expression.
-The values outside `eta > 0` do not affect any regulator-removal limit, whose source filter is
-`nhdsWithin 0 (Ioi 0)`.
-
-The finite-dimensional Lehmann equality proves that this extension is globally equal to the finite
-resolvent sum.  Its nonpositive-rate branch evaluates the same canonical `LehmannTransitionData`
-records used by the fixed-rate pure-point series.  Consequently the nonresonant limit theorem
-transfers directly to the physical susceptibility.  Combining it with the finite-observation-time
-convergence theorem also gives both three-stage orders with `T -> infinity` taken first.
--/
+/-! # Pure-point and physical response limits -/
 
 namespace QuantumTheory
 namespace LinearResponse
 
-open Set Filter Topology
+open Set MeasureTheory Filter Topology
 
 noncomputable section
 
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
 variable {ι : Type*} [Fintype ι]
 variable (system : BoundedFreeSystem H)
+
+/-- Static nonresonance for a finite pure-point response. Degenerate transitions are allowed when
+their physical transition weight vanishes. -/
+def PurePointStaticNonresonant
+    (data : PurePointLehmannData system ι)
+    (A B : H →L[ℂ] H) : Prop :=
+  ∀ mn : ι × ι,
+    (purePointTransitionData system data A B mn).weight = 0 ∨
+      (purePointTransitionData system data A B mn).energyGap ≠ 0
+
+/-- A finite static-nonresonant pure-point Lehmann formula has both local iterated limits, with the
+same zero-rate static double sum. -/
+theorem finite_purePointLehmann_has_both_local_iterated_limits
+    (data : PurePointLehmannData system ι)
+    (A B : H →L[ℂ] H)
+    (hregular : PurePointStaticNonresonant system data A B) :
+    HasLocalStaticThenAdiabaticLimit
+        (fun omega eta =>
+          Finset.univ.sum fun mn : ι × ι =>
+            (purePointTransitionData system data A B mn).frequencyTerm omega eta)
+        (Finset.univ.sum fun mn : ι × ι =>
+          (purePointTransitionData system data A B mn).frequencyTerm 0 0) ∧
+      HasLocalAdiabaticThenStaticLimit
+        (fun omega eta =>
+          Finset.univ.sum fun mn : ι × ι =>
+            (purePointTransitionData system data A B mn).frequencyTerm omega eta)
+        (Finset.univ.sum fun mn : ι × ι =>
+          (purePointTransitionData system data A B mn).frequencyTerm 0 0) := by
+  simpa [LehmannTransitionData.frequencyTerm] using
+    finset_frequencyTerm_has_both_local_iterated_limits
+      (s := Finset.univ)
+      system.hbar
+      (purePointTransitionData system data A B)
+      (ne_of_gt system.hbar_pos)
+      (fun mn _ => hregular mn)
 
 /-- A total real-rate extension of the finite pure-point physical susceptibility.
 
@@ -70,15 +92,11 @@ private theorem finite_purePointPhysicalSusceptibility_has_both_local_iterated_l
     HasLocalStaticThenAdiabaticLimit
         (finitePurePointPhysicalSusceptibilityExtension system data A B)
         (Finset.univ.sum fun mn : ι × ι =>
-          unswitchedLehmannTerm system.hbar 0
-            (data.energy mn.1 - data.energy mn.2)
-            ((purePointTransitionData system data A B mn).weight)) ∧
+          (purePointTransitionData system data A B mn).frequencyTerm 0 0) ∧
       HasLocalAdiabaticThenStaticLimit
         (finitePurePointPhysicalSusceptibilityExtension system data A B)
         (Finset.univ.sum fun mn : ι × ι =>
-          unswitchedLehmannTerm system.hbar 0
-            (data.energy mn.1 - data.energy mn.2)
-            ((purePointTransitionData system data A B mn).weight)) := by
+          (purePointTransitionData system data A B mn).frequencyTerm 0 0) := by
   let F : ℝ → ℝ → ℂ := fun omega eta =>
     Finset.univ.sum fun mn : ι × ι =>
       (purePointTransitionData system data A B mn).frequencyTerm omega eta
@@ -101,17 +119,13 @@ theorem finiteTime_purePointPhysicalSusceptibility_has_both_local_three_stage_li
           finiteTimeAdiabaticFrequencyDomainSusceptibility system
             (purePointNormalizedExpectation system data) A B omega eta T)
         (Finset.univ.sum fun mn : ι × ι =>
-          unswitchedLehmannTerm system.hbar 0
-            (data.energy mn.1 - data.energy mn.2)
-            ((purePointTransitionData system data A B mn).weight)) ∧
+          (purePointTransitionData system data A B mn).frequencyTerm 0 0) ∧
       HasLongTimeThenLocalAdiabaticThenStaticLimit
         (fun T omega eta =>
           finiteTimeAdiabaticFrequencyDomainSusceptibility system
             (purePointNormalizedExpectation system data) A B omega eta T)
         (Finset.univ.sum fun mn : ι × ι =>
-          unswitchedLehmannTerm system.hbar 0
-            (data.energy mn.1 - data.energy mn.2)
-            ((purePointTransitionData system data A B mn).weight)) := by
+          (purePointTransitionData system data A B mn).frequencyTerm 0 0) := by
   have hlimits :=
     finite_purePointPhysicalSusceptibility_has_both_local_iterated_limits
       system data A B hregular

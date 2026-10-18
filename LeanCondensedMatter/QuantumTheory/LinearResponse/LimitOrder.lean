@@ -1,22 +1,8 @@
-import LeanCondensedMatter.QuantumTheory.LinearResponse.PurePointFrequencyDomain
 import Mathlib.MeasureTheory.Integral.Bochner.Set
 
 set_option linter.style.header false
 
-/-!
-# Explicit ordering of response limits
-
-This module keeps three logically different operations separate:
-
-1. the observation-time limit `T → ∞` at fixed frequency and fixed positive switching rate;
-2. removal of the adiabatic regulator `η → 0⁺` at fixed frequency;
-3. the static limit `ω → 0`.
-
-The finite-time transform is proved to converge to the fixed-positive-rate susceptibility.  The two
-remaining limits are represented by different named predicates, including both possible iterated
-orders.  No theorem identifies those orders, and no `η → 0⁺` or `ω → 0` limit is asserted without
-an explicit convergence hypothesis.
--/
+/-! # Order of scalar response limits -/
 
 namespace QuantumTheory
 namespace LinearResponse
@@ -25,89 +11,10 @@ open Set MeasureTheory Filter Topology
 
 noncomputable section
 
-variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
-variable (system : BoundedFreeSystem H)
-
-/-- The switched response observed only over the finite causal window `(0,T]`. -/
-noncomputable def finiteTimeAdiabaticFrequencyDomainSusceptibility
-    (expectation : NormalizedExpectation H)
-    (A B : H →L[ℂ] H) (omega eta T : ℝ) : ℂ :=
-  ∫ τ : ℝ in Ioc 0 T,
-    adiabaticFrequencySusceptibilityIntegrand system expectation A B omega eta τ
-
-/-- The same fixed-rate transform written directly as an integral over the open causal half-line. -/
-noncomputable def causalAdiabaticFrequencyDomainSusceptibility
-    (expectation : NormalizedExpectation H)
-    (A B : H →L[ℂ] H) (omega eta : ℝ) : ℂ :=
-  ∫ τ : ℝ in Ioi 0,
-    adiabaticFrequencySusceptibilityIntegrand system expectation A B omega eta τ
-
-/-- Causality reduces the full-real-line fixed-rate transform to the positive half-line. -/
-theorem adiabaticFrequencyDomainSusceptibilityOfPositiveRate_eq_causal
-    (expectation : NormalizedExpectation H)
-    (A B : H →L[ℂ] H) (omega eta : ℝ) (hη : 0 < eta) :
-    adiabaticFrequencyDomainSusceptibilityOfPositiveRate system
-        expectation A B omega eta hη =
-      causalAdiabaticFrequencyDomainSusceptibility system
-        expectation A B omega eta := by
-  rw [adiabaticFrequencyDomainSusceptibilityOfPositiveRate,
-    adiabaticFrequencyDomainSusceptibility,
-    causalAdiabaticFrequencyDomainSusceptibility]
-  exact integral_adiabaticFrequencySusceptibilityIntegrand_eq_Ioi_zero
-    system expectation A B omega eta
-
-/-- At fixed frequency and fixed positive switching rate, increasing the observation window to
-infinity converges to the causal fixed-rate transform. -/
-theorem tendsto_finiteTimeAdiabaticFrequencyDomainSusceptibility_atTop
-    (expectation : NormalizedExpectation H)
-    (A B : H →L[ℂ] H) (omega eta : ℝ) (hη : 0 < eta) :
-    Tendsto
-      (fun T : ℝ =>
-        finiteTimeAdiabaticFrequencyDomainSusceptibility system
-          expectation A B omega eta T)
-      atTop
-      (𝓝 (causalAdiabaticFrequencyDomainSusceptibility system
-        expectation A B omega eta)) := by
-  let f : ℝ → ℂ :=
-    adiabaticFrequencySusceptibilityIntegrand system expectation A B omega eta
-  have hInt : Integrable f :=
-    (adiabaticIntegrable_of_pos system expectation A B omega eta hη).integrable
-  have hunion : (⋃ T : ℝ, Ioc (0 : ℝ) T) = Ioi 0 := by
-    ext τ
-    simp only [mem_iUnion, mem_Ioc, mem_Ioi]
-    constructor
-    · rintro ⟨T, hpos, _⟩
-      exact hpos
-    · intro hpos
-      exact ⟨τ, hpos, le_rfl⟩
-  have ht := tendsto_setIntegral_of_monotone
-    (f := f) (μ := volume)
-    (s := fun T : ℝ => Ioc 0 T)
-    (fun _ => measurableSet_Ioc)
-    (fun _ _ hab _ hx => ⟨hx.1, hx.2.trans hab⟩)
-    (by
-      rw [hunion]
-      exact hInt.integrableOn)
-  rw [hunion] at ht
-  simpa [finiteTimeAdiabaticFrequencyDomainSusceptibility,
-    causalAdiabaticFrequencyDomainSusceptibility, f] using ht
-
-/-- The physical fixed-rate susceptibility is therefore obtained by taking `T → ∞` first, while
-`omega` and the positive rate `eta` remain fixed. -/
-theorem tendsto_finiteTimeAdiabaticFrequencyDomainSusceptibility_atTop_eq_fixedRate
-    (expectation : NormalizedExpectation H)
-    (A B : H →L[ℂ] H) (omega eta : ℝ) (hη : 0 < eta) :
-    Tendsto
-      (fun T : ℝ =>
-        finiteTimeAdiabaticFrequencyDomainSusceptibility system
-          expectation A B omega eta T)
-      atTop
-      (𝓝 (adiabaticFrequencyDomainSusceptibilityOfPositiveRate system
-        expectation A B omega eta hη)) := by
-  rw [adiabaticFrequencyDomainSusceptibilityOfPositiveRate_eq_causal
-    system expectation A B omega eta hη]
-  exact tendsto_finiteTimeAdiabaticFrequencyDomainSusceptibility_atTop
-    system expectation A B omega eta hη
+/-- Existence of the observation-time limit `T → +∞` at fixed values of all other parameters. -/
+def HasInfiniteObservationTimeLimit
+    (response : ℝ → ℂ) (value : ℂ) : Prop :=
+  Filter.Tendsto response Filter.atTop (nhds value)
 
 /-- Removal of a positive regulator: `eta → 0⁺`. -/
 def HasAdiabaticRemovalLimit (f : ℝ → ℂ) (L : ℂ) : Prop :=

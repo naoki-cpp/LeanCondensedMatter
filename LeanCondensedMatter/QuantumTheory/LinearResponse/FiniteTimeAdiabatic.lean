@@ -1,4 +1,5 @@
 import LeanCondensedMatter.QuantumTheory.LinearResponse.AdiabaticSwitching
+import LeanCondensedMatter.QuantumTheory.LinearResponse.LimitOrder
 import LeanCondensedMatter.QuantumTheory.LinearResponse.ResponseChannel
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.FundThmCalculus
 
@@ -75,10 +76,6 @@ theorem finiteTimeAdiabaticResponse_fixed
 
 end ResponseChannel
 
-/-- Existence of the observation-time limit `T → +∞` at fixed values of all other parameters. -/
-def HasInfiniteObservationTimeLimit
-    (response : ℝ → ℂ) (value : ℂ) : Prop :=
-  Filter.Tendsto response Filter.atTop (nhds value)
 
 end
 end LinearResponse

@@ -121,6 +121,14 @@ normalization. `Core.ConductivityTensor` is independent of either representation
 
 ## Disorder boundary
 
+Response limit predicates and their finite-sum laws belong to `LinearResponse.LimitOrder`,
+independently of a spectral realization. `Lehmann.Limits` owns finite transition-family
+nonresonance results; `Lehmann.PurePointLimits` combines the operator specialization and physical
+three-stage limits. Finite-window convergence is owned by `InfiniteTimeAdiabatic`. Zero switching
+rate is evaluation of the same transition `frequencyTerm` at rate zero, not a second scalar value.
+Positive-rate regulator removal, two-sided static limits, and observation-time-first order remain
+distinct explicit conditions.
+
 ```text
 Finite ──→ Resolvent ──→ AveragedSelfEnergy
   │            │
