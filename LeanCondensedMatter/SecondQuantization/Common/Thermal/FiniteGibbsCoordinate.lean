@@ -2,7 +2,7 @@ import LeanCondensedMatter.SecondQuantization.Common.Algebra.FiniteTrace
 import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.DiagonalEvolution
 import LeanCondensedMatter.SecondQuantization.Common.Perturbation.FiniteOperatorIntegral
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsExpectationBridge
-import LeanCondensedMatter.QuantumTheory.Gibbs.PurePoint
+import LeanCondensedMatter.QuantumTheory.Gibbs.Eigenbasis
 
 set_option linter.style.header false
 set_option linter.style.openClassical false
@@ -31,10 +31,10 @@ noncomputable def boltzmannWeight (energy : Config → ℝ) (β : ℝ) (n : Conf
   Complex.exp (((-β) * energy n : ℝ) : ℂ)
 
 omit [Fintype Config] in
-private theorem purePointBoltzmannWeight_cast_eq_boltzmannWeight
+private theorem eigenbasisBoltzmannWeight_cast_eq_boltzmannWeight
     (energy : Config → ℝ) (β : ℝ) (n : Config) :
-    ((purePointBoltzmannWeight energy β n : ℝ) : ℂ) = boltzmannWeight energy β n := by
-  rw [purePointBoltzmannWeight, boltzmannWeight, Complex.ofReal_exp]
+    ((eigenbasisBoltzmannWeight energy β n : ℝ) : ℂ) = boltzmannWeight energy β n := by
+  rw [eigenbasisBoltzmannWeight, boltzmannWeight, Complex.ofReal_exp]
 
 /-- The trace of the free diagonal evolution is the complex Boltzmann weight sum. -/
 theorem traceFock_diagonalEvolution_eq_weightSum (energy : Config → ℝ) (β : ℝ) :
@@ -47,14 +47,14 @@ theorem traceFock_diagonalEvolution_eq_weightSum (energy : Config → ℝ) (β :
 
 /-- On a finite configuration type, the canonical real pure-point partition function agrees,
 after coercion to `ℂ`, with the finite complex Boltzmann-coordinate sum. -/
-theorem coe_purePointPartitionFunction_eq_sum_boltzmannWeight
+theorem coe_eigenbasisPartitionFunction_eq_sum_boltzmannWeight
     (energy : Config → ℝ) (β : ℝ) :
-    ((purePointPartitionFunction energy β : ℝ) : ℂ) =
+    ((eigenbasisPartitionFunction energy β : ℝ) : ℂ) =
       ∑ n : Config, boltzmannWeight energy β n := by
-  rw [purePointPartitionFunction, tsum_fintype]
+  rw [eigenbasisPartitionFunction, tsum_fintype]
   push_cast
   exact Finset.sum_congr rfl fun n _ =>
-    purePointBoltzmannWeight_cast_eq_boltzmannWeight energy β n
+    eigenbasisBoltzmannWeight_cast_eq_boltzmannWeight energy β n
 
 variable [Nonempty Config]
 
@@ -62,9 +62,9 @@ variable [Nonempty Config]
 theorem traceFock_diagonalEvolution_ne_zero (energy : Config → ℝ) (β : ℝ) :
     traceFock (diagonalEvolution energy (-β)) ≠ 0 := by
   rw [traceFock_diagonalEvolution_eq_weightSum, weightSum,
-    ← coe_purePointPartitionFunction_eq_sum_boltzmannWeight]
+    ← coe_eigenbasisPartitionFunction_eq_sum_boltzmannWeight]
   exact_mod_cast (ne_of_gt
-    (purePointPartitionFunction_pos energy β (purePointGibbsSummable_of_finite energy β)))
+    (eigenbasisPartitionFunction_pos energy β (eigenbasisGibbsSummable_of_finite energy β)))
 
 /-- The canonical finite Gibbs expectation is the normalized physical trace
 `Tr[e^{-βH₀}A] / Tr[e^{-βH₀}]`. -/
@@ -77,22 +77,22 @@ theorem finiteGibbsExpectation_eq_trace_div (energy : Config → ℝ) (β : ℝ)
     traceFock_diagonalEvolution_eq_weightSum, weightSum]
   simp_rw [matrixCoeff_diagonalEvolution_comp]
   change
-    (∑ n : Config, (purePointGibbsProbability energy β n : ℂ) * matrixCoeff A n n) =
+    (∑ n : Config, (eigenbasisGibbsProbability energy β n : ℂ) * matrixCoeff A n n) =
       (∑ n : Config, boltzmannWeight energy β n * matrixCoeff A n n) /
         ∑ n : Config, boltzmannWeight energy β n
-  simp_rw [purePointGibbsProbability]
-  have hZcast : ((purePointPartitionFunction energy β : ℝ) : ℂ) =
+  simp_rw [eigenbasisGibbsProbability]
+  have hZcast : ((eigenbasisPartitionFunction energy β : ℝ) : ℂ) =
       ∑ n : Config, boltzmannWeight energy β n :=
-    coe_purePointPartitionFunction_eq_sum_boltzmannWeight energy β
-  have hZne : ((purePointPartitionFunction energy β : ℝ) : ℂ) ≠ 0 := by
+    coe_eigenbasisPartitionFunction_eq_sum_boltzmannWeight energy β
+  have hZne : ((eigenbasisPartitionFunction energy β : ℝ) : ℂ) ≠ 0 := by
     exact_mod_cast (ne_of_gt
-      (purePointPartitionFunction_pos energy β (purePointGibbsSummable_of_finite energy β)))
+      (eigenbasisPartitionFunction_pos energy β (eigenbasisGibbsSummable_of_finite energy β)))
   rw [← hZcast]
   field_simp
   rw [Finset.sum_mul]
   apply Finset.sum_congr rfl
   intro n _
-  rw [← purePointBoltzmannWeight_cast_eq_boltzmannWeight energy β n]
+  rw [← eigenbasisBoltzmannWeight_cast_eq_boltzmannWeight energy β n]
   push_cast
   field_simp
 
@@ -108,7 +108,7 @@ theorem finiteGibbsExpectation_operatorIntervalIntegral
   simp_rw [finiteGibbsExpectation_eq_sum, matrixCoeff_operatorIntervalIntegral,
     ← intervalIntegral.integral_const_mul]
   exact (intervalIntegral.integral_finsetSum fun n _ =>
-    (hF n).const_mul (purePointGibbsProbability energy β n : ℂ)).symm
+    (hF n).const_mul (eigenbasisGibbsProbability energy β n : ℂ)).symm
 
 end Common
 end SecondQuantization

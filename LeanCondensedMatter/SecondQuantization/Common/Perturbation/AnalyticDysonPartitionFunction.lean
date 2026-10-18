@@ -107,14 +107,14 @@ theorem analyticDysonPartitionFunction_zero
     (energy : Config → ℝ) (β : ℝ)
     (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
     analyticDysonPartitionFunction energy β V 0 =
-      (QuantumTheory.purePointPartitionFunction energy β : ℂ) := by
+      (QuantumTheory.eigenbasisPartitionFunction energy β : ℂ) := by
   unfold analyticDysonPartitionFunction continuousInteractingHamiltonian
   simp only [zero_smul, add_zero]
   rw [← continuousDiagonalEvolution_eq_exp energy (-β)]
   rw [continuousDiagonalEvolution, finiteOperatorTrace_finiteContinuousOperator,
     traceFock_diagonalEvolution_eq_weightSum]
   simpa only [weightSum] using
-    (coe_purePointPartitionFunction_eq_sum_boltzmannWeight energy β).symm
+    (coe_eigenbasisPartitionFunction_eq_sum_boltzmannWeight energy β).symm
 
 end
 end Common
