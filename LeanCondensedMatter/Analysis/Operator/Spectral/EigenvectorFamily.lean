@@ -413,14 +413,6 @@ noncomputable def eigenvectorHilbertBasis (hT : IsCompactOperator T) (hT' : T.Is
   HilbertBasis.mk (orthonormal_eigenvectorFamilyInClosure hT hT')
     (dense_eigenvectorFamilyInClosure hT)
 
-private theorem eigenvectorHilbertBasis_apply
-    (hT : IsCompactOperator T) (hT' : T.IsSymmetric) (a : EigenvectorIndex T) :
-    eigenvectorHilbertBasis hT hT' a = eigenvectorFamilyInClosure hT a := by
-  have h := HilbertBasis.coe_mk
-    (orthonormal_eigenvectorFamilyInClosure hT hT')
-    (dense_eigenvectorFamilyInClosure hT)
-  exact congrFun h a
-
 /-- **The `tsum` reconstruction of a compact self-adjoint operator from its eigenvectors.** For
 any `x : H`, `T x` is the sum, over `EigenvectorIndex T`, of `T`'s eigenvector expansion of `x`:
 `T x = ∑' a, (eigenvalue a : ℂ) • ⟪eigenvectorFamily a, x⟫ • eigenvectorFamily a`. This is the
@@ -435,7 +427,9 @@ theorem hasSum_eigenvectorFamily (hT : IsCompactOperator T) (hT' : T.IsSymmetric
   set b := eigenvectorHilbertBasis hT hT'
   have hb : ∀ a, (b a : H) = eigenvectorFamily hT a := fun a => by
     have hsub : b a = eigenvectorFamilyInClosure hT a := by
-      simpa only [b] using eigenvectorHilbertBasis_apply hT hT' a
+      simpa only [b] using congrFun (HilbertBasis.coe_mk
+        (orthonormal_eigenvectorFamilyInClosure hT hT')
+        (dense_eigenvectorFamilyInClosure hT)) a
     exact congrArg Subtype.val hsub
   have hstep1 : HasSum (fun a : EigenvectorIndex T => (inner ℂ (b a : H) x : ℂ) • (b a : H))
       (F.subtypeₗᵢ (F.orthogonalProjectionOnto x)) :=
