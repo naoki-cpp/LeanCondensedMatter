@@ -1,6 +1,10 @@
-import LeanCondensedMatter.Analysis.Operator.SchwartzKinetic1D
-import Mathlib.Algebra.Lie.OfAssociative
-import Mathlib.Tactic
+module
+
+public import LeanCondensedMatter.Analysis.Operator.SchwartzKinetic1D
+public import Mathlib.Algebra.Lie.OfAssociative
+public import Mathlib.Tactic
+
+public section
 
 set_option linter.style.header false
 
@@ -24,15 +28,15 @@ attribute [local instance 100] LieRing.ofAssociativeRing
 noncomputable section
 
 /-- Kinetic Schrödinger operator `-κ D²` on Schwartz space. -/
-noncomputable def kineticOperator (κ : ℝ) : Space →ₗ[ℂ] Space :=
+@[expose] noncomputable def kineticOperator (κ : ℝ) : Space →ₗ[ℂ] Space :=
   (-(κ : ℂ)) • derivative.comp derivative
 
 /-- Multiplication-potential Schrödinger operator `-κ D² + M_V` on Schwartz space. -/
-noncomputable def schrodingerOperator (κ : ℝ) (potential : Space) : Space →ₗ[ℂ] Space :=
+@[expose] noncomputable def schrodingerOperator (κ : ℝ) (potential : Space) : Space →ₗ[ℂ] Space :=
   kineticOperator κ + multiplicationOperator potential
 
 /-- Velocity associated with `H = -κ D² + V`, namely `v = -2 i κ D / ℏ`. -/
-noncomputable def velocityOperator (ℏ κ : ℝ) : Space →ₗ[ℂ] Space :=
+@[expose] noncomputable def velocityOperator (ℏ κ : ℝ) : Space →ₗ[ℂ] Space :=
   ((2 : ℂ) * (Complex.I / (ℏ : ℂ)) * (-(κ : ℂ))) • derivative
 
 
