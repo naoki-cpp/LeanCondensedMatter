@@ -205,16 +205,11 @@ theorem Pairing.crossingCount_eq_sum_componentCrossingCount [Fintype ι] (pairin
     (e : (Σ B : ι, F B) ≃ pairing.NormalizedPair) :
     pairing.crossingCount = ∑ B : ι, ∑ C : ι, pairing.componentCrossingCount e B C := by
   classical
-  let sigmaProductEquiv :
-      (Σ BC : ι × ι, F BC.1 × F BC.2) ≃ (Σ B : ι, F B) × (Σ C : ι, F C) := {
-    toFun x := (⟨x.1.1, x.2.1⟩, ⟨x.1.2, x.2.2⟩)
-    invFun x := ⟨(x.1.1, x.2.1), (x.1.2, x.2.2)⟩
-    left_inv := by rintro ⟨⟨B, C⟩, p, q⟩; rfl
-    right_inv := by rintro ⟨⟨B, p⟩, ⟨C, q⟩⟩; rfl }
   rw [pairing.crossingCount_eq_sum_crosses,
-    ← Equiv.sum_comp (sigmaProductEquiv.trans (Equiv.prodCongr e e)),
-    Fintype.sum_sigma, Fintype.sum_prod_type]
-  rfl
+    ← Equiv.sum_comp e, Fintype.sum_sigma]
+  simp_rw [← Equiv.sum_comp e, Fintype.sum_sigma]
+  simp only [Pairing.componentCrossingCount, Fintype.sum_prod_type]
+  exact Finset.sum_congr rfl fun B _ => Finset.sum_comm
 
 
 open Classical in
