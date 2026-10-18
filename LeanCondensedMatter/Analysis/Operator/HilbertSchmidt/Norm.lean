@@ -118,6 +118,18 @@ theorem normSq_comp_right_le (hT : IsHilbertSchmidt T) (B : H →L[ℂ] H) :
       rw [← ContinuousLinearMap.star_eq_adjoint, norm_star,
         IsHilbertSchmidt.normSq_adjoint hT]
 
+/-- Right composition by a contraction does not increase the squared Hilbert--Schmidt norm. -/
+theorem normSq_comp_right_le_of_norm_le_one (hT : IsHilbertSchmidt T)
+    (B : H →L[ℂ] H) (hB : ‖B‖ ≤ 1) :
+    (isHilbertSchmidt_comp_right hT B).normSq ≤ hT.normSq := by
+  calc
+    (isHilbertSchmidt_comp_right hT B).normSq ≤ ‖B‖ ^ 2 * hT.normSq :=
+      hT.normSq_comp_right_le B
+    _ ≤ 1 ^ 2 * hT.normSq :=
+      mul_le_mul_of_nonneg_right
+        (pow_le_pow_left₀ (norm_nonneg B) hB 2) hT.normSq_nonneg
+    _ = hT.normSq := by rw [one_pow, one_mul]
+
 /-- The absolute diagonal pairing of two Hilbert--Schmidt operators is summable, and its
 sum is bounded by the arithmetic mean of their squared Hilbert--Schmidt norms. -/
 theorem summable_norm_inner_apply_and_tsum_le {S T : H →L[ℂ] H}
