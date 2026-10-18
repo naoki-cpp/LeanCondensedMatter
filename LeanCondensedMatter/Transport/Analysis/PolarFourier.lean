@@ -1020,9 +1020,6 @@ theorem AngularHarmonicCoefficients.integral_polarFourierRadialPhase
         (polarFourierZerothAngularKernel z * coefficients.constant +
           polarFourierFirstCosineAngularKernel z * coefficients.firstCosine +
           polarFourierSecondCosineAngularKernel z * coefficients.secondCosine) := by
-  have hphase : Continuous (fun θ : ℝ => polarFourierRadialPhase z θ) := by
-    unfold polarFourierRadialPhase
-    fun_prop
   calc
     (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi),
         ((p : ℂ) * polarFourierRadialPhase z θ) * coefficients.eval θ) =
