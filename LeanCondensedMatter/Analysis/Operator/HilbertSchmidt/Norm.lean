@@ -41,12 +41,6 @@ theorem hasSum_norm_sq_apply {T : H →L[ℂ] H} (hT : IsHilbertSchmidt T)
   exact (hT.summable_norm_sq_apply d).hasSum
 
 omit [CompleteSpace H] in
-/-- The squared Hilbert--Schmidt norm is independent of the proof of membership. -/
-theorem normSq_proof_irrel {T : H →L[ℂ] H} (hT hT' : IsHilbertSchmidt T) :
-    hT.normSq = hT'.normSq := by
-  exact congrArg normSq (Subsingleton.elim hT hT')
-
-omit [CompleteSpace H] in
 /-- The squared Hilbert--Schmidt norm is nonnegative. -/
 theorem normSq_nonneg {T : H →L[ℂ] H} (hT : IsHilbertSchmidt T) :
     0 ≤ hT.normSq := by
@@ -104,11 +98,9 @@ theorem normSq_comp_right_le (hT : IsHilbertSchmidt T) (B : H →L[ℂ] H) :
       ← ContinuousLinearMap.star_eq_adjoint, star_mul]
   have hadjNormEq :
       (isHilbertSchmidt_adjoint hTB).normSq = hleft.normSq := by
-    simpa only [hadj_eq] using (IsHilbertSchmidt.normSq_proof_irrel
-      (isHilbertSchmidt_adjoint hTB) (hadj_eq.symm ▸ hleft))
+    simpa only [hadj_eq]
   calc
-    (isHilbertSchmidt_comp_right hT B).normSq = hTB.normSq :=
-      IsHilbertSchmidt.normSq_proof_irrel _ _
+    (isHilbertSchmidt_comp_right hT B).normSq = hTB.normSq := rfl
     _ = (isHilbertSchmidt_adjoint hTB).normSq :=
       (IsHilbertSchmidt.normSq_adjoint hTB).symm
     _ = hleft.normSq := hadjNormEq

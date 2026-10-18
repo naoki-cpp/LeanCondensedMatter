@@ -44,8 +44,7 @@ theorem exists_controlled_hilbertSchmidt_factorization
       (ContinuousLinearMap.star_eq_adjoint S).trans hSself.adjoint_eq]
   have hfactor : ContinuousLinearMap.adjoint A * S = T := by
     rw [hAdjA, mul_assoc, hSS, hUleft]
-  have hSnorm : hS.normSq = IsHilbertSchmidt.normSq hT :=
-    IsHilbertSchmidt.normSq_proof_irrel hS hT
+  have hSnorm : hS.normSq = IsHilbertSchmidt.normSq hT := rfl
   have hAdjUnorm : ‖ContinuousLinearMap.adjoint U‖ ≤ 1 := by
     rw [← ContinuousLinearMap.star_eq_adjoint, norm_star]
     exact hUnorm
