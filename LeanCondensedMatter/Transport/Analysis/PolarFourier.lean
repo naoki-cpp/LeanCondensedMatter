@@ -618,6 +618,110 @@ theorem polarFourierFirstCosineAngularKernel_eq_besselJ (z : ℝ) :
       rw [hderiv]
       ring
 
+/-- The adjacent bottom-parameter regularized hypergeometric series obey the
+coefficient-shift relation needed for the Bessel recurrence of orders zero to two. -/
+private theorem regularizedHGFun_one_sub_two_eq_mul_three (w : ℂ) :
+    Complex.regularizedHGFun 0 {(1 : ℂ)} w -
+      Complex.regularizedHGFun 0 {(2 : ℂ)} w =
+        w * Complex.regularizedHGFun 0 {(3 : ℂ)} w := by
+  let c1 : ℕ → ℂ := Complex.regularizedHGFunCoeff 0 {(1 : ℂ)}
+  let c2 : ℕ → ℂ := Complex.regularizedHGFunCoeff 0 {(2 : ℂ)}
+  let c3 : ℕ → ℂ := Complex.regularizedHGFunCoeff 0 {(3 : ℂ)}
+  have hc2 (n : ℕ) :
+      c2 n = 1 / ((Nat.factorial n : ℂ) * (Nat.factorial (n + 1) : ℂ)) := by
+    have hg : Complex.Gamma ((2 : ℂ) + (n : ℂ)) =
+        (Nat.factorial (n + 1) : ℂ) := by
+      convert Complex.Gamma_nat_eq_factorial (n + 1) using 1
+      push_cast
+      ring
+    simp [c2, Complex.regularizedHGFunCoeff, hg]
+  have hc3 (n : ℕ) :
+      c3 n = 1 / ((Nat.factorial n : ℂ) * (Nat.factorial (n + 2) : ℂ)) := by
+    have hg : Complex.Gamma ((3 : ℂ) + (n : ℂ)) =
+        (Nat.factorial (n + 2) : ℂ) := by
+      convert Complex.Gamma_nat_eq_factorial (n + 2) using 1
+      push_cast
+      ring
+    simp [c3, Complex.regularizedHGFunCoeff, hg]
+  have hcoeff (n : ℕ) : c1 (n + 1) - c2 (n + 1) = c3 n := by
+    rw [show c1 (n + 1) = 1 / (Nat.factorial (n + 1) : ℂ) ^ 2 by
+      exact polarFourierBesselZeroCoeff (n + 1), hc2, hc3]
+    simp only [Nat.factorial_succ]
+    push_cast
+    have hn : (n + 1 : ℂ) ≠ 0 := by exact_mod_cast Nat.succ_ne_zero n
+    have hn2 : (n + 2 : ℂ) ≠ 0 := by exact_mod_cast Nat.succ_ne_zero (n + 1)
+    have hf : (Nat.factorial n : ℂ) ≠ 0 := by
+      exact_mod_cast Nat.factorial_ne_zero n
+    field_simp
+    ring
+  have hzero : c1 0 = c2 0 := by
+    rw [show c1 0 = 1 / (Nat.factorial 0 : ℂ) ^ 2 by
+      exact polarFourierBesselZeroCoeff 0, hc2]
+    norm_num
+  have hs1 : Summable (fun n : ℕ => c1 n * w ^ n) := by
+    simpa only [c1, Complex.regularizedHGFunSeries,
+      FormalMultilinearSeries.ofScalars_apply_eq, smul_eq_mul] using
+      (Complex.regularizedHGFunSeries 0 {(1 : ℂ)}).summable (by simp)
+  have hs2 : Summable (fun n : ℕ => c2 n * w ^ n) := by
+    simpa only [c2, Complex.regularizedHGFunSeries,
+      FormalMultilinearSeries.ofScalars_apply_eq, smul_eq_mul] using
+      (Complex.regularizedHGFunSeries 0 {(2 : ℂ)}).summable (by simp)
+  have hseries (b : Multiset ℂ) :
+      Complex.regularizedHGFun 0 b w =
+        ∑' n : ℕ, Complex.regularizedHGFunCoeff 0 b n * w ^ n := by
+    rw [Complex.regularizedHGFun, Complex.regularizedHGFunSeries,
+      ← FormalMultilinearSeries.ofScalarsSum,
+      FormalMultilinearSeries.ofScalars_sum_eq]
+    simp only [smul_eq_mul]
+  rw [hseries {(1 : ℂ)}, hseries {(2 : ℂ)}, hseries {(3 : ℂ)}]
+  change (∑' n : ℕ, c1 n * w ^ n) -
+      (∑' n : ℕ, c2 n * w ^ n) =
+        w * ∑' n : ℕ, c3 n * w ^ n
+  calc
+    (∑' n : ℕ, c1 n * w ^ n) - (∑' n : ℕ, c2 n * w ^ n) =
+        ∑' n : ℕ, (c1 n * w ^ n - c2 n * w ^ n) :=
+      (hs1.tsum_sub hs2).symm
+    _ = ∑' n : ℕ, w * (c3 n * w ^ n) := by
+      rw [(hs1.sub hs2).tsum_eq_zero_add]
+      simp only [pow_zero, mul_one, hzero, sub_self, zero_add]
+      apply tsum_congr
+      intro n
+      rw [← sub_mul, hcoeff]
+      ring
+    _ = w * ∑' n : ℕ, c3 n * w ^ n := by
+      rw [tsum_mul_left]
+
+/-- The Bessel three-term recurrence at orders zero, one, and two.
+This is formulated without dividing by the argument, so it includes the origin. -/
+private theorem besselJ_zero_one_two_recurrence (z : ℂ) :
+    2 * Complex.besselJ 1 z =
+      z * (Complex.besselJ 0 z + Complex.besselJ 2 z) := by
+  let w : ℂ := -(z / 2) ^ 2
+  have h := regularizedHGFun_one_sub_two_eq_mul_three w
+  have h0 : Complex.besselJ 0 z =
+      Complex.regularizedHGFun 0 {(1 : ℂ)} w := by
+    simp [Complex.besselJ_def, w]
+  have h1 : Complex.besselJ 1 z =
+      (z / 2) * Complex.regularizedHGFun 0 {(2 : ℂ)} w := by
+    simp [Complex.besselJ_def, w]
+  have h2 : Complex.besselJ 2 z =
+      (z / 2) ^ 2 * Complex.regularizedHGFun 0 {(3 : ℂ)} w := by
+    simp [Complex.besselJ_def, w]
+  rw [h0, h1, h2]
+  dsimp [w] at h
+  calc
+    2 * ((z / 2) * Complex.regularizedHGFun 0 {(2 : ℂ)} (-(z / 2) ^ 2)) =
+        z * Complex.regularizedHGFun 0 {(2 : ℂ)} (-(z / 2) ^ 2) := by ring
+    _ = z * (Complex.regularizedHGFun 0 {(1 : ℂ)} (-(z / 2) ^ 2) -
+        (-(z / 2) ^ 2) * Complex.regularizedHGFun 0 {(3 : ℂ)} (-(z / 2) ^ 2)) := by
+      rw [show Complex.regularizedHGFun 0 {(2 : ℂ)} (-(z / 2) ^ 2) =
+          Complex.regularizedHGFun 0 {(1 : ℂ)} (-(z / 2) ^ 2) -
+            (-(z / 2) ^ 2) * Complex.regularizedHGFun 0 {(3 : ℂ)} (-(z / 2) ^ 2) by
+        linear_combination -h]
+    _ = z * (Complex.regularizedHGFun 0 {(1 : ℂ)} (-(z / 2) ^ 2) +
+        (z / 2) ^ 2 * Complex.regularizedHGFun 0 {(3 : ℂ)} (-(z / 2) ^ 2)) := by
+      ring
+
 /-- Derivative of the dimensionless radial Fourier phase with respect to the polar angle. -/
 private theorem polarFourierRadialPhase_hasDerivAt (z θ : ℝ) :
     HasDerivAt (polarFourierRadialPhase z)
