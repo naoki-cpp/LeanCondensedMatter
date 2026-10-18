@@ -25,9 +25,9 @@ two-dimensional polar specialization and angular reduction.
 The full-angle kernels below are the canonical intermediate for radial Fourier reduction. Constant,
 first, and second angular channels are supplied through `AngularHarmonicCoefficients`, shared with
 ordinary angular integration. The kernels remain explicit finite interval integrals to preserve
-their angular reduction API. The zeroth and first-cosine kernels are identified with
-`2π * Complex.besselJ 0` and `2π * Complex.I * Complex.besselJ 1` respectively;
-the second-cosine harmonic still awaits its Bessel bridge.
+their angular reduction API. The zeroth, first-cosine, and second-cosine kernels are
+identified with `2π * Complex.besselJ 0`, `2π * Complex.I * Complex.besselJ 1`,
+and `-2π * Complex.besselJ 2`, respectively.
 
 No model Hamiltonian, matrix representation, disorder approximation, real-space cutoff, or
 conductivity normalization is introduced here.
@@ -98,9 +98,9 @@ noncomputable def polarFourierFirstCosineAngularKernel (z : ℝ) : ℂ :=
     polarFourierFirstCosineAngularKernel 0 = 0 := by
   have h := integral_cos_mul_complex (z := (1 : ℂ)) one_ne_zero (0 : ℝ) (2 * Real.pi)
   simpa [polarFourierFirstCosineAngularKernel, polarFourierRadialPhase] using h
-/-- Second cosine full-angle radial Fourier kernel, written as the `cos(2θ)` polynomial needed by
-quadratic angular products. A future integral-representation theorem should identify it with
-`-2π J₂(z)` using Mathlib's `Complex.besselJ`. -/
+/-- Second cosine full-angle radial Fourier kernel, written as the `cos(2θ)`
+polynomial for quadratic angular products and identified with `-2π J₂(z)`
+by `polarFourierSecondCosineAngularKernel_eq_besselJ`. -/
 noncomputable def polarFourierSecondCosineAngularKernel (z : ℝ) : ℂ :=
   ∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi),
     polarFourierRadialPhase z θ *
@@ -618,6 +618,119 @@ theorem polarFourierFirstCosineAngularKernel_eq_besselJ (z : ℝ) :
       rw [hderiv]
       ring
 
+/-- The adjacent bottom-parameter regularized hypergeometric series obey the
+coefficient-shift relation needed for the Bessel recurrence of orders zero to two. -/
+private theorem regularizedHGFun_one_sub_two_eq_mul_three (w : ℂ) :
+    Complex.regularizedHGFun 0 {(1 : ℂ)} w -
+      Complex.regularizedHGFun 0 {(2 : ℂ)} w =
+        w * Complex.regularizedHGFun 0 {(3 : ℂ)} w := by
+  let c1 : ℕ → ℂ := Complex.regularizedHGFunCoeff 0 {(1 : ℂ)}
+  let c2 : ℕ → ℂ := Complex.regularizedHGFunCoeff 0 {(2 : ℂ)}
+  let c3 : ℕ → ℂ := Complex.regularizedHGFunCoeff 0 {(3 : ℂ)}
+  have hc2 (n : ℕ) :
+      c2 n = 1 / ((Nat.factorial n : ℂ) * (Nat.factorial (n + 1) : ℂ)) := by
+    have hg : Complex.Gamma ((2 : ℂ) + (n : ℂ)) =
+        (Nat.factorial (n + 1) : ℂ) := by
+      convert Complex.Gamma_nat_eq_factorial (n + 1) using 1
+      push_cast
+      ring
+    simp [c2, Complex.regularizedHGFunCoeff, hg]
+  have hc3 (n : ℕ) :
+      c3 n = 1 / ((Nat.factorial n : ℂ) * (Nat.factorial (n + 2) : ℂ)) := by
+    have hg : Complex.Gamma ((3 : ℂ) + (n : ℂ)) =
+        (Nat.factorial (n + 2) : ℂ) := by
+      convert Complex.Gamma_nat_eq_factorial (n + 2) using 1
+      push_cast
+      ring
+    simp [c3, Complex.regularizedHGFunCoeff, hg]
+  have hcoeff (n : ℕ) : c1 (n + 1) - c2 (n + 1) = c3 n := by
+    rw [show c1 (n + 1) = 1 / (Nat.factorial (n + 1) : ℂ) ^ 2 by
+      exact polarFourierBesselZeroCoeff (n + 1), hc2, hc3]
+    simp only [Nat.factorial_succ]
+    push_cast
+    have hn : (n + 1 : ℂ) ≠ 0 := by exact_mod_cast Nat.succ_ne_zero n
+    have hn2 : (n + 2 : ℂ) ≠ 0 := by exact_mod_cast Nat.succ_ne_zero (n + 1)
+    have hf : (Nat.factorial n : ℂ) ≠ 0 := by
+      exact_mod_cast Nat.factorial_ne_zero n
+    have hn2' : (2 : ℂ) + (n : ℂ) ≠ 0 := by simpa [add_comm] using hn2
+    field_simp [hn2']
+    rw [show (n : ℂ) + 1 + 1 = (n : ℂ) + 2 by ring]
+    field_simp [hn2]
+    ring
+  have hzero : c1 0 = c2 0 := by
+    rw [show c1 0 = 1 / (Nat.factorial 0 : ℂ) ^ 2 by
+      exact polarFourierBesselZeroCoeff 0, hc2]
+    norm_num
+  have hs1 : Summable (fun n : ℕ => c1 n * w ^ n) := by
+    simpa only [c1, Complex.regularizedHGFunSeries,
+      FormalMultilinearSeries.ofScalars_apply_eq, smul_eq_mul] using
+      (Complex.regularizedHGFunSeries 0 {(1 : ℂ)}).summable (by simp)
+  have hs2 : Summable (fun n : ℕ => c2 n * w ^ n) := by
+    simpa only [c2, Complex.regularizedHGFunSeries,
+      FormalMultilinearSeries.ofScalars_apply_eq, smul_eq_mul] using
+      (Complex.regularizedHGFunSeries 0 {(2 : ℂ)}).summable (by simp)
+  have hseries (b : Multiset ℂ) :
+      Complex.regularizedHGFun 0 b w =
+        ∑' n : ℕ, Complex.regularizedHGFunCoeff 0 b n * w ^ n := by
+    rw [Complex.regularizedHGFun, Complex.regularizedHGFunSeries,
+      ← FormalMultilinearSeries.ofScalarsSum,
+      FormalMultilinearSeries.ofScalars_sum_eq]
+    simp only [smul_eq_mul]
+  rw [hseries {(1 : ℂ)}, hseries {(2 : ℂ)}, hseries {(3 : ℂ)}]
+  change (∑' n : ℕ, c1 n * w ^ n) -
+      (∑' n : ℕ, c2 n * w ^ n) =
+        w * ∑' n : ℕ, c3 n * w ^ n
+  calc
+    (∑' n : ℕ, c1 n * w ^ n) - (∑' n : ℕ, c2 n * w ^ n) =
+        ∑' n : ℕ, (c1 n * w ^ n - c2 n * w ^ n) :=
+      (hs1.tsum_sub hs2).symm
+    _ = ∑' n : ℕ, w * (c3 n * w ^ n) := by
+      rw [(hs1.sub hs2).tsum_eq_zero_add]
+      simp only [pow_zero, mul_one, hzero, sub_self, zero_add]
+      apply tsum_congr
+      intro n
+      rw [← sub_mul, hcoeff]
+      ring
+    _ = w * ∑' n : ℕ, c3 n * w ^ n := by
+      rw [tsum_mul_left]
+
+/-- The Bessel three-term recurrence at orders zero, one, and two.
+This is formulated without dividing by the argument, so it includes the origin. -/
+private theorem besselJ_zero_one_two_recurrence (z : ℂ) :
+    2 * Complex.besselJ 1 z =
+      z * (Complex.besselJ 0 z + Complex.besselJ 2 z) := by
+  let w : ℂ := -(z / 2) ^ 2
+  have h := regularizedHGFun_one_sub_two_eq_mul_three w
+  have h0 : Complex.besselJ 0 z =
+      Complex.regularizedHGFun 0 {(1 : ℂ)} w := by
+    simp [Complex.besselJ_def, w]
+  have h1 : Complex.besselJ 1 z =
+      (z / 2) * Complex.regularizedHGFun 0 {(2 : ℂ)} w := by
+    change (z / 2) ^ (1 : ℂ) *
+      Complex.regularizedHGFun 0 {((1 : ℂ) + 1)} (-(z / 2) ^ 2) = _
+    simp only [Complex.cpow_one, one_add_one_eq_two]
+    rfl
+  have h2 : Complex.besselJ 2 z =
+      (z / 2) ^ 2 * Complex.regularizedHGFun 0 {(3 : ℂ)} w := by
+    change (z / 2) ^ (2 : ℂ) *
+      Complex.regularizedHGFun 0 {((2 : ℂ) + 1)} (-(z / 2) ^ 2) = _
+    have ha : (2 : ℂ) + 1 = 3 := by norm_num
+    rw [ha, Complex.cpow_two]
+  rw [h0, h1, h2]
+  dsimp [w] at h
+  calc
+    2 * ((z / 2) * Complex.regularizedHGFun 0 {(2 : ℂ)} (-(z / 2) ^ 2)) =
+        z * Complex.regularizedHGFun 0 {(2 : ℂ)} (-(z / 2) ^ 2) := by ring
+    _ = z * (Complex.regularizedHGFun 0 {(1 : ℂ)} (-(z / 2) ^ 2) -
+        (-(z / 2) ^ 2) * Complex.regularizedHGFun 0 {(3 : ℂ)} (-(z / 2) ^ 2)) := by
+      rw [show Complex.regularizedHGFun 0 {(2 : ℂ)} (-(z / 2) ^ 2) =
+          Complex.regularizedHGFun 0 {(1 : ℂ)} (-(z / 2) ^ 2) -
+            (-(z / 2) ^ 2) * Complex.regularizedHGFun 0 {(3 : ℂ)} (-(z / 2) ^ 2) by
+        linear_combination -h]
+    _ = z * (Complex.regularizedHGFun 0 {(1 : ℂ)} (-(z / 2) ^ 2) +
+        (z / 2) ^ 2 * Complex.regularizedHGFun 0 {(3 : ℂ)} (-(z / 2) ^ 2)) := by
+      ring
+
 /-- Derivative of the dimensionless radial Fourier phase with respect to the polar angle. -/
 private theorem polarFourierRadialPhase_hasDerivAt (z θ : ℝ) :
     HasDerivAt (polarFourierRadialPhase z)
@@ -745,6 +858,61 @@ theorem polarFourierFirstCosineAngularKernel_two_mul_eq_zeroth_sub_second (z : �
       rw [hfirstKernel]
       ring
     _ = _ := by rw [hsecond]
+
+/-- The second-cosine angular Fourier kernel vanishes at zero radial argument. -/
+@[simp] theorem polarFourierSecondCosineAngularKernel_zero :
+    polarFourierSecondCosineAngularKernel 0 = 0 := by
+  let coefficients : AngularHarmonicCoefficients ℂ :=
+    { constant := 0
+      firstCosine := 0
+      firstSine := 0
+      secondCosine := 1
+      secondMixed := 0 }
+  have h := coefficients.integral_eval
+  simpa [coefficients, AngularHarmonicCoefficients.eval,
+    polarFourierSecondCosineAngularKernel, polarFourierRadialPhase,
+    smul_eq_mul] using h
+
+/-- The second cosine angular Fourier kernel is the normalized Bessel function
+`-2π J₂`, for every real radial argument. -/
+theorem polarFourierSecondCosineAngularKernel_eq_besselJ (z : ℝ) :
+    polarFourierSecondCosineAngularKernel z =
+      -(((2 * Real.pi : ℝ) : ℂ) * Complex.besselJ 2 (z : ℂ)) := by
+  by_cases hz : z = 0
+  · subst z
+    simp [Complex.besselJ_zero]
+  · have hzc : (z : ℂ) ≠ 0 := by exact_mod_cast hz
+    have hfactor : Complex.I * (z : ℂ) ≠ 0 :=
+      mul_ne_zero Complex.I_ne_zero hzc
+    have hK := polarFourierFirstCosineAngularKernel_two_mul_eq_zeroth_sub_second z
+    rw [polarFourierFirstCosineAngularKernel_eq_besselJ,
+      polarFourierZerothAngularKernel_eq_besselJ] at hK
+    have hJ := besselJ_zero_one_two_recurrence (z : ℂ)
+    have hmain :
+        (Complex.I * (z : ℂ)) * polarFourierSecondCosineAngularKernel z =
+          (Complex.I * (z : ℂ)) *
+            (-(((2 * Real.pi : ℝ) : ℂ) * Complex.besselJ 2 (z : ℂ))) := by
+      calc
+        (Complex.I * (z : ℂ)) * polarFourierSecondCosineAngularKernel z =
+            (Complex.I * (z : ℂ)) *
+                (((2 * Real.pi : ℝ) : ℂ) * Complex.besselJ 0 (z : ℂ)) -
+              2 * (((2 * Real.pi : ℝ) : ℂ) * Complex.I *
+                Complex.besselJ 1 (z : ℂ)) := by
+            linear_combination hK
+        _ = (Complex.I * (z : ℂ)) *
+            (((2 * Real.pi : ℝ) : ℂ) * Complex.besselJ 0 (z : ℂ)) -
+              (((2 * Real.pi : ℝ) : ℂ) * Complex.I) *
+                (2 * Complex.besselJ 1 (z : ℂ)) := by ring
+        _ = (Complex.I * (z : ℂ)) *
+            (((2 * Real.pi : ℝ) : ℂ) * Complex.besselJ 0 (z : ℂ)) -
+              (((2 * Real.pi : ℝ) : ℂ) * Complex.I) *
+                ((z : ℂ) *
+                  (Complex.besselJ 0 (z : ℂ) + Complex.besselJ 2 (z : ℂ))) := by
+            rw [hJ]
+        _ = (Complex.I * (z : ℂ)) *
+            (-(((2 * Real.pi : ℝ) : ℂ) * Complex.besselJ 2 (z : ℂ))) := by
+          ring
+    exact (mul_left_cancel₀ hfactor) hmain
 
 /-- The unnormalized first-harmonic recurrence also holds after finite radial
 momentum integration. This reduces any weighted K1 moment to K0/K2 moments
