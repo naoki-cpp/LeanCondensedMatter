@@ -38,30 +38,6 @@ private theorem hasSum_prod_equiv
     Fintype.prod_equiv e (fun i => a (e i)) a (fun i => rfl)
   rwa [hprod] at h'
 
-private theorem prod_option_finsupp_eq
-    {α R : Type*} [Fintype α] [CommMonoid R]
-    (f : Option α → ℕ → R) :
-    (fun n : Option α →₀ ℕ => ∏ i : Option α, f i (n i)) =
-      (fun p : ℕ × (α →₀ ℕ) =>
-        f none p.1 * ∏ i : α, f (Option.some i) (p.2 i)) ∘ Finsupp.optionEquiv := by
-  funext n
-  simp only [Function.comp_apply, Finsupp.optionEquiv_apply]
-  rw [Fintype.prod_option]
-  congr 1
-
-private theorem hasSum_prod_option_reindex
-    {α R : Type*} [Fintype α] [NormedCommRing R]
-    (f : Option α → ℕ → R) (a : Option α → R)
-    (hprod : HasSum
-      (fun p : ℕ × (α →₀ ℕ) =>
-        f none p.1 * ∏ i : α, f (Option.some i) (p.2 i))
-      (a none * ∏ i : α, a (Option.some i))) :
-    HasSum (fun n : Option α →₀ ℕ => ∏ i : Option α, f i (n i))
-      (∏ i : Option α, a i) := by
-  rw [prod_option_finsupp_eq f]
-  simpa only [Fintype.prod_option] using
-    ((Equiv.hasSum_iff Finsupp.optionEquiv).mpr hprod)
-
 private theorem hasSum_prod_fin_zero
     {R : Type*} [NormedCommRing R] (f : Fin 0 → ℕ → R) (a : Fin 0 → R) :
     HasSum (fun n : Fin 0 →₀ ℕ => ∏ i : Fin 0, f i (n i)) (∏ i : Fin 0, a i) := by
@@ -114,7 +90,12 @@ private theorem hasSum_prod_finSucc_option
       (fun p : ℕ × (Fin k →₀ ℕ) => f 0 p.1 * tail p.2)
       (a 0 * ∏ i : Fin k, a i.succ) :=
     hhead.mul htail' hmul
-  exact hasSum_prod_option_reindex (finSuccFamily f) (finSuccFamily a) hprod
+  convert ((Equiv.hasSum_iff Finsupp.optionEquiv).mpr hprod) using 1
+  · funext n
+    simp only [Function.comp_apply, Finsupp.optionEquiv_apply]
+    rw [Fintype.prod_option]
+    congr 1
+  · rw [Fintype.prod_option]
 
 /-! ## The nonnegative-real case -/
 
