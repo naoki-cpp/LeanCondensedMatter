@@ -1262,6 +1262,16 @@ private theorem angular_second_harmonics_add
   push_cast
   ring
 
+/-- Full-period integrals are unchanged by translating a periodic integrand.
+This is also needed for Fourier harmonics at arbitrary polar angles. -/
+private theorem intervalIntegral_fullPeriod_comp_sub_eq
+    (f : ℝ → ℂ) (hf : Function.Periodic f (2 * Real.pi)) (angle : ℝ) :
+    (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi), f (θ - angle)) =
+      ∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi), f θ := by
+  rw [intervalIntegral.integral_comp_sub_right]
+  have h := hf.intervalIntegral_add_eq (-angle) 0
+  simpa [sub_eq_add_neg, add_comm, add_left_comm, add_assoc] using h
+
 private theorem integral_polarFourierRadialPhase_shifted_second_harmonics
     (z p angle : ℝ) (a b c d e : ℂ) :
     (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi),
