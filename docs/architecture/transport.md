@@ -83,6 +83,13 @@ Pauli algebra, propagator data, and radial physics remain model-owned.
 
 ## Resolvent and response boundary
 
+`QuantumTheory.LinearResponse.RetardedSusceptibility` owns the commutator and causal kernels,
+their stationarity laws, and linearity in the measured observable. It depends on the expectation
+and free-dynamics interface rather than perturbative derivation. `ResponseChannel` consumes this
+kernel directly. `SourceCoupling` owns the source-coupled Kubo derivative theorem, while
+`ObservableVariation` adds the affine measured-observable/contact contribution. Consumers of
+channel data or frequency kernels therefore need not import the Dyson/Kubo derivation.
+
 `Resolvent.Basic` owns the signed spectral parameter `z(E, γ) = E + iγ`, `SpectralSide`, and the
 physical `E ± iη` specializations. Analytic resolvent theorems are stated at arbitrary `γ` whenever
 the argument does not intrinsically depend on retarded/advanced branch semantics. The conversion

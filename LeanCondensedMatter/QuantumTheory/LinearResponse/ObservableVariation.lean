@@ -1,4 +1,4 @@
-import LeanCondensedMatter.QuantumTheory.LinearResponse.RetardedSusceptibility
+import LeanCondensedMatter.QuantumTheory.LinearResponse.SourceCoupling
 import Mathlib.Analysis.Complex.RealDeriv
 import Mathlib.Algebra.Lie.OfAssociative
 
