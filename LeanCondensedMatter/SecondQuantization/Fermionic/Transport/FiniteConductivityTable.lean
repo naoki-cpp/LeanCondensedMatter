@@ -1,3 +1,4 @@
+import LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann.PurePointTable
 import LeanCondensedMatter.Transport.FiniteConductivityTable
 import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.KuboGreenwood
 

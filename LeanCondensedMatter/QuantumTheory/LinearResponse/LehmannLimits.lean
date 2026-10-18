@@ -50,7 +50,7 @@ theorem hasStaticLimit_lehmannTerm
     fun_prop
   have hcont : ContinuousAt
       (fun omega : ℝ => lehmannTerm hbar omega eta energyGap weight) 0 := by
-    unfold lehmannTerm
+    unfold LehmannTransitionData.frequencyTerm lehmannTerm
     exact continuousAt_const.mul
       (hden.inv₀ (lehmannDenominator_ne_zero
         hbar 0 eta energyGap heta))
@@ -218,9 +218,7 @@ theorem finite_purePointLehmann_has_both_local_iterated_limits
     HasLocalStaticThenAdiabaticLimit
         (fun omega eta =>
           Finset.univ.sum fun mn : ι × ι =>
-            lehmannTerm system.hbar omega eta
-              (data.energy mn.1 - data.energy mn.2)
-              ((purePointTransitionData system data A B mn).weight))
+            (purePointTransitionData system data A B mn).frequencyTerm omega eta)
         (Finset.univ.sum fun mn : ι × ι =>
           unswitchedLehmannTerm system.hbar 0
             (data.energy mn.1 - data.energy mn.2)
@@ -228,9 +226,7 @@ theorem finite_purePointLehmann_has_both_local_iterated_limits
       HasLocalAdiabaticThenStaticLimit
         (fun omega eta =>
           Finset.univ.sum fun mn : ι × ι =>
-            lehmannTerm system.hbar omega eta
-              (data.energy mn.1 - data.energy mn.2)
-              ((purePointTransitionData system data A B mn).weight))
+            (purePointTransitionData system data A B mn).frequencyTerm omega eta)
         (Finset.univ.sum fun mn : ι × ι =>
           unswitchedLehmannTerm system.hbar 0
             (data.energy mn.1 - data.energy mn.2)
