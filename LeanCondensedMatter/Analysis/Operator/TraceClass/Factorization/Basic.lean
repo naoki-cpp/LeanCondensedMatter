@@ -51,12 +51,9 @@ theorem exists_controlled_hilbertSchmidt_factorization
     exact hUnorm
   have hAnorm_le : hA.normSq ≤ IsHilbertSchmidt.normSq hT := by
     calc
-      hA.normSq ≤ ‖ContinuousLinearMap.adjoint U‖ ^ 2 * hS.normSq :=
-        IsHilbertSchmidt.normSq_comp_right_le hS (ContinuousLinearMap.adjoint U)
-      _ ≤ 1 ^ 2 * hS.normSq := by
-        exact mul_le_mul_of_nonneg_right
-          (pow_le_pow_left₀ (norm_nonneg _) hAdjUnorm 2) hS.normSq_nonneg
-      _ = IsHilbertSchmidt.normSq hT := by rw [one_pow, one_mul, hSnorm]
+      hA.normSq ≤ hS.normSq :=
+        hS.normSq_comp_right_le_of_norm_le_one (ContinuousLinearMap.adjoint U) hAdjUnorm
+      _ = IsHilbertSchmidt.normSq hT := hSnorm
   exact ⟨A, S, hA, hS, hfactor, hAnorm_le, hSnorm.le⟩
 
 end IsTraceClass
