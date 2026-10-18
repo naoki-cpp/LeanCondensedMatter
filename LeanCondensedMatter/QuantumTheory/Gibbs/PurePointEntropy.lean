@@ -102,14 +102,8 @@ theorem purePointGibbs_helmholtzFreeEnergy_eq [Nonempty ι]
         (1 / β) * (vonNeumannEntropy
           (purePointGibbsDensityOperator b E β hsum)).toReal =
       -(1 / β) * Real.log (purePointPartitionFunction E β) := by
-  have hEntropy :=
-    (vonNeumannEntropy_purePointGibbsDensityOperator b E β hsum hint).2
-  rw [hEntropy, mul_add]
-  have hscale :
-      (1 / β) * (β * purePointGibbsEnergyExpectation E β) =
-        purePointGibbsEnergyExpectation E β := by
-    rw [← mul_assoc, one_div, inv_mul_cancel₀ hβ, one_mul]
-  rw [hscale]
+  rw [(vonNeumannEntropy_purePointGibbsDensityOperator b E β hsum hint).2]
+  field_simp [hβ]
   ring
 
 end QuantumTheory

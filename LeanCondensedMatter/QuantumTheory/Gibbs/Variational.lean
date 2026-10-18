@@ -51,15 +51,8 @@ theorem gibbsState_helmholtzFreeEnergy_eq [Nontrivial H] [FiniteDimensional ℂ 
         (1 / β) * (vonNeumannEntropy
           (gibbsState Hop β)).toReal =
       -(1 / β) * Real.log (spectralTrace (gibbsOp Hop β)) := by
-  have hEntropy :=
-    (vonNeumannEntropy_gibbsState Hop β).2
-  rw [hEntropy, mul_add]
-  have hscale :
-      (1 / β) *
-          (β * energyExpValue (gibbsState Hop β) Hop) =
-        energyExpValue (gibbsState Hop β) Hop := by
-    rw [← mul_assoc, one_div, inv_mul_cancel₀ hβ, one_mul]
-  rw [hscale]
+  rw [(vonNeumannEntropy_gibbsState Hop β).2]
+  field_simp [hβ]
   ring
 
 /-- Every density operator has Helmholtz free energy at least that of the normalized Gibbs state. -/
