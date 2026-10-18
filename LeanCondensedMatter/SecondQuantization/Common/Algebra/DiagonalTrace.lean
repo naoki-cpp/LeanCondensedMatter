@@ -29,21 +29,14 @@ noncomputable def tsumTrace (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock 
 theorem tsumTrace_add {A B : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config}
     (hA : Summable (fun n => matrixCoeff A n n)) (hB : Summable (fun n => matrixCoeff B n n)) :
     tsumTrace (A + B) = tsumTrace A + tsumTrace B := by
-  rw [tsumTrace, tsumTrace, tsumTrace, ← (hA.hasSum.add hB.hasSum).tsum_eq]
-  exact tsum_congr fun n => by
-    simpa only [matrixCoeffLinear_apply] using (matrixCoeffLinear n n).map_add A B
+  simp only [tsumTrace, ← matrixCoeffLinear_apply, map_add]
+  exact hA.tsum_add hB
 
 /-- `tsumTrace` scales unconditionally. -/
 theorem tsumTrace_smul (c : ℂ) (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
     tsumTrace (c • A) = c * tsumTrace A := by
-  rw [tsumTrace, tsumTrace]
-  have hpoint : (fun n => matrixCoeff (c • A) n n) =
-      fun n => c * matrixCoeff A n n := by
-    funext n
-    simpa only [matrixCoeffLinear_apply, smul_eq_mul] using
-      (matrixCoeffLinear n n).map_smul c A
-  rw [hpoint]
-  exact tsum_mul_left
+  simp only [tsumTrace, ← matrixCoeffLinear_apply, map_smul, smul_eq_mul,
+    tsum_mul_left]
 
 /-- **Cyclicity under a two-operator swap**, assuming absolute double summability:
 `Tr'[AB] = Tr'[BA]`. -/
