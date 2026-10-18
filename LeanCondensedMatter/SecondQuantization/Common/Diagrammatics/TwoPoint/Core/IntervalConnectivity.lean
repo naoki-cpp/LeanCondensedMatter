@@ -143,5 +143,47 @@ theorem TwoPointDiagram.intervalVertices_induce_doubleCut_eq
     (d.intervalVertices_doubleCut_adj_iff earlier later hEarlier hLater
       u.1 v.1 u.2 v.2)
 
+/-- The ambient graph induced on a strictly nested cut interval is
+connected. The interval is one component after the two cuts are removed,
+and Mathlib's induced graph on a connected component is connected. -/
+theorem TwoPointDiagram.intervalVertices_induced_connected
+    (d : TwoPointDiagram ExternalLabel InternalLabel N S)
+    (hconnected : d.IsExternallyConnected)
+    (earlier later : Fin (2 * (2 * S.card + 1)))
+    (hstrict :
+      (d.vertexGraphWithoutPropagator earlier).componentBlock (Sum.inl (0 : Fin 2)) ⊂
+        (d.vertexGraphWithoutPropagator later).componentBlock (Sum.inl (0 : Fin 2)))
+    (hsepEarlier : ¬ (d.vertexGraphWithoutPropagator earlier).Reachable
+      (Sum.inl (0 : Fin 2)) (Sum.inl (1 : Fin 2)))
+    (hsepLater : ¬ (d.vertexGraphWithoutPropagator later).Reachable
+      (Sum.inl (0 : Fin 2)) (Sum.inl (1 : Fin 2)))
+    (hEarlier : d.HasIntervalBoundaryEndpoint earlier later earlier)
+    (hLater : d.HasIntervalBoundaryEndpoint earlier later later) :
+    (SimpleGraph.induce
+      (↑(d.verticesBetweenCuts earlier later) : Set (TwoPointVertex S))
+      d.vertexGraph).Connected := by
+  classical
+  obtain ⟨u, hu⟩ : (d.verticesBetweenCuts earlier later).Nonempty :=
+    Finset.nonempty_iff_ne_empty.mpr
+      (d.verticesBetweenCuts_ne_empty_of_ssubset earlier later hstrict)
+  let G := d.vertexGraphWithoutPropagator earlier ⊓
+    d.vertexGraphWithoutPropagator later
+  let C := G.connectedComponentMk u
+  have hC : C.supp =
+      (↑(d.verticesBetweenCuts earlier later) : Set (TwoPointVertex S)) := by
+    ext v
+    change G.connectedComponentMk v = G.connectedComponentMk u ↔
+      v ∈ d.verticesBetweenCuts earlier later
+    rw [SimpleGraph.ConnectedComponent.eq,
+      ← d.doubleCut_componentBlock_eq_verticesBetweenCuts
+        hconnected earlier later hsepEarlier hsepLater u hu]
+    exact (G.mem_componentBlock u v).symm
+  have hc : (SimpleGraph.induce C.supp G).Connected :=
+    C.connected_toSimpleGraph
+  rw [hC] at hc
+  rw [← d.intervalVertices_induce_doubleCut_eq
+    earlier later hEarlier hLater]
+  exact hc
+
 end Common
 end SecondQuantization
