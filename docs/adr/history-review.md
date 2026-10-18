@@ -534,7 +534,7 @@ Issues #1528–#1530 are pull requests, so they are skipped in this issue-focuse
 
 Issues #1532–#1554 are pull requests, so they are skipped in this issue-focused pass.
 
-| 1555 | [refactor(thermal): clarify representation and thermal ownership](https://github.com/naoki-cpp/LeanCondensedMatter/issues/1555) | Extended ADRs 0005, 0006, and 0016: separate CompletedSpace representation from Fermionic.Thermal state/KMS recursion and retain QuantumTheory.Gibbs.PurePoint as the unique generic owner. |
+| 1555 | [refactor(thermal): clarify representation and thermal ownership](https://github.com/naoki-cpp/LeanCondensedMatter/issues/1555) | Extended ADRs 0005, 0006, and 0016: separate CompletedSpace representation from Fermionic.Thermal state/KMS recursion and retain QuantumTheory.Gibbs.Eigenbasis as the unique generic owner. |
 
 Issues #1556–#1578 are pull requests, so they are skipped in this issue-focused pass.
 
@@ -885,7 +885,7 @@ Issues #1556–#1578 are pull requests, so they are skipped in this issue-focuse
 
 | Issue 2535 | [refactor(transport): separate finite conductivity evaluation from generic Core](https://github.com/naoki-cpp/LeanCondensedMatter/issues/2535) | Keeps finite Lehmann response generic; the conductivity adapter alone adds contact and positive-volume electric-field normalization. Recorded in ADR 0009. |
 
-| Issue 2536 | [refactor(transport): move pure-point spectral bridge out of generic Resolvent](https://github.com/naoki-cpp/LeanCondensedMatter/issues/2536) | Keeps signed-regulator resolvent action generic and places `PurePointLehmannData` basis bridges in the shared Kubo–Bastin/Středa adapter. Recorded in ADR 0009. |
+| Issue 2536 | [refactor(transport): move pure-point spectral bridge out of generic Resolvent](https://github.com/naoki-cpp/LeanCondensedMatter/issues/2536) | Keeps signed-regulator resolvent action generic and places `EigenbasisLehmannData` basis bridges in the shared Kubo–Bastin/Středa adapter. Recorded in ADR 0009. |
 
 | PR 2537 | [refactor(transport): connect MassiveDirac ladder resummation](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2537) | Completes #2456 with the canonical Pauli embedding and Born-Dyson bridge; ADR 0009 already records the generic fixed-point, determinant, and no-convergence boundaries. |
 
@@ -897,7 +897,7 @@ Issues #1556–#1578 are pull requests, so they are skipped in this issue-focuse
 
 | PR 2541 | [refactor(operator): move finite-dimensional trace out of QuantumTheory.Transport](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2541) | Implements #2526 by moving the generic trace laws to `Analysis.Operator.FiniteTrace` without compatibility aliases; ADR 0002 links the implementation. |
 
-| PR 2542 | [refactor(transport): split pure-point spectral bridge](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2542) | Implements #2536 with generic signed-regulator spectral action and a shared `Transport.Spectral.PurePoint` adapter; ADR 0009 now links the closure PR. |
+| PR 2542 | [refactor(transport): split pure-point spectral bridge](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2542) | Implements #2536 with generic signed-regulator spectral action and a shared `Transport.Spectral.Eigenbasis` adapter; ADR 0009 now links the closure PR. |
 
 | PR 2543 | [docs(operator): characterize Gibbs variational boundary](https://github.com/naoki-cpp/LeanCondensedMatter/pull/2543) | Separates bounded noncommuting variational/uniqueness proofs from countable diagonal competitors with explicit energy integrability; a full unbounded quantum extension still needs domain/relative-entropy foundations. Integrated into ADR 0016. |
 

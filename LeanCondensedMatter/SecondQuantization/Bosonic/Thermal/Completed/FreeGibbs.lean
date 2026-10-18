@@ -1,5 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.Basic
-import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.PurePointSummability
+import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BoltzmannSummability
 import LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.Heat
 import LeanCondensedMatter.QuantumTheory.Gibbs.HeatOperator
 
@@ -60,10 +60,10 @@ theorem completedFreeHeatOperator_isTraceClass
     (ε : Mode → ℝ) (β : ℝ) (hβ : 0 < β) (hε : ∀ i, 0 < ε i) :
     IsTraceClass
       (completedFreeHeatOperator ε β hβ (fun i => (hε i).le)) := by
-  apply (isTraceClass_iff_purePointGibbsSummable_of_basis_action
+  apply (isTraceClass_iff_eigenbasisGibbsSummable_of_basis_action
     (completedFreeHeatOperator ε β hβ (fun i => (hε i).le))
     completedOccupationHilbertBasis (freeEigenvalue ε) β ?_).2
-  · exact purePointGibbsSummable_freeEigenvalue ε β hβ hε
+  · exact eigenbasisGibbsSummable_freeEigenvalue ε β hβ hε
   · intro n
     rw [completedOccupationHilbertBasis_apply, completedFreeHeatOperator_basisState]
     rfl
@@ -74,8 +74,8 @@ theorem completedFreeHeatOperator_trace_eq_freeGibbsPartition
     (ε : Mode → ℝ) (β : ℝ) (hβ : 0 < β) (hε : ∀ i, 0 < ε i) :
     (completedFreeHeatOperator_isTraceClass ε β hβ hε).trace =
       freeGibbsPartition ε β := by
-  rw [freeGibbsPartition_eq_coe_purePointPartitionFunction ε β hβ hε]
-  exact heatTrace_eq_purePointPartitionFunction_of_basis_action
+  rw [freeGibbsPartition_eq_coe_eigenbasisPartitionFunction ε β hβ hε]
+  exact heatTrace_eq_eigenbasisPartitionFunction_of_basis_action
     (completedFreeHeatOperator ε β hβ (fun i => (hε i).le))
     (completedFreeHeatOperator_isTraceClass ε β hβ hε)
     completedOccupationHilbertBasis (freeEigenvalue ε) β
@@ -87,22 +87,22 @@ theorem completedFreeHeatOperator_trace_eq_freeGibbsPartition
 noncomputable def completedFreeGibbsDensityOperator
     (ε : Mode → ℝ) (β : ℝ) (hβ : 0 < β) (hε : ∀ i, 0 < ε i) :
     DensityOperator (CompletedFockSpace Mode) :=
-  purePointGibbsDensityOperator completedOccupationHilbertBasis
-    (freeEigenvalue ε) β (purePointGibbsSummable_freeEigenvalue ε β hβ hε)
+  eigenbasisGibbsDensityOperator completedOccupationHilbertBasis
+    (freeEigenvalue ε) β (eigenbasisGibbsSummable_freeEigenvalue ε β hβ hε)
 
 @[simp]
 theorem completedFreeGibbsDensityOperator_apply_basis
     (ε : Mode → ℝ) (β : ℝ) (hβ : 0 < β) (hε : ∀ i, 0 < ε i)
     (n : Occupation Mode) :
     (completedFreeGibbsDensityOperator ε β hβ hε).op (completedBasisState n) =
-      (purePointGibbsProbability (freeEigenvalue ε) β n : ℂ) •
+      (eigenbasisGibbsProbability (freeEigenvalue ε) β n : ℂ) •
         completedBasisState n := by
   simpa [completedFreeGibbsDensityOperator, completedOccupationHilbertBasis,
     completedBasisState] using
-    purePointGibbsDensityOperator_apply_basis
+    eigenbasisGibbsDensityOperator_apply_basis
       (completedOccupationHilbertBasis (Mode := Mode))
       (freeEigenvalue ε) β
-      (purePointGibbsSummable_freeEigenvalue ε β hβ hε) n
+      (eigenbasisGibbsSummable_freeEigenvalue ε β hβ hε) n
 
 /-- Normalizing the completed free heat operator by the bosonic partition function gives the
 canonical completed Gibbs density operator. -/
@@ -111,13 +111,13 @@ theorem inv_freeGibbsPartition_smul_completedFreeHeatOperator_eq_completedFreeGi
     (freeGibbsPartition ε β)⁻¹ •
         completedFreeHeatOperator ε β hβ (fun i => (hε i).le) =
       (completedFreeGibbsDensityOperator ε β hβ hε).op := by
-  rw [freeGibbsPartition_eq_coe_purePointPartitionFunction ε β hβ hε]
+  rw [freeGibbsPartition_eq_coe_eigenbasisPartitionFunction ε β hβ hε]
   simpa [completedFreeGibbsDensityOperator] using
-    (inv_partition_smul_heat_eq_purePointGibbsDensityOperator_op
+    (inv_partition_smul_heat_eq_eigenbasisGibbsDensityOperator_op
       (completedFreeHeatOperator ε β hβ (fun i => (hε i).le))
       (completedOccupationHilbertBasis (Mode := Mode))
       (freeEigenvalue ε) β
-      (purePointGibbsSummable_freeEigenvalue ε β hβ hε)
+      (eigenbasisGibbsSummable_freeEigenvalue ε β hβ hε)
       (fun n => by
         rw [completedOccupationHilbertBasis_apply, completedFreeHeatOperator_basisState]
         rfl))

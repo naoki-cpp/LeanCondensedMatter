@@ -14,7 +14,7 @@ not alternative state models.
 
 For a finite configuration type, `Common/Algebra/FiniteHilbertOperator.lean` owns the finite Hilbert
 basis and transport of algebraic Fock endomorphisms to bounded operators. The thermal state is the
-generic pure-point Gibbs density operator from `QuantumTheory.Gibbs.PurePoint`; the finite
+generic pure-point Gibbs density operator from `QuantumTheory.Gibbs.Eigenbasis`; the finite
 SecondQuantization layer only supplies the representation-specific adapter.
 
 The finite Gibbs expectation satisfies the usual trace-ratio formula
@@ -29,7 +29,7 @@ The reusable finite coordinate layer is split by responsibility:
 
 | Owner | Responsibility |
 |---|---|
-| `QuantumTheory/Gibbs/PurePoint.lean` | Boltzmann weights, partition functions, probabilities, pure-point Gibbs states. |
+| `QuantumTheory/Gibbs/Eigenbasis.lean` | Boltzmann weights, partition functions, probabilities, pure-point Gibbs states. |
 | `Common/Algebra/FiniteHilbertOperator.lean` | Finite Hilbert realization and algebraic-operator transport. |
 | `Common/Thermal/FiniteGibbsExpectationBridge.lean` | Canonical finite density-state expectation adapter and pure-point probability formula. |
 | `Common/Thermal/FiniteGibbsCoordinate.lean` | Complex Boltzmann weights, diagonal-evolution traces, and trace-ratio formulas. |
@@ -40,7 +40,7 @@ The reusable finite coordinate layer is split by responsibility:
 
 Raw `weightSum` formulas are scalar coordinate infrastructure, not normalized-state models. The finite Gibbs expectation retains the canonical pure-point density state as its physical
 meaning. For finite fermionic mode types,
-`freePartitionFunction_eq_coe_purePointPartitionFunction` identifies the complex finite-coordinate
+`freePartitionFunction_eq_coe_eigenbasisPartitionFunction` identifies the complex finite-coordinate
 partition function with the canonical real pure-point partition function after coercion to `ℂ`.
 
 ## Generic pairing recursion
@@ -71,7 +71,7 @@ number-operator expectation. The mean energy then uses this marginal, while the 
 formula specializes the generic pure-point Gibbs entropy identity. These are thermodynamic
 consequences of the same density state, not a separate probability-state construction.
 
-`Fermionic.Thermal.PurePointSummability` owns the representation-independent theorem that
+`Fermionic.Thermal.BoltzmannSummability` owns the representation-independent theorem that
 one-particle Gibbs summability implies summability over fermionic occupation configurations.
 
 The completed free-fermion implementation lives under `Fermionic.Thermal.Completed`.
@@ -84,7 +84,7 @@ Unbounded observables do not use `DensityOperator.expectation`. The completed to
 is owned by `Fermionic.CompletedSpace.Diagonal`, while
 `Fermionic.Thermal.Completed.TotalNumberExpectation` defines its explicit Gibbs-integrability
 condition and spectral expectation. Potentially unbounded energy expectation remains generic in
-`QuantumTheory.Gibbs.PurePointExpectation`; there is no public arbitrary-diagonal thermal
+`QuantumTheory.Gibbs.EigenbasisExpectation`; there is no public arbitrary-diagonal thermal
 expectation API.
 
 Bosonic two-field occupation-diagonal coefficients are algebraic imaginary-time facts, owned by

@@ -78,7 +78,7 @@ theorem gibbsFactor_annihilate (ε : Mode → ℝ) (β : ℝ) (i : Mode) :
 
 /-- Uniform completed free-Gibbs intertwining for a creation or annihilation operator. -/
 theorem completedFreeGibbsDensityOperator_comp_operator
-    (ε : Mode → ℝ) (β : ℝ) (hsum : PurePointGibbsSummable (fermionEnergy ε) β)
+    (ε : Mode → ℝ) (β : ℝ) (hsum : EigenbasisGibbsSummable (fermionEnergy ε) β)
     (C : CompletedThermalLadder Mode) :
     (completedFreeGibbsDensityOperator ε β hsum).op.comp C.operator =
       C.gibbsFactor ε β •
@@ -178,19 +178,19 @@ private theorem operator_comp_operatorProduct_eq_peelSum
 
 /-- Canonical completed free-Gibbs expectation of an ordered thermal-ladder list. -/
 noncomputable def completedFreeGibbsExpectation
-    (ε : Mode → ℝ) (β : ℝ) (hsum : PurePointGibbsSummable (fermionEnergy ε) β)
+    (ε : Mode → ℝ) (β : ℝ) (hsum : EigenbasisGibbsSummable (fermionEnergy ε) β)
     (l : List (CompletedThermalLadder Mode)) : ℂ :=
   (completedFreeGibbsDensityOperator ε β hsum).expectation (operatorProduct l)
 
 @[simp]
 theorem completedFreeGibbsExpectation_nil
-    (ε : Mode → ℝ) (β : ℝ) (hsum : PurePointGibbsSummable (fermionEnergy ε) β) :
+    (ε : Mode → ℝ) (β : ℝ) (hsum : EigenbasisGibbsSummable (fermionEnergy ε) β) :
     completedFreeGibbsExpectation ε β hsum [] = 1 := by
   simp [completedFreeGibbsExpectation]
 
 /-- Expectation-level exchange formula before the KMS rotation of the final term. -/
 theorem completedFreeGibbsExpectation_cons_eq_peel_add_rotated
-    (ε : Mode → ℝ) (β : ℝ) (hsum : PurePointGibbsSummable (fermionEnergy ε) β)
+    (ε : Mode → ℝ) (β : ℝ) (hsum : EigenbasisGibbsSummable (fermionEnergy ε) β)
     (C₁ : CompletedThermalLadder Mode) (l : List (CompletedThermalLadder Mode)) :
     completedFreeGibbsExpectation ε β hsum (C₁ :: l) =
       (completedFreeGibbsDensityOperator ε β hsum).expectation (ScalarExchange.peelSum operator anticommutatorValue (-1 : ℂ) C₁ l) +
@@ -221,7 +221,7 @@ namespace CompletedThermalLadder
 
 /-- Expectation of the completed CAR peel as an indexed finite sum over the removed tail position. -/
 private theorem completedFreeGibbsExpectation_peelSum_eq_sum
-    (ε : Mode → ℝ) (β : ℝ) (hsum : PurePointGibbsSummable (fermionEnergy ε) β)
+    (ε : Mode → ℝ) (β : ℝ) (hsum : EigenbasisGibbsSummable (fermionEnergy ε) β)
     (C₁ : CompletedThermalLadder Mode) (l : List (CompletedThermalLadder Mode)) :
     (completedFreeGibbsDensityOperator ε β hsum).expectation (ScalarExchange.peelSum operator anticommutatorValue (-1 : ℂ) C₁ l) =
       ∑ j : Fin l.length,
@@ -254,7 +254,7 @@ namespace CompletedThermalLadder
 `⟨C A⟩β = gβ(C) ⟨A C⟩β`.  The scalar `gβ(C)` is the same factor appearing in
 `ρβ C = gβ(C) C ρβ`. -/
 theorem completedFreeGibbsExpectation_operator_comp
-    (ε : Mode → ℝ) (β : ℝ) (hsum : PurePointGibbsSummable (fermionEnergy ε) β)
+    (ε : Mode → ℝ) (β : ℝ) (hsum : EigenbasisGibbsSummable (fermionEnergy ε) β)
     (C : CompletedThermalLadder Mode)
     (A : CompletedFockSpace Mode →L[ℂ] CompletedFockSpace Mode) :
     (completedFreeGibbsDensityOperator ε β hsum).expectation (C.operator.comp A) =
@@ -280,7 +280,7 @@ theorem completedFreeGibbsExpectation_operator_comp
 
 /-- KMS rotation specialized to an ordered thermal-ladder tail. -/
 theorem completedFreeGibbsExpectation_cons_eq_gibbsFactor_mul_rotate
-    (ε : Mode → ℝ) (β : ℝ) (hsum : PurePointGibbsSummable (fermionEnergy ε) β)
+    (ε : Mode → ℝ) (β : ℝ) (hsum : EigenbasisGibbsSummable (fermionEnergy ε) β)
     (C : CompletedThermalLadder Mode) (l : List (CompletedThermalLadder Mode)) :
     completedFreeGibbsExpectation ε β hsum (C :: l) =
       C.gibbsFactor ε β * completedFreeGibbsExpectation ε β hsum (l ++ [C]) := by
@@ -328,7 +328,7 @@ theorem completedFreeGibbsAdmissible_erase
 /-- For an odd tail, completed CAR exchange followed by KMS rotation solves the wrapped term.
 The coefficient `g / (1 + g)` is the Fermi thermal factor attached to the leading ladder. -/
 theorem completedFreeGibbsExpectation_cons_eq_gibbsRatio_mul_peel
-    (ε : Mode → ℝ) (β : ℝ) (hsum : PurePointGibbsSummable (fermionEnergy ε) β)
+    (ε : Mode → ℝ) (β : ℝ) (hsum : EigenbasisGibbsSummable (fermionEnergy ε) β)
     (n : ℕ) (C : CompletedThermalLadder Mode) (l : List (CompletedThermalLadder Mode))
     (hlen : l.length = 2 * n + 1)
     (hne : (1 : ℂ) + C.gibbsFactor ε β ≠ 0) :
@@ -359,7 +359,7 @@ theorem completedFreeGibbsExpectation_cons_eq_gibbsRatio_mul_peel
 /-- The normalized two-point completed Gibbs expectation is the scalar CAR coefficient multiplied
 by the same Gibbs ratio that solves the odd-tail KMS equation. -/
 theorem completedFreeGibbsExpectation_pair_eq
-    (ε : Mode → ℝ) (β : ℝ) (hsum : PurePointGibbsSummable (fermionEnergy ε) β)
+    (ε : Mode → ℝ) (β : ℝ) (hsum : EigenbasisGibbsSummable (fermionEnergy ε) β)
     (C D : CompletedThermalLadder Mode)
     (hne : (1 : ℂ) + C.gibbsFactor ε β ≠ 0) :
     completedFreeGibbsExpectation ε β hsum [C, D] =
@@ -399,7 +399,7 @@ namespace CompletedThermalLadder
 /-- The completed free-fermion Gibbs expectation as an implementation of the generic
 Bloch--de Dominicis pairing-recursion contract. -/
 noncomputable def completedFreeGibbsExpectationRecursion
-    (ε : Mode → ℝ) (β : ℝ) (hsum : PurePointGibbsSummable (fermionEnergy ε) β) :
+    (ε : Mode → ℝ) (β : ℝ) (hsum : EigenbasisGibbsSummable (fermionEnergy ε) β) :
     Common.BlochDeDominicis.ExpectationPairingRecursion
       (CompletedThermalLadder Mode) Common.Statistics.fermion where
   expectation := completedFreeGibbsExpectation ε β hsum
@@ -444,7 +444,7 @@ noncomputable def completedFreeGibbsExpectationRecursion
 /-- Completed free-fermion Bloch--de Dominicis expansion obtained by feeding the completed Gibbs
 recursion data into the common pairing induction. -/
 theorem completedFreeGibbsExpectation_eq_sum_pairing
-    (ε : Mode → ℝ) (β : ℝ) (hsum : PurePointGibbsSummable (fermionEnergy ε) β)
+    (ε : Mode → ℝ) (β : ℝ) (hsum : EigenbasisGibbsSummable (fermionEnergy ε) β)
     (n : ℕ) (C : Fin (2 * n) → CompletedThermalLadder Mode)
     (hC : completedFreeGibbsAdmissible ε β n C) :
     completedFreeGibbsExpectation ε β hsum (List.ofFn C) =

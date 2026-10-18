@@ -1,10 +1,10 @@
 import LeanCondensedMatter.QuantumTheory.Gibbs.State
-import LeanCondensedMatter.QuantumTheory.Gibbs.PurePoint
+import LeanCondensedMatter.QuantumTheory.Gibbs.Eigenbasis
 import LeanCondensedMatter.QuantumTheory.Gibbs.HeatOperator
-import LeanCondensedMatter.QuantumTheory.Gibbs.PurePointExpectation
-import LeanCondensedMatter.QuantumTheory.Gibbs.PurePointEntropy
-import LeanCondensedMatter.QuantumTheory.Gibbs.PurePointVariational
-import LeanCondensedMatter.QuantumTheory.Gibbs.PurePointUniqueness
+import LeanCondensedMatter.QuantumTheory.Gibbs.EigenbasisExpectation
+import LeanCondensedMatter.QuantumTheory.Gibbs.EigenbasisEntropy
+import LeanCondensedMatter.QuantumTheory.Gibbs.EigenbasisVariational
+import LeanCondensedMatter.QuantumTheory.Gibbs.EigenbasisUniqueness
 import LeanCondensedMatter.QuantumTheory.Gibbs.EnergyExpectation
 import LeanCondensedMatter.QuantumTheory.Gibbs.FreeEnergy
 import LeanCondensedMatter.QuantumTheory.Gibbs.Entropy

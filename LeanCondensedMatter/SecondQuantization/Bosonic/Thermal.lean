@@ -5,7 +5,7 @@ import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.QuadraticParticleN
 import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.TotalParticleNumberWeightSummable
 import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis
 import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.ConvergenceAwareGibbs
-import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.PurePointSummability
+import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BoltzmannSummability
 import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.Completed.FreeGibbs
 
 set_option linter.style.header false

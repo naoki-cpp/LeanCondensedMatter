@@ -1,6 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Common.Algebra.FiniteHilbertOperator
 import LeanCondensedMatter.QuantumTheory.DensityOperator.Finite
-import LeanCondensedMatter.QuantumTheory.Gibbs.PurePoint
+import LeanCondensedMatter.QuantumTheory.Gibbs.Eigenbasis
 
 set_option linter.style.header false
 
@@ -26,7 +26,7 @@ variable {Config : Type*} [Fintype Config] [Nonempty Config]
 endomorphisms.  The state itself is the generic finite pure-point Gibbs density operator. -/
 noncomputable def finiteGibbsExpectationLinearMap (energy : Config → ℝ) (β : ℝ) :
     (AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) →ₗ[ℂ] ℂ :=
-  (finitePurePointGibbsDensityOperator
+  (finiteEigenbasisGibbsDensityOperator
       (finiteHilbertBasis (Config := Config)) energy β).expectation.toLinearMap.comp
     (finiteHilbertOperatorAlgEquiv (Config := Config)).toLinearMap
 
@@ -41,12 +41,12 @@ theorem finiteGibbsExpectation_id (energy : Config → ℝ) (β : ℝ) :
       (LinearMap.id : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) = 1 := by
   rw [finiteGibbsExpectation, finiteGibbsExpectationLinearMap, LinearMap.comp_apply]
   change
-    (finitePurePointGibbsDensityOperator
+    (finiteEigenbasisGibbsDensityOperator
       (finiteHilbertBasis (Config := Config)) energy β).expectation
         (finiteHilbertOperatorAlgEquiv
           (LinearMap.id : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)) = 1
   rw [← Module.End.one_eq_id, map_one]
-  exact (finitePurePointGibbsDensityOperator
+  exact (finiteEigenbasisGibbsDensityOperator
     (finiteHilbertBasis (Config := Config)) energy β).expectation_id
 
 /-- Scalar multiplication passes through the canonical finite Gibbs expectation. -/
@@ -63,16 +63,16 @@ sum. -/
 theorem finiteGibbsExpectation_eq_sum (energy : Config → ℝ) (β : ℝ)
     (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
     finiteGibbsExpectation energy β A =
-      ∑ n : Config, (purePointGibbsProbability energy β n : ℂ) * matrixCoeff A n n := by
+      ∑ n : Config, (eigenbasisGibbsProbability energy β n : ℂ) * matrixCoeff A n n := by
   classical
   have hbase :=
-    (finitePurePointGibbsDensityOperator
+    (finiteEigenbasisGibbsDensityOperator
       (finiteHilbertBasis (Config := Config)) energy β).expectation_eq_sum_diagonal
       (finiteHilbertOperatorAlgEquiv A)
       (finiteHilbertOrthonormalBasis (Config := Config))
-      (purePointGibbsProbability energy β)
+      (eigenbasisGibbsProbability energy β)
       (fun n => by
-        simpa using finitePurePointGibbsDensityOperator_apply_basis
+        simpa using finiteEigenbasisGibbsDensityOperator_apply_basis
           (finiteHilbertBasis (Config := Config)) energy β n)
   have hinner (n : Config) :
       inner ℂ ((finiteHilbertOrthonormalBasis (Config := Config)) n)
@@ -87,16 +87,16 @@ theorem finiteGibbsExpectation_eq_sum (energy : Config → ℝ) (β : ℝ)
     exact finiteHilbertOperator_basis_apply A n n
   rw [finiteGibbsExpectation, finiteGibbsExpectationLinearMap, LinearMap.comp_apply]
   calc
-    (finitePurePointGibbsDensityOperator
+    (finiteEigenbasisGibbsDensityOperator
         (finiteHilbertBasis (Config := Config)) energy β).expectation
           (finiteHilbertOperatorAlgEquiv A) =
         ∑ n : Config,
-          (purePointGibbsProbability energy β n : ℂ) *
+          (eigenbasisGibbsProbability energy β n : ℂ) *
             inner ℂ ((finiteHilbertOrthonormalBasis (Config := Config)) n)
               (finiteHilbertOperatorAlgEquiv A
                 ((finiteHilbertOrthonormalBasis (Config := Config)) n)) :=
       hbase
-    _ = ∑ n : Config, (purePointGibbsProbability energy β n : ℂ) * matrixCoeff A n n := by
+    _ = ∑ n : Config, (eigenbasisGibbsProbability energy β n : ℂ) * matrixCoeff A n n := by
       apply Finset.sum_congr rfl
       intro n _
       rw [hinner n]

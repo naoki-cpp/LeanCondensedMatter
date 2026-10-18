@@ -42,7 +42,7 @@ private theorem analyticDysonPartitionFunction_zero_eq_constantCoeff
   rw [analyticDysonPartitionFunction_zero energy β V,
     constantCoeff_dysonTraceSeries]
   simpa [weightSum] using
-    coe_purePointPartitionFunction_eq_sum_boltzmannWeight energy β
+    coe_eigenbasisPartitionFunction_eq_sum_boltzmannWeight energy β
 
 @[simp]
 theorem normalizedAnalyticDysonPartitionFunction_zero

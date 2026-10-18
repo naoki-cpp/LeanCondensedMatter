@@ -10,7 +10,7 @@ The quantum Gibbs layer consumes the heat operator and its verified properties. 
 
 The bounded-Hamiltonian Gibbs API is explicitly finite-dimensional. This is not an extra physical restriction hidden by the refactor: compactness of the invertible bounded Gibbs operator already forces finite dimension, so the earlier compactness hypothesis was equivalent to that scope. Genuine infinite-dimensional examples therefore come from trace-class heat data such as summable diagonal weights, not from weakening the bounded API. Thermodynamic limits remain separate.
 
-Evidence: [positive normalization](../../LeanCondensedMatter/QuantumTheory/DensityOperator/Normalize.lean), [heat-operator Gibbs boundary](../../LeanCondensedMatter/QuantumTheory/Gibbs/HeatOperator.lean), and [countable pure-point specialization](../../LeanCondensedMatter/QuantumTheory/Gibbs/PurePoint.lean).
+Evidence: [positive normalization](../../LeanCondensedMatter/QuantumTheory/DensityOperator/Normalize.lean), [heat-operator Gibbs boundary](../../LeanCondensedMatter/QuantumTheory/Gibbs/HeatOperator.lean), and [countable pure-point specialization](../../LeanCondensedMatter/QuantumTheory/Gibbs/Eigenbasis.lean).
 
 ## Historical evidence
 

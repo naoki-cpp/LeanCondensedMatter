@@ -341,7 +341,7 @@ private def semanticOwnerRequirements : Array OwnerRequirement :=
   let observableExpectationModule := `LeanCondensedMatter.QuantumTheory.DensityOperator.ObservableExpectation
   let bornModule := `LeanCondensedMatter.QuantumTheory.POVM.Born
   let eigenbasisDynamicsModule := `LeanCondensedMatter.QuantumTheory.LinearResponse.EigenbasisDynamics
-  let gibbsPurePointModule := `LeanCondensedMatter.QuantumTheory.Gibbs.PurePoint
+  let gibbsEigenbasisModule := `LeanCondensedMatter.QuantumTheory.Gibbs.Eigenbasis
   let finiteGibbsModule := `LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsExpectationBridge
   let freeEntropyModule := `LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeEntropy
   let recursionModule := `LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.ExpectationRecursion
@@ -360,8 +360,8 @@ private def semanticOwnerRequirements : Array OwnerRequirement :=
     { declaration := `QuantumTheory.LinearResponse.eigenbasisNormalizedExpectation, moduleName := eigenbasisDynamicsModule },
     { declaration := `QuantumTheory.LinearResponse.eigenbasisNormalizedExpectation_apply, moduleName := eigenbasisDynamicsModule },
     { declaration := `QuantumTheory.LinearResponse.isStationary_eigenbasisNormalizedExpectation, moduleName := eigenbasisDynamicsModule },
-    { declaration := `QuantumTheory.purePointGibbsDensityOperator, moduleName := gibbsPurePointModule },
-    { declaration := `QuantumTheory.finitePurePointGibbsDensityOperator, moduleName := gibbsPurePointModule },
+    { declaration := `QuantumTheory.eigenbasisGibbsDensityOperator, moduleName := gibbsEigenbasisModule },
+    { declaration := `QuantumTheory.finiteEigenbasisGibbsDensityOperator, moduleName := gibbsEigenbasisModule },
     { declaration := `SecondQuantization.Common.finiteGibbsExpectationLinearMap, moduleName := finiteGibbsModule },
     { declaration := `SecondQuantization.Common.finiteGibbsExpectation, moduleName := finiteGibbsModule },
     { declaration := `SecondQuantization.Common.finiteGibbsExpectation_eq_sum, moduleName := finiteGibbsModule },

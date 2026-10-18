@@ -197,7 +197,7 @@
     {
       "id": "densityGibbsOwners",
       "paths": [
-        "LeanCondensedMatter/QuantumTheory/Gibbs/PurePoint.lean",
+        "LeanCondensedMatter/QuantumTheory/Gibbs/Eigenbasis.lean",
         "LeanCondensedMatter/SecondQuantization/Common/Algebra/FiniteHilbertOperator.lean",
         "LeanCondensedMatter/SecondQuantization/Common/Thermal/FiniteGibbsExpectationBridge.lean",
         "LeanCondensedMatter/SecondQuantization/Fermionic/Thermal/FreeEntropy.lean"
@@ -278,8 +278,8 @@
       ]
     },
     {
-      "id": "purePointGibbsDensityDependency",
-      "path": "LeanCondensedMatter/QuantumTheory/Gibbs/PurePoint.lean",
+      "id": "eigenbasisGibbsDensityDependency",
+      "path": "LeanCondensedMatter/QuantumTheory/Gibbs/Eigenbasis.lean",
       "modules": [
         "LeanCondensedMatter.QuantumTheory.DensityOperator.DiagonalFormula"
       ]
@@ -288,7 +288,7 @@
       "id": "finiteGibbsExpectationDependencies",
       "path": "LeanCondensedMatter/SecondQuantization/Common/Thermal/FiniteGibbsExpectationBridge.lean",
       "modules": [
-        "LeanCondensedMatter.QuantumTheory.Gibbs.PurePoint",
+        "LeanCondensedMatter.QuantumTheory.Gibbs.Eigenbasis",
         "LeanCondensedMatter.SecondQuantization.Common.Algebra.FiniteHilbertOperator"
       ]
     },
@@ -296,7 +296,7 @@
       "id": "freeEntropyDependency",
       "path": "LeanCondensedMatter/SecondQuantization/Fermionic/Thermal/FreeEntropy.lean",
       "modules": [
-        "LeanCondensedMatter.QuantumTheory.Gibbs.PurePointEntropy"
+        "LeanCondensedMatter.QuantumTheory.Gibbs.EigenbasisEntropy"
       ]
     },
     {

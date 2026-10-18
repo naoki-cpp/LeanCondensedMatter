@@ -109,7 +109,7 @@ specializations.
 
 Generic bounded-resolvent facts belong upstream in `Analysis.Operator.Spectral.Resolvent`.
 `Resolvent.Spectral` specializes those facts to the arbitrary signed-regulator transport parameter
-without importing response data. `Spectral.PurePoint` is the neutral adapter that combines this
+without importing response data. `Spectral.Eigenbasis` is the neutral adapter that combines this
 generic resolvent action with `EnergyEigenbasisLehmannData`; Kubo–Bastin and Středa both consume that
 adapter rather than owning duplicate pure-point spectral proofs.
 
