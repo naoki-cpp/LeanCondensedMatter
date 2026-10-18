@@ -92828,7 +92828,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.energyExpValue_eigenbasisGibbsDensityOperator_eq_tsum",
+      "QuantumTheory.eigenbasisGibbsEnergyExpectation_eq_energyExpValue",
       "QuantumTheory.finiteEigenbasisGibbsDensityOperator_apply_basis",
       "QuantumTheory.inv_partition_smul_heat_eq_eigenbasisGibbsDensityOperator_op",
       "QuantumTheory.vonNeumannEntropy_eigenbasisGibbsDensityOperator",
@@ -92843,7 +92843,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.energyExpValue_eigenbasisGibbsDensityOperator_eq_tsum",
+      "QuantumTheory.eigenbasisGibbsEnergyExpectation_eq_energyExpValue",
       "QuantumTheory.finiteEigenbasisGibbsDensityOperator_apply_basis",
       "QuantumTheory.inv_partition_smul_heat_eq_eigenbasisGibbsDensityOperator_op",
       "QuantumTheory.vonNeumannEntropy_eigenbasisGibbsDensityOperator",
@@ -92885,7 +92885,8 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "QuantumTheory.energyExpValue_eigenbasisGibbsDensityOperator_eq_tsum"
+      "QuantumTheory.eigenbasisGibbsDensityOperator_apply_basis",
+      "QuantumTheory.energyExpValue_eq_tsum_common_eigenbasis"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -93378,51 +93379,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {ι : Type u_1} {H : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] [inst_3 : Nonempty ι] (b : HilbertBasis ι ℂ H) (E : ι → ℝ) (β : ℝ)\n  (hsum : QuantumTheory.EigenbasisGibbsSummable E β) (Hop : QuantumTheory.Observable H),\n  (∀ (i : ι), ↑Hop (b i) = ↑(E i) • b i) →\n    QuantumTheory.energyExpValue (QuantumTheory.eigenbasisGibbsDensityOperator b E β hsum) Hop =\n      ∑' (i : ι), QuantumTheory.eigenbasisGibbsProbability E β i * E i",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.energyExpValue_eigenbasisGibbsDensityOperator_eq_tsum",
-    "module": "LeanCondensedMatter.QuantumTheory.Gibbs.EigenbasisExpectation",
-    "externalAxioms": [],
-    "docString": "When the same energy data do come from a bounded observable, the generic bounded expectation\nAPI gives the expected weighted pure-point energy series.  Genuinely unbounded energy data should\ninstead carry `EigenbasisGibbsEnergyIntegrable` explicitly. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.eigenbasisGibbsEnergyExpectation_eq_energyExpValue"
-    ],
-    "dependencies": [
-      "QuantumTheory.eigenbasisGibbsDensityOperator_apply_basis",
-      "QuantumTheory.energyExpValue_eq_tsum_common_eigenbasis"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.eigenbasisGibbsEnergyExpectation_eq_energyExpValue"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ {ι : Type u_1} {H : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] (ρ : QuantumTheory.DensityOperator H) (Hop : QuantumTheory.Observable H)\n  (b : HilbertBasis ι ℂ H) (w E : ι → ℝ),\n  (∀ (i : ι), ρ.op (b i) = ↑(w i) • b i) →\n    (∀ (i : ι), ↑Hop (b i) = ↑(E i) • b i) → QuantumTheory.energyExpValue ρ Hop = ∑' (i : ι), w i * E i",
     "standardAxioms": [
       "Classical.choice",
@@ -93442,7 +93398,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.energyExpValue_eigenbasisGibbsDensityOperator_eq_tsum"
+      "QuantumTheory.eigenbasisGibbsEnergyExpectation_eq_energyExpValue"
     ],
     "dependencies": [
       "ContinuousLinearMap.coe_diagonalExpectationValue_right",
@@ -93451,7 +93407,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.energyExpValue_eigenbasisGibbsDensityOperator_eq_tsum"
+      "QuantumTheory.eigenbasisGibbsEnergyExpectation_eq_energyExpValue"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
