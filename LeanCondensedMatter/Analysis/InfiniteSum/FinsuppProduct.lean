@@ -47,28 +47,6 @@ private theorem hasSum_prod_fin_zero
     hasSum_single (0 : Fin 0 →₀ ℕ) (fun n hn => absurd (hzero n) hn)
   simpa using hsum
 
-private def finSuccFamily {k : ℕ} {α : Type*} (f : Fin (k + 1) → α) : Option (Fin k) → α
-  | none => f 0
-  | Option.some i => f i.succ
-
-private theorem hasSum_prod_finSucc_reindex
-    {k : ℕ} {R : Type*} [NormedCommRing R]
-    (f : Fin (k + 1) → ℕ → R) (a : Fin (k + 1) → R)
-    (hOption : HasSum
-      (fun n : Option (Fin k) →₀ ℕ =>
-        ∏ i : Option (Fin k), finSuccFamily f i (n i))
-      (∏ i : Option (Fin k), finSuccFamily a i)) :
-    HasSum (fun n : Fin (k + 1) →₀ ℕ => ∏ i : Fin (k + 1), f i (n i))
-      (∏ i : Fin (k + 1), a i) := by
-  apply hasSum_prod_equiv (finSuccEquiv k).symm f a
-  have hf (i : Option (Fin k)) :
-      f ((finSuccEquiv k).symm i) = finSuccFamily f i := by
-    cases i <;> simp [finSuccFamily]
-  have ha (i : Option (Fin k)) :
-      a ((finSuccEquiv k).symm i) = finSuccFamily a i := by
-    cases i <;> simp [finSuccFamily]
-  simpa only [hf, ha] using hOption
-
 private theorem hasSum_prod_finSucc_option
     {k : ℕ} {R : Type*} [NormedCommRing R] [CompleteSpace R]
     (f : Fin (k + 1) → ℕ → R) (a : Fin (k + 1) → R)
@@ -78,8 +56,8 @@ private theorem hasSum_prod_finSucc_option
     (habsHead : Summable (fun n => ‖f 0 n‖))
     (habsTail : Summable (fun n : Fin k →₀ ℕ => ‖∏ i : Fin k, f i.succ (n i)‖)) :
     HasSum (fun n : Option (Fin k) →₀ ℕ =>
-      ∏ i : Option (Fin k), finSuccFamily f i (n i))
-      (∏ i : Option (Fin k), finSuccFamily a i) := by
+      ∏ i : Option (Fin k), f ((finSuccEquiv k).symm i) (n i))
+      (∏ i : Option (Fin k), a ((finSuccEquiv k).symm i)) := by
   let tail : (Fin k →₀ ℕ) → R :=
     fun n => ∏ i : Fin k, f i.succ (n i)
   have hmul : Summable
@@ -92,10 +70,9 @@ private theorem hasSum_prod_finSucc_option
     hhead.mul htail' hmul
   convert ((Equiv.hasSum_iff Finsupp.optionEquiv).mpr hprod) using 1
   · funext n
-    simp only [Function.comp_apply, Finsupp.optionEquiv_apply]
-    rw [Fintype.prod_option]
-    congr 1
-  · simp only [Fintype.prod_option, finSuccFamily]
+    simp only [Function.comp_apply, Finsupp.optionEquiv_apply, Fintype.prod_option,
+      finSuccEquiv_symm_none, finSuccEquiv_symm_some, Finsupp.some_apply, tail]
+  · simp only [Fintype.prod_option, finSuccEquiv_symm_none, finSuccEquiv_symm_some]
 
 /-! ## The nonnegative-real case -/
 
@@ -114,7 +91,7 @@ private theorem hasSum_prod_nonneg_fin (k : ℕ) (g : Fin k → ℕ → ℝ) (b 
           (∏ i : Fin k, b i.succ) :=
         ih (fun i => g i.succ) (fun i => b i.succ)
           (fun i => hg i.succ) (fun i n => hnn i.succ n)
-      apply hasSum_prod_finSucc_reindex g b
+      apply hasSum_prod_equiv (finSuccEquiv k).symm g b
       apply hasSum_prod_finSucc_option g b (hg 0) htail
       · rw [show (fun n => ‖g 0 n‖) = g 0 from
           funext fun n => Real.norm_of_nonneg (hnn 0 n)]
@@ -169,7 +146,7 @@ private theorem hasSum_prod_fin (k : ℕ) (f : Fin k → ℕ → R) (a : Fin k �
       have habsTail : Summable
           (fun n : Fin k →₀ ℕ => ‖∏ i : Fin k, f i.succ (n i)‖) :=
         summable_norm_prod (fun i : Fin k => f i.succ) (fun i => habs i.succ)
-      exact hasSum_prod_finSucc_reindex f a
+      exact hasSum_prod_equiv (finSuccEquiv k).symm f a
         (hasSum_prod_finSucc_option f a (hf 0) htail (habs 0) habsTail)
 
 /-- **A finite product of absolutely convergent series converges** as a `Finsupp`-indexed
