@@ -49,13 +49,11 @@ noncomputable def finiteKuboGreenwoodDirectionalCurrentTerm
     (data : PurePointLehmannData system ι)
     (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
     (K : LocallyFiniteHopping Site) (q ω η : ℝ) (mn : ι × ι) : ℂ :=
-  lehmannTerm system.hbar ω η
-    (data.energy mn.1 - data.energy mn.2)
-    ((purePointTransitionData system data
+  (purePointTransitionData system data
       (boundedDirectionalCurrent geometry direction
         (system.hbar : ℂ) (q : ℂ) K)
       (boundedDirectionalCurrent geometry direction
-        (system.hbar : ℂ) (q : ℂ) K) mn).weight)
+        (system.hbar : ℂ) (q : ℂ) K) mn).frequencyTerm ω η
 
 /-- Diagonal Kubo–Greenwood current-current transitions vanish exactly. -/
 @[simp]
@@ -66,7 +64,7 @@ theorem finiteKuboGreenwoodDirectionalCurrentTerm_diag
     (K : LocallyFiniteHopping Site) (q ω η : ℝ) (i : ι) :
     finiteKuboGreenwoodDirectionalCurrentTerm
       system data geometry direction K q ω η (i, i) = 0 := by
-  simp [finiteKuboGreenwoodDirectionalCurrentTerm, lehmannTerm]
+  simp [finiteKuboGreenwoodDirectionalCurrentTerm, LehmannTransitionData.frequencyTerm, lehmannTerm]
 
 /-- Equal-energy off-diagonal transitions keep the finite-rate denominator `η - iω`. -/
 theorem finiteKuboGreenwoodDirectionalCurrentTerm_of_equal_energy

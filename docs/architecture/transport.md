@@ -58,6 +58,11 @@ The main semantic boundaries are:
 - generic Transport must not acquire model-specific assumptions from `Transport.Models`.
 
 `QuantumTheory.LinearResponse.FiniteLehmannTable` evaluates each transition through the canonical
+scalar owner `Lehmann.Transition`, independently of operator spectral reconstruction.
+`Lehmann.PurePoint` owns the Hilbert-basis realization; `Lehmann.PurePointTable` adapts it to the
+finite scalar table. Operator-derived response endpoints consume the transition record's
+`frequencyTerm` directly rather than assembling its energy gap and weight separately.
+The table evaluates each transition through the canonical
 `finiteLehmannTableTransitionData` record. Its `.weight`, `.energyGap`, and frequency evaluation
 belong to that transition data; concrete validation and conductivity adapters consume those fields.
 The diagonal-weight vanishing theorem remains a canonical simplification rule, independently of

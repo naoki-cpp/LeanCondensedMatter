@@ -100,13 +100,11 @@ theorem infiniteTimeAdiabaticDirectionalConductivity_purePoint_eq_finite_sum
         system (purePointNormalizedExpectation system data)
           geometry direction K q ω η =
       ((∑ mn : ι × ι,
-        lehmannTerm system.hbar ω η
-          (data.energy mn.1 - data.energy mn.2)
-          ((purePointTransitionData system data
+        (purePointTransitionData system data
             (boundedDirectionalCurrent geometry direction
               (system.hbar : ℂ) (q : ℂ) K)
             (boundedDirectionalCurrent geometry direction
-              (system.hbar : ℂ) (q : ℂ) K) mn).weight)) +
+              (system.hbar : ℂ) (q : ℂ) K) mn).frequencyTerm ω η) +
         purePointNormalizedExpectation system data
           (boundedDirectionalContact geometry direction
             (system.hbar : ℂ) (q : ℂ) K)) *
@@ -130,13 +128,11 @@ theorem hasInfiniteObservationTimeLimit_directionalConductivity_purePoint_finite
         system (purePointNormalizedExpectation system data)
           geometry direction K q ω η)
       (((∑ mn : ι × ι,
-        lehmannTerm system.hbar ω η
-          (data.energy mn.1 - data.energy mn.2)
-          ((purePointTransitionData system data
+        (purePointTransitionData system data
             (boundedDirectionalCurrent geometry direction
               (system.hbar : ℂ) (q : ℂ) K)
             (boundedDirectionalCurrent geometry direction
-              (system.hbar : ℂ) (q : ℂ) K) mn).weight)) +
+              (system.hbar : ℂ) (q : ℂ) K) mn).frequencyTerm ω η) +
         purePointNormalizedExpectation system data
           (boundedDirectionalContact geometry direction
             (system.hbar : ℂ) (q : ℂ) K)) *
