@@ -114,7 +114,7 @@ theorem realMultiplicationOperator_symmetric
        multiplicationOperator_coeFn μ (realMultiplier μ f hf) φ,
        realMultiplier_coeFn μ f hf] with x hψ hφ hf'
   rw [hψ, hφ, hf']
-  simp [RCLike.inner_apply, mul_assoc] <;> ring
+  simp [RCLike.inner_apply, mul_assoc]; ring
 
 /-- Multiplication on complex `L²` depends complex-linearly on the `L∞` multiplier, after
 forgetting continuity of each individual operator. -/
