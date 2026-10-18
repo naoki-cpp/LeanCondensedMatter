@@ -71,12 +71,6 @@ theorem summable_norm_sq_apply_and_tsum_eq {ι κ : Type*} (d : HilbertBasis ι 
   rw [ContinuousLinearMap.adjoint_adjoint] at h2
   exact ⟨h2.1, h2.2.trans h1.2⟩
 
-/-- **`IsHilbertSchmidtWrt` is independent of the choice of Hilbert basis.** -/
-private theorem isHilbertSchmidtWrt_iff {ι κ : Type*} (d : HilbertBasis ι ℂ H) (f : HilbertBasis κ ℂ H)
-    (T : H →L[ℂ] H) : IsHilbertSchmidtWrt d T ↔ IsHilbertSchmidtWrt f T :=
-  ⟨fun hd => (summable_norm_sq_apply_and_tsum_eq d f T hd).1,
-    fun hf => (summable_norm_sq_apply_and_tsum_eq f d T hf).1⟩
-
 /-- **`T` is Hilbert–Schmidt**, independently of any particular choice of Hilbert basis. -/
 def IsHilbertSchmidt (T : H →L[ℂ] H) : Prop :=
   ∃ (w : Set H) (d : HilbertBasis w ℂ H), IsHilbertSchmidtWrt d T
@@ -85,10 +79,10 @@ theorem isHilbertSchmidt_iff_isHilbertSchmidtWrt {ι : Type*} (d : HilbertBasis 
     (T : H →L[ℂ] H) : IsHilbertSchmidt T ↔ IsHilbertSchmidtWrt d T := by
   constructor
   · rintro ⟨ι', d', hd'⟩
-    exact (isHilbertSchmidtWrt_iff d' d T).mp hd'
+    exact (summable_norm_sq_apply_and_tsum_eq d' d T hd').1
   · intro hd
     obtain ⟨w, e, -⟩ := exists_hilbertBasis (𝕜 := ℂ) (E := H)
-    exact ⟨w, e, (isHilbertSchmidtWrt_iff d e T).mp hd⟩
+    exact ⟨w, e, (summable_norm_sq_apply_and_tsum_eq d e T hd).1⟩
 
 namespace IsHilbertSchmidt
 
@@ -110,25 +104,20 @@ theorem isHilbertSchmidt_adjoint {T : H →L[ℂ] H} (hT : IsHilbertSchmidt T) :
   exact ⟨w, d, (summable_norm_sq_adjoint_apply_and_tsum_eq d d T hd).1⟩
 
 omit [CompleteSpace H] in
-/-- **Composing a Hilbert–Schmidt operator with a bounded operator on the left stays
-Hilbert–Schmidt**, with respect to the same basis, by the comparison test against the operator
-norm bound `‖B (T dᵢ)‖ ≤ ‖B‖ * ‖T dᵢ‖`. -/
-private theorem isHilbertSchmidtWrt_comp_left {ι : Type*} (d : HilbertBasis ι ℂ H) (B : H →L[ℂ] H)
-    {T : H →L[ℂ] H} (hT : IsHilbertSchmidtWrt d T) : IsHilbertSchmidtWrt d (B * T) := by
+/-- Left composition by a bounded operator preserves Hilbert–Schmidt membership, using
+the operator-norm bound on each vector in a witnessing Hilbert basis. -/
+theorem isHilbertSchmidt_comp_left (B : H →L[ℂ] H) {T : H →L[ℂ] H}
+    (hT : IsHilbertSchmidt T) : IsHilbertSchmidt (B * T) := by
+  obtain ⟨w, d, hd⟩ := hT
+  refine ⟨w, d, ?_⟩
   refine Summable.of_nonneg_of_le (fun i => sq_nonneg _) (fun i => ?_)
-    (hT.mul_left (‖B‖ ^ 2))
+    (hd.mul_left (‖B‖ ^ 2))
   have hle : ‖(B * T) (d i)‖ ≤ ‖B‖ * ‖T (d i)‖ := by
     rw [mul_apply_eq_comp]
     exact B.le_opNorm (T (d i))
   calc ‖(B * T) (d i)‖ ^ 2 ≤ (‖B‖ * ‖T (d i)‖) ^ 2 :=
         pow_le_pow_left₀ (norm_nonneg _) hle 2
     _ = ‖B‖ ^ 2 * ‖T (d i)‖ ^ 2 := by ring
-
-omit [CompleteSpace H] in
-theorem isHilbertSchmidt_comp_left (B : H →L[ℂ] H) {T : H →L[ℂ] H}
-    (hT : IsHilbertSchmidt T) : IsHilbertSchmidt (B * T) := by
-  obtain ⟨w, d, hd⟩ := hT
-  exact ⟨w, d, isHilbertSchmidtWrt_comp_left d B hd⟩
 
 /-- **Composing a Hilbert–Schmidt operator with a bounded operator on the right stays
 Hilbert–Schmidt.** Reduced to the left-composition case via the adjoint identity
