@@ -25,9 +25,9 @@ two-dimensional polar specialization and angular reduction.
 The full-angle kernels below are the canonical intermediate for radial Fourier reduction. Constant,
 first, and second angular channels are supplied through `AngularHarmonicCoefficients`, shared with
 ordinary angular integration. The kernels remain explicit finite interval integrals to preserve
-their angular reduction API. The zeroth and first-cosine kernels are identified with
-`2π * Complex.besselJ 0` and `2π * Complex.I * Complex.besselJ 1` respectively;
-the second-cosine harmonic still awaits its Bessel bridge.
+their angular reduction API. The zeroth, first-cosine, and second-cosine kernels are
+identified with `2π * Complex.besselJ 0`, `2π * Complex.I * Complex.besselJ 1`,
+and `-2π * Complex.besselJ 2`, respectively.
 
 No model Hamiltonian, matrix representation, disorder approximation, real-space cutoff, or
 conductivity normalization is introduced here.
@@ -98,9 +98,9 @@ noncomputable def polarFourierFirstCosineAngularKernel (z : ℝ) : ℂ :=
     polarFourierFirstCosineAngularKernel 0 = 0 := by
   have h := integral_cos_mul_complex (z := (1 : ℂ)) one_ne_zero (0 : ℝ) (2 * Real.pi)
   simpa [polarFourierFirstCosineAngularKernel, polarFourierRadialPhase] using h
-/-- Second cosine full-angle radial Fourier kernel, written as the `cos(2θ)` polynomial needed by
-quadratic angular products. A future integral-representation theorem should identify it with
-`-2π J₂(z)` using Mathlib's `Complex.besselJ`. -/
+/-- Second cosine full-angle radial Fourier kernel, written as the `cos(2θ)`
+polynomial for quadratic angular products and identified with `-2π J₂(z)`
+by `polarFourierSecondCosineAngularKernel_eq_besselJ`. -/
 noncomputable def polarFourierSecondCosineAngularKernel (z : ℝ) : ℂ :=
   ∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi),
     polarFourierRadialPhase z θ *
