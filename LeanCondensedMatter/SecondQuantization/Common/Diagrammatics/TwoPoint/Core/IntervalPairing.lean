@@ -210,6 +210,35 @@ noncomputable def TwoPointDiagram.intervalBlockLegEquiv
     (Equiv.sumCongr (Equiv.refl (Fin 2))
       (d.intervalInteractionLegEquiv earlier later hsepLater))
 
+/-- Under interval-block reindexing, an artificial external leg remains
+the corresponding external port. -/
+@[simp]
+theorem TwoPointDiagram.intervalBlockLegEquiv_external
+    (d : TwoPointDiagram ExternalLabel InternalLabel N S)
+    (earlier later : Fin (2 * (2 * S.card + 1)))
+    (hsepLater : ¬ (d.vertexGraphWithoutPropagator later).Reachable
+      (Sum.inl (0 : Fin 2)) (Sum.inl (1 : Fin 2)))
+    (i : Fin 2) :
+    (d.intervalBlockLegEquiv earlier later hsepLater)
+      (twoPointExternalLeg (interactionSector (d.verticesBetweenCuts earlier later)) i) =
+        Sum.inl i := by
+  simp [TwoPointDiagram.intervalBlockLegEquiv, twoPointExternalLeg]
+
+/-- Under interval-block reindexing, an interaction leg becomes exactly
+its incident original ambient leg, without changing the interaction slot.
+This is the incidence correspondence used when transporting internal paths. -/
+theorem TwoPointDiagram.intervalBlockLegEquiv_interaction
+    (d : TwoPointDiagram ExternalLabel InternalLabel N S)
+    (earlier later : Fin (2 * (2 * S.card + 1)))
+    (hsepLater : ¬ (d.vertexGraphWithoutPropagator later).Reachable
+      (Sum.inl (0 : Fin 2)) (Sum.inl (1 : Fin 2)))
+    (v : ↥(interactionSector (d.verticesBetweenCuts earlier later)))
+    (l : Fin 4) :
+    (d.intervalBlockLegEquiv earlier later hsepLater)
+      (twoPointInteractionLeg v l) =
+        Sum.inr ((d.intervalInteractionLegEquiv earlier later hsepLater) (v, l)) := by
+  simp [TwoPointDiagram.intervalBlockLegEquiv, twoPointInteractionLeg]
+
 /-- Make a standalone two-point pairing diagram on an interval, replacing
 the two cut propagators by external legs. The caller supplies labels for
 these artificial boundary ports: they are not inherited from the original
