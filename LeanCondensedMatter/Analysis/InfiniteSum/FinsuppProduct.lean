@@ -140,33 +140,27 @@ section Nonneg
 
 variable {ι : Type*}
 
-private theorem hasSum_prod_nonneg_fin_succ
-    (k : ℕ) (g : Fin (k + 1) → ℕ → ℝ) (b : Fin (k + 1) → ℝ)
-    (hg : ∀ i, HasSum (g i) (b i)) (hnn : ∀ i n, 0 ≤ g i n)
-    (htail : HasSum (fun n : Fin k →₀ ℕ => ∏ i : Fin k, g i.succ (n i))
-      (∏ i : Fin k, b i.succ)) :
-    HasSum (fun n : Fin (k + 1) →₀ ℕ => ∏ i : Fin (k + 1), g i (n i))
-      (∏ i : Fin (k + 1), b i) := by
-  apply hasSum_prod_finSucc_reindex g b
-  apply hasSum_prod_finSucc_option g b (hg 0) htail
-  · rw [show (fun n => ‖g 0 n‖) = g 0 from
-      funext fun n => Real.norm_of_nonneg (hnn 0 n)]
-    exact (hg 0).summable
-  · rw [show (fun n : Fin k →₀ ℕ => ‖∏ i : Fin k, g i.succ (n i)‖) =
-        (fun n => ∏ i : Fin k, g i.succ (n i)) from
-      funext fun n => Real.norm_of_nonneg
-        (Finset.prod_nonneg fun i _ => hnn i.succ (n i))]
-    exact htail.summable
-
 private theorem hasSum_prod_nonneg_fin (k : ℕ) (g : Fin k → ℕ → ℝ) (b : Fin k → ℝ)
     (hg : ∀ i, HasSum (g i) (b i)) (hnn : ∀ i n, 0 ≤ g i n) :
     HasSum (fun n : Fin k →₀ ℕ => ∏ i : Fin k, g i (n i)) (∏ i : Fin k, b i) := by
   induction k with
   | zero => exact hasSum_prod_fin_zero g b
   | succ k ih =>
-      apply hasSum_prod_nonneg_fin_succ k g b hg hnn
-      exact ih (fun i => g i.succ) (fun i => b i.succ)
-        (fun i => hg i.succ) (fun i n => hnn i.succ n)
+      have htail : HasSum
+          (fun n : Fin k →₀ ℕ => ∏ i : Fin k, g i.succ (n i))
+          (∏ i : Fin k, b i.succ) :=
+        ih (fun i => g i.succ) (fun i => b i.succ)
+          (fun i => hg i.succ) (fun i n => hnn i.succ n)
+      apply hasSum_prod_finSucc_reindex g b
+      apply hasSum_prod_finSucc_option g b (hg 0) htail
+      · rw [show (fun n => ‖g 0 n‖) = g 0 from
+          funext fun n => Real.norm_of_nonneg (hnn 0 n)]
+        exact (hg 0).summable
+      · rw [show (fun n : Fin k →₀ ℕ => ‖∏ i : Fin k, g i.succ (n i)‖) =
+            (fun n => ∏ i : Fin k, g i.succ (n i)) from
+          funext fun n => Real.norm_of_nonneg
+            (Finset.prod_nonneg fun i _ => hnn i.succ (n i))]
+        exact htail.summable
 
 /-- **The nonnegative-real finite product of series converges** to the product of the individual
 sums, as a `Finsupp`-indexed multi-series. -/
@@ -198,28 +192,22 @@ private theorem summable_norm_prod [Fintype ι] (f : ι → ℕ → R)
   apply Summable.of_nonneg_of_le (fun n => norm_nonneg _) (fun n => ?_) hbound.summable
   exact Finset.norm_prod_le Finset.univ (fun i => f i (n i))
 
-private theorem hasSum_prod_fin_succ_general
-    (k : ℕ) (f : Fin (k + 1) → ℕ → R) (a : Fin (k + 1) → R)
-    (hf : ∀ i, HasSum (f i) (a i)) (habs : ∀ i, Summable (fun n => ‖f i n‖))
-    (htail : HasSum (fun n : Fin k →₀ ℕ => ∏ i : Fin k, f i.succ (n i))
-      (∏ i : Fin k, a i.succ)) :
-    HasSum (fun n : Fin (k + 1) →₀ ℕ => ∏ i : Fin (k + 1), f i (n i))
-      (∏ i : Fin (k + 1), a i) := by
-  have habsTail : Summable
-      (fun n : Fin k →₀ ℕ => ‖∏ i : Fin k, f i.succ (n i)‖) :=
-    summable_norm_prod (fun i : Fin k => f i.succ) (fun i => habs i.succ)
-  exact hasSum_prod_finSucc_reindex f a
-    (hasSum_prod_finSucc_option f a (hf 0) htail (habs 0) habsTail)
-
 private theorem hasSum_prod_fin (k : ℕ) (f : Fin k → ℕ → R) (a : Fin k → R)
     (hf : ∀ i, HasSum (f i) (a i)) (habs : ∀ i, Summable (fun n => ‖f i n‖)) :
     HasSum (fun n : Fin k →₀ ℕ => ∏ i : Fin k, f i (n i)) (∏ i : Fin k, a i) := by
   induction k with
   | zero => exact hasSum_prod_fin_zero f a
   | succ k ih =>
-      apply hasSum_prod_fin_succ_general k f a hf habs
-      exact ih (fun i => f i.succ) (fun i => a i.succ)
-        (fun i => hf i.succ) (fun i => habs i.succ)
+      have htail : HasSum
+          (fun n : Fin k →₀ ℕ => ∏ i : Fin k, f i.succ (n i))
+          (∏ i : Fin k, a i.succ) :=
+        ih (fun i => f i.succ) (fun i => a i.succ)
+          (fun i => hf i.succ) (fun i => habs i.succ)
+      have habsTail : Summable
+          (fun n : Fin k →₀ ℕ => ‖∏ i : Fin k, f i.succ (n i)‖) :=
+        summable_norm_prod (fun i : Fin k => f i.succ) (fun i => habs i.succ)
+      exact hasSum_prod_finSucc_reindex f a
+        (hasSum_prod_finSucc_option f a (hf 0) htail (habs 0) habsTail)
 
 /-- **A finite product of absolutely convergent series converges** as a `Finsupp`-indexed
 multi-series. -/
