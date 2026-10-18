@@ -76,7 +76,6 @@ theorem finiteTimeAdiabaticResponse_fixed
 
 end ResponseChannel
 
-
 end
 end LinearResponse
 end QuantumTheory

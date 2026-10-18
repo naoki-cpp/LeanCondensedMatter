@@ -119,7 +119,7 @@ surface/sea operator and traced response representation, together with the repre
 `ℏ/(2π)` trace prefactor and its composition with an explicitly supplied continuum-measure
 normalization. `Core.ConductivityTensor` is independent of either representation.
 
-## Disorder boundary
+## Response limits
 
 Response limit predicates and their finite-sum laws belong to `LinearResponse.LimitOrder`,
 independently of a spectral realization. `Lehmann.Limits` owns finite transition-family
@@ -128,6 +128,8 @@ three-stage limits. Finite-window convergence is owned by `InfiniteTimeAdiabatic
 rate is evaluation of the same transition `frequencyTerm` at rate zero, not a second scalar value.
 Positive-rate regulator removal, two-sided static limits, and observation-time-first order remain
 distinct explicit conditions.
+
+## Disorder boundary
 
 ```text
 Finite ──→ Resolvent ──→ AveragedSelfEnergy

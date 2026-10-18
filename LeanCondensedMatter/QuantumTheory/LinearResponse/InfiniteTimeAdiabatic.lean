@@ -5,7 +5,7 @@ import Mathlib.MeasureTheory.Integral.IntegralEqImproper
 set_option linter.style.header false
 
 /-!
-# Infinite-time scalar adiabatic response
+# Observation-time convergence of adiabatic response
 
 This module owns the representation-independent half-infinite adiabatic transform of a scalar
 causal kernel. At fixed frequency `ω` and switching rate `η`, it records
@@ -16,6 +16,9 @@ causal kernel. At fixed frequency `ω` and switching rate `η`, it records
 ```
 
 under an explicit Bochner-integrability hypothesis on the positive-lag kernel.
+
+For bounded observables, this module also owns convergence of the finite causal observation
+window to the fixed-positive-rate susceptibility, using automatic adiabatic integrability.
 
 The layer is independent of particle statistics, Fock-space realizations, current operators,
 lattice geometry, and conductivity normalization. Operator-specific sufficient conditions for
@@ -144,7 +147,6 @@ theorem tendsto_finiteTimeAdiabaticFrequencyDomainSusceptibility_atTop_eq_fixedR
     system expectation A B omega eta hη]
   exact tendsto_finiteTimeAdiabaticFrequencyDomainSusceptibility_atTop
     system expectation A B omega eta hη
-
 
 end
 end LinearResponse

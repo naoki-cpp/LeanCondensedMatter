@@ -87,6 +87,7 @@ theorem hasStaticLimit_lehmannTerm_zero_rate
         (hden.inv₀ (lehmannDenominator_zero_rate_ne_zero
           hbar 0 energyGap hdetuning))
     simpa [HasStaticLimit] using hcont.tendsto
+
 /-- Near zero frequency, every finite static-nonresonant sum admits regulator removal. -/
 private theorem eventually_hasAdiabaticRemovalLimit_finset_frequencyTerm
     {κ : Type*} (s : Finset κ)
@@ -167,7 +168,6 @@ theorem finset_frequencyTerm_has_both_local_iterated_limits
       intro j hj
       exact hasStaticLimit_lehmannTerm_zero_rate
         hbar (transition j).energyGap (transition j).weight hhbar (hregular j hj)
-
 
 end
 end LinearResponse

@@ -27,8 +27,6 @@ import LeanCondensedMatter.QuantumTheory.LinearResponse.PurePointDynamics
 import LeanCondensedMatter.QuantumTheory.LinearResponse.PurePointTimeDomain
 import LeanCondensedMatter.QuantumTheory.LinearResponse.PurePointFrequencyDomain
 import LeanCondensedMatter.QuantumTheory.LinearResponse.LimitOrder
-import LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann.Limits
-import LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann.PurePointLimits
 
 set_option linter.style.header false
 
