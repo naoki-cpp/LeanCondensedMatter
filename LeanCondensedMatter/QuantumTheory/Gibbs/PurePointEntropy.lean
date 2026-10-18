@@ -18,14 +18,22 @@ open ContinuousLinearMap
 
 variable {ι H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
 
-private theorem log_purePointGibbsProbability [Nonempty ι]
+/-- The pointwise Shannon-entropy identity for normalized pure-point Gibbs weights. -/
+private theorem negMulLog_purePointGibbsProbability [Nonempty ι]
     (E : ι → ℝ) (β : ℝ) (hsum : PurePointGibbsSummable E β) (i : ι) :
-    Real.log (purePointGibbsProbability E β i) =
-      -β * E i - Real.log (purePointPartitionFunction E β) := by
+    Real.negMulLog (purePointGibbsProbability E β i) =
+      β * (purePointGibbsProbability E β i * E i) +
+        Real.log (purePointPartitionFunction E β) *
+          purePointGibbsProbability E β i := by
   have hZpos := purePointPartitionFunction_pos E β hsum
-  rw [purePointGibbsProbability, purePointBoltzmannWeight,
-    Real.log_mul (inv_ne_zero hZpos.ne') (Real.exp_ne_zero _),
-    Real.log_inv, Real.log_exp]
+  have hlog :
+      Real.log (purePointGibbsProbability E β i) =
+        -β * E i - Real.log (purePointPartitionFunction E β) := by
+    rw [purePointGibbsProbability, purePointBoltzmannWeight,
+      Real.log_mul (inv_ne_zero hZpos.ne') (Real.exp_ne_zero _),
+      Real.log_inv, Real.log_exp]
+    ring
+  rw [Real.negMulLog, hlog]
   ring
 
 /-- Absolute energy integrability implies absolute summability of the Shannon entropy terms of the
@@ -38,20 +46,11 @@ theorem summable_norm_negMulLog_purePointGibbsProbability [Nonempty ι]
   have hEnergy : Summable fun i => purePointGibbsProbability E β i * E i :=
     Summable.of_norm hint
   have hProb := (hasSum_purePointGibbsProbability E β hsum).summable
-  have hlog (i : ι) :
-      Real.log (purePointGibbsProbability E β i) =
-        -β * E i - Real.log Z := by
-    simpa [Z] using log_purePointGibbsProbability E β hsum i
-  have hterm (i : ι) :
-      Real.negMulLog (purePointGibbsProbability E β i) =
-        β * (purePointGibbsProbability E β i * E i) +
-          Real.log Z * purePointGibbsProbability E β i := by
-    rw [Real.negMulLog, hlog i]
-    ring
   have hEntropy : Summable fun i =>
       Real.negMulLog (purePointGibbsProbability E β i) := by
     exact ((hEnergy.mul_left β).add (hProb.mul_left (Real.log Z))).congr
-      (fun i => (hterm i).symm)
+      (fun i => by
+        simpa [Z] using (negMulLog_purePointGibbsProbability E β hsum i).symm)
   exact hEntropy.norm
 
 /-- A countable pure-point Gibbs state with absolutely integrable energy has finite von Neumann
@@ -73,19 +72,12 @@ theorem vonNeumannEntropy_purePointGibbsDensityOperator [Nonempty ι]
   have hEnergySum :=
     hasSum_purePointGibbsEnergyExpectation E β hint
   have hProbSum := hasSum_purePointGibbsProbability E β hsum
-  have hlog (i : ι) :
-      Real.log (p i) = -β * E i - Real.log Z := by
-    simpa [p, Z] using log_purePointGibbsProbability E β hsum i
-  have hterm (i : ι) :
-      Real.negMulLog (p i) =
-        β * (p i * E i) + Real.log Z * p i := by
-    rw [Real.negMulLog, hlog i]
-    ring
   have hEntropyFormula :
       HasSum (fun i => Real.negMulLog (p i))
         (β * purePointGibbsEnergyExpectation E β + Real.log Z) := by
     simpa [p] using HasSum.congr_fun
-      ((hEnergySum.mul_left β).add (hProbSum.mul_left (Real.log Z))) hterm
+      ((hEnergySum.mul_left β).add (hProbSum.mul_left (Real.log Z))) fun i => by
+        simpa [p, Z] using negMulLog_purePointGibbsProbability E β hsum i
   change vonNeumannEntropy ρ ≠ ⊤ ∧
     (vonNeumannEntropy ρ).toReal =
       β * purePointGibbsEnergyExpectation E β + Real.log Z
