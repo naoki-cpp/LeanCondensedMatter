@@ -48,11 +48,7 @@ theorem pairEndpointInversionCount_mod_two_eq_crossesIndicator {n : ℕ}
   rcases left with ⟨a, b⟩
   rcases right with ⟨c, d⟩
   simp only at hleft hright h11 h12 h21 h22 ⊢
-  by_cases hca : c < a <;>
-  by_cases hda : d < a <;>
-  by_cases hcb : c < b <;>
-  by_cases hdb : d < b <;>
-  simp [pairEndpointInversionCount, Crosses, hca, hda, hcb, hdb] <;>
+  simp only [pairEndpointInversionCount, Crosses]
   omega
 
 end Combinatorics
