@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Analysis.InfiniteSum.Order
 import LeanCondensedMatter.Analysis.Inequalities.Gibbs
 import LeanCondensedMatter.QuantumTheory.Gibbs.PurePointVariational
 

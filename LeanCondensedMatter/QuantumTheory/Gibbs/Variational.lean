@@ -1,4 +1,5 @@
 import LeanCondensedMatter.QuantumTheory.Gibbs.Entropy
+import LeanCondensedMatter.QuantumTheory.Gibbs.FreeEnergy
 
 /-!
 # Gibbs-state variational equality
