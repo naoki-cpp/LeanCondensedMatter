@@ -705,19 +705,6 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficie
 
 /-- The traceless second angular Fourier harmonic vanishes at the origin.
 The result follows from the canonical full-angle harmonic integration theorem. -/
-private theorem polarFourierSecondCosineAngularKernel_zero :
-    polarFourierSecondCosineAngularKernel 0 = 0 := by
-  let coefficients : AngularHarmonicCoefficients ℂ :=
-    { constant := 0
-      firstCosine := 0
-      firstSine := 0
-      secondCosine := 1
-      secondMixed := 0 }
-  have h := coefficients.integral_eval
-  simpa [coefficients, AngularHarmonicCoefficients.eval,
-    polarFourierSecondCosineAngularKernel, polarFourierRadialPhase,
-    smul_eq_mul] using h
-
 /-- At zero real-space separation, rotational isotropy forces equality of the
 two diagonal in-plane crossed-current Pauli coefficients. This holds before any
 momentum-cutoff, broadening, or weak-disorder limit. -/
