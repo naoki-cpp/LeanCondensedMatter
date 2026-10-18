@@ -1,9 +1,5 @@
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Crossing
 import LeanCondensedMatter.Combinatorics.PerfectPairing.PairEndpoints
-import Mathlib.Algebra.BigOperators.Group.Finset.Sigma
-import Mathlib.Algebra.BigOperators.ModEq
-import Mathlib.Data.Finset.Prod
-import Mathlib.Data.ZMod.Basic
 
 set_option linter.style.header false
 
@@ -48,7 +44,11 @@ theorem pairEndpointInversionCount_mod_two_eq_crossesIndicator {n : ℕ}
   rcases left with ⟨a, b⟩
   rcases right with ⟨c, d⟩
   simp only at hleft hright h11 h12 h21 h22 ⊢
-  simp only [pairEndpointInversionCount, Crosses]
-  split_ifs <;> omega
+  by_cases hca : c < a <;>
+  by_cases hda : d < a <;>
+  by_cases hcb : c < b <;>
+  by_cases hdb : d < b <;>
+  simp [pairEndpointInversionCount, Crosses, hca, hda, hcb, hdb] <;>
+  omega
 
 end Combinatorics
