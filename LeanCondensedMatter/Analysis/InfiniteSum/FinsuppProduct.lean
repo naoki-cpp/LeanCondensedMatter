@@ -1,4 +1,3 @@
-import Mathlib.Algebra.BigOperators.Fin
 import Mathlib.Analysis.Normed.Ring.InfiniteSum
 import Mathlib.Analysis.Normed.Field.Basic
 import Mathlib.Analysis.SpecificLimits.Normed
@@ -12,9 +11,9 @@ set_option linter.style.header false
 /-!
 # A finite product of absolutely convergent series converges as a `Finsupp`-indexed multi-series
 
-The finite-cardinality induction keeps each recursive theorem small. The common successor step is
-split into a pure `Fin (k + 1)`/`Option (Fin k)` reindexing theorem and a separate product-of-series
-theorem.
+The finite-cardinality induction uses Mathlib's `finSuccEquiv` and `Finsupp.optionEquiv`
+directly in the successor step. Explicitly typed summability witnesses keep elaboration within
+the default heartbeat budget.
 -/
 
 namespace Finsupp
