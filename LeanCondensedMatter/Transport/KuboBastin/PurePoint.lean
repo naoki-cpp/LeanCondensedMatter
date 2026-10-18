@@ -133,7 +133,7 @@ theorem purePointLehmannVertexTerm_eq_bastinSpectral
     rw [hres, inner_smul_right]
     simp [inner_self_eq_norm_sq_to_K, data.basis.orthonormal.norm_eq_one]
   unfold LehmannTransitionData.frequencyTerm lehmannTerm
-  simp only [purePointTransitionData_energyGap]
+  simp only [purePointTransitionData_energyGap, orderedLehmannEnergyGap]
   rw [lehmannDenominator_eq_retardedSpectralShift
     system.hbar omega eta (data.energy mn.1) (data.energy mn.2) hhbar]
   unfold purePointKuboBastinSpectralVertexTerm

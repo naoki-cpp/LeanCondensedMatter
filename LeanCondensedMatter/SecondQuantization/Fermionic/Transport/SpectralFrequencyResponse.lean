@@ -83,7 +83,7 @@ theorem purePointDirectionalCurrentLehmannTerm_of_equal_energy
             (system.hbar : ℂ) (q : ℂ) K) (m, n)).weight *
         ((η : ℂ) - Complex.I * (ω : ℂ))⁻¹ := by
   simp only [QuantumTheory.LinearResponse.LehmannTransitionData.frequencyTerm,
-    purePointTransitionData_energyGap]
+    purePointTransitionData_energyGap, orderedLehmannEnergyGap]
   have hgap : data.energy m - data.energy n = 0 := sub_eq_zero.mpr henergy
   rw [hgap]
   simp [lehmannTerm, lehmannDenominator]

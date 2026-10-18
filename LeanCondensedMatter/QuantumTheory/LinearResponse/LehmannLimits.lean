@@ -50,7 +50,7 @@ theorem hasStaticLimit_lehmannTerm
     fun_prop
   have hcont : ContinuousAt
       (fun omega : ℝ => lehmannTerm hbar omega eta energyGap weight) 0 := by
-    unfold LehmannTransitionData.frequencyTerm lehmannTerm
+    unfold lehmannTerm
     exact continuousAt_const.mul
       (hden.inv₀ (lehmannDenominator_ne_zero
         hbar 0 eta energyGap heta))
