@@ -54,23 +54,6 @@ private def canonicalExternalInsertionTimedEvents (E n : ℕ) :
     (finSumFinEquiv :
       ExternalInsertionTimedEvent E n ≃ Fin (2 * E + n)).symm p
 
-private theorem canonicalExternalInsertionTimedEvents_nodup (E n : ℕ) :
-    (canonicalExternalInsertionTimedEvents E n).Nodup := by
-  unfold canonicalExternalInsertionTimedEvents
-  exact List.nodup_ofFn_ofInjective
-    ((finSumFinEquiv :
-      ExternalInsertionTimedEvent E n ≃ Fin (2 * E + n)).symm.injective)
-
-private theorem canonicalExternalInsertionTimedEvents_all_mem (E n : ℕ) :
-    ∀ event : ExternalInsertionTimedEvent E n,
-      event ∈ canonicalExternalInsertionTimedEvents E n := by
-  intro event
-  rw [canonicalExternalInsertionTimedEvents, List.mem_ofFn]
-  exact ⟨
-    (finSumFinEquiv :
-      ExternalInsertionTimedEvent E n ≃ Fin (2 * E + n)) event,
-    by simp⟩
-
 /-- All external and interaction events sorted by decreasing imaginary time.
 Equal-time events use the fixed flattened external-first rank. -/
 noncomputable def orderedExternalInsertionTimedEvents {E n : ℕ}
@@ -91,16 +74,23 @@ private theorem orderedExternalInsertionTimedEvents_perm {E n : ℕ}
 private theorem orderedExternalInsertionTimedEvents_nodup {E n : ℕ}
     (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ) :
     (orderedExternalInsertionTimedEvents externalTime σ).Nodup :=
-  (orderedExternalInsertionTimedEvents_perm externalTime σ).nodup_iff.mpr
-    (canonicalExternalInsertionTimedEvents_nodup E n)
+  (orderedExternalInsertionTimedEvents_perm externalTime σ).nodup_iff.mpr (by
+    unfold canonicalExternalInsertionTimedEvents
+    exact List.nodup_ofFn_ofInjective
+      ((finSumFinEquiv :
+        ExternalInsertionTimedEvent E n ≃ Fin (2 * E + n)).symm.injective))
 
 private theorem orderedExternalInsertionTimedEvents_all_mem {E n : ℕ}
     (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ) :
     ∀ event : ExternalInsertionTimedEvent E n,
       event ∈ orderedExternalInsertionTimedEvents externalTime σ := by
   intro event
-  exact (orderedExternalInsertionTimedEvents_perm externalTime σ).symm.subset
-    (canonicalExternalInsertionTimedEvents_all_mem E n event)
+  apply (orderedExternalInsertionTimedEvents_perm externalTime σ).symm.subset
+  rw [canonicalExternalInsertionTimedEvents, List.mem_ofFn]
+  exact ⟨
+    (finSumFinEquiv :
+      ExternalInsertionTimedEvent E n ≃ Fin (2 * E + n)) event,
+    by simp⟩
 
 private theorem orderedExternalInsertionTimedEvents_pairwise {E n : ℕ}
     (externalTime : Fin (2 * E) → ℝ) (σ : Fin n → ℝ) :
@@ -255,19 +245,6 @@ def orderedExternalInsertionLegMap {E₁ E₂ m n : ℕ}
     OrderedExternalInsertionLeg E₁ m → OrderedExternalInsertionLeg E₂ n :=
   Sum.map fExternal <|
     Prod.map (fun v => ⟨fInteraction v.1, Finset.mem_univ _⟩) id
-
-/-- Injective slot reindexings induce an injective canonical-leg reindexing. -/
-theorem orderedExternalInsertionLegMap_injective {E₁ E₂ m n : ℕ}
-    {fExternal : Fin (2 * E₁) → Fin (2 * E₂)} {fInteraction : Fin m → Fin n}
-    (hExternal : Function.Injective fExternal)
-    (hInteraction : Function.Injective fInteraction) :
-    Function.Injective (orderedExternalInsertionLegMap fExternal fInteraction) := by
-  unfold orderedExternalInsertionLegMap
-  apply Function.Injective.sumMap hExternal
-  apply Function.Injective.prodMap
-  · intro v w h
-    exact Subtype.ext (hInteraction (congrArg Subtype.val h))
-  · exact Function.injective_id
 
 /-- Atomic legs contributed by one mixed event. -/
 def externalInsertionTimedEventAtomicLegs {E n : ℕ} :
