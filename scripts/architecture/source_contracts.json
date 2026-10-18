@@ -478,7 +478,7 @@
       "id": "transportPurePointSpectralAdapter",
       "path": "LeanCondensedMatter/Transport/Spectral/PurePoint.lean",
       "modules": [
-        "LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann",
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann.PurePoint",
         "LeanCondensedMatter.Transport.Resolvent.Spectral"
       ]
     },
