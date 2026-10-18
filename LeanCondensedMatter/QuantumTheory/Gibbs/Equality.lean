@@ -1,4 +1,4 @@
-import LeanCondensedMatter.QuantumTheory.Gibbs.Variational
+import LeanCondensedMatter.QuantumTheory.Gibbs.FreeEnergy
 import LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Equality
 
 /-!

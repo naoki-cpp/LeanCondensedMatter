@@ -1,4 +1,5 @@
 import LeanCondensedMatter.QuantumTheory.Gibbs.Uniqueness
+import LeanCondensedMatter.QuantumTheory.Gibbs.Variational
 
 /-!
 # Uniqueness of the Gibbs minimizer
