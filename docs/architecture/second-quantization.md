@@ -408,7 +408,7 @@ for finite configuration types; possibly infinite occupation bases use `tsumTrac
 explicit summability hypotheses.
 
 Normalized two-point trace algebra is owned by
-`Common/Thermal/BlochDeDominicis/GibbsExpectation/TwoPointTrace.lean`. Its theorem accepts arbitrary
+`Common/Thermal/BlochDeDominicis/NormalizedTwoPointTrace.lean`. Its theorem accepts arbitrary
 configuration types, a summable partition diagonal and rotated double series, and explicit nonzero
 partition and exchange denominators. The finite Gibbs expectation specializes it using automatic
 finite summability and the density-state trace bridge. The concrete bosonic two-point expectation

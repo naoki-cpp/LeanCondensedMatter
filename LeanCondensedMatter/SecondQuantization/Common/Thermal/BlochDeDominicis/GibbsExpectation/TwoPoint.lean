@@ -1,6 +1,6 @@
 import LeanCondensedMatter.Analysis.ScalarExchange.Basic
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsCoordinate
-import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.GibbsExpectation.TwoPointTrace
+import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.NormalizedTwoPointTrace
 import LeanCondensedMatter.SecondQuantization.Common.Algebra.ExchangeCommutator
 
 set_option linter.style.header false
