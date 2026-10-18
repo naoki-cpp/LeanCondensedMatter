@@ -1023,28 +1023,16 @@ theorem AngularHarmonicCoefficients.integral_polarFourierRadialPhase
   calc
     (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi),
         ((p : ℂ) * polarFourierRadialPhase z θ) * coefficients.eval θ) =
-        (p : ℂ) *
-          ∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi),
-            polarFourierRadialPhase z θ * coefficients.constant +
-              (polarFourierRadialPhase z θ * ((Real.cos θ : ℝ) : ℂ)) *
-                coefficients.firstCosine +
-              (polarFourierRadialPhase z θ * ((Real.sin θ : ℝ) : ℂ)) *
-                coefficients.firstSine +
-              (polarFourierRadialPhase z θ *
-                ((((Real.cos θ : ℝ) : ℂ) ^ 2) - (((Real.sin θ : ℝ) : ℂ) ^ 2))) *
-                coefficients.secondCosine +
-              (polarFourierRadialPhase z θ *
-                (((Real.cos θ : ℝ) : ℂ) * ((Real.sin θ : ℝ) : ℂ))) *
-                coefficients.secondMixed := by
-          rw [← intervalIntegral.integral_const_mul]
-          apply intervalIntegral.integral_congr
-          intro θ _
-          simp only [AngularHarmonicCoefficients.eval, smul_eq_mul]
-          ring
-    _ = (p : ℂ) *
-        (polarFourierZerothAngularKernel z * coefficients.constant +
-          polarFourierFirstCosineAngularKernel z * coefficients.firstCosine +
-          polarFourierSecondCosineAngularKernel z * coefficients.secondCosine) := by
+        (p : ℂ) * ∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi),
+          polarFourierRadialPhase z θ * coefficients.eval θ := by
+      rw [← intervalIntegral.integral_const_mul]
+      apply intervalIntegral.integral_congr
+      intro θ _
+      ring
+    _ = _ := by
+      congr 1
+      simp only [AngularHarmonicCoefficients.eval, smul_eq_mul]
+      simp_rw [mul_add, ← mul_assoc]
       repeat' rw [intervalIntegral.integral_add
         (by apply Continuous.intervalIntegrable; unfold polarFourierRadialPhase; fun_prop)
         (by apply Continuous.intervalIntegrable; unfold polarFourierRadialPhase; fun_prop)]
