@@ -196,10 +196,10 @@ The following declaration families are deliberate API normalization boundaries:
 - `timeDependentInteractionPerturbation_sourceCoupledPerturbation`
 - `timeDependentInteractionPropagator_zero_coupling`
 - `timeDependentInteractionPropagator_zero_time`
-- `purePointGibbsCompetitor_probability`
+- `eigenbasisGibbsCompetitor_probability`
 - `finiteTimeAdiabaticTransform_zero_time`
-- `purePointGibbsDensityOperator_apply_basis`
-- `finitePurePointGibbsDensityOperator_apply_basis`
+- `eigenbasisGibbsDensityOperator_apply_basis`
+- `finiteEigenbasisGibbsDensityOperator_apply_basis`
 - all current simp rules in `LinearResponse/AdiabaticSwitching` except
   `not_adiabaticIntegrable_zero_rate`
 - `orderedLehmannEnergyGap`
@@ -310,9 +310,9 @@ a substantive proof step, a coordinate/representation expansion, or a nontrivial
 
 - `ConservationLaw.symmetrizedProductBilinear_apply` — explicit bridge from the bilinear owner to the pointwise wrapper; keeping it out of the global simp set avoids a rewrite cycle.
 - `InternalSpace.dotProduct_pauliAxis` — explicit x/y/z coordinate expansion.
-- `purePointBoltzmannWeight_pos` — positivity fact, not normalization.
-- `purePointBoltzmannWeight_nonneg` — positivity fact, not normalization.
-- `purePointGibbsProbability_nonneg` — positivity fact, not normalization.
+- `eigenbasisBoltzmannWeight_pos` — positivity fact, not normalization.
+- `eigenbasisBoltzmannWeight_nonneg` — positivity fact, not normalization.
+- `eigenbasisGibbsProbability_nonneg` — positivity fact, not normalization.
 - `LinearResponse.not_adiabaticIntegrable_zero_rate` — analytic side-condition theorem.
 - `ResponseChannel.finiteTimeAdiabaticResponse_fixed` — expands a named response to an interval integral.
 - `finiteCutoffContinuumBornDenominatorIntegralBoundaryValue_re` — explicit logarithmic boundary formula.

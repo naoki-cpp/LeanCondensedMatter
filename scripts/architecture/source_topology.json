@@ -232,18 +232,18 @@
       ],
       "layers": [
         {"id": "diagonalFormula", "modulePrefixes": ["LeanCondensedMatter.QuantumTheory.DensityOperator.DiagonalFormula"]},
-        {"id": "purePoint", "modulePrefixes": ["LeanCondensedMatter.QuantumTheory.Gibbs.PurePoint"]},
+        {"id": "eigenbasis", "modulePrefixes": ["LeanCondensedMatter.QuantumTheory.Gibbs.Eigenbasis"]},
         {"id": "finiteHilbert", "modulePrefixes": ["LeanCondensedMatter.SecondQuantization.Common.Algebra.FiniteHilbertOperator"]},
         {"id": "finiteExpectation", "modulePrefixes": ["LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsExpectationBridge"]},
         {"id": "entropy", "modulePrefixes": ["LeanCondensedMatter.QuantumTheory.Entropy"]},
         {"id": "freeEntropy", "modulePrefixes": ["LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeEntropy"]}
       ],
       "edges": [
-        {"upstream": "diagonalFormula", "downstream": "purePoint"},
-        {"upstream": "purePoint", "downstream": "finiteExpectation"},
+        {"upstream": "diagonalFormula", "downstream": "eigenbasis"},
+        {"upstream": "eigenbasis", "downstream": "finiteExpectation"},
         {"upstream": "finiteHilbert", "downstream": "finiteExpectation"},
         {"upstream": "entropy", "downstream": "freeEntropy"},
-        {"upstream": "purePoint", "downstream": "freeEntropy"}
+        {"upstream": "eigenbasis", "downstream": "freeEntropy"}
       ]
     },
     {
