@@ -14,7 +14,7 @@ is required only by the bridge back to the density operator.
 
 The operator and its maximal domain remain owned by `Fermionic.CompletedSpace.Diagonal`. This module
 owns only the thermal integrability condition and expectation for that concrete observable. Generic
-pure-point energy expectations remain in `QuantumTheory.Gibbs.PurePointExpectation`; no parallel
+pure-point energy expectations remain in `QuantumTheory.Gibbs.EigenbasisExpectation`; no parallel
 public arbitrary-diagonal expectation API is introduced here.
 -/
 
@@ -32,14 +32,14 @@ existence is deliberately not part of this scalar summability predicate. -/
 def CompletedFreeTotalNumberIntegrable
     (ε : Mode → ℝ) (β : ℝ) : Prop :=
   Summable fun n : Occupation Mode =>
-    ‖purePointGibbsProbability (fermionEnergy ε) β n * (particleNumber n : ℝ)‖
+    ‖eigenbasisGibbsProbability (fermionEnergy ε) β n * (particleNumber n : ℝ)‖
 
 /-- Thermal expectation of the completed total particle-number operator, defined by its real
 occupation-basis spectral series. -/
 noncomputable def completedFreeTotalNumberExpectation
     (ε : Mode → ℝ) (β : ℝ) : ℝ :=
   ∑' n : Occupation Mode,
-    purePointGibbsProbability (fermionEnergy ε) β n * (particleNumber n : ℝ)
+    eigenbasisGibbsProbability (fermionEnergy ε) β n * (particleNumber n : ℝ)
 
 /-- Under the explicit number-integrability hypothesis, the total particle-number expectation is
 represented by an absolutely convergent occupation-basis series. -/
@@ -47,7 +47,7 @@ theorem hasSum_completedFreeTotalNumberExpectation
     (ε : Mode → ℝ) (β : ℝ) (hint : CompletedFreeTotalNumberIntegrable ε β) :
     HasSum
       (fun n : Occupation Mode =>
-        purePointGibbsProbability (fermionEnergy ε) β n * (particleNumber n : ℝ))
+        eigenbasisGibbsProbability (fermionEnergy ε) β n * (particleNumber n : ℝ))
       (completedFreeTotalNumberExpectation ε β) := by
   exact (Summable.of_norm hint).hasSum
 
@@ -57,20 +57,20 @@ theorem completedFreeTotalNumberExpectation_nonneg
     0 ≤ completedFreeTotalNumberExpectation ε β := by
   unfold completedFreeTotalNumberExpectation
   exact tsum_nonneg fun n =>
-    mul_nonneg (purePointGibbsProbability_nonneg (fermionEnergy ε) β n)
+    mul_nonneg (eigenbasisGibbsProbability_nonneg (fermionEnergy ε) β n)
       (Nat.cast_nonneg (particleNumber n))
 
 /-- On each occupation basis state, the diagonal matrix element of the composed completed Gibbs
 density operator and total-number operator is the corresponding Gibbs probability times particle
 number. -/
 theorem completedFreeGibbsDensityOperator_totalNumber_diagonalTerm
-    (ε : Mode → ℝ) (β : ℝ) (hsum : PurePointGibbsSummable (fermionEnergy ε) β)
+    (ε : Mode → ℝ) (β : ℝ) (hsum : EigenbasisGibbsSummable (fermionEnergy ε) β)
     (n : Occupation Mode) :
     inner ℂ (completedBasisState n)
         ((completedFreeGibbsDensityOperator ε β hsum).op
           (completedTotalNumberOperator
             ⟨completedBasisState n, completedBasisState_mem_completedTotalNumberDomain n⟩)) =
-      (purePointGibbsProbability (fermionEnergy ε) β n *
+      (eigenbasisGibbsProbability (fermionEnergy ε) β n *
         (particleNumber n : ℝ) : ℝ) := by
   have hnorm : ‖completedBasisState n‖ = 1 := by
     rw [← completedOccupationHilbertBasis_apply]
@@ -84,7 +84,7 @@ theorem completedFreeGibbsDensityOperator_totalNumber_diagonalTerm
 /-- The diagonal matrix elements of the actual completed Gibbs density operator composed with the
 completed total-number operator sum to the real spectral expectation. -/
 theorem hasSum_completedFreeGibbsDensityOperator_totalNumber_diagonal
-    (ε : Mode → ℝ) (β : ℝ) (hsum : PurePointGibbsSummable (fermionEnergy ε) β)
+    (ε : Mode → ℝ) (β : ℝ) (hsum : EigenbasisGibbsSummable (fermionEnergy ε) β)
     (hint : CompletedFreeTotalNumberIntegrable ε β) :
     HasSum
       (fun n : Occupation Mode =>

@@ -1,6 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.Hamiltonian
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsExpectationBridge
-import LeanCondensedMatter.QuantumTheory.Gibbs.PurePoint
+import LeanCondensedMatter.QuantumTheory.Gibbs.Eigenbasis
 
 set_option linter.style.header false
 
@@ -23,7 +23,7 @@ variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
 /-- The canonical finite free-fermion Gibbs state. -/
 noncomputable def freeGibbsDensityOperator (ε : Mode → ℝ) (β : ℝ) :
     DensityOperator (Common.FiniteHilbertFock (Occupation Mode)) :=
-  finitePurePointGibbsDensityOperator
+  finiteEigenbasisGibbsDensityOperator
     (Common.finiteHilbertBasis (Config := Occupation Mode)) (fermionEnergy ε) β
 
 omit [LinearOrder Mode] in
@@ -31,10 +31,10 @@ omit [LinearOrder Mode] in
 theorem freeGibbsDensityOperator_apply_basis (ε : Mode → ℝ) (β : ℝ)
     (n : Occupation Mode) :
     (freeGibbsDensityOperator ε β).op (Common.finiteHilbertBasisState n) =
-      (purePointGibbsProbability (fermionEnergy ε) β n : ℂ) •
+      (eigenbasisGibbsProbability (fermionEnergy ε) β n : ℂ) •
         Common.finiteHilbertBasisState n := by
   simpa [freeGibbsDensityOperator] using
-    finitePurePointGibbsDensityOperator_apply_basis
+    finiteEigenbasisGibbsDensityOperator_apply_basis
       (Common.finiteHilbertBasis (Config := Occupation Mode)) (fermionEnergy ε) β n
 
 omit [LinearOrder Mode] in

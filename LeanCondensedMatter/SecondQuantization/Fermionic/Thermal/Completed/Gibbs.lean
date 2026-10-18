@@ -1,6 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.Basic
 import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.Hamiltonian
-import LeanCondensedMatter.QuantumTheory.Gibbs.PurePoint
+import LeanCondensedMatter.QuantumTheory.Gibbs.Eigenbasis
 import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.Core
 
 set_option linter.style.header false
@@ -13,7 +13,7 @@ pure-point Gibbs state: occupation-basis expectation formulas and the bounded cr
 intertwining identities used by the completed thermal theory.
 
 Boltzmann weights, partition functions, normalized probabilities, and the density-state construction
-remain owned by `QuantumTheory.Gibbs.PurePoint`.
+remain owned by `QuantumTheory.Gibbs.Eigenbasis`.
 -/
 
 namespace SecondQuantization
@@ -27,33 +27,33 @@ variable {Mode : Type*}
 
 /-- The canonical free-fermion Gibbs density operator on the completed occupation Fock space. -/
 noncomputable def completedFreeGibbsDensityOperator
-    (ε : Mode → ℝ) (β : ℝ) (hsum : PurePointGibbsSummable (fermionEnergy ε) β) :
+    (ε : Mode → ℝ) (β : ℝ) (hsum : EigenbasisGibbsSummable (fermionEnergy ε) β) :
     DensityOperator (CompletedFockSpace Mode) :=
-  purePointGibbsDensityOperator completedOccupationHilbertBasis (fermionEnergy ε) β hsum
+  eigenbasisGibbsDensityOperator completedOccupationHilbertBasis (fermionEnergy ε) β hsum
 
 /-- The completed free Gibbs density operator acts diagonally in the occupation basis. -/
 @[simp]
 theorem completedFreeGibbsDensityOperator_apply_basis
-    (ε : Mode → ℝ) (β : ℝ) (hsum : PurePointGibbsSummable (fermionEnergy ε) β)
+    (ε : Mode → ℝ) (β : ℝ) (hsum : EigenbasisGibbsSummable (fermionEnergy ε) β)
     (n : Occupation Mode) :
     (completedFreeGibbsDensityOperator ε β hsum).op (completedBasisState n) =
-      (purePointGibbsProbability (fermionEnergy ε) β n : ℂ) • completedBasisState n := by
+      (eigenbasisGibbsProbability (fermionEnergy ε) β n : ℂ) • completedBasisState n := by
   simpa [completedFreeGibbsDensityOperator] using
-    purePointGibbsDensityOperator_apply_basis
+    eigenbasisGibbsDensityOperator_apply_basis
       (completedOccupationHilbertBasis (Mode := Mode)) (fermionEnergy ε) β hsum n
 
 /-- Bounded-operator expectations in the completed free Gibbs state are the absolutely convergent
 occupation-basis pure-point Gibbs series. -/
 theorem completedFreeGibbsDensityOperator_expectation_eq_tsum
-    (ε : Mode → ℝ) (β : ℝ) (hsum : PurePointGibbsSummable (fermionEnergy ε) β)
+    (ε : Mode → ℝ) (β : ℝ) (hsum : EigenbasisGibbsSummable (fermionEnergy ε) β)
     (A : CompletedFockSpace Mode →L[ℂ] CompletedFockSpace Mode) :
     (completedFreeGibbsDensityOperator ε β hsum).expectation A =
       ∑' n : Occupation Mode,
-        (purePointGibbsProbability (fermionEnergy ε) β n : ℂ) *
+        (eigenbasisGibbsProbability (fermionEnergy ε) β n : ℂ) *
           inner ℂ (completedBasisState n) (A (completedBasisState n)) := by
   simpa using
     (completedFreeGibbsDensityOperator ε β hsum).expectation_eq_tsum_diagonal
-      A completedOccupationHilbertBasis (purePointGibbsProbability (fermionEnergy ε) β)
+      A completedOccupationHilbertBasis (eigenbasisGibbsProbability (fermionEnergy ε) β)
       (completedFreeGibbsDensityOperator_apply_basis ε β hsum)
 
 end
@@ -71,44 +71,44 @@ variable {Mode : Type*} [LinearOrder Mode]
 
 private theorem completedFreeGibbsProbability_insertOccupation_of_not_mem
     (ε : Mode → ℝ) (β : ℝ) {i : Mode} {n : Occupation Mode} (hi : i ∉ n) :
-    purePointGibbsProbability (fermionEnergy ε) β (insertOccupation i n) =
-      Real.exp (-β * ε i) * purePointGibbsProbability (fermionEnergy ε) β n := by
+    eigenbasisGibbsProbability (fermionEnergy ε) β (insertOccupation i n) =
+      Real.exp (-β * ε i) * eigenbasisGibbsProbability (fermionEnergy ε) β n := by
   have hweight :
-      purePointBoltzmannWeight (fermionEnergy ε) β (insertOccupation i n) =
-        Real.exp (-β * ε i) * purePointBoltzmannWeight (fermionEnergy ε) β n := by
+      eigenbasisBoltzmannWeight (fermionEnergy ε) β (insertOccupation i n) =
+        Real.exp (-β * ε i) * eigenbasisBoltzmannWeight (fermionEnergy ε) β n := by
     change Real.exp (-β * fermionEnergy ε (insertOccupation i n)) =
       Real.exp (-β * ε i) * Real.exp (-β * fermionEnergy ε n)
     simp only [fermionEnergy, insertOccupation, Finset.sum_insert hi]
     rw [← Real.exp_add]
     congr 1
     ring
-  simp only [purePointGibbsProbability, hweight]
+  simp only [eigenbasisGibbsProbability, hweight]
   ring
 
 private theorem completedFreeGibbsProbability_removeOccupation_of_mem
     (ε : Mode → ℝ) (β : ℝ) {i : Mode} {n : Occupation Mode} (hi : i ∈ n) :
-    purePointGibbsProbability (fermionEnergy ε) β (removeOccupation i n) =
-      Real.exp (β * ε i) * purePointGibbsProbability (fermionEnergy ε) β n := by
+    eigenbasisGibbsProbability (fermionEnergy ε) β (removeOccupation i n) =
+      Real.exp (β * ε i) * eigenbasisGibbsProbability (fermionEnergy ε) β n := by
   have henergy :
       fermionEnergy ε n = fermionEnergy ε (removeOccupation i n) + ε i := by
     simpa [fermionEnergy, removeOccupation] using (Finset.sum_erase_add n ε hi).symm
   have hweight :
-      purePointBoltzmannWeight (fermionEnergy ε) β (removeOccupation i n) =
-        Real.exp (β * ε i) * purePointBoltzmannWeight (fermionEnergy ε) β n := by
+      eigenbasisBoltzmannWeight (fermionEnergy ε) β (removeOccupation i n) =
+        Real.exp (β * ε i) * eigenbasisBoltzmannWeight (fermionEnergy ε) β n := by
     change Real.exp (-β * fermionEnergy ε (removeOccupation i n)) =
       Real.exp (β * ε i) * Real.exp (-β * fermionEnergy ε n)
     rw [henergy, ← Real.exp_add]
     congr 1
     ring
-  simp only [purePointGibbsProbability, hweight]
+  simp only [eigenbasisGibbsProbability, hweight]
   ring
 
 /-- Complex form of the free Gibbs insertion ratio, matching the scalar used in operator identities. -/
 theorem coe_completedFreeGibbsProbability_insertOccupation_of_not_mem
     (ε : Mode → ℝ) (β : ℝ) {i : Mode} {n : Occupation Mode} (hi : i ∉ n) :
-    (purePointGibbsProbability (fermionEnergy ε) β (insertOccupation i n) : ℂ) =
+    (eigenbasisGibbsProbability (fermionEnergy ε) β (insertOccupation i n) : ℂ) =
       Complex.exp (-(β : ℂ) * (ε i : ℂ)) *
-        (purePointGibbsProbability (fermionEnergy ε) β n : ℂ) := by
+        (eigenbasisGibbsProbability (fermionEnergy ε) β n : ℂ) := by
   rw [completedFreeGibbsProbability_insertOccupation_of_not_mem ε β hi]
   push_cast
   rfl
@@ -116,9 +116,9 @@ theorem coe_completedFreeGibbsProbability_insertOccupation_of_not_mem
 /-- Complex form of the free Gibbs removal ratio, matching the scalar used in operator identities. -/
 theorem coe_completedFreeGibbsProbability_removeOccupation_of_mem
     (ε : Mode → ℝ) (β : ℝ) {i : Mode} {n : Occupation Mode} (hi : i ∈ n) :
-    (purePointGibbsProbability (fermionEnergy ε) β (removeOccupation i n) : ℂ) =
+    (eigenbasisGibbsProbability (fermionEnergy ε) β (removeOccupation i n) : ℂ) =
       Complex.exp ((β : ℂ) * (ε i : ℂ)) *
-        (purePointGibbsProbability (fermionEnergy ε) β n : ℂ) := by
+        (eigenbasisGibbsProbability (fermionEnergy ε) β n : ℂ) := by
   rw [completedFreeGibbsProbability_removeOccupation_of_mem ε β hi]
   push_cast
   rfl
@@ -126,7 +126,7 @@ theorem coe_completedFreeGibbsProbability_removeOccupation_of_mem
 /-- Completed free-Gibbs creation intertwining:
 `ρβ aᵢ† = exp (-β εᵢ) aᵢ† ρβ` as an identity of bounded operators. -/
 theorem completedFreeGibbsDensityOperator_comp_create
-    (ε : Mode → ℝ) (β : ℝ) (hsum : PurePointGibbsSummable (fermionEnergy ε) β) (i : Mode) :
+    (ε : Mode → ℝ) (β : ℝ) (hsum : EigenbasisGibbsSummable (fermionEnergy ε) β) (i : Mode) :
     (completedFreeGibbsDensityOperator ε β hsum).op.comp (completedCreate i) =
       Complex.exp (-(β : ℂ) * (ε i : ℂ)) •
         ((completedCreate i).comp
@@ -156,7 +156,7 @@ theorem completedFreeGibbsDensityOperator_comp_create
 /-- Completed free-Gibbs annihilation intertwining:
 `ρβ aᵢ = exp (β εᵢ) aᵢ ρβ` as an identity of bounded operators. -/
 theorem completedFreeGibbsDensityOperator_comp_annihilate
-    (ε : Mode → ℝ) (β : ℝ) (hsum : PurePointGibbsSummable (fermionEnergy ε) β) (i : Mode) :
+    (ε : Mode → ℝ) (β : ℝ) (hsum : EigenbasisGibbsSummable (fermionEnergy ε) β) (i : Mode) :
     (completedFreeGibbsDensityOperator ε β hsum).op.comp (completedAnnihilate i) =
       Complex.exp ((β : ℂ) * (ε i : ℂ)) •
         ((completedAnnihilate i).comp

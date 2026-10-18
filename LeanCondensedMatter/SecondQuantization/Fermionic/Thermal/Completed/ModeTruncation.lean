@@ -1,6 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.ModeTruncation
 import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.Hamiltonian
-import LeanCondensedMatter.QuantumTheory.Gibbs.PurePoint
+import LeanCondensedMatter.QuantumTheory.Gibbs.Eigenbasis
 import Mathlib.Analysis.Normed.Group.Tannery
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.Gibbs
 
@@ -29,14 +29,14 @@ local instance completedGibbsModeTruncationDecidableEq : DecidableEq Mode := Cla
 /-- Free Boltzmann weight restricted to occupations using only modes from `S`. -/
 noncomputable def completedFreeModeTruncatedWeight (ε : Mode → ℝ) (β : ℝ)
     (S : Finset Mode) (n : Occupation Mode) : ℝ :=
-  if n ⊆ S then purePointBoltzmannWeight (fermionEnergy ε) β n else 0
+  if n ⊆ S then eigenbasisBoltzmannWeight (fermionEnergy ε) β n else 0
 
 private theorem completedFreeModeTruncatedWeight_nonneg (ε : Mode → ℝ) (β : ℝ)
     (S : Finset Mode) (n : Occupation Mode) :
     0 ≤ completedFreeModeTruncatedWeight ε β S n := by
   by_cases h : n ⊆ S
   · simp [completedFreeModeTruncatedWeight, h,
-      purePointBoltzmannWeight_nonneg]
+      eigenbasisBoltzmannWeight_nonneg]
   · simp [completedFreeModeTruncatedWeight, h]
 
 private theorem completedFreeModeTruncatedWeight_norm_summable (ε : Mode → ℝ) (β : ℝ)
@@ -70,14 +70,14 @@ theorem completedFreeModeTruncatedPartitionFunction_pos (ε : Mode → ℝ) (β 
       have hvac : (vacuum : Occupation Mode) ⊆ S := by
         simpa [vacuum] using (Finset.empty_subset S)
       simpa [completedFreeModeTruncatedWeight, hvac] using
-        purePointBoltzmannWeight_pos (fermionEnergy ε) β (vacuum : Occupation Mode))
+        eigenbasisBoltzmannWeight_pos (fermionEnergy ε) β (vacuum : Occupation Mode))
 
 /-- For each fixed occupation configuration, the finite-mode truncated Boltzmann weight is
 eventually exactly the full pure-point Boltzmann weight. -/
 theorem tendsto_completedFreeModeTruncatedWeight (ε : Mode → ℝ) (β : ℝ)
     (n : Occupation Mode) :
     Tendsto (fun S : Finset Mode => completedFreeModeTruncatedWeight ε β S n) atTop
-      (𝓝 (purePointBoltzmannWeight (fermionEnergy ε) β n)) := by
+      (𝓝 (eigenbasisBoltzmannWeight (fermionEnergy ε) β n)) := by
   apply tendsto_const_nhds.congr'
   filter_upwards [eventually_ge_atTop n] with S hS
   have hsub : n ⊆ S := hS
@@ -85,13 +85,13 @@ theorem tendsto_completedFreeModeTruncatedWeight (ε : Mode → ℝ) (β : ℝ)
 
 /-- Finite-mode partition functions converge to the full pure-point partition function. -/
 theorem tendsto_completedFreeModeTruncatedPartitionFunction
-    (ε : Mode → ℝ) (β : ℝ) (hsum : PurePointGibbsSummable (fermionEnergy ε) β) :
+    (ε : Mode → ℝ) (β : ℝ) (hsum : EigenbasisGibbsSummable (fermionEnergy ε) β) :
     Tendsto (fun S : Finset Mode => completedFreeModeTruncatedPartitionFunction ε β S)
-      atTop (𝓝 (purePointPartitionFunction (fermionEnergy ε) β)) := by
+      atTop (𝓝 (eigenbasisPartitionFunction (fermionEnergy ε) β)) := by
   have hbound :
       ∀ᶠ S : Finset Mode in atTop, ∀ n : Occupation Mode,
         ‖completedFreeModeTruncatedWeight ε β S n‖ ≤
-          ‖purePointBoltzmannWeight (fermionEnergy ε) β n‖ := by
+          ‖eigenbasisBoltzmannWeight (fermionEnergy ε) β n‖ := by
     filter_upwards [] with S
     intro n
     by_cases h : n ⊆ S
@@ -99,7 +99,7 @@ theorem tendsto_completedFreeModeTruncatedPartitionFunction
     · simp [completedFreeModeTruncatedWeight, h]
   have h := tendsto_tsum_of_dominated_convergence hsum
     (fun n => tendsto_completedFreeModeTruncatedWeight ε β n) hbound
-  simpa [completedFreeModeTruncatedPartitionFunction, purePointPartitionFunction] using h
+  simpa [completedFreeModeTruncatedPartitionFunction, eigenbasisPartitionFunction] using h
 
 /-- Normalized Gibbs probability in the finite-mode truncated state. -/
 noncomputable def completedFreeModeTruncatedGibbsProbability (ε : Mode → ℝ) (β : ℝ)
@@ -138,15 +138,15 @@ theorem completedFreeModeTruncatedGibbsDensityOperator_apply_basis
 /-- For every fixed occupation configuration, the normalized truncated Gibbs probability converges
 to the full pure-point Gibbs probability. -/
 theorem tendsto_completedFreeModeTruncatedGibbsProbability
-    (ε : Mode → ℝ) (β : ℝ) (hsum : PurePointGibbsSummable (fermionEnergy ε) β)
+    (ε : Mode → ℝ) (β : ℝ) (hsum : EigenbasisGibbsSummable (fermionEnergy ε) β)
     (n : Occupation Mode) :
     Tendsto (fun S : Finset Mode => completedFreeModeTruncatedGibbsProbability ε β S n)
-      atTop (𝓝 (purePointGibbsProbability (fermionEnergy ε) β n)) := by
+      atTop (𝓝 (eigenbasisGibbsProbability (fermionEnergy ε) β n)) := by
   have hZ := tendsto_completedFreeModeTruncatedPartitionFunction ε β hsum
-  have hZne : purePointPartitionFunction (fermionEnergy ε) β ≠ 0 :=
-    ne_of_gt (purePointPartitionFunction_pos (fermionEnergy ε) β hsum)
+  have hZne : eigenbasisPartitionFunction (fermionEnergy ε) β ≠ 0 :=
+    ne_of_gt (eigenbasisPartitionFunction_pos (fermionEnergy ε) β hsum)
   have hw := tendsto_completedFreeModeTruncatedWeight ε β n
-  simpa [completedFreeModeTruncatedGibbsProbability, purePointGibbsProbability] using
+  simpa [completedFreeModeTruncatedGibbsProbability, eigenbasisGibbsProbability] using
     (hZ.inv₀ hZne).mul hw
 
 end
@@ -184,32 +184,32 @@ theorem completedFreeModeTruncatedGibbsDensityOperator_expectation_eq_tsum
 probability. -/
 noncomputable def completedFreeModeTruncationNormalizationRatio
     (ε : Mode → ℝ) (β : ℝ) (S : Finset Mode) : ℝ :=
-  purePointPartitionFunction (fermionEnergy ε) β /
+  eigenbasisPartitionFunction (fermionEnergy ε) β /
     completedFreeModeTruncatedPartitionFunction ε β S
 
 /-- The finite-mode normalization correction tends to one. -/
 theorem tendsto_completedFreeModeTruncationNormalizationRatio
-    (ε : Mode → ℝ) (β : ℝ) (hsum : PurePointGibbsSummable (fermionEnergy ε) β) :
+    (ε : Mode → ℝ) (β : ℝ) (hsum : EigenbasisGibbsSummable (fermionEnergy ε) β) :
     Tendsto (completedFreeModeTruncationNormalizationRatio ε β) atTop (𝓝 1) := by
   have hZ := tendsto_completedFreeModeTruncatedPartitionFunction ε β hsum
-  have hZne : purePointPartitionFunction (fermionEnergy ε) β ≠ 0 :=
-    ne_of_gt (purePointPartitionFunction_pos (fermionEnergy ε) β hsum)
+  have hZne : eigenbasisPartitionFunction (fermionEnergy ε) β ≠ 0 :=
+    ne_of_gt (eigenbasisPartitionFunction_pos (fermionEnergy ε) β hsum)
   have hconst :
-      Tendsto (fun _ : Finset Mode => purePointPartitionFunction (fermionEnergy ε) β) atTop
-        (𝓝 (purePointPartitionFunction (fermionEnergy ε) β)) :=
+      Tendsto (fun _ : Finset Mode => eigenbasisPartitionFunction (fermionEnergy ε) β) atTop
+        (𝓝 (eigenbasisPartitionFunction (fermionEnergy ε) β)) :=
     tendsto_const_nhds
   have hratio :
       Tendsto
         (fun S : Finset Mode =>
-          purePointPartitionFunction (fermionEnergy ε) β /
+          eigenbasisPartitionFunction (fermionEnergy ε) β /
             completedFreeModeTruncatedPartitionFunction ε β S)
         atTop
-        (𝓝 (purePointPartitionFunction (fermionEnergy ε) β /
-          purePointPartitionFunction (fermionEnergy ε) β)) :=
+        (𝓝 (eigenbasisPartitionFunction (fermionEnergy ε) β /
+          eigenbasisPartitionFunction (fermionEnergy ε) β)) :=
     hconst.div hZ hZne
   change Tendsto
     (fun S : Finset Mode =>
-      purePointPartitionFunction (fermionEnergy ε) β /
+      eigenbasisPartitionFunction (fermionEnergy ε) β /
         completedFreeModeTruncatedPartitionFunction ε β S)
     atTop (𝓝 1)
   simpa [div_self hZne] using hratio
@@ -217,18 +217,18 @@ theorem tendsto_completedFreeModeTruncationNormalizationRatio
 /-- A truncated Gibbs probability is the retained full Gibbs probability multiplied by the finite
 normalization correction. -/
 theorem completedFreeModeTruncatedGibbsProbability_eq_ratio_mul
-    (ε : Mode → ℝ) (β : ℝ) (hsum : PurePointGibbsSummable (fermionEnergy ε) β)
+    (ε : Mode → ℝ) (β : ℝ) (hsum : EigenbasisGibbsSummable (fermionEnergy ε) β)
     (S : Finset Mode) (n : Occupation Mode) :
     completedFreeModeTruncatedGibbsProbability ε β S n =
       completedFreeModeTruncationNormalizationRatio ε β S *
-        (if n ⊆ S then purePointGibbsProbability (fermionEnergy ε) β n else 0) := by
-  have hZne : purePointPartitionFunction (fermionEnergy ε) β ≠ 0 :=
-    ne_of_gt (purePointPartitionFunction_pos (fermionEnergy ε) β hsum)
+        (if n ⊆ S then eigenbasisGibbsProbability (fermionEnergy ε) β n else 0) := by
+  have hZne : eigenbasisPartitionFunction (fermionEnergy ε) β ≠ 0 :=
+    ne_of_gt (eigenbasisPartitionFunction_pos (fermionEnergy ε) β hsum)
   have hZSne : completedFreeModeTruncatedPartitionFunction ε β S ≠ 0 :=
     ne_of_gt (completedFreeModeTruncatedPartitionFunction_pos ε β S)
   by_cases h : n ⊆ S
   · simp [completedFreeModeTruncatedGibbsProbability, completedFreeModeTruncatedWeight,
-      completedFreeModeTruncationNormalizationRatio, purePointGibbsProbability, h]
+      completedFreeModeTruncationNormalizationRatio, eigenbasisGibbsProbability, h]
     field_simp [hZne, hZSne]
   · simp [completedFreeModeTruncatedGibbsProbability, completedFreeModeTruncatedWeight,
       completedFreeModeTruncationNormalizationRatio, h]
@@ -240,24 +240,24 @@ noncomputable def completedFreeModeRetainedExpectation
     (A : CompletedFockSpace Mode →L[ℂ] CompletedFockSpace Mode) : ℂ :=
   ∑' n : Occupation Mode,
     if n ⊆ S then
-      (purePointGibbsProbability (fermionEnergy ε) β n : ℂ) *
+      (eigenbasisGibbsProbability (fermionEnergy ε) β n : ℂ) *
         inner ℂ (completedBasisState n) (A (completedBasisState n))
     else 0
 
 /-- The retained, unrenormalized finite-mode expectation converges to the full Gibbs expectation for
 every bounded operator. -/
 theorem tendsto_completedFreeModeRetainedExpectation
-    (ε : Mode → ℝ) (β : ℝ) (hsum : PurePointGibbsSummable (fermionEnergy ε) β)
+    (ε : Mode → ℝ) (β : ℝ) (hsum : EigenbasisGibbsSummable (fermionEnergy ε) β)
     (A : CompletedFockSpace Mode →L[ℂ] CompletedFockSpace Mode) :
     Tendsto (fun S : Finset Mode => completedFreeModeRetainedExpectation ε β S A) atTop
       (𝓝 ((completedFreeGibbsDensityOperator ε β hsum).expectation A)) := by
   let term : Occupation Mode → ℂ := fun n =>
-    (purePointGibbsProbability (fermionEnergy ε) β n : ℂ) *
+    (eigenbasisGibbsProbability (fermionEnergy ε) β n : ℂ) *
       inner ℂ (completedBasisState n) (A (completedBasisState n))
   have hterm : Summable term := by
     simpa [term] using
       ((completedFreeGibbsDensityOperator ε β hsum).hasSum_expectation_diagonal
-        A completedOccupationHilbertBasis (purePointGibbsProbability (fermionEnergy ε) β)
+        A completedOccupationHilbertBasis (eigenbasisGibbsProbability (fermionEnergy ε) β)
         (fun n => by
           simpa using completedFreeGibbsDensityOperator_apply_basis ε β hsum n)).summable
   have hpoint : ∀ n : Occupation Mode,
@@ -282,7 +282,7 @@ theorem tendsto_completedFreeModeRetainedExpectation
 /-- The expectation in a normalized finite-mode Gibbs state is its retained full-state expectation
 times the normalization correction. -/
 theorem completedFreeModeTruncatedGibbsDensityOperator_expectation_eq_ratio_mul
-    (ε : Mode → ℝ) (β : ℝ) (hsum : PurePointGibbsSummable (fermionEnergy ε) β)
+    (ε : Mode → ℝ) (β : ℝ) (hsum : EigenbasisGibbsSummable (fermionEnergy ε) β)
     (S : Finset Mode)
     (A : CompletedFockSpace Mode →L[ℂ] CompletedFockSpace Mode) :
     (completedFreeModeTruncatedGibbsDensityOperator ε β S).expectation A =
@@ -297,7 +297,7 @@ theorem completedFreeModeTruncatedGibbsDensityOperator_expectation_eq_ratio_mul
   have hpC :
       (completedFreeModeTruncatedGibbsProbability ε β S n : ℂ) =
         (completedFreeModeTruncationNormalizationRatio ε β S : ℂ) *
-          (if n ⊆ S then (purePointGibbsProbability (fermionEnergy ε) β n : ℂ) else 0) := by
+          (if n ⊆ S then (eigenbasisGibbsProbability (fermionEnergy ε) β n : ℂ) else 0) := by
     rw [hp]
     by_cases h : n ⊆ S <;> simp [h]
   rw [hpC]
@@ -305,7 +305,7 @@ theorem completedFreeModeTruncatedGibbsDensityOperator_expectation_eq_ratio_mul
 
 /-- Finite-mode completed Gibbs states converge weakly against every bounded operator. -/
 theorem tendsto_completedFreeModeTruncatedGibbsDensityOperator_expectation
-    (ε : Mode → ℝ) (β : ℝ) (hsum : PurePointGibbsSummable (fermionEnergy ε) β)
+    (ε : Mode → ℝ) (β : ℝ) (hsum : EigenbasisGibbsSummable (fermionEnergy ε) β)
     (A : CompletedFockSpace Mode →L[ℂ] CompletedFockSpace Mode) :
     Tendsto
       (fun S : Finset Mode =>

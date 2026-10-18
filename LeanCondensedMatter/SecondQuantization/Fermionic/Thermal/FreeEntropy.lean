@@ -1,5 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreePartitionFunction
-import LeanCondensedMatter.QuantumTheory.Gibbs.PurePointEntropy
+import LeanCondensedMatter.QuantumTheory.Gibbs.EigenbasisEntropy
 
 set_option linter.style.header false
 
@@ -31,25 +31,25 @@ noncomputable def fermiDiracOccupation (ε : Mode → ℝ) (β : ℝ) (i : Mode)
 /-- The normalized probability of an occupation configuration in the free Gibbs state. -/
 noncomputable def freeGibbsConfigurationProbability
     (ε : Mode → ℝ) (β : ℝ) (n : Occupation Mode) : ℝ :=
-  purePointGibbsProbability (fermionEnergy ε) β n
+  eigenbasisGibbsProbability (fermionEnergy ε) β n
 
 omit [LinearOrder Mode] in
-private theorem purePointPartitionFunction_fermionEnergy_eq_prod
+private theorem eigenbasisPartitionFunction_fermionEnergy_eq_prod
     (ε : Mode → ℝ) (β : ℝ) :
-    purePointPartitionFunction (fermionEnergy ε) β =
+    eigenbasisPartitionFunction (fermionEnergy ε) β =
       ∏ i, (1 + Real.exp (-β * ε i)) := by
   apply Complex.ofReal_injective
-  rw [← freePartitionFunction_eq_coe_purePointPartitionFunction,
+  rw [← freePartitionFunction_eq_coe_eigenbasisPartitionFunction,
     freePartitionFunction_eq_prod]
   push_cast [Complex.ofReal_exp]
   rfl
 
 omit [LinearOrder Mode] in
-private theorem log_purePointPartitionFunction_fermionEnergy_eq_sum
+private theorem log_eigenbasisPartitionFunction_fermionEnergy_eq_sum
     (ε : Mode → ℝ) (β : ℝ) :
-    Real.log (purePointPartitionFunction (fermionEnergy ε) β) =
+    Real.log (eigenbasisPartitionFunction (fermionEnergy ε) β) =
       ∑ i, Real.log (1 + Real.exp (-β * ε i)) := by
-  rw [purePointPartitionFunction_fermionEnergy_eq_prod]
+  rw [eigenbasisPartitionFunction_fermionEnergy_eq_prod]
   simpa using
     (Real.log_prod
       (s := (Finset.univ : Finset Mode))
@@ -75,11 +75,11 @@ theorem sum_freeGibbsConfigurationProbability_filter_mem
 
 omit [LinearOrder Mode] in
 /-- The free-fermion Gibbs mean energy is the mode-energy sum weighted by Fermi–Dirac occupations. -/
-theorem purePointGibbsEnergyExpectation_fermionEnergy_eq_sum_fermiDirac
+theorem eigenbasisGibbsEnergyExpectation_fermionEnergy_eq_sum_fermiDirac
     (ε : Mode → ℝ) (β : ℝ) :
-    purePointGibbsEnergyExpectation (fermionEnergy ε) β =
+    eigenbasisGibbsEnergyExpectation (fermionEnergy ε) β =
       ∑ i, ε i * fermiDiracOccupation ε β i := by
-  rw [purePointGibbsEnergyExpectation, tsum_fintype]
+  rw [eigenbasisGibbsEnergyExpectation, tsum_fintype]
   change
     (∑ n : Occupation Mode,
         freeGibbsConfigurationProbability ε β n * fermionEnergy ε n) =
@@ -147,21 +147,21 @@ theorem vonNeumannEntropy_freeGibbsDensityOperator_toReal_eq_sum_fermiDirac
       ∑ i, (Real.negMulLog (fermiDiracOccupation ε β i) +
         Real.negMulLog (1 - fermiDiracOccupation ε β i)) := by
   have hIntegrable :
-      PurePointGibbsEnergyIntegrable (fermionEnergy ε) β := by
+      EigenbasisGibbsEnergyIntegrable (fermionEnergy ε) β := by
     exact Summable.of_finite
   have hEntropy :
       (vonNeumannEntropy (freeGibbsDensityOperator ε β)).toReal =
-        β * purePointGibbsEnergyExpectation (fermionEnergy ε) β +
-          Real.log (purePointPartitionFunction (fermionEnergy ε) β) := by
-    simpa [freeGibbsDensityOperator, finitePurePointGibbsDensityOperator] using
-      (vonNeumannEntropy_purePointGibbsDensityOperator
+        β * eigenbasisGibbsEnergyExpectation (fermionEnergy ε) β +
+          Real.log (eigenbasisPartitionFunction (fermionEnergy ε) β) := by
+    simpa [freeGibbsDensityOperator, finiteEigenbasisGibbsDensityOperator] using
+      (vonNeumannEntropy_eigenbasisGibbsDensityOperator
         (Common.finiteHilbertBasis (Config := Occupation Mode))
         (fermionEnergy ε) β
-        (purePointGibbsSummable_of_finite (fermionEnergy ε) β)
+        (eigenbasisGibbsSummable_of_finite (fermionEnergy ε) β)
         hIntegrable).2
   rw [hEntropy,
-    purePointGibbsEnergyExpectation_fermionEnergy_eq_sum_fermiDirac,
-    log_purePointPartitionFunction_fermionEnergy_eq_sum]
+    eigenbasisGibbsEnergyExpectation_fermionEnergy_eq_sum_fermiDirac,
+    log_eigenbasisPartitionFunction_fermionEnergy_eq_sum]
   calc
     β * (∑ i, ε i * fermiDiracOccupation ε β i) +
         ∑ i, Real.log (1 + Real.exp (-β * ε i)) =
