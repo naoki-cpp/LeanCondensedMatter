@@ -91,20 +91,16 @@ theorem Pairing.componentGeometricCrossingCount_mod_two_eq_endpointInversionCoun
           if Crosses (e ⟨B, x.1⟩).1 (e ⟨C, x.2⟩).1 ∨
             Crosses (e ⟨C, x.2⟩).1 (e ⟨B, x.1⟩).1 then 1 else 0)
         (fun x _ => by
-          change pairEndpointInversionCount (e ⟨B, x.1⟩).1 (e ⟨C, x.2⟩).1 % 2 =
-            (if Crosses (e ⟨B, x.1⟩).1 (e ⟨C, x.2⟩).1 ∨
-              Crosses (e ⟨C, x.2⟩).1 (e ⟨B, x.1⟩).1 then 1 else 0) % 2
-          have hPairNe : e ⟨B, x.1⟩ ≠ e ⟨C, x.2⟩ := by
-            intro h
-            exact hBC (congrArg Sigma.fst (e.injective h))
+          have hPairNe : e ⟨B, x.1⟩ ≠ e ⟨C, x.2⟩ :=
+            fun h => hBC (congrArg Sigma.fst (e.injective h))
           have hEnds := pairing.normalizedPair_endpoints_ne_of_ne
             (e ⟨B, x.1⟩) (e ⟨C, x.2⟩) hPairNe
-          have h := pairEndpointInversionCount_mod_two_eq_crossesIndicator
+          exact (pairEndpointInversionCount_mod_two_eq_crossesIndicator
             (e ⟨B, x.1⟩).1 (e ⟨C, x.2⟩).1
             (pairing.pairs_normalized (e ⟨B, x.1⟩).2)
             (pairing.pairs_normalized (e ⟨C, x.2⟩).2)
-            hEnds.1 hEnds.2.1 hEnds.2.2.1 hEnds.2.2.2
-          split_ifs at h ⊢ <;> simpa using h))
+            hEnds.1 hEnds.2.1 hEnds.2.2.1 hEnds.2.2.2).trans
+              (by split_ifs <;> decide)))
   have hsum :
       (∑ x : F B × F C,
         pairEndpointInversionCount (e ⟨B, x.1⟩).1 (e ⟨C, x.2⟩).1) =
