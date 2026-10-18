@@ -60,22 +60,9 @@ theorem tsumTrace_diagonalEvolution_comp_rotate
         tsumTrace ((diagonalEvolution energy (-β)).comp (C.comp A)) := by
   have hKMS' := comp_diagonalEvolution_eq_smul_diagonalEvolution_comp energy (-β) q C hC
   rw [show ((-(q * -β) : ℝ) : ℂ) = ((q * β : ℝ) : ℂ) by push_cast; ring] at hKMS'
-  calc tsumTrace ((diagonalEvolution energy (-β)).comp (A.comp C))
-      = tsumTrace (((diagonalEvolution energy (-β)).comp A).comp C) := by
-        rw [LinearMap.comp_assoc]
-    _ = tsumTrace (C.comp ((diagonalEvolution energy (-β)).comp A)) := tsumTrace_comp_comm _ _ h
-    _ = tsumTrace ((C.comp (diagonalEvolution energy (-β))).comp A) := by
-        rw [LinearMap.comp_assoc]
-    _ = tsumTrace ((Complex.exp ((q * β : ℝ) : ℂ) •
-          ((diagonalEvolution energy (-β)).comp C)).comp A) := by rw [hKMS']
-    _ = tsumTrace (Complex.exp ((q * β : ℝ) : ℂ) •
-          (((diagonalEvolution energy (-β)).comp C).comp A)) := by rw [LinearMap.smul_comp]
-    _ = Complex.exp ((q * β : ℝ) : ℂ) •
-          tsumTrace (((diagonalEvolution energy (-β)).comp C).comp A) := by
-        rw [tsumTrace_smul, smul_eq_mul]
-    _ = Complex.exp ((q * β : ℝ) : ℂ) •
-          tsumTrace ((diagonalEvolution energy (-β)).comp (C.comp A)) := by
-        rw [LinearMap.comp_assoc]
+  rw [← LinearMap.comp_assoc, tsumTrace_comp_comm _ _ h,
+    ← LinearMap.comp_assoc, hKMS', LinearMap.smul_comp,
+    tsumTrace_smul, LinearMap.comp_assoc, smul_eq_mul]
 
 end Common
 end SecondQuantization
