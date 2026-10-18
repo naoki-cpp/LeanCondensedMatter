@@ -66,7 +66,8 @@ theorem finiteGibbsExpectation_four_point (energy : Config → ℝ) (β q1 : ℝ
       LinearMap.comp_id, LinearMap.comp_zero, LinearMap.comp_add, LinearMap.comp_smul,
       map_add, map_smul, smul_eq_mul, hz, mul_zero] at h
     have hne' : (1 : ℂ) - ζ ^ 3 * Complex.exp ((β * q1 : ℝ) : ℂ) ≠ 0 := by
-      rwa [mul_comm β q1]
+      rw [mul_comm β q1, hζ3]
+      exact hne
     simp only [finiteGibbsExpectation_eq_trace_div]
     field_simp [hZ, hne']
     linear_combination (norm := ring_nf) h
