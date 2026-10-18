@@ -1036,9 +1036,9 @@ theorem AngularHarmonicCoefficients.integral_polarFourierRadialPhase
       repeat' rw [intervalIntegral.integral_add
         (by apply Continuous.intervalIntegrable; unfold polarFourierRadialPhase; fun_prop)
         (by apply Continuous.intervalIntegrable; unfold polarFourierRadialPhase; fun_prop)]
+      simp only [intervalIntegral.integral_mul_const]
       simp_rw [mul_assoc]
-      simp only [intervalIntegral.integral_mul_const,
-        integral_polarFourierRadialPhase_mul_sin_zero,
+      simp only [integral_polarFourierRadialPhase_mul_sin_zero,
         integral_polarFourierRadialPhase_mul_cos_mul_sin_zero]
       simp [polarFourierZerothAngularKernel, polarFourierFirstCosineAngularKernel,
         polarFourierSecondCosineAngularKernel]
