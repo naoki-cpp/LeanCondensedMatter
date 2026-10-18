@@ -52,7 +52,7 @@ noncomputable def TwoPointDiagram.intervalInteractionLegEquiv
       ⟨p.1.1, interactionSector_subset (d.verticesBetweenCuts earlier later) p.1.2⟩
     refine ⟨twoPointInteractionLeg v p.2, ?_⟩
     simpa only [twoPointVertexOfLeg_interactionLeg] using
-      (d.mem_interactionSector_verticesBetweenCuts_iff earlier later v).1 p.1.2
+      (mem_interactionSector_subtype (d.verticesBetweenCuts earlier later) v).1 p.1.2
   refine Equiv.ofBijective f ?_
   constructor
   · intro p q hpq
@@ -83,7 +83,7 @@ noncomputable def TwoPointDiagram.intervalInteractionLegEquiv
           simp [twoPointVertexOfLeg, h]
         have hmem : (v : Fin N) ∈
             interactionSector (d.verticesBetweenCuts earlier later) :=
-          (d.mem_interactionSector_verticesBetweenCuts_iff earlier later v).2
+          (mem_interactionSector_subtype (d.verticesBetweenCuts earlier later) v).2
             (hv ▸ hleg)
         refine ⟨(⟨(v : Fin N), hmem⟩, l), ?_⟩
         apply Subtype.ext
