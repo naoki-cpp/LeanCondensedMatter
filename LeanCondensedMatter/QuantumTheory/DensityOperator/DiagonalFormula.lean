@@ -50,14 +50,6 @@ theorem DensityOperator.hasSum_expectation_diagonal (ρ : DensityOperator H)
         rw [hρ i, inner_smul_left]
         simp
 
-/-- Absolute convergence of the diagonal expectation series follows directly from trace-class
-closure under bounded right multiplication. -/
-theorem DensityOperator.summable_expectation_diagonal (ρ : DensityOperator H)
-    (A : H →L[ℂ] H) (b : HilbertBasis ι ℂ H) (w : ι → ℝ)
-    (hρ : ∀ i, ρ.op (b i) = (w i : ℂ) • b i) :
-    Summable (fun i => (w i : ℂ) * inner ℂ (b i) (A (b i))) :=
-  (ρ.hasSum_expectation_diagonal A b w hρ).summable
-
 /-- Dimension-independent diagonal expectation formula over a Hilbert basis. -/
 theorem DensityOperator.expectation_eq_tsum_diagonal (ρ : DensityOperator H)
     (A : H →L[ℂ] H) (b : HilbertBasis ι ℂ H) (w : ι → ℝ)
@@ -100,20 +92,13 @@ theorem DensityOperator.hasSum_diagonal_weights (ρ : DensityOperator H)
       inner_self_eq_norm_sq_to_K, b.orthonormal.1 i]
     simp
 
-/-- The diagonal weights of a density operator are summable. -/
-theorem DensityOperator.summable_diagonal_weights (ρ : DensityOperator H)
-    (b : HilbertBasis ι ℂ H) (w : ι → ℝ)
-    (happly : ∀ i, ρ.op (b i) = (w i : ℂ) • b i) :
-    Summable w :=
-  (ρ.hasSum_diagonal_weights b w happly).summable
-
 /-- A nonnegative diagonal weight of a density operator is at most one. -/
 theorem DensityOperator.diagonal_weight_le_one (ρ : DensityOperator H)
     (b : HilbertBasis ι ℂ H) (w : ι → ℝ)
     (happly : ∀ i, ρ.op (b i) = (w i : ℂ) • b i)
     (hw_nonneg : ∀ i, 0 ≤ w i) (i : ι) :
     w i ≤ 1 := by
-  have hs := ρ.summable_diagonal_weights b w happly
+  have hs := (ρ.hasSum_diagonal_weights b w happly).summable
   calc
     w i ≤ ∑' j, w j := hs.le_tsum i (fun j _ => hw_nonneg j)
     _ = 1 := (ρ.hasSum_diagonal_weights b w happly).tsum_eq
