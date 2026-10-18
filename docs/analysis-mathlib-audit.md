@@ -204,12 +204,15 @@ a declaration without checking its current uses and compiling affected consumers
 
 ## Remaining technical debt
 
-`Analysis/InfiniteSum/FinsuppProduct.lean` contains finite-cardinality induction proofs that use an
-unbounded heartbeat setting. Before upstreaming or broadening this API:
+`Analysis/InfiniteSum/FinsuppProduct.lean` contains finite-cardinality induction proofs.
+The current implementation uses the default finite heartbeat budget, Mathlib's
+`finSuccEquiv` and `Finsupp.optionEquiv` for reindexing, and the general product theorem
+for the geometric specialization. Aggressively inlining the named summability witnesses
+can exhaust Lean's heartbeat budget. Before upstreaming or broadening this API:
 
-1. make the proofs elaborate under a finite heartbeat budget;
-2. isolate expensive reindexing steps;
-3. minimize imports;
+1. preserve tractable elaboration under the default finite heartbeat budget;
+2. retain explicit summability witnesses where they prevent costly type inference;
+3. minimize imports without losing required Mathlib declarations;
 4. retain the geometric result as a corollary of the general product theorem.
 
 ## Current boundaries
