@@ -11005,46 +11005,6 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
-    "statement": "∀ {Test : Type u_1} [inst : AddCommGroup Test] [inst_1 : _root_.Module ℂ Test] (V : Type u_2) [inst_2 : AddCommGroup V]\n  [inst_3 : _root_.Module ℂ V] (h : V →ₗ[ℂ] V) (M : Test →ₗ[ℂ] V →ₗ[ℂ] V) (m : V →ₗ[ℂ] V) (f : Test),\n  ((LieAlgebra.ad ℂ (Module.End ℂ V)) h) ((ConservationLaw.localizedQuantityFunctional V M m) f) =\n    (ConservationLaw.transportFunctional V h M m) f + (ConservationLaw.sourceFunctional V h M m) f",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "ConservationLaw.ad_localizedQuantityFunctional",
-    "module": "LeanCondensedMatter.Analysis.ConservationLaw.SymmetricLocalizationAlgebra",
-    "externalAxioms": [],
-    "docString": "The packaged localized quantity satisfies the same transport/source decomposition. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "ConservationLaw.lie_localizedQuantity"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
     "terminal": false,
     "statement": "∀ {a b : ℝ} {f : ℝ → ℝ}, tsupport f ⊆ Set.Ioo a b → f a = 0 ∧ f b = 0",
     "standardAxioms": [
@@ -11201,7 +11161,6 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "ConservationLaw.ad_localizedQuantityFunctional",
       "ConservationLaw.lie_localizedQuantity_of_commutes",
       "SecondQuantization.Fermionic.Field.dGamma_lie_manyBodyLocalizedQuantity"
     ],
@@ -11211,11 +11170,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "ConservationLaw.ad_localizedQuantityFunctional",
       "ConservationLaw.lie_localizedQuantity_of_commutes",
       "SecondQuantization.Fermionic.Field.dGamma_lie_manyBodyLocalizedQuantity"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -13486,7 +13444,7 @@
       "QuantumTheory.DensityOperator.hasSum_expectation_diagonal",
       "QuantumTheory.LinearResponse.expectation_evolveDensityOperator_eq_heisenberg",
       "SecondQuantization.Fermionic.CompletedThermalLadder.completedFreeGibbsExpectation_operator_comp",
-      "_private.LeanCondensedMatter.QuantumTheory.DensityOperator.Expectation.0.QuantumTheory.densityExpectationTrace_norm_le"
+      "_private.LeanCondensedMatter.QuantumTheory.DensityOperator.Expectation.0.QuantumTheory.trace_comp_right_norm_le"
     ],
     "dependencies": [
       "ContinuousLinearMap.IsTraceClass.adjoint",
@@ -13505,7 +13463,7 @@
       "QuantumTheory.DensityOperator.hasSum_expectation_diagonal",
       "QuantumTheory.LinearResponse.expectation_evolveDensityOperator_eq_heisenberg",
       "SecondQuantization.Fermionic.CompletedThermalLadder.completedFreeGibbsExpectation_operator_comp",
-      "_private.LeanCondensedMatter.QuantumTheory.DensityOperator.Expectation.0.QuantumTheory.densityExpectationTrace_norm_le"
+      "_private.LeanCondensedMatter.QuantumTheory.DensityOperator.Expectation.0.QuantumTheory.trace_comp_right_norm_le"
     ],
     "compiledConsumerCount": 11,
     "axioms": [
@@ -13936,7 +13894,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "_private.LeanCondensedMatter.QuantumTheory.DensityOperator.Expectation.0.QuantumTheory.densityExpectationTrace_norm_le"
+      "_private.LeanCondensedMatter.QuantumTheory.DensityOperator.Expectation.0.QuantumTheory.trace_comp_right_norm_le"
     ],
     "dependencies": [
       "ContinuousLinearMap.IsTraceClass.summable_trace_diagonal",
@@ -13946,7 +13904,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "_private.LeanCondensedMatter.QuantumTheory.DensityOperator.Expectation.0.QuantumTheory.densityExpectationTrace_norm_le"
+      "_private.LeanCondensedMatter.QuantumTheory.DensityOperator.Expectation.0.QuantumTheory.trace_comp_right_norm_le"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -14279,7 +14237,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "_private.LeanCondensedMatter.QuantumTheory.DensityOperator.Expectation.0.QuantumTheory.densityExpectationTrace_norm_le"
+      "_private.LeanCondensedMatter.QuantumTheory.DensityOperator.Expectation.0.QuantumTheory.trace_comp_right_norm_le"
     ],
     "dependencies": [
       "ContinuousLinearMap.IsTraceClass.adjoint",
@@ -14292,7 +14250,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "_private.LeanCondensedMatter.QuantumTheory.DensityOperator.Expectation.0.QuantumTheory.densityExpectationTrace_norm_le"
+      "_private.LeanCondensedMatter.QuantumTheory.DensityOperator.Expectation.0.QuantumTheory.trace_comp_right_norm_le"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -15352,11 +15310,11 @@
       "QuantumTheory.DensityOperator.expectation_re_nonneg_of_isPositive",
       "QuantumTheory.DensityOperator.summable_expectation_term",
       "QuantumTheory.gibbsOp_orthogonal_span_eq_bot_of_diagonal_sum_eq_spectralTrace",
+      "QuantumTheory.hasSum_eigenvalue_mul_energy",
       "QuantumTheory.helmholtzFreeEnergy_eq_components",
       "QuantumTheory.helmholtzFreeEnergy_eq_iff_eq_gibbsState",
       "QuantumTheory.helmholtzFreeEnergy_ge_and_entropy_ne_top",
       "QuantumTheory.isPureDensity_of_purity_eq_one",
-      "QuantumTheory.summable_eigenvalue_mul_energy_and_tsum",
       "_private.LeanCondensedMatter.QuantumTheory.POVM.Born.0.QuantumTheory.hasSum_probabilityKernel_eigenvector",
       "_private.LeanCondensedMatter.QuantumTheory.POVM.Born.0.QuantumTheory.hasSum_probabilityKernel_outcome",
       "_private.LeanCondensedMatter.QuantumTheory.POVM.Born.0.QuantumTheory.probabilityKernel_nonneg"
@@ -15377,11 +15335,11 @@
       "QuantumTheory.DensityOperator.expectation_re_nonneg_of_isPositive",
       "QuantumTheory.DensityOperator.summable_expectation_term",
       "QuantumTheory.gibbsOp_orthogonal_span_eq_bot_of_diagonal_sum_eq_spectralTrace",
+      "QuantumTheory.hasSum_eigenvalue_mul_energy",
       "QuantumTheory.helmholtzFreeEnergy_eq_components",
       "QuantumTheory.helmholtzFreeEnergy_eq_iff_eq_gibbsState",
       "QuantumTheory.helmholtzFreeEnergy_ge_and_entropy_ne_top",
       "QuantumTheory.isPureDensity_of_purity_eq_one",
-      "QuantumTheory.summable_eigenvalue_mul_energy_and_tsum",
       "_private.LeanCondensedMatter.QuantumTheory.POVM.Born.0.QuantumTheory.hasSum_probabilityKernel_eigenvector",
       "_private.LeanCondensedMatter.QuantumTheory.POVM.Born.0.QuantumTheory.hasSum_probabilityKernel_outcome",
       "_private.LeanCondensedMatter.QuantumTheory.POVM.Born.0.QuantumTheory.probabilityKernel_nonneg"
@@ -16030,7 +15988,6 @@
       "ContinuousLinearMap.diagonalExpectationValue_abs_eq_norm_sq_sqrt_abs",
       "ContinuousLinearMap.diagonalExpectationValue_abs_smul",
       "ContinuousLinearMap.diagonalExpectationValue_add",
-      "ContinuousLinearMap.diagonalExpectationValue_eq_of_inner_eq",
       "ContinuousLinearMap.diagonalExpectationValue_nonneg",
       "ContinuousLinearMap.diagonalExpectationValue_zero",
       "ContinuousLinearMap.hasSum_eigen_expansion_diagonalExpectationValue",
@@ -16041,10 +15998,10 @@
       "QuantumTheory.energyExpValue_eq_tsum_common_eigenbasis",
       "QuantumTheory.gibbsOp_diagonal_pos_of_norm_eq_one",
       "QuantumTheory.gibbsOp_orthogonal_span_eq_bot_of_diagonal_sum_eq_spectralTrace",
+      "QuantumTheory.hasSum_eigenvalue_mul_energy",
       "QuantumTheory.hasSum_entropyOp_diagonal",
       "QuantumTheory.hasSum_negMulLog_eigenvalues",
       "QuantumTheory.helmholtzFreeEnergy_eq_iff_eq_gibbsState",
-      "QuantumTheory.summable_eigenvalue_mul_energy_and_tsum",
       "QuantumTheory.vonNeumannEntropy_gibbs_diagonal",
       "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Bundled.0.ContinuousLinearMap.exists_abs_diagonal_hilbertBasis",
       "_private.LeanCondensedMatter.QuantumTheory.POVM.Born.0.QuantumTheory.hasSum_probabilityKernel_eigenvector",
@@ -16063,7 +16020,6 @@
       "ContinuousLinearMap.diagonalExpectationValue_abs_eq_norm_sq_sqrt_abs",
       "ContinuousLinearMap.diagonalExpectationValue_abs_smul",
       "ContinuousLinearMap.diagonalExpectationValue_add",
-      "ContinuousLinearMap.diagonalExpectationValue_eq_of_inner_eq",
       "ContinuousLinearMap.diagonalExpectationValue_nonneg",
       "ContinuousLinearMap.diagonalExpectationValue_zero",
       "ContinuousLinearMap.hasSum_eigen_expansion_diagonalExpectationValue",
@@ -16074,16 +16030,16 @@
       "QuantumTheory.energyExpValue_eq_tsum_common_eigenbasis",
       "QuantumTheory.gibbsOp_diagonal_pos_of_norm_eq_one",
       "QuantumTheory.gibbsOp_orthogonal_span_eq_bot_of_diagonal_sum_eq_spectralTrace",
+      "QuantumTheory.hasSum_eigenvalue_mul_energy",
       "QuantumTheory.hasSum_entropyOp_diagonal",
       "QuantumTheory.hasSum_negMulLog_eigenvalues",
       "QuantumTheory.helmholtzFreeEnergy_eq_iff_eq_gibbsState",
-      "QuantumTheory.summable_eigenvalue_mul_energy_and_tsum",
       "QuantumTheory.vonNeumannEntropy_gibbs_diagonal",
       "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Bundled.0.ContinuousLinearMap.exists_abs_diagonal_hilbertBasis",
       "_private.LeanCondensedMatter.QuantumTheory.POVM.Born.0.QuantumTheory.hasSum_probabilityKernel_eigenvector",
       "_private.LeanCondensedMatter.QuantumTheory.POVM.Born.0.QuantumTheory.hasSum_probabilityKernel_outcome"
     ],
-    "compiledConsumerCount": 26,
+    "compiledConsumerCount": 25,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -16246,46 +16202,6 @@
     "module": "LeanCondensedMatter.Analysis.Operator.DiagonalExpectation",
     "externalAxioms": [],
     "docString": "Lossless diagonal expectation is additive in the operator. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "ContinuousLinearMap.coe_diagonalExpectationValue_right"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {T S : H →L[ℂ] H} (hT : IsSelfAdjoint T) (hS : IsSelfAdjoint S) (x : H),\n  inner ℂ x (T x) = inner ℂ x (S x) → T.diagonalExpectationValue hT x = S.diagonalExpectationValue hS x",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "ContinuousLinearMap.diagonalExpectationValue_eq_of_inner_eq",
-    "module": "LeanCondensedMatter.Analysis.Operator.DiagonalExpectation",
-    "externalAxioms": [],
-    "docString": "Equal diagonal matrix elements give equal lossless diagonal-expectation values. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [],
@@ -31023,9 +30939,7 @@
       "QuantumMechanics.SingleParticle.Continuum.continuumH2LaplacianPMap1D_isSelfAdjoint_iff_adjoint_domain_le",
       "QuantumMechanics.SingleParticle.Continuum.continuumRealPotentialSchrodingerHamiltonian1D_isSelfAdjoint_iff_adjoint_domain_le"
     ],
-    "dependencies": [
-      "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.SelfAdjointCriterion.0.LinearPMap.isSelfAdjoint_of_isFormalAdjoint_of_adjoint_domain_le"
-    ],
+    "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
@@ -45575,7 +45489,7 @@
       "QuantumTheory.DensityOperator.expectation_op",
       "QuantumTheory.DensityOperator.expectation_pure_observable",
       "QuantumTheory.DensityOperator.expectation_re_nonneg_of_isPositive",
-      "QuantumTheory.summable_eigenvalue_mul_energy_and_tsum",
+      "QuantumTheory.hasSum_eigenvalue_mul_energy",
       "_private.LeanCondensedMatter.QuantumTheory.POVM.Born.0.QuantumTheory.hasSum_probabilityKernel_eigenvector"
     ],
     "dependencies": [
@@ -45597,7 +45511,7 @@
       "QuantumTheory.DensityOperator.expectation_op",
       "QuantumTheory.DensityOperator.expectation_pure_observable",
       "QuantumTheory.DensityOperator.expectation_re_nonneg_of_isPositive",
-      "QuantumTheory.summable_eigenvalue_mul_energy_and_tsum",
+      "QuantumTheory.hasSum_eigenvalue_mul_energy",
       "_private.LeanCondensedMatter.QuantumTheory.POVM.Born.0.QuantumTheory.hasSum_probabilityKernel_eigenvector"
     ],
     "compiledConsumerCount": 6,
@@ -45919,7 +45833,7 @@
       "QuantumTheory.DensityOperator.hasSum_observableExpectation_diagonal",
       "QuantumTheory.DensityOperator.observableExpectation_pure",
       "QuantumTheory.LinearResponse.observableExpectation_evolveDensityOperator_eq_heisenberg",
-      "QuantumTheory.summable_eigenvalue_mul_energy_and_tsum"
+      "QuantumTheory.hasSum_eigenvalue_mul_energy"
     ],
     "dependencies": [
       "QuantumTheory.DensityOperator.expectation_im_eq_zero_of_isSymmetric"
@@ -45930,7 +45844,7 @@
       "QuantumTheory.DensityOperator.hasSum_observableExpectation_diagonal",
       "QuantumTheory.DensityOperator.observableExpectation_pure",
       "QuantumTheory.LinearResponse.observableExpectation_evolveDensityOperator_eq_heisenberg",
-      "QuantumTheory.summable_eigenvalue_mul_energy_and_tsum"
+      "QuantumTheory.hasSum_eigenvalue_mul_energy"
     ],
     "compiledConsumerCount": 4,
     "axioms": [
@@ -46702,7 +46616,7 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "_private.LeanCondensedMatter.QuantumTheory.DensityOperator.Expectation.0.QuantumTheory.densityExpectationTrace_norm_le"
+      "_private.LeanCondensedMatter.QuantumTheory.DensityOperator.Expectation.0.QuantumTheory.trace_comp_right_norm_le"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -46963,11 +46877,11 @@
       "QuantumTheory.DensityOperator.expectation_pure_observable",
       "QuantumTheory.DensityOperator.expectation_re_nonneg_of_isPositive",
       "QuantumTheory.DensityOperator.summable_expectation_term",
+      "QuantumTheory.hasSum_eigenvalue_mul_energy",
       "QuantumTheory.helmholtzFreeEnergy_eq_components",
       "QuantumTheory.helmholtzFreeEnergy_eq_iff_eq_gibbsState",
       "QuantumTheory.helmholtzFreeEnergy_ge_and_entropy_ne_top",
       "QuantumTheory.isPureDensity_of_purity_eq_one",
-      "QuantumTheory.summable_eigenvalue_mul_energy_and_tsum",
       "_private.LeanCondensedMatter.QuantumTheory.POVM.Born.0.QuantumTheory.hasSum_probabilityKernel_eigenvector",
       "_private.LeanCondensedMatter.QuantumTheory.POVM.Born.0.QuantumTheory.hasSum_probabilityKernel_outcome",
       "_private.LeanCondensedMatter.QuantumTheory.POVM.Born.0.QuantumTheory.probabilityKernel_nonneg"
@@ -46985,11 +46899,11 @@
       "QuantumTheory.DensityOperator.expectation_pure_observable",
       "QuantumTheory.DensityOperator.expectation_re_nonneg_of_isPositive",
       "QuantumTheory.DensityOperator.summable_expectation_term",
+      "QuantumTheory.hasSum_eigenvalue_mul_energy",
       "QuantumTheory.helmholtzFreeEnergy_eq_components",
       "QuantumTheory.helmholtzFreeEnergy_eq_iff_eq_gibbsState",
       "QuantumTheory.helmholtzFreeEnergy_ge_and_entropy_ne_top",
       "QuantumTheory.isPureDensity_of_purity_eq_one",
-      "QuantumTheory.summable_eigenvalue_mul_energy_and_tsum",
       "_private.LeanCondensedMatter.QuantumTheory.POVM.Born.0.QuantumTheory.hasSum_probabilityKernel_eigenvector",
       "_private.LeanCondensedMatter.QuantumTheory.POVM.Born.0.QuantumTheory.hasSum_probabilityKernel_outcome",
       "_private.LeanCondensedMatter.QuantumTheory.POVM.Born.0.QuantumTheory.probabilityKernel_nonneg"
@@ -47169,7 +47083,7 @@
       "QuantumTheory.DensityOperator.expectation_im_eq_zero_of_isSymmetric",
       "QuantumTheory.DensityOperator.expectation_op",
       "QuantumTheory.DensityOperator.expectation_re_nonneg_of_isPositive",
-      "QuantumTheory.summable_eigenvalue_mul_energy_and_tsum",
+      "QuantumTheory.hasSum_eigenvalue_mul_energy",
       "_private.LeanCondensedMatter.QuantumTheory.POVM.Born.0.QuantumTheory.hasSum_probabilityKernel_eigenvector"
     ],
     "dependencies": [
@@ -47186,7 +47100,7 @@
       "QuantumTheory.DensityOperator.expectation_im_eq_zero_of_isSymmetric",
       "QuantumTheory.DensityOperator.expectation_op",
       "QuantumTheory.DensityOperator.expectation_re_nonneg_of_isPositive",
-      "QuantumTheory.summable_eigenvalue_mul_energy_and_tsum",
+      "QuantumTheory.hasSum_eigenvalue_mul_energy",
       "_private.LeanCondensedMatter.QuantumTheory.POVM.Born.0.QuantumTheory.hasSum_probabilityKernel_eigenvector"
     ],
     "compiledConsumerCount": 5,
@@ -47269,7 +47183,7 @@
     "dependents": [
       "QuantumTheory.DensityOperator.hasSum_diagonalExpectationValue_eq_one",
       "QuantumTheory.DensityOperator.sum_diagonalExpectationValue_le_one",
-      "_private.LeanCondensedMatter.QuantumTheory.DensityOperator.Expectation.0.QuantumTheory.densityExpectationTrace_norm_le"
+      "_private.LeanCondensedMatter.QuantumTheory.DensityOperator.Expectation.0.QuantumTheory.trace_comp_right_norm_le"
     ],
     "dependencies": [
       "ContinuousLinearMap.IsTraceClass.traceNorm_eq_realTrace",
@@ -47281,7 +47195,7 @@
     "compiledConsumers": [
       "QuantumTheory.DensityOperator.hasSum_diagonalExpectationValue_eq_one",
       "QuantumTheory.DensityOperator.sum_diagonalExpectationValue_le_one",
-      "_private.LeanCondensedMatter.QuantumTheory.DensityOperator.Expectation.0.QuantumTheory.densityExpectationTrace_norm_le"
+      "_private.LeanCondensedMatter.QuantumTheory.DensityOperator.Expectation.0.QuantumTheory.trace_comp_right_norm_le"
     ],
     "compiledConsumerCount": 3,
     "axioms": [
@@ -47575,10 +47489,10 @@
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
-    "retainedNeedsReview": true,
+    "retainedNeedsReview": false,
     "retainedMention": true,
     "projectAxioms": [],
     "name": "QuantumTheory.LinearResponse.HasAdiabaticRemovalLimit.finsetSum",
@@ -47588,15 +47502,17 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.LehmannLimits.0.QuantumTheory.LinearResponse.eventually_hasAdiabaticRemovalLimit_finset_frequencyTerm",
       "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.LehmannLimits.0.QuantumTheory.LinearResponse.finset_frequencyTerm_has_both_local_iterated_limits"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.LehmannLimits.0.QuantumTheory.LinearResponse.eventually_hasAdiabaticRemovalLimit_finset_frequencyTerm",
       "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.LehmannLimits.0.QuantumTheory.LinearResponse.finset_frequencyTerm_has_both_local_iterated_limits"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -47796,13 +47712,13 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.LinearResponse.integral_tsum_purePointAdiabaticTransitionIntegrand_Ioi_zero"
+      "QuantumTheory.LinearResponse.adiabaticFrequencyDomainSusceptibilityOfPositiveRate_purePoint_eq_lehmannSeries"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.LinearResponse.integral_tsum_purePointAdiabaticTransitionIntegrand_Ioi_zero"
+      "QuantumTheory.LinearResponse.adiabaticFrequencyDomainSusceptibilityOfPositiveRate_purePoint_eq_lehmannSeries"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -48025,7 +47941,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {ι : Type u_2} (system : QuantumTheory.LinearResponse.BoundedFreeSystem H) [inst_3 : Fintype ι]\n  (data : QuantumTheory.LinearResponse.PurePointLehmannData system ι) (A B : H →L[ℂ] H) (omega eta : ℝ) (hη : 0 < eta),\n  QuantumTheory.LinearResponse.adiabaticFrequencyDomainSusceptibilityOfPositiveRate system\n      (QuantumTheory.LinearResponse.purePointNormalizedExpectation system data) A B omega eta hη =\n    ∑ mn,\n      QuantumTheory.LinearResponse.lehmannTerm system.hbar omega eta (data.energy mn.1 - data.energy mn.2)\n        (QuantumTheory.LinearResponse.purePointTransitionWeight system data A B mn)",
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {ι : Type u_2} (system : QuantumTheory.LinearResponse.BoundedFreeSystem H) [inst_3 : Fintype ι]\n  (data : QuantumTheory.LinearResponse.PurePointLehmannData system ι) (A B : H →L[ℂ] H) (omega eta : ℝ) (hη : 0 < eta),\n  QuantumTheory.LinearResponse.adiabaticFrequencyDomainSusceptibilityOfPositiveRate system\n      (QuantumTheory.LinearResponse.purePointNormalizedExpectation system data) A B omega eta hη =\n    ∑ mn,\n      QuantumTheory.LinearResponse.lehmannTerm system.hbar omega eta (data.energy mn.1 - data.energy mn.2)\n        (QuantumTheory.LinearResponse.purePointTransitionData system data A B mn).weight",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -48097,6 +48013,7 @@
       "QuantumTheory.LinearResponse.adiabaticFrequencyDomainSusceptibilityOfPositiveRate_purePoint_eq_finite_sum"
     ],
     "dependencies": [
+      "QuantumTheory.LinearResponse.PurePointTimeDomainSummable.lehmannSummable",
       "QuantumTheory.LinearResponse.integral_adiabaticFrequencySusceptibilityIntegrand_eq_Ioi_zero",
       "QuantumTheory.LinearResponse.integral_tsum_purePointAdiabaticTransitionIntegrand_Ioi_zero",
       "QuantumTheory.LinearResponse.retardedTimeDifferenceKernel_purePoint_eq_timeDomainSeries_of_nonneg"
@@ -49648,7 +49565,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -49660,7 +49577,6 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.LinearResponse.hasDerivAt_affinePerturbedExpectation_zero_of_bound_kubo",
       "QuantumTheory.LinearResponse.hasDerivAt_timeDependentPerturbedExpectationFunctional_apply_zero_of_bound_kubo"
     ],
     "dependencies": [
@@ -49669,10 +49585,9 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.LinearResponse.hasDerivAt_affinePerturbedExpectation_zero_of_bound_kubo",
       "QuantumTheory.LinearResponse.hasDerivAt_timeDependentPerturbedExpectationFunctional_apply_zero_of_bound_kubo"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -50068,7 +49983,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {ι : Type u_2} [inst_3 : Fintype ι] (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (data : QuantumTheory.LinearResponse.PurePointLehmannData system ι) (A B : H →L[ℂ] H),\n  QuantumTheory.LinearResponse.PurePointStaticNonresonant system data A B →\n    QuantumTheory.LinearResponse.HasLongTimeThenLocalStaticThenAdiabaticLimit\n        (fun T omega eta =>\n          QuantumTheory.LinearResponse.finiteTimeAdiabaticFrequencyDomainSusceptibility system\n            (QuantumTheory.LinearResponse.purePointNormalizedExpectation system data) A B omega eta T)\n        (∑ mn,\n          QuantumTheory.LinearResponse.unswitchedLehmannTerm system.hbar 0 (data.energy mn.1 - data.energy mn.2)\n            (QuantumTheory.LinearResponse.purePointTransitionWeight system data A B mn)) ∧\n      QuantumTheory.LinearResponse.HasLongTimeThenLocalAdiabaticThenStaticLimit\n        (fun T omega eta =>\n          QuantumTheory.LinearResponse.finiteTimeAdiabaticFrequencyDomainSusceptibility system\n            (QuantumTheory.LinearResponse.purePointNormalizedExpectation system data) A B omega eta T)\n        (∑ mn,\n          QuantumTheory.LinearResponse.unswitchedLehmannTerm system.hbar 0 (data.energy mn.1 - data.energy mn.2)\n            (QuantumTheory.LinearResponse.purePointTransitionWeight system data A B mn))",
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {ι : Type u_2} [inst_3 : Fintype ι] (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (data : QuantumTheory.LinearResponse.PurePointLehmannData system ι) (A B : H →L[ℂ] H),\n  QuantumTheory.LinearResponse.PurePointStaticNonresonant system data A B →\n    QuantumTheory.LinearResponse.HasLongTimeThenLocalStaticThenAdiabaticLimit\n        (fun T omega eta =>\n          QuantumTheory.LinearResponse.finiteTimeAdiabaticFrequencyDomainSusceptibility system\n            (QuantumTheory.LinearResponse.purePointNormalizedExpectation system data) A B omega eta T)\n        (∑ mn,\n          QuantumTheory.LinearResponse.unswitchedLehmannTerm system.hbar 0 (data.energy mn.1 - data.energy mn.2)\n            (QuantumTheory.LinearResponse.purePointTransitionData system data A B mn).weight) ∧\n      QuantumTheory.LinearResponse.HasLongTimeThenLocalAdiabaticThenStaticLimit\n        (fun T omega eta =>\n          QuantumTheory.LinearResponse.finiteTimeAdiabaticFrequencyDomainSusceptibility system\n            (QuantumTheory.LinearResponse.purePointNormalizedExpectation system data) A B omega eta T)\n        (∑ mn,\n          QuantumTheory.LinearResponse.unswitchedLehmannTerm system.hbar 0 (data.energy mn.1 - data.energy mn.2)\n            (QuantumTheory.LinearResponse.purePointTransitionData system data A B mn).weight)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -50109,7 +50024,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {ι : Type u_2} [inst_3 : Fintype ι] (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (data : QuantumTheory.LinearResponse.PurePointLehmannData system ι) (A B : H →L[ℂ] H),\n  QuantumTheory.LinearResponse.PurePointStaticNonresonant system data A B →\n    QuantumTheory.LinearResponse.HasLocalStaticThenAdiabaticLimit\n        (fun omega eta =>\n          ∑ mn,\n            QuantumTheory.LinearResponse.lehmannTerm system.hbar omega eta (data.energy mn.1 - data.energy mn.2)\n              (QuantumTheory.LinearResponse.purePointTransitionWeight system data A B mn))\n        (∑ mn,\n          QuantumTheory.LinearResponse.unswitchedLehmannTerm system.hbar 0 (data.energy mn.1 - data.energy mn.2)\n            (QuantumTheory.LinearResponse.purePointTransitionWeight system data A B mn)) ∧\n      QuantumTheory.LinearResponse.HasLocalAdiabaticThenStaticLimit\n        (fun omega eta =>\n          ∑ mn,\n            QuantumTheory.LinearResponse.lehmannTerm system.hbar omega eta (data.energy mn.1 - data.energy mn.2)\n              (QuantumTheory.LinearResponse.purePointTransitionWeight system data A B mn))\n        (∑ mn,\n          QuantumTheory.LinearResponse.unswitchedLehmannTerm system.hbar 0 (data.energy mn.1 - data.energy mn.2)\n            (QuantumTheory.LinearResponse.purePointTransitionWeight system data A B mn))",
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {ι : Type u_2} [inst_3 : Fintype ι] (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (data : QuantumTheory.LinearResponse.PurePointLehmannData system ι) (A B : H →L[ℂ] H),\n  QuantumTheory.LinearResponse.PurePointStaticNonresonant system data A B →\n    QuantumTheory.LinearResponse.HasLocalStaticThenAdiabaticLimit\n        (fun omega eta =>\n          ∑ mn,\n            QuantumTheory.LinearResponse.lehmannTerm system.hbar omega eta (data.energy mn.1 - data.energy mn.2)\n              (QuantumTheory.LinearResponse.purePointTransitionData system data A B mn).weight)\n        (∑ mn,\n          QuantumTheory.LinearResponse.unswitchedLehmannTerm system.hbar 0 (data.energy mn.1 - data.energy mn.2)\n            (QuantumTheory.LinearResponse.purePointTransitionData system data A B mn).weight) ∧\n      QuantumTheory.LinearResponse.HasLocalAdiabaticThenStaticLimit\n        (fun omega eta =>\n          ∑ mn,\n            QuantumTheory.LinearResponse.lehmannTerm system.hbar omega eta (data.energy mn.1 - data.energy mn.2)\n              (QuantumTheory.LinearResponse.purePointTransitionData system data A B mn).weight)\n        (∑ mn,\n          QuantumTheory.LinearResponse.unswitchedLehmannTerm system.hbar 0 (data.energy mn.1 - data.energy mn.2)\n            (QuantumTheory.LinearResponse.purePointTransitionData system data A B mn).weight)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -50760,9 +50675,8 @@
       "QuantumTheory.LinearResponse.hasDerivAt_affineSourceCoupledExpectation_zero_of_bound_retarded"
     ],
     "dependencies": [
-      "QuantumTheory.LinearResponse.expectation_commutator_firstVariation_eq_integral",
       "QuantumTheory.LinearResponse.hasDerivAt_timeDependentPerturbedExpectationFunctional_apply_zero_of_bound",
-      "QuantumTheory.LinearResponse.star_timeDependentPropagatorFirstVariation_eq_neg_of_isSelfAdjoint",
+      "QuantumTheory.LinearResponse.hasDerivAt_timeDependentPerturbedExpectationFunctional_apply_zero_of_bound_kubo",
       "QuantumTheory.LinearResponse.timeDependentInteractionPropagator_zero_coupling",
       "QuantumTheory.LinearResponse.timeDependentPerturbedExpectationFunctional_apply"
     ],
@@ -51149,7 +51063,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -51161,6 +51075,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "QuantumTheory.LinearResponse.hasDerivAt_affinePerturbedExpectation_zero_of_bound_kubo",
       "QuantumTheory.LinearResponse.hasDerivAt_sourceCoupledPerturbedExpectation_zero_of_bound_kubo"
     ],
     "dependencies": [
@@ -51170,9 +51085,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "QuantumTheory.LinearResponse.hasDerivAt_affinePerturbedExpectation_zero_of_bound_kubo",
       "QuantumTheory.LinearResponse.hasDerivAt_sourceCoupledPerturbedExpectation_zero_of_bound_kubo"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -52184,7 +52100,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {ι : Type u_2} (system : QuantumTheory.LinearResponse.BoundedFreeSystem H) [Countable ι]\n  (data : QuantumTheory.LinearResponse.PurePointLehmannData system ι) (A B : H →L[ℂ] H) (omega eta : ℝ),\n  0 < eta →\n    QuantumTheory.LinearResponse.PurePointTimeDomainSummable system data A B →\n      ∫ (τ : ℝ) in Set.Ioi 0,\n          ∑' (mn : ι × ι),\n            QuantumTheory.LinearResponse.purePointAdiabaticTransitionIntegrand system data A B omega eta mn τ =\n        QuantumTheory.LinearResponse.purePointLehmannSeries system data A B omega eta",
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {ι : Type u_2} (system : QuantumTheory.LinearResponse.BoundedFreeSystem H) [Countable ι]\n  (data : QuantumTheory.LinearResponse.PurePointLehmannData system ι) (A B : H →L[ℂ] H) (omega eta : ℝ),\n  0 < eta →\n    QuantumTheory.LinearResponse.PurePointLehmannSummable system data A B →\n      ∫ (τ : ℝ) in Set.Ioi 0,\n          ∑' (mn : ι × ι),\n            QuantumTheory.LinearResponse.purePointAdiabaticTransitionIntegrand system data A B omega eta mn τ =\n        QuantumTheory.LinearResponse.purePointLehmannSeries system data A B omega eta",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -52199,7 +52115,7 @@
     "name": "QuantumTheory.LinearResponse.integral_tsum_purePointAdiabaticTransitionIntegrand_Ioi_zero",
     "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.PurePointFrequencyDomain",
     "externalAxioms": [],
-    "docString": "The countable transition sum may be exchanged with the causal fixed-rate Bochner integral. ",
+    "docString": "Absolute summability of transition weights suffices to exchange the countable transition sum\nwith the causal fixed-positive-rate Bochner integral. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
@@ -52207,7 +52123,6 @@
     ],
     "dependencies": [
       "QuantumTheory.LinearResponse.LehmannTransitionData.norm_timeTerm",
-      "QuantumTheory.LinearResponse.PurePointTimeDomainSummable.lehmannSummable",
       "QuantumTheory.LinearResponse.integrableOn_lehmannMode_Ioi_zero",
       "QuantumTheory.LinearResponse.integral_purePointAdiabaticTransitionIntegrand_Ioi_zero",
       "QuantumTheory.LinearResponse.purePointAdiabaticTransitionIntegrand_eq_transitionMode"
@@ -53853,58 +53768,16 @@
     "directWrapperOf": null,
     "dependents": [
       "QuantumTheory.LinearResponse.integral_purePointAdiabaticTransitionIntegrand_Ioi_zero",
-      "QuantumTheory.LinearResponse.integral_tsum_purePointAdiabaticTransitionIntegrand_Ioi_zero",
-      "QuantumTheory.LinearResponse.purePointAdiabaticTransitionIntegrand_eq_weight_mul_lehmannMode"
+      "QuantumTheory.LinearResponse.integral_tsum_purePointAdiabaticTransitionIntegrand_Ioi_zero"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.LinearResponse.integral_purePointAdiabaticTransitionIntegrand_Ioi_zero",
-      "QuantumTheory.LinearResponse.integral_tsum_purePointAdiabaticTransitionIntegrand_Ioi_zero",
-      "QuantumTheory.LinearResponse.purePointAdiabaticTransitionIntegrand_eq_weight_mul_lehmannMode"
+      "QuantumTheory.LinearResponse.integral_tsum_purePointAdiabaticTransitionIntegrand_Ioi_zero"
     ],
-    "compiledConsumerCount": 3,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {ι : Type u_2} (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (data : QuantumTheory.LinearResponse.PurePointLehmannData system ι) (A B : H →L[ℂ] H) (omega eta : ℝ) (mn : ι × ι)\n  (τ : ℝ),\n  QuantumTheory.LinearResponse.purePointAdiabaticTransitionIntegrand system data A B omega eta mn τ =\n    QuantumTheory.LinearResponse.purePointTransitionWeight system data A B mn *\n      QuantumTheory.LinearResponse.lehmannMode system.hbar omega eta\n        (QuantumTheory.LinearResponse.orderedLehmannEnergyGap (data.energy mn.1) (data.energy mn.2)) τ",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.LinearResponse.purePointAdiabaticTransitionIntegrand_eq_weight_mul_lehmannMode",
-    "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.PurePointFrequencyDomain",
-    "externalAxioms": [],
-    "docString": "Compatibility form exposing the historical weight and ordered energy-gap accessors. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "QuantumTheory.LinearResponse.purePointAdiabaticTransitionIntegrand_eq_transitionMode"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -54059,7 +53932,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {ι : Type u_2} (system : QuantumTheory.LinearResponse.BoundedFreeSystem H) [inst_3 : Fintype ι]\n  (data : QuantumTheory.LinearResponse.PurePointLehmannData system ι) (A B : H →L[ℂ] H) (omega eta : ℝ),\n  QuantumTheory.LinearResponse.purePointLehmannSeries system data A B omega eta =\n    ∑ mn,\n      QuantumTheory.LinearResponse.lehmannTerm system.hbar omega eta (data.energy mn.1 - data.energy mn.2)\n        (QuantumTheory.LinearResponse.purePointTransitionWeight system data A B mn)",
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {ι : Type u_2} (system : QuantumTheory.LinearResponse.BoundedFreeSystem H) [inst_3 : Fintype ι]\n  (data : QuantumTheory.LinearResponse.PurePointLehmannData system ι) (A B : H →L[ℂ] H) (omega eta : ℝ),\n  QuantumTheory.LinearResponse.purePointLehmannSeries system data A B omega eta =\n    ∑ mn,\n      QuantumTheory.LinearResponse.lehmannTerm system.hbar omega eta (data.energy mn.1 - data.energy mn.2)\n        (QuantumTheory.LinearResponse.purePointTransitionData system data A B mn).weight",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -54234,46 +54107,8 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {ι : Type u_2} (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (data : QuantumTheory.LinearResponse.PurePointLehmannData system ι) (A B : H →L[ℂ] H) (τ : ℝ) (mn : ι × ι),\n  QuantumTheory.LinearResponse.purePointTimeDomainTerm system data A B τ mn =\n    QuantumTheory.LinearResponse.purePointTransitionWeight system data A B mn *\n      Complex.exp\n        (Complex.I *\n          ↑(QuantumTheory.LinearResponse.orderedLehmannEnergyGap (data.energy mn.1) (data.energy mn.2) * τ /\n              system.hbar))",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.LinearResponse.purePointTimeDomainTerm_eq_exp_energyDifference",
-    "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.PurePointTimeDomain",
-    "externalAxioms": [],
-    "docString": "The physical transition term written with the explicit energy-difference exponential. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {ι : Type u_2} (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (data : QuantumTheory.LinearResponse.PurePointLehmannData system ι) (A B : H →L[ℂ] H) (τ : ℝ) (mn : ι × ι),\n  QuantumTheory.LinearResponse.purePointTimeDomainTerm system data A B τ mn =\n    QuantumTheory.LinearResponse.purePointTransitionWeight system data A B mn *\n      QuantumTheory.LinearResponse.purePointTransitionPhase system data mn.1 mn.2 τ",
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {ι : Type u_2} (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (data : QuantumTheory.LinearResponse.PurePointLehmannData system ι) (A B : H →L[ℂ] H) (τ : ℝ) (mn : ι × ι),\n  QuantumTheory.LinearResponse.purePointTimeDomainTerm system data A B τ mn =\n    (QuantumTheory.LinearResponse.purePointTransitionData system data A B mn).weight *\n      QuantumTheory.LinearResponse.purePointTransitionPhase system data mn.1 mn.2 τ",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -54355,6 +54190,48 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {ι : Type u_2} (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (data : QuantumTheory.LinearResponse.PurePointLehmannData system ι) (A B : H →L[ℂ] H) (i : ι),\n  (QuantumTheory.LinearResponse.purePointTransitionData system data A B (i, i)).weight = 0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.LinearResponse.purePointTransitionData_weight_diag",
+    "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann",
+    "externalAxioms": [],
+    "docString": "Diagonal pure-point transitions have zero physical weight. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.Transport.finiteKuboGreenwoodDirectionalCurrentTerm_diag"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.Transport.finiteKuboGreenwoodDirectionalCurrentTerm_diag"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {ι : Type u_2} (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (data : QuantumTheory.LinearResponse.PurePointLehmannData system ι) (m n : ι) (t : ℝ),\n  QuantumTheory.LinearResponse.purePointTransitionPhase system data m n t =\n    Complex.exp\n      (Complex.I *\n        ↑(QuantumTheory.LinearResponse.orderedLehmannEnergyGap (data.energy m) (data.energy n) * t / system.hbar))",
     "standardAxioms": [
       "Classical.choice",
@@ -54381,48 +54258,6 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.LinearResponse.purePointTimeDomainTerm_eq_weight_mul_transitionPhase"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {ι : Type u_2} (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (data : QuantumTheory.LinearResponse.PurePointLehmannData system ι) (A B : H →L[ℂ] H) (i : ι),\n  QuantumTheory.LinearResponse.purePointTransitionWeight system data A B (i, i) = 0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.LinearResponse.purePointTransitionWeight_diag",
-    "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann",
-    "externalAxioms": [],
-    "docString": "Diagonal pure-point transitions have zero physical weight. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.Transport.finiteKuboGreenwoodDirectionalCurrentTerm_diag"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.Transport.finiteKuboGreenwoodDirectionalCurrentTerm_diag"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -55312,7 +55147,6 @@
     "directWrapperOf": null,
     "dependents": [
       "QuantumTheory.LinearResponse.densityOperatorFirstVariation_eq_lie_of_isSelfAdjoint",
-      "QuantumTheory.LinearResponse.hasDerivAt_affinePerturbedExpectation_zero_of_bound_kubo",
       "QuantumTheory.LinearResponse.hasDerivAt_timeDependentPerturbedExpectationFunctional_apply_zero_of_bound_of_isSelfAdjoint"
     ],
     "dependencies": [
@@ -55322,10 +55156,9 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.LinearResponse.densityOperatorFirstVariation_eq_lie_of_isSelfAdjoint",
-      "QuantumTheory.LinearResponse.hasDerivAt_affinePerturbedExpectation_zero_of_bound_kubo",
       "QuantumTheory.LinearResponse.hasDerivAt_timeDependentPerturbedExpectationFunctional_apply_zero_of_bound_of_isSelfAdjoint"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -55432,7 +55265,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {ι : Type u_2} (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (data : QuantumTheory.LinearResponse.PurePointLehmannData system ι) (A B : H →L[ℂ] H) (omega eta : ℝ),\n  QuantumTheory.LinearResponse.PurePointLehmannSummable system data A B →\n    0 < eta →\n      Summable fun mn =>\n        QuantumTheory.LinearResponse.lehmannTerm system.hbar omega eta (data.energy mn.1 - data.energy mn.2)\n          (QuantumTheory.LinearResponse.purePointTransitionWeight system data A B mn)",
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {ι : Type u_2} (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (data : QuantumTheory.LinearResponse.PurePointLehmannData system ι) (A B : H →L[ℂ] H) (omega eta : ℝ),\n  QuantumTheory.LinearResponse.PurePointLehmannSummable system data A B →\n    0 < eta →\n      Summable fun mn =>\n        QuantumTheory.LinearResponse.lehmannTerm system.hbar omega eta (data.energy mn.1 - data.energy mn.2)\n          (QuantumTheory.LinearResponse.purePointTransitionData system data A B mn).weight",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -55448,8 +55281,8 @@
     "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann",
     "externalAxioms": [],
     "docString": "Absolute transition-weight summability implies summability of the fixed-rate pure-point\nLehmann series for every `eta > 0`. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
+    "directWrapperTargetModule": "LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann",
+    "directWrapperOf": "QuantumTheory.LinearResponse.LehmannTransitionData.summable_frequencyTerm_of_pos",
     "dependents": [],
     "dependencies": [
       "QuantumTheory.LinearResponse.LehmannTransitionData.summable_frequencyTerm_of_pos"
@@ -56754,46 +56587,6 @@
       "QuantumTheory.Models.KronigPenney.oneCellTransfer_det_of_mem"
     ],
     "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ (params : QuantumTheory.Models.MassiveDirac.AheBornRtaParameters),\n  params.bornRtaLongitudinalConductivity =\n    params.e ^ 2 * params.hbar * params.v ^ 2 * (params.fermiEnergy ^ 2 - params.m ^ 2) /\n      (Real.pi * params.disorderStrength * (params.fermiEnergy ^ 2 + 3 * params.m ^ 2))",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Models.MassiveDirac.AheBornRtaParameters.bornRtaLongitudinalConductivity_eq",
-    "module": "LeanCondensedMatter.Models.MassiveDirac.Scaling.Longitudinal",
-    "externalAxioms": [],
-    "docString": "The microscopic Born-RTA conductivity has the explicit `1/W` closed form. ",
-    "directWrapperTargetModule": "LeanCondensedMatter.Models.MassiveDirac.Conductivity.Longitudinal.BornRelaxationTime",
-    "directWrapperOf": "QuantumTheory.Models.MassiveDirac.zeroTemperatureRelaxationTimeLongitudinalConductivity_bornTransportLifetime_eq",
-    "dependents": [],
-    "dependencies": [
-      "QuantumTheory.Models.MassiveDirac.zeroTemperatureRelaxationTimeLongitudinalConductivity_bornTransportLifetime_eq"
-    ],
-    "crossModuleDirectWrapper": true,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -59969,7 +59762,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -59981,8 +59774,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Models.MassiveDirac.continuous_continuumBornRadialIntegrandOfRegulator",
-      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.Denominator.0.QuantumTheory.Models.MassiveDirac.continuous_continuumBornRadialDenominatorIntegrandOfRegulator"
+      "QuantumTheory.Models.MassiveDirac.continuous_continuumBornRadialIntegrandOfRegulator"
     ],
     "dependencies": [
       "QuantumTheory.Models.MassiveDirac.pauliGreenDenominatorOfRegulator_ne_zero"
@@ -59990,10 +59782,9 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Models.MassiveDirac.continuous_continuumBornRadialIntegrandOfRegulator",
-      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.Denominator.0.QuantumTheory.Models.MassiveDirac.continuous_continuumBornRadialDenominatorIntegrandOfRegulator"
+      "QuantumTheory.Models.MassiveDirac.continuous_continuumBornRadialIntegrandOfRegulator"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -79428,7 +79219,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -79440,7 +79231,6 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Models.MassiveDirac.AheBornRtaParameters.bornRtaLongitudinalConductivity_eq",
       "QuantumTheory.Models.MassiveDirac.disorderStrength_mul_zeroTemperatureRelaxationTimeLongitudinalConductivity_bornTransportLifetime_eq"
     ],
     "dependencies": [
@@ -79450,10 +79240,9 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Models.MassiveDirac.AheBornRtaParameters.bornRtaLongitudinalConductivity_eq",
       "QuantumTheory.Models.MassiveDirac.disorderStrength_mul_zeroTemperatureRelaxationTimeLongitudinalConductivity_bornTransportLifetime_eq"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -87416,44 +87205,6 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
-    "statement": "∀ (z : ℂ) (eigenvalue : ℝ),\n  z - ↑eigenvalue ≠ 0 → ContinuousAt (fun w => QuantumTheory.Transport.scalarResolventCoefficient w eigenvalue) z",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.continuousAt_scalarResolventCoefficient",
-    "module": "LeanCondensedMatter.Transport.Resolvent.Spectral",
-    "externalAxioms": [],
-    "docString": "The scalar resolvent coefficient is continuous wherever its spectral denominator is nonzero. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
     "terminal": false,
     "statement": "Continuous QuantumTheory.Transport.polarFourierFirstCosineAngularKernel",
     "standardAxioms": [
@@ -90468,7 +90219,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} {ι : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (data : QuantumTheory.LinearResponse.PurePointLehmannData system ι) (measured source : H →L[ℂ] H) (omega eta : ℝ),\n  0 < eta →\n    ∀ (mn : ι × ι),\n      QuantumTheory.LinearResponse.lehmannTerm system.hbar omega eta (data.energy mn.1 - data.energy mn.2)\n          (QuantumTheory.LinearResponse.purePointTransitionWeight system data measured source mn) =\n        QuantumTheory.Transport.purePointKuboBastinSpectralVertexTerm system data measured source omega eta mn",
+    "statement": "∀ {H : Type u_1} {ι : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (data : QuantumTheory.LinearResponse.PurePointLehmannData system ι) (measured source : H →L[ℂ] H) (omega eta : ℝ),\n  0 < eta →\n    ∀ (mn : ι × ι),\n      QuantumTheory.LinearResponse.lehmannTerm system.hbar omega eta (data.energy mn.1 - data.energy mn.2)\n          (QuantumTheory.LinearResponse.purePointTransitionData system data measured source mn).weight =\n        QuantumTheory.Transport.purePointKuboBastinSpectralVertexTerm system data measured source omega eta mn",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -94058,6 +93809,57 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (ρ : QuantumTheory.DensityOperator H) (Hop : QuantumTheory.Observable H),\n  HasSum (fun a => ↑a.fst * (↑Hop).diagonalExpectationValue ⋯ (ContinuousLinearMap.eigenvectorFamily ⋯ a))\n    (QuantumTheory.energyExpValue ρ Hop)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.hasSum_eigenvalue_mul_energy",
+    "module": "LeanCondensedMatter.QuantumTheory.Gibbs.FreeEnergy",
+    "externalAxioms": [],
+    "docString": "The eigenvalue-weighted lossless energy-expectation series has sum\n`energyExpValue ρ Hop`. Summability follows from this `HasSum` result. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.helmholtzFreeEnergy_eq_components",
+      "QuantumTheory.helmholtzFreeEnergy_ge_and_entropy_ne_top"
+    ],
+    "dependencies": [
+      "ContinuousLinearMap.SpectralTraceClass.compact",
+      "ContinuousLinearMap.coe_diagonalExpectationValue_right",
+      "QuantumTheory.DensityOperator.expectation_eq_spectral_tsum",
+      "QuantumTheory.DensityOperator.expectation_observable",
+      "QuantumTheory.DensityOperator.spectralTraceClass",
+      "QuantumTheory.DensityOperator.summable_expectation_term"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.helmholtzFreeEnergy_eq_components",
+      "QuantumTheory.helmholtzFreeEnergy_ge_and_entropy_ne_top"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {ι : Type u_1} {H : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] (ρ : QuantumTheory.DensityOperator H) (b : HilbertBasis ι ℂ H) (w : ι → ℝ),\n  (∀ (i : ι), ρ.op (b i) = ↑(w i) • b i) →\n    ∀ (htrace : (QuantumTheory.entropyOp ρ).IsTraceClass), HasSum (fun i => (w i).negMulLog) (htrace.realTrace ⋯)",
     "standardAxioms": [
       "Classical.choice",
@@ -94420,8 +94222,8 @@
       "QuantumTheory.exp_neg_beta_energy_le_gibbs_diagonal",
       "QuantumTheory.gibbsOp_isPositive",
       "QuantumTheory.gibbsOp_spectralTraceClass",
+      "QuantumTheory.hasSum_eigenvalue_mul_energy",
       "QuantumTheory.spectralTrace_gibbsOp_pos",
-      "QuantumTheory.summable_eigenvalue_mul_energy_and_tsum",
       "QuantumTheory.vonNeumannEntropy_ne_top_and_toReal_eq_tsum",
       "Real.negMulLog_le_of_neg_log_le",
       "Real.neg_log_le_of_exp_le",
@@ -94540,8 +94342,8 @@
       "QuantumTheory.exp_neg_beta_energy_le_gibbs_diagonal",
       "QuantumTheory.gibbsOp_isPositive",
       "QuantumTheory.gibbsOp_spectralTraceClass",
+      "QuantumTheory.hasSum_eigenvalue_mul_energy",
       "QuantumTheory.spectralTrace_gibbsOp_pos",
-      "QuantumTheory.summable_eigenvalue_mul_energy_and_tsum",
       "QuantumTheory.vonNeumannEntropy_ne_top_and_toReal_eq_tsum",
       "Real.neg_log_le_of_exp_le",
       "Real.summable_negMulLog_and_tsum_le_gibbs"
@@ -96190,8 +95992,7 @@
       "QuantumTheory.Transport.resolvent_spectralParameterOfRegulator_apply_eigenvector"
     ],
     "dependencies": [
-      "QuantumTheory.resolvent_mul_spectralShift_of_not_mem",
-      "QuantumTheory.spectralShift_mul_resolvent_of_not_mem"
+      "QuantumTheory.resolvent_mul_spectralShift_of_not_mem"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -96357,7 +96158,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -96369,17 +96170,15 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Transport.spectralShift_mul_resolvent_spectralParameterOfRegulator",
-      "QuantumTheory.resolvent_apply_eigenvector"
+      "QuantumTheory.Transport.spectralShift_mul_resolvent_spectralParameterOfRegulator"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Transport.spectralShift_mul_resolvent_spectralParameterOfRegulator",
-      "QuantumTheory.resolvent_apply_eigenvector"
+      "QuantumTheory.Transport.spectralShift_mul_resolvent_spectralParameterOfRegulator"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -96473,57 +96272,6 @@
       "QuantumTheory.Models.MassiveDirac.projectorBastinTraceIntegrand_eq_band_sum"
     ],
     "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (ρ : QuantumTheory.DensityOperator H) (Hop : QuantumTheory.Observable H),\n  (Summable fun a => ↑a.fst * (↑Hop).diagonalExpectationValue ⋯ (ContinuousLinearMap.eigenvectorFamily ⋯ a)) ∧\n    ∑' (a : ρ.op.EigenvectorIndex),\n        ↑a.fst * (↑Hop).diagonalExpectationValue ⋯ (ContinuousLinearMap.eigenvectorFamily ⋯ a) =\n      QuantumTheory.energyExpValue ρ Hop",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.summable_eigenvalue_mul_energy_and_tsum",
-    "module": "LeanCondensedMatter.QuantumTheory.Gibbs.FreeEnergy",
-    "externalAxioms": [],
-    "docString": "The eigenvalue-weighted lossless energy-expectation sum is summable, with total\n`energyExpValue ρ Hop`. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.helmholtzFreeEnergy_eq_components",
-      "QuantumTheory.helmholtzFreeEnergy_ge_and_entropy_ne_top"
-    ],
-    "dependencies": [
-      "ContinuousLinearMap.SpectralTraceClass.compact",
-      "ContinuousLinearMap.coe_diagonalExpectationValue_right",
-      "QuantumTheory.DensityOperator.expectation_eq_spectral_tsum",
-      "QuantumTheory.DensityOperator.expectation_observable",
-      "QuantumTheory.DensityOperator.spectralTraceClass",
-      "QuantumTheory.DensityOperator.summable_expectation_term"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.helmholtzFreeEnergy_eq_components",
-      "QuantumTheory.helmholtzFreeEnergy_ge_and_entropy_ne_top"
-    ],
-    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -97815,13 +97563,13 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Common.comp_prod_eq_of_zetaCommutator"
+      "SecondQuantization.Common.tsumTrace_diagonalEvolution_comp_peel"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.comp_prod_eq_of_zetaCommutator"
+      "SecondQuantization.Common.tsumTrace_diagonalEvolution_comp_peel"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -112550,7 +112298,8 @@
       "SecondQuantization.Common.TwoPointDiagram.externalSource_componentBlocks_comparable",
       "SecondQuantization.Common.TwoPointDiagram.externalSource_componentBlocks_eq_iff_edge_eq",
       "SecondQuantization.Common.TwoPointDiagram.separatingCut_mem_edges_of_externalWalk",
-      "SecondQuantization.Common.TwoPointDiagram.vertexGraphWithoutTwoPropagators"
+      "SecondQuantization.Common.TwoPointDiagram.vertexGraphWithoutTwoPropagators",
+      "SecondQuantization.Common.TwoPointDiagram.verticesBetweenCuts_reachable_without_both_cuts"
     ],
     "dependencies": [
       "SecondQuantization.Common.TwoPointDiagram.separatingCut_endpoints_not_reachable",
@@ -112562,9 +112311,10 @@
       "SecondQuantization.Common.TwoPointDiagram.externalSource_componentBlocks_comparable",
       "SecondQuantization.Common.TwoPointDiagram.externalSource_componentBlocks_eq_iff_edge_eq",
       "SecondQuantization.Common.TwoPointDiagram.separatingCut_mem_edges_of_externalWalk",
-      "SecondQuantization.Common.TwoPointDiagram.vertexGraphWithoutTwoPropagators"
+      "SecondQuantization.Common.TwoPointDiagram.vertexGraphWithoutTwoPropagators",
+      "SecondQuantization.Common.TwoPointDiagram.verticesBetweenCuts_reachable_without_both_cuts"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 5,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -114512,8 +114262,52 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel N S)\n  (earlier later : Fin (2 * (2 * S.card + 1))),\n  d.HasIntervalBoundaryEndpoint earlier later earlier →\n    d.HasIntervalBoundaryEndpoint earlier later later →\n      ∀ (u v : SecondQuantization.Common.TwoPointVertex S),\n        u ∈ d.verticesBetweenCuts earlier later →\n          v ∈ d.verticesBetweenCuts earlier later →\n            ((d.vertexGraphWithoutPropagator earlier ⊓ d.vertexGraphWithoutPropagator later).Adj u v ↔\n              d.vertexGraph.Adj u v)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.TwoPointDiagram.intervalVertices_doubleCut_adj_iff",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.IntervalConnectivity",
+    "externalAxioms": [],
+    "docString": "On vertices of a cut interval, deleting either (or both) boundary\npropagators does not change adjacency. Each boundary propagator has\nexactly one endpoint in the interval, so neither can join two vertices\nof the interval. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Common.TwoPointDiagram.intervalVertices_induce_doubleCut_eq"
+    ],
+    "dependencies": [
+      "SecondQuantization.Common.TwoPointDiagram.vertexGraphWithoutPropagator_le_vertexGraph"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.TwoPointDiagram.intervalVertices_induce_doubleCut_eq"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel N S)\n  (earlier later : Fin (2 * (2 * S.card + 1))),\n  d.HasIntervalBoundaryEndpoint earlier later earlier →\n    d.HasIntervalBoundaryEndpoint earlier later later →\n      SimpleGraph.induce (↑(d.verticesBetweenCuts earlier later))\n          (d.vertexGraphWithoutPropagator earlier ⊓ d.vertexGraphWithoutPropagator later) =\n        SimpleGraph.induce (↑(d.verticesBetweenCuts earlier later)) d.vertexGraph",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -114525,15 +114319,15 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "SecondQuantization.Common.TwoPointDiagram.intervalVertices_doubleCut_adj_iff",
+    "name": "SecondQuantization.Common.TwoPointDiagram.intervalVertices_induce_doubleCut_eq",
     "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.IntervalConnectivity",
     "externalAxioms": [],
-    "docString": "On vertices of a cut interval, deleting either (or both) boundary\npropagators does not change adjacency. Each boundary propagator has\nexactly one endpoint in the interval, so neither can join two vertices\nof the interval. ",
+    "docString": "As graphs on the interval's own vertex subtype, removing both\nboundary propagators changes nothing: the induced double-cut graph\nequals the graph induced from the original diagram. In particular,\nany interval-confined path can be used unchanged after both cuts. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "SecondQuantization.Common.TwoPointDiagram.vertexGraphWithoutPropagator_le_vertexGraph"
+      "SecondQuantization.Common.TwoPointDiagram.intervalVertices_doubleCut_adj_iff"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -115198,11 +114992,13 @@
       "SecondQuantization.Common.TwoPointDiagram.externalOne_not_mem_verticesBetweenCuts",
       "SecondQuantization.Common.TwoPointDiagram.externalZero_not_mem_verticesBetweenCuts",
       "SecondQuantization.Common.TwoPointDiagram.laterCut_endpoints_opposite_interval_sides",
+      "SecondQuantization.Common.TwoPointDiagram.mem_verticesBetweenCuts_iff_of_doubleCut_reachable",
       "SecondQuantization.Common.TwoPointDiagram.sourceSide_union_verticesBetweenCuts",
       "SecondQuantization.Common.TwoPointDiagram.verticesBetweenCuts_disjoint_earlier",
       "SecondQuantization.Common.TwoPointDiagram.verticesBetweenCuts_eq_source_inter_target",
       "SecondQuantization.Common.TwoPointDiagram.verticesBetweenCuts_ne_empty_of_ssubset",
-      "SecondQuantization.Common.TwoPointDiagram.verticesBetweenCuts_partner_iff"
+      "SecondQuantization.Common.TwoPointDiagram.verticesBetweenCuts_partner_iff",
+      "SecondQuantization.Common.TwoPointDiagram.verticesBetweenCuts_reachable_without_both_cuts"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
@@ -115212,13 +115008,15 @@
       "SecondQuantization.Common.TwoPointDiagram.externalOne_not_mem_verticesBetweenCuts",
       "SecondQuantization.Common.TwoPointDiagram.externalZero_not_mem_verticesBetweenCuts",
       "SecondQuantization.Common.TwoPointDiagram.laterCut_endpoints_opposite_interval_sides",
+      "SecondQuantization.Common.TwoPointDiagram.mem_verticesBetweenCuts_iff_of_doubleCut_reachable",
       "SecondQuantization.Common.TwoPointDiagram.sourceSide_union_verticesBetweenCuts",
       "SecondQuantization.Common.TwoPointDiagram.verticesBetweenCuts_disjoint_earlier",
       "SecondQuantization.Common.TwoPointDiagram.verticesBetweenCuts_eq_source_inter_target",
       "SecondQuantization.Common.TwoPointDiagram.verticesBetweenCuts_ne_empty_of_ssubset",
-      "SecondQuantization.Common.TwoPointDiagram.verticesBetweenCuts_partner_iff"
+      "SecondQuantization.Common.TwoPointDiagram.verticesBetweenCuts_partner_iff",
+      "SecondQuantization.Common.TwoPointDiagram.verticesBetweenCuts_reachable_without_both_cuts"
     ],
-    "compiledConsumerCount": 9,
+    "compiledConsumerCount": 11,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -115264,6 +115062,47 @@
       "SecondQuantization.Common.TwoPointDiagram.intervalIncidentLegs_eq_interior_union_boundary"
     ],
     "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel N S)\n  (earlier later : Fin (2 * (2 * S.card + 1))) (u v : SecondQuantization.Common.TwoPointVertex S),\n  (d.vertexGraphWithoutPropagator earlier ⊓ d.vertexGraphWithoutPropagator later).Reachable u v →\n    (u ∈ d.verticesBetweenCuts earlier later ↔ v ∈ d.verticesBetweenCuts earlier later)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.TwoPointDiagram.mem_verticesBetweenCuts_iff_of_doubleCut_reachable",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.CutIntervals",
+    "externalAxioms": [],
+    "docString": "Reachability after deleting both boundary propagators preserves interval\nmembership. Thus a walk in the double-cut graph cannot leave the interval\nonce it starts there. No ordering or separation hypothesis is needed:\nthe statement follows from the two source-side component tests. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "SecondQuantization.Common.TwoPointDiagram.mem_verticesBetweenCuts_iff",
+      "SimpleGraph.mem_componentBlock"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -116639,7 +116478,8 @@
     "dependents": [
       "SecondQuantization.Common.TwoPointDiagram.earlierCut_endpoints_opposite_interval_sides",
       "SecondQuantization.Common.TwoPointDiagram.externalSource_componentBlocks_eq_iff_edge_eq",
-      "SecondQuantization.Common.TwoPointDiagram.laterCut_endpoints_opposite_interval_sides"
+      "SecondQuantization.Common.TwoPointDiagram.laterCut_endpoints_opposite_interval_sides",
+      "SecondQuantization.Common.TwoPointDiagram.verticesBetweenCuts_reachable_without_both_cuts"
     ],
     "dependencies": [
       "SecondQuantization.Common.TwoPointDiagram.reachable_external_side_withoutPropagator",
@@ -116650,9 +116490,10 @@
     "compiledConsumers": [
       "SecondQuantization.Common.TwoPointDiagram.earlierCut_endpoints_opposite_interval_sides",
       "SecondQuantization.Common.TwoPointDiagram.externalSource_componentBlocks_eq_iff_edge_eq",
-      "SecondQuantization.Common.TwoPointDiagram.laterCut_endpoints_opposite_interval_sides"
+      "SecondQuantization.Common.TwoPointDiagram.laterCut_endpoints_opposite_interval_sides",
+      "SecondQuantization.Common.TwoPointDiagram.verticesBetweenCuts_reachable_without_both_cuts"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -117223,7 +117064,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -117235,15 +117076,17 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Common.TwoPointDiagram.intervalVertices_doubleCut_adj_iff"
+      "SecondQuantization.Common.TwoPointDiagram.intervalVertices_doubleCut_adj_iff",
+      "SecondQuantization.Common.TwoPointDiagram.verticesBetweenCuts_reachable_without_both_cuts"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.TwoPointDiagram.intervalVertices_doubleCut_adj_iff"
+      "SecondQuantization.Common.TwoPointDiagram.intervalVertices_doubleCut_adj_iff",
+      "SecondQuantization.Common.TwoPointDiagram.verticesBetweenCuts_reachable_without_both_cuts"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -117563,7 +117406,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel N S),\n  d.IsExternallyConnected →\n    ∀ (earlier later : Fin (2 * (2 * S.card + 1))),\n      ¬(d.vertexGraphWithoutPropagator earlier).Reachable (Sum.inl 0) (Sum.inl 1) →\n        ∀ (u v : SecondQuantization.Common.TwoPointVertex S),\n          u ∈ d.verticesBetweenCuts earlier later →\n            v ∈ d.verticesBetweenCuts earlier later →\n              (d.vertexGraphWithoutPropagator earlier).Reachable u v ∧\n                (d.vertexGraphWithoutPropagator later).Reachable u v",
+    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel N S),\n  d.IsExternallyConnected →\n    ∀ (earlier later : Fin (2 * (2 * S.card + 1))),\n      ¬(d.vertexGraphWithoutPropagator earlier).Reachable (Sum.inl 0) (Sum.inl 1) →\n        ¬(d.vertexGraphWithoutPropagator later).Reachable (Sum.inl 0) (Sum.inl 1) →\n          ∀ (u v : SecondQuantization.Common.TwoPointVertex S),\n            u ∈ d.verticesBetweenCuts earlier later →\n              v ∈ d.verticesBetweenCuts earlier later →\n                (d.vertexGraphWithoutPropagator earlier ⊓ d.vertexGraphWithoutPropagator later).Reachable u v",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -117575,21 +117418,70 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "SecondQuantization.Common.TwoPointDiagram.verticesBetweenCuts_reachable_without_each_cut",
+    "name": "SecondQuantization.Common.TwoPointDiagram.verticesBetweenCuts_reachable_without_both_cuts",
     "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.CutIntervals",
     "externalAxioms": [],
-    "docString": "Two vertices within a cut interval are connected when either\nboundary propagator is individually removed. The stronger claim of a\nsingle path that avoids *both* boundary cuts is separate. ",
+    "docString": "Vertices in the interval remain connected after *both* boundary\npropagators are deleted. A simple path avoiding the earlier cut cannot\ncross the later separating bridge: both endpoints lie on its source side.\nMathlib's trail lemma eliminates that second boundary edge. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "SecondQuantization.Common.TwoPointDiagram.verticesBetweenCuts_eq_source_inter_target",
+      "SecondQuantization.Common.TwoPointDiagram.deleteEdges_eq_vertexGraphWithoutPropagator_of_separatingCut",
+      "SecondQuantization.Common.TwoPointDiagram.mem_verticesBetweenCuts_iff",
+      "SecondQuantization.Common.TwoPointDiagram.separatingCut_endpoints_opposite_sides",
+      "SecondQuantization.Common.TwoPointDiagram.vertexGraphWithoutPropagator_le_vertexGraph",
+      "SecondQuantization.Common.TwoPointDiagram.verticesBetweenCuts_reachable_without_each_cut",
       "SimpleGraph.mem_componentBlock"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [],
     "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel N S),\n  d.IsExternallyConnected →\n    ∀ (earlier later : Fin (2 * (2 * S.card + 1))),\n      ¬(d.vertexGraphWithoutPropagator earlier).Reachable (Sum.inl 0) (Sum.inl 1) →\n        ∀ (u v : SecondQuantization.Common.TwoPointVertex S),\n          u ∈ d.verticesBetweenCuts earlier later →\n            v ∈ d.verticesBetweenCuts earlier later →\n              (d.vertexGraphWithoutPropagator earlier).Reachable u v ∧\n                (d.vertexGraphWithoutPropagator later).Reachable u v",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.TwoPointDiagram.verticesBetweenCuts_reachable_without_each_cut",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.CutIntervals",
+    "externalAxioms": [],
+    "docString": "Two vertices within a cut interval are connected when either\nboundary propagator is individually removed. The stronger claim of a\nsingle path that avoids *both* boundary cuts is separate. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Common.TwoPointDiagram.verticesBetweenCuts_reachable_without_both_cuts"
+    ],
+    "dependencies": [
+      "SecondQuantization.Common.TwoPointDiagram.verticesBetweenCuts_eq_source_inter_target",
+      "SimpleGraph.mem_componentBlock"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.TwoPointDiagram.verticesBetweenCuts_reachable_without_both_cuts"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -118606,50 +118498,6 @@
     "completedMention": false,
     "compiledConsumers": [],
     "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Config : Type u_1} (ζ : ℂ)\n  (C1 : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config)\n  (l :\n    List ((SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config) × ℂ)),\n  (∀ p ∈ l, ScalarExchange.zetaCommutator ζ C1 p.1 = p.2 • LinearMap.id) →\n    C1 ∘ₗ (List.map Prod.fst l).prod =\n      ScalarExchange.peelSumWithCoefficients ζ l + ζ ^ l.length • (List.map Prod.fst l).prod ∘ₗ C1",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.comp_prod_eq_of_zetaCommutator",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.Unnormalized.PeelFirst",
-    "externalAxioms": [],
-    "docString": "**Peeling `C₁` through an arbitrary-length product**: repeatedly rewriting `C₁Bⱼ` via each\npair's `ζ`-commutator coefficient and pushing `C₁` rightward, `C₁` lands at the very end having\npicked up `ζ^{l.length}`. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.tsumTrace_diagonalEvolution_comp_peel"
-    ],
-    "dependencies": [
-      "ScalarExchange.mul_prod_eq_peelSumWithCoefficients"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.tsumTrace_diagonalEvolution_comp_peel"
-    ],
-    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -120365,44 +120213,6 @@
       "SecondQuantization.Common.allExternalVerticesConnected_iff_supportedComponentParts_eq_singleton"
     ],
     "compiledConsumerCount": 3,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {External : Type u_1} {Internal : Type u_2} (B : Finset (External ⊕ Internal)),\n  SecondQuantization.Common.ComponentMeetsExternal B ↔ B.toLeft.Nonempty",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.componentMeetsExternal_iff_toLeft_nonempty",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalComponents",
-    "externalAxioms": [],
-    "docString": "External support is equivalent to nonemptiness of Mathlib's left-summand extraction. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -128968,7 +128778,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "SecondQuantization.Common.normalizedTsumTrace_comp_eq_div_of_zetaCommutator",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.GibbsExpectation.TwoPointTrace",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.NormalizedTwoPointTrace",
     "externalAxioms": [],
     "docString": "Divide the summable two-point trace identity by the partition trace and exchange denominator.\nThe rotated double series supplies the trace interchange; no countability assumption is needed. ",
     "directWrapperTargetModule": null,
@@ -131502,7 +131312,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -131514,15 +131324,17 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Bosonic.freeGibbsExpectation_add"
+      "SecondQuantization.Bosonic.freeGibbsExpectation_add",
+      "SecondQuantization.Common.tsumTrace_diagonalEvolution_comp_peel"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Bosonic.freeGibbsExpectation_add"
+      "SecondQuantization.Bosonic.freeGibbsExpectation_add",
+      "SecondQuantization.Common.tsumTrace_diagonalEvolution_comp_peel"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -131605,9 +131417,11 @@
       "SecondQuantization.Common.normalizedTsumTrace_comp_eq_div_of_zetaCommutator"
     ],
     "dependencies": [
-      "SecondQuantization.Common.comp_prod_eq_of_zetaCommutator",
+      "ScalarExchange.mul_prod_eq_peelSumWithCoefficients",
       "SecondQuantization.Common.summable_matrixCoeff_diag_comp_of_summable_uncurry",
-      "SecondQuantization.Common.tsumTrace_diagonalEvolution_comp_rotate"
+      "SecondQuantization.Common.tsumTrace_add",
+      "SecondQuantization.Common.tsumTrace_diagonalEvolution_comp_rotate",
+      "SecondQuantization.Common.tsumTrace_smul"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -131698,6 +131512,7 @@
     "dependents": [
       "SecondQuantization.Bosonic.freeGibbsExpectation_smul",
       "SecondQuantization.Common.normalizedTsumTrace_comp_eq_div_of_zetaCommutator",
+      "SecondQuantization.Common.tsumTrace_diagonalEvolution_comp_peel",
       "SecondQuantization.Common.tsumTrace_diagonalEvolution_comp_rotate",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.FreeKMSRotation.0.SecondQuantization.Bosonic.tsumTrace_rotate_of_comp_eq_smul"
     ],
@@ -131707,10 +131522,11 @@
     "compiledConsumers": [
       "SecondQuantization.Bosonic.freeGibbsExpectation_smul",
       "SecondQuantization.Common.normalizedTsumTrace_comp_eq_div_of_zetaCommutator",
+      "SecondQuantization.Common.tsumTrace_diagonalEvolution_comp_peel",
       "SecondQuantization.Common.tsumTrace_diagonalEvolution_comp_rotate",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.FreeKMSRotation.0.SecondQuantization.Bosonic.tsumTrace_rotate_of_comp_eq_smul"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 5,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -138523,7 +138339,7 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "QuantumTheory.LinearResponse.purePointTransitionWeight_diag"
+      "QuantumTheory.LinearResponse.purePointTransitionData_weight_diag"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -138587,7 +138403,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {Site : Type u_1} {E : Type u_2} {ι : Type u_3} [inst : LinearOrder Site] [inst_1 : Fintype Site]\n  [inst_2 : AddCommGroup E] [inst_3 : _root_.Module ℝ E]\n  (system :\n    QuantumTheory.LinearResponse.BoundedFreeSystem (SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site))\n  (data : QuantumTheory.LinearResponse.PurePointLehmannData system ι) (geometry : LatticeGeometry Site E)\n  (direction : E →ₗ[ℝ] ℝ) (K : LocallyFiniteHopping Site) (q ω η : ℝ) {m n : ι},\n  data.energy m = data.energy n →\n    SecondQuantization.Fermionic.Transport.finiteKuboGreenwoodDirectionalCurrentTerm system data geometry direction K q\n        ω η (m, n) =\n      QuantumTheory.LinearResponse.purePointTransitionWeight system data\n          (SecondQuantization.Fermionic.Lattice.boundedDirectionalCurrent geometry direction (↑system.hbar) (↑q) K)\n          (SecondQuantization.Fermionic.Lattice.boundedDirectionalCurrent geometry direction (↑system.hbar) (↑q) K)\n          (m, n) *\n        (↑η - Complex.I * ↑ω)⁻¹",
+    "statement": "∀ {Site : Type u_1} {E : Type u_2} {ι : Type u_3} [inst : LinearOrder Site] [inst_1 : Fintype Site]\n  [inst_2 : AddCommGroup E] [inst_3 : _root_.Module ℝ E]\n  (system :\n    QuantumTheory.LinearResponse.BoundedFreeSystem (SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site))\n  (data : QuantumTheory.LinearResponse.PurePointLehmannData system ι) (geometry : LatticeGeometry Site E)\n  (direction : E →ₗ[ℝ] ℝ) (K : LocallyFiniteHopping Site) (q ω η : ℝ) {m n : ι},\n  data.energy m = data.energy n →\n    SecondQuantization.Fermionic.Transport.finiteKuboGreenwoodDirectionalCurrentTerm system data geometry direction K q\n        ω η (m, n) =\n      (QuantumTheory.LinearResponse.purePointTransitionData system data\n            (SecondQuantization.Fermionic.Lattice.boundedDirectionalCurrent geometry direction (↑system.hbar) (↑q) K)\n            (SecondQuantization.Fermionic.Lattice.boundedDirectionalCurrent geometry direction (↑system.hbar) (↑q) K)\n            (m, n)).weight *\n        (↑η - Complex.I * ↑ω)⁻¹",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -139059,7 +138875,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {Site : Type u_1} {E : Type u_2} [inst : LinearOrder Site] [inst_1 : Fintype Site] [inst_2 : AddCommGroup E]\n  [inst_3 : _root_.Module ℝ E] {ι : Type u_3} [inst_4 : Fintype ι] (volume : QuantumTheory.Transport.PositiveVolume)\n  (system :\n    QuantumTheory.LinearResponse.BoundedFreeSystem (SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site))\n  (data : QuantumTheory.LinearResponse.PurePointLehmannData system ι) (geometry : LatticeGeometry Site E)\n  (direction : E →ₗ[ℝ] ℝ) (K : LocallyFiniteHopping Site) (q ω η : ℝ),\n  0 < η →\n    QuantumTheory.LinearResponse.HasInfiniteObservationTimeLimit\n      (SecondQuantization.Fermionic.Transport.finiteTimeAdiabaticDirectionalConductivity volume system\n        (QuantumTheory.LinearResponse.purePointNormalizedExpectation system data) geometry direction K q ω η)\n      ((∑ mn,\n            QuantumTheory.LinearResponse.lehmannTerm system.hbar ω η (data.energy mn.1 - data.energy mn.2)\n              (QuantumTheory.LinearResponse.purePointTransitionWeight system data\n                (SecondQuantization.Fermionic.Lattice.boundedDirectionalCurrent geometry direction (↑system.hbar) (↑q)\n                  K)\n                (SecondQuantization.Fermionic.Lattice.boundedDirectionalCurrent geometry direction (↑system.hbar) (↑q)\n                  K)\n                mn) +\n          (QuantumTheory.LinearResponse.purePointNormalizedExpectation system data).toContinuousLinearMap\n            (SecondQuantization.Fermionic.Lattice.boundedDirectionalContact geometry direction (↑system.hbar) (↑q) K)) *\n        QuantumTheory.Transport.finiteVolumeConductivityNormalization volume ω η)",
+    "statement": "∀ {Site : Type u_1} {E : Type u_2} [inst : LinearOrder Site] [inst_1 : Fintype Site] [inst_2 : AddCommGroup E]\n  [inst_3 : _root_.Module ℝ E] {ι : Type u_3} [inst_4 : Fintype ι] (volume : QuantumTheory.Transport.PositiveVolume)\n  (system :\n    QuantumTheory.LinearResponse.BoundedFreeSystem (SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site))\n  (data : QuantumTheory.LinearResponse.PurePointLehmannData system ι) (geometry : LatticeGeometry Site E)\n  (direction : E →ₗ[ℝ] ℝ) (K : LocallyFiniteHopping Site) (q ω η : ℝ),\n  0 < η →\n    QuantumTheory.LinearResponse.HasInfiniteObservationTimeLimit\n      (SecondQuantization.Fermionic.Transport.finiteTimeAdiabaticDirectionalConductivity volume system\n        (QuantumTheory.LinearResponse.purePointNormalizedExpectation system data) geometry direction K q ω η)\n      ((∑ mn,\n            QuantumTheory.LinearResponse.lehmannTerm system.hbar ω η (data.energy mn.1 - data.energy mn.2)\n              (QuantumTheory.LinearResponse.purePointTransitionData system data\n                  (SecondQuantization.Fermionic.Lattice.boundedDirectionalCurrent geometry direction (↑system.hbar) (↑q)\n                    K)\n                  (SecondQuantization.Fermionic.Lattice.boundedDirectionalCurrent geometry direction (↑system.hbar) (↑q)\n                    K)\n                  mn).weight +\n          (QuantumTheory.LinearResponse.purePointNormalizedExpectation system data).toContinuousLinearMap\n            (SecondQuantization.Fermionic.Lattice.boundedDirectionalContact geometry direction (↑system.hbar) (↑q) K)) *\n        QuantumTheory.Transport.finiteVolumeConductivityNormalization volume ω η)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -139279,7 +139095,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {Site : Type u_1} {E : Type u_2} [inst : LinearOrder Site] [inst_1 : Fintype Site] [inst_2 : AddCommGroup E]\n  [inst_3 : _root_.Module ℝ E] {ι : Type u_3} [inst_4 : Fintype ι]\n  (system :\n    QuantumTheory.LinearResponse.BoundedFreeSystem (SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site))\n  (data : QuantumTheory.LinearResponse.PurePointLehmannData system ι) (geometry : LatticeGeometry Site E)\n  (direction : E →ₗ[ℝ] ℝ) (K : LocallyFiniteHopping Site) (q ω η : ℝ),\n  0 < η →\n    QuantumTheory.LinearResponse.HasInfiniteObservationTimeLimit\n      (SecondQuantization.Fermionic.Transport.finiteTimeAdiabaticDirectionalCoefficient system\n        (QuantumTheory.LinearResponse.purePointNormalizedExpectation system data) geometry direction K q ω η)\n      (∑ mn,\n          QuantumTheory.LinearResponse.lehmannTerm system.hbar ω η (data.energy mn.1 - data.energy mn.2)\n            (QuantumTheory.LinearResponse.purePointTransitionWeight system data\n              (SecondQuantization.Fermionic.Lattice.boundedDirectionalCurrent geometry direction (↑system.hbar) (↑q) K)\n              (SecondQuantization.Fermionic.Lattice.boundedDirectionalCurrent geometry direction (↑system.hbar) (↑q) K)\n              mn) +\n        (QuantumTheory.LinearResponse.purePointNormalizedExpectation system data).toContinuousLinearMap\n          (SecondQuantization.Fermionic.Lattice.boundedDirectionalContact geometry direction (↑system.hbar) (↑q) K))",
+    "statement": "∀ {Site : Type u_1} {E : Type u_2} [inst : LinearOrder Site] [inst_1 : Fintype Site] [inst_2 : AddCommGroup E]\n  [inst_3 : _root_.Module ℝ E] {ι : Type u_3} [inst_4 : Fintype ι]\n  (system :\n    QuantumTheory.LinearResponse.BoundedFreeSystem (SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site))\n  (data : QuantumTheory.LinearResponse.PurePointLehmannData system ι) (geometry : LatticeGeometry Site E)\n  (direction : E →ₗ[ℝ] ℝ) (K : LocallyFiniteHopping Site) (q ω η : ℝ),\n  0 < η →\n    QuantumTheory.LinearResponse.HasInfiniteObservationTimeLimit\n      (SecondQuantization.Fermionic.Transport.finiteTimeAdiabaticDirectionalCoefficient system\n        (QuantumTheory.LinearResponse.purePointNormalizedExpectation system data) geometry direction K q ω η)\n      (∑ mn,\n          QuantumTheory.LinearResponse.lehmannTerm system.hbar ω η (data.energy mn.1 - data.energy mn.2)\n            (QuantumTheory.LinearResponse.purePointTransitionData system data\n                (SecondQuantization.Fermionic.Lattice.boundedDirectionalCurrent geometry direction (↑system.hbar) (↑q)\n                  K)\n                (SecondQuantization.Fermionic.Lattice.boundedDirectionalCurrent geometry direction (↑system.hbar) (↑q)\n                  K)\n                mn).weight +\n        (QuantumTheory.LinearResponse.purePointNormalizedExpectation system data).toContinuousLinearMap\n          (SecondQuantization.Fermionic.Lattice.boundedDirectionalContact geometry direction (↑system.hbar) (↑q) K))",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -139321,7 +139137,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Site : Type u_1} {E : Type u_2} [inst : LinearOrder Site] [inst_1 : Fintype Site] [inst_2 : AddCommGroup E]\n  [inst_3 : _root_.Module ℝ E] {ι : Type u_3} [inst_4 : Fintype ι]\n  (system :\n    QuantumTheory.LinearResponse.BoundedFreeSystem (SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site))\n  (data : QuantumTheory.LinearResponse.PurePointLehmannData system ι) (geometry : LatticeGeometry Site E)\n  (direction : E →ₗ[ℝ] ℝ) (K : LocallyFiniteHopping Site) (q ω η : ℝ),\n  0 < η →\n    SecondQuantization.Fermionic.Transport.infiniteTimeAdiabaticDirectionalCoefficient system\n        (QuantumTheory.LinearResponse.purePointNormalizedExpectation system data) geometry direction K q ω η =\n      ∑ mn,\n          QuantumTheory.LinearResponse.lehmannTerm system.hbar ω η (data.energy mn.1 - data.energy mn.2)\n            (QuantumTheory.LinearResponse.purePointTransitionWeight system data\n              (SecondQuantization.Fermionic.Lattice.boundedDirectionalCurrent geometry direction (↑system.hbar) (↑q) K)\n              (SecondQuantization.Fermionic.Lattice.boundedDirectionalCurrent geometry direction (↑system.hbar) (↑q) K)\n              mn) +\n        (QuantumTheory.LinearResponse.purePointNormalizedExpectation system data).toContinuousLinearMap\n          (SecondQuantization.Fermionic.Lattice.boundedDirectionalContact geometry direction (↑system.hbar) (↑q) K)",
+    "statement": "∀ {Site : Type u_1} {E : Type u_2} [inst : LinearOrder Site] [inst_1 : Fintype Site] [inst_2 : AddCommGroup E]\n  [inst_3 : _root_.Module ℝ E] {ι : Type u_3} [inst_4 : Fintype ι]\n  (system :\n    QuantumTheory.LinearResponse.BoundedFreeSystem (SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site))\n  (data : QuantumTheory.LinearResponse.PurePointLehmannData system ι) (geometry : LatticeGeometry Site E)\n  (direction : E →ₗ[ℝ] ℝ) (K : LocallyFiniteHopping Site) (q ω η : ℝ),\n  0 < η →\n    SecondQuantization.Fermionic.Transport.infiniteTimeAdiabaticDirectionalCoefficient system\n        (QuantumTheory.LinearResponse.purePointNormalizedExpectation system data) geometry direction K q ω η =\n      ∑ mn,\n          QuantumTheory.LinearResponse.lehmannTerm system.hbar ω η (data.energy mn.1 - data.energy mn.2)\n            (QuantumTheory.LinearResponse.purePointTransitionData system data\n                (SecondQuantization.Fermionic.Lattice.boundedDirectionalCurrent geometry direction (↑system.hbar) (↑q)\n                  K)\n                (SecondQuantization.Fermionic.Lattice.boundedDirectionalCurrent geometry direction (↑system.hbar) (↑q)\n                  K)\n                mn).weight +\n        (QuantumTheory.LinearResponse.purePointNormalizedExpectation system data).toContinuousLinearMap\n          (SecondQuantization.Fermionic.Lattice.boundedDirectionalContact geometry direction (↑system.hbar) (↑q) K)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -139455,7 +139271,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Site : Type u_1} {E : Type u_2} [inst : LinearOrder Site] [inst_1 : Fintype Site] [inst_2 : AddCommGroup E]\n  [inst_3 : _root_.Module ℝ E] {ι : Type u_3} [inst_4 : Fintype ι] (volume : QuantumTheory.Transport.PositiveVolume)\n  (system :\n    QuantumTheory.LinearResponse.BoundedFreeSystem (SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site))\n  (data : QuantumTheory.LinearResponse.PurePointLehmannData system ι) (geometry : LatticeGeometry Site E)\n  (direction : E →ₗ[ℝ] ℝ) (K : LocallyFiniteHopping Site) (q ω η : ℝ),\n  0 < η →\n    SecondQuantization.Fermionic.Transport.infiniteTimeAdiabaticDirectionalConductivity volume system\n        (QuantumTheory.LinearResponse.purePointNormalizedExpectation system data) geometry direction K q ω η =\n      (∑ mn,\n            QuantumTheory.LinearResponse.lehmannTerm system.hbar ω η (data.energy mn.1 - data.energy mn.2)\n              (QuantumTheory.LinearResponse.purePointTransitionWeight system data\n                (SecondQuantization.Fermionic.Lattice.boundedDirectionalCurrent geometry direction (↑system.hbar) (↑q)\n                  K)\n                (SecondQuantization.Fermionic.Lattice.boundedDirectionalCurrent geometry direction (↑system.hbar) (↑q)\n                  K)\n                mn) +\n          (QuantumTheory.LinearResponse.purePointNormalizedExpectation system data).toContinuousLinearMap\n            (SecondQuantization.Fermionic.Lattice.boundedDirectionalContact geometry direction (↑system.hbar) (↑q) K)) *\n        QuantumTheory.Transport.finiteVolumeConductivityNormalization volume ω η",
+    "statement": "∀ {Site : Type u_1} {E : Type u_2} [inst : LinearOrder Site] [inst_1 : Fintype Site] [inst_2 : AddCommGroup E]\n  [inst_3 : _root_.Module ℝ E] {ι : Type u_3} [inst_4 : Fintype ι] (volume : QuantumTheory.Transport.PositiveVolume)\n  (system :\n    QuantumTheory.LinearResponse.BoundedFreeSystem (SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site))\n  (data : QuantumTheory.LinearResponse.PurePointLehmannData system ι) (geometry : LatticeGeometry Site E)\n  (direction : E →ₗ[ℝ] ℝ) (K : LocallyFiniteHopping Site) (q ω η : ℝ),\n  0 < η →\n    SecondQuantization.Fermionic.Transport.infiniteTimeAdiabaticDirectionalConductivity volume system\n        (QuantumTheory.LinearResponse.purePointNormalizedExpectation system data) geometry direction K q ω η =\n      (∑ mn,\n            QuantumTheory.LinearResponse.lehmannTerm system.hbar ω η (data.energy mn.1 - data.energy mn.2)\n              (QuantumTheory.LinearResponse.purePointTransitionData system data\n                  (SecondQuantization.Fermionic.Lattice.boundedDirectionalCurrent geometry direction (↑system.hbar) (↑q)\n                    K)\n                  (SecondQuantization.Fermionic.Lattice.boundedDirectionalCurrent geometry direction (↑system.hbar) (↑q)\n                    K)\n                  mn).weight +\n          (QuantumTheory.LinearResponse.purePointNormalizedExpectation system data).toContinuousLinearMap\n            (SecondQuantization.Fermionic.Lattice.boundedDirectionalContact geometry direction (↑system.hbar) (↑q) K)) *\n        QuantumTheory.Transport.finiteVolumeConductivityNormalization volume ω η",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -139587,7 +139403,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Site : Type u_1} {E : Type u_2} [inst : LinearOrder Site] [inst_1 : Fintype Site] [inst_2 : AddCommGroup E]\n  [inst_3 : _root_.Module ℝ E] {ι : Type u_3} [inst_4 : Fintype ι]\n  (system :\n    QuantumTheory.LinearResponse.BoundedFreeSystem (SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site))\n  (data : QuantumTheory.LinearResponse.PurePointLehmannData system ι) (geometry : LatticeGeometry Site E)\n  (direction : E →ₗ[ℝ] ℝ) (K : LocallyFiniteHopping Site) (q ω η : ℝ),\n  0 < η →\n    SecondQuantization.Fermionic.Transport.infiniteTimeAdiabaticDirectionalRetardedCoefficient system\n        (QuantumTheory.LinearResponse.purePointNormalizedExpectation system data) geometry direction K q ω η =\n      ∑ mn,\n        QuantumTheory.LinearResponse.lehmannTerm system.hbar ω η (data.energy mn.1 - data.energy mn.2)\n          (QuantumTheory.LinearResponse.purePointTransitionWeight system data\n            (SecondQuantization.Fermionic.Lattice.boundedDirectionalCurrent geometry direction (↑system.hbar) (↑q) K)\n            (SecondQuantization.Fermionic.Lattice.boundedDirectionalCurrent geometry direction (↑system.hbar) (↑q) K)\n            mn)",
+    "statement": "∀ {Site : Type u_1} {E : Type u_2} [inst : LinearOrder Site] [inst_1 : Fintype Site] [inst_2 : AddCommGroup E]\n  [inst_3 : _root_.Module ℝ E] {ι : Type u_3} [inst_4 : Fintype ι]\n  (system :\n    QuantumTheory.LinearResponse.BoundedFreeSystem (SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site))\n  (data : QuantumTheory.LinearResponse.PurePointLehmannData system ι) (geometry : LatticeGeometry Site E)\n  (direction : E →ₗ[ℝ] ℝ) (K : LocallyFiniteHopping Site) (q ω η : ℝ),\n  0 < η →\n    SecondQuantization.Fermionic.Transport.infiniteTimeAdiabaticDirectionalRetardedCoefficient system\n        (QuantumTheory.LinearResponse.purePointNormalizedExpectation system data) geometry direction K q ω η =\n      ∑ mn,\n        QuantumTheory.LinearResponse.lehmannTerm system.hbar ω η (data.energy mn.1 - data.energy mn.2)\n          (QuantumTheory.LinearResponse.purePointTransitionData system data\n              (SecondQuantization.Fermionic.Lattice.boundedDirectionalCurrent geometry direction (↑system.hbar) (↑q) K)\n              (SecondQuantization.Fermionic.Lattice.boundedDirectionalCurrent geometry direction (↑system.hbar) (↑q) K)\n              mn).weight",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -139712,7 +139528,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Site : Type u_1} {E : Type u_2} [inst : LinearOrder Site] [inst_1 : Fintype Site] [inst_2 : AddCommGroup E]\n  [inst_3 : _root_.Module ℝ E] {ι : Type u_3}\n  (system :\n    QuantumTheory.LinearResponse.BoundedFreeSystem (SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site))\n  (data : QuantumTheory.LinearResponse.PurePointLehmannData system ι) (geometry : LatticeGeometry Site E)\n  (direction : E →ₗ[ℝ] ℝ) (K : LocallyFiniteHopping Site) (q ω η : ℝ) {m n : ι},\n  data.energy m = data.energy n →\n    QuantumTheory.LinearResponse.lehmannTerm system.hbar ω η (data.energy m - data.energy n)\n        (QuantumTheory.LinearResponse.purePointTransitionWeight system data\n          (SecondQuantization.Fermionic.Lattice.boundedDirectionalCurrent geometry direction (↑system.hbar) (↑q) K)\n          (SecondQuantization.Fermionic.Lattice.boundedDirectionalCurrent geometry direction (↑system.hbar) (↑q) K)\n          (m, n)) =\n      QuantumTheory.LinearResponse.purePointTransitionWeight system data\n          (SecondQuantization.Fermionic.Lattice.boundedDirectionalCurrent geometry direction (↑system.hbar) (↑q) K)\n          (SecondQuantization.Fermionic.Lattice.boundedDirectionalCurrent geometry direction (↑system.hbar) (↑q) K)\n          (m, n) *\n        (↑η - Complex.I * ↑ω)⁻¹",
+    "statement": "∀ {Site : Type u_1} {E : Type u_2} [inst : LinearOrder Site] [inst_1 : Fintype Site] [inst_2 : AddCommGroup E]\n  [inst_3 : _root_.Module ℝ E] {ι : Type u_3}\n  (system :\n    QuantumTheory.LinearResponse.BoundedFreeSystem (SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site))\n  (data : QuantumTheory.LinearResponse.PurePointLehmannData system ι) (geometry : LatticeGeometry Site E)\n  (direction : E →ₗ[ℝ] ℝ) (K : LocallyFiniteHopping Site) (q ω η : ℝ) {m n : ι},\n  data.energy m = data.energy n →\n    QuantumTheory.LinearResponse.lehmannTerm system.hbar ω η (data.energy m - data.energy n)\n        (QuantumTheory.LinearResponse.purePointTransitionData system data\n            (SecondQuantization.Fermionic.Lattice.boundedDirectionalCurrent geometry direction (↑system.hbar) (↑q) K)\n            (SecondQuantization.Fermionic.Lattice.boundedDirectionalCurrent geometry direction (↑system.hbar) (↑q) K)\n            (m, n)).weight =\n      (QuantumTheory.LinearResponse.purePointTransitionData system data\n            (SecondQuantization.Fermionic.Lattice.boundedDirectionalCurrent geometry direction (↑system.hbar) (↑q) K)\n            (SecondQuantization.Fermionic.Lattice.boundedDirectionalCurrent geometry direction (↑system.hbar) (↑q) K)\n            (m, n)).weight *\n        (↑η - Complex.I * ↑ω)⁻¹",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -154678,8 +154494,10 @@
       "SecondQuantization.Common.TwoPointDiagram.externalSource_componentBlocks_eq_iff_edge_eq",
       "SecondQuantization.Common.TwoPointDiagram.external_componentBlocks_cover_and_disjoint",
       "SecondQuantization.Common.TwoPointDiagram.laterCut_endpoints_opposite_interval_sides",
+      "SecondQuantization.Common.TwoPointDiagram.mem_verticesBetweenCuts_iff_of_doubleCut_reachable",
       "SecondQuantization.Common.TwoPointDiagram.not_uncutPropagator_between_externalComponents",
       "SecondQuantization.Common.TwoPointDiagram.verticesBetweenCuts_eq_source_inter_target",
+      "SecondQuantization.Common.TwoPointDiagram.verticesBetweenCuts_reachable_without_both_cuts",
       "SecondQuantization.Common.TwoPointDiagram.verticesBetweenCuts_reachable_without_each_cut",
       "SecondQuantization.Common.allExternalVerticesConnected_iff_supportedComponentParts_eq_singleton",
       "SecondQuantization.Common.componentBlock_slotSplitVacuumVertex_mem_vacuumComponentParts",
@@ -154708,8 +154526,10 @@
       "SecondQuantization.Common.TwoPointDiagram.externalSource_componentBlocks_eq_iff_edge_eq",
       "SecondQuantization.Common.TwoPointDiagram.external_componentBlocks_cover_and_disjoint",
       "SecondQuantization.Common.TwoPointDiagram.laterCut_endpoints_opposite_interval_sides",
+      "SecondQuantization.Common.TwoPointDiagram.mem_verticesBetweenCuts_iff_of_doubleCut_reachable",
       "SecondQuantization.Common.TwoPointDiagram.not_uncutPropagator_between_externalComponents",
       "SecondQuantization.Common.TwoPointDiagram.verticesBetweenCuts_eq_source_inter_target",
+      "SecondQuantization.Common.TwoPointDiagram.verticesBetweenCuts_reachable_without_both_cuts",
       "SecondQuantization.Common.TwoPointDiagram.verticesBetweenCuts_reachable_without_each_cut",
       "SecondQuantization.Common.allExternalVerticesConnected_iff_supportedComponentParts_eq_singleton",
       "SecondQuantization.Common.componentBlock_slotSplitVacuumVertex_mem_vacuumComponentParts",
@@ -154723,7 +154543,7 @@
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.CutIntervals.0.SecondQuantization.Common.sourceSide_mem_partner_iff",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.External.ExternalConnectivity.0.SecondQuantization.Common.TwoPointDiagram.externalOne_not_mem_externalComponentPart"
     ],
-    "compiledConsumerCount": 25,
+    "compiledConsumerCount": 27,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -155391,7 +155211,8 @@
     "dependents": [
       "Finsupp.hasSum_prod",
       "Finsupp.hasSum_prod_nonneg",
-      "_private.LeanCondensedMatter.Analysis.InfiniteSum.FinsuppProduct.0.Finsupp.hasSum_prod_finSucc_reindex"
+      "_private.LeanCondensedMatter.Analysis.InfiniteSum.FinsuppProduct.0.Finsupp.hasSum_prod_fin",
+      "_private.LeanCondensedMatter.Analysis.InfiniteSum.FinsuppProduct.0.Finsupp.hasSum_prod_nonneg_fin"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
@@ -155399,9 +155220,10 @@
     "compiledConsumers": [
       "Finsupp.hasSum_prod",
       "Finsupp.hasSum_prod_nonneg",
-      "_private.LeanCondensedMatter.Analysis.InfiniteSum.FinsuppProduct.0.Finsupp.hasSum_prod_finSucc_reindex"
+      "_private.LeanCondensedMatter.Analysis.InfiniteSum.FinsuppProduct.0.Finsupp.hasSum_prod_fin",
+      "_private.LeanCondensedMatter.Analysis.InfiniteSum.FinsuppProduct.0.Finsupp.hasSum_prod_nonneg_fin"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -155438,8 +155260,8 @@
       "Finsupp.hasSum_prod"
     ],
     "dependencies": [
+      "_private.LeanCondensedMatter.Analysis.InfiniteSum.FinsuppProduct.0.Finsupp.hasSum_prod_equiv",
       "_private.LeanCondensedMatter.Analysis.InfiniteSum.FinsuppProduct.0.Finsupp.hasSum_prod_finSucc_option",
-      "_private.LeanCondensedMatter.Analysis.InfiniteSum.FinsuppProduct.0.Finsupp.hasSum_prod_finSucc_reindex",
       "_private.LeanCondensedMatter.Analysis.InfiniteSum.FinsuppProduct.0.Finsupp.hasSum_prod_fin_zero",
       "_private.LeanCondensedMatter.Analysis.InfiniteSum.FinsuppProduct.0.Finsupp.summable_norm_prod"
     ],
@@ -155463,7 +155285,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {k : ℕ} {R : Type u_1} [inst : NormedCommRing R] [CompleteSpace R] (f : Fin (k + 1) → ℕ → R) (a : Fin (k + 1) → R),\n  HasSum (f 0) (a 0) →\n    HasSum (fun n => ∏ i, f i.succ (n i)) (∏ i, a i.succ) →\n      (Summable fun n => ‖f 0 n‖) →\n        (Summable fun n => ‖∏ i, f i.succ (n i)‖) →\n          HasSum (fun n => ∏ i, Finsupp.finSuccFamily✝ f i (n i)) (∏ i, Finsupp.finSuccFamily✝ a i)",
+    "statement": "∀ {k : ℕ} {R : Type u_1} [inst : NormedCommRing R] [CompleteSpace R] (f : Fin (k + 1) → ℕ → R) (a : Fin (k + 1) → R),\n  HasSum (f 0) (a 0) →\n    HasSum (fun n => ∏ i, f i.succ (n i)) (∏ i, a i.succ) →\n      (Summable fun n => ‖f 0 n‖) →\n        (Summable fun n => ‖∏ i, f i.succ (n i)‖) →\n          HasSum (fun n => ∏ i, f ((finSuccEquiv k).symm i) (n i)) (∏ i, a ((finSuccEquiv k).symm i))",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -155485,55 +155307,7 @@
       "_private.LeanCondensedMatter.Analysis.InfiniteSum.FinsuppProduct.0.Finsupp.hasSum_prod_fin",
       "_private.LeanCondensedMatter.Analysis.InfiniteSum.FinsuppProduct.0.Finsupp.hasSum_prod_nonneg_fin"
     ],
-    "dependencies": [
-      "_private.LeanCondensedMatter.Analysis.InfiniteSum.FinsuppProduct.0.Finsupp.hasSum_prod_option_reindex"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.Analysis.InfiniteSum.FinsuppProduct.0.Finsupp.hasSum_prod_fin",
-      "_private.LeanCondensedMatter.Analysis.InfiniteSum.FinsuppProduct.0.Finsupp.hasSum_prod_nonneg_fin"
-    ],
-    "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {k : ℕ} {R : Type u_1} [inst : NormedCommRing R] (f : Fin (k + 1) → ℕ → R) (a : Fin (k + 1) → R),\n  HasSum (fun n => ∏ i, Finsupp.finSuccFamily✝ f i (n i)) (∏ i, Finsupp.finSuccFamily✝ a i) →\n    HasSum (fun n => ∏ i, f i (n i)) (∏ i, a i)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Analysis.InfiniteSum.FinsuppProduct.0.Finsupp.hasSum_prod_finSucc_reindex",
-    "module": "LeanCondensedMatter.Analysis.InfiniteSum.FinsuppProduct",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.Analysis.InfiniteSum.FinsuppProduct.0.Finsupp.hasSum_prod_fin",
-      "_private.LeanCondensedMatter.Analysis.InfiniteSum.FinsuppProduct.0.Finsupp.hasSum_prod_nonneg_fin"
-    ],
-    "dependencies": [
-      "_private.LeanCondensedMatter.Analysis.InfiniteSum.FinsuppProduct.0.Finsupp.hasSum_prod_equiv"
-    ],
+    "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
@@ -155621,100 +155395,14 @@
       "Finsupp.hasSum_prod_nonneg"
     ],
     "dependencies": [
+      "_private.LeanCondensedMatter.Analysis.InfiniteSum.FinsuppProduct.0.Finsupp.hasSum_prod_equiv",
       "_private.LeanCondensedMatter.Analysis.InfiniteSum.FinsuppProduct.0.Finsupp.hasSum_prod_finSucc_option",
-      "_private.LeanCondensedMatter.Analysis.InfiniteSum.FinsuppProduct.0.Finsupp.hasSum_prod_finSucc_reindex",
       "_private.LeanCondensedMatter.Analysis.InfiniteSum.FinsuppProduct.0.Finsupp.hasSum_prod_fin_zero"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
       "Finsupp.hasSum_prod_nonneg"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {α : Type u_1} {R : Type u_2} [inst : Fintype α] [inst_1 : NormedCommRing R] (f : Option α → ℕ → R)\n  (a : Option α → R),\n  HasSum (fun p => f none p.1 * ∏ i, f (some i) (p.2 i)) (a none * ∏ i, a (some i)) →\n    HasSum (fun n => ∏ i, f i (n i)) (∏ i, a i)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Analysis.InfiniteSum.FinsuppProduct.0.Finsupp.hasSum_prod_option_reindex",
-    "module": "LeanCondensedMatter.Analysis.InfiniteSum.FinsuppProduct",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.Analysis.InfiniteSum.FinsuppProduct.0.Finsupp.hasSum_prod_finSucc_option"
-    ],
-    "dependencies": [
-      "_private.LeanCondensedMatter.Analysis.InfiniteSum.FinsuppProduct.0.Finsupp.prod_option_finsupp_eq"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.Analysis.InfiniteSum.FinsuppProduct.0.Finsupp.hasSum_prod_finSucc_option"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {α : Type u_1} {R : Type u_2} [inst : Fintype α] [inst_1 : CommMonoid R] (f : Option α → ℕ → R),\n  (fun n => ∏ i, f i (n i)) = (fun p => f none p.1 * ∏ i, f (some i) (p.2 i)) ∘ ⇑Finsupp.optionEquiv",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Analysis.InfiniteSum.FinsuppProduct.0.Finsupp.prod_option_finsupp_eq",
-    "module": "LeanCondensedMatter.Analysis.InfiniteSum.FinsuppProduct",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.Analysis.InfiniteSum.FinsuppProduct.0.Finsupp.hasSum_prod_option_reindex"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.Analysis.InfiniteSum.FinsuppProduct.0.Finsupp.hasSum_prod_option_reindex"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -159434,48 +159122,6 @@
     "completedMention": false,
     "compiledConsumers": [
       "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution.0.LinearPMap.resolventEvolutionStrongLimit_add_time_apply"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {A : H →ₗ.[ℂ] H}, Dense ↑A.domain → A.IsFormalAdjoint A → A.adjoint.domain ≤ A.domain → IsSelfAdjoint A",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Analysis.Operator.Unbounded.SelfAdjointCriterion.0.LinearPMap.isSelfAdjoint_of_isFormalAdjoint_of_adjoint_domain_le",
-    "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.SelfAdjointCriterion",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "LinearPMap.isSelfAdjoint_iff_adjoint_domain_le_of_isFormalAdjoint"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "LinearPMap.isSelfAdjoint_iff_adjoint_domain_le_of_isFormalAdjoint"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -165807,47 +165453,6 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
-    "statement": "∀ (v m probeEnergy regulator : ℝ),\n  regulator ≠ 0 →\n    Continuous\n      (QuantumTheory.Models.MassiveDirac.continuumBornRadialDenominatorIntegrandOfRegulator v m probeEnergy regulator)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.Denominator.0.QuantumTheory.Models.MassiveDirac.continuous_continuumBornRadialDenominatorIntegrandOfRegulator",
-    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.Denominator",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "QuantumTheory.Models.MassiveDirac.continuous_inv_pauliGreenDenominatorOfRegulator_radial",
-      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.Denominator.0.QuantumTheory.Models.MassiveDirac.pauliGreenDenominatorOfRegulator_radial_eq"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
     "terminal": false,
     "statement": "∀ (v m probeEnergy regulator pMax : ℝ),\n  v ≠ 0 →\n    probeEnergy ≠ 0 →\n      regulator ≠ 0 →\n        QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDenominatorIntegralOfRegulator v m probeEnergy\n            regulator pMax =\n          -(2 * ↑v ^ 2)⁻¹ *\n            (Complex.log\n                (QuantumTheory.Models.MassiveDirac.pauliGreenDenominatorOfRegulator v m pMax 0 probeEnergy regulator) -\n              Complex.log\n                (QuantumTheory.Models.MassiveDirac.pauliGreenDenominatorOfRegulator v m 0 0 probeEnergy regulator))",
     "standardAxioms": [
@@ -166049,7 +165654,6 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.Denominator.0.QuantumTheory.Models.MassiveDirac.continuous_continuumBornRadialDenominatorIntegrandOfRegulator",
       "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.Denominator.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDenominatorIntegralOfRegulator_eq_log_sub_log",
       "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.Denominator.0.QuantumTheory.Models.MassiveDirac.pauliGreenDenominatorOfRegulator_radial_im",
       "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.Denominator.0.QuantumTheory.Models.MassiveDirac.pauliGreenDenominatorOfRegulator_radial_re"
@@ -166058,12 +165662,11 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.Denominator.0.QuantumTheory.Models.MassiveDirac.continuous_continuumBornRadialDenominatorIntegrandOfRegulator",
       "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.Denominator.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDenominatorIntegralOfRegulator_eq_log_sub_log",
       "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.Denominator.0.QuantumTheory.Models.MassiveDirac.pauliGreenDenominatorOfRegulator_radial_im",
       "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.Denominator.0.QuantumTheory.Models.MassiveDirac.pauliGreenDenominatorOfRegulator_radial_re"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -174965,53 +174568,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (ρ : QuantumTheory.DensityOperator H) (A : H →L[ℂ] H), ‖QuantumTheory.densityExpectationTrace✝ ρ A‖ ≤ ‖A‖",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.QuantumTheory.DensityOperator.Expectation.0.QuantumTheory.densityExpectationTrace_norm_le",
-    "module": "LeanCondensedMatter.QuantumTheory.DensityOperator.Expectation",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.DensityOperator.norm_expectation_le"
-    ],
-    "dependencies": [
-      "ContinuousLinearMap.IsTraceClass.comp_right",
-      "ContinuousLinearMap.IsTraceClass.norm_trace_le_traceNorm",
-      "ContinuousLinearMap.IsTraceClass.traceNorm_comp_right_le",
-      "QuantumTheory.DensityOperator.traceNorm_eq_one"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.DensityOperator.norm_expectation_le"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] (A : H →L[ℂ] H) {x : H},\n  ‖x‖ = 1 → ‖inner ℂ x (A x)‖ ≤ ‖A‖",
     "standardAxioms": [
       "Classical.choice",
@@ -175038,6 +174594,53 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.DensityOperator.summable_expectation_term"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (ρ : QuantumTheory.DensityOperator H) (A : H →L[ℂ] H), ‖⋯.trace‖ ≤ ‖A‖",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.QuantumTheory.DensityOperator.Expectation.0.QuantumTheory.trace_comp_right_norm_le",
+    "module": "LeanCondensedMatter.QuantumTheory.DensityOperator.Expectation",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.DensityOperator.norm_expectation_le"
+    ],
+    "dependencies": [
+      "ContinuousLinearMap.IsTraceClass.comp_right",
+      "ContinuousLinearMap.IsTraceClass.norm_trace_le_traceNorm",
+      "ContinuousLinearMap.IsTraceClass.traceNorm_comp_right_le",
+      "QuantumTheory.DensityOperator.traceNorm_eq_one"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.DensityOperator.norm_expectation_le"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -175396,6 +174999,7 @@
       "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.LehmannLimits.0.QuantumTheory.LinearResponse.finset_frequencyTerm_has_both_local_iterated_limits"
     ],
     "dependencies": [
+      "QuantumTheory.LinearResponse.HasAdiabaticRemovalLimit.finsetSum",
       "QuantumTheory.LinearResponse.hasAdiabaticRemovalLimit_lehmannTerm"
     ],
     "crossModuleDirectWrapper": false,
@@ -175467,7 +175071,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {ι : Type u_2} [inst_3 : Fintype ι] (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (data : QuantumTheory.LinearResponse.PurePointLehmannData system ι) (A B : H →L[ℂ] H) (omega eta : ℝ),\n  QuantumTheory.LinearResponse.finitePurePointPhysicalSusceptibilityExtension✝ system data A B omega eta =\n    ∑ mn,\n      QuantumTheory.LinearResponse.lehmannTerm system.hbar omega eta (data.energy mn.1 - data.energy mn.2)\n        (QuantumTheory.LinearResponse.purePointTransitionWeight system data A B mn)",
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {ι : Type u_2} [inst_3 : Fintype ι] (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (data : QuantumTheory.LinearResponse.PurePointLehmannData system ι) (A B : H →L[ℂ] H) (omega eta : ℝ),\n  QuantumTheory.LinearResponse.finitePurePointPhysicalSusceptibilityExtension✝ system data A B omega eta =\n    ∑ mn,\n      QuantumTheory.LinearResponse.lehmannTerm system.hbar omega eta (data.energy mn.1 - data.energy mn.2)\n        (QuantumTheory.LinearResponse.purePointTransitionData system data A B mn).weight",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -175511,7 +175115,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {ι : Type u_2} [inst_3 : Fintype ι] (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (data : QuantumTheory.LinearResponse.PurePointLehmannData system ι) (A B : H →L[ℂ] H),\n  QuantumTheory.LinearResponse.PurePointStaticNonresonant system data A B →\n    QuantumTheory.LinearResponse.HasLocalStaticThenAdiabaticLimit\n        (QuantumTheory.LinearResponse.finitePurePointPhysicalSusceptibilityExtension✝ system data A B)\n        (∑ mn,\n          QuantumTheory.LinearResponse.unswitchedLehmannTerm system.hbar 0 (data.energy mn.1 - data.energy mn.2)\n            (QuantumTheory.LinearResponse.purePointTransitionWeight system data A B mn)) ∧\n      QuantumTheory.LinearResponse.HasLocalAdiabaticThenStaticLimit\n        (QuantumTheory.LinearResponse.finitePurePointPhysicalSusceptibilityExtension✝ system data A B)\n        (∑ mn,\n          QuantumTheory.LinearResponse.unswitchedLehmannTerm system.hbar 0 (data.energy mn.1 - data.energy mn.2)\n            (QuantumTheory.LinearResponse.purePointTransitionWeight system data A B mn))",
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {ι : Type u_2} [inst_3 : Fintype ι] (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (data : QuantumTheory.LinearResponse.PurePointLehmannData system ι) (A B : H →L[ℂ] H),\n  QuantumTheory.LinearResponse.PurePointStaticNonresonant system data A B →\n    QuantumTheory.LinearResponse.HasLocalStaticThenAdiabaticLimit\n        (QuantumTheory.LinearResponse.finitePurePointPhysicalSusceptibilityExtension✝ system data A B)\n        (∑ mn,\n          QuantumTheory.LinearResponse.unswitchedLehmannTerm system.hbar 0 (data.energy mn.1 - data.energy mn.2)\n            (QuantumTheory.LinearResponse.purePointTransitionData system data A B mn).weight) ∧\n      QuantumTheory.LinearResponse.HasLocalAdiabaticThenStaticLimit\n        (QuantumTheory.LinearResponse.finitePurePointPhysicalSusceptibilityExtension✝ system data A B)\n        (∑ mn,\n          QuantumTheory.LinearResponse.unswitchedLehmannTerm system.hbar 0 (data.energy mn.1 - data.energy mn.2)\n            (QuantumTheory.LinearResponse.purePointTransitionData system data A B mn).weight)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
