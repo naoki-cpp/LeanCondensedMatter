@@ -1020,41 +1020,6 @@ theorem AngularHarmonicCoefficients.integral_polarFourierRadialPhase
         (polarFourierZerothAngularKernel z * coefficients.constant +
           polarFourierFirstCosineAngularKernel z * coefficients.firstCosine +
           polarFourierSecondCosineAngularKernel z * coefficients.secondCosine) := by
-  have hphase : Continuous fun θ : ℝ => polarFourierRadialPhase z θ := by
-    unfold polarFourierRadialPhase
-    fun_prop
-  have hcos : Continuous fun θ : ℝ => ((Real.cos θ : ℝ) : ℂ) := by
-    fun_prop
-  have hsin : Continuous fun θ : ℝ => ((Real.sin θ : ℝ) : ℂ) := by
-    fun_prop
-  have hA : IntervalIntegrable
-      (fun θ : ℝ => polarFourierRadialPhase z θ * coefficients.constant)
-      volume 0 (2 * Real.pi) :=
-    (hphase.mul continuous_const).intervalIntegrable 0 (2 * Real.pi)
-  have hB : IntervalIntegrable
-      (fun θ : ℝ =>
-        (polarFourierRadialPhase z θ * ((Real.cos θ : ℝ) : ℂ)) * coefficients.firstCosine)
-      volume 0 (2 * Real.pi) :=
-    ((hphase.mul hcos).mul continuous_const).intervalIntegrable 0 (2 * Real.pi)
-  have hC : IntervalIntegrable
-      (fun θ : ℝ =>
-        (polarFourierRadialPhase z θ * ((Real.sin θ : ℝ) : ℂ)) * coefficients.firstSine)
-      volume 0 (2 * Real.pi) :=
-    ((hphase.mul hsin).mul continuous_const).intervalIntegrable 0 (2 * Real.pi)
-  have hD : IntervalIntegrable
-      (fun θ : ℝ =>
-        (polarFourierRadialPhase z θ *
-          ((((Real.cos θ : ℝ) : ℂ) ^ 2) - (((Real.sin θ : ℝ) : ℂ) ^ 2))) *
-            coefficients.secondCosine) volume 0 (2 * Real.pi) := by
-    apply Continuous.intervalIntegrable
-    fun_prop
-  have hE : IntervalIntegrable
-      (fun θ : ℝ =>
-        (polarFourierRadialPhase z θ *
-          (((Real.cos θ : ℝ) : ℂ) * ((Real.sin θ : ℝ) : ℂ))) * coefficients.secondMixed)
-      volume 0 (2 * Real.pi) := by
-    apply Continuous.intervalIntegrable
-    fun_prop
   calc
     (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi),
         ((p : ℂ) * polarFourierRadialPhase z θ) * coefficients.eval θ) =
@@ -1080,10 +1045,18 @@ theorem AngularHarmonicCoefficients.integral_polarFourierRadialPhase
         (polarFourierZerothAngularKernel z * coefficients.constant +
           polarFourierFirstCosineAngularKernel z * coefficients.firstCosine +
           polarFourierSecondCosineAngularKernel z * coefficients.secondCosine) := by
-      rw [intervalIntegral.integral_add (((hA.add hB).add hC).add hD) hE,
-        intervalIntegral.integral_add ((hA.add hB).add hC) hD,
-        intervalIntegral.integral_add (hA.add hB) hC,
-        intervalIntegral.integral_add hA hB,
+      rw [intervalIntegral.integral_add
+          (by apply Continuous.intervalIntegrable; unfold polarFourierRadialPhase; fun_prop)
+          (by apply Continuous.intervalIntegrable; unfold polarFourierRadialPhase; fun_prop),
+        intervalIntegral.integral_add
+          (by apply Continuous.intervalIntegrable; unfold polarFourierRadialPhase; fun_prop)
+          (by apply Continuous.intervalIntegrable; unfold polarFourierRadialPhase; fun_prop),
+        intervalIntegral.integral_add
+          (by apply Continuous.intervalIntegrable; unfold polarFourierRadialPhase; fun_prop)
+          (by apply Continuous.intervalIntegrable; unfold polarFourierRadialPhase; fun_prop),
+        intervalIntegral.integral_add
+          (by apply Continuous.intervalIntegrable; unfold polarFourierRadialPhase; fun_prop)
+          (by apply Continuous.intervalIntegrable; unfold polarFourierRadialPhase; fun_prop),
         intervalIntegral.integral_mul_const,
         intervalIntegral.integral_mul_const,
         intervalIntegral.integral_mul_const,
