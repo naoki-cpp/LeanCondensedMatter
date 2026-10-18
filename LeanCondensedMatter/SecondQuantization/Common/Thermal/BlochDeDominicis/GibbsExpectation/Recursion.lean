@@ -44,42 +44,30 @@ noncomputable def finiteGibbsExpectationRecursion (s : Statistics)
       fun i => hne _⟩
   expectation_succ := by
     rintro m C ⟨q, c, hC, hcomm, hne⟩
-    have h1 : finiteGibbsExpectation energy β (List.prod (List.ofFn C)) =
-        finiteGibbsExpectation energy β
-          ((C 0).comp (List.prod (List.ofFn (fun i : Fin (2 * m + 1) => C i.succ)))) := by
-      rw [List.ofFn_succ, List.prod_cons, Module.End.mul_eq_comp]
-      rfl
+    rw [List.ofFn_succ, List.prod_cons, Module.End.mul_eq_comp]
     set l : List ((AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) × ℂ) :=
       List.ofFn (fun i : Fin (2 * m + 1) => (C i.succ, c 0 i.succ)) with hl
-    have hlmap : l.map Prod.fst = List.ofFn (fun i : Fin (2 * m + 1) => C i.succ) := by
-      rw [hl, List.map_ofFn]
-      rfl
-    have hlen : l.length = 2 * m + 1 := by
-      rw [hl]
-      simp
-    have hcommL : ∀ p ∈ l, ScalarExchange.zetaCommutator (s.zetaInt : ℂ) (C 0) p.1 =
+     have hcommL : ∀ p ∈ l, ScalarExchange.zetaCommutator (s.zetaInt : ℂ) (C 0) p.1 =
         p.2 • (LinearMap.id : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) := by
       intro p hp
       rw [hl, List.mem_ofFn] at hp
       obtain ⟨i, rfl⟩ := hp
       exact hcomm 0 i.succ (Ne.symm (Fin.succ_ne_zero i))
     have hzl : (s.zetaInt : ℂ) ^ l.length = (s.zetaInt : ℂ) := by
-      rw [hlen]
-      have h := zetaInt_pow_eq_of_mod_two_eq s (a := 2 * m + 1) (b := 1) (by omega)
-      rwa [pow_one] at h
+      simpa [hl] using
+        (zetaInt_pow_eq_of_mod_two_eq s (a := 2 * m + 1) (b := 1) (by omega))
     have hne0 : (1 : ℂ) - (s.zetaInt : ℂ) ^ l.length *
         Complex.exp ((q 0 * β : ℝ) : ℂ) ≠ 0 := by
       rw [hzl]
       exact hne 0
     have hpeel := finiteGibbsExpectation_peel_indexed energy β (q 0) (s.zetaInt : ℂ) (C 0) l
       (hC 0) hcommL hne0
-    rw [hlmap] at hpeel
     rw [hzl] at hpeel
-    rw [hl, List.sum_getElem_eraseIdx_ofFn
+    rw [hl, List.map_ofFn, List.sum_getElem_eraseIdx_ofFn
       (fun i : Fin (2 * m + 1) => (C i.succ, c 0 i.succ))
       (fun i p rest => (s.zetaInt : ℂ) ^ i * p.2 *
         finiteGibbsExpectation energy β (List.prod (rest.map Prod.fst)))] at hpeel
-    rw [h1, hpeel, Finset.sum_div]
+    rw [hpeel, Finset.sum_div]
     refine Finset.sum_congr rfl fun j _ => ?_
     have h2 : finiteGibbsExpectation energy β ((C 0).comp (C j.succ)) =
         c 0 j.succ / (1 - (s.zetaInt : ℂ) * Complex.exp ((q 0 * β : ℝ) : ℂ)) :=
