@@ -969,40 +969,33 @@ theorem integral_polarFourierFirstCosineAngularKernel_two_mul_eq_zeroth_sub_seco
         _ = _ := by ring
     _ = _ := by rw [intervalIntegral.integral_const_mul]
 
-/-- The sine first harmonic vanishes against the radial Fourier phase over one full angle. -/
-theorem integral_polarFourierRadialPhase_mul_sin_zero (z : ℝ) :
-    (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi),
-      polarFourierRadialPhase z θ * ((Real.sin θ : ℝ) : ℂ)) = 0 := by
-  let f : ℝ → ℂ := fun θ =>
-    polarFourierRadialPhase z θ * ((Real.sin θ : ℝ) : ℂ)
+/-- Reflection across π makes the full-period integral of an antisymmetric
+complex-valued integrand vanish. -/
+private theorem integral_fullPeriod_eq_zero_of_reflection_neg
+    (f : ℝ → ℂ) (hneg : ∀ θ, f (2 * Real.pi - θ) = -f θ) :
+    (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi), f θ) = 0 := by
   have hsub :
       (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi), f (2 * Real.pi - θ)) =
         ∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi), f θ := by
     simpa using
       (intervalIntegral.integral_comp_sub_left
         (f := f) (a := (0 : ℝ)) (b := 2 * Real.pi) (2 * Real.pi))
-  have hneg :
+  have hflip :
       (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi), f (2 * Real.pi - θ)) =
         -(∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi), f θ) := by
-    calc
-      (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi), f (2 * Real.pi - θ)) =
-          ∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi), -f θ := by
-            apply intervalIntegral.integral_congr
-            intro θ _
-            unfold f polarFourierRadialPhase
-            dsimp
-            rw [Real.cos_two_pi_sub, Real.sin_two_pi_sub]
-            push_cast
-            ring
-      _ = -(∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi), f θ) := by
-        rw [intervalIntegral.integral_neg]
-  have hself :
-      -(∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi), f θ) =
-        ∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi), f θ :=
-    hneg.symm.trans hsub
-  have hz : (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi), f θ) = 0 :=
-    CharZero.neg_eq_self_iff.mp hself
-  simpa [f] using hz
+    simp_rw [hneg, intervalIntegral.integral_neg]
+  exact CharZero.neg_eq_self_iff.mp (hflip.symm.trans hsub)
+
+/-- The sine first harmonic vanishes against the radial Fourier phase over one full angle. -/
+theorem integral_polarFourierRadialPhase_mul_sin_zero (z : ℝ) :
+    (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi),
+      polarFourierRadialPhase z θ * ((Real.sin θ : ℝ) : ℂ)) = 0 := by
+  apply integral_fullPeriod_eq_zero_of_reflection_neg
+  intro θ
+  unfold polarFourierRadialPhase
+  rw [Real.cos_two_pi_sub, Real.sin_two_pi_sub]
+  push_cast
+  ring
 
 /-- The mixed quadratic harmonic `cos θ sin θ` vanishes against the radial Fourier phase over one
 full angle. -/
@@ -1010,37 +1003,12 @@ theorem integral_polarFourierRadialPhase_mul_cos_mul_sin_zero (z : ℝ) :
     (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi),
       polarFourierRadialPhase z θ *
         (((Real.cos θ : ℝ) : ℂ) * ((Real.sin θ : ℝ) : ℂ))) = 0 := by
-  let f : ℝ → ℂ := fun θ =>
-    polarFourierRadialPhase z θ *
-      (((Real.cos θ : ℝ) : ℂ) * ((Real.sin θ : ℝ) : ℂ))
-  have hsub :
-      (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi), f (2 * Real.pi - θ)) =
-        ∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi), f θ := by
-    simpa using
-      (intervalIntegral.integral_comp_sub_left
-        (f := f) (a := (0 : ℝ)) (b := 2 * Real.pi) (2 * Real.pi))
-  have hneg :
-      (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi), f (2 * Real.pi - θ)) =
-        -(∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi), f θ) := by
-    calc
-      (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi), f (2 * Real.pi - θ)) =
-          ∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi), -f θ := by
-            apply intervalIntegral.integral_congr
-            intro θ _
-            unfold f polarFourierRadialPhase
-            dsimp
-            rw [Real.cos_two_pi_sub, Real.sin_two_pi_sub]
-            push_cast
-            ring
-      _ = -(∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi), f θ) := by
-        rw [intervalIntegral.integral_neg]
-  have hself :
-      -(∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi), f θ) =
-        ∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi), f θ :=
-    hneg.symm.trans hsub
-  have hz : (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi), f θ) = 0 :=
-    CharZero.neg_eq_self_iff.mp hself
-  simpa [f] using hz
+  apply integral_fullPeriod_eq_zero_of_reflection_neg
+  intro θ
+  unfold polarFourierRadialPhase
+  rw [Real.cos_two_pi_sub, Real.sin_two_pi_sub]
+  push_cast
+  ring
 
 /-- Phase-weighted full-angle integration of the canonical constant/first/second harmonic
 decomposition. The first-sine and mixed-second channels vanish on the radial axis. -/
