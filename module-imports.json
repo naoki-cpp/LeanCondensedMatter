@@ -3786,6 +3786,51 @@
       "externalImportCount": 0
     },
     {
+      "name": "LeanCondensedMatter.QuantumTheory.Gibbs.Eigenbasis",
+      "sourceFile": "LeanCondensedMatter/QuantumTheory/Gibbs/Eigenbasis.lean",
+      "imports": [
+        "LeanCondensedMatter.QuantumTheory.DensityOperator.DiagonalFormula"
+      ],
+      "externalImportCount": 1
+    },
+    {
+      "name": "LeanCondensedMatter.QuantumTheory.Gibbs.EigenbasisEntropy",
+      "sourceFile": "LeanCondensedMatter/QuantumTheory/Gibbs/EigenbasisEntropy.lean",
+      "imports": [
+        "LeanCondensedMatter.QuantumTheory.Entropy.Diagonal",
+        "LeanCondensedMatter.QuantumTheory.Gibbs.EigenbasisExpectation"
+      ],
+      "externalImportCount": 0
+    },
+    {
+      "name": "LeanCondensedMatter.QuantumTheory.Gibbs.EigenbasisExpectation",
+      "sourceFile": "LeanCondensedMatter/QuantumTheory/Gibbs/EigenbasisExpectation.lean",
+      "imports": [
+        "LeanCondensedMatter.QuantumTheory.Gibbs.DiagonalEnergy",
+        "LeanCondensedMatter.QuantumTheory.Gibbs.Eigenbasis"
+      ],
+      "externalImportCount": 0
+    },
+    {
+      "name": "LeanCondensedMatter.QuantumTheory.Gibbs.EigenbasisUniqueness",
+      "sourceFile": "LeanCondensedMatter/QuantumTheory/Gibbs/EigenbasisUniqueness.lean",
+      "imports": [
+        "LeanCondensedMatter.Analysis.Inequalities.Gibbs",
+        "LeanCondensedMatter.Analysis.InfiniteSum.Order",
+        "LeanCondensedMatter.QuantumTheory.Gibbs.EigenbasisVariational"
+      ],
+      "externalImportCount": 0
+    },
+    {
+      "name": "LeanCondensedMatter.QuantumTheory.Gibbs.EigenbasisVariational",
+      "sourceFile": "LeanCondensedMatter/QuantumTheory/Gibbs/EigenbasisVariational.lean",
+      "imports": [
+        "LeanCondensedMatter.Analysis.Inequalities.Gibbs",
+        "LeanCondensedMatter.QuantumTheory.Gibbs.Eigenbasis"
+      ],
+      "externalImportCount": 0
+    },
+    {
       "name": "LeanCondensedMatter.QuantumTheory.Gibbs.EnergyExpectation",
       "sourceFile": "LeanCondensedMatter/QuantumTheory/Gibbs/EnergyExpectation.lean",
       "imports": [
@@ -3846,7 +3891,7 @@
       "name": "LeanCondensedMatter.QuantumTheory.Gibbs.HeatOperator",
       "sourceFile": "LeanCondensedMatter/QuantumTheory/Gibbs/HeatOperator.lean",
       "imports": [
-        "LeanCondensedMatter.QuantumTheory.Gibbs.PurePoint"
+        "LeanCondensedMatter.QuantumTheory.Gibbs.Eigenbasis"
       ],
       "externalImportCount": 0
     },
@@ -3856,51 +3901,6 @@
       "imports": [
         "LeanCondensedMatter.QuantumTheory.Gibbs.Uniqueness",
         "LeanCondensedMatter.QuantumTheory.Gibbs.Variational"
-      ],
-      "externalImportCount": 0
-    },
-    {
-      "name": "LeanCondensedMatter.QuantumTheory.Gibbs.PurePoint",
-      "sourceFile": "LeanCondensedMatter/QuantumTheory/Gibbs/PurePoint.lean",
-      "imports": [
-        "LeanCondensedMatter.QuantumTheory.DensityOperator.DiagonalFormula"
-      ],
-      "externalImportCount": 1
-    },
-    {
-      "name": "LeanCondensedMatter.QuantumTheory.Gibbs.PurePointEntropy",
-      "sourceFile": "LeanCondensedMatter/QuantumTheory/Gibbs/PurePointEntropy.lean",
-      "imports": [
-        "LeanCondensedMatter.QuantumTheory.Entropy.Diagonal",
-        "LeanCondensedMatter.QuantumTheory.Gibbs.PurePointExpectation"
-      ],
-      "externalImportCount": 0
-    },
-    {
-      "name": "LeanCondensedMatter.QuantumTheory.Gibbs.PurePointExpectation",
-      "sourceFile": "LeanCondensedMatter/QuantumTheory/Gibbs/PurePointExpectation.lean",
-      "imports": [
-        "LeanCondensedMatter.QuantumTheory.Gibbs.DiagonalEnergy",
-        "LeanCondensedMatter.QuantumTheory.Gibbs.PurePoint"
-      ],
-      "externalImportCount": 0
-    },
-    {
-      "name": "LeanCondensedMatter.QuantumTheory.Gibbs.PurePointUniqueness",
-      "sourceFile": "LeanCondensedMatter/QuantumTheory/Gibbs/PurePointUniqueness.lean",
-      "imports": [
-        "LeanCondensedMatter.Analysis.Inequalities.Gibbs",
-        "LeanCondensedMatter.Analysis.InfiniteSum.Order",
-        "LeanCondensedMatter.QuantumTheory.Gibbs.PurePointVariational"
-      ],
-      "externalImportCount": 0
-    },
-    {
-      "name": "LeanCondensedMatter.QuantumTheory.Gibbs.PurePointVariational",
-      "sourceFile": "LeanCondensedMatter/QuantumTheory/Gibbs/PurePointVariational.lean",
-      "imports": [
-        "LeanCondensedMatter.Analysis.Inequalities.Gibbs",
-        "LeanCondensedMatter.QuantumTheory.Gibbs.PurePoint"
       ],
       "externalImportCount": 0
     },
@@ -3937,6 +3937,11 @@
       "sourceFile": "LeanCondensedMatter/QuantumTheory/Gibbs.lean",
       "imports": [
         "LeanCondensedMatter.QuantumTheory.Gibbs.DiagonalEnergy",
+        "LeanCondensedMatter.QuantumTheory.Gibbs.Eigenbasis",
+        "LeanCondensedMatter.QuantumTheory.Gibbs.EigenbasisEntropy",
+        "LeanCondensedMatter.QuantumTheory.Gibbs.EigenbasisExpectation",
+        "LeanCondensedMatter.QuantumTheory.Gibbs.EigenbasisUniqueness",
+        "LeanCondensedMatter.QuantumTheory.Gibbs.EigenbasisVariational",
         "LeanCondensedMatter.QuantumTheory.Gibbs.EnergyExpectation",
         "LeanCondensedMatter.QuantumTheory.Gibbs.Entropy",
         "LeanCondensedMatter.QuantumTheory.Gibbs.Equality",
@@ -3945,11 +3950,6 @@
         "LeanCondensedMatter.QuantumTheory.Gibbs.FreeExchangeCycleSeries",
         "LeanCondensedMatter.QuantumTheory.Gibbs.HeatOperator",
         "LeanCondensedMatter.QuantumTheory.Gibbs.MinimizerUniqueness",
-        "LeanCondensedMatter.QuantumTheory.Gibbs.PurePoint",
-        "LeanCondensedMatter.QuantumTheory.Gibbs.PurePointEntropy",
-        "LeanCondensedMatter.QuantumTheory.Gibbs.PurePointExpectation",
-        "LeanCondensedMatter.QuantumTheory.Gibbs.PurePointUniqueness",
-        "LeanCondensedMatter.QuantumTheory.Gibbs.PurePointVariational",
         "LeanCondensedMatter.QuantumTheory.Gibbs.State",
         "LeanCondensedMatter.QuantumTheory.Gibbs.Uniqueness",
         "LeanCondensedMatter.QuantumTheory.Gibbs.Variational"
@@ -4891,6 +4891,15 @@
       "externalImportCount": 0
     },
     {
+      "name": "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BoltzmannSummability",
+      "sourceFile": "LeanCondensedMatter/SecondQuantization/Bosonic/Thermal/BoltzmannSummability.lean",
+      "imports": [
+        "LeanCondensedMatter.QuantumTheory.Gibbs.Eigenbasis",
+        "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.ConvergenceAwareGibbs"
+      ],
+      "externalImportCount": 0
+    },
+    {
       "name": "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BoltzmannWeightFactorization",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Bosonic/Thermal/BoltzmannWeightFactorization.lean",
       "imports": [
@@ -4914,7 +4923,7 @@
       "imports": [
         "LeanCondensedMatter.QuantumTheory.Gibbs.HeatOperator",
         "LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.Basic",
-        "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.PurePointSummability",
+        "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BoltzmannSummability",
         "LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.Heat"
       ],
       "externalImportCount": 0
@@ -4969,15 +4978,6 @@
       "externalImportCount": 0
     },
     {
-      "name": "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.PurePointSummability",
-      "sourceFile": "LeanCondensedMatter/SecondQuantization/Bosonic/Thermal/PurePointSummability.lean",
-      "imports": [
-        "LeanCondensedMatter.QuantumTheory.Gibbs.PurePoint",
-        "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.ConvergenceAwareGibbs"
-      ],
-      "externalImportCount": 0
-    },
-    {
       "name": "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.QuadraticParticleNumberWeightSummable",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Bosonic/Thermal/QuadraticParticleNumberWeightSummable.lean",
       "imports": [
@@ -4998,12 +4998,12 @@
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Bosonic/Thermal.lean",
       "imports": [
         "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis",
+        "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BoltzmannSummability",
         "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.Completed.FreeGibbs",
         "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.ConvergenceAwareGibbs",
         "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.FreePartitionDeterminant",
         "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.ParticleNumberWeightSummable",
         "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.PolynomialOccupationWeightSummable",
-        "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.PurePointSummability",
         "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.QuadraticParticleNumberWeightSummable",
         "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.TotalParticleNumberWeightSummable"
       ],
@@ -6384,7 +6384,7 @@
       "name": "LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteCompletedGibbsCompatibility",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Thermal/FiniteCompletedGibbsCompatibility.lean",
       "imports": [
-        "LeanCondensedMatter.QuantumTheory.Gibbs.PurePoint",
+        "LeanCondensedMatter.QuantumTheory.Gibbs.Eigenbasis",
         "LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.FiniteCompatibility"
       ],
       "externalImportCount": 0
@@ -6393,7 +6393,7 @@
       "name": "LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsCoordinate",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Thermal/FiniteGibbsCoordinate.lean",
       "imports": [
-        "LeanCondensedMatter.QuantumTheory.Gibbs.PurePoint",
+        "LeanCondensedMatter.QuantumTheory.Gibbs.Eigenbasis",
         "LeanCondensedMatter.SecondQuantization.Common.Algebra.FiniteTrace",
         "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.DiagonalEvolution",
         "LeanCondensedMatter.SecondQuantization.Common.Perturbation.FiniteOperatorIntegral",
@@ -6406,7 +6406,7 @@
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Thermal/FiniteGibbsExpectationBridge.lean",
       "imports": [
         "LeanCondensedMatter.QuantumTheory.DensityOperator.Finite",
-        "LeanCondensedMatter.QuantumTheory.Gibbs.PurePoint",
+        "LeanCondensedMatter.QuantumTheory.Gibbs.Eigenbasis",
         "LeanCondensedMatter.SecondQuantization.Common.Algebra.FiniteHilbertOperator"
       ],
       "externalImportCount": 0
@@ -6415,7 +6415,7 @@
       "name": "LeanCondensedMatter.SecondQuantization.Common.Thermal",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Thermal.lean",
       "imports": [
-        "LeanCondensedMatter.QuantumTheory.Gibbs.PurePoint",
+        "LeanCondensedMatter.QuantumTheory.Gibbs.Eigenbasis",
         "LeanCondensedMatter.SecondQuantization.Common.Algebra.DiagonalTrace",
         "LeanCondensedMatter.SecondQuantization.Common.Algebra.FiniteHilbertOperator",
         "LeanCondensedMatter.SecondQuantization.Common.Algebra.FiniteTrace",
@@ -7793,6 +7793,15 @@
       "externalImportCount": 0
     },
     {
+      "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.BoltzmannSummability",
+      "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Thermal/BoltzmannSummability.lean",
+      "imports": [
+        "LeanCondensedMatter.QuantumTheory.Gibbs.Eigenbasis",
+        "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.Hamiltonian"
+      ],
+      "externalImportCount": 1
+    },
+    {
       "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.BlochDeDominicis",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Thermal/Completed/BlochDeDominicis.lean",
       "imports": [
@@ -7809,7 +7818,7 @@
       "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.Gibbs",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Thermal/Completed/Gibbs.lean",
       "imports": [
-        "LeanCondensedMatter.QuantumTheory.Gibbs.PurePoint",
+        "LeanCondensedMatter.QuantumTheory.Gibbs.Eigenbasis",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.Hamiltonian",
         "LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.Basic",
         "LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.Core"
@@ -7820,7 +7829,7 @@
       "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.ModeTruncation",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Thermal/Completed/ModeTruncation.lean",
       "imports": [
-        "LeanCondensedMatter.QuantumTheory.Gibbs.PurePoint",
+        "LeanCondensedMatter.QuantumTheory.Gibbs.Eigenbasis",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.Hamiltonian",
         "LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.ModeTruncation",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.Gibbs"
@@ -7860,7 +7869,7 @@
       "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeEntropy",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Thermal/FreeEntropy.lean",
       "imports": [
-        "LeanCondensedMatter.QuantumTheory.Gibbs.PurePointEntropy",
+        "LeanCondensedMatter.QuantumTheory.Gibbs.EigenbasisEntropy",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreePartitionFunction"
       ],
       "externalImportCount": 0
@@ -7869,7 +7878,7 @@
       "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsDensityOperator",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Thermal/FreeGibbsDensityOperator.lean",
       "imports": [
-        "LeanCondensedMatter.QuantumTheory.Gibbs.PurePoint",
+        "LeanCondensedMatter.QuantumTheory.Gibbs.Eigenbasis",
         "LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsExpectationBridge",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.Hamiltonian"
       ],
@@ -7899,15 +7908,6 @@
       "externalImportCount": 0
     },
     {
-      "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.PurePointSummability",
-      "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Thermal/PurePointSummability.lean",
-      "imports": [
-        "LeanCondensedMatter.QuantumTheory.Gibbs.PurePoint",
-        "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.Hamiltonian"
-      ],
-      "externalImportCount": 1
-    },
-    {
       "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.TimedFieldContraction",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Thermal/TimedFieldContraction.lean",
       "imports": [
@@ -7923,12 +7923,12 @@
       "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Thermal.lean",
       "imports": [
+        "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.BoltzmannSummability",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeEntropy",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsDensityOperator",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsGreenFunction",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreePartitionFunction",
-        "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.PurePointSummability",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.TimedFieldContraction"
       ],
       "externalImportCount": 0
