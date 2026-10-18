@@ -653,6 +653,7 @@ private theorem regularizedHGFun_one_sub_two_eq_mul_three (w : ℂ) :
     have hf : (Nat.factorial n : ℂ) ≠ 0 := by
       exact_mod_cast Nat.factorial_ne_zero n
     have hn2' : (2 : ℂ) + (n : ℂ) ≠ 0 := by simpa [add_comm] using hn2
+    field_simp [hn2']
     calc
       1 - ((2 : ℂ) + (n : ℂ))⁻¹ =
           (((2 : ℂ) + (n : ℂ)) * (((2 : ℂ) + (n : ℂ))⁻¹)) -
@@ -719,7 +720,6 @@ private theorem besselJ_zero_one_two_recurrence (z : ℂ) :
       Complex.regularizedHGFun 0 {((2 : ℂ) + 1)} (-(z / 2) ^ 2) = _
     have ha : (2 : ℂ) + 1 = 3 := by norm_num
     rw [ha, Complex.cpow_two]
-    rfl
   rw [h0, h1, h2]
   dsimp [w] at h
   calc
