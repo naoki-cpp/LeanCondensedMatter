@@ -205,7 +205,7 @@ theorem Pairing.crossingCount_eq_sum_componentCrossingCount [Fintype ι] (pairin
     (e : (Σ B : ι, F B) ≃ pairing.NormalizedPair) :
     pairing.crossingCount = ∑ B : ι, ∑ C : ι, pairing.componentCrossingCount e B C := by
   classical
-  rw [pairing.crossingCount_eq_sum_crosses,
+  rw [pairing.crossingCount_eq_sum_crosses, Fintype.sum_prod_type,
     ← Equiv.sum_comp e, Fintype.sum_sigma]
   simp_rw [← Equiv.sum_comp e, Fintype.sum_sigma]
   simp only [Pairing.componentCrossingCount, Fintype.sum_prod_type]
