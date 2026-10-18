@@ -153,6 +153,49 @@ theorem TwoPointDiagram.verticesBetweenCuts_reachable_without_each_cut
       (((d.vertexGraphWithoutPropagator later).mem_componentBlock
         (Sum.inl (0 : Fin 2)) v).1 hvLater).symm
 
+/-- Reachability after deleting both boundary propagators preserves interval
+membership. Thus a walk in the double-cut graph cannot leave the interval
+once it starts there. No ordering or separation hypothesis is needed:
+the statement follows from the two source-side component tests. -/
+theorem TwoPointDiagram.mem_verticesBetweenCuts_iff_of_doubleCut_reachable
+    (d : TwoPointDiagram ExternalLabel InternalLabel N S)
+    (earlier later : Fin (2 * (2 * S.card + 1)))
+    (u v : TwoPointVertex S)
+    (h : (d.vertexGraphWithoutPropagator earlier ⊓
+      d.vertexGraphWithoutPropagator later).Reachable u v) :
+    u ∈ d.verticesBetweenCuts earlier later ↔
+      v ∈ d.verticesBetweenCuts earlier later := by
+  have hEarlier : (d.vertexGraphWithoutPropagator earlier).Reachable u v :=
+    SimpleGraph.Reachable.mono inf_le_left h
+  have hLater : (d.vertexGraphWithoutPropagator later).Reachable u v :=
+    SimpleGraph.Reachable.mono inf_le_right h
+  have member_iff (cut : Fin (2 * (2 * S.card + 1)))
+      (hcut : (d.vertexGraphWithoutPropagator cut).Reachable u v) :
+      u ∈ (d.vertexGraphWithoutPropagator cut).componentBlock (Sum.inl (0 : Fin 2)) ↔
+        v ∈ (d.vertexGraphWithoutPropagator cut).componentBlock (Sum.inl (0 : Fin 2)) := by
+    constructor
+    · intro hu
+      exact ((d.vertexGraphWithoutPropagator cut).mem_componentBlock
+        (Sum.inl (0 : Fin 2)) v).2
+          (hcut.symm.trans
+            (((d.vertexGraphWithoutPropagator cut).mem_componentBlock
+              (Sum.inl (0 : Fin 2)) u).1 hu))
+    · intro hv
+      exact ((d.vertexGraphWithoutPropagator cut).mem_componentBlock
+        (Sum.inl (0 : Fin 2)) u).2
+          (hcut.trans
+            (((d.vertexGraphWithoutPropagator cut).mem_componentBlock
+              (Sum.inl (0 : Fin 2)) v).1 hv))
+  rw [d.mem_verticesBetweenCuts_iff earlier later u,
+    d.mem_verticesBetweenCuts_iff earlier later v]
+  constructor
+  · rintro ⟨hl, hn⟩
+    exact ⟨(member_iff later hLater).mp hl,
+      fun he => hn ((member_iff earlier hEarlier).mpr he)⟩
+  · rintro ⟨hl, hn⟩
+    exact ⟨(member_iff later hLater).mpr hl,
+      fun he => hn ((member_iff earlier hEarlier).mp he)⟩
+
 /-- A strictly ordered pair of separating cuts leaves at least one vertex
 between them. No arbitrary external path is involved. -/
 theorem TwoPointDiagram.verticesBetweenCuts_ne_empty_of_ssubset
