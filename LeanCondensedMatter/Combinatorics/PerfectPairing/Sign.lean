@@ -1,6 +1,7 @@
 import LeanCondensedMatter.Combinatorics.ExchangeSign
 import LeanCondensedMatter.Combinatorics.FiniteIndex.Block
 import LeanCondensedMatter.Combinatorics.PerfectPairing.CrossingParity
+import Mathlib.Algebra.BigOperators.ModEq
 
 set_option linter.style.header false
 
