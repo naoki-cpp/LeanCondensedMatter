@@ -1,8 +1,5 @@
-import Mathlib.Analysis.Normed.Ring.InfiniteSum
-import Mathlib.Analysis.Normed.Field.Basic
 import Mathlib.Analysis.SpecificLimits.Normed
 import Mathlib.Data.Finsupp.Option
-import Mathlib.Data.Fintype.Option
 import Mathlib.Data.Fintype.BigOperators
 import Mathlib.Logic.Equiv.Fin.Basic
 
