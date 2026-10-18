@@ -1,7 +1,7 @@
 module
 
 public import Mathlib.Analysis.InnerProductSpace.Positive
-public import Mathlib.LinearAlgebra.Complex.Module
+import Mathlib.LinearAlgebra.Complex.Module
 
 public section
 
