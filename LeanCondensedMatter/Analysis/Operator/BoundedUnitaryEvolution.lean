@@ -34,9 +34,6 @@ variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteS
 private noncomputable def unitaryTimeCoefficient (t : ℝ) : ℂ :=
   -((t : ℂ) * I)
 
-private theorem unitaryTimeCoefficient_zero : unitaryTimeCoefficient 0 = 0 := by
-  simp [unitaryTimeCoefficient]
-
 private theorem unitaryTimeCoefficient_add (t s : ℝ) :
     unitaryTimeCoefficient (t + s) = unitaryTimeCoefficient t + unitaryTimeCoefficient s := by
   simp [unitaryTimeCoefficient]
@@ -60,7 +57,7 @@ omit [CompleteSpace H] in
 @[simp]
 theorem boundedUnitaryEvolution_zero (B : H →L[ℂ] H) :
     boundedUnitaryEvolution B 0 = 1 := by
-  simp [boundedUnitaryEvolution, unitaryTimeCoefficient_zero]
+  simp [boundedUnitaryEvolution, unitaryTimeCoefficient]
 
 /-- Exponentials of scalar multiples of one bounded operator form a one-parameter group. -/
 theorem boundedUnitaryEvolution_add (B : H →L[ℂ] H) (t s : ℝ) :
