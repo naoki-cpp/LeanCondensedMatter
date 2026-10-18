@@ -397,15 +397,6 @@ theorem TwoPointDiagram.externalOne_not_mem_verticesBetweenCuts
   exact hsep (((d.vertexGraphWithoutPropagator later).mem_componentBlock
     (Sum.inl (0 : Fin 2)) (Sum.inl (1 : Fin 2))).1 hmem).symm
 
-/-- The interaction vertices between two cuts are the existing generic
-interaction-sector extraction of their intermediate vertex region. -/
-theorem TwoPointDiagram.mem_interactionSector_verticesBetweenCuts_iff
-    (d : TwoPointDiagram ExternalLabel InternalLabel N S)
-    (earlier later : Fin (2 * (2 * S.card + 1))) (v : ↥S) :
-    (v : Fin N) ∈ interactionSector (d.verticesBetweenCuts earlier later) ↔
-      (Sum.inr v : TwoPointVertex S) ∈ d.verticesBetweenCuts earlier later :=
-  mem_interactionSector_subtype (d.verticesBetweenCuts earlier later) v
-
 /-- Between two strictly nested external-separating cuts there is at least
 one interaction vertex. This is the nontriviality requirement for an eventual
 proper 1PI two-point block. -/
@@ -428,7 +419,7 @@ theorem TwoPointDiagram.interactionSector_verticesBetweenCuts_nonempty
       · exact False.elim
           (d.externalOne_not_mem_verticesBetweenCuts earlier later hsep hv)
   | inr v =>
-      exact ⟨v.1, (d.mem_interactionSector_verticesBetweenCuts_iff earlier later v).2 hv⟩
+      exact ⟨v.1, (mem_interactionSector_subtype (d.verticesBetweenCuts earlier later) v).2 hv⟩
 
 /-- A leg strictly inside the interval, excluding both paired boundary
 propagators. Each excluded cut is removed together with its partner, not
