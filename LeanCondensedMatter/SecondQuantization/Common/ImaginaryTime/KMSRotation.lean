@@ -30,22 +30,6 @@ namespace Common
 
 variable {Config : Type*}
 
-/-- **`C e^{τH₀} = e^{-qτ} e^{τH₀} C`**, the KMS-type relation with `C` on the left — the algebraic
-rearrangement of `diagonalEvolution_comp_eq_smul_comp_diagonalEvolution` needed by the rotation
-theorems below, obtained by multiplying both sides of that lemma by the (nonzero) reciprocal
-exponential factor. Config-general — no `[Fintype Config]` needed. -/
-private theorem comp_diagonalEvolution_eq_smul_diagonalEvolution_comp
-    (energy : Config → ℝ) (τ q : ℝ) (C : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
-    (hC : heisenbergEvolve energy τ C = Complex.exp ((q * τ : ℝ) : ℂ) • C) :
-    C.comp (diagonalEvolution energy τ) =
-      Complex.exp ((-(q * τ) : ℝ) : ℂ) • ((diagonalEvolution energy τ).comp C) := by
-  have hKMS := diagonalEvolution_comp_eq_smul_comp_diagonalEvolution energy τ q C hC
-  have h2 := congrArg (fun x => Complex.exp ((-(q * τ) : ℝ) : ℂ) • x) hKMS
-  simp only [smul_smul] at h2
-  rw [show Complex.exp ((-(q * τ) : ℝ) : ℂ) * Complex.exp ((q * τ : ℝ) : ℂ) = 1 by
-    rw [← Complex.exp_add, ← Complex.ofReal_add]; norm_num, one_smul] at h2
-  exact h2.symm
-
 /-- The KMS-type trace rotation on any configuration type, obtained from
 `Common.tsumTrace_comp_comm`. The double-series summability hypothesis `h` is explicit; finite
 configuration spaces discharge it automatically, while infinite bosonic occupation spaces require
@@ -58,8 +42,12 @@ theorem tsumTrace_diagonalEvolution_comp_rotate
     tsumTrace ((diagonalEvolution energy (-β)).comp (A.comp C)) =
       Complex.exp ((q * β : ℝ) : ℂ) •
         tsumTrace ((diagonalEvolution energy (-β)).comp (C.comp A)) := by
-  have hKMS' := comp_diagonalEvolution_eq_smul_diagonalEvolution_comp energy (-β) q C hC
-  rw [show ((-(q * -β) : ℝ) : ℂ) = ((q * β : ℝ) : ℂ) by push_cast; ring] at hKMS'
+  have hKMS := diagonalEvolution_comp_eq_smul_comp_diagonalEvolution energy (-β) q C hC
+  have hKMS' : C.comp (diagonalEvolution energy (-β)) =
+      Complex.exp ((q * β : ℝ) : ℂ) • ((diagonalEvolution energy (-β)).comp C) := by
+    rw [show ((q * β : ℝ) : ℂ) = -((q * -β : ℝ) : ℂ) by push_cast; ring,
+      Complex.exp_neg]
+    exact (eq_inv_smul_iff₀ (Complex.exp_ne_zero _)).2 hKMS.symm
   rw [← LinearMap.comp_assoc, tsumTrace_comp_comm _ _ h,
     ← LinearMap.comp_assoc, hKMS', LinearMap.smul_comp,
     tsumTrace_smul, LinearMap.comp_assoc, smul_eq_mul]
