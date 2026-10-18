@@ -30,14 +30,8 @@ theorem traceNorm_le_half_normSq_add_of_factorization
   obtain ⟨w, d, -⟩ := exists_hilbertBasis (𝕜 := ℂ) (E := H)
   obtain ⟨U, -, hUright, hUnorm⟩ := exists_leftPolarFactor T
   have hAU : IsHilbertSchmidt (A * U) := isHilbertSchmidt_comp_right hA U
-  have hAUnorm_le : hAU.normSq ≤ hA.normSq := by
-    calc
-      hAU.normSq ≤ ‖U‖ ^ 2 * hA.normSq :=
-        IsHilbertSchmidt.normSq_comp_right_le hA U
-      _ ≤ 1 ^ 2 * hA.normSq := by
-        exact mul_le_mul_of_nonneg_right
-          (pow_le_pow_left₀ (norm_nonneg U) hUnorm 2) hA.normSq_nonneg
-      _ = hA.normSq := by rw [one_pow, one_mul]
+  have hAUnorm_le : hAU.normSq ≤ hA.normSq :=
+    hA.normSq_comp_right_le_of_norm_le_one U hUnorm
   have hterm (i : w) :
       inner ℂ (U (d i)) (T (d i)) =
         inner ℂ ((A * U) (d i)) (B (d i)) := by
