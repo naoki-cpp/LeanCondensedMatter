@@ -112,24 +112,24 @@ theorem helmholtzFreeEnergy_eq_components [Nontrivial H] [FiniteDimensional ℂ 
     nlinarith [hb]
   have hp_hasSum : HasSum p 1 := by
     simpa [p] using ρ.hasSum_eigenvalues_eq_one
-  obtain ⟨hph_summable, hphsum⟩ := summable_eigenvalue_mul_energy_and_tsum ρ Hop
+  have hph_hasSum := hasSum_eigenvalue_mul_energy ρ Hop
   have hq_summable_and_le : Summable q ∧ ∑' a, q a ≤ Z := by
     have hbound := hGibbs.sum_diagonalExpectationValue_le_spectralTrace
       (gibbsOp_isPositive Hop β).toLinearMap hd_orth
     simpa [Z, hq_def] using hbound
   obtain ⟨hB_summable, hsum_eq⟩ :=
     Real.summable_gibbsComparison_and_tsum_eq
-      p q h β Z hp_hasSum hph_summable hq_summable_and_le.1
+      p q h β Z hp_hasSum hph_hasSum.summable hq_summable_and_le.1
   obtain ⟨hnML_summable, _⟩ :=
     Real.summable_negMulLog_and_tsum_le_gibbs
       p q h β Z (fun a => ρ.eigenvalue_nonneg a)
-      hp_hasSum hph_summable
+      hp_hasSum hph_hasSum.summable
       hq_summable_and_le.1 hq_summable_and_le.2 hqpos hZpos hstep2
   have hsum_le :=
     hnML_summable.tsum_le_tsum hbound hB_summable
   obtain ⟨-, hToReal⟩ :=
     vonNeumannEntropy_ne_top_and_toReal_eq_tsum ρ hnML_summable
-  rw [hphsum] at hsum_eq
+  rw [hph_hasSum.tsum_eq] at hsum_eq
   have hqZsum_le : ∑' a, q a / Z ≤ 1 :=
     Real.tsum_div_le_one hq_summable_and_le.2 hZpos
   have hEntropyTarget :
