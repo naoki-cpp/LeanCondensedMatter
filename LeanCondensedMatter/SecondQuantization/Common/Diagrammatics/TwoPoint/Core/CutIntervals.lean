@@ -47,7 +47,8 @@ theorem TwoPointDiagram.vertexGraphWithoutTwoPropagators
       ← d.deleteEdges_eq_vertexGraphWithoutPropagator_of_separatingCut
         hconnected later hsepLater]
   apply SimpleGraph.ext
-  intro u v
+  funext u v
+  apply propext
   change
     ((d.vertexGraph.deleteEdges
       {s(twoPointVertexOfLeg earlier,
