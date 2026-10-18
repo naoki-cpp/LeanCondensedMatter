@@ -1,9 +1,14 @@
-import Mathlib.Algebra.Star.BigOperators
-import Mathlib.Analysis.Calculus.Deriv.Comp
-import Mathlib.Analysis.CStarAlgebra.Matrix
-import Mathlib.Analysis.InnerProductSpace.Trace
-import Mathlib.Analysis.InnerProductSpace.Adjoint
-import Mathlib.Analysis.Normed.Module.FiniteDimension
+module
+
+public import Mathlib.Algebra.Star.BigOperators
+public import Mathlib.Analysis.Calculus.Deriv.Comp
+import Mathlib.Analysis.Calculus.FDeriv.Linear
+public import Mathlib.Analysis.CStarAlgebra.Matrix
+public import Mathlib.Analysis.InnerProductSpace.Trace
+public import Mathlib.Analysis.InnerProductSpace.Adjoint
+public import Mathlib.Analysis.Normed.Module.FiniteDimension
+
+public section
 
 set_option linter.style.header false
 
@@ -32,7 +37,7 @@ variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
 
 /-- Ordinary finite-dimensional trace, bundled as a continuous linear functional on bounded
 endomorphisms. Continuity follows because the bounded-endomorphism space is finite-dimensional. -/
-noncomputable def finiteDimensionalOperatorTrace :
+@[expose] noncomputable def finiteDimensionalOperatorTrace :
     (H →L[ℂ] H) →L[ℂ] ℂ :=
   ((LinearMap.trace ℂ H).comp (ContinuousLinearMap.coeLM ℂ)).toContinuousLinearMap
 
