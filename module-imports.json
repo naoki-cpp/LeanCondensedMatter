@@ -4084,7 +4084,7 @@
       "imports": [
         "LeanCondensedMatter.QuantumTheory.LinearResponse.AdiabaticIntegrability"
       ],
-      "externalImportCount": 2
+      "externalImportCount": 3
     },
     {
       "name": "LeanCondensedMatter.QuantumTheory.LinearResponse.LehmannLimits",
@@ -4103,18 +4103,10 @@
       "externalImportCount": 1
     },
     {
-      "name": "LeanCondensedMatter.QuantumTheory.LinearResponse.MeasuredObservableLinearity",
-      "sourceFile": "LeanCondensedMatter/QuantumTheory/LinearResponse/MeasuredObservableLinearity.lean",
-      "imports": [
-        "LeanCondensedMatter.QuantumTheory.LinearResponse.RetardedSusceptibility"
-      ],
-      "externalImportCount": 1
-    },
-    {
       "name": "LeanCondensedMatter.QuantumTheory.LinearResponse.ObservableVariation",
       "sourceFile": "LeanCondensedMatter/QuantumTheory/LinearResponse/ObservableVariation.lean",
       "imports": [
-        "LeanCondensedMatter.QuantumTheory.LinearResponse.RetardedSusceptibility"
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.SourceCoupling"
       ],
       "externalImportCount": 2
     },
@@ -4176,7 +4168,7 @@
       "name": "LeanCondensedMatter.QuantumTheory.LinearResponse.ResponseChannel",
       "sourceFile": "LeanCondensedMatter/QuantumTheory/LinearResponse/ResponseChannel.lean",
       "imports": [
-        "LeanCondensedMatter.QuantumTheory.LinearResponse.ObservableVariation"
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.RetardedSusceptibility"
       ],
       "externalImportCount": 0
     },
@@ -4184,15 +4176,16 @@
       "name": "LeanCondensedMatter.QuantumTheory.LinearResponse.RetardedSusceptibility",
       "sourceFile": "LeanCondensedMatter/QuantumTheory/LinearResponse/RetardedSusceptibility.lean",
       "imports": [
-        "LeanCondensedMatter.QuantumTheory.LinearResponse.SourceCoupling"
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.Stationarity"
       ],
-      "externalImportCount": 1
+      "externalImportCount": 2
     },
     {
       "name": "LeanCondensedMatter.QuantumTheory.LinearResponse.SourceCoupling",
       "sourceFile": "LeanCondensedMatter/QuantumTheory/LinearResponse/SourceCoupling.lean",
       "imports": [
-        "LeanCondensedMatter.QuantumTheory.LinearResponse.KuboFormula"
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.KuboFormula",
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.RetardedSusceptibility"
       ],
       "externalImportCount": 1
     },
@@ -4246,7 +4239,6 @@
         "LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann",
         "LeanCondensedMatter.QuantumTheory.LinearResponse.LehmannLimits",
         "LeanCondensedMatter.QuantumTheory.LinearResponse.LimitOrder",
-        "LeanCondensedMatter.QuantumTheory.LinearResponse.MeasuredObservableLinearity",
         "LeanCondensedMatter.QuantumTheory.LinearResponse.ObservableVariation",
         "LeanCondensedMatter.QuantumTheory.LinearResponse.PhysicalLehmannLimits",
         "LeanCondensedMatter.QuantumTheory.LinearResponse.PictureEquivalence",
@@ -7911,7 +7903,7 @@
       "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.BoundedOneBodyResponse",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Transport/BoundedOneBodyResponse.lean",
       "imports": [
-        "LeanCondensedMatter.QuantumTheory.LinearResponse.MeasuredObservableLinearity",
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.RetardedSusceptibility",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.Bounded"
       ],
       "externalImportCount": 0

@@ -11523,46 +11523,6 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {Test : Type u_1} [inst : AddCommGroup Test] [inst_1 : _root_.Module ℂ Test] (V : Type u_2) [inst_2 : AddCommGroup V]\n  [inst_3 : _root_.Module ℂ V] (M : Test →ₗ[ℂ] V →ₗ[ℂ] V) (m : V →ₗ[ℂ] V) (f : Test),\n  ⁅M f, m⁆ = 0 → ConservationLaw.localizedQuantity V M m f = M f ∘ₗ m",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "ConservationLaw.localizedQuantity_eq_comp_of_commutes",
-    "module": "LeanCondensedMatter.Analysis.ConservationLaw.SymmetricLocalizationAlgebra",
-    "externalAxioms": [],
-    "docString": "When localization commutes with the quantity, symmetric localization reduces to `M f ∘ m`. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "ConservationLaw.symmetrizedProduct_eq_comp_of_commutes"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
     "statement": "∀ {Test : Type u_1} [inst : AddCommGroup Test] [inst_1 : _root_.Module ℂ Test] (V : Type u_2) [inst_2 : AddCommGroup V]\n  [inst_3 : _root_.Module ℂ V] (M : Test →ₗ[ℂ] V →ₗ[ℂ] V) (q : ℂ) (f : Test),\n  ConservationLaw.localizedQuantity V M (q • LinearMap.id) f = q • M f",
     "standardAxioms": [
       "Classical.choice",
@@ -12060,7 +12020,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": false,
+    "terminal": true,
     "statement": "∀ {W : Type u_1} [inst : AddCommGroup W] [inst_1 : _root_.Module ℂ W] (A B : W →ₗ[ℂ] W),\n  ⁅A, B⁆ = 0 → ConservationLaw.symmetrizedProduct A B = A ∘ₗ B",
     "standardAxioms": [
       "Classical.choice",
@@ -12068,7 +12028,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -12079,18 +12039,14 @@
     "docString": "If two operators commute, their symmetrized product reduces to ordinary composition. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [
-      "ConservationLaw.localizedQuantity_eq_comp_of_commutes"
-    ],
+    "dependents": [],
     "dependencies": [
       "ConservationLaw.symmetrizedProduct_apply"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [
-      "ConservationLaw.localizedQuantity_eq_comp_of_commutes"
-    ],
-    "compiledConsumerCount": 1,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -12218,7 +12174,6 @@
     "dependents": [
       "ConservationLaw.localizedQuantity_smul_id",
       "ConservationLaw.transportCommutator_smul_id",
-      "ConservationLaw.transportFunctional_smul_id",
       "QuantumMechanics.SingleParticle.symmetrizedCurrentFlux_smul_id_eq_localPairing",
       "QuantumMechanics.SingleParticle.symmetrizedVelocityCurrent_smul_id"
     ],
@@ -12230,11 +12185,10 @@
     "compiledConsumers": [
       "ConservationLaw.localizedQuantity_smul_id",
       "ConservationLaw.transportCommutator_smul_id",
-      "ConservationLaw.transportFunctional_smul_id",
       "QuantumMechanics.SingleParticle.symmetrizedCurrentFlux_smul_id_eq_localPairing",
       "QuantumMechanics.SingleParticle.symmetrizedVelocityCurrent_smul_id"
     ],
-    "compiledConsumerCount": 5,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -12400,46 +12354,6 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {Test : Type u_1} [inst : AddCommGroup Test] [inst_1 : _root_.Module ℂ Test] (V : Type u_2) [inst_2 : AddCommGroup V]\n  [inst_3 : _root_.Module ℂ V] (h : V →ₗ[ℂ] V) (M : Test →ₗ[ℂ] V →ₗ[ℂ] V) (q : ℂ),\n  ConservationLaw.transportFunctional V h M (q • LinearMap.id) =\n    q • ConservationLaw.localizationCommutatorFunctional V h M",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "ConservationLaw.transportFunctional_smul_id",
-    "module": "LeanCondensedMatter.Analysis.ConservationLaw.SymmetricLocalizationAlgebra",
-    "externalAxioms": [],
-    "docString": "For `m = q I`, the transport functional is `q` times the bare localization commutator. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "ConservationLaw.symmetrizedProduct_smul_id"
-    ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [],
@@ -50933,7 +50847,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "QuantumTheory.LinearResponse.hasDerivAt_sourceCoupledPerturbedExpectation_zero_of_bound_retarded",
-    "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.RetardedSusceptibility",
+    "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.SourceCoupling",
     "externalAxioms": [],
     "docString": "The bounded scalar-source Kubo formula written as a causal convolution with the retarded\nsusceptibility. ",
     "directWrapperTargetModule": null,
@@ -89371,7 +89285,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -89383,6 +89297,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "QuantumTheory.Transport.polarFourierFirstCosineAngularKernel_neg",
       "QuantumTheory.Transport.polarFourierSecondCosineAngularKernel_eq_besselJ"
     ],
     "dependencies": [
@@ -89393,9 +89308,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "QuantumTheory.Transport.polarFourierFirstCosineAngularKernel_neg",
       "QuantumTheory.Transport.polarFourierSecondCosineAngularKernel_eq_besselJ"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -89434,8 +89350,7 @@
       "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedRealSpace.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel_neg_radius"
     ],
     "dependencies": [
-      "_private.LeanCondensedMatter.Transport.Analysis.PolarFourier.0.QuantumTheory.Transport.intervalIntegral_fullPeriod_comp_sub_eq",
-      "_private.LeanCondensedMatter.Transport.Analysis.PolarFourier.0.QuantumTheory.Transport.polarFourierRadialPhase_neg_eq_shift_pi"
+      "QuantumTheory.Transport.polarFourierFirstCosineAngularKernel_eq_besselJ"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -89590,7 +89505,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ (z : ℝ), QuantumTheory.Transport.polarFourierSecondCosineAngularKernel z = -(↑(2 * Real.pi) * Complex.besselJ 2 ↑z)",
     "standardAxioms": [
       "Classical.choice",
@@ -89598,7 +89513,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -89609,7 +89524,9 @@
     "docString": "The second cosine angular Fourier kernel is the normalized Bessel function\n`-2π J₂`, for every real radial argument. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "QuantumTheory.Transport.polarFourierSecondCosineAngularKernel_neg"
+    ],
     "dependencies": [
       "QuantumTheory.Transport.polarFourierFirstCosineAngularKernel_eq_besselJ",
       "QuantumTheory.Transport.polarFourierFirstCosineAngularKernel_two_mul_eq_zeroth_sub_second",
@@ -89619,8 +89536,10 @@
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.polarFourierSecondCosineAngularKernel_neg"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -89658,8 +89577,7 @@
       "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedRealSpace.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel_neg_radius"
     ],
     "dependencies": [
-      "_private.LeanCondensedMatter.Transport.Analysis.PolarFourier.0.QuantumTheory.Transport.intervalIntegral_fullPeriod_comp_sub_eq",
-      "_private.LeanCondensedMatter.Transport.Analysis.PolarFourier.0.QuantumTheory.Transport.polarFourierRadialPhase_neg_eq_shift_pi"
+      "QuantumTheory.Transport.polarFourierSecondCosineAngularKernel_eq_besselJ"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -98226,6 +98144,46 @@
       "SchwartzKinetic1D.secondDerivative_multiplication_apply"
     ],
     "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (f : SchwartzKinetic1D.Space), SchwartzKinetic1D.multiplicationLinear f = SchwartzKinetic1D.multiplicationOperator f",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SchwartzKinetic1D.multiplicationLinear_apply",
+    "module": "LeanCondensedMatter.Analysis.Operator.SchwartzKinetic1D",
+    "externalAxioms": [],
+    "docString": "Applying the linear family of local multiplication operators recovers the pointwise operator. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "_private.LeanCondensedMatter.Analysis.Operator.SchwartzKinetic1D.0.SchwartzKinetic1D.multiplicationLinear_apply_private"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -112328,6 +112286,48 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
+    "terminal": true,
+    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel N S),\n  d.IsExternallyConnected →\n    ∀ (earlier later : Fin (2 * (2 * S.card + 1))),\n      ¬(d.vertexGraphWithoutPropagator earlier).Reachable (Sum.inl 0) (Sum.inl 1) →\n        ¬(d.vertexGraphWithoutPropagator later).Reachable (Sum.inl 0) (Sum.inl 1) →\n          ∀ u ∈ d.verticesBetweenCuts earlier later,\n            (d.vertexGraphWithoutPropagator earlier ⊓ d.vertexGraphWithoutPropagator later).componentBlock u =\n              d.verticesBetweenCuts earlier later",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.TwoPointDiagram.doubleCut_componentBlock_eq_verticesBetweenCuts",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.CutIntervals",
+    "externalAxioms": [],
+    "docString": "Every vertex of a cut interval identifies that entire interval as its\ncomponent after deleting both boundary propagators. This combines the\ninterval's double-cut reachability with invariance of interval membership\nunder double-cut paths. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "SecondQuantization.Common.TwoPointDiagram.mem_verticesBetweenCuts_iff_of_doubleCut_reachable",
+      "SecondQuantization.Common.TwoPointDiagram.verticesBetweenCuts_reachable_without_both_cuts",
+      "SimpleGraph.mem_componentBlock"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
     "terminal": false,
     "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel N S),\n  d.IsExternallyConnected →\n    ∀ (earlier later : Fin (2 * (2 * S.card + 1))),\n      (d.vertexGraphWithoutPropagator earlier).componentBlock (Sum.inl 0) ⊆\n          (d.vertexGraphWithoutPropagator later).componentBlock (Sum.inl 0) →\n        ¬(d.vertexGraphWithoutPropagator earlier).Reachable (Sum.inl 0) (Sum.inl 1) →\n          earlier ≠ later →\n            d.pairing.partner earlier ≠ later →\n              SecondQuantization.Common.twoPointVertexOfLeg earlier ∈ d.verticesBetweenCuts earlier later ∧\n                  SecondQuantization.Common.twoPointVertexOfLeg (d.pairing.partner earlier) ∉\n                    d.verticesBetweenCuts earlier later ∨\n                SecondQuantization.Common.twoPointVertexOfLeg (d.pairing.partner earlier) ∈\n                    d.verticesBetweenCuts earlier later ∧\n                  SecondQuantization.Common.twoPointVertexOfLeg earlier ∉ d.verticesBetweenCuts earlier later",
     "standardAxioms": [
@@ -115031,7 +115031,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel N S)\n  (earlier later : Fin (2 * (2 * S.card + 1))) (u v : SecondQuantization.Common.TwoPointVertex S),\n  (d.vertexGraphWithoutPropagator earlier ⊓ d.vertexGraphWithoutPropagator later).Reachable u v →\n    (u ∈ d.verticesBetweenCuts earlier later ↔ v ∈ d.verticesBetweenCuts earlier later)",
     "standardAxioms": [
       "Classical.choice",
@@ -115039,7 +115039,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -115050,15 +115050,19 @@
     "docString": "Reachability after deleting both boundary propagators preserves interval\nmembership. Thus a walk in the double-cut graph cannot leave the interval\nonce it starts there. No ordering or separation hypothesis is needed:\nthe statement follows from the two source-side component tests. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "SecondQuantization.Common.TwoPointDiagram.doubleCut_componentBlock_eq_verticesBetweenCuts"
+    ],
     "dependencies": [
       "SecondQuantization.Common.TwoPointDiagram.mem_verticesBetweenCuts_iff",
       "SimpleGraph.mem_componentBlock"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "SecondQuantization.Common.TwoPointDiagram.doubleCut_componentBlock_eq_verticesBetweenCuts"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -117361,7 +117365,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel N S),\n  d.IsExternallyConnected →\n    ∀ (earlier later : Fin (2 * (2 * S.card + 1))),\n      ¬(d.vertexGraphWithoutPropagator earlier).Reachable (Sum.inl 0) (Sum.inl 1) →\n        ¬(d.vertexGraphWithoutPropagator later).Reachable (Sum.inl 0) (Sum.inl 1) →\n          ∀ (u v : SecondQuantization.Common.TwoPointVertex S),\n            u ∈ d.verticesBetweenCuts earlier later →\n              v ∈ d.verticesBetweenCuts earlier later →\n                (d.vertexGraphWithoutPropagator earlier ⊓ d.vertexGraphWithoutPropagator later).Reachable u v",
     "standardAxioms": [
       "Classical.choice",
@@ -117369,7 +117373,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -117380,7 +117384,9 @@
     "docString": "Vertices in the interval remain connected after *both* boundary\npropagators are deleted. A simple path avoiding the earlier cut cannot\ncross the later separating bridge: both endpoints lie on its source side.\nMathlib's trail lemma eliminates that second boundary edge. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "SecondQuantization.Common.TwoPointDiagram.doubleCut_componentBlock_eq_verticesBetweenCuts"
+    ],
     "dependencies": [
       "SecondQuantization.Common.TwoPointDiagram.deleteEdges_eq_vertexGraphWithoutPropagator_of_separatingCut",
       "SecondQuantization.Common.TwoPointDiagram.mem_verticesBetweenCuts_iff",
@@ -117391,8 +117397,10 @@
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "SecondQuantization.Common.TwoPointDiagram.doubleCut_componentBlock_eq_verticesBetweenCuts"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -154444,6 +154452,7 @@
       "SecondQuantization.Common.ExternalInsertionDiagram.externallySupportedInteractionPart_ofSlotSplit",
       "SecondQuantization.Common.ExternalInsertionDiagram.hasNoVacuumComponent_externalBearingDiagram",
       "SecondQuantization.Common.ExternalInsertionDiagram.hasNoVacuumComponent_iff_externallySupportedInteractionPart_eq",
+      "SecondQuantization.Common.TwoPointDiagram.doubleCut_componentBlock_eq_verticesBetweenCuts",
       "SecondQuantization.Common.TwoPointDiagram.earlierCut_endpoints_opposite_interval_sides",
       "SecondQuantization.Common.TwoPointDiagram.externalOne_not_mem_verticesBetweenCuts",
       "SecondQuantization.Common.TwoPointDiagram.externalSource_componentBlocks_comparable",
@@ -154476,6 +154485,7 @@
       "SecondQuantization.Common.ExternalInsertionDiagram.externallySupportedInteractionPart_ofSlotSplit",
       "SecondQuantization.Common.ExternalInsertionDiagram.hasNoVacuumComponent_externalBearingDiagram",
       "SecondQuantization.Common.ExternalInsertionDiagram.hasNoVacuumComponent_iff_externallySupportedInteractionPart_eq",
+      "SecondQuantization.Common.TwoPointDiagram.doubleCut_componentBlock_eq_verticesBetweenCuts",
       "SecondQuantization.Common.TwoPointDiagram.earlierCut_endpoints_opposite_interval_sides",
       "SecondQuantization.Common.TwoPointDiagram.externalOne_not_mem_verticesBetweenCuts",
       "SecondQuantization.Common.TwoPointDiagram.externalSource_componentBlocks_comparable",
@@ -154499,7 +154509,7 @@
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.CutIntervals.0.SecondQuantization.Common.sourceSide_mem_partner_iff",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.External.ExternalConnectivity.0.SecondQuantization.Common.TwoPointDiagram.externalOne_not_mem_externalComponentPart"
     ],
-    "compiledConsumerCount": 27,
+    "compiledConsumerCount": 28,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -156984,6 +156994,48 @@
     "completedMention": false,
     "compiledConsumers": [
       "ContinuousLinearMap.exists_leftPolarFactor"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (f : SchwartzKinetic1D.Space), SchwartzKinetic1D.multiplicationLinear f = SchwartzKinetic1D.multiplicationOperator f",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Analysis.Operator.SchwartzKinetic1D.0.SchwartzKinetic1D.multiplicationLinear_apply_private",
+    "module": "LeanCondensedMatter.Analysis.Operator.SchwartzKinetic1D",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SchwartzKinetic1D.multiplicationLinear_apply"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SchwartzKinetic1D.multiplicationLinear_apply"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -189090,8 +189142,8 @@
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -189099,23 +189151,19 @@
     "name": "_private.LeanCondensedMatter.Transport.Analysis.PolarFourier.0.QuantumTheory.Transport.intervalIntegral_fullPeriod_comp_sub_eq",
     "module": "LeanCondensedMatter.Transport.Analysis.PolarFourier",
     "externalAxioms": [],
-    "docString": null,
+    "docString": "Full-period integrals are unchanged by translating a periodic integrand.\nThis is also needed for Fourier harmonics at arbitrary polar angles. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Transport.polarFourierFirstCosineAngularKernel_neg",
-      "QuantumTheory.Transport.polarFourierSecondCosineAngularKernel_neg",
       "_private.LeanCondensedMatter.Transport.Analysis.PolarFourier.0.QuantumTheory.Transport.integral_polarFourierRadialPhase_shifted_second_harmonics"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Transport.polarFourierFirstCosineAngularKernel_neg",
-      "QuantumTheory.Transport.polarFourierSecondCosineAngularKernel_neg",
       "_private.LeanCondensedMatter.Transport.Analysis.PolarFourier.0.QuantumTheory.Transport.integral_polarFourierRadialPhase_shifted_second_harmonics"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -189246,50 +189294,6 @@
       "QuantumTheory.Transport.polarFourierFirstCosineAngularKernel_two_mul_eq_zeroth_sub_second"
     ],
     "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (z θ : ℝ),\n  QuantumTheory.Transport.polarFourierRadialPhase (-z) θ =\n    QuantumTheory.Transport.polarFourierRadialPhase z (θ - Real.pi)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Transport.Analysis.PolarFourier.0.QuantumTheory.Transport.polarFourierRadialPhase_neg_eq_shift_pi",
-    "module": "LeanCondensedMatter.Transport.Analysis.PolarFourier",
-    "externalAxioms": [],
-    "docString": "Reversing the radial Fourier argument is equivalent to shifting the polar angle by π. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.polarFourierFirstCosineAngularKernel_neg",
-      "QuantumTheory.Transport.polarFourierSecondCosineAngularKernel_neg"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.polarFourierFirstCosineAngularKernel_neg",
-      "QuantumTheory.Transport.polarFourierSecondCosineAngularKernel_neg"
-    ],
-    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
