@@ -136,15 +136,6 @@ theorem lie_localizedQuantity
   simpa [localizedQuantity, transportCommutator, sourceCommutator] using
     lie_symmetrizedProduct h (M f) m
 
-/-- The packaged localized quantity satisfies the same transport/source decomposition. -/
-theorem ad_localizedQuantityFunctional
-    (h : V →ₗ[ℂ] V)
-    (M : Test →ₗ[ℂ] (V →ₗ[ℂ] V))
-    (m : V →ₗ[ℂ] V) (f : Test) :
-    (LieAlgebra.ad ℂ (Module.End ℂ V) h) (localizedQuantityFunctional V M m f) =
-      transportFunctional V h M m f + sourceFunctional V h M m f := by
-  simpa using lie_localizedQuantity V h M m f
-
 /-- A conserved one-body quantity has no local source/torque contribution. -/
 @[simp]
 theorem sourceCommutator_eq_zero_of_commutes

@@ -62,16 +62,6 @@ theorem hasNoVacuumComponent_congr_iff
       (φ := φ) (u := Sum.inl f) (v := Sum.inr (eInt.symm v))).mpr hf
     simpa only [hext, hint, Equiv.apply_symm_apply] using hreach
 
-/-- External support is equivalent to nonemptiness of Mathlib's left-summand extraction. -/
-theorem componentMeetsExternal_iff_toLeft_nonempty
-    (B : Finset (External ⊕ Internal)) :
-    ComponentMeetsExternal B ↔ B.toLeft.Nonempty := by
-  constructor
-  · rintro ⟨e, he⟩
-    exact ⟨e, Finset.mem_toLeft.2 he⟩
-  · rintro ⟨e, he⟩
-    exact ⟨e, Finset.mem_toLeft.1 he⟩
-
 /-- A preconnected external/internal graph has no vacuum component when its external type is
 nonempty. -/
 theorem hasNoVacuumComponent_of_preconnected [Nonempty External]
