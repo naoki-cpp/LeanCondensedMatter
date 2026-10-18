@@ -212,9 +212,10 @@ theorem diagonalEvolution_comp_eq_smul_comp_diagonalEvolution
     (hC : heisenbergEvolve energy τ C = Complex.exp ((q * τ : ℝ) : ℂ) • C) :
     (diagonalEvolution energy τ).comp C =
       Complex.exp ((q * τ : ℝ) : ℂ) • (C.comp (diagonalEvolution energy τ)) := by
-  simpa only [heisenbergEvolve_eq_comp, LinearMap.comp_assoc,
-    diagonalEvolution_neg_comp, LinearMap.comp_id, LinearMap.smul_comp] using
-    congrArg (fun f => f.comp (diagonalEvolution energy τ)) hC
+  have h := congrArg (fun f => f.comp (diagonalEvolution energy τ)) hC
+  rw [heisenbergEvolve_eq_comp, LinearMap.comp_assoc, LinearMap.comp_assoc,
+    diagonalEvolution_neg_comp, LinearMap.comp_id, LinearMap.smul_comp] at h
+  exact h
 
 end Common
 end SecondQuantization
