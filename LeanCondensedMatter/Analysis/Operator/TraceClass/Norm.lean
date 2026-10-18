@@ -56,7 +56,7 @@ theorem traceNorm_eq_tsum_norm_inner_left_of_polar {T : H →L[ℂ] H}
 /-- The trace norm is independent of the proof of trace-class membership. -/
 theorem traceNorm_proof_irrel {T : H →L[ℂ] H} (hT hT' : IsTraceClass T) :
     hT.traceNorm = hT'.traceNorm := by
-  exact IsHilbertSchmidt.normSq_proof_irrel hT hT'
+  exact congrArg traceNorm (Subsingleton.elim hT hT')
 
 /-- Equal trace-class operators have equal trace norms, independently of the
 chosen proofs of trace-class membership. -/
