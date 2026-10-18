@@ -250,7 +250,7 @@
       "name": "LeanCondensedMatter.Analysis.InfiniteSum.FinsuppProduct",
       "sourceFile": "LeanCondensedMatter/Analysis/InfiniteSum/FinsuppProduct.lean",
       "imports": [],
-      "externalImportCount": 8
+      "externalImportCount": 7
     },
     {
       "name": "LeanCondensedMatter.Analysis.InfiniteSum.Normalization",
@@ -3277,7 +3277,7 @@
         "LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.SchwartzSchrodinger1D",
         "LeanCondensedMatter.QuantumMechanics.SingleParticle.SymmetrizedVelocityCurrent"
       ],
-      "externalImportCount": 0
+      "externalImportCount": 1
     },
     {
       "name": "LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Continuity.SchwartzIntegral1D",
@@ -3781,7 +3781,7 @@
       "sourceFile": "LeanCondensedMatter/QuantumTheory/Gibbs/DiagonalEnergy.lean",
       "imports": [
         "LeanCondensedMatter.QuantumTheory.DensityOperator.DiagonalFormula",
-        "LeanCondensedMatter.QuantumTheory.Gibbs.Entropy"
+        "LeanCondensedMatter.QuantumTheory.Gibbs.EnergyExpectation"
       ],
       "externalImportCount": 0
     },
@@ -3798,7 +3798,8 @@
       "sourceFile": "LeanCondensedMatter/QuantumTheory/Gibbs/Entropy.lean",
       "imports": [
         "LeanCondensedMatter.QuantumTheory.Entropy.Diagonal",
-        "LeanCondensedMatter.QuantumTheory.Gibbs.FreeEnergy"
+        "LeanCondensedMatter.QuantumTheory.Gibbs.EnergyExpectation",
+        "LeanCondensedMatter.QuantumTheory.Gibbs.State"
       ],
       "externalImportCount": 0
     },
@@ -3807,7 +3808,7 @@
       "sourceFile": "LeanCondensedMatter/QuantumTheory/Gibbs/Equality.lean",
       "imports": [
         "LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Equality",
-        "LeanCondensedMatter.QuantumTheory.Gibbs.Variational"
+        "LeanCondensedMatter.QuantumTheory.Gibbs.FreeEnergy"
       ],
       "externalImportCount": 0
     },
@@ -3853,7 +3854,8 @@
       "name": "LeanCondensedMatter.QuantumTheory.Gibbs.MinimizerUniqueness",
       "sourceFile": "LeanCondensedMatter/QuantumTheory/Gibbs/MinimizerUniqueness.lean",
       "imports": [
-        "LeanCondensedMatter.QuantumTheory.Gibbs.Uniqueness"
+        "LeanCondensedMatter.QuantumTheory.Gibbs.Uniqueness",
+        "LeanCondensedMatter.QuantumTheory.Gibbs.Variational"
       ],
       "externalImportCount": 0
     },
@@ -3888,6 +3890,7 @@
       "sourceFile": "LeanCondensedMatter/QuantumTheory/Gibbs/PurePointUniqueness.lean",
       "imports": [
         "LeanCondensedMatter.Analysis.Inequalities.Gibbs",
+        "LeanCondensedMatter.Analysis.InfiniteSum.Order",
         "LeanCondensedMatter.QuantumTheory.Gibbs.PurePointVariational"
       ],
       "externalImportCount": 0
@@ -3924,7 +3927,8 @@
       "name": "LeanCondensedMatter.QuantumTheory.Gibbs.Variational",
       "sourceFile": "LeanCondensedMatter/QuantumTheory/Gibbs/Variational.lean",
       "imports": [
-        "LeanCondensedMatter.QuantumTheory.Gibbs.Entropy"
+        "LeanCondensedMatter.QuantumTheory.Gibbs.Entropy",
+        "LeanCondensedMatter.QuantumTheory.Gibbs.FreeEnergy"
       ],
       "externalImportCount": 0
     },
@@ -3997,6 +4001,33 @@
       "externalImportCount": 3
     },
     {
+      "name": "LeanCondensedMatter.QuantumTheory.LinearResponse.EigenbasisDynamics",
+      "sourceFile": "LeanCondensedMatter/QuantumTheory/LinearResponse/EigenbasisDynamics.lean",
+      "imports": [
+        "LeanCondensedMatter.QuantumTheory.DensityOperator.DiagonalFormula",
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.AdiabaticIntegrability",
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.ConservationLaws",
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann.Eigenbasis"
+      ],
+      "externalImportCount": 1
+    },
+    {
+      "name": "LeanCondensedMatter.QuantumTheory.LinearResponse.EigenbasisFrequencyDomain",
+      "sourceFile": "LeanCondensedMatter/QuantumTheory/LinearResponse/EigenbasisFrequencyDomain.lean",
+      "imports": [
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.EigenbasisTimeDomain"
+      ],
+      "externalImportCount": 1
+    },
+    {
+      "name": "LeanCondensedMatter.QuantumTheory.LinearResponse.EigenbasisTimeDomain",
+      "sourceFile": "LeanCondensedMatter/QuantumTheory/LinearResponse/EigenbasisTimeDomain.lean",
+      "imports": [
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.EigenbasisDynamics"
+      ],
+      "externalImportCount": 2
+    },
+    {
       "name": "LeanCondensedMatter.QuantumTheory.LinearResponse.EquationsOfMotion",
       "sourceFile": "LeanCondensedMatter/QuantumTheory/LinearResponse/EquationsOfMotion.lean",
       "imports": [
@@ -4014,7 +4045,7 @@
       "name": "LeanCondensedMatter.QuantumTheory.LinearResponse.FiniteLehmannTable",
       "sourceFile": "LeanCondensedMatter/QuantumTheory/LinearResponse/FiniteLehmannTable.lean",
       "imports": [
-        "LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann"
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann.Transition"
       ],
       "externalImportCount": 0
     },
@@ -4023,6 +4054,7 @@
       "sourceFile": "LeanCondensedMatter/QuantumTheory/LinearResponse/FiniteTimeAdiabatic.lean",
       "imports": [
         "LeanCondensedMatter.QuantumTheory.LinearResponse.AdiabaticSwitching",
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.LimitOrder",
         "LeanCondensedMatter.QuantumTheory.LinearResponse.ResponseChannel"
       ],
       "externalImportCount": 1
@@ -4064,6 +4096,7 @@
       "name": "LeanCondensedMatter.QuantumTheory.LinearResponse.InfiniteTimeAdiabatic",
       "sourceFile": "LeanCondensedMatter/QuantumTheory/LinearResponse/InfiniteTimeAdiabatic.lean",
       "imports": [
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.AdiabaticIntegrability",
         "LeanCondensedMatter.QuantumTheory.LinearResponse.FiniteTimeAdiabatic"
       ],
       "externalImportCount": 1
@@ -4079,27 +4112,64 @@
       "externalImportCount": 5
     },
     {
+      "name": "LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann.Eigenbasis",
+      "sourceFile": "LeanCondensedMatter/QuantumTheory/LinearResponse/Lehmann/Eigenbasis.lean",
+      "imports": [
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.FreeDynamics",
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann.Transition"
+      ],
+      "externalImportCount": 2
+    },
+    {
+      "name": "LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann.EigenbasisLimits",
+      "sourceFile": "LeanCondensedMatter/QuantumTheory/LinearResponse/Lehmann/EigenbasisLimits.lean",
+      "imports": [
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.EigenbasisFrequencyDomain",
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.InfiniteTimeAdiabatic",
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann.Limits"
+      ],
+      "externalImportCount": 0
+    },
+    {
+      "name": "LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann.EigenbasisTable",
+      "sourceFile": "LeanCondensedMatter/QuantumTheory/LinearResponse/Lehmann/EigenbasisTable.lean",
+      "imports": [
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.FiniteLehmannTable",
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann.Eigenbasis"
+      ],
+      "externalImportCount": 0
+    },
+    {
+      "name": "LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann.Limits",
+      "sourceFile": "LeanCondensedMatter/QuantumTheory/LinearResponse/Lehmann/Limits.lean",
+      "imports": [
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann.Transition",
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.LimitOrder"
+      ],
+      "externalImportCount": 0
+    },
+    {
+      "name": "LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann.Transition",
+      "sourceFile": "LeanCondensedMatter/QuantumTheory/LinearResponse/Lehmann/Transition.lean",
+      "imports": [],
+      "externalImportCount": 2
+    },
+    {
       "name": "LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann",
       "sourceFile": "LeanCondensedMatter/QuantumTheory/LinearResponse/Lehmann.lean",
       "imports": [
-        "LeanCondensedMatter.QuantumTheory.LinearResponse.AdiabaticIntegrability"
-      ],
-      "externalImportCount": 3
-    },
-    {
-      "name": "LeanCondensedMatter.QuantumTheory.LinearResponse.LehmannLimits",
-      "sourceFile": "LeanCondensedMatter/QuantumTheory/LinearResponse/LehmannLimits.lean",
-      "imports": [
-        "LeanCondensedMatter.QuantumTheory.LinearResponse.LimitOrder"
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann.Eigenbasis",
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann.EigenbasisLimits",
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann.EigenbasisTable",
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann.Limits",
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann.Transition"
       ],
       "externalImportCount": 0
     },
     {
       "name": "LeanCondensedMatter.QuantumTheory.LinearResponse.LimitOrder",
       "sourceFile": "LeanCondensedMatter/QuantumTheory/LinearResponse/LimitOrder.lean",
-      "imports": [
-        "LeanCondensedMatter.QuantumTheory.LinearResponse.PurePointFrequencyDomain"
-      ],
+      "imports": [],
       "externalImportCount": 1
     },
     {
@@ -4109,14 +4179,6 @@
         "LeanCondensedMatter.QuantumTheory.LinearResponse.SourceCoupling"
       ],
       "externalImportCount": 2
-    },
-    {
-      "name": "LeanCondensedMatter.QuantumTheory.LinearResponse.PhysicalLehmannLimits",
-      "sourceFile": "LeanCondensedMatter/QuantumTheory/LinearResponse/PhysicalLehmannLimits.lean",
-      "imports": [
-        "LeanCondensedMatter.QuantumTheory.LinearResponse.LehmannLimits"
-      ],
-      "externalImportCount": 0
     },
     {
       "name": "LeanCondensedMatter.QuantumTheory.LinearResponse.PictureEquivalence",
@@ -4129,32 +4191,6 @@
         "LeanCondensedMatter.QuantumTheory.LinearResponse.PureStateDynamics"
       ],
       "externalImportCount": 0
-    },
-    {
-      "name": "LeanCondensedMatter.QuantumTheory.LinearResponse.PurePointDynamics",
-      "sourceFile": "LeanCondensedMatter/QuantumTheory/LinearResponse/PurePointDynamics.lean",
-      "imports": [
-        "LeanCondensedMatter.QuantumTheory.DensityOperator.DiagonalFormula",
-        "LeanCondensedMatter.QuantumTheory.LinearResponse.ConservationLaws",
-        "LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann"
-      ],
-      "externalImportCount": 1
-    },
-    {
-      "name": "LeanCondensedMatter.QuantumTheory.LinearResponse.PurePointFrequencyDomain",
-      "sourceFile": "LeanCondensedMatter/QuantumTheory/LinearResponse/PurePointFrequencyDomain.lean",
-      "imports": [
-        "LeanCondensedMatter.QuantumTheory.LinearResponse.PurePointTimeDomain"
-      ],
-      "externalImportCount": 1
-    },
-    {
-      "name": "LeanCondensedMatter.QuantumTheory.LinearResponse.PurePointTimeDomain",
-      "sourceFile": "LeanCondensedMatter/QuantumTheory/LinearResponse/PurePointTimeDomain.lean",
-      "imports": [
-        "LeanCondensedMatter.QuantumTheory.LinearResponse.PurePointDynamics"
-      ],
-      "externalImportCount": 2
     },
     {
       "name": "LeanCondensedMatter.QuantumTheory.LinearResponse.PureStateDynamics",
@@ -4226,6 +4262,9 @@
         "LeanCondensedMatter.QuantumTheory.LinearResponse.ConservationLaws",
         "LeanCondensedMatter.QuantumTheory.LinearResponse.DensityExpectation",
         "LeanCondensedMatter.QuantumTheory.LinearResponse.DensityFirstVariation",
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.EigenbasisDynamics",
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.EigenbasisFrequencyDomain",
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.EigenbasisTimeDomain",
         "LeanCondensedMatter.QuantumTheory.LinearResponse.EquationsOfMotion",
         "LeanCondensedMatter.QuantumTheory.LinearResponse.Expectation",
         "LeanCondensedMatter.QuantumTheory.LinearResponse.FiniteLehmannTable",
@@ -4237,14 +4276,9 @@
         "LeanCondensedMatter.QuantumTheory.LinearResponse.InfiniteTimeAdiabatic",
         "LeanCondensedMatter.QuantumTheory.LinearResponse.KuboFormula",
         "LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann",
-        "LeanCondensedMatter.QuantumTheory.LinearResponse.LehmannLimits",
         "LeanCondensedMatter.QuantumTheory.LinearResponse.LimitOrder",
         "LeanCondensedMatter.QuantumTheory.LinearResponse.ObservableVariation",
-        "LeanCondensedMatter.QuantumTheory.LinearResponse.PhysicalLehmannLimits",
         "LeanCondensedMatter.QuantumTheory.LinearResponse.PictureEquivalence",
-        "LeanCondensedMatter.QuantumTheory.LinearResponse.PurePointDynamics",
-        "LeanCondensedMatter.QuantumTheory.LinearResponse.PurePointFrequencyDomain",
-        "LeanCondensedMatter.QuantumTheory.LinearResponse.PurePointTimeDomain",
         "LeanCondensedMatter.QuantumTheory.LinearResponse.PureStateDynamics",
         "LeanCondensedMatter.QuantumTheory.LinearResponse.ResponseChannel",
         "LeanCondensedMatter.QuantumTheory.LinearResponse.RetardedSusceptibility",
@@ -7940,6 +7974,7 @@
       "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.FiniteConductivityTable",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Transport/FiniteConductivityTable.lean",
       "imports": [
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann.EigenbasisTable",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.KuboGreenwood",
         "LeanCondensedMatter.Transport.FiniteConductivityTable"
       ],
@@ -8048,7 +8083,7 @@
       "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.SpectralFrequencyResponse",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Transport/SpectralFrequencyResponse.lean",
       "imports": [
-        "LeanCondensedMatter.QuantumTheory.LinearResponse.PurePointFrequencyDomain",
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.EigenbasisFrequencyDomain",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.InfiniteTimeFrequencyResponse"
       ],
       "externalImportCount": 0
@@ -8433,11 +8468,20 @@
       "externalImportCount": 0
     },
     {
+      "name": "LeanCondensedMatter.Transport.KuboBastin.Eigenbasis",
+      "sourceFile": "LeanCondensedMatter/Transport/KuboBastin/Eigenbasis.lean",
+      "imports": [
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.EigenbasisFrequencyDomain",
+        "LeanCondensedMatter.Transport.Spectral.Eigenbasis"
+      ],
+      "externalImportCount": 0
+    },
+    {
       "name": "LeanCondensedMatter.Transport.KuboBastin.Finite",
       "sourceFile": "LeanCondensedMatter/Transport/KuboBastin/Finite.lean",
       "imports": [
         "LeanCondensedMatter.QuantumTheory.LinearResponse.ResponseChannel",
-        "LeanCondensedMatter.Transport.KuboBastin.PurePoint"
+        "LeanCondensedMatter.Transport.KuboBastin.Eigenbasis"
       ],
       "externalImportCount": 0
     },
@@ -8454,28 +8498,19 @@
       "name": "LeanCondensedMatter.Transport.KuboBastin.OccupationInterpolation",
       "sourceFile": "LeanCondensedMatter/Transport/KuboBastin/OccupationInterpolation.lean",
       "imports": [
-        "LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann"
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann.Eigenbasis"
       ],
       "externalImportCount": 1
-    },
-    {
-      "name": "LeanCondensedMatter.Transport.KuboBastin.PurePoint",
-      "sourceFile": "LeanCondensedMatter/Transport/KuboBastin/PurePoint.lean",
-      "imports": [
-        "LeanCondensedMatter.QuantumTheory.LinearResponse.PurePointFrequencyDomain",
-        "LeanCondensedMatter.Transport.Spectral.PurePoint"
-      ],
-      "externalImportCount": 0
     },
     {
       "name": "LeanCondensedMatter.Transport.KuboBastin",
       "sourceFile": "LeanCondensedMatter/Transport/KuboBastin.lean",
       "imports": [
         "LeanCondensedMatter.Transport.KuboBastin.CommonEnergy",
+        "LeanCondensedMatter.Transport.KuboBastin.Eigenbasis",
         "LeanCondensedMatter.Transport.KuboBastin.Finite",
         "LeanCondensedMatter.Transport.KuboBastin.Occupation",
-        "LeanCondensedMatter.Transport.KuboBastin.OccupationInterpolation",
-        "LeanCondensedMatter.Transport.KuboBastin.PurePoint"
+        "LeanCondensedMatter.Transport.KuboBastin.OccupationInterpolation"
       ],
       "externalImportCount": 0
     },
@@ -8531,10 +8566,10 @@
       "externalImportCount": 0
     },
     {
-      "name": "LeanCondensedMatter.Transport.Spectral.PurePoint",
-      "sourceFile": "LeanCondensedMatter/Transport/Spectral/PurePoint.lean",
+      "name": "LeanCondensedMatter.Transport.Spectral.Eigenbasis",
+      "sourceFile": "LeanCondensedMatter/Transport/Spectral/Eigenbasis.lean",
       "imports": [
-        "LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann",
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann.Eigenbasis",
         "LeanCondensedMatter.Transport.Resolvent.Spectral"
       ],
       "externalImportCount": 0
@@ -8640,7 +8675,7 @@
       "name": "LeanCondensedMatter.Transport.Streda.TraceSpectral",
       "sourceFile": "LeanCondensedMatter/Transport/Streda/TraceSpectral.lean",
       "imports": [
-        "LeanCondensedMatter.Transport.Spectral.PurePoint",
+        "LeanCondensedMatter.Transport.Spectral.Eigenbasis",
         "LeanCondensedMatter.Transport.Streda.TraceKernel"
       ],
       "externalImportCount": 0
