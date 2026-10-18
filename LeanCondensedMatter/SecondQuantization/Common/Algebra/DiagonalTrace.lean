@@ -38,59 +38,40 @@ theorem tsumTrace_smul (c : ℂ) (A : AlgebraicFock Config →ₗ[ℂ] Algebraic
   simp only [tsumTrace, ← matrixCoeffLinear_apply, map_smul, smul_eq_mul,
     tsum_mul_left]
 
+/-- Sum the matrix coefficients of a composite over the finite support of its right factor. -/
+private theorem matrixCoeff_comp_eq_tsum
+    (A B : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (m n : Config) :
+    matrixCoeff (A.comp B) m n = ∑' k, matrixCoeff A m k * matrixCoeff B k n := by
+  rw [matrixCoeff_comp_support]
+  exact ((hasSum_sum_of_ne_finset_zero
+    (s := (B (basisState n)).support)
+    (fun k hk => by
+      have hz : matrixCoeff B k n = 0 := by
+        by_contra hcon
+        exact hk (Finsupp.mem_support_iff.mpr hcon)
+      rw [hz, mul_zero])).tsum_eq).symm
+
 /-- **Cyclicity under a two-operator swap**, assuming absolute double summability:
 `Tr'[AB] = Tr'[BA]`. -/
 theorem tsumTrace_comp_comm (A B : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
     (h : Summable (Function.uncurry (fun n k => matrixCoeff A n k * matrixCoeff B k n))) :
     tsumTrace (A.comp B) = tsumTrace (B.comp A) := by
   rw [tsumTrace, tsumTrace]
-  have hrow : ∀ n, (∑' k, matrixCoeff A n k * matrixCoeff B k n) = matrixCoeff (A.comp B) n n := by
-    intro n
-    rw [matrixCoeff_comp_support]
-    exact (hasSum_sum_of_ne_finset_zero
-      (s := (B (basisState n)).support)
-      (fun k hk => by
-        have hz : matrixCoeff B k n = 0 := by
-          by_contra hcon
-          exact hk (Finsupp.mem_support_iff.mpr hcon)
-        rw [hz, mul_zero])).tsum_eq
-  have hcol : ∀ k, (∑' n, matrixCoeff A n k * matrixCoeff B k n) = matrixCoeff (B.comp A) k k := by
-    intro k
-    have heq : (fun n => matrixCoeff A n k * matrixCoeff B k n) =
-        fun n => matrixCoeff B k n * matrixCoeff A n k := funext fun n => mul_comm _ _
-    rw [heq, matrixCoeff_comp_support]
-    exact (hasSum_sum_of_ne_finset_zero
-      (s := (A (basisState k)).support)
-      (fun n hn => by
-        have hz : matrixCoeff A n k = 0 := by
-          by_contra hcon
-          exact hn (Finsupp.mem_support_iff.mpr hcon)
-        rw [hz, mul_zero])).tsum_eq
   calc
     ∑' n, matrixCoeff (A.comp B) n n
         = ∑' n, ∑' k, matrixCoeff A n k * matrixCoeff B k n :=
-          tsum_congr fun n => (hrow n).symm
+          tsum_congr fun n => matrixCoeff_comp_eq_tsum A B n n
     _ = ∑' k, ∑' n, matrixCoeff A n k * matrixCoeff B k n := h.tsum_comm.symm
-    _ = ∑' n, matrixCoeff (B.comp A) n n := tsum_congr fun k => hcol k
+    _ = ∑' n, matrixCoeff (B.comp A) n n := tsum_congr fun k => by
+      rw [matrixCoeff_comp_eq_tsum]
+      exact tsum_congr fun n => mul_comm _ _
 
 /-- A composite's diagonal series is summable whenever the underlying bivariate family is. -/
 theorem summable_matrixCoeff_diag_comp_of_summable_uncurry
     (A B : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
     (h : Summable (Function.uncurry (fun n k => matrixCoeff A n k * matrixCoeff B k n))) :
     Summable (fun n => matrixCoeff (A.comp B) n n) := by
-  have hrow : (fun n => matrixCoeff (A.comp B) n n) =
-      fun n => ∑' k, matrixCoeff A n k * matrixCoeff B k n := by
-    funext n
-    rw [matrixCoeff_comp_support]
-    exact ((hasSum_sum_of_ne_finset_zero
-      (s := (B (basisState n)).support)
-      (fun k hk => by
-        have hz : matrixCoeff B k n = 0 := by
-          by_contra hcon
-          exact hk (Finsupp.mem_support_iff.mpr hcon)
-        rw [hz, mul_zero])).tsum_eq).symm
-  rw [hrow]
-  exact h.prod
+  simpa only [matrixCoeff_comp_eq_tsum] using h.prod
 
 end Common
 end SecondQuantization
