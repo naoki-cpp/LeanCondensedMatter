@@ -1195,48 +1195,50 @@ private theorem integral_polarFourier_conj (f : ℝ → ℂ) :
   simpa using (Complex.conjLIE.toLinearIsometry).intervalIntegral_comp_comm
     (f := f) (a := (0 : ℝ)) (b := 2 * Real.pi)
 
+/-- Conjugating a full-period radial Fourier integral with a real-valued
+complex weight reverses its Fourier argument. -/
+private theorem integral_polarFourier_conj_real_weight (z : ℝ) (w : ℝ → ℂ)
+    (hw : ∀ θ, conj (w θ) = w θ) :
+    conj (∫ θ in (0 : ℝ)..(2 * Real.pi),
+      polarFourierRadialPhase z θ * w θ) =
+      ∫ θ in (0 : ℝ)..(2 * Real.pi),
+        polarFourierRadialPhase (-z) θ * w θ := by
+  rw [← integral_polarFourier_conj]
+  apply intervalIntegral.integral_congr
+  intro θ _
+  simp only [map_mul, polarFourierRadialPhase_conj, hw]
+
 /-- The zeroth angular Fourier kernel is real for real radial arguments. -/
 @[simp] theorem polarFourierZerothAngularKernel_conj (z : ℝ) :
     conj (polarFourierZerothAngularKernel z) =
       polarFourierZerothAngularKernel z := by
-  calc
-    conj (polarFourierZerothAngularKernel z) =
-        polarFourierZerothAngularKernel (-z) := by
-      unfold polarFourierZerothAngularKernel
-      rw [← integral_polarFourier_conj]
-      apply intervalIntegral.integral_congr
-      intro θ _
-      exact polarFourierRadialPhase_conj z θ
-    _ = polarFourierZerothAngularKernel z := polarFourierZerothAngularKernel_neg z
+  have h := integral_polarFourier_conj_real_weight z
+    (fun _ => (1 : ℂ)) (by simp)
+  have hshift : conj (polarFourierZerothAngularKernel z) =
+      polarFourierZerothAngularKernel (-z) := by
+    simpa only [mul_one] using h
+  exact hshift.trans (polarFourierZerothAngularKernel_neg z)
 
 /-- The first cosine angular Fourier kernel is purely imaginary for real radial arguments. -/
 @[simp] theorem polarFourierFirstCosineAngularKernel_conj (z : ℝ) :
     conj (polarFourierFirstCosineAngularKernel z) =
       -polarFourierFirstCosineAngularKernel z := by
-  calc
-    conj (polarFourierFirstCosineAngularKernel z) =
-        polarFourierFirstCosineAngularKernel (-z) := by
-      unfold polarFourierFirstCosineAngularKernel
-      rw [← integral_polarFourier_conj]
-      apply intervalIntegral.integral_congr
-      intro θ _
-      simp only [map_mul, Complex.conj_ofReal, polarFourierRadialPhase_conj]
-    _ = -polarFourierFirstCosineAngularKernel z := polarFourierFirstCosineAngularKernel_neg z
+  have h := integral_polarFourier_conj_real_weight z
+    (fun θ => ((Real.cos θ : ℝ) : ℂ)) (by intro θ; simp)
+  change conj (polarFourierFirstCosineAngularKernel z) =
+    polarFourierFirstCosineAngularKernel (-z) at h
+  exact h.trans (polarFourierFirstCosineAngularKernel_neg z)
 
 /-- The second cosine angular Fourier kernel is real for real radial arguments. -/
 @[simp] theorem polarFourierSecondCosineAngularKernel_conj (z : ℝ) :
     conj (polarFourierSecondCosineAngularKernel z) =
       polarFourierSecondCosineAngularKernel z := by
-  calc
-    conj (polarFourierSecondCosineAngularKernel z) =
-        polarFourierSecondCosineAngularKernel (-z) := by
-      unfold polarFourierSecondCosineAngularKernel
-      rw [← integral_polarFourier_conj]
-      apply intervalIntegral.integral_congr
-      intro θ _
-      simp only [map_mul, map_sub, map_pow, Complex.conj_ofReal,
-        polarFourierRadialPhase_conj]
-    _ = polarFourierSecondCosineAngularKernel z := polarFourierSecondCosineAngularKernel_neg z
+  have h := integral_polarFourier_conj_real_weight z
+    (fun θ => ((((Real.cos θ : ℝ) : ℂ) ^ 2) -
+      (((Real.sin θ : ℝ) : ℂ) ^ 2))) (by intro θ; simp)
+  change conj (polarFourierSecondCosineAngularKernel z) =
+    polarFourierSecondCosineAngularKernel (-z) at h
+  exact h.trans (polarFourierSecondCosineAngularKernel_neg z)
 
 private theorem angular_second_harmonics_add
     (angle θ : ℝ) (a b c d e : ℂ) :
