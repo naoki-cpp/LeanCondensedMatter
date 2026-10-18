@@ -100,11 +100,6 @@ theorem realMultiplier_coeFn
       fun x => (f x : ℂ) := by
   exact hf.coeFn_toLp
 
-private theorem inner_real_mul_left_eq_inner_real_mul_right
-    (r : ℝ) (z w : ℂ) :
-    inner ℂ ((r : ℂ) * z) w = inner ℂ z ((r : ℂ) * w) := by
-  simp [RCLike.inner_apply, mul_assoc, mul_comm]
-
 /-- Multiplication by a bounded real function is symmetric on complex `L²`. -/
 theorem realMultiplicationOperator_symmetric
     (μ : Measure α) (f : α → ℝ)
@@ -119,7 +114,7 @@ theorem realMultiplicationOperator_symmetric
        multiplicationOperator_coeFn μ (realMultiplier μ f hf) φ,
        realMultiplier_coeFn μ f hf] with x hψ hφ hf'
   rw [hψ, hφ, hf']
-  exact inner_real_mul_left_eq_inner_real_mul_right (f x) (ψ x) (φ x)
+  simp [RCLike.inner_apply, mul_assoc]; ring
 
 /-- Multiplication on complex `L²` depends complex-linearly on the `L∞` multiplier, after
 forgetting continuity of each individual operator. -/
