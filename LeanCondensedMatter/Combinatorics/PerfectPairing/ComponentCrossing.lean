@@ -95,12 +95,12 @@ theorem Pairing.componentGeometricCrossingCount_mod_two_eq_endpointInversionCoun
             fun h => hBC (congrArg Sigma.fst (e.injective h))
           have hEnds := pairing.normalizedPair_endpoints_ne_of_ne
             (e ⟨B, x.1⟩) (e ⟨C, x.2⟩) hPairNe
-          simpa [Nat.ModEq, apply_ite] using
-            (pairEndpointInversionCount_mod_two_eq_crossesIndicator
-              (e ⟨B, x.1⟩).1 (e ⟨C, x.2⟩).1
-              (pairing.pairs_normalized (e ⟨B, x.1⟩).2)
-              (pairing.pairs_normalized (e ⟨C, x.2⟩).2)
-              hEnds.1 hEnds.2.1 hEnds.2.2.1 hEnds.2.2.2)))
+          exact (pairEndpointInversionCount_mod_two_eq_crossesIndicator
+            (e ⟨B, x.1⟩).1 (e ⟨C, x.2⟩).1
+            (pairing.pairs_normalized (e ⟨B, x.1⟩).2)
+            (pairing.pairs_normalized (e ⟨C, x.2⟩).2)
+            hEnds.1 hEnds.2.1 hEnds.2.2.1 hEnds.2.2.2).trans
+              (by split_ifs <;> decide)))
   have hsum :
       (∑ x : F B × F C,
         pairEndpointInversionCount (e ⟨B, x.1⟩).1 (e ⟨C, x.2⟩).1) =
