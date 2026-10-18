@@ -1,6 +1,7 @@
 import LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann.Transition
 import LeanCondensedMatter.QuantumTheory.LinearResponse.FreeDynamics
 import Mathlib.Analysis.InnerProductSpace.PiL2
+import Mathlib.Analysis.InnerProductSpace.l2Space
 
 set_option linter.style.header false
 
