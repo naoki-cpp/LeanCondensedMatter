@@ -27,16 +27,6 @@ open scoped InnerProductSpace
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
 variable {A : H →ₗ.[ℂ] H}
 
-private theorem isSelfAdjoint_of_isFormalAdjoint_of_adjoint_domain_le
-    (hdense : Dense ((A.domain : Submodule ℂ H) : Set H))
-    (hsymm : A.IsFormalAdjoint A)
-    (hdom : A.adjoint.domain ≤ A.domain) :
-    IsSelfAdjoint A := by
-  rw [LinearPMap.isSelfAdjoint_def]
-  have hle : A ≤ A.adjoint := hsymm.le_adjoint hdense
-  have hdomain : A.domain = A.adjoint.domain := le_antisymm hle.1 hdom
-  exact (LinearPMap.eq_of_le_of_domain_eq hle hdomain).symm
-
 /-- For a densely defined symmetric partial operator, self-adjointness is equivalent to the reverse
 adjoint-domain inclusion. The forward inclusion is already supplied by symmetry. -/
 theorem isSelfAdjoint_iff_adjoint_domain_le_of_isFormalAdjoint
@@ -48,7 +38,10 @@ theorem isSelfAdjoint_iff_adjoint_domain_le_of_isFormalAdjoint
     have hadj : A.adjoint = A := LinearPMap.isSelfAdjoint_def.mp hself
     rw [hadj]
   · intro hdom
-    exact isSelfAdjoint_of_isFormalAdjoint_of_adjoint_domain_le hdense hsymm hdom
+    rw [LinearPMap.isSelfAdjoint_def]
+    have hle : A ≤ A.adjoint := hsymm.le_adjoint hdense
+    have hdomain : A.domain = A.adjoint.domain := le_antisymm hle.1 hdom
+    exact (LinearPMap.eq_of_le_of_domain_eq hle hdomain).symm
 
 end
 
