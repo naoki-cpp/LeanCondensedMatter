@@ -1,16 +1,16 @@
-import LeanCondensedMatter.QuantumTheory.LinearResponse.PurePointFrequencyDomain
-import LeanCondensedMatter.Transport.Spectral.PurePoint
+import LeanCondensedMatter.QuantumTheory.LinearResponse.EigenbasisFrequencyDomain
+import LeanCondensedMatter.Transport.Spectral.Eigenbasis
 
 set_option linter.style.header false
 
 /-!
-# Pure-point Kubo–Bastin spectral bridge
+# Eigenbasis Kubo–Bastin spectral bridge
 
-This module owns the statistics-independent Kubo–Bastin algebra for a supplied pure-point energy
+This module owns the statistics-independent Kubo–Bastin algebra for a supplied energy
 basis. The spectral index type is not assumed finite here:
 
 ```text
-one pure-point Lehmann transition
+one eigenbasis Lehmann transition
   -> retarded-resolvent spectral transition.
 ```
 
@@ -68,10 +68,10 @@ theorem lehmannDenominator_eq_retardedSpectralShift
 
 variable
   (system : BoundedFreeSystem H)
-  (data : PurePointLehmannData system ι)
+  (data : EnergyEigenbasisLehmannData system ι)
 
-/-- One pure-point Kubo–Bastin transition for supplied measured and source vertices. -/
-noncomputable def purePointKuboBastinSpectralVertexTerm
+/-- One eigenbasis Kubo–Bastin transition for supplied measured and source vertices. -/
+noncomputable def eigenbasisKuboBastinSpectralVertexTerm
     (measured source : H →L[ℂ] H)
     (omega eta : ℝ) (mn : ι × ι) : ℂ :=
   -(((data.probability mn.1 - data.probability mn.2 : ℝ) : ℂ)) *
@@ -83,13 +83,13 @@ noncomputable def purePointKuboBastinSpectralVertexTerm
         (kuboBastinEnergyBroadening system.hbar eta)
         (data.basis mn.2))
 
-/-- At positive switching rate, one pure-point Lehmann transition equals its retarded-resolvent
+/-- At positive switching rate, one eigenbasis Lehmann transition equals its retarded-resolvent
 Kubo–Bastin form. -/
-theorem purePointLehmannVertexTerm_eq_bastinSpectral
+theorem eigenbasisLehmannVertexTerm_eq_bastinSpectral
     (measured source : H →L[ℂ] H)
     (omega eta : ℝ) (heta : 0 < eta) (mn : ι × ι) :
-    (purePointTransitionData system data measured source mn).frequencyTerm omega eta =
-      purePointKuboBastinSpectralVertexTerm
+    (eigenbasisTransitionData system data measured source mn).frequencyTerm omega eta =
+      eigenbasisKuboBastinSpectralVertexTerm
         system data measured source omega eta mn := by
   have hhbar : system.hbar ≠ 0 := ne_of_gt system.hbar_pos
   have hhbarComplex : (system.hbar : ℂ) ≠ 0 := by
@@ -116,7 +116,7 @@ theorem purePointLehmannVertexTerm_eq_bastinSpectral
           (data.energy mn.2 : ℂ))⁻¹ • data.basis mn.2 := by
     simpa only [retardedResolvent, spectralResolvent_retarded_ofRegulator,
       retardedSpectralParameter, spectralParameter_retarded_ofRegulator] using
-      resolvent_spectralParameterOfRegulator_apply_purePointBasis_at_energy
+      resolvent_spectralParameterOfRegulator_apply_energyEigenbasis_at_energy
         system data
         (kuboBastinRetardedEnergy system.hbar omega (data.energy mn.1))
         (kuboBastinEnergyBroadening system.hbar eta) hregulator mn.2
@@ -133,12 +133,12 @@ theorem purePointLehmannVertexTerm_eq_bastinSpectral
     rw [hres, inner_smul_right]
     simp [inner_self_eq_norm_sq_to_K, data.basis.orthonormal.norm_eq_one]
   unfold LehmannTransitionData.frequencyTerm lehmannTerm
-  simp only [purePointTransitionData_energyGap, orderedLehmannEnergyGap]
+  simp only [eigenbasisTransitionData_energyGap, orderedLehmannEnergyGap]
   rw [lehmannDenominator_eq_retardedSpectralShift
     system.hbar omega eta (data.energy mn.1) (data.energy mn.2) hhbar]
-  unfold purePointKuboBastinSpectralVertexTerm
+  unfold eigenbasisKuboBastinSpectralVertexTerm
   rw [hinner]
-  simp only [purePointTransitionData,
+  simp only [eigenbasisTransitionData,
     orderedLehmannTransitionData_weight, orderedLehmannTransitionWeight]
   field_simp [hhbar, hhbarComplex, hshift]
 

@@ -5,7 +5,7 @@ import Mathlib.Analysis.InnerProductSpace.l2Space
 
 set_option linter.style.header false
 
-/-! # Pure-point operator realization of Lehmann transitions -/
+/-! # Eigenbasis operator realization of Lehmann transitions -/
 
 namespace QuantumTheory
 namespace LinearResponse
@@ -16,11 +16,11 @@ noncomputable section
 
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
 
-/-- Pure-point spectral data for a bounded free system and a diagonal normalized state.
+/-- Spectral data in an energy eigenbasis for a bounded free system and a diagonal normalized state.
 
 The basis vectors diagonalize `system.hamiltonian`; `probability` gives the corresponding diagonal
 state weights. The index type may be infinite. -/
-structure PurePointLehmannData
+structure EnergyEigenbasisLehmannData
     (system : BoundedFreeSystem H) (ι : Type*) where
   /-- Hilbert basis of energy eigenvectors. -/
   basis : HilbertBasis ι ℂ H
@@ -36,8 +36,8 @@ structure PurePointLehmannData
 variable {ι : Type*} (system : BoundedFreeSystem H)
 
 /-- Adapt one operator-level ordered pair to the canonical Lehmann transition data. -/
-noncomputable def purePointTransitionData
-    (data : PurePointLehmannData system ι)
+noncomputable def eigenbasisTransitionData
+    (data : EnergyEigenbasisLehmannData system ι)
     (A B : H →L[ℂ] H) (mn : ι × ι) : LehmannTransitionData system.hbar :=
   orderedLehmannTransitionData system.hbar
     (data.energy mn.1) (data.energy mn.2)
@@ -46,61 +46,61 @@ noncomputable def purePointTransitionData
     (inner ℂ (data.basis mn.2) (B (data.basis mn.1)))
 
 @[simp]
-theorem purePointTransitionData_energyGap
-    (data : PurePointLehmannData system ι)
+theorem eigenbasisTransitionData_energyGap
+    (data : EnergyEigenbasisLehmannData system ι)
     (A B : H →L[ℂ] H) (mn : ι × ι) :
-    (purePointTransitionData system data A B mn).energyGap =
+    (eigenbasisTransitionData system data A B mn).energyGap =
       orderedLehmannEnergyGap (data.energy mn.1) (data.energy mn.2) := rfl
 
-/-- Diagonal pure-point transitions have zero physical weight. -/
+/-- Diagonal eigenbasis transitions have zero physical weight. -/
 @[simp]
-theorem purePointTransitionData_weight_diag
-    (data : PurePointLehmannData system ι)
+theorem eigenbasisTransitionData_weight_diag
+    (data : EnergyEigenbasisLehmannData system ι)
     (A B : H →L[ℂ] H) (i : ι) :
-    (purePointTransitionData system data A B (i, i)).weight = 0 := by
-  simp [purePointTransitionData]
+    (eigenbasisTransitionData system data A B (i, i)).weight = 0 := by
+  simp [eigenbasisTransitionData]
 
-/-- Absolute-summability condition for the countable pure-point transition weights. -/
-def PurePointLehmannSummable
-    (data : PurePointLehmannData system ι)
+/-- Absolute-summability condition for the countable eigenbasis transition weights. -/
+def EigenbasisLehmannSummable
+    (data : EnergyEigenbasisLehmannData system ι)
     (A B : H →L[ℂ] H) : Prop :=
-  Summable fun mn : ι × ι => ‖(purePointTransitionData system data A B mn).weight‖
+  Summable fun mn : ι × ι => ‖(eigenbasisTransitionData system data A B mn).weight‖
 
-/-- The fixed-positive-rate pure-point Lehmann series. -/
-noncomputable def purePointLehmannSeries
-    (data : PurePointLehmannData system ι)
+/-- The fixed-positive-rate eigenbasis Lehmann series. -/
+noncomputable def eigenbasisLehmannSeries
+    (data : EnergyEigenbasisLehmannData system ι)
     (A B : H →L[ℂ] H) (omega eta : ℝ) : ℂ :=
   ∑' mn : ι × ι,
-    (purePointTransitionData system data A B mn).frequencyTerm omega eta
+    (eigenbasisTransitionData system data A B mn).frequencyTerm omega eta
 
-/-- Absolute transition-weight summability implies summability of the fixed-rate pure-point
+/-- Absolute transition-weight summability implies summability of the fixed-rate eigenbasis
 Lehmann series for every `eta > 0`. -/
-theorem summable_purePointLehmannSeries_of_pos
-    (data : PurePointLehmannData system ι)
+theorem summable_eigenbasisLehmannSeries_of_pos
+    (data : EnergyEigenbasisLehmannData system ι)
     (A B : H →L[ℂ] H) (omega eta : ℝ)
-    (hsum : PurePointLehmannSummable system data A B) (heta : 0 < eta) :
+    (hsum : EigenbasisLehmannSummable system data A B) (heta : 0 < eta) :
     Summable fun mn : ι × ι =>
-      (purePointTransitionData system data A B mn).frequencyTerm omega eta := by
+      (eigenbasisTransitionData system data A B mn).frequencyTerm omega eta := by
   simpa [LehmannTransitionData.frequencyTerm] using
     LehmannTransitionData.summable_frequencyTerm_of_pos
-      omega eta (purePointTransitionData system data A B) hsum heta
+      omega eta (eigenbasisTransitionData system data A B) hsum heta
 
 /-- In finite dimension, the absolute transition-weight condition is automatic. -/
-theorem purePointLehmannSummable_of_finite
-    [Finite ι] (data : PurePointLehmannData system ι)
+theorem eigenbasisLehmannSummable_of_finite
+    [Finite ι] (data : EnergyEigenbasisLehmannData system ι)
     (A B : H →L[ℂ] H) :
-    PurePointLehmannSummable system data A B := by
+    EigenbasisLehmannSummable system data A B := by
   exact Summable.of_finite
 
 /-- For a finite spectral index, the countable-series definition reduces to the usual finite
 double sum. -/
-theorem purePointLehmannSeries_eq_finite_sum
-    [Fintype ι] (data : PurePointLehmannData system ι)
+theorem eigenbasisLehmannSeries_eq_finite_sum
+    [Fintype ι] (data : EnergyEigenbasisLehmannData system ι)
     (A B : H →L[ℂ] H) (omega eta : ℝ) :
-    purePointLehmannSeries system data A B omega eta =
+    eigenbasisLehmannSeries system data A B omega eta =
       ∑ mn : ι × ι,
-        (purePointTransitionData system data A B mn).frequencyTerm omega eta := by
-  simp [purePointLehmannSeries, LehmannTransitionData.frequencyTerm]
+        (eigenbasisTransitionData system data A B mn).frequencyTerm omega eta := by
+  simp [eigenbasisLehmannSeries, LehmannTransitionData.frequencyTerm]
 
 end
 end LinearResponse

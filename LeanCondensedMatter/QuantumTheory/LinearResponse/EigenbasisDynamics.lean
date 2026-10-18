@@ -1,18 +1,18 @@
 import LeanCondensedMatter.QuantumTheory.LinearResponse.AdiabaticIntegrability
 import LeanCondensedMatter.QuantumTheory.DensityOperator.DiagonalFormula
 import LeanCondensedMatter.QuantumTheory.LinearResponse.ConservationLaws
-import LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann.PurePoint
+import LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann.Eigenbasis
 import Mathlib.Analysis.SpecialFunctions.Exponential
 
 set_option linter.style.header false
 
 /-!
-# Pure-point density states and free dynamics
+# Eigenbasis density states and free dynamics
 
-This module supplies the state and dynamics bridge needed to identify the countable pure-point
+This module supplies the state and dynamics bridge needed to identify the countable eigenbasis
 Lehmann series with the retarded susceptibility.
 
-A `PurePointLehmannData` probability distribution is first realized as the canonical diagonal
+A `EnergyEigenbasisLehmannData` probability distribution is first realized as the canonical diagonal
 `DensityOperator`. Its normalized expectation is then obtained through
 `DensityOperator.toNormalizedExpectation`; no parallel linear-functional construction is retained.
 The module proves that this density state commutes with the Hamiltonian and derives stationarity
@@ -34,83 +34,83 @@ variable {ι : Type*}
 variable (system : BoundedFreeSystem H)
 
 /-- File-local absolute summability proof required by the diagonal density constructor. -/
-private theorem purePointProbability_summable_norm
-    (data : PurePointLehmannData system ι) :
+private theorem eigenbasisProbability_summable_norm
+    (data : EnergyEigenbasisLehmannData system ι) :
     Summable fun i => ‖data.probability i‖ :=
   data.probability_hasSum.summable.norm
 
 /-- File-local positivity proof required by the diagonal density constructor. -/
-private theorem purePointProbability_tsum_pos
-    (data : PurePointLehmannData system ι) :
+private theorem eigenbasisProbability_tsum_pos
+    (data : EnergyEigenbasisLehmannData system ι) :
     0 < ∑' i, data.probability i := by
   simpa [data.probability_hasSum.tsum_eq]
 
-/-- The canonical density operator represented by the pure-point probabilities. -/
-noncomputable def purePointDensityOperator
-    (data : PurePointLehmannData system ι) : DensityOperator H :=
+/-- The canonical density operator represented by the eigenbasis probabilities. -/
+noncomputable def eigenbasisDensityOperator
+    (data : EnergyEigenbasisLehmannData system ι) : DensityOperator H :=
   diagonalDensityOperator data.basis data.probability
-    (purePointProbability_summable_norm system data) data.probability_nonneg
-    (purePointProbability_tsum_pos system data)
+    (eigenbasisProbability_summable_norm system data) data.probability_nonneg
+    (eigenbasisProbability_tsum_pos system data)
 
-/-- The pure-point density operator acts diagonally with the original normalized probabilities. -/
+/-- The eigenbasis density operator acts diagonally with the original normalized probabilities. -/
 @[simp]
-theorem purePointDensityOperator_apply_basis
-    (data : PurePointLehmannData system ι) (i : ι) :
-    (purePointDensityOperator system data).op (data.basis i) =
+theorem eigenbasisDensityOperator_apply_basis
+    (data : EnergyEigenbasisLehmannData system ι) (i : ι) :
+    (eigenbasisDensityOperator system data).op (data.basis i) =
       (data.probability i : ℂ) • data.basis i := by
-  simpa [purePointDensityOperator, Real.normalizedWeight,
+  simpa [eigenbasisDensityOperator, Real.normalizedWeight,
     data.probability_hasSum.tsum_eq] using
     diagonalDensityOperator_apply_basis data.basis data.probability
-      (purePointProbability_summable_norm system data) data.probability_nonneg
-      (purePointProbability_tsum_pos system data) i
+      (eigenbasisProbability_summable_norm system data) data.probability_nonneg
+      (eigenbasisProbability_tsum_pos system data) i
 
-/-- The pure-point density operator commutes with the Hamiltonian because both are diagonal in the
+/-- The eigenbasis density operator commutes with the Hamiltonian because both are diagonal in the
 same Hilbert basis. -/
-theorem commute_hamiltonian_purePointDensityOperator
-    (data : PurePointLehmannData system ι) :
-    Commute system.hamiltonian.1 (purePointDensityOperator system data).op := by
-  change system.hamiltonian.1 * (purePointDensityOperator system data).op =
-    (purePointDensityOperator system data).op * system.hamiltonian.1
+theorem commute_hamiltonian_eigenbasisDensityOperator
+    (data : EnergyEigenbasisLehmannData system ι) :
+    Commute system.hamiltonian.1 (eigenbasisDensityOperator system data).op := by
+  change system.hamiltonian.1 * (eigenbasisDensityOperator system data).op =
+    (eigenbasisDensityOperator system data).op * system.hamiltonian.1
   apply ContinuousLinearMap.ext
   intro x
   have hleft :=
     (data.basis.hasSum_repr x).mapL
-      (system.hamiltonian.1 * (purePointDensityOperator system data).op)
+      (system.hamiltonian.1 * (eigenbasisDensityOperator system data).op)
   have hright :=
     (data.basis.hasSum_repr x).mapL
-      ((purePointDensityOperator system data).op * system.hamiltonian.1)
+      ((eigenbasisDensityOperator system data).op * system.hamiltonian.1)
   apply hleft.unique
   convert hright using 1
   funext i
   simp [mul_apply_eq_comp, data.hamiltonian_apply_basis, smul_smul, mul_comm]
 
-/-- The normalized response expectation is the canonical expectation of the pure-point density
+/-- The normalized response expectation is the canonical expectation of the eigenbasis density
 operator. -/
-noncomputable def purePointNormalizedExpectation
-    (data : PurePointLehmannData system ι) : NormalizedExpectation H :=
-  (purePointDensityOperator system data).toNormalizedExpectation
+noncomputable def eigenbasisNormalizedExpectation
+    (data : EnergyEigenbasisLehmannData system ι) : NormalizedExpectation H :=
+  (eigenbasisDensityOperator system data).toNormalizedExpectation
 
 @[simp]
-theorem purePointNormalizedExpectation_apply
-    (data : PurePointLehmannData system ι)
+theorem eigenbasisNormalizedExpectation_apply
+    (data : EnergyEigenbasisLehmannData system ι)
     (A : H →L[ℂ] H) :
-    purePointNormalizedExpectation system data A =
+    eigenbasisNormalizedExpectation system data A =
       ∑' i, (data.probability i : ℂ) *
         inner ℂ (data.basis i) (A (data.basis i)) := by
-  rw [purePointNormalizedExpectation, DensityOperator.toNormalizedExpectation_apply]
-  exact (purePointDensityOperator system data).expectation_eq_tsum_diagonal
-    A data.basis data.probability (purePointDensityOperator_apply_basis system data)
+  rw [eigenbasisNormalizedExpectation, DensityOperator.toNormalizedExpectation_apply]
+  exact (eigenbasisDensityOperator system data).expectation_eq_tsum_diagonal
+    A data.basis data.probability (eigenbasisDensityOperator_apply_basis system data)
 
 /-- The scalar free Schrödinger phase of one energy-basis vector. -/
-noncomputable def purePointSchrodingerPhase
-    (data : PurePointLehmannData system ι) (i : ι) (t : ℝ) : ℂ :=
+noncomputable def eigenbasisSchrodingerPhase
+    (data : EnergyEigenbasisLehmannData system ι) (i : ι) (t : ℝ) : ℂ :=
   Complex.exp (-(Complex.I * (((t * data.energy i) / system.hbar : ℝ) : ℂ)))
 
 /-- The free propagator acts on an energy-basis vector by the expected Schrödinger phase. -/
-theorem freePropagator_apply_purePointBasis
-    (data : PurePointLehmannData system ι) (i : ι) (t : ℝ) :
+theorem freePropagator_apply_energyEigenbasis
+    (data : EnergyEigenbasisLehmannData system ι) (i : ι) (t : ℝ) :
     freePropagator system t (data.basis i) =
-      purePointSchrodingerPhase system data i t • data.basis i := by
+      eigenbasisSchrodingerPhase system data i t • data.basis i := by
   let T : H →L[ℂ] H := (t : ℂ) • schrodingerGenerator system
   let c : ℂ := -(Complex.I * (((t * data.energy i) / system.hbar : ℝ) : ℂ))
   let v : H := data.basis i
@@ -151,62 +151,62 @@ theorem freePropagator_apply_purePointBasis
       (ContinuousLinearMap.toSpanSingleton ℂ v)
   have hscalar' : HasSum
       (fun n : ℕ => (((n.factorial : ℂ)⁻¹ * c ^ n) • v))
-      (purePointSchrodingerPhase system data i t • v) := by
+      (eigenbasisSchrodingerPhase system data i t • v) := by
     convert hscalar using 1
     · ext n
       simp
-    · simp [purePointSchrodingerPhase, Complex.exp_eq_exp_ℂ, c, v]
+    · simp [eigenbasisSchrodingerPhase, Complex.exp_eq_exp_ℂ, c, v]
   exact hop'.unique hscalar'
 
 /-- The relative phase carried by a Heisenberg-picture matrix element. -/
-noncomputable def purePointTransitionPhase
-    (data : PurePointLehmannData system ι)
+noncomputable def eigenbasisTransitionPhase
+    (data : EnergyEigenbasisLehmannData system ι)
     (m n : ι) (t : ℝ) : ℂ :=
-  star (purePointSchrodingerPhase system data m t) *
-    purePointSchrodingerPhase system data n t
+  star (eigenbasisSchrodingerPhase system data m t) *
+    eigenbasisSchrodingerPhase system data n t
 
 /-- The relative Schrödinger phases combine into the usual energy-difference phase. -/
-theorem purePointTransitionPhase_eq_exp_energyDifference
-    (data : PurePointLehmannData system ι)
+theorem eigenbasisTransitionPhase_eq_exp_energyDifference
+    (data : EnergyEigenbasisLehmannData system ι)
     (m n : ι) (t : ℝ) :
-    purePointTransitionPhase system data m n t =
+    eigenbasisTransitionPhase system data m n t =
       Complex.exp
         (Complex.I * (((orderedLehmannEnergyGap (data.energy m) (data.energy n) * t) /
           system.hbar : ℝ) : ℂ)) := by
-  rw [purePointTransitionPhase, purePointSchrodingerPhase,
-    purePointSchrodingerPhase, Complex.exp_eq_exp_ℂ]
+  rw [eigenbasisTransitionPhase, eigenbasisSchrodingerPhase,
+    eigenbasisSchrodingerPhase, Complex.exp_eq_exp_ℂ]
   rw [NormedSpace.star_exp, ← NormedSpace.exp_add]
   congr 1
   simp
   ring
 
 /-- Matrix elements of a freely evolved observable acquire the energy-difference phase. -/
-theorem inner_purePointBasis_heisenbergEvolution
-    (data : PurePointLehmannData system ι)
+theorem inner_energyEigenbasis_heisenbergEvolution
+    (data : EnergyEigenbasisLehmannData system ι)
     (A : H →L[ℂ] H) (m n : ι) (t : ℝ) :
     inner ℂ (data.basis m)
         (heisenbergEvolution system A t (data.basis n)) =
-      purePointTransitionPhase system data m n t *
+      eigenbasisTransitionPhase system data m n t *
         inner ℂ (data.basis m) (A (data.basis n)) := by
   rw [heisenbergEvolution]
   simp only [mul_apply_eq_comp]
-  rw [freePropagator_apply_purePointBasis system data n t]
+  rw [freePropagator_apply_energyEigenbasis system data n t]
   rw [map_smul]
   rw [← star_freePropagator system t]
   rw [ContinuousLinearMap.star_eq_adjoint]
   rw [ContinuousLinearMap.adjoint_inner_right]
-  rw [freePropagator_apply_purePointBasis system data m t]
-  simp [purePointTransitionPhase, inner_smul_left, inner_smul_right]
+  rw [freePropagator_apply_energyEigenbasis system data m t]
+  simp [eigenbasisTransitionPhase, inner_smul_left, inner_smul_right]
   ring
 
-/-- The canonical pure-point density expectation is stationary under the free dynamics. -/
-theorem isStationary_purePointNormalizedExpectation
-    (data : PurePointLehmannData system ι) :
-    IsStationary system (purePointNormalizedExpectation system data) := by
-  simpa [purePointNormalizedExpectation] using
+/-- The canonical eigenbasis density expectation is stationary under the free dynamics. -/
+theorem isStationary_eigenbasisNormalizedExpectation
+    (data : EnergyEigenbasisLehmannData system ι) :
+    IsStationary system (eigenbasisNormalizedExpectation system data) := by
+  simpa [eigenbasisNormalizedExpectation] using
     isStationary_toNormalizedExpectation_of_commute_hamiltonian system
-      (purePointDensityOperator system data)
-      (commute_hamiltonian_purePointDensityOperator system data)
+      (eigenbasisDensityOperator system data)
+      (commute_hamiltonian_eigenbasisDensityOperator system data)
 
 end
 end LinearResponse

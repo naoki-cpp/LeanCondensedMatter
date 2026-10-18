@@ -47,7 +47,7 @@ variable [Fintype ι]
 explicit observable-variation expectation. -/
 noncomputable def finiteStaticKuboBastinChannelVertexResponse
     (system : BoundedFreeSystem H)
-    (data : PurePointLehmannData system ι)
+    (data : EnergyEigenbasisLehmannData system ι)
     (channel : ResponseChannel H)
     (eta : ℝ) : ℂ :=
   finiteKuboBastinSpectralVertexSum
@@ -57,7 +57,7 @@ noncomputable def finiteStaticKuboBastinChannelVertexResponse
 switching rate stays finite and the explicit observable-variation expectation is retained. -/
 noncomputable def finiteStaticKuboBastinChannelResponse
     (system : BoundedFreeSystem H)
-    (data : PurePointLehmannData system ι)
+    (data : EnergyEigenbasisLehmannData system ι)
     (channel : ResponseChannel H)
     (eta : ℝ) : ℂ :=
   finiteKuboBastinSpectralChannelResponse system data channel 0 eta
@@ -67,7 +67,7 @@ representation, the complete generalized response is its surface-plus-sea decomp
 unchanged observable-variation expectation. -/
 theorem finiteStaticKuboBastinChannelResponse_eq_surface_add_sea_add_observableVariation
     (system : BoundedFreeSystem H)
-    (data : PurePointLehmannData system ι)
+    (data : EnergyEigenbasisLehmannData system ι)
     (channel : ResponseChannel H)
     (eta : ℝ)
     (representation : RegularizedStredaRepresentation
@@ -75,12 +75,12 @@ theorem finiteStaticKuboBastinChannelResponse_eq_surface_add_sea_add_observableV
     finiteStaticKuboBastinChannelResponse system data channel eta =
       (regularizedStredaFermiSurface representation.toRegularizedStredaIntegralData +
         regularizedStredaFermiSea representation.toRegularizedStredaIntegralData) +
-      purePointNormalizedExpectation system data channel.observableVariation := by
+      eigenbasisNormalizedExpectation system data channel.observableVariation := by
   change finiteKuboBastinSpectralChannelResponse system data channel 0 eta = _
   rw [finiteKuboBastinSpectralChannelResponse_eq_vertexSum]
   exact congrArg
     (fun response : ℂ =>
-      response + purePointNormalizedExpectation system data channel.observableVariation)
+      response + eigenbasisNormalizedExpectation system data channel.observableVariation)
     representation.response_eq_surface_add_sea
 
 end

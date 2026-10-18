@@ -13,7 +13,7 @@ theorem is owned by `Analysis.Operator.Spectral.Resolvent`; this module owns its
 transport specialization. Physical retarded/advanced branches are specialized locally by consumers
 with `γ = ±η`.
 
-No pure-point response data, trace, occupation integral, contact cancellation, zero-broadening
+No eigenbasis response data, trace, occupation integral, contact cancellation, zero-broadening
 limit, or conductivity claim is made here.
 -/
 

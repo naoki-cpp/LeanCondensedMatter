@@ -39,7 +39,7 @@ variable [Fintype ι]
 current-current response and explicit Peierls contact expectation. -/
 noncomputable def finiteStaticKuboBastinVectorPotentialResponse
     (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
-    (data : PurePointLehmannData system ι)
+    (data : EnergyEigenbasisLehmannData system ι)
     (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
     (K : LocallyFiniteHopping Site) (q eta : ℝ) : ℂ :=
   finiteStaticKuboBastinChannelResponse system data
@@ -53,7 +53,7 @@ thermodynamic-limit claim is made here. -/
 noncomputable def finiteStaticKuboBastinDirectionalConductivity
     (convention : QuantumTheory.Transport.PositiveVolume)
     (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
-    (data : PurePointLehmannData system ι)
+    (data : EnergyEigenbasisLehmannData system ι)
     (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
     (K : LocallyFiniteHopping Site) (q eta : ℝ) : ℂ :=
   finiteKuboBastinSpectralDirectionalConductivity
@@ -64,7 +64,7 @@ zero-frequency finite-volume electric-field normalization. -/
 theorem finiteStaticKuboBastinDirectionalConductivity_eq_vectorPotentialResponse_mul_normalization
     (convention : QuantumTheory.Transport.PositiveVolume)
     (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
-    (data : PurePointLehmannData system ι)
+    (data : EnergyEigenbasisLehmannData system ι)
     (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
     (K : LocallyFiniteHopping Site) (q eta : ℝ) :
     finiteStaticKuboBastinDirectionalConductivity
@@ -79,11 +79,11 @@ switching rate. -/
 theorem infiniteTimeAdiabaticDirectionalConductivity_zero_frequency_eq_staticKuboBastin
     (convention : QuantumTheory.Transport.PositiveVolume)
     (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
-    (data : PurePointLehmannData system ι)
+    (data : EnergyEigenbasisLehmannData system ι)
     (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
     (K : LocallyFiniteHopping Site) (q eta : ℝ) (heta : 0 < eta) :
     infiniteTimeAdiabaticDirectionalConductivity convention
-        system (purePointNormalizedExpectation system data)
+        system (eigenbasisNormalizedExpectation system data)
           geometry direction K q 0 eta =
       finiteStaticKuboBastinDirectionalConductivity
         convention system data geometry direction K q eta := by

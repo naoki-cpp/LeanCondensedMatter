@@ -40,7 +40,7 @@
       ]
     },
     {
-      "id": "transportPurePointSpectralBridge",
+      "id": "transportEigenbasisSpectralBridge",
       "sourceRoots": [
         "LeanCondensedMatter/QuantumTheory/LinearResponse",
         "LeanCondensedMatter/Transport/Resolvent",
@@ -51,22 +51,22 @@
       "coveragePrefixes": [
         "LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann",
         "LeanCondensedMatter.Transport.Resolvent.Spectral",
-        "LeanCondensedMatter.Transport.Spectral.PurePoint",
-        "LeanCondensedMatter.Transport.KuboBastin.PurePoint",
+        "LeanCondensedMatter.Transport.Spectral.Eigenbasis",
+        "LeanCondensedMatter.Transport.KuboBastin.Eigenbasis",
         "LeanCondensedMatter.Transport.Streda.TraceSpectral"
       ],
       "layers": [
         {"id": "lehmann", "modulePrefixes": ["LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann"]},
         {"id": "resolventSpectral", "modulePrefixes": ["LeanCondensedMatter.Transport.Resolvent.Spectral"]},
-        {"id": "purePointAdapter", "modulePrefixes": ["LeanCondensedMatter.Transport.Spectral.PurePoint"]},
-        {"id": "kuboBastinPurePoint", "modulePrefixes": ["LeanCondensedMatter.Transport.KuboBastin.PurePoint"]},
+        {"id": "eigenbasisAdapter", "modulePrefixes": ["LeanCondensedMatter.Transport.Spectral.Eigenbasis"]},
+        {"id": "kuboBastinEigenbasis", "modulePrefixes": ["LeanCondensedMatter.Transport.KuboBastin.Eigenbasis"]},
         {"id": "stredaTraceSpectral", "modulePrefixes": ["LeanCondensedMatter.Transport.Streda.TraceSpectral"]}
       ],
       "edges": [
-        {"upstream": "lehmann", "downstream": "purePointAdapter"},
-        {"upstream": "resolventSpectral", "downstream": "purePointAdapter"},
-        {"upstream": "purePointAdapter", "downstream": "kuboBastinPurePoint"},
-        {"upstream": "purePointAdapter", "downstream": "stredaTraceSpectral"}
+        {"upstream": "lehmann", "downstream": "eigenbasisAdapter"},
+        {"upstream": "resolventSpectral", "downstream": "eigenbasisAdapter"},
+        {"upstream": "eigenbasisAdapter", "downstream": "kuboBastinEigenbasis"},
+        {"upstream": "eigenbasisAdapter", "downstream": "stredaTraceSpectral"}
       ]
     },
     {
@@ -215,11 +215,11 @@
       "layers": [
         {"id": "diagonalFormula", "modulePrefixes": ["LeanCondensedMatter.QuantumTheory.DensityOperator.DiagonalFormula"]},
         {"id": "entropyDiagonal", "modulePrefixes": ["LeanCondensedMatter.QuantumTheory.Entropy.Diagonal"]},
-        {"id": "purePointDynamics", "modulePrefixes": ["LeanCondensedMatter.QuantumTheory.LinearResponse.PurePointDynamics"]}
+        {"id": "eigenbasisDynamics", "modulePrefixes": ["LeanCondensedMatter.QuantumTheory.LinearResponse.EigenbasisDynamics"]}
       ],
       "edges": [
         {"upstream": "diagonalFormula", "downstream": "entropyDiagonal"},
-        {"upstream": "diagonalFormula", "downstream": "purePointDynamics"}
+        {"upstream": "diagonalFormula", "downstream": "eigenbasisDynamics"}
       ]
     },
     {
