@@ -39,7 +39,6 @@ theorem finiteGibbsExpectation_four_point (energy : Config → ℝ) (β q1 : ℝ
   have hζ3 : ζ ^ 3 = ζ := by
     have h32 : ζ ^ 3 = ζ ^ 2 * ζ := by ring
     rw [h32, hζ2, one_mul]
-  have hne3 : (1 : ℂ) - ζ ^ 3 * Complex.exp ((q1 * β : ℝ) : ℂ) ≠ 0 := by rwa [hζ3]
   have h4 :
     finiteGibbsExpectation energy β (C1.comp (C2.comp (C3.comp C4))) =
       (c12 * finiteGibbsExpectation energy β (C3.comp C4) +
