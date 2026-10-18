@@ -1,7 +1,7 @@
 module
 
 public import Mathlib.Analysis.Distribution.SchwartzSpace.Deriv
-public import Mathlib.Tactic
+import Mathlib.Tactic
 
 public section
 
@@ -50,7 +50,7 @@ theorem multiplicationOperator_apply (f ψ : Space) (x : ℝ) :
   rfl
 
 /-- The multiplication operator depends complex-linearly on its Schwartz multiplier. -/
-@[expose] noncomputable def multiplicationLinear : Space →ₗ[ℂ] (Space →ₗ[ℂ] Space) where
+noncomputable def multiplicationLinear : Space →ₗ[ℂ] (Space →ₗ[ℂ] Space) where
   toFun := multiplicationOperator
   map_add' := by
     intro f g
@@ -62,6 +62,16 @@ theorem multiplicationOperator_apply (f ψ : Space) (x : ℝ) :
     ext ψ x
     change c * f x * ψ x = c * (f x * ψ x)
     ring
+
+private theorem multiplicationLinear_apply_private (f : Space) :
+    multiplicationLinear f = multiplicationOperator f :=
+  rfl
+
+/-- Applying the linear family of local multiplication operators recovers the pointwise operator. -/
+@[simp]
+theorem multiplicationLinear_apply (f : Space) :
+    multiplicationLinear f = multiplicationOperator f :=
+  multiplicationLinear_apply_private f
 
 /-- Differentiation obeys the product rule on Schwartz multiplication. -/
 theorem derivative_multiplication_apply (f ψ : Space) :
