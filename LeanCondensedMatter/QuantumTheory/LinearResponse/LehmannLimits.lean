@@ -125,45 +125,33 @@ private theorem eventually_hasAdiabaticRemovalLimit_finset_frequencyTerm
         (fun eta : ℝ =>
           s.sum fun j => (transition j).frequencyTerm omega eta)
         (s.sum fun j => (transition j).unswitchedTerm omega) := by
-  classical
-  induction s using Finset.induction_on with
-  | empty =>
-      exact Filter.Eventually.of_forall fun _ => by
-        simp [HasAdiabaticRemovalLimit]
-  | @insert a s ha ih =>
-      have haRegular := hregular a (Finset.mem_insert_self a s)
-      have hsRegular : ∀ j ∈ s,
-          (transition j).weight = 0 ∨ (transition j).energyGap ≠ 0 := by
-        intro j hj
-        exact hregular j (Finset.mem_insert_of_mem hj)
-      have hterm : ∀ᶠ omega : ℝ in 𝓝 0,
-          HasAdiabaticRemovalLimit
-            (fun eta : ℝ =>
-              (transition a).frequencyTerm omega eta)
-            ((transition a).unswitchedTerm omega) := by
-        rcases haRegular with hweight | hgap
-        · exact Filter.Eventually.of_forall fun omega => by
-            simpa [LehmannTransitionData.frequencyTerm,
-              LehmannTransitionData.unswitchedTerm] using
-              hasAdiabaticRemovalLimit_lehmannTerm
-                hbar omega (transition a).energyGap (transition a).weight
-                  (Or.inl hweight)
-        · have hgapDiv : (transition a).energyGap / hbar ≠ 0 :=
-            div_ne_zero hgap hhbar
-          have hvalue : (0 : ℝ) + (transition a).energyGap / hbar ≠ 0 := by
-            simpa only [zero_add] using hgapDiv
-          have hcont : ContinuousAt
-              (fun omega : ℝ => omega + (transition a).energyGap / hbar) 0 := by
-            fun_prop
-          filter_upwards [hcont.eventually_ne hvalue] with omega hdetuning
-          simpa [LehmannTransitionData.frequencyTerm,
-            LehmannTransitionData.unswitchedTerm] using
-            hasAdiabaticRemovalLimit_lehmannTerm
-              hbar omega (transition a).energyGap (transition a).weight
-                (Or.inr hdetuning)
-      filter_upwards [hterm, ih hsRegular] with omega htermOmega hsOmega
-      unfold HasAdiabaticRemovalLimit at htermOmega hsOmega ⊢
-      simpa [Finset.sum_insert, ha] using htermOmega.add hsOmega
+  have hterm : ∀ j ∈ s, ∀ᶠ omega : ℝ in 𝓝 0,
+      HasAdiabaticRemovalLimit
+        (fun eta : ℝ => (transition j).frequencyTerm omega eta)
+        ((transition j).unswitchedTerm omega) := by
+    intro j hj
+    rcases hregular j hj with hweight | hgap
+    · exact Filter.Eventually.of_forall fun omega => by
+        simpa [LehmannTransitionData.frequencyTerm,
+          LehmannTransitionData.unswitchedTerm] using
+          hasAdiabaticRemovalLimit_lehmannTerm
+            hbar omega (transition j).energyGap (transition j).weight
+              (Or.inl hweight)
+    · have hgapDiv : (transition j).energyGap / hbar ≠ 0 :=
+        div_ne_zero hgap hhbar
+      have hvalue : (0 : ℝ) + (transition j).energyGap / hbar ≠ 0 := by
+        simpa only [zero_add] using hgapDiv
+      have hcont : ContinuousAt
+          (fun omega : ℝ => omega + (transition j).energyGap / hbar) 0 := by
+        fun_prop
+      filter_upwards [hcont.eventually_ne hvalue] with omega hdetuning
+      simpa [LehmannTransitionData.frequencyTerm,
+        LehmannTransitionData.unswitchedTerm] using
+        hasAdiabaticRemovalLimit_lehmannTerm
+          hbar omega (transition j).energyGap (transition j).weight
+            (Or.inr hdetuning)
+  filter_upwards [(Filter.eventually_all_finset s).2 hterm] with omega h
+  exact HasAdiabaticRemovalLimit.finsetSum s _ _ h
 
 /-- Both local iterated limits exist and agree for a finite static-nonresonant family. -/
 private theorem finset_frequencyTerm_has_both_local_iterated_limits
