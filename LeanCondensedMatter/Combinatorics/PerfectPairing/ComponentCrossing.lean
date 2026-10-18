@@ -112,17 +112,7 @@ theorem Pairing.componentGeometricCrossingCount_mod_two_eq_endpointInversionCoun
           if position C (endpointEquiv C (x.1.2, x.2.2)) <
             position B (endpointEquiv B (x.1.1, x.2.1))
           then 1 else 0 := by
-    simp only [Fintype.sum_prod_type]
-    apply Finset.sum_congr rfl
-    intro p _
-    apply Finset.sum_congr rfl
-    intro q _
-    rw [pairEndpointInversionCount_eq_sum]
-    apply Finset.sum_congr rfl
-    intro i _
-    apply Finset.sum_congr rfl
-    intro j _
-    rw [hposition B p i, hposition C q j]
+    simp only [Fintype.sum_prod_type, pairEndpointInversionCount_eq_sum, hposition]
   have hreindex :
       (∑ x : (F B × F C) × (Fin 2 × Fin 2),
         if position C (endpointEquiv C (x.1.2, x.2.2)) <
