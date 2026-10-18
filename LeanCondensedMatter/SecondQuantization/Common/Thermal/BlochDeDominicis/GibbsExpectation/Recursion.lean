@@ -47,7 +47,7 @@ noncomputable def finiteGibbsExpectationRecursion (s : Statistics)
     rw [List.ofFn_succ, List.prod_cons, Module.End.mul_eq_comp]
     set l : List ((AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) × ℂ) :=
       List.ofFn (fun i : Fin (2 * m + 1) => (C i.succ, c 0 i.succ)) with hl
-     have hcommL : ∀ p ∈ l, ScalarExchange.zetaCommutator (s.zetaInt : ℂ) (C 0) p.1 =
+    have hcommL : ∀ p ∈ l, ScalarExchange.zetaCommutator (s.zetaInt : ℂ) (C 0) p.1 =
         p.2 • (LinearMap.id : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) := by
       intro p hp
       rw [hl, List.mem_ofFn] at hp
