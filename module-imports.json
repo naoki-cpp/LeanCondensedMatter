@@ -430,7 +430,7 @@
       "name": "LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.Norm",
       "sourceFile": "LeanCondensedMatter/Analysis/Operator/HilbertSchmidt/Norm.lean",
       "imports": [
-        "LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.Basic"
+        "LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.InnerProduct"
       ],
       "externalImportCount": 0
     },
@@ -1268,7 +1268,7 @@
         "LeanCondensedMatter.Combinatorics.PerfectPairing.Crossing",
         "LeanCondensedMatter.Combinatorics.PerfectPairing.PairEndpoints"
       ],
-      "externalImportCount": 4
+      "externalImportCount": 0
     },
     {
       "name": "LeanCondensedMatter.Combinatorics.PerfectPairing.Embedding",
@@ -1373,7 +1373,7 @@
         "LeanCondensedMatter.Combinatorics.FiniteIndex.Block",
         "LeanCondensedMatter.Combinatorics.PerfectPairing.CrossingParity"
       ],
-      "externalImportCount": 0
+      "externalImportCount": 1
     },
     {
       "name": "LeanCondensedMatter.Combinatorics.PerfectPairing.Split",
@@ -1391,7 +1391,7 @@
         "LeanCondensedMatter.Combinatorics.PerfectPairing.CrossingParity",
         "LeanCondensedMatter.Combinatorics.PerfectPairing.SplitNormalizedPairs"
       ],
-      "externalImportCount": 0
+      "externalImportCount": 1
     },
     {
       "name": "LeanCondensedMatter.Combinatorics.PerfectPairing.SplitNormalizedPairs",
