@@ -652,7 +652,8 @@ private theorem regularizedHGFun_one_sub_two_eq_mul_three (w : ℂ) :
     have hn2 : (n + 2 : ℂ) ≠ 0 := by exact_mod_cast Nat.succ_ne_zero (n + 1)
     have hf : (Nat.factorial n : ℂ) ≠ 0 := by
       exact_mod_cast Nat.factorial_ne_zero n
-    field_simp
+    have hn2' : (2 : ℂ) + (n : ℂ) ≠ 0 := by simpa [add_comm] using hn2
+    field_simp [hn2']
     ring
   have hzero : c1 0 = c2 0 := by
     rw [show c1 0 = 1 / (Nat.factorial 0 : ℂ) ^ 2 by
@@ -703,10 +704,15 @@ private theorem besselJ_zero_one_two_recurrence (z : ℂ) :
     simp [Complex.besselJ_def, w]
   have h1 : Complex.besselJ 1 z =
       (z / 2) * Complex.regularizedHGFun 0 {(2 : ℂ)} w := by
-    simp [Complex.besselJ_def, w]
+    change (z / 2) ^ (1 : ℂ) *
+      Complex.regularizedHGFun 0 {((1 : ℂ) + 1)} (-(z / 2) ^ 2) = _
+    simp only [Complex.cpow_one, one_add_one_eq_two]
   have h2 : Complex.besselJ 2 z =
       (z / 2) ^ 2 * Complex.regularizedHGFun 0 {(3 : ℂ)} w := by
-    simp [Complex.besselJ_def, w]
+    change (z / 2) ^ (2 : ℂ) *
+      Complex.regularizedHGFun 0 {((2 : ℂ) + 1)} (-(z / 2) ^ 2) = _
+    simp only [Complex.cpow_two]
+    norm_num
   rw [h0, h1, h2]
   dsimp [w] at h
   calc
