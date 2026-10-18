@@ -112286,7 +112286,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel N S),\n  d.IsExternallyConnected →\n    ∀ (earlier later : Fin (2 * (2 * S.card + 1))),\n      ¬(d.vertexGraphWithoutPropagator earlier).Reachable (Sum.inl 0) (Sum.inl 1) →\n        ¬(d.vertexGraphWithoutPropagator later).Reachable (Sum.inl 0) (Sum.inl 1) →\n          ∀ u ∈ d.verticesBetweenCuts earlier later,\n            (d.vertexGraphWithoutPropagator earlier ⊓ d.vertexGraphWithoutPropagator later).componentBlock u =\n              d.verticesBetweenCuts earlier later",
     "standardAxioms": [
       "Classical.choice",
@@ -112294,7 +112294,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -112305,7 +112305,9 @@
     "docString": "Every vertex of a cut interval identifies that entire interval as its\ncomponent after deleting both boundary propagators. This combines the\ninterval's double-cut reachability with invariance of interval membership\nunder double-cut paths. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "SecondQuantization.Common.TwoPointDiagram.intervalVertices_induced_connected"
+    ],
     "dependencies": [
       "SecondQuantization.Common.TwoPointDiagram.mem_verticesBetweenCuts_iff_of_doubleCut_reachable",
       "SecondQuantization.Common.TwoPointDiagram.verticesBetweenCuts_reachable_without_both_cuts",
@@ -112313,8 +112315,10 @@
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "SecondQuantization.Common.TwoPointDiagram.intervalVertices_induced_connected"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -114306,8 +114310,52 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel N S)\n  (earlier later : Fin (2 * (2 * S.card + 1))),\n  d.HasIntervalBoundaryEndpoint earlier later earlier →\n    d.HasIntervalBoundaryEndpoint earlier later later →\n      SimpleGraph.induce (↑(d.verticesBetweenCuts earlier later))\n          (d.vertexGraphWithoutPropagator earlier ⊓ d.vertexGraphWithoutPropagator later) =\n        SimpleGraph.induce (↑(d.verticesBetweenCuts earlier later)) d.vertexGraph",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.TwoPointDiagram.intervalVertices_induce_doubleCut_eq",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.IntervalConnectivity",
+    "externalAxioms": [],
+    "docString": "As graphs on the interval's own vertex subtype, removing both\nboundary propagators changes nothing: the induced double-cut graph\nequals the graph induced from the original diagram. In particular,\nany interval-confined path can be used unchanged after both cuts. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Common.TwoPointDiagram.intervalVertices_induced_connected"
+    ],
+    "dependencies": [
+      "SecondQuantization.Common.TwoPointDiagram.intervalVertices_doubleCut_adj_iff"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.TwoPointDiagram.intervalVertices_induced_connected"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel N S),\n  d.IsExternallyConnected →\n    ∀ (earlier later : Fin (2 * (2 * S.card + 1))),\n      (d.vertexGraphWithoutPropagator earlier).componentBlock (Sum.inl 0) ⊂\n          (d.vertexGraphWithoutPropagator later).componentBlock (Sum.inl 0) →\n        ¬(d.vertexGraphWithoutPropagator earlier).Reachable (Sum.inl 0) (Sum.inl 1) →\n          ¬(d.vertexGraphWithoutPropagator later).Reachable (Sum.inl 0) (Sum.inl 1) →\n            d.HasIntervalBoundaryEndpoint earlier later earlier →\n              d.HasIntervalBoundaryEndpoint earlier later later →\n                (SimpleGraph.induce (↑(d.verticesBetweenCuts earlier later)) d.vertexGraph).Connected",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -114319,15 +114367,18 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "SecondQuantization.Common.TwoPointDiagram.intervalVertices_induce_doubleCut_eq",
+    "name": "SecondQuantization.Common.TwoPointDiagram.intervalVertices_induced_connected",
     "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.IntervalConnectivity",
     "externalAxioms": [],
-    "docString": "As graphs on the interval's own vertex subtype, removing both\nboundary propagators changes nothing: the induced double-cut graph\nequals the graph induced from the original diagram. In particular,\nany interval-confined path can be used unchanged after both cuts. ",
+    "docString": "The ambient graph induced on a strictly nested cut interval is\nconnected. The interval is one component after the two cuts are removed,\nand Mathlib's induced graph on a connected component is connected. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "SecondQuantization.Common.TwoPointDiagram.intervalVertices_doubleCut_adj_iff"
+      "SecondQuantization.Common.TwoPointDiagram.doubleCut_componentBlock_eq_verticesBetweenCuts",
+      "SecondQuantization.Common.TwoPointDiagram.intervalVertices_induce_doubleCut_eq",
+      "SecondQuantization.Common.TwoPointDiagram.verticesBetweenCuts_ne_empty_of_ssubset",
+      "SimpleGraph.mem_componentBlock"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -117284,7 +117335,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -117296,7 +117347,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Common.TwoPointDiagram.interactionSector_verticesBetweenCuts_nonempty"
+      "SecondQuantization.Common.TwoPointDiagram.interactionSector_verticesBetweenCuts_nonempty",
+      "SecondQuantization.Common.TwoPointDiagram.intervalVertices_induced_connected"
     ],
     "dependencies": [
       "SecondQuantization.Common.TwoPointDiagram.mem_verticesBetweenCuts_iff"
@@ -117304,9 +117356,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.TwoPointDiagram.interactionSector_verticesBetweenCuts_nonempty"
+      "SecondQuantization.Common.TwoPointDiagram.interactionSector_verticesBetweenCuts_nonempty",
+      "SecondQuantization.Common.TwoPointDiagram.intervalVertices_induced_connected"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -126754,8 +126807,7 @@
     "dependents": [
       "SecondQuantization.Common.CarriesShift.comp",
       "SecondQuantization.Common.matrixCoeff_comp",
-      "SecondQuantization.Common.summable_matrixCoeff_diag_comp_of_summable_uncurry",
-      "SecondQuantization.Common.tsumTrace_comp_comm"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Algebra.DiagonalTrace.0.SecondQuantization.Common.matrixCoeff_comp_eq_tsum"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
@@ -126763,10 +126815,9 @@
     "compiledConsumers": [
       "SecondQuantization.Common.CarriesShift.comp",
       "SecondQuantization.Common.matrixCoeff_comp",
-      "SecondQuantization.Common.summable_matrixCoeff_diag_comp_of_summable_uncurry",
-      "SecondQuantization.Common.tsumTrace_comp_comm"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Algebra.DiagonalTrace.0.SecondQuantization.Common.matrixCoeff_comp_eq_tsum"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -130649,7 +130700,7 @@
       "SecondQuantization.Common.tsumTrace_diagonalEvolution_comp_peel"
     ],
     "dependencies": [
-      "SecondQuantization.Common.matrixCoeff_comp_support"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Algebra.DiagonalTrace.0.SecondQuantization.Common.matrixCoeff_comp_eq_tsum"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -131335,7 +131386,7 @@
       "SecondQuantization.Common.tsumTrace_diagonalEvolution_comp_rotate"
     ],
     "dependencies": [
-      "SecondQuantization.Common.matrixCoeff_comp_support"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Algebra.DiagonalTrace.0.SecondQuantization.Common.matrixCoeff_comp_eq_tsum"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -154458,6 +154509,7 @@
       "SecondQuantization.Common.TwoPointDiagram.externalSource_componentBlocks_comparable",
       "SecondQuantization.Common.TwoPointDiagram.externalSource_componentBlocks_eq_iff_edge_eq",
       "SecondQuantization.Common.TwoPointDiagram.external_componentBlocks_cover_and_disjoint",
+      "SecondQuantization.Common.TwoPointDiagram.intervalVertices_induced_connected",
       "SecondQuantization.Common.TwoPointDiagram.laterCut_endpoints_opposite_interval_sides",
       "SecondQuantization.Common.TwoPointDiagram.mem_verticesBetweenCuts_iff_of_doubleCut_reachable",
       "SecondQuantization.Common.TwoPointDiagram.not_uncutPropagator_between_externalComponents",
@@ -154491,6 +154543,7 @@
       "SecondQuantization.Common.TwoPointDiagram.externalSource_componentBlocks_comparable",
       "SecondQuantization.Common.TwoPointDiagram.externalSource_componentBlocks_eq_iff_edge_eq",
       "SecondQuantization.Common.TwoPointDiagram.external_componentBlocks_cover_and_disjoint",
+      "SecondQuantization.Common.TwoPointDiagram.intervalVertices_induced_connected",
       "SecondQuantization.Common.TwoPointDiagram.laterCut_endpoints_opposite_interval_sides",
       "SecondQuantization.Common.TwoPointDiagram.mem_verticesBetweenCuts_iff_of_doubleCut_reachable",
       "SecondQuantization.Common.TwoPointDiagram.not_uncutPropagator_between_externalComponents",
@@ -154509,7 +154562,7 @@
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.CutIntervals.0.SecondQuantization.Common.sourceSide_mem_partner_iff",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.External.ExternalConnectivity.0.SecondQuantization.Common.TwoPointDiagram.externalOne_not_mem_externalComponentPart"
     ],
-    "compiledConsumerCount": 28,
+    "compiledConsumerCount": 29,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -177482,6 +177535,52 @@
       "SecondQuantization.Common.diagonalOperator_basisState"
     ],
     "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Config : Type u_1}\n  (A B : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config)\n  (m n : Config),\n  SecondQuantization.Common.matrixCoeff (A ∘ₗ B) m n =\n    ∑' (k : Config), SecondQuantization.Common.matrixCoeff A m k * SecondQuantization.Common.matrixCoeff B k n",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Algebra.DiagonalTrace.0.SecondQuantization.Common.matrixCoeff_comp_eq_tsum",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Algebra.DiagonalTrace",
+    "externalAxioms": [],
+    "docString": "Sum the matrix coefficients of a composite over the finite support of its right factor. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Common.summable_matrixCoeff_diag_comp_of_summable_uncurry",
+      "SecondQuantization.Common.tsumTrace_comp_comm"
+    ],
+    "dependencies": [
+      "SecondQuantization.Common.matrixCoeff_comp_support"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.summable_matrixCoeff_diag_comp_of_summable_uncurry",
+      "SecondQuantization.Common.tsumTrace_comp_comm"
+    ],
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
