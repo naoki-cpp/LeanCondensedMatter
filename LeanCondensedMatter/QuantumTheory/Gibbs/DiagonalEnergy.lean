@@ -1,5 +1,5 @@
 import LeanCondensedMatter.QuantumTheory.DensityOperator.DiagonalFormula
-import LeanCondensedMatter.QuantumTheory.Gibbs.Entropy
+import LeanCondensedMatter.QuantumTheory.Gibbs.EnergyExpectation
 
 /-!
 # Energy expectation in a common diagonal basis

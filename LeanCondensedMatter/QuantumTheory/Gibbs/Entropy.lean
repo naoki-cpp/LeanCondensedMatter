@@ -1,4 +1,5 @@
-import LeanCondensedMatter.QuantumTheory.Gibbs.FreeEnergy
+import LeanCondensedMatter.QuantumTheory.Gibbs.State
+import LeanCondensedMatter.QuantumTheory.Gibbs.EnergyExpectation
 import LeanCondensedMatter.QuantumTheory.Entropy.Diagonal
 
 /-!
