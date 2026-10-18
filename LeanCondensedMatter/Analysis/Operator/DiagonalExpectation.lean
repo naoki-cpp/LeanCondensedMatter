@@ -97,12 +97,4 @@ theorem diagonalExpectationValue_add
     coe_diagonalExpectationValue_right, coe_diagonalExpectationValue_right]
   simp [inner_add_right]
 
-/-- Equal diagonal matrix elements give equal lossless diagonal-expectation values. -/
-theorem diagonalExpectationValue_eq_of_inner_eq
-    {T S : H →L[ℂ] H} (hT : IsSelfAdjoint T) (hS : IsSelfAdjoint S) (x : H)
-    (h : inner ℂ x (T x) = inner ℂ x (S x)) :
-    diagonalExpectationValue T hT x = diagonalExpectationValue S hS x := by
-  apply Complex.ofReal_injective
-  rw [coe_diagonalExpectationValue_right, coe_diagonalExpectationValue_right, h]
-
 end ContinuousLinearMap

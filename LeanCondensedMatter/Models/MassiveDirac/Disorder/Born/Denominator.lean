@@ -102,26 +102,6 @@ theorem pauliGreenDenominator_radial_im
     simp only [SpectralSide.sign_advanced]
     ring
 
-private theorem continuous_continuumBornRadialDenominatorIntegrandOfRegulator
-    (v m probeEnergy regulator : ℝ) (hregulator : regulator ≠ 0) :
-    Continuous (continuumBornRadialDenominatorIntegrandOfRegulator
-      v m probeEnergy regulator) := by
-  unfold continuumBornRadialDenominatorIntegrandOfRegulator
-    massiveDiracRadialDenominatorKernel
-  have hden (p : ℝ) :
-      massiveDiracRadialDenominator v p
-          (spectralParameterOfRegulator probeEnergy regulator) (m : ℂ) =
-        pauliGreenDenominatorOfRegulator v m p 0 probeEnergy regulator := by
-    rw [pauliGreenDenominatorOfRegulator_radial_eq]
-    unfold massiveDiracRadialDenominator
-    push_cast
-    ring
-  convert (Complex.continuous_ofReal.comp continuous_id).mul
-      (continuous_inv_pauliGreenDenominatorOfRegulator_radial
-        v m probeEnergy regulator hregulator) using 1
-  funext p
-  simp [hden p]
-
 /-- Exact finite-cutoff radial primitive for a massive-Dirac propagator with
 arbitrary complex effective energy and mass. The nonzero imaginary part of
 the squared-energy-minus-mass center keeps the whole radial path off the
