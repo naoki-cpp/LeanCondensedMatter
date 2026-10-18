@@ -1,4 +1,5 @@
 import LeanCondensedMatter.QuantumTheory.LinearResponse.KuboFormula
+import LeanCondensedMatter.QuantumTheory.LinearResponse.RetardedSusceptibility
 import Mathlib.Algebra.Lie.OfAssociative
 
 set_option linter.style.header false
@@ -155,6 +156,32 @@ theorem hasDerivAt_sourceCoupledPerturbedExpectation_zero_of_bound_kubo
         A hM hV ht hInt
   rw [sourceCoupled_responseIntegral_eq system expectation f B A t] at hgeneral
   exact hgeneral
+
+/-- The bounded scalar-source Kubo formula written as a causal convolution with the retarded
+susceptibility. -/
+theorem hasDerivAt_sourceCoupledPerturbedExpectation_zero_of_bound_retarded
+    (expectation : NormalizedExpectation H)
+    (f : ℝ → ℝ) {B : H →L[ℂ] H} (hB : IsSelfAdjoint B)
+    (A : H →L[ℂ] H) {β M t : ℝ} (hM : 0 ≤ M)
+    (hV : ∀ s ∈ Icc (0 : ℝ) β,
+      ‖timeDependentInteractionPerturbation system
+        (sourceCoupledPerturbation f B) s‖ ≤ M)
+    (ht : t ∈ Icc (0 : ℝ) β)
+    (hInt : IntervalIntegrable
+      (timeDependentInteractionPerturbation system
+        (sourceCoupledPerturbation f B)) MeasureTheory.volume 0 t) :
+    HasDerivAt
+      (fun lam : ℝ =>
+        timeDependentPerturbedExpectationFunctional system expectation
+          (sourceCoupledPerturbation f B) lam t A)
+      (∫ s in (0 : ℝ)..t,
+        (f s : ℂ) * retardedSusceptibility system expectation A B t s)
+      0 := by
+  have h := hasDerivAt_sourceCoupledPerturbedExpectation_zero_of_bound_kubo
+    system expectation f hB A hM hV ht hInt
+  rw [sourceCoupled_responseIntegral_eq_retardedSusceptibility
+    system expectation f B A ht.1] at h
+  exact h
 
 end
 end LinearResponse

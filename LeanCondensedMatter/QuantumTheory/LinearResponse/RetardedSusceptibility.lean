@@ -1,5 +1,5 @@
-import LeanCondensedMatter.QuantumTheory.LinearResponse.SourceCoupling
-
+import LeanCondensedMatter.QuantumTheory.LinearResponse.Stationarity
+import Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic
 import Mathlib.Algebra.Lie.OfAssociative
 
 set_option linter.style.header false
@@ -18,6 +18,7 @@ and
 
 `χᴿ_AB(t,s) = if s ≤ t then χ_AB(t,s) else 0`.
 
+Linearity in the measured observable is packaged here independently of perturbative derivation.
 The source response is the causal convolution `∫₀ᵗ f(s) χᴿ_AB(t,s) ds`. Under stationarity, the
 two-time kernel is reduced to a function of the time difference without adding a separate
 correlation-function invariance axiom.
@@ -127,31 +128,26 @@ theorem sourceCoupled_responseIntegral_eq_retardedSusceptibility
   simp [retardedSusceptibility, hs'.2, commutatorSusceptibility, smul_eq_mul]
   ring
 
-/-- The bounded scalar-source Kubo formula written as a causal convolution with the retarded
-susceptibility. -/
-theorem hasDerivAt_sourceCoupledPerturbedExpectation_zero_of_bound_retarded
+/-- With source and times fixed, retarded susceptibility is a complex-linear functional of the
+measured observable. -/
+noncomputable def retardedSusceptibilityMeasuredLinearMap
     (expectation : NormalizedExpectation H)
-    (f : ℝ → ℝ) {B : H →L[ℂ] H} (hB : IsSelfAdjoint B)
-    (A : H →L[ℂ] H) {β M t : ℝ} (hM : 0 ≤ M)
-    (hV : ∀ s ∈ Icc (0 : ℝ) β,
-      ‖timeDependentInteractionPerturbation system
-        (sourceCoupledPerturbation f B) s‖ ≤ M)
-    (ht : t ∈ Icc (0 : ℝ) β)
-    (hInt : IntervalIntegrable
-      (timeDependentInteractionPerturbation system
-        (sourceCoupledPerturbation f B)) MeasureTheory.volume 0 t) :
-    HasDerivAt
-      (fun lam : ℝ =>
-        timeDependentPerturbedExpectationFunctional system expectation
-          (sourceCoupledPerturbation f B) lam t A)
-      (∫ s in (0 : ℝ)..t,
-        (f s : ℂ) * retardedSusceptibility system expectation A B t s)
-      0 := by
-  have h := hasDerivAt_sourceCoupledPerturbedExpectation_zero_of_bound_kubo
-    system expectation f hB A hM hV ht hInt
-  rw [sourceCoupled_responseIntegral_eq_retardedSusceptibility
-    system expectation f B A ht.1] at h
-  exact h
+    (source : H →L[ℂ] H) (t s : ℝ) :
+    (H →L[ℂ] H) →ₗ[ℂ] ℂ where
+  toFun := fun measured =>
+    retardedSusceptibility system expectation measured source t s
+  map_add' := fun A₁ A₂ => by
+    by_cases h : s ≤ t
+    · simp [retardedSusceptibility, commutatorSusceptibility,
+        LieRing.of_associative_ring_bracket, heisenbergEvolution, h, mul_add, add_mul]
+      ring
+    · simp [retardedSusceptibility, h]
+  map_smul' := fun c A => by
+    by_cases h : s ≤ t
+    · simp [retardedSusceptibility, commutatorSusceptibility,
+        LieRing.of_associative_ring_bracket, heisenbergEvolution, h, smul_eq_mul]
+      ring
+    · simp [retardedSusceptibility, h]
 
 end
 end LinearResponse

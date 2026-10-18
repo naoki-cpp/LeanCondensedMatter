@@ -1,5 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.Bounded
-import LeanCondensedMatter.QuantumTheory.LinearResponse.MeasuredObservableLinearity
+import LeanCondensedMatter.QuantumTheory.LinearResponse.RetardedSusceptibility
 
 set_option linter.style.header false
 
