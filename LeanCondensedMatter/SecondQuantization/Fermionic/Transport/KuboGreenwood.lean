@@ -51,11 +51,11 @@ noncomputable def finiteKuboGreenwoodDirectionalCurrentTerm
     (K : LocallyFiniteHopping Site) (q ω η : ℝ) (mn : ι × ι) : ℂ :=
   lehmannTerm system.hbar ω η
     (data.energy mn.1 - data.energy mn.2)
-    (purePointTransitionWeight system data
+    ((purePointTransitionData system data
       (boundedDirectionalCurrent geometry direction
         (system.hbar : ℂ) (q : ℂ) K)
       (boundedDirectionalCurrent geometry direction
-        (system.hbar : ℂ) (q : ℂ) K) mn)
+        (system.hbar : ℂ) (q : ℂ) K) mn).weight)
 
 /-- Diagonal Kubo–Greenwood current-current transitions vanish exactly. -/
 @[simp]
@@ -77,11 +77,11 @@ theorem finiteKuboGreenwoodDirectionalCurrentTerm_of_equal_energy
     (henergy : data.energy m = data.energy n) :
     finiteKuboGreenwoodDirectionalCurrentTerm
         system data geometry direction K q ω η (m, n) =
-      purePointTransitionWeight system data
+      (purePointTransitionData system data
           (boundedDirectionalCurrent geometry direction
             (system.hbar : ℂ) (q : ℂ) K)
           (boundedDirectionalCurrent geometry direction
-            (system.hbar : ℂ) (q : ℂ) K) (m, n) *
+            (system.hbar : ℂ) (q : ℂ) K) (m, n)).weight *
         ((η : ℂ) - Complex.I * (ω : ℂ))⁻¹ := by
   unfold finiteKuboGreenwoodDirectionalCurrentTerm
   exact purePointDirectionalCurrentLehmannTerm_of_equal_energy

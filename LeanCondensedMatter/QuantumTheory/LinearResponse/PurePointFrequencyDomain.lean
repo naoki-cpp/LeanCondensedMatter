@@ -72,19 +72,6 @@ theorem purePointAdiabaticTransitionIntegrand_eq_transitionMode
   push_cast
   ring
 
-/-- Compatibility form exposing the historical weight and ordered energy-gap accessors. -/
-theorem purePointAdiabaticTransitionIntegrand_eq_weight_mul_lehmannMode
-    (data : PurePointLehmannData system ι)
-    (A B : H →L[ℂ] H) (omega eta : ℝ)
-    (mn : ι × ι) (τ : ℝ) :
-    purePointAdiabaticTransitionIntegrand system data A B omega eta mn τ =
-      purePointTransitionWeight system data A B mn *
-        lehmannMode system.hbar omega eta
-          (orderedLehmannEnergyGap (data.energy mn.1) (data.energy mn.2)) τ := by
-  simpa [purePointTransitionWeight] using
-    purePointAdiabaticTransitionIntegrand_eq_transitionMode
-      system data A B omega eta mn τ
-
 /-- The causal integral of one switched transition is its canonical fixed-rate frequency term. -/
 theorem integral_purePointAdiabaticTransitionIntegrand_Ioi_zero
     (data : PurePointLehmannData system ι)
@@ -203,7 +190,7 @@ theorem adiabaticFrequencyDomainSusceptibilityOfPositiveRate_purePoint_eq_finite
       ∑ mn : ι × ι,
         lehmannTerm system.hbar omega eta
           (data.energy mn.1 - data.energy mn.2)
-          (purePointTransitionWeight system data A B mn) := by
+          ((purePointTransitionData system data A B mn).weight) := by
   rw [adiabaticFrequencyDomainSusceptibilityOfPositiveRate_purePoint_eq_lehmannSeries
     system data A B omega eta hη
       (purePointTimeDomainSummable_of_finite system data A B)]

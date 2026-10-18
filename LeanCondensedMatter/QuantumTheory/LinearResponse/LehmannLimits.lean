@@ -232,23 +232,22 @@ theorem finite_purePointLehmann_has_both_local_iterated_limits
           Finset.univ.sum fun mn : ι × ι =>
             lehmannTerm system.hbar omega eta
               (data.energy mn.1 - data.energy mn.2)
-              (purePointTransitionWeight system data A B mn))
+              ((purePointTransitionData system data A B mn).weight))
         (Finset.univ.sum fun mn : ι × ι =>
           unswitchedLehmannTerm system.hbar 0
             (data.energy mn.1 - data.energy mn.2)
-            (purePointTransitionWeight system data A B mn)) ∧
+            ((purePointTransitionData system data A B mn).weight)) ∧
       HasLocalAdiabaticThenStaticLimit
         (fun omega eta =>
           Finset.univ.sum fun mn : ι × ι =>
             lehmannTerm system.hbar omega eta
               (data.energy mn.1 - data.energy mn.2)
-              (purePointTransitionWeight system data A B mn))
+              ((purePointTransitionData system data A B mn).weight))
         (Finset.univ.sum fun mn : ι × ι =>
           unswitchedLehmannTerm system.hbar 0
             (data.energy mn.1 - data.energy mn.2)
-            (purePointTransitionWeight system data A B mn)) := by
-  simpa [LehmannTransitionData.frequencyTerm, LehmannTransitionData.unswitchedTerm,
-    purePointTransitionWeight] using
+            ((purePointTransitionData system data A B mn).weight)) := by
+  simpa [LehmannTransitionData.frequencyTerm, LehmannTransitionData.unswitchedTerm] using
     finset_frequencyTerm_has_both_local_iterated_limits
       (s := Finset.univ)
       system.hbar

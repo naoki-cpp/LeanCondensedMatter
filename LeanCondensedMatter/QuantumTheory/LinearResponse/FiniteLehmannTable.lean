@@ -106,8 +106,7 @@ theorem finiteLehmannTableResponse_ofPurePoint
         (finiteLehmannTableOfPurePoint system data A B) =
       purePointLehmannSeries system data A B omega eta := by
   rw [purePointLehmannSeries_eq_finite_sum]
-  simp [finiteLehmannTableResponse, LehmannTransitionData.frequencyTerm,
-    purePointTransitionWeight]
+  simp [finiteLehmannTableResponse, LehmannTransitionData.frequencyTerm]
 
 end
 end LinearResponse

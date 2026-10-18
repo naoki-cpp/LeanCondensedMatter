@@ -73,16 +73,16 @@ theorem purePointDirectionalCurrentLehmannTerm_of_equal_energy
     (henergy : data.energy m = data.energy n) :
     lehmannTerm system.hbar ω η
         (data.energy m - data.energy n)
-        (purePointTransitionWeight system data
+        ((purePointTransitionData system data
           (boundedDirectionalCurrent geometry direction
             (system.hbar : ℂ) (q : ℂ) K)
           (boundedDirectionalCurrent geometry direction
-            (system.hbar : ℂ) (q : ℂ) K) (m, n)) =
-      purePointTransitionWeight system data
+            (system.hbar : ℂ) (q : ℂ) K) (m, n)).weight) =
+      (purePointTransitionData system data
           (boundedDirectionalCurrent geometry direction
             (system.hbar : ℂ) (q : ℂ) K)
           (boundedDirectionalCurrent geometry direction
-            (system.hbar : ℂ) (q : ℂ) K) (m, n) *
+            (system.hbar : ℂ) (q : ℂ) K) (m, n)).weight *
         ((η : ℂ) - Complex.I * (ω : ℂ))⁻¹ := by
   have hgap : data.energy m - data.energy n = 0 := sub_eq_zero.mpr henergy
   rw [hgap]
@@ -102,11 +102,11 @@ theorem infiniteTimeAdiabaticDirectionalRetardedCoefficient_purePoint_eq_finite_
       ∑ mn : ι × ι,
         lehmannTerm system.hbar ω η
           (data.energy mn.1 - data.energy mn.2)
-          (purePointTransitionWeight system data
+          ((purePointTransitionData system data
             (boundedDirectionalCurrent geometry direction
               (system.hbar : ℂ) (q : ℂ) K)
             (boundedDirectionalCurrent geometry direction
-              (system.hbar : ℂ) (q : ℂ) K) mn) := by
+              (system.hbar : ℂ) (q : ℂ) K) mn).weight) := by
   rw [infiniteTimeAdiabaticDirectionalRetardedCoefficient_eq_susceptibility]
   simpa [adiabaticFrequencyDomainSusceptibilityOfPositiveRate] using
     (adiabaticFrequencyDomainSusceptibilityOfPositiveRate_purePoint_eq_finite_sum
@@ -130,11 +130,11 @@ theorem infiniteTimeAdiabaticDirectionalCoefficient_purePoint_eq_finite_sum
       (∑ mn : ι × ι,
         lehmannTerm system.hbar ω η
           (data.energy mn.1 - data.energy mn.2)
-          (purePointTransitionWeight system data
+          ((purePointTransitionData system data
             (boundedDirectionalCurrent geometry direction
               (system.hbar : ℂ) (q : ℂ) K)
             (boundedDirectionalCurrent geometry direction
-              (system.hbar : ℂ) (q : ℂ) K) mn)) +
+              (system.hbar : ℂ) (q : ℂ) K) mn).weight)) +
         purePointNormalizedExpectation system data
           (boundedDirectionalContact geometry direction
             (system.hbar : ℂ) (q : ℂ) K) := by
@@ -157,11 +157,11 @@ theorem hasInfiniteObservationTimeLimit_directional_purePoint_finite_sum
       ((∑ mn : ι × ι,
         lehmannTerm system.hbar ω η
           (data.energy mn.1 - data.energy mn.2)
-          (purePointTransitionWeight system data
+          ((purePointTransitionData system data
             (boundedDirectionalCurrent geometry direction
               (system.hbar : ℂ) (q : ℂ) K)
             (boundedDirectionalCurrent geometry direction
-              (system.hbar : ℂ) (q : ℂ) K) mn)) +
+              (system.hbar : ℂ) (q : ℂ) K) mn).weight)) +
         purePointNormalizedExpectation system data
           (boundedDirectionalContact geometry direction
             (system.hbar : ℂ) (q : ℂ) K)) := by

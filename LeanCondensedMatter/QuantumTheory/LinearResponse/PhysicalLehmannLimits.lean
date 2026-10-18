@@ -54,13 +54,13 @@ private theorem finitePurePointPhysicalSusceptibilityExtension_eq_finite_sum
       Finset.univ.sum fun mn : ι × ι =>
         lehmannTerm system.hbar omega eta
           (data.energy mn.1 - data.energy mn.2)
-          (purePointTransitionWeight system data A B mn) := by
+          ((purePointTransitionData system data A B mn).weight) := by
   by_cases hη : 0 < eta
   · simp only [finitePurePointPhysicalSusceptibilityExtension, dite_eq_left hη]
     exact adiabaticFrequencyDomainSusceptibilityOfPositiveRate_purePoint_eq_finite_sum
       system data A B omega eta hη
   · simp [finitePurePointPhysicalSusceptibilityExtension, hη,
-      LehmannTransitionData.frequencyTerm, purePointTransitionWeight]
+      LehmannTransitionData.frequencyTerm]
 
 /-- The physical positive-rate susceptibility has both local nonresonant iterated limits after
 passing to its canonical total extension.  Both orders have the same zero-rate static Lehmann
@@ -74,22 +74,22 @@ private theorem finite_purePointPhysicalSusceptibility_has_both_local_iterated_l
         (Finset.univ.sum fun mn : ι × ι =>
           unswitchedLehmannTerm system.hbar 0
             (data.energy mn.1 - data.energy mn.2)
-            (purePointTransitionWeight system data A B mn)) ∧
+            ((purePointTransitionData system data A B mn).weight)) ∧
       HasLocalAdiabaticThenStaticLimit
         (finitePurePointPhysicalSusceptibilityExtension system data A B)
         (Finset.univ.sum fun mn : ι × ι =>
           unswitchedLehmannTerm system.hbar 0
             (data.energy mn.1 - data.energy mn.2)
-            (purePointTransitionWeight system data A B mn)) := by
+            ((purePointTransitionData system data A B mn).weight)) := by
   let F : ℝ → ℝ → ℂ := fun omega eta =>
     Finset.univ.sum fun mn : ι × ι =>
       (purePointTransitionData system data A B mn).frequencyTerm omega eta
   have hfun : finitePurePointPhysicalSusceptibilityExtension system data A B = F := by
     funext omega eta
     rw [finitePurePointPhysicalSusceptibilityExtension_eq_finite_sum]
-    simp [F, LehmannTransitionData.frequencyTerm, purePointTransitionWeight]
+    simp [F, LehmannTransitionData.frequencyTerm]
   rw [hfun]
-  simpa [F, LehmannTransitionData.frequencyTerm, purePointTransitionWeight] using
+  simpa [F, LehmannTransitionData.frequencyTerm] using
     finite_purePointLehmann_has_both_local_iterated_limits
       system data A B hregular
 
@@ -106,7 +106,7 @@ theorem finiteTime_purePointPhysicalSusceptibility_has_both_local_three_stage_li
         (Finset.univ.sum fun mn : ι × ι =>
           unswitchedLehmannTerm system.hbar 0
             (data.energy mn.1 - data.energy mn.2)
-            (purePointTransitionWeight system data A B mn)) ∧
+            ((purePointTransitionData system data A B mn).weight)) ∧
       HasLongTimeThenLocalAdiabaticThenStaticLimit
         (fun T omega eta =>
           finiteTimeAdiabaticFrequencyDomainSusceptibility system
@@ -114,7 +114,7 @@ theorem finiteTime_purePointPhysicalSusceptibility_has_both_local_three_stage_li
         (Finset.univ.sum fun mn : ι × ι =>
           unswitchedLehmannTerm system.hbar 0
             (data.energy mn.1 - data.energy mn.2)
-            (purePointTransitionWeight system data A B mn)) := by
+            ((purePointTransitionData system data A B mn).weight)) := by
   have hlimits :=
     finite_purePointPhysicalSusceptibility_has_both_local_iterated_limits
       system data A B hregular
