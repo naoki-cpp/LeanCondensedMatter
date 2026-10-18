@@ -209,7 +209,7 @@ The following declaration families are deliberate API normalization boundaries:
 - `lehmannDenominator_re`
 - `norm_timeTerm`
 - `purePointTransitionData_energyGap`
-- `purePointTransitionWeight_diag`
+- `purePointTransitionData_weight_diag`
 - `norm_freePropagator_apply`
 - `phaseState_val`
 - `evolveState_val`
