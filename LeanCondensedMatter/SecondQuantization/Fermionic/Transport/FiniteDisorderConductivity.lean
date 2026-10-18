@@ -8,7 +8,7 @@ set_option linter.style.header false
 
 The finite disorder ensemble is kept outside the exact response of each configuration. For every
 configuration `ω`, this module applies the established finite static Kubo–Bastin conductivity to
-the exact Hamiltonian `Hω = H₀ + Vω`, using supplied pure-point spectral data for that Hamiltonian.
+the exact Hamiltonian `Hω = H₀ + Vω`, using supplied eigenbasis spectral data for that Hamiltonian.
 The disorder-averaged conductivity is then the normalized finite weighted sum.
 
 A visible family of finite-rate Peierls Ward identities transports the configuration-wise static
@@ -38,12 +38,12 @@ variable [Fintype Ω] [Fintype ι]
 
 /-- Exact static Kubo–Bastin conductivity of one disorder configuration. The hopping geometry,
 current convention, charge, switching rate, and finite-volume normalization are common ensemble
-data; the Hamiltonian and its supplied pure-point data depend on `ω`. -/
+data; the Hamiltonian and its supplied eigenbasis data depend on `ω`. -/
 noncomputable def finiteDisorderConfigurationStaticConductivity
     (ensemble : FiniteDisorderEnsemble
       (H := FiniteLatticeHilbertFock Site) (Ω := Ω))
     (hbar : ℝ) (hbar_pos : 0 < hbar)
-    (spectralData : (ω : Ω) → PurePointLehmannData
+    (spectralData : (ω : Ω) → EnergyEigenbasisLehmannData
       (ensemble.configurationSystem hbar hbar_pos ω) ι)
     (convention : QuantumTheory.Transport.PositiveVolume)
     (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
@@ -57,7 +57,7 @@ noncomputable def finiteDisorderAveragedStaticConductivity
     (ensemble : FiniteDisorderEnsemble
       (H := FiniteLatticeHilbertFock Site) (Ω := Ω))
     (hbar : ℝ) (hbar_pos : 0 < hbar)
-    (spectralData : (ω : Ω) → PurePointLehmannData
+    (spectralData : (ω : Ω) → EnergyEigenbasisLehmannData
       (ensemble.configurationSystem hbar hbar_pos ω) ι)
     (convention : QuantumTheory.Transport.PositiveVolume)
     (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
@@ -72,7 +72,7 @@ theorem finiteDisorderAveragedStaticConductivity_eq_sum
     (ensemble : FiniteDisorderEnsemble
       (H := FiniteLatticeHilbertFock Site) (Ω := Ω))
     (hbar : ℝ) (hbar_pos : 0 < hbar)
-    (spectralData : (ω : Ω) → PurePointLehmannData
+    (spectralData : (ω : Ω) → EnergyEigenbasisLehmannData
       (ensemble.configurationSystem hbar hbar_pos ω) ι)
     (convention : QuantumTheory.Transport.PositiveVolume)
     (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
@@ -92,7 +92,7 @@ theorem finiteDisorderConfigurationStaticConductivity_eq_tracedBastin
     (ensemble : FiniteDisorderEnsemble
       (H := FiniteLatticeHilbertFock Site) (Ω := Ω))
     (hbar : ℝ) (hbar_pos : 0 < hbar)
-    (spectralData : (ω : Ω) → PurePointLehmannData
+    (spectralData : (ω : Ω) → EnergyEigenbasisLehmannData
       (ensemble.configurationSystem hbar hbar_pos ω) ι)
     (convention : QuantumTheory.Transport.PositiveVolume)
     (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
@@ -127,7 +127,7 @@ theorem finiteDisorderAveragedStaticConductivity_eq_tracedBastinAverage
     (ensemble : FiniteDisorderEnsemble
       (H := FiniteLatticeHilbertFock Site) (Ω := Ω))
     (hbar : ℝ) (hbar_pos : 0 < hbar)
-    (spectralData : (ω : Ω) → PurePointLehmannData
+    (spectralData : (ω : Ω) → EnergyEigenbasisLehmannData
       (ensemble.configurationSystem hbar hbar_pos ω) ι)
     (convention : QuantumTheory.Transport.PositiveVolume)
     (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
@@ -157,12 +157,12 @@ theorem finiteDisorderAveragedStaticConductivity_eq_tracedBastinAverage
     ensemble hbar hbar_pos spectralData convention geometry direction K
       q eta lowerEnergy upperEnergy occupation ω (ward ω) heta
 
-/-- The same exact finite-disorder bridge in the pure-point spectral energy-integral form. -/
+/-- The same exact finite-disorder bridge in the eigenbasis spectral energy-integral form. -/
 theorem finiteDisorderAveragedStaticConductivity_eq_spectralEnergyIntegralAverage
     (ensemble : FiniteDisorderEnsemble
       (H := FiniteLatticeHilbertFock Site) (Ω := Ω))
     (hbar : ℝ) (hbar_pos : 0 < hbar)
-    (spectralData : (ω : Ω) → PurePointLehmannData
+    (spectralData : (ω : Ω) → EnergyEigenbasisLehmannData
       (ensemble.configurationSystem hbar hbar_pos ω) ι)
     (convention : QuantumTheory.Transport.PositiveVolume)
     (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)

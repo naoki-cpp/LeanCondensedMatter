@@ -1,12 +1,12 @@
-import LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann.PurePoint
+import LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann.Eigenbasis
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.FundThmCalculus
 
 set_option linter.style.header false
 
 /-!
-# Pure-point occupation interpolation
+# Eigenbasis occupation interpolation
 
-The finite Kubo–Bastin response is expressed using discrete pure-point probabilities `pₘ`. A
+The finite Kubo–Bastin response is expressed using discrete eigenbasis probabilities `pₘ`. A
 continuous-energy Středa representation instead needs a differentiable occupation function `f`.
 This module records the statistics-independent bridge between the two descriptions: `f` agrees
 with the supplied probabilities on the energy spectrum, and every transition difference is the
@@ -26,10 +26,10 @@ variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteS
 variable {ι : Type*}
 variable (system : BoundedFreeSystem H)
 
-/-- A differentiable complex occupation function reproducing the discrete pure-point probabilities
+/-- A differentiable complex occupation function reproducing the discrete eigenbasis probabilities
 on every supplied energy eigenvalue. -/
-structure PurePointOccupationInterpolation
-    (data : PurePointLehmannData system ι) where
+structure EigenbasisOccupationInterpolation
+    (data : EnergyEigenbasisLehmannData system ι) where
   /-- The continuous-energy occupation used by the later Bastin integral. -/
   occupation : ℝ → ℂ
   /-- The energy derivative of the occupation. -/
@@ -47,9 +47,9 @@ structure PurePointOccupationInterpolation
 
 /-- The occupation difference of two energy eigenstates is the oriented integral of the
 occupation derivative between their energies. -/
-theorem PurePointOccupationInterpolation.probability_sub_eq_integral
-    {data : PurePointLehmannData system ι}
-    (interpolation : PurePointOccupationInterpolation system data)
+theorem EigenbasisOccupationInterpolation.probability_sub_eq_integral
+    {data : EnergyEigenbasisLehmannData system ι}
+    (interpolation : EigenbasisOccupationInterpolation system data)
     (m n : ι) :
     (data.probability m : ℂ) - (data.probability n : ℂ) =
       ∫ energy in data.energy n..data.energy m,

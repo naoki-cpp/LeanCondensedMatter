@@ -31,8 +31,8 @@ variable [AddCommGroup E] [Module ℝ E]
 measured/source vertex kernel to the bounded directional current. -/
 noncomputable def finiteKuboBastinCommonEnergyKernel
     (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
-    (data : PurePointLehmannData system ι)
-    (interpolation : PurePointOccupationInterpolation system data)
+    (data : EnergyEigenbasisLehmannData system ι)
+    (interpolation : EigenbasisOccupationInterpolation system data)
     (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
     (K : LocallyFiniteHopping Site) (q omega eta : ℝ) : ℝ → ℂ :=
   finiteKuboBastinCommonVertexEnergyKernel system data interpolation
@@ -44,8 +44,8 @@ noncomputable def finiteKuboBastinCommonEnergyKernel
 
 theorem integrable_finiteKuboBastinCommonEnergyKernel
     (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
-    (data : PurePointLehmannData system ι)
-    (interpolation : PurePointOccupationInterpolation system data)
+    (data : EnergyEigenbasisLehmannData system ι)
+    (interpolation : EigenbasisOccupationInterpolation system data)
     (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
     (K : LocallyFiniteHopping Site) (q omega eta : ℝ) :
     Integrable (finiteKuboBastinCommonEnergyKernel
@@ -61,8 +61,8 @@ theorem integrable_finiteKuboBastinCommonEnergyKernel
 
 theorem integral_finiteKuboBastinCommonEnergyKernel
     (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
-    (data : PurePointLehmannData system ι)
-    (interpolation : PurePointOccupationInterpolation system data)
+    (data : EnergyEigenbasisLehmannData system ι)
+    (interpolation : EigenbasisOccupationInterpolation system data)
     (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
     (K : LocallyFiniteHopping Site) (q omega eta : ℝ) :
     (∫ energy : ℝ, finiteKuboBastinCommonEnergyKernel
@@ -83,13 +83,13 @@ theorem integral_finiteKuboBastinCommonEnergyKernel
 noncomputable def finiteKuboBastinCommonEnergyDirectionalConductivity
     (convention : QuantumTheory.Transport.PositiveVolume)
     (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
-    (data : PurePointLehmannData system ι)
-    (interpolation : PurePointOccupationInterpolation system data)
+    (data : EnergyEigenbasisLehmannData system ι)
+    (interpolation : EigenbasisOccupationInterpolation system data)
     (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
     (K : LocallyFiniteHopping Site) (q omega eta : ℝ) : ℂ :=
   ((∫ energy : ℝ, finiteKuboBastinCommonEnergyKernel
       system data interpolation geometry direction K q omega eta energy) +
-    purePointNormalizedExpectation system data
+    eigenbasisNormalizedExpectation system data
       (boundedDirectionalContact geometry direction
         (system.hbar : ℂ) (q : ℂ) K)) *
     finiteVolumeConductivityNormalization convention omega eta
@@ -99,8 +99,8 @@ an artificial ordinary-trace carrier. -/
 theorem finiteKuboBastinSpectralDirectionalConductivity_eq_commonEnergy
     (convention : QuantumTheory.Transport.PositiveVolume)
     (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
-    (data : PurePointLehmannData system ι)
-    (interpolation : PurePointOccupationInterpolation system data)
+    (data : EnergyEigenbasisLehmannData system ι)
+    (interpolation : EigenbasisOccupationInterpolation system data)
     (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
     (K : LocallyFiniteHopping Site) (q omega eta : ℝ) :
     finiteKuboBastinSpectralDirectionalConductivity

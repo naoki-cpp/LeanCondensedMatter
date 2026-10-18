@@ -59,9 +59,12 @@ The main semantic boundaries are:
 
 `QuantumTheory.LinearResponse.FiniteLehmannTable` evaluates each transition through the canonical
 scalar owner `Lehmann.Transition`, independently of operator spectral reconstruction.
-`Lehmann.PurePoint` owns the Hilbert-basis realization; `Lehmann.PurePointTable` adapts it to the
+`Lehmann.Eigenbasis` owns the Hilbert-basis realization; `Lehmann.EigenbasisTable` adapts it to the
 finite scalar table. Operator-derived response endpoints consume the transition record's
 `frequencyTerm` directly rather than assembling its energy gap and weight separately.
+`EnergyEigenbasisLehmannData` supplies a complete orthonormal energy eigenbasis and normalized
+diagonal state probabilities. The `Eigenbasis` module and function names describe this supplied
+representation; neither finiteness of the spectral index nor a pure state is assumed by that name.
 The table evaluates each transition through the canonical
 `finiteLehmannTableTransitionData` record. Its `.weight`, `.energyGap`, and frequency evaluation
 belong to that transition data; concrete validation and conductivity adapters consume those fields.
@@ -107,7 +110,7 @@ specializations.
 Generic bounded-resolvent facts belong upstream in `Analysis.Operator.Spectral.Resolvent`.
 `Resolvent.Spectral` specializes those facts to the arbitrary signed-regulator transport parameter
 without importing response data. `Spectral.PurePoint` is the neutral adapter that combines this
-generic resolvent action with `PurePointLehmannData`; Kubo–Bastin and Středa both consume that
+generic resolvent action with `EnergyEigenbasisLehmannData`; Kubo–Bastin and Středa both consume that
 adapter rather than owning duplicate pure-point spectral proofs.
 
 `Resolvent.SelfEnergy` owns the representation-independent two-sided Dyson relation
@@ -123,7 +126,7 @@ normalization. `Core.ConductivityTensor` is independent of either representation
 
 Response limit predicates and their finite-sum laws belong to `LinearResponse.LimitOrder`,
 independently of a spectral realization. `Lehmann.Limits` owns finite transition-family
-nonresonance results; `Lehmann.PurePointLimits` combines the operator specialization and physical
+nonresonance results; `Lehmann.EigenbasisLimits` combines the operator specialization and physical
 three-stage limits. Finite-window convergence is owned by `InfiniteTimeAdiabatic`. Zero switching
 rate is evaluation of the same transition `frequencyTerm` at rate zero, not a second scalar value.
 Positive-rate regulator removal, two-sided static limits, and observation-time-first order remain

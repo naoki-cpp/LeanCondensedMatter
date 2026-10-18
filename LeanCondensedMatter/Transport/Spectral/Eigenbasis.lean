@@ -1,17 +1,17 @@
-import LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann.PurePoint
+import LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann.Eigenbasis
 import LeanCondensedMatter.Transport.Resolvent.Spectral
 
 set_option linter.style.header false
 
 /-!
-# Pure-point spectral adapter for regulated resolvents
+# Eigenbasis spectral adapter for regulated resolvents
 
 This module is the neutral seam between generic signed-regulator resolvent algebra and supplied
-pure-point Lehmann response data. It is shared by Kubo–Bastin and Středa consumers so neither
+eigenbasis Lehmann response data. It is shared by Kubo–Bastin and Středa consumers so neither
 response representation owns or duplicates the basis-action proof.
 
 The arbitrary-regulator eigenvector action remains in `Transport.Resolvent.Spectral`; only results
-whose statements require `PurePointLehmannData` live here.
+whose statements require `EnergyEigenbasisLehmannData` live here.
 -/
 
 namespace QuantumTheory
@@ -26,11 +26,11 @@ variable [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
 
 variable
   (system : BoundedFreeSystem H)
-  (data : PurePointLehmannData system ι)
+  (data : EnergyEigenbasisLehmannData system ι)
 
-/-- A resolvent with arbitrary nonzero signed regulator acts diagonally on the supplied pure-point
+/-- A resolvent with arbitrary nonzero signed regulator acts diagonally on the supplied eigenbasis
 energy basis. -/
-theorem resolvent_spectralParameterOfRegulator_apply_purePointBasis_at_energy
+theorem resolvent_spectralParameterOfRegulator_apply_energyEigenbasis_at_energy
     (energy regulator : ℝ) (hregulator : regulator ≠ 0) (n : ι) :
     resolvent system.hamiltonian.1 (spectralParameterOfRegulator energy regulator)
         (data.basis n) =
@@ -39,9 +39,9 @@ theorem resolvent_spectralParameterOfRegulator_apply_purePointBasis_at_energy
     system.hamiltonian.1 system.hamiltonian.2
     (data.hamiltonian_apply_basis n) energy regulator hregulator
 
-/-- On a pure-point energy basis, the square of a resolvent with arbitrary nonzero signed regulator
+/-- On a energy basis, the square of a resolvent with arbitrary nonzero signed regulator
 has the squared scalar denominator. -/
-theorem resolvent_spectralParameterOfRegulator_sq_apply_purePointBasis_at_energy
+theorem resolvent_spectralParameterOfRegulator_sq_apply_energyEigenbasis_at_energy
     (energy regulator : ℝ) (hregulator : regulator ≠ 0) (n : ι) :
     ((resolvent system.hamiltonian.1 (spectralParameterOfRegulator energy regulator)) ^ 2)
         (data.basis n) =
@@ -51,10 +51,10 @@ theorem resolvent_spectralParameterOfRegulator_sq_apply_purePointBasis_at_energy
   change resolvent system.hamiltonian.1 (spectralParameterOfRegulator energy regulator)
       (resolvent system.hamiltonian.1 (spectralParameterOfRegulator energy regulator)
         (data.basis n)) = _
-  rw [resolvent_spectralParameterOfRegulator_apply_purePointBasis_at_energy
+  rw [resolvent_spectralParameterOfRegulator_apply_energyEigenbasis_at_energy
     system data energy regulator hregulator n]
   rw [map_smul]
-  rw [resolvent_spectralParameterOfRegulator_apply_purePointBasis_at_energy
+  rw [resolvent_spectralParameterOfRegulator_apply_energyEigenbasis_at_energy
     system data energy regulator hregulator n]
   rw [smul_smul, pow_two]
 

@@ -1,4 +1,4 @@
-import LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann.PurePointTable
+import LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann.EigenbasisTable
 import LeanCondensedMatter.Transport.FiniteConductivityTable
 import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.KuboGreenwood
 
@@ -8,7 +8,7 @@ set_option linter.style.header false
 # Fermionic directional finite-conductivity table realization
 
 This module constructs the representation-independent
-`QuantumTheory.Transport.FiniteConductivityTable` from a finite pure-point Peierls conductivity
+`QuantumTheory.Transport.FiniteConductivityTable` from a finite eigenbasis Peierls conductivity
 problem and proves that evaluating the table reproduces the finite Kubo–Greenwood directional
 conductivity.
 
@@ -30,39 +30,39 @@ variable {Site E ι : Type*}
 variable [LinearOrder Site] [Fintype Site]
 variable [AddCommGroup E] [Module ℝ E]
 
-/-- Forget a finite pure-point Peierls conductivity problem to the generic scalar data needed for
+/-- Forget a finite eigenbasis Peierls conductivity problem to the generic scalar data needed for
 exact finite evaluation. -/
-noncomputable def finiteDirectionalConductivityTableOfPurePoint
+noncomputable def finiteDirectionalConductivityTableOfEigenbasis
     (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
-    (data : PurePointLehmannData system ι)
+    (data : EnergyEigenbasisLehmannData system ι)
     (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
     (K : LocallyFiniteHopping Site) (q : ℝ) : FiniteConductivityTable ι :=
   let J := boundedDirectionalCurrent geometry direction
     (system.hbar : ℂ) (q : ℂ) K
-  { lehmann := finiteLehmannTableOfPurePoint system data J J
-    contact := purePointNormalizedExpectation system data
+  { lehmann := finiteLehmannTableOfEigenbasis system data J J
+    contact := eigenbasisNormalizedExpectation system data
       (boundedDirectionalContact geometry direction
         (system.hbar : ℂ) (q : ℂ) K) }
 
-/-- Evaluating the generic scalar table obtained from a finite pure-point hopping model gives
+/-- Evaluating the generic scalar table obtained from a finite eigenbasis hopping model gives
 exactly the existing finite Kubo–Greenwood conductivity, including contact and finite-volume
 normalization. -/
-theorem finiteConductivityTableValue_directional_ofPurePoint_eq_kuboGreenwood
+theorem finiteConductivityTableValue_directional_ofEigenbasis_eq_kuboGreenwood
     [Fintype ι]
     (volume : QuantumTheory.Transport.PositiveVolume)
     (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
-    (data : PurePointLehmannData system ι)
+    (data : EnergyEigenbasisLehmannData system ι)
     (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
     (K : LocallyFiniteHopping Site) (q omega eta : ℝ) :
     finiteConductivityTableValue volume system.hbar omega eta
-        (finiteDirectionalConductivityTableOfPurePoint
+        (finiteDirectionalConductivityTableOfEigenbasis
           system data geometry direction K q) =
       finiteKuboGreenwoodDirectionalConductivity
         volume system data geometry direction K q omega eta := by
   unfold finiteConductivityTableValue finiteKuboGreenwoodDirectionalConductivity
-  unfold finiteDirectionalConductivityTableOfPurePoint
-  rw [finiteLehmannTableResponse_ofPurePoint]
-  rw [purePointLehmannSeries_eq_finite_sum]
+  unfold finiteDirectionalConductivityTableOfEigenbasis
+  rw [finiteLehmannTableResponse_ofEigenbasis]
+  rw [eigenbasisLehmannSeries_eq_finite_sum]
   rfl
 
 end

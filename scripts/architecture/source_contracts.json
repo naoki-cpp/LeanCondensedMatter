@@ -58,8 +58,8 @@
         "LeanCondensedMatter/Transport/FiniteConductivityTable.lean",
         "LeanCondensedMatter/Transport/Resolvent/Basic.lean",
         "LeanCondensedMatter/Transport/Resolvent/Spectral.lean",
-        "LeanCondensedMatter/Transport/Spectral/PurePoint.lean",
-        "LeanCondensedMatter/Transport/KuboBastin/PurePoint.lean",
+        "LeanCondensedMatter/Transport/Spectral/Eigenbasis.lean",
+        "LeanCondensedMatter/Transport/KuboBastin/Eigenbasis.lean",
         "LeanCondensedMatter/Transport/KuboBastin/Finite.lean",
         "LeanCondensedMatter/Transport/KuboBastin/Occupation.lean",
         "LeanCondensedMatter/Transport/KuboBastin/CommonEnergy.lean",
@@ -104,11 +104,11 @@
       ]
     },
     {
-      "id": "quantumTheoryPurePointDensityOwners",
+      "id": "quantumTheoryEigenbasisDensityOwners",
       "paths": [
         "LeanCondensedMatter/QuantumTheory/DensityOperator/DiagonalFormula.lean",
         "LeanCondensedMatter/QuantumTheory/Entropy/Diagonal.lean",
-        "LeanCondensedMatter/QuantumTheory/LinearResponse/PurePointDynamics.lean"
+        "LeanCondensedMatter/QuantumTheory/LinearResponse/EigenbasisDynamics.lean"
       ]
     },
     {
@@ -256,8 +256,8 @@
       ]
     },
     {
-      "id": "purePointDynamicsDensityDependency",
-      "path": "LeanCondensedMatter/QuantumTheory/LinearResponse/PurePointDynamics.lean",
+      "id": "eigenbasisDynamicsDensityDependency",
+      "path": "LeanCondensedMatter/QuantumTheory/LinearResponse/EigenbasisDynamics.lean",
       "modules": [
         "LeanCondensedMatter.QuantumTheory.DensityOperator.DiagonalFormula"
       ]
@@ -475,19 +475,19 @@
       ]
     },
     {
-      "id": "transportPurePointSpectralAdapter",
-      "path": "LeanCondensedMatter/Transport/Spectral/PurePoint.lean",
+      "id": "transportEigenbasisSpectralAdapter",
+      "path": "LeanCondensedMatter/Transport/Spectral/Eigenbasis.lean",
       "modules": [
-        "LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann.PurePoint",
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann.Eigenbasis",
         "LeanCondensedMatter.Transport.Resolvent.Spectral"
       ]
     },
     {
-      "id": "transportKuboBastinPurePoint",
-      "path": "LeanCondensedMatter/Transport/KuboBastin/PurePoint.lean",
+      "id": "transportKuboBastinEigenbasis",
+      "path": "LeanCondensedMatter/Transport/KuboBastin/Eigenbasis.lean",
       "modules": [
-        "LeanCondensedMatter.QuantumTheory.LinearResponse.PurePointFrequencyDomain",
-        "LeanCondensedMatter.Transport.Spectral.PurePoint"
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.EigenbasisFrequencyDomain",
+        "LeanCondensedMatter.Transport.Spectral.Eigenbasis"
       ]
     },
     {
@@ -495,13 +495,13 @@
       "path": "LeanCondensedMatter/Transport/KuboBastin/Finite.lean",
       "modules": [
         "LeanCondensedMatter.QuantumTheory.LinearResponse.ResponseChannel",
-        "LeanCondensedMatter.Transport.KuboBastin.PurePoint"
+        "LeanCondensedMatter.Transport.KuboBastin.Eigenbasis"
       ]
     },
     {
       "id": "transportStredaTraceSpectral",
       "path": "LeanCondensedMatter/Transport/Streda/TraceSpectral.lean",
-      "modules": ["LeanCondensedMatter.Transport.Spectral.PurePoint"]
+      "modules": ["LeanCondensedMatter.Transport.Spectral.Eigenbasis"]
     },
     {
       "id": "transportFrequencyResponse",
@@ -642,7 +642,7 @@
       "id": "transportKuboBastinUmbrella",
       "path": "LeanCondensedMatter/Transport/KuboBastin.lean",
       "modules": [
-        "LeanCondensedMatter.Transport.KuboBastin.PurePoint",
+        "LeanCondensedMatter.Transport.KuboBastin.Eigenbasis",
         "LeanCondensedMatter.Transport.KuboBastin.Finite"
       ]
     },
@@ -727,8 +727,8 @@
       "modules": ["LeanCondensedMatter.Analysis.Lorentzian.Kernel"]
     },
     {
-      "id": "transportKuboBastinPurePointBoundary",
-      "path": "LeanCondensedMatter/Transport/KuboBastin/PurePoint.lean",
+      "id": "transportKuboBastinEigenbasisBoundary",
+      "path": "LeanCondensedMatter/Transport/KuboBastin/Eigenbasis.lean",
       "modules": ["LeanCondensedMatter.Transport.KuboBastin.Finite"]
     },
     {

@@ -188,7 +188,7 @@ The following declaration families are deliberate API normalization boundaries:
 - `DensityOperator.trace_eq_one`
 - `ResponseChannel.fixed_contactExpectation`
 - `DensityOperator.expectation_op`
-- `purePointDensityOperator_apply_basis`
+- `eigenbasisDensityOperator_apply_basis`
 - `DensityOperator.ofFiniteDimensional_op`
 - `DensityOperator.expectation_id`
 - `perturbedDensityOperator_zero_coupling`
@@ -209,8 +209,8 @@ The following declaration families are deliberate API normalization boundaries:
 - `lehmannModeExponent_re`
 - `lehmannDenominator_re`
 - `norm_timeTerm`
-- `purePointTransitionData_energyGap`
-- `purePointTransitionData_weight_diag`
+- `eigenbasisTransitionData_energyGap`
+- `eigenbasisTransitionData_weight_diag`
 - `norm_freePropagator_apply`
 - `phaseState_val`
 - `evolveState_val`
@@ -219,8 +219,8 @@ The following declaration families are deliberate API normalization boundaries:
 - `evolveState_after_neg`
 - `evolveState_phaseState`
 - `DensityOperator.toNormalizedExpectation_apply`
-- `norm_purePointSchrodingerPhase`
-- `norm_purePointTransitionPhase`
+- `norm_eigenbasisSchrodingerPhase`
+- `norm_eigenbasisTransitionPhase`
 - `timeDependentPerturbedNormalizedExpectation_apply`
 - `norm_heisenbergEvolution`
 

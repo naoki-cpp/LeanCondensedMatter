@@ -6,7 +6,7 @@ set_option linter.style.header false
 # Quenched connected current correlations in a finite disorder ensemble
 
 The current correlator is normalized separately in each disorder configuration,
-using the canonical pure-point density-state expectation of that configuration.
+using the canonical eigenbasis density-state expectation of that configuration.
 Only then is the finite disorder ensemble average performed.
 
 The connected correlator refers to two composite current insertions:
@@ -15,7 +15,7 @@ product of the **disorder-averaged** one-current expectations by the
 covariance of those one-current expectations over disorder configurations.
 
 These statements are exact for finite ensembles with supplied normalized
-pure-point states. No assumption of Gaussian disorder, fermionic Wick
+eigenbasis states. No assumption of Gaussian disorder, fermionic Wick
 factorization, a linked-cluster theorem, or an analytic continuation is made.
 -/
 
@@ -33,20 +33,20 @@ variable {Site Ω ι : Type*}
 variable [Fintype Site] [Fintype Ω]
 
 /-- Connected product of two supplied bounded current insertions in the
-normalized pure-point state of one exact disorder configuration. -/
+normalized eigenbasis state of one exact disorder configuration. -/
 noncomputable def finiteDisorderConfigurationConnectedCurrentCorrelation
     (ensemble : FiniteDisorderEnsemble
       (H := FiniteLatticeHilbertFock Site) (Ω := Ω))
     (hbar : ℝ) (hbar_pos : 0 < hbar)
     (spectralData : (ω : Ω) →
-      PurePointLehmannData (ensemble.configurationSystem hbar hbar_pos ω) ι)
+      EnergyEigenbasisLehmannData (ensemble.configurationSystem hbar hbar_pos ω) ι)
     (Jx Jy : FiniteLatticeHilbertFock Site →L[ℂ] FiniteLatticeHilbertFock Site)
     (ω : Ω) : ℂ :=
-  purePointNormalizedExpectation
+  eigenbasisNormalizedExpectation
       (ensemble.configurationSystem hbar hbar_pos ω) (spectralData ω) (Jx * Jy) -
-    purePointNormalizedExpectation
+    eigenbasisNormalizedExpectation
         (ensemble.configurationSystem hbar hbar_pos ω) (spectralData ω) Jx *
-      purePointNormalizedExpectation
+      eigenbasisNormalizedExpectation
         (ensemble.configurationSystem hbar hbar_pos ω) (spectralData ω) Jy
 
 /-- Quenched averaging is performed *after* normalizing and taking the
@@ -56,7 +56,7 @@ noncomputable def finiteDisorderAveragedConnectedCurrentCorrelation
       (H := FiniteLatticeHilbertFock Site) (Ω := Ω))
     (hbar : ℝ) (hbar_pos : 0 < hbar)
     (spectralData : (ω : Ω) →
-      PurePointLehmannData (ensemble.configurationSystem hbar hbar_pos ω) ι)
+      EnergyEigenbasisLehmannData (ensemble.configurationSystem hbar hbar_pos ω) ι)
     (Jx Jy : FiniteLatticeHilbertFock Site →L[ℂ] FiniteLatticeHilbertFock Site) :
     ℂ :=
   ensemble.average (fun ω =>
@@ -71,17 +71,17 @@ theorem finiteDisorderAveragedConnectedCurrentCorrelation_eq_average_sub
       (H := FiniteLatticeHilbertFock Site) (Ω := Ω))
     (hbar : ℝ) (hbar_pos : 0 < hbar)
     (spectralData : (ω : Ω) →
-      PurePointLehmannData (ensemble.configurationSystem hbar hbar_pos ω) ι)
+      EnergyEigenbasisLehmannData (ensemble.configurationSystem hbar hbar_pos ω) ι)
     (Jx Jy : FiniteLatticeHilbertFock Site →L[ℂ] FiniteLatticeHilbertFock Site) :
     finiteDisorderAveragedConnectedCurrentCorrelation
         ensemble hbar hbar_pos spectralData Jx Jy =
       ensemble.average (fun ω =>
-        purePointNormalizedExpectation
+        eigenbasisNormalizedExpectation
           (ensemble.configurationSystem hbar hbar_pos ω) (spectralData ω) (Jx * Jy)) -
       ensemble.average (fun ω =>
-        purePointNormalizedExpectation
+        eigenbasisNormalizedExpectation
             (ensemble.configurationSystem hbar hbar_pos ω) (spectralData ω) Jx *
-          purePointNormalizedExpectation
+          eigenbasisNormalizedExpectation
             (ensemble.configurationSystem hbar hbar_pos ω) (spectralData ω) Jy) := by
   unfold finiteDisorderAveragedConnectedCurrentCorrelation
     finiteDisorderConfigurationConnectedCurrentCorrelation
@@ -97,29 +97,29 @@ theorem finiteDisorderAveragedConnectedCurrentCorrelation_eq_annealed_sub_covari
       (H := FiniteLatticeHilbertFock Site) (Ω := Ω))
     (hbar : ℝ) (hbar_pos : 0 < hbar)
     (spectralData : (ω : Ω) →
-      PurePointLehmannData (ensemble.configurationSystem hbar hbar_pos ω) ι)
+      EnergyEigenbasisLehmannData (ensemble.configurationSystem hbar hbar_pos ω) ι)
     (Jx Jy : FiniteLatticeHilbertFock Site →L[ℂ] FiniteLatticeHilbertFock Site) :
     finiteDisorderAveragedConnectedCurrentCorrelation
         ensemble hbar hbar_pos spectralData Jx Jy =
       (ensemble.average (fun ω =>
-          purePointNormalizedExpectation
+          eigenbasisNormalizedExpectation
             (ensemble.configurationSystem hbar hbar_pos ω) (spectralData ω) (Jx * Jy)) -
         ensemble.average (fun ω =>
-          purePointNormalizedExpectation
+          eigenbasisNormalizedExpectation
             (ensemble.configurationSystem hbar hbar_pos ω) (spectralData ω) Jx) *
         ensemble.average (fun ω =>
-          purePointNormalizedExpectation
+          eigenbasisNormalizedExpectation
             (ensemble.configurationSystem hbar hbar_pos ω) (spectralData ω) Jy)) -
       (ensemble.average (fun ω =>
-          purePointNormalizedExpectation
+          eigenbasisNormalizedExpectation
               (ensemble.configurationSystem hbar hbar_pos ω) (spectralData ω) Jx *
-            purePointNormalizedExpectation
+            eigenbasisNormalizedExpectation
               (ensemble.configurationSystem hbar hbar_pos ω) (spectralData ω) Jy) -
         ensemble.average (fun ω =>
-          purePointNormalizedExpectation
+          eigenbasisNormalizedExpectation
             (ensemble.configurationSystem hbar hbar_pos ω) (spectralData ω) Jx) *
         ensemble.average (fun ω =>
-          purePointNormalizedExpectation
+          eigenbasisNormalizedExpectation
             (ensemble.configurationSystem hbar hbar_pos ω) (spectralData ω) Jy)) := by
   rw [finiteDisorderAveragedConnectedCurrentCorrelation_eq_average_sub]
   ring
@@ -135,27 +135,27 @@ theorem finiteDisorderAveragedConnectedCurrentCorrelation_eq_fourLegAverage
       (H := FiniteLatticeHilbertFock Site) (Ω := Ω))
     (hbar : ℝ) (hbar_pos : 0 < hbar)
     (spectralData : (ω : Ω) →
-      PurePointLehmannData (ensemble.configurationSystem hbar hbar_pos ω) ι)
+      EnergyEigenbasisLehmannData (ensemble.configurationSystem hbar hbar_pos ω) ι)
     (Jx Jy : FiniteLatticeHilbertFock Site →L[ℂ] FiniteLatticeHilbertFock Site)
     (coefficient : α → ℂ) (fourLeg : Ω → α → ℂ)
     (hfourLeg : ∀ ω,
-      purePointNormalizedExpectation
+      eigenbasisNormalizedExpectation
           (ensemble.configurationSystem hbar hbar_pos ω) (spectralData ω) (Jx * Jy) =
         ∑ a : α, coefficient a * fourLeg ω a) :
     finiteDisorderAveragedConnectedCurrentCorrelation
         ensemble hbar hbar_pos spectralData Jx Jy =
       (∑ a : α, coefficient a * ensemble.average (fun ω => fourLeg ω a)) -
         ensemble.average (fun ω =>
-          purePointNormalizedExpectation
+          eigenbasisNormalizedExpectation
               (ensemble.configurationSystem hbar hbar_pos ω) (spectralData ω) Jx *
-            purePointNormalizedExpectation
+            eigenbasisNormalizedExpectation
               (ensemble.configurationSystem hbar hbar_pos ω) (spectralData ω) Jy) := by
   rw [finiteDisorderAveragedConnectedCurrentCorrelation_eq_average_sub]
   congr 1
   unfold FiniteDisorderEnsemble.average
   calc
     (∑ ω, (ensemble.probability ω : ℂ) *
-      purePointNormalizedExpectation
+      eigenbasisNormalizedExpectation
         (ensemble.configurationSystem hbar hbar_pos ω) (spectralData ω) (Jx * Jy)) =
         ∑ ω, (ensemble.probability ω : ℂ) *
           ∑ a : α, coefficient a * fourLeg ω a := by

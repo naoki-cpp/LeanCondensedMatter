@@ -1,9 +1,9 @@
 import LeanCondensedMatter.QuantumTheory.LinearResponse.FiniteLehmannTable
-import LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann.PurePoint
+import LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann.Eigenbasis
 
 set_option linter.style.header false
 
-/-! # Scalar evaluation tables from pure-point operator data -/
+/-! # Scalar evaluation tables from eigenbasis operator data -/
 
 namespace QuantumTheory
 namespace LinearResponse
@@ -15,11 +15,11 @@ noncomputable section
 variable {H ι : Type*}
 variable [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
 
-/-- Forget an operator-level pure-point response problem to the scalar data needed for finite
+/-- Forget an operator-level eigenbasis response problem to the scalar data needed for finite
 Lehmann evaluation. -/
-noncomputable def finiteLehmannTableOfPurePoint
+noncomputable def finiteLehmannTableOfEigenbasis
     (system : BoundedFreeSystem H)
-    (data : PurePointLehmannData system ι)
+    (data : EnergyEigenbasisLehmannData system ι)
     (A B : H →L[ℂ] H) : FiniteLehmannTable ι where
   energy := data.energy
   probability := data.probability
@@ -28,25 +28,25 @@ noncomputable def finiteLehmannTableOfPurePoint
 
 /-- The scalar adapter preserves the canonical ordered transition exactly. -/
 @[simp]
-theorem finiteLehmannTableTransitionData_ofPurePoint
+theorem finiteLehmannTableTransitionData_ofEigenbasis
     (system : BoundedFreeSystem H)
-    (data : PurePointLehmannData system ι)
+    (data : EnergyEigenbasisLehmannData system ι)
     (A B : H →L[ℂ] H) (mn : ι × ι) :
     finiteLehmannTableTransitionData system.hbar
-        (finiteLehmannTableOfPurePoint system data A B) mn =
-      purePointTransitionData system data A B mn := rfl
+        (finiteLehmannTableOfEigenbasis system data A B) mn =
+      eigenbasisTransitionData system data A B mn := rfl
 
-/-- For a finite spectral index, scalar-table evaluation is exactly the theorem-level pure-point
+/-- For a finite spectral index, scalar-table evaluation is exactly the theorem-level eigenbasis
 Lehmann series.  This is the main operator-to-calculation bridge. -/
-theorem finiteLehmannTableResponse_ofPurePoint
+theorem finiteLehmannTableResponse_ofEigenbasis
     [Fintype ι]
     (system : BoundedFreeSystem H)
-    (data : PurePointLehmannData system ι)
+    (data : EnergyEigenbasisLehmannData system ι)
     (A B : H →L[ℂ] H) (omega eta : ℝ) :
     finiteLehmannTableResponse system.hbar omega eta
-        (finiteLehmannTableOfPurePoint system data A B) =
-      purePointLehmannSeries system data A B omega eta := by
-  rw [purePointLehmannSeries_eq_finite_sum]
+        (finiteLehmannTableOfEigenbasis system data A B) =
+      eigenbasisLehmannSeries system data A B omega eta := by
+  rw [eigenbasisLehmannSeries_eq_finite_sum]
   simp [finiteLehmannTableResponse, LehmannTransitionData.frequencyTerm]
 
 end
