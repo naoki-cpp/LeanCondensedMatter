@@ -49,6 +49,6 @@ theorem pairEndpointInversionCount_mod_two_eq_crossesIndicator {n : ℕ}
   rcases right with ⟨c, d⟩
   simp only at hleft hright h11 h12 h21 h22 ⊢
   simp only [pairEndpointInversionCount, Crosses]
-  omega
+  split_ifs <;> omega
 
 end Combinatorics
