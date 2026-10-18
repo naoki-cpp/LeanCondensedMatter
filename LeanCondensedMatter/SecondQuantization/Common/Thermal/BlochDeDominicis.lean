@@ -1,6 +1,7 @@
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.PairingWeight
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.ExpectationRecursion
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.Unnormalized
+import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.NormalizedTwoPointTrace
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.GibbsExpectation
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.Induction
 
@@ -14,8 +15,9 @@ The shared finite-temperature pairing theory is organized into reusable layers:
 - `PairingWeight`: the statistics-dependent crossing factor;
 - `ExpectationRecursion`: the basis-, representation-, and implementation-independent normalized
   expectation/KMS contract and its pairing theorem;
-- `Unnormalized` and `GibbsExpectation`: concrete operator, trace-ratio, and finite Gibbs identities
-  that discharge the contract;
+- `Unnormalized`: configuration-general operator and summable trace peel identities;
+- `NormalizedTwoPointTrace`: a configuration-general normalized two-point trace-ratio identity;
+- `GibbsExpectation`: finite Gibbs density-state identities that discharge the recursion contract;
 - `Induction`: the public finite Gibbs specialization of the generic pairing theorem.
 
 The generic recursion has no configuration type or `Fintype` assumption. Its `admissible` predicate
