@@ -1,17 +1,17 @@
 import LeanCondensedMatter.QuantumTheory.LinearResponse.ResponseChannel
-import LeanCondensedMatter.Transport.KuboBastin.PurePoint
+import LeanCondensedMatter.Transport.KuboBastin.Eigenbasis
 
 set_option linter.style.header false
 
 /-!
-# Finite-sum pure-point Kubo–Bastin response
+# Finite-sum eigenbasis Kubo–Bastin response
 
-This module owns the finite spectral-index specialization of the pure-point Kubo–Bastin bridge.
-The upstream transition algebra in `KuboBastin.PurePoint` does not assume a finite index type;
+This module owns the finite spectral-index specialization of the eigenbasis Kubo–Bastin bridge.
+The upstream transition algebra in `KuboBastin.Eigenbasis` does not assume a finite index type;
 `Fintype ι` first enters here when the transition family is assembled as an ordinary finite sum.
 
 ```text
-pure-point spectral transition
+eigenbasis spectral transition
   -> finite two-vertex sum
   -> explicit observable variation
   -> ResponseChannel packaging.
@@ -35,15 +35,15 @@ variable [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
 variable [Fintype ι]
 variable
   (system : BoundedFreeSystem H)
-  (data : PurePointLehmannData system ι)
+  (data : EnergyEigenbasisLehmannData system ι)
 
-/-- Finite two-vertex pure-point Kubo–Bastin sum before adding any explicit first-order observable
+/-- Finite two-vertex eigenbasis Kubo–Bastin sum before adding any explicit first-order observable
 variation. This is the part later eligible for a Středa energy representation. -/
 noncomputable def finiteKuboBastinSpectralVertexSum
     (measured source : H →L[ℂ] H)
     (omega eta : ℝ) : ℂ :=
   ∑ mn : ι × ι,
-    purePointKuboBastinSpectralVertexTerm
+    eigenbasisKuboBastinSpectralVertexTerm
       system data measured source omega eta mn
 
 /-- At positive switching rate, the causal two-vertex susceptibility is exactly the finite
@@ -52,15 +52,15 @@ theorem adiabaticFrequencyDomainSusceptibility_eq_bastinSpectralVertexSum
     (measured source : H →L[ℂ] H)
     (omega eta : ℝ) (heta : 0 < eta) :
     adiabaticFrequencyDomainSusceptibilityOfPositiveRate system
-        (purePointNormalizedExpectation system data)
+        (eigenbasisNormalizedExpectation system data)
         measured source omega eta heta =
       finiteKuboBastinSpectralVertexSum system data measured source omega eta := by
-  rw [adiabaticFrequencyDomainSusceptibilityOfPositiveRate_purePoint_eq_finite_sum
+  rw [adiabaticFrequencyDomainSusceptibilityOfPositiveRate_eigenbasis_eq_finite_sum
     system data measured source omega eta heta]
   unfold finiteKuboBastinSpectralVertexSum
   apply Finset.sum_congr rfl
   intro mn _
-  exact purePointLehmannVertexTerm_eq_bastinSpectral
+  exact eigenbasisLehmannVertexTerm_eq_bastinSpectral
     system data measured source omega eta heta mn
 
 /-- The finite spectral Kubo–Bastin response attached directly to a neutral `ResponseChannel`. -/
@@ -69,7 +69,7 @@ noncomputable def finiteKuboBastinSpectralChannelResponse
     (omega eta : ℝ) : ℂ :=
   finiteKuboBastinSpectralVertexSum
       system data channel.measured channel.source omega eta +
-    purePointNormalizedExpectation system data channel.observableVariation
+    eigenbasisNormalizedExpectation system data channel.observableVariation
 
 /-- The channel response reduces to its aggregate spectral vertex sum. -/
 theorem finiteKuboBastinSpectralChannelResponse_eq_vertexSum
@@ -77,7 +77,7 @@ theorem finiteKuboBastinSpectralChannelResponse_eq_vertexSum
     (omega eta : ℝ) :
     finiteKuboBastinSpectralChannelResponse system data channel omega eta =
       finiteKuboBastinSpectralVertexSum system data channel.measured channel.source omega eta +
-        purePointNormalizedExpectation system data channel.observableVariation := by
+        eigenbasisNormalizedExpectation system data channel.observableVariation := by
   rfl
 
 /-- At positive switching rate, the frequency-domain response carried by a `ResponseChannel` is
@@ -86,14 +86,14 @@ theorem adiabaticFrequencyDomainResponseChannel_eq_bastinSpectral
     (channel : ResponseChannel H)
     (omega eta : ℝ) (heta : 0 < eta) :
     adiabaticFrequencyDomainSusceptibilityOfPositiveRate system
-          (purePointNormalizedExpectation system data)
+          (eigenbasisNormalizedExpectation system data)
           channel.measured channel.source omega eta heta +
-        purePointNormalizedExpectation system data channel.observableVariation =
+        eigenbasisNormalizedExpectation system data channel.observableVariation =
       finiteKuboBastinSpectralChannelResponse system data channel omega eta := by
   simpa only [finiteKuboBastinSpectralChannelResponse] using
     congrArg
       (fun response : ℂ =>
-        response + purePointNormalizedExpectation system data channel.observableVariation)
+        response + eigenbasisNormalizedExpectation system data channel.observableVariation)
       (adiabaticFrequencyDomainSusceptibility_eq_bastinSpectralVertexSum
         system data channel.measured channel.source omega eta heta)
 

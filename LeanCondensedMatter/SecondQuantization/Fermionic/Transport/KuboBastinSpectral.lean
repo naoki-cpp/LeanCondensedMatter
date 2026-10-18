@@ -28,7 +28,7 @@ variable [Fintype Site]
 variable [AddCommGroup E] [Module ℝ E]
 variable
   (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
-  (data : PurePointLehmannData system ι)
+  (data : EnergyEigenbasisLehmannData system ι)
 
 variable [LinearOrder Site]
 variable
@@ -39,7 +39,7 @@ variable
 resolvent bridge to the continuity-derived electric current. -/
 noncomputable def finiteKuboBastinSpectralDirectionalCurrentTerm
     (mn : ι × ι) : ℂ :=
-  purePointKuboBastinSpectralVertexTerm system data
+  eigenbasisKuboBastinSpectralVertexTerm system data
     (boundedDirectionalCurrent geometry direction
       (system.hbar : ℂ) (q : ℂ) K)
     (boundedDirectionalCurrent geometry direction
@@ -56,7 +56,7 @@ theorem finiteKuboGreenwoodDirectionalCurrentTerm_eq_bastinSpectral
         system data geometry direction K q omega eta mn := by
   simpa [finiteKuboGreenwoodDirectionalCurrentTerm,
     finiteKuboBastinSpectralDirectionalCurrentTerm] using
-    purePointLehmannVertexTerm_eq_bastinSpectral system data
+    eigenbasisLehmannVertexTerm_eq_bastinSpectral system data
       (boundedDirectionalCurrent geometry direction
         (system.hbar : ℂ) (q : ℂ) K)
       (boundedDirectionalCurrent geometry direction

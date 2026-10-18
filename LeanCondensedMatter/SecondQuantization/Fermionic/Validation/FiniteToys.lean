@@ -36,7 +36,7 @@ noncomputable def twoLevelSystem : BoundedFreeSystem (EuclideanSpace ℂ (Fin 2)
   hbar_pos := by norm_num
 
 /-- Uniform pure-point state on the degenerate two-level basis. -/
-noncomputable def twoLevelData : PurePointLehmannData twoLevelSystem (Fin 2) where
+noncomputable def twoLevelData : EnergyEigenbasisLehmannData twoLevelSystem (Fin 2) where
   basis := (EuclideanSpace.basisFun (Fin 2) ℂ).toHilbertBasis
   energy := fun _ => 0
   hamiltonian_apply_basis := by

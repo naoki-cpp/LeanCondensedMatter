@@ -45,7 +45,7 @@ variable [Fintype ι]
 before adding the Peierls contact expectation. -/
 noncomputable def finiteStaticKuboBastinCurrentCurrentResponse
     (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
-    (data : PurePointLehmannData system ι)
+    (data : EnergyEigenbasisLehmannData system ι)
     (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
     (K : LocallyFiniteHopping Site) (q eta : ℝ) : ℂ :=
   finiteKuboBastinSpectralVertexSum system data
@@ -59,14 +59,14 @@ noncomputable def finiteStaticKuboBastinCurrentCurrentResponse
 explicit Peierls contact expectation. -/
 theorem finiteStaticKuboBastinVectorPotentialResponse_eq_currentCurrent_add_contact
     (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
-    (data : PurePointLehmannData system ι)
+    (data : EnergyEigenbasisLehmannData system ι)
     (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
     (K : LocallyFiniteHopping Site) (q eta : ℝ) :
     finiteStaticKuboBastinVectorPotentialResponse
         system data geometry direction K q eta =
       finiteStaticKuboBastinCurrentCurrentResponse
           system data geometry direction K q eta +
-        purePointNormalizedExpectation system data
+        eigenbasisNormalizedExpectation system data
           (boundedDirectionalContact geometry direction
             (system.hbar : ℂ) (q : ℂ) K) := by
   rfl
@@ -81,7 +81,7 @@ explicitly. -/
 structure FiniteStaticPeierlsWardIdentity
     (convention : QuantumTheory.Transport.PositiveVolume)
     (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
-    (data : PurePointLehmannData system ι)
+    (data : EnergyEigenbasisLehmannData system ι)
     (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
     (K : LocallyFiniteHopping Site) (q eta lowerEnergy upperEnergy : ℝ)
     (occupation : ℝ → ℂ) : Prop where
@@ -97,7 +97,7 @@ structure FiniteStaticPeierlsWardIdentity
               (system.hbar : ℂ) (q : ℂ) K)
             (kuboBastinEnergyBroadening system.hbar eta)
             lowerEnergy upperEnergy occupation -
-        purePointNormalizedExpectation system data
+        eigenbasisNormalizedExpectation system data
           (boundedDirectionalContact geometry direction
             (system.hbar : ℂ) (q : ℂ) K)
 
@@ -106,7 +106,7 @@ explicit volume/electric-field factor times the traced Bastin integral. -/
 theorem FiniteStaticPeierlsWardIdentity.vectorPotentialResponse_eq_scaledTracedBastin
     (convention : QuantumTheory.Transport.PositiveVolume)
     (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
-    (data : PurePointLehmannData system ι)
+    (data : EnergyEigenbasisLehmannData system ι)
     (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
     (K : LocallyFiniteHopping Site) (q eta lowerEnergy upperEnergy : ℝ)
     (occupation : ℝ → ℂ)
@@ -133,7 +133,7 @@ traced Bastin energy integral. -/
 theorem FiniteStaticPeierlsWardIdentity.staticConductivity_eq_tracedBastin
     (convention : QuantumTheory.Transport.PositiveVolume)
     (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
-    (data : PurePointLehmannData system ι)
+    (data : EnergyEigenbasisLehmannData system ι)
     (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
     (K : LocallyFiniteHopping Site) (q eta lowerEnergy upperEnergy : ℝ)
     (occupation : ℝ → ℂ)
@@ -172,11 +172,11 @@ theorem FiniteStaticPeierlsWardIdentity.staticConductivity_eq_tracedBastin
         integral * (denominator * denominator⁻¹) := by ring
     _ = integral := by simp [hdenominator]
 
-/-- The same bridge written directly in the finite pure-point spectral energy-integral form. -/
+/-- The same bridge written directly in the finite eigenbasis spectral energy-integral form. -/
 theorem FiniteStaticPeierlsWardIdentity.staticConductivity_eq_spectralEnergyIntegral
     (convention : QuantumTheory.Transport.PositiveVolume)
     (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
-    (data : PurePointLehmannData system ι)
+    (data : EnergyEigenbasisLehmannData system ι)
     (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
     (K : LocallyFiniteHopping Site) (q eta lowerEnergy upperEnergy : ℝ)
     (occupation : ℝ → ℂ)
@@ -220,7 +220,7 @@ representation of the named static finite spectral conductivity. -/
 noncomputable def TracedStredaAnalyticData.toStaticKuboBastinStredaRepresentation
     (convention : QuantumTheory.Transport.PositiveVolume)
     (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
-    (spectralData : PurePointLehmannData system ι)
+    (spectralData : EnergyEigenbasisLehmannData system ι)
     (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
     (K : LocallyFiniteHopping Site) (q eta lowerEnergy upperEnergy : ℝ)
     (occupation occupationDerivative : ℝ → ℂ)
@@ -249,7 +249,7 @@ noncomputable def TracedStredaAnalyticData.toStaticKuboBastinStredaRepresentatio
 theorem TracedStredaAnalyticData.staticKuboBastinConductivity_eq_surface_add_sea
     (convention : QuantumTheory.Transport.PositiveVolume)
     (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
-    (spectralData : PurePointLehmannData system ι)
+    (spectralData : EnergyEigenbasisLehmannData system ι)
     (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
     (K : LocallyFiniteHopping Site) (q eta lowerEnergy upperEnergy : ℝ)
     (occupation occupationDerivative : ℝ → ℂ)

@@ -26,8 +26,8 @@ response can use a spin-current matrix table for `A` and a charge-current matrix
 without changing the Kubo derivation.
 
 If an operator-level finite pure-point model is already available, construct the scalar table with
-`finiteLehmannTableOfPurePoint`. The theorem `finiteLehmannTableResponse_ofPurePoint` states that
-the scalar evaluation is exactly the existing `purePointLehmannSeries`.
+`finiteLehmannTableOfEigenbasis`. The theorem `finiteLehmannTableResponse_ofEigenbasis` states that
+the scalar evaluation is exactly the existing `eigenbasisLehmannSeries`.
 
 ## Electrical conductivity workflow
 
@@ -43,9 +43,9 @@ finiteConductivityTableValue volume ℏ ω η table
 
 The scalar table and evaluator are representation-independent. For a proved finite fermionic
 pure-point hopping model, the downstream
-`SecondQuantization.Fermionic.Transport.finiteDirectionalConductivityTableOfPurePoint` constructs
+`SecondQuantization.Fermionic.Transport.finiteDirectionalConductivityTableOfEigenbasis` constructs
 the canonical scalar current/contact table from the existing Peierls data. The theorem
-`finiteConductivityTableValue_directional_ofPurePoint_eq_kuboGreenwood` identifies its evaluation
+`finiteConductivityTableValue_directional_ofEigenbasis_eq_kuboGreenwood` identifies its evaluation
 exactly with `finiteKuboGreenwoodDirectionalConductivity`.
 
 The intended vertical path is therefore

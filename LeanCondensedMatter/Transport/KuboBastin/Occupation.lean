@@ -7,7 +7,7 @@ set_option linter.style.header false
 /-!
 # Occupation-resolved finite Kubo–Bastin response
 
-This module owns the statistics-independent bridge from discrete pure-point occupation differences
+This module owns the statistics-independent bridge from discrete eigenbasis occupation differences
 to oriented energy integrals of a supplied occupation derivative. It is generic in the Hilbert
 space carrier and in the measured/source response vertices at the transition level, while complete
 responses use the finite spectral-index layer from `KuboBastin.Finite`.
@@ -18,7 +18,7 @@ finite spectral Kubo–Bastin response
   -> occupation-resolved vertex / ResponseChannel response.
 ```
 
-`PurePointOccupationInterpolation` supplies the continuous occupation and the fundamental-theorem
+`EigenbasisOccupationInterpolation` supplies the continuous occupation and the fundamental-theorem
 boundary. Fermionic lattice currents, Peierls contacts, conductivity normalization, and directional
 charge-current specializations remain downstream.
 
@@ -37,11 +37,11 @@ noncomputable section
 variable {H ι : Type*}
 variable [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
 variable (system : BoundedFreeSystem H)
-variable (data : PurePointLehmannData system ι)
+variable (data : EnergyEigenbasisLehmannData system ι)
 
-/-- Matrix elements and retarded-resolvent factor of one generalized pure-point Bastin transition,
+/-- Matrix elements and retarded-resolvent factor of one generalized eigenbasis Bastin transition,
 with the occupation difference removed. -/
-noncomputable def purePointKuboBastinVertexTransitionFactor
+noncomputable def eigenbasisKuboBastinVertexTransitionFactor
     (measured source : H →L[ℂ] H)
     (omega eta : ℝ) (mn : ι × ι) : ℂ :=
   inner ℂ (data.basis mn.1) (measured (data.basis mn.2)) *
@@ -52,29 +52,29 @@ noncomputable def purePointKuboBastinVertexTransitionFactor
         (kuboBastinEnergyBroadening system.hbar eta)
         (data.basis mn.2))
 
-/-- One generalized pure-point Kubo–Bastin transition with its discrete occupation difference
+/-- One generalized eigenbasis Kubo–Bastin transition with its discrete occupation difference
 replaced by an oriented energy integral of the occupation derivative. -/
-noncomputable def purePointKuboBastinOccupationResolvedVertexTerm
-    (interpolation : PurePointOccupationInterpolation system data)
+noncomputable def eigenbasisKuboBastinOccupationResolvedVertexTerm
+    (interpolation : EigenbasisOccupationInterpolation system data)
     (measured source : H →L[ℂ] H)
     (omega eta : ℝ) (mn : ι × ι) : ℂ :=
   -(∫ energy in data.energy mn.2..data.energy mn.1,
       interpolation.occupationDerivative energy) *
-    purePointKuboBastinVertexTransitionFactor
+    eigenbasisKuboBastinVertexTransitionFactor
       system data measured source omega eta mn
 
-/-- The generalized pure-point spectral Bastin transition is exactly its occupation-resolved form. -/
-theorem purePointKuboBastinSpectralVertexTerm_eq_occupationResolved
-    (interpolation : PurePointOccupationInterpolation system data)
+/-- The generalized eigenbasis spectral Bastin transition is exactly its occupation-resolved form. -/
+theorem eigenbasisKuboBastinSpectralVertexTerm_eq_occupationResolved
+    (interpolation : EigenbasisOccupationInterpolation system data)
     (measured source : H →L[ℂ] H)
     (omega eta : ℝ) (mn : ι × ι) :
-    purePointKuboBastinSpectralVertexTerm
+    eigenbasisKuboBastinSpectralVertexTerm
         system data measured source omega eta mn =
-      purePointKuboBastinOccupationResolvedVertexTerm
+      eigenbasisKuboBastinOccupationResolvedVertexTerm
         system data interpolation measured source omega eta mn := by
-  unfold purePointKuboBastinSpectralVertexTerm
-    purePointKuboBastinOccupationResolvedVertexTerm
-    purePointKuboBastinVertexTransitionFactor
+  unfold eigenbasisKuboBastinSpectralVertexTerm
+    eigenbasisKuboBastinOccupationResolvedVertexTerm
+    eigenbasisKuboBastinVertexTransitionFactor
   rw [show (((data.probability mn.1 - data.probability mn.2 : ℝ) : ℂ)) =
       ∫ energy in data.energy mn.2..data.energy mn.1,
         interpolation.occupationDerivative energy by
@@ -85,30 +85,30 @@ variable [Fintype ι]
 
 /-- Occupation-resolved generalized response attached directly to a neutral response channel. -/
 noncomputable def finiteKuboBastinOccupationResolvedChannelResponse
-    (interpolation : PurePointOccupationInterpolation system data)
+    (interpolation : EigenbasisOccupationInterpolation system data)
     (channel : ResponseChannel H)
     (omega eta : ℝ) : ℂ :=
   (∑ mn : ι × ι,
-      purePointKuboBastinOccupationResolvedVertexTerm
+      eigenbasisKuboBastinOccupationResolvedVertexTerm
         system data interpolation channel.measured channel.source omega eta mn) +
-    purePointNormalizedExpectation system data channel.observableVariation
+    eigenbasisNormalizedExpectation system data channel.observableVariation
 
 /-- The occupation-resolved channel response reduces to its aggregate transition sum. -/
 theorem finiteKuboBastinOccupationResolvedChannelResponse_eq_vertexSum
-    (interpolation : PurePointOccupationInterpolation system data)
+    (interpolation : EigenbasisOccupationInterpolation system data)
     (channel : ResponseChannel H)
     (omega eta : ℝ) :
     finiteKuboBastinOccupationResolvedChannelResponse
         system data interpolation channel omega eta =
       (∑ mn : ι × ι,
-        purePointKuboBastinOccupationResolvedVertexTerm
+        eigenbasisKuboBastinOccupationResolvedVertexTerm
           system data interpolation channel.measured channel.source omega eta mn) +
-        purePointNormalizedExpectation system data channel.observableVariation := by
+        eigenbasisNormalizedExpectation system data channel.observableVariation := by
   rfl
 
 /-- The neutral finite spectral channel response equals its occupation-resolved form. -/
 theorem finiteKuboBastinSpectralChannelResponse_eq_occupationResolved
-    (interpolation : PurePointOccupationInterpolation system data)
+    (interpolation : EigenbasisOccupationInterpolation system data)
     (channel : ResponseChannel H)
     (omega eta : ℝ) :
     finiteKuboBastinSpectralChannelResponse system data channel omega eta =
@@ -119,7 +119,7 @@ theorem finiteKuboBastinSpectralChannelResponse_eq_occupationResolved
   congr 1
   apply Finset.sum_congr rfl
   intro mn _
-  exact purePointKuboBastinSpectralVertexTerm_eq_occupationResolved
+  exact eigenbasisKuboBastinSpectralVertexTerm_eq_occupationResolved
     system data interpolation channel.measured channel.source omega eta mn
 
 end

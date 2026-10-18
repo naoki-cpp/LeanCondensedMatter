@@ -1,12 +1,12 @@
-import LeanCondensedMatter.QuantumTheory.LinearResponse.PurePointTimeDomain
+import LeanCondensedMatter.QuantumTheory.LinearResponse.EigenbasisTimeDomain
 import Mathlib.MeasureTheory.Integral.DominatedConvergence
 
 set_option linter.style.header false
 
 /-!
-# Frequency-domain pure-point Lehmann representation
+# Frequency-domain eigenbasis Lehmann representation
 
-This module completes the fixed-positive-rate pure-point bridge.  On the causal half-line, the
+This module completes the fixed-positive-rate eigenbasis bridge.  On the causal half-line, the
 switched susceptibility integrand is the countable sum of damped modes obtained from the same
 `LehmannTransitionData` records as the time-domain series.  Absolute transition-weight summability
 and the common exponential envelope justify exchanging that countable sum with the Bochner time
@@ -31,41 +31,41 @@ variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteS
 variable {ι : Type*}
 variable (system : BoundedFreeSystem H)
 
-/-- One switched pure-point transition before imposing causal support.  The surrounding integral
+/-- One switched eigenbasis transition before imposing causal support.  The surrounding integral
 is restricted to the causal half-line. -/
-noncomputable def purePointAdiabaticTransitionIntegrand
-    (data : PurePointLehmannData system ι)
+noncomputable def eigenbasisAdiabaticTransitionIntegrand
+    (data : EnergyEigenbasisLehmannData system ι)
     (A B : H →L[ℂ] H) (omega eta : ℝ)
     (mn : ι × ι) (τ : ℝ) : ℂ :=
   adiabaticFrequencyPhase omega eta τ *
-    purePointTimeDomainTerm system data A B τ mn
+    eigenbasisTimeDomainTerm system data A B τ mn
 
 /-- The switched integrand written directly from the canonical transition record. -/
-theorem purePointAdiabaticTransitionIntegrand_eq_transitionMode
-    (data : PurePointLehmannData system ι)
+theorem eigenbasisAdiabaticTransitionIntegrand_eq_transitionMode
+    (data : EnergyEigenbasisLehmannData system ι)
     (A B : H →L[ℂ] H) (omega eta : ℝ)
     (mn : ι × ι) (τ : ℝ) :
-    purePointAdiabaticTransitionIntegrand system data A B omega eta mn τ =
-      (purePointTransitionData system data A B mn).weight *
+    eigenbasisAdiabaticTransitionIntegrand system data A B omega eta mn τ =
+      (eigenbasisTransitionData system data A B mn).weight *
         lehmannMode system.hbar omega eta
-          (purePointTransitionData system data A B mn).energyGap τ := by
-  rw [purePointAdiabaticTransitionIntegrand, purePointTimeDomainTerm,
+          (eigenbasisTransitionData system data A B mn).energyGap τ := by
+  rw [eigenbasisAdiabaticTransitionIntegrand, eigenbasisTimeDomainTerm,
     LehmannTransitionData.timeTerm, adiabaticFrequencyPhase,
     lehmannMode, lehmannModeExponent]
   rw [show
       Complex.exp
           ((Complex.I * (omega : ℂ) - (eta : ℂ)) * (τ : ℂ)) *
-          ((purePointTransitionData system data A B mn).weight *
+          ((eigenbasisTransitionData system data A B mn).weight *
             Complex.exp
               (Complex.I *
-                (((((purePointTransitionData system data A B mn).energyGap * τ) /
+                (((((eigenbasisTransitionData system data A B mn).energyGap * τ) /
                   system.hbar : ℝ)) : ℂ))) =
-        (purePointTransitionData system data A B mn).weight *
+        (eigenbasisTransitionData system data A B mn).weight *
           (Complex.exp
               ((Complex.I * (omega : ℂ) - (eta : ℂ)) * (τ : ℂ)) *
             Complex.exp
               (Complex.I *
-                (((((purePointTransitionData system data A B mn).energyGap * τ) /
+                (((((eigenbasisTransitionData system data A B mn).energyGap * τ) /
                   system.hbar : ℝ)) : ℂ))) by ring]
   rw [← Complex.exp_add]
   congr 2
@@ -73,127 +73,127 @@ theorem purePointAdiabaticTransitionIntegrand_eq_transitionMode
   ring
 
 /-- The causal integral of one switched transition is its canonical fixed-rate frequency term. -/
-theorem integral_purePointAdiabaticTransitionIntegrand_Ioi_zero
-    (data : PurePointLehmannData system ι)
+theorem integral_eigenbasisAdiabaticTransitionIntegrand_Ioi_zero
+    (data : EnergyEigenbasisLehmannData system ι)
     (A B : H →L[ℂ] H) (omega eta : ℝ)
     (mn : ι × ι) (hη : 0 < eta) :
     (∫ τ : ℝ in Ioi 0,
-      purePointAdiabaticTransitionIntegrand system data A B omega eta mn τ) =
-      (purePointTransitionData system data A B mn).frequencyTerm omega eta := by
+      eigenbasisAdiabaticTransitionIntegrand system data A B omega eta mn τ) =
+      (eigenbasisTransitionData system data A B mn).frequencyTerm omega eta := by
   rw [setIntegral_congr_fun measurableSet_Ioi fun τ _ =>
-    purePointAdiabaticTransitionIntegrand_eq_transitionMode
+    eigenbasisAdiabaticTransitionIntegrand_eq_transitionMode
       system data A B omega eta mn τ]
   rw [integral_const_mul]
   rw [integral_lehmannMode_Ioi_zero_eq_resolvent
     system.hbar omega eta
-      (purePointTransitionData system data A B mn).energyGap hη]
+      (eigenbasisTransitionData system data A B mn).energyGap hη]
   rfl
 
 /-- Absolute summability of transition weights suffices to exchange the countable transition sum
 with the causal fixed-positive-rate Bochner integral. -/
-theorem integral_tsum_purePointAdiabaticTransitionIntegrand_Ioi_zero
+theorem integral_tsum_eigenbasisAdiabaticTransitionIntegrand_Ioi_zero
     [Countable ι]
-    (data : PurePointLehmannData system ι)
+    (data : EnergyEigenbasisLehmannData system ι)
     (A B : H →L[ℂ] H) (omega eta : ℝ) (hη : 0 < eta)
-    (hsum : PurePointLehmannSummable system data A B) :
+    (hsum : EigenbasisLehmannSummable system data A B) :
     (∫ τ : ℝ in Ioi 0,
       ∑' mn : ι × ι,
-        purePointAdiabaticTransitionIntegrand system data A B omega eta mn τ) =
-      purePointLehmannSeries system data A B omega eta := by
+        eigenbasisAdiabaticTransitionIntegrand system data A B omega eta mn τ) =
+      eigenbasisLehmannSeries system data A B omega eta := by
   have hInt : ∀ mn : ι × ι,
       IntegrableOn
-        (purePointAdiabaticTransitionIntegrand system data A B omega eta mn)
+        (eigenbasisAdiabaticTransitionIntegrand system data A B omega eta mn)
         (Ioi 0) volume := by
     intro mn
     have hmode := integrableOn_lehmannMode_Ioi_zero
       system.hbar omega eta
-        (purePointTransitionData system data A B mn).energyGap hη
+        (eigenbasisTransitionData system data A B mn).energyGap hη
     have hweighted : IntegrableOn (fun τ : ℝ =>
-        (purePointTransitionData system data A B mn).weight *
+        (eigenbasisTransitionData system data A B mn).weight *
           lehmannMode system.hbar omega eta
-            (purePointTransitionData system data A B mn).energyGap τ) (Ioi 0) volume :=
+            (eigenbasisTransitionData system data A B mn).energyGap τ) (Ioi 0) volume :=
       hmode.const_mul _
     apply hweighted.congr_fun
     · intro τ _
-      exact (purePointAdiabaticTransitionIntegrand_eq_transitionMode
+      exact (eigenbasisAdiabaticTransitionIntegrand_eq_transitionMode
         system data A B omega eta mn τ).symm
     · exact measurableSet_Ioi
   have hSum : Summable fun mn : ι × ι =>
       ∫ τ : ℝ in Ioi 0,
-        ‖purePointAdiabaticTransitionIntegrand system data A B omega eta mn τ‖ := by
+        ‖eigenbasisAdiabaticTransitionIntegrand system data A B omega eta mn τ‖ := by
     let C : ℝ := ∫ τ : ℝ in Ioi 0, ‖adiabaticFrequencyPhase omega eta τ‖
     apply (hsum.mul_left C).congr
     intro mn
     symm
     calc
       (∫ τ : ℝ in Ioi 0,
-          ‖purePointAdiabaticTransitionIntegrand system data A B omega eta mn τ‖) =
+          ‖eigenbasisAdiabaticTransitionIntegrand system data A B omega eta mn τ‖) =
         ∫ τ : ℝ in Ioi 0,
-          ‖(purePointTransitionData system data A B mn).weight‖ *
+          ‖(eigenbasisTransitionData system data A B mn).weight‖ *
             ‖adiabaticFrequencyPhase omega eta τ‖ := by
           apply setIntegral_congr_fun measurableSet_Ioi
           intro τ _
-          simp [purePointAdiabaticTransitionIntegrand,
-            purePointTimeDomainTerm]
+          simp [eigenbasisAdiabaticTransitionIntegrand,
+            eigenbasisTimeDomainTerm]
           ring
-      _ = ‖(purePointTransitionData system data A B mn).weight‖ * C := by
+      _ = ‖(eigenbasisTransitionData system data A B mn).weight‖ * C := by
         rw [integral_const_mul]
-      _ = C * ‖(purePointTransitionData system data A B mn).weight‖ := by ring
+      _ = C * ‖(eigenbasisTransitionData system data A B mn).weight‖ := by ring
   rw [← MeasureTheory.integral_tsum_of_summable_integral_norm
     (μ := volume.restrict (Ioi 0)) hInt hSum]
-  rw [purePointLehmannSeries]
+  rw [eigenbasisLehmannSeries]
   apply tsum_congr
   intro mn
-  exact integral_purePointAdiabaticTransitionIntegrand_Ioi_zero
+  exact integral_eigenbasisAdiabaticTransitionIntegrand_Ioi_zero
     system data A B omega eta mn hη
 
-/-- The fixed-positive-rate physical susceptibility equals the countable pure-point Lehmann
+/-- The fixed-positive-rate physical susceptibility equals the countable eigenbasis Lehmann
 resolvent series. -/
-theorem adiabaticFrequencyDomainSusceptibilityOfPositiveRate_purePoint_eq_lehmannSeries
+theorem adiabaticFrequencyDomainSusceptibilityOfPositiveRate_eigenbasis_eq_lehmannSeries
     [Countable ι]
-    (data : PurePointLehmannData system ι)
+    (data : EnergyEigenbasisLehmannData system ι)
     (A B : H →L[ℂ] H) (omega eta : ℝ) (hη : 0 < eta)
-    (hsum : PurePointTimeDomainSummable system data A B) :
+    (hsum : EigenbasisTimeDomainSummable system data A B) :
     adiabaticFrequencyDomainSusceptibilityOfPositiveRate system
-        (purePointNormalizedExpectation system data) A B omega eta hη =
-      purePointLehmannSeries system data A B omega eta := by
+        (eigenbasisNormalizedExpectation system data) A B omega eta hη =
+      eigenbasisLehmannSeries system data A B omega eta := by
   rw [adiabaticFrequencyDomainSusceptibilityOfPositiveRate,
     adiabaticFrequencyDomainSusceptibility,
     integral_adiabaticFrequencySusceptibilityIntegrand_eq_Ioi_zero
-      system (purePointNormalizedExpectation system data) A B omega eta]
+      system (eigenbasisNormalizedExpectation system data) A B omega eta]
   calc
     (∫ τ : ℝ in Ioi 0,
         adiabaticFrequencySusceptibilityIntegrand system
-          (purePointNormalizedExpectation system data) A B omega eta τ) =
+          (eigenbasisNormalizedExpectation system data) A B omega eta τ) =
       ∫ τ : ℝ in Ioi 0,
         ∑' mn : ι × ι,
-          purePointAdiabaticTransitionIntegrand system data A B omega eta mn τ := by
+          eigenbasisAdiabaticTransitionIntegrand system data A B omega eta mn τ := by
         apply setIntegral_congr_fun measurableSet_Ioi
         intro τ hτ
         rw [adiabaticFrequencySusceptibilityIntegrand]
-        rw [retardedTimeDifferenceKernel_purePoint_eq_timeDomainSeries_of_nonneg
+        rw [retardedTimeDifferenceKernel_eigenbasis_eq_timeDomainSeries_of_nonneg
           system data A B (le_of_lt hτ) hsum]
-        rw [purePointTimeDomainSeries]
-        simp only [purePointAdiabaticTransitionIntegrand]
+        rw [eigenbasisTimeDomainSeries]
+        simp only [eigenbasisAdiabaticTransitionIntegrand]
         rw [tsum_mul_left]
-    _ = purePointLehmannSeries system data A B omega eta :=
-      integral_tsum_purePointAdiabaticTransitionIntegrand_Ioi_zero
+    _ = eigenbasisLehmannSeries system data A B omega eta :=
+      integral_tsum_eigenbasisAdiabaticTransitionIntegrand_Ioi_zero
         system data A B omega eta hη (hsum.lehmannSummable system data A B)
 
 /-- In finite dimension, the physical susceptibility is the conventional finite double Lehmann
 sum. -/
-theorem adiabaticFrequencyDomainSusceptibilityOfPositiveRate_purePoint_eq_finite_sum
+theorem adiabaticFrequencyDomainSusceptibilityOfPositiveRate_eigenbasis_eq_finite_sum
     [Fintype ι]
-    (data : PurePointLehmannData system ι)
+    (data : EnergyEigenbasisLehmannData system ι)
     (A B : H →L[ℂ] H) (omega eta : ℝ) (hη : 0 < eta) :
     adiabaticFrequencyDomainSusceptibilityOfPositiveRate system
-        (purePointNormalizedExpectation system data) A B omega eta hη =
+        (eigenbasisNormalizedExpectation system data) A B omega eta hη =
       ∑ mn : ι × ι,
-        (purePointTransitionData system data A B mn).frequencyTerm omega eta := by
-  rw [adiabaticFrequencyDomainSusceptibilityOfPositiveRate_purePoint_eq_lehmannSeries
+        (eigenbasisTransitionData system data A B mn).frequencyTerm omega eta := by
+  rw [adiabaticFrequencyDomainSusceptibilityOfPositiveRate_eigenbasis_eq_lehmannSeries
     system data A B omega eta hη
-      (purePointTimeDomainSummable_of_finite system data A B)]
-  exact purePointLehmannSeries_eq_finite_sum system data A B omega eta
+      (eigenbasisTimeDomainSummable_of_finite system data A B)]
+  exact eigenbasisLehmannSeries_eq_finite_sum system data A B omega eta
 
 end
 end LinearResponse

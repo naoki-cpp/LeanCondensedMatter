@@ -39,12 +39,12 @@ variable [Fintype ι]
 by an oriented energy integral of the occupation derivative. -/
 noncomputable def finiteKuboBastinOccupationResolvedDirectionalCurrentTerm
     (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
-    (data : PurePointLehmannData system ι)
-    (interpolation : PurePointOccupationInterpolation system data)
+    (data : EnergyEigenbasisLehmannData system ι)
+    (interpolation : EigenbasisOccupationInterpolation system data)
     (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
     (K : LocallyFiniteHopping Site) (q omega eta : ℝ)
     (mn : ι × ι) : ℂ :=
-  purePointKuboBastinOccupationResolvedVertexTerm system data interpolation
+  eigenbasisKuboBastinOccupationResolvedVertexTerm system data interpolation
     (boundedDirectionalCurrent geometry direction
       (system.hbar : ℂ) (q : ℂ) K)
     (boundedDirectionalCurrent geometry direction
@@ -57,8 +57,8 @@ normalization remain unchanged. -/
 noncomputable def finiteKuboBastinOccupationResolvedDirectionalConductivity
     (convention : QuantumTheory.Transport.PositiveVolume)
     (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
-    (data : PurePointLehmannData system ι)
-    (interpolation : PurePointOccupationInterpolation system data)
+    (data : EnergyEigenbasisLehmannData system ι)
+    (interpolation : EigenbasisOccupationInterpolation system data)
     (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
     (K : LocallyFiniteHopping Site) (q omega eta : ℝ) : ℂ :=
   finiteKuboBastinOccupationResolvedChannelResponse system data interpolation
@@ -69,8 +69,8 @@ noncomputable def finiteKuboBastinOccupationResolvedDirectionalConductivity
 theorem finiteKuboBastinSpectralDirectionalConductivity_eq_occupationResolved
     (convention : QuantumTheory.Transport.PositiveVolume)
     (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
-    (data : PurePointLehmannData system ι)
-    (interpolation : PurePointOccupationInterpolation system data)
+    (data : EnergyEigenbasisLehmannData system ι)
+    (interpolation : EigenbasisOccupationInterpolation system data)
     (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
     (K : LocallyFiniteHopping Site) (q omega eta : ℝ) :
     finiteKuboBastinSpectralDirectionalConductivity
@@ -92,12 +92,12 @@ spectral Kubo–Bastin derivation at fixed positive switching rate. -/
 theorem infiniteTimeAdiabaticDirectionalConductivity_eq_occupationResolved
     (convention : QuantumTheory.Transport.PositiveVolume)
     (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
-    (data : PurePointLehmannData system ι)
-    (interpolation : PurePointOccupationInterpolation system data)
+    (data : EnergyEigenbasisLehmannData system ι)
+    (interpolation : EigenbasisOccupationInterpolation system data)
     (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
     (K : LocallyFiniteHopping Site) (q omega eta : ℝ) (heta : 0 < eta) :
     infiniteTimeAdiabaticDirectionalConductivity convention
-        system (purePointNormalizedExpectation system data)
+        system (eigenbasisNormalizedExpectation system data)
           geometry direction K q omega eta =
       finiteKuboBastinOccupationResolvedDirectionalConductivity
         convention system data interpolation geometry direction K q omega eta := by

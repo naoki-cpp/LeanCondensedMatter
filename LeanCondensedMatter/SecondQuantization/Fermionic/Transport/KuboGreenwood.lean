@@ -8,7 +8,7 @@ set_option linter.style.header false
 This module gives a public name to the exact finite spectral conductivity derived upstream from
 bounded time-dependent perturbation theory, the causal Kubo theorem, the continuity-derived
 Peierls current, the explicit contact variation, the infinite-observation-time limit, and the
-finite pure-point Lehmann theorem.
+finite eigenbasis Lehmann theorem.
 
 For the source convention `A(t) ∝ exp (ηt) exp (-iωt)`, the result is
 
@@ -46,10 +46,10 @@ variable [AddCommGroup E] [Module ℝ E]
 /-- One finite Kubo–Greenwood current-current transition term. -/
 noncomputable def finiteKuboGreenwoodDirectionalCurrentTerm
     (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
-    (data : PurePointLehmannData system ι)
+    (data : EnergyEigenbasisLehmannData system ι)
     (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
     (K : LocallyFiniteHopping Site) (q ω η : ℝ) (mn : ι × ι) : ℂ :=
-  (purePointTransitionData system data
+  (eigenbasisTransitionData system data
       (boundedDirectionalCurrent geometry direction
         (system.hbar : ℂ) (q : ℂ) K)
       (boundedDirectionalCurrent geometry direction
@@ -59,7 +59,7 @@ noncomputable def finiteKuboGreenwoodDirectionalCurrentTerm
 @[simp]
 theorem finiteKuboGreenwoodDirectionalCurrentTerm_diag
     (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
-    (data : PurePointLehmannData system ι)
+    (data : EnergyEigenbasisLehmannData system ι)
     (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
     (K : LocallyFiniteHopping Site) (q ω η : ℝ) (i : ι) :
     finiteKuboGreenwoodDirectionalCurrentTerm
@@ -69,20 +69,20 @@ theorem finiteKuboGreenwoodDirectionalCurrentTerm_diag
 /-- Equal-energy off-diagonal transitions keep the finite-rate denominator `η - iω`. -/
 theorem finiteKuboGreenwoodDirectionalCurrentTerm_of_equal_energy
     (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
-    (data : PurePointLehmannData system ι)
+    (data : EnergyEigenbasisLehmannData system ι)
     (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
     (K : LocallyFiniteHopping Site) (q ω η : ℝ) {m n : ι}
     (henergy : data.energy m = data.energy n) :
     finiteKuboGreenwoodDirectionalCurrentTerm
         system data geometry direction K q ω η (m, n) =
-      (purePointTransitionData system data
+      (eigenbasisTransitionData system data
           (boundedDirectionalCurrent geometry direction
             (system.hbar : ℂ) (q : ℂ) K)
           (boundedDirectionalCurrent geometry direction
             (system.hbar : ℂ) (q : ℂ) K) (m, n)).weight *
         ((η : ℂ) - Complex.I * (ω : ℂ))⁻¹ := by
   unfold finiteKuboGreenwoodDirectionalCurrentTerm
-  exact purePointDirectionalCurrentLehmannTerm_of_equal_energy
+  exact eigenbasisDirectionalCurrentLehmannTerm_of_equal_energy
     system data geometry direction K q ω η henergy
 
 /-- The exact finite Kubo–Greenwood conductivity supplied to the resolvent rewrite.
@@ -97,13 +97,13 @@ noncomputable def finiteKuboGreenwoodDirectionalConductivity
     [Fintype ι]
     (volume : QuantumTheory.Transport.PositiveVolume)
     (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
-    (data : PurePointLehmannData system ι)
+    (data : EnergyEigenbasisLehmannData system ι)
     (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
     (K : LocallyFiniteHopping Site) (q ω η : ℝ) : ℂ :=
   ((∑ mn : ι × ι,
       finiteKuboGreenwoodDirectionalCurrentTerm
         system data geometry direction K q ω η mn) +
-      purePointNormalizedExpectation system data
+      eigenbasisNormalizedExpectation system data
         (boundedDirectionalContact geometry direction
           (system.hbar : ℂ) (q : ℂ) K)) *
     finiteVolumeConductivityNormalization volume ω η
@@ -114,15 +114,15 @@ theorem infiniteTimeAdiabaticDirectionalConductivity_eq_finiteKuboGreenwood
     [Fintype ι]
     (volume : QuantumTheory.Transport.PositiveVolume)
     (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
-    (data : PurePointLehmannData system ι)
+    (data : EnergyEigenbasisLehmannData system ι)
     (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
     (K : LocallyFiniteHopping Site) (q ω η : ℝ) (hη : 0 < η) :
     infiniteTimeAdiabaticDirectionalConductivity volume
-        system (purePointNormalizedExpectation system data)
+        system (eigenbasisNormalizedExpectation system data)
           geometry direction K q ω η =
       finiteKuboGreenwoodDirectionalConductivity
         volume system data geometry direction K q ω η := by
-  rw [infiniteTimeAdiabaticDirectionalConductivity_purePoint_eq_finite_sum
+  rw [infiniteTimeAdiabaticDirectionalConductivity_eigenbasis_eq_finite_sum
     volume system data geometry direction K q ω η hη]
   rfl
 
@@ -131,7 +131,7 @@ theorem finiteKuboGreenwoodDirectionalConductivity_eq_current_sum_add_contact
     [Fintype ι]
     (volume : QuantumTheory.Transport.PositiveVolume)
     (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
-    (data : PurePointLehmannData system ι)
+    (data : EnergyEigenbasisLehmannData system ι)
     (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
     (K : LocallyFiniteHopping Site) (q ω η : ℝ) :
     finiteKuboGreenwoodDirectionalConductivity
@@ -140,7 +140,7 @@ theorem finiteKuboGreenwoodDirectionalConductivity_eq_current_sum_add_contact
           finiteKuboGreenwoodDirectionalCurrentTerm
             system data geometry direction K q ω η mn) *
           finiteVolumeConductivityNormalization volume ω η +
-        purePointNormalizedExpectation system data
+        eigenbasisNormalizedExpectation system data
             (boundedDirectionalContact geometry direction
               (system.hbar : ℂ) (q : ℂ) K) *
           finiteVolumeConductivityNormalization volume ω η := by

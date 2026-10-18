@@ -16,7 +16,7 @@ Eₙ, pₙ, Aₘₙ = ⟨m|A|n⟩, Bₘₙ = ⟨m|B|n⟩.
 explicit scalar adapter to the canonical `LehmannTransitionData` seam in `Lehmann/Transition.lean`; evaluation
 then uses the record's fixed-rate frequency term.
 
-The operator-to-table adapter is owned separately by `Lehmann/PurePointTable.lean`.
+The operator-to-table adapter is owned separately by `Lehmann/EigenbasisTable.lean`.
 
 This layer intentionally carries no SecondQuantization or conductivity-specific data.  Contact
 terms and finite-volume electric-field normalization belong to the downstream transport wrapper.
@@ -27,7 +27,7 @@ namespace LinearResponse
 
 noncomputable section
 
-/-- Scalar data sufficient to evaluate a finite pure-point Lehmann response.
+/-- Scalar data sufficient to evaluate a finite eigenbasis Lehmann response.
 
 `matrixA m n` and `matrixB m n` represent `⟨m|A|n⟩` and `⟨m|B|n⟩`, respectively. -/
 structure FiniteLehmannTable (ι : Type*) where

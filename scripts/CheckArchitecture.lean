@@ -340,7 +340,7 @@ private def semanticOwnerRequirements : Array OwnerRequirement :=
   let postulatesModule := `LeanCondensedMatter.QuantumTheory.Postulates
   let observableExpectationModule := `LeanCondensedMatter.QuantumTheory.DensityOperator.ObservableExpectation
   let bornModule := `LeanCondensedMatter.QuantumTheory.POVM.Born
-  let purePointDynamicsModule := `LeanCondensedMatter.QuantumTheory.LinearResponse.PurePointDynamics
+  let eigenbasisDynamicsModule := `LeanCondensedMatter.QuantumTheory.LinearResponse.EigenbasisDynamics
   let gibbsPurePointModule := `LeanCondensedMatter.QuantumTheory.Gibbs.PurePoint
   let finiteGibbsModule := `LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsExpectationBridge
   let freeEntropyModule := `LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeEntropy
@@ -355,11 +355,11 @@ private def semanticOwnerRequirements : Array OwnerRequirement :=
     { declaration := `QuantumTheory.DensityOperator.expectation_effect_eq_probNNReal, moduleName := bornModule },
     { declaration := `QuantumTheory.hasSum_probNNReal, moduleName := bornModule },
     { declaration := `QuantumTheory.bornPMF_apply, moduleName := bornModule },
-    { declaration := `QuantumTheory.LinearResponse.purePointDensityOperator, moduleName := purePointDynamicsModule },
-    { declaration := `QuantumTheory.LinearResponse.purePointDensityOperator_apply_basis, moduleName := purePointDynamicsModule },
-    { declaration := `QuantumTheory.LinearResponse.purePointNormalizedExpectation, moduleName := purePointDynamicsModule },
-    { declaration := `QuantumTheory.LinearResponse.purePointNormalizedExpectation_apply, moduleName := purePointDynamicsModule },
-    { declaration := `QuantumTheory.LinearResponse.isStationary_purePointNormalizedExpectation, moduleName := purePointDynamicsModule },
+    { declaration := `QuantumTheory.LinearResponse.eigenbasisDensityOperator, moduleName := eigenbasisDynamicsModule },
+    { declaration := `QuantumTheory.LinearResponse.eigenbasisDensityOperator_apply_basis, moduleName := eigenbasisDynamicsModule },
+    { declaration := `QuantumTheory.LinearResponse.eigenbasisNormalizedExpectation, moduleName := eigenbasisDynamicsModule },
+    { declaration := `QuantumTheory.LinearResponse.eigenbasisNormalizedExpectation_apply, moduleName := eigenbasisDynamicsModule },
+    { declaration := `QuantumTheory.LinearResponse.isStationary_eigenbasisNormalizedExpectation, moduleName := eigenbasisDynamicsModule },
     { declaration := `QuantumTheory.purePointGibbsDensityOperator, moduleName := gibbsPurePointModule },
     { declaration := `QuantumTheory.finitePurePointGibbsDensityOperator, moduleName := gibbsPurePointModule },
     { declaration := `SecondQuantization.Common.finiteGibbsExpectationLinearMap, moduleName := finiteGibbsModule },
