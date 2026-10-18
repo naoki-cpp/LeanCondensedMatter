@@ -75,29 +75,6 @@ private def finSuccFamily {k : ℕ} {α : Type*} (f : Fin (k + 1) → α) : Opti
   | none => f 0
   | Option.some i => f i.succ
 
-private theorem prod_finSuccFamily
-    {k : ℕ} {R : Type*} [CommMonoid R] (a : Fin (k + 1) → R) :
-    (∏ i : Option (Fin k), finSuccFamily a i) = ∏ i : Fin (k + 1), a i := by
-  rw [Fintype.prod_option, Fin.prod_univ_succ]
-  rfl
-
-private theorem prod_finSucc_finsupp_eq
-    {k : ℕ} {R : Type*} [CommMonoid R] (f : Fin (k + 1) → ℕ → R) :
-    (fun n : Fin (k + 1) →₀ ℕ => ∏ i : Fin (k + 1), f i (n i)) =
-      (fun m : Option (Fin k) →₀ ℕ =>
-        ∏ i : Option (Fin k), finSuccFamily f i (m i)) ∘
-        Finsupp.equivMapDomain (finSuccEquiv k) := by
-  funext n
-  simp only [Function.comp_apply]
-  apply Fintype.prod_equiv (finSuccEquiv k) (fun i => f i (n i))
-    (fun j => finSuccFamily f j ((Finsupp.equivMapDomain (finSuccEquiv k) n) j))
-  intro i
-  rw [Finsupp.equivMapDomain_apply, Equiv.symm_apply_apply]
-  refine Fin.cases ?_ ?_ i
-  · simp [finSuccFamily]
-  · intro j
-    simp [finSuccFamily]
-
 private theorem hasSum_prod_finSucc_reindex
     {k : ℕ} {R : Type*} [NormedCommRing R]
     (f : Fin (k + 1) → ℕ → R) (a : Fin (k + 1) → R)
@@ -107,9 +84,14 @@ private theorem hasSum_prod_finSucc_reindex
       (∏ i : Option (Fin k), finSuccFamily a i)) :
     HasSum (fun n : Fin (k + 1) →₀ ℕ => ∏ i : Fin (k + 1), f i (n i))
       (∏ i : Fin (k + 1), a i) := by
-  rw [prod_finSucc_finsupp_eq f]
-  have h := (Equiv.hasSum_iff (Finsupp.equivCongrLeft (finSuccEquiv k))).mpr hOption
-  rwa [prod_finSuccFamily] at h
+  apply hasSum_prod_equiv (finSuccEquiv k).symm f a
+  have hf (i : Option (Fin k)) :
+      f ((finSuccEquiv k).symm i) = finSuccFamily f i := by
+    cases i <;> simp [finSuccFamily]
+  have ha (i : Option (Fin k)) :
+      a ((finSuccEquiv k).symm i) = finSuccFamily a i := by
+    cases i <;> simp [finSuccFamily]
+  simpa only [hf, ha] using hOption
 
 private theorem hasSum_prod_finSucc_option
     {k : ℕ} {R : Type*} [NormedCommRing R] [CompleteSpace R]
