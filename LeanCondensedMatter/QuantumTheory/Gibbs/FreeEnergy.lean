@@ -39,16 +39,13 @@ theorem exp_neg_beta_energy_le_gibbs_diagonal (Hop : Observable H) (β : ℝ) (v
     (gibbsOp Hop β) (gibbsOp_isPositive Hop β).isSelfAdjoint v] at hpb
   exact_mod_cast hpb
 
-/-- The eigenvalue-weighted lossless energy-expectation sum is summable, with total
-`energyExpValue ρ Hop`. -/
-theorem summable_eigenvalue_mul_energy_and_tsum (ρ : DensityOperator H) (Hop : Observable H) :
-    Summable (fun a : EigenvectorIndex ρ.op =>
-        a.1.1 * diagonalExpectationValue Hop.1 Hop.2
-          (eigenvectorFamily ρ.spectralTraceClass.compact a)) ∧
-      ∑' a : EigenvectorIndex ρ.op,
-          a.1.1 * diagonalExpectationValue Hop.1 Hop.2
-            (eigenvectorFamily ρ.spectralTraceClass.compact a) =
-        energyExpValue ρ Hop := by
+/-- The eigenvalue-weighted lossless energy-expectation series has sum
+`energyExpValue ρ Hop`. Summability follows from this `HasSum` result. -/
+theorem hasSum_eigenvalue_mul_energy (ρ : DensityOperator H) (Hop : Observable H) :
+    HasSum (fun a : EigenvectorIndex ρ.op =>
+      a.1.1 * diagonalExpectationValue Hop.1 Hop.2
+        (eigenvectorFamily ρ.spectralTraceClass.compact a))
+      (energyExpValue ρ Hop) := by
   have hsComplex : HasSum
       (fun a : EigenvectorIndex ρ.op =>
         ((a.1.1 * diagonalExpectationValue Hop.1 Hop.2
@@ -57,13 +54,7 @@ theorem summable_eigenvalue_mul_energy_and_tsum (ρ : DensityOperator H) (Hop : 
     have hs := (ρ.summable_expectation_term Hop.1).hasSum
     rw [← ρ.expectation_eq_spectral_tsum Hop.1, ρ.expectation_observable] at hs
     simpa only [Complex.ofReal_mul, coe_diagonalExpectationValue_right, energyExpValue] using hs
-  have hsReal : HasSum
-      (fun a : EigenvectorIndex ρ.op =>
-        a.1.1 * diagonalExpectationValue Hop.1 Hop.2
-          (eigenvectorFamily ρ.spectralTraceClass.compact a))
-      (energyExpValue ρ Hop) := by
-    exact_mod_cast hsComplex
-  exact ⟨hsReal.summable, hsReal.tsum_eq⟩
+  exact_mod_cast hsComplex
 
 /-- The Gibbs–Klein / Helmholtz free-energy inequality. -/
 theorem helmholtzFreeEnergy_ge_and_entropy_ne_top [Nontrivial H] [FiniteDimensional ℂ H]
@@ -94,7 +85,7 @@ theorem helmholtzFreeEnergy_ge_and_entropy_ne_top [Nontrivial H] [FiniteDimensio
     Real.neg_log_le_of_exp_le (u := β * h a) (by rw [← neg_mul]; exact hstep1 a)
   have hp_hasSum : HasSum p 1 := by
     simpa [p] using ρ.hasSum_eigenvalues_eq_one
-  obtain ⟨hph_summable, hphsum⟩ := summable_eigenvalue_mul_energy_and_tsum ρ Hop
+  have hph_hasSum := hasSum_eigenvalue_mul_energy ρ Hop
   have hq_summable_and_le : Summable q ∧ ∑' a, q a ≤ Z := by
     have hbound := hGibbs.sum_diagonalExpectationValue_le_spectralTrace
       (gibbsOp_isPositive Hop β).toLinearMap hd_orth
@@ -102,11 +93,11 @@ theorem helmholtzFreeEnergy_ge_and_entropy_ne_top [Nontrivial H] [FiniteDimensio
   obtain ⟨hnML_summable, hfinal⟩ :=
     Real.summable_negMulLog_and_tsum_le_gibbs
       p q h β Z (fun a => ρ.eigenvalue_nonneg a)
-      hp_hasSum hph_summable
+      hp_hasSum hph_hasSum.summable
       hq_summable_and_le.1 hq_summable_and_le.2 hqpos hZpos hstep2
   obtain ⟨hEntropyNeTop, hToReal⟩ :=
     vonNeumannEntropy_ne_top_and_toReal_eq_tsum ρ hnML_summable
-  rw [hphsum] at hfinal
+  rw [hph_hasSum.tsum_eq] at hfinal
   refine ⟨hEntropyNeTop, ?_⟩
   rw [hToReal]
   have hβinv : 0 < 1 / β := by positivity
