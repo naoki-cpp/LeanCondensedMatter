@@ -85,30 +85,21 @@ theorem normSq_comp_left_le (hT : IsHilbertSchmidt T) (B : H →L[ℂ] H) :
 the square of the operator norm. -/
 theorem normSq_comp_right_le (hT : IsHilbertSchmidt T) (B : H →L[ℂ] H) :
     (isHilbertSchmidt_comp_right hT B).normSq ≤ ‖B‖ ^ 2 * hT.normSq := by
-  let hTB : IsHilbertSchmidt (T * B) := isHilbertSchmidt_comp_right hT B
-  let hTadj : IsHilbertSchmidt (ContinuousLinearMap.adjoint T) :=
-    isHilbertSchmidt_adjoint hT
-  let hleft : IsHilbertSchmidt
-      (ContinuousLinearMap.adjoint B * ContinuousLinearMap.adjoint T) :=
-    isHilbertSchmidt_comp_left (ContinuousLinearMap.adjoint B) hTadj
   have hadj_eq :
       ContinuousLinearMap.adjoint (T * B) =
         ContinuousLinearMap.adjoint B * ContinuousLinearMap.adjoint T := by
     rw [← ContinuousLinearMap.star_eq_adjoint, ← ContinuousLinearMap.star_eq_adjoint,
       ← ContinuousLinearMap.star_eq_adjoint, star_mul]
-  have hadjNormEq :
-      (isHilbertSchmidt_adjoint hTB).normSq = hleft.normSq := by
-    simpa only [hadj_eq]
-  calc
-    (isHilbertSchmidt_comp_right hT B).normSq = hTB.normSq := rfl
-    _ = (isHilbertSchmidt_adjoint hTB).normSq :=
-      (IsHilbertSchmidt.normSq_adjoint hTB).symm
-    _ = hleft.normSq := hadjNormEq
-    _ ≤ ‖ContinuousLinearMap.adjoint B‖ ^ 2 * hTadj.normSq :=
-      IsHilbertSchmidt.normSq_comp_left_le hTadj (ContinuousLinearMap.adjoint B)
-    _ = ‖B‖ ^ 2 * hT.normSq := by
-      rw [← ContinuousLinearMap.star_eq_adjoint, norm_star,
-        IsHilbertSchmidt.normSq_adjoint hT]
+  have hnorm :
+      (isHilbertSchmidt_comp_left (ContinuousLinearMap.adjoint B)
+        (isHilbertSchmidt_adjoint hT)).normSq =
+        (isHilbertSchmidt_comp_right hT B).normSq := by
+    simpa only [hadj_eq] using
+      (isHilbertSchmidt_comp_right hT B).normSq_adjoint
+  have h := (isHilbertSchmidt_adjoint hT).normSq_comp_left_le
+    (ContinuousLinearMap.adjoint B)
+  rw [hnorm, hT.normSq_adjoint, ← ContinuousLinearMap.star_eq_adjoint, norm_star] at h
+  exact h
 
 /-- Right composition by a contraction does not increase the squared Hilbert--Schmidt norm. -/
 theorem normSq_comp_right_le_of_norm_le_one (hT : IsHilbertSchmidt T)

@@ -87,32 +87,18 @@ theorem purePointGibbsEnergyExpectation_fermionEnergy_eq_sum_fermiDirac
   calc
     (∑ n : Occupation Mode,
         freeGibbsConfigurationProbability ε β n * fermionEnergy ε n) =
-        ∑ n : Occupation Mode, ∑ i ∈ n,
-          freeGibbsConfigurationProbability ε β n * ε i := by
-      apply Finset.sum_congr rfl
-      intro n hn
-      rw [fermionEnergy, Finset.mul_sum]
-    _ = ∑ n : Occupation Mode, ∑ i : Mode,
+        ∑ n : Occupation Mode, ∑ i : Mode,
           if i ∈ n then freeGibbsConfigurationProbability ε β n * ε i else 0 := by
-      apply Finset.sum_congr rfl
-      intro n hn
-      simp
+      simp [fermionEnergy, Finset.mul_sum]
     _ = ∑ i : Mode, ∑ n : Occupation Mode,
           if i ∈ n then freeGibbsConfigurationProbability ε β n * ε i else 0 := by
       rw [Finset.sum_comm]
-    _ = ∑ i : Mode, ε i *
-          (∑ n ∈ (Finset.univ : Finset (Occupation Mode)).filter (i ∈ ·),
-            freeGibbsConfigurationProbability ε β n) := by
-      apply Finset.sum_congr rfl
-      intro i hi
-      rw [Finset.mul_sum, ← Finset.sum_filter]
-      apply Finset.sum_congr rfl
-      intro n hn
-      by_cases hni : i ∈ n <;> simp_all [mul_comm]
     _ = ∑ i, ε i * fermiDiracOccupation ε β i := by
       apply Finset.sum_congr rfl
-      intro i hi
-      rw [sum_freeGibbsConfigurationProbability_filter_mem]
+      intro i _
+      rw [← Finset.sum_filter]
+      simp_rw [mul_comm (freeGibbsConfigurationProbability ε β _) (ε i)]
+      rw [← Finset.mul_sum, sum_freeGibbsConfigurationProbability_filter_mem]
 
 omit [LinearOrder Mode] [Fintype Mode] in
 private theorem fermiDiracOccupation_eq_exp_neg_div

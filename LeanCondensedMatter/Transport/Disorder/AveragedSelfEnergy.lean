@@ -38,16 +38,11 @@ variable (ensemble : FiniteDisorderEnsemble (H := H) (Ω := Ω))
 
 /-- A normalized finite nonnegative probability weight has at least one strictly positive entry. -/
 private theorem exists_probability_pos : ∃ ω : Ω, 0 < ensemble.probability ω := by
-  by_contra h
-  have hle : ∀ ω : Ω, ensemble.probability ω ≤ 0 := by
-    intro ω
-    exact le_of_not_gt (fun hpos => h ⟨ω, hpos⟩)
-  have hzero : ∀ ω : Ω, ensemble.probability ω = 0 := by
-    intro ω
-    exact le_antisymm (hle ω) (ensemble.probability_nonneg ω)
-  have hsumProbability : ∑ ω, ensemble.probability ω = 0 := by
-    simp [hzero]
-  linarith [ensemble.probability_sum]
+  have hsum : 0 < ∑ ω, ensemble.probability ω := by
+    rw [ensemble.probability_sum]
+    norm_num
+  simpa using (Finset.sum_pos_iff_of_nonneg
+    (fun ω _ => ensemble.probability_nonneg ω)).mp hsum
 
 /-- The imaginary part of a configuration-resolvent quadratic form equals the signed regulator
 multiplied by the squared resolvent norm. -/
@@ -86,34 +81,13 @@ private theorem im_inner_averagedGreenOfRegulator_apply_self
         (fun ω => ensemble.configurationGreenOfRegulator energy regulator ω) v) v).im = _
   rw [ensemble.inner_operatorAverage_apply
     (fun ω => ensemble.configurationGreenOfRegulator energy regulator ω) v v]
-  change Complex.imCLM
-      (∑ ω, (ensemble.probability ω : ℂ) *
-        inner ℂ (ensemble.configurationGreenOfRegulator energy regulator ω v) v) = _
-  rw [map_sum]
-  change
-    (∑ ω, ((ensemble.probability ω : ℂ) *
-      inner ℂ (ensemble.configurationGreenOfRegulator energy regulator ω v) v).im) = _
-  calc
-    ∑ ω, ((ensemble.probability ω : ℂ) *
-        inner ℂ (ensemble.configurationGreenOfRegulator energy regulator ω v) v).im =
-        ∑ ω, ensemble.probability ω *
-          (inner ℂ (ensemble.configurationGreenOfRegulator energy regulator ω v) v).im := by
-      apply Finset.sum_congr rfl
-      intro ω _
-      simp [Complex.mul_im]
-    _ = ∑ ω, ensemble.probability ω *
-        (regulator * ‖ensemble.configurationGreenOfRegulator energy regulator ω v‖ ^ 2) := by
-      apply Finset.sum_congr rfl
-      intro ω _
-      rw [ensemble.im_inner_configurationGreenOfRegulator_apply_self
-        energy regulator hregulator ω v]
-    _ = regulator *
-        ∑ ω, ensemble.probability ω *
-          ‖ensemble.configurationGreenOfRegulator energy regulator ω v‖ ^ 2 := by
-      rw [Finset.mul_sum]
-      apply Finset.sum_congr rfl
-      intro ω _
-      ring
+  rw [Complex.im_sum]
+  simp_rw [Complex.mul_im, Complex.ofReal_re, Complex.ofReal_im,
+    zero_mul, add_zero,
+    ensemble.im_inner_configurationGreenOfRegulator_apply_self
+      energy regulator hregulator]
+  simp_rw [mul_left_comm (ensemble.probability _) regulator]
+  rw [← Finset.mul_sum]
 
 /-- The Herglotz identity and one positive-probability resolvent give a uniform inverse-norm bound
 for the exact averaged Green operator at any nonzero signed regulator. -/
