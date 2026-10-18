@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.Basic
+import LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.InnerProduct
 
 set_option linter.style.header false
 
@@ -117,6 +117,22 @@ theorem normSq_comp_right_le (hT : IsHilbertSchmidt T) (B : H →L[ℂ] H) :
     _ = ‖B‖ ^ 2 * hT.normSq := by
       rw [← ContinuousLinearMap.star_eq_adjoint, norm_star,
         IsHilbertSchmidt.normSq_adjoint hT]
+
+/-- The absolute diagonal pairing of two Hilbert--Schmidt operators is summable, and its
+sum is bounded by the arithmetic mean of their squared Hilbert--Schmidt norms. -/
+theorem summable_norm_inner_apply_and_tsum_le {S T : H →L[ℂ] H}
+    (hS : IsHilbertSchmidt S) (hT : IsHilbertSchmidt T)
+    {ι : Type*} (d : HilbertBasis ι ℂ H) :
+    Summable (fun i => ‖inner ℂ (S (d i)) (T (d i))‖) ∧
+      ∑' i, ‖inner ℂ (S (d i)) (T (d i))‖ ≤ (hS.normSq + hT.normSq) / 2 := by
+  have hsum := (hS.summable_inner_apply hT d).norm
+  have hmajor :
+      HasSum (fun i => (‖S (d i)‖ ^ 2 + ‖T (d i)‖ ^ 2) / 2)
+        ((hS.normSq + hT.normSq) / 2) :=
+    ((hS.hasSum_norm_sq_apply d).add (hT.hasSum_norm_sq_apply d)).div_const 2
+  refine ⟨hsum, (hsum.tsum_le_tsum (fun i => ?_) hmajor.summable).trans_eq hmajor.tsum_eq⟩
+  exact (norm_inner_le_norm (S (d i)) (T (d i))).trans (by
+    nlinarith [sq_nonneg (‖S (d i)‖ - ‖T (d i)‖)])
 
 end IsHilbertSchmidt
 
