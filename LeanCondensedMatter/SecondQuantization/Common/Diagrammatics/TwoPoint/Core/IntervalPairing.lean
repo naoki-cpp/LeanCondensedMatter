@@ -375,6 +375,37 @@ theorem TwoPointDiagram.intervalBlock_partner_interior
     d.intervalAugmentedPairing_partner_interior earlier later
       hEarlier hLater hne hpne]
 
+/-- The partner of an interior leg in a standalone block is the original
+ambient partner, once both legs are expressed through the interval leg
+equivalence. Unlike the structural partner equation, this exposes the
+ambient leg coordinates directly for graph-incidence arguments. -/
+theorem TwoPointDiagram.intervalBlock_partner_interior_ambient
+    (i : {leg : Fin (2 * (2 * S.card + 1)) // d.IsInteriorLeg earlier later leg}) :
+    (d.intervalBlockLegEquiv earlier later hsepLater)
+      ((d.intervalBlock boundaryLabels earlier later hsepLater
+        hEarlier hLater hne hpne).pairing.partner
+        ((d.intervalBlockLegEquiv earlier later hsepLater).symm
+          (Sum.inr (⟨i.1, i.2.1⟩ : {leg : Fin (2 * (2 * S.card + 1)) //
+            twoPointVertexOfLeg leg ∈ d.verticesBetweenCuts earlier later})))) =
+      Sum.inr (⟨d.pairing.partner i.1,
+        ((d.isInteriorLeg_partner_iff earlier later i.1).mp i.2).1⟩ :
+        {leg : Fin (2 * (2 * S.card + 1)) //
+          twoPointVertexOfLeg leg ∈ d.verticesBetweenCuts earlier later}) := by
+  have h := d.intervalBlock_partner_interior boundaryLabels earlier later
+    hsepLater hEarlier hLater hne hpne i
+  change
+    (d.intervalBlockLegEquiv earlier later hsepLater)
+      ((d.intervalBlock boundaryLabels earlier later hsepLater
+        hEarlier hLater hne hpne).pairing.partner
+        ((d.intervalBlockLegEquiv earlier later hsepLater).symm
+          (Sum.inr (⟨i.1, i.2.1⟩ : {leg : Fin (2 * (2 * S.card + 1)) //
+            twoPointVertexOfLeg leg ∈ d.verticesBetweenCuts earlier later})))) =
+      Sum.inr (⟨((d.interiorPairing earlier later).partner i).1,
+        ((d.interiorPairing earlier later).partner i).2.1⟩ :
+        {leg : Fin (2 * (2 * S.card + 1)) //
+          twoPointVertexOfLeg leg ∈ d.verticesBetweenCuts earlier later}) at h
+  simpa only [d.interiorPairing_partner_val earlier later i] using h
+
 end PartnerCorrespondence
 
 /-- Strictly nested, external-separating cuts have two distinct interval-facing
