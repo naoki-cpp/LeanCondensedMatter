@@ -270,6 +270,38 @@ theorem TwoPointDiagram.verticesBetweenCuts_reachable_without_both_cuts
   rw [hgraph] at hreach
   exact hreach
 
+/-- Every vertex of a cut interval identifies that entire interval as its
+component after deleting both boundary propagators. This combines the
+interval's double-cut reachability with invariance of interval membership
+under double-cut paths. -/
+theorem TwoPointDiagram.doubleCut_componentBlock_eq_verticesBetweenCuts
+    (d : TwoPointDiagram ExternalLabel InternalLabel N S)
+    (hconnected : d.IsExternallyConnected)
+    (earlier later : Fin (2 * (2 * S.card + 1)))
+    (hsepEarlier : ¬ (d.vertexGraphWithoutPropagator earlier).Reachable
+      (Sum.inl (0 : Fin 2)) (Sum.inl (1 : Fin 2)))
+    (hsepLater : ¬ (d.vertexGraphWithoutPropagator later).Reachable
+      (Sum.inl (0 : Fin 2)) (Sum.inl (1 : Fin 2)))
+    (u : TwoPointVertex S)
+    (hu : u ∈ d.verticesBetweenCuts earlier later) :
+    (d.vertexGraphWithoutPropagator earlier ⊓
+      d.vertexGraphWithoutPropagator later).componentBlock u =
+        d.verticesBetweenCuts earlier later := by
+  classical
+  ext v
+  constructor
+  · intro hv
+    have h : (d.vertexGraphWithoutPropagator earlier ⊓
+        d.vertexGraphWithoutPropagator later).Reachable u v :=
+      (((d.vertexGraphWithoutPropagator earlier ⊓
+        d.vertexGraphWithoutPropagator later).mem_componentBlock u v).1 hv).symm
+    exact (d.mem_verticesBetweenCuts_iff_of_doubleCut_reachable earlier later u v h).mp hu
+  · intro hv
+    have h := d.verticesBetweenCuts_reachable_without_both_cuts
+      hconnected earlier later hsepEarlier hsepLater u v hu hv
+    exact ((d.vertexGraphWithoutPropagator earlier ⊓
+      d.vertexGraphWithoutPropagator later).mem_componentBlock u v).2 h.symm
+
 /-- A strictly ordered pair of separating cuts leaves at least one vertex
 between them. No arbitrary external path is involved. -/
 theorem TwoPointDiagram.verticesBetweenCuts_ne_empty_of_ssubset
