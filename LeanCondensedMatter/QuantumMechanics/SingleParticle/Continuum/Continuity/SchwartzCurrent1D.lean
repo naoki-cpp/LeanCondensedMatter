@@ -1,5 +1,6 @@
 import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.SchwartzSchrodinger1D
 import LeanCondensedMatter.QuantumMechanics.SingleParticle.SymmetrizedVelocityCurrent
+import Mathlib.Algebra.Lie.OfAssociative
 
 set_option linter.style.header false
 
