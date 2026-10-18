@@ -57,19 +57,8 @@ theorem finiteDimensionalOperatorTrace_toEuclideanCLM
             (EuclideanSpace ℂ (Fin n) →L[ℂ] EuclideanSpace ℂ (Fin n))) M) =
       Matrix.trace M := by
   rw [finiteDimensionalOperatorTrace_apply]
-  let φ :
-      Matrix (Fin n) (Fin n) ℂ ≃⋆ₐ[ℂ]
-        (EuclideanSpace ℂ (Fin n) →L[ℂ] EuclideanSpace ℂ (Fin n)) :=
-    Matrix.toEuclideanCLM
-  have hcoe :
-      ((φ M : EuclideanSpace ℂ (Fin n) →L[ℂ] EuclideanSpace ℂ (Fin n)) :
-        EuclideanSpace ℂ (Fin n) →ₗ[ℂ] EuclideanSpace ℂ (Fin n)) =
-          Matrix.toEuclideanLin M := by
-    simpa [φ] using Matrix.coe_toEuclideanCLM_eq_toEuclideanLin M
-  change LinearMap.trace ℂ (EuclideanSpace ℂ (Fin n))
-      ((φ M : EuclideanSpace ℂ (Fin n) →L[ℂ] EuclideanSpace ℂ (Fin n)) :
-        EuclideanSpace ℂ (Fin n) →ₗ[ℂ] EuclideanSpace ℂ (Fin n)) = Matrix.trace M
-  rw [hcoe, Matrix.toEuclideanLin_eq_toLin_orthonormal]
+  rw [Matrix.coe_toEuclideanCLM_eq_toEuclideanLin,
+    Matrix.toEuclideanLin_eq_toLin_orthonormal]
   exact Matrix.trace_toLin_eq M (EuclideanSpace.basisFun (Fin n) ℂ).toBasis
 
 /-- Cyclicity of the bundled ordinary trace for two bounded endomorphisms. -/
