@@ -53,20 +53,69 @@ theorem norm_completedFreeHeatOperator_le_one
     (Common.norm_completedDiagonalHeatOperator_le
       (freeEigenvalue ε) β 0 hβ (freeEigenvalue_nonneg ε hε))
 
+/-- The free heat operator is trace class on an arbitrary mode type whenever the
+occupation Boltzmann weights are summable. -/
+theorem completedFreeHeatOperator_isTraceClass_of_summable
+    (ε : Mode → ℝ) (β : ℝ) (hβ : 0 < β) (hε : ∀ i, 0 ≤ ε i)
+    (hsum : EigenbasisGibbsSummable (freeEigenvalue ε) β) :
+    IsTraceClass (completedFreeHeatOperator ε β hβ hε) := by
+  apply (isTraceClass_iff_eigenbasisGibbsSummable_of_basis_action
+    (completedFreeHeatOperator ε β hβ hε)
+    completedOccupationHilbertBasis (freeEigenvalue ε) β ?_).2
+  · exact hsum
+  · intro n
+    rw [completedOccupationHilbertBasis_apply, completedFreeHeatOperator_basisState]
+    rfl
+
+/-- The completed free-boson Gibbs state on any mode type with summable occupation weights. -/
+noncomputable def completedFreeGibbsDensityOperatorOfSummable
+    (ε : Mode → ℝ) (β : ℝ)
+    (hsum : EigenbasisGibbsSummable (freeEigenvalue ε) β) :
+    DensityOperator (CompletedFockSpace Mode) :=
+  eigenbasisGibbsDensityOperator completedOccupationHilbertBasis
+    (freeEigenvalue ε) β hsum
+
+@[simp]
+theorem completedFreeGibbsDensityOperatorOfSummable_apply_basis
+    (ε : Mode → ℝ) (β : ℝ)
+    (hsum : EigenbasisGibbsSummable (freeEigenvalue ε) β)
+    (n : Occupation Mode) :
+    (completedFreeGibbsDensityOperatorOfSummable ε β hsum).op (completedBasisState n) =
+      (eigenbasisGibbsProbability (freeEigenvalue ε) β n : ℂ) •
+        completedBasisState n := by
+  simpa [completedFreeGibbsDensityOperatorOfSummable, completedOccupationHilbertBasis,
+    completedBasisState] using
+    eigenbasisGibbsDensityOperator_apply_basis
+      (completedOccupationHilbertBasis (Mode := Mode))
+      (freeEigenvalue ε) β hsum n
+
+/-- Normalization of the arbitrary-mode free heat operator agrees with the canonical Gibbs
+density operator whenever the occupation partition sum converges. -/
+theorem inv_freeGibbsPartition_smul_completedFreeHeatOperator_eq_completedFreeGibbsDensityOperatorOfSummable_op
+    (ε : Mode → ℝ) (β : ℝ) (hβ : 0 < β) (hε : ∀ i, 0 ≤ ε i)
+    (hsum : EigenbasisGibbsSummable (freeEigenvalue ε) β) :
+    (freeGibbsPartition ε β)⁻¹ •
+        completedFreeHeatOperator ε β hβ hε =
+      (completedFreeGibbsDensityOperatorOfSummable ε β hsum).op := by
+  rw [freeGibbsPartition_eq_coe_eigenbasisPartitionFunction ε β]
+  simpa [completedFreeGibbsDensityOperatorOfSummable] using
+    (inv_partition_smul_heat_eq_eigenbasisGibbsDensityOperator_op
+      (completedFreeHeatOperator ε β hβ hε)
+      (completedOccupationHilbertBasis (Mode := Mode))
+      (freeEigenvalue ε) β hsum
+      (fun n => by
+        rw [completedOccupationHilbertBasis_apply, completedFreeHeatOperator_basisState]
+        rfl))
+
 variable [Finite Mode]
 
 /-- The completed free heat operator is trace class under positive mode energies. -/
 theorem completedFreeHeatOperator_isTraceClass
     (ε : Mode → ℝ) (β : ℝ) (hβ : 0 < β) (hε : ∀ i, 0 < ε i) :
     IsTraceClass
-      (completedFreeHeatOperator ε β hβ (fun i => (hε i).le)) := by
-  apply (isTraceClass_iff_eigenbasisGibbsSummable_of_basis_action
-    (completedFreeHeatOperator ε β hβ (fun i => (hε i).le))
-    completedOccupationHilbertBasis (freeEigenvalue ε) β ?_).2
-  · exact eigenbasisGibbsSummable_freeEigenvalue ε β hβ hε
-  · intro n
-    rw [completedOccupationHilbertBasis_apply, completedFreeHeatOperator_basisState]
-    rfl
+      (completedFreeHeatOperator ε β hβ (fun i => (hε i).le)) :=
+  completedFreeHeatOperator_isTraceClass_of_summable ε β hβ
+    (fun i => (hε i).le) (eigenbasisGibbsSummable_freeEigenvalue ε β hβ hε)
 
 /-- The trace of the completed free heat operator is the existing free bosonic partition
 function. -/
@@ -74,7 +123,7 @@ theorem completedFreeHeatOperator_trace_eq_freeGibbsPartition
     (ε : Mode → ℝ) (β : ℝ) (hβ : 0 < β) (hε : ∀ i, 0 < ε i) :
     (completedFreeHeatOperator_isTraceClass ε β hβ hε).trace =
       freeGibbsPartition ε β := by
-  rw [freeGibbsPartition_eq_coe_eigenbasisPartitionFunction ε β hβ hε]
+  rw [freeGibbsPartition_eq_coe_eigenbasisPartitionFunction ε β]
   exact heatTrace_eq_eigenbasisPartitionFunction_of_basis_action
     (completedFreeHeatOperator ε β hβ (fun i => (hε i).le))
     (completedFreeHeatOperator_isTraceClass ε β hβ hε)
@@ -87,8 +136,8 @@ theorem completedFreeHeatOperator_trace_eq_freeGibbsPartition
 noncomputable def completedFreeGibbsDensityOperator
     (ε : Mode → ℝ) (β : ℝ) (hβ : 0 < β) (hε : ∀ i, 0 < ε i) :
     DensityOperator (CompletedFockSpace Mode) :=
-  eigenbasisGibbsDensityOperator completedOccupationHilbertBasis
-    (freeEigenvalue ε) β (eigenbasisGibbsSummable_freeEigenvalue ε β hβ hε)
+  completedFreeGibbsDensityOperatorOfSummable ε β
+    (eigenbasisGibbsSummable_freeEigenvalue ε β hβ hε)
 
 @[simp]
 theorem completedFreeGibbsDensityOperator_apply_basis
@@ -97,7 +146,8 @@ theorem completedFreeGibbsDensityOperator_apply_basis
     (completedFreeGibbsDensityOperator ε β hβ hε).op (completedBasisState n) =
       (eigenbasisGibbsProbability (freeEigenvalue ε) β n : ℂ) •
         completedBasisState n := by
-  simpa [completedFreeGibbsDensityOperator, completedOccupationHilbertBasis,
+  simpa [completedFreeGibbsDensityOperator, completedFreeGibbsDensityOperatorOfSummable,
+    completedOccupationHilbertBasis,
     completedBasisState] using
     eigenbasisGibbsDensityOperator_apply_basis
       (completedOccupationHilbertBasis (Mode := Mode))
@@ -111,8 +161,8 @@ theorem inv_freeGibbsPartition_smul_completedFreeHeatOperator_eq_completedFreeGi
     (freeGibbsPartition ε β)⁻¹ •
         completedFreeHeatOperator ε β hβ (fun i => (hε i).le) =
       (completedFreeGibbsDensityOperator ε β hβ hε).op := by
-  rw [freeGibbsPartition_eq_coe_eigenbasisPartitionFunction ε β hβ hε]
-  simpa [completedFreeGibbsDensityOperator] using
+  rw [freeGibbsPartition_eq_coe_eigenbasisPartitionFunction ε β]
+  simpa [completedFreeGibbsDensityOperator, completedFreeGibbsDensityOperatorOfSummable] using
     (inv_partition_smul_heat_eq_eigenbasisGibbsDensityOperator_op
       (completedFreeHeatOperator ε β hβ (fun i => (hε i).le))
       (completedOccupationHilbertBasis (Mode := Mode))
