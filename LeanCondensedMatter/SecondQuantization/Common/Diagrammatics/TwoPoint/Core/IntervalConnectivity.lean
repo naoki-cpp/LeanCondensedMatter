@@ -197,7 +197,10 @@ theorem TwoPointDiagram.intervalBlock_adj_interaction_of_ambient_adj
         (Sum.inr (⟨x.1, interactionSector_subset _ x.2⟩ : ↥S) :
           TwoPointVertex S)) : t.1 = x := by
     apply Subtype.ext
-    exact congrArg Subtype.val (Sum.inr.inj ((hI t).symm.trans hx))
+    have hEq : (⟨t.1.1, interactionSector_subset _ t.1.2⟩ : ↥S) =
+        (⟨x.1, interactionSector_subset _ x.2⟩ : ↥S) :=
+      Sum.inr.inj ((hI t).symm.trans hx)
+    exact congrArg Subtype.val hEq
   have hpval : (I p).1 = leg :=
     congrArg Subtype.val (I.apply_symm_apply ⟨leg, hmemLeg⟩)
   have hqval : (I q).1 = d.pairing.partner leg :=
