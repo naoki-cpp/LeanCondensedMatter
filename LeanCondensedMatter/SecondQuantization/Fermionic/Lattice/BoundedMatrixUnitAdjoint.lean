@@ -34,14 +34,6 @@ noncomputable section
 
 variable {Site : Type*}
 
-private theorem basisSingleOne_coord_eq_lapply (y : Site) :
-    (Finsupp.basisSingleOne : Module.Basis Site ℂ (Site →₀ ℂ)).coord y =
-      (Finsupp.lapply y : Module.Dual ℂ ((Site →₀ ℂ))) := by
-  apply LinearMap.ext
-  intro ψ
-  change ψ y = ψ y
-  rfl
-
 variable [LinearOrder Site]
 
 section Finite
@@ -60,17 +52,7 @@ theorem boundedDgammaMatrixUnit_eq_create_comp_annihilate (x y : Site) :
   change Common.finiteHilbertOperatorAlgEquiv
       (AlgebraicFock.occupationConjugate (Finsupp.basisSingleOne : Module.Basis Site ℂ (Site →₀ ℂ))
         (AlgebraicFock.dGamma ((Site →₀ ℂ)) (matrixUnit x y))) = _
-  rw [dGamma_matrixUnit]
-  have hConj := map_mul
-    (AlgebraicFock.occupationConjugate (Finsupp.basisSingleOne : Module.Basis Site ℂ (Site →₀ ℂ)))
-    (AlgebraicFock.create ((Site →₀ ℂ)) (latticeKet x))
-    (AlgebraicFock.annihilateDual ((Site →₀ ℂ)) (Finsupp.lapply y))
-  simp only [Module.End.mul_eq_comp] at hConj
-  rw [hConj]
-  have hx : (Finsupp.basisSingleOne : Module.Basis Site ℂ (Site →₀ ℂ)) x = latticeKet x := rfl
-  rw [← hx, ← basisSingleOne_coord_eq_lapply (Site := Site) y]
-  rw [AlgebraicFock.occupationConjugate_create,
-    AlgebraicFock.occupationConjugate_annihilateDual,
+  rw [occupationConjugate_dGamma_matrixUnit,
     finiteHilbertCreate, finiteHilbertAnnihilate]
   simpa only [← Module.End.mul_eq_comp, ← ContinuousLinearMap.mul_def] using
     map_mul (Common.finiteHilbertOperatorAlgEquiv (Config := Occupation Site))

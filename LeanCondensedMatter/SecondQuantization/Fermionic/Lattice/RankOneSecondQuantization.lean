@@ -1,5 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.RankOne
 import LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.DiscreteLattice
+import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.OccupationFieldEquivalence
 
 set_option linter.style.header false
 
@@ -28,6 +29,35 @@ theorem dGamma_matrixUnit (x y : Site) :
       ((Finsupp.lapply y : Module.Dual ℂ (Site →₀ ℂ)).smulRight (latticeKet x)) = _
   exact AlgebraicFock.dGamma_dualRankOne
     ((Site →₀ ℂ)) (latticeKet x) (Finsupp.lapply y)
+
+
+variable [LinearOrder Site]
+
+/-- Lattice matrix units become occupation-basis creation-annihilation bilinears for
+arbitrary site sets. Both finite and completed realizations use this identity. -/
+theorem occupationConjugate_dGamma_matrixUnit (x y : Site) :
+    AlgebraicFock.occupationConjugate
+        (Finsupp.basisSingleOne : Module.Basis Site ℂ (Site →₀ ℂ))
+        (AlgebraicFock.dGamma ((Site →₀ ℂ)) (matrixUnit x y)) =
+      (create x).comp (annihilate y) := by
+  rw [dGamma_matrixUnit]
+  have hConj := map_mul
+    (AlgebraicFock.occupationConjugate
+      (Finsupp.basisSingleOne : Module.Basis Site ℂ (Site →₀ ℂ)))
+    (AlgebraicFock.create ((Site →₀ ℂ)) (latticeKet x))
+    (AlgebraicFock.annihilateDual ((Site →₀ ℂ)) (Finsupp.lapply y))
+  simp only [Module.End.mul_eq_comp] at hConj
+  rw [hConj]
+  have hx :
+      (Finsupp.basisSingleOne : Module.Basis Site ℂ (Site →₀ ℂ)) x =
+        latticeKet x := rfl
+  have hy :
+      (Finsupp.basisSingleOne : Module.Basis Site ℂ (Site →₀ ℂ)).coord y =
+        (Finsupp.lapply y : Module.Dual ℂ (Site →₀ ℂ)) := by
+    ext ψ
+    rfl
+  rw [← hx, ← hy, AlgebraicFock.occupationConjugate_create,
+    AlgebraicFock.occupationConjugate_annihilateDual]
 
 end
 end Lattice

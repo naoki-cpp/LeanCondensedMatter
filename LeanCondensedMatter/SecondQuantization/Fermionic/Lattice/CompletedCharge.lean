@@ -21,37 +21,6 @@ noncomputable section
 
 variable {Site : Type*} [LinearOrder Site]
 
-/-- The basis-independent lattice charge becomes the occupation number operator under the
-canonical one-particle site basis, for any site type. -/
-private theorem occupationConjugate_siteChargeDensity (q : ℂ) (x : Site) :
-    AlgebraicFock.occupationConjugate
-        (Finsupp.basisSingleOne : Module.Basis Site ℂ (Site →₀ ℂ))
-        (siteChargeDensity q x) = q • numberOperator x := by
-  classical
-  unfold siteChargeDensity
-  rw [map_smul]
-  change q • AlgebraicFock.occupationConjugate
-      (Finsupp.basisSingleOne : Module.Basis Site ℂ (Site →₀ ℂ))
-      (AlgebraicFock.dGamma ((Site →₀ ℂ)) (matrixUnit x x)) = _
-  rw [dGamma_matrixUnit]
-  have hConj := map_mul
-    (AlgebraicFock.occupationConjugate
-      (Finsupp.basisSingleOne : Module.Basis Site ℂ (Site →₀ ℂ)))
-    (AlgebraicFock.create ((Site →₀ ℂ)) (latticeKet x))
-    (AlgebraicFock.annihilateDual ((Site →₀ ℂ)) (Finsupp.lapply x))
-  simp only [Module.End.mul_eq_comp] at hConj
-  rw [hConj]
-  have hx : (Finsupp.basisSingleOne : Module.Basis Site ℂ (Site →₀ ℂ)) x =
-      latticeKet x := rfl
-  have hcoord :
-      (Finsupp.basisSingleOne : Module.Basis Site ℂ (Site →₀ ℂ)).coord x =
-        (Finsupp.lapply x : Module.Dual ℂ (Site →₀ ℂ)) := by
-    ext ψ
-    rfl
-  rw [← hx, ← hcoord, AlgebraicFock.occupationConjugate_create,
-    AlgebraicFock.occupationConjugate_annihilateDual]
-  rfl
-
 /-- The completed local charge realizes the original algebraic lattice charge on the dense
 algebraic core. In particular, no `Fintype Site` assumption is needed. -/
 theorem completedSiteChargeDensity_comp_algebraicToCompleted (q : ℂ) (x : Site) :
@@ -60,7 +29,10 @@ theorem completedSiteChargeDensity_comp_algebraicToCompleted (q : ℂ) (x : Site
         (AlgebraicFock.occupationConjugate
           (Finsupp.basisSingleOne : Module.Basis Site ℂ (Site →₀ ℂ))
           (siteChargeDensity q x)) := by
-  rw [occupationConjugate_siteChargeDensity]
+  rw [siteChargeDensity, map_smul,
+    occupationConjugate_dGamma_matrixUnit]
+  change (q • completedNumberOperator x).toLinearMap.comp algebraicToCompleted =
+    algebraicToCompleted.comp (q • numberOperator x)
   apply Common.linearMap_ext_basisState
   intro n
   change (q • completedNumberOperator x) (algebraicToCompleted (basisState n)) =
