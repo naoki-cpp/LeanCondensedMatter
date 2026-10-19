@@ -1,5 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.ConvergenceAwareGibbs
-import LeanCondensedMatter.QuantumTheory.Gibbs.Eigenbasis
+import LeanCondensedMatter.QuantumTheory.Gibbs.Boltzmann
 
 set_option linter.style.header false
 

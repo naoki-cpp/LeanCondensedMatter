@@ -1,4 +1,4 @@
-import LeanCondensedMatter.QuantumTheory.Gibbs.Eigenbasis
+import LeanCondensedMatter.QuantumTheory.Gibbs.Boltzmann
 import LeanCondensedMatter.Analysis.Inequalities.Gibbs
 
 /-!
