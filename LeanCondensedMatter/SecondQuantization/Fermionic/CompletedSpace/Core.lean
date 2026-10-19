@@ -70,6 +70,9 @@ theorem completedNumberOperator_comp_algebraicToCompleted (i : Mode) :
         Common.completedBoundedDiagonalOperator w zero_le_one hw := by
     apply Common.continuousLinearMap_ext_completedBasis
     intro n
+    change completedNumberOperator i (completedBasisState n) =
+      Common.completedBoundedDiagonalOperator w zero_le_one hw
+        (Common.completedBasisState n)
     rw [completedNumberOperator_basisState,
       Common.completedBoundedDiagonalOperator_basisState]
     by_cases h : i ∈ n <;> simp [w, h]
