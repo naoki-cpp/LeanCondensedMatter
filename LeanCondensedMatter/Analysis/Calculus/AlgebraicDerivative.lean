@@ -42,7 +42,7 @@ theorem add {F G : ℂ → V} {F' G' : V} {A : ℂ}
     (hF : HasAlgebraicDerivAt F F' A) (hG : HasAlgebraicDerivAt G G' A) :
     HasAlgebraicDerivAt (fun z => F z + G z) (F' + G') A := by
   intro ℓ
-  simpa only [map_add] using (hF ℓ).add (hG ℓ)
+  simpa only [map_add, Pi.add_apply] using (hF ℓ).add (hG ℓ)
 
 /-- A complex-linear map transports algebraic derivatives. -/
 theorem map {F : ℂ → V} {F' : V} {A : ℂ}
@@ -64,7 +64,7 @@ theorem comp {F : ℂ → V} {F' : V} {g : ℂ → ℂ} {g' A : ℂ}
     (hF : HasAlgebraicDerivAt F F' (g A)) (hg : HasDerivAt g g' A) :
     HasAlgebraicDerivAt (fun z => F (g z)) (g' • F') A := by
   intro ℓ
-  simpa only [map_smul, smul_eq_mul, mul_comm] using
+  simpa only [map_smul, smul_eq_mul, mul_comm, Function.comp_def] using
     (hF ℓ).comp A hg
 
 /-- Finite sums preserve algebraic derivatives. -/
