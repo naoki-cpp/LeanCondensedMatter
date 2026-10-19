@@ -1,4 +1,3 @@
-import LeanCondensedMatter.Transport.Core.FiniteVolume
 import LeanCondensedMatter.Transport.Core.ConductivityNormalization
 import LeanCondensedMatter.Transport.Core.ConductivityTensor
 

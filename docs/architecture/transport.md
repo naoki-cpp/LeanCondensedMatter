@@ -45,6 +45,10 @@ Transport/
 └── Disorder/      exact finite disorder, Green operators, Born, SCBA, ladder algebra
 ```
 
+`Core.ConductivityNormalization` owns both the model-independent `PositiveVolume` datum and
+the finite-volume electric-field conversion. Consumers use that owner directly; the underlying
+volume is independent of Hilbert-space dimension or a particular response representation.
+
 The main semantic boundaries are:
 
 - finite spectral index and finite Hilbert-space dimension are separate assumptions;
