@@ -53,12 +53,9 @@ variable [Finite Mode]
 theorem eigenbasisGibbsSummable_freeEigenvalue
     (ε : Mode → ℝ) (β : ℝ) (hβ : 0 < β) (hε : ∀ i, 0 < ε i) :
     EigenbasisGibbsSummable (freeEigenvalue ε) β := by
+  apply (eigenbasisGibbsSummable_freeEigenvalue_iff_boltzmannWeight_summable ε β).2
   letI := Fintype.ofFinite Mode
-  unfold EigenbasisGibbsSummable
-  have hsum := summable_boltzmannWeight ε β (fun i => mul_pos hβ (hε i))
-  exact hsum.congr fun n => by
-    simp [boltzmannWeight, eigenbasisBoltzmannWeight, Real.norm_eq_abs,
-      abs_of_nonneg (Real.exp_nonneg _)]
+  exact summable_boltzmannWeight ε β (fun i => mul_pos hβ (hε i))
 
 
 end
