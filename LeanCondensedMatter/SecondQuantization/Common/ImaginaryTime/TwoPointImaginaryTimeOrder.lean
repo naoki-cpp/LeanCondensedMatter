@@ -68,25 +68,6 @@ def twoPointTimedEventBefore {n : ℕ} (τ τ' : ℝ) (σ : Fin n → ℝ)
 def twoPointInteractionEventList (n : ℕ) : List (TwoPointTimedEvent n) :=
   List.ofFn fun v : Fin n => Sum.inr v
 
-private theorem canonicalTwoPointTimedEvents_nodup (n : ℕ) :
-    ([Sum.inl 0, Sum.inl 1] ++ twoPointInteractionEventList n).Nodup := by
-  rw [twoPointInteractionEventList]
-  change ((Sum.inl (0 : Fin 2) : TwoPointTimedEvent n) ::
-    (Sum.inl (1 : Fin 2) : TwoPointTimedEvent n) ::
-      List.ofFn (fun v : Fin n => (Sum.inr v : TwoPointTimedEvent n))).Nodup
-  refine List.nodup_cons.2 ⟨?_, List.nodup_cons.2 ⟨?_, ?_⟩⟩
-  · simp
-  · simp
-  · exact List.nodup_ofFn_ofInjective Sum.inr_injective
-
-private theorem canonicalTwoPointTimedEvents_all_mem (n : ℕ) :
-    ∀ event : TwoPointTimedEvent n,
-      event ∈ [Sum.inl 0, Sum.inl 1] ++ twoPointInteractionEventList n := by
-  intro event
-  cases event with
-  | inl e => fin_cases e <;> simp [twoPointInteractionEventList]
-  | inr v => simp [twoPointInteractionEventList]
-
 /-- All external and interaction events sorted by decreasing time with the stable equal-time rank. -/
 noncomputable def orderedTwoPointTimedEvents {n : ℕ} (τ τ' : ℝ) (σ : Fin n → ℝ) :
     List (TwoPointTimedEvent n) := by
@@ -124,8 +105,15 @@ theorem orderedTwoPointTimedEvents_pairwise {n : ℕ}
 theorem orderedTwoPointTimedEvents_nodup {n : ℕ}
     (τ τ' : ℝ) (σ : Fin n → ℝ) :
     (orderedTwoPointTimedEvents τ τ' σ).Nodup :=
-  (orderedTwoPointTimedEvents_perm τ τ' σ).nodup_iff.mpr
-    (canonicalTwoPointTimedEvents_nodup n)
+  (orderedTwoPointTimedEvents_perm τ τ' σ).nodup_iff.mpr (by
+    rw [twoPointInteractionEventList]
+    change ((Sum.inl (0 : Fin 2) : TwoPointTimedEvent n) ::
+      (Sum.inl (1 : Fin 2) : TwoPointTimedEvent n) ::
+        List.ofFn (fun v : Fin n => (Sum.inr v : TwoPointTimedEvent n))).Nodup
+    refine List.nodup_cons.2 ⟨?_, List.nodup_cons.2 ⟨?_, ?_⟩⟩
+    · simp
+    · simp
+    · exact List.nodup_ofFn_ofInjective Sum.inr_injective)
 
 /-- Every external or interaction event occurs in the fully ordered event list. -/
 theorem orderedTwoPointTimedEvents_all_mem {n : ℕ}
@@ -133,8 +121,10 @@ theorem orderedTwoPointTimedEvents_all_mem {n : ℕ}
     ∀ event : TwoPointTimedEvent n,
       event ∈ orderedTwoPointTimedEvents τ τ' σ := by
   intro event
-  exact (orderedTwoPointTimedEvents_perm τ τ' σ).symm.subset
-    (canonicalTwoPointTimedEvents_all_mem n event)
+  apply (orderedTwoPointTimedEvents_perm τ τ' σ).symm.subset
+  cases event with
+  | inl e => fin_cases e <;> simp [twoPointInteractionEventList]
+  | inr v => simp [twoPointInteractionEventList]
 
 /-- Exact enumeration of all mixed events by their time-ordered positions. -/
 noncomputable def orderedTwoPointTimedEventEquiv {n : ℕ}
