@@ -193,9 +193,9 @@ theorem gibbsEquilibriumDistribution_helmholtzFreeEnergy_eq
   intro i
   rfl
 
-/-- The admissible energy-level Gibbs competitor is the unique equality case of the countable
+/-- The equilibrium Gibbs distribution is the unique equality case of the countable
 Helmholtz variational principle. -/
-theorem gibbsVariational_helmholtzFreeEnergy_eq_iff_eq_competitor
+theorem gibbsVariational_helmholtzFreeEnergy_eq_iff_eq_equilibrium
     [Nonempty ι] (E : ι → ℝ) (β : ℝ) (hβ : 0 < β)
     (hsum : EigenbasisGibbsSummable E β)
     (hint : EigenbasisGibbsEnergyIntegrable E β)
