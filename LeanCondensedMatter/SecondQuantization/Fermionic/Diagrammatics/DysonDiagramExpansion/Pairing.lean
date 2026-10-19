@@ -31,6 +31,7 @@ variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
 interaction-picture quartic-vertex sequence. The row-major `4n` product decomposition is owned by
 `Common.prod_orderedQuarticLegFamily_eq_vertexProducts`; this theorem supplies only the fermionic
 imaginary-time specialization. -/
+omit [Fintype Mode] in
 private theorem prod_ofFn_quarticLegOperatorForSequence_eq_quarticVertexSequenceInteractionPicture
     (ε : Mode → ℝ) :
     ∀ (n : ℕ) (q : Fin n → QuarticVertexLabel Mode) (τ : Fin n → ℝ),
