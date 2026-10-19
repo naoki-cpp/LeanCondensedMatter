@@ -67,10 +67,13 @@ supplies:
 - equality of its trace with the convergence-aware algebraic `freeGibbsPartition`;
 - the canonical pure-point Gibbs density operator, its basis action, and normalization.
 
-For finite `Mode` with positive one-particle energies, the existing geometric-series theorem
-`eigenbasisGibbsSummable_freeEigenvalue` supplies the required summability hypothesis.
-For arbitrary bosonic mode types, one-particle `EigenbasisGibbsSummable ε β` does not yet
-discharge occupation summability; the infinite-mode Finsupp product/multisum theorem remains open.
+For finite `Mode`, the geometric-series theorem `eigenbasisGibbsSummable_freeEigenvalue`
+supplies occupation summability under positive mode energies. For arbitrary `Mode`, the theorem
+`eigenbasisGibbsSummable_freeEigenvalue_of_mode` derives the same conclusion from strict
+positive mode gaps and the one-particle `EigenbasisGibbsSummable ε β` condition. It uses
+`Finsupp.graph` and Mathlib's summability of finite-subset products, without finiteness or
+countability typeclass assumptions on `Mode`. The infinite partition-product identity has
+not yet been formalized.
 
 This does not make bosonic creation, annihilation, number, or interacting Hamiltonians bounded.
 The single-mode number operator and free Hamiltonian are now represented separately as maximal
@@ -101,8 +104,8 @@ needed for that representation-level statement.
 
 ## Open work
 
-- derive arbitrary-mode free-boson occupation Gibbs summability from positive one-mode gaps and
-  summability of the one-particle Boltzmann weights, including the convergent infinite product;
+- identify the arbitrary-mode free-boson partition sum with the convergent infinite product
+  of one-mode geometric partition functions;
 
 - explicit weighted-domain characterizations and identities for mixed-mode and quartic bosonic
   ladder products;
