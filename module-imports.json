@@ -1304,15 +1304,23 @@
       "externalImportCount": 0
     },
     {
+      "name": "LeanCondensedMatter.Combinatorics.PerfectPairing.FirstPairDecomposition",
+      "sourceFile": "LeanCondensedMatter/Combinatorics/PerfectPairing/FirstPairDecomposition.lean",
+      "imports": [
+        "LeanCondensedMatter.Combinatorics.PerfectPairing.EraseZero",
+        "LeanCondensedMatter.Combinatorics.PerfectPairing.InsertFirstPair"
+      ],
+      "externalImportCount": 1
+    },
+    {
       "name": "LeanCondensedMatter.Combinatorics.PerfectPairing.FirstPairRecursion",
       "sourceFile": "LeanCondensedMatter/Combinatorics/PerfectPairing/FirstPairRecursion.lean",
       "imports": [
         "LeanCondensedMatter.Combinatorics.ExchangeSign",
         "LeanCondensedMatter.Combinatorics.PerfectPairing.CrossingEraseZero",
         "LeanCondensedMatter.Combinatorics.PerfectPairing.EraseZero",
-        "LeanCondensedMatter.Combinatorics.PerfectPairing.InsertFirstPair",
-        "LeanCondensedMatter.Combinatorics.PerfectPairing.PairsDecomposition",
-        "LeanCondensedMatter.Combinatorics.PerfectPairing.SumDecomposition"
+        "LeanCondensedMatter.Combinatorics.PerfectPairing.FirstPairDecomposition",
+        "LeanCondensedMatter.Combinatorics.PerfectPairing.InsertFirstPair"
       ],
       "externalImportCount": 0
     },
@@ -1346,14 +1354,6 @@
       "sourceFile": "LeanCondensedMatter/Combinatorics/PerfectPairing/PairEndpoints.lean",
       "imports": [
         "LeanCondensedMatter.Combinatorics.PerfectPairing.Core"
-      ],
-      "externalImportCount": 0
-    },
-    {
-      "name": "LeanCondensedMatter.Combinatorics.PerfectPairing.PairsDecomposition",
-      "sourceFile": "LeanCondensedMatter/Combinatorics/PerfectPairing/PairsDecomposition.lean",
-      "imports": [
-        "LeanCondensedMatter.Combinatorics.PerfectPairing.EraseZero"
       ],
       "externalImportCount": 0
     },
@@ -1404,14 +1404,6 @@
       "externalImportCount": 0
     },
     {
-      "name": "LeanCondensedMatter.Combinatorics.PerfectPairing.SumDecomposition",
-      "sourceFile": "LeanCondensedMatter/Combinatorics/PerfectPairing/SumDecomposition.lean",
-      "imports": [
-        "LeanCondensedMatter.Combinatorics.PerfectPairing.InsertFirstPair"
-      ],
-      "externalImportCount": 1
-    },
-    {
       "name": "LeanCondensedMatter.Combinatorics.PerfectPairing.Transport",
       "sourceFile": "LeanCondensedMatter/Combinatorics/PerfectPairing/Transport.lean",
       "imports": [
@@ -1443,17 +1435,16 @@
         "LeanCondensedMatter.Combinatorics.PerfectPairing.Embedding",
         "LeanCondensedMatter.Combinatorics.PerfectPairing.EraseZero",
         "LeanCondensedMatter.Combinatorics.PerfectPairing.Evaluation",
+        "LeanCondensedMatter.Combinatorics.PerfectPairing.FirstPairDecomposition",
         "LeanCondensedMatter.Combinatorics.PerfectPairing.InsertFirstPair",
         "LeanCondensedMatter.Combinatorics.PerfectPairing.InvolutionCard",
         "LeanCondensedMatter.Combinatorics.PerfectPairing.NormalizedPairRestriction",
         "LeanCondensedMatter.Combinatorics.PerfectPairing.PairEndpoints",
-        "LeanCondensedMatter.Combinatorics.PerfectPairing.PairsDecomposition",
         "LeanCondensedMatter.Combinatorics.PerfectPairing.Restriction",
         "LeanCondensedMatter.Combinatorics.PerfectPairing.Sign",
         "LeanCondensedMatter.Combinatorics.PerfectPairing.Split",
         "LeanCondensedMatter.Combinatorics.PerfectPairing.SplitCrossing",
         "LeanCondensedMatter.Combinatorics.PerfectPairing.SplitNormalizedPairs",
-        "LeanCondensedMatter.Combinatorics.PerfectPairing.SumDecomposition",
         "LeanCondensedMatter.Combinatorics.PerfectPairing.Transport",
         "LeanCondensedMatter.Combinatorics.PerfectPairing.VertexGraph"
       ],
@@ -3794,6 +3785,25 @@
       "externalImportCount": 0
     },
     {
+      "name": "LeanCondensedMatter.QuantumTheory.Gibbs.DistributionUniqueness",
+      "sourceFile": "LeanCondensedMatter/QuantumTheory/Gibbs/DistributionUniqueness.lean",
+      "imports": [
+        "LeanCondensedMatter.Analysis.Inequalities.Gibbs",
+        "LeanCondensedMatter.Analysis.InfiniteSum.Order",
+        "LeanCondensedMatter.QuantumTheory.Gibbs.DistributionVariational"
+      ],
+      "externalImportCount": 0
+    },
+    {
+      "name": "LeanCondensedMatter.QuantumTheory.Gibbs.DistributionVariational",
+      "sourceFile": "LeanCondensedMatter/QuantumTheory/Gibbs/DistributionVariational.lean",
+      "imports": [
+        "LeanCondensedMatter.Analysis.Inequalities.Gibbs",
+        "LeanCondensedMatter.QuantumTheory.Gibbs.Boltzmann"
+      ],
+      "externalImportCount": 0
+    },
+    {
       "name": "LeanCondensedMatter.QuantumTheory.Gibbs.Eigenbasis",
       "sourceFile": "LeanCondensedMatter/QuantumTheory/Gibbs/Eigenbasis.lean",
       "imports": [
@@ -3817,25 +3827,6 @@
       "imports": [
         "LeanCondensedMatter.QuantumTheory.Gibbs.DiagonalEnergy",
         "LeanCondensedMatter.QuantumTheory.Gibbs.Eigenbasis"
-      ],
-      "externalImportCount": 0
-    },
-    {
-      "name": "LeanCondensedMatter.QuantumTheory.Gibbs.EigenbasisUniqueness",
-      "sourceFile": "LeanCondensedMatter/QuantumTheory/Gibbs/EigenbasisUniqueness.lean",
-      "imports": [
-        "LeanCondensedMatter.Analysis.Inequalities.Gibbs",
-        "LeanCondensedMatter.Analysis.InfiniteSum.Order",
-        "LeanCondensedMatter.QuantumTheory.Gibbs.EigenbasisVariational"
-      ],
-      "externalImportCount": 0
-    },
-    {
-      "name": "LeanCondensedMatter.QuantumTheory.Gibbs.EigenbasisVariational",
-      "sourceFile": "LeanCondensedMatter/QuantumTheory/Gibbs/EigenbasisVariational.lean",
-      "imports": [
-        "LeanCondensedMatter.Analysis.Inequalities.Gibbs",
-        "LeanCondensedMatter.QuantumTheory.Gibbs.Boltzmann"
       ],
       "externalImportCount": 0
     },
@@ -3947,11 +3938,11 @@
       "imports": [
         "LeanCondensedMatter.QuantumTheory.Gibbs.Boltzmann",
         "LeanCondensedMatter.QuantumTheory.Gibbs.DiagonalEnergy",
+        "LeanCondensedMatter.QuantumTheory.Gibbs.DistributionUniqueness",
+        "LeanCondensedMatter.QuantumTheory.Gibbs.DistributionVariational",
         "LeanCondensedMatter.QuantumTheory.Gibbs.Eigenbasis",
         "LeanCondensedMatter.QuantumTheory.Gibbs.EigenbasisEntropy",
         "LeanCondensedMatter.QuantumTheory.Gibbs.EigenbasisExpectation",
-        "LeanCondensedMatter.QuantumTheory.Gibbs.EigenbasisUniqueness",
-        "LeanCondensedMatter.QuantumTheory.Gibbs.EigenbasisVariational",
         "LeanCondensedMatter.QuantumTheory.Gibbs.EnergyExpectation",
         "LeanCondensedMatter.QuantumTheory.Gibbs.Entropy",
         "LeanCondensedMatter.QuantumTheory.Gibbs.Equality",

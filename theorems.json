@@ -5982,7 +5982,7 @@
     "retainedMention": true,
     "projectAxioms": [],
     "name": "Combinatorics.Pairing.prod_pairs_eq_firstPair_mul",
-    "module": "LeanCondensedMatter.Combinatorics.PerfectPairing.PairsDecomposition",
+    "module": "LeanCondensedMatter.Combinatorics.PerfectPairing.FirstPairDecomposition",
     "externalAxioms": [],
     "docString": "A product over `pairing.pairs` splits into the `firstPair` factor times a product over the\nsmaller pairing's own pairs. ",
     "directWrapperTargetModule": null,
@@ -6302,7 +6302,7 @@
     "retainedMention": true,
     "projectAxioms": [],
     "name": "Combinatorics.Pairing.sum_eq_sum_sum_insertFirstPair",
-    "module": "LeanCondensedMatter.Combinatorics.PerfectPairing.SumDecomposition",
+    "module": "LeanCondensedMatter.Combinatorics.PerfectPairing.FirstPairDecomposition",
     "externalAxioms": [],
     "docString": "A sum over `Pairing (n + 1)`, reindexed as a double sum over a peeled position and the smaller\npairing. ",
     "directWrapperTargetModule": null,
@@ -47446,13 +47446,13 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.LinearResponse.adiabaticFrequencyDomainSusceptibilityOfPositiveRate_eigenbasis_eq_lehmannSeries"
+      "QuantumTheory.LinearResponse.adiabaticFrequencyDomainSusceptibility_eigenbasis_eq_lehmannSeries"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.LinearResponse.adiabaticFrequencyDomainSusceptibilityOfPositiveRate_eigenbasis_eq_lehmannSeries"
+      "QuantumTheory.LinearResponse.adiabaticFrequencyDomainSusceptibility_eigenbasis_eq_lehmannSeries"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -47845,7 +47845,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {ι : Type u_2} (system : QuantumTheory.LinearResponse.BoundedFreeSystem H) [inst_3 : Fintype ι]\n  (data : QuantumTheory.LinearResponse.EnergyEigenbasisLehmannData system ι) (A B : H →L[ℂ] H) (omega eta : ℝ)\n  (hη : 0 < eta),\n  QuantumTheory.LinearResponse.adiabaticFrequencyDomainSusceptibilityOfPositiveRate system\n      (QuantumTheory.LinearResponse.eigenbasisNormalizedExpectation system data) A B omega eta hη =\n    ∑ mn, (QuantumTheory.LinearResponse.eigenbasisTransitionData system data A B mn).frequencyTerm omega eta",
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {ι : Type u_2} (system : QuantumTheory.LinearResponse.BoundedFreeSystem H) [inst_3 : Fintype ι]\n  (data : QuantumTheory.LinearResponse.EnergyEigenbasisLehmannData system ι) (A B : H →L[ℂ] H) (omega eta : ℝ),\n  0 < eta →\n    QuantumTheory.LinearResponse.adiabaticFrequencyDomainSusceptibility system\n        (QuantumTheory.LinearResponse.eigenbasisNormalizedExpectation system data) A B omega eta =\n      ∑ mn, (QuantumTheory.LinearResponse.eigenbasisTransitionData system data A B mn).frequencyTerm omega eta",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -47857,28 +47857,28 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "QuantumTheory.LinearResponse.adiabaticFrequencyDomainSusceptibilityOfPositiveRate_eigenbasis_eq_finite_sum",
+    "name": "QuantumTheory.LinearResponse.adiabaticFrequencyDomainSusceptibility_eigenbasis_eq_finite_sum",
     "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.EigenbasisFrequencyDomain",
     "externalAxioms": [],
     "docString": "In finite dimension, the physical susceptibility is the conventional finite double Lehmann\nsum. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "QuantumTheory.LinearResponse.finiteTime_eigenbasisPhysicalSusceptibility_has_both_local_three_stage_limits",
       "QuantumTheory.Transport.adiabaticFrequencyDomainSusceptibility_eq_bastinSpectralVertexSum",
-      "SecondQuantization.Fermionic.Transport.infiniteTimeAdiabaticDirectionalRetardedCoefficient_eigenbasis_eq_finite_sum",
-      "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann.EigenbasisLimits.0.QuantumTheory.LinearResponse.finiteEigenbasisPhysicalSusceptibilityExtension_eq_finite_sum"
+      "SecondQuantization.Fermionic.Transport.infiniteTimeAdiabaticDirectionalRetardedCoefficient_eigenbasis_eq_finite_sum"
     ],
     "dependencies": [
-      "QuantumTheory.LinearResponse.adiabaticFrequencyDomainSusceptibilityOfPositiveRate_eigenbasis_eq_lehmannSeries",
+      "QuantumTheory.LinearResponse.adiabaticFrequencyDomainSusceptibility_eigenbasis_eq_lehmannSeries",
       "QuantumTheory.LinearResponse.eigenbasisLehmannSeries_eq_finite_sum",
       "QuantumTheory.LinearResponse.eigenbasisTimeDomainSummable_of_finite"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "QuantumTheory.LinearResponse.finiteTime_eigenbasisPhysicalSusceptibility_has_both_local_three_stage_limits",
       "QuantumTheory.Transport.adiabaticFrequencyDomainSusceptibility_eq_bastinSpectralVertexSum",
-      "SecondQuantization.Fermionic.Transport.infiniteTimeAdiabaticDirectionalRetardedCoefficient_eigenbasis_eq_finite_sum",
-      "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann.EigenbasisLimits.0.QuantumTheory.LinearResponse.finiteEigenbasisPhysicalSusceptibilityExtension_eq_finite_sum"
+      "SecondQuantization.Fermionic.Transport.infiniteTimeAdiabaticDirectionalRetardedCoefficient_eigenbasis_eq_finite_sum"
     ],
     "compiledConsumerCount": 3,
     "axioms": [
@@ -47895,7 +47895,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {ι : Type u_2} (system : QuantumTheory.LinearResponse.BoundedFreeSystem H) [Countable ι]\n  (data : QuantumTheory.LinearResponse.EnergyEigenbasisLehmannData system ι) (A B : H →L[ℂ] H) (omega eta : ℝ)\n  (hη : 0 < eta),\n  QuantumTheory.LinearResponse.EigenbasisTimeDomainSummable system data A B →\n    QuantumTheory.LinearResponse.adiabaticFrequencyDomainSusceptibilityOfPositiveRate system\n        (QuantumTheory.LinearResponse.eigenbasisNormalizedExpectation system data) A B omega eta hη =\n      QuantumTheory.LinearResponse.eigenbasisLehmannSeries system data A B omega eta",
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {ι : Type u_2} (system : QuantumTheory.LinearResponse.BoundedFreeSystem H) [Countable ι]\n  (data : QuantumTheory.LinearResponse.EnergyEigenbasisLehmannData system ι) (A B : H →L[ℂ] H) (omega eta : ℝ),\n  0 < eta →\n    QuantumTheory.LinearResponse.EigenbasisTimeDomainSummable system data A B →\n      QuantumTheory.LinearResponse.adiabaticFrequencyDomainSusceptibility system\n          (QuantumTheory.LinearResponse.eigenbasisNormalizedExpectation system data) A B omega eta =\n        QuantumTheory.LinearResponse.eigenbasisLehmannSeries system data A B omega eta",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -47907,14 +47907,14 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "QuantumTheory.LinearResponse.adiabaticFrequencyDomainSusceptibilityOfPositiveRate_eigenbasis_eq_lehmannSeries",
+    "name": "QuantumTheory.LinearResponse.adiabaticFrequencyDomainSusceptibility_eigenbasis_eq_lehmannSeries",
     "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.EigenbasisFrequencyDomain",
     "externalAxioms": [],
     "docString": "The fixed-positive-rate physical susceptibility equals the countable eigenbasis Lehmann\nresolvent series. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.LinearResponse.adiabaticFrequencyDomainSusceptibilityOfPositiveRate_eigenbasis_eq_finite_sum"
+      "QuantumTheory.LinearResponse.adiabaticFrequencyDomainSusceptibility_eigenbasis_eq_finite_sum"
     ],
     "dependencies": [
       "QuantumTheory.LinearResponse.EigenbasisTimeDomainSummable.lehmannSummable",
@@ -47925,51 +47925,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.LinearResponse.adiabaticFrequencyDomainSusceptibilityOfPositiveRate_eigenbasis_eq_finite_sum"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (expectation : QuantumTheory.LinearResponse.NormalizedExpectation H) (A B : H →L[ℂ] H) (omega eta : ℝ) (hη : 0 < eta),\n  QuantumTheory.LinearResponse.adiabaticFrequencyDomainSusceptibilityOfPositiveRate system expectation A B omega eta\n      hη =\n    QuantumTheory.LinearResponse.causalAdiabaticFrequencyDomainSusceptibility system expectation A B omega eta",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.LinearResponse.adiabaticFrequencyDomainSusceptibilityOfPositiveRate_eq_causal",
-    "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.InfiniteTimeAdiabatic",
-    "externalAxioms": [],
-    "docString": "Causality reduces the full-real-line fixed-rate transform to the positive half-line. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.LinearResponse.tendsto_finiteTimeAdiabaticFrequencyDomainSusceptibility_atTop_eq_fixedRate"
-    ],
-    "dependencies": [
-      "QuantumTheory.LinearResponse.integral_adiabaticFrequencySusceptibilityIntegrand_eq_Ioi_zero"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.LinearResponse.tendsto_finiteTimeAdiabaticFrequencyDomainSusceptibility_atTop_eq_fixedRate"
+      "QuantumTheory.LinearResponse.adiabaticFrequencyDomainSusceptibility_eigenbasis_eq_finite_sum"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -49092,7 +49048,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.LinearResponse.adiabaticFrequencyDomainSusceptibilityOfPositiveRate_eigenbasis_eq_finite_sum",
+      "QuantumTheory.LinearResponse.adiabaticFrequencyDomainSusceptibility_eigenbasis_eq_finite_sum",
       "QuantumTheory.LinearResponse.finiteLehmannTableResponse_ofEigenbasis",
       "SecondQuantization.Fermionic.Transport.finiteConductivityTableValue_directional_ofEigenbasis_eq_kuboGreenwood"
     ],
@@ -49100,7 +49056,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.LinearResponse.adiabaticFrequencyDomainSusceptibilityOfPositiveRate_eigenbasis_eq_finite_sum",
+      "QuantumTheory.LinearResponse.adiabaticFrequencyDomainSusceptibility_eigenbasis_eq_finite_sum",
       "QuantumTheory.LinearResponse.finiteLehmannTableResponse_ofEigenbasis",
       "SecondQuantization.Fermionic.Transport.finiteConductivityTableValue_directional_ofEigenbasis_eq_kuboGreenwood"
     ],
@@ -49224,14 +49180,14 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.LinearResponse.adiabaticFrequencyDomainSusceptibilityOfPositiveRate_eigenbasis_eq_finite_sum",
+      "QuantumTheory.LinearResponse.adiabaticFrequencyDomainSusceptibility_eigenbasis_eq_finite_sum",
       "QuantumTheory.LinearResponse.retardedTimeDifferenceKernel_eigenbasis_eq_finite_sum_of_nonneg"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.LinearResponse.adiabaticFrequencyDomainSusceptibilityOfPositiveRate_eigenbasis_eq_finite_sum",
+      "QuantumTheory.LinearResponse.adiabaticFrequencyDomainSusceptibility_eigenbasis_eq_finite_sum",
       "QuantumTheory.LinearResponse.retardedTimeDifferenceKernel_eigenbasis_eq_finite_sum_of_nonneg"
     ],
     "compiledConsumerCount": 2,
@@ -50532,57 +50488,14 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "QuantumTheory.LinearResponse.tendsto_finiteTimeAdiabaticFrequencyDomainSusceptibility_atTop_eq_fixedRate",
-      "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann.EigenbasisLimits.0.QuantumTheory.LinearResponse.finite_eigenbasisPhysicalSusceptibility_has_both_local_iterated_limits"
+      "QuantumTheory.LinearResponse.adiabaticFrequencyDomainSusceptibility_eigenbasis_eq_finite_sum",
+      "QuantumTheory.LinearResponse.finset_frequencyTerm_has_both_local_iterated_limits",
+      "QuantumTheory.LinearResponse.tendsto_finiteTimeAdiabaticFrequencyDomainSusceptibility_atTop"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [],
     "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {ι : Type u_2} [inst_3 : Fintype ι] (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (data : QuantumTheory.LinearResponse.EnergyEigenbasisLehmannData system ι) (A B : H →L[ℂ] H),\n  QuantumTheory.LinearResponse.EigenbasisStaticNonresonant system data A B →\n    QuantumTheory.LinearResponse.HasLocalStaticThenAdiabaticLimit\n        (fun omega eta =>\n          ∑ mn, (QuantumTheory.LinearResponse.eigenbasisTransitionData system data A B mn).frequencyTerm omega eta)\n        (∑ mn, (QuantumTheory.LinearResponse.eigenbasisTransitionData system data A B mn).frequencyTerm 0 0) ∧\n      QuantumTheory.LinearResponse.HasLocalAdiabaticThenStaticLimit\n        (fun omega eta =>\n          ∑ mn, (QuantumTheory.LinearResponse.eigenbasisTransitionData system data A B mn).frequencyTerm omega eta)\n        (∑ mn, (QuantumTheory.LinearResponse.eigenbasisTransitionData system data A B mn).frequencyTerm 0 0)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": true,
-    "retainedMention": true,
-    "projectAxioms": [],
-    "name": "QuantumTheory.LinearResponse.finite_eigenbasisLehmann_has_both_local_iterated_limits",
-    "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann.EigenbasisLimits",
-    "externalAxioms": [],
-    "docString": "A finite static-nonresonant eigenbasis Lehmann formula has both local iterated limits, with the\nsame zero-rate static double sum. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann.EigenbasisLimits.0.QuantumTheory.LinearResponse.finite_eigenbasisPhysicalSusceptibility_has_both_local_iterated_limits"
-    ],
-    "dependencies": [
-      "QuantumTheory.LinearResponse.finset_frequencyTerm_has_both_local_iterated_limits"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann.EigenbasisLimits.0.QuantumTheory.LinearResponse.finite_eigenbasisPhysicalSusceptibility_has_both_local_iterated_limits"
-    ],
-    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -50616,7 +50529,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.LinearResponse.finite_eigenbasisLehmann_has_both_local_iterated_limits"
+      "QuantumTheory.LinearResponse.finiteTime_eigenbasisPhysicalSusceptibility_has_both_local_three_stage_limits"
     ],
     "dependencies": [
       "QuantumTheory.LinearResponse.HasAdiabaticRemovalLimit.finsetSum",
@@ -50629,7 +50542,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.LinearResponse.finite_eigenbasisLehmann_has_both_local_iterated_limits"
+      "QuantumTheory.LinearResponse.finiteTime_eigenbasisPhysicalSusceptibility_has_both_local_three_stage_limits"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -52376,8 +52289,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.LinearResponse.adiabaticFrequencyDomainSusceptibilityOfPositiveRate_eigenbasis_eq_lehmannSeries",
-      "QuantumTheory.LinearResponse.adiabaticFrequencyDomainSusceptibilityOfPositiveRate_eq_causal",
+      "QuantumTheory.LinearResponse.adiabaticFrequencyDomainSusceptibility_eigenbasis_eq_lehmannSeries",
+      "QuantumTheory.LinearResponse.tendsto_finiteTimeAdiabaticFrequencyDomainSusceptibility_atTop",
       "SecondQuantization.Fermionic.Transport.infiniteTimeAdiabaticDirectionalRetardedCoefficient_eq_susceptibility"
     ],
     "dependencies": [
@@ -52386,8 +52299,8 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.LinearResponse.adiabaticFrequencyDomainSusceptibilityOfPositiveRate_eigenbasis_eq_lehmannSeries",
-      "QuantumTheory.LinearResponse.adiabaticFrequencyDomainSusceptibilityOfPositiveRate_eq_causal",
+      "QuantumTheory.LinearResponse.adiabaticFrequencyDomainSusceptibility_eigenbasis_eq_lehmannSeries",
+      "QuantumTheory.LinearResponse.tendsto_finiteTimeAdiabaticFrequencyDomainSusceptibility_atTop",
       "SecondQuantization.Fermionic.Transport.infiniteTimeAdiabaticDirectionalRetardedCoefficient_eq_susceptibility"
     ],
     "compiledConsumerCount": 3,
@@ -52598,7 +52511,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.LinearResponse.adiabaticFrequencyDomainSusceptibilityOfPositiveRate_eigenbasis_eq_lehmannSeries"
+      "QuantumTheory.LinearResponse.adiabaticFrequencyDomainSusceptibility_eigenbasis_eq_lehmannSeries"
     ],
     "dependencies": [
       "QuantumTheory.LinearResponse.LehmannTransitionData.norm_timeTerm",
@@ -52609,7 +52522,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.LinearResponse.adiabaticFrequencyDomainSusceptibilityOfPositiveRate_eigenbasis_eq_lehmannSeries"
+      "QuantumTheory.LinearResponse.adiabaticFrequencyDomainSusceptibility_eigenbasis_eq_lehmannSeries"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -54402,7 +54315,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.LinearResponse.adiabaticFrequencyDomainSusceptibilityOfPositiveRate_eigenbasis_eq_lehmannSeries",
+      "QuantumTheory.LinearResponse.adiabaticFrequencyDomainSusceptibility_eigenbasis_eq_lehmannSeries",
       "QuantumTheory.LinearResponse.retardedTimeDifferenceKernel_eigenbasis_eq_finite_sum_of_nonneg"
     ],
     "dependencies": [
@@ -54412,7 +54325,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.LinearResponse.adiabaticFrequencyDomainSusceptibilityOfPositiveRate_eigenbasis_eq_lehmannSeries",
+      "QuantumTheory.LinearResponse.adiabaticFrequencyDomainSusceptibility_eigenbasis_eq_lehmannSeries",
       "QuantumTheory.LinearResponse.retardedTimeDifferenceKernel_eigenbasis_eq_finite_sum_of_nonneg"
     ],
     "compiledConsumerCount": 2,
@@ -55064,7 +54977,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (expectation : QuantumTheory.LinearResponse.NormalizedExpectation H) (A B : H →L[ℂ] H) (omega eta : ℝ),\n  0 < eta →\n    Filter.Tendsto\n      (fun T =>\n        QuantumTheory.LinearResponse.finiteTimeAdiabaticFrequencyDomainSusceptibility system expectation A B omega eta\n          T)\n      Filter.atTop\n      (nhds\n        (QuantumTheory.LinearResponse.causalAdiabaticFrequencyDomainSusceptibility system expectation A B omega eta))",
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (expectation : QuantumTheory.LinearResponse.NormalizedExpectation H) (A B : H →L[ℂ] H) (omega eta : ℝ),\n  0 < eta →\n    Filter.Tendsto\n      (fun T =>\n        QuantumTheory.LinearResponse.finiteTimeAdiabaticFrequencyDomainSusceptibility system expectation A B omega eta\n          T)\n      Filter.atTop\n      (nhds (QuantumTheory.LinearResponse.adiabaticFrequencyDomainSusceptibility system expectation A B omega eta))",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -55083,56 +54996,12 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.LinearResponse.tendsto_finiteTimeAdiabaticFrequencyDomainSusceptibility_atTop_eq_fixedRate"
-    ],
-    "dependencies": [
-      "QuantumTheory.LinearResponse.AdiabaticIntegrable.integrable",
-      "QuantumTheory.LinearResponse.adiabaticIntegrable_of_pos"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.LinearResponse.tendsto_finiteTimeAdiabaticFrequencyDomainSusceptibility_atTop_eq_fixedRate"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (expectation : QuantumTheory.LinearResponse.NormalizedExpectation H) (A B : H →L[ℂ] H) (omega eta : ℝ) (hη : 0 < eta),\n  Filter.Tendsto\n    (fun T =>\n      QuantumTheory.LinearResponse.finiteTimeAdiabaticFrequencyDomainSusceptibility system expectation A B omega eta T)\n    Filter.atTop\n    (nhds\n      (QuantumTheory.LinearResponse.adiabaticFrequencyDomainSusceptibilityOfPositiveRate system expectation A B omega\n        eta hη))",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.LinearResponse.tendsto_finiteTimeAdiabaticFrequencyDomainSusceptibility_atTop_eq_fixedRate",
-    "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.InfiniteTimeAdiabatic",
-    "externalAxioms": [],
-    "docString": "The physical fixed-rate susceptibility is therefore obtained by taking `T → ∞` first, while\n`omega` and the positive rate `eta` remain fixed. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
       "QuantumTheory.LinearResponse.finiteTime_eigenbasisPhysicalSusceptibility_has_both_local_three_stage_limits"
     ],
     "dependencies": [
-      "QuantumTheory.LinearResponse.adiabaticFrequencyDomainSusceptibilityOfPositiveRate_eq_causal",
-      "QuantumTheory.LinearResponse.tendsto_finiteTimeAdiabaticFrequencyDomainSusceptibility_atTop"
+      "QuantumTheory.LinearResponse.AdiabaticIntegrable.integrable",
+      "QuantumTheory.LinearResponse.adiabaticIntegrable_of_pos",
+      "QuantumTheory.LinearResponse.integral_adiabaticFrequencySusceptibilityIntegrand_eq_Ioi_zero"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -86816,7 +86685,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {H : Type u_1} {ι : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] [inst_3 : Fintype ι] (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (data : QuantumTheory.LinearResponse.EnergyEigenbasisLehmannData system ι)\n  (channel : QuantumTheory.LinearResponse.ResponseChannel H) (omega eta : ℝ) (heta : 0 < eta),\n  QuantumTheory.LinearResponse.adiabaticFrequencyDomainSusceptibilityOfPositiveRate system\n        (QuantumTheory.LinearResponse.eigenbasisNormalizedExpectation system data) channel.measured channel.source omega\n        eta heta +\n      (QuantumTheory.LinearResponse.eigenbasisNormalizedExpectation system data).toContinuousLinearMap\n        channel.observableVariation =\n    QuantumTheory.Transport.finiteKuboBastinSpectralChannelResponse system data channel omega eta",
+    "statement": "∀ {H : Type u_1} {ι : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] [inst_3 : Fintype ι] (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (data : QuantumTheory.LinearResponse.EnergyEigenbasisLehmannData system ι)\n  (channel : QuantumTheory.LinearResponse.ResponseChannel H) (omega eta : ℝ),\n  0 < eta →\n    QuantumTheory.LinearResponse.adiabaticFrequencyDomainSusceptibility system\n          (QuantumTheory.LinearResponse.eigenbasisNormalizedExpectation system data) channel.measured channel.source\n          omega eta +\n        (QuantumTheory.LinearResponse.eigenbasisNormalizedExpectation system data).toContinuousLinearMap\n          channel.observableVariation =\n      QuantumTheory.Transport.finiteKuboBastinSpectralChannelResponse system data channel omega eta",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -86856,7 +86725,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} {ι : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] [inst_3 : Fintype ι] (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (data : QuantumTheory.LinearResponse.EnergyEigenbasisLehmannData system ι) (measured source : H →L[ℂ] H)\n  (omega eta : ℝ) (heta : 0 < eta),\n  QuantumTheory.LinearResponse.adiabaticFrequencyDomainSusceptibilityOfPositiveRate system\n      (QuantumTheory.LinearResponse.eigenbasisNormalizedExpectation system data) measured source omega eta heta =\n    QuantumTheory.Transport.finiteKuboBastinSpectralVertexSum system data measured source omega eta",
+    "statement": "∀ {H : Type u_1} {ι : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] [inst_3 : Fintype ι] (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (data : QuantumTheory.LinearResponse.EnergyEigenbasisLehmannData system ι) (measured source : H →L[ℂ] H)\n  (omega eta : ℝ),\n  0 < eta →\n    QuantumTheory.LinearResponse.adiabaticFrequencyDomainSusceptibility system\n        (QuantumTheory.LinearResponse.eigenbasisNormalizedExpectation system data) measured source omega eta =\n      QuantumTheory.Transport.finiteKuboBastinSpectralVertexSum system data measured source omega eta",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -86878,7 +86747,7 @@
       "QuantumTheory.Transport.adiabaticFrequencyDomainResponseChannel_eq_bastinSpectral"
     ],
     "dependencies": [
-      "QuantumTheory.LinearResponse.adiabaticFrequencyDomainSusceptibilityOfPositiveRate_eigenbasis_eq_finite_sum",
+      "QuantumTheory.LinearResponse.adiabaticFrequencyDomainSusceptibility_eigenbasis_eq_finite_sum",
       "QuantumTheory.Transport.eigenbasisLehmannVertexTerm_eq_bastinSpectral"
     ],
     "crossModuleDirectWrapper": false,
@@ -92458,20 +92327,20 @@
     "directWrapperOf": null,
     "dependents": [
       "QuantumTheory.eigenbasisBoltzmannWeight_nonneg",
-      "QuantumTheory.eigenbasisGibbs_helmholtzFreeEnergy_le",
       "QuantumTheory.eigenbasisPartitionFunction_pos",
+      "QuantumTheory.gibbsVariational_helmholtzFreeEnergy_le",
       "SecondQuantization.Fermionic.completedFreeModeTruncatedPartitionFunction_pos",
-      "_private.LeanCondensedMatter.QuantumTheory.Gibbs.EigenbasisUniqueness.0.QuantumTheory.eigenbasisGibbs_entropy_eq_iff"
+      "_private.LeanCondensedMatter.QuantumTheory.Gibbs.DistributionUniqueness.0.QuantumTheory.gibbsVariational_entropy_eq_iff"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.eigenbasisBoltzmannWeight_nonneg",
-      "QuantumTheory.eigenbasisGibbs_helmholtzFreeEnergy_le",
       "QuantumTheory.eigenbasisPartitionFunction_pos",
+      "QuantumTheory.gibbsVariational_helmholtzFreeEnergy_le",
       "SecondQuantization.Fermionic.completedFreeModeTruncatedPartitionFunction_pos",
-      "_private.LeanCondensedMatter.QuantumTheory.Gibbs.EigenbasisUniqueness.0.QuantumTheory.eigenbasisGibbs_entropy_eq_iff"
+      "_private.LeanCondensedMatter.QuantumTheory.Gibbs.DistributionUniqueness.0.QuantumTheory.gibbsVariational_entropy_eq_iff"
     ],
     "compiledConsumerCount": 5,
     "axioms": [
@@ -92507,107 +92376,25 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.eigenbasisGibbs_helmholtzFreeEnergy_le",
       "QuantumTheory.eigenbasisPartitionFunction_pos",
+      "QuantumTheory.gibbsVariational_helmholtzFreeEnergy_le",
       "QuantumTheory.hasSum_eigenbasisGibbsProbability",
       "SecondQuantization.Fermionic.eigenbasisPartitionFunction_fermionEnergy_eq_tprod_one_add",
-      "_private.LeanCondensedMatter.QuantumTheory.Gibbs.EigenbasisUniqueness.0.QuantumTheory.eigenbasisGibbs_entropy_eq_iff",
+      "_private.LeanCondensedMatter.QuantumTheory.Gibbs.DistributionUniqueness.0.QuantumTheory.gibbsVariational_entropy_eq_iff",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.BoltzmannSummability.0.SecondQuantization.Fermionic.eigenbasisBoltzmannWeight_fermionEnergy_summable_of_mode"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.eigenbasisGibbs_helmholtzFreeEnergy_le",
       "QuantumTheory.eigenbasisPartitionFunction_pos",
+      "QuantumTheory.gibbsVariational_helmholtzFreeEnergy_le",
       "QuantumTheory.hasSum_eigenbasisGibbsProbability",
       "SecondQuantization.Fermionic.eigenbasisPartitionFunction_fermionEnergy_eq_tprod_one_add",
-      "_private.LeanCondensedMatter.QuantumTheory.Gibbs.EigenbasisUniqueness.0.QuantumTheory.eigenbasisGibbs_entropy_eq_iff",
+      "_private.LeanCondensedMatter.QuantumTheory.Gibbs.DistributionUniqueness.0.QuantumTheory.gibbsVariational_entropy_eq_iff",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.BoltzmannSummability.0.SecondQuantization.Fermionic.eigenbasisBoltzmannWeight_fermionEnergy_summable_of_mode"
     ],
     "compiledConsumerCount": 6,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {ι : Type u_1} [inst : Nonempty ι] (E : ι → ℝ) (β : ℝ),\n  0 < β →\n    ∀ (hsum : QuantumTheory.EigenbasisGibbsSummable E β) (hint : QuantumTheory.EigenbasisGibbsEnergyIntegrable E β),\n      (QuantumTheory.eigenbasisGibbsCompetitor E β hsum hint).helmholtzFreeEnergy β =\n        -(1 / β) * Real.log (QuantumTheory.eigenbasisPartitionFunction E β)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.eigenbasisGibbsCompetitor_helmholtzFreeEnergy_eq",
-    "module": "LeanCondensedMatter.QuantumTheory.Gibbs.EigenbasisUniqueness",
-    "externalAxioms": [],
-    "docString": "The Gibbs competitor attains the countable pure-point Helmholtz lower bound. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.eigenbasisGibbs_helmholtzFreeEnergy_eq_iff_eq_competitor"
-    ],
-    "dependencies": [
-      "QuantumTheory.eigenbasisGibbs_helmholtzFreeEnergy_eq_iff_probability_eq"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.eigenbasisGibbs_helmholtzFreeEnergy_eq_iff_eq_competitor"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {ι : Type u_1} [inst : Nonempty ι] (E : ι → ℝ) (β : ℝ) (hsum : QuantumTheory.EigenbasisGibbsSummable E β)\n  (hint : QuantumTheory.EigenbasisGibbsEnergyIntegrable E β) (i : ι),\n  (QuantumTheory.eigenbasisGibbsCompetitor E β hsum hint).probability i = QuantumTheory.eigenbasisGibbsProbability E β i",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.eigenbasisGibbsCompetitor_probability",
-    "module": "LeanCondensedMatter.QuantumTheory.Gibbs.EigenbasisUniqueness",
-    "externalAxioms": [],
-    "docString": "The canonical Gibbs competitor carries the normalized pure-point Gibbs probability. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -92746,7 +92533,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.eigenbasisGibbsCompetitor",
+      "QuantumTheory.gibbsEquilibriumDistribution",
       "SecondQuantization.Fermionic.completedFreeTotalNumberExpectation_nonneg"
     ],
     "compiledConsumerCount": 2,
@@ -92852,136 +92639,6 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
-    "statement": "∀ {ι : Type u_1} [inst : Nonempty ι] (E : ι → ℝ) (β : ℝ),\n  0 < β →\n    ∀ (hsum : QuantumTheory.EigenbasisGibbsSummable E β) (hint : QuantumTheory.EigenbasisGibbsEnergyIntegrable E β)\n      (p : QuantumTheory.EigenbasisGibbsCompetitor E),\n      p.helmholtzFreeEnergy β = -(1 / β) * Real.log (QuantumTheory.eigenbasisPartitionFunction E β) ↔\n        p = QuantumTheory.eigenbasisGibbsCompetitor E β hsum hint",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.eigenbasisGibbs_helmholtzFreeEnergy_eq_iff_eq_competitor",
-    "module": "LeanCondensedMatter.QuantumTheory.Gibbs.EigenbasisUniqueness",
-    "externalAxioms": [],
-    "docString": "The admissible pure-point Gibbs competitor is the unique equality case of the countable\nHelmholtz variational principle. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "QuantumTheory.eigenbasisGibbsCompetitor_helmholtzFreeEnergy_eq",
-      "QuantumTheory.eigenbasisGibbs_helmholtzFreeEnergy_eq_iff_probability_eq"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {ι : Type u_1} [Nonempty ι] (E : ι → ℝ) (β : ℝ),\n  0 < β →\n    QuantumTheory.EigenbasisGibbsSummable E β →\n      ∀ (p : QuantumTheory.EigenbasisGibbsCompetitor E),\n        p.helmholtzFreeEnergy β = -(1 / β) * Real.log (QuantumTheory.eigenbasisPartitionFunction E β) ↔\n          ∀ (i : ι), p.probability i = QuantumTheory.eigenbasisGibbsProbability E β i",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.eigenbasisGibbs_helmholtzFreeEnergy_eq_iff_probability_eq",
-    "module": "LeanCondensedMatter.QuantumTheory.Gibbs.EigenbasisUniqueness",
-    "externalAxioms": [],
-    "docString": "Equality in the countable pure-point Helmholtz lower bound holds exactly when the competitor\nprobabilities are the normalized Gibbs probabilities. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.eigenbasisGibbsCompetitor_helmholtzFreeEnergy_eq",
-      "QuantumTheory.eigenbasisGibbs_helmholtzFreeEnergy_eq_iff_eq_competitor"
-    ],
-    "dependencies": [
-      "_private.LeanCondensedMatter.QuantumTheory.Gibbs.EigenbasisUniqueness.0.QuantumTheory.eigenbasisGibbs_entropy_eq_iff"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.eigenbasisGibbsCompetitor_helmholtzFreeEnergy_eq",
-      "QuantumTheory.eigenbasisGibbs_helmholtzFreeEnergy_eq_iff_eq_competitor"
-    ],
-    "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {ι : Type u_1} [Nonempty ι] (E : ι → ℝ) (β : ℝ),\n  0 < β →\n    QuantumTheory.EigenbasisGibbsSummable E β →\n      ∀ (p : QuantumTheory.EigenbasisGibbsCompetitor E),\n        -(1 / β) * Real.log (QuantumTheory.eigenbasisPartitionFunction E β) ≤ p.helmholtzFreeEnergy β",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.eigenbasisGibbs_helmholtzFreeEnergy_le",
-    "module": "LeanCondensedMatter.QuantumTheory.Gibbs.EigenbasisVariational",
-    "externalAxioms": [],
-    "docString": "Every normalized countable competitor with absolutely integrable energy has Helmholtz free\nenergy at least the pure-point Gibbs value; finite entropy is derived from Gibbs summability. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "QuantumTheory.eigenbasisBoltzmannWeight_pos",
-      "QuantumTheory.eigenbasisBoltzmannWeight_summable",
-      "QuantumTheory.eigenbasisPartitionFunction_pos",
-      "Real.summable_negMulLog_and_tsum_le_gibbs"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
     "terminal": false,
     "statement": "∀ {ι : Type u_1} [Nonempty ι] (E : ι → ℝ) (β : ℝ),\n  QuantumTheory.EigenbasisGibbsSummable E β → 0 < QuantumTheory.eigenbasisPartitionFunction E β",
     "standardAxioms": [
@@ -93003,15 +92660,15 @@
     "directWrapperOf": null,
     "dependents": [
       "QuantumTheory.eigenbasisGibbsDensityOperator_apply_basis",
-      "QuantumTheory.eigenbasisGibbs_helmholtzFreeEnergy_le",
+      "QuantumTheory.gibbsVariational_helmholtzFreeEnergy_le",
       "QuantumTheory.hasSum_eigenbasisGibbsProbability",
       "SecondQuantization.Common.finiteGibbsExpectation_eq_trace_div",
       "SecondQuantization.Common.traceFock_diagonalEvolution_ne_zero",
       "SecondQuantization.Fermionic.completedFreeModeTruncatedGibbsProbability_eq_ratio_mul",
       "SecondQuantization.Fermionic.tendsto_completedFreeModeTruncatedGibbsProbability",
       "SecondQuantization.Fermionic.tendsto_completedFreeModeTruncationNormalizationRatio",
-      "_private.LeanCondensedMatter.QuantumTheory.Gibbs.EigenbasisEntropy.0.QuantumTheory.negMulLog_eigenbasisGibbsProbability",
-      "_private.LeanCondensedMatter.QuantumTheory.Gibbs.EigenbasisUniqueness.0.QuantumTheory.eigenbasisGibbs_entropy_eq_iff"
+      "_private.LeanCondensedMatter.QuantumTheory.Gibbs.DistributionUniqueness.0.QuantumTheory.gibbsVariational_entropy_eq_iff",
+      "_private.LeanCondensedMatter.QuantumTheory.Gibbs.EigenbasisEntropy.0.QuantumTheory.negMulLog_eigenbasisGibbsProbability"
     ],
     "dependencies": [
       "QuantumTheory.eigenbasisBoltzmannWeight_nonneg",
@@ -93023,15 +92680,15 @@
     "compiledConsumers": [
       "QuantumTheory.eigenbasisGibbsDensityOperator",
       "QuantumTheory.eigenbasisGibbsDensityOperator_apply_basis",
-      "QuantumTheory.eigenbasisGibbs_helmholtzFreeEnergy_le",
+      "QuantumTheory.gibbsVariational_helmholtzFreeEnergy_le",
       "QuantumTheory.hasSum_eigenbasisGibbsProbability",
       "SecondQuantization.Common.finiteGibbsExpectation_eq_trace_div",
       "SecondQuantization.Common.traceFock_diagonalEvolution_ne_zero",
       "SecondQuantization.Fermionic.completedFreeModeTruncatedGibbsProbability_eq_ratio_mul",
       "SecondQuantization.Fermionic.tendsto_completedFreeModeTruncatedGibbsProbability",
       "SecondQuantization.Fermionic.tendsto_completedFreeModeTruncationNormalizationRatio",
-      "_private.LeanCondensedMatter.QuantumTheory.Gibbs.EigenbasisEntropy.0.QuantumTheory.negMulLog_eigenbasisGibbsProbability",
-      "_private.LeanCondensedMatter.QuantumTheory.Gibbs.EigenbasisUniqueness.0.QuantumTheory.eigenbasisGibbs_entropy_eq_iff"
+      "_private.LeanCondensedMatter.QuantumTheory.Gibbs.DistributionUniqueness.0.QuantumTheory.gibbsVariational_entropy_eq_iff",
+      "_private.LeanCondensedMatter.QuantumTheory.Gibbs.EigenbasisEntropy.0.QuantumTheory.negMulLog_eigenbasisGibbsProbability"
     ],
     "compiledConsumerCount": 11,
     "axioms": [
@@ -93731,6 +93388,88 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {ι : Type u_1} [inst : Nonempty ι] (E : ι → ℝ) (β : ℝ),\n  0 < β →\n    ∀ (hsum : QuantumTheory.EigenbasisGibbsSummable E β) (hint : QuantumTheory.EigenbasisGibbsEnergyIntegrable E β),\n      (QuantumTheory.gibbsEquilibriumDistribution E β hsum hint).helmholtzFreeEnergy β =\n        -(1 / β) * Real.log (QuantumTheory.eigenbasisPartitionFunction E β)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.gibbsEquilibriumDistribution_helmholtzFreeEnergy_eq",
+    "module": "LeanCondensedMatter.QuantumTheory.Gibbs.DistributionUniqueness",
+    "externalAxioms": [],
+    "docString": "The Gibbs competitor attains the countable energy-level Helmholtz lower bound. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.gibbsVariational_helmholtzFreeEnergy_eq_iff_eq_equilibrium"
+    ],
+    "dependencies": [
+      "QuantumTheory.gibbsVariational_helmholtzFreeEnergy_eq_iff_probability_eq"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.gibbsVariational_helmholtzFreeEnergy_eq_iff_eq_equilibrium"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {ι : Type u_1} [inst : Nonempty ι] (E : ι → ℝ) (β : ℝ) (hsum : QuantumTheory.EigenbasisGibbsSummable E β)\n  (hint : QuantumTheory.EigenbasisGibbsEnergyIntegrable E β) (i : ι),\n  (QuantumTheory.gibbsEquilibriumDistribution E β hsum hint).probability i =\n    QuantumTheory.eigenbasisGibbsProbability E β i",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.gibbsEquilibriumDistribution_probability",
+    "module": "LeanCondensedMatter.QuantumTheory.Gibbs.DistributionUniqueness",
+    "externalAxioms": [],
+    "docString": "The canonical Gibbs competitor carries the normalized energy-level Gibbs probability. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (Hop : QuantumTheory.Observable H) (β : ℝ) {v : H} {E : ℝ},\n  ↑↑Hop v = ↑E • v → (QuantumTheory.gibbsOp Hop β) v = ↑(Real.exp (-β * E)) • v",
     "standardAxioms": [
       "Classical.choice",
@@ -94212,6 +93951,136 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
+    "terminal": true,
+    "statement": "∀ {ι : Type u_1} [inst : Nonempty ι] (E : ι → ℝ) (β : ℝ),\n  0 < β →\n    ∀ (hsum : QuantumTheory.EigenbasisGibbsSummable E β) (hint : QuantumTheory.EigenbasisGibbsEnergyIntegrable E β)\n      (p : QuantumTheory.GibbsVariationalDistribution E),\n      p.helmholtzFreeEnergy β = -(1 / β) * Real.log (QuantumTheory.eigenbasisPartitionFunction E β) ↔\n        p = QuantumTheory.gibbsEquilibriumDistribution E β hsum hint",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.gibbsVariational_helmholtzFreeEnergy_eq_iff_eq_equilibrium",
+    "module": "LeanCondensedMatter.QuantumTheory.Gibbs.DistributionUniqueness",
+    "externalAxioms": [],
+    "docString": "The equilibrium Gibbs distribution is the unique equality case of the countable\nHelmholtz variational principle. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.gibbsEquilibriumDistribution_helmholtzFreeEnergy_eq",
+      "QuantumTheory.gibbsVariational_helmholtzFreeEnergy_eq_iff_probability_eq"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {ι : Type u_1} [Nonempty ι] (E : ι → ℝ) (β : ℝ),\n  0 < β →\n    QuantumTheory.EigenbasisGibbsSummable E β →\n      ∀ (p : QuantumTheory.GibbsVariationalDistribution E),\n        p.helmholtzFreeEnergy β = -(1 / β) * Real.log (QuantumTheory.eigenbasisPartitionFunction E β) ↔\n          ∀ (i : ι), p.probability i = QuantumTheory.eigenbasisGibbsProbability E β i",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.gibbsVariational_helmholtzFreeEnergy_eq_iff_probability_eq",
+    "module": "LeanCondensedMatter.QuantumTheory.Gibbs.DistributionUniqueness",
+    "externalAxioms": [],
+    "docString": "Equality in the countable energy-level Helmholtz lower bound holds exactly when the competitor\nprobabilities are the normalized Gibbs probabilities. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.gibbsEquilibriumDistribution_helmholtzFreeEnergy_eq",
+      "QuantumTheory.gibbsVariational_helmholtzFreeEnergy_eq_iff_eq_equilibrium"
+    ],
+    "dependencies": [
+      "_private.LeanCondensedMatter.QuantumTheory.Gibbs.DistributionUniqueness.0.QuantumTheory.gibbsVariational_entropy_eq_iff"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.gibbsEquilibriumDistribution_helmholtzFreeEnergy_eq",
+      "QuantumTheory.gibbsVariational_helmholtzFreeEnergy_eq_iff_eq_equilibrium"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {ι : Type u_1} [Nonempty ι] (E : ι → ℝ) (β : ℝ),\n  0 < β →\n    QuantumTheory.EigenbasisGibbsSummable E β →\n      ∀ (p : QuantumTheory.GibbsVariationalDistribution E),\n        -(1 / β) * Real.log (QuantumTheory.eigenbasisPartitionFunction E β) ≤ p.helmholtzFreeEnergy β",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.gibbsVariational_helmholtzFreeEnergy_le",
+    "module": "LeanCondensedMatter.QuantumTheory.Gibbs.DistributionVariational",
+    "externalAxioms": [],
+    "docString": "Every normalized countable competitor with absolutely integrable energy has Helmholtz free\nenergy at least the energy-level Gibbs value; finite entropy is derived from Gibbs summability. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.eigenbasisBoltzmannWeight_pos",
+      "QuantumTheory.eigenbasisBoltzmannWeight_summable",
+      "QuantumTheory.eigenbasisPartitionFunction_pos",
+      "Real.summable_negMulLog_and_tsum_le_gibbs"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
     "terminal": false,
     "statement": "∀ {ι : Type u_1} {H : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] (K : H →L[ℂ] H) (htrace : K.IsTraceClass) (b : HilbertBasis ι ℂ H) (E : ι → ℝ) (β : ℝ),\n  (∀ (i : ι), K (b i) = ↑(QuantumTheory.eigenbasisBoltzmannWeight E β i) • b i) →\n    HasSum (fun i => ↑(QuantumTheory.eigenbasisBoltzmannWeight E β i)) htrace.trace",
     "standardAxioms": [
@@ -94331,7 +94200,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.eigenbasisGibbsCompetitor",
+      "QuantumTheory.gibbsEquilibriumDistribution",
       "QuantumTheory.summable_norm_negMulLog_eigenbasisGibbsProbability",
       "QuantumTheory.vonNeumannEntropy_eigenbasisGibbsDensityOperator"
     ],
@@ -96540,14 +96409,14 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "_private.LeanCondensedMatter.QuantumTheory.Gibbs.EigenbasisUniqueness.0.QuantumTheory.eigenbasisGibbs_entropy_eq_iff",
+      "_private.LeanCondensedMatter.QuantumTheory.Gibbs.DistributionUniqueness.0.QuantumTheory.gibbsVariational_entropy_eq_iff",
       "negMulLog_bound_eq_iff"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "_private.LeanCondensedMatter.QuantumTheory.Gibbs.EigenbasisUniqueness.0.QuantumTheory.eigenbasisGibbs_entropy_eq_iff",
+      "_private.LeanCondensedMatter.QuantumTheory.Gibbs.DistributionUniqueness.0.QuantumTheory.gibbsVariational_entropy_eq_iff",
       "negMulLog_bound_eq_iff"
     ],
     "compiledConsumerCount": 2,
@@ -96676,7 +96545,7 @@
     "dependents": [
       "QuantumTheory.helmholtzFreeEnergy_eq_components",
       "Real.summable_negMulLog_and_tsum_le_gibbs",
-      "_private.LeanCondensedMatter.QuantumTheory.Gibbs.EigenbasisUniqueness.0.QuantumTheory.eigenbasisGibbs_entropy_eq_iff"
+      "_private.LeanCondensedMatter.QuantumTheory.Gibbs.DistributionUniqueness.0.QuantumTheory.gibbsVariational_entropy_eq_iff"
     ],
     "dependencies": [
       "Real.gibbs_scalar_ineq"
@@ -96686,7 +96555,7 @@
     "compiledConsumers": [
       "QuantumTheory.helmholtzFreeEnergy_eq_components",
       "Real.summable_negMulLog_and_tsum_le_gibbs",
-      "_private.LeanCondensedMatter.QuantumTheory.Gibbs.EigenbasisUniqueness.0.QuantumTheory.eigenbasisGibbs_entropy_eq_iff"
+      "_private.LeanCondensedMatter.QuantumTheory.Gibbs.DistributionUniqueness.0.QuantumTheory.gibbsVariational_entropy_eq_iff"
     ],
     "compiledConsumerCount": 3,
     "axioms": [
@@ -96852,7 +96721,7 @@
     "dependents": [
       "QuantumTheory.helmholtzFreeEnergy_eq_components",
       "Real.summable_negMulLog_and_tsum_le_gibbs",
-      "_private.LeanCondensedMatter.QuantumTheory.Gibbs.EigenbasisUniqueness.0.QuantumTheory.eigenbasisGibbs_entropy_eq_iff"
+      "_private.LeanCondensedMatter.QuantumTheory.Gibbs.DistributionUniqueness.0.QuantumTheory.gibbsVariational_entropy_eq_iff"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
@@ -96860,7 +96729,7 @@
     "compiledConsumers": [
       "QuantumTheory.helmholtzFreeEnergy_eq_components",
       "Real.summable_negMulLog_and_tsum_le_gibbs",
-      "_private.LeanCondensedMatter.QuantumTheory.Gibbs.EigenbasisUniqueness.0.QuantumTheory.eigenbasisGibbs_entropy_eq_iff"
+      "_private.LeanCondensedMatter.QuantumTheory.Gibbs.DistributionUniqueness.0.QuantumTheory.gibbsVariational_entropy_eq_iff"
     ],
     "compiledConsumerCount": 3,
     "axioms": [
@@ -96896,10 +96765,10 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.eigenbasisGibbs_helmholtzFreeEnergy_le",
+      "QuantumTheory.gibbsVariational_helmholtzFreeEnergy_le",
       "QuantumTheory.helmholtzFreeEnergy_eq_components",
       "QuantumTheory.helmholtzFreeEnergy_ge_and_entropy_ne_top",
-      "_private.LeanCondensedMatter.QuantumTheory.Gibbs.EigenbasisUniqueness.0.QuantumTheory.eigenbasisGibbs_entropy_eq_iff"
+      "_private.LeanCondensedMatter.QuantumTheory.Gibbs.DistributionUniqueness.0.QuantumTheory.gibbsVariational_entropy_eq_iff"
     ],
     "dependencies": [
       "Real.negMulLog_le_of_neg_log_le",
@@ -96910,10 +96779,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.eigenbasisGibbs_helmholtzFreeEnergy_le",
+      "QuantumTheory.gibbsVariational_helmholtzFreeEnergy_le",
       "QuantumTheory.helmholtzFreeEnergy_eq_components",
       "QuantumTheory.helmholtzFreeEnergy_ge_and_entropy_ne_top",
-      "_private.LeanCondensedMatter.QuantumTheory.Gibbs.EigenbasisUniqueness.0.QuantumTheory.eigenbasisGibbs_entropy_eq_iff"
+      "_private.LeanCondensedMatter.QuantumTheory.Gibbs.DistributionUniqueness.0.QuantumTheory.gibbsVariational_entropy_eq_iff"
     ],
     "compiledConsumerCount": 4,
     "axioms": [
@@ -139364,7 +139233,7 @@
       "SecondQuantization.Fermionic.Transport.infiniteTimeAdiabaticDirectionalCoefficient_eigenbasis_eq_finite_sum"
     ],
     "dependencies": [
-      "QuantumTheory.LinearResponse.adiabaticFrequencyDomainSusceptibilityOfPositiveRate_eigenbasis_eq_finite_sum",
+      "QuantumTheory.LinearResponse.adiabaticFrequencyDomainSusceptibility_eigenbasis_eq_finite_sum",
       "SecondQuantization.Fermionic.Transport.infiniteTimeAdiabaticDirectionalRetardedCoefficient_eq_susceptibility"
     ],
     "crossModuleDirectWrapper": false,
@@ -174689,6 +174558,57 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {ι : Type u_1} [Nonempty ι] (E : ι → ℝ) (β : ℝ),\n  QuantumTheory.EigenbasisGibbsSummable E β →\n    ∀ (p : QuantumTheory.GibbsVariationalDistribution E),\n      p.entropy = β * p.energy + Real.log (QuantumTheory.eigenbasisPartitionFunction E β) ↔\n        ∀ (i : ι), p.probability i = QuantumTheory.eigenbasisGibbsProbability E β i",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.QuantumTheory.Gibbs.DistributionUniqueness.0.QuantumTheory.gibbsVariational_entropy_eq_iff",
+    "module": "LeanCondensedMatter.QuantumTheory.Gibbs.DistributionUniqueness",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.gibbsVariational_helmholtzFreeEnergy_eq_iff_probability_eq"
+    ],
+    "dependencies": [
+      "QuantumTheory.eigenbasisBoltzmannWeight_pos",
+      "QuantumTheory.eigenbasisBoltzmannWeight_summable",
+      "QuantumTheory.eigenbasisPartitionFunction_pos",
+      "Real.gibbs_scalar_ineq_eq_iff",
+      "Real.negMulLog_le_of_neg_log_le",
+      "Real.summable_gibbsComparison_and_tsum_eq",
+      "Real.summable_negMulLog_and_tsum_le_gibbs",
+      "pointwise_eq_of_tsum_eq_of_le"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.gibbsVariational_helmholtzFreeEnergy_eq_iff_probability_eq"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {ι : Type u_1} [Nonempty ι] (E : ι → ℝ) (β : ℝ),\n  QuantumTheory.EigenbasisGibbsSummable E β →\n    ∀ (i : ι),\n      (QuantumTheory.eigenbasisGibbsProbability E β i).negMulLog =\n        β * (QuantumTheory.eigenbasisGibbsProbability E β i * E i) +\n          Real.log (QuantumTheory.eigenbasisPartitionFunction E β) * QuantumTheory.eigenbasisGibbsProbability E β i",
     "standardAxioms": [
       "Classical.choice",
@@ -174721,57 +174641,6 @@
       "QuantumTheory.vonNeumannEntropy_eigenbasisGibbsDensityOperator"
     ],
     "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {ι : Type u_1} [Nonempty ι] (E : ι → ℝ) (β : ℝ),\n  QuantumTheory.EigenbasisGibbsSummable E β →\n    ∀ (p : QuantumTheory.EigenbasisGibbsCompetitor E),\n      p.entropy = β * p.energy + Real.log (QuantumTheory.eigenbasisPartitionFunction E β) ↔\n        ∀ (i : ι), p.probability i = QuantumTheory.eigenbasisGibbsProbability E β i",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.QuantumTheory.Gibbs.EigenbasisUniqueness.0.QuantumTheory.eigenbasisGibbs_entropy_eq_iff",
-    "module": "LeanCondensedMatter.QuantumTheory.Gibbs.EigenbasisUniqueness",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.eigenbasisGibbs_helmholtzFreeEnergy_eq_iff_probability_eq"
-    ],
-    "dependencies": [
-      "QuantumTheory.eigenbasisBoltzmannWeight_pos",
-      "QuantumTheory.eigenbasisBoltzmannWeight_summable",
-      "QuantumTheory.eigenbasisPartitionFunction_pos",
-      "Real.gibbs_scalar_ineq_eq_iff",
-      "Real.negMulLog_le_of_neg_log_le",
-      "Real.summable_gibbsComparison_and_tsum_eq",
-      "Real.summable_negMulLog_and_tsum_le_gibbs",
-      "pointwise_eq_of_tsum_eq_of_le"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.eigenbasisGibbs_helmholtzFreeEnergy_eq_iff_probability_eq"
-    ],
-    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -174992,95 +174861,6 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.LinearResponse.expectation_commutator_firstVariation_eq_integral"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {ι : Type u_2} [inst_3 : Fintype ι] (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (data : QuantumTheory.LinearResponse.EnergyEigenbasisLehmannData system ι) (A B : H →L[ℂ] H) (omega eta : ℝ),\n  QuantumTheory.LinearResponse.finiteEigenbasisPhysicalSusceptibilityExtension✝ system data A B omega eta =\n    ∑ mn, (QuantumTheory.LinearResponse.eigenbasisTransitionData system data A B mn).frequencyTerm omega eta",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann.EigenbasisLimits.0.QuantumTheory.LinearResponse.finiteEigenbasisPhysicalSusceptibilityExtension_eq_finite_sum",
-    "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann.EigenbasisLimits",
-    "externalAxioms": [],
-    "docString": "The total extension is globally equal to the finite Lehmann resolvent sum. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann.EigenbasisLimits.0.QuantumTheory.LinearResponse.finite_eigenbasisPhysicalSusceptibility_has_both_local_iterated_limits"
-    ],
-    "dependencies": [
-      "QuantumTheory.LinearResponse.adiabaticFrequencyDomainSusceptibilityOfPositiveRate_eigenbasis_eq_finite_sum"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann.EigenbasisLimits.0.QuantumTheory.LinearResponse.finite_eigenbasisPhysicalSusceptibility_has_both_local_iterated_limits"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {ι : Type u_2} [inst_3 : Fintype ι] (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (data : QuantumTheory.LinearResponse.EnergyEigenbasisLehmannData system ι) (A B : H →L[ℂ] H),\n  QuantumTheory.LinearResponse.EigenbasisStaticNonresonant system data A B →\n    QuantumTheory.LinearResponse.HasLocalStaticThenAdiabaticLimit\n        (QuantumTheory.LinearResponse.finiteEigenbasisPhysicalSusceptibilityExtension✝ system data A B)\n        (∑ mn, (QuantumTheory.LinearResponse.eigenbasisTransitionData system data A B mn).frequencyTerm 0 0) ∧\n      QuantumTheory.LinearResponse.HasLocalAdiabaticThenStaticLimit\n        (QuantumTheory.LinearResponse.finiteEigenbasisPhysicalSusceptibilityExtension✝ system data A B)\n        (∑ mn, (QuantumTheory.LinearResponse.eigenbasisTransitionData system data A B mn).frequencyTerm 0 0)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann.EigenbasisLimits.0.QuantumTheory.LinearResponse.finite_eigenbasisPhysicalSusceptibility_has_both_local_iterated_limits",
-    "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann.EigenbasisLimits",
-    "externalAxioms": [],
-    "docString": "The physical positive-rate susceptibility has both local nonresonant iterated limits after\npassing to its canonical total extension.  Both orders have the same zero-rate static Lehmann\nvalue. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.LinearResponse.finiteTime_eigenbasisPhysicalSusceptibility_has_both_local_three_stage_limits"
-    ],
-    "dependencies": [
-      "QuantumTheory.LinearResponse.finite_eigenbasisLehmann_has_both_local_iterated_limits",
-      "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann.EigenbasisLimits.0.QuantumTheory.LinearResponse.finiteEigenbasisPhysicalSusceptibilityExtension_eq_finite_sum"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.LinearResponse.finiteTime_eigenbasisPhysicalSusceptibility_has_both_local_three_stage_limits"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -192095,14 +191875,14 @@
     "directWrapperOf": null,
     "dependents": [
       "QuantumTheory.helmholtzFreeEnergy_eq_components",
-      "_private.LeanCondensedMatter.QuantumTheory.Gibbs.EigenbasisUniqueness.0.QuantumTheory.eigenbasisGibbs_entropy_eq_iff"
+      "_private.LeanCondensedMatter.QuantumTheory.Gibbs.DistributionUniqueness.0.QuantumTheory.gibbsVariational_entropy_eq_iff"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.helmholtzFreeEnergy_eq_components",
-      "_private.LeanCondensedMatter.QuantumTheory.Gibbs.EigenbasisUniqueness.0.QuantumTheory.eigenbasisGibbs_entropy_eq_iff"
+      "_private.LeanCondensedMatter.QuantumTheory.Gibbs.DistributionUniqueness.0.QuantumTheory.gibbsVariational_entropy_eq_iff"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
