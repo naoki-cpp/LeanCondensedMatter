@@ -85,7 +85,7 @@ theorem completedBoundedDiagonalOperator_comp_algebraicToCompleted
 
 /-- If a bounded completed operator extends algebraic diagonal multiplication, the diagonal
 weights are uniformly bounded by its operator norm. -/
-theorem norm_weight_le_of_bounded_diagonal_extension
+private theorem norm_weight_le_of_bounded_diagonal_extension
     (A : CompletedFock Config →L[ℂ] CompletedFock Config) (w : Config → ℂ)
     (hA : A.toLinearMap.comp algebraicToCompleted =
       algebraicToCompleted.comp (diagonalOperator w)) (c : Config) :
