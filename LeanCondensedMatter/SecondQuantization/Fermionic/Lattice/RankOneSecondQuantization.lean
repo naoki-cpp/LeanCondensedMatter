@@ -30,7 +30,6 @@ theorem dGamma_matrixUnit (x y : Site) :
   exact AlgebraicFock.dGamma_dualRankOne
     ((Site →₀ ℂ)) (latticeKet x) (Finsupp.lapply y)
 
-
 variable [LinearOrder Site]
 
 /-- Lattice matrix units become occupation-basis creation-annihilation bilinears for
