@@ -43,7 +43,6 @@
         "LeanCondensedMatter/QuantumMechanics/SingleParticle/Continuum/Continuity/SchwartzCurrent1D.lean",
         "LeanCondensedMatter/QuantumMechanics/SingleParticle/Continuum/Continuity/SchwartzSpinCurrent1D.lean",
         "LeanCondensedMatter/SecondQuantization/Fermionic/Field/GeneralizedQuantity.lean",
-        "LeanCondensedMatter/SecondQuantization/Fermionic/Transport/BoundedOneBodyResponse.lean",
         "LeanCondensedMatter/SecondQuantization/Fermionic/Transport/FluxResponse.lean",
         "LeanCondensedMatter/SecondQuantization/Fermionic/Transport/SymmetrizedVelocityCurrent.lean",
         "LeanCondensedMatter/SecondQuantization/Fermionic/Transport/CorrectedCurrentResponse.lean",
@@ -167,7 +166,6 @@
       "paths": [
         "LeanCondensedMatter/SecondQuantization/Fermionic/Transport.lean",
         "LeanCondensedMatter/SecondQuantization/Fermionic/Validation.lean",
-        "LeanCondensedMatter/SecondQuantization/Fermionic/Transport/BoundedOneBodyResponse.lean",
         "LeanCondensedMatter/SecondQuantization/Fermionic/Transport/ConductivityNormalization.lean",
         "LeanCondensedMatter/SecondQuantization/Fermionic/Transport/FrequencyResponse.lean",
         "LeanCondensedMatter/SecondQuantization/Fermionic/Transport/GeometricCurrentResponse.lean",
@@ -404,8 +402,8 @@
       "id": "generalizedCurrentFluxResponse",
       "path": "LeanCondensedMatter/SecondQuantization/Fermionic/Transport/FluxResponse.lean",
       "modules": [
-        "LeanCondensedMatter.Analysis.ConservationLaw.CurrentEquivalence",
-        "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.BoundedOneBodyResponse"
+        "LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.Bounded",
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.RetardedSusceptibility"
       ]
     },
     {
@@ -421,14 +419,13 @@
       "path": "LeanCondensedMatter/SecondQuantization/Fermionic/Transport/SymmetrizedVelocityCurrent.lean",
       "modules": [
         "LeanCondensedMatter.Analysis.Operator.SymmetrizedProduct",
-        "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.BoundedOneBodyResponse"
+        "LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.Bounded"
       ]
     },
     {
       "id": "generalizedCurrentTransportUmbrella",
       "path": "LeanCondensedMatter/SecondQuantization/Fermionic/Transport.lean",
       "modules": [
-        "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.BoundedOneBodyResponse",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.FluxResponse",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.SymmetrizedVelocityCurrent",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.CorrectedCurrentResponse"

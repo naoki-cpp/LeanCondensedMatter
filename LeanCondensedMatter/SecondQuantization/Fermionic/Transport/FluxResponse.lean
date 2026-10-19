@@ -1,5 +1,5 @@
-import LeanCondensedMatter.Analysis.ConservationLaw.CurrentEquivalence
-import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.BoundedOneBodyResponse
+import LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.Bounded
+import LeanCondensedMatter.QuantumTheory.LinearResponse.RetardedSusceptibility
 
 set_option linter.style.header false
 
@@ -29,10 +29,9 @@ open _root_.SecondQuantization.Fermionic.Lattice
 
 noncomputable section
 
-variable {Site Test OneForm : Type*}
+variable {Site Test : Type*}
 variable [LinearOrder Site] [Fintype Site]
 variable [AddCommGroup Test] [Module ℂ Test]
-variable [AddCommGroup OneForm] [Module ℂ OneForm]
 
 /-- Retarded Kubo response of an intrinsic one-body flux, linear in the test object. -/
 noncomputable def boundedFluxRetardedResponse
@@ -43,72 +42,9 @@ noncomputable def boundedFluxRetardedResponse
     (source : FiniteLatticeHilbertFock Site →L[ℂ] FiniteLatticeHilbertFock Site)
     (Φ : Test →ₗ[ℂ] ((Site →₀ ℂ) →ₗ[ℂ] (Site →₀ ℂ)))
     (t s : ℝ) : Test →ₗ[ℂ] ℂ :=
-  (boundedOneBodyRetardedResponseLinearMap system expectation source t s).comp Φ
-
-/-- A differential-current representation identifies the flux Kubo response with
-the chosen current response precomposed by the differential. The equality is only on exact
-differentials; no equality of arbitrary current extensions is implied. -/
-theorem boundedFluxRetardedResponse_eq_comp_of_factorization
-    (system : QuantumTheory.LinearResponse.BoundedFreeSystem
-      (FiniteLatticeHilbertFock Site))
-    (expectation : QuantumTheory.LinearResponse.NormalizedExpectation
-      (FiniteLatticeHilbertFock Site))
-    (source : FiniteLatticeHilbertFock Site →L[ℂ] FiniteLatticeHilbertFock Site)
-    (d : Test →ₗ[ℂ] OneForm)
-    (Φ : Test →ₗ[ℂ] ((Site →₀ ℂ) →ₗ[ℂ] (Site →₀ ℂ)))
-    (J : OneForm →ₗ[ℂ] ((Site →₀ ℂ) →ₗ[ℂ] (Site →₀ ℂ)))
-    (hΦ : Φ = J.comp d)
-    (t s : ℝ) :
-    boundedFluxRetardedResponse system expectation source Φ t s =
-      (boundedFluxRetardedResponse system expectation source J t s).comp d := by
-  apply LinearMap.ext
-  intro f
-  change
-    boundedOneBodyRetardedResponseLinearMap system expectation source t s (Φ f) =
-      boundedOneBodyRetardedResponseLinearMap system expectation source t s (J (d f))
-  have hf := congrArg
-    (fun L : Test →ₗ[ℂ] ((Site →₀ ℂ) →ₗ[ℂ] (Site →₀ ℂ)) => L f) hΦ
-  simp only [LinearMap.comp_apply] at hf
-  rw [hf]
-
-/-- Equivalent full current functionals give the same retarded response on every exact
-differential.  No statement is made here for an arbitrary non-exact one-form. -/
-theorem boundedFluxRetardedResponse_eq_of_differentialEquivalent
-    (system : QuantumTheory.LinearResponse.BoundedFreeSystem
-      (FiniteLatticeHilbertFock Site))
-    (expectation : QuantumTheory.LinearResponse.NormalizedExpectation
-      (FiniteLatticeHilbertFock Site))
-    (source : FiniteLatticeHilbertFock Site →L[ℂ] FiniteLatticeHilbertFock Site)
-    (d : Test →ₗ[ℂ] OneForm)
-    (J₁ J₂ : OneForm →ₗ[ℂ] ((Site →₀ ℂ) →ₗ[ℂ] (Site →₀ ℂ)))
-    (hJ : _root_.ConservationLaw.DifferentialCurrentEquivalent d J₁ J₂)
-    (t s : ℝ) (f : Test) :
-    boundedFluxRetardedResponse system expectation source J₁ t s (d f) =
-      boundedFluxRetardedResponse system expectation source J₂ t s (d f) := by
-  change
-    boundedOneBodyRetardedResponseLinearMap system expectation source t s (J₁ (d f)) =
-      boundedOneBodyRetardedResponseLinearMap system expectation source t s (J₂ (d f))
-  rw [hJ f]
-
-/-- A chosen global current component agrees with the intrinsic response once it is explicitly
-identified as an exact differential.  This witness is essential: exact-differential equivalence
-alone does not identify arbitrary/global one-forms. -/
-theorem boundedFluxRetardedResponse_current_eq_of_eq_differential
-    (system : QuantumTheory.LinearResponse.BoundedFreeSystem
-      (FiniteLatticeHilbertFock Site))
-    (expectation : QuantumTheory.LinearResponse.NormalizedExpectation
-      (FiniteLatticeHilbertFock Site))
-    (source : FiniteLatticeHilbertFock Site →L[ℂ] FiniteLatticeHilbertFock Site)
-    (d : Test →ₗ[ℂ] OneForm)
-    (Φ : Test →ₗ[ℂ] ((Site →₀ ℂ) →ₗ[ℂ] (Site →₀ ℂ)))
-    (R : _root_.ConservationLaw.DifferentialCurrentRepresentation d Φ)
-    (t s : ℝ) (α : OneForm) (f : Test) (hα : α = d f) :
-    boundedFluxRetardedResponse system expectation source R.current t s α =
-      boundedFluxRetardedResponse system expectation source Φ t s f := by
-  subst α
-  exact (congrArg (fun response : Test →ₗ[ℂ] ℂ => response f)
-    (boundedFluxRetardedResponse_eq_comp_of_factorization
-      system expectation source d Φ R.current R.isCurrent t s)).symm
+  (QuantumTheory.LinearResponse.retardedSusceptibilityMeasuredLinearMap
+      system expectation source t s).comp
+    ((boundedOneBodyOperatorLinearMap (Site := Site)).comp Φ)
 
 end
 end Transport
