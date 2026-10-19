@@ -100943,7 +100943,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {Mode : Type u_1} [inst : Finite Mode] (ε : Mode → ℝ) (β : ℝ) (hβ : 0 < β) (hε : ∀ (i : Mode), 0 < ε i)\n  (n : SecondQuantization.Bosonic.Occupation Mode),\n  (SecondQuantization.Bosonic.completedFreeGibbsDensityOperator ε β hβ hε).op\n      (SecondQuantization.Bosonic.completedBasisState n) =\n    ↑(QuantumTheory.eigenbasisGibbsProbability (SecondQuantization.Bosonic.freeEigenvalue ε) β n) •\n      SecondQuantization.Bosonic.completedBasisState n",
+    "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (β : ℝ)\n  (hsum : QuantumTheory.EigenbasisGibbsSummable (SecondQuantization.Bosonic.freeEigenvalue ε) β)\n  (n : SecondQuantization.Bosonic.Occupation Mode),\n  (SecondQuantization.Bosonic.completedFreeGibbsDensityOperator ε β hsum).op\n      (SecondQuantization.Bosonic.completedBasisState n) =\n    ↑(QuantumTheory.eigenbasisGibbsProbability (SecondQuantization.Bosonic.freeEigenvalue ε) β n) •\n      SecondQuantization.Bosonic.completedBasisState n",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -100964,7 +100964,6 @@
     "dependents": [],
     "dependencies": [
       "QuantumTheory.eigenbasisGibbsDensityOperator_apply_basis",
-      "SecondQuantization.Bosonic.eigenbasisGibbsSummable_freeEigenvalue",
       "SecondQuantization.Common.completedHilbertBasis_apply"
     ],
     "crossModuleDirectWrapper": false,
@@ -101154,7 +101153,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [Finite Mode] (ε : Mode → ℝ) (β : ℝ) (hβ : 0 < β) (hε : ∀ (i : Mode), 0 < ε i),\n  (SecondQuantization.Bosonic.completedFreeHeatOperator ε β hβ ⋯).IsTraceClass",
+    "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (β : ℝ) (hβ : 0 < β) (hε : ∀ (i : Mode), 0 ≤ ε i),\n  QuantumTheory.EigenbasisGibbsSummable (SecondQuantization.Bosonic.freeEigenvalue ε) β →\n    (SecondQuantization.Bosonic.completedFreeHeatOperator ε β hβ hε).IsTraceClass",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -101169,7 +101168,7 @@
     "name": "SecondQuantization.Bosonic.completedFreeHeatOperator_isTraceClass",
     "module": "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.Completed.FreeGibbs",
     "externalAxioms": [],
-    "docString": "The completed free heat operator is trace class under positive mode energies. ",
+    "docString": "Summable occupation Boltzmann weights make the completed free heat operator trace class,\nwithout requiring finitely many modes. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
@@ -101178,8 +101177,7 @@
     "dependencies": [
       "QuantumTheory.isTraceClass_iff_eigenbasisGibbsSummable_of_basis_action",
       "SecondQuantization.Bosonic.completedFreeHeatOperator_basisState",
-      "SecondQuantization.Bosonic.completedOccupationHilbertBasis_apply",
-      "SecondQuantization.Bosonic.eigenbasisGibbsSummable_freeEigenvalue"
+      "SecondQuantization.Bosonic.completedOccupationHilbertBasis_apply"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -101201,7 +101199,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {Mode : Type u_1} [inst : Finite Mode] (ε : Mode → ℝ) (β : ℝ) (hβ : 0 < β) (hε : ∀ (i : Mode), 0 < ε i),\n  ⋯.trace = SecondQuantization.Bosonic.freeGibbsPartition ε β",
+    "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (β : ℝ) (hβ : 0 < β) (hε : ∀ (i : Mode), 0 ≤ ε i)\n  (hsum : QuantumTheory.EigenbasisGibbsSummable (SecondQuantization.Bosonic.freeEigenvalue ε) β),\n  ⋯.trace = SecondQuantization.Bosonic.freeGibbsPartition ε β",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -101216,7 +101214,7 @@
     "name": "SecondQuantization.Bosonic.completedFreeHeatOperator_trace_eq_freeGibbsPartition",
     "module": "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.Completed.FreeGibbs",
     "externalAxioms": [],
-    "docString": "The trace of the completed free heat operator is the existing free bosonic partition\nfunction. ",
+    "docString": "The trace of completed free heat data equals the algebraic bosonic partition function. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [],
@@ -102494,7 +102492,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": false,
+    "terminal": true,
     "statement": "∀ {Mode : Type u_1} [Finite Mode] (ε : Mode → ℝ) (β : ℝ),\n  0 < β →\n    (∀ (i : Mode), 0 < ε i) → QuantumTheory.EigenbasisGibbsSummable (SecondQuantization.Bosonic.freeEigenvalue ε) β",
     "standardAxioms": [
       "Classical.choice",
@@ -102513,23 +102511,14 @@
     "docString": "Positive one-particle energies make the free occupation Boltzmann weights absolutely summable. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Bosonic.completedFreeGibbsDensityOperator_apply_basis",
-      "SecondQuantization.Bosonic.completedFreeHeatOperator_isTraceClass",
-      "SecondQuantization.Bosonic.inv_freeGibbsPartition_smul_completedFreeHeatOperator_eq_completedFreeGibbsDensityOperator_op"
-    ],
+    "dependents": [],
     "dependencies": [
       "SecondQuantization.Bosonic.summable_boltzmannWeight"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Bosonic.completedFreeGibbsDensityOperator",
-      "SecondQuantization.Bosonic.completedFreeGibbsDensityOperator_apply_basis",
-      "SecondQuantization.Bosonic.completedFreeHeatOperator_isTraceClass",
-      "SecondQuantization.Bosonic.inv_freeGibbsPartition_smul_completedFreeHeatOperator_eq_completedFreeGibbsDensityOperator_op"
-    ],
-    "compiledConsumerCount": 4,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -103492,7 +103481,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [Finite Mode] (ε : Mode → ℝ) (β : ℝ),\n  0 < β →\n    (∀ (i : Mode), 0 < ε i) →\n      SecondQuantization.Bosonic.freeGibbsPartition ε β =\n        ↑(QuantumTheory.eigenbasisPartitionFunction (SecondQuantization.Bosonic.freeEigenvalue ε) β)",
+    "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (β : ℝ),\n  SecondQuantization.Bosonic.freeGibbsPartition ε β =\n    ↑(QuantumTheory.eigenbasisPartitionFunction (SecondQuantization.Bosonic.freeEigenvalue ε) β)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -103507,7 +103496,7 @@
     "name": "SecondQuantization.Bosonic.freeGibbsPartition_eq_coe_eigenbasisPartitionFunction",
     "module": "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BoltzmannSummability",
     "externalAxioms": [],
-    "docString": "The convergence-aware algebraic bosonic partition function is the canonical pure-point\npartition function for the free occupation energies. ",
+    "docString": "The algebraic occupation trace and the canonical pure-point partition sum are the same\nfor arbitrary bosonic mode types. This coordinate identity does not assert convergence. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
@@ -103515,7 +103504,7 @@
       "SecondQuantization.Bosonic.inv_freeGibbsPartition_smul_completedFreeHeatOperator_eq_completedFreeGibbsDensityOperator_op"
     ],
     "dependencies": [
-      "SecondQuantization.Bosonic.freeGibbsPartition_eq_tsum"
+      "SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_self"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -103545,7 +103534,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -103557,7 +103546,6 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Bosonic.freeGibbsPartition_eq_coe_eigenbasisPartitionFunction",
       "SecondQuantization.Bosonic.freeGibbsPartition_ne_zero"
     ],
     "dependencies": [
@@ -103568,10 +103556,9 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Bosonic.freeGibbsPartition_eq_coe_eigenbasisPartitionFunction",
       "SecondQuantization.Bosonic.freeGibbsPartition_ne_zero"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -104297,7 +104284,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {Mode : Type u_1} [inst : Finite Mode] (ε : Mode → ℝ) (β : ℝ) (hβ : 0 < β) (hε : ∀ (i : Mode), 0 < ε i),\n  (SecondQuantization.Bosonic.freeGibbsPartition ε β)⁻¹ •\n      SecondQuantization.Bosonic.completedFreeHeatOperator ε β hβ ⋯ =\n    (SecondQuantization.Bosonic.completedFreeGibbsDensityOperator ε β hβ hε).op",
+    "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (β : ℝ) (hβ : 0 < β) (hε : ∀ (i : Mode), 0 ≤ ε i)\n  (hsum : QuantumTheory.EigenbasisGibbsSummable (SecondQuantization.Bosonic.freeEigenvalue ε) β),\n  (SecondQuantization.Bosonic.freeGibbsPartition ε β)⁻¹ •\n      SecondQuantization.Bosonic.completedFreeHeatOperator ε β hβ hε =\n    (SecondQuantization.Bosonic.completedFreeGibbsDensityOperator ε β hsum).op",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -104312,7 +104299,7 @@
     "name": "SecondQuantization.Bosonic.inv_freeGibbsPartition_smul_completedFreeHeatOperator_eq_completedFreeGibbsDensityOperator_op",
     "module": "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.Completed.FreeGibbs",
     "externalAxioms": [],
-    "docString": "Normalizing the completed free heat operator by the bosonic partition function gives the\ncanonical completed Gibbs density operator. ",
+    "docString": "Normalize the completed free heat operator to obtain its canonical Gibbs density operator. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [],
@@ -104320,7 +104307,6 @@
       "QuantumTheory.inv_partition_smul_heat_eq_eigenbasisGibbsDensityOperator_op",
       "SecondQuantization.Bosonic.completedFreeHeatOperator_basisState",
       "SecondQuantization.Bosonic.completedOccupationHilbertBasis_apply",
-      "SecondQuantization.Bosonic.eigenbasisGibbsSummable_freeEigenvalue",
       "SecondQuantization.Bosonic.freeGibbsPartition_eq_coe_eigenbasisPartitionFunction"
     ],
     "crossModuleDirectWrapper": false,
@@ -104639,6 +104625,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "SecondQuantization.Bosonic.freeGibbsPartition_eq_coe_eigenbasisPartitionFunction",
       "SecondQuantization.Bosonic.freeGibbsPartition_eq_tsum",
       "SecondQuantization.Bosonic.summable_imaginaryTimeEvolveFree_self"
     ],
@@ -104649,10 +104636,11 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "SecondQuantization.Bosonic.freeGibbsPartition_eq_coe_eigenbasisPartitionFunction",
       "SecondQuantization.Bosonic.freeGibbsPartition_eq_tsum",
       "SecondQuantization.Bosonic.summable_imaginaryTimeEvolveFree_self"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -133343,7 +133331,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.Lattice.boundedDgammaMatrixUnit_eq_create_comp_annihilate"
+      "SecondQuantization.Fermionic.Lattice.occupationConjugate_dGamma_matrixUnit"
     ],
     "dependencies": [
       "SecondQuantization.Fermionic.AlgebraicFock.annihilateDual_create_apply",
@@ -133358,7 +133346,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.Lattice.boundedDgammaMatrixUnit_eq_create_comp_annihilate"
+      "SecondQuantization.Fermionic.Lattice.occupationConjugate_dGamma_matrixUnit"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -133394,7 +133382,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.Lattice.boundedDgammaMatrixUnit_eq_create_comp_annihilate"
+      "SecondQuantization.Fermionic.Lattice.occupationConjugate_dGamma_matrixUnit"
     ],
     "dependencies": [
       "SecondQuantization.Fermionic.AlgebraicFock.occupationEquiv_create",
@@ -133403,7 +133391,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.Lattice.boundedDgammaMatrixUnit_eq_create_comp_annihilate"
+      "SecondQuantization.Fermionic.Lattice.occupationConjugate_dGamma_matrixUnit"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -136015,10 +136003,7 @@
       "SecondQuantization.Fermionic.Lattice.star_boundedDgammaMatrixUnit"
     ],
     "dependencies": [
-      "SecondQuantization.Fermionic.AlgebraicFock.occupationConjugate_annihilateDual",
-      "SecondQuantization.Fermionic.AlgebraicFock.occupationConjugate_create",
-      "SecondQuantization.Fermionic.Lattice.dGamma_matrixUnit",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.BoundedMatrixUnitAdjoint.0.SecondQuantization.Fermionic.Lattice.basisSingleOne_coord_eq_lapply"
+      "SecondQuantization.Fermionic.Lattice.occupationConjugate_dGamma_matrixUnit"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -136522,7 +136507,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {Site : Type u_1} [inst : LinearOrder Site] [inst_1 : Fintype Site] (ℏ q : ℂ) (K : LocallyFiniteHopping Site)\n  (x : Site),\n  (Complex.I / ℏ) •\n        ⁅SecondQuantization.Fermionic.Lattice.boundedHoppingHamiltonian K,\n          SecondQuantization.Fermionic.Lattice.boundedSiteChargeDensity q x⁆ +\n      ∑ y ∈ K.incident x, SecondQuantization.Fermionic.Lattice.boundedBondCurrent ℏ q K x y =\n    0",
+    "statement": "∀ {Site : Type u_1} [inst : LinearOrder Site] [inst_1 : Fintype Site] (ℏ q : ℂ) (K : LocallyFiniteHopping Site)\n  (x : Site),\n  (Complex.I / ℏ) •\n        ⁅SecondQuantization.Fermionic.Lattice.boundedHoppingHamiltonian K,\n          SecondQuantization.Fermionic.Lattice.boundedLatticeOperator\n            (SecondQuantization.Fermionic.Lattice.siteChargeDensity q x)⁆ +\n      ∑ y ∈ K.incident x, SecondQuantization.Fermionic.Lattice.boundedBondCurrent ℏ q K x y =\n    0",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -136586,7 +136571,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.Lattice.boundedDgammaMatrixUnit_eq_create_comp_annihilate"
+      "SecondQuantization.Fermionic.Lattice.occupationConjugate_dGamma_matrixUnit"
     ],
     "dependencies": [
       "SecondQuantization.Fermionic.AlgebraicFock.dGamma_dualRankOne"
@@ -136594,7 +136579,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.Lattice.boundedDgammaMatrixUnit_eq_create_comp_annihilate"
+      "SecondQuantization.Fermionic.Lattice.occupationConjugate_dGamma_matrixUnit"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -136906,6 +136891,52 @@
     "completedMention": false,
     "compiledConsumers": [],
     "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Site : Type u_1} [inst : LinearOrder Site] (x y : Site),\n  (SecondQuantization.Fermionic.AlgebraicFock.occupationConjugate Finsupp.basisSingleOne)\n      (SecondQuantization.Fermionic.AlgebraicFock.dGamma (Site →₀ ℂ) (matrixUnit x y)) =\n    SecondQuantization.Fermionic.create x ∘ₗ SecondQuantization.Fermionic.annihilate y",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.Lattice.occupationConjugate_dGamma_matrixUnit",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.RankOneSecondQuantization",
+    "externalAxioms": [],
+    "docString": "Lattice matrix units become occupation-basis creation-annihilation bilinears for\narbitrary site sets, before any finite-dimensional bounded transport. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.Lattice.boundedDgammaMatrixUnit_eq_create_comp_annihilate"
+    ],
+    "dependencies": [
+      "SecondQuantization.Fermionic.AlgebraicFock.occupationConjugate_annihilateDual",
+      "SecondQuantization.Fermionic.AlgebraicFock.occupationConjugate_create",
+      "SecondQuantization.Fermionic.Lattice.dGamma_matrixUnit"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.Lattice.boundedDgammaMatrixUnit_eq_create_comp_annihilate"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -186255,48 +186286,6 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Fermionic.zetaCommutator_timedFieldOperator"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Site : Type u_1} (y : Site), Finsupp.basisSingleOne.coord y = Finsupp.lapply y",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.BoundedMatrixUnitAdjoint.0.SecondQuantization.Fermionic.Lattice.basisSingleOne_coord_eq_lapply",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.BoundedMatrixUnitAdjoint",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.Lattice.boundedDgammaMatrixUnit_eq_create_comp_annihilate"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.Lattice.boundedDgammaMatrixUnit_eq_create_comp_annihilate"
     ],
     "compiledConsumerCount": 1,
     "axioms": [

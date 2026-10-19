@@ -7664,7 +7664,6 @@
       "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.BoundedMatrixUnitAdjoint",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Lattice/BoundedMatrixUnitAdjoint.lean",
       "imports": [
-        "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.OccupationFieldEquivalence",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.FiniteHilbertCreationAnnihilation",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.Bounded",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.RankOneSecondQuantization"
@@ -7718,6 +7717,7 @@
       "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.RankOneSecondQuantization",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Lattice/RankOneSecondQuantization.lean",
       "imports": [
+        "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.OccupationFieldEquivalence",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.RankOne",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.DiscreteLattice"
       ],
