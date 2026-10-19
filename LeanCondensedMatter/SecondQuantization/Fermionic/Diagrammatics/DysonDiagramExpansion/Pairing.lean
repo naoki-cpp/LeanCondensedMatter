@@ -23,7 +23,7 @@ namespace Fermionic
 open Combinatorics
 open Common
 
-variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
+variable {Mode : Type*} [LinearOrder Mode]
 
 /-! ## Quartic-vertex flattening used by the pairing proof -/
 
@@ -31,7 +31,6 @@ variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
 interaction-picture quartic-vertex sequence. The row-major `4n` product decomposition is owned by
 `Common.prod_orderedQuarticLegFamily_eq_vertexProducts`; this theorem supplies only the fermionic
 imaginary-time specialization. -/
-omit [Fintype Mode] in
 private theorem prod_ofFn_quarticLegOperatorForSequence_eq_quarticVertexSequenceInteractionPicture
     (ε : Mode → ℝ) :
     ∀ (n : ℕ) (q : Fin n → QuarticVertexLabel Mode) (τ : Fin n → ℝ),
@@ -52,6 +51,8 @@ private theorem prod_ofFn_quarticLegOperatorForSequence_eq_quarticVertexSequence
   funext i
   exact (Common.heisenbergEvolve_quarticVertexOperator_eq_prod
     (fermionEnergy ε) create annihilate (q i) (τ i)).symm
+
+variable [Fintype Mode]
 
 /-- Canonical free Gibbs density-state contraction of two flattened quartic Dyson legs. -/
 noncomputable def flatVertexLegPairValue {n : ℕ}
