@@ -106,8 +106,8 @@ theorem infiniteTimeAdiabaticDirectionalRetardedCoefficient_eigenbasis_eq_finite
             (boundedDirectionalCurrent geometry direction
               (system.hbar : ℂ) (q : ℂ) K) mn).frequencyTerm ω η := by
   rw [infiniteTimeAdiabaticDirectionalRetardedCoefficient_eq_susceptibility]
-  simpa [adiabaticFrequencyDomainSusceptibilityOfPositiveRate] using
-    (adiabaticFrequencyDomainSusceptibilityOfPositiveRate_eigenbasis_eq_finite_sum
+  exact
+    (adiabaticFrequencyDomainSusceptibility_eigenbasis_eq_finite_sum
       system data
       (boundedDirectionalCurrent geometry direction
         (system.hbar : ℂ) (q : ℂ) K)

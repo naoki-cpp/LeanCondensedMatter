@@ -218,16 +218,6 @@ theorem integral_adiabaticFrequencySusceptibilityIntegrand_eq_Ioi_zero
         adiabaticFrequencySusceptibilityIntegrand system expectation A B omega eta τ :=
       integral_Ici_eq_integral_Ioi
 
-/-- Fixed-rate susceptibility requiring only the physical hypothesis `η > 0`.
-
-The underlying explicit `AdiabaticIntegrable` proof is supplied by
-`adiabaticIntegrable_of_pos`. -/
-noncomputable def adiabaticFrequencyDomainSusceptibilityOfPositiveRate
-    (expectation : NormalizedExpectation H)
-    (A B : H →L[ℂ] H) (ω η : ℝ) (hη : 0 < η) : ℂ :=
-  let rate : {η : ℝ // 0 < η} := ⟨η, hη⟩
-  adiabaticFrequencyDomainSusceptibility system expectation A B ω rate.1
-
 end
 end LinearResponse
 end QuantumTheory
