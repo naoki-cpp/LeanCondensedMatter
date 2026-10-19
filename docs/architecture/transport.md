@@ -138,6 +138,14 @@ distinct explicit conditions.
 
 ## Stationary channel response
 
+For a real-valued external profile, the derivative theorem in `LinearResponse.ObservableVariation`
+uses `ResponseChannel.causalResponse` directly. Its `observableVariation` is the actual coefficient
+`A₁` in `A₀ + λ A₁`; the channel does not multiply it by the external profile again. A geometric
+current with contact operator `C` supplies `A₁ = f(t) C`. At observation time the normalized cosine
+profile gives `A₁ = C`, while the sine profile gives `A₁ = 0`, using the generic profile computation
+rules in `LinearResponse.HarmonicSource`. Current self-adjointness is supplied by the lattice
+realization, and no complex-valued Hamiltonian perturbation is introduced.
+
 `ResponseChannel.finiteTimeAdiabaticResponse_eq_stationaryLag` owns the stationary change from
 source time to nonnegative lag, including the stationary observable-variation expectation.
 `ResponseChannel.infiniteTimeAdiabaticResponse` denotes the half-line lag transform plus that

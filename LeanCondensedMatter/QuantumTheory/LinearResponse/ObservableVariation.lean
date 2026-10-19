@@ -1,4 +1,5 @@
 import LeanCondensedMatter.QuantumTheory.LinearResponse.SourceCoupling
+import LeanCondensedMatter.QuantumTheory.LinearResponse.ResponseChannel
 import Mathlib.Analysis.Complex.RealDeriv
 import Mathlib.Algebra.Lie.OfAssociative
 
@@ -81,33 +82,35 @@ theorem hasDerivAt_affinePerturbedExpectation_zero_of_bound_kubo
   simpa [affinePerturbedExpectation, timeDependentPerturbedObservable,
     heisenbergEvolution_apply, mul_add, add_mul] using hsum
 
-/-- Scalar-source specialization written as a causal retarded response plus the contact term. -/
-theorem hasDerivAt_affineSourceCoupledExpectation_zero_of_bound_retarded
+/-- For a real-valued source profile, the affine expectation derivative is the channel's causal
+response. The observable variation is the actual affine coefficient, including any source factor
+specified by the caller; it is not automatically multiplied by the profile at observation time. -/
+theorem ResponseChannel.hasDerivAt_affineSourceCoupledExpectation_zero_of_bound_retarded
+    (channel : ResponseChannel H) (system : BoundedFreeSystem H)
     (expectation : NormalizedExpectation H)
-    (f : ℝ → ℝ) {B : H →L[ℂ] H} (hB : IsSelfAdjoint B)
-    (A₀ A₁ : H →L[ℂ] H)
+    (f : ℝ → ℝ) (hB : IsSelfAdjoint channel.source)
     {β M t : ℝ} (hM : 0 ≤ M)
     (hV : ∀ s ∈ Icc (0 : ℝ) β,
       ‖timeDependentInteractionPerturbation system
-        (sourceCoupledPerturbation f B) s‖ ≤ M)
+        (sourceCoupledPerturbation f channel.source) s‖ ≤ M)
     (ht : t ∈ Icc (0 : ℝ) β)
     (hInt : IntervalIntegrable
       (timeDependentInteractionPerturbation system
-        (sourceCoupledPerturbation f B)) MeasureTheory.volume 0 t) :
+        (sourceCoupledPerturbation f channel.source)) MeasureTheory.volume 0 t) :
     HasDerivAt
       (fun lam : ℝ => affinePerturbedExpectation system expectation
-        (sourceCoupledPerturbation f B) A₀ A₁ lam t)
-      ((∫ s in (0 : ℝ)..t,
-          (f s : ℂ) * retardedSusceptibility system expectation A₀ B t s) +
-        expectation (heisenbergEvolution system t A₁))
-      0 := by
+        (sourceCoupledPerturbation f channel.source)
+        channel.measured channel.observableVariation lam t)
+      (channel.causalResponse system expectation f t) 0 := by
   have h := hasDerivAt_affinePerturbedExpectation_zero_of_bound_kubo
     system expectation (fun s => isSelfAdjoint_sourceCoupledPerturbation f hB s)
-    A₀ A₁ hM hV ht hInt
-  rw [sourceCoupled_responseIntegral_eq system expectation f B A₀ t] at h
+    channel.measured channel.observableVariation hM hV ht hInt
+  rw [sourceCoupled_responseIntegral_eq
+    system expectation f channel.source channel.measured t] at h
   rw [sourceCoupled_responseIntegral_eq_retardedSusceptibility
-    system expectation f B A₀ ht.1] at h
-  exact h
+    system expectation f channel.source channel.measured ht.1] at h
+  simpa only [ResponseChannel.causalResponse, ResponseChannel.retardedKernel,
+    ResponseChannel.contactExpectation] using h
 
 end
 end LinearResponse

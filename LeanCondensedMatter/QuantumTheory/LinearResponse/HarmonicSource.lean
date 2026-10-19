@@ -15,8 +15,8 @@ f_sin(s) = exp (-η (T - s)) sin (ω (T - s)).
 
 These definitions are representation independent and are stated directly with real elementary
 functions. They do not depend on particle statistics, Fock-space realizations, current operators,
-lattice geometry, or conductivity normalization. Concrete response theorems using these real
-source profiles belong in downstream realizations.
+lattice geometry, or conductivity normalization. The channel derivative theorem in
+`ObservableVariation` consumes these profiles with the actual affine observable variation.
 -/
 
 namespace QuantumTheory
