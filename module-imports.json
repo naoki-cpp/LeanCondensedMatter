@@ -3777,6 +3777,14 @@
       "externalImportCount": 0
     },
     {
+      "name": "LeanCondensedMatter.QuantumTheory.Gibbs.Boltzmann",
+      "sourceFile": "LeanCondensedMatter/QuantumTheory/Gibbs/Boltzmann.lean",
+      "imports": [
+        "LeanCondensedMatter.Analysis.InfiniteSum.Normalization"
+      ],
+      "externalImportCount": 1
+    },
+    {
       "name": "LeanCondensedMatter.QuantumTheory.Gibbs.DiagonalEnergy",
       "sourceFile": "LeanCondensedMatter/QuantumTheory/Gibbs/DiagonalEnergy.lean",
       "imports": [
@@ -3789,9 +3797,10 @@
       "name": "LeanCondensedMatter.QuantumTheory.Gibbs.Eigenbasis",
       "sourceFile": "LeanCondensedMatter/QuantumTheory/Gibbs/Eigenbasis.lean",
       "imports": [
-        "LeanCondensedMatter.QuantumTheory.DensityOperator.DiagonalFormula"
+        "LeanCondensedMatter.QuantumTheory.DensityOperator.DiagonalFormula",
+        "LeanCondensedMatter.QuantumTheory.Gibbs.Boltzmann"
       ],
-      "externalImportCount": 1
+      "externalImportCount": 0
     },
     {
       "name": "LeanCondensedMatter.QuantumTheory.Gibbs.EigenbasisEntropy",
@@ -3826,7 +3835,7 @@
       "sourceFile": "LeanCondensedMatter/QuantumTheory/Gibbs/EigenbasisVariational.lean",
       "imports": [
         "LeanCondensedMatter.Analysis.Inequalities.Gibbs",
-        "LeanCondensedMatter.QuantumTheory.Gibbs.Eigenbasis"
+        "LeanCondensedMatter.QuantumTheory.Gibbs.Boltzmann"
       ],
       "externalImportCount": 0
     },
@@ -3936,6 +3945,7 @@
       "name": "LeanCondensedMatter.QuantumTheory.Gibbs",
       "sourceFile": "LeanCondensedMatter/QuantumTheory/Gibbs.lean",
       "imports": [
+        "LeanCondensedMatter.QuantumTheory.Gibbs.Boltzmann",
         "LeanCondensedMatter.QuantumTheory.Gibbs.DiagonalEnergy",
         "LeanCondensedMatter.QuantumTheory.Gibbs.Eigenbasis",
         "LeanCondensedMatter.QuantumTheory.Gibbs.EigenbasisEntropy",
@@ -4894,7 +4904,7 @@
       "name": "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BoltzmannSummability",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Bosonic/Thermal/BoltzmannSummability.lean",
       "imports": [
-        "LeanCondensedMatter.QuantumTheory.Gibbs.Eigenbasis",
+        "LeanCondensedMatter.QuantumTheory.Gibbs.Boltzmann",
         "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.ConvergenceAwareGibbs"
       ],
       "externalImportCount": 0
@@ -6393,7 +6403,7 @@
       "name": "LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsCoordinate",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Thermal/FiniteGibbsCoordinate.lean",
       "imports": [
-        "LeanCondensedMatter.QuantumTheory.Gibbs.Eigenbasis",
+        "LeanCondensedMatter.QuantumTheory.Gibbs.Boltzmann",
         "LeanCondensedMatter.SecondQuantization.Common.Algebra.FiniteTrace",
         "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.DiagonalEvolution",
         "LeanCondensedMatter.SecondQuantization.Common.Perturbation.FiniteOperatorIntegral",
@@ -7796,7 +7806,7 @@
       "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.BoltzmannSummability",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Thermal/BoltzmannSummability.lean",
       "imports": [
-        "LeanCondensedMatter.QuantumTheory.Gibbs.Eigenbasis",
+        "LeanCondensedMatter.QuantumTheory.Gibbs.Boltzmann",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.Hamiltonian"
       ],
       "externalImportCount": 1
@@ -7829,7 +7839,7 @@
       "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.ModeTruncation",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Thermal/Completed/ModeTruncation.lean",
       "imports": [
-        "LeanCondensedMatter.QuantumTheory.Gibbs.Eigenbasis",
+        "LeanCondensedMatter.QuantumTheory.Gibbs.Boltzmann",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.Hamiltonian",
         "LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.ModeTruncation",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.Gibbs"
