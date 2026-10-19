@@ -24,17 +24,6 @@ noncomputable section
 
 variable {Mode : Type*}
 
-/-- For arbitrary mode types, the canonical pure-point Gibbs summability condition is exactly
-summability of the free-boson occupation Boltzmann weights. No mode finiteness is needed. -/
-theorem eigenbasisGibbsSummable_freeEigenvalue_iff_boltzmannWeight_summable
-    (ε : Mode → ℝ) (β : ℝ) :
-    EigenbasisGibbsSummable (freeEigenvalue ε) β ↔
-      Summable (boltzmannWeight ε β) := by
-  unfold EigenbasisGibbsSummable
-  simp only [eigenbasisBoltzmannWeight, Real.norm_eq_abs,
-    abs_of_nonneg (Real.exp_nonneg _)]
-  rfl
-
 /-- The algebraic occupation trace and the canonical pure-point partition sum are the same
 for arbitrary bosonic mode types. This coordinate identity does not assert convergence. -/
 theorem freeGibbsPartition_eq_coe_eigenbasisPartitionFunction
@@ -54,10 +43,12 @@ variable [Finite Mode]
 theorem eigenbasisGibbsSummable_freeEigenvalue
     (ε : Mode → ℝ) (β : ℝ) (hβ : 0 < β) (hε : ∀ i, 0 < ε i) :
     EigenbasisGibbsSummable (freeEigenvalue ε) β := by
-  apply (eigenbasisGibbsSummable_freeEigenvalue_iff_boltzmannWeight_summable ε β).2
   letI := Fintype.ofFinite Mode
-  exact summable_boltzmannWeight ε β (fun i => mul_pos hβ (hε i))
-
+  unfold EigenbasisGibbsSummable
+  have hsum := summable_boltzmannWeight ε β (fun i => mul_pos hβ (hε i))
+  exact hsum.congr fun n => by
+    simp [boltzmannWeight, eigenbasisBoltzmannWeight, Real.norm_eq_abs,
+      abs_of_nonneg (Real.exp_nonneg _)]
 
 end
 end Bosonic
