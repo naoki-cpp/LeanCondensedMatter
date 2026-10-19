@@ -1,4 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.Operators
+import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.NumberOperator
 
 set_option linter.style.header false
 
@@ -53,6 +54,19 @@ theorem completedAnnihilate_comp_algebraicToCompleted (i : Mode) :
   · simp [annihilate_basisState_of_mem hi, completedAnnihilate_basisState_of_mem hi,
       fermionPhase, hbasis]
   · simp [annihilate_basisState_of_not_mem hi, completedAnnihilate_basisState_of_not_mem hi]
+
+/-- A single-mode algebraic number operator extends to the bounded occupation projector on
+completed Fock space, even for an infinite mode set. -/
+theorem completedNumberOperator_comp_algebraicToCompleted (i : Mode) :
+    (completedNumberOperator i).toLinearMap.comp algebraicToCompleted =
+      algebraicToCompleted.comp (numberOperator i) := by
+  classical
+  rw [numberOperator_eq_diagonalOperator]
+  simpa only [completedNumberOperator, Common.completedCoordinateProjection,
+    algebraicToCompleted] using
+    (Common.completedBoundedDiagonalOperator_comp_algebraicToCompleted
+      (fun n : Occupation Mode => if i ∈ n then (1 : ℂ) else 0) zero_le_one
+      (fun n => by by_cases h : i ∈ n <;> simp [h]))
 
 end
 end Fermionic
