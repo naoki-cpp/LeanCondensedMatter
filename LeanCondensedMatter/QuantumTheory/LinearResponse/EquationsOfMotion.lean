@@ -85,19 +85,19 @@ theorem schrodingerEquation (ψ : StateVector H) (t : ℝ) :
 /-- Explicit bounded Heisenberg equation
 `dA_H/dt = (i/ℏ) [H₀, A_H]`. -/
 theorem heisenbergEquation (A : H →L[ℂ] H) (t : ℝ) :
-    HasDerivAt (heisenbergEvolution system A)
+    HasDerivAt (fun t => heisenbergEvolution system t A)
       ((Complex.I / (system.hbar : ℂ)) •
-        ⁅system.hamiltonian.1, heisenbergEvolution system A t⁆) t := by
+        ⁅system.hamiltonian.1, heisenbergEvolution system t A⁆) t := by
   let G := schrodingerGenerator system
   let U := freePropagator system t
   let Uneg := freePropagator system (-t)
   have hleft := (hasDerivAt_freePropagator_neg system t).mul_const A
   have hprod := hleft.mul (hasDerivAt_freePropagator system t)
-  have hraw : HasDerivAt (heisenbergEvolution system A)
+  have hraw : HasDerivAt (fun t => heisenbergEvolution system t A)
       ((-G) * Uneg * A * U + Uneg * A * (G * U)) t := by
     rw [hasDerivAt_iff_tendsto]
     rw [hasDerivAt_iff_tendsto] at hprod
-    simpa [G, U, Uneg, heisenbergEvolution, mul_assoc] using hprod
+    simpa [G, U, Uneg, heisenbergEvolution_apply, mul_assoc] using hprod
   have hcomm : Commute G U := by
     simpa [G, U] using schrodingerGenerator_commute_freePropagator system t
   have hderivRaw :
@@ -106,21 +106,21 @@ theorem heisenbergEquation (A : H →L[ℂ] H) (t : ℝ) :
     rw [hcomm.eq]
     noncomm_ring
   have hgenerator :
-      HasDerivAt (heisenbergEvolution system A)
-        (heisenbergEvolution system A t * schrodingerGenerator system -
-          schrodingerGenerator system * heisenbergEvolution system A t) t := by
+      HasDerivAt (fun t => heisenbergEvolution system t A)
+        (heisenbergEvolution system t A * schrodingerGenerator system -
+          schrodingerGenerator system * heisenbergEvolution system t A) t := by
     have hderiv :
         ((-G) * Uneg * A * U + Uneg * A * (G * U)) =
-          heisenbergEvolution system A t * G -
-            G * heisenbergEvolution system A t := by
-      simpa [G, U, Uneg, heisenbergEvolution] using hderivRaw
+          heisenbergEvolution system t A * G -
+            G * heisenbergEvolution system t A := by
+      simpa [G, U, Uneg, heisenbergEvolution_apply] using hderivRaw
     rw [← hderiv]
     exact hraw
   have hderiv :
-      heisenbergEvolution system A t * schrodingerGenerator system -
-          schrodingerGenerator system * heisenbergEvolution system A t =
+      heisenbergEvolution system t A * schrodingerGenerator system -
+          schrodingerGenerator system * heisenbergEvolution system t A =
         (Complex.I / (system.hbar : ℂ)) •
-          ⁅system.hamiltonian.1, heisenbergEvolution system A t⁆ := by
+          ⁅system.hamiltonian.1, heisenbergEvolution system t A⁆ := by
     rw [LieRing.of_associative_ring_bracket, schrodingerGenerator]
     simp only [mul_smul_comm, smul_mul_assoc]
     module
@@ -135,10 +135,10 @@ theorem vonNeumannEquation (ρ : DensityOperator H) (t : ℝ) :
         ⁅system.hamiltonian.1, (evolveDensityOperator system ρ t).op⁆) t := by
   have h := (heisenbergEquation system ρ.op (-t)).scomp t (hasDerivAt_neg t)
   have hevolved (s : ℝ) :
-      heisenbergEvolution system ρ.op (-s) = (evolveDensityOperator system ρ s).op := by
-    simp [evolveDensityOperator_op, adjointConjugate, heisenbergEvolution,
+      heisenbergEvolution system (-s) ρ.op = (evolveDensityOperator system ρ s).op := by
+    simp [evolveDensityOperator_op, adjointConjugate, heisenbergEvolution_apply,
       star_freePropagator]
-  rw [show (heisenbergEvolution system ρ.op ∘ Neg.neg) =
+  rw [show ((fun t => heisenbergEvolution system t ρ.op) ∘ Neg.neg) =
       fun s : ℝ => (evolveDensityOperator system ρ s).op by
         funext s
         exact hevolved s] at h

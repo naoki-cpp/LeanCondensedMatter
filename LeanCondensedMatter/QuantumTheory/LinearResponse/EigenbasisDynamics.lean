@@ -185,10 +185,10 @@ theorem inner_energyEigenbasis_heisenbergEvolution
     (data : EnergyEigenbasisLehmannData system ι)
     (A : H →L[ℂ] H) (m n : ι) (t : ℝ) :
     inner ℂ (data.basis m)
-        (heisenbergEvolution system A t (data.basis n)) =
+        (heisenbergEvolution system t A (data.basis n)) =
       eigenbasisTransitionPhase system data m n t *
         inner ℂ (data.basis m) (A (data.basis n)) := by
-  rw [heisenbergEvolution]
+  rw [heisenbergEvolution_apply]
   simp only [mul_apply_eq_comp]
   rw [freePropagator_apply_energyEigenbasis system data n t]
   rw [map_smul]

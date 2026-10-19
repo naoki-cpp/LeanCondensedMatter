@@ -65,10 +65,10 @@ theorem hasDerivAt_boundedDirectionalCurrentExpectation_zero_of_bound_retarded
               (boundedDirectionalCurrent geometry direction
                 (system.hbar : ℂ) (q : ℂ) K) t s) +
         expectation
-          (QuantumTheory.LinearResponse.heisenbergEvolution system
+          (QuantumTheory.LinearResponse.heisenbergEvolution system t
             ((f t : ℂ) •
               boundedDirectionalContact geometry direction
-                (system.hbar : ℂ) (q : ℂ) K) t))
+                (system.hbar : ℂ) (q : ℂ) K)))
       0 := by
   exact
     QuantumTheory.LinearResponse.hasDerivAt_affineSourceCoupledExpectation_zero_of_bound_retarded

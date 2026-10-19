@@ -26,6 +26,11 @@ with unitarity, norm preservation, Schrödinger-picture state evolution, Heisenb
 evolution, density-operator evolution, exact pure/density expectation equivalence between pictures,
 and restriction of density evolution to physical `PureState` values.
 
+`LinearResponse.heisenbergEvolution system t` is a star-algebra automorphism of bounded operators;
+applying it to `A` gives `U₀(-t) A U₀(t)`. Algebraic consumers use the standard mapping laws,
+while time-dependent statements use the curve `fun t => heisenbergEvolution system t A`.
+The application formula remains explicit for operator-coordinate and differential calculations.
+
 The equations-of-motion layer proves bounded Schrödinger, Heisenberg, and von Neumann equations in
 operator/norm differentiable form. Conservation results show that observables commuting with `H₀`
 have stationary expectations and density operators commuting with `H₀` are fixed by the free

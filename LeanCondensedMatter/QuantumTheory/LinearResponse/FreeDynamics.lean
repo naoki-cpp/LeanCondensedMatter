@@ -19,6 +19,9 @@ and the corresponding Heisenberg evolution is
 
 `A_I(t) = U₀(-t) A U₀(t)`.
 
+At fixed time, `heisenbergEvolution system t` is the corresponding star-algebra automorphism.
+Consumers use its standard mapping laws; the product formula is an explicit evaluation theorem.
+
 The API is dimension-independent. Unbounded Hamiltonians remain outside scope because their
 exponentials and products require operator-domain arguments.
 -/
@@ -138,84 +141,50 @@ theorem freePropagator_mem_unitary (t : ℝ) :
 noncomputable def freePropagatorUnitary (t : ℝ) : unitary (H →L[ℂ] H) :=
   ⟨freePropagator system t, freePropagator_mem_unitary system t⟩
 
-/-- Free Heisenberg evolution of a bounded operator. -/
-noncomputable def heisenbergEvolution (A : H →L[ℂ] H) (t : ℝ) : H →L[ℂ] H :=
-  freePropagator system (-t) * A * freePropagator system t
+/-- Free Heisenberg evolution at fixed time, as a star-algebra automorphism. -/
+noncomputable def heisenbergEvolution (t : ℝ) :
+    (H →L[ℂ] H) ≃⋆ₐ[ℂ] (H →L[ℂ] H) :=
+  Unitary.conjStarAlgAut ℂ (H →L[ℂ] H) (freePropagatorUnitary system (-t))
+
+/-- Applying Heisenberg evolution uses the convention `U₀(-t) A U₀(t)`. -/
+theorem heisenbergEvolution_apply (t : ℝ) (A : H →L[ℂ] H) :
+    heisenbergEvolution system t A =
+      freePropagator system (-t) * A * freePropagator system t := by
+  simp [heisenbergEvolution, freePropagatorUnitary, star_freePropagator]
 
 @[simp]
 theorem heisenbergEvolution_zero (A : H →L[ℂ] H) :
-    heisenbergEvolution system A 0 = A := by
-  simp [heisenbergEvolution]
-
-/-- Free Heisenberg evolution is conjugation by the negative-time propagator, expressed through
-Mathlib's canonical unitary star-algebra automorphism. -/
-theorem heisenbergEvolution_eq_conjStarAlgAut (A : H →L[ℂ] H) (t : ℝ) :
-    heisenbergEvolution system A t =
-      Unitary.conjStarAlgAut ℂ (H →L[ℂ] H) (freePropagatorUnitary system (-t)) A := by
-  simp [heisenbergEvolution, freePropagatorUnitary, star_freePropagator]
+    heisenbergEvolution system 0 A = A := by
+  simp [heisenbergEvolution_apply]
 
 /-- Applying free Heisenberg evolution successively adds the two time parameters. -/
 @[simp]
 theorem heisenbergEvolution_heisenbergEvolution
     (A : H →L[ℂ] H) (t s : ℝ) :
-    heisenbergEvolution system (heisenbergEvolution system A t) s =
-      heisenbergEvolution system A (t + s) := by
-  change
-    freePropagator system (-s) *
-        (freePropagator system (-t) * A * freePropagator system t) *
-        freePropagator system s =
-      freePropagator system (-(t + s)) * A * freePropagator system (t + s)
+    heisenbergEvolution system s (heisenbergEvolution system t A) =
+      heisenbergEvolution system (t + s) A := by
+  simp_rw [heisenbergEvolution_apply]
   rw [show -(t + s) = -s + -t by ring, freePropagator_add, freePropagator_add]
   noncomm_ring
 
-/-- Free Heisenberg evolution preserves operator multiplication. -/
-@[simp]
-theorem heisenbergEvolution_mul
-    (A B : H →L[ℂ] H) (t : ℝ) :
-    heisenbergEvolution system (A * B) t =
-      heisenbergEvolution system A t * heisenbergEvolution system B t := by
-  rw [heisenbergEvolution_eq_conjStarAlgAut, heisenbergEvolution_eq_conjStarAlgAut,
-    heisenbergEvolution_eq_conjStarAlgAut]
-  exact map_mul _ A B
-
-/-- Free Heisenberg evolution preserves operator subtraction. -/
-@[simp]
-theorem heisenbergEvolution_sub
-    (A B : H →L[ℂ] H) (t : ℝ) :
-    heisenbergEvolution system (A - B) t =
-      heisenbergEvolution system A t - heisenbergEvolution system B t := by
-  rw [heisenbergEvolution_eq_conjStarAlgAut, heisenbergEvolution_eq_conjStarAlgAut,
-    heisenbergEvolution_eq_conjStarAlgAut]
-  exact map_sub _ A B
-
-/-- Free Heisenberg evolution preserves the associative operator Lie bracket. -/
-@[simp]
-theorem heisenbergEvolution_lie
-    (A B : H →L[ℂ] H) (t : ℝ) :
-    heisenbergEvolution system ⁅A, B⁆ t =
-      ⁅heisenbergEvolution system A t, heisenbergEvolution system B t⁆ := by
-  simp only [LieRing.of_associative_ring_bracket]
-  rw [heisenbergEvolution_sub, heisenbergEvolution_mul, heisenbergEvolution_mul]
-
-/-- A two-time Heisenberg commutator is the time-`s` evolution of the relative-time
-commutator. This is the algebraic bridge used to reduce Kubo kernels to operator commutators at a
-single relative time. -/
+/-- A two-time Heisenberg commutator is the evolution of a relative-time commutator. -/
 theorem lie_heisenbergEvolution_eq_relativeTime
     (A B : H →L[ℂ] H) (t s : ℝ) :
-    ⁅heisenbergEvolution system A t, heisenbergEvolution system B s⁆ =
-      heisenbergEvolution system ⁅heisenbergEvolution system A (t - s), B⁆ s := by
-  have h :=
-    (heisenbergEvolution_lie system (heisenbergEvolution system A (t - s)) B s).symm
-  rw [heisenbergEvolution_heisenbergEvolution,
-    show t - s + s = t by ring] at h
-  exact h
+    ⁅heisenbergEvolution system t A, heisenbergEvolution system s B⁆ =
+      heisenbergEvolution system s ⁅heisenbergEvolution system (t - s) A, B⁆ := by
+  have htime :
+      heisenbergEvolution system s (heisenbergEvolution system (t - s) A) =
+        heisenbergEvolution system t A := by
+    rw [heisenbergEvolution_heisenbergEvolution, sub_add_cancel]
+  rw [← htime]
+  simp only [LieRing.of_associative_ring_bracket, map_sub, map_mul]
 
 /-- Unitary free conjugation preserves the operator norm exactly. -/
 @[simp]
 theorem norm_heisenbergEvolution (A : H →L[ℂ] H) (t : ℝ) :
-    ‖heisenbergEvolution system A t‖ = ‖A‖ := by
+    ‖heisenbergEvolution system t A‖ = ‖A‖ := by
   have hU := freePropagator_mem_unitary system t
-  rw [heisenbergEvolution, ← star_freePropagator system t]
+  rw [heisenbergEvolution_apply, ← star_freePropagator system t]
   calc
     ‖star (freePropagator system t) * A * freePropagator system t‖ =
         ‖star (freePropagator system t) * A‖ :=
@@ -232,20 +201,11 @@ theorem continuous_freePropagator : Continuous (freePropagator system) := by
 
 /-- Free Heisenberg evolution of a fixed bounded observable is norm-continuous in time. -/
 theorem continuous_heisenbergEvolution (A : H →L[ℂ] H) :
-    Continuous (fun t : ℝ => heisenbergEvolution system A t) := by
+    Continuous (fun t : ℝ => heisenbergEvolution system t A) := by
   have hneg : Continuous (fun t : ℝ => freePropagator system (-t)) :=
     (continuous_freePropagator system).comp continuous_neg
-  change Continuous
-    (((fun t : ℝ => freePropagator system (-t)) * (fun _ : ℝ => A)) *
-      freePropagator system)
+  simp_rw [heisenbergEvolution_apply]
   exact (hneg.mul continuous_const).mul (continuous_freePropagator system)
-
-/-- Free Heisenberg evolution preserves self-adjointness. -/
-theorem isSelfAdjoint_heisenbergEvolution
-    (A : H →L[ℂ] H) (hA : IsSelfAdjoint A) (t : ℝ) :
-    IsSelfAdjoint (heisenbergEvolution system A t) := by
-  rw [isSelfAdjoint_iff]
-  simp [heisenbergEvolution, star_freePropagator, hA.star_eq, mul_assoc]
 
 end
 end LinearResponse

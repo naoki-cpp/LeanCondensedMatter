@@ -43,7 +43,7 @@ noncomputable def commutatorSusceptibility
     (A B : H →L[ℂ] H) (t s : ℝ) : ℂ :=
   (Complex.I / (system.hbar : ℂ)) *
     expectation
-      ⁅heisenbergEvolution system A t, heisenbergEvolution system B s⁆
+      ⁅heisenbergEvolution system t A, heisenbergEvolution system s B⁆
 
 /-- The retarded susceptibility is the commutator susceptibility in the causal region and zero
 when the source time lies after the observation time. -/
@@ -81,14 +81,13 @@ theorem commutatorSusceptibility_eq_timeDifference_of_stationary
   apply congrArg (fun z : ℂ => (Complex.I / (system.hbar : ℂ)) * z)
   calc
     expectation
-        ⁅heisenbergEvolution system A t, heisenbergEvolution system B s⁆ =
+        ⁅heisenbergEvolution system t A, heisenbergEvolution system s B⁆ =
       expectation
-        (heisenbergEvolution system
-          ⁅heisenbergEvolution system A (t - s), B⁆ s) := by
+        (heisenbergEvolution system s ⁅heisenbergEvolution system (t - s) A, B⁆) := by
         rw [lie_heisenbergEvolution_eq_relativeTime]
     _ = expectation
-        ⁅heisenbergEvolution system A (t - s), B⁆ :=
-      hstationary s ⁅heisenbergEvolution system A (t - s), B⁆
+        ⁅heisenbergEvolution system (t - s) A, B⁆ :=
+      hstationary s ⁅heisenbergEvolution system (t - s) A, B⁆
 
 /-- Under stationarity, the retarded kernel is the causal extension of a one-time-difference
 susceptibility. -/
@@ -117,7 +116,7 @@ theorem sourceCoupled_responseIntegral_eq_retardedSusceptibility
       ∫ s in (0 : ℝ)..t,
         (f s : ℂ) *
           expectation
-            ⁅heisenbergEvolution system A t, heisenbergEvolution system B s⁆) =
+            ⁅heisenbergEvolution system t A, heisenbergEvolution system s B⁆) =
       ∫ s in (0 : ℝ)..t,
         (f s : ℂ) * retardedSusceptibility system expectation A B t s := by
   rw [← intervalIntegral.integral_smul]
@@ -139,13 +138,13 @@ noncomputable def retardedSusceptibilityMeasuredLinearMap
   map_add' := fun A₁ A₂ => by
     by_cases h : s ≤ t
     · simp [retardedSusceptibility, commutatorSusceptibility,
-        LieRing.of_associative_ring_bracket, heisenbergEvolution, h, mul_add, add_mul]
+        LieRing.of_associative_ring_bracket, h, mul_add, add_mul]
       ring
     · simp [retardedSusceptibility, h]
   map_smul' := fun c A => by
     by_cases h : s ≤ t
     · simp [retardedSusceptibility, commutatorSusceptibility,
-        LieRing.of_associative_ring_bracket, heisenbergEvolution, h, smul_eq_mul]
+        LieRing.of_associative_ring_bracket, h, smul_eq_mul]
       ring
     · simp [retardedSusceptibility, h]
 

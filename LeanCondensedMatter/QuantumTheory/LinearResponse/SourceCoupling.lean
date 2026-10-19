@@ -54,9 +54,8 @@ theorem isSelfAdjoint_sourceCoupledPerturbation
 theorem timeDependentInteractionPerturbation_sourceCoupledPerturbation
     (f : ℝ → ℝ) (B : H →L[ℂ] H) (t : ℝ) :
     timeDependentInteractionPerturbation system (sourceCoupledPerturbation f B) t =
-      (-(f t : ℂ)) • heisenbergEvolution system B t := by
-  simp [timeDependentInteractionPerturbation, sourceCoupledPerturbation,
-    heisenbergEvolution, mul_assoc]
+      (-(f t : ℂ)) • heisenbergEvolution system t B := by
+  simp [timeDependentInteractionPerturbation, sourceCoupledPerturbation]
 
 /-- Moving the source minus sign from the interaction family into the Dyson scalar coupling leaves
 the interaction-picture propagator unchanged. -/
@@ -64,10 +63,10 @@ theorem sourceCoupledInteractionPropagator_eq_positiveSourceDyson
     (f : ℝ → ℝ) (B : H →L[ℂ] H) (lam t : ℝ) :
     timeDependentInteractionPropagator system (sourceCoupledPerturbation f B) lam t =
       Dyson.evolution
-        (fun s => (f s : ℂ) • heisenbergEvolution system B s)
+        (fun s => (f s : ℂ) • heisenbergEvolution system s B)
         (-(timeDependentPhysicalDysonCoupling system lam)) t := by
   let W : ℝ → (H →L[ℂ] H) :=
-    fun s => (f s : ℂ) • heisenbergEvolution system B s
+    fun s => (f s : ℂ) • heisenbergEvolution system s B
   have hinteraction :
       timeDependentInteractionPerturbation system (sourceCoupledPerturbation f B) =
         fun s => -W s := by
@@ -87,23 +86,23 @@ theorem sourceCoupled_responseIntegral_eq
     ((-(Complex.I / (system.hbar : ℂ))) •
       ∫ s in (0 : ℝ)..t,
         expectation
-          ⁅heisenbergEvolution system A t,
+          ⁅heisenbergEvolution system t A,
             timeDependentInteractionPerturbation system
               (sourceCoupledPerturbation f B) s⁆) =
       ((Complex.I / (system.hbar : ℂ)) •
         ∫ s in (0 : ℝ)..t,
           (f s : ℂ) *
             expectation
-              ⁅heisenbergEvolution system A t,
-                heisenbergEvolution system B s⁆) := by
+              ⁅heisenbergEvolution system t A,
+                heisenbergEvolution system s B⁆) := by
   let g : ℝ → ℂ := fun s =>
     (f s : ℂ) *
       expectation
-        ⁅heisenbergEvolution system A t, heisenbergEvolution system B s⁆
+        ⁅heisenbergEvolution system t A, heisenbergEvolution system s B⁆
   have hfun :
       (fun s : ℝ =>
         expectation
-          ⁅heisenbergEvolution system A t,
+          ⁅heisenbergEvolution system t A,
             timeDependentInteractionPerturbation system
               (sourceCoupledPerturbation f B) s⁆) =
         fun s => -g s := by
@@ -111,15 +110,15 @@ theorem sourceCoupled_responseIntegral_eq
     rw [timeDependentInteractionPerturbation_sourceCoupledPerturbation]
     calc
       expectation
-          ⁅heisenbergEvolution system A t,
-            (-(f s : ℂ)) • heisenbergEvolution system B s⁆ =
+          ⁅heisenbergEvolution system t A,
+            (-(f s : ℂ)) • heisenbergEvolution system s B⁆ =
         expectation
           ((-(f s : ℂ)) •
-            ⁅heisenbergEvolution system A t, heisenbergEvolution system B s⁆) := by
+            ⁅heisenbergEvolution system t A, heisenbergEvolution system s B⁆) := by
         rw [lie_smul]
       _ = (-(f s : ℂ)) *
           expectation
-            ⁅heisenbergEvolution system A t, heisenbergEvolution system B s⁆ := by
+            ⁅heisenbergEvolution system t A, heisenbergEvolution system s B⁆ := by
         exact map_smul expectation.toContinuousLinearMap _ _
       _ = -g s := by
         simp [g]
@@ -147,7 +146,7 @@ theorem hasDerivAt_sourceCoupledPerturbedExpectation_zero_of_bound_kubo
         ∫ s in (0 : ℝ)..t,
           (f s : ℂ) *
             expectation
-              ⁅heisenbergEvolution system A t, heisenbergEvolution system B s⁆)
+              ⁅heisenbergEvolution system t A, heisenbergEvolution system s B⁆)
       0 := by
   have hgeneral :=
     hasDerivAt_timeDependentPerturbedExpectationFunctional_apply_zero_of_bound_kubo

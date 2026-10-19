@@ -38,8 +38,9 @@ variable (system : BoundedFreeSystem H)
 interaction picture. -/
 theorem isSelfAdjoint_timeDependentInteractionPerturbation_of_isSelfAdjoint
     (V : ℝ → (H →L[ℂ] H)) (hV : ∀ s, IsSelfAdjoint (V s)) (t : ℝ) :
-    IsSelfAdjoint (timeDependentInteractionPerturbation system V t) :=
-  isSelfAdjoint_heisenbergEvolution system (V t) (hV t) t
+    IsSelfAdjoint (timeDependentInteractionPerturbation system V t) := by
+  change IsSelfAdjoint (heisenbergEvolution system t (V t))
+  rw [isSelfAdjoint_iff, ← map_star, (hV t).star_eq]
 
 /-- The interval integral of the interaction-picture perturbation is self-adjoint when `V(t)` is
 self-adjoint at every time. -/
