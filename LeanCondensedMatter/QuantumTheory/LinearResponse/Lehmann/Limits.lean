@@ -124,7 +124,7 @@ private theorem eventually_hasAdiabaticRemovalLimit_finset_frequencyTerm
           hbar omega (transition j).energyGap (transition j).weight
             (Or.inr hdetuning)
   filter_upwards [(Filter.eventually_all_finset s).2 hterm] with omega h
-  exact HasAdiabaticRemovalLimit.finsetSum s _ _ h
+  exact tendsto_finsetSum s h
 
 /-- Both local iterated limits exist and agree for a finite static-nonresonant family. -/
 theorem finset_frequencyTerm_has_both_local_iterated_limits
@@ -146,12 +146,12 @@ theorem finset_frequencyTerm_has_both_local_iterated_limits
       s.sum fun j => (transition j).frequencyTerm 0 eta, ?_, ?_⟩
     · filter_upwards [self_mem_nhdsWithin] with eta heta
       unfold LehmannTransitionData.frequencyTerm
-      apply HasStaticLimit.finsetSum
+      apply tendsto_finsetSum
       intro j _
       exact hasStaticLimit_lehmannTerm
         hbar eta (transition j).energyGap (transition j).weight (ne_of_gt heta)
     · unfold LehmannTransitionData.frequencyTerm
-      apply HasAdiabaticRemovalLimit.finsetSum
+      apply tendsto_finsetSum
       intro j hj
       apply hasAdiabaticRemovalLimit_lehmannTerm
       rcases hregular j hj with hweight | hgap
@@ -164,7 +164,7 @@ theorem finset_frequencyTerm_has_both_local_iterated_limits
     · exact eventually_hasAdiabaticRemovalLimit_finset_frequencyTerm
         s hbar transition hhbar hregular
     · unfold LehmannTransitionData.frequencyTerm
-      apply HasStaticLimit.finsetSum
+      apply tendsto_finsetSum
       intro j hj
       exact hasStaticLimit_lehmannTerm_zero_rate
         hbar (transition j).energyGap (transition j).weight hhbar (hregular j hj)
