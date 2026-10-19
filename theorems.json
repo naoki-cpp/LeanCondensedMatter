@@ -47465,92 +47465,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {κ : Type u_1} (s : Finset κ) (f : κ → ℝ → ℂ) (L : κ → ℂ),\n  (∀ j ∈ s, QuantumTheory.LinearResponse.HasAdiabaticRemovalLimit (f j) (L j)) →\n    QuantumTheory.LinearResponse.HasAdiabaticRemovalLimit (fun eta => ∑ j ∈ s, f j eta) (s.sum L)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": true,
-    "projectAxioms": [],
-    "name": "QuantumTheory.LinearResponse.HasAdiabaticRemovalLimit.finsetSum",
-    "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.LimitOrder",
-    "externalAxioms": [],
-    "docString": "Finite sums preserve regulator-removal limits term by term. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.LinearResponse.finset_frequencyTerm_has_both_local_iterated_limits",
-      "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann.Limits.0.QuantumTheory.LinearResponse.eventually_hasAdiabaticRemovalLimit_finset_frequencyTerm"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.LinearResponse.finset_frequencyTerm_has_both_local_iterated_limits",
-      "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann.Limits.0.QuantumTheory.LinearResponse.eventually_hasAdiabaticRemovalLimit_finset_frequencyTerm"
-    ],
-    "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {κ : Type u_1} (s : Finset κ) (f : κ → ℝ → ℂ) (L : κ → ℂ),\n  (∀ j ∈ s, QuantumTheory.LinearResponse.HasStaticLimit (f j) (L j)) →\n    QuantumTheory.LinearResponse.HasStaticLimit (fun omega => ∑ j ∈ s, f j omega) (s.sum L)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": true,
-    "retainedMention": true,
-    "projectAxioms": [],
-    "name": "QuantumTheory.LinearResponse.HasStaticLimit.finsetSum",
-    "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.LimitOrder",
-    "externalAxioms": [],
-    "docString": "Finite sums preserve static limits term by term. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.LinearResponse.finset_frequencyTerm_has_both_local_iterated_limits"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.LinearResponse.finset_frequencyTerm_has_both_local_iterated_limits"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ {hbar : ℝ} (transition : QuantumTheory.LinearResponse.LehmannTransitionData hbar) (t : ℝ),\n  ‖transition.timeTerm t‖ = ‖transition.weight‖",
     "standardAxioms": [
       "Classical.choice",
@@ -50528,8 +50442,6 @@
       "QuantumTheory.LinearResponse.finiteTime_eigenbasisPhysicalSusceptibility_has_both_local_three_stage_limits"
     ],
     "dependencies": [
-      "QuantumTheory.LinearResponse.HasAdiabaticRemovalLimit.finsetSum",
-      "QuantumTheory.LinearResponse.HasStaticLimit.finsetSum",
       "QuantumTheory.LinearResponse.hasAdiabaticRemovalLimit_lehmannTerm",
       "QuantumTheory.LinearResponse.hasStaticLimit_lehmannTerm",
       "QuantumTheory.LinearResponse.hasStaticLimit_lehmannTerm_zero_rate",
@@ -117321,12 +117233,14 @@
     "dependents": [
       "SecondQuantization.Common.algebraicToCompleted_denseRange",
       "SecondQuantization.Common.completedBasisState_mem_completedDiagonalDomain",
+      "SecondQuantization.Common.completedBoundedDiagonalOperator_comp_algebraicToCompleted",
       "SecondQuantization.Common.completedDiagonalOperator_comp_algebraicCore",
       "SecondQuantization.Common.completedFiniteHilbertEquiv_basisState",
       "SecondQuantization.Common.continuousLinearMap_ext_completedBasis",
       "SecondQuantization.Fermionic.completedAnnihilate_comp_algebraicToCompleted",
       "SecondQuantization.Fermionic.completedCreate_comp_algebraicToCompleted",
-      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.Ladder.0.SecondQuantization.Bosonic.algebraicToCompleted_basisState'"
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.Ladder.0.SecondQuantization.Bosonic.algebraicToCompleted_basisState'",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.Diagonal.0.SecondQuantization.Common.norm_weight_le_of_bounded_diagonal_extension"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
@@ -117334,14 +117248,16 @@
     "compiledConsumers": [
       "SecondQuantization.Common.algebraicToCompleted_denseRange",
       "SecondQuantization.Common.completedBasisState_mem_completedDiagonalDomain",
+      "SecondQuantization.Common.completedBoundedDiagonalOperator_comp_algebraicToCompleted",
       "SecondQuantization.Common.completedDiagonalOperator_comp_algebraicCore",
       "SecondQuantization.Common.completedFiniteHilbertEquiv_basisState",
       "SecondQuantization.Common.continuousLinearMap_ext_completedBasis",
       "SecondQuantization.Fermionic.completedAnnihilate_comp_algebraicToCompleted",
       "SecondQuantization.Fermionic.completedCreate_comp_algebraicToCompleted",
-      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.Ladder.0.SecondQuantization.Bosonic.algebraicToCompleted_basisState'"
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.Ladder.0.SecondQuantization.Bosonic.algebraicToCompleted_basisState'",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.Diagonal.0.SecondQuantization.Common.norm_weight_le_of_bounded_diagonal_extension"
     ],
-    "compiledConsumerCount": 8,
+    "compiledConsumerCount": 10,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -118423,6 +118339,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "SecondQuantization.Common.completedBoundedDiagonalOperator_comp_algebraicToCompleted",
       "SecondQuantization.Common.completedCoordinateProjection_basisState",
       "SecondQuantization.Common.completedDiagonalHeatOperator_basisState",
       "SecondQuantization.Common.completedPhaseMultiplier_basisState"
@@ -118435,11 +118352,59 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "SecondQuantization.Common.completedBoundedDiagonalOperator_comp_algebraicToCompleted",
       "SecondQuantization.Common.completedCoordinateProjection_basisState",
       "SecondQuantization.Common.completedDiagonalHeatOperator_basisState",
       "SecondQuantization.Common.completedPhaseMultiplier_basisState"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 4,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Config : Type u_1} (w : Config → ℂ) {C : ℝ} (hC : 0 ≤ C) (hw : ∀ (c : Config), ‖w c‖ ≤ C),\n  ↑(SecondQuantization.Common.completedBoundedDiagonalOperator w hC hw) ∘ₗ\n      SecondQuantization.Common.algebraicToCompleted =\n    SecondQuantization.Common.algebraicToCompleted ∘ₗ SecondQuantization.Common.diagonalOperator w",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.completedBoundedDiagonalOperator_comp_algebraicToCompleted",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.Diagonal",
+    "externalAxioms": [],
+    "docString": "A uniformly bounded diagonal algebraic Fock operator acts on the dense core as its\ncanonical continuous extension. No finite configuration hypothesis is needed. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Common.exists_bounded_diagonal_extension_iff"
+    ],
+    "dependencies": [
+      "SecondQuantization.Common.algebraicToCompleted_basisState",
+      "SecondQuantization.Common.completedBoundedDiagonalOperator_basisState",
+      "SecondQuantization.Common.diagonalOperator_basisState",
+      "SecondQuantization.Common.linearMap_ext_basisState"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.exists_bounded_diagonal_extension_iff"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -119606,7 +119571,8 @@
       "SecondQuantization.Bosonic.completedFreeGibbsDensityOperator_apply_basis",
       "SecondQuantization.Bosonic.completedOccupationHilbertBasis_apply",
       "SecondQuantization.Common.completedFiniteHilbertEquiv_intertwines_eigenbasisGibbsDensity",
-      "SecondQuantization.Fermionic.completedOccupationHilbertBasis_apply"
+      "SecondQuantization.Fermionic.completedOccupationHilbertBasis_apply",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.Diagonal.0.SecondQuantization.Common.norm_weight_le_of_bounded_diagonal_extension"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
@@ -119615,9 +119581,10 @@
       "SecondQuantization.Bosonic.completedFreeGibbsDensityOperator_apply_basis",
       "SecondQuantization.Bosonic.completedOccupationHilbertBasis_apply",
       "SecondQuantization.Common.completedFiniteHilbertEquiv_intertwines_eigenbasisGibbsDensity",
-      "SecondQuantization.Fermionic.completedOccupationHilbertBasis_apply"
+      "SecondQuantization.Fermionic.completedOccupationHilbertBasis_apply",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.Diagonal.0.SecondQuantization.Common.norm_weight_le_of_bounded_diagonal_extension"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 5,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -121518,6 +121485,7 @@
       "Models.HolsteinPrimakoff.deviationFactor_basisState",
       "SecondQuantization.Bosonic.freeHamiltonian_basisState",
       "SecondQuantization.Bosonic.numberOperator_eq_diagonalOperator",
+      "SecondQuantization.Common.completedBoundedDiagonalOperator_comp_algebraicToCompleted",
       "SecondQuantization.Common.completedDiagonalOperator_comp_algebraicCore",
       "SecondQuantization.Common.diagonalEvolution_basisState",
       "SecondQuantization.Common.diagonalOperator_apply",
@@ -121526,6 +121494,7 @@
       "SecondQuantization.Fermionic.interactionHamiltonian_basisState",
       "SecondQuantization.Fermionic.numberOperator_eq_diagonalOperator",
       "SecondQuantization.Fermionic.totalNumberOperator_basisState",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.Diagonal.0.SecondQuantization.Common.norm_weight_le_of_bounded_diagonal_extension",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExponential.0.SecondQuantization.Common.continuousDiagonalHamiltonian_basis_apply"
     ],
     "dependencies": [
@@ -121537,6 +121506,7 @@
       "Models.HolsteinPrimakoff.deviationFactor_basisState",
       "SecondQuantization.Bosonic.freeHamiltonian_basisState",
       "SecondQuantization.Bosonic.numberOperator_eq_diagonalOperator",
+      "SecondQuantization.Common.completedBoundedDiagonalOperator_comp_algebraicToCompleted",
       "SecondQuantization.Common.completedDiagonalOperator_comp_algebraicCore",
       "SecondQuantization.Common.diagonalEvolution_basisState",
       "SecondQuantization.Common.diagonalOperator_apply",
@@ -121545,9 +121515,10 @@
       "SecondQuantization.Fermionic.interactionHamiltonian_basisState",
       "SecondQuantization.Fermionic.numberOperator_eq_diagonalOperator",
       "SecondQuantization.Fermionic.totalNumberOperator_basisState",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.Diagonal.0.SecondQuantization.Common.norm_weight_le_of_bounded_diagonal_extension",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExponential.0.SecondQuantization.Common.continuousDiagonalHamiltonian_basis_apply"
     ],
-    "compiledConsumerCount": 12,
+    "compiledConsumerCount": 14,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -122191,6 +122162,47 @@
     "dependencies": [
       "ScalarExchange.zetaCommutator_swap_of_sq_eq_one",
       "SecondQuantization.Common.Statistics.zeta_sq"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {Config : Type u_1} (w : Config → ℂ),\n  (∃ A,\n      ↑A ∘ₗ SecondQuantization.Common.algebraicToCompleted =\n        SecondQuantization.Common.algebraicToCompleted ∘ₗ SecondQuantization.Common.diagonalOperator w) ↔\n    ∃ C, 0 ≤ C ∧ ∀ (c : Config), ‖w c‖ ≤ C",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.exists_bounded_diagonal_extension_iff",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.Diagonal",
+    "externalAxioms": [],
+    "docString": "An algebraic diagonal operator extends continuously to the completed Fock space if and\nonly if its weights are uniformly bounded. This condition replaces finite dimensionality\nfor diagonal operators, but not for arbitrary algebraic endomorphisms. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "SecondQuantization.Common.completedBoundedDiagonalOperator_comp_algebraicToCompleted",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.Diagonal.0.SecondQuantization.Common.norm_weight_le_of_bounded_diagonal_extension"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -126155,6 +126167,7 @@
       "SecondQuantization.Bosonic.completedAnnihilate_comp_algebraicCore",
       "SecondQuantization.Bosonic.completedCreate_comp_algebraicCore",
       "SecondQuantization.Bosonic.numberOperator_eq_diagonalOperator",
+      "SecondQuantization.Common.completedBoundedDiagonalOperator_comp_algebraicToCompleted",
       "SecondQuantization.Common.completedDiagonalOperator_comp_algebraicCore",
       "SecondQuantization.Common.continuousLinearMap_ext_completedBasis",
       "SecondQuantization.Common.diagonalEvolution_zero",
@@ -126190,6 +126203,7 @@
       "SecondQuantization.Bosonic.completedAnnihilate_comp_algebraicCore",
       "SecondQuantization.Bosonic.completedCreate_comp_algebraicCore",
       "SecondQuantization.Bosonic.numberOperator_eq_diagonalOperator",
+      "SecondQuantization.Common.completedBoundedDiagonalOperator_comp_algebraicToCompleted",
       "SecondQuantization.Common.completedDiagonalOperator_comp_algebraicCore",
       "SecondQuantization.Common.continuousLinearMap_ext_completedBasis",
       "SecondQuantization.Common.diagonalEvolution_zero",
@@ -126213,7 +126227,7 @@
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.LadderTraceCyclicity.0.SecondQuantization.Bosonic.create_apply_coord",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.OccupationFieldEquivalence.0.SecondQuantization.Fermionic.AlgebraicFock.eq_annihilate_of_vacuum_of_mixedCAR"
     ],
-    "compiledConsumerCount": 30,
+    "compiledConsumerCount": 31,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -174586,7 +174600,6 @@
       "QuantumTheory.LinearResponse.finset_frequencyTerm_has_both_local_iterated_limits"
     ],
     "dependencies": [
-      "QuantumTheory.LinearResponse.HasAdiabaticRemovalLimit.finsetSum",
       "QuantumTheory.LinearResponse.hasAdiabaticRemovalLimit_lehmannTerm"
     ],
     "crossModuleDirectWrapper": false,
@@ -177223,6 +177236,52 @@
     "completedMention": false,
     "compiledConsumers": [
       "_private.LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.CoordinateIsometry.0.SecondQuantization.Common.norm_completedReindexLinear"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Config : Type u_1}\n  (A : ↥(SecondQuantization.Common.CompletedFock Config) →L[ℂ] ↥(SecondQuantization.Common.CompletedFock Config))\n  (w : Config → ℂ),\n  ↑A ∘ₗ SecondQuantization.Common.algebraicToCompleted =\n      SecondQuantization.Common.algebraicToCompleted ∘ₗ SecondQuantization.Common.diagonalOperator w →\n    ∀ (c : Config), ‖w c‖ ≤ ‖A‖",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.Diagonal.0.SecondQuantization.Common.norm_weight_le_of_bounded_diagonal_extension",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.Diagonal",
+    "externalAxioms": [],
+    "docString": "If a bounded completed operator extends algebraic diagonal multiplication, the diagonal\nweights are uniformly bounded by its operator norm. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Common.exists_bounded_diagonal_extension_iff"
+    ],
+    "dependencies": [
+      "SecondQuantization.Common.algebraicToCompleted_basisState",
+      "SecondQuantization.Common.completedHilbertBasis_apply",
+      "SecondQuantization.Common.diagonalOperator_basisState"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.exists_bounded_diagonal_extension_iff"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
