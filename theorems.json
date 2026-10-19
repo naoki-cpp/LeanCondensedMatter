@@ -52244,7 +52244,7 @@
       "QuantumTheory.LinearResponse.integral_tsum_eigenbasisAdiabaticTransitionIntegrand_Ioi_zero"
     ],
     "dependencies": [
-      "QuantumTheory.LinearResponse.lehmannModeExponent_re"
+      "QuantumTheory.LinearResponse.lehmannDenominator_re"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -52399,50 +52399,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (hbar omega eta energyGap : ℝ),\n  0 < eta →\n    ∫ (t : ℝ) in Set.Ioi 0, QuantumTheory.LinearResponse.lehmannMode hbar omega eta energyGap t =\n      -1 / QuantumTheory.LinearResponse.lehmannModeExponent hbar omega eta energyGap",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.LinearResponse.integral_lehmannMode_Ioi_zero",
-    "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann.Transition",
-    "externalAxioms": [],
-    "docString": "The causal half-line integral of one damped transition mode. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.LinearResponse.integral_lehmannMode_Ioi_zero_eq_resolvent"
-    ],
-    "dependencies": [
-      "QuantumTheory.LinearResponse.lehmannModeExponent_re"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.LinearResponse.integral_lehmannMode_Ioi_zero_eq_resolvent"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ (hbar omega eta energyGap : ℝ),\n  0 < eta →\n    ∫ (t : ℝ) in Set.Ioi 0, QuantumTheory.LinearResponse.lehmannMode hbar omega eta energyGap t =\n      (QuantumTheory.LinearResponse.lehmannDenominator hbar omega eta energyGap)⁻¹",
     "standardAxioms": [
       "Classical.choice",
@@ -52465,8 +52421,7 @@
       "QuantumTheory.LinearResponse.integral_eigenbasisAdiabaticTransitionIntegrand_Ioi_zero"
     ],
     "dependencies": [
-      "QuantumTheory.LinearResponse.integral_lehmannMode_Ioi_zero",
-      "QuantumTheory.LinearResponse.lehmannDenominator_eq_neg_exponent"
+      "QuantumTheory.LinearResponse.lehmannDenominator_re"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -52803,48 +52758,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (hbar omega eta energyGap : ℝ),\n  QuantumTheory.LinearResponse.lehmannDenominator hbar omega eta energyGap =\n    -QuantumTheory.LinearResponse.lehmannModeExponent hbar omega eta energyGap",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.LinearResponse.lehmannDenominator_eq_neg_exponent",
-    "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann.Transition",
-    "externalAxioms": [],
-    "docString": "The denominator is the negative of the corresponding damped-mode exponent. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.LinearResponse.integral_lehmannMode_Ioi_zero_eq_resolvent"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.LinearResponse.integral_lehmannMode_Ioi_zero_eq_resolvent"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ (hbar omega eta energyGap : ℝ), eta ≠ 0 → QuantumTheory.LinearResponse.lehmannDenominator hbar omega eta energyGap ≠ 0",
     "standardAxioms": [
       "Classical.choice",
@@ -52898,7 +52811,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": true,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -52910,15 +52823,19 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.LinearResponse.eta_le_norm_lehmannDenominator"
+      "QuantumTheory.LinearResponse.eta_le_norm_lehmannDenominator",
+      "QuantumTheory.LinearResponse.integrableOn_lehmannMode_Ioi_zero",
+      "QuantumTheory.LinearResponse.integral_lehmannMode_Ioi_zero_eq_resolvent"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.LinearResponse.eta_le_norm_lehmannDenominator"
+      "QuantumTheory.LinearResponse.eta_le_norm_lehmannDenominator",
+      "QuantumTheory.LinearResponse.integrableOn_lehmannMode_Ioi_zero",
+      "QuantumTheory.LinearResponse.integral_lehmannMode_Ioi_zero_eq_resolvent"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -52961,50 +52878,6 @@
     "compiledConsumers": [
       "QuantumTheory.LinearResponse.hasAdiabaticRemovalLimit_lehmannTerm",
       "QuantumTheory.LinearResponse.hasStaticLimit_lehmannTerm_zero_rate"
-    ],
-    "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (hbar omega eta energyGap : ℝ), (QuantumTheory.LinearResponse.lehmannModeExponent hbar omega eta energyGap).re = -eta",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.LinearResponse.lehmannModeExponent_re",
-    "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann.Transition",
-    "externalAxioms": [],
-    "docString": "The real part of a Lehmann-mode exponent is exactly the negative switching rate. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.LinearResponse.integrableOn_lehmannMode_Ioi_zero",
-      "QuantumTheory.LinearResponse.integral_lehmannMode_Ioi_zero"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.LinearResponse.integrableOn_lehmannMode_Ioi_zero",
-      "QuantumTheory.LinearResponse.integral_lehmannMode_Ioi_zero"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -106545,7 +106418,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "SecondQuantization.Bosonic.summable_particleNumber_total_sq_boltzmannWeight",
-    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.TotalParticleNumberWeightSummable",
+    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.QuadraticParticleNumberWeightSummable",
     "externalAxioms": [],
     "docString": "The square of the total particle number remains summable against the free bosonic Boltzmann\nweight.  This is the uniform degree-two majorant used for quartic ladder amplitudes. ",
     "directWrapperTargetModule": null,

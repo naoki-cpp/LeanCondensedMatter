@@ -4987,14 +4987,6 @@
       "externalImportCount": 0
     },
     {
-      "name": "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.TotalParticleNumberWeightSummable",
-      "sourceFile": "LeanCondensedMatter/SecondQuantization/Bosonic/Thermal/TotalParticleNumberWeightSummable.lean",
-      "imports": [
-        "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.QuadraticParticleNumberWeightSummable"
-      ],
-      "externalImportCount": 0
-    },
-    {
       "name": "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Bosonic/Thermal.lean",
       "imports": [
@@ -5005,8 +4997,7 @@
         "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.FreePartitionDeterminant",
         "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.ParticleNumberWeightSummable",
         "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.PolynomialOccupationWeightSummable",
-        "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.QuadraticParticleNumberWeightSummable",
-        "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.TotalParticleNumberWeightSummable"
+        "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.QuadraticParticleNumberWeightSummable"
       ],
       "externalImportCount": 0
     },
