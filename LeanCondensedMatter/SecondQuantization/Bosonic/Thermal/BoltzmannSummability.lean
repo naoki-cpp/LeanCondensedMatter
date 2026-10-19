@@ -66,6 +66,7 @@ theorem eigenbasisGibbsSummable_freeEigenvalue_of_mode
     apply (hqsum.mul_left (2 : ℝ)).of_norm_bounded_eventually
     filter_upwards [hsmall] with i hi
     have hden : 0 < 1 - q i := sub_pos.mpr (hqlt i)
+    rw [Real.norm_eq_abs, abs_of_nonneg (div_nonneg (hqpos i) hden.le)]
     apply (div_le_iff₀ hden).2
     nlinarith [mul_nonneg (hqpos i) (show 0 ≤ 1 - 2 * q i by linarith)]
   let g : Mode × ℕ → ℝ := fun p => if p.2 = 0 then 0 else q p.1 ^ p.2
