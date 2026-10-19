@@ -78,8 +78,10 @@ theorem completedBoundedDiagonalOperator_comp_algebraicToCompleted
       algebraicToCompleted.comp (diagonalOperator w) := by
   apply linearMap_ext_basisState
   intro c
-  simp only [LinearMap.comp_apply, algebraicToCompleted_basisState,
-    completedBoundedDiagonalOperator_basisState, diagonalOperator_basisState, map_smul]
+  change (completedBoundedDiagonalOperator w hC hw) (completedBasisState c) =
+    algebraicToCompleted (diagonalOperator w (basisState c))
+  rw [diagonalOperator_basisState, map_smul, algebraicToCompleted_basisState]
+  exact completedBoundedDiagonalOperator_basisState w hC hw c
 
 /-- If a bounded completed operator extends algebraic diagonal multiplication, the diagonal
 weights are uniformly bounded by its operator norm. -/
@@ -91,7 +93,9 @@ theorem norm_weight_le_of_bounded_diagonal_extension
   have hvec : A (completedBasisState c) = w c • completedBasisState c := by
     have hc := congrArg
       (fun f : AlgebraicFock Config →ₗ[ℂ] CompletedFock Config => f (basisState c)) hA
-    simpa only [LinearMap.comp_apply, algebraicToCompleted_basisState,
+    change A (algebraicToCompleted (basisState c)) =
+      algebraicToCompleted (diagonalOperator w (basisState c)) at hc
+    simpa only [algebraicToCompleted_basisState,
       diagonalOperator_basisState, map_smul] using hc
   have hn : ‖completedBasisState c‖ = 1 := by
     rw [← completedHilbertBasis_apply (Config := Config) c]
