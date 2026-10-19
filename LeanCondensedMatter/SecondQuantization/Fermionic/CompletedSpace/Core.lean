@@ -61,12 +61,21 @@ theorem completedNumberOperator_comp_algebraicToCompleted (i : Mode) :
     (completedNumberOperator i).toLinearMap.comp algebraicToCompleted =
       algebraicToCompleted.comp (numberOperator i) := by
   classical
-  rw [numberOperator_eq_diagonalOperator]
-  simpa only [completedNumberOperator, Common.completedCoordinateProjection,
-    algebraicToCompleted] using
-    (Common.completedBoundedDiagonalOperator_comp_algebraicToCompleted
-      (fun n : Occupation Mode => if i ∈ n then (1 : ℂ) else 0) zero_le_one
-      (fun n => by by_cases h : i ∈ n <;> simp [h]))
+  let w : Occupation Mode → ℂ := fun n => if i ∈ n then 1 else 0
+  have hw : ∀ n, ‖w n‖ ≤ (1 : ℝ) := by
+    intro n
+    by_cases h : i ∈ n <;> simp [w, h]
+  have hproj :
+      completedNumberOperator i =
+        Common.completedBoundedDiagonalOperator w zero_le_one hw := by
+    apply Common.continuousLinearMap_ext_completedBasis
+    intro n
+    rw [completedNumberOperator_basisState,
+      Common.completedBoundedDiagonalOperator_basisState]
+    by_cases h : i ∈ n <;> simp [w, h]
+  rw [numberOperator_eq_diagonalOperator, hproj]
+  exact Common.completedBoundedDiagonalOperator_comp_algebraicToCompleted
+    w zero_le_one hw
 
 end
 end Fermionic
