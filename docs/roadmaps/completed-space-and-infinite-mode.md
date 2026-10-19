@@ -23,8 +23,15 @@ SecondQuantization.Fermionic.CompletedFockSpace Mode
 - finite-dimensional compatibility and finite-mode coordinate truncations.
 
 Uniformly bounded coordinatewise scalar multiplication uses Mathlib `lp.mapCLM`, specialized locally
-to completed-space diagonal operators. Genuinely unbounded diagonal weights keep explicit `LinearPMap`
-domains; completion alone never licenses coercing an unbounded Hamiltonian or number operator to a
+to completed-space diagonal operators.
+For a diagonal algebraic Fock operator, a continuous extension to the completed space exists
+**if and only if its complex diagonal weights are uniformly bounded**. The general theorem
+`exists_bounded_diagonal_extension_iff` needs no `Finite` or `Fintype` hypothesis;
+`completedBoundedDiagonalOperator_comp_algebraicToCompleted` identifies the extension on
+the dense algebraic core. This criterion does not extend arbitrary algebraic endomorphisms
+without an operator-norm bound. Genuinely unbounded diagonal weights, such as particle-number
+and free-Hamiltonian energies, keep explicit `LinearPMap` domains; completion alone never
+licenses coercing an unbounded Hamiltonian or number operator to a
 bounded map.
 
 ## Thermal boundary
