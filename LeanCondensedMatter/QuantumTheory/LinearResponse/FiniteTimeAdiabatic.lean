@@ -100,6 +100,9 @@ theorem finiteTimeAdiabaticResponse_eq_stationaryLag
       intro s hs
       have hsIcc : s ∈ Set.Icc (0 : ℝ) T := by
         simpa [Set.uIcc_of_le hT] using hs
+      change adiabaticFrequencyPhase ω η (T - s) *
+        retardedSusceptibility system expectation channel.measured channel.source T s =
+          g (T - s)
       rw [retardedSusceptibility_eq_timeDifference_of_stationary
         system expectation hstationary channel.measured channel.source T s]
       simp [g, sub_nonneg.mpr hsIcc.2]
