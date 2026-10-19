@@ -97,6 +97,10 @@ theorem amplitude_eq (K : LocallyFiniteHopping Site) (x y : Site) :
     K.amplitude x y = K.column y x :=
   rfl
 
+/-- Coefficient-level Hermiticity of a lattice hopping model. -/
+def HasHermitianAmplitudes (K : LocallyFiniteHopping Site) : Prop :=
+  ∀ x y : Site, star (K.amplitude x y) = K.amplitude y x
+
 /-- Outside the finite incident set, the incoming matrix element vanishes. -/
 theorem amplitude_eq_zero_of_not_mem (K : LocallyFiniteHopping Site)
     {x y : Site} (hy : y ∉ K.incident x) :
