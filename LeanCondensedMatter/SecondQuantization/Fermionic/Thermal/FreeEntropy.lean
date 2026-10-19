@@ -153,7 +153,7 @@ theorem vonNeumannEntropy_freeGibbsDensityOperator_toReal_eq_sum_fermiDirac
       (vonNeumannEntropy (freeGibbsDensityOperator ε β)).toReal =
         β * eigenbasisGibbsEnergyExpectation (fermionEnergy ε) β +
           Real.log (eigenbasisPartitionFunction (fermionEnergy ε) β) := by
-    simpa [freeGibbsDensityOperator, finiteEigenbasisGibbsDensityOperator] using
+    simpa [freeGibbsDensityOperator] using
       (vonNeumannEntropy_eigenbasisGibbsDensityOperator
         (Common.finiteHilbertBasis (Config := Occupation Mode))
         (fermionEnergy ε) β

@@ -361,7 +361,6 @@ private def semanticOwnerRequirements : Array OwnerRequirement :=
     { declaration := `QuantumTheory.LinearResponse.eigenbasisNormalizedExpectation_apply, moduleName := eigenbasisDynamicsModule },
     { declaration := `QuantumTheory.LinearResponse.isStationary_eigenbasisNormalizedExpectation, moduleName := eigenbasisDynamicsModule },
     { declaration := `QuantumTheory.eigenbasisGibbsDensityOperator, moduleName := gibbsEigenbasisModule },
-    { declaration := `QuantumTheory.finiteEigenbasisGibbsDensityOperator, moduleName := gibbsEigenbasisModule },
     { declaration := `SecondQuantization.Common.finiteGibbsExpectationLinearMap, moduleName := finiteGibbsModule },
     { declaration := `SecondQuantization.Common.finiteGibbsExpectation, moduleName := finiteGibbsModule },
     { declaration := `SecondQuantization.Common.finiteGibbsExpectation_eq_sum, moduleName := finiteGibbsModule },

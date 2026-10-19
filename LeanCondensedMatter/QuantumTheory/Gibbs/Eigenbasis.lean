@@ -39,17 +39,4 @@ theorem eigenbasisGibbsDensityOperator_apply_basis [Nonempty ι]
     diagonalDensityOperator_apply_basis b (eigenbasisBoltzmannWeight E β) hsum
       (eigenbasisBoltzmannWeight_nonneg E β) hZ i
 
-/-- Finite pure-point Gibbs states are direct specializations of the same dimension-independent
-constructor; no separate finite-state implementation is needed. -/
-noncomputable def finiteEigenbasisGibbsDensityOperator [Finite ι] [Nonempty ι]
-    (b : HilbertBasis ι ℂ H) (E : ι → ℝ) (β : ℝ) : DensityOperator H :=
-  eigenbasisGibbsDensityOperator b E β (eigenbasisGibbsSummable_of_finite E β)
-
-@[simp]
-theorem finiteEigenbasisGibbsDensityOperator_apply_basis [Finite ι] [Nonempty ι]
-    (b : HilbertBasis ι ℂ H) (E : ι → ℝ) (β : ℝ) (i : ι) :
-    (finiteEigenbasisGibbsDensityOperator b E β).op (b i) =
-      (eigenbasisGibbsProbability E β i : ℂ) • b i := by
-  exact eigenbasisGibbsDensityOperator_apply_basis b E β (eigenbasisGibbsSummable_of_finite E β) i
-
 end QuantumTheory
