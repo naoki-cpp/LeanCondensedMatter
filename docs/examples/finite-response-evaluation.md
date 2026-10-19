@@ -12,7 +12,7 @@ Eₙ, pₙ, Aₘₙ, Bₘₙ
 ```
 
 as a `QuantumTheory.LinearResponse.FiniteLehmannTable ι`, provided independently by
-`LeanCondensedMatter.QuantumTheory.LinearResponse.FiniteLehmannTable`. Evaluate it directly with
+`LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann.FiniteTable`. Evaluate it directly with
 
 ```text
 finiteLehmannTableResponse ℏ ω η table

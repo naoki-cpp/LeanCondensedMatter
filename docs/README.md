@@ -34,6 +34,7 @@ Architecture notes describe subsystem ownership and dependencies. The
 
 - [Combinatorics and order decomposition](architecture/combinatorics-order-decomposition.md).
 - [Quantum density theory](architecture/quantum-density-theory.md).
+- [Bounded linear response](architecture/linear-response.md).
 - [Physical real-scalar boundary](architecture/physical-real-scalar-boundary.md).
 - [Second quantization](architecture/second-quantization.md).
 - [Fermionic field operators](architecture/fermionic-field-operators.md).

@@ -1,4 +1,4 @@
-import LeanCondensedMatter.QuantumTheory.LinearResponse.FrequencyDomain
+import LeanCondensedMatter.QuantumTheory.LinearResponse.Frequency.Susceptibility
 
 set_option linter.style.header false
 

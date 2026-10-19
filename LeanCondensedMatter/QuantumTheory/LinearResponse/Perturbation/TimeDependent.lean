@@ -1,6 +1,6 @@
 import LeanCondensedMatter.Analysis.Dyson.FirstVariation
 import LeanCondensedMatter.Analysis.Dyson.Volterra
-import LeanCondensedMatter.QuantumTheory.LinearResponse.FreeDynamics
+import LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.Free
 import Mathlib.Analysis.Calculus.Deriv.Basic
 import Mathlib.Topology.MetricSpace.Pseudo.Lemmas
 

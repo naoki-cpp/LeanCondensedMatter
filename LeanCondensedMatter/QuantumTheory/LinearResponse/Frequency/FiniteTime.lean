@@ -1,6 +1,6 @@
-import LeanCondensedMatter.QuantumTheory.LinearResponse.AdiabaticSwitching
-import LeanCondensedMatter.QuantumTheory.LinearResponse.LimitOrder
-import LeanCondensedMatter.QuantumTheory.LinearResponse.ResponseChannel
+import LeanCondensedMatter.QuantumTheory.LinearResponse.Frequency.AdiabaticSwitching
+import LeanCondensedMatter.QuantumTheory.LinearResponse.Frequency.LimitOrder
+import LeanCondensedMatter.QuantumTheory.LinearResponse.Response.Channel
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.FundThmCalculus
 
 set_option linter.style.header false
@@ -25,7 +25,7 @@ The module also applies the same finite-time phase directly to a neutral `Respon
 its retarded measured/source kernel and explicit observable-variation contact expectation together.
 It names convergence in the observation-time variable `T → +∞` and remains independent of particle
 statistics, Fock-space realizations, current operators, lattice geometry, and conductivity
-normalization. Zero-switching and static-limit orderings are owned separately by `LimitOrder`.
+normalization. Zero-switching and static-limit orderings are owned by `Frequency.LimitOrder`.
 -/
 
 namespace QuantumTheory

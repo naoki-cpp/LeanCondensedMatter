@@ -1,7 +1,6 @@
-import LeanCondensedMatter.QuantumTheory.LinearResponse.AdiabaticIntegrability
 import LeanCondensedMatter.QuantumTheory.DensityOperator.DiagonalFormula
-import LeanCondensedMatter.QuantumTheory.LinearResponse.ConservationLaws
-import LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann.Eigenbasis
+import LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.ConservationLaws
+import LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann.Eigenbasis.Data
 import Mathlib.Analysis.SpecialFunctions.Exponential
 
 set_option linter.style.header false

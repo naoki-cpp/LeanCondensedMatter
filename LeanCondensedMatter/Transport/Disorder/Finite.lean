@@ -1,4 +1,4 @@
-import LeanCondensedMatter.QuantumTheory.LinearResponse.FreeDynamics
+import LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.Free
 import Mathlib.Algebra.Star.BigOperators
 
 set_option linter.style.header false

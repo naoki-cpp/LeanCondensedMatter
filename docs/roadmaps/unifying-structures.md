@@ -128,7 +128,7 @@ This can put paramagnetic and explicit-observable-variation terms under a
 single derivative-based origin, without hard-coding a particular coordinate
 representation or assuming every current is uniquely determined by a source.
 
-Current anchor: [observable variation and contact terms](../../LeanCondensedMatter/QuantumTheory/LinearResponse/ObservableVariation.lean).
+Current anchor: [observable variation and contact terms](../../LeanCondensedMatter/QuantumTheory/LinearResponse/Response/ObservableVariation.lean).
 
 Implementation gate: prove a reusable result that specializes to both a
 source-derived current and its first contact term, and connect it to an existing

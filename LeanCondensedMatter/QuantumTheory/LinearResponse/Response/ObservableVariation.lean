@@ -1,5 +1,5 @@
-import LeanCondensedMatter.QuantumTheory.LinearResponse.SourceCoupling
-import LeanCondensedMatter.QuantumTheory.LinearResponse.ResponseChannel
+import LeanCondensedMatter.QuantumTheory.LinearResponse.Response.SourceCoupling
+import LeanCondensedMatter.QuantumTheory.LinearResponse.Response.Channel
 import Mathlib.Analysis.Complex.RealDeriv
 import Mathlib.Algebra.Lie.OfAssociative
 

@@ -1,7 +1,7 @@
 import LeanCondensedMatter.QuantumTheory.SpinfulLattice
 import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.SymmetrizedVelocityCurrent
 import LeanCondensedMatter.QuantumTheory.SpinHalf
-import LeanCondensedMatter.QuantumTheory.LinearResponse.ResponseChannel
+import LeanCondensedMatter.QuantumTheory.LinearResponse.Response.Channel
 
 set_option linter.style.header false
 

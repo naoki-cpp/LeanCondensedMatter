@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Models.MassiveDirac.Model.Basic
-import LeanCondensedMatter.QuantumTheory.LinearResponse.FreeDynamics
+import LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.Free
 import LeanCondensedMatter.Analysis.Operator.FiniteTrace
 import Mathlib.Analysis.CStarAlgebra.Matrix
 import Mathlib.Analysis.Matrix.Hermitian

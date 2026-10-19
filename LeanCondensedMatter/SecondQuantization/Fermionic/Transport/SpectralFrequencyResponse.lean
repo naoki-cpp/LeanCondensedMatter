@@ -1,6 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.FrequencyResponse
-import LeanCondensedMatter.QuantumTheory.LinearResponse.InfiniteTimeAdiabatic
-import LeanCondensedMatter.QuantumTheory.LinearResponse.EigenbasisFrequencyDomain
+import LeanCondensedMatter.QuantumTheory.LinearResponse.Frequency.InfiniteTime
+import LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann.Eigenbasis.FrequencyDomain
 
 set_option linter.style.header false
 

@@ -1,6 +1,6 @@
-import LeanCondensedMatter.QuantumTheory.LinearResponse.DensityExpectation
-import LeanCondensedMatter.QuantumTheory.LinearResponse.HermitianPerturbation
-import LeanCondensedMatter.QuantumTheory.LinearResponse.Stationarity
+import LeanCondensedMatter.QuantumTheory.LinearResponse.Expectation.Density
+import LeanCondensedMatter.QuantumTheory.LinearResponse.Perturbation.Hermitian
+import LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.Stationarity
 import Mathlib.Analysis.Calculus.FDeriv.Comp
 import Mathlib.Analysis.Calculus.FDeriv.Linear
 import Mathlib.Analysis.Calculus.Deriv.Star

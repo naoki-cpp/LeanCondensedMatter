@@ -1,4 +1,4 @@
-import LeanCondensedMatter.QuantumTheory.LinearResponse.AdiabaticSwitching
+import LeanCondensedMatter.QuantumTheory.LinearResponse.Frequency.AdiabaticSwitching
 
 set_option linter.style.header false
 
@@ -16,7 +16,7 @@ f_sin(s) = exp (-η (T - s)) sin (ω (T - s)).
 These definitions are representation independent and are stated directly with real elementary
 functions. They do not depend on particle statistics, Fock-space realizations, current operators,
 lattice geometry, or conductivity normalization. The channel derivative theorem in
-`ObservableVariation` consumes these profiles with the actual affine observable variation.
+`Response.ObservableVariation` consumes these profiles with the actual affine observable variation.
 -/
 
 namespace QuantumTheory

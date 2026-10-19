@@ -1,4 +1,4 @@
-import LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann.Eigenbasis
+import LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann.Eigenbasis.Data
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.FundThmCalculus
 
 set_option linter.style.header false

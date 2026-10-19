@@ -1,4 +1,4 @@
-import LeanCondensedMatter.QuantumTheory.LinearResponse.LimitOrder
+import LeanCondensedMatter.QuantumTheory.LinearResponse.Frequency.LimitOrder
 import LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann.Transition
 
 set_option linter.style.header false

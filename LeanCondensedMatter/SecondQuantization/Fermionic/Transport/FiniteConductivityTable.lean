@@ -1,4 +1,4 @@
-import LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann.EigenbasisTable
+import LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann.Eigenbasis.Table
 import LeanCondensedMatter.Transport.FiniteConductivityTable
 import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.KuboGreenwood
 

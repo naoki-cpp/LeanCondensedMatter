@@ -1,4 +1,4 @@
-import LeanCondensedMatter.QuantumTheory.LinearResponse.Stationarity
+import LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.Stationarity
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic
 import Mathlib.Algebra.Lie.OfAssociative
 

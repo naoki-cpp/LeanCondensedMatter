@@ -2,7 +2,7 @@ import LeanCondensedMatter.Analysis.Operator.TraceClass.AdjointConjugation
 import LeanCondensedMatter.Analysis.Operator.Unitary
 import LeanCondensedMatter.QuantumTheory.DensityOperator.PureState
 import LeanCondensedMatter.QuantumTheory.DensityOperator.ObservableExpectation
-import LeanCondensedMatter.QuantumTheory.LinearResponse.PureStateDynamics
+import LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.PureState
 
 set_option linter.style.header false
 

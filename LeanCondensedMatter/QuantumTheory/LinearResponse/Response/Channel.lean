@@ -1,4 +1,4 @@
-import LeanCondensedMatter.QuantumTheory.LinearResponse.RetardedSusceptibility
+import LeanCondensedMatter.QuantumTheory.LinearResponse.Response.RetardedSusceptibility
 
 set_option linter.style.header false
 

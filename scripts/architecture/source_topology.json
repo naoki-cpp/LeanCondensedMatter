@@ -182,14 +182,14 @@
       "id": "linearResponseLayers",
       "sourceRoots": ["LeanCondensedMatter/QuantumTheory/LinearResponse"],
       "layers": [
-        {"id": "expectation", "modulePrefixes": ["LeanCondensedMatter.QuantumTheory.LinearResponse.Expectation"]},
-        {"id": "freeDynamics", "modulePrefixes": ["LeanCondensedMatter.QuantumTheory.LinearResponse.FreeDynamics"]},
-        {"id": "pureStateDynamics", "modulePrefixes": ["LeanCondensedMatter.QuantumTheory.LinearResponse.PureStateDynamics"]},
-        {"id": "densityExpectation", "modulePrefixes": ["LeanCondensedMatter.QuantumTheory.LinearResponse.DensityExpectation"]},
-        {"id": "stationarity", "modulePrefixes": ["LeanCondensedMatter.QuantumTheory.LinearResponse.Stationarity"]},
-        {"id": "pictureEquivalence", "modulePrefixes": ["LeanCondensedMatter.QuantumTheory.LinearResponse.PictureEquivalence"]},
-        {"id": "conservationLaws", "modulePrefixes": ["LeanCondensedMatter.QuantumTheory.LinearResponse.ConservationLaws"]},
-        {"id": "equationsOfMotion", "modulePrefixes": ["LeanCondensedMatter.QuantumTheory.LinearResponse.EquationsOfMotion"]}
+        {"id": "expectation", "modulePrefixes": ["LeanCondensedMatter.QuantumTheory.LinearResponse.Expectation.Basic"]},
+        {"id": "freeDynamics", "modulePrefixes": ["LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.Free"]},
+        {"id": "pureStateDynamics", "modulePrefixes": ["LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.PureState"]},
+        {"id": "densityExpectation", "modulePrefixes": ["LeanCondensedMatter.QuantumTheory.LinearResponse.Expectation.Density"]},
+        {"id": "stationarity", "modulePrefixes": ["LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.Stationarity"]},
+        {"id": "pictureEquivalence", "modulePrefixes": ["LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.PictureEquivalence"]},
+        {"id": "conservationLaws", "modulePrefixes": ["LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.ConservationLaws"]},
+        {"id": "equationsOfMotion", "modulePrefixes": ["LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.EquationsOfMotion"]}
       ],
       "edges": [
         {"upstream": "expectation", "downstream": "densityExpectation"},
@@ -212,7 +212,7 @@
       "layers": [
         {"id": "diagonalFormula", "modulePrefixes": ["LeanCondensedMatter.QuantumTheory.DensityOperator.DiagonalFormula"]},
         {"id": "entropyDiagonal", "modulePrefixes": ["LeanCondensedMatter.QuantumTheory.Entropy.Diagonal"]},
-        {"id": "eigenbasisDynamics", "modulePrefixes": ["LeanCondensedMatter.QuantumTheory.LinearResponse.EigenbasisDynamics"]}
+        {"id": "eigenbasisDynamics", "modulePrefixes": ["LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann.Eigenbasis.Dynamics"]}
       ],
       "edges": [
         {"upstream": "diagonalFormula", "downstream": "entropyDiagonal"},
