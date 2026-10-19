@@ -28,7 +28,7 @@ theorem completedSiteChargeDensity_comp_algebraicToCompleted (q : ℂ) (x : Site
         (AlgebraicFock.occupationConjugate
           (Finsupp.basisSingleOne : Module.Basis Site ℂ (Site →₀ ℂ))
           (siteChargeDensity q x)) := by
-  rw [siteChargeDensity, map_smul,
+  rw [siteChargeDensity, map_smul, siteProjector,
     occupationConjugate_dGamma_matrixUnit]
   change (q • completedNumberOperator x).toLinearMap.comp algebraicToCompleted =
     algebraicToCompleted.comp (q • numberOperator x)
