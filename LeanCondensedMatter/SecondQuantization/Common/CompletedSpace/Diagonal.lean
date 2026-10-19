@@ -70,6 +70,53 @@ theorem completedBoundedDiagonalOperator_basisState
     simp
   · simp [completedBasisState_apply_of_ne h]
 
+/-- A uniformly bounded diagonal algebraic Fock operator acts on the dense core as its
+canonical continuous extension. No finite configuration hypothesis is needed. -/
+theorem completedBoundedDiagonalOperator_comp_algebraicToCompleted
+    (w : Config → ℂ) {C : ℝ} (hC : 0 ≤ C) (hw : ∀ c, ‖w c‖ ≤ C) :
+    (completedBoundedDiagonalOperator w hC hw).toLinearMap.comp algebraicToCompleted =
+      algebraicToCompleted.comp (diagonalOperator w) := by
+  apply linearMap_ext_basisState
+  intro c
+  simp only [LinearMap.comp_apply, algebraicToCompleted_basisState,
+    completedBoundedDiagonalOperator_basisState, diagonalOperator_basisState, map_smul]
+
+/-- If a bounded completed operator extends algebraic diagonal multiplication, the diagonal
+weights are uniformly bounded by its operator norm. -/
+theorem norm_weight_le_of_bounded_diagonal_extension
+    (A : CompletedFock Config →L[ℂ] CompletedFock Config) (w : Config → ℂ)
+    (hA : A.toLinearMap.comp algebraicToCompleted =
+      algebraicToCompleted.comp (diagonalOperator w)) (c : Config) :
+    ‖w c‖ ≤ ‖A‖ := by
+  have hvec : A (completedBasisState c) = w c • completedBasisState c := by
+    have hc := congrArg
+      (fun f : AlgebraicFock Config →ₗ[ℂ] CompletedFock Config => f (basisState c)) hA
+    simpa only [LinearMap.comp_apply, algebraicToCompleted_basisState,
+      diagonalOperator_basisState, map_smul] using hc
+  have hn : ‖completedBasisState c‖ = 1 := by
+    rw [← completedHilbertBasis_apply (Config := Config) c]
+    exact (completedHilbertBasis (Config := Config)).orthonormal.1 c
+  calc
+    ‖w c‖ = ‖w c‖ * ‖completedBasisState c‖ := by rw [hn, mul_one]
+    _ = ‖A (completedBasisState c)‖ := by rw [hvec, norm_smul]
+    _ ≤ ‖A‖ * ‖completedBasisState c‖ := A.le_opNorm _
+    _ = ‖A‖ := by rw [hn, mul_one]
+
+/-- An algebraic diagonal operator extends continuously to the completed Fock space if and
+only if its weights are uniformly bounded. This condition replaces finite dimensionality
+for diagonal operators, but not for arbitrary algebraic endomorphisms. -/
+theorem exists_bounded_diagonal_extension_iff (w : Config → ℂ) :
+    (∃ A : CompletedFock Config →L[ℂ] CompletedFock Config,
+      A.toLinearMap.comp algebraicToCompleted =
+        algebraicToCompleted.comp (diagonalOperator w)) ↔
+      ∃ C : ℝ, 0 ≤ C ∧ ∀ c, ‖w c‖ ≤ C := by
+  constructor
+  · rintro ⟨A, hA⟩
+    exact ⟨‖A‖, norm_nonneg _, norm_weight_le_of_bounded_diagonal_extension A w hA⟩
+  · rintro ⟨C, hC, hw⟩
+    exact ⟨completedBoundedDiagonalOperator w hC hw,
+      completedBoundedDiagonalOperator_comp_algebraicToCompleted w hC hw⟩
+
 private noncomputable def completedDiagonalCoordinates (w : Config → ℂ) :
     CompletedFock Config →ₗ[ℂ] PreLp (fun _ : Config => ℂ) where
   toFun ψ := fun c => w c * ψ c
