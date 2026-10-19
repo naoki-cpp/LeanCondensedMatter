@@ -31,8 +31,9 @@ theorem eigenbasisGibbsSummable_freeEigenvalue_iff_boltzmannWeight_summable
     EigenbasisGibbsSummable (freeEigenvalue ε) β ↔
       Summable (boltzmannWeight ε β) := by
   unfold EigenbasisGibbsSummable
-  simp only [eigenbasisBoltzmannWeight, boltzmannWeight, Real.norm_eq_abs,
+  simp only [eigenbasisBoltzmannWeight, Real.norm_eq_abs,
     abs_of_nonneg (Real.exp_nonneg _)]
+  rfl
 
 /-- The algebraic occupation trace and the canonical pure-point partition sum are the same
 for arbitrary bosonic mode types. This coordinate identity does not assert convergence. -/
