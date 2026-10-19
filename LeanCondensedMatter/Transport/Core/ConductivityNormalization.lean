@@ -1,14 +1,15 @@
-import LeanCondensedMatter.Transport.Core.FiniteVolume
+import Mathlib.Basic.Real.Basic
 import Mathlib.Basic.Complex.Basic
 import Mathlib.Tactic
 
 set_option linter.style.header false
 
 /-!
-# Finite-volume electric-field conductivity normalization
+# Positive physical volume and finite-volume conductivity normalization
 
-This module owns the representation-independent conversion from a total-current response to a
-finite-volume electric-field conductivity. For the source convention
+This module owns the positive finite physical volume datum and the representation-independent
+conversion from a total-current response to a finite-volume electric-field conductivity.
+For the source convention
 
 ```text
 A(t) ∝ exp (η t) exp (-i ω t),
@@ -29,6 +30,12 @@ No zero-switching, DC, infinite-volume, or gauge-equivalence limit is taken here
 
 namespace QuantumTheory
 namespace Transport
+
+/-- A positive finite physical volume, independent of the response or model carrying it. -/
+structure PositiveVolume where
+  /-- Physical volume of the finite sample. -/
+  volume : ℝ
+  volume_pos : 0 < volume
 
 /-- For `A(t) ∝ exp (ηt) exp (-iωt)`, the electric-field amplitude is
 `(-η + iω) A(t)`. -/
