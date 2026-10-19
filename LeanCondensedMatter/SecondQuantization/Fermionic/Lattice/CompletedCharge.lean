@@ -23,7 +23,7 @@ variable {Site : Type*} [LinearOrder Site]
 
 /-- The basis-independent lattice charge becomes the occupation number operator under the
 canonical one-particle site basis, for any site type. -/
-theorem occupationConjugate_siteChargeDensity (q : ℂ) (x : Site) :
+private theorem occupationConjugate_siteChargeDensity (q : ℂ) (x : Site) :
     AlgebraicFock.occupationConjugate
         (Finsupp.basisSingleOne : Module.Basis Site ℂ (Site →₀ ℂ))
         (siteChargeDensity q x) = q • numberOperator x := by
