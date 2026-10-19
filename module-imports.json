@@ -6406,7 +6406,6 @@
       "name": "LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsExpectationBridge",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Thermal/FiniteGibbsExpectationBridge.lean",
       "imports": [
-        "LeanCondensedMatter.QuantumTheory.DensityOperator.Finite",
         "LeanCondensedMatter.QuantumTheory.Gibbs.Eigenbasis",
         "LeanCondensedMatter.SecondQuantization.Common.Algebra.FiniteHilbertOperator"
       ],
@@ -7358,19 +7357,20 @@
       "externalImportCount": 0
     },
     {
-      "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.ConnectedCoefficient",
-      "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Diagrammatics/TwoPointDiagramExpansion/Integration/ConnectedCoefficient.lean",
-      "imports": [
-        "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.DiagramIntegral"
-      ],
-      "externalImportCount": 0
-    },
-    {
       "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.DiagramIntegral",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Diagrammatics/TwoPointDiagramExpansion/Integration/DiagramIntegral.lean",
       "imports": [
         "LeanCondensedMatter.Analysis.OrderedSimplex.Integral",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Semantics.Amplitude"
+      ],
+      "externalImportCount": 0
+    },
+    {
+      "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.DiagramSelectionCoefficients",
+      "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Diagrammatics/TwoPointDiagramExpansion/Integration/DiagramSelectionCoefficients.lean",
+      "imports": [
+        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.OneParticleIrreducible",
+        "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.DiagramIntegral"
       ],
       "externalImportCount": 0
     },
@@ -7400,7 +7400,7 @@
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Diagrammatics/TwoPointDiagramExpansion/Integration/FiberCauchySum.lean",
       "imports": [
         "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.OrderedVacuum",
-        "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.ConnectedCoefficient",
+        "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.DiagramSelectionCoefficients",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.FiberShuffleIntegral"
       ],
       "externalImportCount": 0
@@ -7428,15 +7428,6 @@
         "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Factorization.ExternalPieceAmplitude",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Factorization.FiberVacuumIntegrand",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.DiagramSumIntegral"
-      ],
-      "externalImportCount": 0
-    },
-    {
-      "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.OneParticleIrreducibleCoefficient",
-      "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Diagrammatics/TwoPointDiagramExpansion/Integration/OneParticleIrreducibleCoefficient.lean",
-      "imports": [
-        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.OneParticleIrreducible",
-        "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.DiagramIntegral"
       ],
       "externalImportCount": 0
     },
@@ -7518,9 +7509,8 @@
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Diagrammatics/TwoPointDiagramExpansion/Series/DysonSeries.lean",
       "imports": [
         "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.QuarticInteraction",
-        "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.ConnectedCoefficient",
+        "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.DiagramSelectionCoefficients",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.DysonCoefficient",
-        "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.OneParticleIrreducibleCoefficient",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.DysonPartitionSeries"
       ],
       "externalImportCount": 2
@@ -8337,10 +8327,8 @@
     {
       "name": "LeanCondensedMatter.Transport.Core.ConductivityNormalization",
       "sourceFile": "LeanCondensedMatter/Transport/Core/ConductivityNormalization.lean",
-      "imports": [
-        "LeanCondensedMatter.Transport.Core.FiniteVolume"
-      ],
-      "externalImportCount": 2
+      "imports": [],
+      "externalImportCount": 3
     },
     {
       "name": "LeanCondensedMatter.Transport.Core.ConductivityTensor",
@@ -8349,18 +8337,11 @@
       "externalImportCount": 1
     },
     {
-      "name": "LeanCondensedMatter.Transport.Core.FiniteVolume",
-      "sourceFile": "LeanCondensedMatter/Transport/Core/FiniteVolume.lean",
-      "imports": [],
-      "externalImportCount": 1
-    },
-    {
       "name": "LeanCondensedMatter.Transport.Core",
       "sourceFile": "LeanCondensedMatter/Transport/Core.lean",
       "imports": [
         "LeanCondensedMatter.Transport.Core.ConductivityNormalization",
-        "LeanCondensedMatter.Transport.Core.ConductivityTensor",
-        "LeanCondensedMatter.Transport.Core.FiniteVolume"
+        "LeanCondensedMatter.Transport.Core.ConductivityTensor"
       ],
       "externalImportCount": 0
     },
