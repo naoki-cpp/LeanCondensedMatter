@@ -66,53 +66,6 @@ private theorem continuousTimeDependentDysonInteraction
           interaction_norm_le := hVbound }
       interaction_continuous := hVcont }
 
-/-- For a pointwise Hermitian perturbation, the interaction-picture Dyson propagator satisfies
-`U(t)† U(t) = 1` on the compact nonnegative interval where the Volterra hypotheses hold. -/
-theorem star_mul_timeDependentInteractionPropagator_eq_one_of_isSelfAdjoint
-    {V : ℝ → (H →L[ℂ] H)} (hVself : ∀ s, IsSelfAdjoint (V s))
-    (lam : ℝ) {β M t : ℝ} (hβ : 0 ≤ β) (hM : 0 ≤ M)
-    (hVcont : Continuous (timeDependentInteractionPerturbation system V))
-    (hVbound : ∀ s ∈ Icc (0 : ℝ) β,
-      ‖timeDependentInteractionPerturbation system V s‖ ≤ M)
-    (ht : t ∈ Icc (0 : ℝ) β) :
-    star (timeDependentInteractionPropagator system V lam t) *
-        timeDependentInteractionPropagator system V lam t = 1 := by
-  apply Dyson.star_mul_evolution_eq_one_of_star_eq
-    (V := timeDependentInteractionPerturbation system V)
-    (lam := timeDependentPhysicalDysonCoupling system lam)
-    (β := β) (M := M) (t := t)
-  · intro s
-    exact (isSelfAdjoint_timeDependentInteractionPerturbation_of_isSelfAdjoint
-      system V hVself s).star_eq
-  · exact star_timeDependentPhysicalDysonCoupling_eq_neg system lam
-  · exact hβ
-  · exact continuousTimeDependentDysonInteraction system hM hVcont hVbound
-  · exact ht
-
-/-- For a pointwise Hermitian perturbation, the interaction-picture Dyson propagator also satisfies
-`U(t) U(t)† = 1`. The proof applies Grönwall to the right-product defect, whose derivative is a
-homogeneous commutator with `V_I(t)`. -/
-theorem mul_star_timeDependentInteractionPropagator_eq_one_of_isSelfAdjoint
-    {V : ℝ → (H →L[ℂ] H)} (hVself : ∀ s, IsSelfAdjoint (V s))
-    (lam : ℝ) {β M t : ℝ} (hβ : 0 ≤ β) (hM : 0 ≤ M)
-    (hVcont : Continuous (timeDependentInteractionPerturbation system V))
-    (hVbound : ∀ s ∈ Icc (0 : ℝ) β,
-      ‖timeDependentInteractionPerturbation system V s‖ ≤ M)
-    (ht : t ∈ Icc (0 : ℝ) β) :
-    timeDependentInteractionPropagator system V lam t *
-        star (timeDependentInteractionPropagator system V lam t) = 1 := by
-  apply Dyson.mul_star_evolution_eq_one_of_star_eq
-    (V := timeDependentInteractionPerturbation system V)
-    (lam := timeDependentPhysicalDysonCoupling system lam)
-    (β := β) (M := M) (t := t)
-  · intro s
-    exact (isSelfAdjoint_timeDependentInteractionPerturbation_of_isSelfAdjoint
-      system V hVself s).star_eq
-  · exact star_timeDependentPhysicalDysonCoupling_eq_neg system lam
-  · exact hβ
-  · exact continuousTimeDependentDysonInteraction system hM hVcont hVbound
-  · exact ht
-
 /-- The two unitary identities for the physical interaction-picture Dyson propagator. -/
 theorem timeDependentInteractionPropagator_unitary_relations_of_isSelfAdjoint
     {V : ℝ → (H →L[ℂ] H)} (hVself : ∀ s, IsSelfAdjoint (V s))
@@ -150,8 +103,8 @@ theorem timeDependentPerturbedObservableMap_one_of_isSelfAdjoint
   rw [timeDependentPerturbedObservableMap_apply]
   simp [timeDependentPerturbedObservable, heisenbergEvolution_apply,
     freePropagator_neg_mul,
-    star_mul_timeDependentInteractionPropagator_eq_one_of_isSelfAdjoint
-      system hVself lam hβ hM hVcont hVbound ht]
+    (timeDependentInteractionPropagator_unitary_relations_of_isSelfAdjoint
+      system hVself lam hβ hM hVcont hVbound ht).1]
 
 /-- The finite-coupling perturbed expectation is the pullback of the ordinary expectation along the
 unital perturbed-observable map. -/
