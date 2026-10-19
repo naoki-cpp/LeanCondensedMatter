@@ -149,7 +149,7 @@ specializations of the same state model.
 
 Scalar Gibbs inequalities and summable-family entropy comparison belong to
 Analysis/Inequalities/Gibbs.lean under Real. Bounded operator free-energy results and
-countable pure-point variational and uniqueness results use this mathematical owner directly.
+countable probability-distribution variational and uniqueness results use this mathematical owner directly.
 Normalization, positive comparison weights, and energy summability remain explicit hypotheses.
 
 
@@ -159,6 +159,9 @@ directly; compactness, spectral summability, and strictly positive trace are der
 
 `Gibbs/Boltzmann.lean` owns real energy-level weights and probabilities independently of
 Hilbert spaces; `Gibbs/Eigenbasis.lean` constructs density operators from those scalar data.
+`Gibbs/DistributionVariational.lean` and `Gibbs/DistributionUniqueness.lean` prove
+Gibbs free-energy minimality and uniqueness for normalized energy-level distributions,
+without introducing a Hilbert space or an operator representation.
 
 For `β > 0`, the Helmholtz lower bound is attained exactly by the canonical Gibbs state under the
 same finite-dimensional and nontrivial-space assumptions. Pure-point spectral data provide a
