@@ -38,7 +38,8 @@ structure ResponseChannel (H : Type*) [NormedAddCommGroup H] [InnerProductSpace 
   measured : H →L[ℂ] H
   /-- Operator coupled to the scalar source. -/
   source : H →L[ℂ] H
-  /-- First-order source variation of the measured observable. -/
+  /-- Actual coefficient of the affine measured-observable variation at observation time.
+  Any source-profile factor prescribed for that coefficient is supplied by the caller. -/
   observableVariation : H →L[ℂ] H
 
 namespace ResponseChannel
@@ -67,7 +68,7 @@ noncomputable def contactExpectation
 /-- Causal scalar response of a channel to a real source profile.
 
 The first term is the ordinary retarded Kubo response and the second is the explicit observable
-variation/contact contribution. -/
+variation/contact contribution. The profile is not applied again to the supplied variation. -/
 noncomputable def causalResponse
     (channel : ResponseChannel H)
     (system : BoundedFreeSystem H) (expectation : NormalizedExpectation H)
