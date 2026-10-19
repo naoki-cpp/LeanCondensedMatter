@@ -287,15 +287,6 @@ noncomputable def completedPhaseMultiplier
       (completedPhaseMultiplier_bound phase hphase)).toLinearMap with
     norm_map' := norm_completedPhaseMultiplier phase hphase }
 
-/-- A configuration-dependent unit phase acts on the algebraic core by the same
-diagonal operator as its completed isometry, for arbitrary configuration types. -/
-theorem completedPhaseMultiplier_comp_algebraicToCompleted
-    (phase : Config → ℂ) (hphase : ∀ c, ‖phase c‖ = 1) :
-    (completedPhaseMultiplier phase hphase).toLinearMap.comp algebraicToCompleted =
-      algebraicToCompleted.comp (diagonalOperator phase) := by
-  exact completedBoundedDiagonalOperator_comp_algebraicToCompleted
-    phase zero_le_one (completedPhaseMultiplier_bound phase hphase)
-
 @[simp]
 theorem completedPhaseMultiplier_apply
     (phase : Config → ℂ) (hphase : ∀ c, ‖phase c‖ = 1)
