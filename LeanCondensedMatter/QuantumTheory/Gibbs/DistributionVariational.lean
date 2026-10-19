@@ -19,7 +19,7 @@ variable {ι : Type*}
 /-- A normalized countable probability family with absolutely integrable energy against the
 supplied energy-level family. Finite Shannon entropy follows from the Gibbs bound. -/
 structure GibbsVariationalDistribution (E : ι → ℝ) where
-  /-- Probability assigned to each energy-level energy level. -/
+  /-- Probability assigned to each energy level. -/
   probability : ι → ℝ
   /-- Each probability is nonnegative. -/
   nonneg : ∀ i, 0 ≤ probability i
