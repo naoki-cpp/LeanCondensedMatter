@@ -10,6 +10,7 @@ Quartic bosonic matrix coefficients grow at most quadratically in occupation num
 keeps the degree-two public API while delegating the analytic finite-mode Gibbs majorant to
 `PolynomialOccupationWeightSummable`.  The square estimate is a direct monomial specialization;
 the mixed product follows from those square specializations by the elementary quadratic bound.
+The total-particle-number square then follows by summing those mixed mode-pair estimates.
 -/
 
 namespace SecondQuantization
@@ -62,6 +63,28 @@ theorem summable_particleNumber_mul_particleNumber_boltzmannWeight (ε : Mode �
     _ = (1 / 2 : ℝ) *
         ((n i : ℝ) ^ 2 * boltzmannWeight ε β n +
           (n j : ℝ) ^ 2 * boltzmannWeight ε β n) := by ring
+
+/-! ## Total particle number -/
+
+/-- The square of the total particle number remains summable against the free bosonic Boltzmann
+weight.  This is the uniform degree-two majorant used for quartic ladder amplitudes. -/
+theorem summable_particleNumber_total_sq_boltzmannWeight (ε : Mode → ℝ) (β : ℝ)
+    (hpos : ∀ i, 0 < β * ε i) :
+    Summable (fun n : Occupation Mode =>
+      (particleNumber n : ℝ) ^ 2 * boltzmannWeight ε β n) := by
+  have hinner : ∀ i : Mode, Summable (fun n : Occupation Mode =>
+      ∑ j, (n i : ℝ) * (n j : ℝ) * boltzmannWeight ε β n) := by
+    intro i
+    exact summable_sum fun j (_ : j ∈ Finset.univ) =>
+      summable_particleNumber_mul_particleNumber_boltzmannWeight ε β hpos i j
+  have hdouble : Summable (fun n : Occupation Mode =>
+      ∑ i, ∑ j, (n i : ℝ) * (n j : ℝ) * boltzmannWeight ε β n) := by
+    exact summable_sum fun i (_ : i ∈ Finset.univ) => hinner i
+  refine hdouble.congr fun n => ?_
+  rw [particleNumber_eq_sum_univ]
+  push_cast
+  rw [pow_two, Finset.sum_mul_sum, Finset.sum_mul]
+  simp_rw [Finset.sum_mul]
 
 end
 end Bosonic
