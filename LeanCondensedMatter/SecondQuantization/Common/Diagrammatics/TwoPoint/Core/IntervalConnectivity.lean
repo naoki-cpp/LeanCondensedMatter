@@ -119,6 +119,102 @@ theorem TwoPointDiagram.intervalBlock_adj_interaction_of_interior_partner
     twoPointVertexOfLeg_interactionLeg v lv,
     by rw [hpblock]; exact twoPointVertexOfLeg_interactionLeg w lw⟩
 
+/-- Any adjacency between interaction vertices of the ambient cut interval
+is also an adjacency of the reconstructed two-point block. -/
+theorem TwoPointDiagram.intervalBlock_adj_interaction_of_ambient_adj
+    (d : TwoPointDiagram ExternalLabel InternalLabel N S)
+    (boundaryLabels : Fin 2 → ExternalLabel)
+    (earlier later : Fin (2 * (2 * S.card + 1)))
+    (hsepLater : ¬ (d.vertexGraphWithoutPropagator later).Reachable
+      (Sum.inl (0 : Fin 2)) (Sum.inl (1 : Fin 2)))
+    (hEarlier : d.HasIntervalBoundaryEndpoint earlier later earlier)
+    (hLater : d.HasIntervalBoundaryEndpoint earlier later later)
+    (hne : earlier ≠ later)
+    (hpne : d.pairing.partner earlier ≠ later)
+    (v w : ↥(interactionSector (d.verticesBetweenCuts earlier later)))
+    (h : d.vertexGraph.Adj
+      (Sum.inr (⟨v.1, interactionSector_subset _ v.2⟩ : ↥S))
+      (Sum.inr (⟨w.1, interactionSector_subset _ w.2⟩ : ↥S))) :
+    (d.intervalBlock boundaryLabels earlier later hsepLater
+      hEarlier hLater hne hpne).vertexGraph.Adj (Sum.inr v) (Sum.inr w) := by
+  let T := interactionSector (d.verticesBetweenCuts earlier later)
+  let V : ↥S := ⟨v.1, interactionSector_subset _ v.2⟩
+  let W : ↥S := ⟨w.1, interactionSector_subset _ w.2⟩
+  have hneVW : v ≠ w := by
+    intro heq
+    cases heq
+    exact h.1 rfl
+  obtain ⟨_, leg, hleg, hpartner⟩ := h
+  have hmemLeg : twoPointVertexOfLeg leg ∈
+      d.verticesBetweenCuts earlier later := by
+    rw [hleg]
+    exact (mem_interactionSector_subtype (d.verticesBetweenCuts earlier later) V).1 v.2
+  have hmemPartner : twoPointVertexOfLeg (d.pairing.partner leg) ∈
+      d.verticesBetweenCuts earlier later := by
+    rw [hpartner]
+    exact (mem_interactionSector_subtype (d.verticesBetweenCuts earlier later) W).1 w.2
+  have havoid (cut : Fin (2 * (2 * S.card + 1)))
+      (hc : d.HasIntervalBoundaryEndpoint earlier later cut) :
+      leg ≠ cut ∧ d.pairing.partner leg ≠ cut := by
+    have hnotBoth :
+        ¬ (twoPointVertexOfLeg cut ∈ d.verticesBetweenCuts earlier later ∧
+          twoPointVertexOfLeg (d.pairing.partner cut) ∈
+            d.verticesBetweenCuts earlier later) := by
+      rintro ⟨ha, hb⟩
+      rcases hc with ⟨_, hout⟩ | ⟨_, hout⟩
+      · exact hout hb
+      · exact hout ha
+    constructor
+    · intro he
+      subst leg
+      exact hnotBoth ⟨hmemLeg, hmemPartner⟩
+    · intro he
+      have hp : d.pairing.partner cut = leg := by
+        calc
+          d.pairing.partner cut =
+              d.pairing.partner (d.pairing.partner leg) :=
+                congrArg d.pairing.partner he.symm
+          _ = leg := d.pairing.partner_involutive leg
+      apply hnotBoth
+      constructor
+      · rw [← he]
+        exact hmemPartner
+      · rw [hp]
+        exact hmemLeg
+  obtain ⟨he, hpe⟩ := havoid earlier hEarlier
+  obtain ⟨hl, hpl⟩ := havoid later hLater
+  let I := d.intervalInteractionLegEquiv earlier later hsepLater
+  let p : ↥T × Fin 4 := I.symm ⟨leg, hmemLeg⟩
+  let q : ↥T × Fin 4 := I.symm ⟨d.pairing.partner leg, hmemPartner⟩
+  have hI (t : ↥T × Fin 4) :
+      twoPointVertexOfLeg (I t).1 =
+        (Sum.inr (⟨t.1.1, interactionSector_subset _ t.1.2⟩ : ↥S) :
+          TwoPointVertex S) := by
+    change twoPointVertexOfLeg (twoPointInteractionLeg _ _) = _
+    simp
+  have hslot (t : ↥T × Fin 4) (x : ↥T)
+      (hx : twoPointVertexOfLeg (I t).1 =
+        (Sum.inr (⟨x.1, interactionSector_subset _ x.2⟩ : ↥S) :
+          TwoPointVertex S)) : t.1 = x := by
+    apply Subtype.ext
+    exact congrArg Subtype.val (Sum.inr.inj ((hI t).symm.trans hx))
+  have hpval : (I p).1 = leg :=
+    congrArg Subtype.val (I.apply_symm_apply ⟨leg, hmemLeg⟩)
+  have hqval : (I q).1 = d.pairing.partner leg :=
+    congrArg Subtype.val (I.apply_symm_apply
+      ⟨d.pairing.partner leg, hmemPartner⟩)
+  have hp1 : p.1 = v := hslot p v (by rw [hpval]; exact hleg)
+  have hq1 : q.1 = w := hslot q w (by rw [hqval]; exact hpartner)
+  have hpPair : p = (v, p.2) := Prod.ext hp1 rfl
+  have hqPair : q = (w, q.2) := Prod.ext hq1 rfl
+  rw [hpPair] at hpval
+  rw [hqPair] at hqval
+  apply d.intervalBlock_adj_interaction_of_interior_partner boundaryLabels
+    earlier later hsepLater hEarlier hLater hne hpne v w p.2 q.2 hneVW
+  · rw [hpval]
+    exact ⟨hmemLeg, he, hpe, hl, hpl⟩
+  · rw [hpval, hqval]
+
 /-- On vertices of a cut interval, deleting either (or both) boundary
 propagators does not change adjacency. Each boundary propagator has
 exactly one endpoint in the interval, so neither can join two vertices
