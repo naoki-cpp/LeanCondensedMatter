@@ -75,7 +75,7 @@ theorem completedNumberOperator_comp_algebraicToCompleted (i : Mode) :
         (Common.completedBasisState n)
     rw [completedNumberOperator_basisState,
       Common.completedBoundedDiagonalOperator_basisState]
-    by_cases h : i ∈ n <;> simp [w, h]
+    by_cases h : i ∈ n <;> simp [w, h, completedBasisState]
   rw [numberOperator_eq_diagonalOperator, hproj]
   exact Common.completedBoundedDiagonalOperator_comp_algebraicToCompleted
     w zero_le_one hw
