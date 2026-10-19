@@ -36,10 +36,6 @@ variable {Site : Type*} [LinearOrder Site] [Fintype Site]
 
 
 
-/-- Coefficient-level Hermiticity of a lattice hopping model. -/
-def HasHermitianAmplitudes (K : LocallyFiniteHopping Site) : Prop :=
-  ∀ x y : Site, star (K.amplitude x y) = K.amplitude y x
-
 /-- Bounded realization of the second-quantized oriented hopping difference before multiplication
 by `i q / ℏ`. -/
 noncomputable def boundedBondOperator (K : LocallyFiniteHopping Site) (x y : Site) :
