@@ -149,16 +149,15 @@ theorem integral_tsum_eigenbasisAdiabaticTransitionIntegrand_Ioi_zero
 
 /-- The fixed-positive-rate physical susceptibility equals the countable eigenbasis Lehmann
 resolvent series. -/
-theorem adiabaticFrequencyDomainSusceptibilityOfPositiveRate_eigenbasis_eq_lehmannSeries
+theorem adiabaticFrequencyDomainSusceptibility_eigenbasis_eq_lehmannSeries
     [Countable ι]
     (data : EnergyEigenbasisLehmannData system ι)
     (A B : H →L[ℂ] H) (omega eta : ℝ) (hη : 0 < eta)
     (hsum : EigenbasisTimeDomainSummable system data A B) :
-    adiabaticFrequencyDomainSusceptibilityOfPositiveRate system
-        (eigenbasisNormalizedExpectation system data) A B omega eta hη =
+    adiabaticFrequencyDomainSusceptibility system
+        (eigenbasisNormalizedExpectation system data) A B omega eta =
       eigenbasisLehmannSeries system data A B omega eta := by
-  rw [adiabaticFrequencyDomainSusceptibilityOfPositiveRate,
-    adiabaticFrequencyDomainSusceptibility,
+  rw [adiabaticFrequencyDomainSusceptibility,
     integral_adiabaticFrequencySusceptibilityIntegrand_eq_Ioi_zero
       system (eigenbasisNormalizedExpectation system data) A B omega eta]
   calc
@@ -182,15 +181,15 @@ theorem adiabaticFrequencyDomainSusceptibilityOfPositiveRate_eigenbasis_eq_lehma
 
 /-- In finite dimension, the physical susceptibility is the conventional finite double Lehmann
 sum. -/
-theorem adiabaticFrequencyDomainSusceptibilityOfPositiveRate_eigenbasis_eq_finite_sum
+theorem adiabaticFrequencyDomainSusceptibility_eigenbasis_eq_finite_sum
     [Fintype ι]
     (data : EnergyEigenbasisLehmannData system ι)
     (A B : H →L[ℂ] H) (omega eta : ℝ) (hη : 0 < eta) :
-    adiabaticFrequencyDomainSusceptibilityOfPositiveRate system
-        (eigenbasisNormalizedExpectation system data) A B omega eta hη =
+    adiabaticFrequencyDomainSusceptibility system
+        (eigenbasisNormalizedExpectation system data) A B omega eta =
       ∑ mn : ι × ι,
         (eigenbasisTransitionData system data A B mn).frequencyTerm omega eta := by
-  rw [adiabaticFrequencyDomainSusceptibilityOfPositiveRate_eigenbasis_eq_lehmannSeries
+  rw [adiabaticFrequencyDomainSusceptibility_eigenbasis_eq_lehmannSeries
     system data A B omega eta hη
       (eigenbasisTimeDomainSummable_of_finite system data A B)]
   exact eigenbasisLehmannSeries_eq_finite_sum system data A B omega eta

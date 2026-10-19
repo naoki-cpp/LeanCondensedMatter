@@ -74,27 +74,6 @@ noncomputable def finiteTimeAdiabaticFrequencyDomainSusceptibility
   ∫ τ : ℝ in Ioc 0 T,
     adiabaticFrequencySusceptibilityIntegrand system expectation A B omega eta τ
 
-/-- The same fixed-rate transform written directly as an integral over the open causal half-line. -/
-noncomputable def causalAdiabaticFrequencyDomainSusceptibility
-    (expectation : NormalizedExpectation H)
-    (A B : H →L[ℂ] H) (omega eta : ℝ) : ℂ :=
-  ∫ τ : ℝ in Ioi 0,
-    adiabaticFrequencySusceptibilityIntegrand system expectation A B omega eta τ
-
-/-- Causality reduces the full-real-line fixed-rate transform to the positive half-line. -/
-theorem adiabaticFrequencyDomainSusceptibilityOfPositiveRate_eq_causal
-    (expectation : NormalizedExpectation H)
-    (A B : H →L[ℂ] H) (omega eta : ℝ) (hη : 0 < eta) :
-    adiabaticFrequencyDomainSusceptibilityOfPositiveRate system
-        expectation A B omega eta hη =
-      causalAdiabaticFrequencyDomainSusceptibility system
-        expectation A B omega eta := by
-  rw [adiabaticFrequencyDomainSusceptibilityOfPositiveRate,
-    adiabaticFrequencyDomainSusceptibility,
-    causalAdiabaticFrequencyDomainSusceptibility]
-  exact integral_adiabaticFrequencySusceptibilityIntegrand_eq_Ioi_zero
-    system expectation A B omega eta
-
 /-- At fixed frequency and fixed positive switching rate, increasing the observation window to
 infinity converges to the causal fixed-rate transform. -/
 theorem tendsto_finiteTimeAdiabaticFrequencyDomainSusceptibility_atTop
@@ -105,8 +84,11 @@ theorem tendsto_finiteTimeAdiabaticFrequencyDomainSusceptibility_atTop
         finiteTimeAdiabaticFrequencyDomainSusceptibility system
           expectation A B omega eta T)
       atTop
-      (𝓝 (causalAdiabaticFrequencyDomainSusceptibility system
+      (𝓝 (adiabaticFrequencyDomainSusceptibility system
         expectation A B omega eta)) := by
+  rw [adiabaticFrequencyDomainSusceptibility,
+    integral_adiabaticFrequencySusceptibilityIntegrand_eq_Ioi_zero
+      system expectation A B omega eta]
   let f : ℝ → ℂ :=
     adiabaticFrequencySusceptibilityIntegrand system expectation A B omega eta
   have hInt : Integrable f :=
@@ -128,25 +110,7 @@ theorem tendsto_finiteTimeAdiabaticFrequencyDomainSusceptibility_atTop
       rw [hunion]
       exact hInt.integrableOn)
   rw [hunion] at ht
-  simpa [finiteTimeAdiabaticFrequencyDomainSusceptibility,
-    causalAdiabaticFrequencyDomainSusceptibility, f] using ht
-
-/-- The physical fixed-rate susceptibility is therefore obtained by taking `T → ∞` first, while
-`omega` and the positive rate `eta` remain fixed. -/
-theorem tendsto_finiteTimeAdiabaticFrequencyDomainSusceptibility_atTop_eq_fixedRate
-    (expectation : NormalizedExpectation H)
-    (A B : H →L[ℂ] H) (omega eta : ℝ) (hη : 0 < eta) :
-    Tendsto
-      (fun T : ℝ =>
-        finiteTimeAdiabaticFrequencyDomainSusceptibility system
-          expectation A B omega eta T)
-      atTop
-      (𝓝 (adiabaticFrequencyDomainSusceptibilityOfPositiveRate system
-        expectation A B omega eta hη)) := by
-  rw [adiabaticFrequencyDomainSusceptibilityOfPositiveRate_eq_causal
-    system expectation A B omega eta hη]
-  exact tendsto_finiteTimeAdiabaticFrequencyDomainSusceptibility_atTop
-    system expectation A B omega eta hη
+  simpa [finiteTimeAdiabaticFrequencyDomainSusceptibility, f] using ht
 
 end
 end LinearResponse

@@ -51,11 +51,11 @@ Kubo–Bastin spectral vertex sum. -/
 theorem adiabaticFrequencyDomainSusceptibility_eq_bastinSpectralVertexSum
     (measured source : H →L[ℂ] H)
     (omega eta : ℝ) (heta : 0 < eta) :
-    adiabaticFrequencyDomainSusceptibilityOfPositiveRate system
+    adiabaticFrequencyDomainSusceptibility system
         (eigenbasisNormalizedExpectation system data)
-        measured source omega eta heta =
+        measured source omega eta =
       finiteKuboBastinSpectralVertexSum system data measured source omega eta := by
-  rw [adiabaticFrequencyDomainSusceptibilityOfPositiveRate_eigenbasis_eq_finite_sum
+  rw [adiabaticFrequencyDomainSusceptibility_eigenbasis_eq_finite_sum
     system data measured source omega eta heta]
   unfold finiteKuboBastinSpectralVertexSum
   apply Finset.sum_congr rfl
@@ -85,9 +85,9 @@ exactly its finite Kubo–Bastin spectral response. -/
 theorem adiabaticFrequencyDomainResponseChannel_eq_bastinSpectral
     (channel : ResponseChannel H)
     (omega eta : ℝ) (heta : 0 < eta) :
-    adiabaticFrequencyDomainSusceptibilityOfPositiveRate system
+    adiabaticFrequencyDomainSusceptibility system
           (eigenbasisNormalizedExpectation system data)
-          channel.measured channel.source omega eta heta +
+          channel.measured channel.source omega eta +
         eigenbasisNormalizedExpectation system data channel.observableVariation =
       finiteKuboBastinSpectralChannelResponse system data channel omega eta := by
   simpa only [finiteKuboBastinSpectralChannelResponse] using
