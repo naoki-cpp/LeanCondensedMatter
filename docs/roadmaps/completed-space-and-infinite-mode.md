@@ -67,10 +67,10 @@ supplies:
 - equality of its trace with the convergence-aware algebraic `freeGibbsPartition`;
 - the canonical pure-point Gibbs density operator, its basis action, and normalization.
 
-The existing finite-mode positive-energy results are specializations: their finite geometric-series
-argument establishes the needed occupation Gibbs summability. A one-particle
-`EigenbasisGibbsSummable ε β` hypothesis does not yet discharge occupation summability for
-arbitrary bosonic mode types; the infinite-mode Finsupp product/multisum theorem remains open.
+For finite `Mode` with positive one-particle energies, the existing geometric-series theorem
+`eigenbasisGibbsSummable_freeEigenvalue` supplies the required summability hypothesis.
+For arbitrary bosonic mode types, one-particle `EigenbasisGibbsSummable ε β` does not yet
+discharge occupation summability; the infinite-mode Finsupp product/multisum theorem remains open.
 
 This does not make bosonic creation, annihilation, number, or interacting Hamiltonians bounded.
 The single-mode number operator and free Hamiltonian are now represented separately as maximal
