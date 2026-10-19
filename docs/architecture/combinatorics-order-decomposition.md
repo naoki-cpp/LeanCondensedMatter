@@ -107,10 +107,11 @@ pair structure. `eraseZeroPairEmbedding` maps both endpoints back to ambient pos
 image of the smaller pairing's pairs. Endpoint membership and inverse-coordinate proofs remain
 private to that owner.
 
-`PairsDecomposition` derives the product decomposition directly from that structure without
-importing crossing geometry. `CrossingEraseZero` uses the same structure together with monotone
-crossing transport to derive the crossing-count decomposition. These laws apply also when the
-smaller pairing has no pairs.
+`PerfectPairing.FirstPairDecomposition` owns both the product decomposition of the normalized
+pair set and the additive reindexing of sums through `Pairing.equivSigma`. These structural laws
+do not depend on crossing geometry, and the product law also applies when the smaller pairing has
+no pairs. `CrossingEraseZero` uses the residual structure and monotone crossing transport to
+derive the crossing-count decomposition.
 
 ## List deletion and indexed sums
 

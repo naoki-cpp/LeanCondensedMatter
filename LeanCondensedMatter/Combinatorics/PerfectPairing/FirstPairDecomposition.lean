@@ -1,16 +1,37 @@
+import LeanCondensedMatter.Combinatorics.PerfectPairing.EraseZero
 import LeanCondensedMatter.Combinatorics.PerfectPairing.InsertFirstPair
 import Mathlib.Logic.Equiv.Fin.Basic
 
 set_option linter.style.header false
 
 /-!
-# Reindexing a sum over `Pairing (n + 1)` via `equivSigma`
+# First-pair decompositions of perfect pairings
 
-A sum over larger pairings is reindexed as a double sum over the partner of position `0` and the
-smaller pairing obtained by erasing that first pair.
+Product factorization along the first pair uses the structural residual-pair decomposition.
+Sum reindexing uses the equivalence between a larger pairing and its first partner together
+with the remaining smaller pairing. Neither result depends on crossing geometry.
 -/
 
 namespace Combinatorics
+
+/-- A product over `pairing.pairs` splits into the `firstPair` factor times a product over the
+smaller pairing's own pairs. -/
+theorem Pairing.prod_pairs_eq_firstPair_mul {n : ℕ} {M : Type*} [CommMonoid M]
+    (pairing : Pairing (n + 1)) (f : Fin (2 * (n + 1)) × Fin (2 * (n + 1)) → M) :
+    ∏ pr ∈ pairing.pairs, f pr =
+      f pairing.firstPair *
+        ∏ pr ∈ pairing.eraseZeroPair.pairs,
+          f ((pairing.eraseZeroOrderIso pr.1 : Fin (2 * (n + 1))),
+            (pairing.eraseZeroOrderIso pr.2 : Fin (2 * (n + 1)))) := by
+  classical
+  rw [← Finset.insert_erase pairing.firstPair_mem_pairs,
+    pairing.pairs_erase_firstPair_eq_image]
+  rw [Finset.prod_insert, Finset.prod_image]
+  · rfl
+  · intro p _ q _ h
+    exact pairing.eraseZeroPairEmbedding.injective h
+  · rw [← pairing.pairs_erase_firstPair_eq_image]
+    simp
 
 /-- A sum over `Pairing (n + 1)`, reindexed as a double sum over a peeled position and the smaller
 pairing. -/

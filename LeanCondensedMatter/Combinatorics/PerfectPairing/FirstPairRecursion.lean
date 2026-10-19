@@ -1,7 +1,6 @@
 import LeanCondensedMatter.Combinatorics.ExchangeSign
 import LeanCondensedMatter.Combinatorics.PerfectPairing.EraseZero
-import LeanCondensedMatter.Combinatorics.PerfectPairing.PairsDecomposition
-import LeanCondensedMatter.Combinatorics.PerfectPairing.SumDecomposition
+import LeanCondensedMatter.Combinatorics.PerfectPairing.FirstPairDecomposition
 import LeanCondensedMatter.Combinatorics.PerfectPairing.CrossingEraseZero
 import LeanCondensedMatter.Combinatorics.PerfectPairing.InsertFirstPair
 
