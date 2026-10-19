@@ -23,30 +23,33 @@ variable {Config : Type*} [Fintype Config] [Nonempty Config]
 
 /-- The canonical finite-configuration isometry intertwines the pure-point Gibbs density operator
 on completed Fock space with the same density operator on the finite Hilbert realization. -/
-theorem completedFiniteHilbertEquiv_intertwines_finiteEigenbasisGibbsDensity
+theorem completedFiniteHilbertEquiv_intertwines_eigenbasisGibbsDensity
     (energy : Config → ℝ) (β : ℝ) :
     (completedFiniteHilbertEquiv
       (Config := Config)).toContinuousLinearEquiv.toContinuousLinearMap.comp
-        (finiteEigenbasisGibbsDensityOperator
-          (completedHilbertBasis (Config := Config)) energy β).op =
-      (finiteEigenbasisGibbsDensityOperator
-        (finiteHilbertBasis (Config := Config)) energy β).op.comp
+        (eigenbasisGibbsDensityOperator
+          (completedHilbertBasis (Config := Config)) energy β
+        (eigenbasisGibbsSummable_of_finite energy β)).op =
+      (eigenbasisGibbsDensityOperator
+        (finiteHilbertBasis (Config := Config)) energy β
+        (eigenbasisGibbsSummable_of_finite energy β)).op.comp
         (completedFiniteHilbertEquiv
           (Config := Config)).toContinuousLinearEquiv.toContinuousLinearMap := by
   apply continuousLinearMap_ext_completedBasis
   intro c
   simp only [ContinuousLinearMap.comp_apply]
   rw [← completedHilbertBasis_apply (Config := Config) c,
-    finiteEigenbasisGibbsDensityOperator_apply_basis, map_smul,
+    eigenbasisGibbsDensityOperator_apply_basis, map_smul,
     completedHilbertBasis_apply]
   change (eigenbasisGibbsProbability energy β c : ℂ) •
       completedFiniteHilbertEquiv (Config := Config) (completedBasisState c) =
-    (finiteEigenbasisGibbsDensityOperator
-      (finiteHilbertBasis (Config := Config)) energy β).op
+    (eigenbasisGibbsDensityOperator
+      (finiteHilbertBasis (Config := Config)) energy β
+        (eigenbasisGibbsSummable_of_finite energy β)).op
       (completedFiniteHilbertEquiv (Config := Config) (completedBasisState c))
   rw [completedFiniteHilbertEquiv_basisState,
     ← finiteHilbertBasis_apply (Config := Config) c,
-    finiteEigenbasisGibbsDensityOperator_apply_basis,
+    eigenbasisGibbsDensityOperator_apply_basis,
     finiteHilbertBasis_apply]
 
 end

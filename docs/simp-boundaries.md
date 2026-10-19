@@ -199,7 +199,6 @@ The following declaration families are deliberate API normalization boundaries:
 - `gibbsEquilibriumDistribution_probability`
 - `finiteTimeAdiabaticTransform_zero_time`
 - `eigenbasisGibbsDensityOperator_apply_basis`
-- `finiteEigenbasisGibbsDensityOperator_apply_basis`
 - all current simp rules in `LinearResponse/AdiabaticSwitching` except
   `not_adiabaticIntegrable_zero_rate`
 - `orderedLehmannEnergyGap`

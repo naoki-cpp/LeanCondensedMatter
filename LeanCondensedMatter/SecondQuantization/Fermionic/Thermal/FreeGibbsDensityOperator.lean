@@ -23,8 +23,9 @@ variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
 /-- The canonical finite free-fermion Gibbs state. -/
 noncomputable def freeGibbsDensityOperator (ε : Mode → ℝ) (β : ℝ) :
     DensityOperator (Common.FiniteHilbertFock (Occupation Mode)) :=
-  finiteEigenbasisGibbsDensityOperator
+  eigenbasisGibbsDensityOperator
     (Common.finiteHilbertBasis (Config := Occupation Mode)) (fermionEnergy ε) β
+    (eigenbasisGibbsSummable_of_finite (fermionEnergy ε) β)
 
 omit [LinearOrder Mode] in
 /-- The free Gibbs density operator acts diagonally in the occupation basis. -/
@@ -34,8 +35,9 @@ theorem freeGibbsDensityOperator_apply_basis (ε : Mode → ℝ) (β : ℝ)
       (eigenbasisGibbsProbability (fermionEnergy ε) β n : ℂ) •
         Common.finiteHilbertBasisState n := by
   simpa [freeGibbsDensityOperator] using
-    finiteEigenbasisGibbsDensityOperator_apply_basis
-      (Common.finiteHilbertBasis (Config := Occupation Mode)) (fermionEnergy ε) β n
+    eigenbasisGibbsDensityOperator_apply_basis
+      (Common.finiteHilbertBasis (Config := Occupation Mode)) (fermionEnergy ε) β
+      (eigenbasisGibbsSummable_of_finite (fermionEnergy ε) β) n
 
 omit [LinearOrder Mode] in
 /-- Evaluating the free Gibbs density state on a transported algebraic Fock operator is the

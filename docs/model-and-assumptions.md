@@ -89,9 +89,9 @@ eigenbasisGibbsDensityOperator
 with `EigenbasisGibbsSummable` as the explicit state-existence hypothesis.
 The distribution-level Gibbs variational principle and equality characterization are owned by
 `QuantumTheory.Gibbs.DistributionVariational` and `QuantumTheory.Gibbs.DistributionUniqueness`;
-they require only energy levels and normalized probability weights. On a finite spectral index,
-`finiteEigenbasisGibbsDensityOperator` is the direct specialization and requires no independent finite
-Gibbs-state implementation.
+they require only energy levels and normalized probability weights. For a finite spectral index,
+`eigenbasisGibbsSummable_of_finite` supplies the summability proof to the same
+`eigenbasisGibbsDensityOperator` constructor; no finite-only density-state wrapper is needed.
 
 The Helmholtz free-energy theorem proves the Gibbs lower bound under its stated hypotheses, and the
 bounded-Hamiltonian Gibbs state satisfies the corresponding entropy identity. For `β > 0`, equality
@@ -234,7 +234,6 @@ and later thermodynamic limits is documented in
 | Gibbs operator | `QuantumTheory.gibbsOp` | `QuantumTheory/Gibbs/State.lean` |
 | Gibbs state | `QuantumTheory.gibbsState` | `QuantumTheory/Gibbs/State.lean` |
 | Energy-eigenbasis Gibbs state | `QuantumTheory.eigenbasisGibbsDensityOperator` | `QuantumTheory/Gibbs/Eigenbasis.lean` |
-| Finite energy-eigenbasis Gibbs state | `QuantumTheory.finiteEigenbasisGibbsDensityOperator` | `QuantumTheory/Gibbs/Eigenbasis.lean` |
 | Energy expectation | `QuantumTheory.energyExpValue` | `QuantumTheory/Gibbs/EnergyExpectation.lean` |
 | Algebraic Fock core | `SecondQuantization.Common.AlgebraicFock` | `SecondQuantization/Common/Algebra/AlgebraicFock.lean` |
 | Completed fermionic Fock space | `SecondQuantization.Fermionic.CompletedFockSpace` | `SecondQuantization/Fermionic/CompletedSpace/Basic.lean` |
