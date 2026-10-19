@@ -1,5 +1,4 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.RankOneSecondQuantization
-import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.OccupationFieldEquivalence
 import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.Core
 
 set_option linter.style.header false
