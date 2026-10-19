@@ -47356,15 +47356,15 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.LinearResponse.tendsto_finiteTimeAdiabaticFrequencyDomainSusceptibility_atTop",
-      "SecondQuantization.Fermionic.Transport.stationaryDirectionalAdiabaticIntegrable_of_pos"
+      "QuantumTheory.LinearResponse.ResponseChannel.hasInfiniteObservationTimeLimit_finiteTimeAdiabaticResponse_of_stationary_pos",
+      "QuantumTheory.LinearResponse.tendsto_finiteTimeAdiabaticFrequencyDomainSusceptibility_atTop"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.LinearResponse.tendsto_finiteTimeAdiabaticFrequencyDomainSusceptibility_atTop",
-      "SecondQuantization.Fermionic.Transport.stationaryDirectionalAdiabaticIntegrable_of_pos"
+      "QuantumTheory.LinearResponse.ResponseChannel.hasInfiniteObservationTimeLimit_finiteTimeAdiabaticResponse_of_stationary_pos",
+      "QuantumTheory.LinearResponse.tendsto_finiteTimeAdiabaticFrequencyDomainSusceptibility_atTop"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -47588,6 +47588,50 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
+    "terminal": false,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (channel : QuantumTheory.LinearResponse.ResponseChannel H) (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (expectation : QuantumTheory.LinearResponse.NormalizedExpectation H),\n  QuantumTheory.LinearResponse.IsStationary system expectation →\n    ∀ (ω η : ℝ) {T : ℝ},\n      0 ≤ T →\n        channel.finiteTimeAdiabaticResponse system expectation ω η T =\n          QuantumTheory.LinearResponse.finiteTimeAdiabaticTransform\n              (fun τ =>\n                QuantumTheory.LinearResponse.commutatorSusceptibility system expectation channel.measured channel.source\n                  τ 0)\n              ω η T +\n            expectation.toContinuousLinearMap channel.observableVariation",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.LinearResponse.ResponseChannel.finiteTimeAdiabaticResponse_eq_stationaryLag",
+    "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.FiniteTimeAdiabatic",
+    "externalAxioms": [],
+    "docString": "In a stationary state, a nonnegative observation interval is a lag transform plus the\nstationary observable-variation expectation. The source value at observation time is factored out. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.LinearResponse.ResponseChannel.hasInfiniteObservationTimeLimit_finiteTimeAdiabaticResponse_of_stationary"
+    ],
+    "dependencies": [
+      "QuantumTheory.LinearResponse.retardedSusceptibility_eq_timeDifference_of_stationary"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.LinearResponse.ResponseChannel.hasInfiniteObservationTimeLimit_finiteTimeAdiabaticResponse_of_stationary"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
     "terminal": true,
     "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (expectation : QuantumTheory.LinearResponse.NormalizedExpectation H) (measured source : H →L[ℂ] H) (ω η T : ℝ),\n  (QuantumTheory.LinearResponse.ResponseChannel.fixed measured source).finiteTimeAdiabaticResponse system expectation ω\n      η T =\n    ∫ (s : ℝ) in 0..T,\n      QuantumTheory.LinearResponse.adiabaticFrequencyPhase ω η (T - s) *\n        QuantumTheory.LinearResponse.retardedSusceptibility system expectation measured source T s",
     "standardAxioms": [
@@ -47712,8 +47756,51 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
+    "terminal": true,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (channel : QuantumTheory.LinearResponse.ResponseChannel H) (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (expectation : QuantumTheory.LinearResponse.NormalizedExpectation H) (f : ℝ → ℝ),\n  IsSelfAdjoint channel.source →\n    ∀ {β M t : ℝ},\n      0 ≤ M →\n        (∀ s ∈ Set.Icc 0 β,\n            ‖QuantumTheory.LinearResponse.timeDependentInteractionPerturbation system\n                  (QuantumTheory.LinearResponse.sourceCoupledPerturbation f channel.source) s‖ ≤\n              M) →\n          t ∈ Set.Icc 0 β →\n            IntervalIntegrable\n                (QuantumTheory.LinearResponse.timeDependentInteractionPerturbation system\n                  (QuantumTheory.LinearResponse.sourceCoupledPerturbation f channel.source))\n                MeasureTheory.volume 0 t →\n              HasDerivAt\n                (fun lam =>\n                  QuantumTheory.LinearResponse.affinePerturbedExpectation system expectation\n                    (QuantumTheory.LinearResponse.sourceCoupledPerturbation f channel.source) channel.measured\n                    channel.observableVariation lam t)\n                (channel.causalResponse system expectation f t) 0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.LinearResponse.ResponseChannel.hasDerivAt_affineSourceCoupledExpectation_zero_of_bound_retarded",
+    "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.ObservableVariation",
+    "externalAxioms": [],
+    "docString": "For a real-valued source profile, the affine expectation derivative is the channel's causal\nresponse. The observable variation is the actual affine coefficient, including any source factor\nspecified by the caller; it is not automatically multiplied by the profile at observation time. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.LinearResponse.hasDerivAt_affinePerturbedExpectation_zero_of_bound_kubo",
+      "QuantumTheory.LinearResponse.isSelfAdjoint_sourceCoupledPerturbation",
+      "QuantumTheory.LinearResponse.sourceCoupled_responseIntegral_eq",
+      "QuantumTheory.LinearResponse.sourceCoupled_responseIntegral_eq_retardedSusceptibility"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
     "terminal": false,
-    "statement": "∀ (ω η T : ℝ), QuantumTheory.LinearResponse.adiabaticCosineSource ω η T T = 1",
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (channel : QuantumTheory.LinearResponse.ResponseChannel H) (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (expectation : QuantumTheory.LinearResponse.NormalizedExpectation H),\n  QuantumTheory.LinearResponse.IsStationary system expectation →\n    ∀ (ω η : ℝ),\n      QuantumTheory.LinearResponse.AdiabaticLagIntegrable\n          (fun τ =>\n            QuantumTheory.LinearResponse.commutatorSusceptibility system expectation channel.measured channel.source τ\n              0)\n          ω η →\n        QuantumTheory.LinearResponse.HasInfiniteObservationTimeLimit\n          (channel.finiteTimeAdiabaticResponse system expectation ω η)\n          (channel.infiniteTimeAdiabaticResponse system expectation ω η)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -47721,6 +47808,100 @@
     ],
     "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.LinearResponse.ResponseChannel.hasInfiniteObservationTimeLimit_finiteTimeAdiabaticResponse_of_stationary",
+    "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.InfiniteTimeAdiabatic",
+    "externalAxioms": [],
+    "docString": "Stationarity and integrability of the phase-weighted lag kernel give the observation-time\nlimit. No sign restriction on the switching rate is imposed beyond that integrability hypothesis. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.LinearResponse.ResponseChannel.hasInfiniteObservationTimeLimit_finiteTimeAdiabaticResponse_of_stationary_pos"
+    ],
+    "dependencies": [
+      "QuantumTheory.LinearResponse.ResponseChannel.finiteTimeAdiabaticResponse_eq_stationaryLag",
+      "QuantumTheory.LinearResponse.hasInfiniteObservationTimeLimit_finiteTimeAdiabaticTransform"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.LinearResponse.ResponseChannel.hasInfiniteObservationTimeLimit_finiteTimeAdiabaticResponse_of_stationary_pos"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (channel : QuantumTheory.LinearResponse.ResponseChannel H) (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (expectation : QuantumTheory.LinearResponse.NormalizedExpectation H),\n  QuantumTheory.LinearResponse.IsStationary system expectation →\n    ∀ (ω η : ℝ),\n      0 < η →\n        QuantumTheory.LinearResponse.HasInfiniteObservationTimeLimit\n          (channel.finiteTimeAdiabaticResponse system expectation ω η)\n          (channel.infiniteTimeAdiabaticResponse system expectation ω η)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.LinearResponse.ResponseChannel.hasInfiniteObservationTimeLimit_finiteTimeAdiabaticResponse_of_stationary_pos",
+    "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.InfiniteTimeAdiabatic",
+    "externalAxioms": [],
+    "docString": "Bounded channel operators automatically supply the lag integrability at positive switching\nrate. Frequency, switching-rate removal, and volume limits remain separate. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.Transport.hasInfiniteObservationTimeLimit_directionalConductivity_of_stationary_pos",
+      "SecondQuantization.Fermionic.Transport.hasInfiniteObservationTimeLimit_directional_eigenbasis_finite_sum"
+    ],
+    "dependencies": [
+      "QuantumTheory.LinearResponse.AdiabaticIntegrable.integrable",
+      "QuantumTheory.LinearResponse.ResponseChannel.hasInfiniteObservationTimeLimit_finiteTimeAdiabaticResponse_of_stationary",
+      "QuantumTheory.LinearResponse.adiabaticIntegrable_of_pos",
+      "QuantumTheory.LinearResponse.retardedTimeDifferenceKernel_eq_commutatorSusceptibility_of_nonneg"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.Transport.hasInfiniteObservationTimeLimit_directionalConductivity_of_stationary_pos",
+      "SecondQuantization.Fermionic.Transport.hasInfiniteObservationTimeLimit_directional_eigenbasis_finite_sum"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (ω η T : ℝ), QuantumTheory.LinearResponse.adiabaticCosineSource ω η T T = 1",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
     "simpLemma": true,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -47731,16 +47912,12 @@
     "docString": null,
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.Transport.hasDerivAt_boundedDirectionalCosineExpectation_zero_of_bound_retarded"
-    ],
+    "dependents": [],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.Transport.hasDerivAt_boundedDirectionalCosineExpectation_zero_of_bound_retarded"
-    ],
-    "compiledConsumerCount": 1,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -47776,7 +47953,7 @@
     "dependents": [
       "QuantumTheory.LinearResponse.finiteTime_eigenbasisPhysicalSusceptibility_has_both_local_three_stage_limits",
       "QuantumTheory.Transport.adiabaticFrequencyDomainSusceptibility_eq_bastinSpectralVertexSum",
-      "SecondQuantization.Fermionic.Transport.infiniteTimeAdiabaticDirectionalRetardedCoefficient_eigenbasis_eq_finite_sum"
+      "SecondQuantization.Fermionic.Transport.infiniteTimeAdiabaticDirectionalResponse_eigenbasis_eq_finite_sum"
     ],
     "dependencies": [
       "QuantumTheory.LinearResponse.adiabaticFrequencyDomainSusceptibility_eigenbasis_eq_lehmannSeries",
@@ -47788,7 +47965,7 @@
     "compiledConsumers": [
       "QuantumTheory.LinearResponse.finiteTime_eigenbasisPhysicalSusceptibility_has_both_local_three_stage_limits",
       "QuantumTheory.Transport.adiabaticFrequencyDomainSusceptibility_eq_bastinSpectralVertexSum",
-      "SecondQuantization.Fermionic.Transport.infiniteTimeAdiabaticDirectionalRetardedCoefficient_eigenbasis_eq_finite_sum"
+      "SecondQuantization.Fermionic.Transport.infiniteTimeAdiabaticDirectionalResponse_eigenbasis_eq_finite_sum"
     ],
     "compiledConsumerCount": 3,
     "axioms": [
@@ -48203,8 +48380,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.LinearResponse.tendsto_finiteTimeAdiabaticFrequencyDomainSusceptibility_atTop",
-      "SecondQuantization.Fermionic.Transport.stationaryDirectionalAdiabaticIntegrable_of_pos"
+      "QuantumTheory.LinearResponse.ResponseChannel.hasInfiniteObservationTimeLimit_finiteTimeAdiabaticResponse_of_stationary_pos",
+      "QuantumTheory.LinearResponse.tendsto_finiteTimeAdiabaticFrequencyDomainSusceptibility_atTop"
     ],
     "dependencies": [
       "QuantumTheory.LinearResponse.adiabaticFrequencySusceptibilityIntegrand_eq_zero_of_neg",
@@ -48215,8 +48392,8 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.LinearResponse.tendsto_finiteTimeAdiabaticFrequencyDomainSusceptibility_atTop",
-      "SecondQuantization.Fermionic.Transport.stationaryDirectionalAdiabaticIntegrable_of_pos"
+      "QuantumTheory.LinearResponse.ResponseChannel.hasInfiniteObservationTimeLimit_finiteTimeAdiabaticResponse_of_stationary_pos",
+      "QuantumTheory.LinearResponse.tendsto_finiteTimeAdiabaticFrequencyDomainSusceptibility_atTop"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -48232,7 +48409,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": false,
+    "terminal": true,
     "statement": "∀ (ω η T : ℝ), QuantumTheory.LinearResponse.adiabaticSineSource ω η T T = 0",
     "standardAxioms": [
       "Classical.choice",
@@ -48240,7 +48417,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": true,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -48251,16 +48428,12 @@
     "docString": null,
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.Transport.hasDerivAt_boundedDirectionalSineExpectation_zero_of_bound_retarded"
-    ],
+    "dependents": [],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.Transport.hasDerivAt_boundedDirectionalSineExpectation_zero_of_bound_retarded"
-    ],
-    "compiledConsumerCount": 1,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -51071,7 +51244,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.LinearResponse.hasDerivAt_affineSourceCoupledExpectation_zero_of_bound_retarded"
+      "QuantumTheory.LinearResponse.ResponseChannel.hasDerivAt_affineSourceCoupledExpectation_zero_of_bound_retarded"
     ],
     "dependencies": [
       "QuantumTheory.LinearResponse.hasDerivAt_timeDependentPerturbedExpectationFunctional_apply_zero_of_bound",
@@ -51083,54 +51256,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.LinearResponse.hasDerivAt_affineSourceCoupledExpectation_zero_of_bound_retarded"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (expectation : QuantumTheory.LinearResponse.NormalizedExpectation H) (f : ℝ → ℝ) {B : H →L[ℂ] H},\n  IsSelfAdjoint B →\n    ∀ (A₀ A₁ : H →L[ℂ] H) {β M t : ℝ},\n      0 ≤ M →\n        (∀ s ∈ Set.Icc 0 β,\n            ‖QuantumTheory.LinearResponse.timeDependentInteractionPerturbation system\n                  (QuantumTheory.LinearResponse.sourceCoupledPerturbation f B) s‖ ≤\n              M) →\n          t ∈ Set.Icc 0 β →\n            IntervalIntegrable\n                (QuantumTheory.LinearResponse.timeDependentInteractionPerturbation system\n                  (QuantumTheory.LinearResponse.sourceCoupledPerturbation f B))\n                MeasureTheory.volume 0 t →\n              HasDerivAt\n                (fun lam =>\n                  QuantumTheory.LinearResponse.affinePerturbedExpectation system expectation\n                    (QuantumTheory.LinearResponse.sourceCoupledPerturbation f B) A₀ A₁ lam t)\n                ((∫ (s : ℝ) in 0..t,\n                    ↑(f s) * QuantumTheory.LinearResponse.retardedSusceptibility system expectation A₀ B t s) +\n                  expectation.toContinuousLinearMap ((QuantumTheory.LinearResponse.heisenbergEvolution system t) A₁))\n                0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.LinearResponse.hasDerivAt_affineSourceCoupledExpectation_zero_of_bound_retarded",
-    "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.ObservableVariation",
-    "externalAxioms": [],
-    "docString": "Scalar-source specialization written as a causal retarded response plus the contact term. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.Transport.hasDerivAt_boundedDirectionalCurrentExpectation_zero_of_bound_retarded"
-    ],
-    "dependencies": [
-      "QuantumTheory.LinearResponse.hasDerivAt_affinePerturbedExpectation_zero_of_bound_kubo",
-      "QuantumTheory.LinearResponse.isSelfAdjoint_sourceCoupledPerturbation",
-      "QuantumTheory.LinearResponse.sourceCoupled_responseIntegral_eq",
-      "QuantumTheory.LinearResponse.sourceCoupled_responseIntegral_eq_retardedSusceptibility"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.Transport.hasDerivAt_boundedDirectionalCurrentExpectation_zero_of_bound_retarded"
+      "QuantumTheory.LinearResponse.ResponseChannel.hasDerivAt_affineSourceCoupledExpectation_zero_of_bound_retarded"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -51601,7 +51727,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -51613,17 +51739,15 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.Transport.hasInfiniteObservationTimeLimit_directionalRetarded_of_stationary",
-      "SecondQuantization.Fermionic.Transport.hasInfiniteObservationTimeLimit_directional_of_stationary"
+      "QuantumTheory.LinearResponse.ResponseChannel.hasInfiniteObservationTimeLimit_finiteTimeAdiabaticResponse_of_stationary"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.Transport.hasInfiniteObservationTimeLimit_directionalRetarded_of_stationary",
-      "SecondQuantization.Fermionic.Transport.hasInfiniteObservationTimeLimit_directional_of_stationary"
+      "QuantumTheory.LinearResponse.ResponseChannel.hasInfiniteObservationTimeLimit_finiteTimeAdiabaticResponse_of_stationary"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -51806,8 +51930,7 @@
       "QuantumTheory.LinearResponse.norm_heisenbergEvolution",
       "QuantumTheory.LinearResponse.timeDependentPerturbedObservableMap_apply",
       "QuantumTheory.LinearResponse.timeDependentPerturbedObservableMap_one_of_isSelfAdjoint",
-      "QuantumTheory.LinearResponse.vonNeumannEquation",
-      "SecondQuantization.Fermionic.Transport.hasDerivAt_boundedDirectionalSineExpectation_zero_of_bound_retarded"
+      "QuantumTheory.LinearResponse.vonNeumannEquation"
     ],
     "dependencies": [
       "QuantumTheory.LinearResponse.freePropagator_mem_unitary",
@@ -51830,10 +51953,9 @@
       "QuantumTheory.LinearResponse.norm_heisenbergEvolution",
       "QuantumTheory.LinearResponse.timeDependentPerturbedObservableMap_apply",
       "QuantumTheory.LinearResponse.timeDependentPerturbedObservableMap_one_of_isSelfAdjoint",
-      "QuantumTheory.LinearResponse.vonNeumannEquation",
-      "SecondQuantization.Fermionic.Transport.hasDerivAt_boundedDirectionalSineExpectation_zero_of_bound_retarded"
+      "QuantumTheory.LinearResponse.vonNeumannEquation"
     ],
-    "compiledConsumerCount": 16,
+    "compiledConsumerCount": 15,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -52044,6 +52166,51 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (expectation : QuantumTheory.LinearResponse.NormalizedExpectation H) (A B : H →L[ℂ] H) (ω η : ℝ),\n  QuantumTheory.LinearResponse.infiniteTimeAdiabaticTransform\n      (fun τ => QuantumTheory.LinearResponse.commutatorSusceptibility system expectation A B τ 0) ω η =\n    QuantumTheory.LinearResponse.adiabaticFrequencyDomainSusceptibility system expectation A B ω η",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.LinearResponse.infiniteTimeAdiabaticTransform_commutator_eq_susceptibility",
+    "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.InfiniteTimeAdiabatic",
+    "externalAxioms": [],
+    "docString": "On the causal half-line the commutator lag transform equals the whole-line retarded\nsusceptibility. This is an identity of totalized integrals, not a regulator-removal limit. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.Transport.infiniteTimeAdiabaticDirectionalResponse_eigenbasis_eq_finite_sum"
+    ],
+    "dependencies": [
+      "QuantumTheory.LinearResponse.integral_adiabaticFrequencySusceptibilityIntegrand_eq_Ioi_zero",
+      "QuantumTheory.LinearResponse.retardedTimeDifferenceKernel_eq_commutatorSusceptibility_of_nonneg"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.Transport.infiniteTimeAdiabaticDirectionalResponse_eigenbasis_eq_finite_sum"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {ι : Type u_2} (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (data : QuantumTheory.LinearResponse.EnergyEigenbasisLehmannData system ι) (A : H →L[ℂ] H) (m n : ι) (t : ℝ),\n  inner ℂ (data.basis m) (((QuantumTheory.LinearResponse.heisenbergEvolution system t) A) (data.basis n)) =\n    QuantumTheory.LinearResponse.eigenbasisTransitionPhase system data m n t * inner ℂ (data.basis m) (A (data.basis n))",
     "standardAxioms": [
       "Classical.choice",
@@ -52198,8 +52365,8 @@
     "directWrapperOf": null,
     "dependents": [
       "QuantumTheory.LinearResponse.adiabaticFrequencyDomainSusceptibility_eigenbasis_eq_lehmannSeries",
-      "QuantumTheory.LinearResponse.tendsto_finiteTimeAdiabaticFrequencyDomainSusceptibility_atTop",
-      "SecondQuantization.Fermionic.Transport.infiniteTimeAdiabaticDirectionalRetardedCoefficient_eq_susceptibility"
+      "QuantumTheory.LinearResponse.infiniteTimeAdiabaticTransform_commutator_eq_susceptibility",
+      "QuantumTheory.LinearResponse.tendsto_finiteTimeAdiabaticFrequencyDomainSusceptibility_atTop"
     ],
     "dependencies": [
       "QuantumTheory.LinearResponse.adiabaticFrequencySusceptibilityIntegrand_eq_zero_of_neg"
@@ -52208,8 +52375,8 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.LinearResponse.adiabaticFrequencyDomainSusceptibility_eigenbasis_eq_lehmannSeries",
-      "QuantumTheory.LinearResponse.tendsto_finiteTimeAdiabaticFrequencyDomainSusceptibility_atTop",
-      "SecondQuantization.Fermionic.Transport.infiniteTimeAdiabaticDirectionalRetardedCoefficient_eq_susceptibility"
+      "QuantumTheory.LinearResponse.infiniteTimeAdiabaticTransform_commutator_eq_susceptibility",
+      "QuantumTheory.LinearResponse.tendsto_finiteTimeAdiabaticFrequencyDomainSusceptibility_atTop"
     ],
     "compiledConsumerCount": 3,
     "axioms": [
@@ -52508,14 +52675,14 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.LinearResponse.hasDerivAt_affineSourceCoupledExpectation_zero_of_bound_retarded",
+      "QuantumTheory.LinearResponse.ResponseChannel.hasDerivAt_affineSourceCoupledExpectation_zero_of_bound_retarded",
       "QuantumTheory.LinearResponse.hasDerivAt_sourceCoupledPerturbedExpectation_zero_of_bound_kubo"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.LinearResponse.hasDerivAt_affineSourceCoupledExpectation_zero_of_bound_retarded",
+      "QuantumTheory.LinearResponse.ResponseChannel.hasDerivAt_affineSourceCoupledExpectation_zero_of_bound_retarded",
       "QuantumTheory.LinearResponse.hasDerivAt_sourceCoupledPerturbedExpectation_zero_of_bound_kubo"
     ],
     "compiledConsumerCount": 2,
@@ -53925,8 +54092,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.LinearResponse.retardedSusceptibility_eq_retardedTimeDifferenceKernel_of_stationary",
-      "SecondQuantization.Fermionic.Transport.finiteTimeAdiabaticDirectionalRetardedCoefficient_eq_stationaryLag"
+      "QuantumTheory.LinearResponse.ResponseChannel.finiteTimeAdiabaticResponse_eq_stationaryLag",
+      "QuantumTheory.LinearResponse.retardedSusceptibility_eq_retardedTimeDifferenceKernel_of_stationary"
     ],
     "dependencies": [
       "QuantumTheory.LinearResponse.commutatorSusceptibility_eq_timeDifference_of_stationary"
@@ -53934,8 +54101,8 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.LinearResponse.retardedSusceptibility_eq_retardedTimeDifferenceKernel_of_stationary",
-      "SecondQuantization.Fermionic.Transport.finiteTimeAdiabaticDirectionalRetardedCoefficient_eq_stationaryLag"
+      "QuantumTheory.LinearResponse.ResponseChannel.finiteTimeAdiabaticResponse_eq_stationaryLag",
+      "QuantumTheory.LinearResponse.retardedSusceptibility_eq_retardedTimeDifferenceKernel_of_stationary"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -54143,19 +54310,19 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "QuantumTheory.LinearResponse.ResponseChannel.hasInfiniteObservationTimeLimit_finiteTimeAdiabaticResponse_of_stationary_pos",
+      "QuantumTheory.LinearResponse.infiniteTimeAdiabaticTransform_commutator_eq_susceptibility",
       "QuantumTheory.LinearResponse.norm_retardedTimeDifferenceKernel_le",
-      "QuantumTheory.LinearResponse.retardedTimeDifferenceKernel_eigenbasis_eq_timeDomainSeries_of_nonneg",
-      "SecondQuantization.Fermionic.Transport.infiniteTimeAdiabaticDirectionalRetardedCoefficient_eq_susceptibility",
-      "SecondQuantization.Fermionic.Transport.stationaryDirectionalAdiabaticIntegrable_of_pos"
+      "QuantumTheory.LinearResponse.retardedTimeDifferenceKernel_eigenbasis_eq_timeDomainSeries_of_nonneg"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "QuantumTheory.LinearResponse.ResponseChannel.hasInfiniteObservationTimeLimit_finiteTimeAdiabaticResponse_of_stationary_pos",
+      "QuantumTheory.LinearResponse.infiniteTimeAdiabaticTransform_commutator_eq_susceptibility",
       "QuantumTheory.LinearResponse.norm_retardedTimeDifferenceKernel_le",
-      "QuantumTheory.LinearResponse.retardedTimeDifferenceKernel_eigenbasis_eq_timeDomainSeries_of_nonneg",
-      "SecondQuantization.Fermionic.Transport.infiniteTimeAdiabaticDirectionalRetardedCoefficient_eq_susceptibility",
-      "SecondQuantization.Fermionic.Transport.stationaryDirectionalAdiabaticIntegrable_of_pos"
+      "QuantumTheory.LinearResponse.retardedTimeDifferenceKernel_eigenbasis_eq_timeDomainSeries_of_nonneg"
     ],
     "compiledConsumerCount": 4,
     "axioms": [
@@ -54362,7 +54529,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.LinearResponse.hasDerivAt_affineSourceCoupledExpectation_zero_of_bound_retarded",
+      "QuantumTheory.LinearResponse.ResponseChannel.hasDerivAt_affineSourceCoupledExpectation_zero_of_bound_retarded",
       "QuantumTheory.LinearResponse.hasDerivAt_sourceCoupledPerturbedExpectation_zero_of_bound_kubo"
     ],
     "dependencies": [
@@ -54371,7 +54538,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.LinearResponse.hasDerivAt_affineSourceCoupledExpectation_zero_of_bound_retarded",
+      "QuantumTheory.LinearResponse.ResponseChannel.hasDerivAt_affineSourceCoupledExpectation_zero_of_bound_retarded",
       "QuantumTheory.LinearResponse.hasDerivAt_sourceCoupledPerturbedExpectation_zero_of_bound_kubo"
     ],
     "compiledConsumerCount": 2,
@@ -54408,14 +54575,14 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.LinearResponse.hasDerivAt_affineSourceCoupledExpectation_zero_of_bound_retarded",
+      "QuantumTheory.LinearResponse.ResponseChannel.hasDerivAt_affineSourceCoupledExpectation_zero_of_bound_retarded",
       "QuantumTheory.LinearResponse.hasDerivAt_sourceCoupledPerturbedExpectation_zero_of_bound_retarded"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.LinearResponse.hasDerivAt_affineSourceCoupledExpectation_zero_of_bound_retarded",
+      "QuantumTheory.LinearResponse.ResponseChannel.hasDerivAt_affineSourceCoupledExpectation_zero_of_bound_retarded",
       "QuantumTheory.LinearResponse.hasDerivAt_sourceCoupledPerturbedExpectation_zero_of_bound_retarded"
     ],
     "compiledConsumerCount": 2,
@@ -113198,7 +113365,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel N S)\n  (boundaryLabels : Fin 2 → ExternalLabel) (earlier later : Fin (2 * (2 * S.card + 1)))\n  (hsepLater : ¬(d.vertexGraphWithoutPropagator later).Reachable (Sum.inl 0) (Sum.inl 1))\n  (hEarlier : d.HasIntervalBoundaryEndpoint earlier later earlier)\n  (hLater : d.HasIntervalBoundaryEndpoint earlier later later) (hne : earlier ≠ later)\n  (hpne : d.pairing.partner earlier ≠ later)\n  (v w : ↥(SecondQuantization.Common.interactionSector (d.verticesBetweenCuts earlier later))) (lv lw : Fin 4),\n  v ≠ w →\n    d.IsInteriorLeg earlier later ↑((d.intervalInteractionLegEquiv earlier later hsepLater) (v, lv)) →\n      d.pairing.partner ↑((d.intervalInteractionLegEquiv earlier later hsepLater) (v, lv)) =\n          ↑((d.intervalInteractionLegEquiv earlier later hsepLater) (w, lw)) →\n        (d.intervalBlock boundaryLabels earlier later hsepLater hEarlier hLater hne hpne).vertexGraph.Adj (Sum.inr v)\n          (Sum.inr w)",
+    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel N S)\n  (boundaryLabels : Fin 2 → ExternalLabel) (earlier later : Fin (2 * (2 * S.card + 1)))\n  (hsepLater : ¬(d.vertexGraphWithoutPropagator later).Reachable (Sum.inl 0) (Sum.inl 1))\n  (hEarlier : d.HasIntervalBoundaryEndpoint earlier later earlier)\n  (hLater : d.HasIntervalBoundaryEndpoint earlier later later) (hne : earlier ≠ later)\n  (hpne : d.pairing.partner earlier ≠ later)\n  (v w : ↥(SecondQuantization.Common.interactionSector (d.verticesBetweenCuts earlier later))),\n  d.vertexGraph.Adj (Sum.inr ⟨↑v, ⋯⟩) (Sum.inr ⟨↑w, ⋯⟩) →\n    (d.intervalBlock boundaryLabels earlier later hsepLater hEarlier hLater hne hpne).vertexGraph.Adj (Sum.inr v)\n      (Sum.inr w)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -113210,13 +113377,59 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
+    "name": "SecondQuantization.Common.TwoPointDiagram.intervalBlock_adj_interaction_of_ambient_adj",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.IntervalConnectivity",
+    "externalAxioms": [],
+    "docString": "Any adjacency between interaction vertices of the ambient cut interval\nis also an adjacency of the reconstructed two-point block. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "SecondQuantization.Common.TwoPointDiagram.intervalBlock_adj_interaction_of_interior_partner",
+      "SecondQuantization.Common.interactionSector_subset",
+      "SecondQuantization.Common.mem_interactionSector_subtype",
+      "SecondQuantization.Common.twoPointVertexOfLeg_interactionLeg",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.IntervalConnectivity.0.SecondQuantization.Common.TwoPointDiagram.intervalBoundary_ne_interior_pair"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel N S)\n  (boundaryLabels : Fin 2 → ExternalLabel) (earlier later : Fin (2 * (2 * S.card + 1)))\n  (hsepLater : ¬(d.vertexGraphWithoutPropagator later).Reachable (Sum.inl 0) (Sum.inl 1))\n  (hEarlier : d.HasIntervalBoundaryEndpoint earlier later earlier)\n  (hLater : d.HasIntervalBoundaryEndpoint earlier later later) (hne : earlier ≠ later)\n  (hpne : d.pairing.partner earlier ≠ later)\n  (v w : ↥(SecondQuantization.Common.interactionSector (d.verticesBetweenCuts earlier later))) (lv lw : Fin 4),\n  v ≠ w →\n    d.IsInteriorLeg earlier later ↑((d.intervalInteractionLegEquiv earlier later hsepLater) (v, lv)) →\n      d.pairing.partner ↑((d.intervalInteractionLegEquiv earlier later hsepLater) (v, lv)) =\n          ↑((d.intervalInteractionLegEquiv earlier later hsepLater) (w, lw)) →\n        (d.intervalBlock boundaryLabels earlier later hsepLater hEarlier hLater hne hpne).vertexGraph.Adj (Sum.inr v)\n          (Sum.inr w)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
     "name": "SecondQuantization.Common.TwoPointDiagram.intervalBlock_adj_interaction_of_interior_partner",
     "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.IntervalConnectivity",
     "externalAxioms": [],
     "docString": "An ambient interior propagator between two interval interaction slots\nremains a propagator between the corresponding vertices of the reconstructed\nblock. The original partner is transported, not recomputed. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "SecondQuantization.Common.TwoPointDiagram.intervalBlock_adj_interaction_of_ambient_adj"
+    ],
     "dependencies": [
       "SecondQuantization.Common.TwoPointDiagram.intervalBlockLegEquiv_interaction",
       "SecondQuantization.Common.TwoPointDiagram.intervalBlock_partner_interior_ambient",
@@ -113225,8 +113438,10 @@
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "SecondQuantization.Common.TwoPointDiagram.intervalBlock_adj_interaction_of_ambient_adj"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -113859,7 +114074,8 @@
       "SecondQuantization.Common.TwoPointDiagram.intervalVertices_induce_doubleCut_eq"
     ],
     "dependencies": [
-      "SecondQuantization.Common.TwoPointDiagram.vertexGraphWithoutPropagator_le_vertexGraph"
+      "SecondQuantization.Common.TwoPointDiagram.vertexGraphWithoutPropagator_le_vertexGraph",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.IntervalConnectivity.0.SecondQuantization.Common.TwoPointDiagram.intervalBoundary_ne_interior_pair"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -125953,6 +126169,7 @@
       "SecondQuantization.Common.ExternalInsertionDiagram.componentDiagramLeg_external",
       "SecondQuantization.Common.ExternalInsertionDiagram.componentDiagramLeg_interaction",
       "SecondQuantization.Common.TwoPointDiagram.externalPieceOfCardEq_vertexLabel",
+      "SecondQuantization.Common.TwoPointDiagram.intervalBlock_adj_interaction_of_ambient_adj",
       "SecondQuantization.Common.TwoPointDiagram.prod_slotSplitVacuumComponents_eq_vacuumVertexProduct",
       "SecondQuantization.Common.prod_eq_prod_interactionSectors",
       "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.sum_componentInteractionOrderShuffle_orderedDysonAmplitude_eq_componentExternalOrderSign_mul_prod_components",
@@ -125974,6 +126191,7 @@
       "SecondQuantization.Common.ExternalInsertionDiagram.componentDiagramLeg_external",
       "SecondQuantization.Common.ExternalInsertionDiagram.componentDiagramLeg_interaction",
       "SecondQuantization.Common.TwoPointDiagram.externalPieceOfCardEq_vertexLabel",
+      "SecondQuantization.Common.TwoPointDiagram.intervalBlock_adj_interaction_of_ambient_adj",
       "SecondQuantization.Common.TwoPointDiagram.prod_slotSplitVacuumComponents_eq_vacuumVertexProduct",
       "SecondQuantization.Common.componentLegDataEquiv",
       "SecondQuantization.Common.prod_eq_prod_interactionSectors",
@@ -125986,7 +126204,7 @@
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.External.ExternalSlotSplit.0.SecondQuantization.Common.TwoPointDiagram.legInComponent_externalSlotLegSplitting_inl",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumVertexProduct.0.SecondQuantization.Common.TwoPointDiagram.prod_slotSplitVacuumComponentPart_eq_restrictComponent"
     ],
-    "compiledConsumerCount": 15,
+    "compiledConsumerCount": 16,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -127355,6 +127573,7 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Common.TwoPointDiagram.interactionSector_verticesBetweenCuts_nonempty",
+      "SecondQuantization.Common.TwoPointDiagram.intervalBlock_adj_interaction_of_ambient_adj",
       "SecondQuantization.Common.TwoPointDiagram.ofSlotSplit_vacuumLeg_mem_right",
       "SecondQuantization.Common.interactionSector_component_unique",
       "SecondQuantization.Common.isExternallyConnected_slotSplitExternal",
@@ -127372,6 +127591,7 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Common.TwoPointDiagram.interactionSector_verticesBetweenCuts_nonempty",
+      "SecondQuantization.Common.TwoPointDiagram.intervalBlock_adj_interaction_of_ambient_adj",
       "SecondQuantization.Common.TwoPointDiagram.ofSlotSplit_vacuumLeg_mem_right",
       "SecondQuantization.Common.interactionSector_component_unique",
       "SecondQuantization.Common.isExternallyConnected_slotSplitExternal",
@@ -127382,7 +127602,7 @@
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumComponents.0.SecondQuantization.Common.not_mem_left_of_mem_vacuumComponentPart",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumComponents.0.SecondQuantization.Common.slotSplitVacuumComponentPart_surjective"
     ],
-    "compiledConsumerCount": 10,
+    "compiledConsumerCount": 11,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -131750,6 +131970,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "SecondQuantization.Common.TwoPointDiagram.intervalBlock_adj_interaction_of_ambient_adj",
       "SecondQuantization.Common.TwoPointDiagram.intervalBlock_adj_interaction_of_interior_partner",
       "SecondQuantization.Common.twoPointVertexOfLeg_slotLegSplitting_inr_exact"
     ],
@@ -131757,10 +131978,11 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "SecondQuantization.Common.TwoPointDiagram.intervalBlock_adj_interaction_of_ambient_adj",
       "SecondQuantization.Common.TwoPointDiagram.intervalBlock_adj_interaction_of_interior_partner",
       "SecondQuantization.Common.twoPointVertexOfLeg_slotLegSplitting_inr_exact"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -136657,7 +136879,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": false,
+    "terminal": true,
     "statement": "∀ {Site : Type u_1} {E : Type u_2} [inst : LinearOrder Site] [inst_1 : Fintype Site] [inst_2 : AddCommGroup E]\n  [inst_3 : _root_.Module ℝ E] (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)\n  (K : LocallyFiniteHopping Site),\n  K.HasHermitianAmplitudes →\n    ∀ (ℏ q : ℝ),\n      IsSelfAdjoint (SecondQuantization.Fermionic.Lattice.boundedDirectionalCurrent geometry direction (↑ℏ) (↑q) K)",
     "standardAxioms": [
       "Classical.choice",
@@ -136665,7 +136887,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -136676,18 +136898,14 @@
     "docString": "Hermitian hopping and real physical parameters make every geometric current component\nself-adjoint. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.Transport.hasDerivAt_boundedDirectionalCurrentExpectation_zero_of_bound_retarded"
-    ],
+    "dependents": [],
     "dependencies": [
       "SecondQuantization.Fermionic.Lattice.isSelfAdjoint_boundedBondCurrent_ofReal"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.Transport.hasDerivAt_boundedDirectionalCurrentExpectation_zero_of_bound_retarded"
-    ],
-    "compiledConsumerCount": 1,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -137020,128 +137238,6 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
-    "statement": "∀ {Site : Type u_1} {Test : Type u_2} {OneForm : Type u_3} [inst : LinearOrder Site] [inst_1 : Fintype Site]\n  [inst_2 : AddCommGroup Test] [inst_3 : _root_.Module ℂ Test] [inst_4 : AddCommGroup OneForm]\n  [inst_5 : _root_.Module ℂ OneForm]\n  (system :\n    QuantumTheory.LinearResponse.BoundedFreeSystem (SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site))\n  (expectation :\n    QuantumTheory.LinearResponse.NormalizedExpectation\n      (SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site))\n  (source :\n    SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site →L[ℂ]\n      SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site)\n  (d : Test →ₗ[ℂ] OneForm) (Φ : Test →ₗ[ℂ] (Site →₀ ℂ) →ₗ[ℂ] Site →₀ ℂ)\n  (R : ConservationLaw.DifferentialCurrentRepresentation d Φ) (t s : ℝ) (α : OneForm) (f : Test),\n  α = d f →\n    (SecondQuantization.Fermionic.Transport.boundedFluxRetardedResponse system expectation source R.current t s) α =\n      (SecondQuantization.Fermionic.Transport.boundedFluxRetardedResponse system expectation source Φ t s) f",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.Transport.boundedFluxRetardedResponse_current_eq_of_eq_differential",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.FluxResponse",
-    "externalAxioms": [],
-    "docString": "A chosen global current component agrees with the intrinsic response once it is explicitly\nidentified as an exact differential.  This witness is essential: exact-differential equivalence\nalone does not identify arbitrary/global one-forms. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "SecondQuantization.Fermionic.Transport.boundedFluxRetardedResponse_eq_comp_of_factorization"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Site : Type u_1} {Test : Type u_2} {OneForm : Type u_3} [inst : LinearOrder Site] [inst_1 : Fintype Site]\n  [inst_2 : AddCommGroup Test] [inst_3 : _root_.Module ℂ Test] [inst_4 : AddCommGroup OneForm]\n  [inst_5 : _root_.Module ℂ OneForm]\n  (system :\n    QuantumTheory.LinearResponse.BoundedFreeSystem (SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site))\n  (expectation :\n    QuantumTheory.LinearResponse.NormalizedExpectation\n      (SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site))\n  (source :\n    SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site →L[ℂ]\n      SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site)\n  (d : Test →ₗ[ℂ] OneForm) (Φ : Test →ₗ[ℂ] (Site →₀ ℂ) →ₗ[ℂ] Site →₀ ℂ) (J : OneForm →ₗ[ℂ] (Site →₀ ℂ) →ₗ[ℂ] Site →₀ ℂ),\n  Φ = J ∘ₗ d →\n    ∀ (t s : ℝ),\n      SecondQuantization.Fermionic.Transport.boundedFluxRetardedResponse system expectation source Φ t s =\n        SecondQuantization.Fermionic.Transport.boundedFluxRetardedResponse system expectation source J t s ∘ₗ d",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.Transport.boundedFluxRetardedResponse_eq_comp_of_factorization",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.FluxResponse",
-    "externalAxioms": [],
-    "docString": "A differential-current representation identifies the flux Kubo response with\nthe chosen current response precomposed by the differential. The equality is only on exact\ndifferentials; no equality of arbitrary current extensions is implied. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.Transport.boundedFluxRetardedResponse_current_eq_of_eq_differential",
-      "SecondQuantization.Fermionic.Transport.boundedFluxRetardedResponse_eq_symmetrized_add_correction"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.Transport.boundedFluxRetardedResponse_current_eq_of_eq_differential",
-      "SecondQuantization.Fermionic.Transport.boundedFluxRetardedResponse_eq_symmetrized_add_correction"
-    ],
-    "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {Site : Type u_1} {Test : Type u_2} {OneForm : Type u_3} [inst : LinearOrder Site] [inst_1 : Fintype Site]\n  [inst_2 : AddCommGroup Test] [inst_3 : _root_.Module ℂ Test] [inst_4 : AddCommGroup OneForm]\n  [inst_5 : _root_.Module ℂ OneForm]\n  (system :\n    QuantumTheory.LinearResponse.BoundedFreeSystem (SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site))\n  (expectation :\n    QuantumTheory.LinearResponse.NormalizedExpectation\n      (SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site))\n  (source :\n    SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site →L[ℂ]\n      SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site)\n  (d : Test →ₗ[ℂ] OneForm) (J₁ J₂ : OneForm →ₗ[ℂ] (Site →₀ ℂ) →ₗ[ℂ] Site →₀ ℂ),\n  ConservationLaw.DifferentialCurrentEquivalent d J₁ J₂ →\n    ∀ (t s : ℝ) (f : Test),\n      (SecondQuantization.Fermionic.Transport.boundedFluxRetardedResponse system expectation source J₁ t s) (d f) =\n        (SecondQuantization.Fermionic.Transport.boundedFluxRetardedResponse system expectation source J₂ t s) (d f)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.Transport.boundedFluxRetardedResponse_eq_of_differentialEquivalent",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.FluxResponse",
-    "externalAxioms": [],
-    "docString": "Equivalent full current functionals give the same retarded response on every exact\ndifferential.  No statement is made here for an arbitrary non-exact one-form. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
     "terminal": false,
     "statement": "∀ {Site : Type u_1} {Test : Type u_2} {OneForm : Type u_3} [inst : LinearOrder Site] [inst_1 : Fintype Site]\n  [inst_2 : AddCommGroup Test] [inst_3 : _root_.Module ℂ Test] [inst_4 : AddCommGroup OneForm]\n  [inst_5 : _root_.Module ℂ OneForm]\n  (system :\n    QuantumTheory.LinearResponse.BoundedFreeSystem (SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site))\n  (expectation :\n    QuantumTheory.LinearResponse.NormalizedExpectation\n      (SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site))\n  (source :\n    SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site →L[ℂ]\n      SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site)\n  (d : Test →ₗ[ℂ] OneForm) (Φ : Test →ₗ[ℂ] (Site →₀ ℂ) →ₗ[ℂ] Site →₀ ℂ) (velocity m : (Site →₀ ℂ) →ₗ[ℂ] Site →₀ ℂ)\n  (N : OneForm →ₗ[ℂ] (Site →₀ ℂ) →ₗ[ℂ] Site →₀ ℂ),\n  Φ = ConservationLaw.nestedSymmetrizedCurrentFlux (Site →₀ ℂ) velocity m N ∘ₗ d →\n    ∀ (t s : ℝ),\n      SecondQuantization.Fermionic.Transport.boundedFluxRetardedResponse system expectation source Φ t s =\n        SecondQuantization.Fermionic.Transport.boundedFluxRetardedResponse system expectation source\n              (ConservationLaw.symmetrizedCurrentFlux (Site →₀ ℂ) velocity m N) t s ∘ₗ\n            d +\n          SecondQuantization.Fermionic.Transport.boundedFluxRetardedResponse system expectation source\n              (ConservationLaw.localizationCorrectionCurrentFlux (Site →₀ ℂ) velocity m N) t s ∘ₗ\n            d",
     "standardAxioms": [
@@ -137166,8 +137262,7 @@
     ],
     "dependencies": [
       "ConservationLaw.localizationCorrectionCurrentFlux_apply",
-      "ConservationLaw.nestedSymmetrizedCurrentFlux_eq_symmetrized_add_correction",
-      "SecondQuantization.Fermionic.Transport.boundedFluxRetardedResponse_eq_comp_of_factorization"
+      "ConservationLaw.nestedSymmetrizedCurrentFlux_eq_symmetrized_add_correction"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -138225,139 +138320,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Site : Type u_1} {E : Type u_2} [inst : LinearOrder Site] [inst_1 : Fintype Site] [inst_2 : AddCommGroup E]\n  [inst_3 : _root_.Module ℝ E]\n  (system :\n    QuantumTheory.LinearResponse.BoundedFreeSystem (SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site))\n  (expectation :\n    QuantumTheory.LinearResponse.NormalizedExpectation\n      (SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site))\n  (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ) (K : LocallyFiniteHopping Site) (q ω η T : ℝ),\n  SecondQuantization.Fermionic.Transport.finiteTimeAdiabaticDirectionalCoefficient system expectation geometry direction\n      K q ω η T =\n    SecondQuantization.Fermionic.Transport.finiteTimeAdiabaticDirectionalRetardedCoefficient system expectation geometry\n        direction K q ω η T +\n      SecondQuantization.Fermionic.Transport.boundedDirectionalContactExpectation system expectation geometry direction\n        K q T",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.Transport.finiteTimeAdiabaticDirectionalCoefficient_eq_retarded_add_contact",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.FrequencyResponse",
-    "externalAxioms": [],
-    "docString": "Expanding the channel-level finite-time response recovers the historical retarded-plus-contact\ndirectional-current coefficient exactly. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.Transport.finiteTimeAdiabaticDirectionalCoefficient_eq_stationaryLag"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.Transport.finiteTimeAdiabaticDirectionalCoefficient_eq_stationaryLag"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Site : Type u_1} {E : Type u_2} [inst : LinearOrder Site] [inst_1 : Fintype Site] [inst_2 : AddCommGroup E]\n  [inst_3 : _root_.Module ℝ E]\n  (system :\n    QuantumTheory.LinearResponse.BoundedFreeSystem (SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site))\n  (expectation :\n    QuantumTheory.LinearResponse.NormalizedExpectation\n      (SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site)),\n  QuantumTheory.LinearResponse.IsStationary system expectation →\n    ∀ (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ) (K : LocallyFiniteHopping Site) (q ω η : ℝ) {T : ℝ},\n      0 ≤ T →\n        SecondQuantization.Fermionic.Transport.finiteTimeAdiabaticDirectionalCoefficient system expectation geometry\n            direction K q ω η T =\n          QuantumTheory.LinearResponse.finiteTimeAdiabaticTransform\n              (SecondQuantization.Fermionic.Transport.stationaryDirectionalCurrentKernel system expectation geometry\n                direction K q)\n              ω η T +\n            expectation.toContinuousLinearMap\n              (SecondQuantization.Fermionic.Lattice.boundedDirectionalContact geometry direction (↑system.hbar) (↑q) K)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.Transport.finiteTimeAdiabaticDirectionalCoefficient_eq_stationaryLag",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.StationaryFrequencyResponse",
-    "externalAxioms": [],
-    "docString": "Exact stationary finite-time coefficient: a positive-lag transform plus the unevolved contact\nexpectation. This remains a finite-volume, finite-`T`, finite-`η` identity. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.Transport.hasInfiniteObservationTimeLimit_directional_of_stationary"
-    ],
-    "dependencies": [
-      "SecondQuantization.Fermionic.Transport.finiteTimeAdiabaticDirectionalCoefficient_eq_retarded_add_contact",
-      "SecondQuantization.Fermionic.Transport.finiteTimeAdiabaticDirectionalRetardedCoefficient_eq_stationaryLag"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.Transport.hasInfiniteObservationTimeLimit_directional_of_stationary"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Site : Type u_1} {E : Type u_2} [inst : LinearOrder Site] [inst_1 : Fintype Site] [inst_2 : AddCommGroup E]\n  [inst_3 : _root_.Module ℝ E]\n  (system :\n    QuantumTheory.LinearResponse.BoundedFreeSystem (SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site))\n  (expectation :\n    QuantumTheory.LinearResponse.NormalizedExpectation\n      (SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site)),\n  QuantumTheory.LinearResponse.IsStationary system expectation →\n    ∀ (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ) (K : LocallyFiniteHopping Site) (q ω η : ℝ) {T : ℝ},\n      0 ≤ T →\n        SecondQuantization.Fermionic.Transport.finiteTimeAdiabaticDirectionalRetardedCoefficient system expectation\n            geometry direction K q ω η T =\n          QuantumTheory.LinearResponse.finiteTimeAdiabaticTransform\n            (SecondQuantization.Fermionic.Transport.stationaryDirectionalCurrentKernel system expectation geometry\n              direction K q)\n            ω η T",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.Transport.finiteTimeAdiabaticDirectionalRetardedCoefficient_eq_stationaryLag",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.StationaryFrequencyResponse",
-    "externalAxioms": [],
-    "docString": "Stationarity turns the finite-time two-time retarded coefficient into the scalar adiabatic\ntransform of the one-lag current kernel. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.Transport.finiteTimeAdiabaticDirectionalCoefficient_eq_stationaryLag",
-      "SecondQuantization.Fermionic.Transport.hasInfiniteObservationTimeLimit_directionalRetarded_of_stationary"
-    ],
-    "dependencies": [
-      "QuantumTheory.LinearResponse.retardedSusceptibility_eq_timeDifference_of_stationary"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.Transport.finiteTimeAdiabaticDirectionalCoefficient_eq_stationaryLag",
-      "SecondQuantization.Fermionic.Transport.hasInfiniteObservationTimeLimit_directionalRetarded_of_stationary"
-    ],
-    "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ (convention : QuantumTheory.Transport.PositiveVolume) (eta : ℝ),\n  QuantumTheory.Transport.finiteVolumeConductivityNormalization convention 0 eta = (↑convention.volume * -↑eta)⁻¹",
     "standardAxioms": [
       "Classical.choice",
@@ -138386,136 +138348,6 @@
       "SecondQuantization.Fermionic.Transport.FiniteStaticPeierlsWardIdentity.staticConductivity_eq_tracedBastin"
     ],
     "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {Site : Type u_1} {E : Type u_2} [inst : LinearOrder Site] [inst_1 : Fintype Site] [inst_2 : AddCommGroup E]\n  [inst_3 : _root_.Module ℝ E]\n  (system :\n    QuantumTheory.LinearResponse.BoundedFreeSystem (SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site))\n  (expectation :\n    QuantumTheory.LinearResponse.NormalizedExpectation\n      (SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site))\n  (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ) (K : LocallyFiniteHopping Site),\n  K.HasHermitianAmplitudes →\n    ∀ (q ω η T : ℝ) {β M : ℝ},\n      0 ≤ M →\n        (∀ s ∈ Set.Icc 0 β,\n            ‖QuantumTheory.LinearResponse.timeDependentInteractionPerturbation system\n                  (QuantumTheory.LinearResponse.sourceCoupledPerturbation\n                    (QuantumTheory.LinearResponse.adiabaticCosineSource ω η T)\n                    (SecondQuantization.Fermionic.Lattice.boundedDirectionalCurrent geometry direction (↑system.hbar)\n                      (↑q) K))\n                  s‖ ≤\n              M) →\n          T ∈ Set.Icc 0 β →\n            IntervalIntegrable\n                (QuantumTheory.LinearResponse.timeDependentInteractionPerturbation system\n                  (QuantumTheory.LinearResponse.sourceCoupledPerturbation\n                    (QuantumTheory.LinearResponse.adiabaticCosineSource ω η T)\n                    (SecondQuantization.Fermionic.Lattice.boundedDirectionalCurrent geometry direction (↑system.hbar)\n                      (↑q) K)))\n                MeasureTheory.volume 0 T →\n              HasDerivAt\n                (fun lam =>\n                  QuantumTheory.LinearResponse.affinePerturbedExpectation system expectation\n                    (QuantumTheory.LinearResponse.sourceCoupledPerturbation\n                      (QuantumTheory.LinearResponse.adiabaticCosineSource ω η T)\n                      (SecondQuantization.Fermionic.Lattice.boundedDirectionalCurrent geometry direction (↑system.hbar)\n                        (↑q) K))\n                    (SecondQuantization.Fermionic.Lattice.boundedDirectionalCurrent geometry direction (↑system.hbar)\n                      (↑q) K)\n                    (SecondQuantization.Fermionic.Lattice.boundedDirectionalContact geometry direction (↑system.hbar)\n                      (↑q) K)\n                    lam T)\n                (SecondQuantization.Fermionic.Transport.finiteTimeAdiabaticDirectionalCosineResponse system expectation\n                  geometry direction K q ω η T)\n                0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.Transport.hasDerivAt_boundedDirectionalCosineExpectation_zero_of_bound_retarded",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.HarmonicSourceResponse",
-    "externalAxioms": [],
-    "docString": "The cosine quadrature is a genuine real-source response theorem. Its derivative contains the\nretarded current-current contribution and the geometric Peierls contact expectation. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "QuantumTheory.LinearResponse.adiabaticCosineSource_at_observation",
-      "SecondQuantization.Fermionic.Transport.hasDerivAt_boundedDirectionalCurrentExpectation_zero_of_bound_retarded"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Site : Type u_1} {E : Type u_2} [inst : LinearOrder Site] [inst_1 : Fintype Site] [inst_2 : AddCommGroup E]\n  [inst_3 : _root_.Module ℝ E]\n  (system :\n    QuantumTheory.LinearResponse.BoundedFreeSystem (SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site))\n  (expectation :\n    QuantumTheory.LinearResponse.NormalizedExpectation\n      (SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site))\n  (f : ℝ → ℝ) (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ) (K : LocallyFiniteHopping Site),\n  K.HasHermitianAmplitudes →\n    ∀ (q : ℝ) {β M t : ℝ},\n      0 ≤ M →\n        (∀ s ∈ Set.Icc 0 β,\n            ‖QuantumTheory.LinearResponse.timeDependentInteractionPerturbation system\n                  (QuantumTheory.LinearResponse.sourceCoupledPerturbation f\n                    (SecondQuantization.Fermionic.Lattice.boundedDirectionalCurrent geometry direction (↑system.hbar)\n                      (↑q) K))\n                  s‖ ≤\n              M) →\n          t ∈ Set.Icc 0 β →\n            IntervalIntegrable\n                (QuantumTheory.LinearResponse.timeDependentInteractionPerturbation system\n                  (QuantumTheory.LinearResponse.sourceCoupledPerturbation f\n                    (SecondQuantization.Fermionic.Lattice.boundedDirectionalCurrent geometry direction (↑system.hbar)\n                      (↑q) K)))\n                MeasureTheory.volume 0 t →\n              HasDerivAt\n                (fun lam =>\n                  QuantumTheory.LinearResponse.affinePerturbedExpectation system expectation\n                    (QuantumTheory.LinearResponse.sourceCoupledPerturbation f\n                      (SecondQuantization.Fermionic.Lattice.boundedDirectionalCurrent geometry direction (↑system.hbar)\n                        (↑q) K))\n                    (SecondQuantization.Fermionic.Lattice.boundedDirectionalCurrent geometry direction (↑system.hbar)\n                      (↑q) K)\n                    (↑(f t) •\n                      SecondQuantization.Fermionic.Lattice.boundedDirectionalContact geometry direction (↑system.hbar)\n                        (↑q) K)\n                    lam t)\n                ((∫ (s : ℝ) in 0..t,\n                    ↑(f s) *\n                      QuantumTheory.LinearResponse.retardedSusceptibility system expectation\n                        (SecondQuantization.Fermionic.Lattice.boundedDirectionalCurrent geometry direction\n                          (↑system.hbar) (↑q) K)\n                        (SecondQuantization.Fermionic.Lattice.boundedDirectionalCurrent geometry direction\n                          (↑system.hbar) (↑q) K)\n                        t s) +\n                  expectation.toContinuousLinearMap\n                    ((QuantumTheory.LinearResponse.heisenbergEvolution system t)\n                      (↑(f t) •\n                        SecondQuantization.Fermionic.Lattice.boundedDirectionalContact geometry direction (↑system.hbar)\n                          (↑q) K)))\n                0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.Transport.hasDerivAt_boundedDirectionalCurrentExpectation_zero_of_bound_retarded",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.GeometricCurrentResponse",
-    "externalAxioms": [],
-    "docString": "Retarded response of a geometric current component with the source-dependent geometric contact\nterm retained. Current self-adjointness is derived from Hermitian hopping and the real physical\ncharge rather than supplied externally. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.Transport.hasDerivAt_boundedDirectionalCosineExpectation_zero_of_bound_retarded",
-      "SecondQuantization.Fermionic.Transport.hasDerivAt_boundedDirectionalSineExpectation_zero_of_bound_retarded"
-    ],
-    "dependencies": [
-      "QuantumTheory.LinearResponse.hasDerivAt_affineSourceCoupledExpectation_zero_of_bound_retarded",
-      "SecondQuantization.Fermionic.Lattice.isSelfAdjoint_boundedDirectionalCurrent"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.Transport.hasDerivAt_boundedDirectionalCosineExpectation_zero_of_bound_retarded",
-      "SecondQuantization.Fermionic.Transport.hasDerivAt_boundedDirectionalSineExpectation_zero_of_bound_retarded"
-    ],
-    "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {Site : Type u_1} {E : Type u_2} [inst : LinearOrder Site] [inst_1 : Fintype Site] [inst_2 : AddCommGroup E]\n  [inst_3 : _root_.Module ℝ E]\n  (system :\n    QuantumTheory.LinearResponse.BoundedFreeSystem (SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site))\n  (expectation :\n    QuantumTheory.LinearResponse.NormalizedExpectation\n      (SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site))\n  (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ) (K : LocallyFiniteHopping Site),\n  K.HasHermitianAmplitudes →\n    ∀ (q ω η T : ℝ) {β M : ℝ},\n      0 ≤ M →\n        (∀ s ∈ Set.Icc 0 β,\n            ‖QuantumTheory.LinearResponse.timeDependentInteractionPerturbation system\n                  (QuantumTheory.LinearResponse.sourceCoupledPerturbation\n                    (QuantumTheory.LinearResponse.adiabaticSineSource ω η T)\n                    (SecondQuantization.Fermionic.Lattice.boundedDirectionalCurrent geometry direction (↑system.hbar)\n                      (↑q) K))\n                  s‖ ≤\n              M) →\n          T ∈ Set.Icc 0 β →\n            IntervalIntegrable\n                (QuantumTheory.LinearResponse.timeDependentInteractionPerturbation system\n                  (QuantumTheory.LinearResponse.sourceCoupledPerturbation\n                    (QuantumTheory.LinearResponse.adiabaticSineSource ω η T)\n                    (SecondQuantization.Fermionic.Lattice.boundedDirectionalCurrent geometry direction (↑system.hbar)\n                      (↑q) K)))\n                MeasureTheory.volume 0 T →\n              HasDerivAt\n                (fun lam =>\n                  QuantumTheory.LinearResponse.affinePerturbedExpectation system expectation\n                    (QuantumTheory.LinearResponse.sourceCoupledPerturbation\n                      (QuantumTheory.LinearResponse.adiabaticSineSource ω η T)\n                      (SecondQuantization.Fermionic.Lattice.boundedDirectionalCurrent geometry direction (↑system.hbar)\n                        (↑q) K))\n                    (SecondQuantization.Fermionic.Lattice.boundedDirectionalCurrent geometry direction (↑system.hbar)\n                      (↑q) K)\n                    0 lam T)\n                (SecondQuantization.Fermionic.Transport.finiteTimeAdiabaticDirectionalSineResponse system expectation\n                  geometry direction K q ω η T)\n                0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.Transport.hasDerivAt_boundedDirectionalSineExpectation_zero_of_bound_retarded",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.HarmonicSourceResponse",
-    "externalAxioms": [],
-    "docString": "The sine quadrature is a genuine real-source response theorem. Its explicit observable\nvariation vanishes because the source is zero at the observation time. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "QuantumTheory.LinearResponse.adiabaticSineSource_at_observation",
-      "QuantumTheory.LinearResponse.heisenbergEvolution_apply",
-      "SecondQuantization.Fermionic.Transport.hasDerivAt_boundedDirectionalCurrentExpectation_zero_of_bound_retarded"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -138594,7 +138426,7 @@
       "SecondQuantization.Fermionic.Transport.hasInfiniteObservationTimeLimit_directionalConductivity_eigenbasis_finite_sum"
     ],
     "dependencies": [
-      "SecondQuantization.Fermionic.Transport.hasInfiniteObservationTimeLimit_directional_of_stationary_pos"
+      "QuantumTheory.LinearResponse.ResponseChannel.hasInfiniteObservationTimeLimit_finiteTimeAdiabaticResponse_of_stationary_pos"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -138615,94 +138447,8 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": false,
-    "statement": "∀ {Site : Type u_1} {E : Type u_2} [inst : LinearOrder Site] [inst_1 : Fintype Site] [inst_2 : AddCommGroup E]\n  [inst_3 : _root_.Module ℝ E]\n  (system :\n    QuantumTheory.LinearResponse.BoundedFreeSystem (SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site))\n  (expectation :\n    QuantumTheory.LinearResponse.NormalizedExpectation\n      (SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site)),\n  QuantumTheory.LinearResponse.IsStationary system expectation →\n    ∀ (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ) (K : LocallyFiniteHopping Site) (q ω η : ℝ),\n      SecondQuantization.Fermionic.Transport.StationaryDirectionalAdiabaticIntegrable system expectation geometry\n          direction K q ω η →\n        QuantumTheory.LinearResponse.HasInfiniteObservationTimeLimit\n          (SecondQuantization.Fermionic.Transport.finiteTimeAdiabaticDirectionalRetardedCoefficient system expectation\n            geometry direction K q ω η)\n          (SecondQuantization.Fermionic.Transport.infiniteTimeAdiabaticDirectionalRetardedCoefficient system expectation\n            geometry direction K q ω η)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.Transport.hasInfiniteObservationTimeLimit_directionalRetarded_of_stationary",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.InfiniteTimeFrequencyResponse",
-    "externalAxioms": [],
-    "docString": "Under stationarity and weighted-lag integrability, the retarded directional coefficient has a\nproved `T → +∞` limit at fixed `ω` and `η`. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.Transport.hasInfiniteObservationTimeLimit_directionalRetarded_of_stationary_pos"
-    ],
-    "dependencies": [
-      "QuantumTheory.LinearResponse.hasInfiniteObservationTimeLimit_finiteTimeAdiabaticTransform",
-      "SecondQuantization.Fermionic.Transport.finiteTimeAdiabaticDirectionalRetardedCoefficient_eq_stationaryLag"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.Transport.hasInfiniteObservationTimeLimit_directionalRetarded_of_stationary_pos"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
     "terminal": true,
-    "statement": "∀ {Site : Type u_1} {E : Type u_2} [inst : LinearOrder Site] [inst_1 : Fintype Site] [inst_2 : AddCommGroup E]\n  [inst_3 : _root_.Module ℝ E]\n  (system :\n    QuantumTheory.LinearResponse.BoundedFreeSystem (SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site))\n  (expectation :\n    QuantumTheory.LinearResponse.NormalizedExpectation\n      (SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site)),\n  QuantumTheory.LinearResponse.IsStationary system expectation →\n    ∀ (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ) (K : LocallyFiniteHopping Site) (q ω η : ℝ),\n      0 < η →\n        QuantumTheory.LinearResponse.HasInfiniteObservationTimeLimit\n          (SecondQuantization.Fermionic.Transport.finiteTimeAdiabaticDirectionalRetardedCoefficient system expectation\n            geometry direction K q ω η)\n          (SecondQuantization.Fermionic.Transport.infiniteTimeAdiabaticDirectionalRetardedCoefficient system expectation\n            geometry direction K q ω η)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.Transport.hasInfiniteObservationTimeLimit_directionalRetarded_of_stationary_pos",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.InfiniteTimeFrequencyResponse",
-    "externalAxioms": [],
-    "docString": "At every strictly positive switching rate, stationarity alone gives the retarded\nobservation-time limit. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "SecondQuantization.Fermionic.Transport.hasInfiniteObservationTimeLimit_directionalRetarded_of_stationary",
-      "SecondQuantization.Fermionic.Transport.stationaryDirectionalAdiabaticIntegrable_of_pos"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {Site : Type u_1} {E : Type u_2} [inst : LinearOrder Site] [inst_1 : Fintype Site] [inst_2 : AddCommGroup E]\n  [inst_3 : _root_.Module ℝ E] {ι : Type u_3} [inst_4 : Fintype ι]\n  (system :\n    QuantumTheory.LinearResponse.BoundedFreeSystem (SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site))\n  (data : QuantumTheory.LinearResponse.EnergyEigenbasisLehmannData system ι) (geometry : LatticeGeometry Site E)\n  (direction : E →ₗ[ℝ] ℝ) (K : LocallyFiniteHopping Site) (q ω η : ℝ),\n  0 < η →\n    QuantumTheory.LinearResponse.HasInfiniteObservationTimeLimit\n      (SecondQuantization.Fermionic.Transport.finiteTimeAdiabaticDirectionalCoefficient system\n        (QuantumTheory.LinearResponse.eigenbasisNormalizedExpectation system data) geometry direction K q ω η)\n      (∑ mn,\n          (QuantumTheory.LinearResponse.eigenbasisTransitionData system data\n                (SecondQuantization.Fermionic.Lattice.boundedDirectionalCurrent geometry direction (↑system.hbar) (↑q)\n                  K)\n                (SecondQuantization.Fermionic.Lattice.boundedDirectionalCurrent geometry direction (↑system.hbar) (↑q)\n                  K)\n                mn).frequencyTerm\n            ω η +\n        (QuantumTheory.LinearResponse.eigenbasisNormalizedExpectation system data).toContinuousLinearMap\n          (SecondQuantization.Fermionic.Lattice.boundedDirectionalContact geometry direction (↑system.hbar) (↑q) K))",
+    "statement": "∀ {Site : Type u_1} {E : Type u_2} [inst : LinearOrder Site] [inst_1 : Fintype Site] [inst_2 : AddCommGroup E]\n  [inst_3 : _root_.Module ℝ E] {ι : Type u_3} [inst_4 : Fintype ι]\n  (system :\n    QuantumTheory.LinearResponse.BoundedFreeSystem (SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site))\n  (data : QuantumTheory.LinearResponse.EnergyEigenbasisLehmannData system ι) (geometry : LatticeGeometry Site E)\n  (direction : E →ₗ[ℝ] ℝ) (K : LocallyFiniteHopping Site) (q ω η : ℝ),\n  0 < η →\n    QuantumTheory.LinearResponse.HasInfiniteObservationTimeLimit\n      ((SecondQuantization.Fermionic.Transport.boundedDirectionalResponseChannel system geometry direction K\n            q).finiteTimeAdiabaticResponse\n        system (QuantumTheory.LinearResponse.eigenbasisNormalizedExpectation system data) ω η)\n      (∑ mn,\n          (QuantumTheory.LinearResponse.eigenbasisTransitionData system data\n                (SecondQuantization.Fermionic.Lattice.boundedDirectionalCurrent geometry direction (↑system.hbar) (↑q)\n                  K)\n                (SecondQuantization.Fermionic.Lattice.boundedDirectionalCurrent geometry direction (↑system.hbar) (↑q)\n                  K)\n                mn).frequencyTerm\n            ω η +\n        (QuantumTheory.LinearResponse.eigenbasisNormalizedExpectation system data).toContinuousLinearMap\n          (SecondQuantization.Fermionic.Lattice.boundedDirectionalContact geometry direction (↑system.hbar) (↑q) K))",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -138722,152 +138468,14 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
+      "QuantumTheory.LinearResponse.ResponseChannel.hasInfiniteObservationTimeLimit_finiteTimeAdiabaticResponse_of_stationary_pos",
       "QuantumTheory.LinearResponse.isStationary_eigenbasisNormalizedExpectation",
-      "SecondQuantization.Fermionic.Transport.hasInfiniteObservationTimeLimit_directional_of_stationary_pos",
-      "SecondQuantization.Fermionic.Transport.infiniteTimeAdiabaticDirectionalCoefficient_eigenbasis_eq_finite_sum"
+      "SecondQuantization.Fermionic.Transport.infiniteTimeAdiabaticDirectionalResponse_eigenbasis_eq_finite_sum"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [],
     "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Site : Type u_1} {E : Type u_2} [inst : LinearOrder Site] [inst_1 : Fintype Site] [inst_2 : AddCommGroup E]\n  [inst_3 : _root_.Module ℝ E]\n  (system :\n    QuantumTheory.LinearResponse.BoundedFreeSystem (SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site))\n  (expectation :\n    QuantumTheory.LinearResponse.NormalizedExpectation\n      (SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site)),\n  QuantumTheory.LinearResponse.IsStationary system expectation →\n    ∀ (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ) (K : LocallyFiniteHopping Site) (q ω η : ℝ),\n      SecondQuantization.Fermionic.Transport.StationaryDirectionalAdiabaticIntegrable system expectation geometry\n          direction K q ω η →\n        QuantumTheory.LinearResponse.HasInfiniteObservationTimeLimit\n          (SecondQuantization.Fermionic.Transport.finiteTimeAdiabaticDirectionalCoefficient system expectation geometry\n            direction K q ω η)\n          (SecondQuantization.Fermionic.Transport.infiniteTimeAdiabaticDirectionalCoefficient system expectation\n            geometry direction K q ω η)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.Transport.hasInfiniteObservationTimeLimit_directional_of_stationary",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.InfiniteTimeFrequencyResponse",
-    "externalAxioms": [],
-    "docString": "Under the same hypotheses, the full stationary coefficient including the contact response has\nits `T → +∞` limit at fixed `ω` and `η`. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.Transport.hasInfiniteObservationTimeLimit_directional_of_stationary_pos"
-    ],
-    "dependencies": [
-      "QuantumTheory.LinearResponse.hasInfiniteObservationTimeLimit_finiteTimeAdiabaticTransform",
-      "SecondQuantization.Fermionic.Transport.finiteTimeAdiabaticDirectionalCoefficient_eq_stationaryLag"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.Transport.hasInfiniteObservationTimeLimit_directional_of_stationary_pos"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Site : Type u_1} {E : Type u_2} [inst : LinearOrder Site] [inst_1 : Fintype Site] [inst_2 : AddCommGroup E]\n  [inst_3 : _root_.Module ℝ E]\n  (system :\n    QuantumTheory.LinearResponse.BoundedFreeSystem (SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site))\n  (expectation :\n    QuantumTheory.LinearResponse.NormalizedExpectation\n      (SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site)),\n  QuantumTheory.LinearResponse.IsStationary system expectation →\n    ∀ (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ) (K : LocallyFiniteHopping Site) (q ω η : ℝ),\n      0 < η →\n        QuantumTheory.LinearResponse.HasInfiniteObservationTimeLimit\n          (SecondQuantization.Fermionic.Transport.finiteTimeAdiabaticDirectionalCoefficient system expectation geometry\n            direction K q ω η)\n          (SecondQuantization.Fermionic.Transport.infiniteTimeAdiabaticDirectionalCoefficient system expectation\n            geometry direction K q ω η)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.Transport.hasInfiniteObservationTimeLimit_directional_of_stationary_pos",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.InfiniteTimeFrequencyResponse",
-    "externalAxioms": [],
-    "docString": "At every strictly positive switching rate, stationarity alone gives the full observation-time\nlimit including the Peierls contact response. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.Transport.hasInfiniteObservationTimeLimit_directionalConductivity_of_stationary_pos",
-      "SecondQuantization.Fermionic.Transport.hasInfiniteObservationTimeLimit_directional_eigenbasis_finite_sum"
-    ],
-    "dependencies": [
-      "SecondQuantization.Fermionic.Transport.hasInfiniteObservationTimeLimit_directional_of_stationary",
-      "SecondQuantization.Fermionic.Transport.stationaryDirectionalAdiabaticIntegrable_of_pos"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.Transport.hasInfiniteObservationTimeLimit_directionalConductivity_of_stationary_pos",
-      "SecondQuantization.Fermionic.Transport.hasInfiniteObservationTimeLimit_directional_eigenbasis_finite_sum"
-    ],
-    "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Site : Type u_1} {E : Type u_2} [inst : LinearOrder Site] [inst_1 : Fintype Site] [inst_2 : AddCommGroup E]\n  [inst_3 : _root_.Module ℝ E] {ι : Type u_3} [inst_4 : Fintype ι]\n  (system :\n    QuantumTheory.LinearResponse.BoundedFreeSystem (SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site))\n  (data : QuantumTheory.LinearResponse.EnergyEigenbasisLehmannData system ι) (geometry : LatticeGeometry Site E)\n  (direction : E →ₗ[ℝ] ℝ) (K : LocallyFiniteHopping Site) (q ω η : ℝ),\n  0 < η →\n    SecondQuantization.Fermionic.Transport.infiniteTimeAdiabaticDirectionalCoefficient system\n        (QuantumTheory.LinearResponse.eigenbasisNormalizedExpectation system data) geometry direction K q ω η =\n      ∑ mn,\n          (QuantumTheory.LinearResponse.eigenbasisTransitionData system data\n                (SecondQuantization.Fermionic.Lattice.boundedDirectionalCurrent geometry direction (↑system.hbar) (↑q)\n                  K)\n                (SecondQuantization.Fermionic.Lattice.boundedDirectionalCurrent geometry direction (↑system.hbar) (↑q)\n                  K)\n                mn).frequencyTerm\n            ω η +\n        (QuantumTheory.LinearResponse.eigenbasisNormalizedExpectation system data).toContinuousLinearMap\n          (SecondQuantization.Fermionic.Lattice.boundedDirectionalContact geometry direction (↑system.hbar) (↑q) K)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.Transport.infiniteTimeAdiabaticDirectionalCoefficient_eigenbasis_eq_finite_sum",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.SpectralFrequencyResponse",
-    "externalAxioms": [],
-    "docString": "The full fixed-rate directional coefficient is the finite Lehmann sum plus the explicit\ngeometric Peierls contact expectation. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.Transport.hasInfiniteObservationTimeLimit_directional_eigenbasis_finite_sum",
-      "SecondQuantization.Fermionic.Transport.infiniteTimeAdiabaticDirectionalConductivity_eigenbasis_eq_finite_sum"
-    ],
-    "dependencies": [
-      "SecondQuantization.Fermionic.Transport.infiniteTimeAdiabaticDirectionalRetardedCoefficient_eigenbasis_eq_finite_sum"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.Transport.hasInfiniteObservationTimeLimit_directional_eigenbasis_finite_sum",
-      "SecondQuantization.Fermionic.Transport.infiniteTimeAdiabaticDirectionalConductivity_eigenbasis_eq_finite_sum"
-    ],
-    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -138905,7 +138513,7 @@
       "SecondQuantization.Fermionic.Transport.infiniteTimeAdiabaticDirectionalConductivity_eq_finiteKuboGreenwood"
     ],
     "dependencies": [
-      "SecondQuantization.Fermionic.Transport.infiniteTimeAdiabaticDirectionalCoefficient_eigenbasis_eq_finite_sum"
+      "SecondQuantization.Fermionic.Transport.infiniteTimeAdiabaticDirectionalResponse_eigenbasis_eq_finite_sum"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -139057,82 +138665,39 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Site : Type u_1} {E : Type u_2} [inst : LinearOrder Site] [inst_1 : Fintype Site] [inst_2 : AddCommGroup E]\n  [inst_3 : _root_.Module ℝ E] {ι : Type u_3} [inst_4 : Fintype ι]\n  (system :\n    QuantumTheory.LinearResponse.BoundedFreeSystem (SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site))\n  (data : QuantumTheory.LinearResponse.EnergyEigenbasisLehmannData system ι) (geometry : LatticeGeometry Site E)\n  (direction : E →ₗ[ℝ] ℝ) (K : LocallyFiniteHopping Site) (q ω η : ℝ),\n  0 < η →\n    SecondQuantization.Fermionic.Transport.infiniteTimeAdiabaticDirectionalRetardedCoefficient system\n        (QuantumTheory.LinearResponse.eigenbasisNormalizedExpectation system data) geometry direction K q ω η =\n      ∑ mn,\n        (QuantumTheory.LinearResponse.eigenbasisTransitionData system data\n              (SecondQuantization.Fermionic.Lattice.boundedDirectionalCurrent geometry direction (↑system.hbar) (↑q) K)\n              (SecondQuantization.Fermionic.Lattice.boundedDirectionalCurrent geometry direction (↑system.hbar) (↑q) K)\n              mn).frequencyTerm\n          ω η",
+    "statement": "∀ {Site : Type u_1} {E : Type u_2} [inst : LinearOrder Site] [inst_1 : Fintype Site] [inst_2 : AddCommGroup E]\n  [inst_3 : _root_.Module ℝ E] {ι : Type u_3} [inst_4 : Fintype ι]\n  (system :\n    QuantumTheory.LinearResponse.BoundedFreeSystem (SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site))\n  (data : QuantumTheory.LinearResponse.EnergyEigenbasisLehmannData system ι) (geometry : LatticeGeometry Site E)\n  (direction : E →ₗ[ℝ] ℝ) (K : LocallyFiniteHopping Site) (q ω η : ℝ),\n  0 < η →\n    (SecondQuantization.Fermionic.Transport.boundedDirectionalResponseChannel system geometry direction K\n            q).infiniteTimeAdiabaticResponse\n        system (QuantumTheory.LinearResponse.eigenbasisNormalizedExpectation system data) ω η =\n      ∑ mn,\n          (QuantumTheory.LinearResponse.eigenbasisTransitionData system data\n                (SecondQuantization.Fermionic.Lattice.boundedDirectionalCurrent geometry direction (↑system.hbar) (↑q)\n                  K)\n                (SecondQuantization.Fermionic.Lattice.boundedDirectionalCurrent geometry direction (↑system.hbar) (↑q)\n                  K)\n                mn).frequencyTerm\n            ω η +\n        (QuantumTheory.LinearResponse.eigenbasisNormalizedExpectation system data).toContinuousLinearMap\n          (SecondQuantization.Fermionic.Lattice.boundedDirectionalContact geometry direction (↑system.hbar) (↑q) K)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.Transport.infiniteTimeAdiabaticDirectionalRetardedCoefficient_eigenbasis_eq_finite_sum",
+    "name": "SecondQuantization.Fermionic.Transport.infiniteTimeAdiabaticDirectionalResponse_eigenbasis_eq_finite_sum",
     "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.SpectralFrequencyResponse",
     "externalAxioms": [],
-    "docString": "In a finite eigenbasis basis, the retarded directional coefficient is the conventional finite\ndouble Lehmann sum at every `η > 0`. ",
+    "docString": "The full fixed-rate directional coefficient is the finite Lehmann sum plus the explicit\ngeometric Peierls contact expectation. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.Transport.infiniteTimeAdiabaticDirectionalCoefficient_eigenbasis_eq_finite_sum"
+      "SecondQuantization.Fermionic.Transport.hasInfiniteObservationTimeLimit_directional_eigenbasis_finite_sum",
+      "SecondQuantization.Fermionic.Transport.infiniteTimeAdiabaticDirectionalConductivity_eigenbasis_eq_finite_sum"
     ],
     "dependencies": [
       "QuantumTheory.LinearResponse.adiabaticFrequencyDomainSusceptibility_eigenbasis_eq_finite_sum",
-      "SecondQuantization.Fermionic.Transport.infiniteTimeAdiabaticDirectionalRetardedCoefficient_eq_susceptibility"
+      "QuantumTheory.LinearResponse.infiniteTimeAdiabaticTransform_commutator_eq_susceptibility"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.Transport.infiniteTimeAdiabaticDirectionalCoefficient_eigenbasis_eq_finite_sum"
+      "SecondQuantization.Fermionic.Transport.hasInfiniteObservationTimeLimit_directional_eigenbasis_finite_sum",
+      "SecondQuantization.Fermionic.Transport.infiniteTimeAdiabaticDirectionalConductivity_eigenbasis_eq_finite_sum"
     ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Site : Type u_1} {E : Type u_2} [inst : LinearOrder Site] [inst_1 : Fintype Site] [inst_2 : AddCommGroup E]\n  [inst_3 : _root_.Module ℝ E]\n  (system :\n    QuantumTheory.LinearResponse.BoundedFreeSystem (SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site))\n  (expectation :\n    QuantumTheory.LinearResponse.NormalizedExpectation\n      (SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site))\n  (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ) (K : LocallyFiniteHopping Site) (q ω η : ℝ),\n  SecondQuantization.Fermionic.Transport.infiniteTimeAdiabaticDirectionalRetardedCoefficient system expectation geometry\n      direction K q ω η =\n    QuantumTheory.LinearResponse.adiabaticFrequencyDomainSusceptibility system expectation\n      (SecondQuantization.Fermionic.Lattice.boundedDirectionalCurrent geometry direction (↑system.hbar) (↑q) K)\n      (SecondQuantization.Fermionic.Lattice.boundedDirectionalCurrent geometry direction (↑system.hbar) (↑q) K) ω η",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.Transport.infiniteTimeAdiabaticDirectionalRetardedCoefficient_eq_susceptibility",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.SpectralFrequencyResponse",
-    "externalAxioms": [],
-    "docString": "The positive-lag field coefficient is exactly the general whole-line causal susceptibility. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.Transport.infiniteTimeAdiabaticDirectionalRetardedCoefficient_eigenbasis_eq_finite_sum"
-    ],
-    "dependencies": [
-      "QuantumTheory.LinearResponse.integral_adiabaticFrequencySusceptibilityIntegrand_eq_Ioi_zero",
-      "QuantumTheory.LinearResponse.retardedTimeDifferenceKernel_eq_commutatorSusceptibility_of_nonneg"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.Transport.infiniteTimeAdiabaticDirectionalRetardedCoefficient_eigenbasis_eq_finite_sum"
-    ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -139213,54 +138778,6 @@
     "completedMention": false,
     "compiledConsumers": [],
     "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Site : Type u_1} {E : Type u_2} [inst : LinearOrder Site] [inst_1 : Fintype Site] [inst_2 : AddCommGroup E]\n  [inst_3 : _root_.Module ℝ E]\n  (system :\n    QuantumTheory.LinearResponse.BoundedFreeSystem (SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site))\n  (expectation :\n    QuantumTheory.LinearResponse.NormalizedExpectation\n      (SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site))\n  (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ) (K : LocallyFiniteHopping Site) (q ω η : ℝ),\n  0 < η →\n    SecondQuantization.Fermionic.Transport.StationaryDirectionalAdiabaticIntegrable system expectation geometry\n      direction K q ω η",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.Transport.stationaryDirectionalAdiabaticIntegrable_of_pos",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.InfiniteTimeFrequencyResponse",
-    "externalAxioms": [],
-    "docString": "For bounded directional currents, every strictly positive switching rate supplies the required\npositive-lag integrability automatically. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.Transport.hasInfiniteObservationTimeLimit_directionalRetarded_of_stationary_pos",
-      "SecondQuantization.Fermionic.Transport.hasInfiniteObservationTimeLimit_directional_of_stationary_pos"
-    ],
-    "dependencies": [
-      "QuantumTheory.LinearResponse.AdiabaticIntegrable.integrable",
-      "QuantumTheory.LinearResponse.adiabaticIntegrable_of_pos",
-      "QuantumTheory.LinearResponse.retardedTimeDifferenceKernel_eq_commutatorSusceptibility_of_nonneg"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.Transport.hasInfiniteObservationTimeLimit_directionalRetarded_of_stationary_pos",
-      "SecondQuantization.Fermionic.Transport.hasInfiniteObservationTimeLimit_directional_of_stationary_pos"
-    ],
-    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -180255,6 +179772,50 @@
     ],
     "compiledConsumerCount": 1,
     "axioms": [
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel N S)\n  (earlier later cut leg : Fin (2 * (2 * S.card + 1))),\n  d.HasIntervalBoundaryEndpoint earlier later cut →\n    SecondQuantization.Common.twoPointVertexOfLeg leg ∈ d.verticesBetweenCuts earlier later →\n      SecondQuantization.Common.twoPointVertexOfLeg (d.pairing.partner leg) ∈ d.verticesBetweenCuts earlier later →\n        leg ≠ cut ∧ d.pairing.partner leg ≠ cut",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.IntervalConnectivity.0.SecondQuantization.Common.TwoPointDiagram.intervalBoundary_ne_interior_pair",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.IntervalConnectivity",
+    "externalAxioms": [],
+    "docString": "A paired propagator with both endpoints inside an interval cannot be\neither of its two boundary cuts. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Common.TwoPointDiagram.intervalBlock_adj_interaction_of_ambient_adj",
+      "SecondQuantization.Common.TwoPointDiagram.intervalVertices_doubleCut_adj_iff"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.TwoPointDiagram.intervalBlock_adj_interaction_of_ambient_adj",
+      "SecondQuantization.Common.TwoPointDiagram.intervalVertices_doubleCut_adj_iff"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
       "Quot.sound",
       "propext"
     ],

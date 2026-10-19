@@ -4177,6 +4177,7 @@
       "name": "LeanCondensedMatter.QuantumTheory.LinearResponse.ObservableVariation",
       "sourceFile": "LeanCondensedMatter/QuantumTheory/LinearResponse/ObservableVariation.lean",
       "imports": [
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.ResponseChannel",
         "LeanCondensedMatter.QuantumTheory.LinearResponse.SourceCoupling"
       ],
       "externalImportCount": 2
@@ -7907,15 +7908,6 @@
       "externalImportCount": 0
     },
     {
-      "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.BoundedOneBodyResponse",
-      "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Transport/BoundedOneBodyResponse.lean",
-      "imports": [
-        "LeanCondensedMatter.QuantumTheory.LinearResponse.RetardedSusceptibility",
-        "LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.Bounded"
-      ],
-      "externalImportCount": 0
-    },
-    {
       "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.ConductivityNormalization",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Transport/ConductivityNormalization.lean",
       "imports": [
@@ -7974,8 +7966,8 @@
       "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.FluxResponse",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Transport/FluxResponse.lean",
       "imports": [
-        "LeanCondensedMatter.Analysis.ConservationLaw.CurrentEquivalence",
-        "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.BoundedOneBodyResponse"
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.RetardedSusceptibility",
+        "LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.Bounded"
       ],
       "externalImportCount": 0
     },
@@ -7985,35 +7977,6 @@
       "imports": [
         "LeanCondensedMatter.QuantumTheory.LinearResponse.FiniteTimeAdiabatic",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.GeometricCurrent"
-      ],
-      "externalImportCount": 0
-    },
-    {
-      "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.GeometricCurrentResponse",
-      "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Transport/GeometricCurrentResponse.lean",
-      "imports": [
-        "LeanCondensedMatter.QuantumTheory.LinearResponse.ObservableVariation",
-        "LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.GeometricCurrent"
-      ],
-      "externalImportCount": 0
-    },
-    {
-      "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.HarmonicSourceResponse",
-      "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Transport/HarmonicSourceResponse.lean",
-      "imports": [
-        "LeanCondensedMatter.QuantumTheory.LinearResponse.HarmonicSource",
-        "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.FrequencyResponse",
-        "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.GeometricCurrentResponse"
-      ],
-      "externalImportCount": 0
-    },
-    {
-      "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.InfiniteTimeFrequencyResponse",
-      "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Transport/InfiniteTimeFrequencyResponse.lean",
-      "imports": [
-        "LeanCondensedMatter.QuantumTheory.LinearResponse.AdiabaticIntegrability",
-        "LeanCondensedMatter.QuantumTheory.LinearResponse.InfiniteTimeAdiabatic",
-        "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.StationaryFrequencyResponse"
       ],
       "externalImportCount": 0
     },
@@ -8057,7 +8020,8 @@
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Transport/SpectralFrequencyResponse.lean",
       "imports": [
         "LeanCondensedMatter.QuantumTheory.LinearResponse.EigenbasisFrequencyDomain",
-        "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.InfiniteTimeFrequencyResponse"
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.InfiniteTimeAdiabatic",
+        "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.FrequencyResponse"
       ],
       "externalImportCount": 0
     },
@@ -8091,20 +8055,11 @@
       "externalImportCount": 0
     },
     {
-      "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.StationaryFrequencyResponse",
-      "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Transport/StationaryFrequencyResponse.lean",
-      "imports": [
-        "LeanCondensedMatter.QuantumTheory.LinearResponse.FiniteTimeAdiabatic",
-        "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.HarmonicSourceResponse"
-      ],
-      "externalImportCount": 0
-    },
-    {
       "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.SymmetrizedVelocityCurrent",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Transport/SymmetrizedVelocityCurrent.lean",
       "imports": [
         "LeanCondensedMatter.Analysis.Operator.SymmetrizedProduct",
-        "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.BoundedOneBodyResponse"
+        "LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.Bounded"
       ],
       "externalImportCount": 0
     },
@@ -8112,7 +8067,6 @@
       "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Transport",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Transport.lean",
       "imports": [
-        "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.BoundedOneBodyResponse",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.ConductivityNormalization",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.CorrectedCurrentResponse",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.CurrentInsertions",
@@ -8121,9 +8075,6 @@
         "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.FiniteDisorderCurrentCorrelation",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.FluxResponse",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.FrequencyResponse",
-        "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.GeometricCurrentResponse",
-        "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.HarmonicSourceResponse",
-        "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.InfiniteTimeFrequencyResponse",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.KuboBastinCommonEnergy",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.KuboBastinOccupation",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.KuboBastinSpectral",
@@ -8132,7 +8083,6 @@
         "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.SpinCurrentResponse",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.StaticKuboBastinResponse",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.StaticStredaWardBridge",
-        "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.StationaryFrequencyResponse",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.SymmetrizedVelocityCurrent"
       ],
       "externalImportCount": 0
