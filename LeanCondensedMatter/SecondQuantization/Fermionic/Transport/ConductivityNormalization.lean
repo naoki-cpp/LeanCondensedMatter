@@ -66,9 +66,9 @@ theorem hasInfiniteObservationTimeLimit_directionalConductivity_of_stationary_po
       (infiniteTimeAdiabaticDirectionalConductivity volume
         system expectation geometry direction K q ω η) := by
   have hlimit :=
-    (boundedDirectionalResponseChannel system geometry direction K q).
-      hasInfiniteObservationTimeLimit_finiteTimeAdiabaticResponse_of_stationary_pos
-        system expectation hstationary ω η hη
+    ResponseChannel.hasInfiniteObservationTimeLimit_finiteTimeAdiabaticResponse_of_stationary_pos
+      (boundedDirectionalResponseChannel system geometry direction K q)
+      system expectation hstationary ω η hη
   unfold HasInfiniteObservationTimeLimit at hlimit ⊢
   change Filter.Tendsto
     (fun T : ℝ =>

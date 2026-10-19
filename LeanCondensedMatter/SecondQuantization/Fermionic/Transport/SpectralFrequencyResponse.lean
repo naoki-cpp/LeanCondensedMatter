@@ -81,6 +81,7 @@ theorem infiniteTimeAdiabaticDirectionalResponse_eigenbasis_eq_finite_sum
   rw [infiniteTimeAdiabaticTransform_commutator_eq_susceptibility]
   rw [adiabaticFrequencyDomainSusceptibility_eigenbasis_eq_finite_sum
     system data _ _ ω η hη]
+  rfl
 
 /-- The finite-time physical response converges directly to the finite Lehmann sum plus contact
 term for a diagonal eigenbasis stationary state. -/
@@ -103,10 +104,10 @@ theorem hasInfiniteObservationTimeLimit_directional_eigenbasis_finite_sum
           (boundedDirectionalContact geometry direction
             (system.hbar : ℂ) (q : ℂ) K)) := by
   have hlimit :=
-    (boundedDirectionalResponseChannel system geometry direction K q).
-      hasInfiniteObservationTimeLimit_finiteTimeAdiabaticResponse_of_stationary_pos
-        system (eigenbasisNormalizedExpectation system data)
-        (isStationary_eigenbasisNormalizedExpectation system data) ω η hη
+    ResponseChannel.hasInfiniteObservationTimeLimit_finiteTimeAdiabaticResponse_of_stationary_pos
+      (boundedDirectionalResponseChannel system geometry direction K q)
+      system (eigenbasisNormalizedExpectation system data)
+      (isStationary_eigenbasisNormalizedExpectation system data) ω η hη
   rw [infiniteTimeAdiabaticDirectionalResponse_eigenbasis_eq_finite_sum
     system data geometry direction K q ω η hη] at hlimit
   exact hlimit
