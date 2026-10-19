@@ -165,21 +165,6 @@ variable {Mode : Type*}
 /-- Classical decidable equality used consistently by finite-mode Gibbs expectation truncations. -/
 local instance completedGibbsExpectationTruncationDecidableEq : DecidableEq Mode := Classical.decEq Mode
 
-/-- Bounded-operator expectations in the truncated state are the corresponding occupation-basis
-series. -/
-theorem completedFreeModeTruncatedGibbsDensityOperator_expectation_eq_tsum
-    (ε : Mode → ℝ) (β : ℝ) (S : Finset Mode)
-    (A : CompletedFockSpace Mode →L[ℂ] CompletedFockSpace Mode) :
-    (completedFreeModeTruncatedGibbsDensityOperator ε β S).expectation A =
-      ∑' n : Occupation Mode,
-        (completedFreeModeTruncatedGibbsProbability ε β S n : ℂ) *
-          inner ℂ (completedBasisState n) (A (completedBasisState n)) := by
-  simpa using
-    (completedFreeModeTruncatedGibbsDensityOperator ε β S).expectation_eq_tsum_diagonal
-      A completedOccupationHilbertBasis (completedFreeModeTruncatedGibbsProbability ε β S)
-      (fun n => by
-        simpa using completedFreeModeTruncatedGibbsDensityOperator_apply_basis ε β S n)
-
 /-- Ratio converting a retained full-state Gibbs probability into the normalized truncated-state
 probability. -/
 noncomputable def completedFreeModeTruncationNormalizationRatio
@@ -254,12 +239,14 @@ theorem tendsto_completedFreeModeRetainedExpectation
   let term : Occupation Mode → ℂ := fun n =>
     (eigenbasisGibbsProbability (fermionEnergy ε) β n : ℂ) *
       inner ℂ (completedBasisState n) (A (completedBasisState n))
-  have hterm : Summable term := by
-    simpa [term] using
-      ((completedFreeGibbsDensityOperator ε β hsum).hasSum_expectation_diagonal
+  have hsumDiag :
+      HasSum term ((completedFreeGibbsDensityOperator ε β hsum).expectation A) := by
+    simpa only [term, completedOccupationHilbertBasis_apply] using
+      (completedFreeGibbsDensityOperator ε β hsum).hasSum_expectation_diagonal
         A completedOccupationHilbertBasis (eigenbasisGibbsProbability (fermionEnergy ε) β)
         (fun n => by
-          simpa using completedFreeGibbsDensityOperator_apply_basis ε β hsum n)).summable
+          simpa using completedFreeGibbsDensityOperator_apply_basis ε β hsum n)
+  have hterm : Summable term := hsumDiag.summable
   have hpoint : ∀ n : Occupation Mode,
       Tendsto (fun S : Finset Mode => if n ⊆ S then term n else 0) atTop (𝓝 (term n)) := by
     intro n
@@ -274,9 +261,7 @@ theorem tendsto_completedFreeModeRetainedExpectation
     intro n
     by_cases h : n ⊆ S <;> simp [h]
   have ht := tendsto_tsum_of_dominated_convergence hterm.norm hpoint hbound
-  have hfull := completedFreeGibbsDensityOperator_expectation_eq_tsum ε β hsum A
-  change (completedFreeGibbsDensityOperator ε β hsum).expectation A = ∑' n, term n at hfull
-  rw [← hfull] at ht
+  rw [hsumDiag.tsum_eq] at ht
   simpa [completedFreeModeRetainedExpectation, term] using ht
 
 /-- The expectation in a normalized finite-mode Gibbs state is its retained full-state expectation
@@ -288,7 +273,11 @@ theorem completedFreeModeTruncatedGibbsDensityOperator_expectation_eq_ratio_mul
     (completedFreeModeTruncatedGibbsDensityOperator ε β S).expectation A =
       (completedFreeModeTruncationNormalizationRatio ε β S : ℂ) *
         completedFreeModeRetainedExpectation ε β S A := by
-  rw [completedFreeModeTruncatedGibbsDensityOperator_expectation_eq_tsum]
+  rw [(completedFreeModeTruncatedGibbsDensityOperator ε β S).expectation_eq_tsum_diagonal
+    A completedOccupationHilbertBasis (completedFreeModeTruncatedGibbsProbability ε β S)
+    (fun n => by
+      simpa using completedFreeModeTruncatedGibbsDensityOperator_apply_basis ε β S n)]
+  simp only [completedOccupationHilbertBasis_apply]
   unfold completedFreeModeRetainedExpectation
   rw [← tsum_mul_left]
   apply tsum_congr

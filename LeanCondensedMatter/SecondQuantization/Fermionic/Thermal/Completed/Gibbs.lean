@@ -42,20 +42,6 @@ theorem completedFreeGibbsDensityOperator_apply_basis
     eigenbasisGibbsDensityOperator_apply_basis
       (completedOccupationHilbertBasis (Mode := Mode)) (fermionEnergy ε) β hsum n
 
-/-- Bounded-operator expectations in the completed free Gibbs state are the absolutely convergent
-occupation-basis pure-point Gibbs series. -/
-theorem completedFreeGibbsDensityOperator_expectation_eq_tsum
-    (ε : Mode → ℝ) (β : ℝ) (hsum : EigenbasisGibbsSummable (fermionEnergy ε) β)
-    (A : CompletedFockSpace Mode →L[ℂ] CompletedFockSpace Mode) :
-    (completedFreeGibbsDensityOperator ε β hsum).expectation A =
-      ∑' n : Occupation Mode,
-        (eigenbasisGibbsProbability (fermionEnergy ε) β n : ℂ) *
-          inner ℂ (completedBasisState n) (A (completedBasisState n)) := by
-  simpa using
-    (completedFreeGibbsDensityOperator ε β hsum).expectation_eq_tsum_diagonal
-      A completedOccupationHilbertBasis (eigenbasisGibbsProbability (fermionEnergy ε) β)
-      (completedFreeGibbsDensityOperator_apply_basis ε β hsum)
-
 end
 end Fermionic
 end SecondQuantization
