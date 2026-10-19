@@ -87,10 +87,7 @@ theorem boundedFluxRetardedResponse_eq_symmetrized_add_correction
       (boundedFluxRetardedResponse system expectation source
         (_root_.ConservationLaw.localizationCorrectionCurrentFlux
           ((Site →₀ ℂ)) velocity m N) t s).comp d := by
-  rw [boundedFluxRetardedResponse_eq_comp_of_factorization
-    system expectation source d Φ
-      (_root_.ConservationLaw.nestedSymmetrizedCurrentFlux
-        ((Site →₀ ℂ)) velocity m N) hΦ t s]
+  rw [hΦ]
   rw [_root_.ConservationLaw.nestedSymmetrizedCurrentFlux_eq_symmetrized_add_correction
     ((Site →₀ ℂ)) velocity m N]
   ext f

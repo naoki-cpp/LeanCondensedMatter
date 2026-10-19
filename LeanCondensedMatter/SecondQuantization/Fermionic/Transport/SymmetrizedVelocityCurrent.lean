@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Analysis.Operator.SymmetrizedProduct
-import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.BoundedOneBodyResponse
+import LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.Bounded
 
 set_option linter.style.header false
 
@@ -16,7 +16,7 @@ as a bounded finite-lattice Fock-space observable. The transported quantity `m` 
 charge, spin, orbital angular momentum, and other one-body quantities are specializations at the
 consumer.
 
-The neutral `BoundedOneBodyResponse` layer remains independent of current conventions.
+The bounded one-body realization remains independent of current conventions.
 -/
 
 namespace SecondQuantization
