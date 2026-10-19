@@ -58,16 +58,14 @@ theorem eigenbasisGibbsSummable_freeEigenvalue_of_mode
     rw [Real.norm_eq_abs, abs_of_nonneg (hqpos i)]
     exact hqlt i
   have hqsum : Summable q := by
-    simpa only [q, eigenbasisBoltzmannWeight] using
-      (eigenbasisBoltzmannWeight_summable ε β hmode)
+    change Summable (eigenbasisBoltzmannWeight ε β)
+    exact eigenbasisBoltzmannWeight_summable ε β hmode
   have hsmall : ∀ᶠ i in Filter.cofinite, q i ≤ (1 / 2 : ℝ) :=
     hqsum.tendsto_cofinite_zero.eventually_le_const (by norm_num)
   have hratio : Summable (fun i : Mode => q i / (1 - q i)) := by
     apply (hqsum.mul_left (2 : ℝ)).of_norm_bounded_eventually
     filter_upwards [hsmall] with i hi
     have hden : 0 < 1 - q i := sub_pos.mpr (hqlt i)
-    rw [Real.norm_eq_abs, abs_of_nonneg (div_nonneg (hqpos i) hden.le),
-      Real.norm_eq_abs, abs_of_nonneg (mul_nonneg (by norm_num) (hqpos i))]
     apply (div_le_iff₀ hden).2
     nlinarith [mul_nonneg (hqpos i) (show 0 ≤ 1 - 2 * q i by linarith)]
   let g : Mode × ℕ → ℝ := fun p => if p.2 = 0 then 0 else q p.1 ^ p.2
@@ -109,7 +107,8 @@ theorem eigenbasisGibbsSummable_freeEigenvalue_of_mode
     simp only [Finsupp.graph, Finset.prod_map]
     apply Finset.prod_congr rfl
     intro i hi
-    simp [g, (Finsupp.mem_support_iff.mp hi)]
+    change (if n i = 0 then (0 : ℝ) else q i ^ n i) = q i ^ n i
+    simp [Finsupp.mem_support_iff.mp hi]
   have hweight (n : Occupation Mode) :
       eigenbasisBoltzmannWeight (freeEigenvalue ε) β n =
         ∏ p ∈ n.graph, g p := by
@@ -131,7 +130,8 @@ theorem eigenbasisGibbsSummable_freeEigenvalue_of_mode
   unfold EigenbasisGibbsSummable
   exact hgraph_sum.congr fun n => by
     rw [← hweight n]
-    simp only [Real.norm_eq_abs, abs_of_nonneg (Real.exp_nonneg _)]
+    exact (abs_of_nonneg
+      (eigenbasisBoltzmannWeight_nonneg (freeEigenvalue ε) β n)).symm
 
 variable [Finite Mode]
 
