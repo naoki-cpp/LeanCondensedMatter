@@ -59,41 +59,6 @@ theorem orderedLehmannTransitionData_weight
       matrixAMN matrixBNM).weight =
       orderedLehmannTransitionWeight hbar probabilityM probabilityN matrixAMN matrixBNM := rfl
 
-/-- Complex exponent of one adiabatically damped Lehmann transition mode. -/
-noncomputable def lehmannModeExponent
-    (hbar omega eta energyGap : ℝ) : ℂ :=
-  -(eta : ℂ) + Complex.I * ((omega + energyGap / hbar : ℝ) : ℂ)
-
-/-- The real part of a Lehmann-mode exponent is exactly the negative switching rate. -/
-@[simp]
-theorem lehmannModeExponent_re
-    (hbar omega eta energyGap : ℝ) :
-    (lehmannModeExponent hbar omega eta energyGap).re = -eta := by
-  simp [lehmannModeExponent]
-
-/-- A single causal Lehmann transition mode. -/
-noncomputable def lehmannMode
-    (hbar omega eta energyGap : ℝ) (t : ℝ) : ℂ :=
-  Complex.exp (lehmannModeExponent hbar omega eta energyGap * (t : ℂ))
-
-/-- Every single Lehmann mode is integrable on the causal half-line for `eta > 0`. -/
-theorem integrableOn_lehmannMode_Ioi_zero
-    (hbar omega eta energyGap : ℝ) (heta : 0 < eta) :
-    IntegrableOn (lehmannMode hbar omega eta energyGap) (Ioi 0) volume := by
-  unfold lehmannMode
-  apply integrableOn_exp_mul_complex_Ioi
-  simpa using neg_lt_zero.mpr heta
-
-/-- The causal half-line integral of one damped transition mode. -/
-theorem integral_lehmannMode_Ioi_zero
-    (hbar omega eta energyGap : ℝ) (heta : 0 < eta) :
-    (∫ t : ℝ in Ioi 0, lehmannMode hbar omega eta energyGap t) =
-      -1 / lehmannModeExponent hbar omega eta energyGap := by
-  unfold lehmannMode
-  simpa using integral_exp_mul_complex_Ioi
-    (a := lehmannModeExponent hbar omega eta energyGap)
-    (by simpa using neg_lt_zero.mpr heta) 0
-
 /-- The conventional fixed-rate Lehmann resolvent denominator. -/
 noncomputable def lehmannDenominator
     (hbar omega eta energyGap : ℝ) : ℂ :=
@@ -104,6 +69,19 @@ theorem lehmannDenominator_re
     (hbar omega eta energyGap : ℝ) :
     (lehmannDenominator hbar omega eta energyGap).re = eta := by
   simp [lehmannDenominator]
+
+/-- A single causal Lehmann transition mode. -/
+noncomputable def lehmannMode
+    (hbar omega eta energyGap : ℝ) (t : ℝ) : ℂ :=
+  Complex.exp (-lehmannDenominator hbar omega eta energyGap * (t : ℂ))
+
+/-- Every single Lehmann mode is integrable on the causal half-line for `eta > 0`. -/
+theorem integrableOn_lehmannMode_Ioi_zero
+    (hbar omega eta energyGap : ℝ) (heta : 0 < eta) :
+    IntegrableOn (lehmannMode hbar omega eta energyGap) (Ioi 0) volume := by
+  unfold lehmannMode
+  apply integrableOn_exp_mul_complex_Ioi
+  simpa using neg_lt_zero.mpr heta
 
 /-- A nonzero switching rate makes every scalar Lehmann denominator nonzero. -/
 theorem lehmannDenominator_ne_zero
@@ -128,22 +106,15 @@ theorem norm_inv_lehmannDenominator_le
   simpa [one_div] using one_div_le_one_div_of_le heta
     (eta_le_norm_lehmannDenominator hbar omega eta energyGap)
 
-/-- The denominator is the negative of the corresponding damped-mode exponent. -/
-theorem lehmannDenominator_eq_neg_exponent
-    (hbar omega eta energyGap : ℝ) :
-    lehmannDenominator hbar omega eta energyGap =
-      -lehmannModeExponent hbar omega eta energyGap := by
-  unfold lehmannModeExponent lehmannDenominator
-  ring
-
 /-- The mode integral written in conventional resolvent-denominator form. -/
 theorem integral_lehmannMode_Ioi_zero_eq_resolvent
     (hbar omega eta energyGap : ℝ) (heta : 0 < eta) :
     (∫ t : ℝ in Ioi 0, lehmannMode hbar omega eta energyGap t) =
       (lehmannDenominator hbar omega eta energyGap)⁻¹ := by
-  rw [integral_lehmannMode_Ioi_zero hbar omega eta energyGap heta]
-  rw [lehmannDenominator_eq_neg_exponent]
-  simp [div_eq_mul_inv]
+  unfold lehmannMode
+  simpa using integral_exp_mul_complex_Ioi
+    (a := -lehmannDenominator hbar omega eta energyGap)
+    (by simpa using neg_lt_zero.mpr heta) 0
 
 /-- One scalar term in a Lehmann representation. -/
 noncomputable def lehmannTerm

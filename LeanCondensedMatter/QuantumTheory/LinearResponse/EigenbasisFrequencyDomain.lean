@@ -51,7 +51,7 @@ theorem eigenbasisAdiabaticTransitionIntegrand_eq_transitionMode
           (eigenbasisTransitionData system data A B mn).energyGap τ := by
   rw [eigenbasisAdiabaticTransitionIntegrand, eigenbasisTimeDomainTerm,
     LehmannTransitionData.timeTerm, adiabaticFrequencyPhase,
-    lehmannMode, lehmannModeExponent]
+    lehmannMode, lehmannDenominator]
   rw [show
       Complex.exp
           ((Complex.I * (omega : ℂ) - (eta : ℂ)) * (τ : ℂ)) *
