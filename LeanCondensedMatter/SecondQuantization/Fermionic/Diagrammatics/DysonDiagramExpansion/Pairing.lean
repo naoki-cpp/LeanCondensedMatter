@@ -1,6 +1,6 @@
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Evaluation
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Core
-import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Flattening
+import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.Quartic
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.LegFamily
 import LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.DysonVertexMoment
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsDensityOperator
@@ -12,9 +12,9 @@ set_option linter.style.header false
 /-!
 # Dyson diagram expansion: canonical pairing evaluation
 
-The finite Bloch--de Dominicis calculation stays local to the public Dyson-moment endpoint. Public
-Dyson pairing statements are expressed through the combinatorics-owned `Pairing.evaluation` boundary
-with the canonical free Gibbs density-state pair kernel.
+The fermionic operator-flattening identity is a proof-local step of the Dyson-moment endpoint.
+Public Dyson pairing statements use the combinatorics-owned `Pairing.evaluation` boundary with
+the canonical free Gibbs density-state pair kernel.
 -/
 
 namespace SecondQuantization
@@ -23,7 +23,36 @@ namespace Fermionic
 open Combinatorics
 open Common
 
-variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
+variable {Mode : Type*} [LinearOrder Mode]
+
+/-! ## Quartic-vertex flattening used by the pairing proof -/
+
+/-- The ordered product of the flattened evolved quartic legs is exactly the Common
+interaction-picture quartic-vertex sequence. The row-major `4n` product decomposition is owned by
+`Common.prod_orderedQuarticLegFamily_eq_vertexProducts`; this theorem supplies only the fermionic
+imaginary-time specialization. -/
+private theorem prod_ofFn_quarticLegOperatorForSequence_eq_quarticVertexSequenceInteractionPicture
+    (ε : Mode → ℝ) :
+    ∀ (n : ℕ) (q : Fin n → QuarticVertexLabel Mode) (τ : Fin n → ℝ),
+      List.prod (List.ofFn (quarticLegOperatorForSequence ε q τ)) =
+        Common.quarticVertexSequenceInteractionPicture (fermionEnergy ε) create annihilate n q τ := by
+  intro n q τ
+  change
+    (List.ofFn (Common.orderedQuarticLegFamily
+      (fun i : Fin n => fun l : Fin 4 =>
+        Common.heisenbergEvolve (fermionEnergy ε) (τ i)
+          (Common.quarticLocalLegOperator create annihilate (q i) l)))).prod =
+      (List.ofFn (fun i : Fin n =>
+        Common.heisenbergEvolve (fermionEnergy ε) (τ i)
+          (Common.quarticVertexOperator create annihilate (q i)))).prod
+  rw [Common.prod_orderedQuarticLegFamily_eq_vertexProducts]
+  apply congrArg List.prod
+  apply congrArg List.ofFn
+  funext i
+  exact (Common.heisenbergEvolve_quarticVertexOperator_eq_prod
+    (fermionEnergy ε) create annihilate (q i) (τ i)).symm
+
+variable [Fintype Mode]
 
 /-- Canonical free Gibbs density-state contraction of two flattened quartic Dyson legs. -/
 noncomputable def flatVertexLegPairValue {n : ℕ}
