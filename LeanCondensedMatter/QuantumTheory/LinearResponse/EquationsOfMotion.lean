@@ -65,22 +65,10 @@ theorem schrodingerEquation (ψ : StateVector H) (t : ℝ) :
     HasDerivAt (fun s : ℝ => (evolveState system ψ s).1)
       ((-(Complex.I / (system.hbar : ℂ))) •
         system.hamiltonian.1 ((evolveState system ψ t).1)) t := by
-  have hU := (hasDerivAt_freePropagator system t).hasFDerivAt
-  have hEval : HasFDerivAt
-      (fun T : H →L[ℂ] H => T ψ.1)
-      ((ContinuousLinearMap.apply ℂ H ψ.1).restrictScalars ℝ)
-      (freePropagator system t) :=
-    ((ContinuousLinearMap.apply ℂ H ψ.1).restrictScalars ℝ).hasFDerivAt
-  have hderiv := (hEval.comp t hU).hasDerivAt
-  have hgenerator :
-      HasDerivAt (fun s : ℝ => (evolveState system ψ s).1)
-        (schrodingerGenerator system ((evolveState system ψ t).1)) t := by
-    change HasDerivAt (fun s : ℝ => freePropagator system s ψ.1)
-      (schrodingerGenerator system (freePropagator system t ψ.1)) t
-    rw [hasDerivAt_iff_tendsto]
-    rw [hasDerivAt_iff_tendsto] at hderiv
-    simpa [Function.comp_def, mul_apply_eq_comp] using hderiv
-  simpa [schrodingerGenerator, smul_apply] using hgenerator
+  let evaluation := (ContinuousLinearMap.apply ℂ H ψ.1).restrictScalars ℝ
+  have h := evaluation.hasFDerivAt.comp_hasDerivAt t (hasDerivAt_freePropagator system t)
+  simpa [evaluation, Function.comp_def, evolveState, schrodingerGenerator, mul_apply_eq_comp,
+    smul_apply] using h
 
 /-- Explicit bounded Heisenberg equation
 `dA_H/dt = (i/ℏ) [H₀, A_H]`. -/
