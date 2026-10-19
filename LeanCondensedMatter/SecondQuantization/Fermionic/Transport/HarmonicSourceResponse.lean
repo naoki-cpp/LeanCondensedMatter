@@ -152,7 +152,7 @@ theorem hasDerivAt_boundedDirectionalSineExpectation_zero_of_bound_retarded
       system expectation (adiabaticSineSource ω η T)
       geometry direction K hK q hM hV hT hInt
   simpa [finiteTimeAdiabaticDirectionalSineResponse,
-    QuantumTheory.LinearResponse.heisenbergEvolution] using h
+    QuantumTheory.LinearResponse.heisenbergEvolution_apply] using h
 
 end
 end Transport

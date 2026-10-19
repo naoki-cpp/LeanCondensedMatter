@@ -169,7 +169,7 @@ theorem eigenbasisExpectation_heisenberg_mul_eq_tsum
     (A B : H →L[ℂ] H) (τ : ℝ)
     (hsum : EigenbasisTimeDomainSummable system data A B) :
     eigenbasisNormalizedExpectation system data
-        (heisenbergEvolution system A τ * B) =
+        (heisenbergEvolution system τ A * B) =
       ∑' mn : ι × ι,
         eigenbasisForwardTimeTerm system data A B τ mn := by
   rw [eigenbasisNormalizedExpectation_apply]
@@ -179,7 +179,7 @@ theorem eigenbasisExpectation_heisenberg_mul_eq_tsum
   intro m
   simp only [mul_apply_eq_comp]
   have hinner := data.basis.hasSum_inner_mul_inner
-    (((heisenbergEvolution system A τ)†) (data.basis m))
+    (((heisenbergEvolution system τ A)†) (data.basis m))
     (B (data.basis m))
   have hscaled := hinner.mul_left (data.probability m : ℂ)
   rw [← ContinuousLinearMap.adjoint_inner_left]
@@ -197,7 +197,7 @@ theorem eigenbasisExpectation_mul_heisenberg_eq_tsum
     (A B : H →L[ℂ] H) (τ : ℝ)
     (hsum : EigenbasisTimeDomainSummable system data A B) :
     eigenbasisNormalizedExpectation system data
-        (B * heisenbergEvolution system A τ) =
+        (B * heisenbergEvolution system τ A) =
       ∑' mn : ι × ι,
         eigenbasisBackwardTimeTerm system data A B τ mn := by
   rw [eigenbasisNormalizedExpectation_apply]
@@ -208,7 +208,7 @@ theorem eigenbasisExpectation_mul_heisenberg_eq_tsum
   simp only [mul_apply_eq_comp]
   have hinner := data.basis.hasSum_inner_mul_inner
     ((B†) (data.basis m))
-    (heisenbergEvolution system A τ (data.basis m))
+    (heisenbergEvolution system τ A (data.basis m))
   have hscaled := hinner.mul_left (data.probability m : ℂ)
   rw [← ContinuousLinearMap.adjoint_inner_left]
   rw [← hscaled.tsum_eq]

@@ -44,7 +44,7 @@ variable (system : BoundedFreeSystem H)
 bounded perturbation. -/
 noncomputable def timeDependentInteractionPerturbation
     (V : ℝ → (H →L[ℂ] H)) (t : ℝ) : H →L[ℂ] H :=
-  heisenbergEvolution system (V t) t
+  heisenbergEvolution system t (V t)
 
 /-- The generic Dyson scalar corresponding to `H_λ(t) = H₀ + λ V(t)`. -/
 noncomputable def timeDependentPhysicalDysonCoupling (lam : ℝ) : ℂ :=

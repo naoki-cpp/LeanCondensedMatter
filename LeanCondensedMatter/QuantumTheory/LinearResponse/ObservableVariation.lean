@@ -63,9 +63,9 @@ theorem hasDerivAt_affinePerturbedExpectation_zero_of_bound_kubo
       (((-(Complex.I / (system.hbar : ℂ))) •
           ∫ s in (0 : ℝ)..t,
             expectation
-              ⁅heisenbergEvolution system A₀ t,
+              ⁅heisenbergEvolution system t A₀,
                 timeDependentInteractionPerturbation system V s⁆) +
-        expectation (heisenbergEvolution system A₁ t))
+        expectation (heisenbergEvolution system t A₁))
       0 := by
   have hfixed :=
     hasDerivAt_timeDependentPerturbedExpectationFunctional_apply_zero_of_bound_kubo
@@ -79,7 +79,7 @@ theorem hasDerivAt_affinePerturbedExpectation_zero_of_bound_kubo
   rw [hasDerivAt_iff_tendsto]
   rw [hasDerivAt_iff_tendsto] at hsum
   simpa [affinePerturbedExpectation, timeDependentPerturbedObservable,
-    heisenbergEvolution, mul_add, add_mul] using hsum
+    heisenbergEvolution_apply, mul_add, add_mul] using hsum
 
 /-- Scalar-source specialization written as a causal retarded response plus the contact term. -/
 theorem hasDerivAt_affineSourceCoupledExpectation_zero_of_bound_retarded
@@ -99,7 +99,7 @@ theorem hasDerivAt_affineSourceCoupledExpectation_zero_of_bound_retarded
         (sourceCoupledPerturbation f B) A₀ A₁ lam t)
       ((∫ s in (0 : ℝ)..t,
           (f s : ℂ) * retardedSusceptibility system expectation A₀ B t s) +
-        expectation (heisenbergEvolution system A₁ t))
+        expectation (heisenbergEvolution system t A₁))
       0 := by
   have h := hasDerivAt_affinePerturbedExpectation_zero_of_bound_kubo
     system expectation (fun s => isSelfAdjoint_sourceCoupledPerturbation f hB s)

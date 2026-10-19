@@ -148,7 +148,7 @@ theorem timeDependentPerturbedObservableMap_one_of_isSelfAdjoint
     (ht : t ∈ Icc (0 : ℝ) β) :
     timeDependentPerturbedObservableMap system V lam t 1 = 1 := by
   rw [timeDependentPerturbedObservableMap_apply]
-  simp [timeDependentPerturbedObservable, heisenbergEvolution,
+  simp [timeDependentPerturbedObservable, heisenbergEvolution_apply,
     freePropagator_neg_mul,
     star_mul_timeDependentInteractionPropagator_eq_one_of_isSelfAdjoint
       system hVself lam hβ hM hVcont hVbound ht]

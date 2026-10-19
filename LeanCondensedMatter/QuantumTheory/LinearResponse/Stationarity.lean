@@ -21,12 +21,12 @@ variable (system : BoundedFreeSystem H)
 
 /-- Stationarity means invariance under the free Heisenberg evolution. -/
 def IsStationary (expectation : NormalizedExpectation H) : Prop :=
-  ∀ t A, expectation (heisenbergEvolution system A t) = expectation A
+  ∀ t A, expectation (heisenbergEvolution system t A) = expectation A
 
 /-- Every normalized expectation is invariant at the initial time. -/
 theorem expectation_heisenbergEvolution_zero (expectation : NormalizedExpectation H)
     (A : H →L[ℂ] H) :
-    expectation (heisenbergEvolution system A 0) = expectation A := by
+    expectation (heisenbergEvolution system 0 A) = expectation A := by
   simp
 
 end

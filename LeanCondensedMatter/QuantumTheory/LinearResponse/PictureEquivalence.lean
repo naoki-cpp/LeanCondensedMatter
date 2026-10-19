@@ -28,12 +28,12 @@ variable (system : BoundedFreeSystem H)
 
 /-- Heisenberg evolution of an observable, bundled with the preserved self-adjointness proof. -/
 noncomputable def heisenbergObservable (A : Observable H) (t : ℝ) : Observable H :=
-  ⟨heisenbergEvolution system A.1 t,
-    isSelfAdjoint_heisenbergEvolution system A.1 A.2 t⟩
+  ⟨heisenbergEvolution system t A.1, by
+    rw [isSelfAdjoint_iff, ← map_star, A.2.star_eq]⟩
 
 @[simp]
 theorem coe_heisenbergObservable (A : Observable H) (t : ℝ) :
-    (heisenbergObservable system A t).1 = heisenbergEvolution system A.1 t :=
+    (heisenbergObservable system A t).1 = heisenbergEvolution system t A.1 :=
   rfl
 
 /-- The quadratic form of a bounded operator agrees after transporting either the vector or the
@@ -42,7 +42,8 @@ private theorem inner_freePropagator_apply_eq_heisenbergEvolution
     (A : H →L[ℂ] H) (x : H) (t : ℝ) :
     inner ℂ (freePropagator system t x)
         (A (freePropagator system t x)) =
-      inner ℂ x (heisenbergEvolution system A t x) := by
+      inner ℂ x (heisenbergEvolution system t A x) := by
+  rw [heisenbergEvolution_apply]
   change inner ℂ (freePropagator system t x)
       (A (freePropagator system t x)) =
     inner ℂ x
@@ -64,7 +65,7 @@ theorem expValue_evolveState_eq_heisenberg
   rw [expValue, expValue]
   change inner ℂ (freePropagator system t ψ.1)
       (A.1 (freePropagator system t ψ.1)) =
-    inner ℂ ψ.1 (heisenbergEvolution system A.1 t ψ.1)
+    inner ℂ ψ.1 (heisenbergEvolution system t A.1 ψ.1)
   exact inner_freePropagator_apply_eq_heisenbergEvolution system A.1 ψ.1 t
 
 /-- The lossless real observable expectation is identical in the Schrödinger and Heisenberg
@@ -148,10 +149,10 @@ pictures for every bounded operator. -/
 theorem expectation_evolveDensityOperator_eq_heisenberg
     (ρ : DensityOperator H) (A : H →L[ℂ] H) (t : ℝ) :
     (evolveDensityOperator system ρ t).expectation A =
-      ρ.expectation (heisenbergEvolution system A t) := by
+      ρ.expectation (heisenbergEvolution system t A) := by
   rw [DensityOperator.expectation_apply, DensityOperator.expectation_apply]
   simpa only [evolveDensityOperator, ContinuousLinearMap.adjointConjugate,
-    heisenbergEvolution, ← star_freePropagator system t, mul_assoc] using
+    heisenbergEvolution_apply, ← star_freePropagator system t, mul_assoc] using
     (((ρ.isTraceClass.comp_right (star (freePropagator system t))).comp_right A).trace_comp_comm
       (freePropagator system t)).symm
 

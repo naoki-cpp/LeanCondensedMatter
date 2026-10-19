@@ -82,9 +82,9 @@ noncomputable def boundedDirectionalContactExpectation
     (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
     (K : LocallyFiniteHopping Site) (q T : ℝ) : ℂ :=
   expectation
-    (QuantumTheory.LinearResponse.heisenbergEvolution system
+    (QuantumTheory.LinearResponse.heisenbergEvolution system T
       (boundedDirectionalContact geometry direction
-        (system.hbar : ℂ) (q : ℂ) K) T)
+        (system.hbar : ℂ) (q : ℂ) K))
 
 /-- Total finite-time adiabatic directional-current coefficient carried by the neutral response
 channel. This is not yet named a DC conductivity. -/
