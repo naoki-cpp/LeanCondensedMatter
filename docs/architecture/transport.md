@@ -49,6 +49,12 @@ Transport/
 the finite-volume electric-field conversion. Consumers use that owner directly; the underlying
 volume is independent of Hilbert-space dimension or a particular response representation.
 
+The zero-frequency normalization identity also belongs to `Core.ConductivityNormalization`.
+The fermionic normalization module consumes channel response and observation-time convergence
+without importing an eigenbasis representation. Its spectral conductivity identities belong to
+the consuming `Fermionic.Transport.KuboGreenwood` module. Fermionic common-energy and spectral
+conductivity use the generic channel response and vertex-term identities directly.
+
 The main semantic boundaries are:
 
 - finite spectral index and finite Hilbert-space dimension are separate assumptions;
@@ -160,6 +166,17 @@ response and finite-volume conductivity consume the channel directly. Frequency,
 and volume limits remain distinct, and the finite stationary lag identity requires nonnegative
 observation time.
 
+## Static response identification
+
+`Streda.StaticChannelIdentification` owns the conditional identification of a complete static
+channel response with the traced Bastin integral. `StaticChannelTracedBastinIdentity` is an explicit
+assumption equating the vertex response to `V (-η)` times the traced integral minus the
+observable-variation expectation. It does not prove a model-specific Ward identity. Measured and
+source operators remain independent; the complete response includes the observable variation
+before the static electric-field normalization is cancelled. This differs from the vertex-only
+representation consumed by `Streda.GeneralizedStatic`. Nonzero switching rate suffices for
+normalization cancellation; the spectral integral identification requires positive switching rate.
+
 ## Disorder boundary
 
 ```text
@@ -174,6 +191,14 @@ Finite ──→ Resolvent ──→ AveragedSelfEnergy
 configuration, and averaged Green operators at arbitrary signed regulator `γ`. Exact configuration
 Dyson expansions are owned at arbitrary nonzero `γ`; physical consumers specialize the regulator
 locally when branch semantics are required.
+
+`FiniteDisorderEnsemble.average` is a complex linear map given by the normalized weighted finite
+sum. `Disorder.ConnectedCorrelation` takes a supplied normalized expectation for each configuration
+and averages the connected product only after those expectations are evaluated. The disconnected
+product remains inside the average; its difference from the product of separately averaged
+one-point functions is the disorder covariance. A four-leg expansion must be supplied explicitly.
+The module needs neither a Fock-space realization nor spectral data or a conductivity definition;
+an eigenbasis density state can be supplied by a physical consumer.
 
 `Disorder.Moments` owns the exact second-moment action `C₂(X) = E[Vω X Vω]` and centered-disorder
 data.

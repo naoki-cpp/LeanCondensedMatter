@@ -56,17 +56,25 @@ noncomputable def configurationSystem
   hbar := hbar
   hbar_pos := hbar_pos
 
-/-- Exact finite disorder average of a complex configuration observable. -/
-noncomputable def average (response : Ω → ℂ) : ℂ :=
-  ∑ ω, (ensemble.probability ω : ℂ) * response ω
+/-- Exact finite disorder averaging as a complex linear map. -/
+noncomputable def average : (Ω → ℂ) →ₗ[ℂ] ℂ where
+  toFun response := ∑ ω, (ensemble.probability ω : ℂ) * response ω
+  map_add' := by
+    intro left right
+    simp only [Pi.add_apply, mul_add, Finset.sum_add_distrib]
+  map_smul' := by
+    intro c response
+    change (∑ ω, (ensemble.probability ω : ℂ) * (c * response ω)) =
+      c * ∑ ω, (ensemble.probability ω : ℂ) * response ω
+    rw [Finset.mul_sum]
+    apply Finset.sum_congr rfl
+    intro ω _
+    ring
 
 /-- Pointwise-equal configuration observables have the same finite disorder average. -/
 theorem average_congr {left right : Ω → ℂ} (h : ∀ ω, left ω = right ω) :
-    ensemble.average left = ensemble.average right := by
-  unfold average
-  apply Finset.sum_congr rfl
-  intro ω _
-  rw [h ω]
+    ensemble.average left = ensemble.average right :=
+  congrArg ensemble.average (funext h)
 
 /-- Exact weighted finite average of an operator-valued configuration observable. -/
 noncomputable def operatorAverage

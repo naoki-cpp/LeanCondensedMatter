@@ -1,4 +1,5 @@
-import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.StaticStredaWardBridge
+import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.StaticKuboBastinResponse
+import LeanCondensedMatter.Transport.Streda.StaticChannelIdentification
 import LeanCondensedMatter.Transport.Disorder.Finite
 
 set_option linter.style.header false
@@ -99,9 +100,11 @@ theorem finiteDisorderConfigurationStaticConductivity_eq_tracedBastin
     (K : LocallyFiniteHopping Site)
     (q eta lowerEnergy upperEnergy : ℝ) (occupation : ℝ → ℂ)
     (ω : Ω)
-    (ward : FiniteStaticPeierlsWardIdentity convention
+    (ward : StaticChannelTracedBastinIdentity convention
       (ensemble.configurationSystem hbar hbar_pos ω) (spectralData ω)
-      geometry direction K q eta lowerEnergy upperEnergy occupation)
+      (boundedDirectionalResponseChannel
+        (ensemble.configurationSystem hbar hbar_pos ω) geometry direction K q)
+      eta lowerEnergy upperEnergy occupation)
     (heta : eta ≠ 0) :
     finiteDisorderConfigurationStaticConductivity
         ensemble hbar hbar_pos spectralData convention
@@ -118,8 +121,10 @@ theorem finiteDisorderConfigurationStaticConductivity_eq_tracedBastin
   unfold finiteDisorderConfigurationStaticConductivity
   exact ward.staticConductivity_eq_tracedBastin
     convention (ensemble.configurationSystem hbar hbar_pos ω)
-      (spectralData ω) geometry direction K q eta
-        lowerEnergy upperEnergy occupation heta
+      (spectralData ω)
+      (boundedDirectionalResponseChannel
+        (ensemble.configurationSystem hbar hbar_pos ω) geometry direction K q)
+      eta lowerEnergy upperEnergy occupation heta
 
 /-- Applying the configuration-wise Ward identity in every configuration lifts the exact
 Kubo–Středa identification through the finite disorder average. -/
@@ -133,9 +138,11 @@ theorem finiteDisorderAveragedStaticConductivity_eq_tracedBastinAverage
     (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
     (K : LocallyFiniteHopping Site)
     (q eta lowerEnergy upperEnergy : ℝ) (occupation : ℝ → ℂ)
-    (ward : ∀ ω, FiniteStaticPeierlsWardIdentity convention
+    (ward : ∀ ω, StaticChannelTracedBastinIdentity convention
       (ensemble.configurationSystem hbar hbar_pos ω) (spectralData ω)
-      geometry direction K q eta lowerEnergy upperEnergy occupation)
+      (boundedDirectionalResponseChannel
+        (ensemble.configurationSystem hbar hbar_pos ω) geometry direction K q)
+      eta lowerEnergy upperEnergy occupation)
     (heta : eta ≠ 0) :
     finiteDisorderAveragedStaticConductivity
         ensemble hbar hbar_pos spectralData convention
@@ -168,9 +175,11 @@ theorem finiteDisorderAveragedStaticConductivity_eq_spectralEnergyIntegralAverag
     (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
     (K : LocallyFiniteHopping Site)
     (q eta lowerEnergy upperEnergy : ℝ) (occupation : ℝ → ℂ)
-    (ward : ∀ ω, FiniteStaticPeierlsWardIdentity convention
+    (ward : ∀ ω, StaticChannelTracedBastinIdentity convention
       (ensemble.configurationSystem hbar hbar_pos ω) (spectralData ω)
-      geometry direction K q eta lowerEnergy upperEnergy occupation)
+      (boundedDirectionalResponseChannel
+        (ensemble.configurationSystem hbar hbar_pos ω) geometry direction K q)
+      eta lowerEnergy upperEnergy occupation)
     (heta : 0 < eta) :
     finiteDisorderAveragedStaticConductivity
         ensemble hbar hbar_pos spectralData convention
@@ -190,8 +199,10 @@ theorem finiteDisorderAveragedStaticConductivity_eq_spectralEnergyIntegralAverag
   intro ω
   exact (ward ω).staticConductivity_eq_spectralEnergyIntegral
     convention (ensemble.configurationSystem hbar hbar_pos ω)
-      (spectralData ω) geometry direction K q eta
-        lowerEnergy upperEnergy occupation heta
+      (spectralData ω)
+      (boundedDirectionalResponseChannel
+        (ensemble.configurationSystem hbar hbar_pos ω) geometry direction K q)
+      eta lowerEnergy upperEnergy occupation heta
 
 end
 end Transport

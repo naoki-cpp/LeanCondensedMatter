@@ -4,13 +4,13 @@ import LeanCondensedMatter.Transport.KuboBastin.CommonEnergy
 set_option linter.style.header false
 
 /-!
-# Fermionic directional common-energy Kubo–Bastin kernel
+# Fermionic common-energy Kubo–Bastin conductivity
 
 This module specializes the generic common-energy Kubo–Bastin construction to finite-lattice
 directional charge currents, including the Peierls contact contribution and finite-volume
 conductivity normalization.
 
-The resulting kernel is a finite full-energy representation at fixed broadening. No smooth Středa
+The resulting conductivity uses a finite full-energy representation at fixed broadening. No smooth Středa
 representation, zero-broadening or DC limit, disorder average, trace per unit volume, or
 thermodynamic-limit claim is made here.
 -/
@@ -27,58 +27,6 @@ variable [Fintype Site] [Fintype ι]
 variable [LinearOrder Site]
 variable [AddCommGroup E] [Module ℝ E]
 
-/-- The finite directional common-energy kernel, obtained by specializing the generic
-measured/source vertex kernel to the bounded directional current. -/
-noncomputable def finiteKuboBastinCommonEnergyKernel
-    (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
-    (data : EnergyEigenbasisLehmannData system ι)
-    (interpolation : EigenbasisOccupationInterpolation system data)
-    (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
-    (K : LocallyFiniteHopping Site) (q omega eta : ℝ) : ℝ → ℂ :=
-  finiteKuboBastinCommonVertexEnergyKernel system data interpolation
-    (boundedDirectionalCurrent geometry direction
-      (system.hbar : ℂ) (q : ℂ) K)
-    (boundedDirectionalCurrent geometry direction
-      (system.hbar : ℂ) (q : ℂ) K)
-    omega eta
-
-theorem integrable_finiteKuboBastinCommonEnergyKernel
-    (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
-    (data : EnergyEigenbasisLehmannData system ι)
-    (interpolation : EigenbasisOccupationInterpolation system data)
-    (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
-    (K : LocallyFiniteHopping Site) (q omega eta : ℝ) :
-    Integrable (finiteKuboBastinCommonEnergyKernel
-      system data interpolation geometry direction K q omega eta) := by
-  simpa [finiteKuboBastinCommonEnergyKernel] using
-    (integrable_finiteKuboBastinCommonVertexEnergyKernel
-      system data interpolation
-      (boundedDirectionalCurrent geometry direction
-        (system.hbar : ℂ) (q : ℂ) K)
-      (boundedDirectionalCurrent geometry direction
-        (system.hbar : ℂ) (q : ℂ) K)
-      omega eta)
-
-theorem integral_finiteKuboBastinCommonEnergyKernel
-    (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
-    (data : EnergyEigenbasisLehmannData system ι)
-    (interpolation : EigenbasisOccupationInterpolation system data)
-    (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
-    (K : LocallyFiniteHopping Site) (q omega eta : ℝ) :
-    (∫ energy : ℝ, finiteKuboBastinCommonEnergyKernel
-      system data interpolation geometry direction K q omega eta energy) =
-      ∑ mn : ι × ι, finiteKuboBastinOccupationResolvedDirectionalCurrentTerm
-        system data interpolation geometry direction K q omega eta mn := by
-  simpa [finiteKuboBastinCommonEnergyKernel,
-    finiteKuboBastinOccupationResolvedDirectionalCurrentTerm] using
-    (integral_finiteKuboBastinCommonVertexEnergyKernel
-      system data interpolation
-      (boundedDirectionalCurrent geometry direction
-        (system.hbar : ℂ) (q : ℂ) K)
-      (boundedDirectionalCurrent geometry direction
-        (system.hbar : ℂ) (q : ℂ) K)
-      omega eta)
-
 /-- The common-energy-kernel conductivity with contact and finite-volume normalization. -/
 noncomputable def finiteKuboBastinCommonEnergyDirectionalConductivity
     (convention : QuantumTheory.Transport.PositiveVolume)
@@ -87,11 +35,9 @@ noncomputable def finiteKuboBastinCommonEnergyDirectionalConductivity
     (interpolation : EigenbasisOccupationInterpolation system data)
     (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
     (K : LocallyFiniteHopping Site) (q omega eta : ℝ) : ℂ :=
-  ((∫ energy : ℝ, finiteKuboBastinCommonEnergyKernel
-      system data interpolation geometry direction K q omega eta energy) +
-    eigenbasisNormalizedExpectation system data
-      (boundedDirectionalContact geometry direction
-        (system.hbar : ℂ) (q : ℂ) K)) *
+  finiteKuboBastinCommonEnergyChannelResponse system data interpolation
+      (boundedDirectionalResponseChannel system geometry direction K q)
+      omega eta *
     finiteVolumeConductivityNormalization convention omega eta
 
 /-- The finite spectral conductivity equals its common-energy representation, without introducing

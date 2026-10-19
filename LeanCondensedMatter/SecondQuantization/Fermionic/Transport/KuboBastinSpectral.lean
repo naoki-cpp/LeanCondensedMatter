@@ -35,34 +35,6 @@ variable
   (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
   (K : LocallyFiniteHopping Site) (q omega eta : ℝ)
 
-/-- One finite directional-current Kubo–Bastin spectral transition, specialized from the neutral
-resolvent bridge to the continuity-derived electric current. -/
-noncomputable def finiteKuboBastinSpectralDirectionalCurrentTerm
-    (mn : ι × ι) : ℂ :=
-  eigenbasisKuboBastinSpectralVertexTerm system data
-    (boundedDirectionalCurrent geometry direction
-      (system.hbar : ℂ) (q : ℂ) K)
-    (boundedDirectionalCurrent geometry direction
-      (system.hbar : ℂ) (q : ℂ) K)
-    omega eta mn
-
-/-- At positive switching rate, each directional Kubo–Greenwood term equals its retarded-resolvent
-spectral form. -/
-theorem finiteKuboGreenwoodDirectionalCurrentTerm_eq_bastinSpectral
-    (heta : 0 < eta) (mn : ι × ι) :
-    finiteKuboGreenwoodDirectionalCurrentTerm
-        system data geometry direction K q omega eta mn =
-      finiteKuboBastinSpectralDirectionalCurrentTerm
-        system data geometry direction K q omega eta mn := by
-  simpa [finiteKuboGreenwoodDirectionalCurrentTerm,
-    finiteKuboBastinSpectralDirectionalCurrentTerm] using
-    eigenbasisLehmannVertexTerm_eq_bastinSpectral system data
-      (boundedDirectionalCurrent geometry direction
-        (system.hbar : ℂ) (q : ℂ) K)
-      (boundedDirectionalCurrent geometry direction
-        (system.hbar : ℂ) (q : ℂ) K)
-      omega eta heta mn
-
 /-- Finite regularized directional Kubo–Bastin conductivity in spectral resolvent form, with the
 Peierls contact term retained explicitly. -/
 noncomputable def finiteKuboBastinSpectralDirectionalConductivity
@@ -90,8 +62,10 @@ theorem finiteKuboGreenwoodDirectionalConductivity_eq_bastinSpectral
   congr 1
   apply Finset.sum_congr rfl
   intro mn _
-  exact finiteKuboGreenwoodDirectionalCurrentTerm_eq_bastinSpectral
-    system data geometry direction K q omega eta heta mn
+  exact eigenbasisLehmannVertexTerm_eq_bastinSpectral system data
+    (boundedDirectionalCurrent geometry direction (system.hbar : ℂ) (q : ℂ) K)
+    (boundedDirectionalCurrent geometry direction (system.hbar : ℂ) (q : ℂ) K)
+    omega eta heta mn
 
 end
 end Transport

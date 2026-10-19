@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Transport.Streda.StaticChannelIdentification
 import LeanCondensedMatter.Transport.Streda.OperatorKernel
 import LeanCondensedMatter.Transport.Streda.TraceKernel
 import LeanCondensedMatter.Transport.Streda.RetardedAdvanced
@@ -18,5 +19,6 @@ set_option linter.style.header false
 
 Finite regularized Středa transport theory: operator and trace kernels, retarded–advanced algebra,
 energy integration, generalized static response, response matrices, spectral representations,
-spectral energy integrals, isolated interband pole algebra, and representation-level conductivity normalization.
+spectral energy integrals, conditional identification of a complete static channel response with a
+traced integral, isolated interband pole algebra, and representation-level conductivity normalization.
 -/

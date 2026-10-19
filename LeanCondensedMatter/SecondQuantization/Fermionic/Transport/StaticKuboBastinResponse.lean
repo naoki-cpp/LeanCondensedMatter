@@ -97,15 +97,6 @@ theorem infiniteTimeAdiabaticDirectionalConductivity_zero_frequency_eq_staticKub
       finiteKuboGreenwoodDirectionalConductivity_eq_bastinSpectral
         system data geometry direction K q 0 eta convention heta
     _ = _ := rfl
-
-/-- At zero frequency, the electric-field normalization keeps the finite switching rate and volume
-explicit. -/
-theorem finiteVolumeConductivityNormalization_zero_frequency
-    (convention : QuantumTheory.Transport.PositiveVolume) (eta : ℝ) :
-    finiteVolumeConductivityNormalization convention 0 eta =
-      (((convention.volume : ℂ) * (-(eta : ℂ))))⁻¹ := by
-  simp [finiteVolumeConductivityNormalization, adiabaticElectricFieldFactor]
-
 end
 end Transport
 end Fermionic

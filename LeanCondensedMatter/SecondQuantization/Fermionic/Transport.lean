@@ -12,9 +12,7 @@ import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.SpectralFreque
 import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.StaticKuboBastinResponse
 import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.KuboBastinOccupation
 import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.KuboBastinCommonEnergy
-import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.StaticStredaWardBridge
 import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.FiniteDisorderConductivity
-import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.FiniteDisorderCurrentCorrelation
 
 set_option linter.style.header false
 
@@ -23,7 +21,7 @@ set_option linter.style.header false
 
 Canonical downstream owner for fermionic Kubo/frequency response, intrinsic-flux and generalized
 current response, conductivity normalization, directional Kubo–Greenwood/spectral Bastin/Středa,
-Ward, finite-table evaluation, and finite-disorder adapters. Generic reusable response and density
+finite-table evaluation, and finite-disorder adapters. Generic reusable response and density
 theory remains under `QuantumTheory`, while statistics-independent Kubo–Bastin, resolvent, and
 Středa infrastructure lives under `QuantumTheory.Transport`.
 
