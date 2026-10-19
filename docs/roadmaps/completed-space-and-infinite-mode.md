@@ -58,13 +58,19 @@ trace-norm convergence theorem.
 ## Completed bosonic free thermal representation
 
 `SecondQuantization.Bosonic.CompletedFockSpace Mode := ℓ²(Bosonic.Occupation Mode, ℂ)` specializes
-the same Common completed occupation-space infrastructure. For finite mode types with positive
-one-particle energies, `Bosonic.Thermal.Completed` now provides:
+the same Common completed occupation-space infrastructure. The free heat operator
+`exp (-βH₀)` is bounded for arbitrary mode types with nonnegative one-particle energies.
+For arbitrary `Mode`, an explicit `EigenbasisGibbsSummable (freeEigenvalue ε) β` hypothesis
+supplies:
 
-- the bounded free heat operator `exp (-βH₀)` as a diagonal completed operator;
-- trace-classness from the existing bosonic Boltzmann summability theorem;
+- trace-classness of the completed free heat operator;
 - equality of its trace with the convergence-aware algebraic `freeGibbsPartition`;
-- the canonical pure-point Gibbs density operator and the operator normalization identity.
+- the canonical pure-point Gibbs density operator, its basis action, and normalization.
+
+The existing finite-mode positive-energy results are specializations: their finite geometric-series
+argument establishes the needed occupation Gibbs summability. A one-particle
+`EigenbasisGibbsSummable ε β` hypothesis does not yet discharge occupation summability for
+arbitrary bosonic mode types; the infinite-mode Finsupp product/multisum theorem remains open.
 
 This does not make bosonic creation, annihilation, number, or interacting Hamiltonians bounded.
 The single-mode number operator and free Hamiltonian are now represented separately as maximal
@@ -94,6 +100,9 @@ fix algebraic vectors, and converge strongly to the identity. No countability as
 needed for that representation-level statement.
 
 ## Open work
+
+- derive arbitrary-mode free-boson occupation Gibbs summability from positive one-mode gaps and
+  summability of the one-particle Boltzmann weights, including the convergent infinite product;
 
 - explicit weighted-domain characterizations and identities for mixed-mode and quartic bosonic
   ladder products;
