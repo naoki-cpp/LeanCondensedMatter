@@ -22,7 +22,22 @@ open QuantumTheory
 
 noncomputable section
 
-variable {Mode : Type*} [Finite Mode]
+variable {Mode : Type*}
+
+/-- The algebraic occupation trace and the canonical pure-point partition sum are the same
+for arbitrary bosonic mode types. This coordinate identity does not assert convergence. -/
+theorem freeGibbsPartition_eq_coe_eigenbasisPartitionFunction
+    (ε : Mode → ℝ) (β : ℝ) :
+    freeGibbsPartition ε β =
+      (eigenbasisPartitionFunction (freeEigenvalue ε) β : ℂ) := by
+  unfold freeGibbsPartition Common.tsumTrace eigenbasisPartitionFunction
+  rw [Complex.ofReal_tsum]
+  apply tsum_congr
+  intro n
+  simp only [matrixCoeff_imaginaryTimeEvolveFree_self, eigenbasisBoltzmannWeight,
+    Complex.ofReal_exp]
+
+variable [Finite Mode]
 
 /-- Positive one-particle energies make the free occupation Boltzmann weights absolutely summable. -/
 theorem eigenbasisGibbsSummable_freeEigenvalue
@@ -34,16 +49,6 @@ theorem eigenbasisGibbsSummable_freeEigenvalue
   exact hsum.congr fun n => by
     simp [boltzmannWeight, eigenbasisBoltzmannWeight, Real.norm_eq_abs,
       abs_of_nonneg (Real.exp_nonneg _)]
-
-/-- The convergence-aware algebraic bosonic partition function is the canonical pure-point
-partition function for the free occupation energies. -/
-theorem freeGibbsPartition_eq_coe_eigenbasisPartitionFunction
-    (ε : Mode → ℝ) (β : ℝ) (hβ : 0 < β) (hε : ∀ i, 0 < ε i) :
-    freeGibbsPartition ε β =
-      (eigenbasisPartitionFunction (freeEigenvalue ε) β : ℂ) := by
-  letI := Fintype.ofFinite Mode
-  rw [freeGibbsPartition_eq_tsum ε β (fun i => mul_pos hβ (hε i))]
-  congr 1
 
 end
 end Bosonic
