@@ -205,7 +205,6 @@ The following declaration families are deliberate API normalization boundaries:
 - `orderedLehmannTransitionWeight`
 - `orderedLehmannTransitionData_energyGap`
 - `orderedLehmannTransitionData_weight`
-- `lehmannModeExponent_re`
 - `lehmannDenominator_re`
 - `norm_timeTerm`
 - `eigenbasisTransitionData_energyGap`
