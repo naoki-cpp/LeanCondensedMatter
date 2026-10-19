@@ -128,13 +128,29 @@ normalization. `Core.ConductivityTensor` is independent of either representation
 
 ## Response limits
 
-Response limit predicates and their finite-sum laws belong to `LinearResponse.LimitOrder`,
-independently of a spectral realization. `Lehmann.Limits` owns finite transition-family
+Response limit predicates belong to `LinearResponse.LimitOrder`, independently of a spectral
+realization; finite sums use Mathlib's general filter-limit theorem. `Lehmann.Limits` owns transition-family
 nonresonance results; `Lehmann.EigenbasisLimits` combines the operator specialization and physical
 three-stage limits. Finite-window convergence is owned by `InfiniteTimeAdiabatic`. Zero switching
 rate is evaluation of the same transition `frequencyTerm` at rate zero, not a second scalar value.
 Positive-rate regulator removal, two-sided static limits, and observation-time-first order remain
 distinct explicit conditions.
+
+## Stationary channel response
+
+`ResponseChannel.finiteTimeAdiabaticResponse_eq_stationaryLag` owns the stationary change from
+source time to nonnegative lag, including the stationary observable-variation expectation.
+`ResponseChannel.infiniteTimeAdiabaticResponse` denotes the half-line lag transform plus that
+contact expectation. Its observation-time convergence is proved in `LinearResponse.InfiniteTimeAdiabatic`,
+either from explicit lag integrability or from a positive switching rate for bounded operators.
+The observation-time source value is factored out; real harmonic quadratures retain their own
+source-dependent contact factors.
+
+Fermionic transport supplies `boundedDirectionalResponseChannel`: measured and source operators
+are the directional current, and observable variation is the Peierls contact operator. Spectral
+response and finite-volume conductivity consume the channel directly. Frequency, switching-rate,
+and volume limits remain distinct, and the finite stationary lag identity requires nonnegative
+observation time.
 
 ## Disorder boundary
 

@@ -1,4 +1,5 @@
-import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.InfiniteTimeFrequencyResponse
+import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.FrequencyResponse
+import LeanCondensedMatter.QuantumTheory.LinearResponse.InfiniteTimeAdiabatic
 import LeanCondensedMatter.QuantumTheory.LinearResponse.EigenbasisFrequencyDomain
 
 set_option linter.style.header false
@@ -30,37 +31,6 @@ variable {Site E : Type*}
 variable [LinearOrder Site] [Fintype Site]
 variable [AddCommGroup E] [Module ℝ E]
 
-/-- The positive-lag field coefficient is exactly the general whole-line causal susceptibility. -/
-theorem infiniteTimeAdiabaticDirectionalRetardedCoefficient_eq_susceptibility
-    (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
-    (expectation : NormalizedExpectation (FiniteLatticeHilbertFock Site))
-    (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
-    (K : LocallyFiniteHopping Site) (q ω η : ℝ) :
-    infiniteTimeAdiabaticDirectionalRetardedCoefficient
-        system expectation geometry direction K q ω η =
-      adiabaticFrequencyDomainSusceptibility system expectation
-        (boundedDirectionalCurrent geometry direction
-          (system.hbar : ℂ) (q : ℂ) K)
-        (boundedDirectionalCurrent geometry direction
-          (system.hbar : ℂ) (q : ℂ) K) ω η := by
-  let J := boundedDirectionalCurrent geometry direction
-    (system.hbar : ℂ) (q : ℂ) K
-  change
-    (∫ τ : ℝ in Ioi 0,
-      adiabaticFrequencyPhase ω η τ *
-        commutatorSusceptibility system expectation J J τ 0) =
-      ∫ τ : ℝ,
-        adiabaticFrequencySusceptibilityIntegrand
-          system expectation J J ω η τ
-  rw [integral_adiabaticFrequencySusceptibilityIntegrand_eq_Ioi_zero
-    system expectation J J ω η]
-  apply setIntegral_congr_fun measurableSet_Ioi
-  intro τ hτ
-  have hτnonneg : 0 ≤ τ := le_of_lt hτ
-  rw [adiabaticFrequencySusceptibilityIntegrand]
-  rw [retardedTimeDifferenceKernel_eq_commutatorSusceptibility_of_nonneg
-    system expectation J J hτnonneg]
-
 variable {ι : Type*}
 
 /-- Equal-energy off-diagonal transitions retain the regularized denominator `η - iω`; their
@@ -88,43 +58,16 @@ theorem eigenbasisDirectionalCurrentLehmannTerm_of_equal_energy
   rw [hgap]
   simp [lehmannTerm, lehmannDenominator]
 
-/-- In a finite eigenbasis basis, the retarded directional coefficient is the conventional finite
-double Lehmann sum at every `η > 0`. -/
-theorem infiniteTimeAdiabaticDirectionalRetardedCoefficient_eigenbasis_eq_finite_sum
-    [Fintype ι]
-    (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
-    (data : EnergyEigenbasisLehmannData system ι)
-    (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
-    (K : LocallyFiniteHopping Site) (q ω η : ℝ) (hη : 0 < η) :
-    infiniteTimeAdiabaticDirectionalRetardedCoefficient
-        system (eigenbasisNormalizedExpectation system data)
-        geometry direction K q ω η =
-      ∑ mn : ι × ι,
-        (eigenbasisTransitionData system data
-            (boundedDirectionalCurrent geometry direction
-              (system.hbar : ℂ) (q : ℂ) K)
-            (boundedDirectionalCurrent geometry direction
-              (system.hbar : ℂ) (q : ℂ) K) mn).frequencyTerm ω η := by
-  rw [infiniteTimeAdiabaticDirectionalRetardedCoefficient_eq_susceptibility]
-  exact
-    (adiabaticFrequencyDomainSusceptibility_eigenbasis_eq_finite_sum
-      system data
-      (boundedDirectionalCurrent geometry direction
-        (system.hbar : ℂ) (q : ℂ) K)
-      (boundedDirectionalCurrent geometry direction
-        (system.hbar : ℂ) (q : ℂ) K) ω η hη)
-
 /-- The full fixed-rate directional coefficient is the finite Lehmann sum plus the explicit
 geometric Peierls contact expectation. -/
-theorem infiniteTimeAdiabaticDirectionalCoefficient_eigenbasis_eq_finite_sum
+theorem infiniteTimeAdiabaticDirectionalResponse_eigenbasis_eq_finite_sum
     [Fintype ι]
     (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
     (data : EnergyEigenbasisLehmannData system ι)
     (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
     (K : LocallyFiniteHopping Site) (q ω η : ℝ) (hη : 0 < η) :
-    infiniteTimeAdiabaticDirectionalCoefficient
-        system (eigenbasisNormalizedExpectation system data)
-        geometry direction K q ω η =
+    (boundedDirectionalResponseChannel system geometry direction K q).infiniteTimeAdiabaticResponse
+        system (eigenbasisNormalizedExpectation system data) ω η =
       (∑ mn : ι × ι,
         (eigenbasisTransitionData system data
             (boundedDirectionalCurrent geometry direction
@@ -134,9 +77,11 @@ theorem infiniteTimeAdiabaticDirectionalCoefficient_eigenbasis_eq_finite_sum
         eigenbasisNormalizedExpectation system data
           (boundedDirectionalContact geometry direction
             (system.hbar : ℂ) (q : ℂ) K) := by
-  rw [infiniteTimeAdiabaticDirectionalCoefficient]
-  rw [infiniteTimeAdiabaticDirectionalRetardedCoefficient_eigenbasis_eq_finite_sum
-    system data geometry direction K q ω η hη]
+  unfold ResponseChannel.infiniteTimeAdiabaticResponse
+  rw [infiniteTimeAdiabaticTransform_commutator_eq_susceptibility]
+  rw [adiabaticFrequencyDomainSusceptibility_eigenbasis_eq_finite_sum
+    system data _ _ ω η hη]
+  rfl
 
 /-- The finite-time physical response converges directly to the finite Lehmann sum plus contact
 term for a diagonal eigenbasis stationary state. -/
@@ -147,9 +92,8 @@ theorem hasInfiniteObservationTimeLimit_directional_eigenbasis_finite_sum
     (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
     (K : LocallyFiniteHopping Site) (q ω η : ℝ) (hη : 0 < η) :
     HasInfiniteObservationTimeLimit
-      (finiteTimeAdiabaticDirectionalCoefficient
-        system (eigenbasisNormalizedExpectation system data)
-          geometry direction K q ω η)
+      ((boundedDirectionalResponseChannel system geometry direction K q).finiteTimeAdiabaticResponse
+        system (eigenbasisNormalizedExpectation system data) ω η)
       ((∑ mn : ι × ι,
         (eigenbasisTransitionData system data
             (boundedDirectionalCurrent geometry direction
@@ -159,11 +103,12 @@ theorem hasInfiniteObservationTimeLimit_directional_eigenbasis_finite_sum
         eigenbasisNormalizedExpectation system data
           (boundedDirectionalContact geometry direction
             (system.hbar : ℂ) (q : ℂ) K)) := by
-  have hlimit := hasInfiniteObservationTimeLimit_directional_of_stationary_pos
-    system (eigenbasisNormalizedExpectation system data)
-      (isStationary_eigenbasisNormalizedExpectation system data)
-      geometry direction K q ω η hη
-  rw [infiniteTimeAdiabaticDirectionalCoefficient_eigenbasis_eq_finite_sum
+  have hlimit :=
+    ResponseChannel.hasInfiniteObservationTimeLimit_finiteTimeAdiabaticResponse_of_stationary_pos
+      (boundedDirectionalResponseChannel system geometry direction K q)
+      system (eigenbasisNormalizedExpectation system data)
+      (isStationary_eigenbasisNormalizedExpectation system data) ω η hη
+  rw [infiniteTimeAdiabaticDirectionalResponse_eigenbasis_eq_finite_sum
     system data geometry direction K q ω η hη] at hlimit
   exact hlimit
 

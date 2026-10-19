@@ -74,6 +74,42 @@ theorem finiteTimeAdiabaticResponse_fixed
   rw [finiteTimeAdiabaticResponse, fixed_contactExpectation]
   simp [retardedKernel, fixed]
 
+/-- In a stationary state, a nonnegative observation interval is a lag transform plus the
+stationary observable-variation expectation. The source value at observation time is factored out. -/
+theorem finiteTimeAdiabaticResponse_eq_stationaryLag
+    (channel : ResponseChannel H)
+    (system : BoundedFreeSystem H) (expectation : NormalizedExpectation H)
+    (hstationary : IsStationary system expectation)
+    (ω η : ℝ) {T : ℝ} (hT : 0 ≤ T) :
+    channel.finiteTimeAdiabaticResponse system expectation ω η T =
+      finiteTimeAdiabaticTransform
+          (fun τ => commutatorSusceptibility system expectation
+            channel.measured channel.source τ 0) ω η T +
+        expectation channel.observableVariation := by
+  rw [finiteTimeAdiabaticResponse, contactExpectation,
+    hstationary T channel.observableVariation]
+  congr 1
+  let g : ℝ → ℂ := fun τ => adiabaticFrequencyPhase ω η τ *
+    commutatorSusceptibility system expectation channel.measured channel.source τ 0
+  change (∫ s in (0 : ℝ)..T, adiabaticFrequencyPhase ω η (T - s) *
+      retardedSusceptibility system expectation channel.measured channel.source T s) =
+    ∫ τ in (0 : ℝ)..T, g τ
+  calc
+    _ = ∫ s in (0 : ℝ)..T, g (T - s) := by
+      apply intervalIntegral.integral_congr
+      intro s hs
+      have hsIcc : s ∈ Set.Icc (0 : ℝ) T := by
+        simpa [Set.uIcc_of_le hT] using hs
+      change adiabaticFrequencyPhase ω η (T - s) *
+        retardedSusceptibility system expectation channel.measured channel.source T s =
+          g (T - s)
+      rw [retardedSusceptibility_eq_timeDifference_of_stationary
+        system expectation hstationary channel.measured channel.source T s]
+      simp [g, sub_nonneg.mpr hsIcc.2]
+    _ = ∫ τ in (0 : ℝ)..T, g τ := by
+      simpa using intervalIntegral.integral_comp_sub_left
+        (a := (0 : ℝ)) (b := T) g T
+
 end ResponseChannel
 
 end
