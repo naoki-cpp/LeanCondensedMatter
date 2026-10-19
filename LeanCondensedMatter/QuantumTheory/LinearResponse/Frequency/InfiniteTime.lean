@@ -1,5 +1,5 @@
-import LeanCondensedMatter.QuantumTheory.LinearResponse.FiniteTimeAdiabatic
-import LeanCondensedMatter.QuantumTheory.LinearResponse.AdiabaticIntegrability
+import LeanCondensedMatter.QuantumTheory.LinearResponse.Frequency.FiniteTime
+import LeanCondensedMatter.QuantumTheory.LinearResponse.Frequency.Integrability
 import Mathlib.MeasureTheory.Integral.IntegralEqImproper
 
 set_option linter.style.header false
@@ -22,7 +22,7 @@ window to the fixed-positive-rate susceptibility, using automatic adiabatic inte
 
 The layer is independent of particle statistics, Fock-space realizations, current operators,
 lattice geometry, and conductivity normalization. Operator-specific sufficient conditions for
-integrability remain in `AdiabaticIntegrability`; physical current realizations consume the generic
+integrability remain in `Frequency.Integrability`; physical current realizations consume the generic
 stationary `ResponseChannel` interface.
 -/
 

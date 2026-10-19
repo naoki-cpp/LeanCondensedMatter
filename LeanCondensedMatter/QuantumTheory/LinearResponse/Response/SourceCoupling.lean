@@ -1,5 +1,5 @@
-import LeanCondensedMatter.QuantumTheory.LinearResponse.KuboFormula
-import LeanCondensedMatter.QuantumTheory.LinearResponse.RetardedSusceptibility
+import LeanCondensedMatter.QuantumTheory.LinearResponse.Response.KuboFormula
+import LeanCondensedMatter.QuantumTheory.LinearResponse.Response.RetardedSusceptibility
 import Mathlib.Algebra.Lie.OfAssociative
 
 set_option linter.style.header false

@@ -1,7 +1,5 @@
-import LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann.Transition
-import LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann.Eigenbasis
-import LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann.EigenbasisTable
+import LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann.Eigenbasis.Table
 import LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann.Limits
-import LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann.EigenbasisLimits
+import LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann.Eigenbasis.Limits
 
 /-! # Lehmann transitions and their eigenbasis operator realization -/

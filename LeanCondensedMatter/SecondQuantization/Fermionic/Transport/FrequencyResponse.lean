@@ -1,5 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.GeometricCurrent
-import LeanCondensedMatter.QuantumTheory.LinearResponse.FiniteTimeAdiabatic
+import LeanCondensedMatter.QuantumTheory.LinearResponse.Frequency.FiniteTime
 
 set_option linter.style.header false
 

@@ -1,4 +1,5 @@
-import LeanCondensedMatter.QuantumTheory.LinearResponse.EigenbasisTimeDomain
+import LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann.Eigenbasis.TimeDomain
+import LeanCondensedMatter.QuantumTheory.LinearResponse.Frequency.Integrability
 import Mathlib.MeasureTheory.Integral.DominatedConvergence
 
 set_option linter.style.header false

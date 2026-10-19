@@ -1,4 +1,4 @@
-import LeanCondensedMatter.QuantumTheory.LinearResponse.EigenbasisFrequencyDomain
+import LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann.Eigenbasis.FrequencyDomain
 import LeanCondensedMatter.Transport.Spectral.Eigenbasis
 
 set_option linter.style.header false

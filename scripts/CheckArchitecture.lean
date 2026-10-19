@@ -216,7 +216,7 @@ private def densityOwnerRequirements : Array OwnerRequirement := #[
 ]
 
 private def pureStateDynamicsOwnerRequirements : Array OwnerRequirement :=
-  let moduleName := `LeanCondensedMatter.QuantumTheory.LinearResponse.PureStateDynamics
+  let moduleName := `LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.PureState
   #[
     { declaration := `QuantumTheory.LinearResponse.norm_freePropagator_apply, moduleName },
     { declaration := `QuantumTheory.LinearResponse.phaseState, moduleName },
@@ -230,21 +230,21 @@ private def pureStateDynamicsOwnerRequirements : Array OwnerRequirement :=
 
 private def normalizedExpectationOwnerRequirements : Array OwnerRequirement := #[
   { declaration := `QuantumTheory.LinearResponse.NormalizedExpectation,
-    moduleName := `LeanCondensedMatter.QuantumTheory.LinearResponse.Expectation },
+    moduleName := `LeanCondensedMatter.QuantumTheory.LinearResponse.Expectation.Basic },
   { declaration := `QuantumTheory.LinearResponse.NormalizedExpectation.pullback,
-    moduleName := `LeanCondensedMatter.QuantumTheory.LinearResponse.Expectation },
+    moduleName := `LeanCondensedMatter.QuantumTheory.LinearResponse.Expectation.Basic },
   { declaration := `QuantumTheory.LinearResponse.NormalizedExpectation.pullback_apply,
-    moduleName := `LeanCondensedMatter.QuantumTheory.LinearResponse.Expectation },
+    moduleName := `LeanCondensedMatter.QuantumTheory.LinearResponse.Expectation.Basic },
   { declaration := `QuantumTheory.LinearResponse.IsStationary,
-    moduleName := `LeanCondensedMatter.QuantumTheory.LinearResponse.Stationarity },
+    moduleName := `LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.Stationarity },
   { declaration := `QuantumTheory.LinearResponse.expectation_heisenbergEvolution_zero,
-    moduleName := `LeanCondensedMatter.QuantumTheory.LinearResponse.Stationarity },
+    moduleName := `LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.Stationarity },
   { declaration := `QuantumTheory.LinearResponse.timeDependentPerturbedObservableMap_one_of_isSelfAdjoint,
-    moduleName := `LeanCondensedMatter.QuantumTheory.LinearResponse.UnitaryPerturbation },
+    moduleName := `LeanCondensedMatter.QuantumTheory.LinearResponse.Perturbation.Unitary },
 ]
 
 private def pictureEquivalenceOwnerRequirements : Array OwnerRequirement :=
-  let pictureModule := `LeanCondensedMatter.QuantumTheory.LinearResponse.PictureEquivalence
+  let pictureModule := `LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.PictureEquivalence
   let adjointConjugationModule := `LeanCondensedMatter.Analysis.Operator.AdjointConjugation
   let unitaryModule := `LeanCondensedMatter.Analysis.Operator.Unitary
   let traceClassAdjointConjugationModule :=
@@ -270,7 +270,7 @@ private def pictureEquivalenceOwnerRequirements : Array OwnerRequirement :=
   ]
 
 private def equationsOfMotionOwnerRequirements : Array OwnerRequirement :=
-  let moduleName := `LeanCondensedMatter.QuantumTheory.LinearResponse.EquationsOfMotion
+  let moduleName := `LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.EquationsOfMotion
   #[
     { declaration := `QuantumTheory.LinearResponse.hasDerivAt_freePropagator, moduleName },
     { declaration := `QuantumTheory.LinearResponse.hasDerivAt_freePropagator_neg, moduleName },
@@ -281,8 +281,8 @@ private def equationsOfMotionOwnerRequirements : Array OwnerRequirement :=
   ]
 
 private def conservationOwnerRequirements : Array OwnerRequirement :=
-  let conservationModule := `LeanCondensedMatter.QuantumTheory.LinearResponse.ConservationLaws
-  let densityExpectationModule := `LeanCondensedMatter.QuantumTheory.LinearResponse.DensityExpectation
+  let conservationModule := `LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.ConservationLaws
+  let densityExpectationModule := `LeanCondensedMatter.QuantumTheory.LinearResponse.Expectation.Density
   #[
     { declaration := `QuantumTheory.LinearResponse.commute_freePropagator_of_commute_hamiltonian, moduleName := conservationModule },
     { declaration := `QuantumTheory.LinearResponse.heisenbergEvolution_eq_self_of_commute_hamiltonian, moduleName := conservationModule },
@@ -340,7 +340,7 @@ private def semanticOwnerRequirements : Array OwnerRequirement :=
   let postulatesModule := `LeanCondensedMatter.QuantumTheory.Postulates
   let observableExpectationModule := `LeanCondensedMatter.QuantumTheory.DensityOperator.ObservableExpectation
   let bornModule := `LeanCondensedMatter.QuantumTheory.POVM.Born
-  let eigenbasisDynamicsModule := `LeanCondensedMatter.QuantumTheory.LinearResponse.EigenbasisDynamics
+  let eigenbasisDynamicsModule := `LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann.Eigenbasis.Dynamics
   let gibbsEigenbasisModule := `LeanCondensedMatter.QuantumTheory.Gibbs.Eigenbasis
   let finiteGibbsModule := `LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsExpectationBridge
   let freeEntropyModule := `LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeEntropy
@@ -404,7 +404,7 @@ private def checkTypedRoutingContracts (snapshot : Snapshot) : Array String := I
   errors := appendErrors errors <| checkTypeUsesConstants snapshot
     `QuantumTheory.LinearResponse.BoundedFreeSystem.hamiltonian #[`QuantumTheory.Observable]
   errors := appendErrors errors <| checkModuleDeclarationTypesDoNotUseConstants snapshot
-    #[`LeanCondensedMatter.QuantumTheory.LinearResponse.ConservationLaws] #[`HasDerivAt]
+    #[`LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.ConservationLaws] #[`HasDerivAt]
   return errors
 
 def runChecks (snapshot : Snapshot) (checks : Array NamedCheck) : Array String := Id.run do

@@ -1,4 +1,4 @@
-import LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann.Eigenbasis
+import LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann.Eigenbasis.Data
 import LeanCondensedMatter.Transport.Resolvent.Spectral
 
 set_option linter.style.header false

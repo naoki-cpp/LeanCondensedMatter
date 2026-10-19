@@ -1,32 +1,33 @@
-import LeanCondensedMatter.QuantumTheory.LinearResponse.Expectation
-import LeanCondensedMatter.QuantumTheory.LinearResponse.FreeDynamics
-import LeanCondensedMatter.QuantumTheory.LinearResponse.Stationarity
-import LeanCondensedMatter.QuantumTheory.LinearResponse.DensityExpectation
-import LeanCondensedMatter.QuantumTheory.LinearResponse.PureStateDynamics
-import LeanCondensedMatter.QuantumTheory.LinearResponse.PictureEquivalence
-import LeanCondensedMatter.QuantumTheory.LinearResponse.EquationsOfMotion
-import LeanCondensedMatter.QuantumTheory.LinearResponse.ConservationLaws
-import LeanCondensedMatter.QuantumTheory.LinearResponse.TimeDependentPerturbation
-import LeanCondensedMatter.QuantumTheory.LinearResponse.DensityFirstVariation
-import LeanCondensedMatter.QuantumTheory.LinearResponse.HermitianPerturbation
-import LeanCondensedMatter.QuantumTheory.LinearResponse.KuboFormula
-import LeanCondensedMatter.QuantumTheory.LinearResponse.UnitaryPerturbation
-import LeanCondensedMatter.QuantumTheory.LinearResponse.SourceCoupling
-import LeanCondensedMatter.QuantumTheory.LinearResponse.RetardedSusceptibility
-import LeanCondensedMatter.QuantumTheory.LinearResponse.ObservableVariation
-import LeanCondensedMatter.QuantumTheory.LinearResponse.ResponseChannel
-import LeanCondensedMatter.QuantumTheory.LinearResponse.FrequencyDomain
-import LeanCondensedMatter.QuantumTheory.LinearResponse.AdiabaticSwitching
-import LeanCondensedMatter.QuantumTheory.LinearResponse.HarmonicSource
-import LeanCondensedMatter.QuantumTheory.LinearResponse.FiniteTimeAdiabatic
-import LeanCondensedMatter.QuantumTheory.LinearResponse.InfiniteTimeAdiabatic
-import LeanCondensedMatter.QuantumTheory.LinearResponse.AdiabaticIntegrability
+import LeanCondensedMatter.QuantumTheory.LinearResponse.Expectation.Basic
+import LeanCondensedMatter.QuantumTheory.LinearResponse.Expectation.Density
+
+import LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.Free
+import LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.Stationarity
+import LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.PureState
+import LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.PictureEquivalence
+import LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.EquationsOfMotion
+import LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.ConservationLaws
+
+import LeanCondensedMatter.QuantumTheory.LinearResponse.Perturbation.TimeDependent
+import LeanCondensedMatter.QuantumTheory.LinearResponse.Perturbation.DensityFirstVariation
+import LeanCondensedMatter.QuantumTheory.LinearResponse.Perturbation.Hermitian
+import LeanCondensedMatter.QuantumTheory.LinearResponse.Perturbation.Unitary
+
+import LeanCondensedMatter.QuantumTheory.LinearResponse.Response.KuboFormula
+import LeanCondensedMatter.QuantumTheory.LinearResponse.Response.SourceCoupling
+import LeanCondensedMatter.QuantumTheory.LinearResponse.Response.RetardedSusceptibility
+import LeanCondensedMatter.QuantumTheory.LinearResponse.Response.ObservableVariation
+import LeanCondensedMatter.QuantumTheory.LinearResponse.Response.Channel
+
+import LeanCondensedMatter.QuantumTheory.LinearResponse.Frequency.Susceptibility
+import LeanCondensedMatter.QuantumTheory.LinearResponse.Frequency.AdiabaticSwitching
+import LeanCondensedMatter.QuantumTheory.LinearResponse.Frequency.HarmonicSource
+import LeanCondensedMatter.QuantumTheory.LinearResponse.Frequency.FiniteTime
+import LeanCondensedMatter.QuantumTheory.LinearResponse.Frequency.InfiniteTime
+import LeanCondensedMatter.QuantumTheory.LinearResponse.Frequency.Integrability
+import LeanCondensedMatter.QuantumTheory.LinearResponse.Frequency.LimitOrder
+
 import LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann
-import LeanCondensedMatter.QuantumTheory.LinearResponse.FiniteLehmannTable
-import LeanCondensedMatter.QuantumTheory.LinearResponse.EigenbasisDynamics
-import LeanCondensedMatter.QuantumTheory.LinearResponse.EigenbasisTimeDomain
-import LeanCondensedMatter.QuantumTheory.LinearResponse.EigenbasisFrequencyDomain
-import LeanCondensedMatter.QuantumTheory.LinearResponse.LimitOrder
 
 set_option linter.style.header false
 
@@ -36,5 +37,6 @@ set_option linter.style.header false
 Generic linear-response theory from time-dependent perturbations to physical response formulas:
 expectation dynamics, first variations, Kubo response, source coupling, retarded susceptibility,
 linearity in the measured observable, frequency-domain and adiabatic limits, Lehmann
-representations, and pure-point specializations.
+representations, and energy-eigenbasis realizations. Files are grouped by expectation interfaces,
+free dynamics, perturbations, response formulas, frequency transforms, and Lehmann data.
 -/

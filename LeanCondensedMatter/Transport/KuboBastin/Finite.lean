@@ -1,4 +1,4 @@
-import LeanCondensedMatter.QuantumTheory.LinearResponse.ResponseChannel
+import LeanCondensedMatter.QuantumTheory.LinearResponse.Response.Channel
 import LeanCondensedMatter.Transport.KuboBastin.Eigenbasis
 
 set_option linter.style.header false

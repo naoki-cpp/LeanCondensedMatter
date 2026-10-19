@@ -1,6 +1,6 @@
 import LeanCondensedMatter.Analysis.ConservationLaw.CorrectedCurrentFlux
 import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.FluxResponse
-import LeanCondensedMatter.QuantumTheory.LinearResponse.ResponseChannel
+import LeanCondensedMatter.QuantumTheory.LinearResponse.Response.Channel
 
 set_option linter.style.header false
 

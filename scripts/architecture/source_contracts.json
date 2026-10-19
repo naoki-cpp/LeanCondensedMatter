@@ -70,10 +70,10 @@
         "LeanCondensedMatter/Transport/Disorder/Moments.lean",
         "LeanCondensedMatter/Transport/Disorder/Born.lean",
         "LeanCondensedMatter/Transport/Disorder/SCBA.lean",
-        "LeanCondensedMatter/QuantumTheory/LinearResponse/AdiabaticSwitching.lean",
-        "LeanCondensedMatter/QuantumTheory/LinearResponse/HarmonicSource.lean",
-        "LeanCondensedMatter/QuantumTheory/LinearResponse/FiniteTimeAdiabatic.lean",
-        "LeanCondensedMatter/QuantumTheory/LinearResponse/InfiniteTimeAdiabatic.lean"
+        "LeanCondensedMatter/QuantumTheory/LinearResponse/Frequency/AdiabaticSwitching.lean",
+        "LeanCondensedMatter/QuantumTheory/LinearResponse/Frequency/HarmonicSource.lean",
+        "LeanCondensedMatter/QuantumTheory/LinearResponse/Frequency/FiniteTime.lean",
+        "LeanCondensedMatter/QuantumTheory/LinearResponse/Frequency/InfiniteTime.lean"
       ]
     },
     {
@@ -86,7 +86,7 @@
     {
       "id": "quantumTheoryPictureOwners",
       "paths": [
-        "LeanCondensedMatter/QuantumTheory/LinearResponse/PictureEquivalence.lean",
+        "LeanCondensedMatter/QuantumTheory/LinearResponse/Dynamics/PictureEquivalence.lean",
         "LeanCondensedMatter/Analysis/Operator/AdjointConjugation.lean",
         "LeanCondensedMatter/Analysis/Operator/Unitary.lean",
         "LeanCondensedMatter/Analysis/Operator/TraceClass/AdjointConjugation.lean",
@@ -96,9 +96,9 @@
     {
       "id": "quantumTheoryConservationOwners",
       "paths": [
-        "LeanCondensedMatter/QuantumTheory/LinearResponse/FreeDynamics.lean",
-        "LeanCondensedMatter/QuantumTheory/LinearResponse/ConservationLaws.lean",
-        "LeanCondensedMatter/QuantumTheory/LinearResponse/DensityExpectation.lean",
+        "LeanCondensedMatter/QuantumTheory/LinearResponse/Dynamics/Free.lean",
+        "LeanCondensedMatter/QuantumTheory/LinearResponse/Dynamics/ConservationLaws.lean",
+        "LeanCondensedMatter/QuantumTheory/LinearResponse/Expectation/Density.lean",
         "LeanCondensedMatter/QuantumTheory/DensityOperator/Basic.lean"
       ]
     },
@@ -107,23 +107,23 @@
       "paths": [
         "LeanCondensedMatter/QuantumTheory/DensityOperator/DiagonalFormula.lean",
         "LeanCondensedMatter/QuantumTheory/Entropy/Diagonal.lean",
-        "LeanCondensedMatter/QuantumTheory/LinearResponse/EigenbasisDynamics.lean"
+        "LeanCondensedMatter/QuantumTheory/LinearResponse/Lehmann/Eigenbasis/Dynamics.lean"
       ]
     },
     {
       "id": "quantumTheoryNormalizedExpectationOwners",
       "paths": [
-        "LeanCondensedMatter/QuantumTheory/LinearResponse/Expectation.lean",
-        "LeanCondensedMatter/QuantumTheory/LinearResponse/FreeDynamics.lean",
-        "LeanCondensedMatter/QuantumTheory/LinearResponse/Stationarity.lean",
-        "LeanCondensedMatter/QuantumTheory/LinearResponse/UnitaryPerturbation.lean"
+        "LeanCondensedMatter/QuantumTheory/LinearResponse/Expectation/Basic.lean",
+        "LeanCondensedMatter/QuantumTheory/LinearResponse/Dynamics/Free.lean",
+        "LeanCondensedMatter/QuantumTheory/LinearResponse/Dynamics/Stationarity.lean",
+        "LeanCondensedMatter/QuantumTheory/LinearResponse/Perturbation/Unitary.lean"
       ]
     },
     {
       "id": "quantumTheoryPublicModules",
       "paths": [
-        "LeanCondensedMatter/QuantumTheory/LinearResponse/PureStateDynamics.lean",
-        "LeanCondensedMatter/QuantumTheory/LinearResponse/EquationsOfMotion.lean"
+        "LeanCondensedMatter/QuantumTheory/LinearResponse/Dynamics/PureState.lean",
+        "LeanCondensedMatter/QuantumTheory/LinearResponse/Dynamics/EquationsOfMotion.lean"
       ]
     },
     {
@@ -236,10 +236,10 @@
     },
     {
       "id": "conservationDependencies",
-      "path": "LeanCondensedMatter/QuantumTheory/LinearResponse/ConservationLaws.lean",
+      "path": "LeanCondensedMatter/QuantumTheory/LinearResponse/Dynamics/ConservationLaws.lean",
       "modules": [
-        "LeanCondensedMatter.QuantumTheory.LinearResponse.PictureEquivalence",
-        "LeanCondensedMatter.QuantumTheory.LinearResponse.DensityExpectation"
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.PictureEquivalence",
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.Expectation.Density"
       ]
     },
     {
@@ -251,17 +251,17 @@
     },
     {
       "id": "eigenbasisDynamicsDensityDependency",
-      "path": "LeanCondensedMatter/QuantumTheory/LinearResponse/EigenbasisDynamics.lean",
+      "path": "LeanCondensedMatter/QuantumTheory/LinearResponse/Lehmann/Eigenbasis/Dynamics.lean",
       "modules": [
         "LeanCondensedMatter.QuantumTheory.DensityOperator.DiagonalFormula"
       ]
     },
     {
       "id": "stationarityDependencies",
-      "path": "LeanCondensedMatter/QuantumTheory/LinearResponse/Stationarity.lean",
+      "path": "LeanCondensedMatter/QuantumTheory/LinearResponse/Dynamics/Stationarity.lean",
       "modules": [
-        "LeanCondensedMatter.QuantumTheory.LinearResponse.Expectation",
-        "LeanCondensedMatter.QuantumTheory.LinearResponse.FreeDynamics"
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.Expectation.Basic",
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.Free"
       ]
     },
     {
@@ -401,7 +401,7 @@
       "path": "LeanCondensedMatter/SecondQuantization/Fermionic/Transport/FluxResponse.lean",
       "modules": [
         "LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.Bounded",
-        "LeanCondensedMatter.QuantumTheory.LinearResponse.RetardedSusceptibility"
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.Response.RetardedSusceptibility"
       ]
     },
     {
@@ -471,7 +471,7 @@
       "id": "transportEigenbasisSpectralAdapter",
       "path": "LeanCondensedMatter/Transport/Spectral/Eigenbasis.lean",
       "modules": [
-        "LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann.Eigenbasis",
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann.Eigenbasis.Data",
         "LeanCondensedMatter.Transport.Resolvent.Spectral"
       ]
     },
@@ -479,7 +479,7 @@
       "id": "transportKuboBastinEigenbasis",
       "path": "LeanCondensedMatter/Transport/KuboBastin/Eigenbasis.lean",
       "modules": [
-        "LeanCondensedMatter.QuantumTheory.LinearResponse.EigenbasisFrequencyDomain",
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann.Eigenbasis.FrequencyDomain",
         "LeanCondensedMatter.Transport.Spectral.Eigenbasis"
       ]
     },
@@ -487,7 +487,7 @@
       "id": "transportKuboBastinFinite",
       "path": "LeanCondensedMatter/Transport/KuboBastin/Finite.lean",
       "modules": [
-        "LeanCondensedMatter.QuantumTheory.LinearResponse.ResponseChannel",
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.Response.Channel",
         "LeanCondensedMatter.Transport.KuboBastin.Eigenbasis"
       ]
     },
@@ -499,7 +499,7 @@
     {
       "id": "transportFrequencyResponse",
       "path": "LeanCondensedMatter/SecondQuantization/Fermionic/Transport/FrequencyResponse.lean",
-      "modules": ["LeanCondensedMatter.QuantumTheory.LinearResponse.FiniteTimeAdiabatic"]
+      "modules": ["LeanCondensedMatter.QuantumTheory.LinearResponse.Frequency.FiniteTime"]
     },
     {
       "id": "transportDisorderResolvent",

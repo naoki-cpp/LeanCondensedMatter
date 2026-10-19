@@ -63,7 +63,7 @@ The main semantic boundaries are:
 
 `QuantumTheory.LinearResponse.FiniteLehmannTable` evaluates each transition through the canonical
 scalar owner `Lehmann.Transition`, independently of operator spectral reconstruction.
-`Lehmann.Eigenbasis` owns the Hilbert-basis realization; `Lehmann.EigenbasisTable` adapts it to the
+`Lehmann.Eigenbasis.Data` owns the Hilbert-basis data; `Lehmann.Eigenbasis.Table` adapts it to the
 finite scalar table. Operator-derived response endpoints consume the transition record's
 `frequencyTerm` directly rather than assembling its energy gap and weight separately.
 `EnergyEigenbasisLehmannData` supplies a complete orthonormal energy eigenbasis and normalized
@@ -128,28 +128,28 @@ normalization. `Core.ConductivityTensor` is independent of either representation
 
 ## Response limits
 
-Response limit predicates belong to `LinearResponse.LimitOrder`, independently of a spectral
+Response limit predicates belong to `LinearResponse.Frequency.LimitOrder`, independently of a spectral
 realization; finite sums use Mathlib's general filter-limit theorem. `Lehmann.Limits` owns transition-family
-nonresonance results; `Lehmann.EigenbasisLimits` combines the operator specialization and physical
-three-stage limits. Finite-window convergence is owned by `InfiniteTimeAdiabatic`. Zero switching
+nonresonance results; `Lehmann.Eigenbasis.Limits` combines the operator specialization and physical
+three-stage limits. Finite-window convergence is owned by `Frequency.InfiniteTime`. Zero switching
 rate is evaluation of the same transition `frequencyTerm` at rate zero, not a second scalar value.
 Positive-rate regulator removal, two-sided static limits, and observation-time-first order remain
 distinct explicit conditions.
 
 ## Stationary channel response
 
-For a real-valued external profile, the derivative theorem in `LinearResponse.ObservableVariation`
+For a real-valued external profile, the derivative theorem in `LinearResponse.Response.ObservableVariation`
 uses `ResponseChannel.causalResponse` directly. Its `observableVariation` is the actual coefficient
 `A₁` in `A₀ + λ A₁`; the channel does not multiply it by the external profile again. A geometric
 current with contact operator `C` supplies `A₁ = f(t) C`. At observation time the normalized cosine
 profile gives `A₁ = C`, while the sine profile gives `A₁ = 0`, using the generic profile computation
-rules in `LinearResponse.HarmonicSource`. Current self-adjointness is supplied by the lattice
+rules in `LinearResponse.Frequency.HarmonicSource`. Current self-adjointness is supplied by the lattice
 realization, and no complex-valued Hamiltonian perturbation is introduced.
 
 `ResponseChannel.finiteTimeAdiabaticResponse_eq_stationaryLag` owns the stationary change from
 source time to nonnegative lag, including the stationary observable-variation expectation.
 `ResponseChannel.infiniteTimeAdiabaticResponse` denotes the half-line lag transform plus that
-contact expectation. Its observation-time convergence is proved in `LinearResponse.InfiniteTimeAdiabatic`,
+contact expectation. Its observation-time convergence is proved in `LinearResponse.Frequency.InfiniteTime`,
 either from explicit lag integrability or from a positive switching rate for bounded operators.
 The observation-time source value is factored out; real harmonic quadratures retain their own
 source-dependent contact factors.

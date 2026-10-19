@@ -1,4 +1,4 @@
-import LeanCondensedMatter.QuantumTheory.LinearResponse.PictureEquivalence
+import LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.PictureEquivalence
 import Mathlib.Analysis.Calculus.Deriv.Mul
 import Mathlib.Analysis.Calculus.FDeriv.Comp
 import Mathlib.Analysis.SpecialFunctions.Exponential

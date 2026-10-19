@@ -1,5 +1,5 @@
 import LeanCondensedMatter.QuantumTheory.DensityOperator.Expectation
-import LeanCondensedMatter.QuantumTheory.LinearResponse.HermitianPerturbation
+import LeanCondensedMatter.QuantumTheory.LinearResponse.Perturbation.Hermitian
 import Mathlib.Analysis.Calculus.Deriv.Mul
 import Mathlib.Analysis.Calculus.Deriv.Star
 import Mathlib.Algebra.Lie.OfAssociative

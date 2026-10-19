@@ -1,4 +1,4 @@
-import LeanCondensedMatter.QuantumTheory.LinearResponse.FiniteLehmannTable
+import LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann.FiniteTable
 import LeanCondensedMatter.Transport.Core.ConductivityNormalization
 
 set_option linter.style.header false

@@ -34,7 +34,7 @@ Annotated reference list. One entry per source: full citation, what it is used f
   Japan* **12**(6), 570–586 (1957). DOI:
   [10.1143/JPSJ.12.570](https://doi.org/10.1143/JPSJ.12.570).
   - **Project use:** Foundational provenance for the bounded finite-time response-as-correlation
-    principle formalized in `QuantumTheory/LinearResponse/KuboFormula.lean`.
+    principle formalized in `QuantumTheory/LinearResponse/Response/KuboFormula.lean`.
   - **Caveat:** This paper does not supply the project's later finite-dimensional spectral,
     resolvent, contact-term, or conductivity normalizations; those identifications require their
     own hypotheses and references.

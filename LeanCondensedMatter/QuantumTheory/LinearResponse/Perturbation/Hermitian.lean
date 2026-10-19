@@ -1,4 +1,4 @@
-import LeanCondensedMatter.QuantumTheory.LinearResponse.TimeDependentPerturbation
+import LeanCondensedMatter.QuantumTheory.LinearResponse.Perturbation.TimeDependent
 import Mathlib.Analysis.CStarAlgebra.Basic
 import Mathlib.Algebra.Lie.OfAssociative
 
@@ -19,7 +19,7 @@ variation
 to be skew-adjoint.
 
 This module records only that sufficient condition; density-operator consequences live in
-`DensityFirstVariation`. It does not characterize all time-dependent
+`Perturbation.DensityFirstVariation`. It does not characterize all time-dependent
 perturbations whose integrated first variation is skew-adjoint.
 -/
 

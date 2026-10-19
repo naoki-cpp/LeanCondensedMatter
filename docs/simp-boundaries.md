@@ -169,13 +169,13 @@ The following declaration families are deliberate API normalization boundaries:
 - `DensityOperator.isPureDensity_pure`
 - `PureState.val_ofStateVector`
 - `PureState.ofStateVector_smul_of_norm_eq_one`
-- all current simp rules in `LinearResponse/FreeDynamics`
+- all current simp rules in `LinearResponse/Dynamics/Free`
 - `DensityOperator.normalizePositive_op`
 - all current simp rules in `LinearResponse/HarmonicSource`
 - all current simp rules in `LinearResponse/FrequencyDomain`
 - all current simp rules in `POVM/Born`
 - `NormalizedExpectation.pullback_apply`
-- all current simp rules in `LinearResponse/FiniteLehmannTable`
+- all current simp rules in `LinearResponse/Lehmann/FiniteTable`
 - all current simp rules in `LinearResponse/PictureEquivalence`
 - all current simp rules in `DensityOperator/ObservableExpectation`
 - all current simp rules in `LinearResponse/RetardedSusceptibility`

@@ -58,16 +58,16 @@ def Snapshot.declarationType? (snapshot : Snapshot) (declName : Name) : Option E
   (snapshot.env.find? declName).map fun info => info.type
 
 private def boundedDimensionIndependentModules : Array Name := #[
-  `LeanCondensedMatter.QuantumTheory.LinearResponse.PureStateDynamics,
-  `LeanCondensedMatter.QuantumTheory.LinearResponse.PictureEquivalence,
+  `LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.PureState,
+  `LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.PictureEquivalence,
   `LeanCondensedMatter.Analysis.Operator.AdjointConjugation,
   `LeanCondensedMatter.Analysis.Operator.Unitary,
   `LeanCondensedMatter.Analysis.Operator.TraceClass.AdjointConjugation,
   `LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Unitary,
-  `LeanCondensedMatter.QuantumTheory.LinearResponse.EquationsOfMotion,
-  `LeanCondensedMatter.QuantumTheory.LinearResponse.ConservationLaws,
-  `LeanCondensedMatter.QuantumTheory.LinearResponse.FreeDynamics,
-  `LeanCondensedMatter.QuantumTheory.LinearResponse.DensityExpectation,
+  `LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.EquationsOfMotion,
+  `LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.ConservationLaws,
+  `LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.Free,
+  `LeanCondensedMatter.QuantumTheory.LinearResponse.Expectation.Density,
   `LeanCondensedMatter.QuantumTheory.DensityOperator.Basic,
   `LeanCondensedMatter.QuantumTheory.DensityOperator.DiagonalFormula,
 ]
@@ -90,11 +90,11 @@ private def boundaryRules : Array BoundaryRule := #[
   },
   {
     id := "linear-response expectation layering"
-    modulePrefixes := #[`LeanCondensedMatter.QuantumTheory.LinearResponse.Expectation]
+    modulePrefixes := #[`LeanCondensedMatter.QuantumTheory.LinearResponse.Expectation.Basic]
     forbiddenConstants := #[]
     forbiddenModulePrefixes := #[
       `LeanCondensedMatter.Analysis.Dyson,
-      `LeanCondensedMatter.QuantumTheory.LinearResponse.FreeDynamics,
+      `LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.Free,
     ]
   },
   {

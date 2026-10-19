@@ -1,4 +1,5 @@
-import LeanCondensedMatter.QuantumTheory.LinearResponse.EigenbasisDynamics
+import LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann.Eigenbasis.Dynamics
+import LeanCondensedMatter.QuantumTheory.LinearResponse.Frequency.Susceptibility
 import Mathlib.Topology.Algebra.InfiniteSum.Module
 import Mathlib.Algebra.Lie.OfAssociative
 

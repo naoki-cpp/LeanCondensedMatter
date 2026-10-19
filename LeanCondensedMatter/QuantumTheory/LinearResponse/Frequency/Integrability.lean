@@ -1,4 +1,4 @@
-import LeanCondensedMatter.QuantumTheory.LinearResponse.AdiabaticSwitching
+import LeanCondensedMatter.QuantumTheory.LinearResponse.Frequency.AdiabaticSwitching
 import Mathlib.Analysis.SpecialFunctions.ImproperIntegrals
 import Mathlib.Algebra.Lie.OfAssociative
 

@@ -1,5 +1,5 @@
-import LeanCondensedMatter.QuantumTheory.LinearResponse.FiniteLehmannTable
-import LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann.Eigenbasis
+import LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann.FiniteTable
+import LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann.Eigenbasis.Data
 
 set_option linter.style.header false
 
