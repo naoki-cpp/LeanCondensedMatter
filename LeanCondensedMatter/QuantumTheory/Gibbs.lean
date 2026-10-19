@@ -4,8 +4,8 @@ import LeanCondensedMatter.QuantumTheory.Gibbs.Eigenbasis
 import LeanCondensedMatter.QuantumTheory.Gibbs.HeatOperator
 import LeanCondensedMatter.QuantumTheory.Gibbs.EigenbasisExpectation
 import LeanCondensedMatter.QuantumTheory.Gibbs.EigenbasisEntropy
-import LeanCondensedMatter.QuantumTheory.Gibbs.EigenbasisVariational
-import LeanCondensedMatter.QuantumTheory.Gibbs.EigenbasisUniqueness
+import LeanCondensedMatter.QuantumTheory.Gibbs.DistributionVariational
+import LeanCondensedMatter.QuantumTheory.Gibbs.DistributionUniqueness
 import LeanCondensedMatter.QuantumTheory.Gibbs.EnergyExpectation
 import LeanCondensedMatter.QuantumTheory.Gibbs.FreeEnergy
 import LeanCondensedMatter.QuantumTheory.Gibbs.Entropy

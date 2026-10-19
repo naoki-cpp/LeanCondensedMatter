@@ -86,7 +86,10 @@ eigenbasisGibbsProbability
 eigenbasisGibbsDensityOperator
 ```
 
-with `EigenbasisGibbsSummable` as the explicit state-existence hypothesis. On a finite spectral index,
+with `EigenbasisGibbsSummable` as the explicit state-existence hypothesis.
+The distribution-level Gibbs variational principle and equality characterization are owned by
+`QuantumTheory.Gibbs.DistributionVariational` and `QuantumTheory.Gibbs.DistributionUniqueness`;
+they require only energy levels and normalized probability weights. On a finite spectral index,
 `finiteEigenbasisGibbsDensityOperator` is the direct specialization and requires no independent finite
 Gibbs-state implementation.
 

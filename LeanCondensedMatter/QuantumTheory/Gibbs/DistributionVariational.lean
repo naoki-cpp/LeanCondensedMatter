@@ -2,7 +2,7 @@ import LeanCondensedMatter.QuantumTheory.Gibbs.Boltzmann
 import LeanCondensedMatter.Analysis.Inequalities.Gibbs
 
 /-!
-# Variational principle for Gibbs energy-level distributions
+# Gibbs variational principle for energy-level distributions
 
 This file proves the diagonal/classical variational principle directly from countable probability
 weights. A competing distribution carries normalization and absolute energy integrability; finite
@@ -17,9 +17,9 @@ namespace QuantumTheory
 variable {ι : Type*}
 
 /-- A normalized countable probability family with absolutely integrable energy against the
-supplied pure-point spectrum. Finite Shannon entropy follows from the Gibbs bound. -/
-structure EigenbasisGibbsCompetitor (E : ι → ℝ) where
-  /-- Probability assigned to each pure-point energy level. -/
+supplied energy-level family. Finite Shannon entropy follows from the Gibbs bound. -/
+structure GibbsVariationalDistribution (E : ι → ℝ) where
+  /-- Probability assigned to each energy level. -/
   probability : ι → ℝ
   /-- Each probability is nonnegative. -/
   nonneg : ∀ i, 0 ≤ probability i
@@ -28,27 +28,27 @@ structure EigenbasisGibbsCompetitor (E : ι → ℝ) where
   /-- The mean-energy series is absolutely summable. -/
   energyIntegrable : Summable fun i => ‖probability i * E i‖
 
-namespace EigenbasisGibbsCompetitor
+namespace GibbsVariationalDistribution
 
-/-- Shannon entropy of a countable pure-point competitor. -/
-noncomputable def entropy (p : EigenbasisGibbsCompetitor E) : ℝ :=
+/-- Shannon entropy of a countable energy-level competitor. -/
+noncomputable def entropy (p : GibbsVariationalDistribution E) : ℝ :=
   ∑' i, Real.negMulLog (p.probability i)
 
-/-- Mean energy of a countable pure-point competitor. -/
-noncomputable def energy (p : EigenbasisGibbsCompetitor E) : ℝ :=
+/-- Mean energy of a countable energy-level competitor. -/
+noncomputable def energy (p : GibbsVariationalDistribution E) : ℝ :=
   ∑' i, p.probability i * E i
 
-/-- Helmholtz free energy of a countable pure-point competitor. -/
-noncomputable def helmholtzFreeEnergy (p : EigenbasisGibbsCompetitor E) (β : ℝ) : ℝ :=
+/-- Helmholtz free energy of a countable energy-level competitor. -/
+noncomputable def helmholtzFreeEnergy (p : GibbsVariationalDistribution E) (β : ℝ) : ℝ :=
   p.energy - (1 / β) * p.entropy
 
-end EigenbasisGibbsCompetitor
+end GibbsVariationalDistribution
 
 /-- Every normalized countable competitor with absolutely integrable energy has Helmholtz free
-energy at least the pure-point Gibbs value; finite entropy is derived from Gibbs summability. -/
-theorem eigenbasisGibbs_helmholtzFreeEnergy_le
+energy at least the energy-level Gibbs value; finite entropy is derived from Gibbs summability. -/
+theorem gibbsVariational_helmholtzFreeEnergy_le
     [Nonempty ι] (E : ι → ℝ) (β : ℝ) (hβ : 0 < β)
-    (hsum : EigenbasisGibbsSummable E β) (p : EigenbasisGibbsCompetitor E) :
+    (hsum : EigenbasisGibbsSummable E β) (p : GibbsVariationalDistribution E) :
     -(1 / β) * Real.log (eigenbasisPartitionFunction E β) ≤
       p.helmholtzFreeEnergy β := by
   let Z := eigenbasisPartitionFunction E β
@@ -71,7 +71,7 @@ theorem eigenbasisGibbs_helmholtzFreeEnergy_le
       p.probability q E β Z p.nonneg p.hasSum_one hEnergy
       hqsum hqsum_le (fun i => eigenbasisBoltzmannWeight_pos E β i) hZpos hlog
   have hmain : p.entropy ≤ β * p.energy + Real.log Z := by
-    simpa [EigenbasisGibbsCompetitor.entropy, EigenbasisGibbsCompetitor.energy] using hmain'
+    simpa [GibbsVariationalDistribution.entropy, GibbsVariationalDistribution.energy] using hmain'
   have hβinv : 0 < 1 / β := by positivity
   have hmul := mul_le_mul_of_nonneg_left hmain hβinv.le
   have hcancel : (1 / β) * (β * p.energy) = p.energy := by

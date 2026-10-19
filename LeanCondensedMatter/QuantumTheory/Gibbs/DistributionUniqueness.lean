@@ -1,12 +1,12 @@
 import LeanCondensedMatter.Analysis.InfiniteSum.Order
 import LeanCondensedMatter.Analysis.Inequalities.Gibbs
-import LeanCondensedMatter.QuantumTheory.Gibbs.EigenbasisVariational
+import LeanCondensedMatter.QuantumTheory.Gibbs.DistributionVariational
 
 /-!
-# Uniqueness for Gibbs energy-level distributions
+# Equality and uniqueness in the Gibbs distribution variational principle
 
 This file characterizes equality in the countable diagonal Gibbs variational principle. Under the
-same explicit energy-integrability hypothesis used for pure-point thermodynamics, the normalized
+same explicit energy-integrability hypothesis used for energy-level thermodynamics, the normalized
 Gibbs probabilities define an admissible competitor. Equality in the Helmholtz lower bound holds
 exactly for that competitor. Scalar and summable-family comparison helpers come from
 `Analysis/Inequalities/Gibbs.lean`, without depending on bounded operator
@@ -19,29 +19,29 @@ namespace QuantumTheory
 
 variable {ι : Type*}
 
-/-- The normalized pure-point Gibbs probabilities, bundled as an admissible variational competitor.
+/-- The normalized energy-level Gibbs probabilities, bundled as an admissible variational competitor.
 The explicit energy-integrability hypothesis is retained because state existence alone does not imply
 finite mean energy. -/
-noncomputable def eigenbasisGibbsCompetitor [Nonempty ι]
+noncomputable def gibbsEquilibriumDistribution [Nonempty ι]
     (E : ι → ℝ) (β : ℝ) (hsum : EigenbasisGibbsSummable E β)
     (hint : EigenbasisGibbsEnergyIntegrable E β) :
-    EigenbasisGibbsCompetitor E where
+    GibbsVariationalDistribution E where
   probability := eigenbasisGibbsProbability E β
   nonneg := eigenbasisGibbsProbability_nonneg E β
   hasSum_one := hasSum_eigenbasisGibbsProbability E β hsum
   energyIntegrable := hint
 
-/-- The canonical Gibbs competitor carries the normalized pure-point Gibbs probability. -/
+/-- The canonical Gibbs competitor carries the normalized energy-level Gibbs probability. -/
 @[simp]
-theorem eigenbasisGibbsCompetitor_probability [Nonempty ι]
+theorem gibbsEquilibriumDistribution_probability [Nonempty ι]
     (E : ι → ℝ) (β : ℝ) (hsum : EigenbasisGibbsSummable E β)
     (hint : EigenbasisGibbsEnergyIntegrable E β) (i : ι) :
-    (eigenbasisGibbsCompetitor E β hsum hint).probability i =
+    (gibbsEquilibriumDistribution E β hsum hint).probability i =
       eigenbasisGibbsProbability E β i := rfl
 
-private theorem eigenbasisGibbs_entropy_eq_iff
+private theorem gibbsVariational_entropy_eq_iff
     [Nonempty ι] (E : ι → ℝ) (β : ℝ)
-    (hsum : EigenbasisGibbsSummable E β) (p : EigenbasisGibbsCompetitor E) :
+    (hsum : EigenbasisGibbsSummable E β) (p : GibbsVariationalDistribution E) :
     p.entropy = β * p.energy + Real.log (eigenbasisPartitionFunction E β) ↔
       ∀ i, p.probability i = eigenbasisGibbsProbability E β i := by
   let Z := eigenbasisPartitionFunction E β
@@ -90,7 +90,7 @@ private theorem eigenbasisGibbs_entropy_eq_iff
         hBsumRaw
       _ = β * p.energy + Real.log Z := by
         rw [hqZ]
-        simp only [EigenbasisGibbsCompetitor.energy]
+        simp only [GibbsVariationalDistribution.energy]
         ring
   constructor
   · intro heq
@@ -156,16 +156,16 @@ private theorem eigenbasisGibbs_entropy_eq_iff
       _ = β * p.energy + Real.log Z := hBsum
       _ = β * p.energy + Real.log (eigenbasisPartitionFunction E β) := by rfl
 
-/-- Equality in the countable pure-point Helmholtz lower bound holds exactly when the competitor
+/-- Equality in the countable energy-level Helmholtz lower bound holds exactly when the competitor
 probabilities are the normalized Gibbs probabilities. -/
-theorem eigenbasisGibbs_helmholtzFreeEnergy_eq_iff_probability_eq
+theorem gibbsVariational_helmholtzFreeEnergy_eq_iff_probability_eq
     [Nonempty ι] (E : ι → ℝ) (β : ℝ) (hβ : 0 < β)
-    (hsum : EigenbasisGibbsSummable E β) (p : EigenbasisGibbsCompetitor E) :
+    (hsum : EigenbasisGibbsSummable E β) (p : GibbsVariationalDistribution E) :
     p.helmholtzFreeEnergy β =
         -(1 / β) * Real.log (eigenbasisPartitionFunction E β) ↔
       ∀ i, p.probability i = eigenbasisGibbsProbability E β i := by
   have hβne : β ≠ 0 := ne_of_gt hβ
-  have hcore := eigenbasisGibbs_entropy_eq_iff E β hsum p
+  have hcore := gibbsVariational_entropy_eq_iff E β hsum p
   constructor
   · intro hfree
     apply hcore.mp
@@ -181,39 +181,39 @@ theorem eigenbasisGibbs_helmholtzFreeEnergy_eq_iff_probability_eq
     field_simp [hβne]
     linarith
 
-/-- The Gibbs competitor attains the countable pure-point Helmholtz lower bound. -/
-theorem eigenbasisGibbsCompetitor_helmholtzFreeEnergy_eq
+/-- The Gibbs competitor attains the countable energy-level Helmholtz lower bound. -/
+theorem gibbsEquilibriumDistribution_helmholtzFreeEnergy_eq
     [Nonempty ι] (E : ι → ℝ) (β : ℝ) (hβ : 0 < β)
     (hsum : EigenbasisGibbsSummable E β)
     (hint : EigenbasisGibbsEnergyIntegrable E β) :
-    (eigenbasisGibbsCompetitor E β hsum hint).helmholtzFreeEnergy β =
+    (gibbsEquilibriumDistribution E β hsum hint).helmholtzFreeEnergy β =
       -(1 / β) * Real.log (eigenbasisPartitionFunction E β) := by
-  apply (eigenbasisGibbs_helmholtzFreeEnergy_eq_iff_probability_eq
-    E β hβ hsum (eigenbasisGibbsCompetitor E β hsum hint)).2
+  apply (gibbsVariational_helmholtzFreeEnergy_eq_iff_probability_eq
+    E β hβ hsum (gibbsEquilibriumDistribution E β hsum hint)).2
   intro i
   rfl
 
-/-- The admissible pure-point Gibbs competitor is the unique equality case of the countable
+/-- The equilibrium Gibbs distribution is the unique equality case of the countable
 Helmholtz variational principle. -/
-theorem eigenbasisGibbs_helmholtzFreeEnergy_eq_iff_eq_competitor
+theorem gibbsVariational_helmholtzFreeEnergy_eq_iff_eq_equilibrium
     [Nonempty ι] (E : ι → ℝ) (β : ℝ) (hβ : 0 < β)
     (hsum : EigenbasisGibbsSummable E β)
     (hint : EigenbasisGibbsEnergyIntegrable E β)
-    (p : EigenbasisGibbsCompetitor E) :
+    (p : GibbsVariationalDistribution E) :
     p.helmholtzFreeEnergy β =
         -(1 / β) * Real.log (eigenbasisPartitionFunction E β) ↔
-      p = eigenbasisGibbsCompetitor E β hsum hint := by
+      p = gibbsEquilibriumDistribution E β hsum hint := by
   constructor
   · intro hfree
     have hprob : p.probability =
-        (eigenbasisGibbsCompetitor E β hsum hint).probability := by
+        (gibbsEquilibriumDistribution E β hsum hint).probability := by
       funext i
-      exact (eigenbasisGibbs_helmholtzFreeEnergy_eq_iff_probability_eq
+      exact (gibbsVariational_helmholtzFreeEnergy_eq_iff_probability_eq
         E β hβ hsum p).mp hfree i
     cases p
     cases hprob
     rfl
   · rintro rfl
-    exact eigenbasisGibbsCompetitor_helmholtzFreeEnergy_eq E β hβ hsum hint
+    exact gibbsEquilibriumDistribution_helmholtzFreeEnergy_eq E β hβ hsum hint
 
 end QuantumTheory

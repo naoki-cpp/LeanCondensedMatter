@@ -196,7 +196,7 @@ The following declaration families are deliberate API normalization boundaries:
 - `timeDependentInteractionPerturbation_sourceCoupledPerturbation`
 - `timeDependentInteractionPropagator_zero_coupling`
 - `timeDependentInteractionPropagator_zero_time`
-- `eigenbasisGibbsCompetitor_probability`
+- `gibbsEquilibriumDistribution_probability`
 - `finiteTimeAdiabaticTransform_zero_time`
 - `eigenbasisGibbsDensityOperator_apply_basis`
 - `finiteEigenbasisGibbsDensityOperator_apply_basis`
