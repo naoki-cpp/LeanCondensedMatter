@@ -1,5 +1,6 @@
 import LeanCondensedMatter.Transport.Core.ConductivityNormalization
-import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.SpectralFrequencyResponse
+import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.FrequencyResponse
+import LeanCondensedMatter.QuantumTheory.LinearResponse.Frequency.InfiniteTime
 
 set_option linter.style.header false
 
@@ -86,67 +87,6 @@ theorem hasInfiniteObservationTimeLimit_directionalConductivity_of_stationary_po
         (fun _ : ℝ => finiteVolumeConductivityNormalization volume ω η)
         Filter.atTop
         (nhds (finiteVolumeConductivityNormalization volume ω η)))
-
-variable {ι : Type*}
-
-/-- The finite eigenbasis conductivity is the Lehmann current response plus contact response,
-multiplied by the explicit volume and electric-field normalization. -/
-theorem infiniteTimeAdiabaticDirectionalConductivity_eigenbasis_eq_finite_sum
-    [Fintype ι]
-    (volume : QuantumTheory.Transport.PositiveVolume)
-    (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
-    (data : EnergyEigenbasisLehmannData system ι)
-    (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
-    (K : LocallyFiniteHopping Site) (q ω η : ℝ) (hη : 0 < η) :
-    infiniteTimeAdiabaticDirectionalConductivity volume
-        system (eigenbasisNormalizedExpectation system data)
-          geometry direction K q ω η =
-      ((∑ mn : ι × ι,
-        (eigenbasisTransitionData system data
-            (boundedDirectionalCurrent geometry direction
-              (system.hbar : ℂ) (q : ℂ) K)
-            (boundedDirectionalCurrent geometry direction
-              (system.hbar : ℂ) (q : ℂ) K) mn).frequencyTerm ω η) +
-        eigenbasisNormalizedExpectation system data
-          (boundedDirectionalContact geometry direction
-            (system.hbar : ℂ) (q : ℂ) K)) *
-        finiteVolumeConductivityNormalization volume ω η := by
-  rw [infiniteTimeAdiabaticDirectionalConductivity]
-  rw [finiteVolumeConductivityFromVectorPotential]
-  rw [infiniteTimeAdiabaticDirectionalResponse_eigenbasis_eq_finite_sum
-    system data geometry direction K q ω η hη]
-
-/-- The finite-time conductivity converges directly to the normalized finite Lehmann sum plus
-contact term. -/
-theorem hasInfiniteObservationTimeLimit_directionalConductivity_eigenbasis_finite_sum
-    [Fintype ι]
-    (volume : QuantumTheory.Transport.PositiveVolume)
-    (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
-    (data : EnergyEigenbasisLehmannData system ι)
-    (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
-    (K : LocallyFiniteHopping Site) (q ω η : ℝ) (hη : 0 < η) :
-    HasInfiniteObservationTimeLimit
-      (finiteTimeAdiabaticDirectionalConductivity volume
-        system (eigenbasisNormalizedExpectation system data)
-          geometry direction K q ω η)
-      (((∑ mn : ι × ι,
-        (eigenbasisTransitionData system data
-            (boundedDirectionalCurrent geometry direction
-              (system.hbar : ℂ) (q : ℂ) K)
-            (boundedDirectionalCurrent geometry direction
-              (system.hbar : ℂ) (q : ℂ) K) mn).frequencyTerm ω η) +
-        eigenbasisNormalizedExpectation system data
-          (boundedDirectionalContact geometry direction
-            (system.hbar : ℂ) (q : ℂ) K)) *
-        finiteVolumeConductivityNormalization volume ω η) := by
-  have hlimit := hasInfiniteObservationTimeLimit_directionalConductivity_of_stationary_pos
-    volume system (eigenbasisNormalizedExpectation system data)
-      (isStationary_eigenbasisNormalizedExpectation system data)
-      geometry direction K q ω η hη
-  rw [infiniteTimeAdiabaticDirectionalConductivity_eigenbasis_eq_finite_sum
-    volume system data geometry direction K q ω η hη] at hlimit
-  exact hlimit
-
 end
 end Transport
 end Fermionic

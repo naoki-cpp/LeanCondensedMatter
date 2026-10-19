@@ -35,22 +35,6 @@ variable [LinearOrder Site]
 variable [AddCommGroup E] [Module ℝ E]
 variable [Fintype ι]
 
-/-- One finite directional Kubo–Bastin transition with its discrete occupation difference replaced
-by an oriented energy integral of the occupation derivative. -/
-noncomputable def finiteKuboBastinOccupationResolvedDirectionalCurrentTerm
-    (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
-    (data : EnergyEigenbasisLehmannData system ι)
-    (interpolation : EigenbasisOccupationInterpolation system data)
-    (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
-    (K : LocallyFiniteHopping Site) (q omega eta : ℝ)
-    (mn : ι × ι) : ℂ :=
-  eigenbasisKuboBastinOccupationResolvedVertexTerm system data interpolation
-    (boundedDirectionalCurrent geometry direction
-      (system.hbar : ℂ) (q : ℂ) K)
-    (boundedDirectionalCurrent geometry direction
-      (system.hbar : ℂ) (q : ℂ) K)
-    omega eta mn
-
 /-- The complete finite directional conductivity after replacing every discrete probability
 difference by its oriented occupation-derivative integral. The contact term and finite-volume
 normalization remain unchanged. -/

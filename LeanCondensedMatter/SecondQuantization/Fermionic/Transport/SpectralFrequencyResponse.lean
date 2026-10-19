@@ -33,31 +33,6 @@ variable [AddCommGroup E] [Module ℝ E]
 
 variable {ι : Type*}
 
-/-- Equal-energy off-diagonal transitions retain the regularized denominator `η - iω`; their
-weight is not assumed to vanish without an additional equality of state probabilities. -/
-theorem eigenbasisDirectionalCurrentLehmannTerm_of_equal_energy
-    (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
-    (data : EnergyEigenbasisLehmannData system ι)
-    (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
-    (K : LocallyFiniteHopping Site) (q ω η : ℝ) {m n : ι}
-    (henergy : data.energy m = data.energy n) :
-    (eigenbasisTransitionData system data
-          (boundedDirectionalCurrent geometry direction
-            (system.hbar : ℂ) (q : ℂ) K)
-          (boundedDirectionalCurrent geometry direction
-            (system.hbar : ℂ) (q : ℂ) K) (m, n)).frequencyTerm ω η =
-      (eigenbasisTransitionData system data
-          (boundedDirectionalCurrent geometry direction
-            (system.hbar : ℂ) (q : ℂ) K)
-          (boundedDirectionalCurrent geometry direction
-            (system.hbar : ℂ) (q : ℂ) K) (m, n)).weight *
-        ((η : ℂ) - Complex.I * (ω : ℂ))⁻¹ := by
-  simp only [QuantumTheory.LinearResponse.LehmannTransitionData.frequencyTerm,
-    eigenbasisTransitionData_energyGap, orderedLehmannEnergyGap]
-  have hgap : data.energy m - data.energy n = 0 := sub_eq_zero.mpr henergy
-  rw [hgap]
-  simp [lehmannTerm, lehmannDenominator]
-
 /-- The full fixed-rate directional coefficient is the finite Lehmann sum plus the explicit
 geometric Peierls contact expectation. -/
 theorem infiniteTimeAdiabaticDirectionalResponse_eigenbasis_eq_finite_sum

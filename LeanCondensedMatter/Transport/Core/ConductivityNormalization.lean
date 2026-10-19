@@ -70,5 +70,13 @@ noncomputable def finiteVolumeConductivityFromVectorPotential
     (volume : PositiveVolume) (ω η : ℝ) (response : ℂ) : ℂ :=
   response * finiteVolumeConductivityNormalization volume ω η
 
+/-- At zero frequency, the electric-field normalization keeps the finite switching rate and volume
+explicit. -/
+theorem finiteVolumeConductivityNormalization_zero_frequency
+    (convention : PositiveVolume) (eta : ℝ) :
+    finiteVolumeConductivityNormalization convention 0 eta =
+      (((convention.volume : ℂ) * (-(eta : ℂ))))⁻¹ := by
+  simp [finiteVolumeConductivityNormalization, adiabaticElectricFieldFactor]
+
 end Transport
 end QuantumTheory
