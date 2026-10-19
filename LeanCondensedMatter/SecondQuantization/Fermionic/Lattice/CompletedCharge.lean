@@ -21,11 +21,6 @@ noncomputable section
 
 variable {Site : Type*} [LinearOrder Site]
 
-/-- Local site charge on the completed occupation Fock space, with no finite-site hypothesis. -/
-noncomputable def completedSiteChargeDensity (q : ℂ) (x : Site) :
-    CompletedFockSpace Site →L[ℂ] CompletedFockSpace Site :=
-  q • completedNumberOperator x
-
 /-- The basis-independent lattice charge becomes the occupation number operator under the
 canonical one-particle site basis, for any site type. -/
 theorem occupationConjugate_siteChargeDensity (q : ℂ) (x : Site) :
@@ -60,7 +55,7 @@ theorem occupationConjugate_siteChargeDensity (q : ℂ) (x : Site) :
 /-- The completed local charge realizes the original algebraic lattice charge on the dense
 algebraic core. In particular, no `Fintype Site` assumption is needed. -/
 theorem completedSiteChargeDensity_comp_algebraicToCompleted (q : ℂ) (x : Site) :
-    (completedSiteChargeDensity q x).toLinearMap.comp algebraicToCompleted =
+    (q • completedNumberOperator x).toLinearMap.comp algebraicToCompleted =
       algebraicToCompleted.comp
         (AlgebraicFock.occupationConjugate
           (Finsupp.basisSingleOne : Module.Basis Site ℂ (Site →₀ ℂ))
