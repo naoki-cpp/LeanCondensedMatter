@@ -169,11 +169,6 @@ noncomputable def boundedHoppingHamiltonian (K : LocallyFiniteHopping Site) :
     FiniteLatticeHilbertFock Site →L[ℂ] FiniteLatticeHilbertFock Site :=
   boundedLatticeOperator (hoppingHamiltonian K)
 
-/-- Bounded local charge observable on the finite-lattice Hilbert Fock space. -/
-noncomputable def boundedSiteChargeDensity (q : ℂ) (x : Site) :
-    FiniteLatticeHilbertFock Site →L[ℂ] FiniteLatticeHilbertFock Site :=
-  boundedLatticeOperator (siteChargeDensity q x)
-
 /-- Bounded oriented bond-current observable on the finite-lattice Hilbert Fock space. -/
 noncomputable def boundedBondCurrent (ℏ q : ℂ) (K : LocallyFiniteHopping Site)
     (x y : Site) :
@@ -236,14 +231,14 @@ representation. -/
 theorem bounded_discrete_continuity (ℏ q : ℂ)
     (K : LocallyFiniteHopping Site) (x : Site) :
     (Complex.I / ℏ) •
-          ⁅boundedHoppingHamiltonian K, boundedSiteChargeDensity q x⁆ +
+          ⁅boundedHoppingHamiltonian K, boundedLatticeOperator (siteChargeDensity q x)⁆ +
         ∑ y ∈ K.incident x, boundedBondCurrent ℏ q K x y = 0 := by
   have h := congrArg (boundedLatticeOperator (Site := Site))
     (discrete_continuity ℏ q K x)
   simpa only [boundedLatticeOperator_add, boundedLatticeOperator_smul,
     boundedLatticeOperator_sum, boundedLatticeOperator_zero,
     boundedLatticeOperator_lie, boundedHoppingHamiltonian,
-    boundedSiteChargeDensity, boundedBondCurrent] using h
+    boundedBondCurrent] using h
 
 end FiniteLattice
 
