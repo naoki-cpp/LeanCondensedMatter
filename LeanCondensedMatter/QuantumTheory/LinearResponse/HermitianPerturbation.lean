@@ -48,28 +48,15 @@ theorem isSelfAdjoint_integral_timeDependentInteractionPerturbation_of_isSelfAdj
     (V : ℝ → (H →L[ℂ] H)) (hV : ∀ s, IsSelfAdjoint (V s)) (t : ℝ) :
     IsSelfAdjoint
       (∫ s in (0 : ℝ)..t, timeDependentInteractionPerturbation system V s) := by
-  let starIso : (H →L[ℂ] H) →ₗᵢ[ℝ] (H →L[ℂ] H) :=
-    { toLinearMap := (starL' ℝ).toLinearEquiv.toLinearMap
-      norm_map' := norm_star }
-  have starIso_apply (A : H →L[ℂ] H) : starIso A = star A := by
-    change (starL' ℝ) A = star A
-    exact starL'_apply ℝ A
   rw [isSelfAdjoint_iff]
   calc
     star (∫ s in (0 : ℝ)..t, timeDependentInteractionPerturbation system V s) =
-        starIso (∫ s in (0 : ℝ)..t, timeDependentInteractionPerturbation system V s) := by
-      rw [starIso_apply]
-    _ = ∫ s in (0 : ℝ)..t,
-          starIso (timeDependentInteractionPerturbation system V s) := by
-      symm
-      exact LinearIsometry.intervalIntegral_comp_comm
-        starIso (fun s => timeDependentInteractionPerturbation system V s)
+        ∫ s in (0 : ℝ)..t, star (timeDependentInteractionPerturbation system V s) :=
+      ((starₗᵢ ℝ).toLinearIsometry.intervalIntegral_comp_comm
+        (fun s => timeDependentInteractionPerturbation system V s)).symm
     _ = ∫ s in (0 : ℝ)..t, timeDependentInteractionPerturbation system V s := by
       apply intervalIntegral.integral_congr
       intro s _
-      change starIso (timeDependentInteractionPerturbation system V s) =
-        timeDependentInteractionPerturbation system V s
-      rw [starIso_apply]
       exact
         (isSelfAdjoint_timeDependentInteractionPerturbation_of_isSelfAdjoint
           system V hV s).star_eq
