@@ -1,6 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.ModeTruncation
 import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.Hamiltonian
-import LeanCondensedMatter.QuantumTheory.Gibbs.Eigenbasis
+import LeanCondensedMatter.QuantumTheory.Gibbs.Boltzmann
 import Mathlib.Analysis.Normed.Group.Tannery
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.Gibbs
 

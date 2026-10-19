@@ -74,8 +74,10 @@ through continuous functional calculus. The bounded-Hamiltonian `gibbsState` API
 finite-dimensional; compactness and spectral summability of the Gibbs operator, together with its
 positive nonzero trace, are derived internally.
 
-For Hamiltonians represented by a complete energy eigenbasis, `QuantumTheory.Gibbs.Eigenbasis`
-constructs the density state directly from a Hilbert basis and real energies. Its canonical API is
+`QuantumTheory.Gibbs.Boltzmann` owns the scalar Boltzmann weights, partition sum,
+normalized probabilities, and summability conditions; none requires a Hilbert space.
+For a complete energy eigenbasis, `QuantumTheory.Gibbs.Eigenbasis` constructs the density
+operator from these scalar data and a Hilbert basis. The canonical APIs are
 
 ```text
 eigenbasisBoltzmannWeight

@@ -157,6 +157,9 @@ For a bounded self-adjoint Hamiltonian `Hop`, `gibbsOp Hop β` is defined by con
 calculus as `exp (-β Hop)`. The public bounded `gibbsState` API assumes finite dimensionality
 directly; compactness, spectral summability, and strictly positive trace are derived internally.
 
+`Gibbs/Boltzmann.lean` owns real energy-level weights and probabilities independently of
+Hilbert spaces; `Gibbs/Eigenbasis.lean` constructs density operators from those scalar data.
+
 For `β > 0`, the Helmholtz lower bound is attained exactly by the canonical Gibbs state under the
 same finite-dimensional and nontrivial-space assumptions. Pure-point spectral data provide a
 separate state-level Gibbs construction when the Boltzmann weights are summable.

@@ -1,5 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.Hamiltonian
-import LeanCondensedMatter.QuantumTheory.Gibbs.Eigenbasis
+import LeanCondensedMatter.QuantumTheory.Gibbs.Boltzmann
 import Mathlib.Analysis.SpecialFunctions.Log.Summable
 
 set_option linter.style.header false

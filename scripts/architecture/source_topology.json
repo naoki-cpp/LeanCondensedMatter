@@ -232,6 +232,7 @@
       ],
       "layers": [
         {"id": "diagonalFormula", "modulePrefixes": ["LeanCondensedMatter.QuantumTheory.DensityOperator.DiagonalFormula"]},
+        {"id": "boltzmann", "modulePrefixes": ["LeanCondensedMatter.QuantumTheory.Gibbs.Boltzmann"]},
         {"id": "eigenbasis", "modulePrefixes": ["LeanCondensedMatter.QuantumTheory.Gibbs.Eigenbasis"]},
         {"id": "finiteHilbert", "modulePrefixes": ["LeanCondensedMatter.SecondQuantization.Common.Algebra.FiniteHilbertOperator"]},
         {"id": "finiteExpectation", "modulePrefixes": ["LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsExpectationBridge"]},
@@ -239,6 +240,7 @@
         {"id": "freeEntropy", "modulePrefixes": ["LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeEntropy"]}
       ],
       "edges": [
+        {"upstream": "boltzmann", "downstream": "eigenbasis"},
         {"upstream": "diagonalFormula", "downstream": "eigenbasis"},
         {"upstream": "eigenbasis", "downstream": "finiteExpectation"},
         {"upstream": "finiteHilbert", "downstream": "finiteExpectation"},

@@ -1,4 +1,5 @@
 import LeanCondensedMatter.QuantumTheory.Gibbs.State
+import LeanCondensedMatter.QuantumTheory.Gibbs.Boltzmann
 import LeanCondensedMatter.QuantumTheory.Gibbs.Eigenbasis
 import LeanCondensedMatter.QuantumTheory.Gibbs.HeatOperator
 import LeanCondensedMatter.QuantumTheory.Gibbs.EigenbasisExpectation
