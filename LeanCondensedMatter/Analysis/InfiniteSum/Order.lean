@@ -20,32 +20,9 @@ theorem Summable.tsum_comp_injective_lt_of_exists_not_mem
     {j : κ} (hj : j ∉ Set.range e) (hjpos : 0 < f j) :
     ∑' i, f (e i) < ∑' k, f k := by
   let e' : ι ⊕ Unit → κ := Sum.elim e (fun _ => j)
-  have he' : Function.Injective e' := by
-    intro a b hab
-    cases a with
-    | inl i =>
-        cases b with
-        | inl i' =>
-            apply congrArg Sum.inl
-            apply he
-            change e i = e i' at hab
-            exact hab
-        | inr u =>
-            exfalso
-            apply hj
-            refine ⟨i, ?_⟩
-            change e i = j at hab
-            exact hab
-    | inr u =>
-        cases b with
-        | inl i =>
-            exfalso
-            apply hj
-            refine ⟨i, ?_⟩
-            change j = e i at hab
-            exact hab.symm
-        | inr u' =>
-            exact congrArg Sum.inr (Subsingleton.elim u u')
+  have he' : Function.Injective e' :=
+    Function.Injective.sumElim he (fun _ _ _ => Subsingleton.elim _ _)
+      (fun i _ hij => hj ⟨i, hij⟩)
   have haug : Summable (fun q : ι ⊕ Unit => f (e' q)) :=
     hf.comp_injective he'
   have hleft : Summable ((fun q : ι ⊕ Unit => f (e' q)) ∘ Sum.inl) :=
