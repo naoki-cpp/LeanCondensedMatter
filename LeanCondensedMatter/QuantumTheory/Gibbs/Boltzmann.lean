@@ -18,7 +18,7 @@ namespace QuantumTheory
 
 variable {ι : Type*}
 
-/-- The positive real Boltzmann weight `exp (-β Eᵢ)` attached to one pure-point energy level. -/
+/-- The positive real Boltzmann weight `exp (-β Eᵢ)` of an energy level. -/
 noncomputable def eigenbasisBoltzmannWeight (E : ι → ℝ) (β : ℝ) (i : ι) : ℝ :=
   Real.exp (-β * E i)
 
@@ -30,12 +30,12 @@ theorem eigenbasisBoltzmannWeight_nonneg (E : ι → ℝ) (β : ℝ) (i : ι) :
     0 ≤ eigenbasisBoltzmannWeight E β i :=
   (eigenbasisBoltzmannWeight_pos E β i).le
 
-/-- Absolute Boltzmann summability for a pure-point Gibbs state.  This is the explicit trace-class
-hypothesis consumed by the generic diagonal density-state constructor. -/
+/-- Absolute Boltzmann summability. This guarantees a finite partition function and, when
+combined with a Hilbert basis, a trace-class Gibbs density operator. -/
 def EigenbasisGibbsSummable (E : ι → ℝ) (β : ℝ) : Prop :=
   Summable fun i => ‖eigenbasisBoltzmannWeight E β i‖
 
-/-- The pure-point partition function `Z(β) = ∑ᵢ exp (-β Eᵢ)`. -/
+/-- The partition function `Z(β) = ∑ᵢ exp (-β Eᵢ)`. -/
 noncomputable def eigenbasisPartitionFunction (E : ι → ℝ) (β : ℝ) : ℝ :=
   ∑' i, eigenbasisBoltzmannWeight E β i
 
@@ -45,7 +45,7 @@ theorem eigenbasisBoltzmannWeight_summable (E : ι → ℝ) (β : ℝ)
     Summable (eigenbasisBoltzmannWeight E β) :=
   Summable.of_norm hsum
 
-/-- For a nonempty pure-point spectrum, a summable family of strictly positive Boltzmann weights
+/-- For a nonempty energy index, a summable family of strictly positive Boltzmann weights
 has a strictly positive partition function. -/
 theorem eigenbasisPartitionFunction_pos [Nonempty ι] (E : ι → ℝ) (β : ℝ)
     (hsum : EigenbasisGibbsSummable E β) :
@@ -57,7 +57,7 @@ theorem eigenbasisPartitionFunction_pos [Nonempty ι] (E : ι → ℝ) (β : ℝ
     (fun j => eigenbasisBoltzmannWeight_nonneg E β j) i
     (eigenbasisBoltzmannWeight_pos E β i)
 
-/-- The normalized Gibbs probability of one pure-point energy level. -/
+/-- The normalized Gibbs probability of an energy level. -/
 noncomputable def eigenbasisGibbsProbability (E : ι → ℝ) (β : ℝ) (i : ι) : ℝ :=
   (eigenbasisPartitionFunction E β)⁻¹ * eigenbasisBoltzmannWeight E β i
 
@@ -70,7 +70,7 @@ theorem eigenbasisGibbsProbability_nonneg (E : ι → ℝ) (β : ℝ) (i : ι) :
       exact tsum_nonneg fun j => eigenbasisBoltzmannWeight_nonneg E β j))
     (eigenbasisBoltzmannWeight_nonneg E β i)
 
-/-- The normalized pure-point Gibbs probabilities sum to one. -/
+/-- The normalized Gibbs probabilities sum to one. -/
 theorem hasSum_eigenbasisGibbsProbability [Nonempty ι] (E : ι → ℝ) (β : ℝ)
     (hsum : EigenbasisGibbsSummable E β) :
     HasSum (eigenbasisGibbsProbability E β) 1 := by
@@ -79,12 +79,12 @@ theorem hasSum_eigenbasisGibbsProbability [Nonempty ι] (E : ι → ℝ) (β : �
       (eigenbasisBoltzmannWeight_summable E β hsum)
       (eigenbasisPartitionFunction_pos E β hsum).ne'
 
-/-- Finiteness condition for the mean energy when the pure-point energy data are not represented by
-a bounded `Observable`.  State existence alone does not imply this stronger weighted summability. -/
+/-- Absolute integrability of energy with respect to the Gibbs probabilities. Existence of the
+normalized probabilities alone does not imply finite mean energy. -/
 def EigenbasisGibbsEnergyIntegrable (E : ι → ℝ) (β : ℝ) : Prop :=
   Summable fun i => ‖eigenbasisGibbsProbability E β i * E i‖
 
-/-- On a finite spectral index, the Boltzmann summability hypothesis is automatic. -/
+/-- On a finite energy index, the Boltzmann summability hypothesis is automatic. -/
 theorem eigenbasisGibbsSummable_of_finite [Finite ι] (E : ι → ℝ) (β : ℝ) :
     EigenbasisGibbsSummable E β := by
   exact Summable.of_finite
