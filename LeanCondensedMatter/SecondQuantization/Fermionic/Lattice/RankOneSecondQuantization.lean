@@ -33,7 +33,7 @@ theorem dGamma_matrixUnit (x y : Site) :
 variable [LinearOrder Site]
 
 /-- Lattice matrix units become occupation-basis creation-annihilation bilinears for
-arbitrary site sets. Both finite and completed realizations use this identity. -/
+arbitrary site sets, before any finite-dimensional bounded transport. -/
 theorem occupationConjugate_dGamma_matrixUnit (x y : Site) :
     AlgebraicFock.occupationConjugate
         (Finsupp.basisSingleOne : Module.Basis Site ℂ (Site →₀ ℂ))
