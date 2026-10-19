@@ -125552,7 +125552,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.prod_ofFn_quarticLegOperatorForSequence_eq_quarticVertexSequenceInteractionPicture",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Pairing.0.SecondQuantization.Fermionic.prod_ofFn_quarticLegOperatorForSequence_eq_quarticVertexSequenceInteractionPicture",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.InteractionPictureVertexProduct.0.SecondQuantization.Fermionic.prod_externalInsertionTimedEventAtomicOperators",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Semantics.Flattening.0.SecondQuantization.Fermionic.prod_twoPointTimedEventAtomicOperators"
     ],
@@ -125560,7 +125560,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.prod_ofFn_quarticLegOperatorForSequence_eq_quarticVertexSequenceInteractionPicture",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Pairing.0.SecondQuantization.Fermionic.prod_ofFn_quarticLegOperatorForSequence_eq_quarticVertexSequenceInteractionPicture",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.InteractionPictureVertexProduct.0.SecondQuantization.Fermionic.prod_externalInsertionTimedEventAtomicOperators",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Semantics.Flattening.0.SecondQuantization.Fermionic.prod_twoPointTimedEventAtomicOperators"
     ],
@@ -129350,7 +129350,7 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Bosonic.quarticFreeThermalOrderedProduct_eq_quarticVertexSequenceOperator",
-      "SecondQuantization.Fermionic.prod_ofFn_quarticLegOperatorForSequence_eq_quarticVertexSequenceInteractionPicture"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Pairing.0.SecondQuantization.Fermionic.prod_ofFn_quarticLegOperatorForSequence_eq_quarticVertexSequenceInteractionPicture"
     ],
     "dependencies": [
       "SecondQuantization.Common.listOfFn_orderedQuarticLegFamily_cons"
@@ -129359,7 +129359,7 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Bosonic.quarticFreeThermalOrderedProduct_eq_quarticVertexSequenceOperator",
-      "SecondQuantization.Fermionic.prod_ofFn_quarticLegOperatorForSequence_eq_quarticVertexSequenceInteractionPicture"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Pairing.0.SecondQuantization.Fermionic.prod_ofFn_quarticLegOperatorForSequence_eq_quarticVertexSequenceInteractionPicture"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -146107,8 +146107,8 @@
       "SecondQuantization.Fermionic.dysonTraceVertexMoment_eq_freeGibbsDensityOperator_expectation",
       "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_comp_dysonCoeff_quarticInteraction",
       "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_prod_timedFieldOperator_eq_sum_pairing",
-      "SecondQuantization.Fermionic.prod_ofFn_quarticLegOperatorForSequence_eq_quarticVertexSequenceInteractionPicture",
       "SecondQuantization.Fermionic.timedFieldOperator_quarticLegFieldForSequence",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Pairing.0.SecondQuantization.Fermionic.prod_ofFn_quarticLegOperatorForSequence_eq_quarticVertexSequenceInteractionPicture",
       "intervalIntegral.orderedSimplexIntegral_congr",
       "intervalIntegral.orderedSimplexIntegral_finsetSum"
     ],
@@ -151559,51 +151559,6 @@
     "completedMention": true,
     "compiledConsumers": [],
     "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (ε : Mode → ℝ) (n : ℕ)\n  (q : Fin n → SecondQuantization.Common.QuarticVertexLabel Mode) (τ : Fin n → ℝ),\n  (List.ofFn (SecondQuantization.Fermionic.quarticLegOperatorForSequence ε q τ)).prod =\n    SecondQuantization.Common.quarticVertexSequenceInteractionPicture (SecondQuantization.Fermionic.fermionEnergy ε)\n      SecondQuantization.Fermionic.create SecondQuantization.Fermionic.annihilate n q τ",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.prod_ofFn_quarticLegOperatorForSequence_eq_quarticVertexSequenceInteractionPicture",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Flattening",
-    "externalAxioms": [],
-    "docString": "The ordered product of the flattened evolved quartic legs is exactly the Common\ninteraction-picture quartic-vertex sequence. The row-major `4n` product decomposition is owned by\n`Common.prod_orderedQuarticLegFamily_eq_vertexProducts`; this theorem supplies only the fermionic\nimaginary-time specialization. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.dysonVertexMoment_quarticInteraction_eq_sum_vertexLabel_pairingEvaluation"
-    ],
-    "dependencies": [
-      "SecondQuantization.Common.heisenbergEvolve_quarticVertexOperator_eq_prod",
-      "SecondQuantization.Common.prod_orderedQuarticLegFamily_eq_vertexProducts"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.dysonVertexMoment_quarticInteraction_eq_sum_vertexLabel_pairingEvaluation"
-    ],
-    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -185115,6 +185070,51 @@
       "SecondQuantization.Fermionic.completedCreate_basisState_of_not_mem"
     ],
     "compiledConsumerCount": 4,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (ε : Mode → ℝ) (n : ℕ)\n  (q : Fin n → SecondQuantization.Common.QuarticVertexLabel Mode) (τ : Fin n → ℝ),\n  (List.ofFn (SecondQuantization.Fermionic.quarticLegOperatorForSequence ε q τ)).prod =\n    SecondQuantization.Common.quarticVertexSequenceInteractionPicture (SecondQuantization.Fermionic.fermionEnergy ε)\n      SecondQuantization.Fermionic.create SecondQuantization.Fermionic.annihilate n q τ",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Pairing.0.SecondQuantization.Fermionic.prod_ofFn_quarticLegOperatorForSequence_eq_quarticVertexSequenceInteractionPicture",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Pairing",
+    "externalAxioms": [],
+    "docString": "The ordered product of the flattened evolved quartic legs is exactly the Common\ninteraction-picture quartic-vertex sequence. The row-major `4n` product decomposition is owned by\n`Common.prod_orderedQuarticLegFamily_eq_vertexProducts`; this theorem supplies only the fermionic\nimaginary-time specialization. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.dysonVertexMoment_quarticInteraction_eq_sum_vertexLabel_pairingEvaluation"
+    ],
+    "dependencies": [
+      "SecondQuantization.Common.heisenbergEvolve_quarticVertexOperator_eq_prod",
+      "SecondQuantization.Common.prod_orderedQuarticLegFamily_eq_vertexProducts"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.dysonVertexMoment_quarticInteraction_eq_sum_vertexLabel_pairingEvaluation"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
