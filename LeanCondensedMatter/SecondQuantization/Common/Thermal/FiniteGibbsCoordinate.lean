@@ -2,7 +2,7 @@ import LeanCondensedMatter.SecondQuantization.Common.Algebra.FiniteTrace
 import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.DiagonalEvolution
 import LeanCondensedMatter.SecondQuantization.Common.Perturbation.FiniteOperatorIntegral
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsExpectationBridge
-import LeanCondensedMatter.QuantumTheory.Gibbs.Eigenbasis
+import LeanCondensedMatter.QuantumTheory.Gibbs.Boltzmann
 
 set_option linter.style.header false
 set_option linter.style.openClassical false

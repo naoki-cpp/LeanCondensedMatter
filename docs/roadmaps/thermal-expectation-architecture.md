@@ -29,7 +29,8 @@ The reusable finite coordinate layer is split by responsibility:
 
 | Owner | Responsibility |
 |---|---|
-| `QuantumTheory/Gibbs/Eigenbasis.lean` | Boltzmann weights, partition functions, probabilities, pure-point Gibbs states. |
+| `QuantumTheory/Gibbs/Boltzmann.lean` | Real Boltzmann weights, partition functions, normalized probabilities, and summability. |
+| `QuantumTheory/Gibbs/Eigenbasis.lean` | Gibbs density states built from energy eigenbases and scalar Boltzmann data. |
 | `Common/Algebra/FiniteHilbertOperator.lean` | Finite Hilbert realization and algebraic-operator transport. |
 | `Common/Thermal/FiniteGibbsExpectationBridge.lean` | Canonical finite density-state expectation adapter and pure-point probability formula. |
 | `Common/Thermal/FiniteGibbsCoordinate.lean` | Complex Boltzmann weights, diagonal-evolution traces, and trace-ratio formulas. |
