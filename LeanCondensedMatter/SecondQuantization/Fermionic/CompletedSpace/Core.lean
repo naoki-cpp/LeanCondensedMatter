@@ -69,7 +69,7 @@ theorem completedNumberOperator_comp_algebraicToCompleted (i : Mode) :
       (Common.algebraicToCompleted_basisState (Config := Occupation Mode) n)
   rw [hbasis, numberOperator_basisState, completedNumberOperator_basisState]
   by_cases h : i ∈ n
-  · simpa only [if_pos h] using hbasis.symm
+  · simpa [h] using hbasis.symm
   · simp [h]
 
 end
