@@ -16402,19 +16402,47 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "ContinuousLinearMap.finiteDimensionalOperatorTrace_mul_comm",
       "ContinuousLinearMap.finiteDimensionalOperatorTrace_star",
       "ContinuousLinearMap.finiteDimensionalOperatorTrace_toEuclideanCLM",
-      "_private.LeanCondensedMatter.Transport.Streda.TraceSpectral.0.QuantumTheory.Transport.finiteDimensionalOperatorTrace_eq_sum_inner_energyEigenbasis"
+      "ContinuousLinearMap.hasDerivAt_finiteDimensionalOperatorTrace_comp",
+      "QuantumTheory.Models.MassiveDirac.currentBandBlockTrace_interband_eq_chargeSq_forceMatrixTraceNumerator",
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceIntegral_eq_radialCoefficient",
+      "QuantumTheory.Models.MassiveDirac.forceMatrixTraceNumerator_eq_hamiltonianDerivativeMatrixElements",
+      "QuantumTheory.Models.RashbaExchange.cleanBastinPointResponse_rashba_zero_swap",
+      "QuantumTheory.Models.RashbaExchange.currentBandBlockTrace_interband_eq_chargeSq_forceMatrixTraceNumerator",
+      "QuantumTheory.Transport.Topology.PeriodicBlochProjector.berryCurvatureComplex_isSelfAdjoint",
+      "QuantumTheory.Transport.Topology.PeriodicBlochProjector.berryCurvatureComplex_swap",
+      "QuantumTheory.Transport.regularizedStredaSurfacePrimitiveTrace_eq_suppliedGreen",
+      "SecondQuantization.Fermionic.Validation.twoLevel_zeroCurrent_streda_sum_zero",
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderRadial.0.QuantumTheory.Models.MassiveDirac.integral_polarPauli_directionTrace_eq",
+      "_private.LeanCondensedMatter.Transport.Streda.TraceSpectral.0.QuantumTheory.Transport.finiteDimensionalOperatorTrace_eq_sum_inner_energyEigenbasis",
+      "_private.LeanCondensedMatter.Transport.Topology.0.QuantumTheory.Transport.Topology.PeriodicBlochProjector.rankOneProjectorCurvature_eq"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "_private.LeanCondensedMatter.Analysis.Operator.FiniteTrace.0.ContinuousLinearMap.finiteDimensionalOperatorTrace_apply_private"
+    ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "ContinuousLinearMap.finiteDimensionalOperatorTrace_mul_comm",
       "ContinuousLinearMap.finiteDimensionalOperatorTrace_star",
       "ContinuousLinearMap.finiteDimensionalOperatorTrace_toEuclideanCLM",
-      "_private.LeanCondensedMatter.Transport.Streda.TraceSpectral.0.QuantumTheory.Transport.finiteDimensionalOperatorTrace_eq_sum_inner_energyEigenbasis"
+      "ContinuousLinearMap.hasDerivAt_finiteDimensionalOperatorTrace_comp",
+      "QuantumTheory.Models.MassiveDirac.currentBandBlockTrace_interband_eq_chargeSq_forceMatrixTraceNumerator",
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceIntegral_eq_radialCoefficient",
+      "QuantumTheory.Models.MassiveDirac.forceMatrixTraceNumerator_eq_hamiltonianDerivativeMatrixElements",
+      "QuantumTheory.Models.RashbaExchange.cleanBastinPointResponse_rashba_zero_swap",
+      "QuantumTheory.Models.RashbaExchange.currentBandBlockTrace_interband_eq_chargeSq_forceMatrixTraceNumerator",
+      "QuantumTheory.Transport.Topology.PeriodicBlochProjector.berryCurvatureComplex_isSelfAdjoint",
+      "QuantumTheory.Transport.Topology.PeriodicBlochProjector.berryCurvatureComplex_swap",
+      "QuantumTheory.Transport.regularizedStredaSurfacePrimitiveTrace_eq_suppliedGreen",
+      "SecondQuantization.Fermionic.Validation.twoLevel_zeroCurrent_streda_sum_zero",
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderRadial.0.QuantumTheory.Models.MassiveDirac.integral_polarPauli_directionTrace_eq",
+      "_private.LeanCondensedMatter.Transport.Streda.TraceSpectral.0.QuantumTheory.Transport.finiteDimensionalOperatorTrace_eq_sum_inner_energyEigenbasis",
+      "_private.LeanCondensedMatter.Transport.Topology.0.QuantumTheory.Transport.Topology.PeriodicBlochProjector.rankOneProjectorCurvature_eq"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 16,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -16455,7 +16483,9 @@
       "QuantumTheory.Transport.regularizedStredaResidualSeaTraceKernel_swap",
       "QuantumTheory.Transport.regularizedStredaSurfacePrimitiveTrace_eq_suppliedGreen"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "ContinuousLinearMap.finiteDimensionalOperatorTrace_apply"
+    ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
@@ -16774,7 +16804,9 @@
     "dependents": [
       "QuantumTheory.Transport.hasDerivAt_regularizedStredaSurfacePrimitiveTrace"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "ContinuousLinearMap.finiteDimensionalOperatorTrace_apply"
+    ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
@@ -61003,6 +61035,7 @@
       "QuantumTheory.Models.MassiveDirac.two_mul_currentBandBlockTrace_interband_im_div_gap_sq_eq_chargeSq_pointwiseBerryCurvature"
     ],
     "dependencies": [
+      "ContinuousLinearMap.finiteDimensionalOperatorTrace_apply",
       "ContinuousLinearMap.finiteDimensionalOperatorTrace_toEuclideanCLM"
     ],
     "crossModuleDirectWrapper": false,
@@ -67492,6 +67525,7 @@
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceRadialIntegrand_eq_radialCoefficient"
     ],
     "dependencies": [
+      "ContinuousLinearMap.finiteDimensionalOperatorTrace_apply",
       "ContinuousLinearMap.finiteDimensionalOperatorTrace_mul_comm",
       "QuantumTheory.Models.MassiveDirac.currentOperator_eq_charge_smul_velocityOperator",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGreenOperator_polar_eq",
@@ -68781,6 +68815,7 @@
       "QuantumTheory.Models.MassiveDirac.pointwiseBerryCurvature_xy_eq_forceMatrixBerryCurvature"
     ],
     "dependencies": [
+      "ContinuousLinearMap.finiteDimensionalOperatorTrace_apply",
       "ContinuousLinearMap.finiteDimensionalOperatorTrace_toEuclideanCLM",
       "QuantumTheory.Models.MassiveDirac.bandProjectorOperator_eq_rankOne_pointwiseEigenbasis"
     ],
@@ -81733,6 +81768,7 @@
       "QuantumTheory.Models.RashbaExchange.finiteDiskBastinIntegrand_rashba_zero_swap"
     ],
     "dependencies": [
+      "ContinuousLinearMap.finiteDimensionalOperatorTrace_apply",
       "QuantumTheory.Models.RashbaExchange.currentBoundedOperator_rashba_zero"
     ],
     "crossModuleDirectWrapper": false,
@@ -81819,6 +81855,7 @@
       "QuantumTheory.Models.RashbaExchange.two_mul_currentBandBlockTrace_interband_im_div_gap_sq_eq_chargeSq_berryCurvature"
     ],
     "dependencies": [
+      "ContinuousLinearMap.finiteDimensionalOperatorTrace_apply",
       "ContinuousLinearMap.finiteDimensionalOperatorTrace_toEuclideanCLM"
     ],
     "crossModuleDirectWrapper": false,
@@ -86334,6 +86371,7 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
+      "ContinuousLinearMap.finiteDimensionalOperatorTrace_apply",
       "ContinuousLinearMap.finiteDimensionalOperatorTrace_mul_comm",
       "ContinuousLinearMap.finiteDimensionalOperatorTrace_star",
       "ContinuousLinearMap.instCompleteSpace_leanCondensedMatter",
@@ -86424,7 +86462,9 @@
     "dependents": [
       "QuantumTheory.Transport.Topology.PeriodicBlochProjector.berryCurvature_swap"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "ContinuousLinearMap.finiteDimensionalOperatorTrace_apply"
+    ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
@@ -90667,6 +90707,7 @@
       "QuantumTheory.Models.RashbaExchange.cleanSurfaceHallPointKernel_eq_regularized"
     ],
     "dependencies": [
+      "ContinuousLinearMap.finiteDimensionalOperatorTrace_apply",
       "ContinuousLinearMap.finiteDimensionalOperatorTrace_mul_comm"
     ],
     "crossModuleDirectWrapper": false,
@@ -140112,6 +140153,7 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
+      "ContinuousLinearMap.finiteDimensionalOperatorTrace_apply",
       "QuantumTheory.Transport.regularizedBastinTraceIntegrand_eq_surfaceDerivative_add_residualSea"
     ],
     "crossModuleDirectWrapper": false,
@@ -156739,6 +156781,48 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : FiniteDimensional ℂ H]\n  (operator : H →L[ℂ] H), ContinuousLinearMap.finiteDimensionalOperatorTrace operator = (LinearMap.trace ℂ H) ↑operator",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Analysis.Operator.FiniteTrace.0.ContinuousLinearMap.finiteDimensionalOperatorTrace_apply_private",
+    "module": "LeanCondensedMatter.Analysis.Operator.FiniteTrace",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "ContinuousLinearMap.finiteDimensionalOperatorTrace_apply"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "ContinuousLinearMap.finiteDimensionalOperatorTrace_apply"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {ι : Type u_2} (d : HilbertBasis ι ℂ H) (T : H →L[ℂ] H) (s : Finset ι),\n  IsCompactOperator ⇑(ContinuousLinearMap.IsHilbertSchmidt.finiteRangeApprox✝ d T s)",
     "standardAxioms": [
       "Classical.choice",
@@ -169317,6 +169401,7 @@
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceIntegral_eq_radialCoefficient"
     ],
     "dependencies": [
+      "ContinuousLinearMap.finiteDimensionalOperatorTrace_apply",
       "ContinuousLinearMap.finiteDimensionalOperatorTrace_toEuclideanCLM",
       "InternalSpace.pauliCombination_eq_components",
       "InternalSpace.trace_pauliBasis_mul_pauliCombination",
@@ -190477,7 +190562,9 @@
     "dependents": [
       "QuantumTheory.Transport.Topology.PeriodicBlochProjector.berryCurvature_eq_pointwiseBerryCurvature_of_rankOne"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "ContinuousLinearMap.finiteDimensionalOperatorTrace_apply"
+    ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
