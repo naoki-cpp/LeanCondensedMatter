@@ -57,14 +57,6 @@ noncomputable def boundedLatticeOperatorAlgEquiv :
   ((AlgebraicFock.occupationEquiv (Finsupp.basisSingleOne : Module.Basis Site ℂ (Site →₀ ℂ))).symm.conjAlgEquiv ℂ).trans
     (Common.finiteHilbertOperatorAlgEquiv (Config := Occupation Site))
 
-/-- The linear bridge from basis-independent algebraic Fock endomorphisms to bounded operators on
-the finite-lattice Hilbert Fock space. -/
-noncomputable def boundedLatticeOperatorLinearMap :
-    (AlgebraicFock ((Site →₀ ℂ)) →ₗ[ℂ]
-        AlgebraicFock ((Site →₀ ℂ))) →ₗ[ℂ]
-      (FiniteLatticeHilbertFock Site →L[ℂ] FiniteLatticeHilbertFock Site) :=
-  (boundedLatticeOperatorAlgEquiv (Site := Site)).toLinearMap
-
 /-- The bounded finite-lattice realization of an exterior-Fock algebraic endomorphism. -/
 noncomputable def boundedLatticeOperator
     (A : AlgebraicFock ((Site →₀ ℂ)) →ₗ[ℂ]
@@ -78,7 +70,7 @@ observable. -/
 noncomputable def boundedOneBodyOperatorLinearMap :
     ((Site →₀ ℂ) →ₗ[ℂ] (Site →₀ ℂ)) →ₗ[ℂ]
       (FiniteLatticeHilbertFock Site →L[ℂ] FiniteLatticeHilbertFock Site) :=
-  (boundedLatticeOperatorLinearMap (Site := Site)).comp
+  (boundedLatticeOperatorAlgEquiv (Site := Site)).toLinearMap.comp
     (AlgebraicFock.dGammaLinear ((Site →₀ ℂ)))
 
 /-- Bounded Fock-space observable associated with one supplied one-body operator. -/
@@ -137,7 +129,7 @@ theorem boundedLatticeOperator_sum {ι : Type*} (s : Finset ι)
       AlgebraicFock ((Site →₀ ℂ))) :
     boundedLatticeOperator (∑ i ∈ s, F i) =
       ∑ i ∈ s, boundedLatticeOperator (F i) := by
-  change boundedLatticeOperatorLinearMap (∑ i ∈ s, F i) = _
+  change (boundedLatticeOperatorAlgEquiv (Site := Site)) (∑ i ∈ s, F i) = _
   rw [map_sum]
   rfl
 
@@ -222,8 +214,8 @@ theorem hasAlgebraicDerivAt_boundedPeierlsBondHamiltonian_zero
 theorem boundedBondCurrent_swap (ℏ q : ℂ) (K : LocallyFiniteHopping Site)
     (x y : Site) :
     boundedBondCurrent ℏ q K y x = -boundedBondCurrent ℏ q K x y := by
-  change boundedLatticeOperatorLinearMap (bondCurrent ℏ q K y x) =
-    -boundedLatticeOperatorLinearMap (bondCurrent ℏ q K x y)
+  change (boundedLatticeOperatorAlgEquiv (Site := Site)) (bondCurrent ℏ q K y x) =
+    -(boundedLatticeOperatorAlgEquiv (Site := Site)) (bondCurrent ℏ q K x y)
   rw [bondCurrent_swap, map_neg]
 
 /-- The algebraic local continuity equation survives exactly in the bounded finite-lattice Hilbert
