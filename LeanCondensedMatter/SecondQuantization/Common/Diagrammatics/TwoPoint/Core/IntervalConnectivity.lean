@@ -119,6 +119,42 @@ theorem TwoPointDiagram.intervalBlock_adj_interaction_of_interior_partner
     twoPointVertexOfLeg_interactionLeg v lv,
     by rw [hpblock]; exact twoPointVertexOfLeg_interactionLeg w lw⟩
 
+/-- A paired propagator with both endpoints inside an interval cannot be
+either of its two boundary cuts. -/
+private theorem TwoPointDiagram.intervalBoundary_ne_interior_pair
+    (d : TwoPointDiagram ExternalLabel InternalLabel N S)
+    (earlier later cut leg : Fin (2 * (2 * S.card + 1)))
+    (hcut : d.HasIntervalBoundaryEndpoint earlier later cut)
+    (hleg : twoPointVertexOfLeg leg ∈ d.verticesBetweenCuts earlier later)
+    (hpartner : twoPointVertexOfLeg (d.pairing.partner leg) ∈
+      d.verticesBetweenCuts earlier later) :
+    leg ≠ cut ∧ d.pairing.partner leg ≠ cut := by
+  have hnotBoth :
+      ¬ (twoPointVertexOfLeg cut ∈ d.verticesBetweenCuts earlier later ∧
+        twoPointVertexOfLeg (d.pairing.partner cut) ∈
+          d.verticesBetweenCuts earlier later) := by
+    rintro ⟨ha, hb⟩
+    rcases hcut with ⟨_, hout⟩ | ⟨_, hout⟩
+    · exact hout hb
+    · exact hout ha
+  constructor
+  · intro he
+    subst leg
+    exact hnotBoth ⟨hleg, hpartner⟩
+  · intro he
+    have hp : d.pairing.partner cut = leg := by
+      calc
+        d.pairing.partner cut =
+            d.pairing.partner (d.pairing.partner leg) :=
+              congrArg d.pairing.partner he.symm
+        _ = leg := d.pairing.partner_involutive leg
+    apply hnotBoth
+    constructor
+    · rw [← he]
+      exact hpartner
+    · rw [hp]
+      exact hleg
+
 /-- Any adjacency between interaction vertices of the ambient cut interval
 is also an adjacency of the reconstructed two-point block. -/
 theorem TwoPointDiagram.intervalBlock_adj_interaction_of_ambient_adj
@@ -153,36 +189,12 @@ theorem TwoPointDiagram.intervalBlock_adj_interaction_of_ambient_adj
       d.verticesBetweenCuts earlier later := by
     rw [hpartner]
     exact (mem_interactionSector_subtype (d.verticesBetweenCuts earlier later) W).1 w.2
-  have havoid (cut : Fin (2 * (2 * S.card + 1)))
-      (hc : d.HasIntervalBoundaryEndpoint earlier later cut) :
-      leg ≠ cut ∧ d.pairing.partner leg ≠ cut := by
-    have hnotBoth :
-        ¬ (twoPointVertexOfLeg cut ∈ d.verticesBetweenCuts earlier later ∧
-          twoPointVertexOfLeg (d.pairing.partner cut) ∈
-            d.verticesBetweenCuts earlier later) := by
-      rintro ⟨ha, hb⟩
-      rcases hc with ⟨_, hout⟩ | ⟨_, hout⟩
-      · exact hout hb
-      · exact hout ha
-    constructor
-    · intro he
-      subst leg
-      exact hnotBoth ⟨hmemLeg, hmemPartner⟩
-    · intro he
-      have hp : d.pairing.partner cut = leg := by
-        calc
-          d.pairing.partner cut =
-              d.pairing.partner (d.pairing.partner leg) :=
-                congrArg d.pairing.partner he.symm
-          _ = leg := d.pairing.partner_involutive leg
-      apply hnotBoth
-      constructor
-      · rw [← he]
-        exact hmemPartner
-      · rw [hp]
-        exact hmemLeg
-  obtain ⟨he, hpe⟩ := havoid earlier hEarlier
-  obtain ⟨hl, hpl⟩ := havoid later hLater
+  obtain ⟨he, hpe⟩ :=
+    d.intervalBoundary_ne_interior_pair earlier later earlier leg
+      hEarlier hmemLeg hmemPartner
+  obtain ⟨hl, hpl⟩ :=
+    d.intervalBoundary_ne_interior_pair earlier later later leg
+      hLater hmemLeg hmemPartner
   let I := d.intervalInteractionLegEquiv earlier later hsepLater
   let p : ↥T × Fin 4 := I.symm ⟨leg, hmemLeg⟩
   let q : ↥T × Fin 4 := I.symm ⟨d.pairing.partner leg, hmemPartner⟩
@@ -245,36 +257,12 @@ theorem TwoPointDiagram.intervalVertices_doubleCut_adj_iff
     have hpartnerMem : twoPointVertexOfLeg (d.pairing.partner leg) ∈
         d.verticesBetweenCuts earlier later := by
       simpa only [hpartner] using hv
-    have admissible (cut : Fin (2 * (2 * S.card + 1)))
-        (hcut : d.HasIntervalBoundaryEndpoint earlier later cut) :
-        leg ≠ cut ∧ d.pairing.partner leg ≠ cut := by
-      have hnotBoth :
-          ¬ (twoPointVertexOfLeg cut ∈ d.verticesBetweenCuts earlier later ∧
-            twoPointVertexOfLeg (d.pairing.partner cut) ∈
-              d.verticesBetweenCuts earlier later) := by
-        rintro ⟨hc, hpc⟩
-        rcases hcut with ⟨_, hout⟩ | ⟨_, hout⟩
-        · exact hout hpc
-        · exact hout hc
-      constructor
-      · intro h
-        subst leg
-        exact hnotBoth ⟨hlegMem, hpartnerMem⟩
-      · intro h
-        apply hnotBoth
-        constructor
-        · rw [← h]
-          exact hpartnerMem
-        · have hp : d.pairing.partner cut = leg := by
-            calc
-              d.pairing.partner cut =
-                  d.pairing.partner (d.pairing.partner leg) :=
-                    congrArg d.pairing.partner h.symm
-              _ = leg := d.pairing.partner_involutive leg
-          rw [hp]
-          exact hlegMem
-    obtain ⟨he, hpe⟩ := admissible earlier hEarlier
-    obtain ⟨hl, hpl⟩ := admissible later hLater
+    obtain ⟨he, hpe⟩ :=
+      d.intervalBoundary_ne_interior_pair earlier later earlier leg
+        hEarlier hlegMem hpartnerMem
+    obtain ⟨hl, hpl⟩ :=
+      d.intervalBoundary_ne_interior_pair earlier later later leg
+        hLater hlegMem hpartnerMem
     change (d.vertexGraphWithoutPropagator earlier).Adj u v ∧
       (d.vertexGraphWithoutPropagator later).Adj u v
     exact ⟨⟨hne, leg, he, hpe, hleg, hpartner⟩,
