@@ -37,8 +37,8 @@ noncomputable def finiteTimeAdiabaticDirectionalConductivity
     (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
     (K : LocallyFiniteHopping Site) (q ω η T : ℝ) : ℂ :=
   finiteVolumeConductivityFromVectorPotential volume ω η
-    (finiteTimeAdiabaticDirectionalCoefficient
-      system expectation geometry direction K q ω η T)
+    ((boundedDirectionalResponseChannel system geometry direction K q).finiteTimeAdiabaticResponse
+      system expectation ω η T)
 
 /-- Infinite-observation-time, finite-volume regularized conductivity at fixed `ω` and `η`. -/
 noncomputable def infiniteTimeAdiabaticDirectionalConductivity
@@ -48,8 +48,8 @@ noncomputable def infiniteTimeAdiabaticDirectionalConductivity
     (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
     (K : LocallyFiniteHopping Site) (q ω η : ℝ) : ℂ :=
   finiteVolumeConductivityFromVectorPotential volume ω η
-    (infiniteTimeAdiabaticDirectionalCoefficient
-      system expectation geometry direction K q ω η)
+    ((boundedDirectionalResponseChannel system geometry direction K q).infiniteTimeAdiabaticResponse
+      system expectation ω η)
 
 /-- Stationarity and `η > 0` give the observation-time limit for the explicitly normalized
 finite-volume conductivity. -/
@@ -65,18 +65,20 @@ theorem hasInfiniteObservationTimeLimit_directionalConductivity_of_stationary_po
         system expectation geometry direction K q ω η)
       (infiniteTimeAdiabaticDirectionalConductivity volume
         system expectation geometry direction K q ω η) := by
-  have hlimit := hasInfiniteObservationTimeLimit_directional_of_stationary_pos
-    system expectation hstationary geometry direction K q ω η hη
+  have hlimit :=
+    (boundedDirectionalResponseChannel system geometry direction K q).
+      hasInfiniteObservationTimeLimit_finiteTimeAdiabaticResponse_of_stationary_pos
+        system expectation hstationary ω η hη
   unfold HasInfiniteObservationTimeLimit at hlimit ⊢
   change Filter.Tendsto
     (fun T : ℝ =>
-      finiteTimeAdiabaticDirectionalCoefficient
-          system expectation geometry direction K q ω η T *
+      (boundedDirectionalResponseChannel system geometry direction K q).finiteTimeAdiabaticResponse
+          system expectation ω η T *
         finiteVolumeConductivityNormalization volume ω η)
     Filter.atTop
     (nhds
-      (infiniteTimeAdiabaticDirectionalCoefficient
-          system expectation geometry direction K q ω η *
+      ((boundedDirectionalResponseChannel system geometry direction K q).infiniteTimeAdiabaticResponse
+          system expectation ω η *
         finiteVolumeConductivityNormalization volume ω η))
   exact hlimit.mul
     (tendsto_const_nhds :
@@ -111,7 +113,7 @@ theorem infiniteTimeAdiabaticDirectionalConductivity_eigenbasis_eq_finite_sum
         finiteVolumeConductivityNormalization volume ω η := by
   rw [infiniteTimeAdiabaticDirectionalConductivity]
   rw [finiteVolumeConductivityFromVectorPotential]
-  rw [infiniteTimeAdiabaticDirectionalCoefficient_eigenbasis_eq_finite_sum
+  rw [infiniteTimeAdiabaticDirectionalResponse_eigenbasis_eq_finite_sum
     system data geometry direction K q ω η hη]
 
 /-- The finite-time conductivity converges directly to the normalized finite Lehmann sum plus

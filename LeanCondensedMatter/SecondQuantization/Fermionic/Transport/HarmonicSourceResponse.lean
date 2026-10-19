@@ -44,8 +44,8 @@ noncomputable def finiteTimeAdiabaticDirectionalCosineResponse
       (adiabaticCosineSource ω η T s : ℂ) *
         QuantumTheory.LinearResponse.retardedSusceptibility
           system expectation J J T s) +
-    boundedDirectionalContactExpectation
-      system expectation geometry direction K q T
+    (boundedDirectionalResponseChannel system geometry direction K q).contactExpectation
+      system expectation T
 
 /-- Finite-time response coefficient measured with the real sine quadrature. There is no contact
 term because the normalized sine source vanishes at the observation time. -/
@@ -107,7 +107,7 @@ theorem hasDerivAt_boundedDirectionalCosineExpectation_zero_of_bound_retarded
       system expectation (adiabaticCosineSource ω η T)
       geometry direction K hK q hM hV hT hInt
   simpa [finiteTimeAdiabaticDirectionalCosineResponse,
-    boundedDirectionalContactExpectation] using h
+    ResponseChannel.contactExpectation, boundedDirectionalResponseChannel] using h
 
 /-- The sine quadrature is a genuine real-source response theorem. Its explicit observable
 variation vanishes because the source is zero at the observation time. -/

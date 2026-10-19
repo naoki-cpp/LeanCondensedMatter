@@ -22,8 +22,8 @@ window to the fixed-positive-rate susceptibility, using automatic adiabatic inte
 
 The layer is independent of particle statistics, Fock-space realizations, current operators,
 lattice geometry, and conductivity normalization. Operator-specific sufficient conditions for
-integrability remain in `AdiabaticIntegrability`; directional-current specializations remain in
-`SecondQuantization.Fermionic.Transport.InfiniteTimeFrequencyResponse`.
+integrability remain in `AdiabaticIntegrability`; physical current realizations consume the generic
+stationary `ResponseChannel` interface.
 -/
 
 namespace QuantumTheory
@@ -111,6 +111,82 @@ theorem tendsto_finiteTimeAdiabaticFrequencyDomainSusceptibility_atTop
       exact hInt.integrableOn)
   rw [hunion] at ht
   simpa [finiteTimeAdiabaticFrequencyDomainSusceptibility, f] using ht
+
+/-- On the causal half-line the commutator lag transform equals the whole-line retarded
+susceptibility. This is an identity of totalized integrals, not a regulator-removal limit. -/
+theorem infiniteTimeAdiabaticTransform_commutator_eq_susceptibility
+    (expectation : NormalizedExpectation H) (A B : H →L[ℂ] H) (ω η : ℝ) :
+    infiniteTimeAdiabaticTransform
+        (fun τ => commutatorSusceptibility system expectation A B τ 0) ω η =
+      adiabaticFrequencyDomainSusceptibility system expectation A B ω η := by
+  rw [infiniteTimeAdiabaticTransform, adiabaticFrequencyDomainSusceptibility,
+    integral_adiabaticFrequencySusceptibilityIntegrand_eq_Ioi_zero
+      system expectation A B ω η]
+  apply setIntegral_congr_fun measurableSet_Ioi
+  intro τ hτ
+  rw [adiabaticFrequencySusceptibilityIntegrand,
+    retardedTimeDifferenceKernel_eq_commutatorSusceptibility_of_nonneg
+      system expectation A B (le_of_lt hτ)]
+
+namespace ResponseChannel
+
+/-- Fixed-frequency, fixed-rate half-line lag transform of a channel, including its stationary
+contact expectation. Its interpretation as an observation-time limit requires stationarity. -/
+noncomputable def infiniteTimeAdiabaticResponse
+    (channel : ResponseChannel H) (system : BoundedFreeSystem H)
+    (expectation : NormalizedExpectation H) (ω η : ℝ) : ℂ :=
+  infiniteTimeAdiabaticTransform
+      (fun τ => commutatorSusceptibility system expectation
+        channel.measured channel.source τ 0) ω η +
+    expectation channel.observableVariation
+
+/-- Stationarity and integrability of the phase-weighted lag kernel give the observation-time
+limit. No sign restriction on the switching rate is imposed beyond that integrability hypothesis. -/
+theorem hasInfiniteObservationTimeLimit_finiteTimeAdiabaticResponse_of_stationary
+    (channel : ResponseChannel H) (system : BoundedFreeSystem H)
+    (expectation : NormalizedExpectation H)
+    (hstationary : IsStationary system expectation) (ω η : ℝ)
+    (hInt : AdiabaticLagIntegrable
+      (fun τ => commutatorSusceptibility system expectation
+        channel.measured channel.source τ 0) ω η) :
+    HasInfiniteObservationTimeLimit
+      (channel.finiteTimeAdiabaticResponse system expectation ω η)
+      (channel.infiniteTimeAdiabaticResponse system expectation ω η) := by
+  have h := hasInfiniteObservationTimeLimit_finiteTimeAdiabaticTransform
+    (fun τ => commutatorSusceptibility system expectation
+      channel.measured channel.source τ 0) ω η hInt
+  unfold HasInfiniteObservationTimeLimit at h ⊢
+  have hC : Tendsto (fun _ : ℝ => expectation channel.observableVariation)
+      atTop (𝓝 (expectation channel.observableVariation)) := tendsto_const_nhds
+  apply (h.add hC).congr'
+  filter_upwards [Filter.eventually_ge_atTop (0 : ℝ)] with T hT
+  exact (channel.finiteTimeAdiabaticResponse_eq_stationaryLag
+    system expectation hstationary ω η hT).symm
+
+/-- Bounded channel operators automatically supply the lag integrability at positive switching
+rate. Frequency, switching-rate removal, and volume limits remain separate. -/
+theorem hasInfiniteObservationTimeLimit_finiteTimeAdiabaticResponse_of_stationary_pos
+    (channel : ResponseChannel H) (system : BoundedFreeSystem H)
+    (expectation : NormalizedExpectation H)
+    (hstationary : IsStationary system expectation) (ω η : ℝ) (hη : 0 < η) :
+    HasInfiniteObservationTimeLimit
+      (channel.finiteTimeAdiabaticResponse system expectation ω η)
+      (channel.infiniteTimeAdiabaticResponse system expectation ω η) := by
+  apply channel.hasInfiniteObservationTimeLimit_finiteTimeAdiabaticResponse_of_stationary
+    system expectation hstationary ω η
+  have hInt : IntegrableOn
+      (adiabaticFrequencySusceptibilityIntegrand system expectation
+        channel.measured channel.source ω η) (Ioi (0 : ℝ)) volume :=
+    (adiabaticIntegrable_of_pos system expectation
+      channel.measured channel.source ω η hη).integrable.integrableOn
+  apply hInt.congr_fun
+  · intro τ hτ
+    rw [adiabaticFrequencySusceptibilityIntegrand,
+      retardedTimeDifferenceKernel_eq_commutatorSusceptibility_of_nonneg
+        system expectation channel.measured channel.source (le_of_lt hτ)]
+  · exact measurableSet_Ioi
+
+end ResponseChannel
 
 end
 end LinearResponse

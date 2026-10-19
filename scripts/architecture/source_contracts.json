@@ -172,12 +172,10 @@
         "LeanCondensedMatter/SecondQuantization/Fermionic/Transport/FrequencyResponse.lean",
         "LeanCondensedMatter/SecondQuantization/Fermionic/Transport/GeometricCurrentResponse.lean",
         "LeanCondensedMatter/SecondQuantization/Fermionic/Transport/HarmonicSourceResponse.lean",
-        "LeanCondensedMatter/SecondQuantization/Fermionic/Transport/InfiniteTimeFrequencyResponse.lean",
         "LeanCondensedMatter/SecondQuantization/Fermionic/Transport/KuboBastinSpectral.lean",
         "LeanCondensedMatter/SecondQuantization/Fermionic/Transport/KuboGreenwood.lean",
         "LeanCondensedMatter/SecondQuantization/Fermionic/Transport/SpectralFrequencyResponse.lean",
         "LeanCondensedMatter/SecondQuantization/Fermionic/Transport/StaticKuboBastinResponse.lean",
-        "LeanCondensedMatter/SecondQuantization/Fermionic/Transport/StationaryFrequencyResponse.lean",
         "LeanCondensedMatter/SecondQuantization/Fermionic/Validation/FiniteToys.lean",
         "LeanCondensedMatter/SecondQuantization/Fermionic/Validation/TwoLevelExplicit.lean",
         "LeanCondensedMatter/SecondQuantization/Fermionic/Validation/TwoSiteDimer.lean"
@@ -512,16 +510,6 @@
       "id": "transportHarmonicResponse",
       "path": "LeanCondensedMatter/SecondQuantization/Fermionic/Transport/HarmonicSourceResponse.lean",
       "modules": ["LeanCondensedMatter.QuantumTheory.LinearResponse.HarmonicSource"]
-    },
-    {
-      "id": "transportStationaryResponse",
-      "path": "LeanCondensedMatter/SecondQuantization/Fermionic/Transport/StationaryFrequencyResponse.lean",
-      "modules": ["LeanCondensedMatter.QuantumTheory.LinearResponse.FiniteTimeAdiabatic"]
-    },
-    {
-      "id": "transportInfiniteTimeResponse",
-      "path": "LeanCondensedMatter/SecondQuantization/Fermionic/Transport/InfiniteTimeFrequencyResponse.lean",
-      "modules": ["LeanCondensedMatter.QuantumTheory.LinearResponse.InfiniteTimeAdiabatic"]
     },
     {
       "id": "transportDisorderResolvent",
