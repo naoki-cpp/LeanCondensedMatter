@@ -58,9 +58,9 @@ theorem finiteTime_eigenbasisPhysicalSusceptibility_has_both_local_three_stage_l
         atTop
         (𝓝 (F omega eta)) := by
     intro omega eta hη
-    have hlong := tendsto_finiteTimeAdiabaticFrequencyDomainSusceptibility_atTop_eq_fixedRate
+    have hlong := tendsto_finiteTimeAdiabaticFrequencyDomainSusceptibility_atTop
       system (eigenbasisNormalizedExpectation system data) A B omega eta hη
-    rw [adiabaticFrequencyDomainSusceptibilityOfPositiveRate_eigenbasis_eq_finite_sum
+    rw [adiabaticFrequencyDomainSusceptibility_eigenbasis_eq_finite_sum
       system data A B omega eta hη] at hlong
     exact hlong
   exact ⟨⟨_, hlong, hlimits.1⟩, ⟨_, hlong, hlimits.2⟩⟩
