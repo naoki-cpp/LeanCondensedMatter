@@ -1,5 +1,4 @@
 import LeanCondensedMatter.SecondQuantization.Common.Algebra.FiniteHilbertOperator
-import LeanCondensedMatter.QuantumTheory.DensityOperator.Finite
 import LeanCondensedMatter.QuantumTheory.Gibbs.Eigenbasis
 
 set_option linter.style.header false
@@ -68,17 +67,27 @@ theorem finiteGibbsExpectation_eq_sum (energy : Config → ℝ) (β : ℝ)
     finiteGibbsExpectation energy β A =
       ∑ n : Config, (eigenbasisGibbsProbability energy β n : ℂ) * matrixCoeff A n n := by
   classical
-  have hbase :=
-    (eigenbasisGibbsDensityOperator
-      (finiteHilbertBasis (Config := Config)) energy β
-        (eigenbasisGibbsSummable_of_finite energy β)).expectation_eq_sum_diagonal
-      (finiteHilbertOperatorAlgEquiv A)
-      (finiteHilbertOrthonormalBasis (Config := Config))
-      (eigenbasisGibbsProbability energy β)
-      (fun n => by
-        simpa using eigenbasisGibbsDensityOperator_apply_basis
+  have hbase :
+      (eigenbasisGibbsDensityOperator
+        (finiteHilbertBasis (Config := Config)) energy β
+        (eigenbasisGibbsSummable_of_finite energy β)).expectation
+          (finiteHilbertOperatorAlgEquiv A) =
+        ∑ n : Config,
+          (eigenbasisGibbsProbability energy β n : ℂ) *
+            inner ℂ ((finiteHilbertOrthonormalBasis (Config := Config)) n)
+              (finiteHilbertOperatorAlgEquiv A
+                ((finiteHilbertOrthonormalBasis (Config := Config)) n)) := by
+    simpa only [tsum_fintype, finiteHilbertBasis_apply,
+      finiteHilbertOrthonormalBasis_apply] using
+      (eigenbasisGibbsDensityOperator
+        (finiteHilbertBasis (Config := Config)) energy β
+        (eigenbasisGibbsSummable_of_finite energy β)).expectation_eq_tsum_diagonal
+        (finiteHilbertOperatorAlgEquiv A)
+        (finiteHilbertBasis (Config := Config))
+        (eigenbasisGibbsProbability energy β)
+        (eigenbasisGibbsDensityOperator_apply_basis
           (finiteHilbertBasis (Config := Config)) energy β
-          (eigenbasisGibbsSummable_of_finite energy β) n)
+          (eigenbasisGibbsSummable_of_finite energy β))
   have hinner (n : Config) :
       inner ℂ ((finiteHilbertOrthonormalBasis (Config := Config)) n)
         (finiteHilbertOperatorAlgEquiv A

@@ -25,6 +25,12 @@ Tr[e^{-βH₀} A] / Tr[e^{-βH₀}].
 
 ## Coordinate infrastructure
 
+Finite density-state expectations are finite-index instances of
+`DensityOperator.expectation_eq_tsum_diagonal`. Completed-space bounded-operator expectations
+use the same dimension-independent diagonal formula; summability comes from the Gibbs
+density state's trace-class condition. Finite algebraic operators still require the
+finite-dimensional transport to bounded operators.
+
 The reusable finite coordinate layer is split by responsibility:
 
 | Owner | Responsibility |
