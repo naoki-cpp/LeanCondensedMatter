@@ -65,11 +65,16 @@ theorem completedSiteChargeDensity_comp_algebraicToCompleted (q : ℂ) (x : Site
   intro n
   change (q • completedNumberOperator x) (algebraicToCompleted (basisState n)) =
     algebraicToCompleted ((q • numberOperator x) (basisState n))
-  rw [smul_apply, smul_apply, map_smul]
-  have h := LinearMap.congr_fun (completedNumberOperator_comp_algebraicToCompleted x)
-    (basisState n)
-  simpa only [LinearMap.comp_apply] using
-    congrArg (fun ψ : CompletedFockSpace Site => q • ψ) h
+  rw [smul_apply, LinearMap.smul_apply, map_smul]
+  have hcore :
+      completedNumberOperator x (algebraicToCompleted (basisState n)) =
+        algebraicToCompleted (numberOperator x (basisState n)) := by
+    have h := LinearMap.congr_fun
+      (completedNumberOperator_comp_algebraicToCompleted x) (basisState n)
+    change completedNumberOperator x (algebraicToCompleted (basisState n)) =
+      algebraicToCompleted (numberOperator x (basisState n)) at h
+    exact h
+  rw [hcore]
 
 end
 end Lattice
