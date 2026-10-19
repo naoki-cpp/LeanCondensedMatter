@@ -99,14 +99,14 @@ theorem norm_retardedTimeDifferenceKernel_le
     have hX : ‖X‖ ≤ 2 * ‖A‖ * ‖B‖ := by
       change
         ‖heisenbergEvolution system τ A * B -
-          B * heisenbergEvolution system τ‖ A ≤ 2 * ‖A‖ * ‖B‖
+          B * heisenbergEvolution system τ A‖ ≤ 2 * ‖A‖ * ‖B‖
       calc
-        ‖heisenbergEvolution system τ A * B - B * heisenbergEvolution system τ‖ A ≤
+        ‖heisenbergEvolution system τ A * B - B * heisenbergEvolution system τ A‖ ≤
             ‖heisenbergEvolution system τ A * B‖ +
-            ‖B * heisenbergEvolution system τ‖ A :=
+            ‖B * heisenbergEvolution system τ A‖ :=
           norm_sub_le _ _
-        _ ≤ ‖heisenbergEvolution system τ‖ A * ‖B‖ +
-            ‖B‖ * ‖heisenbergEvolution system τ‖ A :=
+        _ ≤ ‖heisenbergEvolution system τ A‖ * ‖B‖ +
+            ‖B‖ * ‖heisenbergEvolution system τ A‖ :=
           add_le_add (norm_mul_le _ _) (norm_mul_le _ _)
         _ = 2 * ‖A‖ * ‖B‖ := by
           rw [norm_heisenbergEvolution]

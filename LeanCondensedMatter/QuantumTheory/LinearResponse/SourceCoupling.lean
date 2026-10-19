@@ -55,7 +55,8 @@ theorem timeDependentInteractionPerturbation_sourceCoupledPerturbation
     (f : ℝ → ℝ) (B : H →L[ℂ] H) (t : ℝ) :
     timeDependentInteractionPerturbation system (sourceCoupledPerturbation f B) t =
       (-(f t : ℂ)) • heisenbergEvolution system t B := by
-  simp [timeDependentInteractionPerturbation, sourceCoupledPerturbation]
+  exact (heisenbergEvolution system t).toAlgEquiv.toLinearEquiv.map_smul
+    (-(f t : ℂ)) B
 
 /-- Moving the source minus sign from the interaction family into the Dyson scalar coupling leaves
 the interaction-picture propagator unchanged. -/
