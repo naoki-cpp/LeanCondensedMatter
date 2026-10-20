@@ -1,5 +1,4 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTime.TimedField
-import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsDensityOperator
 
 set_option linter.style.header false
 
@@ -9,12 +8,18 @@ set_option linter.style.header false
 A supplied one-body current kernel `j i k` produces the even-parity Fock-space
 insertion `J(τ) = ∑ i k, j i k • cᵢ†(τ) cₖ(τ)`. Two such insertions
 have four elementary fermionic legs. This file establishes their exact
-finite-sum operator and free Gibbs expectation expansions without assuming
-a linked-cluster theorem, a disorder average, or a Kubo/Středa limit.
+finite-sum operator and linear-expectation expansions without assuming
+a Gibbs state, particle-number ensemble, Wick factorization, a linked-cluster theorem,
+a disorder average, or a Kubo/Středa limit.
 
 Time ordering is applied to the two **even** current operators, hence uses
 the positive exchange sign. Equal-time ordering retains the canonical
 half-symmetrized convention of `Common.timeOrderedProduct`.
+
+The expectation is a complex-linear functional on algebraic Fock endomorphisms.
+For physical connected correlations it should be normalized on the identity, but the
+finite-sum and subtraction identities below only require linearity. Concrete thermal
+states can supply their own functional.
 -/ 
 
 namespace SecondQuantization
@@ -84,24 +89,24 @@ theorem timeOrderedBilinearCurrents_eq_four_fields_of_gt
     Common.timeOrderedProduct_of_gt Common.Statistics.boson _ _ h]
   exact bilinearCurrentInsertion_comp_eq_four_fields ε τ τ' jx jy
 
-/-- The physical finite free-Gibbs density-state expectation of two
-current insertions is the corresponding weighted sum of four-field
-expectations. This is the unconnected, configuration-free P1 boundary. -/
-theorem finiteGibbsBilinearCurrentCurrent_eq_four_fields
-    (ε : Mode → ℝ) (β τ τ' : ℝ)
+/-- The expectation of two current insertions expands into the weighted sum of four-field
+expectations for any complex-linear functional, independently of the statistical ensemble. -/
+theorem bilinearCurrentCurrent_expectation_eq_four_fields
+    (ε : Mode → ℝ) (τ τ' : ℝ)
+    (expectation : (OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) →ₗ[ℂ] ℂ)
     (jx jy : Mode → Mode → ℂ) :
-    Common.finiteGibbsExpectation (fermionEnergy ε) β
+    expectation
         ((bilinearCurrentInsertion ε τ jx).comp
           (bilinearCurrentInsertion ε τ' jy)) =
       ∑ i : Mode, ∑ j : Mode, ∑ k : Mode, ∑ l : Mode,
         (jx i j * jy k l) *
-          Common.finiteGibbsExpectation (fermionEnergy ε) β
+          expectation
             (((externalFieldOperator ε τ (.creation i)).comp
                 (externalFieldOperator ε τ (.annihilation j))).comp
               ((externalFieldOperator ε τ' (.creation k)).comp
                 (externalFieldOperator ε τ' (.annihilation l)))) := by
   rw [bilinearCurrentInsertion_comp_eq_four_fields]
-  simp only [Common.finiteGibbsExpectation, map_sum, map_smul, smul_eq_mul]
+  simp only [map_sum, map_smul, smul_eq_mul]
 
 
 /-- The reversed imaginary-time chamber contains the opposite ordering of
@@ -136,59 +141,63 @@ theorem timeOrderedBilinearCurrents_self_time
     Common.timeOrderedProduct_self_time Common.Statistics.boson]
   simp only [Common.Statistics.zetaInt_boson, Int.cast_one, one_smul]
 
-/-- A normalized free-Gibbs expectation of a current insertion is the
-finite weighted sum of its two elementary fermionic fields. -/
-theorem finiteGibbsBilinearCurrent_eq_two_fields
-    (ε : Mode → ℝ) (β τ : ℝ) (kernel : Mode → Mode → ℂ) :
-    Common.finiteGibbsExpectation (fermionEnergy ε) β
+/-- Any complex-linear expectation of a current insertion is the finite weighted sum of
+two elementary fermionic fields. -/
+theorem bilinearCurrent_expectation_eq_two_fields
+    (ε : Mode → ℝ) (τ : ℝ)
+    (expectation : (OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) →ₗ[ℂ] ℂ)
+    (kernel : Mode → Mode → ℂ) :
+    expectation
         (bilinearCurrentInsertion ε τ kernel) =
       ∑ i : Mode, ∑ j : Mode,
         kernel i j *
-          Common.finiteGibbsExpectation (fermionEnergy ε) β
+          expectation
             ((externalFieldOperator ε τ (.creation i)).comp
               (externalFieldOperator ε τ (.annihilation j))) := by
-  simp only [bilinearCurrentInsertion, Common.finiteGibbsExpectation,
-    map_sum, map_smul, smul_eq_mul]
+  simp only [bilinearCurrentInsertion, map_sum, map_smul, smul_eq_mul]
 
-/-- Connectedness of the two *composite current insertions*:
-subtract their product of one-current expectations. This is deliberately
-not the connected four-elementary-fermion cumulant. -/
-noncomputable def finiteGibbsConnectedBilinearCurrentCorrelation
-    (ε : Mode → ℝ) (β τ τ' : ℝ)
+/-- Subtract the disconnected product of the two *composite current insertions*.
+When the functional is normalized on the identity, this is the connected two-current
+correlation (the second cumulant of the composite currents), not the connected cumulant
+of four elementary fermionic fields. -/
+noncomputable def connectedBilinearCurrentCorrelation
+    (ε : Mode → ℝ) (τ τ' : ℝ)
+    (expectation : (OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) →ₗ[ℂ] ℂ)
     (jx jy : Mode → Mode → ℂ) : ℂ :=
-  Common.finiteGibbsExpectation (fermionEnergy ε) β
+  expectation
       ((bilinearCurrentInsertion ε τ jx).comp
         (bilinearCurrentInsertion ε τ' jy)) -
-    Common.finiteGibbsExpectation (fermionEnergy ε) β
+    expectation
         (bilinearCurrentInsertion ε τ jx) *
-      Common.finiteGibbsExpectation (fermionEnergy ε) β
+      expectation
         (bilinearCurrentInsertion ε τ' jy)
 
-/-- The connected two-current correlator is the four-field sum with only
-the **disconnected current-vertex product** removed. Wick contractions
-joining the two current vertices survive even if the underlying four
-elementary fermion legs are not a single cumulant component. -/
-theorem finiteGibbsConnectedBilinearCurrentCorrelation_eq_four_fields
-    (ε : Mode → ℝ) (β τ τ' : ℝ)
+/-- The connected two-current subtraction is a four-field sum with only the
+**disconnected current-vertex product** removed. Wick contractions joining the
+composite current vertices survive even if four elementary field legs are not
+one cumulant component. No Wick assumption is used. -/
+theorem connectedBilinearCurrentCorrelation_eq_four_fields
+    (ε : Mode → ℝ) (τ τ' : ℝ)
+    (expectation : (OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) →ₗ[ℂ] ℂ)
     (jx jy : Mode → Mode → ℂ) :
-    finiteGibbsConnectedBilinearCurrentCorrelation ε β τ τ' jx jy =
+    connectedBilinearCurrentCorrelation ε τ τ' expectation jx jy =
       ∑ i : Mode, ∑ j : Mode, ∑ k : Mode, ∑ l : Mode,
         (jx i j * jy k l) *
-          (Common.finiteGibbsExpectation (fermionEnergy ε) β
+          (expectation
               (((externalFieldOperator ε τ (.creation i)).comp
                   (externalFieldOperator ε τ (.annihilation j))).comp
                 ((externalFieldOperator ε τ' (.creation k)).comp
                   (externalFieldOperator ε τ' (.annihilation l)))) -
-            Common.finiteGibbsExpectation (fermionEnergy ε) β
+            expectation
                 ((externalFieldOperator ε τ (.creation i)).comp
                   (externalFieldOperator ε τ (.annihilation j))) *
-              Common.finiteGibbsExpectation (fermionEnergy ε) β
+              expectation
                 ((externalFieldOperator ε τ' (.creation k)).comp
                   (externalFieldOperator ε τ' (.annihilation l)))) := by
-  rw [finiteGibbsConnectedBilinearCurrentCorrelation,
-    finiteGibbsBilinearCurrentCurrent_eq_four_fields,
-    finiteGibbsBilinearCurrent_eq_two_fields,
-    finiteGibbsBilinearCurrent_eq_two_fields]
+  rw [connectedBilinearCurrentCorrelation,
+    bilinearCurrentCurrent_expectation_eq_four_fields,
+    bilinearCurrent_expectation_eq_two_fields,
+    bilinearCurrent_expectation_eq_two_fields]
   simp only [mul_sub, Finset.sum_sub_distrib]
   congr 1
   simp_rw [Finset.sum_mul]
