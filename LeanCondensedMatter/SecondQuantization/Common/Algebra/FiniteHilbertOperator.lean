@@ -77,30 +77,25 @@ noncomputable def finiteHilbertOperatorAlgEquiv :
   ((finiteHilbertFockEquiv (Config := Config)).conjAlgEquiv ℂ).trans
     (Module.End.toContinuousLinearMap (FiniteHilbertFock Config))
 
-@[simp]
-theorem finiteHilbertOperator_equiv_apply
-    (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (x : AlgebraicFock Config) :
-    finiteHilbertOperatorAlgEquiv A (finiteHilbertFockEquiv x) =
-      finiteHilbertFockEquiv (A x) := by
-  change
-    ((finiteHilbertFockEquiv (Config := Config)).toLinearMap.comp
-      (A.comp (finiteHilbertFockEquiv (Config := Config)).symm.toLinearMap))
-        (finiteHilbertFockEquiv x) = finiteHilbertFockEquiv (A x)
-  simp
-
 /-- Transported algebraic operators act on canonical finite-Hilbert basis vectors by transporting
 the corresponding algebraic basis-state action. -/
 theorem finiteHilbertOperator_basisState
     (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (n : Config) :
     finiteHilbertOperatorAlgEquiv A (finiteHilbertBasisState n) =
       finiteHilbertFockEquiv (A (basisState n)) := by
-  rw [← finiteHilbertFockEquiv_basisState, finiteHilbertOperator_equiv_apply]
+  rw [← finiteHilbertFockEquiv_basisState]
+  change
+    ((finiteHilbertFockEquiv (Config := Config)).toLinearMap.comp
+      (A.comp (finiteHilbertFockEquiv (Config := Config)).symm.toLinearMap))
+        (finiteHilbertFockEquiv (basisState n)) =
+      finiteHilbertFockEquiv (A (basisState n))
+  simp
 
 @[simp]
 theorem finiteHilbertOperator_basis_apply
     (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (m n : Config) :
     finiteHilbertOperatorAlgEquiv A (finiteHilbertBasisState n) m = matrixCoeff A m n := by
-  rw [← finiteHilbertFockEquiv_basisState, finiteHilbertOperator_equiv_apply]
+  rw [finiteHilbertOperator_basisState]
   rfl
 
 end
