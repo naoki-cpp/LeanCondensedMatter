@@ -2,7 +2,8 @@ import LeanCondensedMatter.Combinatorics.PerfectPairing.Evaluation
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Core
 import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.Quartic
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.LegFamily
-import LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.DysonVertexMoment
+import LeanCondensedMatter.Analysis.PowerSeries.Moment
+import LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonTraceSeries
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsDensityOperator
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.TimedFieldContraction
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsExpectationBridge
@@ -138,7 +139,10 @@ theorem dysonVertexMoment_quarticInteraction_eq_sum_vertexLabel_pairingEvaluatio
       rw [intervalIntegral.orderedSimplexIntegral_congr hpoint,
         intervalIntegral.orderedSimplexIntegral_finsetSum _ S.card β _
           (fun pairing _ => continuous_flatVertexLegPairingEvaluation ε β q pairing)]
-  rw [powerSeriesMomentCoeff_dysonTraceSeries_eq_freeGibbsDensityOperator_expectation, hkey, mul_assoc, hsum]
+  rw [Combinatorics.powerSeriesMomentCoeff,
+    Common.coeff_normalizeByConstantCoeff_dysonTraceSeries_eq_finiteGibbsExpectation,
+    ← freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation,
+    hkey, mul_assoc, hsum]
 
 end Fermionic
 end SecondQuantization

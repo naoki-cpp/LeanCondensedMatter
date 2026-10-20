@@ -42,8 +42,9 @@ use `PowerSeries.normalizeByConstantCoeff` and `Combinatorics.powerSeriesMomentC
 there are no parallel Dyson-specific normalization or moment definitions. The Common trace-series
 owner proves the normalized coefficient's finite Gibbs-expectation identity, while the fermionic
 `DysonPartitionSeries` retains its physical free-partition specialization and formal logarithm.
-`Fermionic.Perturbation.DysonVertexMoment` supplies only the fermionic free Gibbs density-state
-expectation bridge.
+The fermionic Dyson pairing proof uses the generic normalized-coefficient theorem together
+with `freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation` directly; no separate
+fermionic vertex-moment adapter is needed.
 
 ## Analytic log-partition theorem
 
