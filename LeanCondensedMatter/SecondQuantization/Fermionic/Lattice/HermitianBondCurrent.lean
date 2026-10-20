@@ -62,8 +62,9 @@ theorem boundedBondOperator_eq (K : LocallyFiniteHopping Site) (x y : Site) :
             K.amplitude y x • matrixUnit y x) = _
     rw [map_sub, map_smul, map_smul]
     rfl
-  rw [hdGamma, boundedLatticeOperator_sub,
-    boundedLatticeOperator_smul, boundedLatticeOperator_smul]
+  rw [hdGamma]
+  change (boundedLatticeOperatorAlgEquiv (Site := Site)) (_ - _) = _
+  rw [map_sub, map_smul, map_smul]
   rfl
 
 /-- Under Hermitian hopping amplitudes, the oriented hopping difference is skew-adjoint. -/
@@ -92,7 +93,9 @@ theorem boundedBondCurrent_eq_peierlsCoupling_smul
     boundedBondCurrent ℏ q K x y =
       peierlsCoupling ℏ q • K.boundedBondOperator x y := by
   unfold boundedBondCurrent bondCurrent LocallyFiniteHopping.boundedBondOperator peierlsCoupling
-  rw [boundedLatticeOperator_smul]
+  change (boundedLatticeOperatorAlgEquiv (Site := Site)) (_ • _) = _
+  rw [map_smul]
+  rfl
 
 /-- Physical real parameters automatically give a self-adjoint bounded bond current. -/
 theorem isSelfAdjoint_boundedBondCurrent_ofReal
