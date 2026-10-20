@@ -59,6 +59,11 @@ and positive switching rate. Static consumers set the frequency to zero in that 
 this does not take a zero-switching or DC limit. Fermionic common-energy and spectral conductivity
 use the generic channel response and vertex-term identities directly.
 
+The Greenwood definition uses `eigenbasisLehmannSeries` as its aggregate response rather than a
+separate current-transition interface. Its finite spectral index remains explicit; the generic
+finite-sum identity recovers the ordinary sum. The scalar table evaluation and Bastin conversion
+consume the existing aggregate identities without expanding individual transitions downstream.
+
 The main semantic boundaries are:
 
 - finite spectral index and finite Hilbert-space dimension are separate assumptions;
@@ -164,11 +169,17 @@ either from explicit lag integrability or from a positive switching rate for bou
 The observation-time source value is factored out; real harmonic quadratures retain their own
 source-dependent contact factors.
 
-Fermionic transport supplies `boundedDirectionalResponseChannel`: measured and source operators
+`Fermionic.Transport.ChargeCurrentChannel` supplies `boundedDirectionalResponseChannel`: measured and source operators
 are the directional current, and observable variation is the Peierls contact operator. Spectral
 response and finite-volume conductivity consume the channel directly. Frequency, switching-rate,
 and volume limits remain distinct, and the finite stationary lag identity requires nonnegative
 observation time.
+
+The charge-current channel module imports the channel and free-system interfaces directly; it
+performs no frequency transform or time integration. `Fermionic.Transport.CorrectedCurrentResponse`
+owns both `boundedFluxRetardedResponse` and its corrected-current representation laws. The intrinsic
+flux is realized as a bounded observable before applying the measured-linear retarded kernel;
+representation laws only identify it on exact differentials, not arbitrary global currents.
 
 ## Static response identification
 

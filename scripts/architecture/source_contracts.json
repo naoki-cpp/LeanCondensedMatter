@@ -43,7 +43,6 @@
         "LeanCondensedMatter/QuantumMechanics/SingleParticle/Continuum/Continuity/SchwartzCurrent1D.lean",
         "LeanCondensedMatter/QuantumMechanics/SingleParticle/Continuum/Continuity/SchwartzSpinCurrent1D.lean",
         "LeanCondensedMatter/SecondQuantization/Fermionic/Field/GeneralizedQuantity.lean",
-        "LeanCondensedMatter/SecondQuantization/Fermionic/Transport/FluxResponse.lean",
         "LeanCondensedMatter/SecondQuantization/Fermionic/Transport/SymmetrizedVelocityCurrent.lean",
         "LeanCondensedMatter/SecondQuantization/Fermionic/Transport/CorrectedCurrentResponse.lean",
         "LeanCondensedMatter/QuantumTheory/ConservationLaw/HeisenbergEvolution.lean",
@@ -167,7 +166,7 @@
         "LeanCondensedMatter/SecondQuantization/Fermionic/Transport.lean",
         "LeanCondensedMatter/SecondQuantization/Fermionic/Validation.lean",
         "LeanCondensedMatter/SecondQuantization/Fermionic/Transport/ConductivityNormalization.lean",
-        "LeanCondensedMatter/SecondQuantization/Fermionic/Transport/FrequencyResponse.lean",
+        "LeanCondensedMatter/SecondQuantization/Fermionic/Transport/ChargeCurrentChannel.lean",
         "LeanCondensedMatter/SecondQuantization/Fermionic/Transport/KuboBastinSpectral.lean",
         "LeanCondensedMatter/SecondQuantization/Fermionic/Transport/KuboGreenwood.lean",
         "LeanCondensedMatter/SecondQuantization/Fermionic/Validation/FiniteToys.lean",
@@ -395,19 +394,12 @@
       "modules": ["LeanCondensedMatter.Analysis.ConservationLaw.SymmetricLocalizationAlgebra"]
     },
     {
-      "id": "generalizedCurrentFluxResponse",
-      "path": "LeanCondensedMatter/SecondQuantization/Fermionic/Transport/FluxResponse.lean",
-      "modules": [
-        "LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.Bounded",
-        "LeanCondensedMatter.QuantumTheory.LinearResponse.Response.RetardedSusceptibility"
-      ]
-    },
-    {
       "id": "generalizedCurrentCorrectedResponse",
       "path": "LeanCondensedMatter/SecondQuantization/Fermionic/Transport/CorrectedCurrentResponse.lean",
       "modules": [
         "LeanCondensedMatter.Analysis.ConservationLaw.CorrectedCurrentFlux",
-        "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.FluxResponse"
+        "LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.Bounded",
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.Response.RetardedSusceptibility"
       ]
     },
     {
@@ -422,7 +414,6 @@
       "id": "generalizedCurrentTransportUmbrella",
       "path": "LeanCondensedMatter/SecondQuantization/Fermionic/Transport.lean",
       "modules": [
-        "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.FluxResponse",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.SymmetrizedVelocityCurrent",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.CorrectedCurrentResponse"
       ]
@@ -495,9 +486,12 @@
       "modules": ["LeanCondensedMatter.Transport.Spectral.Eigenbasis"]
     },
     {
-      "id": "transportFrequencyResponse",
-      "path": "LeanCondensedMatter/SecondQuantization/Fermionic/Transport/FrequencyResponse.lean",
-      "modules": ["LeanCondensedMatter.QuantumTheory.LinearResponse.Frequency.FiniteTime"]
+      "id": "transportChargeCurrentChannel",
+      "path": "LeanCondensedMatter/SecondQuantization/Fermionic/Transport/ChargeCurrentChannel.lean",
+      "modules": [
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.Response.Channel",
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.Free"
+      ]
     },
     {
       "id": "transportDisorderResolvent",

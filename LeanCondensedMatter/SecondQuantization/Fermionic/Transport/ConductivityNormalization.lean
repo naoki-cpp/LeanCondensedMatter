@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Transport.Core.ConductivityNormalization
-import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.FrequencyResponse
+import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.ChargeCurrentChannel
 import LeanCondensedMatter.QuantumTheory.LinearResponse.Frequency.InfiniteTime
 
 set_option linter.style.header false

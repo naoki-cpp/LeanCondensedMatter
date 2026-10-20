@@ -115,27 +115,6 @@ theorem StaticChannelTracedBastinIdentity.staticConductivity_eq_spectralEnergyIn
     lowerEnergy upperEnergy occupation
     (kuboBastinEnergyBroadening_pos system.hbar eta system.hbar_pos heta)
 
-/-- Analytic traced-kernel data and the explicit identity give the normalized complete response
-a Středa representation. -/
-noncomputable def TracedStredaAnalyticData.toStaticChannelStredaRepresentation
-    (convention : PositiveVolume)
-    (system : BoundedFreeSystem H)
-    (data : EnergyEigenbasisLehmannData system ι)
-    (channel : ResponseChannel H)
-    (eta lowerEnergy upperEnergy : ℝ) (occupation : ℝ → ℂ)
-    (occupationDerivative : ℝ → ℂ)
-    (analyticData : TracedStredaAnalyticData system.hamiltonian.1
-      channel.measured channel.source (kuboBastinEnergyBroadening system.hbar eta)
-      lowerEnergy upperEnergy occupation occupationDerivative)
-    (identity : StaticChannelTracedBastinIdentity convention system data channel
-      eta lowerEnergy upperEnergy occupation) (heta : eta ≠ 0) :
-    RegularizedStredaRepresentation
-      (finiteVolumeConductivityFromVectorPotential convention 0 eta
-        (finiteStaticKuboBastinChannelResponse system data channel eta)) :=
-  analyticData.toRegularizedStredaRepresentation _
-    (identity.staticConductivity_eq_tracedBastin convention system data channel
-      eta lowerEnergy upperEnergy occupation heta)
-
 /-- The identified normalized complete response has the regularized surface-plus-sea split. -/
 theorem TracedStredaAnalyticData.staticChannelConductivity_eq_surface_add_sea
     (convention : PositiveVolume)
@@ -153,8 +132,9 @@ theorem TracedStredaAnalyticData.staticChannelConductivity_eq_surface_add_sea
       (finiteStaticKuboBastinChannelResponse system data channel eta) =
       regularizedStredaFermiSurface analyticData.toRegularizedStredaIntegralData +
         regularizedStredaFermiSea analyticData.toRegularizedStredaIntegralData :=
-  (analyticData.toStaticChannelStredaRepresentation convention system data channel
-    eta lowerEnergy upperEnergy occupation occupationDerivative identity heta).response_eq_surface_add_sea
+  (analyticData.toRegularizedStredaRepresentation _
+    (identity.staticConductivity_eq_tracedBastin convention system data channel
+      eta lowerEnergy upperEnergy occupation heta)).response_eq_surface_add_sea
 
 end
 end QuantumTheory.Transport
