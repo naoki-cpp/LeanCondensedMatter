@@ -5,7 +5,7 @@ import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsDensity
 set_option linter.style.header false
 
 /-!
-# Fermionic realization of Common Dyson vertex moments
+# Fermionic Gibbs realization of generic normalized Dyson moments
 
 Factorial-normalized Dyson moments use the generic power-series moment coefficients rather than
 a separate Dyson-specific definition. This file identifies that moment with the fermionic free
