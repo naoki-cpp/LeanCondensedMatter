@@ -62,7 +62,6 @@ theorem finiteConductivityTableValue_directional_ofEigenbasis_eq_kuboGreenwood
   unfold finiteConductivityTableValue finiteKuboGreenwoodDirectionalConductivity
   unfold finiteDirectionalConductivityTableOfEigenbasis
   rw [finiteLehmannTableResponse_ofEigenbasis]
-  rfl
 
 end
 end Transport
