@@ -133,18 +133,6 @@ theorem boundedLatticeOperator_sum {ι : Type*} (s : Finset ι)
   rw [map_sum]
   rfl
 
-@[simp]
-theorem boundedLatticeOperator_comp
-    (A B : AlgebraicFock ((Site →₀ ℂ)) →ₗ[ℂ]
-      AlgebraicFock ((Site →₀ ℂ))) :
-    boundedLatticeOperator (A.comp B) =
-      (boundedLatticeOperator A).comp (boundedLatticeOperator B) := by
-  change
-    boundedLatticeOperatorAlgEquiv (A.comp B) =
-      (boundedLatticeOperatorAlgEquiv A).comp (boundedLatticeOperatorAlgEquiv B)
-  rw [← Module.End.mul_eq_comp, ← ContinuousLinearMap.mul_def]
-  exact map_mul (boundedLatticeOperatorAlgEquiv (Site := Site)) A B
-
 /-- Bounded transport preserves the ordinary Mathlib Lie bracket. -/
 theorem boundedLatticeOperator_lie
     (A B : AlgebraicFock ((Site →₀ ℂ)) →ₗ[ℂ]
@@ -152,9 +140,12 @@ theorem boundedLatticeOperator_lie
     boundedLatticeOperator ⁅A, B⁆ =
       ⁅boundedLatticeOperator A, boundedLatticeOperator B⁆ := by
   rw [LieRing.of_associative_ring_bracket, LieRing.of_associative_ring_bracket]
-  simp only [Module.End.mul_eq_comp, ContinuousLinearMap.mul_def]
-  rw [boundedLatticeOperator_sub, boundedLatticeOperator_comp,
-    boundedLatticeOperator_comp]
+  change (boundedLatticeOperatorAlgEquiv (Site := Site)) (A * B - B * A) =
+    (boundedLatticeOperatorAlgEquiv (Site := Site)) A *
+      (boundedLatticeOperatorAlgEquiv (Site := Site)) B -
+      (boundedLatticeOperatorAlgEquiv (Site := Site)) B *
+        (boundedLatticeOperatorAlgEquiv (Site := Site)) A
+  rw [map_sub, map_mul, map_mul]
 
 /-- Bounded many-particle hopping Hamiltonian on the finite-lattice Hilbert Fock space. -/
 noncomputable def boundedHoppingHamiltonian (K : LocallyFiniteHopping Site) :
