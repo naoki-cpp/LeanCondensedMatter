@@ -6,9 +6,9 @@ set_option linter.style.header false
 /-!
 # Expectation first-pair recursion for Bloch–de Dominicis
 
-This module records the smallest contract needed by the arbitrary-length pairing induction.  It is
-independent of occupation bases, finite configuration spaces, trace formulas, and density-operator
-implementations.
+This module records the smallest contract needed by the arbitrary-length pairing induction. It is
+independent of occupation bases, finite configuration spaces, trace formulas, density-operator
+implementations, and the choice of statistical ensemble.
 
 An implementation supplies:
 
@@ -16,11 +16,13 @@ An implementation supplies:
 - a two-operator contraction value;
 - an admissibility predicate stable under deleting a paired operator;
 - normalization of the empty product;
-- the first-pair recurrence obtained from its KMS and exchange relations.
+- the first-pair recurrence, often proved from KMS and exchange relations in a concrete state.
 
-Once these data are available, the pairing expansion is purely combinatorial.  A future bosonic
-implementation can therefore discharge the same contract with summability-aware KMS proofs, without
-introducing a false `Fintype` assumption on bosonic occupation states.
+Once these data are available, the pairing expansion is purely combinatorial. The contract itself
+does not assume a Gibbs state, KMS property, or Gaussianity: a concrete canonical, grand-canonical,
+or other state may instantiate it only after proving the stated recurrence. In particular, a
+fixed-particle-number Gibbs state is not automatically quasi-free. Bosonic implementations supply
+their own summability/domain conditions without imposing `Fintype` on occupation states.
 -/
 
 namespace SecondQuantization
@@ -29,7 +31,8 @@ namespace BlochDeDominicis
 
 open Combinatorics
 
-/-- The minimal normalized expectation/KMS contract used by the Bloch–de Dominicis induction. -/
+/-- The minimal normalized expectation/first-pair recurrence contract used by the Bloch–de
+Dominicis induction, independent of the statistical ensemble. -/
 structure ExpectationPairingRecursion (Operator : Type*) (s : Statistics) where
   /-- Expectation of an ordered list of operators. -/
   expectation : List Operator → ℂ
@@ -43,7 +46,7 @@ structure ExpectationPairingRecursion (Operator : Type*) (s : Statistics) where
   admissible_erase : ∀ (n : ℕ) (C : Fin (2 * (n + 1)) → Operator), admissible (n + 1) C →
     ∀ j : Fin (2 * n + 1),
       admissible n (fun i : Fin (2 * n) => C ((j.succAbove i).succ))
-  /-- The KMS/exchange first-pair recurrence. -/
+  /-- The first-pair recurrence, to be proved by each concrete state implementation. -/
   expectation_succ : ∀ (n : ℕ) (C : Fin (2 * (n + 1)) → Operator), admissible (n + 1) C →
     expectation (List.ofFn C) =
       ∑ j : Fin (2 * n + 1), (s.zetaInt : ℂ) ^ (j : ℕ) *
