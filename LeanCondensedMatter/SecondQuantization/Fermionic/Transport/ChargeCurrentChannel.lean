@@ -1,28 +1,16 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.GeometricCurrent
-import LeanCondensedMatter.QuantumTheory.LinearResponse.Frequency.FiniteTime
+import LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.Free
+import LeanCondensedMatter.QuantumTheory.LinearResponse.Response.Channel
 
 set_option linter.style.header false
 
 /-!
-# Finite-time fermionic directional frequency response
+# Fermionic charge-current response channel
 
-This module constructs the physical directional-current response channel of a finite fermionic
-lattice for the generic finite-time and stationary-response interfaces. The response combines the
-continuity-derived directional current with the explicit Peierls contact contribution.
-
-For a source proportional to
-
-```text
-exp (η t) exp (-i ω t),
-```
-
-factoring out its value at the observation time leaves the canonical linear-response lag phase
-
-```text
-exp ((-η + i ω) τ).
-```
-
-No infinite-observation-time, zero-switching, DC, or thermodynamic limit is asserted here.
+This module packages the continuity-derived charge current and the Peierls contact variation
+of a finite fermionic lattice as a general response channel. It performs no time integration or
+frequency transformation. Consumers supply the dynamics and expectation to the general response
+operations, and attach physical volume and electric-field normalization separately.
 -/
 
 namespace SecondQuantization

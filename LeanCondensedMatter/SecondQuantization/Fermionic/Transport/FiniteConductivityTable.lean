@@ -61,8 +61,6 @@ theorem finiteConductivityTableValue_directional_ofEigenbasis_eq_kuboGreenwood
         volume system data geometry direction K q omega eta := by
   unfold finiteConductivityTableValue finiteKuboGreenwoodDirectionalConductivity
   unfold finiteDirectionalConductivityTableOfEigenbasis
-  rw [finiteLehmannTableResponse_ofEigenbasis]
-  rw [eigenbasisLehmannSeries_eq_finite_sum]
   rfl
 
 end

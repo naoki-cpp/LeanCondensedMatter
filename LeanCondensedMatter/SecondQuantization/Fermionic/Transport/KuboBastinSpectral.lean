@@ -55,17 +55,13 @@ theorem finiteKuboGreenwoodDirectionalConductivity_eq_bastinSpectral
         system data geometry direction K q omega eta convention := by
   unfold finiteKuboGreenwoodDirectionalConductivity
     finiteKuboBastinSpectralDirectionalConductivity
-  rw [finiteKuboBastinSpectralChannelResponse_eq_vertexSum]
-  unfold boundedDirectionalResponseChannel
-    finiteKuboBastinSpectralVertexSum
-  congr 1
-  congr 1
-  apply Finset.sum_congr rfl
-  intro mn _
-  exact eigenbasisLehmannVertexTerm_eq_bastinSpectral system data
-    (boundedDirectionalCurrent geometry direction (system.hbar : ℂ) (q : ℂ) K)
-    (boundedDirectionalCurrent geometry direction (system.hbar : ℂ) (q : ℂ) K)
-    omega eta heta mn
+  rw [finiteLehmannTableResponse_ofEigenbasis]
+  rw [← adiabaticFrequencyDomainSusceptibility_eigenbasis_eq_lehmannSeries
+    system data _ _ omega eta heta (eigenbasisTimeDomainSummable_of_finite system data _ _)]
+  exact congrArg (fun response : ℂ =>
+    response * finiteVolumeConductivityNormalization convention omega eta)
+    (adiabaticFrequencyDomainResponseChannel_eq_bastinSpectral system data
+      (boundedDirectionalResponseChannel system geometry direction K q) omega eta heta)
 
 /-- At every positive switching rate and arbitrary driving frequency, the causal conductivity
 equals its finite spectral Bastin representation. Zero frequency is a specialization of this

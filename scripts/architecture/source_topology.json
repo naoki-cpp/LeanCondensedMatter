@@ -168,13 +168,11 @@
       "id": "fermionicTransportCurrentAdapters",
       "sourceRoots": ["LeanCondensedMatter/SecondQuantization/Fermionic/Transport"],
       "layers": [
-        {"id": "fluxResponse", "modulePrefixes": ["LeanCondensedMatter.SecondQuantization.Fermionic.Transport.FluxResponse"]},
         {"id": "symmetrizedVelocity", "modulePrefixes": ["LeanCondensedMatter.SecondQuantization.Fermionic.Transport.SymmetrizedVelocityCurrent"]},
         {"id": "correctedCurrentResponse", "modulePrefixes": ["LeanCondensedMatter.SecondQuantization.Fermionic.Transport.CorrectedCurrentResponse"]},
         {"id": "spinCurrentResponse", "modulePrefixes": ["LeanCondensedMatter.SecondQuantization.Fermionic.Transport.SpinCurrentResponse"]}
       ],
       "edges": [
-        {"upstream": "fluxResponse", "downstream": "correctedCurrentResponse"},
         {"upstream": "symmetrizedVelocity", "downstream": "spinCurrentResponse"}
       ]
     },

@@ -1,5 +1,6 @@
 import LeanCondensedMatter.Analysis.ConservationLaw.CorrectedCurrentFlux
-import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.FluxResponse
+import LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.Bounded
+import LeanCondensedMatter.QuantumTheory.LinearResponse.Response.RetardedSusceptibility
 import LeanCondensedMatter.QuantumTheory.LinearResponse.Response.Channel
 
 set_option linter.style.header false
@@ -7,7 +8,8 @@ set_option linter.style.header false
 /-!
 # Corrected current response decomposition
 
-This module lifts the analysis-level decomposition
+This module realizes a one-body test-space flux as a bounded retarded response and lifts the
+analysis-level decomposition
 
 ```text
 J_nested = J_sym + J_corr
@@ -40,6 +42,18 @@ variable [LinearOrder Site] [Fintype Site]
 variable [AddCommGroup Test] [Module ℂ Test]
 variable [AddCommGroup OneForm] [Module ℂ OneForm]
 
+/-- Retarded Kubo response of an intrinsic one-body flux, linear in the test object. -/
+noncomputable def boundedFluxRetardedResponse
+    (system : QuantumTheory.LinearResponse.BoundedFreeSystem
+      (FiniteLatticeHilbertFock Site))
+    (expectation : QuantumTheory.LinearResponse.NormalizedExpectation
+      (FiniteLatticeHilbertFock Site))
+    (source : FiniteLatticeHilbertFock Site →L[ℂ] FiniteLatticeHilbertFock Site)
+    (Φ : Test →ₗ[ℂ] ((Site →₀ ℂ) →ₗ[ℂ] (Site →₀ ℂ)))
+    (t s : ℝ) : Test →ₗ[ℂ] ℂ :=
+  (QuantumTheory.LinearResponse.retardedSusceptibilityMeasuredLinearMap
+      system expectation source t s).comp
+    ((boundedOneBodyOperatorLinearMap (Site := Site)).comp Φ)
 /-- Bounded Fock-space observable associated with one corrected/nested current component. -/
 noncomputable def boundedCorrectedCurrentObservable
     (velocity m : (Site →₀ ℂ) →ₗ[ℂ] (Site →₀ ℂ))
