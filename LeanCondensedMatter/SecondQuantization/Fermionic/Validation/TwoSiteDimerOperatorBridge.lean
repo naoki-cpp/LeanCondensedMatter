@@ -154,7 +154,7 @@ theorem twoSiteDimerContact_one_eq_hamiltonian :
       (AlgebraicFock.dGammaLinear ((TwoSite →₀ ℂ))).map_add S T
   simp [LocallyFiniteHopping.amplitude_eq, twoSiteDimerHopping,
     twoSiteDimerHamiltonian, Lattice.boundedOneBodyOperator_eq,
-    hdGammaAdd, boundedDgammaMatrixUnit, add_comm]
+    hdGammaAdd, boundedDgammaMatrixUnit, boundedLatticeOperator, add_comm]
 
 /-- The unit Peierls contact therefore has eigenvalue `-1` on the lower dimer state. -/
 theorem twoSiteDimerContact_one_apply_bonding :
