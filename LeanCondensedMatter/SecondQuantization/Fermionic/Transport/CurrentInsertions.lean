@@ -53,8 +53,10 @@ theorem bilinearCurrentInsertion_comp_eq_four_fields
               (externalFieldOperator ε τ (.annihilation j))).comp
             ((externalFieldOperator ε τ' (.creation k)).comp
               (externalFieldOperator ε τ' (.annihilation l)))) := by
-  simp only [bilinearCurrentInsertion, ← Module.End.mul_eq_comp,
-    Finset.sum_mul, Finset.mul_sum, smul_mul_assoc, mul_smul_comm, smul_smul]
+  simp only [bilinearCurrentInsertion, ← Module.End.mul_eq_comp]
+  simp_rw [Finset.sum_mul]
+  simp_rw [Finset.mul_sum]
+  simp only [smul_mul_assoc, mul_smul_comm, smul_smul]
 
 /-- Time ordering of two even-parity composite currents. The positive
 exchange sign here is not the negative exchange sign of individual
@@ -189,7 +191,8 @@ theorem finiteGibbsConnectedBilinearCurrentCorrelation_eq_four_fields
     finiteGibbsBilinearCurrent_eq_two_fields]
   simp only [mul_sub, Finset.sum_sub_distrib]
   congr 1
-  simp only [Finset.sum_mul, Finset.mul_sum]
+  simp_rw [Finset.sum_mul]
+  simp_rw [Finset.mul_sum]
   apply Finset.sum_congr rfl
   intro i _
   apply Finset.sum_congr rfl
