@@ -42,7 +42,7 @@ theorem twoSiteDimerContact_zero_hopping :
     twoSiteDimerContact 0 = 0 := by
   unfold twoSiteDimerContact boundedBondContact
   simp [LocallyFiniteHopping.oneParticleBondContact, twoSiteDimerHopping,
-    LocallyFiniteHopping.amplitude_eq, peierlsCoupling]
+    LocallyFiniteHopping.amplitude_eq, peierlsCoupling, boundedLatticeOperator]
 
 /-- At zero charge, the dimer bond carries no Peierls current. -/
 @[simp]
@@ -56,7 +56,8 @@ theorem twoSiteDimerBondCurrent_zero_charge (t : ℂ) :
 theorem twoSiteDimerBondContact_zero_charge (t : ℂ) :
     boundedBondContact (twoSiteDimerHopping t) (1 : ℂ) 0 0 1 = 0 := by
   unfold boundedBondContact
-  simp [LocallyFiniteHopping.oneParticleBondContact, peierlsCoupling]
+  simp [LocallyFiniteHopping.oneParticleBondContact, peierlsCoupling,
+    boundedLatticeOperator]
 
 end
 end Validation
