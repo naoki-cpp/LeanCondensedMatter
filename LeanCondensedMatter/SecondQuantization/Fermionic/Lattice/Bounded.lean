@@ -89,23 +89,6 @@ theorem boundedOneBodyOperator_eq
         (AlgebraicFock.dGamma ((Site →₀ ℂ)) operator) :=
   rfl
 
-@[simp]
-theorem boundedLatticeOperator_sub
-    (A B : AlgebraicFock ((Site →₀ ℂ)) →ₗ[ℂ]
-      AlgebraicFock ((Site →₀ ℂ))) :
-    boundedLatticeOperator (A - B) =
-      boundedLatticeOperator A - boundedLatticeOperator B := by
-  simpa [boundedLatticeOperator] using
-    map_sub (boundedLatticeOperatorAlgEquiv (Site := Site)) A B
-
-@[simp]
-theorem boundedLatticeOperator_smul (c : ℂ)
-    (A : AlgebraicFock ((Site →₀ ℂ)) →ₗ[ℂ]
-      AlgebraicFock ((Site →₀ ℂ))) :
-    boundedLatticeOperator (c • A) = c • boundedLatticeOperator A := by
-  simpa [boundedLatticeOperator] using
-    map_smul (boundedLatticeOperatorAlgEquiv (Site := Site)) c A
-
 /-- Bounded transport preserves the ordinary Mathlib Lie bracket. -/
 theorem boundedLatticeOperator_lie
     (A B : AlgebraicFock ((Site →₀ ℂ)) →ₗ[ℂ]
@@ -154,7 +137,13 @@ theorem boundedOneBodyOperator_oneParticleBondCurrent
       boundedLatticeOperator
         (((Complex.I * q) / ℏ) •
           AlgebraicFock.dGamma ((Site →₀ ℂ)) (K.bondOperator x y))
-  rw [boundedLatticeOperator_smul]
+  change ((Complex.I * q) / ℏ) •
+      (boundedLatticeOperatorAlgEquiv (Site := Site))
+        (AlgebraicFock.dGamma ((Site →₀ ℂ)) (K.bondOperator x y)) =
+    (boundedLatticeOperatorAlgEquiv (Site := Site))
+      (((Complex.I * q) / ℏ) •
+        AlgebraicFock.dGamma ((Site →₀ ℂ)) (K.bondOperator x y))
+  rw [map_smul]
 
 /-- The Peierls derivative/current equivalence survives the finite-dimensional bounded transport. -/
 theorem hasAlgebraicDerivAt_boundedPeierlsBondHamiltonian_zero
