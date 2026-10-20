@@ -68,9 +68,10 @@ theorem sum_orderedVacuumDysonContribution_eq_normalizedDysonPartitionCoeff
             (Common.dysonTraceSeries (fermionEnergy ε) β (quarticInteraction g)) =
             freePartitionFunction ε β :=
         constantCoeff_dysonPartitionSeries ε β (quarticInteraction g)
-      simpa [Common.dysonTraceVertexMoment, Common.normalizedDysonTraceCoeff,
+      simpa [Combinatorics.powerSeriesMomentCoeff,
+        PowerSeries.coeff_normalizeByConstantCoeff, Common.coeff_dysonTraceSeries,
         normalizedDysonPartitionCoeff, dysonPartitionCoeff, hconst,
-        mul_assoc] using hkey.symm
+        div_eq_mul_inv, mul_assoc, mul_comm, mul_left_comm] using hkey.symm
 
 end Fermionic
 end SecondQuantization
