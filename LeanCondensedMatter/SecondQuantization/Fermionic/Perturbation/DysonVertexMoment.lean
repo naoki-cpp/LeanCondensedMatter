@@ -1,4 +1,5 @@
-import LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonTraceMoment
+import LeanCondensedMatter.Analysis.PowerSeries.Moment
+import LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonTraceSeries
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsDensityOperator
 
 set_option linter.style.header false
