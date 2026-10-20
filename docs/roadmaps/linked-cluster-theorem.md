@@ -36,10 +36,14 @@ It kernel-checks the canonical connected-diagram statement as an `example`, with
 a fermionic cumulant definition or a duplicate public theorem.
 No source-functional wrapper is required for this formal partition-function endpoint.
 
-The normalized finite-configuration Dyson coefficients and labelled finite-set vertex moments are
-owned by `Common.Perturbation.DysonTraceMoment`. The fermionic `DysonPartitionSeries` retains
-its physical free-partition specialization and formal logarithm, while `DysonVertexMoment` supplies
-only the fermionic free Gibbs density-state expectation bridge.
+The finite-configuration Dyson trace coefficients and series are owned by
+`Common.Perturbation.DysonTraceSeries`. Their normalized coefficients and labelled vertex moments
+use `PowerSeries.normalizeByConstantCoeff` and `Combinatorics.powerSeriesMomentCoeff` directly;
+there are no parallel Dyson-specific normalization or moment definitions. The Common trace-series
+owner proves the normalized coefficient's finite Gibbs-expectation identity, while the fermionic
+`DysonPartitionSeries` retains its physical free-partition specialization and formal logarithm.
+`Fermionic.Perturbation.DysonVertexMoment` supplies only the fermionic free Gibbs density-state
+expectation bridge.
 
 ## Analytic log-partition theorem
 
