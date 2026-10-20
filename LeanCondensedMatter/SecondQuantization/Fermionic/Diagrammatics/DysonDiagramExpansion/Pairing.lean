@@ -98,10 +98,12 @@ theorem continuous_flatVertexLegPairingEvaluation {n : ℕ}
 
 /-! ## Integrating the pairing sum over the ordered simplex -/
 
-/-- `Common.dysonTraceVertexMoment` of the quartic interaction in the canonical pairing-evaluator presentation. -/
+/-- The generic normalized Dyson-series moment of the quartic interaction in the pairing-evaluator presentation. -/
 theorem dysonVertexMoment_quarticInteraction_eq_sum_vertexLabel_pairingEvaluation {α : Type*}
     (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ) (S : Finset α) :
-    Common.dysonTraceVertexMoment (fermionEnergy ε) β (quarticInteraction g) S =
+    Combinatorics.powerSeriesMomentCoeff
+      (PowerSeries.normalizeByConstantCoeff
+        (Common.dysonTraceSeries (fermionEnergy ε) β (quarticInteraction g))) S.card =
       (S.card.factorial : ℂ) * (-1 : ℂ) ^ S.card *
         ∑ q : Fin S.card → QuarticVertexLabel Mode, (∏ i, g (q i)) *
           ∑ pairing : Pairing (2 * S.card),
@@ -136,7 +138,7 @@ theorem dysonVertexMoment_quarticInteraction_eq_sum_vertexLabel_pairingEvaluatio
       rw [intervalIntegral.orderedSimplexIntegral_congr hpoint,
         intervalIntegral.orderedSimplexIntegral_finsetSum _ S.card β _
           (fun pairing _ => continuous_flatVertexLegPairingEvaluation ε β q pairing)]
-  rw [dysonTraceVertexMoment_eq_freeGibbsDensityOperator_expectation, hkey, mul_assoc, hsum]
+  rw [powerSeriesMomentCoeff_dysonTraceSeries_eq_freeGibbsDensityOperator_expectation, hkey, mul_assoc, hsum]
 
 end Fermionic
 end SecondQuantization
