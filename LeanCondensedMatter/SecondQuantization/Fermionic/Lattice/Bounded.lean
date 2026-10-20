@@ -89,20 +89,6 @@ theorem boundedOneBodyOperator_eq
         (AlgebraicFock.dGamma ((Site →₀ ℂ)) operator) :=
   rfl
 
-/-- Bounded transport preserves the ordinary Mathlib Lie bracket. -/
-theorem boundedLatticeOperator_lie
-    (A B : AlgebraicFock ((Site →₀ ℂ)) →ₗ[ℂ]
-      AlgebraicFock ((Site →₀ ℂ))) :
-    boundedLatticeOperator ⁅A, B⁆ =
-      ⁅boundedLatticeOperator A, boundedLatticeOperator B⁆ := by
-  rw [LieRing.of_associative_ring_bracket, LieRing.of_associative_ring_bracket]
-  change (boundedLatticeOperatorAlgEquiv (Site := Site)) (A * B - B * A) =
-    (boundedLatticeOperatorAlgEquiv (Site := Site)) A *
-      (boundedLatticeOperatorAlgEquiv (Site := Site)) B -
-      (boundedLatticeOperatorAlgEquiv (Site := Site)) B *
-        (boundedLatticeOperatorAlgEquiv (Site := Site)) A
-  rw [map_sub, map_mul, map_mul]
-
 /-- Bounded many-particle hopping Hamiltonian on the finite-lattice Hilbert Fock space. -/
 noncomputable def boundedHoppingHamiltonian (K : LocallyFiniteHopping Site) :
     FiniteLatticeHilbertFock Site →L[ℂ] FiniteLatticeHilbertFock Site :=
@@ -180,12 +166,9 @@ theorem bounded_discrete_continuity (ℏ q : ℂ)
         ∑ y ∈ K.incident x, boundedBondCurrent ℏ q K x y = 0 := by
   have h := congrArg (boundedLatticeOperatorAlgEquiv (Site := Site))
     (discrete_continuity ℏ q K x)
-  simp only [map_add, map_smul, map_sum, map_zero] at h
-  change (Complex.I / ℏ) •
-      boundedLatticeOperator ⁅hoppingHamiltonian K, siteChargeDensity q x⁆ +
-        ∑ y ∈ K.incident x, boundedBondCurrent ℏ q K x y = 0 at h
-  rw [boundedLatticeOperator_lie] at h
-  exact h
+  simpa only [boundedLatticeOperator, boundedHoppingHamiltonian,
+    boundedBondCurrent, LieRing.of_associative_ring_bracket,
+    map_add, map_smul, map_sum, map_zero, map_sub, map_mul] using h
 
 end FiniteLattice
 
