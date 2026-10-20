@@ -1,4 +1,4 @@
-import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.StaticKuboBastinResponse
+import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.KuboBastinSpectral
 import LeanCondensedMatter.Transport.Streda.StaticChannelIdentification
 import LeanCondensedMatter.Transport.Disorder.Finite
 
@@ -37,22 +37,6 @@ variable [LinearOrder Site] [Fintype Site]
 variable [AddCommGroup E] [Module ℝ E]
 variable [Fintype Ω] [Fintype ι]
 
-/-- Exact static Kubo–Bastin conductivity of one disorder configuration. The hopping geometry,
-current convention, charge, switching rate, and finite-volume normalization are common ensemble
-data; the Hamiltonian and its supplied eigenbasis data depend on `ω`. -/
-noncomputable def finiteDisorderConfigurationStaticConductivity
-    (ensemble : FiniteDisorderEnsemble
-      (H := FiniteLatticeHilbertFock Site) (Ω := Ω))
-    (hbar : ℝ) (hbar_pos : 0 < hbar)
-    (spectralData : (ω : Ω) → EnergyEigenbasisLehmannData
-      (ensemble.configurationSystem hbar hbar_pos ω) ι)
-    (convention : QuantumTheory.Transport.PositiveVolume)
-    (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
-    (K : LocallyFiniteHopping Site) (q eta : ℝ) (ω : Ω) : ℂ :=
-  finiteStaticKuboBastinDirectionalConductivity
-    convention (ensemble.configurationSystem hbar hbar_pos ω)
-      (spectralData ω) geometry direction K q eta
-
 /-- Exact finite disorder average of the configuration-wise static conductivity. -/
 noncomputable def finiteDisorderAveragedStaticConductivity
     (ensemble : FiniteDisorderEnsemble
@@ -64,67 +48,9 @@ noncomputable def finiteDisorderAveragedStaticConductivity
     (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
     (K : LocallyFiniteHopping Site) (q eta : ℝ) : ℂ :=
   ensemble.average (fun ω =>
-    finiteDisorderConfigurationStaticConductivity
-      ensemble hbar hbar_pos spectralData convention
-        geometry direction K q eta ω)
-
-/-- The averaged conductivity is the explicit normalized finite configuration sum. -/
-theorem finiteDisorderAveragedStaticConductivity_eq_sum
-    (ensemble : FiniteDisorderEnsemble
-      (H := FiniteLatticeHilbertFock Site) (Ω := Ω))
-    (hbar : ℝ) (hbar_pos : 0 < hbar)
-    (spectralData : (ω : Ω) → EnergyEigenbasisLehmannData
-      (ensemble.configurationSystem hbar hbar_pos ω) ι)
-    (convention : QuantumTheory.Transport.PositiveVolume)
-    (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
-    (K : LocallyFiniteHopping Site) (q eta : ℝ) :
-    finiteDisorderAveragedStaticConductivity
-        ensemble hbar hbar_pos spectralData convention
-          geometry direction K q eta =
-      ∑ ω, (ensemble.probability ω : ℂ) *
-        finiteDisorderConfigurationStaticConductivity
-          ensemble hbar hbar_pos spectralData convention
-            geometry direction K q eta ω := by
-  rfl
-
-/-- A visible configuration-wise Ward identity identifies the exact static conductivity with the
-canonical traced Bastin energy integral for that same disordered Hamiltonian. -/
-theorem finiteDisorderConfigurationStaticConductivity_eq_tracedBastin
-    (ensemble : FiniteDisorderEnsemble
-      (H := FiniteLatticeHilbertFock Site) (Ω := Ω))
-    (hbar : ℝ) (hbar_pos : 0 < hbar)
-    (spectralData : (ω : Ω) → EnergyEigenbasisLehmannData
-      (ensemble.configurationSystem hbar hbar_pos ω) ι)
-    (convention : QuantumTheory.Transport.PositiveVolume)
-    (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
-    (K : LocallyFiniteHopping Site)
-    (q eta lowerEnergy upperEnergy : ℝ) (occupation : ℝ → ℂ)
-    (ω : Ω)
-    (ward : StaticChannelTracedBastinIdentity convention
+    finiteKuboBastinSpectralDirectionalConductivity
       (ensemble.configurationSystem hbar hbar_pos ω) (spectralData ω)
-      (boundedDirectionalResponseChannel
-        (ensemble.configurationSystem hbar hbar_pos ω) geometry direction K q)
-      eta lowerEnergy upperEnergy occupation)
-    (heta : eta ≠ 0) :
-    finiteDisorderConfigurationStaticConductivity
-        ensemble hbar hbar_pos spectralData convention
-          geometry direction K q eta ω =
-      regularizedTracedBastinEnergyIntegral
-        (ensemble.configurationSystem hbar hbar_pos ω).hamiltonian.1
-        (boundedDirectionalCurrent geometry direction
-          ((ensemble.configurationSystem hbar hbar_pos ω).hbar : ℂ) (q : ℂ) K)
-        (boundedDirectionalCurrent geometry direction
-          ((ensemble.configurationSystem hbar hbar_pos ω).hbar : ℂ) (q : ℂ) K)
-        (kuboBastinEnergyBroadening
-          (ensemble.configurationSystem hbar hbar_pos ω).hbar eta)
-        lowerEnergy upperEnergy occupation := by
-  unfold finiteDisorderConfigurationStaticConductivity
-  exact ward.staticConductivity_eq_tracedBastin
-    convention (ensemble.configurationSystem hbar hbar_pos ω)
-      (spectralData ω)
-      (boundedDirectionalResponseChannel
-        (ensemble.configurationSystem hbar hbar_pos ω) geometry direction K q)
-      eta lowerEnergy upperEnergy occupation heta
+      geometry direction K q 0 eta convention)
 
 /-- Applying the configuration-wise Ward identity in every configuration lifts the exact
 Kubo–Středa identification through the finite disorder average. -/
@@ -160,9 +86,11 @@ theorem finiteDisorderAveragedStaticConductivity_eq_tracedBastinAverage
   unfold finiteDisorderAveragedStaticConductivity
   apply ensemble.average_congr
   intro ω
-  exact finiteDisorderConfigurationStaticConductivity_eq_tracedBastin
-    ensemble hbar hbar_pos spectralData convention geometry direction K
-      q eta lowerEnergy upperEnergy occupation ω (ward ω) heta
+  exact (ward ω).staticConductivity_eq_tracedBastin
+    convention (ensemble.configurationSystem hbar hbar_pos ω) (spectralData ω)
+    (boundedDirectionalResponseChannel
+      (ensemble.configurationSystem hbar hbar_pos ω) geometry direction K q)
+    eta lowerEnergy upperEnergy occupation heta
 
 /-- The same exact finite-disorder bridge in the eigenbasis spectral energy-integral form. -/
 theorem finiteDisorderAveragedStaticConductivity_eq_spectralEnergyIntegralAverage

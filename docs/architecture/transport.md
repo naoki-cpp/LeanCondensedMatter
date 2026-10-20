@@ -52,8 +52,12 @@ volume is independent of Hilbert-space dimension or a particular response repres
 The zero-frequency normalization identity also belongs to `Core.ConductivityNormalization`.
 The fermionic normalization module consumes channel response and observation-time convergence
 without importing an eigenbasis representation. Its spectral conductivity identities belong to
-the consuming `Fermionic.Transport.KuboGreenwood` module. Fermionic common-energy and spectral
-conductivity use the generic channel response and vertex-term identities directly.
+the consuming `Fermionic.Transport.KuboGreenwood` module, whose final conductivity identification
+uses the generic eigenbasis Lehmann theorem directly. `Fermionic.Transport.KuboBastinSpectral`
+identifies the causal conductivity with the spectral Bastin representation at arbitrary frequency
+and positive switching rate. Static consumers set the frequency to zero in that same representation;
+this does not take a zero-switching or DC limit. Fermionic common-energy and spectral conductivity
+use the generic channel response and vertex-term identities directly.
 
 The main semantic boundaries are:
 
@@ -176,6 +180,11 @@ source operators remain independent; the complete response includes the observab
 before the static electric-field normalization is cancelled. This differs from the vertex-only
 representation consumed by `Streda.GeneralizedStatic`. Nonzero switching rate suffices for
 normalization cancellation; the spectral integral identification requires positive switching rate.
+
+`Fermionic.Transport.FiniteDisorderConductivity` averages the spectral conductivity at zero driving
+frequency and applies the generic conditional identification separately in each configuration.
+It keeps the averaged conductivity as the physical endpoint rather than introducing a second
+configuration-conductivity interface.
 
 ## Disorder boundary
 

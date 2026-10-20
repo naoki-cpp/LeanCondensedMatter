@@ -67,6 +67,21 @@ theorem finiteKuboGreenwoodDirectionalConductivity_eq_bastinSpectral
     (boundedDirectionalCurrent geometry direction (system.hbar : ℂ) (q : ℂ) K)
     omega eta heta mn
 
+/-- At every positive switching rate and arbitrary driving frequency, the causal conductivity
+equals its finite spectral Bastin representation. Zero frequency is a specialization of this
+identity, not a zero-switching or DC limit. -/
+theorem infiniteTimeAdiabaticDirectionalConductivity_eq_bastinSpectral
+    [Fintype ι] (convention : QuantumTheory.Transport.PositiveVolume) (heta : 0 < eta) :
+    infiniteTimeAdiabaticDirectionalConductivity convention
+        system (eigenbasisNormalizedExpectation system data)
+          geometry direction K q omega eta =
+      finiteKuboBastinSpectralDirectionalConductivity
+        system data geometry direction K q omega eta convention :=
+  (infiniteTimeAdiabaticDirectionalConductivity_eq_finiteKuboGreenwood
+    convention system data geometry direction K q omega eta heta).trans
+    (finiteKuboGreenwoodDirectionalConductivity_eq_bastinSpectral
+      system data geometry direction K q omega eta convention heta)
+
 end
 end Transport
 end Fermionic
