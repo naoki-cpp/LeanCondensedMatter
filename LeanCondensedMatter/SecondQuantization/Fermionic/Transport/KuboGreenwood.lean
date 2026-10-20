@@ -1,5 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.ConductivityNormalization
 import LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann.Eigenbasis.FrequencyDomain
+import LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann.Eigenbasis.Table
 
 set_option linter.style.header false
 
@@ -59,9 +60,9 @@ noncomputable def finiteKuboGreenwoodDirectionalConductivity
     (data : EnergyEigenbasisLehmannData system ι)
     (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
     (K : LocallyFiniteHopping Site) (q ω η : ℝ) : ℂ :=
-  (eigenbasisLehmannSeries system data
+  (finiteLehmannTableResponse system.hbar ω η (finiteLehmannTableOfEigenbasis system data
       (boundedDirectionalCurrent geometry direction (system.hbar : ℂ) (q : ℂ) K)
-      (boundedDirectionalCurrent geometry direction (system.hbar : ℂ) (q : ℂ) K) ω η +
+      (boundedDirectionalCurrent geometry direction (system.hbar : ℂ) (q : ℂ) K)) +
       eigenbasisNormalizedExpectation system data
         (boundedDirectionalContact geometry direction
           (system.hbar : ℂ) (q : ℂ) K)) *
@@ -83,6 +84,8 @@ theorem infiniteTimeAdiabaticDirectionalConductivity_eq_finiteKuboGreenwood
         volume system data geometry direction K q ω η := by
   rw [infiniteTimeAdiabaticDirectionalConductivity,
     finiteVolumeConductivityFromVectorPotential]
+  unfold finiteKuboGreenwoodDirectionalConductivity
+  rw [finiteLehmannTableResponse_ofEigenbasis]
   unfold ResponseChannel.infiniteTimeAdiabaticResponse
   rw [infiniteTimeAdiabaticTransform_commutator_eq_susceptibility]
   rw [adiabaticFrequencyDomainSusceptibility_eigenbasis_eq_lehmannSeries

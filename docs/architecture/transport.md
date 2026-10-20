@@ -59,9 +59,10 @@ and positive switching rate. Static consumers set the frequency to zero in that 
 this does not take a zero-switching or DC limit. Fermionic common-energy and spectral conductivity
 use the generic channel response and vertex-term identities directly.
 
-The Greenwood definition uses `eigenbasisLehmannSeries` as its aggregate response rather than a
-separate current-transition interface. Its finite spectral index remains explicit; the generic
-finite-sum identity recovers the ordinary sum. The scalar table evaluation and Bastin conversion
+The Greenwood definition uses the generic finite Lehmann table evaluator rather than a
+separate current-transition interface. Its finite spectral index is required by that evaluator;
+`finiteLehmannTableResponse_ofEigenbasis` identifies the result with `eigenbasisLehmannSeries`.
+The scalar table evaluation and Bastin conversion
 consume the existing aggregate identities without expanding individual transitions downstream.
 
 The main semantic boundaries are:
