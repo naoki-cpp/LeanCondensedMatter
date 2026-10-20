@@ -83,23 +83,13 @@ theorem star_finiteHilbertOperator_eq_iff_matrixCoeff
     rw [ContinuousLinearMap.adjoint_toLinearMap] at hlin
     exact ContinuousLinearMap.ext fun x => LinearMap.congr_fun hlin x
 
-private theorem finiteHilbertOperator_isSelfAdjoint_iff_matrix_isHermitian
-    (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
-    IsSelfAdjoint (finiteHilbertOperatorAlgEquiv A) ↔
-      (finiteHilbertOperatorMatrix A).IsHermitian := by
-  rw [ContinuousLinearMap.isSelfAdjoint_iff_isSymmetric]
-  simpa [finiteHilbertOperatorMatrix] using
-    (LinearMap.isHermitian_toMatrix_iff
-      (finiteHilbertOrthonormalBasis (Config := Config))).symm
-
 /-- Coefficient-level criterion for self-adjointness after finite-Hilbert transport. -/
 theorem finiteHilbertOperator_isSelfAdjoint_iff_matrixCoeff
     (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
     IsSelfAdjoint (finiteHilbertOperatorAlgEquiv A) ↔
       ∀ m n : Config, star (matrixCoeff A n m) = matrixCoeff A m n := by
-  rw [finiteHilbertOperator_isSelfAdjoint_iff_matrix_isHermitian]
-  rw [Matrix.IsHermitian.ext_iff]
-  simp only [finiteHilbertOperatorMatrix_apply]
+  rw [isSelfAdjoint_iff]
+  exact star_finiteHilbertOperator_eq_iff_matrixCoeff A A
 
 end
 end Common
