@@ -1,28 +1,27 @@
 import LeanCondensedMatter.Combinatorics.Cumulant.Inversion
-import Mathlib.Basic.Complex.Basic
 
 set_option linter.style.header false
 
 /-!
 # Cumulants vanish across independent finite-set regions
 
-If a complex-valued moment function factors across a disjoint pair of finite sets, every cumulant
-that straddles both regions vanishes.
+If a moment function valued in a commutative ring factors across a disjoint pair of finite sets,
+every cumulant that straddles both regions vanishes.
 -/
 
 open IncidenceAlgebra
 
-variable {α : Type*} [DecidableEq α]
+variable {α R : Type*} [DecidableEq α] [CommRing R]
 
 namespace Finpartition
 
 /-- `m` factors independently across the disjoint pair `(A, B)`. -/
-def IsIndependentAcross (m : Finset α → ℂ) (A B : Finset α) : Prop :=
+def IsIndependentAcross (m : Finset α → R) (A B : Finset α) : Prop :=
   Disjoint A B ∧ m ⊥ = 1 ∧ ∀ T ≤ A ⊔ B, m T = m (T ⊓ A) * m (T ⊓ B)
 
 /-- A restricted partition product is the product of the corresponding intersections. -/
 theorem partitionProduct_restrict_eq_prod_inf {S : Finset α} (π : Finpartition S) {b : Finset α}
-    (hb : b ≤ S) {m : Finset α → ℂ} (hm0 : m ⊥ = 1) :
+    (hb : b ≤ S) {m : Finset α → R} (hm0 : m ⊥ = 1) :
     partitionProduct m (π.restrict hb) = ∏ C ∈ π.parts, m (C ⊓ b) := by
   classical
   have hinj : Set.InjOn (fun C => C ⊓ b)
@@ -53,7 +52,7 @@ theorem partitionProduct_restrict_eq_prod_inf {S : Finset α} (π : Finpartition
   rw [h2, mul_one]
 
 /-- Partition products factor across independent regions. -/
-theorem partitionProduct_eq_mul_of_isIndependentAcross {m : Finset α → ℂ} {A B : Finset α}
+theorem partitionProduct_eq_mul_of_isIndependentAcross {m : Finset α → R} {A B : Finset α}
     (hind : IsIndependentAcross m A B) (π : Finpartition (A ⊔ B)) :
     partitionProduct m π = partitionProduct m (π.restrict le_sup_left) *
       partitionProduct m (π.restrict le_sup_right) := by
@@ -64,10 +63,10 @@ theorem partitionProduct_eq_mul_of_isIndependentAcross {m : Finset α → ℂ} {
   exact Finset.prod_congr rfl fun C hC => hfact C (π.le hC)
 
 /-- Candidate cumulant that vanishes on sets straddling both regions. -/
-noncomputable def splitCumulant (m : Finset α → ℂ) (A B T : Finset α) : ℂ :=
+noncomputable def splitCumulant (m : Finset α → R) (A B T : Finset α) : R :=
   if T ≤ A ∨ T ≤ B then cumulantFromMoment m T else 0
 
-private theorem momentFromCumulant_splitCumulant_of_le {m : Finset α → ℂ}
+private theorem momentFromCumulant_splitCumulant_of_le {m : Finset α → R}
     {A B T : Finset α} (hT : T ≠ ⊥) (hTA : T ≤ A ∨ T ≤ B) :
     momentFromCumulant (splitCumulant m A B) T = m T := by
   have heq : ∀ π : Finpartition T,
@@ -80,7 +79,7 @@ private theorem momentFromCumulant_splitCumulant_of_le {m : Finset α → ℂ}
   simp_rw [heq]
   exact momentFromCumulant_cumulantFromMoment m hT
 
-private theorem momentFromCumulant_splitCumulant_eq {m : Finset α → ℂ} {A B : Finset α}
+private theorem momentFromCumulant_splitCumulant_eq {m : Finset α → R} {A B : Finset α}
     (hind : IsIndependentAcross m A B) :
     ∀ T ≤ A ⊔ B, momentFromCumulant (splitCumulant m A B) T = m T := by
   classical
@@ -141,7 +140,7 @@ private theorem momentFromCumulant_splitCumulant_eq {m : Finset α → ℂ} {A B
   exact (hfact T hT).symm
 
 /-- The true cumulant agrees with `splitCumulant` on every nonempty subset of the two regions. -/
-theorem cumulantFromMoment_eq_splitCumulant_of_le {m : Finset α → ℂ} {A B : Finset α}
+theorem cumulantFromMoment_eq_splitCumulant_of_le {m : Finset α → R} {A B : Finset α}
     (hind : IsIndependentAcross m A B) {T : Finset α} (hT : T ≤ A ⊔ B) (hT0 : T ≠ ⊥) :
     cumulantFromMoment m T = splitCumulant m A B T := by
   have hkey : cumulantFromMoment m T =
@@ -154,7 +153,7 @@ theorem cumulantFromMoment_eq_splitCumulant_of_le {m : Finset α → ℂ} {A B :
   rw [hkey, cumulantFromMoment_momentFromCumulant (splitCumulant m A B) hT0]
 
 /-- Any set straddling both independent regions has vanishing cumulant. -/
-theorem cumulantFromMoment_eq_zero_of_straddles {m : Finset α → ℂ} {A B : Finset α}
+theorem cumulantFromMoment_eq_zero_of_straddles {m : Finset α → R} {A B : Finset α}
     (hind : IsIndependentAcross m A B) {T : Finset α} (hT : T ≤ A ⊔ B) (hTA : ¬T ≤ A)
     (hTB : ¬T ≤ B) : cumulantFromMoment m T = 0 := by
   have hT0 : T ≠ ⊥ := fun h => hTA (h ▸ bot_le)
@@ -162,7 +161,7 @@ theorem cumulantFromMoment_eq_zero_of_straddles {m : Finset α → ℂ} {A B : F
     ite_eq_right (not_or.2 ⟨hTA, hTB⟩)]
 
 /-- The cumulant of a union of two nonempty independent regions vanishes. -/
-theorem cumulantFromMoment_eq_zero_of_isIndependentAcross {m : Finset α → ℂ} {A B : Finset α}
+theorem cumulantFromMoment_eq_zero_of_isIndependentAcross {m : Finset α → R} {A B : Finset α}
     (hind : IsIndependentAcross m A B) (hA : A ≠ ⊥) (hB : B ≠ ⊥) :
     cumulantFromMoment m (A ⊔ B) = 0 := by
   have hAB := hind.1
