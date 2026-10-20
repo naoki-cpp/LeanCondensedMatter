@@ -139,9 +139,9 @@ or consumer structure changes.
 - `SecondQuantization.Bosonic.numberOperator_basisState` — canonical number-operator eigenvalue
   equation `N_i |n⟩ = n_i |n⟩`; this is a physical statement about the named number operator rather
   than proof-routing around `create_annihilate_basisState_same`.
-- `SecondQuantization.Fermionic.Transport.TracedStredaAnalyticData.staticKuboBastinConductivity_eq_surface_add_sea`
-  — named physical endpoint identifying the finite static Kubo–Bastin conductivity with the Středa
-  surface-plus-sea split under the explicit analytic and Ward assumptions.
+- `QuantumTheory.Transport.TracedStredaAnalyticData.staticChannelConductivity_eq_surface_add_sea`
+  — named physical endpoint identifying the normalized finite static channel response with the
+  regularized Středa surface-plus-sea split under the stated traced-kernel and response-identity assumptions.
 - `QuantumTheory.Transport.regularizedBastinOperatorIntegrand_neg_neg` — canonical
   bilinearity/sign symmetry of the generic finite-broadening Bastin operator kernel under
   simultaneous reversal of both current vertices.

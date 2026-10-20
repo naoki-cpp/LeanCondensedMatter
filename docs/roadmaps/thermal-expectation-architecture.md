@@ -1,6 +1,6 @@
 # Thermal expectation and Bloch--de Dominicis architecture
 
-## Canonical expectation
+## State-independent expectation boundary
 
 For bounded observables, the physical normalized expectation is
 
@@ -10,7 +10,9 @@ QuantumTheory.DensityOperator.expectation
 ```
 
 Finite-dimensional trace and occupation-basis formulas are representations of this same expectation,
-not alternative state models.
+not alternative state models. Here *canonical* in a declaration's documentation can mean the
+preferred representation/API; it must not be interpreted as a fixed-particle-number canonical
+ensemble. A density operator and its expectation do not prescribe any particle-number ensemble.
 
 For a finite configuration type, `Common/Algebra/FiniteHilbertOperator.lean` owns the finite Hilbert
 basis and transport of algebraic Fock endomorphisms to bounded operators. The thermal state is the
@@ -43,7 +45,7 @@ The reusable finite coordinate layer is split by responsibility:
 | `Common/Algebra/DiagonalTrace.lean` | Summability-aware diagonal trace infrastructure. |
 | `Common/Algebra/FiniteTrace.lean` | Canonical finite algebraic Fock trace and unnormalized scalar weight sums. |
 | `Common/Thermal/BlochDeDominicis/NormalizedTwoPointTrace.lean` | Statistics-independent normalized two-point diagonal trace identity with explicit summability and nonzero denominators. |
-| `Common/Thermal/BlochDeDominicis/GibbsExpectation/` | Finite density-state specializations: two-point, peel, four-point, and recursion formulas. |
+| `Common/Thermal/BlochDeDominicis/GibbsExpectation/` | Finite Gibbs-state specializations: two-point, peel, four-point, recursion, and its finite Gibbs pairing theorem. |
 
 Raw `weightSum` formulas are scalar coordinate infrastructure, not normalized-state models. The finite Gibbs expectation retains the canonical pure-point density state as its physical
 meaning. For finite fermionic mode types,
@@ -59,12 +61,20 @@ ExpectationPairingRecursion Operator s
 ```
 
 with only the ordered expectation, pair values, admissibility, empty normalization, pair-deletion
-stability, and KMS/exchange first-pair recurrence. The theorem
+stability, and an assumed first-pair recurrence. The theorem
 `ExpectationPairingRecursion.bloch_de_dominicis` derives the full pairing expansion.
 
-The generic recursion has no occupation basis, trace implementation, density-state construction, or
-finite-dimensional assumption. Its `admissible` predicate is where analytic obligations such as
-summability, integrability, domain closure, and KMS hypotheses enter.
+The generic recursion has no occupation basis, trace implementation, density-state construction,
+finite-dimensional assumption, or ensemble choice. Its `admissible` predicate is where analytic
+obligations such as summability, integrability, domain closure, and KMS hypotheses enter. It does
+not assert that an arbitrary fixed-`N` state is Gaussian: the pairing theorem applies only after
+its first-pair recurrence is proved for the specific state.
+
+The generic induction remains in `ExpectationRecursion.lean`. The concrete finite Gibbs
+specialization `finiteGibbsExpectation_prod_eq_sum_pairing` is colocated with its implementing
+`finiteGibbsExpectationRecursion` in `GibbsExpectation/Recursion.lean`. Both are formulated in
+terms of an arbitrary energy function on configurations; the Gibbs implementation does not decide
+whether those configurations represent a fixed-`N` sector or the full Fock space.
 
 ## Fermionic implementations
 

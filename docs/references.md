@@ -160,7 +160,7 @@ Annotated reference list. One entry per source: full citation, what it is used f
   [10.1016/0029-5582(58)90285-2](https://doi.org/10.1016/0029-5582(58)90285-2).
   - **Project use:** Original linked-diagram and finite-temperature pairing provenance for
     `finiteGibbsExpectation_prod_eq_sum_pairing` in
-    `SecondQuantization/Common/Thermal/BlochDeDominicis/Induction.lean`.
+    `SecondQuantization/Common/Thermal/BlochDeDominicis/GibbsExpectation/Recursion.lean`.
   - **Caveat:** The theorem is a finite noninteracting Gibbs recursion specialization; it does not
     assert the original paper's interacting or infinite-volume analytic generality.
 
