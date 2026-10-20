@@ -56,7 +56,7 @@ theorem bilinearCurrentInsertion_comp_eq_four_fields
   simp only [bilinearCurrentInsertion, ← Module.End.mul_eq_comp]
   simp_rw [Finset.sum_mul]
   simp_rw [Finset.mul_sum]
-  simp only [smul_mul_assoc, mul_smul_comm, smul_smul]
+  simp only [smul_mul_assoc, mul_smul_comm, smul_smul, mul_comm]
 
 /-- Time ordering of two even-parity composite currents. The positive
 exchange sign here is not the negative exchange sign of individual
