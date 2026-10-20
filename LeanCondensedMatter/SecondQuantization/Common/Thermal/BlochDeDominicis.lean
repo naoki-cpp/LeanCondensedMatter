@@ -3,7 +3,6 @@ import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.Ex
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.Unnormalized
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.NormalizedTwoPointTrace
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.GibbsExpectation
-import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.Induction
 
 set_option linter.style.header false
 
@@ -17,8 +16,8 @@ The shared finite-temperature pairing theory is organized into reusable layers:
   expectation/KMS contract and its pairing theorem;
 - `Unnormalized`: configuration-general operator and summable trace peel identities;
 - `NormalizedTwoPointTrace`: a configuration-general normalized two-point trace-ratio identity;
-- `GibbsExpectation`: finite Gibbs density-state identities that discharge the recursion contract;
-- `Induction`: the public finite Gibbs specialization of the generic pairing theorem.
+- `GibbsExpectation`: finite Gibbs density-state identities that discharge the recursion contract,
+  including the public finite-configuration Gibbs pairing theorem.
 
 The generic recursion has no configuration type or `Fintype` assumption. Its `admissible` predicate
 is the extension point for summability, integrability, product-closure, or domain hypotheses in a
