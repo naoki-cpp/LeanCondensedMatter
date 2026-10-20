@@ -38,19 +38,6 @@ noncomputable def boundedSymmetrizedVelocityCurrentLinear
   (boundedOneBodyOperatorLinearMap (Site := Site)).comp
     (_root_.ConservationLaw.symmetrizedProductLeftLinear ((Site →₀ ℂ)) velocity)
 
-/-- Bounded many-body realization of the generic symmetrized velocity current
-`jᵐ = 1/2 {v,m}`. -/
-noncomputable def boundedSymmetrizedVelocityCurrent
-    (velocity m : (Site →₀ ℂ) →ₗ[ℂ] (Site →₀ ℂ)) :
-    FiniteLatticeHilbertFock Site →L[ℂ] FiniteLatticeHilbertFock Site :=
-  boundedSymmetrizedVelocityCurrentLinear velocity m
-
-@[simp]
-theorem boundedSymmetrizedVelocityCurrentLinear_apply
-    (velocity m : (Site →₀ ℂ) →ₗ[ℂ] (Site →₀ ℂ)) :
-    boundedSymmetrizedVelocityCurrentLinear velocity m =
-      boundedSymmetrizedVelocityCurrent velocity m :=
-  rfl
 
 end
 end Transport

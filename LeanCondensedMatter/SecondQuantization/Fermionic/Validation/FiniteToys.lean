@@ -1,4 +1,4 @@
-import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.StaticKuboBastinResponse
+import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.KuboBastinSpectral
 import LeanCondensedMatter.Transport.Streda.SpectralEnergyIntegral
 
 set_option linter.style.header false

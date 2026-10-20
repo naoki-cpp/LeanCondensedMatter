@@ -54,19 +54,9 @@ theorem bilinearCurrentInsertion_comp_eq_four_fields
             ((externalFieldOperator ε τ' (.creation k)).comp
               (externalFieldOperator ε τ' (.annihilation l)))) := by
   simp only [bilinearCurrentInsertion, ← Module.End.mul_eq_comp]
-  rw [Finset.sum_mul]
-  apply Finset.sum_congr rfl
-  intro i _
-  rw [Finset.sum_mul]
-  apply Finset.sum_congr rfl
-  intro j _
-  rw [Finset.mul_sum]
-  apply Finset.sum_congr rfl
-  intro k _
-  rw [Finset.mul_sum]
-  apply Finset.sum_congr rfl
-  intro l _
-  rw [smul_mul_assoc, mul_smul_comm, smul_smul]
+  simp_rw [Finset.sum_mul]
+  simp_rw [Finset.mul_sum]
+  simp only [smul_mul_assoc, mul_smul_comm, smul_smul, mul_comm]
 
 /-- Time ordering of two even-parity composite currents. The positive
 exchange sign here is not the negative exchange sign of individual
@@ -199,40 +189,19 @@ theorem finiteGibbsConnectedBilinearCurrentCorrelation_eq_four_fields
     finiteGibbsBilinearCurrentCurrent_eq_four_fields,
     finiteGibbsBilinearCurrent_eq_two_fields,
     finiteGibbsBilinearCurrent_eq_two_fields]
-  have hprod :
-      (∑ i : Mode, ∑ j : Mode,
-        jx i j *
-          Common.finiteGibbsExpectation (fermionEnergy ε) β
-            ((externalFieldOperator ε τ (.creation i)).comp
-              (externalFieldOperator ε τ (.annihilation j)))) *
-        (∑ k : Mode, ∑ l : Mode,
-          jy k l *
-            Common.finiteGibbsExpectation (fermionEnergy ε) β
-              ((externalFieldOperator ε τ' (.creation k)).comp
-                (externalFieldOperator ε τ' (.annihilation l)))) =
-      ∑ i : Mode, ∑ j : Mode, ∑ k : Mode, ∑ l : Mode,
-        (jx i j * jy k l) *
-          (Common.finiteGibbsExpectation (fermionEnergy ε) β
-              ((externalFieldOperator ε τ (.creation i)).comp
-                (externalFieldOperator ε τ (.annihilation j))) *
-            Common.finiteGibbsExpectation (fermionEnergy ε) β
-              ((externalFieldOperator ε τ' (.creation k)).comp
-                (externalFieldOperator ε τ' (.annihilation l)))) := by
-    rw [Finset.sum_mul]
-    apply Finset.sum_congr rfl
-    intro i _
-    rw [Finset.sum_mul]
-    apply Finset.sum_congr rfl
-    intro j _
-    rw [Finset.mul_sum]
-    apply Finset.sum_congr rfl
-    intro k _
-    rw [Finset.mul_sum]
-    apply Finset.sum_congr rfl
-    intro l _
-    ring
-  rw [hprod]
   simp only [mul_sub, Finset.sum_sub_distrib]
+  congr 1
+  simp_rw [Finset.sum_mul]
+  simp_rw [Finset.mul_sum]
+  apply Finset.sum_congr rfl
+  intro i _
+  apply Finset.sum_congr rfl
+  intro j _
+  apply Finset.sum_congr rfl
+  intro k _
+  apply Finset.sum_congr rfl
+  intro l _
+  ring
 
 end
 end Transport

@@ -170,8 +170,6 @@
         "LeanCondensedMatter/SecondQuantization/Fermionic/Transport/FrequencyResponse.lean",
         "LeanCondensedMatter/SecondQuantization/Fermionic/Transport/KuboBastinSpectral.lean",
         "LeanCondensedMatter/SecondQuantization/Fermionic/Transport/KuboGreenwood.lean",
-        "LeanCondensedMatter/SecondQuantization/Fermionic/Transport/SpectralFrequencyResponse.lean",
-        "LeanCondensedMatter/SecondQuantization/Fermionic/Transport/StaticKuboBastinResponse.lean",
         "LeanCondensedMatter/SecondQuantization/Fermionic/Validation/FiniteToys.lean",
         "LeanCondensedMatter/SecondQuantization/Fermionic/Validation/TwoLevelExplicit.lean",
         "LeanCondensedMatter/SecondQuantization/Fermionic/Validation/TwoSiteDimer.lean"
@@ -455,8 +453,8 @@
       "modules": ["LeanCondensedMatter.Transport.KuboBastin.CommonEnergy"]
     },
     {
-      "id": "transportStaticKuboBastinSpecialization",
-      "path": "LeanCondensedMatter/SecondQuantization/Fermionic/Transport/StaticKuboBastinResponse.lean",
+      "id": "transportStaticChannelIdentification",
+      "path": "LeanCondensedMatter/Transport/Streda/StaticChannelIdentification.lean",
       "modules": ["LeanCondensedMatter.Transport.Streda.GeneralizedStatic"]
     },
     {

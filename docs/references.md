@@ -106,7 +106,8 @@ Annotated reference list. One entry per source: full citation, what it is used f
   Physics C: Solid State Physics* **10**(12), 2153–2161 (1977). DOI:
   [10.1088/0022-3719/10/12/021](https://doi.org/10.1088/0022-3719/10/12/021).
   - **Project use:** Primary provenance for the Smrčka–Středa `I`/`II` transport terminology used
-    by `StaticKuboBastinResponse.lean` and `Transport/Streda/OperatorKernel.lean`.
+    by `Fermionic/Transport/KuboBastinSpectral.lean` at zero driving frequency and
+    `Transport/Streda/OperatorKernel.lean`.
   - **Caveat:** The cited declarations retain finite-volume and finite-broadening hypotheses; this
     entry does not supply a DC, thermodynamic-limit, or trace-per-volume theorem for the project.
 

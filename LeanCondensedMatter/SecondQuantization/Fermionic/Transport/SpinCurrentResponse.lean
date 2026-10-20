@@ -66,7 +66,7 @@ theorem boundedSpinCurrentLinear_apply
     (velocity : (SpinfulSite Site →₀ ℂ) →ₗ[ℂ] (SpinfulSite Site →₀ ℂ))
     (spinScale : ℝ) (spinComponent : QuantumTheory.SpinHalf.SpinSpace) :
     boundedSpinCurrentLinear velocity spinScale spinComponent =
-      boundedSymmetrizedVelocityCurrent velocity (spinOneBodyLinear spinScale spinComponent) :=
+      boundedSymmetrizedVelocityCurrentLinear velocity (spinOneBodyLinear spinScale spinComponent) :=
   rfl
 
 /-- Neutral fixed-observable response channel for a finite spin current selected by a spin-space component vector and driven by an electric bond-current source. -/
@@ -81,24 +81,6 @@ noncomputable def boundedSpinCurrentBondSourceResponseChannel
     (boundedSpinCurrentLinear velocity spinScale spinComponent)
     (boundedBondCurrent ℏ q K u v)
 
-/-- Retarded response of a finite spin current selected by a spin-space component vector to an
-electric bond-current source.
-
-The measured observable and source are intentionally distinct. The source carries electric charge
-`q`, while the measured current transports `S(n)`. -/
-noncomputable def boundedSpinCurrentBondSourceRetardedSusceptibility
-    (system : QuantumTheory.LinearResponse.BoundedFreeSystem
-      (FiniteLatticeHilbertFock (SpinfulSite Site)))
-    (expectation : QuantumTheory.LinearResponse.NormalizedExpectation
-      (FiniteLatticeHilbertFock (SpinfulSite Site)))
-    (velocity : (SpinfulSite Site →₀ ℂ) →ₗ[ℂ] (SpinfulSite Site →₀ ℂ))
-    (spinScale : ℝ) (spinComponent : QuantumTheory.SpinHalf.SpinSpace)
-    (ℏ q : ℂ)
-    (K : LocallyFiniteHopping (SpinfulSite Site))
-    (u v : SpinfulSite Site) (t s : ℝ) : ℂ :=
-  (boundedSpinCurrentBondSourceResponseChannel
-    velocity spinScale spinComponent ℏ q K u v).retardedKernel
-    system expectation t s
 
 end
 end Transport

@@ -85,19 +85,10 @@ theorem infiniteTimeAdiabaticDirectionalConductivity_eq_occupationResolved
           geometry direction K q omega eta =
       finiteKuboBastinOccupationResolvedDirectionalConductivity
         convention system data interpolation geometry direction K q omega eta := by
-  calc
-    _ = finiteKuboGreenwoodDirectionalConductivity
-        convention system data geometry direction K q omega eta :=
-      infiniteTimeAdiabaticDirectionalConductivity_eq_finiteKuboGreenwood
-        convention system data geometry direction K q omega eta heta
-    _ = finiteKuboBastinSpectralDirectionalConductivity
-        system data geometry direction K q omega eta convention :=
-      finiteKuboGreenwoodDirectionalConductivity_eq_bastinSpectral
-        system data geometry direction K q omega eta convention heta
-    _ = finiteKuboBastinOccupationResolvedDirectionalConductivity
-        convention system data interpolation geometry direction K q omega eta :=
-      finiteKuboBastinSpectralDirectionalConductivity_eq_occupationResolved
-        convention system data interpolation geometry direction K q omega eta
+  exact (infiniteTimeAdiabaticDirectionalConductivity_eq_bastinSpectral
+    system data geometry direction K q omega eta convention heta).trans
+    (finiteKuboBastinSpectralDirectionalConductivity_eq_occupationResolved
+      convention system data interpolation geometry direction K q omega eta)
 
 end
 end Transport
