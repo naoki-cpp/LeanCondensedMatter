@@ -385,6 +385,12 @@ conductivity, and Středa mathematics belongs upstream under `QuantumTheory` or 
 `Fermionic.Transport` contains statistics/model-specific bounded adapters and physical current
 response specializations.
 
+In `Fermionic.Transport.CurrentInsertions`, finite two- and four-leg current expansions and
+the disconnected two-current subtraction take any complex-linear functional on algebraic-Fock
+endomorphisms. Their proofs use linearity, not Gibbs, KMS, Wick factorization, or a fixed particle
+number. To interpret the subtraction as a physical second cumulant, the functional must be
+normalized on the identity. Thermal or other concrete state realizations remain separate.
+
 The generic bounded one-body response module does not assume a current-density convention.
 The symmetrized velocity current `1/2 {v,m}` is a downstream realization, while corrected,
 orbital, nonlocal, or otherwise model-specific currents can enter through the same arbitrary
