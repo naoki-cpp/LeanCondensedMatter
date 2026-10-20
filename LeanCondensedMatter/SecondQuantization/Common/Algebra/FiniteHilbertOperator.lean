@@ -83,13 +83,16 @@ theorem finiteHilbertOperator_basisState
     (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (n : Config) :
     finiteHilbertOperatorAlgEquiv A (finiteHilbertBasisState n) =
       finiteHilbertFockEquiv (A (basisState n)) := by
-  rw [← finiteHilbertFockEquiv_basisState]
-  change
-    ((finiteHilbertFockEquiv (Config := Config)).toLinearMap.comp
-      (A.comp (finiteHilbertFockEquiv (Config := Config)).symm.toLinearMap))
-        (finiteHilbertFockEquiv (basisState n)) =
+  have hpre :
+      (finiteHilbertFockEquiv (Config := Config)).symm (finiteHilbertBasisState n) =
+        basisState n := by
+    simpa only [← finiteHilbertFockEquiv_basisState,
+      LinearEquiv.symm_apply_apply]
+  change finiteHilbertFockEquiv
+      (A ((finiteHilbertFockEquiv (Config := Config)).symm
+        (finiteHilbertBasisState n))) =
       finiteHilbertFockEquiv (A (basisState n))
-  simp
+  rw [hpre]
 
 @[simp]
 theorem finiteHilbertOperator_basis_apply
