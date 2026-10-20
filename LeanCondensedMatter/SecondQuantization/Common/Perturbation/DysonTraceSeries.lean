@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Analysis.PowerSeries.Normalization
 import LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExpansion
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsCoordinate
 import Mathlib.RingTheory.PowerSeries.Basic
@@ -14,8 +15,9 @@ trace coefficients
 `Tr[diagonalEvolution energy (-β) ∘ Dₙ(β)]`
 
 and the corresponding formal power series. The trace can equivalently be written as the finite
-Boltzmann-weighted diagonal functional of `Dₙ(β)`. No convergence or identification with an
-analytic partition function is asserted here.
+Boltzmann-weighted diagonal functional of `Dₙ(β)`. The normalized series coefficients identify
+with finite Gibbs expectations of those Dyson coefficients. No convergence or identification with
+an analytic partition function is asserted here.
 -/
 
 namespace SecondQuantization
@@ -65,6 +67,22 @@ theorem constantCoeff_dysonTraceSeries_ne_zero (energy : Config → ℝ) (β : �
     PowerSeries.constantCoeff (dysonTraceSeries energy β V) ≠ 0 := by
   rw [constantCoeff_dysonTraceSeries, ← traceFock_diagonalEvolution_eq_weightSum]
   exact traceFock_diagonalEvolution_ne_zero energy β
+
+/-- The normalized Dyson-series coefficient is the finite Gibbs expectation of the
+bare Dyson coefficient, independently of particle statistics. -/
+theorem coeff_normalizeByConstantCoeff_dysonTraceSeries_eq_finiteGibbsExpectation
+    (energy : Config → ℝ) (β : ℝ)
+    (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (n : ℕ) :
+    PowerSeries.coeff n
+        (PowerSeries.normalizeByConstantCoeff (dysonTraceSeries energy β V)) =
+      finiteGibbsExpectation energy β (dysonCoeff energy V n β) := by
+  rw [PowerSeries.coeff_normalizeByConstantCoeff,
+    coeff_dysonTraceSeries, dysonTraceCoeff,
+    constantCoeff_dysonTraceSeries,
+    ← traceFock_diagonalEvolution_eq_weightSum]
+  simpa only [div_eq_mul_inv, mul_comm] using
+    (finiteGibbsExpectation_eq_trace_div energy β _).symm
+
 
 end Common
 end SecondQuantization

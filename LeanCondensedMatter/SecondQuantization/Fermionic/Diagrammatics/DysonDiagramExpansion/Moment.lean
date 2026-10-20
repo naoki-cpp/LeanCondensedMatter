@@ -40,10 +40,7 @@ theorem dysonPartitionSeriesMoment_eq_wickDiagramObjectMoment
             (dysonPartitionSeries ε β (quarticInteraction g))) =
       ∑ d : QuarticWickDiagram Mode N S, quarticWickDiagramAmplitude ε β g d
   rw [← dysonVertexMoment_quarticInteraction_eq_sum_quarticWickDiagramAmplitude ε β g S]
-  simp only [PowerSeries.coeff_normalizeByConstantCoeff, dysonPartitionSeries,
-    Common.coeff_dysonTraceSeries, Common.dysonTraceVertexMoment,
-    Common.normalizedDysonTraceCoeff, div_eq_mul_inv]
-  ring
+  rfl
 
 end Fermionic
 end SecondQuantization
