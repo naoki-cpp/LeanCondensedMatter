@@ -97,6 +97,10 @@ finite-set cumulant inversion, while the replica route converts that bundled equ
 the forward coefficient identity needed by the replica polynomial proof. Both routes identify the
 same formal-log coefficient with the connected-object contribution.
 
+`Finpartition.IsIndependentAcross` and the associated cumulant-vanishing results apply to
+moment functions over a commutative ring; no choice of quantum ensemble or Wick/Gaussian property
+enters their proofs. A concrete state must separately establish the moment-factorization hypothesis.
+
 The bosonic physical Dyson connected theorem uses the same normalized finite-set and
 `MultiplicativeWeight` machinery directly. Its Dyson-to-diagram expansion, component
 factorization, and series-to-object-moment identity are separated under
