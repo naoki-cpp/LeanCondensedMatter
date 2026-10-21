@@ -30,7 +30,8 @@ theorem vonNeumannEntropy_gibbsState [Nontrivial H] [FiniteDimensional ℂ H]
     Hop.2.isSymmetric.eigenvectorBasis rfl
   have hEbE (i : Fin (Module.finrank ℂ H)) :
       Hop.1 (bE.toHilbertBasis i) = (E i : ℂ) • bE.toHilbertBasis i := by
-    simpa [E, bE] using Hop.2.isSymmetric.apply_eigenvectorBasis rfl i
+    simpa only [OrthonormalBasis.coe_toHilbertBasis, E, bE] using
+      Hop.2.isSymmetric.apply_eigenvectorBasis rfl i
   letI : Nonempty (Fin (Module.finrank ℂ H)) :=
     ⟨⟨0, Module.finrank_pos (R := ℂ) (M := H)⟩⟩
   let hsum := eigenbasisGibbsSummable_of_finite E β
