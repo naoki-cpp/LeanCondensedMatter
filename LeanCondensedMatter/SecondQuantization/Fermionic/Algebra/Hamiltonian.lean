@@ -41,8 +41,8 @@ evolution, Gibbs constructions, and completed-space realization. -/
 noncomputable def fermionEnergy (ε : Mode → ℝ) (n : Occupation Mode) : ℝ :=
   Common.occupationEnergy ε n
 
-/-- Fermionic free energy is the sum over the occupied mode set. -/
 omit [LinearOrder Mode] in
+/-- Fermionic free energy is the sum over the occupied mode set. -/
 theorem fermionEnergy_eq_sum (ε : Mode → ℝ) (n : Occupation Mode) :
     fermionEnergy ε n = ∑ i ∈ n, ε i := by
   classical
