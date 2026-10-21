@@ -5475,16 +5475,6 @@
       "externalImportCount": 0
     },
     {
-      "name": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentOrder",
-      "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Diagrammatics/Quartic/Components/ComponentOrder.lean",
-      "imports": [
-        "LeanCondensedMatter.Combinatorics.Shuffle.FinpartitionOrderShuffle",
-        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentRestriction",
-        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Ordered"
-      ],
-      "externalImportCount": 0
-    },
-    {
       "name": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentRestriction",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Diagrammatics/Quartic/Components/ComponentRestriction.lean",
       "imports": [
@@ -5590,8 +5580,9 @@
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Diagrammatics/Quartic/Pairing/ComponentPairing.lean",
       "imports": [
         "LeanCondensedMatter.Combinatorics.PerfectPairing.PairEndpoints",
-        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentOrder",
-        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentRestriction"
+        "LeanCondensedMatter.Combinatorics.Shuffle.FinpartitionOrderShuffle",
+        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentRestriction",
+        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Ordered"
       ],
       "externalImportCount": 0
     },
@@ -5610,7 +5601,6 @@
       "imports": [
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentConnected",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentDecompositionEquiv",
-        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentOrder",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentRestriction",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Connected",

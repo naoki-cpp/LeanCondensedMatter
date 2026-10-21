@@ -761940,16 +761940,16 @@
      "id": "_uniq.71894"}]},
   "statement":
   "{Label : Type u_1} → {N : ℕ} → {S : Finset (Fin N)} → SecondQuantization.Common.QuarticDiagram Label N S → Type",
-  "sourceLine": 26,
+  "sourceLine": 35,
   "sourceFile":
-  "LeanCondensedMatter/SecondQuantization/Common/Diagrammatics/Quartic/Components/ComponentOrder.lean",
-  "sourceEndLine": 28,
+  "LeanCondensedMatter/SecondQuantization/Common/Diagrammatics/Quartic/Pairing/ComponentPairing.lean",
+  "sourceEndLine": 37,
   "sourceEndColumn": 48,
   "sourceColumn": 7,
   "projection": false,
   "name": "SecondQuantization.Common.QuarticDiagram.ComponentShuffle",
   "module":
-  "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentOrder",
+  "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Pairing.ComponentPairing",
   "kind": "abbrev",
   "generated": false,
   "docString":
@@ -761991,7 +761991,7 @@
    "SecondQuantization.Common.QuarticDiagram",
    "SecondQuantization.Common.QuarticDiagram.vertexGraph",
    "SimpleGraph.componentPartitionOn"],
-  "declarationStartLine": 25},
+  "declarationStartLine": 34},
  {"valueDependencies":
   ["Finpartition.PartOrders",
    "SecondQuantization.Common.QuarticDiagram",
@@ -762052,16 +762052,16 @@
      "id": "_uniq.68576"}]},
   "statement":
   "{Label : Type u_1} → {N : ℕ} → {S : Finset (Fin N)} → SecondQuantization.Common.QuarticDiagram Label N S → Type",
-  "sourceLine": 21,
+  "sourceLine": 30,
   "sourceFile":
-  "LeanCondensedMatter/SecondQuantization/Common/Diagrammatics/Quartic/Components/ComponentOrder.lean",
-  "sourceEndLine": 23,
+  "LeanCondensedMatter/SecondQuantization/Common/Diagrammatics/Quartic/Pairing/ComponentPairing.lean",
+  "sourceEndLine": 32,
   "sourceEndColumn": 47,
   "sourceColumn": 7,
   "projection": false,
   "name": "SecondQuantization.Common.QuarticDiagram.ComponentVertexOrders",
   "module":
-  "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentOrder",
+  "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Pairing.ComponentPairing",
   "kind": "abbrev",
   "generated": false,
   "docString": "A vertex order on every connected-component block of `d`. ",
@@ -762093,7 +762093,7 @@
    "SecondQuantization.Common.QuarticDiagram",
    "SecondQuantization.Common.QuarticDiagram.vertexGraph",
    "SimpleGraph.componentPartitionOn"],
-  "declarationStartLine": 20},
+  "declarationStartLine": 29},
  {"valueDependencies":
   ["SecondQuantization.Common.QuarticDiagram",
    "SecondQuantization.Common.QuarticDiagram.vertexGraph"],
@@ -762296,10 +762296,10 @@
      "id": "_uniq.49458"}]},
   "statement":
   "{Label : Type u_1} →\n  {N : ℕ} →\n    {S : Finset (Fin N)} →\n      (d : SecondQuantization.Common.QuarticDiagram Label N S) →\n        d.ComponentVertexOrders → ↥d.vertexGraph.componentPartitionOn.parts → Type",
-  "sourceLine": 27,
+  "sourceLine": 48,
   "sourceFile":
   "LeanCondensedMatter/SecondQuantization/Common/Diagrammatics/Quartic/Pairing/ComponentPairing.lean",
-  "sourceEndLine": 30,
+  "sourceEndLine": 51,
   "sourceEndColumn": 70,
   "sourceColumn": 7,
   "projection": false,
@@ -762338,7 +762338,7 @@
    "SecondQuantization.Common.QuarticDiagram.restrictComponent",
    "SecondQuantization.Common.QuarticDiagram.vertexGraph",
    "SimpleGraph.componentPartitionOn"],
-  "declarationStartLine": 26},
+  "declarationStartLine": 47},
  {"valueDependencies":
   ["SecondQuantization.Common.QuarticDiagram",
    "SecondQuantization.Common.QuarticDiagram.vertexGraph",
@@ -762537,16 +762537,16 @@
      "id": "_uniq.58297"}]},
   "statement":
   "{Label : Type u_1} →\n  {N : ℕ} →\n    {S : Finset (Fin N)} →\n      (d : SecondQuantization.Common.QuarticDiagram Label N S) →\n        d.ComponentVertexOrders → d.ComponentShuffle → SecondQuantization.Common.QuarticVertexOrder S",
-  "sourceLine": 31,
+  "sourceLine": 40,
   "sourceFile":
-  "LeanCondensedMatter/SecondQuantization/Common/Diagrammatics/Quartic/Components/ComponentOrder.lean",
-  "sourceEndLine": 34,
+  "LeanCondensedMatter/SecondQuantization/Common/Diagrammatics/Quartic/Pairing/ComponentPairing.lean",
+  "sourceEndLine": 43,
   "sourceEndColumn": 65,
   "sourceColumn": 18,
   "projection": false,
   "name": "SecondQuantization.Common.QuarticDiagram.assembleVertexOrder",
   "module":
-  "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentOrder",
+  "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Pairing.ComponentPairing",
   "kind": "def",
   "generated": false,
   "docString":
@@ -762588,7 +762588,7 @@
    "SecondQuantization.Common.QuarticDiagram.vertexGraph",
    "SecondQuantization.Common.QuarticVertexOrder",
    "SimpleGraph.componentPartitionOn"],
-  "declarationStartLine": 30},
+  "declarationStartLine": 39},
  {"valueDependencies":
   ["Combinatorics.FamilySlotShuffleTo.slotEquiv",
    "Combinatorics.assembleFamilyOrderOfSize",
@@ -762796,10 +762796,10 @@
   "statement":
   "∀ {Label : Type u_1} {N : ℕ} {S : Finset (Fin N)} (d : SecondQuantization.Common.QuarticDiagram Label N S)\n  (orders : d.ComponentVertexOrders) (shuffle : d.ComponentShuffle) (B : ↥d.vertexGraph.componentPartitionOn.parts)\n  (i : Fin (↑B).card), ↑((d.assembleVertexOrder orders shuffle) (shuffle.slotEquiv ⟨B, i⟩)) = ↑((orders B) i)",
   "standardAxioms": ["Classical.choice", "Quot.sound", "propext"],
-  "sourceLine": 79,
+  "sourceLine": 100,
   "sourceFile":
   "LeanCondensedMatter/SecondQuantization/Common/Diagrammatics/Quartic/Pairing/ComponentPairing.lean",
-  "sourceEndLine": 101,
+  "sourceEndLine": 122,
   "sourceEndColumn": 61,
   "sourceColumn": 8,
   "soleCompiledConsumerPrivate": false,
@@ -762836,7 +762836,7 @@
    "SecondQuantization.Common.QuarticDiagram.vertexGraph",
    "SecondQuantization.Common.QuarticVertexOrder",
    "SimpleGraph.componentPartitionOn"],
-  "declarationStartLine": 77,
+  "declarationStartLine": 98,
   "crossModuleDirectWrapper": false,
   "completedMention": false,
   "compiledConsumers":
@@ -764755,10 +764755,10 @@
      "id": "_uniq.70161"}]},
   "statement":
   "{Label : Type u_1} →\n  {N : ℕ} →\n    {S : Finset (Fin N)} →\n      (d : SecondQuantization.Common.QuarticDiagram Label N S) →\n        (B : ↥d.vertexGraph.componentPartitionOn.parts) → Fin (2 * (2 * (↑B).card)) → Fin (2 * (2 * S.card))",
-  "sourceLine": 133,
+  "sourceLine": 154,
   "sourceFile":
   "LeanCondensedMatter/SecondQuantization/Common/Diagrammatics/Quartic/Pairing/ComponentPairing.lean",
-  "sourceEndLine": 136,
+  "sourceEndLine": 157,
   "sourceEndColumn": 43,
   "sourceColumn": 18,
   "projection": false,
@@ -764784,7 +764784,7 @@
    "SecondQuantization.Common.QuarticDiagram.legInBlock",
    "SecondQuantization.Common.QuarticDiagram.vertexGraph",
    "SimpleGraph.componentPartitionOn"],
-  "declarationStartLine": 131},
+  "declarationStartLine": 152},
  {"valueDependencies":
   ["SecondQuantization.Common.QuarticDiagram",
    "SecondQuantization.Common.QuarticDiagram.componentDiagramLeg",
@@ -764992,10 +764992,10 @@
      "id": "_uniq.73072"}]},
   "statement":
   "{Label : Type u_1} →\n  {N : ℕ} →\n    {S : Finset (Fin N)} →\n      (d : SecondQuantization.Common.QuarticDiagram Label N S) →\n        d.ComponentShuffle →\n          (B : ↥d.vertexGraph.componentPartitionOn.parts) → Fin (2 * (2 * (↑B).card)) → Fin (2 * (2 * S.card))",
-  "sourceLine": 34,
+  "sourceLine": 55,
   "sourceFile":
   "LeanCondensedMatter/SecondQuantization/Common/Diagrammatics/Quartic/Pairing/ComponentPairing.lean",
-  "sourceEndLine": 40,
+  "sourceEndLine": 61,
   "sourceEndColumn": 61,
   "sourceColumn": 18,
   "projection": false,
@@ -765031,7 +765031,7 @@
    "SecondQuantization.Common.QuarticDiagram.vertexGraph",
    "SecondQuantization.Common.orderedQuarticLegEquiv",
    "SimpleGraph.componentPartitionOn"],
-  "declarationStartLine": 32},
+  "declarationStartLine": 53},
  {"valueDependencies":
   ["SecondQuantization.Common.QuarticDiagram",
    "SecondQuantization.Common.QuarticDiagram.ComponentShuffle",
@@ -765190,10 +765190,10 @@
   "statement":
   "∀ {Label : Type u_1} {N : ℕ} {S : Finset (Fin N)} (d : SecondQuantization.Common.QuarticDiagram Label N S)\n  (shuffle : d.ComponentShuffle) (B : ↥d.vertexGraph.componentPartitionOn.parts),\n  StrictMono (d.componentOrderedLeg shuffle B)",
   "standardAxioms": ["Classical.choice", "Quot.sound", "propext"],
-  "sourceLine": 53,
+  "sourceLine": 74,
   "sourceFile":
   "LeanCondensedMatter/SecondQuantization/Common/Diagrammatics/Quartic/Pairing/ComponentPairing.lean",
-  "sourceEndLine": 75,
+  "sourceEndLine": 96,
   "sourceEndColumn": 77,
   "sourceColumn": 8,
   "soleCompiledConsumerPrivate": false,
@@ -765230,7 +765230,7 @@
    "SecondQuantization.Common.QuarticDiagram.vertexGraph",
    "SecondQuantization.Common.orderedQuarticLegEquiv",
    "SimpleGraph.componentPartitionOn"],
-  "declarationStartLine": 52,
+  "declarationStartLine": 73,
   "crossModuleDirectWrapper": false,
   "completedMention": false,
   "compiledConsumers":
@@ -769111,10 +769111,10 @@
   "statement":
   "∀ {Label : Type u_1} {N : ℕ} {S : Finset (Fin N)} (d : SecondQuantization.Common.QuarticDiagram Label N S)\n  (B : ↥d.vertexGraph.componentPartitionOn.parts) (p : Fin (2 * (2 * (↑B).card))),\n  SecondQuantization.Common.localLegOfLeg (d.componentDiagramLeg B p) = SecondQuantization.Common.localLegOfLeg p",
   "standardAxioms": ["Classical.choice", "Quot.sound", "propext"],
-  "sourceLine": 152,
+  "sourceLine": 173,
   "sourceFile":
   "LeanCondensedMatter/SecondQuantization/Common/Diagrammatics/Quartic/Pairing/ComponentPairing.lean",
-  "sourceEndLine": 159,
+  "sourceEndLine": 180,
   "sourceEndColumn": 62,
   "sourceColumn": 8,
   "soleCompiledConsumerPrivate": false,
@@ -769145,7 +769145,7 @@
    "SecondQuantization.Common.QuarticDiagram.vertexGraph",
    "SecondQuantization.Common.localLegOfLeg",
    "SimpleGraph.componentPartitionOn"],
-  "declarationStartLine": 151,
+  "declarationStartLine": 172,
   "crossModuleDirectWrapper": false,
   "completedMention": false,
   "compiledConsumers":
@@ -769932,10 +769932,10 @@
   "statement":
   "∀ {Label : Type u_1} {N : ℕ} {S : Finset (Fin N)} (d : SecondQuantization.Common.QuarticDiagram Label N S)\n  (orders : d.ComponentVertexOrders) (shuffle : d.ComponentShuffle) (B : ↥d.vertexGraph.componentPartitionOn.parts)\n  (p : Fin (2 * (2 * (↑B).card))),\n  (SecondQuantization.Common.orderedLegToDiagramLeg S (d.assembleVertexOrder orders shuffle))\n      (d.componentOrderedLeg shuffle B p) =\n    d.componentDiagramLeg B ((SecondQuantization.Common.orderedLegToDiagramLeg (↑B) (orders B)) p)",
   "standardAxioms": ["Classical.choice", "Quot.sound", "propext"],
-  "sourceLine": 163,
+  "sourceLine": 184,
   "sourceFile":
   "LeanCondensedMatter/SecondQuantization/Common/Diagrammatics/Quartic/Pairing/ComponentPairing.lean",
-  "sourceEndLine": 203,
+  "sourceEndLine": 224,
   "sourceEndColumn": 46,
   "sourceColumn": 8,
   "soleCompiledConsumerPrivate": false,
@@ -769981,7 +769981,7 @@
    "SecondQuantization.Common.vertexOfLeg",
    "SecondQuantization.Common.vertexOfLeg_orderedLegToDiagramLeg",
    "SimpleGraph.componentPartitionOn"],
-  "declarationStartLine": 161,
+  "declarationStartLine": 182,
   "crossModuleDirectWrapper": false,
   "completedMention": false,
   "compiledConsumers":
@@ -770249,10 +770249,10 @@
   "statement":
   "∀ {Label : Type u_1} {N : ℕ} {S : Finset (Fin N)} (d : SecondQuantization.Common.QuarticDiagram Label N S)\n  (shuffle : d.ComponentShuffle) (B : ↥d.vertexGraph.componentPartitionOn.parts) (p : Fin (2 * (2 * (↑B).card))),\n  (SecondQuantization.Common.orderedQuarticLegEquiv S.card) (d.componentOrderedLeg shuffle B p) =\n    (shuffle.slotEquiv ⟨B, ((SecondQuantization.Common.orderedQuarticLegEquiv (↑B).card) p).1⟩,\n      ((SecondQuantization.Common.orderedQuarticLegEquiv (↑B).card) p).2)",
   "standardAxioms": ["Classical.choice", "Quot.sound", "propext"],
-  "sourceLine": 43,
+  "sourceLine": 64,
   "sourceFile":
   "LeanCondensedMatter/SecondQuantization/Common/Diagrammatics/Quartic/Pairing/ComponentPairing.lean",
-  "sourceEndLine": 50,
+  "sourceEndLine": 71,
   "sourceEndColumn": 43,
   "sourceColumn": 8,
   "soleCompiledConsumerPrivate": false,
@@ -770285,7 +770285,7 @@
    "SecondQuantization.Common.QuarticDiagram.vertexGraph",
    "SecondQuantization.Common.orderedQuarticLegEquiv",
    "SimpleGraph.componentPartitionOn"],
-  "declarationStartLine": 42,
+  "declarationStartLine": 63,
   "crossModuleDirectWrapper": false,
   "completedMention": false,
   "compiledConsumers":
@@ -771451,10 +771451,10 @@
   "statement":
   "∀ {Label : Type u_1} {N : ℕ} {S : Finset (Fin N)} (d : SecondQuantization.Common.QuarticDiagram Label N S)\n  (orders : d.ComponentVertexOrders) (shuffle : d.ComponentShuffle) (B : ↥d.vertexGraph.componentPartitionOn.parts)\n  (p : Fin (2 * (2 * (↑B).card))),\n  (d.pairingInOrder (d.assembleVertexOrder orders shuffle)).partner (d.componentOrderedLeg shuffle B p) =\n    d.componentOrderedLeg shuffle B (((d.restrictComponent ⋯).pairingInOrder (orders B)).partner p)",
   "standardAxioms": ["Classical.choice", "Quot.sound", "propext"],
-  "sourceLine": 220,
+  "sourceLine": 241,
   "sourceFile":
   "LeanCondensedMatter/SecondQuantization/Common/Diagrammatics/Quartic/Pairing/ComponentPairing.lean",
-  "sourceEndLine": 243,
+  "sourceEndLine": 264,
   "sourceEndColumn": 70,
   "sourceColumn": 8,
   "soleCompiledConsumerPrivate": true,
@@ -771495,7 +771495,7 @@
    "SecondQuantization.Common.orderedLegToDiagramLeg",
    "SimpleGraph.componentPartitionOn",
    "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Pairing.ComponentPairing.0.SecondQuantization.Common.QuarticDiagram.componentDiagramLeg_restrictedPairing_partner"],
-  "declarationStartLine": 218,
+  "declarationStartLine": 239,
   "crossModuleDirectWrapper": false,
   "completedMention": false,
   "compiledConsumers":
@@ -773529,10 +773529,10 @@
   "statement":
   "∀ {Label : Type u_1} {N : ℕ} {S : Finset (Fin N)} (d : SecondQuantization.Common.QuarticDiagram Label N S)\n  (orders : d.ComponentVertexOrders) (shuffle : d.ComponentShuffle) (B : ↥d.vertexGraph.componentPartitionOn.parts)\n  (i : Fin (↑B).card),\n  (d.restrictComponent ⋯).vertexLabel ((orders B) i) =\n    d.vertexLabel ((d.assembleVertexOrder orders shuffle) (shuffle.slotEquiv ⟨B, i⟩))",
   "standardAxioms": ["Classical.choice", "Quot.sound", "propext"],
-  "sourceLine": 104,
+  "sourceLine": 125,
   "sourceFile":
   "LeanCondensedMatter/SecondQuantization/Common/Diagrammatics/Quartic/Pairing/ComponentPairing.lean",
-  "sourceEndLine": 113,
+  "sourceEndLine": 134,
   "sourceEndColumn": 79,
   "sourceColumn": 8,
   "soleCompiledConsumerPrivate": false,
@@ -773570,7 +773570,7 @@
    "SecondQuantization.Common.QuarticDiagram.vertexLabel",
    "SecondQuantization.Common.QuarticVertexOrder",
    "SimpleGraph.componentPartitionOn"],
-  "declarationStartLine": 103,
+  "declarationStartLine": 124,
   "crossModuleDirectWrapper": false,
   "completedMention": false,
   "compiledConsumers":
@@ -775661,10 +775661,10 @@
   "statement":
   "∀ {Label : Type u_1} {N : ℕ} {S : Finset (Fin N)} (d : SecondQuantization.Common.QuarticDiagram Label N S)\n  (B : ↥d.vertexGraph.componentPartitionOn.parts) (p : Fin (2 * (2 * (↑B).card))),\n  ↑(SecondQuantization.Common.vertexOfLeg (d.componentDiagramLeg B p)) = ↑(SecondQuantization.Common.vertexOfLeg p)",
   "standardAxioms": ["Classical.choice", "Quot.sound", "propext"],
-  "sourceLine": 139,
+  "sourceLine": 160,
   "sourceFile":
   "LeanCondensedMatter/SecondQuantization/Common/Diagrammatics/Quartic/Pairing/ComponentPairing.lean",
-  "sourceEndLine": 149,
+  "sourceEndLine": 170,
   "sourceEndColumn": 51,
   "sourceColumn": 8,
   "soleCompiledConsumerPrivate": false,
@@ -775697,7 +775697,7 @@
    "SecondQuantization.Common.QuarticDiagram.vertexOfLeg_blockLegEquiv",
    "SecondQuantization.Common.vertexOfLeg",
    "SimpleGraph.componentPartitionOn"],
-  "declarationStartLine": 138,
+  "declarationStartLine": 159,
   "crossModuleDirectWrapper": false,
   "completedMention": false,
   "compiledConsumers":
@@ -888853,10 +888853,10 @@
   "statement":
   "∀ {N : ℕ} (S : Finset (Fin N)) (order : SecondQuantization.Common.QuarticVertexOrder S) (p : Fin (2 * (2 * S.card))),\n  SecondQuantization.Common.localLegOfLeg ((SecondQuantization.Common.orderedLegToDiagramLeg S order) p) =\n    ((SecondQuantization.Common.orderedQuarticLegEquiv S.card) p).2",
   "standardAxioms": ["Classical.choice", "Quot.sound", "propext"],
-  "sourceLine": 124,
+  "sourceLine": 145,
   "sourceFile":
   "LeanCondensedMatter/SecondQuantization/Common/Diagrammatics/Quartic/Pairing/ComponentPairing.lean",
-  "sourceEndLine": 129,
+  "sourceEndLine": 150,
   "sourceEndColumn": 31,
   "sourceColumn": 8,
   "soleCompiledConsumerPrivate": false,
@@ -888883,7 +888883,7 @@
    "SecondQuantization.Common.orderedLegToDiagramLeg",
    "SecondQuantization.Common.orderedQuarticLegEquiv",
    "SecondQuantization.Common.quarticLegEquiv"],
-  "declarationStartLine": 123,
+  "declarationStartLine": 144,
   "crossModuleDirectWrapper": false,
   "completedMention": false,
   "compiledConsumers":
@@ -922099,10 +922099,10 @@
   "statement":
   "∀ {N : ℕ} (S : Finset (Fin N)) (order : SecondQuantization.Common.QuarticVertexOrder S) (p : Fin (2 * (2 * S.card))),\n  SecondQuantization.Common.vertexOfLeg ((SecondQuantization.Common.orderedLegToDiagramLeg S order) p) =\n    order ((SecondQuantization.Common.orderedQuarticLegEquiv S.card) p).1",
   "standardAxioms": ["Classical.choice", "Quot.sound", "propext"],
-  "sourceLine": 116,
+  "sourceLine": 137,
   "sourceFile":
   "LeanCondensedMatter/SecondQuantization/Common/Diagrammatics/Quartic/Pairing/ComponentPairing.lean",
-  "sourceEndLine": 121,
+  "sourceEndLine": 142,
   "sourceEndColumn": 31,
   "sourceColumn": 8,
   "soleCompiledConsumerPrivate": false,
@@ -922129,7 +922129,7 @@
    "SecondQuantization.Common.orderedQuarticLegEquiv",
    "SecondQuantization.Common.quarticLegEquiv",
    "SecondQuantization.Common.vertexOfLeg"],
-  "declarationStartLine": 115,
+  "declarationStartLine": 136,
   "crossModuleDirectWrapper": false,
   "completedMention": false,
   "compiledConsumers":
@@ -1201031,10 +1201031,10 @@
   "statement":
   "∀ {Label : Type u_1} {N : ℕ} {S : Finset (Fin N)} (d : SecondQuantization.Common.QuarticDiagram Label N S)\n  (B : ↥d.vertexGraph.componentPartitionOn.parts) (p : Fin (2 * (2 * (↑B).card))),\n  d.componentDiagramLeg B ((d.restrictedPairing ⋯).partner p) = d.pairing.partner (d.componentDiagramLeg B p)",
   "standardAxioms": ["Classical.choice", "Quot.sound", "propext"],
-  "sourceLine": 207,
+  "sourceLine": 228,
   "sourceFile":
   "LeanCondensedMatter/SecondQuantization/Common/Diagrammatics/Quartic/Pairing/ComponentPairing.lean",
-  "sourceEndLine": 216,
+  "sourceEndLine": 237,
   "sourceEndColumn": 67,
   "sourceColumn": 16,
   "soleCompiledConsumerPrivate": false,
@@ -1201070,7 +1201070,7 @@
    "SecondQuantization.Common.QuarticDiagram.restrictedPairing",
    "SecondQuantization.Common.QuarticDiagram.vertexGraph",
    "SimpleGraph.componentPartitionOn"],
-  "declarationStartLine": 205,
+  "declarationStartLine": 226,
   "crossModuleDirectWrapper": false,
   "completedMention": false,
   "compiledConsumers":
