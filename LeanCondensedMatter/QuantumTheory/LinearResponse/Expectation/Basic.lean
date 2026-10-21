@@ -70,8 +70,7 @@ theorem NormalizedExpectation.connectedCorrelation_one_left
     expectation.connectedCorrelation 1 A = 0 := by
   change expectation (1 * A) -
     expectation.toContinuousLinearMap 1 * expectation A = 0
-  rw [one_mul, expectation.map_one]
-  ring
+  simp only [one_mul, expectation.map_one, sub_self]
 
 /-- The connected correlation with the identity in the second slot vanishes by normalization. -/
 @[simp]
@@ -80,8 +79,7 @@ theorem NormalizedExpectation.connectedCorrelation_one_right
     expectation.connectedCorrelation A 1 = 0 := by
   change expectation (A * 1) -
     expectation A * expectation.toContinuousLinearMap 1 = 0
-  rw [mul_one, expectation.map_one]
-  ring
+  simp only [mul_one, expectation.map_one, sub_self]
 
 end
 end LinearResponse
