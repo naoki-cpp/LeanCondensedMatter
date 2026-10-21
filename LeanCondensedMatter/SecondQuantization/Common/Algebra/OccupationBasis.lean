@@ -1,4 +1,4 @@
-import Mathlib.Algebra.BigOperators.Group.Finset.Basic
+import Mathlib.Algebra.BigOperators.Ring.Finset
 import Mathlib.Basic.Real.Basic
 
 set_option linter.style.header false
@@ -53,6 +53,11 @@ theorem particleNumber_vacuum {Mode Config : Type*} [OccupationBasis Mode Config
   classical
   simp [particleNumber, OccupationBasis.occupation_vacuum]
 
+/-- Occupation configurations with a sharp total particle number `N`. This grading is
+statistics-independent; choosing a canonical Gibbs state is a separate thermal construction. -/
+abbrev ParticleNumberSector (Mode Config : Type*) [OccupationBasis Mode Config] (N : ℕ) :=
+  {n : Config // particleNumber (Mode := Mode) n = N}
+
 /-- Free energy of a finite-support occupation configuration with one-particle energies `ε`.
 The sum is over occupied modes, so `Mode` need not be finite. -/
 noncomputable def occupationEnergy {Mode Config : Type*} [OccupationBasis Mode Config]
@@ -68,6 +73,19 @@ theorem occupationEnergy_vacuum {Mode Config : Type*} [OccupationBasis Mode Conf
       (OccupationBasis.vacuum (Mode := Mode) (Config := Config)) = 0 := by
   classical
   simp [occupationEnergy, OccupationBasis.occupation_vacuum]
+
+/-- Shifting every free one-particle energy by `-μ` subtracts `μ` times the
+occupation number from the many-particle energy. -/
+theorem occupationEnergy_sub_const {Mode Config : Type*} [OccupationBasis Mode Config]
+    (ε : Mode → ℝ) (μ : ℝ) (n : Config) :
+    occupationEnergy (fun i => ε i - μ) n =
+      occupationEnergy ε n - μ * (particleNumber (Mode := Mode) n : ℝ) := by
+  simp only [occupationEnergy, particleNumber]
+  simp_rw [mul_sub]
+  rw [Finset.sum_sub_distrib]
+  congr 1
+  rw [← Finset.sum_mul, Nat.cast_sum]
+  exact mul_comm _ _
 
 end Common
 end SecondQuantization
