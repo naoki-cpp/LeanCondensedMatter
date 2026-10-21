@@ -39,11 +39,6 @@ noncomputable def dysonTraceSeries (energy : Config → ℝ) (β : ℝ)
     (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) : PowerSeries ℂ :=
   PowerSeries.mk (dysonTraceCoeff energy β V)
 
-theorem coeff_dysonTraceSeries (energy : Config → ℝ) (β : ℝ)
-    (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (n : ℕ) :
-    PowerSeries.coeff n (dysonTraceSeries energy β V) = dysonTraceCoeff energy β V n :=
-  PowerSeries.coeff_mk n _
-
 /-- The zeroth Dyson trace coefficient is the finite free weight sum. -/
 @[simp]
 theorem dysonTraceCoeff_zero (energy : Config → ℝ) (β : ℝ)
@@ -57,7 +52,8 @@ theorem constantCoeff_dysonTraceSeries (energy : Config → ℝ) (β : ℝ)
     (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
     PowerSeries.constantCoeff (dysonTraceSeries energy β V) =
       weightSum (boltzmannWeight energy β) := by
-  rw [← PowerSeries.coeff_zero_eq_constantCoeff, coeff_dysonTraceSeries, dysonTraceCoeff_zero]
+  rw [← PowerSeries.coeff_zero_eq_constantCoeff, dysonTraceSeries, PowerSeries.coeff_mk,
+    dysonTraceCoeff_zero]
 
 variable [Nonempty Config]
 
@@ -77,9 +73,8 @@ theorem coeff_normalizeByConstantCoeff_dysonTraceSeries_eq_finiteGibbsExpectatio
         (PowerSeries.normalizeByConstantCoeff (dysonTraceSeries energy β V)) =
       finiteGibbsExpectation energy β (dysonCoeff energy V n β) := by
   rw [PowerSeries.coeff_normalizeByConstantCoeff,
-    coeff_dysonTraceSeries, dysonTraceCoeff,
-    constantCoeff_dysonTraceSeries,
-    ← traceFock_diagonalEvolution_eq_weightSum]
+    constantCoeff_dysonTraceSeries, dysonTraceSeries, PowerSeries.coeff_mk,
+    dysonTraceCoeff, ← traceFock_diagonalEvolution_eq_weightSum]
   simpa only [div_eq_mul_inv, mul_comm] using
     (finiteGibbsExpectation_eq_trace_div energy β _).symm
 
