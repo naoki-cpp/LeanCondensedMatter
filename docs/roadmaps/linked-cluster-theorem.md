@@ -89,27 +89,6 @@ Partition-function normalization divides by the free-state-normalized zero-exter
 partition series. It removes vacuum bubbles, not disconnected externally supported components.
 Thus the analogous higher-point quotient is not generally a connected correlation function.
 
-## Composite-current Dyson cumulant boundary
-
-`Fermionic.Transport.CurrentInsertions` expands a bilinear current into two elementary
-fermion fields and its connected two-current subtraction into four-field expectations minus
-products of two-field expectations, without choosing an ensemble.
-`Fermionic.Transport.CurrentDysonSeries` now weights the existing arbitrary-external
-interaction-picture Dyson series with two one-body current kernels (two external legs for
-each current, four for their ordered product). Under `0 ≤ β` it proves the normalized
-two-current formal series equals the vacuum-free four-leg series minus the product of two
-vacuum-free two-leg series. At each perturbative order, the subtraction is a Cauchy
-convolution of the one-current coefficients, **not** a same-order subtraction.
-
-This construction applies the *existing* vacuum-bubble cancellation from arbitrary-external
-insertions and makes the composite-current cumulant distinct from full four-fermion
-connectedness. The diagram series still use the free Gibbs state. Equivalence of the full
-time-ordered physical current-current Dyson expansion with these diagram-weighted series
-(including equal-time conventions), a termwise connected-component selection theorem,
-and the frequency/Kubo and quenched-disorder bridges remain separate work in
-[#1267](https://github.com/naoki-cpp/LeanCondensedMatter/issues/1267) and
-[#3380](https://github.com/naoki-cpp/LeanCondensedMatter/issues/3380).
-
 ## Statistics-independent moment boundary
 
 Both generic endpoints consume the same normalized finite-set boundary:
