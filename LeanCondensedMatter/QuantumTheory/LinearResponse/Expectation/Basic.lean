@@ -6,8 +6,8 @@ set_option linter.style.header false
 # Normalized expectation functionals
 
 This module owns the minimal normalized continuous expectation-functional interface used by bounded
-linear response, together with its two-point connected correlation. It is independent of free
-dynamics, propagators, ensembles, and Dyson-series infrastructure.
+linear response, together with a state-independent two-point connected subtraction. It is
+independent of free dynamics, propagators, ensembles, and Dyson-series infrastructure.
 
 Positivity is intentionally not part of this interface: the algebraic linear-response arguments
 only require a continuous linear functional normalized on the identity. Physical state and density
@@ -55,28 +55,30 @@ theorem NormalizedExpectation.pullback_apply
     expectation.pullback Φ hΦ A = expectation (Φ A) :=
   rfl
 
-/-- The connected two-point correlation (second cumulant) of two bounded observables,
-defined for any normalized continuous linear expectation. No Gibbs, KMS, or Gaussian
-hypotheses are needed. The order of the operator product is retained. -/
-noncomputable def NormalizedExpectation.connectedCorrelation
-    (expectation : NormalizedExpectation H)
-    (A B : H →L[ℂ] H) : ℂ :=
+/-- The ordered two-point connected subtraction for an arbitrary functional on a
+multiplicative space of observables. Normalization, linearity, positivity, and a particular
+statistical ensemble are not assumptions of this definition. For a normalized state, it is
+the second cumulant of the two observable insertions. -/
+def connectedCorrelation {Obs : Type*} [Mul Obs]
+    (expectation : Obs → ℂ) (A B : Obs) : ℂ :=
   expectation (A * B) - expectation A * expectation B
 
-/-- The connected correlation with the identity in the first slot vanishes by normalization. -/
+/-- The connected correlation with the identity in the first slot vanishes for a normalized
+expectation. -/
 @[simp]
 theorem NormalizedExpectation.connectedCorrelation_one_left
     (expectation : NormalizedExpectation H) (A : H →L[ℂ] H) :
-    expectation.connectedCorrelation 1 A = 0 := by
+    connectedCorrelation expectation 1 A = 0 := by
   change expectation (1 * A) -
     expectation.toContinuousLinearMap 1 * expectation A = 0
-  simp only [one_mul, expectation.map_one, sub_self]
+  simp only [one_mul, expectation.map_one, one_mul, sub_self]
 
-/-- The connected correlation with the identity in the second slot vanishes by normalization. -/
+/-- The connected correlation with the identity in the second slot vanishes for a normalized
+expectation. -/
 @[simp]
 theorem NormalizedExpectation.connectedCorrelation_one_right
     (expectation : NormalizedExpectation H) (A : H →L[ℂ] H) :
-    expectation.connectedCorrelation A 1 = 0 := by
+    connectedCorrelation expectation A 1 = 0 := by
   change expectation (A * 1) -
     expectation A * expectation.toContinuousLinearMap 1 = 0
   simp only [mul_one, expectation.map_one, sub_self]
