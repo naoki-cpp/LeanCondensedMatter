@@ -424,9 +424,13 @@
       "modules": ["LeanCondensedMatter.Transport.Core.ConductivityNormalization"]
     },
     {
-      "id": "transportFiniteConductivitySpecialization",
-      "path": "LeanCondensedMatter/SecondQuantization/Fermionic/Transport/FiniteConductivityTable.lean",
-      "modules": ["LeanCondensedMatter.Transport.FiniteConductivityTable"]
+      "id": "transportFiniteConductivityEigenbasis",
+      "path": "LeanCondensedMatter/Transport/FiniteConductivityTable/Eigenbasis.lean",
+      "modules": [
+        "LeanCondensedMatter.Transport.FiniteConductivityTable",
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann.Eigenbasis.Table",
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.Response.Channel"
+      ]
     },
     {
       "id": "transportKuboBastinSpectralSpecialization",

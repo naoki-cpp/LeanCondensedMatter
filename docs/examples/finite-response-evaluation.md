@@ -41,12 +41,13 @@ measured/source spectral data plus contact value as a `QuantumTheory.Transport.F
 finiteConductivityTableValue volume ℏ ω η table
 ```
 
-The scalar table and evaluator are representation-independent. For a proved finite fermionic
-pure-point hopping model, the downstream
-`SecondQuantization.Fermionic.Transport.finiteDirectionalConductivityTableOfEigenbasis` constructs
-the canonical scalar current/contact table from the existing Peierls data. The theorem
-`finiteConductivityTableValue_directional_ofEigenbasis_eq_kuboGreenwood` identifies its evaluation
-exactly with `finiteKuboGreenwoodDirectionalConductivity`.
+The scalar table and evaluator are representation-independent. Given an energy eigenbasis and
+a response channel, `QuantumTheory.Transport.finiteConductivityTableOfEigenbasis` constructs
+the measured/source Lehmann data and observable-variation expectation. The theorem
+`finiteConductivityTableValue_ofEigenbasis` identifies its evaluation with the aggregate eigenbasis
+response plus contact and the explicit conductivity normalization. This construction uses no
+particle-statistics assumption. The fermionic Greenwood conductivity supplies the Peierls
+charge-current channel and uses this same generic construction and evaluator.
 
 The intended vertical path is therefore
 

@@ -24,8 +24,8 @@ finite-volume electric-field normalization from `Transport.Core.ConductivityNorm
 Unlike the generic finite Lehmann evaluator, this adapter intentionally depends on the electrical-
 conductivity contact term and positive-volume vector-potential-to-electric-field normalization.
 It remains independent of particle statistics, Fock-space realization, lattice geometry, Peierls
-currents, and any concrete model. Fermionic directional constructors remain downstream in
-`SecondQuantization.Fermionic.Transport.FiniteConductivityTable`.
+currents, and any concrete model. The operator-to-scalar adapter for a supplied eigenbasis and
+response channel is owned by `Transport.FiniteConductivityTable.Eigenbasis`.
 -/
 
 namespace QuantumTheory

@@ -55,7 +55,7 @@ theorem finiteKuboGreenwoodDirectionalConductivity_eq_bastinSpectral
         system data geometry direction K q omega eta convention := by
   unfold finiteKuboGreenwoodDirectionalConductivity
     finiteKuboBastinSpectralDirectionalConductivity
-  rw [finiteLehmannTableResponse_ofEigenbasis]
+  rw [finiteConductivityTableValue_ofEigenbasis]
   rw [← adiabaticFrequencyDomainSusceptibility_eigenbasis_eq_lehmannSeries
     system data _ _ omega eta heta (eigenbasisTimeDomainSummable_of_finite system data _ _)]
   exact congrArg (fun response : ℂ =>
