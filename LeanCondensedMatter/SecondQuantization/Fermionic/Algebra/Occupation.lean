@@ -64,7 +64,10 @@ theorem particleNumber_eq_card (n : Occupation Mode) :
     particleNumber n = n.card := by
   classical
   change (∑ i ∈ n, if i ∈ n then 1 else 0) = n.card
-  simp
+  rw [Finset.card_eq_sum_ones]
+  apply Finset.sum_congr rfl
+  intro i hi
+  simp [hi]
 
 variable [DecidableEq Mode]
 
