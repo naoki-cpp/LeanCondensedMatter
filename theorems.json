@@ -103016,7 +103016,8 @@
     "dependents": [],
     "dependencies": [
       "QuantumTheory.eigenbasisBoltzmannWeight_nonneg",
-      "QuantumTheory.eigenbasisBoltzmannWeight_summable"
+      "QuantumTheory.eigenbasisBoltzmannWeight_summable",
+      "SecondQuantization.Bosonic.freeEigenvalue_eq_finsupp_sum"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -103144,7 +103145,9 @@
     "dependents": [
       "SecondQuantization.Bosonic.freeEigenvalue_createOccupation"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "SecondQuantization.Bosonic.freeEigenvalue_eq_finsupp_sum"
+    ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
@@ -103212,6 +103215,56 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (n : SecondQuantization.Bosonic.Occupation Mode),\n  SecondQuantization.Bosonic.freeEigenvalue ε n = Finsupp.sum n fun i k => ↑k * ε i",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Bosonic.freeEigenvalue_eq_finsupp_sum",
+    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.ImaginaryTime.ImaginaryTimeEvolution",
+    "externalAxioms": [],
+    "docString": "Bosonic free energy in its native finitely-supported sum representation. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Bosonic.eigenbasisGibbsSummable_freeEigenvalue_of_mode",
+      "SecondQuantization.Bosonic.freeEigenvalue_add",
+      "SecondQuantization.Bosonic.freeEigenvalue_eq_sum_univ",
+      "SecondQuantization.Bosonic.freeEigenvalue_nonneg",
+      "SecondQuantization.Bosonic.freeEigenvalue_singleOccupation"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Bosonic.eigenbasisGibbsSummable_freeEigenvalue_of_mode",
+      "SecondQuantization.Bosonic.freeEigenvalue_add",
+      "SecondQuantization.Bosonic.freeEigenvalue_eq_sum_univ",
+      "SecondQuantization.Bosonic.freeEigenvalue_nonneg",
+      "SecondQuantization.Bosonic.freeEigenvalue_singleOccupation"
+    ],
+    "compiledConsumerCount": 5,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {Mode : Type u_1} [inst : Fintype Mode] (ε : Mode → ℝ) (n : SecondQuantization.Bosonic.Occupation Mode),\n  SecondQuantization.Bosonic.freeEigenvalue ε n = ∑ i, ↑(n i) * ε i",
     "standardAxioms": [
       "Classical.choice",
@@ -103233,7 +103286,9 @@
     "dependents": [
       "SecondQuantization.Bosonic.boltzmannWeight_eq_prod"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "SecondQuantization.Bosonic.freeEigenvalue_eq_finsupp_sum"
+    ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
@@ -103276,7 +103331,9 @@
       "SecondQuantization.Bosonic.completedFreeHeatOperator_basisState",
       "SecondQuantization.Bosonic.norm_completedFreeHeatOperator_le_one"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "SecondQuantization.Bosonic.freeEigenvalue_eq_finsupp_sum"
+    ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
@@ -103365,7 +103422,9 @@
     "dependents": [
       "SecondQuantization.Bosonic.freeEigenvalue_createOccupation"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "SecondQuantization.Bosonic.freeEigenvalue_eq_finsupp_sum"
+    ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
@@ -129023,6 +129082,44 @@
   },
   {
     "terminal": true,
+    "statement": "∀ {Mode : Type u_1} {Config : Type u_2} [inst : SecondQuantization.Common.OccupationBasis Mode Config] (ε : Mode → ℝ),\n  SecondQuantization.Common.occupationEnergy ε (SecondQuantization.Common.OccupationBasis.vacuum Mode) = 0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.occupationEnergy_vacuum",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Algebra.OccupationBasis",
+    "externalAxioms": [],
+    "docString": "The vacuum has zero free occupation energy. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
     "statement": "∀ {Config : Type u_1} [inst : Fintype Config]\n  (F G : ℝ → SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config)\n  (a b : ℝ),\n  (∀ (m n : Config),\n      IntervalIntegrable (fun τ => SecondQuantization.Common.matrixCoeff (F τ) m n) MeasureTheory.volume a b) →\n    (∀ (m n : Config),\n        IntervalIntegrable (fun τ => SecondQuantization.Common.matrixCoeff (G τ) m n) MeasureTheory.volume a b) →\n      SecondQuantization.Common.operatorIntervalIntegral (fun τ => F τ + G τ) a b =\n        SecondQuantization.Common.operatorIntervalIntegral F a b +\n          SecondQuantization.Common.operatorIntervalIntegral G a b",
     "standardAxioms": [
       "Classical.choice",
@@ -144388,7 +144485,9 @@
       "SecondQuantization.Fermionic.eigenbasisPartitionFunction_fermionEnergy_eq_tprod_one_add",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.BoltzmannSummability.0.SecondQuantization.Fermionic.eigenbasisBoltzmannWeight_fermionEnergy_summable_of_mode"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "SecondQuantization.Fermionic.fermionEnergy_eq_sum"
+    ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
@@ -144432,6 +144531,7 @@
       "SecondQuantization.Fermionic.vonNeumannEntropy_freeGibbsDensityOperator_toReal_eq_sum_fermiDirac"
     ],
     "dependencies": [
+      "SecondQuantization.Fermionic.fermionEnergy_eq_sum",
       "SecondQuantization.Fermionic.sum_freeGibbsConfigurationProbability_filter_mem"
     ],
     "crossModuleDirectWrapper": false,
@@ -145989,6 +146089,62 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (n : SecondQuantization.Fermionic.Occupation Mode),\n  SecondQuantization.Fermionic.fermionEnergy ε n = ∑ i ∈ n, ε i",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.fermionEnergy_eq_sum",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.Hamiltonian",
+    "externalAxioms": [],
+    "docString": "Fermionic free energy is the sum over the occupied mode set. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.eigenbasisBoltzmannWeight_fermionEnergy_eq_prod",
+      "SecondQuantization.Fermionic.eigenbasisGibbsEnergyExpectation_fermionEnergy_eq_sum_fermiDirac",
+      "SecondQuantization.Fermionic.fermionEnergy_insertOccupation_of_not_mem",
+      "SecondQuantization.Fermionic.fermionEnergy_removeOccupation_of_mem",
+      "SecondQuantization.Fermionic.freeBoltzmannWeight_eq_ofReal",
+      "SecondQuantization.Fermionic.freeBoltzmannWeight_eq_prod",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.Gibbs.0.SecondQuantization.Fermionic.completedFreeGibbsProbability_insertOccupation_of_not_mem",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.Gibbs.0.SecondQuantization.Fermionic.completedFreeGibbsProbability_removeOccupation_of_mem"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.eigenbasisBoltzmannWeight_fermionEnergy_eq_prod",
+      "SecondQuantization.Fermionic.eigenbasisGibbsEnergyExpectation_fermionEnergy_eq_sum_fermiDirac",
+      "SecondQuantization.Fermionic.fermionEnergy_insertOccupation_of_not_mem",
+      "SecondQuantization.Fermionic.fermionEnergy_removeOccupation_of_mem",
+      "SecondQuantization.Fermionic.freeBoltzmannWeight_eq_ofReal",
+      "SecondQuantization.Fermionic.freeBoltzmannWeight_eq_prod",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.Gibbs.0.SecondQuantization.Fermionic.completedFreeGibbsProbability_insertOccupation_of_not_mem",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.Gibbs.0.SecondQuantization.Fermionic.completedFreeGibbsProbability_removeOccupation_of_mem"
+    ],
+    "compiledConsumerCount": 8,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] {ε : Mode → ℝ} {i : Mode}\n  {n : SecondQuantization.Fermionic.Occupation Mode},\n  i ∉ n →\n    SecondQuantization.Fermionic.fermionEnergy ε (SecondQuantization.Fermionic.insertOccupation i n) =\n      SecondQuantization.Fermionic.fermionEnergy ε n + ε i",
     "standardAxioms": [
       "Classical.choice",
@@ -146011,7 +146167,9 @@
       "SecondQuantization.Fermionic.carriesEnergyShift_create",
       "SecondQuantization.Fermionic.freeHamiltonianWeight_toggle_of_not_mem"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "SecondQuantization.Fermionic.fermionEnergy_eq_sum"
+    ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
@@ -146055,7 +146213,9 @@
       "SecondQuantization.Fermionic.carriesEnergyShift_annihilate",
       "SecondQuantization.Fermionic.freeHamiltonianWeight_toggle_of_mem"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "SecondQuantization.Fermionic.fermionEnergy_eq_sum"
+    ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
@@ -146880,7 +147040,9 @@
     "dependents": [
       "SecondQuantization.Fermionic.freePartitionFunction_ne_zero"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "SecondQuantization.Fermionic.fermionEnergy_eq_sum"
+    ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
@@ -146922,7 +147084,9 @@
     "dependents": [
       "SecondQuantization.Fermionic.sum_freeBoltzmannWeight_powerset_eq_prod"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "SecondQuantization.Fermionic.fermionEnergy_eq_sum"
+    ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
@@ -185252,7 +185416,9 @@
     "dependents": [
       "SecondQuantization.Fermionic.coe_completedFreeGibbsProbability_insertOccupation_of_not_mem"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "SecondQuantization.Fermionic.fermionEnergy_eq_sum"
+    ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
@@ -185294,7 +185460,9 @@
     "dependents": [
       "SecondQuantization.Fermionic.coe_completedFreeGibbsProbability_removeOccupation_of_mem"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "SecondQuantization.Fermionic.fermionEnergy_eq_sum"
+    ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
