@@ -119,7 +119,7 @@ theorem boundedOneBodyOperator_oneParticleBondCurrent
         (peierlsCoupling ℏ q • K.bondOperator x y)) =
     (boundedLatticeOperatorAlgEquiv (Site := Site))
       (peierlsCoupling ℏ q • AlgebraicFock.dGamma ((Site →₀ ℂ)) (K.bondOperator x y))
-  rw [map_smul]
+  rw [map_smul, AlgebraicFock.dGammaLinear_apply]
 
 /-- The Peierls derivative/current equivalence survives the finite-dimensional bounded transport. -/
 theorem hasAlgebraicDerivAt_boundedPeierlsBondHamiltonian_zero
@@ -137,7 +137,7 @@ theorem hasAlgebraicDerivAt_boundedPeierlsBondHamiltonian_zero
     (fun A => boundedOneBodyOperator (Site := Site)
       (K.peierlsBondHamiltonian ℏ q x y A))
     (-boundedBondCurrent ℏ q K x y) 0
-  simpa only [map_neg, hcurrent] using h
+  simpa only [LieHom.coe_toLinearMap, map_neg, hcurrent] using h
 
 /-- Reversing a bond negates its bounded current observable. -/
 theorem boundedBondCurrent_swap (ℏ q : ℂ) (K : LocallyFiniteHopping Site)
