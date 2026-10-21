@@ -74,9 +74,9 @@ theorem imaginaryTimeEvolve_freeHamiltonian (ε : Mode → ℝ) (τ : ℝ) :
 
 /-! ## Evolution of the diagonal density-density interaction -/
 
+omit [LinearOrder Mode] in
 /-- The density-density `interactionHamiltonian` is time-independent under free imaginary-time
 evolution, since it is diagonal in the occupation basis. -/
-omit [LinearOrder Mode] in
 theorem imaginaryTimeEvolve_interactionHamiltonian (ε : Mode → ℝ) (Vint : Mode → Mode → ℝ)
     (τ : ℝ) : imaginaryTimeEvolve ε τ (interactionHamiltonian Vint) = interactionHamiltonian Vint := by
   simpa only [imaginaryTimeEvolve, interactionHamiltonian] using
