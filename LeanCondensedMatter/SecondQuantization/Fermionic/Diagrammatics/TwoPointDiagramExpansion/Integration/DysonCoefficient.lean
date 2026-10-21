@@ -76,6 +76,7 @@ theorem freeGibbsDensityOperator_expectation_mixedTimeOrderedVertexComp_eq_sum_p
               timedFieldOperator_quarticLocalLeg ε (σ v) (Common.quarticLocalLeg (q v) l))
     simp_rw [hmap]
   rw [hoperators] at hwick
+  simp only [Common.finiteGibbsExpectation] at hwick
   rw [hwick]
   rfl
 
