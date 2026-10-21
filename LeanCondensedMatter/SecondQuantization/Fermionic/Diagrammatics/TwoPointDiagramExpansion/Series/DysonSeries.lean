@@ -1,6 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.DysonCoefficient
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.DiagramSelectionCoefficients
-import LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.DysonPartitionSeries
+import LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonTraceSeries
 import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.QuarticInteraction
 import Mathlib.RingTheory.PowerSeries.Basic
 import Mathlib.RingTheory.PowerSeries.Inverse
@@ -36,7 +36,7 @@ noncomputable def partitionFunctionNormalizedTwoPointDysonSeries (ε : Mode → 
     (g : QuarticVertexLabel Mode → ℂ) (i j : Mode) (τ τ' : ℝ) : PowerSeries ℂ :=
   twoPointDysonSeries ε β g i j τ τ' *
     (PowerSeries.normalizeByConstantCoeff
-      (dysonPartitionSeries ε β (quarticInteraction g)))⁻¹
+      (Common.dysonTraceSeries (fermionEnergy ε) β (quarticInteraction g)))⁻¹
 
 /-- **The connected perturbative two-point series.** -/
 noncomputable def connectedTwoPointDysonSeries (ε : Mode → ℝ) (β : ℝ)

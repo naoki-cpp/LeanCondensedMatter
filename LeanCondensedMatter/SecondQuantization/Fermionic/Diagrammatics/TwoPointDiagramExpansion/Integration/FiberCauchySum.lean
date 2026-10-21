@@ -34,7 +34,7 @@ theorem fixedExternalFiberSum_eq_cauchyFactor
               ((Finset.univ : Finset (Fin (m + k))) \ T.1),
         ((fixedExternalFiberEquiv T.1).symm p).1.dysonAmplitude ε β g τ τ') =
       connectedTwoPointDysonCoefficient ε β g i j τ τ' m *
-        normalizedDysonPartitionCoeff ε β (quarticInteraction g) k := by
+        PowerSeries.coeff k (PowerSeries.normalizeByConstantCoeff (Common.dysonTraceSeries (fermionEnergy ε) β (quarticInteraction g))) := by
   rw [sum_leftSlotSet]
   change
     (∑ shuffle : SlotShuffle m k,
@@ -140,7 +140,7 @@ theorem fixedExternalFiberSum_eq_cauchyFactor
               exact (Finset.mul_sum _ _ _).symm
         _ = _ := (Finset.sum_mul _ _ _).symm
     _ = connectedTwoPointDysonCoefficient ε β g i j τ τ' m *
-        normalizedDysonPartitionCoeff ε β (quarticInteraction g) k := by
+        PowerSeries.coeff k (PowerSeries.normalizeByConstantCoeff (Common.dysonTraceSeries (fermionEnergy ε) β (quarticInteraction g))) := by
       unfold connectedTwoPointDysonCoefficient
       rw [Finset.sum_subtype
         (p := fun d : FixedExternalTwoPointWickDiagram Mode m i j => d.1.IsExternallyConnected)
