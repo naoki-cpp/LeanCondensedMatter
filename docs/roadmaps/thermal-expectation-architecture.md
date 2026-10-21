@@ -111,12 +111,15 @@ and distinct-mode cases do not require Gibbs summability or temperature assumpti
 
 ## First fixed-number canonical realization
 
-`Fermionic/Thermal/CanonicalSector.lean` supplies the finite fermionic
-`CanonicalOccupation Mode N` subtype, with configurations satisfying
-`particleNumber n = N`. It constructs the free canonical Gibbs state **on
+`Fermionic/Algebra/Occupation.lean` owns the ensemble-independent fermionic
+`CanonicalOccupation Mode N` subtype and proves its sector is nonempty exactly
+when `N ≤ Fintype.card Mode`. `Fermionic/Algebra/Hamiltonian.lean` proves the
+sector number operator is `N • id`. `Fermionic/Thermal/CanonicalSector.lean`
+constructs the free canonical Gibbs state **on
 the sector Hilbert space** directly from `QuantumTheory.Gibbs.Eigenbasis`
 and identifies its expectation with the existing finite Gibbs functional
-specialized to the restricted energy function.
+specialized to the restricted energy function. It also proves that the
+canonical state has number expectation `N` and zero number variance.
 
 The constructor requires `Nonempty (CanonicalOccupation Mode N)`. In a
 finite mode space an arbitrary `N` need not be realizable, so a normalized
