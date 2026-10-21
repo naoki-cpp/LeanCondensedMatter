@@ -32,7 +32,7 @@ theorem externalInsertionDysonCoefficient_eq_sum_vacuumFree_mul_normalizedDysonP
       ∑ m ∈ Finset.range (n + 1),
         vacuumFreeExternalInsertionDysonCoefficient
           ε β g externalLabel externalTime m *
-          normalizedDysonPartitionCoeff ε β (quarticInteraction g) (n - m) := by
+          PowerSeries.coeff (n - m) (PowerSeries.normalizeByConstantCoeff (Common.dysonTraceSeries (fermionEnergy ε) β (quarticInteraction g))) := by
   classical
   have slice : ∀ {n m k : ℕ}, m + k = n →
       (∑ T ∈ Finset.powersetCard m (Finset.univ : Finset (Fin n)),
@@ -50,7 +50,7 @@ theorem externalInsertionDysonCoefficient_eq_sum_vacuumFree_mul_normalizedDysonP
           else 0) =
         vacuumFreeExternalInsertionDysonCoefficient
           ε β g externalLabel externalTime m *
-          normalizedDysonPartitionCoeff ε β (quarticInteraction g) k := by
+          PowerSeries.coeff k (PowerSeries.normalizeByConstantCoeff (Common.dysonTraceSeries (fermionEnergy ε) β (quarticInteraction g))) := by
     intro n m k hmk
     subst n
     exact externalInsertionFixedCardinalityFiberSum_eq_cauchyFactor
@@ -72,13 +72,12 @@ theorem externalInsertionDysonSeries_eq_vacuumFree_mul_normalizedDysonPartitionS
     externalInsertionDysonSeries ε β g externalLabel externalTime =
       vacuumFreeExternalInsertionDysonSeries ε β g externalLabel externalTime *
         PowerSeries.normalizeByConstantCoeff
-          (dysonPartitionSeries ε β (quarticInteraction g)) := by
+          (Common.dysonTraceSeries (fermionEnergy ε) β (quarticInteraction g)) := by
   ext n
   rw [PowerSeries.coeff_mul,
     Finset.Nat.sum_antidiagonal_eq_sum_range_succ_mk]
   simp only [externalInsertionDysonSeries, vacuumFreeExternalInsertionDysonSeries,
-    PowerSeries.coeff_mk,
-    coeff_normalizeByConstantCoeff_dysonPartitionSeries_eq_normalizedDysonPartitionCoeff]
+    PowerSeries.coeff_mk]
   exact externalInsertionDysonCoefficient_eq_sum_vacuumFree_mul_normalizedDysonPartitionCoeff
     ε β hβ g externalLabel externalTime n
 
@@ -95,7 +94,7 @@ theorem partitionFunctionNormalizedExternalInsertionDysonSeries_eq_vacuumFreeExt
   rw [partitionFunctionNormalizedExternalInsertionDysonSeries]
   apply PowerSeries.mul_inv_eq_of_eq_mul_of_constantCoeff_ne_zero
   · rw [PowerSeries.constantCoeff_normalizeByConstantCoeff
-      (constantCoeff_dysonPartitionSeries_ne_zero ε β (quarticInteraction g))]
+      (Common.constantCoeff_dysonTraceSeries_ne_zero (fermionEnergy ε) β (quarticInteraction g))]
     exact one_ne_zero
   · exact externalInsertionDysonSeries_eq_vacuumFree_mul_normalizedDysonPartitionSeries
       ε β hβ g externalLabel externalTime

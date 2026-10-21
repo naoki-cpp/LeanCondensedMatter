@@ -108,7 +108,7 @@ theorem externalInsertionVertexDysonSeries_eq_vacuumFree_mul_normalizedDysonPart
     externalInsertionVertexDysonSeries ε β g externalLabel externalTime =
       vacuumFreeExternalInsertionDysonSeries ε β g externalLabel externalTime *
         PowerSeries.normalizeByConstantCoeff
-          (dysonPartitionSeries ε β (quarticInteraction g)) := by
+          (Common.dysonTraceSeries (fermionEnergy ε) β (quarticInteraction g)) := by
   rw [externalInsertionVertexDysonSeries_eq_externalInsertionDysonSeries]
   exact externalInsertionDysonSeries_eq_vacuumFree_mul_normalizedDysonPartitionSeries
     ε β hβ g externalLabel externalTime

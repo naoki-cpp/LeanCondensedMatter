@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Analysis.PowerSeries.Moment
-import LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.DysonPartitionSeries
+import LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonTraceSeries
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Reindexing
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.Wick.AmplitudeFactorization
 
@@ -26,10 +26,10 @@ theorem dysonPartitionSeriesMoment_eq_wickDiagramObjectMoment
     (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ) {N : ℕ}
     (hZ : PowerSeries.constantCoeff
       (PowerSeries.normalizeByConstantCoeff
-        (dysonPartitionSeries ε β (quarticInteraction g))) = 1) :
+        (Common.dysonTraceSeries (fermionEnergy ε) β (quarticInteraction g))) = 1) :
     Combinatorics.powerSeriesMomentSetFunction (α := Fin N)
         (PowerSeries.normalizeByConstantCoeff
-          (dysonPartitionSeries ε β (quarticInteraction g))) hZ =
+          (Common.dysonTraceSeries (fermionEnergy ε) β (quarticInteraction g))) hZ =
       (quarticWickDiagramMultiplicativeWeight (N := N) ε β g).normalizedObjectMoment := by
   rw [Combinatorics.powerSeriesMomentSetFunction_eq_iff]
   intro S
@@ -37,7 +37,7 @@ theorem dysonPartitionSeriesMoment_eq_wickDiagramObjectMoment
     (S.card.factorial : ℂ) *
         PowerSeries.coeff S.card
           (PowerSeries.normalizeByConstantCoeff
-            (dysonPartitionSeries ε β (quarticInteraction g))) =
+            (Common.dysonTraceSeries (fermionEnergy ε) β (quarticInteraction g))) =
       ∑ d : QuarticWickDiagram Mode N S, quarticWickDiagramAmplitude ε β g d
   rw [← dysonVertexMoment_quarticInteraction_eq_sum_quarticWickDiagramAmplitude ε β g S]
   rfl

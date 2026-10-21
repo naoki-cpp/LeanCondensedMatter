@@ -39,9 +39,10 @@ No source-functional wrapper is required for this formal partition-function endp
 The finite-configuration Dyson trace coefficients and series are owned by
 `Common.Perturbation.DysonTraceSeries`. Their normalized coefficients and labelled vertex moments
 use `PowerSeries.normalizeByConstantCoeff` and `Combinatorics.powerSeriesMomentCoeff` directly;
-there are no parallel Dyson-specific normalization or moment definitions. The Common trace-series
-owner proves the normalized coefficient's finite Gibbs-expectation identity, while the fermionic
-`DysonPartitionSeries` retains its physical free-partition specialization and formal logarithm.
+there are no parallel Dyson-specific normalization or moment definitions. The Common trace-series owner proves the normalized coefficient's finite Gibbs-expectation
+identity. Fermionic connected-diagram statements use the specialized
+`Common.dysonTraceSeries (fermionEnergy ε) β V` and its `PowerSeries.normalizeByConstantCoeff`/
+`PowerSeries.logOf` operations directly, without a parallel fermionic partition-series API.
 The fermionic Dyson pairing proof uses the generic normalized-coefficient theorem together
 with `freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation` directly; no separate
 fermionic vertex-moment adapter is needed.

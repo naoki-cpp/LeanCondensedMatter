@@ -97,7 +97,7 @@ theorem externalInsertionFixedCardinalityFiberSum_eq_cauchyFactor
         else 0) =
       vacuumFreeExternalInsertionDysonCoefficient
           ε β g externalLabel externalTime m *
-        normalizedDysonPartitionCoeff ε β (quarticInteraction g) k := by
+        PowerSeries.coeff k (PowerSeries.normalizeByConstantCoeff (Common.dysonTraceSeries (fermionEnergy ε) β (quarticInteraction g))) := by
   classical
   rw [externalInsertionDysonCoefficient_powersetCard_eq_sum_standardizedSupportShuffle]
   let X := {d : ExternalInsertionWickDiagram Mode E m //
@@ -179,10 +179,10 @@ theorem externalInsertionFixedCardinalityFiberSum_eq_cauchyFactor
       split_ifs <;> simp
     _ = vacuumFreeExternalInsertionDysonCoefficient
           ε β g externalLabel externalTime m *
-        normalizedDysonPartitionCoeff ε β (quarticInteraction g) k := by
+        PowerSeries.coeff k (PowerSeries.normalizeByConstantCoeff (Common.dysonTraceSeries (fermionEnergy ε) β (quarticInteraction g))) := by
       rw [← vacuumFreeExternalInsertionDysonCoefficient_eq_sum_if,
         show (∑ x : Y, vacuum x) =
-          normalizedDysonPartitionCoeff ε β (quarticInteraction g) k from
+          PowerSeries.coeff k (PowerSeries.normalizeByConstantCoeff (Common.dysonTraceSeries (fermionEnergy ε) β (quarticInteraction g))) from
             sum_orderedVacuumDysonContribution_eq_normalizedDysonPartitionCoeff
               ε β g k]
 
