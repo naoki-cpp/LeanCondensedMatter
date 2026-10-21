@@ -170,7 +170,7 @@ theorem freeGibbsDensityOperator_expectation_comp_dysonCoeff_quarticInteraction
     rw [Common.quarticVertexSequenceInteractionPicture_eq_smul
       (fermionEnergy ε) ε create annihilate hcreate hannihilate n q τ,
       LinearMap.comp_smul, Common.finiteGibbsExpectation, map_smul, smul_eq_mul]
-    rfl
+    exact mul_comm _ _
   simp_rw [hintegral]
   rw [Finset.mul_sum]
   apply Finset.sum_congr rfl
