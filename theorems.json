@@ -50351,7 +50351,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -50363,8 +50363,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.Transport.finiteKuboGreenwoodDirectionalConductivity_eq_bastinSpectral",
-      "SecondQuantization.Fermionic.Transport.infiniteTimeAdiabaticDirectionalConductivity_eq_finiteKuboGreenwood"
+      "QuantumTheory.Transport.finiteConductivityTableValue_ofEigenbasis"
     ],
     "dependencies": [
       "QuantumTheory.LinearResponse.eigenbasisLehmannSeries_eq_finite_sum"
@@ -50372,10 +50371,9 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.Transport.finiteKuboGreenwoodDirectionalConductivity_eq_bastinSpectral",
-      "SecondQuantization.Fermionic.Transport.infiniteTimeAdiabaticDirectionalConductivity_eq_finiteKuboGreenwood"
+      "QuantumTheory.Transport.finiteConductivityTableValue_ofEigenbasis"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -87618,6 +87616,52 @@
       "QuantumTheory.Transport.FiniteDisorderEnsemble.FiniteSCBASolution.resummedLadderVertex_charge_ward_consistency"
     ],
     "compiledConsumerCount": 3,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {H : Type u_1} {ι : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] [inst_3 : Fintype ι] (volume : QuantumTheory.Transport.PositiveVolume)\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (data : QuantumTheory.LinearResponse.EnergyEigenbasisLehmannData system ι)\n  (channel : QuantumTheory.LinearResponse.ResponseChannel H) (omega eta : ℝ),\n  QuantumTheory.Transport.finiteConductivityTableValue volume system.hbar omega eta\n      (QuantumTheory.Transport.finiteConductivityTableOfEigenbasis system data channel) =\n    (QuantumTheory.LinearResponse.eigenbasisLehmannSeries system data channel.measured channel.source omega eta +\n        (QuantumTheory.LinearResponse.eigenbasisNormalizedExpectation system data).toContinuousLinearMap\n          channel.observableVariation) *\n      QuantumTheory.Transport.finiteVolumeConductivityNormalization volume omega eta",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.finiteConductivityTableValue_ofEigenbasis",
+    "module": "LeanCondensedMatter.Transport.FiniteConductivityTable.Eigenbasis",
+    "externalAxioms": [],
+    "docString": "Generic table evaluation preserves the aggregate eigenbasis response, contact, and the\nexplicit volume/electric-field normalization. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.Transport.finiteKuboGreenwoodDirectionalConductivity_eq_bastinSpectral",
+      "SecondQuantization.Fermionic.Transport.infiniteTimeAdiabaticDirectionalConductivity_eq_finiteKuboGreenwood"
+    ],
+    "dependencies": [
+      "QuantumTheory.LinearResponse.finiteLehmannTableResponse_ofEigenbasis"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.Transport.finiteKuboGreenwoodDirectionalConductivity_eq_bastinSpectral",
+      "SecondQuantization.Fermionic.Transport.infiniteTimeAdiabaticDirectionalConductivity_eq_finiteKuboGreenwood"
+    ],
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -137356,44 +137400,6 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {Site : Type u_1} {E : Type u_2} {ι : Type u_3} [inst : LinearOrder Site] [inst_1 : Fintype Site]\n  [inst_2 : AddCommGroup E] [inst_3 : _root_.Module ℝ E] [inst_4 : Fintype ι]\n  (volume : QuantumTheory.Transport.PositiveVolume)\n  (system :\n    QuantumTheory.LinearResponse.BoundedFreeSystem (SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site))\n  (data : QuantumTheory.LinearResponse.EnergyEigenbasisLehmannData system ι) (geometry : LatticeGeometry Site E)\n  (direction : E →ₗ[ℝ] ℝ) (K : LocallyFiniteHopping Site) (q omega eta : ℝ),\n  QuantumTheory.Transport.finiteConductivityTableValue volume system.hbar omega eta\n      (SecondQuantization.Fermionic.Transport.finiteDirectionalConductivityTableOfEigenbasis system data geometry\n        direction K q) =\n    SecondQuantization.Fermionic.Transport.finiteKuboGreenwoodDirectionalConductivity volume system data geometry\n      direction K q omega eta",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.Transport.finiteConductivityTableValue_directional_ofEigenbasis_eq_kuboGreenwood",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.FiniteConductivityTable",
-    "externalAxioms": [],
-    "docString": "Evaluating the generic scalar table obtained from a finite eigenbasis hopping model gives\nexactly the existing finite Kubo–Greenwood conductivity, including contact and finite-volume\nnormalization. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
     "statement": "∀ {Site : Type u_1} {E : Type u_2} {Ω : Type u_3} {ι : Type u_4} [inst : LinearOrder Site] [inst_1 : Fintype Site]\n  [inst_2 : AddCommGroup E] [inst_3 : _root_.Module ℝ E] [inst_4 : Fintype Ω] [inst_5 : Fintype ι]\n  (ensemble : QuantumTheory.Transport.FiniteDisorderEnsemble) (hbar : ℝ) (hbar_pos : 0 < hbar)\n  (spectralData :\n    (ω : Ω) → QuantumTheory.LinearResponse.EnergyEigenbasisLehmannData (ensemble.configurationSystem hbar hbar_pos ω) ι)\n  (convention : QuantumTheory.Transport.PositiveVolume) (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)\n  (K : LocallyFiniteHopping Site) (q eta lowerEnergy upperEnergy : ℝ) (occupation : ℝ → ℂ),\n  (∀ (ω : Ω),\n      QuantumTheory.Transport.StaticChannelTracedBastinIdentity convention\n        (ensemble.configurationSystem hbar hbar_pos ω) (spectralData ω)\n        (SecondQuantization.Fermionic.Transport.boundedDirectionalResponseChannel\n          (ensemble.configurationSystem hbar hbar_pos ω) geometry direction K q)\n        eta lowerEnergy upperEnergy occupation) →\n    0 < eta →\n      SecondQuantization.Fermionic.Transport.finiteDisorderAveragedStaticConductivity ensemble hbar hbar_pos\n          spectralData convention geometry direction K q eta =\n        ensemble.average fun ω =>\n          QuantumTheory.Transport.regularizedBastinSpectralEnergyIntegral (ensemble.configurationSystem hbar hbar_pos ω)\n            (spectralData ω)\n            (SecondQuantization.Fermionic.Lattice.boundedDirectionalCurrent geometry direction\n              (↑(ensemble.configurationSystem hbar hbar_pos ω).hbar) (↑q) K)\n            (SecondQuantization.Fermionic.Lattice.boundedDirectionalCurrent geometry direction\n              (↑(ensemble.configurationSystem hbar hbar_pos ω).hbar) (↑q) K)\n            (QuantumTheory.Transport.kuboBastinEnergyBroadening (ensemble.configurationSystem hbar hbar_pos ω).hbar eta)\n            lowerEnergy upperEnergy occupation",
     "standardAxioms": [
       "Classical.choice",
@@ -137584,8 +137590,8 @@
     "dependencies": [
       "QuantumTheory.LinearResponse.adiabaticFrequencyDomainSusceptibility_eigenbasis_eq_lehmannSeries",
       "QuantumTheory.LinearResponse.eigenbasisTimeDomainSummable_of_finite",
-      "QuantumTheory.LinearResponse.finiteLehmannTableResponse_ofEigenbasis",
-      "QuantumTheory.Transport.adiabaticFrequencyDomainResponseChannel_eq_bastinSpectral"
+      "QuantumTheory.Transport.adiabaticFrequencyDomainResponseChannel_eq_bastinSpectral",
+      "QuantumTheory.Transport.finiteConductivityTableValue_ofEigenbasis"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -137716,8 +137722,8 @@
     "dependencies": [
       "QuantumTheory.LinearResponse.adiabaticFrequencyDomainSusceptibility_eigenbasis_eq_lehmannSeries",
       "QuantumTheory.LinearResponse.eigenbasisTimeDomainSummable_of_finite",
-      "QuantumTheory.LinearResponse.finiteLehmannTableResponse_ofEigenbasis",
-      "QuantumTheory.LinearResponse.infiniteTimeAdiabaticTransform_commutator_eq_susceptibility"
+      "QuantumTheory.LinearResponse.infiniteTimeAdiabaticTransform_commutator_eq_susceptibility",
+      "QuantumTheory.Transport.finiteConductivityTableValue_ofEigenbasis"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
