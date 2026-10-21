@@ -1,4 +1,5 @@
 import LeanCondensedMatter.QuantumTheory.Gibbs.Eigenbasis
+import LeanCondensedMatter.QuantumTheory.Gibbs.State
 
 /-!
 # Heat-operator compatibility with pure-point Gibbs states
@@ -89,5 +90,32 @@ theorem inv_partition_smul_heat_eq_eigenbasisGibbsDensityOperator_op
   apply congrArg (fun z : ℂ => z • b i)
   push_cast
   rfl
+
+/-- In an energy eigenbasis, the bounded heat operator's spectral trace is the partition sum. -/
+theorem spectralTrace_gibbsOp_eq_eigenbasisPartitionFunction [FiniteDimensional ℂ H]
+    (Hop : Observable H) (β : ℝ) (b : HilbertBasis ι ℂ H) (E : ι → ℝ)
+    (hE : ∀ i, Hop.1 (b i) = (E i : ℂ) • b i) :
+    spectralTrace (gibbsOp Hop β) = eigenbasisPartitionFunction E β := by
+  have htrace := (gibbsOp_spectralTraceClass Hop β).isTraceClass
+  have h := heatTrace_eq_eigenbasisPartitionFunction_of_basis_action
+    (gibbsOp Hop β) htrace b E β (fun i => by
+      simpa only [eigenbasisBoltzmannWeight] using gibbsOp_apply_eigenvector Hop β (hE i))
+  rw [htrace.trace_eq_spectralTrace (gibbsOp_isPositive Hop β).isSelfAdjoint] at h
+  exact Complex.ofReal_injective h
+
+/-- The bounded-Hamiltonian Gibbs state and the energy-eigenbasis construction give the same
+density operator. This identifies the states themselves, not just their diagonal expectations. -/
+theorem gibbsState_eq_eigenbasisGibbsDensityOperator
+    [Nontrivial H] [FiniteDimensional ℂ H] [Nonempty ι]
+    (Hop : Observable H) (β : ℝ) (b : HilbertBasis ι ℂ H) (E : ι → ℝ)
+    (hsum : EigenbasisGibbsSummable E β)
+    (hE : ∀ i, Hop.1 (b i) = (E i : ℂ) • b i) :
+    gibbsState Hop β = eigenbasisGibbsDensityOperator b E β hsum := by
+  apply DensityOperator.ext
+  rw [gibbsState_op, spectralTrace_gibbsOp_eq_eigenbasisPartitionFunction Hop β b E hE,
+    RCLike.real_smul_eq_coe_smul (K := ℂ)]
+  simpa using inv_partition_smul_heat_eq_eigenbasisGibbsDensityOperator_op
+    (gibbsOp Hop β) b E β hsum (fun i => by
+      simpa only [eigenbasisBoltzmannWeight] using gibbsOp_apply_eigenvector Hop β (hE i))
 
 end QuantumTheory

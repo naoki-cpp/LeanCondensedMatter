@@ -100,4 +100,14 @@ theorem gibbsState_op [Nontrivial H] [FiniteDimensional ℂ H]
       (spectralTrace (gibbsOp Hop β))⁻¹ • gibbsOp Hop β := by
   rw [gibbsState, DensityOperator.normalizePositive_op]
 
+/-- The normalized Gibbs state acts diagonally on every energy eigenvector. -/
+theorem gibbsState_apply_eigenvector [Nontrivial H] [FiniteDimensional ℂ H]
+    (Hop : Observable H) (β : ℝ) {v : H} {E : ℝ}
+    (hv : (Hop.1 : H →ₗ[ℂ] H) v = (E : ℂ) • v) :
+    (gibbsState Hop β).op v =
+      (((spectralTrace (gibbsOp Hop β))⁻¹ : ℝ) • (Real.exp (-β * E) : ℂ)) • v := by
+  rw [gibbsState_op Hop β, smul_apply, gibbsOp_apply_eigenvector Hop β hv]
+  exact (smul_assoc ((spectralTrace (gibbsOp Hop β))⁻¹ : ℝ)
+    (Real.exp (-β * E) : ℂ) v).symm
+
 end QuantumTheory
