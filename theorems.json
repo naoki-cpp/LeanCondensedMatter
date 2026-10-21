@@ -47550,6 +47550,82 @@
   },
   {
     "terminal": true,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (expectation : QuantumTheory.LinearResponse.NormalizedExpectation H) (A : H →L[ℂ] H),\n  QuantumTheory.LinearResponse.connectedCorrelation (⇑expectation.toContinuousLinearMap) 1 A = 0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.LinearResponse.NormalizedExpectation.connectedCorrelation_one_left",
+    "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.Expectation.Basic",
+    "externalAxioms": [],
+    "docString": "The connected correlation with the identity in the first slot vanishes for a normalized\nexpectation. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (expectation : QuantumTheory.LinearResponse.NormalizedExpectation H) (A : H →L[ℂ] H),\n  QuantumTheory.LinearResponse.connectedCorrelation (⇑expectation.toContinuousLinearMap) A 1 = 0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.LinearResponse.NormalizedExpectation.connectedCorrelation_one_right",
+    "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.Expectation.Basic",
+    "externalAxioms": [],
+    "docString": "The connected correlation with the identity in the second slot vanishes for a normalized\nexpectation. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
     "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {K : Type u_2} [inst_3 : NormedAddCommGroup K] [inst_4 : InnerProductSpace ℂ K] [inst_5 : CompleteSpace K]\n  (expectation : QuantumTheory.LinearResponse.NormalizedExpectation K) (Φ : (H →L[ℂ] H) →L[ℂ] K →L[ℂ] K) (hΦ : Φ 1 = 1)\n  (A : H →L[ℂ] H), (expectation.pullback Φ hΦ).toContinuousLinearMap A = expectation.toContinuousLinearMap (Φ A)",
     "standardAxioms": [
       "Classical.choice",
@@ -137078,7 +137154,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.Transport.connectedBilinearCurrentCorrelation_eq_four_fields"
+      "SecondQuantization.Fermionic.Transport.connectedCorrelation_bilinearCurrentInsertion_eq_four_fields"
     ],
     "dependencies": [
       "SecondQuantization.Fermionic.Transport.bilinearCurrentInsertion_comp_eq_four_fields"
@@ -137086,7 +137162,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.Transport.connectedBilinearCurrentCorrelation_eq_four_fields"
+      "SecondQuantization.Fermionic.Transport.connectedCorrelation_bilinearCurrentInsertion_eq_four_fields"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -137168,13 +137244,13 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.Transport.connectedBilinearCurrentCorrelation_eq_four_fields"
+      "SecondQuantization.Fermionic.Transport.connectedCorrelation_bilinearCurrentInsertion_eq_four_fields"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.Transport.connectedBilinearCurrentCorrelation_eq_four_fields"
+      "SecondQuantization.Fermionic.Transport.connectedCorrelation_bilinearCurrentInsertion_eq_four_fields"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -137359,7 +137435,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] (ε : Mode → ℝ) (τ τ' : ℝ)\n  (expectation :\n    (SecondQuantization.Fermionic.OccupationFock Mode →ₗ[ℂ] SecondQuantization.Fermionic.OccupationFock Mode) →ₗ[ℂ] ℂ)\n  (jx jy : Mode → Mode → ℂ),\n  SecondQuantization.Fermionic.Transport.connectedBilinearCurrentCorrelation ε τ τ' expectation jx jy =\n    ∑ i,\n      ∑ j,\n        ∑ k,\n          ∑ l,\n            jx i j * jy k l *\n              (expectation\n                  ((SecondQuantization.Fermionic.externalFieldOperator ε τ\n                        (SecondQuantization.Fermionic.ExternalFieldLabel.creation i) ∘ₗ\n                      SecondQuantization.Fermionic.externalFieldOperator ε τ\n                        (SecondQuantization.Fermionic.ExternalFieldLabel.annihilation j)) ∘ₗ\n                    SecondQuantization.Fermionic.externalFieldOperator ε τ'\n                        (SecondQuantization.Fermionic.ExternalFieldLabel.creation k) ∘ₗ\n                      SecondQuantization.Fermionic.externalFieldOperator ε τ'\n                        (SecondQuantization.Fermionic.ExternalFieldLabel.annihilation l)) -\n                expectation\n                    (SecondQuantization.Fermionic.externalFieldOperator ε τ\n                        (SecondQuantization.Fermionic.ExternalFieldLabel.creation i) ∘ₗ\n                      SecondQuantization.Fermionic.externalFieldOperator ε τ\n                        (SecondQuantization.Fermionic.ExternalFieldLabel.annihilation j)) *\n                  expectation\n                    (SecondQuantization.Fermionic.externalFieldOperator ε τ'\n                        (SecondQuantization.Fermionic.ExternalFieldLabel.creation k) ∘ₗ\n                      SecondQuantization.Fermionic.externalFieldOperator ε τ'\n                        (SecondQuantization.Fermionic.ExternalFieldLabel.annihilation l)))",
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] (ε : Mode → ℝ) (τ τ' : ℝ)\n  (expectation :\n    (SecondQuantization.Fermionic.OccupationFock Mode →ₗ[ℂ] SecondQuantization.Fermionic.OccupationFock Mode) →ₗ[ℂ] ℂ)\n  (jx jy : Mode → Mode → ℂ),\n  QuantumTheory.LinearResponse.connectedCorrelation (⇑expectation)\n      (SecondQuantization.Fermionic.Transport.bilinearCurrentInsertion ε τ jx)\n      (SecondQuantization.Fermionic.Transport.bilinearCurrentInsertion ε τ' jy) =\n    ∑ i,\n      ∑ j,\n        ∑ k,\n          ∑ l,\n            jx i j * jy k l *\n              (expectation\n                  ((SecondQuantization.Fermionic.externalFieldOperator ε τ\n                        (SecondQuantization.Fermionic.ExternalFieldLabel.creation i) ∘ₗ\n                      SecondQuantization.Fermionic.externalFieldOperator ε τ\n                        (SecondQuantization.Fermionic.ExternalFieldLabel.annihilation j)) ∘ₗ\n                    SecondQuantization.Fermionic.externalFieldOperator ε τ'\n                        (SecondQuantization.Fermionic.ExternalFieldLabel.creation k) ∘ₗ\n                      SecondQuantization.Fermionic.externalFieldOperator ε τ'\n                        (SecondQuantization.Fermionic.ExternalFieldLabel.annihilation l)) -\n                expectation\n                    (SecondQuantization.Fermionic.externalFieldOperator ε τ\n                        (SecondQuantization.Fermionic.ExternalFieldLabel.creation i) ∘ₗ\n                      SecondQuantization.Fermionic.externalFieldOperator ε τ\n                        (SecondQuantization.Fermionic.ExternalFieldLabel.annihilation j)) *\n                  expectation\n                    (SecondQuantization.Fermionic.externalFieldOperator ε τ'\n                        (SecondQuantization.Fermionic.ExternalFieldLabel.creation k) ∘ₗ\n                      SecondQuantization.Fermionic.externalFieldOperator ε τ'\n                        (SecondQuantization.Fermionic.ExternalFieldLabel.annihilation l)))",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -137371,7 +137447,7 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.Transport.connectedBilinearCurrentCorrelation_eq_four_fields",
+    "name": "SecondQuantization.Fermionic.Transport.connectedCorrelation_bilinearCurrentInsertion_eq_four_fields",
     "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.CurrentInsertions",
     "externalAxioms": [],
     "docString": "The connected two-current subtraction is a four-field sum with only the\n**disconnected current-vertex product** removed. Wick contractions joining the\ncomposite current vertices survive even if four elementary field legs are not\none cumulant component. No Wick assumption is used. ",

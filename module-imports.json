@@ -6729,7 +6729,7 @@
       "imports": [
         "LeanCondensedMatter.Analysis.PowerSeries.Moment",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Reindexing",
-        "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.Wick.Connected",
+        "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.Wick.AmplitudeFactorization",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.DysonPartitionSeries"
       ],
       "externalImportCount": 0
@@ -7170,6 +7170,8 @@
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Diagrammatics/Quartic/Wick/AmplitudeFactorization.lean",
       "imports": [
         "LeanCondensedMatter.Analysis.OrderedSimplex.PartitionOrderIntegral",
+        "LeanCondensedMatter.Combinatorics.Cumulant.ConnectedDecomposition",
+        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentDecompositionEquiv",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Ordered",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Factorization.ComponentVertexProduct",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.Wick.Amplitude",
@@ -7198,16 +7200,6 @@
       "externalImportCount": 0
     },
     {
-      "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.Wick.Connected",
-      "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Diagrammatics/Quartic/Wick/Connected.lean",
-      "imports": [
-        "LeanCondensedMatter.Combinatorics.Cumulant.ConnectedDecomposition",
-        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentDecompositionEquiv",
-        "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.Wick.AmplitudeFactorization"
-      ],
-      "externalImportCount": 0
-    },
-    {
       "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.Wick.Diagram",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Diagrammatics/Quartic/Wick/Diagram.lean",
       "imports": [
@@ -7220,7 +7212,7 @@
       "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.Wick",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Diagrammatics/Quartic/Wick.lean",
       "imports": [
-        "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.Wick.Connected"
+        "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.Wick.AmplitudeFactorization"
       ],
       "externalImportCount": 0
     },
@@ -7910,6 +7902,7 @@
       "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.CurrentInsertions",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Transport/CurrentInsertions.lean",
       "imports": [
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.Expectation.Basic",
         "LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTime.TimedField"
       ],
       "externalImportCount": 0
