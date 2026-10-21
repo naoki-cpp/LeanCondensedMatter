@@ -595,7 +595,7 @@
     {
       "id": "transportResolventUmbrella",
       "path": "LeanCondensedMatter/Transport/Resolvent.lean",
-      "modules": ["LeanCondensedMatter.Transport.Resolvent.Uniqueness"]
+      "modules": ["LeanCondensedMatter.Transport.Resolvent.Basic"]
     },
     {
       "id": "transportResolventSpectralHierarchy",
@@ -605,11 +605,6 @@
     {
       "id": "transportResolventEnergyDerivativeHierarchy",
       "path": "LeanCondensedMatter/Transport/Resolvent/EnergyDerivative.lean",
-      "modules": ["LeanCondensedMatter.Transport.Resolvent.Basic"]
-    },
-    {
-      "id": "transportResolventUniquenessHierarchy",
-      "path": "LeanCondensedMatter/Transport/Resolvent/Uniqueness.lean",
       "modules": ["LeanCondensedMatter.Transport.Resolvent.Basic"]
     },
     {

@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Models.MassiveDirac.Model.OperatorSpectral
-import LeanCondensedMatter.Transport.Resolvent.Uniqueness
+import LeanCondensedMatter.Transport.Resolvent.Basic
 
 set_option linter.style.header false
 
@@ -186,13 +186,14 @@ theorem resolvent_spectralParameterOfRegulator_eq_pauliGreenOperatorOfRegulator
     resolvent (hamiltonianOperator v m px py)
         (spectralParameterOfRegulator probeEnergy regulator) =
       pauliGreenOperatorOfRegulator v m px py probeEnergy regulator := by
-  exact resolvent_eq_of_spectralShift_mul_eq_one
-    (hamiltonianOperator v m px py)
-    (pauliGreenOperatorOfRegulator v m px py probeEnergy regulator)
-    (hamiltonianOperator_isSelfAdjoint v m px py)
-    probeEnergy regulator hregulator
-    (spectralShift_mul_pauliGreenOperatorOfRegulator
-      v m px py probeEnergy regulator hregulator)
+  apply QuantumTheory.resolvent_eq_of_spectralShift_mul_eq_one_of_not_mem
+  · apply QuantumTheory.not_mem_spectrum_of_isSelfAdjoint_of_im_ne_zero
+      (hamiltonianOperator v m px py)
+      (hamiltonianOperator_isSelfAdjoint v m px py)
+    rw [spectralParameterOfRegulator_im]
+    exact hregulator
+  · exact spectralShift_mul_pauliGreenOperatorOfRegulator
+      v m px py probeEnergy regulator hregulator
 
 /-- Adjointing the explicit Pauli Green operator reverses the signed regulator. -/
 theorem star_pauliGreenOperatorOfRegulator
