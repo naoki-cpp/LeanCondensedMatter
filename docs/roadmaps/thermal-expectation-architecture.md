@@ -200,8 +200,9 @@ a field and the two scalar equalities, and introduces no thermal-state contract.
 
 The fermionic scalar exchange denominator `1 + exp (βx)` is strictly positive for real
 `β, x`. Its nonvanishing theorem belongs to
-`Common/Thermal/BlochDeDominicis/ExchangeDenominator.lean`, rather than a fermionic free-Gibbs
-partition module; this fact alone does not assert a KMS relation or a Wick recurrence.
+`Fermionic/ImaginaryTime/ImaginaryTimeEvolution.lean`, not the statistics-independent Common
+thermal stack or a free-Gibbs partition module. This fact alone does not assert a KMS relation
+or a Wick recurrence.
 
 `Common/Thermal/BlochDeDominicis/NormalizedTwoPointTrace.lean` applies the general trace peel
 theorem to a singleton coefficient-paired tail. Its
