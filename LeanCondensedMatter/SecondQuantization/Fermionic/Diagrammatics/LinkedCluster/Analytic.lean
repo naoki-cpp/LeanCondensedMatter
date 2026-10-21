@@ -32,11 +32,6 @@ theorem iteratedDeriv_analyticNormalizedLogPartitionFunction_eq_sum_connectedQua
         quarticWickDiagramAmplitude ε β g d.1 := by
   rw [Common.iteratedDeriv_analyticNormalizedLogPartitionFunction_eq_factorial_mul_coeff
     (fermionEnergy ε) hβ (quarticInteraction g) n]
-  change (n.factorial : ℂ) *
-      PowerSeries.coeff n
-        (PowerSeries.logOf (PowerSeries.normalizeByConstantCoeff (Common.dysonTraceSeries (fermionEnergy ε) β (quarticInteraction g)))) =
-    ∑ d : ConnectedQuarticWickDiagram Mode n Finset.univ,
-      quarticWickDiagramAmplitude ε β g d.1
   exact factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_sum_connectedQuarticWickDiagramAmplitude
     ε β g n hn
 
