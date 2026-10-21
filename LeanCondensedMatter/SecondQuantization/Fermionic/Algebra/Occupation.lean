@@ -1,4 +1,5 @@
 import Mathlib.Data.Finset.Card
+import Mathlib.Data.Fintype.Card
 import Mathlib.Data.Finset.SymmDiff
 import LeanCondensedMatter.SecondQuantization.Common.Algebra.OccupationBasis
 
@@ -68,6 +69,31 @@ theorem particleNumber_eq_card (n : Occupation Mode) :
   apply Finset.sum_congr rfl
   intro i hi
   simp [hi]
+
+/-- Fermionic occupation configurations with exactly `N` particles.
+This sector is algebraic data, independent of any thermal ensemble. -/
+abbrev CanonicalOccupation (Mode : Type*) (N : ℕ) :=
+  {n : Occupation Mode // particleNumber n = N}
+
+/-- Every configuration in the canonical sector has exactly `N` particles. -/
+@[simp]
+theorem canonicalOccupation_particleNumber {N : ℕ}
+    (n : CanonicalOccupation Mode N) : particleNumber n.val = N :=
+  n.property
+
+/-- For a finite set of fermionic modes, the fixed-number sector is inhabited
+precisely when the prescribed number does not exceed the number of modes. -/
+theorem canonicalOccupation_nonempty_iff_card [Fintype Mode] (N : ℕ) :
+    Nonempty (CanonicalOccupation Mode N) ↔ N ≤ Fintype.card Mode := by
+  classical
+  constructor
+  · rintro ⟨⟨n, hn⟩⟩
+    rw [particleNumber_eq_card] at hn
+    exact hn ▸ Finset.card_le_univ n
+  · intro h
+    have hu : N ≤ (Finset.univ : Finset Mode).card := by simpa using h
+    obtain ⟨n, _, hn⟩ := Finset.exists_subset_card_eq hu
+    exact ⟨⟨n, (particleNumber_eq_card n).trans hn⟩⟩
 
 variable [DecidableEq Mode]
 
