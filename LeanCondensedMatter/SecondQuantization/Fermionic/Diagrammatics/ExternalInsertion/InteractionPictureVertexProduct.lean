@@ -1,6 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.MixedAtomicDysonIntegral
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.LocalLeg
-import LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTime.InteractionPicture
+import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.InteractionPicture
 
 set_option linter.style.header false
 
@@ -33,7 +33,7 @@ noncomputable def externalInsertionTimedEventOperator {E n : ℕ}
     ExternalInsertionTimedEvent E n →
       OccupationFock Mode →ₗ[ℂ] OccupationFock Mode
   | .inl e => externalFieldOperator ε (externalTime e) (externalLabel e)
-  | .inr v => interactionPicture ε (quarticVertexOperator (q v)) (σ v)
+  | .inr v => Common.interactionPicture (fermionEnergy ε) (quarticVertexOperator (q v)) (σ v)
 
 /-- Signed mixed-time-ordered interaction-picture vertex product, with the fermionic sign from
 restoring the fixed external/interaction atomic order. -/

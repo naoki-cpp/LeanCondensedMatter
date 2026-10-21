@@ -1,7 +1,7 @@
 import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointImaginaryTimeOrder
 import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.QuarticInteraction
 import LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTime.ExternalField
-import LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTime.InteractionPicture
+import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.InteractionPicture
 
 set_option linter.style.header false
 
@@ -29,7 +29,7 @@ noncomputable def twoPointTimedEventOperator {n : ℕ} (ε : Mode → ℝ) (i j 
     TwoPointTimedEvent n → OccupationFock Mode →ₗ[ℂ] OccupationFock Mode
   | .inl e => externalFieldOperator ε (twoPointExternalTimes τ τ' e)
       (twoPointExternalLabels i j e)
-  | .inr v => interactionPicture ε (quarticVertexOperator (q v)) (σ v)
+  | .inr v => Common.interactionPicture (fermionEnergy ε) (quarticVertexOperator (q v)) (σ v)
 
 @[simp]
 theorem twoPointTimedEventOperator_external_zero {n : ℕ} (ε : Mode → ℝ) (i j : Mode)
@@ -49,7 +49,7 @@ theorem twoPointTimedEventOperator_external_one {n : ℕ} (ε : Mode → ℝ) (i
 theorem twoPointTimedEventOperator_interaction {n : ℕ} (ε : Mode → ℝ) (i j : Mode)
     (τ τ' : ℝ) (q : Fin n → QuarticVertexLabel Mode) (σ : Fin n → ℝ) (v : Fin n) :
     twoPointTimedEventOperator ε i j τ τ' q σ (Sum.inr v) =
-      interactionPicture ε (quarticVertexOperator (q v)) (σ v) := rfl
+      Common.interactionPicture (fermionEnergy ε) (quarticVertexOperator (q v)) (σ v) := rfl
 
 /-- Exchange prefactor from reversing the two odd fermionic external fields in the Common stable
 mixed-event order. -/
