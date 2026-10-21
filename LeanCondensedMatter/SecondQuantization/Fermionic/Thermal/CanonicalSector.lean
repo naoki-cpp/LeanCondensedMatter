@@ -86,7 +86,13 @@ theorem canonicalFreeGibbsDensityOperator_number_expectation
           (canonicalSectorNumberOperator (Mode := Mode) N)) = (N : ℂ) := by
   rw [canonicalSectorNumberOperator_eq_smul_id, map_smul,
     ← Module.End.one_eq_id, map_one, map_smul]
-  simp [(canonicalFreeGibbsDensityOperator ε β N).expectation_id]
+  have hid :
+      (canonicalFreeGibbsDensityOperator ε β N).expectation
+        (1 : Common.FiniteHilbertFock (CanonicalOccupation Mode N) →L[ℂ]
+          Common.FiniteHilbertFock (CanonicalOccupation Mode N)) = 1 :=
+    (canonicalFreeGibbsDensityOperator ε β N).expectation_id
+  rw [hid]
+  ring
 
 /-- The fixed-number Gibbs state has zero particle-number variance. -/
 theorem canonicalFreeGibbsDensityOperator_number_variance_zero
@@ -100,8 +106,13 @@ theorem canonicalFreeGibbsDensityOperator_number_variance_zero
           (canonicalSectorNumberOperator (Mode := Mode) N))) ^ 2 = 0 := by
   rw [canonicalSectorNumberOperator_sq_eq_smul_id, map_smul,
     ← Module.End.one_eq_id, map_one, map_smul]
-  simp [canonicalFreeGibbsDensityOperator_number_expectation,
-    (canonicalFreeGibbsDensityOperator ε β N).expectation_id]
+  have hid :
+      (canonicalFreeGibbsDensityOperator ε β N).expectation
+        (1 : Common.FiniteHilbertFock (CanonicalOccupation Mode N) →L[ℂ]
+          Common.FiniteHilbertFock (CanonicalOccupation Mode N)) = 1 :=
+    (canonicalFreeGibbsDensityOperator ε β N).expectation_id
+  rw [hid, canonicalFreeGibbsDensityOperator_number_expectation]
+  ring
 
 end Fermionic
 end SecondQuantization
