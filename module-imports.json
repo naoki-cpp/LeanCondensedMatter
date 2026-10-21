@@ -2569,8 +2569,7 @@
       "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Model/Operator.lean",
       "imports": [
         "LeanCondensedMatter.Analysis.Operator.FiniteTrace",
-        "LeanCondensedMatter.Models.MassiveDirac.Model.Basic",
-        "LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.Free"
+        "LeanCondensedMatter.Models.MassiveDirac.Model.Basic"
       ],
       "externalImportCount": 2
     },

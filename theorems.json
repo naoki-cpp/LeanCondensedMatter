@@ -68814,7 +68814,7 @@
     "name": "QuantumTheory.Models.MassiveDirac.hamiltonianOperator_isSelfAdjoint",
     "module": "LeanCondensedMatter.Models.MassiveDirac.Model.Operator",
     "externalAxioms": [],
-    "docString": "Transporting the Hermitian Hamiltonian through `Matrix.toEuclideanCLM` gives a self-adjoint\nbounded operator, as required by the generic free-system API. ",
+    "docString": "Transporting the Hermitian Hamiltonian through `Matrix.toEuclideanCLM` gives a self-adjoint\nbounded operator. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
@@ -68834,7 +68834,6 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Models.MassiveDirac.boundedFreeSystem",
       "QuantumTheory.Models.MassiveDirac.pointwiseEigenbasisData",
       "QuantumTheory.Models.MassiveDirac.regularizedBastinTraceIntegrand_eq_projectorBastinTraceIntegrand",
       "QuantumTheory.Models.MassiveDirac.resolvent_spectralParameterOfRegulator_eq_pauliGreenOperatorOfRegulator",
@@ -68845,7 +68844,7 @@
       "_private.LeanCondensedMatter.Models.MassiveDirac.Model.OperatorSpectral.BerryPointwise.0.QuantumTheory.Models.MassiveDirac.hamiltonianOperator_bandEigenbasis",
       "_private.LeanCondensedMatter.Models.MassiveDirac.Model.OperatorSpectral.BerryPointwise.0.QuantumTheory.Models.MassiveDirac.sortedEigenvalues_eq_bandEnergy"
     ],
-    "compiledConsumerCount": 10,
+    "compiledConsumerCount": 9,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
