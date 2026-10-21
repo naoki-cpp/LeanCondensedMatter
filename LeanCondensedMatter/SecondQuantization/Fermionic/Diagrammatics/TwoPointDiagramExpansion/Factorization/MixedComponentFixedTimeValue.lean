@@ -12,12 +12,12 @@ set_option linter.style.header false
 # Component-local fixed-time values for two-point diagrams
 
 A fixed-time two-point Wick-diagram amplitude contains three scalar layers: the external-field time-
-ordering sign, the product of quartic couplings, and the mixed-order pairing value. The Common layer supplies mixed-component pairing fibers and crossing weights, and the semantic
-pair-contraction layer supplies the atomic contractions. This module assembles the fermionic pairing
-value and then combines it with the component-local vertex products.
+ordering sign, the product of quartic couplings, and the mixed-order pairing value. Common owns
+the mixed-component pair fibers and crossing weights, while the semantic pair-contraction layer
+owns the atomic contractions. This module assembles the fermionic component pairing value,
+combines it with the local vertex weight, and proves the all-component fixed-time factorization.
 
-This module combines those results into component-local fixed-time values and the all-component
-factorization. The external value is related to the standalone external piece downstream in
+The external value is related to the standalone external piece downstream in
 `ExternalPieceAmplitude`.
 
 The Dyson sign and ordered-simplex integration are intentionally left to the next layer.
