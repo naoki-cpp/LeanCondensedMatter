@@ -222,10 +222,16 @@ Dyson expansions are owned at arbitrary nonzero `γ`; physical consumers special
 locally when branch semantics are required.
 
 `FiniteDisorderEnsemble.average` is a complex linear map given by the normalized weighted finite
-sum. `Disorder.ConnectedCorrelation` takes a supplied normalized expectation for each configuration
-and averages the connected product only after those expectations are evaluated. The disconnected
-product remains inside the average; its difference from the product of separately averaged
-one-point functions is the disorder covariance. A four-leg expansion must be supplied explicitly.
+sum. The ensemble-independent connected two-point subtraction belongs to
+`QuantumTheory.LinearResponse.connectedCorrelation`. Its definition requires only a
+functional and ordered multiplication of observables, not Gibbs, KMS, or Gaussianity.
+For a normalized expectation it is the physical second cumulant; normalization makes
+identity insertions vanish.
+`Disorder.ConnectedCorrelation` takes a supplied normalized expectation for each configuration
+and averages that connected correlation **after** evaluating each configuration's expectation.
+The disconnected product remains inside the average; its difference from the product of
+separately averaged one-point functions is the disorder covariance. A four-leg expansion
+must be supplied explicitly.
 The module needs neither a Fock-space realization nor spectral data or a conductivity definition;
 an eigenbasis density state can be supplied by a physical consumer.
 

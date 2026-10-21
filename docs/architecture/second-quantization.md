@@ -388,8 +388,10 @@ response specializations.
 In `Fermionic.Transport.CurrentInsertions`, finite two- and four-leg current expansions and
 the disconnected two-current subtraction take any complex-linear functional on algebraic-Fock
 endomorphisms. Their proofs use linearity, not Gibbs, KMS, Wick factorization, or a fixed particle
-number. To interpret the subtraction as a physical second cumulant, the functional must be
-normalized on the identity. Thermal or other concrete state realizations remain separate.
+number. The disconnected subtraction uses `QuantumTheory.LinearResponse.connectedCorrelation`
+directly rather than a one-use current-specific definition. To interpret it as a physical
+second cumulant, the functional must be normalized on the identity. Thermal or other
+concrete state realizations remain separate.
 
 The generic bounded one-body response module does not assume a current-density convention.
 The symmetrized velocity current `1/2 {v,m}` is a downstream realization, while corrected,
