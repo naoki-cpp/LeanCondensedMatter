@@ -1,4 +1,4 @@
-import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.ExchangeDenominator
+import LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTime.ImaginaryTimeEvolution
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreePartitionFunction
 import LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTime.TwoPoint
 import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.NumberOperator
@@ -60,7 +60,7 @@ theorem freeGibbsDensityOperator_expectation_annihilate_comp_create
           (LinearMap.id : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) := by
     simpa [Common.exchangeCommutator, Common.Statistics.zetaInt_fermion] using
       (anticomm_annihilate_create (Mode := Mode) i j)
-  have hne := Common.BlochDeDominicis.one_sub_zetaInt_fermion_mul_exp_ne_zero (-ε i) β
+  have hne := one_sub_zetaInt_fermion_mul_exp_ne_zero (-ε i) β
   have h := Common.finiteGibbsExpectation_comp_eq_div_of_exchangeCommutator
     (fermionEnergy ε) β (-ε i) Common.Statistics.fermion
     (if i = j then (1 : ℂ) else 0) (annihilate i) (create j) hC hcomm hne
@@ -127,7 +127,7 @@ theorem freeGibbsGreenFunction_self_time_self (ε : Mode → ℝ) (β : ℝ) (i 
   simp only [smul_eq_mul, one_mul, neg_mul]
   have hE : Complex.exp ((β : ℂ) * (ε i : ℂ)) + 1 ≠ 0 := by
     simpa [Common.Statistics.zetaInt_fermion, add_comm] using
-      (Common.BlochDeDominicis.one_sub_zetaInt_fermion_mul_exp_ne_zero β (ε i))
+      (one_sub_zetaInt_fermion_mul_exp_ne_zero β (ε i))
   simp only [ite_true]
   field_simp
   ring
@@ -155,7 +155,7 @@ theorem freeGibbsDensityOperator_expectation_create_comp_annihilate
     rw [hid] at h
     have hne : Complex.exp ((β : ℂ) * (ε i : ℂ)) + 1 ≠ 0 := by
       simpa [Common.Statistics.zetaInt_fermion, add_comm] using
-        (Common.BlochDeDominicis.one_sub_zetaInt_fermion_mul_exp_ne_zero β (ε i))
+        (one_sub_zetaInt_fermion_mul_exp_ne_zero β (ε i))
     field_simp [hne] at h ⊢
     linear_combination h
   · simp only [ite_eq_right hij, map_zero] at h hknown ⊢
