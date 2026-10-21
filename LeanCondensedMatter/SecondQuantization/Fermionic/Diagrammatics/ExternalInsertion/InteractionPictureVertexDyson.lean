@@ -67,7 +67,7 @@ theorem externalInsertionVertexDysonCoefficient_eq_externalInsertionDysonCoeffic
       intro q _
       rw [externalInsertionMixedTimeOrderedVertexComp_eq_atomicProduct]
       simp only [freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation,
-        Common.finiteGibbsExpectation_smul]
+        Common.finiteGibbsExpectation, map_smul, smul_eq_mul]
       ring
     _ = externalInsertionDysonCoefficient
           ε β g externalLabel externalTime n :=
