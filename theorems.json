@@ -47949,8 +47949,7 @@
     "directWrapperOf": null,
     "dependents": [
       "QuantumTheory.LinearResponse.finiteTime_eigenbasisPhysicalSusceptibility_has_both_local_three_stage_limits",
-      "QuantumTheory.Transport.adiabaticFrequencyDomainSusceptibility_eq_bastinSpectralVertexSum",
-      "SecondQuantization.Fermionic.Transport.infiniteTimeAdiabaticDirectionalConductivity_eq_finiteKuboGreenwood"
+      "QuantumTheory.Transport.adiabaticFrequencyDomainSusceptibility_eq_bastinSpectralVertexSum"
     ],
     "dependencies": [
       "QuantumTheory.LinearResponse.adiabaticFrequencyDomainSusceptibility_eigenbasis_eq_lehmannSeries",
@@ -47961,10 +47960,9 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.LinearResponse.finiteTime_eigenbasisPhysicalSusceptibility_has_both_local_three_stage_limits",
-      "QuantumTheory.Transport.adiabaticFrequencyDomainSusceptibility_eq_bastinSpectralVertexSum",
-      "SecondQuantization.Fermionic.Transport.infiniteTimeAdiabaticDirectionalConductivity_eq_finiteKuboGreenwood"
+      "QuantumTheory.Transport.adiabaticFrequencyDomainSusceptibility_eq_bastinSpectralVertexSum"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -47986,7 +47984,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -47998,7 +47996,9 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.LinearResponse.adiabaticFrequencyDomainSusceptibility_eigenbasis_eq_finite_sum"
+      "QuantumTheory.LinearResponse.adiabaticFrequencyDomainSusceptibility_eigenbasis_eq_finite_sum",
+      "SecondQuantization.Fermionic.Transport.finiteKuboGreenwoodDirectionalConductivity_eq_bastinSpectral",
+      "SecondQuantization.Fermionic.Transport.infiniteTimeAdiabaticDirectionalConductivity_eq_finiteKuboGreenwood"
     ],
     "dependencies": [
       "QuantumTheory.LinearResponse.EigenbasisTimeDomainSummable.lehmannSummable",
@@ -48009,9 +48009,11 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.LinearResponse.adiabaticFrequencyDomainSusceptibility_eigenbasis_eq_finite_sum"
+      "QuantumTheory.LinearResponse.adiabaticFrequencyDomainSusceptibility_eigenbasis_eq_finite_sum",
+      "SecondQuantization.Fermionic.Transport.finiteKuboGreenwoodDirectionalConductivity_eq_bastinSpectral",
+      "SecondQuantization.Fermionic.Transport.infiniteTimeAdiabaticDirectionalConductivity_eq_finiteKuboGreenwood"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -49129,18 +49131,16 @@
     "directWrapperOf": null,
     "dependents": [
       "QuantumTheory.LinearResponse.adiabaticFrequencyDomainSusceptibility_eigenbasis_eq_finite_sum",
-      "QuantumTheory.LinearResponse.finiteLehmannTableResponse_ofEigenbasis",
-      "SecondQuantization.Fermionic.Transport.finiteConductivityTableValue_directional_ofEigenbasis_eq_kuboGreenwood"
+      "QuantumTheory.LinearResponse.finiteLehmannTableResponse_ofEigenbasis"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.LinearResponse.adiabaticFrequencyDomainSusceptibility_eigenbasis_eq_finite_sum",
-      "QuantumTheory.LinearResponse.finiteLehmannTableResponse_ofEigenbasis",
-      "SecondQuantization.Fermionic.Transport.finiteConductivityTableValue_directional_ofEigenbasis_eq_kuboGreenwood"
+      "QuantumTheory.LinearResponse.finiteLehmannTableResponse_ofEigenbasis"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -49261,16 +49261,20 @@
     "directWrapperOf": null,
     "dependents": [
       "QuantumTheory.LinearResponse.adiabaticFrequencyDomainSusceptibility_eigenbasis_eq_finite_sum",
-      "QuantumTheory.LinearResponse.retardedTimeDifferenceKernel_eigenbasis_eq_finite_sum_of_nonneg"
+      "QuantumTheory.LinearResponse.retardedTimeDifferenceKernel_eigenbasis_eq_finite_sum_of_nonneg",
+      "SecondQuantization.Fermionic.Transport.finiteKuboGreenwoodDirectionalConductivity_eq_bastinSpectral",
+      "SecondQuantization.Fermionic.Transport.infiniteTimeAdiabaticDirectionalConductivity_eq_finiteKuboGreenwood"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.LinearResponse.adiabaticFrequencyDomainSusceptibility_eigenbasis_eq_finite_sum",
-      "QuantumTheory.LinearResponse.retardedTimeDifferenceKernel_eigenbasis_eq_finite_sum_of_nonneg"
+      "QuantumTheory.LinearResponse.retardedTimeDifferenceKernel_eigenbasis_eq_finite_sum_of_nonneg",
+      "SecondQuantization.Fermionic.Transport.finiteKuboGreenwoodDirectionalConductivity_eq_bastinSpectral",
+      "SecondQuantization.Fermionic.Transport.infiniteTimeAdiabaticDirectionalConductivity_eq_finiteKuboGreenwood"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -49366,7 +49370,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": false,
+    "terminal": true,
     "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {ι : Type u_2} (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (data : QuantumTheory.LinearResponse.EnergyEigenbasisLehmannData system ι) (A B : H →L[ℂ] H) (i : ι),\n  (QuantumTheory.LinearResponse.eigenbasisTransitionData system data A B (i, i)).weight = 0",
     "standardAxioms": [
       "Classical.choice",
@@ -49374,7 +49378,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": true,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -49385,16 +49389,12 @@
     "docString": "Diagonal eigenbasis transitions have zero physical weight. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.Transport.finiteKuboGreenwoodDirectionalCurrentTerm_diag"
-    ],
+    "dependents": [],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.Transport.finiteKuboGreenwoodDirectionalCurrentTerm_diag"
-    ],
-    "compiledConsumerCount": 1,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -50351,7 +50351,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -50363,7 +50363,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.Transport.finiteConductivityTableValue_directional_ofEigenbasis_eq_kuboGreenwood"
+      "SecondQuantization.Fermionic.Transport.finiteKuboGreenwoodDirectionalConductivity_eq_bastinSpectral",
+      "SecondQuantization.Fermionic.Transport.infiniteTimeAdiabaticDirectionalConductivity_eq_finiteKuboGreenwood"
     ],
     "dependencies": [
       "QuantumTheory.LinearResponse.eigenbasisLehmannSeries_eq_finite_sum"
@@ -50371,9 +50372,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.Transport.finiteConductivityTableValue_directional_ofEigenbasis_eq_kuboGreenwood"
+      "SecondQuantization.Fermionic.Transport.finiteKuboGreenwoodDirectionalConductivity_eq_bastinSpectral",
+      "SecondQuantization.Fermionic.Transport.infiniteTimeAdiabaticDirectionalConductivity_eq_finiteKuboGreenwood"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -86086,6 +86088,7 @@
     "directWrapperOf": null,
     "dependents": [
       "QuantumTheory.Transport.StaticChannelTracedBastinIdentity.staticConductivity_eq_spectralEnergyIntegral",
+      "QuantumTheory.Transport.TracedStredaAnalyticData.staticChannelConductivity_eq_surface_add_sea",
       "SecondQuantization.Fermionic.Transport.finiteDisorderAveragedStaticConductivity_eq_tracedBastinAverage"
     ],
     "dependencies": [
@@ -86097,7 +86100,7 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.Transport.StaticChannelTracedBastinIdentity.staticConductivity_eq_spectralEnergyIntegral",
-      "QuantumTheory.Transport.TracedStredaAnalyticData.toStaticChannelStredaRepresentation",
+      "QuantumTheory.Transport.TracedStredaAnalyticData.staticChannelConductivity_eq_surface_add_sea",
       "SecondQuantization.Fermionic.Transport.finiteDisorderAveragedStaticConductivity_eq_tracedBastinAverage"
     ],
     "compiledConsumerCount": 3,
@@ -86731,13 +86734,14 @@
     "module": "LeanCondensedMatter.Transport.Streda.StaticChannelIdentification",
     "externalAxioms": [],
     "docString": "The identified normalized complete response has the regularized surface-plus-sea split. ",
-    "directWrapperTargetModule": "LeanCondensedMatter.Transport.Streda.Integration",
-    "directWrapperOf": "QuantumTheory.Transport.RegularizedStredaRepresentation.response_eq_surface_add_sea",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "QuantumTheory.Transport.RegularizedStredaRepresentation.response_eq_surface_add_sea"
+      "QuantumTheory.Transport.RegularizedStredaRepresentation.response_eq_surface_add_sea",
+      "QuantumTheory.Transport.StaticChannelTracedBastinIdentity.staticConductivity_eq_tracedBastin"
     ],
-    "crossModuleDirectWrapper": true,
+    "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [],
     "compiledConsumerCount": 0,
@@ -86929,7 +86933,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ {H : Type u_1} {ι : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] [inst_3 : Fintype ι] (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (data : QuantumTheory.LinearResponse.EnergyEigenbasisLehmannData system ι)\n  (channel : QuantumTheory.LinearResponse.ResponseChannel H) (omega eta : ℝ),\n  0 < eta →\n    QuantumTheory.LinearResponse.adiabaticFrequencyDomainSusceptibility system\n          (QuantumTheory.LinearResponse.eigenbasisNormalizedExpectation system data) channel.measured channel.source\n          omega eta +\n        (QuantumTheory.LinearResponse.eigenbasisNormalizedExpectation system data).toContinuousLinearMap\n          channel.observableVariation =\n      QuantumTheory.Transport.finiteKuboBastinSpectralChannelResponse system data channel omega eta",
     "standardAxioms": [
       "Classical.choice",
@@ -86937,7 +86941,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -86948,14 +86952,18 @@
     "docString": "At positive switching rate, the frequency-domain response carried by a `ResponseChannel` is\nexactly its finite Kubo–Bastin spectral response. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "SecondQuantization.Fermionic.Transport.finiteKuboGreenwoodDirectionalConductivity_eq_bastinSpectral"
+    ],
     "dependencies": [
       "QuantumTheory.Transport.adiabaticFrequencyDomainSusceptibility_eq_bastinSpectralVertexSum"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.Transport.finiteKuboGreenwoodDirectionalConductivity_eq_bastinSpectral"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -87536,7 +87544,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -87548,8 +87556,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Transport.adiabaticFrequencyDomainSusceptibility_eq_bastinSpectralVertexSum",
-      "SecondQuantization.Fermionic.Transport.finiteKuboGreenwoodDirectionalConductivity_eq_bastinSpectral"
+      "QuantumTheory.Transport.adiabaticFrequencyDomainSusceptibility_eq_bastinSpectralVertexSum"
     ],
     "dependencies": [
       "QuantumTheory.Transport.kuboBastinEnergyBroadening_pos",
@@ -87562,10 +87569,9 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Transport.adiabaticFrequencyDomainSusceptibility_eq_bastinSpectralVertexSum",
-      "SecondQuantization.Fermionic.Transport.finiteKuboGreenwoodDirectionalConductivity_eq_bastinSpectral"
+      "QuantumTheory.Transport.adiabaticFrequencyDomainSusceptibility_eq_bastinSpectralVertexSum"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -87880,8 +87886,7 @@
     "dependents": [
       "QuantumTheory.Transport.StaticChannelTracedBastinIdentity.channelResponse_eq_scaledTracedBastin",
       "QuantumTheory.Transport.finiteKuboBastinSpectralChannelResponse_eq_occupationResolved",
-      "QuantumTheory.Transport.finiteStaticKuboBastinChannelResponse_eq_surface_add_sea_add_observableVariation",
-      "SecondQuantization.Fermionic.Transport.finiteKuboGreenwoodDirectionalConductivity_eq_bastinSpectral"
+      "QuantumTheory.Transport.finiteStaticKuboBastinChannelResponse_eq_surface_add_sea_add_observableVariation"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
@@ -87889,10 +87894,9 @@
     "compiledConsumers": [
       "QuantumTheory.Transport.StaticChannelTracedBastinIdentity.channelResponse_eq_scaledTracedBastin",
       "QuantumTheory.Transport.finiteKuboBastinSpectralChannelResponse_eq_occupationResolved",
-      "QuantumTheory.Transport.finiteStaticKuboBastinChannelResponse_eq_surface_add_sea_add_observableVariation",
-      "SecondQuantization.Fermionic.Transport.finiteKuboGreenwoodDirectionalConductivity_eq_bastinSpectral"
+      "QuantumTheory.Transport.finiteStaticKuboBastinChannelResponse_eq_surface_add_sea_add_observableVariation"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -125144,8 +125148,7 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Algebra.FiniteHilbertSelfAdjoint.0.SecondQuantization.Common.finiteHilbertOperatorMatrix_apply",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Algebra.FiniteHilbertSelfAdjoint.0.SecondQuantization.Common.finiteHilbertOperator_isSelfAdjoint_iff_matrix_isHermitian"
+      "SecondQuantization.Common.star_finiteHilbertOperator_eq_iff_matrixCoeff"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -130730,7 +130733,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -130742,6 +130745,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "SecondQuantization.Common.finiteHilbertOperator_isSelfAdjoint_iff_matrixCoeff",
       "SecondQuantization.Fermionic.star_finiteHilbertCreate"
     ],
     "dependencies": [
@@ -130750,9 +130754,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "SecondQuantization.Common.finiteHilbertOperator_isSelfAdjoint_iff_matrixCoeff",
       "SecondQuantization.Fermionic.star_finiteHilbertCreate"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -137370,10 +137375,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [],
-    "dependencies": [
-      "QuantumTheory.LinearResponse.eigenbasisLehmannSeries_eq_finite_sum",
-      "QuantumTheory.LinearResponse.finiteLehmannTableResponse_ofEigenbasis"
-    ],
+    "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [],
@@ -137580,8 +137582,10 @@
       "SecondQuantization.Fermionic.Transport.infiniteTimeAdiabaticDirectionalConductivity_eq_bastinSpectral"
     ],
     "dependencies": [
-      "QuantumTheory.Transport.eigenbasisLehmannVertexTerm_eq_bastinSpectral",
-      "QuantumTheory.Transport.finiteKuboBastinSpectralChannelResponse_eq_vertexSum"
+      "QuantumTheory.LinearResponse.adiabaticFrequencyDomainSusceptibility_eigenbasis_eq_lehmannSeries",
+      "QuantumTheory.LinearResponse.eigenbasisTimeDomainSummable_of_finite",
+      "QuantumTheory.LinearResponse.finiteLehmannTableResponse_ofEigenbasis",
+      "QuantumTheory.Transport.adiabaticFrequencyDomainResponseChannel_eq_bastinSpectral"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -137589,84 +137593,6 @@
       "SecondQuantization.Fermionic.Transport.infiniteTimeAdiabaticDirectionalConductivity_eq_bastinSpectral"
     ],
     "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {Site : Type u_1} {E : Type u_2} {ι : Type u_3} [inst : LinearOrder Site] [inst_1 : Fintype Site]\n  [inst_2 : AddCommGroup E] [inst_3 : _root_.Module ℝ E] [inst_4 : Fintype ι]\n  (volume : QuantumTheory.Transport.PositiveVolume)\n  (system :\n    QuantumTheory.LinearResponse.BoundedFreeSystem (SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site))\n  (data : QuantumTheory.LinearResponse.EnergyEigenbasisLehmannData system ι) (geometry : LatticeGeometry Site E)\n  (direction : E →ₗ[ℝ] ℝ) (K : LocallyFiniteHopping Site) (q ω η : ℝ),\n  SecondQuantization.Fermionic.Transport.finiteKuboGreenwoodDirectionalConductivity volume system data geometry\n      direction K q ω η =\n    (∑ mn,\n          SecondQuantization.Fermionic.Transport.finiteKuboGreenwoodDirectionalCurrentTerm system data geometry\n            direction K q ω η mn) *\n        QuantumTheory.Transport.finiteVolumeConductivityNormalization volume ω η +\n      (QuantumTheory.LinearResponse.eigenbasisNormalizedExpectation system data).toContinuousLinearMap\n          (SecondQuantization.Fermionic.Lattice.boundedDirectionalContact geometry direction (↑system.hbar) (↑q) K) *\n        QuantumTheory.Transport.finiteVolumeConductivityNormalization volume ω η",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.Transport.finiteKuboGreenwoodDirectionalConductivity_eq_current_sum_add_contact",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.KuboGreenwood",
-    "externalAxioms": [],
-    "docString": "The contact term remains a separate explicit contribution after conductivity normalization. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {Site : Type u_1} {E : Type u_2} {ι : Type u_3} [inst : LinearOrder Site] [inst_1 : Fintype Site]\n  [inst_2 : AddCommGroup E] [inst_3 : _root_.Module ℝ E]\n  (system :\n    QuantumTheory.LinearResponse.BoundedFreeSystem (SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site))\n  (data : QuantumTheory.LinearResponse.EnergyEigenbasisLehmannData system ι) (geometry : LatticeGeometry Site E)\n  (direction : E →ₗ[ℝ] ℝ) (K : LocallyFiniteHopping Site) (q ω η : ℝ) (i : ι),\n  SecondQuantization.Fermionic.Transport.finiteKuboGreenwoodDirectionalCurrentTerm system data geometry direction K q ω\n      η (i, i) =\n    0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.Transport.finiteKuboGreenwoodDirectionalCurrentTerm_diag",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.KuboGreenwood",
-    "externalAxioms": [],
-    "docString": "Diagonal Kubo–Greenwood current-current transitions vanish exactly. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "QuantumTheory.LinearResponse.eigenbasisTransitionData_weight_diag"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -137788,7 +137714,9 @@
       "SecondQuantization.Fermionic.Transport.infiniteTimeAdiabaticDirectionalConductivity_eq_bastinSpectral"
     ],
     "dependencies": [
-      "QuantumTheory.LinearResponse.adiabaticFrequencyDomainSusceptibility_eigenbasis_eq_finite_sum",
+      "QuantumTheory.LinearResponse.adiabaticFrequencyDomainSusceptibility_eigenbasis_eq_lehmannSeries",
+      "QuantumTheory.LinearResponse.eigenbasisTimeDomainSummable_of_finite",
+      "QuantumTheory.LinearResponse.finiteLehmannTableResponse_ofEigenbasis",
       "QuantumTheory.LinearResponse.infiniteTimeAdiabaticTransform_commutator_eq_susceptibility"
     ],
     "crossModuleDirectWrapper": false,
@@ -175399,7 +175327,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -175411,7 +175339,6 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Common.finiteHilbertOperator_isSelfAdjoint_iff_matrixCoeff",
       "SecondQuantization.Common.star_finiteHilbertOperator_eq_iff_matrixCoeff"
     ],
     "dependencies": [
@@ -175420,50 +175347,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.finiteHilbertOperator_isSelfAdjoint_iff_matrixCoeff",
       "SecondQuantization.Common.star_finiteHilbertOperator_eq_iff_matrixCoeff"
-    ],
-    "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Config : Type u_1} [inst : Fintype Config]\n  (A : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config),\n  IsSelfAdjoint (SecondQuantization.Common.finiteHilbertOperatorAlgEquiv A) ↔\n    (SecondQuantization.Common.finiteHilbertOperatorMatrix✝ A).IsHermitian",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Algebra.FiniteHilbertSelfAdjoint.0.SecondQuantization.Common.finiteHilbertOperator_isSelfAdjoint_iff_matrix_isHermitian",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Algebra.FiniteHilbertSelfAdjoint",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.finiteHilbertOperator_isSelfAdjoint_iff_matrixCoeff"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.finiteHilbertOperator_isSelfAdjoint_iff_matrixCoeff"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
