@@ -1,4 +1,4 @@
-import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.KuboBastinOccupation
+import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.KuboBastinSpectral
 import LeanCondensedMatter.Transport.KuboBastin.CommonEnergy
 
 set_option linter.style.header false

@@ -37,6 +37,8 @@ Transport/
 ├── Core/          physical volume, normalization, conductivity tensor
 ├── FiniteConductivityTable.lean
 │                  finite Lehmann + contact + positive-volume E-field normalization
+├── FiniteConductivityTable/Eigenbasis.lean
+│                  statistics-independent eigenbasis/channel-to-scalar adapter
 ├── Resolvent/     signed spectral regulator, physical spectral sides, self-energy algebra
 ├── Spectral/      response-neutral adapters from supplied spectral data to resolvent algebra
 ├── Analysis/      occupations, 2D continuum measure, angular harmonics, polar Fourier, relaxation time
@@ -59,11 +61,17 @@ and positive switching rate. Static consumers set the frequency to zero in that 
 this does not take a zero-switching or DC limit. Fermionic common-energy and spectral conductivity
 use the generic channel response and vertex-term identities directly.
 
-The Greenwood definition uses the generic finite Lehmann table evaluator rather than a
-separate current-transition interface. Its finite spectral index is required by that evaluator;
-`finiteLehmannTableResponse_ofEigenbasis` identifies the result with `eigenbasisLehmannSeries`.
-The scalar table evaluation and Bastin conversion
-consume the existing aggregate identities without expanding individual transitions downstream.
+`FiniteConductivityTable.Eigenbasis` constructs the scalar data from a supplied eigenbasis and
+`ResponseChannel`: measured and source operators supply the two Lehmann matrix factors, while
+the observable variation supplies the contact expectation. The scalar table/evaluator module
+remains independent of operator data and channel construction. Neither module depends on particle
+statistics, Fock space, lattice geometry, or a concrete current realization.
+
+The Greenwood definition evaluates this generic data with `finiteConductivityTableValue`, supplying
+only the fermionic charge-current channel. Its finite spectral index is required by the evaluator;
+`finiteConductivityTableValue_ofEigenbasis` identifies the result with the aggregate Lehmann
+response plus contact and the explicit normalization. The scalar evaluation and Bastin conversion
+consume the aggregate identities without expanding individual transitions downstream.
 
 The main semantic boundaries are:
 

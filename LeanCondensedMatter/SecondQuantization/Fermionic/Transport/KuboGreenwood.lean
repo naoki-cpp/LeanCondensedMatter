@@ -1,6 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.ConductivityNormalization
 import LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann.Eigenbasis.FrequencyDomain
-import LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann.Eigenbasis.Table
+import LeanCondensedMatter.Transport.FiniteConductivityTable.Eigenbasis
 
 set_option linter.style.header false
 
@@ -60,13 +60,9 @@ noncomputable def finiteKuboGreenwoodDirectionalConductivity
     (data : EnergyEigenbasisLehmannData system ι)
     (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
     (K : LocallyFiniteHopping Site) (q ω η : ℝ) : ℂ :=
-  (finiteLehmannTableResponse system.hbar ω η (finiteLehmannTableOfEigenbasis system data
-      (boundedDirectionalCurrent geometry direction (system.hbar : ℂ) (q : ℂ) K)
-      (boundedDirectionalCurrent geometry direction (system.hbar : ℂ) (q : ℂ) K)) +
-      eigenbasisNormalizedExpectation system data
-        (boundedDirectionalContact geometry direction
-          (system.hbar : ℂ) (q : ℂ) K)) *
-    finiteVolumeConductivityNormalization volume ω η
+  finiteConductivityTableValue volume system.hbar ω η
+    (finiteConductivityTableOfEigenbasis system data
+      (boundedDirectionalResponseChannel system geometry direction K q))
 
 /-- The named finite Kubo–Greenwood expression is exactly the conductivity derived from the
 upstream Kubo response chain, at fixed positive switching rate. -/
@@ -85,12 +81,11 @@ theorem infiniteTimeAdiabaticDirectionalConductivity_eq_finiteKuboGreenwood
   rw [infiniteTimeAdiabaticDirectionalConductivity,
     finiteVolumeConductivityFromVectorPotential]
   unfold finiteKuboGreenwoodDirectionalConductivity
-  rw [finiteLehmannTableResponse_ofEigenbasis]
+  rw [finiteConductivityTableValue_ofEigenbasis]
   unfold ResponseChannel.infiniteTimeAdiabaticResponse
   rw [infiniteTimeAdiabaticTransform_commutator_eq_susceptibility]
   rw [adiabaticFrequencyDomainSusceptibility_eigenbasis_eq_lehmannSeries
     system data _ _ ω η hη (eigenbasisTimeDomainSummable_of_finite system data _ _)]
-  rfl
 end
 end Transport
 end Fermionic
