@@ -76,7 +76,7 @@ theorem hamiltonian_shiftedMomentum (momentum : Momentum → ℝ × ℝ)
           (a : ℂ) • MassiveDirac.current direction e v := by
     fin_cases direction <;>
       simp [MassiveDirac.hamiltonian, MassiveDirac.current, velocity,
-        directionPauli, inPlanePauliAxis, InternalSpace.pauliBasis] <;> push_cast <;> module
+        directionPauli, inPlanePauliAxis, InternalSpace.pauliBasis] <;> module
   unfold hamiltonian current
   simp only [Finset.smul_sum, ← Finset.sum_sub_distrib]
   apply Finset.sum_congr rfl
@@ -93,9 +93,15 @@ theorem hasDerivAt_hamiltonian_shiftedMomentum (momentum : Momentum → ℝ × �
       hamiltonian (shiftedMomentum momentum direction e field) v m)
       (-current (Momentum := Momentum) direction e v) a := by
   simp only [hamiltonian_shiftedMomentum]
-  simpa using (hasDerivAt_const a (hamiltonian momentum v m)).sub
-    (((hasDerivAt_id (x := a)).ofReal_comp).smul_const
-      (current (Momentum := Momentum) direction e v))
+  have hscalar (r : ℝ) :
+      (r : ℂ) • current (Momentum := Momentum) direction e v =
+        r • current (Momentum := Momentum) direction e v :=
+    algebraMap_smul ℂ r _
+  simp only [hscalar]
+  simpa only [zero_sub, one_smul] using
+    (hasDerivAt_const a (hamiltonian momentum v m)).sub
+      ((hasDerivAt_id (x := a)).smul_const
+        (current (Momentum := Momentum) direction e v))
 
 /-- A time-profiled minimal coupling is the source perturbation used by bounded response. -/
 theorem hamiltonian_sourceCoupledPerturbation (momentum : Momentum → ℝ × ℝ)
@@ -104,7 +110,8 @@ theorem hamiltonian_sourceCoupledPerturbation (momentum : Momentum → ℝ × �
       hamiltonian momentum v m + (lam : ℂ) •
         sourceCoupledPerturbation f (current direction e v) t := by
   rw [hamiltonian_shiftedMomentum]
-  simp [sourceCoupledPerturbation, smul_smul, sub_eq_add_neg]
+  simp only [sourceCoupledPerturbation, Complex.ofReal_mul, Complex.ofReal_neg,
+    smul_smul, mul_neg, neg_smul, sub_eq_add_neg]
 
 /-- Unperturbed bounded dynamics; the Hamiltonian acts on the full Fock space. -/
 def system (momentum : Momentum → ℝ × ℝ) (v m hbar : ℝ) (hbar_pos : 0 < hbar) :
@@ -142,8 +149,8 @@ theorem hasDerivAt_gibbsCurrentResponse
       (fun lam : ℝ => affinePerturbedExpectation S expectation
         (sourceCoupledPerturbation f C.source) C.measured C.observableVariation lam t)
       (C.causalResponse S expectation f t) 0 := by
-  exact (channel measuredDirection sourceDirection e v).
-    hasDerivAt_affineSourceCoupledExpectation_zero_of_bound_retarded
+  exact ResponseChannel.hasDerivAt_affineSourceCoupledExpectation_zero_of_bound_retarded
+      (channel measuredDirection sourceDirection e v)
       (system momentum v m hbar hbar_pos) _ f
       (current_isSelfAdjoint sourceDirection e v) hM hV ht hInt
 
