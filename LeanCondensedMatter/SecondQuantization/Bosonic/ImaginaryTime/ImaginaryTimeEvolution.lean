@@ -43,16 +43,6 @@ noncomputable def freeEigenvalue (ε : Mode → ℝ) (n : Occupation Mode) : ℝ
 /-- Bosonic free energy in its native finitely-supported sum representation. -/
 theorem freeEigenvalue_eq_finsupp_sum (ε : Mode → ℝ) (n : Occupation Mode) :
     freeEigenvalue ε n = n.sum fun i k => (k : ℝ) * ε i := by
-  classical
-  unfold freeEigenvalue Common.occupationEnergy
-  have hs :
-      (Common.OccupationBasis.finiteSupport
-        (Mode := Mode) (Config := Occupation Mode) n).toFinset = n.support := by
-    ext i
-    simp only [Set.Finite.mem_toFinset]
-    change (n i ≠ 0) ↔ i ∈ n.support
-    exact Finsupp.mem_support_iff.symm
-  rw [hs]
   rfl
 
 /-- Nonnegative one-particle energies give a nonnegative many-boson free energy. -/

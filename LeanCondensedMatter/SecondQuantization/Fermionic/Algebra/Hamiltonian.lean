@@ -46,19 +46,9 @@ omit [LinearOrder Mode] in
 theorem fermionEnergy_eq_sum (ε : Mode → ℝ) (n : Occupation Mode) :
     fermionEnergy ε n = ∑ i ∈ n, ε i := by
   classical
-  unfold fermionEnergy Common.occupationEnergy
-  have hs :
-      (Common.OccupationBasis.finiteSupport
-        (Mode := Mode) (Config := Occupation Mode) n).toFinset = n := by
-    ext i
-    simp only [Set.Finite.mem_toFinset]
-    change ((if i ∈ n then 1 else 0) ≠ 0) ↔ i ∈ n
-    by_cases hi : i ∈ n <;> simp [hi]
-  rw [hs]
-  apply Finset.sum_congr rfl
-  intro i hi
-  change ((if i ∈ n then (1 : ℕ) else 0 : ℕ) : ℝ) * ε i = ε i
-  simp [hi]
+  change (∑ i ∈ n, ((if i ∈ n then (1 : ℕ) else 0 : ℕ) : ℝ) * ε i) =
+    ∑ i ∈ n, ε i
+  simp
 
 /-- Inserting an unoccupied mode raises the free energy by that mode's one-particle energy. -/
 theorem fermionEnergy_insertOccupation_of_not_mem {ε : Mode → ℝ} {i : Mode}
