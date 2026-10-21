@@ -163,7 +163,7 @@ theorem connectedCurrentDysonSeries_eq_vacuumFree_sub
       vacuumFreeCurrentPairDysonSeries ε β g τ τ' jx jy -
         vacuumFreeCurrentInsertionDysonSeries ε β g τ jx *
           vacuumFreeCurrentInsertionDysonSeries ε β g τ' jy := by
-  unfold connectedCurrentDysonSeries
+  dsimp only [connectedCurrentDysonSeries]
   rw [currentPairDysonSeries_mul_partition_inv ε β hβ g τ τ' jx jy,
     currentInsertionDysonSeries_mul_partition_inv ε β hβ g τ jx,
     currentInsertionDysonSeries_mul_partition_inv ε β hβ g τ' jy]
@@ -177,7 +177,7 @@ theorem coeff_connectedCurrentDysonSeries_eq_vacuumFree_sub_cauchy
     (τ τ' : ℝ) (jx jy : Mode → Mode → ℂ) (n : ℕ) :
     PowerSeries.coeff n (connectedCurrentDysonSeries ε β g τ τ' jx jy) =
       PowerSeries.coeff n (vacuumFreeCurrentPairDysonSeries ε β g τ τ' jx jy) -
-        ∑ p ∈ Finset.Nat.antidiagonal n,
+        ∑ p ∈ Finset.HasAntidiagonal.antidiagonal n,
           PowerSeries.coeff p.1 (vacuumFreeCurrentInsertionDysonSeries ε β g τ jx) *
             PowerSeries.coeff p.2 (vacuumFreeCurrentInsertionDysonSeries ε β g τ' jy) := by
   rw [connectedCurrentDysonSeries_eq_vacuumFree_sub ε β hβ g τ τ' jx jy]
