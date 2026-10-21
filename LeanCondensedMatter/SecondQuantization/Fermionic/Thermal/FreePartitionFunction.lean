@@ -1,3 +1,4 @@
+import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.ExchangeDenominator
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeBoltzmannCore
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsDensityOperator
 import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.NumberOperator
@@ -78,7 +79,7 @@ theorem freeGibbsDensityOperator_expectation_numberOperator
         (1 : ℂ) • (LinearMap.id : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) := by
     simpa [Common.exchangeCommutator, Common.Statistics.zetaInt_fermion] using
       (anticomm_create_annihilate (Mode := Mode) i i)
-  have hne := one_sub_zetaInt_fermion_mul_exp_ne_zero (ε i) β
+  have hne := Common.BlochDeDominicis.one_sub_zetaInt_fermion_mul_exp_ne_zero (ε i) β
   have h := Common.finiteGibbsExpectation_comp_eq_div_of_exchangeCommutator
     (fermionEnergy ε) β (ε i) Common.Statistics.fermion (1 : ℂ)
     (create i) (annihilate i) hC hcomm hne
