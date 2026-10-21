@@ -46,7 +46,7 @@ theorem eigenbasisBoltzmannWeight_fermionEnergy_eq_prod
   calc
     eigenbasisBoltzmannWeight (fermionEnergy ε) β n =
         Real.exp (-β * ∑ i ∈ n, ε i) := by
-      rfl
+      simp only [eigenbasisBoltzmannWeight, fermionEnergy_eq_sum]
     _ = Real.exp (∑ i ∈ n, (-β * ε i)) := by
       congr 1
       rw [Finset.mul_sum]

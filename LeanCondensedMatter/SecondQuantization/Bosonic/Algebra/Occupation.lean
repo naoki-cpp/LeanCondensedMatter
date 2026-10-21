@@ -31,7 +31,8 @@ instance occupationBasis : Common.OccupationBasis Mode (Occupation Mode) where
   vacuum := vacuum
   occupation n i := n i
   occupation_vacuum i := by simp [vacuum]
-  finiteSupport n := (n.support.finite_toSet).subset fun i hi => Finsupp.mem_support_iff.2 hi
+  support n := n.support
+  mem_support_iff n i := Finsupp.mem_support_iff
   ext {m n} h := Finsupp.ext h
 
 /-- Bosonic spelling of the statistics-independent particle-number grade from `Common`. -/
@@ -41,20 +42,6 @@ noncomputable abbrev particleNumber (n : Occupation Mode) : ℕ :=
 /-- The common particle-number grade agrees with the native finitely-supported occupation sum. -/
 theorem particleNumber_eq_finsupp_sum (n : Occupation Mode) :
     particleNumber n = n.sum fun _ k => k := by
-  classical
-  change Common.particleNumber (Mode := Mode) n = n.sum fun _ k => k
-  unfold Common.particleNumber
-  have hs :
-      (Common.OccupationBasis.finiteSupport
-        (Mode := Mode) (Config := Occupation Mode) n).toFinset = n.support := by
-    ext i
-    simp only [Set.Finite.mem_toFinset]
-    change (n i ≠ 0) ↔ i ∈ n.support
-    exact Finsupp.mem_support_iff.symm
-  rw [hs]
-  simp only [Finsupp.sum]
-  apply Finset.sum_congr rfl
-  intro i _
   rfl
 
 @[simp]

@@ -43,14 +43,14 @@ noncomputable instance occupationBasis : Common.OccupationBasis Mode (Occupation
     { vacuum := vacuum
       occupation := fun n i => if i ∈ n then 1 else 0
       occupation_vacuum := ?_
-      finiteSupport := ?_
+      support := fun n => n
+      mem_support_iff := ?_
       ext := ?_ }
   · intro i
     simp [vacuum]
-  · intro n
-    exact (Finset.finite_toSet n).subset fun i hi => by
-      by_contra hin
-      exact hi (ite_eq_right hin)
+  · intro n i
+    change i ∈ n ↔ (if i ∈ n then 1 else 0) ≠ 0
+    by_cases hi : i ∈ n <;> simp [hi]
   · intro m n h
     exact Finset.ext fun i => by
       have hi := h i
@@ -63,19 +63,10 @@ noncomputable abbrev particleNumber (n : Occupation Mode) : ℕ :=
 theorem particleNumber_eq_card (n : Occupation Mode) :
     particleNumber n = n.card := by
   classical
-  change Common.particleNumber (Mode := Mode) n = n.card
-  unfold Common.particleNumber
-  have hs :
-      (Common.OccupationBasis.finiteSupport
-        (Mode := Mode) (Config := Occupation Mode) n).toFinset = n := by
-    ext i
-    simp only [Set.Finite.mem_toFinset]
-    change ((if i ∈ n then 1 else 0) ≠ 0) ↔ i ∈ n
-    by_cases hi : i ∈ n <;> simp [hi]
-  rw [hs, Finset.card_eq_sum_ones]
+  change (∑ i ∈ n, if i ∈ n then 1 else 0) = n.card
+  rw [Finset.card_eq_sum_ones]
   apply Finset.sum_congr rfl
   intro i hi
-  change (if i ∈ n then 1 else 0) = 1
   simp [hi]
 
 variable [DecidableEq Mode]

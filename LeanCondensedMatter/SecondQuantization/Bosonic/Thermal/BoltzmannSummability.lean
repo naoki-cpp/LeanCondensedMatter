@@ -119,7 +119,7 @@ theorem eigenbasisGibbsSummable_freeEigenvalue_of_mode
       Real.exp (-β * freeEigenvalue ε n) =
           Real.exp (∑ i ∈ n.support, (n i : ℝ) * (-β * ε i)) := by
         congr 1
-        simp only [freeEigenvalue, Finsupp.sum, Finset.mul_sum]
+        simp only [freeEigenvalue_eq_finsupp_sum, Finsupp.sum, Finset.mul_sum]
         apply Finset.sum_congr rfl
         intro i hi
         ring
