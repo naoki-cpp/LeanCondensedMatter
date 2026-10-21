@@ -1,3 +1,4 @@
+import LeanCondensedMatter.SecondQuantization.Common.Algebra.Statistics
 import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.Hamiltonian
 import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.EnergyShift
 import Mathlib.Analysis.SpecialFunctions.Complex.Analytic
@@ -29,6 +30,22 @@ laws are owned by `SecondQuantization.Common.ImaginaryTime.EnergyShift`.
 
 namespace SecondQuantization
 namespace Fermionic
+
+/-! ## Ensemble-independent fermionic thermal denominator -/
+
+/-- The fermionic exchange denominator never vanishes for real shifts and temperatures. -/
+theorem one_sub_zetaInt_fermion_mul_exp_ne_zero (x β : ℝ) :
+    (1 : ℂ) - ((Common.Statistics.fermion.zetaInt : ℤ) : ℂ) *
+        Complex.exp ((x * β : ℝ) : ℂ) ≠ 0 := by
+  have hpos : (0 : ℝ) < 1 + Real.exp (x * β) := by
+    positivity
+  have heq : (1 : ℂ) - ((Common.Statistics.fermion.zetaInt : ℤ) : ℂ) *
+      Complex.exp ((x * β : ℝ) : ℂ) = ((1 + Real.exp (x * β) : ℝ) : ℂ) := by
+    rw [Common.Statistics.zetaInt_fermion]
+    push_cast [Complex.ofReal_exp]
+    ring
+  rw [heq]
+  exact_mod_cast hpos.ne'
 
 variable {Mode : Type*} [LinearOrder Mode]
 
