@@ -1,4 +1,4 @@
-import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.ExchangeDenominator
+import LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTime.ImaginaryTimeEvolution
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Evaluation
 import LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTime.TimedField
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeBoltzmannCore
@@ -66,7 +66,7 @@ theorem freeGibbsDensityOperator_expectation_prod_timedFieldOperator_eq_sum_pair
       (fun a b => timedFieldCommutatorCoeff ε (fields a) (fields b))
       (fun p => heisenbergEvolve_timedFieldOperator ε β (fields p))
       (fun a b _ => zetaCommutator_timedFieldOperator ε (fields a) (fields b))
-      (fun p => Common.BlochDeDominicis.one_sub_zetaInt_fermion_mul_exp_ne_zero
+      (fun p => one_sub_zetaInt_fermion_mul_exp_ne_zero
         (externalFieldLabelEnergyShift ε (fields p).label) β)
   rw [freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation]
   simpa only [Combinatorics.Pairing.evaluation, timedFieldPairContraction,
