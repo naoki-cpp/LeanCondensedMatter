@@ -27,10 +27,6 @@ namespace Fermionic
 
 open QuantumTheory
 
-/-- Occupation configurations with exactly `N` fermions. -/
-abbrev CanonicalOccupation (Mode : Type*) (N : ℕ) :=
-  {n : Occupation Mode // particleNumber n = N}
-
 variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
 
 /-- Free Gibbs density operator on the **fixed-number sector Hilbert space**.
@@ -80,6 +76,32 @@ theorem canonicalFreeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation
   rw [canonicalFreeGibbsDensityOperator, Common.finiteGibbsExpectation,
     Common.finiteGibbsExpectationLinearMap, LinearMap.comp_apply]
   rfl
+
+/-- The canonical sector has sharp particle number: its Gibbs expectation of the
+sector number operator is precisely `N`. -/
+theorem canonicalFreeGibbsDensityOperator_number_expectation
+    (ε : Mode → ℝ) (β : ℝ) (N : ℕ) [Nonempty (CanonicalOccupation Mode N)] :
+    (canonicalFreeGibbsDensityOperator ε β N).expectation
+        (Common.finiteHilbertOperatorAlgEquiv
+          (canonicalSectorNumberOperator (Mode := Mode) N)) = (N : ℂ) := by
+  rw [canonicalSectorNumberOperator_eq_smul_id, map_smul,
+    ← Module.End.one_eq_id, map_one, map_smul]
+  simp [(canonicalFreeGibbsDensityOperator ε β N).expectation_id]
+
+/-- The fixed-number Gibbs state has zero particle-number variance. -/
+theorem canonicalFreeGibbsDensityOperator_number_variance_zero
+    (ε : Mode → ℝ) (β : ℝ) (N : ℕ) [Nonempty (CanonicalOccupation Mode N)] :
+    (canonicalFreeGibbsDensityOperator ε β N).expectation
+        (Common.finiteHilbertOperatorAlgEquiv
+          ((canonicalSectorNumberOperator (Mode := Mode) N).comp
+            (canonicalSectorNumberOperator (Mode := Mode) N))) -
+      ((canonicalFreeGibbsDensityOperator ε β N).expectation
+        (Common.finiteHilbertOperatorAlgEquiv
+          (canonicalSectorNumberOperator (Mode := Mode) N))) ^ 2 = 0 := by
+  rw [canonicalSectorNumberOperator_sq_eq_smul_id, map_smul,
+    ← Module.End.one_eq_id, map_one, map_smul]
+  simp [canonicalFreeGibbsDensityOperator_number_expectation,
+    (canonicalFreeGibbsDensityOperator ε β N).expectation_id]
 
 end Fermionic
 end SecondQuantization
