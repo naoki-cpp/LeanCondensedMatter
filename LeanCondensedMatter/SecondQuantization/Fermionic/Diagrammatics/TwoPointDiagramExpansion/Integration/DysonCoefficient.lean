@@ -38,7 +38,7 @@ theorem freeGibbsDensityOperator_expectation_mixedTimeOrderedVertexComp_eq_sum_p
           orderedTwoPointPairingValue ε β i j τ τ' σ q pairing := by
   rw [freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation,
     mixedTimeOrderedVertexComp_eq_prod_atomicOperators,
-    Common.finiteGibbsExpectation_smul]
+    Common.finiteGibbsExpectation, map_smul, smul_eq_mul]
   have hwick :=
     freeGibbsDensityOperator_expectation_prod_timedFieldOperator_eq_sum_pairing
       ε β (2 * n + 1) (mixedTimeOrderedAtomicFieldFamily i j τ τ' q σ)
