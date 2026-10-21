@@ -34,6 +34,8 @@ namespace SecondQuantization
 namespace Fermionic
 namespace Lattice
 
+attribute [local instance 100] LieRing.ofAssociativeRing
+
 open QuantumTheory.PeierlsPhase
 
 section Bounded

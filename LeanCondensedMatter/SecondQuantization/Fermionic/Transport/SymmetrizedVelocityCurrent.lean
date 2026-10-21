@@ -23,6 +23,8 @@ namespace SecondQuantization
 namespace Fermionic
 namespace Transport
 
+attribute [local instance 100] LieRing.ofAssociativeRing
+
 open _root_.SecondQuantization.Fermionic.Lattice
 
 noncomputable section
