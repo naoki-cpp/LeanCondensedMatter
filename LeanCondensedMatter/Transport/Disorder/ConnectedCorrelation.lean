@@ -7,6 +7,9 @@ set_option linter.style.header false
 # Quenched connected correlations in a finite disorder ensemble
 
 Each configuration supplies its own normalized expectation before disorder averaging.
+Its two-point connected correlation is the generic
+`LinearResponse.NormalizedExpectation.connectedCorrelation`; this module only owns
+finite disorder averaging and its relationship to annealed covariance.
 The minimal expectation interface assumes normalization and linearity, not positivity;
 physical density-state constructions can supply stronger hypotheses.
 
@@ -29,7 +32,7 @@ variable [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] [Fin
 noncomputable def averagedConnectedCorrelation
     (ensemble : FiniteDisorderEnsemble (H := H) (Ω := Ω))
     (expectation : Ω → NormalizedExpectation H) (A B : H →L[ℂ] H) : ℂ :=
-  ensemble.average (fun ω => expectation ω (A * B) - expectation ω A * expectation ω B)
+  ensemble.average (fun ω => (expectation ω).connectedCorrelation A B)
 
 /-- The disconnected product remains inside the disorder average. -/
 theorem averagedConnectedCorrelation_eq_average_sub
@@ -38,6 +41,8 @@ theorem averagedConnectedCorrelation_eq_average_sub
     ensemble.averagedConnectedCorrelation expectation A B =
       ensemble.average (fun ω => expectation ω (A * B)) -
         ensemble.average (fun ω => expectation ω A * expectation ω B) := by
+  change ensemble.average (fun ω =>
+      expectation ω (A * B) - expectation ω A * expectation ω B) = _
   exact map_sub ensemble.average _ _
 
 /-- The connected correlation of averaged one-point functions differs by disorder covariance. -/
