@@ -1,6 +1,7 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.DiscreteLattice
 import LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.Bounded
 import LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.BoundedMatrixUnitAdjoint
+import LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.MatrixBilinear
 import LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.PeierlsContact
 import LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.HermitianBondCurrent
 import LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.RankOneSecondQuantization

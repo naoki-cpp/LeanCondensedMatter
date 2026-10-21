@@ -291,6 +291,17 @@ prefactor is attached; only then is it exposed through `Core.ConductivityTensor`
 cutoff-removal, or zero-broadening limit is part of this benchmark.
 
 `Models.MassiveDirac` is the public route for the massive-Dirac transport benchmark.
+`Models.MassiveDirac.ManyBody` constructs its clean Hamiltonian on the full fermionic
+Fock space of a finite set of physical momenta, with two internal modes per momentum.
+It consumes the matrix bilinear and adjoint law in `Fermionic.Lattice.MatrixBilinear`,
+then supplies its Hamiltonian, current operators and finite-dimensional Gibbs state to
+the general bounded linear-response theorem. Uniform minimal coupling shifts momentum
+by `+e A` for charge `-e`; the affine Dirac Hamiltonian has a field-independent current
+and zero explicit contact term on this fixed mode set. Source bounds and interval
+integrability remain explicit hypotheses. This finite-mode construction does not identify
+the many-body Gibbs response with the continuum one-particle conductivity calculations;
+that reduction, volume normalization and continuum limits require separate results.
+
 Its explicit clean Pauli Green operator and continuum Born self-energy follow the same split as the
 generic disorder layer: arbitrary-regulator definitions/theorems own the analytic calculation, while
 side-indexed objects are retained only at reusable physical boundaries such as broadening limits,
