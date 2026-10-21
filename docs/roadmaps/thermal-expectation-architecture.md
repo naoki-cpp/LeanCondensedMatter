@@ -144,6 +144,36 @@ public Bloch--de Dominicis theorem.
 The generic recursion must remain independent of finite-coordinate or representation-specific Gibbs
 implementations.
 
+## Ensemble-parameter dependency audit
+
+The following is the boundary for issue
+[#3986](https://github.com/naoki-cpp/LeanCondensedMatter/issues/3986), after the
+ensemble-neutral refactors #3988, #3991, #3993, #3996, #3997, #3999, #4002, #4004, and #4008.
+An API being *statistics-independent* does not by itself make a Gibbs expectation or trace
+independent of the ensemble: the operator algebra and the chosen state are separate inputs.
+
+| Layer | Existing owner | Ensemble dependence |
+|---|---|---|
+| Algebraic operator products, imaginary-time Dyson coefficients, coefficientwise integration | `Common.Perturbation.DysonExpansion`, `Common.Perturbation.FiniteOperatorIntegral` | No Gibbs state, fixed particle number, or chemical potential is assumed. |
+| Formal series normalization and connected/moment/cumulant combinatorics | `Analysis.PowerSeries.Normalization`, `Analysis.PowerSeries.Moment`, `Combinatorics.Cumulant` | Purely algebraic; state-dependent moment identities are *inputs* to the connected-diagram proof. |
+| Normalized two-point subtraction and composite-current field expansions | `QuantumTheory.LinearResponse.connectedCorrelation`, `Fermionic.Transport.CurrentInsertions` | The subtraction and finite-sum expansion do not require Gibbs; physical second-cumulant interpretation requires normalization. |
+| Abstract thermal pairing induction | `Common.Thermal.BlochDeDominicis.ExpectationRecursion` | The induction is generic, but each concrete state must prove its first-pair recurrence; fixed-`N` Wick factorization is **not** automatic. |
+| Finite trace ratios and normalized Dyson trace-series coefficients | `Common.Thermal.FiniteGibbsCoordinate`, `Common.Perturbation.DysonTraceSeries` | Concrete Gibbs specialization on the supplied finite configuration type. That type may be a selected sector or all configurations; the trace ratio alone does not select an ensemble. |
+| Completed / infinite-occupation Gibbs realizations | `QuantumTheory.Gibbs.Eigenbasis`, `Bosonic.Thermal.ConvergenceAwareGibbs` | Density states require summable weights; unbounded bosonic algebraic observables also require an explicit summability domain. |
+
+**Migration policy.** Introduce a sharp `N` or chemical potential `μ` only in the
+appropriate physical state constructors and their genuinely ensemble-dependent expectations.
+Do not thread either parameter through formal Dyson coefficients, generic pairing
+combinatorics, abstract connected correlations, or cumulant inversion. The grand-canonical
+KMS evolution uses `H - μ N̂` on its specified observable algebra; fixed-`N` states require
+a separate analysis of the number-preserving algebra and higher cumulants. A finite-mode
+bosonic Fock occupation type is still infinite, so a finite-configuration theorem never
+justifies omitting its summability hypotheses.
+
+This audit records **module ownership**, not completion of the fixed-`N` or `μ`-dependent
+state construction. Those constructions, their full consumer migration, and their physical
+verification remain open in #3986.
+
 ## Open work
 
 - extend the established free-field product summability and KMS/exchange recurrence to further
