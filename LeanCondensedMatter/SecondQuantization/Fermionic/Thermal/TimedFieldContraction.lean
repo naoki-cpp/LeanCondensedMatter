@@ -44,6 +44,7 @@ theorem timedFieldPairContraction_eq
   rw [timedFieldOperator_eq_smul, timedFieldOperator_eq_smul,
     LinearMap.smul_comp, LinearMap.comp_smul, smul_smul,
     Common.finiteGibbsExpectation, map_smul, smul_eq_mul]
+  rfl
 
 /-- Finite-temperature Wick (Bloch--de Dominicis) expansion for an arbitrary even family of
 time-labelled free fermionic fields. The free Gibbs state and the canonical two-field
