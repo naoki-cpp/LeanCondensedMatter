@@ -17,7 +17,7 @@ set_option linter.style.header false
 # Fermionic transport adapters
 
 Canonical downstream owner for fermionic Kubo/frequency response, intrinsic-flux and generalized
-current response, composite-current connected Dyson series, conductivity normalization, directional Kubo–Greenwood/spectral Bastin/Středa,
+current response, conductivity normalization, directional Kubo–Greenwood/spectral Bastin/Středa,
 finite-table evaluation, and finite-disorder adapters. Generic reusable response and density
 theory remains under `QuantumTheory`, while statistics-independent Kubo–Bastin, resolvent, and
 Středa infrastructure lives under `QuantumTheory.Transport`.
