@@ -1,4 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTime.TimedField
+import LeanCondensedMatter.QuantumTheory.LinearResponse.Expectation.Basic
 
 set_option linter.style.header false
 
@@ -17,9 +18,10 @@ the positive exchange sign. Equal-time ordering retains the canonical
 half-symmetrized convention of `Common.timeOrderedProduct`.
 
 The expectation is a complex-linear functional on algebraic Fock endomorphisms.
-For physical connected correlations it should be normalized on the identity, but the
-finite-sum and subtraction identities below only require linearity. Concrete thermal
-states can supply their own functional.
+For the physical second cumulant it should be normalized on the identity, but the finite-sum
+expansions only require linearity. The connected subtraction is the generic
+`QuantumTheory.LinearResponse.connectedCorrelation`; it is not a four-fermion cumulant.
+Concrete thermal states can supply their own functional.
 -/ 
 
 namespace SecondQuantization
@@ -156,31 +158,17 @@ theorem bilinearCurrent_expectation_eq_two_fields
               (externalFieldOperator ε τ (.annihilation j))) := by
   simp only [bilinearCurrentInsertion, map_sum, map_smul, smul_eq_mul]
 
-/-- Subtract the disconnected product of the two *composite current insertions*.
-When the functional is normalized on the identity, this is the connected two-current
-correlation (the second cumulant of the composite currents), not the connected cumulant
-of four elementary fermionic fields. -/
-noncomputable def connectedBilinearCurrentCorrelation
-    (ε : Mode → ℝ) (τ τ' : ℝ)
-    (expectation : (OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) →ₗ[ℂ] ℂ)
-    (jx jy : Mode → Mode → ℂ) : ℂ :=
-  expectation
-      ((bilinearCurrentInsertion ε τ jx).comp
-        (bilinearCurrentInsertion ε τ' jy)) -
-    expectation
-        (bilinearCurrentInsertion ε τ jx) *
-      expectation
-        (bilinearCurrentInsertion ε τ' jy)
-
 /-- The connected two-current subtraction is a four-field sum with only the
 **disconnected current-vertex product** removed. Wick contractions joining the
 composite current vertices survive even if four elementary field legs are not
 one cumulant component. No Wick assumption is used. -/
-theorem connectedBilinearCurrentCorrelation_eq_four_fields
+theorem connectedCorrelation_bilinearCurrentInsertion_eq_four_fields
     (ε : Mode → ℝ) (τ τ' : ℝ)
     (expectation : (OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) →ₗ[ℂ] ℂ)
     (jx jy : Mode → Mode → ℂ) :
-    connectedBilinearCurrentCorrelation ε τ τ' expectation jx jy =
+    QuantumTheory.LinearResponse.connectedCorrelation expectation
+        (bilinearCurrentInsertion ε τ jx)
+        (bilinearCurrentInsertion ε τ' jy) =
       ∑ i : Mode, ∑ j : Mode, ∑ k : Mode, ∑ l : Mode,
         (jx i j * jy k l) *
           (expectation
@@ -194,8 +182,8 @@ theorem connectedBilinearCurrentCorrelation_eq_four_fields
               expectation
                 ((externalFieldOperator ε τ' (.creation k)).comp
                   (externalFieldOperator ε τ' (.annihilation l)))) := by
-  rw [connectedBilinearCurrentCorrelation,
-    bilinearCurrentCurrent_expectation_eq_four_fields,
+  simp only [QuantumTheory.LinearResponse.connectedCorrelation, Module.End.mul_eq_comp]
+  rw [bilinearCurrentCurrent_expectation_eq_four_fields,
     bilinearCurrent_expectation_eq_two_fields,
     bilinearCurrent_expectation_eq_two_fields]
   simp only [mul_sub, Finset.sum_sub_distrib]
