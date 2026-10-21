@@ -69,7 +69,8 @@ theorem sum_orderedVacuumDysonContribution_eq_normalizedDysonPartitionCoeff
             freePartitionFunction ε β :=
         constantCoeff_dysonPartitionSeries ε β (quarticInteraction g)
       simpa [Combinatorics.powerSeriesMomentCoeff,
-        PowerSeries.coeff_normalizeByConstantCoeff, Common.coeff_dysonTraceSeries,
+        PowerSeries.coeff_normalizeByConstantCoeff, Common.dysonTraceSeries,
+        PowerSeries.coeff_mk,
         normalizedDysonPartitionCoeff, dysonPartitionCoeff, hconst,
         div_eq_mul_inv, mul_assoc, mul_comm, mul_left_comm] using hkey.symm
 
