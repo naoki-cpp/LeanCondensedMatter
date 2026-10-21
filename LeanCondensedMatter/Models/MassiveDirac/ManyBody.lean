@@ -98,10 +98,11 @@ theorem hasDerivAt_hamiltonian_shiftedMomentum (momentum : Momentum → ℝ × �
         r • current (Momentum := Momentum) direction e v :=
     algebraMap_smul ℂ r _
   simp only [hscalar]
-  simpa only [zero_sub, one_smul] using
-    (hasDerivAt_const a (hamiltonian momentum v m)).sub
+  have h := (hasDerivAt_const a (hamiltonian momentum v m)).sub
       ((hasDerivAt_id (x := a)).smul_const
         (current (Momentum := Momentum) direction e v))
+  rw [hasDerivAt_iff_tendsto] at h ⊢
+  simpa only [zero_sub, one_smul] using h
 
 /-- A time-profiled minimal coupling is the source perturbation used by bounded response. -/
 theorem hamiltonian_sourceCoupledPerturbation (momentum : Momentum → ℝ × ℝ)
@@ -110,8 +111,8 @@ theorem hamiltonian_sourceCoupledPerturbation (momentum : Momentum → ℝ × �
       hamiltonian momentum v m + (lam : ℂ) •
         sourceCoupledPerturbation f (current direction e v) t := by
   rw [hamiltonian_shiftedMomentum]
-  simp only [sourceCoupledPerturbation, Complex.ofReal_mul, Complex.ofReal_neg,
-    smul_smul, mul_neg, neg_smul, sub_eq_add_neg]
+  simp only [sourceCoupledPerturbation, Complex.ofReal_mul,
+    neg_smul, smul_neg, smul_smul, sub_eq_add_neg]
 
 /-- Unperturbed bounded dynamics; the Hamiltonian acts on the full Fock space. -/
 def system (momentum : Momentum → ℝ × ℝ) (v m hbar : ℝ) (hbar_pos : 0 < hbar) :
