@@ -1,4 +1,5 @@
 import Mathlib.Data.Finset.Card
+import Mathlib.Data.Fintype.Card
 import Mathlib.Data.Finset.SymmDiff
 import LeanCondensedMatter.SecondQuantization.Common.Algebra.OccupationBasis
 
@@ -68,6 +69,21 @@ theorem particleNumber_eq_card (n : Occupation Mode) :
   apply Finset.sum_congr rfl
   intro i hi
   simp [hi]
+
+/-- For finitely many fermionic modes, the sharp-`N` occupation sector is
+nonempty exactly when `N` does not exceed the number of modes. -/
+theorem particleNumberSector_nonempty_iff_card [Fintype Mode] (N : ℕ) :
+    Nonempty (Common.ParticleNumberSector Mode (Occupation Mode) N) ↔
+      N ≤ Fintype.card Mode := by
+  classical
+  constructor
+  · rintro ⟨⟨n, hn⟩⟩
+    rw [particleNumber_eq_card] at hn
+    exact hn ▸ Finset.card_le_univ n
+  · intro h
+    have hu : N ≤ (Finset.univ : Finset Mode).card := by simpa using h
+    obtain ⟨n, _, hn⟩ := Finset.exists_subset_card_eq hu
+    exact ⟨⟨n, (particleNumber_eq_card n).trans hn⟩⟩
 
 variable [DecidableEq Mode]
 
