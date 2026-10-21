@@ -48,6 +48,7 @@ noncomputable def canonicalFreeGibbsDensityOperator
 
 /-- The canonical sector density operator has Gibbs probabilities on its own
 fixed-`N` occupation basis. -/
+omit [LinearOrder Mode] in
 theorem canonicalFreeGibbsDensityOperator_apply_basis
     (ε : Mode → ℝ) (β : ℝ) (N : ℕ) [Nonempty (CanonicalOccupation Mode N)]
     (n : CanonicalOccupation Mode N) :
@@ -66,6 +67,7 @@ theorem canonicalFreeGibbsDensityOperator_apply_basis
 
 /-- A fixed-sector density-state expectation is the existing finite Gibbs
 expectation evaluated with the energy function restricted to that sector. -/
+omit [LinearOrder Mode] in
 theorem canonicalFreeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation
     (ε : Mode → ℝ) (β : ℝ) (N : ℕ) [Nonempty (CanonicalOccupation Mode N)]
     (A : Common.AlgebraicFock (CanonicalOccupation Mode N) →ₗ[ℂ]
