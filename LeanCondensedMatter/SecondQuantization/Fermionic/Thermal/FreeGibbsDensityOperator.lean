@@ -5,7 +5,7 @@ import LeanCondensedMatter.QuantumTheory.Gibbs.Eigenbasis
 set_option linter.style.header false
 
 /-!
-# The canonical free-fermion Gibbs density operator
+# The full-Fock free-fermion Gibbs density operator
 
 The finite free-fermion thermal state is the generic finite pure-point Gibbs density operator
 specialized to the occupation basis and `fermionEnergy ε`. This module records its occupation-basis
@@ -20,7 +20,8 @@ open QuantumTheory
 
 variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
 
-/-- The canonical finite free-fermion Gibbs state. -/
+/-- The finite full-occupation-Fock free-fermion Gibbs state, without a fixed total
+particle number. It is not the fixed-`N` canonical ensemble. -/
 noncomputable def freeGibbsDensityOperator (ε : Mode → ℝ) (β : ℝ) :
     DensityOperator (Common.FiniteHilbertFock (Occupation Mode)) :=
   eigenbasisGibbsDensityOperator
