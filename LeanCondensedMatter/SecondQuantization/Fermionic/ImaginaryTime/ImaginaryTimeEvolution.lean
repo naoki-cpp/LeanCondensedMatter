@@ -7,11 +7,9 @@ set_option linter.style.header false
 /-!
 # Imaginary-time evolution under the free Hamiltonian
 
-Beginning of the finite-temperature Green-function / time-ordered-correlator line: the genuine
-Linked Cluster Theorem needs free imaginary-time evolution, time ordering, and thermal `n`-point
-correlators — none of which `FormalLogPartitionFunction.lean`'s purely combinatorial `log Z`
-groundwork provides on its own. This file is step 1: an algebraic, basis-diagonal realization of
-free evolution for `H₀ = freeHamiltonian ε` only.
+The free imaginary-time evolution is realized as a basis-diagonal algebraic operator for
+`H₀ = freeHamiltonian ε`. The diagonal density-density interaction Hamiltonian is invariant under
+this evolution; creation and annihilation acquire their canonical free-energy shifts.
 
 This file defines the scalar action of free evolution directly on each basis vector:
 `Complex.exp (τ * E(n)) • |n⟩`, where `E(n) := fermionEnergy ε n`. This is an algebraic,
@@ -73,6 +71,17 @@ theorem imaginaryTimeEvolve_freeHamiltonian (ε : Mode → ℝ) (τ : ℝ) :
   simpa only [imaginaryTimeEvolve, freeHamiltonian] using
     Common.heisenbergEvolve_diagonalOperator (fermionEnergy ε) τ
       (fun n : Occupation Mode => (fermionEnergy ε n : ℂ))
+
+/-! ## Evolution of the diagonal density-density interaction -/
+
+/-- The density-density `interactionHamiltonian` is time-independent under free imaginary-time
+evolution, since it is diagonal in the occupation basis. -/
+omit [LinearOrder Mode] in
+theorem imaginaryTimeEvolve_interactionHamiltonian (ε : Mode → ℝ) (Vint : Mode → Mode → ℝ)
+    (τ : ℝ) : imaginaryTimeEvolve ε τ (interactionHamiltonian Vint) = interactionHamiltonian Vint := by
+  simpa only [imaginaryTimeEvolve, interactionHamiltonian] using
+    Common.heisenbergEvolve_diagonalOperator (fermionEnergy ε) τ
+      (fun n : Occupation Mode => (∑ i ∈ n, ∑ j ∈ n, (Vint i j : ℂ)))
 
 /-! ## Energy shifts of creation and annihilation -/
 

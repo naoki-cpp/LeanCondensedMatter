@@ -5,7 +5,8 @@ import LeanCondensedMatter.Analysis.OrderedSimplex.Integral
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsExpectationBridge
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsDensityOperator
 import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.QuarticInteraction
-import LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTime.InteractionPicture
+import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.InteractionPicture
+import LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTime.ImaginaryTimeEvolution
 
 set_option linter.style.header false
 
@@ -31,7 +32,7 @@ variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
 
 omit [LinearOrder Mode] [Fintype Mode] in
 /-- **Continuity in `σ`, at fixed `k n'`, of a matrix coefficient of
-`(interactionPicture ε V σ).comp (Common.dysonCoeff (fermionEnergy ε) V n σ)`.**
+`(Common.interactionPicture (fermionEnergy ε) V σ).comp (Common.dysonCoeff (fermionEnergy ε) V n σ)`.**
 This is the general finite-mode continuity interface obtained from
 `Common.continuous_matrixCoeff_interactionPicture`,
 `Common.continuous_matrixCoeff_dysonCoeff`, and `Common.matrixCoeff_comp`; it is retained
@@ -41,7 +42,7 @@ theorem continuous_matrixCoeff_interactionPicture_comp_dysonCoeff [Finite Mode] 
     (V : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) (n : ℕ)
     (k n' : Occupation Mode) :
     Continuous (fun σ : ℝ => Common.matrixCoeff
-      ((interactionPicture ε V σ).comp (Common.dysonCoeff (fermionEnergy ε) V n σ)) k n') := by
+      ((Common.interactionPicture (fermionEnergy ε) V σ).comp (Common.dysonCoeff (fermionEnergy ε) V n σ)) k n') := by
   letI := Fintype.ofFinite Mode
   simp_rw [Common.matrixCoeff_comp]
   exact continuous_finsetSum _ fun j _ =>
