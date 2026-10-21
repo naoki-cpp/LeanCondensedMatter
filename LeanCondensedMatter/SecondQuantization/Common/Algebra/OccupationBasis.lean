@@ -1,4 +1,4 @@
-import Mathlib.Algebra.BigOperators.Group.Finset.Basic
+import Mathlib.Algebra.BigOperators.Ring.Finset
 import Mathlib.Basic.Real.Basic
 
 set_option linter.style.header false
@@ -84,17 +84,8 @@ theorem occupationEnergy_sub_const {Mode Config : Type*} [OccupationBasis Mode C
   simp_rw [mul_sub]
   rw [Finset.sum_sub_distrib]
   congr 1
-  rw [← Finset.sum_mul]
-  push_cast
-  ring
-
-/-- On a fixed-particle-number sector, the chemical-potential energy shift is constant. -/
-theorem occupationEnergy_sub_const_of_sector {Mode Config : Type*}
-    [OccupationBasis Mode Config] (ε : Mode → ℝ) (μ : ℝ) (N : ℕ)
-    (n : ParticleNumberSector Mode Config N) :
-    occupationEnergy (fun i => ε i - μ) n.1 =
-      occupationEnergy ε n.1 - μ * (N : ℝ) := by
-  rw [occupationEnergy_sub_const, n.property]
+  rw [← Finset.sum_mul, Nat.cast_sum]
+  exact mul_comm _ _
 
 end Common
 end SecondQuantization
