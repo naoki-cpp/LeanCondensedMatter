@@ -106,7 +106,7 @@ theorem iteratedDeriv_analyticNormalizedLogPartitionFunction_eq_factorial_mul_co
     PowerSeries.coeff m
       (PowerSeries.normalizeByConstantCoeff (dysonTraceSeries energy β V))
   rw [coeff_dysonTraceFPowerSeries, PowerSeries.coeff_normalizeByConstantCoeff,
-    coeff_dysonTraceSeries]
+    dysonTraceSeries, PowerSeries.coeff_mk]
 
 end
 end Common

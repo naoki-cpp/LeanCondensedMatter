@@ -45,7 +45,7 @@ theorem coeff_dysonPartitionSeries (ε : Mode → ℝ) (β : ℝ)
     (V : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) (n : ℕ) :
     PowerSeries.coeff n (dysonPartitionSeries ε β V) = dysonPartitionCoeff ε β V n := by
   rw [dysonPartitionCoeff_eq_dysonTraceCoeff]
-  exact Common.coeff_dysonTraceSeries (fermionEnergy ε) β V n
+  simp only [dysonPartitionSeries, Common.dysonTraceSeries, PowerSeries.coeff_mk]
 
 omit [LinearOrder Mode] in
 /-- The constant coefficient is the fermionic free partition function. -/
