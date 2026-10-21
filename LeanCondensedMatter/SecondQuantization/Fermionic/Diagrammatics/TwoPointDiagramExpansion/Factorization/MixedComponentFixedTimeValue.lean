@@ -1,9 +1,10 @@
 import LeanCondensedMatter.Combinatorics.Common.FintypeProduct
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Components.ComponentDecomposition
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.InteractionSector
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossing
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossingEven
+import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Semantics.PairContraction
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Semantics.Amplitude
-import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Factorization.MixedComponentPairingValue
 
 set_option linter.style.header false
 
@@ -11,9 +12,9 @@ set_option linter.style.header false
 # Component-local fixed-time values for two-point diagrams
 
 A fixed-time two-point Wick-diagram amplitude contains three scalar layers: the external-field time-
-ordering sign, the product of quartic couplings, and the mixed-order pairing value. The preceding
-modules factor the pairing value over full external-plus-interaction components, while the common
-two-point component API factors arbitrary interaction-vertex products.
+ordering sign, the product of quartic couplings, and the mixed-order pairing value. The Common layer supplies mixed-component pairing fibers and crossing weights, and the semantic
+pair-contraction layer supplies the atomic contractions. This module assembles the fermionic pairing
+value and then combines it with the component-local vertex products.
 
 This module combines those results into component-local fixed-time values and the all-component
 factorization. The external value is related to the standalone external piece downstream in
@@ -44,6 +45,20 @@ noncomputable def FixedExternalTwoPointWickDiagram.mixedComponentVertexWeight
 section Fermionic
 
 variable [LinearOrder Mode] [Fintype Mode]
+
+/-! ## Mixed-component pairing value -/
+
+/-- Fermionic crossing weight times the contraction product internal to one full component. -/
+@[implicit_reducible]
+noncomputable def FixedExternalTwoPointWickDiagram.mixedComponentPairingValue
+    {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
+    (ε : Mode → ℝ) (β : ℝ) (τ τ' : ℝ) (σ : Fin n → ℝ)
+    (B : d.1.vertexGraph.componentPartition.parts) : ℂ :=
+  d.1.mixedComponentWeight Common.Statistics.fermion τ τ' σ B *
+    ∏ pr : d.1.MixedComponentPair τ τ' σ B,
+      d.mixedPairContractionValue ε β τ τ' σ pr.1
+
+/-! ## Fixed-time component amplitudes -/
 
 /-- Coupling weight times mixed pairing value internal to one full component. -/
 @[implicit_reducible]
