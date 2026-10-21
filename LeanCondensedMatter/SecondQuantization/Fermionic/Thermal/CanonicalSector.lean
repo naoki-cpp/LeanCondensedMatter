@@ -77,9 +77,9 @@ theorem canonicalFreeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation
     Common.finiteGibbsExpectationLinearMap, LinearMap.comp_apply]
   rfl
 
+omit [LinearOrder Mode] in
 /-- The canonical sector has sharp particle number: its Gibbs expectation of the
 sector number operator is precisely `N`. -/
-omit [LinearOrder Mode] in
 theorem canonicalFreeGibbsDensityOperator_number_expectation
     (ε : Mode → ℝ) (β : ℝ) (N : ℕ) [Nonempty (CanonicalOccupation Mode N)] :
     (canonicalFreeGibbsDensityOperator ε β N).expectation
@@ -95,8 +95,8 @@ theorem canonicalFreeGibbsDensityOperator_number_expectation
   rw [hid]
   ring
 
-/-- The fixed-number Gibbs state has zero particle-number variance. -/
 omit [LinearOrder Mode] in
+/-- The fixed-number Gibbs state has zero particle-number variance. -/
 theorem canonicalFreeGibbsDensityOperator_number_variance_zero
     (ε : Mode → ℝ) (β : ℝ) (N : ℕ) [Nonempty (CanonicalOccupation Mode N)] :
     (canonicalFreeGibbsDensityOperator ε β N).expectation
