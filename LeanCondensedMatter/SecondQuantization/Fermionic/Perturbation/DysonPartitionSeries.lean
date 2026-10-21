@@ -28,24 +28,10 @@ noncomputable def dysonPartitionCoeff (ε : Mode → ℝ) (β : ℝ)
     (V : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) (n : ℕ) : ℂ :=
   Common.dysonTraceCoeff (fermionEnergy ε) β V n
 
-omit [LinearOrder Mode] in
-/-- The fermionic coefficient is the specialization of the Common Dyson trace coefficient. -/
-theorem dysonPartitionCoeff_eq_dysonTraceCoeff (ε : Mode → ℝ) (β : ℝ)
-    (V : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) (n : ℕ) :
-    dysonPartitionCoeff ε β V n = Common.dysonTraceCoeff (fermionEnergy ε) β V n := rfl
-
 /-- The fermionic specialization of `Common.dysonTraceSeries`. -/
 noncomputable def dysonPartitionSeries (ε : Mode → ℝ) (β : ℝ)
     (V : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) : PowerSeries ℂ :=
   Common.dysonTraceSeries (fermionEnergy ε) β V
-
-omit [LinearOrder Mode] in
-/-- Coefficients are the fermionic Dyson partition coefficients. -/
-theorem coeff_dysonPartitionSeries (ε : Mode → ℝ) (β : ℝ)
-    (V : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) (n : ℕ) :
-    PowerSeries.coeff n (dysonPartitionSeries ε β V) = dysonPartitionCoeff ε β V n := by
-  rw [dysonPartitionCoeff_eq_dysonTraceCoeff]
-  simp only [dysonPartitionSeries, Common.dysonTraceSeries, PowerSeries.coeff_mk]
 
 omit [LinearOrder Mode] in
 /-- The constant coefficient is the fermionic free partition function. -/
@@ -69,8 +55,9 @@ omit [LinearOrder Mode] in
 theorem dysonPartitionCoeff_zero (ε : Mode → ℝ) (β : ℝ)
     (V : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) :
     dysonPartitionCoeff ε β V 0 = freePartitionFunction ε β := by
-  rw [← coeff_dysonPartitionSeries, PowerSeries.coeff_zero_eq_constantCoeff,
-    constantCoeff_dysonPartitionSeries]
+  have h := constantCoeff_dysonPartitionSeries ε β V
+  simpa only [← PowerSeries.coeff_zero_eq_constantCoeff, dysonPartitionSeries,
+    Common.dysonTraceSeries, PowerSeries.coeff_mk, dysonPartitionCoeff] using h
 
 /-- The normalized fermionic Dyson partition coefficient. -/
 noncomputable def normalizedDysonPartitionCoeff (ε : Mode → ℝ) (β : ℝ)
@@ -87,7 +74,8 @@ theorem coeff_normalizeByConstantCoeff_dysonPartitionSeries_eq_normalizedDysonPa
         (PowerSeries.normalizeByConstantCoeff (dysonPartitionSeries ε β V)) =
       normalizedDysonPartitionCoeff ε β V n := by
   rw [normalizedDysonPartitionCoeff, PowerSeries.coeff_normalizeByConstantCoeff,
-    constantCoeff_dysonPartitionSeries, coeff_dysonPartitionSeries, div_eq_mul_inv]
+    constantCoeff_dysonPartitionSeries, dysonPartitionSeries, Common.dysonTraceSeries,
+    PowerSeries.coeff_mk, dysonPartitionCoeff, div_eq_mul_inv]
   exact mul_comm _ _
 
 omit [LinearOrder Mode] in
