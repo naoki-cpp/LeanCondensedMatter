@@ -92,7 +92,7 @@ theorem currentInsertionDysonSeries_eq_vacuumFree_mul_partition
   unfold currentInsertionDysonSeries vacuumFreeCurrentInsertionDysonSeries
   simp_rw [externalInsertionVertexDysonSeries_eq_vacuumFree_mul_normalizedDysonPartitionSeries
     ε β hβ g]
-  simp only [smul_mul_assoc, ← Finset.sum_mul]
+  simp only [← smul_mul_assoc, ← Finset.sum_mul]
 
 /-- The same vacuum-factor decomposition for two composite current insertions. -/
 theorem currentPairDysonSeries_eq_vacuumFree_mul_partition
@@ -106,7 +106,7 @@ theorem currentPairDysonSeries_eq_vacuumFree_mul_partition
   unfold currentPairDysonSeries vacuumFreeCurrentPairDysonSeries
   simp_rw [externalInsertionVertexDysonSeries_eq_vacuumFree_mul_normalizedDysonPartitionSeries
     ε β hβ g]
-  simp only [smul_mul_assoc, ← Finset.sum_mul]
+  simp only [← smul_mul_assoc, ← Finset.sum_mul]
 
 /-- Dividing a one-current Dyson series by its free-normalized partition series
 discards precisely the vacuum-only components. -/
@@ -167,6 +167,21 @@ theorem connectedCurrentDysonSeries_eq_vacuumFree_sub
   rw [currentPairDysonSeries_mul_partition_inv ε β hβ g τ τ' jx jy,
     currentInsertionDysonSeries_mul_partition_inv ε β hβ g τ jx,
     currentInsertionDysonSeries_mul_partition_inv ε β hβ g τ' jy]
+
+
+/-- At each perturbative order the disconnected-current subtraction is a Cauchy
+convolution, not the product of two coefficients at the same order. -/
+theorem coeff_connectedCurrentDysonSeries_eq_vacuumFree_sub_cauchy
+    (ε : Mode → ℝ) (β : ℝ) (hβ : 0 ≤ β)
+    (g : QuarticVertexLabel Mode → ℂ)
+    (τ τ' : ℝ) (jx jy : Mode → Mode → ℂ) (n : ℕ) :
+    PowerSeries.coeff n (connectedCurrentDysonSeries ε β g τ τ' jx jy) =
+      PowerSeries.coeff n (vacuumFreeCurrentPairDysonSeries ε β g τ τ' jx jy) -
+        ∑ p ∈ Finset.Nat.antidiagonal n,
+          PowerSeries.coeff p.1 (vacuumFreeCurrentInsertionDysonSeries ε β g τ jx) *
+            PowerSeries.coeff p.2 (vacuumFreeCurrentInsertionDysonSeries ε β g τ' jy) := by
+  rw [connectedCurrentDysonSeries_eq_vacuumFree_sub ε β hβ g τ τ' jx jy]
+  simp only [map_sub, PowerSeries.coeff_mul]
 
 end Transport
 end Fermionic
