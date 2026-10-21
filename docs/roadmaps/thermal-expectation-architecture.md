@@ -198,6 +198,11 @@ rotation. Bosonic and completed fermionic first-pair reductions apply it with re
 sign proof remain in the representation-specific consumers. The algebraic identity assumes only
 a field and the two scalar equalities, and introduces no thermal-state contract.
 
+The fermionic scalar exchange denominator `1 + exp (βx)` is strictly positive for real
+`β, x`. Its nonvanishing theorem belongs to
+`Common/Thermal/BlochDeDominicis/ExchangeDenominator.lean`, rather than a fermionic free-Gibbs
+partition module; this fact alone does not assert a KMS relation or a Wick recurrence.
+
 `Common/Thermal/BlochDeDominicis/NormalizedTwoPointTrace.lean` applies the general trace peel
 theorem to a singleton coefficient-paired tail. Its
 `normalizedTsumTrace_comp_eq_div_of_zetaCommutator` accepts an arbitrary configuration type;
