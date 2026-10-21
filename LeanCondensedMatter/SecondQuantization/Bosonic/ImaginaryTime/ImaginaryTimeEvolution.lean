@@ -37,24 +37,43 @@ variable {Mode : Type*}
 local instance instDecidableEqImaginaryTimeEvolution : DecidableEq Mode := Classical.decEq Mode
 
 /-- The free-Hamiltonian eigenvalue `E(n) = Σᵢ n(i) ε(i)`. -/
-def freeEigenvalue (ε : Mode → ℝ) (n : Occupation Mode) : ℝ :=
-  n.sum fun i k => (k : ℝ) * ε i
+noncomputable def freeEigenvalue (ε : Mode → ℝ) (n : Occupation Mode) : ℝ :=
+  Common.occupationEnergy ε n
+
+/-- Bosonic free energy in its native finitely-supported sum representation. -/
+theorem freeEigenvalue_eq_finsupp_sum (ε : Mode → ℝ) (n : Occupation Mode) :
+    freeEigenvalue ε n = n.sum fun i k => (k : ℝ) * ε i := by
+  classical
+  unfold freeEigenvalue Common.occupationEnergy
+  have hs :
+      (Common.OccupationBasis.finiteSupport
+        (Mode := Mode) (Config := Occupation Mode) n).toFinset = n.support := by
+    ext i
+    simp only [Set.Finite.mem_toFinset]
+    change (n i ≠ 0) ↔ i ∈ n.support
+    exact Finsupp.mem_support_iff.symm
+  rw [hs]
+  rfl
 
 /-- Nonnegative one-particle energies give a nonnegative many-boson free energy. -/
 theorem freeEigenvalue_nonneg (ε : Mode → ℝ) (hε : ∀ i, 0 ≤ ε i)
     (n : Occupation Mode) :
     0 ≤ freeEigenvalue ε n := by
   classical
-  unfold freeEigenvalue Finsupp.sum
+  rw [freeEigenvalue_eq_finsupp_sum]
+  unfold Finsupp.sum
   exact Finset.sum_nonneg fun i _ => mul_nonneg (by positivity) (hε i)
 
 theorem freeEigenvalue_add (ε : Mode → ℝ) (m n : Occupation Mode) :
-    freeEigenvalue ε (m + n) = freeEigenvalue ε m + freeEigenvalue ε n :=
-  Finsupp.sum_add_index' (fun i => by simp) (fun i k1 k2 => by push_cast; ring)
+    freeEigenvalue ε (m + n) = freeEigenvalue ε m + freeEigenvalue ε n := by
+  rw [freeEigenvalue_eq_finsupp_sum, freeEigenvalue_eq_finsupp_sum,
+    freeEigenvalue_eq_finsupp_sum]
+  exact Finsupp.sum_add_index' (fun i => by simp)
+    (fun i k1 k2 => by push_cast; ring)
 
 theorem freeEigenvalue_singleOccupation (ε : Mode → ℝ) (i : Mode) :
     freeEigenvalue ε (singleOccupation i) = ε i := by
-  simp [freeEigenvalue, singleOccupation]
+  simp [freeEigenvalue_eq_finsupp_sum, singleOccupation]
 
 theorem freeEigenvalue_createOccupation (ε : Mode → ℝ) (i : Mode) (n : Occupation Mode) :
     freeEigenvalue ε (createOccupation i n) = freeEigenvalue ε n + ε i := by

@@ -1,5 +1,6 @@
 import Mathlib.Algebra.BigOperators.Group.Finset.Basic
 import Mathlib.Data.Set.Finite.Basic
+import Mathlib.Data.Real.Basic
 
 set_option linter.style.header false
 
@@ -9,7 +10,7 @@ set_option linter.style.header false
 `OccupationBasis` captures the statistics-independent structure shared by fermionic and bosonic
 occupation descriptions: a vacuum configuration, a per-mode occupation number, vanishing vacuum
 occupation, finite support, and extensionality from the occupation data. These assumptions define
-the common total `particleNumber` grading.
+the common total `particleNumber` grading and free occupation energy.
 
 The concrete configuration types remain distinct. Fermions use finite subsets of modes with
 occupations in `{0, 1}`, while bosons use finitely supported `ℕ`-valued occupations. Each
@@ -51,6 +52,22 @@ theorem particleNumber_vacuum {Mode Config : Type*} [OccupationBasis Mode Config
       (OccupationBasis.vacuum (Mode := Mode) (Config := Config)) = 0 := by
   classical
   simp [particleNumber, OccupationBasis.occupation_vacuum]
+
+/-- Free energy of a finite-support occupation configuration with one-particle energies `ε`.
+The sum is over occupied modes, so `Mode` need not be finite. -/
+noncomputable def occupationEnergy {Mode Config : Type*} [OccupationBasis Mode Config]
+    (ε : Mode → ℝ) (n : Config) : ℝ :=
+  (OccupationBasis.finiteSupport (Mode := Mode) (Config := Config) n).toFinset.sum
+    (fun i => (OccupationBasis.occupation (Mode := Mode) (Config := Config) n i : ℝ) * ε i)
+
+/-- The vacuum has zero free occupation energy. -/
+@[simp]
+theorem occupationEnergy_vacuum {Mode Config : Type*} [OccupationBasis Mode Config]
+    (ε : Mode → ℝ) :
+    occupationEnergy ε
+      (OccupationBasis.vacuum (Mode := Mode) (Config := Config)) = 0 := by
+  classical
+  simp [occupationEnergy, OccupationBasis.occupation_vacuum]
 
 end Common
 end SecondQuantization

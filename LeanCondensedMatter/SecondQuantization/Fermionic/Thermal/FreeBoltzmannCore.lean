@@ -25,7 +25,7 @@ omit [LinearOrder Mode] [Fintype Mode] in
 /-- The free Boltzmann weight is a cast of a positive real number. -/
 theorem freeBoltzmannWeight_eq_ofReal (ε : Mode → ℝ) (β : ℝ) (n : Occupation Mode) :
     freeBoltzmannWeight ε β n = ((Real.exp (-β * ∑ i ∈ n, ε i) : ℝ) : ℂ) := by
-  rw [freeBoltzmannWeight, Common.boltzmannWeight, fermionEnergy, Complex.ofReal_exp]
+  rw [freeBoltzmannWeight, Common.boltzmannWeight, fermionEnergy_eq_sum, Complex.ofReal_exp]
 
 omit [LinearOrder Mode] [Fintype Mode] in
 theorem freeBoltzmannWeight_ne_zero (ε : Mode → ℝ) (β : ℝ) (n : Occupation Mode) :

@@ -64,7 +64,7 @@ private theorem completedFreeGibbsProbability_insertOccupation_of_not_mem
         Real.exp (-β * ε i) * eigenbasisBoltzmannWeight (fermionEnergy ε) β n := by
     change Real.exp (-β * fermionEnergy ε (insertOccupation i n)) =
       Real.exp (-β * ε i) * Real.exp (-β * fermionEnergy ε n)
-    simp only [fermionEnergy, insertOccupation, Finset.sum_insert hi]
+    simp only [fermionEnergy_eq_sum, insertOccupation, Finset.sum_insert hi]
     rw [← Real.exp_add]
     congr 1
     ring
@@ -77,7 +77,7 @@ private theorem completedFreeGibbsProbability_removeOccupation_of_mem
       Real.exp (β * ε i) * eigenbasisGibbsProbability (fermionEnergy ε) β n := by
   have henergy :
       fermionEnergy ε n = fermionEnergy ε (removeOccupation i n) + ε i := by
-    simpa [fermionEnergy, removeOccupation] using (Finset.sum_erase_add n ε hi).symm
+    simpa only [fermionEnergy_eq_sum, removeOccupation] using (Finset.sum_erase_add n ε hi).symm
   have hweight :
       eigenbasisBoltzmannWeight (fermionEnergy ε) β (removeOccupation i n) =
         Real.exp (β * ε i) * eigenbasisBoltzmannWeight (fermionEnergy ε) β n := by

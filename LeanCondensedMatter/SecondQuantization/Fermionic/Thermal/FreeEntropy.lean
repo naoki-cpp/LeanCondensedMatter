@@ -89,7 +89,7 @@ theorem eigenbasisGibbsEnergyExpectation_fermionEnergy_eq_sum_fermiDirac
         freeGibbsConfigurationProbability ε β n * fermionEnergy ε n) =
         ∑ n : Occupation Mode, ∑ i : Mode,
           if i ∈ n then freeGibbsConfigurationProbability ε β n * ε i else 0 := by
-      simp [fermionEnergy, Finset.mul_sum]
+      simp [fermionEnergy_eq_sum, Finset.mul_sum]
     _ = ∑ i : Mode, ∑ n : Occupation Mode,
           if i ∈ n then freeGibbsConfigurationProbability ε β n * ε i else 0 := by
       rw [Finset.sum_comm]
