@@ -125010,56 +125010,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Config : Type u_1} [inst : Fintype Config] [inst_1 : Nonempty Config] (energy : Config → ℝ) (β : ℝ) (c : ℂ)\n  (A : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config),\n  SecondQuantization.Common.finiteGibbsExpectation energy β (c • A) =\n    c * SecondQuantization.Common.finiteGibbsExpectation energy β A",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.finiteGibbsExpectation_smul",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsExpectationBridge",
-    "externalAxioms": [],
-    "docString": "Scalar multiplication passes through the canonical finite Gibbs expectation. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.continuous_freeGibbsDensityOperator_expectation_comp_quarticVertexSequenceInteractionPicture",
-      "SecondQuantization.Fermionic.externalInsertionVertexDysonCoefficient_eq_externalInsertionDysonCoefficient",
-      "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_comp_dysonCoeff_quarticInteraction",
-      "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_mixedTimeOrderedVertexComp_eq_sum_pairingValue",
-      "SecondQuantization.Fermionic.timedFieldPairContraction_eq"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.continuous_freeGibbsDensityOperator_expectation_comp_quarticVertexSequenceInteractionPicture",
-      "SecondQuantization.Fermionic.externalInsertionVertexDysonCoefficient_eq_externalInsertionDysonCoefficient",
-      "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_comp_dysonCoeff_quarticInteraction",
-      "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_mixedTimeOrderedVertexComp_eq_sum_pairingValue",
-      "SecondQuantization.Fermionic.timedFieldPairContraction_eq"
-    ],
-    "compiledConsumerCount": 5,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ {Config : Type u_1} [inst : Fintype Config] (n : Config),\n  SecondQuantization.Common.finiteHilbertBasis n = SecondQuantization.Common.finiteHilbertBasisState n",
     "standardAxioms": [
       "Classical.choice",
@@ -143795,7 +143745,6 @@
     "dependents": [],
     "dependencies": [
       "SecondQuantization.Common.continuous_quarticVertexSequenceTimeFactor",
-      "SecondQuantization.Common.finiteGibbsExpectation_smul",
       "SecondQuantization.Common.quarticVertexSequenceInteractionPicture_eq_smul",
       "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation",
       "SecondQuantization.Fermionic.imaginaryTimeEvolve_annihilate",
@@ -146024,7 +145973,6 @@
       "SecondQuantization.Fermionic.externalInsertionVertexDysonSeries_eq_externalInsertionDysonSeries"
     ],
     "dependencies": [
-      "SecondQuantization.Common.finiteGibbsExpectation_smul",
       "SecondQuantization.Fermionic.externalInsertionMixedAtomicDysonCoefficient_eq_externalInsertionDysonCoefficient",
       "SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedVertexComp_eq_atomicProduct",
       "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation",
@@ -147337,7 +147285,6 @@
     ],
     "dependencies": [
       "SecondQuantization.Common.dysonCoeff_quarticInteraction_eq_sum",
-      "SecondQuantization.Common.finiteGibbsExpectation_smul",
       "SecondQuantization.Common.quarticVertexSequenceInteractionPicture_eq_smul",
       "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation",
       "SecondQuantization.Fermionic.imaginaryTimeEvolve_annihilate",
@@ -147543,7 +147490,6 @@
       "SecondQuantization.Fermionic.twoPointDiagramCoefficient_eq_twoPointDysonCoefficient"
     ],
     "dependencies": [
-      "SecondQuantization.Common.finiteGibbsExpectation_smul",
       "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation",
       "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_prod_timedFieldOperator_eq_sum_pairing",
       "SecondQuantization.Fermionic.mixedTimeOrderedAtomicFields_length",
@@ -151193,7 +151139,6 @@
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Analysis.DiagramRegularity.0.SecondQuantization.Fermionic.continuous_orderedTwoPointLegPairContraction"
     ],
     "dependencies": [
-      "SecondQuantization.Common.finiteGibbsExpectation_smul",
       "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation",
       "SecondQuantization.Fermionic.timedFieldOperator_eq_smul"
     ],
