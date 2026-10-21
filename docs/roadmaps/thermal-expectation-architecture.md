@@ -109,6 +109,25 @@ Bosonic two-field occupation-diagonal coefficients are algebraic imaginary-time 
 `diagonalCoeff_evolve_annihilate_comp_create` uses `Common.diagonalCoeff` directly; its equal-mode
 and distinct-mode cases do not require Gibbs summability or temperature assumptions.
 
+## First fixed-number canonical realization
+
+`Fermionic/Thermal/CanonicalSector.lean` supplies the finite fermionic
+`CanonicalOccupation Mode N` subtype, with configurations satisfying
+`particleNumber n = N`. It constructs the free canonical Gibbs state **on
+the sector Hilbert space** directly from `QuantumTheory.Gibbs.Eigenbasis`
+and identifies its expectation with the existing finite Gibbs functional
+specialized to the restricted energy function.
+
+The constructor requires `Nonempty (CanonicalOccupation Mode N)`. In a
+finite mode space an arbitrary `N` need not be realizable, so a normalized
+state cannot be constructed unconditionally. This first sector-level
+implementation does not yet extend the density state by zero to the whole
+occupation Fock space, construct a bosonic fixed-number sector, or provide
+a chemical-potential-dependent grand-canonical state. These are subsequent
+steps in #3986. In particular, a projected `P_N A B P_N` must **not**
+be replaced with `(P_N A P_N)(P_N B P_N)` for charge-changing fields, and
+no fixed-`N` Wick factorization or full-field KMS property is claimed.
+
 ## Bosonic boundary
 
 Even for finite `Mode`,
