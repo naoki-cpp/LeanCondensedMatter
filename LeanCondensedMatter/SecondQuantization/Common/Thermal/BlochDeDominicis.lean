@@ -1,4 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.PairingWeight
+import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.ExchangeDenominator
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.ExpectationRecursion
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.Unnormalized.PeelFirstTrace
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.NormalizedTwoPointTrace
@@ -12,6 +13,7 @@ set_option linter.style.header false
 The shared finite-temperature pairing theory is organized into reusable layers:
 
 - `PairingWeight`: the statistics-dependent crossing factor;
+- `ExchangeDenominator`: scalar exchange-denominator nonvanishing independent of any Gibbs state;
 - `ExpectationRecursion`: the basis-, representation-, and implementation-independent normalized
   expectation/KMS contract and its pairing theorem;
 - `Unnormalized/PeelFirstTrace`: configuration-general operator and summable trace peel identities;
