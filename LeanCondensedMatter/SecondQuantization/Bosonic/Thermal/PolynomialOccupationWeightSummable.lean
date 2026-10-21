@@ -21,9 +21,6 @@ namespace Bosonic
 
 noncomputable section
 
-variable {Mode : Type*} [Fintype Mode]
-
-omit [Fintype Mode] in
 /-- A fixed shift of the occupation number does not spoil polynomially weighted one-mode Gibbs
 summability.  This is the tail form needed after finitely many creation operators have acted. -/
 theorem summable_shiftedPow_oneModeBoltzmannWeight
@@ -52,6 +49,8 @@ theorem summable_shiftedPow_oneModeBoltzmannWeight
       (r ^ shift)⁻¹ * ((↑(k + shift) : ℝ) ^ power * r ^ (k + shift))
     rw [pow_add]
     field_simp [hr0]
+
+variable {Mode : Type*} [Fintype Mode]
 
 /-- Mode-dependent shifted occupation powers are summable against the free bosonic Gibbs weight.
 
