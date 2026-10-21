@@ -1,4 +1,6 @@
 import LeanCondensedMatter.Analysis.OrderedSimplex.PartitionOrderIntegral
+import LeanCondensedMatter.Combinatorics.Cumulant.ConnectedDecomposition
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentDecompositionEquiv
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Ordered
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Factorization.ComponentVertexProduct
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.Wick.ComponentContractionIntegrand
@@ -14,7 +16,8 @@ fixed family of local orders, contraction-integrand factorization identifies the
 with the generic family-shuffle integrand, so the ordered-simplex product theorem applies directly.
 The remaining finite sum over families of component orders distributes into the product of the local
 order sums. Combining this with the Common scalar-prefactor factorization gives the quartic
-Wick-amplitude factorization.
+Wick-amplitude factorization. The resulting scalar amplitudes are bundled directly as a
+multiplicative weight on the generic connected-decomposition API.
 -/
 
 namespace SecondQuantization
@@ -57,6 +60,19 @@ theorem quarticWickDiagramAmplitude_eq_prod_components
   rw [Common.QuarticDiagram.dysonSign_mul_vertexWeight_eq_prod_components d g,
     sum_orderedSimplexContribution_eq_prod_components ε β d]
   rw [← Finset.prod_mul_distrib]
+
+/-! ## Multiplicative weight for connected components -/
+
+/-- The fermionic quartic Wick amplitude as a multiplicative weight on the shared connected
+quartic-diagram decomposition. -/
+noncomputable def quarticWickDiagramMultiplicativeWeight
+    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ) :
+    Combinatorics.MultiplicativeWeight
+      (Common.quarticDiagramConnectedDecomposition (QuarticVertexLabel Mode) N) ℂ :=
+  Common.QuarticDiagram.multiplicativeWeight
+    (N := N)
+    (fun d => quarticWickDiagramAmplitude ε β g d)
+    (fun d => quarticWickDiagramAmplitude_eq_prod_components ε β g d)
 
 end Fermionic
 end SecondQuantization
