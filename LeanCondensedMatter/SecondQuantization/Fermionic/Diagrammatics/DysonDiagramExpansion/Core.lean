@@ -97,7 +97,7 @@ theorem continuous_freeGibbsDensityOperator_expectation_comp_quarticVertexSequen
     (fermionEnergy ε) ε create annihilate hcreate hannihilate n q]
   simp only [LinearMap.comp_smul,
     freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation,
-    Common.finiteGibbsExpectation_smul]
+    Common.finiteGibbsExpectation, map_smul, smul_eq_mul]
   exact (Common.continuous_quarticVertexSequenceTimeFactor ε q).mul continuous_const
 
 /-- The quartic Dyson coefficient expansion through the canonical free Gibbs density-state
@@ -169,8 +169,8 @@ theorem freeGibbsDensityOperator_expectation_comp_dysonCoeff_quarticInteraction
     intro τ
     rw [Common.quarticVertexSequenceInteractionPicture_eq_smul
       (fermionEnergy ε) ε create annihilate hcreate hannihilate n q τ,
-      LinearMap.comp_smul, Common.finiteGibbsExpectation_smul]
-    ring
+      LinearMap.comp_smul, Common.finiteGibbsExpectation, map_smul, smul_eq_mul]
+    exact mul_comm _ _
   simp_rw [hintegral]
   rw [Finset.mul_sum]
   apply Finset.sum_congr rfl
