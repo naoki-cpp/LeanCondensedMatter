@@ -1,5 +1,6 @@
 import LeanCondensedMatter.Transport.FiniteConductivityTable
 import LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann.Eigenbasis.Table
+import LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann.Eigenbasis.Dynamics
 import LeanCondensedMatter.QuantumTheory.LinearResponse.Response.Channel
 
 set_option linter.style.header false
