@@ -50,7 +50,7 @@ theorem factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_sum_connectedQuar
         PowerSeries.coeff n
           (PowerSeries.logOf (PowerSeries.normalizeByConstantCoeff (Common.dysonTraceSeries (fermionEnergy ε) β (quarticInteraction g)))) =
         W.connectedContribution (Finset.univ : Finset (Fin n)) := by
-      simpa only [] using
+      simpa using
         (Combinatorics.factorial_mul_coeff_logOf_eq_connectedContribution_replica
           (Z := PowerSeries.normalizeByConstantCoeff
             (Common.dysonTraceSeries (fermionEnergy ε) β (quarticInteraction g)))

@@ -50,7 +50,7 @@ example
         PowerSeries.coeff n
           (PowerSeries.logOf (PowerSeries.normalizeByConstantCoeff (Common.dysonTraceSeries (fermionEnergy ε) β (quarticInteraction g)))) =
         W.connectedContribution (Finset.univ : Finset (Fin n)) := by
-      simpa only [, Z] using
+      simpa [Z] using
         (Combinatorics.factorial_mul_coeff_logOf_eq_connectedContribution
           hZ W hMoment huniv)
     _ = ∑ d : ConnectedQuarticWickDiagram Mode n Finset.univ,
