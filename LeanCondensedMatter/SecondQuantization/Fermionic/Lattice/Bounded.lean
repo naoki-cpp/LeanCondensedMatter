@@ -65,19 +65,20 @@ noncomputable def boundedLatticeOperator
   boundedLatticeOperatorAlgEquiv A
 
 
-/-- Linear finite-lattice realization of an arbitrary one-body operator as a bounded Fock-space
-observable. -/
-noncomputable def boundedOneBodyOperatorLinearMap :
-    ((Site →₀ ℂ) →ₗ[ℂ] (Site →₀ ℂ)) →ₗ[ℂ]
-      (FiniteLatticeHilbertFock Site →L[ℂ] FiniteLatticeHilbertFock Site) :=
-  (boundedLatticeOperatorAlgEquiv (Site := Site)).toLinearMap.comp
-    (AlgebraicFock.dGammaLinear ((Site →₀ ℂ)))
-
-/-- Bounded Fock-space observable associated with one supplied one-body operator. -/
-noncomputable def boundedOneBodyOperator
-    (operator : (Site →₀ ℂ) →ₗ[ℂ] (Site →₀ ℂ)) :
-    FiniteLatticeHilbertFock Site →L[ℂ] FiniteLatticeHilbertFock Site :=
-  boundedOneBodyOperatorLinearMap operator
+/-- Finite-lattice second quantization as a complex-linear Lie algebra homomorphism.
+It preserves commutators, not products, on the full finite Hilbert Fock space. -/
+noncomputable def boundedOneBodyOperator :
+    ((Site →₀ ℂ) →ₗ[ℂ] (Site →₀ ℂ)) →ₗ⁅ℂ⁆
+      (FiniteLatticeHilbertFock Site →L[ℂ] FiniteLatticeHilbertFock Site) where
+  toLinearMap := (boundedLatticeOperatorAlgEquiv (Site := Site)).toLinearMap.comp
+    (AlgebraicFock.dGammaLieHom ((Site →₀ ℂ))).toLinearMap
+  map_lie' := by
+    intro S T
+    change boundedLatticeOperator (AlgebraicFock.dGamma ((Site →₀ ℂ)) ⁅S, T⁆) =
+      ⁅boundedLatticeOperator (AlgebraicFock.dGamma ((Site →₀ ℂ)) S),
+        boundedLatticeOperator (AlgebraicFock.dGamma ((Site →₀ ℂ)) T)⁆
+    rw [← AlgebraicFock.dGamma_lie]
+    simp only [boundedLatticeOperator, LieRing.of_associative_ring_bracket, map_sub, map_mul]
 
 
 /-- Canonical computation rule for the bounded realization of a one-body operator. -/
@@ -113,22 +114,11 @@ theorem boundedOneBodyOperator_oneParticleBondCurrent
     (K : LocallyFiniteHopping Site) (ℏ q : ℂ) (x y : Site) :
     boundedOneBodyOperator (K.oneParticleBondCurrent ℏ q x y) =
       boundedBondCurrent ℏ q K x y := by
-  unfold boundedOneBodyOperator boundedOneBodyOperatorLinearMap
-  unfold LocallyFiniteHopping.oneParticleBondCurrent boundedBondCurrent bondCurrent peierlsCoupling
-  rw [map_smul]
-  change
-    ((Complex.I * q) / ℏ) •
-        boundedLatticeOperator
-          (AlgebraicFock.dGamma ((Site →₀ ℂ)) (K.bondOperator x y)) =
-      boundedLatticeOperator
-        (((Complex.I * q) / ℏ) •
-          AlgebraicFock.dGamma ((Site →₀ ℂ)) (K.bondOperator x y))
-  change ((Complex.I * q) / ℏ) •
-      (boundedLatticeOperatorAlgEquiv (Site := Site))
-        (AlgebraicFock.dGamma ((Site →₀ ℂ)) (K.bondOperator x y)) =
+  change (boundedLatticeOperatorAlgEquiv (Site := Site))
+      (AlgebraicFock.dGammaLinear ((Site →₀ ℂ))
+        (peierlsCoupling ℏ q • K.bondOperator x y)) =
     (boundedLatticeOperatorAlgEquiv (Site := Site))
-      (((Complex.I * q) / ℏ) •
-        AlgebraicFock.dGamma ((Site →₀ ℂ)) (K.bondOperator x y))
+      (peierlsCoupling ℏ q • AlgebraicFock.dGamma ((Site →₀ ℂ)) (K.bondOperator x y))
   rw [map_smul]
 
 /-- The Peierls derivative/current equivalence survives the finite-dimensional bounded transport. -/
@@ -138,13 +128,13 @@ theorem hasAlgebraicDerivAt_boundedPeierlsBondHamiltonian_zero
       (-boundedBondCurrent ℏ q K x y) 0 := by
   have h :=
     (K.hasAlgebraicDerivAt_peierlsBondHamiltonian_zero ℏ q x y).map
-      (boundedOneBodyOperatorLinearMap (Site := Site))
+      (boundedOneBodyOperator (Site := Site)).toLinearMap
   have hcurrent :
-      boundedOneBodyOperatorLinearMap (Site := Site) (K.oneParticleBondCurrent ℏ q x y) =
+      boundedOneBodyOperator (Site := Site) (K.oneParticleBondCurrent ℏ q x y) =
         boundedBondCurrent ℏ q K x y :=
     boundedOneBodyOperator_oneParticleBondCurrent K ℏ q x y
   change HasAlgebraicDerivAt
-    (fun A => boundedOneBodyOperatorLinearMap (Site := Site)
+    (fun A => boundedOneBodyOperator (Site := Site)
       (K.peierlsBondHamiltonian ℏ q x y A))
     (-boundedBondCurrent ℏ q K x y) 0
   simpa only [map_neg, hcurrent] using h

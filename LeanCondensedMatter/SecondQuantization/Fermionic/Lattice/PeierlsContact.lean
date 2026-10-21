@@ -61,7 +61,7 @@ theorem boundedBondContact_eq_neg_sq_smul_peierlsBondHamiltonian_zero
   rw [boundedBondContact,
     K.oneParticleBondContact_eq_neg_sq_smul_peierlsBondHamiltonian_zero]
   unfold boundedPeierlsBondHamiltonian
-  exact map_smul (boundedOneBodyOperatorLinearMap (Site := Site))
+  exact map_smul (boundedOneBodyOperator (Site := Site))
     (-((peierlsCoupling ℏ q) ^ 2)) (K.peierlsBondHamiltonian ℏ q x y 0)
 
 /-- At zero source, the bounded Peierls current is the bounded continuity-derived current. -/
@@ -79,7 +79,7 @@ theorem hasAlgebraicDerivAt_boundedPeierlsBondCurrent_zero
     HasAlgebraicDerivAt (boundedPeierlsBondCurrent K ℏ q x y)
       (boundedBondContact K ℏ q x y) 0 := by
   exact (K.hasAlgebraicDerivAt_peierlsBondCurrentOperator_zero ℏ q x y).map
-    (boundedOneBodyOperatorLinearMap (Site := Site))
+    (boundedOneBodyOperator (Site := Site)).toLinearMap
 
 end Bounded
 

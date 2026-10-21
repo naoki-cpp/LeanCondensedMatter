@@ -53,7 +53,7 @@ noncomputable def boundedFluxRetardedResponse
     (t s : ℝ) : Test →ₗ[ℂ] ℂ :=
   (QuantumTheory.LinearResponse.retardedSusceptibilityMeasuredLinearMap
       system expectation source t s).comp
-    ((boundedOneBodyOperatorLinearMap (Site := Site)).comp Φ)
+    ((boundedOneBodyOperator (Site := Site)).toLinearMap.comp Φ)
 /-- Bounded Fock-space observable associated with one corrected/nested current component. -/
 noncomputable def boundedCorrectedCurrentObservable
     (velocity m : (Site →₀ ℂ) →ₗ[ℂ] (Site →₀ ℂ))

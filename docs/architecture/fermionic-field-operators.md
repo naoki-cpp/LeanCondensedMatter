@@ -95,8 +95,10 @@ Fermionic.Validation
 
 `Fermionic.Lattice` owns discrete one-particle lattice data, hopping, charge/bond currents, Peierls
 families, finite-lattice bounded realizations, and model-level current identities. In particular,
-`Lattice.Bounded` owns the canonical linear realization from one-body operators through `dGamma` to
-bounded finite-Fock observables. It does not own generic response, conductivity, disorder, or
+`Lattice.Bounded` owns `boundedOneBodyOperator`, the complex-linear Lie algebra homomorphism from
+one-body operators through `dGamma` to bounded finite-Fock operators. Its `toLinearMap` projection
+serves current derivatives and response composition; the bundled map also preserves commutators.
+It does not preserve one-particle products. It does not own generic response, conductivity, disorder, or
 validation theory.
 
 `Fermionic.Field` is a narrow side interface for basis-independent density constructions, bounded
