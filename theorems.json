@@ -141654,52 +141654,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : Fintype Mode] (ε : Mode → ℝ) (β : ℝ)\n  (V : SecondQuantization.Fermionic.OccupationFock Mode →ₗ[ℂ] SecondQuantization.Fermionic.OccupationFock Mode) (n : ℕ),\n  (PowerSeries.coeff n) (SecondQuantization.Fermionic.dysonPartitionSeries ε β V) =\n    SecondQuantization.Fermionic.dysonPartitionCoeff ε β V n",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.coeff_dysonPartitionSeries",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.DysonPartitionSeries",
-    "externalAxioms": [],
-    "docString": "Coefficients are the fermionic Dyson partition coefficients. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.coeff_normalizeByConstantCoeff_dysonPartitionSeries_eq_normalizedDysonPartitionCoeff",
-      "SecondQuantization.Fermionic.dysonPartitionCoeff_zero"
-    ],
-    "dependencies": [
-      "SecondQuantization.Fermionic.dysonPartitionCoeff_eq_dysonTraceCoeff"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.coeff_normalizeByConstantCoeff_dysonPartitionSeries_eq_normalizedDysonPartitionCoeff",
-      "SecondQuantization.Fermionic.dysonPartitionCoeff_zero"
-    ],
-    "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ {Mode : Type u_1} [inst : Fintype Mode] (ε : Mode → ℝ) (β : ℝ)\n  (V : SecondQuantization.Fermionic.OccupationFock Mode →ₗ[ℂ] SecondQuantization.Fermionic.OccupationFock Mode) (n : ℕ),\n  (PowerSeries.coeff n) (SecondQuantization.Fermionic.dysonPartitionSeries ε β V).normalizeByConstantCoeff =\n    SecondQuantization.Fermionic.normalizedDysonPartitionCoeff ε β V n",
     "standardAxioms": [
       "Classical.choice",
@@ -141724,7 +141678,6 @@
     ],
     "dependencies": [
       "PowerSeries.coeff_normalizeByConstantCoeff",
-      "SecondQuantization.Fermionic.coeff_dysonPartitionSeries",
       "SecondQuantization.Fermionic.constantCoeff_dysonPartitionSeries"
     ],
     "crossModuleDirectWrapper": false,
@@ -144224,48 +144177,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : Fintype Mode] (ε : Mode → ℝ) (β : ℝ)\n  (V : SecondQuantization.Fermionic.OccupationFock Mode →ₗ[ℂ] SecondQuantization.Fermionic.OccupationFock Mode) (n : ℕ),\n  SecondQuantization.Fermionic.dysonPartitionCoeff ε β V n =\n    SecondQuantization.Common.dysonTraceCoeff (SecondQuantization.Fermionic.fermionEnergy ε) β V n",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.dysonPartitionCoeff_eq_dysonTraceCoeff",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.DysonPartitionSeries",
-    "externalAxioms": [],
-    "docString": "The fermionic coefficient is the specialization of the Common Dyson trace coefficient. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.coeff_dysonPartitionSeries"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.coeff_dysonPartitionSeries"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ {Mode : Type u_1} [inst : Fintype Mode] (ε : Mode → ℝ) (β : ℝ)\n  (V : SecondQuantization.Fermionic.OccupationFock Mode →ₗ[ℂ] SecondQuantization.Fermionic.OccupationFock Mode),\n  SecondQuantization.Fermionic.dysonPartitionCoeff ε β V 0 = SecondQuantization.Fermionic.freePartitionFunction ε β",
     "standardAxioms": [
       "Classical.choice",
@@ -144288,7 +144199,6 @@
       "SecondQuantization.Fermionic.normalizedDysonPartitionCoeff_zero"
     ],
     "dependencies": [
-      "SecondQuantization.Fermionic.coeff_dysonPartitionSeries",
       "SecondQuantization.Fermionic.constantCoeff_dysonPartitionSeries"
     ],
     "crossModuleDirectWrapper": false,
