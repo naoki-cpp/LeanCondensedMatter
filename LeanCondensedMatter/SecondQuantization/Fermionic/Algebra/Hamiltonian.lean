@@ -35,6 +35,40 @@ theorem totalNumberOperator_basisState (n : Occupation Mode) :
   Common.diagonalOperator_basisState _ n
 
 omit [LinearOrder Mode] in
+/-- Number operator on a fixed-particle-number fermionic sector.  This is the
+restriction of the full-Fock total-number observable, represented on its own
+algebraic occupation-basis space. -/
+noncomputable def canonicalSectorNumberOperator (N : ℕ) :
+    Common.AlgebraicFock (CanonicalOccupation Mode N) →ₗ[ℂ]
+      Common.AlgebraicFock (CanonicalOccupation Mode N) :=
+  Common.diagonalOperator fun n : CanonicalOccupation Mode N => (particleNumber n.val : ℂ)
+
+omit [LinearOrder Mode] in
+/-- The number operator acts as the scalar `N` on the entire fixed-number sector. -/
+theorem canonicalSectorNumberOperator_eq_smul_id (N : ℕ) :
+    canonicalSectorNumberOperator (Mode := Mode) N =
+      (N : ℂ) • (LinearMap.id :
+        Common.AlgebraicFock (CanonicalOccupation Mode N) →ₗ[ℂ]
+          Common.AlgebraicFock (CanonicalOccupation Mode N)) := by
+  apply Common.linearMap_ext_basisState
+  intro n
+  simp [canonicalSectorNumberOperator, Common.diagonalOperator_basisState,
+    canonicalOccupation_particleNumber]
+
+omit [LinearOrder Mode] in
+/-- The square of the fixed-sector number operator is the scalar `N²`. -/
+theorem canonicalSectorNumberOperator_sq_eq_smul_id (N : ℕ) :
+    (canonicalSectorNumberOperator (Mode := Mode) N).comp
+        (canonicalSectorNumberOperator (Mode := Mode) N) =
+      ((N : ℂ) ^ 2) • (LinearMap.id :
+        Common.AlgebraicFock (CanonicalOccupation Mode N) →ₗ[ℂ]
+          Common.AlgebraicFock (CanonicalOccupation Mode N)) := by
+  rw [canonicalSectorNumberOperator_eq_smul_id]
+  apply Common.linearMap_ext_basisState
+  intro n
+  simp [LinearMap.comp_apply, LinearMap.smul_apply, pow_two, smul_smul]
+
+omit [LinearOrder Mode] in
 /-- **The free Hamiltonian's real occupation energy**, `E(n) := Σᵢ∈n ε(i)`.
 This is the canonical eigenvalue function shared by the algebraic Hamiltonian, imaginary-time
 evolution, Gibbs constructions, and completed-space realization. -/
