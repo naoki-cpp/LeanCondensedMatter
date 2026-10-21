@@ -98,11 +98,14 @@ theorem hasDerivAt_hamiltonian_shiftedMomentum (momentum : Momentum → ℝ × �
         r • current (Momentum := Momentum) direction e v :=
     algebraMap_smul ℂ r _
   simp only [hscalar]
-  have h := (hasDerivAt_const a (hamiltonian momentum v m)).sub
-      ((hasDerivAt_id (x := a)).smul_const
-        (current (Momentum := Momentum) direction e v))
-  rw [hasDerivAt_iff_tendsto] at h ⊢
-  simpa only [zero_sub, one_smul] using h
+  rw [hasDerivAt_iff_tendsto]
+  have hzero (field : ℝ) :
+      hamiltonian momentum v m - field • current (Momentum := Momentum) direction e v -
+          (hamiltonian momentum v m - a • current direction e v) -
+          (field - a) • (-current direction e v) = 0 := by
+    module
+  simpa only [hzero, norm_zero, mul_zero] using
+    (tendsto_const_nhds : Filter.Tendsto (fun _ : ℝ => (0 : ℝ)) (nhds a) (nhds 0))
 
 /-- A time-profiled minimal coupling is the source perturbation used by bounded response. -/
 theorem hamiltonian_sourceCoupledPerturbation (momentum : Momentum → ℝ × ℝ)
