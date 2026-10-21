@@ -1,4 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsDensityOperator
+import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.CanonicalSector
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.TimedFieldContraction
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreePartitionFunction
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeEntropy
@@ -11,8 +12,9 @@ set_option linter.style.header false
 /-!
 # Fermionic free thermal theory
 
-Finite-basis and completed-Hilbert free-fermion thermal theory, including canonical Gibbs
-expectations, partition functions, Fermi--Dirac observables, entropy,
+Finite-basis and completed-Hilbert free-fermion thermal theory, including full-Fock Gibbs
+expectations, fixed-particle-number canonical sector states, partition functions,
+Fermi--Dirac observables, entropy,
 Green functions and contractions, pure-point Gibbs summability, and completed free-Gibbs
 total-number expectation, ladder/KMS/pairing, and finite-mode Gibbs convergence.
 
