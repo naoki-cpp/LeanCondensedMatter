@@ -29,61 +29,55 @@ local instance instDecidableEqConcreteMixedTwoPoint : DecidableEq Mode := Classi
 
 variable [Fintype Mode]
 
-/-- Concrete normalized annihilation/creation contraction. -/
-theorem freeGibbsExpectation_annihilate_comp_create_concrete
-    (ε : Mode → ℝ) (β : ℝ) (hpos : ∀ k, 0 < β * ε k) (i j : Mode) :
-    freeGibbsExpectation ε β ((annihilate i).comp (create j)) =
-      if i = j then (1 - Complex.exp (((-(ε i) * β : ℝ) : ℂ)))⁻¹ else 0 := by
-  have hden : 1 - Complex.exp (((-(ε i) * β : ℝ) : ℂ)) ≠ 0 :=
-    sub_ne_zero.mpr (Ne.symm (Complex.exp_ne_one_of_re_ne_zero (by
-      change -(ε i) * β ≠ 0
-      nlinarith [hpos i])))
-  have hvalue :
-      freeGibbsExpectation ε β ((annihilate i).comp (create j)) =
-        (if i = j then (1 : ℂ) else 0) /
-          (1 - Complex.exp ((-(ε i) * β : ℝ) : ℂ)) := by
-    have hC1 : Common.heisenbergEvolve (freeEigenvalue ε) (-β) (annihilate i) =
-        Complex.exp ((-(ε i) * (-β) : ℝ) : ℂ) • annihilate i := by
-      have h := imaginaryTimeEvolve_annihilate ε (-β) i
-      rwa [show ((-(ε i) * (-β) : ℝ) : ℂ) = -((-β : ℝ) : ℂ) * (ε i : ℂ) by push_cast; ring]
-    have hcomm : ScalarExchange.zetaCommutator (1 : ℂ) (annihilate i) (create j) =
-        (if i = j then (1 : ℂ) else 0) •
-          (LinearMap.id : FockSpace Mode →ₗ[ℂ] FockSpace Mode) := by
-      simpa using comm_annihilate_create i j
-    have hSummD := summable_imaginaryTimeEvolveFree_self ε β hpos
-    have hRotate :=
-      summable_imaginaryTimeEvolveFree_comp_create_mul_annihilate ε β hpos i j
-    have hfun : (fun k : Mode => ε k - (0 : ℝ)) = ε := by
-      funext k
-      simp
-    have hpartition : Common.tsumTrace
-        (Common.diagonalEvolution (freeEigenvalue ε) (-β)) ≠ 0 := by
-      have hZ := grandCanonicalAlgebraicPartition_ne_zero ε β 0
-        (by simpa only [sub_zero] using hpos)
-      simpa only [grandCanonicalAlgebraicPartition, hfun, imaginaryTimeEvolveFree] using hZ
-    simpa only [freeGibbsExpectation, grandCanonicalAlgebraicPartition, hfun,
-      imaginaryTimeEvolveFree, one_mul] using
-      Common.normalizedTsumTrace_comp_eq_div_of_zetaCommutator
-        (freeEigenvalue ε) β (-(ε i)) (1 : ℂ)
-        (if i = j then (1 : ℂ) else 0) (annihilate i) (create j)
-        hC1 hcomm (by simpa only [imaginaryTimeEvolveFree] using hSummD)
-        (by simpa only [imaginaryTimeEvolveFree] using hRotate)
-        hpartition (by simpa only [one_mul] using hden)
-  rw [hvalue]
-  by_cases hij : i = j <;> simp [hij]
-
-/-- The grand-canonical annihilation/creation contraction at chemical potential `μ`.
-The bosonic algebraic Gibbs functional still accepts an effective one-particle
-spectrum, so its physical grand-canonical realization is evaluated at `ε - μ`.
-The resulting factor is the Bose distribution with shifted mode energy. -/
+/-- Grand-canonical annihilation/creation correlation for a finite-mode free
+boson gas at chemical potential `μ`. The thermal generator has mode energies
+`ξ i = ε i - μ`; positivity of `β * ξ i` gives a normalized Gibbs trace. -/
 theorem grandCanonicalGibbsExpectation_annihilate_comp_create_concrete
     (ε : Mode → ℝ) (β μ : ℝ)
     (hpos : ∀ k, 0 < β * (ε k - μ)) (i j : Mode) :
     freeGibbsExpectation (fun k => ε k - μ) β ((annihilate i).comp (create j)) =
       if i = j then
         (1 - Complex.exp (((-(ε i - μ) * β : ℝ) : ℂ)))⁻¹ else 0 := by
-  exact freeGibbsExpectation_annihilate_comp_create_concrete
-    (fun k => ε k - μ) β hpos i j
+  let ξ : Mode → ℝ := fun k => ε k - μ
+  change freeGibbsExpectation ξ β ((annihilate i).comp (create j)) =
+    if i = j then (1 - Complex.exp (((-(ξ i) * β : ℝ) : ℂ)))⁻¹ else 0
+  have hden : 1 - Complex.exp (((-(ξ i) * β : ℝ) : ℂ)) ≠ 0 :=
+    sub_ne_zero.mpr (Ne.symm (Complex.exp_ne_one_of_re_ne_zero (by
+      change -(ξ i) * β ≠ 0
+      nlinarith [hpos i])))
+  have hvalue :
+      freeGibbsExpectation ξ β ((annihilate i).comp (create j)) =
+        (if i = j then (1 : ℂ) else 0) /
+          (1 - Complex.exp ((-(ξ i) * β : ℝ) : ℂ)) := by
+    have hC1 : Common.heisenbergEvolve (freeEigenvalue ξ) (-β) (annihilate i) =
+        Complex.exp ((-(ξ i) * (-β) : ℝ) : ℂ) • annihilate i := by
+      have h := imaginaryTimeEvolve_annihilate ξ (-β) i
+      rwa [show ((-(ξ i) * (-β) : ℝ) : ℂ) = -((-β : ℝ) : ℂ) * (ξ i : ℂ) by push_cast; ring]
+    have hcomm : ScalarExchange.zetaCommutator (1 : ℂ) (annihilate i) (create j) =
+        (if i = j then (1 : ℂ) else 0) •
+          (LinearMap.id : FockSpace Mode →ₗ[ℂ] FockSpace Mode) := by
+      simpa using comm_annihilate_create i j
+    have hSummD := summable_imaginaryTimeEvolveFree_self ξ β hpos
+    have hRotate :=
+      summable_imaginaryTimeEvolveFree_comp_create_mul_annihilate ξ β hpos i j
+    have hfun : (fun k : Mode => ξ k - (0 : ℝ)) = ξ := by
+      funext k
+      simp
+    have hpartition : Common.tsumTrace
+        (Common.diagonalEvolution (freeEigenvalue ξ) (-β)) ≠ 0 := by
+      have hZ := grandCanonicalAlgebraicPartition_ne_zero ξ β 0
+        (by simpa only [sub_zero] using hpos)
+      simpa only [grandCanonicalAlgebraicPartition, hfun, imaginaryTimeEvolveFree] using hZ
+    simpa only [freeGibbsExpectation, grandCanonicalAlgebraicPartition, hfun,
+      imaginaryTimeEvolveFree, one_mul] using
+      Common.normalizedTsumTrace_comp_eq_div_of_zetaCommutator
+        (freeEigenvalue ξ) β (-(ξ i)) (1 : ℂ)
+        (if i = j then (1 : ℂ) else 0) (annihilate i) (create j)
+        hC1 hcomm (by simpa only [imaginaryTimeEvolveFree] using hSummD)
+        (by simpa only [imaginaryTimeEvolveFree] using hRotate)
+        hpartition (by simpa only [one_mul] using hden)
+  rw [hvalue]
+  by_cases hij : i = j <;> simp [hij]
 
 /-- Grand-canonical creation/annihilation contraction under the KMS rotation
 generated by `K = H - μ N̂`, rather than physical time evolution under `H`.
@@ -111,18 +105,6 @@ theorem grandCanonicalGibbsExpectation_create_comp_annihilate_concrete
     simp only [ite_true, harg]
   · simp [hij, Ne.symm hij]
 
-/-- The physical zero-chemical-potential contraction is now a specialization
-of the actual μ-dependent Bose occupation theorem, not a second KMS proof. -/
-theorem freeGibbsExpectation_create_comp_annihilate_concrete
-    (ε : Mode → ℝ) (β : ℝ) (hpos : ∀ k, 0 < β * ε k) (i j : Mode) :
-    freeGibbsExpectation ε β ((create i).comp (annihilate j)) =
-      if i = j then
-        Complex.exp (((-(ε j) * β : ℝ) : ℂ)) *
-          (1 - Complex.exp (((-(ε j) * β : ℝ) : ℂ)))⁻¹
-      else 0 := by
-  simpa only [sub_zero] using
-    (grandCanonicalGibbsExpectation_create_comp_annihilate_concrete
-      ε β 0 (by simpa only [sub_zero] using hpos) i j)
 
 end
 end Bosonic
