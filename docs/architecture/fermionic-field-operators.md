@@ -101,6 +101,13 @@ serves current derivatives and response composition; the bundled map also preser
 It does not preserve one-particle products. It does not own generic response, conductivity, disorder, or
 validation theory.
 
+`Lattice.BoundedEvolution` gives the continuous finite-Hilbert realization
+`finiteSecondQuantization` and its exponential-conjugation identity. The reusable analytic
+intertwining theorem lives in `Analysis.Calculus.ExponentialConjugation`: it assumes preservation
+of the commutator with the generator, not multiplication. Its conjugation derivative also supplies
+the general bounded Heisenberg equation. No unbounded bosonic evolution or thermal trace reduction
+is inferred from this bounded result.
+
 `Fermionic.Field` is a narrow side interface for basis-independent density constructions, bounded
 `L²` multiplication density realizations, and the `dGamma` bridge for generalized localized quantities. It does not
 own generic one-body current semantics or lattice/transport models.
