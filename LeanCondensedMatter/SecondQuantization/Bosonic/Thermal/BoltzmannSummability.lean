@@ -14,7 +14,7 @@ temperature, the existing occupation-level Boltzmann summability theorem supplie
 `QuantumTheory.EigenbasisGibbsSummable` hypothesis for `freeEigenvalue ε`.
 
 This module is representation-independent: it also identifies the convergence-aware algebraic
-`freeGibbsPartition` with the canonical pure-point partition function. Completed-space heat and
+`grandCanonicalAlgebraicPartition` with the shared grand partition function. Completed-space heat and
 density operators consume these results downstream.
 -/
 
@@ -27,18 +27,23 @@ noncomputable section
 
 variable {Mode : Type*}
 
-/-- The algebraic occupation trace and the canonical pure-point partition sum are the same
-for arbitrary bosonic mode types. This coordinate identity does not assert convergence. -/
-theorem freeGibbsPartition_eq_coe_eigenbasisPartitionFunction
-    (ε : Mode → ℝ) (β : ℝ) :
-    freeGibbsPartition ε β =
-      (eigenbasisPartitionFunction (freeEigenvalue ε) β : ℂ) := by
-  unfold freeGibbsPartition Common.tsumTrace eigenbasisPartitionFunction
+/-- The algebraic grand-canonical diagonal trace agrees with the shared
+real grand partition function, for arbitrary mode types and chemical potential.
+This coordinate identity does not claim convergence. -/
+theorem grandCanonicalAlgebraicPartition_eq_coe_grandCanonicalPartitionFunction
+    (ε : Mode → ℝ) (β μ : ℝ) :
+    grandCanonicalAlgebraicPartition ε β μ =
+      (Common.grandCanonicalPartitionFunction
+        (Config := Occupation Mode) ε β μ : ℂ) := by
+  unfold grandCanonicalAlgebraicPartition Common.tsumTrace
+  rw [Common.grandCanonicalPartitionFunction_eq_shifted]
+  unfold eigenbasisPartitionFunction
   rw [Complex.ofReal_tsum]
   apply tsum_congr
   intro n
   simp only [matrixCoeff_imaginaryTimeEvolveFree_self, eigenbasisBoltzmannWeight,
     Complex.ofReal_exp]
+  rfl
 
 /-- Positive one-mode gaps and summable one-particle Boltzmann weights imply convergence
 of the free-boson Gibbs partition sum over all finitely supported occupations, even for
