@@ -173,10 +173,16 @@ theorem eigenbasisGibbsSummable_grandCanonicalEnergy
     (hgap : ∀ i, μ < ε i) :
     EigenbasisGibbsSummable
       (Common.grandCanonicalEnergy (Config := Occupation Mode) ε μ) β := by
-  apply eigenbasisGibbsSummable_grandCanonicalEnergy_of_mode ε β μ
-  · intro i
-    exact mul_pos hβ (sub_pos.mpr (hgap i))
-  · exact eigenbasisGibbsSummable_of_finite (fun i => ε i - μ) β
+  have hzero : EigenbasisGibbsSummable
+      (Common.grandCanonicalEnergy (Config := Occupation Mode)
+        (fun i => ε i - μ) 0) β := by
+    have hpositive : ∀ i, 0 < ε i - μ := fun i => sub_pos.mpr (hgap i)
+    have hsum := eigenbasisGibbsSummable_freeEigenvalue
+      (fun i => ε i - μ) β hβ hpositive
+    simpa [Common.grandCanonicalEnergy, freeEigenvalue] using hsum
+  have hshift := (Common.grandCanonicalGibbsSummable_shift_iff
+    (Config := Occupation Mode) (fun i => ε i - μ) β 0 μ).2 hzero
+  simpa only [zero_add, sub_add_cancel] using hshift
 
 end
 end Bosonic
