@@ -2,7 +2,7 @@ module
 
 public import Mathlib.Data.Fin.SuccPred
 public import Mathlib.Data.Fintype.BigOperators
-public import Mathlib.Logic.Equiv.Fin.Basic
+import Mathlib.Logic.Equiv.Fin.Basic
 
 public section
 
