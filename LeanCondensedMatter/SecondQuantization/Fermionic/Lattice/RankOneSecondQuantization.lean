@@ -1,6 +1,7 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.RankOne
 import LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.DiscreteLattice
 import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.OccupationFieldEquivalence
+import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.NumberOperator
 
 set_option linter.style.header false
 
@@ -17,6 +18,8 @@ namespace Fermionic
 namespace Lattice
 
 noncomputable section
+
+open scoped BigOperators
 
 variable {Site : Type*}
 
@@ -57,6 +60,36 @@ theorem occupationConjugate_dGamma_matrixUnit (x y : Site) :
     rfl
   rw [← hx, ← hy, AlgebraicFock.occupationConjugate_create,
     AlgebraicFock.occupationConjugate_annihilateDual]
+
+/-- Second quantization of a diagonal one-particle operator sums its coefficients over the
+occupied modes. Real coefficients give the occupation-energy free Hamiltonian. -/
+theorem occupationConjugate_dGamma_diagonalOperator [Fintype Site] (a : Site → ℂ) :
+    AlgebraicFock.occupationConjugate
+        (Finsupp.basisSingleOne : Module.Basis Site ℂ (Site →₀ ℂ))
+        (AlgebraicFock.dGamma ((Site →₀ ℂ)) (Common.diagonalOperator a)) =
+      Common.diagonalOperator (fun n : Occupation Site => ∑ i ∈ n, a i) := by
+  classical
+  have hdiag : Common.diagonalOperator a = ∑ i, a i • matrixUnit i i := by
+    apply Common.linearMap_ext_basisState
+    intro j
+    ext i
+    by_cases hij : i = j <;>
+      simp [Common.diagonalOperator_apply, Common.basisState, LinearMap.sum_apply,
+        Finsupp.finsetSum_apply, matrixUnit_apply, Finsupp.single_apply, hij, eq_comm]
+  rw [hdiag]
+  change AlgebraicFock.occupationConjugate _
+    (AlgebraicFock.dGammaLinear ((Site →₀ ℂ)) (∑ i, a i • matrixUnit i i)) = _
+  simp only [map_sum, map_smul, AlgebraicFock.dGammaLinear_apply,
+    occupationConjugate_dGamma_matrixUnit]
+  apply Common.linearMap_ext_basisState
+  intro n
+  simp only [LinearMap.sum_apply, LinearMap.smul_apply,
+    ← numberOperator, numberOperator_basisState, Common.diagonalOperator_basisState,
+    smul_ite, smul_zero]
+  have hfilter : (Finset.univ : Finset Site).filter (fun i => i ∈ n) = n := by
+    ext i
+    simp
+  rw [← Finset.sum_filter, hfilter, Finset.sum_smul]
 
 end
 end Lattice

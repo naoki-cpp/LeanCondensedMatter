@@ -1,5 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreePartitionFunction
-import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsContraction
+import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.OneBodyExpectation
 import LeanCondensedMatter.QuantumTheory.Gibbs.EigenbasisEntropy
 
 set_option linter.style.header false
@@ -29,11 +29,6 @@ local instance instDecidableEqFreeEntropy : DecidableEq Mode := Classical.decEq 
 noncomputable def fermiDiracOccupation (ε : Mode → ℝ) (β : ℝ) (i : Mode) : ℝ :=
   (Real.exp (β * ε i) + 1)⁻¹
 
-/-- The normalized probability of an occupation configuration in the free Gibbs state. -/
-noncomputable def freeGibbsConfigurationProbability
-    (ε : Mode → ℝ) (β : ℝ) (n : Occupation Mode) : ℝ :=
-  eigenbasisGibbsProbability (fermionEnergy ε) β n
-
 omit [LinearOrder Mode] in
 private theorem eigenbasisPartitionFunction_fermionEnergy_eq_prod
     (ε : Mode → ℝ) (β : ℝ) :
@@ -58,51 +53,31 @@ private theorem log_eigenbasisPartitionFunction_fermionEnergy_eq_sum
       (fun i _ => ne_of_gt (by positivity)))
 
 omit [LinearOrder Mode] in
-/-- The total probability of configurations containing mode `i` is its Fermi–Dirac occupation. -/
-theorem sum_freeGibbsConfigurationProbability_filter_mem
-    (ε : Mode → ℝ) (β : ℝ) (i : Mode) :
-    ∑ n ∈ (Finset.univ : Finset (Occupation Mode)).filter (i ∈ ·),
-        freeGibbsConfigurationProbability ε β n =
-      fermiDiracOccupation ε β i := by
-  letI : LinearOrder Mode :=
-    LinearOrder.lift' (Fintype.equivFin Mode) (Fintype.equivFin Mode).injective
-  have h := freeGibbsDensityOperator_expectation_create_comp_annihilate ε β i i
-  simp only [ite_true] at h
-  change (freeGibbsDensityOperator ε β).expectation
-    (Common.finiteHilbertOperatorAlgEquiv (numberOperator i)) = _ at h
-  rw [freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation,
-    Common.finiteGibbsExpectation_eq_sum, numberOperator_eq_diagonalOperator] at h
-  apply Complex.ofReal_injective
-  push_cast
-  simpa [Common.matrixCoeff_diagonalOperator, Finset.sum_filter, mul_ite,
-    freeGibbsConfigurationProbability, fermiDiracOccupation] using h
-
-omit [LinearOrder Mode] in
 /-- The free-fermion Gibbs mean energy is the mode-energy sum weighted by Fermi–Dirac occupations. -/
 theorem eigenbasisGibbsEnergyExpectation_fermionEnergy_eq_sum_fermiDirac
     (ε : Mode → ℝ) (β : ℝ) :
     eigenbasisGibbsEnergyExpectation (fermionEnergy ε) β =
       ∑ i, ε i * fermiDiracOccupation ε β i := by
+  letI : LinearOrder Mode :=
+    LinearOrder.lift' (Fintype.equivFin Mode) (Fintype.equivFin Mode).injective
+  let D := Common.diagonalOperator (fun i => (ε i : ℂ))
+  have h := freeGibbsDensityOperator_expectation_finiteSecondQuantization ε β
+    (Common.finiteHilbertOperatorAlgEquiv D)
+  simp only [Lattice.finiteSecondQuantization_finiteHilbertOperator,
+    AlgEquiv.symm_apply_apply] at h
+  change (freeGibbsDensityOperator ε β).expectation
+    (Common.finiteHilbertOperatorAlgEquiv
+      (AlgebraicFock.occupationConjugate
+        (Finsupp.basisSingleOne : Module.Basis Mode ℂ (Mode →₀ ℂ))
+        (AlgebraicFock.dGamma ((Mode →₀ ℂ)) D))) = _ at h
+  rw [Lattice.occupationConjugate_dGamma_diagonalOperator,
+    freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation,
+    Common.finiteGibbsExpectation_eq_sum] at h
+  apply Complex.ofReal_injective
   rw [eigenbasisGibbsEnergyExpectation, tsum_fintype]
-  change
-    (∑ n : Occupation Mode,
-        freeGibbsConfigurationProbability ε β n * fermionEnergy ε n) =
-      ∑ i, ε i * fermiDiracOccupation ε β i
-  calc
-    (∑ n : Occupation Mode,
-        freeGibbsConfigurationProbability ε β n * fermionEnergy ε n) =
-        ∑ n : Occupation Mode, ∑ i : Mode,
-          if i ∈ n then freeGibbsConfigurationProbability ε β n * ε i else 0 := by
-      simp [fermionEnergy_eq_sum, Finset.mul_sum]
-    _ = ∑ i : Mode, ∑ n : Occupation Mode,
-          if i ∈ n then freeGibbsConfigurationProbability ε β n * ε i else 0 := by
-      rw [Finset.sum_comm]
-    _ = ∑ i, ε i * fermiDiracOccupation ε β i := by
-      apply Finset.sum_congr rfl
-      intro i _
-      rw [← Finset.sum_filter]
-      simp_rw [mul_comm (freeGibbsConfigurationProbability ε β _) (ε i)]
-      rw [← Finset.mul_sum, sum_freeGibbsConfigurationProbability_filter_mem]
+  push_cast [fermiDiracOccupation, Complex.ofReal_exp]
+  simpa [D, Common.matrixCoeff_diagonalOperator, Common.diagonalOperator_apply,
+    latticeKet, Finsupp.single_apply, fermionEnergy_eq_sum, div_eq_mul_inv] using h
 
 omit [LinearOrder Mode] [Fintype Mode] in
 private theorem fermiDiracOccupation_eq_exp_neg_div
