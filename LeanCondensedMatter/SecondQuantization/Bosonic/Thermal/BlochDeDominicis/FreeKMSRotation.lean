@@ -42,25 +42,34 @@ noncomputable def FreeThermalField.kmsFactor (ε : Mode → ℝ) (β : ℝ) :
   | .annihilate i => Complex.exp ((β : ℂ) * (ε i : ℂ))
   | .create i => Complex.exp (-(β : ℂ) * (ε i : ℂ))
 
-/-- Uniform KMS rotation for either kind of free thermal field. -/
-theorem FreeThermalField.freeGibbsExpectation_operator_comp_rotate
-    (ε : Mode → ℝ) (β : ℝ) (C : FreeThermalField Mode)
+/-- Grand-canonical KMS rotation for either kind of free thermal field.
+
+The thermal generator is `K = H - μ N̂`, with effective one-particle energies
+`ε - μ`. This theorem concerns cyclicity of the Gibbs trace, not a change to
+the physical `H`-generated time evolution. It is used both by the
+explicit-μ Bose two-point function and by the μ=0 first-pair recursion. -/
+theorem FreeThermalField.grandCanonicalGibbsExpectation_operator_comp_rotate
+    (ε : Mode → ℝ) (β μ : ℝ) (C : FreeThermalField Mode)
     (A : FockSpace Mode →ₗ[ℂ] FockSpace Mode) :
-    freeGibbsExpectation ε β (C.operator.comp A) =
-      C.kmsFactor ε β * freeGibbsExpectation ε β (A.comp C.operator) := by
+    freeGibbsExpectation (fun i => ε i - μ) β (C.operator.comp A) =
+      C.kmsFactor (fun i => ε i - μ) β *
+        freeGibbsExpectation (fun i => ε i - μ) β (A.comp C.operator) := by
+  let ξ : Mode → ℝ := fun i => ε i - μ
+  change freeGibbsExpectation ξ β (C.operator.comp A) =
+    C.kmsFactor ξ β * freeGibbsExpectation ξ β (A.comp C.operator)
   have hmove :
-      (imaginaryTimeEvolveFree ε (-β)).comp C.operator =
-        C.kmsFactor ε β • (C.operator.comp (imaginaryTimeEvolveFree ε (-β))) := by
+      (imaginaryTimeEvolveFree ξ (-β)).comp C.operator =
+        C.kmsFactor ξ β • (C.operator.comp (imaginaryTimeEvolveFree ξ (-β))) := by
     cases C with
     | annihilate i =>
         simpa only [FreeThermalField.operator, FreeThermalField.kmsFactor,
-          Complex.ofReal_neg, neg_neg] using imaginaryTimeEvolveFree_comp_annihilate ε (-β) i
+          Complex.ofReal_neg, neg_neg] using imaginaryTimeEvolveFree_comp_annihilate ξ (-β) i
     | create i =>
         simpa only [FreeThermalField.operator, FreeThermalField.kmsFactor,
-          Complex.ofReal_neg] using imaginaryTimeEvolveFree_comp_create ε (-β) i
+          Complex.ofReal_neg] using imaginaryTimeEvolveFree_comp_create ξ (-β) i
   have hcyclic :
-      Common.tsumTrace (C.operator.comp ((imaginaryTimeEvolveFree ε (-β)).comp A)) =
-        Common.tsumTrace (((imaginaryTimeEvolveFree ε (-β)).comp A).comp C.operator) := by
+      Common.tsumTrace (C.operator.comp ((imaginaryTimeEvolveFree ξ (-β)).comp A)) =
+        Common.tsumTrace (((imaginaryTimeEvolveFree ξ (-β)).comp A).comp C.operator) := by
     cases C with
     | annihilate i => exact tsumTrace_annihilate_comp i _
     | create i => exact tsumTrace_create_comp i _
