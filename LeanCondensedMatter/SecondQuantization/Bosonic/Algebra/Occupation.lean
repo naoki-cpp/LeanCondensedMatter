@@ -88,13 +88,14 @@ finite, even though the full bosonic occupation space is infinite. -/
 instance finiteParticleNumberSector [Finite Mode] (N : ℕ) :
     Finite (Common.ParticleNumberSector Mode (Occupation Mode) N) := by
   classical
+  letI : Fintype Mode := Fintype.ofFinite Mode
   let encode : Common.ParticleNumberSector Mode (Occupation Mode) N →
       Mode → Fin (N + 1) :=
     fun n i => ⟨n.val i, Nat.lt_succ_of_le (by
       calc
         n.val i ≤ particleNumber n.val := occupation_le_particleNumber n.val i
         _ = N := n.property)⟩
-  apply Finite.of_injective encode
+  refine Finite.of_injective encode ?_
   intro n m h
   apply Subtype.ext
   apply Finsupp.ext
