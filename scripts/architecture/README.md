@@ -20,7 +20,12 @@ files / direct imports / DAGs / reachability             ↓
 Ordinary Lean library changes normally exercise both branches. Source-audit-only tooling does not
 force a library build, while advisory theorem-catalog tooling remains outside the pull-request gate.
 On `main`, advisory-tooling changes may request a build cache so the separate Lean Insights workflow
-can run against the merged commit.
+can run against the merged commit. Lean Insights always reports retained-theorem structural signals
+and changes from the previously published `graph-data` snapshot, without failing on findings.
+Pull-request CI also generates the report when catalog/retained tooling is changed; ordinary Lean-only
+PRs remain on the shorter required build path. The report is attached as `retained-audit.json` and
+summarized in the Actions job summary. A snapshot comparison is skipped explicitly if the
+`graph-data` reference cannot be fetched.
 
 Run the source audit with:
 
