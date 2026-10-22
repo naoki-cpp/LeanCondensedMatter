@@ -112,20 +112,6 @@ theorem polarPauliMatrix_inPlane_sandwich_eq_harmonics
   simp [hI]
   module
 
-private theorem integral_polar_inPlane_modes (c0 c2 cMix : ℂ) :
-    (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi),
-      c0 +
-        ((((Real.cos θ : ℝ) : ℂ) ^ 2) - (((Real.sin θ : ℝ) : ℂ) ^ 2)) * c2 +
-        (((Real.cos θ : ℝ) : ℂ) * ((Real.sin θ : ℝ) : ℂ)) * cMix) =
-      (((2 * Real.pi : ℝ) : ℂ)) * c0 := by
-  let harmonics : AngularHarmonicCoefficients ℂ :=
-    { constant := c0
-      firstCosine := 0
-      firstSine := 0
-      secondCosine := c2
-      secondMixed := cMix }
-  simpa [harmonics, AngularHarmonicCoefficients.eval, smul_eq_mul] using harmonics.integral_eval
-
 /-- The full-angle retarded-advanced polar Pauli rung acts through the canonical in-plane ladder
 action, preserving the complete coefficient vector until the operator boundary. -/
 theorem integral_polarPauliOperator_inPlane_eq
@@ -136,145 +122,65 @@ theorem integral_polarPauliOperator_inPlane_eq
         polarPauliOperator aA bA dA θ) =
       inPlanePauliVertexOperator
         (inPlaneLadderAction (pauliRungAngularCoefficient aR aA dR dA) coefficients) := by
-  let scalarCoefficient : ℝ → ℂ := fun θ =>
-    let c := ((Real.cos θ : ℝ) : ℂ)
-    let s := ((Real.sin θ : ℝ) : ℂ)
-    coefficients 0 * (c * (aA * bR + aR * bA) + Complex.I * s * (bA * dR - bR * dA)) +
-      coefficients 1 * (s * (aA * bR + aR * bA) - Complex.I * c * (bA * dR - bR * dA))
-  let xCoefficient : ℝ → ℂ := fun θ =>
-    let c := ((Real.cos θ : ℝ) : ℂ)
-    let s := ((Real.sin θ : ℝ) : ℂ)
-    coefficients 0 * (aR * aA - dR * dA + bR * bA * (c ^ 2 - s ^ 2)) +
-      coefficients 1 * ((-Complex.I) * (aA * dR - aR * dA) + 2 * bR * bA * c * s)
-  let yCoefficient : ℝ → ℂ := fun θ =>
-    let c := ((Real.cos θ : ℝ) : ℂ)
-    let s := ((Real.sin θ : ℝ) : ℂ)
-    coefficients 0 * (Complex.I * (aA * dR - aR * dA) + 2 * bR * bA * c * s) +
-      coefficients 1 * (aR * aA - dR * dA - bR * bA * (c ^ 2 - s ^ 2))
-  let zCoefficient : ℝ → ℂ := fun θ =>
-    let c := ((Real.cos θ : ℝ) : ℂ)
-    let s := ((Real.sin θ : ℝ) : ℂ)
-    coefficients 0 * (c * (bA * dR + bR * dA) + Complex.I * s * (aR * bA - aA * bR)) +
-      coefficients 1 * (s * (bA * dR + bR * dA) - Complex.I * c * (aR * bA - aA * bR))
-  have hpointwise :
-      (fun θ : ℝ =>
-        polarPauliOperator aR bR dR θ *
+  let H := polarPauliInPlaneHarmonics aR bR dR aA bA dA coefficients
+  let HO : AngularHarmonicCoefficients DiracOperator :=
+    { constant := matrixOperator H.constant
+      firstCosine := matrixOperator H.firstCosine
+      firstSine := matrixOperator H.firstSine
+      secondCosine := matrixOperator H.secondCosine
+      secondMixed := matrixOperator H.secondMixed }
+  have hVertex :
+      inPlanePauliVertexOperator coefficients =
+        matrixOperator (coefficients 0 • sigmaX + coefficients 1 • sigmaY) := by
+    simp [inPlanePauliVertexOperator, matrixOperator, map_add, map_smul]
+  have hpoint (θ : ℝ) :
+      polarPauliOperator aR bR dR θ *
           inPlanePauliVertexOperator coefficients *
-          polarPauliOperator aA bA dA θ) =
-      fun θ : ℝ =>
-        scalarCoefficient θ • (1 : DiracHilbert →L[ℂ] DiracHilbert) +
-          xCoefficient θ • matrixOperator sigmaX +
-          yCoefficient θ • matrixOperator sigmaY +
-          zCoefficient θ • matrixOperator sigmaZ := by
-    funext θ
-    have hmatrix :
-        polarPauliMatrix aR bR dR θ *
-            (coefficients 0 • sigmaX + coefficients 1 • sigmaY) *
-            polarPauliMatrix aA bA dA θ =
-          scalarCoefficient θ • (1 : Matrix2) +
-            xCoefficient θ • sigmaX +
-            yCoefficient θ • sigmaY +
-            zCoefficient θ • sigmaZ := by
-      rw [polarPauliMatrix_inPlane_sandwich_eq_harmonics]
-      simp [polarPauliInPlaneHarmonics, AngularHarmonicCoefficients.eval,
-        scalarCoefficient, xCoefficient, yCoefficient, zCoefficient]
-      module
-    have hVertexOperator :
-        coefficients 0 • matrixOperator sigmaX + coefficients 1 • matrixOperator sigmaY =
-          matrixOperator (coefficients 0 • sigmaX + coefficients 1 • sigmaY) := by
-      simp [matrixOperator]
-    unfold inPlanePauliVertexOperator polarPauliOperator
-    rw [hVertexOperator]
+          polarPauliOperator aA bA dA θ = HO.eval θ := by
+    rw [hVertex]
+    unfold polarPauliOperator
     change
-      (Matrix.toEuclideanCLM : Matrix2 ≃⋆ₐ[ℂ] (DiracHilbert →L[ℂ] DiracHilbert))
+      (Matrix.toEuclideanCLM : Matrix2 ≃⋆ₐ[ℂ]
+          (DiracHilbert →L[ℂ] DiracHilbert))
           (polarPauliMatrix aR bR dR θ) *
-        (Matrix.toEuclideanCLM : Matrix2 ≃⋆ₐ[ℂ] (DiracHilbert →L[ℂ] DiracHilbert))
+        (Matrix.toEuclideanCLM : Matrix2 ≃⋆ₐ[ℂ]
+          (DiracHilbert →L[ℂ] DiracHilbert))
           (coefficients 0 • sigmaX + coefficients 1 • sigmaY) *
-        (Matrix.toEuclideanCLM : Matrix2 ≃⋆ₐ[ℂ] (DiracHilbert →L[ℂ] DiracHilbert))
+        (Matrix.toEuclideanCLM : Matrix2 ≃⋆ₐ[ℂ]
+          (DiracHilbert →L[ℂ] DiracHilbert))
           (polarPauliMatrix aA bA dA θ) = _
-    rw [← map_mul, ← map_mul, hmatrix]
-    simp [matrixOperator, map_add, map_smul]
-  have hScalarIntegral :
-      (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi), scalarCoefficient θ) = 0 := by
-    convert integral_complex_cos_mul_add_sin_mul_zero_two_pi
-      (coefficients 0 * (aA * bR + aR * bA) -
-        coefficients 1 * Complex.I * (bA * dR - bR * dA))
-      (coefficients 0 * Complex.I * (bA * dR - bR * dA) +
-        coefficients 1 * (aA * bR + aR * bA)) using 1
-    apply intervalIntegral.integral_congr
-    intro θ _
-    simp [scalarCoefficient]
-    ring
-  have hXIntegral :
-      (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi), xCoefficient θ) =
-        pauliRungAngularCoefficient aR aA dR dA 0 * coefficients 0 -
-          pauliRungAngularCoefficient aR aA dR dA 1 * coefficients 1 := by
-    convert integral_polar_inPlane_modes
-      ((aR * aA - dR * dA) * coefficients 0 -
-        Complex.I * (aA * dR - aR * dA) * coefficients 1)
-      (bR * bA * coefficients 0)
-      (2 * bR * bA * coefficients 1) using 1
-    · apply intervalIntegral.integral_congr
-      intro θ _
-      simp [xCoefficient]
-      ring
-    · simp [pauliRungAngularCoefficient]
-      ring
-  have hYIntegral :
-      (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi), yCoefficient θ) =
-        pauliRungAngularCoefficient aR aA dR dA 1 * coefficients 0 +
-          pauliRungAngularCoefficient aR aA dR dA 0 * coefficients 1 := by
-    convert integral_polar_inPlane_modes
-      (Complex.I * (aA * dR - aR * dA) * coefficients 0 +
-        (aR * aA - dR * dA) * coefficients 1)
-      (-(bR * bA * coefficients 1))
-      (2 * bR * bA * coefficients 0) using 1
-    · apply intervalIntegral.integral_congr
-      intro θ _
-      simp [yCoefficient]
-      ring
-    · simp [pauliRungAngularCoefficient]
-      ring
-  have hZIntegral :
-      (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi), zCoefficient θ) = 0 := by
-    convert integral_complex_cos_mul_add_sin_mul_zero_two_pi
-      (coefficients 0 * (bA * dR + bR * dA) -
-        coefficients 1 * Complex.I * (aR * bA - aA * bR))
-      (coefficients 0 * Complex.I * (aR * bA - aA * bR) +
-        coefficients 1 * (bA * dR + bR * dA)) using 1
-    apply intervalIntegral.integral_congr
-    intro θ _
-    simp [zCoefficient]
-    ring
-  have hscalar : IntervalIntegrable
-      (fun θ : ℝ => scalarCoefficient θ • (1 : DiracHilbert →L[ℂ] DiracHilbert))
-      volume 0 (2 * Real.pi) := by
-    apply Continuous.intervalIntegrable
-    dsimp [scalarCoefficient]
-    fun_prop
-  have hx : IntervalIntegrable
-      (fun θ : ℝ => xCoefficient θ • matrixOperator sigmaX) volume 0 (2 * Real.pi) := by
-    apply Continuous.intervalIntegrable
-    dsimp [xCoefficient]
-    fun_prop
-  have hy : IntervalIntegrable
-      (fun θ : ℝ => yCoefficient θ • matrixOperator sigmaY) volume 0 (2 * Real.pi) := by
-    apply Continuous.intervalIntegrable
-    dsimp [yCoefficient]
-    fun_prop
-  have hz : IntervalIntegrable
-      (fun θ : ℝ => zCoefficient θ • matrixOperator sigmaZ) volume 0 (2 * Real.pi) := by
-    apply Continuous.intervalIntegrable
-    dsimp [zCoefficient]
-    fun_prop
-  rw [hpointwise]
-  rw [intervalIntegral.integral_add ((hscalar.add hx).add hy) hz,
-    intervalIntegral.integral_add (hscalar.add hx) hy,
-    intervalIntegral.integral_add hscalar hx]
-  rw [intervalIntegral.integral_smul_const, intervalIntegral.integral_smul_const,
-    intervalIntegral.integral_smul_const, intervalIntegral.integral_smul_const]
-  rw [hScalarIntegral, hXIntegral, hYIntegral, hZIntegral]
-  simp [inPlanePauliVertexOperator]
+    rw [← map_mul, ← map_mul,
+      show polarPauliMatrix aR bR dR θ *
+          (coefficients 0 • sigmaX + coefficients 1 • sigmaY) *
+          polarPauliMatrix aA bA dA θ = H.eval θ from
+        polarPauliMatrix_inPlane_sandwich_eq_harmonics
+          aR bR dR aA bA dA coefficients θ]
+    simp [HO, AngularHarmonicCoefficients.eval, matrixOperator,
+      map_add, map_smul]
+  change
+    (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi),
+      polarPauliOperator aR bR dR θ *
+        inPlanePauliVertexOperator coefficients *
+        polarPauliOperator aA bA dA θ) = _
+  calc
+    (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi),
+      polarPauliOperator aR bR dR θ *
+        inPlanePauliVertexOperator coefficients *
+        polarPauliOperator aA bA dA θ) =
+        ∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi), HO.eval θ := by
+          apply intervalIntegral.integral_congr
+          intro θ _
+          exact hpoint θ
+    _ = (2 * Real.pi : ℝ) • HO.constant := HO.integral_eval
+    _ = inPlanePauliVertexOperator
+        (inPlaneLadderAction
+          (pauliRungAngularCoefficient aR aA dR dA) coefficients) := by
+      change ((2 * Real.pi : ℝ) : ℂ) • matrixOperator H.constant = _
+      simp only [H, polarPauliInPlaneHarmonics, inPlanePauliVertexOperator,
+        pauliRungAngularCoefficient, inPlaneLadderAction_apply_x,
+        inPlaneLadderAction_apply_y, map_add, map_smul,
+        smul_add, smul_smul]
+      module
 
 end
 
