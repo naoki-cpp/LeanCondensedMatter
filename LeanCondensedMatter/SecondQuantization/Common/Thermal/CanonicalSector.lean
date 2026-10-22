@@ -95,7 +95,7 @@ theorem canonicalSectorPullback_comp_embedding (N : ℕ) :
   change Function.extend
       (Subtype.val : ParticleNumberSector Mode Config N → Config)
       (fun d => ψ d) 0 n.val = ψ n
-  exact Subtype.val_injective.extend_apply (fun d => ψ d) n
+  simp only [Subtype.val_injective.extend_apply]
 
 /-- The fixed-particle-number coordinate projection is precisely zero-extension
 from the sector composed with coordinate pullback onto that sector.
