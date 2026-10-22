@@ -23,6 +23,8 @@ namespace SecondQuantization
 namespace Fermionic
 namespace Transport
 
+attribute [local instance 100] LieRing.ofAssociativeRing
+
 open _root_.SecondQuantization.Fermionic.Lattice
 
 noncomputable section
@@ -35,7 +37,7 @@ noncomputable def boundedSymmetrizedVelocityCurrentLinear
     (velocity : (Site →₀ ℂ) →ₗ[ℂ] (Site →₀ ℂ)) :
     ((Site →₀ ℂ) →ₗ[ℂ] (Site →₀ ℂ)) →ₗ[ℂ]
       (FiniteLatticeHilbertFock Site →L[ℂ] FiniteLatticeHilbertFock Site) :=
-  (boundedOneBodyOperatorLinearMap (Site := Site)).comp
+  (boundedOneBodyOperator (Site := Site)).toLinearMap.comp
     (_root_.ConservationLaw.symmetrizedProductLeftLinear ((Site →₀ ℂ)) velocity)
 
 
