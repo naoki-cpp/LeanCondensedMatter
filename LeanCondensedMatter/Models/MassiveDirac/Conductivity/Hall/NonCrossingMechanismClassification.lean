@@ -1,3 +1,4 @@
+import LeanCondensedMatter.QuantumTheory.PlanckConstant
 import LeanCondensedMatter.Transport.Analysis.ContinuumMeasure
 import LeanCondensedMatter.Models.MassiveDirac.Conductivity.Hall.NonCrossingDecomposition
 import LeanCondensedMatter.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderHallZeroBroadeningProvenance
@@ -144,11 +145,11 @@ do not create primitive mechanism APIs. -/
 theorem orderedXYRungSolvedProvenanceConductivityLimit_eq_intrinsic_sideJumpType_nonCrossingSkewType_partition
     (e hbar m probeEnergy : ℝ) (hhbar : hbar ≠ 0) (hprobe : probeEnergy ≠ 0) :
     let sideJumpType : ℝ :=
-      -(e ^ 2 / planckFromReduced hbar) *
+      -(e ^ 2 / planckConstantFromReduced hbar) *
         (2 * m * (probeEnergy ^ 2 - m ^ 2) /
           (probeEnergy * (probeEnergy ^ 2 + 3 * m ^ 2)))
     let nonCrossingSkewType : ℝ :=
-      -(e ^ 2 / planckFromReduced hbar) *
+      -(e ^ 2 / planckConstantFromReduced hbar) *
         (3 * m * (probeEnergy ^ 2 - m ^ 2) ^ 2 /
           (2 * probeEnergy * (probeEnergy ^ 2 + 3 * m ^ 2) ^ 2))
     inPlaneCoefficientVector
@@ -169,24 +170,24 @@ theorem orderedXYRungSolvedProvenanceConductivityLimit_eq_intrinsic_sideJumpType
           (Real.pi * hbar * (probeEnergy ^ 2 + 3 * m ^ 2)) =
         intrinsicHallConductivity e hbar m probeEnergy +
           (3 / 4 : ℝ) *
-            (-(e ^ 2 / planckFromReduced hbar) *
+            (-(e ^ 2 / planckConstantFromReduced hbar) *
               (2 * m * (probeEnergy ^ 2 - m ^ 2) /
                 (probeEnergy * (probeEnergy ^ 2 + 3 * m ^ 2)))) := by
     rw [intrinsicHallConductivity_eq_ado_eq12a e hbar m probeEnergy hhbar hprobe]
-    unfold planckFromReduced
+    unfold planckConstantFromReduced
     field_simp [hhbar, hprobe, hden, Real.pi_ne_zero]
     ring
   have hy :
       -e ^ 2 * probeEnergy * m * (probeEnergy ^ 2 - m ^ 2) /
           (Real.pi * hbar * (probeEnergy ^ 2 + 3 * m ^ 2) ^ 2) =
         (1 / 4 : ℝ) *
-            (-(e ^ 2 / planckFromReduced hbar) *
+            (-(e ^ 2 / planckConstantFromReduced hbar) *
               (2 * m * (probeEnergy ^ 2 - m ^ 2) /
                 (probeEnergy * (probeEnergy ^ 2 + 3 * m ^ 2)))) +
-          (-(e ^ 2 / planckFromReduced hbar) *
+          (-(e ^ 2 / planckConstantFromReduced hbar) *
             (3 * m * (probeEnergy ^ 2 - m ^ 2) ^ 2 /
               (2 * probeEnergy * (probeEnergy ^ 2 + 3 * m ^ 2) ^ 2))) := by
-    unfold planckFromReduced
+    unfold planckConstantFromReduced
     field_simp [hhbar, hprobe, hden, Real.pi_ne_zero]
     ring
   apply funext
@@ -200,11 +201,11 @@ non-crossing Hall conductivity. -/
 theorem intrinsic_sideJumpType_nonCrossingSkewType_sum_eq_nonCrossingHallConductivity
     (e hbar m probeEnergy : ℝ) (hhbar : hbar ≠ 0) (hprobe : probeEnergy ≠ 0) :
     let sideJumpType : ℝ :=
-      -(e ^ 2 / planckFromReduced hbar) *
+      -(e ^ 2 / planckConstantFromReduced hbar) *
         (2 * m * (probeEnergy ^ 2 - m ^ 2) /
           (probeEnergy * (probeEnergy ^ 2 + 3 * m ^ 2)))
     let nonCrossingSkewType : ℝ :=
-      -(e ^ 2 / planckFromReduced hbar) *
+      -(e ^ 2 / planckConstantFromReduced hbar) *
         (3 * m * (probeEnergy ^ 2 - m ^ 2) ^ 2 /
           (2 * probeEnergy * (probeEnergy ^ 2 + 3 * m ^ 2) ^ 2))
     intrinsicHallConductivity e hbar m probeEnergy + sideJumpType + nonCrossingSkewType =

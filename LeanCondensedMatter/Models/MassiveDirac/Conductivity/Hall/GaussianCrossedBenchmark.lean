@@ -1,3 +1,4 @@
+import LeanCondensedMatter.QuantumTheory.PlanckConstant
 import LeanCondensedMatter.Models.MassiveDirac.Conductivity.Hall.NonCrossingMechanismClassification
 import Mathlib.Tactic
 
@@ -36,10 +37,10 @@ integral with this expression. -/
 theorem nonCrossingHallConductivity_add_gaussianCrossedTarget_eq_gaussianBenchmark
     (e hbar m probeEnergy : ℝ) :
     nonCrossingHallConductivity e hbar m probeEnergy +
-        (4 * e ^ 2 / planckFromReduced hbar) *
+        (4 * e ^ 2 / planckConstantFromReduced hbar) *
           (probeEnergy * m * (probeEnergy ^ 2 - m ^ 2) /
             (probeEnergy ^ 2 + 3 * m ^ 2) ^ 2) =
-      -(8 * e ^ 2 / planckFromReduced hbar) *
+      -(8 * e ^ 2 / planckConstantFromReduced hbar) *
         (probeEnergy * m ^ 3 /
           (probeEnergy ^ 2 + 3 * m ^ 2) ^ 2) := by
   unfold nonCrossingHallConductivity
@@ -56,13 +57,13 @@ In particular, it does **not** establish that the regulated X/Psi
 real-space integrals converge to those expressions. -/
 theorem adoEq18SkewBenchmark_eq_nonCrossingSkew_add_crossedTarget
     (e hbar m probeEnergy : ℝ) (hprobe : probeEnergy ≠ 0) :
-    (e ^ 2 / planckFromReduced hbar) *
+    (e ^ 2 / planckConstantFromReduced hbar) *
         (m * (probeEnergy ^ 2 - m ^ 2) * (5 * probeEnergy ^ 2 + 3 * m ^ 2) /
           (2 * probeEnergy * (probeEnergy ^ 2 + 3 * m ^ 2) ^ 2)) =
-      -(e ^ 2 / planckFromReduced hbar) *
+      -(e ^ 2 / planckConstantFromReduced hbar) *
           (3 * m * (probeEnergy ^ 2 - m ^ 2) ^ 2 /
             (2 * probeEnergy * (probeEnergy ^ 2 + 3 * m ^ 2) ^ 2)) +
-        (4 * e ^ 2 / planckFromReduced hbar) *
+        (4 * e ^ 2 / planckConstantFromReduced hbar) *
           (probeEnergy * m * (probeEnergy ^ 2 - m ^ 2) /
             (probeEnergy ^ 2 + 3 * m ^ 2) ^ 2) := by
   have hden : probeEnergy ^ 2 + 3 * m ^ 2 ≠ 0 := by
@@ -90,14 +91,14 @@ theorem intrinsic_sideJumpType_adoEq18SkewBenchmark_sum_eq_gaussianBenchmark
     (e hbar m probeEnergy : ℝ) (hhbar : hbar ≠ 0)
     (hprobe : probeEnergy ≠ 0) :
     intrinsicHallConductivity e hbar m probeEnergy +
-        (-(e ^ 2 / planckFromReduced hbar) *
+        (-(e ^ 2 / planckConstantFromReduced hbar) *
           (2 * m * (probeEnergy ^ 2 - m ^ 2) /
             (probeEnergy * (probeEnergy ^ 2 + 3 * m ^ 2)))) +
-        (e ^ 2 / planckFromReduced hbar) *
+        (e ^ 2 / planckConstantFromReduced hbar) *
           (m * (probeEnergy ^ 2 - m ^ 2) *
             (5 * probeEnergy ^ 2 + 3 * m ^ 2) /
             (2 * probeEnergy * (probeEnergy ^ 2 + 3 * m ^ 2) ^ 2)) =
-      -(8 * e ^ 2 / planckFromReduced hbar) *
+      -(8 * e ^ 2 / planckConstantFromReduced hbar) *
         (probeEnergy * m ^ 3 /
           (probeEnergy ^ 2 + 3 * m ^ 2) ^ 2) := by
   rw [adoEq18SkewBenchmark_eq_nonCrossingSkew_add_crossedTarget
@@ -117,10 +118,10 @@ Unlike a bare transcription of the displayed arXiv-v3 Eq. (18), the
 reconstructed mechanism sum obeys the expected mass-reversal parity. -/
 theorem gaussianHallBenchmark_neg_mass
     (e hbar m probeEnergy : ℝ) :
-    -(8 * e ^ 2 / planckFromReduced hbar) *
+    -(8 * e ^ 2 / planckConstantFromReduced hbar) *
         (probeEnergy * (-m) ^ 3 /
           (probeEnergy ^ 2 + 3 * (-m) ^ 2) ^ 2) =
-      - (-(8 * e ^ 2 / planckFromReduced hbar) *
+      - (-(8 * e ^ 2 / planckConstantFromReduced hbar) *
         (probeEnergy * m ^ 3 /
           (probeEnergy ^ 2 + 3 * m ^ 2) ^ 2)) := by
   ring
@@ -129,11 +130,11 @@ theorem gaussianHallBenchmark_neg_mass
 is odd under mass reversal. -/
 theorem adoEq18SkewBenchmark_neg_mass
     (e hbar m probeEnergy : ℝ) :
-    (e ^ 2 / planckFromReduced hbar) *
+    (e ^ 2 / planckConstantFromReduced hbar) *
         ((-m) * (probeEnergy ^ 2 - (-m) ^ 2) *
           (5 * probeEnergy ^ 2 + 3 * (-m) ^ 2) /
           (2 * probeEnergy * (probeEnergy ^ 2 + 3 * (-m) ^ 2) ^ 2)) =
-      - ((e ^ 2 / planckFromReduced hbar) *
+      - ((e ^ 2 / planckConstantFromReduced hbar) *
         (m * (probeEnergy ^ 2 - m ^ 2) *
           (5 * probeEnergy ^ 2 + 3 * m ^ 2) /
           (2 * probeEnergy * (probeEnergy ^ 2 + 3 * m ^ 2) ^ 2))) := by

@@ -1,3 +1,4 @@
+import LeanCondensedMatter.QuantumTheory.PlanckConstant
 import LeanCondensedMatter.Models.MassiveDirac.Scaling.Domain
 import LeanCondensedMatter.Models.MassiveDirac.Conductivity.Hall.NonCrossing
 import LeanCondensedMatter.Models.MassiveDirac.TransportDomain
@@ -30,7 +31,7 @@ open Filter QuantumTheory.Transport
 statements have been proved for a physical conductivity component. -/
 def AheScalingParameters.normalizedComplexConductivity
     (params : AheScalingParameters) (sigma : ℂ) : ℂ :=
-  (((planckFromReduced params.hbar / params.e ^ 2 : ℝ) : ℂ)) * sigma
+  (((planckConstantFromReduced params.hbar / params.e ^ 2 : ℝ) : ℂ)) * sigma
 
 /-- Dimensionless longitudinal/Hall conductivity coordinates. Finite-broadening values remain
 complex until a separate reality theorem is available. -/
@@ -171,7 +172,7 @@ theorem AheScalingParameters.tendsto_finiteBroadeningPair_sxx_broadening_zero
       hrenorm hdet
   have hnormalized :=
     h.const_mul
-      (((planckFromReduced params.hbar / params.e ^ 2 : ℝ) : ℂ))
+      (((planckConstantFromReduced params.hbar / params.e ^ 2 : ℝ) : ℂ))
   simpa [AheScalingParameters.normalizedComplexConductivity,
     FixedCutoffMetallicBornRegime.ofScalarBoundaryData] using hnormalized
 
@@ -197,7 +198,7 @@ theorem AheScalingParameters.tendsto_finiteBroadeningPair_sxy_broadening_zero
       hrenorm hdet
   have hnormalized :=
     h.const_mul
-      (((planckFromReduced params.hbar / params.e ^ 2 : ℝ) : ℂ))
+      (((planckConstantFromReduced params.hbar / params.e ^ 2 : ℝ) : ℂ))
   simpa [AheScalingParameters.finiteBroadeningPair_sxy,
     AheScalingParameters.zeroBroadeningPair_sxy,
     AheScalingParameters.normalizedComplexConductivity,
@@ -223,7 +224,7 @@ theorem AheScalingParameters.tendsto_zeroBroadeningPairAtDisorder_sxy_disorder_z
       params.velocity_ne_zero params.hbar_pos params.metallic params.cutoff_shell
   have hnormalized :=
     h.const_mul
-      (((planckFromReduced params.hbar / params.e ^ 2 : ℝ) : ℂ))
+      (((planckConstantFromReduced params.hbar / params.e ^ 2 : ℝ) : ℂ))
   simpa [AheScalingParameters.zeroBroadeningPairAtDisorder,
     AheScalingParameters.normalizedPairOfTensor,
     AheScalingParameters.normalizedComplexConductivity] using hnormalized
