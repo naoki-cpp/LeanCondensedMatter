@@ -1,4 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.CanonicalFullFock
+import LeanCondensedMatter.QuantumTheory.DensityOperator.DiagonalFormula
 
 set_option linter.style.header false
 
@@ -102,6 +103,130 @@ theorem canonicalFullGibbsDensityOperator_eq_sector_embedding
     rw [canonicalFullGibbsDensityOperator_apply_basis_of_ne ε β N hsum c hc,
       canonicalPullback_basisState_of_ne N c hc]
     simp
+
+/-- Restricting a bounded full-Fock operator to the sharp-number sector preserves
+its diagonal matrix elements on the embedded occupation basis. This does not
+require the operator to preserve particle number. -/
+private theorem canonicalCompressedDiagonalMatrixElement (N : ℕ)
+    (A : CompletedFock Config →L[ℂ] CompletedFock Config)
+    (n : ParticleNumberSector Mode Config N) :
+    inner ℂ (completedBasisState n)
+      (((completedCoordinatePullback
+          (Subtype.val : ParticleNumberSector Mode Config N → Config)
+          Subtype.val_injective).comp
+        (A.comp
+          (completedCoordinateEmbedding
+            (Subtype.val : ParticleNumberSector Mode Config N → Config)
+            Subtype.val_injective).toContinuousLinearMap))
+        (completedBasisState n)) =
+    inner ℂ (completedBasisState n.val) (A (completedBasisState n.val)) := by
+  rw [ContinuousLinearMap.comp_apply, ContinuousLinearMap.comp_apply,
+    inner_completedBasisState_left, completedCoordinatePullback_apply,
+    completedCoordinateEmbedding_basisState, inner_completedBasisState_left]
+
+/-- A bounded full-Fock observable has the same canonical expectation as its
+compression to the fixed-number sector. The ambient operator may connect
+different particle-number sectors; only the final expectation is restricted. -/
+theorem canonicalFullGibbsDensityOperator_expectation_eq_sector
+    (ε : Mode → ℝ) (β : ℝ) (N : ℕ)
+    [Nonempty (ParticleNumberSector Mode Config N)]
+    (hsum : EigenbasisGibbsSummable
+      (fun n : ParticleNumberSector Mode Config N => occupationEnergy ε n.val) β)
+    (A : CompletedFock Config →L[ℂ] CompletedFock Config) :
+    (canonicalFullGibbsDensityOperator (Config := Config) ε β N hsum).expectation A =
+      (canonicalGibbsDensityOperator (Config := Config) ε β N hsum).expectation
+        ((completedCoordinatePullback
+          (Subtype.val : ParticleNumberSector Mode Config N → Config)
+          Subtype.val_injective).comp
+          (A.comp
+            (completedCoordinateEmbedding
+              (Subtype.val : ParticleNumberSector Mode Config N → Config)
+              Subtype.val_injective).toContinuousLinearMap)) := by
+  classical
+  let E : ParticleNumberSector Mode Config N → ℝ := fun n => occupationEnergy ε n.val
+  let B : CompletedFock (ParticleNumberSector Mode Config N) →L[ℂ]
+      CompletedFock (ParticleNumberSector Mode Config N) :=
+    (completedCoordinatePullback
+      (Subtype.val : ParticleNumberSector Mode Config N → Config)
+      Subtype.val_injective).comp
+      (A.comp
+        (completedCoordinateEmbedding
+          (Subtype.val : ParticleNumberSector Mode Config N → Config)
+          Subtype.val_injective).toContinuousLinearMap)
+  let f : ParticleNumberSector Mode Config N → ℂ := fun n =>
+    (eigenbasisGibbsProbability E β n : ℂ) *
+      inner ℂ (completedBasisState n) (B (completedBasisState n))
+  let g : Config → ℂ := fun c =>
+    (Real.normalizedWeight (canonicalFullGibbsWeight ε β N) c : ℂ) *
+      inner ℂ (completedBasisState c) (A (completedBasisState c))
+  have hSector : HasSum f
+      ((canonicalGibbsDensityOperator (Config := Config) ε β N hsum).expectation B) := by
+    simpa only [f, E, completedHilbertBasis_apply] using
+      (canonicalGibbsDensityOperator (Config := Config) ε β N hsum).hasSum_expectation_diagonal
+        B (completedHilbertBasis (Config := ParticleNumberSector Mode Config N))
+        (eigenbasisGibbsProbability E β)
+        (fun n => by
+          simpa only [E, completedHilbertBasis_apply] using
+            (canonicalGibbsDensityOperator_apply_basis ε β N hsum n))
+  have hFull : HasSum g
+      ((canonicalFullGibbsDensityOperator (Config := Config) ε β N hsum).expectation A) := by
+    simpa only [g, completedHilbertBasis_apply] using
+      (canonicalFullGibbsDensityOperator (Config := Config) ε β N hsum).hasSum_expectation_diagonal
+        A (completedHilbertBasis (Config := Config))
+        (Real.normalizedWeight (canonicalFullGibbsWeight ε β N))
+        (fun c => by
+          simpa only [canonicalFullGibbsDensityOperator, completedHilbertBasis_apply] using
+            (diagonalDensityOperator_apply_basis
+              (completedHilbertBasis (Config := Config))
+              (canonicalFullGibbsWeight ε β N)
+              (canonicalFullGibbsWeight_norm_summable ε β N hsum)
+              (canonicalFullGibbsWeight_nonneg ε β N)
+              (canonicalFullGibbsWeight_tsum_pos ε β N hsum) c))
+  have hProb (n : ParticleNumberSector Mode Config N) :
+      Real.normalizedWeight (canonicalFullGibbsWeight ε β N) n.val =
+        eigenbasisGibbsProbability E β n := by
+    change
+      (∑' c : Config, canonicalFullGibbsWeight ε β N c)⁻¹ *
+          canonicalFullGibbsWeight ε β N n.val =
+        (eigenbasisPartitionFunction E β)⁻¹ * eigenbasisBoltzmannWeight E β n
+    rw [(canonicalFullGibbsWeight_hasSum ε β N hsum).tsum_eq,
+      canonicalPartitionFunction, canonicalFullGibbsWeight_apply_sector]
+  have hPoint :
+      Function.extend
+        (Subtype.val : ParticleNumberSector Mode Config N → Config) f 0 = g := by
+    funext c
+    by_cases hc : particleNumber (Mode := Mode) c = N
+    · let n : ParticleNumberSector Mode Config N := ⟨c, hc⟩
+      change Function.extend
+        (Subtype.val : ParticleNumberSector Mode Config N → Config) f 0 n.val = g n.val
+      rw [Subtype.val_injective.extend_apply]
+      change (eigenbasisGibbsProbability E β n : ℂ) *
+          inner ℂ (completedBasisState n) (B (completedBasisState n)) =
+        (Real.normalizedWeight (canonicalFullGibbsWeight ε β N) n.val : ℂ) *
+          inner ℂ (completedBasisState n.val) (A (completedBasisState n.val))
+      rw [hProb n]
+      exact congrArg (fun z : ℂ => (eigenbasisGibbsProbability E β n : ℂ) * z)
+        (canonicalCompressedDiagonalMatrixElement N A n)
+    · have hnot : ¬ ∃ n : ParticleNumberSector Mode Config N, n.val = c := by
+        rintro ⟨n, hn⟩
+        apply hc
+        rw [← hn]
+        exact n.property
+      change Function.extend
+        (Subtype.val : ParticleNumberSector Mode Config N → Config) f 0 c = g c
+      rw [Function.extend_apply' _ _ _ hnot]
+      simp [g, Real.normalizedWeight,
+        canonicalFullGibbsWeight_apply_of_ne ε β N c hc]
+  have hExtended : HasSum
+      (Function.extend
+        (Subtype.val : ParticleNumberSector Mode Config N → Config) f 0)
+      ((canonicalGibbsDensityOperator (Config := Config) ε β N hsum).expectation B) :=
+    (hasSum_extend_zero Subtype.val_injective).2 hSector
+  rw [hPoint] at hExtended
+  change
+    (canonicalFullGibbsDensityOperator (Config := Config) ε β N hsum).expectation A =
+      (canonicalGibbsDensityOperator (Config := Config) ε β N hsum).expectation B
+  exact hFull.unique hExtended
 
 end
 
