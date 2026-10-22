@@ -63,9 +63,10 @@ the same Common completed occupation-space infrastructure. The free heat operato
 For arbitrary `Mode`, an explicit `EigenbasisGibbsSummable (freeEigenvalue ε) β` hypothesis
 supplies:
 
-- trace-classness of the completed free heat operator;
-- equality of its trace with the convergence-aware algebraic `freeGibbsPartition`;
-- the canonical pure-point Gibbs density operator, its basis action, and normalization.
+- trace-classness of the physical completed free heat operator `exp(-βH)`;
+- equality of its trace with the explicit grand-canonical partition function at `μ = 0`;
+- normalization to `Common.grandCanonicalGibbsDensityOperator ε β 0`. General `μ`
+  is supplied directly by the Common API, not a bosonic zero-μ constructor.
 
 For finite `Mode`, the geometric-series theorem `eigenbasisGibbsSummable_freeEigenvalue`
 supplies occupation summability under positive mode energies. For arbitrary `Mode`, the theorem
