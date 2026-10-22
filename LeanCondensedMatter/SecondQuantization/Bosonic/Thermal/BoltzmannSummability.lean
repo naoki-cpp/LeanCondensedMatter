@@ -179,7 +179,13 @@ theorem eigenbasisGibbsSummable_grandCanonicalEnergy
     have hpositive : ∀ i, 0 < ε i - μ := fun i => sub_pos.mpr (hgap i)
     have hsum := eigenbasisGibbsSummable_freeEigenvalue
       (fun i => ε i - μ) β hβ hpositive
-    simpa [Common.grandCanonicalEnergy, freeEigenvalue] using hsum
+    have henergy :
+        Common.grandCanonicalEnergy (Config := Occupation Mode)
+            (fun i => ε i - μ) 0 = freeEigenvalue (fun i => ε i - μ) := by
+      funext n
+      simp [Common.grandCanonicalEnergy, freeEigenvalue]
+    rw [henergy]
+    exact hsum
   have hshift := (Common.grandCanonicalGibbsSummable_shift_iff
     (Config := Occupation Mode) (fun i => ε i - μ) β 0 μ).2 hzero
   simpa only [zero_add, sub_add_cancel] using hshift
