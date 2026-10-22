@@ -53,14 +53,17 @@ theorem freeGibbsExpectation_annihilate_comp_create_concrete
     have hSummD := summable_imaginaryTimeEvolveFree_self ε β hpos
     have hRotate :=
       summable_imaginaryTimeEvolveFree_comp_create_mul_annihilate ε β hpos i j
-    simpa only [freeGibbsExpectation, freeGibbsPartition, imaginaryTimeEvolveFree, one_mul] using
+    simpa only [freeGibbsExpectation, grandCanonicalAlgebraicPartition, sub_zero,
+      imaginaryTimeEvolveFree, one_mul] using
       Common.normalizedTsumTrace_comp_eq_div_of_zetaCommutator
         (freeEigenvalue ε) β (-(ε i)) (1 : ℂ)
         (if i = j then (1 : ℂ) else 0) (annihilate i) (create j)
         hC1 hcomm (by simpa only [imaginaryTimeEvolveFree] using hSummD)
         (by simpa only [imaginaryTimeEvolveFree] using hRotate)
-        (by simpa only [freeGibbsPartition, imaginaryTimeEvolveFree] using
-          freeGibbsPartition_ne_zero ε β hpos) (by simpa only [one_mul] using hden)
+        (by simpa only [grandCanonicalAlgebraicPartition, sub_zero,
+          imaginaryTimeEvolveFree] using
+          grandCanonicalAlgebraicPartition_ne_zero ε β 0
+            (by simpa only [sub_zero] using hpos)) (by simpa only [one_mul] using hden)
   rw [hvalue]
   by_cases hij : i = j <;> simp [hij]
 
