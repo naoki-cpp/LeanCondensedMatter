@@ -1,4 +1,4 @@
-import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsGreenFunction
+import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsContraction
 import LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.BoundedEvolution
 import LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.RankOneSecondQuantization
 
@@ -16,7 +16,7 @@ No self-adjointness of the observable or positivity of `β` is required.
 namespace SecondQuantization.Fermionic
 
 open scoped BigOperators
-open Lattice
+open _root_.SecondQuantization.Fermionic.Lattice
 
 attribute [local instance 100] LieRing.ofAssociativeRing
 
@@ -41,7 +41,8 @@ theorem freeGibbsDensityOperator_expectation_finiteSecondQuantization
     apply (Finsupp.basisSingleOne : Module.Basis Mode ℂ (Mode →₀ ℂ)).ext
     intro j
     ext i
-    simp [LinearMap.sum_apply, Finsupp.finsetSum_apply, matrixUnit_apply, latticeKet]
+    simp [LinearMap.sum_apply, Finsupp.finsetSum_apply, matrixUnit_apply, latticeKet,
+      Finsupp.single_apply]
   have hunit (i j : Mode) :
       (freeGibbsDensityOperator ε β).expectation
           (boundedOneBodyOperator (matrixUnit i j)) =

@@ -4,6 +4,7 @@ import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreePartitionFun
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeEntropy
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsGreenFunction
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.OneBodyExpectation
+import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsContraction
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.BoltzmannSummability
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed
 
