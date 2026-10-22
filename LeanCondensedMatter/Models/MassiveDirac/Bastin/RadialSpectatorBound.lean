@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Models.MassiveDirac.Model.OperatorSpectral
 import LeanCondensedMatter.Models.MassiveDirac.Bastin.PoleHall
 import LeanCondensedMatter.Models.MassiveDirac.Model.Kinematics
 import Mathlib.Tactic
@@ -25,10 +26,9 @@ open QuantumTheory.Transport
 /-- The natural radial `x-y` Bastin block at a target-band pole is purely imaginary. -/
 theorem bastinXYBandBlockTrace_opposite_source_radial
     (band : Band) (e v m p : ℝ) (hE : energy v m p 0 ≠ 0) :
-    bastinBandBlockTrace 0 1 (oppositeBand band) band e v m p 0 =
+    currentBandBlockTrace 0 1 (oppositeBand band) band e v m p 0 =
       (((e ^ 2 : ℝ) : ℂ)) *
         (((bandSign band * m * v ^ 2 / energy v m p 0 : ℝ) : ℂ)) * Complex.I := by
-  rw [bastinBandBlockTrace_eq_currentBandBlockTrace]
   have hblock :=
     currentBandBlockTrace_interband_eq_chargeSq_forceMatrixTraceNumerator
       0 1 (oppositeBand band) e v m p 0
@@ -66,7 +66,7 @@ theorem targetCenteredInterbandSpectatorCurrentFactor_radial_eq
     bastinXYBandBlockTrace_opposite_source_radial (oppositeBand band) e v m p hE
   simp only [oppositeBand_oppositeBand, bandSign_oppositeBand] at hxyOpp
   rw [bastinXYBandBlockTrace_opposite_source_radial band e v m p hE,
-    bastinBandBlockTrace_swap 0 1 (oppositeBand band) band,
+    currentBandBlockTrace_swap 0 1 (oppositeBand band) band,
     hxyOpp]
   simp only [SpectralSide.regulator_retarded, SpectralSide.regulator_advanced]
   unfold radialInterbandCurrentAmplitude

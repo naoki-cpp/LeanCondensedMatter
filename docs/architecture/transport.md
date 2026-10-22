@@ -349,6 +349,10 @@ the same model-independent Pauli integration laws with explicit entrywise integr
 
 Concrete models may consume generic Transport and Analysis results, but reusable mathematics or
 transport infrastructure should be moved upstream rather than duplicated in a concrete model.
+Massive-Dirac Bastin band, pole, and Berry calculations consume the ordered
+`Model.OperatorSpectral.currentBandBlockTrace` directly. The finite band-sum expansion
+normalizes its current-first trace order locally using finite trace cyclicity; it does
+not expose a second trace representation to downstream consumers.
 The canonical top-level owner of all three concrete benchmark families is `Models`;
 `Transport` contains only reusable model-independent theory.
 

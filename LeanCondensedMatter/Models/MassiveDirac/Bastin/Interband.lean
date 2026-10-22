@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Models.MassiveDirac.Model.OperatorSpectral
 import LeanCondensedMatter.Models.MassiveDirac.Bastin.Spectator
 import LeanCondensedMatter.Models.MassiveDirac.Model.Berry.Symmetry
 import Mathlib.Tactic
@@ -29,8 +30,8 @@ open QuantumTheory.Transport
 /-- Antisymmetric direction exchange of the interband Bastin block at a selected target band. -/
 noncomputable def bastinInterbandBlockDifference
     (μ ν : Fin 2) (band : Band) (e v m px py : ℝ) : ℂ :=
-  bastinBandBlockTrace μ ν (oppositeBand band) band e v m px py -
-    bastinBandBlockTrace ν μ (oppositeBand band) band e v m px py
+  currentBandBlockTrace μ ν (oppositeBand band) band e v m px py -
+    currentBandBlockTrace ν μ (oppositeBand band) band e v m px py
 
 /-- Exchanging the two current directions reverses the sign of the interband Bastin block
 difference. -/
@@ -65,10 +66,8 @@ theorem bastinInterbandBlockDifference_im_div_gap_sq_eq_neg_chargeSq_berryCurvat
     interbandEnergyGap_oppositeBand, berryCurvature_oppositeBand] at hopp
   simp [pow_two] at hopp
   unfold bastinInterbandBlockDifference
-  rw [bastinBandBlockTrace_swap 0 1 (oppositeBand band) band]
-  rw [bastinBandBlockTrace_eq_currentBandBlockTrace 0 1 (oppositeBand band) band,
-    bastinBandBlockTrace_eq_currentBandBlockTrace 0 1 band (oppositeBand band),
-    Complex.sub_im]
+  rw [currentBandBlockTrace_swap 0 1 (oppositeBand band) band]
+  rw [Complex.sub_im]
   have hgap := interbandEnergyGap_ne_zero_of_energy_ne_zero band v m px py hE
   field_simp [hgap] at hband hopp ⊢
   nlinarith
