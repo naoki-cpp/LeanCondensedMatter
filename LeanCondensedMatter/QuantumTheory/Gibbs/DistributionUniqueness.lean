@@ -108,7 +108,7 @@ private theorem gibbsVariational_entropy_eq_iff
     have hterm_eq : ∀ i, Real.negMulLog (p.probability i) =
         β * (p.probability i * E i) + p.probability i * Real.log Z -
           p.probability i + q i / Z :=
-      pointwise_eq_of_tsum_eq_of_le hbound hEntropySummable hB hsum_eq
+      hEntropySummable.pointwise_eq_of_tsum_eq_of_le hB hbound hsum_eq
     intro i
     have hqpos : 0 < q i := by
       simpa [q] using eigenbasisBoltzmannWeight_pos E β i
