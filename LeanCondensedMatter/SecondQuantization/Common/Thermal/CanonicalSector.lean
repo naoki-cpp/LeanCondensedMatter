@@ -77,6 +77,48 @@ theorem canonicalGibbsDensityOperator_apply_basis
       (completedHilbertBasis (Config := ParticleNumberSector Mode Config N))
       (fun m : ParticleNumberSector Mode Config N => occupationEnergy ε m.val) β hsum n)
 
+
+/-- A uniform one-particle energy shift is constant on a fixed-number sector. -/
+private theorem canonicalSectorEnergy_shift_eq (ε : Mode → ℝ) (N : ℕ) (C : ℝ) :
+    (fun n : ParticleNumberSector Mode Config N =>
+      occupationEnergy (fun i => ε i + C) n.val) =
+    (fun n : ParticleNumberSector Mode Config N =>
+      occupationEnergy ε n.val + C * (N : ℝ)) := by
+  funext n
+  rw [occupationEnergy_add_const, n.property]
+
+/-- An energy-reference shift does not change convergence of the canonical
+sector Boltzmann weights. -/
+theorem canonicalGibbsSummable_shift (ε : Mode → ℝ) (β : ℝ) (N : ℕ) (C : ℝ)
+    (hsum : EigenbasisGibbsSummable
+      (fun n : ParticleNumberSector Mode Config N => occupationEnergy ε n.val) β) :
+    EigenbasisGibbsSummable
+      (fun n : ParticleNumberSector Mode Config N =>
+        occupationEnergy (fun i => ε i + C) n.val) β := by
+  rw [canonicalSectorEnergy_shift_eq]
+  exact eigenbasisGibbsSummable_add_const
+    (fun n : ParticleNumberSector Mode Config N => occupationEnergy ε n.val)
+    β (C * (N : ℝ)) hsum
+
+/-- Shifting all single-particle energies by the same constant leaves the
+normalized canonical Gibbs state on a fixed-number sector unchanged. -/
+theorem canonicalGibbsDensityOperator_shift_invariant
+    (ε : Mode → ℝ) (β : ℝ) (N : ℕ) (C : ℝ)
+    [Nonempty (ParticleNumberSector Mode Config N)]
+    (hsum : EigenbasisGibbsSummable
+      (fun n : ParticleNumberSector Mode Config N => occupationEnergy ε n.val) β) :
+    canonicalGibbsDensityOperator (Config := Config) (fun i => ε i + C) β N
+        (canonicalGibbsSummable_shift ε β N C hsum) =
+      canonicalGibbsDensityOperator (Config := Config) ε β N hsum := by
+  classical
+  apply DensityOperator.ext
+  apply continuousLinearMap_ext_completedBasis
+  intro n
+  rw [canonicalGibbsDensityOperator_apply_basis,
+    canonicalGibbsDensityOperator_apply_basis]
+  rw [canonicalSectorEnergy_shift_eq, eigenbasisGibbsProbability_add_const]
+
+
 /-- Pullback after zero-extension from the fixed-number sector is the identity.
 This works for arbitrary mode types and does not require Gibbs summability. -/
 theorem canonicalSectorPullback_comp_embedding (N : ℕ) :
