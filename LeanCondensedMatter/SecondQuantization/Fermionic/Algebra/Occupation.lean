@@ -78,6 +78,7 @@ theorem particleNumberSector_nonempty_iff_card [Fintype Mode] (N : ℕ) :
   classical
   constructor
   · rintro ⟨⟨n, hn⟩⟩
+    change particleNumber n = N at hn
     rw [particleNumber_eq_card] at hn
     exact hn ▸ Finset.card_le_univ n
   · intro h
