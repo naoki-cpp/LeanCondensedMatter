@@ -94,7 +94,7 @@ theorem occupationConjugate_dGamma_diagonalOperator [Finite Site] (a : Site → 
       ∑ i, if i ∈ n then a i • Common.basisState n else 0 := by
     apply Finset.sum_congr rfl
     intro i _
-    simpa only [smul_ite, smul_zero] using
+    simpa only [SecondQuantization.Fermionic.basisState, smul_ite, smul_zero] using
       congrArg (fun v => a i • v) (numberOperator_basisState i n)
   rw [hnumber]
   have hfilter : (Finset.univ : Finset Site).filter (fun i => i ∈ n) = n := by
