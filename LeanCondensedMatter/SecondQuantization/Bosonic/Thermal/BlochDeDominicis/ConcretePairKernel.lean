@@ -49,14 +49,16 @@ theorem freeGibbsExpectation_orderedProduct_pair_eq_freeThermalPairValue
               (matrixCoeff_annihilate_comp_annihilate i j))
       | create j =>
           simpa [FreeThermalField.orderedProduct, FreeThermalField.operator,
-            freeThermalPairValue, Module.End.mul_eq_comp] using
-            freeGibbsExpectation_annihilate_comp_create_concrete ε β hpos i j
+            freeThermalPairValue, Module.End.mul_eq_comp, sub_zero] using
+            (grandCanonicalGibbsExpectation_annihilate_comp_create_concrete
+              ε β 0 (by simpa only [sub_zero] using hpos) i j)
   | create i =>
       cases g with
       | annihilate j =>
           simpa [FreeThermalField.orderedProduct, FreeThermalField.operator,
-            freeThermalPairValue, Module.End.mul_eq_comp] using
-            freeGibbsExpectation_create_comp_annihilate_concrete ε β hpos i j
+            freeThermalPairValue, Module.End.mul_eq_comp, sub_zero] using
+            (grandCanonicalGibbsExpectation_create_comp_annihilate_concrete
+              ε β 0 (by simpa only [sub_zero] using hpos) i j)
       | create j =>
           simpa [FreeThermalField.orderedProduct, FreeThermalField.operator,
             freeThermalPairValue, Module.End.mul_eq_comp] using
