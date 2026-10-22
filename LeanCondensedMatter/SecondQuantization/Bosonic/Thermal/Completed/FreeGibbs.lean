@@ -180,7 +180,7 @@ theorem grandCanonicalAlgebraicPartition_eq_completedFreeHeatOperator_trace
   congr 1
   simpa only [sub_add_cancel, zero_add] using
     (Common.grandCanonicalPartitionFunction_shift_invariant
-      (Config := Occupation Mode) (fun i => ε i - μ) β 0 μ).symm
+      (Config := Occupation Mode) (fun i => ε i - μ) β 0 μ)
 
 end
 end Bosonic
