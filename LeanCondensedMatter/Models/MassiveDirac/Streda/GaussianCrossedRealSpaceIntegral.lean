@@ -878,6 +878,7 @@ private theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_x
         1 v m probeEnergy broadening disorderStrength hbar pMax radius) .y)] at hdiag
   dsimp only at hdiag ⊢
   rw [hdiag]
+  ring
 
 private theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_x_antisymmetric_eq_first_harmonic_minor
     (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ)
