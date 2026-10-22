@@ -1,19 +1,64 @@
-import LeanCondensedMatter.QuantumTheory.Gibbs.Uniqueness
+import LeanCondensedMatter.QuantumTheory.Gibbs.EqualityComponents
+import LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Equality
 import LeanCondensedMatter.QuantumTheory.Gibbs.Variational
 
 /-!
 # Uniqueness of the Gibbs minimizer
 
-The equality components recovered in `Gibbs.Uniqueness` identify a minimizing density operator with
-the canonical Gibbs state.  The public result is the final if-and-only-if characterization; the
-one-way implication is kept local to its proof.
+The equality components supplied by `Gibbs.EqualityComponents` identify a minimizing density
+operator with the canonical Gibbs state. Positivity of the Gibbs operator and completeness of a
+trace-saturating orthonormal family are proved locally as inputs to the final characterization.
 -/
 
 namespace QuantumTheory
 
 open ContinuousLinearMap
+open scoped ComplexOrder
 
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
+
+/-! ## Gibbs trace saturation and completeness -/
+
+/-- The Gibbs operator has a strictly positive diagonal matrix element on every unit vector.
+
+The conclusion uses the complex positive order directly: it asserts both that the matrix element is
+real and that its real value is strictly positive, rather than merely projecting it with `.re`. -/
+private theorem gibbsOp_inner_pos_of_norm_eq_one (Hop : Observable H) (β : ℝ) (v : H)
+    (hv : ‖v‖ = 1) :
+    (0 : ℂ) < inner ℂ v (gibbsOp Hop β v) := by
+  rw [lt_iff_le_and_ne]
+  refine ⟨(gibbsOp_isPositive Hop β).inner_nonneg_right v, ?_⟩
+  intro hzero
+  have hpb := exp_neg_beta_energy_le_gibbs_diagonal Hop β v hv
+  have hdiag_zero :
+      diagonalExpectationValue
+        (gibbsOp Hop β) (gibbsOp_isPositive Hop β).isSelfAdjoint v = 0 := by
+    apply Complex.ofReal_injective
+    rw [coe_diagonalExpectationValue_right]
+    exact hzero.symm
+  rw [hdiag_zero] at hpb
+  exact (not_le_of_gt (Real.exp_pos _)) (by simpa using hpb)
+
+/-- If an orthonormal family saturates the Gibbs spectral trace, its span has trivial orthogonal
+complement. -/
+private theorem gibbsOp_orthogonal_span_eq_bot_of_tsum_eq_spectralTrace
+    [FiniteDimensional ℂ H] (Hop : Observable H) (β : ℝ)
+    {ι : Type*} {d : ι → H} (hd : Orthonormal ℂ d)
+    (heq : ∑' i, diagonalExpectationValue
+        (gibbsOp Hop β) (gibbsOp_isPositive Hop β).isSelfAdjoint (d i) =
+      spectralTrace (gibbsOp Hop β)) :
+    (Submodule.span ℂ (Set.range d))ᗮ = ⊥ := by
+  let htrace := gibbsOp_spectralTraceClass Hop β
+  apply
+    ContinuousLinearMap.orthogonal_span_eq_bot_of_sum_diagonalExpectationValue_eq_spectralTrace
+      htrace.compact (gibbsOp_isPositive Hop β) htrace.summable hd ?_ heq
+  intro v hv
+  have hpos := gibbsOp_inner_pos_of_norm_eq_one Hop β v hv
+  rw [← coe_diagonalExpectationValue_right
+    (gibbsOp Hop β) (gibbsOp_isPositive Hop β).isSelfAdjoint v] at hpos
+  exact_mod_cast hpos
+
+/-! ## Unique Gibbs minimizer -/
 
 /-- For nonzero inverse temperature, the Helmholtz equality case is attained exactly by the
 canonical Gibbs state. -/
@@ -46,7 +91,7 @@ theorem helmholtzFreeEnergy_eq_iff_eq_gibbsState [Nontrivial H] [FiniteDimension
       intro a
       simpa [d, h, q] using hpeierls a
     have hcomplete : (Submodule.span ℂ (Set.range d))ᗮ = ⊥ := by
-      apply gibbsOp_orthogonal_span_eq_bot_of_diagonal_sum_eq_spectralTrace
+      apply gibbsOp_orthogonal_span_eq_bot_of_tsum_eq_spectralTrace
         Hop β hd_orth
       simpa [q, Z] using hqsum'
     have henergyEigen : ∀ a,
