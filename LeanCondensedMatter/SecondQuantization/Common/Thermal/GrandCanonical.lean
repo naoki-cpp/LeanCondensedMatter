@@ -66,6 +66,8 @@ theorem grandCanonicalPartitionFunction_eq_shifted
   unfold grandCanonicalPartitionFunction eigenbasisPartitionFunction
   apply tsum_congr
   intro n
+  change Real.exp (-β * grandCanonicalEnergy ε μ n) =
+    Real.exp (-β * occupationEnergy (fun i => ε i - μ) n)
   rw [grandCanonicalEnergy_eq_shifted]
 
 /-- Grand-canonical Boltzmann summability is equivalent to summability
