@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornRadialRealSpacePropagator
 import LeanCondensedMatter.Transport.Analysis.ContinuumMeasure
 import LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedRealSpace
 import LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedRadialHarmonics
@@ -14,7 +15,8 @@ topology still contains `r ↦ -r`, but the massive-Dirac Green/current inversio
 negative-radius blocks from the scalar entry-sum and radial-kernel evaluation boundaries.
 
 The radial Green/current Pauli coefficient bridges and their Fourier-harmonic identities live in
-`GaussianCrossedRadialCoefficients` and `GaussianCrossedRadialHarmonics` respectively. This trace
+`Disorder.FiniteBroadeningBornRadialRealSpacePropagator` / `GaussianCrossedRadialCoefficients`
+and `GaussianCrossedRadialHarmonics` respectively. This trace
 module consumes them and reuses the canonical topology from `GaussianCrossedTrace`; it does not
 redefine the `X` / `Psi` matrix products. The two radial topologies are additionally exposed as
 finite scalar sums over matrix entries and then as products of one-dimensional scalar momentum

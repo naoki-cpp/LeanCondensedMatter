@@ -339,6 +339,14 @@ moment expressions. Intermediate harmonic reductions are private proof stages. T
 the physical current and trace prefactors. Ordered radial kernels remain distinct from
 the antisymmetric trace used for Hall conductivity.
 
+`Analysis.InternalSpace.Pauli` owns coefficient extraction through entrywise interval
+integrals with a complex prefactor. These laws use Mathlib's integral addition,
+subtraction, division, and constant-multiplication results; no additional linear-map
+representation is needed. `Disorder.FiniteBroadeningBornRadialRealSpacePropagator`
+owns the radial Green coefficient integration laws, while
+`Streda.GaussianCrossedRadialCoefficients` owns the crossed-current laws. Both consume
+the same model-independent Pauli integration laws with explicit entrywise integrability.
+
 Concrete models may consume generic Transport and Analysis results, but reusable mathematics or
 transport infrastructure should be moved upstream rather than duplicated in a concrete model.
 The canonical top-level owner of all three concrete benchmark families is `Models`;
