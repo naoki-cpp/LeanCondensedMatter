@@ -91,10 +91,11 @@ theorem canonicalSectorPullback_comp_embedding (N : ℕ) :
   apply ContinuousLinearMap.ext
   intro ψ
   ext n
-  rw [ContinuousLinearMap.comp_apply, completedCoordinatePullback_apply,
-    completedCoordinateEmbedding_apply]
-  simp only [Subtype.val_injective.extend_apply]
-  rfl
+  rw [ContinuousLinearMap.comp_apply, completedCoordinatePullback_apply]
+  change Function.extend
+      (Subtype.val : ParticleNumberSector Mode Config N → Config)
+      (fun d => ψ d) 0 n.val = ψ n
+  exact Subtype.val_injective.extend_apply (fun d => ψ d) n
 
 /-- The fixed-particle-number coordinate projection is precisely zero-extension
 from the sector composed with coordinate pullback onto that sector.
@@ -111,16 +112,15 @@ theorem completedParticleNumberProjection_eq_embedding_comp_pullback (N : ℕ) :
   apply ContinuousLinearMap.ext
   intro ψ
   ext c
-  rw [completedCoordinateProjection_apply, ContinuousLinearMap.comp_apply,
-    completedCoordinateEmbedding_apply]
+  rw [completedCoordinateProjection_apply, ContinuousLinearMap.comp_apply]
+  change (if particleNumber (Mode := Mode) c = N then ψ c else 0) =
+    Function.extend
+      (Subtype.val : ParticleNumberSector Mode Config N → Config)
+      (fun n => completedCoordinatePullback
+        (Subtype.val : ParticleNumberSector Mode Config N → Config)
+        Subtype.val_injective ψ n) 0 c
   by_cases hc : particleNumber (Mode := Mode) c = N
   · let d : ParticleNumberSector Mode Config N := ⟨c, hc⟩
-    change (if particleNumber (Mode := Mode) c = N then ψ c else 0) =
-      Function.extend
-        (Subtype.val : ParticleNumberSector Mode Config N → Config)
-        (fun n => completedCoordinatePullback
-          (Subtype.val : ParticleNumberSector Mode Config N → Config)
-          Subtype.val_injective ψ n) 0 c
     rw [show c = (d : Config) from rfl,
       Subtype.val_injective.extend_apply, completedCoordinatePullback_apply]
     simp [hc, d]
