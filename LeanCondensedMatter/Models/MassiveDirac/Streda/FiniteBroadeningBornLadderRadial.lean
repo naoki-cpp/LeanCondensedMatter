@@ -166,7 +166,7 @@ private theorem integral_polarPauli_directionTrace_eq
         inPlanePauliVertexOperator
           (inPlaneLadderAction
             (pauliRungAngularCoefficient aL aR dL dR) coefficients) := by
-    simpa [rung] using
+    simpa only [rung, inPlanePauliVertexOperator] using
       (integral_polarPauliOperator_inPlane_eq aL aR bL bR dL dR coefficients)
   rw [hrungIntegral]
   change
