@@ -52,6 +52,7 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentScalarCoeffici
       (finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel
         source v m probeEnergy broadening disorderStrength hbar pMax radius p)
   · exact InternalSpace.pauliScalarCoefficient_prefactor_intervalIntegral
+      (prefactor := (((momentumMeasurePrefactor hbar : ℝ) : ℂ)))
       (kernel := fun p i j => finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel
         source v m probeEnergy broadening disorderStrength hbar pMax radius p i j)
       (hkernel := hentry)
