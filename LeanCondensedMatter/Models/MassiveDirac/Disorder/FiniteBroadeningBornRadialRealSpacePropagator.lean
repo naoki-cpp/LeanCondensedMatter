@@ -333,7 +333,7 @@ theorem finiteCutoffContinuumBornDysonRadialGreenScalarCoefficient_eq_radialKern
   have hentry : ∀ i j, IntervalIntegrable
       (fun p : ℝ => finiteCutoffContinuumBornDysonRadialGreenEntryKernel
         side v m probeEnergy broadening disorderStrength hbar pMax radius p i j)
-      volume 0 pMax := by
+      MeasureTheory.volume 0 pMax := by
     intro i j
     exact intervalIntegrable_finiteCutoffContinuumBornDysonRadialGreenEntryKernel
       side v m probeEnergy broadening disorderStrength hbar pMax radius
@@ -369,7 +369,7 @@ theorem finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient_eq_radialKerne
   have hentry : ∀ i j, IntervalIntegrable
       (fun p : ℝ => finiteCutoffContinuumBornDysonRadialGreenEntryKernel
         side v m probeEnergy broadening disorderStrength hbar pMax radius p i j)
-      volume 0 pMax := by
+      MeasureTheory.volume 0 pMax := by
     intro i j
     exact intervalIntegrable_finiteCutoffContinuumBornDysonRadialGreenEntryKernel
       side v m probeEnergy broadening disorderStrength hbar pMax radius
