@@ -6,7 +6,6 @@ Major public theorem names were aligned with their mathematical conclusions. No 
 |---|---|
 | `SecondQuantization.Common.QuarticDiagram.dysonSign_mul_vertexWeight_eq_prod_restrictComponentConnected` | `SecondQuantization.Common.QuarticDiagram.dysonSign_mul_vertexWeight_eq_prod_components` |
 | `SecondQuantization.Fermionic.quarticWickDiagramAmplitude_eq_prod_restrictComponentConnected` | `SecondQuantization.Fermionic.quarticWickDiagramAmplitude_eq_prod_components` |
-| `SecondQuantization.Common.hasSum_dysonTraceCoeff_eq_trace_analyticDysonEvolution` | `SecondQuantization.Common.hasSum_dysonTraceCoeff` |
 | `SecondQuantization.Fermionic.hasSum_dysonTraceCoeff_eq_analyticDysonPartitionFunction` | `SecondQuantization.Common.hasSum_dysonTraceCoeff_analyticDysonPartitionFunction` |
 | `SecondQuantization.Fermionic.factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_sum_connectedAmplitude` | `SecondQuantization.Fermionic.factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_sum_connectedQuarticWickDiagramAmplitude` |
 | `SecondQuantization.Fermionic.iteratedDeriv_log_normalizedAnalyticPartitionFunction_eq_sum_connectedAmplitude` | `SecondQuantization.Fermionic.iteratedDeriv_analyticNormalizedLogPartitionFunction_eq_sum_connectedQuarticWickDiagramAmplitude` |
