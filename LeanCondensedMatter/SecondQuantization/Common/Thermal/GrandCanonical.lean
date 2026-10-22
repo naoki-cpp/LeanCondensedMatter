@@ -136,6 +136,54 @@ theorem grandCanonicalEnergy_shift_invariant
   funext i
   ring
 
+
+/-- Simultaneous energy-reference and chemical-potential shifts leave the
+grand-canonical generator unchanged as a function on all occupations. -/
+theorem grandCanonicalEnergy_shift_eq
+    (ε : Mode → ℝ) (μ C : ℝ) :
+    grandCanonicalEnergy (Config := Config) (fun i => ε i + C) (μ + C) =
+      grandCanonicalEnergy (Config := Config) ε μ := by
+  funext n
+  exact grandCanonicalEnergy_shift_invariant ε μ C n
+
+/-- Shifting one-particle energies and chemical potential by the same
+constant leaves the grand partition function invariant. -/
+theorem grandCanonicalPartitionFunction_shift_invariant
+    (ε : Mode → ℝ) (β μ C : ℝ) :
+    grandCanonicalPartitionFunction (Config := Config) (fun i => ε i + C) β (μ + C) =
+      grandCanonicalPartitionFunction (Config := Config) ε β μ := by
+  unfold grandCanonicalPartitionFunction
+  rw [grandCanonicalEnergy_shift_eq]
+
+/-- Existence of the full-Fock grand-canonical Gibbs state is independent of
+the common energy origin for the spectrum and chemical potential. -/
+theorem grandCanonicalGibbsSummable_shift_iff
+    (ε : Mode → ℝ) (β μ C : ℝ) :
+    EigenbasisGibbsSummable
+        (grandCanonicalEnergy (Config := Config) (fun i => ε i + C) (μ + C)) β ↔
+      EigenbasisGibbsSummable (grandCanonicalEnergy (Config := Config) ε μ) β := by
+  rw [grandCanonicalEnergy_shift_eq]
+
+/-- Simultaneously shifting all single-particle energies and chemical
+potential leaves the *normalized density operator* unchanged, not merely its
+free energy. This holds on the full occupation Fock space for arbitrary
+mode types under the usual grand-canonical summability hypothesis. -/
+theorem grandCanonicalGibbsDensityOperator_shift_invariant
+    (ε : Mode → ℝ) (β μ C : ℝ)
+    (hsum : EigenbasisGibbsSummable
+      (grandCanonicalEnergy (Config := Config) ε μ) β) :
+    grandCanonicalGibbsDensityOperator (Config := Config)
+        (fun i => ε i + C) β (μ + C)
+        ((grandCanonicalGibbsSummable_shift_iff (Config := Config) ε β μ C).2 hsum) =
+      grandCanonicalGibbsDensityOperator (Config := Config) ε β μ hsum := by
+  classical
+  apply DensityOperator.ext
+  apply continuousLinearMap_ext_completedBasis
+  intro n
+  rw [grandCanonicalGibbsDensityOperator_apply_basis,
+    grandCanonicalGibbsDensityOperator_apply_basis]
+  rw [grandCanonicalEnergy_shift_eq]
+
 end
 
 end Common
