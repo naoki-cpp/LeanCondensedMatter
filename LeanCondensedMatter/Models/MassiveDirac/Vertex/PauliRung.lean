@@ -199,9 +199,9 @@ theorem integral_polarPauliOperator_inPlane_eq
       rw [← map_smul]
       apply congrArg (Matrix.toEuclideanCLM : Matrix2 ≃⋆ₐ[ℂ]
         (DiracHilbert →L[ℂ] DiracHilbert))
-      simp only [H, polarPauliInPlaneHarmonics, pauliRungAngularCoefficient,
+      simp [H, polarPauliInPlaneHarmonics, pauliRungAngularCoefficient,
         inPlaneLadderAction_apply_x, inPlaneLadderAction_apply_y,
-        smul_add, smul_sub, smul_smul]
+        smul_add, smul_smul]
       module
 
 end
