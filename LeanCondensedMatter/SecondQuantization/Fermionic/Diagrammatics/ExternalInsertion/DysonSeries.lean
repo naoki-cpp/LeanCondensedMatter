@@ -2,7 +2,7 @@ import LeanCondensedMatter.Analysis.PowerSeries.Normalization
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalComponents
 import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.QuarticInteraction
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.Integral
-import LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.DysonPartitionSeries
+import LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonTraceSeries
 
 set_option linter.style.header false
 
@@ -85,7 +85,7 @@ noncomputable def partitionFunctionNormalizedExternalInsertionDysonSeries {E : �
     (externalTime : Fin (2 * E) → ℝ) : PowerSeries ℂ :=
   externalInsertionDysonSeries ε β g externalLabel externalTime *
     (PowerSeries.normalizeByConstantCoeff
-      (dysonPartitionSeries ε β (quarticInteraction g)))⁻¹
+      (Common.dysonTraceSeries (fermionEnergy ε) β (quarticInteraction g)))⁻¹
 
 
 

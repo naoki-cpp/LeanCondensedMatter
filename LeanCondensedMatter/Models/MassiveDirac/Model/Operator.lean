@@ -1,5 +1,4 @@
 import LeanCondensedMatter.Models.MassiveDirac.Model.Basic
-import LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.Free
 import LeanCondensedMatter.Analysis.Operator.FiniteTrace
 import Mathlib.Analysis.CStarAlgebra.Matrix
 import Mathlib.Analysis.Matrix.Hermitian
@@ -13,7 +12,7 @@ The clean massive-Dirac model is defined first by explicit `2 × 2` matrices. Th
 model-level passage from those matrices to bounded operators on the canonical two-level Hilbert
 space. It supplies the bounded Hamiltonian, velocity and current vertices, the shared polar Pauli
 representation used by rotationally symmetric propagators, their self-adjointness, the in-plane
-current-combination API, and the `BoundedFreeSystem` adapter used by generic response theory. Generic
+current-combination API. Generic
 finite-dimensional matrix/operator trace transport lives upstream in `Analysis.Operator.FiniteTrace`.
 
 No Kubo–Bastin or Středa kernel is defined here. Response-specific trace identities and energy
@@ -24,7 +23,7 @@ namespace QuantumTheory.Models.MassiveDirac
 
 noncomputable section
 
-open QuantumTheory QuantumTheory.LinearResponse
+open QuantumTheory
 
 /-- Canonical two-level Hilbert space on which the massive-Dirac matrices act. -/
 abbrev DiracHilbert := EuclideanSpace ℂ (Fin 2)
@@ -197,7 +196,7 @@ theorem current_isHermitian (direction : Fin 2) (e v : ℝ) :
       (by simp [isSelfAdjoint_iff])
 
 /-- Transporting the Hermitian Hamiltonian through `Matrix.toEuclideanCLM` gives a self-adjoint
-bounded operator, as required by the generic free-system API. -/
+bounded operator. -/
 theorem hamiltonianOperator_isSelfAdjoint (v m px py : ℝ) :
     IsSelfAdjoint (hamiltonianOperator v m px py) := by
   simpa [hamiltonianOperator, matrixOperator] using
@@ -217,15 +216,6 @@ theorem currentOperator_isSelfAdjoint (direction : Fin 2) (e v : ℝ) :
   simpa [currentOperator, matrixOperator] using
     (current_isHermitian direction e v).isSelfAdjoint.map
       (Matrix.toEuclideanCLM : Matrix2 ≃⋆ₐ[ℂ] (DiracHilbert →L[ℂ] DiracHilbert))
-
-/-- The clean massive-Dirac model as the bounded free system consumed by generic response layers.
-The currents remain supplied separately because `BoundedFreeSystem` intentionally stores only
-Hamiltonian dynamics and `ℏ`. -/
-noncomputable def boundedFreeSystem (hbar v m px py : ℝ) (hhbar : 0 < hbar) :
-    BoundedFreeSystem DiracHilbert where
-  hamiltonian := ⟨hamiltonianOperator v m px py, hamiltonianOperator_isSelfAdjoint v m px py⟩
-  hbar := hbar
-  hbar_pos := hhbar
 
 end
 

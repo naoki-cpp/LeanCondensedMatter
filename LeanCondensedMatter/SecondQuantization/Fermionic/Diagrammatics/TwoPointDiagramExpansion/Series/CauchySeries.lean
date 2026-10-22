@@ -31,7 +31,7 @@ theorem twoPointDysonCoefficient_eq_sum_connectedTwoPointDysonCoefficient_mul_no
     twoPointDysonCoefficient (n := n) ε β g i j τ τ' =
       ∑ m ∈ Finset.range (n + 1),
         connectedTwoPointDysonCoefficient ε β g i j τ τ' m *
-          normalizedDysonPartitionCoeff ε β (quarticInteraction g) (n - m) := by
+          PowerSeries.coeff (n - m) (PowerSeries.normalizeByConstantCoeff (Common.dysonTraceSeries (fermionEnergy ε) β (quarticInteraction g))) := by
   rw [← twoPointDiagramCoefficient_eq_twoPointDysonCoefficient]
   classical
   have slice : ∀ {n m k : ℕ}, m + k = n →
@@ -42,7 +42,7 @@ theorem twoPointDysonCoefficient_eq_sum_connectedTwoPointDysonCoefficient_mul_no
                 ((Finset.univ : Finset (Fin n)) \ T),
           ((fixedExternalFiberEquiv T).symm p).1.dysonAmplitude ε β g τ τ') =
         connectedTwoPointDysonCoefficient ε β g i j τ τ' m *
-          normalizedDysonPartitionCoeff ε β (quarticInteraction g) k := by
+          PowerSeries.coeff k (PowerSeries.normalizeByConstantCoeff (Common.dysonTraceSeries (fermionEnergy ε) β (quarticInteraction g))) := by
     intro n m k hmk
     subst n
     rw [Finset.sum_subtype
@@ -77,12 +77,11 @@ theorem twoPointDysonSeries_eq_connectedTwoPointDysonSeries_mul_normalizedDysonP
     twoPointDysonSeries ε β g i j τ τ' =
       connectedTwoPointDysonSeries ε β g i j τ τ' *
         PowerSeries.normalizeByConstantCoeff
-          (dysonPartitionSeries ε β (quarticInteraction g)) := by
+          (Common.dysonTraceSeries (fermionEnergy ε) β (quarticInteraction g)) := by
   ext n
   rw [PowerSeries.coeff_mul]
   rw [Finset.Nat.sum_antidiagonal_eq_sum_range_succ_mk]
-  simp only [twoPointDysonSeries, connectedTwoPointDysonSeries, PowerSeries.coeff_mk,
-    coeff_normalizeByConstantCoeff_dysonPartitionSeries_eq_normalizedDysonPartitionCoeff]
+  simp only [twoPointDysonSeries, connectedTwoPointDysonSeries, PowerSeries.coeff_mk]
   exact twoPointDysonCoefficient_eq_sum_connectedTwoPointDysonCoefficient_mul_normalizedDysonPartitionCoeff
     ε β hβ g i j τ τ' n
 
@@ -98,7 +97,7 @@ theorem partitionFunctionNormalizedTwoPointDysonSeries_eq_connectedTwoPointDyson
   rw [partitionFunctionNormalizedTwoPointDysonSeries]
   apply PowerSeries.mul_inv_eq_of_eq_mul_of_constantCoeff_ne_zero
   · rw [PowerSeries.constantCoeff_normalizeByConstantCoeff
-      (constantCoeff_dysonPartitionSeries_ne_zero ε β (quarticInteraction g))]
+      (Common.constantCoeff_dysonTraceSeries_ne_zero (fermionEnergy ε) β (quarticInteraction g))]
     exact one_ne_zero
   · exact twoPointDysonSeries_eq_connectedTwoPointDysonSeries_mul_normalizedDysonPartitionSeries
       ε β hβ g i j τ τ'

@@ -30,7 +30,8 @@ variable [Fintype Mode]
 /-- The free energy is the sum over all modes; terms outside the support vanish. -/
 theorem freeEigenvalue_eq_sum_univ (ε : Mode → ℝ) (n : Occupation Mode) :
     freeEigenvalue ε n = ∑ i, (n i : ℝ) * ε i := by
-  simp only [freeEigenvalue, Finsupp.sum]
+  rw [freeEigenvalue_eq_finsupp_sum]
+  simp only [Finsupp.sum]
   apply Finset.sum_subset (Finset.subset_univ _)
   intro i _ hi
   simp only [Finsupp.mem_support_iff, not_not] at hi

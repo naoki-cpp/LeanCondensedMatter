@@ -95,9 +95,18 @@ Fermionic.Validation
 
 `Fermionic.Lattice` owns discrete one-particle lattice data, hopping, charge/bond currents, Peierls
 families, finite-lattice bounded realizations, and model-level current identities. In particular,
-`Lattice.Bounded` owns the canonical linear realization from one-body operators through `dGamma` to
-bounded finite-Fock observables. It does not own generic response, conductivity, disorder, or
+`Lattice.Bounded` owns `boundedOneBodyOperator`, the complex-linear Lie algebra homomorphism from
+one-body operators through `dGamma` to bounded finite-Fock operators. Its `toLinearMap` projection
+serves current derivatives and response composition; the bundled map also preserves commutators.
+It does not preserve one-particle products. It does not own generic response, conductivity, disorder, or
 validation theory.
+
+`Lattice.BoundedEvolution` gives the continuous finite-Hilbert realization
+`finiteSecondQuantization` and its exponential-conjugation identity. The reusable analytic
+intertwining theorem lives in `Analysis.Calculus.ExponentialConjugation`: it assumes preservation
+of the commutator with the generator, not multiplication. Its conjugation derivative also supplies
+the general bounded Heisenberg equation. No unbounded bosonic evolution or thermal trace reduction
+is inferred from this bounded result.
 
 `Fermionic.Field` is a narrow side interface for basis-independent density constructions, bounded
 `L²` multiplication density realizations, and the `dGamma` bridge for generalized localized quantities. It does not

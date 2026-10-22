@@ -53,7 +53,7 @@ noncomputable def boundedFluxRetardedResponse
     (t s : ℝ) : Test →ₗ[ℂ] ℂ :=
   (QuantumTheory.LinearResponse.retardedSusceptibilityMeasuredLinearMap
       system expectation source t s).comp
-    ((boundedOneBodyOperatorLinearMap (Site := Site)).comp Φ)
+    ((boundedOneBodyOperator (Site := Site)).toLinearMap.comp Φ)
 /-- Bounded Fock-space observable associated with one corrected/nested current component. -/
 noncomputable def boundedCorrectedCurrentObservable
     (velocity m : (Site →₀ ℂ) →ₗ[ℂ] (Site →₀ ℂ))
@@ -105,7 +105,7 @@ theorem boundedFluxRetardedResponse_eq_symmetrized_add_correction
   rw [_root_.ConservationLaw.nestedSymmetrizedCurrentFlux_eq_symmetrized_add_correction
     ((Site →₀ ℂ)) velocity m N]
   ext f
-  simp [boundedFluxRetardedResponse]
+  simp only [boundedFluxRetardedResponse, LinearMap.comp_apply, LinearMap.add_apply, map_add]
 
 /-- When all supplied localizers commute with `m`, the correction disappears and the intrinsic
 exact-flux response is represented by the symmetrized current flux alone. -/

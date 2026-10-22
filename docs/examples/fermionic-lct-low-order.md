@@ -9,7 +9,7 @@ umbrella exports the general formal and analytic theorems instead.
 Write
 
 ```text
-zₙ = normalizedDysonPartitionCoeff ε β (quarticInteraction g) n.
+zₙ = [λⁿ] normalizeByConstantCoeff (Common.dysonTraceSeries (fermionEnergy ε) β (quarticInteraction g)).
 ```
 
 The formal logarithm satisfies

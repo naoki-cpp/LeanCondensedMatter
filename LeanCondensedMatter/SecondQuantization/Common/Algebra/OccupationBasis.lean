@@ -1,5 +1,5 @@
-import Mathlib.Algebra.BigOperators.Group.Finset.Basic
-import Mathlib.Data.Set.Finite.Basic
+import Mathlib.Algebra.BigOperators.Ring.Finset
+import Mathlib.Basic.Real.Basic
 
 set_option linter.style.header false
 
@@ -7,9 +7,9 @@ set_option linter.style.header false
 # The occupation-basis interface
 
 `OccupationBasis` captures the statistics-independent structure shared by fermionic and bosonic
-occupation descriptions: a vacuum configuration, a per-mode occupation number, vanishing vacuum
-occupation, finite support, and extensionality from the occupation data. These assumptions define
-the common total `particleNumber` grading.
+occupation descriptions: a vacuum configuration, a per-mode occupation number, its finite support,
+vanishing vacuum occupation, and extensionality from the occupation data. These data define the
+common total `particleNumber` grading and free occupation energy.
 
 The concrete configuration types remain distinct. Fermions use finite subsets of modes with
 occupations in `{0, 1}`, while bosons use finitely supported `ℕ`-valued occupations. Each
@@ -32,17 +32,18 @@ class OccupationBasis (Mode Config : Type*) where
   occupation : Config → Mode → ℕ
   /-- The vacuum has no particles in any mode. -/
   occupation_vacuum : ∀ i, occupation vacuum i = 0
-  /-- Every occupation state has only finitely many occupied modes. -/
-  finiteSupport : ∀ n, Set.Finite {i | occupation n i ≠ 0}
+  /-- The finite set of occupied modes. -/
+  support : Config → Finset Mode
+  /-- A mode is in the support if and only if its occupation is nonzero. -/
+  mem_support_iff : ∀ n i, i ∈ support n ↔ occupation n i ≠ 0
   /-- The occupation-number reading determines the state. -/
   ext : ∀ {m n}, (∀ i, occupation m i = occupation n i) → m = n
 
-/-- **The total particle-number grade** of an occupation-basis state. The sum is taken over the
-finite support supplied by `OccupationBasis`, so the definition works for arbitrary mode types
-without a `Fintype Mode` assumption. -/
+/-- **The total particle-number grade** of an occupation-basis state. The sum is taken over the support supplied by `OccupationBasis`, so the definition works for
+arbitrary mode types without a `Fintype Mode` assumption. -/
 noncomputable def particleNumber {Mode Config : Type*} [OccupationBasis Mode Config]
     (n : Config) : ℕ :=
-  (OccupationBasis.finiteSupport (Mode := Mode) (Config := Config) n).toFinset.sum
+  (OccupationBasis.support (Mode := Mode) (Config := Config) n).sum
     (OccupationBasis.occupation (Mode := Mode) (Config := Config) n)
 
 @[simp]
@@ -51,6 +52,40 @@ theorem particleNumber_vacuum {Mode Config : Type*} [OccupationBasis Mode Config
       (OccupationBasis.vacuum (Mode := Mode) (Config := Config)) = 0 := by
   classical
   simp [particleNumber, OccupationBasis.occupation_vacuum]
+
+/-- Occupation configurations with a sharp total particle number `N`. This grading is
+statistics-independent; choosing a canonical Gibbs state is a separate thermal construction. -/
+abbrev ParticleNumberSector (Mode Config : Type*) [OccupationBasis Mode Config] (N : ℕ) :=
+  {n : Config // particleNumber (Mode := Mode) n = N}
+
+/-- Free energy of a finite-support occupation configuration with one-particle energies `ε`.
+The sum is over occupied modes, so `Mode` need not be finite. -/
+noncomputable def occupationEnergy {Mode Config : Type*} [OccupationBasis Mode Config]
+    (ε : Mode → ℝ) (n : Config) : ℝ :=
+  (OccupationBasis.support (Mode := Mode) (Config := Config) n).sum
+    (fun i => (OccupationBasis.occupation (Mode := Mode) (Config := Config) n i : ℝ) * ε i)
+
+/-- The vacuum has zero free occupation energy. -/
+@[simp]
+theorem occupationEnergy_vacuum {Mode Config : Type*} [OccupationBasis Mode Config]
+    (ε : Mode → ℝ) :
+    occupationEnergy ε
+      (OccupationBasis.vacuum (Mode := Mode) (Config := Config)) = 0 := by
+  classical
+  simp [occupationEnergy, OccupationBasis.occupation_vacuum]
+
+/-- Shifting every free one-particle energy by `-μ` subtracts `μ` times the
+occupation number from the many-particle energy. -/
+theorem occupationEnergy_sub_const {Mode Config : Type*} [OccupationBasis Mode Config]
+    (ε : Mode → ℝ) (μ : ℝ) (n : Config) :
+    occupationEnergy (fun i => ε i - μ) n =
+      occupationEnergy ε n - μ * (particleNumber (Mode := Mode) n : ℝ) := by
+  simp only [occupationEnergy, particleNumber]
+  simp_rw [mul_sub]
+  rw [Finset.sum_sub_distrib]
+  congr 1
+  rw [← Finset.sum_mul, Nat.cast_sum]
+  exact mul_comm _ _
 
 end Common
 end SecondQuantization

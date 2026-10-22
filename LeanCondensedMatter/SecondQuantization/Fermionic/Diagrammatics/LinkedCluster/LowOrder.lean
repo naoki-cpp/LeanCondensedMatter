@@ -1,6 +1,6 @@
 import LeanCondensedMatter.Analysis.PowerSeries.LowOrderLog
 import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.QuarticInteraction
-import LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.DysonPartitionSeries
+import LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonTraceSeries
 
 set_option linter.style.header false
 
@@ -24,46 +24,40 @@ theorem factorial_mul_coeff_dysonFormalLogPartitionFunction_order_one
     (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ) :
     ((1 : ℕ).factorial : ℂ) *
         PowerSeries.coeff 1
-          (dysonFormalLogPartitionFunction ε β (quarticInteraction g)) =
-      normalizedDysonPartitionCoeff ε β (quarticInteraction g) 1 := by
-  rw [dysonFormalLogPartitionFunction]
-  simpa only [
-    coeff_normalizeByConstantCoeff_dysonPartitionSeries_eq_normalizedDysonPartitionCoeff] using
+          (PowerSeries.logOf (PowerSeries.normalizeByConstantCoeff (Common.dysonTraceSeries (fermionEnergy ε) β (quarticInteraction g)))) =
+      PowerSeries.coeff 1 (PowerSeries.normalizeByConstantCoeff (Common.dysonTraceSeries (fermionEnergy ε) β (quarticInteraction g))) := by
+  simpa only [] using
     (Combinatorics.factorial_mul_coeff_logOf_one_eq
       (PowerSeries.constantCoeff_normalizeByConstantCoeff
-        (constantCoeff_dysonPartitionSeries_ne_zero ε β (quarticInteraction g))))
+        (Common.constantCoeff_dysonTraceSeries_ne_zero (fermionEnergy ε) β (quarticInteraction g))))
 
 /-- At second order, the logarithm subtracts the product of two first-order contributions. -/
 theorem factorial_mul_coeff_dysonFormalLogPartitionFunction_order_two
     (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ) :
     ((2 : ℕ).factorial : ℂ) *
         PowerSeries.coeff 2
-          (dysonFormalLogPartitionFunction ε β (quarticInteraction g)) =
-      2 * normalizedDysonPartitionCoeff ε β (quarticInteraction g) 2 -
-        normalizedDysonPartitionCoeff ε β (quarticInteraction g) 1 ^ 2 := by
-  rw [dysonFormalLogPartitionFunction]
-  simpa only [
-    coeff_normalizeByConstantCoeff_dysonPartitionSeries_eq_normalizedDysonPartitionCoeff] using
+          (PowerSeries.logOf (PowerSeries.normalizeByConstantCoeff (Common.dysonTraceSeries (fermionEnergy ε) β (quarticInteraction g)))) =
+      2 * PowerSeries.coeff 2 (PowerSeries.normalizeByConstantCoeff (Common.dysonTraceSeries (fermionEnergy ε) β (quarticInteraction g))) -
+        PowerSeries.coeff 1 (PowerSeries.normalizeByConstantCoeff (Common.dysonTraceSeries (fermionEnergy ε) β (quarticInteraction g))) ^ 2 := by
+  simpa only [] using
     (Combinatorics.factorial_mul_coeff_logOf_two_eq
       (PowerSeries.constantCoeff_normalizeByConstantCoeff
-        (constantCoeff_dysonPartitionSeries_ne_zero ε β (quarticInteraction g))))
+        (Common.constantCoeff_dysonTraceSeries_ne_zero (fermionEnergy ε) β (quarticInteraction g))))
 
 /-- At third order, the logarithm removes the one-plus-two and three-singleton disconnected terms. -/
 theorem factorial_mul_coeff_dysonFormalLogPartitionFunction_order_three
     (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ) :
     ((3 : ℕ).factorial : ℂ) *
         PowerSeries.coeff 3
-          (dysonFormalLogPartitionFunction ε β (quarticInteraction g)) =
-      6 * normalizedDysonPartitionCoeff ε β (quarticInteraction g) 3 -
-        6 * normalizedDysonPartitionCoeff ε β (quarticInteraction g) 1 *
-          normalizedDysonPartitionCoeff ε β (quarticInteraction g) 2 +
-        2 * normalizedDysonPartitionCoeff ε β (quarticInteraction g) 1 ^ 3 := by
-  rw [dysonFormalLogPartitionFunction]
-  simpa only [
-    coeff_normalizeByConstantCoeff_dysonPartitionSeries_eq_normalizedDysonPartitionCoeff] using
+          (PowerSeries.logOf (PowerSeries.normalizeByConstantCoeff (Common.dysonTraceSeries (fermionEnergy ε) β (quarticInteraction g)))) =
+      6 * PowerSeries.coeff 3 (PowerSeries.normalizeByConstantCoeff (Common.dysonTraceSeries (fermionEnergy ε) β (quarticInteraction g))) -
+        6 * PowerSeries.coeff 1 (PowerSeries.normalizeByConstantCoeff (Common.dysonTraceSeries (fermionEnergy ε) β (quarticInteraction g))) *
+          PowerSeries.coeff 2 (PowerSeries.normalizeByConstantCoeff (Common.dysonTraceSeries (fermionEnergy ε) β (quarticInteraction g))) +
+        2 * PowerSeries.coeff 1 (PowerSeries.normalizeByConstantCoeff (Common.dysonTraceSeries (fermionEnergy ε) β (quarticInteraction g))) ^ 3 := by
+  simpa only [] using
     (Combinatorics.factorial_mul_coeff_logOf_three_eq
       (PowerSeries.constantCoeff_normalizeByConstantCoeff
-        (constantCoeff_dysonPartitionSeries_ne_zero ε β (quarticInteraction g))))
+        (Common.constantCoeff_dysonTraceSeries_ne_zero (fermionEnergy ε) β (quarticInteraction g))))
 
 end Fermionic
 end SecondQuantization

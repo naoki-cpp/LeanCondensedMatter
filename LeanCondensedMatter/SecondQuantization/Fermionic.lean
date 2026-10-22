@@ -4,7 +4,6 @@ import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics
 import LeanCondensedMatter.SecondQuantization.Fermionic.Field
 import LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTime
 import LeanCondensedMatter.SecondQuantization.Fermionic.Lattice
-import LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal
 import LeanCondensedMatter.SecondQuantization.Fermionic.Transport
 import LeanCondensedMatter.SecondQuantization.Fermionic.Validation

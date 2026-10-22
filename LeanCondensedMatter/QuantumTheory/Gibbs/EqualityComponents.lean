@@ -1,12 +1,13 @@
 import LeanCondensedMatter.Analysis.Inequalities.Gibbs
-import LeanCondensedMatter.QuantumTheory.Gibbs.Equality
+import LeanCondensedMatter.QuantumTheory.Gibbs.FreeEnergy
 import LeanCondensedMatter.Analysis.Inequalities.PeierlsBogoliubovEquality
 
 /-!
-# Uniqueness in the Gibbs variational principle
+# Equality components of the Gibbs variational bound
 
-This file reverses the inequality chain in the Gibbs–Klein proof. The scalar lemma isolates the
-combined equality case needed to recover the Gibbs weights and saturated Peierls–Bogoliubov bound.
+The equality case of the Gibbs–Klein free-energy bound determines the diagonal Gibbs weights,
+saturation of the Gibbs trace, and equality in the Peierls–Bogoliubov inequality. The scalar
+comparison lemma isolates the equality conditions used in this decomposition.
 -/
 
 /-- Equality in the scalar estimate used by the Gibbs–Klein proof forces both constituent

@@ -1,5 +1,6 @@
 import LeanCondensedMatter.Combinatorics.PerfectPairing.PairEndpoints
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentOrder
+import LeanCondensedMatter.Combinatorics.Shuffle.FinpartitionOrderShuffle
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Ordered
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentRestriction
 
 set_option linter.style.header false
@@ -22,6 +23,26 @@ namespace Common
 open Combinatorics
 
 variable {Label : Type*} {N : ℕ}
+
+/-! ## Component-local vertex orders and their global assembly -/
+
+/-- A vertex order on every connected-component block of `d`. -/
+abbrev QuarticDiagram.ComponentVertexOrders {S : Finset (Fin N)}
+    (d : QuarticDiagram Label N S) :=
+  d.vertexGraph.componentPartitionOn.PartOrders
+
+/-- An order-preserving interleaving of all component-local slots into the ambient global slots. -/
+abbrev QuarticDiagram.ComponentShuffle {S : Finset (Fin N)}
+    (d : QuarticDiagram Label N S) :=
+  d.vertexGraph.componentPartitionOn.PartShuffle
+
+/-- Assemble a global vertex order from component-local orders and an order-preserving shuffle. -/
+noncomputable def QuarticDiagram.assembleVertexOrder {S : Finset (Fin N)}
+    (d : QuarticDiagram Label N S) (orders : d.ComponentVertexOrders)
+    (shuffle : d.ComponentShuffle) : QuarticVertexOrder S :=
+  d.vertexGraph.componentPartitionOn.assembleOrder orders shuffle
+
+/-! ## Component-local pairing compatibility -/
 
 /-- The normalized ordered pairs of one restricted component. -/
 abbrev QuarticDiagram.LocalOrderedPair {S : Finset (Fin N)}

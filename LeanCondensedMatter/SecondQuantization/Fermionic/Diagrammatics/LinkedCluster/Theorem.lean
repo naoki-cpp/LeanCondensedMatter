@@ -25,7 +25,7 @@ theorem factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_sum_connectedQuar
     (n : ℕ) (hn : n ≠ 0) :
     (n.factorial : ℂ) *
         PowerSeries.coeff n
-          (dysonFormalLogPartitionFunction ε β (quarticInteraction g)) =
+          (PowerSeries.logOf (PowerSeries.normalizeByConstantCoeff (Common.dysonTraceSeries (fermionEnergy ε) β (quarticInteraction g)))) =
       ∑ d : ConnectedQuarticWickDiagram Mode n Finset.univ,
         quarticWickDiagramAmplitude ε β g d.1 := by
   have huniv : (Finset.univ : Finset (Fin n)) ≠ ∅ :=
@@ -34,13 +34,13 @@ theorem factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_sum_connectedQuar
   have hZ :
       PowerSeries.constantCoeff
           (PowerSeries.normalizeByConstantCoeff
-            (dysonPartitionSeries ε β (quarticInteraction g))) = 1 :=
+            (Common.dysonTraceSeries (fermionEnergy ε) β (quarticInteraction g))) = 1 :=
     PowerSeries.constantCoeff_normalizeByConstantCoeff
-      (constantCoeff_dysonPartitionSeries_ne_zero ε β (quarticInteraction g))
+      (Common.constantCoeff_dysonTraceSeries_ne_zero (fermionEnergy ε) β (quarticInteraction g))
   have hMoment :
       Combinatorics.powerSeriesMomentSetFunction (α := Fin n)
           (PowerSeries.normalizeByConstantCoeff
-            (dysonPartitionSeries ε β (quarticInteraction g))) hZ =
+            (Common.dysonTraceSeries (fermionEnergy ε) β (quarticInteraction g))) hZ =
         W.normalizedObjectMoment := by
     simpa only [W] using
       (dysonPartitionSeriesMoment_eq_wickDiagramObjectMoment
@@ -48,12 +48,12 @@ theorem factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_sum_connectedQuar
   calc
     (n.factorial : ℂ) *
         PowerSeries.coeff n
-          (dysonFormalLogPartitionFunction ε β (quarticInteraction g)) =
+          (PowerSeries.logOf (PowerSeries.normalizeByConstantCoeff (Common.dysonTraceSeries (fermionEnergy ε) β (quarticInteraction g)))) =
         W.connectedContribution (Finset.univ : Finset (Fin n)) := by
-      simpa [dysonFormalLogPartitionFunction] using
+      simpa using
         (Combinatorics.factorial_mul_coeff_logOf_eq_connectedContribution_replica
           (Z := PowerSeries.normalizeByConstantCoeff
-            (dysonPartitionSeries ε β (quarticInteraction g)))
+            (Common.dysonTraceSeries (fermionEnergy ε) β (quarticInteraction g)))
           hZ (W := W) hMoment huniv)
     _ = ∑ d : ConnectedQuarticWickDiagram Mode n Finset.univ,
           quarticWickDiagramAmplitude ε β g d.1 := by

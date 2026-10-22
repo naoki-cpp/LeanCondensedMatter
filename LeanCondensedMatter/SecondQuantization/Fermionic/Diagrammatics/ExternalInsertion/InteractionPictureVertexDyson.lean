@@ -67,7 +67,7 @@ theorem externalInsertionVertexDysonCoefficient_eq_externalInsertionDysonCoeffic
       intro q _
       rw [externalInsertionMixedTimeOrderedVertexComp_eq_atomicProduct]
       simp only [freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation,
-        Common.finiteGibbsExpectation_smul]
+        Common.finiteGibbsExpectation, map_smul, smul_eq_mul]
       ring
     _ = externalInsertionDysonCoefficient
           ε β g externalLabel externalTime n :=
@@ -108,7 +108,7 @@ theorem externalInsertionVertexDysonSeries_eq_vacuumFree_mul_normalizedDysonPart
     externalInsertionVertexDysonSeries ε β g externalLabel externalTime =
       vacuumFreeExternalInsertionDysonSeries ε β g externalLabel externalTime *
         PowerSeries.normalizeByConstantCoeff
-          (dysonPartitionSeries ε β (quarticInteraction g)) := by
+          (Common.dysonTraceSeries (fermionEnergy ε) β (quarticInteraction g)) := by
   rw [externalInsertionVertexDysonSeries_eq_externalInsertionDysonSeries]
   exact externalInsertionDysonSeries_eq_vacuumFree_mul_normalizedDysonPartitionSeries
     ε β hβ g externalLabel externalTime

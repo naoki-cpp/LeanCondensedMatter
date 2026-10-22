@@ -28,7 +28,7 @@ omit [LinearOrder Mode] [Fintype Mode] in
 since `E(n) = Σ_{i ∈ n} ε_i`. -/
 theorem freeBoltzmannWeight_eq_prod (ε : Mode → ℝ) (β : ℝ) (n : Occupation Mode) :
     freeBoltzmannWeight ε β n = ∏ i ∈ n, Complex.exp (-(β : ℂ) * (ε i : ℂ)) := by
-  rw [freeBoltzmannWeight, Common.boltzmannWeight, fermionEnergy, Finset.mul_sum]
+  rw [freeBoltzmannWeight, Common.boltzmannWeight, fermionEnergy_eq_sum, Finset.mul_sum]
   push_cast
   rw [Complex.exp_sum]
 

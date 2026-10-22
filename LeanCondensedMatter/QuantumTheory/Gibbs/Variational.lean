@@ -1,12 +1,13 @@
-import LeanCondensedMatter.QuantumTheory.Gibbs.Entropy
+import LeanCondensedMatter.QuantumTheory.Gibbs.HeatOperator
+import LeanCondensedMatter.QuantumTheory.Gibbs.EigenbasisEntropy
 import LeanCondensedMatter.QuantumTheory.Gibbs.FreeEnergy
 
 /-!
 # Gibbs-state variational equality
 
-The normalized Gibbs state attains the Helmholtz lower bound. The bounded-Hamiltonian API states
-finite dimensionality directly, so the dimension-independent Gibbs-diagonal entropy identity applies
-to a common energy eigenbasis.
+The normalized Gibbs state attains the Helmholtz lower bound. The bounded-Hamiltonian state is
+identified with the canonical energy-eigenbasis Gibbs state, whose entropy identity supplies
+the finite-dimensional result.
 -/
 
 namespace QuantumTheory
@@ -23,26 +24,25 @@ theorem vonNeumannEntropy_gibbsState [Nontrivial H] [FiniteDimensional ℂ H]
         β * energyExpValue (gibbsState Hop β) Hop +
           Real.log (spectralTrace (gibbsOp Hop β)) := by
   classical
-  let ρ := gibbsState Hop β
-  let Z : ℝ := spectralTrace (gibbsOp Hop β)
   let E : Fin (Module.finrank ℂ H) → ℝ :=
     Hop.2.isSymmetric.eigenvalues rfl
   let bE : OrthonormalBasis (Fin (Module.finrank ℂ H)) ℂ H :=
     Hop.2.isSymmetric.eigenvectorBasis rfl
   have hEbE (i : Fin (Module.finrank ℂ H)) :
-      (Hop.1 : H →ₗ[ℂ] H) (bE i) = (E i : ℂ) • bE i := by
-    simpa [E, bE] using Hop.2.isSymmetric.apply_eigenvectorBasis rfl i
-  have hZpos : 0 < Z := by
-    simpa [Z] using spectralTrace_gibbsOp_pos Hop β
-  have hρbE (i : Fin (Module.finrank ℂ H)) :
-      (ρ.op : H →ₗ[ℂ] H) (bE i) =
-        ((Real.exp (-β * E i) / Z : ℝ) : ℂ) • bE i := by
-    simpa [ρ, Z, div_eq_mul_inv, mul_comm] using
-      (gibbsState_apply_eigenvector Hop β (hEbE i))
-  change vonNeumannEntropy ρ ≠ ⊤ ∧
-    (vonNeumannEntropy ρ).toReal = β * energyExpValue ρ Hop + Real.log Z
-  exact vonNeumannEntropy_gibbs_diagonal ρ Hop bE.toHilbertBasis E β Z hZpos
-    (fun i => by simpa using hρbE i) (fun i => by simpa using hEbE i)
+      Hop.1 (bE.toHilbertBasis i) = (E i : ℂ) • bE.toHilbertBasis i := by
+    simp only [OrthonormalBasis.coe_toHilbertBasis]
+    change (Hop.1 : H →ₗ[ℂ] H) (bE i) = (E i : ℂ) • bE i
+    exact Hop.2.isSymmetric.apply_eigenvectorBasis rfl i
+  letI : Nonempty (Fin (Module.finrank ℂ H)) :=
+    ⟨⟨0, Module.finrank_pos (R := ℂ) (M := H)⟩⟩
+  let hsum := eigenbasisGibbsSummable_of_finite E β
+  simp only [gibbsState_eq_eigenbasisGibbsDensityOperator Hop β bE.toHilbertBasis E hsum hEbE,
+    spectralTrace_gibbsOp_eq_eigenbasisPartitionFunction Hop β bE.toHilbertBasis E hEbE]
+  have h := vonNeumannEntropy_eigenbasisGibbsDensityOperator bE.toHilbertBasis E β hsum
+    (by exact Summable.of_finite)
+  rw [eigenbasisGibbsEnergyExpectation_eq_energyExpValue
+    bE.toHilbertBasis E β hsum Hop hEbE] at h
+  exact h
 
 /-- For nonzero inverse temperature, the normalized Gibbs state satisfies the exact Helmholtz
 free-energy identity. -/

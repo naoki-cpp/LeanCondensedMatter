@@ -15,10 +15,14 @@ namespace Bosonic
 
 noncomputable section
 
-variable {Mode : Type*} [Fintype Mode]
+variable {Mode : Type*}
 
 /-- File-local classical decidable equality, kept out of public theorem signatures. -/
 local instance instDecidableEqParticleNumberWeightSummable : DecidableEq Mode := Classical.decEq Mode
+
+section FintypeMode
+
+variable [Fintype Mode]
 
 /-- The particle-number-weighted free Boltzmann series has its product closed form. -/
 theorem hasSum_particleNumber_boltzmannWeight (ε : Mode → ℝ) (β : ℝ)
@@ -71,7 +75,8 @@ theorem hasSum_particleNumber_boltzmannWeight (ε : Mode → ℝ) (β : ℝ)
       Finset.mul_prod_erase Finset.univ (fun i => oneModeBoltzmannWeight β (ε i) (n i))
         (Finset.mem_univ j)]
 
-omit [Fintype Mode] in
+end FintypeMode
+
 /-- The particle-number-weighted free Boltzmann series is summable for any finite mode type. -/
 theorem summable_particleNumber_boltzmannWeight [Finite Mode]
     (ε : Mode → ℝ) (β : ℝ) (hpos : ∀ i, 0 < β * ε i) (j : Mode) :

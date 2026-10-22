@@ -38,21 +38,34 @@ omit [LinearOrder Mode] in
 /-- **The free Hamiltonian's real occupation energy**, `E(n) := Σᵢ∈n ε(i)`.
 This is the canonical eigenvalue function shared by the algebraic Hamiltonian, imaginary-time
 evolution, Gibbs constructions, and completed-space realization. -/
-def fermionEnergy (ε : Mode → ℝ) (n : Occupation Mode) : ℝ :=
-  ∑ i ∈ n, ε i
+noncomputable def fermionEnergy (ε : Mode → ℝ) (n : Occupation Mode) : ℝ :=
+  Common.occupationEnergy ε n
+
+omit [LinearOrder Mode] in
+/-- Fermionic free energy is the sum over the occupied mode set. -/
+theorem fermionEnergy_eq_sum (ε : Mode → ℝ) (n : Occupation Mode) :
+    fermionEnergy ε n = ∑ i ∈ n, ε i := by
+  classical
+  change (∑ i ∈ n, ((if i ∈ n then (1 : ℕ) else 0 : ℕ) : ℝ) * ε i) =
+    ∑ i ∈ n, ε i
+  apply Finset.sum_congr rfl
+  intro i hi
+  simp [hi]
 
 /-- Inserting an unoccupied mode raises the free energy by that mode's one-particle energy. -/
 theorem fermionEnergy_insertOccupation_of_not_mem {ε : Mode → ℝ} {i : Mode}
     {n : Occupation Mode} (h : i ∉ n) :
     fermionEnergy ε (insertOccupation i n) = fermionEnergy ε n + ε i := by
-  unfold fermionEnergy insertOccupation
+  rw [fermionEnergy_eq_sum, fermionEnergy_eq_sum]
+  unfold insertOccupation
   rw [Finset.sum_insert h, add_comm]
 
 /-- Removing an occupied mode lowers the free energy by that mode's one-particle energy. -/
 theorem fermionEnergy_removeOccupation_of_mem {ε : Mode → ℝ} {i : Mode}
     {n : Occupation Mode} (h : i ∈ n) :
     fermionEnergy ε (removeOccupation i n) = fermionEnergy ε n - ε i := by
-  unfold fermionEnergy removeOccupation
+  rw [fermionEnergy_eq_sum, fermionEnergy_eq_sum]
+  unfold removeOccupation
   have hsum : ε i + ∑ x ∈ n.erase i, ε x = ∑ x ∈ n, ε x :=
     Finset.add_sum_erase n ε h
   exact eq_sub_iff_add_eq.mpr (by simpa [add_comm] using hsum)

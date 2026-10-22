@@ -159,6 +159,11 @@ directly; compactness, spectral summability, and strictly positive trace are der
 
 `Gibbs/Boltzmann.lean` owns real energy-level weights and probabilities independently of
 Hilbert spaces; `Gibbs/Eigenbasis.lean` constructs density operators from those scalar data.
+`Gibbs/HeatOperator.lean` identifies this state with `gibbsState` when the basis diagonalizes
+the bounded Hamiltonian, and identifies the spectral trace of its heat operator with the
+partition sum. Bounded Gibbs entropy uses this equality and the canonical identity in
+`Gibbs/EigenbasisEntropy.lean`. Eigenvector action of the bounded state belongs to
+`Gibbs/State.lean`, independently of entropy.
 `Gibbs/DistributionVariational.lean` and `Gibbs/DistributionUniqueness.lean` prove
 Gibbs free-energy minimality and uniqueness for normalized energy-level distributions,
 without introducing a Hilbert space or an operator representation.

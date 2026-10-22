@@ -8,13 +8,11 @@ import LeanCondensedMatter.QuantumTheory.Gibbs.DistributionVariational
 import LeanCondensedMatter.QuantumTheory.Gibbs.DistributionUniqueness
 import LeanCondensedMatter.QuantumTheory.Gibbs.EnergyExpectation
 import LeanCondensedMatter.QuantumTheory.Gibbs.FreeEnergy
-import LeanCondensedMatter.QuantumTheory.Gibbs.Entropy
 import LeanCondensedMatter.QuantumTheory.Gibbs.DiagonalEnergy
 import LeanCondensedMatter.QuantumTheory.Gibbs.FreeBoltzmannKernel
 import LeanCondensedMatter.QuantumTheory.Gibbs.FreeExchangeCycleSeries
 import LeanCondensedMatter.QuantumTheory.Gibbs.Variational
-import LeanCondensedMatter.QuantumTheory.Gibbs.Equality
-import LeanCondensedMatter.QuantumTheory.Gibbs.Uniqueness
+import LeanCondensedMatter.QuantumTheory.Gibbs.EqualityComponents
 import LeanCondensedMatter.QuantumTheory.Gibbs.MinimizerUniqueness
 
 set_option linter.style.header false

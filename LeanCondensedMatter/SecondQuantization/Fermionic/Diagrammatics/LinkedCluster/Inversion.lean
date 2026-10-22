@@ -26,7 +26,7 @@ example
     (n : ℕ) (hn : n ≠ 0) :
     (n.factorial : ℂ) *
         PowerSeries.coeff n
-          (dysonFormalLogPartitionFunction ε β (quarticInteraction g)) =
+          (PowerSeries.logOf (PowerSeries.normalizeByConstantCoeff (Common.dysonTraceSeries (fermionEnergy ε) β (quarticInteraction g)))) =
       ∑ d : ConnectedQuarticWickDiagram Mode n Finset.univ,
         quarticWickDiagramAmplitude ε β g d.1 := by
   have huniv : (Finset.univ : Finset (Fin n)) ≠ ∅ :=
@@ -34,11 +34,11 @@ example
   let W := quarticWickDiagramMultiplicativeWeight (N := n) ε β g
   let Z :=
     PowerSeries.normalizeByConstantCoeff
-      (dysonPartitionSeries ε β (quarticInteraction g))
+      (Common.dysonTraceSeries (fermionEnergy ε) β (quarticInteraction g))
   have hZ : PowerSeries.constantCoeff Z = 1 := by
     dsimp [Z]
     exact PowerSeries.constantCoeff_normalizeByConstantCoeff
-      (constantCoeff_dysonPartitionSeries_ne_zero ε β (quarticInteraction g))
+      (Common.constantCoeff_dysonTraceSeries_ne_zero (fermionEnergy ε) β (quarticInteraction g))
   have hMoment :
       Combinatorics.powerSeriesMomentSetFunction (α := Fin n) Z hZ =
         W.normalizedObjectMoment := by
@@ -48,9 +48,9 @@ example
   calc
     (n.factorial : ℂ) *
         PowerSeries.coeff n
-          (dysonFormalLogPartitionFunction ε β (quarticInteraction g)) =
+          (PowerSeries.logOf (PowerSeries.normalizeByConstantCoeff (Common.dysonTraceSeries (fermionEnergy ε) β (quarticInteraction g)))) =
         W.connectedContribution (Finset.univ : Finset (Fin n)) := by
-      simpa [dysonFormalLogPartitionFunction, Z] using
+      simpa [Z] using
         (Combinatorics.factorial_mul_coeff_logOf_eq_connectedContribution
           hZ W hMoment huniv)
     _ = ∑ d : ConnectedQuarticWickDiagram Mode n Finset.univ,

@@ -2,6 +2,7 @@ import LeanCondensedMatter.SecondQuantization.Common.Algebra.DiagonalTrace
 import LeanCondensedMatter.SecondQuantization.Common.Algebra.FiniteTrace
 import LeanCondensedMatter.SecondQuantization.Common.Algebra.FiniteHilbertOperator
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsExpectationBridge
+import LeanCondensedMatter.SecondQuantization.Common.Thermal.CanonicalSector
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteCompletedGibbsCompatibility
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsCoordinate
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis
@@ -17,7 +18,7 @@ The statistics-independent thermal theory separates five layers:
 - algebraic diagonal traces and finite unnormalized weight sums;
 - finite Hilbert realization of algebraic Fock operators and compatibility of completed-space
   Gibbs densities with their finite-Hilbert counterparts;
-- the generic `QuantumTheory.Gibbs.Eigenbasis` density state with the finite Gibbs expectation adapter;
+- the generic `QuantumTheory.Gibbs.Eigenbasis` density state and sharp-number canonical sector specialization;
 - finite Gibbs trace-ratio and Boltzmann-coordinate formulas;
 - the implementation-independent Bloch–de Dominicis expectation recursion and its finite Gibbs
   pairing specialization.

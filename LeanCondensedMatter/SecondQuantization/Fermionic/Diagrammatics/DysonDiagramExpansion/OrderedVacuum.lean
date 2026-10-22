@@ -1,5 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Pairing
-import LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.DysonPartitionSeries
+import LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonTraceSeries
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Ordered
 
 set_option linter.style.header false
@@ -37,7 +37,7 @@ theorem sum_orderedVacuumDysonContribution_eq_normalizedDysonPartitionCoeff
       (-1 : ℂ) ^ k * (∏ q : Fin k, g (x.1 q)) *
         intervalIntegral.orderedSimplexIntegral k β
           (fun σ => flatVertexLegPairingEvaluation ε β x.1 σ x.2)) =
-      normalizedDysonPartitionCoeff ε β (quarticInteraction g) k := by
+      PowerSeries.coeff k (PowerSeries.normalizeByConstantCoeff (Common.dysonTraceSeries (fermionEnergy ε) β (quarticInteraction g))) := by
   classical
   have hkey :=
     dysonVertexMoment_quarticInteraction_eq_sum_vertexLabel_pairingEvaluation
@@ -59,19 +59,12 @@ theorem sum_orderedVacuumDysonContribution_eq_normalizedDysonPartitionCoeff
       intro q _
       rw [Finset.mul_sum, Finset.mul_sum]
       simp only [mul_assoc]
-    _ = normalizedDysonPartitionCoeff ε β (quarticInteraction g) k := by
+    _ = PowerSeries.coeff k (PowerSeries.normalizeByConstantCoeff (Common.dysonTraceSeries (fermionEnergy ε) β (quarticInteraction g))) := by
       have hfac : ((k.factorial : ℕ) : ℂ) ≠ 0 := by
         exact_mod_cast Nat.factorial_ne_zero k
       apply mul_left_cancel₀ hfac
-      have hconst :
-          PowerSeries.constantCoeff
-            (Common.dysonTraceSeries (fermionEnergy ε) β (quarticInteraction g)) =
-            freePartitionFunction ε β :=
-        constantCoeff_dysonPartitionSeries ε β (quarticInteraction g)
-      simpa [Combinatorics.powerSeriesMomentCoeff,
-        PowerSeries.coeff_normalizeByConstantCoeff, Common.coeff_dysonTraceSeries,
-        normalizedDysonPartitionCoeff, dysonPartitionCoeff, hconst,
-        div_eq_mul_inv, mul_assoc, mul_comm, mul_left_comm] using hkey.symm
+      simpa only [Combinatorics.powerSeriesMomentCoeff, mul_assoc, mul_comm,
+        mul_left_comm] using hkey.symm
 
 end Fermionic
 end SecondQuantization
