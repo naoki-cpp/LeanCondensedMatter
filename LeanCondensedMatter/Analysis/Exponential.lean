@@ -1,6 +1,7 @@
 module
 
-public import Mathlib.Analysis.Complex.Trigonometric
+public import Mathlib.Analysis.Complex.Exponential
+import Mathlib.Analysis.Complex.Trigonometric
 
 public section
 
