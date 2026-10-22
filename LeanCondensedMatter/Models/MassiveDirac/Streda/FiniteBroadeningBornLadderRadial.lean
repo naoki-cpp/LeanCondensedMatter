@@ -85,6 +85,43 @@ private theorem intervalIntegrable_polarPauli_directionTrace
     (((continuous_const.mul (continuous_polarPauliOperator aL bL dL)).mul
       continuous_const).mul (continuous_polarPauliOperator aR bR dR))
 
+/-- Hilbert--Schmidt orthogonality of the Hermitian Pauli basis projects an in-plane
+operator onto its measured coefficient; the scalar `q` multiplies the trace rather
+than occupying the conjugate-linear slot of the Hilbert--Schmidt pairing. -/
+private theorem trace_directionPauli_inPlane_eq
+    (measured : Fin 2) (q : ℂ) (coefficients : InPlaneCoefficientVector) :
+    finiteDimensionalOperatorTrace
+        ((q • matrixOperator (directionPauli measured)) *
+          inPlanePauliVertexOperator coefficients) =
+      2 * q * coefficients measured := by
+  let u : PauliAxis → ℂ
+    | .x => coefficients 0
+    | .y => coefficients 1
+    | .z => 0
+  have hmatrix :
+      inPlanePauliVertexOperator coefficients =
+        matrixOperator (InternalSpace.pauliCombination u) := by
+    simp [inPlanePauliVertexOperator, matrixOperator,
+      InternalSpace.pauliCombination_eq_components, sigmaX, sigmaY, u]
+  rw [hmatrix]
+  have hop :
+      (q • matrixOperator (directionPauli measured)) *
+          matrixOperator (InternalSpace.pauliCombination u) =
+        matrixOperator
+          ((q • directionPauli measured) * InternalSpace.pauliCombination u) := by
+    simp [matrixOperator]
+  rw [hop, matrixOperator, finiteDimensionalOperatorTrace_toEuclideanCLM]
+  rw [smul_mul_assoc, Matrix.trace_smul]
+  change
+    q * Matrix.trace
+        (InternalSpace.pauliBasis (inPlanePauliAxis measured) *
+          InternalSpace.pauliCombination u) = _
+  rw [InternalSpace.trace_pauliBasis_mul_pauliCombination]
+  have hcomponent : u (inPlanePauliAxis measured) = coefficients measured := by
+    fin_cases measured <;> simp [u, inPlanePauliAxis]
+  rw [hcomponent]
+  ring
+
 /-- Full-angle trace of a polar Pauli rung with a measured in-plane Pauli vertex. -/
 private theorem integral_polarPauli_directionTrace_eq
     (measured : Fin 2) (q aL aR bL bR dL dR : ℂ)
@@ -111,9 +148,6 @@ private theorem integral_polarPauli_directionTrace_eq
     finiteDimensionalOperatorTrace.comp
       ((ContinuousLinearMap.mulLeftRight ℂ DiracOperator)
         (q • matrixOperator (directionPauli measured)) 1)
-  have hoperator (c : InPlaneCoefficientVector) :
-      inPlanePauliVertexOperator c =
-        c 0 • matrixOperator sigmaX + c 1 • matrixOperator sigmaY := rfl
   have hfun :
       (fun θ : ℝ =>
         finiteDimensionalOperatorTrace
@@ -127,51 +161,24 @@ private theorem integral_polarPauli_directionTrace_eq
     simp [L, rung, mul_assoc]
   rw [hfun]
   rw [L.intervalIntegral_comp_comm hrungIntegrable]
-  let coefficientsRung := pauliRungAngularCoefficient aL aR dL dR
-  let x : ℂ := inPlaneLadderAction coefficientsRung coefficients 0
-  let y : ℂ := inPlaneLadderAction coefficientsRung coefficients 1
   have hrungIntegral :
       (∫ θ in (0 : ℝ)..(2 * Real.pi), rung θ) =
-        x • matrixOperator sigmaX + y • matrixOperator sigmaY := by
-    simpa [x, y, coefficientsRung, rung, hoperator] using
+        inPlanePauliVertexOperator
+          (inPlaneLadderAction
+            (pauliRungAngularCoefficient aL aR dL dR) coefficients) := by
+    simpa only [rung, inPlanePauliVertexOperator] using
       (integral_polarPauliOperator_inPlane_eq aL aR bL bR dL dR coefficients)
   rw [hrungIntegral]
-  let u : PauliAxis → ℂ
-    | .x => x
-    | .y => y
-    | .z => 0
-  have hmatrix :
-      x • matrixOperator sigmaX + y • matrixOperator sigmaY =
-        matrixOperator (InternalSpace.pauliCombination u) := by
-    simp [matrixOperator, InternalSpace.pauliCombination_eq_components,
-      sigmaX, sigmaY, u]
-  rw [hmatrix]
   change
     finiteDimensionalOperatorTrace
         ((q • matrixOperator (directionPauli measured)) *
-          matrixOperator (InternalSpace.pauliCombination u)) =
-      2 * q * inPlaneLadderAction coefficientsRung coefficients measured
-  have hop :
-      (q • matrixOperator (directionPauli measured)) *
-          matrixOperator (InternalSpace.pauliCombination u) =
-        matrixOperator
-          ((q • directionPauli measured) * InternalSpace.pauliCombination u) := by
-    simp [matrixOperator]
-  rw [hop, matrixOperator, finiteDimensionalOperatorTrace_toEuclideanCLM]
-  rw [smul_mul_assoc, Matrix.trace_smul]
-  change
-    q * Matrix.trace
-        (InternalSpace.pauliBasis (inPlanePauliAxis measured) *
-          InternalSpace.pauliCombination u) =
-      2 * q * inPlaneLadderAction coefficientsRung coefficients measured
-  rw [InternalSpace.trace_pauliBasis_mul_pauliCombination]
-  have hcomponent :
-      u (inPlanePauliAxis measured) =
-        inPlaneLadderAction coefficientsRung coefficients measured := by
-    fin_cases measured <;>
-      simp [u, inPlanePauliAxis, x, y]
-  rw [hcomponent]
-  ring
+          inPlanePauliVertexOperator
+            (inPlaneLadderAction
+              (pauliRungAngularCoefficient aL aR dL dR) coefficients)) =
+      2 * q * inPlaneLadderAction
+        (pauliRungAngularCoefficient aL aR dL dR) coefficients measured
+  exact trace_directionPauli_inPlane_eq measured q
+    (inPlaneLadderAction (pauliRungAngularCoefficient aL aR dL dR) coefficients)
 
 /-- Explicit pair-indexed radial coefficient of the finite-`η` RA-dressed Středa angular trace. The
 RA and same-side rungs act on complete dressed and bare in-plane source vectors; the requested
