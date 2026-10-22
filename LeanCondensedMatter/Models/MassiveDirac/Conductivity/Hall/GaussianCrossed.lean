@@ -254,6 +254,7 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedOrderedXYConductivity_x_eq_
   congr 1
   apply intervalIntegral.integral_congr
   intro radius _
+  dsimp only
   rw [finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_x_antisymmetric_eq_explicit_k0_k1_k2_moments
     v m probeEnergy broadening disorderStrength hbar pMax radius
     hbroadening hdisorder hpMax]
@@ -338,6 +339,7 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedOrderedXYConductivity_psi_e
   congr 1
   apply intervalIntegral.integral_congr
   intro radius _
+  dsimp only
   rw [finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_psi_antisymmetric_eq_real_minor
     v m probeEnergy broadening disorderStrength hbar pMax radius
     hbroadening hdisorder hpMax]
@@ -435,6 +437,7 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedOrderedXYConductivity_psi_e
   congr 1
   apply intervalIntegral.integral_congr
   intro radius _
+  dsimp only
   rw [finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_psi_antisymmetric_eq_explicit_k0_k1_k2_moments
     v m probeEnergy broadening disorderStrength hbar pMax radius
     hbroadening hdisorder hpMax]
