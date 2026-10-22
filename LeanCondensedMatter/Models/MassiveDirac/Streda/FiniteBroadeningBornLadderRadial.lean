@@ -85,6 +85,42 @@ private theorem intervalIntegrable_polarPauli_directionTrace
     (((continuous_const.mul (continuous_polarPauliOperator aL bL dL)).mul
       continuous_const).mul (continuous_polarPauliOperator aR bR dR))
 
+/-- The Pauli trace pairing projects an in-plane operator onto its measured
+component, independently of the angular integral that produced the operator. -/
+private theorem trace_directionPauli_inPlane_eq
+    (measured : Fin 2) (q : ℂ) (coefficients : InPlaneCoefficientVector) :
+    finiteDimensionalOperatorTrace
+        ((q • matrixOperator (directionPauli measured)) *
+          inPlanePauliVertexOperator coefficients) =
+      2 * q * coefficients measured := by
+  let u : PauliAxis → ℂ
+    | .x => coefficients 0
+    | .y => coefficients 1
+    | .z => 0
+  have hmatrix :
+      inPlanePauliVertexOperator coefficients =
+        matrixOperator (InternalSpace.pauliCombination u) := by
+    simp [inPlanePauliVertexOperator, matrixOperator,
+      InternalSpace.pauliCombination_eq_components, sigmaX, sigmaY, u]
+  rw [hmatrix]
+  have hop :
+      (q • matrixOperator (directionPauli measured)) *
+          matrixOperator (InternalSpace.pauliCombination u) =
+        matrixOperator
+          ((q • directionPauli measured) * InternalSpace.pauliCombination u) := by
+    simp [matrixOperator]
+  rw [hop, matrixOperator, finiteDimensionalOperatorTrace_toEuclideanCLM]
+  rw [smul_mul_assoc, Matrix.trace_smul]
+  change
+    q * Matrix.trace
+        (InternalSpace.pauliBasis (inPlanePauliAxis measured) *
+          InternalSpace.pauliCombination u) = _
+  rw [InternalSpace.trace_pauliBasis_mul_pauliCombination]
+  have hcomponent : u (inPlanePauliAxis measured) = coefficients measured := by
+    fin_cases measured <;> simp [u, inPlanePauliAxis]
+  rw [hcomponent]
+  ring
+
 /-- Full-angle trace of a polar Pauli rung with a measured in-plane Pauli vertex. -/
 private theorem integral_polarPauli_directionTrace_eq
     (measured : Fin 2) (q aL aR bL bR dL dR : ℂ)
@@ -136,42 +172,13 @@ private theorem integral_polarPauli_directionTrace_eq
     simpa [x, y, coefficientsRung, rung, hoperator] using
       (integral_polarPauliOperator_inPlane_eq aL aR bL bR dL dR coefficients)
   rw [hrungIntegral]
-  let u : PauliAxis → ℂ
-    | .x => x
-    | .y => y
-    | .z => 0
-  have hmatrix :
-      x • matrixOperator sigmaX + y • matrixOperator sigmaY =
-        matrixOperator (InternalSpace.pauliCombination u) := by
-    simp [matrixOperator, InternalSpace.pauliCombination_eq_components,
-      sigmaX, sigmaY, u]
-  rw [hmatrix]
   change
     finiteDimensionalOperatorTrace
         ((q • matrixOperator (directionPauli measured)) *
-          matrixOperator (InternalSpace.pauliCombination u)) =
+          inPlanePauliVertexOperator (inPlaneCoefficientVector x y)) =
       2 * q * inPlaneLadderAction coefficientsRung coefficients measured
-  have hop :
-      (q • matrixOperator (directionPauli measured)) *
-          matrixOperator (InternalSpace.pauliCombination u) =
-        matrixOperator
-          ((q • directionPauli measured) * InternalSpace.pauliCombination u) := by
-    simp [matrixOperator]
-  rw [hop, matrixOperator, finiteDimensionalOperatorTrace_toEuclideanCLM]
-  rw [smul_mul_assoc, Matrix.trace_smul]
-  change
-    q * Matrix.trace
-        (InternalSpace.pauliBasis (inPlanePauliAxis measured) *
-          InternalSpace.pauliCombination u) =
-      2 * q * inPlaneLadderAction coefficientsRung coefficients measured
-  rw [InternalSpace.trace_pauliBasis_mul_pauliCombination]
-  have hcomponent :
-      u (inPlanePauliAxis measured) =
-        inPlaneLadderAction coefficientsRung coefficients measured := by
-    fin_cases measured <;>
-      simp [u, inPlanePauliAxis, x, y]
-  rw [hcomponent]
-  ring
+  simpa [inPlaneCoefficientVector, x, y, coefficientsRung] using
+    (trace_directionPauli_inPlane_eq measured q (inPlaneCoefficientVector x y))
 
 /-- Explicit pair-indexed radial coefficient of the finite-`η` RA-dressed Středa angular trace. The
 RA and same-side rungs act on complete dressed and bare in-plane source vectors; the requested
