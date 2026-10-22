@@ -64,6 +64,7 @@ theorem canonicalFullGibbsWeight_apply_of_ne (ε : Mode → ℝ) (β : ℝ) (N :
     exact n.property
   unfold canonicalFullGibbsWeight
   rw [Function.extend_apply' _ _ _ hnot]
+  simp
 
 /-- The full-space canonical Boltzmann weights are nonnegative. -/
 theorem canonicalFullGibbsWeight_nonneg (ε : Mode → ℝ) (β : ℝ) (N : ℕ)
@@ -150,7 +151,7 @@ theorem canonicalFullGibbsDensityOperator_apply_basis_of_ne
         (completedBasisState c) = 0 := by
   have hzero : Real.normalizedWeight (canonicalFullGibbsWeight ε β N) c = 0 := by
     simp [Real.normalizedWeight, canonicalFullGibbsWeight_apply_of_ne ε β N c hc]
-  simpa only [canonicalFullGibbsDensityOperator, completedHilbertBasis_apply, hzero, zero_smul] using
+  simpa [canonicalFullGibbsDensityOperator, completedHilbertBasis_apply, hzero] using
     (diagonalDensityOperator_apply_basis
       (completedHilbertBasis (Config := Config)) (canonicalFullGibbsWeight ε β N)
       (canonicalFullGibbsWeight_norm_summable ε β N hsum)
