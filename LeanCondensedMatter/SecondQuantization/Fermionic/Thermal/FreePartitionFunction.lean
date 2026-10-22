@@ -1,21 +1,14 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeBoltzmannCore
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsDensityOperator
-import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.NumberOperator
-import LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTime.ImaginaryTimeEvolution
-import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.GibbsExpectation.TwoPoint
 
 set_option linter.style.header false
 
 /-!
-# The free fermion partition function factorizes, and gives the Fermi–Dirac distribution
-
-The closed-form free-fermion occupation number `⟨N_i⟩₀ = 1/(e^{βε_i}+1)` follows from the
-mode-by-mode product factorization of the finite free partition function,
+# Factorization of the finite free-fermion partition function
 
 `Z₀(β) = Σₙ e^{-β E(n)} = ∏ᵢ (1 + e^{-βε_i})`.
 
-Unlike the bosonic case (`Bosonic/Thermal/FreePartitionFunction.lean`), each fermionic mode's
-occupation is `0` or `1`, so every sum is manifestly finite.
+Each fermionic mode has occupation `0` or `1`, so the configuration sum is finite.
 -/
 
 namespace SecondQuantization
@@ -55,34 +48,6 @@ theorem freePartitionFunction_eq_prod (ε : Mode → ℝ) (β : ℝ) :
   classical
   rw [freePartitionFunction, ← Finset.powerset_univ]
   exact sum_freeBoltzmannWeight_powerset_eq_prod ε β Finset.univ
-
-/-- **The closed-form Fermi–Dirac occupation number.** `⟨N_i⟩₀,β = 1/(e^{βε_i}+1)`. -/
-theorem freeGibbsDensityOperator_expectation_numberOperator
-    (ε : Mode → ℝ) (β : ℝ) (i : Mode) :
-    (freeGibbsDensityOperator ε β).expectation
-        (Common.finiteHilbertOperatorAlgEquiv (numberOperator i)) =
-      1 / (Complex.exp ((β : ℂ) * (ε i : ℂ)) + 1) := by
-  rw [freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation]
-  change Common.finiteGibbsExpectation (fermionEnergy ε) β
-      ((create i).comp (annihilate i)) =
-    1 / (Complex.exp ((β : ℂ) * (ε i : ℂ)) + 1)
-  have hC :
-      Common.heisenbergEvolve (fermionEnergy ε) (-β) (create i) =
-        Complex.exp (((ε i) * (-β) : ℝ) : ℂ) • create i := by
-    have h := Common.heisenbergEvolve_eq_smul_of_carriesShift
-      (fermionEnergy ε) (ε i) (-β) (create i)
-      (carriesEnergyShift_create ε i)
-    simpa [mul_comm] using h
-  have hcomm :
-      Common.exchangeCommutator Common.Statistics.fermion (create i) (annihilate i) =
-        (1 : ℂ) • (LinearMap.id : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) := by
-    simpa [Common.exchangeCommutator, Common.Statistics.zetaInt_fermion] using
-      (anticomm_create_annihilate (Mode := Mode) i i)
-  have hne := one_sub_zetaInt_fermion_mul_exp_ne_zero (ε i) β
-  have h := Common.finiteGibbsExpectation_comp_eq_div_of_exchangeCommutator
-    (fermionEnergy ε) β (ε i) Common.Statistics.fermion (1 : ℂ)
-    (create i) (annihilate i) hC hcomm hne
-  simpa [Common.Statistics.zetaInt_fermion, mul_comm, add_comm] using h
 
 end Fermionic
 end SecondQuantization
