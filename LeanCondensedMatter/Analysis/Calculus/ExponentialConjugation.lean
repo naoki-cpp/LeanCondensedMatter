@@ -26,7 +26,7 @@ theorem hasDerivAt_exp_conjugate (a b : A) (t : ℝ) :
         (exp (t • a) * b * exp (-(t • a))) * a) t := by
   have hc : Commute a (exp (-(t • a))) := by
     apply Commute.exp_right
-    show a * (-(t • a)) = (-(t • a)) * a
+    change a * (-(t • a)) = (-(t • a)) * a
     simp only [mul_neg, neg_mul, mul_smul_comm, smul_mul_assoc]
   have h := ((hasDerivAt_exp_smul_const' a t).mul_const b).mul
     (hasDerivAt_exp_smul_const' (-a) t)
@@ -49,7 +49,7 @@ theorem ContinuousLinearMap.map_exp_conjugate_of_commutator
     have hX := F.hasFDerivAt.comp_hasDerivAt s (hasDerivAt_exp_conjugate a b s)
     have hc : Commute c (exp (s • (-c))) := by
       apply Commute.exp_right
-      show c * (s • (-c)) = (s • (-c)) * c
+      change c * (s • (-c)) = (s • (-c)) * c
       simp only [smul_neg, mul_neg, neg_mul, mul_smul_comm, smul_mul_assoc]
     have h := ((hasDerivAt_exp_smul_const' (-c) s).mul hX).mul
       (hasDerivAt_exp_smul_const' c s)
@@ -68,7 +68,7 @@ theorem ContinuousLinearMap.map_exp_conjugate_of_commutator
   have hunit (z : B) : exp z * exp (-z) = 1 := by
     letI : NormedAlgebra ℚ B := .restrictScalars ℚ ℝ B
     have hz : Commute z (-z) := by
-      show z * (-z) = (-z) * z
+      change z * (-z) = (-z) * z
       simp only [mul_neg, neg_mul]
     rw [← exp_add_of_commute hz, add_neg_cancel, exp_zero]
   change F (X t) = _
