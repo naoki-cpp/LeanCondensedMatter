@@ -48,9 +48,12 @@ must respect the actual import dependency graph.
 - **Keep imports narrow.** Use ordinary `import` by default and
   `public import` only for intentional re-exporting. Use `import all`
   or `meta import` only when the relevant private or metaprogramming
-  dependency is demonstrated. Treat broad `@[expose] public section` and
-  temporary backward-compatibility options as migration scaffolding, not
-  the final visibility policy.
+  dependency is demonstrated. For theorem modules, keep imports needed to
+  form or elaborate exported statements public, but leave proof-only helpers
+  as ordinary imports; verify actual downstream consumers before narrowing a
+  public import. Treat broad `@[expose] public section` and temporary
+  backward-compatibility options as migration scaffolding, not the final
+  visibility policy.
 - **Avoid unrelated refactors.** A module-conversion PR should not also
   rename physical concepts, rearrange the architecture, or alter theorem
   meaning. Genuine API improvements follow the normal canonical-ownership
