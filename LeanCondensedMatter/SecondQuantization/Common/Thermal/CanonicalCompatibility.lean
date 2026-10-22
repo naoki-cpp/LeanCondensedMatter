@@ -121,8 +121,13 @@ private theorem canonicalCompressedDiagonalMatrixElement (N : ℕ)
         (completedBasisState n)) =
     inner ℂ (completedBasisState n.val) (A (completedBasisState n.val)) := by
   rw [ContinuousLinearMap.comp_apply, ContinuousLinearMap.comp_apply,
-    inner_completedBasisState_left, completedCoordinatePullback_apply,
-    completedCoordinateEmbedding_basisState, inner_completedBasisState_left]
+    inner_completedBasisState_left, completedCoordinatePullback_apply]
+  change
+    (A (completedCoordinateEmbedding
+      (Subtype.val : ParticleNumberSector Mode Config N → Config)
+      Subtype.val_injective (completedBasisState n))) n.val =
+      inner ℂ (completedBasisState n.val) (A (completedBasisState n.val))
+  rw [completedCoordinateEmbedding_basisState, inner_completedBasisState_left]
 
 /-- A bounded full-Fock observable has the same canonical expectation as its
 compression to the fixed-number sector. The ambient operator may connect
