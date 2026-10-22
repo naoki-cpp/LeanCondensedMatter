@@ -12,9 +12,14 @@ migration are separate changes: the former must not silently force the latter.
 
 Lean modules distinguish public names, private implementation details, and
 whether the body of a public definition can be unfolded by importers. Ordinary
-`import` in a module makes an imported module's public scope available locally;
-`public import` also re-exports it. This supports narrower imports, more stable
-interfaces, and fewer downstream rebuilds when only private proofs change.
+`import` in a module makes an imported module's public scope available locally,
+not to consumers of the current module. Consumers should import the canonical
+owners of the APIs they use directly, rather than depend on incidental transitive
+imports. `public import` re-exports the imported module's public scope; reserve it
+for a genuine public-signature dependency or an intentional umbrella interface.
+A public declaration's type may mention only public names, so not every
+`public import` can simply be downgraded to `import`. This distinction supports
+narrower interfaces and fewer downstream rebuilds when only private proofs change.
 
 Modern Mathlib declares that its API is designed for the module system.
 LeanCondensedMatter still has source files without a `module` header. Lake's
@@ -45,13 +50,19 @@ must respect the actual import dependency graph.
   definitional reduction is an intentional interface; otherwise supply
   canonical public equations or theorems and refactor consumers to use them.
   Do not expose proof internals merely to make a tactic succeed.
-- **Keep imports narrow.** Use ordinary `import` by default and
-  `public import` only for intentional re-exporting. Use `import all`
-  or `meta import` only when the relevant private or metaprogramming
-  dependency is demonstrated. For theorem modules, keep imports needed to
-  form or elaborate exported statements public, but leave proof-only helpers
-  as ordinary imports; verify actual downstream consumers before narrowing a
-  public import. Treat broad `@[expose] public section` and temporary
+- **Use direct ordinary imports by default.** Each consumer imports the modules
+  owning the declarations it actually uses; do not re-export dependencies just
+  to spare downstream files an explicit import. Use `public import` only when
+  the public scope needs an imported declaration to express or elaborate an
+  exported signature, or when a designated umbrella intentionally re-exports
+  that interface. Prefer the narrowest owner module for either case. Keep
+  proof-only imports (including tactics and supporting rewrite lemmas) ordinary.
+  If a downstream file loses an accidental transitive dependency, add its
+  direct `import` rather than widening the upstream public API.
+- **Keep visibility mechanisms distinct.** `public section` publishes this
+  file's declarations; it does not re-export ordinary imports. Use `import all`
+  or `meta import` only when a concrete private-scope or metaprogramming need
+  is demonstrated. Treat broad `@[expose] public section` and temporary
   backward-compatibility options as migration scaffolding, not the final
   visibility policy.
 - **Avoid unrelated refactors.** A module-conversion PR should not also
@@ -64,11 +75,16 @@ must respect the actual import dependency graph.
 1. Establish the supported toolchain/Mathlib baseline and confirm it builds
    in compatibility mode before converting files.
 2. Inspect direct imports and in-repository consumers; select an upstream
-   pilot file that can legally use a `module` header. Convert its imports and
-   identify the declarations genuinely needed by downstream clients.
-3. Compile the edited module and relevant consumers. Fix private-name or
-   definitional-equality failures by narrowing the API boundary where possible;
-   expand `public` and `@[expose]` only with a concrete consumer need.
+   pilot file that can legally use a `module` header. Classify each import as
+   a public-signature dependency, proof/implementation-only dependency, or
+   intentional re-export. Begin with ordinary imports, then promote only the
+   imports needed for a valid public interface.
+3. Compile the edited module and relevant consumers. If callers relied on
+   unintentional re-exports, add direct imports at those use sites. If the
+   exported signature needs an imported name, publish the narrowest owner
+   dependency. Fix private-name or definitional-equality failures by narrowing
+   the API boundary where possible; expand `public` and `@[expose]` only
+   with a concrete consumer need.
 4. Extend the converted region along dependency edges. At coherent milestones,
    run the existing architecture checks, `lake build --wfail`, lints, and
    no-`sorry` / declaration checks. Verify that public theorem signatures
@@ -78,9 +94,10 @@ must respect the actual import dependency graph.
    downstream importers. Validate the complete library before claiming the
    migration finished.
 
-Review each migration by inspecting the public/private interface and the
-rebuild impact, not merely whether a `module` header compiles. Document an
-actual change to module ownership in the relevant architecture note.
+Review each migration by inspecting the public/private interface, direct
+consumer imports, and rebuild impact, not merely whether a `module` header
+compiles. Document an actual change to module ownership in the relevant
+architecture note.
 
 ## Alternatives and consequences
 
