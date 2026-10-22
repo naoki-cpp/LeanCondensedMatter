@@ -12,6 +12,9 @@ from pathlib import Path
 EVIDENCE_FIELDS = (
     "statement", "module", "compiledConsumers", "simpLemma", "directWrapperOf",
     "terminal", "projectAxioms", "externalAxioms",
+    "definitionallyEquivalentTo", "replacementCandidates",
+    "mathlibDefinitionallyEquivalentTo", "mathlibReplacementCandidates",
+    "directWrapperTargetModule", "crossModuleDirectWrapper",
 )
 
 
@@ -34,6 +37,7 @@ def audit(current, previous=None):
     zero_consumer_wrappers = []
     changed = []
     newly_retained = []
+    replacement_candidates = []
     for row in retained:
         count = row["compiledConsumerCount"]
         has_signal = bool(row["terminal"] or count <= 1 or row.get("directWrapperOf"))
@@ -43,6 +47,16 @@ def audit(current, previous=None):
             zero_consumer.append(row["name"])
             if row.get("directWrapperOf"):
                 zero_consumer_wrappers.append(row["name"])
+        candidates = {
+            field: row.get(field) or []
+            for field in (
+                "definitionallyEquivalentTo", "replacementCandidates",
+                "mathlibDefinitionallyEquivalentTo", "mathlibReplacementCandidates",
+            )
+            if row.get(field)
+        }
+        if candidates:
+            replacement_candidates.append({"name": row["name"], "candidates": candidates})
         if previous_by_name is not None:
             old = previous_by_name.get(row["name"])
             if old is None or not old.get("retainedMention"):
@@ -73,6 +87,7 @@ def audit(current, previous=None):
         "withoutStructuralSignal": no_signal,
         "zeroCompiledConsumers": zero_consumer,
         "zeroConsumerDirectWrappers": zero_consumer_wrappers,
+        "retainedReplacementCandidates": replacement_candidates,
         "baselineAvailable": previous_by_name is not None,
         "changedReviewEvidence": changed,
         "newlyRetained": newly_retained,
@@ -94,6 +109,7 @@ def markdown(report, max_items=20):
         f"- No longer carrying a structural review signal: **{len(report['withoutStructuralSignal'])}**",
         f"- Zero compiled consumers: **{len(report['zeroCompiledConsumers'])}**",
         f"- Zero-consumer direct wrappers: **{len(report['zeroConsumerDirectWrappers'])}**",
+        f"- Retained theorems with candidate replacements: **{len(report['retainedReplacementCandidates'])}**",
         "",
     ]
 
@@ -109,6 +125,16 @@ def markdown(report, max_items=20):
 
     append_names("Retained entries without a current structural signal", report["withoutStructuralSignal"])
     append_names("Zero-consumer direct wrappers to assess semantically", report["zeroConsumerDirectWrappers"])
+    replacements = report["retainedReplacementCandidates"]
+    lines.extend([f"### Retained theorems with replacement candidates ({len(replacements)})", ""])
+    for item in replacements[:max_items]:
+        targets = sorted({name for values in item["candidates"].values() for name in values})
+        lines.append(f"- `{item['name']}` → {', '.join(targets)}")
+    if len(replacements) > max_items:
+        lines.append(f"- ... and {len(replacements) - max_items} more (see retained-audit.json)")
+    if not replacements:
+        lines.append("- None")
+    lines.append("")
 
     if report["baselineAvailable"]:
         lines.extend([
