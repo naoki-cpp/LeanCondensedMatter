@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Models.MassiveDirac.Conductivity.Normalization
+import LeanCondensedMatter.QuantumTheory.PlanckConstant
 
 set_option linter.style.header false
 
@@ -18,7 +18,6 @@ namespace QuantumTheory.Models.MassiveDirac
 
 noncomputable section
 
-open QuantumTheory.Transport
 
 /-- Minimal physical domain for the Born-RTA longitudinal benchmark.
 
@@ -92,7 +91,7 @@ def AheScalingCoordinate.dimensionlessScattering (coordinate : AheScalingCoordin
 charge and reduced-Planck-constant data of this physical transport point. -/
 def AheScalingParameters.normalizedConductivity
     (params : AheScalingParameters) (sigma : ℝ) : ℝ :=
-  (planckFromReduced params.hbar / params.e ^ 2) * sigma
+  (planckConstantFromReduced params.hbar / params.e ^ 2) * sigma
 
 lemma AheScalingCoordinate.referenceEnergy_ne_zero (coordinate : AheScalingCoordinate) :
     coordinate.referenceEnergy ≠ 0 :=

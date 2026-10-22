@@ -1,3 +1,4 @@
+import LeanCondensedMatter.QuantumTheory.PlanckConstant
 import LeanCondensedMatter.Models.MassiveDirac.Conductivity.Hall.NonCrossing
 import LeanCondensedMatter.Models.MassiveDirac.Conductivity.Hall.Intrinsic
 import Mathlib.Tactic
@@ -28,9 +29,9 @@ non-crossing decomposition, Eq. (12a). -/
 theorem intrinsicHallConductivity_eq_ado_eq12a
     (e hbar m probeEnergy : ℝ) (hhbar : hbar ≠ 0) (hprobe : probeEnergy ≠ 0) :
     intrinsicHallConductivity e hbar m probeEnergy =
-      -(e ^ 2 / planckFromReduced hbar) * (m / (2 * probeEnergy)) := by
+      -(e ^ 2 / planckConstantFromReduced hbar) * (m / (2 * probeEnergy)) := by
   rw [intrinsicHallConductivity_eq_massiveDirac]
-  unfold planckFromReduced
+  unfold planckConstantFromReduced
   field_simp [hhbar, hprobe, Real.pi_ne_zero]
 
 /-- The completed non-crossing Hall benchmark equals the sum of the three closed expressions in
@@ -40,17 +41,17 @@ theorem nonCrossingHallConductivity_eq_ado_eq12_sum
     (e hbar m probeEnergy : ℝ) (hhbar : hbar ≠ 0) (hprobe : probeEnergy ≠ 0) :
     nonCrossingHallConductivity e hbar m probeEnergy =
       intrinsicHallConductivity e hbar m probeEnergy +
-        (-(e ^ 2 / planckFromReduced hbar) *
+        (-(e ^ 2 / planckConstantFromReduced hbar) *
           (2 * m * (probeEnergy ^ 2 - m ^ 2) /
             (probeEnergy * (probeEnergy ^ 2 + 3 * m ^ 2)))) +
-        (-(e ^ 2 / planckFromReduced hbar) *
+        (-(e ^ 2 / planckConstantFromReduced hbar) *
           (3 * m * (probeEnergy ^ 2 - m ^ 2) ^ 2 /
             (2 * probeEnergy * (probeEnergy ^ 2 + 3 * m ^ 2) ^ 2))) := by
   have hprobeSq : 0 < probeEnergy ^ 2 := sq_pos_of_ne_zero hprobe
   have hden : probeEnergy ^ 2 + 3 * m ^ 2 ≠ 0 := by
     nlinarith [sq_nonneg m]
   rw [intrinsicHallConductivity_eq_massiveDirac]
-  unfold nonCrossingHallConductivity planckFromReduced
+  unfold nonCrossingHallConductivity planckConstantFromReduced
   field_simp [hhbar, hprobe, hden, Real.pi_ne_zero]
   ring
 
@@ -61,10 +62,10 @@ theorem nonCrossingHallConductivity_sub_intrinsicHallConductivity_eq_ado_eq12bc
     (e hbar m probeEnergy : ℝ) (hhbar : hbar ≠ 0) (hprobe : probeEnergy ≠ 0) :
     nonCrossingHallConductivity e hbar m probeEnergy -
         intrinsicHallConductivity e hbar m probeEnergy =
-      (-(e ^ 2 / planckFromReduced hbar) *
+      (-(e ^ 2 / planckConstantFromReduced hbar) *
         (2 * m * (probeEnergy ^ 2 - m ^ 2) /
           (probeEnergy * (probeEnergy ^ 2 + 3 * m ^ 2)))) +
-      (-(e ^ 2 / planckFromReduced hbar) *
+      (-(e ^ 2 / planckConstantFromReduced hbar) *
         (3 * m * (probeEnergy ^ 2 - m ^ 2) ^ 2 /
           (2 * probeEnergy * (probeEnergy ^ 2 + 3 * m ^ 2) ^ 2))) := by
   rw [nonCrossingHallConductivity_eq_ado_eq12_sum e hbar m probeEnergy hhbar hprobe]

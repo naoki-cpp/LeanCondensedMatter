@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Transport.Analysis.ContinuumMeasure
-import LeanCondensedMatter.Models.MassiveDirac.Conductivity.Normalization
+import LeanCondensedMatter.QuantumTheory.PlanckConstant
 import LeanCondensedMatter.Models.MassiveDirac.Model.Berry.Occupation
 import Mathlib.Topology.Algebra.Order.Field
 
@@ -89,11 +89,11 @@ def intrinsicHallPrefactorFromMomentumMeasure (e hbar : ℝ) : ℝ :=
 identity of totalized real-field expressions. -/
 theorem intrinsicHallPrefactorFromMomentumMeasure_eq (e hbar : ℝ) :
     intrinsicHallPrefactorFromMomentumMeasure e hbar =
-      -(e ^ 2 / planckFromReduced hbar) := by
+      -(e ^ 2 / planckConstantFromReduced hbar) := by
   by_cases hhbar : hbar = 0
   · simp [intrinsicHallPrefactorFromMomentumMeasure, momentumMeasurePrefactor,
-      planckFromReduced, hhbar]
-  · unfold intrinsicHallPrefactorFromMomentumMeasure momentumMeasurePrefactor planckFromReduced
+      planckConstantFromReduced, hhbar]
+  · unfold intrinsicHallPrefactorFromMomentumMeasure momentumMeasurePrefactor planckConstantFromReduced
     field_simp [hhbar, Real.pi_ne_zero]
 
 /-- Finite-cutoff intrinsic Hall conductivity obtained from the canonical zero-temperature
@@ -120,14 +120,14 @@ theorem tendsto_intrinsicHallConductivityCutoff_atTop (e hbar m εF : ℝ)
 `σxy^int = -(e²/2h) (m/εF)`, stated for the totalized real-field operations. -/
 theorem intrinsicHallConductivity_eq_massiveDirac (e hbar m εF : ℝ) :
     intrinsicHallConductivity e hbar m εF =
-      -(e ^ 2 / (2 * planckFromReduced hbar)) * (m / εF) := by
+      -(e ^ 2 / (2 * planckConstantFromReduced hbar)) * (m / εF) := by
   rw [intrinsicHallConductivity, intrinsicHallPrefactorFromMomentumMeasure_eq]
   unfold metallicBerryWeightUV
   by_cases hhbar : hbar = 0
-  · simp [planckFromReduced, hhbar]
+  · simp [planckConstantFromReduced, hhbar]
   · by_cases hεF : εF = 0
     · simp [hεF]
-    · unfold planckFromReduced
+    · unfold planckConstantFromReduced
       field_simp [hhbar, hεF, Real.pi_ne_zero]
 
 end

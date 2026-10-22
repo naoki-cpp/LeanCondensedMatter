@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Models.MassiveDirac.Conductivity.Hall.FiniteBroadeningBornLadderProjection
-import LeanCondensedMatter.Models.MassiveDirac.Conductivity.Normalization
+import LeanCondensedMatter.QuantumTheory.PlanckConstant
 import Mathlib.Tactic
 
 set_option linter.style.header false
@@ -28,7 +28,7 @@ open Filter QuantumTheory.Transport
 /-- Standard non-crossing massive-Dirac Hall conductivity of Ado et al., EPL 111, 37004 (2015),
 Eq. (3), written with `h = 2πℏ`. -/
 def nonCrossingHallConductivity (e hbar m probeEnergy : ℝ) : ℝ :=
-  -(4 * e ^ 2 / planckFromReduced hbar) *
+  -(4 * e ^ 2 / planckConstantFromReduced hbar) *
     (probeEnergy * m * (probeEnergy ^ 2 + m ^ 2) /
       (probeEnergy ^ 2 + 3 * m ^ 2) ^ 2)
 
@@ -56,7 +56,7 @@ theorem tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceCond
         (Real.pi * hbar * (probeEnergy ^ 2 + 3 * m ^ 2) ^ 2) : ℝ) : ℂ)) =
       (((nonCrossingHallConductivity e hbar m probeEnergy : ℝ) : ℂ)) := by
     norm_cast
-    unfold nonCrossingHallConductivity planckFromReduced
+    unfold nonCrossingHallConductivity planckConstantFromReduced
     field_simp [ne_of_gt hhbar, hden, Real.pi_ne_zero]
     norm_num
     ring

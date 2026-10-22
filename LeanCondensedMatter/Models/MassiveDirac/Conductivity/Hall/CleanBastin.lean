@@ -1,6 +1,7 @@
 import LeanCondensedMatter.Models.MassiveDirac.Bastin.CleanLimit
 import LeanCondensedMatter.Models.MassiveDirac.Conductivity.Hall.Intrinsic.Conductivity
-import LeanCondensedMatter.Models.MassiveDirac.Conductivity.Normalization
+import LeanCondensedMatter.QuantumTheory.PlanckConstant
+import LeanCondensedMatter.Transport.Streda.PhysicalMomentum2DNormalization
 import Mathlib.Tactic
 
 set_option linter.style.header false
@@ -63,7 +64,7 @@ theorem tendsto_bastinCleanHallConductivityCutoff_atTop
 theorem tendsto_bastinCleanHallConductivityCutoff_atTop_massiveDirac
     (e hbar m εF : ℝ) (hmF : |m| ≤ εF) :
     Tendsto (bastinCleanHallConductivityCutoff e hbar m εF) atTop
-      (nhds (-(e ^ 2 / (2 * planckFromReduced hbar)) * (m / εF))) := by
+      (nhds (-(e ^ 2 / (2 * planckConstantFromReduced hbar)) * (m / εF))) := by
   rw [← intrinsicHallConductivity_eq_massiveDirac e hbar m εF]
   exact tendsto_bastinCleanHallConductivityCutoff_atTop e hbar m εF hmF
 
