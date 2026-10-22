@@ -51,8 +51,7 @@ theorem canonicalFullGibbsWeight_apply_sector (ε : Mode → ℝ) (β : ℝ) (N 
     canonicalFullGibbsWeight (Config := Config) ε β N n.val =
       eigenbasisBoltzmannWeight
         (fun m : ParticleNumberSector Mode Config N => occupationEnergy ε m.val) β n := by
-  unfold canonicalFullGibbsWeight
-  exact Subtype.val_injective.extend_apply _ n
+  simp only [canonicalFullGibbsWeight, Subtype.val_injective.extend_apply]
 
 /-- Outside the prescribed sector the canonical weight vanishes. -/
 theorem canonicalFullGibbsWeight_apply_of_ne (ε : Mode → ℝ) (β : ℝ) (N : ℕ)
