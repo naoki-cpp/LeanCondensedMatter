@@ -91,7 +91,7 @@ Incremental conversion costs additional dependency analysis and focused
 consumer builds, but permits transparent review of each visibility boundary.
 This decision extends [ADR 0001](0001-lean-and-mathlib.md) on deliberate
 Mathlib upgrades and [ADR 0002](0002-semantic-ownership.md) on canonical
-semantic ownership; implementation remains pending.
+semantic ownership; implementation is progressing through focused, CI-verified changes.
 
 References: [Lean reference manual — Source Files and Modules](https://lean-lang.org/doc/reference/latest/Source-Files-and-Modules/)
 and [Lake configuration](https://lean-lang.org/doc/reference/latest/Build-Tools-and-Distribution/Lake/).
