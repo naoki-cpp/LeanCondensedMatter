@@ -1,4 +1,5 @@
 import LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.PictureEquivalence
+import LeanCondensedMatter.Analysis.Calculus.ExponentialConjugation
 import Mathlib.Analysis.Calculus.Deriv.Mul
 import Mathlib.Analysis.Calculus.FDeriv.Comp
 import Mathlib.Analysis.SpecialFunctions.Exponential
@@ -40,25 +41,6 @@ theorem hasDerivAt_freePropagator (t : ℝ) :
   rw [hasDerivAt_iff_tendsto] at h
   simpa only [freePropagator, Complex.coe_smul] using h
 
-/-- The negative-time propagator is differentiable with generator `-G`, where
-`G = -(i/ℏ) H₀`. -/
-theorem hasDerivAt_freePropagator_neg (t : ℝ) :
-    HasDerivAt (fun s : ℝ => freePropagator system (-s))
-      ((-schrodingerGenerator system) * freePropagator system (-t)) t := by
-  have h := hasDerivAt_exp_smul_const' (-schrodingerGenerator system) t
-  rw [hasDerivAt_iff_tendsto]
-  rw [hasDerivAt_iff_tendsto] at h
-  simpa only [freePropagator, Complex.coe_smul, smul_neg,
-    neg_smul] using h
-
-/-- The constant Schrödinger generator commutes with every free propagator. -/
-theorem schrodingerGenerator_commute_freePropagator (t : ℝ) :
-    Commute (schrodingerGenerator system) (freePropagator system t) := by
-  have h : Commute (schrodingerGenerator system)
-      ((t : ℂ) • schrodingerGenerator system) :=
-    (Commute.refl (schrodingerGenerator system)).smul_right (t : ℂ)
-  simpa [freePropagator] using h.exp_right
-
 /-- Explicit bounded Schrödinger equation
 `dψ/dt = -(i/ℏ) H₀ ψ`. -/
 theorem schrodingerEquation (ψ : StateVector H) (t : ℝ) :
@@ -76,44 +58,23 @@ theorem heisenbergEquation (A : H →L[ℂ] H) (t : ℝ) :
     HasDerivAt (fun t => heisenbergEvolution system t A)
       ((Complex.I / (system.hbar : ℂ)) •
         ⁅system.hamiltonian.1, heisenbergEvolution system t A⁆) t := by
-  let G := schrodingerGenerator system
-  let U := freePropagator system t
-  let Uneg := freePropagator system (-t)
-  have hleft := (hasDerivAt_freePropagator_neg system t).mul_const A
-  have hprod := hleft.mul (hasDerivAt_freePropagator system t)
-  have hraw : HasDerivAt (fun t => heisenbergEvolution system t A)
-      ((-G) * Uneg * A * U + Uneg * A * (G * U)) t := by
-    rw [hasDerivAt_iff_tendsto]
-    rw [hasDerivAt_iff_tendsto] at hprod
-    simpa [G, U, Uneg, heisenbergEvolution_apply, mul_assoc] using hprod
-  have hcomm : Commute G U := by
-    simpa [G, U] using schrodingerGenerator_commute_freePropagator system t
-  have hderivRaw :
-      ((-G) * Uneg * A * U + Uneg * A * (G * U)) =
-        (Uneg * A * U) * G - G * (Uneg * A * U) := by
-    rw [hcomm.eq]
-    noncomm_ring
-  have hgenerator :
-      HasDerivAt (fun t => heisenbergEvolution system t A)
-        (heisenbergEvolution system t A * schrodingerGenerator system -
-          schrodingerGenerator system * heisenbergEvolution system t A) t := by
-    have hderiv :
-        ((-G) * Uneg * A * U + Uneg * A * (G * U)) =
-          heisenbergEvolution system t A * G -
-            G * heisenbergEvolution system t A := by
-      simpa [G, U, Uneg, heisenbergEvolution_apply] using hderivRaw
-    rw [← hderiv]
-    exact hraw
+  have h := hasDerivAt_exp_conjugate (-schrodingerGenerator system) A t
+  have hfun (s : ℝ) :
+      NormedSpace.exp (s • (-schrodingerGenerator system)) * A *
+          NormedSpace.exp (-(s • (-schrodingerGenerator system))) =
+        heisenbergEvolution system s A := by
+    simp only [heisenbergEvolution_apply, freePropagator, Complex.coe_smul,
+      smul_neg, neg_smul, neg_neg]
   have hderiv :
-      heisenbergEvolution system t A * schrodingerGenerator system -
-          schrodingerGenerator system * heisenbergEvolution system t A =
+      (-schrodingerGenerator system) * heisenbergEvolution system t A -
+          heisenbergEvolution system t A * (-schrodingerGenerator system) =
         (Complex.I / (system.hbar : ℂ)) •
           ⁅system.hamiltonian.1, heisenbergEvolution system t A⁆ := by
     rw [LieRing.of_associative_ring_bracket, schrodingerGenerator]
-    simp only [mul_smul_comm, smul_mul_assoc]
+    simp only [neg_smul, neg_neg, mul_smul_comm, smul_mul_assoc]
     module
-  rw [← hderiv]
-  exact hgenerator
+  rw [hasDerivAt_iff_tendsto] at h ⊢
+  simpa only [hfun, hderiv] using h
 
 /-- Explicit bounded von Neumann equation
 `dρ/dt = -(i/ℏ) [H₀, ρ]`. -/
