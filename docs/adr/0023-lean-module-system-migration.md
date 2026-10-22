@@ -70,6 +70,25 @@ must respect the actual import dependency graph.
   meaning. Genuine API improvements follow the normal canonical-ownership
   rules and receive their own focused review.
 
+## Import-boundary example
+
+A theorem module that exports a statement about `Complex.exp` can use
+`public import Mathlib.Analysis.Complex.Exponential` for the public name but
+ordinary `import Mathlib.Analysis.Complex.Trigonometric` for proof-only facts
+such as `Complex.norm_exp`. Callers requiring trigonometric results should
+import their Mathlib owner directly, not rely on this theorem module to
+re-export them. Conversely, replacing *both* imports with ordinary imports
+would make the theorem's public signature invalid.
+
+```lean
+module
+
+public import Mathlib.Analysis.Complex.Exponential
+import Mathlib.Analysis.Complex.Trigonometric
+
+public section
+```
+
 ## Migration and verification
 
 1. Establish the supported toolchain/Mathlib baseline and confirm it builds
