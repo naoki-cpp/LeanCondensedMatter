@@ -229,11 +229,12 @@ theorem freeGibbsExpectation_id (ε : Mode → ℝ) (β : ℝ)
     (hpos : ∀ i, 0 < β * ε i) :
     freeGibbsExpectation ε β
       (LinearMap.id : FockSpace Mode →ₗ[ℂ] FockSpace Mode) = 1 := by
-  rw [freeGibbsExpectation, LinearMap.comp_id]
-  change grandCanonicalAlgebraicPartition ε β 0 /
-    grandCanonicalAlgebraicPartition ε β 0 = 1
-  exact div_self (grandCanonicalAlgebraicPartition_ne_zero ε β 0
-    (by simpa only [sub_zero] using hpos))
+  have hZ : grandCanonicalAlgebraicPartition ε β 0 ≠ 0 :=
+    grandCanonicalAlgebraicPartition_ne_zero ε β 0
+      (by simpa only [sub_zero] using hpos)
+  unfold freeGibbsExpectation
+  rw [LinearMap.comp_id]
+  simpa only [grandCanonicalAlgebraicPartition, sub_zero] using (div_self hZ)
 
 end
 end Bosonic
