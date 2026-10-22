@@ -175,15 +175,17 @@ theorem integral_polarPauliOperator_inPlane_eq
     _ = inPlanePauliVertexOperator
         (inPlaneLadderAction
           (pauliRungAngularCoefficient aR aA dR dA) coefficients) := by
-      rw [show inPlanePauliVertexOperator
-          (inPlaneLadderAction
-            (pauliRungAngularCoefficient aR aA dR dA) coefficients) =
-          matrixOperator
-            ((inPlaneLadderAction
-              (pauliRungAngularCoefficient aR aA dR dA) coefficients) 0 • sigmaX +
-             (inPlaneLadderAction
-              (pauliRungAngularCoefficient aR aA dR dA) coefficients) 1 • sigmaY) by
-            simp [inPlanePauliVertexOperator, matrixOperator, map_add, map_smul]]
+      have hvertexAction :
+          inPlanePauliVertexOperator
+              (inPlaneLadderAction
+                (pauliRungAngularCoefficient aR aA dR dA) coefficients) =
+            matrixOperator
+              ((inPlaneLadderAction
+                (pauliRungAngularCoefficient aR aA dR dA) coefficients) 0 • sigmaX +
+               (inPlaneLadderAction
+                (pauliRungAngularCoefficient aR aA dR dA) coefficients) 1 • sigmaY) := by
+        simp [inPlanePauliVertexOperator, matrixOperator, map_add, map_smul]
+      rw [hvertexAction]
       change
         ((2 * Real.pi : ℝ) : ℂ) •
           (Matrix.toEuclideanCLM : Matrix2 ≃⋆ₐ[ℂ]
