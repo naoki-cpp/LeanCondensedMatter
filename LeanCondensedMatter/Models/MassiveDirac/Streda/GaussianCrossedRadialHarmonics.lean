@@ -232,78 +232,32 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficie
   constructor
   · rw [
       finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient_eq_radialKernel_integral
-        .x 0 v m probeEnergy broadening disorderStrength hbar pMax radius hbroadening hdisorder hpMax,
+        .x 0 v m probeEnergy broadening disorderStrength hbar pMax radius
+        hbroadening hdisorder hpMax,
       finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient_eq_radialKernel_integral
-        .y 1 v m probeEnergy broadening disorderStrength hbar pMax radius hbroadening hdisorder hpMax]
-    calc
-      (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
-          (∫ p in (0 : ℝ)..pMax, finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliKernel
-            .x 0 v m probeEnergy broadening disorderStrength hbar pMax radius p) +
-        (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
-          (∫ p in (0 : ℝ)..pMax, finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliKernel
-            .y 1 v m probeEnergy broadening disorderStrength hbar pMax radius p) =
-        (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
-          ∫ p in (0 : ℝ)..pMax,
-            finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliKernel
-            .x 0 v m probeEnergy broadening disorderStrength hbar pMax radius p +
-              finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliKernel
-            .y 1 v m probeEnergy broadening disorderStrength hbar pMax radius p := by
-          rw [intervalIntegral.integral_add hxx hyy]
-          ring
-      _ = (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
-          ∫ p in (0 : ℝ)..pMax,
-            2 * (p : ℂ) *
-              (polarFourierZerothAngularKernel (p * radius / hbar) *
-                ((finiteCutoffContinuumBornDysonScalarCoefficient
-                    .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax *
-                   finiteCutoffContinuumBornDysonScalarCoefficient
-                    .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax -
-                   finiteCutoffContinuumBornDysonPauliCoefficient .z
-                    .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax *
-                   finiteCutoffContinuumBornDysonPauliCoefficient .z
-                    .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax) *
-                  finiteCutoffContinuumBornDysonGaussianCrossedCurrentFactor v m probeEnergy broadening disorderStrength hbar pMax)) := by
-          apply congrArg (fun z : ℂ => (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) * z)
-          apply intervalIntegral.integral_congr
-          intro p _
-          exact
-            (finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliKernel_diagonal_harmonics
-              v m probeEnergy broadening disorderStrength hbar pMax radius p).1
+        .y 1 v m probeEnergy broadening disorderStrength hbar pMax radius
+        hbroadening hdisorder hpMax,
+      ← mul_add, ← intervalIntegral.integral_add hxx hyy]
+    apply congrArg (fun z : ℂ => (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) * z)
+    apply intervalIntegral.integral_congr
+    intro p _
+    exact
+      (finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliKernel_diagonal_harmonics
+        v m probeEnergy broadening disorderStrength hbar pMax radius p).1
   · rw [
       finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient_eq_radialKernel_integral
-        .x 0 v m probeEnergy broadening disorderStrength hbar pMax radius hbroadening hdisorder hpMax,
+        .x 0 v m probeEnergy broadening disorderStrength hbar pMax radius
+        hbroadening hdisorder hpMax,
       finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient_eq_radialKernel_integral
-        .y 1 v m probeEnergy broadening disorderStrength hbar pMax radius hbroadening hdisorder hpMax]
-    calc
-      (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
-          (∫ p in (0 : ℝ)..pMax, finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliKernel
-            .x 0 v m probeEnergy broadening disorderStrength hbar pMax radius p) -
-        (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
-          (∫ p in (0 : ℝ)..pMax, finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliKernel
-            .y 1 v m probeEnergy broadening disorderStrength hbar pMax radius p) =
-        (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
-          ∫ p in (0 : ℝ)..pMax,
-            finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliKernel
-            .x 0 v m probeEnergy broadening disorderStrength hbar pMax radius p -
-              finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliKernel
-            .y 1 v m probeEnergy broadening disorderStrength hbar pMax radius p := by
-          rw [intervalIntegral.integral_sub hxx hyy]
-          ring
-      _ = (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
-          ∫ p in (0 : ℝ)..pMax,
-            2 * (p : ℂ) *
-              (polarFourierSecondCosineAngularKernel (p * radius / hbar) *
-                (finiteCutoffContinuumBornDysonPauliCoefficient .x
-                    .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax *
-                   finiteCutoffContinuumBornDysonPauliCoefficient .x
-                    .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax *
-                   finiteCutoffContinuumBornDysonGaussianCrossedCurrentFactor v m probeEnergy broadening disorderStrength hbar pMax)) := by
-          apply congrArg (fun z : ℂ => (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) * z)
-          apply intervalIntegral.integral_congr
-          intro p _
-          exact
-            (finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliKernel_diagonal_harmonics
-              v m probeEnergy broadening disorderStrength hbar pMax radius p).2
+        .y 1 v m probeEnergy broadening disorderStrength hbar pMax radius
+        hbroadening hdisorder hpMax,
+      ← mul_sub, ← intervalIntegral.integral_sub hxx hyy]
+    apply congrArg (fun z : ℂ => (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) * z)
+    apply intervalIntegral.integral_congr
+    intro p _
+    exact
+      (finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliKernel_diagonal_harmonics
+        v m probeEnergy broadening disorderStrength hbar pMax radius p).2
 
 /-- Every finite-cutoff radial moment of the Born-Dyson RA double pole
 reduces, after multiplication by the momentum-independent spectral center gap,
