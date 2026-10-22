@@ -1,6 +1,10 @@
-import Mathlib.Data.Fin.SuccPred
-import Mathlib.Data.Fintype.BigOperators
+module
+
+public import Mathlib.Data.Fin.SuccPred
+public import Mathlib.Data.Fintype.BigOperators
 import Mathlib.Logic.Equiv.Fin.Basic
+
+public section
 
 set_option linter.style.header false
 

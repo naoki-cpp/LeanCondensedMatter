@@ -1,4 +1,9 @@
+module
+
+public import Mathlib.Analysis.Complex.Exponential
 import Mathlib.Analysis.Complex.Trigonometric
+
+public section
 
 set_option linter.style.header false
 
