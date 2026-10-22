@@ -1,5 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.ConvergenceAwareGibbs
 import LeanCondensedMatter.QuantumTheory.Gibbs.Boltzmann
+import LeanCondensedMatter.SecondQuantization.Common.Thermal.GrandCanonical
 import Mathlib.Analysis.SpecialFunctions.Log.Summable
 import Mathlib.Data.Finsupp.Basic
 
@@ -134,6 +135,23 @@ theorem eigenbasisGibbsSummable_freeEigenvalue_of_mode
     exact (abs_of_nonneg
       (eigenbasisBoltzmannWeight_nonneg (freeEigenvalue ε) β n)).symm
 
+/-- If every bosonic mode has positive grand-canonical gap and the
+one-mode shifted Boltzmann family is summable, then the full bosonic
+occupation Gibbs weights of `H - μ N̂` are summable.
+
+For infinitely many modes the second hypothesis is essential: positive
+mode gaps by themselves do not control the total occupation partition sum. -/
+theorem eigenbasisGibbsSummable_grandCanonicalEnergy_of_mode
+    (ε : Mode → ℝ) (β μ : ℝ)
+    (hpos : ∀ i, 0 < β * (ε i - μ))
+    (hmode : EigenbasisGibbsSummable (fun i => ε i - μ) β) :
+    EigenbasisGibbsSummable
+      (Common.grandCanonicalEnergy (Config := Occupation Mode) ε μ) β := by
+  rw [Common.grandCanonicalGibbsSummable_iff_shifted]
+  change EigenbasisGibbsSummable (freeEigenvalue (fun i => ε i - μ)) β
+  exact eigenbasisGibbsSummable_freeEigenvalue_of_mode (fun i => ε i - μ) β
+    hpos hmode
+
 variable [Finite Mode]
 
 /-- Positive one-particle energies make the free occupation Boltzmann weights absolutely summable. -/
@@ -146,6 +164,19 @@ theorem eigenbasisGibbsSummable_freeEigenvalue
   exact hsum.congr fun n => by
     simp [boltzmannWeight, eigenbasisBoltzmannWeight, Real.norm_eq_abs,
       abs_of_nonneg (Real.exp_nonneg _)]
+
+/-- For finitely many bosonic modes, positive inverse temperature and
+chemical potential below every one-particle energy imply existence of a
+normalizable grand-canonical Gibbs state on the full occupation Fock space. -/
+theorem eigenbasisGibbsSummable_grandCanonicalEnergy
+    (ε : Mode → ℝ) (β μ : ℝ) (hβ : 0 < β)
+    (hgap : ∀ i, μ < ε i) :
+    EigenbasisGibbsSummable
+      (Common.grandCanonicalEnergy (Config := Occupation Mode) ε μ) β := by
+  apply eigenbasisGibbsSummable_grandCanonicalEnergy_of_mode ε β μ
+  · intro i
+    exact mul_pos hβ (sub_pos.mpr (hgap i))
+  · exact eigenbasisGibbsSummable_of_finite (fun i => ε i - μ) β
 
 end
 end Bosonic
