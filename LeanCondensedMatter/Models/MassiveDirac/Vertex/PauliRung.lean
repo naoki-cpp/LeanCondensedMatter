@@ -155,8 +155,8 @@ theorem integral_polarPauliOperator_inPlane_eq
           polarPauliMatrix aA bA dA θ = H.eval θ from
         polarPauliMatrix_inPlane_sandwich_eq_harmonics
           aR bR dR aA bA dA coefficients θ]
-    simp [HO, AngularHarmonicCoefficients.eval,
-      map_add, map_smul]
+    dsimp only [HO, AngularHarmonicCoefficients.eval, matrixOperator]
+    simp only [map_add, map_smul]
   change
     (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi),
       polarPauliOperator aR bR dR θ *
@@ -175,11 +175,31 @@ theorem integral_polarPauliOperator_inPlane_eq
     _ = inPlanePauliVertexOperator
         (inPlaneLadderAction
           (pauliRungAngularCoefficient aR aA dR dA) coefficients) := by
-      change ((2 * Real.pi : ℝ) : ℂ) • matrixOperator H.constant = _
-      simp only [H, polarPauliInPlaneHarmonics, inPlanePauliVertexOperator,
-        pauliRungAngularCoefficient, inPlaneLadderAction_apply_x,
-        inPlaneLadderAction_apply_y, map_add, map_smul,
-        smul_add, smul_smul]
+      rw [show inPlanePauliVertexOperator
+          (inPlaneLadderAction
+            (pauliRungAngularCoefficient aR aA dR dA) coefficients) =
+          matrixOperator
+            ((inPlaneLadderAction
+              (pauliRungAngularCoefficient aR aA dR dA) coefficients) 0 • sigmaX +
+             (inPlaneLadderAction
+              (pauliRungAngularCoefficient aR aA dR dA) coefficients) 1 • sigmaY) by
+            simp [inPlanePauliVertexOperator, matrixOperator, map_add, map_smul]]
+      change
+        ((2 * Real.pi : ℝ) : ℂ) •
+          (Matrix.toEuclideanCLM : Matrix2 ≃⋆ₐ[ℂ]
+            (DiracHilbert →L[ℂ] DiracHilbert)) H.constant =
+        (Matrix.toEuclideanCLM : Matrix2 ≃⋆ₐ[ℂ]
+            (DiracHilbert →L[ℂ] DiracHilbert))
+          ((inPlaneLadderAction
+              (pauliRungAngularCoefficient aR aA dR dA) coefficients) 0 • sigmaX +
+           (inPlaneLadderAction
+              (pauliRungAngularCoefficient aR aA dR dA) coefficients) 1 • sigmaY)
+      rw [← map_smul]
+      apply congrArg (Matrix.toEuclideanCLM : Matrix2 ≃⋆ₐ[ℂ]
+        (DiracHilbert →L[ℂ] DiracHilbert))
+      simp only [H, polarPauliInPlaneHarmonics, pauliRungAngularCoefficient,
+        inPlaneLadderAction_apply_x, inPlaneLadderAction_apply_y,
+        smul_add, smul_sub, smul_smul]
       module
 
 end
