@@ -616,46 +616,8 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficie
     dsimp only [k2Weight]
     ring
   constructor
-  · calc
-      gap * (finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient
-              .x 0 v m probeEnergy broadening disorderStrength hbar pMax radius +
-            finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient
-              .y 1 v m probeEnergy broadening disorderStrength hbar pMax radius) =
-        (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
-          (gap * (∫ p in (0 : ℝ)..pMax,
-            2 * (p : ℂ) *
-              (polarFourierZerothAngularKernel (p * radius / hbar) *
-                ((finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct
-                  v m p probeEnergy broadening disorderStrength hbar pMax)⁻¹ *
-                    (energyA * energyR - massA * massR) * factor)))) := by
-          rw [hdiag.1]
-          ring
-      _ = (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
-          (gap * (∫ p in (0 : ℝ)..pMax, k0Weight p *
-            (finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct
-              v m p probeEnergy broadening disorderStrength hbar pMax)⁻¹)) := by
-          rw [hweight0]
-      _ = _ := by rw [hk0]
-  · calc
-      gap * (finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient
-              .x 0 v m probeEnergy broadening disorderStrength hbar pMax radius -
-            finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient
-              .y 1 v m probeEnergy broadening disorderStrength hbar pMax radius) =
-        (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
-          (gap * (∫ p in (0 : ℝ)..pMax,
-            2 * (p : ℂ) *
-              (polarFourierSecondCosineAngularKernel (p * radius / hbar) *
-                ((finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct
-                  v m p probeEnergy broadening disorderStrength hbar pMax)⁻¹ *
-                    (((v * p : ℝ) : ℂ) ^ 2) * factor)))) := by
-          rw [hdiag.2]
-          ring
-      _ = (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
-          (gap * (∫ p in (0 : ℝ)..pMax, k2Weight p *
-            (finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct
-              v m p probeEnergy broadening disorderStrength hbar pMax)⁻¹)) := by
-          rw [hweight2]
-      _ = _ := by rw [hk2]
+  · rw [hdiag.1, hweight0, mul_left_comm gap, hk0]
+  · rw [hdiag.2, hweight2, mul_left_comm gap, hk2]
 
 /-- At zero real-space separation, rotational isotropy forces equality of the
 two diagonal in-plane crossed-current Pauli coefficients. This holds before any
