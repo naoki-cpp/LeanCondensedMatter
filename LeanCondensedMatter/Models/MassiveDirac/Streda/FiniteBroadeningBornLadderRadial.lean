@@ -175,10 +175,11 @@ private theorem integral_polarPauli_directionTrace_eq
   change
     finiteDimensionalOperatorTrace
         ((q • matrixOperator (directionPauli measured)) *
-          inPlanePauliVertexOperator (inPlaneCoefficientVector x y)) =
+          inPlanePauliVertexOperator
+            (inPlaneLadderAction coefficientsRung coefficients)) =
       2 * q * inPlaneLadderAction coefficientsRung coefficients measured
-  simpa [inPlaneCoefficientVector, x, y, coefficientsRung] using
-    (trace_directionPauli_inPlane_eq measured q (inPlaneCoefficientVector x y))
+  exact trace_directionPauli_inPlane_eq measured q
+    (inPlaneLadderAction coefficientsRung coefficients)
 
 /-- Explicit pair-indexed radial coefficient of the finite-`η` RA-dressed Středa angular trace. The
 RA and same-side rungs act on complete dressed and bare in-plane source vectors; the requested
