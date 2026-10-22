@@ -68,8 +68,7 @@ theorem freeGibbsExpectation_cons_eq_kmsRatio_mul_operatorPeelSum
     change freeGibbsExpectation ε β (C.operator.comp (orderedProduct l)) =
       C.kmsFactor ε β *
         freeGibbsExpectation ε β ((orderedProduct l).comp C.operator)
-    simpa only [sub_zero] using
-      (C.grandCanonicalGibbsExpectation_operator_comp_rotate ε β 0 (orderedProduct l))
+    exact C.freeGibbsExpectation_operator_comp_rotate ε β (orderedProduct l)
   have hden : C.kmsFactor ε β - 1 ≠ 0 := by
     apply sub_ne_zero.mpr
     cases C with

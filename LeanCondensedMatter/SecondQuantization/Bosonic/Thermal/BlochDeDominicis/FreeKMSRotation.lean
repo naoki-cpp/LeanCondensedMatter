@@ -42,21 +42,18 @@ noncomputable def FreeThermalField.kmsFactor (ε : Mode → ℝ) (β : ℝ) :
   | .annihilate i => Complex.exp ((β : ℂ) * (ε i : ℂ))
   | .create i => Complex.exp (-(β : ℂ) * (ε i : ℂ))
 
-/-- Grand-canonical KMS rotation for either kind of free thermal field.
+/-- Thermal KMS rotation for a free bosonic field and an arbitrary supplied
+one-particle generator `ξ`.
 
-The thermal generator is `K = H - μ N̂`, with effective one-particle energies
-`ε - μ`. This theorem concerns cyclicity of the Gibbs trace, not a change to
-the physical `H`-generated time evolution. It is used both by the
-explicit-μ Bose two-point function and by the μ=0 first-pair recursion. -/
-theorem FreeThermalField.grandCanonicalGibbsExpectation_operator_comp_rotate
-    (ε : Mode → ℝ) (β μ : ℝ) (C : FreeThermalField Mode)
+This theorem is algebraic in `ξ`: a physical grand-canonical specialization
+passes `ξ i = ε i - μ` at its use site, while a free Hamiltonian uses `ξ = ε`.
+No energy reference, particle-number conservation law, or convergence of
+arbitrary Gibbs numerators is inferred by this equation alone. -/
+theorem FreeThermalField.freeGibbsExpectation_operator_comp_rotate
+    (ξ : Mode → ℝ) (β : ℝ) (C : FreeThermalField Mode)
     (A : FockSpace Mode →ₗ[ℂ] FockSpace Mode) :
-    freeGibbsExpectation (fun i => ε i - μ) β (C.operator.comp A) =
-      C.kmsFactor (fun i => ε i - μ) β *
-        freeGibbsExpectation (fun i => ε i - μ) β (A.comp C.operator) := by
-  let ξ : Mode → ℝ := fun i => ε i - μ
-  change freeGibbsExpectation ξ β (C.operator.comp A) =
-    C.kmsFactor ξ β * freeGibbsExpectation ξ β (A.comp C.operator)
+    freeGibbsExpectation ξ β (C.operator.comp A) =
+      C.kmsFactor ξ β * freeGibbsExpectation ξ β (A.comp C.operator) := by
   have hmove :
       (imaginaryTimeEvolveFree ξ (-β)).comp C.operator =
         C.kmsFactor ξ β • (C.operator.comp (imaginaryTimeEvolveFree ξ (-β))) := by

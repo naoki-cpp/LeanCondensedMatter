@@ -88,8 +88,8 @@ theorem grandCanonicalGibbsExpectation_create_comp_annihilate_concrete
         Complex.exp (((-(ε j - μ) * β : ℝ) : ℂ)) *
           (1 - Complex.exp (((-(ε j - μ) * β : ℝ) : ℂ)))⁻¹
       else 0 := by
-  have hrotate := FreeThermalField.grandCanonicalGibbsExpectation_operator_comp_rotate
-    ε β μ (.create i) (annihilate j)
+  have hrotate := FreeThermalField.freeGibbsExpectation_operator_comp_rotate
+    (fun k => ε k - μ) β (.create i) (annihilate j)
   simp only [FreeThermalField.operator, FreeThermalField.kmsFactor] at hrotate
   rw [hrotate,
     grandCanonicalGibbsExpectation_annihilate_comp_create_concrete ε β μ hpos j i]
