@@ -123,7 +123,7 @@ theorem integral_polarPauliOperator_inPlane_eq
       inPlanePauliVertexOperator
         (inPlaneLadderAction (pauliRungAngularCoefficient aR aA dR dA) coefficients) := by
   let H := polarPauliInPlaneHarmonics aR bR dR aA bA dA coefficients
-  let HO : AngularHarmonicCoefficients DiracOperator :=
+  let HO : AngularHarmonicCoefficients (DiracHilbert →L[ℂ] DiracHilbert) :=
     { constant := matrixOperator H.constant
       firstCosine := matrixOperator H.firstCosine
       firstSine := matrixOperator H.firstSine
@@ -155,7 +155,7 @@ theorem integral_polarPauliOperator_inPlane_eq
           polarPauliMatrix aA bA dA θ = H.eval θ from
         polarPauliMatrix_inPlane_sandwich_eq_harmonics
           aR bR dR aA bA dA coefficients θ]
-    simp [HO, AngularHarmonicCoefficients.eval, matrixOperator,
+    simp [HO, AngularHarmonicCoefficients.eval,
       map_add, map_smul]
   change
     (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi),
