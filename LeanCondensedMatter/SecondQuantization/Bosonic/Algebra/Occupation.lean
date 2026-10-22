@@ -83,6 +83,35 @@ theorem occupation_le_particleNumber [Finite Mode] (n : Occupation Mode) (i : Mo
   rw [particleNumber_eq_sum_univ]
   exact Finset.single_le_sum (fun j _ => Nat.zero_le (n j)) (Finset.mem_univ i)
 
+/-- For finitely many modes, the bosonic fixed-particle-number occupation sector is
+finite, even though the full bosonic occupation space is infinite. -/
+instance finiteParticleNumberSector [Finite Mode] (N : ℕ) :
+    Finite (Common.ParticleNumberSector Mode (Occupation Mode) N) := by
+  classical
+  letI : Fintype Mode := Fintype.ofFinite Mode
+  let encode : Common.ParticleNumberSector Mode (Occupation Mode) N →
+      Mode → Fin (N + 1) :=
+    fun n i => ⟨n.val i, Nat.lt_succ_of_le (by
+      calc
+        n.val i ≤ particleNumber n.val := occupation_le_particleNumber n.val i
+        _ = N := n.property)⟩
+  refine Finite.of_injective encode ?_
+  intro n m h
+  apply Subtype.ext
+  apply Finsupp.ext
+  intro i
+  exact congrArg Fin.val (congrFun h i)
+
+/-- If a bosonic mode exists, every prescribed particle number can be realized. -/
+instance nonemptyParticleNumberSector [Nonempty Mode] (N : ℕ) :
+    Nonempty (Common.ParticleNumberSector Mode (Occupation Mode) N) := by
+  classical
+  obtain ⟨i⟩ := ‹Nonempty Mode›
+  refine ⟨⟨Finsupp.single i N, ?_⟩⟩
+  change particleNumber (Finsupp.single i N : Occupation Mode) = N
+  rw [particleNumber_eq_finsupp_sum]
+  simp
+
 /-- The occupation state with one particle in mode `i`. -/
 noncomputable def singleOccupation (i : Mode) : Occupation Mode := Finsupp.single i 1
 
