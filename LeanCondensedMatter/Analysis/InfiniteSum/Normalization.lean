@@ -49,4 +49,16 @@ theorem normalizedWeight_le_one (a : ι → ℝ) (ha : Summable a)
   have hle := hs.summable.le_tsum i (fun j _ => normalizedWeight_nonneg a ha_nonneg j)
   rwa [hs.tsum_eq] at hle
 
+/-- Multiplying all weights by the same nonzero scalar does not change their
+normalized values, regardless of whether the original total is zero. -/
+theorem normalizedWeight_mul_left (a : ι → ℝ) (c : ℝ) (hc : c ≠ 0) (i : ι) :
+    normalizedWeight (fun j => c * a j) i = normalizedWeight a i := by
+  unfold normalizedWeight
+  rw [tsum_mul_left, mul_inv_rev]
+  calc
+    (c⁻¹ * (∑' j, a j)⁻¹) * (c * a i) =
+        (c⁻¹ * c) * ((∑' j, a j)⁻¹ * a i) := by ring
+    _ = (∑' j, a j)⁻¹ * a i := by rw [inv_mul_cancel₀ hc, one_mul]
+
+
 end Real
