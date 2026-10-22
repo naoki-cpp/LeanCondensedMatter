@@ -90,7 +90,13 @@ theorem occupationConjugate_dGamma_diagonalOperator [Finite Site] (a : Site → 
   simp only [LinearMap.sum_apply, LinearMap.smul_apply, Common.diagonalOperator_basisState]
   change (∑ i, a i • numberOperator i (Common.basisState n)) =
     (∑ i ∈ n, a i) • Common.basisState n
-  simp only [numberOperator_basisState, smul_ite, smul_zero]
+  have hnumber : (∑ i, a i • numberOperator i (Common.basisState n)) =
+      ∑ i, if i ∈ n then a i • Common.basisState n else 0 := by
+    apply Finset.sum_congr rfl
+    intro i _
+    simpa only [smul_ite, smul_zero] using
+      congrArg (fun v => a i • v) (numberOperator_basisState i n)
+  rw [hnumber]
   have hfilter : (Finset.univ : Finset Site).filter (fun i => i ∈ n) = n := by
     ext i
     simp
