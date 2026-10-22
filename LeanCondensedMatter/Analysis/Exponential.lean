@@ -1,4 +1,8 @@
-import Mathlib.Analysis.Complex.Trigonometric
+module
+
+public import Mathlib.Analysis.Complex.Trigonometric
+
+public section
 
 set_option linter.style.header false
 
