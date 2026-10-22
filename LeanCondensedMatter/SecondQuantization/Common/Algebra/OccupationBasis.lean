@@ -87,5 +87,14 @@ theorem occupationEnergy_sub_const {Mode Config : Type*} [OccupationBasis Mode C
   rw [← Finset.sum_mul, Nat.cast_sum]
   exact mul_comm _ _
 
+/-- Adding a common one-particle energy offset shifts the occupation energy
+by that offset times the total particle number. -/
+theorem occupationEnergy_add_const {Mode Config : Type*} [OccupationBasis Mode Config]
+    (ε : Mode → ℝ) (C : ℝ) (n : Config) :
+    occupationEnergy (fun i => ε i + C) n =
+      occupationEnergy ε n + C * (particleNumber (Mode := Mode) n : ℝ) := by
+  simpa only [sub_neg, neg_mul] using (occupationEnergy_sub_const ε (-C) n)
+
+
 end Common
 end SecondQuantization
