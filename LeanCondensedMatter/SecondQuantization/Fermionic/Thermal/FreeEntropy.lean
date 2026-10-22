@@ -1,5 +1,7 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreePartitionFunction
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.OneBodyExpectation
+import LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.BoundedEvolution
+import LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.RankOneSecondQuantization
 import LeanCondensedMatter.QuantumTheory.Gibbs.EigenbasisEntropy
 
 set_option linter.style.header false
@@ -63,8 +65,11 @@ theorem eigenbasisGibbsEnergyExpectation_fermionEnergy_eq_sum_fermiDirac
   let D := Common.diagonalOperator (fun i => (ε i : ℂ))
   have h := freeGibbsDensityOperator_expectation_finiteSecondQuantization ε β
     (Common.finiteHilbertOperatorAlgEquiv D)
-  simp only [Lattice.finiteSecondQuantization_finiteHilbertOperator,
-    AlgEquiv.symm_apply_apply] at h
+  have hquant : Lattice.finiteSecondQuantization (Common.finiteHilbertOperatorAlgEquiv D) =
+      Lattice.boundedOneBodyOperator D := by
+    simp [Lattice.finiteSecondQuantization]
+  rw [hquant] at h
+  simp only [AlgEquiv.symm_apply_apply] at h
   change (freeGibbsDensityOperator ε β).expectation
     (Common.finiteHilbertOperatorAlgEquiv
       (AlgebraicFock.occupationConjugate
