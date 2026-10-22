@@ -158,6 +158,30 @@ theorem inv_grandCanonicalPartitionFunction_smul_completedFreeHeatOperator_eq_gi
   exact inv_grandCanonicalPartitionFunction_zero_smul_completedFreeHeatOperator_eq_gibbs
     (fun i => ε i - μ) β hβ hgap hshifted
 
+/-- The grand-canonical algebraic trace equals the actual trace of the
+completed free heat operator for the grand-canonical generator
+`K = H - μ N̂`. This identifies the formerly separate occupation-trace
+and completed trace-class normalizations at arbitrary explicit μ. -/
+theorem grandCanonicalAlgebraicPartition_eq_completedFreeHeatOperator_trace
+    (ε : Mode → ℝ) (β μ : ℝ) (hβ : 0 < β)
+    (hgap : ∀ i, 0 ≤ ε i - μ)
+    (hsum : EigenbasisGibbsSummable
+      (Common.grandCanonicalEnergy (Config := Occupation Mode) ε μ) β) :
+    grandCanonicalAlgebraicPartition ε β μ =
+      (completedFreeHeatOperator_isTraceClass (fun i => ε i - μ) β hβ hgap
+        ((Common.grandCanonicalGibbsSummable_iff_shifted
+          (Config := Occupation Mode) ε β μ).1 hsum)).trace := by
+  rw [grandCanonicalAlgebraicPartition_eq_coe_grandCanonicalPartitionFunction]
+  have hshift := completedFreeHeatOperator_trace_eq_grandCanonicalPartitionFunction_zero
+    (fun i => ε i - μ) β hβ hgap
+    ((Common.grandCanonicalGibbsSummable_iff_shifted
+      (Config := Occupation Mode) ε β μ).1 hsum)
+  rw [hshift]
+  congr 1
+  simpa only [sub_add_cancel, zero_add] using
+    (Common.grandCanonicalPartitionFunction_shift_invariant
+      (Config := Occupation Mode) (fun i => ε i - μ) β 0 μ)
+
 end
 end Bosonic
 end SecondQuantization
