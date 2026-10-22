@@ -293,8 +293,10 @@ cutoff-removal, or zero-broadening limit is part of this benchmark.
 `Models.MassiveDirac` is the public route for the massive-Dirac transport benchmark.
 `Models.MassiveDirac.ManyBody` constructs its clean Hamiltonian on the full fermionic
 Fock space of a finite set of physical momenta, with two internal modes per momentum.
-It consumes the matrix bilinear and adjoint law in `Fermionic.Lattice.MatrixBilinear`,
-then supplies its Hamiltonian, current operators and finite-dimensional Gibbs state to
+Its finite one-particle Hamiltonian and current are realized by the canonical continuous
+`Fermionic.Lattice.finiteSecondQuantization` map. Adjoint identities use the matrix-unit
+expansion law in `Fermionic.Lattice.BoundedMatrixUnitAdjoint`. It supplies its Hamiltonian,
+current operators and finite-dimensional Gibbs state to
 the general bounded linear-response theorem. Uniform minimal coupling shifts momentum
 by `+e A` for charge `-e`; the affine Dirac Hamiltonian has a field-independent current
 and zero explicit contact term on this fixed mode set. Source bounds and interval

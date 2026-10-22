@@ -26,6 +26,15 @@ def finiteSecondQuantization :
   ((boundedOneBodyOperator (Site := Site)).toLinearMap.comp
     (Common.finiteHilbertOperatorAlgEquiv (Config := Site)).symm.toLinearMap).toContinuousLinearMap
 
+/-- Changing a one-particle operator to finite Hilbert coordinates and then second quantizing
+recovers its canonical algebraic-input realization. -/
+@[simp]
+theorem finiteSecondQuantization_finiteHilbertOperator
+    (A : (Site →₀ ℂ) →ₗ[ℂ] (Site →₀ ℂ)) :
+    finiteSecondQuantization (Common.finiteHilbertOperatorAlgEquiv A) =
+      boundedOneBodyOperator A := by
+  simp [finiteSecondQuantization]
+
 /-- Exponential evolution of one-particle observables lifts exactly to the full finite Fock
 space. For real-time Hamiltonian evolution, take an imaginary scalar multiple of the Hamiltonian
 as `generator`; no self-adjointness is needed for the algebraic conjugation identity itself. -/

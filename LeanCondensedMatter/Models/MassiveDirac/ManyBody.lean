@@ -1,5 +1,6 @@
 import LeanCondensedMatter.Models.MassiveDirac.Model.Operator
-import LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.MatrixBilinear
+import LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.BoundedEvolution
+import LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.BoundedMatrixUnitAdjoint
 import LeanCondensedMatter.QuantumTheory.Gibbs.State
 import LeanCondensedMatter.QuantumTheory.LinearResponse.Expectation.Density
 import LeanCondensedMatter.QuantumTheory.LinearResponse.Response.ObservableVariation
@@ -29,32 +30,54 @@ variable {Momentum : Type*} [Fintype Momentum] [LinearOrder Momentum]
 /-- Full fermionic Fock space over momentum and the two internal components. -/
 abbrev Hilbert (Momentum : Type*) := FiniteLatticeHilbertFock (Momentum ×ₗ Fin 2)
 
-private def liftMatrix (p : Momentum) :=
-  matrixBilinear (fun a : Fin 2 => toLex (p, a))
+private def liftMatrix (p : Momentum) :
+    Matrix2 →ₗ[ℂ] ((Momentum ×ₗ Fin 2 →₀ ℂ) →ₗ[ℂ] (Momentum ×ₗ Fin 2 →₀ ℂ)) where
+  toFun M := ∑ a, ∑ b, M a b • matrixUnit (toLex (p, a)) (toLex (p, b))
+  map_add' M N := by simp [add_smul, Finset.sum_add_distrib]
+  map_smul' z M := by simp [smul_smul, Finset.smul_sum]
+
+private theorem star_liftMatrix (p : Momentum) (M : Matrix2) :
+    star (boundedOneBodyOperator (liftMatrix p M)) =
+      boundedOneBodyOperator (liftMatrix p (star M)) :=
+  star_boundedOneBodyOperator_matrix (fun a : Fin 2 => toLex (p, a)) M
+
+/-- The block-diagonal one-particle Hamiltonian on the sampled finite momentum space. -/
+def oneParticleHamiltonian (momentum : Momentum → ℝ × ℝ) (v m : ℝ) :
+    EuclideanSpace ℂ (Momentum ×ₗ Fin 2) →L[ℂ] EuclideanSpace ℂ (Momentum ×ₗ Fin 2) :=
+  ∑ p, SecondQuantization.Common.finiteHilbertOperatorAlgEquiv
+    (liftMatrix p (MassiveDirac.hamiltonian v m (momentum p).1 (momentum p).2))
+
+/-- One-particle current on the same finite momentum space. -/
+def oneParticleCurrent (direction : Fin 2) (e v : ℝ) :
+    EuclideanSpace ℂ (Momentum ×ₗ Fin 2) →L[ℂ] EuclideanSpace ℂ (Momentum ×ₗ Fin 2) :=
+  ∑ p : Momentum, SecondQuantization.Common.finiteHilbertOperatorAlgEquiv
+    (liftMatrix p (MassiveDirac.current direction e v))
 
 /-- Clean many-body Hamiltonian at the specified finite set of physical momenta. -/
 def hamiltonian (momentum : Momentum → ℝ × ℝ) (v m : ℝ) :
     Hilbert Momentum →L[ℂ] Hilbert Momentum :=
-  ∑ p, liftMatrix p (MassiveDirac.hamiltonian v m (momentum p).1 (momentum p).2)
+  finiteSecondQuantization (oneParticleHamiltonian momentum v m)
 
 /-- Total current, with electron charge `-e`, in either Cartesian direction. -/
 def current (direction : Fin 2) (e v : ℝ) :
     Hilbert Momentum →L[ℂ] Hilbert Momentum :=
-  ∑ p : Momentum, liftMatrix p (MassiveDirac.current direction e v)
+  finiteSecondQuantization (oneParticleCurrent (Momentum := Momentum) direction e v)
 
 theorem hamiltonian_isSelfAdjoint (momentum : Momentum → ℝ × ℝ) (v m : ℝ) :
     IsSelfAdjoint (hamiltonian momentum v m) := by
   rw [isSelfAdjoint_iff]
-  simp only [hamiltonian, star_sum]
+  simp only [hamiltonian, oneParticleHamiltonian, map_sum,
+    finiteSecondQuantization_finiteHilbertOperator, star_sum]
   apply Finset.sum_congr rfl
   intro p _
-  rw [liftMatrix, star_matrixBilinear,
+  rw [star_liftMatrix,
     (hamiltonian_isHermitian v m (momentum p).1 (momentum p).2).isSelfAdjoint.star_eq]
 
 theorem current_isSelfAdjoint (direction : Fin 2) (e v : ℝ) :
     IsSelfAdjoint (current (Momentum := Momentum) direction e v) := by
   rw [isSelfAdjoint_iff]
-  simp only [current, star_sum, liftMatrix, star_matrixBilinear,
+  simp only [current, oneParticleCurrent, map_sum, finiteSecondQuantization_finiteHilbertOperator,
+    star_sum, star_liftMatrix,
     (current_isHermitian direction e v).isSelfAdjoint.star_eq]
 
 /-- Uniform vector potential in one Cartesian direction, with the mode set held fixed. -/
@@ -77,14 +100,15 @@ theorem hamiltonian_shiftedMomentum (momentum : Momentum → ℝ × ℝ)
     fin_cases direction <;>
       simp [MassiveDirac.hamiltonian, MassiveDirac.current, velocity,
         directionPauli, inPlanePauliAxis, InternalSpace.pauliBasis] <;> module
-  unfold hamiltonian current
-  simp only [Finset.smul_sum, ← Finset.sum_sub_distrib]
+  unfold hamiltonian current oneParticleHamiltonian oneParticleCurrent
+  simp only [map_sum, Finset.smul_sum, ← Finset.sum_sub_distrib]
   apply Finset.sum_congr rfl
   intro p _
   have hp := hmatrix (momentum p).1 (momentum p).2
   fin_cases direction <;>
-    simpa [shiftedMomentum, liftMatrix, map_sub, map_smul] using
-      congrArg (liftMatrix p) hp
+    simpa [shiftedMomentum, map_sub, map_smul] using
+      congrArg (fun M : Matrix2 => finiteSecondQuantization
+        (SecondQuantization.Common.finiteHilbertOperatorAlgEquiv (liftMatrix p M))) hp
 
 /-- The negative vector-potential derivative is the total creation-annihilation current. -/
 theorem hasDerivAt_hamiltonian_shiftedMomentum (momentum : Momentum → ℝ × ℝ)
@@ -124,14 +148,9 @@ def system (momentum : Momentum → ℝ × ℝ) (v m hbar : ℝ) (hbar_pos : 0 <
   hbar := hbar
   hbar_pos := hbar_pos
 
-/-- Current response to a uniform vector potential. Since the Dirac Hamiltonian is affine,
-the current has zero explicit variation, hence zero contact contribution for this finite model. -/
-def channel (measuredDirection sourceDirection : Fin 2) (e v : ℝ) :
-    ResponseChannel (Hilbert Momentum) :=
-  ResponseChannel.fixed (current measuredDirection e v) (current sourceDirection e v)
-
 /-- The actual finite-Fock Gibbs state at chemical potential zero supplies the expectation
-in the general Kubo theorem.
+in the general Kubo theorem. The affine Dirac Hamiltonian has field-independent currents,
+so the measured current has zero explicit variation and the fixed channel has zero contact.
 `horizon` is a time interval endpoint, distinct from the inverse temperature. Analytic bounds
 and interval integrability of the applied source remain explicit hypotheses. -/
 theorem hasDerivAt_gibbsCurrentResponse
@@ -148,13 +167,14 @@ theorem hasDerivAt_gibbsCurrentResponse
       MeasureTheory.volume 0 t) :
     let S := system momentum v m hbar hbar_pos
     let expectation := (gibbsState S.hamiltonian inverseTemperature).toNormalizedExpectation
-    let C := channel (Momentum := Momentum) measuredDirection sourceDirection e v
+    let C := ResponseChannel.fixed (current (Momentum := Momentum) measuredDirection e v)
+      (current sourceDirection e v)
     HasDerivAt
       (fun lam : ℝ => affinePerturbedExpectation S expectation
         (sourceCoupledPerturbation f C.source) C.measured C.observableVariation lam t)
       (C.causalResponse S expectation f t) 0 := by
   exact ResponseChannel.hasDerivAt_affineSourceCoupledExpectation_zero_of_bound_retarded
-      (channel measuredDirection sourceDirection e v)
+      (ResponseChannel.fixed (current measuredDirection e v) (current sourceDirection e v))
       (system momentum v m hbar hbar_pos) _ f
       (current_isSelfAdjoint sourceDirection e v) hM hV ht hInt
 
