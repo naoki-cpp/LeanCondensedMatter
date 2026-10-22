@@ -1,4 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreePartitionFunction
+import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsContraction
 import LeanCondensedMatter.QuantumTheory.Gibbs.EigenbasisEntropy
 
 set_option linter.style.header false
@@ -65,7 +66,10 @@ theorem sum_freeGibbsConfigurationProbability_filter_mem
       fermiDiracOccupation ε β i := by
   letI : LinearOrder Mode :=
     LinearOrder.lift' (Fintype.equivFin Mode) (Fintype.equivFin Mode).injective
-  have h := freeGibbsDensityOperator_expectation_numberOperator ε β i
+  have h := freeGibbsDensityOperator_expectation_create_comp_annihilate ε β i i
+  simp only [ite_true] at h
+  change (freeGibbsDensityOperator ε β).expectation
+    (Common.finiteHilbertOperatorAlgEquiv (numberOperator i)) = _ at h
   rw [freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation,
     Common.finiteGibbsExpectation_eq_sum, numberOperator_eq_diagonalOperator] at h
   apply Complex.ofReal_injective
