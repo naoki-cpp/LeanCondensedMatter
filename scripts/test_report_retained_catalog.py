@@ -24,6 +24,7 @@ class RetainedReportTests(unittest.TestCase):
         self.assertEqual(report["withoutStructuralSignal"], ["a"])
         self.assertEqual(report["zeroConsumerDirectWrappers"], ["b"])
         self.assertFalse(report["baselineAvailable"])
+        self.assertEqual(report["retainedReplacementCandidates"], [])
         self.assertIn("Snapshot comparison unavailable", markdown(report))
 
     def test_diff_compares_evidence_and_tracks_retained_changes(self):
@@ -46,6 +47,20 @@ class RetainedReportTests(unittest.TestCase):
             {"name": "a", "fields": ["compiledConsumers", "simpLemma"]},
         ])
         self.assertIn("Since the last published graph-data snapshot", markdown(report))
+
+    def test_retained_mathlib_replacement_candidates_remain_visible(self):
+        previous = [sample("a", mathlibReplacementCandidates=[])]
+        current = [sample("a", mathlibReplacementCandidates=["Mathlib.foo"])]
+        report = audit(current, previous)
+        self.assertEqual(report["retainedReplacementCandidates"], [
+            {"name": "a", "candidates": {
+                "mathlibReplacementCandidates": ["Mathlib.foo"],
+            }},
+        ])
+        self.assertEqual(report["changedReviewEvidence"], [
+            {"name": "a", "fields": ["mathlibReplacementCandidates"]},
+        ])
+        self.assertIn("Mathlib.foo", markdown(report))
 
     def test_duplicate_names_rejected(self):
         with self.assertRaisesRegex(ValueError, "duplicate"):
