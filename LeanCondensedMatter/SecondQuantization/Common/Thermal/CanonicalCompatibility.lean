@@ -206,15 +206,6 @@ theorem canonicalFullGibbsDensityOperator_expectation_eq_sector
               (canonicalFullGibbsWeight_norm_summable ε β N hsum)
               (canonicalFullGibbsWeight_nonneg ε β N)
               (canonicalFullGibbsWeight_tsum_pos ε β N hsum) c))
-  have hProb (n : ParticleNumberSector Mode Config N) :
-      Real.normalizedWeight (canonicalFullGibbsWeight ε β N) n.val =
-        eigenbasisGibbsProbability E β n := by
-    change
-      (∑' c : Config, canonicalFullGibbsWeight ε β N c)⁻¹ *
-          canonicalFullGibbsWeight ε β N n.val =
-        (eigenbasisPartitionFunction E β)⁻¹ * eigenbasisBoltzmannWeight E β n
-    rw [(canonicalFullGibbsWeight_hasSum ε β N hsum).tsum_eq,
-      canonicalPartitionFunction, canonicalFullGibbsWeight_apply_sector]
   have hPoint :
       Function.extend
         (Subtype.val : ParticleNumberSector Mode Config N → Config) f 0 = g := by
@@ -228,7 +219,7 @@ theorem canonicalFullGibbsDensityOperator_expectation_eq_sector
           inner ℂ (completedBasisState n) (B (completedBasisState n)) =
         (Real.normalizedWeight (canonicalFullGibbsWeight ε β N) n.val : ℂ) *
           inner ℂ (completedBasisState n.val) (A (completedBasisState n.val))
-      rw [hProb n]
+      rw [normalizedWeight_canonicalFullGibbsWeight_apply_sector ε β N hsum n]
       exact congrArg (fun z : ℂ => (eigenbasisGibbsProbability E β n : ℂ) * z)
         (canonicalCompressedDiagonalMatrixElement N A n)
     · have hnot : ¬ ∃ n : ParticleNumberSector Mode Config N, n.val = c := by

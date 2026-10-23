@@ -93,6 +93,26 @@ theorem canonicalFullGibbsWeight_tsum_pos (ε : Mode → ℝ) (β : ℝ) (N : �
   rw [(canonicalFullGibbsWeight_hasSum ε β N hsum).tsum_eq]
   exact canonicalPartitionFunction_pos ε β N hsum
 
+/-- Normalizing the zero-extended fixed-number Boltzmann weights agrees
+with the Gibbs probability computed directly on the sector. -/
+theorem normalizedWeight_canonicalFullGibbsWeight_apply_sector
+    (ε : Mode → ℝ) (β : ℝ) (N : ℕ)
+    (hsum : EigenbasisGibbsSummable
+      (fun n : ParticleNumberSector Mode Config N => occupationEnergy ε n.val) β)
+    (n : ParticleNumberSector Mode Config N) :
+    Real.normalizedWeight (canonicalFullGibbsWeight ε β N) n.val =
+      eigenbasisGibbsProbability
+        (fun m : ParticleNumberSector Mode Config N => occupationEnergy ε m.val) β n := by
+  change
+    (∑' c : Config, canonicalFullGibbsWeight ε β N c)⁻¹ *
+        canonicalFullGibbsWeight ε β N n.val =
+      (eigenbasisPartitionFunction
+        (fun m : ParticleNumberSector Mode Config N => occupationEnergy ε m.val) β)⁻¹ *
+        eigenbasisBoltzmannWeight
+          (fun m : ParticleNumberSector Mode Config N => occupationEnergy ε m.val) β n
+  rw [(canonicalFullGibbsWeight_hasSum ε β N hsum).tsum_eq,
+    canonicalPartitionFunction, canonicalFullGibbsWeight_apply_sector]
+
 /-- The canonical Gibbs density on the entire completed Fock space, supported
 exactly on occupation configurations with particle number `N`. -/
 noncomputable def canonicalFullGibbsDensityOperator
@@ -120,20 +140,8 @@ theorem canonicalFullGibbsDensityOperator_apply_basis_of_sector
       (eigenbasisGibbsProbability
         (fun m : ParticleNumberSector Mode Config N => occupationEnergy ε m.val) β n : ℂ) •
         completedBasisState n.val := by
-  have hprob :
-      Real.normalizedWeight (canonicalFullGibbsWeight ε β N) n.val =
-        eigenbasisGibbsProbability
-          (fun m : ParticleNumberSector Mode Config N => occupationEnergy ε m.val) β n := by
-    change
-      (∑' c : Config, canonicalFullGibbsWeight ε β N c)⁻¹ *
-          canonicalFullGibbsWeight ε β N n.val =
-        (eigenbasisPartitionFunction
-          (fun m : ParticleNumberSector Mode Config N => occupationEnergy ε m.val) β)⁻¹ *
-          eigenbasisBoltzmannWeight
-            (fun m : ParticleNumberSector Mode Config N => occupationEnergy ε m.val) β n
-    rw [(canonicalFullGibbsWeight_hasSum ε β N hsum).tsum_eq,
-      canonicalPartitionFunction, canonicalFullGibbsWeight_apply_sector]
-  simpa only [canonicalFullGibbsDensityOperator, completedHilbertBasis_apply, hprob] using
+  simpa only [canonicalFullGibbsDensityOperator, completedHilbertBasis_apply,
+    normalizedWeight_canonicalFullGibbsWeight_apply_sector ε β N hsum n] using
     (diagonalDensityOperator_apply_basis
       (completedHilbertBasis (Config := Config)) (canonicalFullGibbsWeight ε β N)
       (canonicalFullGibbsWeight_norm_summable ε β N hsum)
