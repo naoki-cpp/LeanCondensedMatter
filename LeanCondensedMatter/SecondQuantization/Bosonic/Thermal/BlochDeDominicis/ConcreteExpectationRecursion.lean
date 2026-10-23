@@ -33,7 +33,7 @@ local instance instDecidableEqConcreteExpectationRecursion : DecidableEq Mode :=
 namespace FreeThermalField
 
 /-- Concrete normalized free-Gibbs first-pair recurrence for an arbitrary even field family. -/
-theorem freeGibbsExpectation_firstPair_recursion
+private theorem freeGibbsExpectation_firstPair_recursion
     (ε : Mode → ℝ) (β : ℝ) (hpos : ∀ i, 0 < β * ε i)
     (n : ℕ) (C : Fin (2 * (n + 1)) → FreeThermalField Mode) :
     grandCanonicalGibbsExpectation ε β 0 (orderedProduct (List.ofFn C)) =
@@ -90,16 +90,20 @@ private noncomputable def concreteFreeGibbsPairingRecursion
     simpa only [Statistics.zetaInt_boson, Int.cast_one, one_pow, one_mul] using
       FreeThermalField.freeGibbsExpectation_firstPair_recursion ε β hpos n C
 
-/-- Fully concrete free-boson Bloch--de Dominicis/Wick pairing expansion.  The only analytic
-hypothesis is positivity of every one-mode Boltzmann exponent. -/
-theorem freeGibbsExpectation_eq_sum_pairing_concrete
-    (ε : Mode → ℝ) (β : ℝ) (hpos : ∀ i, 0 < β * ε i)
+/-- Grand-canonical free-boson Wick/Bloch--de Dominicis factorization at arbitrary chemical
+potential. The free-field pairing kernel uses `ε - μ`; the abstract recurrence is applied on this
+effective thermal dispersion. This does not assert fixed-particle-number canonical Wick factorization. -/
+theorem grandCanonicalGibbsExpectation_eq_sum_pairing_concrete
+    (ε : Mode → ℝ) (β μ : ℝ) (hpos : ∀ i, 0 < β * (ε i - μ))
     (n : ℕ) (C : Fin (2 * n) → FreeThermalField Mode) :
-    grandCanonicalGibbsExpectation ε β 0 (FreeThermalField.orderedProduct (List.ofFn C)) =
+    grandCanonicalGibbsExpectation ε β μ (FreeThermalField.orderedProduct (List.ofFn C)) =
       ∑ pairing : Pairing n,
         pairing.weight .boson *
-          ∏ pr ∈ pairing.pairs, freeThermalPairValue ε β (C pr.1) (C pr.2) := by
-  exact (concreteFreeGibbsPairingRecursion ε β hpos).bloch_de_dominicis n C trivial
+          ∏ pr ∈ pairing.pairs,
+            freeThermalPairValue (fun i => ε i - μ) β (C pr.1) (C pr.2) := by
+  rw [grandCanonicalGibbsExpectation_shift]
+  exact (concreteFreeGibbsPairingRecursion (fun i => ε i - μ) β hpos).bloch_de_dominicis
+    n C trivial
 
 end
 end Bosonic
