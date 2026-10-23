@@ -36,23 +36,23 @@ namespace FreeThermalField
 theorem freeGibbsExpectation_firstPair_recursion
     (ε : Mode → ℝ) (β : ℝ) (hpos : ∀ i, 0 < β * ε i)
     (n : ℕ) (C : Fin (2 * (n + 1)) → FreeThermalField Mode) :
-    freeGibbsExpectation ε β (orderedProduct (List.ofFn C)) =
+    grandCanonicalGibbsExpectation ε β 0 (orderedProduct (List.ofFn C)) =
       ∑ j : Fin (2 * n + 1),
         freeThermalPairValue ε β (C 0) (C j.succ) *
-          freeGibbsExpectation ε β
+          grandCanonicalGibbsExpectation ε β 0
             (orderedProduct
               (List.ofFn fun i : Fin (2 * n) => C ((j.succAbove i).succ))) := by
   rw [List.ofFn_succ]
   set l : List (FreeThermalField Mode) :=
     List.ofFn (fun i : Fin (2 * n + 1) => C i.succ) with hl
   calc
-    freeGibbsExpectation ε β (orderedProduct (C 0 :: l)) =
+    grandCanonicalGibbsExpectation ε β 0 (orderedProduct (C 0 :: l)) =
         ((C 0).kmsFactor ε β / ((C 0).kmsFactor ε β - 1)) *
-          freeGibbsExpectation ε β ((C 0).operatorPeelSum l) :=
+          grandCanonicalGibbsExpectation ε β 0 ((C 0).operatorPeelSum l) :=
       freeGibbsExpectation_cons_eq_kmsRatio_mul_operatorPeelSum ε β hpos (C 0) l
     _ = ∑ j : Fin (2 * n + 1),
         freeThermalPairValue ε β (C 0) (C j.succ) *
-          freeGibbsExpectation ε β
+          grandCanonicalGibbsExpectation ε β 0
             (orderedProduct
               (List.ofFn fun i : Fin (2 * n) => C ((j.succAbove i).succ))) := by
       rw [freeGibbsExpectation_operatorPeelSum_eq_sum ε β hpos (C 0) l,
@@ -61,7 +61,7 @@ theorem freeGibbsExpectation_firstPair_recursion
         (fun i : Fin (2 * n + 1) => C i.succ)
         (fun _ field rest =>
           ((C 0).kmsFactor ε β / ((C 0).kmsFactor ε β - 1)) *
-            ((C 0).exchangeValue field * freeGibbsExpectation ε β (orderedProduct rest)))]
+            ((C 0).exchangeValue field * grandCanonicalGibbsExpectation ε β 0 (orderedProduct rest)))]
       refine Finset.sum_congr rfl fun j _ => ?_
       have hpair := kmsRatio_mul_exchangeValue_eq_freeThermalPairValue
         ε β hpos (C 0) (C j.succ)
@@ -76,12 +76,14 @@ KMS/exchange recurrence without transporting values through an additional totali
 private noncomputable def concreteFreeGibbsPairingRecursion
     (ε : Mode → ℝ) (β : ℝ) (hpos : ∀ i, 0 < β * ε i) :
     Common.BlochDeDominicis.ExpectationPairingRecursion (FreeThermalField Mode) .boson where
-  expectation := fun fields => freeGibbsExpectation ε β (FreeThermalField.orderedProduct fields)
+  expectation := fun fields => grandCanonicalGibbsExpectation ε β 0 (FreeThermalField.orderedProduct fields)
   pairValue := freeThermalPairValue ε β
   admissible := fun _ _ => True
   expectation_nil := by
     rw [FreeThermalField.orderedProduct_nil]
-    exact freeGibbsExpectation_id ε β hpos
+    simpa only [sub_zero] using
+      (grandCanonicalGibbsExpectation_id ε β 0
+        (by simpa only [sub_zero] using hpos))
   admissible_erase := fun _ _ _ _ => trivial
   expectation_succ := by
     intro n C _
@@ -93,7 +95,7 @@ hypothesis is positivity of every one-mode Boltzmann exponent. -/
 theorem freeGibbsExpectation_eq_sum_pairing_concrete
     (ε : Mode → ℝ) (β : ℝ) (hpos : ∀ i, 0 < β * ε i)
     (n : ℕ) (C : Fin (2 * n) → FreeThermalField Mode) :
-    freeGibbsExpectation ε β (FreeThermalField.orderedProduct (List.ofFn C)) =
+    grandCanonicalGibbsExpectation ε β 0 (FreeThermalField.orderedProduct (List.ofFn C)) =
       ∑ pairing : Pairing n,
         pairing.weight .boson *
           ∏ pr ∈ pairing.pairs, freeThermalPairValue ε β (C pr.1) (C pr.2) := by

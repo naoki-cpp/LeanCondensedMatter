@@ -117,15 +117,15 @@ Even for finite `Mode`,
 Bosonic.Occupation Mode := Mode →₀ ℕ
 ```
 
-is infinite. `Bosonic/Thermal/ConvergenceAwareGibbs.lean` therefore defines a normalized functional
-on an explicit summability domain rather than pretending that finite-configuration traces apply.
-The linear expectation is defined on the summable-operator submodule; additivity retains explicit summability hypotheses.
+is infinite. `Bosonic/Thermal/ConvergenceAwareGibbs.lean` therefore defines a grand-canonical normalized functional parameterized by explicit `ε`, `β`,
+and `μ` on a summability domain, rather than pretending that finite-configuration traces apply.
+The linear expectation is defined on the summable-operator submodule; additivity retains explicit summability hypotheses. The shared effective-energy transport uses `ξ i = ε i - μ`; physical Dyson evolution continues to use `ε`.
 
 `Bosonic/Thermal/FreeThermalField.lean` owns the free thermal field labels, ordered algebraic-Fock
 products, and normalized pair kernel independently of pairing recursion. KMS, product summability,
 and the kernel's equality to Gibbs two-field expectations consume these data directly.
 `Bosonic/Thermal/BlochDeDominicis/ConcreteExpectationRecursion.lean` constructs the Common
-recursion directly with `freeGibbsExpectation`. Under explicit positive one-mode Boltzmann
+recursion directly with `grandCanonicalGibbsExpectation ε β μ`. Under explicit positive one-mode Boltzmann
 exponents, `FreeThermalField.freeGibbsSummable_orderedProduct` proves summability of every finite
 field product, including every remaining product after pair deletion. The first-pair recurrence
 uses those analytic results before the representation-independent pairing induction is applied.
@@ -159,7 +159,7 @@ independent of the ensemble: the operator algebra and the chosen state are separ
 | Normalized two-point subtraction and composite-current field expansions | `QuantumTheory.LinearResponse.connectedCorrelation`, `Fermionic.Transport.CurrentInsertions` | The subtraction and finite-sum expansion do not require Gibbs; physical second-cumulant interpretation requires normalization. |
 | Abstract thermal pairing induction | `Common.Thermal.BlochDeDominicis.ExpectationRecursion` | The induction is generic, but each concrete state must prove its first-pair recurrence; fixed-`N` Wick factorization is **not** automatic. |
 | Finite trace ratios and normalized Dyson trace-series coefficients | `Common.Thermal.FiniteGibbsCoordinate`, `Common.Perturbation.DysonTraceSeries` | Concrete Gibbs specialization on the supplied finite configuration type. That type may be a selected sector or all configurations; the trace ratio alone does not select an ensemble. |
-| Completed / infinite-occupation Gibbs realizations | `QuantumTheory.Gibbs.Eigenbasis`, `Bosonic.Thermal.ConvergenceAwareGibbs` | Density states require summable weights; unbounded bosonic algebraic observables also require an explicit summability domain. |
+| Completed / infinite-occupation Gibbs realizations | `QuantumTheory.Gibbs.Eigenbasis`, `Bosonic.Thermal.ConvergenceAwareGibbs` | Density states require summable weights; unbounded bosonic algebraic observables also require an explicit summability domain with `μ` in the thermal weight. |
 
 **Migration policy.** Introduce a sharp `N` or chemical potential `μ` only in the
 appropriate physical state constructors and their genuinely ensemble-dependent expectations.
