@@ -187,8 +187,12 @@ theorem tendsto_completedFreeModeTruncationNormalizationRatio
         (𝓝 (eigenbasisPartitionFunction
           (Common.grandCanonicalEnergy (Config := Occupation Mode) ε μ) β)) :=
     tendsto_const_nhds
-  simpa [completedFreeModeTruncationNormalizationRatio, Pi.div_apply, div_self hZne] using
-    hconst.div hZ hZne
+  change Tendsto
+    ((fun _ : Finset Mode =>
+      eigenbasisPartitionFunction
+        (Common.grandCanonicalEnergy (Config := Occupation Mode) ε μ) β) /
+      completedFreeModeTruncatedPartitionFunction ε β μ) atTop (𝓝 (1 : ℝ))
+  simpa only [div_self hZne] using hconst.div hZ hZne
 
 /-- A truncated Gibbs probability is the retained full Gibbs probability multiplied by the finite
 normalization correction. -/
