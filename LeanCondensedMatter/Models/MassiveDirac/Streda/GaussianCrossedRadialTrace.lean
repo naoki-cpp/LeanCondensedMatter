@@ -490,21 +490,7 @@ private theorem gaussianCrossedRadialFirstHarmonicIntegral_eq_difference
                 polarFourierSecondCosineAngularKernel (p * radius / hbar)) * f p)) := by
   have h := integral_polarFourierFirstCosineAngularKernel_two_mul_eq_zeroth_sub_second
     hbar pMax radius f
-  calc
-    (∫ p in (0 : ℝ)..pMax,
-        (p : ℂ) *
-          (polarFourierFirstCosineAngularKernel (p * radius / hbar) * f p)) =
-        (2 * (∫ p in (0 : ℝ)..pMax,
-          (p : ℂ) *
-            (polarFourierFirstCosineAngularKernel (p * radius / hbar) * f p))) / 2 := by
-      ring
-    _ = (Complex.I * (((radius / hbar : ℝ) : ℂ)) *
-        (∫ p in (0 : ℝ)..pMax,
-          (p : ℂ) ^ 2 *
-            ((polarFourierZerothAngularKernel (p * radius / hbar) -
-                polarFourierSecondCosineAngularKernel (p * radius / hbar)) * f p))) / 2 := by
-      rw [h]
-    _ = _ := by ring
+  linear_combination (1 / 2 : ℂ) * h
 
 /-- At negative real-space radius, the retarded or advanced Green Pauli-x
 coefficient is a single K0-K2 momentum moment times the exact K1
