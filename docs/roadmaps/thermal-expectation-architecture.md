@@ -54,23 +54,23 @@ partition function with the canonical real pure-point partition function after c
 
 ## Canonical and grand-canonical conditioning
 
-`Common/Thermal/CanonicalGrandCanonicalCompatibility.lean` identifies the grand-canonical
-weight restricted to a sharp-number sector with the canonical Boltzmann weight multiplied by
-the fugacity factor `exp (β μ N)`. Global Gibbs summability implies summability on every
-fixed-number sector without assuming a finite occupation basis.
+`Common/Thermal/GrandCanonicalSectorDecomposition.lean` owns the scalar bridge:
+restricting grand-canonical Boltzmann weights to sharp-number sectors gives
+the canonical weights multiplied by `exp (β μ N)`. Global Gibbs summability
+implies summability in every sector, without a finite occupation-basis hypothesis.
+For a nonempty sector the probability is `p_N = exp (β μ N) Z_N / Ξ > 0`;
+empty sectors contribute zero without a normalized canonical density.
 
-For a nonempty sector, the resulting probability is
-`p_N = exp (β μ N) Z_N / Ξ`. The bounded-operator identity
-`P_N ρ_GC P_N = p_N ρ_{N,full}` holds on the common completed Fock space, where
-`ρ_{N,full}` is the existing isometric zero-extension of the canonical density.
-The left side is an unnormalized positive operator, not itself a density state.
-Empty number sectors have probability zero but do not admit a normalized sector density.
+The same module uses sigma-fiber reindexing to prove
+`Ξ = ∑_N exp (β μ N) Z_N` and `∑_N p_N = 1`.
+`Common/Thermal/CanonicalGrandCanonicalCompatibility.lean` uses this scalar
+data to prove the completed-Fock bounded-operator identity
+`P_N ρ_GC P_N = p_N ρ_{N,full}`, where `ρ_{N,full}` is the existing
+isometric zero extension of the canonical density. The left-hand side
+is an unnormalized positive operator, not itself a density state.
 
-`Common/Thermal/GrandCanonicalSectorDecomposition.lean` sums the fixed-number
-Boltzmann fibers using the canonical sigma-fiber equivalence and summable
-sigma-series. It proves `Ξ = ∑_N exp (β μ N) Z_N` and
-`∑_N p_N = 1`, with empty sectors contributing zero. General bounded-observable
-expectation and full density-operator decompositions remain separate tasks.
+General bounded-observable expectation and full density-operator decompositions
+remain separate tasks.
 
 ## Generic pairing recursion
 
