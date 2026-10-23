@@ -1,5 +1,4 @@
 import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.FreeFirstPair
-import LeanCondensedMatter.Combinatorics.FiniteIndex.EraseIdxOfFn
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.ExpectationRecursion
 
 set_option linter.style.header false
@@ -55,18 +54,17 @@ private theorem freeGibbsExpectation_firstPair_recursion
           grandCanonicalGibbsExpectation ε β 0
             (orderedProduct
               (List.ofFn fun i : Fin (2 * n) => C ((j.succAbove i).succ))) := by
-      rw [freeGibbsExpectation_operatorPeelSum_eq_sum ε β hpos (C 0) l,
-        Finset.mul_sum]
-      rw [hl, List.sum_getElem_eraseIdx_ofFn
-        (fun i : Fin (2 * n + 1) => C i.succ)
-        (fun _ field rest =>
-          ((C 0).kmsFactor ε β / ((C 0).kmsFactor ε β - 1)) *
-            ((C 0).exchangeValue field * grandCanonicalGibbsExpectation ε β 0 (orderedProduct rest)))]
-      refine Finset.sum_congr rfl fun j _ => ?_
-      have hpair := kmsRatio_mul_exchangeValue_eq_freeThermalPairValue
-        ε β hpos (C 0) (C j.succ)
-      rw [← hpair]
-      ring
+      rw [freeGibbsExpectation_operatorPeelSum_eq_sum ε β hpos (C 0) l, hl]
+      simpa only [Statistics.zetaInt_boson, Int.cast_one, one_pow, one_mul] using
+        (Common.BlochDeDominicis.indexedPeel_sum_eq_firstPair
+          (1 : ℂ)
+          ((C 0).kmsFactor ε β / ((C 0).kmsFactor ε β - 1))
+          (fun D => (C 0).exchangeValue D)
+          (fun D => freeThermalPairValue ε β (C 0) D)
+          (fun rest => grandCanonicalGibbsExpectation ε β 0 (orderedProduct rest))
+          (fun i : Fin (2 * n + 1) => C i.succ)
+          (fun D => kmsRatio_mul_exchangeValue_eq_freeThermalPairValue
+            ε β hpos (C 0) D))
 
 end FreeThermalField
 
