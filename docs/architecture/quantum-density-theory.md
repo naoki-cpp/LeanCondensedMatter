@@ -159,6 +159,10 @@ directly; compactness, spectral summability, and strictly positive trace are der
 
 `Gibbs/Boltzmann.lean` owns real energy-level weights and probabilities independently of
 Hilbert spaces; `Gibbs/Eigenbasis.lean` constructs density operators from those scalar data.
+It also owns transport between energy bases with the same energy labels: a bounded map carrying
+one basis to the other intertwines the Gibbs density operators, and a linear isometry equivalence
+preserves expectations when observables are pulled back by its inverse. Statistics-specific Fock
+layers supply the basis correspondence and isometry; the Gibbs layer does not construct them.
 `Gibbs/HeatOperator.lean` identifies this state with `gibbsState` when the basis diagonalizes
 the bounded Hamiltonian, and identifies the spectral trace of its heat operator with the
 partition sum. Bounded Gibbs entropy uses this equality and the canonical identity in
