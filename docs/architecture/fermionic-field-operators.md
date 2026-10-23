@@ -30,6 +30,14 @@ with `dGamma`: one-particle intertwiners lift to Fock-space intertwiners, and li
 give covariance under conjugation. This algebraic transport does not by itself establish a Hilbert
 isometry or a transformation law for Gibbs density operators.
 
+`AlgebraicFock.Annihilation` also owns transport of dual contraction: pulling a covector back along
+a one-particle linear map makes annihilation commute with the exterior lift. For a one-particle
+linear isometry, the inner-product dual pulls back to the original smearing vector, giving the
+corresponding smeared-annihilation identity. No exterior-space norm is assumed by these laws.
+The pinned Mathlib exterior-power inner product is real-only; its complex analogue is not available
+as a Fock-unitarity shortcut. Preservation of the complex occupation-Hilbert inner product by the
+exterior lift remains a separate proof obligation.
+
 The completed representation
 
 ```text
