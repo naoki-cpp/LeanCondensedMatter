@@ -49,6 +49,28 @@ noncomputable def finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel
         source v m probeEnergy broadening disorderStrength hbar pMax ρ)
     radius
 
+/-- The radial Green Pauli vector is supported on the xz plane for either spectral side.
+This is only a local coordinate expansion of the upstream y-vanishing theorem. -/
+private theorem radialGreenPauliCoordinates_eq_xz
+    (side : SpectralSide)
+    (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ) :
+    (fun axis =>
+      finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient
+        axis side v m probeEnergy broadening disorderStrength hbar pMax radius) =
+      (fun axis =>
+        match axis with
+        | .x => finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient
+            .x side v m probeEnergy broadening disorderStrength hbar pMax radius
+        | .y => 0
+        | .z => finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient
+            .z side v m probeEnergy broadening disorderStrength hbar pMax radius) := by
+  funext axis
+  cases axis
+  · rfl
+  · exact finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient_y_eq_zero
+      side v m probeEnergy broadening disorderStrength hbar pMax radius
+  · rfl
+
 private theorem trace_four_mul_eq_entry_sum
     {ι : Type*} [Fintype ι] (A B C D : Matrix ι ι ℂ) :
     Matrix.trace (A * B * C * D) =
@@ -294,46 +316,11 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_x_eq_expl
     finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient_y_zero_eq_neg_x_one
       v m probeEnergy broadening disorderStrength hbar pMax radius
       hbroadening hdisorder hpMax
-  have hret_y :=
-    finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient_y_eq_zero
-      .retarded v m probeEnergy broadening disorderStrength hbar pMax radius
-  have hadv_y :=
-    finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient_y_eq_zero
-      .advanced v m probeEnergy broadening disorderStrength hbar pMax radius
-  have hret_fun :
-      (fun axis =>
-        finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient
-          axis .retarded v m probeEnergy broadening disorderStrength hbar pMax radius) =
-        (fun axis =>
-          match axis with
-          | .x => finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient
-              .x .retarded v m probeEnergy broadening disorderStrength hbar pMax radius
-          | .y => 0
-          | .z => finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient
-              .z .retarded v m probeEnergy broadening disorderStrength hbar pMax radius) := by
-    funext axis
-    cases axis
-    · rfl
-    · exact hret_y
-    · rfl
-  have hadv_fun :
-      (fun axis =>
-        finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient
-          axis .advanced v m probeEnergy broadening disorderStrength hbar pMax radius) =
-        (fun axis =>
-          match axis with
-          | .x => finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient
-              .x .advanced v m probeEnergy broadening disorderStrength hbar pMax radius
-          | .y => 0
-          | .z => finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient
-              .z .advanced v m probeEnergy broadening disorderStrength hbar pMax radius) := by
-    funext axis
-    cases axis
-    · rfl
-    · exact hadv_y
-    · rfl
   rw [finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_x_eq_pauli_scalar]
-  rw [hret_fun, hadv_fun]
+  rw [radialGreenPauliCoordinates_eq_xz
+    .retarded v m probeEnergy broadening disorderStrength hbar pMax radius,
+    radialGreenPauliCoordinates_eq_xz
+    .advanced v m probeEnergy broadening disorderStrength hbar pMax radius]
   simp [InternalSpace.pauliZConjugateVector, InternalSpace.dotProduct_pauliAxis,
     InternalSpace.pauliCross, cross_apply, InternalSpace.pauliAxisComponent, hoffdiag]; ring
 
@@ -443,27 +430,9 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_psi_eq_ex
     finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient_y_zero_eq_neg_x_one
       v m probeEnergy broadening disorderStrength hbar pMax radius
       hbroadening hdisorder hpMax
-  have hret_y :=
-    finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient_y_eq_zero
-      .retarded v m probeEnergy broadening disorderStrength hbar pMax radius
-  have hret_fun :
-      (fun axis =>
-        finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient
-          axis .retarded v m probeEnergy broadening disorderStrength hbar pMax radius) =
-        (fun axis =>
-          match axis with
-          | .x => finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient
-              .x .retarded v m probeEnergy broadening disorderStrength hbar pMax radius
-          | .y => 0
-          | .z => finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient
-              .z .retarded v m probeEnergy broadening disorderStrength hbar pMax radius) := by
-    funext axis
-    cases axis
-    · rfl
-    · exact hret_y
-    · rfl
   rw [finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_psi_eq_pauli_scalar]
-  rw [hret_fun]
+  rw [radialGreenPauliCoordinates_eq_xz
+    .retarded v m probeEnergy broadening disorderStrength hbar pMax radius]
   simp [InternalSpace.pauliZConjugateVector, InternalSpace.dotProduct_pauliAxis,
     InternalSpace.pauliCross, cross_apply, InternalSpace.pauliAxisComponent, hoffdiag]; ring
 
