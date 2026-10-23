@@ -844,8 +844,9 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_x_eq_harm
     finiteCutoffContinuumBornDysonRadialGreenScalarCoefficient_eq_radialKernel_integral
       .retarded v m probeEnergy broadening disorderStrength hbar pMax radius hbroadening hdisorder hpMax
   have hGreenRx :=
-    finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient_eq_radialKernel_integral
-      .x .retarded v m probeEnergy broadening disorderStrength hbar pMax radius hbroadening hdisorder hpMax
+    finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient_x_negRadius_eq_k0_sub_k2
+      .retarded v m probeEnergy broadening disorderStrength hbar pMax (-radius)
+      hbroadening hdisorder hpMax
   have hGreenRz :=
     finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient_eq_radialKernel_integral
       .z .retarded v m probeEnergy broadening disorderStrength hbar pMax radius hbroadening hdisorder hpMax
@@ -853,17 +854,20 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_x_eq_harm
     finiteCutoffContinuumBornDysonRadialGreenScalarCoefficient_eq_radialKernel_integral
       .advanced v m probeEnergy broadening disorderStrength hbar pMax radius hbroadening hdisorder hpMax
   have hGreenAx :=
-    finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient_eq_radialKernel_integral
-      .x .advanced v m probeEnergy broadening disorderStrength hbar pMax radius hbroadening hdisorder hpMax
+    finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient_x_negRadius_eq_k0_sub_k2
+      .advanced v m probeEnergy broadening disorderStrength hbar pMax (-radius)
+      hbroadening hdisorder hpMax
   have hGreenAz :=
     finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient_eq_radialKernel_integral
       .z .advanced v m probeEnergy broadening disorderStrength hbar pMax radius hbroadening hdisorder hpMax
   dsimp only [finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliKernel] at htransverse
   simp only [ite_true] at htransverse
   dsimp only [finiteCutoffContinuumBornDysonRadialGreenScalarKernel] at hGreenRscalar
-  dsimp only [finiteCutoffContinuumBornDysonRadialGreenPauliKernel] at hGreenRx hGreenRz hGreenAx hGreenAz
+  dsimp only [finiteCutoffContinuumBornDysonRadialGreenPauliKernel] at hGreenRz hGreenAz
   dsimp only [finiteCutoffContinuumBornDysonRadialGreenScalarKernel] at hGreenAscalar
-  rw [gaussianCrossedRadialFirstHarmonicIntegral_eq_difference hbar pMax radius] at hscalarX hscalarY hzX hzY hGreenRx hGreenAx
+  simp only [neg_neg] at hGreenRx hGreenAx
+  rw [mul_left_comm] at hGreenRx hGreenAx
+  rw [gaussianCrossedRadialFirstHarmonicIntegral_eq_difference hbar pMax radius] at hscalarX hscalarY hzX hzY
   simpa only [hxx, hyy, hscalarX, hscalarY, hzX, hzY, htransverse,
     hGreenRscalar, hGreenRx, hGreenRz, hGreenAscalar, hGreenAx, hGreenAz] using
     (finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_x_eq_explicit_pauli_components
@@ -995,16 +999,19 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_psi_eq_ha
     finiteCutoffContinuumBornDysonRadialGreenScalarCoefficient_eq_radialKernel_integral
       .retarded v m probeEnergy broadening disorderStrength hbar pMax radius hbroadening hdisorder hpMax
   have hGreenRx :=
-    finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient_eq_radialKernel_integral
-      .x .retarded v m probeEnergy broadening disorderStrength hbar pMax radius hbroadening hdisorder hpMax
+    finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient_x_negRadius_eq_k0_sub_k2
+      .retarded v m probeEnergy broadening disorderStrength hbar pMax (-radius)
+      hbroadening hdisorder hpMax
   have hGreenRz :=
     finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient_eq_radialKernel_integral
       .z .retarded v m probeEnergy broadening disorderStrength hbar pMax radius hbroadening hdisorder hpMax
   dsimp only [finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliKernel] at htransverse
   simp only [ite_true] at htransverse
   dsimp only [finiteCutoffContinuumBornDysonRadialGreenScalarKernel] at hGreenRscalar
-  dsimp only [finiteCutoffContinuumBornDysonRadialGreenPauliKernel] at hGreenRx hGreenRz
-  rw [gaussianCrossedRadialFirstHarmonicIntegral_eq_difference hbar pMax radius] at hscalarX hscalarY hzX hzY hGreenRx
+  dsimp only [finiteCutoffContinuumBornDysonRadialGreenPauliKernel] at hGreenRz
+  simp only [neg_neg] at hGreenRx
+  rw [mul_left_comm] at hGreenRx
+  rw [gaussianCrossedRadialFirstHarmonicIntegral_eq_difference hbar pMax radius] at hscalarX hscalarY hzX hzY
   simpa only [hxx, hyy, hscalarX, hscalarY, hzX, hzY, htransverse,
     hGreenRscalar, hGreenRx, hGreenRz] using
     (finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_psi_eq_explicit_pauli_components
