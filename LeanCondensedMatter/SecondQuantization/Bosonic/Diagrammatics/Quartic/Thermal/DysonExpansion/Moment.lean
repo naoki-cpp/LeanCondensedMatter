@@ -38,24 +38,24 @@ noncomputable def quarticDysonThermalDiagramMultiplicativeWeight
 omit [Finite Mode] in
 /-- Factorial-normalized free-Gibbs Dyson series moments are exactly the object moments of the
 physical time-integrated quartic Dyson-diagram connected decomposition. -/
-theorem powerSeriesMomentSetFunction_freeGibbsDysonSeries_eq_dysonThermalObjectMoment
+theorem powerSeriesMomentSetFunction_grandCanonicalGibbsDysonSeries_eq_dysonThermalObjectMoment
     (ε : Mode → ℝ) (β : ℝ) (hpos : ∀ i, 0 < β * ε i)
     (g : QuarticVertexLabel Mode → ℂ) {N : ℕ}
     (hZ :
       PowerSeries.constantCoeff
-          (freeGibbsDysonSeries ε β (quarticInteraction g)) = 1) :
+          (grandCanonicalGibbsDysonSeries ε β 0 (quarticInteraction g)) = 1) :
     Combinatorics.powerSeriesMomentSetFunction (α := Fin N)
-        (freeGibbsDysonSeries ε β (quarticInteraction g)) hZ =
+        (grandCanonicalGibbsDysonSeries ε β 0 (quarticInteraction g)) hZ =
       (quarticDysonThermalDiagramMultiplicativeWeight ε β g β).normalizedObjectMoment := by
   rw [Combinatorics.powerSeriesMomentSetFunction_eq_iff]
   intro S
-  simp only [Combinatorics.powerSeriesMomentCoeff, coeff_freeGibbsDysonSeries]
+  simp only [Combinatorics.powerSeriesMomentCoeff, coeff_grandCanonicalGibbsDysonSeries]
   change
     (S.card.factorial : ℂ) *
-        freeGibbsDysonCoeff ε β (quarticInteraction g) S.card β =
+        grandCanonicalGibbsDysonCoeff ε β 0 (quarticInteraction g) S.card β =
       ∑ d : Common.QuarticDiagram (QuarticVertexLabel Mode) N S,
         QuarticDiagram.dysonThermalAmplitude ε β g d β
-  exact factorial_mul_freeGibbsDysonCoeff_quarticInteraction_eq_sum_dysonThermalAmplitude
+  exact factorial_mul_grandCanonicalGibbsDysonCoeff_quarticInteraction_eq_sum_dysonThermalAmplitude
     ε β hpos g S β
 
 end
