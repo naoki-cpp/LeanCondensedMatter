@@ -1,6 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.Gibbs
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsDensityOperator
-import LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteCompletedGibbsCompatibility
+import LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.FiniteCompatibility
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsCoordinate
 
 set_option linter.style.header false
@@ -44,11 +44,27 @@ theorem completedGrandCanonicalGibbs_intertwines_finite
         fermionEnergy (fun i => ε i - μ) := by
     funext n
     exact Common.grandCanonicalEnergy_eq_shifted ε μ n
+  have hbasis : ∀ n : Occupation Mode,
+      (Common.completedFiniteHilbertEquiv
+        (Config := Occupation Mode)).toContinuousLinearEquiv.toContinuousLinearMap
+          (Common.completedHilbertBasis (Config := Occupation Mode) n) =
+        Common.finiteHilbertBasis (Config := Occupation Mode) n := by
+    intro n
+    simpa only [Common.completedHilbertBasis_apply, Common.finiteHilbertBasis_apply,
+      ContinuousLinearEquiv.coe_coe, LinearIsometryEquiv.coe_toContinuousLinearEquiv] using
+      (Common.completedFiniteHilbertEquiv_basisState (Config := Occupation Mode) n)
+  have htransport :=
+    eigenbasisGibbsDensityOperator_intertwines
+      (Common.completedHilbertBasis (Config := Occupation Mode))
+      (Common.finiteHilbertBasis (Config := Occupation Mode))
+      (fermionEnergy (fun i => ε i - μ)) β
+      (eigenbasisGibbsSummable_of_finite
+        (fermionEnergy (fun i => ε i - μ)) β)
+      (Common.completedFiniteHilbertEquiv
+        (Config := Occupation Mode)).toContinuousLinearEquiv.toContinuousLinearMap
+      hbasis
   simpa [Common.grandCanonicalGibbsDensityOperator,
-    freeGibbsDensityOperator, hE] using
-    (Common.completedFiniteHilbertEquiv_intertwines_eigenbasisGibbsDensity
-      (Config := Occupation Mode)
-      (fermionEnergy (fun i => ε i - μ)) β)
+    freeGibbsDensityOperator, hE] using htransport
 
 omit [LinearOrder Mode] in
 /-- The finite fermionic grand-canonical density-state expectation is the
