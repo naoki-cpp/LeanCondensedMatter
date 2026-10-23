@@ -73,7 +73,8 @@ theorem eigenbasisGibbsDensityOperator_expectation_transport [Nonempty ι]
     (eigenbasisGibbsDensityOperator_apply_basis b E β hsum)]
   apply tsum_congr
   intro i
-  simp only [ContinuousLinearMap.comp_apply]
+  simp only [ContinuousLinearMap.comp_apply, ContinuousLinearEquiv.coe_coe,
+    LinearIsometryEquiv.coe_toContinuousLinearEquiv]
   rw [← hbasis i]
   have hinner := e.inner_map_map (b i) (e.symm (A (e (b i))))
   simpa only [e.apply_symm_apply] using
