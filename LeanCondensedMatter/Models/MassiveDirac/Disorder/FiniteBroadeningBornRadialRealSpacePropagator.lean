@@ -184,6 +184,17 @@ noncomputable def finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient
     (finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix
       side v m probeEnergy broadening disorderStrength hbar pMax radius) axis
 
+/-- The symmetric off-diagonal entries of the radial Green matrix imply that
+its Pauli-y coefficient vanishes on the radial axis for either spectral side. -/
+theorem finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient_y_eq_zero
+    (side : SpectralSide)
+    (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ) :
+    finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient
+        .y side v m probeEnergy broadening disorderStrength hbar pMax radius = 0 := by
+  simp [finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient,
+    finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix,
+    InternalSpace.pauliVectorCoefficient]
+
 /-- Pointwise scalar Pauli kernel of the positive-axis radial Born-Dyson Green integrand. -/
 noncomputable def finiteCutoffContinuumBornDysonRadialGreenScalarKernel
     (side : SpectralSide)

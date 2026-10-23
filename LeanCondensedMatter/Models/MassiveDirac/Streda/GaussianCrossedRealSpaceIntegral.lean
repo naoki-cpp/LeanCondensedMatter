@@ -303,20 +303,12 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_x_antisym
             u .y * (w .z * va .x - w .x * va .z)) +
           d * (w .y * (u .z * vr .x - u .x * vr .z) +
             u .y * (vr .z * w .x - vr .x * w .z))) := by
-  have hret_y :
-      InternalSpace.pauliVectorCoefficient
-          (finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix
-            .retarded v m probeEnergy broadening disorderStrength hbar pMax
-            (-radius)) .y = 0 := by
-    simp [finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix,
-      InternalSpace.pauliVectorCoefficient]
-  have hadv_y :
-      InternalSpace.pauliVectorCoefficient
-          (finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix
-            .advanced v m probeEnergy broadening disorderStrength hbar pMax
-            (-radius)) .y = 0 := by
-    simp [finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix,
-      InternalSpace.pauliVectorCoefficient]
+  have hret_y :=
+    finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient_y_eq_zero
+      .retarded v m probeEnergy broadening disorderStrength hbar pMax (-radius)
+  have hadv_y :=
+    finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient_y_eq_zero
+      .advanced v m probeEnergy broadening disorderStrength hbar pMax (-radius)
   rw [finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_antisymmetric_eq
     .x v m probeEnergy broadening disorderStrength hbar pMax radius]
   dsimp only
@@ -375,20 +367,12 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_x_antisym
           (finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock
             1 v m probeEnergy broadening disorderStrength hbar pMax radius) .x at hxy
     linear_combination hxy
-  have hret_y :
-      InternalSpace.pauliVectorCoefficient
-          (finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix
-            .retarded v m probeEnergy broadening disorderStrength hbar pMax
-            (-radius)) .y = 0 := by
-    simp [finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix,
-      InternalSpace.pauliVectorCoefficient]
-  have hadv_y :
-      InternalSpace.pauliVectorCoefficient
-          (finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix
-            .advanced v m probeEnergy broadening disorderStrength hbar pMax
-            (-radius)) .y = 0 := by
-    simp [finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix,
-      InternalSpace.pauliVectorCoefficient]
+  have hret_y :=
+    finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient_y_eq_zero
+      .retarded v m probeEnergy broadening disorderStrength hbar pMax (-radius)
+  have hadv_y :=
+    finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient_y_eq_zero
+      .advanced v m probeEnergy broadening disorderStrength hbar pMax (-radius)
   rw [finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_antisymmetric_eq
     .x v m probeEnergy broadening disorderStrength hbar pMax radius]
   dsimp only
