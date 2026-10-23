@@ -8,7 +8,8 @@ set_option linter.style.header false
 /-!
 # Bosonic Dyson Gibbs formal series
 
-A finite-order bosonic Dyson coefficient can be evaluated in the convergence-aware free Gibbs
+A finite-order physical-H bosonic Dyson coefficient can be evaluated in a convergence-aware
+explicit-μ grand-canonical Gibbs
 functional without asserting any all-order analytic convergence. This file packages those normalized
 finite-order coefficients into a formal power series.
 
@@ -17,7 +18,8 @@ finite Dyson order by expanding each coefficient into a finite sum of thermal-fi
 interchange of an infinite Gibbs sum with the recursive operator-valued Dyson integral is built into
 this definition.
 
-Unlike the finite-dimensional fermionic trace series, no interacting bosonic partition function or
+Physical Dyson time evolution continues to use H, while the thermal weighting uses K = H - μN.
+Unlike finite-dimensional fermionic trace series, no interacting bosonic partition function or
 analytic convergence statement is asserted here.
 -/
 
@@ -28,56 +30,57 @@ noncomputable section
 
 variable {Mode : Type*}
 
-/-- Normalized free Gibbs expectation of an arbitrary-configuration finite-order Dyson coefficient. -/
-noncomputable def freeGibbsDysonCoeff
-    (ε : Mode → ℝ) (β : ℝ)
+/-- Grand-canonical expectation of a physical-H Dyson coefficient at explicit chemical potential. -/
+noncomputable def grandCanonicalGibbsDysonCoeff
+    (ε : Mode → ℝ) (β μ : ℝ)
     (V : FockSpace Mode →ₗ[ℂ] FockSpace Mode) (order : ℕ) (t : ℝ) : ℂ :=
-  freeGibbsExpectation ε β (Common.dysonCoeff (freeEigenvalue ε) V order t)
+  freeGibbsExpectation (fun i => ε i - μ) β
+    (Common.dysonCoeff (freeEigenvalue ε) V order t)
 
 set_option linter.unusedFintypeInType false in
-/-- The zeroth normalized bosonic Dyson coefficient is one under the explicit positive Gibbs
+/-- The zeroth grand-canonical bosonic Dyson coefficient is one under the explicit positive Gibbs
 hypothesis. -/
 @[simp]
-theorem freeGibbsDysonCoeff_zero [Fintype Mode]
-    (ε : Mode → ℝ) (β : ℝ) (hpos : ∀ i, 0 < β * ε i)
+theorem grandCanonicalGibbsDysonCoeff_zero [Fintype Mode]
+    (ε : Mode → ℝ) (β μ : ℝ) (hpos : ∀ i, 0 < β * (ε i - μ))
     (V : FockSpace Mode →ₗ[ℂ] FockSpace Mode) (t : ℝ) :
-    freeGibbsDysonCoeff ε β V 0 t = 1 := by
-  rw [freeGibbsDysonCoeff, Common.dysonCoeff_zero]
-  exact freeGibbsExpectation_id ε β hpos
+    grandCanonicalGibbsDysonCoeff ε β μ V 0 t = 1 := by
+  rw [grandCanonicalGibbsDysonCoeff, Common.dysonCoeff_zero]
+  exact freeGibbsExpectation_id (fun i => ε i - μ) β hpos
 
 /-- Formal series whose coefficients are the convergence-aware normalized free-Gibbs Dyson
-coefficients evaluated at imaginary time `β`. -/
-noncomputable def freeGibbsDysonSeries
-    (ε : Mode → ℝ) (β : ℝ)
+coefficients evaluated at imaginary time `β` and explicit chemical potential `μ`. -/
+noncomputable def grandCanonicalGibbsDysonSeries
+    (ε : Mode → ℝ) (β μ : ℝ)
     (V : FockSpace Mode →ₗ[ℂ] FockSpace Mode) : PowerSeries ℂ :=
-  PowerSeries.mk fun n => freeGibbsDysonCoeff ε β V n β
+  PowerSeries.mk fun n => grandCanonicalGibbsDysonCoeff ε β μ V n β
 
 @[simp]
-theorem coeff_freeGibbsDysonSeries
-    (ε : Mode → ℝ) (β : ℝ)
+theorem coeff_grandCanonicalGibbsDysonSeries
+    (ε : Mode → ℝ) (β μ : ℝ)
     (V : FockSpace Mode →ₗ[ℂ] FockSpace Mode) (n : ℕ) :
-    PowerSeries.coeff n (freeGibbsDysonSeries ε β V) =
-      freeGibbsDysonCoeff ε β V n β := by
-  simp [freeGibbsDysonSeries]
+    PowerSeries.coeff n (grandCanonicalGibbsDysonSeries ε β μ V) =
+      grandCanonicalGibbsDysonCoeff ε β μ V n β := by
+  simp [grandCanonicalGibbsDysonSeries]
 
 set_option linter.unusedFintypeInType false in
 /-- Under the positive free-Gibbs hypothesis, the physical bosonic Dyson series has unit constant
 coefficient. The finite mode instance enters through the Gibbs summability theorem used at zeroth
 order. -/
-theorem constantCoeff_freeGibbsDysonSeries
+theorem constantCoeff_grandCanonicalGibbsDysonSeries
     [Fintype Mode]
-    (ε : Mode → ℝ) (β : ℝ) (hpos : ∀ i, 0 < β * ε i)
+    (ε : Mode → ℝ) (β μ : ℝ) (hpos : ∀ i, 0 < β * (ε i - μ))
     (V : FockSpace Mode →ₗ[ℂ] FockSpace Mode) :
-    PowerSeries.constantCoeff (freeGibbsDysonSeries ε β V) = 1 := by
-  rw [← PowerSeries.coeff_zero_eq_constantCoeff, coeff_freeGibbsDysonSeries]
-  exact freeGibbsDysonCoeff_zero ε β hpos V β
+    PowerSeries.constantCoeff (grandCanonicalGibbsDysonSeries ε β μ V) = 1 := by
+  rw [← PowerSeries.coeff_zero_eq_constantCoeff, coeff_grandCanonicalGibbsDysonSeries]
+  exact grandCanonicalGibbsDysonCoeff_zero ε β μ hpos V β
 
 /-- Formal logarithm of the normalized physical bosonic Dyson series. This is purely coefficientwise;
 it does not assert convergence to an interacting bosonic partition function. -/
-noncomputable def freeGibbsDysonFormalLog
-    (ε : Mode → ℝ) (β : ℝ)
+noncomputable def grandCanonicalGibbsDysonFormalLog
+    (ε : Mode → ℝ) (β μ : ℝ)
     (V : FockSpace Mode →ₗ[ℂ] FockSpace Mode) : PowerSeries ℂ :=
-  PowerSeries.logOf (freeGibbsDysonSeries ε β V)
+  PowerSeries.logOf (grandCanonicalGibbsDysonSeries ε β μ V)
 
 end
 end Bosonic
