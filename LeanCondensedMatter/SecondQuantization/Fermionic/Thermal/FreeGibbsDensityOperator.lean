@@ -51,9 +51,9 @@ theorem freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation
     Common.finiteGibbsExpectationLinearMap, LinearMap.comp_apply]
   rfl
 
+omit [LinearOrder Mode] in
 /-- The finite fermionic density-state expectation is the common summable diagonal
 trace ratio specialized to the occupation energies. -/
-omit [LinearOrder Mode] in
 theorem freeGibbsDensityOperator_expectation_eq_summableDiagonalTraceRatioLinear
     (ε : Mode → ℝ) (β : ℝ)
     (A : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) :
