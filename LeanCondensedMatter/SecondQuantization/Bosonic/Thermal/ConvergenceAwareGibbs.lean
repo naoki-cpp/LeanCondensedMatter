@@ -180,6 +180,7 @@ theorem grandCanonicalGibbsExpectation_sum_of_summable
 
 /-- Reexpress a free grand-canonical Gibbs numerator using the effective dispersion
 `ξ i = ε i - μ`. This is a state-level energy shift, not a change to physical-H Dyson evolution. -/
+omit [Fintype Mode] in
 theorem grandCanonicalGibbsSummable_shift
     (ε : Mode → ℝ) (β μ : ℝ) (A : FockSpace Mode →ₗ[ℂ] FockSpace Mode) :
     grandCanonicalGibbsSummable ε β μ A ↔
@@ -196,6 +197,7 @@ theorem grandCanonicalGibbsDomain_shift
 
 /-- The normalized grand-canonical algebraic Gibbs functional depends only on
 `ε - μ`, independently of the physical imaginary-time generator. -/
+omit [Fintype Mode] in
 theorem grandCanonicalGibbsExpectation_shift
     (ε : Mode → ℝ) (β μ : ℝ) (A : FockSpace Mode →ₗ[ℂ] FockSpace Mode) :
     grandCanonicalGibbsExpectation ε β μ A =
