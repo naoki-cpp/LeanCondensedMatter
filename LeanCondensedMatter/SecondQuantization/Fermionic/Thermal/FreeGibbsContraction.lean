@@ -92,9 +92,10 @@ theorem freeGibbsDensityOperator_expectation_annihilate_comp_annihilate
     (ε : Mode → ℝ) (β : ℝ) (i j : Mode) :
     (freeGibbsDensityOperator ε β).expectation
         (Common.finiteHilbertOperatorAlgEquiv ((annihilate i).comp (annihilate j))) = 0 := by
-  rw [freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation,
-    Common.finiteGibbsExpectation_eq_sum]
-  simp only [matrixCoeff_annihilate_comp_annihilate, mul_zero, Finset.sum_const_zero]
+  rw [freeGibbsDensityOperator_expectation_eq_summableDiagonalTraceRatioLinear]
+  simp [Common.summableDiagonalTraceRatioLinear, Common.tsumTrace,
+    Common.matrixCoeff_diagonalEvolution_comp,
+    matrixCoeff_annihilate_comp_annihilate]
 
 /-- **Anomalous contractions vanish.** The expectation of two creation operators is zero, for the
 same particle-number selection rule. -/
@@ -102,9 +103,10 @@ theorem freeGibbsDensityOperator_expectation_create_comp_create
     (ε : Mode → ℝ) (β : ℝ) (i j : Mode) :
     (freeGibbsDensityOperator ε β).expectation
         (Common.finiteHilbertOperatorAlgEquiv ((create i).comp (create j))) = 0 := by
-  rw [freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation,
-    Common.finiteGibbsExpectation_eq_sum]
-  simp only [matrixCoeff_create_comp_create, mul_zero, Finset.sum_const_zero]
+  rw [freeGibbsDensityOperator_expectation_eq_summableDiagonalTraceRatioLinear]
+  simp [Common.summableDiagonalTraceRatioLinear, Common.tsumTrace,
+    Common.matrixCoeff_diagonalEvolution_comp,
+    matrixCoeff_create_comp_create]
 
 end Fermionic
 end SecondQuantization
