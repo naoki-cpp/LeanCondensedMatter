@@ -27,7 +27,7 @@ theorem DensityOperator.entropyOp_isTraceClass_of_diagonal
   let a : ι → ℝ := fun i => Real.negMulLog (w i)
   have hw_nonneg : ∀ i, 0 ≤ w i := ρ.diagonal_weight_nonneg b w happly
   have hw_le_one : ∀ i, w i ≤ 1 :=
-    ρ.diagonal_weight_le_one b w happly hw_nonneg
+    ρ.diagonal_weight_le_one b w happly
   have ha_nonneg : ∀ i, 0 ≤ a i := fun i =>
     Real.negMulLog_nonneg (hw_nonneg i) (hw_le_one i)
   have ha : Summable fun i => ‖a i‖ := by
@@ -73,7 +73,7 @@ theorem DensityOperator.vonNeumannEntropy_ne_top_and_toReal_eq_of_hasSum_diagona
     hEntropySum.unique hsum
   have hw_nonneg : ∀ i, 0 ≤ w i := ρ.diagonal_weight_nonneg b w happly
   have hw_le_one : ∀ i, w i ≤ 1 :=
-    ρ.diagonal_weight_le_one b w happly hw_nonneg
+    ρ.diagonal_weight_le_one b w happly
   have htrace_nonneg : 0 ≤ htrace.realTrace (entropyOp_isSelfAdjoint ρ) := by
     rw [← hEntropySum.tsum_eq]
     exact tsum_nonneg fun i => Real.negMulLog_nonneg (hw_nonneg i) (hw_le_one i)
