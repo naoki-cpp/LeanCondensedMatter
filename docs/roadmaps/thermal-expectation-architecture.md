@@ -52,6 +52,26 @@ meaning. For finite fermionic mode types,
 `freePartitionFunction_eq_coe_eigenbasisPartitionFunction` identifies the complex finite-coordinate
 partition function with the canonical real pure-point partition function after coercion to `ℂ`.
 
+## Canonical and grand-canonical conditioning
+
+`Common/Thermal/GrandCanonicalSectorDecomposition.lean` owns the scalar bridge:
+restricting grand-canonical Boltzmann weights to sharp-number sectors gives
+the canonical weights multiplied by `exp (β μ N)`. Global Gibbs summability
+implies summability in every sector, without a finite occupation-basis hypothesis.
+For a nonempty sector the probability is `p_N = exp (β μ N) Z_N / Ξ > 0`;
+empty sectors contribute zero without a normalized canonical density.
+
+The same module uses sigma-fiber reindexing to prove
+`Ξ = ∑_N exp (β μ N) Z_N` and `∑_N p_N = 1`.
+`Common/Thermal/CanonicalGrandCanonicalCompatibility.lean` uses this scalar
+data to prove the completed-Fock bounded-operator identity
+`P_N ρ_GC P_N = p_N ρ_{N,full}`, where `ρ_{N,full}` is the existing
+isometric zero extension of the canonical density. The left-hand side
+is an unnormalized positive operator, not itself a density state.
+
+General bounded-observable expectation and full density-operator decompositions
+remain separate tasks.
+
 ## Generic pairing recursion
 
 `Common/Thermal/BlochDeDominicis/ExpectationRecursion.lean` owns
