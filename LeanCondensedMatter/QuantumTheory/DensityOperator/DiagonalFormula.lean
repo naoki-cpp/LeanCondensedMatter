@@ -96,8 +96,10 @@ theorem DensityOperator.hasSum_diagonal_weights (ρ : DensityOperator H)
 theorem DensityOperator.diagonal_weight_le_one (ρ : DensityOperator H)
     (b : HilbertBasis ι ℂ H) (w : ι → ℝ)
     (happly : ∀ i, ρ.op (b i) = (w i : ℂ) • b i)
-    (hw_nonneg : ∀ i, 0 ≤ w i) (i : ι) :
+    (i : ι) :
     w i ≤ 1 := by
+  have hw_nonneg : ∀ j, 0 ≤ w j :=
+    ρ.diagonal_weight_nonneg b w happly
   have hs := (ρ.hasSum_diagonal_weights b w happly).summable
   calc
     w i ≤ ∑' j, w j := hs.le_tsum i (fun j _ => hw_nonneg j)
