@@ -294,18 +294,12 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_x_eq_expl
     finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient_y_zero_eq_neg_x_one
       v m probeEnergy broadening disorderStrength hbar pMax radius
       hbroadening hdisorder hpMax
-  have hret_y :
-      finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient
-          .y .retarded v m probeEnergy broadening disorderStrength hbar pMax radius = 0 := by
-    unfold finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient
-    simp [finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix,
-      InternalSpace.pauliVectorCoefficient]
-  have hadv_y :
-      finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient
-          .y .advanced v m probeEnergy broadening disorderStrength hbar pMax radius = 0 := by
-    unfold finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient
-    simp [finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix,
-      InternalSpace.pauliVectorCoefficient]
+  have hret_y :=
+    finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient_y_eq_zero
+      .retarded v m probeEnergy broadening disorderStrength hbar pMax radius
+  have hadv_y :=
+    finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient_y_eq_zero
+      .advanced v m probeEnergy broadening disorderStrength hbar pMax radius
   have hret_fun :
       (fun axis =>
         finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient
@@ -449,12 +443,9 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_psi_eq_ex
     finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient_y_zero_eq_neg_x_one
       v m probeEnergy broadening disorderStrength hbar pMax radius
       hbroadening hdisorder hpMax
-  have hret_y :
-      finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient
-          .y .retarded v m probeEnergy broadening disorderStrength hbar pMax radius = 0 := by
-    unfold finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient
-    simp [finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix,
-      InternalSpace.pauliVectorCoefficient]
+  have hret_y :=
+    finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient_y_eq_zero
+      .retarded v m probeEnergy broadening disorderStrength hbar pMax radius
   have hret_fun :
       (fun axis =>
         finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient
