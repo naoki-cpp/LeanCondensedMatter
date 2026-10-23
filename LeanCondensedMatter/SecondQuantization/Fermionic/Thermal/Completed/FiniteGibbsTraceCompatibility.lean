@@ -27,6 +27,7 @@ noncomputable section
 
 variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
 
+omit [LinearOrder Mode] in
 /-- At finite mode number, the completed grand-canonical density operator and
 the finite free-fermion Gibbs density operator at effective energy `ε - μ`
 are intertwined by the canonical completed-to-finite Hilbert equivalence. -/
@@ -49,6 +50,7 @@ theorem completedGrandCanonicalGibbs_intertwines_finite
       (Config := Occupation Mode)
       (fermionEnergy (fun i => ε i - μ)) β)
 
+omit [LinearOrder Mode] in
 /-- The finite fermionic grand-canonical density-state expectation is the
 summable diagonal trace ratio of #4074, with shifted one-mode energies.
 Summability on the algebraic side is automatic only because the occupation
