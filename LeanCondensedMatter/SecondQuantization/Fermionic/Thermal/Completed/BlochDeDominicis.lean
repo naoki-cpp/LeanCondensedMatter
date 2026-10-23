@@ -3,7 +3,6 @@ import LeanCondensedMatter.Analysis.Operator.TraceClass.Cyclicity
 import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.CanonicalAnticommutationRelations
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.Gibbs
 import Mathlib.Tactic.Module
-import LeanCondensedMatter.Combinatorics.FiniteIndex.EraseIdxOfFn
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.ExpectationRecursion
 
 set_option linter.style.header false
@@ -446,19 +445,18 @@ noncomputable def grandCanonicalGibbsExpectationRecursion
             grandCanonicalGibbsExpectation ε β μ hsum [C 0, C j.succ] *
               grandCanonicalGibbsExpectation ε β μ hsum
                 (List.ofFn fun i : Fin (2 * n) => C ((j.succAbove i).succ)) := by
-        rw [grandCanonicalGibbsExpectation_peelSum_eq_sum, Finset.mul_sum]
-        rw [hl, List.sum_getElem_eraseIdx_ofFn
-          (fun i : Fin (2 * n + 1) => C i.succ)
-          (fun i field rest =>
-            ((C 0).gibbsFactor (fun i => ε i - μ) β / ((1 : ℂ) + (C 0).gibbsFactor (fun i => ε i - μ) β)) *
-              (((-1 : ℂ) ^ i) * (C 0).anticommutatorValue field *
-                grandCanonicalGibbsExpectation ε β μ hsum rest))]
-        refine Finset.sum_congr rfl fun j _ => ?_
-        have hpair := grandCanonicalGibbsExpectation_pair_eq
-          ε β μ hsum (C 0) (C j.succ)
-        rw [hpair]
-        simp only [Common.Statistics.zetaInt_fermion, Int.cast_neg, Int.cast_one]
-        ring
+        rw [grandCanonicalGibbsExpectation_peelSum_eq_sum, hl]
+        simpa only [Common.Statistics.zetaInt_fermion, Int.cast_neg, Int.cast_one] using
+          (Common.BlochDeDominicis.indexedPeel_sum_eq_firstPair
+            (-1 : ℂ)
+            ((C 0).gibbsFactor (fun i => ε i - μ) β /
+              ((1 : ℂ) + (C 0).gibbsFactor (fun i => ε i - μ) β))
+            (fun D => (C 0).anticommutatorValue D)
+            (fun D => grandCanonicalGibbsExpectation ε β μ hsum [C 0, D])
+            (grandCanonicalGibbsExpectation ε β μ hsum)
+            (fun i : Fin (2 * n + 1) => C i.succ)
+            (fun D => (grandCanonicalGibbsExpectation_pair_eq
+              ε β μ hsum (C 0) D).symm))
 
 /-- Completed free-fermion Bloch--de Dominicis expansion obtained by feeding the completed Gibbs
 recursion data into the common pairing induction. -/
