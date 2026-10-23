@@ -273,17 +273,12 @@ or consumer structure changes.
   upper-energy eigenvector theorem for the public two-site gapped validation benchmark.
 - `SecondQuantization.Fermionic.Validation.twoSiteGappedBenchmark_ground_eigenvector` — explicit
   lower-energy eigenvector theorem for the public two-site gapped validation benchmark.
-- `SecondQuantization.Fermionic.completedModeTruncation_algebraicToCompleted_of_subset` — exactness of
-  completed mode truncation once the truncation contains the finite support of an algebraic vector;
-  this is the canonical dense-subspace approximation boundary.
 - `SecondQuantization.Fermionic.continuous_matrixCoeff_interactionPicture_comp_dysonCoeff` — general
   finite-mode continuity theorem for matrix coefficients of an interaction-picture operator composed
   with a Dyson coefficient, stated for arbitrary interaction `V` rather than the quartic consumer.
 - `SecondQuantization.Fermionic.continuous_matrixCoeff_quarticVertexSequenceInteractionPicture` — joint continuity of
   matrix coefficients of the quartic vertex sequence for arbitrary mode types; this follows from
   the Common scalar-time-factor decomposition without finite intermediate-state sums.
-- `SecondQuantization.Fermionic.dist_completedModeTruncation_le_two_mul_of_fixed` — reusable contraction
-  estimate bounding truncation error by twice the distance to any fixed point of the truncation.
 - `Combinatorics.Pairing.sign_pairPerm` — canonical parity endpoint identifying the sign of the
   permutation that lists normalized pairs blockwise with `(-1)` raised to the pairing crossing
   count. It records the intrinsic bridge between crossing parity and permutation sign independently

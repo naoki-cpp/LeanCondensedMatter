@@ -4,6 +4,7 @@ import LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.DiagonalAna
 import LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.Ladder
 import LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.LadderAnalytic
 import LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.ProductDomain
+import LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.ParticleNumberTruncation
 import LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.Quartic
 
 set_option linter.style.header false
