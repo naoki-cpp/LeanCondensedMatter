@@ -49,10 +49,13 @@ theorem star_finiteHilbertOperator_create
     change star (Common.finiteHilbertOperatorAlgEquiv
       (occupationConjugate b.toBasis (create H (b i)))) =
       Common.finiteHilbertOperatorAlgEquiv (occupationConjugate b.toBasis (annihilate H (b i)))
-    rw [occupationConjugate_create, hann, occupationConjugate_annihilateDual]
+    have hcreate := occupationConjugate_create b.toBasis i
+    simp only [OrthonormalBasis.coe_toBasis] at hcreate
+    rw [hcreate, hann, occupationConjugate_annihilateDual]
     exact SecondQuantization.Fermionic.star_finiteHilbertCreate i
   rw [← b.sum_repr v]
-  simp only [map_sum, map_smul, (annihilate H).map_smulₛₗ, star_sum, star_smul, hb]
+  simp only [map_sum, map_smul, (annihilate H).map_smulₛₗ, star_sum, star_smul,
+    starRingEnd_apply, hb]
 
 end
 end SecondQuantization.Fermionic.AlgebraicFock
