@@ -128,6 +128,24 @@ jobs:
       - name: Merge theorem replacement findings
         run: python3 scripts/merge_theorem_replacements.py
 
+      - name: Report retained theorem drift
+        shell: bash
+        run: |
+          set -euo pipefail
+          previous="$RUNNER_TEMP/retained-previous-theorems.json"
+          if git fetch --quiet --depth=1 origin refs/heads/graph-data &&
+             git show FETCH_HEAD:theorems.json > "$previous"; then
+            echo "Comparing retained declarations to the published graph-data snapshot."
+          else
+            rm -f "$previous"
+            echo "::warning::Published graph-data snapshot unavailable; reporting current signals only."
+          fi
+          python3 scripts/report_retained_catalog.py docs/generated/theorems.json \
+            --baseline "$previous" \
+            --markdown docs/generated/retained-audit.md \
+            --json docs/generated/retained-audit.json
+          cat docs/generated/retained-audit.md >> "$GITHUB_STEP_SUMMARY"
+
       - name: Add theorem catalog summary
         if: success()
         shell: bash
@@ -147,6 +165,8 @@ jobs:
             docs/generated/theorems.json
             docs/generated/declarations.json
             docs/generated/module-imports.json
+            docs/generated/retained-audit.md
+            docs/generated/retained-audit.json
           if-no-files-found: error
           retention-days: 30
 
