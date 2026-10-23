@@ -13290,7 +13290,7 @@
       "ContinuousLinearMap.IsTraceClass.trace_adjointConjugate",
       "ContinuousLinearMap.IsTraceClass.trace_comp_comm",
       "QuantumTheory.LinearResponse.expectation_evolveDensityOperator_eq_heisenberg",
-      "SecondQuantization.Fermionic.CompletedThermalLadder.completedFreeGibbsExpectation_operator_comp",
+      "SecondQuantization.Fermionic.CompletedThermalLadder.grandCanonicalGibbsExpectation_operator_comp",
       "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Basic.0.ContinuousLinearMap.IsTraceClass.summable_inner_left",
       "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Norm.0.ContinuousLinearMap.IsTraceClass.traceNorm_comp_left_le_of_norm_le_one"
     ],
@@ -13308,7 +13308,7 @@
       "ContinuousLinearMap.IsTraceClass.trace_adjointConjugate",
       "ContinuousLinearMap.IsTraceClass.trace_comp_comm",
       "QuantumTheory.LinearResponse.expectation_evolveDensityOperator_eq_heisenberg",
-      "SecondQuantization.Fermionic.CompletedThermalLadder.completedFreeGibbsExpectation_operator_comp",
+      "SecondQuantization.Fermionic.CompletedThermalLadder.grandCanonicalGibbsExpectation_operator_comp",
       "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Basic.0.ContinuousLinearMap.IsTraceClass.summable_inner_left",
       "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Norm.0.ContinuousLinearMap.IsTraceClass.traceNorm_comp_left_le_of_norm_le_one"
     ],
@@ -13355,7 +13355,7 @@
       "QuantumTheory.DensityOperator.expectation_id",
       "QuantumTheory.DensityOperator.hasSum_expectation_diagonal",
       "QuantumTheory.LinearResponse.expectation_evolveDensityOperator_eq_heisenberg",
-      "SecondQuantization.Fermionic.CompletedThermalLadder.completedFreeGibbsExpectation_operator_comp",
+      "SecondQuantization.Fermionic.CompletedThermalLadder.grandCanonicalGibbsExpectation_operator_comp",
       "_private.LeanCondensedMatter.QuantumTheory.DensityOperator.Expectation.0.QuantumTheory.trace_comp_right_norm_le"
     ],
     "dependencies": [
@@ -13374,7 +13374,7 @@
       "QuantumTheory.DensityOperator.expectation_id",
       "QuantumTheory.DensityOperator.hasSum_expectation_diagonal",
       "QuantumTheory.LinearResponse.expectation_evolveDensityOperator_eq_heisenberg",
-      "SecondQuantization.Fermionic.CompletedThermalLadder.completedFreeGibbsExpectation_operator_comp",
+      "SecondQuantization.Fermionic.CompletedThermalLadder.grandCanonicalGibbsExpectation_operator_comp",
       "_private.LeanCondensedMatter.QuantumTheory.DensityOperator.Expectation.0.QuantumTheory.trace_comp_right_norm_le"
     ],
     "compiledConsumerCount": 11,
@@ -13858,7 +13858,7 @@
       "ContinuousLinearMap.IsTraceClass.traceNorm_smul",
       "ContinuousLinearMap.IsTraceClass.trace_neg",
       "ContinuousLinearMap.IsTraceClass.trace_smul",
-      "SecondQuantization.Fermionic.CompletedThermalLadder.completedFreeGibbsExpectation_operator_comp"
+      "SecondQuantization.Fermionic.CompletedThermalLadder.grandCanonicalGibbsExpectation_operator_comp"
     ],
     "dependencies": [
       "ContinuousLinearMap.diagonalExpectationValue_abs_smul",
@@ -13873,7 +13873,7 @@
       "ContinuousLinearMap.IsTraceClass.traceNorm_smul",
       "ContinuousLinearMap.IsTraceClass.trace_neg",
       "ContinuousLinearMap.IsTraceClass.trace_smul",
-      "SecondQuantization.Fermionic.CompletedThermalLadder.completedFreeGibbsExpectation_operator_comp"
+      "SecondQuantization.Fermionic.CompletedThermalLadder.grandCanonicalGibbsExpectation_operator_comp"
     ],
     "compiledConsumerCount": 7,
     "axioms": [
@@ -14793,7 +14793,7 @@
     "dependents": [
       "ContinuousLinearMap.IsTraceClass.trace_adjointConjugate",
       "QuantumTheory.LinearResponse.expectation_evolveDensityOperator_eq_heisenberg",
-      "SecondQuantization.Fermionic.CompletedThermalLadder.completedFreeGibbsExpectation_operator_comp"
+      "SecondQuantization.Fermionic.CompletedThermalLadder.grandCanonicalGibbsExpectation_operator_comp"
     ],
     "dependencies": [
       "ContinuousLinearMap.IsTraceClass.comp_left",
@@ -14807,7 +14807,7 @@
     "compiledConsumers": [
       "ContinuousLinearMap.IsTraceClass.trace_adjointConjugate",
       "QuantumTheory.LinearResponse.expectation_evolveDensityOperator_eq_heisenberg",
-      "SecondQuantization.Fermionic.CompletedThermalLadder.completedFreeGibbsExpectation_operator_comp"
+      "SecondQuantization.Fermionic.CompletedThermalLadder.grandCanonicalGibbsExpectation_operator_comp"
     ],
     "compiledConsumerCount": 3,
     "axioms": [
@@ -14844,14 +14844,14 @@
     "directWrapperOf": null,
     "dependents": [
       "QuantumTheory.DensityOperator.expectation_id",
-      "SecondQuantization.Fermionic.CompletedThermalLadder.completedFreeGibbsExpectation_operator_comp"
+      "SecondQuantization.Fermionic.CompletedThermalLadder.grandCanonicalGibbsExpectation_operator_comp"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.DensityOperator.expectation_id",
-      "SecondQuantization.Fermionic.CompletedThermalLadder.completedFreeGibbsExpectation_operator_comp"
+      "SecondQuantization.Fermionic.CompletedThermalLadder.grandCanonicalGibbsExpectation_operator_comp"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -15127,7 +15127,7 @@
     "directWrapperOf": null,
     "dependents": [
       "ContinuousLinearMap.IsTraceClass.trace_neg",
-      "SecondQuantization.Fermionic.CompletedThermalLadder.completedFreeGibbsExpectation_operator_comp"
+      "SecondQuantization.Fermionic.CompletedThermalLadder.grandCanonicalGibbsExpectation_operator_comp"
     ],
     "dependencies": [
       "ContinuousLinearMap.IsTraceClass.smul",
@@ -15137,7 +15137,7 @@
     "completedMention": false,
     "compiledConsumers": [
       "ContinuousLinearMap.IsTraceClass.trace_neg",
-      "SecondQuantization.Fermionic.CompletedThermalLadder.completedFreeGibbsExpectation_operator_comp"
+      "SecondQuantization.Fermionic.CompletedThermalLadder.grandCanonicalGibbsExpectation_operator_comp"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -45412,7 +45412,7 @@
       "QuantumTheory.DensityOperator.expectation_id",
       "QuantumTheory.DensityOperator.hasSum_expectation_diagonal",
       "QuantumTheory.LinearResponse.expectation_evolveDensityOperator_eq_heisenberg",
-      "SecondQuantization.Fermionic.CompletedThermalLadder.completedFreeGibbsExpectation_operator_comp"
+      "SecondQuantization.Fermionic.CompletedThermalLadder.grandCanonicalGibbsExpectation_operator_comp"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
@@ -45423,7 +45423,7 @@
       "QuantumTheory.DensityOperator.expectation_id",
       "QuantumTheory.DensityOperator.hasSum_expectation_diagonal",
       "QuantumTheory.LinearResponse.expectation_evolveDensityOperator_eq_heisenberg",
-      "SecondQuantization.Fermionic.CompletedThermalLadder.completedFreeGibbsExpectation_operator_comp"
+      "SecondQuantization.Fermionic.CompletedThermalLadder.grandCanonicalGibbsExpectation_operator_comp"
     ],
     "compiledConsumerCount": 6,
     "axioms": [
@@ -45657,6 +45657,7 @@
     "dependents": [
       "QuantumTheory.DensityOperator.expectation_eq_sum_diagonal",
       "QuantumTheory.LinearResponse.eigenbasisNormalizedExpectation_apply",
+      "QuantumTheory.eigenbasisGibbsDensityOperator_expectation_transport",
       "SecondQuantization.Common.finiteGibbsExpectation_eq_sum",
       "SecondQuantization.Fermionic.completedFreeModeTruncatedGibbsDensityOperator_expectation_eq_ratio_mul"
     ],
@@ -45668,10 +45669,11 @@
     "compiledConsumers": [
       "QuantumTheory.DensityOperator.expectation_eq_sum_diagonal",
       "QuantumTheory.LinearResponse.eigenbasisNormalizedExpectation_apply",
+      "QuantumTheory.eigenbasisGibbsDensityOperator_expectation_transport",
       "SecondQuantization.Common.finiteGibbsExpectation_eq_sum",
       "SecondQuantization.Fermionic.completedFreeModeTruncatedGibbsDensityOperator_expectation_eq_ratio_mul"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 5,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -45707,8 +45709,8 @@
     "dependents": [
       "QuantumTheory.DensityOperator.linearMap_trace_eq_one",
       "SecondQuantization.Common.finiteGibbsExpectation_id",
-      "SecondQuantization.Fermionic.CompletedThermalLadder.completedFreeGibbsExpectation_nil",
-      "SecondQuantization.Fermionic.CompletedThermalLadder.completedFreeGibbsExpectation_pair_eq"
+      "SecondQuantization.Fermionic.CompletedThermalLadder.grandCanonicalGibbsExpectation_nil",
+      "SecondQuantization.Fermionic.CompletedThermalLadder.grandCanonicalGibbsExpectation_pair_eq"
     ],
     "dependencies": [
       "ContinuousLinearMap.IsTraceClass.comp_right",
@@ -45720,8 +45722,8 @@
     "compiledConsumers": [
       "QuantumTheory.DensityOperator.linearMap_trace_eq_one",
       "SecondQuantization.Common.finiteGibbsExpectation_id",
-      "SecondQuantization.Fermionic.CompletedThermalLadder.completedFreeGibbsExpectation_nil",
-      "SecondQuantization.Fermionic.CompletedThermalLadder.completedFreeGibbsExpectation_pair_eq"
+      "SecondQuantization.Fermionic.CompletedThermalLadder.grandCanonicalGibbsExpectation_nil",
+      "SecondQuantization.Fermionic.CompletedThermalLadder.grandCanonicalGibbsExpectation_pair_eq"
     ],
     "compiledConsumerCount": 4,
     "axioms": [
@@ -92749,14 +92751,14 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "QuantumTheory.eigenbasisGibbsDensityOperator_expectation_transport",
+      "QuantumTheory.eigenbasisGibbsDensityOperator_intertwines",
       "QuantumTheory.eigenbasisGibbsEnergyExpectation_eq_energyExpValue",
       "QuantumTheory.inv_partition_smul_heat_eq_eigenbasisGibbsDensityOperator_op",
       "QuantumTheory.vonNeumannEntropy_eigenbasisGibbsDensityOperator",
       "SecondQuantization.Common.canonicalGibbsDensityOperator_apply_basis",
-      "SecondQuantization.Common.completedFiniteHilbertEquiv_intertwines_eigenbasisGibbsDensity",
       "SecondQuantization.Common.finiteGibbsExpectation_eq_sum",
       "SecondQuantization.Common.grandCanonicalGibbsDensityOperator_apply_basis",
-      "SecondQuantization.Fermionic.completedFreeGibbsDensityOperator_apply_basis",
       "SecondQuantization.Fermionic.freeGibbsDensityOperator_apply_basis"
     ],
     "dependencies": [
@@ -92767,17 +92769,102 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "QuantumTheory.eigenbasisGibbsDensityOperator_expectation_transport",
+      "QuantumTheory.eigenbasisGibbsDensityOperator_intertwines",
       "QuantumTheory.eigenbasisGibbsEnergyExpectation_eq_energyExpValue",
       "QuantumTheory.inv_partition_smul_heat_eq_eigenbasisGibbsDensityOperator_op",
       "QuantumTheory.vonNeumannEntropy_eigenbasisGibbsDensityOperator",
       "SecondQuantization.Common.canonicalGibbsDensityOperator_apply_basis",
-      "SecondQuantization.Common.completedFiniteHilbertEquiv_intertwines_eigenbasisGibbsDensity",
       "SecondQuantization.Common.finiteGibbsExpectation_eq_sum",
       "SecondQuantization.Common.grandCanonicalGibbsDensityOperator_apply_basis",
-      "SecondQuantization.Fermionic.completedFreeGibbsDensityOperator_apply_basis",
       "SecondQuantization.Fermionic.freeGibbsDensityOperator_apply_basis"
     ],
     "compiledConsumerCount": 9,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {ι : Type u_1} {H : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] {K : Type u_3} [inst_3 : NormedAddCommGroup K] [inst_4 : InnerProductSpace ℂ K]\n  [inst_5 : CompleteSpace K] [inst_6 : Nonempty ι] (b : HilbertBasis ι ℂ H) (c : HilbertBasis ι ℂ K) (E : ι → ℝ) (β : ℝ)\n  (hsum : QuantumTheory.EigenbasisGibbsSummable E β) (e : H ≃ₗᵢ[ℂ] K),\n  (∀ (i : ι), e (b i) = c i) →\n    ∀ (A : K →L[ℂ] K),\n      (QuantumTheory.eigenbasisGibbsDensityOperator c E β hsum).expectation A =\n        (QuantumTheory.eigenbasisGibbsDensityOperator b E β hsum).expectation (↑↑e.symm ∘SL A ∘SL ↑↑e)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.eigenbasisGibbsDensityOperator_expectation_transport",
+    "module": "LeanCondensedMatter.QuantumTheory.Gibbs.Eigenbasis",
+    "externalAxioms": [],
+    "docString": "A unitary change of energy basis preserves Gibbs expectations when the observable is\ntransported back by the inverse unitary. The energy labels and temperature are unchanged. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.DensityOperator.expectation_eq_tsum_diagonal",
+      "QuantumTheory.eigenbasisGibbsDensityOperator_apply_basis"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {ι : Type u_1} {H : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] {K : Type u_3} [inst_3 : NormedAddCommGroup K] [inst_4 : InnerProductSpace ℂ K]\n  [inst_5 : CompleteSpace K] [inst_6 : Nonempty ι] (b : HilbertBasis ι ℂ H) (c : HilbertBasis ι ℂ K) (E : ι → ℝ) (β : ℝ)\n  (hsum : QuantumTheory.EigenbasisGibbsSummable E β) (F : H →L[ℂ] K),\n  (∀ (i : ι), F (b i) = c i) →\n    F ∘SL (QuantumTheory.eigenbasisGibbsDensityOperator b E β hsum).op =\n      (QuantumTheory.eigenbasisGibbsDensityOperator c E β hsum).op ∘SL F",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.eigenbasisGibbsDensityOperator_intertwines",
+    "module": "LeanCondensedMatter.QuantumTheory.Gibbs.Eigenbasis",
+    "externalAxioms": [],
+    "docString": "A bounded linear map carrying one energy basis to another intertwines the Gibbs density\noperators with the same energies and inverse temperature. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.completedGrandCanonicalGibbs_intertwines_finite"
+    ],
+    "dependencies": [
+      "QuantumTheory.eigenbasisGibbsDensityOperator_apply_basis"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.completedGrandCanonicalGibbs_intertwines_finite"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -92901,7 +92988,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.completedFreeTotalNumberExpectation_nonneg"
+      "SecondQuantization.Fermionic.grandCanonicalTotalNumberExpectation_nonneg"
     ],
     "dependencies": [
       "QuantumTheory.eigenbasisBoltzmannWeight_nonneg"
@@ -92910,7 +92997,7 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.gibbsEquilibriumDistribution",
-      "SecondQuantization.Fermionic.completedFreeTotalNumberExpectation_nonneg"
+      "SecondQuantization.Fermionic.grandCanonicalTotalNumberExpectation_nonneg"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -92991,11 +93078,11 @@
     "directWrapperOf": null,
     "dependents": [
       "QuantumTheory.vonNeumannEntropy_gibbsState",
-      "SecondQuantization.Common.completedFiniteHilbertEquiv_intertwines_eigenbasisGibbsDensity",
       "SecondQuantization.Common.finiteGibbsExpectation_eq_sum",
       "SecondQuantization.Common.finiteGibbsExpectation_eq_trace_div",
       "SecondQuantization.Common.finiteGibbsExpectation_id",
       "SecondQuantization.Common.traceFock_diagonalEvolution_ne_zero",
+      "SecondQuantization.Fermionic.completedGrandCanonicalGibbs_intertwines_finite",
       "SecondQuantization.Fermionic.freeGibbsDensityOperator_apply_basis",
       "SecondQuantization.Fermionic.freePartitionFunction_ne_zero",
       "SecondQuantization.Fermionic.vonNeumannEntropy_freeGibbsDensityOperator_toReal_eq_sum_fermiDirac"
@@ -93005,11 +93092,11 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.vonNeumannEntropy_gibbsState",
-      "SecondQuantization.Common.completedFiniteHilbertEquiv_intertwines_eigenbasisGibbsDensity",
       "SecondQuantization.Common.finiteGibbsExpectation_eq_sum",
       "SecondQuantization.Common.finiteGibbsExpectation_eq_trace_div",
       "SecondQuantization.Common.finiteGibbsExpectation_id",
       "SecondQuantization.Common.traceFock_diagonalEvolution_ne_zero",
+      "SecondQuantization.Fermionic.completedGrandCanonicalGibbs_intertwines_finite",
       "SecondQuantization.Fermionic.freeGibbsDensityOperator_apply_basis",
       "SecondQuantization.Fermionic.freePartitionFunction_ne_zero",
       "SecondQuantization.Fermionic.vonNeumannEntropy_freeGibbsDensityOperator_toReal_eq_sum_fermiDirac"
@@ -97433,14 +97520,14 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Bosonic.FreeThermalField.freeGibbsExpectation_cons_eq_kmsRatio_mul_operatorPeelSum",
-      "SecondQuantization.Fermionic.CompletedThermalLadder.completedFreeGibbsExpectation_cons_eq_gibbsRatio_mul_peel"
+      "SecondQuantization.Fermionic.CompletedThermalLadder.grandCanonicalGibbsExpectation_cons_eq_gibbsRatio_mul_peel"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Bosonic.FreeThermalField.freeGibbsExpectation_cons_eq_kmsRatio_mul_operatorPeelSum",
-      "SecondQuantization.Fermionic.CompletedThermalLadder.completedFreeGibbsExpectation_cons_eq_gibbsRatio_mul_peel"
+      "SecondQuantization.Fermionic.CompletedThermalLadder.grandCanonicalGibbsExpectation_cons_eq_gibbsRatio_mul_peel"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -97693,7 +97780,7 @@
       "ScalarExchange.peelSumWithCoefficients_eq_sum",
       "SecondQuantization.Bosonic.FreeThermalField.freeGibbsExpectation_operatorPeelSum_eq_sum",
       "SecondQuantization.Bosonic.FreeThermalField.operatorPeelSum_mem_freeGibbsDomain",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.BlochDeDominicis.0.SecondQuantization.Fermionic.CompletedThermalLadder.completedFreeGibbsExpectation_peelSum_eq_sum"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.BlochDeDominicis.0.SecondQuantization.Fermionic.CompletedThermalLadder.grandCanonicalGibbsExpectation_peelSum_eq_sum"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
@@ -97702,7 +97789,7 @@
       "ScalarExchange.peelSumWithCoefficients_eq_sum",
       "SecondQuantization.Bosonic.FreeThermalField.freeGibbsExpectation_operatorPeelSum_eq_sum",
       "SecondQuantization.Bosonic.FreeThermalField.operatorPeelSum_mem_freeGibbsDomain",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.BlochDeDominicis.0.SecondQuantization.Fermionic.CompletedThermalLadder.completedFreeGibbsExpectation_peelSum_eq_sum"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.BlochDeDominicis.0.SecondQuantization.Fermionic.CompletedThermalLadder.grandCanonicalGibbsExpectation_peelSum_eq_sum"
     ],
     "compiledConsumerCount": 4,
     "axioms": [
@@ -107599,7 +107686,7 @@
     "dependents": [
       "SecondQuantization.Bosonic.grandCanonicalGibbsExpectation_eq_sum_pairing_concrete",
       "SecondQuantization.Common.BlochDeDominicis.finiteGibbsExpectation_prod_eq_sum_pairing",
-      "SecondQuantization.Fermionic.CompletedThermalLadder.completedFreeGibbsExpectation_eq_sum_pairing"
+      "SecondQuantization.Fermionic.CompletedThermalLadder.grandCanonicalGibbsExpectation_eq_sum_pairing"
     ],
     "dependencies": [
       "Combinatorics.moment_eq_pairing_sum_of_first_pair_recursion",
@@ -107610,7 +107697,7 @@
     "compiledConsumers": [
       "SecondQuantization.Bosonic.grandCanonicalGibbsExpectation_eq_sum_pairing_concrete",
       "SecondQuantization.Common.BlochDeDominicis.finiteGibbsExpectation_prod_eq_sum_pairing",
-      "SecondQuantization.Fermionic.CompletedThermalLadder.completedFreeGibbsExpectation_eq_sum_pairing"
+      "SecondQuantization.Fermionic.CompletedThermalLadder.grandCanonicalGibbsExpectation_eq_sum_pairing"
     ],
     "compiledConsumerCount": 3,
     "axioms": [
@@ -107818,7 +107905,7 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Common.BlochDeDominicis.Pairing.weight_fermion_eq_ite",
-      "SecondQuantization.Fermionic.CompletedThermalLadder.completedFreeGibbsExpectation_eq_sum_pairing",
+      "SecondQuantization.Fermionic.CompletedThermalLadder.grandCanonicalGibbsExpectation_eq_sum_pairing",
       "SecondQuantization.Fermionic.fixedExternalOfSlotSplit_prod_vacuumDysonFixedTimeValue_eq_quarticIntegrand"
     ],
     "dependencies": [],
@@ -107826,7 +107913,7 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Common.BlochDeDominicis.Pairing.weight_fermion_eq_ite",
-      "SecondQuantization.Fermionic.CompletedThermalLadder.completedFreeGibbsExpectation_eq_sum_pairing",
+      "SecondQuantization.Fermionic.CompletedThermalLadder.grandCanonicalGibbsExpectation_eq_sum_pairing",
       "SecondQuantization.Fermionic.fixedExternalOfSlotSplit_prod_vacuumDysonFixedTimeValue_eq_quarticIntegrand"
     ],
     "compiledConsumerCount": 3,
@@ -108040,7 +108127,7 @@
       "SecondQuantization.Common.BlochDeDominicis.Pairing.weight_eraseZeroPair",
       "SecondQuantization.Common.BlochDeDominicis.Pairing.weight_ofSplit_eq_positionInversions_mul",
       "SecondQuantization.Common.BlochDeDominicis.zetaInt_pow_eq_prod_of_sum_mod_two_eq",
-      "SecondQuantization.Fermionic.CompletedThermalLadder.completedFreeGibbsExpectation_cons_eq_gibbsRatio_mul_peel"
+      "SecondQuantization.Fermionic.CompletedThermalLadder.grandCanonicalGibbsExpectation_cons_eq_gibbsRatio_mul_peel"
     ],
     "dependencies": [
       "Combinatorics.pow_eq_of_mod_two_eq"
@@ -108052,7 +108139,7 @@
       "SecondQuantization.Common.BlochDeDominicis.Pairing.weight_eraseZeroPair",
       "SecondQuantization.Common.BlochDeDominicis.Pairing.weight_ofSplit_eq_positionInversions_mul",
       "SecondQuantization.Common.BlochDeDominicis.zetaInt_pow_eq_prod_of_sum_mod_two_eq",
-      "SecondQuantization.Fermionic.CompletedThermalLadder.completedFreeGibbsExpectation_cons_eq_gibbsRatio_mul_peel"
+      "SecondQuantization.Fermionic.CompletedThermalLadder.grandCanonicalGibbsExpectation_cons_eq_gibbsRatio_mul_peel"
     ],
     "compiledConsumerCount": 5,
     "axioms": [
@@ -121172,7 +121259,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Common.completedFiniteHilbertEquiv_intertwines_eigenbasisGibbsDensity"
+      "SecondQuantization.Fermionic.completedGrandCanonicalGibbs_intertwines_finite"
     ],
     "dependencies": [
       "SecondQuantization.Common.algebraicToCompleted_basisState",
@@ -121182,54 +121269,9 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.completedFiniteHilbertEquiv_intertwines_eigenbasisGibbsDensity"
+      "SecondQuantization.Fermionic.completedGrandCanonicalGibbs_intertwines_finite"
     ],
     "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {Config : Type u_1} [inst : Fintype Config] [inst_1 : Nonempty Config] (energy : Config → ℝ) (β : ℝ),\n  ↑↑SecondQuantization.Common.completedFiniteHilbertEquiv ∘SL\n      (QuantumTheory.eigenbasisGibbsDensityOperator SecondQuantization.Common.completedHilbertBasis energy β ⋯).op =\n    (QuantumTheory.eigenbasisGibbsDensityOperator SecondQuantization.Common.finiteHilbertBasis energy β ⋯).op ∘SL\n      ↑↑SecondQuantization.Common.completedFiniteHilbertEquiv",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.completedFiniteHilbertEquiv_intertwines_eigenbasisGibbsDensity",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteCompletedGibbsCompatibility",
-    "externalAxioms": [],
-    "docString": "The canonical finite-configuration isometry intertwines the pure-point Gibbs density operator\non completed Fock space with the same density operator on the finite Hilbert realization. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "QuantumTheory.eigenbasisGibbsDensityOperator_apply_basis",
-      "QuantumTheory.eigenbasisGibbsSummable_of_finite",
-      "SecondQuantization.Common.completedFiniteHilbertEquiv_basisState",
-      "SecondQuantization.Common.completedHilbertBasis_apply",
-      "SecondQuantization.Common.continuousLinearMap_ext_completedBasis",
-      "SecondQuantization.Common.finiteHilbertBasis_apply"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -121268,8 +121310,8 @@
       "SecondQuantization.Common.canonicalFullGibbsDensityOperator_apply_basis_of_sector",
       "SecondQuantization.Common.canonicalFullGibbsDensityOperator_expectation_eq_sector",
       "SecondQuantization.Common.canonicalGibbsDensityOperator_apply_basis",
-      "SecondQuantization.Common.completedFiniteHilbertEquiv_intertwines_eigenbasisGibbsDensity",
       "SecondQuantization.Common.grandCanonicalGibbsDensityOperator_apply_basis",
+      "SecondQuantization.Fermionic.completedGrandCanonicalGibbs_intertwines_finite",
       "SecondQuantization.Fermionic.completedOccupationHilbertBasis_apply",
       "_private.LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.Diagonal.0.SecondQuantization.Common.norm_weight_le_of_bounded_diagonal_extension"
     ],
@@ -121282,8 +121324,8 @@
       "SecondQuantization.Common.canonicalFullGibbsDensityOperator_apply_basis_of_sector",
       "SecondQuantization.Common.canonicalFullGibbsDensityOperator_expectation_eq_sector",
       "SecondQuantization.Common.canonicalGibbsDensityOperator_apply_basis",
-      "SecondQuantization.Common.completedFiniteHilbertEquiv_intertwines_eigenbasisGibbsDensity",
       "SecondQuantization.Common.grandCanonicalGibbsDensityOperator_apply_basis",
+      "SecondQuantization.Fermionic.completedGrandCanonicalGibbs_intertwines_finite",
       "SecondQuantization.Fermionic.completedOccupationHilbertBasis_apply",
       "_private.LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.Diagonal.0.SecondQuantization.Common.norm_weight_le_of_bounded_diagonal_extension"
     ],
@@ -122370,10 +122412,9 @@
     "dependents": [
       "SecondQuantization.Common.canonicalFullGibbsDensityOperator_eq_sector_embedding",
       "SecondQuantization.Common.canonicalGibbsDensityOperator_shift_invariant",
-      "SecondQuantization.Common.completedFiniteHilbertEquiv_intertwines_eigenbasisGibbsDensity",
       "SecondQuantization.Common.grandCanonicalGibbsDensityOperator_shift_invariant",
-      "SecondQuantization.Fermionic.completedFreeGibbsDensityOperator_comp_annihilate",
-      "SecondQuantization.Fermionic.completedFreeGibbsDensityOperator_comp_create"
+      "SecondQuantization.Fermionic.grandCanonicalGibbsDensityOperator_comp_annihilate",
+      "SecondQuantization.Fermionic.grandCanonicalGibbsDensityOperator_comp_create"
     ],
     "dependencies": [
       "SecondQuantization.Common.algebraicToCompleted_basisState",
@@ -122385,12 +122426,11 @@
     "compiledConsumers": [
       "SecondQuantization.Common.canonicalFullGibbsDensityOperator_eq_sector_embedding",
       "SecondQuantization.Common.canonicalGibbsDensityOperator_shift_invariant",
-      "SecondQuantization.Common.completedFiniteHilbertEquiv_intertwines_eigenbasisGibbsDensity",
       "SecondQuantization.Common.grandCanonicalGibbsDensityOperator_shift_invariant",
-      "SecondQuantization.Fermionic.completedFreeGibbsDensityOperator_comp_annihilate",
-      "SecondQuantization.Fermionic.completedFreeGibbsDensityOperator_comp_create"
+      "SecondQuantization.Fermionic.grandCanonicalGibbsDensityOperator_comp_annihilate",
+      "SecondQuantization.Fermionic.grandCanonicalGibbsDensityOperator_comp_create"
     ],
-    "compiledConsumerCount": 6,
+    "compiledConsumerCount": 5,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -125744,9 +125784,7 @@
     "dependents": [
       "SecondQuantization.Common.finiteGibbsExpectation_eq_trace_div",
       "SecondQuantization.Common.finiteGibbsExpectation_operatorIntervalIntegral",
-      "SecondQuantization.Fermionic.eigenbasisGibbsEnergyExpectation_fermionEnergy_eq_sum_fermiDirac",
-      "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_annihilate_comp_annihilate",
-      "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_create_comp_create"
+      "SecondQuantization.Fermionic.eigenbasisGibbsEnergyExpectation_fermionEnergy_eq_sum_fermiDirac"
     ],
     "dependencies": [
       "QuantumTheory.DensityOperator.expectation_eq_tsum_diagonal",
@@ -125761,11 +125799,54 @@
     "compiledConsumers": [
       "SecondQuantization.Common.finiteGibbsExpectation_eq_trace_div",
       "SecondQuantization.Common.finiteGibbsExpectation_operatorIntervalIntegral",
-      "SecondQuantization.Fermionic.eigenbasisGibbsEnergyExpectation_fermionEnergy_eq_sum_fermiDirac",
-      "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_annihilate_comp_annihilate",
-      "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_create_comp_create"
+      "SecondQuantization.Fermionic.eigenbasisGibbsEnergyExpectation_fermionEnergy_eq_sum_fermiDirac"
     ],
-    "compiledConsumerCount": 5,
+    "compiledConsumerCount": 3,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Config : Type u_1} [inst : Fintype Config] [inst_1 : Nonempty Config] (energy : Config → ℝ) (β : ℝ)\n  (A : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config),\n  SecondQuantization.Common.finiteGibbsExpectation energy β A =\n    (SecondQuantization.Common.summableDiagonalTraceRatioLinear\n        (SecondQuantization.Common.diagonalEvolution energy (-β)))\n      ⟨A, ⋯⟩",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.finiteGibbsExpectation_eq_summableDiagonalTraceRatioLinear",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsCoordinate",
+    "externalAxioms": [],
+    "docString": "The finite density-state Gibbs expectation evaluates the common summable\ndiagonal-trace ratio, with its convergence domain automatic for finite configurations. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_eq_summableDiagonalTraceRatioLinear"
+    ],
+    "dependencies": [
+      "SecondQuantization.Common.finiteGibbsExpectation_eq_trace_div",
+      "SecondQuantization.Common.tsumTrace_eq_traceFock"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_eq_summableDiagonalTraceRatioLinear"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -125801,6 +125882,7 @@
     "dependents": [
       "SecondQuantization.Common.coeff_normalizeByConstantCoeff_dysonTraceSeries_eq_finiteGibbsExpectation",
       "SecondQuantization.Common.finiteGibbsExpectation_comp_eq_div_of_zetaCommutator",
+      "SecondQuantization.Common.finiteGibbsExpectation_eq_summableDiagonalTraceRatioLinear",
       "SecondQuantization.Common.finiteGibbsExpectation_four_point",
       "SecondQuantization.Common.finiteGibbsExpectation_peel_indexed"
     ],
@@ -125819,10 +125901,11 @@
     "compiledConsumers": [
       "SecondQuantization.Common.coeff_normalizeByConstantCoeff_dysonTraceSeries_eq_finiteGibbsExpectation",
       "SecondQuantization.Common.finiteGibbsExpectation_comp_eq_div_of_zetaCommutator",
+      "SecondQuantization.Common.finiteGibbsExpectation_eq_summableDiagonalTraceRatioLinear",
       "SecondQuantization.Common.finiteGibbsExpectation_four_point",
       "SecondQuantization.Common.finiteGibbsExpectation_peel_indexed"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 5,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -126028,16 +126111,16 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Common.completedFiniteHilbertEquiv_intertwines_eigenbasisGibbsDensity",
       "SecondQuantization.Common.finiteGibbsExpectation_eq_sum",
+      "SecondQuantization.Fermionic.completedGrandCanonicalGibbs_intertwines_finite",
       "SecondQuantization.Fermionic.freeGibbsDensityOperator_apply_basis"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.completedFiniteHilbertEquiv_intertwines_eigenbasisGibbsDensity",
       "SecondQuantization.Common.finiteGibbsExpectation_eq_sum",
+      "SecondQuantization.Fermionic.completedGrandCanonicalGibbs_intertwines_finite",
       "SecondQuantization.Fermionic.freeGibbsDensityOperator_apply_basis"
     ],
     "compiledConsumerCount": 3,
@@ -126492,7 +126575,10 @@
     "dependents": [
       "SecondQuantization.Common.grandCanonicalEnergy_shift_invariant",
       "SecondQuantization.Common.grandCanonicalGibbsSummable_iff_shifted",
-      "SecondQuantization.Common.grandCanonicalPartitionFunction_eq_shifted"
+      "SecondQuantization.Common.grandCanonicalPartitionFunction_eq_shifted",
+      "SecondQuantization.Fermionic.completedGrandCanonicalGibbs_intertwines_finite",
+      "SecondQuantization.Fermionic.finiteGrandCanonicalGibbsExpectation_eq_diagonalTraceRatio",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.Gibbs.0.SecondQuantization.Fermionic.grandCanonicalEnergy_eq_fermionEnergy"
     ],
     "dependencies": [
       "SecondQuantization.Common.occupationEnergy_sub_const"
@@ -126502,9 +126588,12 @@
     "compiledConsumers": [
       "SecondQuantization.Common.grandCanonicalEnergy_shift_invariant",
       "SecondQuantization.Common.grandCanonicalGibbsSummable_iff_shifted",
-      "SecondQuantization.Common.grandCanonicalPartitionFunction_eq_shifted"
+      "SecondQuantization.Common.grandCanonicalPartitionFunction_eq_shifted",
+      "SecondQuantization.Fermionic.completedGrandCanonicalGibbs_intertwines_finite",
+      "SecondQuantization.Fermionic.finiteGrandCanonicalGibbsExpectation_eq_diagonalTraceRatio",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.Gibbs.0.SecondQuantization.Fermionic.grandCanonicalEnergy_eq_fermionEnergy"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 6,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -126659,7 +126748,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": true,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -126671,7 +126760,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Common.grandCanonicalGibbsDensityOperator_shift_invariant"
+      "SecondQuantization.Common.grandCanonicalGibbsDensityOperator_shift_invariant",
+      "SecondQuantization.Fermionic.grandCanonicalGibbsDensityOperator_apply_basis"
     ],
     "dependencies": [
       "QuantumTheory.eigenbasisGibbsDensityOperator_apply_basis",
@@ -126680,9 +126770,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.grandCanonicalGibbsDensityOperator_shift_invariant"
+      "SecondQuantization.Common.grandCanonicalGibbsDensityOperator_shift_invariant",
+      "SecondQuantization.Fermionic.grandCanonicalGibbsDensityOperator_apply_basis"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -128639,6 +128730,8 @@
       "SecondQuantization.Bosonic.FreeThermalField.freeGibbsSummable_orderedProduct",
       "SecondQuantization.Bosonic.grandCanonicalGibbsExpectation_eq_zero_of_matrixCoeff_self_eq_zero",
       "SecondQuantization.Common.finiteGibbsExpectation_eq_trace_div",
+      "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_annihilate_comp_annihilate",
+      "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_create_comp_create",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.TwoPoint.0.SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_comp_create_mul_matrixCoeff_annihilate_of_ne",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.TwoPoint.0.SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_comp_create_removeOccupation"
     ],
@@ -128651,10 +128744,12 @@
       "SecondQuantization.Bosonic.FreeThermalField.freeGibbsSummable_orderedProduct",
       "SecondQuantization.Bosonic.grandCanonicalGibbsExpectation_eq_zero_of_matrixCoeff_self_eq_zero",
       "SecondQuantization.Common.finiteGibbsExpectation_eq_trace_div",
+      "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_annihilate_comp_annihilate",
+      "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_create_comp_create",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.TwoPoint.0.SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_comp_create_mul_matrixCoeff_annihilate_of_ne",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.TwoPoint.0.SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_comp_create_removeOccupation"
     ],
-    "compiledConsumerCount": 5,
+    "compiledConsumerCount": 7,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -129485,6 +129580,44 @@
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumComponents.0.SecondQuantization.Common.slotSplitVacuumComponentPart_surjective"
     ],
     "compiledConsumerCount": 11,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {Config : Type u_1}\n  (B A : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config),\n  A ∈ SecondQuantization.Common.summableDiagonalTraceDomain B ↔\n    Summable fun n => SecondQuantization.Common.matrixCoeff (B ∘ₗ A) n n",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.mem_summableDiagonalTraceDomain_iff",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Algebra.DiagonalTrace",
+    "externalAxioms": [],
+    "docString": "Membership is precisely summability of the weighted diagonal series. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -133041,7 +133174,8 @@
       "SecondQuantization.Common.finiteGibbsExpectation_eq_trace_div",
       "SecondQuantization.Common.finiteOperatorTrace_finiteContinuousOperator",
       "SecondQuantization.Common.traceFock_diagonalEvolution_eq_weightSum",
-      "SecondQuantization.Common.traceFock_id"
+      "SecondQuantization.Common.traceFock_id",
+      "SecondQuantization.Common.tsumTrace_eq_traceFock"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
@@ -133051,9 +133185,10 @@
       "SecondQuantization.Common.finiteGibbsExpectation_eq_trace_div",
       "SecondQuantization.Common.finiteOperatorTrace_finiteContinuousOperator",
       "SecondQuantization.Common.traceFock_diagonalEvolution_eq_weightSum",
-      "SecondQuantization.Common.traceFock_id"
+      "SecondQuantization.Common.traceFock_id",
+      "SecondQuantization.Common.tsumTrace_eq_traceFock"
     ],
-    "compiledConsumerCount": 5,
+    "compiledConsumerCount": 6,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -133279,6 +133414,50 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Common.tsumTrace_diagonalEvolution_comp_peel"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Config : Type u_1} [inst : Fintype Config]\n  (A : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config),\n  SecondQuantization.Common.tsumTrace A = SecondQuantization.Common.traceFock A",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.tsumTrace_eq_traceFock",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Algebra.FiniteTrace",
+    "externalAxioms": [],
+    "docString": "On a finite configuration space, the summable diagonal trace agrees with the\ncanonical finite-dimensional trace. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Common.finiteGibbsExpectation_eq_summableDiagonalTraceRatioLinear"
+    ],
+    "dependencies": [
+      "SecondQuantization.Common.traceFock_eq_sum_matrixCoeff"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.finiteGibbsExpectation_eq_summableDiagonalTraceRatioLinear"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -134866,6 +135045,7 @@
     "dependents": [
       "SecondQuantization.Fermionic.AlgebraicFock.dGamma_dualRankOne",
       "SecondQuantization.Fermionic.AlgebraicFock.dGamma_zero",
+      "SecondQuantization.Fermionic.AlgebraicFock.map_dGamma",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.SecondQuantizationCommutator.0.SecondQuantization.Fermionic.AlgebraicFock.dGamma_lie_raw",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.SecondQuantizationLinearity.0.SecondQuantization.Fermionic.AlgebraicFock.dGamma_add",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.SecondQuantizationLinearity.0.SecondQuantization.Fermionic.AlgebraicFock.dGamma_smul"
@@ -134878,11 +135058,12 @@
     "compiledConsumers": [
       "SecondQuantization.Fermionic.AlgebraicFock.dGamma_dualRankOne",
       "SecondQuantization.Fermionic.AlgebraicFock.dGamma_zero",
+      "SecondQuantization.Fermionic.AlgebraicFock.map_dGamma",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.SecondQuantizationCommutator.0.SecondQuantization.Fermionic.AlgebraicFock.dGamma_lie_raw",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.SecondQuantizationLinearity.0.SecondQuantization.Fermionic.AlgebraicFock.dGamma_add",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.SecondQuantizationLinearity.0.SecondQuantization.Fermionic.AlgebraicFock.dGamma_smul"
     ],
-    "compiledConsumerCount": 5,
+    "compiledConsumerCount": 6,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -135056,6 +135237,7 @@
     "dependents": [
       "SecondQuantization.Fermionic.AlgebraicFock.dGamma_dualRankOne",
       "SecondQuantization.Fermionic.AlgebraicFock.dGamma_zero",
+      "SecondQuantization.Fermionic.AlgebraicFock.map_dGamma",
       "SecondQuantization.Fermionic.AlgebraicFock.totalNumberOperator_oneParticle_mul",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.SecondQuantizationCommutator.0.SecondQuantization.Fermionic.AlgebraicFock.dGamma_lie_raw",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.SecondQuantizationLinearity.0.SecondQuantization.Fermionic.AlgebraicFock.dGamma_add",
@@ -135069,12 +135251,13 @@
     "compiledConsumers": [
       "SecondQuantization.Fermionic.AlgebraicFock.dGamma_dualRankOne",
       "SecondQuantization.Fermionic.AlgebraicFock.dGamma_zero",
+      "SecondQuantization.Fermionic.AlgebraicFock.map_dGamma",
       "SecondQuantization.Fermionic.AlgebraicFock.totalNumberOperator_oneParticle_mul",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.SecondQuantizationCommutator.0.SecondQuantization.Fermionic.AlgebraicFock.dGamma_lie_raw",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.SecondQuantizationLinearity.0.SecondQuantization.Fermionic.AlgebraicFock.dGamma_add",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.SecondQuantizationLinearity.0.SecondQuantization.Fermionic.AlgebraicFock.dGamma_smul"
     ],
-    "compiledConsumerCount": 6,
+    "compiledConsumerCount": 7,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -135240,6 +135423,91 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {V : Type u_1} {W : Type u_2} [inst : AddCommGroup V] [inst_1 : _root_.Module ℂ V] [inst_2 : AddCommGroup W]\n  [inst_3 : _root_.Module ℂ W] (f : V →ₗ[ℂ] W) (T : V →ₗ[ℂ] V) (S : W →ₗ[ℂ] W),\n  (∀ (v : V), f (T v) = S (f v)) →\n    ∀ (Ψ : SecondQuantization.Fermionic.AlgebraicFock V),\n      (ExteriorAlgebra.map f) ((SecondQuantization.Fermionic.AlgebraicFock.dGamma V T) Ψ) =\n        (SecondQuantization.Fermionic.AlgebraicFock.dGamma W S) ((ExteriorAlgebra.map f) Ψ)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.AlgebraicFock.map_dGamma",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.SecondQuantizationNaturality",
+    "externalAxioms": [],
+    "docString": "A one-particle intertwiner lifts through the exterior algebra to an intertwiner of the\nsecond-quantized operators, without finite-dimensionality or invertibility assumptions. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.AlgebraicFock.map_dGamma_conj"
+    ],
+    "dependencies": [
+      "SecondQuantization.Fermionic.AlgebraicFock.dGamma_algebraMap",
+      "SecondQuantization.Fermionic.AlgebraicFock.dGamma_oneParticle_mul"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.AlgebraicFock.map_dGamma_conj"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {V : Type u_1} {W : Type u_2} [inst : AddCommGroup V] [inst_1 : _root_.Module ℂ V] [inst_2 : AddCommGroup W]\n  [inst_3 : _root_.Module ℂ W] (e : V ≃ₗ[ℂ] W) (T : V →ₗ[ℂ] V) (Ψ : SecondQuantization.Fermionic.AlgebraicFock W),\n  (ExteriorAlgebra.map ↑e) ((SecondQuantization.Fermionic.AlgebraicFock.dGamma V T) ((ExteriorAlgebra.map ↑e.symm) Ψ)) =\n    (SecondQuantization.Fermionic.AlgebraicFock.dGamma W ((LinearEquiv.conjAlgEquiv ℂ e) T)) Ψ",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.AlgebraicFock.map_dGamma_conj",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.SecondQuantizationNaturality",
+    "externalAxioms": [],
+    "docString": "Changing one-particle coordinates before second quantization agrees with changing the\nexterior-Fock coordinates after second quantization. The inverse maps are the existing\n`ExteriorAlgebra.map` applied to the two directions of the linear equivalence. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "SecondQuantization.Fermionic.AlgebraicFock.map_dGamma"
+    ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [],
@@ -135986,405 +136254,6 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (β : ℝ) (n : ℕ)\n  (C : Fin (2 * (n + 1)) → SecondQuantization.Fermionic.CompletedThermalLadder Mode),\n  SecondQuantization.Fermionic.CompletedThermalLadder.completedFreeGibbsAdmissible ε β (n + 1) C →\n    ∀ (j : Fin (2 * n + 1)),\n      SecondQuantization.Fermionic.CompletedThermalLadder.completedFreeGibbsAdmissible ε β n fun i =>\n        C (j.succAbove i).succ",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.CompletedThermalLadder.completedFreeGibbsAdmissible_erase",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.BlochDeDominicis",
-    "externalAxioms": [],
-    "docString": "Completed Gibbs admissibility is stable under deleting the first ladder and one partner. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.CompletedThermalLadder.completedFreeGibbsExpectationRecursion"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (ε : Mode → ℝ) (β : ℝ)\n  (hsum : QuantumTheory.EigenbasisGibbsSummable (SecondQuantization.Fermionic.fermionEnergy ε) β)\n  (C : SecondQuantization.Fermionic.CompletedThermalLadder Mode),\n  (SecondQuantization.Fermionic.completedFreeGibbsDensityOperator ε β hsum).op ∘SL C.operator =\n    SecondQuantization.Fermionic.CompletedThermalLadder.gibbsFactor ε β C •\n      C.operator ∘SL (SecondQuantization.Fermionic.completedFreeGibbsDensityOperator ε β hsum).op",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.CompletedThermalLadder.completedFreeGibbsDensityOperator_comp_operator",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.BlochDeDominicis",
-    "externalAxioms": [],
-    "docString": "Uniform completed free-Gibbs intertwining for a creation or annihilation operator. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.CompletedThermalLadder.completedFreeGibbsExpectation_operator_comp"
-    ],
-    "dependencies": [
-      "SecondQuantization.Fermionic.completedFreeGibbsDensityOperator_comp_annihilate",
-      "SecondQuantization.Fermionic.completedFreeGibbsDensityOperator_comp_create"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.CompletedThermalLadder.completedFreeGibbsExpectation_operator_comp"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (ε : Mode → ℝ) (β : ℝ)\n  (hsum : QuantumTheory.EigenbasisGibbsSummable (SecondQuantization.Fermionic.fermionEnergy ε) β)\n  (C : SecondQuantization.Fermionic.CompletedThermalLadder Mode)\n  (l : List (SecondQuantization.Fermionic.CompletedThermalLadder Mode)),\n  SecondQuantization.Fermionic.CompletedThermalLadder.completedFreeGibbsExpectation ε β hsum (C :: l) =\n    SecondQuantization.Fermionic.CompletedThermalLadder.gibbsFactor ε β C *\n      SecondQuantization.Fermionic.CompletedThermalLadder.completedFreeGibbsExpectation ε β hsum (l ++ [C])",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.CompletedThermalLadder.completedFreeGibbsExpectation_cons_eq_gibbsFactor_mul_rotate",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.BlochDeDominicis",
-    "externalAxioms": [],
-    "docString": "KMS rotation specialized to an ordered thermal-ladder tail. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.CompletedThermalLadder.completedFreeGibbsExpectation_cons_eq_gibbsRatio_mul_peel"
-    ],
-    "dependencies": [
-      "SecondQuantization.Fermionic.CompletedThermalLadder.completedFreeGibbsExpectation_operator_comp",
-      "SecondQuantization.Fermionic.CompletedThermalLadder.operatorProduct_append",
-      "SecondQuantization.Fermionic.CompletedThermalLadder.operatorProduct_cons"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.CompletedThermalLadder.completedFreeGibbsExpectation_cons_eq_gibbsRatio_mul_peel"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (ε : Mode → ℝ) (β : ℝ)\n  (hsum : QuantumTheory.EigenbasisGibbsSummable (SecondQuantization.Fermionic.fermionEnergy ε) β) (n : ℕ)\n  (C : SecondQuantization.Fermionic.CompletedThermalLadder Mode)\n  (l : List (SecondQuantization.Fermionic.CompletedThermalLadder Mode)),\n  l.length = 2 * n + 1 →\n    1 + SecondQuantization.Fermionic.CompletedThermalLadder.gibbsFactor ε β C ≠ 0 →\n      SecondQuantization.Fermionic.CompletedThermalLadder.completedFreeGibbsExpectation ε β hsum (C :: l) =\n        SecondQuantization.Fermionic.CompletedThermalLadder.gibbsFactor ε β C /\n            (1 + SecondQuantization.Fermionic.CompletedThermalLadder.gibbsFactor ε β C) *\n          (SecondQuantization.Fermionic.completedFreeGibbsDensityOperator ε β hsum).expectation\n            (ScalarExchange.peelSum SecondQuantization.Fermionic.CompletedThermalLadder.operator\n              SecondQuantization.Fermionic.CompletedThermalLadder.anticommutatorValue (-1) C l)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.CompletedThermalLadder.completedFreeGibbsExpectation_cons_eq_gibbsRatio_mul_peel",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.BlochDeDominicis",
-    "externalAxioms": [],
-    "docString": "For an odd tail, completed CAR exchange followed by KMS rotation solves the wrapped term.\nThe coefficient `g / (1 + g)` is the Fermi thermal factor attached to the leading ladder. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.CompletedThermalLadder.completedFreeGibbsExpectation_pair_eq"
-    ],
-    "dependencies": [
-      "ScalarExchange.eq_div_mul_of_eq_add_mul_of_eq_mul",
-      "SecondQuantization.Common.BlochDeDominicis.zetaInt_pow_eq_of_mod_two_eq",
-      "SecondQuantization.Fermionic.CompletedThermalLadder.completedFreeGibbsExpectation_cons_eq_gibbsFactor_mul_rotate",
-      "SecondQuantization.Fermionic.CompletedThermalLadder.completedFreeGibbsExpectation_cons_eq_peel_add_rotated"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.CompletedThermalLadder.completedFreeGibbsExpectation_pair_eq"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (ε : Mode → ℝ) (β : ℝ)\n  (hsum : QuantumTheory.EigenbasisGibbsSummable (SecondQuantization.Fermionic.fermionEnergy ε) β)\n  (C₁ : SecondQuantization.Fermionic.CompletedThermalLadder Mode)\n  (l : List (SecondQuantization.Fermionic.CompletedThermalLadder Mode)),\n  SecondQuantization.Fermionic.CompletedThermalLadder.completedFreeGibbsExpectation ε β hsum (C₁ :: l) =\n    (SecondQuantization.Fermionic.completedFreeGibbsDensityOperator ε β hsum).expectation\n        (ScalarExchange.peelSum SecondQuantization.Fermionic.CompletedThermalLadder.operator\n          SecondQuantization.Fermionic.CompletedThermalLadder.anticommutatorValue (-1) C₁ l) +\n      (-1) ^ l.length *\n        SecondQuantization.Fermionic.CompletedThermalLadder.completedFreeGibbsExpectation ε β hsum (l ++ [C₁])",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.CompletedThermalLadder.completedFreeGibbsExpectation_cons_eq_peel_add_rotated",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.BlochDeDominicis",
-    "externalAxioms": [],
-    "docString": "Expectation-level exchange formula before the KMS rotation of the final term. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.CompletedThermalLadder.completedFreeGibbsExpectation_cons_eq_gibbsRatio_mul_peel"
-    ],
-    "dependencies": [
-      "SecondQuantization.Fermionic.CompletedThermalLadder.operatorProduct_append",
-      "SecondQuantization.Fermionic.CompletedThermalLadder.operatorProduct_cons",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.BlochDeDominicis.0.SecondQuantization.Fermionic.CompletedThermalLadder.operator_comp_operatorProduct_eq_peelSum"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.CompletedThermalLadder.completedFreeGibbsExpectation_cons_eq_gibbsRatio_mul_peel"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (ε : Mode → ℝ) (β : ℝ)\n  (hsum : QuantumTheory.EigenbasisGibbsSummable (SecondQuantization.Fermionic.fermionEnergy ε) β) (n : ℕ)\n  (C : Fin (2 * n) → SecondQuantization.Fermionic.CompletedThermalLadder Mode),\n  SecondQuantization.Fermionic.CompletedThermalLadder.completedFreeGibbsAdmissible ε β n C →\n    SecondQuantization.Fermionic.CompletedThermalLadder.completedFreeGibbsExpectation ε β hsum (List.ofFn C) =\n      ∑ pairing,\n        Combinatorics.Pairing.weight SecondQuantization.Common.Statistics.fermion pairing *\n          ∏ pr ∈ pairing.pairs,\n            SecondQuantization.Fermionic.CompletedThermalLadder.completedFreeGibbsExpectation ε β hsum [C pr.1, C pr.2]",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.CompletedThermalLadder.completedFreeGibbsExpectation_eq_sum_pairing",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.BlochDeDominicis",
-    "externalAxioms": [],
-    "docString": "Completed free-fermion Bloch--de Dominicis expansion obtained by feeding the completed Gibbs\nrecursion data into the common pairing induction. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "SecondQuantization.Common.BlochDeDominicis.ExpectationPairingRecursion.bloch_de_dominicis",
-      "SecondQuantization.Common.BlochDeDominicis.Pairing.weight_fermion"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (ε : Mode → ℝ) (β : ℝ)\n  (hsum : QuantumTheory.EigenbasisGibbsSummable (SecondQuantization.Fermionic.fermionEnergy ε) β),\n  SecondQuantization.Fermionic.CompletedThermalLadder.completedFreeGibbsExpectation ε β hsum [] = 1",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.CompletedThermalLadder.completedFreeGibbsExpectation_nil",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.BlochDeDominicis",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "QuantumTheory.DensityOperator.expectation_id"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.CompletedThermalLadder.completedFreeGibbsExpectationRecursion"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (ε : Mode → ℝ) (β : ℝ)\n  (hsum : QuantumTheory.EigenbasisGibbsSummable (SecondQuantization.Fermionic.fermionEnergy ε) β)\n  (C : SecondQuantization.Fermionic.CompletedThermalLadder Mode)\n  (A :\n    ↥(SecondQuantization.Fermionic.CompletedFockSpace Mode) →L[ℂ]\n      ↥(SecondQuantization.Fermionic.CompletedFockSpace Mode)),\n  (SecondQuantization.Fermionic.completedFreeGibbsDensityOperator ε β hsum).expectation (C.operator ∘SL A) =\n    SecondQuantization.Fermionic.CompletedThermalLadder.gibbsFactor ε β C *\n      (SecondQuantization.Fermionic.completedFreeGibbsDensityOperator ε β hsum).expectation (A ∘SL C.operator)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.CompletedThermalLadder.completedFreeGibbsExpectation_operator_comp",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.BlochDeDominicis",
-    "externalAxioms": [],
-    "docString": "Completed free-Gibbs KMS rotation for one thermal ladder and an arbitrary bounded operator:\n`⟨C A⟩β = gβ(C) ⟨A C⟩β`.  The scalar `gβ(C)` is the same factor appearing in\n`ρβ C = gβ(C) C ρβ`. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.CompletedThermalLadder.completedFreeGibbsExpectation_cons_eq_gibbsFactor_mul_rotate"
-    ],
-    "dependencies": [
-      "ContinuousLinearMap.IsTraceClass.comp_left",
-      "ContinuousLinearMap.IsTraceClass.comp_right",
-      "ContinuousLinearMap.IsTraceClass.smul",
-      "ContinuousLinearMap.IsTraceClass.trace_comp_comm",
-      "ContinuousLinearMap.IsTraceClass.trace_congr",
-      "ContinuousLinearMap.IsTraceClass.trace_smul",
-      "QuantumTheory.DensityOperator.expectation_apply",
-      "SecondQuantization.Fermionic.CompletedThermalLadder.completedFreeGibbsDensityOperator_comp_operator"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.CompletedThermalLadder.completedFreeGibbsExpectation_cons_eq_gibbsFactor_mul_rotate"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (ε : Mode → ℝ) (β : ℝ)\n  (hsum : QuantumTheory.EigenbasisGibbsSummable (SecondQuantization.Fermionic.fermionEnergy ε) β)\n  (C D : SecondQuantization.Fermionic.CompletedThermalLadder Mode),\n  1 + SecondQuantization.Fermionic.CompletedThermalLadder.gibbsFactor ε β C ≠ 0 →\n    SecondQuantization.Fermionic.CompletedThermalLadder.completedFreeGibbsExpectation ε β hsum [C, D] =\n      SecondQuantization.Fermionic.CompletedThermalLadder.gibbsFactor ε β C /\n          (1 + SecondQuantization.Fermionic.CompletedThermalLadder.gibbsFactor ε β C) *\n        C.anticommutatorValue D",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.CompletedThermalLadder.completedFreeGibbsExpectation_pair_eq",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.BlochDeDominicis",
-    "externalAxioms": [],
-    "docString": "The normalized two-point completed Gibbs expectation is the scalar CAR coefficient multiplied\nby the same Gibbs ratio that solves the odd-tail KMS equation. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "QuantumTheory.DensityOperator.expectation_id",
-      "SecondQuantization.Fermionic.CompletedThermalLadder.completedFreeGibbsExpectation_cons_eq_gibbsRatio_mul_peel"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
     "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (β : ℝ) (i : Mode),\n  SecondQuantization.Fermionic.CompletedThermalLadder.gibbsFactor ε β\n      (SecondQuantization.Fermionic.CompletedThermalLadder.annihilate i) =\n    Complex.exp (↑β * ↑(ε i))",
     "standardAxioms": [
       "Classical.choice",
@@ -136460,6 +136329,405 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
+    "terminal": true,
+    "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (β μ : ℝ) (n : ℕ)\n  (C : Fin (2 * (n + 1)) → SecondQuantization.Fermionic.CompletedThermalLadder Mode),\n  SecondQuantization.Fermionic.CompletedThermalLadder.grandCanonicalGibbsAdmissible ε β μ (n + 1) C →\n    ∀ (j : Fin (2 * n + 1)),\n      SecondQuantization.Fermionic.CompletedThermalLadder.grandCanonicalGibbsAdmissible ε β μ n fun i =>\n        C (j.succAbove i).succ",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.CompletedThermalLadder.grandCanonicalGibbsAdmissible_erase",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.BlochDeDominicis",
+    "externalAxioms": [],
+    "docString": "Completed Gibbs admissibility is stable under deleting the first ladder and one partner. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.CompletedThermalLadder.grandCanonicalGibbsExpectationRecursion"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (ε : Mode → ℝ) (β μ : ℝ)\n  (hsum : QuantumTheory.EigenbasisGibbsSummable (SecondQuantization.Common.grandCanonicalEnergy ε μ) β)\n  (C : SecondQuantization.Fermionic.CompletedThermalLadder Mode),\n  (SecondQuantization.Common.grandCanonicalGibbsDensityOperator ε β μ hsum).op ∘SL C.operator =\n    SecondQuantization.Fermionic.CompletedThermalLadder.gibbsFactor (fun i => ε i - μ) β C •\n      C.operator ∘SL (SecondQuantization.Common.grandCanonicalGibbsDensityOperator ε β μ hsum).op",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.CompletedThermalLadder.grandCanonicalGibbsDensityOperator_comp_operator",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.BlochDeDominicis",
+    "externalAxioms": [],
+    "docString": "Uniform completed free-Gibbs intertwining for a creation or annihilation operator. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.CompletedThermalLadder.grandCanonicalGibbsExpectation_operator_comp"
+    ],
+    "dependencies": [
+      "SecondQuantization.Fermionic.grandCanonicalGibbsDensityOperator_comp_annihilate",
+      "SecondQuantization.Fermionic.grandCanonicalGibbsDensityOperator_comp_create"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.CompletedThermalLadder.grandCanonicalGibbsExpectation_operator_comp"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (ε : Mode → ℝ) (β μ : ℝ)\n  (hsum : QuantumTheory.EigenbasisGibbsSummable (SecondQuantization.Common.grandCanonicalEnergy ε μ) β)\n  (C : SecondQuantization.Fermionic.CompletedThermalLadder Mode)\n  (l : List (SecondQuantization.Fermionic.CompletedThermalLadder Mode)),\n  SecondQuantization.Fermionic.CompletedThermalLadder.grandCanonicalGibbsExpectation ε β μ hsum (C :: l) =\n    SecondQuantization.Fermionic.CompletedThermalLadder.gibbsFactor (fun i => ε i - μ) β C *\n      SecondQuantization.Fermionic.CompletedThermalLadder.grandCanonicalGibbsExpectation ε β μ hsum (l ++ [C])",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.CompletedThermalLadder.grandCanonicalGibbsExpectation_cons_eq_gibbsFactor_mul_rotate",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.BlochDeDominicis",
+    "externalAxioms": [],
+    "docString": "KMS rotation specialized to an ordered thermal-ladder tail. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.CompletedThermalLadder.grandCanonicalGibbsExpectation_cons_eq_gibbsRatio_mul_peel"
+    ],
+    "dependencies": [
+      "SecondQuantization.Fermionic.CompletedThermalLadder.grandCanonicalGibbsExpectation_operator_comp",
+      "SecondQuantization.Fermionic.CompletedThermalLadder.operatorProduct_append",
+      "SecondQuantization.Fermionic.CompletedThermalLadder.operatorProduct_cons"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.CompletedThermalLadder.grandCanonicalGibbsExpectation_cons_eq_gibbsRatio_mul_peel"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (ε : Mode → ℝ) (β μ : ℝ)\n  (hsum : QuantumTheory.EigenbasisGibbsSummable (SecondQuantization.Common.grandCanonicalEnergy ε μ) β) (n : ℕ)\n  (C : SecondQuantization.Fermionic.CompletedThermalLadder Mode)\n  (l : List (SecondQuantization.Fermionic.CompletedThermalLadder Mode)),\n  l.length = 2 * n + 1 →\n    1 + SecondQuantization.Fermionic.CompletedThermalLadder.gibbsFactor (fun i => ε i - μ) β C ≠ 0 →\n      SecondQuantization.Fermionic.CompletedThermalLadder.grandCanonicalGibbsExpectation ε β μ hsum (C :: l) =\n        SecondQuantization.Fermionic.CompletedThermalLadder.gibbsFactor (fun i => ε i - μ) β C /\n            (1 + SecondQuantization.Fermionic.CompletedThermalLadder.gibbsFactor (fun i => ε i - μ) β C) *\n          (SecondQuantization.Common.grandCanonicalGibbsDensityOperator ε β μ hsum).expectation\n            (ScalarExchange.peelSum SecondQuantization.Fermionic.CompletedThermalLadder.operator\n              SecondQuantization.Fermionic.CompletedThermalLadder.anticommutatorValue (-1) C l)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.CompletedThermalLadder.grandCanonicalGibbsExpectation_cons_eq_gibbsRatio_mul_peel",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.BlochDeDominicis",
+    "externalAxioms": [],
+    "docString": "For an odd tail, completed CAR exchange followed by KMS rotation solves the wrapped term.\nThe coefficient `g / (1 + g)` is the Fermi thermal factor attached to the leading ladder. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.CompletedThermalLadder.grandCanonicalGibbsExpectation_pair_eq"
+    ],
+    "dependencies": [
+      "ScalarExchange.eq_div_mul_of_eq_add_mul_of_eq_mul",
+      "SecondQuantization.Common.BlochDeDominicis.zetaInt_pow_eq_of_mod_two_eq",
+      "SecondQuantization.Fermionic.CompletedThermalLadder.grandCanonicalGibbsExpectation_cons_eq_gibbsFactor_mul_rotate",
+      "SecondQuantization.Fermionic.CompletedThermalLadder.grandCanonicalGibbsExpectation_cons_eq_peel_add_rotated"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.CompletedThermalLadder.grandCanonicalGibbsExpectation_pair_eq"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (ε : Mode → ℝ) (β μ : ℝ)\n  (hsum : QuantumTheory.EigenbasisGibbsSummable (SecondQuantization.Common.grandCanonicalEnergy ε μ) β)\n  (C₁ : SecondQuantization.Fermionic.CompletedThermalLadder Mode)\n  (l : List (SecondQuantization.Fermionic.CompletedThermalLadder Mode)),\n  SecondQuantization.Fermionic.CompletedThermalLadder.grandCanonicalGibbsExpectation ε β μ hsum (C₁ :: l) =\n    (SecondQuantization.Common.grandCanonicalGibbsDensityOperator ε β μ hsum).expectation\n        (ScalarExchange.peelSum SecondQuantization.Fermionic.CompletedThermalLadder.operator\n          SecondQuantization.Fermionic.CompletedThermalLadder.anticommutatorValue (-1) C₁ l) +\n      (-1) ^ l.length *\n        SecondQuantization.Fermionic.CompletedThermalLadder.grandCanonicalGibbsExpectation ε β μ hsum (l ++ [C₁])",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.CompletedThermalLadder.grandCanonicalGibbsExpectation_cons_eq_peel_add_rotated",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.BlochDeDominicis",
+    "externalAxioms": [],
+    "docString": "Expectation-level exchange formula before the KMS rotation of the final term. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.CompletedThermalLadder.grandCanonicalGibbsExpectation_cons_eq_gibbsRatio_mul_peel"
+    ],
+    "dependencies": [
+      "SecondQuantization.Fermionic.CompletedThermalLadder.operatorProduct_append",
+      "SecondQuantization.Fermionic.CompletedThermalLadder.operatorProduct_cons",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.BlochDeDominicis.0.SecondQuantization.Fermionic.CompletedThermalLadder.operator_comp_operatorProduct_eq_peelSum"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.CompletedThermalLadder.grandCanonicalGibbsExpectation_cons_eq_gibbsRatio_mul_peel"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (ε : Mode → ℝ) (β μ : ℝ)\n  (hsum : QuantumTheory.EigenbasisGibbsSummable (SecondQuantization.Common.grandCanonicalEnergy ε μ) β) (n : ℕ)\n  (C : Fin (2 * n) → SecondQuantization.Fermionic.CompletedThermalLadder Mode),\n  SecondQuantization.Fermionic.CompletedThermalLadder.grandCanonicalGibbsAdmissible ε β μ n C →\n    SecondQuantization.Fermionic.CompletedThermalLadder.grandCanonicalGibbsExpectation ε β μ hsum (List.ofFn C) =\n      ∑ pairing,\n        Combinatorics.Pairing.weight SecondQuantization.Common.Statistics.fermion pairing *\n          ∏ pr ∈ pairing.pairs,\n            SecondQuantization.Fermionic.CompletedThermalLadder.grandCanonicalGibbsExpectation ε β μ hsum\n              [C pr.1, C pr.2]",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.CompletedThermalLadder.grandCanonicalGibbsExpectation_eq_sum_pairing",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.BlochDeDominicis",
+    "externalAxioms": [],
+    "docString": "Completed free-fermion Bloch--de Dominicis expansion obtained by feeding the completed Gibbs\nrecursion data into the common pairing induction. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "SecondQuantization.Common.BlochDeDominicis.ExpectationPairingRecursion.bloch_de_dominicis",
+      "SecondQuantization.Common.BlochDeDominicis.Pairing.weight_fermion"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (ε : Mode → ℝ) (β μ : ℝ)\n  (hsum : QuantumTheory.EigenbasisGibbsSummable (SecondQuantization.Common.grandCanonicalEnergy ε μ) β),\n  SecondQuantization.Fermionic.CompletedThermalLadder.grandCanonicalGibbsExpectation ε β μ hsum [] = 1",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.CompletedThermalLadder.grandCanonicalGibbsExpectation_nil",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.BlochDeDominicis",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.DensityOperator.expectation_id"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.CompletedThermalLadder.grandCanonicalGibbsExpectationRecursion"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (ε : Mode → ℝ) (β μ : ℝ)\n  (hsum : QuantumTheory.EigenbasisGibbsSummable (SecondQuantization.Common.grandCanonicalEnergy ε μ) β)\n  (C : SecondQuantization.Fermionic.CompletedThermalLadder Mode)\n  (A :\n    ↥(SecondQuantization.Fermionic.CompletedFockSpace Mode) →L[ℂ]\n      ↥(SecondQuantization.Fermionic.CompletedFockSpace Mode)),\n  (SecondQuantization.Common.grandCanonicalGibbsDensityOperator ε β μ hsum).expectation (C.operator ∘SL A) =\n    SecondQuantization.Fermionic.CompletedThermalLadder.gibbsFactor (fun i => ε i - μ) β C *\n      (SecondQuantization.Common.grandCanonicalGibbsDensityOperator ε β μ hsum).expectation (A ∘SL C.operator)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.CompletedThermalLadder.grandCanonicalGibbsExpectation_operator_comp",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.BlochDeDominicis",
+    "externalAxioms": [],
+    "docString": "Completed free-Gibbs KMS rotation for one thermal ladder and an arbitrary bounded operator:\n`⟨C A⟩β = gβ(C) ⟨A C⟩β`.  The scalar `gβ(C)` is the same factor appearing in\n`ρβ C = gβ(C) C ρβ`. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.CompletedThermalLadder.grandCanonicalGibbsExpectation_cons_eq_gibbsFactor_mul_rotate"
+    ],
+    "dependencies": [
+      "ContinuousLinearMap.IsTraceClass.comp_left",
+      "ContinuousLinearMap.IsTraceClass.comp_right",
+      "ContinuousLinearMap.IsTraceClass.smul",
+      "ContinuousLinearMap.IsTraceClass.trace_comp_comm",
+      "ContinuousLinearMap.IsTraceClass.trace_congr",
+      "ContinuousLinearMap.IsTraceClass.trace_smul",
+      "QuantumTheory.DensityOperator.expectation_apply",
+      "SecondQuantization.Fermionic.CompletedThermalLadder.grandCanonicalGibbsDensityOperator_comp_operator"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.CompletedThermalLadder.grandCanonicalGibbsExpectation_cons_eq_gibbsFactor_mul_rotate"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (ε : Mode → ℝ) (β μ : ℝ)\n  (hsum : QuantumTheory.EigenbasisGibbsSummable (SecondQuantization.Common.grandCanonicalEnergy ε μ) β)\n  (C D : SecondQuantization.Fermionic.CompletedThermalLadder Mode),\n  1 + SecondQuantization.Fermionic.CompletedThermalLadder.gibbsFactor (fun i => ε i - μ) β C ≠ 0 →\n    SecondQuantization.Fermionic.CompletedThermalLadder.grandCanonicalGibbsExpectation ε β μ hsum [C, D] =\n      SecondQuantization.Fermionic.CompletedThermalLadder.gibbsFactor (fun i => ε i - μ) β C /\n          (1 + SecondQuantization.Fermionic.CompletedThermalLadder.gibbsFactor (fun i => ε i - μ) β C) *\n        C.anticommutatorValue D",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.CompletedThermalLadder.grandCanonicalGibbsExpectation_pair_eq",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.BlochDeDominicis",
+    "externalAxioms": [],
+    "docString": "The normalized two-point completed Gibbs expectation is the scalar CAR coefficient multiplied\nby the same Gibbs ratio that solves the odd-tail KMS equation. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.DensityOperator.expectation_id",
+      "SecondQuantization.Fermionic.CompletedThermalLadder.grandCanonicalGibbsExpectation_cons_eq_gibbsRatio_mul_peel"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
     "terminal": false,
     "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (l₁ l₂ : List (SecondQuantization.Fermionic.CompletedThermalLadder Mode)),\n  SecondQuantization.Fermionic.CompletedThermalLadder.operatorProduct (l₁ ++ l₂) =\n    SecondQuantization.Fermionic.CompletedThermalLadder.operatorProduct l₁ ∘SL\n      SecondQuantization.Fermionic.CompletedThermalLadder.operatorProduct l₂",
     "standardAxioms": [
@@ -136480,15 +136748,15 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.CompletedThermalLadder.completedFreeGibbsExpectation_cons_eq_gibbsFactor_mul_rotate",
-      "SecondQuantization.Fermionic.CompletedThermalLadder.completedFreeGibbsExpectation_cons_eq_peel_add_rotated"
+      "SecondQuantization.Fermionic.CompletedThermalLadder.grandCanonicalGibbsExpectation_cons_eq_gibbsFactor_mul_rotate",
+      "SecondQuantization.Fermionic.CompletedThermalLadder.grandCanonicalGibbsExpectation_cons_eq_peel_add_rotated"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.CompletedThermalLadder.completedFreeGibbsExpectation_cons_eq_gibbsFactor_mul_rotate",
-      "SecondQuantization.Fermionic.CompletedThermalLadder.completedFreeGibbsExpectation_cons_eq_peel_add_rotated"
+      "SecondQuantization.Fermionic.CompletedThermalLadder.grandCanonicalGibbsExpectation_cons_eq_gibbsFactor_mul_rotate",
+      "SecondQuantization.Fermionic.CompletedThermalLadder.grandCanonicalGibbsExpectation_cons_eq_peel_add_rotated"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -136524,15 +136792,15 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.CompletedThermalLadder.completedFreeGibbsExpectation_cons_eq_gibbsFactor_mul_rotate",
-      "SecondQuantization.Fermionic.CompletedThermalLadder.completedFreeGibbsExpectation_cons_eq_peel_add_rotated"
+      "SecondQuantization.Fermionic.CompletedThermalLadder.grandCanonicalGibbsExpectation_cons_eq_gibbsFactor_mul_rotate",
+      "SecondQuantization.Fermionic.CompletedThermalLadder.grandCanonicalGibbsExpectation_cons_eq_peel_add_rotated"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.CompletedThermalLadder.completedFreeGibbsExpectation_cons_eq_gibbsFactor_mul_rotate",
-      "SecondQuantization.Fermionic.CompletedThermalLadder.completedFreeGibbsExpectation_cons_eq_peel_add_rotated"
+      "SecondQuantization.Fermionic.CompletedThermalLadder.grandCanonicalGibbsExpectation_cons_eq_gibbsFactor_mul_rotate",
+      "SecondQuantization.Fermionic.CompletedThermalLadder.grandCanonicalGibbsExpectation_cons_eq_peel_add_rotated"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -143291,7 +143559,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (ε : Mode → ℝ) (β : ℝ) {i : Mode}\n  {n : SecondQuantization.Fermionic.Occupation Mode},\n  i ∉ n →\n    ↑(QuantumTheory.eigenbasisGibbsProbability (SecondQuantization.Fermionic.fermionEnergy ε) β\n          (SecondQuantization.Fermionic.insertOccupation i n)) =\n      Complex.exp (-↑β * ↑(ε i)) *\n        ↑(QuantumTheory.eigenbasisGibbsProbability (SecondQuantization.Fermionic.fermionEnergy ε) β n)",
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (ε : Mode → ℝ) (β μ : ℝ) {i : Mode}\n  {n : SecondQuantization.Fermionic.Occupation Mode},\n  i ∉ n →\n    ↑(QuantumTheory.eigenbasisGibbsProbability (SecondQuantization.Common.grandCanonicalEnergy ε μ) β\n          (SecondQuantization.Fermionic.insertOccupation i n)) =\n      Complex.exp (-↑β * (↑(ε i) - ↑μ)) *\n        ↑(QuantumTheory.eigenbasisGibbsProbability (SecondQuantization.Common.grandCanonicalEnergy ε μ) β n)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -143310,7 +143578,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.completedFreeGibbsDensityOperator_comp_create"
+      "SecondQuantization.Fermionic.grandCanonicalGibbsDensityOperator_comp_create"
     ],
     "dependencies": [
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.Gibbs.0.SecondQuantization.Fermionic.completedFreeGibbsProbability_insertOccupation_of_not_mem"
@@ -143318,7 +143586,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.completedFreeGibbsDensityOperator_comp_create"
+      "SecondQuantization.Fermionic.grandCanonicalGibbsDensityOperator_comp_create"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -143335,7 +143603,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (ε : Mode → ℝ) (β : ℝ) {i : Mode}\n  {n : SecondQuantization.Fermionic.Occupation Mode},\n  i ∈ n →\n    ↑(QuantumTheory.eigenbasisGibbsProbability (SecondQuantization.Fermionic.fermionEnergy ε) β\n          (SecondQuantization.Fermionic.removeOccupation i n)) =\n      Complex.exp (↑β * ↑(ε i)) *\n        ↑(QuantumTheory.eigenbasisGibbsProbability (SecondQuantization.Fermionic.fermionEnergy ε) β n)",
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (ε : Mode → ℝ) (β μ : ℝ) {i : Mode}\n  {n : SecondQuantization.Fermionic.Occupation Mode},\n  i ∈ n →\n    ↑(QuantumTheory.eigenbasisGibbsProbability (SecondQuantization.Common.grandCanonicalEnergy ε μ) β\n          (SecondQuantization.Fermionic.removeOccupation i n)) =\n      Complex.exp (↑β * (↑(ε i) - ↑μ)) *\n        ↑(QuantumTheory.eigenbasisGibbsProbability (SecondQuantization.Common.grandCanonicalEnergy ε μ) β n)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -143354,7 +143622,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.completedFreeGibbsDensityOperator_comp_annihilate"
+      "SecondQuantization.Fermionic.grandCanonicalGibbsDensityOperator_comp_annihilate"
     ],
     "dependencies": [
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.Gibbs.0.SecondQuantization.Fermionic.completedFreeGibbsProbability_removeOccupation_of_mem"
@@ -143362,7 +143630,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.completedFreeGibbsDensityOperator_comp_annihilate"
+      "SecondQuantization.Fermionic.grandCanonicalGibbsDensityOperator_comp_annihilate"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -143446,7 +143714,7 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Fermionic.completedAnnihilate_comp_algebraicToCompleted",
-      "SecondQuantization.Fermionic.completedFreeGibbsDensityOperator_comp_annihilate"
+      "SecondQuantization.Fermionic.grandCanonicalGibbsDensityOperator_comp_annihilate"
     ],
     "dependencies": [
       "SecondQuantization.Common.completedCoordinateProjection_basisState",
@@ -143457,7 +143725,7 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Fermionic.completedAnnihilate_comp_algebraicToCompleted",
-      "SecondQuantization.Fermionic.completedFreeGibbsDensityOperator_comp_annihilate"
+      "SecondQuantization.Fermionic.grandCanonicalGibbsDensityOperator_comp_annihilate"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -143494,7 +143762,7 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Fermionic.completedAnnihilate_comp_algebraicToCompleted",
-      "SecondQuantization.Fermionic.completedFreeGibbsDensityOperator_comp_annihilate"
+      "SecondQuantization.Fermionic.grandCanonicalGibbsDensityOperator_comp_annihilate"
     ],
     "dependencies": [
       "SecondQuantization.Common.completedCoordinateProjection_basisState",
@@ -143505,7 +143773,7 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Fermionic.completedAnnihilate_comp_algebraicToCompleted",
-      "SecondQuantization.Fermionic.completedFreeGibbsDensityOperator_comp_annihilate"
+      "SecondQuantization.Fermionic.grandCanonicalGibbsDensityOperator_comp_annihilate"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -143828,8 +144096,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.completedFreeGibbsDensityOperator_totalNumber_diagonalTerm",
-      "SecondQuantization.Fermionic.hasSum_completedFreeGibbsDensityOperator_totalNumber_diagonal"
+      "SecondQuantization.Fermionic.grandCanonicalGibbsDensityOperator_totalNumber_diagonalTerm",
+      "SecondQuantization.Fermionic.hasSum_grandCanonicalGibbsDensityOperator_totalNumber_diagonal"
     ],
     "dependencies": [
       "SecondQuantization.Common.completedBasisState_mem_completedDiagonalDomain"
@@ -143837,8 +144105,8 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.completedFreeGibbsDensityOperator_totalNumber_diagonalTerm",
-      "SecondQuantization.Fermionic.hasSum_completedFreeGibbsDensityOperator_totalNumber_diagonal"
+      "SecondQuantization.Fermionic.grandCanonicalGibbsDensityOperator_totalNumber_diagonalTerm",
+      "SecondQuantization.Fermionic.hasSum_grandCanonicalGibbsDensityOperator_totalNumber_diagonal"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -143922,7 +144190,7 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Fermionic.completedCreate_comp_algebraicToCompleted",
-      "SecondQuantization.Fermionic.completedFreeGibbsDensityOperator_comp_create"
+      "SecondQuantization.Fermionic.grandCanonicalGibbsDensityOperator_comp_create"
     ],
     "dependencies": [
       "SecondQuantization.Common.completedCoordinateProjection_basisState",
@@ -143933,7 +144201,7 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Fermionic.completedCreate_comp_algebraicToCompleted",
-      "SecondQuantization.Fermionic.completedFreeGibbsDensityOperator_comp_create"
+      "SecondQuantization.Fermionic.grandCanonicalGibbsDensityOperator_comp_create"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -143970,7 +144238,7 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Fermionic.completedCreate_comp_algebraicToCompleted",
-      "SecondQuantization.Fermionic.completedFreeGibbsDensityOperator_comp_create"
+      "SecondQuantization.Fermionic.grandCanonicalGibbsDensityOperator_comp_create"
     ],
     "dependencies": [
       "SecondQuantization.Common.completedCoordinateProjection_basisState",
@@ -143981,7 +144249,7 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Fermionic.completedCreate_comp_algebraicToCompleted",
-      "SecondQuantization.Fermionic.completedFreeGibbsDensityOperator_comp_create"
+      "SecondQuantization.Fermionic.grandCanonicalGibbsDensityOperator_comp_create"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -144080,200 +144348,6 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Fermionic.completedFreeHamiltonianAfterCreate"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (β : ℝ)\n  (hsum : QuantumTheory.EigenbasisGibbsSummable (SecondQuantization.Fermionic.fermionEnergy ε) β)\n  (n : SecondQuantization.Fermionic.Occupation Mode),\n  (SecondQuantization.Fermionic.completedFreeGibbsDensityOperator ε β hsum).op\n      (SecondQuantization.Fermionic.completedBasisState n) =\n    ↑(QuantumTheory.eigenbasisGibbsProbability (SecondQuantization.Fermionic.fermionEnergy ε) β n) •\n      SecondQuantization.Fermionic.completedBasisState n",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.completedFreeGibbsDensityOperator_apply_basis",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.Gibbs",
-    "externalAxioms": [],
-    "docString": "The completed free Gibbs density operator acts diagonally in the occupation basis. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.completedFreeGibbsDensityOperator_comp_annihilate",
-      "SecondQuantization.Fermionic.completedFreeGibbsDensityOperator_comp_create",
-      "SecondQuantization.Fermionic.completedFreeGibbsDensityOperator_totalNumber_diagonalTerm",
-      "SecondQuantization.Fermionic.tendsto_completedFreeModeRetainedExpectation"
-    ],
-    "dependencies": [
-      "QuantumTheory.eigenbasisGibbsDensityOperator_apply_basis",
-      "SecondQuantization.Fermionic.completedOccupationHilbertBasis_apply"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.completedFreeGibbsDensityOperator_comp_annihilate",
-      "SecondQuantization.Fermionic.completedFreeGibbsDensityOperator_comp_create",
-      "SecondQuantization.Fermionic.completedFreeGibbsDensityOperator_totalNumber_diagonalTerm",
-      "SecondQuantization.Fermionic.tendsto_completedFreeModeRetainedExpectation"
-    ],
-    "compiledConsumerCount": 4,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (ε : Mode → ℝ) (β : ℝ)\n  (hsum : QuantumTheory.EigenbasisGibbsSummable (SecondQuantization.Fermionic.fermionEnergy ε) β) (i : Mode),\n  (SecondQuantization.Fermionic.completedFreeGibbsDensityOperator ε β hsum).op ∘SL\n      SecondQuantization.Fermionic.completedAnnihilate i =\n    Complex.exp (↑β * ↑(ε i)) •\n      SecondQuantization.Fermionic.completedAnnihilate i ∘SL\n        (SecondQuantization.Fermionic.completedFreeGibbsDensityOperator ε β hsum).op",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.completedFreeGibbsDensityOperator_comp_annihilate",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.Gibbs",
-    "externalAxioms": [],
-    "docString": "Completed free-Gibbs annihilation intertwining:\n`ρβ aᵢ = exp (β εᵢ) aᵢ ρβ` as an identity of bounded operators. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.CompletedThermalLadder.completedFreeGibbsDensityOperator_comp_operator"
-    ],
-    "dependencies": [
-      "SecondQuantization.Common.continuousLinearMap_ext_completedBasis",
-      "SecondQuantization.Fermionic.coe_completedFreeGibbsProbability_removeOccupation_of_mem",
-      "SecondQuantization.Fermionic.completedAnnihilate_basisState_of_mem",
-      "SecondQuantization.Fermionic.completedAnnihilate_basisState_of_not_mem",
-      "SecondQuantization.Fermionic.completedFreeGibbsDensityOperator_apply_basis"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.CompletedThermalLadder.completedFreeGibbsDensityOperator_comp_operator"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (ε : Mode → ℝ) (β : ℝ)\n  (hsum : QuantumTheory.EigenbasisGibbsSummable (SecondQuantization.Fermionic.fermionEnergy ε) β) (i : Mode),\n  (SecondQuantization.Fermionic.completedFreeGibbsDensityOperator ε β hsum).op ∘SL\n      SecondQuantization.Fermionic.completedCreate i =\n    Complex.exp (-↑β * ↑(ε i)) •\n      SecondQuantization.Fermionic.completedCreate i ∘SL\n        (SecondQuantization.Fermionic.completedFreeGibbsDensityOperator ε β hsum).op",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.completedFreeGibbsDensityOperator_comp_create",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.Gibbs",
-    "externalAxioms": [],
-    "docString": "Completed free-Gibbs creation intertwining:\n`ρβ aᵢ† = exp (-β εᵢ) aᵢ† ρβ` as an identity of bounded operators. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.CompletedThermalLadder.completedFreeGibbsDensityOperator_comp_operator"
-    ],
-    "dependencies": [
-      "SecondQuantization.Common.continuousLinearMap_ext_completedBasis",
-      "SecondQuantization.Fermionic.coe_completedFreeGibbsProbability_insertOccupation_of_not_mem",
-      "SecondQuantization.Fermionic.completedCreate_basisState_of_mem",
-      "SecondQuantization.Fermionic.completedCreate_basisState_of_not_mem",
-      "SecondQuantization.Fermionic.completedFreeGibbsDensityOperator_apply_basis"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.CompletedThermalLadder.completedFreeGibbsDensityOperator_comp_operator"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (β : ℝ)\n  (hsum : QuantumTheory.EigenbasisGibbsSummable (SecondQuantization.Fermionic.fermionEnergy ε) β)\n  (n : SecondQuantization.Fermionic.Occupation Mode),\n  inner ℂ (SecondQuantization.Fermionic.completedBasisState n)\n      ((SecondQuantization.Fermionic.completedFreeGibbsDensityOperator ε β hsum).op\n        (↑SecondQuantization.Fermionic.completedTotalNumberOperator\n          ⟨SecondQuantization.Fermionic.completedBasisState n, ⋯⟩)) =\n    ↑(QuantumTheory.eigenbasisGibbsProbability (SecondQuantization.Fermionic.fermionEnergy ε) β n *\n        ↑(SecondQuantization.Fermionic.particleNumber n))",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.completedFreeGibbsDensityOperator_totalNumber_diagonalTerm",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.TotalNumberExpectation",
-    "externalAxioms": [],
-    "docString": "On each occupation basis state, the diagonal matrix element of the composed completed Gibbs\ndensity operator and total-number operator is the corresponding Gibbs probability times particle\nnumber. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.hasSum_completedFreeGibbsDensityOperator_totalNumber_diagonal"
-    ],
-    "dependencies": [
-      "SecondQuantization.Fermionic.completedBasisState_mem_completedTotalNumberDomain",
-      "SecondQuantization.Fermionic.completedFreeGibbsDensityOperator_apply_basis",
-      "SecondQuantization.Fermionic.completedOccupationHilbertBasis_apply",
-      "SecondQuantization.Fermionic.completedTotalNumberOperator_basisState"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.hasSum_completedFreeGibbsDensityOperator_totalNumber_diagonal"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -144412,7 +144486,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (β : ℝ) (S : Finset Mode) (n : SecondQuantization.Fermionic.Occupation Mode),\n  (SecondQuantization.Fermionic.completedFreeModeTruncatedGibbsDensityOperator ε β S).op\n      (SecondQuantization.Fermionic.completedBasisState n) =\n    ↑(SecondQuantization.Fermionic.completedFreeModeTruncatedGibbsProbability ε β S n) •\n      SecondQuantization.Fermionic.completedBasisState n",
+    "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (β μ : ℝ) (S : Finset Mode) (n : SecondQuantization.Fermionic.Occupation Mode),\n  (SecondQuantization.Fermionic.completedFreeModeTruncatedGibbsDensityOperator ε β μ S).op\n      (SecondQuantization.Fermionic.completedBasisState n) =\n    ↑(SecondQuantization.Fermionic.completedFreeModeTruncatedGibbsProbability ε β μ S n) •\n      SecondQuantization.Fermionic.completedBasisState n",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -144460,7 +144534,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (β : ℝ),\n  QuantumTheory.EigenbasisGibbsSummable (SecondQuantization.Fermionic.fermionEnergy ε) β →\n    ∀ (S : Finset Mode)\n      (A :\n        ↥(SecondQuantization.Fermionic.CompletedFockSpace Mode) →L[ℂ]\n          ↥(SecondQuantization.Fermionic.CompletedFockSpace Mode)),\n      (SecondQuantization.Fermionic.completedFreeModeTruncatedGibbsDensityOperator ε β S).expectation A =\n        ↑(SecondQuantization.Fermionic.completedFreeModeTruncationNormalizationRatio ε β S) *\n          SecondQuantization.Fermionic.completedFreeModeRetainedExpectation ε β S A",
+    "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (β μ : ℝ),\n  QuantumTheory.EigenbasisGibbsSummable (SecondQuantization.Common.grandCanonicalEnergy ε μ) β →\n    ∀ (S : Finset Mode)\n      (A :\n        ↥(SecondQuantization.Fermionic.CompletedFockSpace Mode) →L[ℂ]\n          ↥(SecondQuantization.Fermionic.CompletedFockSpace Mode)),\n      (SecondQuantization.Fermionic.completedFreeModeTruncatedGibbsDensityOperator ε β μ S).expectation A =\n        ↑(SecondQuantization.Fermionic.completedFreeModeTruncationNormalizationRatio ε β μ S) *\n          SecondQuantization.Fermionic.completedFreeModeRetainedExpectation ε β μ S A",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -144508,7 +144582,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (β : ℝ),\n  QuantumTheory.EigenbasisGibbsSummable (SecondQuantization.Fermionic.fermionEnergy ε) β →\n    ∀ (S : Finset Mode) (n : SecondQuantization.Fermionic.Occupation Mode),\n      SecondQuantization.Fermionic.completedFreeModeTruncatedGibbsProbability ε β S n =\n        SecondQuantization.Fermionic.completedFreeModeTruncationNormalizationRatio ε β S *\n          if n ⊆ S then QuantumTheory.eigenbasisGibbsProbability (SecondQuantization.Fermionic.fermionEnergy ε) β n\n          else 0",
+    "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (β μ : ℝ),\n  QuantumTheory.EigenbasisGibbsSummable (SecondQuantization.Common.grandCanonicalEnergy ε μ) β →\n    ∀ (S : Finset Mode) (n : SecondQuantization.Fermionic.Occupation Mode),\n      SecondQuantization.Fermionic.completedFreeModeTruncatedGibbsProbability ε β μ S n =\n        SecondQuantization.Fermionic.completedFreeModeTruncationNormalizationRatio ε β μ S *\n          if n ⊆ S then\n            QuantumTheory.eigenbasisGibbsProbability (SecondQuantization.Common.grandCanonicalEnergy ε μ) β n\n          else 0",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -144553,7 +144627,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (β : ℝ) (S : Finset Mode),\n  0 < SecondQuantization.Fermionic.completedFreeModeTruncatedPartitionFunction ε β S",
+    "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (β μ : ℝ) (S : Finset Mode),\n  0 < SecondQuantization.Fermionic.completedFreeModeTruncatedPartitionFunction ε β μ S",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -144602,7 +144676,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (β : ℝ), 0 ≤ SecondQuantization.Fermionic.completedFreeTotalNumberExpectation ε β",
+    "statement": "∀ {Mode : Type u_1} [inst : Fintype Mode] (ε : Mode → ℝ) (β μ : ℝ),\n  ↑↑SecondQuantization.Common.completedFiniteHilbertEquiv ∘SL\n      (SecondQuantization.Common.grandCanonicalGibbsDensityOperator ε β μ ⋯).op =\n    (SecondQuantization.Fermionic.freeGibbsDensityOperator (fun i => ε i - μ) β).op ∘SL\n      ↑↑SecondQuantization.Common.completedFiniteHilbertEquiv",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -144614,15 +144688,20 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.completedFreeTotalNumberExpectation_nonneg",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.TotalNumberExpectation",
+    "name": "SecondQuantization.Fermionic.completedGrandCanonicalGibbs_intertwines_finite",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.FiniteGibbsTraceCompatibility",
     "externalAxioms": [],
-    "docString": "The completed free total-number expectation is nonnegative. ",
+    "docString": "At finite mode number, the completed grand-canonical density operator and\nthe finite free-fermion Gibbs density operator at effective energy `ε - μ`\nare intertwined by the canonical completed-to-finite Hilbert equivalence. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "QuantumTheory.eigenbasisGibbsProbability_nonneg"
+      "QuantumTheory.eigenbasisGibbsDensityOperator_intertwines",
+      "QuantumTheory.eigenbasisGibbsSummable_of_finite",
+      "SecondQuantization.Common.completedFiniteHilbertEquiv_basisState",
+      "SecondQuantization.Common.completedHilbertBasis_apply",
+      "SecondQuantization.Common.finiteHilbertBasis_apply",
+      "SecondQuantization.Common.grandCanonicalEnergy_eq_shifted"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -144869,10 +144948,9 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.completedFreeGibbsDensityOperator_apply_basis",
-      "SecondQuantization.Fermionic.completedFreeGibbsDensityOperator_totalNumber_diagonalTerm",
       "SecondQuantization.Fermionic.completedFreeModeTruncatedGibbsDensityOperator_apply_basis",
       "SecondQuantization.Fermionic.completedFreeModeTruncatedGibbsDensityOperator_expectation_eq_ratio_mul",
+      "SecondQuantization.Fermionic.grandCanonicalGibbsDensityOperator_totalNumber_diagonalTerm",
       "SecondQuantization.Fermionic.tendsto_completedFreeModeRetainedExpectation"
     ],
     "dependencies": [
@@ -144881,13 +144959,12 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.completedFreeGibbsDensityOperator_apply_basis",
-      "SecondQuantization.Fermionic.completedFreeGibbsDensityOperator_totalNumber_diagonalTerm",
       "SecondQuantization.Fermionic.completedFreeModeTruncatedGibbsDensityOperator_apply_basis",
       "SecondQuantization.Fermionic.completedFreeModeTruncatedGibbsDensityOperator_expectation_eq_ratio_mul",
+      "SecondQuantization.Fermionic.grandCanonicalGibbsDensityOperator_totalNumber_diagonalTerm",
       "SecondQuantization.Fermionic.tendsto_completedFreeModeRetainedExpectation"
     ],
-    "compiledConsumerCount": 5,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -144921,7 +144998,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.completedFreeGibbsDensityOperator_totalNumber_diagonalTerm"
+      "SecondQuantization.Fermionic.grandCanonicalGibbsDensityOperator_totalNumber_diagonalTerm"
     ],
     "dependencies": [
       "SecondQuantization.Common.completedDiagonalOperator_basisState"
@@ -144929,7 +145006,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.completedFreeGibbsDensityOperator_totalNumber_diagonalTerm"
+      "SecondQuantization.Fermionic.grandCanonicalGibbsDensityOperator_totalNumber_diagonalTerm"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -148037,6 +148114,47 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
+    "terminal": true,
+    "statement": "∀ {Mode : Type u_1} [inst : Fintype Mode] (ε : Mode → ℝ) (β μ : ℝ)\n  (A : SecondQuantization.Fermionic.OccupationFock Mode →ₗ[ℂ] SecondQuantization.Fermionic.OccupationFock Mode),\n  (SecondQuantization.Fermionic.freeGibbsDensityOperator (fun i => ε i - μ) β).expectation\n      (SecondQuantization.Common.finiteHilbertOperatorAlgEquiv A) =\n    (SecondQuantization.Common.summableDiagonalTraceRatioLinear\n        (SecondQuantization.Common.diagonalEvolution (SecondQuantization.Common.grandCanonicalEnergy ε μ) (-β)))\n      ⟨A, ⋯⟩",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.finiteGrandCanonicalGibbsExpectation_eq_diagonalTraceRatio",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.FiniteGibbsTraceCompatibility",
+    "externalAxioms": [],
+    "docString": "The finite fermionic grand-canonical density-state expectation is the\nsummable diagonal trace ratio of #4074, with shifted one-mode energies.\nSummability on the algebraic side is automatic only because the occupation\nconfiguration type is finite. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "SecondQuantization.Common.grandCanonicalEnergy_eq_shifted",
+      "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_eq_summableDiagonalTraceRatioLinear"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
     "terminal": false,
     "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] {i : Mode}\n  {n : SecondQuantization.Fermionic.Occupation Mode},\n  i ∈ n →\n    (SecondQuantization.Fermionic.finiteHilbertAnnihilate i) (SecondQuantization.Common.finiteHilbertBasisState n) =\n      ↑(SecondQuantization.Fermionic.fermionSign i n) •\n        SecondQuantization.Common.finiteHilbertBasisState (SecondQuantization.Fermionic.removeOccupation i n)",
     "standardAxioms": [
@@ -148565,8 +148683,8 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "SecondQuantization.Common.finiteGibbsExpectation_eq_sum",
-      "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation",
+      "SecondQuantization.Common.matrixCoeff_diagonalEvolution_comp",
+      "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_eq_summableDiagonalTraceRatioLinear",
       "SecondQuantization.Fermionic.matrixCoeff_annihilate_comp_annihilate"
     ],
     "crossModuleDirectWrapper": false,
@@ -148767,8 +148885,8 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "SecondQuantization.Common.finiteGibbsExpectation_eq_sum",
-      "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation",
+      "SecondQuantization.Common.matrixCoeff_diagonalEvolution_comp",
+      "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_eq_summableDiagonalTraceRatioLinear",
       "SecondQuantization.Fermionic.matrixCoeff_create_comp_create"
     ],
     "crossModuleDirectWrapper": false,
@@ -148812,11 +148930,10 @@
       "SecondQuantization.Fermionic.dysonVertexMoment_quarticInteraction_eq_sum_vertexLabel_pairingEvaluation",
       "SecondQuantization.Fermionic.eigenbasisGibbsEnergyExpectation_fermionEnergy_eq_sum_fermiDirac",
       "SecondQuantization.Fermionic.externalInsertionVertexDysonCoefficient_eq_externalInsertionDysonCoefficient",
-      "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_annihilate_comp_annihilate",
       "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_annihilate_comp_create",
       "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_comp_dysonCoeff_quarticInteraction",
       "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_create_comp_annihilate",
-      "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_create_comp_create",
+      "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_eq_summableDiagonalTraceRatioLinear",
       "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_mixedTimeOrderedVertexComp_eq_sum_pairingValue",
       "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_prod_timedFieldOperator_eq_sum_pairing",
       "SecondQuantization.Fermionic.timedFieldPairContraction_eq"
@@ -148829,16 +148946,64 @@
       "SecondQuantization.Fermionic.dysonVertexMoment_quarticInteraction_eq_sum_vertexLabel_pairingEvaluation",
       "SecondQuantization.Fermionic.eigenbasisGibbsEnergyExpectation_fermionEnergy_eq_sum_fermiDirac",
       "SecondQuantization.Fermionic.externalInsertionVertexDysonCoefficient_eq_externalInsertionDysonCoefficient",
-      "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_annihilate_comp_annihilate",
       "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_annihilate_comp_create",
       "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_comp_dysonCoeff_quarticInteraction",
       "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_create_comp_annihilate",
-      "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_create_comp_create",
+      "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_eq_summableDiagonalTraceRatioLinear",
       "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_mixedTimeOrderedVertexComp_eq_sum_pairingValue",
       "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_prod_timedFieldOperator_eq_sum_pairing",
       "SecondQuantization.Fermionic.timedFieldPairContraction_eq"
     ],
-    "compiledConsumerCount": 12,
+    "compiledConsumerCount": 11,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} [inst : Fintype Mode] (ε : Mode → ℝ) (β : ℝ)\n  (A : SecondQuantization.Fermionic.OccupationFock Mode →ₗ[ℂ] SecondQuantization.Fermionic.OccupationFock Mode),\n  (SecondQuantization.Fermionic.freeGibbsDensityOperator ε β).expectation\n      (SecondQuantization.Common.finiteHilbertOperatorAlgEquiv A) =\n    (SecondQuantization.Common.summableDiagonalTraceRatioLinear\n        (SecondQuantization.Common.diagonalEvolution (SecondQuantization.Fermionic.fermionEnergy ε) (-β)))\n      ⟨A, ⋯⟩",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_eq_summableDiagonalTraceRatioLinear",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsDensityOperator",
+    "externalAxioms": [],
+    "docString": "The finite fermionic density-state expectation is the common summable diagonal\ntrace ratio specialized to the occupation energies. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.finiteGrandCanonicalGibbsExpectation_eq_diagonalTraceRatio",
+      "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_annihilate_comp_annihilate",
+      "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_create_comp_create"
+    ],
+    "dependencies": [
+      "SecondQuantization.Common.finiteGibbsExpectation_eq_summableDiagonalTraceRatioLinear",
+      "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.finiteGrandCanonicalGibbsExpectation_eq_diagonalTraceRatio",
+      "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_annihilate_comp_annihilate",
+      "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_create_comp_create"
+    ],
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -149441,8 +149606,201 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (β μ : ℝ)\n  (hsum : QuantumTheory.EigenbasisGibbsSummable (SecondQuantization.Common.grandCanonicalEnergy ε μ) β)\n  (n : SecondQuantization.Fermionic.Occupation Mode),\n  (SecondQuantization.Common.grandCanonicalGibbsDensityOperator ε β μ hsum).op\n      (SecondQuantization.Fermionic.completedBasisState n) =\n    ↑(QuantumTheory.eigenbasisGibbsProbability (SecondQuantization.Common.grandCanonicalEnergy ε μ) β n) •\n      SecondQuantization.Fermionic.completedBasisState n",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.grandCanonicalGibbsDensityOperator_apply_basis",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.Gibbs",
+    "externalAxioms": [],
+    "docString": "Occupation-basis action of the common grand-canonical Gibbs density, in the fermionic\ncompleted-Fock representation. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.grandCanonicalGibbsDensityOperator_comp_annihilate",
+      "SecondQuantization.Fermionic.grandCanonicalGibbsDensityOperator_comp_create",
+      "SecondQuantization.Fermionic.grandCanonicalGibbsDensityOperator_totalNumber_diagonalTerm",
+      "SecondQuantization.Fermionic.tendsto_completedFreeModeRetainedExpectation"
+    ],
+    "dependencies": [
+      "SecondQuantization.Common.grandCanonicalGibbsDensityOperator_apply_basis"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.grandCanonicalGibbsDensityOperator_comp_annihilate",
+      "SecondQuantization.Fermionic.grandCanonicalGibbsDensityOperator_comp_create",
+      "SecondQuantization.Fermionic.grandCanonicalGibbsDensityOperator_totalNumber_diagonalTerm",
+      "SecondQuantization.Fermionic.tendsto_completedFreeModeRetainedExpectation"
+    ],
+    "compiledConsumerCount": 4,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (ε : Mode → ℝ) (β μ : ℝ)\n  (hsum : QuantumTheory.EigenbasisGibbsSummable (SecondQuantization.Common.grandCanonicalEnergy ε μ) β) (i : Mode),\n  (SecondQuantization.Common.grandCanonicalGibbsDensityOperator ε β μ hsum).op ∘SL\n      SecondQuantization.Fermionic.completedAnnihilate i =\n    Complex.exp (↑β * ↑(ε i - μ)) •\n      SecondQuantization.Fermionic.completedAnnihilate i ∘SL\n        (SecondQuantization.Common.grandCanonicalGibbsDensityOperator ε β μ hsum).op",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.grandCanonicalGibbsDensityOperator_comp_annihilate",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.Gibbs",
+    "externalAxioms": [],
+    "docString": "Completed free-Gibbs annihilation intertwining:\n`ρβ,μ aᵢ = exp (β (εᵢ - μ)) aᵢ ρβ,μ` as an identity of bounded operators. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.CompletedThermalLadder.grandCanonicalGibbsDensityOperator_comp_operator"
+    ],
+    "dependencies": [
+      "SecondQuantization.Common.continuousLinearMap_ext_completedBasis",
+      "SecondQuantization.Fermionic.coe_completedFreeGibbsProbability_removeOccupation_of_mem",
+      "SecondQuantization.Fermionic.completedAnnihilate_basisState_of_mem",
+      "SecondQuantization.Fermionic.completedAnnihilate_basisState_of_not_mem",
+      "SecondQuantization.Fermionic.grandCanonicalGibbsDensityOperator_apply_basis"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.CompletedThermalLadder.grandCanonicalGibbsDensityOperator_comp_operator"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (ε : Mode → ℝ) (β μ : ℝ)\n  (hsum : QuantumTheory.EigenbasisGibbsSummable (SecondQuantization.Common.grandCanonicalEnergy ε μ) β) (i : Mode),\n  (SecondQuantization.Common.grandCanonicalGibbsDensityOperator ε β μ hsum).op ∘SL\n      SecondQuantization.Fermionic.completedCreate i =\n    Complex.exp (-↑β * ↑(ε i - μ)) •\n      SecondQuantization.Fermionic.completedCreate i ∘SL\n        (SecondQuantization.Common.grandCanonicalGibbsDensityOperator ε β μ hsum).op",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.grandCanonicalGibbsDensityOperator_comp_create",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.Gibbs",
+    "externalAxioms": [],
+    "docString": "Completed free-Gibbs creation intertwining:\n`ρβ,μ aᵢ† = exp (-β (εᵢ - μ)) aᵢ† ρβ,μ` as an identity of bounded operators. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.CompletedThermalLadder.grandCanonicalGibbsDensityOperator_comp_operator"
+    ],
+    "dependencies": [
+      "SecondQuantization.Common.continuousLinearMap_ext_completedBasis",
+      "SecondQuantization.Fermionic.coe_completedFreeGibbsProbability_insertOccupation_of_not_mem",
+      "SecondQuantization.Fermionic.completedCreate_basisState_of_mem",
+      "SecondQuantization.Fermionic.completedCreate_basisState_of_not_mem",
+      "SecondQuantization.Fermionic.grandCanonicalGibbsDensityOperator_apply_basis"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.CompletedThermalLadder.grandCanonicalGibbsDensityOperator_comp_operator"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (β μ : ℝ)\n  (hsum : QuantumTheory.EigenbasisGibbsSummable (SecondQuantization.Common.grandCanonicalEnergy ε μ) β)\n  (n : SecondQuantization.Fermionic.Occupation Mode),\n  inner ℂ (SecondQuantization.Fermionic.completedBasisState n)\n      ((SecondQuantization.Common.grandCanonicalGibbsDensityOperator ε β μ hsum).op\n        (↑SecondQuantization.Fermionic.completedTotalNumberOperator\n          ⟨SecondQuantization.Fermionic.completedBasisState n, ⋯⟩)) =\n    ↑(QuantumTheory.eigenbasisGibbsProbability (SecondQuantization.Common.grandCanonicalEnergy ε μ) β n *\n        ↑(SecondQuantization.Fermionic.particleNumber n))",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.grandCanonicalGibbsDensityOperator_totalNumber_diagonalTerm",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.TotalNumberExpectation",
+    "externalAxioms": [],
+    "docString": "On each occupation basis state, the diagonal matrix element of the composed completed Gibbs\ndensity operator and total-number operator is the corresponding Gibbs probability times particle\nnumber. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.hasSum_grandCanonicalGibbsDensityOperator_totalNumber_diagonal"
+    ],
+    "dependencies": [
+      "SecondQuantization.Fermionic.completedBasisState_mem_completedTotalNumberDomain",
+      "SecondQuantization.Fermionic.completedOccupationHilbertBasis_apply",
+      "SecondQuantization.Fermionic.completedTotalNumberOperator_basisState",
+      "SecondQuantization.Fermionic.grandCanonicalGibbsDensityOperator_apply_basis"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.hasSum_grandCanonicalGibbsDensityOperator_totalNumber_diagonal"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
     "terminal": true,
-    "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (β : ℝ)\n  (hsum : QuantumTheory.EigenbasisGibbsSummable (SecondQuantization.Fermionic.fermionEnergy ε) β),\n  SecondQuantization.Fermionic.CompletedFreeTotalNumberIntegrable ε β →\n    HasSum\n      (fun n =>\n        inner ℂ (SecondQuantization.Fermionic.completedBasisState n)\n          ((SecondQuantization.Fermionic.completedFreeGibbsDensityOperator ε β hsum).op\n            (↑SecondQuantization.Fermionic.completedTotalNumberOperator\n              ⟨SecondQuantization.Fermionic.completedBasisState n, ⋯⟩)))\n      ↑(SecondQuantization.Fermionic.completedFreeTotalNumberExpectation ε β)",
+    "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (β μ : ℝ),\n  0 ≤ SecondQuantization.Fermionic.grandCanonicalTotalNumberExpectation ε β μ",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -149454,7 +149812,47 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.hasSum_completedFreeGibbsDensityOperator_totalNumber_diagonal",
+    "name": "SecondQuantization.Fermionic.grandCanonicalTotalNumberExpectation_nonneg",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.TotalNumberExpectation",
+    "externalAxioms": [],
+    "docString": "The completed free total-number expectation is nonnegative. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.eigenbasisGibbsProbability_nonneg"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (β μ : ℝ)\n  (hsum : QuantumTheory.EigenbasisGibbsSummable (SecondQuantization.Common.grandCanonicalEnergy ε μ) β),\n  SecondQuantization.Fermionic.GrandCanonicalTotalNumberIntegrable ε β μ →\n    HasSum\n      (fun n =>\n        inner ℂ (SecondQuantization.Fermionic.completedBasisState n)\n          ((SecondQuantization.Common.grandCanonicalGibbsDensityOperator ε β μ hsum).op\n            (↑SecondQuantization.Fermionic.completedTotalNumberOperator\n              ⟨SecondQuantization.Fermionic.completedBasisState n, ⋯⟩)))\n      ↑(SecondQuantization.Fermionic.grandCanonicalTotalNumberExpectation ε β μ)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.hasSum_grandCanonicalGibbsDensityOperator_totalNumber_diagonal",
     "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.TotalNumberExpectation",
     "externalAxioms": [],
     "docString": "The diagonal matrix elements of the actual completed Gibbs density operator composed with the\ncompleted total-number operator sum to the real spectral expectation. ",
@@ -149463,8 +149861,8 @@
     "dependents": [],
     "dependencies": [
       "SecondQuantization.Fermionic.completedBasisState_mem_completedTotalNumberDomain",
-      "SecondQuantization.Fermionic.completedFreeGibbsDensityOperator_totalNumber_diagonalTerm",
-      "SecondQuantization.Fermionic.hasSum_completedFreeTotalNumberExpectation"
+      "SecondQuantization.Fermionic.grandCanonicalGibbsDensityOperator_totalNumber_diagonalTerm",
+      "SecondQuantization.Fermionic.hasSum_grandCanonicalTotalNumberExpectation"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -149484,7 +149882,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (β : ℝ),\n  SecondQuantization.Fermionic.CompletedFreeTotalNumberIntegrable ε β →\n    HasSum\n      (fun n =>\n        QuantumTheory.eigenbasisGibbsProbability (SecondQuantization.Fermionic.fermionEnergy ε) β n *\n          ↑(SecondQuantization.Fermionic.particleNumber n))\n      (SecondQuantization.Fermionic.completedFreeTotalNumberExpectation ε β)",
+    "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (β μ : ℝ),\n  SecondQuantization.Fermionic.GrandCanonicalTotalNumberIntegrable ε β μ →\n    HasSum\n      (fun n =>\n        QuantumTheory.eigenbasisGibbsProbability (SecondQuantization.Common.grandCanonicalEnergy ε μ) β n *\n          ↑(SecondQuantization.Fermionic.particleNumber n))\n      (SecondQuantization.Fermionic.grandCanonicalTotalNumberExpectation ε β μ)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -149496,20 +149894,20 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.hasSum_completedFreeTotalNumberExpectation",
+    "name": "SecondQuantization.Fermionic.hasSum_grandCanonicalTotalNumberExpectation",
     "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.TotalNumberExpectation",
     "externalAxioms": [],
     "docString": "Under the explicit number-integrability hypothesis, the total particle-number expectation is\nrepresented by an absolutely convergent occupation-basis series. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.hasSum_completedFreeGibbsDensityOperator_totalNumber_diagonal"
+      "SecondQuantization.Fermionic.hasSum_grandCanonicalGibbsDensityOperator_totalNumber_diagonal"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.hasSum_completedFreeGibbsDensityOperator_totalNumber_diagonal"
+      "SecondQuantization.Fermionic.hasSum_grandCanonicalGibbsDensityOperator_totalNumber_diagonal"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -151903,7 +152301,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (β : ℝ)\n  (hsum : QuantumTheory.EigenbasisGibbsSummable (SecondQuantization.Fermionic.fermionEnergy ε) β)\n  (A :\n    ↥(SecondQuantization.Fermionic.CompletedFockSpace Mode) →L[ℂ]\n      ↥(SecondQuantization.Fermionic.CompletedFockSpace Mode)),\n  Filter.Tendsto (fun S => SecondQuantization.Fermionic.completedFreeModeRetainedExpectation ε β S A) Filter.atTop\n    (nhds ((SecondQuantization.Fermionic.completedFreeGibbsDensityOperator ε β hsum).expectation A))",
+    "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (β μ : ℝ)\n  (hsum : QuantumTheory.EigenbasisGibbsSummable (SecondQuantization.Common.grandCanonicalEnergy ε μ) β)\n  (A :\n    ↥(SecondQuantization.Fermionic.CompletedFockSpace Mode) →L[ℂ]\n      ↥(SecondQuantization.Fermionic.CompletedFockSpace Mode)),\n  Filter.Tendsto (fun S => SecondQuantization.Fermionic.completedFreeModeRetainedExpectation ε β μ S A) Filter.atTop\n    (nhds ((SecondQuantization.Common.grandCanonicalGibbsDensityOperator ε β μ hsum).expectation A))",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -151926,8 +152324,8 @@
     ],
     "dependencies": [
       "QuantumTheory.DensityOperator.hasSum_expectation_diagonal",
-      "SecondQuantization.Fermionic.completedFreeGibbsDensityOperator_apply_basis",
       "SecondQuantization.Fermionic.completedOccupationHilbertBasis_apply",
+      "SecondQuantization.Fermionic.grandCanonicalGibbsDensityOperator_apply_basis",
       "SecondQuantization.Fermionic.inner_completedBasisState_left"
     ],
     "crossModuleDirectWrapper": false,
@@ -151950,7 +152348,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (β : ℝ)\n  (hsum : QuantumTheory.EigenbasisGibbsSummable (SecondQuantization.Fermionic.fermionEnergy ε) β)\n  (A :\n    ↥(SecondQuantization.Fermionic.CompletedFockSpace Mode) →L[ℂ]\n      ↥(SecondQuantization.Fermionic.CompletedFockSpace Mode)),\n  Filter.Tendsto\n    (fun S => (SecondQuantization.Fermionic.completedFreeModeTruncatedGibbsDensityOperator ε β S).expectation A)\n    Filter.atTop (nhds ((SecondQuantization.Fermionic.completedFreeGibbsDensityOperator ε β hsum).expectation A))",
+    "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (β μ : ℝ)\n  (hsum : QuantumTheory.EigenbasisGibbsSummable (SecondQuantization.Common.grandCanonicalEnergy ε μ) β)\n  (A :\n    ↥(SecondQuantization.Fermionic.CompletedFockSpace Mode) →L[ℂ]\n      ↥(SecondQuantization.Fermionic.CompletedFockSpace Mode)),\n  Filter.Tendsto\n    (fun S => (SecondQuantization.Fermionic.completedFreeModeTruncatedGibbsDensityOperator ε β μ S).expectation A)\n    Filter.atTop (nhds ((SecondQuantization.Common.grandCanonicalGibbsDensityOperator ε β μ hsum).expectation A))",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -151992,7 +152390,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (β : ℝ),\n  QuantumTheory.EigenbasisGibbsSummable (SecondQuantization.Fermionic.fermionEnergy ε) β →\n    ∀ (n : SecondQuantization.Fermionic.Occupation Mode),\n      Filter.Tendsto (fun S => SecondQuantization.Fermionic.completedFreeModeTruncatedGibbsProbability ε β S n)\n        Filter.atTop\n        (nhds (QuantumTheory.eigenbasisGibbsProbability (SecondQuantization.Fermionic.fermionEnergy ε) β n))",
+    "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (β μ : ℝ),\n  QuantumTheory.EigenbasisGibbsSummable (SecondQuantization.Common.grandCanonicalEnergy ε μ) β →\n    ∀ (n : SecondQuantization.Fermionic.Occupation Mode),\n      Filter.Tendsto (fun S => SecondQuantization.Fermionic.completedFreeModeTruncatedGibbsProbability ε β μ S n)\n        Filter.atTop\n        (nhds (QuantumTheory.eigenbasisGibbsProbability (SecondQuantization.Common.grandCanonicalEnergy ε μ) β n))",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -152034,7 +152432,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (β : ℝ),\n  QuantumTheory.EigenbasisGibbsSummable (SecondQuantization.Fermionic.fermionEnergy ε) β →\n    Filter.Tendsto (fun S => SecondQuantization.Fermionic.completedFreeModeTruncatedPartitionFunction ε β S)\n      Filter.atTop (nhds (QuantumTheory.eigenbasisPartitionFunction (SecondQuantization.Fermionic.fermionEnergy ε) β))",
+    "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (β μ : ℝ),\n  QuantumTheory.EigenbasisGibbsSummable (SecondQuantization.Common.grandCanonicalEnergy ε μ) β →\n    Filter.Tendsto (fun S => SecondQuantization.Fermionic.completedFreeModeTruncatedPartitionFunction ε β μ S)\n      Filter.atTop\n      (nhds (QuantumTheory.eigenbasisPartitionFunction (SecondQuantization.Common.grandCanonicalEnergy ε μ) β))",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -152080,7 +152478,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (β : ℝ) (n : SecondQuantization.Fermionic.Occupation Mode),\n  Filter.Tendsto (fun S => SecondQuantization.Fermionic.completedFreeModeTruncatedWeight ε β S n) Filter.atTop\n    (nhds (QuantumTheory.eigenbasisBoltzmannWeight (SecondQuantization.Fermionic.fermionEnergy ε) β n))",
+    "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (β μ : ℝ) (n : SecondQuantization.Fermionic.Occupation Mode),\n  Filter.Tendsto (fun S => SecondQuantization.Fermionic.completedFreeModeTruncatedWeight ε β μ S n) Filter.atTop\n    (nhds (QuantumTheory.eigenbasisBoltzmannWeight (SecondQuantization.Common.grandCanonicalEnergy ε μ) β n))",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -152124,7 +152522,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (β : ℝ),\n  QuantumTheory.EigenbasisGibbsSummable (SecondQuantization.Fermionic.fermionEnergy ε) β →\n    Filter.Tendsto (SecondQuantization.Fermionic.completedFreeModeTruncationNormalizationRatio ε β) Filter.atTop\n      (nhds 1)",
+    "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (β μ : ℝ),\n  QuantumTheory.EigenbasisGibbsSummable (SecondQuantization.Common.grandCanonicalEnergy ε μ) β →\n    Filter.Tendsto (SecondQuantization.Fermionic.completedFreeModeTruncationNormalizationRatio ε β μ) Filter.atTop\n      (nhds 1)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -187160,7 +187558,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (ε : Mode → ℝ) (β : ℝ)\n  (hsum : QuantumTheory.EigenbasisGibbsSummable (SecondQuantization.Fermionic.fermionEnergy ε) β)\n  (C₁ : SecondQuantization.Fermionic.CompletedThermalLadder Mode)\n  (l : List (SecondQuantization.Fermionic.CompletedThermalLadder Mode)),\n  (SecondQuantization.Fermionic.completedFreeGibbsDensityOperator ε β hsum).expectation\n      (ScalarExchange.peelSum SecondQuantization.Fermionic.CompletedThermalLadder.operator\n        SecondQuantization.Fermionic.CompletedThermalLadder.anticommutatorValue (-1) C₁ l) =\n    ∑ j,\n      (-1) ^ ↑j * C₁.anticommutatorValue l[↑j] *\n        SecondQuantization.Fermionic.CompletedThermalLadder.completedFreeGibbsExpectation ε β hsum (l.eraseIdx ↑j)",
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (ε : Mode → ℝ) (β μ : ℝ)\n  (hsum : QuantumTheory.EigenbasisGibbsSummable (SecondQuantization.Common.grandCanonicalEnergy ε μ) β)\n  (C₁ : SecondQuantization.Fermionic.CompletedThermalLadder Mode)\n  (l : List (SecondQuantization.Fermionic.CompletedThermalLadder Mode)),\n  (SecondQuantization.Common.grandCanonicalGibbsDensityOperator ε β μ hsum).expectation\n      (ScalarExchange.peelSum SecondQuantization.Fermionic.CompletedThermalLadder.operator\n        SecondQuantization.Fermionic.CompletedThermalLadder.anticommutatorValue (-1) C₁ l) =\n    ∑ j,\n      (-1) ^ ↑j * C₁.anticommutatorValue l[↑j] *\n        SecondQuantization.Fermionic.CompletedThermalLadder.grandCanonicalGibbsExpectation ε β μ hsum (l.eraseIdx ↑j)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -187172,7 +187570,7 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.BlochDeDominicis.0.SecondQuantization.Fermionic.CompletedThermalLadder.completedFreeGibbsExpectation_peelSum_eq_sum",
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.BlochDeDominicis.0.SecondQuantization.Fermionic.CompletedThermalLadder.grandCanonicalGibbsExpectation_peelSum_eq_sum",
     "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.BlochDeDominicis",
     "externalAxioms": [],
     "docString": "Expectation of the completed CAR peel as an indexed finite sum over the removed tail position. ",
@@ -187219,7 +187617,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.CompletedThermalLadder.completedFreeGibbsExpectation_cons_eq_peel_add_rotated"
+      "SecondQuantization.Fermionic.CompletedThermalLadder.grandCanonicalGibbsExpectation_cons_eq_peel_add_rotated"
     ],
     "dependencies": [
       "ScalarExchange.mul_prod_eq_peelSum",
@@ -187228,7 +187626,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.CompletedThermalLadder.completedFreeGibbsExpectation_cons_eq_peel_add_rotated"
+      "SecondQuantization.Fermionic.CompletedThermalLadder.grandCanonicalGibbsExpectation_cons_eq_peel_add_rotated"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -187290,7 +187688,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (ε : Mode → ℝ) (β : ℝ) {i : Mode}\n  {n : SecondQuantization.Fermionic.Occupation Mode},\n  i ∉ n →\n    QuantumTheory.eigenbasisGibbsProbability (SecondQuantization.Fermionic.fermionEnergy ε) β\n        (SecondQuantization.Fermionic.insertOccupation i n) =\n      Real.exp (-β * ε i) * QuantumTheory.eigenbasisGibbsProbability (SecondQuantization.Fermionic.fermionEnergy ε) β n",
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (ε : Mode → ℝ) (β μ : ℝ) {i : Mode}\n  {n : SecondQuantization.Fermionic.Occupation Mode},\n  i ∉ n →\n    QuantumTheory.eigenbasisGibbsProbability (SecondQuantization.Common.grandCanonicalEnergy ε μ) β\n        (SecondQuantization.Fermionic.insertOccupation i n) =\n      Real.exp (-β * (ε i - μ)) *\n        QuantumTheory.eigenbasisGibbsProbability (SecondQuantization.Common.grandCanonicalEnergy ε μ) β n",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -187312,7 +187710,8 @@
       "SecondQuantization.Fermionic.coe_completedFreeGibbsProbability_insertOccupation_of_not_mem"
     ],
     "dependencies": [
-      "SecondQuantization.Fermionic.fermionEnergy_eq_sum"
+      "SecondQuantization.Fermionic.fermionEnergy_eq_sum",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.Gibbs.0.SecondQuantization.Fermionic.grandCanonicalEnergy_eq_fermionEnergy"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -187334,7 +187733,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (ε : Mode → ℝ) (β : ℝ) {i : Mode}\n  {n : SecondQuantization.Fermionic.Occupation Mode},\n  i ∈ n →\n    QuantumTheory.eigenbasisGibbsProbability (SecondQuantization.Fermionic.fermionEnergy ε) β\n        (SecondQuantization.Fermionic.removeOccupation i n) =\n      Real.exp (β * ε i) * QuantumTheory.eigenbasisGibbsProbability (SecondQuantization.Fermionic.fermionEnergy ε) β n",
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (ε : Mode → ℝ) (β μ : ℝ) {i : Mode}\n  {n : SecondQuantization.Fermionic.Occupation Mode},\n  i ∈ n →\n    QuantumTheory.eigenbasisGibbsProbability (SecondQuantization.Common.grandCanonicalEnergy ε μ) β\n        (SecondQuantization.Fermionic.removeOccupation i n) =\n      Real.exp (β * (ε i - μ)) *\n        QuantumTheory.eigenbasisGibbsProbability (SecondQuantization.Common.grandCanonicalEnergy ε μ) β n",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -187356,7 +187755,8 @@
       "SecondQuantization.Fermionic.coe_completedFreeGibbsProbability_removeOccupation_of_mem"
     ],
     "dependencies": [
-      "SecondQuantization.Fermionic.fermionEnergy_eq_sum"
+      "SecondQuantization.Fermionic.fermionEnergy_eq_sum",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.Gibbs.0.SecondQuantization.Fermionic.grandCanonicalEnergy_eq_fermionEnergy"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -187378,7 +187778,53 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (β : ℝ) (S : Finset Mode) (n : SecondQuantization.Fermionic.Occupation Mode),\n  0 ≤ SecondQuantization.Fermionic.completedFreeModeTruncatedWeight ε β S n",
+    "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (μ : ℝ),\n  SecondQuantization.Common.grandCanonicalEnergy ε μ = SecondQuantization.Fermionic.fermionEnergy fun i => ε i - μ",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.Gibbs.0.SecondQuantization.Fermionic.grandCanonicalEnergy_eq_fermionEnergy",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.Gibbs",
+    "externalAxioms": [],
+    "docString": "The generic grand-canonical energy agrees with the fermionic free energy evaluated\nat the effective dispersion `ε - μ`. No extra fermion-specific density state is required. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.Gibbs.0.SecondQuantization.Fermionic.completedFreeGibbsProbability_insertOccupation_of_not_mem",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.Gibbs.0.SecondQuantization.Fermionic.completedFreeGibbsProbability_removeOccupation_of_mem"
+    ],
+    "dependencies": [
+      "SecondQuantization.Common.grandCanonicalEnergy_eq_shifted"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.Gibbs.0.SecondQuantization.Fermionic.completedFreeGibbsProbability_insertOccupation_of_not_mem",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.Gibbs.0.SecondQuantization.Fermionic.completedFreeGibbsProbability_removeOccupation_of_mem"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (β μ : ℝ) (S : Finset Mode) (n : SecondQuantization.Fermionic.Occupation Mode),\n  0 ≤ SecondQuantization.Fermionic.completedFreeModeTruncatedWeight ε β μ S n",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -187423,7 +187869,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (β : ℝ) (S : Finset Mode),\n  Summable fun n => ‖SecondQuantization.Fermionic.completedFreeModeTruncatedWeight ε β S n‖",
+    "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (β μ : ℝ) (S : Finset Mode),\n  Summable fun n => ‖SecondQuantization.Fermionic.completedFreeModeTruncatedWeight ε β μ S n‖",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -187468,7 +187914,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (β : ℝ) (S : Finset Mode),\n  Summable (SecondQuantization.Fermionic.completedFreeModeTruncatedWeight ε β S)",
+    "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (β μ : ℝ) (S : Finset Mode),\n  Summable (SecondQuantization.Fermionic.completedFreeModeTruncatedWeight ε β μ S)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",

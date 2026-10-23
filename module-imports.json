@@ -6348,15 +6348,6 @@
       "externalImportCount": 0
     },
     {
-      "name": "LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteCompletedGibbsCompatibility",
-      "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Thermal/FiniteCompletedGibbsCompatibility.lean",
-      "imports": [
-        "LeanCondensedMatter.QuantumTheory.Gibbs.Eigenbasis",
-        "LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.FiniteCompatibility"
-      ],
-      "externalImportCount": 0
-    },
-    {
       "name": "LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsCoordinate",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Thermal/FiniteGibbsCoordinate.lean",
       "imports": [
@@ -6399,7 +6390,6 @@
         "LeanCondensedMatter.SecondQuantization.Common.Thermal.CanonicalCompatibility",
         "LeanCondensedMatter.SecondQuantization.Common.Thermal.CanonicalFullFock",
         "LeanCondensedMatter.SecondQuantization.Common.Thermal.CanonicalSector",
-        "LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteCompletedGibbsCompatibility",
         "LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsCoordinate",
         "LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsExpectationBridge",
         "LeanCondensedMatter.SecondQuantization.Common.Thermal.GrandCanonical"
@@ -6495,6 +6485,14 @@
       "externalImportCount": 0
     },
     {
+      "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.SecondQuantizationNaturality",
+      "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Algebra/AlgebraicFock/SecondQuantizationNaturality.lean",
+      "imports": [
+        "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.SecondQuantizationLinearity"
+      ],
+      "externalImportCount": 1
+    },
+    {
       "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Algebra/AlgebraicFock.lean",
       "imports": [
@@ -6506,7 +6504,8 @@
         "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.RankOne",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.SecondQuantization",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.SecondQuantizationCommutator",
-        "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.SecondQuantizationLinearity"
+        "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.SecondQuantizationLinearity",
+        "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.SecondQuantizationNaturality"
       ],
       "externalImportCount": 0
     },
@@ -7710,10 +7709,22 @@
       "externalImportCount": 1
     },
     {
+      "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.FiniteGibbsTraceCompatibility",
+      "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Thermal/Completed/FiniteGibbsTraceCompatibility.lean",
+      "imports": [
+        "LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.FiniteCompatibility",
+        "LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsCoordinate",
+        "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.Gibbs",
+        "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsDensityOperator"
+      ],
+      "externalImportCount": 0
+    },
+    {
       "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.Gibbs",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Thermal/Completed/Gibbs.lean",
       "imports": [
         "LeanCondensedMatter.QuantumTheory.Gibbs.Eigenbasis",
+        "LeanCondensedMatter.SecondQuantization.Common.Thermal.GrandCanonical",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.Hamiltonian",
         "LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.Basic",
         "LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.Core"
@@ -7745,6 +7756,7 @@
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Thermal/Completed.lean",
       "imports": [
         "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.BlochDeDominicis",
+        "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.FiniteGibbsTraceCompatibility",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.Gibbs",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.ModeTruncation",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.TotalNumberExpectation"
@@ -7790,6 +7802,7 @@
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Thermal/FreeGibbsDensityOperator.lean",
       "imports": [
         "LeanCondensedMatter.QuantumTheory.Gibbs.Eigenbasis",
+        "LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsCoordinate",
         "LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsExpectationBridge",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.Hamiltonian"
       ],
