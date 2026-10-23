@@ -866,7 +866,6 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_x_eq_harm
   dsimp only [finiteCutoffContinuumBornDysonRadialGreenPauliKernel] at hGreenRz hGreenAz
   dsimp only [finiteCutoffContinuumBornDysonRadialGreenScalarKernel] at hGreenAscalar
   simp only [neg_neg] at hGreenRx hGreenAx
-  dsimp only at hGreenRx hGreenAx
   rw [mul_left_comm] at hGreenRx hGreenAx
   rw [gaussianCrossedRadialFirstHarmonicIntegral_eq_difference hbar pMax radius] at hscalarX hscalarY hzX hzY
   simpa only [hxx, hyy, hscalarX, hscalarY, hzX, hzY, htransverse,
@@ -1011,7 +1010,6 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_psi_eq_ha
   dsimp only [finiteCutoffContinuumBornDysonRadialGreenScalarKernel] at hGreenRscalar
   dsimp only [finiteCutoffContinuumBornDysonRadialGreenPauliKernel] at hGreenRz
   simp only [neg_neg] at hGreenRx
-  dsimp only at hGreenRx
   rw [mul_left_comm] at hGreenRx
   rw [gaussianCrossedRadialFirstHarmonicIntegral_eq_difference hbar pMax radius] at hscalarX hscalarY hzX hzY
   simpa only [hxx, hyy, hscalarX, hscalarY, hzX, hzY, htransverse,
