@@ -102009,6 +102009,46 @@
   },
   {
     "terminal": true,
+    "statement": "∀ {Mode : Type u_1} (N : ℕ) (ψ : ↥(SecondQuantization.Bosonic.CompletedFockSpace Mode))\n  (n : SecondQuantization.Bosonic.Occupation Mode),\n  ↑((SecondQuantization.Bosonic.completedParticleNumberTruncation N) ψ) n =\n    if SecondQuantization.Bosonic.particleNumber n ≤ N then ↑ψ n else 0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Bosonic.completedParticleNumberTruncation_apply",
+    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.ParticleNumberTruncation",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "SecondQuantization.Common.completedCoordinateProjection_apply"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
     "statement": "∀ {Mode : Type u_1} (support : Finset (SecondQuantization.Common.QuarticVertexLabel Mode)),\n  Dense ↑(SecondQuantization.Bosonic.completedQuarticInteractionDomain support)",
     "standardAxioms": [
       "Classical.choice",
@@ -107244,6 +107284,46 @@
       "SecondQuantization.Bosonic.summable_shiftedOccupationPowerProduct_boltzmannWeight"
     ],
     "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {Mode : Type u_1} (ψ : ↥(SecondQuantization.Bosonic.CompletedFockSpace Mode)),\n  Filter.Tendsto (fun N => (SecondQuantization.Bosonic.completedParticleNumberTruncation N) ψ) Filter.atTop (nhds ψ)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Bosonic.tendsto_completedParticleNumberTruncation",
+    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.ParticleNumberTruncation",
+    "externalAxioms": [],
+    "docString": "Particle-number cutoffs converge strongly on completed bosonic Fock space, for arbitrary\nmode types and without an assumption that the cutoff is finite rank. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "SecondQuantization.Common.tendsto_completedCoordinateProjection_of_eventually"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -118196,7 +118276,7 @@
       "SecondQuantization.Bosonic.completedQuarticVertexOperator_denseDomain",
       "SecondQuantization.Common.completedDiagonalOperator_denseDomain",
       "SecondQuantization.Common.continuousLinearMap_ext_algebraicCore",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.ModeTruncation.0.SecondQuantization.Fermionic.eventually_dist_completedModeTruncation_lt"
+      "SecondQuantization.Common.tendsto_completedCoordinateProjection_of_eventually"
     ],
     "dependencies": [
       "SecondQuantization.Common.algebraicToCompleted_basisState"
@@ -118208,7 +118288,7 @@
       "SecondQuantization.Bosonic.completedQuarticVertexOperator_denseDomain",
       "SecondQuantization.Common.completedDiagonalOperator_denseDomain",
       "SecondQuantization.Common.continuousLinearMap_ext_algebraicCore",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.ModeTruncation.0.SecondQuantization.Fermionic.eventually_dist_completedModeTruncation_lt"
+      "SecondQuantization.Common.tendsto_completedCoordinateProjection_of_eventually"
     ],
     "compiledConsumerCount": 5,
     "axioms": [
@@ -120276,6 +120356,50 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {Config : Type u_1} (P : Config → Prop) (x : SecondQuantization.Common.AlgebraicFock Config),\n  (∀ c ∈ x.support, P c) →\n    (SecondQuantization.Common.completedCoordinateProjection P) (SecondQuantization.Common.algebraicToCompleted x) =\n      SecondQuantization.Common.algebraicToCompleted x",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.completedCoordinateProjection_algebraicToCompleted_of_support",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.CoordinateProjection",
+    "externalAxioms": [],
+    "docString": "A coordinate projection fixes an algebraic vector whenever its mask retains every\nconfiguration in that vector's finite support. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Common.tendsto_completedCoordinateProjection_of_eventually"
+    ],
+    "dependencies": [
+      "SecondQuantization.Common.completedCoordinateProjection_apply"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.tendsto_completedCoordinateProjection_of_eventually"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {Config : Type u_1} (P : Config → Prop) [inst : DecidablePred P]\n  (ψ : ↥(SecondQuantization.Common.CompletedFock Config)) (c : Config),\n  ↑((SecondQuantization.Common.completedCoordinateProjection P) ψ) c = if P c then ↑ψ c else 0",
     "standardAxioms": [
       "Classical.choice",
@@ -120295,6 +120419,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "SecondQuantization.Bosonic.completedParticleNumberTruncation_apply",
+      "SecondQuantization.Common.completedCoordinateProjection_algebraicToCompleted_of_support",
       "SecondQuantization.Common.completedParticleNumberProjection_eq_embedding_comp_pullback",
       "SecondQuantization.Fermionic.completedAnnihilate_apply",
       "SecondQuantization.Fermionic.completedCreate_apply",
@@ -120307,13 +120433,15 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "SecondQuantization.Bosonic.completedParticleNumberTruncation_apply",
+      "SecondQuantization.Common.completedCoordinateProjection_algebraicToCompleted_of_support",
       "SecondQuantization.Common.completedParticleNumberProjection_eq_embedding_comp_pullback",
       "SecondQuantization.Fermionic.completedAnnihilate_apply",
       "SecondQuantization.Fermionic.completedCreate_apply",
       "SecondQuantization.Fermionic.completedModeTruncation_apply",
       "SecondQuantization.Fermionic.completedNumberOperator_apply"
     ],
-    "compiledConsumerCount": 5,
+    "compiledConsumerCount": 7,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -123384,7 +123512,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.dist_completedModeTruncation_le_two_mul_of_fixed"
+      "SecondQuantization.Common.dist_completedCoordinateProjection_le_two_mul_of_fixed"
     ],
     "dependencies": [
       "SecondQuantization.Common.norm_completedCoordinateProjection_le"
@@ -123392,7 +123520,51 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.dist_completedModeTruncation_le_two_mul_of_fixed"
+      "SecondQuantization.Common.dist_completedCoordinateProjection_le_two_mul_of_fixed"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Config : Type u_1} (P : Config → Prop) (ψ φ : ↥(SecondQuantization.Common.CompletedFock Config)),\n  (SecondQuantization.Common.completedCoordinateProjection P) φ = φ →\n    dist ((SecondQuantization.Common.completedCoordinateProjection P) ψ) ψ ≤ 2 * dist ψ φ",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.dist_completedCoordinateProjection_le_two_mul_of_fixed",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.CoordinateProjection",
+    "externalAxioms": [],
+    "docString": "A contractive coordinate projection moving no point of a fixed algebraic approximation\nmoves an arbitrary completed vector by at most twice the approximation error. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Common.tendsto_completedCoordinateProjection_of_eventually"
+    ],
+    "dependencies": [
+      "SecondQuantization.Common.dist_completedCoordinateProjection_le"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.tendsto_completedCoordinateProjection_of_eventually"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -132885,6 +133057,54 @@
       "SecondQuantization.Common.support_interactionPicture_apply_subset_reachableSupport_succ"
     ],
     "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Config : Type u_1} {ι : Type u_2} (l : Filter ι) (P : ι → Config → Prop),\n  (∀ (c : Config), ∀ᶠ (i : ι) in l, P i c) →\n    ∀ (ψ : ↥(SecondQuantization.Common.CompletedFock Config)),\n      Filter.Tendsto (fun i => (SecondQuantization.Common.completedCoordinateProjection (P i)) ψ) l (nhds ψ)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.tendsto_completedCoordinateProjection_of_eventually",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.CoordinateProjection",
+    "externalAxioms": [],
+    "docString": "Coordinate projections converge strongly to the identity along any filter of masks\neventually retaining each fixed configuration. The configuration type and filter index\nneed not be countable; no finite-rank assumption is made. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Bosonic.tendsto_completedParticleNumberTruncation",
+      "SecondQuantization.Fermionic.tendsto_completedModeTruncation"
+    ],
+    "dependencies": [
+      "SecondQuantization.Common.algebraicToCompleted_denseRange",
+      "SecondQuantization.Common.completedCoordinateProjection_algebraicToCompleted_of_support",
+      "SecondQuantization.Common.dist_completedCoordinateProjection_le_two_mul_of_fixed"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Bosonic.tendsto_completedParticleNumberTruncation",
+      "SecondQuantization.Fermionic.tendsto_completedModeTruncation"
+    ],
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -144934,51 +145154,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": false,
-    "statement": "∀ {Mode : Type u_1} (S : Finset Mode) (x : SecondQuantization.Fermionic.OccupationFock Mode),\n  SecondQuantization.Fermionic.algebraicModeSupport x ⊆ S →\n    (SecondQuantization.Fermionic.completedModeTruncation S) (SecondQuantization.Fermionic.algebraicToCompleted x) =\n      SecondQuantization.Fermionic.algebraicToCompleted x",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": true,
-    "retainedMention": true,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.completedModeTruncation_algebraicToCompleted_of_subset",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.ModeTruncation",
-    "externalAxioms": [],
-    "docString": "Once `S` contains every mode appearing in an algebraic vector, finite-mode truncation fixes its\ncompleted image exactly. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.ModeTruncation.0.SecondQuantization.Fermionic.eventually_dist_completedModeTruncation_lt"
-    ],
-    "dependencies": [
-      "SecondQuantization.Fermionic.completedModeTruncation_apply"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.ModeTruncation.0.SecondQuantization.Fermionic.eventually_dist_completedModeTruncation_lt"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
+    "terminal": true,
     "statement": "∀ {Mode : Type u_1} (S : Finset Mode) (ψ : ↥(SecondQuantization.Fermionic.CompletedFockSpace Mode))\n  (n : SecondQuantization.Fermionic.Occupation Mode),\n  ↑((SecondQuantization.Fermionic.completedModeTruncation S) ψ) n = if n ⊆ S then ↑ψ n else 0",
     "standardAxioms": [
       "Classical.choice",
@@ -144986,7 +145162,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": true,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -144997,18 +145173,14 @@
     "docString": null,
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.completedModeTruncation_algebraicToCompleted_of_subset"
-    ],
+    "dependents": [],
     "dependencies": [
       "SecondQuantization.Common.completedCoordinateProjection_apply"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.completedModeTruncation_algebraicToCompleted_of_subset"
-    ],
-    "compiledConsumerCount": 1,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -145989,50 +146161,6 @@
     "completedMention": false,
     "compiledConsumers": [],
     "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Mode : Type u_1} (S : Finset Mode) (ψ φ : ↥(SecondQuantization.Fermionic.CompletedFockSpace Mode)),\n  (SecondQuantization.Fermionic.completedModeTruncation S) φ = φ →\n    dist ((SecondQuantization.Fermionic.completedModeTruncation S) ψ) ψ ≤ 2 * dist ψ φ",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": true,
-    "retainedMention": true,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.dist_completedModeTruncation_le_two_mul_of_fixed",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.ModeTruncation",
-    "externalAxioms": [],
-    "docString": "A contraction that fixes `φ` moves `ψ` by at most twice the distance from `ψ` to `φ`. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.ModeTruncation.0.SecondQuantization.Fermionic.eventually_dist_completedModeTruncation_lt"
-    ],
-    "dependencies": [
-      "SecondQuantization.Common.dist_completedCoordinateProjection_le"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.ModeTruncation.0.SecondQuantization.Fermionic.eventually_dist_completedModeTruncation_lt"
-    ],
-    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -152711,7 +152839,7 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.ModeTruncation.0.SecondQuantization.Fermionic.eventually_dist_completedModeTruncation_lt"
+      "SecondQuantization.Common.tendsto_completedCoordinateProjection_of_eventually"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -185781,52 +185909,6 @@
       "SecondQuantization.Fermionic.completedAnticomm_create_create"
     ],
     "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Mode : Type u_1} (ψ : ↥(SecondQuantization.Fermionic.CompletedFockSpace Mode)) {ε : ℝ},\n  0 < ε → ∃ S₀, ∀ (S : Finset Mode), S₀ ⊆ S → dist ((SecondQuantization.Fermionic.completedModeTruncation S) ψ) ψ < ε",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.ModeTruncation.0.SecondQuantization.Fermionic.eventually_dist_completedModeTruncation_lt",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.ModeTruncation",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.tendsto_completedModeTruncation"
-    ],
-    "dependencies": [
-      "SecondQuantization.Common.algebraicToCompleted_denseRange",
-      "SecondQuantization.Fermionic.completedModeTruncation_algebraicToCompleted_of_subset",
-      "SecondQuantization.Fermionic.dist_completedModeTruncation_le_two_mul_of_fixed"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.tendsto_completedModeTruncation"
-    ],
-    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",

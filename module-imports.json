@@ -4553,6 +4553,15 @@
       "externalImportCount": 1
     },
     {
+      "name": "LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.ParticleNumberTruncation",
+      "sourceFile": "LeanCondensedMatter/SecondQuantization/Bosonic/CompletedSpace/ParticleNumberTruncation.lean",
+      "imports": [
+        "LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.Basic",
+        "LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.CoordinateProjection"
+      ],
+      "externalImportCount": 0
+    },
+    {
       "name": "LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.ProductDomain",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Bosonic/CompletedSpace/ProductDomain.lean",
       "imports": [
@@ -4580,6 +4589,7 @@
         "LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.DiagonalAnalytic",
         "LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.Ladder",
         "LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.LadderAnalytic",
+        "LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.ParticleNumberTruncation",
         "LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.ProductDomain",
         "LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.Quartic"
       ],
@@ -6679,6 +6689,7 @@
       "name": "LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.ModeTruncation",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/CompletedSpace/ModeTruncation.lean",
       "imports": [
+        "LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.CoordinateProjection",
         "LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.Basic"
       ],
       "externalImportCount": 0
