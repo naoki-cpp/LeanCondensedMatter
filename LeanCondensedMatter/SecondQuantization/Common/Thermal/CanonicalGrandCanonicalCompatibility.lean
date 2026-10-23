@@ -149,7 +149,7 @@ theorem grandCanonicalGibbsDensityOperator_sector_expectation_eq_canonical
         (completedHilbertBasis (Config := Config))
         (Real.normalizedWeight (canonicalFullGibbsWeight ε β N))
         (fun c => by
-          simpa only [ρN, completedHilbertBasis_apply] using
+          simpa only [ρN, canonicalFullGibbsDensityOperator, completedHilbertBasis_apply] using
             (diagonalDensityOperator_apply_basis
               (completedHilbertBasis (Config := Config))
               (canonicalFullGibbsWeight ε β N)
