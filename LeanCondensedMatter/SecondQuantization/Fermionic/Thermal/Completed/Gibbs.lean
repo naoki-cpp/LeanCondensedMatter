@@ -148,13 +148,10 @@ theorem grandCanonicalGibbsDensityOperator_comp_create
       grandCanonicalGibbsDensityOperator_apply_basis, map_smul,
       completedCreate_basisState_of_not_mem hi,
       coe_completedFreeGibbsProbability_insertOccupation_of_not_mem ε β μ hi]
-    have hexp :
-        Complex.exp (-(β : ℂ) * (ε i : ℂ) + (β : ℂ) * (μ : ℂ)) =
-          Complex.exp (-(β : ℂ) * (((ε i - μ : ℝ) : ℂ))) := by
-      congr 1
+    have hcast : ((ε i - μ : ℝ) : ℂ) = (ε i : ℂ) - (μ : ℂ) := by
       push_cast
       ring
-    rw [hexp]
+    rw [hcast]
     simp only [smul_smul]
     congr 1
     ring
@@ -182,13 +179,10 @@ theorem grandCanonicalGibbsDensityOperator_comp_annihilate
       grandCanonicalGibbsDensityOperator_apply_basis, map_smul,
       completedAnnihilate_basisState_of_mem hi,
       coe_completedFreeGibbsProbability_removeOccupation_of_mem ε β μ hi]
-    have hexp :
-        Complex.exp ((β : ℂ) * (ε i : ℂ) - (β : ℂ) * (μ : ℂ)) =
-          Complex.exp ((β : ℂ) * (((ε i - μ : ℝ) : ℂ))) := by
-      congr 1
+    have hcast : ((ε i - μ : ℝ) : ℂ) = (ε i : ℂ) - (μ : ℂ) := by
       push_cast
       ring
-    rw [hexp]
+    rw [hcast]
     simp only [smul_smul]
     congr 1
     ring
