@@ -436430,10 +436430,10 @@
   "statement":
   "∀ (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ),\n  (QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel\n        QuantumTheory.Models.MassiveDirac.GaussianCrossedDiagram.psi v m probeEnergy broadening disorderStrength hbar\n        pMax radius).im =\n    0",
   "standardAxioms": ["Classical.choice", "Quot.sound", "propext"],
-  "sourceLine": 1053,
+  "sourceLine": 1041,
   "sourceFile":
   "LeanCondensedMatter/Models/MassiveDirac/Streda/GaussianCrossedRadialTrace.lean",
-  "sourceEndLine": 1058,
+  "sourceEndLine": 1046,
   "sourceEndColumn": 54,
   "sourceColumn": 16,
   "soleCompiledConsumerPrivate": false,
@@ -436463,7 +436463,7 @@
    "QuantumTheory.Models.MassiveDirac.gaussianCrossedTraceKernel_psi_im",
    "QuantumTheory.Transport.SpectralSide.advanced",
    "QuantumTheory.Transport.SpectralSide.retarded"],
-  "declarationStartLine": 1051,
+  "declarationStartLine": 1039,
   "crossModuleDirectWrapper": false,
   "completedMention": false,
   "compiledConsumers": [],
@@ -442489,8 +442489,8 @@
   "sourceLine": 1022,
   "sourceFile":
   "LeanCondensedMatter/Models/MassiveDirac/Streda/GaussianCrossedRadialTrace.lean",
-  "sourceEndLine": 1049,
-  "sourceEndColumn": 89,
+  "sourceEndLine": 1037,
+  "sourceEndColumn": 71,
   "sourceColumn": 8,
   "soleCompiledConsumerPrivate": false,
   "singleCompiledConsumer": false,
