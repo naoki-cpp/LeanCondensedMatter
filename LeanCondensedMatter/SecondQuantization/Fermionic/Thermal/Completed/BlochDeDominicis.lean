@@ -98,10 +98,12 @@ theorem one_add_gibbsFactor_ne_zero
       change (1 : ℂ) + Complex.exp (-(β : ℂ) * (ε i : ℂ)) ≠ 0
       convert one_add_exp_ofReal_ne_zero (-β * ε i) using 1
       push_cast
+      rfl
   | annihilate i =>
       change (1 : ℂ) + Complex.exp ((β : ℂ) * (ε i : ℂ)) ≠ 0
       convert one_add_exp_ofReal_ne_zero (β * ε i) using 1
       push_cast
+      rfl
 
 /-- Uniform completed free-Gibbs intertwining for a creation or annihilation operator. -/
 theorem grandCanonicalGibbsDensityOperator_comp_operator
