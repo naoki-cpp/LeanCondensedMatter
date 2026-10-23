@@ -203,6 +203,36 @@ theorem grandCanonicalGibbsDensityOperator_sector_expectation_eq_canonical
     _ = (grandCanonicalSectorProbability ε β μ N : ℂ) * ρN.expectation A := by
       rw [hsector.tsum_eq]
 
+/-- Every bounded grand-canonical expectation is a probability-weighted mixture
+of full-Fock canonical expectations. Empty particle-number sectors contribute zero;
+no particle-number conservation assumption is imposed on the observable. -/
+theorem grandCanonicalGibbsDensityOperator_expectation_eq_tsum_canonical
+    (ε : Mode → ℝ) (β μ : ℝ)
+    (hsum : EigenbasisGibbsSummable
+      (grandCanonicalEnergy (Config := Config) ε μ) β)
+    (A : CompletedFock Config →L[ℂ] CompletedFock Config) :
+    (grandCanonicalGibbsDensityOperator (Config := Config) ε β μ hsum).expectation A =
+      ∑' N : ℕ,
+        if hN : Nonempty (ParticleNumberSector Mode Config N) then
+          letI : Nonempty (ParticleNumberSector Mode Config N) := hN
+          (grandCanonicalSectorProbability (Config := Config) ε β μ N : ℂ) *
+            (canonicalFullGibbsDensityOperator (Config := Config) ε β N
+              (canonicalGibbsSummable_of_grandCanonical ε β μ N hsum)).expectation A
+        else 0 := by
+  classical
+  rw [grandCanonicalGibbsDensityOperator_expectation_eq_tsum_sector ε β μ hsum A]
+  apply tsum_congr
+  intro N
+  by_cases hN : Nonempty (ParticleNumberSector Mode Config N)
+  · letI : Nonempty (ParticleNumberSector Mode Config N) := hN
+    simpa only [dif_pos hN] using
+      (grandCanonicalGibbsDensityOperator_sector_expectation_eq_canonical
+        ε β μ N hsum A)
+  · letI : IsEmpty (ParticleNumberSector Mode Config N) :=
+      ⟨fun n => hN ⟨n⟩⟩
+    simp only [dif_neg hN]
+    simp
+
 end
 
 end Common
