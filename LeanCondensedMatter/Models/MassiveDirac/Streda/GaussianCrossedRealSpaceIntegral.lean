@@ -374,11 +374,7 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_x_antisym
         -InternalSpace.pauliVectorCoefficient
           (finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock
             1 v m probeEnergy broadening disorderStrength hbar pMax radius) .x at hxy
-    calc
-      _ = -(-InternalSpace.pauliVectorCoefficient
-          (finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock
-            1 v m probeEnergy broadening disorderStrength hbar pMax radius) .x) := by ring
-      _ = _ := by rw [hxy]
+    linear_combination hxy
   have hret_y :
       InternalSpace.pauliVectorCoefficient
           (finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix
@@ -526,9 +522,7 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_psi_antis
       hbroadening hdisorder hpMax
   have htrans : w .x = -u .y := by
     change u .y = -w .x at hxy
-    calc
-      _ = -(-w .x) := by ring
-      _ = _ := by rw [hxy]
+    linear_combination hxy
   have hpsi :=
     finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_psi_antisymmetric_eq_pauli_minors
       v m probeEnergy broadening disorderStrength hbar pMax radius
