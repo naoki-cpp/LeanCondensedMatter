@@ -108,7 +108,6 @@ theorem grandCanonicalGibbsProbability_of_sector
           (fun m : ParticleNumberSector Mode Config N => occupationEnergy ε m.val) β n)
   rw [grandCanonicalBoltzmannWeight_of_sector]
   field_simp [hZ, hZN]
-  ring
 
 /-- A particle-number compression of the grand-canonical density equals the
 full-Fock zero extension of the canonical density scaled by the probability
@@ -136,15 +135,24 @@ theorem grandCanonicalGibbsDensityOperator_compress_sector
       completedCoordinateProjection_basisState, if_pos hc]
     rw [grandCanonicalGibbsDensityOperator_apply_basis, map_smul,
       completedCoordinateProjection_basisState, if_pos hc]
-    rw [smul_apply, canonicalFullGibbsDensityOperator_apply_basis_of_sector,
-      smul_smul]
+    rw [smul_apply]
+    change
+      (eigenbasisGibbsProbability (grandCanonicalEnergy ε μ) β n.val : ℂ) •
+        completedBasisState n.val =
+      (grandCanonicalSectorProbability ε β μ N : ℂ) •
+        (canonicalFullGibbsDensityOperator (Config := Config) ε β N
+          (canonicalGibbsSummable_of_grandCanonical ε β μ N hsum)).op
+          (completedBasisState n.val)
+    rw [canonicalFullGibbsDensityOperator_apply_basis_of_sector, smul_smul]
     simpa only [Complex.ofReal_mul] using
       congrArg (fun z : ℝ => (z : ℂ) • completedBasisState n.val)
         (grandCanonicalGibbsProbability_of_sector ε β μ N hsum n)
   · rw [ContinuousLinearMap.comp_apply, ContinuousLinearMap.comp_apply,
       completedCoordinateProjection_basisState, if_neg hc]
-    simp [canonicalFullGibbsDensityOperator_apply_basis_of_ne ε β N
-      (canonicalGibbsSummable_of_grandCanonical ε β μ N hsum) c hc]
+    rw [smul_apply,
+      canonicalFullGibbsDensityOperator_apply_basis_of_ne ε β N
+        (canonicalGibbsSummable_of_grandCanonical ε β μ N hsum) c hc]
+    simp
 
 end
 
