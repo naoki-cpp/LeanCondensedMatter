@@ -67,8 +67,9 @@ variable {Mode : Type*} [LinearOrder Mode]
 
 private theorem completedFreeGibbsProbability_insertOccupation_of_not_mem
     (ε : Mode → ℝ) (β μ : ℝ) {i : Mode} {n : Occupation Mode} (hi : i ∉ n) :
-    eigenbasisGibbsProbability (fermionEnergy (fun k => ε k - μ)) β (insertOccupation i n) =
-      Real.exp (-β * (ε i - μ)) * eigenbasisGibbsProbability (fermionEnergy (fun k => ε k - μ)) β n := by
+    eigenbasisGibbsProbability (Common.grandCanonicalEnergy (Config := Occupation Mode) ε μ) β (insertOccupation i n) =
+      Real.exp (-β * (ε i - μ)) * eigenbasisGibbsProbability (Common.grandCanonicalEnergy (Config := Occupation Mode) ε μ) β n := by
+  simp only [grandCanonicalEnergy_eq_fermionEnergy]
   have hweight :
       eigenbasisBoltzmannWeight (fermionEnergy (fun k => ε k - μ)) β (insertOccupation i n) =
         Real.exp (-β * (ε i - μ)) * eigenbasisBoltzmannWeight (fermionEnergy (fun k => ε k - μ)) β n := by
@@ -83,11 +84,12 @@ private theorem completedFreeGibbsProbability_insertOccupation_of_not_mem
 
 private theorem completedFreeGibbsProbability_removeOccupation_of_mem
     (ε : Mode → ℝ) (β μ : ℝ) {i : Mode} {n : Occupation Mode} (hi : i ∈ n) :
-    eigenbasisGibbsProbability (fermionEnergy (fun k => ε k - μ)) β (removeOccupation i n) =
-      Real.exp (β * (ε i - μ)) * eigenbasisGibbsProbability (fermionEnergy (fun k => ε k - μ)) β n := by
+    eigenbasisGibbsProbability (Common.grandCanonicalEnergy (Config := Occupation Mode) ε μ) β (removeOccupation i n) =
+      Real.exp (β * (ε i - μ)) * eigenbasisGibbsProbability (Common.grandCanonicalEnergy (Config := Occupation Mode) ε μ) β n := by
+  simp only [grandCanonicalEnergy_eq_fermionEnergy]
   have henergy :
       fermionEnergy (fun k => ε k - μ) n = fermionEnergy (fun k => ε k - μ) (removeOccupation i n) + (ε i - μ) := by
-    simpa only [fermionEnergy_eq_sum, removeOccupation] using (Finset.sum_erase_add n ε hi).symm
+    simpa only [fermionEnergy_eq_sum, removeOccupation] using (Finset.sum_erase_add n (fun k => ε k - μ) hi).symm
   have hweight :
       eigenbasisBoltzmannWeight (fermionEnergy (fun k => ε k - μ)) β (removeOccupation i n) =
         Real.exp (β * (ε i - μ)) * eigenbasisBoltzmannWeight (fermionEnergy (fun k => ε k - μ)) β n := by
@@ -102,9 +104,10 @@ private theorem completedFreeGibbsProbability_removeOccupation_of_mem
 /-- Complex form of the free Gibbs insertion ratio, matching the scalar used in operator identities. -/
 theorem coe_completedFreeGibbsProbability_insertOccupation_of_not_mem
     (ε : Mode → ℝ) (β μ : ℝ) {i : Mode} {n : Occupation Mode} (hi : i ∉ n) :
-    (eigenbasisGibbsProbability (fermionEnergy (fun k => ε k - μ)) β (insertOccupation i n) : ℂ) =
+    (eigenbasisGibbsProbability (Common.grandCanonicalEnergy (Config := Occupation Mode) ε μ) β (insertOccupation i n) : ℂ) =
       Complex.exp (-(β : ℂ) * ((ε i - μ) : ℂ)) *
-        (eigenbasisGibbsProbability (fermionEnergy (fun k => ε k - μ)) β n : ℂ) := by
+        (eigenbasisGibbsProbability (Common.grandCanonicalEnergy (Config := Occupation Mode) ε μ) β n : ℂ) := by
+  simp only [grandCanonicalEnergy_eq_fermionEnergy]
   rw [completedFreeGibbsProbability_insertOccupation_of_not_mem ε β μ hi]
   push_cast
   rfl
@@ -112,15 +115,16 @@ theorem coe_completedFreeGibbsProbability_insertOccupation_of_not_mem
 /-- Complex form of the free Gibbs removal ratio, matching the scalar used in operator identities. -/
 theorem coe_completedFreeGibbsProbability_removeOccupation_of_mem
     (ε : Mode → ℝ) (β μ : ℝ) {i : Mode} {n : Occupation Mode} (hi : i ∈ n) :
-    (eigenbasisGibbsProbability (fermionEnergy (fun k => ε k - μ)) β (removeOccupation i n) : ℂ) =
+    (eigenbasisGibbsProbability (Common.grandCanonicalEnergy (Config := Occupation Mode) ε μ) β (removeOccupation i n) : ℂ) =
       Complex.exp ((β : ℂ) * ((ε i - μ) : ℂ)) *
-        (eigenbasisGibbsProbability (fermionEnergy (fun k => ε k - μ)) β n : ℂ) := by
+        (eigenbasisGibbsProbability (Common.grandCanonicalEnergy (Config := Occupation Mode) ε μ) β n : ℂ) := by
+  simp only [grandCanonicalEnergy_eq_fermionEnergy]
   rw [completedFreeGibbsProbability_removeOccupation_of_mem ε β μ hi]
   push_cast
   rfl
 
 /-- Completed free-Gibbs creation intertwining:
-`ρβ aᵢ† = exp (-β εᵢ) aᵢ† ρβ` as an identity of bounded operators. -/
+`ρβ,μ aᵢ† = exp (-β (εᵢ - μ)) aᵢ† ρβ,μ` as an identity of bounded operators. -/
 theorem grandCanonicalGibbsDensityOperator_comp_create
     (ε : Mode → ℝ) (β μ : ℝ) (hsum : EigenbasisGibbsSummable
       (Common.grandCanonicalEnergy (Config := Occupation Mode) ε μ) β) (i : Mode) :
@@ -146,13 +150,12 @@ theorem grandCanonicalGibbsDensityOperator_comp_create
       grandCanonicalGibbsDensityOperator_apply_basis, map_smul,
       completedCreate_basisState_of_not_mem hi,
       coe_completedFreeGibbsProbability_insertOccupation_of_not_mem ε β μ hi]
-    simp only [grandCanonicalEnergy_eq_fermionEnergy] at *
     simp only [smul_smul]
     congr 1
     ring
 
 /-- Completed free-Gibbs annihilation intertwining:
-`ρβ aᵢ = exp (β εᵢ) aᵢ ρβ` as an identity of bounded operators. -/
+`ρβ,μ aᵢ = exp (β (εᵢ - μ)) aᵢ ρβ,μ` as an identity of bounded operators. -/
 theorem grandCanonicalGibbsDensityOperator_comp_annihilate
     (ε : Mode → ℝ) (β μ : ℝ) (hsum : EigenbasisGibbsSummable
       (Common.grandCanonicalEnergy (Config := Occupation Mode) ε μ) β) (i : Mode) :
@@ -174,7 +177,6 @@ theorem grandCanonicalGibbsDensityOperator_comp_annihilate
       grandCanonicalGibbsDensityOperator_apply_basis, map_smul,
       completedAnnihilate_basisState_of_mem hi,
       coe_completedFreeGibbsProbability_removeOccupation_of_mem ε β μ hi]
-    simp only [grandCanonicalEnergy_eq_fermionEnergy] at *
     simp only [smul_smul]
     congr 1
     ring
