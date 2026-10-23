@@ -92,10 +92,11 @@ consequences of the same density state, not a separate probability-state constru
 one-particle Gibbs summability implies summability over fermionic occupation configurations.
 
 The completed free-fermion implementation lives under `Fermionic.Thermal.Completed`.
-`completedFreeGibbsDensityOperator` is the representation-specific name for the generic pure-point
-Gibbs state on the completed occupation Hilbert basis. Bounded completed ladder operators then provide
-KMS, first-pair/peel, and pairing-recursion results without introducing a finite-mode assumption into
-the generic recursion.
+It uses `Common.grandCanonicalGibbsDensityOperator (Config := Fermionic.Occupation Mode) ε β μ`
+without an additional zero-chemical-potential fermionic density constructor. Its completed CAR
+intertwining and KMS factors use the effective thermal dispersion `ε i - μ`. The first-pair/peel
+and Wick pairing recursion are instantiated for this explicit grand-canonical state, with no
+finite-mode assumption introduced into the generic recursion.
 
 Unbounded observables do not use `DensityOperator.expectation`. The completed total-number operator
 is owned by `Fermionic.CompletedSpace.Diagonal`, while
