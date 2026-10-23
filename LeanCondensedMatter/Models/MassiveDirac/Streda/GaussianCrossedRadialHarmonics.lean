@@ -554,36 +554,26 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficie
       v m probeEnergy broadening disorderStrength hbar pMax
       hbroadening hdisorder hpMax k2Weight
   dsimp only at hdiag hk0 hk2 ⊢
-  have hweight0 :
+  have hweight (kernel numerator : ℝ → ℂ) :
       (∫ p in (0 : ℝ)..pMax,
         2 * (p : ℂ) *
-          (polarFourierZerothAngularKernel (p * radius / hbar) *
+          (kernel p *
             ((finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct
               v m p probeEnergy broadening disorderStrength hbar pMax)⁻¹ *
-                (energyA * energyR - massA * massR) * factor))) =
+                numerator p * factor))) =
         ∫ p in (0 : ℝ)..pMax,
-          k0Weight p *
+          (2 * (p : ℂ) * kernel p * (numerator p * factor)) *
             (finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct
               v m p probeEnergy broadening disorderStrength hbar pMax)⁻¹ := by
     apply intervalIntegral.integral_congr
     intro p _
-    dsimp only [k0Weight]
     ring
-  have hweight2 :
-      (∫ p in (0 : ℝ)..pMax,
-        2 * (p : ℂ) *
-          (polarFourierSecondCosineAngularKernel (p * radius / hbar) *
-            ((finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct
-              v m p probeEnergy broadening disorderStrength hbar pMax)⁻¹ *
-                (((v * p : ℝ) : ℂ) ^ 2) * factor))) =
-        ∫ p in (0 : ℝ)..pMax,
-          k2Weight p *
-            (finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct
-              v m p probeEnergy broadening disorderStrength hbar pMax)⁻¹ := by
-    apply intervalIntegral.integral_congr
-    intro p _
-    dsimp only [k2Weight]
-    ring
+  have hweight0 := hweight
+    (fun p => polarFourierZerothAngularKernel (p * radius / hbar))
+    (fun _ => energyA * energyR - massA * massR)
+  have hweight2 := hweight
+    (fun p => polarFourierSecondCosineAngularKernel (p * radius / hbar))
+    (fun p => (((v * p : ℝ) : ℂ) ^ 2))
   constructor
   · rw [hdiag.1, hweight0, mul_left_comm gap, hk0]
   · rw [hdiag.2, hweight2, mul_left_comm gap, hk2]
