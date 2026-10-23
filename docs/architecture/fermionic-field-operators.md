@@ -24,6 +24,13 @@ these canonical rank-one maps to lattice `matrixUnit` operators.
 A chosen ordered mode basis gives the occupation representation `Fermionic.OccupationFock Mode`, with
 an explicit linear equivalence to `AlgebraicFock` that intertwines the ladder operators.
 
+For a finite mode basis, `AlgebraicFock.finiteHilbertOperatorAlgEquiv` transports exterior-Fock
+operators to the existing occupation-Hilbert realization. The lattice layer consumes this general
+transport with the site basis. For an orthonormal one-particle basis,
+`star_finiteHilbertOperator_create` identifies the realized smeared creation and annihilation
+operators as adjoints. This is a fixed-basis statement; isometry of the exterior lift between
+different one-particle bases remains separate.
+
 Mathlib's `ExteriorAlgebra.map` is the canonical lift of a one-particle linear map; no parallel
 Fock-map definition is needed. `AlgebraicFock.SecondQuantizationNaturality` supplies its compatibility
 with `dGamma`: one-particle intertwiners lift to Fock-space intertwiners, and linear equivalences
