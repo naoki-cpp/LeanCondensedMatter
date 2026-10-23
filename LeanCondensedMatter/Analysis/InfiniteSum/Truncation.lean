@@ -20,6 +20,7 @@ noncomputable section
 
 /-- An absolutely summable series is the limit of its masked sums whenever each index is
 eventually retained. The masks need not be monotone or have finite support. -/
+open scoped Classical in
 theorem tendsto_tsum_ite_of_eventually
     {ι κ E : Type*} [NormedAddCommGroup E] [CompleteSpace E]
     (f : ι → E) (hf : Summable (fun i => ‖f i‖))
@@ -42,6 +43,7 @@ theorem tendsto_tsum_ite_of_eventually
 /-- Pointwise normalization commutes with an eventually exhaustive cutoff of an absolutely
 summable real weight family, provided the uncut total is nonzero. No assumption that the
 cutoff total is nonzero at every index is necessary. -/
+open scoped Classical in
 theorem tendsto_normalizedWeight_ite_of_eventually
     {ι κ : Type*} (w : ι → ℝ) (hw : Summable (fun i => ‖w i‖))
     (hZ : (∑' i, w i) ≠ 0)
