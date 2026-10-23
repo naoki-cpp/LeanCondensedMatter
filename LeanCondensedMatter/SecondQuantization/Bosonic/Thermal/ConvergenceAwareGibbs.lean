@@ -100,17 +100,6 @@ noncomputable def grandCanonicalGibbsExpectation (ε : Mode → ℝ) (β μ : �
     grandCanonicalAlgebraicPartition ε β μ
 
 omit [Fintype Mode] in
-/-- The free Gibbs expectation vanishes when every diagonal occupation-basis coefficient of the
-observable vanishes. -/
-theorem grandCanonicalGibbsExpectation_eq_zero_of_matrixCoeff_self_eq_zero
-    (ε : Mode → ℝ) (β μ : ℝ) (A : FockSpace Mode →ₗ[ℂ] FockSpace Mode)
-    (hdiag : ∀ n, Common.matrixCoeff A n n = 0) :
-    grandCanonicalGibbsExpectation ε β μ A = 0 := by
-  unfold grandCanonicalGibbsExpectation Common.tsumTrace imaginaryTimeEvolveFree
-  simp_rw [Common.matrixCoeff_diagonalEvolution_comp, hdiag, mul_zero]
-  simp
-
-omit [Fintype Mode] in
 /-- The normalized free Gibbs expectation is additive on its explicit summability domain. -/
 theorem grandCanonicalGibbsExpectation_add (ε : Mode → ℝ) (β μ : ℝ)
     {A B : FockSpace Mode →ₗ[ℂ] FockSpace Mode}

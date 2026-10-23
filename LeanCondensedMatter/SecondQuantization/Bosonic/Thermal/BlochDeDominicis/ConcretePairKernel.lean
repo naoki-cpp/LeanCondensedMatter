@@ -41,12 +41,20 @@ theorem freeGibbsExpectation_orderedProduct_pair_eq_freeThermalPairValue
   | annihilate i =>
       cases g with
       | annihilate j =>
-          simpa [FreeThermalField.orderedProduct, FreeThermalField.operator,
-            freeThermalPairValue, Module.End.mul_eq_comp] using
-            (grandCanonicalGibbsExpectation_eq_zero_of_matrixCoeff_self_eq_zero ε β 0
+          have hzero : grandCanonicalGibbsExpectation ε β 0
               ((_root_.SecondQuantization.Bosonic.annihilate i).comp
-                (_root_.SecondQuantization.Bosonic.annihilate j))
-              (matrixCoeff_annihilate_comp_annihilate i j))
+                (_root_.SecondQuantization.Bosonic.annihilate j)) = 0 := by
+            simpa only [grandCanonicalGibbsExpectation, grandCanonicalAlgebraicPartition,
+              imaginaryTimeEvolveFree, Common.diagonalEvolution] using
+              (Common.diagonalTraceRatio_eq_zero_of_carriesShift
+                ((carriesParticleNumberCharge_annihilate i).comp
+                  (carriesParticleNumberCharge_annihilate j))
+                (by norm_num)
+                (fun n : Occupation Mode =>
+                  Complex.exp (((-β) *
+                    freeEigenvalue (fun k => ε k - 0) n : ℝ) : ℂ)))
+          simpa [FreeThermalField.orderedProduct, FreeThermalField.operator,
+            freeThermalPairValue, Module.End.mul_eq_comp] using hzero
       | create j =>
           simpa [FreeThermalField.orderedProduct, FreeThermalField.operator,
             freeThermalPairValue, Module.End.mul_eq_comp, sub_zero] using
@@ -60,12 +68,20 @@ theorem freeGibbsExpectation_orderedProduct_pair_eq_freeThermalPairValue
             (grandCanonicalGibbsExpectation_create_comp_annihilate_concrete
               ε β 0 (by simpa only [sub_zero] using hpos) i j)
       | create j =>
-          simpa [FreeThermalField.orderedProduct, FreeThermalField.operator,
-            freeThermalPairValue, Module.End.mul_eq_comp] using
-            (grandCanonicalGibbsExpectation_eq_zero_of_matrixCoeff_self_eq_zero ε β 0
+          have hzero : grandCanonicalGibbsExpectation ε β 0
               ((_root_.SecondQuantization.Bosonic.create i).comp
-                (_root_.SecondQuantization.Bosonic.create j))
-              (matrixCoeff_create_comp_create i j))
+                (_root_.SecondQuantization.Bosonic.create j)) = 0 := by
+            simpa only [grandCanonicalGibbsExpectation, grandCanonicalAlgebraicPartition,
+              imaginaryTimeEvolveFree, Common.diagonalEvolution] using
+              (Common.diagonalTraceRatio_eq_zero_of_carriesShift
+                ((carriesParticleNumberCharge_create i).comp
+                  (carriesParticleNumberCharge_create j))
+                (by norm_num)
+                (fun n : Occupation Mode =>
+                  Complex.exp (((-β) *
+                    freeEigenvalue (fun k => ε k - 0) n : ℝ) : ℂ)))
+          simpa [FreeThermalField.orderedProduct, FreeThermalField.operator,
+            freeThermalPairValue, Module.End.mul_eq_comp] using hzero
 
 end
 end Bosonic
