@@ -18,7 +18,7 @@ line:
 - canonical adapters from summability to domain membership, finite linear closure, and evaluation;
 - a linear expectation on that submodule;
 - normalization on the identity observable;
-- the canonical free-boson realization under `0 < β ε i`.
+- the explicit-μ free-boson realization under `0 < β(ε i - μ)`.
 
 Callers must still provide the relevant summability witness.  A composition or integral belongs to
 the domain only when its own analytic theorem proves that fact; the adapter does not manufacture
@@ -39,32 +39,32 @@ variable {Mode : Type*} [Fintype Mode]
 /-- Explicit summability condition for a free bosonic Gibbs numerator.
 
 For an algebraic-Fock endomorphism `A`, this is absolute summability of the diagonal coefficients of
-`e^{-βH₀} A` over the genuinely infinite occupation type. -/
-noncomputable def freeGibbsSummable (ε : Mode → ℝ) (β : ℝ)
+`e^{-β(H₀ - μN̂)} A` over the genuinely infinite occupation type. -/
+noncomputable def grandCanonicalGibbsSummable (ε : Mode → ℝ) (β μ : ℝ)
     (A : FockSpace Mode →ₗ[ℂ] FockSpace Mode) : Prop :=
   Summable (fun n : Occupation Mode =>
-    Common.matrixCoeff ((imaginaryTimeEvolveFree ε (-β)).comp A) n n)
+    Common.matrixCoeff ((imaginaryTimeEvolveFree (fun i => ε i - μ) (-β)).comp A) n n)
 
 /-- The linear domain of algebraic-Fock endomorphisms with summable free Gibbs numerator. -/
-noncomputable def freeGibbsDomain (ε : Mode → ℝ) (β : ℝ) :
+noncomputable def grandCanonicalGibbsDomain (ε : Mode → ℝ) (β μ : ℝ) :
     Submodule ℂ (FockSpace Mode →ₗ[ℂ] FockSpace Mode) where
-  carrier := {A | freeGibbsSummable ε β A}
+  carrier := {A | grandCanonicalGibbsSummable ε β μ A}
   zero_mem' := by
-    change freeGibbsSummable ε β
+    change grandCanonicalGibbsSummable ε β μ
       (0 : FockSpace Mode →ₗ[ℂ] FockSpace Mode)
-    unfold freeGibbsSummable
+    unfold grandCanonicalGibbsSummable
     simpa [LinearMap.comp_zero, Common.matrixCoeff] using
       (summable_zero : Summable (fun _ : Occupation Mode => (0 : ℂ)))
   add_mem' := by
     intro A B hA hB
-    change freeGibbsSummable ε β (A + B)
-    unfold freeGibbsSummable at hA hB ⊢
+    change grandCanonicalGibbsSummable ε β μ (A + B)
+    unfold grandCanonicalGibbsSummable at hA hB ⊢
     have h := hA.add hB
     simpa only [LinearMap.comp_add, ← Common.matrixCoeffLinear_apply, map_add] using h
   smul_mem' := by
     intro c A hA
-    change freeGibbsSummable ε β (c • A)
-    unfold freeGibbsSummable at hA ⊢
+    change grandCanonicalGibbsSummable ε β μ (c • A)
+    unfold grandCanonicalGibbsSummable at hA ⊢
     have h := hA.mul_left c
     simpa only [LinearMap.comp_smul, ← Common.matrixCoeffLinear_apply, map_smul, smul_eq_mul] using h
 
@@ -73,33 +73,33 @@ omit [Fintype Mode] in
 basis numerator.  This is the canonical conversion between caller-facing convergence proofs and the
 submodule consumed by partial-linear APIs. -/
 @[simp]
-theorem mem_freeGibbsDomain_iff
-    (ε : Mode → ℝ) (β : ℝ) (A : FockSpace Mode →ₗ[ℂ] FockSpace Mode) :
-    A ∈ freeGibbsDomain ε β ↔ freeGibbsSummable ε β A :=
+theorem mem_grandCanonicalGibbsDomain_iff
+    (ε : Mode → ℝ) (β μ : ℝ) (A : FockSpace Mode →ₗ[ℂ] FockSpace Mode) :
+    A ∈ grandCanonicalGibbsDomain ε β μ ↔ grandCanonicalGibbsSummable ε β μ A :=
   Iff.rfl
 
 omit [Fintype Mode] in
 /-- Scalar multiplication preserves free-Gibbs summability through the canonical analytic domain. -/
-theorem freeGibbsSummable_smul
-    (ε : Mode → ℝ) (β : ℝ) (c : ℂ)
+theorem grandCanonicalGibbsSummable_smul
+    (ε : Mode → ℝ) (β μ : ℝ) (c : ℂ)
     {A : FockSpace Mode →ₗ[ℂ] FockSpace Mode}
-    (hA : freeGibbsSummable ε β A) :
-    freeGibbsSummable ε β (c • A) := by
-  apply (mem_freeGibbsDomain_iff ε β (c • A)).1
-  exact (freeGibbsDomain ε β).smul_mem c ((mem_freeGibbsDomain_iff ε β A).2 hA)
+    (hA : grandCanonicalGibbsSummable ε β μ A) :
+    grandCanonicalGibbsSummable ε β μ (c • A) := by
+  apply (mem_grandCanonicalGibbsDomain_iff ε β μ (c • A)).1
+  exact (grandCanonicalGibbsDomain ε β μ).smul_mem c ((mem_grandCanonicalGibbsDomain_iff ε β μ A).2 hA)
 
 omit [Fintype Mode] in
 /-- A finite family of explicitly summable observables has a summable free-Gibbs numerator. -/
-theorem freeGibbsSummable_sum
+theorem grandCanonicalGibbsSummable_sum
     {ι : Type*} [Fintype ι]
-    (ε : Mode → ℝ) (β : ℝ)
+    (ε : Mode → ℝ) (β μ : ℝ)
     (A : ι → FockSpace Mode →ₗ[ℂ] FockSpace Mode)
-    (hA : ∀ i, freeGibbsSummable ε β (A i)) :
-    freeGibbsSummable ε β (∑ i, A i) := by
+    (hA : ∀ i, grandCanonicalGibbsSummable ε β μ (A i)) :
+    grandCanonicalGibbsSummable ε β μ (∑ i, A i) := by
   classical
-  apply (mem_freeGibbsDomain_iff ε β (∑ i, A i)).1
-  exact Submodule.sum_mem (freeGibbsDomain ε β) fun i _ =>
-    (mem_freeGibbsDomain_iff ε β (A i)).2 (hA i)
+  apply (mem_grandCanonicalGibbsDomain_iff ε β μ (∑ i, A i)).1
+  exact Submodule.sum_mem (grandCanonicalGibbsDomain ε β μ) fun i _ =>
+    (mem_grandCanonicalGibbsDomain_iff ε β μ (A i)).2 (hA i)
 
 /-- The grand-canonical algebraic partition trace at explicit chemical potential.
 The diagonal Gibbs weight is generated by K = H - μ N rather than the
@@ -108,75 +108,99 @@ noncomputable def grandCanonicalAlgebraicPartition
     (ε : Mode → ℝ) (β μ : ℝ) : ℂ :=
   Common.tsumTrace (imaginaryTimeEvolveFree (fun i => ε i - μ) (-β))
 
-/-- The normalized free bosonic Gibbs expectation whenever its numerator is summable and the
+/-- The normalized grand-canonical free bosonic Gibbs expectation whenever its numerator is summable and the
 partition series is nonzero.  Positivity hypotheses proving the latter are supplied by subsequent
 theorems rather than hidden in the definition. -/
-noncomputable def freeGibbsExpectation (ε : Mode → ℝ) (β : ℝ)
+noncomputable def grandCanonicalGibbsExpectation (ε : Mode → ℝ) (β μ : ℝ)
     (A : FockSpace Mode →ₗ[ℂ] FockSpace Mode) : ℂ :=
-  Common.tsumTrace ((imaginaryTimeEvolveFree ε (-β)).comp A) /
-    grandCanonicalAlgebraicPartition ε β 0
+  Common.tsumTrace ((imaginaryTimeEvolveFree (fun i => ε i - μ) (-β)).comp A) /
+    grandCanonicalAlgebraicPartition ε β μ
 
 omit [Fintype Mode] in
 /-- The free Gibbs expectation vanishes when every diagonal occupation-basis coefficient of the
 observable vanishes. -/
-theorem freeGibbsExpectation_eq_zero_of_matrixCoeff_self_eq_zero
-    (ε : Mode → ℝ) (β : ℝ) (A : FockSpace Mode →ₗ[ℂ] FockSpace Mode)
+theorem grandCanonicalGibbsExpectation_eq_zero_of_matrixCoeff_self_eq_zero
+    (ε : Mode → ℝ) (β μ : ℝ) (A : FockSpace Mode →ₗ[ℂ] FockSpace Mode)
     (hdiag : ∀ n, Common.matrixCoeff A n n = 0) :
-    freeGibbsExpectation ε β A = 0 := by
-  unfold freeGibbsExpectation Common.tsumTrace imaginaryTimeEvolveFree
+    grandCanonicalGibbsExpectation ε β μ A = 0 := by
+  unfold grandCanonicalGibbsExpectation Common.tsumTrace imaginaryTimeEvolveFree
   simp_rw [Common.matrixCoeff_diagonalEvolution_comp, hdiag, mul_zero]
   simp
 
 omit [Fintype Mode] in
 /-- The normalized free Gibbs expectation is additive on its explicit summability domain. -/
-theorem freeGibbsExpectation_add (ε : Mode → ℝ) (β : ℝ)
+theorem grandCanonicalGibbsExpectation_add (ε : Mode → ℝ) (β μ : ℝ)
     {A B : FockSpace Mode →ₗ[ℂ] FockSpace Mode}
-    (hA : freeGibbsSummable ε β A) (hB : freeGibbsSummable ε β B) :
-    freeGibbsExpectation ε β (A + B) =
-      freeGibbsExpectation ε β A + freeGibbsExpectation ε β B := by
-  unfold freeGibbsExpectation
+    (hA : grandCanonicalGibbsSummable ε β μ A) (hB : grandCanonicalGibbsSummable ε β μ B) :
+    grandCanonicalGibbsExpectation ε β μ (A + B) =
+      grandCanonicalGibbsExpectation ε β μ A + grandCanonicalGibbsExpectation ε β μ B := by
+  unfold grandCanonicalGibbsExpectation
   rw [LinearMap.comp_add, Common.tsumTrace_add hA hB, add_div]
 
 omit [Fintype Mode] in
 /-- The normalized free Gibbs expectation is homogeneous on algebraic-Fock endomorphisms. -/
-theorem freeGibbsExpectation_smul (ε : Mode → ℝ) (β : ℝ) (c : ℂ)
+theorem grandCanonicalGibbsExpectation_smul (ε : Mode → ℝ) (β μ : ℝ) (c : ℂ)
     (A : FockSpace Mode →ₗ[ℂ] FockSpace Mode) :
-    freeGibbsExpectation ε β (c • A) = c * freeGibbsExpectation ε β A := by
-  unfold freeGibbsExpectation
+    grandCanonicalGibbsExpectation ε β μ (c • A) = c * grandCanonicalGibbsExpectation ε β μ A := by
+  unfold grandCanonicalGibbsExpectation
   rw [LinearMap.comp_smul, Common.tsumTrace_smul, mul_div_assoc]
 
 /-- The free Gibbs expectation as a linear map on the summable-operator submodule. -/
-noncomputable def freeGibbsExpectationLinear (ε : Mode → ℝ) (β : ℝ) :
-    freeGibbsDomain ε β →ₗ[ℂ] ℂ where
-  toFun := fun A => freeGibbsExpectation ε β A.1
+noncomputable def grandCanonicalGibbsExpectationLinear (ε : Mode → ℝ) (β μ : ℝ) :
+    grandCanonicalGibbsDomain ε β μ →ₗ[ℂ] ℂ where
+  toFun := fun A => grandCanonicalGibbsExpectation ε β μ A.1
   map_add' := by
     intro A B
-    exact freeGibbsExpectation_add ε β A.2 B.2
+    exact grandCanonicalGibbsExpectation_add ε β μ A.2 B.2
   map_smul' := by
     intro c A
-    exact freeGibbsExpectation_smul ε β c A.1
+    exact grandCanonicalGibbsExpectation_smul ε β μ c A.1
 
 omit [Fintype Mode] in
 /-- The normalized free-Gibbs expectation commutes with a finite sum when every summand carries an
 explicit summability witness.  The subtype construction and linear-map evaluation stay inside this
 analytic adapter. -/
-theorem freeGibbsExpectation_sum_of_summable
+theorem grandCanonicalGibbsExpectation_sum_of_summable
     {ι : Type*} [Fintype ι]
-    (ε : Mode → ℝ) (β : ℝ)
+    (ε : Mode → ℝ) (β μ : ℝ)
     (A : ι → FockSpace Mode →ₗ[ℂ] FockSpace Mode)
-    (hA : ∀ i, freeGibbsSummable ε β (A i)) :
-    freeGibbsExpectation ε β (∑ i, A i) =
-      ∑ i, freeGibbsExpectation ε β (A i) := by
+    (hA : ∀ i, grandCanonicalGibbsSummable ε β μ (A i)) :
+    grandCanonicalGibbsExpectation ε β μ (∑ i, A i) =
+      ∑ i, grandCanonicalGibbsExpectation ε β μ (A i) := by
   classical
-  let terms : ι → freeGibbsDomain ε β := fun i =>
-    ⟨A i, (mem_freeGibbsDomain_iff ε β (A i)).2 (hA i)⟩
+  let terms : ι → grandCanonicalGibbsDomain ε β μ := fun i =>
+    ⟨A i, (mem_grandCanonicalGibbsDomain_iff ε β μ (A i)).2 (hA i)⟩
   have hcoe :
       ((↑(∑ i, terms i) : FockSpace Mode →ₗ[ℂ] FockSpace Mode)) = ∑ i, A i := by
     rw [Submodule.coe_sum]
   rw [← hcoe]
-  change (freeGibbsExpectationLinear ε β) (∑ i, terms i) =
-    ∑ i, (freeGibbsExpectationLinear ε β) (terms i)
-  simpa using map_sum (freeGibbsExpectationLinear ε β) terms Finset.univ
+  change (grandCanonicalGibbsExpectationLinear ε β μ) (∑ i, terms i) =
+    ∑ i, (grandCanonicalGibbsExpectationLinear ε β μ) (terms i)
+  simpa using map_sum (grandCanonicalGibbsExpectationLinear ε β μ) terms Finset.univ
+
+/-- Reexpress a free grand-canonical Gibbs numerator using the effective dispersion
+`ξ i = ε i - μ`. This is a state-level energy shift, not a change to physical-H Dyson evolution. -/
+theorem grandCanonicalGibbsSummable_shift
+    (ε : Mode → ℝ) (β μ : ℝ) (A : FockSpace Mode →ₗ[ℂ] FockSpace Mode) :
+    grandCanonicalGibbsSummable ε β μ A ↔
+      grandCanonicalGibbsSummable (fun i => ε i - μ) β 0 A := by
+  simp only [grandCanonicalGibbsSummable, sub_zero]
+
+/-- The analytic domain depends only on the effective one-mode Gibbs energies. -/
+theorem grandCanonicalGibbsDomain_shift
+    (ε : Mode → ℝ) (β μ : ℝ) :
+    grandCanonicalGibbsDomain ε β μ =
+      grandCanonicalGibbsDomain (fun i => ε i - μ) β 0 := by
+  ext A
+  exact grandCanonicalGibbsSummable_shift ε β μ A
+
+/-- The normalized grand-canonical algebraic Gibbs functional depends only on
+`ε - μ`, independently of the physical imaginary-time generator. -/
+theorem grandCanonicalGibbsExpectation_shift
+    (ε : Mode → ℝ) (β μ : ℝ) (A : FockSpace Mode →ₗ[ℂ] FockSpace Mode) :
+    grandCanonicalGibbsExpectation ε β μ A =
+      grandCanonicalGibbsExpectation (fun i => ε i - μ) β 0 A := by
+  simp only [grandCanonicalGibbsExpectation, grandCanonicalAlgebraicPartition, sub_zero]
 
 /-- Under positive one-mode Boltzmann exponents, the free diagonal trace equals the convergent real
 Boltzmann partition sum embedded in `ℂ`. -/
@@ -204,16 +228,15 @@ theorem grandCanonicalAlgebraicPartition_ne_zero
     (tsum_boltzmannWeight_ne_zero (fun i => ε i - μ) β hpos)
 
 /-- The free bosonic Gibbs expectation is normalized on the identity endomorphism. -/
-theorem freeGibbsExpectation_id (ε : Mode → ℝ) (β : ℝ)
-    (hpos : ∀ i, 0 < β * ε i) :
-    freeGibbsExpectation ε β
+theorem grandCanonicalGibbsExpectation_id (ε : Mode → ℝ) (β μ : ℝ)
+    (hpos : ∀ i, 0 < β * (ε i - μ)) :
+    grandCanonicalGibbsExpectation ε β μ
       (LinearMap.id : FockSpace Mode →ₗ[ℂ] FockSpace Mode) = 1 := by
-  have hZ : grandCanonicalAlgebraicPartition ε β 0 ≠ 0 :=
-    grandCanonicalAlgebraicPartition_ne_zero ε β 0
-      (by simpa only [sub_zero] using hpos)
-  unfold freeGibbsExpectation
+  have hZ : grandCanonicalAlgebraicPartition ε β μ ≠ 0 :=
+    grandCanonicalAlgebraicPartition_ne_zero ε β μ hpos
+  unfold grandCanonicalGibbsExpectation
   rw [LinearMap.comp_id]
-  simpa only [grandCanonicalAlgebraicPartition, sub_zero] using (div_self hZ)
+  simpa only [grandCanonicalAlgebraicPartition] using (div_self hZ)
 
 end
 end Bosonic

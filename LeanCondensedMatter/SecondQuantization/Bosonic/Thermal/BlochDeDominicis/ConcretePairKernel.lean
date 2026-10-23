@@ -35,7 +35,7 @@ corresponding ordered two-field product. -/
 theorem freeGibbsExpectation_orderedProduct_pair_eq_freeThermalPairValue
     (ε : Mode → ℝ) (β : ℝ) (hpos : ∀ k, 0 < β * ε k)
     (f g : FreeThermalField Mode) :
-    freeGibbsExpectation ε β (FreeThermalField.orderedProduct [f, g]) =
+    grandCanonicalGibbsExpectation ε β 0 (FreeThermalField.orderedProduct [f, g]) =
       freeThermalPairValue ε β f g := by
   cases f with
   | annihilate i =>
@@ -43,7 +43,7 @@ theorem freeGibbsExpectation_orderedProduct_pair_eq_freeThermalPairValue
       | annihilate j =>
           simpa [FreeThermalField.orderedProduct, FreeThermalField.operator,
             freeThermalPairValue, Module.End.mul_eq_comp] using
-            (freeGibbsExpectation_eq_zero_of_matrixCoeff_self_eq_zero ε β
+            (grandCanonicalGibbsExpectation_eq_zero_of_matrixCoeff_self_eq_zero ε β 0
               ((_root_.SecondQuantization.Bosonic.annihilate i).comp
                 (_root_.SecondQuantization.Bosonic.annihilate j))
               (matrixCoeff_annihilate_comp_annihilate i j))
@@ -62,7 +62,7 @@ theorem freeGibbsExpectation_orderedProduct_pair_eq_freeThermalPairValue
       | create j =>
           simpa [FreeThermalField.orderedProduct, FreeThermalField.operator,
             freeThermalPairValue, Module.End.mul_eq_comp] using
-            (freeGibbsExpectation_eq_zero_of_matrixCoeff_self_eq_zero ε β
+            (grandCanonicalGibbsExpectation_eq_zero_of_matrixCoeff_self_eq_zero ε β 0
               ((_root_.SecondQuantization.Bosonic.create i).comp
                 (_root_.SecondQuantization.Bosonic.create j))
               (matrixCoeff_create_comp_create i j))

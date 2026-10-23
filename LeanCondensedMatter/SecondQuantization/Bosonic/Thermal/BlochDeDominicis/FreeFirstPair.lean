@@ -43,32 +43,33 @@ theorem orderedProduct_append_singleton
 theorem freeGibbsExpectation_cons_eq_kmsRatio_mul_operatorPeelSum
     (ε : Mode → ℝ) (β : ℝ) (hpos : ∀ i, 0 < β * ε i)
     (C : FreeThermalField Mode) (l : List (FreeThermalField Mode)) :
-    freeGibbsExpectation ε β (orderedProduct (C :: l)) =
+    grandCanonicalGibbsExpectation ε β 0 (orderedProduct (C :: l)) =
       (C.kmsFactor ε β / (C.kmsFactor ε β - 1)) *
-        freeGibbsExpectation ε β (C.operatorPeelSum l) := by
-  set E : ℂ := freeGibbsExpectation ε β (orderedProduct (C :: l))
-  set P : ℂ := freeGibbsExpectation ε β (C.operatorPeelSum l)
-  set R : ℂ := freeGibbsExpectation ε β ((orderedProduct l).comp C.operator)
-  have hRmem : (orderedProduct l).comp C.operator ∈ freeGibbsDomain ε β := by
+        grandCanonicalGibbsExpectation ε β 0 (C.operatorPeelSum l) := by
+  set E : ℂ := grandCanonicalGibbsExpectation ε β 0 (orderedProduct (C :: l))
+  set P : ℂ := grandCanonicalGibbsExpectation ε β 0 (C.operatorPeelSum l)
+  set R : ℂ := grandCanonicalGibbsExpectation ε β 0 ((orderedProduct l).comp C.operator)
+  have hRmem : (orderedProduct l).comp C.operator ∈ grandCanonicalGibbsDomain ε β 0 := by
     rw [← orderedProduct_append_singleton]
     exact freeGibbsSummable_orderedProduct ε β hpos (l ++ [C])
-  have hPmem : C.operatorPeelSum l ∈ freeGibbsDomain ε β :=
+  have hPmem : C.operatorPeelSum l ∈ grandCanonicalGibbsDomain ε β 0 :=
     operatorPeelSum_mem_freeGibbsDomain ε β hpos C l
   have hpeel : E = P + R := by
     have hop := C.operator_comp_orderedProduct_eq_operatorPeelSum l
     calc
-      E = freeGibbsExpectation ε β
+      E = grandCanonicalGibbsExpectation ε β 0
           (C.operatorPeelSum l + (orderedProduct l).comp C.operator) := by
         dsimp [E]
         rw [show orderedProduct (C :: l) = C.operator.comp (orderedProduct l) by rfl,
           hop]
       _ = P + R := by
-        rw [freeGibbsExpectation_add ε β hPmem hRmem]
+        rw [grandCanonicalGibbsExpectation_add ε β 0 hPmem hRmem]
   have hkms : E = C.kmsFactor ε β * R := by
-    change freeGibbsExpectation ε β (C.operator.comp (orderedProduct l)) =
+    change grandCanonicalGibbsExpectation ε β 0 (C.operator.comp (orderedProduct l)) =
       C.kmsFactor ε β *
-        freeGibbsExpectation ε β ((orderedProduct l).comp C.operator)
-    exact C.freeGibbsExpectation_operator_comp_rotate ε β (orderedProduct l)
+        grandCanonicalGibbsExpectation ε β 0 ((orderedProduct l).comp C.operator)
+    simpa only [sub_zero] using
+      (C.freeGibbsExpectation_operator_comp_rotate ε β 0 (orderedProduct l))
   have hden : C.kmsFactor ε β - 1 ≠ 0 := by
     apply sub_ne_zero.mpr
     cases C with
@@ -92,16 +93,17 @@ theorem kmsRatio_mul_exchangeValue_eq_freeThermalPairValue
   have hfirst := freeGibbsExpectation_cons_eq_kmsRatio_mul_operatorPeelSum
     ε β hpos C [D]
   have hpeel :
-      freeGibbsExpectation ε β (C.operatorPeelSum [D]) = C.exchangeValue D := by
+      grandCanonicalGibbsExpectation ε β 0 (C.operatorPeelSum [D]) = C.exchangeValue D := by
     rw [freeGibbsExpectation_operatorPeelSum_eq_sum ε β hpos C [D]]
-    simp [freeGibbsExpectation_id ε β hpos]
+    simp [grandCanonicalGibbsExpectation_id ε β 0
+      (by simpa only [sub_zero] using hpos)]
   have hpair := freeGibbsExpectation_orderedProduct_pair_eq_freeThermalPairValue
     ε β hpos C D
   calc
     (C.kmsFactor ε β / (C.kmsFactor ε β - 1)) * C.exchangeValue D =
         (C.kmsFactor ε β / (C.kmsFactor ε β - 1)) *
-          freeGibbsExpectation ε β (C.operatorPeelSum [D]) := by rw [hpeel]
-    _ = freeGibbsExpectation ε β (orderedProduct [C, D]) := hfirst.symm
+          grandCanonicalGibbsExpectation ε β 0 (C.operatorPeelSum [D]) := by rw [hpeel]
+    _ = grandCanonicalGibbsExpectation ε β 0 (orderedProduct [C, D]) := hfirst.symm
     _ = freeThermalPairValue ε β C D := hpair
 
 end FreeThermalField

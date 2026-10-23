@@ -34,7 +34,7 @@ variable {Mode : Type*}
 noncomputable def grandCanonicalGibbsDysonCoeff
     (ε : Mode → ℝ) (β μ : ℝ)
     (V : FockSpace Mode →ₗ[ℂ] FockSpace Mode) (order : ℕ) (t : ℝ) : ℂ :=
-  freeGibbsExpectation (fun i => ε i - μ) β
+  grandCanonicalGibbsExpectation ε β μ
     (Common.dysonCoeff (freeEigenvalue ε) V order t)
 
 set_option linter.unusedFintypeInType false in
@@ -46,7 +46,7 @@ theorem grandCanonicalGibbsDysonCoeff_zero [Fintype Mode]
     (V : FockSpace Mode →ₗ[ℂ] FockSpace Mode) (t : ℝ) :
     grandCanonicalGibbsDysonCoeff ε β μ V 0 t = 1 := by
   rw [grandCanonicalGibbsDysonCoeff, Common.dysonCoeff_zero]
-  exact freeGibbsExpectation_id (fun i => ε i - μ) β hpos
+  exact grandCanonicalGibbsExpectation_id ε β μ hpos
 
 /-- Formal series whose coefficients are the convergence-aware normalized free-Gibbs Dyson
 coefficients evaluated at imaginary time `β` and explicit chemical potential `μ`. -/

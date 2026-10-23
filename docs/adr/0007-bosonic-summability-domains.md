@@ -6,11 +6,11 @@ status: accepted
 
 A nonempty finite bosonic mode set still has infinitely many occupation configurations because each mode admits arbitrary natural-number occupation. Therefore finite-mode bosonic thermal theory uses an explicit summability domain rather than the finite-configuration trace argument available to finite-mode fermions.
 
-`freeGibbsDomain` is the canonical submodule defined by `freeGibbsSummable`, and
-`freeGibbsExpectationLinear` is the normalized expectation restricted to that submodule under
-positive one-mode Boltzmann exponents. Its membership equivalence and finite-sum adapter convert
+`grandCanonicalGibbsDomain ε β μ` is the canonical submodule defined by `grandCanonicalGibbsSummable ε β μ`, and
+`grandCanonicalGibbsExpectationLinear ε β μ` is the normalized expectation restricted to that submodule under
+positive one-mode Boltzmann exponents `0 < β(εᵢ - μ)`. Its membership equivalence and finite-sum adapter convert
 explicit summability witnesses into the subtype consumed by the linear map. The total trace-ratio
-expression `freeGibbsExpectation` has physical expectation semantics only when its numerator is
+expression `grandCanonicalGibbsExpectation ε β μ` has physical expectation semantics only when its numerator is
 summable and its partition series is nonzero. For free thermal field lists, the ordered-product
 summability theorem establishes this domain condition for every finite product; the Common pairing
 recursion therefore consumes the trace-ratio expression directly, without a second totalization.
@@ -27,7 +27,7 @@ Evidence: [summability domain and expectation](../../LeanCondensedMatter/SecondQ
 
 [Issue #2408](https://github.com/naoki-cpp/LeanCondensedMatter/issues/2408) separates bosonic occupation reindexing from the positive-energy Gibbs/KMS adapter. `Bosonic.Algebra.LadderTraceCyclicity` owns the two diagonal `tsumTrace` ladder-cyclicity results without Gibbs weights, energy, inverse temperature, or KMS factors; `FreeKMSRotation` combines those results with the imaginary-time shifts and retains the Bosonic thermal factors. This keeps coordinate transport below the analytic Gibbs layer and leaves infinite-sum assumptions explicit. Current source: [ladder trace cyclicity](../../LeanCondensedMatter/SecondQuantization/Bosonic/Algebra/LadderTraceCyclicity.lean) and [free Gibbs KMS rotation](../../LeanCondensedMatter/SecondQuantization/Bosonic/Thermal/BlochDeDominicis/FreeKMSRotation.lean). The issue is closed.
 
-[Issue #2407](https://github.com/naoki-cpp/LeanCondensedMatter/issues/2407) makes the convergence-aware module the analytic adapter between a free-Gibbs summability proof, `freeGibbsDomain` membership, and normalized expectation evaluation. The canonical membership equivalence and finite-sum adapter remove repeated subtype/evaluation plumbing, while callers still supply each summability witness. Products and integrals do not gain domain closure without their own analytic proofs; the infinite occupation space is not replaced by a finite trace. Current sources: [convergence-aware Gibbs domain and adapters](../../LeanCondensedMatter/SecondQuantization/Bosonic/Thermal/ConvergenceAwareGibbs.lean) and [peel consumer](../../LeanCondensedMatter/SecondQuantization/Bosonic/Thermal/BlochDeDominicis/FreePeelIndexed.lean). The issue is closed.
+[Issue #2407](https://github.com/naoki-cpp/LeanCondensedMatter/issues/2407) makes the convergence-aware module the analytic adapter between a free-Gibbs summability proof, `grandCanonicalGibbsDomain ε β μ` membership, and normalized expectation evaluation. The analytic membership equivalence and finite-sum adapter remove repeated subtype/evaluation plumbing, while callers still supply each summability witness. Products and integrals do not gain domain closure without their own analytic proofs; the infinite occupation space is not replaced by a finite trace. Current source: [convergence-aware Gibbs domain and adapters](../../LeanCondensedMatter/SecondQuantization/Bosonic/Thermal/ConvergenceAwareGibbs.lean), [peel consumer](../../LeanCondensedMatter/SecondQuantization/Bosonic/Thermal/BlochDeDominicis/FreePeelIndexed.lean), and [interaction-picture consumer](../../LeanCondensedMatter/SecondQuantization/Bosonic/Perturbation/GibbsInteractionPicture.lean). The issue is closed.
 
 [Issue #435](https://github.com/naoki-cpp/LeanCondensedMatter/issues/435) validates the boundary with a full finite-order bosonic perturbation slice: explicit admissible Gibbs observables and KMS hypotheses, polynomial-growth summability for quartic terms, recursive domain/product closure, and a separate expectation/integral interchange boundary. Common component combinatorics is reused, while the analytic convergence claims remain staged after the coefficientwise connected theorem; a completed Hilbert-Fock theory remains separate. The finite reachable-support construction is recorded in ADR 0005.
 

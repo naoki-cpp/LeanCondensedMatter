@@ -28,8 +28,8 @@ positive one-mode Boltzmann exponents. -/
 theorem quarticVertexOperator_mem_freeGibbsDomain
     (ε : Mode → ℝ) (β : ℝ) (hpos : ∀ i, 0 < β * ε i)
     (q : QuarticVertexLabel Mode) :
-    quarticVertexOperator q ∈ freeGibbsDomain ε β := by
-  change freeGibbsSummable ε β (quarticVertexOperator q)
+    quarticVertexOperator q ∈ grandCanonicalGibbsDomain ε β 0 := by
+  change grandCanonicalGibbsSummable ε β 0 (quarticVertexOperator q)
   simpa only [FreeThermalField.orderedProduct_cons, FreeThermalField.orderedProduct_nil,
     FreeThermalField.operator, LinearMap.comp_id,
     quarticVertexOperator, Common.quarticVertexOperator] using
@@ -41,11 +41,11 @@ theorem quarticInteractionOn_mem_freeGibbsDomain
     (support : Finset (QuarticVertexLabel Mode))
     (ε : Mode → ℝ) (β : ℝ) (hpos : ∀ i, 0 < β * ε i)
     (g : QuarticVertexLabel Mode → ℂ) :
-    quarticInteractionOn support g ∈ freeGibbsDomain ε β := by
+    quarticInteractionOn support g ∈ grandCanonicalGibbsDomain ε β 0 := by
   classical
-  change (∑ q ∈ support, g q • quarticVertexOperator q) ∈ freeGibbsDomain ε β
-  exact Submodule.sum_mem (freeGibbsDomain ε β) fun q hq =>
-    (freeGibbsDomain ε β).smul_mem (g q)
+  change (∑ q ∈ support, g q • quarticVertexOperator q) ∈ grandCanonicalGibbsDomain ε β 0
+  exact Submodule.sum_mem (grandCanonicalGibbsDomain ε β 0) fun q hq =>
+    (grandCanonicalGibbsDomain ε β 0).smul_mem (g q)
       (quarticVertexOperator_mem_freeGibbsDomain ε β hpos q)
 
 /-- On a finite mode type, the all-label bosonic quartic interaction belongs to the free-Gibbs
@@ -53,7 +53,7 @@ domain. -/
 theorem quarticInteraction_mem_freeGibbsDomain
     (ε : Mode → ℝ) (β : ℝ) (hpos : ∀ i, 0 < β * ε i)
     (g : QuarticVertexLabel Mode → ℂ) :
-    quarticInteraction g ∈ freeGibbsDomain ε β := by
+    quarticInteraction g ∈ grandCanonicalGibbsDomain ε β 0 := by
   simpa [quarticInteraction, quarticInteractionOn, Common.quarticInteraction] using
     (quarticInteractionOn_mem_freeGibbsDomain
       (support := (Finset.univ : Finset (QuarticVertexLabel Mode))) ε β hpos g)

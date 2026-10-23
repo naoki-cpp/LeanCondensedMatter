@@ -35,18 +35,18 @@ boson gas at chemical potential `μ`. The thermal generator has mode energies
 theorem grandCanonicalGibbsExpectation_annihilate_comp_create_concrete
     (ε : Mode → ℝ) (β μ : ℝ)
     (hpos : ∀ k, 0 < β * (ε k - μ)) (i j : Mode) :
-    freeGibbsExpectation (fun k => ε k - μ) β ((annihilate i).comp (create j)) =
+    grandCanonicalGibbsExpectation ε β μ ((annihilate i).comp (create j)) =
       if i = j then
         (1 - Complex.exp (((-(ε i - μ) * β : ℝ) : ℂ)))⁻¹ else 0 := by
   let ξ : Mode → ℝ := fun k => ε k - μ
-  change freeGibbsExpectation ξ β ((annihilate i).comp (create j)) =
+  change grandCanonicalGibbsExpectation ε β μ ((annihilate i).comp (create j)) =
     if i = j then (1 - Complex.exp (((-(ξ i) * β : ℝ) : ℂ)))⁻¹ else 0
   have hden : 1 - Complex.exp (((-(ξ i) * β : ℝ) : ℂ)) ≠ 0 :=
     sub_ne_zero.mpr (Ne.symm (Complex.exp_ne_one_of_re_ne_zero (by
       change -(ξ i) * β ≠ 0
       nlinarith [hpos i])))
   have hvalue :
-      freeGibbsExpectation ξ β ((annihilate i).comp (create j)) =
+      grandCanonicalGibbsExpectation ε β μ ((annihilate i).comp (create j)) =
         (if i = j then (1 : ℂ) else 0) /
           (1 - Complex.exp ((-(ξ i) * β : ℝ) : ℂ)) := by
     have hC1 : Common.heisenbergEvolve (freeEigenvalue ξ) (-β) (annihilate i) =
@@ -60,15 +60,11 @@ theorem grandCanonicalGibbsExpectation_annihilate_comp_create_concrete
     have hSummD := summable_imaginaryTimeEvolveFree_self ξ β hpos
     have hRotate :=
       summable_imaginaryTimeEvolveFree_comp_create_mul_annihilate ξ β hpos i j
-    have hfun : (fun k : Mode => ξ k - (0 : ℝ)) = ξ := by
-      funext k
-      simp
     have hpartition : Common.tsumTrace
         (Common.diagonalEvolution (freeEigenvalue ξ) (-β)) ≠ 0 := by
-      have hZ := grandCanonicalAlgebraicPartition_ne_zero ξ β 0
-        (by simpa only [sub_zero] using hpos)
-      simpa only [grandCanonicalAlgebraicPartition, hfun, imaginaryTimeEvolveFree] using hZ
-    simpa only [freeGibbsExpectation, grandCanonicalAlgebraicPartition, hfun,
+      have hZ := grandCanonicalAlgebraicPartition_ne_zero ε β μ hpos
+      simpa only [grandCanonicalAlgebraicPartition, imaginaryTimeEvolveFree] using hZ
+    simpa only [grandCanonicalGibbsExpectation, grandCanonicalAlgebraicPartition,
       imaginaryTimeEvolveFree, one_mul] using
       Common.normalizedTsumTrace_comp_eq_div_of_zetaCommutator
         (freeEigenvalue ξ) β (-(ξ i)) (1 : ℂ)
@@ -85,13 +81,13 @@ This directly evaluates the finite-mode Bose occupation correlation. -/
 theorem grandCanonicalGibbsExpectation_create_comp_annihilate_concrete
     (ε : Mode → ℝ) (β μ : ℝ)
     (hpos : ∀ k, 0 < β * (ε k - μ)) (i j : Mode) :
-    freeGibbsExpectation (fun k => ε k - μ) β ((create i).comp (annihilate j)) =
+    grandCanonicalGibbsExpectation ε β μ ((create i).comp (annihilate j)) =
       if i = j then
         Complex.exp (((-(ε j - μ) * β : ℝ) : ℂ)) *
           (1 - Complex.exp (((-(ε j - μ) * β : ℝ) : ℂ)))⁻¹
       else 0 := by
   have hrotate := FreeThermalField.freeGibbsExpectation_operator_comp_rotate
-    (fun k => ε k - μ) β (.create i) (annihilate j)
+    ε β μ (.create i) (annihilate j)
   simp only [FreeThermalField.operator, FreeThermalField.kmsFactor] at hrotate
   rw [hrotate,
     grandCanonicalGibbsExpectation_annihilate_comp_create_concrete ε β μ hpos j i]

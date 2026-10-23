@@ -193,8 +193,9 @@ under positive one-mode Boltzmann exponents. -/
 theorem FreeThermalField.freeGibbsSummable_orderedProduct
     (ε : Mode → ℝ) (β : ℝ) (hpos : ∀ i, 0 < β * ε i)
     (fields : List (FreeThermalField Mode)) :
-    freeGibbsSummable ε β (FreeThermalField.orderedProduct fields) := by
-  unfold freeGibbsSummable
+    grandCanonicalGibbsSummable ε β 0 (FreeThermalField.orderedProduct fields) := by
+  unfold grandCanonicalGibbsSummable
+  simp only [sub_zero]
   have hmajorant := summable_shiftedOccupationPowerProduct_boltzmannWeight
     ε β hpos (fun _ => fields.length + 1) (fun _ => fields.length)
   apply hmajorant.of_norm_bounded
