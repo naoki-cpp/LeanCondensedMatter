@@ -98,8 +98,8 @@ theorem freeGibbsDensityOperator_expectation_annihilate_comp_annihilate
     Common.tsumTrace (Common.diagonalEvolution (fermionEnergy ε) (-β)) = 0
   simpa only [Common.diagonalEvolution] using
     (Common.diagonalTraceRatio_eq_zero_of_carriesShift
-      ((carriesParticleNumberChargeannihilate i).comp
-        (carriesParticleNumberChargeannihilate j))
+      ((carriesParticleNumberCharge_annihilate i).comp
+        (carriesParticleNumberCharge_annihilate j))
       (by norm_num)
       (fun n : Occupation Mode =>
         Complex.exp (((-β) * fermionEnergy ε n : ℝ) : ℂ)))
@@ -116,8 +116,8 @@ theorem freeGibbsDensityOperator_expectation_create_comp_create
     Common.tsumTrace (Common.diagonalEvolution (fermionEnergy ε) (-β)) = 0
   simpa only [Common.diagonalEvolution] using
     (Common.diagonalTraceRatio_eq_zero_of_carriesShift
-      ((carriesParticleNumberChargecreate i).comp
-        (carriesParticleNumberChargecreate j))
+      ((carriesParticleNumberCharge_create i).comp
+        (carriesParticleNumberCharge_create j))
       (by norm_num)
       (fun n : Occupation Mode =>
         Complex.exp (((-β) * fermionEnergy ε n : ℝ) : ℂ)))
