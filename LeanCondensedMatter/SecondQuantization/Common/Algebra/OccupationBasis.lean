@@ -93,7 +93,15 @@ theorem occupationEnergy_add_const {Mode Config : Type*} [OccupationBasis Mode C
     (ε : Mode → ℝ) (C : ℝ) (n : Config) :
     occupationEnergy (fun i => ε i + C) n =
       occupationEnergy ε n + C * (particleNumber (Mode := Mode) n : ℝ) := by
-  simpa only [sub_neg, neg_mul, neg_neg] using (occupationEnergy_sub_const ε (-C) n)
+  calc
+    occupationEnergy (fun i => ε i + C) n =
+        occupationEnergy (fun i => ε i - (-C)) n := by
+          congr 1
+          funext i
+          ring
+    _ = occupationEnergy ε n - (-C) * (particleNumber (Mode := Mode) n : ℝ) :=
+      occupationEnergy_sub_const ε (-C) n
+    _ = occupationEnergy ε n + C * (particleNumber (Mode := Mode) n : ℝ) := by ring
 
 
 end Common
