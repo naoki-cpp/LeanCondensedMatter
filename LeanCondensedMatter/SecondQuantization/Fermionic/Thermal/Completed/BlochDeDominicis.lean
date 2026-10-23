@@ -474,8 +474,7 @@ theorem grandCanonicalGibbsExpectation_eq_sum_pairing
     (Common.BlochDeDominicis.ExpectationPairingRecursion.bloch_de_dominicis
       (grandCanonicalGibbsExpectationRecursion ε β μ hsum) n C trivial)
 
-open scoped Classical
-
+open Classical in
 /-- The grand-canonical fermionic Wick pairing sum is also the
 probability-weighted mixture of the fixed-particle-number canonical
 expectations of the same ordered product. This identity does not assert
