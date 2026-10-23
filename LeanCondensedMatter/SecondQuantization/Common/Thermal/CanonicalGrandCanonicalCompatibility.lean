@@ -203,6 +203,8 @@ theorem grandCanonicalGibbsDensityOperator_sector_expectation_eq_canonical
     _ = (grandCanonicalSectorProbability ε β μ N : ℂ) * ρN.expectation A := by
       rw [hsector.tsum_eq]
 
+open scoped Classical
+
 /-- Every bounded grand-canonical expectation is a probability-weighted mixture
 of full-Fock canonical expectations. Empty particle-number sectors contribute zero;
 no particle-number conservation assumption is imposed on the observable. -/
@@ -230,7 +232,7 @@ theorem grandCanonicalGibbsDensityOperator_expectation_eq_tsum_canonical
         ε β μ N hsum A)
   · letI : IsEmpty (ParticleNumberSector Mode Config N) :=
       ⟨fun n => hN ⟨n⟩⟩
-    simp only [dif_neg hN]
+    simp only [dite_eq_right hN]
     simp
 
 end
