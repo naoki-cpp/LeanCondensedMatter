@@ -36,21 +36,22 @@ bounded map.
 
 ## Thermal boundary
 
-Completed thermal specializations live under `SecondQuantization.Fermionic.Thermal.Completed`, while
-the state-level pure-point Gibbs construction is owned by `QuantumTheory.Gibbs.Eigenbasis`.
+Completed thermal specializations live under `SecondQuantization.Fermionic.Thermal.Completed`.
+The full-Fock grand-canonical state uses `Common.grandCanonicalGibbsDensityOperator` with explicit
+chemical potential `μ`, whose normalization reuses `QuantumTheory.Gibbs.Eigenbasis`.
 
 The completed free-fermion route includes:
 
-- pure-point Gibbs states under explicit `EigenbasisGibbsSummable` hypotheses;
+- grand-canonical pure-point Gibbs states with explicit `μ` and occupation-weight summability;
 - occupation-basis formulas for bounded expectations and an explicit integrability domain for the
   completed total-number expectation;
 - generic unbounded energy expectation through `QuantumTheory.Gibbs.EigenbasisExpectation`;
 - a one-particle sufficient condition for free-fermion Gibbs summability and the corresponding
   partition-product identity;
-- bounded thermal ladder packaging, Gibbs intertwining, KMS rotation, CAR peel, and the completed
-  Bloch--de Dominicis recursion;
-- finite-mode Gibbs truncations and convergence of bounded-observable expectations to the completed
-  pure-point Gibbs expectation.
+- bounded thermal ladder packaging, Gibbs intertwining and KMS rotation with factors
+  `exp(±β(εᵢ - μ))`, CAR peel, and the completed Bloch--de Dominicis recursion;
+- finite-mode Gibbs truncations at explicit `μ` and convergence of bounded-observable expectations
+  to the completed grand-canonical Gibbs expectation.
 
 The last item is weak convergence against bounded observables, not a thermodynamic limit or a general
 trace-norm convergence theorem.
