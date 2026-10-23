@@ -6,7 +6,6 @@ import LeanCondensedMatter.SecondQuantization.Common.Thermal.CanonicalSector
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.CanonicalFullFock
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.CanonicalCompatibility
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.GrandCanonical
-import LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteCompletedGibbsCompatibility
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsCoordinate
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis
 import LeanCondensedMatter.QuantumTheory.Gibbs.Eigenbasis
