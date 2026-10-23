@@ -124,12 +124,13 @@ The linear expectation is defined on the summable-operator submodule; additivity
 `Bosonic/Thermal/FreeThermalField.lean` owns the free thermal field labels, ordered algebraic-Fock
 products, and normalized pair kernel independently of pairing recursion. KMS, product summability,
 and the kernel's equality to Gibbs two-field expectations consume these data directly.
-`Bosonic/Thermal/BlochDeDominicis/ConcreteExpectationRecursion.lean` constructs the Common
-recursion directly with `grandCanonicalGibbsExpectation ε β μ`. Under explicit positive one-mode Boltzmann
-exponents, `FreeThermalField.freeGibbsSummable_orderedProduct` proves summability of every finite
-field product, including every remaining product after pair deletion. The first-pair recurrence
-uses those analytic results before the representation-independent pairing induction is applied.
-No additional zero-totalization of the domain expectation is needed.
+`Bosonic/Thermal/BlochDeDominicis/ConcreteExpectationRecursion.lean` applies the
+Common pairing recursion at the effective thermal energy `ξ i = ε i - μ` and exposes
+`grandCanonicalGibbsExpectation_eq_sum_pairing_concrete` for explicit chemical potential `μ`.
+Under `0 < β * (ε i - μ)`, finite ordered free-field products have summable Gibbs numerators,
+including products after pair deletion. The first-pair recurrence and KMS rotation supply the
+analytic hypotheses before the representation-independent pairing induction. This grand-canonical
+Wick conclusion does not extend automatically to a sharp-particle-number canonical state.
 
 ## Dependency boundary
 
