@@ -65,8 +65,12 @@ For a nonempty sector, the resulting probability is
 `ρ_{N,full}` is the existing isometric zero-extension of the canonical density.
 The left side is an unnormalized positive operator, not itself a density state.
 Empty number sectors have probability zero but do not admit a normalized sector density.
-The full infinite sum over particle-number sectors and the resulting general expectation
-decomposition require separate summation arguments.
+
+`Common/Thermal/GrandCanonicalSectorDecomposition.lean` sums the fixed-number
+Boltzmann fibers using the canonical sigma-fiber equivalence and summable
+sigma-series. It proves `Ξ = ∑_N exp (β μ N) Z_N` and
+`∑_N p_N = 1`, with empty sectors contributing zero. General bounded-observable
+expectation and full density-operator decompositions remain separate tasks.
 
 ## Generic pairing recursion
 
