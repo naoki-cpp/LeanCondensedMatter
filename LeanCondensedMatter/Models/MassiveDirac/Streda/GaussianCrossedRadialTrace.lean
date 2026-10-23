@@ -681,12 +681,12 @@ theorem finiteCutoffContinuumBornDysonRadialGreen_ra_xz_minor_eq_harmonic_moment
       first * (secondMoment bR * zerothMoment dA -
         zerothMoment dR * secondMoment bA) := by
   have hRx :=
-    finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient_eq_radialKernel_integral
-      .x .retarded v m probeEnergy broadening disorderStrength hbar pMax radius
+    finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient_x_negRadius_eq_k0_sub_k2
+      .retarded v m probeEnergy broadening disorderStrength hbar pMax (-radius)
       hbroadening hdisorder hpMax
   have hAx :=
-    finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient_eq_radialKernel_integral
-      .x .advanced v m probeEnergy broadening disorderStrength hbar pMax radius
+    finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient_x_negRadius_eq_k0_sub_k2
+      .advanced v m probeEnergy broadening disorderStrength hbar pMax (-radius)
       hbroadening hdisorder hpMax
   have hRz :=
     finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient_eq_radialKernel_integral
@@ -696,8 +696,8 @@ theorem finiteCutoffContinuumBornDysonRadialGreen_ra_xz_minor_eq_harmonic_moment
     finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient_eq_radialKernel_integral
       .z .advanced v m probeEnergy broadening disorderStrength hbar pMax radius
       hbroadening hdisorder hpMax
-  dsimp only [finiteCutoffContinuumBornDysonRadialGreenPauliKernel] at hRx hAx hRz hAz
-  rw [gaussianCrossedRadialFirstHarmonicIntegral_eq_difference hbar pMax radius] at hRx hAx
+  dsimp only [finiteCutoffContinuumBornDysonRadialGreenPauliKernel] at hRz hAz
+  simp only [neg_neg] at hRx hAx
   dsimp only at hRx hAx hRz hAz ⊢
   rw [hRx, hAx, hRz, hAz]
   ring
