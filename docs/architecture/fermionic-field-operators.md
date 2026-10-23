@@ -24,6 +24,12 @@ these canonical rank-one maps to lattice `matrixUnit` operators.
 A chosen ordered mode basis gives the occupation representation `Fermionic.OccupationFock Mode`, with
 an explicit linear equivalence to `AlgebraicFock` that intertwines the ladder operators.
 
+Mathlib's `ExteriorAlgebra.map` is the canonical lift of a one-particle linear map; no parallel
+Fock-map definition is needed. `AlgebraicFock.SecondQuantizationNaturality` supplies its compatibility
+with `dGamma`: one-particle intertwiners lift to Fock-space intertwiners, and linear equivalences
+give covariance under conjugation. This algebraic transport does not by itself establish a Hilbert
+isometry or a transformation law for Gibbs density operators.
+
 The completed representation
 
 ```text
