@@ -326,7 +326,7 @@ omit [LinearOrder Mode] in
 theorem grandCanonicalGibbsAdmissible_erase
     (ε : Mode → ℝ) (β μ : ℝ) (n : ℕ)
     (C : Fin (2 * (n + 1)) → CompletedThermalLadder Mode)
-    (hC : grandCanonicalGibbsAdmissible ε β (n + 1) C)
+    (hC : grandCanonicalGibbsAdmissible ε β μ (n + 1) C)
     (j : Fin (2 * n + 1)) :
     grandCanonicalGibbsAdmissible ε β μ n
       (fun i : Fin (2 * n) => C ((j.succAbove i).succ)) := by
@@ -415,9 +415,9 @@ noncomputable def grandCanonicalGibbsExpectationRecursion
       (CompletedThermalLadder Mode) Common.Statistics.fermion where
   expectation := grandCanonicalGibbsExpectation ε β μ hsum
   pairValue := fun C D => grandCanonicalGibbsExpectation ε β μ hsum [C, D]
-  admissible := grandCanonicalGibbsAdmissible ε β
+  admissible := grandCanonicalGibbsAdmissible ε β μ
   expectation_nil := grandCanonicalGibbsExpectation_nil ε β μ hsum
-  admissible_erase := grandCanonicalGibbsAdmissible_erase ε β
+  admissible_erase := grandCanonicalGibbsAdmissible_erase ε β μ
   expectation_succ := by
     intro n C hC
     rw [List.ofFn_succ]
