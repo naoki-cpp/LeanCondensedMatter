@@ -1,22 +1,19 @@
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.CanonicalCompatibility
-import LeanCondensedMatter.SecondQuantization.Common.Thermal.GrandCanonical
+import LeanCondensedMatter.SecondQuantization.Common.Thermal.GrandCanonicalSectorDecomposition
 
 set_option linter.style.header false
 
 /-!
-# Conditioning a grand-canonical Gibbs state on particle number
+# Density-operator compatibility of canonical and grand-canonical Gibbs states
 
-A full-Fock grand-canonical Gibbs state, when its Boltzmann weights are summable,
-restricts to summable weights on every sharp-particle-number sector. On a nonempty
-sector, the unnormalized restriction of the grand-canonical density is its
-canonical Gibbs density multiplied by the sector probability
+The scalar sector weights, summability, probabilities, and partition-function
+decomposition are owned by GrandCanonicalSectorDecomposition. This module
+uses those scalar identities to identify the sharp-number compression of the
+full-Fock grand-canonical Gibbs density with the zero-extended canonical density
+scaled by the sector probability.
 
-  exp(β μ N) Z_N / Ξ.
-
-The operator-level formula holds on the completed occupation Fock space without
-assuming finitely many modes, bounded energy, or bosonic/fermionic CCR/CAR.
-The projected operator is generally not itself a density operator: its trace
-is the probability of the sector, not one.
+The equality holds on the completed occupation Fock space without a finite-mode
+assumption or CCR/CAR. The compressed operator need not have trace one.
 -/
 
 namespace SecondQuantization
@@ -27,102 +24,6 @@ open QuantumTheory
 noncomputable section
 
 variable {Mode Config : Type*} [OccupationBasis Mode Config]
-
-/-- Summability of the full grand-canonical Gibbs weights implies summability
-of their restriction to every fixed-number sector. This includes sectors with
-infinitely many configurations, and requires no nonemptiness hypothesis. -/
-theorem canonicalGibbsSummable_of_grandCanonical
-    (ε : Mode → ℝ) (β μ : ℝ) (N : ℕ)
-    (hsum : EigenbasisGibbsSummable
-      (grandCanonicalEnergy (Config := Config) ε μ) β) :
-    EigenbasisGibbsSummable
-      (fun n : ParticleNumberSector Mode Config N => occupationEnergy ε n.val) β := by
-  have hrestricted : EigenbasisGibbsSummable
-      (fun n : ParticleNumberSector Mode Config N =>
-        grandCanonicalEnergy ε μ n.val) β :=
-    hsum.comp_injective Subtype.val_injective
-  have hE :
-      (fun n : ParticleNumberSector Mode Config N =>
-        grandCanonicalEnergy ε μ n.val) =
-      (fun n : ParticleNumberSector Mode Config N =>
-        occupationEnergy ε n.val - μ * (N : ℝ)) := by
-    funext n
-    simp [grandCanonicalEnergy, n.property]
-  rw [hE] at hrestricted
-  simpa only [sub_add_cancel] using
-    (eigenbasisGibbsSummable_add_const
-      (fun n : ParticleNumberSector Mode Config N =>
-        occupationEnergy ε n.val - μ * (N : ℝ))
-      β (μ * (N : ℝ)) hrestricted)
-
-/-- Within a fixed-number sector the chemical-potential correction is a
-constant fugacity factor multiplying the canonical Boltzmann weight. -/
-theorem grandCanonicalBoltzmannWeight_of_sector
-    (ε : Mode → ℝ) (β μ : ℝ) (N : ℕ)
-    (n : ParticleNumberSector Mode Config N) :
-    eigenbasisBoltzmannWeight (grandCanonicalEnergy ε μ) β n.val =
-      Real.exp (β * μ * (N : ℝ)) *
-        eigenbasisBoltzmannWeight
-          (fun m : ParticleNumberSector Mode Config N => occupationEnergy ε m.val) β n := by
-  change Real.exp
-      (-β * (occupationEnergy ε n.val -
-        μ * (particleNumber (Mode := Mode) n.val : ℝ))) =
-    Real.exp (β * μ * (N : ℝ)) * Real.exp (-β * occupationEnergy ε n.val)
-  rw [n.property]
-  rw [show -β * (occupationEnergy ε n.val - μ * (N : ℝ)) =
-      β * μ * (N : ℝ) + -β * occupationEnergy ε n.val by ring,
-    Real.exp_add]
-
-/-- Probability assigned by the grand-canonical distribution to the
-fixed-particle-number sector. It can be zero when the sector is empty. -/
-noncomputable def grandCanonicalSectorProbability
-    (ε : Mode → ℝ) (β μ : ℝ) (N : ℕ) : ℝ :=
-  Real.exp (β * μ * (N : ℝ)) *
-    canonicalPartitionFunction (Config := Config) ε β N /
-      grandCanonicalPartitionFunction (Config := Config) ε β μ
-
-/-- Every nonempty fixed-number sector has strictly positive probability under a
-summable grand-canonical Gibbs distribution. Empty sectors are handled separately. -/
-theorem grandCanonicalSectorProbability_pos
-    (ε : Mode → ℝ) (β μ : ℝ) (N : ℕ)
-    [Nonempty (ParticleNumberSector Mode Config N)]
-    (hsum : EigenbasisGibbsSummable
-      (grandCanonicalEnergy (Config := Config) ε μ) β) :
-    0 < grandCanonicalSectorProbability (Config := Config) ε β μ N := by
-  unfold grandCanonicalSectorProbability
-  exact div_pos
-    (mul_pos (Real.exp_pos _)
-      (canonicalPartitionFunction_pos ε β N
-        (canonicalGibbsSummable_of_grandCanonical ε β μ N hsum)))
-    (grandCanonicalPartitionFunction_pos ε β μ hsum)
-
-/-- Conditioning the grand-canonical occupation probability on a nonempty
-sharp-number sector gives its canonical Gibbs occupation probability. -/
-theorem grandCanonicalGibbsProbability_of_sector
-    (ε : Mode → ℝ) (β μ : ℝ) (N : ℕ)
-    [Nonempty (ParticleNumberSector Mode Config N)]
-    (hsum : EigenbasisGibbsSummable
-      (grandCanonicalEnergy (Config := Config) ε μ) β)
-    (n : ParticleNumberSector Mode Config N) :
-    eigenbasisGibbsProbability (grandCanonicalEnergy ε μ) β n.val =
-      grandCanonicalSectorProbability (Config := Config) ε β μ N *
-        eigenbasisGibbsProbability
-          (fun m : ParticleNumberSector Mode Config N => occupationEnergy ε m.val) β n := by
-  have hZ : grandCanonicalPartitionFunction (Config := Config) ε β μ ≠ 0 :=
-    (grandCanonicalPartitionFunction_pos ε β μ hsum).ne'
-  have hZN : canonicalPartitionFunction (Config := Config) ε β N ≠ 0 :=
-    (canonicalPartitionFunction_pos ε β N
-      (canonicalGibbsSummable_of_grandCanonical ε β μ N hsum)).ne'
-  change (grandCanonicalPartitionFunction ε β μ)⁻¹ *
-      eigenbasisBoltzmannWeight (grandCanonicalEnergy ε μ) β n.val =
-    (Real.exp (β * μ * (N : ℝ)) *
-      canonicalPartitionFunction ε β N /
-      grandCanonicalPartitionFunction ε β μ) *
-      ((canonicalPartitionFunction ε β N)⁻¹ *
-        eigenbasisBoltzmannWeight
-          (fun m : ParticleNumberSector Mode Config N => occupationEnergy ε m.val) β n)
-  rw [grandCanonicalBoltzmannWeight_of_sector]
-  field_simp [hZ, hZN]
 
 /-- A particle-number compression of the grand-canonical density equals the
 full-Fock zero extension of the canonical density scaled by the probability
