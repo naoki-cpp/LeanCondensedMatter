@@ -105,12 +105,9 @@ theorem eigenbasisGibbsProbability_add_const (E : ι → ℝ) (β c : ℝ) (i : 
 
 theorem eigenbasisGibbsProbability_nonneg (E : ι → ℝ) (β : ℝ) (i : ι) :
     0 ≤ eigenbasisGibbsProbability E β i := by
-  unfold eigenbasisGibbsProbability
-  exact mul_nonneg
-    (inv_nonneg.mpr (by
-      rw [eigenbasisPartitionFunction]
-      exact tsum_nonneg fun j => eigenbasisBoltzmannWeight_nonneg E β j))
-    (eigenbasisBoltzmannWeight_nonneg E β i)
+  change 0 ≤ Real.normalizedWeight (eigenbasisBoltzmannWeight E β) i
+  exact Real.normalizedWeight_nonneg _
+    (eigenbasisBoltzmannWeight_nonneg E β) i
 
 /-- The normalized Gibbs probabilities sum to one. -/
 theorem hasSum_eigenbasisGibbsProbability [Nonempty ι] (E : ι → ℝ) (β : ℝ)
