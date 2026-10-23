@@ -175,20 +175,11 @@ theorem grandCanonicalSectorProbability_tsum_eq_one
     (hsum : EigenbasisGibbsSummable
       (grandCanonicalEnergy (Config := Config) ε μ) β) :
     (∑' N : ℕ, grandCanonicalSectorProbability (Config := Config) ε β μ N) = 1 := by
-  have hΞ : grandCanonicalPartitionFunction (Config := Config) ε β μ ≠ 0 :=
-    (grandCanonicalPartitionFunction_pos ε β μ hsum).ne'
-  calc
-    (∑' N : ℕ, grandCanonicalSectorProbability (Config := Config) ε β μ N) =
-        ∑' N : ℕ, (Real.exp (β * μ * (N : ℝ)) *
-          canonicalPartitionFunction (Config := Config) ε β N) /
-          grandCanonicalPartitionFunction (Config := Config) ε β μ := rfl
-    _ = (∑' N : ℕ, Real.exp (β * μ * (N : ℝ)) *
-          canonicalPartitionFunction (Config := Config) ε β N) /
-            grandCanonicalPartitionFunction (Config := Config) ε β μ := by
-      rw [tsum_div_const]
-    _ = 1 := by
-      rw [← grandCanonicalPartitionFunction_eq_tsum_sector ε β μ hsum]
-      exact div_self hΞ
+  change (∑' N : ℕ, (Real.exp (β * μ * (N : ℝ)) *
+      canonicalPartitionFunction (Config := Config) ε β N) /
+      grandCanonicalPartitionFunction (Config := Config) ε β μ) = 1
+  rw [tsum_div_const, ← grandCanonicalPartitionFunction_eq_tsum_sector ε β μ hsum]
+  exact div_self (grandCanonicalPartitionFunction_pos ε β μ hsum).ne'
 
 end
 
