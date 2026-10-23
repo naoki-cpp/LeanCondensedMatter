@@ -660,15 +660,11 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedTraceKernel_polarPoint2D_eq
           (fun ρ => U * greenR ρ * Ui)
           (fun ρ => U * greenA ρ * Ui)
           (fun source ρ => U * rotated source ρ * Ui) radius := by
-    cases diagram with
-    | x =>
-        simp only [finiteCutoffContinuumBornDysonGaussianCrossedTraceKernel,
-          gaussianCrossedTraceKernel]
-        rw [hposition, hJ 0 radius, hJ 1 radius, hR (-radius), hA (-radius)]
-    | psi =>
-        simp only [finiteCutoffContinuumBornDysonGaussianCrossedTraceKernel,
-          gaussianCrossedTraceKernel]
-        rw [hposition, hJ 0 radius, hJ 1 (-radius), hR (-radius), hR radius]
+    cases diagram <;>
+      simp only [finiteCutoffContinuumBornDysonGaussianCrossedTraceKernel,
+        gaussianCrossedTraceKernel] <;>
+      rw [hposition] <;>
+      simp only [hJ, hR, hA]
   calc
     finiteCutoffContinuumBornDysonGaussianCrossedTraceKernel
         diagram v m probeEnergy broadening disorderStrength hbar pMax
