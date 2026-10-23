@@ -37,8 +37,7 @@ theorem QuarticDiagram.grandCanonicalGibbsExpectation_eq_orderedThermalWickSum
         (quarticFreeThermalOrderedProduct (fun i => d.vertexLabel (order i))) =
       QuarticDiagram.orderedThermalWickSum ε β μ d order := by
   letI := Fintype.ofFinite Mode
-  rw [grandCanonicalGibbsExpectation_shift]
-  have hwick := freeGibbsExpectation_eq_sum_pairing_concrete (fun i => ε i - μ) β hpos
+  have hwick := grandCanonicalGibbsExpectation_eq_sum_pairing_concrete ε β μ hpos
     (2 * S.card) (quarticFreeThermalFieldFamily fun i => d.vertexLabel (order i))
   simpa [quarticFreeThermalOrderedProduct, QuarticDiagram.orderedFreeThermalFieldFamily,
     QuarticDiagram.orderedThermalWickSum, Combinatorics.Pairing.evaluation] using hwick
@@ -126,9 +125,10 @@ theorem grandCanonicalGibbsDysonCoeff_quarticInteractionOn_eq_sum_pairingEvaluat
   rw [grandCanonicalGibbsExpectation_smul]
   rw [← quarticFreeThermalOrderedProduct_eq_quarticVertexSequenceOperator,
     quarticFreeThermalOrderedProduct]
-  have hwick := freeGibbsExpectation_eq_sum_pairing_concrete (fun i => ε i - μ) β hpos
+  have hwick := grandCanonicalGibbsExpectation_eq_sum_pairing_concrete ε β μ hpos
     (2 * n) (quarticFreeThermalFieldFamily
       (fun i => (q i : QuarticVertexLabel Mode)))
+  rw [grandCanonicalGibbsExpectation_shift] at hwick
   simpa only [Pairing.evaluation] using congrArg
     (fun z => Common.quarticDysonSequenceCoeff ε g
       (fun i => (q i : QuarticVertexLabel Mode)) t * z) hwick
@@ -162,8 +162,9 @@ private theorem grandCanonicalGibbsDysonCoeff_quarticInteraction_eq_sum_pairingE
   rw [grandCanonicalGibbsExpectation_smul]
   rw [← quarticFreeThermalOrderedProduct_eq_quarticVertexSequenceOperator,
     quarticFreeThermalOrderedProduct]
-  have hwick := freeGibbsExpectation_eq_sum_pairing_concrete (fun i => ε i - μ) β hpos
+  have hwick := grandCanonicalGibbsExpectation_eq_sum_pairing_concrete ε β μ hpos
     (2 * n) (quarticFreeThermalFieldFamily q)
+  rw [grandCanonicalGibbsExpectation_shift] at hwick
   simpa only [Pairing.evaluation] using congrArg
     (fun z => Common.quarticDysonSequenceCoeff ε g q t * z) hwick
 
