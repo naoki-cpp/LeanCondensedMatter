@@ -176,27 +176,23 @@ theorem tendsto_completedFreeModeTruncationNormalizationRatio
       (Common.grandCanonicalEnergy (Config := Occupation Mode) ε μ) β) :
     Tendsto (completedFreeModeTruncationNormalizationRatio ε β μ) atTop (𝓝 1) := by
   have hZ := tendsto_completedFreeModeTruncatedPartitionFunction ε β μ hsum
-  have hZne : eigenbasisPartitionFunction (Common.grandCanonicalEnergy (Config := Occupation Mode) ε μ) β ≠ 0 :=
-    ne_of_gt (eigenbasisPartitionFunction_pos (Common.grandCanonicalEnergy (Config := Occupation Mode) ε μ) β hsum)
+  have hZne : eigenbasisPartitionFunction
+      (Common.grandCanonicalEnergy (Config := Occupation Mode) ε μ) β ≠ 0 :=
+    ne_of_gt (eigenbasisPartitionFunction_pos
+      (Common.grandCanonicalEnergy (Config := Occupation Mode) ε μ) β hsum)
   have hconst :
-      Tendsto (fun _ : Finset Mode => eigenbasisPartitionFunction (Common.grandCanonicalEnergy (Config := Occupation Mode) ε μ) β) atTop
-        (𝓝 (eigenbasisPartitionFunction (Common.grandCanonicalEnergy (Config := Occupation Mode) ε μ) β)) :=
+      Tendsto (fun _ : Finset Mode =>
+        eigenbasisPartitionFunction
+          (Common.grandCanonicalEnergy (Config := Occupation Mode) ε μ) β) atTop
+        (𝓝 (eigenbasisPartitionFunction
+          (Common.grandCanonicalEnergy (Config := Occupation Mode) ε μ) β)) :=
     tendsto_const_nhds
-  have hratio :
-      Tendsto
-        (fun S : Finset Mode =>
-          eigenbasisPartitionFunction (Common.grandCanonicalEnergy (Config := Occupation Mode) ε μ) β /
-            completedFreeModeTruncatedPartitionFunction ε β μ S)
-        atTop
-        (𝓝 (eigenbasisPartitionFunction (Common.grandCanonicalEnergy (Config := Occupation Mode) ε μ) β /
-          eigenbasisPartitionFunction (Common.grandCanonicalEnergy (Config := Occupation Mode) ε μ) β)) :=
-    hconst.div hZ hZne
   change Tendsto
-    (fun S : Finset Mode =>
-      eigenbasisPartitionFunction (Common.grandCanonicalEnergy (Config := Occupation Mode) ε μ) β /
-        completedFreeModeTruncatedPartitionFunction ε β μ S)
-    atTop (𝓝 1)
-  simpa [div_self hZne] using hratio
+    ((fun _ : Finset Mode =>
+      eigenbasisPartitionFunction
+        (Common.grandCanonicalEnergy (Config := Occupation Mode) ε μ) β) /
+      completedFreeModeTruncatedPartitionFunction ε β μ) atTop (𝓝 (1 : ℝ))
+  simpa only [div_self hZne] using hconst.div hZ hZne
 
 /-- A truncated Gibbs probability is the retained full Gibbs probability multiplied by the finite
 normalization correction. -/
