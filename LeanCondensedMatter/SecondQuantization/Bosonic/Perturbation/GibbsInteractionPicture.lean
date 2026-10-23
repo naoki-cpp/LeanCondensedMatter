@@ -46,8 +46,12 @@ theorem grandCanonicalGibbsSummable_interactionPicture_iff
       freeGibbsSummable (fun i => ε i - μ) β V := by
   unfold freeGibbsSummable
   constructor <;> intro h
-  · exact h.congr fun n => matrixCoeff_diagonalGibbs_interactionPicture_self ε (fun i => ε i - μ) β σ V n
-  · exact h.congr fun n => (matrixCoeff_diagonalGibbs_interactionPicture_self ε (fun i => ε i - μ) β σ V n).symm
+  · exact h.congr fun n =>
+      matrixCoeff_diagonalGibbs_interactionPicture_self
+        ε (fun i => ε i - μ) β σ V n
+  · exact h.congr fun n =>
+      (matrixCoeff_diagonalGibbs_interactionPicture_self
+        ε (fun i => ε i - μ) β σ V n).symm
 
 omit [Fintype Mode] in
 /-- Grand-canonical Gibbs expectation is invariant under physical-H interaction-picture
@@ -59,8 +63,9 @@ theorem grandCanonicalGibbsExpectation_interactionPicture
       freeGibbsExpectation (fun i => ε i - μ) β V := by
   unfold freeGibbsExpectation Common.tsumTrace
   congr 1
-  exact tsum_congr fun n => matrixCoeff_diagonalGibbs_interactionPicture_self ε (fun i => ε i - μ) β σ V n
-
+  exact tsum_congr fun n =>
+    matrixCoeff_diagonalGibbs_interactionPicture_self
+      ε (fun i => ε i - μ) β σ V n
 
 end
 end Bosonic
