@@ -150,7 +150,7 @@ theorem grandCanonicalGibbsExpectation_sum_of_summable
       (imaginaryTimeEvolveFree (fun i => ε i - μ) (-β))) (∑ i, terms i) =
     ∑ i, (Common.summableDiagonalTraceRatioLinear
       (imaginaryTimeEvolveFree (fun i => ε i - μ) (-β))) (terms i)
-  simpa using map_sum
+  exact map_sum
     (Common.summableDiagonalTraceRatioLinear
       (imaginaryTimeEvolveFree (fun i => ε i - μ) (-β))) terms Finset.univ
 
