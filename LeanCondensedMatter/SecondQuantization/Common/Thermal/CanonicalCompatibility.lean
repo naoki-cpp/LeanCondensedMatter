@@ -20,35 +20,6 @@ noncomputable section
 
 variable {Mode Config : Type*} [OccupationBasis Mode Config]
 
-private theorem canonicalPullback_basisState_of_sector (N : ℕ)
-    (n : ParticleNumberSector Mode Config N) :
-    completedCoordinatePullback
-      (Subtype.val : ParticleNumberSector Mode Config N → Config)
-      Subtype.val_injective (completedBasisState n.val) = completedBasisState n := by
-  classical
-  ext m
-  rw [completedCoordinatePullback_apply]
-  by_cases h : m = n
-  · subst m
-    simp
-  · have hv : (m : Config) ≠ n.val := fun he => h (Subtype.ext he)
-    simp [completedBasisState_apply_of_ne hv, completedBasisState_apply_of_ne h]
-
-private theorem canonicalPullback_basisState_of_ne (N : ℕ)
-    (c : Config) (hc : particleNumber (Mode := Mode) c ≠ N) :
-    completedCoordinatePullback
-      (Subtype.val : ParticleNumberSector Mode Config N → Config)
-      Subtype.val_injective (completedBasisState c) = 0 := by
-  classical
-  ext n
-  rw [completedCoordinatePullback_apply]
-  have hv : (n : Config) ≠ c := by
-    intro he
-    apply hc
-    rw [← he]
-    exact n.property
-  simp [completedBasisState_apply_of_ne hv]
-
 /-- The canonical density on the full completed Fock space is the zero extension
 of the Gibbs density on its fixed-number sector, as a bounded operator.
 The inclusion is an isometry and pullback is its Hilbert adjoint. -/
@@ -81,7 +52,7 @@ theorem canonicalFullGibbsDensityOperator_eq_sector_embedding
               (Subtype.val : ParticleNumberSector Mode Config N → Config)
               Subtype.val_injective (completedBasisState n.val)))
     rw [canonicalFullGibbsDensityOperator_apply_basis_of_sector,
-      canonicalPullback_basisState_of_sector,
+      completedCoordinatePullback_basisState_of_image,
       canonicalGibbsDensityOperator_apply_basis, map_smul]
     exact (congrArg
       (fun ψ : CompletedFock Config =>
@@ -100,8 +71,16 @@ theorem canonicalFullGibbsDensityOperator_eq_sector_embedding
             (completedCoordinatePullback
               (Subtype.val : ParticleNumberSector Mode Config N → Config)
               Subtype.val_injective (completedBasisState c)))
+    have hnot : c ∉ Set.range
+        (Subtype.val : ParticleNumberSector Mode Config N → Config) := by
+      rintro ⟨n, hn⟩
+      apply hc
+      rw [← hn]
+      exact n.property
     rw [canonicalFullGibbsDensityOperator_apply_basis_of_ne ε β N hsum c hc,
-      canonicalPullback_basisState_of_ne N c hc]
+      completedCoordinatePullback_basisState_of_not_mem
+        (Subtype.val : ParticleNumberSector Mode Config N → Config)
+        Subtype.val_injective c hnot]
     simp
 
 
