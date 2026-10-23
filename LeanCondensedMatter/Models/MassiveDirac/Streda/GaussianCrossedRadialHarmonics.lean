@@ -320,23 +320,12 @@ theorem finiteCutoffContinuumBornDysonRadial_ra_weighted_moment_mul_center_gap
       hden, ← finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct_eq_mul]
       using hspectral
   dsimp only
-  calc
-    (energyA ^ 2 - massA ^ 2 - (energyR ^ 2 - massR ^ 2)) *
-        (∫ p in (0 : ℝ)..pMax, weight p *
-          (finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct
-            v m p probeEnergy broadening disorderStrength hbar pMax)⁻¹) =
-      ∫ p in (0 : ℝ)..pMax,
-        (energyA ^ 2 - massA ^ 2 - (energyR ^ 2 - massR ^ 2)) *
-          (weight p *
-            (finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct
-              v m p probeEnergy broadening disorderStrength hbar pMax)⁻¹) := by
-          rw [intervalIntegral.integral_const_mul]
-    _ = _ := by
-      apply intervalIntegral.integral_congr
-      intro p _
-      dsimp only
-      rw [← hgap p]
-      ring
+  rw [← intervalIntegral.integral_const_mul]
+  apply intervalIntegral.integral_congr
+  intro p _
+  dsimp only
+  rw [← hgap p]
+  ring
 
 /-- At finite broadening and cutoff, the unweighted RA radial double-pole
 moment reduces to logarithmic boundary values of the retarded and advanced
