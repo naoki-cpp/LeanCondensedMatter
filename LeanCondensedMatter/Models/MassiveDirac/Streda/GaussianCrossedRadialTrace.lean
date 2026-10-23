@@ -1028,25 +1028,13 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedTraceKernel_radialAxis_eq
       finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel
         diagram v m probeEnergy broadening disorderStrength hbar pMax radius := by
   have hneg := neg_polarPoint2D radius 0
-  cases diagram with
-  | x =>
-      simp only [finiteCutoffContinuumBornDysonGaussianCrossedTraceKernel,
-        finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel,
-        gaussianCrossedTraceKernel]
-      rw [hneg,
-        finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceCurrentBlock_radialAxis_eq,
-        finiteCutoffContinuumBornDysonRealSpaceGreenMatrix_radialAxis_eq,
-        finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceCurrentBlock_radialAxis_eq,
-        finiteCutoffContinuumBornDysonRealSpaceGreenMatrix_radialAxis_eq]
-  | psi =>
-      simp only [finiteCutoffContinuumBornDysonGaussianCrossedTraceKernel,
-        finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel,
-        gaussianCrossedTraceKernel]
-      rw [hneg,
-        finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceCurrentBlock_radialAxis_eq,
-        finiteCutoffContinuumBornDysonRealSpaceGreenMatrix_radialAxis_eq,
-        finiteCutoffContinuumBornDysonRealSpaceGreenMatrix_radialAxis_eq,
-        finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceCurrentBlock_radialAxis_eq]
+  cases diagram <;>
+    simp only [finiteCutoffContinuumBornDysonGaussianCrossedTraceKernel,
+      finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel,
+      gaussianCrossedTraceKernel] <;>
+    rw [hneg] <;>
+    simp only [finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceCurrentBlock_radialAxis_eq,
+      finiteCutoffContinuumBornDysonRealSpaceGreenMatrix_radialAxis_eq]
 
 /-- The radial `Psi` trace kernel remains real because its Hermitian-conjugate partner is included at
 trace level. -/
