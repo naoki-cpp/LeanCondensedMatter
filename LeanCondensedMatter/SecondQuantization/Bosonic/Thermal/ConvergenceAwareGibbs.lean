@@ -178,15 +178,16 @@ theorem grandCanonicalGibbsExpectation_sum_of_summable
     ∑ i, (grandCanonicalGibbsExpectationLinear ε β μ) (terms i)
   simpa using map_sum (grandCanonicalGibbsExpectationLinear ε β μ) terms Finset.univ
 
+omit [Fintype Mode] in
 /-- Reexpress a free grand-canonical Gibbs numerator using the effective dispersion
 `ξ i = ε i - μ`. This is a state-level energy shift, not a change to physical-H Dyson evolution. -/
-omit [Fintype Mode] in
 theorem grandCanonicalGibbsSummable_shift
     (ε : Mode → ℝ) (β μ : ℝ) (A : FockSpace Mode →ₗ[ℂ] FockSpace Mode) :
     grandCanonicalGibbsSummable ε β μ A ↔
       grandCanonicalGibbsSummable (fun i => ε i - μ) β 0 A := by
   simp only [grandCanonicalGibbsSummable, sub_zero]
 
+omit [Fintype Mode] in
 /-- The analytic domain depends only on the effective one-mode Gibbs energies. -/
 theorem grandCanonicalGibbsDomain_shift
     (ε : Mode → ℝ) (β μ : ℝ) :
@@ -195,9 +196,9 @@ theorem grandCanonicalGibbsDomain_shift
   ext A
   exact grandCanonicalGibbsSummable_shift ε β μ A
 
+omit [Fintype Mode] in
 /-- The normalized grand-canonical algebraic Gibbs functional depends only on
 `ε - μ`, independently of the physical imaginary-time generator. -/
-omit [Fintype Mode] in
 theorem grandCanonicalGibbsExpectation_shift
     (ε : Mode → ℝ) (β μ : ℝ) (A : FockSpace Mode →ₗ[ℂ] FockSpace Mode) :
     grandCanonicalGibbsExpectation ε β μ A =
