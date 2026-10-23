@@ -15,7 +15,6 @@ or physical Gibbs-state assumptions belong to downstream consumers.
 -/
 
 open Filter Topology
-open scoped Classical
 
 noncomputable section
 
@@ -24,10 +23,9 @@ eventually retained. The masks need not be monotone or have finite support. -/
 theorem tendsto_tsum_ite_of_eventually
     {ι κ E : Type*} [NormedAddCommGroup E] [CompleteSpace E]
     (f : ι → E) (hf : Summable (fun i => ‖f i‖))
-    (l : Filter κ) (P : κ → ι → Prop)
+    (l : Filter κ) (P : κ → ι → Prop) [DecidableRel P]
     (hP : ∀ i, ∀ᶠ s in l, P s i) :
     Tendsto (fun s => ∑' i, if P s i then f i else 0) l (𝓝 (∑' i, f i)) := by
-  classical
   have hpoint (i : ι) :
       Tendsto (fun s => if P s i then f i else 0) l (𝓝 (f i)) := by
     apply tendsto_const_nhds.congr'
@@ -46,12 +44,11 @@ cutoff total is nonzero at every index is necessary. -/
 theorem tendsto_normalizedWeight_ite_of_eventually
     {ι κ : Type*} (w : ι → ℝ) (hw : Summable (fun i => ‖w i‖))
     (hZ : (∑' i, w i) ≠ 0)
-    (l : Filter κ) (P : κ → ι → Prop)
+    (l : Filter κ) (P : κ → ι → Prop) [DecidableRel P]
     (hP : ∀ i, ∀ᶠ s in l, P s i) (i : ι) :
     Tendsto (fun s => Real.normalizedWeight
       (fun j => if P s j then w j else 0) i)
       l (𝓝 (Real.normalizedWeight w i)) := by
-  classical
   have hZt := tendsto_tsum_ite_of_eventually w hw l P hP
   have hwt : Tendsto (fun s => if P s i then w i else 0) l (𝓝 (w i)) := by
     apply tendsto_const_nhds.congr'
