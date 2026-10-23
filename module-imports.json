@@ -271,6 +271,12 @@
       "externalImportCount": 1
     },
     {
+      "name": "LeanCondensedMatter.Analysis.InfiniteSum.Truncation",
+      "sourceFile": "LeanCondensedMatter/Analysis/InfiniteSum/Truncation.lean",
+      "imports": [],
+      "externalImportCount": 1
+    },
+    {
       "name": "LeanCondensedMatter.Analysis.InternalSpace.Pauli",
       "sourceFile": "LeanCondensedMatter/Analysis/InternalSpace/Pauli.lean",
       "imports": [],
@@ -6347,6 +6353,15 @@
       "externalImportCount": 0
     },
     {
+      "name": "LeanCondensedMatter.SecondQuantization.Common.Thermal.CanonicalGrandCanonicalCompatibility",
+      "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Thermal/CanonicalGrandCanonicalCompatibility.lean",
+      "imports": [
+        "LeanCondensedMatter.SecondQuantization.Common.Thermal.CanonicalCompatibility",
+        "LeanCondensedMatter.SecondQuantization.Common.Thermal.GrandCanonicalSectorDecomposition"
+      ],
+      "externalImportCount": 0
+    },
+    {
       "name": "LeanCondensedMatter.SecondQuantization.Common.Thermal.CanonicalSector",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Thermal/CanonicalSector.lean",
       "imports": [
@@ -6390,6 +6405,15 @@
       "externalImportCount": 0
     },
     {
+      "name": "LeanCondensedMatter.SecondQuantization.Common.Thermal.GrandCanonicalSectorDecomposition",
+      "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Thermal/GrandCanonicalSectorDecomposition.lean",
+      "imports": [
+        "LeanCondensedMatter.SecondQuantization.Common.Thermal.CanonicalSector",
+        "LeanCondensedMatter.SecondQuantization.Common.Thermal.GrandCanonical"
+      ],
+      "externalImportCount": 0
+    },
+    {
       "name": "LeanCondensedMatter.SecondQuantization.Common.Thermal",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Thermal.lean",
       "imports": [
@@ -6400,10 +6424,12 @@
         "LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis",
         "LeanCondensedMatter.SecondQuantization.Common.Thermal.CanonicalCompatibility",
         "LeanCondensedMatter.SecondQuantization.Common.Thermal.CanonicalFullFock",
+        "LeanCondensedMatter.SecondQuantization.Common.Thermal.CanonicalGrandCanonicalCompatibility",
         "LeanCondensedMatter.SecondQuantization.Common.Thermal.CanonicalSector",
         "LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsCoordinate",
         "LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsExpectationBridge",
-        "LeanCondensedMatter.SecondQuantization.Common.Thermal.GrandCanonical"
+        "LeanCondensedMatter.SecondQuantization.Common.Thermal.GrandCanonical",
+        "LeanCondensedMatter.SecondQuantization.Common.Thermal.GrandCanonicalSectorDecomposition"
       ],
       "externalImportCount": 0
     },
@@ -7746,12 +7772,13 @@
       "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.ModeTruncation",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Thermal/Completed/ModeTruncation.lean",
       "imports": [
+        "LeanCondensedMatter.Analysis.InfiniteSum.Truncation",
         "LeanCondensedMatter.QuantumTheory.Gibbs.Boltzmann",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.Hamiltonian",
         "LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.ModeTruncation",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.Gibbs"
       ],
-      "externalImportCount": 1
+      "externalImportCount": 0
     },
     {
       "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.TotalNumberExpectation",
