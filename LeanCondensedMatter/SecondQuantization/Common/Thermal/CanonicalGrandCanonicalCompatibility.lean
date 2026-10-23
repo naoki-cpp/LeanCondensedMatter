@@ -81,6 +81,21 @@ noncomputable def grandCanonicalSectorProbability
     canonicalPartitionFunction (Config := Config) ε β N /
       grandCanonicalPartitionFunction (Config := Config) ε β μ
 
+/-- Every nonempty fixed-number sector has strictly positive probability under a
+summable grand-canonical Gibbs distribution. Empty sectors are handled separately. -/
+theorem grandCanonicalSectorProbability_pos
+    (ε : Mode → ℝ) (β μ : ℝ) (N : ℕ)
+    [Nonempty (ParticleNumberSector Mode Config N)]
+    (hsum : EigenbasisGibbsSummable
+      (grandCanonicalEnergy (Config := Config) ε μ) β) :
+    0 < grandCanonicalSectorProbability (Config := Config) ε β μ N := by
+  unfold grandCanonicalSectorProbability
+  exact div_pos
+    (mul_pos (Real.exp_pos _)
+      (canonicalPartitionFunction_pos ε β N
+        (canonicalGibbsSummable_of_grandCanonical ε β μ N hsum)))
+    (grandCanonicalPartitionFunction_pos ε β μ hsum)
+
 /-- Conditioning the grand-canonical occupation probability on a nonempty
 sharp-number sector gives its canonical Gibbs occupation probability. -/
 theorem grandCanonicalGibbsProbability_of_sector
