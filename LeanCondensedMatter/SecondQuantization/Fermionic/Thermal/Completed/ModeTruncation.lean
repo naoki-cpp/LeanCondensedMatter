@@ -140,23 +140,12 @@ theorem tendsto_completedFreeModeTruncatedGibbsProbability
     (n : Occupation Mode) :
     Tendsto (fun S : Finset Mode => completedFreeModeTruncatedGibbsProbability ε β μ S n)
       atTop (𝓝 (eigenbasisGibbsProbability (Common.grandCanonicalEnergy (Config := Occupation Mode) ε μ) β n)) := by
-  have hZne : eigenbasisPartitionFunction
-      (Common.grandCanonicalEnergy (Config := Occupation Mode) ε μ) β ≠ 0 :=
-    ne_of_gt (eigenbasisPartitionFunction_pos
-      (Common.grandCanonicalEnergy (Config := Occupation Mode) ε μ) β hsum)
-  change Tendsto (fun S : Finset Mode => Real.normalizedWeight
-      (fun m : Occupation Mode => if m ⊆ S then
-        eigenbasisBoltzmannWeight (Common.grandCanonicalEnergy (Config := Occupation Mode) ε μ) β m
-        else 0) n) atTop
-    (𝓝 (Real.normalizedWeight
-      (eigenbasisBoltzmannWeight
-        (Common.grandCanonicalEnergy (Config := Occupation Mode) ε μ) β) n))
-  exact tendsto_normalizedWeight_ite_of_eventually
-    (eigenbasisBoltzmannWeight
-      (Common.grandCanonicalEnergy (Config := Occupation Mode) ε μ) β)
-    hsum hZne (atTop : Filter (Finset Mode))
-    (fun S (m : Occupation Mode) => m ⊆ S)
-    (fun m => eventually_ge_atTop m) n
+  have hZ := tendsto_completedFreeModeTruncatedPartitionFunction ε β μ hsum
+  have hZne : eigenbasisPartitionFunction (Common.grandCanonicalEnergy (Config := Occupation Mode) ε μ) β ≠ 0 :=
+    ne_of_gt (eigenbasisPartitionFunction_pos (Common.grandCanonicalEnergy (Config := Occupation Mode) ε μ) β hsum)
+  have hw := tendsto_completedFreeModeTruncatedWeight ε β μ n
+  simpa [completedFreeModeTruncatedGibbsProbability, eigenbasisGibbsProbability] using
+    (hZ.inv₀ hZne).mul hw
 
 end
 end Fermionic
