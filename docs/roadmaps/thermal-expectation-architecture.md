@@ -206,6 +206,12 @@ rotation. Bosonic and completed fermionic first-pair reductions apply it with re
 sign proof remain in the representation-specific consumers. The algebraic identity assumes only
 a field and the two scalar equalities, and introduces no thermal-state contract.
 
+`Common/Thermal/BlochDeDominicis/ExpectationRecursion.lean` also owns
+`indexedPeel_sum_eq_firstPair`: it distributes the scalar KMS ratio through a finite indexed
+peel, reindexes each erased tail, and replaces bare exchange coefficients by normalized
+contractions. Both completed fermionic and free bosonic first-pair adapters use this same
+sum conversion; their exchange/KMS and analytic conditions remain representation-specific.
+
 `Common/Thermal/BlochDeDominicis/NormalizedTwoPointTrace.lean` applies the general trace peel
 theorem to a singleton coefficient-paired tail. Its
 `normalizedTsumTrace_comp_eq_div_of_zetaCommutator` accepts an arbitrary configuration type;

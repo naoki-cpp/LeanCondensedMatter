@@ -1,5 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.PairingWeight
 import LeanCondensedMatter.Combinatorics.PerfectPairing.FirstPairRecursion
+import LeanCondensedMatter.Combinatorics.FiniteIndex.EraseIdxOfFn
 
 set_option linter.style.header false
 
@@ -30,6 +31,27 @@ namespace Common
 namespace BlochDeDominicis
 
 open Combinatorics
+
+/-- Convert an indexed exchange/peel sum to the first-pair sum when the Gibbs/KMS
+ratio times the bare exchange coefficient equals the normalized two-point contraction.
+This is purely a finite-index/scalar identity: CAR/CCR, trace cyclicity, and analytic
+summability remain the responsibility of the concrete state. -/
+theorem indexedPeel_sum_eq_firstPair {Operator : Type*}
+    (ζ ratio : ℂ) (exchange pair : Operator → ℂ)
+    (expectation : List Operator → ℂ) {m : ℕ}
+    (tail : Fin (m + 1) → Operator)
+    (hpair : ∀ D, ratio * exchange D = pair D) :
+    ratio * ∑ j : Fin (List.ofFn tail).length,
+      (ζ ^ (j : ℕ) * exchange ((List.ofFn tail)[(j : ℕ)]'j.isLt)) *
+        expectation ((List.ofFn tail).eraseIdx j) =
+      ∑ j : Fin (m + 1), ζ ^ (j : ℕ) * pair (tail j) *
+        expectation (List.ofFn fun i : Fin m => tail (j.succAbove i)) := by
+  rw [Finset.mul_sum, List.sum_getElem_eraseIdx_ofFn tail
+    (fun i D rest => ratio * ((ζ ^ i * exchange D) * expectation rest))]
+  apply Finset.sum_congr rfl
+  intro j _
+  rw [← hpair (tail j)]
+  ring
 
 /-- The minimal normalized expectation/first-pair recurrence contract used by the Bloch–de
 Dominicis induction, independent of the statistical ensemble. -/
