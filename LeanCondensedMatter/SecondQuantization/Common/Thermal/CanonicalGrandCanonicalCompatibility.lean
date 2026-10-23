@@ -132,9 +132,11 @@ theorem grandCanonicalGibbsDensityOperator_compress_sector
   by_cases hc : particleNumber (Mode := Mode) c = N
   · let n : ParticleNumberSector Mode Config N := ⟨c, hc⟩
     rw [ContinuousLinearMap.comp_apply, ContinuousLinearMap.comp_apply,
-      completedCoordinateProjection_basisState, if_pos hc]
+      completedCoordinateProjection_basisState]
+    simp only [hc, ↓reduceIte]
     rw [grandCanonicalGibbsDensityOperator_apply_basis, map_smul,
-      completedCoordinateProjection_basisState, if_pos hc]
+      completedCoordinateProjection_basisState]
+    simp only [hc, ↓reduceIte]
     rw [smul_apply]
     change
       (eigenbasisGibbsProbability (grandCanonicalEnergy ε μ) β n.val : ℂ) •
@@ -148,7 +150,8 @@ theorem grandCanonicalGibbsDensityOperator_compress_sector
       congrArg (fun z : ℝ => (z : ℂ) • completedBasisState n.val)
         (grandCanonicalGibbsProbability_of_sector ε β μ N hsum n)
   · rw [ContinuousLinearMap.comp_apply, ContinuousLinearMap.comp_apply,
-      completedCoordinateProjection_basisState, if_neg hc]
+      completedCoordinateProjection_basisState]
+    simp only [hc, ↓reduceIte, map_zero]
     rw [smul_apply,
       canonicalFullGibbsDensityOperator_apply_basis_of_ne ε β N
         (canonicalGibbsSummable_of_grandCanonical ε β μ N hsum) c hc]
