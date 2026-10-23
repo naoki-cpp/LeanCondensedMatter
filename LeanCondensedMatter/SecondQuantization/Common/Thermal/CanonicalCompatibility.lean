@@ -190,10 +190,10 @@ theorem canonicalFullGibbsDensityOperator_expectation_eq_sector
         inner ℂ (completedBasisState n.val)
           (U (ρN.op (V (A (completedBasisState n.val)))))
       have hU : U (completedBasisState n) = completedBasisState n.val := by
-        simpa only [U] using
-          (completedCoordinateEmbedding_basisState
-            (Subtype.val : ParticleNumberSector Mode Config N → Config)
-            Subtype.val_injective n)
+        change completedCoordinateEmbedding
+          (Subtype.val : ParticleNumberSector Mode Config N → Config)
+          Subtype.val_injective (completedBasisState n) = completedBasisState n.val
+        exact completedCoordinateEmbedding_basisState _ _ n
       rw [hU]
       simp only [inner_completedBasisState_left]
       change
@@ -225,6 +225,7 @@ theorem canonicalFullGibbsDensityOperator_expectation_eq_sector
           Subtype.val_injective
           (ρN.op (V (A (completedBasisState c))))) c
       rw [completedCoordinateEmbedding_apply, Function.extend_apply' _ _ _ hnot]
+      simp
   have hExtended : HasSum
       (Function.extend
         (Subtype.val : ParticleNumberSector Mode Config N → Config) f 0)
