@@ -26,37 +26,37 @@ variable {Mode : Type*} [Fintype Mode]
 /-- Bosonic quartic Dyson Linked Cluster Theorem for the physical convergence-aware Gibbs
 coefficients. -/
 theorem factorial_mul_coeff_grandCanonicalGibbsDysonFormalLog_eq_sum_connectedDysonThermalAmplitude
-    (ε : Mode → ℝ) (β : ℝ) (hpos : ∀ i, 0 < β * ε i)
+    (ε : Mode → ℝ) (β μ : ℝ) (hpos : ∀ i, 0 < β * (ε i - μ))
     (g : QuarticVertexLabel Mode → ℂ) (n : ℕ) (hn : n ≠ 0) :
     (n.factorial : ℂ) *
         PowerSeries.coeff n
-          (grandCanonicalGibbsDysonFormalLog ε β 0 (quarticInteraction g)) =
+          (grandCanonicalGibbsDysonFormalLog ε β μ (quarticInteraction g)) =
       ∑ d : Common.ConnectedQuarticDiagram (QuarticVertexLabel Mode) n Finset.univ,
-        QuarticDiagram.dysonThermalAmplitude ε β g d.1 β := by
-  let W := quarticDysonThermalDiagramMultiplicativeWeight (N := n) ε β g β
+        QuarticDiagram.dysonThermalAmplitude ε β μ g d.1 β := by
+  let W := quarticDysonThermalDiagramMultiplicativeWeight (N := n) ε β μ g β
   have hZ :
       PowerSeries.constantCoeff
-          (grandCanonicalGibbsDysonSeries ε β 0 (quarticInteraction g)) = 1 :=
-    constantCoeff_grandCanonicalGibbsDysonSeries ε β 0 (by simpa only [sub_zero] using hpos) (quarticInteraction g)
+          (grandCanonicalGibbsDysonSeries ε β μ (quarticInteraction g)) = 1 :=
+    constantCoeff_grandCanonicalGibbsDysonSeries ε β μ hpos (quarticInteraction g)
   have hMoment :
       Combinatorics.powerSeriesMomentSetFunction (α := Fin n)
-          (grandCanonicalGibbsDysonSeries ε β 0 (quarticInteraction g)) hZ =
+          (grandCanonicalGibbsDysonSeries ε β μ (quarticInteraction g)) hZ =
         W.normalizedObjectMoment := by
     simpa only [W] using
       (powerSeriesMomentSetFunction_grandCanonicalGibbsDysonSeries_eq_dysonThermalObjectMoment
-        (N := n) ε β hpos g hZ)
+        (N := n) ε β μ hpos g hZ)
   have huniv : (Finset.univ : Finset (Fin n)) ≠ ∅ :=
     (Finset.univ_nonempty_iff.mpr ⟨⟨0, Nat.pos_of_ne_zero hn⟩⟩).ne_empty
   calc
     (n.factorial : ℂ) *
         PowerSeries.coeff n
-          (grandCanonicalGibbsDysonFormalLog ε β 0 (quarticInteraction g)) =
+          (grandCanonicalGibbsDysonFormalLog ε β μ (quarticInteraction g)) =
         W.connectedContribution (Finset.univ : Finset (Fin n)) := by
       simpa [grandCanonicalGibbsDysonFormalLog] using
         (Combinatorics.factorial_mul_coeff_logOf_eq_connectedContribution
           hZ W hMoment huniv)
     _ = ∑ d : Common.ConnectedQuarticDiagram (QuarticVertexLabel Mode) n Finset.univ,
-          QuarticDiagram.dysonThermalAmplitude ε β g d.1 β := rfl
+          QuarticDiagram.dysonThermalAmplitude ε β μ g d.1 β := rfl
 
 end
 end Bosonic
