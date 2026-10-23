@@ -104,6 +104,25 @@ theorem canonicalFullGibbsDensityOperator_eq_sector_embedding
       canonicalPullback_basisState_of_ne N c hc]
     simp
 
+
+/-- The fixed-number canonical state on the full completed Fock space is
+invariant under a common one-particle energy offset. The proof transports
+the sector result through the actual zero-extension representation. -/
+theorem canonicalFullGibbsDensityOperator_shift_invariant
+    (ε : Mode → ℝ) (β : ℝ) (N : ℕ) (C : ℝ)
+    [Nonempty (ParticleNumberSector Mode Config N)]
+    (hsum : EigenbasisGibbsSummable
+      (fun n : ParticleNumberSector Mode Config N => occupationEnergy ε n.val) β) :
+    canonicalFullGibbsDensityOperator (Config := Config)
+        (fun i => ε i + C) β N
+        (canonicalGibbsSummable_shift ε β N C hsum) =
+      canonicalFullGibbsDensityOperator (Config := Config) ε β N hsum := by
+  apply DensityOperator.ext
+  rw [canonicalFullGibbsDensityOperator_eq_sector_embedding,
+    canonicalFullGibbsDensityOperator_eq_sector_embedding,
+    canonicalGibbsDensityOperator_shift_invariant]
+
+
 /-- Restricting a bounded full-Fock operator to the sharp-number sector preserves
 its diagonal matrix elements on the embedded occupation basis. This does not
 require the operator to preserve particle number. -/
