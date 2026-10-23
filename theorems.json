@@ -33511,7 +33511,7 @@
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": true,
+    "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
@@ -33524,7 +33524,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.ConcreteExpectationRecursion.0.SecondQuantization.Bosonic.FreeThermalField.freeGibbsExpectation_firstPair_recursion"
+      "SecondQuantization.Common.BlochDeDominicis.indexedPeel_sum_eq_firstPair"
     ],
     "dependencies": [
       "List.eraseIdx_ofFn_eq_ofFn_succAbove"
@@ -33532,7 +33532,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.ConcreteExpectationRecursion.0.SecondQuantization.Bosonic.FreeThermalField.freeGibbsExpectation_firstPair_recursion"
+      "SecondQuantization.Common.BlochDeDominicis.indexedPeel_sum_eq_firstPair"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -108104,6 +108104,50 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {Operator : Type u_1} (ζ ratio : ℂ) (exchange pair : Operator → ℂ) (expectation : List Operator → ℂ) {m : ℕ}\n  (tail : Fin (m + 1) → Operator),\n  (∀ (D : Operator), ratio * exchange D = pair D) →\n    ratio * ∑ j, ζ ^ ↑j * exchange (List.ofFn tail)[↑j] * expectation ((List.ofFn tail).eraseIdx ↑j) =\n      ∑ j, ζ ^ ↑j * pair (tail j) * expectation (List.ofFn fun i => tail (j.succAbove i))",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.BlochDeDominicis.indexedPeel_sum_eq_firstPair",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.ExpectationRecursion",
+    "externalAxioms": [],
+    "docString": "Convert an indexed exchange/peel sum to the first-pair sum when the Gibbs/KMS\nratio times the bare exchange coefficient equals the normalized two-point contraction.\nThis is purely a finite-index/scalar identity: CAR/CCR, trace cyclicity, and analytic\nsummability remain the responsibility of the concrete state. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.ConcreteExpectationRecursion.0.SecondQuantization.Bosonic.FreeThermalField.freeGibbsExpectation_firstPair_recursion"
+    ],
+    "dependencies": [
+      "List.sum_getElem_eraseIdx_ofFn"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.ConcreteExpectationRecursion.0.SecondQuantization.Bosonic.FreeThermalField.freeGibbsExpectation_firstPair_recursion"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ (s : SecondQuantization.Common.Statistics) {a b : ℕ}, a % 2 = b % 2 → ↑s.zetaInt ^ a = ↑s.zetaInt ^ b",
     "standardAxioms": [
       "Classical.choice",
@@ -177039,10 +177083,10 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "List.sum_getElem_eraseIdx_ofFn",
       "SecondQuantization.Bosonic.FreeThermalField.freeGibbsExpectation_cons_eq_kmsRatio_mul_operatorPeelSum",
       "SecondQuantization.Bosonic.FreeThermalField.freeGibbsExpectation_operatorPeelSum_eq_sum",
-      "SecondQuantization.Bosonic.FreeThermalField.kmsRatio_mul_exchangeValue_eq_freeThermalPairValue"
+      "SecondQuantization.Bosonic.FreeThermalField.kmsRatio_mul_exchangeValue_eq_freeThermalPairValue",
+      "SecondQuantization.Common.BlochDeDominicis.indexedPeel_sum_eq_firstPair"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,

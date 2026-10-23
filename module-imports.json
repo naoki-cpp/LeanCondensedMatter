@@ -4772,7 +4772,6 @@
       "name": "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.ConcreteExpectationRecursion",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Bosonic/Thermal/BlochDeDominicis/ConcreteExpectationRecursion.lean",
       "imports": [
-        "LeanCondensedMatter.Combinatorics.FiniteIndex.EraseIdxOfFn",
         "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.FreeFirstPair",
         "LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.ExpectationRecursion"
       ],
@@ -6220,6 +6219,7 @@
       "name": "LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.ExpectationRecursion",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Thermal/BlochDeDominicis/ExpectationRecursion.lean",
       "imports": [
+        "LeanCondensedMatter.Combinatorics.FiniteIndex.EraseIdxOfFn",
         "LeanCondensedMatter.Combinatorics.PerfectPairing.FirstPairRecursion",
         "LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.PairingWeight"
       ],
@@ -7701,7 +7701,6 @@
       "imports": [
         "LeanCondensedMatter.Analysis.Operator.TraceClass.Cyclicity",
         "LeanCondensedMatter.Analysis.ScalarExchange.Peel",
-        "LeanCondensedMatter.Combinatorics.FiniteIndex.EraseIdxOfFn",
         "LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.ExpectationRecursion",
         "LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.CanonicalAnticommutationRelations",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.Gibbs"
