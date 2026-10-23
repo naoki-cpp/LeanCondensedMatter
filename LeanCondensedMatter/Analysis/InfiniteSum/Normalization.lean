@@ -56,8 +56,8 @@ theorem normalizedWeight_mul_left (a : ι → ℝ) (c : ℝ) (hc : c ≠ 0) (i :
   unfold normalizedWeight
   rw [tsum_mul_left, mul_inv_rev]
   calc
-    (c⁻¹ * (∑' j, a j)⁻¹) * (c * a i) =
-        (c⁻¹ * c) * ((∑' j, a j)⁻¹ * a i) := by ring
+    (∑' j, a j)⁻¹ * c⁻¹ * (c * a i) =
+        (∑' j, a j)⁻¹ * ((c⁻¹ * c) * a i) := by ring
     _ = (∑' j, a j)⁻¹ * a i := by rw [inv_mul_cancel₀ hc, one_mul]
 
 
