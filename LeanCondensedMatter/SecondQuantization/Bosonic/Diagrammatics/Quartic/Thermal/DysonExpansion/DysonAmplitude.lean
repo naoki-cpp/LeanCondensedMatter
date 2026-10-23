@@ -25,23 +25,23 @@ variable {Mode : Type*}
 contains the ordered-simplex time integration and coupling product, while the diagram contributes
 one concrete bosonic thermal pairing value in the same vertex order. -/
 noncomputable def QuarticDiagram.orderedDysonThermalAmplitude
-    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
+    (ε : Mode → ℝ) (β μ : ℝ) (g : QuarticVertexLabel Mode → ℂ)
     {N : ℕ} {S : Finset (Fin N)}
     (d : Common.QuarticDiagram (QuarticVertexLabel Mode) N S)
     (order : Common.QuarticVertexOrder S) (t : ℝ) : ℂ :=
   Common.quarticDysonSequenceCoeff ε g (fun i => d.vertexLabel (order i)) t *
-    QuarticDiagram.orderedThermalPairingValue ε β d order
+    QuarticDiagram.orderedThermalPairingValue ε β μ d order
 
 /-- Physical bosonic quartic Dyson diagram amplitude, summed over all global vertex orders.
 The ordered-simplex regions associated with these orders are the pieces that shuffle-factorize over
 connected components, so this physical amplitude is a sum over orders, with no factorial
 averaging. -/
 noncomputable def QuarticDiagram.dysonThermalAmplitude
-    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
+    (ε : Mode → ℝ) (β μ : ℝ) (g : QuarticVertexLabel Mode → ℂ)
     {N : ℕ} {S : Finset (Fin N)}
     (d : Common.QuarticDiagram (QuarticVertexLabel Mode) N S) (t : ℝ) : ℂ :=
   ∑ order : Common.QuarticVertexOrder S,
-    QuarticDiagram.orderedDysonThermalAmplitude ε β g d order t
+    QuarticDiagram.orderedDysonThermalAmplitude ε β μ g d order t
 
 end
 end Bosonic
