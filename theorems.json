@@ -134506,6 +134506,7 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Fermionic.AlgebraicFock.annihilateDual_comp_create_add_swap",
+      "SecondQuantization.Fermionic.AlgebraicFock.annihilateDual_map",
       "SecondQuantization.Fermionic.AlgebraicFock.dGamma_dualRankOne",
       "SecondQuantization.Fermionic.AlgebraicFock.occupationConjugate_annihilateDual"
     ],
@@ -134514,10 +134515,55 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Fermionic.AlgebraicFock.annihilateDual_comp_create_add_swap",
+      "SecondQuantization.Fermionic.AlgebraicFock.annihilateDual_map",
       "SecondQuantization.Fermionic.AlgebraicFock.dGamma_dualRankOne",
       "SecondQuantization.Fermionic.AlgebraicFock.occupationConjugate_annihilateDual"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 4,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {V : Type u_2} {W : Type u_3} [inst : AddCommGroup V] [inst_1 : _root_.Module ℂ V] [inst_2 : AddCommGroup W]\n  [inst_3 : _root_.Module ℂ W] (f : V →ₗ[ℂ] W) (d : Module.Dual ℂ W) (Ψ : SecondQuantization.Fermionic.AlgebraicFock V),\n  ((SecondQuantization.Fermionic.AlgebraicFock.annihilateDual W) d) ((ExteriorAlgebra.map f) Ψ) =\n    (ExteriorAlgebra.map f) (((SecondQuantization.Fermionic.AlgebraicFock.annihilateDual V) (d ∘ₗ f)) Ψ)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.AlgebraicFock.annihilateDual_map",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.Annihilation",
+    "externalAxioms": [],
+    "docString": "Exterior transport commutes with dual contraction when the dual functional is pulled back\nalong the one-particle linear map. No inner product or invertibility is required. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.AlgebraicFock.annihilate_map"
+    ],
+    "dependencies": [
+      "SecondQuantization.Fermionic.AlgebraicFock.annihilateDual_create_apply"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.AlgebraicFock.annihilate_map"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -134719,6 +134765,46 @@
     "dependents": [],
     "dependencies": [
       "SecondQuantization.Fermionic.AlgebraicFock.annihilateDual_comp_self"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {V : Type u_2} {W : Type u_3} [inst : NormedAddCommGroup V] [inst_1 : InnerProductSpace ℂ V]\n  [inst_2 : NormedAddCommGroup W] [inst_3 : InnerProductSpace ℂ W] (e : V →ₗᵢ[ℂ] W) (v : V)\n  (Ψ : SecondQuantization.Fermionic.AlgebraicFock V),\n  ((SecondQuantization.Fermionic.AlgebraicFock.annihilate W) (e v)) ((ExteriorAlgebra.map e.toLinearMap) Ψ) =\n    (ExteriorAlgebra.map e.toLinearMap) (((SecondQuantization.Fermionic.AlgebraicFock.annihilate V) v) Ψ)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.AlgebraicFock.annihilate_map",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.Annihilation",
+    "externalAxioms": [],
+    "docString": "A one-particle linear isometry intertwines smeared annihilation fields through its exterior\nlift. Surjectivity, finite-dimensionality, and completeness are not needed. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "SecondQuantization.Fermionic.AlgebraicFock.annihilateDual_map"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -136329,46 +136415,6 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
-    "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (β μ : ℝ) (n : ℕ)\n  (C : Fin (2 * (n + 1)) → SecondQuantization.Fermionic.CompletedThermalLadder Mode),\n  SecondQuantization.Fermionic.CompletedThermalLadder.grandCanonicalGibbsAdmissible ε β μ (n + 1) C →\n    ∀ (j : Fin (2 * n + 1)),\n      SecondQuantization.Fermionic.CompletedThermalLadder.grandCanonicalGibbsAdmissible ε β μ n fun i =>\n        C (j.succAbove i).succ",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.CompletedThermalLadder.grandCanonicalGibbsAdmissible_erase",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.BlochDeDominicis",
-    "externalAxioms": [],
-    "docString": "Completed Gibbs admissibility is stable under deleting the first ladder and one partner. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.CompletedThermalLadder.grandCanonicalGibbsExpectationRecursion"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
     "terminal": false,
     "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (ε : Mode → ℝ) (β μ : ℝ)\n  (hsum : QuantumTheory.EigenbasisGibbsSummable (SecondQuantization.Common.grandCanonicalEnergy ε μ) β)\n  (C : SecondQuantization.Fermionic.CompletedThermalLadder Mode),\n  (SecondQuantization.Common.grandCanonicalGibbsDensityOperator ε β μ hsum).op ∘SL C.operator =\n    SecondQuantization.Fermionic.CompletedThermalLadder.gibbsFactor (fun i => ε i - μ) β C •\n      C.operator ∘SL (SecondQuantization.Common.grandCanonicalGibbsDensityOperator ε β μ hsum).op",
     "standardAxioms": [
@@ -136461,7 +136507,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (ε : Mode → ℝ) (β μ : ℝ)\n  (hsum : QuantumTheory.EigenbasisGibbsSummable (SecondQuantization.Common.grandCanonicalEnergy ε μ) β) (n : ℕ)\n  (C : SecondQuantization.Fermionic.CompletedThermalLadder Mode)\n  (l : List (SecondQuantization.Fermionic.CompletedThermalLadder Mode)),\n  l.length = 2 * n + 1 →\n    1 + SecondQuantization.Fermionic.CompletedThermalLadder.gibbsFactor (fun i => ε i - μ) β C ≠ 0 →\n      SecondQuantization.Fermionic.CompletedThermalLadder.grandCanonicalGibbsExpectation ε β μ hsum (C :: l) =\n        SecondQuantization.Fermionic.CompletedThermalLadder.gibbsFactor (fun i => ε i - μ) β C /\n            (1 + SecondQuantization.Fermionic.CompletedThermalLadder.gibbsFactor (fun i => ε i - μ) β C) *\n          (SecondQuantization.Common.grandCanonicalGibbsDensityOperator ε β μ hsum).expectation\n            (ScalarExchange.peelSum SecondQuantization.Fermionic.CompletedThermalLadder.operator\n              SecondQuantization.Fermionic.CompletedThermalLadder.anticommutatorValue (-1) C l)",
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (ε : Mode → ℝ) (β μ : ℝ)\n  (hsum : QuantumTheory.EigenbasisGibbsSummable (SecondQuantization.Common.grandCanonicalEnergy ε μ) β) (n : ℕ)\n  (C : SecondQuantization.Fermionic.CompletedThermalLadder Mode)\n  (l : List (SecondQuantization.Fermionic.CompletedThermalLadder Mode)),\n  l.length = 2 * n + 1 →\n    SecondQuantization.Fermionic.CompletedThermalLadder.grandCanonicalGibbsExpectation ε β μ hsum (C :: l) =\n      SecondQuantization.Fermionic.CompletedThermalLadder.gibbsFactor (fun i => ε i - μ) β C /\n          (1 + SecondQuantization.Fermionic.CompletedThermalLadder.gibbsFactor (fun i => ε i - μ) β C) *\n        (SecondQuantization.Common.grandCanonicalGibbsDensityOperator ε β μ hsum).expectation\n          (ScalarExchange.peelSum SecondQuantization.Fermionic.CompletedThermalLadder.operator\n            SecondQuantization.Fermionic.CompletedThermalLadder.anticommutatorValue (-1) C l)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -136486,7 +136532,8 @@
       "ScalarExchange.eq_div_mul_of_eq_add_mul_of_eq_mul",
       "SecondQuantization.Common.BlochDeDominicis.zetaInt_pow_eq_of_mod_two_eq",
       "SecondQuantization.Fermionic.CompletedThermalLadder.grandCanonicalGibbsExpectation_cons_eq_gibbsFactor_mul_rotate",
-      "SecondQuantization.Fermionic.CompletedThermalLadder.grandCanonicalGibbsExpectation_cons_eq_peel_add_rotated"
+      "SecondQuantization.Fermionic.CompletedThermalLadder.grandCanonicalGibbsExpectation_cons_eq_peel_add_rotated",
+      "SecondQuantization.Fermionic.CompletedThermalLadder.one_add_gibbsFactor_ne_zero"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -136554,7 +136601,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (ε : Mode → ℝ) (β μ : ℝ)\n  (hsum : QuantumTheory.EigenbasisGibbsSummable (SecondQuantization.Common.grandCanonicalEnergy ε μ) β) (n : ℕ)\n  (C : Fin (2 * n) → SecondQuantization.Fermionic.CompletedThermalLadder Mode),\n  SecondQuantization.Fermionic.CompletedThermalLadder.grandCanonicalGibbsAdmissible ε β μ n C →\n    SecondQuantization.Fermionic.CompletedThermalLadder.grandCanonicalGibbsExpectation ε β μ hsum (List.ofFn C) =\n      ∑ pairing,\n        Combinatorics.Pairing.weight SecondQuantization.Common.Statistics.fermion pairing *\n          ∏ pr ∈ pairing.pairs,\n            SecondQuantization.Fermionic.CompletedThermalLadder.grandCanonicalGibbsExpectation ε β μ hsum\n              [C pr.1, C pr.2]",
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (ε : Mode → ℝ) (β μ : ℝ)\n  (hsum : QuantumTheory.EigenbasisGibbsSummable (SecondQuantization.Common.grandCanonicalEnergy ε μ) β) (n : ℕ)\n  (C : Fin (2 * n) → SecondQuantization.Fermionic.CompletedThermalLadder Mode),\n  SecondQuantization.Fermionic.CompletedThermalLadder.grandCanonicalGibbsExpectation ε β μ hsum (List.ofFn C) =\n    ∑ pairing,\n      Combinatorics.Pairing.weight SecondQuantization.Common.Statistics.fermion pairing *\n        ∏ pr ∈ pairing.pairs,\n          SecondQuantization.Fermionic.CompletedThermalLadder.grandCanonicalGibbsExpectation ε β μ hsum [C pr.1, C pr.2]",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -136688,7 +136735,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (ε : Mode → ℝ) (β μ : ℝ)\n  (hsum : QuantumTheory.EigenbasisGibbsSummable (SecondQuantization.Common.grandCanonicalEnergy ε μ) β)\n  (C D : SecondQuantization.Fermionic.CompletedThermalLadder Mode),\n  1 + SecondQuantization.Fermionic.CompletedThermalLadder.gibbsFactor (fun i => ε i - μ) β C ≠ 0 →\n    SecondQuantization.Fermionic.CompletedThermalLadder.grandCanonicalGibbsExpectation ε β μ hsum [C, D] =\n      SecondQuantization.Fermionic.CompletedThermalLadder.gibbsFactor (fun i => ε i - μ) β C /\n          (1 + SecondQuantization.Fermionic.CompletedThermalLadder.gibbsFactor (fun i => ε i - μ) β C) *\n        C.anticommutatorValue D",
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (ε : Mode → ℝ) (β μ : ℝ)\n  (hsum : QuantumTheory.EigenbasisGibbsSummable (SecondQuantization.Common.grandCanonicalEnergy ε μ) β)\n  (C D : SecondQuantization.Fermionic.CompletedThermalLadder Mode),\n  SecondQuantization.Fermionic.CompletedThermalLadder.grandCanonicalGibbsExpectation ε β μ hsum [C, D] =\n    SecondQuantization.Fermionic.CompletedThermalLadder.gibbsFactor (fun i => ε i - μ) β C /\n        (1 + SecondQuantization.Fermionic.CompletedThermalLadder.gibbsFactor (fun i => ε i - μ) β C) *\n      C.anticommutatorValue D",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -136715,6 +136762,50 @@
     "completedMention": false,
     "compiledConsumers": [],
     "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (β : ℝ) (C : SecondQuantization.Fermionic.CompletedThermalLadder Mode),\n  1 + SecondQuantization.Fermionic.CompletedThermalLadder.gibbsFactor ε β C ≠ 0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.CompletedThermalLadder.one_add_gibbsFactor_ne_zero",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.BlochDeDominicis",
+    "externalAxioms": [],
+    "docString": "The fermionic KMS denominator is nonzero for every ladder, temperature,\nchemical potential, and real one-particle energy. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.CompletedThermalLadder.grandCanonicalGibbsExpectation_cons_eq_gibbsRatio_mul_peel"
+    ],
+    "dependencies": [
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.BlochDeDominicis.0.SecondQuantization.Fermionic.CompletedThermalLadder.one_add_exp_ofReal_ne_zero"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.CompletedThermalLadder.grandCanonicalGibbsExpectation_cons_eq_gibbsRatio_mul_peel"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -187584,6 +187675,48 @@
     "completedMention": false,
     "compiledConsumers": [],
     "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (x : ℝ), 1 + Complex.exp ↑x ≠ 0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.BlochDeDominicis.0.SecondQuantization.Fermionic.CompletedThermalLadder.one_add_exp_ofReal_ne_zero",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.BlochDeDominicis",
+    "externalAxioms": [],
+    "docString": "A complex exponential of a real number has positive real value, so its\nsum with one never vanishes. No condition on the sign of the exponent is needed. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.CompletedThermalLadder.one_add_gibbsFactor_ne_zero"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.CompletedThermalLadder.one_add_gibbsFactor_ne_zero"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
