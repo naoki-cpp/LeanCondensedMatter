@@ -312,29 +312,19 @@ theorem finiteCutoffContinuumBornDysonRadial_ra_weighted_moment_mul_center_gap
           .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax)⁻¹ -
         (finiteCutoffContinuumBornDysonDenominator
           .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax)⁻¹ := by
-    have hR : massiveDiracRadialDenominator v p energyR massR ≠ 0 := by
-      change massiveDiracRadialDenominator v p
-        (finiteCutoffContinuumBornEffectiveEnergy
-          .retarded v m probeEnergy broadening disorderStrength hbar pMax)
-        (finiteCutoffContinuumBornEffectiveMass
-          .retarded v m probeEnergy broadening disorderStrength hbar pMax) ≠ 0
+    have hnonzero (side : SpectralSide) :
+        massiveDiracRadialDenominator v p
+          (finiteCutoffContinuumBornEffectiveEnergy
+            side v m probeEnergy broadening disorderStrength hbar pMax)
+          (finiteCutoffContinuumBornEffectiveMass
+            side v m probeEnergy broadening disorderStrength hbar pMax) ≠ 0 := by
       rw [hden]
       exact finiteCutoffContinuumBornDysonDenominator_ne_zero
-        .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax
-        hbroadening hdisorder hpMax
-    have hA : massiveDiracRadialDenominator v p energyA massA ≠ 0 := by
-      change massiveDiracRadialDenominator v p
-        (finiteCutoffContinuumBornEffectiveEnergy
-          .advanced v m probeEnergy broadening disorderStrength hbar pMax)
-        (finiteCutoffContinuumBornEffectiveMass
-          .advanced v m probeEnergy broadening disorderStrength hbar pMax) ≠ 0
-      rw [hden]
-      exact finiteCutoffContinuumBornDysonDenominator_ne_zero
-        .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax
+        side v m p 0 probeEnergy broadening disorderStrength hbar pMax
         hbroadening hdisorder hpMax
     have hspectral :=
       massiveDiracRadialDenominator_inv_product_mul_center_gap
-        v p energyR massR energyA massA hR hA
+        v p energyR massR energyA massA (hnonzero .retarded) (hnonzero .advanced)
     dsimp only [energyR, energyA, massR, massA] at hspectral
     simpa only [massiveDiracRetardedAdvancedRadialDenominatorProduct,
       hden, ← finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct_eq_mul]
