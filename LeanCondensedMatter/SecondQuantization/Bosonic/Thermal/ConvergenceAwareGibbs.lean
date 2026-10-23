@@ -45,17 +45,6 @@ noncomputable def freeGibbsSummable (ε : Mode → ℝ) (β : ℝ)
   Summable (fun n : Occupation Mode =>
     Common.matrixCoeff ((imaginaryTimeEvolveFree ε (-β)).comp A) n n)
 
-omit [Fintype Mode] in
-/-- An operator with identically zero diagonal occupation-basis coefficients has a summable free
-Gibbs numerator. -/
-theorem freeGibbsSummable_of_matrixCoeff_self_eq_zero
-    (ε : Mode → ℝ) (β : ℝ) (A : FockSpace Mode →ₗ[ℂ] FockSpace Mode)
-    (hdiag : ∀ n, Common.matrixCoeff A n n = 0) :
-    freeGibbsSummable ε β A := by
-  unfold freeGibbsSummable imaginaryTimeEvolveFree
-  exact (summable_zero : Summable (fun _ : Occupation Mode => (0 : ℂ))).congr fun n => by
-    rw [Common.matrixCoeff_diagonalEvolution_comp, hdiag n, mul_zero]
-
 /-- The linear domain of algebraic-Fock endomorphisms with summable free Gibbs numerator. -/
 noncomputable def freeGibbsDomain (ε : Mode → ℝ) (β : ℝ) :
     Submodule ℂ (FockSpace Mode →ₗ[ℂ] FockSpace Mode) where
@@ -213,16 +202,6 @@ theorem grandCanonicalAlgebraicPartition_ne_zero
   rw [grandCanonicalAlgebraicPartition_eq_tsum ε β μ hpos]
   exact Complex.ofReal_ne_zero.2
     (tsum_boltzmannWeight_ne_zero (fun i => ε i - μ) β hpos)
-
-/-- The identity endomorphism belongs to the free Gibbs summability domain. -/
-theorem linearMap_id_mem_freeGibbsDomain (ε : Mode → ℝ) (β : ℝ)
-    (hpos : ∀ i, 0 < β * ε i) :
-    (LinearMap.id : FockSpace Mode →ₗ[ℂ] FockSpace Mode) ∈ freeGibbsDomain ε β := by
-  change freeGibbsSummable ε β
-    (LinearMap.id : FockSpace Mode →ₗ[ℂ] FockSpace Mode)
-  unfold freeGibbsSummable
-  rw [LinearMap.comp_id]
-  exact summable_imaginaryTimeEvolveFree_self ε β hpos
 
 /-- The free bosonic Gibbs expectation is normalized on the identity endomorphism. -/
 theorem freeGibbsExpectation_id (ε : Mode → ℝ) (β : ℝ)
