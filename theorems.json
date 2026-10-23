@@ -44991,7 +44991,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {ι : Type u_1} {H : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] (ρ : QuantumTheory.DensityOperator H) (b : HilbertBasis ι ℂ H) (w : ι → ℝ),\n  (∀ (i : ι), ρ.op (b i) = ↑(w i) • b i) → (∀ (i : ι), 0 ≤ w i) → ∀ (i : ι), w i ≤ 1",
+    "statement": "∀ {ι : Type u_1} {H : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] (ρ : QuantumTheory.DensityOperator H) (b : HilbertBasis ι ℂ H) (w : ι → ℝ),\n  (∀ (i : ι), ρ.op (b i) = ↑(w i) • b i) → ∀ (i : ι), w i ≤ 1",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -45014,6 +45014,7 @@
       "QuantumTheory.DensityOperator.vonNeumannEntropy_ne_top_and_toReal_eq_of_hasSum_diagonal"
     ],
     "dependencies": [
+      "QuantumTheory.DensityOperator.diagonal_weight_nonneg",
       "QuantumTheory.DensityOperator.hasSum_diagonal_weights"
     ],
     "crossModuleDirectWrapper": false,
@@ -45056,6 +45057,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "QuantumTheory.DensityOperator.diagonal_weight_le_one",
       "QuantumTheory.DensityOperator.entropyOp_isTraceClass_of_diagonal",
       "QuantumTheory.DensityOperator.vonNeumannEntropy_ne_top_and_toReal_eq_of_hasSum_diagonal"
     ],
@@ -45063,10 +45065,11 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "QuantumTheory.DensityOperator.diagonal_weight_le_one",
       "QuantumTheory.DensityOperator.entropyOp_isTraceClass_of_diagonal",
       "QuantumTheory.DensityOperator.vonNeumannEntropy_ne_top_and_toReal_eq_of_hasSum_diagonal"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -92993,7 +92996,8 @@
       "SecondQuantization.Fermionic.grandCanonicalTotalNumberExpectation_nonneg"
     ],
     "dependencies": [
-      "QuantumTheory.eigenbasisBoltzmannWeight_nonneg"
+      "QuantumTheory.eigenbasisBoltzmannWeight_nonneg",
+      "Real.normalizedWeight_nonneg"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -97161,6 +97165,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "QuantumTheory.eigenbasisGibbsProbability_nonneg",
       "Real.normalizedWeight_le_one"
     ],
     "dependencies": [],
@@ -97168,9 +97173,10 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.diagonalDensityOperator",
+      "QuantumTheory.eigenbasisGibbsProbability_nonneg",
       "Real.normalizedWeight_le_one"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -136342,7 +136348,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -136354,6 +136360,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "SecondQuantization.Fermionic.AlgebraicFock.star_finiteHilbertOperator_create",
       "SecondQuantization.Fermionic.Lattice.occupationConjugate_dGamma_matrixUnit"
     ],
     "dependencies": [
@@ -136369,9 +136376,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "SecondQuantization.Fermionic.AlgebraicFock.star_finiteHilbertOperator_create",
       "SecondQuantization.Fermionic.Lattice.occupationConjugate_dGamma_matrixUnit"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -136393,7 +136401,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -136405,6 +136413,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "SecondQuantization.Fermionic.AlgebraicFock.star_finiteHilbertOperator_create",
       "SecondQuantization.Fermionic.Lattice.occupationConjugate_dGamma_matrixUnit"
     ],
     "dependencies": [
@@ -136414,9 +136423,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "SecondQuantization.Fermionic.AlgebraicFock.star_finiteHilbertOperator_create",
       "SecondQuantization.Fermionic.Lattice.occupationConjugate_dGamma_matrixUnit"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -136801,6 +136811,48 @@
       "SecondQuantization.Fermionic.AlgebraicFock.secondQuantizationStep_fold_condition"
     ],
     "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] {H : Type u_3} [inst_2 : NormedAddCommGroup H]\n  [inst_3 : InnerProductSpace ℂ H] (b : OrthonormalBasis Mode ℂ H) (v : H),\n  star\n      ((SecondQuantization.Fermionic.AlgebraicFock.finiteHilbertOperatorAlgEquiv b.toBasis)\n        ((SecondQuantization.Fermionic.AlgebraicFock.create H) v)) =\n    (SecondQuantization.Fermionic.AlgebraicFock.finiteHilbertOperatorAlgEquiv b.toBasis)\n      ((SecondQuantization.Fermionic.AlgebraicFock.annihilate H) v)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.AlgebraicFock.star_finiteHilbertOperator_create",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.FiniteHilbertRealization",
+    "externalAxioms": [],
+    "docString": "An orthonormal one-particle basis makes the finite-Hilbert realizations of smeared\ncreation and annihilation mutual adjoints. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "SecondQuantization.Fermionic.AlgebraicFock.occupationConjugate_annihilateDual",
+      "SecondQuantization.Fermionic.AlgebraicFock.occupationConjugate_create",
+      "SecondQuantization.Fermionic.star_finiteHilbertCreate"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -152583,6 +152635,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "SecondQuantization.Fermionic.AlgebraicFock.star_finiteHilbertOperator_create",
       "SecondQuantization.Fermionic.Lattice.star_boundedDgammaMatrixUnit",
       "SecondQuantization.Fermionic.star_finiteHilbertAnnihilate"
     ],
@@ -152593,10 +152646,11 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "SecondQuantization.Fermionic.AlgebraicFock.star_finiteHilbertOperator_create",
       "SecondQuantization.Fermionic.Lattice.star_boundedDgammaMatrixUnit",
       "SecondQuantization.Fermionic.star_finiteHilbertAnnihilate"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",

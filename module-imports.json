@@ -6470,6 +6470,15 @@
       "externalImportCount": 1
     },
     {
+      "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.FiniteHilbertRealization",
+      "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Algebra/AlgebraicFock/FiniteHilbertRealization.lean",
+      "imports": [
+        "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.OccupationFieldEquivalence",
+        "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.FiniteHilbertCreationAnnihilation"
+      ],
+      "externalImportCount": 0
+    },
+    {
       "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.OccupationEquivalence",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Algebra/AlgebraicFock/OccupationEquivalence.lean",
       "imports": [
@@ -6536,6 +6545,7 @@
         "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.Annihilation",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.Basic",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.Creation",
+        "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.FiniteHilbertRealization",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.OccupationEquivalence",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.OccupationFieldEquivalence",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.RankOne",
@@ -7630,7 +7640,7 @@
       "imports": [
         "LeanCondensedMatter.QuantumTheory.PeierlsLattice",
         "LeanCondensedMatter.SecondQuantization.Common.Algebra.FiniteHilbertOperator",
-        "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.OccupationEquivalence",
+        "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.FiniteHilbertRealization",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.DiscreteLattice"
       ],
       "externalImportCount": 0
