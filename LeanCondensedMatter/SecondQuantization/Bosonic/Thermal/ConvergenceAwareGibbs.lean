@@ -45,28 +45,11 @@ noncomputable def grandCanonicalGibbsSummable (ε : Mode → ℝ) (β μ : ℝ)
   Summable (fun n : Occupation Mode =>
     Common.matrixCoeff ((imaginaryTimeEvolveFree (fun i => ε i - μ) (-β)).comp A) n n)
 
-/-- The linear domain of algebraic-Fock endomorphisms with summable free Gibbs numerator. -/
+/-- The free-boson Gibbs numerator domain as a specialization of the common diagonal trace domain. -/
 noncomputable def grandCanonicalGibbsDomain (ε : Mode → ℝ) (β μ : ℝ) :
-    Submodule ℂ (FockSpace Mode →ₗ[ℂ] FockSpace Mode) where
-  carrier := {A | grandCanonicalGibbsSummable ε β μ A}
-  zero_mem' := by
-    change grandCanonicalGibbsSummable ε β μ
-      (0 : FockSpace Mode →ₗ[ℂ] FockSpace Mode)
-    unfold grandCanonicalGibbsSummable
-    simpa [LinearMap.comp_zero, Common.matrixCoeff] using
-      (summable_zero : Summable (fun _ : Occupation Mode => (0 : ℂ)))
-  add_mem' := by
-    intro A B hA hB
-    change grandCanonicalGibbsSummable ε β μ (A + B)
-    unfold grandCanonicalGibbsSummable at hA hB ⊢
-    have h := hA.add hB
-    simpa only [LinearMap.comp_add, ← Common.matrixCoeffLinear_apply, map_add] using h
-  smul_mem' := by
-    intro c A hA
-    change grandCanonicalGibbsSummable ε β μ (c • A)
-    unfold grandCanonicalGibbsSummable at hA ⊢
-    have h := hA.mul_left c
-    simpa only [LinearMap.comp_smul, ← Common.matrixCoeffLinear_apply, map_smul, smul_eq_mul] using h
+    Submodule ℂ (FockSpace Mode →ₗ[ℂ] FockSpace Mode) :=
+  Common.summableDiagonalTraceDomain
+    (imaginaryTimeEvolveFree (fun i => ε i - μ) (-β))
 
 omit [Fintype Mode] in
 /-- Membership in the free-Gibbs analytic domain is exactly summability of the infinite occupation
@@ -145,17 +128,6 @@ theorem grandCanonicalGibbsExpectation_smul (ε : Mode → ℝ) (β μ : ℝ) (c
   unfold grandCanonicalGibbsExpectation
   rw [LinearMap.comp_smul, Common.tsumTrace_smul, mul_div_assoc]
 
-/-- The free Gibbs expectation as a linear map on the summable-operator submodule. -/
-noncomputable def grandCanonicalGibbsExpectationLinear (ε : Mode → ℝ) (β μ : ℝ) :
-    grandCanonicalGibbsDomain ε β μ →ₗ[ℂ] ℂ where
-  toFun := fun A => grandCanonicalGibbsExpectation ε β μ A.1
-  map_add' := by
-    intro A B
-    exact grandCanonicalGibbsExpectation_add ε β μ A.2 B.2
-  map_smul' := by
-    intro c A
-    exact grandCanonicalGibbsExpectation_smul ε β μ c A.1
-
 omit [Fintype Mode] in
 /-- The normalized free-Gibbs expectation commutes with a finite sum when every summand carries an
 explicit summability witness.  The subtype construction and linear-map evaluation stay inside this
@@ -174,9 +146,13 @@ theorem grandCanonicalGibbsExpectation_sum_of_summable
       ((↑(∑ i, terms i) : FockSpace Mode →ₗ[ℂ] FockSpace Mode)) = ∑ i, A i := by
     rw [Submodule.coe_sum]
   rw [← hcoe]
-  change (grandCanonicalGibbsExpectationLinear ε β μ) (∑ i, terms i) =
-    ∑ i, (grandCanonicalGibbsExpectationLinear ε β μ) (terms i)
-  simpa using map_sum (grandCanonicalGibbsExpectationLinear ε β μ) terms Finset.univ
+  change (Common.summableDiagonalTraceRatioLinear
+      (imaginaryTimeEvolveFree (fun i => ε i - μ) (-β))) (∑ i, terms i) =
+    ∑ i, (Common.summableDiagonalTraceRatioLinear
+      (imaginaryTimeEvolveFree (fun i => ε i - μ) (-β))) (terms i)
+  exact map_sum
+    (Common.summableDiagonalTraceRatioLinear
+      (imaginaryTimeEvolveFree (fun i => ε i - μ) (-β))) terms Finset.univ
 
 omit [Fintype Mode] in
 /-- Reexpress a free grand-canonical Gibbs numerator using the effective dispersion

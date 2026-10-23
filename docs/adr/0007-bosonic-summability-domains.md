@@ -6,10 +6,8 @@ status: accepted
 
 A nonempty finite bosonic mode set still has infinitely many occupation configurations because each mode admits arbitrary natural-number occupation. Therefore finite-mode bosonic thermal theory uses an explicit summability domain rather than the finite-configuration trace argument available to finite-mode fermions.
 
-`grandCanonicalGibbsDomain ε β μ` is the canonical submodule defined by `grandCanonicalGibbsSummable ε β μ`, and
-`grandCanonicalGibbsExpectationLinear ε β μ` is the normalized expectation restricted to that submodule under
-positive one-mode Boltzmann exponents `0 < β(εᵢ - μ)`. Its membership equivalence and finite-sum adapter convert
-explicit summability witnesses into the subtype consumed by the linear map. The total trace-ratio
+`grandCanonicalGibbsDomain ε β μ` specializes `Common.summableDiagonalTraceDomain` to the shifted free-heat operator, while `Common.summableDiagonalTraceRatioLinear` supplies the state-independent partial linear trace ratio. The concrete bosonic membership equivalence and finite-sum adapter transport
+explicit summability witnesses to that common linear map. The total trace-ratio
 expression `grandCanonicalGibbsExpectation ε β μ` has physical expectation semantics only when its numerator is
 summable and its partition series is nonzero. For free thermal field lists, the ordered-product
 summability theorem establishes this domain condition for every finite product; the Common pairing

@@ -38,6 +38,55 @@ theorem tsumTrace_smul (c : ℂ) (A : AlgebraicFock Config →ₗ[ℂ] Algebraic
   simp only [tsumTrace, ← matrixCoeffLinear_apply, map_smul, smul_eq_mul,
     tsum_mul_left]
 
+
+/-- Algebraic observables whose diagonal trace after left multiplication by `B` is summable.
+This is a partial trace domain, not a Hilbert-space trace-class or operator-domain claim. -/
+noncomputable def summableDiagonalTraceDomain
+    (B : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
+    Submodule ℂ (AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) where
+  carrier := {A | Summable (fun n => matrixCoeff (B.comp A) n n)}
+  zero_mem' := by
+    change Summable (fun n : Config =>
+      matrixCoeff (B.comp (0 : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)) n n)
+    simpa [LinearMap.comp_zero, matrixCoeff] using
+      (summable_zero : Summable (fun _ : Config => (0 : ℂ)))
+  add_mem' := by
+    intro A C hA hC
+    change Summable (fun n => matrixCoeff (B.comp (A + C)) n n)
+    have h := hA.add hC
+    simpa only [LinearMap.comp_add, ← matrixCoeffLinear_apply, map_add] using h
+  smul_mem' := by
+    intro c A hA
+    change Summable (fun n => matrixCoeff (B.comp (c • A)) n n)
+    have h := hA.mul_left c
+    simpa only [LinearMap.comp_smul, ← matrixCoeffLinear_apply, map_smul, smul_eq_mul] using h
+
+/-- Membership is precisely summability of the weighted diagonal series. -/
+@[simp]
+theorem mem_summableDiagonalTraceDomain_iff
+    (B A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
+    A ∈ summableDiagonalTraceDomain B ↔
+      Summable (fun n => matrixCoeff (B.comp A) n n) :=
+  Iff.rfl
+
+/-- Trace ratio as a linear functional on its summability domain.
+A nonzero, summable denominator is needed before interpreting this as a normalized state. -/
+noncomputable def summableDiagonalTraceRatioLinear
+    (B : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
+    summableDiagonalTraceDomain B →ₗ[ℂ] ℂ where
+  toFun := fun A => tsumTrace (B.comp A.1) / tsumTrace B
+  map_add' := by
+    intro A C
+    change tsumTrace (B.comp (A.1 + C.1)) / tsumTrace B =
+      tsumTrace (B.comp A.1) / tsumTrace B +
+        tsumTrace (B.comp C.1) / tsumTrace B
+    rw [LinearMap.comp_add, tsumTrace_add A.2 C.2, add_div]
+  map_smul' := by
+    intro c A
+    change tsumTrace (B.comp (c • A.1)) / tsumTrace B =
+      c * (tsumTrace (B.comp A.1) / tsumTrace B)
+    rw [LinearMap.comp_smul, tsumTrace_smul, mul_div_assoc]
+
 /-- Sum the matrix coefficients of a composite over the finite support of its right factor. -/
 private theorem matrixCoeff_comp_eq_tsum
     (A B : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (m n : Config) :

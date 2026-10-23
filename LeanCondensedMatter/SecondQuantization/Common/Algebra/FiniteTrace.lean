@@ -45,6 +45,13 @@ theorem traceFock_comp_comm [Fintype Config]
     LinearMap.trace ℂ (AlgebraicFock Config) (B.comp A)
   simpa only [Module.End.mul_eq_comp] using (LinearMap.trace_mul_comm ℂ A B)
 
+/-- On a finite configuration space, the summable diagonal trace agrees with the
+canonical finite-dimensional trace. -/
+theorem tsumTrace_eq_traceFock [Fintype Config]
+    (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
+    tsumTrace A = traceFock A := by
+  rw [tsumTrace, tsum_fintype, traceFock_eq_sum_matrixCoeff]
+
 /-! ## Finite scalar weight sums -/
 
 variable [Fintype Config]
