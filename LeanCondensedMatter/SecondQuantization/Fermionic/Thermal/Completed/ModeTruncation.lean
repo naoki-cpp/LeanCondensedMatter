@@ -187,7 +187,7 @@ theorem tendsto_completedFreeModeTruncationNormalizationRatio
         (𝓝 (eigenbasisPartitionFunction
           (Common.grandCanonicalEnergy (Config := Occupation Mode) ε μ) β)) :=
     tendsto_const_nhds
-  simpa [completedFreeModeTruncationNormalizationRatio, div_self hZne] using
+  simpa [completedFreeModeTruncationNormalizationRatio, Pi.div_apply, div_self hZne] using
     hconst.div hZ hZne
 
 /-- A truncated Gibbs probability is the retained full Gibbs probability multiplied by the finite
