@@ -90,6 +90,27 @@ theorem annihilateDual_comp_create_add_swap (d : Module.Dual ℂ 𝓗₁) (g : �
   rw [annihilateDual_create_apply]
   exact sub_add_cancel _ _
 
+/-- Exterior transport commutes with dual contraction when the dual functional is pulled back
+along the one-particle linear map. No inner product or invertibility is required. -/
+theorem annihilateDual_map
+    {V W : Type*} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
+    (f : V →ₗ[ℂ] W) (d : Module.Dual ℂ W) (Ψ : AlgebraicFock V) :
+    annihilateDual W d (ExteriorAlgebra.map f Ψ) =
+      ExteriorAlgebra.map f (annihilateDual V (d.comp f) Ψ) := by
+  have hcreate (v : V) (x : AlgebraicFock V) :
+      ExteriorAlgebra.map f (create V v x) =
+        create W (f v) (ExteriorAlgebra.map f x) := by
+    simp only [create_apply, oneParticle, map_mul, ExteriorAlgebra.map_apply_ι]
+  induction Ψ using CliffordAlgebra.left_induction with
+  | algebraMap c => simp [annihilateDual]
+  | add x y hx hy => simp only [map_add, hx, hy]
+  | ι_mul x v hx =>
+      change annihilateDual W d (ExteriorAlgebra.map f (create V v x)) =
+        ExteriorAlgebra.map f (annihilateDual V (d.comp f) (create V v x))
+      rw [hcreate, annihilateDual_create_apply, annihilateDual_create_apply,
+        map_sub, map_smul, hcreate, hx]
+      rfl
+
 end Dual
 
 section InnerProduct
@@ -111,6 +132,21 @@ inner-product dual with left contraction. -/
 noncomputable def annihilate :
     𝓗₁ →ₗ⋆[ℂ] (AlgebraicFock 𝓗₁ →ₗ[ℂ] AlgebraicFock 𝓗₁) :=
   (annihilateDual 𝓗₁).comp (innerDual 𝓗₁)
+
+/-- A one-particle linear isometry intertwines smeared annihilation fields through its exterior
+lift. Surjectivity, finite-dimensionality, and completeness are not needed. -/
+theorem annihilate_map
+    {V W : Type*} [NormedAddCommGroup V] [InnerProductSpace ℂ V]
+    [NormedAddCommGroup W] [InnerProductSpace ℂ W]
+    (e : V →ₗᵢ[ℂ] W) (v : V) (Ψ : AlgebraicFock V) :
+    annihilate W (e v) (ExteriorAlgebra.map e.toLinearMap Ψ) =
+      ExteriorAlgebra.map e.toLinearMap (annihilate V v Ψ) := by
+  have hdual : (innerDual W (e v)).comp e.toLinearMap = innerDual V v := by
+    ext w
+    exact e.inner_map_map v w
+  have h := annihilateDual_map e.toLinearMap (innerDual W (e v)) Ψ
+  rw [hdual] at h
+  exact h
 
 /-- A smeared annihilation field kills the vacuum. -/
 @[simp]
