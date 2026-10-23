@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Models.MassiveDirac.Model.OperatorSpectral
 import LeanCondensedMatter.Models.MassiveDirac.Bastin.Interband
 import LeanCondensedMatter.Analysis.Lorentzian.Kernel
 import LeanCondensedMatter.Transport.Streda.InterbandPole
@@ -68,8 +69,8 @@ noncomputable def interbandSpectatorCurrentFactor
   let a := scalarResolventCoefficient
     (advancedSpectralParameter probeEnergy broadening)
     (bandEnergy (oppositeBand band) v m px py)
-  r ^ 2 * bastinBandBlockTrace μ ν (oppositeBand band) band e v m px py -
-    a ^ 2 * bastinBandBlockTrace ν μ (oppositeBand band) band e v m px py
+  r ^ 2 * currentBandBlockTrace μ ν (oppositeBand band) band e v m px py -
+    a ^ 2 * currentBandBlockTrace ν μ (oppositeBand band) band e v m px py
 
 /-- Exact factorization of one direction-indexed interband Bastin pair into its Lorentzian spectral
 pole and regular spectator/current factor. -/
@@ -121,14 +122,14 @@ theorem tendsto_interbandSpectatorCurrentFactor_at_bandPole
       tendsto_oppositeBandCoefficient_sq_at_bandPole .advanced band v m px py hE
   have hμν := hret.mul
     (tendsto_const_nhds : Tendsto
-      (fun _ : ℝ => bastinBandBlockTrace μ ν (oppositeBand band) band e v m px py)
+      (fun _ : ℝ => currentBandBlockTrace μ ν (oppositeBand band) band e v m px py)
       (nhds 0)
-      (nhds (bastinBandBlockTrace μ ν (oppositeBand band) band e v m px py)))
+      (nhds (currentBandBlockTrace μ ν (oppositeBand band) band e v m px py)))
   have hνμ := hadv.mul
     (tendsto_const_nhds : Tendsto
-      (fun _ : ℝ => bastinBandBlockTrace ν μ (oppositeBand band) band e v m px py)
+      (fun _ : ℝ => currentBandBlockTrace ν μ (oppositeBand band) band e v m px py)
       (nhds 0)
-      (nhds (bastinBandBlockTrace ν μ (oppositeBand band) band e v m px py)))
+      (nhds (currentBandBlockTrace ν μ (oppositeBand band) band e v m px py)))
   simpa [interbandSpectatorCurrentFactor, bastinInterbandBlockDifference, mul_sub] using
     hμν.sub hνμ
 

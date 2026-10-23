@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Models.MassiveDirac.Model.OperatorSpectral
 import LeanCondensedMatter.Models.MassiveDirac.Bastin.PoleHall
 import LeanCondensedMatter.Transport.Streda.InterbandPole
 import Mathlib.Tactic
@@ -38,8 +39,8 @@ private theorem targetCenteredInterbandSpectatorCurrentPoleIntegral_eq_interband
         band e v m px py radius broadening =
       interbandPoleRegularFactorIntegral
         (interbandEnergyGap band v m px py)
-        (bastinBandBlockTrace 0 1 (oppositeBand band) band e v m px py)
-        (bastinBandBlockTrace 1 0 (oppositeBand band) band e v m px py)
+        (currentBandBlockTrace 0 1 (oppositeBand band) band e v m px py)
+        (currentBandBlockTrace 1 0 (oppositeBand band) band e v m px py)
         radius broadening := by
   unfold targetCenteredInterbandSpectatorCurrentPoleIntegral
     interbandPoleRegularFactorIntegral
@@ -95,8 +96,8 @@ theorem targetCenteredInterbandBastinPairIntegral_eq_interbandBastinPoleIntegral
         band e v m px py radius broadening =
       interbandBastinPoleIntegral
         (interbandEnergyGap band v m px py)
-        (bastinBandBlockTrace 0 1 (oppositeBand band) band e v m px py)
-        (bastinBandBlockTrace 1 0 (oppositeBand band) band e v m px py)
+        (currentBandBlockTrace 0 1 (oppositeBand band) band e v m px py)
+        (currentBandBlockTrace 1 0 (oppositeBand band) band e v m px py)
         radius broadening := by
   rw [targetCenteredInterbandBastinPairIntegral_eq_neg_two_i_mul_poleIntegral
     band e v m px py radius broadening hbroadening]
