@@ -107,7 +107,6 @@ theorem coe_completedFreeGibbsProbability_insertOccupation_of_not_mem
     (eigenbasisGibbsProbability (Common.grandCanonicalEnergy (Config := Occupation Mode) ε μ) β (insertOccupation i n) : ℂ) =
       Complex.exp (-(β : ℂ) * ((ε i - μ) : ℂ)) *
         (eigenbasisGibbsProbability (Common.grandCanonicalEnergy (Config := Occupation Mode) ε μ) β n : ℂ) := by
-  simp only [grandCanonicalEnergy_eq_fermionEnergy]
   rw [completedFreeGibbsProbability_insertOccupation_of_not_mem ε β μ hi]
   push_cast
   rfl
@@ -118,7 +117,6 @@ theorem coe_completedFreeGibbsProbability_removeOccupation_of_mem
     (eigenbasisGibbsProbability (Common.grandCanonicalEnergy (Config := Occupation Mode) ε μ) β (removeOccupation i n) : ℂ) =
       Complex.exp ((β : ℂ) * ((ε i - μ) : ℂ)) *
         (eigenbasisGibbsProbability (Common.grandCanonicalEnergy (Config := Occupation Mode) ε μ) β n : ℂ) := by
-  simp only [grandCanonicalEnergy_eq_fermionEnergy]
   rw [completedFreeGibbsProbability_removeOccupation_of_mem ε β μ hi]
   push_cast
   rfl
@@ -150,6 +148,20 @@ theorem grandCanonicalGibbsDensityOperator_comp_create
       grandCanonicalGibbsDensityOperator_apply_basis, map_smul,
       completedCreate_basisState_of_not_mem hi,
       coe_completedFreeGibbsProbability_insertOccupation_of_not_mem ε β μ hi]
+    have hexp :
+        Complex.exp (-(β : ℂ) * (ε i : ℂ) + (β : ℂ) * (μ : ℂ)) =
+          Complex.exp (-(β : ℂ) * (((ε i - μ : ℝ) : ℂ))) := by
+      congr 1
+      push_cast
+      ring
+    rw [hexp]
+    have hexp :
+        Complex.exp ((β : ℂ) * (ε i : ℂ) - (β : ℂ) * (μ : ℂ)) =
+          Complex.exp ((β : ℂ) * (((ε i - μ : ℝ) : ℂ))) := by
+      congr 1
+      push_cast
+      ring
+    rw [hexp]
     simp only [smul_smul]
     congr 1
     ring
