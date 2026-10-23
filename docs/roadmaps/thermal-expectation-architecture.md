@@ -96,7 +96,10 @@ It uses `Common.grandCanonicalGibbsDensityOperator (Config := Fermionic.Occupati
 without an additional zero-chemical-potential fermionic density constructor. Its completed CAR
 intertwining and KMS factors use the effective thermal dispersion `ε i - μ`. The first-pair/peel
 and Wick pairing recursion are instantiated for this explicit grand-canonical state, with no
-finite-mode assumption introduced into the generic recursion. In the separate finite-mode bridge,
+finite-mode assumption introduced into the generic recursion. Fermionic KMS factors are
+exponentials of real energies, so `1 + g` is automatically nonzero; the completed fermionic
+pairing-recursion adapter consequently uses `admissible := True`. The Gibbs state still requires
+summability over occupation configurations. In the separate finite-mode bridge,
 `completedGrandCanonicalGibbs_intertwines_finite` transports the density state to the finite Hilbert
 realization; `finiteGrandCanonicalGibbsExpectation_eq_diagonalTraceRatio` then applies the common
 algebraic summable-trace ratio from #4074.
