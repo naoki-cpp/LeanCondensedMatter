@@ -99936,7 +99936,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Bosonic.matrixCoeff_annihilate_comp_annihilate"
+      "SecondQuantization.Bosonic.freeGibbsExpectation_orderedProduct_pair_eq_freeThermalPairValue"
     ],
     "dependencies": [
       "SecondQuantization.Bosonic.annihilate_basisState_of_pos",
@@ -99947,7 +99947,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Bosonic.matrixCoeff_annihilate_comp_annihilate"
+      "SecondQuantization.Bosonic.freeGibbsExpectation_orderedProduct_pair_eq_freeThermalPairValue"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -99983,7 +99983,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Bosonic.matrixCoeff_create_comp_create"
+      "SecondQuantization.Bosonic.freeGibbsExpectation_orderedProduct_pair_eq_freeThermalPairValue"
     ],
     "dependencies": [
       "SecondQuantization.Bosonic.create_basisState_eq",
@@ -99993,7 +99993,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Bosonic.matrixCoeff_create_comp_create"
+      "SecondQuantization.Bosonic.freeGibbsExpectation_orderedProduct_pair_eq_freeThermalPairValue"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -103632,11 +103632,12 @@
       "SecondQuantization.Bosonic.FreeThermalField.kmsRatio_mul_exchangeValue_eq_freeThermalPairValue"
     ],
     "dependencies": [
+      "SecondQuantization.Bosonic.carriesParticleNumberCharge_annihilate",
+      "SecondQuantization.Bosonic.carriesParticleNumberCharge_create",
       "SecondQuantization.Bosonic.grandCanonicalGibbsExpectation_annihilate_comp_create_concrete",
       "SecondQuantization.Bosonic.grandCanonicalGibbsExpectation_create_comp_annihilate_concrete",
-      "SecondQuantization.Bosonic.grandCanonicalGibbsExpectation_eq_zero_of_matrixCoeff_self_eq_zero",
-      "SecondQuantization.Bosonic.matrixCoeff_annihilate_comp_annihilate",
-      "SecondQuantization.Bosonic.matrixCoeff_create_comp_create"
+      "SecondQuantization.Common.CarriesShift.comp",
+      "SecondQuantization.Common.diagonalTraceRatio_eq_zero_of_carriesShift"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -104238,50 +104239,6 @@
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion.Pairing.0.SecondQuantization.Bosonic.grandCanonicalGibbsDysonCoeff_quarticInteraction_eq_sum_pairingEvaluation"
     ],
     "compiledConsumerCount": 3,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (β μ : ℝ)\n  (A : SecondQuantization.Bosonic.FockSpace Mode →ₗ[ℂ] SecondQuantization.Bosonic.FockSpace Mode),\n  (∀ (n : SecondQuantization.Bosonic.Occupation Mode), SecondQuantization.Common.matrixCoeff A n n = 0) →\n    SecondQuantization.Bosonic.grandCanonicalGibbsExpectation ε β μ A = 0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Bosonic.grandCanonicalGibbsExpectation_eq_zero_of_matrixCoeff_self_eq_zero",
-    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.ConvergenceAwareGibbs",
-    "externalAxioms": [],
-    "docString": "The free Gibbs expectation vanishes when every diagonal occupation-basis coefficient of the\nobservable vanishes. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Bosonic.freeGibbsExpectation_orderedProduct_pair_eq_freeThermalPairValue"
-    ],
-    "dependencies": [
-      "SecondQuantization.Common.matrixCoeff_diagonalEvolution_comp"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Bosonic.freeGibbsExpectation_orderedProduct_pair_eq_freeThermalPairValue"
-    ],
-    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -105213,52 +105170,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} (i j : Mode) (n : SecondQuantization.Bosonic.Occupation Mode),\n  SecondQuantization.Common.matrixCoeff\n      (SecondQuantization.Bosonic.annihilate i ∘ₗ SecondQuantization.Bosonic.annihilate j) n n =\n    0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Bosonic.matrixCoeff_annihilate_comp_annihilate",
-    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.ParticleNumberCharge",
-    "externalAxioms": [],
-    "docString": "Two annihilation operators have zero diagonal matrix coefficient. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Bosonic.freeGibbsExpectation_orderedProduct_pair_eq_freeThermalPairValue"
-    ],
-    "dependencies": [
-      "SecondQuantization.Bosonic.carriesParticleNumberCharge_annihilate",
-      "SecondQuantization.Common.CarriesShift.comp",
-      "SecondQuantization.Common.diagonalCoeff_eq_zero_of_carriesShift"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Bosonic.freeGibbsExpectation_orderedProduct_pair_eq_freeThermalPairValue"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ {Mode : Type u_1} (i : Mode) (m n : SecondQuantization.Bosonic.Occupation Mode),\n  SecondQuantization.Common.matrixCoeff (SecondQuantization.Bosonic.create i) m n =\n    if m = SecondQuantization.Bosonic.createOccupation i n then ↑√(↑(n i) + 1) else 0",
     "standardAxioms": [
       "Classical.choice",
@@ -105294,52 +105205,6 @@
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.TwoPoint.0.SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_comp_create_removeOccupation"
     ],
     "compiledConsumerCount": 3,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Mode : Type u_1} (i j : Mode) (n : SecondQuantization.Bosonic.Occupation Mode),\n  SecondQuantization.Common.matrixCoeff (SecondQuantization.Bosonic.create i ∘ₗ SecondQuantization.Bosonic.create j) n\n      n =\n    0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Bosonic.matrixCoeff_create_comp_create",
-    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.ParticleNumberCharge",
-    "externalAxioms": [],
-    "docString": "Two creation operators have zero diagonal matrix coefficient. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Bosonic.freeGibbsExpectation_orderedProduct_pair_eq_freeThermalPairValue"
-    ],
-    "dependencies": [
-      "SecondQuantization.Bosonic.carriesParticleNumberCharge_create",
-      "SecondQuantization.Common.CarriesShift.comp",
-      "SecondQuantization.Common.diagonalCoeff_eq_zero_of_carriesShift"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Bosonic.freeGibbsExpectation_orderedProduct_pair_eq_freeThermalPairValue"
-    ],
-    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -108309,10 +108174,9 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Bosonic.matrixCoeff_annihilate_comp_annihilate",
-      "SecondQuantization.Bosonic.matrixCoeff_create_comp_create",
-      "SecondQuantization.Fermionic.matrixCoeff_annihilate_comp_annihilate",
-      "SecondQuantization.Fermionic.matrixCoeff_create_comp_create"
+      "SecondQuantization.Bosonic.freeGibbsExpectation_orderedProduct_pair_eq_freeThermalPairValue",
+      "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_annihilate_comp_annihilate",
+      "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_create_comp_create"
     ],
     "dependencies": [
       "SecondQuantization.Common.matrixCoeff_comp_support"
@@ -108320,12 +108184,11 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Bosonic.matrixCoeff_annihilate_comp_annihilate",
-      "SecondQuantization.Bosonic.matrixCoeff_create_comp_create",
-      "SecondQuantization.Fermionic.matrixCoeff_annihilate_comp_annihilate",
-      "SecondQuantization.Fermionic.matrixCoeff_create_comp_create"
+      "SecondQuantization.Bosonic.freeGibbsExpectation_orderedProduct_pair_eq_freeThermalPairValue",
+      "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_annihilate_comp_annihilate",
+      "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_create_comp_create"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -122867,7 +122730,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -122879,21 +122742,15 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Bosonic.matrixCoeff_annihilate_comp_annihilate",
-      "SecondQuantization.Bosonic.matrixCoeff_create_comp_create",
-      "SecondQuantization.Fermionic.matrixCoeff_annihilate_comp_annihilate",
-      "SecondQuantization.Fermionic.matrixCoeff_create_comp_create"
+      "SecondQuantization.Common.matrixCoeff_diagonalOperator_comp_self_eq_zero_of_carriesShift"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Bosonic.matrixCoeff_annihilate_comp_annihilate",
-      "SecondQuantization.Bosonic.matrixCoeff_create_comp_create",
-      "SecondQuantization.Fermionic.matrixCoeff_annihilate_comp_annihilate",
-      "SecondQuantization.Fermionic.matrixCoeff_create_comp_create"
+      "SecondQuantization.Common.matrixCoeff_diagonalOperator_comp_self_eq_zero_of_carriesShift"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -123269,6 +123126,7 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Common.matrixCoeff_diagonalEvolution_comp",
+      "SecondQuantization.Common.matrixCoeff_diagonalOperator_comp_self_eq_zero_of_carriesShift",
       "SecondQuantization.Common.matrixCoeff_heisenbergEvolve",
       "SecondQuantization.Fermionic.Lattice.occupationConjugate_dGamma_diagonalOperator",
       "SecondQuantization.Fermionic.eigenbasisGibbsEnergyExpectation_fermionEnergy_eq_sum_fermiDirac"
@@ -123281,11 +123139,12 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Common.matrixCoeff_diagonalEvolution_comp",
+      "SecondQuantization.Common.matrixCoeff_diagonalOperator_comp_self_eq_zero_of_carriesShift",
       "SecondQuantization.Common.matrixCoeff_heisenbergEvolve",
       "SecondQuantization.Fermionic.Lattice.occupationConjugate_dGamma_diagonalOperator",
       "SecondQuantization.Fermionic.eigenbasisGibbsEnergyExpectation_fermionEnergy_eq_sum_fermiDirac"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 5,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -123442,6 +123301,56 @@
     "completedMention": false,
     "compiledConsumers": [],
     "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Config : Type u_1} {G : Type u_2} [inst : AddCommGroup G] {grading : Config → G}\n  {A : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config} {q : G},\n  SecondQuantization.Common.CarriesShift grading A q →\n    q ≠ 0 →\n      ∀ (w : Config → ℂ),\n        SecondQuantization.Common.tsumTrace (SecondQuantization.Common.diagonalOperator w ∘ₗ A) /\n            SecondQuantization.Common.tsumTrace (SecondQuantization.Common.diagonalOperator w) =\n          0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.diagonalTraceRatio_eq_zero_of_carriesShift",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Algebra.DiagonalTrace",
+    "externalAxioms": [],
+    "docString": "The ratio of diagonal traces vanishes for nonzero-charge observables even when\nthe denominator is zero.  Physical state normalization still requires a separate\nnonzero partition function hypothesis. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Bosonic.freeGibbsExpectation_orderedProduct_pair_eq_freeThermalPairValue",
+      "SecondQuantization.Common.summableDiagonalTraceRatioLinear_eq_zero_of_carriesShift",
+      "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_annihilate_comp_annihilate",
+      "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_create_comp_create"
+    ],
+    "dependencies": [
+      "SecondQuantization.Common.tsumTrace_diagonalOperator_comp_eq_zero_of_carriesShift"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Bosonic.freeGibbsExpectation_orderedProduct_pair_eq_freeThermalPairValue",
+      "SecondQuantization.Common.summableDiagonalTraceRatioLinear_eq_zero_of_carriesShift",
+      "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_annihilate_comp_annihilate",
+      "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_create_comp_create"
+    ],
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -128772,10 +128681,7 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Bosonic.FreeThermalField.freeGibbsSummable_orderedProduct",
-      "SecondQuantization.Bosonic.grandCanonicalGibbsExpectation_eq_zero_of_matrixCoeff_self_eq_zero",
       "SecondQuantization.Common.finiteGibbsExpectation_eq_trace_div",
-      "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_annihilate_comp_annihilate",
-      "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_create_comp_create",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.TwoPoint.0.SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_comp_create_mul_matrixCoeff_annihilate_of_ne",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.TwoPoint.0.SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_comp_create_removeOccupation"
     ],
@@ -128786,14 +128692,11 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Bosonic.FreeThermalField.freeGibbsSummable_orderedProduct",
-      "SecondQuantization.Bosonic.grandCanonicalGibbsExpectation_eq_zero_of_matrixCoeff_self_eq_zero",
       "SecondQuantization.Common.finiteGibbsExpectation_eq_trace_div",
-      "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_annihilate_comp_annihilate",
-      "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_create_comp_create",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.TwoPoint.0.SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_comp_create_mul_matrixCoeff_annihilate_of_ne",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.TwoPoint.0.SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_comp_create_removeOccupation"
     ],
-    "compiledConsumerCount": 7,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -128887,6 +128790,53 @@
       "SecondQuantization.Fermionic.eigenbasisGibbsEnergyExpectation_fermionEnergy_eq_sum_fermiDirac"
     ],
     "compiledConsumerCount": 3,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Config : Type u_1} {G : Type u_2} [inst : AddCommGroup G] {grading : Config → G}\n  {A : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config} {q : G},\n  SecondQuantization.Common.CarriesShift grading A q →\n    q ≠ 0 →\n      ∀ (w : Config → ℂ) (n : Config),\n        SecondQuantization.Common.matrixCoeff (SecondQuantization.Common.diagonalOperator w ∘ₗ A) n n = 0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.matrixCoeff_diagonalOperator_comp_self_eq_zero_of_carriesShift",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Algebra.DiagonalTrace",
+    "externalAxioms": [],
+    "docString": "A nonzero grading shift remains off-diagonal after multiplication by any diagonal\nweight.  No positivity, trace-class condition, or countability hypothesis is needed. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Common.summable_diagonalOperator_comp_of_carriesShift",
+      "SecondQuantization.Common.tsumTrace_diagonalOperator_comp_eq_zero_of_carriesShift"
+    ],
+    "dependencies": [
+      "SecondQuantization.Common.diagonalCoeff_eq_zero_of_carriesShift",
+      "SecondQuantization.Common.diagonalOperator_apply"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.summable_diagonalOperator_comp_of_carriesShift",
+      "SecondQuantization.Common.tsumTrace_diagonalOperator_comp_eq_zero_of_carriesShift"
+    ],
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -132643,6 +132593,91 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
+    "terminal": true,
+    "statement": "∀ {Config : Type u_1} {G : Type u_2} [inst : AddCommGroup G] {grading : Config → G}\n  {A : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config} {q : G}\n  (hA : SecondQuantization.Common.CarriesShift grading A q) (hq : q ≠ 0) (w : Config → ℂ),\n  (SecondQuantization.Common.summableDiagonalTraceRatioLinear (SecondQuantization.Common.diagonalOperator w)) ⟨A, ⋯⟩ = 0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.summableDiagonalTraceRatioLinear_eq_zero_of_carriesShift",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Algebra.DiagonalTrace",
+    "externalAxioms": [],
+    "docString": "The common partial trace-ratio functional vanishes on nonzero-charge observables.\nThe summability witness is supplied automatically by the selection rule. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "SecondQuantization.Common.diagonalTraceRatio_eq_zero_of_carriesShift",
+      "SecondQuantization.Common.summable_diagonalOperator_comp_of_carriesShift"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Config : Type u_1} {G : Type u_2} [inst : AddCommGroup G] {grading : Config → G}\n  {A : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config} {q : G},\n  SecondQuantization.Common.CarriesShift grading A q →\n    q ≠ 0 →\n      ∀ (w : Config → ℂ),\n        Summable fun n => SecondQuantization.Common.matrixCoeff (SecondQuantization.Common.diagonalOperator w ∘ₗ A) n n",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.summable_diagonalOperator_comp_of_carriesShift",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Algebra.DiagonalTrace",
+    "externalAxioms": [],
+    "docString": "Nonzero-charge observables belong to every diagonal-weighted trace domain:\nthe numerator vanishes term by term, regardless of the weight. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Common.summableDiagonalTraceRatioLinear_eq_zero_of_carriesShift"
+    ],
+    "dependencies": [
+      "SecondQuantization.Common.matrixCoeff_diagonalOperator_comp_self_eq_zero_of_carriesShift"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.summableDiagonalTraceRatioLinear_eq_zero_of_carriesShift"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
     "terminal": false,
     "statement": "∀ {Config : Type u_1}\n  (A B : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config),\n  Summable\n      (Function.uncurry fun n k =>\n        SecondQuantization.Common.matrixCoeff A n k * SecondQuantization.Common.matrixCoeff B k n) →\n    Summable fun n => SecondQuantization.Common.matrixCoeff (A ∘ₗ B) n n",
     "standardAxioms": [
@@ -133458,6 +133493,50 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Common.tsumTrace_diagonalEvolution_comp_peel"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Config : Type u_1} {G : Type u_2} [inst : AddCommGroup G] {grading : Config → G}\n  {A : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config} {q : G},\n  SecondQuantization.Common.CarriesShift grading A q →\n    q ≠ 0 →\n      ∀ (w : Config → ℂ), SecondQuantization.Common.tsumTrace (SecondQuantization.Common.diagonalOperator w ∘ₗ A) = 0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.tsumTrace_diagonalOperator_comp_eq_zero_of_carriesShift",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Algebra.DiagonalTrace",
+    "externalAxioms": [],
+    "docString": "Every diagonal weighting annihilates the trace of a nonzero-charge observable. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Common.diagonalTraceRatio_eq_zero_of_carriesShift"
+    ],
+    "dependencies": [
+      "SecondQuantization.Common.matrixCoeff_diagonalOperator_comp_self_eq_zero_of_carriesShift"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.diagonalTraceRatio_eq_zero_of_carriesShift"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -143616,7 +143695,7 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Fermionic.carriesFermionParity_create_add_annihilate",
-      "SecondQuantization.Fermionic.matrixCoeff_annihilate_comp_annihilate"
+      "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_annihilate_comp_annihilate"
     ],
     "dependencies": [
       "SecondQuantization.Common.grading_eq_of_matrixCoeff_ne_zero_of_basisState_smul",
@@ -143628,7 +143707,7 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Fermionic.carriesFermionParity_create_add_annihilate",
-      "SecondQuantization.Fermionic.matrixCoeff_annihilate_comp_annihilate"
+      "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_annihilate_comp_annihilate"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -143665,7 +143744,7 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Fermionic.carriesFermionParity_create_add_annihilate",
-      "SecondQuantization.Fermionic.matrixCoeff_create_comp_create"
+      "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_create_comp_create"
     ],
     "dependencies": [
       "SecondQuantization.Common.grading_eq_of_matrixCoeff_ne_zero_of_basisState_smul",
@@ -143677,7 +143756,7 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Fermionic.carriesFermionParity_create_add_annihilate",
-      "SecondQuantization.Fermionic.matrixCoeff_create_comp_create"
+      "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_create_comp_create"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -148818,9 +148897,10 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "SecondQuantization.Common.matrixCoeff_diagonalEvolution_comp",
-      "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_eq_summableDiagonalTraceRatioLinear",
-      "SecondQuantization.Fermionic.matrixCoeff_annihilate_comp_annihilate"
+      "SecondQuantization.Common.CarriesShift.comp",
+      "SecondQuantization.Common.diagonalTraceRatio_eq_zero_of_carriesShift",
+      "SecondQuantization.Fermionic.carriesParticleNumberCharge_annihilate",
+      "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_eq_summableDiagonalTraceRatioLinear"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -149020,9 +149100,10 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "SecondQuantization.Common.matrixCoeff_diagonalEvolution_comp",
-      "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_eq_summableDiagonalTraceRatioLinear",
-      "SecondQuantization.Fermionic.matrixCoeff_create_comp_create"
+      "SecondQuantization.Common.CarriesShift.comp",
+      "SecondQuantization.Common.diagonalTraceRatio_eq_zero_of_carriesShift",
+      "SecondQuantization.Fermionic.carriesParticleNumberCharge_create",
+      "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_eq_summableDiagonalTraceRatioLinear"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -150647,52 +150728,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (i j : Mode) (n : SecondQuantization.Fermionic.Occupation Mode),\n  SecondQuantization.Common.matrixCoeff\n      (SecondQuantization.Fermionic.annihilate i ∘ₗ SecondQuantization.Fermionic.annihilate j) n n =\n    0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.matrixCoeff_annihilate_comp_annihilate",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.ParticleNumberCharge",
-    "externalAxioms": [],
-    "docString": "Two annihilation operators have zero diagonal matrix coefficient because their product carries\nparticle-number charge `-2`. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_annihilate_comp_annihilate"
-    ],
-    "dependencies": [
-      "SecondQuantization.Common.CarriesShift.comp",
-      "SecondQuantization.Common.diagonalCoeff_eq_zero_of_carriesShift",
-      "SecondQuantization.Fermionic.carriesParticleNumberCharge_annihilate"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_annihilate_comp_annihilate"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (i : Mode) (m n : SecondQuantization.Fermionic.Occupation Mode),\n  SecondQuantization.Common.matrixCoeff (SecondQuantization.Fermionic.create i) m n =\n    if m = SecondQuantization.Fermionic.insertOccupation i n then\n      if i ∈ n then 0 else ↑(SecondQuantization.Fermionic.fermionSign i n)\n    else 0",
     "standardAxioms": [
       "Classical.choice",
@@ -150722,52 +150757,6 @@
     "completedMention": false,
     "compiledConsumers": [
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.FiniteHilbertCreationAnnihilation.0.SecondQuantization.Fermionic.star_matrixCoeff_create_eq_matrixCoeff_annihilate"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (i j : Mode) (n : SecondQuantization.Fermionic.Occupation Mode),\n  SecondQuantization.Common.matrixCoeff (SecondQuantization.Fermionic.create i ∘ₗ SecondQuantization.Fermionic.create j)\n      n n =\n    0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.matrixCoeff_create_comp_create",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.ParticleNumberCharge",
-    "externalAxioms": [],
-    "docString": "Two creation operators have zero diagonal matrix coefficient because their product carries\nparticle-number charge `+2`. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_create_comp_create"
-    ],
-    "dependencies": [
-      "SecondQuantization.Common.CarriesShift.comp",
-      "SecondQuantization.Common.diagonalCoeff_eq_zero_of_carriesShift",
-      "SecondQuantization.Fermionic.carriesParticleNumberCharge_create"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_create_comp_create"
     ],
     "compiledConsumerCount": 1,
     "axioms": [

@@ -5014,7 +5014,8 @@
       "name": "LeanCondensedMatter.SecondQuantization.Common.Algebra.DiagonalTrace",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Algebra/DiagonalTrace.lean",
       "imports": [
-        "LeanCondensedMatter.SecondQuantization.Common.Algebra.AlgebraicFock"
+        "LeanCondensedMatter.SecondQuantization.Common.Algebra.AlgebraicFock",
+        "LeanCondensedMatter.SecondQuantization.Common.Algebra.SupportShift"
       ],
       "externalImportCount": 2
     },
