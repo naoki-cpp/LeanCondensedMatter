@@ -753,17 +753,12 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficie
         measure * (2 * (((2 * Real.pi : ℝ) : ℂ)) *
           ((energyA * energyR - massA * massR) * factor)) *
           (-(((2 : ℂ) * (v : ℂ) ^ 2)⁻¹) * logDiff) := by
+    rw [hdiag, hrad]
     calc
-      gap * (jxx + jyy) =
-          gap * (measure * (∫ p in (0 : ℝ)..pMax, 2 * (p : ℂ) *
-            (polarFourierZerothAngularKernel (p * 0 / hbar) *
-              ((denominator p)⁻¹ * (energyA * energyR - massA * massR) * factor)))) := by
-          rw [hdiag]
       _ = measure * (2 * (((2 * Real.pi : ℝ) : ℂ)) *
-            ((energyA * energyR - massA * massR) * factor)) *
-            (gap * (∫ p in (0 : ℝ)..pMax, (p : ℂ) * (denominator p)⁻¹)) := by
-          rw [hrad]
-          ring
+          ((energyA * energyR - massA * massR) * factor)) *
+          (gap * (∫ p in (0 : ℝ)..pMax, (p : ℂ) * (denominator p)⁻¹)) := by
+            ring
       _ = _ := by rw [hlog]
   have hxx :
       gap * jxx = measure * (((2 * Real.pi : ℝ) : ℂ)) *
@@ -771,10 +766,7 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficie
         (-(((2 : ℂ) * (v : ℂ) ^ 2)⁻¹) * logDiff) := by
     calc
       gap * jxx = (gap * (jxx + jyy)) / 2 := by rw [← hsymm]; ring
-      _ = (measure * (2 * (((2 * Real.pi : ℝ) : ℂ)) *
-        ((energyA * energyR - massA * massR) * factor)) *
-        (-(((2 : ℂ) * (v : ℂ) ^ 2)⁻¹) * logDiff)) / 2 := by rw [hsum]
-      _ = _ := by ring
+      _ = _ := by rw [hsum]; ring
   constructor
   · exact hxx
   · exact (congrArg (fun j : ℂ => gap * j) hsymm).symm.trans hxx
