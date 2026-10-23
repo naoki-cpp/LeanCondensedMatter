@@ -1,5 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.Hamiltonian
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsExpectationBridge
+import LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsCoordinate
 import LeanCondensedMatter.QuantumTheory.Gibbs.Eigenbasis
 
 set_option linter.style.header false
@@ -49,6 +50,19 @@ theorem freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation
   rw [freeGibbsDensityOperator, Common.finiteGibbsExpectation,
     Common.finiteGibbsExpectationLinearMap, LinearMap.comp_apply]
   rfl
+
+/-- The finite fermionic density-state expectation is the common summable diagonal
+trace ratio specialized to the occupation energies. -/
+theorem freeGibbsDensityOperator_expectation_eq_summableDiagonalTraceRatioLinear
+    (ε : Mode → ℝ) (β : ℝ)
+    (A : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) :
+    (freeGibbsDensityOperator ε β).expectation (Common.finiteHilbertOperatorAlgEquiv A) =
+      Common.summableDiagonalTraceRatioLinear
+        (Common.diagonalEvolution (fermionEnergy ε) (-β))
+        ⟨A, Summable.of_finite⟩ := by
+  rw [freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation]
+  exact Common.finiteGibbsExpectation_eq_summableDiagonalTraceRatioLinear
+    (fermionEnergy ε) β A
 
 end Fermionic
 end SecondQuantization
