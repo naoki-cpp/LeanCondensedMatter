@@ -79,10 +79,8 @@ theorem canonicalFullGibbsWeight_nonneg (ε : Mode → ℝ) (β : ℝ) (N : ℕ)
 theorem canonicalFullGibbsWeight_norm_summable (ε : Mode → ℝ) (β : ℝ) (N : ℕ)
     (hsum : EigenbasisGibbsSummable
       (fun n : ParticleNumberSector Mode Config N => occupationEnergy ε n.val) β) :
-    Summable (fun c : Config => ‖canonicalFullGibbsWeight (Config := Config) ε β N c‖) := by
-  apply (canonicalFullGibbsWeight_hasSum ε β N hsum).summable.congr
-  intro c
-  rw [Real.norm_eq_abs, abs_of_nonneg (canonicalFullGibbsWeight_nonneg ε β N c)]
+    Summable (fun c : Config => ‖canonicalFullGibbsWeight (Config := Config) ε β N c‖) :=
+  (canonicalFullGibbsWeight_hasSum ε β N hsum).summable.norm
 
 /-- A nonempty sharp-number sector gives positive full-space partition normalization. -/
 theorem canonicalFullGibbsWeight_tsum_pos (ε : Mode → ℝ) (β : ℝ) (N : ℕ)
