@@ -1,14 +1,17 @@
-import LeanCondensedMatter.SecondQuantization.Common.Thermal.CanonicalGrandCanonicalCompatibility
+import LeanCondensedMatter.SecondQuantization.Common.Thermal.CanonicalSector
+import LeanCondensedMatter.SecondQuantization.Common.Thermal.GrandCanonical
 
 set_option linter.style.header false
 
 /-!
-# Decomposition of grand-canonical partition functions by particle number
+# Grand-canonical scalar data on sharp-number sectors
 
-The occupation basis is canonically partitioned into its fixed-number fibers.
-Summability of the grand-canonical Boltzmann weights makes the resulting
-infinite sector sum genuine, without assuming finite mode or configuration types.
-Empty sectors contribute zero. No CCR/CAR assumptions enter the proof.
+Fixed-number restriction of grand-canonical Gibbs weights yields the canonical
+weights multiplied by fugacity. The resulting sector probabilities are positive
+when the sector is nonempty, and their infinite sum is normalized by reindexing
+the occupation basis into its fixed-number fibers. Empty sectors contribute
+zero. These scalar statements require no finite-mode, CCR/CAR, or bounded-operator
+hypotheses.
 -/
 
 namespace SecondQuantization
@@ -19,6 +22,102 @@ open QuantumTheory
 noncomputable section
 
 variable {Mode Config : Type*} [OccupationBasis Mode Config]
+
+/-- Summability of the full grand-canonical Gibbs weights implies summability
+of their restriction to every fixed-number sector. This includes sectors with
+infinitely many configurations, and requires no nonemptiness hypothesis. -/
+theorem canonicalGibbsSummable_of_grandCanonical
+    (ε : Mode → ℝ) (β μ : ℝ) (N : ℕ)
+    (hsum : EigenbasisGibbsSummable
+      (grandCanonicalEnergy (Config := Config) ε μ) β) :
+    EigenbasisGibbsSummable
+      (fun n : ParticleNumberSector Mode Config N => occupationEnergy ε n.val) β := by
+  have hrestricted : EigenbasisGibbsSummable
+      (fun n : ParticleNumberSector Mode Config N =>
+        grandCanonicalEnergy ε μ n.val) β :=
+    hsum.comp_injective Subtype.val_injective
+  have hE :
+      (fun n : ParticleNumberSector Mode Config N =>
+        grandCanonicalEnergy ε μ n.val) =
+      (fun n : ParticleNumberSector Mode Config N =>
+        occupationEnergy ε n.val - μ * (N : ℝ)) := by
+    funext n
+    simp [grandCanonicalEnergy, n.property]
+  rw [hE] at hrestricted
+  simpa only [sub_add_cancel] using
+    (eigenbasisGibbsSummable_add_const
+      (fun n : ParticleNumberSector Mode Config N =>
+        occupationEnergy ε n.val - μ * (N : ℝ))
+      β (μ * (N : ℝ)) hrestricted)
+
+/-- Within a fixed-number sector the chemical-potential correction is a
+constant fugacity factor multiplying the canonical Boltzmann weight. -/
+theorem grandCanonicalBoltzmannWeight_of_sector
+    (ε : Mode → ℝ) (β μ : ℝ) (N : ℕ)
+    (n : ParticleNumberSector Mode Config N) :
+    eigenbasisBoltzmannWeight (grandCanonicalEnergy ε μ) β n.val =
+      Real.exp (β * μ * (N : ℝ)) *
+        eigenbasisBoltzmannWeight
+          (fun m : ParticleNumberSector Mode Config N => occupationEnergy ε m.val) β n := by
+  change Real.exp
+      (-β * (occupationEnergy ε n.val -
+        μ * (particleNumber (Mode := Mode) n.val : ℝ))) =
+    Real.exp (β * μ * (N : ℝ)) * Real.exp (-β * occupationEnergy ε n.val)
+  rw [n.property]
+  rw [show -β * (occupationEnergy ε n.val - μ * (N : ℝ)) =
+      β * μ * (N : ℝ) + -β * occupationEnergy ε n.val by ring,
+    Real.exp_add]
+
+/-- Probability assigned by the grand-canonical distribution to the
+fixed-particle-number sector. It can be zero when the sector is empty. -/
+noncomputable def grandCanonicalSectorProbability
+    (ε : Mode → ℝ) (β μ : ℝ) (N : ℕ) : ℝ :=
+  Real.exp (β * μ * (N : ℝ)) *
+    canonicalPartitionFunction (Config := Config) ε β N /
+      grandCanonicalPartitionFunction (Config := Config) ε β μ
+
+/-- Every nonempty fixed-number sector has strictly positive probability under a
+summable grand-canonical Gibbs distribution. Empty sectors are handled separately. -/
+theorem grandCanonicalSectorProbability_pos
+    (ε : Mode → ℝ) (β μ : ℝ) (N : ℕ)
+    [Nonempty (ParticleNumberSector Mode Config N)]
+    (hsum : EigenbasisGibbsSummable
+      (grandCanonicalEnergy (Config := Config) ε μ) β) :
+    0 < grandCanonicalSectorProbability (Config := Config) ε β μ N := by
+  unfold grandCanonicalSectorProbability
+  exact div_pos
+    (mul_pos (Real.exp_pos _)
+      (canonicalPartitionFunction_pos ε β N
+        (canonicalGibbsSummable_of_grandCanonical ε β μ N hsum)))
+    (grandCanonicalPartitionFunction_pos ε β μ hsum)
+
+/-- Conditioning the grand-canonical occupation probability on a nonempty
+sharp-number sector gives its canonical Gibbs occupation probability. -/
+theorem grandCanonicalGibbsProbability_of_sector
+    (ε : Mode → ℝ) (β μ : ℝ) (N : ℕ)
+    [Nonempty (ParticleNumberSector Mode Config N)]
+    (hsum : EigenbasisGibbsSummable
+      (grandCanonicalEnergy (Config := Config) ε μ) β)
+    (n : ParticleNumberSector Mode Config N) :
+    eigenbasisGibbsProbability (grandCanonicalEnergy ε μ) β n.val =
+      grandCanonicalSectorProbability (Config := Config) ε β μ N *
+        eigenbasisGibbsProbability
+          (fun m : ParticleNumberSector Mode Config N => occupationEnergy ε m.val) β n := by
+  have hZ : grandCanonicalPartitionFunction (Config := Config) ε β μ ≠ 0 :=
+    (grandCanonicalPartitionFunction_pos ε β μ hsum).ne'
+  have hZN : canonicalPartitionFunction (Config := Config) ε β N ≠ 0 :=
+    (canonicalPartitionFunction_pos ε β N
+      (canonicalGibbsSummable_of_grandCanonical ε β μ N hsum)).ne'
+  change (grandCanonicalPartitionFunction ε β μ)⁻¹ *
+      eigenbasisBoltzmannWeight (grandCanonicalEnergy ε μ) β n.val =
+    (Real.exp (β * μ * (N : ℝ)) *
+      canonicalPartitionFunction ε β N /
+      grandCanonicalPartitionFunction ε β μ) *
+      ((canonicalPartitionFunction ε β N)⁻¹ *
+        eigenbasisBoltzmannWeight
+          (fun m : ParticleNumberSector Mode Config N => occupationEnergy ε m.val) β n)
+  rw [grandCanonicalBoltzmannWeight_of_sector]
+  field_simp [hZ, hZN]
 
 /-- The grand-canonical partition function is the sum of canonical sector
 partition functions weighted by fugacity, including empty sectors. -/
