@@ -8,9 +8,6 @@ set_option linter.style.header false
 For an absolutely summable family, pointwise eventually exhaustive coordinate masks preserve
 the limit of its infinite sum. This works along an arbitrary filter, without countability,
 monotonicity, or finite-rank hypotheses on the masks.
-
-This is a specialization of dominated convergence that needs no positivity or
-finite-rank hypotheses.
 -/
 
 open Filter Topology
