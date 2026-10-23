@@ -315,7 +315,7 @@ theorem tendsto_completedFreeModeTruncatedGibbsDensityOperator_expectation
   simpa using (hratio.mul hretained).congr'
     (Eventually.of_forall fun S =>
       (completedFreeModeTruncatedGibbsDensityOperator_expectation_eq_ratio_mul
-        ε β hsum S A).symm)
+        ε β μ hsum S A).symm)
 
 end
 end Fermionic
