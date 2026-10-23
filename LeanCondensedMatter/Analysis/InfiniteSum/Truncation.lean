@@ -1,4 +1,3 @@
-import LeanCondensedMatter.Analysis.InfiniteSum.Normalization
 import Mathlib.Analysis.Normed.Group.Tannery
 
 set_option linter.style.header false
@@ -10,8 +9,8 @@ For an absolutely summable family, pointwise eventually exhaustive coordinate ma
 the limit of its infinite sum. This works along an arbitrary filter, without countability,
 monotonicity, or finite-rank hypotheses on the masks.
 
-The normalized version applies to a real weight family with nonzero total mass. Positivity
-or physical Gibbs-state assumptions belong to downstream consumers.
+This is a specialization of dominated convergence that needs no positivity or
+finite-rank hypotheses.
 -/
 
 open Filter Topology
@@ -37,23 +36,5 @@ theorem tendsto_tsum_ite_of_eventually
     intro i
     by_cases h : P s i <;> simp [h]
   exact tendsto_tsum_of_dominated_convergence hf hpoint hbound
-
-/-- Pointwise normalization commutes with an eventually exhaustive cutoff of an absolutely
-summable real weight family, provided the uncut total is nonzero. No assumption that the
-cutoff total is nonzero at every index is necessary. -/
-theorem tendsto_normalizedWeight_ite_of_eventually
-    {ι κ : Type*} (w : ι → ℝ) (hw : Summable (fun i => ‖w i‖))
-    (hZ : (∑' i, w i) ≠ 0)
-    (l : Filter κ) (P : κ → ι → Prop) [DecidableRel P]
-    (hP : ∀ i, ∀ᶠ s in l, P s i) (i : ι) :
-    Tendsto (fun s => Real.normalizedWeight
-      (fun j => if P s j then w j else 0) i)
-      l (𝓝 (Real.normalizedWeight w i)) := by
-  have hZt := tendsto_tsum_ite_of_eventually w hw l P hP
-  have hwt : Tendsto (fun s => if P s i then w i else 0) l (𝓝 (w i)) := by
-    apply tendsto_const_nhds.congr'
-    filter_upwards [hP i] with s hs
-    simp [hs]
-  simpa only [Real.normalizedWeight] using (hZt.inv₀ hZ).mul hwt
 
 end
