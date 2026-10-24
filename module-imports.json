@@ -6332,6 +6332,7 @@
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Thermal/CanonicalCompatibility.lean",
       "imports": [
         "LeanCondensedMatter.QuantumTheory.DensityOperator.DiagonalFormula",
+        "LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.CoordinateIsometry",
         "LeanCondensedMatter.SecondQuantization.Common.Thermal.CanonicalFullFock"
       ],
       "externalImportCount": 0
@@ -6348,6 +6349,7 @@
       "name": "LeanCondensedMatter.SecondQuantization.Common.Thermal.CanonicalGrandCanonicalCompatibility",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Thermal/CanonicalGrandCanonicalCompatibility.lean",
       "imports": [
+        "LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.CoordinateProjection",
         "LeanCondensedMatter.SecondQuantization.Common.Thermal.CanonicalCompatibility",
         "LeanCondensedMatter.SecondQuantization.Common.Thermal.GrandCanonicalSectorDecomposition"
       ],
@@ -6359,9 +6361,7 @@
       "imports": [
         "LeanCondensedMatter.QuantumTheory.Gibbs.Eigenbasis",
         "LeanCondensedMatter.SecondQuantization.Common.Algebra.OccupationBasis",
-        "LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.Basic",
-        "LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.CoordinateIsometry",
-        "LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.CoordinateProjection"
+        "LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.Basic"
       ],
       "externalImportCount": 0
     },
@@ -6970,20 +6970,12 @@
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Diagrammatics/ExternalInsertion/ExternalVacuumFiberShuffleIntegral.lean",
       "imports": [
         "LeanCondensedMatter.Analysis.OrderedSimplex.BinarySlotShuffle",
+        "LeanCondensedMatter.Analysis.OrderedSimplex.StrictAntiCongr",
         "LeanCondensedMatter.Combinatorics.Shuffle.SlotShuffle",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.ExternalSupportFiber",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.SupportStandardization",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Ordered",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Pairing",
-        "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalVacuumIntegrated"
-      ],
-      "externalImportCount": 0
-    },
-    {
-      "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalVacuumIntegrated",
-      "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Diagrammatics/ExternalInsertion/ExternalVacuumIntegrated.lean",
-      "imports": [
-        "LeanCondensedMatter.Analysis.OrderedSimplex.StrictAntiCongr",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalVacuumStandalone",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.Integral"
       ],
@@ -7109,7 +7101,6 @@
         "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalVacuumAmplitude",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalVacuumFiberCauchySum",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalVacuumFiberShuffleIntegral",
-        "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalVacuumIntegrated",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalVacuumPairing",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalVacuumShuffleIntegral",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalVacuumStandalone",
