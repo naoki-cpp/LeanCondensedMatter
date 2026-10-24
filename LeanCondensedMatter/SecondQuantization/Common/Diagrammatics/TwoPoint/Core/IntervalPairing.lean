@@ -1,4 +1,5 @@
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.IntervalBlock
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.CutIntervals
+import LeanCondensedMatter.Combinatorics.PerfectPairing.Transport
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Restriction
 
 set_option linter.style.header false
@@ -14,7 +15,8 @@ on all interior propagators.
 
 The construction is for a pair of separating cuts. A proof that a resulting
 block is 1PI requires that the cuts be consecutive; a general interval may
-contain additional separating propagators.
+contain additional separating propagators. The ambient interaction-leg incidence
+equivalence is kept with the pairing construction that consumes it.
 -/
 
 namespace SecondQuantization
@@ -23,6 +25,76 @@ namespace Common
 open Combinatorics
 
 variable {ExternalLabel InternalLabel : Type*} {N : ℕ} {S : Finset (Fin N)}
+
+/-- The flattened interaction-leg map is injective: distinct interaction
+slots or local legs are never identified by flattening. -/
+private theorem twoPointInteractionLeg_injective (S : Finset (Fin N)) :
+    Function.Injective
+      (fun p : ↥S × Fin 4 => twoPointInteractionLeg p.1 p.2) := by
+  intro p q hpq
+  have h := congrArg (twoPointLegEquiv S) hpq
+  simpa [twoPointInteractionLeg] using h
+
+/-- The interaction legs of the finite vertex interval, in their original
+ambient flattened coordinates.
+
+The only inputs are the two cuts and the fact that the later cut separates
+the external vertices. The source external vertex is never in the interval;
+the separation hypothesis excludes the target external vertex. -/
+noncomputable def TwoPointDiagram.intervalInteractionLegEquiv
+    (d : TwoPointDiagram ExternalLabel InternalLabel N S)
+    (earlier later : Fin (2 * (2 * S.card + 1)))
+    (hsep : ¬ (d.vertexGraphWithoutPropagator later).Reachable
+      (Sum.inl (0 : Fin 2)) (Sum.inl (1 : Fin 2))) :
+    (↥(interactionSector (d.verticesBetweenCuts earlier later)) × Fin 4) ≃
+      {leg : Fin (2 * (2 * S.card + 1)) //
+        twoPointVertexOfLeg leg ∈ d.verticesBetweenCuts earlier later} := by
+  classical
+  let f :
+      ↥(interactionSector (d.verticesBetweenCuts earlier later)) × Fin 4 →
+        {leg : Fin (2 * (2 * S.card + 1)) //
+          twoPointVertexOfLeg leg ∈ d.verticesBetweenCuts earlier later} := fun p => by
+    let v : ↥S :=
+      ⟨p.1.1, interactionSector_subset (d.verticesBetweenCuts earlier later) p.1.2⟩
+    refine ⟨twoPointInteractionLeg v p.2, ?_⟩
+    simpa only [twoPointVertexOfLeg_interactionLeg] using
+      (mem_interactionSector_subtype (d.verticesBetweenCuts earlier later) v).1 p.1.2
+  refine Equiv.ofBijective f ?_
+  constructor
+  · intro p q hpq
+    have hflat : (f p).1 = (f q).1 := congrArg Subtype.val hpq
+    have hpair :
+        ((⟨p.1.1, interactionSector_subset
+          (d.verticesBetweenCuts earlier later) p.1.2⟩ : ↥S), p.2) =
+        ((⟨q.1.1, interactionSector_subset
+          (d.verticesBetweenCuts earlier later) q.1.2⟩ : ↥S), q.2) :=
+      twoPointInteractionLeg_injective S (by simpa [f] using hflat)
+    apply Prod.ext
+    · apply Subtype.ext
+      exact congrArg (fun x => (x.1 : ↥S).1) hpair
+    · exact congrArg (fun x : ↥S × Fin 4 => x.2) hpair
+  · rintro ⟨leg, hleg⟩
+    cases h : twoPointLegEquiv S leg with
+    | inl e =>
+        have hv : twoPointVertexOfLeg leg = (Sum.inl e : TwoPointVertex S) := by
+          simp [twoPointVertexOfLeg, h]
+        fin_cases e
+        · exact False.elim
+            (d.externalZero_not_mem_verticesBetweenCuts earlier later (hv ▸ hleg))
+        · exact False.elim
+            (d.externalOne_not_mem_verticesBetweenCuts earlier later hsep (hv ▸ hleg))
+    | inr p =>
+        obtain ⟨v, l⟩ := p
+        have hv : twoPointVertexOfLeg leg = (Sum.inr v : TwoPointVertex S) := by
+          simp [twoPointVertexOfLeg, h]
+        have hmem : (v : Fin N) ∈
+            interactionSector (d.verticesBetweenCuts earlier later) :=
+          (mem_interactionSector_subtype (d.verticesBetweenCuts earlier later) v).2
+            (hv ▸ hleg)
+        refine ⟨(⟨(v : Fin N), hmem⟩, l), ?_⟩
+        apply Subtype.ext
+        apply (twoPointLegEquiv S).injective
+        simp [f, twoPointInteractionLeg, h]
 
 /-- A cut has exactly one endpoint incident to the given interval. -/
 def TwoPointDiagram.HasIntervalBoundaryEndpoint
