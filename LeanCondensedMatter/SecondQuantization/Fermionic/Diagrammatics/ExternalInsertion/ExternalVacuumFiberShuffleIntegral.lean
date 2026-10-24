@@ -2,7 +2,9 @@ import LeanCondensedMatter.Analysis.OrderedSimplex.BinarySlotShuffle
 import LeanCondensedMatter.Combinatorics.Shuffle.SlotShuffle
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.SupportStandardization
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.ExternalSupportFiber
-import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalVacuumIntegrated
+import LeanCondensedMatter.Analysis.OrderedSimplex.StrictAntiCongr
+import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalVacuumStandalone
+import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.Integral
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Ordered
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Pairing
 
@@ -24,6 +26,48 @@ open Common
 open Combinatorics
 
 variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
+
+/-- For any external-support slot set, the integrated full Dyson diagram is
+the ordered-simplex integral of its standalone external-support Dyson factor
+times the ordered vacuum Dyson factor. This is the fixed-support analytic
+bridge before reindexing all supports by binary slot shuffles. -/
+theorem externalInsertionOfSlotSplit_dysonAmplitude_eq_integral_standalone_mul_vacuum
+    (ε : Mode → ℝ) (β : ℝ) (hβ : 0 ≤ β)
+    (g : QuarticVertexLabel Mode → ℂ)
+    {E n : ℕ} (T : Finset (Fin n))
+    (ext : ExternalInsertionDiagram (ExternalFieldLabel Mode)
+      (QuarticVertexLabel Mode) E n T)
+    (vac : QuarticDiagram (QuarticVertexLabel Mode) n
+      ((Finset.univ : Finset (Fin n)) \ T))
+    (externalTime : Fin (2 * E) → ℝ) :
+    let S := (Finset.univ : Finset (Fin n)) \ T
+    let order : QuarticVertexOrder S := (S.orderIsoOfFin rfl).toEquiv
+    let f : Fin S.card → Fin n := fun i => (S.orderIsoOfFin rfl i).1
+    let fT : Fin T.card → Fin n := fun i => (T.orderIsoOfFin rfl i).1
+    let e : ↥T ≃ ↥(Finset.univ : Finset (Fin T.card)) :=
+      (T.orderIsoOfFin rfl).toEquiv.symm.trans
+        (Equiv.subtypeUnivEquiv
+          (fun i : Fin T.card => Finset.mem_univ i)).symm
+    let d : ExternalInsertionWickDiagram Mode E n :=
+      ExternalInsertionDiagram.ofSlotSplit (Finset.subset_univ T) ext vac
+    d.dysonAmplitude ε β g externalTime =
+      intervalIntegral.orderedSimplexIntegral n β (fun σ =>
+        ExternalInsertionWickDiagram.dysonFixedTimeAmplitude
+          (ext.slotCongr e) ε β g externalTime (σ ∘ fT) *
+        (((-1 : ℂ) ^ S.card * vac.vertexWeight g) *
+          (vac.pairingInOrder order).evaluation
+            ((vac.pairingInOrder order).weight Statistics.fermion)
+            (flatVertexLegPairValue ε β
+              (fun v => vac.vertexLabel (S.orderIsoOfFin rfl v)) (σ ∘ f)))) := by
+  intro S order f fT e d
+  rw [← d.orderedSimplexIntegral_dysonFixedTimeAmplitude ε β g externalTime]
+  apply intervalIntegral.orderedSimplexIntegral_congr_of_strictAnti n β hβ
+  intro σ hσ _
+  have hanti : StrictAnti (σ ∘ f) := by
+    intro a b hab
+    exact hσ ((S.orderIsoOfFin rfl).strictMono hab)
+  exact externalInsertionOfSlotSplit_dysonFixedTimeAmplitude_eq_standalone_mul_vacuum
+    ε β g T ext vac externalTime σ hanti
 
 private theorem quarticVacuumDysonFactor_orderIsoOfFin
     (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
