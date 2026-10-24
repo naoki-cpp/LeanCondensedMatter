@@ -5,8 +5,8 @@ import LeanCondensedMatter.QuantumTheory.Gibbs.State
 # Heat-operator compatibility with pure-point Gibbs states
 
 A bounded heat operator is accepted as operator data rather than wrapped in a second Gibbs-state
-structure. When it acts on a Hilbert basis by the Boltzmann factors, its general trace and canonical
-positive normalization agree with the existing pure-point Gibbs construction.
+structure. When it acts on a Hilbert basis by the Boltzmann factors, its trace and normalized
+Gibbs density operator agree with the existing pure-point Gibbs construction.
 -/
 
 noncomputable section
@@ -73,7 +73,7 @@ theorem heatTrace_eq_eigenbasisPartitionFunction_of_basis_action
     _ = (eigenbasisPartitionFunction E β : ℂ) := by
       rw [eigenbasisPartitionFunction, Complex.ofReal_tsum]
 
-/-- Pure-point Boltzmann heat data normalize directly to the canonical Gibbs density
+/-- Pure-point Boltzmann heat data normalize directly to the pure-point Gibbs density
 operator at the operator level. -/
 theorem inv_partition_smul_heat_eq_eigenbasisGibbsDensityOperator_op
     [Nonempty ι] (K : H →L[ℂ] H)

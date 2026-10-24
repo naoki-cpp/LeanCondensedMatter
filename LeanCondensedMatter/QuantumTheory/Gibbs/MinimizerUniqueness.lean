@@ -6,7 +6,7 @@ import LeanCondensedMatter.QuantumTheory.Gibbs.Variational
 # Uniqueness of the Gibbs minimizer
 
 The equality components supplied by `Gibbs.EqualityComponents` identify a minimizing density
-operator with the canonical Gibbs state. Positivity of the Gibbs operator and completeness of a
+operator with the normalized Gibbs state. Positivity of the Gibbs operator and completeness of a
 trace-saturating orthonormal family are proved locally as inputs to the final characterization.
 -/
 
@@ -61,7 +61,7 @@ private theorem gibbsOp_orthogonal_span_eq_bot_of_tsum_eq_spectralTrace
 /-! ## Unique Gibbs minimizer -/
 
 /-- For nonzero inverse temperature, the Helmholtz equality case is attained exactly by the
-canonical Gibbs state. -/
+normalized Gibbs state. -/
 theorem helmholtzFreeEnergy_eq_iff_eq_gibbsState [Nontrivial H] [FiniteDimensional ℂ H]
     (ρ : DensityOperator H) (Hop : Observable H) (β : ℝ) (hβ : β ≠ 0) :
     energyExpValue ρ Hop - (1 / β) * (vonNeumannEntropy ρ).toReal =
