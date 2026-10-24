@@ -262,24 +262,18 @@ theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTrace
     rw [hbareInPlane,
       inPlaneCurrentOperator_eq_chargeVelocity_smul_inPlanePauliVertexOperator]
     simp [q, inPlanePauliVertexOperator, smul_add, smul_smul]
-  let ra : ℝ → ℂ := fun θ =>
-    finiteDimensionalOperatorTrace
-      ((q • matrixOperator (directionPauli measured)) * polarPauliOperator aR bR dR θ *
-        ((q • dressed) 0 • matrixOperator sigmaX +
-          (q • dressed) 1 • matrixOperator sigmaY) *
-        polarPauliOperator aA bA dA θ)
-  let rr : ℝ → ℂ := fun θ =>
-    finiteDimensionalOperatorTrace
-      ((q • matrixOperator (directionPauli measured)) * polarPauliOperator aR bR dR θ *
-        ((q • bare) 0 • matrixOperator sigmaX +
-          (q • bare) 1 • matrixOperator sigmaY) *
-        polarPauliOperator aR bR dR θ)
-  let aa : ℝ → ℂ := fun θ =>
-    finiteDimensionalOperatorTrace
-      ((q • matrixOperator (directionPauli measured)) * polarPauliOperator aA bA dA θ *
-        ((q • bare) 0 • matrixOperator sigmaX +
-          (q • bare) 1 • matrixOperator sigmaY) *
-        polarPauliOperator aA bA dA θ)
+  let angularTrace (aL aR bL bR dL dR : ℂ)
+      (coefficients : InPlaneCoefficientVector) : ℝ → ℂ :=
+    fun θ =>
+      finiteDimensionalOperatorTrace
+        ((q • matrixOperator (directionPauli measured)) *
+          polarPauliOperator aL bL dL θ *
+          (coefficients 0 • matrixOperator sigmaX +
+            coefficients 1 • matrixOperator sigmaY) *
+          polarPauliOperator aR bR dR θ)
+  let ra := angularTrace aR aA bR bA dR dA (q • dressed)
+  let rr := angularTrace aR aR bR bR dR dR (q • bare)
+  let aa := angularTrace aA aA bA bA dA dA (q • bare)
   have hbridge :
       (fun θ : ℝ =>
         finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceTraceBridge
@@ -313,13 +307,13 @@ theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTrace
           ((q • matrixOperator (directionPauli measured)) * polarPauliOperator aA bA dA θ))
     rw [hcyclic]
   have hraIntegrable : IntervalIntegrable ra volume 0 (2 * Real.pi) := by
-    simpa [ra] using intervalIntegrable_polarPauli_directionTrace
+    simpa [ra, angularTrace] using intervalIntegrable_polarPauli_directionTrace
       measured q aR aA bR bA dR dA (q • dressed)
   have hrrIntegrable : IntervalIntegrable rr volume 0 (2 * Real.pi) := by
-    simpa [rr] using intervalIntegrable_polarPauli_directionTrace
+    simpa [rr, angularTrace] using intervalIntegrable_polarPauli_directionTrace
       measured q aR aR bR bR dR dR (q • bare)
   have haaIntegrable : IntervalIntegrable aa volume 0 (2 * Real.pi) := by
-    simpa [aa] using intervalIntegrable_polarPauli_directionTrace
+    simpa [aa, angularTrace] using intervalIntegrable_polarPauli_directionTrace
       measured q aA aA bA bA dA dA (q • bare)
   have hra := integral_polarPauli_directionTrace_eq
     measured q aR aA bR bA dR dA (q • dressed)
