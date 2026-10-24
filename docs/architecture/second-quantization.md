@@ -260,7 +260,7 @@ signs remain Fermionic consumers.
 The generic `Pairing.interComponentCrossingCount_mod_two_eq_orderedBlockInversionCount`
 identifies residual crossing parity with the ordered block-inversion parity for both fixed and
 mixed component shuffles. Fermionic `ComponentSign` defines the fixed external regrouping
-exchange sign; `ComponentOrderSign` applies the generic crossing-parity identity directly for
+exchange sign; `ComponentPairingValue` applies the generic crossing-parity identity directly for
 the mixed pairing coordinates. Fermionic pairing evaluation applies
 `Pairing.crossingCount_eq_sum_localCrossingCount_add_inter` for the exact crossing decomposition,
 then uses the exchange-weight identity in `Common.Thermal.BlochDeDominicis.PairingWeight`.
