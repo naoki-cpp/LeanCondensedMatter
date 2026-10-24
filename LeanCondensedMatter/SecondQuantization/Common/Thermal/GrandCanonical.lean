@@ -125,18 +125,6 @@ theorem grandCanonicalGibbsDensityOperator_apply_basis
       (completedHilbertBasis (Config := Config))
       (grandCanonicalEnergy (Config := Config) ε μ) β hsum n)
 
-/-- A simultaneous constant shift of the one-particle energy zero and
-chemical potential leaves the grand-canonical energy unchanged. -/
-theorem grandCanonicalEnergy_shift_invariant
-    (ε : Mode → ℝ) (μ C : ℝ) (n : Config) :
-    grandCanonicalEnergy (fun i => ε i + C) (μ + C) n =
-      grandCanonicalEnergy ε μ n := by
-  rw [grandCanonicalEnergy_eq_shifted, grandCanonicalEnergy_eq_shifted]
-  congr 1
-  funext i
-  ring
-
-
 /-- Simultaneous energy-reference and chemical-potential shifts leave the
 grand-canonical generator unchanged as a function on all occupations. -/
 theorem grandCanonicalEnergy_shift_eq
@@ -144,7 +132,10 @@ theorem grandCanonicalEnergy_shift_eq
     grandCanonicalEnergy (Config := Config) (fun i => ε i + C) (μ + C) =
       grandCanonicalEnergy (Config := Config) ε μ := by
   funext n
-  exact grandCanonicalEnergy_shift_invariant ε μ C n
+  rw [grandCanonicalEnergy_eq_shifted, grandCanonicalEnergy_eq_shifted]
+  congr 1
+  funext i
+  ring
 
 /-- Shifting one-particle energies and chemical potential by the same
 constant leaves the grand partition function invariant. -/
