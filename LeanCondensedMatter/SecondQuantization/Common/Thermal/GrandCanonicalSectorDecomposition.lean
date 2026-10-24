@@ -180,19 +180,17 @@ theorem grandCanonicalSectorProbability_eq_tsum
       ∑' n : ParticleNumberSector Mode Config N,
         eigenbasisGibbsProbability (grandCanonicalEnergy ε μ) β n.val := by
   let Z := grandCanonicalPartitionFunction (Config := Config) ε β μ
-  let E : ParticleNumberSector Mode Config N → ℝ :=
-    fun n => occupationEnergy ε n.val
   have hweighted :
       (∑' n : ParticleNumberSector Mode Config N,
         eigenbasisBoltzmannWeight (grandCanonicalEnergy ε μ) β n.val) =
-      Real.exp (β * μ * (N : ℝ)) * canonicalPartitionFunction ε β N := by
+      Real.exp (β * μ * (N : ℝ)) * canonicalPartitionFunction (Config := Config) ε β N := by
     simp_rw [grandCanonicalBoltzmannWeight_of_sector ε β μ N]
     rw [tsum_mul_left]
     rfl
   calc
     grandCanonicalSectorProbability (Config := Config) ε β μ N =
         Z⁻¹ * (Real.exp (β * μ * (N : ℝ)) *
-          canonicalPartitionFunction ε β N) := by
+          canonicalPartitionFunction (Config := Config) ε β N) := by
       simp only [grandCanonicalSectorProbability, Z, div_eq_mul_inv]
       ring
     _ = Z⁻¹ * (∑' n : ParticleNumberSector Mode Config N,
