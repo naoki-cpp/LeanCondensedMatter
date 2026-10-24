@@ -542,109 +542,6 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficie
     rw [finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock_apply_eq_entryKernel_integral,
       finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock_apply_eq_entryKernel_integral]
 
-/-- The two-dimensional Fourier definition of the Gaussian crossed current block reduces exactly to
-the one-dimensional zeroth/first/second radial kernels on the positive real-space radial axis. -/
-theorem finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceCurrentBlock_radialAxis_eq
-    (source : Fin 2)
-    (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ) :
-    finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceCurrentBlock
-        source v m probeEnergy broadening disorderStrength hbar pMax
-        (polarPoint2D radius 0) =
-      finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock
-        source v m probeEnergy broadening disorderStrength hbar pMax radius := by
-  let factor := finiteCutoffContinuumBornDysonGaussianCrossedCurrentFactor
-    v m probeEnergy broadening disorderStrength hbar pMax
-  let coefficients := gaussianCrossedCurrentCoefficientVector source factor
-  let aA : ℝ → ℂ := fun p =>
-    finiteCutoffContinuumBornDysonScalarCoefficient
-      .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax
-  let bA : ℝ → ℂ := fun p =>
-    finiteCutoffContinuumBornDysonPauliCoefficient .x
-      .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax
-  let dA : ℝ → ℂ := fun p =>
-    finiteCutoffContinuumBornDysonPauliCoefficient .z
-      .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax
-  let aR : ℝ → ℂ := fun p =>
-    finiteCutoffContinuumBornDysonScalarCoefficient
-      .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax
-  let bR : ℝ → ℂ := fun p =>
-    finiteCutoffContinuumBornDysonPauliCoefficient .x
-      .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax
-  let dR : ℝ → ℂ := fun p =>
-    finiteCutoffContinuumBornDysonPauliCoefficient .z
-      .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax
-  let harmonics : ℝ → AngularHarmonicCoefficients Matrix2 := fun p =>
-    polarPauliInPlaneHarmonics
-      (aA p) (bA p) (dA p) (aR p) (bR p) (dR p) coefficients
-  let entryHarmonics : Fin 2 → Fin 2 → ℝ → AngularHarmonicCoefficients ℂ :=
-    fun i j p =>
-      { constant := (harmonics p).constant i j
-        firstCosine := (harmonics p).firstCosine i j
-        firstSine := (harmonics p).firstSine i j
-        secondCosine := (harmonics p).secondCosine i j
-        secondMixed := (harmonics p).secondMixed i j }
-  have hA (p θ : ℝ) :
-      finiteCutoffContinuumBornDysonGreenMatrix
-          .advanced v m (p * Real.cos θ) (p * Real.sin θ)
-          probeEnergy broadening disorderStrength hbar pMax =
-        polarPauliMatrix (aA p) (bA p) (dA p) θ := by
-    apply (Matrix.toEuclideanCLM :
-      Matrix2 ≃⋆ₐ[ℂ] (DiracHilbert →L[ℂ] DiracHilbert)).injective
-    simpa [finiteCutoffContinuumBornDysonGreenOperator, polarPauliOperator,
-      matrixOperator, aA, bA, dA] using
-      (finiteCutoffContinuumBornDysonGreenOperator_polar_eq
-        .advanced v m p θ probeEnergy broadening disorderStrength hbar pMax)
-  have hR (p θ : ℝ) :
-      finiteCutoffContinuumBornDysonGreenMatrix
-          .retarded v m (p * Real.cos θ) (p * Real.sin θ)
-          probeEnergy broadening disorderStrength hbar pMax =
-        polarPauliMatrix (aR p) (bR p) (dR p) θ := by
-    apply (Matrix.toEuclideanCLM :
-      Matrix2 ≃⋆ₐ[ℂ] (DiracHilbert →L[ℂ] DiracHilbert)).injective
-    simpa [finiteCutoffContinuumBornDysonGreenOperator, polarPauliOperator,
-      matrixOperator, aR, bR, dR] using
-      (finiteCutoffContinuumBornDysonGreenOperator_polar_eq
-        .retarded v m p θ probeEnergy broadening disorderStrength hbar pMax)
-  have hvertex :
-      coefficients 0 • sigmaX + coefficients 1 • sigmaY =
-        factor • directionPauli source := by
-    simpa [coefficients] using
-      (gaussianCrossedCurrentCoefficientVector_vertex source factor)
-  change
-    (fun i j =>
-      finiteCutoffPhysicalMomentumPolarFourier hbar pMax
-        (fun p θ =>
-          (finiteCutoffContinuumBornDysonGreenMatrix
-              .advanced v m (p * Real.cos θ) (p * Real.sin θ)
-              probeEnergy broadening disorderStrength hbar pMax *
-            (factor • directionPauli source) *
-            finiteCutoffContinuumBornDysonGreenMatrix
-              .retarded v m (p * Real.cos θ) (p * Real.sin θ)
-              probeEnergy broadening disorderStrength hbar pMax) i j)
-        (polarPoint2D radius 0)) =
-      finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock
-        source v m probeEnergy broadening disorderStrength hbar pMax radius
-  apply Matrix.ext
-  intro i j
-  have hfield :
-      (fun p θ =>
-        (finiteCutoffContinuumBornDysonGreenMatrix
-            .advanced v m (p * Real.cos θ) (p * Real.sin θ)
-            probeEnergy broadening disorderStrength hbar pMax *
-          (factor • directionPauli source) *
-          finiteCutoffContinuumBornDysonGreenMatrix
-            .retarded v m (p * Real.cos θ) (p * Real.sin θ)
-            probeEnergy broadening disorderStrength hbar pMax) i j) =
-        fun p θ => (entryHarmonics i j p).eval θ := by
-    funext p θ
-    rw [hA, hR, ← hvertex, polarPauliMatrix_inPlane_sandwich_eq_harmonics]
-    simp [entryHarmonics, harmonics, AngularHarmonicCoefficients.eval,
-      Matrix.add_apply, Matrix.smul_apply, smul_eq_mul]
-  rw [hfield]
-  simpa [finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock,
-    factor, coefficients, harmonics, entryHarmonics, aA, bA, dA, aR, bR, dR] using
-    (finiteCutoffPhysicalMomentumPolarFourier_polarPoint2D_harmonics
-      hbar pMax radius 0 (entryHarmonics i j))
 /-- Physical momentum-space radial kernel of the Gaussian-crossed current block at
 an arbitrary polar real-space angle. In addition to K0 and K1 it contains the
 second angular Fourier kernel K2; the cosine and sine weights are retained
@@ -850,6 +747,35 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceCurrentBlock_polar
     (finiteCutoffPhysicalMomentumPolarFourier_polarPoint2D_harmonics
       hbar pMax radius angle (entryHarmonics i j))
 
+
+/-- The two-dimensional Fourier definition of the Gaussian crossed current block reduces
+to the one-dimensional radial kernel by specializing the full-angle representation to angle zero. -/
+theorem finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceCurrentBlock_radialAxis_eq
+    (source : Fin 2)
+    (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ) :
+    finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceCurrentBlock
+        source v m probeEnergy broadening disorderStrength hbar pMax
+        (polarPoint2D radius 0) =
+      finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock
+        source v m probeEnergy broadening disorderStrength hbar pMax radius := by
+  ext i j
+  rw [finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceCurrentBlock_polarPoint2D_eq_angularKernel_integral]
+  change
+    (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
+        (∫ p in (0 : ℝ)..pMax,
+          finiteCutoffContinuumBornDysonGaussianCrossedAngularCurrentEntryKernel
+            source v m probeEnergy broadening disorderStrength hbar pMax
+            radius 0 p i j) =
+      (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
+        (∫ p in (0 : ℝ)..pMax,
+          finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel
+            source v m probeEnergy broadening disorderStrength hbar pMax
+            radius p i j)
+  congr 1
+  apply intervalIntegral.integral_congr
+  intro p _
+  simp [finiteCutoffContinuumBornDysonGaussianCrossedAngularCurrentEntryKernel,
+    finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel]
 
 /-- The exact finite-cutoff Gaussian-crossed real-space current is covariant
 under SO(2), including the oriented rotation of its Cartesian source index.
