@@ -396,46 +396,8 @@ theorem tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoeffic
       finiteCutoffContinuumBornDysonRetardedAdvancedAngularCoefficient_eq_denominatorForm]
     simp only [norm_mul]
     dsimp [boundValue]
-    have hcDenInv : 0 ≤ cDen⁻¹ := (inv_pos.mpr hcDen).le
-    have hinvNum :
-        ‖(finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct
-              v m p probeEnergy broadening disorderStrength hbar pMax)⁻¹‖ *
-            ‖finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumerator
-              i j v m probeEnergy broadening disorderStrength hbar pMax‖ ≤
-          cDen⁻¹ * (‖numeratorBoundary‖ + 1) := by
-      exact mul_le_mul hinvBound hnumBound (norm_nonneg _) hcDenInv
-    have hangularBound :
-        ‖(((2 * Real.pi : ℝ) : ℂ))‖ *
-            ‖(finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct
-              v m p probeEnergy broadening disorderStrength hbar pMax)⁻¹‖ *
-            ‖finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumerator
-              i j v m probeEnergy broadening disorderStrength hbar pMax‖ ≤
-          ‖(((2 * Real.pi : ℝ) : ℂ))‖ * cDen⁻¹ * (‖numeratorBoundary‖ + 1) := by
-      simpa [mul_assoc] using
-        (mul_le_mul_of_nonneg_left hinvNum (norm_nonneg (((2 * Real.pi : ℝ) : ℂ))))
-    have hprefP :
-        ‖(continuumBornDisorderMeasurePrefactor disorderStrength hbar : ℂ)‖ * ‖(p : ℂ)‖ ≤
-          ‖(continuumBornDisorderMeasurePrefactor disorderStrength hbar : ℂ)‖ * pMax :=
-      mul_le_mul_of_nonneg_left hpNorm (norm_nonneg _)
-    have hradial :
-        (‖(continuumBornDisorderMeasurePrefactor disorderStrength hbar : ℂ)‖ * ‖(p : ℂ)‖) *
-            (‖(((2 * Real.pi : ℝ) : ℂ))‖ *
-              ‖(finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct
-                v m p probeEnergy broadening disorderStrength hbar pMax)⁻¹‖ *
-              ‖finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumerator
-                i j v m probeEnergy broadening disorderStrength hbar pMax‖) ≤
-          (‖(continuumBornDisorderMeasurePrefactor disorderStrength hbar : ℂ)‖ * pMax) *
-            (‖(((2 * Real.pi : ℝ) : ℂ))‖ * cDen⁻¹ * (‖numeratorBoundary‖ + 1)) := by
-      calc
-        _ ≤ (‖(continuumBornDisorderMeasurePrefactor disorderStrength hbar : ℂ)‖ * pMax) *
-            (‖(((2 * Real.pi : ℝ) : ℂ))‖ *
-              ‖(finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct
-                v m p probeEnergy broadening disorderStrength hbar pMax)⁻¹‖ *
-              ‖finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumerator
-                i j v m probeEnergy broadening disorderStrength hbar pMax‖) :=
-          mul_le_mul_of_nonneg_right hprefP (by positivity)
-        _ ≤ _ := mul_le_mul_of_nonneg_left hangularBound (by positivity)
-    simpa [mul_assoc] using hradial
+    simp only [← mul_assoc]
+    gcongr
   have hBoundIntegrable :
       Integrable (fun _ : ℝ => boundValue) (volume.restrict (Set.Icc 0 pMax)) := by
     exact integrableOn_const isCompact_Icc.measure_lt_top.ne
