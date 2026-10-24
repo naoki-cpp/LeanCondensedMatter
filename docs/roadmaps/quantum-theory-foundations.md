@@ -41,6 +41,19 @@ The bounded representation's application formula remains explicit for operator-c
 differential calculations. Generalizing the perturbative Kubo derivation and its analytic
 hypotheses to unbounded generators remains separate work.
 
+`Response/RetardedSusceptibility` and `Response/Channel` take the propagator group and an explicit
+real `hbar` rather than a bounded system. Their bounded observables, causal support, stationarity
+reduction, and uniform commutator bounds do not require a bounded generator. The scalar kernel's
+continuity theorem takes norm continuity of the measured observable's orbit as an explicit
+hypothesis. Existing bounded-system frequency consumers discharge it with
+`continuous_heisenbergEvolution`; strong continuity of Stone propagators alone is not used to
+infer it. Physical callers supply positive `hbar` and consistently scaled propagators.
+
+The causal convolution remains a totalized integral until the caller supplies the relevant
+integrability conditions. Defining this kernel for a Stone group does not establish its equality
+to the first derivative of perturbed dynamics. The frequency constructions and perturbative Kubo
+derivation still take bounded systems.
+
 The equations-of-motion layer proves bounded Schrödinger, Heisenberg, and von Neumann equations in
 operator/norm differentiable form. Conservation results show that observables commuting with `H₀`
 have stationary expectations and density operators commuting with `H₀` are fixed by the free

@@ -1,6 +1,5 @@
 import LeanCondensedMatter.QuantumTheory.LinearResponse.Frequency.AdiabaticSwitching
 import Mathlib.Analysis.SpecialFunctions.ImproperIntegrals
-import Mathlib.Algebra.Lie.OfAssociative
 
 set_option linter.style.header false
 
@@ -18,8 +17,6 @@ The limit `η → 0⁺` remains a separate question and is not formed in this mo
 namespace QuantumTheory
 namespace LinearResponse
 
-attribute [local instance 100] LieRing.ofAssociativeRing
-
 open Set MeasureTheory
 
 noncomputable section
@@ -28,38 +25,18 @@ variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteS
 
 variable (system : BoundedFreeSystem H)
 
-/-- The unswitched commutator kernel with source time fixed to zero is continuous. -/
-theorem continuous_commutatorSusceptibility_timeDifference
-    (expectation : NormalizedExpectation H)
-    (A B : H →L[ℂ] H) :
-    Continuous (fun τ : ℝ =>
-      commutatorSusceptibility system expectation A B τ 0) := by
-  have hA := continuous_heisenbergEvolution system A
-  have hcomm : Continuous (fun τ : ℝ =>
-      heisenbergEvolution (freePropagatorGroup system) τ A * B -
-        B * heisenbergEvolution (freePropagatorGroup system) τ A) :=
-    (hA.mul continuous_const).sub (continuous_const.mul hA)
-  have hexpect : Continuous (fun τ : ℝ => expectation
-      (heisenbergEvolution (freePropagatorGroup system) τ A * B -
-        B * heisenbergEvolution (freePropagatorGroup system) τ A)) :=
-    expectation.toContinuousLinearMap.continuous.comp hcomm
-  convert
-    ((continuous_const : Continuous (fun _ : ℝ => Complex.I / (system.hbar : ℂ))).mul hexpect)
-    using 1
-  funext τ
-  simp only [Pi.mul_apply, commutatorSusceptibility, heisenbergEvolution_zero,
-    LieRing.of_associative_ring_bracket]
-
 /-- The causal time-difference kernel is Borel measurable; its only possible jump is at zero. -/
 theorem measurable_retardedTimeDifferenceKernel
     (expectation : NormalizedExpectation H)
     (A B : H →L[ℂ] H) :
     Measurable (retardedTimeDifferenceKernel system expectation A B) := by
   have hcomm :=
-    (continuous_commutatorSusceptibility_timeDifference system expectation A B).measurable
+    (continuous_commutatorSusceptibility_timeDifference
+      (freePropagatorGroup system) system.hbar expectation A B
+      (continuous_heisenbergEvolution system A)).measurable
   change Measurable (fun τ : ℝ =>
     if τ ∈ Ici (0 : ℝ) then
-      commutatorSusceptibility system expectation A B τ 0
+      commutatorSusceptibility (freePropagatorGroup system) system.hbar expectation A B τ 0
     else 0)
   exact Measurable.ite measurableSet_Ici hcomm measurable_const
 
@@ -93,43 +70,8 @@ theorem norm_retardedTimeDifferenceKernel_le
   · have hτnonneg : 0 ≤ τ := le_of_not_gt hτ
     rw [retardedTimeDifferenceKernel_eq_commutatorSusceptibility_of_nonneg
       system expectation A B hτnonneg]
-    simp only [commutatorSusceptibility, heisenbergEvolution_zero]
-    let X : H →L[ℂ] H :=
-      ⁅heisenbergEvolution (freePropagatorGroup system) τ A, B⁆
-    have hX : ‖X‖ ≤ 2 * ‖A‖ * ‖B‖ := by
-      change
-        ‖heisenbergEvolution (freePropagatorGroup system) τ A * B -
-          B * heisenbergEvolution (freePropagatorGroup system) τ A‖ ≤ 2 * ‖A‖ * ‖B‖
-      calc
-        ‖heisenbergEvolution (freePropagatorGroup system) τ A * B -
-          B * heisenbergEvolution (freePropagatorGroup system) τ A‖ ≤
-            ‖heisenbergEvolution (freePropagatorGroup system) τ A * B‖ +
-            ‖B * heisenbergEvolution (freePropagatorGroup system) τ A‖ :=
-          norm_sub_le _ _
-        _ ≤ ‖heisenbergEvolution (freePropagatorGroup system) τ A‖ * ‖B‖ +
-            ‖B‖ * ‖heisenbergEvolution (freePropagatorGroup system) τ A‖ :=
-          add_le_add (norm_mul_le _ _) (norm_mul_le _ _)
-        _ = 2 * ‖A‖ * ‖B‖ := by
-          rw [norm_heisenbergEvolution]
-          ring
-    change ‖(Complex.I / (system.hbar : ℂ)) * expectation X‖ ≤
-      retardedTimeDifferenceKernelNormBound system expectation A B
-    have hexpect : ‖expectation X‖ ≤
-        ‖expectation.toContinuousLinearMap‖ * ‖X‖ :=
-      expectation.toContinuousLinearMap.le_opNorm X
-    calc
-      ‖(Complex.I / (system.hbar : ℂ)) * expectation X‖ =
-          ‖Complex.I / (system.hbar : ℂ)‖ * ‖expectation X‖ :=
-        norm_mul _ _
-      _ ≤ ‖Complex.I / (system.hbar : ℂ)‖ *
-          (‖expectation.toContinuousLinearMap‖ * ‖X‖) :=
-        mul_le_mul_of_nonneg_left hexpect (norm_nonneg _)
-      _ ≤ ‖Complex.I / (system.hbar : ℂ)‖ *
-          (‖expectation.toContinuousLinearMap‖ * (2 * ‖A‖ * ‖B‖)) := by
-        gcongr
-      _ = retardedTimeDifferenceKernelNormBound system expectation A B := by
-        rw [retardedTimeDifferenceKernelNormBound]
-        ring
+    exact norm_commutatorSusceptibility_le
+      (freePropagatorGroup system) system.hbar expectation A B τ 0
 
 /-- The exponentially damped complex phase is integrable on every right half-line when `η > 0`. -/
 theorem integrableOn_adiabaticFrequencyPhase_Ioi

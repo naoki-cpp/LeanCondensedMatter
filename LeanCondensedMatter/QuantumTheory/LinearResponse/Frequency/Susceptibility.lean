@@ -1,4 +1,5 @@
 import LeanCondensedMatter.QuantumTheory.LinearResponse.Response.RetardedSusceptibility
+import LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.Free
 
 set_option linter.style.header false
 
@@ -35,7 +36,7 @@ variable (system : BoundedFreeSystem H)
 noncomputable def retardedTimeDifferenceKernel
     (expectation : NormalizedExpectation H)
     (A B : H →L[ℂ] H) (τ : ℝ) : ℂ :=
-  retardedSusceptibility system expectation A B τ 0
+  retardedSusceptibility (freePropagatorGroup system) system.hbar expectation A B τ 0
 
 @[simp]
 theorem retardedTimeDifferenceKernel_eq_zero_of_neg
@@ -43,14 +44,14 @@ theorem retardedTimeDifferenceKernel_eq_zero_of_neg
     (A B : H →L[ℂ] H) {τ : ℝ} (hτ : τ < 0) :
     retardedTimeDifferenceKernel system expectation A B τ = 0 := by
   simpa [retardedTimeDifferenceKernel] using
-    (retardedSusceptibility_eq_zero_of_lt system expectation A B hτ)
+    (retardedSusceptibility_eq_zero_of_lt (freePropagatorGroup system) system.hbar expectation A B hτ)
 
 @[simp]
 theorem retardedTimeDifferenceKernel_eq_commutatorSusceptibility_of_nonneg
     (expectation : NormalizedExpectation H)
     (A B : H →L[ℂ] H) {τ : ℝ} (hτ : 0 ≤ τ) :
     retardedTimeDifferenceKernel system expectation A B τ =
-      commutatorSusceptibility system expectation A B τ 0 := by
+      commutatorSusceptibility (freePropagatorGroup system) system.hbar expectation A B τ 0 := by
   simp [retardedTimeDifferenceKernel, retardedSusceptibility, hτ]
 
 /-- A stationary expectation makes the full retarded susceptibility a function only of `t - s`. -/
@@ -58,11 +59,11 @@ theorem retardedSusceptibility_eq_retardedTimeDifferenceKernel_of_stationary
     (expectation : NormalizedExpectation H)
     (hstationary : IsStationary (freePropagatorGroup system) expectation)
     (A B : H →L[ℂ] H) (t s : ℝ) :
-    retardedSusceptibility system expectation A B t s =
+    retardedSusceptibility (freePropagatorGroup system) system.hbar expectation A B t s =
       retardedTimeDifferenceKernel system expectation A B (t - s) := by
   simpa [retardedTimeDifferenceKernel, retardedSusceptibility] using
     (retardedSusceptibility_eq_timeDifference_of_stationary
-      system expectation hstationary A B t s)
+      (freePropagatorGroup system) system.hbar expectation hstationary A B t s)
 
 /-- Fourier phase convention `exp (i ω τ)`. -/
 noncomputable def frequencyPhase (ω τ : ℝ) : ℂ :=

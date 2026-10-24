@@ -101,14 +101,14 @@ theorem ResponseChannel.hasDerivAt_affineSourceCoupledExpectation_zero_of_bound_
       (fun lam : ℝ => affinePerturbedExpectation system expectation
         (sourceCoupledPerturbation f channel.source)
         channel.measured channel.observableVariation lam t)
-      (channel.causalResponse system expectation f t) 0 := by
+      (channel.causalResponse (freePropagatorGroup system) system.hbar expectation f t) 0 := by
   have h := hasDerivAt_affinePerturbedExpectation_zero_of_bound_kubo
     system expectation (fun s => isSelfAdjoint_sourceCoupledPerturbation f hB s)
     channel.measured channel.observableVariation hM hV ht hInt
   rw [sourceCoupled_responseIntegral_eq
     system expectation f channel.source channel.measured t] at h
   rw [sourceCoupled_responseIntegral_eq_retardedSusceptibility
-    system expectation f channel.source channel.measured ht.1] at h
+    (freePropagatorGroup system) system.hbar expectation f channel.source channel.measured ht.1] at h
   simpa only [ResponseChannel.causalResponse, ResponseChannel.retardedKernel,
     ResponseChannel.contactExpectation] using h
 
