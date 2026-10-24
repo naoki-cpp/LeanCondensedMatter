@@ -1,13 +1,10 @@
 import LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.Basic
 import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BoltzmannSummability
-import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.ParticleNumberWeightSummable
-import LeanCondensedMatter.SecondQuantization.Common.Thermal.GrandCanonicalSectorDecomposition
 import LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.Heat
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.GrandCanonical
 import LeanCondensedMatter.QuantumTheory.Gibbs.HeatOperator
 
 set_option linter.style.header false
-set_option linter.unusedFintypeInType false
 
 /-!
 # Completed free-boson heat and Gibbs operators
@@ -184,56 +181,6 @@ theorem grandCanonicalAlgebraicPartition_eq_completedFreeHeatOperator_trace
   simpa only [sub_add_cancel, zero_add] using
     (Common.grandCanonicalPartitionFunction_shift_invariant
       (Config := Occupation Mode) (fun i => ε i - μ) β 0 μ)
-
-/-- Under positive finite-mode grand-canonical gaps, the bosonic mean
-particle number is the first moment of the shared sharp-number distribution.
-The integrability hypothesis of the Common theorem follows from the
-one-mode weighted geometric-series estimates. -/
-theorem grandCanonicalParticleNumber_tsum_eq_sector_moment
-    [Fintype Mode]
-    (ε : Mode → ℝ) (β μ : ℝ)
-    (hpos : ∀ i, 0 < β * (ε i - μ)) :
-    (∑' n : Occupation Mode,
-      eigenbasisGibbsProbability
-        (Common.grandCanonicalEnergy (Config := Occupation Mode) ε μ) β n *
-          (particleNumber n : ℝ)) =
-      ∑' N : ℕ, (N : ℝ) *
-        Common.grandCanonicalSectorProbability (Config := Occupation Mode) ε β μ N := by
-  let ξ : Mode → ℝ := fun i => ε i - μ
-  have hterms : Summable (fun n : Occupation Mode =>
-      ∑ i : Mode, (n i : ℝ) * boltzmannWeight ξ β n) :=
-    summable_sum fun i (_ : i ∈ Finset.univ) =>
-      (hasSum_particleNumber_boltzmannWeight ξ β hpos i).summable
-  have hweighted : Summable (fun n : Occupation Mode =>
-      (particleNumber n : ℝ) * boltzmannWeight ξ β n) := by
-    apply hterms.congr
-    intro n
-    rw [particleNumber_eq_sum_univ]
-    push_cast
-    rw [Finset.sum_mul]
-  have hnormalized : Summable (fun n : Occupation Mode =>
-      eigenbasisGibbsProbability
-        (Common.grandCanonicalEnergy (Config := Occupation Mode) ε μ) β n *
-          (particleNumber n : ℝ)) := by
-    apply (hweighted.mul_left
-      (Common.grandCanonicalPartitionFunction (Config := Occupation Mode) ε β μ)⁻¹).congr
-    intro n
-    simp only [eigenbasisGibbsProbability]
-    change
-      (Common.grandCanonicalPartitionFunction (Config := Occupation Mode) ε β μ)⁻¹ *
-        ((particleNumber n : ℝ) * boltzmannWeight ξ β n) =
-      (Common.grandCanonicalPartitionFunction (Config := Occupation Mode) ε β μ)⁻¹ *
-        Real.exp (-β * Common.grandCanonicalEnergy ε μ n) * (particleNumber n : ℝ)
-    rw [Common.grandCanonicalEnergy_eq_shifted]
-    change
-      (Common.grandCanonicalPartitionFunction (Config := Occupation Mode) ε β μ)⁻¹ *
-        ((particleNumber n : ℝ) * boltzmannWeight ξ β n) =
-      (Common.grandCanonicalPartitionFunction (Config := Occupation Mode) ε β μ)⁻¹ *
-        boltzmannWeight ξ β n * (particleNumber n : ℝ)
-    ring
-  exact Common.grandCanonicalParticleNumber_tsum_eq_sector_moment
-    (Config := Occupation Mode) ε β μ hnormalized.norm
-
 
 end
 end Bosonic
