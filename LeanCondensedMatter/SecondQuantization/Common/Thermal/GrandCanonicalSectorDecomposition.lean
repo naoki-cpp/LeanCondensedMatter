@@ -173,9 +173,7 @@ occupation probabilities in that sector, including when it is empty.
 This identifies the scalar sector distribution without constructing a
 normalized canonical density operator. -/
 theorem grandCanonicalSectorProbability_eq_tsum
-    (ε : Mode → ℝ) (β μ : ℝ) (N : ℕ)
-    (hsum : EigenbasisGibbsSummable
-      (grandCanonicalEnergy (Config := Config) ε μ) β) :
+    (ε : Mode → ℝ) (β μ : ℝ) (N : ℕ) :
     grandCanonicalSectorProbability (Config := Config) ε β μ N =
       ∑' n : ParticleNumberSector Mode Config N,
         eigenbasisGibbsProbability (grandCanonicalEnergy ε μ) β n.val := by
