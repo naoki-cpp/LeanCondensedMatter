@@ -236,12 +236,11 @@ theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTrace
     .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax
   have hmeasured : currentOperator measured e v =
       q • matrixOperator (directionPauli measured) := by
-    fin_cases measured <;>
-      dsimp [q]
-    all_goals unfold currentOperator current velocity directionPauli matrixOperator
-    all_goals rw [map_smul, map_smul]
-    all_goals push_cast
-    all_goals module
+    rw [currentOperator_eq_charge_smul_velocityOperator]
+    unfold velocityOperator velocity matrixOperator
+    rw [map_smul]
+    dsimp [q]
+    module
   have hsource :
       finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperator
           source e v m probeEnergy broadening disorderStrength hbar pMax =
@@ -286,26 +285,16 @@ theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTrace
     rw [hmeasured, hsource, hbare]
     rw [finiteCutoffContinuumBornDysonGreenOperator_polar_eq,
       finiteCutoffContinuumBornDysonGreenOperator_polar_eq]
-    have hcyclic :
-        finiteDimensionalOperatorTrace
-          (((q • bare) 0 • matrixOperator sigmaX +
-              (q • bare) 1 • matrixOperator sigmaY) *
-            polarPauliOperator aA bA dA θ *
-            (q • matrixOperator (directionPauli measured)) *
-            polarPauliOperator aA bA dA θ) =
-          finiteDimensionalOperatorTrace
-            ((q • matrixOperator (directionPauli measured)) *
-              polarPauliOperator aA bA dA θ *
-              ((q • bare) 0 • matrixOperator sigmaX +
-                (q • bare) 1 • matrixOperator sigmaY) *
-              polarPauliOperator aA bA dA θ) := by
-      simpa [mul_assoc] using
-        (finiteDimensionalOperatorTrace_mul_comm
-          (((q • bare) 0 • matrixOperator sigmaX +
-              (q • bare) 1 • matrixOperator sigmaY) *
-            polarPauliOperator aA bA dA θ)
-          ((q • matrixOperator (directionPauli measured)) * polarPauliOperator aA bA dA θ))
-    rw [hcyclic]
+    have hcyclic (J B A : DiracOperator) :
+        finiteDimensionalOperatorTrace (B * A * J * A) =
+          finiteDimensionalOperatorTrace (J * A * B * A) := by
+      simpa only [mul_assoc] using
+        (finiteDimensionalOperatorTrace_mul_comm (B * A) (J * A))
+    rw [hcyclic
+      (q • matrixOperator (directionPauli measured))
+      ((q • bare) 0 • matrixOperator sigmaX +
+        (q • bare) 1 • matrixOperator sigmaY)
+      (polarPauliOperator aA bA dA θ)]
   have hraIntegrable : IntervalIntegrable ra volume 0 (2 * Real.pi) := by
     simpa [ra, angularTrace] using intervalIntegrable_polarPauli_directionTrace
       measured q aR aA bR bA dR dA (q • dressed)
