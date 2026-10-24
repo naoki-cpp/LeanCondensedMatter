@@ -5404,6 +5404,7 @@
       "name": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.SupportPairingStandardization",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Diagrammatics/ExternalInsertion/SlotSplit/SupportPairingStandardization.lean",
       "imports": [
+        "LeanCondensedMatter.Combinatorics.Shuffle.SlotShuffle",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Pairing.MixedOrder",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.SupportStandardization"
       ],
@@ -5758,6 +5759,7 @@
       "name": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.External.ExternalPiece",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Diagrammatics/TwoPoint/External/ExternalPiece.lean",
       "imports": [
+        "LeanCondensedMatter.Combinatorics.Shuffle.SlotShuffle",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Components.ComponentDecomposition",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.SlotCongr",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.External.ExternalSlotSplit",
@@ -6109,6 +6111,7 @@
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Perturbation/AnalyticDysonPartitionFunction.lean",
       "imports": [
         "LeanCondensedMatter.Analysis.Dyson.Bounds",
+        "LeanCondensedMatter.Analysis.Operator.FiniteTrace",
         "LeanCondensedMatter.SecondQuantization.Common.Perturbation.ContinuousDyson",
         "LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExponential",
         "LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonTraceSeries"
@@ -6174,6 +6177,7 @@
       "name": "LeanCondensedMatter.SecondQuantization.Common.Perturbation.FiniteAnalyticBridge",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Perturbation/FiniteAnalyticBridge.lean",
       "imports": [
+        "LeanCondensedMatter.Analysis.Operator.FiniteTrace",
         "LeanCondensedMatter.SecondQuantization.Common.Algebra.FiniteTrace",
         "LeanCondensedMatter.SecondQuantization.Common.Perturbation.FiniteOperatorIntegral"
       ],
@@ -6470,6 +6474,14 @@
       "externalImportCount": 1
     },
     {
+      "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.FiniteHilbertIsometry",
+      "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Algebra/AlgebraicFock/FiniteHilbertIsometry.lean",
+      "imports": [
+        "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.FiniteHilbertRealization"
+      ],
+      "externalImportCount": 3
+    },
+    {
       "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.FiniteHilbertRealization",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Algebra/AlgebraicFock/FiniteHilbertRealization.lean",
       "imports": [
@@ -6545,6 +6557,7 @@
         "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.Annihilation",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.Basic",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.Creation",
+        "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.FiniteHilbertIsometry",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.FiniteHilbertRealization",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.OccupationEquivalence",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.OccupationFieldEquivalence",
@@ -7278,6 +7291,7 @@
       "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Factorization.ExternalPieceAmplitude",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Diagrammatics/TwoPointDiagramExpansion/Factorization/ExternalPieceAmplitude.lean",
       "imports": [
+        "LeanCondensedMatter.Combinatorics.Shuffle.SlotShuffle",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.SlotCongr",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.External.ExternalPiecePairing",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Factorization.MixedComponentDysonValue",
@@ -7290,6 +7304,7 @@
       "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Factorization.FiberDecomposition",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Diagrammatics/TwoPointDiagramExpansion/Factorization/FiberDecomposition.lean",
       "imports": [
+        "LeanCondensedMatter.Combinatorics.Shuffle.SlotShuffle",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Components.ComponentDecomposition",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.SlotCongr",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitConnectivity",
@@ -7750,6 +7765,7 @@
         "LeanCondensedMatter.Analysis.Operator.TraceClass.Cyclicity",
         "LeanCondensedMatter.Analysis.ScalarExchange.Peel",
         "LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.ExpectationRecursion",
+        "LeanCondensedMatter.SecondQuantization.Common.Thermal.CanonicalGrandCanonicalCompatibility",
         "LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.CanonicalAnticommutationRelations",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.Gibbs"
       ],
@@ -7794,6 +7810,7 @@
       "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.TotalNumberExpectation",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Thermal/Completed/TotalNumberExpectation.lean",
       "imports": [
+        "LeanCondensedMatter.SecondQuantization.Common.Thermal.GrandCanonicalSectorDecomposition",
         "LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.Diagonal",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.Gibbs"
       ],
