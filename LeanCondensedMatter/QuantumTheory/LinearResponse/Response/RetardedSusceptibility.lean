@@ -1,4 +1,5 @@
 import LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.Stationarity
+import LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.Free
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic
 import Mathlib.Algebra.Lie.OfAssociative
 
@@ -43,7 +44,8 @@ noncomputable def commutatorSusceptibility
     (A B : H →L[ℂ] H) (t s : ℝ) : ℂ :=
   (Complex.I / (system.hbar : ℂ)) *
     expectation
-      ⁅heisenbergEvolution system t A, heisenbergEvolution system s B⁆
+      ⁅heisenbergEvolution (freePropagatorGroup system) t A,
+        heisenbergEvolution (freePropagatorGroup system) s B⁆
 
 /-- The retarded susceptibility is the commutator susceptibility in the causal region and zero
 when the source time lies after the observation time. -/
@@ -72,7 +74,7 @@ theorem retardedSusceptibility_eq_zero_of_lt
 time difference. -/
 theorem commutatorSusceptibility_eq_timeDifference_of_stationary
     (expectation : NormalizedExpectation H)
-    (hstationary : IsStationary system expectation)
+    (hstationary : IsStationary (freePropagatorGroup system) expectation)
     (A B : H →L[ℂ] H) (t s : ℝ) :
     commutatorSusceptibility system expectation A B t s =
       commutatorSusceptibility system expectation A B (t - s) 0 := by
@@ -81,19 +83,21 @@ theorem commutatorSusceptibility_eq_timeDifference_of_stationary
   apply congrArg (fun z : ℂ => (Complex.I / (system.hbar : ℂ)) * z)
   calc
     expectation
-        ⁅heisenbergEvolution system t A, heisenbergEvolution system s B⁆ =
+        ⁅heisenbergEvolution (freePropagatorGroup system) t A,
+          heisenbergEvolution (freePropagatorGroup system) s B⁆ =
       expectation
-        (heisenbergEvolution system s ⁅heisenbergEvolution system (t - s) A, B⁆) := by
+        (heisenbergEvolution (freePropagatorGroup system) s
+          ⁅heisenbergEvolution (freePropagatorGroup system) (t - s) A, B⁆) := by
         rw [lie_heisenbergEvolution_eq_relativeTime]
     _ = expectation
-        ⁅heisenbergEvolution system (t - s) A, B⁆ :=
-      hstationary s ⁅heisenbergEvolution system (t - s) A, B⁆
+        ⁅heisenbergEvolution (freePropagatorGroup system) (t - s) A, B⁆ :=
+      hstationary s ⁅heisenbergEvolution (freePropagatorGroup system) (t - s) A, B⁆
 
 /-- Under stationarity, the retarded kernel is the causal extension of a one-time-difference
 susceptibility. -/
 theorem retardedSusceptibility_eq_timeDifference_of_stationary
     (expectation : NormalizedExpectation H)
-    (hstationary : IsStationary system expectation)
+    (hstationary : IsStationary (freePropagatorGroup system) expectation)
     (A B : H →L[ℂ] H) (t s : ℝ) :
     retardedSusceptibility system expectation A B t s =
       if 0 ≤ t - s then
@@ -116,7 +120,8 @@ theorem sourceCoupled_responseIntegral_eq_retardedSusceptibility
       ∫ s in (0 : ℝ)..t,
         (f s : ℂ) *
           expectation
-            ⁅heisenbergEvolution system t A, heisenbergEvolution system s B⁆) =
+            ⁅heisenbergEvolution (freePropagatorGroup system) t A,
+              heisenbergEvolution (freePropagatorGroup system) s B⁆) =
       ∫ s in (0 : ℝ)..t,
         (f s : ℂ) * retardedSusceptibility system expectation A B t s := by
   rw [← intervalIntegral.integral_smul]

@@ -55,21 +55,21 @@ theorem schrodingerEquation (ψ : StateVector H) (t : ℝ) :
 /-- Explicit bounded Heisenberg equation
 `dA_H/dt = (i/ℏ) [H₀, A_H]`. -/
 theorem heisenbergEquation (A : H →L[ℂ] H) (t : ℝ) :
-    HasDerivAt (fun t => heisenbergEvolution system t A)
+    HasDerivAt (fun t => heisenbergEvolution (freePropagatorGroup system) t A)
       ((Complex.I / (system.hbar : ℂ)) •
-        ⁅system.hamiltonian.1, heisenbergEvolution system t A⁆) t := by
+        ⁅system.hamiltonian.1, heisenbergEvolution (freePropagatorGroup system) t A⁆) t := by
   have h := hasDerivAt_exp_conjugate (-schrodingerGenerator system) A t
   have hfun (s : ℝ) :
       NormedSpace.exp (s • (-schrodingerGenerator system)) * A *
           NormedSpace.exp (-(s • (-schrodingerGenerator system))) =
-        heisenbergEvolution system s A := by
-    simp only [heisenbergEvolution_apply, freePropagator, Complex.coe_smul,
+        heisenbergEvolution (freePropagatorGroup system) s A := by
+    simp only [heisenbergEvolution_freePropagatorGroup_apply, freePropagator, Complex.coe_smul,
       smul_neg, neg_smul, neg_neg]
   have hderiv :
-      (-schrodingerGenerator system) * heisenbergEvolution system t A -
-          heisenbergEvolution system t A * (-schrodingerGenerator system) =
+      (-schrodingerGenerator system) * heisenbergEvolution (freePropagatorGroup system) t A -
+          heisenbergEvolution (freePropagatorGroup system) t A * (-schrodingerGenerator system) =
         (Complex.I / (system.hbar : ℂ)) •
-          ⁅system.hamiltonian.1, heisenbergEvolution system t A⁆ := by
+          ⁅system.hamiltonian.1, heisenbergEvolution (freePropagatorGroup system) t A⁆ := by
     rw [LieRing.of_associative_ring_bracket, schrodingerGenerator]
     simp only [neg_smul, neg_neg, mul_smul_comm, smul_mul_assoc]
     module
@@ -84,10 +84,10 @@ theorem vonNeumannEquation (ρ : DensityOperator H) (t : ℝ) :
         ⁅system.hamiltonian.1, (evolveDensityOperator system ρ t).op⁆) t := by
   have h := (heisenbergEquation system ρ.op (-t)).scomp t (hasDerivAt_neg t)
   have hevolved (s : ℝ) :
-      heisenbergEvolution system (-s) ρ.op = (evolveDensityOperator system ρ s).op := by
-    simp [evolveDensityOperator_op, adjointConjugate, heisenbergEvolution_apply,
+      heisenbergEvolution (freePropagatorGroup system) (-s) ρ.op = (evolveDensityOperator system ρ s).op := by
+    simp [evolveDensityOperator_op, adjointConjugate, heisenbergEvolution_freePropagatorGroup_apply,
       star_freePropagator]
-  rw [show ((fun t => heisenbergEvolution system t ρ.op) ∘ Neg.neg) =
+  rw [show ((fun t => heisenbergEvolution (freePropagatorGroup system) t ρ.op) ∘ Neg.neg) =
       fun s : ℝ => (evolveDensityOperator system ρ s).op by
         funext s
         exact hevolved s] at h

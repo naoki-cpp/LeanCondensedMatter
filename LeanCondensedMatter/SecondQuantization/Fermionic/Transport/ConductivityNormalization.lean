@@ -58,7 +58,7 @@ theorem hasInfiniteObservationTimeLimit_directionalConductivity_of_stationary_po
     (volume : QuantumTheory.Transport.PositiveVolume)
     (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
     (expectation : NormalizedExpectation (FiniteLatticeHilbertFock Site))
-    (hstationary : IsStationary system expectation)
+    (hstationary : IsStationary (freePropagatorGroup system) expectation)
     (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
     (K : LocallyFiniteHopping Site) (q ω η : ℝ) (hη : 0 < η) :
     HasInfiniteObservationTimeLimit

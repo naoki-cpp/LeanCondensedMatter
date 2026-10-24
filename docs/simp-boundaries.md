@@ -170,6 +170,9 @@ The following declaration families are deliberate API normalization boundaries:
 - `PureState.val_ofStateVector`
 - `PureState.ofStateVector_smul_of_norm_eq_one`
 - all current simp rules in `LinearResponse/Dynamics/Free`
+- `heisenbergEvolution_zero`, `heisenbergEvolution_heisenbergEvolution`, and
+  `norm_heisenbergEvolution` in `LinearResponse/Dynamics/Unitary`
+- `LinearPMap.stoneEvolutionUnitaryGroup_apply`
 - `DensityOperator.normalizePositive_op`
 - all current simp rules in `LinearResponse/HarmonicSource`
 - all current simp rules in `LinearResponse/FrequencyDomain`

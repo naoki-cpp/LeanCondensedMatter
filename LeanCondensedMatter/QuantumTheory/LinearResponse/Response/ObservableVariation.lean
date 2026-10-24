@@ -64,9 +64,9 @@ theorem hasDerivAt_affinePerturbedExpectation_zero_of_bound_kubo
       (((-(Complex.I / (system.hbar : ℂ))) •
           ∫ s in (0 : ℝ)..t,
             expectation
-              ⁅heisenbergEvolution system t A₀,
+              ⁅heisenbergEvolution (freePropagatorGroup system) t A₀,
                 timeDependentInteractionPerturbation system V s⁆) +
-        expectation (heisenbergEvolution system t A₁))
+        expectation (heisenbergEvolution (freePropagatorGroup system) t A₁))
       0 := by
   have hfixed :=
     hasDerivAt_timeDependentPerturbedExpectationFunctional_apply_zero_of_bound_kubo
@@ -80,7 +80,7 @@ theorem hasDerivAt_affinePerturbedExpectation_zero_of_bound_kubo
   rw [hasDerivAt_iff_tendsto]
   rw [hasDerivAt_iff_tendsto] at hsum
   simpa [affinePerturbedExpectation, timeDependentPerturbedObservable,
-    heisenbergEvolution_apply, mul_add, add_mul] using hsum
+    heisenbergEvolution_freePropagatorGroup_apply, mul_add, add_mul] using hsum
 
 /-- For a real-valued source profile, the affine expectation derivative is the channel's causal
 response. The observable variation is the actual affine coefficient, including any source factor

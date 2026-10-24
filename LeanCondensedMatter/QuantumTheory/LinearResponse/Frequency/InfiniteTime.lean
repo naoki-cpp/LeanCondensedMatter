@@ -145,7 +145,7 @@ limit. No sign restriction on the switching rate is imposed beyond that integrab
 theorem hasInfiniteObservationTimeLimit_finiteTimeAdiabaticResponse_of_stationary
     (channel : ResponseChannel H) (system : BoundedFreeSystem H)
     (expectation : NormalizedExpectation H)
-    (hstationary : IsStationary system expectation) (ω η : ℝ)
+    (hstationary : IsStationary (freePropagatorGroup system) expectation) (ω η : ℝ)
     (hInt : AdiabaticLagIntegrable
       (fun τ => commutatorSusceptibility system expectation
         channel.measured channel.source τ 0) ω η) :
@@ -168,7 +168,7 @@ rate. Frequency, switching-rate removal, and volume limits remain separate. -/
 theorem hasInfiniteObservationTimeLimit_finiteTimeAdiabaticResponse_of_stationary_pos
     (channel : ResponseChannel H) (system : BoundedFreeSystem H)
     (expectation : NormalizedExpectation H)
-    (hstationary : IsStationary system expectation) (ω η : ℝ) (hη : 0 < η) :
+    (hstationary : IsStationary (freePropagatorGroup system) expectation) (ω η : ℝ) (hη : 0 < η) :
     HasInfiniteObservationTimeLimit
       (channel.finiteTimeAdiabaticResponse system expectation ω η)
       (channel.infiniteTimeAdiabaticResponse system expectation ω η) := by
