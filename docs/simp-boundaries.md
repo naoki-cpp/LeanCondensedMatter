@@ -192,7 +192,6 @@ The following declaration families are deliberate API normalization boundaries:
 - `DensityOperator.ofFiniteDimensional_op`
 - `DensityOperator.expectation_id`
 - `perturbedDensityOperator_zero_coupling`
-- `constantCoeff_freeExchangeGrandPartitionSeries`
 - `timeDependentInteractionPerturbation_sourceCoupledPerturbation`
 - `timeDependentInteractionPropagator_zero_coupling`
 - `timeDependentInteractionPropagator_zero_time`

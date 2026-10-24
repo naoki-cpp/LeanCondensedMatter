@@ -10,7 +10,6 @@ import LeanCondensedMatter.QuantumTheory.Gibbs.EnergyExpectation
 import LeanCondensedMatter.QuantumTheory.Gibbs.FreeEnergy
 import LeanCondensedMatter.QuantumTheory.Gibbs.DiagonalEnergy
 import LeanCondensedMatter.QuantumTheory.Gibbs.FreeBoltzmannKernel
-import LeanCondensedMatter.QuantumTheory.Gibbs.FreeExchangeCycleSeries
 import LeanCondensedMatter.QuantumTheory.Gibbs.Variational
 import LeanCondensedMatter.QuantumTheory.Gibbs.EqualityComponents
 import LeanCondensedMatter.QuantumTheory.Gibbs.MinimizerUniqueness
@@ -22,5 +21,5 @@ set_option linter.style.header false
 
 Gibbs states and equilibrium thermodynamics: heat operators, pure-point expectations and entropy,
 energy expectation, free energy, diagonal-energy formulas, one-particle Boltzmann kernels,
-exchange-cycle series, variational principles, and uniqueness results.
+variational principles, and uniqueness results.
 -/
