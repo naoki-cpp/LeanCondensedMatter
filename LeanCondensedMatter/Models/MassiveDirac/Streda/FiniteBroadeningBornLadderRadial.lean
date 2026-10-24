@@ -236,8 +236,11 @@ theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTrace
     .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax
   have hmeasured : currentOperator measured e v =
       q • matrixOperator (directionPauli measured) := by
-    simp [q, currentOperator_eq_charge_smul_velocityOperator,
-      velocityOperator, velocity, map_smul, smul_smul]
+    rw [currentOperator_eq_charge_smul_velocityOperator]
+    unfold velocityOperator velocity matrixOperator
+    rw [map_smul]
+    dsimp [q]
+    module
   have hsource :
       finiteCutoffContinuumBornDysonRetardedAdvancedDressedSourceCurrentOperator
           source e v m probeEnergy broadening disorderStrength hbar pMax =
