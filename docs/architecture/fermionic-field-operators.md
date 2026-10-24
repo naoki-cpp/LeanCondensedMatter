@@ -28,8 +28,8 @@ For a finite mode basis, `AlgebraicFock.finiteHilbertOperatorAlgEquiv` transport
 operators to the existing occupation-Hilbert realization. The lattice layer consumes this general
 transport with the site basis. For an orthonormal one-particle basis,
 `star_finiteHilbertOperator_create` identifies the realized smeared creation and annihilation
-operators as adjoints. This is a fixed-basis statement; isometry of the exterior lift between
-different one-particle bases remains separate.
+operators as adjoints. `finiteHilbertEquiv` supplies the vector coordinates used by the same
+operator realization.
 
 Mathlib's `ExteriorAlgebra.map` is the canonical lift of a one-particle linear map; no parallel
 Fock-map definition is needed. `AlgebraicFock.SecondQuantizationNaturality` supplies its compatibility
@@ -42,8 +42,12 @@ a one-particle linear map makes annihilation commute with the exterior lift. For
 linear isometry, the inner-product dual pulls back to the original smearing vector, giving the
 corresponding smeared-annihilation identity. No exterior-space norm is assumed by these laws.
 The pinned Mathlib exterior-power inner product is real-only; its complex analogue is not available
-as a Fock-unitarity shortcut. Preservation of the complex occupation-Hilbert inner product by the
-exterior lift remains a separate proof obligation.
+as a Fock-unitarity shortcut. `AlgebraicFock.FiniteHilbertIsometry` instead uses the existing complex
+occupation-Hilbert inner product, creation/annihilation adjointness, and exterior induction to show
+that the exterior lift of a one-particle isometry preserves inner products in any finite
+orthonormal coordinate bases. `finiteHilbertMap` bundles the unitary lift of a one-particle unitary;
+its vector action is the existing exterior map. This finite-mode construction does not establish
+an infinite-mode completed-Fock lift or by itself identify a particular Gibbs state.
 
 The completed representation
 

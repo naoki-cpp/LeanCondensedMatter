@@ -9,7 +9,7 @@ set_option linter.style.header false
 A finite ordered one-particle basis identifies exterior Fock space with the finite occupation
 Hilbert space. The induced operator transport is an algebra equivalence. For an orthonormal
 one-particle basis it also realizes smeared creation and annihilation as Hilbert adjoints.
-This does not yet identify the Hilbert norms obtained from different one-particle bases.
+Isometric changes between orthonormal one-particle bases are handled in `FiniteHilbertIsometry`.
 -/
 
 namespace SecondQuantization.Fermionic.AlgebraicFock
@@ -21,13 +21,28 @@ noncomputable section
 variable {Mode V : Type*} [LinearOrder Mode] [Fintype Mode]
 variable [AddCommGroup V] [Module ℂ V]
 
+/-- Finite occupation-Hilbert coordinates on exterior Fock vectors, determined by a
+one-particle basis. This is a linear equivalence, without an assertion of isometry. -/
+def finiteHilbertEquiv (b : Module.Basis Mode ℂ V) :
+    AlgebraicFock V ≃ₗ[ℂ] Common.FiniteHilbertFock (Occupation Mode) :=
+  (occupationEquiv b).symm.trans Common.finiteHilbertFockEquiv
+
 /-- The operator realization in finite occupation-Hilbert coordinates determined by a
 one-particle basis. No inner product on the one-particle space is needed for this transport. -/
 def finiteHilbertOperatorAlgEquiv (b : Module.Basis Mode ℂ V) :
     (AlgebraicFock V →ₗ[ℂ] AlgebraicFock V) ≃ₐ[ℂ]
       (Common.FiniteHilbertFock (Occupation Mode) →L[ℂ]
         Common.FiniteHilbertFock (Occupation Mode)) :=
-  (occupationConjugate b).trans Common.finiteHilbertOperatorAlgEquiv
+  ((finiteHilbertEquiv b).conjAlgEquiv ℂ).trans
+    (Module.End.toContinuousLinearMap (Common.FiniteHilbertFock (Occupation Mode)))
+
+/-- The finite-Hilbert operator realization acts on the corresponding vector coordinates. -/
+theorem finiteHilbertOperator_apply (b : Module.Basis Mode ℂ V)
+    (A : AlgebraicFock V →ₗ[ℂ] AlgebraicFock V) (Ψ : AlgebraicFock V) :
+    finiteHilbertOperatorAlgEquiv b A (finiteHilbertEquiv b Ψ) =
+      finiteHilbertEquiv b (A Ψ) := by
+  change finiteHilbertEquiv b (A ((finiteHilbertEquiv b).symm (finiteHilbertEquiv b Ψ))) = _
+  rw [LinearEquiv.symm_apply_apply]
 
 /-- An orthonormal one-particle basis makes the finite-Hilbert realizations of smeared
 creation and annihilation mutual adjoints. -/
