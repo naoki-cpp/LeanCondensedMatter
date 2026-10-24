@@ -15,7 +15,7 @@ namespace QuantumTheory
 
 variable {ι H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
 
-/-- The canonical pure-point Gibbs density operator.  No bounded Hamiltonian is introduced: the
+/-- The pure-point Gibbs density operator. No bounded Hamiltonian is introduced: the
 state is built directly from the spectral Boltzmann weights. -/
 noncomputable def eigenbasisGibbsDensityOperator [Nonempty ι]
     (b : HilbertBasis ι ℂ H) (E : ι → ℝ) (β : ℝ)
