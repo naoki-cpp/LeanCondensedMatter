@@ -168,6 +168,41 @@ theorem grandCanonicalPartitionFunction_eq_tsum_sector
           rw [tsum_mul_left]
           rfl
 
+/-- The probability of a sharp-number sector is the sum of grand-canonical
+occupation probabilities in that sector, including when it is empty.
+This identifies the scalar sector distribution without constructing a
+normalized canonical density operator. -/
+theorem grandCanonicalSectorProbability_eq_tsum
+    (ε : Mode → ℝ) (β μ : ℝ) (N : ℕ)
+    (hsum : EigenbasisGibbsSummable
+      (grandCanonicalEnergy (Config := Config) ε μ) β) :
+    grandCanonicalSectorProbability (Config := Config) ε β μ N =
+      ∑' n : ParticleNumberSector Mode Config N,
+        eigenbasisGibbsProbability (grandCanonicalEnergy ε μ) β n.val := by
+  let Z := grandCanonicalPartitionFunction (Config := Config) ε β μ
+  let E : ParticleNumberSector Mode Config N → ℝ :=
+    fun n => occupationEnergy ε n.val
+  have hweighted :
+      (∑' n : ParticleNumberSector Mode Config N,
+        eigenbasisBoltzmannWeight (grandCanonicalEnergy ε μ) β n.val) =
+      Real.exp (β * μ * (N : ℝ)) * canonicalPartitionFunction ε β N := by
+    simp_rw [grandCanonicalBoltzmannWeight_of_sector ε β μ N]
+    rw [tsum_mul_left]
+    rfl
+  calc
+    grandCanonicalSectorProbability (Config := Config) ε β μ N =
+        Z⁻¹ * (Real.exp (β * μ * (N : ℝ)) *
+          canonicalPartitionFunction ε β N) := by
+      simp only [grandCanonicalSectorProbability, Z, div_eq_mul_inv]
+      ring
+    _ = Z⁻¹ * (∑' n : ParticleNumberSector Mode Config N,
+          eigenbasisBoltzmannWeight (grandCanonicalEnergy ε μ) β n.val) := by
+      rw [hweighted]
+    _ = ∑' n : ParticleNumberSector Mode Config N,
+          eigenbasisGibbsProbability (grandCanonicalEnergy ε μ) β n.val := by
+      rw [← tsum_mul_left]
+      rfl
+
 /-- The grand-canonical sector probabilities form a normalized distribution
 over all natural particle numbers, with empty sectors assigned probability zero. -/
 theorem grandCanonicalSectorProbability_tsum_eq_one
