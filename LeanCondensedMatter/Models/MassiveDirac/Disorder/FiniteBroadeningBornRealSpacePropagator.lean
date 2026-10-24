@@ -261,7 +261,7 @@ theorem finiteCutoffContinuumBornDysonRealSpaceGreenMatrix_radialAxis_eq
     simp [finiteCutoffContinuumBornDysonAngularGreenEntryKernel,
       finiteCutoffContinuumBornDysonRadialGreenEntryKernel,
       sigmaX, sigmaY, sigmaZ, InternalSpace.pauliX, InternalSpace.pauliY,
-      InternalSpace.pauliZ]
+      InternalSpace.pauliZ, sub_eq_add_neg]
 
 /-- Entrywise interval integration of a complex two-band matrix. The interval
 integral's existing non-integrable convention is preserved entry by entry. -/
