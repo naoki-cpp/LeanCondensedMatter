@@ -237,35 +237,7 @@ theorem externalInsertionStandardizedSupportFiber_dysonAmplitude_eq_shuffleInteg
   have hpVac :
       quarticDiagramEquivOrderedData shuffle.sdiffLeftSlotsOrderEquiv p.2 = q.2 :=
     congrArg Prod.snd hp
-  change
-    ExternalInsertionWickDiagram.dysonFixedTimeAmplitude
-      (p.1.1.slotCongr
-        ((shuffle.leftSlots.orderIsoOfFin rfl).toEquiv.symm.trans
-          (Equiv.subtypeUnivEquiv
-            (fun i : Fin shuffle.leftSlots.card => Finset.mem_univ i)).symm))
-      ε β g externalTime
-      (σ ∘ fun i => (shuffle.leftSlots.orderIsoOfFin rfl i).1) *
-    (((-1 : ℂ) ^
-        ((Finset.univ : Finset (Fin (m + k))) \ shuffle.leftSlots).card *
-        p.2.vertexWeight g) *
-      (p.2.pairingInOrder
-        ((((Finset.univ : Finset (Fin (m + k))) \ shuffle.leftSlots).orderIsoOfFin
-          rfl).toEquiv)).evaluation
-          ((p.2.pairingInOrder
-            ((((Finset.univ : Finset (Fin (m + k))) \ shuffle.leftSlots).orderIsoOfFin
-              rfl).toEquiv)).weight Statistics.fermion)
-          (flatVertexLegPairValue ε β
-            (fun i => p.2.vertexLabel
-              (((Finset.univ : Finset (Fin (m + k))) \ shuffle.leftSlots).orderIsoOfFin
-                rfl i))
-            (σ ∘ fun i =>
-              (((Finset.univ : Finset (Fin (m + k))) \ shuffle.leftSlots).orderIsoOfFin
-                rfl i).1))) =
-    ExternalInsertionWickDiagram.dysonFixedTimeAmplitude q.1.1 ε β g externalTime
-      (fun i => σ (shuffle.slotEquiv (Sum.inl i))) *
-    ((-1 : ℂ) ^ k * (∏ i : Fin k, g (q.2.1 i)) *
-      flatVertexLegPairingEvaluation ε β q.2.1
-        (fun i => σ (shuffle.slotEquiv (Sum.inr i))) q.2.2)
+  dsimp only [SlotShuffle.integrand]
   rw [hext, hvac, hpExt, hpVac]
 
 end Fermionic
