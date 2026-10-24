@@ -49,7 +49,8 @@ private theorem inner_finiteHilbert_algebraMap (b : Module.Basis Mode ℂ H) (a 
       (Common.finiteHilbertOrthonormalBasis (Config := Occupation Mode)).orthonormal)
       (∅ : Occupation Mode) ∅
     simpa only [Common.finiteHilbertOrthonormalBasis_apply, ite_true] using h
-  simp only [finiteHilbertEquiv_algebraMap, inner_smul_left, inner_smul_right, hvac, mul_one]
+  simp only [finiteHilbertEquiv_algebraMap, inner_smul_left, inner_smul_right, hvac, mul_one,
+    mul_comm]
 
 private theorem inner_finiteHilbert_create (b : OrthonormalBasis Mode ℂ H)
     (v : H) (x y : AlgebraicFock H) :
@@ -97,6 +98,7 @@ theorem inner_finiteHilbertEquiv_map (b : OrthonormalBasis Mode ℂ H)
       ExteriorAlgebra.map e.toLinearMap (create H v z) =
         create K (e v) (ExteriorAlgebra.map e.toLinearMap z) := by
     simp only [create_apply, oneParticle, map_mul, ExteriorAlgebra.map_apply_ι]
+    rfl
   have hscalar (a : ℂ) (z : AlgebraicFock H) :
       inner ℂ (finiteHilbertEquiv c.toBasis
           (ExteriorAlgebra.map e.toLinearMap (algebraMap ℂ (AlgebraicFock H) a)))
@@ -138,9 +140,9 @@ def finiteHilbertMap (b : OrthonormalBasis Mode ℂ H) (c : OrthonormalBasis N �
   intro x y
   change inner ℂ
       (finiteHilbertEquiv c.toBasis
-        (ExteriorAlgebra.map e.toLinearEquiv.toLinearMap ((finiteHilbertEquiv b.toBasis).symm x)))
+        (ExteriorAlgebra.map e.toLinearIsometry.toLinearMap ((finiteHilbertEquiv b.toBasis).symm x)))
       (finiteHilbertEquiv c.toBasis
-        (ExteriorAlgebra.map e.toLinearEquiv.toLinearMap ((finiteHilbertEquiv b.toBasis).symm y))) = _
+        (ExteriorAlgebra.map e.toLinearIsometry.toLinearMap ((finiteHilbertEquiv b.toBasis).symm y))) = _
   rw [inner_finiteHilbertEquiv_map b c e.toLinearIsometry]
   simp only [LinearEquiv.apply_symm_apply]
 
