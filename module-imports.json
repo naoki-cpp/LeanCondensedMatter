@@ -3889,16 +3889,6 @@
       "externalImportCount": 0
     },
     {
-      "name": "LeanCondensedMatter.QuantumTheory.Gibbs.FreeExchangeCycleSeries",
-      "sourceFile": "LeanCondensedMatter/QuantumTheory/Gibbs/FreeExchangeCycleSeries.lean",
-      "imports": [
-        "LeanCondensedMatter.Analysis.PowerSeries.LogAlgebra",
-        "LeanCondensedMatter.Permutation.TraceLog",
-        "LeanCondensedMatter.QuantumTheory.Gibbs.FreeBoltzmannKernel"
-      ],
-      "externalImportCount": 0
-    },
-    {
       "name": "LeanCondensedMatter.QuantumTheory.Gibbs.HeatOperator",
       "sourceFile": "LeanCondensedMatter/QuantumTheory/Gibbs/HeatOperator.lean",
       "imports": [
@@ -3951,7 +3941,6 @@
         "LeanCondensedMatter.QuantumTheory.Gibbs.EqualityComponents",
         "LeanCondensedMatter.QuantumTheory.Gibbs.FreeBoltzmannKernel",
         "LeanCondensedMatter.QuantumTheory.Gibbs.FreeEnergy",
-        "LeanCondensedMatter.QuantumTheory.Gibbs.FreeExchangeCycleSeries",
         "LeanCondensedMatter.QuantumTheory.Gibbs.HeatOperator",
         "LeanCondensedMatter.QuantumTheory.Gibbs.MinimizerUniqueness",
         "LeanCondensedMatter.QuantumTheory.Gibbs.State",
@@ -5696,15 +5685,6 @@
       "externalImportCount": 2
     },
     {
-      "name": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.IntervalBlock",
-      "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Diagrammatics/TwoPoint/Core/IntervalBlock.lean",
-      "imports": [
-        "LeanCondensedMatter.Combinatorics.PerfectPairing.Transport",
-        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.CutIntervals"
-      ],
-      "externalImportCount": 0
-    },
-    {
       "name": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.IntervalConnectivity",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Diagrammatics/TwoPoint/Core/IntervalConnectivity.lean",
       "imports": [
@@ -5717,7 +5697,8 @@
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Diagrammatics/TwoPoint/Core/IntervalPairing.lean",
       "imports": [
         "LeanCondensedMatter.Combinatorics.PerfectPairing.Restriction",
-        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.IntervalBlock"
+        "LeanCondensedMatter.Combinatorics.PerfectPairing.Transport",
+        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.CutIntervals"
       ],
       "externalImportCount": 0
     },
@@ -5938,7 +5919,6 @@
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.CutOrder",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.CutSides",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.Diagram",
-        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.IntervalBlock",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.IntervalConnectivity",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.IntervalPairing",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.OneParticleIrreducible",
@@ -6890,37 +6870,19 @@
       "externalImportCount": 0
     },
     {
-      "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentOrderSign",
-      "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Diagrammatics/ExternalInsertion/ComponentOrderSign.lean",
-      "imports": [
-        "LeanCondensedMatter.Combinatorics.PerfectPairing.ComponentCrossing",
-        "LeanCondensedMatter.Combinatorics.Shuffle.FamilySlotShuffleSign",
-        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Factorization.ComponentShuffleParity",
-        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Factorization.MixedComponentShuffle",
-        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Pairing.ComponentMixedPairEquiv",
-        "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentSign",
-        "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.Diagram"
-      ],
-      "externalImportCount": 0
-    },
-    {
-      "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentPairingLocality",
-      "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Diagrammatics/ExternalInsertion/ComponentPairingLocality.lean",
-      "imports": [
-        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.MixedOrderData",
-        "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.TimedField"
-      ],
-      "externalImportCount": 0
-    },
-    {
       "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentPairingValue",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Diagrammatics/ExternalInsertion/ComponentPairingValue.lean",
       "imports": [
         "LeanCondensedMatter.Combinatorics.PerfectPairing.ComponentCrossing",
+        "LeanCondensedMatter.Combinatorics.Shuffle.FamilySlotShuffleSign",
+        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.MixedOrderData",
+        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Factorization.ComponentShuffleParity",
+        "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Factorization.MixedComponentShuffle",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Pairing.ComponentMixedPairEquiv",
         "LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.PairingWeight",
-        "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentOrderSign",
-        "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentPairingLocality"
+        "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentSign",
+        "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.Diagram",
+        "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.TimedField"
       ],
       "externalImportCount": 0
     },
@@ -7130,8 +7092,6 @@
         "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.CauchySeries",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentAmplitude",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentIntegral",
-        "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentOrderSign",
-        "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentPairingLocality",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentPairingValue",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentSign",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.Diagram",
@@ -7170,17 +7130,6 @@
       "imports": [
         "LeanCondensedMatter.Analysis.PowerSeries.Cumulant",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Moment"
-      ],
-      "externalImportCount": 0
-    },
-    {
-      "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.LinkedCluster.LowOrder",
-      "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Diagrammatics/LinkedCluster/LowOrder.lean",
-      "imports": [
-        "LeanCondensedMatter.Analysis.PowerSeries.LowOrderLog",
-        "LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonTraceSeries",
-        "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.Hamiltonian",
-        "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.QuarticInteraction"
       ],
       "externalImportCount": 0
     },

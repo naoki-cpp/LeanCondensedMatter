@@ -9465,7 +9465,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": false,
+    "terminal": true,
     "statement": "∀ {ι : Type u_1} [inst : Fintype ι] [inst_1 : DecidableEq ι] (ζ : ℂ) (w : ι → ℂ),\n  ζ ≠ 0 →\n    Combinatorics.permutationConnectedCycleSeries ζ (Matrix.diagonal w) =\n      -ζ⁻¹ • ∑ i, (PowerSeries.rescale (-ζ * w i)) (PowerSeries.log ℂ)",
     "standardAxioms": [
       "Classical.choice",
@@ -9473,7 +9473,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -9484,19 +9484,15 @@
     "docString": "For a diagonal kernel and nonzero exchange weight, the connected-cycle series is the scaled sum\nof the modewise formal logarithms `log(1 - ζ wᵢ t)`. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.permutationConnectedCycleSeries_freeBoltzmannModeKernel_eq_sum_log"
-    ],
+    "dependents": [],
     "dependencies": [
       "Combinatorics.coeff_formalTraceLogOneSubSeries",
       "Combinatorics.smul_permutationConnectedCycleSeries_eq_neg_traceLog"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.permutationConnectedCycleSeries_freeBoltzmannModeKernel_eq_sum_log"
-    ],
-    "compiledConsumerCount": 1,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -37377,7 +37373,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": false,
+    "terminal": true,
     "statement": "∀ {ι : Type u_2} (s : Finset ι) (F : ι → PowerSeries ℂ),\n  (∀ (i : ι), PowerSeries.constantCoeff (F i) = 1) → (∏ i ∈ s, F i).logOf = ∑ i ∈ s, (F i).logOf",
     "standardAxioms": [
       "Classical.choice",
@@ -37385,7 +37381,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -37396,19 +37392,15 @@
     "docString": "`logOf` turns a finite product of normalized complex power series into the corresponding finite\nsum. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.logOf_freeExchangeGrandPartitionSeries_eq_sum_log"
-    ],
+    "dependents": [],
     "dependencies": [
       "PowerSeries.logOf_mul",
       "PowerSeries.logOf_one"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.logOf_freeExchangeGrandPartitionSeries_eq_sum_log"
-    ],
-    "compiledConsumerCount": 1,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -37422,7 +37414,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": false,
+    "terminal": true,
     "statement": "∀ {F : PowerSeries ℂ}, PowerSeries.constantCoeff F = 1 → F⁻¹.logOf = -F.logOf",
     "standardAxioms": [
       "Classical.choice",
@@ -37430,7 +37422,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -37441,19 +37433,15 @@
     "docString": "The formal logarithm of the inverse of a normalized complex power series is the negative\nformal logarithm. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.logOf_freeExchangeGrandPartitionSeries_eq_sum_log"
-    ],
+    "dependents": [],
     "dependencies": [
       "PowerSeries.logOf_mul",
       "PowerSeries.logOf_one"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.logOf_freeExchangeGrandPartitionSeries_eq_sum_log"
-    ],
-    "compiledConsumerCount": 1,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -37559,7 +37547,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": false,
+    "terminal": true,
     "statement": "∀ (q : ℂ), (1 + q • PowerSeries.X).logOf = (PowerSeries.rescale q) (PowerSeries.log ℂ)",
     "standardAxioms": [
       "Classical.choice",
@@ -37567,7 +37555,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -37578,16 +37566,12 @@
     "docString": "The formal logarithm of a normalized linear factor is the corresponding rescaled scalar\n`log(1 + X)` series. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.logOf_freeExchangeGrandPartitionSeries_eq_sum_log"
-    ],
+    "dependents": [],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.logOf_freeExchangeGrandPartitionSeries_eq_sum_log"
-    ],
-    "compiledConsumerCount": 1,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -64772,7 +64756,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -64784,7 +64768,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceCurrentBlock_polarPoint2D_sourceRotation"
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceCurrentBlock_polarPoint2D_sourceRotation",
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceCurrentBlock_radialAxis_eq"
     ],
     "dependencies": [
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGreenOperator_polar_eq",
@@ -64795,9 +64780,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceCurrentBlock_polarPoint2D_sourceRotation"
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceCurrentBlock_polarPoint2D_sourceRotation",
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceCurrentBlock_radialAxis_eq"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -64878,17 +64864,14 @@
     "name": "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceCurrentBlock_radialAxis_eq",
     "module": "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedRealSpace",
     "externalAxioms": [],
-    "docString": "The two-dimensional Fourier definition of the Gaussian crossed current block reduces exactly to\nthe one-dimensional zeroth/first/second radial kernels on the positive real-space radial axis. ",
+    "docString": "The two-dimensional Fourier definition of the Gaussian crossed current block reduces\nto the one-dimensional radial kernel by specializing the full-angle representation to angle zero. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedTraceKernel_radialAxis_eq"
     ],
     "dependencies": [
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGreenOperator_polar_eq",
-      "QuantumTheory.Models.MassiveDirac.polarPauliMatrix_inPlane_sandwich_eq_harmonics",
-      "QuantumTheory.Transport.finiteCutoffPhysicalMomentumPolarFourier_polarPoint2D_harmonics",
-      "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedRealSpace.0.QuantumTheory.Models.MassiveDirac.gaussianCrossedCurrentCoefficientVector_vertex"
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceCurrentBlock_polarPoint2D_eq_angularKernel_integral"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -65420,10 +65403,8 @@
     "dependents": [
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonAngularRetardedAdvancedInPlaneRungAction_eq",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceCurrentBlock_polarPoint2D_eq_angularKernel_integral",
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceCurrentBlock_radialAxis_eq",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGreenMatrix_polar_spinRotation",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRealSpaceGreenMatrix_polarPoint2D_eq_angularKernel_integral",
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRealSpaceGreenMatrix_radialAxis_eq",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceIntegral_eq_radialCoefficient"
     ],
     "dependencies": [
@@ -65434,13 +65415,11 @@
     "compiledConsumers": [
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonAngularRetardedAdvancedInPlaneRungAction_eq",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceCurrentBlock_polarPoint2D_eq_angularKernel_integral",
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceCurrentBlock_radialAxis_eq",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGreenMatrix_polar_spinRotation",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRealSpaceGreenMatrix_polarPoint2D_eq_angularKernel_integral",
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRealSpaceGreenMatrix_radialAxis_eq",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceIntegral_eq_radialCoefficient"
     ],
-    "compiledConsumerCount": 7,
+    "compiledConsumerCount": 5,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -66163,7 +66142,8 @@
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGreenLoopMatrix_apply_eq_radial_integral",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient_eq_entryKernel_integrals",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenScalarCoefficient_eq_entryKernel_integrals",
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix_neg_radius"
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix_neg_radius",
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRealSpaceGreenMatrix_radialAxis_eq"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
@@ -66174,9 +66154,10 @@
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGreenLoopMatrix_apply_eq_radial_integral",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient_eq_entryKernel_integrals",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenScalarCoefficient_eq_entryKernel_integrals",
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix_neg_radius"
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix_neg_radius",
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRealSpaceGreenMatrix_radialAxis_eq"
     ],
-    "compiledConsumerCount": 6,
+    "compiledConsumerCount": 7,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -66478,7 +66459,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -66490,7 +66471,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRealSpaceGreenMatrix_polarPoint2D_spinRotation"
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRealSpaceGreenMatrix_polarPoint2D_spinRotation",
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRealSpaceGreenMatrix_radialAxis_eq"
     ],
     "dependencies": [
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGreenOperator_polar_eq",
@@ -66499,9 +66481,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRealSpaceGreenMatrix_polarPoint2D_spinRotation"
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRealSpaceGreenMatrix_polarPoint2D_spinRotation",
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRealSpaceGreenMatrix_radialAxis_eq"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -66622,7 +66605,7 @@
     "name": "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRealSpaceGreenMatrix_radialAxis_eq",
     "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornRealSpacePropagator",
     "externalAxioms": [],
-    "docString": "The two-dimensional polar Fourier representation of the finite-cutoff Born-Dyson Green matrix\nreduces exactly to the one-dimensional zeroth/first angular kernels on the positive real-space\nradial axis. ",
+    "docString": "The radial-axis Green matrix follows by setting the polar angle to zero in the\nfull-angle Fourier representation, using the same K0/K1 entry kernels. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
@@ -66631,8 +66614,8 @@
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRealSpaceGreenMatrix_polarPoint2D_eq_radial_spinRotation"
     ],
     "dependencies": [
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGreenOperator_polar_eq",
-      "QuantumTheory.Transport.finiteCutoffPhysicalMomentumPolarFourier_polarPoint2D_harmonics"
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix_apply_eq_entryKernel_integral",
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRealSpaceGreenMatrix_polarPoint2D_eq_angularKernel_integral"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -73637,7 +73620,6 @@
     "directWrapperOf": null,
     "dependents": [
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceCurrentBlock_polarPoint2D_eq_angularKernel_integral",
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceCurrentBlock_radialAxis_eq",
       "QuantumTheory.Models.MassiveDirac.integral_polarPauliOperator_inPlane_eq"
     ],
     "dependencies": [
@@ -73649,10 +73631,9 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceCurrentBlock_polarPoint2D_eq_angularKernel_integral",
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceCurrentBlock_radialAxis_eq",
       "QuantumTheory.Models.MassiveDirac.integral_polarPauliOperator_inPlane_eq"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -87789,9 +87770,7 @@
     "directWrapperOf": null,
     "dependents": [
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceCurrentBlock_polarPoint2D_eq_angularKernel_integral",
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceCurrentBlock_radialAxis_eq",
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRealSpaceGreenMatrix_polarPoint2D_eq_angularKernel_integral",
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRealSpaceGreenMatrix_radialAxis_eq"
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRealSpaceGreenMatrix_polarPoint2D_eq_angularKernel_integral"
     ],
     "dependencies": [
       "QuantumTheory.Transport.AngularHarmonicCoefficients.integral_polarFourierRadialPhase_shifted",
@@ -87801,11 +87780,9 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceCurrentBlock_polarPoint2D_eq_angularKernel_integral",
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceCurrentBlock_radialAxis_eq",
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRealSpaceGreenMatrix_polarPoint2D_eq_angularKernel_integral",
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRealSpaceGreenMatrix_radialAxis_eq"
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRealSpaceGreenMatrix_polarPoint2D_eq_angularKernel_integral"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -92496,44 +92473,6 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
-    "statement": "∀ {Mode : Type u_1} [inst : Fintype Mode] (ζ : ℂ) (hζ : ζ = 1 ∨ ζ = -1) (ε : Mode → ℝ) (β : ℝ),\n  PowerSeries.constantCoeff (QuantumTheory.freeExchangeGrandPartitionSeries ζ hζ ε β) = 1",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.constantCoeff_freeExchangeGrandPartitionSeries",
-    "module": "LeanCondensedMatter.QuantumTheory.Gibbs.FreeExchangeCycleSeries",
-    "externalAxioms": [],
-    "docString": "The shared Bose/Fermi free grand product has unit constant coefficient. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
     "terminal": false,
     "statement": "∀ {ι : Type u_1} {H : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] (b : HilbertBasis ι ℂ H) (a : ι → ℝ) (ha : Summable fun i => ‖a i‖)\n  (ha_nonneg : ∀ (i : ι), 0 ≤ a i) (hZ : 0 < ∑' (i : ι), a i) (i : ι),\n  (QuantumTheory.diagonalDensityOperator b a ha ha_nonneg hZ).op (b i) = ↑(Real.normalizedWeight a i) • b i",
     "standardAxioms": [
@@ -93938,7 +93877,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -93950,17 +93889,15 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.permutationConnectedCycleSeries_freeBoltzmannModeKernel_eq_sum_log",
       "SecondQuantization.Bosonic.tsum_boltzmannWeight_eq_inv_det_one_sub_freeBoltzmannModeKernel"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.permutationConnectedCycleSeries_freeBoltzmannModeKernel_eq_sum_log",
       "SecondQuantization.Bosonic.tsum_boltzmannWeight_eq_inv_det_one_sub_freeBoltzmannModeKernel"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -95414,93 +95351,6 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {Mode : Type u_1} [inst : Fintype Mode] (ζ : ℂ) (hζ : ζ = 1 ∨ ζ = -1) (ε : Mode → ℝ) (β : ℝ),\n  (QuantumTheory.freeExchangeGrandPartitionSeries ζ hζ ε β).logOf =\n    Combinatorics.permutationConnectedCycleSeries ζ (QuantumTheory.freeBoltzmannModeKernel ε β)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.logOf_freeExchangeGrandPartitionSeries_eq_permutationConnectedCycleSeries",
-    "module": "LeanCondensedMatter.QuantumTheory.Gibbs.FreeExchangeCycleSeries",
-    "externalAxioms": [],
-    "docString": "For either physical exchange weight, the logarithm of the shared free grand product equals the\nconnected-cycle series of the free Boltzmann kernel. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "QuantumTheory.logOf_freeExchangeGrandPartitionSeries_eq_sum_log",
-      "QuantumTheory.permutationConnectedCycleSeries_freeBoltzmannModeKernel_eq_sum_log"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : Fintype Mode] (ζ : ℂ) (hζ : ζ = 1 ∨ ζ = -1) (ε : Mode → ℝ) (β : ℝ),\n  (QuantumTheory.freeExchangeGrandPartitionSeries ζ hζ ε β).logOf =\n    -ζ⁻¹ • ∑ i, (PowerSeries.rescale (-ζ * Complex.exp (-↑β * ↑(ε i)))) (PowerSeries.log ℂ)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.logOf_freeExchangeGrandPartitionSeries_eq_sum_log",
-    "module": "LeanCondensedMatter.QuantumTheory.Gibbs.FreeExchangeCycleSeries",
-    "externalAxioms": [],
-    "docString": "The formal logarithm of the shared Bose/Fermi free grand product is the exchange-weighted\nmodewise trace-log. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.logOf_freeExchangeGrandPartitionSeries_eq_permutationConnectedCycleSeries"
-    ],
-    "dependencies": [
-      "PowerSeries.logOf_finset_prod",
-      "PowerSeries.logOf_inv",
-      "PowerSeries.logOf_one_add_smul_X"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.logOf_freeExchangeGrandPartitionSeries_eq_permutationConnectedCycleSeries"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
     "statement": "∀ {Band : Type u_1} {K : Type u_2} (energy : Band → K → ℝ) (fermiEnergy : ℝ) (band : Band) (k : K),\n  k ∈ QuantumTheory.fermiSurface energy fermiEnergy band ↔ energy band k = fermiEnergy",
     "standardAxioms": [
       "Classical.choice",
@@ -95740,51 +95590,6 @@
     "completedMention": false,
     "compiledConsumers": [],
     "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : Fintype Mode] (ζ : ℂ),\n  ζ ≠ 0 →\n    ∀ (ε : Mode → ℝ) (β : ℝ),\n      Combinatorics.permutationConnectedCycleSeries ζ (QuantumTheory.freeBoltzmannModeKernel ε β) =\n        -ζ⁻¹ • ∑ i, (PowerSeries.rescale (-ζ * Complex.exp (-↑β * ↑(ε i)))) (PowerSeries.log ℂ)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.permutationConnectedCycleSeries_freeBoltzmannModeKernel_eq_sum_log",
-    "module": "LeanCondensedMatter.QuantumTheory.Gibbs.FreeExchangeCycleSeries",
-    "externalAxioms": [],
-    "docString": "For the diagonal free Boltzmann kernel and nonzero exchange weight `ζ`, the connected-cycle\nseries is the modewise formal trace-log\n\n`-(1/ζ) Σᵢ log(1 - ζ qᵢ t)`, where `qᵢ = exp(-β εᵢ)`. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.logOf_freeExchangeGrandPartitionSeries_eq_permutationConnectedCycleSeries"
-    ],
-    "dependencies": [
-      "Combinatorics.permutationConnectedCycleSeries_diagonal_eq_neg_inv_smul_sum_log",
-      "QuantumTheory.freeBoltzmannModeKernel_eq_diagonal"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.logOf_freeExchangeGrandPartitionSeries_eq_permutationConnectedCycleSeries"
-    ],
-    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -126964,18 +126769,16 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Common.grandCanonicalGibbsProbability_of_sector",
-      "SecondQuantization.Common.grandCanonicalPartitionFunction_eq_tsum_sector",
-      "SecondQuantization.Common.grandCanonicalSectorProbability_eq_tsum"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Thermal.GrandCanonicalSectorDecomposition.0.SecondQuantization.Common.grandCanonicalBoltzmannWeight_tsum_sector"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Common.grandCanonicalGibbsProbability_of_sector",
-      "SecondQuantization.Common.grandCanonicalPartitionFunction_eq_tsum_sector",
-      "SecondQuantization.Common.grandCanonicalSectorProbability_eq_tsum"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Thermal.GrandCanonicalSectorDecomposition.0.SecondQuantization.Common.grandCanonicalBoltzmannWeight_tsum_sector"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -127614,6 +127417,50 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {Mode : Type u_1} {Config : Type u_2} [inst : SecondQuantization.Common.OccupationBasis Mode Config] (ε : Mode → ℝ)\n  (β μ : ℝ),\n  (Summable fun c =>\n      ‖QuantumTheory.eigenbasisGibbsProbability (SecondQuantization.Common.grandCanonicalEnergy ε μ) β c *\n          ↑(SecondQuantization.Common.particleNumber c)‖) →\n    ∑' (c : Config),\n        QuantumTheory.eigenbasisGibbsProbability (SecondQuantization.Common.grandCanonicalEnergy ε μ) β c *\n          ↑(SecondQuantization.Common.particleNumber c) =\n      ∑' (N : ℕ), ↑N * SecondQuantization.Common.grandCanonicalSectorProbability ε β μ N",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.grandCanonicalParticleNumber_tsum_eq_sector_moment",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Thermal.GrandCanonicalSectorDecomposition",
+    "externalAxioms": [],
+    "docString": "The first moment of a grand-canonical particle-number distribution is\nthe particle-number-weighted occupation-basis sum. The nonnegative count is\nunbounded; absolute integrability is therefore required independently of\nthe existence of a normalized Gibbs state. This is statistics-independent. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.grandCanonicalTotalNumberExpectation_eq_tsum_sector"
+    ],
+    "dependencies": [
+      "SecondQuantization.Common.grandCanonicalSectorProbability_eq_tsum"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.grandCanonicalTotalNumberExpectation_eq_tsum_sector"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {Mode : Type u_1} {Config : Type u_2} [inst : SecondQuantization.Common.OccupationBasis Mode Config] (ε : Mode → ℝ)\n  (β μ : ℝ),\n  SecondQuantization.Common.grandCanonicalPartitionFunction ε β μ =\n    QuantumTheory.eigenbasisPartitionFunction (SecondQuantization.Common.occupationEnergy fun i => ε i - μ) β",
     "standardAxioms": [
       "Classical.choice",
@@ -127681,7 +127528,7 @@
     ],
     "dependencies": [
       "QuantumTheory.eigenbasisBoltzmannWeight_summable",
-      "SecondQuantization.Common.grandCanonicalBoltzmannWeight_of_sector"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Thermal.GrandCanonicalSectorDecomposition.0.SecondQuantization.Common.grandCanonicalBoltzmannWeight_tsum_sector"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -127816,15 +127663,15 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.grandCanonicalTotalNumberExpectation_eq_tsum_sector"
+      "SecondQuantization.Common.grandCanonicalParticleNumber_tsum_eq_sector_moment"
     ],
     "dependencies": [
-      "SecondQuantization.Common.grandCanonicalBoltzmannWeight_of_sector"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Thermal.GrandCanonicalSectorDecomposition.0.SecondQuantization.Common.grandCanonicalBoltzmannWeight_tsum_sector"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.grandCanonicalTotalNumberExpectation_eq_tsum_sector"
+      "SecondQuantization.Common.grandCanonicalParticleNumber_tsum_eq_sector_moment"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -134698,44 +134545,6 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
-    "statement": "∀ {N : ℕ} (S : Finset (Fin N)), Function.Injective fun p => SecondQuantization.Common.twoPointInteractionLeg p.1 p.2",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.twoPointInteractionLeg_injective",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.IntervalBlock",
-    "externalAxioms": [],
-    "docString": "The flattened interaction-leg map is injective: distinct interaction\nslots or local legs are never identified by flattening. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
     "terminal": false,
     "statement": "∀ {N M : ℕ} {T : Finset (Fin N)} {U : Finset (Fin M)} (e : ↥T ≃ ↥U),\n  SecondQuantization.Common.twoPointLegCongr e.symm = (SecondQuantization.Common.twoPointLegCongr e).symm",
     "standardAxioms": [
@@ -138396,7 +138205,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.externalInsertionMixedTimeOrderedAtomicPairValue_componentMixedPosition",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentPairingLocality",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentPairingValue",
     "externalAxioms": [],
     "docString": "The ambient free-Gibbs pair contraction restricts to the standalone component pair contraction\nunder the canonical mixed-position embedding. ",
     "directWrapperTargetModule": null,
@@ -138637,7 +138446,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.relativeComponentShuffleSign_eq_external_mul_mixedInter",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentOrderSign",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentPairingValue",
     "externalAxioms": [],
     "docString": "The relative permutation between fixed and mixed component shuffles carries exactly the fixed\nexternal regrouping sign and the residual mixed inter-component crossing sign. ",
     "directWrapperTargetModule": null,
@@ -151125,13 +150934,13 @@
     "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.TotalNumberExpectation",
     "externalAxioms": [],
     "docString": "The grand-canonical mean particle number is the first moment of the\nsharp-number sector distribution. Unlike bounded-observable sector mixing,\nthis identity requires integrability of the unbounded number operator. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
+    "directWrapperTargetModule": "LeanCondensedMatter.SecondQuantization.Common.Thermal.GrandCanonicalSectorDecomposition",
+    "directWrapperOf": "SecondQuantization.Common.grandCanonicalParticleNumber_tsum_eq_sector_moment",
     "dependents": [],
     "dependencies": [
-      "SecondQuantization.Common.grandCanonicalSectorProbability_eq_tsum"
+      "SecondQuantization.Common.grandCanonicalParticleNumber_tsum_eq_sector_moment"
     ],
-    "crossModuleDirectWrapper": false,
+    "crossModuleDirectWrapper": true,
     "completedMention": false,
     "compiledConsumers": [],
     "compiledConsumerCount": 0,
@@ -170698,7 +170507,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -170710,17 +170519,15 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceCurrentBlock_polarPoint2D_eq_angularKernel_integral",
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceCurrentBlock_radialAxis_eq"
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceCurrentBlock_polarPoint2D_eq_angularKernel_integral"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceCurrentBlock_polarPoint2D_eq_angularKernel_integral",
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceCurrentBlock_radialAxis_eq"
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceCurrentBlock_polarPoint2D_eq_angularKernel_integral"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -182140,6 +181947,44 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
+    "terminal": true,
+    "statement": "∀ {N : ℕ} (S : Finset (Fin N)), Function.Injective fun p => SecondQuantization.Common.twoPointInteractionLeg p.1 p.2",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.IntervalPairing.0.SecondQuantization.Common.twoPointInteractionLeg_injective",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.IntervalPairing",
+    "externalAxioms": [],
+    "docString": "The flattened interaction-leg map is injective: distinct interaction\nslots or local legs are never identified by flattening. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
     "terminal": false,
     "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {N : ℕ} {S : Finset (Fin N)}\n  (d : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel N S),\n  ¬d.ExternalVerticesConnected → Sum.inl 1 ∉ ↑d.externalComponentPart",
     "standardAxioms": [
@@ -185945,6 +185790,52 @@
     "compiledConsumers": [
       "SecondQuantization.Common.coe_eigenbasisPartitionFunction_eq_sum_boltzmannWeight",
       "SecondQuantization.Common.finiteGibbsExpectation_eq_trace_div"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} {Config : Type u_2} [inst : SecondQuantization.Common.OccupationBasis Mode Config] (ε : Mode → ℝ)\n  (β μ : ℝ) (N : ℕ),\n  ∑' (n : SecondQuantization.Common.ParticleNumberSector Mode Config N),\n      QuantumTheory.eigenbasisBoltzmannWeight (SecondQuantization.Common.grandCanonicalEnergy ε μ) β ↑n =\n    Real.exp (β * μ * ↑N) * SecondQuantization.Common.canonicalPartitionFunction ε β N",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Thermal.GrandCanonicalSectorDecomposition.0.SecondQuantization.Common.grandCanonicalBoltzmannWeight_tsum_sector",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Thermal.GrandCanonicalSectorDecomposition",
+    "externalAxioms": [],
+    "docString": "Restricting the grand-canonical Boltzmann sum to one particle-number sector\nfactors out the fugacity. This identity also covers empty sectors. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Common.grandCanonicalPartitionFunction_eq_tsum_sector",
+      "SecondQuantization.Common.grandCanonicalSectorProbability_eq_tsum"
+    ],
+    "dependencies": [
+      "SecondQuantization.Common.grandCanonicalBoltzmannWeight_of_sector"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.grandCanonicalPartitionFunction_eq_tsum_sector",
+      "SecondQuantization.Common.grandCanonicalSectorProbability_eq_tsum"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
