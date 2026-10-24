@@ -446,20 +446,16 @@ the operator-integral compatibility theorem on the analytic side, and basis, adj
 self-adjointness criteria on the Hilbert side. The two realizations are not identified merely because
 they are finite-dimensional.
 
-## Free exchange grand-partition boundary
+## Thermal partition ownership
 
-The statistics-independent finite-mode formal grand-product backend is owned upstream by
-`QuantumTheory.Gibbs.FreeExchangeCycleSeries`, next to the diagonal one-particle Boltzmann kernel
-and the exchange-weighted connected-cycle series. Its grand-product construction is explicitly
-restricted to the physical exchange weights `ζ = +1` and `ζ = -1`; the generic permutation
-connected-cycle series remains available for arbitrary exchange weight where its stated algebraic
-hypotheses hold.
+`QuantumTheory.Gibbs.FreeBoltzmannKernel` owns the one-particle Boltzmann kernel, which does not
+require occupation configurations or particle-number grading. The abstract exchange-weighted
+connected-cycle combinatorics stays in `Permutation.TraceLog`.
 
-Formal Bose/Fermi grand-partition series and connected-cycle identities are consumed directly from
-the Gibbs-level owner with the appropriate exchange weight. The bosonic thermal modules own the
-inverse-determinant identity for the convergent occupation-space partition function.
-Bosonic occupation-space convergence and analytic partition-function results remain in the bosonic
-thermal modules. No formal series is evaluated at one by this construction.
+Particle-number ensembles and Bose/Fermi partition functions belong to `SecondQuantization`.
+The fermionic finite-mode product and the bosonic convergent occupation-space partition function
+remain in their statistics-specific thermal modules. Their analytic hypotheses must not be
+inferred from formal permutation or power-series identities.
 
 ## Bosonic boundary
 
