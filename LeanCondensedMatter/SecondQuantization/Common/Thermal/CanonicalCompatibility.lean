@@ -1,3 +1,4 @@
+import LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.CoordinateIsometry
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.CanonicalFullFock
 import LeanCondensedMatter.QuantumTheory.DensityOperator.DiagonalFormula
 
