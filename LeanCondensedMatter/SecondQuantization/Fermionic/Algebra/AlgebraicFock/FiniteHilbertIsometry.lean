@@ -49,8 +49,8 @@ private theorem inner_finiteHilbert_algebraMap (b : Module.Basis Mode ℂ H) (a 
       (Common.finiteHilbertOrthonormalBasis (Config := Occupation Mode)).orthonormal)
       (∅ : Occupation Mode) ∅
     simpa only [Common.finiteHilbertOrthonormalBasis_apply, ite_true] using h
-  simp only [finiteHilbertEquiv_algebraMap, inner_smul_left, inner_smul_right, hvac, mul_one,
-    mul_comm]
+  simp only [finiteHilbertEquiv_algebraMap, inner_smul_left, inner_smul_right, hvac, mul_one]
+  exact mul_comm _ _
 
 private theorem inner_finiteHilbert_create (b : OrthonormalBasis Mode ℂ H)
     (v : H) (x y : AlgebraicFock H) :
