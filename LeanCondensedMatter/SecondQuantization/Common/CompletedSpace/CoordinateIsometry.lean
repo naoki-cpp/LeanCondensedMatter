@@ -250,6 +250,35 @@ theorem completedCoordinatePullback_apply
   rw [completedCoordinateEmbedding_basisState,
     inner_completedBasisState_left]
 
+/-- Pulling back a basis state in the image of an injective configuration map
+recovers the basis state at its unique preimage. -/
+@[simp]
+theorem completedCoordinatePullback_basisState_of_image
+    (f : Config → Config') (hf : Function.Injective f) (c : Config) :
+    completedCoordinatePullback f hf (completedBasisState (f c)) =
+      completedBasisState c := by
+  classical
+  ext d
+  rw [completedCoordinatePullback_apply]
+  by_cases h : d = c
+  · subst d
+    simp
+  · have hne : f d ≠ f c := hf.ne h
+    simp [completedBasisState_apply_of_ne h, completedBasisState_apply_of_ne hne]
+
+/-- Pulling back a basis state outside the image of an injective configuration map
+gives zero. -/
+@[simp]
+theorem completedCoordinatePullback_basisState_of_not_mem
+    (f : Config → Config') (hf : Function.Injective f)
+    (d : Config') (hd : d ∉ Set.range f) :
+    completedCoordinatePullback f hf (completedBasisState d) = 0 := by
+  classical
+  ext c
+  rw [completedCoordinatePullback_apply]
+  have hne : f c ≠ d := fun h => hd ⟨c, h⟩
+  simp [completedBasisState_apply_of_ne hne]
+
 @[simp]
 theorem completedCoordinateEmbedding_adjoint
     (f : Config → Config') (hf : Function.Injective f) :
