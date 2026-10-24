@@ -173,6 +173,9 @@ physics-facing connected theorems
 ```
 
 Common owns component and shuffle structure when no fermionic sign or energy data is required.
+Canonical increasing enumeration of finite slot sets belongs to
+`Combinatorics.Shuffle.SlotShuffle`. Two-point and external-insertion standardization both
+use these equivalences while retaining their separate leg and pairing representations.
 Finite-partition sums of ordered-simplex integrals are owned by
 `Analysis.OrderedSimplex.PartitionOrderIntegral`. Its factorization theorem requires local
 measurable boundedness and equality of assembled integrands with shuffled local products.

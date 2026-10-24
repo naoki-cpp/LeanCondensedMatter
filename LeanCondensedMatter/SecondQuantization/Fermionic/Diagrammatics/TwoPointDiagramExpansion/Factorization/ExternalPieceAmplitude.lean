@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Combinatorics.Shuffle.SlotShuffle
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.External.ExternalPiecePairing
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Semantics.ExternalPiece
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Factorization.MixedComponentDysonValue
@@ -133,7 +134,7 @@ private theorem
       rfl
     _ = ∏ v : ↥(Finset.univ : Finset (Fin d.1.externalInteractionPart.card)),
           g (d.externalPiece.1.vertexLabel v) := by
-      let e := Common.standardSlotEquiv d.1.externalInteractionPart
+      let e := Combinatorics.standardSlotEquiv d.1.externalInteractionPart
       rw [← Equiv.prod_comp e
         (fun v => g (d.externalPiece.1.vertexLabel v))]
       apply Finset.prod_congr rfl
@@ -146,9 +147,9 @@ private theorem
           apply congrArg g
           apply congrArg d.1.vertexLabel
           apply Subtype.ext
-          have h := Common.standardSlotEquivOfCardEq_symm_coe
+          have h := Combinatorics.standardSlotEquivOfCardEq_symm_coe
             d.1.externalInteractionPart rfl (e v)
-          simpa [e, Common.standardSlotEquiv] using h
+          simpa [e, Combinatorics.standardSlotEquiv] using h
         _ = g (d.externalPiece.1.vertexLabel (e v)) := by
           symm
           unfold FixedExternalTwoPointWickDiagram.externalPiece

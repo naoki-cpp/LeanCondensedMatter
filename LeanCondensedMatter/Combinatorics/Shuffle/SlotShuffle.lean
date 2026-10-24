@@ -20,6 +20,27 @@ namespace Combinatorics
 
 open scoped BigOperators
 
+/-- The increasing enumeration of a finite slot set, viewed as a relabeling onto a standard
+full slot set whose size is identified by the supplied cardinality equality. -/
+noncomputable def standardSlotEquivOfCardEq {N : ℕ} (T : Finset (Fin N)) {m : ℕ}
+    (h : T.card = m) :
+    ↥T ≃ ↥(Finset.univ : Finset (Fin m)) :=
+  (T.orderIsoOfFin h).toEquiv.symm.trans
+    (Equiv.subtypeUnivEquiv (fun x : Fin m => Finset.mem_univ x)).symm
+
+@[simp]
+theorem standardSlotEquivOfCardEq_symm_coe {N : ℕ} (T : Finset (Fin N)) {m : ℕ}
+    (h : T.card = m) (v : ↥(Finset.univ : Finset (Fin m))) :
+    (((standardSlotEquivOfCardEq T h).symm v : ↥T) : Fin N) =
+      T.orderEmbOfFin h (v : Fin m) := by
+  simp [standardSlotEquivOfCardEq, Finset.coe_orderIsoOfFin_apply]
+
+/-- The increasing enumeration of a finite slot set, viewed as a relabeling onto the standard full
+slot set of the same cardinality. -/
+noncomputable def standardSlotEquiv {N : ℕ} (T : Finset (Fin N)) :
+    ↥T ≃ ↥(Finset.univ : Finset (Fin T.card)) :=
+  standardSlotEquivOfCardEq T rfl
+
 /-- An order-preserving equivalence of two local slot families with the ambient slots. -/
 structure SlotShuffle (m n : ℕ) where
   /-- Equivalence between tagged local slots and ambient slots. -/
