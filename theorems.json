@@ -65732,50 +65732,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (axis : QuantumTheory.Models.MassiveDirac.PauliAxis) (side : QuantumTheory.Transport.SpectralSide)\n  (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ),\n  QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient axis side v m probeEnergy\n      broadening disorderStrength hbar pMax radius =\n    match axis with\n    | InternalSpace.PauliAxis.x =>\n      ((↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n            ∫ (p : ℝ) in 0..pMax,\n              QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenEntryKernel side v m\n                probeEnergy broadening disorderStrength hbar pMax radius p 0 1) +\n          ↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n            ∫ (p : ℝ) in 0..pMax,\n              QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenEntryKernel side v m\n                probeEnergy broadening disorderStrength hbar pMax radius p 1 0) /\n        2\n    | InternalSpace.PauliAxis.y =>\n      Complex.I *\n          ((↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n              ∫ (p : ℝ) in 0..pMax,\n                QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenEntryKernel side v m\n                  probeEnergy broadening disorderStrength hbar pMax radius p 0 1) -\n            ↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n              ∫ (p : ℝ) in 0..pMax,\n                QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenEntryKernel side v m\n                  probeEnergy broadening disorderStrength hbar pMax radius p 1 0) /\n        2\n    | InternalSpace.PauliAxis.z =>\n      ((↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n            ∫ (p : ℝ) in 0..pMax,\n              QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenEntryKernel side v m\n                probeEnergy broadening disorderStrength hbar pMax radius p 0 0) -\n          ↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n            ∫ (p : ℝ) in 0..pMax,\n              QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenEntryKernel side v m\n                probeEnergy broadening disorderStrength hbar pMax radius p 1 1) /\n        2",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient_eq_entryKernel_integrals",
-    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornRadialRealSpacePropagator",
-    "externalAxioms": [],
-    "docString": "Each Pauli-vector component of the radial Green matrix is a scalar combination of entry-kernel\nintegrals. This is the matrix-free boundary consumed by crossed radial traces. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient_eq_radialKernel_integral"
-    ],
-    "dependencies": [
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix_apply_eq_entryKernel_integral"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient_eq_radialKernel_integral"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ (axis : QuantumTheory.Models.MassiveDirac.PauliAxis) (side : QuantumTheory.Transport.SpectralSide)\n  (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ),\n  broadening ≠ 0 →\n    0 ≤ disorderStrength →\n      0 ≤ pMax →\n        QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient axis side v m\n            probeEnergy broadening disorderStrength hbar pMax radius =\n          ↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n            ∫ (p : ℝ) in 0..pMax,\n              QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenPauliKernel axis side v m\n                probeEnergy broadening disorderStrength hbar pMax radius p",
     "standardAxioms": [
       "Classical.choice",
@@ -65805,7 +65761,7 @@
     "dependencies": [
       "InternalSpace.pauliVectorCoefficient_prefactor_intervalIntegral",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenEntryKernel_pauliVectorCoefficient",
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient_eq_entryKernel_integrals",
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix_apply_eq_entryKernel_integral",
       "QuantumTheory.Models.MassiveDirac.intervalIntegrable_finiteCutoffContinuumBornDysonRadialGreenEntryKernel"
     ],
     "crossModuleDirectWrapper": false,
@@ -65932,50 +65888,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (side : QuantumTheory.Transport.SpectralSide) (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ),\n  QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenScalarCoefficient side v m probeEnergy\n      broadening disorderStrength hbar pMax radius =\n    ((↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n          ∫ (p : ℝ) in 0..pMax,\n            QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenEntryKernel side v m probeEnergy\n              broadening disorderStrength hbar pMax radius p 0 0) +\n        ↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n          ∫ (p : ℝ) in 0..pMax,\n            QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenEntryKernel side v m probeEnergy\n              broadening disorderStrength hbar pMax radius p 1 1) /\n      2",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenScalarCoefficient_eq_entryKernel_integrals",
-    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornRadialRealSpacePropagator",
-    "externalAxioms": [],
-    "docString": "The scalar Pauli coefficient of the radial Green matrix is a combination of its two\nscalar entry-kernel integrals; no matrix operation remains on the right-hand side. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenScalarCoefficient_eq_radialKernel_integral"
-    ],
-    "dependencies": [
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix_apply_eq_entryKernel_integral"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenScalarCoefficient_eq_radialKernel_integral"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ (side : QuantumTheory.Transport.SpectralSide) (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ),\n  broadening ≠ 0 →\n    0 ≤ disorderStrength →\n      0 ≤ pMax →\n        QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenScalarCoefficient side v m\n            probeEnergy broadening disorderStrength hbar pMax radius =\n          ↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n            ∫ (p : ℝ) in 0..pMax,\n              QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenScalarKernel side v m\n                probeEnergy broadening disorderStrength hbar pMax radius p",
     "standardAxioms": [
       "Classical.choice",
@@ -66003,7 +65915,7 @@
     "dependencies": [
       "InternalSpace.pauliScalarCoefficient_prefactor_intervalIntegral",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenEntryKernel_pauliScalarCoefficient",
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenScalarCoefficient_eq_entryKernel_integrals",
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix_apply_eq_entryKernel_integral",
       "QuantumTheory.Models.MassiveDirac.intervalIntegrable_finiteCutoffContinuumBornDysonRadialGreenEntryKernel"
     ],
     "crossModuleDirectWrapper": false,
@@ -66140,8 +66052,8 @@
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_psi_eq_scalar_radial_kernels",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_x_eq_scalar_radial_kernels",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGreenLoopMatrix_apply_eq_radial_integral",
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient_eq_entryKernel_integrals",
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenScalarCoefficient_eq_entryKernel_integrals",
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient_eq_radialKernel_integral",
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenScalarCoefficient_eq_radialKernel_integral",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix_neg_radius",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRealSpaceGreenMatrix_radialAxis_eq"
     ],
@@ -66152,8 +66064,8 @@
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_psi_eq_scalar_radial_kernels",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_x_eq_scalar_radial_kernels",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGreenLoopMatrix_apply_eq_radial_integral",
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient_eq_entryKernel_integrals",
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenScalarCoefficient_eq_entryKernel_integrals",
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient_eq_radialKernel_integral",
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenScalarCoefficient_eq_radialKernel_integral",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix_neg_radius",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRealSpaceGreenMatrix_radialAxis_eq"
     ],
@@ -92944,7 +92856,7 @@
     "name": "QuantumTheory.eigenbasisGibbsEnergyExpectation_eq_energyExpValue",
     "module": "LeanCondensedMatter.QuantumTheory.Gibbs.EigenbasisExpectation",
     "externalAxioms": [],
-    "docString": "If the same energy data are represented by a bounded observable, the spectral-series energy\nexpectation agrees with the canonical density-state energy expectation. ",
+    "docString": "If the same energy data are represented by a bounded observable, the spectral-series energy\nexpectation agrees with the density-operator energy expectation. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
@@ -93971,7 +93883,7 @@
     "name": "QuantumTheory.gibbsEquilibriumDistribution_probability",
     "module": "LeanCondensedMatter.QuantumTheory.Gibbs.DistributionUniqueness",
     "externalAxioms": [],
-    "docString": "The canonical Gibbs competitor carries the normalized energy-level Gibbs probability. ",
+    "docString": "The normalized Gibbs equilibrium competitor carries the energy-level Gibbs probability. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [],
@@ -95025,7 +94937,7 @@
     "name": "QuantumTheory.helmholtzFreeEnergy_eq_iff_eq_gibbsState",
     "module": "LeanCondensedMatter.QuantumTheory.Gibbs.MinimizerUniqueness",
     "externalAxioms": [],
-    "docString": "For nonzero inverse temperature, the Helmholtz equality case is attained exactly by the\ncanonical Gibbs state. ",
+    "docString": "For nonzero inverse temperature, the Helmholtz equality case is attained exactly by the\nnormalized Gibbs state. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [],
@@ -95140,7 +95052,7 @@
     "name": "QuantumTheory.inv_partition_smul_heat_eq_eigenbasisGibbsDensityOperator_op",
     "module": "LeanCondensedMatter.QuantumTheory.Gibbs.HeatOperator",
     "externalAxioms": [],
-    "docString": "Pure-point Boltzmann heat data normalize directly to the canonical Gibbs density\noperator at the operator level. ",
+    "docString": "Pure-point Boltzmann heat data normalize directly to the pure-point Gibbs density\noperator at the operator level. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
