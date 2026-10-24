@@ -397,7 +397,7 @@ theorem tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoeffic
     simp only [norm_mul]
     dsimp [boundValue]
     simp only [← mul_assoc]
-    gcongr <;> assumption
+    gcongr
   have hBoundIntegrable :
       Integrable (fun _ : ℝ => boundValue) (volume.restrict (Set.Icc 0 pMax)) := by
     exact integrableOn_const isCompact_Icc.measure_lt_top.ne
