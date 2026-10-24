@@ -31,7 +31,7 @@ noncomputable def gibbsEquilibriumDistribution [Nonempty ι]
   hasSum_one := hasSum_eigenbasisGibbsProbability E β hsum
   energyIntegrable := hint
 
-/-- The canonical Gibbs competitor carries the normalized energy-level Gibbs probability. -/
+/-- The normalized Gibbs equilibrium competitor carries the energy-level Gibbs probability. -/
 @[simp]
 theorem gibbsEquilibriumDistribution_probability [Nonempty ι]
     (E : ι → ℝ) (β : ℝ) (hsum : EigenbasisGibbsSummable E β)
