@@ -322,10 +322,10 @@ theorem intervalIntegralMatrix2_spinRotation_conjugate
       Fin.sum_univ_two, intervalIntegral.integral_const_mul,
       intervalIntegral.integral_mul_const, mul_assoc]
 
-/-- At finite momentum cutoff, the fully integrated Born-Dyson Green matrix
-inherits the spinor SO(2) covariance of its exact K0/K1 polar Fourier kernel.
-The reference is the same two-dimensional Fourier Green matrix at angle zero.
-Neither a new physical assumption nor a regulator limit is introduced. -/
+/-- The finite-cutoff Born-Dyson Green matrix is the SO(2) spinor conjugate
+of its canonical one-dimensional radial Green matrix. This follows from
+the full-angle K0/K1 Fourier kernels without extra physical assumptions
+or regulator limits. -/
 theorem finiteCutoffContinuumBornDysonRealSpaceGreenMatrix_polarPoint2D_eq_radial_spinRotation
     (side : SpectralSide)
     (v m probeEnergy broadening disorderStrength hbar pMax radius angle : ℝ) :
@@ -429,7 +429,6 @@ theorem finiteCutoffContinuumBornDysonRealSpaceGreenMatrix_polarPoint2D_eq_radia
     exact congrArg (fun M : Matrix2 => M i j) (hpoint0 p)
   rw [hrot, haxis]
   simp only [mul_smul_comm, smul_mul_assoc]
-
 
 end
 
