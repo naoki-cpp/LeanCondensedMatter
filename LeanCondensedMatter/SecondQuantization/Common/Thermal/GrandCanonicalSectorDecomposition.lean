@@ -119,6 +119,18 @@ theorem grandCanonicalGibbsProbability_of_sector
   rw [grandCanonicalBoltzmannWeight_of_sector]
   field_simp [hZ, hZN]
 
+/-- Restricting the grand-canonical Boltzmann sum to one particle-number sector
+factors out the fugacity. This identity also covers empty sectors. -/
+private theorem grandCanonicalBoltzmannWeight_tsum_sector
+    (ε : Mode → ℝ) (β μ : ℝ) (N : ℕ) :
+    (∑' n : ParticleNumberSector Mode Config N,
+      eigenbasisBoltzmannWeight (grandCanonicalEnergy ε μ) β n.val) =
+      Real.exp (β * μ * (N : ℝ)) *
+        canonicalPartitionFunction (Config := Config) ε β N := by
+  simp_rw [grandCanonicalBoltzmannWeight_of_sector ε β μ N]
+  rw [tsum_mul_left]
+  rfl
+
 /-- The grand-canonical partition function is the sum of canonical sector
 partition functions weighted by fugacity, including empty sectors. -/
 theorem grandCanonicalPartitionFunction_eq_tsum_sector
@@ -152,21 +164,7 @@ theorem grandCanonicalPartitionFunction_eq_tsum_sector
           canonicalPartitionFunction (Config := Config) ε β N := by
       apply tsum_congr
       intro N
-      calc
-        (∑' n : ParticleNumberSector Mode Config N,
-          eigenbasisBoltzmannWeight (grandCanonicalEnergy ε μ) β n.val) =
-            ∑' n : ParticleNumberSector Mode Config N,
-              Real.exp (β * μ * (N : ℝ)) *
-                eigenbasisBoltzmannWeight
-                  (fun m : ParticleNumberSector Mode Config N =>
-                    occupationEnergy ε m.val) β n := by
-          apply tsum_congr
-          intro n
-          exact grandCanonicalBoltzmannWeight_of_sector ε β μ N n
-        _ = Real.exp (β * μ * (N : ℝ)) *
-            canonicalPartitionFunction (Config := Config) ε β N := by
-          rw [tsum_mul_left]
-          rfl
+      exact grandCanonicalBoltzmannWeight_tsum_sector (Config := Config) ε β μ N
 
 /-- The probability of a sharp-number sector is the sum of grand-canonical
 occupation probabilities in that sector, including when it is empty.
@@ -178,13 +176,7 @@ theorem grandCanonicalSectorProbability_eq_tsum
       ∑' n : ParticleNumberSector Mode Config N,
         eigenbasisGibbsProbability (grandCanonicalEnergy ε μ) β n.val := by
   let Z := grandCanonicalPartitionFunction (Config := Config) ε β μ
-  have hweighted :
-      (∑' n : ParticleNumberSector Mode Config N,
-        eigenbasisBoltzmannWeight (grandCanonicalEnergy ε μ) β n.val) =
-      Real.exp (β * μ * (N : ℝ)) * canonicalPartitionFunction (Config := Config) ε β N := by
-    simp_rw [grandCanonicalBoltzmannWeight_of_sector ε β μ N]
-    rw [tsum_mul_left]
-    rfl
+  have hweighted := grandCanonicalBoltzmannWeight_tsum_sector (Config := Config) ε β μ N
   calc
     grandCanonicalSectorProbability (Config := Config) ε β μ N =
         Z⁻¹ * (Real.exp (β * μ * (N : ℝ)) *
