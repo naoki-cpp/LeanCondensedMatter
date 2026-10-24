@@ -179,12 +179,12 @@ theorem hasDerivAt_sourceCoupledPerturbedExpectation_zero_of_bound_retarded
         timeDependentPerturbedExpectationFunctional system expectation
           (sourceCoupledPerturbation f B) lam t A)
       (∫ s in (0 : ℝ)..t,
-        (f s : ℂ) * retardedSusceptibility system expectation A B t s)
+        (f s : ℂ) * retardedSusceptibility (freePropagatorGroup system) system.hbar expectation A B t s)
       0 := by
   have h := hasDerivAt_sourceCoupledPerturbedExpectation_zero_of_bound_kubo
     system expectation f hB A hM hV ht hInt
   rw [sourceCoupled_responseIntegral_eq_retardedSusceptibility
-    system expectation f B A ht.1] at h
+    (freePropagatorGroup system) system.hbar expectation f B A ht.1] at h
   exact h
 
 end

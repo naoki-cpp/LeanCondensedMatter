@@ -263,7 +263,7 @@ theorem commutatorSusceptibility_eigenbasis_eq_timeDomainSeries
     (data : EnergyEigenbasisLehmannData system ι)
     (A B : H →L[ℂ] H) (τ : ℝ)
     (hsum : EigenbasisTimeDomainSummable system data A B) :
-    commutatorSusceptibility system
+    commutatorSusceptibility (freePropagatorGroup system) system.hbar
         (eigenbasisNormalizedExpectation system data) A B τ 0 =
       eigenbasisTimeDomainSeries system data A B τ := by
   rw [commutatorSusceptibility]

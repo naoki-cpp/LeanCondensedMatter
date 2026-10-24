@@ -2,6 +2,7 @@ import LeanCondensedMatter.Analysis.ConservationLaw.CorrectedCurrentFlux
 import LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.Bounded
 import LeanCondensedMatter.QuantumTheory.LinearResponse.Response.RetardedSusceptibility
 import LeanCondensedMatter.QuantumTheory.LinearResponse.Response.Channel
+import LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.Free
 
 set_option linter.style.header false
 
@@ -52,7 +53,8 @@ noncomputable def boundedFluxRetardedResponse
     (Φ : Test →ₗ[ℂ] ((Site →₀ ℂ) →ₗ[ℂ] (Site →₀ ℂ)))
     (t s : ℝ) : Test →ₗ[ℂ] ℂ :=
   (QuantumTheory.LinearResponse.retardedSusceptibilityMeasuredLinearMap
-      system expectation source t s).comp
+      (QuantumTheory.LinearResponse.freePropagatorGroup system)
+      system.hbar expectation source t s).comp
     ((boundedOneBodyOperator (Site := Site)).toLinearMap.comp Φ)
 /-- Bounded Fock-space observable associated with one corrected/nested current component. -/
 noncomputable def boundedCorrectedCurrentObservable

@@ -117,7 +117,8 @@ susceptibility. This is an identity of totalized integrals, not a regulator-remo
 theorem infiniteTimeAdiabaticTransform_commutator_eq_susceptibility
     (expectation : NormalizedExpectation H) (A B : H →L[ℂ] H) (ω η : ℝ) :
     infiniteTimeAdiabaticTransform
-        (fun τ => commutatorSusceptibility system expectation A B τ 0) ω η =
+        (fun τ => commutatorSusceptibility (freePropagatorGroup system) system.hbar
+          expectation A B τ 0) ω η =
       adiabaticFrequencyDomainSusceptibility system expectation A B ω η := by
   rw [infiniteTimeAdiabaticTransform, adiabaticFrequencyDomainSusceptibility,
     integral_adiabaticFrequencySusceptibilityIntegrand_eq_Ioi_zero
@@ -136,7 +137,7 @@ noncomputable def infiniteTimeAdiabaticResponse
     (channel : ResponseChannel H) (system : BoundedFreeSystem H)
     (expectation : NormalizedExpectation H) (ω η : ℝ) : ℂ :=
   infiniteTimeAdiabaticTransform
-      (fun τ => commutatorSusceptibility system expectation
+      (fun τ => commutatorSusceptibility (freePropagatorGroup system) system.hbar expectation
         channel.measured channel.source τ 0) ω η +
     expectation channel.observableVariation
 
@@ -147,13 +148,13 @@ theorem hasInfiniteObservationTimeLimit_finiteTimeAdiabaticResponse_of_stationar
     (expectation : NormalizedExpectation H)
     (hstationary : IsStationary (freePropagatorGroup system) expectation) (ω η : ℝ)
     (hInt : AdiabaticLagIntegrable
-      (fun τ => commutatorSusceptibility system expectation
+      (fun τ => commutatorSusceptibility (freePropagatorGroup system) system.hbar expectation
         channel.measured channel.source τ 0) ω η) :
     HasInfiniteObservationTimeLimit
       (channel.finiteTimeAdiabaticResponse system expectation ω η)
       (channel.infiniteTimeAdiabaticResponse system expectation ω η) := by
   have h := hasInfiniteObservationTimeLimit_finiteTimeAdiabaticTransform
-    (fun τ => commutatorSusceptibility system expectation
+    (fun τ => commutatorSusceptibility (freePropagatorGroup system) system.hbar expectation
       channel.measured channel.source τ 0) ω η hInt
   unfold HasInfiniteObservationTimeLimit at h ⊢
   have hC : Tendsto (fun _ : ℝ => expectation channel.observableVariation)
