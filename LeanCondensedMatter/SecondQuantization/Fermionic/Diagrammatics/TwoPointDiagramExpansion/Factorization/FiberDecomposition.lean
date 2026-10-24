@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Combinatorics.Shuffle.SlotShuffle
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Semantics.ExternalPiece
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.Wick.Diagram
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Components.ComponentDecomposition
@@ -36,19 +37,19 @@ noncomputable def fixedExternalTwoPointWickDiagramOnEquivOfCardEq
     FixedExternalTwoPointWickDiagramOn Mode n T i j ≃
       FixedExternalTwoPointWickDiagram Mode m i j where
   toFun d :=
-    ⟨d.1.slotCongr (Common.standardSlotEquivOfCardEq T h), by
+    ⟨d.1.slotCongr (Combinatorics.standardSlotEquivOfCardEq T h), by
       rw [Common.TwoPointDiagram.slotCongr_externalLabel]
       exact d.2⟩
   invFun d :=
-    ⟨d.1.slotCongr (Common.standardSlotEquivOfCardEq T h).symm, by
+    ⟨d.1.slotCongr (Combinatorics.standardSlotEquivOfCardEq T h).symm, by
       rw [Common.TwoPointDiagram.slotCongr_externalLabel]
       exact d.2⟩
   left_inv d :=
     Subtype.ext ((Common.TwoPointDiagram.slotCongrEquiv
-      (Common.standardSlotEquivOfCardEq T h)).left_inv d.1)
+      (Combinatorics.standardSlotEquivOfCardEq T h)).left_inv d.1)
   right_inv d :=
     Subtype.ext ((Common.TwoPointDiagram.slotCongrEquiv
-      (Common.standardSlotEquivOfCardEq T h)).right_inv d.1)
+      (Combinatorics.standardSlotEquivOfCardEq T h)).right_inv d.1)
 
 
 /-- The increasing slot standardization with a chosen cardinality equality restricts to externally
@@ -62,11 +63,11 @@ noncomputable def connectedFixedExternalTwoPointWickDiagramOnEquivOfCardEq
   toFun ext :=
     ⟨fixedExternalTwoPointWickDiagramOnEquivOfCardEq T h ext.1,
       (Common.TwoPointDiagram.slotCongr_isExternallyConnected_iff
-        (Common.standardSlotEquivOfCardEq T h) ext.1.1).2 ext.2⟩
+        (Combinatorics.standardSlotEquivOfCardEq T h) ext.1.1).2 ext.2⟩
   invFun d :=
     ⟨(fixedExternalTwoPointWickDiagramOnEquivOfCardEq T h).symm d.1,
       (Common.TwoPointDiagram.slotCongr_isExternallyConnected_iff
-        (Common.standardSlotEquivOfCardEq T h).symm d.1.1).2 d.2⟩
+        (Combinatorics.standardSlotEquivOfCardEq T h).symm d.1.1).2 d.2⟩
   left_inv ext :=
     Subtype.ext ((fixedExternalTwoPointWickDiagramOnEquivOfCardEq T h).left_inv ext.1)
   right_inv d :=
@@ -151,13 +152,13 @@ theorem fixedExternalFiberEquiv_symm_externalPieceOfCardEq_eq
       rfl
     have hcongr := congrArg
       (fun x => Common.TwoPointDiagram.slotCongr
-        (Common.standardSlotEquivOfCardEq d0.1.externalInteractionPart h) x) hsplit
+        (Combinatorics.standardSlotEquivOfCardEq d0.1.externalInteractionPart h) x) hsplit
     change
       Common.TwoPointDiagram.slotCongr
-          (Common.standardSlotEquivOfCardEq d0.1.externalInteractionPart h)
+          (Combinatorics.standardSlotEquivOfCardEq d0.1.externalInteractionPart h)
           d0.1.externalVacuumSplit.1 =
         Common.TwoPointDiagram.slotCongr
-          (Common.standardSlotEquivOfCardEq d0.1.externalInteractionPart h)
+          (Combinatorics.standardSlotEquivOfCardEq d0.1.externalInteractionPart h)
           (d0.1.slotSplitExternal
             (Finset.subset_univ d0.1.externalInteractionPart)
             (Common.isSplit_slotLegSplitting_of_interactionSector_eq

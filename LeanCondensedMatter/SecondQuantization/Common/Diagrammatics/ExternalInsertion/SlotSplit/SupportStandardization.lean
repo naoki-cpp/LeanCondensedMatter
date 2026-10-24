@@ -44,8 +44,7 @@ noncomputable def ExternalInsertionDiagram.standardizeVacuumFree
         (Finset.univ : Finset (Fin m)) //
       HasNoVacuumComponent d.vertexGraph} :=
   ExternalInsertionDiagram.vacuumFreeSlotCongrEquiv
-    ((T.orderIsoOfFin h).toEquiv.symm.trans
-      (Equiv.subtypeUnivEquiv (fun i : Fin m => Finset.mem_univ i)).symm)
+    (standardSlotEquivOfCardEq T h)
 
 /-- The increasing support-slot standardization preserves the actual flattened
 leg positions. Neither the external legs nor the internal four-leg blocks are
@@ -53,10 +52,9 @@ permuted within their sectors. -/
 theorem externalInsertionLegCongr_standardize
     (T : Finset (Fin N)) :
     externalInsertionLegCongr (E := E)
-      ((T.orderIsoOfFin rfl).toEquiv.symm.trans
-        (Equiv.subtypeUnivEquiv
-          (fun i : Fin T.card => Finset.mem_univ i)).symm) =
+      (standardSlotEquiv T) =
       finCongr (by simp) := by
+  dsimp only [standardSlotEquiv, standardSlotEquivOfCardEq]
   classical
   apply Equiv.ext
   intro p

@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Combinatorics.Shuffle.SlotShuffle
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.SupportStandardization
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Pairing.MixedOrder
 
@@ -26,9 +27,7 @@ theorem ExternalInsertionDiagram.supportSlotCongr_pairingInMixedOrder
     (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N T)
     (externalTime : Fin (2 * E) → ℝ) (σ : Fin N → ℝ) :
     let e : ↥T ≃ ↥(Finset.univ : Finset (Fin T.card)) :=
-      (T.orderIsoOfFin rfl).toEquiv.symm.trans
-        (Equiv.subtypeUnivEquiv
-          (fun i : Fin T.card => Finset.mem_univ i)).symm
+      standardSlotEquiv T
     let σT : Fin T.card → ℝ :=
       σ ∘ fun i => (T.orderIsoOfFin rfl i).1
     (d.slotCongr e).pairingInMixedOrder externalTime σT =
