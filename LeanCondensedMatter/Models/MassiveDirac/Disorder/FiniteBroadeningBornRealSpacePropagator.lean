@@ -302,60 +302,21 @@ theorem finiteCutoffContinuumBornDysonRealSpaceGreenMatrix_radialAxis_eq
     simpa [entryHarmonics, AngularHarmonicCoefficients.eval, Matrix.add_apply,
       Matrix.smul_apply, smul_eq_mul] using h
   funext i j
-  fin_cases i <;> fin_cases j
-  · change
-      finiteCutoffPhysicalMomentumPolarFourier hbar pMax
-          (fun p θ =>
-            finiteCutoffContinuumBornDysonGreenMatrix
-              side v m (p * Real.cos θ) (p * Real.sin θ)
-              probeEnergy broadening disorderStrength hbar pMax 0 0)
-          (polarPoint2D radius 0) = _
-    simp_rw [hentry 0 0]
+  change
+    finiteCutoffPhysicalMomentumPolarFourier hbar pMax
+      (fun p θ =>
+        finiteCutoffContinuumBornDysonGreenMatrix
+          side v m (p * Real.cos θ) (p * Real.sin θ)
+          probeEnergy broadening disorderStrength hbar pMax i j)
+      (polarPoint2D radius 0) = _
+  simp_rw [hentry i j]
+  have hFourier :=
+    finiteCutoffPhysicalMomentumPolarFourier_polarPoint2D_harmonics
+      hbar pMax radius 0 (entryHarmonics i j)
+  fin_cases i <;> fin_cases j <;>
     simpa [finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix,
-      entryHarmonics, harmonics, a, b, d, InternalSpace.pauliX, InternalSpace.pauliY,
-      InternalSpace.pauliZ] using
-      (finiteCutoffPhysicalMomentumPolarFourier_polarPoint2D_harmonics
-        hbar pMax radius 0 (entryHarmonics 0 0))
-  · change
-      finiteCutoffPhysicalMomentumPolarFourier hbar pMax
-          (fun p θ =>
-            finiteCutoffContinuumBornDysonGreenMatrix
-              side v m (p * Real.cos θ) (p * Real.sin θ)
-              probeEnergy broadening disorderStrength hbar pMax 0 1)
-          (polarPoint2D radius 0) = _
-    simp_rw [hentry 0 1]
-    simpa [finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix,
-      entryHarmonics, harmonics, a, b, d, InternalSpace.pauliX, InternalSpace.pauliY,
-      InternalSpace.pauliZ] using
-      (finiteCutoffPhysicalMomentumPolarFourier_polarPoint2D_harmonics
-        hbar pMax radius 0 (entryHarmonics 0 1))
-  · change
-      finiteCutoffPhysicalMomentumPolarFourier hbar pMax
-          (fun p θ =>
-            finiteCutoffContinuumBornDysonGreenMatrix
-              side v m (p * Real.cos θ) (p * Real.sin θ)
-              probeEnergy broadening disorderStrength hbar pMax 1 0)
-          (polarPoint2D radius 0) = _
-    simp_rw [hentry 1 0]
-    simpa [finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix,
-      entryHarmonics, harmonics, a, b, d, InternalSpace.pauliX, InternalSpace.pauliY,
-      InternalSpace.pauliZ] using
-      (finiteCutoffPhysicalMomentumPolarFourier_polarPoint2D_harmonics
-        hbar pMax radius 0 (entryHarmonics 1 0))
-  · change
-      finiteCutoffPhysicalMomentumPolarFourier hbar pMax
-          (fun p θ =>
-            finiteCutoffContinuumBornDysonGreenMatrix
-              side v m (p * Real.cos θ) (p * Real.sin θ)
-              probeEnergy broadening disorderStrength hbar pMax 1 1)
-          (polarPoint2D radius 0) = _
-    simp_rw [hentry 1 1]
-    simpa [finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix,
-      entryHarmonics, harmonics, a, b, d, sub_eq_add_neg, InternalSpace.pauliX,
-      InternalSpace.pauliY, InternalSpace.pauliZ] using
-      (finiteCutoffPhysicalMomentumPolarFourier_polarPoint2D_harmonics
-        hbar pMax radius 0 (entryHarmonics 1 1))
-
+      entryHarmonics, harmonics, a, b, d, sub_eq_add_neg,
+      InternalSpace.pauliX, InternalSpace.pauliY, InternalSpace.pauliZ] using hFourier
 
 /-- Entrywise interval integration of a complex two-band matrix. The interval
 integral's existing non-integrable convention is preserved entry by entry. -/
