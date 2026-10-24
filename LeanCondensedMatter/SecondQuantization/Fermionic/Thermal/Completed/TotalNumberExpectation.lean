@@ -61,48 +61,8 @@ theorem grandCanonicalTotalNumberExpectation_eq_tsum_sector
     grandCanonicalTotalNumberExpectation ε β μ =
       ∑' N : ℕ, (N : ℝ) *
         Common.grandCanonicalSectorProbability (Config := Occupation Mode) ε β μ N := by
-  let f : Occupation Mode → ℝ := fun c =>
-    eigenbasisGibbsProbability
-      (Common.grandCanonicalEnergy (Config := Occupation Mode) ε μ) β c *
-        (particleNumber c : ℝ)
-  have hf : Summable f := Summable.of_norm hint
-  let e : (Σ N : ℕ, Common.ParticleNumberSector Mode (Occupation Mode) N) ≃
-      Occupation Mode :=
-    Equiv.sigmaFiberEquiv
-      (Common.particleNumber (Mode := Mode) (Config := Occupation Mode))
-  have hSigma :
-      Summable (fun x : Σ N : ℕ, Common.ParticleNumberSector Mode (Occupation Mode) N =>
-        f (e x)) := hf.comp_injective e.injective
-  calc
-    grandCanonicalTotalNumberExpectation ε β μ = ∑' c : Occupation Mode, f c := rfl
-    _ = ∑' x : Σ N : ℕ, Common.ParticleNumberSector Mode (Occupation Mode) N,
-          f (e x) := (e.tsum_eq _).symm
-    _ = ∑' N : ℕ, ∑' n : Common.ParticleNumberSector Mode (Occupation Mode) N,
-          f n.val := by
-      rw [hSigma.tsum_sigma]
-      simp only [e, Equiv.sigmaFiberEquiv_apply]
-    _ = ∑' N : ℕ, (N : ℝ) *
-        Common.grandCanonicalSectorProbability (Config := Occupation Mode) ε β μ N := by
-      apply tsum_congr
-      intro N
-      calc
-        (∑' n : Common.ParticleNumberSector Mode (Occupation Mode) N, f n.val) =
-            ∑' n : Common.ParticleNumberSector Mode (Occupation Mode) N,
-              (N : ℝ) *
-                eigenbasisGibbsProbability
-                  (Common.grandCanonicalEnergy (Config := Occupation Mode) ε μ) β n.val := by
-          apply tsum_congr
-          intro n
-          simp only [f, n.property]
-          ring
-        _ = (N : ℝ) *
-            (∑' n : Common.ParticleNumberSector Mode (Occupation Mode) N,
-              eigenbasisGibbsProbability
-                (Common.grandCanonicalEnergy (Config := Occupation Mode) ε μ) β n.val) := by
-          rw [tsum_mul_left]
-        _ = (N : ℝ) *
-            Common.grandCanonicalSectorProbability (Config := Occupation Mode) ε β μ N := by
-          rw [← Common.grandCanonicalSectorProbability_eq_tsum ε β μ N]
+  exact Common.grandCanonicalParticleNumber_tsum_eq_sector_moment
+    (Config := Occupation Mode) ε β μ hint
 
 /-- The completed free total-number expectation is nonnegative. -/
 theorem grandCanonicalTotalNumberExpectation_nonneg
