@@ -7,6 +7,7 @@ import LeanCondensedMatter.SecondQuantization.Common.Thermal.GrandCanonical
 import LeanCondensedMatter.QuantumTheory.Gibbs.HeatOperator
 
 set_option linter.style.header false
+set_option linter.unusedFintypeInType false
 
 /-!
 # Completed free-boson heat and Gibbs operators
@@ -218,6 +219,11 @@ theorem grandCanonicalParticleNumber_tsum_eq_sector_moment
       (Common.grandCanonicalPartitionFunction (Config := Occupation Mode) ε β μ)⁻¹).congr
     intro n
     simp only [eigenbasisGibbsProbability]
+    change
+      (Common.grandCanonicalPartitionFunction (Config := Occupation Mode) ε β μ)⁻¹ *
+        ((particleNumber n : ℝ) * boltzmannWeight ξ β n) =
+      (Common.grandCanonicalPartitionFunction (Config := Occupation Mode) ε β μ)⁻¹ *
+        Real.exp (-β * Common.grandCanonicalEnergy ε μ n) * (particleNumber n : ℝ)
     rw [Common.grandCanonicalEnergy_eq_shifted]
     change
       (Common.grandCanonicalPartitionFunction (Config := Occupation Mode) ε β μ)⁻¹ *
