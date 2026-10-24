@@ -160,7 +160,15 @@ theorem isTraceClass_of_finiteDimensional (T : H →L[ℂ] H) : IsTraceClass T :
 theorem IsTraceClass.trace_eq_linearMap_trace {T : H →L[ℂ] H} (hT : IsTraceClass T) :
     hT.trace = LinearMap.trace ℂ H (T : H →ₗ[ℂ] H) := by
   rw [hT.trace_eq_tsum_inner (stdOrthonormalBasis ℂ H).toHilbertBasis, tsum_fintype]
-  simpa using (LinearMap.trace_eq_sum_inner _ (stdOrthonormalBasis ℂ H)).symm
+  calc
+    (∑ i, inner ℂ ((stdOrthonormalBasis ℂ H) i) (T ((stdOrthonormalBasis ℂ H) i))) =
+        ∑ i, inner ℂ ((stdOrthonormalBasis ℂ H) i)
+          ((T : H →ₗ[ℂ] H) ((stdOrthonormalBasis ℂ H) i)) := by
+      apply Finset.sum_congr rfl
+      intro i _
+      rfl
+    _ = LinearMap.trace ℂ H (T : H →ₗ[ℂ] H) :=
+      (LinearMap.trace_eq_sum_inner _ (stdOrthonormalBasis ℂ H)).symm
 
 end FiniteDimensional
 
