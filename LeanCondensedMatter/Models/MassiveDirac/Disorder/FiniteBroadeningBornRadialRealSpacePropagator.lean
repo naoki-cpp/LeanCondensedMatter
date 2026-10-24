@@ -414,51 +414,14 @@ private theorem finiteCutoffContinuumBornDysonRadialGreenEntryKernel_neg_radius
         finiteCutoffContinuumBornDysonRadialGreenEntryKernel
           side v m probeEnergy broadening disorderStrength hbar pMax radius p i j *
         sigmaZ j j := by
-  let a := finiteCutoffContinuumBornDysonScalarCoefficient
-    side v m p 0 probeEnergy broadening disorderStrength hbar pMax
-  let b := finiteCutoffContinuumBornDysonPauliCoefficient .x
-    side v m p 0 probeEnergy broadening disorderStrength hbar pMax
-  let d := finiteCutoffContinuumBornDysonPauliCoefficient .z
-    side v m p 0 probeEnergy broadening disorderStrength hbar pMax
   have harg : p * (-radius) / hbar = -(p * radius / hbar) := by
     ring
-  fin_cases i <;> fin_cases j
-  · change
-      (p : ℂ) *
-          (polarFourierZerothAngularKernel (p * (-radius) / hbar) * (a + d)) =
-        sigmaZ 0 0 *
-            ((p : ℂ) *
-              (polarFourierZerothAngularKernel (p * radius / hbar) * (a + d))) *
-          sigmaZ 0 0
-    rw [harg, polarFourierZerothAngularKernel_neg]
-    simp [sigmaZ, InternalSpace.pauliZ]
-  · change
-      (p : ℂ) *
-          (polarFourierFirstCosineAngularKernel (p * (-radius) / hbar) * b) =
-        sigmaZ 0 0 *
-            ((p : ℂ) *
-              (polarFourierFirstCosineAngularKernel (p * radius / hbar) * b)) *
-          sigmaZ 1 1
-    rw [harg, polarFourierFirstCosineAngularKernel_neg]
-    simp [sigmaZ, InternalSpace.pauliZ]
-  · change
-      (p : ℂ) *
-          (polarFourierFirstCosineAngularKernel (p * (-radius) / hbar) * b) =
-        sigmaZ 1 1 *
-            ((p : ℂ) *
-              (polarFourierFirstCosineAngularKernel (p * radius / hbar) * b)) *
-          sigmaZ 0 0
-    rw [harg, polarFourierFirstCosineAngularKernel_neg]
-    simp [sigmaZ, InternalSpace.pauliZ]
-  · change
-      (p : ℂ) *
-          (polarFourierZerothAngularKernel (p * (-radius) / hbar) * (a - d)) =
-        sigmaZ 1 1 *
-            ((p : ℂ) *
-              (polarFourierZerothAngularKernel (p * radius / hbar) * (a - d))) *
-          sigmaZ 1 1
-    rw [harg, polarFourierZerothAngularKernel_neg]
-    simp [sigmaZ, InternalSpace.pauliZ]
+  fin_cases i <;> fin_cases j <;>
+    dsimp [finiteCutoffContinuumBornDysonRadialGreenEntryKernel] <;>
+    rw [harg] <;>
+    simp [polarFourierZerothAngularKernel_neg,
+      polarFourierFirstCosineAngularKernel_neg,
+      sigmaZ, InternalSpace.pauliZ]
 
 /-- Reversing the radial real-space coordinate conjugates the massive-Dirac Green matrix by
 `σ_z`. The diagonal zeroth-harmonic channels are even, while the off-diagonal first-harmonic
