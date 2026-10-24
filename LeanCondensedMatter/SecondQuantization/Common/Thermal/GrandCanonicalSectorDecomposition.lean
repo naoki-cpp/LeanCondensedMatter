@@ -164,7 +164,7 @@ theorem grandCanonicalPartitionFunction_eq_tsum_sector
           canonicalPartitionFunction (Config := Config) ε β N := by
       apply tsum_congr
       intro N
-      exact grandCanonicalBoltzmannWeight_tsum_sector ε β μ N
+      exact grandCanonicalBoltzmannWeight_tsum_sector (Config := Config) ε β μ N
 
 /-- The probability of a sharp-number sector is the sum of grand-canonical
 occupation probabilities in that sector, including when it is empty.
@@ -176,7 +176,7 @@ theorem grandCanonicalSectorProbability_eq_tsum
       ∑' n : ParticleNumberSector Mode Config N,
         eigenbasisGibbsProbability (grandCanonicalEnergy ε μ) β n.val := by
   let Z := grandCanonicalPartitionFunction (Config := Config) ε β μ
-  have hweighted := grandCanonicalBoltzmannWeight_tsum_sector ε β μ N
+  have hweighted := grandCanonicalBoltzmannWeight_tsum_sector (Config := Config) ε β μ N
   calc
     grandCanonicalSectorProbability (Config := Config) ε β μ N =
         Z⁻¹ * (Real.exp (β * μ * (N : ℝ)) *
