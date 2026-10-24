@@ -417,10 +417,11 @@ private theorem finiteCutoffContinuumBornDysonRadialGreenEntryKernel_neg_radius
   have harg : p * (-radius) / hbar = -(p * radius / hbar) := by
     ring
   fin_cases i <;> fin_cases j <;>
-    simp [finiteCutoffContinuumBornDysonRadialGreenEntryKernel,
-      harg, polarFourierZerothAngularKernel_neg,
+    dsimp [finiteCutoffContinuumBornDysonRadialGreenEntryKernel] <;>
+    rw [harg] <;>
+    simp [polarFourierZerothAngularKernel_neg,
       polarFourierFirstCosineAngularKernel_neg,
-      sigmaZ, InternalSpace.pauliZ, sub_eq_add_neg]
+      sigmaZ, InternalSpace.pauliZ]
 
 /-- Reversing the radial real-space coordinate conjugates the massive-Dirac Green matrix by
 `σ_z`. The diagonal zeroth-harmonic channels are even, while the off-diagonal first-harmonic
