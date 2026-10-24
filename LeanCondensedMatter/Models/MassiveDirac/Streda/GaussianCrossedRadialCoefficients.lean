@@ -46,7 +46,19 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentScalarCoeffici
     exact intervalIntegrable_finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel
       source v m probeEnergy broadening disorderStrength hbar pMax radius
       hbroadening hdisorder hpMax i j
-  rw [finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentScalarCoefficient_eq_entryKernel_integrals]
+  have hmatrix :
+      finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock
+          source v m probeEnergy broadening disorderStrength hbar pMax radius =
+        fun i j =>
+          (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
+            ∫ p in (0 : ℝ)..pMax,
+              finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel
+                source v m probeEnergy broadening disorderStrength hbar pMax radius p i j := by
+    ext i j
+    exact finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock_apply_eq_entryKernel_integral
+      source v m probeEnergy broadening disorderStrength hbar pMax radius i j
+  unfold finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentScalarCoefficient
+  rw [hmatrix]
   trans (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
     ∫ p in (0 : ℝ)..pMax, InternalSpace.pauliScalarCoefficient
       (finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel
@@ -84,7 +96,19 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficie
     exact intervalIntegrable_finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel
       source v m probeEnergy broadening disorderStrength hbar pMax radius
       hbroadening hdisorder hpMax i j
-  rw [finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient_eq_entryKernel_integrals]
+  have hmatrix :
+      finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock
+          source v m probeEnergy broadening disorderStrength hbar pMax radius =
+        fun i j =>
+          (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
+            ∫ p in (0 : ℝ)..pMax,
+              finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel
+                source v m probeEnergy broadening disorderStrength hbar pMax radius p i j := by
+    ext i j
+    exact finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock_apply_eq_entryKernel_integral
+      source v m probeEnergy broadening disorderStrength hbar pMax radius i j
+  unfold finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient
+  rw [hmatrix]
   have hmove := InternalSpace.pauliVectorCoefficient_prefactor_intervalIntegral
     (axis := axis)
     (prefactor := (((momentumMeasurePrefactor hbar : ℝ) : ℂ)))
@@ -95,7 +119,7 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficie
     ∫ p in (0 : ℝ)..pMax, InternalSpace.pauliVectorCoefficient
       (finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel
         source v m probeEnergy broadening disorderStrength hbar pMax radius p) axis
-  · cases axis <;> exact hmove
+  · exact hmove
   apply congrArg (fun z : ℂ => (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) * z)
   apply intervalIntegral.integral_congr
   intro p _
