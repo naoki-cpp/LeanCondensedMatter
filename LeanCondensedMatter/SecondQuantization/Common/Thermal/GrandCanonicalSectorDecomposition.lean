@@ -191,6 +191,60 @@ theorem grandCanonicalSectorProbability_eq_tsum
       rw [← tsum_mul_left]
       rfl
 
+/-- The first moment of a grand-canonical particle-number distribution is
+the particle-number-weighted occupation-basis sum. The nonnegative count is
+unbounded; absolute integrability is therefore required independently of
+the existence of a normalized Gibbs state. This is statistics-independent. -/
+theorem grandCanonicalParticleNumber_tsum_eq_sector_moment
+    (ε : Mode → ℝ) (β μ : ℝ)
+    (hint : Summable fun c : Config =>
+      ‖eigenbasisGibbsProbability (grandCanonicalEnergy ε μ) β c *
+        (particleNumber (Mode := Mode) c : ℝ)‖) :
+    (∑' c : Config,
+      eigenbasisGibbsProbability (grandCanonicalEnergy ε μ) β c *
+        (particleNumber (Mode := Mode) c : ℝ)) =
+      ∑' N : ℕ, (N : ℝ) *
+        grandCanonicalSectorProbability (Config := Config) ε β μ N := by
+  let f : Config → ℝ := fun c =>
+    eigenbasisGibbsProbability (grandCanonicalEnergy ε μ) β c *
+      (particleNumber (Mode := Mode) c : ℝ)
+  have hf : Summable f := Summable.of_norm hint
+  let e : (Σ N : ℕ, ParticleNumberSector Mode Config N) ≃ Config :=
+    Equiv.sigmaFiberEquiv (particleNumber (Mode := Mode) (Config := Config))
+  have hSigma :
+      Summable (fun x : Σ N : ℕ, ParticleNumberSector Mode Config N =>
+        f (e x)) := hf.comp_injective e.injective
+  calc
+    (∑' c : Config,
+      eigenbasisGibbsProbability (grandCanonicalEnergy ε μ) β c *
+        (particleNumber (Mode := Mode) c : ℝ)) = ∑' c : Config, f c := rfl
+    _ = ∑' x : Σ N : ℕ, ParticleNumberSector Mode Config N,
+          f (e x) := (e.tsum_eq _).symm
+    _ = ∑' N : ℕ, ∑' n : ParticleNumberSector Mode Config N,
+          f n.val := by
+      rw [hSigma.tsum_sigma]
+      simp only [e, Equiv.sigmaFiberEquiv_apply]
+    _ = ∑' N : ℕ, (N : ℝ) *
+        grandCanonicalSectorProbability (Config := Config) ε β μ N := by
+      apply tsum_congr
+      intro N
+      calc
+        (∑' n : ParticleNumberSector Mode Config N, f n.val) =
+            ∑' n : ParticleNumberSector Mode Config N,
+              (N : ℝ) *
+                eigenbasisGibbsProbability (grandCanonicalEnergy ε μ) β n.val := by
+          apply tsum_congr
+          intro n
+          simp only [f, n.property]
+          ring
+        _ = (N : ℝ) *
+            (∑' n : ParticleNumberSector Mode Config N,
+              eigenbasisGibbsProbability (grandCanonicalEnergy ε μ) β n.val) := by
+          rw [tsum_mul_left]
+        _ = (N : ℝ) *
+            grandCanonicalSectorProbability (Config := Config) ε β μ N := by
+          rw [← grandCanonicalSectorProbability_eq_tsum ε β μ N]
+
 /-- The grand-canonical sector probabilities form a normalized distribution
 over all natural particle numbers, with empty sectors assigned probability zero. -/
 theorem grandCanonicalSectorProbability_tsum_eq_one
