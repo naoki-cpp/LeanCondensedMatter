@@ -5,7 +5,6 @@ import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.CutSides
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.CutOrder
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.CutIntervals
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.IntervalBlock
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.IntervalPairing
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.IntervalConnectivity
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalComponents
