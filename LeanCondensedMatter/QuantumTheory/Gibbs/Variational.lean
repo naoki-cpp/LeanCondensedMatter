@@ -6,7 +6,7 @@ import LeanCondensedMatter.QuantumTheory.Gibbs.FreeEnergy
 # Gibbs-state variational equality
 
 The normalized Gibbs state attains the Helmholtz lower bound. The bounded-Hamiltonian state is
-identified with the canonical energy-eigenbasis Gibbs state, whose entropy identity supplies
+identified with the pure-point energy-eigenbasis Gibbs state, whose entropy identity supplies
 the finite-dimensional result.
 -/
 
