@@ -26,7 +26,7 @@ noncomputable section
 
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
 
-variable (system : BoundedFreeSystem H)
+variable (U : Multiplicative ℝ →* unitary (H →L[ℂ] H)) (hbar : ℝ)
 
 /-- The fixed-rate adiabatic phase `exp ((i ω - η) τ)`. -/
 noncomputable def adiabaticFrequencyPhase (ω η τ : ℝ) : ℂ :=
@@ -53,22 +53,22 @@ noncomputable def adiabaticFrequencySusceptibilityIntegrand
     (expectation : NormalizedExpectation H)
     (A B : H →L[ℂ] H) (ω η τ : ℝ) : ℂ :=
   adiabaticFrequencyPhase ω η τ *
-    retardedTimeDifferenceKernel system expectation A B τ
+    retardedTimeDifferenceKernel U hbar expectation A B τ
 
 @[simp]
 theorem adiabaticFrequencySusceptibilityIntegrand_eq_zero_of_neg
     (expectation : NormalizedExpectation H)
     (A B : H →L[ℂ] H) (ω η : ℝ) {τ : ℝ} (hτ : τ < 0) :
-    adiabaticFrequencySusceptibilityIntegrand system expectation A B ω η τ = 0 := by
+    adiabaticFrequencySusceptibilityIntegrand U hbar expectation A B ω η τ = 0 := by
   simp [adiabaticFrequencySusceptibilityIntegrand,
-    retardedTimeDifferenceKernel_eq_zero_of_neg system expectation A B hτ]
+    retardedTimeDifferenceKernel_eq_zero_of_neg U hbar expectation A B hτ]
 
 @[simp]
 theorem adiabaticFrequencySusceptibilityIntegrand_zero_rate
     (expectation : NormalizedExpectation H)
     (A B : H →L[ℂ] H) (ω τ : ℝ) :
-    adiabaticFrequencySusceptibilityIntegrand system expectation A B ω 0 τ =
-      frequencySusceptibilityIntegrand system expectation A B ω τ := by
+    adiabaticFrequencySusceptibilityIntegrand U hbar expectation A B ω 0 τ =
+      frequencySusceptibilityIntegrand U hbar expectation A B ω τ := by
   simp [adiabaticFrequencySusceptibilityIntegrand,
     frequencySusceptibilityIntegrand]
 
@@ -76,9 +76,9 @@ theorem adiabaticFrequencySusceptibilityIntegrand_zero_rate
 theorem adiabaticFrequencySusceptibilityIntegrand_zero_frequency
     (expectation : NormalizedExpectation H)
     (A B : H →L[ℂ] H) (η τ : ℝ) :
-    adiabaticFrequencySusceptibilityIntegrand system expectation A B 0 η τ =
+    adiabaticFrequencySusceptibilityIntegrand U hbar expectation A B 0 η τ =
       Complex.exp (-(η : ℂ) * (τ : ℂ)) *
-        retardedTimeDifferenceKernel system expectation A B τ := by
+        retardedTimeDifferenceKernel U hbar expectation A B τ := by
   simp [adiabaticFrequencySusceptibilityIntegrand]
 
 /-- Explicit assumptions for a physically adiabatic fixed-rate transform. -/
@@ -86,22 +86,22 @@ def AdiabaticIntegrable
     (expectation : NormalizedExpectation H)
     (A B : H →L[ℂ] H) (ω η : ℝ) : Prop :=
   0 < η ∧ MeasureTheory.Integrable
-    (adiabaticFrequencySusceptibilityIntegrand system expectation A B ω η)
+    (adiabaticFrequencySusceptibilityIntegrand U hbar expectation A B ω η)
 
 /-- Integrability of the switched kernel carried by `AdiabaticIntegrable`. -/
 theorem AdiabaticIntegrable.integrable
     {expectation : NormalizedExpectation H}
     {A B : H →L[ℂ] H} {ω η : ℝ}
-    (hInt : AdiabaticIntegrable system expectation A B ω η) :
+    (hInt : AdiabaticIntegrable U hbar expectation A B ω η) :
     MeasureTheory.Integrable
-      (adiabaticFrequencySusceptibilityIntegrand system expectation A B ω η) :=
+      (adiabaticFrequencySusceptibilityIntegrand U hbar expectation A B ω η) :=
   hInt.2
 
 /-- A zero switching rate is not an adiabatic rate. -/
 theorem not_adiabaticIntegrable_zero_rate
     (expectation : NormalizedExpectation H)
     (A B : H →L[ℂ] H) (ω : ℝ) :
-    ¬ AdiabaticIntegrable system expectation A B ω 0 := by
+    ¬ AdiabaticIntegrable U hbar expectation A B ω 0 := by
   simp [AdiabaticIntegrable]
 
 /-- Totalized fixed-rate adiabatically switched retarded susceptibility.  Theorems using
@@ -110,16 +110,16 @@ noncomputable def adiabaticFrequencyDomainSusceptibility
     (expectation : NormalizedExpectation H)
     (A B : H →L[ℂ] H) (ω η : ℝ) : ℂ :=
   ∫ τ : ℝ,
-    adiabaticFrequencySusceptibilityIntegrand system expectation A B ω η τ
+    adiabaticFrequencySusceptibilityIntegrand U hbar expectation A B ω η τ
 
 /-- At zero frequency, only the exponential damping remains. -/
 theorem adiabaticFrequencyDomainSusceptibility_zero_frequency
     (expectation : NormalizedExpectation H)
     (A B : H →L[ℂ] H) (η : ℝ) :
-    adiabaticFrequencyDomainSusceptibility system expectation A B 0 η =
+    adiabaticFrequencyDomainSusceptibility U hbar expectation A B 0 η =
       ∫ τ : ℝ,
         Complex.exp (-(η : ℂ) * (τ : ℂ)) *
-          retardedTimeDifferenceKernel system expectation A B τ := by
+          retardedTimeDifferenceKernel U hbar expectation A B τ := by
   simp [adiabaticFrequencyDomainSusceptibility,
     adiabaticFrequencySusceptibilityIntegrand]
 
@@ -129,8 +129,8 @@ theorem integral_adiabaticFrequencySusceptibilityIntegrand_zero_rate_eq_frequenc
     (expectation : NormalizedExpectation H)
     (A B : H →L[ℂ] H) (ω : ℝ) :
     (∫ τ : ℝ,
-        adiabaticFrequencySusceptibilityIntegrand system expectation A B ω 0 τ) =
-      frequencyDomainSusceptibility system expectation A B ω := by
+        adiabaticFrequencySusceptibilityIntegrand U hbar expectation A B ω 0 τ) =
+      frequencyDomainSusceptibility U hbar expectation A B ω := by
   simp [frequencyDomainSusceptibility]
 
 end

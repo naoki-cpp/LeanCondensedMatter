@@ -155,15 +155,16 @@ theorem adiabaticFrequencyDomainSusceptibility_eigenbasis_eq_lehmannSeries
     (data : EnergyEigenbasisLehmannData system ι)
     (A B : H →L[ℂ] H) (omega eta : ℝ) (hη : 0 < eta)
     (hsum : EigenbasisTimeDomainSummable system data A B) :
-    adiabaticFrequencyDomainSusceptibility system
+    adiabaticFrequencyDomainSusceptibility (freePropagatorGroup system) system.hbar
         (eigenbasisNormalizedExpectation system data) A B omega eta =
       eigenbasisLehmannSeries system data A B omega eta := by
   rw [adiabaticFrequencyDomainSusceptibility,
     integral_adiabaticFrequencySusceptibilityIntegrand_eq_Ioi_zero
-      system (eigenbasisNormalizedExpectation system data) A B omega eta]
+      (freePropagatorGroup system) system.hbar
+      (eigenbasisNormalizedExpectation system data) A B omega eta]
   calc
     (∫ τ : ℝ in Ioi 0,
-        adiabaticFrequencySusceptibilityIntegrand system
+        adiabaticFrequencySusceptibilityIntegrand (freePropagatorGroup system) system.hbar
           (eigenbasisNormalizedExpectation system data) A B omega eta τ) =
       ∫ τ : ℝ in Ioi 0,
         ∑' mn : ι × ι,
@@ -186,7 +187,7 @@ theorem adiabaticFrequencyDomainSusceptibility_eigenbasis_eq_finite_sum
     [Fintype ι]
     (data : EnergyEigenbasisLehmannData system ι)
     (A B : H →L[ℂ] H) (omega eta : ℝ) (hη : 0 < eta) :
-    adiabaticFrequencyDomainSusceptibility system
+    adiabaticFrequencyDomainSusceptibility (freePropagatorGroup system) system.hbar
         (eigenbasisNormalizedExpectation system data) A B omega eta =
       ∑ mn : ι × ι,
         (eigenbasisTransitionData system data A B mn).frequencyTerm omega eta := by

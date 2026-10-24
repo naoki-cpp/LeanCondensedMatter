@@ -34,13 +34,13 @@ theorem finiteTime_eigenbasisPhysicalSusceptibility_has_both_local_three_stage_l
     (hregular : EigenbasisStaticNonresonant system data A B) :
     HasLongTimeThenLocalStaticThenAdiabaticLimit
         (fun T omega eta =>
-          finiteTimeAdiabaticFrequencyDomainSusceptibility system
+          finiteTimeAdiabaticFrequencyDomainSusceptibility (freePropagatorGroup system) system.hbar
             (eigenbasisNormalizedExpectation system data) A B omega eta T)
         (Finset.univ.sum fun mn : ι × ι =>
           (eigenbasisTransitionData system data A B mn).frequencyTerm 0 0) ∧
       HasLongTimeThenLocalAdiabaticThenStaticLimit
         (fun T omega eta =>
-          finiteTimeAdiabaticFrequencyDomainSusceptibility system
+          finiteTimeAdiabaticFrequencyDomainSusceptibility (freePropagatorGroup system) system.hbar
             (eigenbasisNormalizedExpectation system data) A B omega eta T)
         (Finset.univ.sum fun mn : ι × ι =>
           (eigenbasisTransitionData system data A B mn).frequencyTerm 0 0) := by
@@ -53,13 +53,22 @@ theorem finiteTime_eigenbasisPhysicalSusceptibility_has_both_local_three_stage_l
   have hlong : ∀ omega eta, 0 < eta →
       Tendsto
         (fun T =>
-          finiteTimeAdiabaticFrequencyDomainSusceptibility system
+          finiteTimeAdiabaticFrequencyDomainSusceptibility (freePropagatorGroup system) system.hbar
             (eigenbasisNormalizedExpectation system data) A B omega eta T)
         atTop
         (𝓝 (F omega eta)) := by
     intro omega eta hη
+    have hMeas := measurable_retardedTimeDifferenceKernel
+      (freePropagatorGroup system) system.hbar (eigenbasisNormalizedExpectation system data) A B
+      (continuous_commutatorSusceptibility_timeDifference
+        (freePropagatorGroup system) system.hbar (eigenbasisNormalizedExpectation system data) A B
+        (continuous_heisenbergEvolution system A)).measurable
+    have hInt := adiabaticIntegrable_of_pos
+      (freePropagatorGroup system) system.hbar (eigenbasisNormalizedExpectation system data)
+      A B omega eta hη hMeas
     have hlong := tendsto_finiteTimeAdiabaticFrequencyDomainSusceptibility_atTop
-      system (eigenbasisNormalizedExpectation system data) A B omega eta hη
+      (freePropagatorGroup system) system.hbar (eigenbasisNormalizedExpectation system data)
+      A B omega eta hInt.integrable
     rw [adiabaticFrequencyDomainSusceptibility_eigenbasis_eq_finite_sum
       system data A B omega eta hη] at hlong
     exact hlong

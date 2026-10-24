@@ -280,11 +280,11 @@ theorem retardedTimeDifferenceKernel_eigenbasis_eq_timeDomainSeries_of_nonneg
     (data : EnergyEigenbasisLehmannData system ι)
     (A B : H →L[ℂ] H) {τ : ℝ} (hτ : 0 ≤ τ)
     (hsum : EigenbasisTimeDomainSummable system data A B) :
-    retardedTimeDifferenceKernel system
+    retardedTimeDifferenceKernel (freePropagatorGroup system) system.hbar
         (eigenbasisNormalizedExpectation system data) A B τ =
       eigenbasisTimeDomainSeries system data A B τ := by
   rw [retardedTimeDifferenceKernel_eq_commutatorSusceptibility_of_nonneg
-    system (eigenbasisNormalizedExpectation system data) A B hτ]
+    (freePropagatorGroup system) system.hbar (eigenbasisNormalizedExpectation system data) A B hτ]
   exact commutatorSusceptibility_eigenbasis_eq_timeDomainSeries
     system data A B τ hsum
 
@@ -293,7 +293,7 @@ transition sum. -/
 theorem retardedTimeDifferenceKernel_eigenbasis_eq_finite_sum_of_nonneg
     [Fintype ι] (data : EnergyEigenbasisLehmannData system ι)
     (A B : H →L[ℂ] H) {τ : ℝ} (hτ : 0 ≤ τ) :
-    retardedTimeDifferenceKernel system
+    retardedTimeDifferenceKernel (freePropagatorGroup system) system.hbar
         (eigenbasisNormalizedExpectation system data) A B τ =
       ∑ mn : ι × ι,
         eigenbasisTimeDomainTerm system data A B τ mn := by
