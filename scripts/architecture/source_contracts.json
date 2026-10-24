@@ -258,7 +258,7 @@
       "path": "LeanCondensedMatter/QuantumTheory/LinearResponse/Dynamics/Stationarity.lean",
       "modules": [
         "LeanCondensedMatter.QuantumTheory.LinearResponse.Expectation.Basic",
-        "LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.Free"
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.Unitary"
       ]
     },
     {

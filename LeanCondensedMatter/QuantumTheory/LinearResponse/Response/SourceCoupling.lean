@@ -54,8 +54,8 @@ theorem isSelfAdjoint_sourceCoupledPerturbation
 theorem timeDependentInteractionPerturbation_sourceCoupledPerturbation
     (f : ℝ → ℝ) (B : H →L[ℂ] H) (t : ℝ) :
     timeDependentInteractionPerturbation system (sourceCoupledPerturbation f B) t =
-      (-(f t : ℂ)) • heisenbergEvolution system t B := by
-  exact (heisenbergEvolution system t).toAlgEquiv.toLinearEquiv.map_smul
+      (-(f t : ℂ)) • heisenbergEvolution (freePropagatorGroup system) t B := by
+  exact (heisenbergEvolution (freePropagatorGroup system) t).toAlgEquiv.toLinearEquiv.map_smul
     (-(f t : ℂ)) B
 
 /-- Moving the source minus sign from the interaction family into the Dyson scalar coupling leaves
@@ -64,10 +64,10 @@ theorem sourceCoupledInteractionPropagator_eq_positiveSourceDyson
     (f : ℝ → ℝ) (B : H →L[ℂ] H) (lam t : ℝ) :
     timeDependentInteractionPropagator system (sourceCoupledPerturbation f B) lam t =
       Dyson.evolution
-        (fun s => (f s : ℂ) • heisenbergEvolution system s B)
+        (fun s => (f s : ℂ) • heisenbergEvolution (freePropagatorGroup system) s B)
         (-(timeDependentPhysicalDysonCoupling system lam)) t := by
   let W : ℝ → (H →L[ℂ] H) :=
-    fun s => (f s : ℂ) • heisenbergEvolution system s B
+    fun s => (f s : ℂ) • heisenbergEvolution (freePropagatorGroup system) s B
   have hinteraction :
       timeDependentInteractionPerturbation system (sourceCoupledPerturbation f B) =
         fun s => -W s := by
@@ -87,23 +87,24 @@ theorem sourceCoupled_responseIntegral_eq
     ((-(Complex.I / (system.hbar : ℂ))) •
       ∫ s in (0 : ℝ)..t,
         expectation
-          ⁅heisenbergEvolution system t A,
+          ⁅heisenbergEvolution (freePropagatorGroup system) t A,
             timeDependentInteractionPerturbation system
               (sourceCoupledPerturbation f B) s⁆) =
       ((Complex.I / (system.hbar : ℂ)) •
         ∫ s in (0 : ℝ)..t,
           (f s : ℂ) *
             expectation
-              ⁅heisenbergEvolution system t A,
-                heisenbergEvolution system s B⁆) := by
+              ⁅heisenbergEvolution (freePropagatorGroup system) t A,
+                heisenbergEvolution (freePropagatorGroup system) s B⁆) := by
   let g : ℝ → ℂ := fun s =>
     (f s : ℂ) *
       expectation
-        ⁅heisenbergEvolution system t A, heisenbergEvolution system s B⁆
+        ⁅heisenbergEvolution (freePropagatorGroup system) t A,
+          heisenbergEvolution (freePropagatorGroup system) s B⁆
   have hfun :
       (fun s : ℝ =>
         expectation
-          ⁅heisenbergEvolution system t A,
+          ⁅heisenbergEvolution (freePropagatorGroup system) t A,
             timeDependentInteractionPerturbation system
               (sourceCoupledPerturbation f B) s⁆) =
         fun s => -g s := by
@@ -111,15 +112,17 @@ theorem sourceCoupled_responseIntegral_eq
     rw [timeDependentInteractionPerturbation_sourceCoupledPerturbation]
     calc
       expectation
-          ⁅heisenbergEvolution system t A,
-            (-(f s : ℂ)) • heisenbergEvolution system s B⁆ =
+          ⁅heisenbergEvolution (freePropagatorGroup system) t A,
+            (-(f s : ℂ)) • heisenbergEvolution (freePropagatorGroup system) s B⁆ =
         expectation
           ((-(f s : ℂ)) •
-            ⁅heisenbergEvolution system t A, heisenbergEvolution system s B⁆) := by
+            ⁅heisenbergEvolution (freePropagatorGroup system) t A,
+              heisenbergEvolution (freePropagatorGroup system) s B⁆) := by
         rw [lie_smul]
       _ = (-(f s : ℂ)) *
           expectation
-            ⁅heisenbergEvolution system t A, heisenbergEvolution system s B⁆ := by
+            ⁅heisenbergEvolution (freePropagatorGroup system) t A,
+              heisenbergEvolution (freePropagatorGroup system) s B⁆ := by
         exact map_smul expectation.toContinuousLinearMap _ _
       _ = -g s := by
         simp [g]
@@ -147,7 +150,8 @@ theorem hasDerivAt_sourceCoupledPerturbedExpectation_zero_of_bound_kubo
         ∫ s in (0 : ℝ)..t,
           (f s : ℂ) *
             expectation
-              ⁅heisenbergEvolution system t A, heisenbergEvolution system s B⁆)
+              ⁅heisenbergEvolution (freePropagatorGroup system) t A,
+                heisenbergEvolution (freePropagatorGroup system) s B⁆)
       0 := by
   have hgeneral :=
     hasDerivAt_timeDependentPerturbedExpectationFunctional_apply_zero_of_bound_kubo

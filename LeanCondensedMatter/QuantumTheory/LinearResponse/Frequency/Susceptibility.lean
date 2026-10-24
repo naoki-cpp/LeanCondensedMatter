@@ -56,7 +56,7 @@ theorem retardedTimeDifferenceKernel_eq_commutatorSusceptibility_of_nonneg
 /-- A stationary expectation makes the full retarded susceptibility a function only of `t - s`. -/
 theorem retardedSusceptibility_eq_retardedTimeDifferenceKernel_of_stationary
     (expectation : NormalizedExpectation H)
-    (hstationary : IsStationary system expectation)
+    (hstationary : IsStationary (freePropagatorGroup system) expectation)
     (A B : H →L[ℂ] H) (t s : ℝ) :
     retardedSusceptibility system expectation A B t s =
       retardedTimeDifferenceKernel system expectation A B (t - s) := by

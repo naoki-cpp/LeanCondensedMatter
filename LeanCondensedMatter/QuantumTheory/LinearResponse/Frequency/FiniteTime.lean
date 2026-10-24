@@ -79,7 +79,7 @@ stationary observable-variation expectation. The source value at observation tim
 theorem finiteTimeAdiabaticResponse_eq_stationaryLag
     (channel : ResponseChannel H)
     (system : BoundedFreeSystem H) (expectation : NormalizedExpectation H)
-    (hstationary : IsStationary system expectation)
+    (hstationary : IsStationary (freePropagatorGroup system) expectation)
     (ω η : ℝ) {T : ℝ} (hT : 0 ≤ T) :
     channel.finiteTimeAdiabaticResponse system expectation ω η T =
       finiteTimeAdiabaticTransform

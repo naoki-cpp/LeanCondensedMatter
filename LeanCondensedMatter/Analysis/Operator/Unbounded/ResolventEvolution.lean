@@ -4,6 +4,8 @@ import LeanCondensedMatter.Analysis.Operator.BoundedUnitaryEvolution
 import Mathlib.Analysis.Normed.Operator.Completeness
 import Mathlib.Analysis.Calculus.Deriv.Slope
 import Mathlib.Topology.MetricSpace.Cauchy
+import Mathlib.Algebra.Group.TypeTags.Basic
+import Mathlib.Algebra.Star.Unitary
 import Mathlib.Tactic
 
 set_option linter.style.header false
@@ -574,6 +576,23 @@ theorem stoneEvolution_mul_star
         star (stoneEvolution A hA t) = 1 := by
   rw [stoneEvolution_star, ← stoneEvolution_add]
   simp
+
+/-- The Stone propagators as a one-parameter group of unitary bounded operators.
+The generator is allowed to be unbounded; no operator-norm continuity is asserted. -/
+noncomputable def stoneEvolutionUnitaryGroup
+    (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) :
+    Multiplicative ℝ →* unitary (H →L[ℂ] H) where
+  toFun t := ⟨stoneEvolution A hA t.toAdd, by
+    rw [Unitary.mem_iff]
+    exact ⟨stoneEvolution_star_mul A hA t.toAdd, stoneEvolution_mul_star A hA t.toAdd⟩⟩
+  map_one' := Subtype.ext (stoneEvolution_zero A hA)
+  map_mul' t s := Subtype.ext (stoneEvolution_add A hA t.toAdd s.toAdd)
+
+@[simp]
+theorem stoneEvolutionUnitaryGroup_apply
+    (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (t : ℝ) :
+    (stoneEvolutionUnitaryGroup A hA (Multiplicative.ofAdd t) : H →L[ℂ] H) =
+      stoneEvolution A hA t := rfl
 
 end
 

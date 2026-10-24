@@ -26,10 +26,20 @@ with unitarity, norm preservation, Schrödinger-picture state evolution, Heisenb
 evolution, density-operator evolution, exact pure/density expectation equivalence between pictures,
 and restriction of density evolution to physical `PureState` values.
 
-`LinearResponse.heisenbergEvolution system t` is a star-algebra automorphism of bounded operators;
-applying it to `A` gives `U₀(-t) A U₀(t)`. Algebraic consumers use the standard mapping laws,
-while time-dependent statements use the curve `fun t => heisenbergEvolution system t A`.
-The application formula remains explicit for operator-coordinate and differential calculations.
+`LinearResponse/Dynamics/Unitary` owns Heisenberg evolution and its algebraic laws for a
+one-parameter unitary group `U : Multiplicative ℝ →* unitary (H →L[ℂ] H)`.
+`heisenbergEvolution U t` is the star-algebra automorphism `A ↦ U(t)† A U(t)`.
+Composition, relative-time commutators, norm preservation, and `IsStationary` do not assume a
+bounded generator or operator-norm continuity. The group uses Mathlib's monoid homomorphism and
+unitary subtype, without an additional dynamics structure.
+
+`freePropagatorGroup system` supplies this group for a bounded physical Hamiltonian.
+`LinearPMap.stoneEvolutionUnitaryGroup` supplies the same group type for an unbounded self-adjoint
+generator through the existing Stone evolution. The Stone generator includes the desired time
+scale; it is not automatically a physical Hamiltonian with an implicit factor of `ℏ⁻¹`.
+The bounded representation's application formula remains explicit for operator-coordinate and
+differential calculations. Generalizing the perturbative Kubo derivation and its analytic
+hypotheses to unbounded generators remains separate work.
 
 The equations-of-motion layer proves bounded Schrödinger, Heisenberg, and von Neumann equations in
 operator/norm differentiable form. Conservation results show that observables commuting with `H₀`
