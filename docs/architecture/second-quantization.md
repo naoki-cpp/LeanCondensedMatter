@@ -24,6 +24,11 @@ Hamiltonians, convergence assumptions, physical specializations, and final physi
 A declaration should not remain in a statistics-specific layer merely because that is where its proof
 was first developed.
 
+Ordinary finite-dimensional operator trace is owned by `Analysis.Operator.FiniteTrace`
+for normed spaces; its adjoint law retains the inner-product-space assumption. Common's
+finite analytic Fock adapter owns the occupation-basis formula and algebraic-trace transport,
+while the analytic Dyson partition function uses the Analysis trace directly.
+
 Statistics-independent complex Peierls phase kernels and their scalar derivatives are owned by
 `QuantumTheory.PeierlsPhase`. One-particle Peierls hopping, link current, and contact operators
 with their algebraic source derivatives are owned by `QuantumTheory.PeierlsLattice`;

@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Analysis.Operator.FiniteTrace
 import LeanCondensedMatter.SecondQuantization.Common.Algebra.FiniteTrace
 import LeanCondensedMatter.SecondQuantization.Common.Perturbation.FiniteOperatorIntegral
 import Mathlib.Algebra.Algebra.Equiv
@@ -17,7 +18,7 @@ For a finite configuration type, `AlgebraicFock Config = Config →₀ ℂ` is t
 endomorphisms are transported by the canonical conjugation algebra equivalence and the
 finite-dimensional equivalence between linear and continuous linear endomorphisms.
 
-The ordinary finite-dimensional trace is bundled on the continuous realization and proved compatible
+The ordinary finite-dimensional trace from `Analysis.Operator.FiniteTrace` is proved compatible
 with the existing algebraic `traceFock`. The coefficientwise `operatorIntervalIntegral` remains the
 algebraic definition used by the Dyson and diagrammatic layers. The theorem
 `continuousOperatorIntervalIntegral_eq` proves that, for a matrix-coefficient-continuous operator
@@ -82,27 +83,20 @@ theorem finiteContinuousOperator_basis_apply
   rw [← finiteAnalyticFockEquiv_basisState, finiteContinuousOperator_equiv_apply]
   rfl
 
-/-- The ordinary finite-dimensional trace, bundled as a continuous linear functional on the
-continuous-operator algebra. This is Mathlib's canonical linear trace, made continuous using
-finite dimensionality. -/
-noncomputable def finiteOperatorTrace :
-    FiniteContinuousOperator Config →L[ℂ] ℂ :=
-  ((LinearMap.trace ℂ (FiniteAnalyticFock Config)).comp
-    (ContinuousLinearMap.coeLM ℂ)).toContinuousLinearMap
-
-@[simp]
-theorem finiteOperatorTrace_apply (A : FiniteContinuousOperator Config) :
-    finiteOperatorTrace A = ∑ n : Config, A (finiteAnalyticBasis n) n := by
+theorem finiteDimensionalOperatorTrace_finiteAnalyticBasis (A : FiniteContinuousOperator Config) :
+    ContinuousLinearMap.finiteDimensionalOperatorTrace A =
+      ∑ n : Config, A (finiteAnalyticBasis n) n := by
   classical
   change LinearMap.trace ℂ (FiniteAnalyticFock Config) A.toLinearMap = _
   rw [LinearMap.trace_eq_matrix_trace ℂ (Pi.basisFun ℂ Config)]
   simp [Matrix.trace, finiteAnalyticBasis, Pi.basisFun_apply]
 
 /-- The continuous trace agrees with the existing algebraic `traceFock` after transport. -/
-theorem finiteOperatorTrace_finiteContinuousOperator
+theorem finiteDimensionalOperatorTrace_finiteContinuousOperator
     (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
-    finiteOperatorTrace (finiteContinuousOperatorAlgEquiv A) = traceFock A := by
-  simp [finiteOperatorTrace_apply, traceFock_eq_sum_matrixCoeff,
+    ContinuousLinearMap.finiteDimensionalOperatorTrace (finiteContinuousOperatorAlgEquiv A) =
+      traceFock A := by
+  simp only [finiteDimensionalOperatorTrace_finiteAnalyticBasis, traceFock_eq_sum_matrixCoeff,
     finiteContinuousOperator_basis_apply]
 
 set_option linter.unusedFintypeInType false in
