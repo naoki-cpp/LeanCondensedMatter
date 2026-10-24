@@ -32676,6 +32676,44 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
+    "terminal": true,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (t : ℝ),\n  ↑((A.stoneEvolutionUnitaryGroup hA) (Multiplicative.ofAdd t)) = A.stoneEvolution hA t",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "LinearPMap.stoneEvolutionUnitaryGroup_apply",
+    "module": "LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
     "terminal": false,
     "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (t s : ℝ),\n  A.stoneEvolution hA (t + s) = A.stoneEvolution hA t * A.stoneEvolution hA s",
     "standardAxioms": [
@@ -47839,7 +47877,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (channel : QuantumTheory.LinearResponse.ResponseChannel H) (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (expectation : QuantumTheory.LinearResponse.NormalizedExpectation H),\n  QuantumTheory.LinearResponse.IsStationary system expectation →\n    ∀ (ω η : ℝ) {T : ℝ},\n      0 ≤ T →\n        channel.finiteTimeAdiabaticResponse system expectation ω η T =\n          QuantumTheory.LinearResponse.finiteTimeAdiabaticTransform\n              (fun τ =>\n                QuantumTheory.LinearResponse.commutatorSusceptibility system expectation channel.measured channel.source\n                  τ 0)\n              ω η T +\n            expectation.toContinuousLinearMap channel.observableVariation",
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (channel : QuantumTheory.LinearResponse.ResponseChannel H) (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (expectation : QuantumTheory.LinearResponse.NormalizedExpectation H),\n  QuantumTheory.LinearResponse.IsStationary (QuantumTheory.LinearResponse.freePropagatorGroup system) expectation →\n    ∀ (ω η : ℝ) {T : ℝ},\n      0 ≤ T →\n        channel.finiteTimeAdiabaticResponse system expectation ω η T =\n          QuantumTheory.LinearResponse.finiteTimeAdiabaticTransform\n              (fun τ =>\n                QuantumTheory.LinearResponse.commutatorSusceptibility system expectation channel.measured channel.source\n                  τ 0)\n              ω η T +\n            expectation.toContinuousLinearMap channel.observableVariation",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -47943,7 +47981,7 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "QuantumTheory.LinearResponse.heisenbergEvolution_apply"
+      "QuantumTheory.LinearResponse.heisenbergEvolution_freePropagatorGroup_apply"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -47985,7 +48023,7 @@
       "QuantumTheory.LinearResponse.ResponseChannel.finiteTimeAdiabaticResponse_fixed"
     ],
     "dependencies": [
-      "QuantumTheory.LinearResponse.heisenbergEvolution_apply"
+      "QuantumTheory.LinearResponse.heisenbergEvolution_freePropagatorGroup_apply"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -48050,7 +48088,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (channel : QuantumTheory.LinearResponse.ResponseChannel H) (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (expectation : QuantumTheory.LinearResponse.NormalizedExpectation H),\n  QuantumTheory.LinearResponse.IsStationary system expectation →\n    ∀ (ω η : ℝ),\n      QuantumTheory.LinearResponse.AdiabaticLagIntegrable\n          (fun τ =>\n            QuantumTheory.LinearResponse.commutatorSusceptibility system expectation channel.measured channel.source τ\n              0)\n          ω η →\n        QuantumTheory.LinearResponse.HasInfiniteObservationTimeLimit\n          (channel.finiteTimeAdiabaticResponse system expectation ω η)\n          (channel.infiniteTimeAdiabaticResponse system expectation ω η)",
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (channel : QuantumTheory.LinearResponse.ResponseChannel H) (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (expectation : QuantumTheory.LinearResponse.NormalizedExpectation H),\n  QuantumTheory.LinearResponse.IsStationary (QuantumTheory.LinearResponse.freePropagatorGroup system) expectation →\n    ∀ (ω η : ℝ),\n      QuantumTheory.LinearResponse.AdiabaticLagIntegrable\n          (fun τ =>\n            QuantumTheory.LinearResponse.commutatorSusceptibility system expectation channel.measured channel.source τ\n              0)\n          ω η →\n        QuantumTheory.LinearResponse.HasInfiniteObservationTimeLimit\n          (channel.finiteTimeAdiabaticResponse system expectation ω η)\n          (channel.infiniteTimeAdiabaticResponse system expectation ω η)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -48095,7 +48133,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (channel : QuantumTheory.LinearResponse.ResponseChannel H) (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (expectation : QuantumTheory.LinearResponse.NormalizedExpectation H),\n  QuantumTheory.LinearResponse.IsStationary system expectation →\n    ∀ (ω η : ℝ),\n      0 < η →\n        QuantumTheory.LinearResponse.HasInfiniteObservationTimeLimit\n          (channel.finiteTimeAdiabaticResponse system expectation ω η)\n          (channel.infiniteTimeAdiabaticResponse system expectation ω η)",
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (channel : QuantumTheory.LinearResponse.ResponseChannel H) (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (expectation : QuantumTheory.LinearResponse.NormalizedExpectation H),\n  QuantumTheory.LinearResponse.IsStationary (QuantumTheory.LinearResponse.freePropagatorGroup system) expectation →\n    ∀ (ω η : ℝ),\n      0 < η →\n        QuantumTheory.LinearResponse.HasInfiniteObservationTimeLimit\n          (channel.finiteTimeAdiabaticResponse system expectation ω η)\n          (channel.infiniteTimeAdiabaticResponse system expectation ω η)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -48720,8 +48758,8 @@
       "QuantumTheory.LinearResponse.evolveDensityOperator_eq_self_of_commute_hamiltonian"
     ],
     "dependencies": [
-      "QuantumTheory.LinearResponse.heisenbergEvolution_apply",
       "QuantumTheory.LinearResponse.heisenbergEvolution_eq_self_of_commute_hamiltonian",
+      "QuantumTheory.LinearResponse.heisenbergEvolution_freePropagatorGroup_apply",
       "QuantumTheory.LinearResponse.star_freePropagator"
     ],
     "crossModuleDirectWrapper": false,
@@ -48744,7 +48782,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H) (A : QuantumTheory.Observable H) (t : ℝ),\n  ↑(QuantumTheory.LinearResponse.heisenbergObservable system A t) =\n    (QuantumTheory.LinearResponse.heisenbergEvolution system t) ↑A",
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H) (A : QuantumTheory.Observable H) (t : ℝ),\n  ↑(QuantumTheory.LinearResponse.heisenbergObservable system A t) =\n    (QuantumTheory.LinearResponse.heisenbergEvolution (QuantumTheory.LinearResponse.freePropagatorGroup system) t) ↑A",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -48829,7 +48867,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (expectation : QuantumTheory.LinearResponse.NormalizedExpectation H),\n  QuantumTheory.LinearResponse.IsStationary system expectation →\n    ∀ (A B : H →L[ℂ] H) (t s : ℝ),\n      QuantumTheory.LinearResponse.commutatorSusceptibility system expectation A B t s =\n        QuantumTheory.LinearResponse.commutatorSusceptibility system expectation A B (t - s) 0",
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (expectation : QuantumTheory.LinearResponse.NormalizedExpectation H),\n  QuantumTheory.LinearResponse.IsStationary (QuantumTheory.LinearResponse.freePropagatorGroup system) expectation →\n    ∀ (A B : H →L[ℂ] H) (t s : ℝ),\n      QuantumTheory.LinearResponse.commutatorSusceptibility system expectation A B t s =\n        QuantumTheory.LinearResponse.commutatorSusceptibility system expectation A B (t - s) 0",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -49050,7 +49088,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H) (A : H →L[ℂ] H),\n  Continuous fun t => (QuantumTheory.LinearResponse.heisenbergEvolution system t) A",
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H) (A : H →L[ℂ] H),\n  Continuous fun t =>\n    (QuantumTheory.LinearResponse.heisenbergEvolution (QuantumTheory.LinearResponse.freePropagatorGroup system) t) A",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -49073,7 +49111,7 @@
     ],
     "dependencies": [
       "QuantumTheory.LinearResponse.continuous_freePropagator",
-      "QuantumTheory.LinearResponse.heisenbergEvolution_apply"
+      "QuantumTheory.LinearResponse.heisenbergEvolution_freePropagatorGroup_apply"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -49270,7 +49308,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {ι : Type u_2} (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (data : QuantumTheory.LinearResponse.EnergyEigenbasisLehmannData system ι) (A B : H →L[ℂ] H) (τ : ℝ),\n  QuantumTheory.LinearResponse.EigenbasisTimeDomainSummable system data A B →\n    (QuantumTheory.LinearResponse.eigenbasisNormalizedExpectation system data).toContinuousLinearMap\n        ((QuantumTheory.LinearResponse.heisenbergEvolution system τ) A * B) =\n      ∑' (mn : ι × ι), QuantumTheory.LinearResponse.eigenbasisForwardTimeTerm system data A B τ mn",
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {ι : Type u_2} (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (data : QuantumTheory.LinearResponse.EnergyEigenbasisLehmannData system ι) (A B : H →L[ℂ] H) (τ : ℝ),\n  QuantumTheory.LinearResponse.EigenbasisTimeDomainSummable system data A B →\n    (QuantumTheory.LinearResponse.eigenbasisNormalizedExpectation system data).toContinuousLinearMap\n        ((QuantumTheory.LinearResponse.heisenbergEvolution (QuantumTheory.LinearResponse.freePropagatorGroup system) τ)\n            A *\n          B) =\n      ∑' (mn : ι × ι), QuantumTheory.LinearResponse.eigenbasisForwardTimeTerm system data A B τ mn",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -49316,7 +49354,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {ι : Type u_2} (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (data : QuantumTheory.LinearResponse.EnergyEigenbasisLehmannData system ι) (A B : H →L[ℂ] H) (τ : ℝ),\n  QuantumTheory.LinearResponse.EigenbasisTimeDomainSummable system data A B →\n    (QuantumTheory.LinearResponse.eigenbasisNormalizedExpectation system data).toContinuousLinearMap\n        (B * (QuantumTheory.LinearResponse.heisenbergEvolution system τ) A) =\n      ∑' (mn : ι × ι), QuantumTheory.LinearResponse.eigenbasisBackwardTimeTerm system data A B τ mn",
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {ι : Type u_2} (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (data : QuantumTheory.LinearResponse.EnergyEigenbasisLehmannData system ι) (A B : H →L[ℂ] H) (τ : ℝ),\n  QuantumTheory.LinearResponse.EigenbasisTimeDomainSummable system data A B →\n    (QuantumTheory.LinearResponse.eigenbasisNormalizedExpectation system data).toContinuousLinearMap\n        (B *\n          (QuantumTheory.LinearResponse.heisenbergEvolution (QuantumTheory.LinearResponse.freePropagatorGroup system) τ)\n            A) =\n      ∑' (mn : ι × ι), QuantumTheory.LinearResponse.eigenbasisBackwardTimeTerm system data A B τ mn",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -50371,7 +50409,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (expectation : QuantumTheory.LinearResponse.NormalizedExpectation H) (V : ℝ → H →L[ℂ] H) (A : H →L[ℂ] H) (t : ℝ),\n  IntervalIntegrable (QuantumTheory.LinearResponse.timeDependentInteractionPerturbation system V) MeasureTheory.volume 0\n      t →\n    expectation.toContinuousLinearMap\n        ⁅(QuantumTheory.LinearResponse.heisenbergEvolution system t) A,\n          QuantumTheory.LinearResponse.timeDependentPropagatorFirstVariation system V t⁆ =\n      -(Complex.I / ↑system.hbar) •\n        ∫ (s : ℝ) in 0..t,\n          expectation.toContinuousLinearMap\n            ⁅(QuantumTheory.LinearResponse.heisenbergEvolution system t) A,\n              QuantumTheory.LinearResponse.timeDependentInteractionPerturbation system V s⁆",
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (expectation : QuantumTheory.LinearResponse.NormalizedExpectation H) (V : ℝ → H →L[ℂ] H) (A : H →L[ℂ] H) (t : ℝ),\n  IntervalIntegrable (QuantumTheory.LinearResponse.timeDependentInteractionPerturbation system V) MeasureTheory.volume 0\n      t →\n    expectation.toContinuousLinearMap\n        ⁅(QuantumTheory.LinearResponse.heisenbergEvolution (QuantumTheory.LinearResponse.freePropagatorGroup system) t)\n            A,\n          QuantumTheory.LinearResponse.timeDependentPropagatorFirstVariation system V t⁆ =\n      -(Complex.I / ↑system.hbar) •\n        ∫ (s : ℝ) in 0..t,\n          expectation.toContinuousLinearMap\n            ⁅(QuantumTheory.LinearResponse.heisenbergEvolution (QuantumTheory.LinearResponse.freePropagatorGroup system)\n                  t)\n                A,\n              QuantumTheory.LinearResponse.timeDependentInteractionPerturbation system V s⁆",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -50415,7 +50453,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H) (ρ : QuantumTheory.DensityOperator H) (A : H →L[ℂ] H)\n  (t : ℝ),\n  (QuantumTheory.LinearResponse.evolveDensityOperator system ρ t).expectation A =\n    ρ.expectation ((QuantumTheory.LinearResponse.heisenbergEvolution system t) A)",
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H) (ρ : QuantumTheory.DensityOperator H) (A : H →L[ℂ] H)\n  (t : ℝ),\n  (QuantumTheory.LinearResponse.evolveDensityOperator system ρ t).expectation A =\n    ρ.expectation\n      ((QuantumTheory.LinearResponse.heisenbergEvolution (QuantumTheory.LinearResponse.freePropagatorGroup system) t) A)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -50444,7 +50482,7 @@
       "ContinuousLinearMap.IsTraceClass.comp_right",
       "ContinuousLinearMap.IsTraceClass.trace_comp_comm",
       "QuantumTheory.DensityOperator.expectation_apply",
-      "QuantumTheory.LinearResponse.heisenbergEvolution_apply",
+      "QuantumTheory.LinearResponse.heisenbergEvolution_freePropagatorGroup_apply",
       "QuantumTheory.LinearResponse.star_freePropagator"
     ],
     "crossModuleDirectWrapper": false,
@@ -50536,46 +50574,6 @@
     "dependents": [],
     "dependencies": [
       "QuantumTheory.LinearResponse.expectation_evolveDensityOperator_eq_of_commute_hamiltonian"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (expectation : QuantumTheory.LinearResponse.NormalizedExpectation H) (A : H →L[ℂ] H),\n  expectation.toContinuousLinearMap ((QuantumTheory.LinearResponse.heisenbergEvolution system 0) A) =\n    expectation.toContinuousLinearMap A",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.LinearResponse.expectation_heisenbergEvolution_zero",
-    "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.Stationarity",
-    "externalAxioms": [],
-    "docString": "Every normalized expectation is invariant at the initial time. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "QuantumTheory.LinearResponse.heisenbergEvolution_zero"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -50887,6 +50885,44 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
+    "terminal": true,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H) (t : ℝ),\n  ↑((QuantumTheory.LinearResponse.freePropagatorGroup system) (Multiplicative.ofAdd t)) =\n    QuantumTheory.LinearResponse.freePropagator system t",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.LinearResponse.freePropagatorGroup_apply",
+    "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.Free",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
     "terminal": false,
     "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H) (t s : ℝ),\n  QuantumTheory.LinearResponse.freePropagator system (t + s) =\n    QuantumTheory.LinearResponse.freePropagator system t * QuantumTheory.LinearResponse.freePropagator system s",
     "standardAxioms": [
@@ -50909,8 +50945,7 @@
     "dependents": [
       "QuantumTheory.LinearResponse.evolveState_add",
       "QuantumTheory.LinearResponse.freePropagator_mul_neg",
-      "QuantumTheory.LinearResponse.freePropagator_neg_mul",
-      "QuantumTheory.LinearResponse.heisenbergEvolution_heisenbergEvolution"
+      "QuantumTheory.LinearResponse.freePropagator_neg_mul"
     ],
     "dependencies": [
       "LinearPMap.boundedUnitaryEvolution_add",
@@ -50921,10 +50956,9 @@
     "compiledConsumers": [
       "QuantumTheory.LinearResponse.evolveState_add",
       "QuantumTheory.LinearResponse.freePropagator_mul_neg",
-      "QuantumTheory.LinearResponse.freePropagator_neg_mul",
-      "QuantumTheory.LinearResponse.heisenbergEvolution_heisenbergEvolution"
+      "QuantumTheory.LinearResponse.freePropagator_neg_mul"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -50988,7 +51022,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -51000,9 +51034,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.LinearResponse.heisenbergEvolution_apply",
-      "QuantumTheory.LinearResponse.norm_freePropagator_apply",
-      "QuantumTheory.LinearResponse.norm_heisenbergEvolution"
+      "QuantumTheory.LinearResponse.norm_freePropagator_apply"
     ],
     "dependencies": [
       "QuantumTheory.LinearResponse.freePropagator_mul_star",
@@ -51011,12 +51043,9 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.LinearResponse.freePropagatorUnitary",
-      "QuantumTheory.LinearResponse.heisenbergEvolution_apply",
-      "QuantumTheory.LinearResponse.norm_freePropagator_apply",
-      "QuantumTheory.LinearResponse.norm_heisenbergEvolution"
+      "QuantumTheory.LinearResponse.norm_freePropagator_apply"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -51195,8 +51224,7 @@
     "dependents": [
       "QuantumTheory.LinearResponse.evolveState_zero",
       "QuantumTheory.LinearResponse.freePropagator_mul_neg",
-      "QuantumTheory.LinearResponse.freePropagator_neg_mul",
-      "QuantumTheory.LinearResponse.heisenbergEvolution_zero"
+      "QuantumTheory.LinearResponse.freePropagator_neg_mul"
     ],
     "dependencies": [
       "LinearPMap.boundedUnitaryEvolution_zero",
@@ -51207,10 +51235,9 @@
     "compiledConsumers": [
       "QuantumTheory.LinearResponse.evolveState_zero",
       "QuantumTheory.LinearResponse.freePropagator_mul_neg",
-      "QuantumTheory.LinearResponse.freePropagator_neg_mul",
-      "QuantumTheory.LinearResponse.heisenbergEvolution_zero"
+      "QuantumTheory.LinearResponse.freePropagator_neg_mul"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -51473,7 +51500,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (expectation : QuantumTheory.LinearResponse.NormalizedExpectation H) {V : ℝ → H →L[ℂ] H},\n  (∀ (s : ℝ), IsSelfAdjoint (V s)) →\n    ∀ (A₀ A₁ : H →L[ℂ] H) {β M t : ℝ},\n      0 ≤ M →\n        (∀ s ∈ Set.Icc 0 β, ‖QuantumTheory.LinearResponse.timeDependentInteractionPerturbation system V s‖ ≤ M) →\n          t ∈ Set.Icc 0 β →\n            IntervalIntegrable (QuantumTheory.LinearResponse.timeDependentInteractionPerturbation system V)\n                MeasureTheory.volume 0 t →\n              HasDerivAt\n                (fun lam => QuantumTheory.LinearResponse.affinePerturbedExpectation system expectation V A₀ A₁ lam t)\n                ((-(Complex.I / ↑system.hbar) •\n                    ∫ (s : ℝ) in 0..t,\n                      expectation.toContinuousLinearMap\n                        ⁅(QuantumTheory.LinearResponse.heisenbergEvolution system t) A₀,\n                          QuantumTheory.LinearResponse.timeDependentInteractionPerturbation system V s⁆) +\n                  expectation.toContinuousLinearMap ((QuantumTheory.LinearResponse.heisenbergEvolution system t) A₁))\n                0",
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (expectation : QuantumTheory.LinearResponse.NormalizedExpectation H) {V : ℝ → H →L[ℂ] H},\n  (∀ (s : ℝ), IsSelfAdjoint (V s)) →\n    ∀ (A₀ A₁ : H →L[ℂ] H) {β M t : ℝ},\n      0 ≤ M →\n        (∀ s ∈ Set.Icc 0 β, ‖QuantumTheory.LinearResponse.timeDependentInteractionPerturbation system V s‖ ≤ M) →\n          t ∈ Set.Icc 0 β →\n            IntervalIntegrable (QuantumTheory.LinearResponse.timeDependentInteractionPerturbation system V)\n                MeasureTheory.volume 0 t →\n              HasDerivAt\n                (fun lam => QuantumTheory.LinearResponse.affinePerturbedExpectation system expectation V A₀ A₁ lam t)\n                ((-(Complex.I / ↑system.hbar) •\n                    ∫ (s : ℝ) in 0..t,\n                      expectation.toContinuousLinearMap\n                        ⁅(QuantumTheory.LinearResponse.heisenbergEvolution\n                              (QuantumTheory.LinearResponse.freePropagatorGroup system) t)\n                            A₀,\n                          QuantumTheory.LinearResponse.timeDependentInteractionPerturbation system V s⁆) +\n                  expectation.toContinuousLinearMap\n                    ((QuantumTheory.LinearResponse.heisenbergEvolution\n                        (QuantumTheory.LinearResponse.freePropagatorGroup system) t)\n                      A₁))\n                0",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -51497,7 +51524,7 @@
     "dependencies": [
       "QuantumTheory.LinearResponse.hasDerivAt_timeDependentPerturbedExpectationFunctional_apply_zero_of_bound",
       "QuantumTheory.LinearResponse.hasDerivAt_timeDependentPerturbedExpectationFunctional_apply_zero_of_bound_kubo",
-      "QuantumTheory.LinearResponse.heisenbergEvolution_apply",
+      "QuantumTheory.LinearResponse.heisenbergEvolution_freePropagatorGroup_apply",
       "QuantumTheory.LinearResponse.timeDependentInteractionPropagator_zero_coupling",
       "QuantumTheory.LinearResponse.timeDependentPerturbedExpectationFunctional_apply"
     ],
@@ -51604,7 +51631,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (expectation : QuantumTheory.LinearResponse.NormalizedExpectation H) (f : ℝ → ℝ) {B : H →L[ℂ] H},\n  IsSelfAdjoint B →\n    ∀ (A : H →L[ℂ] H) {β M t : ℝ},\n      0 ≤ M →\n        (∀ s ∈ Set.Icc 0 β,\n            ‖QuantumTheory.LinearResponse.timeDependentInteractionPerturbation system\n                  (QuantumTheory.LinearResponse.sourceCoupledPerturbation f B) s‖ ≤\n              M) →\n          t ∈ Set.Icc 0 β →\n            IntervalIntegrable\n                (QuantumTheory.LinearResponse.timeDependentInteractionPerturbation system\n                  (QuantumTheory.LinearResponse.sourceCoupledPerturbation f B))\n                MeasureTheory.volume 0 t →\n              HasDerivAt\n                (fun lam =>\n                  (QuantumTheory.LinearResponse.timeDependentPerturbedExpectationFunctional system expectation\n                      (QuantumTheory.LinearResponse.sourceCoupledPerturbation f B) lam t)\n                    A)\n                ((Complex.I / ↑system.hbar) •\n                  ∫ (s : ℝ) in 0..t,\n                    ↑(f s) *\n                      expectation.toContinuousLinearMap\n                        ⁅(QuantumTheory.LinearResponse.heisenbergEvolution system t) A,\n                          (QuantumTheory.LinearResponse.heisenbergEvolution system s) B⁆)\n                0",
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (expectation : QuantumTheory.LinearResponse.NormalizedExpectation H) (f : ℝ → ℝ) {B : H →L[ℂ] H},\n  IsSelfAdjoint B →\n    ∀ (A : H →L[ℂ] H) {β M t : ℝ},\n      0 ≤ M →\n        (∀ s ∈ Set.Icc 0 β,\n            ‖QuantumTheory.LinearResponse.timeDependentInteractionPerturbation system\n                  (QuantumTheory.LinearResponse.sourceCoupledPerturbation f B) s‖ ≤\n              M) →\n          t ∈ Set.Icc 0 β →\n            IntervalIntegrable\n                (QuantumTheory.LinearResponse.timeDependentInteractionPerturbation system\n                  (QuantumTheory.LinearResponse.sourceCoupledPerturbation f B))\n                MeasureTheory.volume 0 t →\n              HasDerivAt\n                (fun lam =>\n                  (QuantumTheory.LinearResponse.timeDependentPerturbedExpectationFunctional system expectation\n                      (QuantumTheory.LinearResponse.sourceCoupledPerturbation f B) lam t)\n                    A)\n                ((Complex.I / ↑system.hbar) •\n                  ∫ (s : ℝ) in 0..t,\n                    ↑(f s) *\n                      expectation.toContinuousLinearMap\n                        ⁅(QuantumTheory.LinearResponse.heisenbergEvolution\n                              (QuantumTheory.LinearResponse.freePropagatorGroup system) t)\n                            A,\n                          (QuantumTheory.LinearResponse.heisenbergEvolution\n                              (QuantumTheory.LinearResponse.freePropagatorGroup system) s)\n                            B⁆)\n                0",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -51738,7 +51765,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (expectation : QuantumTheory.LinearResponse.NormalizedExpectation H) {V : ℝ → H →L[ℂ] H} (A : H →L[ℂ] H) {β M t : ℝ},\n  0 ≤ M →\n    (∀ s ∈ Set.Icc 0 β, ‖QuantumTheory.LinearResponse.timeDependentInteractionPerturbation system V s‖ ≤ M) →\n      t ∈ Set.Icc 0 β →\n        HasDerivAt\n          (fun lam =>\n            (QuantumTheory.LinearResponse.timeDependentPerturbedExpectationFunctional system expectation V lam t) A)\n          (expectation.toContinuousLinearMap\n            (star (QuantumTheory.LinearResponse.timeDependentPropagatorFirstVariation system V t) *\n                (QuantumTheory.LinearResponse.heisenbergEvolution system t) A +\n              (QuantumTheory.LinearResponse.heisenbergEvolution system t) A *\n                QuantumTheory.LinearResponse.timeDependentPropagatorFirstVariation system V t))\n          0",
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (expectation : QuantumTheory.LinearResponse.NormalizedExpectation H) {V : ℝ → H →L[ℂ] H} (A : H →L[ℂ] H) {β M t : ℝ},\n  0 ≤ M →\n    (∀ s ∈ Set.Icc 0 β, ‖QuantumTheory.LinearResponse.timeDependentInteractionPerturbation system V s‖ ≤ M) →\n      t ∈ Set.Icc 0 β →\n        HasDerivAt\n          (fun lam =>\n            (QuantumTheory.LinearResponse.timeDependentPerturbedExpectationFunctional system expectation V lam t) A)\n          (expectation.toContinuousLinearMap\n            (star (QuantumTheory.LinearResponse.timeDependentPropagatorFirstVariation system V t) *\n                (QuantumTheory.LinearResponse.heisenbergEvolution\n                    (QuantumTheory.LinearResponse.freePropagatorGroup system) t)\n                  A +\n              (QuantumTheory.LinearResponse.heisenbergEvolution\n                    (QuantumTheory.LinearResponse.freePropagatorGroup system) t)\n                  A *\n                QuantumTheory.LinearResponse.timeDependentPropagatorFirstVariation system V t))\n          0",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -51786,7 +51813,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (expectation : QuantumTheory.LinearResponse.NormalizedExpectation H) {V : ℝ → H →L[ℂ] H},\n  (∀ (s : ℝ), IsSelfAdjoint (V s)) →\n    ∀ (A : H →L[ℂ] H) {β M t : ℝ},\n      0 ≤ M →\n        (∀ s ∈ Set.Icc 0 β, ‖QuantumTheory.LinearResponse.timeDependentInteractionPerturbation system V s‖ ≤ M) →\n          t ∈ Set.Icc 0 β →\n            IntervalIntegrable (QuantumTheory.LinearResponse.timeDependentInteractionPerturbation system V)\n                MeasureTheory.volume 0 t →\n              HasDerivAt\n                (fun lam =>\n                  (QuantumTheory.LinearResponse.timeDependentPerturbedExpectationFunctional system expectation V lam t)\n                    A)\n                (-(Complex.I / ↑system.hbar) •\n                  ∫ (s : ℝ) in 0..t,\n                    expectation.toContinuousLinearMap\n                      ⁅(QuantumTheory.LinearResponse.heisenbergEvolution system t) A,\n                        QuantumTheory.LinearResponse.timeDependentInteractionPerturbation system V s⁆)\n                0",
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (expectation : QuantumTheory.LinearResponse.NormalizedExpectation H) {V : ℝ → H →L[ℂ] H},\n  (∀ (s : ℝ), IsSelfAdjoint (V s)) →\n    ∀ (A : H →L[ℂ] H) {β M t : ℝ},\n      0 ≤ M →\n        (∀ s ∈ Set.Icc 0 β, ‖QuantumTheory.LinearResponse.timeDependentInteractionPerturbation system V s‖ ≤ M) →\n          t ∈ Set.Icc 0 β →\n            IntervalIntegrable (QuantumTheory.LinearResponse.timeDependentInteractionPerturbation system V)\n                MeasureTheory.volume 0 t →\n              HasDerivAt\n                (fun lam =>\n                  (QuantumTheory.LinearResponse.timeDependentPerturbedExpectationFunctional system expectation V lam t)\n                    A)\n                (-(Complex.I / ↑system.hbar) •\n                  ∫ (s : ℝ) in 0..t,\n                    expectation.toContinuousLinearMap\n                      ⁅(QuantumTheory.LinearResponse.heisenbergEvolution\n                            (QuantumTheory.LinearResponse.freePropagatorGroup system) t)\n                          A,\n                        QuantumTheory.LinearResponse.timeDependentInteractionPerturbation system V s⁆)\n                0",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -51833,7 +51860,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (expectation : QuantumTheory.LinearResponse.NormalizedExpectation H) {V : ℝ → H →L[ℂ] H},\n  (∀ (s : ℝ), IsSelfAdjoint (V s)) →\n    ∀ (A : H →L[ℂ] H) {β M t : ℝ},\n      0 ≤ M →\n        (∀ s ∈ Set.Icc 0 β, ‖QuantumTheory.LinearResponse.timeDependentInteractionPerturbation system V s‖ ≤ M) →\n          t ∈ Set.Icc 0 β →\n            HasDerivAt\n              (fun lam =>\n                (QuantumTheory.LinearResponse.timeDependentPerturbedExpectationFunctional system expectation V lam t) A)\n              (expectation.toContinuousLinearMap\n                ⁅(QuantumTheory.LinearResponse.heisenbergEvolution system t) A,\n                  QuantumTheory.LinearResponse.timeDependentPropagatorFirstVariation system V t⁆)\n              0",
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (expectation : QuantumTheory.LinearResponse.NormalizedExpectation H) {V : ℝ → H →L[ℂ] H},\n  (∀ (s : ℝ), IsSelfAdjoint (V s)) →\n    ∀ (A : H →L[ℂ] H) {β M t : ℝ},\n      0 ≤ M →\n        (∀ s ∈ Set.Icc 0 β, ‖QuantumTheory.LinearResponse.timeDependentInteractionPerturbation system V s‖ ≤ M) →\n          t ∈ Set.Icc 0 β →\n            HasDerivAt\n              (fun lam =>\n                (QuantumTheory.LinearResponse.timeDependentPerturbedExpectationFunctional system expectation V lam t) A)\n              (expectation.toContinuousLinearMap\n                ⁅(QuantumTheory.LinearResponse.heisenbergEvolution\n                      (QuantumTheory.LinearResponse.freePropagatorGroup system) t)\n                    A,\n                  QuantumTheory.LinearResponse.timeDependentPropagatorFirstVariation system V t⁆)\n              0",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -51879,7 +51906,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H) {V : ℝ → H →L[ℂ] H} (A : H →L[ℂ] H) {β M t : ℝ},\n  0 ≤ M →\n    (∀ s ∈ Set.Icc 0 β, ‖QuantumTheory.LinearResponse.timeDependentInteractionPerturbation system V s‖ ≤ M) →\n      t ∈ Set.Icc 0 β →\n        HasDerivAt (fun lam => QuantumTheory.LinearResponse.timeDependentPerturbedObservable system V A lam t)\n          (star (QuantumTheory.LinearResponse.timeDependentPropagatorFirstVariation system V t) *\n              (QuantumTheory.LinearResponse.heisenbergEvolution system t) A +\n            (QuantumTheory.LinearResponse.heisenbergEvolution system t) A *\n              QuantumTheory.LinearResponse.timeDependentPropagatorFirstVariation system V t)\n          0",
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H) {V : ℝ → H →L[ℂ] H} (A : H →L[ℂ] H) {β M t : ℝ},\n  0 ≤ M →\n    (∀ s ∈ Set.Icc 0 β, ‖QuantumTheory.LinearResponse.timeDependentInteractionPerturbation system V s‖ ≤ M) →\n      t ∈ Set.Icc 0 β →\n        HasDerivAt (fun lam => QuantumTheory.LinearResponse.timeDependentPerturbedObservable system V A lam t)\n          (star (QuantumTheory.LinearResponse.timeDependentPropagatorFirstVariation system V t) *\n              (QuantumTheory.LinearResponse.heisenbergEvolution\n                  (QuantumTheory.LinearResponse.freePropagatorGroup system) t)\n                A +\n            (QuantumTheory.LinearResponse.heisenbergEvolution (QuantumTheory.LinearResponse.freePropagatorGroup system)\n                  t)\n                A *\n              QuantumTheory.LinearResponse.timeDependentPropagatorFirstVariation system V t)\n          0",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -52054,7 +52081,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H) (A : H →L[ℂ] H) (t : ℝ),\n  HasDerivAt (fun t => (QuantumTheory.LinearResponse.heisenbergEvolution system t) A)\n    ((Complex.I / ↑system.hbar) • ⁅↑system.hamiltonian, (QuantumTheory.LinearResponse.heisenbergEvolution system t) A⁆)\n    t",
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H) (A : H →L[ℂ] H) (t : ℝ),\n  HasDerivAt\n    (fun t =>\n      (QuantumTheory.LinearResponse.heisenbergEvolution (QuantumTheory.LinearResponse.freePropagatorGroup system) t) A)\n    ((Complex.I / ↑system.hbar) •\n      ⁅↑system.hamiltonian,\n        (QuantumTheory.LinearResponse.heisenbergEvolution (QuantumTheory.LinearResponse.freePropagatorGroup system) t)\n          A⁆)\n    t",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -52076,7 +52103,7 @@
       "QuantumTheory.LinearResponse.vonNeumannEquation"
     ],
     "dependencies": [
-      "QuantumTheory.LinearResponse.heisenbergEvolution_apply",
+      "QuantumTheory.LinearResponse.heisenbergEvolution_freePropagatorGroup_apply",
       "hasDerivAt_exp_conjugate"
     ],
     "crossModuleDirectWrapper": false,
@@ -52099,7 +52126,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H) (t : ℝ) (A : H →L[ℂ] H),\n  (QuantumTheory.LinearResponse.heisenbergEvolution system t) A =\n    QuantumTheory.LinearResponse.freePropagator system (-t) * A * QuantumTheory.LinearResponse.freePropagator system t",
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (U : Multiplicative ℝ →* ↥(unitary (H →L[ℂ] H))) (t : ℝ) (A : H →L[ℂ] H),\n  (QuantumTheory.LinearResponse.heisenbergEvolution U t) A =\n    star ↑(U (Multiplicative.ofAdd t)) * A * ↑(U (Multiplicative.ofAdd t))",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -52112,52 +52139,25 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "QuantumTheory.LinearResponse.heisenbergEvolution_apply",
-    "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.Free",
+    "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.Unitary",
     "externalAxioms": [],
-    "docString": "Applying Heisenberg evolution uses the convention `U₀(-t) A U₀(t)`. ",
+    "docString": "The observable is conjugated by the adjoint of the Schrödinger propagator. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.LinearResponse.ResponseChannel.fixed_causalResponse_eq",
-      "QuantumTheory.LinearResponse.ResponseChannel.fixed_contactExpectation",
-      "QuantumTheory.LinearResponse.adjointConjugate_freePropagator_eq_self_of_commute_hamiltonian",
-      "QuantumTheory.LinearResponse.continuous_heisenbergEvolution",
-      "QuantumTheory.LinearResponse.expectation_evolveDensityOperator_eq_heisenberg",
-      "QuantumTheory.LinearResponse.hasDerivAt_affinePerturbedExpectation_zero_of_bound_kubo",
-      "QuantumTheory.LinearResponse.heisenbergEquation",
-      "QuantumTheory.LinearResponse.heisenbergEvolution_eq_self_of_commute_hamiltonian",
+      "QuantumTheory.LinearResponse.heisenbergEvolution_freePropagatorGroup_apply",
       "QuantumTheory.LinearResponse.heisenbergEvolution_heisenbergEvolution",
-      "QuantumTheory.LinearResponse.heisenbergEvolution_zero",
-      "QuantumTheory.LinearResponse.inner_energyEigenbasis_heisenbergEvolution",
-      "QuantumTheory.LinearResponse.norm_heisenbergEvolution",
-      "QuantumTheory.LinearResponse.timeDependentPerturbedObservableMap_apply",
-      "QuantumTheory.LinearResponse.timeDependentPerturbedObservableMap_one_of_isSelfAdjoint",
-      "QuantumTheory.LinearResponse.vonNeumannEquation"
+      "QuantumTheory.LinearResponse.norm_heisenbergEvolution"
     ],
-    "dependencies": [
-      "QuantumTheory.LinearResponse.freePropagator_mem_unitary",
-      "QuantumTheory.LinearResponse.star_freePropagator"
-    ],
+    "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.LinearResponse.ResponseChannel.fixed_causalResponse_eq",
-      "QuantumTheory.LinearResponse.ResponseChannel.fixed_contactExpectation",
-      "QuantumTheory.LinearResponse.adjointConjugate_freePropagator_eq_self_of_commute_hamiltonian",
-      "QuantumTheory.LinearResponse.continuous_heisenbergEvolution",
-      "QuantumTheory.LinearResponse.expectation_evolveDensityOperator_eq_heisenberg",
-      "QuantumTheory.LinearResponse.hasDerivAt_affinePerturbedExpectation_zero_of_bound_kubo",
-      "QuantumTheory.LinearResponse.heisenbergEquation",
-      "QuantumTheory.LinearResponse.heisenbergEvolution_eq_self_of_commute_hamiltonian",
+      "QuantumTheory.LinearResponse.heisenbergEvolution_freePropagatorGroup_apply",
       "QuantumTheory.LinearResponse.heisenbergEvolution_heisenbergEvolution",
-      "QuantumTheory.LinearResponse.heisenbergEvolution_zero",
-      "QuantumTheory.LinearResponse.inner_energyEigenbasis_heisenbergEvolution",
-      "QuantumTheory.LinearResponse.norm_heisenbergEvolution",
-      "QuantumTheory.LinearResponse.timeDependentPerturbedObservableMap_apply",
-      "QuantumTheory.LinearResponse.timeDependentPerturbedObservableMap_one_of_isSelfAdjoint",
-      "QuantumTheory.LinearResponse.vonNeumannEquation"
+      "QuantumTheory.LinearResponse.norm_heisenbergEvolution"
     ],
-    "compiledConsumerCount": 15,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -52172,7 +52172,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H) (A : H →L[ℂ] H),\n  Commute (↑system.hamiltonian) A → ∀ (t : ℝ), (QuantumTheory.LinearResponse.heisenbergEvolution system t) A = A",
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H) (A : H →L[ℂ] H),\n  Commute (↑system.hamiltonian) A →\n    ∀ (t : ℝ),\n      (QuantumTheory.LinearResponse.heisenbergEvolution (QuantumTheory.LinearResponse.freePropagatorGroup system) t) A =\n        A",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -52198,7 +52198,7 @@
     "dependencies": [
       "QuantumTheory.LinearResponse.commute_freePropagator_of_commute_hamiltonian",
       "QuantumTheory.LinearResponse.freePropagator_neg_mul",
-      "QuantumTheory.LinearResponse.heisenbergEvolution_apply"
+      "QuantumTheory.LinearResponse.heisenbergEvolution_freePropagatorGroup_apply"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -52222,7 +52222,74 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H) (A : H →L[ℂ] H) (t s : ℝ),\n  (QuantumTheory.LinearResponse.heisenbergEvolution system s)\n      ((QuantumTheory.LinearResponse.heisenbergEvolution system t) A) =\n    (QuantumTheory.LinearResponse.heisenbergEvolution system (t + s)) A",
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H) (t : ℝ) (A : H →L[ℂ] H),\n  (QuantumTheory.LinearResponse.heisenbergEvolution (QuantumTheory.LinearResponse.freePropagatorGroup system) t) A =\n    QuantumTheory.LinearResponse.freePropagator system (-t) * A * QuantumTheory.LinearResponse.freePropagator system t",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.LinearResponse.heisenbergEvolution_freePropagatorGroup_apply",
+    "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.Free",
+    "externalAxioms": [],
+    "docString": "Applying Heisenberg evolution uses the convention `U₀(-t) A U₀(t)`. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.LinearResponse.ResponseChannel.fixed_causalResponse_eq",
+      "QuantumTheory.LinearResponse.ResponseChannel.fixed_contactExpectation",
+      "QuantumTheory.LinearResponse.adjointConjugate_freePropagator_eq_self_of_commute_hamiltonian",
+      "QuantumTheory.LinearResponse.continuous_heisenbergEvolution",
+      "QuantumTheory.LinearResponse.expectation_evolveDensityOperator_eq_heisenberg",
+      "QuantumTheory.LinearResponse.hasDerivAt_affinePerturbedExpectation_zero_of_bound_kubo",
+      "QuantumTheory.LinearResponse.heisenbergEquation",
+      "QuantumTheory.LinearResponse.heisenbergEvolution_eq_self_of_commute_hamiltonian",
+      "QuantumTheory.LinearResponse.inner_energyEigenbasis_heisenbergEvolution",
+      "QuantumTheory.LinearResponse.timeDependentPerturbedObservableMap_apply",
+      "QuantumTheory.LinearResponse.timeDependentPerturbedObservableMap_one_of_isSelfAdjoint",
+      "QuantumTheory.LinearResponse.vonNeumannEquation"
+    ],
+    "dependencies": [
+      "QuantumTheory.LinearResponse.heisenbergEvolution_apply",
+      "QuantumTheory.LinearResponse.star_freePropagator"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.LinearResponse.ResponseChannel.fixed_causalResponse_eq",
+      "QuantumTheory.LinearResponse.ResponseChannel.fixed_contactExpectation",
+      "QuantumTheory.LinearResponse.adjointConjugate_freePropagator_eq_self_of_commute_hamiltonian",
+      "QuantumTheory.LinearResponse.continuous_heisenbergEvolution",
+      "QuantumTheory.LinearResponse.expectation_evolveDensityOperator_eq_heisenberg",
+      "QuantumTheory.LinearResponse.hasDerivAt_affinePerturbedExpectation_zero_of_bound_kubo",
+      "QuantumTheory.LinearResponse.heisenbergEquation",
+      "QuantumTheory.LinearResponse.heisenbergEvolution_eq_self_of_commute_hamiltonian",
+      "QuantumTheory.LinearResponse.inner_energyEigenbasis_heisenbergEvolution",
+      "QuantumTheory.LinearResponse.timeDependentPerturbedObservableMap_apply",
+      "QuantumTheory.LinearResponse.timeDependentPerturbedObservableMap_one_of_isSelfAdjoint",
+      "QuantumTheory.LinearResponse.vonNeumannEquation"
+    ],
+    "compiledConsumerCount": 12,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (U : Multiplicative ℝ →* ↥(unitary (H →L[ℂ] H))) (A : H →L[ℂ] H) (t s : ℝ),\n  (QuantumTheory.LinearResponse.heisenbergEvolution U s) ((QuantumTheory.LinearResponse.heisenbergEvolution U t) A) =\n    (QuantumTheory.LinearResponse.heisenbergEvolution U (t + s)) A",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -52235,16 +52302,15 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "QuantumTheory.LinearResponse.heisenbergEvolution_heisenbergEvolution",
-    "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.Free",
+    "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.Unitary",
     "externalAxioms": [],
-    "docString": "Applying free Heisenberg evolution successively adds the two time parameters. ",
+    "docString": "Successive Heisenberg evolutions add their time parameters. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
       "QuantumTheory.LinearResponse.lie_heisenbergEvolution_eq_relativeTime"
     ],
     "dependencies": [
-      "QuantumTheory.LinearResponse.freePropagator_add",
       "QuantumTheory.LinearResponse.heisenbergEvolution_apply"
     ],
     "crossModuleDirectWrapper": false,
@@ -52267,7 +52333,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H) (A : H →L[ℂ] H),\n  (QuantumTheory.LinearResponse.heisenbergEvolution system 0) A = A",
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (U : Multiplicative ℝ →* ↥(unitary (H →L[ℂ] H))) (A : H →L[ℂ] H),\n  (QuantumTheory.LinearResponse.heisenbergEvolution U 0) A = A",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -52280,7 +52346,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "QuantumTheory.LinearResponse.heisenbergEvolution_zero",
-    "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.Free",
+    "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.Unitary",
     "externalAxioms": [],
     "docString": null,
     "directWrapperTargetModule": null,
@@ -52289,23 +52355,18 @@
       "QuantumTheory.LinearResponse.commutatorSusceptibility_eigenbasis_eq_timeDomainSeries",
       "QuantumTheory.LinearResponse.commutatorSusceptibility_eq_timeDifference_of_stationary",
       "QuantumTheory.LinearResponse.continuous_commutatorSusceptibility_timeDifference",
-      "QuantumTheory.LinearResponse.expectation_heisenbergEvolution_zero",
       "QuantumTheory.LinearResponse.norm_retardedTimeDifferenceKernel_le"
     ],
-    "dependencies": [
-      "QuantumTheory.LinearResponse.freePropagator_zero",
-      "QuantumTheory.LinearResponse.heisenbergEvolution_apply"
-    ],
+    "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.LinearResponse.commutatorSusceptibility_eigenbasis_eq_timeDomainSeries",
       "QuantumTheory.LinearResponse.commutatorSusceptibility_eq_timeDifference_of_stationary",
       "QuantumTheory.LinearResponse.continuous_commutatorSusceptibility_timeDifference",
-      "QuantumTheory.LinearResponse.expectation_heisenbergEvolution_zero",
       "QuantumTheory.LinearResponse.norm_retardedTimeDifferenceKernel_le"
     ],
-    "compiledConsumerCount": 5,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -52413,7 +52474,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {ι : Type u_2} (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (data : QuantumTheory.LinearResponse.EnergyEigenbasisLehmannData system ι) (A : H →L[ℂ] H) (m n : ι) (t : ℝ),\n  inner ℂ (data.basis m) (((QuantumTheory.LinearResponse.heisenbergEvolution system t) A) (data.basis n)) =\n    QuantumTheory.LinearResponse.eigenbasisTransitionPhase system data m n t * inner ℂ (data.basis m) (A (data.basis n))",
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {ι : Type u_2} (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (data : QuantumTheory.LinearResponse.EnergyEigenbasisLehmannData system ι) (A : H →L[ℂ] H) (m n : ι) (t : ℝ),\n  inner ℂ (data.basis m)\n      (((QuantumTheory.LinearResponse.heisenbergEvolution (QuantumTheory.LinearResponse.freePropagatorGroup system) t)\n          A)\n        (data.basis n)) =\n    QuantumTheory.LinearResponse.eigenbasisTransitionPhase system data m n t * inner ℂ (data.basis m) (A (data.basis n))",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -52437,7 +52498,7 @@
     ],
     "dependencies": [
       "QuantumTheory.LinearResponse.freePropagator_apply_energyEigenbasis",
-      "QuantumTheory.LinearResponse.heisenbergEvolution_apply",
+      "QuantumTheory.LinearResponse.heisenbergEvolution_freePropagatorGroup_apply",
       "QuantumTheory.LinearResponse.star_freePropagator"
     ],
     "crossModuleDirectWrapper": false,
@@ -52946,7 +53007,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {ι : Type u_2} (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (data : QuantumTheory.LinearResponse.EnergyEigenbasisLehmannData system ι),\n  QuantumTheory.LinearResponse.IsStationary system\n    (QuantumTheory.LinearResponse.eigenbasisNormalizedExpectation system data)",
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {ι : Type u_2} (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (data : QuantumTheory.LinearResponse.EnergyEigenbasisLehmannData system ι),\n  QuantumTheory.LinearResponse.IsStationary (QuantumTheory.LinearResponse.freePropagatorGroup system)\n    (QuantumTheory.LinearResponse.eigenbasisNormalizedExpectation system data)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -52987,7 +53048,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H) (ρ : QuantumTheory.DensityOperator H),\n  Commute (↑system.hamiltonian) ρ.op → QuantumTheory.LinearResponse.IsStationary system ρ.toNormalizedExpectation",
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H) (ρ : QuantumTheory.DensityOperator H),\n  Commute (↑system.hamiltonian) ρ.op →\n    QuantumTheory.LinearResponse.IsStationary (QuantumTheory.LinearResponse.freePropagatorGroup system)\n      ρ.toNormalizedExpectation",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -53169,7 +53230,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H) (A B : H →L[ℂ] H) (t s : ℝ),\n  ⁅(QuantumTheory.LinearResponse.heisenbergEvolution system t) A,\n      (QuantumTheory.LinearResponse.heisenbergEvolution system s) B⁆ =\n    (QuantumTheory.LinearResponse.heisenbergEvolution system s)\n      ⁅(QuantumTheory.LinearResponse.heisenbergEvolution system (t - s)) A, B⁆",
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (U : Multiplicative ℝ →* ↥(unitary (H →L[ℂ] H))) (A B : H →L[ℂ] H) (t s : ℝ),\n  ⁅(QuantumTheory.LinearResponse.heisenbergEvolution U t) A, (QuantumTheory.LinearResponse.heisenbergEvolution U s) B⁆ =\n    (QuantumTheory.LinearResponse.heisenbergEvolution U s)\n      ⁅(QuantumTheory.LinearResponse.heisenbergEvolution U (t - s)) A, B⁆",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -53182,9 +53243,9 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "QuantumTheory.LinearResponse.lie_heisenbergEvolution_eq_relativeTime",
-    "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.Free",
+    "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.Unitary",
     "externalAxioms": [],
-    "docString": "A two-time Heisenberg commutator is the evolution of a relative-time commutator. ",
+    "docString": "A two-time commutator is the evolution of a relative-time commutator. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
@@ -53385,7 +53446,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H) (A : H →L[ℂ] H) (t : ℝ),\n  ‖(QuantumTheory.LinearResponse.heisenbergEvolution system t) A‖ = ‖A‖",
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (U : Multiplicative ℝ →* ↥(unitary (H →L[ℂ] H))) (A : H →L[ℂ] H) (t : ℝ),\n  ‖(QuantumTheory.LinearResponse.heisenbergEvolution U t) A‖ = ‖A‖",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -53398,18 +53459,16 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "QuantumTheory.LinearResponse.norm_heisenbergEvolution",
-    "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.Free",
+    "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.Unitary",
     "externalAxioms": [],
-    "docString": "Unitary free conjugation preserves the operator norm exactly. ",
+    "docString": "Unitary conjugation preserves the norm of every bounded observable. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
       "QuantumTheory.LinearResponse.norm_retardedTimeDifferenceKernel_le"
     ],
     "dependencies": [
-      "QuantumTheory.LinearResponse.freePropagator_mem_unitary",
-      "QuantumTheory.LinearResponse.heisenbergEvolution_apply",
-      "QuantumTheory.LinearResponse.star_freePropagator"
+      "QuantumTheory.LinearResponse.heisenbergEvolution_apply"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -54229,7 +54288,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (expectation : QuantumTheory.LinearResponse.NormalizedExpectation H),\n  QuantumTheory.LinearResponse.IsStationary system expectation →\n    ∀ (A B : H →L[ℂ] H) (t s : ℝ),\n      QuantumTheory.LinearResponse.retardedSusceptibility system expectation A B t s =\n        QuantumTheory.LinearResponse.retardedTimeDifferenceKernel system expectation A B (t - s)",
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (expectation : QuantumTheory.LinearResponse.NormalizedExpectation H),\n  QuantumTheory.LinearResponse.IsStationary (QuantumTheory.LinearResponse.freePropagatorGroup system) expectation →\n    ∀ (A B : H →L[ℂ] H) (t s : ℝ),\n      QuantumTheory.LinearResponse.retardedSusceptibility system expectation A B t s =\n        QuantumTheory.LinearResponse.retardedTimeDifferenceKernel system expectation A B (t - s)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -54269,7 +54328,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (expectation : QuantumTheory.LinearResponse.NormalizedExpectation H),\n  QuantumTheory.LinearResponse.IsStationary system expectation →\n    ∀ (A B : H →L[ℂ] H) (t s : ℝ),\n      QuantumTheory.LinearResponse.retardedSusceptibility system expectation A B t s =\n        if 0 ≤ t - s then QuantumTheory.LinearResponse.commutatorSusceptibility system expectation A B (t - s) 0 else 0",
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (expectation : QuantumTheory.LinearResponse.NormalizedExpectation H),\n  QuantumTheory.LinearResponse.IsStationary (QuantumTheory.LinearResponse.freePropagatorGroup system) expectation →\n    ∀ (A B : H →L[ℂ] H) (t s : ℝ),\n      QuantumTheory.LinearResponse.retardedSusceptibility system expectation A B t s =\n        if 0 ≤ t - s then QuantumTheory.LinearResponse.commutatorSusceptibility system expectation A B (t - s) 0 else 0",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -54623,7 +54682,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H) (f : ℝ → ℝ) (B : H →L[ℂ] H) (lam t : ℝ),\n  QuantumTheory.LinearResponse.timeDependentInteractionPropagator system\n      (QuantumTheory.LinearResponse.sourceCoupledPerturbation f B) lam t =\n    Dyson.evolution (fun s => ↑(f s) • (QuantumTheory.LinearResponse.heisenbergEvolution system s) B)\n      (-QuantumTheory.LinearResponse.timeDependentPhysicalDysonCoupling system lam) t",
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H) (f : ℝ → ℝ) (B : H →L[ℂ] H) (lam t : ℝ),\n  QuantumTheory.LinearResponse.timeDependentInteractionPropagator system\n      (QuantumTheory.LinearResponse.sourceCoupledPerturbation f B) lam t =\n    Dyson.evolution\n      (fun s =>\n        ↑(f s) •\n          (QuantumTheory.LinearResponse.heisenbergEvolution (QuantumTheory.LinearResponse.freePropagatorGroup system) s)\n            B)\n      (-QuantumTheory.LinearResponse.timeDependentPhysicalDysonCoupling system lam) t",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -54664,7 +54723,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (expectation : QuantumTheory.LinearResponse.NormalizedExpectation H) (f : ℝ → ℝ) (B A : H →L[ℂ] H) (t : ℝ),\n  -(Complex.I / ↑system.hbar) •\n      ∫ (s : ℝ) in 0..t,\n        expectation.toContinuousLinearMap\n          ⁅(QuantumTheory.LinearResponse.heisenbergEvolution system t) A,\n            QuantumTheory.LinearResponse.timeDependentInteractionPerturbation system\n              (QuantumTheory.LinearResponse.sourceCoupledPerturbation f B) s⁆ =\n    (Complex.I / ↑system.hbar) •\n      ∫ (s : ℝ) in 0..t,\n        ↑(f s) *\n          expectation.toContinuousLinearMap\n            ⁅(QuantumTheory.LinearResponse.heisenbergEvolution system t) A,\n              (QuantumTheory.LinearResponse.heisenbergEvolution system s) B⁆",
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (expectation : QuantumTheory.LinearResponse.NormalizedExpectation H) (f : ℝ → ℝ) (B A : H →L[ℂ] H) (t : ℝ),\n  -(Complex.I / ↑system.hbar) •\n      ∫ (s : ℝ) in 0..t,\n        expectation.toContinuousLinearMap\n          ⁅(QuantumTheory.LinearResponse.heisenbergEvolution (QuantumTheory.LinearResponse.freePropagatorGroup system)\n                t)\n              A,\n            QuantumTheory.LinearResponse.timeDependentInteractionPerturbation system\n              (QuantumTheory.LinearResponse.sourceCoupledPerturbation f B) s⁆ =\n    (Complex.I / ↑system.hbar) •\n      ∫ (s : ℝ) in 0..t,\n        ↑(f s) *\n          expectation.toContinuousLinearMap\n            ⁅(QuantumTheory.LinearResponse.heisenbergEvolution (QuantumTheory.LinearResponse.freePropagatorGroup system)\n                  t)\n                A,\n              (QuantumTheory.LinearResponse.heisenbergEvolution\n                  (QuantumTheory.LinearResponse.freePropagatorGroup system) s)\n                B⁆",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -54710,7 +54769,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (expectation : QuantumTheory.LinearResponse.NormalizedExpectation H) (f : ℝ → ℝ) (B A : H →L[ℂ] H) {t : ℝ},\n  0 ≤ t →\n    (Complex.I / ↑system.hbar) •\n        ∫ (s : ℝ) in 0..t,\n          ↑(f s) *\n            expectation.toContinuousLinearMap\n              ⁅(QuantumTheory.LinearResponse.heisenbergEvolution system t) A,\n                (QuantumTheory.LinearResponse.heisenbergEvolution system s) B⁆ =\n      ∫ (s : ℝ) in 0..t, ↑(f s) * QuantumTheory.LinearResponse.retardedSusceptibility system expectation A B t s",
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (expectation : QuantumTheory.LinearResponse.NormalizedExpectation H) (f : ℝ → ℝ) (B A : H →L[ℂ] H) {t : ℝ},\n  0 ≤ t →\n    (Complex.I / ↑system.hbar) •\n        ∫ (s : ℝ) in 0..t,\n          ↑(f s) *\n            expectation.toContinuousLinearMap\n              ⁅(QuantumTheory.LinearResponse.heisenbergEvolution\n                    (QuantumTheory.LinearResponse.freePropagatorGroup system) t)\n                  A,\n                (QuantumTheory.LinearResponse.heisenbergEvolution\n                    (QuantumTheory.LinearResponse.freePropagatorGroup system) s)\n                  B⁆ =\n      ∫ (s : ℝ) in 0..t, ↑(f s) * QuantumTheory.LinearResponse.retardedSusceptibility system expectation A B t s",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -54776,9 +54835,8 @@
       "QuantumTheory.LinearResponse.adjointConjugate_freePropagator_eq_self_of_commute_hamiltonian",
       "QuantumTheory.LinearResponse.expectation_evolveDensityOperator_eq_heisenberg",
       "QuantumTheory.LinearResponse.freePropagator_mul_star",
-      "QuantumTheory.LinearResponse.heisenbergEvolution_apply",
+      "QuantumTheory.LinearResponse.heisenbergEvolution_freePropagatorGroup_apply",
       "QuantumTheory.LinearResponse.inner_energyEigenbasis_heisenbergEvolution",
-      "QuantumTheory.LinearResponse.norm_heisenbergEvolution",
       "QuantumTheory.LinearResponse.star_mul_freePropagator",
       "QuantumTheory.LinearResponse.vonNeumannEquation"
     ],
@@ -54793,13 +54851,12 @@
       "QuantumTheory.LinearResponse.adjointConjugate_freePropagator_eq_self_of_commute_hamiltonian",
       "QuantumTheory.LinearResponse.expectation_evolveDensityOperator_eq_heisenberg",
       "QuantumTheory.LinearResponse.freePropagator_mul_star",
-      "QuantumTheory.LinearResponse.heisenbergEvolution_apply",
+      "QuantumTheory.LinearResponse.heisenbergEvolution_freePropagatorGroup_apply",
       "QuantumTheory.LinearResponse.inner_energyEigenbasis_heisenbergEvolution",
-      "QuantumTheory.LinearResponse.norm_heisenbergEvolution",
       "QuantumTheory.LinearResponse.star_mul_freePropagator",
       "QuantumTheory.LinearResponse.vonNeumannEquation"
     ],
-    "compiledConsumerCount": 8,
+    "compiledConsumerCount": 7,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -55125,7 +55182,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H) (f : ℝ → ℝ) (B : H →L[ℂ] H) (t : ℝ),\n  QuantumTheory.LinearResponse.timeDependentInteractionPerturbation system\n      (QuantumTheory.LinearResponse.sourceCoupledPerturbation f B) t =\n    -↑(f t) • (QuantumTheory.LinearResponse.heisenbergEvolution system t) B",
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H) (f : ℝ → ℝ) (B : H →L[ℂ] H) (t : ℝ),\n  QuantumTheory.LinearResponse.timeDependentInteractionPerturbation system\n      (QuantumTheory.LinearResponse.sourceCoupledPerturbation f B) t =\n    -↑(f t) •\n      (QuantumTheory.LinearResponse.heisenbergEvolution (QuantumTheory.LinearResponse.freePropagatorGroup system) t) B",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -55401,7 +55458,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (expectation : QuantumTheory.LinearResponse.NormalizedExpectation H) (V : ℝ → H →L[ℂ] H) (A : H →L[ℂ] H) (t : ℝ),\n  (QuantumTheory.LinearResponse.timeDependentPerturbedExpectationFunctional system expectation V 0 t) A =\n    expectation.toContinuousLinearMap ((QuantumTheory.LinearResponse.heisenbergEvolution system t) A)",
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (expectation : QuantumTheory.LinearResponse.NormalizedExpectation H) (V : ℝ → H →L[ℂ] H) (A : H →L[ℂ] H) (t : ℝ),\n  (QuantumTheory.LinearResponse.timeDependentPerturbedExpectationFunctional system expectation V 0 t) A =\n    expectation.toContinuousLinearMap\n      ((QuantumTheory.LinearResponse.heisenbergEvolution (QuantumTheory.LinearResponse.freePropagatorGroup system) t) A)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -55442,7 +55499,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (expectation : QuantumTheory.LinearResponse.NormalizedExpectation H),\n  QuantumTheory.LinearResponse.IsStationary system expectation →\n    ∀ (V : ℝ → H →L[ℂ] H) (A : H →L[ℂ] H) (t : ℝ),\n      (QuantumTheory.LinearResponse.timeDependentPerturbedExpectationFunctional system expectation V 0 t) A =\n        expectation.toContinuousLinearMap A",
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (expectation : QuantumTheory.LinearResponse.NormalizedExpectation H),\n  QuantumTheory.LinearResponse.IsStationary (QuantumTheory.LinearResponse.freePropagatorGroup system) expectation →\n    ∀ (V : ℝ → H →L[ℂ] H) (A : H →L[ℂ] H) (t : ℝ),\n      (QuantumTheory.LinearResponse.timeDependentPerturbedExpectationFunctional system expectation V 0 t) A =\n        expectation.toContinuousLinearMap A",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -55547,7 +55604,7 @@
       "QuantumTheory.LinearResponse.timeDependentPerturbedObservableMap_one_of_isSelfAdjoint"
     ],
     "dependencies": [
-      "QuantumTheory.LinearResponse.heisenbergEvolution_apply"
+      "QuantumTheory.LinearResponse.heisenbergEvolution_freePropagatorGroup_apply"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -55592,7 +55649,7 @@
     "dependents": [],
     "dependencies": [
       "QuantumTheory.LinearResponse.freePropagator_neg_mul",
-      "QuantumTheory.LinearResponse.heisenbergEvolution_apply",
+      "QuantumTheory.LinearResponse.heisenbergEvolution_freePropagatorGroup_apply",
       "QuantumTheory.LinearResponse.timeDependentInteractionPropagator_unitary_relations_of_isSelfAdjoint",
       "QuantumTheory.LinearResponse.timeDependentPerturbedObservableMap_apply"
     ],
@@ -55616,7 +55673,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H) (V : ℝ → H →L[ℂ] H) (A : H →L[ℂ] H) (t : ℝ),\n  QuantumTheory.LinearResponse.timeDependentPerturbedObservable system V A 0 t =\n    (QuantumTheory.LinearResponse.heisenbergEvolution system t) A",
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H) (V : ℝ → H →L[ℂ] H) (A : H →L[ℂ] H) (t : ℝ),\n  QuantumTheory.LinearResponse.timeDependentPerturbedObservable system V A 0 t =\n    (QuantumTheory.LinearResponse.heisenbergEvolution (QuantumTheory.LinearResponse.freePropagatorGroup system) t) A",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -55685,7 +55742,7 @@
     "dependents": [],
     "dependencies": [
       "QuantumTheory.LinearResponse.heisenbergEquation",
-      "QuantumTheory.LinearResponse.heisenbergEvolution_apply",
+      "QuantumTheory.LinearResponse.heisenbergEvolution_freePropagatorGroup_apply",
       "QuantumTheory.LinearResponse.star_freePropagator"
     ],
     "crossModuleDirectWrapper": false,
@@ -63076,50 +63133,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (axis : QuantumTheory.Models.MassiveDirac.PauliAxis) (source : Fin 2)\n  (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ),\n  QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient axis\n      source v m probeEnergy broadening disorderStrength hbar pMax radius =\n    match axis with\n    | InternalSpace.PauliAxis.x =>\n      ((↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n            ∫ (p : ℝ) in 0..pMax,\n              QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel\n                source v m probeEnergy broadening disorderStrength hbar pMax radius p 0 1) +\n          ↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n            ∫ (p : ℝ) in 0..pMax,\n              QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel\n                source v m probeEnergy broadening disorderStrength hbar pMax radius p 1 0) /\n        2\n    | InternalSpace.PauliAxis.y =>\n      Complex.I *\n          ((↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n              ∫ (p : ℝ) in 0..pMax,\n                QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel\n                  source v m probeEnergy broadening disorderStrength hbar pMax radius p 0 1) -\n            ↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n              ∫ (p : ℝ) in 0..pMax,\n                QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel\n                  source v m probeEnergy broadening disorderStrength hbar pMax radius p 1 0) /\n        2\n    | InternalSpace.PauliAxis.z =>\n      ((↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n            ∫ (p : ℝ) in 0..pMax,\n              QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel\n                source v m probeEnergy broadening disorderStrength hbar pMax radius p 0 0) -\n          ↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n            ∫ (p : ℝ) in 0..pMax,\n              QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel\n                source v m probeEnergy broadening disorderStrength hbar pMax radius p 1 1) /\n        2",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient_eq_entryKernel_integrals",
-    "module": "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedRealSpace",
-    "externalAxioms": [],
-    "docString": "Each Pauli-vector component of a radial crossed-current block is a scalar combination of its\nentry-kernel integrals. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient_eq_radialKernel_integral"
-    ],
-    "dependencies": [
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock_apply_eq_entryKernel_integral"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient_eq_radialKernel_integral"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ (axis : QuantumTheory.Models.MassiveDirac.PauliAxis) (source : Fin 2)\n  (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ),\n  broadening ≠ 0 →\n    0 ≤ disorderStrength →\n      0 ≤ pMax →\n        QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient\n            axis source v m probeEnergy broadening disorderStrength hbar pMax radius =\n          ↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n            ∫ (p : ℝ) in 0..pMax,\n              QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliKernel\n                axis source v m probeEnergy broadening disorderStrength hbar pMax radius p",
     "standardAxioms": [
       "Classical.choice",
@@ -63151,7 +63164,7 @@
     "dependencies": [
       "InternalSpace.pauliVectorCoefficient_prefactor_intervalIntegral",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel_pauliVectorCoefficient",
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient_eq_entryKernel_integrals",
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock_apply_eq_entryKernel_integral",
       "QuantumTheory.Models.MassiveDirac.intervalIntegrable_finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel"
     ],
     "crossModuleDirectWrapper": false,
@@ -63449,50 +63462,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (source : Fin 2) (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ),\n  QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentScalarCoefficient source v\n      m probeEnergy broadening disorderStrength hbar pMax radius =\n    ((↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n          ∫ (p : ℝ) in 0..pMax,\n            QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel\n              source v m probeEnergy broadening disorderStrength hbar pMax radius p 0 0) +\n        ↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n          ∫ (p : ℝ) in 0..pMax,\n            QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel\n              source v m probeEnergy broadening disorderStrength hbar pMax radius p 1 1) /\n      2",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentScalarCoefficient_eq_entryKernel_integrals",
-    "module": "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedRealSpace",
-    "externalAxioms": [],
-    "docString": "The scalar Pauli coefficient of a radial crossed-current block is a scalar combination of its\nentry-kernel integrals. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentScalarCoefficient_eq_radialKernel_integral"
-    ],
-    "dependencies": [
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock_apply_eq_entryKernel_integral"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentScalarCoefficient_eq_radialKernel_integral"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ (source : Fin 2) (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ),\n  broadening ≠ 0 →\n    0 ≤ disorderStrength →\n      0 ≤ pMax →\n        QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentScalarCoefficient\n            source v m probeEnergy broadening disorderStrength hbar pMax radius =\n          ↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n            ∫ (p : ℝ) in 0..pMax,\n              QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentScalarKernel\n                source v m probeEnergy broadening disorderStrength hbar pMax radius p",
     "standardAxioms": [
       "Classical.choice",
@@ -63518,7 +63487,7 @@
     "dependencies": [
       "InternalSpace.pauliScalarCoefficient_prefactor_intervalIntegral",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel_pauliScalarCoefficient",
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentScalarCoefficient_eq_entryKernel_integrals",
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock_apply_eq_entryKernel_integral",
       "QuantumTheory.Models.MassiveDirac.intervalIntegrable_finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel"
     ],
     "crossModuleDirectWrapper": false,
@@ -63746,8 +63715,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient_eq_entryKernel_integrals",
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentScalarCoefficient_eq_entryKernel_integrals",
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient_eq_radialKernel_integral",
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentScalarCoefficient_eq_radialKernel_integral",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock_neg_radius",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_psi_eq_scalar_radial_kernels",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_x_eq_scalar_radial_kernels",
@@ -63757,8 +63726,8 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient_eq_entryKernel_integrals",
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentScalarCoefficient_eq_entryKernel_integrals",
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient_eq_radialKernel_integral",
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentScalarCoefficient_eq_radialKernel_integral",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock_neg_radius",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_psi_eq_scalar_radial_kernels",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_x_eq_scalar_radial_kernels",
@@ -140706,7 +140675,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {Site : Type u_1} {E : Type u_2} [inst : LinearOrder Site] [inst_1 : Fintype Site] [inst_2 : AddCommGroup E]\n  [inst_3 : _root_.Module ℝ E] (volume : QuantumTheory.Transport.PositiveVolume)\n  (system :\n    QuantumTheory.LinearResponse.BoundedFreeSystem (SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site))\n  (expectation :\n    QuantumTheory.LinearResponse.NormalizedExpectation\n      (SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site)),\n  QuantumTheory.LinearResponse.IsStationary system expectation →\n    ∀ (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ) (K : LocallyFiniteHopping Site) (q ω η : ℝ),\n      0 < η →\n        QuantumTheory.LinearResponse.HasInfiniteObservationTimeLimit\n          (SecondQuantization.Fermionic.Transport.finiteTimeAdiabaticDirectionalConductivity volume system expectation\n            geometry direction K q ω η)\n          (SecondQuantization.Fermionic.Transport.infiniteTimeAdiabaticDirectionalConductivity volume system expectation\n            geometry direction K q ω η)",
+    "statement": "∀ {Site : Type u_1} {E : Type u_2} [inst : LinearOrder Site] [inst_1 : Fintype Site] [inst_2 : AddCommGroup E]\n  [inst_3 : _root_.Module ℝ E] (volume : QuantumTheory.Transport.PositiveVolume)\n  (system :\n    QuantumTheory.LinearResponse.BoundedFreeSystem (SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site))\n  (expectation :\n    QuantumTheory.LinearResponse.NormalizedExpectation\n      (SecondQuantization.Fermionic.Lattice.FiniteLatticeHilbertFock Site)),\n  QuantumTheory.LinearResponse.IsStationary (QuantumTheory.LinearResponse.freePropagatorGroup system) expectation →\n    ∀ (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ) (K : LocallyFiniteHopping Site) (q ω η : ℝ),\n      0 < η →\n        QuantumTheory.LinearResponse.HasInfiniteObservationTimeLimit\n          (SecondQuantization.Fermionic.Transport.finiteTimeAdiabaticDirectionalConductivity volume system expectation\n            geometry direction K q ω η)\n          (SecondQuantization.Fermionic.Transport.infiniteTimeAdiabaticDirectionalConductivity volume system expectation\n            geometry direction K q ω η)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",

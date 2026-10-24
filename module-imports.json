@@ -791,7 +791,7 @@
         "LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventCommutation",
         "LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventConvergence"
       ],
-      "externalImportCount": 4
+      "externalImportCount": 6
     },
     {
       "name": "LeanCondensedMatter.Analysis.Operator.Unbounded.SelfAdjointCriterion",
@@ -3972,9 +3972,10 @@
       "sourceFile": "LeanCondensedMatter/QuantumTheory/LinearResponse/Dynamics/Free.lean",
       "imports": [
         "LeanCondensedMatter.Analysis.Operator.BoundedUnitaryEvolution",
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.Unitary",
         "LeanCondensedMatter.QuantumTheory.Postulates"
       ],
-      "externalImportCount": 3
+      "externalImportCount": 1
     },
     {
       "name": "LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.PictureEquivalence",
@@ -4000,10 +4001,16 @@
       "name": "LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.Stationarity",
       "sourceFile": "LeanCondensedMatter/QuantumTheory/LinearResponse/Dynamics/Stationarity.lean",
       "imports": [
-        "LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.Free",
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.Unitary",
         "LeanCondensedMatter.QuantumTheory.LinearResponse.Expectation.Basic"
       ],
       "externalImportCount": 0
+    },
+    {
+      "name": "LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.Unitary",
+      "sourceFile": "LeanCondensedMatter/QuantumTheory/LinearResponse/Dynamics/Unitary.lean",
+      "imports": [],
+      "externalImportCount": 5
     },
     {
       "name": "LeanCondensedMatter.QuantumTheory.LinearResponse.Expectation.Basic",
@@ -4233,6 +4240,7 @@
       "name": "LeanCondensedMatter.QuantumTheory.LinearResponse.Response.RetardedSusceptibility",
       "sourceFile": "LeanCondensedMatter/QuantumTheory/LinearResponse/Response/RetardedSusceptibility.lean",
       "imports": [
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.Free",
         "LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.Stationarity"
       ],
       "externalImportCount": 2
