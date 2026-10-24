@@ -2,6 +2,7 @@ import LeanCondensedMatter.Analysis.ScalarExchange.Peel
 import LeanCondensedMatter.Analysis.Operator.TraceClass.Cyclicity
 import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.CanonicalAnticommutationRelations
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.Gibbs
+import LeanCondensedMatter.SecondQuantization.Common.Thermal.CanonicalGrandCanonicalCompatibility
 import Mathlib.Tactic.Module
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.ExpectationRecursion
 
@@ -472,6 +473,31 @@ theorem grandCanonicalGibbsExpectation_eq_sum_pairing
   simpa [grandCanonicalGibbsExpectationRecursion] using
     (Common.BlochDeDominicis.ExpectationPairingRecursion.bloch_de_dominicis
       (grandCanonicalGibbsExpectationRecursion ε β μ hsum) n C trivial)
+
+open Classical in
+/-- The grand-canonical fermionic Wick pairing sum is also the
+probability-weighted mixture of the fixed-particle-number canonical
+expectations of the same ordered product. This identity does not assert
+Wick factorization in any individual canonical sector. -/
+theorem grandCanonicalGibbsExpectation_tsum_canonical_eq_sum_pairing
+    (ε : Mode → ℝ) (β μ : ℝ) (hsum : EigenbasisGibbsSummable
+      (Common.grandCanonicalEnergy (Config := Occupation Mode) ε μ) β)
+    (n : ℕ) (C : Fin (2 * n) → CompletedThermalLadder Mode) :
+    (∑' N : ℕ,
+      if hN : Nonempty (Common.ParticleNumberSector Mode (Occupation Mode) N) then
+        letI : Nonempty (Common.ParticleNumberSector Mode (Occupation Mode) N) := hN
+        (Common.grandCanonicalSectorProbability (Config := Occupation Mode) ε β μ N : ℂ) *
+          (Common.canonicalFullGibbsDensityOperator (Config := Occupation Mode) ε β N
+            (Common.canonicalGibbsSummable_of_grandCanonical ε β μ N hsum)).expectation
+              (operatorProduct (List.ofFn C))
+      else 0) =
+      ∑ pairing : Pairing n,
+        pairing.weight Common.Statistics.fermion *
+          ∏ pr ∈ pairing.pairs,
+            grandCanonicalGibbsExpectation ε β μ hsum [C pr.1, C pr.2] := by
+  rw [← Common.grandCanonicalGibbsDensityOperator_expectation_eq_tsum_canonical
+    (Config := Occupation Mode) ε β μ hsum (operatorProduct (List.ofFn C))]
+  exact grandCanonicalGibbsExpectation_eq_sum_pairing ε β μ hsum n C
 
 end CompletedThermalLadder
 
