@@ -57,8 +57,6 @@ sharp-number sector distribution. Unlike bounded-observable sector mixing,
 this identity requires integrability of the unbounded number operator. -/
 theorem grandCanonicalTotalNumberExpectation_eq_tsum_sector
     (ε : Mode → ℝ) (β μ : ℝ)
-    (hsum : EigenbasisGibbsSummable
-      (Common.grandCanonicalEnergy (Config := Occupation Mode) ε μ) β)
     (hint : GrandCanonicalTotalNumberIntegrable ε β μ) :
     grandCanonicalTotalNumberExpectation ε β μ =
       ∑' N : ℕ, (N : ℝ) *
@@ -104,7 +102,7 @@ theorem grandCanonicalTotalNumberExpectation_eq_tsum_sector
           rw [tsum_mul_left]
         _ = (N : ℝ) *
             Common.grandCanonicalSectorProbability (Config := Occupation Mode) ε β μ N := by
-          rw [← Common.grandCanonicalSectorProbability_eq_tsum ε β μ N hsum]
+          rw [← Common.grandCanonicalSectorProbability_eq_tsum ε β μ N]
 
 /-- The completed free total-number expectation is nonnegative. -/
 theorem grandCanonicalTotalNumberExpectation_nonneg
