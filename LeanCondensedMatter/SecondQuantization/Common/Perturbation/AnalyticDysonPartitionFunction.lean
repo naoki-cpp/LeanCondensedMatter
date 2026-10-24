@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Analysis.Operator.FiniteTrace
 import LeanCondensedMatter.Analysis.Dyson.Bounds
 import LeanCondensedMatter.SecondQuantization.Common.Perturbation.ContinuousDyson
 import LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExponential
@@ -29,7 +30,7 @@ variable {Config : Type*} [Fintype Config]
 /-- The finite-dimensional interacting partition function `Tr exp(-β (H₀ + λV))`. -/
 noncomputable def analyticDysonPartitionFunction (energy : Config → ℝ) (β : ℝ)
     (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (lam : ℂ) : ℂ :=
-  finiteOperatorTrace
+  ContinuousLinearMap.finiteDimensionalOperatorTrace
     (NormedSpace.exp ((-β) • continuousInteractingHamiltonian energy V lam))
 
 /-- The analytic partition function is the thermal trace of the interaction-picture Dyson
@@ -38,11 +39,11 @@ theorem analyticDysonPartitionFunction_eq_trace_dysonEvolution
     (energy : Config → ℝ) {β : ℝ} (hβ : 0 ≤ β)
     (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (lam : ℂ) :
     analyticDysonPartitionFunction energy β V lam =
-      finiteOperatorTrace
+      ContinuousLinearMap.finiteDimensionalOperatorTrace
         ((continuousDiagonalEvolution energy (-β)).comp
           (Dyson.evolution (continuousInteractionPicture energy V) lam β)) := by
   unfold analyticDysonPartitionFunction
-  apply congrArg finiteOperatorTrace
+  apply congrArg ContinuousLinearMap.finiteDimensionalOperatorTrace
   change NormedSpace.exp ((-β) • continuousInteractingHamiltonian energy V lam) =
     continuousDiagonalEvolution energy (-β) *
       Dyson.evolution (continuousInteractionPicture energy V) lam β
@@ -57,7 +58,7 @@ private theorem hasSum_dysonTraceCoeff_trace_dysonEvolution
     (energy : Config → ℝ) {β : ℝ} (hβ : 0 ≤ β)
     (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (lam : ℂ) :
     HasSum (fun n : ℕ => lam ^ n * dysonTraceCoeff energy β V n)
-      (finiteOperatorTrace
+      (ContinuousLinearMap.finiteDimensionalOperatorTrace
         ((continuousDiagonalEvolution energy (-β)).comp
           (Dyson.evolution (continuousInteractionPicture energy V) lam β))) := by
   obtain ⟨M, hBound⟩ := Dyson.exists_continuousBoundedInteraction
@@ -65,18 +66,18 @@ private theorem hasSum_dysonTraceCoeff_trace_dysonEvolution
     (continuous_continuousInteractionPicture energy V)
     ContinuousLinearMap.norm_id_le
   let traceLeft : FiniteContinuousOperator Config →L[ℂ] ℂ :=
-    finiteOperatorTrace.comp
+    ContinuousLinearMap.finiteDimensionalOperatorTrace.comp
       ((ContinuousLinearMap.mul ℂ (FiniteContinuousOperator Config))
         (continuousDiagonalEvolution energy (-β)))
   have htrace (n : ℕ) :
       traceLeft (Dyson.coeff (continuousInteractionPicture energy V) n β) =
         dysonTraceCoeff energy β V n := by
     rw [← continuousDysonCoeff_eq_coeff]
-    change finiteOperatorTrace
+    change ContinuousLinearMap.finiteDimensionalOperatorTrace
       ((finiteContinuousOperatorAlgEquiv (diagonalEvolution energy (-β))).comp
         (finiteContinuousOperatorAlgEquiv (dysonCoeff energy V n β))) = _
     rw [← ContinuousLinearMap.mul_def, ← map_mul, Module.End.mul_eq_comp,
-      finiteOperatorTrace_finiteContinuousOperator]
+      finiteDimensionalOperatorTrace_finiteContinuousOperator]
     rfl
   have h := (Dyson.hasSum_evolution_of_bound
     hBound.toBoundedInteraction lam ⟨hβ, le_rfl⟩).map
@@ -159,7 +160,7 @@ theorem analyticDysonPartitionFunction_zero
   unfold analyticDysonPartitionFunction continuousInteractingHamiltonian
   simp only [zero_smul, add_zero]
   rw [← continuousDiagonalEvolution_eq_exp energy (-β)]
-  rw [continuousDiagonalEvolution, finiteOperatorTrace_finiteContinuousOperator,
+  rw [continuousDiagonalEvolution, finiteDimensionalOperatorTrace_finiteContinuousOperator,
     traceFock_diagonalEvolution_eq_weightSum]
   simpa only [weightSum] using
     (coe_eigenbasisPartitionFunction_eq_sum_boltzmannWeight energy β).symm
