@@ -38,10 +38,13 @@ private theorem eigenbasisPartitionFunction_fermionEnergy_eq_prod
     eigenbasisPartitionFunction (fermionEnergy ε) β =
       ∏ i, (1 + Real.exp (-β * ε i)) := by
   apply Complex.ofReal_injective
-  rw [← freePartitionFunction_eq_coe_eigenbasisPartitionFunction,
-    freePartitionFunction_eq_prod]
+  have h := coe_grandCanonicalPartitionFunction_eq_prod ε β 0
+  rw [Common.grandCanonicalPartitionFunction_eq_shifted] at h
+  simp only [sub_zero] at h
+  change ((eigenbasisPartitionFunction (fermionEnergy ε) β : ℝ) : ℂ) =
+    ∏ i, (1 + Complex.exp (-(β : ℂ) * (ε i : ℂ))) at h
   push_cast [Complex.ofReal_exp]
-  rfl
+  exact h
 
 omit [LinearOrder Mode] in
 private theorem log_eigenbasisPartitionFunction_fermionEnergy_eq_sum
