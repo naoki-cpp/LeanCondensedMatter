@@ -238,8 +238,8 @@ The assumptions matter: the default integral of a non-integrable function
 is zero, so unconditional additivity would be false. -/
 theorem intervalIntegralPauliMatrix_add
     (a b : ℝ) (f g : ℝ → PauliMatrix)
-    (hf : ∀ i j, IntervalIntegrable (fun p => f p i j) MeasureTheory.volume a b)
-    (hg : ∀ i j, IntervalIntegrable (fun p => g p i j) MeasureTheory.volume a b) :
+    (hf : ∀ i j, MeasureTheory.IntervalIntegrable (fun p => f p i j) MeasureTheory.volume a b)
+    (hg : ∀ i j, MeasureTheory.IntervalIntegrable (fun p => g p i j) MeasureTheory.volume a b) :
     intervalIntegralPauliMatrix a b (fun p => f p + g p) =
       intervalIntegralPauliMatrix a b f + intervalIntegralPauliMatrix a b g := by
   ext i j
@@ -251,8 +251,8 @@ theorem intervalIntegralPauliMatrix_add
 under the same explicit analytic assumptions. -/
 theorem intervalIntegralPauliMatrix_sub
     (a b : ℝ) (f g : ℝ → PauliMatrix)
-    (hf : ∀ i j, IntervalIntegrable (fun p => f p i j) MeasureTheory.volume a b)
-    (hg : ∀ i j, IntervalIntegrable (fun p => g p i j) MeasureTheory.volume a b) :
+    (hf : ∀ i j, MeasureTheory.IntervalIntegrable (fun p => f p i j) MeasureTheory.volume a b)
+    (hg : ∀ i j, MeasureTheory.IntervalIntegrable (fun p => g p i j) MeasureTheory.volume a b) :
     intervalIntegralPauliMatrix a b (fun p => f p - g p) =
       intervalIntegralPauliMatrix a b f - intervalIntegralPauliMatrix a b g := by
   ext i j
