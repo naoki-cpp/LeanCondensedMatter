@@ -100,10 +100,9 @@ theorem finiteBroadeningBornDyson_singlePoleRadialIntegral_eq_log_of_center_re_p
   have hdenEq (p : ℝ) :
       massiveDiracRadialDenominator v p energy mass =
         finiteCutoffContinuumBornDysonDenominator
-          side v m p 0 probeEnergy broadening disorderStrength hbar pMax := by
-    unfold massiveDiracRadialDenominator finiteCutoffContinuumBornDysonDenominator
-    push_cast
-    ring
+          side v m p 0 probeEnergy broadening disorderStrength hbar pMax :=
+    finiteCutoffContinuumBornDysonDenominator_eq_radial
+      side v m p probeEnergy broadening disorderStrength hbar pMax
   have hden : ∀ p : ℝ, massiveDiracRadialDenominator v p energy mass ≠ 0 := by
     intro p
     rw [hdenEq]
