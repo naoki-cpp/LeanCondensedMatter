@@ -21,6 +21,8 @@ occupations; anomalous contractions vanish by particle-number conservation.
 namespace SecondQuantization
 namespace Fermionic
 
+open QuantumTheory
+
 variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
 
 /-- `⟨c_i c_j†⟩₀,β = δᵢⱼ (1 - f_i)`. -/
@@ -35,6 +37,7 @@ theorem freeGibbsDensityOperator_expectation_annihilate_comp_create
     ε β 0 ((annihilate i).comp (create j))
       ((completedAnnihilate i).comp (completedCreate j))
       (completedNormalProduct_comp_algebraicToCompleted i j)
+  simp only [sub_zero] at hbridge
   rw [hbridge, grandCanonicalGibbsDensityOperator_expectation_annihilate_comp_create]
   simp only [sub_zero]
   by_cases hij : i = j
@@ -51,6 +54,7 @@ theorem freeGibbsDensityOperator_expectation_create_comp_annihilate
     ε β 0 ((create j).comp (annihilate i))
       ((completedCreate j).comp (completedAnnihilate i))
       (completedReversedNormalProduct_comp_algebraicToCompleted i j)
+  simp only [sub_zero] at hbridge
   have hcompleted := grandCanonicalGibbsDensityOperator_expectation_create_comp_annihilate
     ε β 0 (eigenbasisGibbsSummable_of_finite
       (Common.grandCanonicalEnergy (Config := Occupation Mode) ε 0) β) i j
