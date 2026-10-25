@@ -123,10 +123,10 @@ theorem completedCreate_comp_completedAnnihilate_eq_numberOperator (i : Mode) :
       rw [fermionSign_removeOccupation_of_not_lt (lt_irrefl i)]
     rw [completedAnnihilate_basisState_of_mem hi, map_smul,
       completedCreate_basisState_of_not_mem hnot,
-      completedNumberOperator_basisState, if_pos hi, hphase, heq, smul_smul]
+      completedNumberOperator_basisState, ite_eq_left hi, hphase, heq, smul_smul]
     simp only [fermionPhase, fermionSign_sq_complex, one_smul]
   · rw [completedAnnihilate_basisState_of_not_mem hi, map_zero,
-      completedNumberOperator_basisState, if_neg hi]
+      completedNumberOperator_basisState, ite_eq_right hi]
 
 end
 end Fermionic
