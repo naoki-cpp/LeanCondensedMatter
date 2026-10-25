@@ -100,8 +100,10 @@ theorem freeGibbsExpectation_eq_completed_of_algebraicCore
       (e (Common.completedBasisState n))) = T (Common.completedBasisState n)
     rw [Common.completedFiniteHilbertEquiv_basisState,
       Common.finiteHilbertOperator_basisState, hn]
-    exact (Common.completedFiniteHilbertEquiv_algebraicToCompleted
-      (A (Common.basisState n))).symm_apply_eq
+    apply e.injective
+    simpa only [e.apply_symm_apply] using
+      (Common.completedFiniteHilbertEquiv_algebraicToCompleted
+        (A (Common.basisState n))).symm
   let ξ : Mode → ℝ := fun i => ε i - μ
   have henergy : Common.grandCanonicalEnergy (Config := Occupation Mode) ε μ =
       fermionEnergy ξ := by
