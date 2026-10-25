@@ -762,7 +762,7 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceCurrentBlock_polar
     apply intervalIntegral.integral_congr
     intro p _
     exact congrArg (fun M : Matrix2 => M i j) (hpoint p)
-  rw [hentries, InternalSpace.intervalIntegralPauliMatrix_spinRotation_conjugate, hmix]
+  rw [hentries, intervalIntegralMatrix2_spinRotation_conjugate, hmix]
   rw [hradial 0, hradial 1]
   have htransport (M : Matrix2) :
       prefactor • (inPlaneSpinRotation angle * M * inPlaneSpinRotationInverse angle) =
