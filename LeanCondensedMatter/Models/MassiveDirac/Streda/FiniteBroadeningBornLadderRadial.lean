@@ -316,11 +316,17 @@ theorem finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTrace
     ((hrrIntegrable.add haaIntegrable).const_mul (1 / 2 : ℂ))]
   rw [intervalIntegral.integral_const_mul,
     intervalIntegral.integral_add hrrIntegrable haaIntegrable, hra, hrr, haa]
+  have hsmul (rung coefficients : InPlaneCoefficientVector) :
+      inPlaneLadderAction rung (q • coefficients) measured =
+        q * inPlaneLadderAction rung coefficients measured := by
+    change (inPlaneLadderCLM rung (q • coefficients)) measured =
+      q * (inPlaneLadderCLM rung coefficients) measured
+    rw [map_smul]
+    rfl
   unfold finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient
-  fin_cases measured <;>
-    simp [q, dressed, bare, aR, aA, dR, dA, inPlaneLadderBareXSource,
-      inPlaneLadderAction_apply_x, inPlaneLadderAction_apply_y] <;>
-    ring
+  dsimp only
+  simp only [hsmul]
+  ring
 
 /-- The pair-indexed finite-`η` radial integrand is the polar Jacobian `p` multiplying the canonical
 angularly reduced coefficient. -/
