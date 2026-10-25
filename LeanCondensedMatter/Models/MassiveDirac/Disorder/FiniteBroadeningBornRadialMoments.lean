@@ -10,10 +10,11 @@ set_option linter.style.header false
 
 Model-specific finite-cutoff radial integration laws for Born–Dyson denominators.
 The single-pole logarithmic primitive, arbitrary-weight retarded–advanced
-double-pole difference, and its logarithmic specialization are shared by
-longitudinal same-side Středa remainders and Gaussian-crossed current harmonics.
-These identities do not depend on a particular conductivity or crossed diagram;
-they preserve finite broadening and cutoff without taking a regulator limit.
+double-pole difference, and its logarithmic specialization are independent of a
+particular conductivity or crossed diagram. The retarded–advanced moments are
+consumed by Gaussian-crossed current harmonics, while the longitudinal same-side
+RR/AA remainder retains its separate response-specific integral.
+All identities retain finite broadening and cutoff without taking regulator limits.
 -/
 
 namespace QuantumTheory.Models.MassiveDirac
