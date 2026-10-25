@@ -92762,7 +92762,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.freeGibbsExpectation_eq_completed_of_algebraicCore"
+      "SecondQuantization.Common.finiteGibbsExpectation_eq_completed_of_algebraicCore"
     ],
     "dependencies": [
       "QuantumTheory.DensityOperator.expectation_eq_tsum_diagonal",
@@ -92771,7 +92771,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.freeGibbsExpectation_eq_completed_of_algebraicCore"
+      "SecondQuantization.Common.finiteGibbsExpectation_eq_completed_of_algebraicCore"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -92807,7 +92807,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.completedGrandCanonicalGibbs_intertwines_finite"
+      "SecondQuantization.Common.completedFiniteGibbsDensityOperator_intertwines"
     ],
     "dependencies": [
       "QuantumTheory.eigenbasisGibbsDensityOperator_apply_basis"
@@ -92815,7 +92815,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.completedGrandCanonicalGibbs_intertwines_finite"
+      "SecondQuantization.Common.completedFiniteGibbsDensityOperator_intertwines"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -93034,6 +93034,8 @@
     "directWrapperOf": null,
     "dependents": [
       "QuantumTheory.vonNeumannEntropy_gibbsState",
+      "SecondQuantization.Common.completedFiniteGibbsDensityOperator_intertwines",
+      "SecondQuantization.Common.finiteGibbsExpectation_eq_completed_of_algebraicCore",
       "SecondQuantization.Common.finiteGibbsExpectation_eq_sum",
       "SecondQuantization.Common.finiteGibbsExpectation_eq_trace_div",
       "SecondQuantization.Common.finiteGibbsExpectation_id",
@@ -93052,6 +93054,8 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.vonNeumannEntropy_gibbsState",
+      "SecondQuantization.Common.completedFiniteGibbsDensityOperator_intertwines",
+      "SecondQuantization.Common.finiteGibbsExpectation_eq_completed_of_algebraicCore",
       "SecondQuantization.Common.finiteGibbsExpectation_eq_sum",
       "SecondQuantization.Common.finiteGibbsExpectation_eq_trace_div",
       "SecondQuantization.Common.finiteGibbsExpectation_id",
@@ -93065,7 +93069,7 @@
       "SecondQuantization.Fermionic.freeGibbsExpectation_eq_completed_of_algebraicCore",
       "SecondQuantization.Fermionic.vonNeumannEntropy_finiteGrandCanonicalGibbs_toReal_eq_sum_fermiDirac"
     ],
-    "compiledConsumerCount": 13,
+    "compiledConsumerCount": 15,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -121167,6 +121171,54 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {Config : Type u_1} [inst : Fintype Config] [inst_1 : Nonempty Config] (energy : Config → ℝ) (β : ℝ),\n  ↑↑SecondQuantization.Common.completedFiniteHilbertEquiv ∘SL\n      (QuantumTheory.eigenbasisGibbsDensityOperator SecondQuantization.Common.completedHilbertBasis energy β ⋯).op =\n    (QuantumTheory.eigenbasisGibbsDensityOperator SecondQuantization.Common.finiteHilbertBasis energy β ⋯).op ∘SL\n      ↑↑SecondQuantization.Common.completedFiniteHilbertEquiv",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.completedFiniteGibbsDensityOperator_intertwines",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteCompletedGibbsCompatibility",
+    "externalAxioms": [],
+    "docString": "The Gibbs density operators on the completed and finite realizations\nintertwine under the canonical isometry, for arbitrary configuration energies. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.completedGrandCanonicalGibbs_intertwines_finite"
+    ],
+    "dependencies": [
+      "QuantumTheory.eigenbasisGibbsDensityOperator_intertwines",
+      "QuantumTheory.eigenbasisGibbsSummable_of_finite",
+      "SecondQuantization.Common.completedFiniteHilbertEquiv_basisState",
+      "SecondQuantization.Common.completedHilbertBasis_apply",
+      "SecondQuantization.Common.finiteHilbertBasis_apply"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.completedGrandCanonicalGibbs_intertwines_finite"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {Config : Type u_1} [inst : Fintype Config] (x : SecondQuantization.Common.AlgebraicFock Config),\n  SecondQuantization.Common.completedFiniteHilbertEquiv (SecondQuantization.Common.algebraicToCompleted x) =\n    SecondQuantization.Common.finiteHilbertFockEquiv x",
     "standardAxioms": [
       "Classical.choice",
@@ -121230,9 +121282,9 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "SecondQuantization.Common.completedFiniteGibbsDensityOperator_intertwines",
       "SecondQuantization.Common.completedOperator_eq_transport_of_algebraicCore",
-      "SecondQuantization.Fermionic.completedGrandCanonicalGibbs_intertwines_finite",
-      "SecondQuantization.Fermionic.freeGibbsExpectation_eq_completed_of_algebraicCore"
+      "SecondQuantization.Common.finiteGibbsExpectation_eq_completed_of_algebraicCore"
     ],
     "dependencies": [
       "SecondQuantization.Common.algebraicToCompleted_basisState",
@@ -121242,9 +121294,9 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "SecondQuantization.Common.completedFiniteGibbsDensityOperator_intertwines",
       "SecondQuantization.Common.completedOperator_eq_transport_of_algebraicCore",
-      "SecondQuantization.Fermionic.completedGrandCanonicalGibbs_intertwines_finite",
-      "SecondQuantization.Fermionic.freeGibbsExpectation_eq_completed_of_algebraicCore"
+      "SecondQuantization.Common.finiteGibbsExpectation_eq_completed_of_algebraicCore"
     ],
     "compiledConsumerCount": 3,
     "axioms": [
@@ -121285,13 +121337,13 @@
       "SecondQuantization.Common.canonicalFullGibbsDensityOperator_apply_basis_of_sector",
       "SecondQuantization.Common.canonicalFullGibbsDensityOperator_expectation_eq_sector",
       "SecondQuantization.Common.canonicalGibbsDensityOperator_apply_basis",
+      "SecondQuantization.Common.completedFiniteGibbsDensityOperator_intertwines",
+      "SecondQuantization.Common.finiteGibbsExpectation_eq_completed_of_algebraicCore",
       "SecondQuantization.Common.grandCanonicalGibbsDensityOperator_apply_basis",
       "SecondQuantization.Common.grandCanonicalGibbsDensityOperator_expectation_eq_tsum_sector",
       "SecondQuantization.Common.grandCanonicalGibbsDensityOperator_sector_expectation_eq_canonical",
       "SecondQuantization.Common.isStationary_grandCanonicalGibbsDensityOperator",
-      "SecondQuantization.Fermionic.completedGrandCanonicalGibbs_intertwines_finite",
       "SecondQuantization.Fermionic.completedOccupationHilbertBasis_apply",
-      "SecondQuantization.Fermionic.freeGibbsExpectation_eq_completed_of_algebraicCore",
       "_private.LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.Diagonal.0.SecondQuantization.Common.norm_weight_le_of_bounded_diagonal_extension"
     ],
     "dependencies": [],
@@ -121303,13 +121355,13 @@
       "SecondQuantization.Common.canonicalFullGibbsDensityOperator_apply_basis_of_sector",
       "SecondQuantization.Common.canonicalFullGibbsDensityOperator_expectation_eq_sector",
       "SecondQuantization.Common.canonicalGibbsDensityOperator_apply_basis",
+      "SecondQuantization.Common.completedFiniteGibbsDensityOperator_intertwines",
+      "SecondQuantization.Common.finiteGibbsExpectation_eq_completed_of_algebraicCore",
       "SecondQuantization.Common.grandCanonicalGibbsDensityOperator_apply_basis",
       "SecondQuantization.Common.grandCanonicalGibbsDensityOperator_expectation_eq_tsum_sector",
       "SecondQuantization.Common.grandCanonicalGibbsDensityOperator_sector_expectation_eq_canonical",
       "SecondQuantization.Common.isStationary_grandCanonicalGibbsDensityOperator",
-      "SecondQuantization.Fermionic.completedGrandCanonicalGibbs_intertwines_finite",
       "SecondQuantization.Fermionic.completedOccupationHilbertBasis_apply",
-      "SecondQuantization.Fermionic.freeGibbsExpectation_eq_completed_of_algebraicCore",
       "_private.LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.Diagonal.0.SecondQuantization.Common.norm_weight_le_of_bounded_diagonal_extension"
     ],
     "compiledConsumerCount": 13,
@@ -121346,7 +121398,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.freeGibbsExpectation_eq_completed_of_algebraicCore"
+      "SecondQuantization.Common.finiteGibbsExpectation_eq_completed_of_algebraicCore"
     ],
     "dependencies": [
       "SecondQuantization.Common.algebraicToCompleted_basisState",
@@ -121358,7 +121410,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.freeGibbsExpectation_eq_completed_of_algebraicCore"
+      "SecondQuantization.Common.finiteGibbsExpectation_eq_completed_of_algebraicCore"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -125979,6 +126031,55 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {Config : Type u_1} [inst : Fintype Config] [inst_1 : Nonempty Config] (energy : Config → ℝ) (β : ℝ)\n  (A : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config)\n  (T : ↥(SecondQuantization.Common.CompletedFock Config) →L[ℂ] ↥(SecondQuantization.Common.CompletedFock Config)),\n  ↑T ∘ₗ SecondQuantization.Common.algebraicToCompleted = SecondQuantization.Common.algebraicToCompleted ∘ₗ A →\n    (QuantumTheory.eigenbasisGibbsDensityOperator SecondQuantization.Common.finiteHilbertBasis energy β ⋯).expectation\n        (SecondQuantization.Common.finiteHilbertOperatorAlgEquiv A) =\n      (QuantumTheory.eigenbasisGibbsDensityOperator SecondQuantization.Common.completedHilbertBasis energy β\n            ⋯).expectation\n        T",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.finiteGibbsExpectation_eq_completed_of_algebraicCore",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteCompletedGibbsCompatibility",
+    "externalAxioms": [],
+    "docString": "The finite Gibbs expectation of an algebraic observable equals its\ncompleted Gibbs expectation whenever the completed observable extends the\nalgebraic one on the finite-support core. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.freeGibbsExpectation_eq_completed_of_algebraicCore"
+    ],
+    "dependencies": [
+      "QuantumTheory.eigenbasisGibbsDensityOperator_expectation_transport",
+      "QuantumTheory.eigenbasisGibbsSummable_of_finite",
+      "SecondQuantization.Common.completedFiniteHilbertEquiv_basisState",
+      "SecondQuantization.Common.completedHilbertBasis_apply",
+      "SecondQuantization.Common.completedOperator_eq_transport_of_algebraicCore",
+      "SecondQuantization.Common.finiteHilbertBasis_apply"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.freeGibbsExpectation_eq_completed_of_algebraicCore"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {Config : Type u_1} [inst : Fintype Config] [inst_1 : Nonempty Config] (energy : Config → ℝ) (β : ℝ)\n  (A : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config),\n  SecondQuantization.Common.finiteGibbsExpectation energy β A =\n    ∑ n, ↑(QuantumTheory.eigenbasisGibbsProbability energy β n) * SecondQuantization.Common.matrixCoeff A n n",
     "standardAxioms": [
       "Classical.choice",
@@ -126323,19 +126424,19 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "SecondQuantization.Common.completedFiniteGibbsDensityOperator_intertwines",
+      "SecondQuantization.Common.finiteGibbsExpectation_eq_completed_of_algebraicCore",
       "SecondQuantization.Common.finiteGibbsExpectation_eq_sum",
-      "SecondQuantization.Fermionic.completedGrandCanonicalGibbs_intertwines_finite",
-      "SecondQuantization.Fermionic.freeGibbsDensityOperator_apply_basis",
-      "SecondQuantization.Fermionic.freeGibbsExpectation_eq_completed_of_algebraicCore"
+      "SecondQuantization.Fermionic.freeGibbsDensityOperator_apply_basis"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "SecondQuantization.Common.completedFiniteGibbsDensityOperator_intertwines",
+      "SecondQuantization.Common.finiteGibbsExpectation_eq_completed_of_algebraicCore",
       "SecondQuantization.Common.finiteGibbsExpectation_eq_sum",
-      "SecondQuantization.Fermionic.completedGrandCanonicalGibbs_intertwines_finite",
-      "SecondQuantization.Fermionic.freeGibbsDensityOperator_apply_basis",
-      "SecondQuantization.Fermionic.freeGibbsExpectation_eq_completed_of_algebraicCore"
+      "SecondQuantization.Fermionic.freeGibbsDensityOperator_apply_basis"
     ],
     "compiledConsumerCount": 4,
     "axioms": [
@@ -145963,11 +146064,8 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "QuantumTheory.eigenbasisGibbsDensityOperator_intertwines",
       "QuantumTheory.eigenbasisGibbsSummable_of_finite",
-      "SecondQuantization.Common.completedFiniteHilbertEquiv_basisState",
-      "SecondQuantization.Common.completedHilbertBasis_apply",
-      "SecondQuantization.Common.finiteHilbertBasis_apply",
+      "SecondQuantization.Common.completedFiniteGibbsDensityOperator_intertwines",
       "SecondQuantization.Common.grandCanonicalEnergy_eq_shifted"
     ],
     "crossModuleDirectWrapper": false,
@@ -150241,12 +150339,8 @@
       "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_create_comp_create"
     ],
     "dependencies": [
-      "QuantumTheory.eigenbasisGibbsDensityOperator_expectation_transport",
       "QuantumTheory.eigenbasisGibbsSummable_of_finite",
-      "SecondQuantization.Common.completedFiniteHilbertEquiv_basisState",
-      "SecondQuantization.Common.completedHilbertBasis_apply",
-      "SecondQuantization.Common.completedOperator_eq_transport_of_algebraicCore",
-      "SecondQuantization.Common.finiteHilbertBasis_apply",
+      "SecondQuantization.Common.finiteGibbsExpectation_eq_completed_of_algebraicCore",
       "SecondQuantization.Common.grandCanonicalEnergy_eq_shifted"
     ],
     "crossModuleDirectWrapper": false,
