@@ -1,4 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeBoltzmannCore
+import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.BlochDeDominicis
+import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.FiniteGibbsTraceCompatibility
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsDensityOperator
 import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.NumberOperator
 import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.ParticleNumberCharge
@@ -28,62 +30,39 @@ theorem freeGibbsDensityOperator_expectation_annihilate_comp_create
         (Common.finiteHilbertOperatorAlgEquiv ((annihilate i).comp (create j))) =
       if i = j then
         Complex.exp ((β : ℂ) * (ε i : ℂ)) / (Complex.exp ((β : ℂ) * (ε i : ℂ)) + 1)
-      else 0 := by
-  rw [freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation]
-  have hC :
-      Common.heisenbergEvolve (fermionEnergy ε) (-β) (annihilate i) =
-        Complex.exp (((-ε i) * (-β) : ℝ) : ℂ) • annihilate i := by
-    simpa [mul_comm] using
-      (Common.heisenbergEvolve_eq_smul_of_carriesShift
-        (fermionEnergy ε) (-ε i) (-β) (annihilate i)
-        (carriesEnergyShift_annihilate ε i))
-  have hcomm :
-      Common.exchangeCommutator Common.Statistics.fermion (annihilate i) (create j) =
-        (if i = j then (1 : ℂ) else 0) •
-          (LinearMap.id : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) := by
-    simpa [Common.exchangeCommutator, Common.Statistics.zetaInt_fermion] using
-      (anticomm_annihilate_create (Mode := Mode) i j)
-  have hne := one_sub_zetaInt_fermion_mul_exp_ne_zero (-ε i) β
-  have h := Common.finiteGibbsExpectation_comp_eq_div_of_exchangeCommutator
-    (fermionEnergy ε) β (-ε i) Common.Statistics.fermion
-    (if i = j then (1 : ℂ) else 0) (annihilate i) (create j) hC hcomm hne
-  rcases eq_or_ne i j with rfl | hij
-  · rw [ite_eq_left rfl] at h ⊢
-    rw [h]
-    have hE : Complex.exp ((β : ℂ) * (ε i : ℂ)) ≠ 0 := Complex.exp_ne_zero _
-    rw [Common.Statistics.zetaInt_fermion, Int.cast_neg, Int.cast_one, neg_one_mul,
-      sub_neg_eq_add, show ((-ε i * β : ℝ) : ℂ) = -((β : ℂ) * (ε i : ℂ)) by
-        push_cast
-        ring, Complex.exp_neg]
-    field_simp
-  · rw [ite_eq_right hij] at h ⊢
-    simpa [hij] using h
+      else 0 := by  have hbridge := freeGibbsExpectation_eq_completed_of_algebraicCore
+    ε β 0 ((annihilate i).comp (create j))
+      ((completedAnnihilate i).comp (completedCreate j))
+      (completedNormalProduct_comp_algebraicToCompleted i j)
+  simpa only [sub_zero, Complex.add_comm, ite_mul, mul_one, mul_zero] using
+    hbridge.trans
+      (grandCanonicalGibbsDensityOperator_expectation_annihilate_comp_create
+        ε β 0 (eigenbasisGibbsSummable_of_finite
+          (Common.grandCanonicalEnergy (Config := Occupation Mode) ε 0) β) i j)
+
 /-- `⟨c_j† c_i⟩₀,β = δᵢⱼ f_i`. -/
 theorem freeGibbsDensityOperator_expectation_create_comp_annihilate
     (ε : Mode → ℝ) (β : ℝ) (i j : Mode) :
     (freeGibbsDensityOperator ε β).expectation
         (Common.finiteHilbertOperatorAlgEquiv ((create j).comp (annihilate i))) =
-      if i = j then 1 / (Complex.exp ((β : ℂ) * (ε i : ℂ)) + 1) else 0 := by
-  have hknown := freeGibbsDensityOperator_expectation_annihilate_comp_create ε β i j
-  rw [freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation] at hknown ⊢
-  simp only [Common.finiteGibbsExpectation] at hknown ⊢
-  have h := congrArg (Common.finiteGibbsExpectationLinearMap (fermionEnergy ε) β)
-    (anticomm_annihilate_create (Mode := Mode) i j)
-  simp only [ScalarExchange.zetaCommutator, Module.End.mul_eq_comp,
-    neg_one_smul, sub_neg_eq_add, map_add] at h
-  rcases eq_or_ne i j with rfl | hij
-  · simp only [ite_true] at h hknown ⊢
-    rw [hknown] at h
-    have hid : Common.finiteGibbsExpectationLinearMap (fermionEnergy ε) β LinearMap.id = 1 :=
-      Common.finiteGibbsExpectation_id (fermionEnergy ε) β
-    rw [hid] at h
-    have hne : Complex.exp ((β : ℂ) * (ε i : ℂ)) + 1 ≠ 0 := by
-      simpa [Common.Statistics.zetaInt_fermion, add_comm] using
-        (one_sub_zetaInt_fermion_mul_exp_ne_zero β (ε i))
-    field_simp [hne] at h ⊢
-    linear_combination h
-  · simp only [ite_eq_right hij, map_zero] at h hknown ⊢
-    simpa only [hknown, zero_add] using h
+      if i = j then 1 / (Complex.exp ((β : ℂ) * (ε i : ℂ)) + 1) else 0 := by  have hbridge := freeGibbsExpectation_eq_completed_of_algebraicCore
+    ε β 0 ((create j).comp (annihilate i))
+      ((completedCreate j).comp (completedAnnihilate i))
+      (completedReversedNormalProduct_comp_algebraicToCompleted i j)
+  have hcompleted := grandCanonicalGibbsDensityOperator_expectation_create_comp_annihilate
+    ε β 0 (eigenbasisGibbsSummable_of_finite
+      (Common.grandCanonicalEnergy (Config := Occupation Mode) ε 0) β) i j
+  rw [hbridge, hcompleted]
+  simp only [sub_zero]
+  by_cases hij : i = j
+  · subst j
+    simp only [ite_true, mul_one]
+    have hne : Complex.exp ((β : ℂ) * (ε i : ℂ)) ≠ 0 := Complex.exp_ne_zero _
+    rw [show -(β : ℂ) * (ε i : ℂ) = -((β : ℂ) * (ε i : ℂ)) by ring,
+      Complex.exp_neg]
+    field_simp
+    ring
+  · simp [hij, eq_comm]
 
 /-- **Anomalous contractions vanish.** The free Gibbs state is diagonal in the occupation basis, so
 the expectation of two annihilation operators is zero: a contraction always pairs a creation
