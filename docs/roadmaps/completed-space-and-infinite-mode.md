@@ -116,8 +116,13 @@ statistics without a finite-mode hypothesis. Physical Hamiltonian energies divid
 used independently of the thermal generator `E - μ N`. The observable remains bounded; this
 does not supply response theory for unbounded currents or an infinite-volume equilibrium state.
 
-The analysis input is eigenvector expectation invariance, obtained from the existing strong Stone
-derivative and Mathlib's inner-product derivative and derivative-zero constancy theorems.
+The analysis input is `LinearPMap.stoneEvolution_eigenvector`: a domain eigenvector of real
+energy `E` evolves by the phase `exp(-i t E)`. It follows from the existing strong Stone derivative,
+Mathlib's exponential derivative, and derivative-zero constancy using an integrating factor.
+Eigenvector expectation invariance now follows from cancellation of this phase with its conjugate.
+For completed diagonal generators, `completedDiagonalOperator_basisState` supplies the eigenvector
+hypothesis directly. This identifies occupation-basis time evolution without a finite-mode
+assumption; it does not construct the Fock lift of a general unitary mixing one-particle modes.
 
 ## Open work
 
