@@ -461,9 +461,10 @@ or consumer structure changes.
 - `SecondQuantization.Fermionic.Lattice.discrete_continuity` — canonical algebraic local continuity
   equation on an arbitrary locally finite lattice and the source theorem for the bounded
   finite-lattice continuity equation.
-- `SecondQuantization.Fermionic.freePartitionFunction_eq_coe_eigenbasisPartitionFunction` — The
-  finite complex free-fermion partition function is exactly the canonical pure-point Gibbs partition
-  function for `fermionEnergy`, coerced from `ℝ` to `ℂ`.
+- `SecondQuantization.Fermionic.coe_grandCanonicalPartitionFunction_eq_prod` — The
+  existing shared grand-canonical partition sum on finite fermionic occupation Fock space
+  factorizes into `∏ᵢ (1 + exp(-β(εᵢ-μ)))` for explicit chemical potential `μ`.
+  It is a physical factorization endpoint, not a duplicate partition constructor.
 - `SecondQuantization.Fermionic.eigenbasisGibbsEnergyExpectation_fermionEnergy_eq_sum_fermiDirac` — canonical
   finite free-fermion mean-energy identity `⟨E⟩ = ∑ᵢ εᵢ fᵢ`; its current single consumer is the
   entropy endpoint, but the thermodynamic statement is independently meaningful.
