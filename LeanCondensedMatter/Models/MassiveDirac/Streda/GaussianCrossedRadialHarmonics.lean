@@ -278,10 +278,9 @@ theorem finiteCutoffContinuumBornDysonRadial_ra_weighted_moment_mul_center_gap
           (finiteCutoffContinuumBornEffectiveMass
             side v m probeEnergy broadening disorderStrength hbar pMax) =
         finiteCutoffContinuumBornDysonDenominator
-          side v m p 0 probeEnergy broadening disorderStrength hbar pMax := by
-    unfold massiveDiracRadialDenominator finiteCutoffContinuumBornDysonDenominator
-    push_cast
-    ring
+          side v m p 0 probeEnergy broadening disorderStrength hbar pMax :=
+    finiteCutoffContinuumBornDysonDenominator_eq_radial
+      side v m p probeEnergy broadening disorderStrength hbar pMax
   have hgap (p : ℝ) :
       (energyA ^ 2 - massA ^ 2 - (energyR ^ 2 - massR ^ 2)) *
           (finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct
