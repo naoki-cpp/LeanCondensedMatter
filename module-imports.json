@@ -2292,6 +2292,16 @@
       "externalImportCount": 2
     },
     {
+      "name": "LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornRadialMoments",
+      "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Disorder/FiniteBroadeningBornRadialMoments.lean",
+      "imports": [
+        "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.Denominator",
+        "LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornInvertibility",
+        "LeanCondensedMatter.Transport.Analysis.ContinuumMeasure"
+      ],
+      "externalImportCount": 1
+    },
+    {
       "name": "LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornRadialRealSpacePropagator",
       "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Disorder/FiniteBroadeningBornRadialRealSpacePropagator.lean",
       "imports": [
@@ -2480,6 +2490,7 @@
         "LeanCondensedMatter.Models.MassiveDirac.Disorder.BornCurrentVertexWeakDisorder",
         "LeanCondensedMatter.Models.MassiveDirac.Disorder.ContinuumMeasurePrefactor",
         "LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornDysonShift",
+        "LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornRadialMoments",
         "LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornRadialRealSpacePropagator",
         "LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornRealSpacePropagator",
         "LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexResponse",
@@ -2765,7 +2776,6 @@
       "name": "LeanCondensedMatter.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderLongitudinalSameSide",
       "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Streda/FiniteBroadeningBornLadderLongitudinalSameSide.lean",
       "imports": [
-        "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.Denominator",
         "LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornInvertibility",
         "LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornZeroBroadening"
       ],
@@ -2828,7 +2838,7 @@
       "name": "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedRadialHarmonics",
       "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Streda/GaussianCrossedRadialHarmonics.lean",
       "imports": [
-        "LeanCondensedMatter.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderLongitudinalSameSide",
+        "LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornRadialMoments",
         "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedRadialCoefficients",
         "LeanCondensedMatter.Transport.Analysis.ContinuumMeasure"
       ],
