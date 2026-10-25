@@ -4,50 +4,18 @@ import LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsCoordina
 set_option linter.style.header false
 
 /-!
-# Free-fermion Boltzmann weights and partition function
+# Fermionic scalar KMS denominator
 
-This module owns the finite complex-coordinate free-fermion Boltzmann weight and partition
-function used by perturbative and algebraic finite-sum calculations. The generic pure-point
-Gibbs state and real partition function are owned by `QuantumTheory.Gibbs.Eigenbasis`. These finite occupation weights and `freePartitionFunction`
-implicitly use `μ = 0`; unlike a fixed-`N` canonical partition function, they sum over
-all occupation sectors. Explicit-`μ` migration of the remaining finite-fermion users is
-tracked in #3986.
+The fermionic statistics sign gives a nonvanishing scalar KMS denominator for every real
+energy shift. Generic finite Boltzmann weights are owned by `Common.boltzmannWeight`;
+the full-occupation grand-canonical partition function, with explicit `μ`, is owned by
+`Common.grandCanonicalPartitionFunction`.
 -/
 
 namespace SecondQuantization
 namespace Fermionic
 
 variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
-
-/-- The free Boltzmann weight `e^{-βE(n)}` specialized from the canonical Common weight at
-`fermionEnergy`. -/
-noncomputable def freeBoltzmannWeight (ε : Mode → ℝ) (β : ℝ) (n : Occupation Mode) : ℂ :=
-  Common.boltzmannWeight (fermionEnergy ε) β n
-
-/-- The free partition function `Z₀(β)` as its finite occupation-basis sum. -/
-noncomputable def freePartitionFunction (ε : Mode → ℝ) (β : ℝ) : ℂ :=
-  ∑ n : Occupation Mode, freeBoltzmannWeight ε β n
-
-omit [LinearOrder Mode] in
-/-- The finite complex free-fermion partition function is exactly the generic pure-point Gibbs
-partition function for `fermionEnergy`, coerced from `ℝ` to `ℂ`. -/
-theorem freePartitionFunction_eq_coe_eigenbasisPartitionFunction
-    (ε : Mode → ℝ) (β : ℝ) :
-    freePartitionFunction ε β =
-      (QuantumTheory.eigenbasisPartitionFunction (fermionEnergy ε) β : ℂ) := by
-  symm
-  simpa [freePartitionFunction, freeBoltzmannWeight] using
-    (Common.coe_eigenbasisPartitionFunction_eq_sum_boltzmannWeight
-      (fermionEnergy ε) β)
-
-omit [LinearOrder Mode] in
-/-- The free finite fermion partition function is nonzero. -/
-theorem freePartitionFunction_ne_zero (ε : Mode → ℝ) (β : ℝ) :
-    freePartitionFunction ε β ≠ 0 := by
-  rw [freePartitionFunction_eq_coe_eigenbasisPartitionFunction]
-  exact_mod_cast (ne_of_gt
-    (QuantumTheory.eigenbasisPartitionFunction_pos (fermionEnergy ε) β
-      (QuantumTheory.eigenbasisGibbsSummable_of_finite (fermionEnergy ε) β)))
 
 /-- The Bloch--de Dominicis non-resonance denominator is automatically nonzero for fermionic
 statistics and any real energy shift and inverse temperature. -/
