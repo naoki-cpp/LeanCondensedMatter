@@ -668,6 +668,9 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficie
       Complex.log (finiteCutoffContinuumBornDysonDenominator
         .advanced v m 0 0 probeEnergy broadening disorderStrength hbar pMax))
   let measure := (((momentumMeasurePrefactor hbar : ℝ) : ℂ))
+  let value : ℂ := measure * (((2 * Real.pi : ℝ) : ℂ)) *
+    ((energyA * energyR - massA * massR) * factor) *
+    (-(((2 : ℂ) * (v : ℂ) ^ 2)⁻¹) * logDiff)
   let jxx := finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient
     .x 0 v m probeEnergy broadening disorderStrength hbar pMax 0
   let jyy := finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient
@@ -707,28 +710,15 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficie
     intro p _
     simp only [mul_zero, zero_div, polarFourierZerothAngularKernel_zero]
     ring
-  have hsum :
-      gap * (jxx + jyy) =
-        measure * (2 * (((2 * Real.pi : ℝ) : ℂ)) *
-          ((energyA * energyR - massA * massR) * factor)) *
-          (-(((2 : ℂ) * (v : ℂ) ^ 2)⁻¹) * logDiff) := by
+  have hsum : gap * (jxx + jyy) = 2 * value := by
     rw [hdiag, hrad]
-    calc
-      _ = measure * (2 * (((2 * Real.pi : ℝ) : ℂ)) *
-          ((energyA * energyR - massA * massR) * factor)) *
-          (gap * (∫ p in (0 : ℝ)..pMax, (p : ℂ) * (denominator p)⁻¹)) := by
-            ring
-      _ = _ := by rw [hlog]
-  have hxx :
-      gap * jxx = measure * (((2 * Real.pi : ℝ) : ℂ)) *
-        ((energyA * energyR - massA * massR) * factor) *
-        (-(((2 : ℂ) * (v : ℂ) ^ 2)⁻¹) * logDiff) := by
-    calc
-      gap * jxx = (gap * (jxx + jyy)) / 2 := by rw [← hsymm]; ring
-      _ = _ := by rw [hsum]; ring
+    dsimp only [value]
+    rw [← hlog]
+    ring
+  change (gap * jxx = value) ∧ (gap * jyy = value)
   constructor
-  · exact hxx
-  · exact (congrArg (fun j : ℂ => gap * j) hsymm).symm.trans hxx
+  · linear_combination (1 / 2 : ℂ) * hsum + (gap / 2) * hsymm
+  · linear_combination (1 / 2 : ℂ) * hsum - (gap / 2) * hsymm
 
 /-- In the positive-real-spectral-center regime the finite-broadening RA
 center gap is nonzero. Hence both physical origin crossed-current diagonal
