@@ -7719,6 +7719,7 @@
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Thermal/BoltzmannSummability.lean",
       "imports": [
         "LeanCondensedMatter.QuantumTheory.Gibbs.Boltzmann",
+        "LeanCondensedMatter.SecondQuantization.Common.Thermal.GrandCanonical",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.Hamiltonian"
       ],
       "externalImportCount": 1

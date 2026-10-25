@@ -92442,8 +92442,8 @@
       "QuantumTheory.isTraceClass_iff_eigenbasisGibbsSummable_of_basis_action",
       "SecondQuantization.Bosonic.eigenbasisGibbsSummable_freeEigenvalue_of_mode",
       "SecondQuantization.Common.canonicalFullGibbsWeight_nonneg",
-      "SecondQuantization.Fermionic.eigenbasisPartitionFunction_fermionEnergy_eq_tprod_one_add",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.BoltzmannSummability.0.SecondQuantization.Fermionic.eigenbasisBoltzmannWeight_fermionEnergy_summable_of_mode"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.BoltzmannSummability.0.SecondQuantization.Fermionic.eigenbasisBoltzmannWeight_fermionEnergy_summable_of_mode",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.BoltzmannSummability.0.SecondQuantization.Fermionic.eigenbasisPartitionFunction_fermionEnergy_eq_tprod_one_add"
     ],
     "dependencies": [
       "QuantumTheory.eigenbasisBoltzmannWeight_pos"
@@ -92458,8 +92458,8 @@
       "QuantumTheory.isTraceClass_iff_eigenbasisGibbsSummable_of_basis_action",
       "SecondQuantization.Bosonic.eigenbasisGibbsSummable_freeEigenvalue_of_mode",
       "SecondQuantization.Common.canonicalFullGibbsWeight_nonneg",
-      "SecondQuantization.Fermionic.eigenbasisPartitionFunction_fermionEnergy_eq_tprod_one_add",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.BoltzmannSummability.0.SecondQuantization.Fermionic.eigenbasisBoltzmannWeight_fermionEnergy_summable_of_mode"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.BoltzmannSummability.0.SecondQuantization.Fermionic.eigenbasisBoltzmannWeight_fermionEnergy_summable_of_mode",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.BoltzmannSummability.0.SecondQuantization.Fermionic.eigenbasisPartitionFunction_fermionEnergy_eq_tprod_one_add"
     ],
     "compiledConsumerCount": 9,
     "axioms": [
@@ -92551,9 +92551,9 @@
       "SecondQuantization.Bosonic.eigenbasisGibbsSummable_freeEigenvalue_of_mode",
       "SecondQuantization.Common.canonicalFullGibbsWeight_hasSum",
       "SecondQuantization.Common.grandCanonicalPartitionFunction_eq_tsum_sector",
-      "SecondQuantization.Fermionic.eigenbasisPartitionFunction_fermionEnergy_eq_tprod_one_add",
       "_private.LeanCondensedMatter.QuantumTheory.Gibbs.DistributionUniqueness.0.QuantumTheory.gibbsVariational_entropy_eq_iff",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.BoltzmannSummability.0.SecondQuantization.Fermionic.eigenbasisBoltzmannWeight_fermionEnergy_summable_of_mode"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.BoltzmannSummability.0.SecondQuantization.Fermionic.eigenbasisBoltzmannWeight_fermionEnergy_summable_of_mode",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.BoltzmannSummability.0.SecondQuantization.Fermionic.eigenbasisPartitionFunction_fermionEnergy_eq_tprod_one_add"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
@@ -92565,9 +92565,9 @@
       "SecondQuantization.Bosonic.eigenbasisGibbsSummable_freeEigenvalue_of_mode",
       "SecondQuantization.Common.canonicalFullGibbsWeight_hasSum",
       "SecondQuantization.Common.grandCanonicalPartitionFunction_eq_tsum_sector",
-      "SecondQuantization.Fermionic.eigenbasisPartitionFunction_fermionEnergy_eq_tprod_one_add",
       "_private.LeanCondensedMatter.QuantumTheory.Gibbs.DistributionUniqueness.0.QuantumTheory.gibbsVariational_entropy_eq_iff",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.BoltzmannSummability.0.SecondQuantization.Fermionic.eigenbasisBoltzmannWeight_fermionEnergy_summable_of_mode"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.BoltzmannSummability.0.SecondQuantization.Fermionic.eigenbasisBoltzmannWeight_fermionEnergy_summable_of_mode",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.BoltzmannSummability.0.SecondQuantization.Fermionic.eigenbasisPartitionFunction_fermionEnergy_eq_tprod_one_add"
     ],
     "compiledConsumerCount": 9,
     "axioms": [
@@ -127026,7 +127026,8 @@
     "dependents": [
       "SecondQuantization.Bosonic.eigenbasisGibbsSummable_grandCanonicalEnergy_of_mode",
       "SecondQuantization.Bosonic.grandCanonicalAlgebraicPartition_eq_completedFreeHeatOperator_trace",
-      "SecondQuantization.Bosonic.inv_grandCanonicalPartitionFunction_smul_completedFreeHeatOperator_eq_gibbs"
+      "SecondQuantization.Bosonic.inv_grandCanonicalPartitionFunction_smul_completedFreeHeatOperator_eq_gibbs",
+      "SecondQuantization.Fermionic.grandCanonicalGibbsSummable_of_mode"
     ],
     "dependencies": [
       "SecondQuantization.Common.grandCanonicalEnergy_eq_shifted"
@@ -127036,9 +127037,10 @@
     "compiledConsumers": [
       "SecondQuantization.Bosonic.eigenbasisGibbsSummable_grandCanonicalEnergy_of_mode",
       "SecondQuantization.Bosonic.grandCanonicalAlgebraicPartition_eq_completedFreeHeatOperator_trace",
-      "SecondQuantization.Bosonic.inv_grandCanonicalPartitionFunction_smul_completedFreeHeatOperator_eq_gibbs"
+      "SecondQuantization.Bosonic.inv_grandCanonicalPartitionFunction_smul_completedFreeHeatOperator_eq_gibbs",
+      "SecondQuantization.Fermionic.grandCanonicalGibbsSummable_of_mode"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -127166,6 +127168,7 @@
     "dependents": [
       "SecondQuantization.Bosonic.grandCanonicalAlgebraicPartition_eq_coe_grandCanonicalPartitionFunction",
       "SecondQuantization.Fermionic.coe_grandCanonicalPartitionFunction_eq_prod",
+      "SecondQuantization.Fermionic.grandCanonicalPartitionFunction_eq_tprod_one_add",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeEntropy.0.SecondQuantization.Fermionic.eigenbasisPartitionFunction_fermionEnergy_eq_prod"
     ],
     "dependencies": [
@@ -127176,9 +127179,10 @@
     "compiledConsumers": [
       "SecondQuantization.Bosonic.grandCanonicalAlgebraicPartition_eq_coe_grandCanonicalPartitionFunction",
       "SecondQuantization.Fermionic.coe_grandCanonicalPartitionFunction_eq_prod",
+      "SecondQuantization.Fermionic.grandCanonicalPartitionFunction_eq_tprod_one_add",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeEntropy.0.SecondQuantization.Fermionic.eigenbasisPartitionFunction_fermionEnergy_eq_prod"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -146897,8 +146901,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.eigenbasisPartitionFunction_fermionEnergy_eq_tprod_one_add",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.BoltzmannSummability.0.SecondQuantization.Fermionic.eigenbasisBoltzmannWeight_fermionEnergy_summable_of_mode"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.BoltzmannSummability.0.SecondQuantization.Fermionic.eigenbasisBoltzmannWeight_fermionEnergy_summable_of_mode",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.BoltzmannSummability.0.SecondQuantization.Fermionic.eigenbasisPartitionFunction_fermionEnergy_eq_tprod_one_add"
     ],
     "dependencies": [
       "SecondQuantization.Fermionic.fermionEnergy_eq_sum"
@@ -146906,8 +146910,8 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.eigenbasisPartitionFunction_fermionEnergy_eq_tprod_one_add",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.BoltzmannSummability.0.SecondQuantization.Fermionic.eigenbasisBoltzmannWeight_fermionEnergy_summable_of_mode"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.BoltzmannSummability.0.SecondQuantization.Fermionic.eigenbasisBoltzmannWeight_fermionEnergy_summable_of_mode",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.BoltzmannSummability.0.SecondQuantization.Fermionic.eigenbasisPartitionFunction_fermionEnergy_eq_tprod_one_add"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -146960,88 +146964,6 @@
       "SecondQuantization.Fermionic.vonNeumannEntropy_finiteGrandCanonicalGibbs_toReal_eq_sum_fermiDirac"
     ],
     "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (β : ℝ),\n  QuantumTheory.EigenbasisGibbsSummable ε β →\n    QuantumTheory.EigenbasisGibbsSummable (SecondQuantization.Fermionic.fermionEnergy ε) β",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.eigenbasisGibbsSummable_fermionEnergy_of_mode",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.BoltzmannSummability",
-    "externalAxioms": [],
-    "docString": "One-particle pure-point Gibbs summability implies summability of the free fermion Gibbs weights\nover all finite occupation configurations. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.BoltzmannSummability.0.SecondQuantization.Fermionic.eigenbasisBoltzmannWeight_fermionEnergy_summable_of_mode"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (β : ℝ),\n  QuantumTheory.EigenbasisGibbsSummable ε β →\n    QuantumTheory.eigenbasisPartitionFunction (SecondQuantization.Fermionic.fermionEnergy ε) β =\n      ∏' (i : Mode), (1 + QuantumTheory.eigenbasisBoltzmannWeight ε β i)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.eigenbasisPartitionFunction_fermionEnergy_eq_tprod_one_add",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.BoltzmannSummability",
-    "externalAxioms": [],
-    "docString": "Under one-particle pure-point Gibbs summability, the free fermion partition function is the\ninfinite product `∏ᵢ (1 + exp (-β εᵢ))`. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "QuantumTheory.eigenbasisBoltzmannWeight_nonneg",
-      "QuantumTheory.eigenbasisBoltzmannWeight_summable",
-      "SecondQuantization.Fermionic.eigenbasisBoltzmannWeight_fermionEnergy_eq_prod"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -150512,6 +150434,88 @@
       "SecondQuantization.Fermionic.hasSum_grandCanonicalGibbsDensityOperator_totalNumber_diagonal"
     ],
     "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (β μ : ℝ),\n  QuantumTheory.EigenbasisGibbsSummable (fun i => ε i - μ) β →\n    QuantumTheory.EigenbasisGibbsSummable (SecondQuantization.Common.grandCanonicalEnergy ε μ) β",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.grandCanonicalGibbsSummable_of_mode",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.BoltzmannSummability",
+    "externalAxioms": [],
+    "docString": "For any (possibly infinite) mode type, summability of the one-particle weights\n`exp (-β * (ε i - μ))` ensures existence of the full-Fock grand-canonical\nGibbs density operator through the common constructor. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "SecondQuantization.Common.grandCanonicalGibbsSummable_iff_shifted",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.BoltzmannSummability.0.SecondQuantization.Fermionic.eigenbasisGibbsSummable_fermionEnergy_of_mode"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (β μ : ℝ),\n  QuantumTheory.EigenbasisGibbsSummable (fun i => ε i - μ) β →\n    SecondQuantization.Common.grandCanonicalPartitionFunction ε β μ =\n      ∏' (i : Mode), (1 + QuantumTheory.eigenbasisBoltzmannWeight (fun j => ε j - μ) β i)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.grandCanonicalPartitionFunction_eq_tprod_one_add",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.BoltzmannSummability",
+    "externalAxioms": [],
+    "docString": "The full-Fock grand partition function of free fermions on arbitrary modes\nfactorizes into the infinite product of one-mode contributions at explicit `μ`.\nThe one-particle summability condition is required for the genuine Gibbs state. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "SecondQuantization.Common.grandCanonicalPartitionFunction_eq_shifted",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.BoltzmannSummability.0.SecondQuantization.Fermionic.eigenbasisPartitionFunction_fermionEnergy_eq_tprod_one_add"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -188364,7 +188368,7 @@
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": false,
+    "soleCompiledConsumerPrivate": true,
     "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
@@ -188377,7 +188381,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.eigenbasisGibbsSummable_fermionEnergy_of_mode"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.BoltzmannSummability.0.SecondQuantization.Fermionic.eigenbasisGibbsSummable_fermionEnergy_of_mode"
     ],
     "dependencies": [
       "QuantumTheory.eigenbasisBoltzmannWeight_nonneg",
@@ -188387,7 +188391,97 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.eigenbasisGibbsSummable_fermionEnergy_of_mode"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.BoltzmannSummability.0.SecondQuantization.Fermionic.eigenbasisGibbsSummable_fermionEnergy_of_mode"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (β : ℝ),\n  QuantumTheory.EigenbasisGibbsSummable ε β →\n    QuantumTheory.EigenbasisGibbsSummable (SecondQuantization.Fermionic.fermionEnergy ε) β",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.BoltzmannSummability.0.SecondQuantization.Fermionic.eigenbasisGibbsSummable_fermionEnergy_of_mode",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.BoltzmannSummability",
+    "externalAxioms": [],
+    "docString": "One-particle pure-point Gibbs summability implies summability of the free fermion Gibbs weights\nover all finite occupation configurations. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.grandCanonicalGibbsSummable_of_mode"
+    ],
+    "dependencies": [
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.BoltzmannSummability.0.SecondQuantization.Fermionic.eigenbasisBoltzmannWeight_fermionEnergy_summable_of_mode"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.grandCanonicalGibbsSummable_of_mode"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (β : ℝ),\n  QuantumTheory.EigenbasisGibbsSummable ε β →\n    QuantumTheory.eigenbasisPartitionFunction (SecondQuantization.Fermionic.fermionEnergy ε) β =\n      ∏' (i : Mode), (1 + QuantumTheory.eigenbasisBoltzmannWeight ε β i)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.BoltzmannSummability.0.SecondQuantization.Fermionic.eigenbasisPartitionFunction_fermionEnergy_eq_tprod_one_add",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.BoltzmannSummability",
+    "externalAxioms": [],
+    "docString": "Under one-particle pure-point Gibbs summability, the free fermion partition function is the\ninfinite product `∏ᵢ (1 + exp (-β εᵢ))`. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.grandCanonicalPartitionFunction_eq_tprod_one_add"
+    ],
+    "dependencies": [
+      "QuantumTheory.eigenbasisBoltzmannWeight_nonneg",
+      "QuantumTheory.eigenbasisBoltzmannWeight_summable",
+      "SecondQuantization.Fermionic.eigenbasisBoltzmannWeight_fermionEnergy_eq_prod"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.grandCanonicalPartitionFunction_eq_tprod_one_add"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
