@@ -539,8 +539,6 @@ theorem externalInsertionOfSlotSplit_mixedPairingEvaluation_eq_positionInversion
       Pairing.ofSplitNormalizedPairEquiv_pair_eq_of_lt
         mixedSplit localPairing (vac.pairingInOrder order) (Sum.inl pr)
         (hleftMono (localPairing.pairs_normalized pr.2))
-    change kernel (pairEquiv (Sum.inl pr)).1.1
-        (pairEquiv (Sum.inl pr)).1.2 = leftKernel pr.1.1 pr.1.2
     rw [hpair]
     change kernel (mixedSplit (Sum.inl pr.1.1))
         (mixedSplit (Sum.inl pr.1.2)) = leftKernel pr.1.1 pr.1.2
@@ -556,8 +554,6 @@ theorem externalInsertionOfSlotSplit_mixedPairingEvaluation_eq_positionInversion
       Pairing.ofSplitNormalizedPairEquiv_pair_eq_of_lt
         mixedSplit localPairing (vac.pairingInOrder order) (Sum.inr pr)
         (hrightMono ((vac.pairingInOrder order).pairs_normalized pr.2))
-    change kernel (pairEquiv (Sum.inr pr)).1.1
-        (pairEquiv (Sum.inr pr)).1.2 = rightKernel pr.1.1 pr.1.2
     rw [hpair]
     change kernel (mixedSplit (Sum.inr pr.1.1))
         (mixedSplit (Sum.inr pr.1.2)) = rightKernel pr.1.1 pr.1.2
