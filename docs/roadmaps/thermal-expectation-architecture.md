@@ -111,7 +111,9 @@ The finite Gibbs implementation specializes the generic recursion using the fini
 state, imaginary-time evolution, trace-ratio identity, and KMS/exchange relations.
 The finite `Fermionic.freeGibbsDensityOperator ε β` still covers **all**
 fermionic occupation sectors at implicit `μ = 0`, not a fixed-number canonical state;
-it has real entropy, contraction, Green-function and diagrammatic consumers. The older
+it has real one-body/mean-energy, contraction, Green-function and diagrammatic consumers.
+The binary-entropy endpoint instead uses the generic finite eigenbasis Gibbs density
+directly at `Common.grandCanonicalEnergy ε μ`, with explicit chemical potential. The older
 finite `freeBoltzmannWeight` and `freePartitionFunction` specializations are removed in
 the #3986 partition migration: generic coordinate weights are
 `Common.boltzmannWeight`, and the physical full-Fock partition is
