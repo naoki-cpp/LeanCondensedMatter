@@ -1,31 +1,27 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.Hamiltonian
+import LeanCondensedMatter.SecondQuantization.Common.Thermal.GrandCanonical
 import LeanCondensedMatter.QuantumTheory.Gibbs.Boltzmann
 import Mathlib.Analysis.SpecialFunctions.Log.Summable
 
 set_option linter.style.header false
 
 /-!
-# Boltzmann summability for the free fermion Gibbs state
+# Infinite-mode fermionic grand-canonical Gibbs summability and partition product
 
-The free fermion Gibbs state on an arbitrary mode type is the generic pure-point Gibbs state on
-occupation energies `fermionEnergy ε`. Its occupation-level summability follows from the
-corresponding one-particle
-pure-point summability condition.  Writing
-
-```text
-qᵢ = exp (-β εᵢ),
-```
-
-the occupation weight factors as `∏ i ∈ n, qᵢ`.  Mathlib's summability theorem for products over
-all finite subsets then gives both occupation-level Gibbs summability and the partition-product
-formula
+For an arbitrary mode type and explicit chemical potential `μ`, write the effective one-particle
+energy as `ξ i = ε i - μ`. One-particle Gibbs summability
+`EigenbasisGibbsSummable ξ β` implies summability of the grand-canonical occupation
+weights for `K(n) = E(n) - μ N(n)`, and the grand partition function factorizes as
 
 ```text
-Z(β) = ∏' i, (1 + exp (-β εᵢ)).
+Ξ(β, μ) = ∏' i, (1 + exp (-β * (ε i - μ))).
 ```
 
-No explicit finiteness or countability typeclass is imposed on `Mode`; the summability hypothesis
-itself carries the required analytic restriction.
+The product ranges over **all** modes, not a finite subset. The proof uses the generic
+occupation energy shift and a summable product over finite occupied subsets. There is no
+`[Fintype Mode]` or countability typeclass: the analytic summability condition is
+explicit and nontrivial in an infinite-mode system. The finite-coordinate results are
+separate downstream consequences, not the foundation of this construction.
 -/
 
 namespace SecondQuantization
@@ -74,7 +70,7 @@ private theorem eigenbasisBoltzmannWeight_fermionEnergy_summable_of_mode
 
 /-- One-particle pure-point Gibbs summability implies summability of the free fermion Gibbs weights
 over all finite occupation configurations. -/
-theorem eigenbasisGibbsSummable_fermionEnergy_of_mode
+private theorem eigenbasisGibbsSummable_fermionEnergy_of_mode
     (ε : Mode → ℝ) (β : ℝ) (hmode : EigenbasisGibbsSummable ε β) :
     EigenbasisGibbsSummable (fermionEnergy ε) β := by
   unfold EigenbasisGibbsSummable
@@ -82,7 +78,7 @@ theorem eigenbasisGibbsSummable_fermionEnergy_of_mode
 
 /-- Under one-particle pure-point Gibbs summability, the free fermion partition function is the
 infinite product `∏ᵢ (1 + exp (-β εᵢ))`. -/
-theorem eigenbasisPartitionFunction_fermionEnergy_eq_tprod_one_add
+private theorem eigenbasisPartitionFunction_fermionEnergy_eq_tprod_one_add
     (ε : Mode → ℝ) (β : ℝ) (hmode : EigenbasisGibbsSummable ε β) :
     eigenbasisPartitionFunction (fermionEnergy ε) β =
       ∏' i : Mode, (1 + eigenbasisBoltzmannWeight ε β i) := by
@@ -101,6 +97,33 @@ theorem eigenbasisPartitionFunction_fermionEnergy_eq_tprod_one_add
       exact eigenbasisBoltzmannWeight_fermionEnergy_eq_prod ε β n
     _ = ∏' i : Mode, (1 + eigenbasisBoltzmannWeight ε β i) :=
       (tprod_one_add hprod).symm
+
+
+/-- For any (possibly infinite) mode type, summability of the one-particle weights
+`exp (-β * (ε i - μ))` ensures existence of the full-Fock grand-canonical
+Gibbs density operator through the common constructor. -/
+theorem grandCanonicalGibbsSummable_of_mode
+    (ε : Mode → ℝ) (β μ : ℝ)
+    (hmode : EigenbasisGibbsSummable (fun i => ε i - μ) β) :
+    EigenbasisGibbsSummable
+      (Common.grandCanonicalEnergy (Config := Occupation Mode) ε μ) β := by
+  apply (Common.grandCanonicalGibbsSummable_iff_shifted
+    (Config := Occupation Mode) ε β μ).2
+  exact eigenbasisGibbsSummable_fermionEnergy_of_mode
+    (fun i => ε i - μ) β hmode
+
+/-- The full-Fock grand partition function of free fermions on arbitrary modes
+factorizes into the infinite product of one-mode contributions at explicit `μ`.
+The one-particle summability condition is required for the genuine Gibbs state. -/
+theorem grandCanonicalPartitionFunction_eq_tprod_one_add
+    (ε : Mode → ℝ) (β μ : ℝ)
+    (hmode : EigenbasisGibbsSummable (fun i => ε i - μ) β) :
+    Common.grandCanonicalPartitionFunction (Config := Occupation Mode) ε β μ =
+      ∏' i : Mode,
+        (1 + eigenbasisBoltzmannWeight (fun j => ε j - μ) β i) := by
+  rw [Common.grandCanonicalPartitionFunction_eq_shifted]
+  exact eigenbasisPartitionFunction_fermionEnergy_eq_tprod_one_add
+    (fun i => ε i - μ) β hmode
 
 end
 end Fermionic
