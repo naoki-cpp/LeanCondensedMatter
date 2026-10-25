@@ -1,14 +1,7 @@
-import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeBoltzmannCore
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.BlochDeDominicis
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.FiniteGibbsTraceCompatibility
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsDensityOperator
-import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.NumberOperator
-import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.ParticleNumberCharge
-import LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTime.ImaginaryTimeEvolution
-import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.GibbsExpectation.TwoPoint
 import Mathlib.Tactic.FieldSimp
-import Mathlib.Tactic.LinearCombination
-import Mathlib.Tactic.Ring
 
 set_option linter.style.header false
 
@@ -36,7 +29,10 @@ theorem freeGibbsDensityOperator_expectation_annihilate_comp_create
   have hbridge := freeGibbsExpectation_eq_completed_of_algebraicCore
     ε β 0 ((annihilate i).comp (create j))
       ((completedAnnihilate i).comp (completedCreate j))
-      (completedNormalProduct_comp_algebraicToCompleted i j)
+      (completedProduct_comp_algebraicToCompleted_of_core
+        (annihilate i) (create j) (completedAnnihilate i) (completedCreate j)
+        (completedAnnihilate_comp_algebraicToCompleted i)
+        (completedCreate_comp_algebraicToCompleted j))
   simp only [sub_zero] at hbridge
   rw [hbridge, grandCanonicalGibbsDensityOperator_expectation_annihilate_comp_create]
   simp only [sub_zero]
@@ -53,7 +49,10 @@ theorem freeGibbsDensityOperator_expectation_create_comp_annihilate
   have hbridge := freeGibbsExpectation_eq_completed_of_algebraicCore
     ε β 0 ((create j).comp (annihilate i))
       ((completedCreate j).comp (completedAnnihilate i))
-      (completedReversedNormalProduct_comp_algebraicToCompleted i j)
+      (completedProduct_comp_algebraicToCompleted_of_core
+        (create j) (annihilate i) (completedCreate j) (completedAnnihilate i)
+        (completedCreate_comp_algebraicToCompleted j)
+        (completedAnnihilate_comp_algebraicToCompleted i))
   simp only [sub_zero] at hbridge
   have hcompleted := grandCanonicalGibbsDensityOperator_expectation_create_comp_annihilate
     ε β 0 (eigenbasisGibbsSummable_of_finite
@@ -76,17 +75,15 @@ theorem freeGibbsDensityOperator_expectation_annihilate_comp_annihilate
     (ε : Mode → ℝ) (β : ℝ) (i j : Mode) :
     (freeGibbsDensityOperator ε β).expectation
         (Common.finiteHilbertOperatorAlgEquiv ((annihilate i).comp (annihilate j))) = 0 := by
-  rw [freeGibbsDensityOperator_expectation_eq_summableDiagonalTraceRatioLinear]
-  change Common.tsumTrace ((Common.diagonalEvolution (fermionEnergy ε) (-β)).comp
-      ((annihilate i).comp (annihilate j))) /
-    Common.tsumTrace (Common.diagonalEvolution (fermionEnergy ε) (-β)) = 0
-  simpa only [Common.diagonalEvolution] using
-    (Common.diagonalTraceRatio_eq_zero_of_carriesShift
-      ((carriesParticleNumberCharge_annihilate i).comp
-        (carriesParticleNumberCharge_annihilate j))
-      (by norm_num)
-      (fun n : Occupation Mode =>
-        Complex.exp (((-β) * fermionEnergy ε n : ℝ) : ℂ)))
+  have hbridge := freeGibbsExpectation_eq_completed_of_algebraicCore
+    ε β 0 ((annihilate i).comp (annihilate j))
+      ((completedAnnihilate i).comp (completedAnnihilate j))
+      (completedProduct_comp_algebraicToCompleted_of_core
+        (annihilate i) (annihilate j) (completedAnnihilate i) (completedAnnihilate j)
+        (completedAnnihilate_comp_algebraicToCompleted i)
+        (completedAnnihilate_comp_algebraicToCompleted j))
+  simp only [sub_zero] at hbridge
+  rw [hbridge, grandCanonicalGibbsDensityOperator_expectation_annihilate_comp_annihilate]
 
 /-- **Anomalous contractions vanish.** The expectation of two creation operators is zero, for the
 same particle-number selection rule. -/
@@ -94,17 +91,15 @@ theorem freeGibbsDensityOperator_expectation_create_comp_create
     (ε : Mode → ℝ) (β : ℝ) (i j : Mode) :
     (freeGibbsDensityOperator ε β).expectation
         (Common.finiteHilbertOperatorAlgEquiv ((create i).comp (create j))) = 0 := by
-  rw [freeGibbsDensityOperator_expectation_eq_summableDiagonalTraceRatioLinear]
-  change Common.tsumTrace ((Common.diagonalEvolution (fermionEnergy ε) (-β)).comp
-      ((create i).comp (create j))) /
-    Common.tsumTrace (Common.diagonalEvolution (fermionEnergy ε) (-β)) = 0
-  simpa only [Common.diagonalEvolution] using
-    (Common.diagonalTraceRatio_eq_zero_of_carriesShift
-      ((carriesParticleNumberCharge_create i).comp
-        (carriesParticleNumberCharge_create j))
-      (by norm_num)
-      (fun n : Occupation Mode =>
-        Complex.exp (((-β) * fermionEnergy ε n : ℝ) : ℂ)))
+  have hbridge := freeGibbsExpectation_eq_completed_of_algebraicCore
+    ε β 0 ((create i).comp (create j))
+      ((completedCreate i).comp (completedCreate j))
+      (completedProduct_comp_algebraicToCompleted_of_core
+        (create i) (create j) (completedCreate i) (completedCreate j)
+        (completedCreate_comp_algebraicToCompleted i)
+        (completedCreate_comp_algebraicToCompleted j))
+  simp only [sub_zero] at hbridge
+  rw [hbridge, grandCanonicalGibbsDensityOperator_expectation_create_comp_create]
 
 end Fermionic
 end SecondQuantization
