@@ -178,6 +178,7 @@ theorem AngularHarmonicCoefficients.intervalIntegral_weighted_integral_eval
             (weight radius * (coefficients radius).constant) := by
       apply intervalIntegral.integral_congr
       intro radius _
+      dsimp only
       rw [intervalIntegral.integral_const_mul, (coefficients radius).integral_eval]
       simp only [smul_eq_mul]
       ring
