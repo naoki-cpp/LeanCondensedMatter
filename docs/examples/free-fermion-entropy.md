@@ -1,7 +1,8 @@
 # Finite free-fermion entropy
 
-For a finite mode type and one-particle energies `ε : Mode → ℝ`, the canonical free Gibbs density
-operator is diagonal in the occupation basis. The mode occupation is
+For a finite mode type and one-particle energies `ε : Mode → ℝ`, the full-occupation-Fock
+free Gibbs density operator at implicit `μ = 0` is diagonal in the occupation basis.
+It is not a sharp-particle-number canonical Gibbs state. The mode occupation is
 
 ```text
 fᵢ = 1 / (exp(β εᵢ) + 1).

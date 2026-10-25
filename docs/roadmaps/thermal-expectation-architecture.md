@@ -69,8 +69,17 @@ data to prove the completed-Fock bounded-operator identity
 isometric zero extension of the canonical density. The left-hand side
 is an unnormalized positive operator, not itself a density state.
 
-General bounded-observable expectation and full density-operator decompositions
-remain separate tasks.
+PR #4097 now proves the **bounded-observable** grand-canonical expectation decomposition
+by sharp particle-number sector (including empty sectors). PR #4100 connects that
+sector-weighted mixture of canonical expectations to the completed fermionic Wick
+pairing theorem; it does **not** assert Wick factorization for a single sharp-`N` state.
+PRs #4102 and #4108 identify the first particle-number moment of sector probabilities
+under explicit integrability assumptions, without applying bounded-observable expectation
+to an unbounded number operator.
+
+A trace-class **operator-valued** infinite mixture identity, sector-probability conservation
+under specified open-system dynamics, and relative-entropy/thermalization results are
+separate follow-ups, not prerequisites already proved by those expectation identities.
 
 ## Generic pairing recursion
 
@@ -99,8 +108,14 @@ whether those configurations represent a fixed-`N` sector or the full Fock space
 ## Fermionic implementations
 
 The finite Gibbs implementation specializes the generic recursion using the finite pure-point Gibbs
-state, imaginary-time evolution, trace-ratio identity, and KMS/exchange relations. The finite
-density-state specialization depends directly on `fermionEnergy` and the generic pure-point state;
+state, imaginary-time evolution, trace-ratio identity, and KMS/exchange relations.
+The surviving `Fermionic.Thermal.freeGibbsDensityOperator ε β` and
+`freePartitionFunction ε β` interfaces cover **all** finite fermionic occupation sectors at
+implicit `μ = 0`; they are not fixed-number canonical states. These public finite-fermion
+interfaces still have real entropy, contraction, Green-function and diagrammatic consumers,
+so replacing them with the existing shared explicit-`μ` Gibbs construction requires a staged
+consumer migration, not compatibility aliases or a parallel density constructor.
+The finite density-state specialization depends directly on `fermionEnergy` and the generic pure-point state;
 finite complex Boltzmann coordinates are a separate proof/perturbation lane.
 
 `Fermionic.Thermal.FreeEntropy` derives the finite occupation marginal from the canonical
