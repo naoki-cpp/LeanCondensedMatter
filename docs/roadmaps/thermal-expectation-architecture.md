@@ -109,12 +109,15 @@ whether those configurations represent a fixed-`N` sector or the full Fock space
 
 The finite Gibbs implementation specializes the generic recursion using the finite pure-point Gibbs
 state, imaginary-time evolution, trace-ratio identity, and KMS/exchange relations.
-The surviving `Fermionic.Thermal.freeGibbsDensityOperator ε β` and
-`freePartitionFunction ε β` interfaces cover **all** finite fermionic occupation sectors at
-implicit `μ = 0`; they are not fixed-number canonical states. These public finite-fermion
-interfaces still have real entropy, contraction, Green-function and diagrammatic consumers,
-so replacing them with the existing shared explicit-`μ` Gibbs construction requires a staged
-consumer migration, not compatibility aliases or a parallel density constructor.
+The finite `Fermionic.freeGibbsDensityOperator ε β` still covers **all**
+fermionic occupation sectors at implicit `μ = 0`, not a fixed-number canonical state;
+it has real entropy, contraction, Green-function and diagrammatic consumers. The older
+finite `freeBoltzmannWeight` and `freePartitionFunction` specializations are removed in
+the #3986 partition migration: generic coordinate weights are
+`Common.boltzmannWeight`, and the physical full-Fock partition is
+`Common.grandCanonicalPartitionFunction ε β μ`. The finite fermionic product theorem
+accepts explicit `μ`. Migrating the remaining finite density/observable consumers requires
+staged changes without compatibility aliases or a second density constructor.
 The finite density-state specialization depends directly on `fermionEnergy` and the generic pure-point state;
 finite complex Boltzmann coordinates are a separate proof/perturbation lane.
 
