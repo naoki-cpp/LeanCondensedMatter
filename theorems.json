@@ -92939,7 +92939,7 @@
       "SecondQuantization.Common.traceFock_diagonalEvolution_ne_zero",
       "SecondQuantization.Fermionic.completedGrandCanonicalGibbs_intertwines_finite",
       "SecondQuantization.Fermionic.freeGibbsDensityOperator_apply_basis",
-      "SecondQuantization.Fermionic.vonNeumannEntropy_freeGibbsDensityOperator_toReal_eq_sum_fermiDirac"
+      "SecondQuantization.Fermionic.vonNeumannEntropy_finiteGrandCanonicalGibbs_toReal_eq_sum_fermiDirac"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
@@ -92952,7 +92952,7 @@
       "SecondQuantization.Common.traceFock_diagonalEvolution_ne_zero",
       "SecondQuantization.Fermionic.completedGrandCanonicalGibbs_intertwines_finite",
       "SecondQuantization.Fermionic.freeGibbsDensityOperator_apply_basis",
-      "SecondQuantization.Fermionic.vonNeumannEntropy_freeGibbsDensityOperator_toReal_eq_sum_fermiDirac"
+      "SecondQuantization.Fermionic.vonNeumannEntropy_finiteGrandCanonicalGibbs_toReal_eq_sum_fermiDirac"
     ],
     "compiledConsumerCount": 8,
     "axioms": [
@@ -96162,7 +96162,7 @@
     "dependents": [
       "QuantumTheory.eigenbasisGibbs_helmholtzFreeEnergy_eq",
       "QuantumTheory.vonNeumannEntropy_gibbsState",
-      "SecondQuantization.Fermionic.vonNeumannEntropy_freeGibbsDensityOperator_toReal_eq_sum_fermiDirac"
+      "SecondQuantization.Fermionic.vonNeumannEntropy_finiteGrandCanonicalGibbs_toReal_eq_sum_fermiDirac"
     ],
     "dependencies": [
       "QuantumTheory.DensityOperator.vonNeumannEntropy_ne_top_and_toReal_eq_of_hasSum_diagonal",
@@ -96176,7 +96176,7 @@
     "compiledConsumers": [
       "QuantumTheory.eigenbasisGibbs_helmholtzFreeEnergy_eq",
       "QuantumTheory.vonNeumannEntropy_gibbsState",
-      "SecondQuantization.Fermionic.vonNeumannEntropy_freeGibbsDensityOperator_toReal_eq_sum_fermiDirac"
+      "SecondQuantization.Fermionic.vonNeumannEntropy_finiteGrandCanonicalGibbs_toReal_eq_sum_fermiDirac"
     ],
     "compiledConsumerCount": 3,
     "axioms": [
@@ -126541,6 +126541,7 @@
       "SecondQuantization.Common.grandCanonicalPartitionFunction_eq_shifted",
       "SecondQuantization.Fermionic.completedGrandCanonicalGibbs_intertwines_finite",
       "SecondQuantization.Fermionic.finiteGrandCanonicalGibbsExpectation_eq_diagonalTraceRatio",
+      "SecondQuantization.Fermionic.vonNeumannEntropy_finiteGrandCanonicalGibbs_toReal_eq_sum_fermiDirac",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.Gibbs.0.SecondQuantization.Fermionic.grandCanonicalEnergy_eq_fermionEnergy"
     ],
     "dependencies": [
@@ -126554,9 +126555,10 @@
       "SecondQuantization.Common.grandCanonicalPartitionFunction_eq_shifted",
       "SecondQuantization.Fermionic.completedGrandCanonicalGibbs_intertwines_finite",
       "SecondQuantization.Fermionic.finiteGrandCanonicalGibbsExpectation_eq_diagonalTraceRatio",
+      "SecondQuantization.Fermionic.vonNeumannEntropy_finiteGrandCanonicalGibbs_toReal_eq_sum_fermiDirac",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.Gibbs.0.SecondQuantization.Fermionic.grandCanonicalEnergy_eq_fermionEnergy"
     ],
-    "compiledConsumerCount": 6,
+    "compiledConsumerCount": 7,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -146941,7 +146943,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.vonNeumannEntropy_freeGibbsDensityOperator_toReal_eq_sum_fermiDirac"
+      "SecondQuantization.Fermionic.vonNeumannEntropy_finiteGrandCanonicalGibbs_toReal_eq_sum_fermiDirac"
     ],
     "dependencies": [
       "SecondQuantization.Common.diagonalOperator_apply",
@@ -146955,7 +146957,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.vonNeumannEntropy_freeGibbsDensityOperator_toReal_eq_sum_fermiDirac"
+      "SecondQuantization.Fermionic.vonNeumannEntropy_finiteGrandCanonicalGibbs_toReal_eq_sum_fermiDirac"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -154464,7 +154466,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {Mode : Type u_1} [inst : Fintype Mode] (ε : Mode → ℝ) (β : ℝ),\n  (QuantumTheory.vonNeumannEntropy (SecondQuantization.Fermionic.freeGibbsDensityOperator ε β)).toReal =\n    ∑ i,\n      ((SecondQuantization.Fermionic.fermiDiracOccupation ε β i).negMulLog +\n        (1 - SecondQuantization.Fermionic.fermiDiracOccupation ε β i).negMulLog)",
+    "statement": "∀ {Mode : Type u_1} [inst : Fintype Mode] (ε : Mode → ℝ) (β μ : ℝ),\n  (QuantumTheory.vonNeumannEntropy\n        (QuantumTheory.eigenbasisGibbsDensityOperator SecondQuantization.Common.finiteHilbertBasis\n          (SecondQuantization.Common.grandCanonicalEnergy ε μ) β ⋯)).toReal =\n    ∑ i,\n      ((SecondQuantization.Fermionic.fermiDiracOccupation (fun j => ε j - μ) β i).negMulLog +\n        (1 - SecondQuantization.Fermionic.fermiDiracOccupation (fun j => ε j - μ) β i).negMulLog)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -154476,16 +154478,17 @@
     "retainedNeedsReview": true,
     "retainedMention": true,
     "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.vonNeumannEntropy_freeGibbsDensityOperator_toReal_eq_sum_fermiDirac",
+    "name": "SecondQuantization.Fermionic.vonNeumannEntropy_finiteGrandCanonicalGibbs_toReal_eq_sum_fermiDirac",
     "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeEntropy",
     "externalAxioms": [],
-    "docString": "The finite free-fermion entropy is the sum of binary entropies of the Fermi–Dirac modes. ",
+    "docString": "The full-occupation-space finite fermionic grand-canonical Gibbs entropy is the\nsum of binary entropies for occupations at the effective energy `ε - μ`.\nThis uses the generic pure-point Gibbs density state directly, without a second finite\nfermionic density constructor. It does not assert a fixed-particle-number canonical entropy. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
       "QuantumTheory.eigenbasisGibbsSummable_of_finite",
       "QuantumTheory.vonNeumannEntropy_eigenbasisGibbsDensityOperator",
+      "SecondQuantization.Common.grandCanonicalEnergy_eq_shifted",
       "SecondQuantization.Fermionic.eigenbasisGibbsEnergyExpectation_fermionEnergy_eq_sum_fermiDirac",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeEntropy.0.SecondQuantization.Fermionic.binaryEntropy_fermiDiracOccupation",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeEntropy.0.SecondQuantization.Fermionic.log_eigenbasisPartitionFunction_fermionEnergy_eq_sum"
@@ -188862,7 +188865,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.vonNeumannEntropy_freeGibbsDensityOperator_toReal_eq_sum_fermiDirac"
+      "SecondQuantization.Fermionic.vonNeumannEntropy_finiteGrandCanonicalGibbs_toReal_eq_sum_fermiDirac"
     ],
     "dependencies": [
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeEntropy.0.SecondQuantization.Fermionic.fermiDiracOccupation_eq_exp_neg_div",
@@ -188871,7 +188874,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.vonNeumannEntropy_freeGibbsDensityOperator_toReal_eq_sum_fermiDirac"
+      "SecondQuantization.Fermionic.vonNeumannEntropy_finiteGrandCanonicalGibbs_toReal_eq_sum_fermiDirac"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -188994,7 +188997,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.vonNeumannEntropy_freeGibbsDensityOperator_toReal_eq_sum_fermiDirac"
+      "SecondQuantization.Fermionic.vonNeumannEntropy_finiteGrandCanonicalGibbs_toReal_eq_sum_fermiDirac"
     ],
     "dependencies": [
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeEntropy.0.SecondQuantization.Fermionic.eigenbasisPartitionFunction_fermionEnergy_eq_prod"
@@ -189002,7 +189005,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.vonNeumannEntropy_freeGibbsDensityOperator_toReal_eq_sum_fermiDirac"
+      "SecondQuantization.Fermionic.vonNeumannEntropy_finiteGrandCanonicalGibbs_toReal_eq_sum_fermiDirac"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
