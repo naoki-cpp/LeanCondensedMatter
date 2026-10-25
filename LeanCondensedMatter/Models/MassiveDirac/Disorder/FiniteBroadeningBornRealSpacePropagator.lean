@@ -266,7 +266,7 @@ theorem finiteCutoffContinuumBornDysonRealSpaceGreenMatrix_radialAxis_eq
 /-- Diagonal spinor conjugation commutes with entrywise interval integration.
 Every entry has only one nonzero summand, so scalar constant-factor integral
 rules suffice and no additional integrability assumptions are required. -/
-theorem InternalSpace.intervalIntegralPauliMatrix_spinRotation_conjugate
+theorem intervalIntegralMatrix2_spinRotation_conjugate
     (angle a b : ℝ) (f : ℝ → Matrix2) :
     InternalSpace.intervalIntegralPauliMatrix a b
         (fun p => inPlaneSpinRotation angle * f p *
@@ -373,7 +373,7 @@ theorem finiteCutoffContinuumBornDysonRealSpaceGreenMatrix_polarPoint2D_eq_radia
       apply intervalIntegral.integral_congr
       intro p _
       exact congrArg (fun M : Matrix2 => M i j) (hpoint angle p)
-    rw [hentries, InternalSpace.intervalIntegralPauliMatrix_spinRotation_conjugate]
+    rw [hentries, intervalIntegralMatrix2_spinRotation_conjugate]
   have haxis :
       finiteCutoffContinuumBornDysonRealSpaceGreenMatrix
           side v m probeEnergy broadening disorderStrength hbar pMax
