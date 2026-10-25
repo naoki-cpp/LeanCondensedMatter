@@ -34,7 +34,15 @@ theorem freeGibbsDensityOperator_expectation_annihilate_comp_create
         (completedAnnihilate_comp_algebraicToCompleted i)
         (completedCreate_comp_algebraicToCompleted j))
   simp only [sub_zero] at hbridge
-  rw [hbridge, grandCanonicalGibbsDensityOperator_expectation_annihilate_comp_create]
+  have hpair := grandCanonicalGibbsDensityOperator_expectation_pair ε β 0
+    (eigenbasisGibbsSummable_of_finite
+      (Common.grandCanonicalEnergy (Config := Occupation Mode) ε 0) β)
+    (CompletedThermalLadder.annihilate i) (CompletedThermalLadder.create j)
+  simp only [CompletedThermalLadder.operator_annihilate,
+    CompletedThermalLadder.operator_create,
+    CompletedThermalLadder.gibbsFactor_annihilate,
+    CompletedThermalLadder.anticommutatorValue] at hpair
+  rw [hbridge, hpair]
   simp only [sub_zero]
   by_cases hij : i = j
   · simp [hij, add_comm]
@@ -54,10 +62,15 @@ theorem freeGibbsDensityOperator_expectation_create_comp_annihilate
         (completedCreate_comp_algebraicToCompleted j)
         (completedAnnihilate_comp_algebraicToCompleted i))
   simp only [sub_zero] at hbridge
-  have hcompleted := grandCanonicalGibbsDensityOperator_expectation_create_comp_annihilate
-    ε β 0 (eigenbasisGibbsSummable_of_finite
-      (Common.grandCanonicalEnergy (Config := Occupation Mode) ε 0) β) i j
-  rw [hbridge, hcompleted]
+  have hpair := grandCanonicalGibbsDensityOperator_expectation_pair ε β 0
+    (eigenbasisGibbsSummable_of_finite
+      (Common.grandCanonicalEnergy (Config := Occupation Mode) ε 0) β)
+    (CompletedThermalLadder.create j) (CompletedThermalLadder.annihilate i)
+  simp only [CompletedThermalLadder.operator_create,
+    CompletedThermalLadder.operator_annihilate,
+    CompletedThermalLadder.gibbsFactor_create,
+    CompletedThermalLadder.anticommutatorValue] at hpair
+  rw [hbridge, hpair]
   simp only [sub_zero]
   by_cases hij : i = j
   · subst j
@@ -83,7 +96,13 @@ theorem freeGibbsDensityOperator_expectation_annihilate_comp_annihilate
         (completedAnnihilate_comp_algebraicToCompleted i)
         (completedAnnihilate_comp_algebraicToCompleted j))
   simp only [sub_zero] at hbridge
-  rw [hbridge, grandCanonicalGibbsDensityOperator_expectation_annihilate_comp_annihilate]
+  rw [hbridge]
+  have hpair := grandCanonicalGibbsDensityOperator_expectation_pair ε β 0
+    (eigenbasisGibbsSummable_of_finite
+      (Common.grandCanonicalEnergy (Config := Occupation Mode) ε 0) β)
+    (CompletedThermalLadder.annihilate i) (CompletedThermalLadder.annihilate j)
+  simpa only [CompletedThermalLadder.operator_annihilate,
+    CompletedThermalLadder.anticommutatorValue, mul_zero] using hpair
 
 /-- **Anomalous contractions vanish.** The expectation of two creation operators is zero, for the
 same particle-number selection rule. -/
@@ -99,7 +118,13 @@ theorem freeGibbsDensityOperator_expectation_create_comp_create
         (completedCreate_comp_algebraicToCompleted i)
         (completedCreate_comp_algebraicToCompleted j))
   simp only [sub_zero] at hbridge
-  rw [hbridge, grandCanonicalGibbsDensityOperator_expectation_create_comp_create]
+  rw [hbridge]
+  have hpair := grandCanonicalGibbsDensityOperator_expectation_pair ε β 0
+    (eigenbasisGibbsSummable_of_finite
+      (Common.grandCanonicalEnergy (Config := Occupation Mode) ε 0) β)
+    (CompletedThermalLadder.create i) (CompletedThermalLadder.create j)
+  simpa only [CompletedThermalLadder.operator_create,
+    CompletedThermalLadder.anticommutatorValue, mul_zero] using hpair
 
 end Fermionic
 end SecondQuantization
