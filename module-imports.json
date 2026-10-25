@@ -793,7 +793,7 @@
         "LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventCommutation",
         "LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventConvergence"
       ],
-      "externalImportCount": 8
+      "externalImportCount": 9
     },
     {
       "name": "LeanCondensedMatter.Analysis.Operator.Unbounded.SelfAdjointCriterion",
@@ -7743,6 +7743,7 @@
       "imports": [
         "LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.FiniteCompatibility",
         "LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsCoordinate",
+        "LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.Core",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.Gibbs",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsDensityOperator"
       ],
@@ -7819,14 +7820,11 @@
       "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsContraction",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Thermal/FreeGibbsContraction.lean",
       "imports": [
-        "LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.GibbsExpectation.TwoPoint",
-        "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.NumberOperator",
-        "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.ParticleNumberCharge",
-        "LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTime.ImaginaryTimeEvolution",
-        "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeBoltzmannCore",
+        "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.BlochDeDominicis",
+        "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.FiniteGibbsTraceCompatibility",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsDensityOperator"
       ],
-      "externalImportCount": 3
+      "externalImportCount": 1
     },
     {
       "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsDensityOperator",
@@ -7844,6 +7842,7 @@
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Thermal/FreeGibbsGreenFunction.lean",
       "imports": [
         "LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTime.TwoPoint",
+        "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeBoltzmannCore",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsContraction"
       ],
       "externalImportCount": 0
