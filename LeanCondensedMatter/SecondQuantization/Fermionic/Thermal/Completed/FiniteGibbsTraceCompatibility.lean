@@ -1,4 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.Gibbs
+import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.Core
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsDensityOperator
 import LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.FiniteCompatibility
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsCoordinate
@@ -65,6 +66,142 @@ theorem completedGrandCanonicalGibbs_intertwines_finite
       hbasis
   simpa [Common.grandCanonicalGibbsDensityOperator,
     freeGibbsDensityOperator, hE] using htransport
+
+/-- A bounded completed operator extending an algebraic Fock endomorphism is intertwined
+with its canonical finite-Hilbert realization. This is the reusable operator-level
+bridge, with no Gibbs-state assumption. -/
+private theorem completedFiniteHilbertIntertwines_of_algebraicCore
+    (A : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode)
+    (T : CompletedFockSpace Mode →L[ℂ] CompletedFockSpace Mode)
+    (hcore : T.toLinearMap.comp algebraicToCompleted =
+      algebraicToCompleted.comp A) :
+    (Common.completedFiniteHilbertEquiv
+      (Config := Occupation Mode)).toContinuousLinearEquiv.toContinuousLinearMap.comp T =
+      (Common.finiteHilbertOperatorAlgEquiv A).comp
+        (Common.completedFiniteHilbertEquiv
+          (Config := Occupation Mode)).toContinuousLinearEquiv.toContinuousLinearMap := by
+  apply Common.continuousLinearMap_ext_completedBasis
+  intro n
+  let e := Common.completedFiniteHilbertEquiv (Config := Occupation Mode)
+  have hcore_n :
+      T (Common.algebraicToCompleted (Common.basisState n)) =
+        Common.algebraicToCompleted (A (Common.basisState n)) := by
+    have h := congrArg
+      (fun f : OccupationFock Mode →ₗ[ℂ] CompletedFockSpace Mode =>
+        f (Common.basisState n)) hcore
+    simpa only [LinearMap.comp_apply] using h
+  change e (T (Common.completedBasisState n)) =
+    Common.finiteHilbertOperatorAlgEquiv A (e (Common.completedBasisState n))
+  calc
+    e (T (Common.completedBasisState n)) =
+        e (Common.algebraicToCompleted (A (Common.basisState n))) := by
+      rw [← Common.algebraicToCompleted_basisState (Config := Occupation Mode)]
+      exact congrArg e hcore_n
+    _ = Common.finiteHilbertFockEquiv (A (Common.basisState n)) :=
+      Common.completedFiniteHilbertEquiv_algebraicToCompleted _
+    _ = Common.finiteHilbertOperatorAlgEquiv A
+        (Common.finiteHilbertBasisState n) :=
+      (Common.finiteHilbertOperator_basisState A n).symm
+    _ = Common.finiteHilbertOperatorAlgEquiv A
+        (e (Common.completedBasisState n)) := by
+      rw [Common.completedFiniteHilbertEquiv_basisState]
+
+/-- Transport a finite free-fermion expectation to the completed normal grand-canonical
+Gibbs state whenever the bounded completed operator extends the algebraic observable.
+The chemical potential is explicit, and finite modes enter solely through this bridge. -/
+theorem freeGibbsExpectation_eq_completed_of_algebraicCore
+    (ε : Mode → ℝ) (β μ : ℝ)
+    (A : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode)
+    (T : CompletedFockSpace Mode →L[ℂ] CompletedFockSpace Mode)
+    (hcore : T.toLinearMap.comp algebraicToCompleted =
+      algebraicToCompleted.comp A) :
+    (freeGibbsDensityOperator (fun i => ε i - μ) β).expectation
+      (Common.finiteHilbertOperatorAlgEquiv A) =
+    (Common.grandCanonicalGibbsDensityOperator (Config := Occupation Mode)
+      ε β μ (eigenbasisGibbsSummable_of_finite
+        (Common.grandCanonicalEnergy (Config := Occupation Mode) ε μ) β)).expectation T := by
+  let e := Common.completedFiniteHilbertEquiv (Config := Occupation Mode)
+  let F := e.toContinuousLinearEquiv.toContinuousLinearMap
+  let G := e.symm.toContinuousLinearEquiv.toContinuousLinearMap
+  have hinter := completedFiniteHilbertIntertwines_of_algebraicCore A T hcore
+  have hconj :
+      G.comp ((Common.finiteHilbertOperatorAlgEquiv A).comp F) = T := by
+    apply ContinuousLinearMap.ext
+    intro ψ
+    have hψ := ContinuousLinearMap.congr_fun hinter ψ
+    change F (T ψ) = Common.finiteHilbertOperatorAlgEquiv A (F ψ) at hψ
+    change G (Common.finiteHilbertOperatorAlgEquiv A (F ψ)) = T ψ
+    calc
+      G (Common.finiteHilbertOperatorAlgEquiv A (F ψ)) = G (F (T ψ)) :=
+        congrArg G hψ.symm
+      _ = T ψ := by
+        simpa only [F, G, ContinuousLinearEquiv.coe_coe,
+          LinearIsometryEquiv.coe_toContinuousLinearEquiv] using
+          e.symm_apply_apply (T ψ)
+  let ξ : Mode → ℝ := fun i => ε i - μ
+  have henergy : Common.grandCanonicalEnergy (Config := Occupation Mode) ε μ =
+      fermionEnergy ξ := by
+    funext n
+    exact Common.grandCanonicalEnergy_eq_shifted ε μ n
+  have hbasis : ∀ n : Occupation Mode,
+      e (Common.completedHilbertBasis (Config := Occupation Mode) n) =
+        Common.finiteHilbertBasis (Config := Occupation Mode) n := by
+    intro n
+    simpa only [Common.completedHilbertBasis_apply, Common.finiteHilbertBasis_apply] using
+      (Common.completedFiniteHilbertEquiv_basisState (Config := Occupation Mode) n)
+  have htransport :=
+    eigenbasisGibbsDensityOperator_expectation_transport
+      (Common.completedHilbertBasis (Config := Occupation Mode))
+      (Common.finiteHilbertBasis (Config := Occupation Mode))
+      (fermionEnergy ξ) β
+      (eigenbasisGibbsSummable_of_finite (fermionEnergy ξ) β) e hbasis
+      (Common.finiteHilbertOperatorAlgEquiv A)
+  rw [hconj] at htransport
+  simpa only [freeGibbsDensityOperator, Common.grandCanonicalGibbsDensityOperator,
+    henergy, ξ] using htransport
+
+/-- The completed normal product extends the corresponding algebraic normal product. -/
+theorem completedNormalProduct_comp_algebraicToCompleted
+    (i j : Mode) :
+    ((completedAnnihilate i).comp (completedCreate j)).toLinearMap.comp
+      algebraicToCompleted =
+    algebraicToCompleted.comp ((annihilate i).comp (create j)) := by
+  apply LinearMap.ext
+  intro x
+  change completedAnnihilate i (completedCreate j (algebraicToCompleted x)) =
+    algebraicToCompleted (annihilate i (create j x))
+  have hcreate := congrArg (fun f : OccupationFock Mode →ₗ[ℂ] CompletedFockSpace Mode =>
+      f x) (completedCreate_comp_algebraicToCompleted j)
+  have hann := congrArg (fun f : OccupationFock Mode →ₗ[ℂ] CompletedFockSpace Mode =>
+      f (create j x)) (completedAnnihilate_comp_algebraicToCompleted i)
+  simpa only [LinearMap.comp_apply] using
+    calc
+      completedAnnihilate i (completedCreate j (algebraicToCompleted x)) =
+          completedAnnihilate i (algebraicToCompleted (create j x)) := by
+            simpa only [LinearMap.comp_apply] using congrArg (completedAnnihilate i) hcreate
+      _ = algebraicToCompleted (annihilate i (create j x)) := by
+            simpa only [LinearMap.comp_apply] using hann
+
+/-- The completed reversed normal product extends the algebraic product. -/
+theorem completedReversedNormalProduct_comp_algebraicToCompleted
+    (i j : Mode) :
+    ((completedCreate j).comp (completedAnnihilate i)).toLinearMap.comp
+      algebraicToCompleted =
+    algebraicToCompleted.comp ((create j).comp (annihilate i)) := by
+  apply LinearMap.ext
+  intro x
+  change completedCreate j (completedAnnihilate i (algebraicToCompleted x)) =
+    algebraicToCompleted (create j (annihilate i x))
+  have hann := congrArg (fun f : OccupationFock Mode →ₗ[ℂ] CompletedFockSpace Mode =>
+      f x) (completedAnnihilate_comp_algebraicToCompleted i)
+  have hcreate := congrArg (fun f : OccupationFock Mode →ₗ[ℂ] CompletedFockSpace Mode =>
+      f (annihilate i x)) (completedCreate_comp_algebraicToCompleted j)
+  calc
+    completedCreate j (completedAnnihilate i (algebraicToCompleted x)) =
+        completedCreate j (algebraicToCompleted (annihilate i x)) := by
+          simpa only [LinearMap.comp_apply] using congrArg (completedCreate j) hann
+    _ = algebraicToCompleted (create j (annihilate i x)) := by
+          simpa only [LinearMap.comp_apply] using hcreate
 
 omit [LinearOrder Mode] in
 /-- The finite fermionic grand-canonical density-state expectation is the
