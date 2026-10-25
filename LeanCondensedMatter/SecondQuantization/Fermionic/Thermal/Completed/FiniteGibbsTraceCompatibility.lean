@@ -83,29 +83,8 @@ theorem freeGibbsExpectation_eq_completed_of_algebraicCore
       ε β μ (eigenbasisGibbsSummable_of_finite
         (Common.grandCanonicalEnergy (Config := Occupation Mode) ε μ) β)).expectation T := by
   let e := Common.completedFiniteHilbertEquiv (Config := Occupation Mode)
-  have hconj :
-      e.symm.toContinuousLinearEquiv.toContinuousLinearMap.comp
-        ((Common.finiteHilbertOperatorAlgEquiv A).comp
-          e.toContinuousLinearEquiv.toContinuousLinearMap) = T := by
-    apply Common.continuousLinearMap_ext_completedBasis
-    intro n
-    have hn : T (Common.completedBasisState n) =
-        Common.algebraicToCompleted (A (Common.basisState n)) := by
-      have h := congrArg
-        (fun f : OccupationFock Mode →ₗ[ℂ] CompletedFockSpace Mode =>
-          f (Common.basisState n)) hcore
-      change T (Common.algebraicToCompleted (Common.basisState n)) =
-        Common.algebraicToCompleted (A (Common.basisState n)) at h
-      rw [Common.algebraicToCompleted_basisState] at h
-      exact h
-    change e.symm (Common.finiteHilbertOperatorAlgEquiv A
-      (e (Common.completedBasisState n))) = T (Common.completedBasisState n)
-    rw [Common.completedFiniteHilbertEquiv_basisState,
-      Common.finiteHilbertOperator_basisState, hn]
-    apply e.injective
-    simpa only [e.apply_symm_apply] using
-      (Common.completedFiniteHilbertEquiv_algebraicToCompleted
-        (A (Common.basisState n))).symm
+  have hconj :=
+    Common.completedOperator_eq_transport_of_algebraicCore A T hcore
   let ξ : Mode → ℝ := fun i => ε i - μ
   have henergy : Common.grandCanonicalEnergy (Config := Occupation Mode) ε μ =
       fermionEnergy ξ := by
