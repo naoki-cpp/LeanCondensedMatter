@@ -180,7 +180,7 @@ theorem AngularHarmonicCoefficients.intervalIntegral_weighted_integral_eval
       intro radius _
       dsimp only
       rw [intervalIntegral.integral_const_mul, (coefficients radius).integral_eval]
-      simp <;> ring
+      simp; ring
     _ = _ := by rw [intervalIntegral.integral_const_mul]
 
 /-- A complex linear combination of the first sine and cosine harmonics integrates to zero. -/
