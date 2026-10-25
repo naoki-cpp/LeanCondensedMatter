@@ -49,10 +49,18 @@ hypothesis. Existing bounded-system frequency consumers discharge it with
 `continuous_heisenbergEvolution`; strong continuity of Stone propagators alone is not used to
 infer it. Physical callers supply positive `hbar` and consistently scaled propagators.
 
+The frequency, fixed-rate adiabatic, and finite/infinite observation-time constructions take the
+same unitary-group input with explicit `hbar`. Uniform bounds need no continuity hypothesis.
+Positive-rate integrability requires measurability of the scalar causal kernel, while convergence
+of observation windows takes integrability directly. Finite-volume fermionic conductivity and
+bounded eigenbasis consumers prove the measurable-kernel hypothesis from their existing
+norm-continuous observable orbits. No general inference from strong continuity alone is made.
+
 The causal convolution remains a totalized integral until the caller supplies the relevant
-integrability conditions. Defining this kernel for a Stone group does not establish its equality
-to the first derivative of perturbed dynamics. The frequency constructions and perturbative Kubo
-derivation still take bounded systems.
+integrability conditions. Defining these transforms for a Stone group does not establish their
+equality to the first derivative of perturbed dynamics. The perturbative Kubo derivation still
+takes bounded systems; a Stone or completed-Fock application must also supply its state and scalar
+kernel measurability.
 
 The equations-of-motion layer proves bounded Schrödinger, Heisenberg, and von Neumann equations in
 operator/norm differentiable form. Conservation results show that observables commuting with `H₀`

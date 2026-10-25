@@ -39,7 +39,7 @@ noncomputable def finiteTimeAdiabaticDirectionalConductivity
     (K : LocallyFiniteHopping Site) (q ω η T : ℝ) : ℂ :=
   finiteVolumeConductivityFromVectorPotential volume ω η
     ((boundedDirectionalResponseChannel system geometry direction K q).finiteTimeAdiabaticResponse
-      system expectation ω η T)
+      (freePropagatorGroup system) system.hbar expectation ω η T)
 
 /-- Infinite-observation-time, finite-volume regularized conductivity at fixed `ω` and `η`. -/
 noncomputable def infiniteTimeAdiabaticDirectionalConductivity
@@ -50,7 +50,7 @@ noncomputable def infiniteTimeAdiabaticDirectionalConductivity
     (K : LocallyFiniteHopping Site) (q ω η : ℝ) : ℂ :=
   finiteVolumeConductivityFromVectorPotential volume ω η
     ((boundedDirectionalResponseChannel system geometry direction K q).infiniteTimeAdiabaticResponse
-      system expectation ω η)
+      (freePropagatorGroup system) system.hbar expectation ω η)
 
 /-- Stationarity and `η > 0` give the observation-time limit for the explicitly normalized
 finite-volume conductivity. -/
@@ -66,20 +66,25 @@ theorem hasInfiniteObservationTimeLimit_directionalConductivity_of_stationary_po
         system expectation geometry direction K q ω η)
       (infiniteTimeAdiabaticDirectionalConductivity volume
         system expectation geometry direction K q ω η) := by
+  let channel := boundedDirectionalResponseChannel system geometry direction K q
+  have hMeas := measurable_retardedTimeDifferenceKernel
+    (freePropagatorGroup system) system.hbar expectation channel.measured channel.source
+    (continuous_commutatorSusceptibility_timeDifference
+      (freePropagatorGroup system) system.hbar expectation channel.measured channel.source
+      (continuous_heisenbergEvolution system channel.measured)).measurable
   have hlimit :=
     ResponseChannel.hasInfiniteObservationTimeLimit_finiteTimeAdiabaticResponse_of_stationary_pos
-      (boundedDirectionalResponseChannel system geometry direction K q)
-      system expectation hstationary ω η hη
+      channel (freePropagatorGroup system) system.hbar expectation hstationary ω η hη hMeas
   unfold HasInfiniteObservationTimeLimit at hlimit ⊢
   change Filter.Tendsto
     (fun T : ℝ =>
       (boundedDirectionalResponseChannel system geometry direction K q).finiteTimeAdiabaticResponse
-          system expectation ω η T *
+          (freePropagatorGroup system) system.hbar expectation ω η T *
         finiteVolumeConductivityNormalization volume ω η)
     Filter.atTop
     (nhds
       ((boundedDirectionalResponseChannel system geometry direction K q).infiniteTimeAdiabaticResponse
-          system expectation ω η *
+          (freePropagatorGroup system) system.hbar expectation ω η *
         finiteVolumeConductivityNormalization volume ω η))
   exact hlimit.mul
     (tendsto_const_nhds :

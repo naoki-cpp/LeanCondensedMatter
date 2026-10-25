@@ -55,22 +55,22 @@ lag phase `exp ((i ω - η) (T - s))` while the explicit observable variation co
 contact expectation at `T`. No stationarity or infinite-time limit is assumed. -/
 noncomputable def finiteTimeAdiabaticResponse
     (channel : ResponseChannel H)
-    (system : BoundedFreeSystem H) (expectation : NormalizedExpectation H)
+    (U : Multiplicative ℝ →* unitary (H →L[ℂ] H)) (hbar : ℝ) (expectation : NormalizedExpectation H)
     (ω η T : ℝ) : ℂ :=
   (∫ s in (0 : ℝ)..T,
       adiabaticFrequencyPhase ω η (T - s) *
-        channel.retardedKernel (freePropagatorGroup system) system.hbar expectation T s) +
-    channel.contactExpectation (freePropagatorGroup system) expectation T
+        channel.retardedKernel U hbar expectation T s) +
+    channel.contactExpectation U expectation T
 
 /-- A fixed-observable channel has no contact contribution, so its finite-time adiabatic response is
 exactly the retarded measured/source transform. -/
 theorem finiteTimeAdiabaticResponse_fixed
-    (system : BoundedFreeSystem H) (expectation : NormalizedExpectation H)
+    (U : Multiplicative ℝ →* unitary (H →L[ℂ] H)) (hbar : ℝ) (expectation : NormalizedExpectation H)
     (measured source : H →L[ℂ] H) (ω η T : ℝ) :
-    (fixed measured source).finiteTimeAdiabaticResponse system expectation ω η T =
+    (fixed measured source).finiteTimeAdiabaticResponse U hbar expectation ω η T =
       ∫ s in (0 : ℝ)..T,
         adiabaticFrequencyPhase ω η (T - s) *
-          retardedSusceptibility (freePropagatorGroup system) system.hbar
+          retardedSusceptibility U hbar
             expectation measured source T s := by
   rw [finiteTimeAdiabaticResponse, fixed_contactExpectation]
   simp [retardedKernel, fixed]
@@ -79,22 +79,22 @@ theorem finiteTimeAdiabaticResponse_fixed
 stationary observable-variation expectation. The source value at observation time is factored out. -/
 theorem finiteTimeAdiabaticResponse_eq_stationaryLag
     (channel : ResponseChannel H)
-    (system : BoundedFreeSystem H) (expectation : NormalizedExpectation H)
-    (hstationary : IsStationary (freePropagatorGroup system) expectation)
+    (U : Multiplicative ℝ →* unitary (H →L[ℂ] H)) (hbar : ℝ) (expectation : NormalizedExpectation H)
+    (hstationary : IsStationary U expectation)
     (ω η : ℝ) {T : ℝ} (hT : 0 ≤ T) :
-    channel.finiteTimeAdiabaticResponse system expectation ω η T =
+    channel.finiteTimeAdiabaticResponse U hbar expectation ω η T =
       finiteTimeAdiabaticTransform
-          (fun τ => commutatorSusceptibility (freePropagatorGroup system) system.hbar expectation
+          (fun τ => commutatorSusceptibility U hbar expectation
             channel.measured channel.source τ 0) ω η T +
         expectation channel.observableVariation := by
   rw [finiteTimeAdiabaticResponse, contactExpectation,
     hstationary T channel.observableVariation]
   congr 1
   let g : ℝ → ℂ := fun τ => adiabaticFrequencyPhase ω η τ *
-    commutatorSusceptibility (freePropagatorGroup system) system.hbar
+    commutatorSusceptibility U hbar
       expectation channel.measured channel.source τ 0
   change (∫ s in (0 : ℝ)..T, adiabaticFrequencyPhase ω η (T - s) *
-      retardedSusceptibility (freePropagatorGroup system) system.hbar
+      retardedSusceptibility U hbar
         expectation channel.measured channel.source T s) =
     ∫ τ in (0 : ℝ)..T, g τ
   calc
@@ -104,11 +104,11 @@ theorem finiteTimeAdiabaticResponse_eq_stationaryLag
       have hsIcc : s ∈ Set.Icc (0 : ℝ) T := by
         simpa [Set.uIcc_of_le hT] using hs
       change adiabaticFrequencyPhase ω η (T - s) *
-        retardedSusceptibility (freePropagatorGroup system) system.hbar
+        retardedSusceptibility U hbar
           expectation channel.measured channel.source T s =
           g (T - s)
       rw [retardedSusceptibility_eq_timeDifference_of_stationary
-        (freePropagatorGroup system) system.hbar
+        U hbar
         expectation hstationary channel.measured channel.source T s]
       simp [g, sub_nonneg.mpr hsIcc.2]
     _ = ∫ τ in (0 : ℝ)..T, g τ := by
