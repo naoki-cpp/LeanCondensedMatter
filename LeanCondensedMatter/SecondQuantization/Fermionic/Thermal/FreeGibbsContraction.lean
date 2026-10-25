@@ -79,7 +79,8 @@ theorem freeGibbsDensityOperator_expectation_create_comp_annihilate
     rw [show -(β : ℂ) * (ε i : ℂ) = -((β : ℂ) * (ε i : ℂ)) by ring,
       Complex.exp_neg]
     field_simp
-  · simp [hij]
+  · have hji : j ≠ i := Ne.symm hij
+    simp [hij, hji]
 
 /-- **Anomalous contractions vanish.** The free Gibbs state is diagonal in the occupation basis, so
 the expectation of two annihilation operators is zero: a contraction always pairs a creation
