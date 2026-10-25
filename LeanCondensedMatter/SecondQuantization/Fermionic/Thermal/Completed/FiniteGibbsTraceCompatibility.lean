@@ -163,31 +163,6 @@ theorem freeGibbsExpectation_eq_completed_of_algebraicCore
   simpa only [freeGibbsDensityOperator, Common.grandCanonicalGibbsDensityOperator,
     henergy, ξ] using htransport
 
-omit [LinearOrder Mode] [Fintype Mode] in
-/-- Intertwining of bounded completed products with algebraic products on the dense
-Fock core. The mode set is arbitrary; finite modes are needed only later to
-transport the expectation itself. -/
-theorem completedProduct_comp_algebraicToCompleted_of_core
-    (A B : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode)
-    (T U : CompletedFockSpace Mode →L[ℂ] CompletedFockSpace Mode)
-    (hT : T.toLinearMap.comp algebraicToCompleted = algebraicToCompleted.comp A)
-    (hU : U.toLinearMap.comp algebraicToCompleted = algebraicToCompleted.comp B) :
-    (T.comp U).toLinearMap.comp algebraicToCompleted =
-      algebraicToCompleted.comp (A.comp B) := by
-  apply LinearMap.ext
-  intro x
-  change T (U (algebraicToCompleted x)) = algebraicToCompleted (A (B x))
-  have hUx := congrArg
-    (fun f : OccupationFock Mode →ₗ[ℂ] CompletedFockSpace Mode => f x) hU
-  have hTBx := congrArg
-    (fun f : OccupationFock Mode →ₗ[ℂ] CompletedFockSpace Mode => f (B x)) hT
-  calc
-    T (U (algebraicToCompleted x)) = T (algebraicToCompleted (B x)) := by
-      simpa [algebraicToCompleted, ContinuousLinearMap.toLinearMap] using
-        congrArg T hUx
-    _ = algebraicToCompleted (A (B x)) := by
-      simpa [algebraicToCompleted, ContinuousLinearMap.toLinearMap] using hTBx
-
 omit [LinearOrder Mode] in
 /-- The finite fermionic grand-canonical density-state expectation is the
 summable diagonal trace ratio of #4074, with shifted one-mode energies.
