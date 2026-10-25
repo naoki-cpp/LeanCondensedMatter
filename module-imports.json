@@ -4080,7 +4080,6 @@
       "name": "LeanCondensedMatter.QuantumTheory.LinearResponse.Frequency.Susceptibility",
       "sourceFile": "LeanCondensedMatter/QuantumTheory/LinearResponse/Frequency/Susceptibility.lean",
       "imports": [
-        "LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.Free",
         "LeanCondensedMatter.QuantumTheory.LinearResponse.Response.RetardedSusceptibility"
       ],
       "externalImportCount": 0
