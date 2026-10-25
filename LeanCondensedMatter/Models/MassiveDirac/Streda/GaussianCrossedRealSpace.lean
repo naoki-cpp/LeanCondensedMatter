@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Analysis.Matrix.IntervalIntegral
 import LeanCondensedMatter.Transport.Analysis.ContinuumMeasure
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornRealSpacePropagator
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexResponse
@@ -693,7 +694,7 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceCurrentBlock_polar
   have hradial (src : Fin 2) :
       finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock
           src v m probeEnergy broadening disorderStrength hbar pMax radius =
-        prefactor • intervalIntegralMatrix2 0 pMax (radial src) := by
+        prefactor • Matrix.intervalIntegralEntries 0 pMax (radial src) := by
     ext i j
     change
       finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock
@@ -705,7 +706,7 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceCurrentBlock_polar
       finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceCurrentBlock
           source v m probeEnergy broadening disorderStrength hbar pMax
           (polarPoint2D radius angle) =
-        prefactor • intervalIntegralMatrix2 0 pMax angular := by
+        prefactor • Matrix.intervalIntegralEntries 0 pMax angular := by
     ext i j
     change
       finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceCurrentBlock
@@ -724,15 +725,15 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceCurrentBlock_polar
     exact gaussianCrossedAngularCurrentEntryKernel_sourceRotation
       source v m probeEnergy broadening disorderStrength hbar pMax radius angle p
   have hmix :
-      intervalIntegralMatrix2 0 pMax (fun p =>
+      Matrix.intervalIntegralEntries 0 pMax (fun p =>
           if source = 0 then c • radial 0 p - s • radial 1 p
           else s • radial 0 p + c • radial 1 p) =
         if source = 0 then
-          c • intervalIntegralMatrix2 0 pMax (radial 0) -
-            s • intervalIntegralMatrix2 0 pMax (radial 1)
+          c • Matrix.intervalIntegralEntries 0 pMax (radial 0) -
+            s • Matrix.intervalIntegralEntries 0 pMax (radial 1)
         else
-          s • intervalIntegralMatrix2 0 pMax (radial 0) +
-            c • intervalIntegralMatrix2 0 pMax (radial 1) := by
+          s • Matrix.intervalIntegralEntries 0 pMax (radial 0) +
+            c • Matrix.intervalIntegralEntries 0 pMax (radial 1) := by
     have hscaled (src : Fin 2) (t : ℂ) (i j : Fin 2) :
         IntervalIntegrable (fun p : ℝ => (t • radial src p) i j)
           MeasureTheory.volume 0 pMax := by
@@ -741,19 +742,19 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceCurrentBlock_polar
       exact (hradialInt src i j).const_mul t
     by_cases hs : source = 0
     · simp only [hs, ite_true]
-      rw [intervalIntegralMatrix2_sub
+      rw [Matrix.intervalIntegralEntries_sub
         0 pMax (fun p => c • radial 0 p) (fun p => s • radial 1 p)
         (hscaled 0 c) (hscaled 1 s)]
-      rw [intervalIntegralMatrix2_smul, intervalIntegralMatrix2_smul]
+      rw [Matrix.intervalIntegralEntries_smul, Matrix.intervalIntegralEntries_smul]
     · simp only [hs, ite_false]
-      rw [intervalIntegralMatrix2_add
+      rw [Matrix.intervalIntegralEntries_add
         0 pMax (fun p => s • radial 0 p) (fun p => c • radial 1 p)
         (hscaled 0 s) (hscaled 1 c)]
-      rw [intervalIntegralMatrix2_smul, intervalIntegralMatrix2_smul]
+      rw [Matrix.intervalIntegralEntries_smul, Matrix.intervalIntegralEntries_smul]
   rw [hangular]
   have hentries :
-      intervalIntegralMatrix2 0 pMax angular =
-        intervalIntegralMatrix2 0 pMax (fun p =>
+      Matrix.intervalIntegralEntries 0 pMax angular =
+        Matrix.intervalIntegralEntries 0 pMax (fun p =>
           inPlaneSpinRotation angle *
             (if source = 0 then c • radial 0 p - s • radial 1 p
             else s • radial 0 p + c • radial 1 p) *
