@@ -67,6 +67,7 @@ theorem completedGrandCanonicalGibbs_intertwines_finite
   simpa [Common.grandCanonicalGibbsDensityOperator,
     freeGibbsDensityOperator, hE] using htransport
 
+omit [LinearOrder Mode] in
 /-- A bounded completed operator extending an algebraic Fock endomorphism is intertwined
 with its canonical finite-Hilbert realization. This is the reusable operator-level
 bridge, with no Gibbs-state assumption. -/
@@ -106,10 +107,10 @@ private theorem completedFiniteHilbertIntertwines_of_algebraicCore
         (e (Common.completedBasisState n)) := by
       rw [Common.completedFiniteHilbertEquiv_basisState]
 
+omit [LinearOrder Mode] in
 /-- Transport a finite free-fermion expectation to the completed normal grand-canonical
 Gibbs state whenever the bounded completed operator extends the algebraic observable.
 The chemical potential is explicit, and finite modes enter solely through this bridge. -/
-omit [LinearOrder Mode] in
 theorem freeGibbsExpectation_eq_completed_of_algebraicCore
     (ε : Mode → ℝ) (β μ : ℝ)
     (A : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode)
@@ -162,8 +163,8 @@ theorem freeGibbsExpectation_eq_completed_of_algebraicCore
   simpa only [freeGibbsDensityOperator, Common.grandCanonicalGibbsDensityOperator,
     henergy, ξ] using htransport
 
-/-- The completed normal product extends the corresponding algebraic normal product. -/
 omit [Fintype Mode] in
+/-- The completed normal product extends the corresponding algebraic normal product. -/
 theorem completedNormalProduct_comp_algebraicToCompleted
     (i j : Mode) :
     ((completedAnnihilate i).comp (completedCreate j)).toLinearMap.comp
@@ -185,8 +186,8 @@ theorem completedNormalProduct_comp_algebraicToCompleted
       _ = algebraicToCompleted (annihilate i (create j x)) := by
             simpa [algebraicToCompleted, ContinuousLinearMap.toLinearMap] using hann
 
-/-- The completed reversed normal product extends the algebraic product. -/
 omit [Fintype Mode] in
+/-- The completed reversed normal product extends the algebraic product. -/
 theorem completedReversedNormalProduct_comp_algebraicToCompleted
     (i j : Mode) :
     ((completedCreate j).comp (completedAnnihilate i)).toLinearMap.comp
