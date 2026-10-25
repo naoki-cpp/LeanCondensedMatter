@@ -104,6 +104,30 @@ theorem completedAnticomm_create_annihilate (i j : Mode) :
     completedAnticomm_annihilate_create]
   simp only [neg_neg, one_smul, eq_comm]
 
+
+/-- The bounded one-mode occupation projection is exactly the completed
+creation operator composed with annihilation. This identity is valid for
+an arbitrary ordered mode type and does not require a finite Fock space. -/
+theorem completedCreate_comp_completedAnnihilate_eq_numberOperator (i : Mode) :
+    (completedCreate i).comp (completedAnnihilate i) = completedNumberOperator i := by
+  apply Common.continuousLinearMap_ext_completedBasis
+  intro n
+  change completedCreate i (completedAnnihilate i (completedBasisState n)) =
+    completedNumberOperator i (completedBasisState n)
+  by_cases hi : i ∈ n
+  · have hnot : i ∉ removeOccupation i n := Finset.notMem_erase i n
+    have heq : insertOccupation i (removeOccupation i n) = n := by
+      rw [insertOccupation, removeOccupation, Finset.insert_erase hi]
+    have hphase : fermionPhase i (removeOccupation i n) = fermionPhase i n := by
+      change (fermionSign i (removeOccupation i n) : ℂ) = (fermionSign i n : ℂ)
+      rw [fermionSign_removeOccupation_of_not_lt (lt_irrefl i)]
+    rw [completedAnnihilate_basisState_of_mem hi, map_smul,
+      completedCreate_basisState_of_not_mem hnot,
+      completedNumberOperator_basisState, ite_eq_left hi, hphase, heq, smul_smul]
+    simp only [fermionPhase, fermionSign_sq_complex, one_smul]
+  · rw [completedAnnihilate_basisState_of_not_mem hi, map_zero,
+      completedNumberOperator_basisState, ite_eq_right hi]
+
 end
 end Fermionic
 end SecondQuantization

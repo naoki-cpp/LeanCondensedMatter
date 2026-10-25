@@ -147,6 +147,8 @@ theorem completedAnticomm_operator_operator
 
 end CompletedThermalLadder
 
+
+
 end
 end Fermionic
 end SecondQuantization
@@ -500,6 +502,31 @@ theorem grandCanonicalGibbsExpectation_tsum_canonical_eq_sum_pairing
   exact grandCanonicalGibbsExpectation_eq_sum_pairing ε β μ hsum n C
 
 end CompletedThermalLadder
+
+/-- Fermi--Dirac occupation of one mode in the completed grand-canonical free
+Gibbs state, for an arbitrary (possibly infinite) ordered mode type.
+The single-mode number operator is bounded; only existence of the full-Fock
+Gibbs density is required. No finite-mode sum or one-body trace formula occurs. -/
+theorem grandCanonicalGibbsDensityOperator_expectation_completedNumberOperator
+    (ε : Mode → ℝ) (β μ : ℝ) (hsum : EigenbasisGibbsSummable
+      (Common.grandCanonicalEnergy (Config := Occupation Mode) ε μ) β)
+    (i : Mode) :
+    (Common.grandCanonicalGibbsDensityOperator
+      (Config := Occupation Mode) ε β μ hsum).expectation (completedNumberOperator i) =
+      Complex.exp (-(β : ℂ) * ((ε i - μ : ℝ) : ℂ)) /
+        (1 + Complex.exp (-(β : ℂ) * ((ε i - μ : ℝ) : ℂ))) := by
+  have hpair := CompletedThermalLadder.grandCanonicalGibbsExpectation_pair_eq
+    ε β μ hsum (CompletedThermalLadder.create i) (CompletedThermalLadder.annihilate i)
+  simpa only [CompletedThermalLadder.grandCanonicalGibbsExpectation,
+    CompletedThermalLadder.operatorProduct_cons,
+    CompletedThermalLadder.operatorProduct_nil,
+    CompletedThermalLadder.operator_create,
+    CompletedThermalLadder.operator_annihilate,
+    CompletedThermalLadder.gibbsFactor_create,
+    CompletedThermalLadder.anticommutatorValue,
+    ContinuousLinearMap.comp_id,
+    completedCreate_comp_completedAnnihilate_eq_numberOperator,
+    ↓reduceIte, mul_one] using hpair
 
 end
 end Fermionic
