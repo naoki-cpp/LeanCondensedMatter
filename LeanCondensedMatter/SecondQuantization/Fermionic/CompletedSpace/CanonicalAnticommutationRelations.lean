@@ -112,22 +112,20 @@ theorem completedCreate_comp_completedAnnihilate_eq_numberOperator (i : Mode) :
     (completedCreate i).comp (completedAnnihilate i) = completedNumberOperator i := by
   apply Common.continuousLinearMap_ext_completedBasis
   intro n
+  change completedCreate i (completedAnnihilate i (completedBasisState n)) =
+    completedNumberOperator i (completedBasisState n)
   by_cases hi : i ∈ n
-  · have hnot : i ∉ removeOccupation i n := by
-      simp [removeOccupation]
-    rw [ContinuousLinearMap.comp_apply, completedAnnihilate_basisState_of_mem hi,
-      map_smul, completedCreate_basisState_of_not_mem hnot,
-      completedNumberOperator_basisState, if_pos hi]
-    have hphase : fermionPhase i (removeOccupation i n) = fermionPhase i n := by
-      change (fermionSign i (removeOccupation i n) : ℂ) = (fermionSign i n : ℂ)
-      rw [fermionSign_removeOccupation_of_not_lt (i := i) (k := i)
-        (n := n) (lt_irrefl i)]
-    rw [hphase]
-    simp only [smul_smul, insertOccupation, removeOccupation, Finset.insert_erase hi]
-    simp [fermionPhase, fermionSign_sq_complex]
-  · simp [ContinuousLinearMap.comp_apply,
-      completedAnnihilate_basisState_of_not_mem hi,
-      completedNumberOperator_basisState, hi]
+  · have hnot : i ∉ removeOccupation i n := Finset.notMem_erase i n
+    have heq : insertOccupation i (removeOccupation i n) = n := by
+      rw [insertOccupation, removeOccupation, Finset.insert_erase hi]
+    rw [completedAnnihilate_basisState_of_mem hi, map_smul,
+      completedCreate_basisState_of_not_mem hnot,
+      completedNumberOperator_basisState, if_pos hi,
+      fermionSign_removeOccupation_of_not_lt (lt_irrefl i)]
+    rw [heq, smul_smul]
+    simpa [fermionPhase] using fermionSign_sq_complex i n
+  · rw [completedAnnihilate_basisState_of_not_mem hi, map_zero,
+      completedNumberOperator_basisState, if_neg hi]
 
 end
 end Fermionic
