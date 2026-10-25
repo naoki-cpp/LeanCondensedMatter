@@ -136,73 +136,64 @@ theorem grandCanonicalGibbsDensityOperator_sector_expectation_eq_canonical
           (canonicalGibbsSummable_of_grandCanonical ε β μ N hsum)).expectation A := by
   classical
   let hcan := canonicalGibbsSummable_of_grandCanonical ε β μ N hsum
-  let ρN := canonicalFullGibbsDensityOperator (Config := Config) ε β N hcan
+  let ρ := canonicalGibbsDensityOperator (Config := Config) ε β N hcan
+  let U := (completedCoordinateEmbedding
+    (Subtype.val : ParticleNumberSector Mode Config N → Config)
+    Subtype.val_injective).toContinuousLinearMap
+  let V := completedCoordinatePullback
+    (Subtype.val : ParticleNumberSector Mode Config N → Config)
+    Subtype.val_injective
+  let B := V.comp (A.comp U)
   let E : ParticleNumberSector Mode Config N → ℝ := fun n => occupationEnergy ε n.val
-  let term : ParticleNumberSector Mode Config N → ℂ := fun n =>
-    (eigenbasisGibbsProbability E β n : ℂ) *
-      inner ℂ (completedBasisState n.val) (A (completedBasisState n.val))
-  let fullTerm : Config → ℂ := fun c =>
-    (Real.normalizedWeight (canonicalFullGibbsWeight ε β N) c : ℂ) *
-      inner ℂ (completedBasisState c) (A (completedBasisState c))
-  have hfull : HasSum fullTerm (ρN.expectation A) := by
-    simpa only [fullTerm, completedHilbertBasis_apply] using
-      (ρN.hasSum_expectation_diagonal A
-        (completedHilbertBasis (Config := Config))
-        (Real.normalizedWeight (canonicalFullGibbsWeight ε β N))
-        (fun c => by
-          simpa only [ρN, canonicalFullGibbsDensityOperator, completedHilbertBasis_apply] using
-            (diagonalDensityOperator_apply_basis
-              (completedHilbertBasis (Config := Config))
-              (canonicalFullGibbsWeight ε β N)
-              (canonicalFullGibbsWeight_norm_summable ε β N hcan)
-              (canonicalFullGibbsWeight_nonneg ε β N)
-              (canonicalFullGibbsWeight_tsum_pos ε β N hcan) c)))
-  have hpoint :
-      Function.extend
-        (Subtype.val : ParticleNumberSector Mode Config N → Config) term 0 = fullTerm := by
-    funext c
-    by_cases hc : particleNumber (Mode := Mode) c = N
-    · let n : ParticleNumberSector Mode Config N := ⟨c, hc⟩
-      change Function.extend
-        (Subtype.val : ParticleNumberSector Mode Config N → Config) term 0 n.val =
-          fullTerm n.val
-      rw [Subtype.val_injective.extend_apply]
-      change
-        (eigenbasisGibbsProbability E β n : ℂ) *
-          inner ℂ (completedBasisState n.val) (A (completedBasisState n.val)) =
-        (Real.normalizedWeight (canonicalFullGibbsWeight ε β N) n.val : ℂ) *
-          inner ℂ (completedBasisState n.val) (A (completedBasisState n.val))
-      rw [normalizedWeight_canonicalFullGibbsWeight_apply_sector ε β N hcan n]
-    · have hnot : ¬ ∃ n : ParticleNumberSector Mode Config N, n.val = c := by
-        rintro ⟨n, hn⟩
-        apply hc
-        rw [← hn]
-        exact n.property
-      change Function.extend
-        (Subtype.val : ParticleNumberSector Mode Config N → Config) term 0 c = fullTerm c
-      rw [Function.extend_apply' _ _ _ hnot]
-      simp [fullTerm, Real.normalizedWeight,
-        canonicalFullGibbsWeight_apply_of_ne ε β N c hc]
-  have hsector : HasSum term (ρN.expectation A) := by
-    rw [← hpoint] at hfull
-    exact (hasSum_extend_zero Subtype.val_injective).1 hfull
+  have hcompress (n : ParticleNumberSector Mode Config N) :
+      inner ℂ (completedBasisState n) (B (completedBasisState n)) =
+        inner ℂ (completedBasisState n.val) (A (completedBasisState n.val)) := by
+    have hU : U (completedBasisState n) = completedBasisState n.val := by
+      change completedCoordinateEmbedding
+        (Subtype.val : ParticleNumberSector Mode Config N → Config)
+        Subtype.val_injective (completedBasisState n) = completedBasisState n.val
+      exact completedCoordinateEmbedding_basisState _ _ n
+    simp only [B, V, ContinuousLinearMap.comp_apply,
+      inner_completedBasisState_left, completedCoordinatePullback_apply, hU]
+  have hdiag : ∀ n : ParticleNumberSector Mode Config N,
+      ρ.op ((completedHilbertBasis (Config := ParticleNumberSector Mode Config N)) n) =
+        (eigenbasisGibbsProbability E β n : ℂ) •
+          (completedHilbertBasis (Config := ParticleNumberSector Mode Config N)) n := by
+    intro n
+    simpa only [ρ, E, completedHilbertBasis_apply] using
+      (canonicalGibbsDensityOperator_apply_basis ε β N hcan n)
+  have hsector :
+      ρ.expectation B =
+        ∑' n : ParticleNumberSector Mode Config N,
+          (eigenbasisGibbsProbability E β n : ℂ) *
+            inner ℂ (completedBasisState n) (B (completedBasisState n)) := by
+    simpa only [completedHilbertBasis_apply] using
+      (ρ.expectation_eq_tsum_diagonal B
+        (completedHilbertBasis (Config := ParticleNumberSector Mode Config N))
+        (eigenbasisGibbsProbability E β) hdiag)
   calc
     (∑' n : ParticleNumberSector Mode Config N,
       (eigenbasisGibbsProbability (grandCanonicalEnergy ε μ) β n.val : ℂ) *
         inner ℂ (completedBasisState n.val) (A (completedBasisState n.val))) =
-        ∑' n : ParticleNumberSector Mode Config N,
-          (grandCanonicalSectorProbability ε β μ N : ℂ) * term n := by
+        (grandCanonicalSectorProbability ε β μ N : ℂ) *
+          ∑' n : ParticleNumberSector Mode Config N,
+            (eigenbasisGibbsProbability E β n : ℂ) *
+              inner ℂ (completedBasisState n) (B (completedBasisState n)) := by
+      rw [← tsum_mul_left]
       apply tsum_congr
       intro n
-      simpa only [term, E, Complex.ofReal_mul, mul_assoc] using
+      rw [hcompress n]
+      simpa only [Complex.ofReal_mul, mul_assoc] using
         congrArg
           (fun w : ℝ => (w : ℂ) *
             inner ℂ (completedBasisState n.val) (A (completedBasisState n.val)))
           (grandCanonicalGibbsProbability_of_sector ε β μ N hsum n)
-    _ = (grandCanonicalSectorProbability ε β μ N : ℂ) * ∑' n, term n := by
-      rw [tsum_mul_left]
-    _ = (grandCanonicalSectorProbability ε β μ N : ℂ) * ρN.expectation A := by
-      rw [hsector.tsum_eq]
+    _ = (grandCanonicalSectorProbability ε β μ N : ℂ) * ρ.expectation B := by
+      rw [hsector]
+    _ = _ := by
+      congr 1
+      exact (canonicalFullGibbsDensityOperator_expectation_eq_sector
+        ε β N hcan A).symm
 
 open Classical in
 /-- Every bounded grand-canonical expectation is a probability-weighted mixture
