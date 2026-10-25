@@ -153,9 +153,10 @@ finite-mode assumption introduced into the generic recursion. Fermionic KMS fact
 exponentials of real energies, so `1 + g` is automatically nonzero; the completed fermionic
 pairing-recursion adapter consequently uses `admissible := True`. The Gibbs state still requires
 summability over occupation configurations. In the separate finite-mode bridge,
-`completedGrandCanonicalGibbs_intertwines_finite` transports the density state to the finite Hilbert
-realization; `finiteGrandCanonicalGibbsExpectation_eq_diagonalTraceRatio` then applies the common
-algebraic summable-trace ratio from #4074.
+`freeGibbsExpectation_eq_completed_of_algebraicCore` specializes the common
+`finiteGibbsExpectation_eq_completed_of_algebraicCore` expectation transport.
+Finite-coordinate trace ratios are handled directly by
+`Common.finiteGibbsExpectation_eq_summableDiagonalTraceRatioLinear` from #4074.
 
 Unbounded observables do not use `DensityOperator.expectation`. The completed total-number operator
 is owned by `Fermionic.CompletedSpace.Diagonal`, while
