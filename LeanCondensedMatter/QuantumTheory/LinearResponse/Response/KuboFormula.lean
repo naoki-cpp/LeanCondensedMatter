@@ -37,12 +37,18 @@ When `V_I` is interval-integrable, continuity and linearity of `ω` give the gen
 `-(i / ℏ) ∫₀ᵗ ω([A_I(t), V_I(s)]) ds`.
 
 The linear-response principle used here is due to Kubo, *J. Phys. Soc. Jpn.* **12**, 570–586
-(1957), [doi:10.1143/JPSJ.12.570](https://doi.org/10.1143/JPSJ.12.570). The bounded finite-time
-hypotheses are this library's explicit specialization.
+(1957), [doi:10.1143/JPSJ.12.570](https://doi.org/10.1143/JPSJ.12.570). The bounded-perturbation,
+finite-time hypotheses are this library's explicit specialization. The unperturbed dynamics are
+an arbitrary supplied unitary group; the generator need not be bounded. The derivative is with
+respect to coupling at fixed observation time, not an operator-norm time derivative of that group.
 
 The finite-coupling pullback is kept as a continuous linear functional rather than bundled as a
 `NormalizedExpectation`: normalization would require full unitarity of the Dyson propagator, which
 is a separate theorem.
+
+For Stone dynamics, these theorems evaluate the defined interaction-picture Dyson perturbation
+under their explicit norm-bound and integrability hypotheses. They do not identify its full
+Schrödinger-picture evolution with the Stone evolution of a perturbed unbounded generator.
 -/
 
 namespace QuantumTheory
@@ -56,24 +62,25 @@ open Set
 
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
 
-variable (system : BoundedFreeSystem H)
+variable (U : Multiplicative ℝ →* unitary (H →L[ℂ] H)) (hbar : ℝ)
 
 /-- The interaction-picture observable conjugated by the perturbed propagator. -/
 noncomputable def timeDependentPerturbedObservable
     (V : ℝ → (H →L[ℂ] H)) (A : H →L[ℂ] H)
     (lam t : ℝ) : H →L[ℂ] H :=
-  star (timeDependentInteractionPropagator system V lam t) *
-    heisenbergEvolution (freePropagatorGroup system) t A *
-      timeDependentInteractionPropagator system V lam t
+  star (timeDependentInteractionPropagator U hbar V lam t) *
+    heisenbergEvolution U t A *
+      timeDependentInteractionPropagator U hbar V lam t
 
 /-- The continuous linear map sending an ordinary observable `A` to its perturbed
 interaction-picture representative `U_I† A_I U_I`. -/
 noncomputable def timeDependentPerturbedObservableMap
     (V : ℝ → (H →L[ℂ] H)) (lam t : ℝ) :
     (H →L[ℂ] H) →L[ℂ] (H →L[ℂ] H) :=
-  let U := timeDependentInteractionPropagator system V lam t
-  let left := star U * freePropagator system (-t)
-  let right := freePropagator system t * U
+  let W := timeDependentInteractionPropagator U hbar V lam t
+  let U₀ : H →L[ℂ] H := U (Multiplicative.ofAdd t)
+  let left := star W * star U₀
+  let right := U₀ * W
   ((ContinuousLinearMap.mul ℂ (H →L[ℂ] H)).flip right).comp
     ((ContinuousLinearMap.mul ℂ (H →L[ℂ] H)) left)
 
@@ -81,10 +88,10 @@ noncomputable def timeDependentPerturbedObservableMap
 theorem timeDependentPerturbedObservableMap_apply
     (V : ℝ → (H →L[ℂ] H)) (A : H →L[ℂ] H)
     (lam t : ℝ) :
-    timeDependentPerturbedObservableMap system V lam t A =
-      timeDependentPerturbedObservable system V A lam t := by
+    timeDependentPerturbedObservableMap U hbar V lam t A =
+      timeDependentPerturbedObservable U hbar V A lam t := by
   simp [timeDependentPerturbedObservableMap, timeDependentPerturbedObservable,
-    heisenbergEvolution_freePropagatorGroup_apply, mul_assoc]
+    heisenbergEvolution_apply, mul_assoc]
 
 /-- The perturbed expectation functional derived from the ordinary expectation by pullback along
 `A ↦ U_I† A_I U_I`. -/
@@ -93,22 +100,22 @@ noncomputable def timeDependentPerturbedExpectationFunctional
     (V : ℝ → (H →L[ℂ] H)) (lam t : ℝ) :
     (H →L[ℂ] H) →L[ℂ] ℂ :=
   expectation.toContinuousLinearMap.comp
-    (timeDependentPerturbedObservableMap system V lam t)
+    (timeDependentPerturbedObservableMap U hbar V lam t)
 
 @[simp]
 theorem timeDependentPerturbedExpectationFunctional_apply
     (expectation : NormalizedExpectation H)
     (V : ℝ → (H →L[ℂ] H)) (A : H →L[ℂ] H)
     (lam t : ℝ) :
-    timeDependentPerturbedExpectationFunctional system expectation V lam t A =
-      expectation (timeDependentPerturbedObservable system V A lam t) := by
+    timeDependentPerturbedExpectationFunctional U hbar expectation V lam t A =
+      expectation (timeDependentPerturbedObservable U hbar V A lam t) := by
   simp [timeDependentPerturbedExpectationFunctional]
 
 @[simp]
 theorem timeDependentPerturbedObservable_zero_coupling
     (V : ℝ → (H →L[ℂ] H)) (A : H →L[ℂ] H) (t : ℝ) :
-    timeDependentPerturbedObservable system V A 0 t =
-      heisenbergEvolution (freePropagatorGroup system) t A := by
+    timeDependentPerturbedObservable U hbar V A 0 t =
+      heisenbergEvolution U t A := by
   simp [timeDependentPerturbedObservable]
 
 /-- At zero coupling, the perturbed functional is the ordinary expectation composed with free
@@ -116,17 +123,17 @@ Heisenberg evolution. -/
 theorem timeDependentPerturbedExpectationFunctional_zero_coupling_apply
     (expectation : NormalizedExpectation H)
     (V : ℝ → (H →L[ℂ] H)) (A : H →L[ℂ] H) (t : ℝ) :
-    timeDependentPerturbedExpectationFunctional system expectation V 0 t A =
-      expectation (heisenbergEvolution (freePropagatorGroup system) t A) := by
+    timeDependentPerturbedExpectationFunctional U hbar expectation V 0 t A =
+      expectation (heisenbergEvolution U t A) := by
   simp
 
 /-- For a stationary ordinary expectation, the zero-coupling pullback is exactly the original
 expectation. -/
 theorem timeDependentPerturbedExpectationFunctional_zero_coupling_apply_of_stationary
     (expectation : NormalizedExpectation H)
-    (hstationary : IsStationary (freePropagatorGroup system) expectation)
+    (hstationary : IsStationary U expectation)
     (V : ℝ → (H →L[ℂ] H)) (A : H →L[ℂ] H) (t : ℝ) :
-    timeDependentPerturbedExpectationFunctional system expectation V 0 t A =
+    timeDependentPerturbedExpectationFunctional U hbar expectation V 0 t A =
       expectation A := by
   simpa using hstationary t A
 
@@ -135,26 +142,26 @@ theorem hasDerivAt_timeDependentPerturbedObservable_zero_of_bound
     {V : ℝ → (H →L[ℂ] H)} (A : H →L[ℂ] H)
     {β M t : ℝ} (hM : 0 ≤ M)
     (hV : ∀ s ∈ Icc (0 : ℝ) β,
-      ‖timeDependentInteractionPerturbation system V s‖ ≤ M)
+      ‖timeDependentInteractionPerturbation U V s‖ ≤ M)
     (ht : t ∈ Icc (0 : ℝ) β) :
     HasDerivAt
-      (fun lam : ℝ => timeDependentPerturbedObservable system V A lam t)
-      (star (timeDependentPropagatorFirstVariation system V t) *
-          heisenbergEvolution (freePropagatorGroup system) t A +
-        heisenbergEvolution (freePropagatorGroup system) t A *
-          timeDependentPropagatorFirstVariation system V t)
+      (fun lam : ℝ => timeDependentPerturbedObservable U hbar V A lam t)
+      (star (timeDependentPropagatorFirstVariation U hbar V t) *
+          heisenbergEvolution U t A +
+        heisenbergEvolution U t A *
+          timeDependentPropagatorFirstVariation U hbar V t)
       0 := by
   have hU : HasDerivAt
-      (fun lam : ℝ => timeDependentInteractionPropagator system V lam t)
-      (timeDependentPropagatorFirstVariation system V t)
+      (fun lam : ℝ => timeDependentInteractionPropagator U hbar V lam t)
+      (timeDependentPropagatorFirstVariation U hbar V t)
       0 :=
-    hasDerivAt_timeDependentInteractionPropagator_zero_of_bound system hM hV ht
+    hasDerivAt_timeDependentInteractionPropagator_zero_of_bound U hbar hM hV ht
   have hUstar : HasDerivAt
-      (fun lam : ℝ => star (timeDependentInteractionPropagator system V lam t))
-      (star (timeDependentPropagatorFirstVariation system V t))
+      (fun lam : ℝ => star (timeDependentInteractionPropagator U hbar V lam t))
+      (star (timeDependentPropagatorFirstVariation U hbar V t))
       0 := by
     simpa [Function.comp_def] using hU.star
-  have hleft := hUstar.mul_const (heisenbergEvolution (freePropagatorGroup system) t A)
+  have hleft := hUstar.mul_const (heisenbergEvolution U t A)
   have hprod := hleft.mul hU
   rw [hasDerivAt_iff_tendsto]
   rw [hasDerivAt_iff_tendsto] at hprod
@@ -167,23 +174,23 @@ theorem hasDerivAt_timeDependentPerturbedExpectationFunctional_apply_zero_of_bou
     {V : ℝ → (H →L[ℂ] H)} (A : H →L[ℂ] H)
     {β M t : ℝ} (hM : 0 ≤ M)
     (hV : ∀ s ∈ Icc (0 : ℝ) β,
-      ‖timeDependentInteractionPerturbation system V s‖ ≤ M)
+      ‖timeDependentInteractionPerturbation U V s‖ ≤ M)
     (ht : t ∈ Icc (0 : ℝ) β) :
     HasDerivAt
       (fun lam : ℝ =>
-        timeDependentPerturbedExpectationFunctional system expectation V lam t A)
+        timeDependentPerturbedExpectationFunctional U hbar expectation V lam t A)
       (expectation
-        (star (timeDependentPropagatorFirstVariation system V t) *
-            heisenbergEvolution (freePropagatorGroup system) t A +
-          heisenbergEvolution (freePropagatorGroup system) t A *
-            timeDependentPropagatorFirstVariation system V t))
+        (star (timeDependentPropagatorFirstVariation U hbar V t) *
+            heisenbergEvolution U t A +
+          heisenbergEvolution U t A *
+            timeDependentPropagatorFirstVariation U hbar V t))
       0 := by
   have hObs := hasDerivAt_timeDependentPerturbedObservable_zero_of_bound
-    system A hM hV ht
+    U hbar A hM hV ht
   have hExpectation : HasFDerivAt
       (fun X : H →L[ℂ] H => expectation X)
       (expectation.toContinuousLinearMap.restrictScalars ℝ)
-      (timeDependentPerturbedObservable system V A 0 t) :=
+      (timeDependentPerturbedObservable U hbar V A 0 t) :=
     (expectation.toContinuousLinearMap.restrictScalars ℝ).hasFDerivAt
   have hcomp := hExpectation.comp 0 hObs.hasFDerivAt
   have hderiv := hcomp.hasDerivAt
@@ -198,20 +205,20 @@ theorem hasDerivAt_timeDependentPerturbedExpectationFunctional_apply_zero_of_bou
     {V : ℝ → (H →L[ℂ] H)} (hVself : ∀ s, IsSelfAdjoint (V s))
     (A : H →L[ℂ] H) {β M t : ℝ} (hM : 0 ≤ M)
     (hV : ∀ s ∈ Icc (0 : ℝ) β,
-      ‖timeDependentInteractionPerturbation system V s‖ ≤ M)
+      ‖timeDependentInteractionPerturbation U V s‖ ≤ M)
     (ht : t ∈ Icc (0 : ℝ) β) :
     HasDerivAt
       (fun lam : ℝ =>
-        timeDependentPerturbedExpectationFunctional system expectation V lam t A)
+        timeDependentPerturbedExpectationFunctional U hbar expectation V lam t A)
       (expectation
-        ⁅heisenbergEvolution (freePropagatorGroup system) t A,
-          timeDependentPropagatorFirstVariation system V t⁆)
+        ⁅heisenbergEvolution U t A,
+          timeDependentPropagatorFirstVariation U hbar V t⁆)
       0 := by
   have h :=
     hasDerivAt_timeDependentPerturbedExpectationFunctional_apply_zero_of_bound
-      system expectation A hM hV ht
+      U hbar expectation A hM hV ht
   have hK := star_timeDependentPropagatorFirstVariation_eq_neg_of_isSelfAdjoint
-    system V hVself t
+    U hbar V hVself t
   simpa [LieRing.of_associative_ring_bracket, hK, sub_eq_add_neg,
     add_comm, add_left_comm, add_assoc] using h
 
@@ -236,40 +243,40 @@ theorem expectation_commutator_firstVariation_eq_integral
     (expectation : NormalizedExpectation H)
     (V : ℝ → (H →L[ℂ] H)) (A : H →L[ℂ] H) (t : ℝ)
     (hInt : IntervalIntegrable
-      (timeDependentInteractionPerturbation system V) MeasureTheory.volume 0 t) :
+      (timeDependentInteractionPerturbation U V) MeasureTheory.volume 0 t) :
     expectation
-        ⁅heisenbergEvolution (freePropagatorGroup system) t A,
-          timeDependentPropagatorFirstVariation system V t⁆ =
-      (-(Complex.I / (system.hbar : ℂ))) •
+        ⁅heisenbergEvolution U t A,
+          timeDependentPropagatorFirstVariation U hbar V t⁆ =
+      (-(Complex.I / (hbar : ℂ))) •
         ∫ s in (0 : ℝ)..t,
           expectation
-            ⁅heisenbergEvolution (freePropagatorGroup system) t A,
-              timeDependentInteractionPerturbation system V s⁆ := by
-  let L := commutatorExpectation expectation (heisenbergEvolution (freePropagatorGroup system) t A)
+            ⁅heisenbergEvolution U t A,
+              timeDependentInteractionPerturbation U V s⁆ := by
+  let L := commutatorExpectation expectation (heisenbergEvolution U t A)
   have hmap := ContinuousLinearMap.intervalIntegral_comp_comm L hInt
   calc
     expectation
-        ⁅heisenbergEvolution (freePropagatorGroup system) t A,
-          timeDependentPropagatorFirstVariation system V t⁆ =
-        L (timeDependentPropagatorFirstVariation system V t) := by
+        ⁅heisenbergEvolution U t A,
+          timeDependentPropagatorFirstVariation U hbar V t⁆ =
+        L (timeDependentPropagatorFirstVariation U hbar V t) := by
       simp [L, commutatorExpectation_apply]
-    _ = L ((-(Complex.I / (system.hbar : ℂ))) •
+    _ = L ((-(Complex.I / (hbar : ℂ))) •
         ∫ s in (0 : ℝ)..t,
-          timeDependentInteractionPerturbation system V s) := by
+          timeDependentInteractionPerturbation U V s) := by
       rfl
-    _ = (-(Complex.I / (system.hbar : ℂ))) •
+    _ = (-(Complex.I / (hbar : ℂ))) •
         L (∫ s in (0 : ℝ)..t,
-          timeDependentInteractionPerturbation system V s) := by
+          timeDependentInteractionPerturbation U V s) := by
       rw [map_smul]
-    _ = (-(Complex.I / (system.hbar : ℂ))) •
+    _ = (-(Complex.I / (hbar : ℂ))) •
         ∫ s in (0 : ℝ)..t,
-          L (timeDependentInteractionPerturbation system V s) := by
+          L (timeDependentInteractionPerturbation U V s) := by
       rw [hmap]
-    _ = (-(Complex.I / (system.hbar : ℂ))) •
+    _ = (-(Complex.I / (hbar : ℂ))) •
         ∫ s in (0 : ℝ)..t,
           expectation
-            ⁅heisenbergEvolution (freePropagatorGroup system) t A,
-              timeDependentInteractionPerturbation system V s⁆ := by
+            ⁅heisenbergEvolution U t A,
+              timeDependentInteractionPerturbation U V s⁆ := by
       simp [L, commutatorExpectation_apply]
 
 /-- The general bounded Kubo formula for the pullback of an ordinary expectation by a pointwise
@@ -279,24 +286,24 @@ theorem hasDerivAt_timeDependentPerturbedExpectationFunctional_apply_zero_of_bou
     {V : ℝ → (H →L[ℂ] H)} (hVself : ∀ s, IsSelfAdjoint (V s))
     (A : H →L[ℂ] H) {β M t : ℝ} (hM : 0 ≤ M)
     (hV : ∀ s ∈ Icc (0 : ℝ) β,
-      ‖timeDependentInteractionPerturbation system V s‖ ≤ M)
+      ‖timeDependentInteractionPerturbation U V s‖ ≤ M)
     (ht : t ∈ Icc (0 : ℝ) β)
     (hInt : IntervalIntegrable
-      (timeDependentInteractionPerturbation system V) MeasureTheory.volume 0 t) :
+      (timeDependentInteractionPerturbation U V) MeasureTheory.volume 0 t) :
     HasDerivAt
       (fun lam : ℝ =>
-        timeDependentPerturbedExpectationFunctional system expectation V lam t A)
-      ((-(Complex.I / (system.hbar : ℂ))) •
+        timeDependentPerturbedExpectationFunctional U hbar expectation V lam t A)
+      ((-(Complex.I / (hbar : ℂ))) •
         ∫ s in (0 : ℝ)..t,
           expectation
-            ⁅heisenbergEvolution (freePropagatorGroup system) t A,
-              timeDependentInteractionPerturbation system V s⁆)
+            ⁅heisenbergEvolution U t A,
+              timeDependentInteractionPerturbation U V s⁆)
       0 := by
   have h :=
     hasDerivAt_timeDependentPerturbedExpectationFunctional_apply_zero_of_bound_of_isSelfAdjoint
-      system expectation hVself A hM hV ht
+      U hbar expectation hVself A hM hV ht
   rw [expectation_commutator_firstVariation_eq_integral
-    system expectation V A t hInt] at h
+    U hbar expectation V A t hInt] at h
   exact h
 
 end
