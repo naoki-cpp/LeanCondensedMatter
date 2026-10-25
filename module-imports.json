@@ -4068,7 +4068,7 @@
       "imports": [
         "LeanCondensedMatter.QuantumTheory.LinearResponse.Frequency.AdiabaticSwitching"
       ],
-      "externalImportCount": 2
+      "externalImportCount": 1
     },
     {
       "name": "LeanCondensedMatter.QuantumTheory.LinearResponse.Frequency.LimitOrder",
@@ -4080,6 +4080,7 @@
       "name": "LeanCondensedMatter.QuantumTheory.LinearResponse.Frequency.Susceptibility",
       "sourceFile": "LeanCondensedMatter/QuantumTheory/LinearResponse/Frequency/Susceptibility.lean",
       "imports": [
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.Free",
         "LeanCondensedMatter.QuantumTheory.LinearResponse.Response.RetardedSusceptibility"
       ],
       "externalImportCount": 0
@@ -4240,10 +4241,9 @@
       "name": "LeanCondensedMatter.QuantumTheory.LinearResponse.Response.RetardedSusceptibility",
       "sourceFile": "LeanCondensedMatter/QuantumTheory/LinearResponse/Response/RetardedSusceptibility.lean",
       "imports": [
-        "LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.Free",
         "LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.Stationarity"
       ],
-      "externalImportCount": 2
+      "externalImportCount": 3
     },
     {
       "name": "LeanCondensedMatter.QuantumTheory.LinearResponse.Response.SourceCoupling",
@@ -7902,6 +7902,7 @@
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Transport/CorrectedCurrentResponse.lean",
       "imports": [
         "LeanCondensedMatter.Analysis.ConservationLaw.CorrectedCurrentFlux",
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.Free",
         "LeanCondensedMatter.QuantumTheory.LinearResponse.Response.Channel",
         "LeanCondensedMatter.QuantumTheory.LinearResponse.Response.RetardedSusceptibility",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.Bounded"
