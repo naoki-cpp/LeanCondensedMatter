@@ -101,13 +101,7 @@ theorem normalizedWeight_canonicalFullGibbsWeight_apply_sector
     Real.normalizedWeight (canonicalFullGibbsWeight ε β N) n.val =
       eigenbasisGibbsProbability
         (fun m : ParticleNumberSector Mode Config N => occupationEnergy ε m.val) β n := by
-  change
-    (∑' c : Config, canonicalFullGibbsWeight ε β N c)⁻¹ *
-        canonicalFullGibbsWeight ε β N n.val =
-      (eigenbasisPartitionFunction
-        (fun m : ParticleNumberSector Mode Config N => occupationEnergy ε m.val) β)⁻¹ *
-        eigenbasisBoltzmannWeight
-          (fun m : ParticleNumberSector Mode Config N => occupationEnergy ε m.val) β n
+  unfold Real.normalizedWeight eigenbasisGibbsProbability
   rw [(canonicalFullGibbsWeight_hasSum ε β N hsum).tsum_eq,
     canonicalPartitionFunction, canonicalFullGibbsWeight_apply_sector]
 
