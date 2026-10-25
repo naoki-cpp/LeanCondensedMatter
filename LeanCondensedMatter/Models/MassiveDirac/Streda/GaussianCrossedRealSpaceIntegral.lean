@@ -71,45 +71,6 @@ noncomputable def finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceIntegral
     (finiteCutoffContinuumBornDysonGaussianCrossedTraceKernel
       diagram v m probeEnergy broadening disorderStrength hbar pMax)
 
-/-- Finite real-space angular integration extracts only the constant harmonic of
-the *full* crossed trace kernel. The supplied expansion is over the actual
-polar real-space point, not merely the radial-axis restriction.
-
-This is an exact finite-regulator reduction conditional on a pointwise angular
-harmonic representation; proving that representation for the model's X/Psi
-traces and evaluating the remaining radial integral are separate tasks. -/
-theorem finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceIntegral_eq_radial_harmonic_constant
-    (diagram : GaussianCrossedDiagram)
-    (v m probeEnergy broadening disorderStrength hbar pMax rMax : ℝ)
-    (coefficients : ℝ → AngularHarmonicCoefficients ℂ)
-    (hangle : ∀ radius angle : ℝ,
-      finiteCutoffContinuumBornDysonGaussianCrossedTraceKernel
-          diagram v m probeEnergy broadening disorderStrength hbar pMax
-          (polarPoint2D radius angle) =
-        (coefficients radius).eval angle) :
-    finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceIntegral
-        diagram v m probeEnergy broadening disorderStrength hbar pMax rMax =
-      (((2 * Real.pi : ℝ) : ℂ)) *
-        ∫ radius in (0 : ℝ)..rMax,
-          (radius : ℂ) * (coefficients radius).constant := by
-  unfold finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceIntegral
-    finiteRadiusPolarRealSpaceIntegral
-  simp_rw [hangle]
-  calc
-    (∫ radius in (0 : ℝ)..rMax,
-      ∫ angle in (0 : ℝ)..(2 * Real.pi),
-        (radius : ℂ) * (coefficients radius).eval angle) =
-        ∫ radius in (0 : ℝ)..rMax,
-          (((2 * Real.pi : ℝ) : ℂ)) *
-            ((radius : ℂ) * (coefficients radius).constant) := by
-      apply intervalIntegral.integral_congr
-      intro radius _
-      dsimp only
-      rw [intervalIntegral.integral_const_mul,
-        (coefficients radius).integral_eval]
-      simp; ring
-    _ = _ := by rw [intervalIntegral.integral_const_mul]
-
 /-- Bilinear angular projection for the Cartesian `xy` response under a planar
 rotation. The constant angular coefficient is the antisymmetric part of the
 radial rank-two trace tensor, not its `xy` entry alone. -/
@@ -540,16 +501,24 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceIntegral_eq_radial
                 diagram v m probeEnergy broadening disorderStrength hbar pMax radius 0 1 -
               finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor
                 diagram v m probeEnergy broadening disorderStrength hbar pMax radius 1 0) / 2) := by
-  apply finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceIntegral_eq_radial_harmonic_constant
-    diagram v m probeEnergy broadening disorderStrength hbar pMax rMax
-    (fun radius => gaussianCrossedAngularTensorCoefficients
+  let coefficients : ℝ → AngularHarmonicCoefficients ℂ := fun radius =>
+    gaussianCrossedAngularTensorCoefficients
       (finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor
-        diagram v m probeEnergy broadening disorderStrength hbar pMax radius))
-  intro radius angle
-  rw [hrotation radius angle]
-  exact (gaussianCrossedAngularTensorCoefficients_eval
-    (finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor
-      diagram v m probeEnergy broadening disorderStrength hbar pMax radius) angle).symm
+        diagram v m probeEnergy broadening disorderStrength hbar pMax radius)
+  have hangle (radius angle : ℝ) :
+      finiteCutoffContinuumBornDysonGaussianCrossedTraceKernel
+          diagram v m probeEnergy broadening disorderStrength hbar pMax
+          (polarPoint2D radius angle) = (coefficients radius).eval angle := by
+    rw [hrotation radius angle]
+    exact (gaussianCrossedAngularTensorCoefficients_eval
+      (finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor
+        diagram v m probeEnergy broadening disorderStrength hbar pMax radius) angle).symm
+  unfold finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceIntegral
+    finiteRadiusPolarRealSpaceIntegral
+  simp_rw [hangle]
+  simpa only [coefficients, gaussianCrossedAngularTensorCoefficients] using
+    (AngularHarmonicCoefficients.intervalIntegral_weighted_integral_eval
+      0 rMax (fun radius => (radius : ℂ)) coefficients)
 
 /-- The regulated Gaussian X/Psi real-space integral reduces unconditionally to
 the antisymmetric radial source-pair tensor once the finite-broadening
