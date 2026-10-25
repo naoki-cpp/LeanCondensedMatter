@@ -107,6 +107,18 @@ For arbitrary `Mode`, finite-mode projections indexed by `Finset Mode` are contr
 fix algebraic vectors, and converge strongly to the identity. No countability assumption on `Mode` is
 needed for that representation-level statement.
 
+## Stationary completed Gibbs states
+
+`Common.Thermal.CompletedStationarity` connects the existing summable grand-canonical density
+to the unitary-group linear-response interface: it is stationary under Stone evolution of any
+real diagonal energy function on the same occupation basis. The statement applies to both
+statistics without a finite-mode hypothesis. Physical Hamiltonian energies divided by ℏ may be
+used independently of the thermal generator `E - μ N`. The observable remains bounded; this
+does not supply response theory for unbounded currents or an infinite-volume equilibrium state.
+
+The analysis input is eigenvector expectation invariance, obtained from the existing strong Stone
+derivative and Mathlib's inner-product derivative and derivative-zero constancy theorems.
+
 ## Open work
 
 - identify the arbitrary-mode free-boson partition sum with the convergent infinite product
