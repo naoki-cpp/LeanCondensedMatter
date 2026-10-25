@@ -7851,8 +7851,9 @@
       "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreePartitionFunction",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Thermal/FreePartitionFunction.lean",
       "imports": [
-        "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeBoltzmannCore",
-        "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsDensityOperator"
+        "LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsCoordinate",
+        "LeanCondensedMatter.SecondQuantization.Common.Thermal.GrandCanonical",
+        "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.Hamiltonian"
       ],
       "externalImportCount": 0
     },
@@ -8331,6 +8332,7 @@
       "sourceFile": "LeanCondensedMatter/Transport/KuboBastin/CommonEnergy.lean",
       "imports": [
         "LeanCondensedMatter.Analysis.Calculus.IntervalLocalization",
+        "LeanCondensedMatter.Transport.KuboBastin.Eigenbasis",
         "LeanCondensedMatter.Transport.KuboBastin.Occupation"
       ],
       "externalImportCount": 0
@@ -8357,6 +8359,7 @@
       "name": "LeanCondensedMatter.Transport.KuboBastin.Occupation",
       "sourceFile": "LeanCondensedMatter/Transport/KuboBastin/Occupation.lean",
       "imports": [
+        "LeanCondensedMatter.Transport.KuboBastin.Eigenbasis",
         "LeanCondensedMatter.Transport.KuboBastin.Finite",
         "LeanCondensedMatter.Transport.KuboBastin.OccupationInterpolation"
       ],

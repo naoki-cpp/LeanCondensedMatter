@@ -64804,7 +64804,7 @@
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceCurrentBlock_radialAxis_eq"
     ],
     "dependencies": [
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGreenOperator_polar_eq",
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGreenMatrix_polar_eq",
       "QuantumTheory.Models.MassiveDirac.polarPauliMatrix_inPlane_sandwich_eq_harmonics",
       "QuantumTheory.Transport.finiteCutoffPhysicalMomentumPolarFourier_polarPoint2D_harmonics",
       "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedRealSpace.0.QuantumTheory.Models.MassiveDirac.gaussianCrossedCurrentCoefficientVector_vertex"
@@ -65324,6 +65324,54 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
+    "terminal": false,
+    "statement": "∀ (side : QuantumTheory.Transport.SpectralSide) (v m p θ probeEnergy broadening disorderStrength hbar pMax : ℝ),\n  QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGreenMatrix side v m (p * Real.cos θ) (p * Real.sin θ)\n      probeEnergy broadening disorderStrength hbar pMax =\n    QuantumTheory.Models.MassiveDirac.polarPauliMatrix\n      (QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonScalarCoefficient side v m p 0 probeEnergy\n        broadening disorderStrength hbar pMax)\n      (QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonPauliCoefficient InternalSpace.PauliAxis.x side v\n        m p 0 probeEnergy broadening disorderStrength hbar pMax)\n      (QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonPauliCoefficient InternalSpace.PauliAxis.z side v\n        m p 0 probeEnergy broadening disorderStrength hbar pMax)\n      θ",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGreenMatrix_polar_eq",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornPropagator",
+    "externalAxioms": [],
+    "docString": "Matrix-valued polar Born-Dyson Green identity, shared by momentum-space spinor\nrotation and the full-angle real-space Fourier constructions. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceCurrentBlock_polarPoint2D_eq_angularKernel_integral",
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGreenMatrix_polar_spinRotation",
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRealSpaceGreenMatrix_polarPoint2D_eq_angularKernel_integral"
+    ],
+    "dependencies": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGreenOperator_polar_eq"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceCurrentBlock_polarPoint2D_eq_angularKernel_integral",
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGreenMatrix_polar_spinRotation",
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRealSpaceGreenMatrix_polarPoint2D_eq_angularKernel_integral"
+    ],
+    "compiledConsumerCount": 3,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
     "terminal": true,
     "statement": "∀ (side : QuantumTheory.Transport.SpectralSide) (v m probeEnergy broadening disorderStrength hbar pMax p angle : ℝ),\n  QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGreenMatrix side v m (p * Real.cos angle)\n      (p * Real.sin angle) probeEnergy broadening disorderStrength hbar pMax =\n    QuantumTheory.Models.MassiveDirac.inPlaneSpinRotation angle *\n        QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGreenMatrix side v m p 0 probeEnergy broadening\n          disorderStrength hbar pMax *\n      QuantumTheory.Models.MassiveDirac.inPlaneSpinRotationInverse angle",
     "standardAxioms": [
@@ -65345,7 +65393,7 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGreenOperator_polar_eq",
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGreenMatrix_polar_eq",
       "QuantumTheory.Models.MassiveDirac.polarPauliMatrix_eq_spinRotation"
     ],
     "crossModuleDirectWrapper": false,
@@ -65386,9 +65434,7 @@
     "directWrapperOf": null,
     "dependents": [
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonAngularRetardedAdvancedInPlaneRungAction_eq",
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceCurrentBlock_polarPoint2D_eq_angularKernel_integral",
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGreenMatrix_polar_spinRotation",
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRealSpaceGreenMatrix_polarPoint2D_eq_angularKernel_integral",
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGreenMatrix_polar_eq",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceIntegral_eq_radialCoefficient"
     ],
     "dependencies": [
@@ -65398,12 +65444,10 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonAngularRetardedAdvancedInPlaneRungAction_eq",
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceCurrentBlock_polarPoint2D_eq_angularKernel_integral",
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGreenMatrix_polar_spinRotation",
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRealSpaceGreenMatrix_polarPoint2D_eq_angularKernel_integral",
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGreenMatrix_polar_eq",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceIntegral_eq_radialCoefficient"
     ],
-    "compiledConsumerCount": 5,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -66369,7 +66413,7 @@
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRealSpaceGreenMatrix_radialAxis_eq"
     ],
     "dependencies": [
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGreenOperator_polar_eq",
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGreenMatrix_polar_eq",
       "QuantumTheory.Transport.finiteCutoffPhysicalMomentumPolarFourier_polarPoint2D_harmonics"
     ],
     "crossModuleDirectWrapper": false,
@@ -67039,8 +67083,6 @@
       "QuantumTheory.Models.MassiveDirac.currentOperator_eq_charge_smul_velocityOperator",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGreenOperator_polar_eq",
       "QuantumTheory.Models.MassiveDirac.inPlaneCurrentOperator_eq_chargeVelocity_smul_inPlanePauliVertexOperator",
-      "QuantumTheory.Models.MassiveDirac.inPlaneLadderAction_apply_x",
-      "QuantumTheory.Models.MassiveDirac.inPlaneLadderAction_apply_y",
       "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderRadial.0.QuantumTheory.Models.MassiveDirac.integral_polarPauli_directionTrace_eq",
       "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderRadial.0.QuantumTheory.Models.MassiveDirac.intervalIntegrable_polarPauli_directionTrace"
     ],
@@ -69102,7 +69144,6 @@
     "directWrapperOf": null,
     "dependents": [
       "QuantumTheory.Models.MassiveDirac.continuumBornAngularRetardedAdvancedPauliXIntegral_eq",
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceIntegral_eq_radialCoefficient",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_x_eq_denominatorForm",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yx_eq_neg_xy",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yy_eq_xx",
@@ -69119,7 +69160,6 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.Models.MassiveDirac.continuumBornAngularRetardedAdvancedPauliXIntegral_eq",
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceIntegral_eq_radialCoefficient",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_x_eq_denominatorForm",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yx_eq_neg_xy",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yy_eq_xx",
@@ -69131,7 +69171,7 @@
       "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderLongitudinalZeroBroadeningIntegral.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral_x_eq_endpointForm",
       "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderRadialDenominator.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_y_eq_denominatorForm"
     ],
-    "compiledConsumerCount": 12,
+    "compiledConsumerCount": 11,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -69167,7 +69207,6 @@
     "dependents": [
       "QuantumTheory.Models.MassiveDirac.continuumBornAngularRetardedAdvancedPauliXIntegral_eq",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonOrderedXYRetardedAdvancedDressedSurfaceMomentumIntegralZeroBroadeningBoundary_eq_rungSolvedProvenance",
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceIntegral_eq_radialCoefficient",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yx_eq_neg_xy",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yy_eq_xx",
       "QuantumTheory.Models.MassiveDirac.inPlaneLadderAction_integrable_and_integral_eq",
@@ -69183,7 +69222,6 @@
     "compiledConsumers": [
       "QuantumTheory.Models.MassiveDirac.continuumBornAngularRetardedAdvancedPauliXIntegral_eq",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonOrderedXYRetardedAdvancedDressedSurfaceMomentumIntegralZeroBroadeningBoundary_eq_rungSolvedProvenance",
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceIntegral_eq_radialCoefficient",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yx_eq_neg_xy",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceRadialCoefficient_yy_eq_xx",
       "QuantumTheory.Models.MassiveDirac.inPlaneLadderAction_integrable_and_integral_eq",
@@ -69193,7 +69231,7 @@
       "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonTransverseLadderActionZeroBroadeningBoundary_div_disorder_zero",
       "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderHallZeroBroadeningIntegral.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral_y_eq_endpointForm"
     ],
-    "compiledConsumerCount": 11,
+    "compiledConsumerCount": 10,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -92901,7 +92939,6 @@
       "SecondQuantization.Common.traceFock_diagonalEvolution_ne_zero",
       "SecondQuantization.Fermionic.completedGrandCanonicalGibbs_intertwines_finite",
       "SecondQuantization.Fermionic.freeGibbsDensityOperator_apply_basis",
-      "SecondQuantization.Fermionic.freePartitionFunction_ne_zero",
       "SecondQuantization.Fermionic.vonNeumannEntropy_freeGibbsDensityOperator_toReal_eq_sum_fermiDirac"
     ],
     "dependencies": [],
@@ -92915,10 +92952,9 @@
       "SecondQuantization.Common.traceFock_diagonalEvolution_ne_zero",
       "SecondQuantization.Fermionic.completedGrandCanonicalGibbs_intertwines_finite",
       "SecondQuantization.Fermionic.freeGibbsDensityOperator_apply_basis",
-      "SecondQuantization.Fermionic.freePartitionFunction_ne_zero",
       "SecondQuantization.Fermionic.vonNeumannEntropy_freeGibbsDensityOperator_toReal_eq_sum_fermiDirac"
     ],
-    "compiledConsumerCount": 9,
+    "compiledConsumerCount": 8,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -93000,7 +93036,6 @@
       "SecondQuantization.Common.grandCanonicalPartitionFunction_pos",
       "SecondQuantization.Common.traceFock_diagonalEvolution_ne_zero",
       "SecondQuantization.Fermionic.completedFreeModeTruncatedGibbsProbability_eq_ratio_mul",
-      "SecondQuantization.Fermionic.freePartitionFunction_ne_zero",
       "SecondQuantization.Fermionic.tendsto_completedFreeModeTruncatedGibbsProbability",
       "SecondQuantization.Fermionic.tendsto_completedFreeModeTruncationNormalizationRatio",
       "_private.LeanCondensedMatter.QuantumTheory.Gibbs.DistributionUniqueness.0.QuantumTheory.gibbsVariational_entropy_eq_iff",
@@ -93023,13 +93058,12 @@
       "SecondQuantization.Common.grandCanonicalPartitionFunction_pos",
       "SecondQuantization.Common.traceFock_diagonalEvolution_ne_zero",
       "SecondQuantization.Fermionic.completedFreeModeTruncatedGibbsProbability_eq_ratio_mul",
-      "SecondQuantization.Fermionic.freePartitionFunction_ne_zero",
       "SecondQuantization.Fermionic.tendsto_completedFreeModeTruncatedGibbsProbability",
       "SecondQuantization.Fermionic.tendsto_completedFreeModeTruncationNormalizationRatio",
       "_private.LeanCondensedMatter.QuantumTheory.Gibbs.DistributionUniqueness.0.QuantumTheory.gibbsVariational_entropy_eq_iff",
       "_private.LeanCondensedMatter.QuantumTheory.Gibbs.EigenbasisEntropy.0.QuantumTheory.negMulLog_eigenbasisGibbsProbability"
     ],
-    "compiledConsumerCount": 14,
+    "compiledConsumerCount": 13,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -119393,7 +119427,7 @@
       "SecondQuantization.Common.analyticDysonPartitionFunction_zero",
       "SecondQuantization.Common.finiteGibbsExpectation_eq_trace_div",
       "SecondQuantization.Common.traceFock_diagonalEvolution_ne_zero",
-      "SecondQuantization.Fermionic.freePartitionFunction_eq_coe_eigenbasisPartitionFunction",
+      "SecondQuantization.Fermionic.coe_grandCanonicalPartitionFunction_eq_prod",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticLinkedCluster.0.SecondQuantization.Common.analyticDysonPartitionFunction_zero_eq_constantCoeff"
     ],
     "dependencies": [
@@ -119405,7 +119439,7 @@
       "SecondQuantization.Common.analyticDysonPartitionFunction_zero",
       "SecondQuantization.Common.finiteGibbsExpectation_eq_trace_div",
       "SecondQuantization.Common.traceFock_diagonalEvolution_ne_zero",
-      "SecondQuantization.Fermionic.freePartitionFunction_eq_coe_eigenbasisPartitionFunction",
+      "SecondQuantization.Fermionic.coe_grandCanonicalPartitionFunction_eq_prod",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticLinkedCluster.0.SecondQuantization.Common.analyticDysonPartitionFunction_zero_eq_constantCoeff"
     ],
     "compiledConsumerCount": 5,
@@ -127116,7 +127150,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -127128,7 +127162,9 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Bosonic.grandCanonicalAlgebraicPartition_eq_coe_grandCanonicalPartitionFunction"
+      "SecondQuantization.Bosonic.grandCanonicalAlgebraicPartition_eq_coe_grandCanonicalPartitionFunction",
+      "SecondQuantization.Fermionic.coe_grandCanonicalPartitionFunction_eq_prod",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeEntropy.0.SecondQuantization.Fermionic.eigenbasisPartitionFunction_fermionEnergy_eq_prod"
     ],
     "dependencies": [
       "SecondQuantization.Common.grandCanonicalEnergy_eq_shifted"
@@ -127136,9 +127172,11 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Bosonic.grandCanonicalAlgebraicPartition_eq_coe_grandCanonicalPartitionFunction"
+      "SecondQuantization.Bosonic.grandCanonicalAlgebraicPartition_eq_coe_grandCanonicalPartitionFunction",
+      "SecondQuantization.Fermionic.coe_grandCanonicalPartitionFunction_eq_prod",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeEntropy.0.SecondQuantization.Fermionic.eigenbasisPartitionFunction_fermionEnergy_eq_prod"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -144553,6 +144591,52 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {Mode : Type u_1} [inst : Fintype Mode] (ε : Mode → ℝ) (β μ : ℝ),\n  ↑(SecondQuantization.Common.grandCanonicalPartitionFunction ε β μ) = ∏ i, (1 + Complex.exp (-↑β * ↑(ε i - μ)))",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.coe_grandCanonicalPartitionFunction_eq_prod",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreePartitionFunction",
+    "externalAxioms": [],
+    "docString": "The grand-canonical partition sum over finite fermionic occupation Fock space\nfactorizes into one-mode terms at explicit chemical potential `μ`. The normalization\nuses the shared real partition function; this identity is its complex coordinate form. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeEntropy.0.SecondQuantization.Fermionic.eigenbasisPartitionFunction_fermionEnergy_eq_prod"
+    ],
+    "dependencies": [
+      "SecondQuantization.Common.coe_eigenbasisPartitionFunction_eq_sum_boltzmannWeight",
+      "SecondQuantization.Common.grandCanonicalPartitionFunction_eq_shifted",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreePartitionFunction.0.SecondQuantization.Fermionic.sum_boltzmannWeight_powerset_eq_prod"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeEntropy.0.SecondQuantization.Fermionic.eigenbasisPartitionFunction_fermionEnergy_eq_prod"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (i : Mode) (ψ : ↥(SecondQuantization.Fermionic.CompletedFockSpace Mode))\n  (n : SecondQuantization.Fermionic.Occupation Mode),\n  ↑((SecondQuantization.Fermionic.completedAnnihilate i) ψ) n =\n    if i ∈ n then 0\n    else\n      SecondQuantization.Fermionic.fermionPhase i (SecondQuantization.Fermionic.toggleOccupation i n) *\n        ↑ψ (SecondQuantization.Fermionic.toggleOccupation i n)",
     "standardAxioms": [
       "Classical.choice",
@@ -148445,9 +148529,9 @@
       "SecondQuantization.Fermionic.eigenbasisGibbsEnergyExpectation_fermionEnergy_eq_sum_fermiDirac",
       "SecondQuantization.Fermionic.fermionEnergy_insertOccupation_of_not_mem",
       "SecondQuantization.Fermionic.fermionEnergy_removeOccupation_of_mem",
-      "SecondQuantization.Fermionic.freeBoltzmannWeight_eq_prod",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.Gibbs.0.SecondQuantization.Fermionic.completedFreeGibbsProbability_insertOccupation_of_not_mem",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.Gibbs.0.SecondQuantization.Fermionic.completedFreeGibbsProbability_removeOccupation_of_mem"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.Gibbs.0.SecondQuantization.Fermionic.completedFreeGibbsProbability_removeOccupation_of_mem",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreePartitionFunction.0.SecondQuantization.Fermionic.boltzmannWeight_fermionEnergy_eq_prod"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
@@ -148457,9 +148541,9 @@
       "SecondQuantization.Fermionic.eigenbasisGibbsEnergyExpectation_fermionEnergy_eq_sum_fermiDirac",
       "SecondQuantization.Fermionic.fermionEnergy_insertOccupation_of_not_mem",
       "SecondQuantization.Fermionic.fermionEnergy_removeOccupation_of_mem",
-      "SecondQuantization.Fermionic.freeBoltzmannWeight_eq_prod",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.Gibbs.0.SecondQuantization.Fermionic.completedFreeGibbsProbability_insertOccupation_of_not_mem",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.Gibbs.0.SecondQuantization.Fermionic.completedFreeGibbsProbability_removeOccupation_of_mem"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.Gibbs.0.SecondQuantization.Fermionic.completedFreeGibbsProbability_removeOccupation_of_mem",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreePartitionFunction.0.SecondQuantization.Fermionic.boltzmannWeight_fermionEnergy_eq_prod"
     ],
     "compiledConsumerCount": 7,
     "axioms": [
@@ -149390,50 +149474,6 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": false,
-    "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (β : ℝ) (n : SecondQuantization.Fermionic.Occupation Mode),\n  SecondQuantization.Fermionic.freeBoltzmannWeight ε β n = ∏ i ∈ n, Complex.exp (-↑β * ↑(ε i))",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.freeBoltzmannWeight_eq_prod",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreePartitionFunction",
-    "externalAxioms": [],
-    "docString": "**The free Boltzmann weight factorizes mode-by-mode**: `e^{-β E(n)} = ∏_{i ∈ n} e^{-βε_i}`,\nsince `E(n) = Σ_{i ∈ n} ε_i`. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.sum_freeBoltzmannWeight_powerset_eq_prod"
-    ],
-    "dependencies": [
-      "SecondQuantization.Fermionic.fermionEnergy_eq_sum"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.sum_freeBoltzmannWeight_powerset_eq_prod"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
     "terminal": true,
     "statement": "∀ {Mode : Type u_1} [inst : Fintype Mode] (ε : Mode → ℝ) (β : ℝ) (n : SecondQuantization.Fermionic.Occupation Mode),\n  (SecondQuantization.Fermionic.freeGibbsDensityOperator ε β).op (SecondQuantization.Common.finiteHilbertBasisState n) =\n    ↑(QuantumTheory.eigenbasisGibbsProbability (SecondQuantization.Fermionic.fermionEnergy ε) β n) •\n      SecondQuantization.Common.finiteHilbertBasisState n",
     "standardAxioms": [
@@ -150272,138 +150312,6 @@
     "dependents": [],
     "dependencies": [
       "SecondQuantization.Common.diagonalOperator_basisState"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : Fintype Mode] (ε : Mode → ℝ) (β : ℝ),\n  SecondQuantization.Fermionic.freePartitionFunction ε β =\n    ↑(QuantumTheory.eigenbasisPartitionFunction (SecondQuantization.Fermionic.fermionEnergy ε) β)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": true,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.freePartitionFunction_eq_coe_eigenbasisPartitionFunction",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeBoltzmannCore",
-    "externalAxioms": [],
-    "docString": "The finite complex free-fermion partition function is exactly the canonical pure-point Gibbs\npartition function for `fermionEnergy`, coerced from `ℝ` to `ℂ`. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.freePartitionFunction_ne_zero",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeEntropy.0.SecondQuantization.Fermionic.eigenbasisPartitionFunction_fermionEnergy_eq_prod"
-    ],
-    "dependencies": [
-      "SecondQuantization.Common.coe_eigenbasisPartitionFunction_eq_sum_boltzmannWeight"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.freePartitionFunction_ne_zero",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeEntropy.0.SecondQuantization.Fermionic.eigenbasisPartitionFunction_fermionEnergy_eq_prod"
-    ],
-    "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : Fintype Mode] (ε : Mode → ℝ) (β : ℝ),\n  SecondQuantization.Fermionic.freePartitionFunction ε β = ∏ i, (1 + Complex.exp (-↑β * ↑(ε i)))",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.freePartitionFunction_eq_prod",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreePartitionFunction",
-    "externalAxioms": [],
-    "docString": "**The free partition function factorizes into a product over modes**:\n`Z₀(β) = ∏ᵢ (1 + e^{-βε_i})`. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeEntropy.0.SecondQuantization.Fermionic.eigenbasisPartitionFunction_fermionEnergy_eq_prod"
-    ],
-    "dependencies": [
-      "SecondQuantization.Fermionic.sum_freeBoltzmannWeight_powerset_eq_prod"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeEntropy.0.SecondQuantization.Fermionic.eigenbasisPartitionFunction_fermionEnergy_eq_prod"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {Mode : Type u_1} [inst : Fintype Mode] (ε : Mode → ℝ) (β : ℝ),\n  SecondQuantization.Fermionic.freePartitionFunction ε β ≠ 0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.freePartitionFunction_ne_zero",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeBoltzmannCore",
-    "externalAxioms": [],
-    "docString": "The free finite fermion partition function is nonzero. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "QuantumTheory.eigenbasisGibbsSummable_of_finite",
-      "QuantumTheory.eigenbasisPartitionFunction_pos",
-      "SecondQuantization.Fermionic.freePartitionFunction_eq_coe_eigenbasisPartitionFunction"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -152815,50 +152723,6 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Fermionic.externalInsertionMixedAtomicDysonCoefficient_eq_externalInsertionDysonCoefficient"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (β : ℝ) (s : Finset Mode),\n  ∑ t ∈ s.powerset, SecondQuantization.Fermionic.freeBoltzmannWeight ε β t = ∏ j ∈ s, (1 + Complex.exp (-↑β * ↑(ε j)))",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.sum_freeBoltzmannWeight_powerset_eq_prod",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreePartitionFunction",
-    "externalAxioms": [],
-    "docString": "**The free Boltzmann weight, summed over all subsets of a fixed mode set `s`, factorizes** as\na product over `s`: `Σ_{t ⊆ s} e^{-β E(t)} = ∏_{i ∈ s} (1 + e^{-βε_i})`. The general-`s` form\nkeeps the mode-set factorization available independently of the `s = univ` partition function. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.freePartitionFunction_eq_prod"
-    ],
-    "dependencies": [
-      "SecondQuantization.Fermionic.freeBoltzmannWeight_eq_prod"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.freePartitionFunction_eq_prod"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -189046,8 +188910,8 @@
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeEntropy.0.SecondQuantization.Fermionic.log_eigenbasisPartitionFunction_fermionEnergy_eq_sum"
     ],
     "dependencies": [
-      "SecondQuantization.Fermionic.freePartitionFunction_eq_coe_eigenbasisPartitionFunction",
-      "SecondQuantization.Fermionic.freePartitionFunction_eq_prod"
+      "SecondQuantization.Common.grandCanonicalPartitionFunction_eq_shifted",
+      "SecondQuantization.Fermionic.coe_grandCanonicalPartitionFunction_eq_prod"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -189181,6 +189045,94 @@
     "completedMention": false,
     "compiledConsumers": [
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeEntropy.0.SecondQuantization.Fermionic.binaryEntropy_fermiDiracOccupation"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} (ξ : Mode → ℝ) (β : ℝ) (n : SecondQuantization.Fermionic.Occupation Mode),\n  SecondQuantization.Common.boltzmannWeight (SecondQuantization.Fermionic.fermionEnergy ξ) β n =\n    ∏ i ∈ n, Complex.exp (-↑β * ↑(ξ i))",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreePartitionFunction.0.SecondQuantization.Fermionic.boltzmannWeight_fermionEnergy_eq_prod",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreePartitionFunction",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreePartitionFunction.0.SecondQuantization.Fermionic.sum_boltzmannWeight_powerset_eq_prod"
+    ],
+    "dependencies": [
+      "SecondQuantization.Fermionic.fermionEnergy_eq_sum"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreePartitionFunction.0.SecondQuantization.Fermionic.sum_boltzmannWeight_powerset_eq_prod"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} (ξ : Mode → ℝ) (β : ℝ) (s : Finset Mode),\n  ∑ t ∈ s.powerset, SecondQuantization.Common.boltzmannWeight (SecondQuantization.Fermionic.fermionEnergy ξ) β t =\n    ∏ j ∈ s, (1 + Complex.exp (-↑β * ↑(ξ j)))",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreePartitionFunction.0.SecondQuantization.Fermionic.sum_boltzmannWeight_powerset_eq_prod",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreePartitionFunction",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.coe_grandCanonicalPartitionFunction_eq_prod"
+    ],
+    "dependencies": [
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreePartitionFunction.0.SecondQuantization.Fermionic.boltzmannWeight_fermionEnergy_eq_prod"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.coe_grandCanonicalPartitionFunction_eq_prod"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
