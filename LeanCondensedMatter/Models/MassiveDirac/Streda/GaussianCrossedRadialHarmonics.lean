@@ -271,17 +271,6 @@ theorem finiteCutoffContinuumBornDysonRadial_ra_weighted_moment_mul_center_gap
     .retarded v m probeEnergy broadening disorderStrength hbar pMax
   let massA := finiteCutoffContinuumBornEffectiveMass
     .advanced v m probeEnergy broadening disorderStrength hbar pMax
-  have hden (side : SpectralSide) (p : ℝ) :
-      massiveDiracRadialDenominator v p
-          (finiteCutoffContinuumBornEffectiveEnergy
-            side v m probeEnergy broadening disorderStrength hbar pMax)
-          (finiteCutoffContinuumBornEffectiveMass
-            side v m probeEnergy broadening disorderStrength hbar pMax) =
-        finiteCutoffContinuumBornDysonDenominator
-          side v m p 0 probeEnergy broadening disorderStrength hbar pMax := by
-    unfold massiveDiracRadialDenominator finiteCutoffContinuumBornDysonDenominator
-    push_cast
-    ring
   have hgap (p : ℝ) :
       (energyA ^ 2 - massA ^ 2 - (energyR ^ 2 - massR ^ 2)) *
           (finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct
@@ -296,7 +285,7 @@ theorem finiteCutoffContinuumBornDysonRadial_ra_weighted_moment_mul_center_gap
             side v m probeEnergy broadening disorderStrength hbar pMax)
           (finiteCutoffContinuumBornEffectiveMass
             side v m probeEnergy broadening disorderStrength hbar pMax) ≠ 0 := by
-      rw [hden]
+      rw [finiteCutoffContinuumBornDysonDenominator_eq_radial]
       exact finiteCutoffContinuumBornDysonDenominator_ne_zero
         side v m p 0 probeEnergy broadening disorderStrength hbar pMax
         hbroadening hdisorder hpMax
@@ -305,7 +294,8 @@ theorem finiteCutoffContinuumBornDysonRadial_ra_weighted_moment_mul_center_gap
         v p energyR massR energyA massA (hnonzero .retarded) (hnonzero .advanced)
     dsimp only [energyR, energyA, massR, massA] at hspectral
     simpa only [massiveDiracRetardedAdvancedRadialDenominatorProduct,
-      hden, ← finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct_eq_mul]
+      finiteCutoffContinuumBornDysonDenominator_eq_radial,
+      ← finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct_eq_mul]
       using hspectral
   dsimp only
   rw [← intervalIntegral.integral_const_mul]
