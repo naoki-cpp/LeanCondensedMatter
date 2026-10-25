@@ -29,7 +29,7 @@ theorem freeGibbsDensityOperator_expectation_annihilate_comp_create
   have hbridge := freeGibbsExpectation_eq_completed_of_algebraicCore
     ε β 0 ((annihilate i).comp (create j))
       ((completedAnnihilate i).comp (completedCreate j))
-      (completedProduct_comp_algebraicToCompleted_of_core
+      (Common.completedProduct_comp_algebraicToCompleted_of_core
         (annihilate i) (create j) (completedAnnihilate i) (completedCreate j)
         (completedAnnihilate_comp_algebraicToCompleted i)
         (completedCreate_comp_algebraicToCompleted j))
@@ -49,7 +49,7 @@ theorem freeGibbsDensityOperator_expectation_create_comp_annihilate
   have hbridge := freeGibbsExpectation_eq_completed_of_algebraicCore
     ε β 0 ((create j).comp (annihilate i))
       ((completedCreate j).comp (completedAnnihilate i))
-      (completedProduct_comp_algebraicToCompleted_of_core
+      (Common.completedProduct_comp_algebraicToCompleted_of_core
         (create j) (annihilate i) (completedCreate j) (completedAnnihilate i)
         (completedCreate_comp_algebraicToCompleted j)
         (completedAnnihilate_comp_algebraicToCompleted i))
@@ -78,7 +78,7 @@ theorem freeGibbsDensityOperator_expectation_annihilate_comp_annihilate
   have hbridge := freeGibbsExpectation_eq_completed_of_algebraicCore
     ε β 0 ((annihilate i).comp (annihilate j))
       ((completedAnnihilate i).comp (completedAnnihilate j))
-      (completedProduct_comp_algebraicToCompleted_of_core
+      (Common.completedProduct_comp_algebraicToCompleted_of_core
         (annihilate i) (annihilate j) (completedAnnihilate i) (completedAnnihilate j)
         (completedAnnihilate_comp_algebraicToCompleted i)
         (completedAnnihilate_comp_algebraicToCompleted j))
@@ -94,7 +94,7 @@ theorem freeGibbsDensityOperator_expectation_create_comp_create
   have hbridge := freeGibbsExpectation_eq_completed_of_algebraicCore
     ε β 0 ((create i).comp (create j))
       ((completedCreate i).comp (completedCreate j))
-      (completedProduct_comp_algebraicToCompleted_of_core
+      (Common.completedProduct_comp_algebraicToCompleted_of_core
         (create i) (create j) (completedCreate i) (completedCreate j)
         (completedCreate_comp_algebraicToCompleted i)
         (completedCreate_comp_algebraicToCompleted j))
