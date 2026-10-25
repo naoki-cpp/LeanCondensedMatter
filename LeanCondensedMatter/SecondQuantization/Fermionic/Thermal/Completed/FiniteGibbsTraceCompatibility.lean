@@ -89,7 +89,7 @@ private theorem completedFiniteHilbertIntertwines_of_algebraicCore
     have h := congrArg
       (fun f : OccupationFock Mode →ₗ[ℂ] CompletedFockSpace Mode =>
         f (Common.basisState n)) hcore
-    simpa only [LinearMap.comp_apply] using h
+    simpa [algebraicToCompleted, ContinuousLinearMap.toLinearMap] using h
   change e (T (Common.completedBasisState n)) =
     Common.finiteHilbertOperatorAlgEquiv A (e (Common.completedBasisState n))
   calc
@@ -109,6 +109,7 @@ private theorem completedFiniteHilbertIntertwines_of_algebraicCore
 /-- Transport a finite free-fermion expectation to the completed normal grand-canonical
 Gibbs state whenever the bounded completed operator extends the algebraic observable.
 The chemical potential is explicit, and finite modes enter solely through this bridge. -/
+omit [LinearOrder Mode] in
 theorem freeGibbsExpectation_eq_completed_of_algebraicCore
     (ε : Mode → ℝ) (β μ : ℝ)
     (A : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode)
@@ -128,7 +129,8 @@ theorem freeGibbsExpectation_eq_completed_of_algebraicCore
       G.comp ((Common.finiteHilbertOperatorAlgEquiv A).comp F) = T := by
     apply ContinuousLinearMap.ext
     intro ψ
-    have hψ := ContinuousLinearMap.congr_fun hinter ψ
+    have hψ := congrArg (fun L : CompletedFockSpace Mode →L[ℂ]
+        Common.FiniteHilbertFock (Occupation Mode) => L ψ) hinter
     change F (T ψ) = Common.finiteHilbertOperatorAlgEquiv A (F ψ) at hψ
     change G (Common.finiteHilbertOperatorAlgEquiv A (F ψ)) = T ψ
     calc
@@ -161,6 +163,7 @@ theorem freeGibbsExpectation_eq_completed_of_algebraicCore
     henergy, ξ] using htransport
 
 /-- The completed normal product extends the corresponding algebraic normal product. -/
+omit [Fintype Mode] in
 theorem completedNormalProduct_comp_algebraicToCompleted
     (i j : Mode) :
     ((completedAnnihilate i).comp (completedCreate j)).toLinearMap.comp
@@ -178,11 +181,12 @@ theorem completedNormalProduct_comp_algebraicToCompleted
     calc
       completedAnnihilate i (completedCreate j (algebraicToCompleted x)) =
           completedAnnihilate i (algebraicToCompleted (create j x)) := by
-            simpa only [LinearMap.comp_apply] using congrArg (completedAnnihilate i) hcreate
+            simpa [algebraicToCompleted, ContinuousLinearMap.toLinearMap] using congrArg (completedAnnihilate i) hcreate
       _ = algebraicToCompleted (annihilate i (create j x)) := by
-            simpa only [LinearMap.comp_apply] using hann
+            simpa [algebraicToCompleted, ContinuousLinearMap.toLinearMap] using hann
 
 /-- The completed reversed normal product extends the algebraic product. -/
+omit [Fintype Mode] in
 theorem completedReversedNormalProduct_comp_algebraicToCompleted
     (i j : Mode) :
     ((completedCreate j).comp (completedAnnihilate i)).toLinearMap.comp
@@ -199,9 +203,9 @@ theorem completedReversedNormalProduct_comp_algebraicToCompleted
   calc
     completedCreate j (completedAnnihilate i (algebraicToCompleted x)) =
         completedCreate j (algebraicToCompleted (annihilate i x)) := by
-          simpa only [LinearMap.comp_apply] using congrArg (completedCreate j) hann
+          simpa [algebraicToCompleted, ContinuousLinearMap.toLinearMap] using congrArg (completedCreate j) hann
     _ = algebraicToCompleted (create j (annihilate i x)) := by
-          simpa only [LinearMap.comp_apply] using hcreate
+          simpa [algebraicToCompleted, ContinuousLinearMap.toLinearMap] using hcreate
 
 omit [LinearOrder Mode] in
 /-- The finite fermionic grand-canonical density-state expectation is the
