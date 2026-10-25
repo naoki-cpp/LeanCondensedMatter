@@ -357,19 +357,18 @@ theorem finiteCutoffContinuumBornDysonRadial_ra_pole_moment_mul_center_gap_eq_lo
         (finiteCutoffContinuumBornDysonDenominator
           side v m p 0 probeEnergy broadening disorderStrength hbar pMax)⁻¹)
       volume 0 pMax := by
-    have hdenCont : Continuous
-        (fun p : ℝ => finiteCutoffContinuumBornDysonDenominator
-          side v m p 0 probeEnergy broadening disorderStrength hbar pMax) := by
-      unfold finiteCutoffContinuumBornDysonDenominator
-      fun_prop
     have hdenNe (p : ℝ) :
         finiteCutoffContinuumBornDysonDenominator
           side v m p 0 probeEnergy broadening disorderStrength hbar pMax ≠ 0 :=
       finiteCutoffContinuumBornDysonDenominator_ne_zero
         side v m p 0 probeEnergy broadening disorderStrength hbar pMax
         hbroadening hdisorder hpMax
-    exact ((Complex.continuous_ofReal.comp continuous_id).mul
-      (hdenCont.inv₀ hdenNe)).intervalIntegrable 0 pMax
+    have hdenCont : Continuous
+        (fun p : ℝ => finiteCutoffContinuumBornDysonDenominator
+          side v m p 0 probeEnergy broadening disorderStrength hbar pMax) := by
+      unfold finiteCutoffContinuumBornDysonDenominator
+      fun_prop
+    fun_prop
   have hR := finiteBroadeningBornDyson_singlePoleRadialIntegral_eq_log_of_center_re_pos
     .retarded v m probeEnergy broadening disorderStrength hbar pMax
     hvelocity hbroadening hdisorder hpMax hcenterR
