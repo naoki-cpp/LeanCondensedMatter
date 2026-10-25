@@ -114,8 +114,8 @@ The surviving `Fermionic.Thermal.freeGibbsDensityOperator ε β` and
 implicit `μ = 0`; they are not fixed-number canonical states. These public finite-fermion
 interfaces still have real entropy, contraction, Green-function and diagrammatic consumers,
 so replacing them with the existing shared explicit-`μ` Gibbs construction requires a staged
-consumer migration, not compatibility aliases or a parallel density constructor. The finite
-density-state specialization depends directly on `fermionEnergy` and the generic pure-point state;
+consumer migration, not compatibility aliases or a parallel density constructor.
+The finite density-state specialization depends directly on `fermionEnergy` and the generic pure-point state;
 finite complex Boltzmann coordinates are a separate proof/perturbation lane.
 
 `Fermionic.Thermal.FreeEntropy` derives the finite occupation marginal from the canonical
