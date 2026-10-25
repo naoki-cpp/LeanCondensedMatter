@@ -94,7 +94,7 @@ theorem freeGibbsExpectation_eq_completed_of_algebraicCore
       have h := congrArg
         (fun f : OccupationFock Mode →ₗ[ℂ] CompletedFockSpace Mode =>
           f (Common.basisState n)) hcore
-      simpa only [LinearMap.comp_apply, ContinuousLinearMap.toLinearMap_apply,
+      simpa only [LinearMap.comp_apply, ContinuousLinearMap.coe_coe,
         Common.algebraicToCompleted_basisState] using h
     change e.symm (Common.finiteHilbertOperatorAlgEquiv A
       (e (Common.completedBasisState n))) = T (Common.completedBasisState n)
