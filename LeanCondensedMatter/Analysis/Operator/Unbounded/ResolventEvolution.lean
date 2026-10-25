@@ -1033,7 +1033,8 @@ theorem inner_stoneEvolution_eigenvector
     rw [hx, (stoneEvolution A hA s).map_smul, smul_smul] at h
     exact h
   have hc : starRingEnd ℂ c = -c := by
-    simp only [c, map_mul, map_neg, Complex.conj_I, Complex.conj_ofReal, neg_neg, neg_mul]
+    simp only [c, (starRingEnd ℂ).map_mul, (starRingEnd ℂ).map_neg,
+      Complex.conj_I, Complex.conj_ofReal, neg_neg, neg_mul]
   have hq (s : ℝ) : HasDerivAt (fun r : ℝ => inner ℂ (f r) (B (f r))) 0 s := by
     have hB := (B.restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt s (hf s)
     have h := (hf s).inner ℂ hB
