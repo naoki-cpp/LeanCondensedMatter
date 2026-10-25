@@ -156,6 +156,30 @@ theorem continuousLinearMap_ext_completedBasis
     exact h c
   exact congrArg (fun f : AlgebraicFock Config →ₗ[ℂ] E => f x) hcore
 
+/-- Intertwining of bounded completed products with algebraic products on the dense
+Fock core. The configuration set is arbitrary; no thermal or particle-statistics data is required. -/
+theorem completedProduct_comp_algebraicToCompleted_of_core
+    (A B : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
+    (T U : CompletedFock Config →L[ℂ] CompletedFock Config)
+    (hT : T.toLinearMap.comp algebraicToCompleted = algebraicToCompleted.comp A)
+    (hU : U.toLinearMap.comp algebraicToCompleted = algebraicToCompleted.comp B) :
+    (T.comp U).toLinearMap.comp algebraicToCompleted =
+      algebraicToCompleted.comp (A.comp B) := by
+  apply LinearMap.ext
+  intro x
+  change T (U (algebraicToCompleted x)) = algebraicToCompleted (A (B x))
+  have hUx := congrArg
+    (fun f : AlgebraicFock Config →ₗ[ℂ] CompletedFock Config => f x) hU
+  have hTBx := congrArg
+    (fun f : AlgebraicFock Config →ₗ[ℂ] CompletedFock Config => f (B x)) hT
+  calc
+    T (U (algebraicToCompleted x)) = T (algebraicToCompleted (B x)) := by
+      simpa [algebraicToCompleted, ContinuousLinearMap.toLinearMap] using
+        congrArg T hUx
+    _ = algebraicToCompleted (A (B x)) := by
+      simpa [algebraicToCompleted, ContinuousLinearMap.toLinearMap] using hTBx
+
+
 end
 end Common
 end SecondQuantization

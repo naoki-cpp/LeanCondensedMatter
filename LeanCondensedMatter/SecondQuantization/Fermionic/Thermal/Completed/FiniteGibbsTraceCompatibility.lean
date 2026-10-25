@@ -1,4 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.Gibbs
+import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.Core
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsDensityOperator
 import LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.FiniteCompatibility
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsCoordinate
@@ -65,6 +66,46 @@ theorem completedGrandCanonicalGibbs_intertwines_finite
       hbasis
   simpa [Common.grandCanonicalGibbsDensityOperator,
     freeGibbsDensityOperator, hE] using htransport
+
+omit [LinearOrder Mode] in
+/-- Transport a finite free-fermion expectation to the completed normal grand-canonical
+Gibbs state whenever the bounded completed operator extends the algebraic observable.
+The chemical potential is explicit, and finite modes enter solely through this bridge. -/
+theorem freeGibbsExpectation_eq_completed_of_algebraicCore
+    (ε : Mode → ℝ) (β μ : ℝ)
+    (A : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode)
+    (T : CompletedFockSpace Mode →L[ℂ] CompletedFockSpace Mode)
+    (hcore : T.toLinearMap.comp algebraicToCompleted =
+      algebraicToCompleted.comp A) :
+    (freeGibbsDensityOperator (fun i => ε i - μ) β).expectation
+      (Common.finiteHilbertOperatorAlgEquiv A) =
+    (Common.grandCanonicalGibbsDensityOperator (Config := Occupation Mode)
+      ε β μ (eigenbasisGibbsSummable_of_finite
+        (Common.grandCanonicalEnergy (Config := Occupation Mode) ε μ) β)).expectation T := by
+  let e := Common.completedFiniteHilbertEquiv (Config := Occupation Mode)
+  have hconj :=
+    Common.completedOperator_eq_transport_of_algebraicCore A T hcore
+  let ξ : Mode → ℝ := fun i => ε i - μ
+  have henergy : Common.grandCanonicalEnergy (Config := Occupation Mode) ε μ =
+      fermionEnergy ξ := by
+    funext n
+    exact Common.grandCanonicalEnergy_eq_shifted ε μ n
+  have hbasis : ∀ n : Occupation Mode,
+      e (Common.completedHilbertBasis (Config := Occupation Mode) n) =
+        Common.finiteHilbertBasis (Config := Occupation Mode) n := by
+    intro n
+    simpa only [Common.completedHilbertBasis_apply, Common.finiteHilbertBasis_apply] using
+      (Common.completedFiniteHilbertEquiv_basisState (Config := Occupation Mode) n)
+  have htransport :=
+    eigenbasisGibbsDensityOperator_expectation_transport
+      (Common.completedHilbertBasis (Config := Occupation Mode))
+      (Common.finiteHilbertBasis (Config := Occupation Mode))
+      (fermionEnergy ξ) β
+      (eigenbasisGibbsSummable_of_finite (fermionEnergy ξ) β) e hbasis
+      (Common.finiteHilbertOperatorAlgEquiv A)
+  rw [hconj] at htransport
+  simpa only [freeGibbsDensityOperator, Common.grandCanonicalGibbsDensityOperator,
+    henergy, ξ] using htransport
 
 omit [LinearOrder Mode] in
 /-- The finite fermionic grand-canonical density-state expectation is the

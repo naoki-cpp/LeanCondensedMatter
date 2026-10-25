@@ -503,6 +503,24 @@ theorem grandCanonicalGibbsExpectation_tsum_canonical_eq_sum_pairing
 
 end CompletedThermalLadder
 
+/-- The completed CAR/KMS two-point formula expressed directly for the composed bounded
+operators. This is the only operator-level adapter to the existing list-valued pair theorem;
+it works for arbitrary (possibly infinite) modes and explicit chemical potential. -/
+theorem grandCanonicalGibbsDensityOperator_expectation_pair
+    (ε : Mode → ℝ) (β μ : ℝ) (hsum : EigenbasisGibbsSummable
+      (Common.grandCanonicalEnergy (Config := Occupation Mode) ε μ) β)
+    (C D : CompletedThermalLadder Mode) :
+    (Common.grandCanonicalGibbsDensityOperator
+      (Config := Occupation Mode) ε β μ hsum).expectation
+        (C.operator.comp D.operator) =
+      (C.gibbsFactor (fun i => ε i - μ) β /
+        (1 + C.gibbsFactor (fun i => ε i - μ) β)) * C.anticommutatorValue D := by
+  simpa only [CompletedThermalLadder.grandCanonicalGibbsExpectation,
+    CompletedThermalLadder.operatorProduct_cons,
+    CompletedThermalLadder.operatorProduct_nil,
+    ContinuousLinearMap.comp_id] using
+      (CompletedThermalLadder.grandCanonicalGibbsExpectation_pair_eq ε β μ hsum C D)
+
 /-- Fermi--Dirac occupation of one mode in the completed grand-canonical free
 Gibbs state, for an arbitrary (possibly infinite) ordered mode type.
 The single-mode number operator is bounded; only existence of the full-Fock
@@ -515,16 +533,12 @@ theorem grandCanonicalGibbsDensityOperator_expectation_completedNumberOperator
       (Config := Occupation Mode) ε β μ hsum).expectation (completedNumberOperator i) =
       Complex.exp (-(β : ℂ) * ((ε i - μ : ℝ) : ℂ)) /
         (1 + Complex.exp (-(β : ℂ) * ((ε i - μ : ℝ) : ℂ))) := by
-  have hpair := CompletedThermalLadder.grandCanonicalGibbsExpectation_pair_eq
+  have hpair := grandCanonicalGibbsDensityOperator_expectation_pair
     ε β μ hsum (CompletedThermalLadder.create i) (CompletedThermalLadder.annihilate i)
-  simpa only [CompletedThermalLadder.grandCanonicalGibbsExpectation,
-    CompletedThermalLadder.operatorProduct_cons,
-    CompletedThermalLadder.operatorProduct_nil,
-    CompletedThermalLadder.operator_create,
+  simpa only [CompletedThermalLadder.operator_create,
     CompletedThermalLadder.operator_annihilate,
     CompletedThermalLadder.gibbsFactor_create,
     CompletedThermalLadder.anticommutatorValue,
-    ContinuousLinearMap.comp_id,
     completedCreate_comp_completedAnnihilate_eq_numberOperator,
     ↓reduceIte, mul_one] using hpair
 
