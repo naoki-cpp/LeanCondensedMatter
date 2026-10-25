@@ -97,15 +97,9 @@ theorem finiteBroadeningBornDyson_singlePoleRadialIntegral_eq_log_of_center_re_p
     side v m probeEnergy broadening disorderStrength hbar pMax
   let mass := finiteCutoffContinuumBornEffectiveMass
     side v m probeEnergy broadening disorderStrength hbar pMax
-  have hdenEq (p : ℝ) :
-      massiveDiracRadialDenominator v p energy mass =
-        finiteCutoffContinuumBornDysonDenominator
-          side v m p 0 probeEnergy broadening disorderStrength hbar pMax :=
-    finiteCutoffContinuumBornDysonDenominator_eq_radial
-      side v m p probeEnergy broadening disorderStrength hbar pMax
   have hden : ∀ p : ℝ, massiveDiracRadialDenominator v p energy mass ≠ 0 := by
     intro p
-    rw [hdenEq]
+    rw [finiteCutoffContinuumBornDysonDenominator_eq_radial]
     exact finiteCutoffContinuumBornDysonDenominator_ne_zero
       side v m p 0 probeEnergy broadening disorderStrength hbar pMax
       hbroadening hdisorder hpMax
@@ -114,7 +108,8 @@ theorem finiteBroadeningBornDyson_singlePoleRadialIntegral_eq_log_of_center_re_p
       v energy mass hvelocity hcenterRe hden
   have hlog := integral_massiveDiracRadialDenominatorKernel_eq_log
     v pMax energy mass hvelocity him
-  simpa only [massiveDiracRadialDenominatorKernel, hdenEq] using hlog
+  simpa only [massiveDiracRadialDenominatorKernel,
+    finiteCutoffContinuumBornDysonDenominator_eq_radial] using hlog
 
 /-- Evaluated finite-broadening radial endpoint of one bare-source same-side spectral branch. -/
 def finiteBroadeningSameSideRadialEndpoint
