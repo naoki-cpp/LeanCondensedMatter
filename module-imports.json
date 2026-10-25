@@ -647,7 +647,9 @@
       "name": "LeanCondensedMatter.Analysis.Operator.TraceClass.Positive",
       "sourceFile": "LeanCondensedMatter/Analysis/Operator/TraceClass/Positive.lean",
       "imports": [
+        "LeanCondensedMatter.Analysis.Operator.TraceClass.Compact",
         "LeanCondensedMatter.Analysis.Operator.TraceClass.Norm",
+        "LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Basic",
         "LeanCondensedMatter.Analysis.Operator.TraceClass.Trace"
       ],
       "externalImportCount": 0
@@ -717,7 +719,7 @@
       "imports": [
         "LeanCondensedMatter.Analysis.Operator.TraceClass.Factorization.Basic"
       ],
-      "externalImportCount": 0
+      "externalImportCount": 1
     },
     {
       "name": "LeanCondensedMatter.Analysis.Operator.TraceClass",
@@ -3681,17 +3683,19 @@
       "name": "LeanCondensedMatter.QuantumTheory.DensityOperator.Finite",
       "sourceFile": "LeanCondensedMatter/QuantumTheory/DensityOperator/Finite.lean",
       "imports": [
+        "LeanCondensedMatter.Analysis.Operator.TraceClass.Trace",
         "LeanCondensedMatter.QuantumTheory.DensityOperator.Basic",
         "LeanCondensedMatter.QuantumTheory.DensityOperator.DiagonalFormula",
         "LeanCondensedMatter.QuantumTheory.DensityOperator.Purity"
       ],
-      "externalImportCount": 2
+      "externalImportCount": 1
     },
     {
       "name": "LeanCondensedMatter.QuantumTheory.DensityOperator.Normalize",
       "sourceFile": "LeanCondensedMatter/QuantumTheory/DensityOperator/Normalize.lean",
       "imports": [
         "LeanCondensedMatter.Analysis.Operator.TraceClass.Ops.Basic",
+        "LeanCondensedMatter.Analysis.Operator.TraceClass.Positive",
         "LeanCondensedMatter.QuantumTheory.DensityOperator.Basic"
       ],
       "externalImportCount": 1
@@ -4196,7 +4200,7 @@
       "imports": [
         "LeanCondensedMatter.Analysis.Dyson.FirstVariation",
         "LeanCondensedMatter.Analysis.Dyson.Volterra",
-        "LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.Free"
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.Unitary"
       ],
       "externalImportCount": 2
     },

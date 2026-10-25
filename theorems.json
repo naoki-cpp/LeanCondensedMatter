@@ -13752,6 +13752,7 @@
     "directWrapperOf": null,
     "dependents": [
       "ContinuousLinearMap.IsTraceClass.hasSummableRealEigenvalues",
+      "ContinuousLinearMap.IsTraceClass.realTrace_pos",
       "ContinuousLinearMap.IsTraceClass.traceNorm_eq_tsum_abs_eigenvalues",
       "ContinuousLinearMap.IsTraceClass.trace_eq_spectralTrace",
       "ContinuousLinearMap.SpectralTraceClass.compact",
@@ -13769,6 +13770,7 @@
     "completedMention": false,
     "compiledConsumers": [
       "ContinuousLinearMap.IsTraceClass.hasSummableRealEigenvalues",
+      "ContinuousLinearMap.IsTraceClass.realTrace_pos",
       "ContinuousLinearMap.IsTraceClass.traceNorm_eq_tsum_abs_eigenvalues",
       "ContinuousLinearMap.IsTraceClass.trace_eq_spectralTrace",
       "ContinuousLinearMap.SpectralTraceClass.compact",
@@ -13778,7 +13780,7 @@
       "QuantumTheory.entropyOp_isCompact",
       "QuantumTheory.hasSum_negMulLog_eigenvalues"
     ],
-    "compiledConsumerCount": 9,
+    "compiledConsumerCount": 10,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -13879,6 +13881,59 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {T : H →L[ℂ] H} (hT : T.IsTraceClass) (hpos : T.IsPositive), T ≠ 0 → 0 < hT.realTrace ⋯",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "ContinuousLinearMap.IsTraceClass.realTrace_pos",
+    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Positive",
+    "externalAxioms": [],
+    "docString": "A nonzero positive trace-class operator has strictly positive lossless real trace. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "ContinuousLinearMap.SpectralTraceClass.spectralTrace_pos"
+    ],
+    "dependencies": [
+      "ContinuousLinearMap.IsTraceClass.isCompact",
+      "ContinuousLinearMap.IsTraceClass.sum_diagonalExpectationValue_le_traceNorm",
+      "ContinuousLinearMap.IsTraceClass.traceNorm_eq_realTrace",
+      "ContinuousLinearMap.apply_eigenvectorFamily",
+      "ContinuousLinearMap.coe_diagonalExpectationValue_right",
+      "ContinuousLinearMap.diagonalExpectationValue_nonneg",
+      "ContinuousLinearMap.eigenvalue_nonneg_of_isPositive",
+      "ContinuousLinearMap.hasSum_eigenvectorFamily",
+      "ContinuousLinearMap.orthonormal_eigenvectorFamily"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "ContinuousLinearMap.SpectralTraceClass.spectralTrace_pos",
+      "QuantumTheory.DensityOperator.normalizePositive"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {T : H →L[ℂ] H}, T.IsTraceClass → ∀ (c : ℂ), (c • T).IsTraceClass",
     "standardAxioms": [
       "Classical.choice",
@@ -13955,6 +14010,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "ContinuousLinearMap.IsTraceClass.realTrace_pos",
       "ContinuousLinearMap.SpectralTraceClass.sum_diagonalExpectationValue_le_spectralTrace",
       "QuantumTheory.DensityOperator.sum_diagonalExpectationValue_le_one"
     ],
@@ -13965,10 +14021,11 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "ContinuousLinearMap.IsTraceClass.realTrace_pos",
       "ContinuousLinearMap.SpectralTraceClass.sum_diagonalExpectationValue_le_spectralTrace",
       "QuantumTheory.DensityOperator.sum_diagonalExpectationValue_le_one"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -14290,8 +14347,11 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "ContinuousLinearMap.IsTraceClass.realTrace_pos",
+      "ContinuousLinearMap.SpectralTraceClass.spectralTrace_pos",
       "ContinuousLinearMap.SpectralTraceClass.traceNorm_eq_spectralTrace",
-      "QuantumTheory.DensityOperator.traceNorm_eq_one"
+      "QuantumTheory.DensityOperator.traceNorm_eq_one",
+      "QuantumTheory.gibbsState_op"
     ],
     "dependencies": [
       "ContinuousLinearMap.IsTraceClass.hasSum_diagonalExpectationValue_eq_traceNorm",
@@ -14300,10 +14360,13 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "ContinuousLinearMap.IsTraceClass.realTrace_pos",
+      "ContinuousLinearMap.SpectralTraceClass.spectralTrace_pos",
       "ContinuousLinearMap.SpectralTraceClass.traceNorm_eq_spectralTrace",
-      "QuantumTheory.DensityOperator.traceNorm_eq_one"
+      "QuantumTheory.DensityOperator.traceNorm_eq_one",
+      "QuantumTheory.gibbsState_op"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 5,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -14959,6 +15022,50 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  [FiniteDimensional ℂ H] {T : H →L[ℂ] H} (hT : T.IsTraceClass), hT.trace = (LinearMap.trace ℂ H) ↑T",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "ContinuousLinearMap.IsTraceClass.trace_eq_linearMap_trace",
+    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Trace",
+    "externalAxioms": [],
+    "docString": "In finite dimensions, the canonical trace agrees with the ordinary linear-map trace. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.DensityOperator.expectation_eq_linearMap_trace"
+    ],
+    "dependencies": [
+      "ContinuousLinearMap.IsTraceClass.trace_eq_tsum_inner"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.DensityOperator.expectation_eq_linearMap_trace"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {T : H →L[ℂ] H} (hT : T.IsTraceClass), IsSelfAdjoint T → hT.trace = ↑T.spectralTrace",
     "standardAxioms": [
       "Classical.choice",
@@ -15034,11 +15141,11 @@
       "ContinuousLinearMap.IsTraceClass.norm_trace_le_traceNorm",
       "ContinuousLinearMap.IsTraceClass.trace_add",
       "ContinuousLinearMap.IsTraceClass.trace_eq_innerHS_of_factorization",
+      "ContinuousLinearMap.IsTraceClass.trace_eq_linearMap_trace",
       "ContinuousLinearMap.IsTraceClass.trace_eq_spectralTrace",
       "ContinuousLinearMap.IsTraceClass.trace_im_eq_zero_of_isSelfAdjoint",
       "ContinuousLinearMap.IsTraceClass.trace_smul",
-      "ContinuousLinearMap.IsTraceClass.trace_zero",
-      "QuantumTheory.DensityOperator.expectation_eq_linearMap_trace"
+      "ContinuousLinearMap.IsTraceClass.trace_zero"
     ],
     "dependencies": [
       "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Trace.0.ContinuousLinearMap.trace_tsum_eq"
@@ -15050,11 +15157,11 @@
       "ContinuousLinearMap.IsTraceClass.norm_trace_le_traceNorm",
       "ContinuousLinearMap.IsTraceClass.trace_add",
       "ContinuousLinearMap.IsTraceClass.trace_eq_innerHS_of_factorization",
+      "ContinuousLinearMap.IsTraceClass.trace_eq_linearMap_trace",
       "ContinuousLinearMap.IsTraceClass.trace_eq_spectralTrace",
       "ContinuousLinearMap.IsTraceClass.trace_im_eq_zero_of_isSelfAdjoint",
       "ContinuousLinearMap.IsTraceClass.trace_smul",
-      "ContinuousLinearMap.IsTraceClass.trace_zero",
-      "QuantumTheory.DensityOperator.expectation_eq_linearMap_trace"
+      "ContinuousLinearMap.IsTraceClass.trace_zero"
     ],
     "compiledConsumerCount": 9,
     "axioms": [
@@ -15261,7 +15368,6 @@
     "directWrapperOf": "ContinuousLinearMap.IsTraceClass.isCompact",
     "dependents": [
       "ContinuousLinearMap.SpectralTraceClass.hasSum_diagonalExpectationValue",
-      "ContinuousLinearMap.SpectralTraceClass.spectralTrace_pos",
       "QuantumTheory.DensityOperator.exists_diagonal_hilbertBasis",
       "QuantumTheory.DensityOperator.expectation_eq_spectral_tsum",
       "QuantumTheory.DensityOperator.expectation_im_eq_zero_of_isSymmetric",
@@ -15286,7 +15392,6 @@
     "completedMention": false,
     "compiledConsumers": [
       "ContinuousLinearMap.SpectralTraceClass.hasSum_diagonalExpectationValue",
-      "ContinuousLinearMap.SpectralTraceClass.spectralTrace_pos",
       "QuantumTheory.DensityOperator.exists_diagonal_hilbertBasis",
       "QuantumTheory.DensityOperator.expectation_eq_spectral_tsum",
       "QuantumTheory.DensityOperator.expectation_im_eq_zero_of_isSymmetric",
@@ -15304,7 +15409,7 @@
       "_private.LeanCondensedMatter.QuantumTheory.POVM.Born.0.QuantumTheory.hasSum_probabilityKernel_outcome",
       "_private.LeanCondensedMatter.QuantumTheory.POVM.Born.0.QuantumTheory.probabilityKernel_nonneg"
     ],
-    "compiledConsumerCount": 18,
+    "compiledConsumerCount": 17,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -15466,7 +15571,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -15486,10 +15591,9 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.DensityOperator.ofFiniteDimensional",
       "QuantumTheory.gibbsOp_spectralTraceClass"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -15526,10 +15630,9 @@
       "QuantumTheory.spectralTrace_gibbsOp_pos"
     ],
     "dependencies": [
-      "ContinuousLinearMap.SpectralTraceClass.compact",
-      "ContinuousLinearMap.SpectralTraceClass.summable",
-      "ContinuousLinearMap.eigenvalue_nonneg_of_isPositive",
-      "ContinuousLinearMap.hasSum_eigenvectorFamily"
+      "ContinuousLinearMap.IsTraceClass.realTrace_pos",
+      "ContinuousLinearMap.IsTraceClass.traceNorm_eq_realTrace",
+      "ContinuousLinearMap.SpectralTraceClass.traceNorm_eq_spectralTrace"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -15618,7 +15721,6 @@
     "directWrapperOf": null,
     "dependents": [
       "ContinuousLinearMap.SpectralTraceClass.hasSum_diagonalExpectationValue",
-      "ContinuousLinearMap.SpectralTraceClass.spectralTrace_pos",
       "_private.LeanCondensedMatter.QuantumTheory.Gibbs.MinimizerUniqueness.0.QuantumTheory.gibbsOp_orthogonal_span_eq_bot_of_tsum_eq_spectralTrace"
     ],
     "dependencies": [
@@ -15629,10 +15731,9 @@
     "completedMention": false,
     "compiledConsumers": [
       "ContinuousLinearMap.SpectralTraceClass.hasSum_diagonalExpectationValue",
-      "ContinuousLinearMap.SpectralTraceClass.spectralTrace_pos",
       "_private.LeanCondensedMatter.QuantumTheory.Gibbs.MinimizerUniqueness.0.QuantumTheory.gibbsOp_orthogonal_span_eq_bot_of_tsum_eq_spectralTrace"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -15654,7 +15755,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -15666,7 +15767,9 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "ContinuousLinearMap.SpectralTraceClass.sum_diagonalExpectationValue_le_spectralTrace"
+      "ContinuousLinearMap.SpectralTraceClass.spectralTrace_pos",
+      "ContinuousLinearMap.SpectralTraceClass.sum_diagonalExpectationValue_le_spectralTrace",
+      "QuantumTheory.gibbsState_op"
     ],
     "dependencies": [
       "ContinuousLinearMap.IsTraceClass.coe_realTrace",
@@ -15677,9 +15780,11 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "ContinuousLinearMap.SpectralTraceClass.sum_diagonalExpectationValue_le_spectralTrace"
+      "ContinuousLinearMap.SpectralTraceClass.spectralTrace_pos",
+      "ContinuousLinearMap.SpectralTraceClass.sum_diagonalExpectationValue_le_spectralTrace",
+      "QuantumTheory.gibbsState_op"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -15793,6 +15898,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "ContinuousLinearMap.IsTraceClass.realTrace_pos",
       "ContinuousLinearMap.finite_large_eigenvalue_index",
       "ContinuousLinearMap.hasSum_eigenvectorFamily",
       "QuantumTheory.DensityOperator.exists_diagonal_hilbertBasis",
@@ -15807,6 +15913,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "ContinuousLinearMap.IsTraceClass.realTrace_pos",
       "ContinuousLinearMap.finite_large_eigenvalue_index",
       "ContinuousLinearMap.hasSum_eigenvectorFamily",
       "QuantumTheory.DensityOperator.exists_diagonal_hilbertBasis",
@@ -15817,7 +15924,7 @@
       "QuantumTheory.helmholtzFreeEnergy_eq_iff_eq_gibbsState",
       "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Bundled.0.ContinuousLinearMap.exists_abs_diagonal_hilbertBasis"
     ],
-    "compiledConsumerCount": 9,
+    "compiledConsumerCount": 10,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -15945,6 +16052,7 @@
     "dependents": [
       "ContinuousLinearMap.IsTraceClass.add",
       "ContinuousLinearMap.IsTraceClass.hasSum_realTrace",
+      "ContinuousLinearMap.IsTraceClass.realTrace_pos",
       "ContinuousLinearMap.IsTraceClass.traceNorm_eq_tsum_norm_inner_left_of_polar",
       "ContinuousLinearMap.IsTraceClass.trace_eq_spectralTrace",
       "ContinuousLinearMap.diagonalExpectationValue_abs_eq_norm_sq_sqrt_abs",
@@ -15976,6 +16084,7 @@
     "compiledConsumers": [
       "ContinuousLinearMap.IsTraceClass.add",
       "ContinuousLinearMap.IsTraceClass.hasSum_realTrace",
+      "ContinuousLinearMap.IsTraceClass.realTrace_pos",
       "ContinuousLinearMap.IsTraceClass.traceNorm_eq_tsum_norm_inner_left_of_polar",
       "ContinuousLinearMap.IsTraceClass.trace_eq_spectralTrace",
       "ContinuousLinearMap.diagonalExpectationValue_abs_eq_norm_sq_sqrt_abs",
@@ -15999,7 +16108,7 @@
       "_private.LeanCondensedMatter.QuantumTheory.POVM.Born.0.QuantumTheory.hasSum_probabilityKernel_eigenvector",
       "_private.LeanCondensedMatter.QuantumTheory.POVM.Born.0.QuantumTheory.hasSum_probabilityKernel_outcome"
     ],
-    "compiledConsumerCount": 24,
+    "compiledConsumerCount": 25,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -16205,6 +16314,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "ContinuousLinearMap.IsTraceClass.realTrace_pos",
       "ContinuousLinearMap.IsTraceClass.sum_diagonalExpectationValue_le_traceNorm",
       "ContinuousLinearMap.IsTraceClass.traceNorm_eq_tsum_norm_inner_left_of_polar",
       "ContinuousLinearMap.orthogonal_span_eq_bot_of_sum_diagonalExpectationValue_eq_spectralTrace",
@@ -16216,13 +16326,14 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "ContinuousLinearMap.IsTraceClass.realTrace_pos",
       "ContinuousLinearMap.IsTraceClass.sum_diagonalExpectationValue_le_traceNorm",
       "ContinuousLinearMap.IsTraceClass.traceNorm_eq_tsum_norm_inner_left_of_polar",
       "ContinuousLinearMap.diagonalExpectationNNReal",
       "ContinuousLinearMap.orthogonal_span_eq_bot_of_sum_diagonalExpectationValue_eq_spectralTrace",
       "_private.LeanCondensedMatter.QuantumTheory.POVM.Born.0.QuantumTheory.probabilityKernel_nonneg"
     ],
-    "compiledConsumerCount": 5,
+    "compiledConsumerCount": 6,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -16344,7 +16455,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "ContinuousLinearMap.SpectralTraceClass.spectralTrace_pos",
+      "ContinuousLinearMap.IsTraceClass.realTrace_pos",
       "QuantumTheory.DensityOperator.eigenvalue_nonneg",
       "QuantumTheory.DensityOperator.expectation_re_nonneg_of_isPositive",
       "_private.LeanCondensedMatter.QuantumTheory.POVM.Born.0.QuantumTheory.probabilityKernel_nonneg"
@@ -16353,7 +16464,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "ContinuousLinearMap.SpectralTraceClass.spectralTrace_pos",
+      "ContinuousLinearMap.IsTraceClass.realTrace_pos",
       "QuantumTheory.DensityOperator.eigenvalue_nonneg",
       "QuantumTheory.DensityOperator.expectation_re_nonneg_of_isPositive",
       "_private.LeanCondensedMatter.QuantumTheory.POVM.Born.0.QuantumTheory.probabilityKernel_nonneg"
@@ -16987,7 +17098,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "ContinuousLinearMap.SpectralTraceClass.spectralTrace_pos",
+      "ContinuousLinearMap.IsTraceClass.realTrace_pos",
       "ContinuousLinearMap.hasSum_eigen_expansion_diagonalExpectationValue",
       "QuantumTheory.isPureDensity_of_purity_eq_one"
     ],
@@ -17000,7 +17111,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "ContinuousLinearMap.SpectralTraceClass.spectralTrace_pos",
+      "ContinuousLinearMap.IsTraceClass.realTrace_pos",
       "ContinuousLinearMap.hasSum_eigen_expansion_diagonalExpectationValue",
       "QuantumTheory.isPureDensity_of_purity_eq_one"
     ],
@@ -17582,6 +17693,7 @@
       "ContinuousLinearMap.IsTraceClass.traceNorm_eq_tsum_abs_eigenvalues",
       "ContinuousLinearMap.isTraceClass_iff_exists_hilbertSchmidt_factorization",
       "ContinuousLinearMap.isTraceClass_iff_hasSummableRealEigenvalues",
+      "ContinuousLinearMap.isTraceClass_of_finiteDimensional",
       "ContinuousLinearMap.isTraceClass_zero",
       "HilbertBasis.diagonalOp_isTraceClass"
     ],
@@ -17598,10 +17710,53 @@
       "ContinuousLinearMap.IsTraceClass.traceNorm_eq_tsum_abs_eigenvalues",
       "ContinuousLinearMap.isTraceClass_iff_exists_hilbertSchmidt_factorization",
       "ContinuousLinearMap.isTraceClass_iff_hasSummableRealEigenvalues",
+      "ContinuousLinearMap.isTraceClass_of_finiteDimensional",
       "ContinuousLinearMap.isTraceClass_zero",
       "HilbertBasis.diagonalOp_isTraceClass"
     ],
-    "compiledConsumerCount": 8,
+    "compiledConsumerCount": 9,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  [FiniteDimensional ℂ H] (T : H →L[ℂ] H), T.IsTraceClass",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "ContinuousLinearMap.isTraceClass_of_finiteDimensional",
+    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Trace",
+    "externalAxioms": [],
+    "docString": "Every bounded operator on a finite-dimensional Hilbert space is trace class. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "ContinuousLinearMap.isTraceClass_iff_isTraceClassWrt"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.DensityOperator.ofFiniteDimensional"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -17866,6 +18021,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "ContinuousLinearMap.IsTraceClass.realTrace_pos",
       "ContinuousLinearMap.finite_large_eigenvalue_index",
       "ContinuousLinearMap.hasSum_diagonalExpectationValue_eq_spectralTrace",
       "QuantumTheory.DensityOperator.entropyOp_isTraceClass",
@@ -17886,6 +18042,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "ContinuousLinearMap.IsTraceClass.realTrace_pos",
       "ContinuousLinearMap.finite_large_eigenvalue_index",
       "ContinuousLinearMap.hasSum_diagonalExpectationValue_eq_spectralTrace",
       "QuantumTheory.DensityOperator.entropyOp_isTraceClass",
@@ -17900,7 +18057,7 @@
       "_private.LeanCondensedMatter.Analysis.Operator.Spectral.EigenvectorFamily.0.ContinuousLinearMap.orthonormal_eigenvectorFamilyInClosure",
       "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Bundled.0.ContinuousLinearMap.exists_abs_diagonal_hilbertBasis"
     ],
-    "compiledConsumerCount": 13,
+    "compiledConsumerCount": 14,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -45583,9 +45740,8 @@
     ],
     "dependencies": [
       "ContinuousLinearMap.IsTraceClass.comp_right",
-      "ContinuousLinearMap.IsTraceClass.trace_eq_tsum_inner",
-      "QuantumTheory.DensityOperator.expectation_apply",
-      "QuantumTheory.DensityOperator.isSymmetric"
+      "ContinuousLinearMap.IsTraceClass.trace_eq_linearMap_trace",
+      "QuantumTheory.DensityOperator.expectation_apply"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -46626,7 +46782,6 @@
     "directWrapperOf": null,
     "dependents": [
       "QuantumTheory.DensityOperator.exists_diagonal_hilbertBasis",
-      "QuantumTheory.DensityOperator.expectation_eq_linearMap_trace",
       "QuantumTheory.DensityOperator.expectation_eq_spectral_tsum",
       "QuantumTheory.DensityOperator.spectralTraceClass",
       "QuantumTheory.eigenvectorFamily_norm_eq_one",
@@ -46640,7 +46795,6 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.DensityOperator.exists_diagonal_hilbertBasis",
-      "QuantumTheory.DensityOperator.expectation_eq_linearMap_trace",
       "QuantumTheory.DensityOperator.expectation_eq_spectral_tsum",
       "QuantumTheory.DensityOperator.spectralTraceClass",
       "QuantumTheory.eigenvectorFamily_norm_eq_one",
@@ -46649,7 +46803,7 @@
       "QuantumTheory.helmholtzFreeEnergy_ge_and_entropy_ne_top",
       "QuantumTheory.isPureDensity_of_purity_eq_one"
     ],
-    "compiledConsumerCount": 9,
+    "compiledConsumerCount": 8,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -46786,7 +46940,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (T : H →L[ℂ] H) (hpos : T.IsPositive) (htrace : T.IsTraceClass) (hne : T ≠ 0),\n  (QuantumTheory.DensityOperator.normalizePositive T hpos htrace hne).op = T.spectralTrace⁻¹ • T",
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (T : H →L[ℂ] H) (hpos : T.IsPositive) (htrace : T.IsTraceClass) (hne : T ≠ 0),\n  (QuantumTheory.DensityOperator.normalizePositive T hpos htrace hne).op = (htrace.realTrace ⋯)⁻¹ • T",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -48041,7 +48195,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (channel : QuantumTheory.LinearResponse.ResponseChannel H) (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (expectation : QuantumTheory.LinearResponse.NormalizedExpectation H) (f : ℝ → ℝ),\n  IsSelfAdjoint channel.source →\n    ∀ {β M t : ℝ},\n      0 ≤ M →\n        (∀ s ∈ Set.Icc 0 β,\n            ‖QuantumTheory.LinearResponse.timeDependentInteractionPerturbation system\n                  (QuantumTheory.LinearResponse.sourceCoupledPerturbation f channel.source) s‖ ≤\n              M) →\n          t ∈ Set.Icc 0 β →\n            IntervalIntegrable\n                (QuantumTheory.LinearResponse.timeDependentInteractionPerturbation system\n                  (QuantumTheory.LinearResponse.sourceCoupledPerturbation f channel.source))\n                MeasureTheory.volume 0 t →\n              HasDerivAt\n                (fun lam =>\n                  QuantumTheory.LinearResponse.affinePerturbedExpectation system expectation\n                    (QuantumTheory.LinearResponse.sourceCoupledPerturbation f channel.source) channel.measured\n                    channel.observableVariation lam t)\n                (channel.causalResponse (QuantumTheory.LinearResponse.freePropagatorGroup system) system.hbar\n                  expectation f t)\n                0",
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (channel : QuantumTheory.LinearResponse.ResponseChannel H) (U : Multiplicative ℝ →* ↥(unitary (H →L[ℂ] H))) (hbar : ℝ)\n  (expectation : QuantumTheory.LinearResponse.NormalizedExpectation H) (f : ℝ → ℝ),\n  IsSelfAdjoint channel.source →\n    ∀ {β M t : ℝ},\n      0 ≤ M →\n        (∀ s ∈ Set.Icc 0 β,\n            ‖QuantumTheory.LinearResponse.timeDependentInteractionPerturbation U\n                  (QuantumTheory.LinearResponse.sourceCoupledPerturbation f channel.source) s‖ ≤\n              M) →\n          t ∈ Set.Icc 0 β →\n            IntervalIntegrable\n                (QuantumTheory.LinearResponse.timeDependentInteractionPerturbation U\n                  (QuantumTheory.LinearResponse.sourceCoupledPerturbation f channel.source))\n                MeasureTheory.volume 0 t →\n              HasDerivAt\n                (fun lam =>\n                  QuantumTheory.LinearResponse.affinePerturbedExpectation U hbar expectation\n                    (QuantumTheory.LinearResponse.sourceCoupledPerturbation f channel.source) channel.measured\n                    channel.observableVariation lam t)\n                (channel.causalResponse U hbar expectation f t) 0",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -49131,7 +49285,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H) (ρ : QuantumTheory.DensityOperator H) (V : ℝ → H →L[ℂ] H),\n  (∀ (s : ℝ), IsSelfAdjoint (V s)) →\n    ∀ (t : ℝ),\n      QuantumTheory.LinearResponse.densityOperatorFirstVariation system ρ V t =\n        ⁅QuantumTheory.LinearResponse.timeDependentPropagatorFirstVariation system V t, ρ.op⁆",
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (U : Multiplicative ℝ →* ↥(unitary (H →L[ℂ] H))) (hbar : ℝ) (ρ : QuantumTheory.DensityOperator H) (V : ℝ → H →L[ℂ] H),\n  (∀ (s : ℝ), IsSelfAdjoint (V s)) →\n    ∀ (t : ℝ),\n      QuantumTheory.LinearResponse.densityOperatorFirstVariation U hbar ρ V t =\n        ⁅QuantumTheory.LinearResponse.timeDependentPropagatorFirstVariation U hbar V t, ρ.op⁆",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -49172,7 +49326,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H) (ρ : QuantumTheory.DensityOperator H) (V : ℝ → H →L[ℂ] H)\n  (t : ℝ),\n  star (QuantumTheory.LinearResponse.timeDependentPropagatorFirstVariation system V t) =\n      -QuantumTheory.LinearResponse.timeDependentPropagatorFirstVariation system V t →\n    QuantumTheory.LinearResponse.densityOperatorFirstVariation system ρ V t =\n      ⁅QuantumTheory.LinearResponse.timeDependentPropagatorFirstVariation system V t, ρ.op⁆",
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (U : Multiplicative ℝ →* ↥(unitary (H →L[ℂ] H))) (hbar : ℝ) (ρ : QuantumTheory.DensityOperator H) (V : ℝ → H →L[ℂ] H)\n  (t : ℝ),\n  star (QuantumTheory.LinearResponse.timeDependentPropagatorFirstVariation U hbar V t) =\n      -QuantumTheory.LinearResponse.timeDependentPropagatorFirstVariation U hbar V t →\n    QuantumTheory.LinearResponse.densityOperatorFirstVariation U hbar ρ V t =\n      ⁅QuantumTheory.LinearResponse.timeDependentPropagatorFirstVariation U hbar V t, ρ.op⁆",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -50407,7 +50561,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (expectation : QuantumTheory.LinearResponse.NormalizedExpectation H) (V : ℝ → H →L[ℂ] H) (A : H →L[ℂ] H) (t : ℝ),\n  IntervalIntegrable (QuantumTheory.LinearResponse.timeDependentInteractionPerturbation system V) MeasureTheory.volume 0\n      t →\n    expectation.toContinuousLinearMap\n        ⁅(QuantumTheory.LinearResponse.heisenbergEvolution (QuantumTheory.LinearResponse.freePropagatorGroup system) t)\n            A,\n          QuantumTheory.LinearResponse.timeDependentPropagatorFirstVariation system V t⁆ =\n      -(Complex.I / ↑system.hbar) •\n        ∫ (s : ℝ) in 0..t,\n          expectation.toContinuousLinearMap\n            ⁅(QuantumTheory.LinearResponse.heisenbergEvolution (QuantumTheory.LinearResponse.freePropagatorGroup system)\n                  t)\n                A,\n              QuantumTheory.LinearResponse.timeDependentInteractionPerturbation system V s⁆",
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (U : Multiplicative ℝ →* ↥(unitary (H →L[ℂ] H))) (hbar : ℝ)\n  (expectation : QuantumTheory.LinearResponse.NormalizedExpectation H) (V : ℝ → H →L[ℂ] H) (A : H →L[ℂ] H) (t : ℝ),\n  IntervalIntegrable (QuantumTheory.LinearResponse.timeDependentInteractionPerturbation U V) MeasureTheory.volume 0 t →\n    expectation.toContinuousLinearMap\n        ⁅(QuantumTheory.LinearResponse.heisenbergEvolution U t) A,\n          QuantumTheory.LinearResponse.timeDependentPropagatorFirstVariation U hbar V t⁆ =\n      -(Complex.I / ↑hbar) •\n        ∫ (s : ℝ) in 0..t,\n          expectation.toContinuousLinearMap\n            ⁅(QuantumTheory.LinearResponse.heisenbergEvolution U t) A,\n              QuantumTheory.LinearResponse.timeDependentInteractionPerturbation U V s⁆",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -51176,8 +51330,7 @@
     "dependents": [
       "QuantumTheory.LinearResponse.evolveState_neg_after",
       "QuantumTheory.LinearResponse.heisenbergEvolution_eq_self_of_commute_hamiltonian",
-      "QuantumTheory.LinearResponse.star_mul_freePropagator",
-      "QuantumTheory.LinearResponse.timeDependentPerturbedObservableMap_one_of_isSelfAdjoint"
+      "QuantumTheory.LinearResponse.star_mul_freePropagator"
     ],
     "dependencies": [
       "QuantumTheory.LinearResponse.freePropagator_add",
@@ -51188,10 +51341,9 @@
     "compiledConsumers": [
       "QuantumTheory.LinearResponse.evolveState_neg_after",
       "QuantumTheory.LinearResponse.heisenbergEvolution_eq_self_of_commute_hamiltonian",
-      "QuantumTheory.LinearResponse.star_mul_freePropagator",
-      "QuantumTheory.LinearResponse.timeDependentPerturbedObservableMap_one_of_isSelfAdjoint"
+      "QuantumTheory.LinearResponse.star_mul_freePropagator"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -51503,7 +51655,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (expectation : QuantumTheory.LinearResponse.NormalizedExpectation H) {V : ℝ → H →L[ℂ] H},\n  (∀ (s : ℝ), IsSelfAdjoint (V s)) →\n    ∀ (A₀ A₁ : H →L[ℂ] H) {β M t : ℝ},\n      0 ≤ M →\n        (∀ s ∈ Set.Icc 0 β, ‖QuantumTheory.LinearResponse.timeDependentInteractionPerturbation system V s‖ ≤ M) →\n          t ∈ Set.Icc 0 β →\n            IntervalIntegrable (QuantumTheory.LinearResponse.timeDependentInteractionPerturbation system V)\n                MeasureTheory.volume 0 t →\n              HasDerivAt\n                (fun lam => QuantumTheory.LinearResponse.affinePerturbedExpectation system expectation V A₀ A₁ lam t)\n                ((-(Complex.I / ↑system.hbar) •\n                    ∫ (s : ℝ) in 0..t,\n                      expectation.toContinuousLinearMap\n                        ⁅(QuantumTheory.LinearResponse.heisenbergEvolution\n                              (QuantumTheory.LinearResponse.freePropagatorGroup system) t)\n                            A₀,\n                          QuantumTheory.LinearResponse.timeDependentInteractionPerturbation system V s⁆) +\n                  expectation.toContinuousLinearMap\n                    ((QuantumTheory.LinearResponse.heisenbergEvolution\n                        (QuantumTheory.LinearResponse.freePropagatorGroup system) t)\n                      A₁))\n                0",
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (U : Multiplicative ℝ →* ↥(unitary (H →L[ℂ] H))) (hbar : ℝ)\n  (expectation : QuantumTheory.LinearResponse.NormalizedExpectation H) {V : ℝ → H →L[ℂ] H},\n  (∀ (s : ℝ), IsSelfAdjoint (V s)) →\n    ∀ (A₀ A₁ : H →L[ℂ] H) {β M t : ℝ},\n      0 ≤ M →\n        (∀ s ∈ Set.Icc 0 β, ‖QuantumTheory.LinearResponse.timeDependentInteractionPerturbation U V s‖ ≤ M) →\n          t ∈ Set.Icc 0 β →\n            IntervalIntegrable (QuantumTheory.LinearResponse.timeDependentInteractionPerturbation U V)\n                MeasureTheory.volume 0 t →\n              HasDerivAt\n                (fun lam => QuantumTheory.LinearResponse.affinePerturbedExpectation U hbar expectation V A₀ A₁ lam t)\n                ((-(Complex.I / ↑hbar) •\n                    ∫ (s : ℝ) in 0..t,\n                      expectation.toContinuousLinearMap\n                        ⁅(QuantumTheory.LinearResponse.heisenbergEvolution U t) A₀,\n                          QuantumTheory.LinearResponse.timeDependentInteractionPerturbation U V s⁆) +\n                  expectation.toContinuousLinearMap ((QuantumTheory.LinearResponse.heisenbergEvolution U t) A₁))\n                0",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -51527,7 +51679,7 @@
     "dependencies": [
       "QuantumTheory.LinearResponse.hasDerivAt_timeDependentPerturbedExpectationFunctional_apply_zero_of_bound",
       "QuantumTheory.LinearResponse.hasDerivAt_timeDependentPerturbedExpectationFunctional_apply_zero_of_bound_kubo",
-      "QuantumTheory.LinearResponse.heisenbergEvolution_freePropagatorGroup_apply",
+      "QuantumTheory.LinearResponse.heisenbergEvolution_apply",
       "QuantumTheory.LinearResponse.timeDependentInteractionPropagator_zero_coupling",
       "QuantumTheory.LinearResponse.timeDependentPerturbedExpectationFunctional_apply"
     ],
@@ -51593,7 +51745,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H) (ρ : QuantumTheory.DensityOperator H) {V : ℝ → H →L[ℂ] H}\n  {β M t : ℝ},\n  0 ≤ M →\n    (∀ s ∈ Set.Icc 0 β, ‖QuantumTheory.LinearResponse.timeDependentInteractionPerturbation system V s‖ ≤ M) →\n      t ∈ Set.Icc 0 β →\n        HasDerivAt (fun lam => QuantumTheory.LinearResponse.perturbedDensityOperator system ρ V lam t)\n          (QuantumTheory.LinearResponse.densityOperatorFirstVariation system ρ V t) 0",
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (U : Multiplicative ℝ →* ↥(unitary (H →L[ℂ] H))) (hbar : ℝ) (ρ : QuantumTheory.DensityOperator H) {V : ℝ → H →L[ℂ] H}\n  {β M t : ℝ},\n  0 ≤ M →\n    (∀ s ∈ Set.Icc 0 β, ‖QuantumTheory.LinearResponse.timeDependentInteractionPerturbation U V s‖ ≤ M) →\n      t ∈ Set.Icc 0 β →\n        HasDerivAt (fun lam => QuantumTheory.LinearResponse.perturbedDensityOperator U hbar ρ V lam t)\n          (QuantumTheory.LinearResponse.densityOperatorFirstVariation U hbar ρ V t) 0",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -51634,7 +51786,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (expectation : QuantumTheory.LinearResponse.NormalizedExpectation H) (f : ℝ → ℝ) {B : H →L[ℂ] H},\n  IsSelfAdjoint B →\n    ∀ (A : H →L[ℂ] H) {β M t : ℝ},\n      0 ≤ M →\n        (∀ s ∈ Set.Icc 0 β,\n            ‖QuantumTheory.LinearResponse.timeDependentInteractionPerturbation system\n                  (QuantumTheory.LinearResponse.sourceCoupledPerturbation f B) s‖ ≤\n              M) →\n          t ∈ Set.Icc 0 β →\n            IntervalIntegrable\n                (QuantumTheory.LinearResponse.timeDependentInteractionPerturbation system\n                  (QuantumTheory.LinearResponse.sourceCoupledPerturbation f B))\n                MeasureTheory.volume 0 t →\n              HasDerivAt\n                (fun lam =>\n                  (QuantumTheory.LinearResponse.timeDependentPerturbedExpectationFunctional system expectation\n                      (QuantumTheory.LinearResponse.sourceCoupledPerturbation f B) lam t)\n                    A)\n                ((Complex.I / ↑system.hbar) •\n                  ∫ (s : ℝ) in 0..t,\n                    ↑(f s) *\n                      expectation.toContinuousLinearMap\n                        ⁅(QuantumTheory.LinearResponse.heisenbergEvolution\n                              (QuantumTheory.LinearResponse.freePropagatorGroup system) t)\n                            A,\n                          (QuantumTheory.LinearResponse.heisenbergEvolution\n                              (QuantumTheory.LinearResponse.freePropagatorGroup system) s)\n                            B⁆)\n                0",
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (U : Multiplicative ℝ →* ↥(unitary (H →L[ℂ] H))) (hbar : ℝ)\n  (expectation : QuantumTheory.LinearResponse.NormalizedExpectation H) (f : ℝ → ℝ) {B : H →L[ℂ] H},\n  IsSelfAdjoint B →\n    ∀ (A : H →L[ℂ] H) {β M t : ℝ},\n      0 ≤ M →\n        (∀ s ∈ Set.Icc 0 β,\n            ‖QuantumTheory.LinearResponse.timeDependentInteractionPerturbation U\n                  (QuantumTheory.LinearResponse.sourceCoupledPerturbation f B) s‖ ≤\n              M) →\n          t ∈ Set.Icc 0 β →\n            IntervalIntegrable\n                (QuantumTheory.LinearResponse.timeDependentInteractionPerturbation U\n                  (QuantumTheory.LinearResponse.sourceCoupledPerturbation f B))\n                MeasureTheory.volume 0 t →\n              HasDerivAt\n                (fun lam =>\n                  (QuantumTheory.LinearResponse.timeDependentPerturbedExpectationFunctional U hbar expectation\n                      (QuantumTheory.LinearResponse.sourceCoupledPerturbation f B) lam t)\n                    A)\n                ((Complex.I / ↑hbar) •\n                  ∫ (s : ℝ) in 0..t,\n                    ↑(f s) *\n                      expectation.toContinuousLinearMap\n                        ⁅(QuantumTheory.LinearResponse.heisenbergEvolution U t) A,\n                          (QuantumTheory.LinearResponse.heisenbergEvolution U s) B⁆)\n                0",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -51680,7 +51832,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (expectation : QuantumTheory.LinearResponse.NormalizedExpectation H) (f : ℝ → ℝ) {B : H →L[ℂ] H},\n  IsSelfAdjoint B →\n    ∀ (A : H →L[ℂ] H) {β M t : ℝ},\n      0 ≤ M →\n        (∀ s ∈ Set.Icc 0 β,\n            ‖QuantumTheory.LinearResponse.timeDependentInteractionPerturbation system\n                  (QuantumTheory.LinearResponse.sourceCoupledPerturbation f B) s‖ ≤\n              M) →\n          t ∈ Set.Icc 0 β →\n            IntervalIntegrable\n                (QuantumTheory.LinearResponse.timeDependentInteractionPerturbation system\n                  (QuantumTheory.LinearResponse.sourceCoupledPerturbation f B))\n                MeasureTheory.volume 0 t →\n              HasDerivAt\n                (fun lam =>\n                  (QuantumTheory.LinearResponse.timeDependentPerturbedExpectationFunctional system expectation\n                      (QuantumTheory.LinearResponse.sourceCoupledPerturbation f B) lam t)\n                    A)\n                (∫ (s : ℝ) in 0..t,\n                  ↑(f s) *\n                    QuantumTheory.LinearResponse.retardedSusceptibility\n                      (QuantumTheory.LinearResponse.freePropagatorGroup system) system.hbar expectation A B t s)\n                0",
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (U : Multiplicative ℝ →* ↥(unitary (H →L[ℂ] H))) (hbar : ℝ)\n  (expectation : QuantumTheory.LinearResponse.NormalizedExpectation H) (f : ℝ → ℝ) {B : H →L[ℂ] H},\n  IsSelfAdjoint B →\n    ∀ (A : H →L[ℂ] H) {β M t : ℝ},\n      0 ≤ M →\n        (∀ s ∈ Set.Icc 0 β,\n            ‖QuantumTheory.LinearResponse.timeDependentInteractionPerturbation U\n                  (QuantumTheory.LinearResponse.sourceCoupledPerturbation f B) s‖ ≤\n              M) →\n          t ∈ Set.Icc 0 β →\n            IntervalIntegrable\n                (QuantumTheory.LinearResponse.timeDependentInteractionPerturbation U\n                  (QuantumTheory.LinearResponse.sourceCoupledPerturbation f B))\n                MeasureTheory.volume 0 t →\n              HasDerivAt\n                (fun lam =>\n                  (QuantumTheory.LinearResponse.timeDependentPerturbedExpectationFunctional U hbar expectation\n                      (QuantumTheory.LinearResponse.sourceCoupledPerturbation f B) lam t)\n                    A)\n                (∫ (s : ℝ) in 0..t,\n                  ↑(f s) * QuantumTheory.LinearResponse.retardedSusceptibility U hbar expectation A B t s)\n                0",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -51721,7 +51873,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H) {V : ℝ → H →L[ℂ] H} {β M t : ℝ},\n  0 ≤ M →\n    (∀ s ∈ Set.Icc 0 β, ‖QuantumTheory.LinearResponse.timeDependentInteractionPerturbation system V s‖ ≤ M) →\n      t ∈ Set.Icc 0 β →\n        HasDerivAt (fun lam => QuantumTheory.LinearResponse.timeDependentInteractionPropagator system V lam t)\n          (QuantumTheory.LinearResponse.timeDependentPropagatorFirstVariation system V t) 0",
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (U : Multiplicative ℝ →* ↥(unitary (H →L[ℂ] H))) (hbar : ℝ) {V : ℝ → H →L[ℂ] H} {β M t : ℝ},\n  0 ≤ M →\n    (∀ s ∈ Set.Icc 0 β, ‖QuantumTheory.LinearResponse.timeDependentInteractionPerturbation U V s‖ ≤ M) →\n      t ∈ Set.Icc 0 β →\n        HasDerivAt (fun lam => QuantumTheory.LinearResponse.timeDependentInteractionPropagator U hbar V lam t)\n          (QuantumTheory.LinearResponse.timeDependentPropagatorFirstVariation U hbar V t) 0",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -51768,7 +51920,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (expectation : QuantumTheory.LinearResponse.NormalizedExpectation H) {V : ℝ → H →L[ℂ] H} (A : H →L[ℂ] H) {β M t : ℝ},\n  0 ≤ M →\n    (∀ s ∈ Set.Icc 0 β, ‖QuantumTheory.LinearResponse.timeDependentInteractionPerturbation system V s‖ ≤ M) →\n      t ∈ Set.Icc 0 β →\n        HasDerivAt\n          (fun lam =>\n            (QuantumTheory.LinearResponse.timeDependentPerturbedExpectationFunctional system expectation V lam t) A)\n          (expectation.toContinuousLinearMap\n            (star (QuantumTheory.LinearResponse.timeDependentPropagatorFirstVariation system V t) *\n                (QuantumTheory.LinearResponse.heisenbergEvolution\n                    (QuantumTheory.LinearResponse.freePropagatorGroup system) t)\n                  A +\n              (QuantumTheory.LinearResponse.heisenbergEvolution\n                    (QuantumTheory.LinearResponse.freePropagatorGroup system) t)\n                  A *\n                QuantumTheory.LinearResponse.timeDependentPropagatorFirstVariation system V t))\n          0",
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (U : Multiplicative ℝ →* ↥(unitary (H →L[ℂ] H))) (hbar : ℝ)\n  (expectation : QuantumTheory.LinearResponse.NormalizedExpectation H) {V : ℝ → H →L[ℂ] H} (A : H →L[ℂ] H) {β M t : ℝ},\n  0 ≤ M →\n    (∀ s ∈ Set.Icc 0 β, ‖QuantumTheory.LinearResponse.timeDependentInteractionPerturbation U V s‖ ≤ M) →\n      t ∈ Set.Icc 0 β →\n        HasDerivAt\n          (fun lam =>\n            (QuantumTheory.LinearResponse.timeDependentPerturbedExpectationFunctional U hbar expectation V lam t) A)\n          (expectation.toContinuousLinearMap\n            (star (QuantumTheory.LinearResponse.timeDependentPropagatorFirstVariation U hbar V t) *\n                (QuantumTheory.LinearResponse.heisenbergEvolution U t) A +\n              (QuantumTheory.LinearResponse.heisenbergEvolution U t) A *\n                QuantumTheory.LinearResponse.timeDependentPropagatorFirstVariation U hbar V t))\n          0",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -51816,7 +51968,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (expectation : QuantumTheory.LinearResponse.NormalizedExpectation H) {V : ℝ → H →L[ℂ] H},\n  (∀ (s : ℝ), IsSelfAdjoint (V s)) →\n    ∀ (A : H →L[ℂ] H) {β M t : ℝ},\n      0 ≤ M →\n        (∀ s ∈ Set.Icc 0 β, ‖QuantumTheory.LinearResponse.timeDependentInteractionPerturbation system V s‖ ≤ M) →\n          t ∈ Set.Icc 0 β →\n            IntervalIntegrable (QuantumTheory.LinearResponse.timeDependentInteractionPerturbation system V)\n                MeasureTheory.volume 0 t →\n              HasDerivAt\n                (fun lam =>\n                  (QuantumTheory.LinearResponse.timeDependentPerturbedExpectationFunctional system expectation V lam t)\n                    A)\n                (-(Complex.I / ↑system.hbar) •\n                  ∫ (s : ℝ) in 0..t,\n                    expectation.toContinuousLinearMap\n                      ⁅(QuantumTheory.LinearResponse.heisenbergEvolution\n                            (QuantumTheory.LinearResponse.freePropagatorGroup system) t)\n                          A,\n                        QuantumTheory.LinearResponse.timeDependentInteractionPerturbation system V s⁆)\n                0",
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (U : Multiplicative ℝ →* ↥(unitary (H →L[ℂ] H))) (hbar : ℝ)\n  (expectation : QuantumTheory.LinearResponse.NormalizedExpectation H) {V : ℝ → H →L[ℂ] H},\n  (∀ (s : ℝ), IsSelfAdjoint (V s)) →\n    ∀ (A : H →L[ℂ] H) {β M t : ℝ},\n      0 ≤ M →\n        (∀ s ∈ Set.Icc 0 β, ‖QuantumTheory.LinearResponse.timeDependentInteractionPerturbation U V s‖ ≤ M) →\n          t ∈ Set.Icc 0 β →\n            IntervalIntegrable (QuantumTheory.LinearResponse.timeDependentInteractionPerturbation U V)\n                MeasureTheory.volume 0 t →\n              HasDerivAt\n                (fun lam =>\n                  (QuantumTheory.LinearResponse.timeDependentPerturbedExpectationFunctional U hbar expectation V lam t)\n                    A)\n                (-(Complex.I / ↑hbar) •\n                  ∫ (s : ℝ) in 0..t,\n                    expectation.toContinuousLinearMap\n                      ⁅(QuantumTheory.LinearResponse.heisenbergEvolution U t) A,\n                        QuantumTheory.LinearResponse.timeDependentInteractionPerturbation U V s⁆)\n                0",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -51863,7 +52015,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (expectation : QuantumTheory.LinearResponse.NormalizedExpectation H) {V : ℝ → H →L[ℂ] H},\n  (∀ (s : ℝ), IsSelfAdjoint (V s)) →\n    ∀ (A : H →L[ℂ] H) {β M t : ℝ},\n      0 ≤ M →\n        (∀ s ∈ Set.Icc 0 β, ‖QuantumTheory.LinearResponse.timeDependentInteractionPerturbation system V s‖ ≤ M) →\n          t ∈ Set.Icc 0 β →\n            HasDerivAt\n              (fun lam =>\n                (QuantumTheory.LinearResponse.timeDependentPerturbedExpectationFunctional system expectation V lam t) A)\n              (expectation.toContinuousLinearMap\n                ⁅(QuantumTheory.LinearResponse.heisenbergEvolution\n                      (QuantumTheory.LinearResponse.freePropagatorGroup system) t)\n                    A,\n                  QuantumTheory.LinearResponse.timeDependentPropagatorFirstVariation system V t⁆)\n              0",
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (U : Multiplicative ℝ →* ↥(unitary (H →L[ℂ] H))) (hbar : ℝ)\n  (expectation : QuantumTheory.LinearResponse.NormalizedExpectation H) {V : ℝ → H →L[ℂ] H},\n  (∀ (s : ℝ), IsSelfAdjoint (V s)) →\n    ∀ (A : H →L[ℂ] H) {β M t : ℝ},\n      0 ≤ M →\n        (∀ s ∈ Set.Icc 0 β, ‖QuantumTheory.LinearResponse.timeDependentInteractionPerturbation U V s‖ ≤ M) →\n          t ∈ Set.Icc 0 β →\n            HasDerivAt\n              (fun lam =>\n                (QuantumTheory.LinearResponse.timeDependentPerturbedExpectationFunctional U hbar expectation V lam t) A)\n              (expectation.toContinuousLinearMap\n                ⁅(QuantumTheory.LinearResponse.heisenbergEvolution U t) A,\n                  QuantumTheory.LinearResponse.timeDependentPropagatorFirstVariation U hbar V t⁆)\n              0",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -51909,7 +52061,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H) {V : ℝ → H →L[ℂ] H} (A : H →L[ℂ] H) {β M t : ℝ},\n  0 ≤ M →\n    (∀ s ∈ Set.Icc 0 β, ‖QuantumTheory.LinearResponse.timeDependentInteractionPerturbation system V s‖ ≤ M) →\n      t ∈ Set.Icc 0 β →\n        HasDerivAt (fun lam => QuantumTheory.LinearResponse.timeDependentPerturbedObservable system V A lam t)\n          (star (QuantumTheory.LinearResponse.timeDependentPropagatorFirstVariation system V t) *\n              (QuantumTheory.LinearResponse.heisenbergEvolution\n                  (QuantumTheory.LinearResponse.freePropagatorGroup system) t)\n                A +\n            (QuantumTheory.LinearResponse.heisenbergEvolution (QuantumTheory.LinearResponse.freePropagatorGroup system)\n                  t)\n                A *\n              QuantumTheory.LinearResponse.timeDependentPropagatorFirstVariation system V t)\n          0",
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (U : Multiplicative ℝ →* ↥(unitary (H →L[ℂ] H))) (hbar : ℝ) {V : ℝ → H →L[ℂ] H} (A : H →L[ℂ] H) {β M t : ℝ},\n  0 ≤ M →\n    (∀ s ∈ Set.Icc 0 β, ‖QuantumTheory.LinearResponse.timeDependentInteractionPerturbation U V s‖ ≤ M) →\n      t ∈ Set.Icc 0 β →\n        HasDerivAt (fun lam => QuantumTheory.LinearResponse.timeDependentPerturbedObservable U hbar V A lam t)\n          (star (QuantumTheory.LinearResponse.timeDependentPropagatorFirstVariation U hbar V t) *\n              (QuantumTheory.LinearResponse.heisenbergEvolution U t) A +\n            (QuantumTheory.LinearResponse.heisenbergEvolution U t) A *\n              QuantumTheory.LinearResponse.timeDependentPropagatorFirstVariation U hbar V t)\n          0",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -52150,9 +52302,11 @@
     "dependents": [
       "QuantumTheory.LinearResponse.ResponseChannel.fixed_causalResponse_eq",
       "QuantumTheory.LinearResponse.ResponseChannel.fixed_contactExpectation",
+      "QuantumTheory.LinearResponse.hasDerivAt_affinePerturbedExpectation_zero_of_bound_kubo",
       "QuantumTheory.LinearResponse.heisenbergEvolution_freePropagatorGroup_apply",
       "QuantumTheory.LinearResponse.heisenbergEvolution_heisenbergEvolution",
-      "QuantumTheory.LinearResponse.norm_heisenbergEvolution"
+      "QuantumTheory.LinearResponse.norm_heisenbergEvolution",
+      "QuantumTheory.LinearResponse.timeDependentPerturbedObservableMap_apply"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
@@ -52160,11 +52314,13 @@
     "compiledConsumers": [
       "QuantumTheory.LinearResponse.ResponseChannel.fixed_causalResponse_eq",
       "QuantumTheory.LinearResponse.ResponseChannel.fixed_contactExpectation",
+      "QuantumTheory.LinearResponse.hasDerivAt_affinePerturbedExpectation_zero_of_bound_kubo",
       "QuantumTheory.LinearResponse.heisenbergEvolution_freePropagatorGroup_apply",
       "QuantumTheory.LinearResponse.heisenbergEvolution_heisenbergEvolution",
-      "QuantumTheory.LinearResponse.norm_heisenbergEvolution"
+      "QuantumTheory.LinearResponse.norm_heisenbergEvolution",
+      "QuantumTheory.LinearResponse.timeDependentPerturbedObservableMap_apply"
     ],
-    "compiledConsumerCount": 5,
+    "compiledConsumerCount": 7,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -52251,12 +52407,9 @@
       "QuantumTheory.LinearResponse.adjointConjugate_freePropagator_eq_self_of_commute_hamiltonian",
       "QuantumTheory.LinearResponse.continuous_heisenbergEvolution",
       "QuantumTheory.LinearResponse.expectation_evolveDensityOperator_eq_heisenberg",
-      "QuantumTheory.LinearResponse.hasDerivAt_affinePerturbedExpectation_zero_of_bound_kubo",
       "QuantumTheory.LinearResponse.heisenbergEquation",
       "QuantumTheory.LinearResponse.heisenbergEvolution_eq_self_of_commute_hamiltonian",
       "QuantumTheory.LinearResponse.inner_energyEigenbasis_heisenbergEvolution",
-      "QuantumTheory.LinearResponse.timeDependentPerturbedObservableMap_apply",
-      "QuantumTheory.LinearResponse.timeDependentPerturbedObservableMap_one_of_isSelfAdjoint",
       "QuantumTheory.LinearResponse.vonNeumannEquation"
     ],
     "dependencies": [
@@ -52269,15 +52422,12 @@
       "QuantumTheory.LinearResponse.adjointConjugate_freePropagator_eq_self_of_commute_hamiltonian",
       "QuantumTheory.LinearResponse.continuous_heisenbergEvolution",
       "QuantumTheory.LinearResponse.expectation_evolveDensityOperator_eq_heisenberg",
-      "QuantumTheory.LinearResponse.hasDerivAt_affinePerturbedExpectation_zero_of_bound_kubo",
       "QuantumTheory.LinearResponse.heisenbergEquation",
       "QuantumTheory.LinearResponse.heisenbergEvolution_eq_self_of_commute_hamiltonian",
       "QuantumTheory.LinearResponse.inner_energyEigenbasis_heisenbergEvolution",
-      "QuantumTheory.LinearResponse.timeDependentPerturbedObservableMap_apply",
-      "QuantumTheory.LinearResponse.timeDependentPerturbedObservableMap_one_of_isSelfAdjoint",
       "QuantumTheory.LinearResponse.vonNeumannEquation"
     ],
-    "compiledConsumerCount": 10,
+    "compiledConsumerCount": 7,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -52876,7 +53026,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H) (V : ℝ → H →L[ℂ] H),\n  (∀ (s : ℝ), IsSelfAdjoint (V s)) →\n    ∀ (t : ℝ),\n      IsSelfAdjoint (∫ (s : ℝ) in 0..t, QuantumTheory.LinearResponse.timeDependentInteractionPerturbation system V s)",
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (U : Multiplicative ℝ →* ↥(unitary (H →L[ℂ] H))) (V : ℝ → H →L[ℂ] H),\n  (∀ (s : ℝ), IsSelfAdjoint (V s)) →\n    ∀ (t : ℝ),\n      IsSelfAdjoint (∫ (s : ℝ) in 0..t, QuantumTheory.LinearResponse.timeDependentInteractionPerturbation U V s)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -52964,7 +53114,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H) (V : ℝ → H →L[ℂ] H),\n  (∀ (s : ℝ), IsSelfAdjoint (V s)) →\n    ∀ (t : ℝ), IsSelfAdjoint (QuantumTheory.LinearResponse.timeDependentInteractionPerturbation system V t)",
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (U : Multiplicative ℝ →* ↥(unitary (H →L[ℂ] H))) (V : ℝ → H →L[ℂ] H),\n  (∀ (s : ℝ), IsSelfAdjoint (V s)) →\n    ∀ (t : ℝ), IsSelfAdjoint (QuantumTheory.LinearResponse.timeDependentInteractionPerturbation U V t)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -53670,7 +53820,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H) {V : ℝ → H →L[ℂ] H} {β M t : ℝ},\n  0 ≤ M →\n    (∀ s ∈ Set.Icc 0 β, ‖QuantumTheory.LinearResponse.timeDependentInteractionPerturbation system V s‖ ≤ M) →\n      t ∈ Set.Icc 0 β →\n        ∀ (lam : ℝ),\n          ‖QuantumTheory.LinearResponse.timeDependentInteractionPropagator system V lam t -\n                (1 +\n                  (↑lam * -(Complex.I / ↑system.hbar)) •\n                    ∫ (s : ℝ) in 0..t, QuantumTheory.LinearResponse.timeDependentInteractionPerturbation system V s)‖ ≤\n            ∑' (n : ℕ), Dyson.majorant (|lam| / system.hbar * M) t (n + 2)",
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (U : Multiplicative ℝ →* ↥(unitary (H →L[ℂ] H))) (hbar : ℝ) {V : ℝ → H →L[ℂ] H} {β M t : ℝ},\n  0 ≤ M →\n    (∀ s ∈ Set.Icc 0 β, ‖QuantumTheory.LinearResponse.timeDependentInteractionPerturbation U V s‖ ≤ M) →\n      t ∈ Set.Icc 0 β →\n        ∀ (lam : ℝ),\n          ‖QuantumTheory.LinearResponse.timeDependentInteractionPropagator U hbar V lam t -\n                (1 +\n                  (↑lam * -(Complex.I / ↑hbar)) •\n                    ∫ (s : ℝ) in 0..t, QuantumTheory.LinearResponse.timeDependentInteractionPerturbation U V s)‖ ≤\n            ∑' (n : ℕ), Dyson.majorant (|lam| / |hbar| * M) t (n + 2)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -53713,7 +53863,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H) {V : ℝ → H →L[ℂ] H} {β M t : ℝ},\n  0 ≤ M →\n    (∀ s ∈ Set.Icc 0 β, ‖QuantumTheory.LinearResponse.timeDependentInteractionPerturbation system V s‖ ≤ M) →\n      t ∈ Set.Icc 0 β →\n        ∀ (lam : ℝ),\n          |lam| / system.hbar ≤ 1 →\n            ‖QuantumTheory.LinearResponse.timeDependentInteractionPropagator system V lam t -\n                  (1 +\n                    (↑lam * -(Complex.I / ↑system.hbar)) •\n                      ∫ (s : ℝ) in 0..t,\n                        QuantumTheory.LinearResponse.timeDependentInteractionPerturbation system V s)‖ ≤\n              (|lam| / system.hbar) ^ 2 * ∑' (n : ℕ), Dyson.majorant M t (n + 2)",
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (U : Multiplicative ℝ →* ↥(unitary (H →L[ℂ] H))) (hbar : ℝ) {V : ℝ → H →L[ℂ] H} {β M t : ℝ},\n  0 ≤ M →\n    (∀ s ∈ Set.Icc 0 β, ‖QuantumTheory.LinearResponse.timeDependentInteractionPerturbation U V s‖ ≤ M) →\n      t ∈ Set.Icc 0 β →\n        ∀ (lam : ℝ),\n          |lam| / |hbar| ≤ 1 →\n            ‖QuantumTheory.LinearResponse.timeDependentInteractionPropagator U hbar V lam t -\n                  (1 +\n                    (↑lam * -(Complex.I / ↑hbar)) •\n                      ∫ (s : ℝ) in 0..t, QuantumTheory.LinearResponse.timeDependentInteractionPerturbation U V s)‖ ≤\n              (|lam| / |hbar|) ^ 2 * ∑' (n : ℕ), Dyson.majorant M t (n + 2)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -53728,7 +53878,7 @@
     "name": "QuantumTheory.LinearResponse.norm_timeDependentInteractionPropagator_sub_firstOrder_le_sq_mul_of_bound",
     "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.Perturbation.TimeDependent",
     "externalAxioms": [],
-    "docString": "On `|λ| / ℏ ≤ 1`, the general time-dependent propagator remainder has an explicit quadratic\nbound. ",
+    "docString": "On `|λ| / |ℏ| ≤ 1`, the general time-dependent propagator remainder has an explicit quadratic\nbound. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [],
@@ -53756,7 +53906,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H) (lam : ℝ),\n  ‖QuantumTheory.LinearResponse.timeDependentPhysicalDysonCoupling system lam‖ = |lam| / system.hbar",
+    "statement": "∀ (hbar lam : ℝ), ‖QuantumTheory.LinearResponse.timeDependentPhysicalDysonCoupling hbar lam‖ = |lam| / |hbar|",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -53771,7 +53921,7 @@
     "name": "QuantumTheory.LinearResponse.norm_timeDependentPhysicalDysonCoupling",
     "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.Perturbation.TimeDependent",
     "externalAxioms": [],
-    "docString": "The norm of the physical scalar coupling is `|λ| / ℏ`. ",
+    "docString": "The norm of the scalar coupling is `|λ| / |ℏ|`, agreeing with `|λ| / ℏ` for positive ℏ. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
@@ -54216,7 +54366,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H) (ρ : QuantumTheory.DensityOperator H) (V : ℝ → H →L[ℂ] H)\n  (t : ℝ), QuantumTheory.LinearResponse.perturbedDensityOperator system ρ V 0 t = ρ.op",
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (U : Multiplicative ℝ →* ↥(unitary (H →L[ℂ] H))) (hbar : ℝ) (ρ : QuantumTheory.DensityOperator H) (V : ℝ → H →L[ℂ] H)\n  (t : ℝ), QuantumTheory.LinearResponse.perturbedDensityOperator U hbar ρ V 0 t = ρ.op",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -54726,7 +54876,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H) (f : ℝ → ℝ) (B : H →L[ℂ] H) (lam t : ℝ),\n  QuantumTheory.LinearResponse.timeDependentInteractionPropagator system\n      (QuantumTheory.LinearResponse.sourceCoupledPerturbation f B) lam t =\n    Dyson.evolution\n      (fun s =>\n        ↑(f s) •\n          (QuantumTheory.LinearResponse.heisenbergEvolution (QuantumTheory.LinearResponse.freePropagatorGroup system) s)\n            B)\n      (-QuantumTheory.LinearResponse.timeDependentPhysicalDysonCoupling system lam) t",
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (U : Multiplicative ℝ →* ↥(unitary (H →L[ℂ] H))) (hbar : ℝ) (f : ℝ → ℝ) (B : H →L[ℂ] H) (lam t : ℝ),\n  QuantumTheory.LinearResponse.timeDependentInteractionPropagator U hbar\n      (QuantumTheory.LinearResponse.sourceCoupledPerturbation f B) lam t =\n    Dyson.evolution (fun s => ↑(f s) • (QuantumTheory.LinearResponse.heisenbergEvolution U s) B)\n      (-QuantumTheory.LinearResponse.timeDependentPhysicalDysonCoupling hbar lam) t",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -54767,7 +54917,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (expectation : QuantumTheory.LinearResponse.NormalizedExpectation H) (f : ℝ → ℝ) (B A : H →L[ℂ] H) (t : ℝ),\n  -(Complex.I / ↑system.hbar) •\n      ∫ (s : ℝ) in 0..t,\n        expectation.toContinuousLinearMap\n          ⁅(QuantumTheory.LinearResponse.heisenbergEvolution (QuantumTheory.LinearResponse.freePropagatorGroup system)\n                t)\n              A,\n            QuantumTheory.LinearResponse.timeDependentInteractionPerturbation system\n              (QuantumTheory.LinearResponse.sourceCoupledPerturbation f B) s⁆ =\n    (Complex.I / ↑system.hbar) •\n      ∫ (s : ℝ) in 0..t,\n        ↑(f s) *\n          expectation.toContinuousLinearMap\n            ⁅(QuantumTheory.LinearResponse.heisenbergEvolution (QuantumTheory.LinearResponse.freePropagatorGroup system)\n                  t)\n                A,\n              (QuantumTheory.LinearResponse.heisenbergEvolution\n                  (QuantumTheory.LinearResponse.freePropagatorGroup system) s)\n                B⁆",
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (U : Multiplicative ℝ →* ↥(unitary (H →L[ℂ] H))) (hbar : ℝ)\n  (expectation : QuantumTheory.LinearResponse.NormalizedExpectation H) (f : ℝ → ℝ) (B A : H →L[ℂ] H) (t : ℝ),\n  -(Complex.I / ↑hbar) •\n      ∫ (s : ℝ) in 0..t,\n        expectation.toContinuousLinearMap\n          ⁅(QuantumTheory.LinearResponse.heisenbergEvolution U t) A,\n            QuantumTheory.LinearResponse.timeDependentInteractionPerturbation U\n              (QuantumTheory.LinearResponse.sourceCoupledPerturbation f B) s⁆ =\n    (Complex.I / ↑hbar) •\n      ∫ (s : ℝ) in 0..t,\n        ↑(f s) *\n          expectation.toContinuousLinearMap\n            ⁅(QuantumTheory.LinearResponse.heisenbergEvolution U t) A,\n              (QuantumTheory.LinearResponse.heisenbergEvolution U s) B⁆",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -54960,7 +55110,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H) (lam : ℝ),\n  star (QuantumTheory.LinearResponse.timeDependentPhysicalDysonCoupling system lam) =\n    -QuantumTheory.LinearResponse.timeDependentPhysicalDysonCoupling system lam",
+    "statement": "∀ (hbar lam : ℝ),\n  star (QuantumTheory.LinearResponse.timeDependentPhysicalDysonCoupling hbar lam) =\n    -QuantumTheory.LinearResponse.timeDependentPhysicalDysonCoupling hbar lam",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -55002,7 +55152,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H) (V : ℝ → H →L[ℂ] H),\n  (∀ (s : ℝ), IsSelfAdjoint (V s)) →\n    ∀ (t : ℝ),\n      star (QuantumTheory.LinearResponse.timeDependentPropagatorFirstVariation system V t) =\n        -QuantumTheory.LinearResponse.timeDependentPropagatorFirstVariation system V t",
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (U : Multiplicative ℝ →* ↥(unitary (H →L[ℂ] H))) (hbar : ℝ) (V : ℝ → H →L[ℂ] H),\n  (∀ (s : ℝ), IsSelfAdjoint (V s)) →\n    ∀ (t : ℝ),\n      star (QuantumTheory.LinearResponse.timeDependentPropagatorFirstVariation U hbar V t) =\n        -QuantumTheory.LinearResponse.timeDependentPropagatorFirstVariation U hbar V t",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -55224,7 +55374,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H) (f : ℝ → ℝ) (B : H →L[ℂ] H) (t : ℝ),\n  QuantumTheory.LinearResponse.timeDependentInteractionPerturbation system\n      (QuantumTheory.LinearResponse.sourceCoupledPerturbation f B) t =\n    -↑(f t) •\n      (QuantumTheory.LinearResponse.heisenbergEvolution (QuantumTheory.LinearResponse.freePropagatorGroup system) t) B",
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (U : Multiplicative ℝ →* ↥(unitary (H →L[ℂ] H))) (f : ℝ → ℝ) (B : H →L[ℂ] H) (t : ℝ),\n  QuantumTheory.LinearResponse.timeDependentInteractionPerturbation U\n      (QuantumTheory.LinearResponse.sourceCoupledPerturbation f B) t =\n    -↑(f t) • (QuantumTheory.LinearResponse.heisenbergEvolution U t) B",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -55268,7 +55418,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H) {V : ℝ → H →L[ℂ] H},\n  Continuous (QuantumTheory.LinearResponse.timeDependentInteractionPerturbation system V) →\n    ∀ {β M t : ℝ},\n      0 ≤ M →\n        (∀ s ∈ Set.Icc 0 β, ‖QuantumTheory.LinearResponse.timeDependentInteractionPerturbation system V s‖ ≤ M) →\n          t ∈ Set.Icc 0 β →\n            ∀ (lam : ℝ),\n              QuantumTheory.LinearResponse.timeDependentInteractionPropagator system V lam t =\n                1 -\n                  (↑lam * (Complex.I / ↑system.hbar)) •\n                    ∫ (s : ℝ) in 0..t,\n                      QuantumTheory.LinearResponse.timeDependentInteractionPerturbation system V s *\n                        QuantumTheory.LinearResponse.timeDependentInteractionPropagator system V lam s",
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (U : Multiplicative ℝ →* ↥(unitary (H →L[ℂ] H))) (hbar : ℝ) {V : ℝ → H →L[ℂ] H},\n  Continuous (QuantumTheory.LinearResponse.timeDependentInteractionPerturbation U V) →\n    ∀ {β M t : ℝ},\n      0 ≤ M →\n        (∀ s ∈ Set.Icc 0 β, ‖QuantumTheory.LinearResponse.timeDependentInteractionPerturbation U V s‖ ≤ M) →\n          t ∈ Set.Icc 0 β →\n            ∀ (lam : ℝ),\n              QuantumTheory.LinearResponse.timeDependentInteractionPropagator U hbar V lam t =\n                1 -\n                  (↑lam * (Complex.I / ↑hbar)) •\n                    ∫ (s : ℝ) in 0..t,\n                      QuantumTheory.LinearResponse.timeDependentInteractionPerturbation U V s *\n                        QuantumTheory.LinearResponse.timeDependentInteractionPropagator U hbar V lam s",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -55309,7 +55459,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H) {V : ℝ → H →L[ℂ] H},\n  (∀ (s : ℝ), IsSelfAdjoint (V s)) →\n    ∀ (lam : ℝ) {β M t : ℝ},\n      0 ≤ β →\n        0 ≤ M →\n          Continuous (QuantumTheory.LinearResponse.timeDependentInteractionPerturbation system V) →\n            (∀ s ∈ Set.Icc 0 β, ‖QuantumTheory.LinearResponse.timeDependentInteractionPerturbation system V s‖ ≤ M) →\n              t ∈ Set.Icc 0 β →\n                star (QuantumTheory.LinearResponse.timeDependentInteractionPropagator system V lam t) *\n                      QuantumTheory.LinearResponse.timeDependentInteractionPropagator system V lam t =\n                    1 ∧\n                  QuantumTheory.LinearResponse.timeDependentInteractionPropagator system V lam t *\n                      star (QuantumTheory.LinearResponse.timeDependentInteractionPropagator system V lam t) =\n                    1",
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (U : Multiplicative ℝ →* ↥(unitary (H →L[ℂ] H))) (hbar : ℝ) {V : ℝ → H →L[ℂ] H},\n  (∀ (s : ℝ), IsSelfAdjoint (V s)) →\n    ∀ (lam : ℝ) {β M t : ℝ},\n      0 ≤ β →\n        0 ≤ M →\n          Continuous (QuantumTheory.LinearResponse.timeDependentInteractionPerturbation U V) →\n            (∀ s ∈ Set.Icc 0 β, ‖QuantumTheory.LinearResponse.timeDependentInteractionPerturbation U V s‖ ≤ M) →\n              t ∈ Set.Icc 0 β →\n                star (QuantumTheory.LinearResponse.timeDependentInteractionPropagator U hbar V lam t) *\n                      QuantumTheory.LinearResponse.timeDependentInteractionPropagator U hbar V lam t =\n                    1 ∧\n                  QuantumTheory.LinearResponse.timeDependentInteractionPropagator U hbar V lam t *\n                      star (QuantumTheory.LinearResponse.timeDependentInteractionPropagator U hbar V lam t) =\n                    1",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -55356,7 +55506,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H) (V : ℝ → H →L[ℂ] H) (t : ℝ),\n  QuantumTheory.LinearResponse.timeDependentInteractionPropagator system V 0 t = 1",
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (U : Multiplicative ℝ →* ↥(unitary (H →L[ℂ] H))) (hbar : ℝ) (V : ℝ → H →L[ℂ] H) (t : ℝ),\n  QuantumTheory.LinearResponse.timeDependentInteractionPropagator U hbar V 0 t = 1",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -55408,7 +55558,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H) (V : ℝ → H →L[ℂ] H) (lam : ℝ),\n  QuantumTheory.LinearResponse.timeDependentInteractionPropagator system V lam 0 = 1",
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (U : Multiplicative ℝ →* ↥(unitary (H →L[ℂ] H))) (hbar : ℝ) (V : ℝ → H →L[ℂ] H) (lam : ℝ),\n  QuantumTheory.LinearResponse.timeDependentInteractionPropagator U hbar V lam 0 = 1",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -55448,7 +55598,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (expectation : QuantumTheory.LinearResponse.NormalizedExpectation H) (V : ℝ → H →L[ℂ] H) (A : H →L[ℂ] H) (lam t : ℝ),\n  (QuantumTheory.LinearResponse.timeDependentPerturbedExpectationFunctional system expectation V lam t) A =\n    expectation.toContinuousLinearMap (QuantumTheory.LinearResponse.timeDependentPerturbedObservable system V A lam t)",
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (U : Multiplicative ℝ →* ↥(unitary (H →L[ℂ] H))) (hbar : ℝ)\n  (expectation : QuantumTheory.LinearResponse.NormalizedExpectation H) (V : ℝ → H →L[ℂ] H) (A : H →L[ℂ] H) (lam t : ℝ),\n  (QuantumTheory.LinearResponse.timeDependentPerturbedExpectationFunctional U hbar expectation V lam t) A =\n    expectation.toContinuousLinearMap (QuantumTheory.LinearResponse.timeDependentPerturbedObservable U hbar V A lam t)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -55500,7 +55650,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (expectation : QuantumTheory.LinearResponse.NormalizedExpectation H) (V : ℝ → H →L[ℂ] H) (A : H →L[ℂ] H) (t : ℝ),\n  (QuantumTheory.LinearResponse.timeDependentPerturbedExpectationFunctional system expectation V 0 t) A =\n    expectation.toContinuousLinearMap\n      ((QuantumTheory.LinearResponse.heisenbergEvolution (QuantumTheory.LinearResponse.freePropagatorGroup system) t) A)",
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (U : Multiplicative ℝ →* ↥(unitary (H →L[ℂ] H))) (hbar : ℝ)\n  (expectation : QuantumTheory.LinearResponse.NormalizedExpectation H) (V : ℝ → H →L[ℂ] H) (A : H →L[ℂ] H) (t : ℝ),\n  (QuantumTheory.LinearResponse.timeDependentPerturbedExpectationFunctional U hbar expectation V 0 t) A =\n    expectation.toContinuousLinearMap ((QuantumTheory.LinearResponse.heisenbergEvolution U t) A)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -55541,7 +55691,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (expectation : QuantumTheory.LinearResponse.NormalizedExpectation H),\n  QuantumTheory.LinearResponse.IsStationary (QuantumTheory.LinearResponse.freePropagatorGroup system) expectation →\n    ∀ (V : ℝ → H →L[ℂ] H) (A : H →L[ℂ] H) (t : ℝ),\n      (QuantumTheory.LinearResponse.timeDependentPerturbedExpectationFunctional system expectation V 0 t) A =\n        expectation.toContinuousLinearMap A",
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (U : Multiplicative ℝ →* ↥(unitary (H →L[ℂ] H))) (hbar : ℝ)\n  (expectation : QuantumTheory.LinearResponse.NormalizedExpectation H),\n  QuantumTheory.LinearResponse.IsStationary U expectation →\n    ∀ (V : ℝ → H →L[ℂ] H) (A : H →L[ℂ] H) (t : ℝ),\n      (QuantumTheory.LinearResponse.timeDependentPerturbedExpectationFunctional U hbar expectation V 0 t) A =\n        expectation.toContinuousLinearMap A",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -55582,7 +55732,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (expectation : QuantumTheory.LinearResponse.NormalizedExpectation H) {V : ℝ → H →L[ℂ] H}\n  (hVself : ∀ (s : ℝ), IsSelfAdjoint (V s)) (lam : ℝ) {β M t : ℝ} (hβ : 0 ≤ β) (hM : 0 ≤ M)\n  (hVcont : Continuous (QuantumTheory.LinearResponse.timeDependentInteractionPerturbation system V))\n  (hVbound : ∀ s ∈ Set.Icc 0 β, ‖QuantumTheory.LinearResponse.timeDependentInteractionPerturbation system V s‖ ≤ M)\n  (ht : t ∈ Set.Icc 0 β) (A : H →L[ℂ] H),\n  (QuantumTheory.LinearResponse.timeDependentPerturbedNormalizedExpectation system expectation hVself lam hβ hM hVcont\n          hVbound ht).toContinuousLinearMap\n      A =\n    expectation.toContinuousLinearMap (QuantumTheory.LinearResponse.timeDependentPerturbedObservable system V A lam t)",
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (U : Multiplicative ℝ →* ↥(unitary (H →L[ℂ] H))) (hbar : ℝ)\n  (expectation : QuantumTheory.LinearResponse.NormalizedExpectation H) {V : ℝ → H →L[ℂ] H}\n  (hVself : ∀ (s : ℝ), IsSelfAdjoint (V s)) (lam : ℝ) {β M t : ℝ} (hβ : 0 ≤ β) (hM : 0 ≤ M)\n  (hVcont : Continuous (QuantumTheory.LinearResponse.timeDependentInteractionPerturbation U V))\n  (hVbound : ∀ s ∈ Set.Icc 0 β, ‖QuantumTheory.LinearResponse.timeDependentInteractionPerturbation U V s‖ ≤ M)\n  (ht : t ∈ Set.Icc 0 β) (A : H →L[ℂ] H),\n  (QuantumTheory.LinearResponse.timeDependentPerturbedNormalizedExpectation U hbar expectation hVself lam hβ hM hVcont\n          hVbound ht).toContinuousLinearMap\n      A =\n    expectation.toContinuousLinearMap (QuantumTheory.LinearResponse.timeDependentPerturbedObservable U hbar V A lam t)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -55622,7 +55772,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H) (V : ℝ → H →L[ℂ] H) (A : H →L[ℂ] H) (lam t : ℝ),\n  (QuantumTheory.LinearResponse.timeDependentPerturbedObservableMap system V lam t) A =\n    QuantumTheory.LinearResponse.timeDependentPerturbedObservable system V A lam t",
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (U : Multiplicative ℝ →* ↥(unitary (H →L[ℂ] H))) (hbar : ℝ) (V : ℝ → H →L[ℂ] H) (A : H →L[ℂ] H) (lam t : ℝ),\n  (QuantumTheory.LinearResponse.timeDependentPerturbedObservableMap U hbar V lam t) A =\n    QuantumTheory.LinearResponse.timeDependentPerturbedObservable U hbar V A lam t",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -55646,7 +55796,7 @@
       "QuantumTheory.LinearResponse.timeDependentPerturbedObservableMap_one_of_isSelfAdjoint"
     ],
     "dependencies": [
-      "QuantumTheory.LinearResponse.heisenbergEvolution_freePropagatorGroup_apply"
+      "QuantumTheory.LinearResponse.heisenbergEvolution_apply"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -55670,7 +55820,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H) {V : ℝ → H →L[ℂ] H},\n  (∀ (s : ℝ), IsSelfAdjoint (V s)) →\n    ∀ (lam : ℝ) {β M t : ℝ},\n      0 ≤ β →\n        0 ≤ M →\n          Continuous (QuantumTheory.LinearResponse.timeDependentInteractionPerturbation system V) →\n            (∀ s ∈ Set.Icc 0 β, ‖QuantumTheory.LinearResponse.timeDependentInteractionPerturbation system V s‖ ≤ M) →\n              t ∈ Set.Icc 0 β → (QuantumTheory.LinearResponse.timeDependentPerturbedObservableMap system V lam t) 1 = 1",
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (U : Multiplicative ℝ →* ↥(unitary (H →L[ℂ] H))) (hbar : ℝ) {V : ℝ → H →L[ℂ] H},\n  (∀ (s : ℝ), IsSelfAdjoint (V s)) →\n    ∀ (lam : ℝ) {β M t : ℝ},\n      0 ≤ β →\n        0 ≤ M →\n          Continuous (QuantumTheory.LinearResponse.timeDependentInteractionPerturbation U V) →\n            (∀ s ∈ Set.Icc 0 β, ‖QuantumTheory.LinearResponse.timeDependentInteractionPerturbation U V s‖ ≤ M) →\n              t ∈ Set.Icc 0 β → (QuantumTheory.LinearResponse.timeDependentPerturbedObservableMap U hbar V lam t) 1 = 1",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -55690,8 +55840,6 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "QuantumTheory.LinearResponse.freePropagator_neg_mul",
-      "QuantumTheory.LinearResponse.heisenbergEvolution_freePropagatorGroup_apply",
       "QuantumTheory.LinearResponse.timeDependentInteractionPropagator_unitary_relations_of_isSelfAdjoint",
       "QuantumTheory.LinearResponse.timeDependentPerturbedObservableMap_apply"
     ],
@@ -55715,7 +55863,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H) (V : ℝ → H →L[ℂ] H) (A : H →L[ℂ] H) (t : ℝ),\n  QuantumTheory.LinearResponse.timeDependentPerturbedObservable system V A 0 t =\n    (QuantumTheory.LinearResponse.heisenbergEvolution (QuantumTheory.LinearResponse.freePropagatorGroup system) t) A",
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (U : Multiplicative ℝ →* ↥(unitary (H →L[ℂ] H))) (hbar : ℝ) (V : ℝ → H →L[ℂ] H) (A : H →L[ℂ] H) (t : ℝ),\n  QuantumTheory.LinearResponse.timeDependentPerturbedObservable U hbar V A 0 t =\n    (QuantumTheory.LinearResponse.heisenbergEvolution U t) A",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -93734,6 +93882,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "QuantumTheory.gibbsState_op",
       "QuantumTheory.helmholtzFreeEnergy_eq_components",
       "QuantumTheory.helmholtzFreeEnergy_ge_and_entropy_ne_top",
       "QuantumTheory.spectralTrace_gibbsOp_eq_eigenbasisPartitionFunction",
@@ -93748,13 +93897,14 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "QuantumTheory.gibbsState_op",
       "QuantumTheory.helmholtzFreeEnergy_eq_components",
       "QuantumTheory.helmholtzFreeEnergy_ge_and_entropy_ne_top",
       "QuantumTheory.spectralTrace_gibbsOp_eq_eigenbasisPartitionFunction",
       "QuantumTheory.spectralTrace_gibbsOp_pos",
       "_private.LeanCondensedMatter.QuantumTheory.Gibbs.MinimizerUniqueness.0.QuantumTheory.gibbsOp_orthogonal_span_eq_bot_of_tsum_eq_spectralTrace"
     ],
-    "compiledConsumerCount": 5,
+    "compiledConsumerCount": 6,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -93973,9 +94123,12 @@
       "QuantumTheory.helmholtzFreeEnergy_eq_iff_eq_gibbsState"
     ],
     "dependencies": [
+      "ContinuousLinearMap.IsTraceClass.traceNorm_eq_realTrace",
+      "ContinuousLinearMap.SpectralTraceClass.traceNorm_eq_spectralTrace",
       "QuantumTheory.DensityOperator.normalizePositive_op",
       "QuantumTheory.gibbsOp_isPositive",
-      "QuantumTheory.gibbsOp_ne_zero"
+      "QuantumTheory.gibbsOp_ne_zero",
+      "QuantumTheory.gibbsOp_spectralTraceClass"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -175608,7 +175761,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H) {V : ℝ → H →L[ℂ] H} {β M : ℝ},\n  0 ≤ M →\n    (∀ s ∈ Set.Icc 0 β, ‖QuantumTheory.LinearResponse.timeDependentInteractionPerturbation system V s‖ ≤ M) →\n      Dyson.BoundedInteraction (QuantumTheory.LinearResponse.timeDependentInteractionPerturbation system V) β M",
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (U : Multiplicative ℝ →* ↥(unitary (H →L[ℂ] H))) {V : ℝ → H →L[ℂ] H} {β M : ℝ},\n  0 ≤ M →\n    (∀ s ∈ Set.Icc 0 β, ‖QuantumTheory.LinearResponse.timeDependentInteractionPerturbation U V s‖ ≤ M) →\n      Dyson.BoundedInteraction (QuantumTheory.LinearResponse.timeDependentInteractionPerturbation U V) β M",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -175656,7 +175809,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H) (V : ℝ → H →L[ℂ] H) (lam t : ℝ),\n  Dyson.term (QuantumTheory.LinearResponse.timeDependentInteractionPerturbation system V)\n      (QuantumTheory.LinearResponse.timeDependentPhysicalDysonCoupling system lam) t 1 =\n    (↑lam * -(Complex.I / ↑system.hbar)) •\n      ∫ (s : ℝ) in 0..t, QuantumTheory.LinearResponse.timeDependentInteractionPerturbation system V s",
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (U : Multiplicative ℝ →* ↥(unitary (H →L[ℂ] H))) (hbar : ℝ) (V : ℝ → H →L[ℂ] H) (lam t : ℝ),\n  Dyson.term (QuantumTheory.LinearResponse.timeDependentInteractionPerturbation U V)\n      (QuantumTheory.LinearResponse.timeDependentPhysicalDysonCoupling hbar lam) t 1 =\n    (↑lam * -(Complex.I / ↑hbar)) •\n      ∫ (s : ℝ) in 0..t, QuantumTheory.LinearResponse.timeDependentInteractionPerturbation U V s",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -175702,7 +175855,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H) {V : ℝ → H →L[ℂ] H} {β M : ℝ},\n  0 ≤ M →\n    Continuous (QuantumTheory.LinearResponse.timeDependentInteractionPerturbation system V) →\n      (∀ s ∈ Set.Icc 0 β, ‖QuantumTheory.LinearResponse.timeDependentInteractionPerturbation system V s‖ ≤ M) →\n        Dyson.ContinuousBoundedInteraction (QuantumTheory.LinearResponse.timeDependentInteractionPerturbation system V)\n          β M",
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (U : Multiplicative ℝ →* ↥(unitary (H →L[ℂ] H))) {V : ℝ → H →L[ℂ] H} {β M : ℝ},\n  0 ≤ M →\n    Continuous (QuantumTheory.LinearResponse.timeDependentInteractionPerturbation U V) →\n      (∀ s ∈ Set.Icc 0 β, ‖QuantumTheory.LinearResponse.timeDependentInteractionPerturbation U V s‖ ≤ M) →\n        Dyson.ContinuousBoundedInteraction (QuantumTheory.LinearResponse.timeDependentInteractionPerturbation U V) β M",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
