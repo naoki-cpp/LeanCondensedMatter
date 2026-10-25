@@ -9,11 +9,13 @@ set_option linter.style.header false
 /-!
 # Entropy of the finite free-fermion Gibbs state
 
-The free Gibbs density operator here is the full-occupation-Fock pure-point Gibbs state at
-implicit `μ = 0`, not the fixed-`N` canonical ensemble. It is specialized to the
-fermionic occupation basis. The generic pure-point Gibbs entropy identity gives
-`S = β ⟨E⟩ + log Z`; mode factorization then reduces this to the sum of independent one-mode
-binary entropies.
+The public entropy endpoint uses the generic finite pure-point Gibbs density state
+at the explicit grand-canonical energy `K(n) = E(n) - μ N(n)`, not a fixed-`N`
+canonical state or a new fermion-specific density constructor.
+The generic identity `S = β ⟨K⟩ + log Ξ`, together with the finite fermionic
+product factorization, reduces entropy to independent binary mode entropies.
+The older zero-`μ` one-body intermediate is reused on `ε - μ` until the
+remaining finite expectation consumers migrate under #3986.
 -/
 
 namespace SecondQuantization
@@ -128,40 +130,46 @@ private theorem binaryEntropy_fermiDiracOccupation
   ring
 
 omit [LinearOrder Mode] in
-/-- The finite free-fermion entropy is the sum of binary entropies of the Fermi–Dirac modes. -/
-theorem vonNeumannEntropy_freeGibbsDensityOperator_toReal_eq_sum_fermiDirac
-    (ε : Mode → ℝ) (β : ℝ) :
-    (vonNeumannEntropy (freeGibbsDensityOperator ε β)).toReal =
-      ∑ i, (Real.negMulLog (fermiDiracOccupation ε β i) +
-        Real.negMulLog (1 - fermiDiracOccupation ε β i)) := by
-  have hIntegrable :
-      EigenbasisGibbsEnergyIntegrable (fermionEnergy ε) β := by
-    exact Summable.of_finite
-  have hEntropy :
-      (vonNeumannEntropy (freeGibbsDensityOperator ε β)).toReal =
-        β * eigenbasisGibbsEnergyExpectation (fermionEnergy ε) β +
-          Real.log (eigenbasisPartitionFunction (fermionEnergy ε) β) := by
-    simpa [freeGibbsDensityOperator] using
-      (vonNeumannEntropy_eigenbasisGibbsDensityOperator
+/-- The full-occupation-space finite fermionic grand-canonical Gibbs entropy is the
+sum of binary entropies for occupations at the effective energy `ε - μ`.
+This uses the generic pure-point Gibbs density state directly, without a second finite
+fermionic density constructor. It does not assert a fixed-particle-number canonical entropy. -/
+theorem vonNeumannEntropy_finiteGrandCanonicalGibbs_toReal_eq_sum_fermiDirac
+    (ε : Mode → ℝ) (β μ : ℝ) :
+    (vonNeumannEntropy
+      (eigenbasisGibbsDensityOperator
         (Common.finiteHilbertBasis (Config := Occupation Mode))
-        (fermionEnergy ε) β
-        (eigenbasisGibbsSummable_of_finite (fermionEnergy ε) β)
-        hIntegrable).2
-  rw [hEntropy,
+        (Common.grandCanonicalEnergy (Config := Occupation Mode) ε μ) β
+        (eigenbasisGibbsSummable_of_finite
+          (Common.grandCanonicalEnergy (Config := Occupation Mode) ε μ) β))).toReal =
+      ∑ i, (Real.negMulLog (fermiDiracOccupation (fun j => ε j - μ) β i) +
+        Real.negMulLog (1 - fermiDiracOccupation (fun j => ε j - μ) β i)) := by
+  let ξ : Mode → ℝ := fun i => ε i - μ
+  have hE : Common.grandCanonicalEnergy (Config := Occupation Mode) ε μ =
+      fermionEnergy ξ := by
+    funext n
+    exact Common.grandCanonicalEnergy_eq_shifted ε μ n
+  rw [hE]
+  have hIntegrable : EigenbasisGibbsEnergyIntegrable (fermionEnergy ξ) β :=
+    Summable.of_finite
+  rw [(vonNeumannEntropy_eigenbasisGibbsDensityOperator
+    (Common.finiteHilbertBasis (Config := Occupation Mode))
+    (fermionEnergy ξ) β
+    (eigenbasisGibbsSummable_of_finite (fermionEnergy ξ) β) hIntegrable).2,
     eigenbasisGibbsEnergyExpectation_fermionEnergy_eq_sum_fermiDirac,
     log_eigenbasisPartitionFunction_fermionEnergy_eq_sum]
   calc
-    β * (∑ i, ε i * fermiDiracOccupation ε β i) +
-        ∑ i, Real.log (1 + Real.exp (-β * ε i)) =
-      ∑ i, ((β * ε i) * fermiDiracOccupation ε β i +
-        Real.log (1 + Real.exp (-β * ε i))) := by
+    β * (∑ i, ξ i * fermiDiracOccupation ξ β i) +
+        ∑ i, Real.log (1 + Real.exp (-β * ξ i)) =
+      ∑ i, ((β * ξ i) * fermiDiracOccupation ξ β i +
+        Real.log (1 + Real.exp (-β * ξ i))) := by
       rw [Finset.mul_sum, Finset.sum_add_distrib]
       ring_nf
-    _ = ∑ i, (Real.negMulLog (fermiDiracOccupation ε β i) +
-        Real.negMulLog (1 - fermiDiracOccupation ε β i)) := by
+    _ = ∑ i, (Real.negMulLog (fermiDiracOccupation ξ β i) +
+        Real.negMulLog (1 - fermiDiracOccupation ξ β i)) := by
       apply Finset.sum_congr rfl
       intro i hi
-      exact (binaryEntropy_fermiDiracOccupation ε β i).symm
+      exact (binaryEntropy_fermiDiracOccupation ξ β i).symm
 
 end
 end Fermionic
