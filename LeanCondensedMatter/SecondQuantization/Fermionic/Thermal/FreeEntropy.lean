@@ -9,7 +9,8 @@ set_option linter.style.header false
 /-!
 # Entropy of the finite free-fermion Gibbs state
 
-The canonical free Gibbs density operator is the finite pure-point Gibbs state specialized to the
+The free Gibbs density operator here is the full-occupation-Fock pure-point Gibbs state at
+implicit `μ = 0`, not the fixed-`N` canonical ensemble. It is specialized to the
 fermionic occupation basis. The generic pure-point Gibbs entropy identity gives
 `S = β ⟨E⟩ + log Z`; mode factorization then reduces this to the sum of independent one-mode
 binary entropies.
