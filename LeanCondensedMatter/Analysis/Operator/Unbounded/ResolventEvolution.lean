@@ -1030,20 +1030,24 @@ theorem inner_stoneEvolution_eigenvector
   let c : ℂ := (-I : ℂ) * (E : ℂ)
   have hf (s : ℝ) : HasDerivAt f (c • f s) s := by
     have h := stoneEvolution_apply_hasDerivAt_intertwined A hA x s
-    rw [hx, map_smul, smul_smul] at h
+    rw [hx, (stoneEvolution A hA s).map_smul, smul_smul] at h
     exact h
   have hc : starRingEnd ℂ c = -c := by
-    simp [c, starRingEnd_apply, Complex.star_def]
+    simp only [c, map_mul, map_neg, Complex.conj_I, Complex.conj_ofReal, neg_neg, neg_mul]
   have hq (s : ℝ) : HasDerivAt (fun r : ℝ => inner ℂ (f r) (B (f r))) 0 s := by
     have hB := (B.restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt s (hf s)
     have h := (hf s).inner ℂ hB
     have hz : inner ℂ (f s) (B (c • f s)) +
         inner ℂ (c • f s) (B (f s)) = 0 := by
-      simp only [map_smul, inner_smul_right, inner_smul_left, hc, neg_mul, add_neg_cancel]
+      rw [B.map_smul, inner_smul_right, inner_smul_left, hc, neg_mul, add_neg_cancel]
     exact h.congr_deriv hz
   have hconst := is_const_of_deriv_eq_zero
     (fun s => (hq s).differentiableAt) (fun s => (hq s).deriv) t 0
-  simpa [f, stoneEvolution_zero] using hconst
+  change inner ℂ (stoneEvolution A hA t (x : H))
+      (B (stoneEvolution A hA t (x : H))) =
+    inner ℂ (stoneEvolution A hA 0 (x : H))
+      (B (stoneEvolution A hA 0 (x : H))) at hconst
+  simpa only [stoneEvolution_zero, one_apply_eq_self] using hconst
 
 end
 
