@@ -76,9 +76,12 @@ theorem completedOperator_eq_transport_of_algebraicCore
   rw [completedFiniteHilbertEquiv_basisState,
     finiteHilbertOperator_basisState, hn]
   apply e.injective
-  simpa only [e.apply_symm_apply] using
-    (completedFiniteHilbertEquiv_algebraicToCompleted
-      (A (basisState n))).symm
+  calc
+    e (e.symm (finiteHilbertFockEquiv (A (basisState n)))) =
+        finiteHilbertFockEquiv (A (basisState n)) := e.apply_symm_apply _
+    _ = e (algebraicToCompleted (A (basisState n))) :=
+      (completedFiniteHilbertEquiv_algebraicToCompleted
+        (A (basisState n))).symm
 
 end
 end Common
