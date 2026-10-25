@@ -25,23 +25,16 @@ namespace DensityOperator
 noncomputable def normalizePositive
     (T : H →L[ℂ] H) (hpos : T.IsPositive)
     (htrace : IsTraceClass T) (hne : T ≠ 0) : DensityOperator H := by
-  let Z : ℝ := htrace.realTrace hpos.isSelfAdjoint
-  let r : ℝ := Z⁻¹
-  have hZpos : 0 < Z := by
-    simpa [Z] using htrace.realTrace_pos hpos hne
-  have hscaledPos : ((r : ℂ) • T).IsPositive :=
-    hpos.smul_of_nonneg (RCLike.ofReal_nonneg.mpr (inv_nonneg.mpr hZpos.le))
-  let hscaledTrace : IsTraceClass ((r : ℂ) • T) :=
-    htrace.smul (r : ℂ)
+  let r : ℝ := (htrace.realTrace hpos.isSelfAdjoint)⁻¹
+  have hZpos := htrace.realTrace_pos hpos hne
   exact {
     op := (r : ℂ) • T
-    pos := hscaledPos
-    isTraceClass := hscaledTrace
+    pos := hpos.smul_of_nonneg (RCLike.ofReal_nonneg.mpr (inv_nonneg.mpr hZpos.le))
+    isTraceClass := htrace.smul (r : ℂ)
     trace_eq_one := by
-      dsimp [hscaledTrace]
       rw [htrace.trace_smul,
         ← htrace.coe_realTrace hpos.isSelfAdjoint]
-      dsimp [r, Z]
+      dsimp [r]
       exact_mod_cast inv_mul_cancel₀ (ne_of_gt hZpos)
   }
 

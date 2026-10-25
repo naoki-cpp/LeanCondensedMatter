@@ -98,15 +98,9 @@ theorem gibbsState_op [Nontrivial H] [FiniteDimensional ℂ H]
     (Hop : Observable H) (β : ℝ) :
     (gibbsState Hop β).op =
       (spectralTrace (gibbsOp Hop β))⁻¹ • gibbsOp Hop β := by
-  rw [gibbsState, DensityOperator.normalizePositive_op]
-  have hreal :
-      (gibbsOp_spectralTraceClass Hop β).isTraceClass.realTrace
-        (gibbsOp_isPositive Hop β).isSelfAdjoint = spectralTrace (gibbsOp Hop β) := by
-    apply Complex.ofReal_injective
-    rw [IsTraceClass.coe_realTrace,
-      (gibbsOp_spectralTraceClass Hop β).isTraceClass.trace_eq_spectralTrace
-        (gibbsOp_isPositive Hop β).isSelfAdjoint]
-  rw [hreal]
+  rw [gibbsState, DensityOperator.normalizePositive_op,
+    ← IsTraceClass.traceNorm_eq_realTrace _ (gibbsOp_isPositive Hop β),
+    (gibbsOp_spectralTraceClass Hop β).traceNorm_eq_spectralTrace (gibbsOp_isPositive Hop β)]
 
 /-- The normalized Gibbs state acts diagonally on every energy eigenvector. -/
 theorem gibbsState_apply_eigenvector [Nontrivial H] [FiniteDimensional ℂ H]
