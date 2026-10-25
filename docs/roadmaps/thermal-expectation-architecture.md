@@ -128,8 +128,14 @@ number-operator expectation. The mean energy then uses this marginal, while the 
 formula specializes the generic pure-point Gibbs entropy identity. These are thermodynamic
 consequences of the same density state, not a separate probability-state construction.
 
-`Fermionic.Thermal.BoltzmannSummability` owns the representation-independent theorem that
-one-particle Gibbs summability implies summability over fermionic occupation configurations.
+`Fermionic.Thermal.BoltzmannSummability` owns the **arbitrary-mode** fermionic theorem
+that one-particle Gibbs summability at the effective dispersion `ε - μ` implies
+summability over **all** occupation configurations at explicit `μ`. It also proves the
+infinite-product partition formula `Ξ(β, μ) = ∏' i (1 + exp (-β(ε i - μ)))`.
+Neither theorem assumes `[Fintype Mode]`; finite coordinate formulas should be viewed as
+downstream specializations. In infinite systems where the one-particle weights are not
+summable, the normal full-Fock Gibbs density is not constructed by these results; a
+separate algebraic KMS/quasifree treatment may be required.
 
 The completed free-fermion implementation lives under `Fermionic.Thermal.Completed`.
 It uses `Common.grandCanonicalGibbsDensityOperator (Config := Fermionic.Occupation Mode) ε β μ`
