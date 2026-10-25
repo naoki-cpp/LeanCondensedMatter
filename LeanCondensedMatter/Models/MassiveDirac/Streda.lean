@@ -12,6 +12,7 @@ import LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedRadialCoeff
 import LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedRadialHarmonics
 import LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedRadialTrace
 import LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedRealSpaceIntegral
+import LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedExplicitMoments
 
 set_option linter.style.header false
 
