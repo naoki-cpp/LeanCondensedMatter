@@ -338,57 +338,31 @@ theorem tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoeffic
       broadening hbroadening hRlowerAt hAlowerAt hnumCloseAt
     refine MeasureTheory.ae_restrict_of_forall_mem measurableSet_Icc ?_
     intro p hp
-    let DR := finiteCutoffContinuumBornDysonDenominator
-      .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax
-    let DA := finiteCutoffContinuumBornDysonDenominator
-      .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax
-    have hRlowerAt' : cR ≤ ‖DR‖ := by
-      simpa [DR] using hRlowerAt p hp
-    have hAlowerAt' : cA ≤ ‖DA‖ := by
-      simpa [DA] using hAlowerAt p hp
-    have hproductNorm :
-        ‖finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct
-          v m p probeEnergy broadening disorderStrength hbar pMax‖ = ‖DR‖ * ‖DA‖ := by
-      dsimp [DR, DA]
-      rw [finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct_eq_mul, norm_mul]
     have hproductLower :
         cDen ≤
           ‖finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct
             v m p probeEnergy broadening disorderStrength hbar pMax‖ := by
-      rw [hproductNorm]
-      dsimp [cDen]
-      exact mul_le_mul hRlowerAt' hAlowerAt' (le_of_lt hcA) (norm_nonneg _)
-    have hproductPos :
-        0 < ‖finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct
-          v m p probeEnergy broadening disorderStrength hbar pMax‖ :=
-      lt_of_lt_of_le hcDen hproductLower
+      dsimp only [cDen]
+      rw [finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct_eq_mul, norm_mul]
+      exact mul_le_mul (hRlowerAt p hp) (hAlowerAt p hp)
+        (le_of_lt hcA) (norm_nonneg _)
     have hinvBound :
         ‖(finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct
           v m p probeEnergy broadening disorderStrength hbar pMax)⁻¹‖ ≤ cDen⁻¹ := by
       rw [norm_inv]
-      exact (inv_le_inv₀ hproductPos hcDen).2 hproductLower
-    have hnumErr :
-        ‖finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumerator
-              i j v m probeEnergy broadening disorderStrength hbar pMax - numeratorBoundary‖ < 1 := by
-      simpa [dist_eq_norm] using hnumCloseAt
-    have hnumTri :
-        ‖finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumerator
-            i j v m probeEnergy broadening disorderStrength hbar pMax‖ ≤
-          ‖finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumerator
-              i j v m probeEnergy broadening disorderStrength hbar pMax - numeratorBoundary‖ +
-            ‖numeratorBoundary‖ := by
+      exact (inv_le_inv₀ (lt_of_lt_of_le hcDen hproductLower) hcDen).2 hproductLower
+    let numerator :=
+      finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumerator
+        i j v m probeEnergy broadening disorderStrength hbar pMax
+    have hnumErr : ‖numerator - numeratorBoundary‖ < 1 := by
+      simpa only [numerator, dist_eq_norm] using hnumCloseAt
+    have hnumBound : ‖numerator‖ ≤ ‖numeratorBoundary‖ + 1 := by
       calc
-        ‖finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumerator
-            i j v m probeEnergy broadening disorderStrength hbar pMax‖ =
-            ‖(finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumerator
-                i j v m probeEnergy broadening disorderStrength hbar pMax - numeratorBoundary) +
-              numeratorBoundary‖ := by ring_nf
-        _ ≤ _ := norm_add_le _ _
-    have hnumBound :
-        ‖finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumerator
-            i j v m probeEnergy broadening disorderStrength hbar pMax‖ ≤
-          ‖numeratorBoundary‖ + 1 := by
-      linarith
+        ‖numerator‖ = ‖(numerator - numeratorBoundary) + numeratorBoundary‖ := by
+          rw [sub_add_cancel]
+        _ ≤ ‖numerator - numeratorBoundary‖ + ‖numeratorBoundary‖ := norm_add_le _ _
+        _ ≤ _ := by linarith
+    dsimp only [numerator] at hnumBound
     have hpNorm : ‖(p : ℂ)‖ ≤ pMax := by
       rw [Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg hp.1]
       exact hp.2
