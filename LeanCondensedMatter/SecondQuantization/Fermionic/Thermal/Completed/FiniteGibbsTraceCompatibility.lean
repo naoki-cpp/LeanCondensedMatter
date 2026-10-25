@@ -1,7 +1,7 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.Gibbs
 import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.Core
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsDensityOperator
-import LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.FiniteCompatibility
+import LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteCompletedGibbsCompatibility
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsCoordinate
 
 set_option linter.style.header false
@@ -45,27 +45,10 @@ theorem completedGrandCanonicalGibbs_intertwines_finite
         fermionEnergy (fun i => ε i - μ) := by
     funext n
     exact Common.grandCanonicalEnergy_eq_shifted ε μ n
-  have hbasis : ∀ n : Occupation Mode,
-      (Common.completedFiniteHilbertEquiv
-        (Config := Occupation Mode)).toContinuousLinearEquiv.toContinuousLinearMap
-          (Common.completedHilbertBasis (Config := Occupation Mode) n) =
-        Common.finiteHilbertBasis (Config := Occupation Mode) n := by
-    intro n
-    simpa only [Common.completedHilbertBasis_apply, Common.finiteHilbertBasis_apply,
-      ContinuousLinearEquiv.coe_coe, LinearIsometryEquiv.coe_toContinuousLinearEquiv] using
-      (Common.completedFiniteHilbertEquiv_basisState (Config := Occupation Mode) n)
-  have htransport :=
-    eigenbasisGibbsDensityOperator_intertwines
-      (Common.completedHilbertBasis (Config := Occupation Mode))
-      (Common.finiteHilbertBasis (Config := Occupation Mode))
-      (fermionEnergy (fun i => ε i - μ)) β
-      (eigenbasisGibbsSummable_of_finite
-        (fermionEnergy (fun i => ε i - μ)) β)
-      (Common.completedFiniteHilbertEquiv
-        (Config := Occupation Mode)).toContinuousLinearEquiv.toContinuousLinearMap
-      hbasis
   simpa [Common.grandCanonicalGibbsDensityOperator,
-    freeGibbsDensityOperator, hE] using htransport
+    freeGibbsDensityOperator, hE] using
+    (Common.completedFiniteGibbsDensityOperator_intertwines
+      (Config := Occupation Mode) (fermionEnergy (fun i => ε i - μ)) β)
 
 omit [LinearOrder Mode] in
 /-- Transport a finite free-fermion expectation to the completed normal grand-canonical
@@ -82,30 +65,15 @@ theorem freeGibbsExpectation_eq_completed_of_algebraicCore
     (Common.grandCanonicalGibbsDensityOperator (Config := Occupation Mode)
       ε β μ (eigenbasisGibbsSummable_of_finite
         (Common.grandCanonicalEnergy (Config := Occupation Mode) ε μ) β)).expectation T := by
-  let e := Common.completedFiniteHilbertEquiv (Config := Occupation Mode)
-  have hconj :=
-    Common.completedOperator_eq_transport_of_algebraicCore A T hcore
-  let ξ : Mode → ℝ := fun i => ε i - μ
-  have henergy : Common.grandCanonicalEnergy (Config := Occupation Mode) ε μ =
-      fermionEnergy ξ := by
+  have hE :
+      Common.grandCanonicalEnergy (Config := Occupation Mode) ε μ =
+        fermionEnergy (fun i => ε i - μ) := by
     funext n
     exact Common.grandCanonicalEnergy_eq_shifted ε μ n
-  have hbasis : ∀ n : Occupation Mode,
-      e (Common.completedHilbertBasis (Config := Occupation Mode) n) =
-        Common.finiteHilbertBasis (Config := Occupation Mode) n := by
-    intro n
-    simpa only [Common.completedHilbertBasis_apply, Common.finiteHilbertBasis_apply] using
-      (Common.completedFiniteHilbertEquiv_basisState (Config := Occupation Mode) n)
-  have htransport :=
-    eigenbasisGibbsDensityOperator_expectation_transport
-      (Common.completedHilbertBasis (Config := Occupation Mode))
-      (Common.finiteHilbertBasis (Config := Occupation Mode))
-      (fermionEnergy ξ) β
-      (eigenbasisGibbsSummable_of_finite (fermionEnergy ξ) β) e hbasis
-      (Common.finiteHilbertOperatorAlgEquiv A)
-  rw [hconj] at htransport
-  simpa only [freeGibbsDensityOperator, Common.grandCanonicalGibbsDensityOperator,
-    henergy, ξ] using htransport
+  simpa [Common.grandCanonicalGibbsDensityOperator,
+    freeGibbsDensityOperator, hE] using
+    (Common.finiteGibbsExpectation_eq_completed_of_algebraicCore
+      (Config := Occupation Mode) (fermionEnergy (fun i => ε i - μ)) β A T hcore)
 
 omit [LinearOrder Mode] in
 /-- The finite fermionic grand-canonical density-state expectation is the
