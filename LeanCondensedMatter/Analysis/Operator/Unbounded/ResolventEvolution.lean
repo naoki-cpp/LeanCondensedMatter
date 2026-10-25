@@ -1050,7 +1050,7 @@ theorem stoneEvolution_eigenvector
   have hconst := is_const_of_deriv_eq_zero
     (fun s => (hg s).differentiableAt) (fun s => (hg s).deriv) t 0
   have heq : Complex.exp (-(t • c)) • f t = (x : H) := by
-    simpa only [g, smul_neg, zero_smul, Complex.exp_zero, one_smul, f,
+    simpa only [g, smul_neg, zero_smul, neg_zero, Complex.exp_zero, one_smul, f,
       stoneEvolution_zero, one_apply_eq_self] using hconst
   have hunit : Complex.exp (t • c) * Complex.exp (-(t • c)) = 1 := by
     rw [← Complex.exp_add, add_neg_cancel, Complex.exp_zero]
