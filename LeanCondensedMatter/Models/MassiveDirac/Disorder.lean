@@ -4,6 +4,7 @@ import LeanCondensedMatter.Models.MassiveDirac.Disorder.SingleParticleRate
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.TransportRate
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.ContinuumMeasurePrefactor
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornDysonShift
+import LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornRadialMoments
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornRadialRealSpacePropagator
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornRealSpacePropagator
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexResponse
@@ -32,6 +33,10 @@ weak-disorder propagator and owns its retarded-advanced radial denominator pair;
 the corresponding transport scattering rate and lifetime. The finite-`η`
 Born-Dyson layer propagates the same fixed-cutoff boundary through its effective energy, effective
 mass, and radial denominator before any weak-disorder or ultraviolet limit is taken.
+`FiniteBroadeningBornRadialMoments` owns the single-pole logarithmic integral,
+arbitrary-weight RA double-pole spectral difference, and its logarithmic specialization.
+These analytic identities are independent of the longitudinal same-side Středa
+remainder and are consumed by Gaussian-crossed harmonics.
 `FiniteBroadeningBornZeroBroadening` owns that propagator boundary together with the real Born
 renormalization and the denominator nonvanishing guarantee protected by the renormalization bound.
 

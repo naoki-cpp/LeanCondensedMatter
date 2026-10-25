@@ -310,6 +310,14 @@ The Hall and longitudinal Středa radial integrals use the shared integration la
 the existing full-vector convergence law for the same action. The ordered Hall sign and the
 longitudinal bare RR/AA remainder remain with their respective response constructions.
 
+`Disorder.FiniteBroadeningBornRadialMoments` owns the finite-cutoff Born–Dyson single-pole
+logarithmic integral, the arbitrary-weight retarded–advanced double-pole spectral difference,
+and its logarithmic specialization. These are model-level denominator identities independent
+of a particular response channel. The Gaussian-crossed K0/K2 current harmonics
+consume the common owner directly, rather than importing the longitudinal same-side
+Středa remainder merely to obtain a radial logarithmic primitive. The RR/AA
+same-side remainder stays in its own response-specific module.
+
 `Disorder.FiniteBroadeningCurrentVertexResponse` owns the source-indexed dressed current,
 its source evaluations, and its fixed-disorder zero-broadening insertion. Continuity of the
 in-plane rotation and current realization belongs to `Vertex.InPlaneLadder` and `Model.Operator`.
