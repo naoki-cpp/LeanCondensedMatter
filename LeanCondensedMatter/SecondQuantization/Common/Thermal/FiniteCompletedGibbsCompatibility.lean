@@ -6,10 +6,9 @@ set_option linter.style.header false
 /-!
 # Gibbs compatibility between finite and completed configuration Hilbert spaces
 
-For a finite configuration type, the canonical isometry transports Gibbs density
-operators and expectations between the finite Hilbert realization and completed
-Fock space. These results depend only on the configuration basis, not on
-particle statistics or a particular energy function.
+For a finite configuration type, the canonical isometry transports Gibbs
+expectations between the finite Hilbert realization and completed Fock space.
+The result is independent of particle statistics and the energy function.
 -/
 
 namespace SecondQuantization
@@ -20,32 +19,6 @@ open QuantumTheory
 noncomputable section
 
 variable {Config : Type*} [Fintype Config] [Nonempty Config]
-
-/-- The Gibbs density operators on the completed and finite realizations
-intertwine under the canonical isometry, for arbitrary configuration energies. -/
-theorem completedFiniteGibbsDensityOperator_intertwines
-    (energy : Config → ℝ) (β : ℝ) :
-    (completedFiniteHilbertEquiv (Config := Config)).toContinuousLinearEquiv.toContinuousLinearMap.comp
-      (eigenbasisGibbsDensityOperator (completedHilbertBasis (Config := Config))
-        energy β (eigenbasisGibbsSummable_of_finite energy β)).op =
-    (eigenbasisGibbsDensityOperator (finiteHilbertBasis (Config := Config))
-      energy β (eigenbasisGibbsSummable_of_finite energy β)).op.comp
-        (completedFiniteHilbertEquiv (Config := Config)).toContinuousLinearEquiv.toContinuousLinearMap := by
-  have hbasis : ∀ n : Config,
-      (completedFiniteHilbertEquiv
-        (Config := Config)).toContinuousLinearEquiv.toContinuousLinearMap
-          (completedHilbertBasis (Config := Config) n) =
-        finiteHilbertBasis (Config := Config) n := by
-    intro n
-    simpa only [completedHilbertBasis_apply, finiteHilbertBasis_apply,
-      ContinuousLinearEquiv.coe_coe, LinearIsometryEquiv.coe_toContinuousLinearEquiv] using
-      (completedFiniteHilbertEquiv_basisState (Config := Config) n)
-  exact eigenbasisGibbsDensityOperator_intertwines
-    (completedHilbertBasis (Config := Config))
-    (finiteHilbertBasis (Config := Config))
-    energy β (eigenbasisGibbsSummable_of_finite energy β)
-    (completedFiniteHilbertEquiv (Config := Config)).toContinuousLinearEquiv.toContinuousLinearMap
-    hbasis
 
 /-- The finite Gibbs expectation of an algebraic observable equals its
 completed Gibbs expectation whenever the completed observable extends the
