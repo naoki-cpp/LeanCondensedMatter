@@ -218,6 +218,48 @@ noncomputable def pauliVectorCoefficient (M : PauliMatrix) : PauliAxis → ℂ
   | .y => Complex.I * (M 0 1 - M 1 0) / 2
   | .z => (M 0 0 - M 1 1) / 2
 
+/-- Entrywise interval integration of a complex two-level matrix. The interval
+integral's existing non-integrable convention is preserved entry by entry. -/
+noncomputable def intervalIntegralPauliMatrix
+    (a b : ℝ) (f : ℝ → PauliMatrix) : PauliMatrix :=
+  fun i j => ∫ p in a..b, f p i j
+
+/-- Entrywise interval integration commutes with a fixed complex scalar. -/
+theorem intervalIntegralPauliMatrix_smul
+    (a b : ℝ) (c : ℂ) (f : ℝ → PauliMatrix) :
+    intervalIntegralPauliMatrix a b (fun p => c • f p) =
+      c • intervalIntegralPauliMatrix a b f := by
+  ext i j
+  change (∫ p in a..b, c * f p i j) = c * (∫ p in a..b, f p i j)
+  rw [intervalIntegral.integral_const_mul]
+
+/-- Entrywise interval integration is additive for interval-integrable matrices.
+The assumptions matter: the default integral of a non-integrable function
+is zero, so unconditional additivity would be false. -/
+theorem intervalIntegralPauliMatrix_add
+    (a b : ℝ) (f g : ℝ → PauliMatrix)
+    (hf : ∀ i j, IntervalIntegrable (fun p => f p i j) MeasureTheory.volume a b)
+    (hg : ∀ i j, IntervalIntegrable (fun p => g p i j) MeasureTheory.volume a b) :
+    intervalIntegralPauliMatrix a b (fun p => f p + g p) =
+      intervalIntegralPauliMatrix a b f + intervalIntegralPauliMatrix a b g := by
+  ext i j
+  change (∫ p in a..b, f p i j + g p i j) =
+    (∫ p in a..b, f p i j) + (∫ p in a..b, g p i j)
+  exact intervalIntegral.integral_add (hf i j) (hg i j)
+
+/-- Subtraction likewise commutes with entrywise interval integration
+under the same explicit analytic assumptions. -/
+theorem intervalIntegralPauliMatrix_sub
+    (a b : ℝ) (f g : ℝ → PauliMatrix)
+    (hf : ∀ i j, IntervalIntegrable (fun p => f p i j) MeasureTheory.volume a b)
+    (hg : ∀ i j, IntervalIntegrable (fun p => g p i j) MeasureTheory.volume a b) :
+    intervalIntegralPauliMatrix a b (fun p => f p - g p) =
+      intervalIntegralPauliMatrix a b f - intervalIntegralPauliMatrix a b g := by
+  ext i j
+  change (∫ p in a..b, f p i j - g p i j) =
+    (∫ p in a..b, f p i j) - (∫ p in a..b, g p i j)
+  exact intervalIntegral.integral_sub (hf i j) (hg i j)
+
 open MeasureTheory in
 /-- Scalar Pauli coefficient extraction commutes with an entrywise interval integral
 and a complex prefactor, assuming interval integrability of every matrix entry. -/
