@@ -317,11 +317,10 @@ theorem finiteCutoffContinuumBornDysonRadial_center_gap_ne_zero_of_re_pos
   let massA := finiteCutoffContinuumBornEffectiveMass
     .advanced v m probeEnergy broadening disorderStrength hbar pMax
   have hden (p : ℝ) : massiveDiracRadialDenominator v p energyR massR ≠ 0 := by
-    have hx := finiteCutoffContinuumBornDysonDenominator_ne_zero
+    rw [finiteCutoffContinuumBornDysonDenominator_eq_radial]
+    exact finiteCutoffContinuumBornDysonDenominator_ne_zero
       .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax
       hbroadening hdisorder hpMax
-    simpa [massiveDiracRadialDenominator, finiteCutoffContinuumBornDysonDenominator,
-      energyR, massR] using hx
   have him : (energyR ^ 2 - massR ^ 2).im ≠ 0 :=
     massiveDiracRadialDenominator_center_im_ne_zero_of_re_pos
       v energyR massR hvelocity hcenterR hden
