@@ -306,28 +306,9 @@ theorem finiteCutoffContinuumBornDysonRealSpaceGreenMatrix_polarPoint2D_eq_radia
         radius θ p i j
   have hpoint (θ p : ℝ) :
       angular θ p =
-        inPlaneSpinRotation θ * base p * inPlaneSpinRotationInverse θ := by
-    change
-      (fun i j : Fin 2 =>
-        finiteCutoffContinuumBornDysonAngularGreenEntryKernel
-          side v m probeEnergy broadening disorderStrength hbar pMax
-          radius θ p i j) =
-        inPlaneSpinRotation θ *
-          ((p : ℂ) • polarPauliMatrix
-            (polarFourierZerothAngularKernel (p * radius / hbar) *
-              finiteCutoffContinuumBornDysonScalarCoefficient
-                side v m p 0 probeEnergy broadening disorderStrength hbar pMax)
-            (polarFourierFirstCosineAngularKernel (p * radius / hbar) *
-              finiteCutoffContinuumBornDysonPauliCoefficient .x
-                side v m p 0 probeEnergy broadening disorderStrength hbar pMax)
-            (polarFourierZerothAngularKernel (p * radius / hbar) *
-              finiteCutoffContinuumBornDysonPauliCoefficient .z
-                side v m p 0 probeEnergy broadening disorderStrength hbar pMax)
-            0) *
-          inPlaneSpinRotationInverse θ
-    exact
-      finiteCutoffContinuumBornDysonAngularGreenEntryKernel_eq_spinRotation
-        side v m probeEnergy broadening disorderStrength hbar pMax radius θ p
+        inPlaneSpinRotation θ * base p * inPlaneSpinRotationInverse θ :=
+    finiteCutoffContinuumBornDysonAngularGreenEntryKernel_eq_spinRotation
+      side v m probeEnergy broadening disorderStrength hbar pMax radius θ p
   have hU0 : inPlaneSpinRotation 0 = 1 := by
     ext i j
     fin_cases i <;> fin_cases j <;> simp [inPlaneSpinRotation]
@@ -343,11 +324,6 @@ theorem finiteCutoffContinuumBornDysonRealSpaceGreenMatrix_polarPoint2D_eq_radia
           (polarPoint2D radius θ) =
         prefactor • InternalSpace.intervalIntegralPauliMatrix 0 pMax (angular θ) := by
     ext i j
-    change
-      finiteCutoffContinuumBornDysonRealSpaceGreenMatrix
-          side v m probeEnergy broadening disorderStrength hbar pMax
-          (polarPoint2D radius θ) i j =
-        prefactor * ∫ p in (0 : ℝ)..pMax, angular θ p i j
     exact finiteCutoffContinuumBornDysonRealSpaceGreenMatrix_polarPoint2D_eq_angularKernel_integral
       side v m probeEnergy broadening disorderStrength hbar pMax radius θ i j
   have hrot :
@@ -357,28 +333,16 @@ theorem finiteCutoffContinuumBornDysonRealSpaceGreenMatrix_polarPoint2D_eq_radia
         prefactor •
           (inPlaneSpinRotation angle * InternalSpace.intervalIntegralPauliMatrix 0 pMax base *
             inPlaneSpinRotationInverse angle) := by
-    rw [hIntegral angle]
-    have hentries :
-        InternalSpace.intervalIntegralPauliMatrix 0 pMax (angular angle) =
-          InternalSpace.intervalIntegralPauliMatrix 0 pMax
-            (fun p => inPlaneSpinRotation angle * base p *
-              inPlaneSpinRotationInverse angle) := by
-      ext i j
-      apply intervalIntegral.integral_congr
-      intro p _
-      exact congrArg (fun M : Matrix2 => M i j) (hpoint angle p)
-    rw [hentries, intervalIntegralMatrix2_spinRotation_conjugate]
+    have hfun : angular angle = fun p =>
+        inPlaneSpinRotation angle * base p * inPlaneSpinRotationInverse angle :=
+      funext (hpoint angle)
+    rw [hIntegral angle, hfun, intervalIntegralMatrix2_spinRotation_conjugate]
   have haxis :
       finiteCutoffContinuumBornDysonRealSpaceGreenMatrix
           side v m probeEnergy broadening disorderStrength hbar pMax
           (polarPoint2D radius 0) =
         prefactor • InternalSpace.intervalIntegralPauliMatrix 0 pMax base := by
-    rw [hIntegral 0]
-    congr 1
-    ext i j
-    apply intervalIntegral.integral_congr
-    intro p _
-    exact congrArg (fun M : Matrix2 => M i j) (hpoint0 p)
+    rw [hIntegral 0, show angular 0 = base from funext hpoint0]
   rw [hrot, haxis]
   simp only [mul_smul_comm, smul_mul_assoc]
 
