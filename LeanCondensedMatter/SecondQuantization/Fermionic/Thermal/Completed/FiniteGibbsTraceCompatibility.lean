@@ -163,50 +163,30 @@ theorem freeGibbsExpectation_eq_completed_of_algebraicCore
   simpa only [freeGibbsDensityOperator, Common.grandCanonicalGibbsDensityOperator,
     henergy, ξ] using htransport
 
-omit [Fintype Mode] in
-/-- The completed normal product extends the corresponding algebraic normal product. -/
-theorem completedNormalProduct_comp_algebraicToCompleted
-    (i j : Mode) :
-    ((completedAnnihilate i).comp (completedCreate j)).toLinearMap.comp
-      algebraicToCompleted =
-    algebraicToCompleted.comp ((annihilate i).comp (create j)) := by
+omit [LinearOrder Mode] [Fintype Mode] in
+/-- Intertwining of bounded completed products with algebraic products on the dense
+Fock core. The mode set is arbitrary; finite modes are needed only later to
+transport the expectation itself. -/
+theorem completedProduct_comp_algebraicToCompleted_of_core
+    (A B : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode)
+    (T U : CompletedFockSpace Mode →L[ℂ] CompletedFockSpace Mode)
+    (hT : T.toLinearMap.comp algebraicToCompleted = algebraicToCompleted.comp A)
+    (hU : U.toLinearMap.comp algebraicToCompleted = algebraicToCompleted.comp B) :
+    (T.comp U).toLinearMap.comp algebraicToCompleted =
+      algebraicToCompleted.comp (A.comp B) := by
   apply LinearMap.ext
   intro x
-  change completedAnnihilate i (completedCreate j (algebraicToCompleted x)) =
-    algebraicToCompleted (annihilate i (create j x))
-  have hcreate := congrArg (fun f : OccupationFock Mode →ₗ[ℂ] CompletedFockSpace Mode =>
-      f x) (completedCreate_comp_algebraicToCompleted j)
-  have hann := congrArg (fun f : OccupationFock Mode →ₗ[ℂ] CompletedFockSpace Mode =>
-      f (create j x)) (completedAnnihilate_comp_algebraicToCompleted i)
-  simpa only [LinearMap.comp_apply] using
-    calc
-      completedAnnihilate i (completedCreate j (algebraicToCompleted x)) =
-          completedAnnihilate i (algebraicToCompleted (create j x)) := by
-            simpa [algebraicToCompleted, ContinuousLinearMap.toLinearMap] using congrArg (completedAnnihilate i) hcreate
-      _ = algebraicToCompleted (annihilate i (create j x)) := by
-            simpa [algebraicToCompleted, ContinuousLinearMap.toLinearMap] using hann
-
-omit [Fintype Mode] in
-/-- The completed reversed normal product extends the algebraic product. -/
-theorem completedReversedNormalProduct_comp_algebraicToCompleted
-    (i j : Mode) :
-    ((completedCreate j).comp (completedAnnihilate i)).toLinearMap.comp
-      algebraicToCompleted =
-    algebraicToCompleted.comp ((create j).comp (annihilate i)) := by
-  apply LinearMap.ext
-  intro x
-  change completedCreate j (completedAnnihilate i (algebraicToCompleted x)) =
-    algebraicToCompleted (create j (annihilate i x))
-  have hann := congrArg (fun f : OccupationFock Mode →ₗ[ℂ] CompletedFockSpace Mode =>
-      f x) (completedAnnihilate_comp_algebraicToCompleted i)
-  have hcreate := congrArg (fun f : OccupationFock Mode →ₗ[ℂ] CompletedFockSpace Mode =>
-      f (annihilate i x)) (completedCreate_comp_algebraicToCompleted j)
+  change T (U (algebraicToCompleted x)) = algebraicToCompleted (A (B x))
+  have hUx := congrArg
+    (fun f : OccupationFock Mode →ₗ[ℂ] CompletedFockSpace Mode => f x) hU
+  have hTBx := congrArg
+    (fun f : OccupationFock Mode →ₗ[ℂ] CompletedFockSpace Mode => f (B x)) hT
   calc
-    completedCreate j (completedAnnihilate i (algebraicToCompleted x)) =
-        completedCreate j (algebraicToCompleted (annihilate i x)) := by
-          simpa [algebraicToCompleted, ContinuousLinearMap.toLinearMap] using congrArg (completedCreate j) hann
-    _ = algebraicToCompleted (create j (annihilate i x)) := by
-          simpa [algebraicToCompleted, ContinuousLinearMap.toLinearMap] using hcreate
+    T (U (algebraicToCompleted x)) = T (algebraicToCompleted (B x)) := by
+      simpa [algebraicToCompleted, ContinuousLinearMap.toLinearMap] using
+        congrArg T hUx
+    _ = algebraicToCompleted (A (B x)) := by
+      simpa [algebraicToCompleted, ContinuousLinearMap.toLinearMap] using hTBx
 
 omit [LinearOrder Mode] in
 /-- The finite fermionic grand-canonical density-state expectation is the
