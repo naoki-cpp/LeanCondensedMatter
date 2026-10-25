@@ -133,23 +133,41 @@ theorem canonicalFullGibbsDensityOperator_expectation_eq_sector
     (Subtype.val : ParticleNumberSector Mode Config N → Config)
     Subtype.val_injective
   let B := V.comp (A.comp U)
-  have hop : ρF.op = U.comp (ρN.op.comp V) := by
-    simpa only [ρF, ρN, U, V] using
-      (canonicalFullGibbsDensityOperator_eq_sector_embedding ε β N hsum)
+  let w : ParticleNumberSector Mode Config N → ℝ :=
+    eigenbasisGibbsProbability
+      (fun n : ParticleNumberSector Mode Config N => occupationEnergy ε n.val) β
+  let wf : Config → ℝ :=
+    Real.normalizedWeight (canonicalFullGibbsWeight ε β N)
   let f : ParticleNumberSector Mode Config N → ℂ := fun n =>
-    inner ℂ (completedBasisState n) ((ρN.op * B) (completedBasisState n))
+    (w n : ℂ) * inner ℂ (completedBasisState n) (B (completedBasisState n))
   let g : Config → ℂ := fun c =>
-    inner ℂ (completedBasisState c) ((ρF.op * A) (completedBasisState c))
+    (wf c : ℂ) * inner ℂ (completedBasisState c) (A (completedBasisState c))
   have hSector : HasSum f (ρN.expectation B) := by
-    rw [ρN.expectation_apply]
-    simpa only [f, completedHilbertBasis_apply, mul_apply_eq_comp] using
-      (ρN.isTraceClass.comp_right B).hasSum_trace
-        (completedHilbertBasis (Config := ParticleNumberSector Mode Config N))
+    simpa only [f, completedHilbertBasis_apply] using
+      (ρN.hasSum_expectation_diagonal B
+        (completedHilbertBasis (Config := ParticleNumberSector Mode Config N)) w
+        (fun n => by
+          simpa only [ρN, w, completedHilbertBasis_apply] using
+            (canonicalGibbsDensityOperator_apply_basis ε β N hsum n)))
   have hFull : HasSum g (ρF.expectation A) := by
-    rw [ρF.expectation_apply]
-    simpa only [g, completedHilbertBasis_apply, mul_apply_eq_comp] using
-      (ρF.isTraceClass.comp_right A).hasSum_trace
-        (completedHilbertBasis (Config := Config))
+    simpa only [g, completedHilbertBasis_apply] using
+      (ρF.hasSum_expectation_diagonal A
+        (completedHilbertBasis (Config := Config)) wf
+        (fun c => by
+          simpa only [ρF, canonicalFullGibbsDensityOperator, wf,
+            completedHilbertBasis_apply] using
+            (diagonalDensityOperator_apply_basis
+              (completedHilbertBasis (Config := Config))
+              (canonicalFullGibbsWeight ε β N)
+              (canonicalFullGibbsWeight_norm_summable ε β N hsum)
+              (canonicalFullGibbsWeight_nonneg ε β N)
+              (canonicalFullGibbsWeight_tsum_pos ε β N hsum) c)))
+  have hcompress (n : ParticleNumberSector Mode Config N) :
+      inner ℂ (completedBasisState n) (B (completedBasisState n)) =
+        inner ℂ (completedBasisState n.val) (A (completedBasisState n.val)) := by
+    simp only [B, V, U, ContinuousLinearMap.comp_apply,
+      inner_completedBasisState_left, completedCoordinatePullback_apply,
+      completedCoordinateEmbedding_basisState]
   have hPoint :
       Function.extend
         (Subtype.val : ParticleNumberSector Mode Config N → Config) f 0 = g := by
@@ -159,30 +177,13 @@ theorem canonicalFullGibbsDensityOperator_expectation_eq_sector
       change Function.extend
         (Subtype.val : ParticleNumberSector Mode Config N → Config) f 0 n.val = g n.val
       rw [Subtype.val_injective.extend_apply]
-      change inner ℂ (completedBasisState n)
-        ((ρN.op * B) (completedBasisState n)) =
-        inner ℂ (completedBasisState n.val)
-          ((ρF.op * A) (completedBasisState n.val))
-      rw [hop]
-      simp only [mul_apply_eq_comp, ContinuousLinearMap.comp_apply]
-      change inner ℂ (completedBasisState n)
-        (ρN.op (V (A (U (completedBasisState n))))) =
-        inner ℂ (completedBasisState n.val)
-          (U (ρN.op (V (A (completedBasisState n.val)))))
-      have hU : U (completedBasisState n) = completedBasisState n.val := by
-        change completedCoordinateEmbedding
-          (Subtype.val : ParticleNumberSector Mode Config N → Config)
-          Subtype.val_injective (completedBasisState n) = completedBasisState n.val
-        exact completedCoordinateEmbedding_basisState _ _ n
-      rw [hU]
-      simp only [inner_completedBasisState_left]
-      change
-        (ρN.op (V (A (completedBasisState n.val)))) n =
-          (completedCoordinateEmbedding
-            (Subtype.val : ParticleNumberSector Mode Config N → Config)
-            Subtype.val_injective
-            (ρN.op (V (A (completedBasisState n.val))))) n.val
-      rw [completedCoordinateEmbedding_apply, Subtype.val_injective.extend_apply]
+      change (w n : ℂ) *
+          inner ℂ (completedBasisState n) (B (completedBasisState n)) =
+        (wf n.val : ℂ) *
+          inner ℂ (completedBasisState n.val) (A (completedBasisState n.val))
+      rw [show wf n.val = w n from
+        normalizedWeight_canonicalFullGibbsWeight_apply_sector ε β N hsum n,
+        hcompress n]
     · have hnot : ¬ ∃ n : ParticleNumberSector Mode Config N, n.val = c := by
         rintro ⟨n, hn⟩
         apply hc
@@ -191,21 +192,8 @@ theorem canonicalFullGibbsDensityOperator_expectation_eq_sector
       change Function.extend
         (Subtype.val : ParticleNumberSector Mode Config N → Config) f 0 c = g c
       rw [Function.extend_apply' _ _ _ hnot]
-      change (0 : ℂ) =
-        inner ℂ (completedBasisState c) ((ρF.op * A) (completedBasisState c))
-      rw [hop]
-      simp only [mul_apply_eq_comp, ContinuousLinearMap.comp_apply]
-      change (0 : ℂ) =
-        inner ℂ (completedBasisState c)
-          (U (ρN.op (V (A (completedBasisState c)))))
-      rw [inner_completedBasisState_left]
-      change (0 : ℂ) =
-        (completedCoordinateEmbedding
-          (Subtype.val : ParticleNumberSector Mode Config N → Config)
-          Subtype.val_injective
-          (ρN.op (V (A (completedBasisState c))))) c
-      rw [completedCoordinateEmbedding_apply, Function.extend_apply' _ _ _ hnot]
-      simp
+      simp [g, wf, Real.normalizedWeight,
+        canonicalFullGibbsWeight_apply_of_ne ε β N c hc]
   have hExtended : HasSum
       (Function.extend
         (Subtype.val : ParticleNumberSector Mode Config N → Config) f 0)
