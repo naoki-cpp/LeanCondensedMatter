@@ -35,11 +35,11 @@ theorem freeGibbsDensityOperator_expectation_annihilate_comp_create
     ε β 0 ((annihilate i).comp (create j))
       ((completedAnnihilate i).comp (completedCreate j))
       (completedNormalProduct_comp_algebraicToCompleted i j)
-  simpa only [sub_zero, Complex.add_comm, ite_mul, mul_one, mul_zero] using
-    hbridge.trans
-      (grandCanonicalGibbsDensityOperator_expectation_annihilate_comp_create
-        ε β 0 (eigenbasisGibbsSummable_of_finite
-          (Common.grandCanonicalEnergy (Config := Occupation Mode) ε 0) β) i j)
+  rw [hbridge, grandCanonicalGibbsDensityOperator_expectation_annihilate_comp_create]
+  simp only [sub_zero]
+  by_cases hij : i = j
+  · simp [hij, add_comm]
+  · simp [hij]
 
 /-- `⟨c_j† c_i⟩₀,β = δᵢⱼ f_i`. -/
 theorem freeGibbsDensityOperator_expectation_create_comp_annihilate
