@@ -564,22 +564,16 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceCurrentBlock_polar
           .advanced v m (p * Real.cos θ) (p * Real.sin θ)
           probeEnergy broadening disorderStrength hbar pMax =
         polarPauliMatrix (aA p) (bA p) (dA p) θ := by
-    apply (Matrix.toEuclideanCLM :
-      Matrix2 ≃⋆ₐ[ℂ] (DiracHilbert →L[ℂ] DiracHilbert)).injective
-    simpa [finiteCutoffContinuumBornDysonGreenOperator, polarPauliOperator,
-      matrixOperator, aA, bA, dA] using
-      (finiteCutoffContinuumBornDysonGreenOperator_polar_eq
+    simpa [aA, bA, dA] using
+      (finiteCutoffContinuumBornDysonGreenMatrix_polar_eq
         .advanced v m p θ probeEnergy broadening disorderStrength hbar pMax)
   have hR (p θ : ℝ) :
       finiteCutoffContinuumBornDysonGreenMatrix
           .retarded v m (p * Real.cos θ) (p * Real.sin θ)
           probeEnergy broadening disorderStrength hbar pMax =
         polarPauliMatrix (aR p) (bR p) (dR p) θ := by
-    apply (Matrix.toEuclideanCLM :
-      Matrix2 ≃⋆ₐ[ℂ] (DiracHilbert →L[ℂ] DiracHilbert)).injective
-    simpa [finiteCutoffContinuumBornDysonGreenOperator, polarPauliOperator,
-      matrixOperator, aR, bR, dR] using
-      (finiteCutoffContinuumBornDysonGreenOperator_polar_eq
+    simpa [aR, bR, dR] using
+      (finiteCutoffContinuumBornDysonGreenMatrix_polar_eq
         .retarded v m p θ probeEnergy broadening disorderStrength hbar pMax)
   have hvertex :
       coefficients 0 • sigmaX + coefficients 1 • sigmaY =
