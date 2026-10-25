@@ -841,10 +841,9 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficie
     finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient_diagonal_harmonics
       v m probeEnergy broadening disorderStrength hbar pMax radius hbroadening hdisorder hpMax
   dsimp only at h ⊢
-  rcases h with ⟨h0, h2⟩
   constructor
-  · linear_combination (1 / 2 : ℂ) * h0 + (1 / 2 : ℂ) * h2
-  · linear_combination (1 / 2 : ℂ) * h0 - (1 / 2 : ℂ) * h2
+  · linear_combination (1 / 2 : ℂ) * h.1 + (1 / 2 : ℂ) * h.2
+  · linear_combination (1 / 2 : ℂ) * h.1 - (1 / 2 : ℂ) * h.2
 
 
 /-- The diagonal source-current product entering both crossed Hall minors
@@ -895,8 +894,7 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficie
       v m probeEnergy broadening disorderStrength hbar pMax radius
       hbroadening hdisorder hpMax
   dsimp only at h ⊢
-  rcases h with ⟨hxx, hyy⟩
-  rw [hxx, hyy]
+  rw [h.1, h.2]
   ring
 
 
@@ -969,9 +967,7 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrent_scalar_diagon
       v m probeEnergy broadening disorderStrength hbar pMax radius
       hbroadening hdisorder hpMax
   dsimp only at hfirst hdiag ⊢
-  rcases hfirst with ⟨hscalarX, hscalarY, _, _⟩
-  rcases hdiag with ⟨_, hyy⟩
-  rw [hscalarX, hscalarY, hyy]
+  rw [hfirst.1, hfirst.2.1, hdiag.2]
 
 
 end
