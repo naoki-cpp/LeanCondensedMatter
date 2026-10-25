@@ -34,8 +34,9 @@ the corresponding transport scattering rate and lifetime. The finite-`η`
 Born-Dyson layer propagates the same fixed-cutoff boundary through its effective energy, effective
 mass, and radial denominator before any weak-disorder or ultraviolet limit is taken.
 `FiniteBroadeningBornRadialMoments` owns the single-pole logarithmic integral,
-arbitrary-weight RA double-pole spectral difference, and its logarithmic specialization,
-upstream of both Středa same-side remainders and Gaussian-crossed harmonics.
+arbitrary-weight RA double-pole spectral difference, and its logarithmic specialization.
+These analytic identities are independent of the longitudinal same-side Středa
+remainder and are consumed by Gaussian-crossed harmonics.
 `FiniteBroadeningBornZeroBroadening` owns that propagator boundary together with the real Born
 renormalization and the denominator nonvanishing guarantee protected by the renormalization bound.
 
