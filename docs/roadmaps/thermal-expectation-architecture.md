@@ -137,6 +137,13 @@ downstream specializations. In infinite systems where the one-particle weights a
 summable, the normal full-Fock Gibbs density is not constructed by these results; a
 separate algebraic KMS/quasifree treatment may be required.
 
+The completed CAR algebra identifies each bounded occupation projection
+`completedNumberOperator i` with `completedCreate i ∘ completedAnnihilate i`, for
+arbitrary modes. The two-point Gibbs pairing formula then proves the **single-mode
+Fermi--Dirac expectation** at explicit `μ`, without `[Fintype Mode]` or a finite trace.
+This is an exact expectation of a bounded projection, not an assertion that the
+potentially unbounded *total* number or Hamiltonian is a bounded observable.
+
 The completed free-fermion implementation lives under `Fermionic.Thermal.Completed`.
 It uses `Common.grandCanonicalGibbsDensityOperator (Config := Fermionic.Occupation Mode) ε β μ`
 without an additional zero-chemical-potential fermionic density constructor. Its completed CAR
