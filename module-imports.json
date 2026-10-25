@@ -793,7 +793,7 @@
         "LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventCommutation",
         "LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventConvergence"
       ],
-      "externalImportCount": 6
+      "externalImportCount": 8
     },
     {
       "name": "LeanCondensedMatter.Analysis.Operator.Unbounded.SelfAdjointCriterion",
@@ -6369,6 +6369,19 @@
       "externalImportCount": 0
     },
     {
+      "name": "LeanCondensedMatter.SecondQuantization.Common.Thermal.CompletedStationarity",
+      "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Thermal/CompletedStationarity.lean",
+      "imports": [
+        "LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution",
+        "LeanCondensedMatter.QuantumTheory.DensityOperator.DiagonalFormula",
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.Stationarity",
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.Expectation.Density",
+        "LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.DiagonalAnalytic",
+        "LeanCondensedMatter.SecondQuantization.Common.Thermal.GrandCanonical"
+      ],
+      "externalImportCount": 0
+    },
+    {
       "name": "LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsCoordinate",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Thermal/FiniteGibbsCoordinate.lean",
       "imports": [
@@ -6421,6 +6434,7 @@
         "LeanCondensedMatter.SecondQuantization.Common.Thermal.CanonicalFullFock",
         "LeanCondensedMatter.SecondQuantization.Common.Thermal.CanonicalGrandCanonicalCompatibility",
         "LeanCondensedMatter.SecondQuantization.Common.Thermal.CanonicalSector",
+        "LeanCondensedMatter.SecondQuantization.Common.Thermal.CompletedStationarity",
         "LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsCoordinate",
         "LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsExpectationBridge",
         "LeanCondensedMatter.SecondQuantization.Common.Thermal.GrandCanonical",
