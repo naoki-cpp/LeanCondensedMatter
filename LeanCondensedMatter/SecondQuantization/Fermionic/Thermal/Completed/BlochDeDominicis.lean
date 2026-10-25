@@ -503,6 +503,52 @@ theorem grandCanonicalGibbsExpectation_tsum_canonical_eq_sum_pairing
 
 end CompletedThermalLadder
 
+/-- The completed grand-canonical normal contraction of an annihilation and creation
+operator on arbitrary modes. In particular, no finite-mode trace formula is used. -/
+theorem grandCanonicalGibbsDensityOperator_expectation_annihilate_comp_create
+    (ε : Mode → ℝ) (β μ : ℝ) (hsum : EigenbasisGibbsSummable
+      (Common.grandCanonicalEnergy (Config := Occupation Mode) ε μ) β)
+    (i j : Mode) :
+    (Common.grandCanonicalGibbsDensityOperator
+      (Config := Occupation Mode) ε β μ hsum).expectation
+        ((completedAnnihilate i).comp (completedCreate j)) =
+      (Complex.exp ((β : ℂ) * ((ε i - μ : ℝ) : ℂ)) /
+        (1 + Complex.exp ((β : ℂ) * ((ε i - μ : ℝ) : ℂ)))) *
+          (if i = j then 1 else 0) := by
+  have hpair := CompletedThermalLadder.grandCanonicalGibbsExpectation_pair_eq
+    ε β μ hsum (CompletedThermalLadder.annihilate i) (CompletedThermalLadder.create j)
+  simpa only [CompletedThermalLadder.grandCanonicalGibbsExpectation,
+    CompletedThermalLadder.operatorProduct_cons,
+    CompletedThermalLadder.operatorProduct_nil,
+    CompletedThermalLadder.operator_create,
+    CompletedThermalLadder.operator_annihilate,
+    CompletedThermalLadder.gibbsFactor_annihilate,
+    CompletedThermalLadder.anticommutatorValue,
+    ContinuousLinearMap.comp_id] using hpair
+
+/-- The completed grand-canonical normal contraction of a creation and annihilation
+operator on arbitrary modes, with explicit chemical potential. -/
+theorem grandCanonicalGibbsDensityOperator_expectation_create_comp_annihilate
+    (ε : Mode → ℝ) (β μ : ℝ) (hsum : EigenbasisGibbsSummable
+      (Common.grandCanonicalEnergy (Config := Occupation Mode) ε μ) β)
+    (i j : Mode) :
+    (Common.grandCanonicalGibbsDensityOperator
+      (Config := Occupation Mode) ε β μ hsum).expectation
+        ((completedCreate j).comp (completedAnnihilate i)) =
+      (Complex.exp (-(β : ℂ) * ((ε j - μ : ℝ) : ℂ)) /
+        (1 + Complex.exp (-(β : ℂ) * ((ε j - μ : ℝ) : ℂ)))) *
+          (if i = j then 1 else 0) := by
+  have hpair := CompletedThermalLadder.grandCanonicalGibbsExpectation_pair_eq
+    ε β μ hsum (CompletedThermalLadder.create j) (CompletedThermalLadder.annihilate i)
+  simpa only [CompletedThermalLadder.grandCanonicalGibbsExpectation,
+    CompletedThermalLadder.operatorProduct_cons,
+    CompletedThermalLadder.operatorProduct_nil,
+    CompletedThermalLadder.operator_create,
+    CompletedThermalLadder.operator_annihilate,
+    CompletedThermalLadder.gibbsFactor_create,
+    CompletedThermalLadder.anticommutatorValue,
+    ContinuousLinearMap.comp_id] using hpair
+
 /-- Fermi--Dirac occupation of one mode in the completed grand-canonical free
 Gibbs state, for an arbitrary (possibly infinite) ordered mode type.
 The single-mode number operator is bounded; only existence of the full-Fock
