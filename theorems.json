@@ -62054,6 +62054,7 @@
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadial_ra_pole_moment_mul_center_gap_eq_log"
     ],
     "dependencies": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominator_eq_radial",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominator_ne_zero",
       "QuantumTheory.Models.MassiveDirac.integral_massiveDiracRadialDenominatorKernel_eq_log",
       "QuantumTheory.Models.MassiveDirac.massiveDiracRadialDenominator_center_im_ne_zero_of_re_pos"
@@ -62508,6 +62509,54 @@
       "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonLongitudinalRetardedAdvancedDressedSurfaceMomentumIntegral_broadening_zero"
     ],
     "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (side : QuantumTheory.Transport.SpectralSide) (v m p probeEnergy broadening disorderStrength hbar pMax : ℝ),\n  QuantumTheory.Models.MassiveDirac.massiveDiracRadialDenominator v p\n      (QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornEffectiveEnergy side v m probeEnergy broadening\n        disorderStrength hbar pMax)\n      (QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornEffectiveMass side v m probeEnergy broadening\n        disorderStrength hbar pMax) =\n    QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominator side v m p 0 probeEnergy broadening\n      disorderStrength hbar pMax",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominator_eq_radial",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornPropagator",
+    "externalAxioms": [],
+    "docString": "The model's radial Dyson denominator is the canonical massive-Dirac\nradial polynomial evaluated at the Born-renormalized spectral parameters. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.MassiveDirac.finiteBroadeningBornDyson_singlePoleRadialIntegral_eq_log_of_center_re_pos",
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadial_center_gap_ne_zero_of_re_pos",
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadial_ra_weighted_moment_mul_center_gap",
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct_eq_mul"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.finiteBroadeningBornDyson_singlePoleRadialIntegral_eq_log_of_center_re_pos",
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadial_center_gap_ne_zero_of_re_pos",
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadial_ra_weighted_moment_mul_center_gap",
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct_eq_mul"
+    ],
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -66185,6 +66234,7 @@
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient_origin_diagonal_eq_log"
     ],
     "dependencies": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominator_eq_radial",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominator_ne_zero",
       "QuantumTheory.Models.MassiveDirac.massiveDiracRadialDenominator_center_im_ne_zero_of_re_pos",
       "QuantumTheory.Models.MassiveDirac.star_finiteCutoffContinuumBornDysonDenominator"
@@ -66322,6 +66372,7 @@
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadial_ra_pole_moment_mul_center_gap_eq_log"
     ],
     "dependencies": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominator_eq_radial",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominator_ne_zero",
       "QuantumTheory.Models.MassiveDirac.massiveDiracRadialDenominator_inv_product_mul_center_gap"
     ],
@@ -66796,7 +66847,9 @@
       "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct_broadening_zero",
       "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderLongitudinalZeroBroadeningIntegral.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceMomentumIntegral_x_eq_endpointForm"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominator_eq_radial"
+    ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
