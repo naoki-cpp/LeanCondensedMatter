@@ -70,18 +70,26 @@ variable
   (system : BoundedFreeSystem H)
   (data : EnergyEigenbasisLehmannData system ι)
 
-/-- One eigenbasis Kubo–Bastin transition for supplied measured and source vertices. -/
-noncomputable def eigenbasisKuboBastinSpectralVertexTerm
+/-- Matrix elements and retarded-resolvent factor of one generalized eigenbasis Bastin transition,
+with the occupation difference removed. -/
+noncomputable def eigenbasisKuboBastinVertexTransitionFactor
     (measured source : H →L[ℂ] H)
     (omega eta : ℝ) (mn : ι × ι) : ℂ :=
-  -(((data.probability mn.1 - data.probability mn.2 : ℝ) : ℂ)) *
-    inner ℂ (data.basis mn.1) (measured (data.basis mn.2)) *
+  inner ℂ (data.basis mn.1) (measured (data.basis mn.2)) *
     inner ℂ (data.basis mn.2) (source (data.basis mn.1)) *
     inner ℂ (data.basis mn.2)
       (retardedResolvent system.hamiltonian.1
         (kuboBastinRetardedEnergy system.hbar omega (data.energy mn.1))
         (kuboBastinEnergyBroadening system.hbar eta)
         (data.basis mn.2))
+
+/-- One eigenbasis Kubo–Bastin transition for supplied measured and source vertices. -/
+noncomputable def eigenbasisKuboBastinSpectralVertexTerm
+    (measured source : H →L[ℂ] H)
+    (omega eta : ℝ) (mn : ι × ι) : ℂ :=
+  -(((data.probability mn.1 - data.probability mn.2 : ℝ) : ℂ)) *
+    eigenbasisKuboBastinVertexTransitionFactor
+      system data measured source omega eta mn
 
 /-- At positive switching rate, one eigenbasis Lehmann transition equals its retarded-resolvent
 Kubo–Bastin form. -/
@@ -136,7 +144,8 @@ theorem eigenbasisLehmannVertexTerm_eq_bastinSpectral
   simp only [eigenbasisTransitionData_energyGap, orderedLehmannEnergyGap]
   rw [lehmannDenominator_eq_retardedSpectralShift
     system.hbar omega eta (data.energy mn.1) (data.energy mn.2) hhbar]
-  unfold eigenbasisKuboBastinSpectralVertexTerm
+  unfold eigenbasisKuboBastinSpectralVertexTerm eigenbasisKuboBastinVertexTransitionFactor
+  simp only [← mul_assoc]
   rw [hinner]
   simp only [eigenbasisTransitionData,
     orderedLehmannTransitionData_weight, orderedLehmannTransitionWeight]
