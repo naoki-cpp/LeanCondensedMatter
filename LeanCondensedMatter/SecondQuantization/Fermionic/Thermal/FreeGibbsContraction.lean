@@ -30,7 +30,8 @@ theorem freeGibbsDensityOperator_expectation_annihilate_comp_create
         (Common.finiteHilbertOperatorAlgEquiv ((annihilate i).comp (create j))) =
       if i = j then
         Complex.exp ((β : ℂ) * (ε i : ℂ)) / (Complex.exp ((β : ℂ) * (ε i : ℂ)) + 1)
-      else 0 := by  have hbridge := freeGibbsExpectation_eq_completed_of_algebraicCore
+      else 0 := by
+  have hbridge := freeGibbsExpectation_eq_completed_of_algebraicCore
     ε β 0 ((annihilate i).comp (create j))
       ((completedAnnihilate i).comp (completedCreate j))
       (completedNormalProduct_comp_algebraicToCompleted i j)
@@ -45,7 +46,8 @@ theorem freeGibbsDensityOperator_expectation_create_comp_annihilate
     (ε : Mode → ℝ) (β : ℝ) (i j : Mode) :
     (freeGibbsDensityOperator ε β).expectation
         (Common.finiteHilbertOperatorAlgEquiv ((create j).comp (annihilate i))) =
-      if i = j then 1 / (Complex.exp ((β : ℂ) * (ε i : ℂ)) + 1) else 0 := by  have hbridge := freeGibbsExpectation_eq_completed_of_algebraicCore
+      if i = j then 1 / (Complex.exp ((β : ℂ) * (ε i : ℂ)) + 1) else 0 := by
+  have hbridge := freeGibbsExpectation_eq_completed_of_algebraicCore
     ε β 0 ((create j).comp (annihilate i))
       ((completedCreate j).comp (completedAnnihilate i))
       (completedReversedNormalProduct_comp_algebraicToCompleted i j)
