@@ -39,12 +39,12 @@ noncomputable section
 
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
 
-variable (system : BoundedFreeSystem H)
+variable (U : Multiplicative ℝ →* unitary (H →L[ℂ] H)) (hbar : ℝ)
 
 /-- The physical Dyson scalar for a real coupling is skew-adjoint. -/
 theorem star_timeDependentPhysicalDysonCoupling_eq_neg (lam : ℝ) :
-    star (timeDependentPhysicalDysonCoupling system lam) =
-      -timeDependentPhysicalDysonCoupling system lam := by
+    star (timeDependentPhysicalDysonCoupling hbar lam) =
+      -timeDependentPhysicalDysonCoupling hbar lam := by
   unfold timeDependentPhysicalDysonCoupling
   rw [Complex.star_def]
   simp
@@ -52,11 +52,11 @@ theorem star_timeDependentPhysicalDysonCoupling_eq_neg (lam : ℝ) :
 
 private theorem continuousTimeDependentDysonInteraction
     {V : ℝ → (H →L[ℂ] H)} {β M : ℝ} (hM : 0 ≤ M)
-    (hVcont : Continuous (timeDependentInteractionPerturbation system V))
+    (hVcont : Continuous (timeDependentInteractionPerturbation U V))
     (hVbound : ∀ s ∈ Icc (0 : ℝ) β,
-      ‖timeDependentInteractionPerturbation system V s‖ ≤ M) :
+      ‖timeDependentInteractionPerturbation U V s‖ ≤ M) :
     Dyson.ContinuousBoundedInteraction
-      (timeDependentInteractionPerturbation system V) β M := by
+      (timeDependentInteractionPerturbation U V) β M := by
   exact
     { toBoundedInteraction :=
         { norm_one_le := by
@@ -70,24 +70,23 @@ private theorem continuousTimeDependentDysonInteraction
 theorem timeDependentInteractionPropagator_unitary_relations_of_isSelfAdjoint
     {V : ℝ → (H →L[ℂ] H)} (hVself : ∀ s, IsSelfAdjoint (V s))
     (lam : ℝ) {β M t : ℝ} (hβ : 0 ≤ β) (hM : 0 ≤ M)
-    (hVcont : Continuous (timeDependentInteractionPerturbation system V))
+    (hVcont : Continuous (timeDependentInteractionPerturbation U V))
     (hVbound : ∀ s ∈ Icc (0 : ℝ) β,
-      ‖timeDependentInteractionPerturbation system V s‖ ≤ M)
+      ‖timeDependentInteractionPerturbation U V s‖ ≤ M)
     (ht : t ∈ Icc (0 : ℝ) β) :
-    star (timeDependentInteractionPropagator system V lam t) *
-          timeDependentInteractionPropagator system V lam t = 1 ∧
-      timeDependentInteractionPropagator system V lam t *
-          star (timeDependentInteractionPropagator system V lam t) = 1 := by
+    star (timeDependentInteractionPropagator U hbar V lam t) *
+          timeDependentInteractionPropagator U hbar V lam t = 1 ∧
+      timeDependentInteractionPropagator U hbar V lam t *
+          star (timeDependentInteractionPropagator U hbar V lam t) = 1 := by
   apply Dyson.evolution_unitary_relations_of_star_eq
-    (V := timeDependentInteractionPerturbation system V)
-    (lam := timeDependentPhysicalDysonCoupling system lam)
+    (V := timeDependentInteractionPerturbation U V)
+    (lam := timeDependentPhysicalDysonCoupling hbar lam)
     (β := β) (M := M) (t := t)
   · intro s
-    exact (isSelfAdjoint_timeDependentInteractionPerturbation_of_isSelfAdjoint
-      system V hVself s).star_eq
-  · exact star_timeDependentPhysicalDysonCoupling_eq_neg system lam
+    exact (isSelfAdjoint_timeDependentInteractionPerturbation_of_isSelfAdjoint U V hVself s).star_eq
+  · exact star_timeDependentPhysicalDysonCoupling_eq_neg hbar lam
   · exact hβ
-  · exact continuousTimeDependentDysonInteraction system hM hVcont hVbound
+  · exact continuousTimeDependentDysonInteraction U hM hVcont hVbound
   · exact ht
 
 /-- For a pointwise Hermitian perturbation, the finite-coupling observable map preserves the
@@ -95,16 +94,15 @@ identity. This is the exact hypothesis needed to pull back a normalized expectat
 theorem timeDependentPerturbedObservableMap_one_of_isSelfAdjoint
     {V : ℝ → (H →L[ℂ] H)} (hVself : ∀ s, IsSelfAdjoint (V s))
     (lam : ℝ) {β M t : ℝ} (hβ : 0 ≤ β) (hM : 0 ≤ M)
-    (hVcont : Continuous (timeDependentInteractionPerturbation system V))
+    (hVcont : Continuous (timeDependentInteractionPerturbation U V))
     (hVbound : ∀ s ∈ Icc (0 : ℝ) β,
-      ‖timeDependentInteractionPerturbation system V s‖ ≤ M)
+      ‖timeDependentInteractionPerturbation U V s‖ ≤ M)
     (ht : t ∈ Icc (0 : ℝ) β) :
-    timeDependentPerturbedObservableMap system V lam t 1 = 1 := by
+    timeDependentPerturbedObservableMap U hbar V lam t 1 = 1 := by
   rw [timeDependentPerturbedObservableMap_apply]
-  simp [timeDependentPerturbedObservable, heisenbergEvolution_freePropagatorGroup_apply,
-    freePropagator_neg_mul,
-    (timeDependentInteractionPropagator_unitary_relations_of_isSelfAdjoint
-      system hVself lam hβ hM hVcont hVbound ht).1]
+  simp only [timeDependentPerturbedObservable, map_one, mul_one]
+  exact (timeDependentInteractionPropagator_unitary_relations_of_isSelfAdjoint
+    U hbar hVself lam hβ hM hVcont hVbound ht).1
 
 /-- The finite-coupling perturbed expectation is the pullback of the ordinary expectation along the
 unital perturbed-observable map. -/
@@ -112,26 +110,26 @@ noncomputable def timeDependentPerturbedNormalizedExpectation
     (expectation : NormalizedExpectation H)
     {V : ℝ → (H →L[ℂ] H)} (hVself : ∀ s, IsSelfAdjoint (V s))
     (lam : ℝ) {β M t : ℝ} (hβ : 0 ≤ β) (hM : 0 ≤ M)
-    (hVcont : Continuous (timeDependentInteractionPerturbation system V))
+    (hVcont : Continuous (timeDependentInteractionPerturbation U V))
     (hVbound : ∀ s ∈ Icc (0 : ℝ) β,
-      ‖timeDependentInteractionPerturbation system V s‖ ≤ M)
+      ‖timeDependentInteractionPerturbation U V s‖ ≤ M)
     (ht : t ∈ Icc (0 : ℝ) β) : NormalizedExpectation H :=
-  expectation.pullback (timeDependentPerturbedObservableMap system V lam t)
+  expectation.pullback (timeDependentPerturbedObservableMap U hbar V lam t)
     (timeDependentPerturbedObservableMap_one_of_isSelfAdjoint
-      system hVself lam hβ hM hVcont hVbound ht)
+      U hbar hVself lam hβ hM hVcont hVbound ht)
 
 @[simp]
 theorem timeDependentPerturbedNormalizedExpectation_apply
     (expectation : NormalizedExpectation H)
     {V : ℝ → (H →L[ℂ] H)} (hVself : ∀ s, IsSelfAdjoint (V s))
     (lam : ℝ) {β M t : ℝ} (hβ : 0 ≤ β) (hM : 0 ≤ M)
-    (hVcont : Continuous (timeDependentInteractionPerturbation system V))
+    (hVcont : Continuous (timeDependentInteractionPerturbation U V))
     (hVbound : ∀ s ∈ Icc (0 : ℝ) β,
-      ‖timeDependentInteractionPerturbation system V s‖ ≤ M)
+      ‖timeDependentInteractionPerturbation U V s‖ ≤ M)
     (ht : t ∈ Icc (0 : ℝ) β) (A : H →L[ℂ] H) :
-    timeDependentPerturbedNormalizedExpectation system expectation hVself lam
+    timeDependentPerturbedNormalizedExpectation U hbar expectation hVself lam
         hβ hM hVcont hVbound ht A =
-      expectation (timeDependentPerturbedObservable system V A lam t) := by
+      expectation (timeDependentPerturbedObservable U hbar V A lam t) := by
   simp [timeDependentPerturbedNormalizedExpectation,
     timeDependentPerturbedObservableMap_apply]
 

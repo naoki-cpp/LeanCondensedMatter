@@ -5,7 +5,7 @@ import Mathlib.Algebra.Lie.OfAssociative
 set_option linter.style.header false
 
 /-!
-# Scalar-source specialization of the bounded Kubo formula
+# Scalar-source Kubo formula for bounded perturbations
 
 This module specializes the general perturbation convention
 
@@ -35,7 +35,7 @@ noncomputable section
 
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
 
-variable (system : BoundedFreeSystem H)
+variable (U : Multiplicative ℝ →* unitary (H →L[ℂ] H)) (hbar : ℝ)
 
 /-- The source-coupled perturbation `V(t) = -f(t) B`. -/
 noncomputable def sourceCoupledPerturbation
@@ -53,23 +53,23 @@ theorem isSelfAdjoint_sourceCoupledPerturbation
 @[simp]
 theorem timeDependentInteractionPerturbation_sourceCoupledPerturbation
     (f : ℝ → ℝ) (B : H →L[ℂ] H) (t : ℝ) :
-    timeDependentInteractionPerturbation system (sourceCoupledPerturbation f B) t =
-      (-(f t : ℂ)) • heisenbergEvolution (freePropagatorGroup system) t B := by
-  exact (heisenbergEvolution (freePropagatorGroup system) t).toAlgEquiv.toLinearEquiv.map_smul
+    timeDependentInteractionPerturbation U (sourceCoupledPerturbation f B) t =
+      (-(f t : ℂ)) • heisenbergEvolution U t B := by
+  exact (heisenbergEvolution U t).toAlgEquiv.toLinearEquiv.map_smul
     (-(f t : ℂ)) B
 
 /-- Moving the source minus sign from the interaction family into the Dyson scalar coupling leaves
 the interaction-picture propagator unchanged. -/
 theorem sourceCoupledInteractionPropagator_eq_positiveSourceDyson
     (f : ℝ → ℝ) (B : H →L[ℂ] H) (lam t : ℝ) :
-    timeDependentInteractionPropagator system (sourceCoupledPerturbation f B) lam t =
+    timeDependentInteractionPropagator U hbar (sourceCoupledPerturbation f B) lam t =
       Dyson.evolution
-        (fun s => (f s : ℂ) • heisenbergEvolution (freePropagatorGroup system) s B)
-        (-(timeDependentPhysicalDysonCoupling system lam)) t := by
+        (fun s => (f s : ℂ) • heisenbergEvolution U s B)
+        (-(timeDependentPhysicalDysonCoupling hbar lam)) t := by
   let W : ℝ → (H →L[ℂ] H) :=
-    fun s => (f s : ℂ) • heisenbergEvolution (freePropagatorGroup system) s B
+    fun s => (f s : ℂ) • heisenbergEvolution U s B
   have hinteraction :
-      timeDependentInteractionPerturbation system (sourceCoupledPerturbation f B) =
+      timeDependentInteractionPerturbation U (sourceCoupledPerturbation f B) =
         fun s => -W s := by
     funext s
     rw [timeDependentInteractionPerturbation_sourceCoupledPerturbation]
@@ -77,52 +77,52 @@ theorem sourceCoupledInteractionPropagator_eq_positiveSourceDyson
   unfold timeDependentInteractionPropagator
   rw [hinteraction]
   simpa [W] using
-    (Dyson.evolution_neg_neg W (-(timeDependentPhysicalDysonCoupling system lam)) t)
+    (Dyson.evolution_neg_neg W (-(timeDependentPhysicalDysonCoupling hbar lam)) t)
 
 /-- Substituting `V(t) = -f(t) B` into the general response integral produces the conventional
 positive `i/ℏ` prefactor. -/
 theorem sourceCoupled_responseIntegral_eq
     (expectation : NormalizedExpectation H)
     (f : ℝ → ℝ) (B A : H →L[ℂ] H) (t : ℝ) :
-    ((-(Complex.I / (system.hbar : ℂ))) •
+    ((-(Complex.I / (hbar : ℂ))) •
       ∫ s in (0 : ℝ)..t,
         expectation
-          ⁅heisenbergEvolution (freePropagatorGroup system) t A,
-            timeDependentInteractionPerturbation system
+          ⁅heisenbergEvolution U t A,
+            timeDependentInteractionPerturbation U
               (sourceCoupledPerturbation f B) s⁆) =
-      ((Complex.I / (system.hbar : ℂ)) •
+      ((Complex.I / (hbar : ℂ)) •
         ∫ s in (0 : ℝ)..t,
           (f s : ℂ) *
             expectation
-              ⁅heisenbergEvolution (freePropagatorGroup system) t A,
-                heisenbergEvolution (freePropagatorGroup system) s B⁆) := by
+              ⁅heisenbergEvolution U t A,
+                heisenbergEvolution U s B⁆) := by
   let g : ℝ → ℂ := fun s =>
     (f s : ℂ) *
       expectation
-        ⁅heisenbergEvolution (freePropagatorGroup system) t A,
-          heisenbergEvolution (freePropagatorGroup system) s B⁆
+        ⁅heisenbergEvolution U t A,
+          heisenbergEvolution U s B⁆
   have hfun :
       (fun s : ℝ =>
         expectation
-          ⁅heisenbergEvolution (freePropagatorGroup system) t A,
-            timeDependentInteractionPerturbation system
+          ⁅heisenbergEvolution U t A,
+            timeDependentInteractionPerturbation U
               (sourceCoupledPerturbation f B) s⁆) =
         fun s => -g s := by
     funext s
     rw [timeDependentInteractionPerturbation_sourceCoupledPerturbation]
     calc
       expectation
-          ⁅heisenbergEvolution (freePropagatorGroup system) t A,
-            (-(f s : ℂ)) • heisenbergEvolution (freePropagatorGroup system) s B⁆ =
+          ⁅heisenbergEvolution U t A,
+            (-(f s : ℂ)) • heisenbergEvolution U s B⁆ =
         expectation
           ((-(f s : ℂ)) •
-            ⁅heisenbergEvolution (freePropagatorGroup system) t A,
-              heisenbergEvolution (freePropagatorGroup system) s B⁆) := by
+            ⁅heisenbergEvolution U t A,
+              heisenbergEvolution U s B⁆) := by
         rw [lie_smul]
       _ = (-(f s : ℂ)) *
           expectation
-            ⁅heisenbergEvolution (freePropagatorGroup system) t A,
-              heisenbergEvolution (freePropagatorGroup system) s B⁆ := by
+            ⁅heisenbergEvolution U t A,
+              heisenbergEvolution U s B⁆ := by
         exact map_smul expectation.toContinuousLinearMap _ _
       _ = -g s := by
         simp [g]
@@ -136,29 +136,29 @@ theorem hasDerivAt_sourceCoupledPerturbedExpectation_zero_of_bound_kubo
     (f : ℝ → ℝ) {B : H →L[ℂ] H} (hB : IsSelfAdjoint B)
     (A : H →L[ℂ] H) {β M t : ℝ} (hM : 0 ≤ M)
     (hV : ∀ s ∈ Icc (0 : ℝ) β,
-      ‖timeDependentInteractionPerturbation system
+      ‖timeDependentInteractionPerturbation U
         (sourceCoupledPerturbation f B) s‖ ≤ M)
     (ht : t ∈ Icc (0 : ℝ) β)
     (hInt : IntervalIntegrable
-      (timeDependentInteractionPerturbation system
+      (timeDependentInteractionPerturbation U
         (sourceCoupledPerturbation f B)) MeasureTheory.volume 0 t) :
     HasDerivAt
       (fun lam : ℝ =>
-        timeDependentPerturbedExpectationFunctional system expectation
+        timeDependentPerturbedExpectationFunctional U hbar expectation
           (sourceCoupledPerturbation f B) lam t A)
-      ((Complex.I / (system.hbar : ℂ)) •
+      ((Complex.I / (hbar : ℂ)) •
         ∫ s in (0 : ℝ)..t,
           (f s : ℂ) *
             expectation
-              ⁅heisenbergEvolution (freePropagatorGroup system) t A,
-                heisenbergEvolution (freePropagatorGroup system) s B⁆)
+              ⁅heisenbergEvolution U t A,
+                heisenbergEvolution U s B⁆)
       0 := by
   have hgeneral :=
     hasDerivAt_timeDependentPerturbedExpectationFunctional_apply_zero_of_bound_kubo
-      system expectation
+      U hbar expectation
         (fun s => isSelfAdjoint_sourceCoupledPerturbation f hB s)
         A hM hV ht hInt
-  rw [sourceCoupled_responseIntegral_eq system expectation f B A t] at hgeneral
+  rw [sourceCoupled_responseIntegral_eq U hbar expectation f B A t] at hgeneral
   exact hgeneral
 
 /-- The bounded scalar-source Kubo formula written as a causal convolution with the retarded
@@ -168,23 +168,23 @@ theorem hasDerivAt_sourceCoupledPerturbedExpectation_zero_of_bound_retarded
     (f : ℝ → ℝ) {B : H →L[ℂ] H} (hB : IsSelfAdjoint B)
     (A : H →L[ℂ] H) {β M t : ℝ} (hM : 0 ≤ M)
     (hV : ∀ s ∈ Icc (0 : ℝ) β,
-      ‖timeDependentInteractionPerturbation system
+      ‖timeDependentInteractionPerturbation U
         (sourceCoupledPerturbation f B) s‖ ≤ M)
     (ht : t ∈ Icc (0 : ℝ) β)
     (hInt : IntervalIntegrable
-      (timeDependentInteractionPerturbation system
+      (timeDependentInteractionPerturbation U
         (sourceCoupledPerturbation f B)) MeasureTheory.volume 0 t) :
     HasDerivAt
       (fun lam : ℝ =>
-        timeDependentPerturbedExpectationFunctional system expectation
+        timeDependentPerturbedExpectationFunctional U hbar expectation
           (sourceCoupledPerturbation f B) lam t A)
       (∫ s in (0 : ℝ)..t,
-        (f s : ℂ) * retardedSusceptibility (freePropagatorGroup system) system.hbar expectation A B t s)
+        (f s : ℂ) * retardedSusceptibility U hbar expectation A B t s)
       0 := by
   have h := hasDerivAt_sourceCoupledPerturbedExpectation_zero_of_bound_kubo
-    system expectation f hB A hM hV ht hInt
+    U hbar expectation f hB A hM hV ht hInt
   rw [sourceCoupled_responseIntegral_eq_retardedSusceptibility
-    (freePropagatorGroup system) system.hbar expectation f B A ht.1] at h
+    U hbar expectation f B A ht.1] at h
   exact h
 
 end
