@@ -7,8 +7,11 @@ set_option linter.style.header false
 # Free-fermion Boltzmann weights and partition function
 
 This module owns the finite complex-coordinate free-fermion Boltzmann weight and partition
-function used by perturbative and algebraic finite-sum calculations. The canonical physical Gibbs
-state and real partition function are owned by `QuantumTheory.Gibbs.Eigenbasis`.
+function used by perturbative and algebraic finite-sum calculations. The generic pure-point Gibbs state and real partition function are owned by
+`QuantumTheory.Gibbs.Eigenbasis`. These finite occupation weights and `freePartitionFunction`
+implicitly use `μ = 0`; unlike a fixed-`N` canonical partition function, they sum over
+all occupation sectors. Explicit-`μ` migration of the remaining finite-fermion users is
+tracked in #3986.
 -/
 
 namespace SecondQuantization
@@ -26,7 +29,7 @@ noncomputable def freePartitionFunction (ε : Mode → ℝ) (β : ℝ) : ℂ :=
   ∑ n : Occupation Mode, freeBoltzmannWeight ε β n
 
 omit [LinearOrder Mode] in
-/-- The finite complex free-fermion partition function is exactly the canonical pure-point Gibbs
+/-- The finite complex free-fermion partition function is exactly the generic pure-point Gibbs
 partition function for `fermionEnergy`, coerced from `ℝ` to `ℂ`. -/
 theorem freePartitionFunction_eq_coe_eigenbasisPartitionFunction
     (ε : Mode → ℝ) (β : ℝ) :
