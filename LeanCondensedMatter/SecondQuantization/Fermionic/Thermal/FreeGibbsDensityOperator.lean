@@ -1,6 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.Hamiltonian
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsExpectationBridge
-import LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsCoordinate
 import LeanCondensedMatter.QuantumTheory.Gibbs.Eigenbasis
 
 set_option linter.style.header false
@@ -35,18 +34,6 @@ noncomputable def freeGibbsDensityOperator (ε : Mode → ℝ) (β : ℝ) :
     (eigenbasisGibbsSummable_of_finite (fermionEnergy ε) β)
 
 omit [LinearOrder Mode] in
-/-- The free Gibbs density operator acts diagonally in the occupation basis. -/
-theorem freeGibbsDensityOperator_apply_basis (ε : Mode → ℝ) (β : ℝ)
-    (n : Occupation Mode) :
-    (freeGibbsDensityOperator ε β).op (Common.finiteHilbertBasisState n) =
-      (eigenbasisGibbsProbability (fermionEnergy ε) β n : ℂ) •
-        Common.finiteHilbertBasisState n := by
-  simpa [freeGibbsDensityOperator] using
-    eigenbasisGibbsDensityOperator_apply_basis
-      (Common.finiteHilbertBasis (Config := Occupation Mode)) (fermionEnergy ε) β
-      (eigenbasisGibbsSummable_of_finite (fermionEnergy ε) β) n
-
-omit [LinearOrder Mode] in
 /-- Evaluating the free Gibbs density state on a transported algebraic Fock operator is the
 canonical finite Gibbs expectation at `fermionEnergy ε`. -/
 theorem freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation
@@ -57,19 +44,6 @@ theorem freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation
     Common.finiteGibbsExpectationLinearMap, LinearMap.comp_apply]
   rfl
 
-omit [LinearOrder Mode] in
-/-- The finite fermionic density-state expectation is the common summable diagonal
-trace ratio specialized to the occupation energies. -/
-theorem freeGibbsDensityOperator_expectation_eq_summableDiagonalTraceRatioLinear
-    (ε : Mode → ℝ) (β : ℝ)
-    (A : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) :
-    (freeGibbsDensityOperator ε β).expectation (Common.finiteHilbertOperatorAlgEquiv A) =
-      Common.summableDiagonalTraceRatioLinear
-        (Common.diagonalEvolution (fermionEnergy ε) (-β))
-        ⟨A, Summable.of_finite⟩ := by
-  rw [freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation]
-  exact Common.finiteGibbsExpectation_eq_summableDiagonalTraceRatioLinear
-    (fermionEnergy ε) β A
 
 end Fermionic
 end SecondQuantization
