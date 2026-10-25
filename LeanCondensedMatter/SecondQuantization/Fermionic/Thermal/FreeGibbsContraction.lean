@@ -33,17 +33,13 @@ theorem freeGibbsDensityOperator_expectation_annihilate_comp_create
         (annihilate i) (create j) (completedAnnihilate i) (completedCreate j)
         (completedAnnihilate_comp_algebraicToCompleted i)
         (completedCreate_comp_algebraicToCompleted j))
-  simp only [sub_zero] at hbridge
-  have hpair := grandCanonicalGibbsDensityOperator_expectation_pair ε β 0
+  have hpair := hbridge.trans (grandCanonicalGibbsDensityOperator_expectation_pair ε β 0
     (eigenbasisGibbsSummable_of_finite
       (Common.grandCanonicalEnergy (Config := Occupation Mode) ε 0) β)
-    (CompletedThermalLadder.annihilate i) (CompletedThermalLadder.create j)
-  simp only [CompletedThermalLadder.operator_annihilate,
-    CompletedThermalLadder.operator_create,
-    CompletedThermalLadder.gibbsFactor_annihilate,
+    (CompletedThermalLadder.annihilate i) (CompletedThermalLadder.create j))
+  simp only [sub_zero, CompletedThermalLadder.gibbsFactor_annihilate,
     CompletedThermalLadder.anticommutatorValue] at hpair
-  rw [hbridge, hpair]
-  simp only [sub_zero]
+  rw [hpair]
   by_cases hij : i = j
   · simp [hij, add_comm]
   · simp [hij]
@@ -61,17 +57,13 @@ theorem freeGibbsDensityOperator_expectation_create_comp_annihilate
         (create j) (annihilate i) (completedCreate j) (completedAnnihilate i)
         (completedCreate_comp_algebraicToCompleted j)
         (completedAnnihilate_comp_algebraicToCompleted i))
-  simp only [sub_zero] at hbridge
-  have hpair := grandCanonicalGibbsDensityOperator_expectation_pair ε β 0
+  have hpair := hbridge.trans (grandCanonicalGibbsDensityOperator_expectation_pair ε β 0
     (eigenbasisGibbsSummable_of_finite
       (Common.grandCanonicalEnergy (Config := Occupation Mode) ε 0) β)
-    (CompletedThermalLadder.create j) (CompletedThermalLadder.annihilate i)
-  simp only [CompletedThermalLadder.operator_create,
-    CompletedThermalLadder.operator_annihilate,
-    CompletedThermalLadder.gibbsFactor_create,
+    (CompletedThermalLadder.create j) (CompletedThermalLadder.annihilate i))
+  simp only [sub_zero, CompletedThermalLadder.gibbsFactor_create,
     CompletedThermalLadder.anticommutatorValue] at hpair
-  rw [hbridge, hpair]
-  simp only [sub_zero]
+  rw [hpair]
   by_cases hij : i = j
   · subst j
     simp only [ite_true, mul_one]
