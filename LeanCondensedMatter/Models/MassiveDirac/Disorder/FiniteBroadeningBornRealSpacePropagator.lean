@@ -263,61 +263,19 @@ theorem finiteCutoffContinuumBornDysonRealSpaceGreenMatrix_radialAxis_eq
       sigmaX, sigmaY, sigmaZ, InternalSpace.pauliX, InternalSpace.pauliY,
       InternalSpace.pauliZ, sub_eq_add_neg]
 
-/-- Entrywise interval integration of a complex two-band matrix. The interval
-integral's existing non-integrable convention is preserved entry by entry. -/
-noncomputable def intervalIntegralMatrix2
-    (a b : ℝ) (f : ℝ → Matrix2) : Matrix2 :=
-  fun i j => ∫ p in a..b, f p i j
-
-/-- Entrywise interval integration commutes with a fixed complex scalar. -/
-theorem intervalIntegralMatrix2_smul
-    (a b : ℝ) (c : ℂ) (f : ℝ → Matrix2) :
-    intervalIntegralMatrix2 a b (fun p => c • f p) =
-      c • intervalIntegralMatrix2 a b f := by
-  ext i j
-  change (∫ p in a..b, c * f p i j) = c * (∫ p in a..b, f p i j)
-  rw [intervalIntegral.integral_const_mul]
-
-/-- Entrywise interval integration is additive for interval-integrable matrices.
-The assumptions matter: the default integral of a non-integrable function
-is zero, so unconditional additivity would be false. -/
-theorem intervalIntegralMatrix2_add
-    (a b : ℝ) (f g : ℝ → Matrix2)
-    (hf : ∀ i j, IntervalIntegrable (fun p => f p i j) MeasureTheory.volume a b)
-    (hg : ∀ i j, IntervalIntegrable (fun p => g p i j) MeasureTheory.volume a b) :
-    intervalIntegralMatrix2 a b (fun p => f p + g p) =
-      intervalIntegralMatrix2 a b f + intervalIntegralMatrix2 a b g := by
-  ext i j
-  change (∫ p in a..b, f p i j + g p i j) =
-    (∫ p in a..b, f p i j) + (∫ p in a..b, g p i j)
-  exact intervalIntegral.integral_add (hf i j) (hg i j)
-
-/-- Subtraction likewise commutes with entrywise interval integration
-under the same explicit analytic assumptions. -/
-theorem intervalIntegralMatrix2_sub
-    (a b : ℝ) (f g : ℝ → Matrix2)
-    (hf : ∀ i j, IntervalIntegrable (fun p => f p i j) MeasureTheory.volume a b)
-    (hg : ∀ i j, IntervalIntegrable (fun p => g p i j) MeasureTheory.volume a b) :
-    intervalIntegralMatrix2 a b (fun p => f p - g p) =
-      intervalIntegralMatrix2 a b f - intervalIntegralMatrix2 a b g := by
-  ext i j
-  change (∫ p in a..b, f p i j - g p i j) =
-    (∫ p in a..b, f p i j) - (∫ p in a..b, g p i j)
-  exact intervalIntegral.integral_sub (hf i j) (hg i j)
-
 /-- Diagonal spinor conjugation commutes with entrywise interval integration.
 Every entry has only one nonzero summand, so scalar constant-factor integral
 rules suffice and no additional integrability assumptions are required. -/
-theorem intervalIntegralMatrix2_spinRotation_conjugate
+theorem InternalSpace.intervalIntegralPauliMatrix_spinRotation_conjugate
     (angle a b : ℝ) (f : ℝ → Matrix2) :
-    intervalIntegralMatrix2 a b
+    InternalSpace.intervalIntegralPauliMatrix a b
         (fun p => inPlaneSpinRotation angle * f p *
           inPlaneSpinRotationInverse angle) =
-      inPlaneSpinRotation angle * intervalIntegralMatrix2 a b f *
+      inPlaneSpinRotation angle * InternalSpace.intervalIntegralPauliMatrix a b f *
         inPlaneSpinRotationInverse angle := by
   ext i j
   fin_cases i <;> fin_cases j <;>
-    simp [intervalIntegralMatrix2, inPlaneSpinRotation,
+    simp [InternalSpace.intervalIntegralPauliMatrix, inPlaneSpinRotation,
       inPlaneSpinRotationInverse, Matrix.mul_apply, Matrix.vecMul_apply_eq_sum,
       Fin.sum_univ_two, intervalIntegral.integral_const_mul,
       intervalIntegral.integral_mul_const, mul_assoc]
@@ -389,7 +347,7 @@ theorem finiteCutoffContinuumBornDysonRealSpaceGreenMatrix_polarPoint2D_eq_radia
       finiteCutoffContinuumBornDysonRealSpaceGreenMatrix
           side v m probeEnergy broadening disorderStrength hbar pMax
           (polarPoint2D radius θ) =
-        prefactor • intervalIntegralMatrix2 0 pMax (angular θ) := by
+        prefactor • InternalSpace.intervalIntegralPauliMatrix 0 pMax (angular θ) := by
     ext i j
     change
       finiteCutoffContinuumBornDysonRealSpaceGreenMatrix
@@ -403,24 +361,24 @@ theorem finiteCutoffContinuumBornDysonRealSpaceGreenMatrix_polarPoint2D_eq_radia
           side v m probeEnergy broadening disorderStrength hbar pMax
           (polarPoint2D radius angle) =
         prefactor •
-          (inPlaneSpinRotation angle * intervalIntegralMatrix2 0 pMax base *
+          (inPlaneSpinRotation angle * InternalSpace.intervalIntegralPauliMatrix 0 pMax base *
             inPlaneSpinRotationInverse angle) := by
     rw [hIntegral angle]
     have hentries :
-        intervalIntegralMatrix2 0 pMax (angular angle) =
-          intervalIntegralMatrix2 0 pMax
+        InternalSpace.intervalIntegralPauliMatrix 0 pMax (angular angle) =
+          InternalSpace.intervalIntegralPauliMatrix 0 pMax
             (fun p => inPlaneSpinRotation angle * base p *
               inPlaneSpinRotationInverse angle) := by
       ext i j
       apply intervalIntegral.integral_congr
       intro p _
       exact congrArg (fun M : Matrix2 => M i j) (hpoint angle p)
-    rw [hentries, intervalIntegralMatrix2_spinRotation_conjugate]
+    rw [hentries, InternalSpace.intervalIntegralPauliMatrix_spinRotation_conjugate]
   have haxis :
       finiteCutoffContinuumBornDysonRealSpaceGreenMatrix
           side v m probeEnergy broadening disorderStrength hbar pMax
           (polarPoint2D radius 0) =
-        prefactor • intervalIntegralMatrix2 0 pMax base := by
+        prefactor • InternalSpace.intervalIntegralPauliMatrix 0 pMax base := by
     rw [hIntegral 0]
     congr 1
     ext i j
