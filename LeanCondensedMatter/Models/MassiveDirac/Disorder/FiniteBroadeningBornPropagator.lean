@@ -234,6 +234,28 @@ theorem finiteCutoffContinuumBornDysonGreenOperator_polar_eq
         side v m probeEnergy broadening disorderStrength hbar pMax)
       v p θ)
 
+/-- Matrix-valued polar Born-Dyson Green identity, shared by momentum-space spinor
+rotation and the full-angle real-space Fourier constructions. -/
+theorem finiteCutoffContinuumBornDysonGreenMatrix_polar_eq
+    (side : SpectralSide)
+    (v m p θ probeEnergy broadening disorderStrength hbar pMax : ℝ) :
+    finiteCutoffContinuumBornDysonGreenMatrix
+        side v m (p * Real.cos θ) (p * Real.sin θ)
+        probeEnergy broadening disorderStrength hbar pMax =
+      polarPauliMatrix
+        (finiteCutoffContinuumBornDysonScalarCoefficient
+          side v m p 0 probeEnergy broadening disorderStrength hbar pMax)
+        (finiteCutoffContinuumBornDysonPauliCoefficient .x
+          side v m p 0 probeEnergy broadening disorderStrength hbar pMax)
+        (finiteCutoffContinuumBornDysonPauliCoefficient .z
+          side v m p 0 probeEnergy broadening disorderStrength hbar pMax) θ := by
+  apply (Matrix.toEuclideanCLM :
+    Matrix2 ≃⋆ₐ[ℂ] (DiracHilbert →L[ℂ] DiracHilbert)).injective
+  simpa [finiteCutoffContinuumBornDysonGreenOperator, polarPauliOperator,
+    matrixOperator] using
+    (finiteCutoffContinuumBornDysonGreenOperator_polar_eq
+      side v m p θ probeEnergy broadening disorderStrength hbar pMax)
+
 /-- At zero disorder strength the finite-`η` Born-Dyson denominator reduces to the clean Pauli Green
 denominator. -/
 @[simp] theorem finiteCutoffContinuumBornDysonDenominator_zero_disorder
