@@ -217,25 +217,8 @@ theorem traceNorm_eq_spectralTrace (h : SpectralTraceClass T) (hpos : T.IsPositi
 /-- A nonzero positive spectral-trace-class operator has strictly positive real spectral trace. -/
 theorem spectralTrace_pos (h : SpectralTraceClass T) (hpos : T.IsPositive) (hne : T ≠ 0) :
     0 < spectralTrace T := by
-  classical
-  have hnonempty : Nonempty (EigenvectorIndex T) := by
-    by_contra hidx
-    haveI : IsEmpty (EigenvectorIndex T) := ⟨fun a => hidx ⟨a⟩⟩
-    apply hne
-    ext x
-    have hsum := hasSum_eigenvectorFamily h.compact h.symmetric x
-    simpa using hsum.tsum_eq.symm
-  let a : EigenvectorIndex T := Classical.choice hnonempty
-  have ha_nonneg : 0 ≤ a.1.1 :=
-    eigenvalue_nonneg_of_isPositive hpos.toLinearMap a
-  have ha_pos : 0 < a.1.1 :=
-    lt_of_le_of_ne ha_nonneg (Ne.symm a.1.2)
-  have hsum : Summable (fun b : EigenvectorIndex T => b.1.1) := by
-    have habs : Summable (fun b : EigenvectorIndex T => |b.1.1|) := h.summable
-    exact Summable.of_norm (by simpa only [Real.norm_eq_abs] using habs)
-  have hle : a.1.1 ≤ spectralTrace T :=
-    hsum.le_tsum a (fun b _ => eigenvalue_nonneg_of_isPositive hpos.toLinearMap b)
-  exact lt_of_lt_of_le ha_pos hle
+  rw [← h.traceNorm_eq_spectralTrace hpos, h.isTraceClass.traceNorm_eq_realTrace hpos]
+  exact h.isTraceClass.realTrace_pos hpos hne
 
 /-- Compute the real spectral trace against any Hilbert basis using lossless diagonal expectation
 values. -/
