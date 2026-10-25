@@ -1,4 +1,3 @@
-import LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.Denominator
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornZeroBroadening
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornInvertibility
 import Mathlib.Analysis.Complex.RealDeriv
@@ -12,6 +11,8 @@ set_option linter.style.header false
 This module owns the bare-source `RR/AA` same-side radial remainder used by the longitudinal
 Massive-Dirac Středa response. It evaluates the finite-broadening radial integral, exposes its
 fixed-disorder `η → 0⁺` endpoint, and records the separate weak-disorder behavior of that endpoint.
+General single-pole Born–Dyson logarithmic integration is owned upstream by
+`Disorder.FiniteBroadeningBornRadialMoments`.
 
 The same-side remainder stays separate from the singular retarded-advanced ladder action. The cutoff
 remains fixed throughout, and no physical conductivity normalization is attached here.
@@ -67,49 +68,6 @@ private theorem intervalIntegrable_and_integral_radialQuadraticInverseSquare
   rw [intervalIntegral.integral_eq_sub_of_hasDerivAt (fun p _ => hF p) hint]
   simp [F, g, c, sub_eq_add_neg, mul_assoc]
   ring
-
-/-- The finite-cutoff Born-Dyson single-pole radial integral is exactly
-a difference of principal complex logarithms whenever the real part of
-its effective spectral center is positive. Finite-`η` invertibility
-excludes all real momentum poles and supplies the required nonzero
-imaginary part of that center; no additional log-branch assumption is made.
-This is before broadening and disorder limits. -/
-theorem finiteBroadeningBornDyson_singlePoleRadialIntegral_eq_log_of_center_re_pos
-    (side : SpectralSide)
-    (v m probeEnergy broadening disorderStrength hbar pMax : ℝ)
-    (hvelocity : v ≠ 0) (hbroadening : broadening ≠ 0)
-    (hdisorder : 0 ≤ disorderStrength) (hpMax : 0 ≤ pMax)
-    (hcenterRe : 0 <
-      (finiteCutoffContinuumBornEffectiveEnergy
-          side v m probeEnergy broadening disorderStrength hbar pMax ^ 2 -
-        finiteCutoffContinuumBornEffectiveMass
-          side v m probeEnergy broadening disorderStrength hbar pMax ^ 2).re) :
-    (∫ p in (0 : ℝ)..pMax,
-      (p : ℂ) *
-        (finiteCutoffContinuumBornDysonDenominator
-          side v m p 0 probeEnergy broadening disorderStrength hbar pMax)⁻¹) =
-      -(((2 : ℂ) * (v : ℂ) ^ 2)⁻¹) *
-        (Complex.log (finiteCutoffContinuumBornDysonDenominator
-          side v m pMax 0 probeEnergy broadening disorderStrength hbar pMax) -
-          Complex.log (finiteCutoffContinuumBornDysonDenominator
-            side v m 0 0 probeEnergy broadening disorderStrength hbar pMax)) := by
-  let energy := finiteCutoffContinuumBornEffectiveEnergy
-    side v m probeEnergy broadening disorderStrength hbar pMax
-  let mass := finiteCutoffContinuumBornEffectiveMass
-    side v m probeEnergy broadening disorderStrength hbar pMax
-  have hden : ∀ p : ℝ, massiveDiracRadialDenominator v p energy mass ≠ 0 := by
-    intro p
-    rw [finiteCutoffContinuumBornDysonDenominator_eq_radial]
-    exact finiteCutoffContinuumBornDysonDenominator_ne_zero
-      side v m p 0 probeEnergy broadening disorderStrength hbar pMax
-      hbroadening hdisorder hpMax
-  have him : (energy ^ 2 - mass ^ 2).im ≠ 0 :=
-    massiveDiracRadialDenominator_center_im_ne_zero_of_re_pos
-      v energy mass hvelocity hcenterRe hden
-  have hlog := integral_massiveDiracRadialDenominatorKernel_eq_log
-    v pMax energy mass hvelocity him
-  simpa only [massiveDiracRadialDenominatorKernel,
-    ← finiteCutoffContinuumBornDysonDenominator_eq_radial] using hlog
 
 /-- Evaluated finite-broadening radial endpoint of one bare-source same-side spectral branch. -/
 def finiteBroadeningSameSideRadialEndpoint
