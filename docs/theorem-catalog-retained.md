@@ -468,9 +468,9 @@ or consumer structure changes.
 - `SecondQuantization.Fermionic.eigenbasisGibbsEnergyExpectation_fermionEnergy_eq_sum_fermiDirac` — canonical
   finite free-fermion mean-energy identity `⟨E⟩ = ∑ᵢ εᵢ fᵢ`; its current single consumer is the
   entropy endpoint, but the thermodynamic statement is independently meaningful.
-- `SecondQuantization.Fermionic.vonNeumannEntropy_freeGibbsDensityOperator_toReal_eq_sum_fermiDirac`
-  — canonical finite free-fermion entropy endpoint expressing the Gibbs-state von Neumann entropy
-  as the sum of binary Fermi–Dirac mode entropies.
+- `SecondQuantization.Fermionic.vonNeumannEntropy_finiteGrandCanonicalGibbs_toReal_eq_sum_fermiDirac`
+  — finite full-Fock grand-canonical Gibbs entropy at explicit chemical potential, expressed
+  as a sum of binary Fermi–Dirac mode entropies using the generic pure-point density state.
 - `ContinuousLinearMap.IsTraceClass.traceNorm_nonneg` — Canonical nonnegativity of the trace norm of a general trace-class operator. Although its proof reuses Hilbert–Schmidt norm-square, the trace-norm invariant deserves its own operator-facing API.
 - `ContinuousLinearMap.IsTraceClass.traceNorm_proof_irrel` — Trace norm depends on the operator rather than the witness of trace-class membership. Retain the trace-class-facing statement used by adjoint and norm-congruence arguments.
 - `ContinuousLinearMap.IsTraceClass.trace_add` — General additivity of the canonical complex trace on trace-class operators. Its present private density-expectation consumer does not make the operator theorem proof plumbing.
