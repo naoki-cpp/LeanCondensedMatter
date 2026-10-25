@@ -547,7 +547,7 @@ theorem grandCanonicalGibbsDensityOperator_expectation_create_comp_annihilate
     CompletedThermalLadder.operator_annihilate,
     CompletedThermalLadder.gibbsFactor_create,
     CompletedThermalLadder.anticommutatorValue,
-    ContinuousLinearMap.comp_id] using hpair
+    ContinuousLinearMap.comp_id, eq_comm] using hpair
 
 /-- Fermi--Dirac occupation of one mode in the completed grand-canonical free
 Gibbs state, for an arbitrary (possibly infinite) ordered mode type.
