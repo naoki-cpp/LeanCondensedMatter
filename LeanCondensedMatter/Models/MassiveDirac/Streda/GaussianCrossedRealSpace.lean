@@ -689,10 +689,6 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceCurrentBlock_polar
           src v m probeEnergy broadening disorderStrength hbar pMax radius =
         prefactor • InternalSpace.intervalIntegralPauliMatrix 0 pMax (radial src) := by
     ext i j
-    change
-      finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock
-          src v m probeEnergy broadening disorderStrength hbar pMax radius i j =
-        prefactor * (∫ p in (0 : ℝ)..pMax, radial src p i j)
     exact finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock_apply_eq_entryKernel_integral
       src v m probeEnergy broadening disorderStrength hbar pMax radius i j
   have hangular :
@@ -701,11 +697,6 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceCurrentBlock_polar
           (polarPoint2D radius angle) =
         prefactor • InternalSpace.intervalIntegralPauliMatrix 0 pMax angular := by
     ext i j
-    change
-      finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceCurrentBlock
-          source v m probeEnergy broadening disorderStrength hbar pMax
-          (polarPoint2D radius angle) i j =
-        prefactor * (∫ p in (0 : ℝ)..pMax, angular p i j)
     exact
       finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceCurrentBlock_polarPoint2D_eq_angularKernel_integral
         source v m probeEnergy broadening disorderStrength hbar pMax radius angle i j
@@ -744,37 +735,20 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceCurrentBlock_polar
         0 pMax (fun p => s • radial 0 p) (fun p => c • radial 1 p)
         (hscaled 0 s) (hscaled 1 c)]
       rw [InternalSpace.intervalIntegralPauliMatrix_smul, InternalSpace.intervalIntegralPauliMatrix_smul]
-  rw [hangular]
-  have hentries :
-      InternalSpace.intervalIntegralPauliMatrix 0 pMax angular =
-        InternalSpace.intervalIntegralPauliMatrix 0 pMax (fun p =>
-          inPlaneSpinRotation angle *
-            (if source = 0 then c • radial 0 p - s • radial 1 p
-            else s • radial 0 p + c • radial 1 p) *
-            inPlaneSpinRotationInverse angle) := by
-    ext i j
-    apply intervalIntegral.integral_congr
-    intro p _
-    exact congrArg (fun M : Matrix2 => M i j) (hpoint p)
-  rw [hentries, intervalIntegralMatrix2_spinRotation_conjugate, hmix]
+  have hfun : angular = fun p =>
+      inPlaneSpinRotation angle *
+        (if source = 0 then c • radial 0 p - s • radial 1 p
+        else s • radial 0 p + c • radial 1 p) *
+        inPlaneSpinRotationInverse angle := by
+    funext p
+    exact hpoint p
+  rw [hangular, hfun, intervalIntegralMatrix2_spinRotation_conjugate, hmix]
   rw [hradial 0, hradial 1]
-  have htransport (M : Matrix2) :
-      prefactor • (inPlaneSpinRotation angle * M * inPlaneSpinRotationInverse angle) =
-        inPlaneSpinRotation angle * (prefactor • M) * inPlaneSpinRotationInverse angle := by
-    simp only [mul_smul_comm, smul_mul_assoc]
-  have hminus (M N : Matrix2) :
-      prefactor • (c • M - s • N) =
-        c • (prefactor • M) - s • (prefactor • N) := by
-    simp only [smul_sub, smul_smul, mul_comm prefactor c, mul_comm prefactor s]
-  have hplus (M N : Matrix2) :
-      prefactor • (s • M + c • N) =
-        s • (prefactor • M) + c • (prefactor • N) := by
-    simp only [smul_add, smul_smul, mul_comm prefactor c, mul_comm prefactor s]
   by_cases hs : source = 0
-  · simp only [hs, ite_true]
-    rw [htransport, hminus]
-  · simp only [hs, ite_false]
-    rw [htransport, hplus]
+  · simp only [hs, ite_true, mul_smul_comm, smul_mul_assoc,
+      smul_sub, smul_smul, mul_comm prefactor c, mul_comm prefactor s]
+  · simp only [hs, ite_false, mul_smul_comm, smul_mul_assoc,
+      smul_add, smul_smul, mul_comm prefactor c, mul_comm prefactor s]
 
 private theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel_neg_radius
     (source : Fin 2)
