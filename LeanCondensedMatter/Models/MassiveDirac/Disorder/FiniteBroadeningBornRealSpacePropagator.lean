@@ -64,11 +64,8 @@ theorem finiteCutoffContinuumBornDysonGreenMatrix_polar_spinRotation
           side v m (p * Real.cos θ) (p * Real.sin θ)
           probeEnergy broadening disorderStrength hbar pMax =
         polarPauliMatrix a b d θ := by
-    apply (Matrix.toEuclideanCLM :
-      Matrix2 ≃⋆ₐ[ℂ] (DiracHilbert →L[ℂ] DiracHilbert)).injective
-    simpa [finiteCutoffContinuumBornDysonGreenOperator, polarPauliOperator,
-      matrixOperator, a, b, d] using
-      (finiteCutoffContinuumBornDysonGreenOperator_polar_eq
+    simpa [a, b, d] using
+      (finiteCutoffContinuumBornDysonGreenMatrix_polar_eq
         side v m p θ probeEnergy broadening disorderStrength hbar pMax)
   have haxis :
       finiteCutoffContinuumBornDysonGreenMatrix
@@ -205,11 +202,8 @@ theorem finiteCutoffContinuumBornDysonRealSpaceGreenMatrix_polarPoint2D_eq_angul
           side v m (p * Real.cos θ) (p * Real.sin θ)
           probeEnergy broadening disorderStrength hbar pMax =
         polarPauliMatrix (a p) (b p) (d p) θ := by
-    apply (Matrix.toEuclideanCLM :
-      Matrix2 ≃⋆ₐ[ℂ] (DiracHilbert →L[ℂ] DiracHilbert)).injective
-    simpa [finiteCutoffContinuumBornDysonGreenOperator, polarPauliOperator,
-      matrixOperator, a, b, d] using
-      (finiteCutoffContinuumBornDysonGreenOperator_polar_eq
+    simpa [a, b, d] using
+      (finiteCutoffContinuumBornDysonGreenMatrix_polar_eq
         side v m p θ probeEnergy broadening disorderStrength hbar pMax)
   have hfield (p θ : ℝ) :
       finiteCutoffContinuumBornDysonGreenMatrix
