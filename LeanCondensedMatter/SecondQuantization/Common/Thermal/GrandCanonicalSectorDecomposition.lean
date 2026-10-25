@@ -140,26 +140,17 @@ theorem grandCanonicalPartitionFunction_eq_tsum_sector
     grandCanonicalPartitionFunction (Config := Config) ε β μ =
       ∑' N : ℕ, Real.exp (β * μ * (N : ℝ)) *
         canonicalPartitionFunction (Config := Config) ε β N := by
-  let e : (Σ N : ℕ, ParticleNumberSector Mode Config N) ≃ Config :=
-    Equiv.sigmaFiberEquiv (particleNumber (Mode := Mode) (Config := Config))
   have hfull : Summable
       (eigenbasisBoltzmannWeight (grandCanonicalEnergy (Config := Config) ε μ) β) :=
     eigenbasisBoltzmannWeight_summable _ _ hsum
-  have hfiber : Summable
-      (fun x : Σ N : ℕ, ParticleNumberSector Mode Config N =>
-        eigenbasisBoltzmannWeight (grandCanonicalEnergy ε μ) β (e x)) :=
-    hfull.comp_injective e.injective
   calc
     grandCanonicalPartitionFunction (Config := Config) ε β μ =
         ∑' c : Config, eigenbasisBoltzmannWeight
           (grandCanonicalEnergy ε μ) β c := rfl
-    _ = ∑' x : Σ N : ℕ, ParticleNumberSector Mode Config N,
-          eigenbasisBoltzmannWeight (grandCanonicalEnergy ε μ) β (e x) :=
-      (e.tsum_eq _).symm
     _ = ∑' N : ℕ, ∑' n : ParticleNumberSector Mode Config N,
-          eigenbasisBoltzmannWeight (grandCanonicalEnergy ε μ) β n.val := by
-      rw [hfiber.tsum_sigma]
-      simp only [e, Equiv.sigmaFiberEquiv_apply]
+          eigenbasisBoltzmannWeight (grandCanonicalEnergy ε μ) β n.val :=
+      (hfull.hasSum.tsum_fiberwise
+        (particleNumber (Mode := Mode) (Config := Config))).tsum_eq.symm
     _ = ∑' N : ℕ, Real.exp (β * μ * (N : ℝ)) *
           canonicalPartitionFunction (Config := Config) ε β N := by
       apply tsum_congr
@@ -209,21 +200,13 @@ theorem grandCanonicalParticleNumber_tsum_eq_sector_moment
     eigenbasisGibbsProbability (grandCanonicalEnergy ε μ) β c *
       (particleNumber (Mode := Mode) c : ℝ)
   have hf : Summable f := Summable.of_norm hint
-  let e : (Σ N : ℕ, ParticleNumberSector Mode Config N) ≃ Config :=
-    Equiv.sigmaFiberEquiv (particleNumber (Mode := Mode) (Config := Config))
-  have hSigma :
-      Summable (fun x : Σ N : ℕ, ParticleNumberSector Mode Config N =>
-        f (e x)) := hf.comp_injective e.injective
   calc
     (∑' c : Config,
       eigenbasisGibbsProbability (grandCanonicalEnergy ε μ) β c *
         (particleNumber (Mode := Mode) c : ℝ)) = ∑' c : Config, f c := rfl
-    _ = ∑' x : Σ N : ℕ, ParticleNumberSector Mode Config N,
-          f (e x) := (e.tsum_eq _).symm
-    _ = ∑' N : ℕ, ∑' n : ParticleNumberSector Mode Config N,
-          f n.val := by
-      rw [hSigma.tsum_sigma]
-      simp only [e, Equiv.sigmaFiberEquiv_apply]
+    _ = ∑' N : ℕ, ∑' n : ParticleNumberSector Mode Config N, f n.val :=
+      (hf.hasSum.tsum_fiberwise
+        (particleNumber (Mode := Mode) (Config := Config))).tsum_eq.symm
     _ = ∑' N : ℕ, (N : ℝ) *
         grandCanonicalSectorProbability (Config := Config) ε β μ N := by
       apply tsum_congr
