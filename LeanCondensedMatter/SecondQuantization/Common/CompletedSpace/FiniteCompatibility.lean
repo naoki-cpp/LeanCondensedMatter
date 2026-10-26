@@ -60,28 +60,20 @@ theorem completedOperator_eq_transport_of_algebraicCore
       ((finiteHilbertOperatorAlgEquiv A).comp
         (completedFiniteHilbertEquiv (Config := Config)).toContinuousLinearEquiv.toContinuousLinearMap) = T := by
   let e := completedFiniteHilbertEquiv (Config := Config)
-  apply continuousLinearMap_ext_completedBasis
-  intro n
-  have hn : T (completedBasisState n) =
-      algebraicToCompleted (A (basisState n)) := by
-    have h := congrArg
-      (fun f : AlgebraicFock Config →ₗ[ℂ] CompletedFock Config =>
-        f (basisState n)) hcore
-    change T (algebraicToCompleted (basisState n)) =
-      algebraicToCompleted (A (basisState n)) at h
-    rw [algebraicToCompleted_basisState] at h
-    exact h
-  change e.symm (finiteHilbertOperatorAlgEquiv A
-    (e (completedBasisState n))) = T (completedBasisState n)
-  rw [completedFiniteHilbertEquiv_basisState,
-    finiteHilbertOperator_basisState, hn]
-  apply e.injective
-  calc
-    e (e.symm (finiteHilbertFockEquiv (A (basisState n)))) =
-        finiteHilbertFockEquiv (A (basisState n)) := e.apply_symm_apply _
-    _ = e (algebraicToCompleted (A (basisState n))) :=
-      (completedFiniteHilbertEquiv_algebraicToCompleted
-        (A (basisState n))).symm
+  apply continuousLinearMap_ext_algebraicCore
+  intro x
+  change e.symm (finiteHilbertOperatorAlgEquiv A (e (algebraicToCompleted x))) =
+    T (algebraicToCompleted x)
+  rw [completedFiniteHilbertEquiv_algebraicToCompleted]
+  change e.symm (finiteHilbertFockEquiv
+    (A ((finiteHilbertFockEquiv (Config := Config)).symm
+      (finiteHilbertFockEquiv x)))) = T (algebraicToCompleted x)
+  rw [LinearEquiv.symm_apply_apply]
+  rw [← completedFiniteHilbertEquiv_algebraicToCompleted, e.symm_apply_apply]
+  have h := congrArg
+    (fun f : AlgebraicFock Config →ₗ[ℂ] CompletedFock Config => f x) hcore
+  change T (algebraicToCompleted x) = algebraicToCompleted (A x) at h
+  exact h.symm
 
 end
 end Common
