@@ -109,6 +109,11 @@ whether those configurations represent a fixed-`N` sector or the full Fock space
 
 The finite Gibbs implementation specializes the generic recursion using the finite pure-point Gibbs
 state, imaginary-time evolution, trace-ratio identity, and KMS/exchange relations.
+The finite quartic Dyson coefficient and interaction-picture continuity identities accept an
+arbitrary occupation-energy function for `Common.finiteGibbsExpectation`, while the physical
+imaginary-time generator remains `fermionEnergy ε`. Concrete ensemble-specific Dyson/Wick
+statements choose the Gibbs energy separately; no finite density-state adapter is required by
+the coefficient expansion itself.
 The finite `Fermionic.freeGibbsDensityOperator ε β` still covers **all**
 fermionic occupation sectors at implicit `μ = 0`, not a fixed-number canonical state;
 it remains in use for finite contractions and diagrammatic consumers.
