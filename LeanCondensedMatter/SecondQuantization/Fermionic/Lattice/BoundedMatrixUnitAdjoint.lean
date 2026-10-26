@@ -1,6 +1,7 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.Bounded
 import LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.RankOneSecondQuantization
 import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.FiniteHilbertCreationAnnihilation
+import Mathlib.Analysis.CStarAlgebra.Matrix
 
 set_option linter.style.header false
 
@@ -28,6 +29,8 @@ currents from coefficient-level Hermiticity.
 namespace SecondQuantization
 namespace Fermionic
 namespace Lattice
+
+open scoped BigOperators
 
 noncomputable section
 
@@ -105,6 +108,17 @@ theorem star_boundedDgammaMatrixUnit (x y : Site) :
     star (finiteHilbertCreate x * finiteHilbertAnnihilate y) =
       finiteHilbertCreate y * finiteHilbertAnnihilate x
   rw [star_mul, star_finiteHilbertAnnihilate, star_finiteHilbertCreate]
+
+/-- Matrix adjoints become adjoints after second quantizing a finite matrix-unit expansion. -/
+theorem star_boundedOneBodyOperator_matrix {Index : Type*} [Fintype Index]
+    (label : Index → Site) (M : Matrix Index Index ℂ) :
+    star (boundedOneBodyOperator (∑ i, ∑ j, M i j • matrixUnit (label i) (label j))) =
+      boundedOneBodyOperator (∑ i, ∑ j, (star M) i j • matrixUnit (label i) (label j)) := by
+  have hunit (i j : Index) : boundedOneBodyOperator (matrixUnit (label i) (label j)) =
+      boundedDgammaMatrixUnit (label i) (label j) := rfl
+  simp only [map_sum, map_smul, hunit, star_sum, star_smul, star_boundedDgammaMatrixUnit]
+  rw [Finset.sum_comm]
+  rfl
 
 end Finite
 

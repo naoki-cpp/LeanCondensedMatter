@@ -579,6 +579,7 @@
       "path": "LeanCondensedMatter/Models/MassiveDirac.lean",
       "modules": [
         "LeanCondensedMatter.Models.MassiveDirac.Model",
+        "LeanCondensedMatter.Models.MassiveDirac.ManyBody",
         "LeanCondensedMatter.Models.MassiveDirac.Propagator",
         "LeanCondensedMatter.Models.MassiveDirac.Streda",
         "LeanCondensedMatter.Models.MassiveDirac.Bastin",

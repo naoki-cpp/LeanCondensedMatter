@@ -226,6 +226,8 @@ The following declaration families are deliberate API normalization boundaries:
 
 ## Green: SecondQuantization
 
+- `SecondQuantization.Fermionic.Lattice.finiteSecondQuantization_finiteHilbertOperator`: removes the canonical one-particle Hilbert-coordinate round trip before second quantization.
+
 All current `@[simp]` declarations under `LeanCondensedMatter/SecondQuantization/` are Green.
 The reviewed set consists of basis-state and occupation evaluation rules, vacuum/zero cases,
 creation/annihilation actions, CAR-related involutions, equivalence and reindexing round trips,
