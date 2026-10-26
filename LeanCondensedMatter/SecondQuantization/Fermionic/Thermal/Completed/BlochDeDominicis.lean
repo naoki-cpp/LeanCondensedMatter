@@ -534,7 +534,8 @@ theorem grandCanonicalGibbsDensityOperator_expectation_create_comp_annihilate
       if i = j then 1 / (Complex.exp ((β : ℂ) * ((ε i - μ : ℝ) : ℂ)) + 1) else 0 := by
   have hpair := grandCanonicalGibbsDensityOperator_expectation_pair ε β μ hsum
     (CompletedThermalLadder.create j) (CompletedThermalLadder.annihilate i)
-  simp only [CompletedThermalLadder.gibbsFactor_create,
+  simp only [CompletedThermalLadder.operator_create, CompletedThermalLadder.operator_annihilate,
+    CompletedThermalLadder.gibbsFactor_create,
     CompletedThermalLadder.anticommutatorValue] at hpair
   rw [hpair]
   by_cases hij : i = j
