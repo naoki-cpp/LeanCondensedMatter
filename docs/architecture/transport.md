@@ -309,6 +309,11 @@ The Hall and longitudinal Středa radial integrals use the shared integration la
 `inPlaneLadderAction` from `Vertex.InPlaneLadder`. Their fixed-disorder zero-broadening proofs use
 the existing full-vector convergence law for the same action. The ordered Hall sign and the
 longitudinal bare RR/AA remainder remain with their respective response constructions.
+The finite-broadening response-side trace bridge, radial denominator, same-side remainder,
+and separate longitudinal/Hall zero-broadening and weak-disorder boundaries belong under
+`MassiveDirac.Streda.BornLadder/`. The folder is a coherent package of ten semantic leaf
+modules; `MassiveDirac.Streda` remains its existing public umbrella, without a second
+single-purpose re-export layer.
 
 `Disorder.FiniteBroadeningBornRadialMoments` owns the finite-cutoff Born–Dyson single-pole
 logarithmic integral, the arbitrary-weight retarded–advanced double-pole spectral difference,
