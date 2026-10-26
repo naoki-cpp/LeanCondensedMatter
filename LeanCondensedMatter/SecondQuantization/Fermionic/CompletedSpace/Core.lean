@@ -77,6 +77,7 @@ theorem star_completedCreate (i : Mode) : star (completedCreate i) = completedAn
     have hb : algebraicToCompleted (basisState q) = completedBasisState q := by
       exact Common.algebraicToCompleted_basisState q
     simp only [LinearMap.comp_apply, hb] at hq
+    change T (completedBasisState q) = algebraicToCompleted (A (basisState q)) at hq
     rw [hq, inner_completedBasisState_left]
     rfl
   rw [hcore _ _ (completedCreate_comp_algebraicToCompleted i),
