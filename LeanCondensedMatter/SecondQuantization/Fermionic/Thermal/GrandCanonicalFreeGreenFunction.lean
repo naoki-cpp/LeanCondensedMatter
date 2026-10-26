@@ -21,7 +21,7 @@ open QuantumTheory
 variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
 
 /-- The free grand-canonical Gibbs Green function
-`G₀,ᵢⱼ(τ, τ') = -Tr(ρ₀,β Tτ cᵢ(τ)cⱼ†(τ'))`. -/
+`G₀,ᵢⱼ(τ, τ') = -Tr(ρβ,μ Tτ cᵢ(τ)cⱼ†(τ'))`. -/
 noncomputable def grandCanonicalFreeGreenFunction (ε : Mode → ℝ) (β μ : ℝ)
     (i j : Mode) (τ τ' : ℝ) : ℂ :=
   - Common.finiteGibbsExpectation
