@@ -58,7 +58,11 @@ theorem finiteGibbsExpectation_eq_sum (energy : Config → ℝ) (β : ℝ)
     finiteGibbsExpectation energy β A =
       ∑ n : Config, (eigenbasisGibbsProbability energy β n : ℂ) * matrixCoeff A n n := by
   classical
-  rw [finiteGibbsExpectation, finiteGibbsExpectationLinearMap, LinearMap.comp_apply]
+  change (eigenbasisGibbsDensityOperator
+      (finiteHilbertBasis (Config := Config)) energy β
+      (eigenbasisGibbsSummable_of_finite energy β)).expectation
+        (finiteHilbertOperatorAlgEquiv A) =
+      ∑ n : Config, (eigenbasisGibbsProbability energy β n : ℂ) * matrixCoeff A n n
   rw [(eigenbasisGibbsDensityOperator
       (finiteHilbertBasis (Config := Config)) energy β
       (eigenbasisGibbsSummable_of_finite energy β)).expectation_eq_tsum_diagonal
