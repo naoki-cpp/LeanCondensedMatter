@@ -1,6 +1,6 @@
 import LeanCondensedMatter.Transport.Core.ConductivityTensor
 import LeanCondensedMatter.Transport.Streda.PhysicalMomentum2DNormalization
-import LeanCondensedMatter.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderIntegral
+import LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.RadialIntegrand
 
 set_option linter.style.header false
 

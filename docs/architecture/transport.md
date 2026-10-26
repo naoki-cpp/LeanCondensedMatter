@@ -310,6 +310,15 @@ The Hall and longitudinal Středa radial integrals use the shared integration la
 the existing full-vector convergence law for the same action. The ordered Hall sign and the
 longitudinal bare RR/AA remainder remain with their respective response constructions.
 
+`MassiveDirac.Streda.BornLadder` groups the finite-broadening trace bridge, radial
+integrands and denominator forms, and the separate longitudinal and ordered-Hall
+zero-broadening/weak-disorder response boundaries. `BornLadder.LongitudinalSameSide`
+owns the bare RR/AA remainder as a distinct contribution to the Středa surface response,
+not as part of the singular RA ladder. These response-specific files remain separate
+from the generic Born–Dyson denominator and radial-moment laws owned by `Disorder`.
+`MassiveDirac.Streda` is the public umbrella for these leaves alongside
+the independent `Streda.GaussianCrossed` package.
+
 `Disorder.FiniteBroadeningBornRadialMoments` owns the finite-cutoff Born–Dyson single-pole
 logarithmic integral, the arbitrary-weight retarded–advanced double-pole spectral difference,
 and its logarithmic specialization. These are model-level denominator identities independent
