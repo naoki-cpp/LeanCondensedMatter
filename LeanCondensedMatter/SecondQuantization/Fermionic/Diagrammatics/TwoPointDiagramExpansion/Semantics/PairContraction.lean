@@ -125,7 +125,7 @@ noncomputable def orderedTwoPointLegPairContraction
     {n : ℕ} (ε : Mode → ℝ) (β : ℝ) (i j : Mode) (τ τ' : ℝ)
     (q : Fin n → QuarticVertexLabel Mode) (σ : Fin n → ℝ)
     (x y : OrderedTwoPointLeg n) : ℂ :=
-  timedFieldPairContraction ε β
+  grandCanonicalTimedFieldPairContraction ε β 0
     (orderedTwoPointLegField i j τ τ' q σ x)
     (orderedTwoPointLegField i j τ τ' q σ y)
 

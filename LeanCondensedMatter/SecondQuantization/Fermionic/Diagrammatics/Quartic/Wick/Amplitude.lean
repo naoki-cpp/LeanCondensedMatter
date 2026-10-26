@@ -39,7 +39,7 @@ noncomputable def orderedQuarticLegOperator (ε : Mode → ℝ) {S : Finset (Fin
 noncomputable def orderedQuarticPairValue (ε : Mode → ℝ) (β : ℝ) {S : Finset (Fin N)}
     (d : QuarticWickDiagram Mode N S) (order : Common.QuarticVertexOrder S) (τ : Fin S.card → ℝ)
     (a b : Fin (2 * (2 * S.card))) : ℂ :=
-  timedFieldPairContraction ε β
+  grandCanonicalTimedFieldPairContraction ε β 0
     (quarticLegFieldForSequence (fun i => d.vertexLabel (order i)) τ a)
     (quarticLegFieldForSequence (fun i => d.vertexLabel (order i)) τ b)
 
@@ -54,10 +54,11 @@ theorem orderedQuarticPairValue_eq_freeGibbsDensityOperator_expectation
         (Common.finiteHilbertOperatorAlgEquiv
           ((orderedQuarticLegOperator ε d order τ a).comp
             (orderedQuarticLegOperator ε d order τ b))) := by
-  rw [orderedQuarticPairValue, timedFieldPairContraction,
+  rw [orderedQuarticPairValue, grandCanonicalTimedFieldPairContraction,
     timedFieldOperator_quarticLegFieldForSequence,
     timedFieldOperator_quarticLegFieldForSequence]
-  rfl
+  simp only [sub_zero, freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation,
+    orderedQuarticLegOperator]
 
 /-! ## Fixed-order Wick integrand and ordered-simplex contribution -/
 
@@ -99,8 +100,9 @@ theorem orderedQuarticPairValue_eq (ε : Mode → ℝ) (β : ℝ) {S : Finset (F
               (quarticLocalLegOperator
                 (d.vertexLabel (order (Common.orderedQuarticLegEquiv S.card b).1))
                 (Common.orderedQuarticLegEquiv S.card b).2))) := by
-  simpa [orderedQuarticPairValue, timedFieldPairContraction_eq,
-    quarticLegFieldForSequence, quarticLocalLegEnergyShift,
+  simpa [orderedQuarticPairValue, grandCanonicalTimedFieldPairContraction_eq,
+    quarticLegFieldForSequence, quarticLocalLegEnergyShift, sub_zero,
+    freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation,
     quarticLocalLegOperator, Common.quarticLocalLegOperator]
 
 /-- A pair value is continuous in the time assignment. -/

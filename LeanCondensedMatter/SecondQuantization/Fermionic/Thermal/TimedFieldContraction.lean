@@ -2,16 +2,15 @@ import LeanCondensedMatter.Combinatorics.PerfectPairing.Evaluation
 import LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTime.TimedField
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeBoltzmannCore
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.GibbsExpectation.Recursion
-import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsDensityOperator
 
 set_option linter.style.header false
 
 /-!
 # Free-Gibbs contractions of time-labelled fermionic fields
 
-This module owns the canonical free-Gibbs contraction of two time-labelled creation or annihilation
-fields. The construction is independent of any diagram representation and is shared by diagrammatic
-consumers through the thermal layer.
+This module owns the grand-canonical contraction of time-labelled free fermionic fields.
+Physical evolution uses ε; thermal occupation weights use ε - μ. Diagrammatic clients that
+retain zero chemical potential specialize μ = 0 explicitly.
 -/
 
 namespace SecondQuantization
@@ -22,25 +21,23 @@ open Common
 
 variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
 
-/-- Canonical free Gibbs density-state contraction of two time-labelled fermionic fields. -/
-noncomputable def timedFieldPairContraction
-    (ε : Mode → ℝ) (β : ℝ) (A B : TimedField Mode) : ℂ :=
-  (freeGibbsDensityOperator ε β).expectation
-    (Common.finiteHilbertOperatorAlgEquiv
-      ((timedFieldOperator ε A).comp (timedFieldOperator ε B)))
+/-- Grand-canonical two-point contraction with physical-time fields at ε and Gibbs weights
+at ε - μ. -/
+noncomputable def grandCanonicalTimedFieldPairContraction
+    (ε : Mode → ℝ) (β μ : ℝ) (A B : TimedField Mode) : ℂ :=
+  Common.finiteGibbsExpectation (fermionEnergy (fun i => ε i - μ)) β
+    ((timedFieldOperator ε A).comp (timedFieldOperator ε B))
 
-/-- Closed form after extracting the two imaginary-time exponential factors. -/
-theorem timedFieldPairContraction_eq
-    (ε : Mode → ℝ) (β : ℝ) (A B : TimedField Mode) :
-    timedFieldPairContraction ε β A B =
+/-- Factor physical imaginary-time evolution from an explicit-μ Gibbs pair contraction. -/
+theorem grandCanonicalTimedFieldPairContraction_eq
+    (ε : Mode → ℝ) (β μ : ℝ) (A B : TimedField Mode) :
+    grandCanonicalTimedFieldPairContraction ε β μ A B =
       Complex.exp (((A.time * externalFieldLabelEnergyShift ε A.label : ℝ) : ℂ)) *
         Complex.exp (((B.time * externalFieldLabelEnergyShift ε B.label : ℝ) : ℂ)) *
-          (freeGibbsDensityOperator ε β).expectation
-            (Common.finiteHilbertOperatorAlgEquiv
-              ((bareExternalFieldOperator A.label).comp
-                (bareExternalFieldOperator B.label))) := by
-  simp only [timedFieldPairContraction,
-    freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation]
+          Common.finiteGibbsExpectation (fermionEnergy (fun i => ε i - μ)) β
+            ((bareExternalFieldOperator A.label).comp
+              (bareExternalFieldOperator B.label)) := by
+  simp only [grandCanonicalTimedFieldPairContraction]
   rw [timedFieldOperator_eq_smul, timedFieldOperator_eq_smul,
     LinearMap.smul_comp, LinearMap.comp_smul, smul_smul,
     Common.finiteGibbsExpectation, map_smul, smul_eq_mul]

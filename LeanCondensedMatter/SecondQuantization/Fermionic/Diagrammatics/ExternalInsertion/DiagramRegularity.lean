@@ -33,7 +33,7 @@ private noncomputable def ExternalInsertionWickDiagram.dysonFixedTimeChamberRepr
     ((-1 : ℂ) ^ n * externalInsertionMixedAtomicOrderSign externalTime σ₀ *
       d.vertexWeight g * p.weight Common.Statistics.fermion) *
     ∏ pr ∈ p.pairs,
-      timedFieldPairContraction ε β
+      grandCanonicalTimedFieldPairContraction ε β 0
         (orderedExternalInsertionLegField d.externalLabel externalTime
           d.vertexLabelSequence σ
           (externalInsertionMixedTimeOrderedAtomicLegEquiv externalTime σ₀ pr.1))
@@ -55,7 +55,7 @@ private theorem ExternalInsertionWickDiagram.continuous_dysonFixedTimeChamberRep
   generalize hb :
       externalInsertionMixedTimeOrderedAtomicLegEquiv externalTime σ₀ pr.2 = b
   rcases a with a | ⟨v, l⟩ <;> rcases b with b | ⟨w, k⟩ <;>
-    simp only [timedFieldPairContraction_eq, orderedExternalInsertionLegField,
+    simp only [grandCanonicalTimedFieldPairContraction_eq, orderedExternalInsertionLegField,
       orderedExternalInsertionLegTime, orderedExternalInsertionLegFieldLabel] <;>
     fun_prop
 

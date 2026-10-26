@@ -1,5 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.DysonSeries
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.TimedFieldContraction
+import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsDensityOperator
 
 set_option linter.style.header false
 
@@ -141,9 +142,9 @@ theorem sum_fixedExternalInsertionWickDiagram_fixedTimeAmplitude_eq_mixedAtomicE
     have hpair (A B : TimedField Mode) :
         Common.finiteGibbsExpectation (fermionEnergy ε) β
           ((timedFieldOperator ε A).comp (timedFieldOperator ε B)) =
-        timedFieldPairContraction ε β A B := by
-      simp only [timedFieldPairContraction,
-        freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation]
+        grandCanonicalTimedFieldPairContraction ε β 0 A B := by
+      simp only [grandCanonicalTimedFieldPairContraction]
+      rw [henergy]
     simp_rw [hpair] at hgen
     exact hgen
   calc
