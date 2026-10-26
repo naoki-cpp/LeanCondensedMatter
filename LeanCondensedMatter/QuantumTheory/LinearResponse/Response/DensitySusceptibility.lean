@@ -37,7 +37,8 @@ theorem continuous_commutatorSusceptibility_of_diagonal_density
     have hright := (hU ((star B) (b i))).inner (𝕜 := ℂ) (A.continuous.comp (hU (b i)))
     convert hleft.sub hright using 1
     funext t
-    simp only [LieRing.of_associative_ring_bracket, ContinuousLinearMap.sub_apply,
+    simp only [Pi.sub_apply, Function.comp_apply,
+      LieRing.of_associative_ring_bracket, ContinuousLinearMap.sub_apply,
       inner_sub_right, heisenbergEvolution_apply, mul_apply_eq_comp,
       ContinuousLinearMap.star_eq_adjoint]
     rw [ContinuousLinearMap.adjoint_inner_right,
@@ -46,7 +47,7 @@ theorem continuous_commutatorSusceptibility_of_diagonal_density
     (fun t : ℝ => ⁅heisenbergEvolution U t A, B⁆) (2 * ‖A‖ * ‖B‖)
     (fun t => by simpa only [heisenbergEvolution_zero] using
       norm_lie_heisenbergEvolution_le U A B t 0) hcoeff
-  simpa only [commutatorSusceptibility, heisenbergEvolution_zero,
+  simpa only [Pi.mul_apply, commutatorSusceptibility, heisenbergEvolution_zero,
     DensityOperator.toNormalizedExpectation_apply] using
     (continuous_const.mul hexpect : Continuous (fun t : ℝ =>
       (Complex.I / (hbar : ℂ)) * ρ.expectation ⁅heisenbergEvolution U t A, B⁆))
