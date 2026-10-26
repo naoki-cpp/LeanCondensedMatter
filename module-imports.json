@@ -3460,7 +3460,10 @@
       "name": "LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Hamiltonian.LaplacianSelfAdjoint1D",
       "sourceFile": "LeanCondensedMatter/QuantumMechanics/SingleParticle/Continuum/Hamiltonian/LaplacianSelfAdjoint1D.lean",
       "imports": [
-        "LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Hamiltonian.SelfAdjointCriterion1D"
+        "LeanCondensedMatter.Analysis.Operator.Unbounded.SelfAdjointCriterion",
+        "LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Hamiltonian.Closed1D",
+        "LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Hamiltonian.DenseDomain1D",
+        "LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Hamiltonian.LaplacianSymmetry1D"
       ],
       "externalImportCount": 4
     },
@@ -3492,19 +3495,11 @@
       "name": "LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Hamiltonian.SelfAdjoint1D",
       "sourceFile": "LeanCondensedMatter/QuantumMechanics/SingleParticle/Continuum/Hamiltonian/SelfAdjoint1D.lean",
       "imports": [
-        "LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Hamiltonian.LaplacianSelfAdjoint1D",
-        "LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.L2.Multiplication1D"
-      ],
-      "externalImportCount": 1
-    },
-    {
-      "name": "LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Hamiltonian.SelfAdjointCriterion1D",
-      "sourceFile": "LeanCondensedMatter/QuantumMechanics/SingleParticle/Continuum/Hamiltonian/SelfAdjointCriterion1D.lean",
-      "imports": [
         "LeanCondensedMatter.Analysis.Operator.Unbounded.SelfAdjointCriterion",
-        "LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Hamiltonian.Closed1D",
         "LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Hamiltonian.DenseDomain1D",
-        "LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Hamiltonian.Symmetry1D"
+        "LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Hamiltonian.LaplacianSelfAdjoint1D",
+        "LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Hamiltonian.Symmetry1D",
+        "LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.L2.Multiplication1D"
       ],
       "externalImportCount": 1
     },
@@ -3685,7 +3680,7 @@
         "LeanCondensedMatter.QuantumTheory.DensityOperator.Diagonal",
         "LeanCondensedMatter.QuantumTheory.DensityOperator.ObservableExpectation"
       ],
-      "externalImportCount": 0
+      "externalImportCount": 1
     },
     {
       "name": "LeanCondensedMatter.QuantumTheory.DensityOperator.Expectation",
@@ -4247,6 +4242,16 @@
       "externalImportCount": 0
     },
     {
+      "name": "LeanCondensedMatter.QuantumTheory.LinearResponse.Response.DensitySusceptibility",
+      "sourceFile": "LeanCondensedMatter/QuantumTheory/LinearResponse/Response/DensitySusceptibility.lean",
+      "imports": [
+        "LeanCondensedMatter.QuantumTheory.DensityOperator.DiagonalFormula",
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.Expectation.Density",
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.Response.RetardedSusceptibility"
+      ],
+      "externalImportCount": 1
+    },
+    {
       "name": "LeanCondensedMatter.QuantumTheory.LinearResponse.Response.KuboFormula",
       "sourceFile": "LeanCondensedMatter/QuantumTheory/LinearResponse/Response/KuboFormula.lean",
       "imports": [
@@ -4307,6 +4312,7 @@
         "LeanCondensedMatter.QuantumTheory.LinearResponse.Perturbation.TimeDependent",
         "LeanCondensedMatter.QuantumTheory.LinearResponse.Perturbation.Unitary",
         "LeanCondensedMatter.QuantumTheory.LinearResponse.Response.Channel",
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.Response.DensitySusceptibility",
         "LeanCondensedMatter.QuantumTheory.LinearResponse.Response.KuboFormula",
         "LeanCondensedMatter.QuantumTheory.LinearResponse.Response.ObservableVariation",
         "LeanCondensedMatter.QuantumTheory.LinearResponse.Response.RetardedSusceptibility",
@@ -6394,13 +6400,15 @@
       "externalImportCount": 0
     },
     {
-      "name": "LeanCondensedMatter.SecondQuantization.Common.Thermal.CompletedStationarity",
-      "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Thermal/CompletedStationarity.lean",
+      "name": "LeanCondensedMatter.SecondQuantization.Common.Thermal.CompletedResponse",
+      "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Thermal/CompletedResponse.lean",
       "imports": [
         "LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution",
         "LeanCondensedMatter.QuantumTheory.DensityOperator.DiagonalFormula",
         "LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.Stationarity",
         "LeanCondensedMatter.QuantumTheory.LinearResponse.Expectation.Density",
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.Frequency.Integrability",
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.Response.DensitySusceptibility",
         "LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.DiagonalAnalytic",
         "LeanCondensedMatter.SecondQuantization.Common.Thermal.GrandCanonical"
       ],
@@ -6468,7 +6476,7 @@
         "LeanCondensedMatter.SecondQuantization.Common.Thermal.CanonicalFullFock",
         "LeanCondensedMatter.SecondQuantization.Common.Thermal.CanonicalGrandCanonicalCompatibility",
         "LeanCondensedMatter.SecondQuantization.Common.Thermal.CanonicalSector",
-        "LeanCondensedMatter.SecondQuantization.Common.Thermal.CompletedStationarity",
+        "LeanCondensedMatter.SecondQuantization.Common.Thermal.CompletedResponse",
         "LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsCoordinate",
         "LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsExpectationBridge",
         "LeanCondensedMatter.SecondQuantization.Common.Thermal.GrandCanonical",
@@ -7870,22 +7878,24 @@
       "externalImportCount": 0
     },
     {
-      "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsGreenFunction",
-      "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Thermal/FreeGibbsGreenFunction.lean",
-      "imports": [
-        "LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTime.TwoPoint",
-        "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeBoltzmannCore",
-        "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsContraction"
-      ],
-      "externalImportCount": 0
-    },
-    {
       "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreePartitionFunction",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Thermal/FreePartitionFunction.lean",
       "imports": [
         "LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsCoordinate",
         "LeanCondensedMatter.SecondQuantization.Common.Thermal.GrandCanonical",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.Hamiltonian"
+      ],
+      "externalImportCount": 0
+    },
+    {
+      "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.GrandCanonicalFreeGreenFunction",
+      "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Thermal/GrandCanonicalFreeGreenFunction.lean",
+      "imports": [
+        "LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsExpectationBridge",
+        "LeanCondensedMatter.SecondQuantization.Common.Thermal.GrandCanonical",
+        "LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTime.TwoPoint",
+        "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeBoltzmannCore",
+        "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsContraction"
       ],
       "externalImportCount": 0
     },
@@ -7921,8 +7931,8 @@
         "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeEntropy",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsContraction",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsDensityOperator",
-        "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsGreenFunction",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreePartitionFunction",
+        "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.GrandCanonicalFreeGreenFunction",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.OneBodyExpectation",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.TimedFieldContraction"
       ],
