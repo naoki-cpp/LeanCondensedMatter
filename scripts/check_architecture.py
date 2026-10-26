@@ -1,12 +1,10 @@
 from __future__ import annotations
 
 import argparse
-import runpy
+import subprocess
 import sys
-import traceback
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Callable
 
 ROOT = Path(__file__).resolve().parents[1]
 SCRIPTS = ROOT / "scripts"
@@ -59,58 +57,13 @@ def selected_checks(scope: str) -> tuple[ArchitectureCheck, ...]:
     return tuple(check for check in CHECKS if check.scope in (scope, "all"))
 
 
-def load_checker_main(check: ArchitectureCheck) -> Callable[[], int | None]:
-    path = SCRIPTS / check.script
-    namespace = runpy.run_path(
-        str(path),
-        run_name=f"_architecture_check_{path.stem}",
-    )
-    main_fn = namespace.get("main")
-    if not callable(main_fn):
-        raise TypeError(f"scripts/{check.script} must expose callable main()")
-    return main_fn
-
-
-def system_exit_code(check: ArchitectureCheck, exc: SystemExit) -> int:
-    if exc.code is None:
-        return 0
-    if isinstance(exc.code, int):
-        return exc.code
-    print(
-        f"scripts/{check.script} exited with non-integer status: {exc.code}",
-        file=sys.stderr,
-    )
-    return 1
-
-
-def checker_exit_code(check: ArchitectureCheck) -> int:
-    try:
-        result = load_checker_main(check)()
-    except SystemExit as exc:
-        return system_exit_code(check, exc)
-    except Exception:
-        traceback.print_exc()
-        return 1
-
-    if result is None:
-        return 0
-    if isinstance(result, int):
-        return result
-
-    print(
-        f"scripts/{check.script} main() returned unsupported result: {result!r}",
-        file=sys.stderr,
-    )
-    return 1
-
-
 def run_checks(scope: str) -> int:
     checks = selected_checks(scope)
     failures: list[ArchitectureCheck] = []
 
     for index, check in enumerate(checks, start=1):
         print(f"[{index}/{len(checks)}] {check.name} ({check.script})", flush=True)
-        if checker_exit_code(check) != 0:
+        if subprocess.run([sys.executable, str(SCRIPTS / check.script)]).returncode != 0:
             failures.append(check)
 
     if failures:
