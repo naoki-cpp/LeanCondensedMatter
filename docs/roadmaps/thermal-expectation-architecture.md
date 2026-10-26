@@ -26,6 +26,10 @@ weights but **not** `Fintype Config`, and it delegates to the existing
 `Common.finiteGibbsExpectation energy β A` remains a finite-algebraic evaluation adapter.
 The canonical `finiteGibbsExpectation_eq_completed_of_algebraicCore` bridge directly
 identifies these two APIs whenever the bounded completed operator extends `A`.
+The finite fermionic two-point contractions now use that bridge directly at explicit
+chemical potential, deriving their Fermi–Dirac values from completed bounded CAR/KMS
+operators. The free grand-canonical Green function evaluates its finite Gibbs
+expectation without routing through the old density-specific contraction API.
 Finite-coordinate trace-ratio and Wick lemmas remain finite specializations; this
 does not assert bounded extensions of arbitrary infinite-dimensional ladder products.
 
