@@ -33,19 +33,22 @@ private theorem norm_createFieldCore_le (v : Mode →₀ ℂ) :
   classical
   let C := createFieldCore v
   let u := Common.algebraicToCompleted v
-  have hscalar : (∑ i ∈ v.support, star (v i) * v i) = (‖u‖ ^ 2 : ℂ) := by
+  have hscalar : (∑ i ∈ v.support, star (v i) * v i) = ((‖u‖ ^ (2 : ℕ) : ℝ) : ℂ) := by
     calc
       _ = inner ℂ u u := by
         rw [lp.inner_eq_tsum]
         change (∑ i ∈ v.support, star (v i) * v i) = ∑' i, inner ℂ (v i) (v i)
         simp only [RCLike.inner_apply]
         symm
-        apply tsum_eq_sum
-        intro i hi
-        simp only [Finsupp.notMem_support_iff.mp hi, star_zero, zero_mul]
+        calc
+          _ = ∑ i ∈ v.support, v i * (starRingEnd ℂ) (v i) := by
+            apply tsum_eq_sum
+            intro i hi
+            simp only [Finsupp.notMem_support_iff.mp hi, map_zero, zero_mul]
+          _ = _ := Finset.sum_congr rfl fun i _ => mul_comm _ _
       _ = _ := by
         simpa only [Complex.ofReal_pow] using (inner_self_eq_norm_sq_to_K (𝕜 := ℂ) u)
-  have hcar : star C * C + C * star C = (‖u‖ ^ 2 : ℂ) •
+  have hcar : star C * C + C * star C = ((‖u‖ ^ (2 : ℕ) : ℝ) : ℂ) •
       ContinuousLinearMap.id ℂ (CompletedFockSpace Mode) := by
     have h := ScalarExchange.zetaCommutator_sum_sum (-1 : ℂ) v.support v.support
       (fun i => star (v i) • completedAnnihilate i)
