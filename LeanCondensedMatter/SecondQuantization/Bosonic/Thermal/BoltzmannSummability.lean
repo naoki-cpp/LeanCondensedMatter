@@ -163,12 +163,8 @@ variable [Finite Mode]
 theorem eigenbasisGibbsSummable_freeEigenvalue
     (ε : Mode → ℝ) (β : ℝ) (hβ : 0 < β) (hε : ∀ i, 0 < ε i) :
     EigenbasisGibbsSummable (freeEigenvalue ε) β := by
-  letI := Fintype.ofFinite Mode
-  unfold EigenbasisGibbsSummable
-  have hsum := summable_boltzmannWeight ε β (fun i => mul_pos hβ (hε i))
-  exact hsum.congr fun n => by
-    simp [boltzmannWeight, eigenbasisBoltzmannWeight, Real.norm_eq_abs,
-      abs_of_nonneg (Real.exp_nonneg _)]
+  exact eigenbasisGibbsSummable_freeEigenvalue_of_mode ε β
+    (fun i => mul_pos hβ (hε i)) (eigenbasisGibbsSummable_of_finite ε β)
 
 /-- For finitely many bosonic modes, positive inverse temperature and
 chemical potential below every one-particle energy imply existence of a
@@ -178,22 +174,9 @@ theorem eigenbasisGibbsSummable_grandCanonicalEnergy
     (hgap : ∀ i, μ < ε i) :
     EigenbasisGibbsSummable
       (Common.grandCanonicalEnergy (Config := Occupation Mode) ε μ) β := by
-  have hzero : EigenbasisGibbsSummable
-      (Common.grandCanonicalEnergy (Config := Occupation Mode)
-        (fun i => ε i - μ) 0) β := by
-    have hpositive : ∀ i, 0 < ε i - μ := fun i => sub_pos.mpr (hgap i)
-    have hsum := eigenbasisGibbsSummable_freeEigenvalue
-      (fun i => ε i - μ) β hβ hpositive
-    have henergy :
-        Common.grandCanonicalEnergy (Config := Occupation Mode)
-            (fun i => ε i - μ) 0 = freeEigenvalue (fun i => ε i - μ) := by
-      funext n
-      simp [Common.grandCanonicalEnergy, freeEigenvalue]
-    rw [henergy]
-    exact hsum
-  have hshift := (Common.grandCanonicalGibbsSummable_shift_iff
-    (Config := Occupation Mode) (fun i => ε i - μ) β 0 μ).2 hzero
-  simpa only [zero_add, sub_add_cancel] using hshift
+  exact eigenbasisGibbsSummable_grandCanonicalEnergy_of_mode ε β μ
+    (fun i => mul_pos hβ (sub_pos.mpr (hgap i)))
+    (eigenbasisGibbsSummable_of_finite (fun i => ε i - μ) β)
 
 end
 end Bosonic
