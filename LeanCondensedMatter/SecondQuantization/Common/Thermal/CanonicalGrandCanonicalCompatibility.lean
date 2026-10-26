@@ -152,14 +152,14 @@ theorem grandCanonicalGibbsDensityOperator_sector_expectation_eq_canonical
           inner ℂ (completedBasisState c) (A (completedBasisState c))
         else 0 := by
     by_cases hc : particleNumber (Mode := Mode) c = N
-    · rw [if_pos hc]
+    · simp only [hc, ↓reduceIte]
       change inner ℂ (completedBasisState c)
         (P (A (P (completedBasisState c)))) = _
       rw [show P (completedBasisState c) = completedBasisState c from
         by simp only [P, completedCoordinateProjection_basisState, hc, ↓reduceIte]]
       simp only [P, inner_completedBasisState_left,
         completedCoordinateProjection_apply, hc, ↓reduceIte]
-    · rw [if_neg hc]
+    · simp only [hc, ↓reduceIte]
       change inner ℂ (completedBasisState c)
         (P (A (P (completedBasisState c)))) = 0
       rw [show P (completedBasisState c) = 0 from
@@ -191,8 +191,8 @@ theorem grandCanonicalGibbsDensityOperator_sector_expectation_eq_canonical
       rw [Function.extend_apply' _ _ _ hnot]
       change (0 : ℂ) = (w c : ℂ) *
         inner ℂ (completedBasisState c) (B (completedBasisState c))
-      rw [hB c, if_neg hc]
-      simp
+      rw [hB c]
+      simp only [hc, ↓reduceIte, mul_zero]
   have hsector : HasSum f (ρ.expectation B) :=
     (hasSum_extend_zero Subtype.val_injective).1 (by
       simpa only [hpoint] using hfull)
