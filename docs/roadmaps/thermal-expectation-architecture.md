@@ -19,6 +19,16 @@ basis and transport of algebraic Fock endomorphisms to bounded operators. The th
 generic pure-point Gibbs density operator from `QuantumTheory.Gibbs.Eigenbasis`; the finite
 SecondQuantization layer only supplies the representation-specific adapter.
 
+`Common.gibbsExpectation energy β hsum` is the dimension-independent normalized Gibbs
+functional on bounded operators of `CompletedFock Config`. It requires summable Boltzmann
+weights but **not** `Fintype Config`, and it delegates to the existing
+`DensityOperator.expectation` without constructing a second density state.
+`Common.finiteGibbsExpectation energy β A` remains a finite-algebraic evaluation adapter.
+The canonical `finiteGibbsExpectation_eq_completed_of_algebraicCore` bridge directly
+identifies these two APIs whenever the bounded completed operator extends `A`.
+Finite-coordinate trace-ratio and Wick lemmas remain finite specializations; this
+does not assert bounded extensions of arbitrary infinite-dimensional ladder products.
+
 The finite Gibbs expectation satisfies the usual trace-ratio formula
 
 ```text
@@ -40,7 +50,8 @@ The reusable finite coordinate layer is split by responsibility:
 | `QuantumTheory/Gibbs/Boltzmann.lean` | Real Boltzmann weights, partition functions, normalized probabilities, and summability. |
 | `QuantumTheory/Gibbs/Eigenbasis.lean` | Gibbs density states built from energy eigenbases and scalar Boltzmann data. |
 | `Common/Algebra/FiniteHilbertOperator.lean` | Finite Hilbert realization and algebraic-operator transport. |
-| `Common/Thermal/FiniteGibbsExpectationBridge.lean` | Canonical finite density-state expectation adapter and pure-point probability formula. |
+| `Common/Thermal/GibbsExpectation.lean` | Summability-aware Gibbs expectation on bounded completed operators, independent of finite configuration types. |
+| `Common/Thermal/FiniteGibbsExpectationBridge.lean` | Finite algebraic Gibbs adapter and finite probability formula. |
 | `Common/Thermal/FiniteGibbsCoordinate.lean` | Complex Boltzmann weights, diagonal-evolution traces, and trace-ratio formulas. |
 | `Common/Algebra/DiagonalTrace.lean` | Summability-aware diagonal trace infrastructure. |
 | `Common/Algebra/FiniteTrace.lean` | Canonical finite algebraic Fock trace and unnormalized scalar weight sums. |

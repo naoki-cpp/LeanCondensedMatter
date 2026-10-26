@@ -45,8 +45,9 @@ theorem freeGibbsExpectation_eq_completed_of_algebraicCore
         fermionEnergy (fun i => ε i - μ) := by
     funext n
     exact Common.grandCanonicalEnergy_eq_shifted ε μ n
-  simpa [Common.grandCanonicalGibbsDensityOperator,
-    freeGibbsDensityOperator, hE] using
+  simpa [Common.gibbsExpectation, Common.finiteGibbsExpectation,
+    Common.finiteGibbsExpectationLinearMap,
+    Common.grandCanonicalGibbsDensityOperator, freeGibbsDensityOperator, hE] using
     (Common.finiteGibbsExpectation_eq_completed_of_algebraicCore
       (Config := Occupation Mode) (fermionEnergy (fun i => ε i - μ)) β A T hcore)
 
