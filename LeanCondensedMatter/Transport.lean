@@ -2,6 +2,7 @@ import LeanCondensedMatter.Transport.Core
 import LeanCondensedMatter.Transport.Topology
 import LeanCondensedMatter.Transport.FiniteConductivityTable
 import LeanCondensedMatter.Transport.FiniteConductivityTable.Eigenbasis
+import LeanCondensedMatter.Transport.FiniteConductivityTable.Reciprocity
 import LeanCondensedMatter.Transport.Resolvent
 import LeanCondensedMatter.Transport.KuboBastin
 import LeanCondensedMatter.Transport.Streda
