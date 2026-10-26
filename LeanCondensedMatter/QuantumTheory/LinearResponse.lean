@@ -16,6 +16,7 @@ import LeanCondensedMatter.QuantumTheory.LinearResponse.Perturbation.Unitary
 import LeanCondensedMatter.QuantumTheory.LinearResponse.Response.KuboFormula
 import LeanCondensedMatter.QuantumTheory.LinearResponse.Response.SourceCoupling
 import LeanCondensedMatter.QuantumTheory.LinearResponse.Response.RetardedSusceptibility
+import LeanCondensedMatter.QuantumTheory.LinearResponse.Response.DensitySusceptibility
 import LeanCondensedMatter.QuantumTheory.LinearResponse.Response.ObservableVariation
 import LeanCondensedMatter.QuantumTheory.LinearResponse.Response.Channel
 

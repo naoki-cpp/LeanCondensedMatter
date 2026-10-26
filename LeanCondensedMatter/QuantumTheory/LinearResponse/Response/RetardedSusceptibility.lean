@@ -73,6 +73,19 @@ theorem continuous_commutatorSusceptibility_timeDifference
   simp only [Pi.mul_apply, commutatorSusceptibility, heisenbergEvolution_zero,
     LieRing.of_associative_ring_bracket]
 
+/-- Unitary Heisenberg orbits give a uniform operator-norm commutator bound. -/
+theorem norm_lie_heisenbergEvolution_le (A B : H →L[ℂ] H) (t s : ℝ) :
+    ‖⁅heisenbergEvolution U t A, heisenbergEvolution U s B⁆‖ ≤ 2 * ‖A‖ * ‖B‖ := by
+  change ‖heisenbergEvolution U t A * heisenbergEvolution U s B -
+    heisenbergEvolution U s B * heisenbergEvolution U t A‖ ≤ _
+  calc
+    _ ≤ ‖heisenbergEvolution U t A * heisenbergEvolution U s B‖ +
+        ‖heisenbergEvolution U s B * heisenbergEvolution U t A‖ := norm_sub_le _ _
+    _ ≤ ‖heisenbergEvolution U t A‖ * ‖heisenbergEvolution U s B‖ +
+        ‖heisenbergEvolution U s B‖ * ‖heisenbergEvolution U t A‖ :=
+      add_le_add (norm_mul_le _ _) (norm_mul_le _ _)
+    _ = 2 * ‖A‖ * ‖B‖ := by simp only [norm_heisenbergEvolution]; ring
+
 /-- A unitary group gives uniform scalar commutator bounds without any continuity assumption. -/
 theorem norm_commutatorSusceptibility_le
     (expectation : NormalizedExpectation H) (A B : H →L[ℂ] H) (t s : ℝ) :
@@ -80,18 +93,7 @@ theorem norm_commutatorSusceptibility_le
       ‖Complex.I / (hbar : ℂ)‖ * ‖expectation.toContinuousLinearMap‖ *
         (2 * ‖A‖ * ‖B‖) := by
   let X : H →L[ℂ] H := ⁅heisenbergEvolution U t A, heisenbergEvolution U s B⁆
-  have hX : ‖X‖ ≤ 2 * ‖A‖ * ‖B‖ := by
-    change ‖heisenbergEvolution U t A * heisenbergEvolution U s B -
-      heisenbergEvolution U s B * heisenbergEvolution U t A‖ ≤ _
-    calc
-      _ ≤ ‖heisenbergEvolution U t A * heisenbergEvolution U s B‖ +
-          ‖heisenbergEvolution U s B * heisenbergEvolution U t A‖ := norm_sub_le _ _
-      _ ≤ ‖heisenbergEvolution U t A‖ * ‖heisenbergEvolution U s B‖ +
-          ‖heisenbergEvolution U s B‖ * ‖heisenbergEvolution U t A‖ :=
-        add_le_add (norm_mul_le _ _) (norm_mul_le _ _)
-      _ = 2 * ‖A‖ * ‖B‖ := by
-        simp only [norm_heisenbergEvolution]
-        ring
+  have hX : ‖X‖ ≤ 2 * ‖A‖ * ‖B‖ := norm_lie_heisenbergEvolution_le U A B t s
   change ‖(Complex.I / (hbar : ℂ)) * expectation X‖ ≤ _
   calc
     _ = ‖Complex.I / (hbar : ℂ)‖ * ‖expectation X‖ := norm_mul _ _
