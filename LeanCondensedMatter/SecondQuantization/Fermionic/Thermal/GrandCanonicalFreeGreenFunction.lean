@@ -43,11 +43,13 @@ theorem grandCanonicalFreeGreenFunction_of_gt_self (ε : Mode → ℝ) (β μ : 
   change -(Common.finiteGibbsExpectationLinearMap
     (Common.grandCanonicalEnergy (Config := Occupation Mode) ε μ) β)
     (twoPointTimeOrderedProduct ε i i τ τ') = _
+  have hAC := grandCanonicalFiniteGibbsExpectation_annihilate_comp_create ε β μ i i
+  simp only [Common.finiteGibbsExpectation] at hAC
   rw [twoPointTimeOrderedProduct_of_gt ε i i h,
     imaginaryTimeEvolve_annihilate, imaginaryTimeEvolve_create, LinearMap.smul_comp,
     LinearMap.comp_smul, smul_smul,
     map_smul, map_smul, smul_eq_mul,
-    grandCanonicalFiniteGibbsExpectation_annihilate_comp_create, ite_eq_left rfl]
+    hAC, ite_eq_left rfl]
   rw [show Complex.exp (-(τ : ℂ) * (ε i : ℂ)) * Complex.exp ((τ' : ℂ) * (ε i : ℂ)) =
       Complex.exp (-(τ - τ' : ℝ) * (ε i : ℂ)) by
     rw [← Complex.exp_add]; congr 1; push_cast; ring]
@@ -62,13 +64,17 @@ theorem grandCanonicalFreeGreenFunction_of_lt_self (ε : Mode → ℝ) (β μ : 
   change -(Common.finiteGibbsExpectationLinearMap
     (Common.grandCanonicalEnergy (Config := Occupation Mode) ε μ) β)
     (twoPointTimeOrderedProduct ε i i τ τ') = _
+  have hAC := grandCanonicalFiniteGibbsExpectation_annihilate_comp_create ε β μ i i
+  simp only [Common.finiteGibbsExpectation] at hAC
+  have hCA := grandCanonicalFiniteGibbsExpectation_create_comp_annihilate ε β μ i i
+  simp only [Common.finiteGibbsExpectation] at hCA
   rw [twoPointTimeOrderedProduct_of_lt ε i i h, Common.Statistics.zetaInt_fermion,
     Int.cast_neg, Int.cast_one, neg_one_smul,
-    map_neg, map_neg, neg_neg,
+    map_neg, neg_neg,
     imaginaryTimeEvolve_annihilate, imaginaryTimeEvolve_create, LinearMap.smul_comp,
     LinearMap.comp_smul, smul_smul,
     map_smul, map_smul, smul_eq_mul,
-    grandCanonicalFiniteGibbsExpectation_create_comp_annihilate, ite_eq_left rfl]
+    hCA, ite_eq_left rfl]
   rw [show Complex.exp ((τ' : ℂ) * (ε i : ℂ)) * Complex.exp (-(τ : ℂ) * (ε i : ℂ)) =
       Complex.exp (-(τ - τ' : ℝ) * (ε i : ℂ)) by
     rw [← Complex.exp_add]; congr 1; push_cast; ring]
@@ -81,6 +87,10 @@ theorem grandCanonicalFreeGreenFunction_self_time_self (ε : Mode → ℝ) (β �
   change -(Common.finiteGibbsExpectationLinearMap
     (Common.grandCanonicalEnergy (Config := Occupation Mode) ε μ) β)
     (twoPointTimeOrderedProduct ε i i τ τ) = _
+  have hAC := grandCanonicalFiniteGibbsExpectation_annihilate_comp_create ε β μ i i
+  simp only [Common.finiteGibbsExpectation] at hAC
+  have hCA := grandCanonicalFiniteGibbsExpectation_create_comp_annihilate ε β μ i i
+  simp only [Common.finiteGibbsExpectation] at hCA
   rw [twoPointTimeOrderedProduct_self_time, Common.Statistics.zetaInt_fermion,
     Int.cast_neg, Int.cast_one,
     imaginaryTimeEvolve_annihilate, imaginaryTimeEvolve_create]
@@ -88,8 +98,7 @@ theorem grandCanonicalFreeGreenFunction_self_time_self (ε : Mode → ℝ) (β �
     show -(τ : ℂ) * (ε i : ℂ) + (τ : ℂ) * (ε i : ℂ) = 0 by ring,
     show (τ : ℂ) * (ε i : ℂ) + -(τ : ℂ) * (ε i : ℂ) = 0 by ring, Complex.exp_zero, one_smul]
   simp only [map_smul, map_add]
-  rw [grandCanonicalFiniteGibbsExpectation_annihilate_comp_create,
-    grandCanonicalFiniteGibbsExpectation_create_comp_annihilate]
+  rw [hAC, hCA]
   simp only [smul_eq_mul, one_mul, neg_mul]
   have hE : Complex.exp ((β : ℂ) * ((ε i - μ : ℝ) : ℂ)) + 1 ≠ 0 := by
     simpa [Common.Statistics.zetaInt_fermion, add_comm] using
@@ -105,20 +114,21 @@ theorem grandCanonicalFreeGreenFunction_of_ne (ε : Mode → ℝ) (β μ : ℝ) 
   change -(Common.finiteGibbsExpectationLinearMap
     (Common.grandCanonicalEnergy (Config := Occupation Mode) ε μ) β)
     (twoPointTimeOrderedProduct ε i j τ τ') = _
+  have hAC := grandCanonicalFiniteGibbsExpectation_annihilate_comp_create ε β μ i j
+  simp only [Common.finiteGibbsExpectation] at hAC
+  have hCA := grandCanonicalFiniteGibbsExpectation_create_comp_annihilate ε β μ i j
+  simp only [Common.finiteGibbsExpectation] at hCA
   unfold twoPointTimeOrderedProduct Common.timeOrderedProduct
   rw [imaginaryTimeEvolve_annihilate, imaginaryTimeEvolve_create]
   split_ifs with hτ hτ'
   · simp only [LinearMap.smul_comp, LinearMap.comp_smul, smul_smul, map_smul]
-    rw [grandCanonicalFiniteGibbsExpectation_annihilate_comp_create,
-      ite_eq_right hij]
+    rw [hAC, ite_eq_right hij]
     simp
   · simp only [LinearMap.smul_comp, LinearMap.comp_smul, smul_smul, map_smul]
-    rw [grandCanonicalFiniteGibbsExpectation_create_comp_annihilate,
-      ite_eq_right hij]
+    rw [hCA, ite_eq_right hij]
     simp
   · simp only [LinearMap.smul_comp, LinearMap.comp_smul, smul_smul, map_smul, map_add]
-    rw [grandCanonicalFiniteGibbsExpectation_annihilate_comp_create,
-      grandCanonicalFiniteGibbsExpectation_create_comp_annihilate]
+    rw [hAC, hCA]
     simp [hij]
 end Fermionic
 end SecondQuantization
