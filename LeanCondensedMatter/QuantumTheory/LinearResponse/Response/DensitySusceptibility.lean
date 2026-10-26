@@ -47,10 +47,11 @@ theorem continuous_commutatorSusceptibility_of_diagonal_density
     (fun t : ℝ => ⁅heisenbergEvolution U t A, B⁆) (2 * ‖A‖ * ‖B‖)
     (fun t => by simpa only [heisenbergEvolution_zero] using
       norm_lie_heisenbergEvolution_le U A B t 0) hcoeff
-  simpa only [Pi.mul_apply, commutatorSusceptibility, heisenbergEvolution_zero,
-    DensityOperator.toNormalizedExpectation_apply] using
-    (continuous_const.mul hexpect : Continuous (fun t : ℝ =>
-      (Complex.I / (hbar : ℂ)) * ρ.expectation ⁅heisenbergEvolution U t A, B⁆))
+  convert (continuous_const : Continuous (fun _ : ℝ => Complex.I / (hbar : ℂ))).mul
+    hexpect using 1
+  funext t
+  simp only [Pi.mul_apply, commutatorSusceptibility, heisenbergEvolution_zero,
+    DensityOperator.toNormalizedExpectation_apply]
 
 end
 
