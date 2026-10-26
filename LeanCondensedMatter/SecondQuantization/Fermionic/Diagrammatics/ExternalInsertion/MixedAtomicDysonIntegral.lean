@@ -27,11 +27,12 @@ open Common
 variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
 
 /-- Order-n Dyson coefficient of the explicitly mixed-time-ordered atomic
-free-Gibbs operator product, including the fermionic atomic-order sign and
+grand-canonical Gibbs operator product, including the fermionic atomic-order sign and
 the vertex couplings. The Dyson (-1)^n factor is independent of the
-mixed-time reordering sign. -/
+mixed-time reordering sign. Its physical time evolution uses ε, and its
+thermal occupation weight uses ε - μ. -/
 noncomputable def externalInsertionMixedAtomicDysonCoefficient {E : ℕ}
-    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
+    (ε : Mode → ℝ) (β μ : ℝ) (g : QuarticVertexLabel Mode → ℂ)
     (externalLabel : Fin (2 * E) → ExternalFieldLabel Mode)
     (externalTime : Fin (2 * E) → ℝ) (n : ℕ) : ℂ :=
   intervalIntegral.orderedSimplexIntegral n β
@@ -40,15 +41,14 @@ noncomputable def externalInsertionMixedAtomicDysonCoefficient {E : ℕ}
         (externalInsertionMixedAtomicOrderSign externalTime σ *
           ∑ q : Fin n → QuarticVertexLabel Mode,
             (∏ i : Fin n, g (q i)) *
-              (freeGibbsDensityOperator ε β).expectation
-                (Common.finiteHilbertOperatorAlgEquiv
-                  (List.prod (List.ofFn
+              Common.finiteGibbsExpectation (fermionEnergy (fun i => ε i - μ)) β
+                (List.prod (List.ofFn
                     (fun p : Fin (2 * (2 * n + E)) =>
                       timedFieldOperator ε
                         (externalInsertionMixedTimeOrderedAtomicFieldFamily
-                          externalLabel externalTime q σ p)))))))
+                          externalLabel externalTime q σ p))))))
 
-/-- The mixed-atomic free-Gibbs Dyson coefficient equals the existing
+/-- At μ = 0, the mixed-atomic grand-canonical Dyson coefficient equals the existing
 integrated fixed-external Wick-diagram coefficient at every perturbative
 order. The finite-sum/integral interchange follows from the proved
 chamberwise regularity of each diagram's Dyson integrand. -/
@@ -58,7 +58,7 @@ theorem externalInsertionMixedAtomicDysonCoefficient_eq_externalInsertionDysonCo
     (externalLabel : Fin (2 * E) → ExternalFieldLabel Mode)
     (externalTime : Fin (2 * E) → ℝ) (n : ℕ) :
     externalInsertionMixedAtomicDysonCoefficient
-        ε β g externalLabel externalTime n =
+        ε β 0 g externalLabel externalTime n =
       externalInsertionDysonCoefficient
         ε β g externalLabel externalTime n := by
   classical
@@ -67,15 +67,15 @@ theorem externalInsertionMixedAtomicDysonCoefficient_eq_externalInsertionDysonCo
         (externalInsertionMixedAtomicOrderSign externalTime σ *
           ∑ q : Fin n → QuarticVertexLabel Mode,
             (∏ i : Fin n, g (q i)) *
-              (freeGibbsDensityOperator ε β).expectation
-                (Common.finiteHilbertOperatorAlgEquiv
-                  (List.prod (List.ofFn
+              Common.finiteGibbsExpectation (fermionEnergy (fun i => ε i - (0 : ℝ))) β
+                (List.prod (List.ofFn
                     (fun p : Fin (2 * (2 * n + E)) =>
                       timedFieldOperator ε
                         (externalInsertionMixedTimeOrderedAtomicFieldFamily
-                          externalLabel externalTime q σ p)))))) =
+                          externalLabel externalTime q σ p))))) =
         ∑ d : FixedExternalInsertionWickDiagram Mode E n externalLabel,
           d.1.dysonFixedTimeAmplitude ε β g externalTime σ := by
+    simp only [sub_zero]
     rw [← sum_fixedExternalInsertionWickDiagram_fixedTimeAmplitude_eq_mixedAtomicExpectation
       ε β g externalLabel externalTime σ]
     rw [Finset.mul_sum]
