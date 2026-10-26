@@ -7916,8 +7916,7 @@
         "LeanCondensedMatter.Combinatorics.PerfectPairing.Evaluation",
         "LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.GibbsExpectation.Recursion",
         "LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTime.TimedField",
-        "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeBoltzmannCore",
-        "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsDensityOperator"
+        "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeBoltzmannCore"
       ],
       "externalImportCount": 0
     },

@@ -127030,7 +127030,7 @@
     "name": "SecondQuantization.Common.grandCanonicalGibbsDensityOperator_compress_sector",
     "module": "LeanCondensedMatter.SecondQuantization.Common.Thermal.CanonicalGrandCanonicalCompatibility",
     "externalAxioms": [],
-    "docString": "A particle-number compression of the grand-canonical density equals the\nfull-Fock zero extension of the canonical density scaled by the probability\nof that sector. These are equalities of bounded operators, not of normalized\ndensity operators. No number-conservation condition on an observable is needed. ",
+    "docString": "A particle-number compression of the grand-canonical density equals the\nfull-Fock zero extension of the canonical density scaled by the probability\nof that sector. This is an equality of bounded operators; the compressed\noperator is generally unnormalized and is not itself a density state. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [],
@@ -147123,7 +147123,6 @@
       "SecondQuantization.Common.coeff_normalizeByConstantCoeff_dysonTraceSeries_eq_finiteGibbsExpectation",
       "SecondQuantization.Fermionic.continuous_flatVertexLegPairingEvaluation",
       "SecondQuantization.Fermionic.finiteGibbsExpectation_comp_dysonCoeff_quarticInteraction",
-      "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation",
       "SecondQuantization.Fermionic.grandCanonicalGibbsExpectation_prod_timedFieldOperator_eq_sum_pairing",
       "SecondQuantization.Fermionic.timedFieldOperator_quarticLegFieldForSequence",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Pairing.0.SecondQuantization.Fermionic.prod_ofFn_quarticLegOperatorForSequence_eq_quarticVertexSequenceInteractionPicture",
@@ -147774,7 +147773,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] {E : ℕ} (ε : Mode → ℝ) (β : ℝ)\n  (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ)\n  (externalLabel : Fin (2 * E) → SecondQuantization.Fermionic.ExternalFieldLabel Mode) (externalTime : Fin (2 * E) → ℝ)\n  (n : ℕ),\n  SecondQuantization.Fermionic.externalInsertionMixedAtomicDysonCoefficient ε β g externalLabel externalTime n =\n    SecondQuantization.Fermionic.externalInsertionDysonCoefficient ε β g externalLabel externalTime n",
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] {E : ℕ} (ε : Mode → ℝ) (β : ℝ)\n  (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ)\n  (externalLabel : Fin (2 * E) → SecondQuantization.Fermionic.ExternalFieldLabel Mode) (externalTime : Fin (2 * E) → ℝ)\n  (n : ℕ),\n  SecondQuantization.Fermionic.externalInsertionMixedAtomicDysonCoefficient ε β 0 g externalLabel externalTime n =\n    SecondQuantization.Fermionic.externalInsertionDysonCoefficient ε β g externalLabel externalTime n",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -147789,7 +147788,7 @@
     "name": "SecondQuantization.Fermionic.externalInsertionMixedAtomicDysonCoefficient_eq_externalInsertionDysonCoefficient",
     "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.MixedAtomicDysonIntegral",
     "externalAxioms": [],
-    "docString": "The mixed-atomic free-Gibbs Dyson coefficient equals the existing\nintegrated fixed-external Wick-diagram coefficient at every perturbative\norder. The finite-sum/integral interchange follows from the proved\nchamberwise regularity of each diagram's Dyson integrand. ",
+    "docString": "At μ = 0, the mixed-atomic grand-canonical Dyson coefficient equals the existing\nintegrated fixed-external Wick-diagram coefficient at every perturbative\norder. The finite-sum/integral interchange follows from the proved\nchamberwise regularity of each diagram's Dyson integrand. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
@@ -148521,7 +148520,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] {E : ℕ} (ε : Mode → ℝ) (β : ℝ)\n  (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ)\n  (externalLabel : Fin (2 * E) → SecondQuantization.Fermionic.ExternalFieldLabel Mode) (externalTime : Fin (2 * E) → ℝ)\n  (n : ℕ),\n  SecondQuantization.Fermionic.externalInsertionVertexDysonCoefficient ε β g externalLabel externalTime n =\n    SecondQuantization.Fermionic.externalInsertionDysonCoefficient ε β g externalLabel externalTime n",
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] {E : ℕ} (ε : Mode → ℝ) (β : ℝ)\n  (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ)\n  (externalLabel : Fin (2 * E) → SecondQuantization.Fermionic.ExternalFieldLabel Mode) (externalTime : Fin (2 * E) → ℝ)\n  (n : ℕ),\n  SecondQuantization.Fermionic.externalInsertionVertexDysonCoefficient ε β 0 g externalLabel externalTime n =\n    SecondQuantization.Fermionic.externalInsertionDysonCoefficient ε β g externalLabel externalTime n",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -148536,7 +148535,7 @@
     "name": "SecondQuantization.Fermionic.externalInsertionVertexDysonCoefficient_eq_externalInsertionDysonCoefficient",
     "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.InteractionPictureVertexDyson",
     "externalAxioms": [],
-    "docString": "The free-Gibbs interaction-picture vertex Dyson coefficient equals the\nintegrated Wick-diagram coefficient at each finite perturbative order. ",
+    "docString": "At μ = 0, the interaction-picture vertex Dyson coefficient equals the\nintegrated Wick-diagram coefficient at each finite perturbative order. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
@@ -148545,7 +148544,6 @@
     "dependencies": [
       "SecondQuantization.Fermionic.externalInsertionMixedAtomicDysonCoefficient_eq_externalInsertionDysonCoefficient",
       "SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedVertexComp_eq_atomicProduct",
-      "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation",
       "intervalIntegral.orderedSimplexIntegral_congr"
     ],
     "crossModuleDirectWrapper": false,
@@ -148568,7 +148566,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] {E : ℕ} (ε : Mode → ℝ) (β : ℝ)\n  (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ)\n  (externalLabel : Fin (2 * E) → SecondQuantization.Fermionic.ExternalFieldLabel Mode) (externalTime : Fin (2 * E) → ℝ),\n  SecondQuantization.Fermionic.externalInsertionVertexDysonSeries ε β g externalLabel externalTime =\n    SecondQuantization.Fermionic.externalInsertionDysonSeries ε β g externalLabel externalTime",
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] {E : ℕ} (ε : Mode → ℝ) (β : ℝ)\n  (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ)\n  (externalLabel : Fin (2 * E) → SecondQuantization.Fermionic.ExternalFieldLabel Mode) (externalTime : Fin (2 * E) → ℝ),\n  SecondQuantization.Fermionic.externalInsertionVertexDysonSeries ε β 0 g externalLabel externalTime =\n    SecondQuantization.Fermionic.externalInsertionDysonSeries ε β g externalLabel externalTime",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -148583,7 +148581,7 @@
     "name": "SecondQuantization.Fermionic.externalInsertionVertexDysonSeries_eq_externalInsertionDysonSeries",
     "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.InteractionPictureVertexDyson",
     "externalAxioms": [],
-    "docString": "The interaction-picture vertex Dyson formal series is the already-proved\ndiagrammatic external-insertion series. ",
+    "docString": "At μ = 0, the interaction-picture vertex Dyson formal series is the already-proved\ndiagrammatic external-insertion series. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
@@ -148612,7 +148610,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] {E : ℕ} (ε : Mode → ℝ) (β : ℝ),\n  0 ≤ β →\n    ∀ (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ)\n      (externalLabel : Fin (2 * E) → SecondQuantization.Fermionic.ExternalFieldLabel Mode)\n      (externalTime : Fin (2 * E) → ℝ),\n      SecondQuantization.Fermionic.externalInsertionVertexDysonSeries ε β g externalLabel externalTime =\n        SecondQuantization.Fermionic.vacuumFreeExternalInsertionDysonSeries ε β g externalLabel externalTime *\n          (SecondQuantization.Common.dysonTraceSeries (SecondQuantization.Fermionic.fermionEnergy ε) β\n              (SecondQuantization.Fermionic.quarticInteraction g)).normalizeByConstantCoeff",
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] {E : ℕ} (ε : Mode → ℝ) (β : ℝ),\n  0 ≤ β →\n    ∀ (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ)\n      (externalLabel : Fin (2 * E) → SecondQuantization.Fermionic.ExternalFieldLabel Mode)\n      (externalTime : Fin (2 * E) → ℝ),\n      SecondQuantization.Fermionic.externalInsertionVertexDysonSeries ε β 0 g externalLabel externalTime =\n        SecondQuantization.Fermionic.vacuumFreeExternalInsertionDysonSeries ε β g externalLabel externalTime *\n          (SecondQuantization.Common.dysonTraceSeries (SecondQuantization.Fermionic.fermionEnergy ε) β\n              (SecondQuantization.Fermionic.quarticInteraction g)).normalizeByConstantCoeff",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -148627,7 +148625,7 @@
     "name": "SecondQuantization.Fermionic.externalInsertionVertexDysonSeries_eq_vacuumFree_mul_normalizedDysonPartitionSeries",
     "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.InteractionPictureVertexDyson",
     "externalAxioms": [],
-    "docString": "The interaction-picture vertex Dyson formal series contains precisely the\nvacuum-free external contribution times the normalized vacuum partition\nseries. Externally supported but mutually disconnected components remain. ",
+    "docString": "At μ = 0, the interaction-picture vertex Dyson formal series contains precisely the\nvacuum-free external contribution times the normalized vacuum partition\nseries. Externally supported but mutually disconnected components remain. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [],
@@ -149706,7 +149704,8 @@
     "dependencies": [
       "SecondQuantization.Fermionic.bareExternalFieldOperator_quarticLocalLegExternalFieldLabel",
       "SecondQuantization.Fermionic.externalFieldLabelEnergyShift_quarticLocalLegExternalFieldLabel",
-      "SecondQuantization.Fermionic.timedFieldPairContraction_eq"
+      "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation",
+      "SecondQuantization.Fermionic.grandCanonicalTimedFieldPairContraction_eq"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -149944,22 +149943,22 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.dysonVertexMoment_quarticInteraction_eq_sum_vertexLabel_pairingEvaluation",
-      "SecondQuantization.Fermionic.externalInsertionVertexDysonCoefficient_eq_externalInsertionDysonCoefficient",
+      "SecondQuantization.Fermionic.flatVertexLegPairValue_eq",
       "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_mixedTimeOrderedVertexComp_eq_sum_pairingValue",
-      "SecondQuantization.Fermionic.sum_fixedExternalInsertionWickDiagram_fixedTimeAmplitude_eq_mixedAtomicExpectation",
-      "SecondQuantization.Fermionic.timedFieldPairContraction_eq",
+      "SecondQuantization.Fermionic.orderedQuarticPairValue_eq",
+      "SecondQuantization.Fermionic.orderedQuarticPairValue_eq_freeGibbsDensityOperator_expectation",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Factorization.FiberVacuumIntegrand.0.SecondQuantization.Fermionic.fixedExternalOfSlotSplit_mixedPairContractionValue_vacuumNormalizedPair",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.GrandCanonicalFreeGreenFunction.0.SecondQuantization.Fermionic.grandCanonicalFreeGreenFunction_eq_finite"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.dysonVertexMoment_quarticInteraction_eq_sum_vertexLabel_pairingEvaluation",
-      "SecondQuantization.Fermionic.externalInsertionVertexDysonCoefficient_eq_externalInsertionDysonCoefficient",
+      "SecondQuantization.Fermionic.flatVertexLegPairValue_eq",
       "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_mixedTimeOrderedVertexComp_eq_sum_pairingValue",
-      "SecondQuantization.Fermionic.sum_fixedExternalInsertionWickDiagram_fixedTimeAmplitude_eq_mixedAtomicExpectation",
-      "SecondQuantization.Fermionic.timedFieldPairContraction_eq",
+      "SecondQuantization.Fermionic.orderedQuarticPairValue_eq",
+      "SecondQuantization.Fermionic.orderedQuarticPairValue_eq_freeGibbsDensityOperator_expectation",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Factorization.FiberVacuumIntegrand.0.SecondQuantization.Fermionic.fixedExternalOfSlotSplit_mixedPairContractionValue_vacuumNormalizedPair",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.GrandCanonicalFreeGreenFunction.0.SecondQuantization.Fermionic.grandCanonicalFreeGreenFunction_eq_finite"
     ],
     "compiledConsumerCount": 6,
@@ -150798,6 +150797,56 @@
     "completedMention": false,
     "compiledConsumers": [],
     "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] (ε : Mode → ℝ) (β μ : ℝ)\n  (A B : SecondQuantization.Fermionic.TimedField Mode),\n  SecondQuantization.Fermionic.grandCanonicalTimedFieldPairContraction ε β μ A B =\n    Complex.exp ↑(A.time * SecondQuantization.Fermionic.externalFieldLabelEnergyShift ε A.label) *\n        Complex.exp ↑(B.time * SecondQuantization.Fermionic.externalFieldLabelEnergyShift ε B.label) *\n      SecondQuantization.Common.finiteGibbsExpectation (SecondQuantization.Fermionic.fermionEnergy fun i => ε i - μ) β\n        (SecondQuantization.Fermionic.bareExternalFieldOperator A.label ∘ₗ\n          SecondQuantization.Fermionic.bareExternalFieldOperator B.label)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.grandCanonicalTimedFieldPairContraction_eq",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.TimedFieldContraction",
+    "externalAxioms": [],
+    "docString": "Factor physical imaginary-time evolution from an explicit-μ Gibbs pair contraction. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.flatVertexLegPairValue_eq",
+      "SecondQuantization.Fermionic.orderedQuarticPairValue_eq",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.DiagramRegularity.0.SecondQuantization.Fermionic.ExternalInsertionWickDiagram.continuous_dysonFixedTimeChamberRepresentative",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Analysis.DiagramRegularity.0.SecondQuantization.Fermionic.continuous_orderedTwoPointLegPairContraction"
+    ],
+    "dependencies": [
+      "SecondQuantization.Fermionic.timedFieldOperator_eq_smul"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.flatVertexLegPairValue_eq",
+      "SecondQuantization.Fermionic.orderedQuarticPairValue_eq",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.DiagramRegularity.0.SecondQuantization.Fermionic.ExternalInsertionWickDiagram.continuous_dysonFixedTimeChamberRepresentative",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Analysis.DiagramRegularity.0.SecondQuantization.Fermionic.continuous_orderedTwoPointLegPairContraction"
+    ],
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -152212,7 +152261,8 @@
     "dependencies": [
       "SecondQuantization.Fermionic.bareExternalFieldOperator_quarticLocalLegExternalFieldLabel",
       "SecondQuantization.Fermionic.externalFieldLabelEnergyShift_quarticLocalLegExternalFieldLabel",
-      "SecondQuantization.Fermionic.timedFieldPairContraction_eq"
+      "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation",
+      "SecondQuantization.Fermionic.grandCanonicalTimedFieldPairContraction_eq"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -152258,6 +152308,7 @@
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Factorization.FiberVacuumIntegrand.0.SecondQuantization.Fermionic.fixedExternalOfSlotSplit_mixedPairContractionValue_vacuumNormalizedPair"
     ],
     "dependencies": [
+      "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation",
       "SecondQuantization.Fermionic.timedFieldOperator_quarticLegFieldForSequence"
     ],
     "crossModuleDirectWrapper": false,
@@ -152975,7 +153026,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] {E n : ℕ} (ε : Mode → ℝ) (β : ℝ)\n  (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ)\n  (externalLabel : Fin (2 * E) → SecondQuantization.Fermionic.ExternalFieldLabel Mode) (externalTime : Fin (2 * E) → ℝ)\n  (σ : Fin n → ℝ),\n  ∑ d, (↑d).fixedTimeAmplitude ε β g externalTime σ =\n    SecondQuantization.Fermionic.externalInsertionMixedAtomicOrderSign externalTime σ *\n      ∑ q,\n        (∏ i, g (q i)) *\n          (SecondQuantization.Fermionic.freeGibbsDensityOperator ε β).expectation\n            (SecondQuantization.Common.finiteHilbertOperatorAlgEquiv\n              (List.ofFn fun p =>\n                  SecondQuantization.Fermionic.timedFieldOperator ε\n                    (SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicFieldFamily externalLabel\n                      externalTime q σ p)).prod)",
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] {E n : ℕ} (ε : Mode → ℝ) (β : ℝ)\n  (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ)\n  (externalLabel : Fin (2 * E) → SecondQuantization.Fermionic.ExternalFieldLabel Mode) (externalTime : Fin (2 * E) → ℝ)\n  (σ : Fin n → ℝ),\n  ∑ d, (↑d).fixedTimeAmplitude ε β g externalTime σ =\n    SecondQuantization.Fermionic.externalInsertionMixedAtomicOrderSign externalTime σ *\n      ∑ q,\n        (∏ i, g (q i)) *\n          SecondQuantization.Common.finiteGibbsExpectation (SecondQuantization.Fermionic.fermionEnergy ε) β\n            (List.ofFn fun p =>\n                SecondQuantization.Fermionic.timedFieldOperator ε\n                  (SecondQuantization.Fermionic.externalInsertionMixedTimeOrderedAtomicFieldFamily externalLabel\n                    externalTime q σ p)).prod",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -152990,14 +153041,13 @@
     "name": "SecondQuantization.Fermionic.sum_fixedExternalInsertionWickDiagram_fixedTimeAmplitude_eq_mixedAtomicExpectation",
     "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.FreeGibbsWickExpansion",
     "externalAxioms": [],
-    "docString": "The fixed-external Wick-diagram sum is the vertex-weighted free-Gibbs\nexpectation of the mixed-time atomic operator product, with the fermionic\npermutation sign restoring the canonical external/interaction leg order. ",
+    "docString": "The fixed-external Wick-diagram sum is the vertex-weighted zero-μ finite Gibbs\nexpectation of the mixed-time atomic operator product, with the fermionic\npermutation sign restoring the canonical external/interaction leg order. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Fermionic.externalInsertionMixedAtomicDysonCoefficient_eq_externalInsertionDysonCoefficient"
     ],
     "dependencies": [
-      "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation",
       "SecondQuantization.Fermionic.grandCanonicalGibbsExpectation_prod_timedFieldOperator_eq_sum_pairing"
     ],
     "crossModuleDirectWrapper": false,
@@ -153614,9 +153664,9 @@
     "directWrapperTargetModule": "LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTime.TimedField",
     "directWrapperOf": "SecondQuantization.Fermionic.externalFieldOperator_eq_smul_bare",
     "dependents": [
+      "SecondQuantization.Fermionic.grandCanonicalTimedFieldPairContraction_eq",
       "SecondQuantization.Fermionic.heisenbergEvolve_timedFieldOperator",
       "SecondQuantization.Fermionic.timedFieldOperator_quarticLocalLeg",
-      "SecondQuantization.Fermionic.timedFieldPairContraction_eq",
       "SecondQuantization.Fermionic.zetaCommutator_timedFieldOperator"
     ],
     "dependencies": [
@@ -153625,9 +153675,9 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "SecondQuantization.Fermionic.grandCanonicalTimedFieldPairContraction_eq",
       "SecondQuantization.Fermionic.heisenbergEvolve_timedFieldOperator",
       "SecondQuantization.Fermionic.timedFieldOperator_quarticLocalLeg",
-      "SecondQuantization.Fermionic.timedFieldPairContraction_eq",
       "SecondQuantization.Fermionic.zetaCommutator_timedFieldOperator"
     ],
     "compiledConsumerCount": 4,
@@ -153730,57 +153780,6 @@
       "SecondQuantization.Fermionic.timedFieldOperator_quarticLegFieldForSequence",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.InteractionPictureVertexProduct.0.SecondQuantization.Fermionic.prod_externalInsertionTimedEventAtomicOperators",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Factorization.FiberVacuumIntegrand.0.SecondQuantization.Fermionic.fixedExternalOfSlotSplit_mixedAtomicOperator_vacuumOrderedLeg"
-    ],
-    "compiledConsumerCount": 4,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] (ε : Mode → ℝ) (β : ℝ)\n  (A B : SecondQuantization.Fermionic.TimedField Mode),\n  SecondQuantization.Fermionic.timedFieldPairContraction ε β A B =\n    Complex.exp ↑(A.time * SecondQuantization.Fermionic.externalFieldLabelEnergyShift ε A.label) *\n        Complex.exp ↑(B.time * SecondQuantization.Fermionic.externalFieldLabelEnergyShift ε B.label) *\n      (SecondQuantization.Fermionic.freeGibbsDensityOperator ε β).expectation\n        (SecondQuantization.Common.finiteHilbertOperatorAlgEquiv\n          (SecondQuantization.Fermionic.bareExternalFieldOperator A.label ∘ₗ\n            SecondQuantization.Fermionic.bareExternalFieldOperator B.label))",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.timedFieldPairContraction_eq",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.TimedFieldContraction",
-    "externalAxioms": [],
-    "docString": "Closed form after extracting the two imaginary-time exponential factors. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.flatVertexLegPairValue_eq",
-      "SecondQuantization.Fermionic.orderedQuarticPairValue_eq",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.DiagramRegularity.0.SecondQuantization.Fermionic.ExternalInsertionWickDiagram.continuous_dysonFixedTimeChamberRepresentative",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Analysis.DiagramRegularity.0.SecondQuantization.Fermionic.continuous_orderedTwoPointLegPairContraction"
-    ],
-    "dependencies": [
-      "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation",
-      "SecondQuantization.Fermionic.timedFieldOperator_eq_smul"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.flatVertexLegPairValue_eq",
-      "SecondQuantization.Fermionic.orderedQuarticPairValue_eq",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.DiagramRegularity.0.SecondQuantization.Fermionic.ExternalInsertionWickDiagram.continuous_dysonFixedTimeChamberRepresentative",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Analysis.DiagramRegularity.0.SecondQuantization.Fermionic.continuous_orderedTwoPointLegPairContraction"
     ],
     "compiledConsumerCount": 4,
     "axioms": [
@@ -187056,7 +187055,7 @@
       "SecondQuantization.Fermionic.ExternalInsertionWickDiagram.measurableLocallyBounded_dysonFixedTimeAmplitude"
     ],
     "dependencies": [
-      "SecondQuantization.Fermionic.timedFieldPairContraction_eq"
+      "SecondQuantization.Fermionic.grandCanonicalTimedFieldPairContraction_eq"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -187636,7 +187635,7 @@
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Analysis.DiagramRegularity.0.SecondQuantization.Fermionic.FixedExternalTwoPointWickDiagram.continuous_mixedComponentDysonFixedTimeChamberRepresentative"
     ],
     "dependencies": [
-      "SecondQuantization.Fermionic.timedFieldPairContraction_eq"
+      "SecondQuantization.Fermionic.grandCanonicalTimedFieldPairContraction_eq"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -187865,6 +187864,7 @@
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Factorization.FiberVacuumIntegrand.0.SecondQuantization.Fermionic.fixedExternalOfSlotSplit_prod_vacuumPairContractionValue_eq"
     ],
     "dependencies": [
+      "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation",
       "SecondQuantization.Fermionic.orderedQuarticPairValue_eq_freeGibbsDensityOperator_expectation",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Factorization.FiberVacuumIntegrand.0.SecondQuantization.Fermionic.fixedExternalOfSlotSplit_mixedAtomicOperator_vacuumOrderedLeg"
     ],
