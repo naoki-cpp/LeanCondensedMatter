@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Models.MassiveDirac.Conductivity.FiniteBroadeningBornLadder
-import LeanCondensedMatter.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderHallZeroBroadeningIntegral
+import LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.HallZeroBroadeningIntegral
 import LeanCondensedMatter.Models.MassiveDirac.TransportDomain
 
 set_option linter.style.header false

@@ -1,11 +1,11 @@
-import LeanCondensedMatter.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderRadial
-import LeanCondensedMatter.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderRadialDenominator
-import LeanCondensedMatter.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderLongitudinalSameSide
-import LeanCondensedMatter.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderLongitudinalZeroBroadeningIntegral
-import LeanCondensedMatter.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderHallZeroBroadeningIntegral
-import LeanCondensedMatter.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderLongitudinalZeroBroadeningWeakDisorder
-import LeanCondensedMatter.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderHallZeroBroadeningWeakDisorder
-import LeanCondensedMatter.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderHallZeroBroadeningProvenance
+import LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.Radial
+import LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.RadialDenominator
+import LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.LongitudinalSameSide
+import LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.LongitudinalZeroBroadeningIntegral
+import LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.HallZeroBroadeningIntegral
+import LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.LongitudinalZeroBroadeningWeakDisorder
+import LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.HallZeroBroadeningWeakDisorder
+import LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.HallZeroBroadeningProvenance
 import LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.Trace
 import LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.RealSpace
 import LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.RadialCoefficients
@@ -34,6 +34,9 @@ The ordered-`xy` endpoint also exposes a theorem-level expansion of the canonica
 `inPlaneLadderAction` component into the concrete `r_y Γ_x` and `r_x Γ_y` products, without
 introducing a second public representation or assigning scattering-mechanism labels.
 
+The finite-broadening Born-ladder response reductions are grouped under
+`Streda/BornLadder/`, with the retarded-advanced trace bridge, radial denominator,
+longitudinal RR/AA remainder, and separate Hall/longitudinal regulator limits.
 The leading Gaussian crossed sector is grouped under `Streda/GaussianCrossed/` as a
 separate Středa-level real-space trace boundary. Its `X` and
 `Psi` topologies are represented by one indexed kernel. The massive-Dirac finite-cutoff finite-`η`
