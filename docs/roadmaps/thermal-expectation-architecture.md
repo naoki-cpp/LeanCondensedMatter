@@ -126,9 +126,10 @@ staged changes without compatibility aliases or a second density constructor.
 The finite density-state specialization depends directly on `fermionEnergy` and the generic pure-point state;
 finite complex Boltzmann coordinates are a separate proof/perturbation lane.
 
-`Fermionic.Thermal.FreeEntropy` derives the finite occupation marginal from the canonical
-number-operator expectation. The mean energy then uses this marginal, while the binary-entropy
-formula specializes the generic pure-point Gibbs entropy identity. These are thermodynamic
+`Fermionic.Thermal.FreeEntropy` uses the full-occupation grand-canonical one-body
+expectation, not a sharp-number canonical expectation, to derive finite mean-energy
+and one-mode occupations. The binary-entropy formula specializes the generic
+pure-point Gibbs entropy identity. These are thermodynamic
 consequences of the same density state, not a separate probability-state construction.
 
 `Fermionic.Thermal.BoltzmannSummability` owns the **arbitrary-mode** fermionic theorem
