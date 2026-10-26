@@ -38,7 +38,7 @@ theorem continuous_commutatorSusceptibility_of_diagonal_density
     convert hleft.sub hright using 1
     funext t
     simp only [Pi.sub_apply, Function.comp_apply,
-      LieRing.of_associative_ring_bracket, ContinuousLinearMap.sub_apply,
+      LieRing.of_associative_ring_bracket, sub_apply,
       inner_sub_right, heisenbergEvolution_apply, mul_apply_eq_comp,
       ContinuousLinearMap.star_eq_adjoint]
     rw [ContinuousLinearMap.adjoint_inner_right,
