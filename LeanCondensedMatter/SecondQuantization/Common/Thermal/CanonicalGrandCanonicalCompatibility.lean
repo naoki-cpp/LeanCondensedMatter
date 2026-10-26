@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Analysis.Operator.Diagonal
 import LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.CoordinateProjection
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.CanonicalCompatibility
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.GrandCanonicalSectorDecomposition
@@ -70,6 +71,112 @@ theorem grandCanonicalGibbsDensityOperator_compress_sector
       hc, ↓reduceIte, map_zero, smul_apply,
       canonicalFullGibbsDensityOperator_apply_basis_of_ne ε β N
         (canonicalGibbsSummable_of_grandCanonical ε β μ N hsum) c hc, smul_zero]
+
+/-- The grand-canonical density is the operator-norm convergent sum of its
+sharp-number blocks. Every nonempty block is the sector probability times the
+zero-extended canonical density, while empty sectors contribute zero.
+The total operator is trace class; the asserted convergence is in operator norm. -/
+open Classical in
+theorem grandCanonicalGibbsDensityOperator_op_eq_tsum_canonical
+    (ε : Mode → ℝ) (β μ : ℝ)
+    (hsum : EigenbasisGibbsSummable
+      (grandCanonicalEnergy (Config := Config) ε μ) β) :
+    (grandCanonicalGibbsDensityOperator (Config := Config) ε β μ hsum).op =
+      ∑' N : ℕ,
+        if hN : Nonempty (ParticleNumberSector Mode Config N) then
+          letI : Nonempty (ParticleNumberSector Mode Config N) := hN
+          (grandCanonicalSectorProbability (Config := Config) ε β μ N : ℂ) •
+            (canonicalFullGibbsDensityOperator (Config := Config) ε β N
+              (canonicalGibbsSummable_of_grandCanonical ε β μ N hsum)).op
+        else 0 := by
+  classical
+  let ρ := grandCanonicalGibbsDensityOperator (Config := Config) ε β μ hsum
+  let b := completedHilbertBasis (Config := Config)
+  let a : Config → ℂ := fun c =>
+    (eigenbasisGibbsProbability (grandCanonicalEnergy ε μ) β c : ℂ)
+  have ha : Summable (fun c => ‖a c‖) := by
+    simpa only [a, eigenbasisGibbsProbability, Real.normalizedWeight,
+      eigenbasisPartitionFunction, Complex.norm_real] using
+      (Real.summable_norm_normalizedWeight
+        (eigenbasisBoltzmannWeight (grandCanonicalEnergy (Config := Config) ε μ) β)
+        hsum)
+  have hρ : ρ.op = b.diagonalOp a := by
+    apply continuousLinearMap_ext_completedBasis
+    intro c
+    change ρ.op (b c) = b.diagonalOp a (b c)
+    rw [HilbertBasis.diagonalOp_apply_basis b a ha c]
+    simpa only [ρ, b, a, completedHilbertBasis_apply] using
+      (grandCanonicalGibbsDensityOperator_apply_basis ε β μ hsum c)
+  have hfull : HasSum (fun c : Config => b.diagonalTerm a c) ρ.op := by
+    rw [hρ]
+    exact HilbertBasis.hasSum_diagonalTerm b a ha
+  have hblock (N : ℕ) :
+      (∑' n : ParticleNumberSector Mode Config N, b.diagonalTerm a n.val) =
+        (completedCoordinateProjection
+          (fun c : Config => particleNumber (Mode := Mode) c = N)).comp
+          (ρ.op.comp (completedCoordinateProjection
+            (fun c : Config => particleNumber (Mode := Mode) c = N))) := by
+    let P := completedCoordinateProjection
+      (fun c : Config => particleNumber (Mode := Mode) c = N)
+    let L : (CompletedFock Config →L[ℂ] CompletedFock Config) →L[ℂ]
+        (CompletedFock Config →L[ℂ] CompletedFock Config) :=
+      (ContinuousLinearMap.mulLeftRight ℂ
+        (CompletedFock Config →L[ℂ] CompletedFock Config)) P P
+    have hterm (c : Config) :
+        L (b.diagonalTerm a c) =
+          if particleNumber (Mode := Mode) c = N then b.diagonalTerm a c else 0 := by
+      apply ContinuousLinearMap.ext
+      intro ψ
+      change P ((b.diagonalTerm a c) (P ψ)) =
+        (if particleNumber (Mode := Mode) c = N then b.diagonalTerm a c else 0) ψ
+      simp only [HilbertBasis.diagonalTerm, ContinuousLinearMap.smul_apply,
+        InnerProductSpace.rankOne_apply, map_smul, b, completedHilbertBasis_apply]
+      by_cases hc : particleNumber (Mode := Mode) c = N
+      · simp [P, hc, inner_completedBasisState_left,
+          completedCoordinateProjection_apply, completedCoordinateProjection_basisState]
+      · simp [P, hc, inner_completedBasisState_left,
+          completedCoordinateProjection_apply, completedCoordinateProjection_basisState]
+    have hfamily :
+        (fun c : Config => L (b.diagonalTerm a c)) =
+          Function.extend (Subtype.val : ParticleNumberSector Mode Config N → Config)
+            (fun n : ParticleNumberSector Mode Config N => b.diagonalTerm a n.val) 0 := by
+      funext c
+      by_cases hc : particleNumber (Mode := Mode) c = N
+      · let n : ParticleNumberSector Mode Config N := ⟨c, hc⟩
+        change L (b.diagonalTerm a n.val) =
+          Function.extend (Subtype.val : ParticleNumberSector Mode Config N → Config)
+            (fun n : ParticleNumberSector Mode Config N => b.diagonalTerm a n.val) 0 n.val
+        rw [hterm, if_pos hc, Subtype.val_injective.extend_apply]
+      · have hnot : ¬ ∃ n : ParticleNumberSector Mode Config N, n.val = c := by
+          rintro ⟨n, hn⟩
+          apply hc
+          rw [← hn]
+          exact n.property
+        rw [hterm, if_neg hc, Function.extend_apply' _ _ _ hnot]
+    have hcompressed := hfull.mapL L
+    rw [hfamily] at hcompressed
+    have hsector := (hasSum_extend_zero Subtype.val_injective).mp hcompressed
+    simpa only [L, P, ContinuousLinearMap.mul_def, mul_assoc] using hsector.tsum_eq
+  have hgroups :
+      ρ.op = ∑' N : ℕ, ∑' n : ParticleNumberSector Mode Config N,
+        b.diagonalTerm a n.val :=
+    (hfull.tsum_fiberwise
+      (particleNumber (Mode := Mode) (Config := Config))).tsum_eq.symm
+  calc
+    ρ.op = ∑' N : ℕ, ∑' n : ParticleNumberSector Mode Config N,
+        b.diagonalTerm a n.val := hgroups
+    _ = _ := by
+      apply tsum_congr
+      intro N
+      by_cases hN : Nonempty (ParticleNumberSector Mode Config N)
+      · letI : Nonempty (ParticleNumberSector Mode Config N) := hN
+        simp only [dif_pos hN]
+        rw [hblock N]
+        exact grandCanonicalGibbsDensityOperator_compress_sector ε β μ N hsum
+      · letI : IsEmpty (ParticleNumberSector Mode Config N) :=
+          ⟨fun n => hN ⟨n⟩⟩
+        simp only [dif_neg hN]
+        simp
 
 /-- The expectation of any bounded full-Fock observable in a summable grand-canonical
 Gibbs state is an absolutely convergent sum over sharp-number sectors.
