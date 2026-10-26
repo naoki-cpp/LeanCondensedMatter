@@ -3,7 +3,6 @@ import LeanCondensedMatter.SecondQuantization.Common.Perturbation.QuarticDysonEx
 import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.Quartic
 import LeanCondensedMatter.Analysis.OrderedSimplex.Integral
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsExpectationBridge
-import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsDensityOperator
 import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.QuarticInteraction
 import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.InteractionPicture
 import LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTime.ImaginaryTimeEvolution
@@ -13,9 +12,9 @@ set_option linter.style.header false
 /-!
 # Quartic Dyson coefficient expansion and continuity
 
-This module specializes the Common quartic Dyson coefficient expansion to finite fermionic
-free-Gibbs expectations, and establishes continuity of the quartic interaction-picture vertex
-sequence via its scalar imaginary-time factor.
+This module evaluates the Common quartic Dyson coefficient expansion against an arbitrary
+finite occupation-basis Gibbs energy. The physical interaction-picture evolution retains
+`fermionEnergy ε`, independently of the energy defining the expectation.
 
 The Bloch–de Dominicis pairing expansion is proved in `DysonDiagramExpansion/Pairing.lean`;
 the final Dyson-to-Wick-diagram reindexing is proved in `DysonDiagramExpansion/Reindexing.lean`.
@@ -76,48 +75,21 @@ theorem continuous_matrixCoeff_quarticVertexSequenceInteractionPicture (ε : Mod
   simp only [map_smul, smul_eq_mul]
   exact (Common.continuous_quarticVertexSequenceTimeFactor ε q).mul continuous_const
 
-/-- Joint continuity of the free Gibbs density-state expectation of an `L`-prefixed quartic
-interaction-picture sequence, directly from the Common scalar-time-factor decomposition. -/
-theorem continuous_freeGibbsDensityOperator_expectation_comp_quarticVertexSequenceInteractionPicture
-    (ε : Mode → ℝ) (β : ℝ) (n : ℕ) (q : Fin n → QuarticVertexLabel Mode)
-    (L : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) :
-    Continuous (fun τ : Fin n → ℝ =>
-      (freeGibbsDensityOperator ε β).expectation
-        (Common.finiteHilbertOperatorAlgEquiv
-          (L.comp (Common.quarticVertexSequenceInteractionPicture
-            (fermionEnergy ε) create annihilate n q τ)))) := by
-  have hcreate : ∀ τ i, Common.heisenbergEvolve (fermionEnergy ε) τ (create i) =
-      Complex.exp ((τ : ℂ) * (ε i : ℂ)) • create i := by
-    intro τ i
-    simpa only [imaginaryTimeEvolve] using imaginaryTimeEvolve_create ε τ i
-  have hannihilate : ∀ τ i, Common.heisenbergEvolve (fermionEnergy ε) τ (annihilate i) =
-      Complex.exp (-(τ : ℂ) * (ε i : ℂ)) • annihilate i := by
-    intro τ i
-    simpa only [imaginaryTimeEvolve] using imaginaryTimeEvolve_annihilate ε τ i
-  simp_rw [Common.quarticVertexSequenceInteractionPicture_eq_smul
-    (fermionEnergy ε) ε create annihilate hcreate hannihilate n q]
-  simp only [LinearMap.comp_smul,
-    freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation,
-    Common.finiteGibbsExpectation, map_smul, smul_eq_mul]
-  exact (Common.continuous_quarticVertexSequenceTimeFactor ε q).mul continuous_const
-
-/-- The quartic Dyson coefficient expansion through the canonical free Gibbs density-state
-expectation. The operator-level Dyson expansion and scalar ordered-simplex coefficient are supplied
-by the statistics-independent Common quartic Dyson seam. -/
-theorem freeGibbsDensityOperator_expectation_comp_dysonCoeff_quarticInteraction
-    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ) :
+/-- The quartic Dyson coefficient expansion against a finite Gibbs expectation with arbitrary
+configuration energy. Dyson evolution continues to use the physical `fermionEnergy ε`;
+the Gibbs energy is an independent input, permitting explicit-μ specializations. -/
+theorem finiteGibbsExpectation_comp_dysonCoeff_quarticInteraction
+    (ε : Mode → ℝ) (energy : Occupation Mode → ℝ) (β : ℝ)
+    (g : QuarticVertexLabel Mode → ℂ) :
     ∀ (n : ℕ) (t : ℝ) (L : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode),
-      (freeGibbsDensityOperator ε β).expectation
-          (Common.finiteHilbertOperatorAlgEquiv
-            (L.comp (Common.dysonCoeff (fermionEnergy ε) (quarticInteraction g) n t))) =
+      Common.finiteGibbsExpectation energy β
+          (L.comp (Common.dysonCoeff (fermionEnergy ε) (quarticInteraction g) n t)) =
         (-1 : ℂ) ^ n * ∑ q : Fin n → QuarticVertexLabel Mode,
           (∏ i, g (q i)) * intervalIntegral.orderedSimplexIntegral n t
-            (fun τ => (freeGibbsDensityOperator ε β).expectation
-              (Common.finiteHilbertOperatorAlgEquiv
-                (L.comp (Common.quarticVertexSequenceInteractionPicture
-                  (fermionEnergy ε) create annihilate n q τ)))) := by
+            (fun τ => Common.finiteGibbsExpectation energy β
+              (L.comp (Common.quarticVertexSequenceInteractionPicture
+                (fermionEnergy ε) create annihilate n q τ))) := by
   intro n t L
-  simp_rw [freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation]
   have hcreate : ∀ τ i, Common.heisenbergEvolve (fermionEnergy ε) τ (create i) =
       Complex.exp ((τ : ℂ) * (ε i : ℂ)) • create i := by
     intro τ i
@@ -148,7 +120,7 @@ theorem freeGibbsDensityOperator_expectation_comp_dysonCoeff_quarticInteraction
     simp [LinearMap.comp_apply, LinearMap.sum_apply]
   rw [hcomp]
   change
-    (Common.finiteGibbsExpectationLinearMap (fermionEnergy ε) β)
+    (Common.finiteGibbsExpectationLinearMap energy β)
         (∑ q : Fin n → QuarticVertexLabel Mode,
           Common.quarticDysonSequenceCoeff ε g q t •
             L.comp (Common.quarticVertexSequenceOperator create annihilate q)) =
@@ -157,10 +129,10 @@ theorem freeGibbsDensityOperator_expectation_comp_dysonCoeff_quarticInteraction
   simp only [map_smul, smul_eq_mul]
   have hintegral : ∀ q : Fin n → QuarticVertexLabel Mode,
       intervalIntegral.orderedSimplexIntegral n t
-          (fun τ => Common.finiteGibbsExpectation (fermionEnergy ε) β
+          (fun τ => Common.finiteGibbsExpectation energy β
             (L.comp (Common.quarticVertexSequenceInteractionPicture
               (fermionEnergy ε) create annihilate n q τ))) =
-        Common.finiteGibbsExpectation (fermionEnergy ε) β
+        Common.finiteGibbsExpectation energy β
             (L.comp (Common.quarticVertexSequenceOperator create annihilate q)) *
           intervalIntegral.orderedSimplexIntegral n t
             (Common.quarticVertexSequenceTimeFactor ε q) := by
