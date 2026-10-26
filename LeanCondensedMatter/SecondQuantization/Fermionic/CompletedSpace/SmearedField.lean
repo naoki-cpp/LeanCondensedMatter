@@ -28,6 +28,7 @@ private def createFieldCore : (Mode →₀ ℂ) →ₗ[ℂ]
     (CompletedFockSpace Mode →L[ℂ] CompletedFockSpace Mode) :=
   Finsupp.linearCombination ℂ completedCreate
 
+set_option pp.all true in
 private theorem norm_createFieldCore_le (v : Mode →₀ ℂ) :
     ‖createFieldCore v‖ ≤ ‖Common.algebraicToCompleted v‖ := by
   classical
