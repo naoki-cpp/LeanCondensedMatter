@@ -39,7 +39,11 @@ theorem grandCanonicalFreeGreenFunction_of_gt_self (ε : Mode → ℝ) (β μ : 
     grandCanonicalFreeGreenFunction ε β μ i i τ τ' =
       - (Complex.exp (-(τ - τ' : ℝ) * (ε i : ℂ)) *
         (Complex.exp ((β : ℂ) * ((ε i - μ : ℝ) : ℂ)) / (Complex.exp ((β : ℂ) * ((ε i - μ : ℝ) : ℂ)) + 1))) := by
-  rw [grandCanonicalFreeGreenFunction, twoPointTimeOrderedProduct_of_gt ε i i h,
+  rw [grandCanonicalFreeGreenFunction]
+  change -(Common.finiteGibbsExpectationLinearMap
+    (Common.grandCanonicalEnergy (Config := Occupation Mode) ε μ) β)
+    (twoPointTimeOrderedProduct ε i i τ τ') = _
+  rw [twoPointTimeOrderedProduct_of_gt ε i i h,
     imaginaryTimeEvolve_annihilate, imaginaryTimeEvolve_create, LinearMap.smul_comp,
     LinearMap.comp_smul, smul_smul,
     map_smul, map_smul, smul_eq_mul,
@@ -54,7 +58,11 @@ theorem grandCanonicalFreeGreenFunction_of_lt_self (ε : Mode → ℝ) (β μ : 
     grandCanonicalFreeGreenFunction ε β μ i i τ τ' =
       Complex.exp (-(τ - τ' : ℝ) * (ε i : ℂ)) *
         (1 / (Complex.exp ((β : ℂ) * ((ε i - μ : ℝ) : ℂ)) + 1)) := by
-  rw [grandCanonicalFreeGreenFunction, twoPointTimeOrderedProduct_of_lt ε i i h, Common.Statistics.zetaInt_fermion,
+  rw [grandCanonicalFreeGreenFunction]
+  change -(Common.finiteGibbsExpectationLinearMap
+    (Common.grandCanonicalEnergy (Config := Occupation Mode) ε μ) β)
+    (twoPointTimeOrderedProduct ε i i τ τ') = _
+  rw [twoPointTimeOrderedProduct_of_lt ε i i h, Common.Statistics.zetaInt_fermion,
     Int.cast_neg, Int.cast_one, neg_one_smul,
     map_neg, map_neg, neg_neg,
     imaginaryTimeEvolve_annihilate, imaginaryTimeEvolve_create, LinearMap.smul_comp,
@@ -69,7 +77,11 @@ theorem grandCanonicalFreeGreenFunction_of_lt_self (ε : Mode → ℝ) (β μ : 
 theorem grandCanonicalFreeGreenFunction_self_time_self (ε : Mode → ℝ) (β μ : ℝ) (i : Mode) (τ : ℝ) :
     grandCanonicalFreeGreenFunction ε β μ i i τ τ =
       1 / (Complex.exp ((β : ℂ) * ((ε i - μ : ℝ) : ℂ)) + 1) - (2 : ℂ)⁻¹ := by
-  rw [grandCanonicalFreeGreenFunction, twoPointTimeOrderedProduct_self_time, Common.Statistics.zetaInt_fermion,
+  rw [grandCanonicalFreeGreenFunction]
+  change -(Common.finiteGibbsExpectationLinearMap
+    (Common.grandCanonicalEnergy (Config := Occupation Mode) ε μ) β)
+    (twoPointTimeOrderedProduct ε i i τ τ) = _
+  rw [twoPointTimeOrderedProduct_self_time, Common.Statistics.zetaInt_fermion,
     Int.cast_neg, Int.cast_one,
     imaginaryTimeEvolve_annihilate, imaginaryTimeEvolve_create]
   simp only [LinearMap.smul_comp, LinearMap.comp_smul, smul_smul, ← Complex.exp_add,
@@ -90,6 +102,9 @@ theorem grandCanonicalFreeGreenFunction_self_time_self (ε : Mode → ℝ) (β �
 theorem grandCanonicalFreeGreenFunction_of_ne (ε : Mode → ℝ) (β μ : ℝ) {i j : Mode} (hij : i ≠ j)
     (τ τ' : ℝ) : grandCanonicalFreeGreenFunction ε β μ i j τ τ' = 0 := by
   rw [grandCanonicalFreeGreenFunction]
+  change -(Common.finiteGibbsExpectationLinearMap
+    (Common.grandCanonicalEnergy (Config := Occupation Mode) ε μ) β)
+    (twoPointTimeOrderedProduct ε i j τ τ') = _
   unfold twoPointTimeOrderedProduct Common.timeOrderedProduct
   rw [imaginaryTimeEvolve_annihilate, imaginaryTimeEvolve_create]
   split_ifs with hτ hτ'
