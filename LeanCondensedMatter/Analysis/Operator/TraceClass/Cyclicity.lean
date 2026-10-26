@@ -40,16 +40,6 @@ theorem trace_comp_comm {T : H →L[ℂ] H} (hT : IsTraceClass T) (W : H →L[�
     _ = (hT.comp_left W).trace :=
       (trace_eq_innerHS_of_factorization (hT.comp_left W) hfactorLeft d).symm
 
-/-- Moving the outer factor of a trace-class sandwich through the trace.
-This applies to arbitrary bounded operators; no projection or self-adjointness
-assumption on `P` is required. -/
-theorem trace_sandwich {T : H →L[ℂ] H} (hT : IsTraceClass T) (P : H →L[ℂ] H) :
-    ((hT.comp_left P).comp_right P).trace =
-      (hT.comp_right (P * P)).trace := by
-  have h := (hT.comp_right P).trace_comp_comm P
-  simpa only [mul_assoc] using h.symm
-
-
 end IsTraceClass
 
 end ContinuousLinearMap
