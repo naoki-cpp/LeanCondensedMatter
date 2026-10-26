@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Analysis.Operator.TraceClass.Cyclicity
 import LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.CoordinateProjection
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.CanonicalCompatibility
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.GrandCanonicalSectorDecomposition
