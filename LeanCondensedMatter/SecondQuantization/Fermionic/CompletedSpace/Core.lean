@@ -26,6 +26,9 @@ theorem completedCreate_comp_algebraicToCompleted (i : Mode) :
   intro n
   change completedCreate i (algebraicToCompleted (basisState n)) =
     algebraicToCompleted (create i (basisState n))
+  change completedCreate i
+    (Common.algebraicToCompleted (Common.basisState n)) =
+      Common.algebraicToCompleted (create i (Common.basisState n))
   rw [Common.algebraicToCompleted_basisState]
   by_cases hi : i ∈ n
   · simp [create_basisState_of_mem hi, completedCreate_basisState_of_mem hi]
@@ -40,6 +43,9 @@ theorem completedAnnihilate_comp_algebraicToCompleted (i : Mode) :
   intro n
   change completedAnnihilate i (algebraicToCompleted (basisState n)) =
     algebraicToCompleted (annihilate i (basisState n))
+  change completedAnnihilate i
+    (Common.algebraicToCompleted (Common.basisState n)) =
+      Common.algebraicToCompleted (annihilate i (Common.basisState n))
   rw [Common.algebraicToCompleted_basisState]
   by_cases hi : i ∈ n
   · simp [annihilate_basisState_of_mem hi, completedAnnihilate_basisState_of_mem hi,
