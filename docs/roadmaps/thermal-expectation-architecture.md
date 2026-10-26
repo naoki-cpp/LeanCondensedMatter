@@ -111,7 +111,11 @@ The finite Gibbs implementation specializes the generic recursion using the fini
 state, imaginary-time evolution, trace-ratio identity, and KMS/exchange relations.
 The finite quartic Dyson coefficient identity accepts an arbitrary occupation-energy
 function for `Common.finiteGibbsExpectation`, while the physical imaginary-time generator
-remains `fermionEnergy ε`. Concrete ensemble-specific Dyson/Wick statements choose the Gibbs
+remains `fermionEnergy ε`.
+The external-insertion mixed-atomic and interaction-picture vertex Dyson coefficient APIs
+accept explicit μ and evaluate directly via `Common.finiteGibbsExpectation` at
+`fermionEnergy (ε - μ)`, while existing diagrammatic and vacuum-factorization theorems
+remain explicitly restricted to μ = 0 until the full diagrammatic API migrates. Concrete ensemble-specific Dyson/Wick statements choose the Gibbs
 energy separately; no finite density-state adapter is required by the coefficient expansion.
 The finite `Fermionic.freeGibbsDensityOperator ε β` still covers **all**
 fermionic occupation sectors at implicit `μ = 0`, not a fixed-number canonical state;

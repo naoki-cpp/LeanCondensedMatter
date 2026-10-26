@@ -1,6 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.DysonSeries
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.TimedFieldContraction
-import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsDensityOperator
 
 set_option linter.style.header false
 
@@ -13,7 +12,9 @@ fixed-external Wick diagrams. The mixed-order fermionic sign and the quartic
 vertex weights are kept explicit; the Dyson sign and time integration are
 separate downstream operations.
 
-The state is the normalized *free* Gibbs state, not the interacting Gibbs state.
+The state is the normalized *free* finite Gibbs state at μ = 0, not the
+interacting Gibbs state. The expectation directly uses the generic finite Gibbs
+functional, without the legacy finite density-state adapter.
 This is a pointwise statement about the mixed-time atomic operator product,
 not yet an identification with a separately constructed time-ordered product
 of quartic interaction operators.
@@ -63,7 +64,7 @@ private noncomputable def fixedExternalInsertionWickDiagramEquivMixedData
           (externalInsertionMixedTimeAmbientPositionEquiv externalTime σ) = pairing
       exact PairingOn.transport_transport_symm _ _
 
-/-- The fixed-external Wick-diagram sum is the vertex-weighted free-Gibbs
+/-- The fixed-external Wick-diagram sum is the vertex-weighted zero-μ finite Gibbs
 expectation of the mixed-time atomic operator product, with the fermionic
 permutation sign restoring the canonical external/interaction leg order. -/
 theorem sum_fixedExternalInsertionWickDiagram_fixedTimeAmplitude_eq_mixedAtomicExpectation
@@ -76,12 +77,11 @@ theorem sum_fixedExternalInsertionWickDiagram_fixedTimeAmplitude_eq_mixedAtomicE
       externalInsertionMixedAtomicOrderSign externalTime σ *
         ∑ q : Fin n → QuarticVertexLabel Mode,
           (∏ i : Fin n, g (q i)) *
-            (freeGibbsDensityOperator ε β).expectation
-              (Common.finiteHilbertOperatorAlgEquiv
-                (List.prod (List.ofFn (fun p : Fin (2 * (2 * n + E)) =>
-                  timedFieldOperator ε
-                    (externalInsertionMixedTimeOrderedAtomicFieldFamily
-                      externalLabel externalTime q σ p))))) := by
+            Common.finiteGibbsExpectation (fermionEnergy ε) β
+              (List.prod (List.ofFn (fun p : Fin (2 * (2 * n + E)) =>
+                timedFieldOperator ε
+                  (externalInsertionMixedTimeOrderedAtomicFieldFamily
+                    externalLabel externalTime q σ p)))) := by
   classical
   let e := fixedExternalInsertionWickDiagramEquivMixedData
     (Mode := Mode) externalLabel externalTime σ
@@ -122,12 +122,11 @@ theorem sum_fixedExternalInsertionWickDiagram_fixedTimeAmplitude_eq_mixedAtomicE
         rw [hweight, d.2]
       _ = _ := Equiv.sum_comp e F
   have hwick (q : Fin n → QuarticVertexLabel Mode) :
-      (freeGibbsDensityOperator ε β).expectation
-        (Common.finiteHilbertOperatorAlgEquiv
-          (List.prod (List.ofFn (fun p : Fin (2 * (2 * n + E)) =>
-            timedFieldOperator ε
-              (externalInsertionMixedTimeOrderedAtomicFieldFamily
-                externalLabel externalTime q σ p))))) =
+      Common.finiteGibbsExpectation (fermionEnergy ε) β
+        (List.prod (List.ofFn (fun p : Fin (2 * (2 * n + E)) =>
+          timedFieldOperator ε
+            (externalInsertionMixedTimeOrderedAtomicFieldFamily
+              externalLabel externalTime q σ p)))) =
         ∑ pairing : Pairing (2 * n + E),
           pairing.evaluation (pairing.weight Common.Statistics.fermion)
             (externalInsertionMixedTimeOrderedAtomicPairValue ε β
