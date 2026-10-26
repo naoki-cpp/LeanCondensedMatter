@@ -45,7 +45,8 @@ Records without an explicit status have status **accepted**. Acceptance means th
 - [0017 — Derive crystal structure from weak atomic configurations](0017-crystal-from-atomic-configurations.md)
 - [0022 — Separate exact spin models, magnon approximations, and macroscopic magnetization](0022-spin-wave-model-boundaries.md)
 
-[Historical review coverage](history-review.md) tracks the issue-focused sequential review, records PR-only number gaps as skips, and identifies the next issue to inspect. Historical evidence sections distinguish recorded motivations from current implementation constraints.
+The [historical issue-review index](history-review.md) records review coverage separately from
+the current decisions and implementation constraints.
 
 Lean declarations are authoritative for mathematical meaning. [Architecture notes](../architecture/) describe the current subsystem layout, [roadmaps](../roadmap.md) describe targets and remaining work, and these ADRs explain why the enduring boundaries exist. An ADR is not a proof milestone or a replacement for those documents.
 
