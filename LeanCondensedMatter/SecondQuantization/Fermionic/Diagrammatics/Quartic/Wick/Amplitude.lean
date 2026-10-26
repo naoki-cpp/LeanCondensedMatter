@@ -57,7 +57,8 @@ theorem orderedQuarticPairValue_eq_freeGibbsDensityOperator_expectation
   rw [orderedQuarticPairValue, grandCanonicalTimedFieldPairContraction,
     timedFieldOperator_quarticLegFieldForSequence,
     timedFieldOperator_quarticLegFieldForSequence]
-  simp only [sub_zero, freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation]
+  simp only [sub_zero, freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation,
+    orderedQuarticLegOperator]
 
 /-! ## Fixed-order Wick integrand and ordered-simplex contribution -/
 

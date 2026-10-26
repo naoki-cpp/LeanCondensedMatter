@@ -1,5 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.DysonSeries
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.TimedFieldContraction
+import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsDensityOperator
 
 set_option linter.style.header false
 
