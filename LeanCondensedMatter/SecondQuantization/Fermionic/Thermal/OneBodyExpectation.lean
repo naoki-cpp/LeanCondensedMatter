@@ -1,5 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.BlochDeDominicis
-import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.FiniteGibbsExpectationCompatibility
+import LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteCompletedGibbsCompatibility
+import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsDensityOperator
 import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.Core
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.GrandCanonical
 import LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.BoundedEvolution
@@ -98,8 +99,15 @@ theorem finiteGrandCanonicalGibbsDensityOperator_expectation_finiteSecondQuantiz
           (Finsupp.basisSingleOne : Module.Basis Mode ℂ (Mode →₀ ℂ))
           (AlgebraicFock.dGamma ((Mode →₀ ℂ)) (matrixUnit i j)))) = _
     rw [occupationConjugate_dGamma_matrixUnit]
-    simpa only [sub_zero] using
-      (freeGibbsExpectation_eq_completed_of_algebraicCore ξ β 0
+    have hξ : Common.grandCanonicalEnergy (Config := Occupation Mode) ξ 0 =
+        fermionEnergy ξ := by
+      funext n
+      simpa only [sub_zero] using Common.grandCanonicalEnergy_eq_shifted ξ 0 n
+    simpa [ρ, Common.gibbsExpectation, Common.finiteGibbsExpectation,
+      Common.finiteGibbsExpectationLinearMap, Common.grandCanonicalGibbsDensityOperator,
+      freeGibbsDensityOperator, hξ] using
+      (Common.finiteGibbsExpectation_eq_completed_of_algebraicCore
+        (Config := Occupation Mode) (fermionEnergy ξ) β
         ((create i).comp (annihilate j)) ((completedCreate i).comp (completedAnnihilate j))
         (Common.completedProduct_comp_algebraicToCompleted_of_core
           (create i) (annihilate j) (completedCreate i) (completedAnnihilate j)
