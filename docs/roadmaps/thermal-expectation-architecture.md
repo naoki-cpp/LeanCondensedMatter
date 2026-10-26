@@ -52,6 +52,34 @@ meaning. For finite fermionic mode types,
 `freePartitionFunction_eq_coe_eigenbasisPartitionFunction` identifies the complex finite-coordinate
 partition function with the canonical real pure-point partition function after coercion to `ℂ`.
 
+## Trace compression refactor boundary
+
+The existing `Common/Thermal/CanonicalGrandCanonicalCompatibility.lean` proves
+`grandCanonicalGibbsDensityOperator_compress_sector` as a bounded-operator identity.
+Its `grandCanonicalGibbsDensityOperator_sector_expectation_eq_canonical`
+currently proves the corresponding expectation identity separately by comparing
+Gibbs diagonal series.
+
+A potential replacement uses the general identity
+`Tr_H ((U T U†) A) = Tr_K (T (U† A U))` for an isometric embedding
+`U : K → H` and trace-class `T`. This is a **cross-Hilbert-space**
+trace identity. The existing `ContinuousLinearMap.IsTraceClass.trace_comp_comm`
+and `trace_adjointConjugate` are formulated for endomorphisms of one
+Hilbert space and do not, by themselves, establish it. Do not substitute
+same-space cyclicity without proving the cross-space transport.
+
+Before changing the expectation proof, check whether Mathlib or the existing
+trace-class infrastructure already provides cross-space trace transport.
+If missing, prove the smallest reusable result in `Analysis/Operator/TraceClass`
+and establish its trace-class hypotheses. Then reuse the sector compression
+identity and the zero-extension identity; remove the redundant diagonal-series
+argument rather than retaining two parallel proof routes.
+
+The sectorwise expectation decomposition is special to the block-diagonal
+grand-canonical Gibbs state: an arbitrary density operator can have
+off-diagonal particle-number coherences. Keep that distinction explicit,
+and do not move Gibbs probability identities into generic operator theory.
+
 ## Canonical and grand-canonical conditioning
 
 `Common/Thermal/GrandCanonicalSectorDecomposition.lean` owns the scalar bridge:
