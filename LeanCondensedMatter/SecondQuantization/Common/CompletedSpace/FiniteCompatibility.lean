@@ -65,7 +65,10 @@ theorem completedOperator_eq_transport_of_algebraicCore
   change e.symm (finiteHilbertOperatorAlgEquiv A (e (algebraicToCompleted x))) =
     T (algebraicToCompleted x)
   rw [completedFiniteHilbertEquiv_algebraicToCompleted]
-  change e.symm (finiteHilbertFockEquiv (A x)) = T (algebraicToCompleted x)
+  change e.symm (finiteHilbertFockEquiv
+    (A ((finiteHilbertFockEquiv (Config := Config)).symm
+      (finiteHilbertFockEquiv x)))) = T (algebraicToCompleted x)
+  rw [LinearEquiv.symm_apply_apply]
   rw [← completedFiniteHilbertEquiv_algebraicToCompleted, e.symm_apply_apply]
   have h := congrArg
     (fun f : AlgebraicFock Config →ₗ[ℂ] CompletedFock Config => f x) hcore
