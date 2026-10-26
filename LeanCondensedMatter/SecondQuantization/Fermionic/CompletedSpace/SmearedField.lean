@@ -28,7 +28,6 @@ private def createFieldCore : (Mode →₀ ℂ) →ₗ[ℂ]
     (CompletedFockSpace Mode →L[ℂ] CompletedFockSpace Mode) :=
   Finsupp.linearCombination ℂ completedCreate
 
-set_option pp.all true in
 private theorem norm_createFieldCore_le (v : Mode →₀ ℂ) :
     ‖createFieldCore v‖ ≤ ‖Common.algebraicToCompleted v‖ := by
   classical
@@ -48,7 +47,8 @@ private theorem norm_createFieldCore_le (v : Mode →₀ ℂ) :
             simp only [Finsupp.notMem_support_iff.mp hi, map_zero, zero_mul]
           _ = _ := Finset.sum_congr rfl fun i _ => mul_comm _ _
       _ = _ := by
-        simpa only [Complex.ofReal_pow] using (inner_self_eq_norm_sq_to_K (𝕜 := ℂ) u)
+        convert! (inner_self_eq_norm_sq_to_K (𝕜 := ℂ) u) using 1 <;>
+          simp only [Complex.ofReal_pow]
   have hcar : star C * C + C * star C = ((‖u‖ ^ (2 : ℕ) : ℝ) : ℂ) •
       ContinuousLinearMap.id ℂ (CompletedFockSpace Mode) := by
     have h := ScalarExchange.zetaCommutator_sum_sum (-1 : ℂ) v.support v.support
@@ -82,7 +82,8 @@ private theorem norm_createFieldCore_le (v : Mode →₀ ℂ) :
   have hreal : ‖C x‖ ^ 2 + ‖(ContinuousLinearMap.adjoint C) x‖ ^ 2 =
       ‖u‖ ^ 2 * ‖x‖ ^ 2 := by
     apply Complex.ofReal_injective
-    simpa only [Complex.ofReal_add, Complex.ofReal_mul, Complex.ofReal_pow] using hinner
+    convert! hinner using 1 <;>
+      simp only [Complex.ofReal_add, Complex.ofReal_mul, Complex.ofReal_pow]
   nlinarith [sq_nonneg ‖(ContinuousLinearMap.adjoint C) x‖,
     norm_nonneg (C x), mul_nonneg (norm_nonneg u) (norm_nonneg x)]
 
