@@ -75,7 +75,7 @@ theorem freeGibbsExpectation_operatorPeelSum_eq_sum
           C₁.exchangeValue (l[(j : ℕ)]'j.isLt) • orderedProduct (l.eraseIdx j))
         (fun j => grandCanonicalGibbsSummable_smul ε β 0 _
           (FreeThermalField.grandCanonicalGibbsSummable_orderedProduct ε β 0
-        (by simpa only [sub_zero] using hpos) (l.eraseIdx j)))
+            (by simpa only [sub_zero] using hpos) (l.eraseIdx j)))
     _ = ∑ j : Fin l.length,
         C₁.exchangeValue (l[(j : ℕ)]'j.isLt) *
           grandCanonicalGibbsExpectation ε β 0 (orderedProduct (l.eraseIdx j)) := by
