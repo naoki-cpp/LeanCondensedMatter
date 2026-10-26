@@ -146,13 +146,13 @@ theorem grandCanonicalGibbsDensityOperator_op_eq_tsum_canonical
         change L (b.diagonalTerm a n.val) =
           Function.extend (Subtype.val : ParticleNumberSector Mode Config N → Config)
             (fun n : ParticleNumberSector Mode Config N => b.diagonalTerm a n.val) 0 n.val
-        rw [hterm, if_pos hc, Subtype.val_injective.extend_apply]
+        rw [hterm, ite_eq_left hc, Subtype.val_injective.extend_apply]
       · have hnot : ¬ ∃ n : ParticleNumberSector Mode Config N, n.val = c := by
           rintro ⟨n, hn⟩
           apply hc
           rw [← hn]
           exact n.property
-        rw [hterm, if_neg hc, Function.extend_apply' _ _ _ hnot]
+        rw [hterm, ite_eq_right hc, Function.extend_apply' _ _ _ hnot]
         simp
     have hcompressed := hfull.mapL L
     rw [hfamily] at hcompressed
@@ -176,12 +176,12 @@ theorem grandCanonicalGibbsDensityOperator_op_eq_tsum_canonical
       intro N
       by_cases hN : Nonempty (ParticleNumberSector Mode Config N)
       · letI : Nonempty (ParticleNumberSector Mode Config N) := hN
-        simp only [dif_pos hN]
+        simp only [dite_eq_left hN]
         rw [hblock N]
         exact grandCanonicalGibbsDensityOperator_compress_sector ε β μ N hsum
       · letI : IsEmpty (ParticleNumberSector Mode Config N) :=
           ⟨fun n => hN ⟨n⟩⟩
-        simp only [dif_neg hN]
+        simp only [dite_eq_right hN]
         simp
 
 /-- The expectation of any bounded full-Fock observable in a summable grand-canonical
