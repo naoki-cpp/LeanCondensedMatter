@@ -68,6 +68,16 @@ data to prove the completed-Fock bounded-operator identity
 `P_N ρ_GC P_N = p_N ρ_{N,full}`, where `ρ_{N,full}` is the existing
 isometric zero extension of the canonical density. The left-hand side
 is an unnormalized positive operator, not itself a density state.
+The full grand-canonical density is also the operator-norm convergent series
+`ρ_GC = ∑_N p_N ρ_{N,full}`, with empty sectors contributing zero. This
+follows by regrouping the absolutely summable occupation-basis rank-one
+operator series. Each block is trace class; trace-norm convergence is not
+asserted by this operator-norm identity.
+
+The bounded-observable expectation identity uses the corresponding absolutely
+convergent diagonal trace series and the full-Fock canonical sector formula.
+Operator-norm convergence alone would not justify interchanging traces and
+infinite sums.
 
 PR #4097 now proves the **bounded-observable** grand-canonical expectation decomposition
 by sharp particle-number sector (including empty sectors). PR #4100 connects that
@@ -77,9 +87,9 @@ PRs #4102 and #4108 identify the first particle-number moment of sector probabil
 under explicit integrability assumptions, without applying bounded-observable expectation
 to an unbounded number operator.
 
-A trace-class **operator-valued** infinite mixture identity, sector-probability conservation
-under specified open-system dynamics, and relative-entropy/thermalization results are
-separate follow-ups, not prerequisites already proved by those expectation identities.
+Trace-norm convergence of the sector mixture, sector-probability conservation
+under specified open-system dynamics, and relative-entropy/thermalization results
+remain separate questions.
 
 ## Generic pairing recursion
 
