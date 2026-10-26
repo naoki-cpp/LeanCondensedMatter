@@ -22,6 +22,7 @@ namespace SecondQuantization
 namespace Common
 
 open QuantumTheory
+open ContinuousLinearMap
 
 noncomputable section
 
