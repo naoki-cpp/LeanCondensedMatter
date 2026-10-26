@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderRadial
+import LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.Radial
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexResponse
 import Mathlib.Tactic
 
