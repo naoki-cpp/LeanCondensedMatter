@@ -165,19 +165,14 @@ theorem completedProduct_comp_algebraicToCompleted_of_core
     (hU : U.toLinearMap.comp algebraicToCompleted = algebraicToCompleted.comp B) :
     (T.comp U).toLinearMap.comp algebraicToCompleted =
       algebraicToCompleted.comp (A.comp B) := by
-  apply LinearMap.ext
-  intro x
-  change T (U (algebraicToCompleted x)) = algebraicToCompleted (A (B x))
-  have hUx := congrArg
-    (fun f : AlgebraicFock Config →ₗ[ℂ] CompletedFock Config => f x) hU
-  have hTBx := congrArg
-    (fun f : AlgebraicFock Config →ₗ[ℂ] CompletedFock Config => f (B x)) hT
+  change T.toLinearMap.comp (U.toLinearMap.comp algebraicToCompleted) =
+    algebraicToCompleted.comp (A.comp B)
   calc
-    T (U (algebraicToCompleted x)) = T (algebraicToCompleted (B x)) := by
-      simpa [algebraicToCompleted, ContinuousLinearMap.toLinearMap] using
-        congrArg T hUx
-    _ = algebraicToCompleted (A (B x)) := by
-      simpa [algebraicToCompleted, ContinuousLinearMap.toLinearMap] using hTBx
+    _ = T.toLinearMap.comp (algebraicToCompleted.comp B) := by rw [hU]
+    _ = (T.toLinearMap.comp algebraicToCompleted).comp B :=
+      (LinearMap.comp_assoc .. .. ..).symm
+    _ = (algebraicToCompleted.comp A).comp B := by rw [hT]
+    _ = _ := LinearMap.comp_assoc .. .. ..
 
 
 end
