@@ -72,9 +72,9 @@ theorem eigenbasisGibbsEnergyExpectation_fermionEnergy_eq_sum_fermiDirac
   have h := finiteGrandCanonicalGibbsDensityOperator_expectation_finiteSecondQuantization ε β 0
     (Common.finiteHilbertOperatorAlgEquiv D)
   have hE : Common.grandCanonicalEnergy (Config := Occupation Mode) ε 0 =
-      fermionEnergy ε := by
+      fermionEnergy (fun i => ε i - 0) := by
     funext n
-    simpa using (Common.grandCanonicalEnergy_eq_shifted ε 0 n)
+    exact Common.grandCanonicalEnergy_eq_shifted ε 0 n
   rw [hE] at h
   simp only [sub_zero] at h
   have hquant : Lattice.finiteSecondQuantization (Common.finiteHilbertOperatorAlgEquiv D) =
