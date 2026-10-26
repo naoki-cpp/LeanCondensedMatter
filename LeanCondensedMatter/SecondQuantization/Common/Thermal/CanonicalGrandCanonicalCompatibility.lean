@@ -219,8 +219,8 @@ theorem grandCanonicalGibbsDensityOperator_sector_expectation_eq_canonical
     calc
       _ = ((σ.isTraceClass.comp_right A).smul p).trace := by
         apply ContinuousLinearMap.IsTraceClass.trace_congr
-        change (P * (ρ.op * P)) * A = p • (σ.op * A)
-        rw [hcompress, smul_mul_assoc]
+        change ((P * ρ.op) * P) * A = p • (σ.op * A)
+        rw [mul_assoc P ρ.op P, hcompress, smul_mul_assoc]
       _ = p * σ.expectation A := by
         rw [(σ.isTraceClass.comp_right A).trace_smul]
         rfl
