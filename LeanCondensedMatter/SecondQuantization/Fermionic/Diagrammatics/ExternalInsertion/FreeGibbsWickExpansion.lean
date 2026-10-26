@@ -143,8 +143,8 @@ theorem sum_fixedExternalInsertionWickDiagram_fixedTimeAmplitude_eq_mixedAtomicE
         Common.finiteGibbsExpectation (fermionEnergy ε) β
           ((timedFieldOperator ε A).comp (timedFieldOperator ε B)) =
         grandCanonicalTimedFieldPairContraction ε β 0 A B := by
-      simp only [grandCanonicalTimedFieldPairContraction,
-        freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation]
+      simp only [grandCanonicalTimedFieldPairContraction]
+      rw [henergy]
     simp_rw [hpair] at hgen
     exact hgen
   calc
