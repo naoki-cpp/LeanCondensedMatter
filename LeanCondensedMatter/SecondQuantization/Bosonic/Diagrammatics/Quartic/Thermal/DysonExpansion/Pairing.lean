@@ -121,7 +121,7 @@ theorem grandCanonicalGibbsDysonCoeff_quarticInteractionOn_eq_sum_pairingEvaluat
     apply grandCanonicalGibbsSummable_smul
     rw [← quarticFreeThermalOrderedProduct_eq_quarticVertexSequenceOperator]
     exact FreeThermalField.grandCanonicalGibbsSummable_orderedProduct (fun i => ε i - μ) β 0
-        (by simpa only [sub_zero] using hpos) _
+      (by simpa only [sub_zero] using hpos) _
   rw [grandCanonicalGibbsExpectation_sum_of_summable (fun i => ε i - μ) β 0 _ hsumm]
   refine Finset.sum_congr rfl fun q _ => ?_
   rw [grandCanonicalGibbsExpectation_smul]
@@ -159,7 +159,7 @@ private theorem grandCanonicalGibbsDysonCoeff_quarticInteraction_eq_sum_pairingE
     apply grandCanonicalGibbsSummable_smul
     rw [← quarticFreeThermalOrderedProduct_eq_quarticVertexSequenceOperator]
     exact FreeThermalField.grandCanonicalGibbsSummable_orderedProduct (fun i => ε i - μ) β 0
-        (by simpa only [sub_zero] using hpos) _
+      (by simpa only [sub_zero] using hpos) _
   rw [grandCanonicalGibbsExpectation_sum_of_summable (fun i => ε i - μ) β 0 _ hsumm]
   refine Finset.sum_congr rfl fun q _ => ?_
   rw [grandCanonicalGibbsExpectation_smul]
