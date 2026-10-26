@@ -24,6 +24,27 @@ Středa response matrices are not physical conductivity tensors. Physical prefac
 continuum normalization, and required limits remain explicit before constructing
 `Transport.Core.ConductivityTensor`.
 
+## Tensor symmetry and magnetic reciprocity
+
+`Transport.Core.ConductivityTensor` carries physical, already-normalized conductivity.
+Its `symmetricComponent` and `hallComponent` are complementary index-exchange projections;
+`component_eq_symmetricComponent_add_hallComponent` reconstructs the ordered component.
+The former contains the longitudinal response, while the latter is the Hall response.
+
+`ConductivityTensor.IsOnsagerReciprocal` is an **explicit hypothesis** on a family of
+conductivity tensors indexed by a reversed control parameter (e.g. magnetization).
+Under this hypothesis, the symmetric projection and longitudinal conductivity are even under
+reversal, and the Hall projection is odd. These are algebraic consequences, not a
+derivation of microscopic reciprocity.
+
+The next proof target is to derive the reciprocal response from the causal Kubo channel,
+with explicit antiunitary time reversal, stationary-state transformation, measured/source
+current parity, contact-term transformation and frequency/limit conventions. Only then
+specialize this result to normalized `ConductivityTensor`. Concrete AMR additionally requires
+a magnetization-dependent Hamiltonian, model-specific conductivity response, tensor
+invertibility, and the resistivity (rather than conductivity) angular comparison.
+Planar Hall resistivity must not be identified with the Hall projection of conductivity.
+
 ## Proved disorder chain
 
 ```text
