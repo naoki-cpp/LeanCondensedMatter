@@ -40,37 +40,36 @@ theorem orderedProduct_append_singleton
   simp [orderedProduct, List.map_append, List.prod_append, Module.End.mul_eq_comp]
 
 /-- Bosonic CCR exchange plus KMS rotation solves the wrapped term with factor `q / (q - 1)`. -/
-theorem freeGibbsExpectation_cons_eq_kmsRatio_mul_operatorPeelSum
-    (ε : Mode → ℝ) (β : ℝ) (hpos : ∀ i, 0 < β * ε i)
+theorem grandCanonicalGibbsExpectation_cons_eq_kmsRatio_mul_operatorPeelSum
+    (ε : Mode → ℝ) (β μ : ℝ) (hpos : ∀ i, 0 < β * (ε i - μ))
     (C : FreeThermalField Mode) (l : List (FreeThermalField Mode)) :
-    grandCanonicalGibbsExpectation ε β 0 (orderedProduct (C :: l)) =
-      (C.kmsFactor ε β / (C.kmsFactor ε β - 1)) *
-        grandCanonicalGibbsExpectation ε β 0 (C.operatorPeelSum l) := by
-  set E : ℂ := grandCanonicalGibbsExpectation ε β 0 (orderedProduct (C :: l))
-  set P : ℂ := grandCanonicalGibbsExpectation ε β 0 (C.operatorPeelSum l)
-  set R : ℂ := grandCanonicalGibbsExpectation ε β 0 ((orderedProduct l).comp C.operator)
-  have hRmem : (orderedProduct l).comp C.operator ∈ grandCanonicalGibbsDomain ε β 0 := by
+    grandCanonicalGibbsExpectation ε β μ (orderedProduct (C :: l)) =
+      (C.kmsFactor (fun i => ε i - μ) β / (C.kmsFactor (fun i => ε i - μ) β - 1)) *
+        grandCanonicalGibbsExpectation ε β μ (C.operatorPeelSum l) := by
+  set E : ℂ := grandCanonicalGibbsExpectation ε β μ (orderedProduct (C :: l))
+  set P : ℂ := grandCanonicalGibbsExpectation ε β μ (C.operatorPeelSum l)
+  set R : ℂ := grandCanonicalGibbsExpectation ε β μ ((orderedProduct l).comp C.operator)
+  have hRmem : (orderedProduct l).comp C.operator ∈ grandCanonicalGibbsDomain ε β μ := by
     rw [← orderedProduct_append_singleton]
-    exact freeGibbsSummable_orderedProduct ε β hpos (l ++ [C])
-  have hPmem : C.operatorPeelSum l ∈ grandCanonicalGibbsDomain ε β 0 :=
-    operatorPeelSum_mem_freeGibbsDomain ε β hpos C l
+    exact grandCanonicalGibbsSummable_orderedProduct ε β μ hpos (l ++ [C])
+  have hPmem : C.operatorPeelSum l ∈ grandCanonicalGibbsDomain ε β μ :=
+    operatorPeelSum_mem_grandCanonicalGibbsDomain ε β μ hpos C l
   have hpeel : E = P + R := by
     have hop := C.operator_comp_orderedProduct_eq_operatorPeelSum l
     calc
-      E = grandCanonicalGibbsExpectation ε β 0
+      E = grandCanonicalGibbsExpectation ε β μ
           (C.operatorPeelSum l + (orderedProduct l).comp C.operator) := by
         dsimp [E]
         rw [show orderedProduct (C :: l) = C.operator.comp (orderedProduct l) by rfl,
           hop]
       _ = P + R := by
-        rw [grandCanonicalGibbsExpectation_add ε β 0 hPmem hRmem]
-  have hkms : E = C.kmsFactor ε β * R := by
-    change grandCanonicalGibbsExpectation ε β 0 (C.operator.comp (orderedProduct l)) =
-      C.kmsFactor ε β *
-        grandCanonicalGibbsExpectation ε β 0 ((orderedProduct l).comp C.operator)
-    simpa only [sub_zero] using
-      (C.freeGibbsExpectation_operator_comp_rotate ε β 0 (orderedProduct l))
-  have hden : C.kmsFactor ε β - 1 ≠ 0 := by
+        rw [grandCanonicalGibbsExpectation_add ε β μ hPmem hRmem]
+  have hkms : E = C.kmsFactor (fun i => ε i - μ) β * R := by
+    change grandCanonicalGibbsExpectation ε β μ (C.operator.comp (orderedProduct l)) =
+      C.kmsFactor (fun i => ε i - μ) β *
+        grandCanonicalGibbsExpectation ε β μ ((orderedProduct l).comp C.operator)
+    exact C.freeGibbsExpectation_operator_comp_rotate ε β μ (orderedProduct l)
+  have hden : C.kmsFactor (fun i => ε i - μ) β - 1 ≠ 0 := by
     apply sub_ne_zero.mpr
     cases C with
     | annihilate i =>
@@ -79,32 +78,31 @@ theorem freeGibbsExpectation_cons_eq_kmsRatio_mul_operatorPeelSum
     | create i =>
         apply Complex.exp_ne_one_of_re_ne_zero
         simpa using neg_ne_zero.mpr (ne_of_gt (hpos i))
-  exact ScalarExchange.eq_div_mul_of_eq_add_mul_of_eq_mul E P R 1 (C.kmsFactor ε β)
+  exact ScalarExchange.eq_div_mul_of_eq_add_mul_of_eq_mul E P R 1 (C.kmsFactor (fun i => ε i - μ) β)
     (by simpa only [one_mul] using hpeel) hkms
     hden
 
-/-- The KMS solution factor times the bare CCR exchange coefficient is exactly the canonical
+/-- The KMS solution factor times the bare CCR exchange coefficient is exactly the grand-canonical
 normalized two-field free thermal kernel. -/
-theorem kmsRatio_mul_exchangeValue_eq_freeThermalPairValue
-    (ε : Mode → ℝ) (β : ℝ) (hpos : ∀ i, 0 < β * ε i)
+theorem grandCanonicalKmsRatio_mul_exchangeValue_eq_freeThermalPairValue
+    (ε : Mode → ℝ) (β μ : ℝ) (hpos : ∀ i, 0 < β * (ε i - μ))
     (C D : FreeThermalField Mode) :
-    (C.kmsFactor ε β / (C.kmsFactor ε β - 1)) * C.exchangeValue D =
-      freeThermalPairValue ε β C D := by
-  have hfirst := freeGibbsExpectation_cons_eq_kmsRatio_mul_operatorPeelSum
-    ε β hpos C [D]
+    (C.kmsFactor (fun i => ε i - μ) β / (C.kmsFactor (fun i => ε i - μ) β - 1)) * C.exchangeValue D =
+      freeThermalPairValue (fun i => ε i - μ) β C D := by
+  have hfirst := grandCanonicalGibbsExpectation_cons_eq_kmsRatio_mul_operatorPeelSum
+    ε β μ hpos C [D]
   have hpeel :
-      grandCanonicalGibbsExpectation ε β 0 (C.operatorPeelSum [D]) = C.exchangeValue D := by
-    rw [freeGibbsExpectation_operatorPeelSum_eq_sum ε β hpos C [D]]
-    simp [grandCanonicalGibbsExpectation_id ε β 0
-      (by simpa only [sub_zero] using hpos)]
-  have hpair := freeGibbsExpectation_orderedProduct_pair_eq_freeThermalPairValue
-    ε β hpos C D
+      grandCanonicalGibbsExpectation ε β μ (C.operatorPeelSum [D]) = C.exchangeValue D := by
+    rw [grandCanonicalGibbsExpectation_operatorPeelSum_eq_sum ε β μ hpos C [D]]
+    simp [grandCanonicalGibbsExpectation_id ε β μ hpos]
+  have hpair := grandCanonicalGibbsExpectation_orderedProduct_pair_eq_freeThermalPairValue
+    ε β μ hpos C D
   calc
-    (C.kmsFactor ε β / (C.kmsFactor ε β - 1)) * C.exchangeValue D =
-        (C.kmsFactor ε β / (C.kmsFactor ε β - 1)) *
-          grandCanonicalGibbsExpectation ε β 0 (C.operatorPeelSum [D]) := by rw [hpeel]
-    _ = grandCanonicalGibbsExpectation ε β 0 (orderedProduct [C, D]) := hfirst.symm
-    _ = freeThermalPairValue ε β C D := hpair
+    (C.kmsFactor (fun i => ε i - μ) β / (C.kmsFactor (fun i => ε i - μ) β - 1)) * C.exchangeValue D =
+        (C.kmsFactor (fun i => ε i - μ) β / (C.kmsFactor (fun i => ε i - μ) β - 1)) *
+          grandCanonicalGibbsExpectation ε β μ (C.operatorPeelSum [D]) := by rw [hpeel]
+    _ = grandCanonicalGibbsExpectation ε β μ (orderedProduct [C, D]) := hfirst.symm
+    _ = freeThermalPairValue (fun i => ε i - μ) β C D := hpair
 
 end FreeThermalField
 
