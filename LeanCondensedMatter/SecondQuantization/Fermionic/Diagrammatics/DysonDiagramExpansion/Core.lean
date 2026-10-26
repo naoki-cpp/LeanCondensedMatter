@@ -75,30 +75,6 @@ theorem continuous_matrixCoeff_quarticVertexSequenceInteractionPicture (ε : Mod
   simp only [map_smul, smul_eq_mul]
   exact (Common.continuous_quarticVertexSequenceTimeFactor ε q).mul continuous_const
 
-/-- Joint continuity of an energy-parameterized finite Gibbs expectation of an `L`-prefixed
-quartic interaction-picture sequence, from the Common scalar-time-factor decomposition. -/
-theorem continuous_finiteGibbsExpectation_comp_quarticVertexSequenceInteractionPicture
-    (ε : Mode → ℝ) (energy : Occupation Mode → ℝ) (β : ℝ)
-    (n : ℕ) (q : Fin n → QuarticVertexLabel Mode)
-    (L : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) :
-    Continuous (fun τ : Fin n → ℝ =>
-      Common.finiteGibbsExpectation energy β
-        (L.comp (Common.quarticVertexSequenceInteractionPicture
-          (fermionEnergy ε) create annihilate n q τ))) := by
-  have hcreate : ∀ τ i, Common.heisenbergEvolve (fermionEnergy ε) τ (create i) =
-      Complex.exp ((τ : ℂ) * (ε i : ℂ)) • create i := by
-    intro τ i
-    simpa only [imaginaryTimeEvolve] using imaginaryTimeEvolve_create ε τ i
-  have hannihilate : ∀ τ i, Common.heisenbergEvolve (fermionEnergy ε) τ (annihilate i) =
-      Complex.exp (-(τ : ℂ) * (ε i : ℂ)) • annihilate i := by
-    intro τ i
-    simpa only [imaginaryTimeEvolve] using imaginaryTimeEvolve_annihilate ε τ i
-  simp_rw [Common.quarticVertexSequenceInteractionPicture_eq_smul
-    (fermionEnergy ε) ε create annihilate hcreate hannihilate n q]
-  simp only [LinearMap.comp_smul,
-    Common.finiteGibbsExpectation, map_smul, smul_eq_mul]
-  exact (Common.continuous_quarticVertexSequenceTimeFactor ε q).mul continuous_const
-
 /-- The quartic Dyson coefficient expansion against a finite Gibbs expectation with arbitrary
 configuration energy. Dyson evolution continues to use the physical `fermionEnergy ε`;
 the Gibbs energy is an independent input, permitting explicit-μ specializations. -/
