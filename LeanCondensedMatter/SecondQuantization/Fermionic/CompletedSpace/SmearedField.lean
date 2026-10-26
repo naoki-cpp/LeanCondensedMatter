@@ -34,14 +34,17 @@ private theorem norm_createFieldCore_le (v : Mode →₀ ℂ) :
   let C := createFieldCore v
   let u := Common.algebraicToCompleted v
   have hscalar : (∑ i ∈ v.support, star (v i) * v i) = (‖u‖ ^ 2 : ℂ) := by
-    rw [← inner_self_eq_norm_sq_to_K (𝕜 := ℂ) u, lp.inner_eq_tsum]
-    change (∑ i ∈ v.support, star (v i) * v i) =
-      ∑' i, inner ℂ (v i) (v i)
-    simp only [RCLike.inner_apply]
-    symm
-    apply tsum_eq_sum
-    intro i hi
-    simp only [Finsupp.notMem_support_iff.mp hi, star_zero, zero_mul]
+    calc
+      _ = inner ℂ u u := by
+        rw [lp.inner_eq_tsum]
+        change (∑ i ∈ v.support, star (v i) * v i) = ∑' i, inner ℂ (v i) (v i)
+        simp only [RCLike.inner_apply]
+        symm
+        apply tsum_eq_sum
+        intro i hi
+        simp only [Finsupp.notMem_support_iff.mp hi, star_zero, zero_mul]
+      _ = _ := by
+        simpa only [Complex.ofReal_pow] using (inner_self_eq_norm_sq_to_K (𝕜 := ℂ) u)
   have hcar : star C * C + C * star C = (‖u‖ ^ 2 : ℂ) •
       ContinuousLinearMap.id ℂ (CompletedFockSpace Mode) := by
     have h := ScalarExchange.zetaCommutator_sum_sum (-1 : ℂ) v.support v.support
@@ -73,7 +76,9 @@ private theorem norm_createFieldCore_le (v : Mode →₀ ℂ) :
     ← ContinuousLinearMap.adjoint_inner_left C ((ContinuousLinearMap.adjoint C) x) x] at hinner
   simp only [inner_self_eq_norm_sq_to_K] at hinner
   have hreal : ‖C x‖ ^ 2 + ‖(ContinuousLinearMap.adjoint C) x‖ ^ 2 =
-      ‖u‖ ^ 2 * ‖x‖ ^ 2 := by exact_mod_cast hinner
+      ‖u‖ ^ 2 * ‖x‖ ^ 2 := by
+    apply Complex.ofReal_injective
+    simpa only [Complex.ofReal_add, Complex.ofReal_mul, Complex.ofReal_pow] using hinner
   nlinarith [sq_nonneg ‖(ContinuousLinearMap.adjoint C) x‖,
     norm_nonneg (C x), mul_nonneg (norm_nonneg u) (norm_nonneg x)]
 
