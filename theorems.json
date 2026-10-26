@@ -123783,16 +123783,18 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Common.diagonalEvolution_add",
-      "SecondQuantization.Common.heisenbergEvolve_diagonalOperator"
+      "SecondQuantization.Common.heisenbergEvolve_diagonalOperator",
+      "SecondQuantization.Fermionic.numberOperator_comp_self"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Common.diagonalEvolution_add",
-      "SecondQuantization.Common.heisenbergEvolve_diagonalOperator"
+      "SecondQuantization.Common.heisenbergEvolve_diagonalOperator",
+      "SecondQuantization.Fermionic.numberOperator_comp_self"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -144579,8 +144581,7 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Fermionic.annihilate_comp_create_add_create_comp_annihilate",
-      "SecondQuantization.Fermionic.annihilate_comp_create_comp_self",
-      "SecondQuantization.Fermionic.numberOperator_comp_self"
+      "SecondQuantization.Fermionic.annihilate_comp_create_comp_self"
     ],
     "dependencies": [
       "SecondQuantization.Common.Statistics.zetaInt_fermion",
@@ -144590,10 +144591,9 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Fermionic.annihilate_comp_create_add_create_comp_annihilate",
-      "SecondQuantization.Fermionic.annihilate_comp_create_comp_self",
-      "SecondQuantization.Fermionic.numberOperator_comp_self"
+      "SecondQuantization.Fermionic.annihilate_comp_create_comp_self"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -144607,15 +144607,15 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": false,
+    "terminal": true,
     "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (i : Mode),\n  SecondQuantization.Fermionic.annihilate i ∘ₗ SecondQuantization.Fermionic.annihilate i = 0",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": true,
     "retainedMention": true,
@@ -144626,19 +144626,15 @@
     "docString": "**`cᵢ cᵢ = 0`**: the same-mode consequence of `{cᵢ, cᵢ} = 0`. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.NumberOperator.0.SecondQuantization.Fermionic.numberOperator_comp_annihilate"
-    ],
+    "dependents": [],
     "dependencies": [
       "ScalarExchange.zetaCommutator_self",
       "SecondQuantization.Fermionic.anticomm_annihilate_annihilate"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.NumberOperator.0.SecondQuantization.Fermionic.numberOperator_comp_annihilate"
-    ],
-    "compiledConsumerCount": 1,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -152497,15 +152493,15 @@
     "name": "SecondQuantization.Fermionic.numberOperator_comp_self",
     "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.NumberOperator",
     "externalAxioms": [],
-    "docString": "**`Nᵢ` is idempotent**: `Nᵢ ∘ Nᵢ = Nᵢ`. Algebraically this follows from CAR:\n`cᵢ cᵢ† = id - Nᵢ` and `cᵢ cᵢ = 0`; no occupation-basis expansion is needed. ",
+    "docString": "**`Nᵢ` is idempotent**: its diagonal occupation eigenvalues are zero or one. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Fermionic.annihilate_comp_create_comp_self"
     ],
     "dependencies": [
-      "SecondQuantization.Fermionic.annihilate_comp_create_self",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.NumberOperator.0.SecondQuantization.Fermionic.numberOperator_comp_annihilate"
+      "SecondQuantization.Common.diagonalOperator_comp",
+      "SecondQuantization.Fermionic.numberOperator_eq_diagonalOperator"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -152526,7 +152522,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (i : Mode),\n  SecondQuantization.Fermionic.numberOperator i =\n    SecondQuantization.Common.diagonalOperator fun n => if i ∈ n then 1 else 0",
     "standardAxioms": [
       "Classical.choice",
@@ -152534,7 +152530,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -152545,7 +152541,9 @@
     "docString": "The single-mode number operator is the basis-diagonal projector onto occupations containing\nmode `i`. This is the canonical bridge from the CAR definition `aᵢ† aᵢ` to the common\nbasis-diagonal operator API. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "SecondQuantization.Fermionic.numberOperator_comp_self"
+    ],
     "dependencies": [
       "SecondQuantization.Common.diagonalOperator_basisState",
       "SecondQuantization.Common.linearMap_ext_basisState",
@@ -152553,8 +152551,10 @@
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.numberOperator_comp_self"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -187207,50 +187207,6 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Fermionic.numberOperator_basisState"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (i : Mode),\n  SecondQuantization.Fermionic.numberOperator i ∘ₗ SecondQuantization.Fermionic.annihilate i = 0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.NumberOperator.0.SecondQuantization.Fermionic.numberOperator_comp_annihilate",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.NumberOperator",
-    "externalAxioms": [],
-    "docString": "The number operator vanishes after a same-mode annihilation, by `cᵢ cᵢ = 0`. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.numberOperator_comp_self"
-    ],
-    "dependencies": [
-      "SecondQuantization.Fermionic.annihilate_comp_self"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.numberOperator_comp_self"
     ],
     "compiledConsumerCount": 1,
     "axioms": [

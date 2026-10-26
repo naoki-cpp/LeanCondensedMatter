@@ -6690,6 +6690,7 @@
       "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.NumberOperator",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Algebra/NumberOperator.lean",
       "imports": [
+        "LeanCondensedMatter.SecondQuantization.Common.Algebra.AlgebraicFock",
         "LeanCondensedMatter.SecondQuantization.Common.Algebra.ExchangeCommutator",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.CanonicalAnticommutationRelations",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.ExchangeAlgebra"
