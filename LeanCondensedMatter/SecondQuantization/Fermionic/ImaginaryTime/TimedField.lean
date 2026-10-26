@@ -116,41 +116,29 @@ theorem zetaCommutator_timedFieldOperator (ε : Mode → ℝ)
     ScalarExchange.zetaCommutator_smul_smul, zetaCommutator_bareExternalFieldOperator, smul_smul,
     timedFieldCommutatorCoeff]
 
-/-- A time-labelled field remains an eigenoperator after a further evolution by `-β`. -/
-theorem heisenbergEvolve_timedFieldOperator (ε : Mode → ℝ) (β : ℝ)
+/-- A field evolved with physical dispersion `ε` remains an eigenoperator of the
+Gibbs/KMS evolution at thermal dispersion `ξ`. The physical time coordinate is unchanged;
+only the KMS eigenvalue shift uses `ξ`. -/
+theorem heisenbergEvolve_timedFieldOperator (ε ξ : Mode → ℝ) (β : ℝ)
     (field : TimedField Mode) :
-    Common.heisenbergEvolve (fermionEnergy ε) (-β) (timedFieldOperator ε field) =
-      Complex.exp (((externalFieldLabelEnergyShift ε field.label * (-β) : ℝ) : ℂ)) •
+    Common.heisenbergEvolve (fermionEnergy ξ) (-β) (timedFieldOperator ε field) =
+      Complex.exp (((externalFieldLabelEnergyShift ξ field.label * (-β) : ℝ) : ℂ)) •
         timedFieldOperator ε field := by
-  obtain ⟨τ, label⟩ := field
-  cases label with
-  | annihilation i =>
-      change Common.heisenbergEvolve (fermionEnergy ε) (-β)
-          (imaginaryTimeEvolve ε τ (annihilate i)) =
-        Complex.exp ((((-ε i) * (-β) : ℝ) : ℂ)) •
-          imaginaryTimeEvolve ε τ (annihilate i)
-      have step : Common.heisenbergEvolve (fermionEnergy ε) (-β)
-          (imaginaryTimeEvolve ε τ (annihilate i)) =
-        imaginaryTimeEvolve ε (τ + -β) (annihilate i) :=
-        Common.heisenbergEvolve_heisenbergEvolve (fermionEnergy ε) τ (-β) (annihilate i)
-      rw [step, imaginaryTimeEvolve_annihilate, imaginaryTimeEvolve_annihilate, smul_smul,
-        ← Complex.exp_add]
-      congr 2
-      push_cast
-      ring
-  | creation i =>
-      change Common.heisenbergEvolve (fermionEnergy ε) (-β)
-          (imaginaryTimeEvolve ε τ (create i)) =
-        Complex.exp ((((ε i) * (-β) : ℝ) : ℂ)) • imaginaryTimeEvolve ε τ (create i)
-      have step : Common.heisenbergEvolve (fermionEnergy ε) (-β)
-          (imaginaryTimeEvolve ε τ (create i)) =
-        imaginaryTimeEvolve ε (τ + -β) (create i) :=
-        Common.heisenbergEvolve_heisenbergEvolve (fermionEnergy ε) τ (-β) (create i)
-      rw [step, imaginaryTimeEvolve_create, imaginaryTimeEvolve_create, smul_smul,
-        ← Complex.exp_add]
-      congr 2
-      push_cast
-      ring
+  have hbare :
+      Common.heisenbergEvolve (fermionEnergy ξ) (-β)
+          (bareExternalFieldOperator field.label) =
+        Complex.exp (((externalFieldLabelEnergyShift ξ field.label * (-β) : ℝ) : ℂ)) •
+          bareExternalFieldOperator field.label := by
+    cases field.label with
+    | annihilation i =>
+        simpa [bareExternalFieldOperator, externalFieldLabelEnergyShift,
+          imaginaryTimeEvolve, Complex.ofReal_mul, Complex.ofReal_neg, mul_comm] using
+          (imaginaryTimeEvolve_annihilate ξ (-β) i)
+    | creation i =>
+        simpa [bareExternalFieldOperator, externalFieldLabelEnergyShift,
+          imaginaryTimeEvolve, Complex.ofReal_mul, Complex.ofReal_neg, mul_comm] using
+          (imaginaryTimeEvolve_create ξ (-β) i)
+  rw [timedFieldOperator_eq_smul, map_smul, hbare, smul_comm]
 
 end Fermionic
 end SecondQuantization

@@ -131,10 +131,21 @@ theorem sum_fixedExternalInsertionWickDiagram_fixedTimeAmplitude_eq_mixedAtomicE
           pairing.evaluation (pairing.weight Common.Statistics.fermion)
             (externalInsertionMixedTimeOrderedAtomicPairValue ε β
               externalLabel externalTime q σ) := by
-    exact freeGibbsDensityOperator_expectation_prod_timedFieldOperator_eq_sum_pairing
-      ε β (2 * n + E)
-      (externalInsertionMixedTimeOrderedAtomicFieldFamily
-        externalLabel externalTime q σ)
+    have henergy : (fun i : Mode => ε i - (0 : ℝ)) = ε := by
+      funext i
+      simp
+    have hgen := grandCanonicalGibbsExpectation_prod_timedFieldOperator_eq_sum_pairing
+      ε β 0 (2 * n + E)
+      (externalInsertionMixedTimeOrderedAtomicFieldFamily externalLabel externalTime q σ)
+    rw [henergy] at hgen
+    have hpair (A B : TimedField Mode) :
+        Common.finiteGibbsExpectation (fermionEnergy ε) β
+          ((timedFieldOperator ε A).comp (timedFieldOperator ε B)) =
+        timedFieldPairContraction ε β A B := by
+      simp only [timedFieldPairContraction,
+        freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation]
+    simp_rw [hpair] at hgen
+    exact hgen
   calc
     _ = ∑ x : (Fin n → QuarticVertexLabel Mode) × Pairing (2 * n + E), F x :=
       hreindex

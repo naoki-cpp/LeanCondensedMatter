@@ -46,30 +46,29 @@ theorem timedFieldPairContraction_eq
     Common.finiteGibbsExpectation, map_smul, smul_eq_mul]
   rfl
 
-/-- Finite-temperature Wick (Bloch--de Dominicis) expansion for an arbitrary even family of
-time-labelled free fermionic fields. The free Gibbs state and the canonical two-field
-contractions are independent of any Dyson or diagrammatic ordering. -/
-theorem freeGibbsDensityOperator_expectation_prod_timedFieldOperator_eq_sum_pairing
-    (ε : Mode → ℝ) (β : ℝ) (n : ℕ) (fields : Fin (2 * n) → TimedField Mode) :
-    (freeGibbsDensityOperator ε β).expectation
-        (Common.finiteHilbertOperatorAlgEquiv
-          (List.prod (List.ofFn (fun p => timedFieldOperator ε (fields p))))) =
+/-- Grand-canonical finite free-fermion Wick expansion for physical-time fields.
+The time evolution uses `ε`, while the Gibbs distribution and KMS rotation use `ε - μ`.
+This is not a fixed-particle-number canonical Wick theorem. -/
+theorem grandCanonicalGibbsExpectation_prod_timedFieldOperator_eq_sum_pairing
+    (ε : Mode → ℝ) (β μ : ℝ) (n : ℕ) (fields : Fin (2 * n) → TimedField Mode) :
+    Common.finiteGibbsExpectation (fermionEnergy (fun i => ε i - μ)) β
+        (List.prod (List.ofFn (fun p => timedFieldOperator ε (fields p)))) =
       ∑ pairing : Pairing n,
         pairing.evaluation (pairing.weight Common.Statistics.fermion)
-          (fun a b => timedFieldPairContraction ε β (fields a) (fields b)) := by
+          (fun a b => Common.finiteGibbsExpectation (fermionEnergy (fun i => ε i - μ)) β
+            ((timedFieldOperator ε (fields a)).comp
+              (timedFieldOperator ε (fields b)))) := by
   have hgen :=
     Common.BlochDeDominicis.finiteGibbsExpectation_prod_eq_sum_pairing
-      Common.Statistics.fermion (fermionEnergy ε) β n
+      Common.Statistics.fermion (fermionEnergy (fun i => ε i - μ)) β n
       (fun p => timedFieldOperator ε (fields p))
-      (fun p => externalFieldLabelEnergyShift ε (fields p).label)
+      (fun p => externalFieldLabelEnergyShift (fun i => ε i - μ) (fields p).label)
       (fun a b => timedFieldCommutatorCoeff ε (fields a) (fields b))
-      (fun p => heisenbergEvolve_timedFieldOperator ε β (fields p))
+      (fun p => heisenbergEvolve_timedFieldOperator ε (fun i => ε i - μ) β (fields p))
       (fun a b _ => zetaCommutator_timedFieldOperator ε (fields a) (fields b))
       (fun p => one_sub_zetaInt_fermion_mul_exp_ne_zero
-        (externalFieldLabelEnergyShift ε (fields p).label) β)
-  rw [freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation]
-  simpa only [Combinatorics.Pairing.evaluation, timedFieldPairContraction,
-    freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation] using hgen
+        (externalFieldLabelEnergyShift (fun i => ε i - μ) (fields p).label) β)
+  simpa only [Combinatorics.Pairing.evaluation] using hgen
 
 end Fermionic
 end SecondQuantization

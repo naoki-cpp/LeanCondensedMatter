@@ -131,11 +131,23 @@ theorem dysonVertexMoment_quarticInteraction_eq_sum_vertexLabel_pairingEvaluatio
             ∑ pairing : Pairing (2 * S.card),
               flatVertexLegPairingEvaluation ε β q τ pairing := by
         rw [← prod_ofFn_quarticLegOperatorForSequence_eq_quarticVertexSequenceInteractionPicture]
+        have henergy : (fun i : Mode => ε i - (0 : ℝ)) = ε := by
+          funext i
+          simp
+        have hwick :=
+          grandCanonicalGibbsExpectation_prod_timedFieldOperator_eq_sum_pairing
+            ε β 0 (2 * S.card) (quarticLegFieldForSequence q τ)
+        rw [henergy] at hwick
+        have hpair (A B : TimedField Mode) :
+            Common.finiteGibbsExpectation (fermionEnergy ε) β
+              ((timedFieldOperator ε A).comp (timedFieldOperator ε B)) =
+            timedFieldPairContraction ε β A B := by
+          simp only [timedFieldPairContraction,
+            freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation]
+        simp_rw [hpair] at hwick
         simpa only [flatVertexLegPairingEvaluation, Combinatorics.Pairing.evaluation,
           flatVertexLegPairValue, timedFieldOperator_quarticLegFieldForSequence,
-          freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation] using
-          (freeGibbsDensityOperator_expectation_prod_timedFieldOperator_eq_sum_pairing
-            ε β (2 * S.card) (quarticLegFieldForSequence q τ))
+          freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation] using hwick
       rw [intervalIntegral.orderedSimplexIntegral_congr hpoint,
         intervalIntegral.orderedSimplexIntegral_finsetSum _ S.card β _
           (fun pairing _ => continuous_flatVertexLegPairingEvaluation ε β q pairing)]

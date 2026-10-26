@@ -40,9 +40,16 @@ theorem freeGibbsDensityOperator_expectation_mixedTimeOrderedVertexComp_eq_sum_p
     mixedTimeOrderedVertexComp_eq_prod_atomicOperators,
     Common.finiteGibbsExpectation, map_smul, smul_eq_mul]
   have hwick :=
-    freeGibbsDensityOperator_expectation_prod_timedFieldOperator_eq_sum_pairing
-      ε β (2 * n + 1) (mixedTimeOrderedAtomicFieldFamily i j τ τ' q σ)
-  rw [freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation] at hwick
+    grandCanonicalGibbsExpectation_prod_timedFieldOperator_eq_sum_pairing
+      ε β 0 (2 * n + 1) (mixedTimeOrderedAtomicFieldFamily i j τ τ' q σ)
+  simp only [sub_zero] at hwick
+  have hpair (A B : TimedField Mode) :
+      Common.finiteGibbsExpectation (fermionEnergy ε) β
+        ((timedFieldOperator ε A).comp (timedFieldOperator ε B)) =
+      timedFieldPairContraction ε β A B := by
+    simp only [timedFieldPairContraction,
+      freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation]
+  simp_rw [hpair] at hwick
   change Common.finiteGibbsExpectation (fermionEnergy ε) β
     (List.prod (List.ofFn (mixedTimeOrderedAtomicOperatorFamily ε i j τ τ' q σ))) = _ at hwick
   have hfields :
