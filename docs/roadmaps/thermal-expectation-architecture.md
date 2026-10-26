@@ -111,7 +111,11 @@ The finite Gibbs implementation specializes the generic recursion using the fini
 state, imaginary-time evolution, trace-ratio identity, and KMS/exchange relations.
 The finite `Fermionic.freeGibbsDensityOperator ε β` still covers **all**
 fermionic occupation sectors at implicit `μ = 0`, not a fixed-number canonical state;
-it remains in use for finite contractions, Green functions and diagrammatic consumers.
+it remains in use for finite contractions and diagrammatic consumers.
+The finite `Fermionic.grandCanonicalFreeGreenFunction ε β μ` instead uses the generic
+`Common.finiteGibbsExpectation` at `Common.grandCanonicalEnergy ε μ`;
+its imaginary-time field evolution uses physical energies `ε`, while its
+Fermi–Dirac factors depend on `ε - μ`.
 The one-body endpoint `finiteGrandCanonicalGibbsDensityOperator_expectation_finiteSecondQuantization`
 instead takes explicit `μ` and evaluates the generic eigenbasis Gibbs state at
 `Common.grandCanonicalEnergy ε μ`. Its finite mean-energy consumer passes `μ = 0`

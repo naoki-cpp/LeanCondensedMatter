@@ -1,3 +1,5 @@
+import LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsExpectationBridge
+import LeanCondensedMatter.SecondQuantization.Common.Thermal.GrandCanonical
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsContraction
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeBoltzmannCore
 import LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTime.TwoPoint
@@ -5,34 +7,53 @@ import LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTime.TwoPoint
 set_option linter.style.header false
 
 /-!
-# Closed-form free Gibbs Green function
+# Finite grand-canonical free Gibbs Green function
 
-The finite free-fermion imaginary-time Green function is evaluated using the canonical density
-state and the two-point contractions in `FreeGibbsContraction`. At equal times, the convention
-`θ(0) = 1/2` gives a value distinct from both one-sided limits.
+The grand-canonical finite-fermion Green function uses Gibbs weights of `H - μ N`
+while its imaginary-time fields evolve under the physical Hamiltonian `H`.
+The contraction proofs use the existing finite/completed Gibbs bridge.
+At equal times, `θ(0) = 1/2` gives a value distinct from both one-sided limits.
 -/
 
 namespace SecondQuantization
 namespace Fermionic
 
+open QuantumTheory
+
 variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
 
-/-- The physical free Gibbs Green function
-`G₀,ᵢⱼ(τ, τ') = -Tr(ρ₀,β Tτ cᵢ(τ)cⱼ†(τ'))`. -/
-noncomputable def freeGibbsGreenFunction (ε : Mode → ℝ) (β : ℝ)
+/-- The free grand-canonical Gibbs Green function
+`G₀,ᵢⱼ(τ, τ') = -Tr(ρβ,μ Tτ cᵢ(τ)cⱼ†(τ'))`. -/
+noncomputable def grandCanonicalFreeGreenFunction (ε : Mode → ℝ) (β μ : ℝ)
     (i j : Mode) (τ τ' : ℝ) : ℂ :=
-  - (freeGibbsDensityOperator ε β).expectation
-      (Common.finiteHilbertOperatorAlgEquiv (twoPointTimeOrderedProduct ε i j τ τ'))
+  - Common.finiteGibbsExpectation
+      (Common.grandCanonicalEnergy (Config := Occupation Mode) ε μ) β
+      (twoPointTimeOrderedProduct ε i j τ τ')
+
+/-- The finite Gibbs expectation is used only as a proof bridge; the public
+Green function is defined using the explicit chemical potential. -/
+private theorem grandCanonicalFreeGreenFunction_eq_finite
+    (ε : Mode → ℝ) (β μ : ℝ) (i j : Mode) (τ τ' : ℝ) :
+    grandCanonicalFreeGreenFunction ε β μ i j τ τ' =
+      - (freeGibbsDensityOperator (fun k => ε k - μ) β).expectation
+        (Common.finiteHilbertOperatorAlgEquiv
+          (twoPointTimeOrderedProduct ε i j τ τ')) := by
+  have hE : Common.grandCanonicalEnergy (Config := Occupation Mode) ε μ =
+      fermionEnergy (fun k => ε k - μ) := by
+    funext n
+    exact Common.grandCanonicalEnergy_eq_shifted ε μ n
+  unfold grandCanonicalFreeGreenFunction
+  rw [hE, ← freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation]
 
 /-! ## Closed forms of the free thermal Green function -/
 
 /-- `G₀,ᵢᵢ(τ, τ')` for `τ' < τ`. -/
-theorem freeGibbsGreenFunction_of_gt_self (ε : Mode → ℝ) (β : ℝ) (i : Mode) {τ τ' : ℝ}
+theorem grandCanonicalFreeGreenFunction_of_gt_self (ε : Mode → ℝ) (β μ : ℝ) (i : Mode) {τ τ' : ℝ}
     (h : τ' < τ) :
-    freeGibbsGreenFunction ε β i i τ τ' =
+    grandCanonicalFreeGreenFunction ε β μ i i τ τ' =
       - (Complex.exp (-(τ - τ' : ℝ) * (ε i : ℂ)) *
-        (Complex.exp ((β : ℂ) * (ε i : ℂ)) / (Complex.exp ((β : ℂ) * (ε i : ℂ)) + 1))) := by
-  rw [freeGibbsGreenFunction, twoPointTimeOrderedProduct_of_gt ε i i h,
+        (Complex.exp ((β : ℂ) * ((ε i - μ : ℝ) : ℂ)) / (Complex.exp ((β : ℂ) * ((ε i - μ : ℝ) : ℂ)) + 1))) := by
+  rw [grandCanonicalFreeGreenFunction_eq_finite, twoPointTimeOrderedProduct_of_gt ε i i h,
     imaginaryTimeEvolve_annihilate, imaginaryTimeEvolve_create, LinearMap.smul_comp,
     LinearMap.comp_smul, smul_smul,
     map_smul, map_smul, smul_eq_mul,
@@ -42,12 +63,12 @@ theorem freeGibbsGreenFunction_of_gt_self (ε : Mode → ℝ) (β : ℝ) (i : Mo
     rw [← Complex.exp_add]; congr 1; push_cast; ring]
 
 /-- `G₀,ᵢᵢ(τ, τ')` for `τ < τ'`. -/
-theorem freeGibbsGreenFunction_of_lt_self (ε : Mode → ℝ) (β : ℝ) (i : Mode) {τ τ' : ℝ}
+theorem grandCanonicalFreeGreenFunction_of_lt_self (ε : Mode → ℝ) (β μ : ℝ) (i : Mode) {τ τ' : ℝ}
     (h : τ < τ') :
-    freeGibbsGreenFunction ε β i i τ τ' =
+    grandCanonicalFreeGreenFunction ε β μ i i τ τ' =
       Complex.exp (-(τ - τ' : ℝ) * (ε i : ℂ)) *
-        (1 / (Complex.exp ((β : ℂ) * (ε i : ℂ)) + 1)) := by
-  rw [freeGibbsGreenFunction, twoPointTimeOrderedProduct_of_lt ε i i h, Common.Statistics.zetaInt_fermion,
+        (1 / (Complex.exp ((β : ℂ) * ((ε i - μ : ℝ) : ℂ)) + 1)) := by
+  rw [grandCanonicalFreeGreenFunction_eq_finite, twoPointTimeOrderedProduct_of_lt ε i i h, Common.Statistics.zetaInt_fermion,
     Int.cast_neg, Int.cast_one, neg_one_smul,
     map_neg, map_neg, neg_neg,
     imaginaryTimeEvolve_annihilate, imaginaryTimeEvolve_create, LinearMap.smul_comp,
@@ -59,10 +80,10 @@ theorem freeGibbsGreenFunction_of_lt_self (ε : Mode → ℝ) (β : ℝ) (i : Mo
     rw [← Complex.exp_add]; congr 1; push_cast; ring]
 
 /-- `G₀,ᵢᵢ(τ, τ)` with the symmetric equal-time convention `θ(0) = 1/2`. -/
-theorem freeGibbsGreenFunction_self_time_self (ε : Mode → ℝ) (β : ℝ) (i : Mode) (τ : ℝ) :
-    freeGibbsGreenFunction ε β i i τ τ =
-      1 / (Complex.exp ((β : ℂ) * (ε i : ℂ)) + 1) - (2 : ℂ)⁻¹ := by
-  rw [freeGibbsGreenFunction, twoPointTimeOrderedProduct_self_time, Common.Statistics.zetaInt_fermion,
+theorem grandCanonicalFreeGreenFunction_self_time_self (ε : Mode → ℝ) (β μ : ℝ) (i : Mode) (τ : ℝ) :
+    grandCanonicalFreeGreenFunction ε β μ i i τ τ =
+      1 / (Complex.exp ((β : ℂ) * ((ε i - μ : ℝ) : ℂ)) + 1) - (2 : ℂ)⁻¹ := by
+  rw [grandCanonicalFreeGreenFunction_eq_finite, twoPointTimeOrderedProduct_self_time, Common.Statistics.zetaInt_fermion,
     Int.cast_neg, Int.cast_one,
     imaginaryTimeEvolve_annihilate, imaginaryTimeEvolve_create]
   simp only [LinearMap.smul_comp, LinearMap.comp_smul, smul_smul, ← Complex.exp_add,
@@ -72,17 +93,17 @@ theorem freeGibbsGreenFunction_self_time_self (ε : Mode → ℝ) (β : ℝ) (i 
   rw [freeGibbsDensityOperator_expectation_annihilate_comp_create,
     freeGibbsDensityOperator_expectation_create_comp_annihilate]
   simp only [smul_eq_mul, one_mul, neg_mul]
-  have hE : Complex.exp ((β : ℂ) * (ε i : ℂ)) + 1 ≠ 0 := by
+  have hE : Complex.exp ((β : ℂ) * ((ε i - μ : ℝ) : ℂ)) + 1 ≠ 0 := by
     simpa [Common.Statistics.zetaInt_fermion, add_comm] using
-      (one_sub_zetaInt_fermion_mul_exp_ne_zero β (ε i))
+      (one_sub_zetaInt_fermion_mul_exp_ne_zero β (ε i - μ))
   simp only [ite_true]
   field_simp
   ring
 
 /-- `G₀,ᵢⱼ(τ, τ') = 0` for `i ≠ j`, at arbitrary imaginary times. -/
-theorem freeGibbsGreenFunction_of_ne (ε : Mode → ℝ) (β : ℝ) {i j : Mode} (hij : i ≠ j)
-    (τ τ' : ℝ) : freeGibbsGreenFunction ε β i j τ τ' = 0 := by
-  rw [freeGibbsGreenFunction]
+theorem grandCanonicalFreeGreenFunction_of_ne (ε : Mode → ℝ) (β μ : ℝ) {i j : Mode} (hij : i ≠ j)
+    (τ τ' : ℝ) : grandCanonicalFreeGreenFunction ε β μ i j τ τ' = 0 := by
+  rw [grandCanonicalFreeGreenFunction_eq_finite]
   unfold twoPointTimeOrderedProduct Common.timeOrderedProduct
   rw [imaginaryTimeEvolve_annihilate, imaginaryTimeEvolve_create]
   split_ifs with hτ hτ'
