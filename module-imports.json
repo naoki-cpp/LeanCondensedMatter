@@ -7390,7 +7390,6 @@
       "imports": [
         "LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsExpectationBridge",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.DiagramIntegral",
-        "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsDensityOperator",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.TimedFieldContraction"
       ],
       "externalImportCount": 0
@@ -7776,7 +7775,7 @@
         "LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.CanonicalAnticommutationRelations",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.Gibbs"
       ],
-      "externalImportCount": 1
+      "externalImportCount": 2
     },
     {
       "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.FiniteGibbsExpectationCompatibility",
@@ -7864,7 +7863,7 @@
         "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.FiniteGibbsExpectationCompatibility",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsDensityOperator"
       ],
-      "externalImportCount": 1
+      "externalImportCount": 0
     },
     {
       "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsDensityOperator",
@@ -7903,9 +7902,11 @@
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Thermal/OneBodyExpectation.lean",
       "imports": [
         "LeanCondensedMatter.SecondQuantization.Common.Thermal.GrandCanonical",
+        "LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.Core",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.BoundedEvolution",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.RankOneSecondQuantization",
-        "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsContraction"
+        "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.BlochDeDominicis",
+        "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.FiniteGibbsExpectationCompatibility"
       ],
       "externalImportCount": 0
     },
