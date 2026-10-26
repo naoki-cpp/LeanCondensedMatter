@@ -1,7 +1,7 @@
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornRadialRealSpacePropagator
-import LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedRealSpace
-import LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedRadialHarmonics
-import LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedRadialTrace
+import LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.RealSpace
+import LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.RadialHarmonics
+import LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.RadialTrace
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic
 
 set_option linter.style.header false

@@ -6,13 +6,13 @@ import LeanCondensedMatter.Models.MassiveDirac.Streda.FiniteBroadeningBornLadder
 import LeanCondensedMatter.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderLongitudinalZeroBroadeningWeakDisorder
 import LeanCondensedMatter.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderHallZeroBroadeningWeakDisorder
 import LeanCondensedMatter.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderHallZeroBroadeningProvenance
-import LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedTrace
-import LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedRealSpace
-import LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedRadialCoefficients
-import LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedRadialHarmonics
-import LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedRadialTrace
-import LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedRealSpaceIntegral
-import LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedExplicitMoments
+import LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.Trace
+import LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.RealSpace
+import LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.RadialCoefficients
+import LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.RadialHarmonics
+import LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.RadialTrace
+import LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.RealSpaceIntegral
+import LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.ExplicitMoments
 
 set_option linter.style.header false
 
@@ -34,7 +34,8 @@ The ordered-`xy` endpoint also exposes a theorem-level expansion of the canonica
 `inPlaneLadderAction` component into the concrete `r_y Γ_x` and `r_x Γ_y` products, without
 introducing a second public representation or assigning scattering-mechanism labels.
 
-The leading Gaussian crossed sector is a separate Středa-level real-space trace boundary. Its `X` and
+The leading Gaussian crossed sector is grouped under `Streda/GaussianCrossed/` as a
+separate Středa-level real-space trace boundary. Its `X` and
 `Psi` topologies are represented by one indexed kernel. The massive-Dirac finite-cutoff finite-`η`
 real-space Green matrices are owned upstream by the disorder propagator layer, while this Středa
 sector owns the Eq. (14)-style `Gᴬ (F σ_source) Gᴿ` crossed current blocks and trace realization. Here

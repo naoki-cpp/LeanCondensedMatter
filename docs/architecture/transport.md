@@ -340,9 +340,9 @@ integral is formed. Real-space crossed Fourier blocks already contain their phys
 measures upstream, so a later crossed conductivity boundary must consume only the remaining
 trace/current normalization rather than attach another momentum measure.
 
-`MassiveDirac.Streda.GaussianCrossedRealSpaceIntegral` owns the angular projection,
+`MassiveDirac.Streda.GaussianCrossed.RealSpaceIntegral` owns the angular projection,
 pointwise antisymmetric radial trace tensors, and regulated polar position-space integrals
-for both crossed topologies. `MassiveDirac.Streda.GaussianCrossedExplicitMoments`
+for both crossed topologies. `MassiveDirac.Streda.GaussianCrossed.ExplicitMoments`
 consumes those tensors and reduces their X/Psi antisymmetric components to explicit
 K0/K1/K2 momentum moments. Intermediate harmonic reductions stay private in that owner.
 `Conductivity.Hall.GaussianCrossed` consumes both the regulated integral boundary and
@@ -354,7 +354,7 @@ integrals with a complex prefactor. These laws use Mathlib's integral addition,
 subtraction, division, and constant-multiplication results; no additional linear-map
 representation is needed. `Disorder.FiniteBroadeningBornRadialRealSpacePropagator`
 owns the radial Green coefficient integration laws, while
-`Streda.GaussianCrossedRadialCoefficients` owns the crossed-current laws. Both consume
+`Streda.GaussianCrossed.RadialCoefficients` owns the crossed-current laws. Both consume
 the same model-independent Pauli integration laws with explicit entrywise integrability.
 
 Concrete models may consume generic Transport and Analysis results, but reusable mathematics or
