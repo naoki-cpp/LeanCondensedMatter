@@ -37,10 +37,18 @@ Under this hypothesis, the symmetric projection and longitudinal conductivity ar
 reversal, and the Hall projection is odd. These are algebraic consequences, not a
 derivation of microscopic reciprocity.
 
-The next proof target is to derive the reciprocal response from the causal Kubo channel,
-with explicit antiunitary time reversal, stationary-state transformation, measured/source
-current parity, contact-term transformation and frequency/limit conventions. Only then
-specialize this result to normalized `ConductivityTensor`. Concrete AMR additionally requires
+`FiniteConductivityTable.Reciprocity` now supplies a finite-spectral charge-current
+bridge: equal reversed spectral energies/occupations, conjugate odd-current matrix elements,
+Hermitian currents, and the reciprocal contact term imply equality of the canonical
+finite Lehmann response and normalized physical conductivity with transposed directions.
+It constructs a `ConductivityTensor` family satisfying `IsOnsagerReciprocal` without
+postulating conductivity reciprocity. This is an eigenbasis-level conditional theorem,
+not yet the construction of these hypotheses from an operator-level antiunitary.
+
+The next proof target is to derive the reversal hypotheses directly from the causal Kubo
+channel, with explicit antiunitary time reversal, stationary-state transformation,
+measured/source current parity, contact-term transformation and frequency/limit
+conventions. Concrete AMR additionally requires
 a magnetization-dependent Hamiltonian, model-specific conductivity response, tensor
 invertibility, and the resistivity (rather than conductivity) angular comparison.
 Planar Hall resistivity must not be identified with the Hall projection of conductivity.
