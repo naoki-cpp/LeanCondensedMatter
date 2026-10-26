@@ -34,7 +34,7 @@ private theorem norm_createFieldCore_le (v : Mode →₀ ℂ) :
   let C := createFieldCore v
   let u := Common.algebraicToCompleted v
   have hscalar : (∑ i ∈ v.support, star (v i) * v i) = (‖u‖ ^ 2 : ℂ) := by
-    rw [← inner_self_eq_norm_sq_to_K, lp.inner_eq_tsum]
+    rw [← inner_self_eq_norm_sq_to_K (𝕜 := ℂ) u, lp.inner_eq_tsum]
     change (∑ i ∈ v.support, star (v i) * v i) =
       ∑' i, inner ℂ (v i) (v i)
     simp only [RCLike.inner_apply]
@@ -68,8 +68,9 @@ private theorem norm_createFieldCore_le (v : Mode →₀ ℂ) :
     inner ℂ x (T x)) hcar
   simp only [add_apply, mul_apply_eq_comp, smul_apply, ContinuousLinearMap.id_apply,
     inner_add_right, inner_smul_right] at hinner
-  rw [ContinuousLinearMap.star_eq_adjoint, ContinuousLinearMap.adjoint_inner_right,
-    ← ContinuousLinearMap.adjoint_inner_left C] at hinner
+  simp only [ContinuousLinearMap.star_eq_adjoint] at hinner
+  rw [ContinuousLinearMap.adjoint_inner_right C x (C x),
+    ← ContinuousLinearMap.adjoint_inner_left C ((ContinuousLinearMap.adjoint C) x) x] at hinner
   simp only [inner_self_eq_norm_sq_to_K] at hinner
   have hreal : ‖C x‖ ^ 2 + ‖(ContinuousLinearMap.adjoint C) x‖ ^ 2 =
       ‖u‖ ^ 2 * ‖x‖ ^ 2 := by exact_mod_cast hinner
@@ -92,7 +93,7 @@ theorem completedCreateField_algebraicToCompleted (v : Mode →₀ ℂ) :
 /-- The creation field is bounded by the one-particle Hilbert norm, independently of support size. -/
 theorem norm_completedCreateField_le (v : Common.CompletedFock Mode) :
     ‖completedCreateField v‖ ≤ ‖v‖ := by
-  simpa only [one_mul] using LinearMap.norm_extendOfNorm_apply_le
+  simpa only [completedCreateField, one_mul] using LinearMap.norm_extendOfNorm_apply_le
     (f := createFieldCore) Common.algebraicToCompleted_denseRange 1
     (fun v => by simpa only [one_mul] using norm_createFieldCore_le v) v
 
