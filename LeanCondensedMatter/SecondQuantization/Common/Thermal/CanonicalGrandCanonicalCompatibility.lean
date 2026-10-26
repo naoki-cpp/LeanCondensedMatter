@@ -134,13 +134,10 @@ theorem grandCanonicalGibbsDensityOperator_sector_expectation_eq_canonical
   have hcompress (n : ParticleNumberSector Mode Config N) :
       inner ℂ (completedBasisState n) (B (completedBasisState n)) =
         inner ℂ (completedBasisState n.val) (A (completedBasisState n.val)) := by
-    have hU : U (completedBasisState n) = completedBasisState n.val := by
-      change completedCoordinateEmbedding
+    simpa only [B, V, U] using
+      (inner_completedBasisState_coordinatePullback_comp
         (Subtype.val : ParticleNumberSector Mode Config N → Config)
-        Subtype.val_injective (completedBasisState n) = completedBasisState n.val
-      exact completedCoordinateEmbedding_basisState _ _ n
-    simp only [B, V, ContinuousLinearMap.comp_apply,
-      inner_completedBasisState_left, completedCoordinatePullback_apply, hU]
+        Subtype.val_injective A n)
   have hdiag : ∀ n : ParticleNumberSector Mode Config N,
       ρ.op ((completedHilbertBasis (Config := ParticleNumberSector Mode Config N)) n) =
         (eigenbasisGibbsProbability E β n : ℂ) •
