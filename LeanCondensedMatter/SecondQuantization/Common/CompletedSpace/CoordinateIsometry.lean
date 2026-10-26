@@ -250,6 +250,20 @@ theorem completedCoordinatePullback_apply
   rw [completedCoordinateEmbedding_basisState,
     inner_completedBasisState_left]
 
+/-- A diagonal matrix coefficient is unchanged when an operator is compressed
+along an injective coordinate embedding and evaluated on the corresponding basis state. -/
+theorem inner_completedBasisState_coordinatePullback_comp
+    (f : Config → Config') (hf : Function.Injective f)
+    (A : CompletedFock Config' →L[ℂ] CompletedFock Config') (c : Config) :
+    inner ℂ (completedBasisState c)
+        ((completedCoordinatePullback f hf).comp
+          (A.comp (completedCoordinateEmbedding f hf).toContinuousLinearMap)
+          (completedBasisState c)) =
+      inner ℂ (completedBasisState (f c))
+        (A (completedBasisState (f c))) := by
+  simp only [ContinuousLinearMap.comp_apply, inner_completedBasisState_left,
+    completedCoordinatePullback_apply, completedCoordinateEmbedding_basisState]
+
 /-- Pulling back a basis state in the image of an injective configuration map
 recovers the basis state at its unique preimage. -/
 @[simp]
