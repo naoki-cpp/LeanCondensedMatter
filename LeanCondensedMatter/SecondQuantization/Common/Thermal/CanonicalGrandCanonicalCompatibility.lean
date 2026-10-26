@@ -66,13 +66,9 @@ theorem grandCanonicalGibbsDensityOperator_compress_sector
     simpa only [Complex.ofReal_mul] using
       congrArg (fun z : ℝ => (z : ℂ) • completedBasisState n.val)
         (grandCanonicalGibbsProbability_of_sector ε β μ N hsum n)
-  · rw [ContinuousLinearMap.comp_apply, ContinuousLinearMap.comp_apply,
-      completedCoordinateProjection_basisState]
-    simp only [hc, ↓reduceIte, map_zero]
-    rw [smul_apply,
-      canonicalFullGibbsDensityOperator_apply_basis_of_ne ε β N
+  · simp [ContinuousLinearMap.comp_apply, completedCoordinateProjection_basisState,
+      hc, canonicalFullGibbsDensityOperator_apply_basis_of_ne ε β N
         (canonicalGibbsSummable_of_grandCanonical ε β μ N hsum) c hc]
-    simp
 
 /-- The expectation of any bounded full-Fock observable in a summable grand-canonical
 Gibbs state is an absolutely convergent sum over sharp-number sectors.
