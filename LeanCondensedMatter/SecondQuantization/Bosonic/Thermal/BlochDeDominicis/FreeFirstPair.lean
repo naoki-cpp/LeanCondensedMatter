@@ -63,7 +63,7 @@ theorem grandCanonicalGibbsExpectation_cons_eq_kmsRatio_mul_operatorPeelSum
         rw [show orderedProduct (C :: l) = C.operator.comp (orderedProduct l) by rfl,
           hop]
       _ = P + R := by
-        rw [grandCanonicalGibbsExpectation_add ε β 0 hPmem hRmem]
+        rw [grandCanonicalGibbsExpectation_add ε β μ hPmem hRmem]
   have hkms : E = C.kmsFactor (fun i => ε i - μ) β * R := by
     change grandCanonicalGibbsExpectation ε β μ (C.operator.comp (orderedProduct l)) =
       C.kmsFactor (fun i => ε i - μ) β *

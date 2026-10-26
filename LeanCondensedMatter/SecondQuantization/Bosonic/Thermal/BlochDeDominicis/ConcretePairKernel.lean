@@ -57,14 +57,14 @@ theorem grandCanonicalGibbsExpectation_orderedProduct_pair_eq_freeThermalPairVal
             freeThermalPairValue, Module.End.mul_eq_comp] using hzero
       | create j =>
           simpa [FreeThermalField.orderedProduct, FreeThermalField.operator,
-            freeThermalPairValue, Module.End.mul_eq_comp, sub_zero] using
+            freeThermalPairValue, Module.End.mul_eq_comp] using
             (grandCanonicalGibbsExpectation_annihilate_comp_create_concrete
               ε β μ hpos i j)
   | create i =>
       cases g with
       | annihilate j =>
           simpa [FreeThermalField.orderedProduct, FreeThermalField.operator,
-            freeThermalPairValue, Module.End.mul_eq_comp, sub_zero] using
+            freeThermalPairValue, Module.End.mul_eq_comp] using
             (grandCanonicalGibbsExpectation_create_comp_annihilate_concrete
               ε β μ hpos i j)
       | create j =>

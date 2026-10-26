@@ -69,7 +69,7 @@ theorem grandCanonicalGibbsExpectation_operatorPeelSum_eq_sum
         ∑ j : Fin l.length,
           grandCanonicalGibbsExpectation ε β μ
             (C₁.exchangeValue (l[(j : ℕ)]'j.isLt) • orderedProduct (l.eraseIdx j)) :=
-      grandCanonicalGibbsExpectation_sum_of_summable ε β 0
+      grandCanonicalGibbsExpectation_sum_of_summable ε β μ
         (fun j : Fin l.length =>
           C₁.exchangeValue (l[(j : ℕ)]'j.isLt) • orderedProduct (l.eraseIdx j))
         (fun j => grandCanonicalGibbsSummable_smul ε β μ _

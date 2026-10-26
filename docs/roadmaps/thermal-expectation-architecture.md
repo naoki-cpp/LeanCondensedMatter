@@ -193,9 +193,10 @@ The linear expectation is defined on the summable-operator submodule; additivity
 `Bosonic/Thermal/FreeThermalField.lean` owns the free thermal field labels, ordered algebraic-Fock
 products, and normalized pair kernel independently of pairing recursion. KMS, product summability,
 and the kernel's equality to Gibbs two-field expectations consume these data directly.
-`Bosonic/Thermal/BlochDeDominicis/ConcreteExpectationRecursion.lean` applies the
-Common pairing recursion at the effective thermal energy `ξ i = ε i - μ` and exposes
-`grandCanonicalGibbsExpectation_eq_sum_pairing_concrete` for explicit chemical potential `μ`.
+`Bosonic/Thermal/BlochDeDominicis/ConcreteExpectationRecursion.lean` directly instantiates
+the Common pairing recursion with `grandCanonicalGibbsExpectation ε β μ`; its
+KMS factors and pair kernel use the effective thermal energy `ξ i = ε i - μ`.
+The public `grandCanonicalGibbsExpectation_eq_sum_pairing_concrete` accepts explicit `μ`.
 Under `0 < β * (ε i - μ)`, finite ordered free-field products have summable Gibbs numerators,
 including products after pair deletion. The first-pair recurrence and KMS rotation supply the
 analytic hypotheses before the representation-independent pairing induction. This grand-canonical
