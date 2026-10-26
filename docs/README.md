@@ -63,7 +63,7 @@ and cross-track targets. Follow these topic documents for details.
 - [Retained theorem-audit candidates](theorem-catalog-retained.md).
 - [Analysis inventory against Mathlib](analysis-mathlib-audit.md).
 - [Architecture audit tooling](../scripts/architecture/README.md).
-- API migration references: [canonical theorem names](migrations/canonical-theorem-names.md) and [second-quantization R2 rollup](migrations/second-quantization-r2-rollup.md).
+- [Canonical connected-expansion theorem names](migrations/canonical-theorem-names.md).
 - Agent guidance: [domain navigation](agents/domain.md), [issue tracker](agents/issue-tracker.md), and [triage labels](agents/triage-labels.md).
 
 ## Where documentation lives

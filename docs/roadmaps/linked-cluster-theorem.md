@@ -119,11 +119,8 @@ insertions and higher-point source consumers give it independent semantics.
 The explicit order-`1`, order-`2`, and order-`3` formal-log formulas are the generic theorems in
 `Analysis/PowerSeries/LowOrderLog.lean`, applied to the normalized fermionic Dyson trace series.
 They are illustrated in [the low-order example](../examples/fermionic-lct-low-order.md).
-The former fermionic-only `LinkedCluster/LowOrder.lean` specializations had no Lean consumers and
-were removed rather than retained as duplicate public declarations. The generic formal-log proofs
-remain kernel-checked; the opt-in checks of these exact fermionic specializations are no longer
-compiled separately. Connected-diagram and analytic low-order statements still follow by
-specializing the canonical general formal and analytic endpoints.
+Connected-diagram and analytic low-order statements follow by specializing the canonical
+general formal and analytic endpoints.
 
 ## Replica-method proof track
 
