@@ -72,11 +72,11 @@ theorem grandCanonicalGibbsDensityOperator_compress_sector
       canonicalFullGibbsDensityOperator_apply_basis_of_ne ε β N
         (canonicalGibbsSummable_of_grandCanonical ε β μ N hsum) c hc, smul_zero]
 
+open Classical in
 /-- The grand-canonical density is the operator-norm convergent sum of its
 sharp-number blocks. Every nonempty block is the sector probability times the
 zero-extended canonical density, while empty sectors contribute zero.
 The total operator is trace class; the asserted convergence is in operator norm. -/
-open Classical in
 theorem grandCanonicalGibbsDensityOperator_op_eq_tsum_canonical
     (ε : Mode → ℝ) (β μ : ℝ)
     (hsum : EigenbasisGibbsSummable
@@ -129,7 +129,7 @@ theorem grandCanonicalGibbsDensityOperator_op_eq_tsum_canonical
       intro ψ
       change P ((b.diagonalTerm a c) (P ψ)) =
         (if particleNumber (Mode := Mode) c = N then b.diagonalTerm a c else 0) ψ
-      simp only [HilbertBasis.diagonalTerm, ContinuousLinearMap.smul_apply,
+      simp only [HilbertBasis.diagonalTerm, smul_apply,
         InnerProductSpace.rankOne_apply, map_smul, b, completedHilbertBasis_apply]
       by_cases hc : particleNumber (Mode := Mode) c = N
       · simp [P, hc, inner_completedBasisState_left,
@@ -153,10 +153,15 @@ theorem grandCanonicalGibbsDensityOperator_op_eq_tsum_canonical
           rw [← hn]
           exact n.property
         rw [hterm, if_neg hc, Function.extend_apply' _ _ _ hnot]
+        simp
     have hcompressed := hfull.mapL L
     rw [hfamily] at hcompressed
     have hsector := (hasSum_extend_zero Subtype.val_injective).mp hcompressed
-    simpa only [L, P, ContinuousLinearMap.mul_def, mul_assoc] using hsector.tsum_eq
+    have hL : L ρ.op = P.comp (ρ.op.comp P) := by
+      ext ψ
+      change P (ρ.op (P ψ)) = P (ρ.op (P ψ))
+      rfl
+    exact hsector.tsum_eq.trans hL
   have hgroups :
       ρ.op = ∑' N : ℕ, ∑' n : ParticleNumberSector Mode Config N,
         b.diagonalTerm a n.val :=
