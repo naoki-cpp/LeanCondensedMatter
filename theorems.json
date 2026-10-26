@@ -10347,14 +10347,14 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Bosonic.FreeThermalField.freeGibbsExpectation_cons_eq_kmsRatio_mul_operatorPeelSum",
+      "SecondQuantization.Bosonic.FreeThermalField.grandCanonicalGibbsExpectation_cons_eq_kmsRatio_mul_operatorPeelSum",
       "SecondQuantization.Bosonic.grandCanonicalGibbsExpectation_annihilate_comp_create_concrete"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Bosonic.FreeThermalField.freeGibbsExpectation_cons_eq_kmsRatio_mul_operatorPeelSum",
+      "SecondQuantization.Bosonic.FreeThermalField.grandCanonicalGibbsExpectation_cons_eq_kmsRatio_mul_operatorPeelSum",
       "SecondQuantization.Bosonic.grandCanonicalGibbsExpectation_annihilate_comp_create_concrete"
     ],
     "compiledConsumerCount": 2,
@@ -97371,14 +97371,14 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Bosonic.FreeThermalField.freeGibbsExpectation_cons_eq_kmsRatio_mul_operatorPeelSum",
+      "SecondQuantization.Bosonic.FreeThermalField.grandCanonicalGibbsExpectation_cons_eq_kmsRatio_mul_operatorPeelSum",
       "SecondQuantization.Fermionic.CompletedThermalLadder.grandCanonicalGibbsExpectation_cons_eq_gibbsRatio_mul_peel"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Bosonic.FreeThermalField.freeGibbsExpectation_cons_eq_kmsRatio_mul_operatorPeelSum",
+      "SecondQuantization.Bosonic.FreeThermalField.grandCanonicalGibbsExpectation_cons_eq_kmsRatio_mul_operatorPeelSum",
       "SecondQuantization.Fermionic.CompletedThermalLadder.grandCanonicalGibbsExpectation_cons_eq_gibbsRatio_mul_peel"
     ],
     "compiledConsumerCount": 2,
@@ -97630,8 +97630,8 @@
     "directWrapperOf": null,
     "dependents": [
       "ScalarExchange.peelSumWithCoefficients_eq_sum",
-      "SecondQuantization.Bosonic.FreeThermalField.freeGibbsExpectation_operatorPeelSum_eq_sum",
-      "SecondQuantization.Bosonic.FreeThermalField.operatorPeelSum_mem_freeGibbsDomain",
+      "SecondQuantization.Bosonic.FreeThermalField.grandCanonicalGibbsExpectation_operatorPeelSum_eq_sum",
+      "SecondQuantization.Bosonic.FreeThermalField.operatorPeelSum_mem_grandCanonicalGibbsDomain",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.BlochDeDominicis.0.SecondQuantization.Fermionic.CompletedThermalLadder.grandCanonicalGibbsExpectation_peelSum_eq_sum"
     ],
     "dependencies": [],
@@ -97639,8 +97639,8 @@
     "completedMention": false,
     "compiledConsumers": [
       "ScalarExchange.peelSumWithCoefficients_eq_sum",
-      "SecondQuantization.Bosonic.FreeThermalField.freeGibbsExpectation_operatorPeelSum_eq_sum",
-      "SecondQuantization.Bosonic.FreeThermalField.operatorPeelSum_mem_freeGibbsDomain",
+      "SecondQuantization.Bosonic.FreeThermalField.grandCanonicalGibbsExpectation_operatorPeelSum_eq_sum",
+      "SecondQuantization.Bosonic.FreeThermalField.operatorPeelSum_mem_grandCanonicalGibbsDomain",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.BlochDeDominicis.0.SecondQuantization.Fermionic.CompletedThermalLadder.grandCanonicalGibbsExpectation_peelSum_eq_sum"
     ],
     "compiledConsumerCount": 4,
@@ -98304,109 +98304,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [Fintype Mode] (ε : Mode → ℝ) (β : ℝ),\n  (∀ (i : Mode), 0 < β * ε i) →\n    ∀ (C : SecondQuantization.Bosonic.FreeThermalField Mode)\n      (l : List (SecondQuantization.Bosonic.FreeThermalField Mode)),\n      SecondQuantization.Bosonic.grandCanonicalGibbsExpectation ε β 0\n          (SecondQuantization.Bosonic.FreeThermalField.orderedProduct (C :: l)) =\n        SecondQuantization.Bosonic.FreeThermalField.kmsFactor ε β C /\n            (SecondQuantization.Bosonic.FreeThermalField.kmsFactor ε β C - 1) *\n          SecondQuantization.Bosonic.grandCanonicalGibbsExpectation ε β 0 (C.operatorPeelSum l)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Bosonic.FreeThermalField.freeGibbsExpectation_cons_eq_kmsRatio_mul_operatorPeelSum",
-    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.FreeFirstPair",
-    "externalAxioms": [],
-    "docString": "Bosonic CCR exchange plus KMS rotation solves the wrapped term with factor `q / (q - 1)`. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Bosonic.FreeThermalField.kmsRatio_mul_exchangeValue_eq_freeThermalPairValue",
-      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.ConcreteExpectationRecursion.0.SecondQuantization.Bosonic.FreeThermalField.freeGibbsExpectation_firstPair_recursion"
-    ],
-    "dependencies": [
-      "Complex.exp_ne_one_of_re_ne_zero",
-      "ScalarExchange.eq_div_mul_of_eq_add_mul_of_eq_mul",
-      "SecondQuantization.Bosonic.FreeThermalField.freeGibbsExpectation_operator_comp_rotate",
-      "SecondQuantization.Bosonic.FreeThermalField.freeGibbsSummable_orderedProduct",
-      "SecondQuantization.Bosonic.FreeThermalField.operatorPeelSum_mem_freeGibbsDomain",
-      "SecondQuantization.Bosonic.FreeThermalField.operator_comp_orderedProduct_eq_operatorPeelSum",
-      "SecondQuantization.Bosonic.FreeThermalField.orderedProduct_append_singleton",
-      "SecondQuantization.Bosonic.grandCanonicalGibbsExpectation_add"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Bosonic.FreeThermalField.kmsRatio_mul_exchangeValue_eq_freeThermalPairValue",
-      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.ConcreteExpectationRecursion.0.SecondQuantization.Bosonic.FreeThermalField.freeGibbsExpectation_firstPair_recursion"
-    ],
-    "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [Fintype Mode] (ε : Mode → ℝ) (β : ℝ),\n  (∀ (i : Mode), 0 < β * ε i) →\n    ∀ (C₁ : SecondQuantization.Bosonic.FreeThermalField Mode)\n      (l : List (SecondQuantization.Bosonic.FreeThermalField Mode)),\n      SecondQuantization.Bosonic.grandCanonicalGibbsExpectation ε β 0 (C₁.operatorPeelSum l) =\n        ∑ j,\n          C₁.exchangeValue l[↑j] *\n            SecondQuantization.Bosonic.grandCanonicalGibbsExpectation ε β 0\n              (SecondQuantization.Bosonic.FreeThermalField.orderedProduct (l.eraseIdx ↑j))",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Bosonic.FreeThermalField.freeGibbsExpectation_operatorPeelSum_eq_sum",
-    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.FreePeelIndexed",
-    "externalAxioms": [],
-    "docString": "Expectation of the bosonic CCR peel as a finite sum over the removed tail position. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Bosonic.FreeThermalField.kmsRatio_mul_exchangeValue_eq_freeThermalPairValue",
-      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.ConcreteExpectationRecursion.0.SecondQuantization.Bosonic.FreeThermalField.freeGibbsExpectation_firstPair_recursion"
-    ],
-    "dependencies": [
-      "ScalarExchange.peelSum_eq_sum",
-      "SecondQuantization.Bosonic.FreeThermalField.freeGibbsSummable_orderedProduct",
-      "SecondQuantization.Bosonic.grandCanonicalGibbsExpectation_smul",
-      "SecondQuantization.Bosonic.grandCanonicalGibbsExpectation_sum_of_summable",
-      "SecondQuantization.Bosonic.grandCanonicalGibbsSummable_smul"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Bosonic.FreeThermalField.kmsRatio_mul_exchangeValue_eq_freeThermalPairValue",
-      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.ConcreteExpectationRecursion.0.SecondQuantization.Bosonic.FreeThermalField.freeGibbsExpectation_firstPair_recursion"
-    ],
-    "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (β μ : ℝ) (C : SecondQuantization.Bosonic.FreeThermalField Mode)\n  (A : SecondQuantization.Bosonic.FockSpace Mode →ₗ[ℂ] SecondQuantization.Bosonic.FockSpace Mode),\n  SecondQuantization.Bosonic.grandCanonicalGibbsExpectation ε β μ (C.operator ∘ₗ A) =\n    SecondQuantization.Bosonic.FreeThermalField.kmsFactor (fun i => ε i - μ) β C *\n      SecondQuantization.Bosonic.grandCanonicalGibbsExpectation ε β μ (A ∘ₗ C.operator)",
     "standardAxioms": [
       "Classical.choice",
@@ -98426,7 +98323,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Bosonic.FreeThermalField.freeGibbsExpectation_cons_eq_kmsRatio_mul_operatorPeelSum",
+      "SecondQuantization.Bosonic.FreeThermalField.grandCanonicalGibbsExpectation_cons_eq_kmsRatio_mul_operatorPeelSum",
       "SecondQuantization.Bosonic.grandCanonicalGibbsExpectation_create_comp_annihilate_concrete"
     ],
     "dependencies": [
@@ -98439,7 +98336,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Bosonic.FreeThermalField.freeGibbsExpectation_cons_eq_kmsRatio_mul_operatorPeelSum",
+      "SecondQuantization.Bosonic.FreeThermalField.grandCanonicalGibbsExpectation_cons_eq_kmsRatio_mul_operatorPeelSum",
       "SecondQuantization.Bosonic.grandCanonicalGibbsExpectation_create_comp_annihilate_concrete"
     ],
     "compiledConsumerCount": 2,
@@ -98457,7 +98354,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [Fintype Mode] (ε : Mode → ℝ) (β : ℝ),\n  (∀ (i : Mode), 0 < β * ε i) →\n    ∀ (fields : List (SecondQuantization.Bosonic.FreeThermalField Mode)),\n      SecondQuantization.Bosonic.grandCanonicalGibbsSummable ε β 0\n        (SecondQuantization.Bosonic.FreeThermalField.orderedProduct fields)",
+    "statement": "∀ {Mode : Type u_1} [Fintype Mode] (ε : Mode → ℝ) (β μ : ℝ),\n  (∀ (i : Mode), 0 < β * (ε i - μ)) →\n    ∀ (C : SecondQuantization.Bosonic.FreeThermalField Mode)\n      (l : List (SecondQuantization.Bosonic.FreeThermalField Mode)),\n      SecondQuantization.Bosonic.grandCanonicalGibbsExpectation ε β μ\n          (SecondQuantization.Bosonic.FreeThermalField.orderedProduct (C :: l)) =\n        SecondQuantization.Bosonic.FreeThermalField.kmsFactor (fun i => ε i - μ) β C /\n            (SecondQuantization.Bosonic.FreeThermalField.kmsFactor (fun i => ε i - μ) β C - 1) *\n          SecondQuantization.Bosonic.grandCanonicalGibbsExpectation ε β μ (C.operatorPeelSum l)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -98469,35 +98366,139 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "SecondQuantization.Bosonic.FreeThermalField.freeGibbsSummable_orderedProduct",
-    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.OrderedProductSummable",
+    "name": "SecondQuantization.Bosonic.FreeThermalField.grandCanonicalGibbsExpectation_cons_eq_kmsRatio_mul_operatorPeelSum",
+    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.FreeFirstPair",
     "externalAxioms": [],
-    "docString": "Every finite ordered product of free bosonic thermal fields has a summable free-Gibbs numerator\nunder positive one-mode Boltzmann exponents. ",
+    "docString": "Bosonic CCR exchange plus KMS rotation solves the wrapped term with factor `q / (q - 1)`. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Bosonic.FreeThermalField.freeGibbsExpectation_cons_eq_kmsRatio_mul_operatorPeelSum",
-      "SecondQuantization.Bosonic.FreeThermalField.freeGibbsExpectation_operatorPeelSum_eq_sum",
-      "SecondQuantization.Bosonic.FreeThermalField.operatorPeelSum_mem_freeGibbsDomain",
+      "SecondQuantization.Bosonic.FreeThermalField.grandCanonicalKmsRatio_mul_exchangeValue_eq_freeThermalPairValue",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.ConcreteExpectationRecursion.0.SecondQuantization.Bosonic.FreeThermalField.grandCanonicalGibbsExpectation_firstPair_recursion"
+    ],
+    "dependencies": [
+      "Complex.exp_ne_one_of_re_ne_zero",
+      "ScalarExchange.eq_div_mul_of_eq_add_mul_of_eq_mul",
+      "SecondQuantization.Bosonic.FreeThermalField.freeGibbsExpectation_operator_comp_rotate",
+      "SecondQuantization.Bosonic.FreeThermalField.grandCanonicalGibbsSummable_orderedProduct",
+      "SecondQuantization.Bosonic.FreeThermalField.operatorPeelSum_mem_grandCanonicalGibbsDomain",
+      "SecondQuantization.Bosonic.FreeThermalField.operator_comp_orderedProduct_eq_operatorPeelSum",
+      "SecondQuantization.Bosonic.FreeThermalField.orderedProduct_append_singleton",
+      "SecondQuantization.Bosonic.grandCanonicalGibbsExpectation_add"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Bosonic.FreeThermalField.grandCanonicalKmsRatio_mul_exchangeValue_eq_freeThermalPairValue",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.ConcreteExpectationRecursion.0.SecondQuantization.Bosonic.FreeThermalField.grandCanonicalGibbsExpectation_firstPair_recursion"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} [Fintype Mode] (ε : Mode → ℝ) (β μ : ℝ),\n  (∀ (i : Mode), 0 < β * (ε i - μ)) →\n    ∀ (C₁ : SecondQuantization.Bosonic.FreeThermalField Mode)\n      (l : List (SecondQuantization.Bosonic.FreeThermalField Mode)),\n      SecondQuantization.Bosonic.grandCanonicalGibbsExpectation ε β μ (C₁.operatorPeelSum l) =\n        ∑ j,\n          C₁.exchangeValue l[↑j] *\n            SecondQuantization.Bosonic.grandCanonicalGibbsExpectation ε β μ\n              (SecondQuantization.Bosonic.FreeThermalField.orderedProduct (l.eraseIdx ↑j))",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Bosonic.FreeThermalField.grandCanonicalGibbsExpectation_operatorPeelSum_eq_sum",
+    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.FreePeelIndexed",
+    "externalAxioms": [],
+    "docString": "Expectation of the bosonic CCR peel as a finite sum over the removed tail position. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Bosonic.FreeThermalField.grandCanonicalKmsRatio_mul_exchangeValue_eq_freeThermalPairValue",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.ConcreteExpectationRecursion.0.SecondQuantization.Bosonic.FreeThermalField.grandCanonicalGibbsExpectation_firstPair_recursion"
+    ],
+    "dependencies": [
+      "ScalarExchange.peelSum_eq_sum",
+      "SecondQuantization.Bosonic.FreeThermalField.grandCanonicalGibbsSummable_orderedProduct",
+      "SecondQuantization.Bosonic.grandCanonicalGibbsExpectation_smul",
+      "SecondQuantization.Bosonic.grandCanonicalGibbsExpectation_sum_of_summable",
+      "SecondQuantization.Bosonic.grandCanonicalGibbsSummable_smul"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Bosonic.FreeThermalField.grandCanonicalKmsRatio_mul_exchangeValue_eq_freeThermalPairValue",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.ConcreteExpectationRecursion.0.SecondQuantization.Bosonic.FreeThermalField.grandCanonicalGibbsExpectation_firstPair_recursion"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} [Fintype Mode] (ε : Mode → ℝ) (β μ : ℝ),\n  (∀ (i : Mode), 0 < β * (ε i - μ)) →\n    ∀ (fields : List (SecondQuantization.Bosonic.FreeThermalField Mode)),\n      SecondQuantization.Bosonic.grandCanonicalGibbsSummable ε β μ\n        (SecondQuantization.Bosonic.FreeThermalField.orderedProduct fields)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Bosonic.FreeThermalField.grandCanonicalGibbsSummable_orderedProduct",
+    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.OrderedProductSummable",
+    "externalAxioms": [],
+    "docString": "Every finite ordered product of free bosonic thermal fields has a summable\ngrand-canonical Gibbs numerator under positive effective one-mode Boltzmann exponents. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Bosonic.FreeThermalField.grandCanonicalGibbsExpectation_cons_eq_kmsRatio_mul_operatorPeelSum",
+      "SecondQuantization.Bosonic.FreeThermalField.grandCanonicalGibbsExpectation_operatorPeelSum_eq_sum",
+      "SecondQuantization.Bosonic.FreeThermalField.operatorPeelSum_mem_grandCanonicalGibbsDomain",
       "SecondQuantization.Bosonic.grandCanonicalGibbsDysonCoeff_quarticInteractionOn_eq_sum_pairingEvaluation",
-      "SecondQuantization.Bosonic.quarticVertexOperator_mem_freeGibbsDomain",
-      "SecondQuantization.Bosonic.quarticVertexSequenceOperator_mem_freeGibbsDomain",
+      "SecondQuantization.Bosonic.quarticVertexOperator_mem_grandCanonicalGibbsDomain",
+      "SecondQuantization.Bosonic.quarticVertexSequenceOperator_mem_grandCanonicalGibbsDomain",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion.Pairing.0.SecondQuantization.Bosonic.grandCanonicalGibbsDysonCoeff_quarticInteraction_eq_sum_pairingEvaluation"
     ],
     "dependencies": [
       "SecondQuantization.Bosonic.FreeThermalField.norm_matrixCoeff_orderedProduct_le",
+      "SecondQuantization.Bosonic.grandCanonicalGibbsSummable_shift",
       "SecondQuantization.Bosonic.summable_shiftedOccupationPowerProduct_boltzmannWeight",
       "SecondQuantization.Common.matrixCoeff_diagonalEvolution_comp"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Bosonic.FreeThermalField.freeGibbsExpectation_cons_eq_kmsRatio_mul_operatorPeelSum",
-      "SecondQuantization.Bosonic.FreeThermalField.freeGibbsExpectation_operatorPeelSum_eq_sum",
-      "SecondQuantization.Bosonic.FreeThermalField.operatorPeelSum_mem_freeGibbsDomain",
+      "SecondQuantization.Bosonic.FreeThermalField.grandCanonicalGibbsExpectation_cons_eq_kmsRatio_mul_operatorPeelSum",
+      "SecondQuantization.Bosonic.FreeThermalField.grandCanonicalGibbsExpectation_operatorPeelSum_eq_sum",
+      "SecondQuantization.Bosonic.FreeThermalField.operatorPeelSum_mem_grandCanonicalGibbsDomain",
       "SecondQuantization.Bosonic.grandCanonicalGibbsDysonCoeff_quarticInteractionOn_eq_sum_pairingEvaluation",
-      "SecondQuantization.Bosonic.quarticVertexOperator_mem_freeGibbsDomain",
-      "SecondQuantization.Bosonic.quarticVertexSequenceOperator_mem_freeGibbsDomain",
+      "SecondQuantization.Bosonic.quarticVertexOperator_mem_grandCanonicalGibbsDomain",
+      "SecondQuantization.Bosonic.quarticVertexSequenceOperator_mem_grandCanonicalGibbsDomain",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion.Pairing.0.SecondQuantization.Bosonic.grandCanonicalGibbsDysonCoeff_quarticInteraction_eq_sum_pairingEvaluation"
     ],
     "compiledConsumerCount": 7,
@@ -98515,7 +98516,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [Fintype Mode] (ε : Mode → ℝ) (β : ℝ),\n  (∀ (i : Mode), 0 < β * ε i) →\n    ∀ (C D : SecondQuantization.Bosonic.FreeThermalField Mode),\n      SecondQuantization.Bosonic.FreeThermalField.kmsFactor ε β C /\n            (SecondQuantization.Bosonic.FreeThermalField.kmsFactor ε β C - 1) *\n          C.exchangeValue D =\n        SecondQuantization.Bosonic.freeThermalPairValue ε β C D",
+    "statement": "∀ {Mode : Type u_1} [Fintype Mode] (ε : Mode → ℝ) (β μ : ℝ),\n  (∀ (i : Mode), 0 < β * (ε i - μ)) →\n    ∀ (C D : SecondQuantization.Bosonic.FreeThermalField Mode),\n      SecondQuantization.Bosonic.FreeThermalField.kmsFactor (fun i => ε i - μ) β C /\n            (SecondQuantization.Bosonic.FreeThermalField.kmsFactor (fun i => ε i - μ) β C - 1) *\n          C.exchangeValue D =\n        SecondQuantization.Bosonic.freeThermalPairValue (fun i => ε i - μ) β C D",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -98527,26 +98528,26 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "SecondQuantization.Bosonic.FreeThermalField.kmsRatio_mul_exchangeValue_eq_freeThermalPairValue",
+    "name": "SecondQuantization.Bosonic.FreeThermalField.grandCanonicalKmsRatio_mul_exchangeValue_eq_freeThermalPairValue",
     "module": "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.FreeFirstPair",
     "externalAxioms": [],
-    "docString": "The KMS solution factor times the bare CCR exchange coefficient is exactly the canonical\nnormalized two-field free thermal kernel. ",
+    "docString": "The KMS solution factor times the bare CCR exchange coefficient is exactly the grand-canonical\nnormalized two-field free thermal kernel. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.ConcreteExpectationRecursion.0.SecondQuantization.Bosonic.FreeThermalField.freeGibbsExpectation_firstPair_recursion"
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.ConcreteExpectationRecursion.0.SecondQuantization.Bosonic.FreeThermalField.grandCanonicalGibbsExpectation_firstPair_recursion"
     ],
     "dependencies": [
-      "SecondQuantization.Bosonic.FreeThermalField.freeGibbsExpectation_cons_eq_kmsRatio_mul_operatorPeelSum",
-      "SecondQuantization.Bosonic.FreeThermalField.freeGibbsExpectation_operatorPeelSum_eq_sum",
+      "SecondQuantization.Bosonic.FreeThermalField.grandCanonicalGibbsExpectation_cons_eq_kmsRatio_mul_operatorPeelSum",
+      "SecondQuantization.Bosonic.FreeThermalField.grandCanonicalGibbsExpectation_operatorPeelSum_eq_sum",
       "SecondQuantization.Bosonic.FreeThermalField.orderedProduct_nil",
-      "SecondQuantization.Bosonic.freeGibbsExpectation_orderedProduct_pair_eq_freeThermalPairValue",
-      "SecondQuantization.Bosonic.grandCanonicalGibbsExpectation_id"
+      "SecondQuantization.Bosonic.grandCanonicalGibbsExpectation_id",
+      "SecondQuantization.Bosonic.grandCanonicalGibbsExpectation_orderedProduct_pair_eq_freeThermalPairValue"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.ConcreteExpectationRecursion.0.SecondQuantization.Bosonic.FreeThermalField.freeGibbsExpectation_firstPair_recursion"
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.ConcreteExpectationRecursion.0.SecondQuantization.Bosonic.FreeThermalField.grandCanonicalGibbsExpectation_firstPair_recursion"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -98582,7 +98583,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Bosonic.FreeThermalField.freeGibbsSummable_orderedProduct"
+      "SecondQuantization.Bosonic.FreeThermalField.grandCanonicalGibbsSummable_orderedProduct"
     ],
     "dependencies": [
       "SecondQuantization.Common.matrixCoeff_eq_ite_of_basisState_smul",
@@ -98592,7 +98593,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Bosonic.FreeThermalField.freeGibbsSummable_orderedProduct"
+      "SecondQuantization.Bosonic.FreeThermalField.grandCanonicalGibbsSummable_orderedProduct"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -98609,7 +98610,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [Fintype Mode] (ε : Mode → ℝ) (β : ℝ),\n  (∀ (i : Mode), 0 < β * ε i) →\n    ∀ (C₁ : SecondQuantization.Bosonic.FreeThermalField Mode)\n      (l : List (SecondQuantization.Bosonic.FreeThermalField Mode)),\n      C₁.operatorPeelSum l ∈ SecondQuantization.Bosonic.grandCanonicalGibbsDomain ε β 0",
+    "statement": "∀ {Mode : Type u_1} [Fintype Mode] (ε : Mode → ℝ) (β μ : ℝ),\n  (∀ (i : Mode), 0 < β * (ε i - μ)) →\n    ∀ (C₁ : SecondQuantization.Bosonic.FreeThermalField Mode)\n      (l : List (SecondQuantization.Bosonic.FreeThermalField Mode)),\n      C₁.operatorPeelSum l ∈ SecondQuantization.Bosonic.grandCanonicalGibbsDomain ε β μ",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -98621,18 +98622,18 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "SecondQuantization.Bosonic.FreeThermalField.operatorPeelSum_mem_freeGibbsDomain",
+    "name": "SecondQuantization.Bosonic.FreeThermalField.operatorPeelSum_mem_grandCanonicalGibbsDomain",
     "module": "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.FreePeelIndexed",
     "externalAxioms": [],
     "docString": "The whole finite CCR peel is in the convergence-aware free-Gibbs domain. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Bosonic.FreeThermalField.freeGibbsExpectation_cons_eq_kmsRatio_mul_operatorPeelSum"
+      "SecondQuantization.Bosonic.FreeThermalField.grandCanonicalGibbsExpectation_cons_eq_kmsRatio_mul_operatorPeelSum"
     ],
     "dependencies": [
       "ScalarExchange.peelSum_eq_sum",
-      "SecondQuantization.Bosonic.FreeThermalField.freeGibbsSummable_orderedProduct",
+      "SecondQuantization.Bosonic.FreeThermalField.grandCanonicalGibbsSummable_orderedProduct",
       "SecondQuantization.Bosonic.grandCanonicalGibbsSummable_smul",
       "SecondQuantization.Bosonic.grandCanonicalGibbsSummable_sum",
       "SecondQuantization.Bosonic.mem_grandCanonicalGibbsDomain_iff"
@@ -98640,7 +98641,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Bosonic.FreeThermalField.freeGibbsExpectation_cons_eq_kmsRatio_mul_operatorPeelSum"
+      "SecondQuantization.Bosonic.FreeThermalField.grandCanonicalGibbsExpectation_cons_eq_kmsRatio_mul_operatorPeelSum"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -98724,7 +98725,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Bosonic.FreeThermalField.freeGibbsExpectation_cons_eq_kmsRatio_mul_operatorPeelSum"
+      "SecondQuantization.Bosonic.FreeThermalField.grandCanonicalGibbsExpectation_cons_eq_kmsRatio_mul_operatorPeelSum"
     ],
     "dependencies": [
       "ScalarExchange.mul_prod_eq_peelSum",
@@ -98733,7 +98734,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Bosonic.FreeThermalField.freeGibbsExpectation_cons_eq_kmsRatio_mul_operatorPeelSum"
+      "SecondQuantization.Bosonic.FreeThermalField.grandCanonicalGibbsExpectation_cons_eq_kmsRatio_mul_operatorPeelSum"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -98811,13 +98812,13 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Bosonic.FreeThermalField.freeGibbsExpectation_cons_eq_kmsRatio_mul_operatorPeelSum"
+      "SecondQuantization.Bosonic.FreeThermalField.grandCanonicalGibbsExpectation_cons_eq_kmsRatio_mul_operatorPeelSum"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Bosonic.FreeThermalField.freeGibbsExpectation_cons_eq_kmsRatio_mul_operatorPeelSum"
+      "SecondQuantization.Bosonic.FreeThermalField.grandCanonicalGibbsExpectation_cons_eq_kmsRatio_mul_operatorPeelSum"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -98853,14 +98854,14 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Bosonic.quarticVertexOperator_mem_freeGibbsDomain",
+      "SecondQuantization.Bosonic.quarticVertexOperator_mem_grandCanonicalGibbsDomain",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.OrderedProductSummable.0.SecondQuantization.Bosonic.FreeThermalField.orderedProduct_basisState_bound_aux"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Bosonic.quarticVertexOperator_mem_freeGibbsDomain",
+      "SecondQuantization.Bosonic.quarticVertexOperator_mem_grandCanonicalGibbsDomain",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.OrderedProductSummable.0.SecondQuantization.Bosonic.FreeThermalField.orderedProduct_basisState_bound_aux"
     ],
     "compiledConsumerCount": 2,
@@ -98897,15 +98898,15 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Bosonic.FreeThermalField.kmsRatio_mul_exchangeValue_eq_freeThermalPairValue",
-      "SecondQuantization.Bosonic.quarticVertexOperator_mem_freeGibbsDomain"
+      "SecondQuantization.Bosonic.FreeThermalField.grandCanonicalKmsRatio_mul_exchangeValue_eq_freeThermalPairValue",
+      "SecondQuantization.Bosonic.quarticVertexOperator_mem_grandCanonicalGibbsDomain"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Bosonic.FreeThermalField.kmsRatio_mul_exchangeValue_eq_freeThermalPairValue",
-      "SecondQuantization.Bosonic.quarticVertexOperator_mem_freeGibbsDomain"
+      "SecondQuantization.Bosonic.FreeThermalField.grandCanonicalKmsRatio_mul_exchangeValue_eq_freeThermalPairValue",
+      "SecondQuantization.Bosonic.quarticVertexOperator_mem_grandCanonicalGibbsDomain"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -99788,7 +99789,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Bosonic.freeGibbsExpectation_orderedProduct_pair_eq_freeThermalPairValue"
+      "SecondQuantization.Bosonic.grandCanonicalGibbsExpectation_orderedProduct_pair_eq_freeThermalPairValue"
     ],
     "dependencies": [
       "SecondQuantization.Bosonic.annihilate_basisState_of_pos",
@@ -99799,7 +99800,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Bosonic.freeGibbsExpectation_orderedProduct_pair_eq_freeThermalPairValue"
+      "SecondQuantization.Bosonic.grandCanonicalGibbsExpectation_orderedProduct_pair_eq_freeThermalPairValue"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -99835,7 +99836,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Bosonic.freeGibbsExpectation_orderedProduct_pair_eq_freeThermalPairValue"
+      "SecondQuantization.Bosonic.grandCanonicalGibbsExpectation_orderedProduct_pair_eq_freeThermalPairValue"
     ],
     "dependencies": [
       "SecondQuantization.Bosonic.create_basisState_eq",
@@ -99845,7 +99846,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Bosonic.freeGibbsExpectation_orderedProduct_pair_eq_freeThermalPairValue"
+      "SecondQuantization.Bosonic.grandCanonicalGibbsExpectation_orderedProduct_pair_eq_freeThermalPairValue"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -102721,7 +102722,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Bosonic.dysonCoeff_quarticInteractionOn_mem_freeGibbsDomain",
+      "SecondQuantization.Bosonic.dysonCoeff_quarticInteractionOn_mem_grandCanonicalGibbsDomain",
       "SecondQuantization.Bosonic.grandCanonicalGibbsDysonCoeff_quarticInteractionOn_eq_sum_pairingEvaluation"
     ],
     "dependencies": [
@@ -102732,7 +102733,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Bosonic.dysonCoeff_quarticInteractionOn_mem_freeGibbsDomain",
+      "SecondQuantization.Bosonic.dysonCoeff_quarticInteractionOn_mem_grandCanonicalGibbsDomain",
       "SecondQuantization.Bosonic.grandCanonicalGibbsDysonCoeff_quarticInteractionOn_eq_sum_pairingEvaluation"
     ],
     "compiledConsumerCount": 2,
@@ -102762,7 +102763,7 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "SecondQuantization.Bosonic.dysonCoeff_quarticInteractionOn_mem_freeGibbsDomain",
+    "name": "SecondQuantization.Bosonic.dysonCoeff_quarticInteractionOn_mem_grandCanonicalGibbsDomain",
     "module": "LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion.Pairing",
     "externalAxioms": [],
     "docString": "Every finite Dyson coefficient of a finitely supported quartic interaction belongs to the\nfree-Gibbs domain. This is proved coefficientwise from the finite vertex-sequence expansion and does\nnot exchange the infinite Gibbs sum with the recursive Dyson integral. ",
@@ -102771,8 +102772,7 @@
     "dependents": [],
     "dependencies": [
       "SecondQuantization.Bosonic.dysonCoeff_quarticInteractionOn_eq_sum",
-      "SecondQuantization.Bosonic.grandCanonicalGibbsDomain_shift",
-      "SecondQuantization.Bosonic.quarticVertexSequenceOperator_mem_freeGibbsDomain"
+      "SecondQuantization.Bosonic.quarticVertexSequenceOperator_mem_grandCanonicalGibbsDomain"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -102811,7 +102811,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Bosonic.dysonCoeff_quarticInteraction_mem_freeGibbsDomain",
+      "SecondQuantization.Bosonic.dysonCoeff_quarticInteraction_mem_grandCanonicalGibbsDomain",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion.Pairing.0.SecondQuantization.Bosonic.grandCanonicalGibbsDysonCoeff_quarticInteraction_eq_sum_pairingEvaluation"
     ],
     "dependencies": [
@@ -102822,7 +102822,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Bosonic.dysonCoeff_quarticInteraction_mem_freeGibbsDomain",
+      "SecondQuantization.Bosonic.dysonCoeff_quarticInteraction_mem_grandCanonicalGibbsDomain",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion.Pairing.0.SecondQuantization.Bosonic.grandCanonicalGibbsDysonCoeff_quarticInteraction_eq_sum_pairingEvaluation"
     ],
     "compiledConsumerCount": 2,
@@ -102852,7 +102852,7 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "SecondQuantization.Bosonic.dysonCoeff_quarticInteraction_mem_freeGibbsDomain",
+    "name": "SecondQuantization.Bosonic.dysonCoeff_quarticInteraction_mem_grandCanonicalGibbsDomain",
     "module": "LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion.Pairing",
     "externalAxioms": [],
     "docString": "On a finite mode type, every finite Dyson coefficient of the full quartic interaction belongs to\nthe free-Gibbs domain. ",
@@ -102861,8 +102861,7 @@
     "dependents": [],
     "dependencies": [
       "SecondQuantization.Bosonic.dysonCoeff_quarticInteraction_eq_sum",
-      "SecondQuantization.Bosonic.grandCanonicalGibbsDomain_shift",
-      "SecondQuantization.Bosonic.quarticVertexSequenceOperator_mem_freeGibbsDomain"
+      "SecondQuantization.Bosonic.quarticVertexSequenceOperator_mem_grandCanonicalGibbsDomain"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -103501,55 +103500,6 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [Fintype Mode] (ε : Mode → ℝ) (β : ℝ),\n  (∀ (k : Mode), 0 < β * ε k) →\n    ∀ (f g : SecondQuantization.Bosonic.FreeThermalField Mode),\n      SecondQuantization.Bosonic.grandCanonicalGibbsExpectation ε β 0\n          (SecondQuantization.Bosonic.FreeThermalField.orderedProduct [f, g]) =\n        SecondQuantization.Bosonic.freeThermalPairValue ε β f g",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Bosonic.freeGibbsExpectation_orderedProduct_pair_eq_freeThermalPairValue",
-    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.ConcretePairKernel",
-    "externalAxioms": [],
-    "docString": "The canonical free thermal pair kernel is exactly the normalized free-Gibbs expectation of the\ncorresponding ordered two-field product. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Bosonic.FreeThermalField.kmsRatio_mul_exchangeValue_eq_freeThermalPairValue"
-    ],
-    "dependencies": [
-      "SecondQuantization.Bosonic.carriesParticleNumberCharge_annihilate",
-      "SecondQuantization.Bosonic.carriesParticleNumberCharge_create",
-      "SecondQuantization.Bosonic.grandCanonicalGibbsExpectation_annihilate_comp_create_concrete",
-      "SecondQuantization.Bosonic.grandCanonicalGibbsExpectation_create_comp_annihilate_concrete",
-      "SecondQuantization.Common.CarriesShift.comp",
-      "SecondQuantization.Common.diagonalTraceRatio_eq_zero_of_carriesShift"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Bosonic.FreeThermalField.kmsRatio_mul_exchangeValue_eq_freeThermalPairValue"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
     "terminal": true,
     "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (n : SecondQuantization.Bosonic.Occupation Mode),\n  (SecondQuantization.Bosonic.freeHamiltonian ε) (SecondQuantization.Bosonic.basisState n) =\n    ↑(SecondQuantization.Bosonic.freeEigenvalue ε n) • SecondQuantization.Bosonic.basisState n",
     "standardAxioms": [
@@ -103772,7 +103722,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": false,
+    "terminal": true,
     "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (β μ : ℝ),\n  SecondQuantization.Bosonic.grandCanonicalGibbsDomain ε β μ =\n    SecondQuantization.Bosonic.grandCanonicalGibbsDomain (fun i => ε i - μ) β 0",
     "standardAxioms": [
       "Classical.choice",
@@ -103791,20 +103741,14 @@
     "docString": "The analytic domain depends only on the effective one-mode Gibbs energies. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Bosonic.dysonCoeff_quarticInteractionOn_mem_freeGibbsDomain",
-      "SecondQuantization.Bosonic.dysonCoeff_quarticInteraction_mem_freeGibbsDomain"
-    ],
+    "dependents": [],
     "dependencies": [
       "SecondQuantization.Bosonic.grandCanonicalGibbsSummable_shift"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Bosonic.dysonCoeff_quarticInteractionOn_mem_freeGibbsDomain",
-      "SecondQuantization.Bosonic.dysonCoeff_quarticInteraction_mem_freeGibbsDomain"
-    ],
-    "compiledConsumerCount": 2,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -103839,10 +103783,9 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "SecondQuantization.Bosonic.FreeThermalField.freeGibbsSummable_orderedProduct",
+      "SecondQuantization.Bosonic.FreeThermalField.grandCanonicalGibbsSummable_orderedProduct",
       "SecondQuantization.Bosonic.dysonCoeff_quarticInteractionOn_eq_sum",
       "SecondQuantization.Bosonic.grandCanonicalGibbsExpectation_eq_sum_pairing_concrete",
-      "SecondQuantization.Bosonic.grandCanonicalGibbsExpectation_shift",
       "SecondQuantization.Bosonic.grandCanonicalGibbsExpectation_smul",
       "SecondQuantization.Bosonic.grandCanonicalGibbsExpectation_sum_of_summable",
       "SecondQuantization.Bosonic.grandCanonicalGibbsSummable_smul",
@@ -103974,7 +103917,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Bosonic.FreeThermalField.freeGibbsExpectation_cons_eq_kmsRatio_mul_operatorPeelSum"
+      "SecondQuantization.Bosonic.FreeThermalField.grandCanonicalGibbsExpectation_cons_eq_kmsRatio_mul_operatorPeelSum"
     ],
     "dependencies": [
       "SecondQuantization.Common.tsumTrace_add"
@@ -103982,7 +103925,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Bosonic.FreeThermalField.freeGibbsExpectation_cons_eq_kmsRatio_mul_operatorPeelSum"
+      "SecondQuantization.Bosonic.FreeThermalField.grandCanonicalGibbsExpectation_cons_eq_kmsRatio_mul_operatorPeelSum"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -104018,8 +103961,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Bosonic.freeGibbsExpectation_orderedProduct_pair_eq_freeThermalPairValue",
-      "SecondQuantization.Bosonic.grandCanonicalGibbsExpectation_create_comp_annihilate_concrete"
+      "SecondQuantization.Bosonic.grandCanonicalGibbsExpectation_create_comp_annihilate_concrete",
+      "SecondQuantization.Bosonic.grandCanonicalGibbsExpectation_orderedProduct_pair_eq_freeThermalPairValue"
     ],
     "dependencies": [
       "Complex.exp_ne_one_of_re_ne_zero",
@@ -104033,8 +103976,8 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Bosonic.freeGibbsExpectation_orderedProduct_pair_eq_freeThermalPairValue",
-      "SecondQuantization.Bosonic.grandCanonicalGibbsExpectation_create_comp_annihilate_concrete"
+      "SecondQuantization.Bosonic.grandCanonicalGibbsExpectation_create_comp_annihilate_concrete",
+      "SecondQuantization.Bosonic.grandCanonicalGibbsExpectation_orderedProduct_pair_eq_freeThermalPairValue"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -104070,7 +104013,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Bosonic.freeGibbsExpectation_orderedProduct_pair_eq_freeThermalPairValue"
+      "SecondQuantization.Bosonic.grandCanonicalGibbsExpectation_orderedProduct_pair_eq_freeThermalPairValue"
     ],
     "dependencies": [
       "SecondQuantization.Bosonic.FreeThermalField.freeGibbsExpectation_operator_comp_rotate",
@@ -104079,7 +104022,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Bosonic.freeGibbsExpectation_orderedProduct_pair_eq_freeThermalPairValue"
+      "SecondQuantization.Bosonic.grandCanonicalGibbsExpectation_orderedProduct_pair_eq_freeThermalPairValue"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -104112,18 +104055,17 @@
     "module": "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.ConcreteExpectationRecursion",
     "externalAxioms": [],
     "docString": "Grand-canonical free-boson Wick/Bloch--de Dominicis factorization at arbitrary chemical\npotential. The free-field pairing kernel uses `ε - μ`; the abstract recurrence is applied on this\neffective thermal dispersion. This does not assert fixed-particle-number canonical Wick factorization. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
+    "directWrapperTargetModule": "LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.ExpectationRecursion",
+    "directWrapperOf": "SecondQuantization.Common.BlochDeDominicis.ExpectationPairingRecursion.bloch_de_dominicis",
     "dependents": [
       "SecondQuantization.Bosonic.QuarticDiagram.grandCanonicalGibbsExpectation_eq_orderedThermalWickSum",
       "SecondQuantization.Bosonic.grandCanonicalGibbsDysonCoeff_quarticInteractionOn_eq_sum_pairingEvaluation",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion.Pairing.0.SecondQuantization.Bosonic.grandCanonicalGibbsDysonCoeff_quarticInteraction_eq_sum_pairingEvaluation"
     ],
     "dependencies": [
-      "SecondQuantization.Bosonic.grandCanonicalGibbsExpectation_shift",
       "SecondQuantization.Common.BlochDeDominicis.ExpectationPairingRecursion.bloch_de_dominicis"
     ],
-    "crossModuleDirectWrapper": false,
+    "crossModuleDirectWrapper": true,
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Bosonic.QuarticDiagram.grandCanonicalGibbsExpectation_eq_orderedThermalWickSum",
@@ -104164,7 +104106,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Bosonic.FreeThermalField.kmsRatio_mul_exchangeValue_eq_freeThermalPairValue",
+      "SecondQuantization.Bosonic.FreeThermalField.grandCanonicalKmsRatio_mul_exchangeValue_eq_freeThermalPairValue",
       "SecondQuantization.Bosonic.grandCanonicalGibbsDysonCoeff_zero"
     ],
     "dependencies": [
@@ -104173,7 +104115,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Bosonic.FreeThermalField.kmsRatio_mul_exchangeValue_eq_freeThermalPairValue",
+      "SecondQuantization.Bosonic.FreeThermalField.grandCanonicalKmsRatio_mul_exchangeValue_eq_freeThermalPairValue",
       "SecondQuantization.Bosonic.grandCanonicalGibbsDysonCoeff_zero"
     ],
     "compiledConsumerCount": 2,
@@ -104191,6 +104133,55 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {Mode : Type u_1} [Fintype Mode] (ε : Mode → ℝ) (β μ : ℝ),\n  (∀ (k : Mode), 0 < β * (ε k - μ)) →\n    ∀ (f g : SecondQuantization.Bosonic.FreeThermalField Mode),\n      SecondQuantization.Bosonic.grandCanonicalGibbsExpectation ε β μ\n          (SecondQuantization.Bosonic.FreeThermalField.orderedProduct [f, g]) =\n        SecondQuantization.Bosonic.freeThermalPairValue (fun i => ε i - μ) β f g",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Bosonic.grandCanonicalGibbsExpectation_orderedProduct_pair_eq_freeThermalPairValue",
+    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.ConcretePairKernel",
+    "externalAxioms": [],
+    "docString": "The grand-canonical free thermal pair kernel is exactly the normalized free-Gibbs expectation of the\ncorresponding ordered two-field product. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Bosonic.FreeThermalField.grandCanonicalKmsRatio_mul_exchangeValue_eq_freeThermalPairValue"
+    ],
+    "dependencies": [
+      "SecondQuantization.Bosonic.carriesParticleNumberCharge_annihilate",
+      "SecondQuantization.Bosonic.carriesParticleNumberCharge_create",
+      "SecondQuantization.Bosonic.grandCanonicalGibbsExpectation_annihilate_comp_create_concrete",
+      "SecondQuantization.Bosonic.grandCanonicalGibbsExpectation_create_comp_annihilate_concrete",
+      "SecondQuantization.Common.CarriesShift.comp",
+      "SecondQuantization.Common.diagonalTraceRatio_eq_zero_of_carriesShift"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Bosonic.FreeThermalField.grandCanonicalKmsRatio_mul_exchangeValue_eq_freeThermalPairValue"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
     "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (β μ : ℝ)\n  (A : SecondQuantization.Bosonic.FockSpace Mode →ₗ[ℂ] SecondQuantization.Bosonic.FockSpace Mode),\n  SecondQuantization.Bosonic.grandCanonicalGibbsExpectation ε β μ A =\n    SecondQuantization.Bosonic.grandCanonicalGibbsExpectation (fun i => ε i - μ) β 0 A",
     "standardAxioms": [
       "Classical.choice",
@@ -104209,20 +104200,12 @@
     "docString": "The normalized grand-canonical algebraic Gibbs functional depends only on\n`ε - μ`, independently of the physical imaginary-time generator. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Bosonic.grandCanonicalGibbsDysonCoeff_quarticInteractionOn_eq_sum_pairingEvaluation",
-      "SecondQuantization.Bosonic.grandCanonicalGibbsExpectation_eq_sum_pairing_concrete",
-      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion.Pairing.0.SecondQuantization.Bosonic.grandCanonicalGibbsDysonCoeff_quarticInteraction_eq_sum_pairingEvaluation"
-    ],
+    "dependents": [],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Bosonic.grandCanonicalGibbsDysonCoeff_quarticInteractionOn_eq_sum_pairingEvaluation",
-      "SecondQuantization.Bosonic.grandCanonicalGibbsExpectation_eq_sum_pairing_concrete",
-      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion.Pairing.0.SecondQuantization.Bosonic.grandCanonicalGibbsDysonCoeff_quarticInteraction_eq_sum_pairingEvaluation"
-    ],
-    "compiledConsumerCount": 3,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -104256,7 +104239,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Bosonic.FreeThermalField.freeGibbsExpectation_operatorPeelSum_eq_sum",
+      "SecondQuantization.Bosonic.FreeThermalField.grandCanonicalGibbsExpectation_operatorPeelSum_eq_sum",
       "SecondQuantization.Bosonic.grandCanonicalGibbsDysonCoeff_quarticInteractionOn_eq_sum_pairingEvaluation",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion.Pairing.0.SecondQuantization.Bosonic.grandCanonicalGibbsDysonCoeff_quarticInteraction_eq_sum_pairingEvaluation"
     ],
@@ -104266,7 +104249,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Bosonic.FreeThermalField.freeGibbsExpectation_operatorPeelSum_eq_sum",
+      "SecondQuantization.Bosonic.FreeThermalField.grandCanonicalGibbsExpectation_operatorPeelSum_eq_sum",
       "SecondQuantization.Bosonic.grandCanonicalGibbsDysonCoeff_quarticInteractionOn_eq_sum_pairingEvaluation",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion.Pairing.0.SecondQuantization.Bosonic.grandCanonicalGibbsDysonCoeff_quarticInteraction_eq_sum_pairingEvaluation"
     ],
@@ -104304,7 +104287,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Bosonic.FreeThermalField.freeGibbsExpectation_operatorPeelSum_eq_sum",
+      "SecondQuantization.Bosonic.FreeThermalField.grandCanonicalGibbsExpectation_operatorPeelSum_eq_sum",
       "SecondQuantization.Bosonic.grandCanonicalGibbsDysonCoeff_quarticInteractionOn_eq_sum_pairingEvaluation",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion.Pairing.0.SecondQuantization.Bosonic.grandCanonicalGibbsDysonCoeff_quarticInteraction_eq_sum_pairingEvaluation"
     ],
@@ -104314,7 +104297,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Bosonic.FreeThermalField.freeGibbsExpectation_operatorPeelSum_eq_sum",
+      "SecondQuantization.Bosonic.FreeThermalField.grandCanonicalGibbsExpectation_operatorPeelSum_eq_sum",
       "SecondQuantization.Bosonic.grandCanonicalGibbsDysonCoeff_quarticInteractionOn_eq_sum_pairingEvaluation",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion.Pairing.0.SecondQuantization.Bosonic.grandCanonicalGibbsDysonCoeff_quarticInteraction_eq_sum_pairingEvaluation"
     ],
@@ -104340,7 +104323,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -104352,15 +104335,17 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "SecondQuantization.Bosonic.FreeThermalField.grandCanonicalGibbsSummable_orderedProduct",
       "SecondQuantization.Bosonic.grandCanonicalGibbsDomain_shift"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "SecondQuantization.Bosonic.FreeThermalField.grandCanonicalGibbsSummable_orderedProduct",
       "SecondQuantization.Bosonic.grandCanonicalGibbsDomain_shift"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -104394,8 +104379,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Bosonic.FreeThermalField.freeGibbsExpectation_operatorPeelSum_eq_sum",
-      "SecondQuantization.Bosonic.FreeThermalField.operatorPeelSum_mem_freeGibbsDomain",
+      "SecondQuantization.Bosonic.FreeThermalField.grandCanonicalGibbsExpectation_operatorPeelSum_eq_sum",
+      "SecondQuantization.Bosonic.FreeThermalField.operatorPeelSum_mem_grandCanonicalGibbsDomain",
       "SecondQuantization.Bosonic.grandCanonicalGibbsDysonCoeff_quarticInteractionOn_eq_sum_pairingEvaluation",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion.Pairing.0.SecondQuantization.Bosonic.grandCanonicalGibbsDysonCoeff_quarticInteraction_eq_sum_pairingEvaluation"
     ],
@@ -104405,8 +104390,8 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Bosonic.FreeThermalField.freeGibbsExpectation_operatorPeelSum_eq_sum",
-      "SecondQuantization.Bosonic.FreeThermalField.operatorPeelSum_mem_freeGibbsDomain",
+      "SecondQuantization.Bosonic.FreeThermalField.grandCanonicalGibbsExpectation_operatorPeelSum_eq_sum",
+      "SecondQuantization.Bosonic.FreeThermalField.operatorPeelSum_mem_grandCanonicalGibbsDomain",
       "SecondQuantization.Bosonic.grandCanonicalGibbsDysonCoeff_quarticInteractionOn_eq_sum_pairingEvaluation",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion.Pairing.0.SecondQuantization.Bosonic.grandCanonicalGibbsDysonCoeff_quarticInteraction_eq_sum_pairingEvaluation"
     ],
@@ -104444,7 +104429,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Bosonic.FreeThermalField.operatorPeelSum_mem_freeGibbsDomain"
+      "SecondQuantization.Bosonic.FreeThermalField.operatorPeelSum_mem_grandCanonicalGibbsDomain"
     ],
     "dependencies": [
       "SecondQuantization.Bosonic.mem_grandCanonicalGibbsDomain_iff"
@@ -104452,7 +104437,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Bosonic.FreeThermalField.operatorPeelSum_mem_freeGibbsDomain"
+      "SecondQuantization.Bosonic.FreeThermalField.operatorPeelSum_mem_grandCanonicalGibbsDomain"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -105307,21 +105292,21 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Bosonic.FreeThermalField.operatorPeelSum_mem_freeGibbsDomain",
+      "SecondQuantization.Bosonic.FreeThermalField.operatorPeelSum_mem_grandCanonicalGibbsDomain",
       "SecondQuantization.Bosonic.grandCanonicalGibbsExpectation_sum_of_summable",
       "SecondQuantization.Bosonic.grandCanonicalGibbsSummable_smul",
       "SecondQuantization.Bosonic.grandCanonicalGibbsSummable_sum",
-      "SecondQuantization.Bosonic.quarticVertexSequenceOperator_mem_freeGibbsDomain"
+      "SecondQuantization.Bosonic.quarticVertexSequenceOperator_mem_grandCanonicalGibbsDomain"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Bosonic.FreeThermalField.operatorPeelSum_mem_freeGibbsDomain",
+      "SecondQuantization.Bosonic.FreeThermalField.operatorPeelSum_mem_grandCanonicalGibbsDomain",
       "SecondQuantization.Bosonic.grandCanonicalGibbsExpectation_sum_of_summable",
       "SecondQuantization.Bosonic.grandCanonicalGibbsSummable_smul",
       "SecondQuantization.Bosonic.grandCanonicalGibbsSummable_sum",
-      "SecondQuantization.Bosonic.quarticVertexSequenceOperator_mem_freeGibbsDomain"
+      "SecondQuantization.Bosonic.quarticVertexSequenceOperator_mem_grandCanonicalGibbsDomain"
     ],
     "compiledConsumerCount": 5,
     "axioms": [
@@ -106034,7 +106019,7 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Bosonic.grandCanonicalGibbsDysonCoeff_quarticInteractionOn_eq_sum_pairingEvaluation",
-      "SecondQuantization.Bosonic.quarticVertexSequenceOperator_mem_freeGibbsDomain",
+      "SecondQuantization.Bosonic.quarticVertexSequenceOperator_mem_grandCanonicalGibbsDomain",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion.Pairing.0.SecondQuantization.Bosonic.grandCanonicalGibbsDysonCoeff_quarticInteraction_eq_sum_pairingEvaluation"
     ],
     "dependencies": [
@@ -106045,7 +106030,7 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Bosonic.grandCanonicalGibbsDysonCoeff_quarticInteractionOn_eq_sum_pairingEvaluation",
-      "SecondQuantization.Bosonic.quarticVertexSequenceOperator_mem_freeGibbsDomain",
+      "SecondQuantization.Bosonic.quarticVertexSequenceOperator_mem_grandCanonicalGibbsDomain",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion.Pairing.0.SecondQuantization.Bosonic.grandCanonicalGibbsDysonCoeff_quarticInteraction_eq_sum_pairingEvaluation"
     ],
     "compiledConsumerCount": 3,
@@ -106063,7 +106048,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [Fintype Mode] (support : Finset (SecondQuantization.Common.QuarticVertexLabel Mode)) (ε : Mode → ℝ)\n  (β : ℝ),\n  (∀ (i : Mode), 0 < β * ε i) →\n    ∀ (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ),\n      SecondQuantization.Bosonic.quarticInteractionOn support g ∈\n        SecondQuantization.Bosonic.grandCanonicalGibbsDomain ε β 0",
+    "statement": "∀ {Mode : Type u_1} [Fintype Mode] (support : Finset (SecondQuantization.Common.QuarticVertexLabel Mode)) (ε : Mode → ℝ)\n  (β μ : ℝ),\n  (∀ (i : Mode), 0 < β * (ε i - μ)) →\n    ∀ (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ),\n      SecondQuantization.Bosonic.quarticInteractionOn support g ∈\n        SecondQuantization.Bosonic.grandCanonicalGibbsDomain ε β μ",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -106075,22 +106060,22 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "SecondQuantization.Bosonic.quarticInteractionOn_mem_freeGibbsDomain",
+    "name": "SecondQuantization.Bosonic.quarticInteractionOn_mem_grandCanonicalGibbsDomain",
     "module": "LeanCondensedMatter.SecondQuantization.Bosonic.Perturbation.QuarticGibbsSummable",
     "externalAxioms": [],
     "docString": "Every finitely supported bosonic quartic interaction belongs to the free-Gibbs domain. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Bosonic.quarticInteraction_mem_freeGibbsDomain"
+      "SecondQuantization.Bosonic.quarticInteraction_mem_grandCanonicalGibbsDomain"
     ],
     "dependencies": [
-      "SecondQuantization.Bosonic.quarticVertexOperator_mem_freeGibbsDomain"
+      "SecondQuantization.Bosonic.quarticVertexOperator_mem_grandCanonicalGibbsDomain"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Bosonic.quarticInteraction_mem_freeGibbsDomain"
+      "SecondQuantization.Bosonic.quarticInteraction_mem_grandCanonicalGibbsDomain"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -106107,7 +106092,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {Mode : Type u_1} [inst : Fintype Mode] (ε : Mode → ℝ) (β : ℝ),\n  (∀ (i : Mode), 0 < β * ε i) →\n    ∀ (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ),\n      SecondQuantization.Bosonic.quarticInteraction g ∈ SecondQuantization.Bosonic.grandCanonicalGibbsDomain ε β 0",
+    "statement": "∀ {Mode : Type u_1} [inst : Fintype Mode] (ε : Mode → ℝ) (β μ : ℝ),\n  (∀ (i : Mode), 0 < β * (ε i - μ)) →\n    ∀ (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ),\n      SecondQuantization.Bosonic.quarticInteraction g ∈ SecondQuantization.Bosonic.grandCanonicalGibbsDomain ε β μ",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -106119,7 +106104,7 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "SecondQuantization.Bosonic.quarticInteraction_mem_freeGibbsDomain",
+    "name": "SecondQuantization.Bosonic.quarticInteraction_mem_grandCanonicalGibbsDomain",
     "module": "LeanCondensedMatter.SecondQuantization.Bosonic.Perturbation.QuarticGibbsSummable",
     "externalAxioms": [],
     "docString": "On a finite mode type, the all-label bosonic quartic interaction belongs to the free-Gibbs\ndomain. ",
@@ -106127,7 +106112,7 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "SecondQuantization.Bosonic.quarticInteractionOn_mem_freeGibbsDomain"
+      "SecondQuantization.Bosonic.quarticInteractionOn_mem_grandCanonicalGibbsDomain"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -106147,7 +106132,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [Fintype Mode] (ε : Mode → ℝ) (β : ℝ),\n  (∀ (i : Mode), 0 < β * ε i) →\n    ∀ (q : SecondQuantization.Common.QuarticVertexLabel Mode),\n      SecondQuantization.Bosonic.quarticVertexOperator q ∈ SecondQuantization.Bosonic.grandCanonicalGibbsDomain ε β 0",
+    "statement": "∀ {Mode : Type u_1} [Fintype Mode] (ε : Mode → ℝ) (β μ : ℝ),\n  (∀ (i : Mode), 0 < β * (ε i - μ)) →\n    ∀ (q : SecondQuantization.Common.QuarticVertexLabel Mode),\n      SecondQuantization.Bosonic.quarticVertexOperator q ∈ SecondQuantization.Bosonic.grandCanonicalGibbsDomain ε β μ",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -106159,24 +106144,24 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "SecondQuantization.Bosonic.quarticVertexOperator_mem_freeGibbsDomain",
+    "name": "SecondQuantization.Bosonic.quarticVertexOperator_mem_grandCanonicalGibbsDomain",
     "module": "LeanCondensedMatter.SecondQuantization.Bosonic.Perturbation.QuarticGibbsSummable",
     "externalAxioms": [],
     "docString": "A single ordered quartic vertex belongs to the explicit free-Gibbs domain under the usual\npositive one-mode Boltzmann exponents. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Bosonic.quarticInteractionOn_mem_freeGibbsDomain"
+      "SecondQuantization.Bosonic.quarticInteractionOn_mem_grandCanonicalGibbsDomain"
     ],
     "dependencies": [
-      "SecondQuantization.Bosonic.FreeThermalField.freeGibbsSummable_orderedProduct",
+      "SecondQuantization.Bosonic.FreeThermalField.grandCanonicalGibbsSummable_orderedProduct",
       "SecondQuantization.Bosonic.FreeThermalField.orderedProduct_cons",
       "SecondQuantization.Bosonic.FreeThermalField.orderedProduct_nil"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Bosonic.quarticInteractionOn_mem_freeGibbsDomain"
+      "SecondQuantization.Bosonic.quarticInteractionOn_mem_grandCanonicalGibbsDomain"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -106193,7 +106178,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [Finite Mode] (ε : Mode → ℝ) (β : ℝ),\n  (∀ (i : Mode), 0 < β * ε i) →\n    ∀ {n : ℕ} (q : Fin n → SecondQuantization.Common.QuarticVertexLabel Mode),\n      SecondQuantization.Common.quarticVertexSequenceOperator SecondQuantization.Bosonic.create\n          SecondQuantization.Bosonic.annihilate q ∈\n        SecondQuantization.Bosonic.grandCanonicalGibbsDomain ε β 0",
+    "statement": "∀ {Mode : Type u_1} [Finite Mode] (ε : Mode → ℝ) (β μ : ℝ),\n  (∀ (i : Mode), 0 < β * (ε i - μ)) →\n    ∀ {n : ℕ} (q : Fin n → SecondQuantization.Common.QuarticVertexLabel Mode),\n      SecondQuantization.Common.quarticVertexSequenceOperator SecondQuantization.Bosonic.create\n          SecondQuantization.Bosonic.annihilate q ∈\n        SecondQuantization.Bosonic.grandCanonicalGibbsDomain ε β μ",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -106205,26 +106190,26 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "SecondQuantization.Bosonic.quarticVertexSequenceOperator_mem_freeGibbsDomain",
+    "name": "SecondQuantization.Bosonic.quarticVertexSequenceOperator_mem_grandCanonicalGibbsDomain",
     "module": "LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion.Pairing",
     "externalAxioms": [],
     "docString": "Every finite bare quartic vertex sequence has a summable free-Gibbs numerator under the\npositive one-mode Boltzmann hypothesis. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Bosonic.dysonCoeff_quarticInteractionOn_mem_freeGibbsDomain",
-      "SecondQuantization.Bosonic.dysonCoeff_quarticInteraction_mem_freeGibbsDomain"
+      "SecondQuantization.Bosonic.dysonCoeff_quarticInteractionOn_mem_grandCanonicalGibbsDomain",
+      "SecondQuantization.Bosonic.dysonCoeff_quarticInteraction_mem_grandCanonicalGibbsDomain"
     ],
     "dependencies": [
-      "SecondQuantization.Bosonic.FreeThermalField.freeGibbsSummable_orderedProduct",
+      "SecondQuantization.Bosonic.FreeThermalField.grandCanonicalGibbsSummable_orderedProduct",
       "SecondQuantization.Bosonic.mem_grandCanonicalGibbsDomain_iff",
       "SecondQuantization.Bosonic.quarticFreeThermalOrderedProduct_eq_quarticVertexSequenceOperator"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Bosonic.dysonCoeff_quarticInteractionOn_mem_freeGibbsDomain",
-      "SecondQuantization.Bosonic.dysonCoeff_quarticInteraction_mem_freeGibbsDomain"
+      "SecondQuantization.Bosonic.dysonCoeff_quarticInteractionOn_mem_grandCanonicalGibbsDomain",
+      "SecondQuantization.Bosonic.dysonCoeff_quarticInteraction_mem_grandCanonicalGibbsDomain"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -107079,7 +107064,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Bosonic.FreeThermalField.freeGibbsSummable_orderedProduct",
+      "SecondQuantization.Bosonic.FreeThermalField.grandCanonicalGibbsSummable_orderedProduct",
       "SecondQuantization.Bosonic.summable_particleNumber_sq_boltzmannWeight"
     ],
     "dependencies": [
@@ -107090,7 +107075,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Bosonic.FreeThermalField.freeGibbsSummable_orderedProduct",
+      "SecondQuantization.Bosonic.FreeThermalField.grandCanonicalGibbsSummable_orderedProduct",
       "SecondQuantization.Bosonic.summable_particleNumber_sq_boltzmannWeight"
     ],
     "compiledConsumerCount": 2,
@@ -107920,7 +107905,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.ConcreteExpectationRecursion.0.SecondQuantization.Bosonic.FreeThermalField.freeGibbsExpectation_firstPair_recursion"
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.ConcreteExpectationRecursion.0.SecondQuantization.Bosonic.FreeThermalField.grandCanonicalGibbsExpectation_firstPair_recursion"
     ],
     "dependencies": [
       "List.sum_getElem_eraseIdx_ofFn"
@@ -107928,7 +107913,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.ConcreteExpectationRecursion.0.SecondQuantization.Bosonic.FreeThermalField.freeGibbsExpectation_firstPair_recursion"
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.ConcreteExpectationRecursion.0.SecondQuantization.Bosonic.FreeThermalField.grandCanonicalGibbsExpectation_firstPair_recursion"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -108106,7 +108091,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Bosonic.freeGibbsExpectation_orderedProduct_pair_eq_freeThermalPairValue"
+      "SecondQuantization.Bosonic.grandCanonicalGibbsExpectation_orderedProduct_pair_eq_freeThermalPairValue"
     ],
     "dependencies": [
       "SecondQuantization.Common.matrixCoeff_comp_support"
@@ -108114,7 +108099,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Bosonic.freeGibbsExpectation_orderedProduct_pair_eq_freeThermalPairValue"
+      "SecondQuantization.Bosonic.grandCanonicalGibbsExpectation_orderedProduct_pair_eq_freeThermalPairValue"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -123541,7 +123526,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Bosonic.freeGibbsExpectation_orderedProduct_pair_eq_freeThermalPairValue",
+      "SecondQuantization.Bosonic.grandCanonicalGibbsExpectation_orderedProduct_pair_eq_freeThermalPairValue",
       "SecondQuantization.Common.summableDiagonalTraceRatioLinear_eq_zero_of_carriesShift"
     ],
     "dependencies": [
@@ -123550,7 +123535,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Bosonic.freeGibbsExpectation_orderedProduct_pair_eq_freeThermalPairValue",
+      "SecondQuantization.Bosonic.grandCanonicalGibbsExpectation_orderedProduct_pair_eq_freeThermalPairValue",
       "SecondQuantization.Common.summableDiagonalTraceRatioLinear_eq_zero_of_carriesShift"
     ],
     "compiledConsumerCount": 2,
@@ -129490,7 +129475,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Bosonic.FreeThermalField.freeGibbsSummable_orderedProduct",
+      "SecondQuantization.Bosonic.FreeThermalField.grandCanonicalGibbsSummable_orderedProduct",
       "SecondQuantization.Common.finiteGibbsExpectation_eq_trace_div",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.TwoPoint.0.SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_comp_create_mul_matrixCoeff_annihilate_of_ne",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.TwoPoint.0.SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_comp_create_removeOccupation"
@@ -129501,7 +129486,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Bosonic.FreeThermalField.freeGibbsSummable_orderedProduct",
+      "SecondQuantization.Bosonic.FreeThermalField.grandCanonicalGibbsSummable_orderedProduct",
       "SecondQuantization.Common.finiteGibbsExpectation_eq_trace_div",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.TwoPoint.0.SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_comp_create_mul_matrixCoeff_annihilate_of_ne",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.TwoPoint.0.SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_comp_create_removeOccupation"
@@ -177890,10 +177875,9 @@
       "SecondQuantization.Bosonic.grandCanonicalGibbsDysonCoeff_quarticInteraction_eq_sum_orderedDysonThermalAmplitude"
     ],
     "dependencies": [
-      "SecondQuantization.Bosonic.FreeThermalField.freeGibbsSummable_orderedProduct",
+      "SecondQuantization.Bosonic.FreeThermalField.grandCanonicalGibbsSummable_orderedProduct",
       "SecondQuantization.Bosonic.dysonCoeff_quarticInteraction_eq_sum",
       "SecondQuantization.Bosonic.grandCanonicalGibbsExpectation_eq_sum_pairing_concrete",
-      "SecondQuantization.Bosonic.grandCanonicalGibbsExpectation_shift",
       "SecondQuantization.Bosonic.grandCanonicalGibbsExpectation_smul",
       "SecondQuantization.Bosonic.grandCanonicalGibbsExpectation_sum_of_summable",
       "SecondQuantization.Bosonic.grandCanonicalGibbsSummable_smul",
@@ -177961,7 +177945,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {Mode : Type u_1} [Fintype Mode] (ε : Mode → ℝ) (β : ℝ),\n  (∀ (i : Mode), 0 < β * ε i) →\n    ∀ (n : ℕ) (C : Fin (2 * (n + 1)) → SecondQuantization.Bosonic.FreeThermalField Mode),\n      SecondQuantization.Bosonic.grandCanonicalGibbsExpectation ε β 0\n          (SecondQuantization.Bosonic.FreeThermalField.orderedProduct (List.ofFn C)) =\n        ∑ j,\n          SecondQuantization.Bosonic.freeThermalPairValue ε β (C 0) (C j.succ) *\n            SecondQuantization.Bosonic.grandCanonicalGibbsExpectation ε β 0\n              (SecondQuantization.Bosonic.FreeThermalField.orderedProduct (List.ofFn fun i => C (j.succAbove i).succ))",
+    "statement": "∀ {Mode : Type u_1} [Fintype Mode] (ε : Mode → ℝ) (β μ : ℝ),\n  (∀ (i : Mode), 0 < β * (ε i - μ)) →\n    ∀ (n : ℕ) (C : Fin (2 * (n + 1)) → SecondQuantization.Bosonic.FreeThermalField Mode),\n      SecondQuantization.Bosonic.grandCanonicalGibbsExpectation ε β μ\n          (SecondQuantization.Bosonic.FreeThermalField.orderedProduct (List.ofFn C)) =\n        ∑ j,\n          SecondQuantization.Bosonic.freeThermalPairValue (fun i => ε i - μ) β (C 0) (C j.succ) *\n            SecondQuantization.Bosonic.grandCanonicalGibbsExpectation ε β μ\n              (SecondQuantization.Bosonic.FreeThermalField.orderedProduct (List.ofFn fun i => C (j.succAbove i).succ))",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -177973,7 +177957,7 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.ConcreteExpectationRecursion.0.SecondQuantization.Bosonic.FreeThermalField.freeGibbsExpectation_firstPair_recursion",
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.ConcreteExpectationRecursion.0.SecondQuantization.Bosonic.FreeThermalField.grandCanonicalGibbsExpectation_firstPair_recursion",
     "module": "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.ConcreteExpectationRecursion",
     "externalAxioms": [],
     "docString": "Concrete normalized free-Gibbs first-pair recurrence for an arbitrary even field family. ",
@@ -177981,9 +177965,9 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "SecondQuantization.Bosonic.FreeThermalField.freeGibbsExpectation_cons_eq_kmsRatio_mul_operatorPeelSum",
-      "SecondQuantization.Bosonic.FreeThermalField.freeGibbsExpectation_operatorPeelSum_eq_sum",
-      "SecondQuantization.Bosonic.FreeThermalField.kmsRatio_mul_exchangeValue_eq_freeThermalPairValue",
+      "SecondQuantization.Bosonic.FreeThermalField.grandCanonicalGibbsExpectation_cons_eq_kmsRatio_mul_operatorPeelSum",
+      "SecondQuantization.Bosonic.FreeThermalField.grandCanonicalGibbsExpectation_operatorPeelSum_eq_sum",
+      "SecondQuantization.Bosonic.FreeThermalField.grandCanonicalKmsRatio_mul_exchangeValue_eq_freeThermalPairValue",
       "SecondQuantization.Common.BlochDeDominicis.indexedPeel_sum_eq_firstPair"
     ],
     "crossModuleDirectWrapper": false,
