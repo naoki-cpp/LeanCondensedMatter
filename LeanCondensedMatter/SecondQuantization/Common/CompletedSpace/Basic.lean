@@ -168,12 +168,10 @@ theorem completedProduct_comp_algebraicToCompleted_of_core
   apply LinearMap.ext
   intro x
   change T (U (algebraicToCompleted x)) = algebraicToCompleted (A (B x))
-  calc
-    _ = T (algebraicToCompleted (B x)) :=
-      congrArg T (congrArg
-        (fun f : AlgebraicFock Config →ₗ[ℂ] CompletedFock Config => f x) hU)
-    _ = _ := congrArg
-      (fun f : AlgebraicFock Config →ₗ[ℂ] CompletedFock Config => f (B x)) hT
+  exact (congrArg T (congrArg
+    (fun f : AlgebraicFock Config →ₗ[ℂ] CompletedFock Config => f x) hU)).trans
+    (congrArg (fun f : AlgebraicFock Config →ₗ[ℂ] CompletedFock Config =>
+      f (B x)) hT)
 
 
 end
