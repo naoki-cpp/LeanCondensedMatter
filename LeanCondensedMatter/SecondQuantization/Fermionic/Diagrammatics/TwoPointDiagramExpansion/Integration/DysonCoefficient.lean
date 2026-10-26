@@ -1,5 +1,4 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.DiagramIntegral
-import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsDensityOperator
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.TimedFieldContraction
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsExpectationBridge
 
@@ -9,8 +8,9 @@ set_option linter.style.header false
 # Ordered-simplex two-point Dyson coefficients
 
 This module integrates the fixed-time external-leg Wick expansion over the ordered simplex and
-attaches the `(-1)^n` Dyson sign. The operator presentation uses the canonical free Gibbs density
-state directly; no parallel finite-Gibbs coefficient API is maintained.
+attaches the `(-1)^n` Dyson sign. The operator coefficient now uses the generic
+finite Gibbs expectation at explicit chemical potential μ, while imaginary-time operators
+continue to evolve under the physical free dispersion ε.
 
 The unconditional public theorem integrates the pointwise finite sum over diagrams.  Commuting that
 finite diagram sum with the ordered-simplex integral is a separate analytic obligation, because
@@ -26,18 +26,17 @@ open Combinatorics Common
 
 variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
 
-/-- The mixed event-level density-state expectation is the external-order sign times the sum of
-canonical pairing evaluations. -/
-theorem freeGibbsDensityOperator_expectation_mixedTimeOrderedVertexComp_eq_sum_pairingValue
+/-- At chemical potential μ = 0, the mixed event-level finite Gibbs expectation equals
+the external-order sign times the canonical pairing sum. -/
+theorem finiteGibbsExpectation_mixedTimeOrderedVertexComp_eq_sum_pairingValue
     {n : ℕ} (ε : Mode → ℝ) (β : ℝ) (i j : Mode) (τ τ' : ℝ)
     (q : Fin n → QuarticVertexLabel Mode) (σ : Fin n → ℝ) :
-    (freeGibbsDensityOperator ε β).expectation
-        (Common.finiteHilbertOperatorAlgEquiv (mixedTimeOrderedVertexComp ε i j τ τ' q σ)) =
+    Common.finiteGibbsExpectation (fermionEnergy ε) β
+        (mixedTimeOrderedVertexComp ε i j τ τ' q σ) =
       twoPointExternalOrderSign τ τ' *
         ∑ pairing : Pairing (2 * n + 1),
           orderedTwoPointPairingValue ε β i j τ τ' σ q pairing := by
-  rw [freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation,
-    mixedTimeOrderedVertexComp_eq_prod_atomicOperators,
+  rw [mixedTimeOrderedVertexComp_eq_prod_atomicOperators,
     Common.finiteGibbsExpectation, map_smul, smul_eq_mul]
   have hwick :=
     grandCanonicalGibbsExpectation_prod_timedFieldOperator_eq_sum_pairing
@@ -86,18 +85,18 @@ theorem freeGibbsDensityOperator_expectation_mixedTimeOrderedVertexComp_eq_sum_p
   rw [hwick]
   rfl
 
-/-- The canonical order-`n` perturbative two-point coefficient in the density-state operator
-presentation. -/
+/-- Order-`n` perturbative two-point coefficient at explicit chemical potential μ.
+The finite Gibbs weight uses ε - μ, while the physical vertex and external-field
+imaginary-time evolution uses ε. -/
 noncomputable def twoPointDysonCoefficient {n : ℕ}
-    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
+    (ε : Mode → ℝ) (β μ : ℝ) (g : QuarticVertexLabel Mode → ℂ)
     (i j : Mode) (τ τ' : ℝ) : ℂ :=
   (-1 : ℂ) ^ n * intervalIntegral.orderedSimplexIntegral n β
     (fun σ =>
       ∑ q : Fin n → QuarticVertexLabel Mode,
         orderedTwoPointVertexWeight g q *
-          (freeGibbsDensityOperator ε β).expectation
-            (Common.finiteHilbertOperatorAlgEquiv
-              (mixedTimeOrderedVertexComp ε i j τ τ' q σ)))
+          Common.finiteGibbsExpectation (fermionEnergy (fun k => ε k - μ)) β
+            (mixedTimeOrderedVertexComp ε i j τ τ' q σ))
 
 /-- The ordered-simplex external-leg diagram coefficient equals the mixed time-ordered Dyson
 coefficient at every perturbation order. -/
@@ -105,8 +104,9 @@ theorem twoPointDiagramCoefficient_eq_twoPointDysonCoefficient {n : ℕ}
     (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
     (i j : Mode) (τ τ' : ℝ) :
     twoPointDiagramCoefficient (n := n) ε β g i j τ τ' =
-      twoPointDysonCoefficient (n := n) ε β g i j τ τ' := by
+      twoPointDysonCoefficient (n := n) ε β 0 g i j τ τ' := by
   unfold twoPointDiagramCoefficient twoPointDysonCoefficient
+  simp only [sub_zero]
   apply congrArg (fun z : ℂ => (-1 : ℂ) ^ n * z)
   apply intervalIntegral.orderedSimplexIntegral_congr
   intro σ
@@ -154,7 +154,7 @@ theorem twoPointDiagramCoefficient_eq_twoPointDysonCoefficient {n : ℕ}
   rw [hsum, Finset.mul_sum]
   apply Finset.sum_congr rfl
   intro q _
-  rw [freeGibbsDensityOperator_expectation_mixedTimeOrderedVertexComp_eq_sum_pairingValue]
+  rw [finiteGibbsExpectation_mixedTimeOrderedVertexComp_eq_sum_pairingValue]
   ring
 
 end Fermionic
