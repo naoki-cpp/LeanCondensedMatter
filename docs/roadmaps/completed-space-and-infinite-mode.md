@@ -124,6 +124,16 @@ For completed diagonal generators, `completedDiagonalOperator_basisState` suppli
 hypothesis directly. This identifies occupation-basis time evolution without a finite-mode
 assumption; it does not construct the Fock lift of a general unitary mixing one-particle modes.
 
+`Common.Thermal.CompletedResponse` supplies positive-switching-rate integrability of the existing
+adiabatic scalar kernel for this completed Gibbs density under real diagonal Stone dynamics.
+`DensityOperator.continuous_expectation_of_diagonal` uses continuous diagonal matrix coefficients
+and a uniform operator bound, with the density weights providing a summable majorant through
+Mathlib's `continuous_tsum`. `Response.DensitySusceptibility` applies that fact to the scalar
+commutator using strong continuity of the unitary group. It does not require operator-norm
+continuity of observable orbits, and does not extend this conclusion to arbitrary normalized
+functionals. The causal extension is measurable and the existing exponential-damping theorem
+then gives integrability for every positive switching rate. The zero-rate limit remains separate.
+
 ## Open work
 
 - identify the arbitrary-mode free-boson partition sum with the convergent infinite product

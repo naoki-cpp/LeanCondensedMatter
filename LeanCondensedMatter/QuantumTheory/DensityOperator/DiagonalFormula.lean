@@ -1,5 +1,6 @@
 import LeanCondensedMatter.QuantumTheory.DensityOperator.Diagonal
 import LeanCondensedMatter.QuantumTheory.DensityOperator.ObservableExpectation
+import Mathlib.Analysis.Normed.Group.FunctionSeries
 
 /-!
 # Diagonal density-state formulas over countable Hilbert bases
@@ -91,6 +92,33 @@ theorem DensityOperator.hasSum_diagonal_weights (ρ : DensityOperator H)
     rw [coe_diagonalExpectationValue_right, happly i, inner_smul_right,
       inner_self_eq_norm_sq_to_K, b.orthonormal.1 i]
     simp
+
+/-- Uniformly bounded operator families have continuous density expectations when their diagonal
+matrix coefficients are continuous. Operator-norm continuity is not required. -/
+theorem DensityOperator.continuous_expectation_of_diagonal
+    {T : Type*} [TopologicalSpace T] (ρ : DensityOperator H)
+    (b : HilbertBasis ι ℂ H) (w : ι → ℝ)
+    (hρ : ∀ i, ρ.op (b i) = (w i : ℂ) • b i)
+    (F : T → (H →L[ℂ] H)) (C : ℝ) (hbound : ∀ t, ‖F t‖ ≤ C)
+    (hcoeff : ∀ i, Continuous (fun t => inner ℂ (b i) (F t (b i)))) :
+    Continuous (fun t => ρ.expectation (F t)) := by
+  have heq : (fun t => ρ.expectation (F t)) =
+      (fun t => ∑' i, (w i : ℂ) * inner ℂ (b i) (F t (b i))) :=
+    funext fun t => ρ.expectation_eq_tsum_diagonal (F t) b w hρ
+  rw [heq]
+  apply continuous_tsum (fun i => continuous_const.mul (hcoeff i))
+    ((ρ.hasSum_diagonal_weights b w hρ).summable.mul_right C)
+  intro i t
+  have hw := ρ.diagonal_weight_nonneg b w hρ i
+  have hnorm : ‖b i‖ = 1 := b.orthonormal.1 i
+  have hdiag : ‖inner ℂ (b i) (F t (b i))‖ ≤ C := by
+    calc
+      _ ≤ ‖b i‖ * ‖F t (b i)‖ := norm_inner_le_norm _ _
+      _ ≤ ‖b i‖ * (‖F t‖ * ‖b i‖) :=
+        mul_le_mul_of_nonneg_left ((F t).le_opNorm _) (norm_nonneg _)
+      _ ≤ C := by simpa only [hnorm, one_mul, mul_one] using hbound t
+  simpa only [norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg hw] using
+    mul_le_mul_of_nonneg_left hdiag hw
 
 /-- A nonnegative diagonal weight of a density operator is at most one. -/
 theorem DensityOperator.diagonal_weight_le_one (ρ : DensityOperator H)
