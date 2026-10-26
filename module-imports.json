@@ -6383,6 +6383,7 @@
       "name": "LeanCondensedMatter.SecondQuantization.Common.Thermal.CanonicalGrandCanonicalCompatibility",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Thermal/CanonicalGrandCanonicalCompatibility.lean",
       "imports": [
+        "LeanCondensedMatter.Analysis.Operator.Diagonal",
         "LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.CoordinateProjection",
         "LeanCondensedMatter.SecondQuantization.Common.Thermal.CanonicalCompatibility",
         "LeanCondensedMatter.SecondQuantization.Common.Thermal.GrandCanonicalSectorDecomposition"
@@ -7789,17 +7790,6 @@
       "externalImportCount": 2
     },
     {
-      "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.FiniteGibbsExpectationCompatibility",
-      "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Thermal/Completed/FiniteGibbsExpectationCompatibility.lean",
-      "imports": [
-        "LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteCompletedGibbsCompatibility",
-        "LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.Core",
-        "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.Gibbs",
-        "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsDensityOperator"
-      ],
-      "externalImportCount": 0
-    },
-    {
       "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.Gibbs",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Thermal/Completed/Gibbs.lean",
       "imports": [
@@ -7838,7 +7828,6 @@
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Thermal/Completed.lean",
       "imports": [
         "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.BlochDeDominicis",
-        "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.FiniteGibbsExpectationCompatibility",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.Gibbs",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.ModeTruncation",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.TotalNumberExpectation"
@@ -7870,9 +7859,8 @@
       "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsContraction",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Thermal/FreeGibbsContraction.lean",
       "imports": [
-        "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.BlochDeDominicis",
-        "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.FiniteGibbsExpectationCompatibility",
-        "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsDensityOperator"
+        "LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteCompletedGibbsCompatibility",
+        "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.BlochDeDominicis"
       ],
       "externalImportCount": 0
     },
@@ -7912,12 +7900,13 @@
       "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.OneBodyExpectation",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Thermal/OneBodyExpectation.lean",
       "imports": [
+        "LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteCompletedGibbsCompatibility",
         "LeanCondensedMatter.SecondQuantization.Common.Thermal.GrandCanonical",
         "LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.Core",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.BoundedEvolution",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.RankOneSecondQuantization",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.BlochDeDominicis",
-        "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.FiniteGibbsExpectationCompatibility"
+        "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsDensityOperator"
       ],
       "externalImportCount": 0
     },
@@ -8253,7 +8242,7 @@
       "name": "LeanCondensedMatter.Transport.Core.ConductivityTensor",
       "sourceFile": "LeanCondensedMatter/Transport/Core/ConductivityTensor.lean",
       "imports": [],
-      "externalImportCount": 1
+      "externalImportCount": 2
     },
     {
       "name": "LeanCondensedMatter.Transport.Core",
