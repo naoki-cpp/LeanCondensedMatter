@@ -48,7 +48,7 @@ private theorem norm_createFieldCore_le (v : Mode →₀ ℂ) :
           _ = _ := Finset.sum_congr rfl fun i _ => mul_comm _ _
       _ = _ := by
         convert! (inner_self_eq_norm_sq_to_K (𝕜 := ℂ) u) using 1 <;>
-          simp only [Complex.ofReal_pow]
+          simp only [Complex.ofReal_pow] <;> with_unfolding_all rfl
   have hcar : star C * C + C * star C = ((‖u‖ ^ (2 : ℕ) : ℝ) : ℂ) •
       ContinuousLinearMap.id ℂ (CompletedFockSpace Mode) := by
     have h := ScalarExchange.zetaCommutator_sum_sum (-1 : ℂ) v.support v.support
@@ -83,7 +83,8 @@ private theorem norm_createFieldCore_le (v : Mode →₀ ℂ) :
       ‖u‖ ^ 2 * ‖x‖ ^ 2 := by
     apply Complex.ofReal_injective
     convert! hinner using 1 <;>
-      simp only [Complex.ofReal_add, Complex.ofReal_mul, Complex.ofReal_pow]
+      simp only [Complex.ofReal_add, Complex.ofReal_mul, Complex.ofReal_pow] <;>
+        with_unfolding_all rfl
   nlinarith [sq_nonneg ‖(ContinuousLinearMap.adjoint C) x‖,
     norm_nonneg (C x), mul_nonneg (norm_nonneg u) (norm_nonneg x)]
 
