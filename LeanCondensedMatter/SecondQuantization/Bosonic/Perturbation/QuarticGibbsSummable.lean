@@ -33,7 +33,8 @@ theorem quarticVertexOperator_mem_freeGibbsDomain
   simpa only [FreeThermalField.orderedProduct_cons, FreeThermalField.orderedProduct_nil,
     FreeThermalField.operator, LinearMap.comp_id,
     quarticVertexOperator, Common.quarticVertexOperator] using
-    (FreeThermalField.freeGibbsSummable_orderedProduct ε β hpos
+    (FreeThermalField.grandCanonicalGibbsSummable_orderedProduct ε β 0
+      (by simpa only [sub_zero] using hpos)
       [.create q.create₁, .create q.create₂, .annihilate q.annihilate₂, .annihilate q.annihilate₁])
 
 /-- Every finitely supported bosonic quartic interaction belongs to the free-Gibbs domain. -/

@@ -188,22 +188,25 @@ theorem FreeThermalField.norm_matrixCoeff_orderedProduct_le
   · rw [norm_zero]
     exact pow_nonneg (orderedProductMajorant_nonneg n fields.length) _
 
-/-- Every finite ordered product of free bosonic thermal fields has a summable free-Gibbs numerator
-under positive one-mode Boltzmann exponents. -/
-theorem FreeThermalField.freeGibbsSummable_orderedProduct
-    (ε : Mode → ℝ) (β : ℝ) (hpos : ∀ i, 0 < β * ε i)
+/-- Every finite ordered product of free bosonic thermal fields has a summable
+grand-canonical Gibbs numerator under positive effective one-mode Boltzmann exponents. -/
+theorem FreeThermalField.grandCanonicalGibbsSummable_orderedProduct
+    (ε : Mode → ℝ) (β μ : ℝ) (hpos : ∀ i, 0 < β * (ε i - μ))
     (fields : List (FreeThermalField Mode)) :
-    grandCanonicalGibbsSummable ε β 0 (FreeThermalField.orderedProduct fields) := by
+    grandCanonicalGibbsSummable ε β μ (FreeThermalField.orderedProduct fields) := by
+  rw [grandCanonicalGibbsSummable_shift ε β μ (FreeThermalField.orderedProduct fields)]
+  let ξ : Mode → ℝ := fun i => ε i - μ
+  change grandCanonicalGibbsSummable ξ β 0 (FreeThermalField.orderedProduct fields)
   unfold grandCanonicalGibbsSummable
   simp only [sub_zero]
   have hmajorant := summable_shiftedOccupationPowerProduct_boltzmannWeight
-    ε β hpos (fun _ => fields.length + 1) (fun _ => fields.length)
+    ξ β hpos (fun _ => fields.length + 1) (fun _ => fields.length)
   apply hmajorant.of_norm_bounded
   intro n
-  rw [show imaginaryTimeEvolveFree ε (-β) =
-      Common.diagonalEvolution (freeEigenvalue ε) (-β) by rfl,
+  rw [show imaginaryTimeEvolveFree ξ (-β) =
+      Common.diagonalEvolution (freeEigenvalue ξ) (-β) by rfl,
     Common.matrixCoeff_diagonalEvolution_comp, norm_mul, Complex.norm_exp]
-  change boltzmannWeight ε β n *
+  change boltzmannWeight ξ β n *
       ‖Common.matrixCoeff (FreeThermalField.orderedProduct fields) n n‖ ≤ _
   have hcoeff := FreeThermalField.norm_matrixCoeff_orderedProduct_le fields n
   have heq :
@@ -218,13 +221,13 @@ theorem FreeThermalField.freeGibbsSummable_orderedProduct
         rw [Finset.prod_pow]
   rw [heq] at hcoeff
   calc
-    boltzmannWeight ε β n *
+    boltzmannWeight ξ β n *
         ‖Common.matrixCoeff (FreeThermalField.orderedProduct fields) n n‖ ≤
-      boltzmannWeight ε β n *
+      boltzmannWeight ξ β n *
         (∏ i, ((n i + (fields.length + 1) : ℕ) : ℝ) ^ fields.length) :=
       mul_le_mul_of_nonneg_left hcoeff (Real.exp_nonneg _)
     _ = (∏ i, ((n i + (fields.length + 1) : ℕ) : ℝ) ^ fields.length) *
-        boltzmannWeight ε β n := by ring
+        boltzmannWeight ξ β n := by ring
 
 end
 end Bosonic

@@ -52,7 +52,8 @@ theorem quarticVertexSequenceOperator_mem_freeGibbsDomain
       grandCanonicalGibbsDomain ε β 0 := by
   letI := Fintype.ofFinite Mode
   rw [mem_grandCanonicalGibbsDomain_iff, ← quarticFreeThermalOrderedProduct_eq_quarticVertexSequenceOperator]
-  exact FreeThermalField.freeGibbsSummable_orderedProduct ε β hpos _
+  exact FreeThermalField.grandCanonicalGibbsSummable_orderedProduct ε β 0
+    (by simpa only [sub_zero] using hpos) _
 
 /-- Every finite Dyson coefficient of a finitely supported quartic interaction belongs to the
 free-Gibbs domain. This is proved coefficientwise from the finite vertex-sequence expansion and does
@@ -119,7 +120,8 @@ theorem grandCanonicalGibbsDysonCoeff_quarticInteractionOn_eq_sum_pairingEvaluat
     intro q
     apply grandCanonicalGibbsSummable_smul
     rw [← quarticFreeThermalOrderedProduct_eq_quarticVertexSequenceOperator]
-    exact FreeThermalField.freeGibbsSummable_orderedProduct (fun i => ε i - μ) β hpos _
+    exact FreeThermalField.grandCanonicalGibbsSummable_orderedProduct (fun i => ε i - μ) β 0
+        (by simpa only [sub_zero] using hpos) _
   rw [grandCanonicalGibbsExpectation_sum_of_summable (fun i => ε i - μ) β 0 _ hsumm]
   refine Finset.sum_congr rfl fun q _ => ?_
   rw [grandCanonicalGibbsExpectation_smul]
@@ -156,7 +158,8 @@ private theorem grandCanonicalGibbsDysonCoeff_quarticInteraction_eq_sum_pairingE
     intro q
     apply grandCanonicalGibbsSummable_smul
     rw [← quarticFreeThermalOrderedProduct_eq_quarticVertexSequenceOperator]
-    exact FreeThermalField.freeGibbsSummable_orderedProduct (fun i => ε i - μ) β hpos _
+    exact FreeThermalField.grandCanonicalGibbsSummable_orderedProduct (fun i => ε i - μ) β 0
+        (by simpa only [sub_zero] using hpos) _
   rw [grandCanonicalGibbsExpectation_sum_of_summable (fun i => ε i - μ) β 0 _ hsumm]
   refine Finset.sum_congr rfl fun q _ => ?_
   rw [grandCanonicalGibbsExpectation_smul]
