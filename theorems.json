@@ -107818,7 +107818,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_prod_timedFieldOperator_eq_sum_pairing"
+      "SecondQuantization.Fermionic.grandCanonicalGibbsExpectation_prod_timedFieldOperator_eq_sum_pairing"
     ],
     "dependencies": [
       "SecondQuantization.Common.BlochDeDominicis.ExpectationPairingRecursion.bloch_de_dominicis"
@@ -107826,7 +107826,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_prod_timedFieldOperator_eq_sum_pairing"
+      "SecondQuantization.Fermionic.grandCanonicalGibbsExpectation_prod_timedFieldOperator_eq_sum_pairing"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -128172,7 +128172,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": false,
+    "terminal": true,
     "statement": "∀ {Config : Type u_1} (energy : Config → ℝ) (s t : ℝ)\n  (A : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config),\n  (SecondQuantization.Common.heisenbergEvolve energy t) ((SecondQuantization.Common.heisenbergEvolve energy s) A) =\n    (SecondQuantization.Common.heisenbergEvolve energy (s + t)) A",
     "standardAxioms": [
       "Classical.choice",
@@ -128180,7 +128180,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -128191,18 +128191,14 @@
     "docString": "**`heisenbergEvolve` is a one-parameter semigroup**: `A(s)(t) = A(s + t)`. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.heisenbergEvolve_timedFieldOperator"
-    ],
+    "dependents": [],
     "dependencies": [
       "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.DiagonalEvolution.0.SecondQuantization.Common.diagonalEvolutionEquiv_trans"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.heisenbergEvolve_timedFieldOperator"
-    ],
-    "compiledConsumerCount": 1,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -147128,7 +147124,7 @@
       "SecondQuantization.Fermionic.continuous_flatVertexLegPairingEvaluation",
       "SecondQuantization.Fermionic.finiteGibbsExpectation_comp_dysonCoeff_quarticInteraction",
       "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation",
-      "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_prod_timedFieldOperator_eq_sum_pairing",
+      "SecondQuantization.Fermionic.grandCanonicalGibbsExpectation_prod_timedFieldOperator_eq_sum_pairing",
       "SecondQuantization.Fermionic.timedFieldOperator_quarticLegFieldForSequence",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Pairing.0.SecondQuantization.Fermionic.prod_ofFn_quarticLegOperatorForSequence_eq_quarticVertexSequenceInteractionPicture",
       "intervalIntegral.orderedSimplexIntegral_congr",
@@ -149951,7 +149947,7 @@
       "SecondQuantization.Fermionic.dysonVertexMoment_quarticInteraction_eq_sum_vertexLabel_pairingEvaluation",
       "SecondQuantization.Fermionic.externalInsertionVertexDysonCoefficient_eq_externalInsertionDysonCoefficient",
       "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_mixedTimeOrderedVertexComp_eq_sum_pairingValue",
-      "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_prod_timedFieldOperator_eq_sum_pairing",
+      "SecondQuantization.Fermionic.sum_fixedExternalInsertionWickDiagram_fixedTimeAmplitude_eq_mixedAtomicExpectation",
       "SecondQuantization.Fermionic.timedFieldPairContraction_eq",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.GrandCanonicalFreeGreenFunction.0.SecondQuantization.Fermionic.grandCanonicalFreeGreenFunction_eq_finite"
     ],
@@ -149962,7 +149958,7 @@
       "SecondQuantization.Fermionic.dysonVertexMoment_quarticInteraction_eq_sum_vertexLabel_pairingEvaluation",
       "SecondQuantization.Fermionic.externalInsertionVertexDysonCoefficient_eq_externalInsertionDysonCoefficient",
       "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_mixedTimeOrderedVertexComp_eq_sum_pairingValue",
-      "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_prod_timedFieldOperator_eq_sum_pairing",
+      "SecondQuantization.Fermionic.sum_fixedExternalInsertionWickDiagram_fixedTimeAmplitude_eq_mixedAtomicExpectation",
       "SecondQuantization.Fermionic.timedFieldPairContraction_eq",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.GrandCanonicalFreeGreenFunction.0.SecondQuantization.Fermionic.grandCanonicalFreeGreenFunction_eq_finite"
     ],
@@ -150004,7 +150000,7 @@
     ],
     "dependencies": [
       "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation",
-      "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_prod_timedFieldOperator_eq_sum_pairing",
+      "SecondQuantization.Fermionic.grandCanonicalGibbsExpectation_prod_timedFieldOperator_eq_sum_pairing",
       "SecondQuantization.Fermionic.mixedTimeOrderedAtomicFields_length",
       "SecondQuantization.Fermionic.mixedTimeOrderedVertexComp_eq_prod_atomicOperators",
       "SecondQuantization.Fermionic.timedFieldOperator_quarticLocalLeg",
@@ -150016,58 +150012,6 @@
       "SecondQuantization.Fermionic.twoPointDiagramCoefficient_eq_twoPointDysonCoefficient"
     ],
     "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] (ε : Mode → ℝ) (β : ℝ) (n : ℕ)\n  (fields : Fin (2 * n) → SecondQuantization.Fermionic.TimedField Mode),\n  (SecondQuantization.Fermionic.freeGibbsDensityOperator ε β).expectation\n      (SecondQuantization.Common.finiteHilbertOperatorAlgEquiv\n        (List.ofFn fun p => SecondQuantization.Fermionic.timedFieldOperator ε (fields p)).prod) =\n    ∑ pairing,\n      pairing.evaluation (Combinatorics.Pairing.weight SecondQuantization.Common.Statistics.fermion pairing) fun a b =>\n        SecondQuantization.Fermionic.timedFieldPairContraction ε β (fields a) (fields b)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_prod_timedFieldOperator_eq_sum_pairing",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.TimedFieldContraction",
-    "externalAxioms": [],
-    "docString": "Finite-temperature Wick (Bloch--de Dominicis) expansion for an arbitrary even family of\ntime-labelled free fermionic fields. The free Gibbs state and the canonical two-field\ncontractions are independent of any Dyson or diagrammatic ordering. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.dysonVertexMoment_quarticInteraction_eq_sum_vertexLabel_pairingEvaluation",
-      "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_mixedTimeOrderedVertexComp_eq_sum_pairingValue",
-      "SecondQuantization.Fermionic.sum_fixedExternalInsertionWickDiagram_fixedTimeAmplitude_eq_mixedAtomicExpectation"
-    ],
-    "dependencies": [
-      "SecondQuantization.Common.BlochDeDominicis.finiteGibbsExpectation_prod_eq_sum_pairing",
-      "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation",
-      "SecondQuantization.Fermionic.heisenbergEvolve_timedFieldOperator",
-      "SecondQuantization.Fermionic.one_sub_zetaInt_fermion_mul_exp_ne_zero",
-      "SecondQuantization.Fermionic.zetaCommutator_timedFieldOperator"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.dysonVertexMoment_quarticInteraction_eq_sum_vertexLabel_pairingEvaluation",
-      "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_mixedTimeOrderedVertexComp_eq_sum_pairingValue",
-      "SecondQuantization.Fermionic.sum_fixedExternalInsertionWickDiagram_fixedTimeAmplitude_eq_mixedAtomicExpectation"
-    ],
-    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -150734,6 +150678,57 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] (ε : Mode → ℝ) (β μ : ℝ) (n : ℕ)\n  (fields : Fin (2 * n) → SecondQuantization.Fermionic.TimedField Mode),\n  SecondQuantization.Common.finiteGibbsExpectation (SecondQuantization.Fermionic.fermionEnergy fun i => ε i - μ) β\n      (List.ofFn fun p => SecondQuantization.Fermionic.timedFieldOperator ε (fields p)).prod =\n    ∑ pairing,\n      pairing.evaluation (Combinatorics.Pairing.weight SecondQuantization.Common.Statistics.fermion pairing) fun a b =>\n        SecondQuantization.Common.finiteGibbsExpectation (SecondQuantization.Fermionic.fermionEnergy fun i => ε i - μ) β\n          (SecondQuantization.Fermionic.timedFieldOperator ε (fields a) ∘ₗ\n            SecondQuantization.Fermionic.timedFieldOperator ε (fields b))",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.grandCanonicalGibbsExpectation_prod_timedFieldOperator_eq_sum_pairing",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.TimedFieldContraction",
+    "externalAxioms": [],
+    "docString": "Grand-canonical finite free-fermion Wick expansion for physical-time fields.\nThe time evolution uses `ε`, while the Gibbs distribution and KMS rotation use `ε - μ`.\nThis is not a fixed-particle-number canonical Wick theorem. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.dysonVertexMoment_quarticInteraction_eq_sum_vertexLabel_pairingEvaluation",
+      "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_mixedTimeOrderedVertexComp_eq_sum_pairingValue",
+      "SecondQuantization.Fermionic.sum_fixedExternalInsertionWickDiagram_fixedTimeAmplitude_eq_mixedAtomicExpectation"
+    ],
+    "dependencies": [
+      "SecondQuantization.Common.BlochDeDominicis.finiteGibbsExpectation_prod_eq_sum_pairing",
+      "SecondQuantization.Fermionic.heisenbergEvolve_timedFieldOperator",
+      "SecondQuantization.Fermionic.one_sub_zetaInt_fermion_mul_exp_ne_zero",
+      "SecondQuantization.Fermionic.zetaCommutator_timedFieldOperator"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.dysonVertexMoment_quarticInteraction_eq_sum_vertexLabel_pairingEvaluation",
+      "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_mixedTimeOrderedVertexComp_eq_sum_pairingValue",
+      "SecondQuantization.Fermionic.sum_fixedExternalInsertionWickDiagram_fixedTimeAmplitude_eq_mixedAtomicExpectation"
+    ],
+    "compiledConsumerCount": 3,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
     "terminal": true,
     "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (β μ : ℝ),\n  QuantumTheory.EigenbasisGibbsSummable (fun i => ε i - μ) β →\n    QuantumTheory.EigenbasisGibbsSummable (SecondQuantization.Common.grandCanonicalEnergy ε μ) β",
     "standardAxioms": [
@@ -150981,7 +150976,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (ε : Mode → ℝ) (β : ℝ)\n  (field : SecondQuantization.Fermionic.TimedField Mode),\n  (SecondQuantization.Common.heisenbergEvolve (SecondQuantization.Fermionic.fermionEnergy ε) (-β))\n      (SecondQuantization.Fermionic.timedFieldOperator ε field) =\n    Complex.exp ↑(SecondQuantization.Fermionic.externalFieldLabelEnergyShift ε field.label * -β) •\n      SecondQuantization.Fermionic.timedFieldOperator ε field",
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (ε ξ : Mode → ℝ) (β : ℝ)\n  (field : SecondQuantization.Fermionic.TimedField Mode),\n  (SecondQuantization.Common.heisenbergEvolve (SecondQuantization.Fermionic.fermionEnergy ξ) (-β))\n      (SecondQuantization.Fermionic.timedFieldOperator ε field) =\n    Complex.exp ↑(SecondQuantization.Fermionic.externalFieldLabelEnergyShift ξ field.label * -β) •\n      SecondQuantization.Fermionic.timedFieldOperator ε field",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -150996,21 +150991,21 @@
     "name": "SecondQuantization.Fermionic.heisenbergEvolve_timedFieldOperator",
     "module": "LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTime.TimedField",
     "externalAxioms": [],
-    "docString": "A time-labelled field remains an eigenoperator after a further evolution by `-β`. ",
+    "docString": "A field evolved with physical dispersion `ε` remains an eigenoperator of the\nGibbs/KMS evolution at thermal dispersion `ξ`. The physical time coordinate is unchanged;\nonly the KMS eigenvalue shift uses `ξ`. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_prod_timedFieldOperator_eq_sum_pairing"
+      "SecondQuantization.Fermionic.grandCanonicalGibbsExpectation_prod_timedFieldOperator_eq_sum_pairing"
     ],
     "dependencies": [
-      "SecondQuantization.Common.heisenbergEvolve_heisenbergEvolve",
       "SecondQuantization.Fermionic.imaginaryTimeEvolve_annihilate",
-      "SecondQuantization.Fermionic.imaginaryTimeEvolve_create"
+      "SecondQuantization.Fermionic.imaginaryTimeEvolve_create",
+      "SecondQuantization.Fermionic.timedFieldOperator_eq_smul"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_prod_timedFieldOperator_eq_sum_pairing"
+      "SecondQuantization.Fermionic.grandCanonicalGibbsExpectation_prod_timedFieldOperator_eq_sum_pairing"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -152078,8 +152073,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_prod_timedFieldOperator_eq_sum_pairing",
-      "SecondQuantization.Fermionic.grandCanonicalFreeGreenFunction_self_time_self"
+      "SecondQuantization.Fermionic.grandCanonicalFreeGreenFunction_self_time_self",
+      "SecondQuantization.Fermionic.grandCanonicalGibbsExpectation_prod_timedFieldOperator_eq_sum_pairing"
     ],
     "dependencies": [
       "SecondQuantization.Common.Statistics.zetaInt_fermion"
@@ -152087,8 +152082,8 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_prod_timedFieldOperator_eq_sum_pairing",
-      "SecondQuantization.Fermionic.grandCanonicalFreeGreenFunction_self_time_self"
+      "SecondQuantization.Fermionic.grandCanonicalFreeGreenFunction_self_time_self",
+      "SecondQuantization.Fermionic.grandCanonicalGibbsExpectation_prod_timedFieldOperator_eq_sum_pairing"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -153002,7 +152997,8 @@
       "SecondQuantization.Fermionic.externalInsertionMixedAtomicDysonCoefficient_eq_externalInsertionDysonCoefficient"
     ],
     "dependencies": [
-      "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_prod_timedFieldOperator_eq_sum_pairing"
+      "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation",
+      "SecondQuantization.Fermionic.grandCanonicalGibbsExpectation_prod_timedFieldOperator_eq_sum_pairing"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -153618,6 +153614,7 @@
     "directWrapperTargetModule": "LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTime.TimedField",
     "directWrapperOf": "SecondQuantization.Fermionic.externalFieldOperator_eq_smul_bare",
     "dependents": [
+      "SecondQuantization.Fermionic.heisenbergEvolve_timedFieldOperator",
       "SecondQuantization.Fermionic.timedFieldOperator_quarticLocalLeg",
       "SecondQuantization.Fermionic.timedFieldPairContraction_eq",
       "SecondQuantization.Fermionic.zetaCommutator_timedFieldOperator"
@@ -153628,11 +153625,12 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "SecondQuantization.Fermionic.heisenbergEvolve_timedFieldOperator",
       "SecondQuantization.Fermionic.timedFieldOperator_quarticLocalLeg",
       "SecondQuantization.Fermionic.timedFieldPairContraction_eq",
       "SecondQuantization.Fermionic.zetaCommutator_timedFieldOperator"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -154813,7 +154811,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_prod_timedFieldOperator_eq_sum_pairing"
+      "SecondQuantization.Fermionic.grandCanonicalGibbsExpectation_prod_timedFieldOperator_eq_sum_pairing"
     ],
     "dependencies": [
       "ScalarExchange.zetaCommutator_smul_smul",
@@ -154823,7 +154821,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.freeGibbsDensityOperator_expectation_prod_timedFieldOperator_eq_sum_pairing"
+      "SecondQuantization.Fermionic.grandCanonicalGibbsExpectation_prod_timedFieldOperator_eq_sum_pairing"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
