@@ -48,22 +48,11 @@ theorem grandCanonicalGibbsDensityOperator_compress_sector
   intro c
   by_cases hc : particleNumber (Mode := Mode) c = N
   · let n : ParticleNumberSector Mode Config N := ⟨c, hc⟩
-    rw [ContinuousLinearMap.comp_apply, ContinuousLinearMap.comp_apply,
-      completedCoordinateProjection_basisState]
-    simp only [hc, ↓reduceIte]
-    rw [grandCanonicalGibbsDensityOperator_apply_basis, map_smul,
-      completedCoordinateProjection_basisState]
-    simp only [hc, ↓reduceIte]
-    rw [smul_apply]
-    change
-      (eigenbasisGibbsProbability (grandCanonicalEnergy ε μ) β n.val : ℂ) •
-        completedBasisState n.val =
-      (grandCanonicalSectorProbability ε β μ N : ℂ) •
-        (canonicalFullGibbsDensityOperator (Config := Config) ε β N
-          (canonicalGibbsSummable_of_grandCanonical ε β μ N hsum)).op
-          (completedBasisState n.val)
-    rw [canonicalFullGibbsDensityOperator_apply_basis_of_sector, smul_smul]
-    simpa only [Complex.ofReal_mul] using
+    simpa only [ContinuousLinearMap.comp_apply,
+      completedCoordinateProjection_basisState, hc, ↓reduceIte,
+      grandCanonicalGibbsDensityOperator_apply_basis, map_smul, smul_apply,
+      canonicalFullGibbsDensityOperator_apply_basis_of_sector, smul_smul,
+      Complex.ofReal_mul] using
       congrArg (fun z : ℝ => (z : ℂ) • completedBasisState n.val)
         (grandCanonicalGibbsProbability_of_sector ε β μ N hsum n)
   · simp only [ContinuousLinearMap.comp_apply, completedCoordinateProjection_basisState,
