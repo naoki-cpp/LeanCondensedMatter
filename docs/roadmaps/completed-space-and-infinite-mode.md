@@ -109,7 +109,7 @@ needed for that representation-level statement.
 
 ## Stationary completed Gibbs states
 
-`Common.Thermal.CompletedStationarity` connects the existing summable grand-canonical density
+`Common.Thermal.CompletedResponse` connects the existing summable grand-canonical density
 to the unitary-group linear-response interface: it is stationary under Stone evolution of any
 real diagonal energy function on the same occupation basis. The statement applies to both
 statistics without a finite-mode hypothesis. Physical Hamiltonian energies divided by ℏ may be
