@@ -158,7 +158,8 @@ theorem grandCanonicalGibbsDensityOperator_op_eq_tsum_canonical
     rw [hfamily] at hcompressed
     have hsector := (hasSum_extend_zero Subtype.val_injective).mp hcompressed
     have hL : L ρ.op = P.comp (ρ.op.comp P) := by
-      ext ψ
+      apply ContinuousLinearMap.ext
+      intro ψ
       change P (ρ.op (P ψ)) = P (ρ.op (P ψ))
       rfl
     exact hsector.tsum_eq.trans hL
