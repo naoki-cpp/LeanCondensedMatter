@@ -30,18 +30,18 @@ local instance instDecidableEqConcretePairKernel : DecidableEq Mode := Classical
 
 variable [Fintype Mode]
 
-/-- The canonical free thermal pair kernel is exactly the normalized free-Gibbs expectation of the
+/-- The grand-canonical free thermal pair kernel is exactly the normalized free-Gibbs expectation of the
 corresponding ordered two-field product. -/
-theorem freeGibbsExpectation_orderedProduct_pair_eq_freeThermalPairValue
-    (ε : Mode → ℝ) (β : ℝ) (hpos : ∀ k, 0 < β * ε k)
+theorem grandCanonicalGibbsExpectation_orderedProduct_pair_eq_freeThermalPairValue
+    (ε : Mode → ℝ) (β μ : ℝ) (hpos : ∀ k, 0 < β * (ε k - μ))
     (f g : FreeThermalField Mode) :
-    grandCanonicalGibbsExpectation ε β 0 (FreeThermalField.orderedProduct [f, g]) =
-      freeThermalPairValue ε β f g := by
+    grandCanonicalGibbsExpectation ε β μ (FreeThermalField.orderedProduct [f, g]) =
+      freeThermalPairValue (fun i => ε i - μ) β f g := by
   cases f with
   | annihilate i =>
       cases g with
       | annihilate j =>
-          have hzero : grandCanonicalGibbsExpectation ε β 0
+          have hzero : grandCanonicalGibbsExpectation ε β μ
               ((_root_.SecondQuantization.Bosonic.annihilate i).comp
                 (_root_.SecondQuantization.Bosonic.annihilate j)) = 0 := by
             simpa only [grandCanonicalGibbsExpectation, grandCanonicalAlgebraicPartition,
@@ -52,23 +52,23 @@ theorem freeGibbsExpectation_orderedProduct_pair_eq_freeThermalPairValue
                 (by norm_num)
                 (fun n : Occupation Mode =>
                   Complex.exp (((-β) *
-                    freeEigenvalue (fun k => ε k - 0) n : ℝ) : ℂ)))
+                    freeEigenvalue (fun k => ε k - μ) n : ℝ) : ℂ)))
           simpa [FreeThermalField.orderedProduct, FreeThermalField.operator,
             freeThermalPairValue, Module.End.mul_eq_comp] using hzero
       | create j =>
           simpa [FreeThermalField.orderedProduct, FreeThermalField.operator,
             freeThermalPairValue, Module.End.mul_eq_comp, sub_zero] using
             (grandCanonicalGibbsExpectation_annihilate_comp_create_concrete
-              ε β 0 (by simpa only [sub_zero] using hpos) i j)
+              ε β μ hpos i j)
   | create i =>
       cases g with
       | annihilate j =>
           simpa [FreeThermalField.orderedProduct, FreeThermalField.operator,
             freeThermalPairValue, Module.End.mul_eq_comp, sub_zero] using
             (grandCanonicalGibbsExpectation_create_comp_annihilate_concrete
-              ε β 0 (by simpa only [sub_zero] using hpos) i j)
+              ε β μ hpos i j)
       | create j =>
-          have hzero : grandCanonicalGibbsExpectation ε β 0
+          have hzero : grandCanonicalGibbsExpectation ε β μ
               ((_root_.SecondQuantization.Bosonic.create i).comp
                 (_root_.SecondQuantization.Bosonic.create j)) = 0 := by
             simpa only [grandCanonicalGibbsExpectation, grandCanonicalAlgebraicPartition,
@@ -79,7 +79,7 @@ theorem freeGibbsExpectation_orderedProduct_pair_eq_freeThermalPairValue
                 (by norm_num)
                 (fun n : Occupation Mode =>
                   Complex.exp (((-β) *
-                    freeEigenvalue (fun k => ε k - 0) n : ℝ) : ℂ)))
+                    freeEigenvalue (fun k => ε k - μ) n : ℝ) : ℂ)))
           simpa [FreeThermalField.orderedProduct, FreeThermalField.operator,
             freeThermalPairValue, Module.End.mul_eq_comp] using hzero
 

@@ -45,20 +45,19 @@ theorem QuarticDiagram.grandCanonicalGibbsExpectation_eq_orderedThermalWickSum
 
 /-- Every finite bare quartic vertex sequence has a summable free-Gibbs numerator under the
 positive one-mode Boltzmann hypothesis. -/
-theorem quarticVertexSequenceOperator_mem_freeGibbsDomain
-    (ε : Mode → ℝ) (β : ℝ) (hpos : ∀ i, 0 < β * ε i)
+theorem quarticVertexSequenceOperator_mem_grandCanonicalGibbsDomain
+    (ε : Mode → ℝ) (β μ : ℝ) (hpos : ∀ i, 0 < β * (ε i - μ))
     {n : ℕ} (q : Fin n → QuarticVertexLabel Mode) :
     Common.quarticVertexSequenceOperator create annihilate q ∈
-      grandCanonicalGibbsDomain ε β 0 := by
+      grandCanonicalGibbsDomain ε β μ := by
   letI := Fintype.ofFinite Mode
   rw [mem_grandCanonicalGibbsDomain_iff, ← quarticFreeThermalOrderedProduct_eq_quarticVertexSequenceOperator]
-  exact FreeThermalField.grandCanonicalGibbsSummable_orderedProduct ε β 0
-    (by simpa only [sub_zero] using hpos) _
+  exact FreeThermalField.grandCanonicalGibbsSummable_orderedProduct ε β μ hpos _
 
 /-- Every finite Dyson coefficient of a finitely supported quartic interaction belongs to the
 free-Gibbs domain. This is proved coefficientwise from the finite vertex-sequence expansion and does
 not exchange the infinite Gibbs sum with the recursive Dyson integral. -/
-theorem dysonCoeff_quarticInteractionOn_mem_freeGibbsDomain
+theorem dysonCoeff_quarticInteractionOn_mem_grandCanonicalGibbsDomain
     (support : Finset (QuarticVertexLabel Mode))
     (ε : Mode → ℝ) (β μ : ℝ) (hpos : ∀ i, 0 < β * (ε i - μ))
     (g : QuarticVertexLabel Mode → ℂ) (n : ℕ) (t : ℝ) :
@@ -66,27 +65,25 @@ theorem dysonCoeff_quarticInteractionOn_mem_freeGibbsDomain
       grandCanonicalGibbsDomain ε β μ := by
   letI := Fintype.ofFinite Mode
   classical
-  rw [grandCanonicalGibbsDomain_shift]
   rw [dysonCoeff_quarticInteractionOn_eq_sum support ε g n t]
-  exact Submodule.sum_mem (grandCanonicalGibbsDomain (fun i => ε i - μ) β 0) fun q _ =>
-    (grandCanonicalGibbsDomain (fun i => ε i - μ) β 0).smul_mem _
-      (quarticVertexSequenceOperator_mem_freeGibbsDomain (fun i => ε i - μ) β hpos
+  exact Submodule.sum_mem (grandCanonicalGibbsDomain ε β μ) fun q _ =>
+    (grandCanonicalGibbsDomain ε β μ).smul_mem _
+      (quarticVertexSequenceOperator_mem_grandCanonicalGibbsDomain ε β μ hpos
         (fun i => (q i : QuarticVertexLabel Mode)))
 
 omit [Finite Mode] in
 /-- On a finite mode type, every finite Dyson coefficient of the full quartic interaction belongs to
 the free-Gibbs domain. -/
-theorem dysonCoeff_quarticInteraction_mem_freeGibbsDomain [Fintype Mode]
+theorem dysonCoeff_quarticInteraction_mem_grandCanonicalGibbsDomain [Fintype Mode]
     (ε : Mode → ℝ) (β μ : ℝ) (hpos : ∀ i, 0 < β * (ε i - μ))
     (g : QuarticVertexLabel Mode → ℂ) (n : ℕ) (t : ℝ) :
     Common.dysonCoeff (freeEigenvalue ε) (quarticInteraction g) n t ∈
       grandCanonicalGibbsDomain ε β μ := by
   classical
-  rw [grandCanonicalGibbsDomain_shift]
   rw [dysonCoeff_quarticInteraction_eq_sum ε g n t]
-  exact Submodule.sum_mem (grandCanonicalGibbsDomain (fun i => ε i - μ) β 0) fun q _ =>
-    (grandCanonicalGibbsDomain (fun i => ε i - μ) β 0).smul_mem _
-      (quarticVertexSequenceOperator_mem_freeGibbsDomain (fun i => ε i - μ) β hpos q)
+  exact Submodule.sum_mem (grandCanonicalGibbsDomain ε β μ) fun q _ =>
+    (grandCanonicalGibbsDomain ε β μ).smul_mem _
+      (quarticVertexSequenceOperator_mem_grandCanonicalGibbsDomain ε β μ hpos q)
 
 /-- The convergence-aware Gibbs expectation of a finite-order quartic Dyson coefficient is a finite
 sum over support-valued vertex sequences and bosonic pairings. The scalar
@@ -110,9 +107,9 @@ theorem grandCanonicalGibbsDysonCoeff_quarticInteractionOn_eq_sum_pairingEvaluat
                     (fun i => (q i : QuarticVertexLabel Mode)) b)) := by
   letI := Fintype.ofFinite Mode
   classical
-  rw [grandCanonicalGibbsDysonCoeff, grandCanonicalGibbsExpectation_shift, dysonCoeff_quarticInteractionOn_eq_sum support ε g n t]
+  rw [grandCanonicalGibbsDysonCoeff, dysonCoeff_quarticInteractionOn_eq_sum support ε g n t]
   have hsumm : ∀ q : Fin n → ↥support,
-      grandCanonicalGibbsSummable (fun i => ε i - μ) β 0
+      grandCanonicalGibbsSummable ε β μ
         (Common.quarticDysonSequenceCoeff ε g
             (fun i => (q i : QuarticVertexLabel Mode)) t •
           Common.quarticVertexSequenceOperator create annihilate
@@ -120,9 +117,8 @@ theorem grandCanonicalGibbsDysonCoeff_quarticInteractionOn_eq_sum_pairingEvaluat
     intro q
     apply grandCanonicalGibbsSummable_smul
     rw [← quarticFreeThermalOrderedProduct_eq_quarticVertexSequenceOperator]
-    exact FreeThermalField.grandCanonicalGibbsSummable_orderedProduct (fun i => ε i - μ) β 0
-      (by simpa only [sub_zero] using hpos) _
-  rw [grandCanonicalGibbsExpectation_sum_of_summable (fun i => ε i - μ) β 0 _ hsumm]
+    exact FreeThermalField.grandCanonicalGibbsSummable_orderedProduct ε β μ hpos _
+  rw [grandCanonicalGibbsExpectation_sum_of_summable ε β μ _ hsumm]
   refine Finset.sum_congr rfl fun q _ => ?_
   rw [grandCanonicalGibbsExpectation_smul]
   rw [← quarticFreeThermalOrderedProduct_eq_quarticVertexSequenceOperator,
@@ -130,7 +126,6 @@ theorem grandCanonicalGibbsDysonCoeff_quarticInteractionOn_eq_sum_pairingEvaluat
   have hwick := grandCanonicalGibbsExpectation_eq_sum_pairing_concrete ε β μ hpos
     (2 * n) (quarticFreeThermalFieldFamily
       (fun i => (q i : QuarticVertexLabel Mode)))
-  rw [grandCanonicalGibbsExpectation_shift] at hwick
   simpa only [Pairing.evaluation] using congrArg
     (fun z => Common.quarticDysonSequenceCoeff ε g
       (fun i => (q i : QuarticVertexLabel Mode)) t * z) hwick
@@ -150,24 +145,22 @@ private theorem grandCanonicalGibbsDysonCoeff_quarticInteraction_eq_sum_pairingE
                   (quarticFreeThermalFieldFamily q a)
                   (quarticFreeThermalFieldFamily q b)) := by
   classical
-  rw [grandCanonicalGibbsDysonCoeff, grandCanonicalGibbsExpectation_shift, dysonCoeff_quarticInteraction_eq_sum ε g n t]
+  rw [grandCanonicalGibbsDysonCoeff, dysonCoeff_quarticInteraction_eq_sum ε g n t]
   have hsumm : ∀ q : Fin n → QuarticVertexLabel Mode,
-      grandCanonicalGibbsSummable (fun i => ε i - μ) β 0
+      grandCanonicalGibbsSummable ε β μ
         (Common.quarticDysonSequenceCoeff ε g q t •
           Common.quarticVertexSequenceOperator create annihilate q) := by
     intro q
     apply grandCanonicalGibbsSummable_smul
     rw [← quarticFreeThermalOrderedProduct_eq_quarticVertexSequenceOperator]
-    exact FreeThermalField.grandCanonicalGibbsSummable_orderedProduct (fun i => ε i - μ) β 0
-      (by simpa only [sub_zero] using hpos) _
-  rw [grandCanonicalGibbsExpectation_sum_of_summable (fun i => ε i - μ) β 0 _ hsumm]
+    exact FreeThermalField.grandCanonicalGibbsSummable_orderedProduct ε β μ hpos _
+  rw [grandCanonicalGibbsExpectation_sum_of_summable ε β μ _ hsumm]
   refine Finset.sum_congr rfl fun q _ => ?_
   rw [grandCanonicalGibbsExpectation_smul]
   rw [← quarticFreeThermalOrderedProduct_eq_quarticVertexSequenceOperator,
     quarticFreeThermalOrderedProduct]
   have hwick := grandCanonicalGibbsExpectation_eq_sum_pairing_concrete ε β μ hpos
     (2 * n) (quarticFreeThermalFieldFamily q)
-  rw [grandCanonicalGibbsExpectation_shift] at hwick
   simpa only [Pairing.evaluation] using congrArg
     (fun z => Common.quarticDysonSequenceCoeff ε g q t * z) hwick
 

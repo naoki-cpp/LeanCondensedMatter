@@ -25,39 +25,38 @@ variable {Mode : Type*} [Fintype Mode]
 
 /-- A single ordered quartic vertex belongs to the explicit free-Gibbs domain under the usual
 positive one-mode Boltzmann exponents. -/
-theorem quarticVertexOperator_mem_freeGibbsDomain
-    (ε : Mode → ℝ) (β : ℝ) (hpos : ∀ i, 0 < β * ε i)
+theorem quarticVertexOperator_mem_grandCanonicalGibbsDomain
+    (ε : Mode → ℝ) (β μ : ℝ) (hpos : ∀ i, 0 < β * (ε i - μ))
     (q : QuarticVertexLabel Mode) :
-    quarticVertexOperator q ∈ grandCanonicalGibbsDomain ε β 0 := by
-  change grandCanonicalGibbsSummable ε β 0 (quarticVertexOperator q)
+    quarticVertexOperator q ∈ grandCanonicalGibbsDomain ε β μ := by
+  change grandCanonicalGibbsSummable ε β μ (quarticVertexOperator q)
   simpa only [FreeThermalField.orderedProduct_cons, FreeThermalField.orderedProduct_nil,
     FreeThermalField.operator, LinearMap.comp_id,
     quarticVertexOperator, Common.quarticVertexOperator] using
-    (FreeThermalField.grandCanonicalGibbsSummable_orderedProduct ε β 0
-      (by simpa only [sub_zero] using hpos)
+    (FreeThermalField.grandCanonicalGibbsSummable_orderedProduct ε β μ hpos
       [.create q.create₁, .create q.create₂, .annihilate q.annihilate₂, .annihilate q.annihilate₁])
 
 /-- Every finitely supported bosonic quartic interaction belongs to the free-Gibbs domain. -/
-theorem quarticInteractionOn_mem_freeGibbsDomain
+theorem quarticInteractionOn_mem_grandCanonicalGibbsDomain
     (support : Finset (QuarticVertexLabel Mode))
-    (ε : Mode → ℝ) (β : ℝ) (hpos : ∀ i, 0 < β * ε i)
+    (ε : Mode → ℝ) (β μ : ℝ) (hpos : ∀ i, 0 < β * (ε i - μ))
     (g : QuarticVertexLabel Mode → ℂ) :
-    quarticInteractionOn support g ∈ grandCanonicalGibbsDomain ε β 0 := by
+    quarticInteractionOn support g ∈ grandCanonicalGibbsDomain ε β μ := by
   classical
-  change (∑ q ∈ support, g q • quarticVertexOperator q) ∈ grandCanonicalGibbsDomain ε β 0
-  exact Submodule.sum_mem (grandCanonicalGibbsDomain ε β 0) fun q hq =>
-    (grandCanonicalGibbsDomain ε β 0).smul_mem (g q)
-      (quarticVertexOperator_mem_freeGibbsDomain ε β hpos q)
+  change (∑ q ∈ support, g q • quarticVertexOperator q) ∈ grandCanonicalGibbsDomain ε β μ
+  exact Submodule.sum_mem (grandCanonicalGibbsDomain ε β μ) fun q hq =>
+    (grandCanonicalGibbsDomain ε β μ).smul_mem (g q)
+      (quarticVertexOperator_mem_grandCanonicalGibbsDomain ε β μ hpos q)
 
 /-- On a finite mode type, the all-label bosonic quartic interaction belongs to the free-Gibbs
 domain. -/
-theorem quarticInteraction_mem_freeGibbsDomain
-    (ε : Mode → ℝ) (β : ℝ) (hpos : ∀ i, 0 < β * ε i)
+theorem quarticInteraction_mem_grandCanonicalGibbsDomain
+    (ε : Mode → ℝ) (β μ : ℝ) (hpos : ∀ i, 0 < β * (ε i - μ))
     (g : QuarticVertexLabel Mode → ℂ) :
-    quarticInteraction g ∈ grandCanonicalGibbsDomain ε β 0 := by
+    quarticInteraction g ∈ grandCanonicalGibbsDomain ε β μ := by
   simpa [quarticInteraction, quarticInteractionOn, Common.quarticInteraction] using
-    (quarticInteractionOn_mem_freeGibbsDomain
-      (support := (Finset.univ : Finset (QuarticVertexLabel Mode))) ε β hpos g)
+    (quarticInteractionOn_mem_grandCanonicalGibbsDomain
+      (support := (Finset.univ : Finset (QuarticVertexLabel Mode))) ε β μ hpos g)
 
 end
 end Bosonic
