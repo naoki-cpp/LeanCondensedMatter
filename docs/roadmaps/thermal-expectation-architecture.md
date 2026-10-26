@@ -201,9 +201,9 @@ and Wick pairing recursion are instantiated for this explicit grand-canonical st
 finite-mode assumption introduced into the generic recursion. Fermionic KMS factors are
 exponentials of real energies, so `1 + g` is automatically nonzero; the completed fermionic
 pairing-recursion adapter consequently uses `admissible := True`. The Gibbs state still requires
-summability over occupation configurations. In the separate finite-mode bridge,
-`freeGibbsExpectation_eq_completed_of_algebraicCore` specializes the common
-`finiteGibbsExpectation_eq_completed_of_algebraicCore` expectation transport.
+summability over occupation configurations. Finite-mode contraction and one-body expectations
+use `Common.finiteGibbsExpectation_eq_completed_of_algebraicCore` directly to transport
+expectations from algebraic observables to their bounded completed extensions.
 Finite-coordinate trace ratios are handled directly by
 `Common.finiteGibbsExpectation_eq_summableDiagonalTraceRatioLinear` from #4074.
 

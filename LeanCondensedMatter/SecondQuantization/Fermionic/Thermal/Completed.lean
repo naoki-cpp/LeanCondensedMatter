@@ -2,7 +2,6 @@ import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.Gibbs
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.TotalNumberExpectation
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.BlochDeDominicis
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.ModeTruncation
-import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.FiniteGibbsExpectationCompatibility
 
 set_option linter.style.header false
 
