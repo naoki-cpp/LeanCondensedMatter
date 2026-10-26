@@ -1,7 +1,7 @@
 import LeanCondensedMatter.Transport.Analysis.ContinuumMeasure
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornRealSpacePropagator
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexResponse
-import LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossedTrace
+import LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.Trace
 
 set_option linter.style.header false
 
