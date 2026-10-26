@@ -170,9 +170,9 @@ theorem completedProduct_comp_algebraicToCompleted_of_core
   calc
     _ = T.toLinearMap.comp (algebraicToCompleted.comp B) := by rw [hU]
     _ = (T.toLinearMap.comp algebraicToCompleted).comp B :=
-      (LinearMap.comp_assoc .. .. ..).symm
+      (LinearMap.comp_assoc _ _ _).symm
     _ = (algebraicToCompleted.comp A).comp B := by rw [hT]
-    _ = _ := LinearMap.comp_assoc .. .. ..
+    _ = _ := LinearMap.comp_assoc _ _ _
 
 
 end
