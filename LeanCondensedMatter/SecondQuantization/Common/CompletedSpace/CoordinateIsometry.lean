@@ -262,7 +262,10 @@ theorem inner_completedBasisState_coordinatePullback_comp
       inner ℂ (completedBasisState (f c))
         (A (completedBasisState (f c))) := by
   simp only [ContinuousLinearMap.comp_apply, inner_completedBasisState_left,
-    completedCoordinatePullback_apply, completedCoordinateEmbedding_basisState]
+    completedCoordinatePullback_apply]
+  change (A (completedCoordinateEmbedding f hf (completedBasisState c))) (f c) =
+    (A (completedBasisState (f c))) (f c)
+  rw [completedCoordinateEmbedding_basisState]
 
 /-- Pulling back a basis state in the image of an injective configuration map
 recovers the basis state at its unique preimage. -/
