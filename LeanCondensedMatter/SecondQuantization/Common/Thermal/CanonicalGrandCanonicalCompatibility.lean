@@ -120,63 +120,73 @@ theorem grandCanonicalGibbsDensityOperator_sector_expectation_eq_canonical
       (grandCanonicalSectorProbability (Config := Config) ε β μ N : ℂ) *
         (canonicalFullGibbsDensityOperator (Config := Config) ε β N
           (canonicalGibbsSummable_of_grandCanonical ε β μ N hsum)).expectation A := by
-  classical
+classical
   let hcan := canonicalGibbsSummable_of_grandCanonical ε β μ N hsum
-  let ρ := canonicalGibbsDensityOperator (Config := Config) ε β N hcan
-  let U := (completedCoordinateEmbedding
-    (Subtype.val : ParticleNumberSector Mode Config N → Config)
-    Subtype.val_injective).toContinuousLinearMap
-  let V := completedCoordinatePullback
-    (Subtype.val : ParticleNumberSector Mode Config N → Config)
-    Subtype.val_injective
-  let B := V.comp (A.comp U)
-  let E : ParticleNumberSector Mode Config N → ℝ := fun n => occupationEnergy ε n.val
-  have hcompress (n : ParticleNumberSector Mode Config N) :
-      inner ℂ (completedBasisState n) (B (completedBasisState n)) =
-        inner ℂ (completedBasisState n.val) (A (completedBasisState n.val)) := by
-    simpa only [B, V, U] using
-      (inner_completedBasisState_coordinatePullback_comp
-        (Subtype.val : ParticleNumberSector Mode Config N → Config)
-        Subtype.val_injective A n)
-  have hdiag : ∀ n : ParticleNumberSector Mode Config N,
-      ρ.op ((completedHilbertBasis (Config := ParticleNumberSector Mode Config N)) n) =
-        (eigenbasisGibbsProbability E β n : ℂ) •
-          (completedHilbertBasis (Config := ParticleNumberSector Mode Config N)) n := by
-    intro n
-    simpa only [ρ, E, completedHilbertBasis_apply] using
-      (canonicalGibbsDensityOperator_apply_basis ε β N hcan n)
-  have hsector :
-      ρ.expectation B =
-        ∑' n : ParticleNumberSector Mode Config N,
-          (eigenbasisGibbsProbability E β n : ℂ) *
-            inner ℂ (completedBasisState n) (B (completedBasisState n)) := by
-    simpa only [completedHilbertBasis_apply] using
-      (ρ.expectation_eq_tsum_diagonal B
-        (completedHilbertBasis (Config := ParticleNumberSector Mode Config N))
-        (eigenbasisGibbsProbability E β) hdiag)
+  let ρ := canonicalFullGibbsDensityOperator (Config := Config) ε β N hcan
+  let w : Config → ℝ := Real.normalizedWeight (canonicalFullGibbsWeight ε β N)
+  let f : ParticleNumberSector Mode Config N → ℂ := fun n =>
+    (w n.val : ℂ) *
+      inner ℂ (completedBasisState n.val) (A (completedBasisState n.val))
+  let g : Config → ℂ := fun c =>
+    (w c : ℂ) * inner ℂ (completedBasisState c) (A (completedBasisState c))
+  have hdiag : ∀ c : Config,
+      ρ.op ((completedHilbertBasis (Config := Config)) c) =
+        (w c : ℂ) • (completedHilbertBasis (Config := Config)) c := by
+    intro c
+    simpa only [ρ, canonicalFullGibbsDensityOperator, w, completedHilbertBasis_apply] using
+      (diagonalDensityOperator_apply_basis
+        (completedHilbertBasis (Config := Config)) (canonicalFullGibbsWeight ε β N)
+        (canonicalFullGibbsWeight_norm_summable ε β N hcan)
+        (canonicalFullGibbsWeight_nonneg ε β N)
+        (canonicalFullGibbsWeight_tsum_pos ε β N hcan) c)
+  have hfull : HasSum g (ρ.expectation A) := by
+    simpa only [g, completedHilbertBasis_apply] using
+      (ρ.hasSum_expectation_diagonal A
+        (completedHilbertBasis (Config := Config)) w hdiag)
+  have hpoint :
+      Function.extend
+        (Subtype.val : ParticleNumberSector Mode Config N → Config) f 0 = g := by
+    funext c
+    by_cases hc : particleNumber (Mode := Mode) c = N
+    · let n : ParticleNumberSector Mode Config N := ⟨c, hc⟩
+      change Function.extend
+        (Subtype.val : ParticleNumberSector Mode Config N → Config) f 0 n.val = g n.val
+      rw [Subtype.val_injective.extend_apply]
+    · have hnot : ¬ ∃ n : ParticleNumberSector Mode Config N, n.val = c := by
+        rintro ⟨n, hn⟩
+        exact hc (by simpa only [← hn] using n.property)
+      change Function.extend
+        (Subtype.val : ParticleNumberSector Mode Config N → Config) f 0 c = g c
+      rw [Function.extend_apply' _ _ _ hnot]
+      simp [g, w, Real.normalizedWeight,
+        canonicalFullGibbsWeight_apply_of_ne ε β N c hc]
+  have hsector : HasSum f (ρ.expectation A) := by
+    rw [← hpoint] at hfull
+    exact (hasSum_extend_zero Subtype.val_injective).mp hfull
   calc
     (∑' n : ParticleNumberSector Mode Config N,
       (eigenbasisGibbsProbability (grandCanonicalEnergy ε μ) β n.val : ℂ) *
         inner ℂ (completedBasisState n.val) (A (completedBasisState n.val))) =
-        (grandCanonicalSectorProbability ε β μ N : ℂ) *
-          ∑' n : ParticleNumberSector Mode Config N,
-            (eigenbasisGibbsProbability E β n : ℂ) *
-              inner ℂ (completedBasisState n) (B (completedBasisState n)) := by
-      rw [← tsum_mul_left]
+        ∑' n : ParticleNumberSector Mode Config N,
+          (grandCanonicalSectorProbability ε β μ N : ℂ) * f n := by
       apply tsum_congr
       intro n
-      rw [hcompress n]
+      change
+        (eigenbasisGibbsProbability (grandCanonicalEnergy ε μ) β n.val : ℂ) *
+          inner ℂ (completedBasisState n.val) (A (completedBasisState n.val)) =
+        (grandCanonicalSectorProbability ε β μ N : ℂ) *
+          ((w n.val : ℂ) *
+            inner ℂ (completedBasisState n.val) (A (completedBasisState n.val)))
+      rw [normalizedWeight_canonicalFullGibbsWeight_apply_sector ε β N hcan n]
       simpa only [Complex.ofReal_mul, mul_assoc] using
         congrArg
-          (fun w : ℝ => (w : ℂ) *
+          (fun z : ℝ => (z : ℂ) *
             inner ℂ (completedBasisState n.val) (A (completedBasisState n.val)))
           (grandCanonicalGibbsProbability_of_sector ε β μ N hsum n)
-    _ = (grandCanonicalSectorProbability ε β μ N : ℂ) * ρ.expectation B := by
-      rw [hsector]
+    _ = (grandCanonicalSectorProbability ε β μ N : ℂ) * (∑' n, f n) := by
+      rw [tsum_mul_left]
     _ = _ := by
-      congr 1
-      exact (canonicalFullGibbsDensityOperator_expectation_eq_sector
-        ε β N hcan A).symm
+      rw [hsector.tsum_eq]
 
 open Classical in
 /-- Every bounded grand-canonical expectation is a probability-weighted mixture
