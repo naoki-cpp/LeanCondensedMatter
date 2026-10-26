@@ -6837,8 +6837,7 @@
         "LeanCondensedMatter.SecondQuantization.Common.Perturbation.QuarticDysonExpansion",
         "LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsExpectationBridge",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.QuarticInteraction",
-        "LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTime.ImaginaryTimeEvolution",
-        "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsDensityOperator"
+        "LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTime.ImaginaryTimeEvolution"
       ],
       "externalImportCount": 0
     },
