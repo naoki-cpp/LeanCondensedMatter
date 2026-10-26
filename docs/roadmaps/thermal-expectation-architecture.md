@@ -111,9 +111,12 @@ The finite Gibbs implementation specializes the generic recursion using the fini
 state, imaginary-time evolution, trace-ratio identity, and KMS/exchange relations.
 The finite `Fermionic.freeGibbsDensityOperator ε β` still covers **all**
 fermionic occupation sectors at implicit `μ = 0`, not a fixed-number canonical state;
-it has real one-body/mean-energy, contraction, Green-function and diagrammatic consumers.
-The binary-entropy endpoint instead uses the generic finite eigenbasis Gibbs density
-directly at `Common.grandCanonicalEnergy ε μ`, with explicit chemical potential. The older
+it remains in use for finite contractions, Green functions and diagrammatic consumers.
+The one-body endpoint `finiteGrandCanonicalGibbsDensityOperator_expectation_finiteSecondQuantization`
+instead takes explicit `μ` and evaluates the generic eigenbasis Gibbs state at
+`Common.grandCanonicalEnergy ε μ`. Its finite mean-energy consumer passes `μ = 0`
+explicitly. The binary-entropy endpoint likewise uses the generic finite Gibbs state
+at explicit chemical potential. The older
 finite `freeBoltzmannWeight` and `freePartitionFunction` specializations are removed in
 the #3986 partition migration: generic coordinate weights are
 `Common.boltzmannWeight`, and the physical full-Fock partition is
@@ -123,9 +126,10 @@ staged changes without compatibility aliases or a second density constructor.
 The finite density-state specialization depends directly on `fermionEnergy` and the generic pure-point state;
 finite complex Boltzmann coordinates are a separate proof/perturbation lane.
 
-`Fermionic.Thermal.FreeEntropy` derives the finite occupation marginal from the canonical
-number-operator expectation. The mean energy then uses this marginal, while the binary-entropy
-formula specializes the generic pure-point Gibbs entropy identity. These are thermodynamic
+`Fermionic.Thermal.FreeEntropy` uses the full-occupation grand-canonical one-body
+expectation, not a sharp-number canonical expectation, to derive finite mean-energy
+and one-mode occupations. The binary-entropy formula specializes the generic
+pure-point Gibbs entropy identity. These are thermodynamic
 consequences of the same density state, not a separate probability-state construction.
 
 `Fermionic.Thermal.BoltzmannSummability` owns the **arbitrary-mode** fermionic theorem

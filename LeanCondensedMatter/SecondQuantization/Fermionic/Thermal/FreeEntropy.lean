@@ -14,8 +14,8 @@ at the explicit grand-canonical energy `K(n) = E(n) - μ N(n)`, not a fixed-`N`
 canonical state or a new fermion-specific density constructor.
 The generic identity `S = β ⟨K⟩ + log Ξ`, together with the finite fermionic
 product factorization, reduces entropy to independent binary mode entropies.
-The older zero-`μ` one-body intermediate is reused on `ε - μ` until the
-remaining finite expectation consumers migrate under #3986.
+The finite one-body expectation is evaluated using the explicit-`μ` grand-canonical
+Gibbs state and finite-coordinate second quantization.
 -/
 
 namespace SecondQuantization
@@ -69,20 +69,24 @@ theorem eigenbasisGibbsEnergyExpectation_fermionEnergy_eq_sum_fermiDirac
   letI : LinearOrder Mode :=
     LinearOrder.lift' (Fintype.equivFin Mode) (Fintype.equivFin Mode).injective
   let D := Common.diagonalOperator (fun i => (ε i : ℂ))
-  have h := freeGibbsDensityOperator_expectation_finiteSecondQuantization ε β
+  have h := finiteGrandCanonicalGibbsDensityOperator_expectation_finiteSecondQuantization ε β 0
     (Common.finiteHilbertOperatorAlgEquiv D)
+  have hE : Common.grandCanonicalEnergy (Config := Occupation Mode) ε 0 =
+      fermionEnergy (fun i => ε i - 0) := by
+    funext n
+    exact Common.grandCanonicalEnergy_eq_shifted ε 0 n
+  rw [hE] at h
+  simp only [sub_zero] at h
   have hquant : Lattice.finiteSecondQuantization (Common.finiteHilbertOperatorAlgEquiv D) =
       Lattice.boundedOneBodyOperator D := by
     simp [Lattice.finiteSecondQuantization]
   rw [hquant] at h
   simp only [AlgEquiv.symm_apply_apply] at h
-  change (freeGibbsDensityOperator ε β).expectation
-    (Common.finiteHilbertOperatorAlgEquiv
-      (AlgebraicFock.occupationConjugate
-        (Finsupp.basisSingleOne : Module.Basis Mode ℂ (Mode →₀ ℂ))
-        (AlgebraicFock.dGamma ((Mode →₀ ℂ)) D))) = _ at h
+  change Common.finiteGibbsExpectation (fermionEnergy ε) β
+    (AlgebraicFock.occupationConjugate
+      (Finsupp.basisSingleOne : Module.Basis Mode ℂ (Mode →₀ ℂ))
+      (AlgebraicFock.dGamma ((Mode →₀ ℂ)) D)) = _ at h
   rw [Lattice.occupationConjugate_dGamma_diagonalOperator,
-    freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation,
     Common.finiteGibbsExpectation_eq_sum] at h
   apply Complex.ofReal_injective
   rw [eigenbasisGibbsEnergyExpectation, tsum_fintype]
