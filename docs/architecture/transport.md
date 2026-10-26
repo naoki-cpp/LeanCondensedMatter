@@ -340,12 +340,14 @@ integral is formed. Real-space crossed Fourier blocks already contain their phys
 measures upstream, so a later crossed conductivity boundary must consume only the remaining
 trace/current normalization rather than attach another momentum measure.
 
-`MassiveDirac.Streda.GaussianCrossedRealSpaceIntegral` owns the pointwise antisymmetric
-radial trace reductions for both crossed topologies, including their explicit K0/K1/K2
-moment expressions. Intermediate harmonic reductions are private proof stages. The
-`Conductivity.Hall.GaussianCrossed` module integrates those trace identities and attaches
-the physical current and trace prefactors. Ordered radial kernels remain distinct from
-the antisymmetric trace used for Hall conductivity.
+`MassiveDirac.Streda.GaussianCrossedRealSpaceIntegral` owns the angular projection,
+pointwise antisymmetric radial trace tensors, and regulated polar position-space integrals
+for both crossed topologies. `MassiveDirac.Streda.GaussianCrossedExplicitMoments`
+consumes those tensors and reduces their X/Psi antisymmetric components to explicit
+K0/K1/K2 momentum moments. Intermediate harmonic reductions stay private in that owner.
+`Conductivity.Hall.GaussianCrossed` consumes both the regulated integral boundary and
+the explicit moments to attach physical current and trace prefactors. Ordered radial
+kernels remain distinct from the antisymmetric trace used for Hall conductivity.
 
 `Analysis.InternalSpace.Pauli` owns coefficient extraction through entrywise interval
 integrals with a complex prefactor. These laws use Mathlib's integral addition,
