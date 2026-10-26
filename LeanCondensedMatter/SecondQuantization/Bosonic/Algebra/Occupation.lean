@@ -76,12 +76,16 @@ theorem particleNumber_eq_sum_univ (n : Occupation Mode) :
 
 end FiniteMode
 
-/-- Every mode occupation is bounded by the total particle number on a finite mode type. -/
-theorem occupation_le_particleNumber [Finite Mode] (n : Occupation Mode) (i : Mode) :
+/-- Every mode occupation is bounded by the total particle number. -/
+theorem occupation_le_particleNumber (n : Occupation Mode) (i : Mode) :
     n i ≤ particleNumber n := by
-  letI := Fintype.ofFinite Mode
-  rw [particleNumber_eq_sum_univ]
-  exact Finset.single_le_sum (fun j _ => Nat.zero_le (n j)) (Finset.mem_univ i)
+  classical
+  rw [particleNumber_eq_finsupp_sum, Finsupp.sum]
+  by_cases hi : i ∈ n.support
+  · exact Finset.single_le_sum (fun j _ => Nat.zero_le (n j)) hi
+  · have hi0 : n i = 0 := by
+      simpa only [Finsupp.mem_support_iff, not_not] using hi
+    simp [hi0]
 
 /-- For finitely many modes, the bosonic fixed-particle-number occupation sector is
 finite, even though the full bosonic occupation space is infinite. -/
