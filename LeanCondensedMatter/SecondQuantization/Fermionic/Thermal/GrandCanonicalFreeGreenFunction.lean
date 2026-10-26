@@ -49,7 +49,7 @@ theorem grandCanonicalFreeGreenFunction_of_gt_self (ε : Mode → ℝ) (β μ : 
     imaginaryTimeEvolve_annihilate, imaginaryTimeEvolve_create, LinearMap.smul_comp,
     LinearMap.comp_smul, smul_smul,
     map_smul, smul_eq_mul,
-    hAC, ite_eq_left rfl]
+    hAC, ite_true]
   rw [show Complex.exp (-(τ : ℂ) * (ε i : ℂ)) * Complex.exp ((τ' : ℂ) * (ε i : ℂ)) =
       Complex.exp (-(τ - τ' : ℝ) * (ε i : ℂ)) by
     rw [← Complex.exp_add]; congr 1; push_cast; ring]
@@ -74,7 +74,7 @@ theorem grandCanonicalFreeGreenFunction_of_lt_self (ε : Mode → ℝ) (β μ : 
     imaginaryTimeEvolve_annihilate, imaginaryTimeEvolve_create, LinearMap.smul_comp,
     LinearMap.comp_smul, smul_smul,
     map_smul, smul_eq_mul,
-    hCA, ite_eq_left rfl]
+    hCA, ite_true]
   rw [show Complex.exp ((τ' : ℂ) * (ε i : ℂ)) * Complex.exp (-(τ : ℂ) * (ε i : ℂ)) =
       Complex.exp (-(τ - τ' : ℝ) * (ε i : ℂ)) by
     rw [← Complex.exp_add]; congr 1; push_cast; ring]
