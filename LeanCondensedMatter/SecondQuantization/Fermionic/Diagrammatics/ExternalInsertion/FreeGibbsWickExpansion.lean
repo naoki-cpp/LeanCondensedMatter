@@ -141,8 +141,8 @@ theorem sum_fixedExternalInsertionWickDiagram_fixedTimeAmplitude_eq_mixedAtomicE
     have hpair (A B : TimedField Mode) :
         Common.finiteGibbsExpectation (fermionEnergy ε) β
           ((timedFieldOperator ε A).comp (timedFieldOperator ε B)) =
-        timedFieldPairContraction ε β A B := by
-      simp only [timedFieldPairContraction,
+        grandCanonicalTimedFieldPairContraction ε β 0 A B := by
+      simp only [grandCanonicalTimedFieldPairContraction,
         freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation]
     simp_rw [hpair] at hgen
     exact hgen

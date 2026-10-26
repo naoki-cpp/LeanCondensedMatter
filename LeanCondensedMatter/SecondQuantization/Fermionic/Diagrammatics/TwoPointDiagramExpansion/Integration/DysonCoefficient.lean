@@ -46,9 +46,8 @@ theorem freeGibbsDensityOperator_expectation_mixedTimeOrderedVertexComp_eq_sum_p
   have hpair (A B : TimedField Mode) :
       Common.finiteGibbsExpectation (fermionEnergy ε) β
         ((timedFieldOperator ε A).comp (timedFieldOperator ε B)) =
-      timedFieldPairContraction ε β A B := by
-    simp only [timedFieldPairContraction,
-      freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation]
+      grandCanonicalTimedFieldPairContraction ε β 0 A B := by
+    simp only [grandCanonicalTimedFieldPairContraction, sub_zero]
   simp_rw [hpair] at hwick
   change Common.finiteGibbsExpectation (fermionEnergy ε) β
     (List.prod (List.ofFn (mixedTimeOrderedAtomicOperatorFamily ε i j τ τ' q σ))) = _ at hwick

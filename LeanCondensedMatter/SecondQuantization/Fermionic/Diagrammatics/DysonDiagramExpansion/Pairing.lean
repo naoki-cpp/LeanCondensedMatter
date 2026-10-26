@@ -59,7 +59,7 @@ variable [Fintype Mode]
 noncomputable def flatVertexLegPairValue {n : ℕ}
     (ε : Mode → ℝ) (β : ℝ) (q : Fin n → QuarticVertexLabel Mode)
     (τ : Fin n → ℝ) (a b : Fin (2 * (2 * n))) : ℂ :=
-  timedFieldPairContraction ε β
+  grandCanonicalTimedFieldPairContraction ε β 0
     (quarticLegFieldForSequence q τ a) (quarticLegFieldForSequence q τ b)
 
 /-- Canonical scalar value of a flattened-leg pairing. -/
@@ -82,8 +82,9 @@ theorem flatVertexLegPairValue_eq {n : ℕ}
           (Common.finiteHilbertOperatorAlgEquiv
             ((quarticLocalLegOperator (q (flatVertexIndex n a)) (flatLocalLeg n a)).comp
               (quarticLocalLegOperator (q (flatVertexIndex n b)) (flatLocalLeg n b)))) := by
-  simpa [flatVertexLegPairValue, timedFieldPairContraction_eq,
-    quarticLegFieldForSequence, quarticLegEnergyShiftForSequence,
+  simpa [flatVertexLegPairValue, grandCanonicalTimedFieldPairContraction_eq,
+    quarticLegFieldForSequence, quarticLegEnergyShiftForSequence, sub_zero,
+    freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation,
     quarticLocalLegEnergyShift, quarticLocalLegOperator,
     Common.quarticLocalLegOperator, Common.flatVertexIndex, Common.flatLocalLeg]
 
@@ -141,9 +142,8 @@ theorem dysonVertexMoment_quarticInteraction_eq_sum_vertexLabel_pairingEvaluatio
         have hpair (A B : TimedField Mode) :
             Common.finiteGibbsExpectation (fermionEnergy ε) β
               ((timedFieldOperator ε A).comp (timedFieldOperator ε B)) =
-            timedFieldPairContraction ε β A B := by
-          simp only [timedFieldPairContraction,
-            freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation]
+            grandCanonicalTimedFieldPairContraction ε β 0 A B := by
+          simp only [grandCanonicalTimedFieldPairContraction, sub_zero]
         simp_rw [hpair] at hwick
         simpa only [flatVertexLegPairingEvaluation, Combinatorics.Pairing.evaluation,
           flatVertexLegPairValue, timedFieldOperator_quarticLegFieldForSequence,

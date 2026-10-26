@@ -115,7 +115,10 @@ remains `fermionEnergy ε`. Concrete ensemble-specific Dyson/Wick statements cho
 energy separately; no finite density-state adapter is required by the coefficient expansion.
 The finite `Fermionic.freeGibbsDensityOperator ε β` still covers **all**
 fermionic occupation sectors at implicit `μ = 0`, not a fixed-number canonical state;
-it remains in use for finite contractions and diagrammatic consumers.
+it remains in use for some finite contractions and diagrammatic consumers.
+`grandCanonicalTimedFieldPairContraction ε β μ` uses the generic finite Gibbs functional
+at effective dispersion `ε - μ` with physical imaginary-time fields at `ε`. Existing
+diagrammatic consumers explicitly choose `μ = 0` until their higher-level APIs migrate.
 The finite `Fermionic.grandCanonicalFreeGreenFunction ε β μ` instead uses the generic
 `Common.finiteGibbsExpectation` at `Common.grandCanonicalEnergy ε μ`;
 its imaginary-time field evolution uses physical energies `ε`, while its

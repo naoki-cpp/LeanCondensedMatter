@@ -143,22 +143,22 @@ private theorem fixedExternalOfSlotSplit_mixedPairContractionValue_vacuumNormali
         (σ ∘ slotSplitVacuumSlot T) pr.1.1 pr.1.2 := by
   let d := fixedExternalOfSlotSplit T ext vac
   unfold FixedExternalTwoPointWickDiagram.mixedPairContractionValue
-  rw [orderedQuarticPairValue_eq_freeGibbsDensityOperator_expectation]
-  unfold mixedTimeOrderedAtomicPairValue timedFieldPairContraction
-  change (freeGibbsDensityOperator ε β).expectation
-      (Common.finiteHilbertOperatorAlgEquiv
-        ((mixedTimeOrderedAtomicOperatorFamily ε i j τ τ' d.vertexLabelSequence σ
-            (mixedTimeOrderedQuarticLegMapPosition
-              (slotSplitVacuumSlot T) τ τ' σ pr.1.1)).comp
-          (mixedTimeOrderedAtomicOperatorFamily ε i j τ τ' d.vertexLabelSequence σ
-            (mixedTimeOrderedQuarticLegMapPosition
-              (slotSplitVacuumSlot T) τ τ' σ pr.1.2)))) =
-    (freeGibbsDensityOperator ε β).expectation
-      (Common.finiteHilbertOperatorAlgEquiv
-        ((orderedQuarticLegOperator ε vac (slotSplitVacuumOrder T)
-            (σ ∘ slotSplitVacuumSlot T) pr.1.1).comp
-          (orderedQuarticLegOperator ε vac (slotSplitVacuumOrder T)
-            (σ ∘ slotSplitVacuumSlot T) pr.1.2)))
+  rw [orderedQuarticPairValue_eq_freeGibbsDensityOperator_expectation,
+    freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation]
+  unfold mixedTimeOrderedAtomicPairValue grandCanonicalTimedFieldPairContraction
+  simp only [sub_zero]
+  change Common.finiteGibbsExpectation (fermionEnergy ε) β
+      ((mixedTimeOrderedAtomicOperatorFamily ε i j τ τ' d.vertexLabelSequence σ
+          (mixedTimeOrderedQuarticLegMapPosition
+            (slotSplitVacuumSlot T) τ τ' σ pr.1.1)).comp
+        (mixedTimeOrderedAtomicOperatorFamily ε i j τ τ' d.vertexLabelSequence σ
+          (mixedTimeOrderedQuarticLegMapPosition
+            (slotSplitVacuumSlot T) τ τ' σ pr.1.2))) =
+    Common.finiteGibbsExpectation (fermionEnergy ε) β
+      ((orderedQuarticLegOperator ε vac (slotSplitVacuumOrder T)
+          (σ ∘ slotSplitVacuumSlot T) pr.1.1).comp
+        (orderedQuarticLegOperator ε vac (slotSplitVacuumOrder T)
+          (σ ∘ slotSplitVacuumSlot T) pr.1.2))
   rw [fixedExternalOfSlotSplit_mixedAtomicOperator_vacuumOrderedLeg
       ε T ext vac τ τ' σ pr.1.1,
     fixedExternalOfSlotSplit_mixedAtomicOperator_vacuumOrderedLeg
