@@ -10,8 +10,8 @@ set_option linter.style.header false
 /-!
 # Perturbative two-point series
 
-The order-`n` mixed time-ordered density-state coefficients of `DysonCoefficient.lean` are assembled
-into formal power series in the coupling. The connected coefficient is owned by the integration
+The order-`n` mixed time-ordered explicit-μ Gibbs coefficients of `DysonCoefficient.lean`
+are assembled into formal power series in the coupling. The connected coefficient is owned by the integration
 layer; this module only packages coefficient-level data into formal power series and performs
 partition-function normalization.
 -/
@@ -21,12 +21,12 @@ namespace Fermionic
 
 variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
 
-/-- **The perturbative two-point series**, in the mixed time-ordered density-state presentation. -/
-noncomputable def twoPointDysonSeries (ε : Mode → ℝ) (β : ℝ)
+/-- **The explicit-μ perturbative two-point series** of mixed time-ordered finite Gibbs expectations. -/
+noncomputable def twoPointDysonSeries (ε : Mode → ℝ) (β μ : ℝ)
     (g : QuarticVertexLabel Mode → ℂ) (i j : Mode) (τ τ' : ℝ) : PowerSeries ℂ :=
-  PowerSeries.mk fun n => twoPointDysonCoefficient (n := n) ε β g i j τ τ'
+  PowerSeries.mk fun n => twoPointDysonCoefficient (n := n) ε β μ g i j τ τ'
 
-/-- **The partition-function-normalized two-point series**: the two-point series divided by the partition series
+/-- **The μ = 0 partition-function-normalized two-point series**: the two-point series divided by the partition series
 of the same interaction, normalized to constant coefficient one.
 
 The division is by the *normalized* partition series because the two-point coefficients are already
@@ -34,7 +34,7 @@ free Gibbs **expectations** — the free partition function has been divided out
 only the interacting vacuum contributions remain to be cancelled. -/
 noncomputable def partitionFunctionNormalizedTwoPointDysonSeries (ε : Mode → ℝ) (β : ℝ)
     (g : QuarticVertexLabel Mode → ℂ) (i j : Mode) (τ τ' : ℝ) : PowerSeries ℂ :=
-  twoPointDysonSeries ε β g i j τ τ' *
+  twoPointDysonSeries ε β 0 g i j τ τ' *
     (PowerSeries.normalizeByConstantCoeff
       (Common.dysonTraceSeries (fermionEnergy ε) β (quarticInteraction g)))⁻¹
 

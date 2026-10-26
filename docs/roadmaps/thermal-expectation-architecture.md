@@ -115,7 +115,12 @@ remains `fermionEnergy ε`.
 The external-insertion mixed-atomic and interaction-picture vertex Dyson coefficient APIs
 accept explicit μ and evaluate directly via `Common.finiteGibbsExpectation` at
 `fermionEnergy (ε - μ)`, while existing diagrammatic and vacuum-factorization theorems
-remain explicitly restricted to μ = 0 until the full diagrammatic API migrates. Concrete ensemble-specific Dyson/Wick statements choose the Gibbs
+remain explicitly restricted to μ = 0 until the full diagrammatic API migrates.
+The finite two-point operator Dyson coefficient and its unnormalized formal series now
+also use explicit μ through the generic finite Gibbs expectation. Their current
+identities with Wick diagrams, connected components and normalized partition series
+remain explicitly specialized to μ = 0; nonzero-μ linked-cluster factorization
+requires migrating the diagram-side amplitudes and partition trace together. Concrete ensemble-specific Dyson/Wick statements choose the Gibbs
 energy separately; no finite density-state adapter is required by the coefficient expansion.
 The finite `Fermionic.freeGibbsDensityOperator ε β` still covers **all**
 fermionic occupation sectors at implicit `μ = 0`, not a fixed-number canonical state;
