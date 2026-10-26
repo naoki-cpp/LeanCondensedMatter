@@ -103,21 +103,10 @@ theorem grandCanonicalGibbsDensityOperator_expectation_eq_tsum_sector
       (ρ.hasSum_expectation_diagonal A
         (completedHilbertBasis (Config := Config))
         (eigenbasisGibbsProbability (grandCanonicalEnergy ε μ) β) hdiag)
-  let e : (Σ N : ℕ, ParticleNumberSector Mode Config N) ≃ Config :=
-    Equiv.sigmaFiberEquiv (particleNumber (Mode := Mode) (Config := Config))
-  have hfiber :
-      Summable (fun x : Σ N : ℕ, ParticleNumberSector Mode Config N => f (e x)) :=
-    hfull.summable.comp_injective e.injective
-  calc
-    ρ.expectation A = ∑' c : Config, f c := hfull.tsum_eq.symm
-    _ = ∑' x : Σ N : ℕ, ParticleNumberSector Mode Config N, f (e x) :=
-      (e.tsum_eq _).symm
-    _ = ∑' N : ℕ, ∑' n : ParticleNumberSector Mode Config N, f n.val := by
-      rw [hfiber.tsum_sigma]
-      simp only [e, Equiv.sigmaFiberEquiv_apply]
-    _ = ∑' N : ℕ, ∑' n : ParticleNumberSector Mode Config N,
-          (eigenbasisGibbsProbability (grandCanonicalEnergy ε μ) β n.val : ℂ) *
-            inner ℂ (completedBasisState n.val) (A (completedBasisState n.val)) := rfl
+  change ρ.expectation A =
+    ∑' N : ℕ, ∑' n : ParticleNumberSector Mode Config N, f n.val
+  exact (hfull.tsum_fiberwise
+    (particleNumber (Mode := Mode) (Config := Config))).tsum_eq.symm
 
 /-- On a nonempty sharp-number sector, the unnormalized contribution to any
 bounded grand-canonical expectation equals its probability times the
