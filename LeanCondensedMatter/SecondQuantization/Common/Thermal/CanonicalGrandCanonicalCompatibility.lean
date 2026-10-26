@@ -28,8 +28,8 @@ variable {Mode Config : Type*} [OccupationBasis Mode Config]
 
 /-- A particle-number compression of the grand-canonical density equals the
 full-Fock zero extension of the canonical density scaled by the probability
-of that sector. These are equalities of bounded operators, not of normalized
-density operators. No number-conservation condition on an observable is needed. -/
+of that sector. This is an equality of bounded operators; the compressed
+operator is generally unnormalized and is not itself a density state. -/
 theorem grandCanonicalGibbsDensityOperator_compress_sector
     (ε : Mode → ℝ) (β μ : ℝ) (N : ℕ)
     [Nonempty (ParticleNumberSector Mode Config N)]
