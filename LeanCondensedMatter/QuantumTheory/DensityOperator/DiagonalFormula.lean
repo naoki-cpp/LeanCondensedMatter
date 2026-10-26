@@ -117,7 +117,7 @@ theorem DensityOperator.continuous_expectation_of_diagonal
       _ ≤ ‖b i‖ * (‖F t‖ * ‖b i‖) :=
         mul_le_mul_of_nonneg_left ((F t).le_opNorm _) (norm_nonneg _)
       _ ≤ C := by simpa only [hnorm, one_mul, mul_one] using hbound t
-  simpa only [norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg hw] using
+  simpa only [Pi.mul_apply, norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg hw] using
     mul_le_mul_of_nonneg_left hdiag hw
 
 /-- A nonnegative diagonal weight of a density operator is at most one. -/
