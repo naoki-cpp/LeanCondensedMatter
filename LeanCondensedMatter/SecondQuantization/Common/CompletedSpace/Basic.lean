@@ -172,12 +172,10 @@ theorem completedProduct_comp_algebraicToCompleted_of_core
     (fun f : AlgebraicFock Config →ₗ[ℂ] CompletedFock Config => f x) hU
   have hTBx := congrArg
     (fun f : AlgebraicFock Config →ₗ[ℂ] CompletedFock Config => f (B x)) hT
-  calc
-    T (U (algebraicToCompleted x)) = T (algebraicToCompleted (B x)) := by
-      simpa [algebraicToCompleted, ContinuousLinearMap.toLinearMap] using
-        congrArg T hUx
-    _ = algebraicToCompleted (A (B x)) := by
-      simpa [algebraicToCompleted, ContinuousLinearMap.toLinearMap] using hTBx
+  change U (algebraicToCompleted x) = algebraicToCompleted (B x) at hUx
+  change T (algebraicToCompleted (B x)) =
+    algebraicToCompleted (A (B x)) at hTBx
+  exact (congrArg T hUx).trans hTBx
 
 
 end
