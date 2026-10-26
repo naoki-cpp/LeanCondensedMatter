@@ -107,7 +107,7 @@ theorem finiteGrandCanonicalGibbsDensityOperator_expectation_finiteSecondQuantiz
           (completedAnnihilate_comp_algebraicToCompleted j)))
   conv_lhs => rw [hB]
   simp only [map_sum, map_smul, hunit]
-  simpa only [map_sum, map_smul, Finset.sum_univ, sub_zero] using
+  simpa only [map_sum, map_smul, sub_zero] using
     (grandCanonicalGibbsDensityOperator_expectation_sum_create_comp_annihilate
       ξ β 0 hsum Finset.univ (fun i j => (B (latticeKet j)) i))
 
