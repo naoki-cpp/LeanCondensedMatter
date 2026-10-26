@@ -155,6 +155,9 @@ theorem canonicalFullGibbsDensityOperator_expectation_eq_tsum_sector
           inner ℂ (completedBasisState n.val) (A (completedBasisState n.val)) =
         (w n.val : ℂ) *
           inner ℂ (completedBasisState n.val) (A (completedBasisState n.val))
+      change _ =
+        (Real.normalizedWeight (canonicalFullGibbsWeight ε β N) n.val : ℂ) *
+          inner ℂ (completedBasisState n.val) (A (completedBasisState n.val))
       rw [normalizedWeight_canonicalFullGibbsWeight_apply_sector ε β N hsum n]
     · have hnot : ¬ ∃ n : ParticleNumberSector Mode Config N, n.val = c := by
         rintro ⟨n, hn⟩
