@@ -102,7 +102,7 @@ theorem finiteGrandCanonicalGibbsDensityOperator_expectation_finiteSecondQuantiz
     have hξ : Common.grandCanonicalEnergy (Config := Occupation Mode) ξ 0 =
         fermionEnergy ξ := by
       funext n
-      simpa only [sub_zero] using Common.grandCanonicalEnergy_eq_shifted ξ 0 n
+      simpa only [sub_zero, fermionEnergy] using Common.grandCanonicalEnergy_eq_shifted ξ 0 n
     simpa [ρ, Common.gibbsExpectation, Common.finiteGibbsExpectation,
       Common.finiteGibbsExpectationLinearMap, Common.grandCanonicalGibbsDensityOperator,
       freeGibbsDensityOperator, hξ] using
