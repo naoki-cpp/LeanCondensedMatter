@@ -4,6 +4,7 @@ import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.Canonical
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.Gibbs
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.CanonicalGrandCanonicalCompatibility
 import Mathlib.Tactic.Module
+import Mathlib.Tactic.FieldSimp
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.ExpectationRecursion
 
 set_option linter.style.header false
@@ -520,6 +521,30 @@ theorem grandCanonicalGibbsDensityOperator_expectation_pair
     CompletedThermalLadder.operatorProduct_nil,
     ContinuousLinearMap.comp_id] using
       (CompletedThermalLadder.grandCanonicalGibbsExpectation_pair_eq ε β μ hsum C D)
+
+/-- A bounded creation-annihilation bilinear has the diagonal Fermi--Dirac mean in the completed
+normal Gibbs state. The mode type may be infinite and the chemical potential is explicit. -/
+theorem grandCanonicalGibbsDensityOperator_expectation_create_comp_annihilate
+    (ε : Mode → ℝ) (β μ : ℝ) (hsum : EigenbasisGibbsSummable
+      (Common.grandCanonicalEnergy (Config := Occupation Mode) ε μ) β)
+    (i j : Mode) :
+    (Common.grandCanonicalGibbsDensityOperator
+      (Config := Occupation Mode) ε β μ hsum).expectation
+        ((completedCreate j).comp (completedAnnihilate i)) =
+      if i = j then 1 / (Complex.exp ((β : ℂ) * ((ε i - μ : ℝ) : ℂ)) + 1) else 0 := by
+  have hpair := grandCanonicalGibbsDensityOperator_expectation_pair ε β μ hsum
+    (CompletedThermalLadder.create j) (CompletedThermalLadder.annihilate i)
+  simp only [CompletedThermalLadder.gibbsFactor_create,
+    CompletedThermalLadder.anticommutatorValue] at hpair
+  rw [hpair]
+  by_cases hij : i = j
+  · subst j
+    simp only [ite_true, mul_one]
+    rw [show -(β : ℂ) * ((ε i - μ : ℝ) : ℂ) =
+      -((β : ℂ) * ((ε i - μ : ℝ) : ℂ)) by ring, Complex.exp_neg]
+    have hne := Complex.exp_ne_zero ((β : ℂ) * ((ε i - μ : ℝ) : ℂ))
+    field_simp
+  · simp [hij, Ne.symm hij]
 
 /-- Fermi--Dirac occupation of one mode in the completed grand-canonical free
 Gibbs state, for an arbitrary (possibly infinite) ordered mode type.

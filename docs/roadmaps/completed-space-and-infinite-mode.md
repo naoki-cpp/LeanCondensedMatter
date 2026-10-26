@@ -50,6 +50,8 @@ The completed free-fermion route includes:
   partition-product identity;
 - bounded thermal ladder packaging, Gibbs intertwining and KMS rotation with factors
   `exp(±β(εᵢ - μ))`, CAR peel, and the completed Bloch--de Dominicis recursion;
+- finite mode-supported sums of bounded creation-annihilation bilinears with their
+  Fermi-weighted diagonal Gibbs means, owned by `Fermionic.Thermal.OneBodyExpectation`;
 - finite-mode Gibbs truncations at explicit `μ` and convergence of bounded-observable expectations
   to the completed grand-canonical Gibbs expectation.
 
@@ -58,6 +60,13 @@ trace-norm convergence theorem. For finite fermionic mode sets, the completed gr
 is intertwined with the finite Gibbs density under `Common.completedFiniteHilbertEquiv`;
 the finite density expectation is the `Common.summableDiagonalTraceRatioLinear` of #4074.
 This finite bridge does not extend to a trace-ratio identification for arbitrary completed operators.
+
+The finite second-quantization expectation in `Thermal.OneBodyExpectation` consumes the same
+completed finite-sum theorem through the existing algebraic-core expectation bridge. The full mode
+type need not be finite for the completed theorem: only the observable's specified mode support
+is finite. This is not yet the general finite-rank formula, because a finite-rank one-particle
+operator can have vectors with infinite support in the chosen mode basis. Arbitrary one-body
+observables and unbounded `dΓ(A)` still require their own realization and integrability conditions.
 
 ## Completed bosonic free thermal representation
 
