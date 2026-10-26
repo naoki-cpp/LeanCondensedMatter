@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Transport.Analysis.ContinuumMeasure
-import LeanCondensedMatter.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderHallZeroBroadeningIntegral
+import LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.HallZeroBroadeningIntegral
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningLadderZeroBroadeningTransverseWeakDisorder
 import Mathlib.Tactic
 

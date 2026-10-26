@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Models.MassiveDirac.Streda.FiniteBroadeningBornLadder
+import LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.TraceBridge
 import Mathlib.Tactic
 
 set_option linter.style.header false
