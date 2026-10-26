@@ -23,43 +23,6 @@ noncomputable section
 
 variable {Mode : Type*} [LinearOrder Mode]
 
-private theorem star_matrixCoeff_create_eq_matrixCoeff_annihilate
-    (i : Mode) (m n : Occupation Mode) :
-    star (Common.matrixCoeff (create i) n m) =
-      Common.matrixCoeff (annihilate i) m n := by
-  rw [matrixCoeff_create, matrixCoeff_annihilate]
-  by_cases hm : i ∈ m
-  · by_cases hn : i ∈ n
-    · have hne : m ≠ removeOccupation i n := by
-        intro h
-        have hnot : i ∉ removeOccupation i n := by
-          simp [removeOccupation]
-        rw [← h] at hnot
-        exact hnot hm
-      simp [hm, hne]
-    · simp [hm, hn]
-  · by_cases hn : i ∈ n
-    · by_cases hnm : n = insertOccupation i m
-      · subst n
-        have hremove : removeOccupation i (insertOccupation i m) = m := by
-          simp [removeOccupation, insertOccupation, hm]
-        have hi : i ∈ insertOccupation i m := by
-          simp [insertOccupation]
-        rw [ite_eq_left rfl, ite_eq_right hm, hremove, ite_eq_left rfl,
-          ite_eq_left hi, fermionSign_insertOccupation_of_not_lt (lt_irrefl i)]
-        simp
-      · have hremove : m ≠ removeOccupation i n := by
-          intro hmr
-          apply hnm
-          rw [hmr, insertOccupation, removeOccupation, Finset.insert_erase hn]
-        simp [hnm, hremove]
-    · have hne : n ≠ insertOccupation i m := by
-        intro h
-        have hi : i ∈ insertOccupation i m := Finset.mem_insert_self i m
-        rw [← h] at hi
-        exact hn hi
-      simp [hn, hne]
-
 section Finite
 
 variable [Fintype Mode]

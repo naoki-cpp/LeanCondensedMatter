@@ -24,6 +24,21 @@ SecondQuantization.Fermionic.CompletedFockSpace Mode
 
 Uniformly bounded coordinatewise scalar multiplication uses Mathlib `lp.mapCLM`, specialized locally
 to completed-space diagonal operators.
+
+`Fermionic.CompletedSpace.SmearedField` extends finite linear combinations of the existing
+mode creation operators to all square-summable one-particle mode coefficients. The CAR bound
+`‖c†(v)‖ ≤ ‖v‖₂` supplies the hypothesis for Mathlib's `LinearMap.extendOfNorm`; the algebraic
+inclusion has dense range. Mode-basis coefficients recover the existing creation operators.
+`star_completedCreate` identifies the completed mode operators as Hilbert adjoints using the
+same conjugate-transpose coefficient theorem as the finite realization. Annihilation of a
+general coefficient vector is the adjoint of its bounded creation field.
+
+This field construction is a prerequisite, not yet the general unitary Fock lift. Extending
+CAR and vacuum identities to the new fields and constructing the induced Fock isometry remain
+separate obligations. In the pinned Mathlib revision, `Analysis.InnerProductSpace.ExteriorPower`
+provides a Hilbert structure only for real, finite-dimensional exterior powers; it cannot directly
+supply the complex infinite-dimensional construction needed here. A Hilbert basis in an infinite
+one-particle space must not be substituted for a finite-support algebraic basis.
 For a diagonal algebraic Fock operator, a continuous extension to the completed space exists
 **if and only if its complex diagonal weights are uniformly bounded**. The general theorem
 `exists_bounded_diagonal_extension_iff` needs no `Finite` or `Fintype` hypothesis;
