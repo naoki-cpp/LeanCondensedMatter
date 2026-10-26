@@ -133,9 +133,10 @@ theorem dysonVertexMoment_quarticInteraction_eq_sum_vertexLabel_pairingEvaluatio
         rw [← prod_ofFn_quarticLegOperatorForSequence_eq_quarticVertexSequenceInteractionPicture]
         simpa only [flatVertexLegPairingEvaluation, Combinatorics.Pairing.evaluation,
           flatVertexLegPairValue, timedFieldOperator_quarticLegFieldForSequence,
-          freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation] using
-          (freeGibbsDensityOperator_expectation_prod_timedFieldOperator_eq_sum_pairing
-            ε β (2 * S.card) (quarticLegFieldForSequence q τ))
+          freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation,
+          sub_zero] using
+          (grandCanonicalGibbsExpectation_prod_timedFieldOperator_eq_sum_pairing
+            ε β 0 (2 * S.card) (quarticLegFieldForSequence q τ))
       rw [intervalIntegral.orderedSimplexIntegral_congr hpoint,
         intervalIntegral.orderedSimplexIntegral_finsetSum _ S.card β _
           (fun pairing _ => continuous_flatVertexLegPairingEvaluation ε β q pairing)]

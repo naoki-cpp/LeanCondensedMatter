@@ -131,10 +131,12 @@ theorem sum_fixedExternalInsertionWickDiagram_fixedTimeAmplitude_eq_mixedAtomicE
           pairing.evaluation (pairing.weight Common.Statistics.fermion)
             (externalInsertionMixedTimeOrderedAtomicPairValue ε β
               externalLabel externalTime q σ) := by
-    exact freeGibbsDensityOperator_expectation_prod_timedFieldOperator_eq_sum_pairing
-      ε β (2 * n + E)
-      (externalInsertionMixedTimeOrderedAtomicFieldFamily
-        externalLabel externalTime q σ)
+    simpa only [sub_zero, timedFieldPairContraction,
+        freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation] using
+      (grandCanonicalGibbsExpectation_prod_timedFieldOperator_eq_sum_pairing
+        ε β 0 (2 * n + E)
+        (externalInsertionMixedTimeOrderedAtomicFieldFamily
+          externalLabel externalTime q σ))
   calc
     _ = ∑ x : (Fin n → QuarticVertexLabel Mode) × Pairing (2 * n + E), F x :=
       hreindex
