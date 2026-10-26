@@ -1,4 +1,6 @@
-import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsContraction
+import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.BlochDeDominicis
+import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.FiniteGibbsExpectationCompatibility
+import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.Core
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.GrandCanonical
 import LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.BoundedEvolution
 import LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.RankOneSecondQuantization
@@ -6,7 +8,11 @@ import LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.RankOneSecondQua
 set_option linter.style.header false
 
 /-!
-# Free thermal expectation of finite second quantization
+# Free thermal expectation of one-body observables
+
+Finite sums of completed creation-annihilation bilinears are bounded even when the mode type is
+infinite. Their completed Gibbs mean uses the existing thermal two-point theorem. The finite
+second-quantization formula is transported from this same completed finite-sum expectation.
 
 The energies `ε` are diagonal in the specified mode basis. For the finite full-Fock
 state with grand-canonical energy `E - μ N`, the expectation of `dΓ(A)` is the sum
@@ -24,7 +30,26 @@ attribute [local instance 100] LieRing.ofAssociativeRing
 
 noncomputable section
 
-variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
+variable {Mode : Type*} [LinearOrder Mode]
+
+/-- A one-body observable supported on finitely many specified modes has the Fermi-weighted
+diagonal mean. The full mode type and completed Fock space need not be finite. This statement
+does not extend to arbitrary finite-rank one-particle operators with infinitely supported vectors. -/
+theorem grandCanonicalGibbsDensityOperator_expectation_sum_create_comp_annihilate
+    (ε : Mode → ℝ) (β μ : ℝ) (hsum : QuantumTheory.EigenbasisGibbsSummable
+      (Common.grandCanonicalEnergy (Config := Occupation Mode) ε μ) β)
+    (s : Finset Mode) (a : Mode → Mode → ℂ) :
+    (Common.grandCanonicalGibbsDensityOperator (Config := Occupation Mode) ε β μ hsum).expectation
+        (∑ i ∈ s, ∑ j ∈ s, a i j • (completedCreate i).comp (completedAnnihilate j)) =
+      ∑ i ∈ s, a i i * (1 / (Complex.exp ((β : ℂ) * ((ε i - μ : ℝ) : ℂ)) + 1)) := by
+  classical
+  simp only [map_sum, map_smul,
+    grandCanonicalGibbsDensityOperator_expectation_create_comp_annihilate, smul_eq_mul]
+  apply Finset.sum_congr rfl
+  intro i hi
+  simp [mul_ite, hi]
+
+variable [Fintype Mode]
 
 /-- In an energy mode basis, the free Gibbs mean of a second-quantized observable is its
 one-particle diagonal weighted by the Fermi–Dirac occupations. The inverse coordinate
@@ -60,20 +85,31 @@ theorem finiteGrandCanonicalGibbsDensityOperator_expectation_finiteSecondQuantiz
     ext i
     simp [LinearMap.sum_apply, Finsupp.finsetSum_apply, matrixUnit_apply, latticeKet,
       Finsupp.single_apply]
+  let hsum := QuantumTheory.eigenbasisGibbsSummable_of_finite
+    (Common.grandCanonicalEnergy (Config := Occupation Mode) ξ 0) β
+  let ρ := Common.grandCanonicalGibbsDensityOperator (Config := Occupation Mode) ξ β 0 hsum
   have hunit (i j : Mode) :
       (freeGibbsDensityOperator ξ β).expectation
           (boundedOneBodyOperator (matrixUnit i j)) =
-        if j = i then 1 / (Complex.exp ((β : ℂ) * (ξ j : ℂ)) + 1) else 0 := by
+        ρ.expectation ((completedCreate i).comp (completedAnnihilate j)) := by
     change (freeGibbsDensityOperator ξ β).expectation
       (Common.finiteHilbertOperatorAlgEquiv
         (AlgebraicFock.occupationConjugate
           (Finsupp.basisSingleOne : Module.Basis Mode ℂ (Mode →₀ ℂ))
           (AlgebraicFock.dGamma ((Mode →₀ ℂ)) (matrixUnit i j)))) = _
-    rw [occupationConjugate_dGamma_matrixUnit,
-      freeGibbsDensityOperator_expectation_create_comp_annihilate]
+    rw [occupationConjugate_dGamma_matrixUnit]
+    simpa only [sub_zero] using
+      (freeGibbsExpectation_eq_completed_of_algebraicCore ξ β 0
+        ((create i).comp (annihilate j)) ((completedCreate i).comp (completedAnnihilate j))
+        (Common.completedProduct_comp_algebraicToCompleted_of_core
+          (create i) (annihilate j) (completedCreate i) (completedAnnihilate j)
+          (completedCreate_comp_algebraicToCompleted i)
+          (completedAnnihilate_comp_algebraicToCompleted j)))
   conv_lhs => rw [hB]
-  simp only [map_sum, map_smul, hunit, smul_eq_mul]
-  simp [mul_ite]
+  simp only [map_sum, map_smul, hunit]
+  simpa only [map_sum, map_smul, sub_zero] using
+    (grandCanonicalGibbsDensityOperator_expectation_sum_create_comp_annihilate
+      ξ β 0 hsum Finset.univ (fun i j => (B (latticeKet j)) i))
 
 end
 end SecondQuantization.Fermionic

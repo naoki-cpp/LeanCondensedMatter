@@ -1,7 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.BlochDeDominicis
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.FiniteGibbsExpectationCompatibility
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsDensityOperator
-import Mathlib.Tactic.FieldSimp
 
 set_option linter.style.header false
 
@@ -57,22 +56,10 @@ theorem freeGibbsDensityOperator_expectation_create_comp_annihilate
         (create j) (annihilate i) (completedCreate j) (completedAnnihilate i)
         (completedCreate_comp_algebraicToCompleted j)
         (completedAnnihilate_comp_algebraicToCompleted i))
-  have hpair := hbridge.trans (grandCanonicalGibbsDensityOperator_expectation_pair ε β 0
-    (eigenbasisGibbsSummable_of_finite
-      (Common.grandCanonicalEnergy (Config := Occupation Mode) ε 0) β)
-    (CompletedThermalLadder.create j) (CompletedThermalLadder.annihilate i))
-  simp only [sub_zero, CompletedThermalLadder.gibbsFactor_create,
-    CompletedThermalLadder.anticommutatorValue] at hpair
-  rw [hpair]
-  by_cases hij : i = j
-  · subst j
-    simp only [ite_true, mul_one]
-    have hne : Complex.exp ((β : ℂ) * (ε i : ℂ)) ≠ 0 := Complex.exp_ne_zero _
-    rw [show -(β : ℂ) * (ε i : ℂ) = -((β : ℂ) * (ε i : ℂ)) by ring,
-      Complex.exp_neg]
-    field_simp
-  · have hji : j ≠ i := Ne.symm hij
-    simp [hij, hji]
+  simpa only [sub_zero] using hbridge.trans
+    (grandCanonicalGibbsDensityOperator_expectation_create_comp_annihilate ε β 0
+      (eigenbasisGibbsSummable_of_finite
+        (Common.grandCanonicalEnergy (Config := Occupation Mode) ε 0) β) i j)
 
 /-- **Anomalous contractions vanish.** The free Gibbs state is diagonal in the occupation basis, so
 the expectation of two annihilation operators is zero: a contraction always pairs a creation
