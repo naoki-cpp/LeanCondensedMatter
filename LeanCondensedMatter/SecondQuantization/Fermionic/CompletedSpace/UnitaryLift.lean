@@ -55,8 +55,9 @@ theorem completedExterior_create (v : Common.CompletedFock Mode)
   change completedExteriorRepresentation (ExteriorAlgebra.ι ℂ v)
     (completedExterior x) = _
   rw [show completedExteriorRepresentation (ExteriorAlgebra.ι ℂ v) =
-    completedCreateField v from ExteriorAlgebra.lift_ι_apply _ _ v]
+    completedCreateField v from ExteriorAlgebra.lift_ι_apply ℂ _ _ v]
 
+omit [LinearOrder Mode] in
 private theorem annihilate_scalar (v : Common.CompletedFock Mode) (a : ℂ) :
     AlgebraicFock.annihilate _ v
       (algebraMap ℂ (AlgebraicFock (Common.CompletedFock Mode)) a) = 0 := by
@@ -163,6 +164,9 @@ private theorem completedExterior_denseRange :
       Common.algebraicToCompleted (Config := Occupation Mode) := by
     apply Common.linearMap_ext_basisState
     intro n
+    change completedExterior (L (Common.basisState n)) =
+      Common.algebraicToCompleted (Common.basisState n)
+    rw [Common.algebraicToCompleted_basisState]
     simpa [L, Common.basisState, completedBasisState] using hp n
   have hsubset : Set.range (Common.algebraicToCompleted (Config := Occupation Mode)) ⊆
       Set.range (completedExterior (Mode := Mode)) := by
