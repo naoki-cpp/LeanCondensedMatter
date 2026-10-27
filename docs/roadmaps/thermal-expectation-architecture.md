@@ -109,7 +109,13 @@ to an unbounded number operator.
 
 Trace-norm convergence of the sector mixture, sector-probability conservation
 under specified open-system dynamics, and relative-entropy/thermalization results
-remain separate questions.
+remain separate questions. A fixed mean particle number `⟨N̂⟩` does not determine
+a sharp-number sector or the complete sector distribution `p_N`. Likewise,
+`[H, N̂] = 0` conserves the sector probabilities under unitary evolution, but
+does not by itself imply relaxation to a canonical Gibbs state. Conservation
+of each `p_N` under open dynamics requires that the dynamics preserve the
+corresponding number-sector projectors; thermalization within those sectors
+requires additional dynamical assumptions.
 
 ## Generic pairing recursion
 
@@ -172,11 +178,10 @@ at explicit chemical potential. The older
 finite `freeBoltzmannWeight` and `freePartitionFunction` specializations are removed in
 the #3986 partition migration: generic coordinate weights are
 `Common.boltzmannWeight`, and the physical full-Fock partition is
-`Common.grandCanonicalPartitionFunction ε β μ`. The finite fermionic product theorem
-accepts explicit `μ`. Migrating the remaining finite density/observable consumers requires
-staged changes without compatibility aliases or a second density constructor.
-The finite density-state specialization depends directly on `fermionEnergy` and the generic pure-point state;
-finite complex Boltzmann coordinates are a separate proof/perturbation lane.
+`Common.grandCanonicalPartitionFunction ε β μ`. The finite fermionic product theorem accepts explicit `μ`. The previous finite
+implicit-μ density constructor and its consumer-specific expectation bridge have been
+removed. Finite density-state expectations use the generic pure-point Gibbs state
+directly; finite complex Boltzmann coordinates remain a separate proof/perturbation lane.
 
 `Fermionic.Thermal.FreeEntropy` uses the full-occupation grand-canonical one-body
 expectation, not a sharp-number canonical expectation, to derive finite mean-energy
@@ -284,14 +289,22 @@ independent of the ensemble: the operator algebra and the chosen state are separ
 appropriate physical state constructors and their genuinely ensemble-dependent expectations.
 Do not thread either parameter through formal Dyson coefficients, generic pairing
 combinatorics, abstract connected correlations, or cumulant inversion. The grand-canonical
-KMS evolution uses `H - μ N̂` on its specified observable algebra; fixed-`N` states require
-a separate analysis of the number-preserving algebra and higher cumulants. A finite-mode
-bosonic Fock occupation type is still infinite, so a finite-configuration theorem never
-justifies omitting its summability hypotheses.
+KMS rotation uses the effective Gibbs generator `K = H - μ N̂`, whereas
+the physical imaginary-time field and Dyson evolution used here is generated
+by `H`. A sharp-`N` canonical state is not generally KMS for charged
+creation/annihilation fields on the full field algebra; any KMS assertion
+restricted to the number-preserving subalgebra needs its own domain and
+hypotheses. Such restricted KMS conditions do not determine the sector
+weights `p_N` or imply thermalization. A finite-mode bosonic Fock occupation
+type is still infinite, so a finite-configuration theorem never justifies
+omitting its summability hypotheses.
 
-This audit records **module ownership**, not completion of the fixed-`N` or `μ`-dependent
-state construction. Those constructions, their full consumer migration, and their physical
-verification remain open in #3986.
+The fixed-`N` canonical and explicit-`μ` grand-canonical state constructions and
+migration of their legacy implicit-`μ = 0` finite-fermion and bosonic free-field
+adapters are implemented. The remaining **nonzero-`μ` diagrammatic
+linked-cluster factorization**, sharp-sector dynamical/KMS questions, and
+interacting or infinite-volume limits require separate theorems; they are not
+consequences of the completed API migration.
 
 ## Open work
 

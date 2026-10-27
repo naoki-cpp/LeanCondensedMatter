@@ -16,7 +16,9 @@ Finite-basis and completed-Hilbert free-fermion thermal theory, including generi
 Gibbs expectations, the shared explicit-μ grand-canonical partition function and its finite-mode
 product formula, Fermi--Dirac observables, entropy, and Green functions and contractions. Completed
 thermal theory includes grand-canonical number expectation, ladder/KMS/pairing, and finite-mode
-Gibbs convergence. The separate finite density-state API still has implicit μ = 0 pending migration.
+Gibbs convergence. Finite full-occupation Gibbs expectations and density operators now use
+shared explicit-μ grand-canonical and generic pure-point APIs; there is no separate
+implicit-μ fermionic density constructor.
 
 Completed thermal modules depend on the representation and operator infrastructure in
 `Fermionic.CompletedSpace`; the representation umbrella does not own the thermal stack.

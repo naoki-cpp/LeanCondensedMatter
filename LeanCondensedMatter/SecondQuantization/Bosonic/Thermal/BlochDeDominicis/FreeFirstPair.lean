@@ -68,7 +68,7 @@ theorem grandCanonicalGibbsExpectation_cons_eq_kmsRatio_mul_operatorPeelSum
     change grandCanonicalGibbsExpectation ε β μ (C.operator.comp (orderedProduct l)) =
       C.kmsFactor (fun i => ε i - μ) β *
         grandCanonicalGibbsExpectation ε β μ ((orderedProduct l).comp C.operator)
-    exact C.freeGibbsExpectation_operator_comp_rotate ε β μ (orderedProduct l)
+    exact C.grandCanonicalGibbsExpectation_operator_comp_rotate ε β μ (orderedProduct l)
   have hden : C.kmsFactor (fun i => ε i - μ) β - 1 ≠ 0 := by
     apply sub_ne_zero.mpr
     cases C with
