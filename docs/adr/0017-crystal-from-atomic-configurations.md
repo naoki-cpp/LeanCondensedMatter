@@ -12,6 +12,14 @@ Use the full species-preserving symmetry group as the space-symmetry group. The 
 
 Reuse Mathlib's affine/isometry, group-action, subgroup/quotient, and lattice structures. Add project-specific abstractions only when they carry mathematical content beyond those canonical structures.
 
+Lattice geometry and atomic-configuration classification have separate owners.
+[Gram matrices and lattice automorphisms](../../LeanCondensedMatter/Crystal/LatticePointGroup/Gram.lean),
+[planar basis reduction](../../LeanCondensedMatter/Crystal/LatticePointGroup/PlanarReduction.lean), and
+[planar Gram constraints](../../LeanCondensedMatter/Crystal/LatticePointGroup/PlanarGram.lean)
+describe the lattice itself. [Classification](../../LeanCondensedMatter/Crystal/Classification.lean)
+owns the configuration point group's integral representation and crystallographic restriction.
+Import the owner needed by a consumer; the `Crystal` umbrella groups these related APIs.
+
 Evidence: [atomic configuration](../../LeanCondensedMatter/Crystal/AtomicConfiguration.lean), [symmetries](../../LeanCondensedMatter/Crystal/Symmetry.lean), [translations](../../LeanCondensedMatter/Crystal/Translation.lean), [periodicity and finite motifs](../../LeanCondensedMatter/Crystal/Periodicity.lean), [physical reciprocal lattice](../../LeanCondensedMatter/Crystal/Lattice.lean), [Brillouin quotient](../../LeanCondensedMatter/Crystal/Brillouin.lean), and [point group](../../LeanCondensedMatter/Crystal/PointGroup.lean).
 
 
