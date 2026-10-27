@@ -118658,7 +118658,8 @@
       "SecondQuantization.Fermionic.completedCreate_comp_algebraicToCompleted",
       "SecondQuantization.Fermionic.star_completedCreate",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.Ladder.0.SecondQuantization.Bosonic.algebraicToCompleted_basisState'",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.Diagonal.0.SecondQuantization.Common.norm_weight_le_of_bounded_diagonal_extension"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.Diagonal.0.SecondQuantization.Common.norm_weight_le_of_bounded_diagonal_extension",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.UnitaryLift.0.SecondQuantization.Fermionic.completedExterior_denseRange"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
@@ -118675,9 +118676,10 @@
       "SecondQuantization.Fermionic.completedCreate_comp_algebraicToCompleted",
       "SecondQuantization.Fermionic.star_completedCreate",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.Ladder.0.SecondQuantization.Bosonic.algebraicToCompleted_basisState'",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.Diagonal.0.SecondQuantization.Common.norm_weight_le_of_bounded_diagonal_extension"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.Diagonal.0.SecondQuantization.Common.norm_weight_le_of_bounded_diagonal_extension",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.UnitaryLift.0.SecondQuantization.Fermionic.completedExterior_denseRange"
     ],
-    "compiledConsumerCount": 12,
+    "compiledConsumerCount": 13,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -118720,7 +118722,8 @@
       "SecondQuantization.Fermionic.completedAnticomm_adjoint_createField",
       "SecondQuantization.Fermionic.completedAnticomm_createField_createField",
       "SecondQuantization.Fermionic.completedCreateField_algebraicToCompleted",
-      "SecondQuantization.Fermionic.norm_completedCreateField_le"
+      "SecondQuantization.Fermionic.norm_completedCreateField_le",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.UnitaryLift.0.SecondQuantization.Fermionic.completedExterior_denseRange"
     ],
     "dependencies": [
       "SecondQuantization.Common.algebraicToCompleted_basisState"
@@ -118737,9 +118740,10 @@
       "SecondQuantization.Fermionic.completedAnticomm_adjoint_createField",
       "SecondQuantization.Fermionic.completedAnticomm_createField_createField",
       "SecondQuantization.Fermionic.completedCreateField_algebraicToCompleted",
-      "SecondQuantization.Fermionic.norm_completedCreateField_le"
+      "SecondQuantization.Fermionic.norm_completedCreateField_le",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.UnitaryLift.0.SecondQuantization.Fermionic.completedExterior_denseRange"
     ],
-    "compiledConsumerCount": 10,
+    "compiledConsumerCount": 11,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -129918,7 +129922,8 @@
       "_private.LeanCondensedMatter.Models.HolsteinPrimakoff.MultiSite.0.Models.HolsteinPrimakoff.spinZ_comm_spinZ",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.LadderTraceCyclicity.0.SecondQuantization.Bosonic.annihilate_apply_coord",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.LadderTraceCyclicity.0.SecondQuantization.Bosonic.create_apply_coord",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.OccupationFieldEquivalence.0.SecondQuantization.Fermionic.AlgebraicFock.eq_annihilate_of_vacuum_of_mixedCAR"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.OccupationFieldEquivalence.0.SecondQuantization.Fermionic.AlgebraicFock.eq_annihilate_of_vacuum_of_mixedCAR",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.UnitaryLift.0.SecondQuantization.Fermionic.completedExterior_denseRange"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
@@ -129955,9 +129960,10 @@
       "_private.LeanCondensedMatter.Models.HolsteinPrimakoff.MultiSite.0.Models.HolsteinPrimakoff.spinZ_comm_spinZ",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.LadderTraceCyclicity.0.SecondQuantization.Bosonic.annihilate_apply_coord",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.LadderTraceCyclicity.0.SecondQuantization.Bosonic.create_apply_coord",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.OccupationFieldEquivalence.0.SecondQuantization.Fermionic.AlgebraicFock.eq_annihilate_of_vacuum_of_mixedCAR"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.OccupationFieldEquivalence.0.SecondQuantization.Fermionic.AlgebraicFock.eq_annihilate_of_vacuum_of_mixedCAR",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.UnitaryLift.0.SecondQuantization.Fermionic.completedExterior_denseRange"
     ],
-    "compiledConsumerCount": 32,
+    "compiledConsumerCount": 33,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -136178,7 +136184,8 @@
       "SecondQuantization.Fermionic.AlgebraicFock.annihilateDual_comp_create_add_swap",
       "SecondQuantization.Fermionic.AlgebraicFock.annihilateDual_map",
       "SecondQuantization.Fermionic.AlgebraicFock.dGamma_dualRankOne",
-      "SecondQuantization.Fermionic.AlgebraicFock.occupationConjugate_annihilateDual"
+      "SecondQuantization.Fermionic.AlgebraicFock.occupationConjugate_annihilateDual",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.UnitaryLift.0.SecondQuantization.Fermionic.completedExterior_annihilate"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
@@ -136187,9 +136194,10 @@
       "SecondQuantization.Fermionic.AlgebraicFock.annihilateDual_comp_create_add_swap",
       "SecondQuantization.Fermionic.AlgebraicFock.annihilateDual_map",
       "SecondQuantization.Fermionic.AlgebraicFock.dGamma_dualRankOne",
-      "SecondQuantization.Fermionic.AlgebraicFock.occupationConjugate_annihilateDual"
+      "SecondQuantization.Fermionic.AlgebraicFock.occupationConjugate_annihilateDual",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.UnitaryLift.0.SecondQuantization.Fermionic.completedExterior_annihilate"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 5,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -136461,7 +136469,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -136473,7 +136481,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.AlgebraicFock.inner_finiteHilbertEquiv_map"
+      "SecondQuantization.Fermionic.AlgebraicFock.inner_finiteHilbertEquiv_map",
+      "SecondQuantization.Fermionic.inner_completedExterior_map"
     ],
     "dependencies": [
       "SecondQuantization.Fermionic.AlgebraicFock.annihilateDual_map"
@@ -136481,9 +136490,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.AlgebraicFock.inner_finiteHilbertEquiv_map"
+      "SecondQuantization.Fermionic.AlgebraicFock.inner_finiteHilbertEquiv_map",
+      "SecondQuantization.Fermionic.inner_completedExterior_map"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -144601,7 +144611,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -144613,7 +144623,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.inner_completedCreateField_vacuum"
+      "SecondQuantization.Fermionic.inner_completedCreateField_vacuum",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.UnitaryLift.0.SecondQuantization.Fermionic.completedExterior_annihilate"
     ],
     "dependencies": [
       "SecondQuantization.Common.algebraicToCompleted_denseRange",
@@ -144624,9 +144635,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.inner_completedCreateField_vacuum"
+      "SecondQuantization.Fermionic.inner_completedCreateField_vacuum",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.UnitaryLift.0.SecondQuantization.Fermionic.completedExterior_annihilate"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -145983,7 +145995,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -145995,7 +146007,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.inner_completedCreateField_vacuum"
+      "SecondQuantization.Fermionic.inner_completedCreateField_vacuum",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.UnitaryLift.0.SecondQuantization.Fermionic.completedExterior_annihilate"
     ],
     "dependencies": [
       "SecondQuantization.Common.algebraicToCompleted_denseRange",
@@ -146005,9 +146018,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.inner_completedCreateField_vacuum"
+      "SecondQuantization.Fermionic.inner_completedCreateField_vacuum",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.UnitaryLift.0.SecondQuantization.Fermionic.completedExterior_annihilate"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -146355,15 +146369,15 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (i : Mode),\n  SecondQuantization.Fermionic.completedCreateField (SecondQuantization.Common.completedBasisState i) =\n    SecondQuantization.Fermionic.completedCreate i",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
     "simpLemma": true,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -146374,15 +146388,19 @@
     "docString": "A mode basis vector recovers the original completed creation operator. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.UnitaryLift.0.SecondQuantization.Fermionic.completedExterior_denseRange"
+    ],
     "dependencies": [
       "SecondQuantization.Common.algebraicToCompleted_basisState",
       "SecondQuantization.Fermionic.completedCreateField_algebraicToCompleted"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.UnitaryLift.0.SecondQuantization.Fermionic.completedExterior_denseRange"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -146513,7 +146531,8 @@
     "dependents": [
       "SecondQuantization.Fermionic.completedCreate_comp_algebraicToCompleted",
       "SecondQuantization.Fermionic.completedCreate_comp_completedAnnihilate_eq_numberOperator",
-      "SecondQuantization.Fermionic.grandCanonicalGibbsDensityOperator_comp_create"
+      "SecondQuantization.Fermionic.grandCanonicalGibbsDensityOperator_comp_create",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.UnitaryLift.0.SecondQuantization.Fermionic.completedExterior_denseRange"
     ],
     "dependencies": [
       "SecondQuantization.Common.completedCoordinateProjection_basisState",
@@ -146525,9 +146544,10 @@
     "compiledConsumers": [
       "SecondQuantization.Fermionic.completedCreate_comp_algebraicToCompleted",
       "SecondQuantization.Fermionic.completedCreate_comp_completedAnnihilate_eq_numberOperator",
-      "SecondQuantization.Fermionic.grandCanonicalGibbsDensityOperator_comp_create"
+      "SecondQuantization.Fermionic.grandCanonicalGibbsDensityOperator_comp_create",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.UnitaryLift.0.SecondQuantization.Fermionic.completedExterior_denseRange"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -146686,6 +146706,270 @@
       "SecondQuantization.Fermionic.completedFreeHamiltonianAfterCreate"
     ],
     "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (v : ↥(SecondQuantization.Common.CompletedFock Mode))\n  (x : SecondQuantization.Fermionic.AlgebraicFock ↥(SecondQuantization.Common.CompletedFock Mode)),\n  SecondQuantization.Fermionic.completedExterior\n      (((SecondQuantization.Fermionic.AlgebraicFock.create ↥(SecondQuantization.Common.CompletedFock Mode)) v) x) =\n    (SecondQuantization.Fermionic.completedCreateField v) (SecondQuantization.Fermionic.completedExterior x)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.completedExterior_create",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.UnitaryLift",
+    "externalAxioms": [],
+    "docString": "Exterior creation is represented by the bounded completed creation field. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.completedFockUnitary_createField",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.UnitaryLift.0.SecondQuantization.Fermionic.completedExterior_annihilate",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.UnitaryLift.0.SecondQuantization.Fermionic.completedExterior_denseRange",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.UnitaryLift.0.SecondQuantization.Fermionic.inner_completedExterior_create"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.completedFockUnitary_createField",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.UnitaryLift.0.SecondQuantization.Fermionic.completedExterior_annihilate",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.UnitaryLift.0.SecondQuantization.Fermionic.completedExterior_denseRange",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.UnitaryLift.0.SecondQuantization.Fermionic.inner_completedExterior_create"
+    ],
+    "compiledConsumerCount": 4,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode]\n  (e : ↥(SecondQuantization.Common.CompletedFock Mode) ≃ₗᵢ[ℂ] ↥(SecondQuantization.Common.CompletedFock Mode))\n  (x : SecondQuantization.Fermionic.AlgebraicFock ↥(SecondQuantization.Common.CompletedFock Mode)),\n  (SecondQuantization.Fermionic.completedFockUnitary e) (SecondQuantization.Fermionic.completedExterior x) =\n    SecondQuantization.Fermionic.completedExterior ((ExteriorAlgebra.map ↑e.toLinearEquiv) x)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.completedFockUnitary_completedExterior",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.UnitaryLift",
+    "externalAxioms": [],
+    "docString": "The completed unitary agrees with exterior transport on its dense realization. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.completedFockUnitary_createField",
+      "SecondQuantization.Fermionic.completedFockUnitary_refl",
+      "SecondQuantization.Fermionic.completedFockUnitary_trans",
+      "SecondQuantization.Fermionic.completedFockUnitary_vacuum"
+    ],
+    "dependencies": [
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.UnitaryLift.0.SecondQuantization.Fermionic.completedExterior_denseRange",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.UnitaryLift.0.SecondQuantization.Fermionic.norm_completedExterior_map"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.completedFockUnitary_createField",
+      "SecondQuantization.Fermionic.completedFockUnitary_refl",
+      "SecondQuantization.Fermionic.completedFockUnitary_trans",
+      "SecondQuantization.Fermionic.completedFockUnitary_vacuum"
+    ],
+    "compiledConsumerCount": 4,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode]\n  (e : ↥(SecondQuantization.Common.CompletedFock Mode) ≃ₗᵢ[ℂ] ↥(SecondQuantization.Common.CompletedFock Mode))\n  (v : ↥(SecondQuantization.Common.CompletedFock Mode)) (x : ↥(SecondQuantization.Fermionic.CompletedFockSpace Mode)),\n  (SecondQuantization.Fermionic.completedFockUnitary e) ((SecondQuantization.Fermionic.completedCreateField v) x) =\n    (SecondQuantization.Fermionic.completedCreateField (e v)) ((SecondQuantization.Fermionic.completedFockUnitary e) x)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.completedFockUnitary_createField",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.UnitaryLift",
+    "externalAxioms": [],
+    "docString": "A one-particle unitary intertwines arbitrary square-summable creation fields through its\nFock lift. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "SecondQuantization.Fermionic.completedExterior_create",
+      "SecondQuantization.Fermionic.completedFockUnitary_completedExterior",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.UnitaryLift.0.SecondQuantization.Fermionic.completedExterior_denseRange"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (x : ↥(SecondQuantization.Fermionic.CompletedFockSpace Mode)),\n  (SecondQuantization.Fermionic.completedFockUnitary\n        (LinearIsometryEquiv.refl ℂ ↥(SecondQuantization.Common.CompletedFock Mode)))\n      x =\n    x",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.completedFockUnitary_refl",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.UnitaryLift",
+    "externalAxioms": [],
+    "docString": "The identity one-particle unitary lifts to the identity on completed Fock space. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "SecondQuantization.Fermionic.completedFockUnitary_completedExterior",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.UnitaryLift.0.SecondQuantization.Fermionic.completedExterior_denseRange"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode]\n  (e f : ↥(SecondQuantization.Common.CompletedFock Mode) ≃ₗᵢ[ℂ] ↥(SecondQuantization.Common.CompletedFock Mode))\n  (x : ↥(SecondQuantization.Fermionic.CompletedFockSpace Mode)),\n  (SecondQuantization.Fermionic.completedFockUnitary (e.trans f)) x =\n    (SecondQuantization.Fermionic.completedFockUnitary f) ((SecondQuantization.Fermionic.completedFockUnitary e) x)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.completedFockUnitary_trans",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.UnitaryLift",
+    "externalAxioms": [],
+    "docString": "Composition of one-particle unitaries agrees with composition of their Fock lifts. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "SecondQuantization.Fermionic.completedFockUnitary_completedExterior",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.UnitaryLift.0.SecondQuantization.Fermionic.completedExterior_denseRange"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode]\n  (e : ↥(SecondQuantization.Common.CompletedFock Mode) ≃ₗᵢ[ℂ] ↥(SecondQuantization.Common.CompletedFock Mode)),\n  (SecondQuantization.Fermionic.completedFockUnitary e)\n      (SecondQuantization.Fermionic.completedBasisState SecondQuantization.Fermionic.vacuum) =\n    SecondQuantization.Fermionic.completedBasisState SecondQuantization.Fermionic.vacuum",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.completedFockUnitary_vacuum",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.UnitaryLift",
+    "externalAxioms": [],
+    "docString": "The Fock lift fixes the vacuum. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "SecondQuantization.Fermionic.completedFockUnitary_completedExterior",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.UnitaryLift.0.SecondQuantization.Fermionic.completedExterior_algebraMap"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -149975,7 +150259,8 @@
     "dependents": [
       "SecondQuantization.Fermionic.completedCreate_comp_completedAnnihilate_eq_numberOperator",
       "SecondQuantization.Fermionic.numberOperator_basisState",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.OccupationFieldEquivalence.0.SecondQuantization.Fermionic.AlgebraicFock.eq_annihilate_of_vacuum_of_mixedCAR"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.OccupationFieldEquivalence.0.SecondQuantization.Fermionic.AlgebraicFock.eq_annihilate_of_vacuum_of_mixedCAR",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.UnitaryLift.0.SecondQuantization.Fermionic.completedExterior_denseRange"
     ],
     "dependencies": [
       "SecondQuantization.Fermionic.fermionSign_sq"
@@ -149985,9 +150270,10 @@
     "compiledConsumers": [
       "SecondQuantization.Fermionic.completedCreate_comp_completedAnnihilate_eq_numberOperator",
       "SecondQuantization.Fermionic.numberOperator_basisState",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.OccupationFieldEquivalence.0.SecondQuantization.Fermionic.AlgebraicFock.eq_annihilate_of_vacuum_of_mixedCAR"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.OccupationFieldEquivalence.0.SecondQuantization.Fermionic.AlgebraicFock.eq_annihilate_of_vacuum_of_mixedCAR",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.UnitaryLift.0.SecondQuantization.Fermionic.completedExterior_denseRange"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -152316,6 +152602,52 @@
     "completedMention": false,
     "compiledConsumers": [],
     "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode]\n  (e : ↥(SecondQuantization.Common.CompletedFock Mode) →ₗᵢ[ℂ] ↥(SecondQuantization.Common.CompletedFock Mode))\n  (x y : SecondQuantization.Fermionic.AlgebraicFock ↥(SecondQuantization.Common.CompletedFock Mode)),\n  inner ℂ (SecondQuantization.Fermionic.completedExterior ((ExteriorAlgebra.map e.toLinearMap) x))\n      (SecondQuantization.Fermionic.completedExterior ((ExteriorAlgebra.map e.toLinearMap) y)) =\n    inner ℂ (SecondQuantization.Fermionic.completedExterior x) (SecondQuantization.Fermionic.completedExterior y)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.inner_completedExterior_map",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.UnitaryLift",
+    "externalAxioms": [],
+    "docString": "Exterior transport by a one-particle isometry preserves the realized Fock inner product. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.UnitaryLift.0.SecondQuantization.Fermionic.norm_completedExterior_map"
+    ],
+    "dependencies": [
+      "SecondQuantization.Fermionic.AlgebraicFock.annihilate_map",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.UnitaryLift.0.SecondQuantization.Fermionic.inner_completedExterior_create",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.UnitaryLift.0.SecondQuantization.Fermionic.inner_completedExterior_scalar_create"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.UnitaryLift.0.SecondQuantization.Fermionic.norm_completedExterior_map"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -187878,6 +188210,340 @@
     "compiledConsumers": [
       "SecondQuantization.Fermionic.completedCreateField_algebraicToCompleted",
       "SecondQuantization.Fermionic.norm_completedCreateField_le"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} (v : ↥(SecondQuantization.Common.CompletedFock Mode)) (a : ℂ),\n  ((SecondQuantization.Fermionic.AlgebraicFock.annihilate ↥(SecondQuantization.Common.CompletedFock Mode)) v)\n      ((algebraMap ℂ (SecondQuantization.Fermionic.AlgebraicFock ↥(SecondQuantization.Common.CompletedFock Mode))) a) =\n    0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.UnitaryLift.0.SecondQuantization.Fermionic.annihilate_scalar",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.UnitaryLift",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.UnitaryLift.0.SecondQuantization.Fermionic.completedExterior_annihilate",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.UnitaryLift.0.SecondQuantization.Fermionic.inner_completedExterior_scalar_create"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.UnitaryLift.0.SecondQuantization.Fermionic.completedExterior_annihilate",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.UnitaryLift.0.SecondQuantization.Fermionic.inner_completedExterior_scalar_create"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (a : ℂ),\n  SecondQuantization.Fermionic.completedExterior\n      ((algebraMap ℂ (SecondQuantization.Fermionic.AlgebraicFock ↥(SecondQuantization.Common.CompletedFock Mode))) a) =\n    a • SecondQuantization.Fermionic.completedBasisState SecondQuantization.Fermionic.vacuum",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.UnitaryLift.0.SecondQuantization.Fermionic.completedExterior_algebraMap",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.UnitaryLift",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.completedFockUnitary_vacuum",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.UnitaryLift.0.SecondQuantization.Fermionic.completedExterior_annihilate",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.UnitaryLift.0.SecondQuantization.Fermionic.completedExterior_denseRange"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.completedFockUnitary_vacuum",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.UnitaryLift.0.SecondQuantization.Fermionic.completedExterior_annihilate",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.UnitaryLift.0.SecondQuantization.Fermionic.completedExterior_denseRange"
+    ],
+    "compiledConsumerCount": 3,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (v : ↥(SecondQuantization.Common.CompletedFock Mode))\n  (x : SecondQuantization.Fermionic.AlgebraicFock ↥(SecondQuantization.Common.CompletedFock Mode)),\n  (star (SecondQuantization.Fermionic.completedCreateField v)) (SecondQuantization.Fermionic.completedExterior x) =\n    SecondQuantization.Fermionic.completedExterior\n      (((SecondQuantization.Fermionic.AlgebraicFock.annihilate ↥(SecondQuantization.Common.CompletedFock Mode)) v) x)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.UnitaryLift.0.SecondQuantization.Fermionic.completedExterior_annihilate",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.UnitaryLift",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.UnitaryLift.0.SecondQuantization.Fermionic.inner_completedExterior_create"
+    ],
+    "dependencies": [
+      "SecondQuantization.Fermionic.AlgebraicFock.annihilateDual_create_apply",
+      "SecondQuantization.Fermionic.adjoint_completedCreateField_vacuum",
+      "SecondQuantization.Fermionic.completedAnticomm_adjoint_createField",
+      "SecondQuantization.Fermionic.completedExterior_create",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.UnitaryLift.0.SecondQuantization.Fermionic.annihilate_scalar",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.UnitaryLift.0.SecondQuantization.Fermionic.completedExterior_algebraMap"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.UnitaryLift.0.SecondQuantization.Fermionic.inner_completedExterior_create"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode], DenseRange ⇑SecondQuantization.Fermionic.completedExterior",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.UnitaryLift.0.SecondQuantization.Fermionic.completedExterior_denseRange",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.UnitaryLift",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.completedFockUnitary_completedExterior",
+      "SecondQuantization.Fermionic.completedFockUnitary_createField",
+      "SecondQuantization.Fermionic.completedFockUnitary_refl",
+      "SecondQuantization.Fermionic.completedFockUnitary_trans"
+    ],
+    "dependencies": [
+      "SecondQuantization.Common.algebraicToCompleted_basisState",
+      "SecondQuantization.Common.algebraicToCompleted_denseRange",
+      "SecondQuantization.Common.linearMap_ext_basisState",
+      "SecondQuantization.Fermionic.completedCreateField_basisState",
+      "SecondQuantization.Fermionic.completedCreate_basisState_of_not_mem",
+      "SecondQuantization.Fermionic.completedExterior_create",
+      "SecondQuantization.Fermionic.fermionSign_sq_complex",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.UnitaryLift.0.SecondQuantization.Fermionic.completedExterior_algebraMap"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.completedFockUnitary",
+      "SecondQuantization.Fermionic.completedFockUnitary_completedExterior",
+      "SecondQuantization.Fermionic.completedFockUnitary_createField",
+      "SecondQuantization.Fermionic.completedFockUnitary_refl",
+      "SecondQuantization.Fermionic.completedFockUnitary_trans"
+    ],
+    "compiledConsumerCount": 5,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (v : ↥(SecondQuantization.Common.CompletedFock Mode))\n  (x y : SecondQuantization.Fermionic.AlgebraicFock ↥(SecondQuantization.Common.CompletedFock Mode)),\n  inner ℂ\n      (SecondQuantization.Fermionic.completedExterior\n        (((SecondQuantization.Fermionic.AlgebraicFock.create ↥(SecondQuantization.Common.CompletedFock Mode)) v) x))\n      (SecondQuantization.Fermionic.completedExterior y) =\n    inner ℂ (SecondQuantization.Fermionic.completedExterior x)\n      (SecondQuantization.Fermionic.completedExterior\n        (((SecondQuantization.Fermionic.AlgebraicFock.annihilate ↥(SecondQuantization.Common.CompletedFock Mode)) v) y))",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.UnitaryLift.0.SecondQuantization.Fermionic.inner_completedExterior_create",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.UnitaryLift",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.inner_completedExterior_map",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.UnitaryLift.0.SecondQuantization.Fermionic.inner_completedExterior_scalar_create"
+    ],
+    "dependencies": [
+      "SecondQuantization.Fermionic.completedExterior_create",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.UnitaryLift.0.SecondQuantization.Fermionic.completedExterior_annihilate"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.inner_completedExterior_map",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.UnitaryLift.0.SecondQuantization.Fermionic.inner_completedExterior_scalar_create"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (a : ℂ) (v : ↥(SecondQuantization.Common.CompletedFock Mode))\n  (x : SecondQuantization.Fermionic.AlgebraicFock ↥(SecondQuantization.Common.CompletedFock Mode)),\n  inner ℂ\n      (SecondQuantization.Fermionic.completedExterior\n        ((algebraMap ℂ (SecondQuantization.Fermionic.AlgebraicFock ↥(SecondQuantization.Common.CompletedFock Mode))) a))\n      (SecondQuantization.Fermionic.completedExterior\n        (((SecondQuantization.Fermionic.AlgebraicFock.create ↥(SecondQuantization.Common.CompletedFock Mode)) v) x)) =\n    0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.UnitaryLift.0.SecondQuantization.Fermionic.inner_completedExterior_scalar_create",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.UnitaryLift",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.inner_completedExterior_map"
+    ],
+    "dependencies": [
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.UnitaryLift.0.SecondQuantization.Fermionic.annihilate_scalar",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.UnitaryLift.0.SecondQuantization.Fermionic.inner_completedExterior_create"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.inner_completedExterior_map"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode]\n  (e : ↥(SecondQuantization.Common.CompletedFock Mode) ≃ₗᵢ[ℂ] ↥(SecondQuantization.Common.CompletedFock Mode))\n  (x : SecondQuantization.Fermionic.AlgebraicFock ↥(SecondQuantization.Common.CompletedFock Mode)),\n  ‖SecondQuantization.Fermionic.completedExterior ((SecondQuantization.Fermionic.exteriorUnitary✝ e) x)‖ =\n    ‖SecondQuantization.Fermionic.completedExterior x‖",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.UnitaryLift.0.SecondQuantization.Fermionic.norm_completedExterior_map",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.UnitaryLift",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.completedFockUnitary_completedExterior"
+    ],
+    "dependencies": [
+      "SecondQuantization.Fermionic.inner_completedExterior_map"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.completedFockUnitary",
+      "SecondQuantization.Fermionic.completedFockUnitary_completedExterior"
     ],
     "compiledConsumerCount": 2,
     "axioms": [

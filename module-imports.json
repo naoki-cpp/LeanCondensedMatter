@@ -6856,6 +6856,15 @@
       "externalImportCount": 3
     },
     {
+      "name": "LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.UnitaryLift",
+      "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/CompletedSpace/UnitaryLift.lean",
+      "imports": [
+        "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.Annihilation",
+        "LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.SmearedField"
+      ],
+      "externalImportCount": 2
+    },
+    {
       "name": "LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/CompletedSpace.lean",
       "imports": [
@@ -6869,7 +6878,8 @@
         "LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.ModeTruncation",
         "LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.Operators",
         "LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.ProductDomain",
-        "LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.SmearedField"
+        "LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.SmearedField",
+        "LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.UnitaryLift"
       ],
       "externalImportCount": 0
     },
