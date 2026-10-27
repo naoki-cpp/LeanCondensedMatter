@@ -28,29 +28,26 @@ noncomputable section
 
 variable {Mode : Type*}
 
-/-- Integrability condition for the completed total particle-number spectral series. State
-existence is deliberately not part of this scalar summability predicate. -/
-def GrandCanonicalTotalNumberIntegrable
+/-- Fermionic compatibility name for the statistics-independent grand-canonical
+particle-number integrability condition. -/
+abbrev GrandCanonicalTotalNumberIntegrable
     (ε : Mode → ℝ) (β μ : ℝ) : Prop :=
-  Summable fun n : Occupation Mode =>
-    ‖eigenbasisGibbsProbability (Common.grandCanonicalEnergy (Config := Occupation Mode) ε μ) β n * (particleNumber n : ℝ)‖
+  Common.GrandCanonicalParticleNumberIntegrable (Config := Occupation Mode) ε β μ
 
-/-- Thermal expectation of the completed total particle-number operator, defined by its real
-occupation-basis spectral series. -/
-noncomputable def grandCanonicalTotalNumberExpectation
+/-- Fermionic compatibility name for the common particle-number spectral mean. -/
+noncomputable abbrev grandCanonicalTotalNumberExpectation
     (ε : Mode → ℝ) (β μ : ℝ) : ℝ :=
-  ∑' n : Occupation Mode,
-    eigenbasisGibbsProbability (Common.grandCanonicalEnergy (Config := Occupation Mode) ε μ) β n * (particleNumber n : ℝ)
+  Common.grandCanonicalParticleNumberExpectation (Config := Occupation Mode) ε β μ
 
-/-- Under the explicit number-integrability hypothesis, the total particle-number expectation is
-represented by an absolutely convergent occupation-basis series. -/
+/-- Integrable fermionic particle-number means have the expected spectral series. -/
 theorem hasSum_grandCanonicalTotalNumberExpectation
     (ε : Mode → ℝ) (β μ : ℝ) (hint : GrandCanonicalTotalNumberIntegrable ε β μ) :
     HasSum
       (fun n : Occupation Mode =>
         eigenbasisGibbsProbability (Common.grandCanonicalEnergy (Config := Occupation Mode) ε μ) β n * (particleNumber n : ℝ))
-      (grandCanonicalTotalNumberExpectation ε β μ) := by
-  exact (Summable.of_norm hint).hasSum
+      (grandCanonicalTotalNumberExpectation ε β μ) :=
+  Common.hasSum_grandCanonicalParticleNumberExpectation
+    (Config := Occupation Mode) ε β μ hint
 
 /-- The grand-canonical mean particle number is the first moment of the
 sharp-number sector distribution. Unlike bounded-observable sector mixing,
@@ -60,18 +57,16 @@ theorem grandCanonicalTotalNumberExpectation_eq_tsum_sector
     (hint : GrandCanonicalTotalNumberIntegrable ε β μ) :
     grandCanonicalTotalNumberExpectation ε β μ =
       ∑' N : ℕ, (N : ℝ) *
-        Common.grandCanonicalSectorProbability (Config := Occupation Mode) ε β μ N := by
-  exact Common.grandCanonicalParticleNumber_tsum_eq_sector_moment
+        Common.grandCanonicalSectorProbability (Config := Occupation Mode) ε β μ N :=
+  Common.grandCanonicalParticleNumber_tsum_eq_sector_moment
     (Config := Occupation Mode) ε β μ hint
 
 /-- The completed free total-number expectation is nonnegative. -/
 theorem grandCanonicalTotalNumberExpectation_nonneg
     (ε : Mode → ℝ) (β μ : ℝ) :
-    0 ≤ grandCanonicalTotalNumberExpectation ε β μ := by
-  unfold grandCanonicalTotalNumberExpectation
-  exact tsum_nonneg fun n =>
-    mul_nonneg (eigenbasisGibbsProbability_nonneg (Common.grandCanonicalEnergy (Config := Occupation Mode) ε μ) β n)
-      (Nat.cast_nonneg (particleNumber n))
+    0 ≤ grandCanonicalTotalNumberExpectation ε β μ :=
+  Common.grandCanonicalParticleNumberExpectation_nonneg
+    (Config := Occupation Mode) ε β μ
 
 /-- On each occupation basis state, the diagonal matrix element of the composed completed Gibbs
 density operator and total-number operator is the corresponding Gibbs probability times particle
