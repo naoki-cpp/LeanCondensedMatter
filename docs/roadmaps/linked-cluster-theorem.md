@@ -44,8 +44,8 @@ identity. Fermionic connected-diagram statements use the specialized
 `Common.dysonTraceSeries (fermionEnergy ε) β V` and its `PowerSeries.normalizeByConstantCoeff`/
 `PowerSeries.logOf` operations directly, without a parallel fermionic partition-series API.
 The fermionic Dyson pairing proof uses the generic normalized-coefficient theorem together
-with `freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation` directly; no separate
-fermionic vertex-moment adapter is needed.
+with `Common.finiteGibbsExpectation` directly; no separate fermionic density-state
+or vertex-moment adapter is needed.
 
 ## Analytic log-partition theorem
 

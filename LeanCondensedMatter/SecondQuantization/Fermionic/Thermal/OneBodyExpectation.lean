@@ -1,6 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.BlochDeDominicis
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteCompletedGibbsCompatibility
-import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsDensityOperator
 import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.Core
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.GrandCanonical
 import LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.BoundedEvolution
@@ -79,11 +78,14 @@ theorem finiteGrandCanonicalGibbsDensityOperator_expectation_finiteSecondQuantiz
     exact Common.grandCanonicalEnergy_eq_shifted ε μ n
   rw [hE]
   let ξ : Mode → ℝ := fun i => ε i - μ
-  change (freeGibbsDensityOperator ξ β).expectation (finiteSecondQuantization A) =
+  let ρ := QuantumTheory.eigenbasisGibbsDensityOperator
+    (Common.finiteHilbertBasis (Config := Occupation Mode)) (fermionEnergy ξ) β
+    (QuantumTheory.eigenbasisGibbsSummable_of_finite (fermionEnergy ξ) β)
+  change ρ.expectation (finiteSecondQuantization A) =
     ∑ i, ((Common.finiteHilbertOperatorAlgEquiv.symm A) (latticeKet i)) i *
       (1 / (Complex.exp ((β : ℂ) * (ξ i : ℂ)) + 1))
   let B := Common.finiteHilbertOperatorAlgEquiv.symm A
-  change (freeGibbsDensityOperator ξ β).expectation (boundedOneBodyOperator B) =
+  change ρ.expectation (boundedOneBodyOperator B) =
     ∑ i, (B (latticeKet i)) i * (1 / (Complex.exp ((β : ℂ) * (ξ i : ℂ)) + 1))
   have hB : B = ∑ i, ∑ j, (B (latticeKet j)) i • matrixUnit i j := by
     apply (Finsupp.basisSingleOne : Module.Basis Mode ℂ (Mode →₀ ℂ)).ext
@@ -94,12 +96,12 @@ theorem finiteGrandCanonicalGibbsDensityOperator_expectation_finiteSecondQuantiz
   let hsum := QuantumTheory.eigenbasisGibbsSummable_of_finite
     (Common.grandCanonicalEnergy (Config := Occupation Mode) ξ 0) β
   have hunit (i j : Mode) :
-      (freeGibbsDensityOperator ξ β).expectation
+      ρ.expectation
           (boundedOneBodyOperator (matrixUnit i j)) =
         Common.gibbsExpectation
           (Common.grandCanonicalEnergy (Config := Occupation Mode) ξ 0) β hsum
           ((completedCreate i).comp (completedAnnihilate j)) := by
-    change (freeGibbsDensityOperator ξ β).expectation
+    change ρ.expectation
       (Common.finiteHilbertOperatorAlgEquiv
         (AlgebraicFock.occupationConjugate
           (Finsupp.basisSingleOne : Module.Basis Mode ℂ (Mode →₀ ℂ))
@@ -110,7 +112,7 @@ theorem finiteGrandCanonicalGibbsDensityOperator_expectation_finiteSecondQuantiz
       funext n
       simpa only [sub_zero, fermionEnergy] using Common.grandCanonicalEnergy_eq_shifted ξ 0 n
     simpa [Common.gibbsExpectation, Common.finiteGibbsExpectation,
-      Common.finiteGibbsExpectationLinearMap, freeGibbsDensityOperator, hξ] using
+      Common.finiteGibbsExpectationLinearMap, ρ, hξ] using
       (Common.finiteGibbsExpectation_eq_completed_of_algebraicCore
         (Config := Occupation Mode) (fermionEnergy ξ) β
         ((create i).comp (annihilate j)) ((completedCreate i).comp (completedAnnihilate j))
