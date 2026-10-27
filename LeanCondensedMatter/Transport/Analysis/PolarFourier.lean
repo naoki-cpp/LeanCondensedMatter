@@ -337,9 +337,9 @@ theorem polarFourierZerothMoment_even_eq_bessel (z : ℝ) (n : ℕ) :
       ((2 * Real.pi : ℝ) : ℂ) *
         (Complex.regularizedHGFunCoeff 0 {(1 : ℂ)} n *
           (-((z : ℂ) / 2) ^ 2) ^ n) := by
-  rw [polarFourierCosineMoment_even_factorial,
-    Complex.regularizedHGFunCoeff_zero_singleton_nat_add_one 0 n, Nat.add_zero,
-    ← pow_two]
+  have hcoeff := Complex.regularizedHGFunCoeff_zero_singleton_nat_add_one 0 n
+  norm_num only [Nat.add_zero] at hcoeff
+  rw [polarFourierCosineMoment_even_factorial, hcoeff, ← pow_two]
   push_cast
   have hI : (Complex.I * (z : ℂ)) ^ (2 * n) = (-(z : ℂ) ^ 2) ^ n := by
     rw [pow_mul, mul_pow, Complex.I_sq]
@@ -508,9 +508,10 @@ private theorem regularizedHGFun_zero_one_hasDerivAt (w : ℂ) :
   have hcoeff (n : ℕ) :
       ((n + 1 : ℕ) : ℂ) * Complex.regularizedHGFunCoeff 0 {(1 : ℂ)} (n + 1) =
         Complex.regularizedHGFunCoeff 0 {(2 : ℂ)} n := by
-    rw [Complex.regularizedHGFunCoeff_zero_singleton_nat_add_one 0 (n + 1),
-      Complex.regularizedHGFunCoeff_zero_singleton_nat_add_one 1 n, Nat.add_zero,
-      ← pow_two, Nat.factorial_succ]
+    have h0 := Complex.regularizedHGFunCoeff_zero_singleton_nat_add_one 0 (n + 1)
+    have h1 := Complex.regularizedHGFunCoeff_zero_singleton_nat_add_one 1 n
+    norm_num only [Nat.add_zero] at h0 h1
+    rw [h0, h1, ← pow_two, Nat.factorial_succ]
     push_cast
     have hn : (n + 1 : ℂ) ≠ 0 := by exact_mod_cast Nat.succ_ne_zero n
     have hf : (Nat.factorial n : ℂ) ≠ 0 := by
@@ -615,10 +616,11 @@ private theorem regularizedHGFun_one_sub_two_eq_mul_three (w : ℂ) :
   let c3 : ℕ → ℂ := Complex.regularizedHGFunCoeff 0 {(3 : ℂ)}
   have hcoeff (n : ℕ) : c1 (n + 1) - c2 (n + 1) = c3 n := by
     dsimp only [c1, c2, c3]
-    rw [Complex.regularizedHGFunCoeff_zero_singleton_nat_add_one 0 (n + 1),
-      Complex.regularizedHGFunCoeff_zero_singleton_nat_add_one 1 (n + 1),
-      Complex.regularizedHGFunCoeff_zero_singleton_nat_add_one 2 n, Nat.add_zero,
-      ← pow_two]
+    have h0 := Complex.regularizedHGFunCoeff_zero_singleton_nat_add_one 0 (n + 1)
+    have h1 := Complex.regularizedHGFunCoeff_zero_singleton_nat_add_one 1 (n + 1)
+    have h2 := Complex.regularizedHGFunCoeff_zero_singleton_nat_add_one 2 n
+    norm_num only [Nat.add_zero] at h0 h1 h2
+    rw [h0, h1, h2, ← pow_two]
     simp only [Nat.factorial_succ]
     push_cast
     have hn : (n + 1 : ℂ) ≠ 0 := by exact_mod_cast Nat.succ_ne_zero n
@@ -632,9 +634,10 @@ private theorem regularizedHGFun_one_sub_two_eq_mul_three (w : ℂ) :
     ring
   have hzero : c1 0 = c2 0 := by
     dsimp only [c1, c2]
-    rw [Complex.regularizedHGFunCoeff_zero_singleton_nat_add_one 0 0,
-      Complex.regularizedHGFunCoeff_zero_singleton_nat_add_one 1 0]
-    norm_num
+    have h0 := Complex.regularizedHGFunCoeff_zero_singleton_nat_add_one 0 0
+    have h1 := Complex.regularizedHGFunCoeff_zero_singleton_nat_add_one 1 0
+    norm_num at h0 h1
+    rw [h0, h1]
   have hs1 : Summable (fun n : ℕ => c1 n * w ^ n) := by
     simpa only [c1, Complex.regularizedHGFunSeries,
       FormalMultilinearSeries.ofScalars_apply_eq, smul_eq_mul] using
