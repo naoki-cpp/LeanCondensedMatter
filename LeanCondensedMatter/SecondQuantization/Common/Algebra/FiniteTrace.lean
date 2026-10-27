@@ -37,14 +37,6 @@ theorem traceFock_eq_sum_matrixCoeff [Fintype Config]
     (Finsupp.basisSingleOne : Module.Basis Config ℂ (AlgebraicFock Config))]
   simp [Matrix.trace, LinearMap.toMatrix_apply, matrixCoeff, basisState, Finsupp.basisSingleOne]
 
-/-- The finite trace is cyclic under a two-operator swap, `Tr[AB] = Tr[BA]`. -/
-theorem traceFock_comp_comm [Fintype Config]
-    (A B : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
-    traceFock (A.comp B) = traceFock (B.comp A) := by
-  change LinearMap.trace ℂ (AlgebraicFock Config) (A.comp B) =
-    LinearMap.trace ℂ (AlgebraicFock Config) (B.comp A)
-  simpa only [Module.End.mul_eq_comp] using (LinearMap.trace_mul_comm ℂ A B)
-
 /-- On a finite configuration space, the summable diagonal trace agrees with the
 canonical finite-dimensional trace. -/
 theorem tsumTrace_eq_traceFock [Fintype Config]
