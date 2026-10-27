@@ -1,5 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsCoordinate
-import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.Unnormalized.PeelFirstTrace
+import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.NormalizedPeelTrace
 
 set_option linter.style.header false
 
@@ -32,15 +32,12 @@ theorem finiteGibbsExpectation_peel_indexed (energy : Config → ℝ) (β q1 : �
       finiteGibbsExpectation energy β (C1.comp (List.prod (l.map Prod.fst))) =
         finiteGibbsExpectation energy β (ScalarExchange.peelSumWithCoefficients ζ l) /
           (1 - ζ ^ l.length * Complex.exp ((q1 * β : ℝ) : ℂ)) := by
-    have h := tsumTrace_diagonalEvolution_comp_peel energy β q1 ζ C1 l hC1 hcomm
-      Summable.of_finite Summable.of_finite
-    simp only [tsumTrace, tsum_fintype, ← traceFock_eq_sum_matrixCoeff] at h
-    have hZ := traceFock_diagonalEvolution_ne_zero energy β
-    have hne' : (1 : ℂ) - ζ ^ l.length * Complex.exp ((β * q1 : ℝ) : ℂ) ≠ 0 := by
-      rwa [mul_comm β q1]
-    simp only [finiteGibbsExpectation_eq_trace_div]
-    field_simp [hZ, hne']
-    linear_combination (norm := ring_nf) h
+    have hZ : tsumTrace (diagonalEvolution energy (-β)) ≠ 0 := by
+      rw [tsumTrace_eq_traceFock]
+      exact traceFock_diagonalEvolution_ne_zero energy β
+    simpa only [finiteGibbsExpectation_eq_trace_div, tsumTrace_eq_traceFock] using
+      (normalizedTsumTrace_comp_peel energy β q1 ζ C1 l hC1 hcomm
+        Summable.of_finite Summable.of_finite hZ hne)
   rw [hpeel]
   apply congrArg (fun x : ℂ =>
     x / (1 - ζ ^ l.length * Complex.exp ((q1 * β : ℝ) : ℂ)))
