@@ -190,11 +190,5 @@ theorem dysonCoeff_at_zero (energy : Config → ℝ)
       rw [dysonCoeff_succ_basisState_apply, intervalIntegral.integral_same]
       simp [matrixCoeff]
 
-/-- The order-`N` finite Dyson truncation in the perturbation parameter `lam`. -/
-noncomputable def dysonTruncation (energy : Config → ℝ)
-    (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (lam : ℂ) (N : ℕ) (τ : ℝ) :
-    AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config :=
-  ∑ n ∈ Finset.range (N + 1), lam ^ n • dysonCoeff energy V n τ
-
 end Common
 end SecondQuantization
