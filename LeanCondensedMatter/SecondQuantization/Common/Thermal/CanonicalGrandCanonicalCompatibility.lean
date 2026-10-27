@@ -367,7 +367,7 @@ theorem grandCanonicalGibbsDensityOperator_traceNorm_complement_projection
       apply HasSum.congr_fun h
       intro c
       simpa only [T] using
-        (b.diagonalExpectationValue_diagonalOp tail ht ht_nonneg c)
+        (b.diagonalExpectationValue_diagonalOp tail ht ht_nonneg c).symm
     exact h'.tsum_eq.symm
   have hOp : ρ.op - Q.comp (ρ.op.comp Q) = T := by
     apply continuousLinearMap_ext_completedBasis
@@ -377,11 +377,21 @@ theorem grandCanonicalGibbsDensityOperator_traceNorm_complement_projection
       simpa only [T, b, completedHilbertBasis_apply] using
         (b.diagonalOp_apply_basis (fun i => (tail i : ℂ))
           (by simpa using ht) c)
+    have hρc :
+        ρ.op (completedBasisState c) = (w c : ℂ) • completedBasisState c := by
+      simpa only [ρ, w] using
+        (grandCanonicalGibbsDensityOperator_apply_basis ε β μ hsum c)
+    have hQc :
+        Q (completedBasisState c) =
+          if particleNumber (Mode := Mode) c ∈ F then completedBasisState c else 0 := by
+      simpa only [Q] using
+        (completedCoordinateProjection_basisState
+          (fun x : Config => particleNumber (Mode := Mode) x ∈ F) c)
     rw [sub_apply, ContinuousLinearMap.comp_apply, ContinuousLinearMap.comp_apply,
-      happly, grandCanonicalGibbsDensityOperator_apply_basis]
+      happly, hρc, hQc]
     by_cases hc : particleNumber (Mode := Mode) c ∈ F
-    · simp [Q, tail, w, hc, completedCoordinateProjection_basisState]
-    · simp [Q, tail, w, hc, completedCoordinateProjection_basisState]
+    · simp [hc, hρc, hQc, tail]
+    · simp [hc, hρc, hQc, tail]
   have hres : IsTraceClass (ρ.op - Q.comp (ρ.op.comp Q)) := by
     rw [hOp]
     exact hT
@@ -393,7 +403,7 @@ theorem grandCanonicalGibbsDensityOperator_traceNorm_complement_projection
     have hgroups :=
       ((Summable.of_norm ht).hasSum.tsum_fiberwise
         (particleNumber (Mode := Mode) (Config := Config))).tsum_eq
-    rw [hgroups]
+    rw [← hgroups]
     apply tsum_congr
     intro N
     by_cases hN : N ∈ F
