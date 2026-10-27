@@ -1,5 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.GibbsExpectation.TwoPoint
-import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.Unnormalized.PeelFirstTrace
+import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.GibbsExpectation.Peel
 
 set_option linter.style.header false
 
@@ -53,24 +53,12 @@ theorem finiteGibbsExpectation_four_point (energy : Config → ℝ) (β q1 : ℝ
       · simpa [ScalarExchange.zetaCommutator, Module.End.mul_eq_comp] using hcomm12
       · simpa [ScalarExchange.zetaCommutator, Module.End.mul_eq_comp] using hcomm13
       · simpa [ScalarExchange.zetaCommutator, Module.End.mul_eq_comp] using hcomm14
-    have hz : traceFock (0 : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) = 0 :=
-      (traceFock (Config := Config)).map_zero
-    have h := tsumTrace_diagonalEvolution_comp_peel energy β q1 ζ C1
+    have hpeel := finiteGibbsExpectation_peel_indexed energy β q1 ζ C1
       [(C2, c12), (C3, c13), (C4, c14)] hC1 hmem
-      Summable.of_finite Summable.of_finite
-    simp only [tsumTrace, tsum_fintype, ← traceFock_eq_sum_matrixCoeff] at h
-    have hZ := traceFock_diagonalEvolution_ne_zero energy β
-    simp only [ScalarExchange.peelSumWithCoefficients, List.map_cons, List.map_nil,
-      List.prod_cons, List.prod_nil,
-      Module.End.mul_eq_comp, Module.End.one_eq_id, List.length_cons, List.length_nil,
-      LinearMap.comp_id, LinearMap.comp_zero, LinearMap.comp_add, LinearMap.comp_smul,
-      map_add, map_smul, smul_eq_mul, hz, mul_zero] at h
-    have hne' : (1 : ℂ) - ζ ^ 3 * Complex.exp ((β * q1 : ℝ) : ℂ) ≠ 0 := by
-      rw [mul_comm β q1, hζ3]
-      exact hne
-    simp only [finiteGibbsExpectation_eq_trace_div]
-    field_simp [hZ, hne']
-    linear_combination (norm := ring_nf) h
+      (by simpa [hζ3] using hne)
+    simpa [Fin.sum_univ_succ, List.eraseIdx_cons_zero, List.eraseIdx_cons_succ,
+      List.map_cons, List.map_nil, List.prod_cons, List.prod_nil,
+      Module.End.mul_eq_comp, Module.End.one_eq_id] using hpeel
   rw [hζ3, hζ2] at h4
   have h12 := finiteGibbsExpectation_comp_eq_div_of_zetaCommutator energy β q1 ζ c12 C1 C2 hC1
     hcomm12 hne
