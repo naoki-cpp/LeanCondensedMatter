@@ -152,9 +152,11 @@ identities with Wick diagrams, connected components and normalized partition ser
 remain explicitly specialized to μ = 0; nonzero-μ linked-cluster factorization
 requires migrating the diagram-side amplitudes and partition trace together. Concrete ensemble-specific Dyson/Wick statements choose the Gibbs
 energy separately; no finite density-state adapter is required by the coefficient expansion.
-The finite `Fermionic.freeGibbsDensityOperator ε β` still covers **all**
-fermionic occupation sectors at implicit `μ = 0`, not a fixed-number canonical state;
-it remains in use for some finite contractions and diagrammatic consumers.
+Finite fermionic contractions, one-body expectations, Wick amplitudes, and Dyson consumers
+use the generic finite Gibbs expectation or eigenbasis density operator directly, with
+`Common.grandCanonicalEnergy ε μ` when the chemical potential is explicit.
+Where the diagrammatic series still specializes to `μ = 0`, this choice is explicit
+and does not constitute a fixed-number canonical state.
 `grandCanonicalTimedFieldPairContraction ε β μ` uses the generic finite Gibbs functional
 at effective dispersion `ε - μ` with physical imaginary-time fields at `ε`. Existing
 diagrammatic consumers explicitly choose `μ = 0` until their higher-level APIs migrate.

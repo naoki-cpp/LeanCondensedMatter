@@ -2,7 +2,6 @@ import LeanCondensedMatter.Combinatorics.PerfectPairing.Evaluation
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Ordered
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.Wick.Diagram
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.LegFamily
-import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsDensityOperator
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.TimedFieldContraction
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.PairingWeight
 import LeanCondensedMatter.Analysis.OrderedSimplex.Integral
@@ -35,7 +34,7 @@ noncomputable def orderedQuarticLegOperator (ε : Mode → ℝ) {S : Finset (Fin
 
 /-! ## Pair contraction values -/
 
-/-- The canonical free Gibbs density-state value of two flattened leg positions. -/
+/-- The μ = 0 grand-canonical pair value of two flattened leg positions. -/
 noncomputable def orderedQuarticPairValue (ε : Mode → ℝ) (β : ℝ) {S : Finset (Fin N)}
     (d : QuarticWickDiagram Mode N S) (order : Common.QuarticVertexOrder S) (τ : Fin S.card → ℝ)
     (a b : Fin (2 * (2 * S.card))) : ℂ :=
@@ -43,22 +42,20 @@ noncomputable def orderedQuarticPairValue (ε : Mode → ℝ) (β : ℝ) {S : Fi
     (quarticLegFieldForSequence (fun i => d.vertexLabel (order i)) τ a)
     (quarticLegFieldForSequence (fun i => d.vertexLabel (order i)) τ b)
 
-/-- The Wick pair value is the canonical free Gibbs density-state expectation of the transported
+/-- The Wick pair value is the finite Gibbs expectation of the transported
 operator product. -/
-theorem orderedQuarticPairValue_eq_freeGibbsDensityOperator_expectation
+theorem orderedQuarticPairValue_eq_finiteGibbsExpectation
     (ε : Mode → ℝ) (β : ℝ) {S : Finset (Fin N)}
     (d : QuarticWickDiagram Mode N S) (order : Common.QuarticVertexOrder S) (τ : Fin S.card → ℝ)
     (a b : Fin (2 * (2 * S.card))) :
     orderedQuarticPairValue ε β d order τ a b =
-      (freeGibbsDensityOperator ε β).expectation
-        (Common.finiteHilbertOperatorAlgEquiv
-          ((orderedQuarticLegOperator ε d order τ a).comp
-            (orderedQuarticLegOperator ε d order τ b))) := by
+      Common.finiteGibbsExpectation (fermionEnergy ε) β
+        ((orderedQuarticLegOperator ε d order τ a).comp
+          (orderedQuarticLegOperator ε d order τ b)) := by
   rw [orderedQuarticPairValue, grandCanonicalTimedFieldPairContraction,
     timedFieldOperator_quarticLegFieldForSequence,
     timedFieldOperator_quarticLegFieldForSequence]
-  simp only [sub_zero, freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation,
-    orderedQuarticLegOperator]
+  simp only [sub_zero, orderedQuarticLegOperator]
 
 /-! ## Fixed-order Wick integrand and ordered-simplex contribution -/
 
@@ -92,17 +89,15 @@ theorem orderedQuarticPairValue_eq (ε : Mode → ℝ) (β : ℝ) {S : Finset (F
               quarticLocalLegEnergyShift ε
                 (d.vertexLabel (order (Common.orderedQuarticLegEquiv S.card b).1))
                 (Common.orderedQuarticLegEquiv S.card b).2 : ℝ) : ℂ) *
-        (freeGibbsDensityOperator ε β).expectation
-          (Common.finiteHilbertOperatorAlgEquiv
-            ((quarticLocalLegOperator
+        Common.finiteGibbsExpectation (fermionEnergy ε) β
+          ((quarticLocalLegOperator
                 (d.vertexLabel (order (Common.orderedQuarticLegEquiv S.card a).1))
                 (Common.orderedQuarticLegEquiv S.card a).2).comp
               (quarticLocalLegOperator
                 (d.vertexLabel (order (Common.orderedQuarticLegEquiv S.card b).1))
-                (Common.orderedQuarticLegEquiv S.card b).2))) := by
+                (Common.orderedQuarticLegEquiv S.card b).2)) := by
   simpa [orderedQuarticPairValue, grandCanonicalTimedFieldPairContraction_eq,
     quarticLegFieldForSequence, quarticLocalLegEnergyShift, sub_zero,
-    freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation,
     quarticLocalLegOperator, Common.quarticLocalLegOperator]
 
 /-- A pair value is continuous in the time assignment. -/

@@ -4,7 +4,6 @@ import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.Quartic
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.LegFamily
 import LeanCondensedMatter.Analysis.PowerSeries.Moment
 import LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonTraceSeries
-import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsDensityOperator
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.TimedFieldContraction
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsExpectationBridge
 
@@ -15,7 +14,7 @@ set_option linter.style.header false
 
 The fermionic operator-flattening identity is a proof-local step of the Dyson-moment endpoint.
 Public Dyson pairing statements use the combinatorics-owned `Pairing.evaluation` boundary with
-the canonical free Gibbs density-state pair kernel.
+the finite Gibbs expectation pair kernel at explicit μ = 0.
 -/
 
 namespace SecondQuantization
@@ -55,7 +54,7 @@ private theorem prod_ofFn_quarticLegOperatorForSequence_eq_quarticVertexSequence
 
 variable [Fintype Mode]
 
-/-- Canonical free Gibbs density-state contraction of two flattened quartic Dyson legs. -/
+/-- μ = 0 grand-canonical contraction of two flattened quartic Dyson legs. -/
 noncomputable def flatVertexLegPairValue {n : ℕ}
     (ε : Mode → ℝ) (β : ℝ) (q : Fin n → QuarticVertexLabel Mode)
     (τ : Fin n → ℝ) (a b : Fin (2 * (2 * n))) : ℂ :=
@@ -71,20 +70,18 @@ noncomputable def flatVertexLegPairingEvaluation {n : ℕ}
 
 /-! ## Pair-kernel regularity -/
 
-/-- Closed form of the canonical flattened-leg pair kernel. -/
+/-- Closed form of the μ = 0 flattened-leg pair kernel. -/
 theorem flatVertexLegPairValue_eq {n : ℕ}
     (ε : Mode → ℝ) (β : ℝ) (q : Fin n → QuarticVertexLabel Mode)
     (τ : Fin n → ℝ) (a b : Fin (2 * (2 * n))) :
     flatVertexLegPairValue ε β q τ a b =
       Complex.exp ((τ (flatVertexIndex n a) * quarticLegEnergyShiftForSequence ε q a : ℝ) : ℂ) *
         Complex.exp ((τ (flatVertexIndex n b) * quarticLegEnergyShiftForSequence ε q b : ℝ) : ℂ) *
-        (freeGibbsDensityOperator ε β).expectation
-          (Common.finiteHilbertOperatorAlgEquiv
-            ((quarticLocalLegOperator (q (flatVertexIndex n a)) (flatLocalLeg n a)).comp
-              (quarticLocalLegOperator (q (flatVertexIndex n b)) (flatLocalLeg n b)))) := by
+        Common.finiteGibbsExpectation (fermionEnergy ε) β
+          ((quarticLocalLegOperator (q (flatVertexIndex n a)) (flatLocalLeg n a)).comp
+            (quarticLocalLegOperator (q (flatVertexIndex n b)) (flatLocalLeg n b))) := by
   simpa [flatVertexLegPairValue, grandCanonicalTimedFieldPairContraction_eq,
     quarticLegFieldForSequence, quarticLegEnergyShiftForSequence, sub_zero,
-    freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation,
     quarticLocalLegEnergyShift, quarticLocalLegOperator,
     Common.quarticLocalLegOperator, Common.flatVertexIndex, Common.flatLocalLeg]
 
@@ -146,8 +143,7 @@ theorem dysonVertexMoment_quarticInteraction_eq_sum_vertexLabel_pairingEvaluatio
           simp only [grandCanonicalTimedFieldPairContraction, sub_zero]
         simp_rw [hpair] at hwick
         simpa only [flatVertexLegPairingEvaluation, Combinatorics.Pairing.evaluation,
-          flatVertexLegPairValue, timedFieldOperator_quarticLegFieldForSequence,
-          freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation] using hwick
+          flatVertexLegPairValue, timedFieldOperator_quarticLegFieldForSequence] using hwick
       rw [intervalIntegral.orderedSimplexIntegral_congr hpoint,
         intervalIntegral.orderedSimplexIntegral_finsetSum _ S.card β _
           (fun pairing _ => continuous_flatVertexLegPairingEvaluation ε β q pairing)]

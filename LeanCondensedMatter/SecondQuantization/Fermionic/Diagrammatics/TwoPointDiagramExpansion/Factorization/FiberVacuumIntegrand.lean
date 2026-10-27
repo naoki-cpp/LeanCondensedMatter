@@ -143,8 +143,7 @@ private theorem fixedExternalOfSlotSplit_mixedPairContractionValue_vacuumNormali
         (σ ∘ slotSplitVacuumSlot T) pr.1.1 pr.1.2 := by
   let d := fixedExternalOfSlotSplit T ext vac
   unfold FixedExternalTwoPointWickDiagram.mixedPairContractionValue
-  rw [orderedQuarticPairValue_eq_freeGibbsDensityOperator_expectation,
-    freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation]
+  rw [orderedQuarticPairValue_eq_finiteGibbsExpectation]
   unfold mixedTimeOrderedAtomicPairValue grandCanonicalTimedFieldPairContraction
   simp only [sub_zero]
   change Common.finiteGibbsExpectation (fermionEnergy ε) β
