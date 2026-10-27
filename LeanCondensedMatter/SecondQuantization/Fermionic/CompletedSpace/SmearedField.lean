@@ -3,6 +3,7 @@ import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.Core
 import LeanCondensedMatter.Analysis.ScalarExchange.Basic
 import Mathlib.Analysis.Normed.Operator.Extend
 import Mathlib.LinearAlgebra.Finsupp.LinearCombination
+import Mathlib.Topology.DenseEmbedding
 
 set_option linter.style.header false
 
@@ -28,48 +29,57 @@ private def createFieldCore : (Mode →₀ ℂ) →ₗ[ℂ]
     (CompletedFockSpace Mode →L[ℂ] CompletedFockSpace Mode) :=
   Finsupp.linearCombination ℂ completedCreate
 
+private theorem createFieldCore_anticomm (v w : Mode →₀ ℂ) :
+    ScalarExchange.zetaCommutator (-1 : ℂ) (star (createFieldCore v)) (createFieldCore w) =
+      inner ℂ (Common.algebraicToCompleted v) (Common.algebraicToCompleted w) •
+        ContinuousLinearMap.id ℂ (CompletedFockSpace Mode) := by
+  classical
+  have hscalar : (∑ i ∈ v.support, star (v i) * w i) =
+      inner ℂ (Common.algebraicToCompleted v) (Common.algebraicToCompleted w) := by
+    rw [lp.inner_eq_tsum]
+    change (∑ i ∈ v.support, star (v i) * w i) = ∑' i, inner ℂ (v i) (w i)
+    simp only [RCLike.inner_apply]
+    symm
+    calc
+      _ = ∑ i ∈ v.support, w i * (starRingEnd ℂ) (v i) := by
+        apply tsum_eq_sum
+        intro i hi
+        simp only [Finsupp.notMem_support_iff.mp hi, map_zero, mul_zero]
+      _ = _ := Finset.sum_congr rfl fun i _ => mul_comm _ _
+  have h := ScalarExchange.zetaCommutator_sum_sum (-1 : ℂ) v.support w.support
+    (fun i => star (v i) • completedAnnihilate i)
+    (fun j => w j • completedCreate j)
+  simp only [ScalarExchange.zetaCommutator_smul_smul,
+    completedAnticomm_annihilate_create] at h
+  have hsum : (∑ i ∈ v.support, ∑ j ∈ w.support,
+      (star (v i) * w j) •
+        (if i = j then ContinuousLinearMap.id ℂ (CompletedFockSpace Mode) else 0)) =
+      (∑ i ∈ v.support, star (v i) * w i) •
+        ContinuousLinearMap.id ℂ (CompletedFockSpace Mode) := by
+    rw [Finset.sum_smul]
+    apply Finset.sum_congr rfl
+    intro i _
+    by_cases hi : i ∈ w.support
+    · simp [smul_ite, hi]
+    · simp [smul_ite, hi, Finsupp.notMem_support_iff.mp hi]
+  rw [hsum, hscalar] at h
+  simpa only [createFieldCore, Finsupp.linearCombination_apply, Finsupp.sum,
+    star_sum, star_smul, star_completedCreate] using h
+
 private theorem norm_createFieldCore_le (v : Mode →₀ ℂ) :
     ‖createFieldCore v‖ ≤ ‖Common.algebraicToCompleted v‖ := by
   classical
   let C := createFieldCore v
   let u := Common.algebraicToCompleted v
-  have hscalar : (∑ i ∈ v.support, star (v i) * v i) = ((‖u‖ ^ (2 : ℕ) : ℝ) : ℂ) := by
-    calc
-      _ = inner ℂ u u := by
-        rw [lp.inner_eq_tsum]
-        change (∑ i ∈ v.support, star (v i) * v i) = ∑' i, inner ℂ (v i) (v i)
-        simp only [RCLike.inner_apply]
-        symm
-        calc
-          _ = ∑ i ∈ v.support, v i * (starRingEnd ℂ) (v i) := by
-            apply tsum_eq_sum
-            intro i hi
-            simp only [Finsupp.notMem_support_iff.mp hi, map_zero, zero_mul]
-          _ = _ := Finset.sum_congr rfl fun i _ => mul_comm _ _
-      _ = _ := by
-        convert! (inner_self_eq_norm_sq_to_K (𝕜 := ℂ) u) using 1
-        simp only [Complex.ofReal_pow]
-        with_unfolding_all rfl
   have hcar : star C * C + C * star C = ((‖u‖ ^ (2 : ℕ) : ℝ) : ℂ) •
       ContinuousLinearMap.id ℂ (CompletedFockSpace Mode) := by
-    have h := ScalarExchange.zetaCommutator_sum_sum (-1 : ℂ) v.support v.support
-      (fun i => star (v i) • completedAnnihilate i)
-      (fun j => v j • completedCreate j)
-    simp only [ScalarExchange.zetaCommutator_smul_smul,
-      completedAnticomm_annihilate_create] at h
-    have hsum : (∑ i ∈ v.support, ∑ j ∈ v.support,
-        (star (v i) * v j) •
-          (if i = j then ContinuousLinearMap.id ℂ (CompletedFockSpace Mode) else 0)) =
-        (∑ i ∈ v.support, star (v i) * v i) •
-          ContinuousLinearMap.id ℂ (CompletedFockSpace Mode) := by
-      rw [Finset.sum_smul]
-      apply Finset.sum_congr rfl
-      intro i hi
-      simp [smul_ite, hi]
-    rw [hsum, hscalar] at h
-    simpa only [C, createFieldCore, Finsupp.linearCombination_apply, Finsupp.sum,
-      star_sum, star_smul, star_completedCreate, ScalarExchange.zetaCommutator,
-      neg_one_smul, sub_neg_eq_add] using h
+    have hnorm : inner ℂ u u = ((‖u‖ ^ (2 : ℕ) : ℝ) : ℂ) := by
+      convert! (inner_self_eq_norm_sq_to_K (𝕜 := ℂ) u) using 1
+      simp only [Complex.ofReal_pow]
+      with_unfolding_all rfl
+    have h := createFieldCore_anticomm v v
+    rw [hnorm] at h
+    simpa only [ScalarExchange.zetaCommutator, neg_one_smul, sub_neg_eq_add] using h
   apply C.opNorm_le_bound (norm_nonneg u)
   intro x
   have hinner := congrArg (fun T : CompletedFockSpace Mode →L[ℂ] CompletedFockSpace Mode =>
@@ -115,6 +125,64 @@ theorem completedCreateField_basisState (i : Mode) :
     completedCreateField (Common.completedBasisState i) = completedCreate i := by
   rw [← Common.algebraicToCompleted_basisState, completedCreateField_algebraicToCompleted]
   simp [Common.basisState]
+
+/-- Creation fields anticommute for arbitrary square-summable one-particle coefficients. -/
+theorem completedAnticomm_createField_createField (v w : Common.CompletedFock Mode) :
+    ScalarExchange.zetaCommutator (-1 : ℂ) (completedCreateField v)
+      (completedCreateField w) = 0 := by
+  classical
+  refine Common.algebraicToCompleted_denseRange.induction_on₂ ?_ ?_ v w
+  · apply isClosed_eq
+    · unfold ScalarExchange.zetaCommutator
+      fun_prop
+    · fun_prop
+  · intro a b
+    rw [completedCreateField_algebraicToCompleted, completedCreateField_algebraicToCompleted,
+      ScalarExchange.zetaCommutator_sum_sum]
+    simp only [ScalarExchange.zetaCommutator_smul_smul, completedAnticomm_create_create,
+      smul_zero, Finset.sum_const_zero]
+
+/-- The mixed CAR for square-summable coefficients: `{c(v)†, c(w)} = ⟨v,w⟩ I`, where
+`c` denotes the creation field and the inner product is conjugate-linear in its first argument. -/
+theorem completedAnticomm_adjoint_createField (v w : Common.CompletedFock Mode) :
+    ScalarExchange.zetaCommutator (-1 : ℂ) (star (completedCreateField v))
+      (completedCreateField w) =
+        inner ℂ v w • ContinuousLinearMap.id ℂ (CompletedFockSpace Mode) := by
+  refine Common.algebraicToCompleted_denseRange.induction_on₂ ?_ ?_ v w
+  · apply isClosed_eq
+    · unfold ScalarExchange.zetaCommutator
+      fun_prop
+    · fun_prop
+  · intro a b
+    simpa only [completedCreateField_algebraicToCompleted, createFieldCore,
+      Finsupp.linearCombination_apply, Finsupp.sum] using createFieldCore_anticomm a b
+
+/-- The adjoint creation field annihilates the vacuum, including for infinite-support
+one-particle coefficients. -/
+theorem adjoint_completedCreateField_vacuum (v : Common.CompletedFock Mode) :
+    star (completedCreateField v) (completedBasisState (vacuum : Occupation Mode)) = 0 := by
+  classical
+  refine Common.algebraicToCompleted_denseRange.induction_on v ?_ ?_
+  · apply isClosed_eq <;> fun_prop
+  · intro a
+    simp [completedCreateField_algebraicToCompleted, star_sum, star_smul,
+      star_completedCreate, vacuum]
+
+/-- Creating from the vacuum preserves the one-particle inner product. -/
+theorem inner_completedCreateField_vacuum (v w : Common.CompletedFock Mode) :
+    inner ℂ (completedCreateField v (completedBasisState (vacuum : Occupation Mode)))
+      (completedCreateField w (completedBasisState (vacuum : Occupation Mode))) =
+        inner ℂ v w := by
+  have h := congrArg (fun T : CompletedFockSpace Mode →L[ℂ] CompletedFockSpace Mode =>
+    T (completedBasisState (vacuum : Occupation Mode)))
+      (completedAnticomm_adjoint_createField v w)
+  simp only [ScalarExchange.zetaCommutator, neg_one_smul, sub_neg_eq_add, add_apply,
+    mul_apply_eq_comp, smul_apply, ContinuousLinearMap.id_apply,
+    adjoint_completedCreateField_vacuum, map_zero, add_zero] at h
+  rw [← ContinuousLinearMap.adjoint_inner_right (completedCreateField v),
+    ← ContinuousLinearMap.star_eq_adjoint, h, inner_smul_right,
+    inner_completedBasisState_left]
+  simp [completedBasisState]
 
 end
 
