@@ -83,14 +83,6 @@ theorem star_finiteHilbertOperator_eq_iff_matrixCoeff
     rw [ContinuousLinearMap.adjoint_toLinearMap] at hlin
     exact ContinuousLinearMap.ext fun x => LinearMap.congr_fun hlin x
 
-/-- Coefficient-level criterion for self-adjointness after finite-Hilbert transport. -/
-theorem finiteHilbertOperator_isSelfAdjoint_iff_matrixCoeff
-    (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
-    IsSelfAdjoint (finiteHilbertOperatorAlgEquiv A) ↔
-      ∀ m n : Config, star (matrixCoeff A n m) = matrixCoeff A m n := by
-  rw [isSelfAdjoint_iff]
-  exact star_finiteHilbertOperator_eq_iff_matrixCoeff A A
-
 end
 end Common
 end SecondQuantization
