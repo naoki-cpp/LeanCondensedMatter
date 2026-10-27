@@ -274,7 +274,10 @@ theorem completedFockUnitary_joint_continuous {X : Type*} [TopologicalSpace X]
     | algebraMap a =>
         simp only [completedExterior_algebraMap, map_smul, completedFockUnitary_vacuum]
         exact continuous_const
-    | add x y hx hy => simpa only [map_add, Pi.add_apply] using hx.add hy
+    | add x y hx hy =>
+        simp only [map_add]
+        convert! hx.add hy using 1
+        with_unfolding_all rfl
     | ι_mul x v hx =>
         change Continuous (fun t =>
           completedFockUnitary (e t) (completedExterior (AlgebraicFock.create _ v x)))
