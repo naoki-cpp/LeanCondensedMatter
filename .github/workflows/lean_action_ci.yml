@@ -49,6 +49,9 @@ jobs:
               - 'scripts/architecture_graph_scopes.py'
               - 'scripts/architecture/*.json'
               - 'docs-site/**'
+              - 'scripts/report_retained_catalog.py'
+              - 'scripts/test_report_retained_catalog.py'
+              - '.github/workflows/insights.yml'
               - '.github/workflows/lean_action_ci.yml'
             lean:
               - 'LeanCondensedMatter.lean'
@@ -62,8 +65,6 @@ jobs:
             advisory:
               - 'scripts/check_declaration_catalog.py'
               - 'scripts/test_declaration_catalog.py'
-              - 'scripts/report_retained_catalog.py'
-              - 'scripts/test_report_retained_catalog.py'
               - 'scripts/generate_declaration_catalog.py'
               - 'scripts/CheckUnusedHypotheses.lean'
               - 'scripts/TheoremCatalog.lean'
@@ -71,7 +72,6 @@ jobs:
               - 'scripts/merge_theorem_replacements.py'
               - 'docs/completed.md'
               - 'docs/theorem-catalog-retained.md'
-              - '.github/workflows/insights.yml'
 
   source-checks:
     needs: changes
@@ -89,6 +89,9 @@ jobs:
 
       - name: Test declaration explorer
         run: node --test docs-site/tests/*.test.mjs
+
+      - name: Test retained theorem drift report
+        run: python3 -m unittest discover -s scripts -p 'test_report_retained_catalog.py'
 
   build:
     needs: changes
@@ -131,7 +134,6 @@ jobs:
           python3 scripts/generate_declaration_catalog.py
           python3 scripts/check_declaration_catalog.py
           python3 -m unittest discover -s scripts -p 'test_declaration_catalog.py'
-          python3 -m unittest discover -s scripts -p 'test_report_retained_catalog.py'
 
       - name: Validate theorem replacement tooling
         if: needs.changes.outputs.advisory == 'true'
