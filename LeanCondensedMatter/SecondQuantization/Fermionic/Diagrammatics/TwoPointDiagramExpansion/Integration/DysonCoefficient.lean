@@ -85,7 +85,6 @@ theorem finiteGibbsExpectation_mixedTimeOrderedVertexComp_eq_sum_pairingValue
   rw [hoperators] at hwick
   simp only [Common.finiteGibbsExpectation] at hwick
   rw [hwick]
-  rfl
 
 /-- Order-`n` perturbative two-point coefficient at explicit chemical potential μ.
 The finite Gibbs weight uses ε - μ, while the physical vertex and external-field
@@ -161,7 +160,7 @@ theorem twoPointDiagramCoefficient_eq_twoPointDysonCoefficient {n : ℕ}
       ε β 0 i j τ τ' q σ
   simp only [sub_zero] at hpoint
   rw [hpoint]
-  ring
+  simp only [orderedTwoPointPairingValue, mixedTimeOrderedAtomicPairValue]
 
 end Fermionic
 end SecondQuantization
