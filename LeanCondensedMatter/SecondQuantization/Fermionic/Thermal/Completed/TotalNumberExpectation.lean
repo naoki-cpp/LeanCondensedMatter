@@ -39,35 +39,6 @@ noncomputable abbrev grandCanonicalTotalNumberExpectation
     (ε : Mode → ℝ) (β μ : ℝ) : ℝ :=
   Common.grandCanonicalParticleNumberExpectation (Config := Occupation Mode) ε β μ
 
-/-- Integrable fermionic particle-number means have the expected spectral series. -/
-theorem hasSum_grandCanonicalTotalNumberExpectation
-    (ε : Mode → ℝ) (β μ : ℝ) (hint : GrandCanonicalTotalNumberIntegrable ε β μ) :
-    HasSum
-      (fun n : Occupation Mode =>
-        eigenbasisGibbsProbability (Common.grandCanonicalEnergy (Config := Occupation Mode) ε μ) β n * (particleNumber n : ℝ))
-      (grandCanonicalTotalNumberExpectation ε β μ) :=
-  Common.hasSum_grandCanonicalParticleNumberExpectation
-    (Config := Occupation Mode) ε β μ hint
-
-/-- The grand-canonical mean particle number is the first moment of the
-sharp-number sector distribution. Unlike bounded-observable sector mixing,
-this identity requires integrability of the unbounded number operator. -/
-theorem grandCanonicalTotalNumberExpectation_eq_tsum_sector
-    (ε : Mode → ℝ) (β μ : ℝ)
-    (hint : GrandCanonicalTotalNumberIntegrable ε β μ) :
-    grandCanonicalTotalNumberExpectation ε β μ =
-      ∑' N : ℕ, (N : ℝ) *
-        Common.grandCanonicalSectorProbability (Config := Occupation Mode) ε β μ N :=
-  Common.grandCanonicalParticleNumber_tsum_eq_sector_moment
-    (Config := Occupation Mode) ε β μ hint
-
-/-- The completed free total-number expectation is nonnegative. -/
-theorem grandCanonicalTotalNumberExpectation_nonneg
-    (ε : Mode → ℝ) (β μ : ℝ) :
-    0 ≤ grandCanonicalTotalNumberExpectation ε β μ :=
-  Common.grandCanonicalParticleNumberExpectation_nonneg
-    (Config := Occupation Mode) ε β μ
-
 /-- On each occupation basis state, the diagonal matrix element of the composed completed Gibbs
 density operator and total-number operator is the corresponding Gibbs probability times particle
 number. -/
@@ -104,7 +75,8 @@ theorem hasSum_grandCanonicalGibbsDensityOperator_totalNumber_diagonal
               ⟨completedBasisState n, completedBasisState_mem_completedTotalNumberDomain n⟩)))
       (grandCanonicalTotalNumberExpectation ε β μ : ℂ) := by
   have hcast :=
-    (hasSum_grandCanonicalTotalNumberExpectation ε β μ hint).mapL Complex.ofRealCLM
+    (Common.hasSum_grandCanonicalParticleNumberExpectation
+      (Config := Occupation Mode) ε β μ hint).mapL Complex.ofRealCLM
   simp only [Complex.ofRealCLM_apply] at hcast
   simpa only [grandCanonicalGibbsDensityOperator_totalNumber_diagonalTerm] using hcast
 
