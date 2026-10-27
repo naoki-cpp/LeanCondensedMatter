@@ -12,8 +12,9 @@ set_option linter.style.header false
 # Free thermal expectation of one-body observables
 
 Finite sums of completed creation-annihilation bilinears are bounded even when the mode type is
-infinite. Their completed Gibbs mean uses the existing thermal two-point theorem. The finite
-second-quantization formula is transported from this same completed finite-sum expectation.
+infinite. Their mean is stated through the general summability-aware completed Gibbs
+expectation; the proof uses the existing grand-canonical CAR/KMS two-point theorem.
+The finite second-quantization formula is transported from this same completed finite-sum mean.
 
 The energies `ε` are diagonal in the specified mode basis. For the finite full-Fock
 state with grand-canonical energy `E - μ N`, the expectation of `dΓ(A)` is the sum
@@ -33,17 +34,21 @@ noncomputable section
 
 variable {Mode : Type*} [LinearOrder Mode]
 
-/-- A one-body observable supported on finitely many specified modes has the Fermi-weighted
-diagonal mean. The full mode type and completed Fock space need not be finite. This statement
-does not extend to arbitrary finite-rank one-particle operators with infinitely supported vectors. -/
-theorem grandCanonicalGibbsDensityOperator_expectation_sum_create_comp_annihilate
+/-- The general, summability-aware completed Gibbs expectation of a one-body observable
+supported on finitely many specified modes has the Fermi-weighted diagonal mean.
+Neither the mode type nor the completed Fock space needs to be finite. The observable
+must be a finite sum of bounded mode bilinears, not an arbitrary unbounded operator. -/
+theorem grandCanonicalGibbsExpectation_sum_create_comp_annihilate
     (ε : Mode → ℝ) (β μ : ℝ) (hsum : QuantumTheory.EigenbasisGibbsSummable
       (Common.grandCanonicalEnergy (Config := Occupation Mode) ε μ) β)
     (s : Finset Mode) (a : Mode → Mode → ℂ) :
-    (Common.grandCanonicalGibbsDensityOperator (Config := Occupation Mode) ε β μ hsum).expectation
+    Common.gibbsExpectation
+        (Common.grandCanonicalEnergy (Config := Occupation Mode) ε μ) β hsum
         (∑ i ∈ s, ∑ j ∈ s, a i j • (completedCreate i).comp (completedAnnihilate j)) =
       ∑ i ∈ s, a i i * (1 / (Complex.exp ((β : ℂ) * ((ε i - μ : ℝ) : ℂ)) + 1)) := by
   classical
+  change (Common.grandCanonicalGibbsDensityOperator
+      (Config := Occupation Mode) ε β μ hsum).expectation _ = _
   simp only [map_sum, map_smul,
     grandCanonicalGibbsDensityOperator_expectation_create_comp_annihilate, smul_eq_mul]
   apply Finset.sum_congr rfl
@@ -88,11 +93,12 @@ theorem finiteGrandCanonicalGibbsDensityOperator_expectation_finiteSecondQuantiz
       Finsupp.single_apply]
   let hsum := QuantumTheory.eigenbasisGibbsSummable_of_finite
     (Common.grandCanonicalEnergy (Config := Occupation Mode) ξ 0) β
-  let ρ := Common.grandCanonicalGibbsDensityOperator (Config := Occupation Mode) ξ β 0 hsum
   have hunit (i j : Mode) :
       (freeGibbsDensityOperator ξ β).expectation
           (boundedOneBodyOperator (matrixUnit i j)) =
-        ρ.expectation ((completedCreate i).comp (completedAnnihilate j)) := by
+        Common.gibbsExpectation
+          (Common.grandCanonicalEnergy (Config := Occupation Mode) ξ 0) β hsum
+          ((completedCreate i).comp (completedAnnihilate j)) := by
     change (freeGibbsDensityOperator ξ β).expectation
       (Common.finiteHilbertOperatorAlgEquiv
         (AlgebraicFock.occupationConjugate
@@ -103,9 +109,8 @@ theorem finiteGrandCanonicalGibbsDensityOperator_expectation_finiteSecondQuantiz
         fermionEnergy ξ := by
       funext n
       simpa only [sub_zero, fermionEnergy] using Common.grandCanonicalEnergy_eq_shifted ξ 0 n
-    simpa [ρ, Common.gibbsExpectation, Common.finiteGibbsExpectation,
-      Common.finiteGibbsExpectationLinearMap, Common.grandCanonicalGibbsDensityOperator,
-      freeGibbsDensityOperator, hξ] using
+    simpa [Common.gibbsExpectation, Common.finiteGibbsExpectation,
+      Common.finiteGibbsExpectationLinearMap, freeGibbsDensityOperator, hξ] using
       (Common.finiteGibbsExpectation_eq_completed_of_algebraicCore
         (Config := Occupation Mode) (fermionEnergy ξ) β
         ((create i).comp (annihilate j)) ((completedCreate i).comp (completedAnnihilate j))
@@ -116,7 +121,7 @@ theorem finiteGrandCanonicalGibbsDensityOperator_expectation_finiteSecondQuantiz
   conv_lhs => rw [hB]
   simp only [map_sum, map_smul, hunit]
   simpa only [map_sum, map_smul, sub_zero] using
-    (grandCanonicalGibbsDensityOperator_expectation_sum_create_comp_annihilate
+    (grandCanonicalGibbsExpectation_sum_create_comp_annihilate
       ξ β 0 hsum Finset.univ (fun i j => (B (latticeKet j)) i))
 
 end

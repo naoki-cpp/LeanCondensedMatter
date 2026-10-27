@@ -30,6 +30,11 @@ The finite fermionic two-point contractions now use that bridge directly at expl
 chemical potential, deriving their Fermi–Dirac values from completed bounded CAR/KMS
 operators. The free grand-canonical Green function evaluates its finite Gibbs
 expectation without routing through the old density-specific contraction API.
+The finite-mode-supported one-body bilinear mean now states its result using
+`Common.gibbsExpectation` directly, for arbitrary fermionic mode types under
+the grand-canonical Gibbs summability hypothesis. The finite second-quantized
+one-body expectation remains a finite-coordinate theorem, bridged to this
+completed bounded-operator mean rather than re-proving its Gibbs average.
 Finite-coordinate trace-ratio and Wick lemmas remain finite specializations; this
 does not assert bounded extensions of arbitrary infinite-dimensional ladder products.
 
