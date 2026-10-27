@@ -225,9 +225,7 @@ unbounded; absolute integrability is therefore required independently of
 the existence of a normalized Gibbs state. This is statistics-independent. -/
 theorem grandCanonicalParticleNumber_tsum_eq_sector_moment
     (ε : Mode → ℝ) (β μ : ℝ)
-    (hint : Summable fun c : Config =>
-      ‖eigenbasisGibbsProbability (grandCanonicalEnergy ε μ) β c *
-        (particleNumber (Mode := Mode) c : ℝ)‖) :
+    (hint : GrandCanonicalParticleNumberIntegrable (Config := Config) ε β μ) :
     (∑' c : Config,
       eigenbasisGibbsProbability (grandCanonicalEnergy ε μ) β c *
         (particleNumber (Mode := Mode) c : ℝ)) =
