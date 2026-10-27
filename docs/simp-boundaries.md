@@ -303,6 +303,13 @@ The following current simp boundaries are Green:
 - `pauliGreenDenominator_radial_re`
 - `pauliGreenDenominator_radial_im`
 
+## Green: completed fermionic fields
+
+- `SecondQuantization.Fermionic.star_completedCreate` — the adjoint of a mode creation operator
+  normalizes to the existing annihilation operator, consistently with the finite realization.
+- `SecondQuantization.Fermionic.completedCreateField_basisState` — a mode-basis coefficient
+  vector evaluates the extended field to the existing mode creation operator.
+
 ## Explicit-only reviewed boundaries
 
 These declarations are intentionally ordinary theorems rather than global simp rules. Their use is
