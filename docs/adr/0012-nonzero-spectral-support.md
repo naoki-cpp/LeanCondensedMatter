@@ -10,16 +10,18 @@ The kernel contributes zero to the operator's action and spectral trace but may 
 
 Evidence: [current spectral family and index](../../LeanCondensedMatter/Analysis/Operator/Spectral/EigenvectorFamily.lean) and [spectral-trace-class bundle](../../LeanCondensedMatter/Analysis/Operator/TraceClass/Spectral/Bundled.lean).
 
-## Historical evidence
+## Relation to general trace class
 
-[Issue #281](https://github.com/naoki-cpp/LeanCondensedMatter/issues/281) explains the present bundle: spectral summability alone was renamed `HasSummableRealEigenvalues`, the scalar sum `spectralTrace`, and compactness, symmetry, and summability were collected in `SpectralTraceClass`. Storing this bundle directly in density operators removed duplicate hypotheses and compatibility-only bridges. The narrower names prevent a restricted self-adjoint spectral construction from being mistaken for a general trace-class ideal.
+`SpectralTraceClass T` bundles general trace-class membership and symmetry. Compactness and
+absolute summability of nonzero real eigenvalues are derived. This is a self-adjoint spectral
+interface to the general trace-class theory, not the representation stored in density states.
+The general complex trace agrees with the real spectral trace on this interface.
 
-[PR #16](https://github.com/naoki-cpp/LeanCondensedMatter/pull/16) compared different operators through a common Hilbert basis instead of identifying their individual eigenbases. Its summation argument required `HasSum` witnesses and a justified interchange of sums; an equality involving totalized `tsum` alone would not supply those convergence obligations. The shared-basis bridge is the reusable boundary, while closure assumptions on the operators remain explicit.
+When comparing different operators, use a common Hilbert basis and explicit `HasSum` witnesses
+for trace-series arguments. An equality of totalized `tsum` expressions alone does not justify
+interchanging sums. Nonzero eigenspaces and their multiplicities determine the spectral sum;
+the selected orthonormal vectors within each eigenspace do not change that scalar value.
 
-[PR #15](https://github.com/naoki-cpp/LeanCondensedMatter/pull/15) records a concrete trade-off when transporting spectral sums: directly reindexing the dependent eigenvector `Sigma` type caused kernel timeouts, so the proof split the sum into a nondependent eigenvalue index and a finite multiplicity sum. When the summand ignores the basis-vector index, that decomposition removes unnecessary dependent casts while retaining eigenspace multiplicity. This supports the present [convention against directly reindexing dependent spectral indices](../conventions.md), without fixing an incidental proof script.
-
-[PR #13](https://github.com/naoki-cpp/LeanCondensedMatter/pull/13) defined the spectral trace and proved positivity without first developing Hilbert–Schmidt operators. It also noted that a scalar eigenvalue sum does not automatically supply linearity or cyclicity across different operators, whose spectral index types differ. The current construction may use additional bridges; the historical choice was to unblock the compact self-adjoint trace, not to exclude Hilbert–Schmidt theory permanently.
-
-[PR #12](https://github.com/naoki-cpp/LeanCondensedMatter/pull/12) expressed spectral summability using absolute nonzero eigenvalues with eigenspace multiplicity. Those values depend on the eigenspaces and their dimensions, not on the selected orthonormal vectors within them. This avoids unnecessary basis-choice data in the scalar predicate. Its historical name `IsTraceClass` must not be read as a general Schatten-ideal definition: the present public `SpectralTraceClass` bundle explicitly includes compactness and symmetry as well as summability.
-
-[PR #8](https://github.com/naoki-cpp/LeanCondensedMatter/pull/8) explicitly excluded the zero eigenspace for this reason. [PR #9](https://github.com/naoki-cpp/LeanCondensedMatter/pull/9) derived countability from finiteness above each positive eigenvalue threshold. [PR #10](https://github.com/naoki-cpp/LeanCondensedMatter/pull/10) identified the supported subspace, and [PR #11](https://github.com/naoki-cpp/LeanCondensedMatter/pull/11) supplied its Hilbert basis and a `HasSum` reconstruction of the operator's action. These are separate obligations; the earlier PR titles alone do not establish all of them.
+For sums whose summand ignores the basis-vector index, separate the eigenvalue index from the
+finite multiplicity sum rather than reindexing a dependent spectral `Sigma` type through casts;
+see the [proof conventions](../conventions.md).
