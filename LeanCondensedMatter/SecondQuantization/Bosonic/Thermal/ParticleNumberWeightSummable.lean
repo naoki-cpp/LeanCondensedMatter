@@ -118,7 +118,11 @@ theorem grandCanonicalParticleNumberIntegrable_of_finite [Finite Mode]
   simp only [QuantumTheory.eigenbasisGibbsProbability,
     QuantumTheory.eigenbasisBoltzmannWeight, Common.grandCanonicalPartitionFunction,
     Common.grandCanonicalEnergy_eq_shifted, ξ, boltzmannWeight]
-  ring
+  have hshift : (fun i : Mode => ε i - μ) = (fun i : Mode => -μ + ε i) := by
+    funext i
+    ring
+  simp only [freeEigenvalue]
+  rw [hshift]
 
 end
 end Bosonic
