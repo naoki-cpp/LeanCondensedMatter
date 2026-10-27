@@ -42,13 +42,20 @@ bridge: equal reversed spectral energies/occupations, conjugate odd-current matr
 Hermitian currents, and the reciprocal contact term imply equality of the canonical
 finite Lehmann response and normalized physical conductivity with transposed directions.
 It constructs a `ConductivityTensor` family satisfying `IsOnsagerReciprocal` without
-postulating conductivity reciprocity. This is an eigenbasis-level conditional theorem,
-not yet the construction of these hypotheses from an operator-level antiunitary.
+postulating conductivity reciprocity.
 
-The next proof target is to derive the reversal hypotheses directly from the causal Kubo
-channel, with explicit antiunitary time reversal, stationary-state transformation,
-measured/source current parity, contact-term transformation and frequency/limit
-conventions. Concrete AMR additionally requires
+`LinearResponse.Dynamics.Antiunitary` specifies a bijective conjugate-linear
+inner-product-preserving Hilbert-space transformation. The finite-spectral
+`FiniteConductivityTable.Reciprocity.Antiunitary` bridge now proves the required current
+matrix-element conjugation/reversal rules from *operator-level* Hermiticity,
+antiunitary current covariance, and paired eigenbases. It then consumes the existing
+Lehmann Onsager theorem. Hamiltonian covariance, eigenbasis pairing, equilibrium-state
+transformation, and reciprocal contact response remain supplied model assumptions.
+
+The next proof target is to discharge those hypotheses directly in representative magnetic
+models and, independently, to derive reciprocity from the causal Kubo channel with
+explicit stationary-state transformation and source/contact conventions. No DC,
+zero-switching, or thermodynamic limit follows automatically. Concrete AMR additionally requires
 a magnetization-dependent Hamiltonian, model-specific conductivity response, tensor
 invertibility, and the resistivity (rather than conductivity) angular comparison.
 Planar Hall resistivity must not be identified with the Hall projection of conductivity.
