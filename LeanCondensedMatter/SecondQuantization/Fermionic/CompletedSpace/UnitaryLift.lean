@@ -277,7 +277,6 @@ theorem completedFockUnitary_joint_continuous {X : Type*} [TopologicalSpace X]
     | add x y hx hy =>
         simp only [map_add]
         convert! hx.add hy using 1
-        with_unfolding_all rfl
     | ι_mul x v hx =>
         change Continuous (fun t =>
           completedFockUnitary (e t) (completedExterior (AlgebraicFock.create _ v x)))
