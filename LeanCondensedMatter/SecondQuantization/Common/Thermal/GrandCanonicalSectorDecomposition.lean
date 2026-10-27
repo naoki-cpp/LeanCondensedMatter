@@ -182,6 +182,43 @@ theorem grandCanonicalSectorProbability_eq_tsum
       rw [← tsum_mul_left]
       rfl
 
+/-- Absolute integrability of the grand-canonical particle-number spectral series.
+Normalizability of the Gibbs state alone does not guarantee a finite first moment. -/
+def GrandCanonicalParticleNumberIntegrable
+    (ε : Mode → ℝ) (β μ : ℝ) : Prop :=
+  Summable fun c : Config =>
+    ‖eigenbasisGibbsProbability (grandCanonicalEnergy ε μ) β c *
+      (particleNumber (Mode := Mode) c : ℝ)‖
+
+/-- Mean particle number as an occupation-basis spectral sum; valid for bosonic and
+fermionic configurations alike when the explicit first-moment condition holds. -/
+noncomputable def grandCanonicalParticleNumberExpectation
+    (ε : Mode → ℝ) (β μ : ℝ) : ℝ :=
+  ∑' c : Config,
+    eigenbasisGibbsProbability (grandCanonicalEnergy ε μ) β c *
+      (particleNumber (Mode := Mode) c : ℝ)
+
+/-- The particle-number mean is the sum of its spectral terms when integrable. -/
+theorem hasSum_grandCanonicalParticleNumberExpectation
+    (ε : Mode → ℝ) (β μ : ℝ)
+    (hint : GrandCanonicalParticleNumberIntegrable (Config := Config) ε β μ) :
+    HasSum
+      (fun c : Config =>
+        eigenbasisGibbsProbability (grandCanonicalEnergy ε μ) β c *
+          (particleNumber (Mode := Mode) c : ℝ))
+      (grandCanonicalParticleNumberExpectation (Config := Config) ε β μ) :=
+  (Summable.of_norm hint).hasSum
+
+/-- The grand-canonical mean particle number is nonnegative, including when its
+spectral `tsum` is interpreted by Lean outside the integrable domain. -/
+theorem grandCanonicalParticleNumberExpectation_nonneg
+    (ε : Mode → ℝ) (β μ : ℝ) :
+    0 ≤ grandCanonicalParticleNumberExpectation (Config := Config) ε β μ := by
+  unfold grandCanonicalParticleNumberExpectation
+  exact tsum_nonneg fun c =>
+    mul_nonneg (eigenbasisGibbsProbability_nonneg (grandCanonicalEnergy ε μ) β c)
+      (Nat.cast_nonneg (particleNumber (Mode := Mode) c))
+
 /-- The first moment of a grand-canonical particle-number distribution is
 the particle-number-weighted occupation-basis sum. The nonnegative count is
 unbounded; absolute integrability is therefore required independently of
