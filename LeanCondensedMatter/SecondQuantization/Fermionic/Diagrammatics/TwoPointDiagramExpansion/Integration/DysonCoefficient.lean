@@ -160,7 +160,13 @@ theorem twoPointDiagramCoefficient_eq_twoPointDysonCoefficient {n : ℕ}
       ε β 0 i j τ τ' q σ
   simp only [sub_zero] at hpoint
   rw [hpoint]
-  simp only [orderedTwoPointPairingValue, mixedTimeOrderedAtomicPairValue]
+  have hkernel :
+      mixedTimeOrderedAtomicPairValue ε β i j τ τ' σ q =
+        (fun a b => grandCanonicalTimedFieldPairContraction ε β 0
+          (mixedTimeOrderedAtomicFieldFamily i j τ τ' q σ a)
+          (mixedTimeOrderedAtomicFieldFamily i j τ τ' q σ b)) := rfl
+  simp only [orderedTwoPointPairingValue, hkernel]
+  ring
 
 end Fermionic
 end SecondQuantization
