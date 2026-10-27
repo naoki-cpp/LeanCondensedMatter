@@ -39,11 +39,12 @@ theorem normalizedTsumTrace_comp_eq_div_of_zetaCommutator
       mul_zero, smul_zero, add_zero, Module.End.one_eq_id, LinearMap.comp_smul,
       LinearMap.comp_id, ← matrixCoeffLinear_apply, map_smul, smul_eq_mul] using hpeel)
     (by simpa only [List.map_cons, List.map_nil, List.prod_cons, List.prod_nil, mul_one]
-      using hrotate) hZ hden
+      using hrotate) hZ (by simpa using hden)
   simp only [List.length_cons, List.length_nil, List.map_cons, List.map_nil,
     List.prod_cons, List.prod_nil,
     ScalarExchange.peelSumWithCoefficients, mul_zero, smul_zero, add_zero,
-    Module.End.one_eq_id, LinearMap.comp_smul, LinearMap.comp_id, tsumTrace_smul] at h
+    Module.End.one_eq_id, Module.End.mul_eq_comp, LinearMap.comp_smul,
+    LinearMap.comp_id, tsumTrace_smul, zero_add, pow_one] at h
   have hcancel :
       c * tsumTrace (diagonalEvolution energy (-β)) /
           tsumTrace (diagonalEvolution energy (-β)) = c := by
