@@ -23,6 +23,10 @@ Entries with no current structural review signal are ordinary retained public AP
 exceptions requiring catalog suppression; they are omitted from this registry without
 removing their declarations or changing their visibility.
 
+Compiled-consumer counts can miss source-level references erased during proof elaboration.
+Check source references and the role of a declaration in public constructions before
+using a zero-consumer signal as grounds for changing its retention.
+
 ## Retained declarations
 
 - `Dyson.hasSum_intervalIntegral_integrand_of_bound` — generic dominated-convergence result exchanging an interacting Dyson/Volterra series with the Bochner interval integral under explicit continuous bounded-interaction hypotheses; this is an independent analytic endpoint, not a disposable one-consumer proof wrapper.
@@ -181,9 +185,10 @@ removing their declarations or changing their visibility.
 - `Combinatorics.Pairing.pairEndpoint_ne_of_normalizedPair_ne` — canonical indexed endpoint-separation
   theorem: distinct normalized pairs have distinct endpoints for arbitrary `Fin 2` endpoint choices.
   The coordinate four-inequality theorem is a downstream specialization used by crossing arguments.
-- `Combinatorics.BinaryShuffle.toSlotShuffle_injective` — canonical injectivity property of the public
-  forgetful map from recursive binary shuffles to ambient slot shuffles. It participates in both the
-  cardinality argument and the final equivalence construction, so it is not merely one-use routing.
+- `Combinatorics.BinaryShuffle.toSlotShuffle_injective` — injectivity of the public map from
+  recursive binary shuffles to ambient slot shuffles. `BinaryShuffle.slotShuffleEquiv` uses this
+  theorem together with the separately proved cardinality formulas to establish bijectivity;
+  the source-level dependency is not reflected in the compiled-consumer count.
 - `Combinatorics.permutationSum_eq_momentFromCumulant` — semantic connected-decomposition endpoint
   identifying the project-local permutation sum with the moment transform of the single-cycle
   contribution; the module explicitly reserves public declarations for this moment characterization.
@@ -247,9 +252,11 @@ removing their declarations or changing their visibility.
 - `SecondQuantization.Common.QuarticDiagram.restrictComponent_vertexGraph_adj_iff` — canonical graph
   transport characterization identifying adjacency in a restricted component with ambient adjacency
   through `blockVertex`.
-- `SecondQuantization.Common.TwoPointDiagram.externalVacuumSplit_fst_partner` — canonical partner-map
-  characterization for the external split pairing. Source-level public mixed-component theorems also
-  use this law even when simplification removes the reference from their compiled proof terms.
+- `SecondQuantization.Common.TwoPointDiagram.externalVacuumSplit_fst_partner` — partner-map
+  compatibility for the public external-slot split. The private
+  `externalComponentLegEquiv_partner` proof uses it to establish the public
+  `externalComponentLegEquiv_symm_restrictedPartner` normalization rule; retaining the split-level
+  statement exposes the pairing invariant independently of that downstream equivalence.
 - `SecondQuantization.Common.orderedTwoPointTimedEvents_pairwise` — structural invariant that the
   canonical mixed-event list is pairwise ordered by the stable time precedence relation.
 - `SecondQuantization.Common.support_dysonCoeff_basisState_subset_reachableSupport` — finite-order
