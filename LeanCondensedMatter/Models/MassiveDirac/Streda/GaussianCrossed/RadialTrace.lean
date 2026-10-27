@@ -439,8 +439,7 @@ theorem finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient_x_negRadius_eq
 /-- The second independent X Hall Green minor combines a Pauli-x and
 a Pauli-scalar coefficient at negative real-space radius. The common
 K1 factor reduces to a K0-K2 momentum moment without adding a new
-Fourier measure or changing any finite regulator. The xz Green minor
-is handled independently in PR #3597. -/
+Fourier measure or changing any finite regulator. -/
 theorem finiteCutoffContinuumBornDysonRadialGreen_ra_scalar_x_minor_eq_k0_sub_k2
     (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ)
     (hbroadening : broadening ≠ 0) (hdisorder : 0 ≤ disorderStrength)
