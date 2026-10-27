@@ -31,11 +31,13 @@ mode creation operators to all square-summable one-particle mode coefficients. T
 inclusion has dense range. Mode-basis coefficients recover the existing creation operators.
 `star_completedCreate` identifies the completed mode operators as Hilbert adjoints using the
 same conjugate-transpose coefficient theorem as the finite realization. Annihilation of a
-general coefficient vector is the adjoint of its bounded creation field.
+general coefficient vector is the adjoint of its bounded creation field. The creation fields
+anticommute, and their mixed CAR is the one-particle inner product times the identity. The adjoint
+field annihilates the vacuum; creation on the vacuum preserves the one-particle inner product.
 
-This field construction is a prerequisite, not yet the general unitary Fock lift. Extending
-CAR and vacuum identities to the new fields and constructing the induced Fock isometry remain
-separate obligations. In the pinned Mathlib revision, `Analysis.InnerProductSpace.ExteriorPower`
+This field construction is a prerequisite, not yet the general unitary Fock lift. Constructing
+the induced Fock isometry and proving its compatibility with the fields remain obligations.
+In the pinned Mathlib revision, `Analysis.InnerProductSpace.ExteriorPower`
 provides a Hilbert structure only for real, finite-dimensional exterior powers; it cannot directly
 supply the complex infinite-dimensional construction needed here. A Hilbert basis in an infinite
 one-particle space must not be substituted for a finite-support algebraic basis.
