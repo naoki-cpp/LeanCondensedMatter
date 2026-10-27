@@ -165,13 +165,13 @@ local instance completedGibbsExpectationTruncationDecidableEq : DecidableEq Mode
 
 /-- Ratio converting a retained full-state Gibbs probability into the normalized truncated-state
 probability. -/
-noncomputable def completedFreeModeTruncationNormalizationRatio
+private noncomputable def completedFreeModeTruncationNormalizationRatio
     (ε : Mode → ℝ) (β μ : ℝ) (S : Finset Mode) : ℝ :=
   eigenbasisPartitionFunction (Common.grandCanonicalEnergy (Config := Occupation Mode) ε μ) β /
     completedFreeModeTruncatedPartitionFunction ε β μ S
 
 /-- The finite-mode normalization correction tends to one. -/
-theorem tendsto_completedFreeModeTruncationNormalizationRatio
+private theorem tendsto_completedFreeModeTruncationNormalizationRatio
     (ε : Mode → ℝ) (β μ : ℝ) (hsum : EigenbasisGibbsSummable
       (Common.grandCanonicalEnergy (Config := Occupation Mode) ε μ) β) :
     Tendsto (completedFreeModeTruncationNormalizationRatio ε β μ) atTop (𝓝 1) := by
@@ -196,7 +196,7 @@ theorem tendsto_completedFreeModeTruncationNormalizationRatio
 
 /-- A truncated Gibbs probability is the retained full Gibbs probability multiplied by the finite
 normalization correction. -/
-theorem completedFreeModeTruncatedGibbsProbability_eq_ratio_mul
+private theorem completedFreeModeTruncatedGibbsProbability_eq_ratio_mul
     (ε : Mode → ℝ) (β μ : ℝ) (hsum : EigenbasisGibbsSummable
       (Common.grandCanonicalEnergy (Config := Occupation Mode) ε μ) β)
     (S : Finset Mode) (n : Occupation Mode) :
@@ -216,7 +216,7 @@ theorem completedFreeModeTruncatedGibbsProbability_eq_ratio_mul
 
 /-- The part of the full Gibbs expectation retained by a finite mode set, before finite-volume
 renormalization. -/
-noncomputable def completedFreeModeRetainedExpectation
+private noncomputable def completedFreeModeRetainedExpectation
     (ε : Mode → ℝ) (β μ : ℝ) (S : Finset Mode)
     (A : CompletedFockSpace Mode →L[ℂ] CompletedFockSpace Mode) : ℂ :=
   ∑' n : Occupation Mode,
@@ -227,7 +227,7 @@ noncomputable def completedFreeModeRetainedExpectation
 
 /-- The retained, unrenormalized finite-mode expectation converges to the full Gibbs expectation for
 every bounded operator. -/
-theorem tendsto_completedFreeModeRetainedExpectation
+private theorem tendsto_completedFreeModeRetainedExpectation
     (ε : Mode → ℝ) (β μ : ℝ) (hsum : EigenbasisGibbsSummable
       (Common.grandCanonicalEnergy (Config := Occupation Mode) ε μ) β)
     (A : CompletedFockSpace Mode →L[ℂ] CompletedFockSpace Mode) :
@@ -252,7 +252,7 @@ theorem tendsto_completedFreeModeRetainedExpectation
 
 /-- The expectation in a normalized finite-mode Gibbs state is its retained full-state expectation
 times the normalization correction. -/
-theorem completedFreeModeTruncatedGibbsDensityOperator_expectation_eq_ratio_mul
+private theorem completedFreeModeTruncatedGibbsDensityOperator_expectation_eq_ratio_mul
     (ε : Mode → ℝ) (β μ : ℝ) (hsum : EigenbasisGibbsSummable
       (Common.grandCanonicalEnergy (Config := Occupation Mode) ε μ) β)
     (S : Finset Mode)
