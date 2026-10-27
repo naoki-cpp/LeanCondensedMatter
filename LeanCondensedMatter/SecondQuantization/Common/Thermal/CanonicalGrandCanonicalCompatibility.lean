@@ -345,7 +345,7 @@ theorem grandCanonicalGibbsDensityOperator_traceNorm_complement_projection
   have hw_nonneg : ∀ c, 0 ≤ w c := by
     intro c
     exact eigenbasisGibbsProbability_nonneg
-      (grandCanonicalEnergy (Config := Config) ε μ) β hsum c
+      (grandCanonicalEnergy (Config := Config) ε μ) β c
   have ht : Summable (fun c => ‖tail c‖) := by
     refine Summable.of_norm_bounded hw ?_
     intro c
