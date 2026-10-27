@@ -138,7 +138,7 @@ theorem inv_grandCanonicalPartitionFunction_smul_completedFreeHeatOperator_eq_gi
 
 /-- The grand-canonical algebraic trace equals the actual trace of the
 completed free heat operator for the grand-canonical generator
-`K = H - μ N̂`. This identifies the formerly separate occupation-trace
+`K = H - μ N̂`. This identifies the occupation-trace
 and completed trace-class normalizations at arbitrary explicit μ. -/
 theorem grandCanonicalAlgebraicPartition_eq_completedFreeHeatOperator_trace
     (ε : Mode → ℝ) (β μ : ℝ) (hβ : 0 < β)
