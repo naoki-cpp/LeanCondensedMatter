@@ -9,20 +9,20 @@ public section
 set_option linter.style.header false
 
 /-!
-# Counting a filtered self-product by summing over the left coordinate
+# Counting a filtered product by summing over the left coordinate
 
-For a finite set `T` and a binary relation `R`, the number of pairs `(p, q) ∈ T × T` satisfying
-`R p q` equals the sum, over `p ∈ T`, of the number of `q ∈ T` with `R p q` — a `Finset.card`
-counterpart of `Finset.sum_boole`-style double counting. This statement is general-purpose and
-independent of project-specific pairing or crossing structures.
+For finite sets `S` and `T` (possibly of different element types) and a relation `R`, the number
+of pairs `(p, q) ∈ S × T` satisfying `R p q` equals the sum, over `p ∈ S`, of the number
+of `q ∈ T` satisfying `R p q`. The original self-product identity is an immediate
+specialization. This counting law is independent of pairing or crossing structures.
 -/
 
-theorem Finset.card_filter_product_eq_sum_card_filter {α : Type*}
-    (T : Finset α) (R : α → α → Prop) [DecidableRel R] :
-    ((T.product T).filter fun pq => R pq.1 pq.2).card =
-      ∑ p ∈ T, (T.filter fun q => R p q).card := by
+theorem Finset.card_filter_product_eq_sum_card_filter {α β : Type*}
+    (S : Finset α) (T : Finset β) (R : α → β → Prop) [DecidableRel R] :
+    ((S.product T).filter fun pq => R pq.1 pq.2).card =
+      ∑ p ∈ S, (T.filter fun q => R p q).card := by
   rw [Finset.card_filter]
-  change (∑ i ∈ T ×ˢ T, if R i.1 i.2 then 1 else 0) =
-    ∑ p ∈ T, (T.filter fun q => R p q).card
+  change (∑ i ∈ S ×ˢ T, if R i.1 i.2 then 1 else 0) =
+    ∑ p ∈ S, (T.filter fun q => R p q).card
   rw [Finset.sum_product]
   simp_rw [Finset.card_filter]

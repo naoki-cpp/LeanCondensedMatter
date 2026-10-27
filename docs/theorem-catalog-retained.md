@@ -131,8 +131,9 @@ or consumer structure changes.
   weight, including `ζ = 0`; the nonzero diagonal endpoint is derived from this reusable
   formal-series boundary by scalar cancellation.
 - `Finset.card_filter_product_eq_sum_card_filter` — canonical generic double-counting identity for a
-  filtered finite self-product. Its remaining crossing-count consumer is a domain specialization,
-  while the theorem itself is independent of pairing or crossing structure.
+  filtered finite product, allowing different left and right element types and sets. Its
+  crossing-count consumer specializes to a self-product; the theorem is independent of pairing
+  or crossing structure.
 - `QuantumMechanics.SingleParticle.Continuum.l2MultiplicationOperator1D_apply` — deliberate `[simp]`
   boundary for the continuum-domain multiplication-operator vocabulary. The proof delegates to the
   analysis-level operator theorem, but the specialization is the normalization rule for this API.

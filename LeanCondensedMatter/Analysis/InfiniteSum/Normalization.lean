@@ -41,13 +41,16 @@ theorem normalizedWeight_nonneg (a : ι → ℝ) (ha : ∀ i, 0 ≤ a i) (i : ι
     0 ≤ normalizedWeight a i :=
   mul_nonneg (inv_nonneg.mpr (tsum_nonneg ha)) (ha i)
 
-/-- Each normalized nonnegative weight is at most one when the total is positive. -/
+/-- Every normalized nonnegative summable weight is at most one, including when its
+total mass is zero (so all normalized weights vanish). -/
 theorem normalizedWeight_le_one (a : ι → ℝ) (ha : Summable a)
-    (ha_nonneg : ∀ i, 0 ≤ a i) (hZ : 0 < ∑' i, a i) (i : ι) :
+    (ha_nonneg : ∀ i, 0 ≤ a i) (i : ι) :
     normalizedWeight a i ≤ 1 := by
-  have hs := hasSum_normalizedWeight a ha hZ.ne'
-  have hle := hs.summable.le_tsum i (fun j _ => normalizedWeight_nonneg a ha_nonneg j)
-  rwa [hs.tsum_eq] at hle
+  by_cases hZ : (∑' j, a j) = 0
+  · simp [normalizedWeight, hZ]
+  · have hs := hasSum_normalizedWeight a ha hZ
+    have hle := hs.summable.le_tsum i (fun j _ => normalizedWeight_nonneg a ha_nonneg j)
+    rwa [hs.tsum_eq] at hle
 
 /-- Multiplying all weights by the same nonzero scalar does not change their
 normalized values, regardless of whether the original total is zero. -/
