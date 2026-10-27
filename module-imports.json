@@ -6765,7 +6765,7 @@
       "imports": [
         "LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.Operators"
       ],
-      "externalImportCount": 0
+      "externalImportCount": 1
     },
     {
       "name": "LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.Diagonal",
@@ -6823,6 +6823,16 @@
       "externalImportCount": 0
     },
     {
+      "name": "LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.SmearedField",
+      "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/CompletedSpace/SmearedField.lean",
+      "imports": [
+        "LeanCondensedMatter.Analysis.ScalarExchange.Basic",
+        "LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.CanonicalAnticommutationRelations",
+        "LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.Core"
+      ],
+      "externalImportCount": 3
+    },
+    {
       "name": "LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/CompletedSpace.lean",
       "imports": [
@@ -6835,7 +6845,8 @@
         "LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.FreeHamiltonianLadder",
         "LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.ModeTruncation",
         "LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.Operators",
-        "LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.ProductDomain"
+        "LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.ProductDomain",
+        "LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.SmearedField"
       ],
       "externalImportCount": 0
     },
@@ -6886,7 +6897,6 @@
         "LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsExpectationBridge",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Core",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.LegFamily",
-        "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsDensityOperator",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.TimedFieldContraction"
       ],
       "externalImportCount": 0
@@ -7252,7 +7262,6 @@
         "LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.PairingWeight",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.LegFamily",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.Wick.Diagram",
-        "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsDensityOperator",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.TimedFieldContraction"
       ],
       "externalImportCount": 0
@@ -7866,16 +7875,6 @@
       "externalImportCount": 0
     },
     {
-      "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsDensityOperator",
-      "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Thermal/FreeGibbsDensityOperator.lean",
-      "imports": [
-        "LeanCondensedMatter.QuantumTheory.Gibbs.Eigenbasis",
-        "LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsExpectationBridge",
-        "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.Hamiltonian"
-      ],
-      "externalImportCount": 0
-    },
-    {
       "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreePartitionFunction",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Thermal/FreePartitionFunction.lean",
       "imports": [
@@ -7906,8 +7905,7 @@
         "LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.Core",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.BoundedEvolution",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.RankOneSecondQuantization",
-        "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.BlochDeDominicis",
-        "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsDensityOperator"
+        "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.BlochDeDominicis"
       ],
       "externalImportCount": 0
     },
@@ -7930,7 +7928,6 @@
         "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeEntropy",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsContraction",
-        "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsDensityOperator",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreePartitionFunction",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.GrandCanonicalFreeGreenFunction",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.OneBodyExpectation",
@@ -8362,6 +8359,15 @@
       "externalImportCount": 0
     },
     {
+      "name": "LeanCondensedMatter.Transport.FiniteConductivityTable.Reciprocity",
+      "sourceFile": "LeanCondensedMatter/Transport/FiniteConductivityTable/Reciprocity.lean",
+      "imports": [
+        "LeanCondensedMatter.Transport.Core.ConductivityTensor",
+        "LeanCondensedMatter.Transport.FiniteConductivityTable"
+      ],
+      "externalImportCount": 1
+    },
+    {
       "name": "LeanCondensedMatter.Transport.FiniteConductivityTable",
       "sourceFile": "LeanCondensedMatter/Transport/FiniteConductivityTable.lean",
       "imports": [
@@ -8633,6 +8639,7 @@
         "LeanCondensedMatter.Transport.Disorder",
         "LeanCondensedMatter.Transport.FiniteConductivityTable",
         "LeanCondensedMatter.Transport.FiniteConductivityTable.Eigenbasis",
+        "LeanCondensedMatter.Transport.FiniteConductivityTable.Reciprocity",
         "LeanCondensedMatter.Transport.KuboBastin",
         "LeanCondensedMatter.Transport.Resolvent",
         "LeanCondensedMatter.Transport.Streda",
