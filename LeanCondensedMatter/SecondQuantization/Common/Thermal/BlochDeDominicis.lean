@@ -2,6 +2,7 @@ import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.Pa
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.ExpectationRecursion
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.Unnormalized.PeelFirstTrace
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.NormalizedTwoPointTrace
+import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.NormalizedPeelTrace
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.GibbsExpectation
 
 set_option linter.style.header false
@@ -16,6 +17,8 @@ The shared finite-temperature pairing theory is organized into reusable layers:
   expectation/KMS contract and its pairing theorem;
 - `Unnormalized/PeelFirstTrace`: configuration-general operator and summable trace peel identities;
 - `NormalizedTwoPointTrace`: a configuration-general normalized two-point trace-ratio identity;
+- `NormalizedPeelTrace`: a configuration-general normalized peel identity under explicit
+  summability and nonzero-denominator hypotheses;
 - `GibbsExpectation`: finite Gibbs density-state identities that discharge the recursion contract,
   including the public finite-configuration Gibbs pairing theorem.
 
