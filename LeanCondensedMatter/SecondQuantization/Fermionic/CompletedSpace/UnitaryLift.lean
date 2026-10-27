@@ -274,7 +274,7 @@ theorem completedFockUnitary_joint_continuous {X : Type*} [TopologicalSpace X]
     | algebraMap a =>
         simp only [completedExterior_algebraMap, map_smul, completedFockUnitary_vacuum]
         exact continuous_const
-    | add x y hx hy => simpa only [map_add] using hx.add hy
+    | add x y hx hy => simpa only [map_add, Pi.add_apply] using hx.add hy
     | ι_mul x v hx =>
         change Continuous (fun t =>
           completedFockUnitary (e t) (completedExterior (AlgebraicFock.create _ v x)))
@@ -295,13 +295,15 @@ def completedFockUnitaryGroup
     (completedFockUnitary (Unitary.linearIsometryEquiv (U t)))
   map_one' := by
     apply Subtype.ext
-    ext x
+    apply ContinuousLinearMap.ext
+    intro x
     change completedFockUnitary (Unitary.linearIsometryEquiv (U 1)) x = x
     simp only [map_one]
     exact completedFockUnitary_refl x
   map_mul' t s := by
     apply Subtype.ext
-    ext x
+    apply ContinuousLinearMap.ext
+    intro x
     change completedFockUnitary (Unitary.linearIsometryEquiv (U (t * s))) x =
       completedFockUnitary (Unitary.linearIsometryEquiv (U t))
         (completedFockUnitary (Unitary.linearIsometryEquiv (U s)) x)
@@ -321,9 +323,13 @@ theorem completedFockUnitaryGroup_apply_continuous
         CompletedFockSpace Mode →L[ℂ] CompletedFockSpace Mode) x) := by
   have he : ∀ v, Continuous (fun t : ℝ =>
       Unitary.linearIsometryEquiv (U (Multiplicative.ofAdd t)) v) := hU
-  exact (completedFockUnitary_joint_continuous
-    (fun t : ℝ => Unitary.linearIsometryEquiv (U (Multiplicative.ofAdd t))) he).comp
-      (continuous_const.prodMk continuous_id)
+  change Continuous (fun t : ℝ =>
+    completedFockUnitary (Unitary.linearIsometryEquiv (U (Multiplicative.ofAdd t))) x)
+  have hpair : Continuous (fun t : ℝ => (x, t)) :=
+    continuous_const.prodMk continuous_id
+  have h := (completedFockUnitary_joint_continuous
+    (fun t : ℝ => Unitary.linearIsometryEquiv (U (Multiplicative.ofAdd t))) he).comp hpair
+  simpa only [Function.comp_def] using h
 
 end
 end SecondQuantization.Fermionic
