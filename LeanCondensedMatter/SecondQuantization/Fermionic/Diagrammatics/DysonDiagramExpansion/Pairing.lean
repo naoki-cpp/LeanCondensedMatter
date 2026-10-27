@@ -185,47 +185,24 @@ theorem dysonVertexMoment_quarticInteraction_eq_sum_vertexLabel_pairingEvaluatio
             intervalIntegral.orderedSimplexIntegral S.card β
               (fun τ => flatVertexLegPairingEvaluation ε β q τ pairing) := by
   classical
-  have hkey :=
-    finiteGibbsExpectation_comp_dysonCoeff_quarticInteraction
-      ε (fermionEnergy ε) β g S.card β LinearMap.id
-  simp only [LinearMap.id_comp] at hkey
-  have hsum :
-      ∑ q : Fin S.card → QuarticVertexLabel Mode, (∏ i, g (q i)) *
-        intervalIntegral.orderedSimplexIntegral S.card β
-          (fun τ => Common.finiteGibbsExpectation (fermionEnergy ε) β
-            (Common.quarticVertexSequenceInteractionPicture (fermionEnergy ε) create annihilate S.card q τ)) =
-      ∑ q : Fin S.card → QuarticVertexLabel Mode, (∏ i, g (q i)) *
-        ∑ pairing : Pairing (2 * S.card),
-          intervalIntegral.orderedSimplexIntegral S.card β
-            (fun τ => flatVertexLegPairingEvaluation ε β q τ pairing) :=
-    Finset.sum_congr rfl fun q _ => by
-      have hpoint (τ : Fin S.card → ℝ) :
-          Common.finiteGibbsExpectation (fermionEnergy ε) β
-              (Common.quarticVertexSequenceInteractionPicture (fermionEnergy ε) create annihilate S.card q τ) =
-            ∑ pairing : Pairing (2 * S.card),
-              flatVertexLegPairingEvaluation ε β q τ pairing := by
-        rw [← prod_ofFn_quarticLegOperatorForSequence_eq_quarticVertexSequenceInteractionPicture]
-        have henergy : (fun i : Mode => ε i - (0 : ℝ)) = ε := by
-          funext i
-          simp
-        have hwick :=
-          grandCanonicalGibbsExpectation_prod_timedFieldOperator_eq_sum_pairing
-            ε β 0 (2 * S.card) (quarticLegFieldForSequence q τ)
-        rw [henergy] at hwick
-        have hpair (A B : TimedField Mode) :
-            Common.finiteGibbsExpectation (fermionEnergy ε) β
-              ((timedFieldOperator ε A).comp (timedFieldOperator ε B)) =
-            grandCanonicalTimedFieldPairContraction ε β 0 A B := by
-          simp only [grandCanonicalTimedFieldPairContraction, sub_zero]
-        simp_rw [hpair] at hwick
-        simpa only [flatVertexLegPairingEvaluation, Combinatorics.Pairing.evaluation,
-          flatVertexLegPairValue, timedFieldOperator_quarticLegFieldForSequence] using hwick
-      rw [intervalIntegral.orderedSimplexIntegral_congr hpoint,
-        intervalIntegral.orderedSimplexIntegral_finsetSum _ S.card β _
-          (fun pairing _ => continuous_flatVertexLegPairingEvaluation ε β q pairing)]
   rw [Combinatorics.powerSeriesMomentCoeff,
-    Common.coeff_normalizeByConstantCoeff_dysonTraceSeries_eq_finiteGibbsExpectation,
-    hkey, mul_assoc, hsum]
-
+    Common.coeff_normalizeByConstantCoeff_dysonTraceSeries_eq_finiteGibbsExpectation]
+  have hgeneral :=
+    finiteGibbsExpectation_dysonCoeff_quarticInteraction_eq_sum_pairing_explicitMu
+      ε β 0 g S
+  simp only [sub_zero] at hgeneral
+  rw [hgeneral]
+  simp only [mul_assoc]
+  apply congrArg (fun z : ℂ => (S.card.factorial : ℂ) * ((-1 : ℂ) ^ S.card * z))
+  apply Finset.sum_congr rfl
+  intro q _
+  apply congrArg (fun z : ℂ => (∏ i, g (q i)) * z)
+  apply Finset.sum_congr rfl
+  intro pairing _
+  apply intervalIntegral.orderedSimplexIntegral_congr
+  intro τ
+  simp only [flatVertexLegPairingEvaluation, flatVertexLegPairValue,
+    Combinatorics.Pairing.evaluation, grandCanonicalTimedFieldPairContraction,
+    sub_zero]
 end Fermionic
 end SecondQuantization
