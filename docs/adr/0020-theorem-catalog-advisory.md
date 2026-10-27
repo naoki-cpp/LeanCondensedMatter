@@ -5,7 +5,7 @@ status: accepted
 # Keep theorem-catalog findings advisory
 
 The Lean-generated theorem catalog is the full declaration inventory; related audits may flag declarations with no compiled proof reference, low consumer counts, candidate theorem substitutions, or candidate subproof ranges as review prompts, but these signals do not justify automatic API deletion or required pull-request gates because source-level use and semantic value need human review. Keep generated extension declarations in the full inventory but exclude them from unresolved queues; the retained-theorem registry is a reauditable exception list whose entries should be revisited when declarations or their consumers change.
- 
+
 Retained re-audit reports reuse the Lean catalog's `retainedNeedsReview` disposition as
 the authoritative structural signal. They summarize declarations with no current signal,
 zero compiled consumers, direct wrappers, and proof-guided replacement candidates. They
