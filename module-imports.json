@@ -1688,6 +1688,26 @@
       "externalImportCount": 3
     },
     {
+      "name": "LeanCondensedMatter.Crystal.LatticePointGroup.Gram",
+      "sourceFile": "LeanCondensedMatter/Crystal/LatticePointGroup/Gram.lean",
+      "imports": [
+        "LeanCondensedMatter.Crystal.PointGroup"
+      ],
+      "externalImportCount": 11
+    },
+    {
+      "name": "LeanCondensedMatter.Crystal.LatticePointGroup.PlanarGram",
+      "sourceFile": "LeanCondensedMatter/Crystal/LatticePointGroup/PlanarGram.lean",
+      "imports": [],
+      "externalImportCount": 10
+    },
+    {
+      "name": "LeanCondensedMatter.Crystal.LatticePointGroup.PlanarReduction",
+      "sourceFile": "LeanCondensedMatter/Crystal/LatticePointGroup/PlanarReduction.lean",
+      "imports": [],
+      "externalImportCount": 11
+    },
+    {
       "name": "LeanCondensedMatter.Crystal.Periodicity",
       "sourceFile": "LeanCondensedMatter/Crystal/Periodicity.lean",
       "imports": [
@@ -1727,6 +1747,9 @@
         "LeanCondensedMatter.Crystal.Brillouin",
         "LeanCondensedMatter.Crystal.Classification",
         "LeanCondensedMatter.Crystal.Lattice",
+        "LeanCondensedMatter.Crystal.LatticePointGroup.Gram",
+        "LeanCondensedMatter.Crystal.LatticePointGroup.PlanarGram",
+        "LeanCondensedMatter.Crystal.LatticePointGroup.PlanarReduction",
         "LeanCondensedMatter.Crystal.Periodicity",
         "LeanCondensedMatter.Crystal.PointGroup",
         "LeanCondensedMatter.Crystal.Symmetry",
@@ -6272,8 +6295,8 @@
       "name": "LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.GibbsExpectation.FourPoint",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Thermal/BlochDeDominicis/GibbsExpectation/FourPoint.lean",
       "imports": [
-        "LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.GibbsExpectation.TwoPoint",
-        "LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.Unnormalized.PeelFirstTrace"
+        "LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.GibbsExpectation.Peel",
+        "LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.GibbsExpectation.TwoPoint"
       ],
       "externalImportCount": 0
     },

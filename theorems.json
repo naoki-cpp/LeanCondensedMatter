@@ -22400,7 +22400,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {α : Type u_1} (T : Finset α) (R : α → α → Prop) [inst : DecidableRel R],\n  {pq ∈ T.product T | R pq.1 pq.2}.card = ∑ p ∈ T, {q ∈ T | R p q}.card",
+    "statement": "∀ {α : Type u_1} {β : Type u_2} (S : Finset α) (T : Finset β) (R : α → β → Prop) [inst : DecidableRel R],\n  {pq ∈ S.product T | R pq.1 pq.2}.card = ∑ p ∈ S, {q ∈ T | R p q}.card",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -28054,7 +28054,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "LeanCondensedMatter.Crystal.latticePointGroup.exists_basis_coordinates_iff_gram_congruence",
-    "module": "LeanCondensedMatter.Crystal.Classification",
+    "module": "LeanCondensedMatter.Crystal.LatticePointGroup.Gram",
     "externalAxioms": [],
     "docString": "A unimodular integer matrix is realized as the integral-coordinate action\nof an intrinsic lattice isometry if and only if it stabilizes the basis Gram\nmatrix. This gives the rank-independent classification criterion used to\nidentify symmetries of concrete Bravais metrics. ",
     "directWrapperTargetModule": null,
@@ -28095,7 +28095,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "LeanCondensedMatter.Crystal.latticePointGroup.exists_basis_shortest_first_vector",
-    "module": "LeanCondensedMatter.Crystal.Classification",
+    "module": "LeanCondensedMatter.Crystal.LatticePointGroup.PlanarReduction",
     "externalAxioms": [],
     "docString": "Among all integral bases of a discrete planar lattice, there is a basis\nwhose first vector has globally minimal norm. Its first vector is no longer\nthan its second vector, because swapping the vectors is again an integral\nbasis. This supplies the shortest-primitive-vector starting point for Gauss\nbasis reduction without assuming a preselected reduced basis. ",
     "directWrapperTargetModule": null,
@@ -28139,7 +28139,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "LeanCondensedMatter.Crystal.latticePointGroup.exists_gauss_reduced_basis",
-    "module": "LeanCondensedMatter.Crystal.Classification",
+    "module": "LeanCondensedMatter.Crystal.LatticePointGroup.PlanarReduction",
     "externalAxioms": [],
     "docString": "Every discrete rank-two integral lattice admits a Gauss-reduced primitive\nbasis. Its Gram matrix has nondecreasing diagonal coefficients and its\noff-diagonal coefficient is at most half the first diagonal coefficient\nin absolute value. The proof minimizes the first primitive basis vector\nglobally and then uses an integral shear, which keeps that vector fixed. ",
     "directWrapperTargetModule": null,
@@ -28148,8 +28148,8 @@
     "dependencies": [
       "LeanCondensedMatter.Crystal.latticePointGroup.exists_basis_shortest_first_vector",
       "LeanCondensedMatter.Crystal.latticePointGroup.exists_gram_integerShear_reduced",
-      "_private.LeanCondensedMatter.Crystal.Classification.0.LeanCondensedMatter.Crystal.latticePointGroup.integerShearBasis_apply_one",
-      "_private.LeanCondensedMatter.Crystal.Classification.0.LeanCondensedMatter.Crystal.latticePointGroup.integerShearBasis_apply_zero"
+      "_private.LeanCondensedMatter.Crystal.LatticePointGroup.PlanarReduction.0.LeanCondensedMatter.Crystal.latticePointGroup.integerShearBasis_apply_one",
+      "_private.LeanCondensedMatter.Crystal.LatticePointGroup.PlanarReduction.0.LeanCondensedMatter.Crystal.latticePointGroup.integerShearBasis_apply_zero"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -28182,7 +28182,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "LeanCondensedMatter.Crystal.latticePointGroup.exists_gram_integerShear_reduced",
-    "module": "LeanCondensedMatter.Crystal.Classification",
+    "module": "LeanCondensedMatter.Crystal.LatticePointGroup.PlanarReduction",
     "externalAxioms": [],
     "docString": "Every positive planar first Gram coefficient admits an integer shear\nthat reduces the off-diagonal entry to at most half of that coefficient in\nabsolute value. This is the size-reduction step of Gauss lattice reduction;\nit does not yet assert the ordering of the two diagonal coefficients. ",
     "directWrapperTargetModule": null,
@@ -28228,7 +28228,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "LeanCondensedMatter.Crystal.latticePointGroup.exists_gram_swapShear_descends",
-    "module": "LeanCondensedMatter.Crystal.Classification",
+    "module": "LeanCondensedMatter.Crystal.LatticePointGroup.PlanarReduction",
     "externalAxioms": [],
     "docString": "If the second primitive vector is shorter than the first, swapping the\nvectors and size-reducing by an integer shear gives a new primitive basis\nwhose first squared length strictly decreases and whose off-diagonal Gram\ncoefficient is at most half that first squared length.\n\nThis is the descent step of the Gauss algorithm. Termination requires an\nadditional discreteness argument for the squared lengths of lattice vectors. ",
     "directWrapperTargetModule": null,
@@ -28269,7 +28269,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "LeanCondensedMatter.Crystal.latticePointGroup.extendIntegralLinearEquiv_apply_basis",
-    "module": "LeanCondensedMatter.Crystal.Classification",
+    "module": "LeanCondensedMatter.Crystal.LatticePointGroup.Gram",
     "externalAxioms": [],
     "docString": "The ambient extension agrees with the integral-linear automorphism on\nevery integer basis vector. ",
     "directWrapperTargetModule": null,
@@ -28315,7 +28315,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "LeanCondensedMatter.Crystal.latticePointGroup.extendIntegralLinearEquiv_mem_iff",
-    "module": "LeanCondensedMatter.Crystal.Classification",
+    "module": "LeanCondensedMatter.Crystal.LatticePointGroup.Gram",
     "externalAxioms": [],
     "docString": "An integral-linear lattice automorphism extends to an ambient real-linear\nautomorphism that preserves lattice membership in both directions. ",
     "directWrapperTargetModule": null,
@@ -28357,7 +28357,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "LeanCondensedMatter.Crystal.latticePointGroup.finite_lattice_vectors_norm_le",
-    "module": "LeanCondensedMatter.Crystal.Classification",
+    "module": "LeanCondensedMatter.Crystal.LatticePointGroup.PlanarReduction",
     "externalAxioms": [],
     "docString": "A discrete integral submodule of a finite-dimensional real normed space\nhas only finitely many vectors of bounded norm. In particular, the first\nsquared length of any primitive lattice basis takes values in a finite set\nas long as it remains below a fixed bound. ",
     "directWrapperTargetModule": null,
@@ -28401,7 +28401,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "LeanCondensedMatter.Crystal.latticePointGroup.gram_axisReflection_iff",
-    "module": "LeanCondensedMatter.Crystal.Classification",
+    "module": "LeanCondensedMatter.Crystal.LatticePointGroup.PlanarGram",
     "externalAxioms": [],
     "docString": "For a symmetric planar Gram matrix, an integral basis-axis reflection\npreserves the metric exactly when that basis is orthogonal. ",
     "directWrapperTargetModule": null,
@@ -28445,7 +28445,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "LeanCondensedMatter.Crystal.latticePointGroup.gram_basisSwap_iff",
-    "module": "LeanCondensedMatter.Crystal.Classification",
+    "module": "LeanCondensedMatter.Crystal.LatticePointGroup.PlanarGram",
     "externalAxioms": [],
     "docString": "Swapping two primitive basis vectors preserves a symmetric Gram matrix\nexactly when they have equal squared lengths. This is the rhombic primitive-basis\ncondition relevant to the centered-rectangular Bravais class. It is not by\nitself an exhaustive characterization of that class. ",
     "directWrapperTargetModule": null,
@@ -28487,7 +28487,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "LeanCondensedMatter.Crystal.latticePointGroup.gram_congruence",
-    "module": "LeanCondensedMatter.Crystal.Classification",
+    "module": "LeanCondensedMatter.Crystal.LatticePointGroup.Gram",
     "externalAxioms": [],
     "docString": "A full-rank integral lattice's intrinsic point group preserves the Gram metric\nin every integral lattice basis. Each column of the integral matrix contains\nthe basis coordinates of an image basis vector. The result is rank-generic and\nindependent of any atomic motif. ",
     "directWrapperTargetModule": null,
@@ -28496,7 +28496,7 @@
       "LeanCondensedMatter.Crystal.latticePointGroup.exists_basis_coordinates_iff_gram_congruence"
     ],
     "dependencies": [
-      "_private.LeanCondensedMatter.Crystal.Classification.0.LeanCondensedMatter.Crystal.latticePointGroup.gram_matrix_congruence"
+      "_private.LeanCondensedMatter.Crystal.LatticePointGroup.Gram.0.LeanCondensedMatter.Crystal.latticePointGroup.gram_matrix_congruence"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -28531,7 +28531,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "LeanCondensedMatter.Crystal.latticePointGroup.gram_congruence_change_basis_iff",
-    "module": "LeanCondensedMatter.Crystal.Classification",
+    "module": "LeanCondensedMatter.Crystal.LatticePointGroup.Gram",
     "externalAxioms": [],
     "docString": "A Gram-metric stabilizer condition is invariant under an invertible\nchange of coordinates. In a lattice basis change the matrices `P` and `Q`\nhave integral entries and satisfy `Q = P⁻¹`; the statement only uses their\nreal inverse relations. The symmetry matrix changes by conjugation, while\nthe Gram matrix changes by congruence. ",
     "directWrapperTargetModule": null,
@@ -28569,7 +28569,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "LeanCondensedMatter.Crystal.latticePointGroup.gram_fixedFirst_reflection_relation",
-    "module": "LeanCondensedMatter.Crystal.Classification",
+    "module": "LeanCondensedMatter.Crystal.LatticePointGroup.PlanarGram",
     "externalAxioms": [],
     "docString": "For an integral reflection fixing the first primitive vector,\nGram preservation forces twice the off-diagonal coefficient to be an\ninteger multiple of the first squared length. ",
     "directWrapperTargetModule": null,
@@ -28613,7 +28613,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "LeanCondensedMatter.Crystal.latticePointGroup.gram_hexagonal_constraints_of_sixthTurn",
-    "module": "LeanCondensedMatter.Crystal.Classification",
+    "module": "LeanCondensedMatter.Crystal.LatticePointGroup.PlanarGram",
     "externalAxioms": [],
     "docString": "In a symmetric planar metric, invariance under the order-six integral\nrotation forces an equilateral primitive basis: equal squared lengths and\ntwice the off-diagonal inner product equal to their common squared length. ",
     "directWrapperTargetModule": null,
@@ -28655,7 +28655,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "LeanCondensedMatter.Crystal.latticePointGroup.gram_integerShear",
-    "module": "LeanCondensedMatter.Crystal.Classification",
+    "module": "LeanCondensedMatter.Crystal.LatticePointGroup.PlanarReduction",
     "externalAxioms": [],
     "docString": "The elementary integral shear `e₂ ↦ e₂ - n e₁` changes the Gram\ncoefficients by the standard binary-quadratic-form substitution. Together\nwith `integerShear_det`, this is a primitive lattice-basis operation. ",
     "directWrapperTargetModule": null,
@@ -28697,7 +28697,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "LeanCondensedMatter.Crystal.latticePointGroup.gram_integerSwapShear",
-    "module": "LeanCondensedMatter.Crystal.Classification",
+    "module": "LeanCondensedMatter.Crystal.LatticePointGroup.PlanarReduction",
     "externalAxioms": [],
     "docString": "Under the swap-and-shear primitive basis change\n`e₁' = e₂`, `e₂' = e₁ - n e₂`, the Gram coefficients transform\nby the binary quadratic form substitution with the shorter vector first. ",
     "directWrapperTargetModule": null,
@@ -28739,7 +28739,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "LeanCondensedMatter.Crystal.latticePointGroup.gram_offDiagonal_eq_zero_of_axisReflection",
-    "module": "LeanCondensedMatter.Crystal.Classification",
+    "module": "LeanCondensedMatter.Crystal.LatticePointGroup.PlanarGram",
     "externalAxioms": [],
     "docString": "A reflection across one integral basis axis makes the two basis vectors\northogonal. This is the rectangular Gram-metric constraint. ",
     "directWrapperTargetModule": null,
@@ -28781,7 +28781,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "LeanCondensedMatter.Crystal.latticePointGroup.gram_quarterTurn_iff",
-    "module": "LeanCondensedMatter.Crystal.Classification",
+    "module": "LeanCondensedMatter.Crystal.LatticePointGroup.PlanarGram",
     "externalAxioms": [],
     "docString": "For a symmetric planar metric, the quarter-turn acts isometrically exactly\nwhen the two primitive vectors are orthogonal and have equal squared lengths. ",
     "directWrapperTargetModule": null,
@@ -28821,7 +28821,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "LeanCondensedMatter.Crystal.latticePointGroup.gram_reduced_fixedFirst_reflection_cases",
-    "module": "LeanCondensedMatter.Crystal.Classification",
+    "module": "LeanCondensedMatter.Crystal.LatticePointGroup.PlanarGram",
     "externalAxioms": [],
     "docString": "Every determinant-minus-one integral Gram symmetry fixing the first\nprimitive vector of a Gauss-reduced basis is one of the three standard\nreflections: axis reflection or a positive/negative unit shear-reflection.\n\nThis is an exhaustive statement within the *fixed-first-vector* class;\nan arbitrary reflection need not fix that particular primitive vector. ",
     "directWrapperTargetModule": null,
@@ -28861,7 +28861,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "LeanCondensedMatter.Crystal.latticePointGroup.gram_reduced_sixthTurn_iff_boundary",
-    "module": "LeanCondensedMatter.Crystal.Classification",
+    "module": "LeanCondensedMatter.Crystal.LatticePointGroup.PlanarGram",
     "externalAxioms": [],
     "docString": "On the Gauss-reduced metric region, a sixth-turn integral symmetry exists\nin one of the two orientations exactly on the boundary where the shorter\nprimitive vector is tied in squared length with one of the sum/difference\nvectors. Indeed their smaller squared length is\n`G₀₀ + G₁₁ - 2 * |G₀₁|`. ",
     "directWrapperTargetModule": null,
@@ -28901,7 +28901,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "LeanCondensedMatter.Crystal.latticePointGroup.gram_restrict",
-    "module": "LeanCondensedMatter.Crystal.Classification",
+    "module": "LeanCondensedMatter.Crystal.LatticePointGroup.Gram",
     "externalAxioms": [],
     "docString": "Restricting an intrinsic lattice isometry preserves the Gram matrix of any\nintegral lattice basis. This statement needs neither periodicity nor a choice\nof coordinate representation for the isometry. ",
     "directWrapperTargetModule": null,
@@ -28943,7 +28943,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "LeanCondensedMatter.Crystal.latticePointGroup.gram_shearReflection_either_iff",
-    "module": "LeanCondensedMatter.Crystal.Classification",
+    "module": "LeanCondensedMatter.Crystal.LatticePointGroup.PlanarGram",
     "externalAxioms": [],
     "docString": "The two integral shear-reflections jointly characterize the\nsign-independent edge `2 |G₀₁| = G₀₀` for positive primitive metrics. ",
     "directWrapperTargetModule": null,
@@ -28988,7 +28988,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "LeanCondensedMatter.Crystal.latticePointGroup.gram_shearReflection_negative_iff",
-    "module": "LeanCondensedMatter.Crystal.Classification",
+    "module": "LeanCondensedMatter.Crystal.LatticePointGroup.PlanarGram",
     "externalAxioms": [],
     "docString": "The opposite shear-reflection `e₂ ↦ -e₁ - e₂` is an isometry\nexactly on the negative size-reduction edge `2 G₀₁ = -G₀₀`. ",
     "directWrapperTargetModule": null,
@@ -29030,7 +29030,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "LeanCondensedMatter.Crystal.latticePointGroup.gram_shearReflection_positive_iff",
-    "module": "LeanCondensedMatter.Crystal.Classification",
+    "module": "LeanCondensedMatter.Crystal.LatticePointGroup.PlanarGram",
     "externalAxioms": [],
     "docString": "The shear-reflection `e₁ ↦ e₁`, `e₂ ↦ e₁ - e₂` is a Gram\nisometry exactly when the primitive vectors meet the positive edge\n`2 G₀₁ = G₀₀` of the Gauss size-reduction inequality. The integral\nmatrix is involutive and has determinant `-1`. ",
     "directWrapperTargetModule": null,
@@ -29072,7 +29072,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "LeanCondensedMatter.Crystal.latticePointGroup.gram_shiftedConventionalCell_diagonal_iff",
-    "module": "LeanCondensedMatter.Crystal.Classification",
+    "module": "LeanCondensedMatter.Crystal.LatticePointGroup.PlanarGram",
     "externalAxioms": [],
     "docString": "On the positive Gauss size-reduction edge, the index-two conventional\ncell with columns `e₁` and `2 e₂ - e₁` is orthogonal. Conversely,\northogonality of this conventional cell forces that edge condition.\nUnlike an integral primitive basis change, this matrix has determinant `2`. ",
     "directWrapperTargetModule": null,
@@ -29110,7 +29110,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "LeanCondensedMatter.Crystal.latticePointGroup.gram_sixthTurn_either_iff",
-    "module": "LeanCondensedMatter.Crystal.Classification",
+    "module": "LeanCondensedMatter.Crystal.LatticePointGroup.PlanarGram",
     "externalAxioms": [],
     "docString": "For a positive symmetric planar Gram metric, one of the two sixth-turn\ninteger matrices preserves the metric if and only if its two diagonal entries\nagree and the absolute off-diagonal entry is half their common value.\nThe disjunction makes the hexagonal condition independent of the sign of\nthe primitive-basis angle. ",
     "directWrapperTargetModule": null,
@@ -29155,7 +29155,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "LeanCondensedMatter.Crystal.latticePointGroup.gram_sixthTurn_iff",
-    "module": "LeanCondensedMatter.Crystal.Classification",
+    "module": "LeanCondensedMatter.Crystal.LatticePointGroup.PlanarGram",
     "externalAxioms": [],
     "docString": "For a symmetric planar metric, the order-six integral rotation acts\nisometrically exactly when the primitive basis has the hexagonal Gram form. ",
     "directWrapperTargetModule": null,
@@ -29199,7 +29199,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "LeanCondensedMatter.Crystal.latticePointGroup.gram_sixthTurn_opposite_iff",
-    "module": "LeanCondensedMatter.Crystal.Classification",
+    "module": "LeanCondensedMatter.Crystal.LatticePointGroup.PlanarGram",
     "externalAxioms": [],
     "docString": "The opposite orientation of the sixth-turn integral coordinate\nmatrix preserves a symmetric planar Gram metric exactly when the primitive\nbasis has equal squared lengths and a negative equilateral cross term. ",
     "directWrapperTargetModule": null,
@@ -29241,7 +29241,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "LeanCondensedMatter.Crystal.latticePointGroup.gram_square_constraints_of_quarterTurn",
-    "module": "LeanCondensedMatter.Crystal.Classification",
+    "module": "LeanCondensedMatter.Crystal.LatticePointGroup.PlanarGram",
     "externalAxioms": [],
     "docString": "In a symmetric planar metric, invariance under the quarter-turn basis\ntransformation forces equal squared lengths and orthogonal basis vectors. ",
     "directWrapperTargetModule": null,
@@ -29283,7 +29283,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "LeanCondensedMatter.Crystal.latticePointGroup.gram_standard_reflection_walls_iff",
-    "module": "LeanCondensedMatter.Crystal.Classification",
+    "module": "LeanCondensedMatter.Crystal.LatticePointGroup.PlanarGram",
     "externalAxioms": [],
     "docString": "Three explicitly exhibited kinds of integral reflection witness pick out\nthe three walls of the planar Gauss-reduced metric region: an orthogonal\nprimitive basis, equal primitive lengths, or the size-reduction edge.\n\nThe result classifies these *standard witnesses*, not all possible reflection\nmatrices up to integral conjugacy. That completeness statement requires an\nadditional arithmetic argument. ",
     "directWrapperTargetModule": null,
@@ -29325,7 +29325,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "LeanCondensedMatter.Crystal.latticePointGroup.gram_sumDiff_diagonal_iff",
-    "module": "LeanCondensedMatter.Crystal.Classification",
+    "module": "LeanCondensedMatter.Crystal.LatticePointGroup.PlanarGram",
     "externalAxioms": [],
     "docString": "The sum and difference of two primitive lattice vectors form an orthogonal\nconventional cell exactly when the vectors have equal squared lengths.\n\nFor a symmetric Gram metric `G`, the columns of `S = !![1, 1; 1, -1]`\nare the sum and difference of the primitive basis vectors. When `G₀₀ = G₁₁`,\nthe conventional squared lengths are `2 * (G₀₀ + G₀₁)` and\n`2 * (G₀₀ - G₀₁)`. This is the metric relation underlying the\ncentered-rectangular Bravais class. The matrix `S` has determinant `-2`,\nso this conventional cell is not an integral primitive basis change. ",
     "directWrapperTargetModule": null,
@@ -29363,7 +29363,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "LeanCondensedMatter.Crystal.latticePointGroup.integerShear_det",
-    "module": "LeanCondensedMatter.Crystal.Classification",
+    "module": "LeanCondensedMatter.Crystal.LatticePointGroup.PlanarReduction",
     "externalAxioms": [],
     "docString": "An integer shear of a planar primitive basis is unimodular. ",
     "directWrapperTargetModule": null,
@@ -29401,7 +29401,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "LeanCondensedMatter.Crystal.latticePointGroup.integerSwapShear_det",
-    "module": "LeanCondensedMatter.Crystal.Classification",
+    "module": "LeanCondensedMatter.Crystal.LatticePointGroup.PlanarReduction",
     "externalAxioms": [],
     "docString": "Swapping the planar basis vectors and then applying an integer shear\nis an integral primitive basis change of determinant minus one. ",
     "directWrapperTargetModule": null,
@@ -29439,7 +29439,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "LeanCondensedMatter.Crystal.latticePointGroup.integer_fixedFirst_reflection_normalform",
-    "module": "LeanCondensedMatter.Crystal.Classification",
+    "module": "LeanCondensedMatter.Crystal.LatticePointGroup.PlanarGram",
     "externalAxioms": [],
     "docString": "An integral matrix of determinant minus one fixing the first\nprimitive basis vector is necessarily a shear-reflection. No metric\nhypothesis is needed for this arithmetic normal form. ",
     "directWrapperTargetModule": null,
@@ -29481,7 +29481,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "LeanCondensedMatter.Crystal.latticePointGroup.integer_fixedFirst_reflection_parity_normalform",
-    "module": "LeanCondensedMatter.Crystal.Classification",
+    "module": "LeanCondensedMatter.Crystal.LatticePointGroup.PlanarGram",
     "externalAxioms": [],
     "docString": "Every integer reflection fixing the first vector is shear-conjugate\nto one with coefficient zero or one. Thus the integer conjugacy class\ndepends only on the shear coefficient modulo two. ",
     "directWrapperTargetModule": null,
@@ -29521,7 +29521,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "LeanCondensedMatter.Crystal.latticePointGroup.integer_fixedFirst_reflection_shear_conjugation",
-    "module": "LeanCondensedMatter.Crystal.Classification",
+    "module": "LeanCondensedMatter.Crystal.LatticePointGroup.PlanarGram",
     "externalAxioms": [],
     "docString": "Conjugating a shear-reflection by an integral shear changes its shear\ncoefficient by an even integer. This arithmetic identity exposes the\nparity invariant distinguishing the two integral reflection classes. ",
     "directWrapperTargetModule": null,
@@ -29563,7 +29563,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "LeanCondensedMatter.Crystal.latticePointGroup.integer_trace_zero_det_neg_one_fixed_vector",
-    "module": "LeanCondensedMatter.Crystal.Classification",
+    "module": "LeanCondensedMatter.Crystal.LatticePointGroup.PlanarGram",
     "externalAxioms": [],
     "docString": "A trace-zero determinant-minus-one integral matrix has a nonzero\ninteger vector fixed by its action. The eigenvector is constructed\ndirectly from the entries, without extending scalars to the reals.\nA later primitive-vector completion will turn this into a unimodular\nchange of basis for arbitrary integral reflections. ",
     "directWrapperTargetModule": null,
@@ -29605,7 +29605,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "LeanCondensedMatter.Crystal.latticePointGroup.integer_trace_zero_det_neg_one_reversed_vector",
-    "module": "LeanCondensedMatter.Crystal.Classification",
+    "module": "LeanCondensedMatter.Crystal.LatticePointGroup.PlanarGram",
     "externalAxioms": [],
     "docString": "The same integral reflection also has a nonzero integer vector\nreversed by its action. The two eigendirections provide the arithmetic\nstarting point for classifying arbitrary planar reflections. ",
     "directWrapperTargetModule": null,
@@ -29645,7 +29645,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "LeanCondensedMatter.Crystal.latticePointGroup.integer_trace_zero_det_neg_one_sq",
-    "module": "LeanCondensedMatter.Crystal.Classification",
+    "module": "LeanCondensedMatter.Crystal.LatticePointGroup.PlanarGram",
     "externalAxioms": [],
     "docString": "In dimension two, an integral matrix with trace zero and\ndeterminant minus one is an involution. This is a matrix identity over\n`ℤ`, independently of the ambient real Gram metric. ",
     "directWrapperTargetModule": null,
@@ -29683,7 +29683,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "LeanCondensedMatter.Crystal.latticePointGroup.not_exists_bounded_strict_norm_sq_descent",
-    "module": "LeanCondensedMatter.Crystal.Classification",
+    "module": "LeanCondensedMatter.Crystal.LatticePointGroup.PlanarReduction",
     "externalAxioms": [],
     "docString": "An infinite sequence of lattice vectors cannot remain bounded while its\nsquared norms strictly decrease at every step. Applied to the first vectors\nof successive primitive bases, this rules out infinitely many swap-and-shear\ndescent steps from a fixed initial metric.\n\nThe separate task of assembling a Gauss-reduced basis still has to track\nthe basis transformations between steps. ",
     "directWrapperTargetModule": null,
@@ -29723,7 +29723,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "LeanCondensedMatter.Crystal.latticePointGroup.ofGLGramPreserving_basis_coordinates",
-    "module": "LeanCondensedMatter.Crystal.Classification",
+    "module": "LeanCondensedMatter.Crystal.LatticePointGroup.Gram",
     "externalAxioms": [],
     "docString": "In the chosen integral basis, the intrinsic lattice isometry obtained from\na Gram-preserving integer matrix has *exactly* that matrix as its coordinate\nrepresentation. This connects concrete planar symmetry matrices to geometry. ",
     "directWrapperTargetModule": null,
@@ -29767,7 +29767,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "LeanCondensedMatter.Crystal.latticePointGroup.ofIntegralLinearEquivGramPreserving_restrict",
-    "module": "LeanCondensedMatter.Crystal.Classification",
+    "module": "LeanCondensedMatter.Crystal.LatticePointGroup.Gram",
     "externalAxioms": [],
     "docString": "Extending the restriction of an intrinsic lattice isometry back to the\nambient real vector space recovers the original isometry. Together with\n`restrict_ofIntegralLinearEquivGramPreserving`, this completes the\ncoordinate-free round trip between lattice symmetries and Gram-preserving\nintegral lattice automorphisms. ",
     "directWrapperTargetModule": null,
@@ -29808,7 +29808,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "LeanCondensedMatter.Crystal.latticePointGroup.restrict_ofGLGramPreserving",
-    "module": "LeanCondensedMatter.Crystal.Classification",
+    "module": "LeanCondensedMatter.Crystal.LatticePointGroup.Gram",
     "externalAxioms": [],
     "docString": "Lifting a Gram-preserving unimodular integer matrix to an intrinsic lattice\nisometry and restricting to the lattice recovers Mathlib's original integral\nlinear automorphism represented by that matrix. ",
     "directWrapperTargetModule": null,
@@ -29852,7 +29852,7 @@
     "retainedMention": false,
     "projectAxioms": [],
     "name": "LeanCondensedMatter.Crystal.latticePointGroup.restrict_ofIntegralLinearEquivGramPreserving",
-    "module": "LeanCondensedMatter.Crystal.Classification",
+    "module": "LeanCondensedMatter.Crystal.LatticePointGroup.Gram",
     "externalAxioms": [],
     "docString": "The intrinsic lattice isometry constructed from an integral-linear\nautomorphism restricts back to that automorphism. This makes the metric\nextension compatible with the original integral action. ",
     "directWrapperTargetModule": null,
@@ -97405,7 +97405,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {ι : Type u_1} (a : ι → ℝ),\n  Summable a → (∀ (i : ι), 0 ≤ a i) → 0 < ∑' (i : ι), a i → ∀ (i : ι), Real.normalizedWeight a i ≤ 1",
+    "statement": "∀ {ι : Type u_1} (a : ι → ℝ), Summable a → (∀ (i : ι), 0 ≤ a i) → ∀ (i : ι), Real.normalizedWeight a i ≤ 1",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -97420,7 +97420,7 @@
     "name": "Real.normalizedWeight_le_one",
     "module": "LeanCondensedMatter.Analysis.InfiniteSum.Normalization",
     "externalAxioms": [],
-    "docString": "Each normalized nonnegative weight is at most one when the total is positive. ",
+    "docString": "Every normalized nonnegative summable weight is at most one, including when its\ntotal mass is zero (so all normalized weights vanish). ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [],
@@ -97959,14 +97959,16 @@
     "name": "ScalarExchange.mul_prod_eq_peelSum",
     "module": "LeanCondensedMatter.Analysis.ScalarExchange.Peel",
     "externalAxioms": [],
-    "docString": "Repeatedly apply a scalar exchange relation while pushing one algebra element through a finite\nordered product. ",
+    "docString": "Repeatedly apply a globally valid scalar exchange relation while pushing one algebra\nelement through a finite ordered product. This is the global-hypothesis specialization of\n`mul_prod_eq_peelSum_of_mem`. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Bosonic.FreeThermalField.operator_comp_orderedProduct_eq_operatorPeelSum",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.BlochDeDominicis.0.SecondQuantization.Fermionic.CompletedThermalLadder.operator_comp_operatorProduct_eq_peelSum"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "ScalarExchange.mul_prod_eq_peelSum_of_mem"
+    ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
@@ -98009,13 +98011,60 @@
     "dependents": [
       "SecondQuantization.Common.tsumTrace_diagonalEvolution_comp_peel"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "ScalarExchange.mul_prod_eq_peelSum_of_mem",
+      "_private.LeanCondensedMatter.Analysis.ScalarExchange.Peel.0.ScalarExchange.peelSumWithCoefficients_eq_peelSum"
+    ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Common.tsumTrace_diagonalEvolution_comp_peel"
     ],
     "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Label : Type u_1} {A : Type u_2} [inst : Semiring A] [inst_1 : Algebra ℂ A] (element : Label → A)\n  (exchangeCoeff : Label → Label → ℂ) (ζ : ℂ) (C : Label) (l : List Label),\n  (∀ D ∈ l, element C * element D = exchangeCoeff C D • 1 + ζ • (element D * element C)) →\n    element C * (List.map element l).prod =\n      ScalarExchange.peelSum element exchangeCoeff ζ C l + ζ ^ l.length • ((List.map element l).prod * element C)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "ScalarExchange.mul_prod_eq_peelSum_of_mem",
+    "module": "LeanCondensedMatter.Analysis.ScalarExchange.Peel",
+    "externalAxioms": [],
+    "docString": "Peel a fixed element through a finite product when the exchange relation holds only\nfor factors appearing in the given list. No relations between the tail factors are needed. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "ScalarExchange.mul_prod_eq_peelSum",
+      "ScalarExchange.mul_prod_eq_peelSumWithCoefficients"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "ScalarExchange.mul_prod_eq_peelSum",
+      "ScalarExchange.mul_prod_eq_peelSumWithCoefficients"
+    ],
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -98052,7 +98101,8 @@
       "SecondQuantization.Common.finiteGibbsExpectation_peel_indexed"
     ],
     "dependencies": [
-      "ScalarExchange.peelSum_eq_sum"
+      "ScalarExchange.peelSum_eq_sum",
+      "_private.LeanCondensedMatter.Analysis.ScalarExchange.Peel.0.ScalarExchange.peelSumWithCoefficients_eq_peelSum"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -98814,56 +98864,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (β μ : ℝ) (C : SecondQuantization.Bosonic.FreeThermalField Mode)\n  (A : SecondQuantization.Bosonic.FockSpace Mode →ₗ[ℂ] SecondQuantization.Bosonic.FockSpace Mode),\n  SecondQuantization.Bosonic.grandCanonicalGibbsExpectation ε β μ (C.operator ∘ₗ A) =\n    SecondQuantization.Bosonic.FreeThermalField.kmsFactor (fun i => ε i - μ) β C *\n      SecondQuantization.Bosonic.grandCanonicalGibbsExpectation ε β μ (A ∘ₗ C.operator)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Bosonic.FreeThermalField.freeGibbsExpectation_operator_comp_rotate",
-    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.FreeKMSRotation",
-    "externalAxioms": [],
-    "docString": "Thermal KMS rotation for a free bosonic field and an arbitrary supplied\none-particle dispersion `ε` at explicit chemical potential `μ`.\n\nThe KMS rotation is generated by the effective thermal dispersion `ξ i = ε i - μ`.\nNo energy reference, particle-number conservation law, or convergence of\narbitrary Gibbs numerators is inferred by this equation alone. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Bosonic.FreeThermalField.grandCanonicalGibbsExpectation_cons_eq_kmsRatio_mul_operatorPeelSum",
-      "SecondQuantization.Bosonic.grandCanonicalGibbsExpectation_create_comp_annihilate_concrete"
-    ],
-    "dependencies": [
-      "SecondQuantization.Bosonic.imaginaryTimeEvolveFree_comp_annihilate",
-      "SecondQuantization.Bosonic.imaginaryTimeEvolveFree_comp_create",
-      "SecondQuantization.Bosonic.tsumTrace_annihilate_comp",
-      "SecondQuantization.Bosonic.tsumTrace_create_comp",
-      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.FreeKMSRotation.0.SecondQuantization.Bosonic.tsumTrace_rotate_of_comp_eq_smul"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Bosonic.FreeThermalField.grandCanonicalGibbsExpectation_cons_eq_kmsRatio_mul_operatorPeelSum",
-      "SecondQuantization.Bosonic.grandCanonicalGibbsExpectation_create_comp_annihilate_concrete"
-    ],
-    "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ {Mode : Type u_1} [Fintype Mode] (ε : Mode → ℝ) (β μ : ℝ),\n  (∀ (i : Mode), 0 < β * (ε i - μ)) →\n    ∀ (C : SecondQuantization.Bosonic.FreeThermalField Mode)\n      (l : List (SecondQuantization.Bosonic.FreeThermalField Mode)),\n      SecondQuantization.Bosonic.grandCanonicalGibbsExpectation ε β μ\n          (SecondQuantization.Bosonic.FreeThermalField.orderedProduct (C :: l)) =\n        SecondQuantization.Bosonic.FreeThermalField.kmsFactor (fun i => ε i - μ) β C /\n            (SecondQuantization.Bosonic.FreeThermalField.kmsFactor (fun i => ε i - μ) β C - 1) *\n          SecondQuantization.Bosonic.grandCanonicalGibbsExpectation ε β μ (C.operatorPeelSum l)",
     "standardAxioms": [
       "Classical.choice",
@@ -98889,7 +98889,7 @@
     "dependencies": [
       "Complex.exp_ne_one_of_re_ne_zero",
       "ScalarExchange.eq_div_mul_of_eq_add_mul_of_eq_mul",
-      "SecondQuantization.Bosonic.FreeThermalField.freeGibbsExpectation_operator_comp_rotate",
+      "SecondQuantization.Bosonic.FreeThermalField.grandCanonicalGibbsExpectation_operator_comp_rotate",
       "SecondQuantization.Bosonic.FreeThermalField.grandCanonicalGibbsSummable_orderedProduct",
       "SecondQuantization.Bosonic.FreeThermalField.operatorPeelSum_mem_grandCanonicalGibbsDomain",
       "SecondQuantization.Bosonic.FreeThermalField.operator_comp_orderedProduct_eq_operatorPeelSum",
@@ -98951,6 +98951,56 @@
     "compiledConsumers": [
       "SecondQuantization.Bosonic.FreeThermalField.grandCanonicalKmsRatio_mul_exchangeValue_eq_freeThermalPairValue",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.ConcreteExpectationRecursion.0.SecondQuantization.Bosonic.FreeThermalField.grandCanonicalGibbsExpectation_firstPair_recursion"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (β μ : ℝ) (C : SecondQuantization.Bosonic.FreeThermalField Mode)\n  (A : SecondQuantization.Bosonic.FockSpace Mode →ₗ[ℂ] SecondQuantization.Bosonic.FockSpace Mode),\n  SecondQuantization.Bosonic.grandCanonicalGibbsExpectation ε β μ (C.operator ∘ₗ A) =\n    SecondQuantization.Bosonic.FreeThermalField.kmsFactor (fun i => ε i - μ) β C *\n      SecondQuantization.Bosonic.grandCanonicalGibbsExpectation ε β μ (A ∘ₗ C.operator)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Bosonic.FreeThermalField.grandCanonicalGibbsExpectation_operator_comp_rotate",
+    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.FreeKMSRotation",
+    "externalAxioms": [],
+    "docString": "Thermal KMS rotation for a free bosonic field and an arbitrary supplied\none-particle dispersion `ε` at explicit chemical potential `μ`.\n\nThe KMS rotation is generated by the effective thermal dispersion `ξ i = ε i - μ`.\nNo energy reference, particle-number conservation law, or convergence of\narbitrary Gibbs numerators is inferred by this equation alone. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Bosonic.FreeThermalField.grandCanonicalGibbsExpectation_cons_eq_kmsRatio_mul_operatorPeelSum",
+      "SecondQuantization.Bosonic.grandCanonicalGibbsExpectation_create_comp_annihilate_concrete"
+    ],
+    "dependencies": [
+      "SecondQuantization.Bosonic.imaginaryTimeEvolveFree_comp_annihilate",
+      "SecondQuantization.Bosonic.imaginaryTimeEvolveFree_comp_create",
+      "SecondQuantization.Bosonic.tsumTrace_annihilate_comp",
+      "SecondQuantization.Bosonic.tsumTrace_create_comp",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.FreeKMSRotation.0.SecondQuantization.Bosonic.tsumTrace_rotate_of_comp_eq_smul"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Bosonic.FreeThermalField.grandCanonicalGibbsExpectation_cons_eq_kmsRatio_mul_operatorPeelSum",
+      "SecondQuantization.Bosonic.grandCanonicalGibbsExpectation_create_comp_annihilate_concrete"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -104533,7 +104583,7 @@
       "SecondQuantization.Bosonic.grandCanonicalGibbsExpectation_orderedProduct_pair_eq_freeThermalPairValue"
     ],
     "dependencies": [
-      "SecondQuantization.Bosonic.FreeThermalField.freeGibbsExpectation_operator_comp_rotate",
+      "SecondQuantization.Bosonic.FreeThermalField.grandCanonicalGibbsExpectation_operator_comp_rotate",
       "SecondQuantization.Bosonic.grandCanonicalGibbsExpectation_annihilate_comp_create_concrete"
     ],
     "crossModuleDirectWrapper": false,
@@ -105174,7 +105224,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Bosonic.FreeThermalField.freeGibbsExpectation_operator_comp_rotate"
+      "SecondQuantization.Bosonic.FreeThermalField.grandCanonicalGibbsExpectation_operator_comp_rotate"
     ],
     "dependencies": [
       "SecondQuantization.Bosonic.carriesEnergyShift_annihilate",
@@ -105183,7 +105233,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Bosonic.FreeThermalField.freeGibbsExpectation_operator_comp_rotate"
+      "SecondQuantization.Bosonic.FreeThermalField.grandCanonicalGibbsExpectation_operator_comp_rotate"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -105219,7 +105269,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Bosonic.FreeThermalField.freeGibbsExpectation_operator_comp_rotate"
+      "SecondQuantization.Bosonic.FreeThermalField.grandCanonicalGibbsExpectation_operator_comp_rotate"
     ],
     "dependencies": [
       "SecondQuantization.Bosonic.carriesEnergyShift_create",
@@ -105228,7 +105278,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Bosonic.FreeThermalField.freeGibbsExpectation_operator_comp_rotate"
+      "SecondQuantization.Bosonic.FreeThermalField.grandCanonicalGibbsExpectation_operator_comp_rotate"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -107701,7 +107751,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Bosonic.FreeThermalField.freeGibbsExpectation_operator_comp_rotate"
+      "SecondQuantization.Bosonic.FreeThermalField.grandCanonicalGibbsExpectation_operator_comp_rotate"
     ],
     "dependencies": [
       "SecondQuantization.Bosonic.annihilate_basisState_of_pos",
@@ -107713,7 +107763,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Bosonic.FreeThermalField.freeGibbsExpectation_operator_comp_rotate"
+      "SecondQuantization.Bosonic.FreeThermalField.grandCanonicalGibbsExpectation_operator_comp_rotate"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -107749,7 +107799,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Bosonic.FreeThermalField.freeGibbsExpectation_operator_comp_rotate"
+      "SecondQuantization.Bosonic.FreeThermalField.grandCanonicalGibbsExpectation_operator_comp_rotate"
     ],
     "dependencies": [
       "SecondQuantization.Bosonic.createOccupation_apply_same",
@@ -107760,7 +107810,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Bosonic.FreeThermalField.freeGibbsExpectation_operator_comp_rotate"
+      "SecondQuantization.Bosonic.FreeThermalField.grandCanonicalGibbsExpectation_operator_comp_rotate"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -126782,7 +126832,6 @@
       "SecondQuantization.Common.coeff_normalizeByConstantCoeff_dysonTraceSeries_eq_finiteGibbsExpectation",
       "SecondQuantization.Common.finiteGibbsExpectation_comp_eq_div_of_zetaCommutator",
       "SecondQuantization.Common.finiteGibbsExpectation_eq_summableDiagonalTraceRatioLinear",
-      "SecondQuantization.Common.finiteGibbsExpectation_four_point",
       "SecondQuantization.Common.finiteGibbsExpectation_peel_indexed"
     ],
     "dependencies": [
@@ -126801,10 +126850,9 @@
       "SecondQuantization.Common.coeff_normalizeByConstantCoeff_dysonTraceSeries_eq_finiteGibbsExpectation",
       "SecondQuantization.Common.finiteGibbsExpectation_comp_eq_div_of_zetaCommutator",
       "SecondQuantization.Common.finiteGibbsExpectation_eq_summableDiagonalTraceRatioLinear",
-      "SecondQuantization.Common.finiteGibbsExpectation_four_point",
       "SecondQuantization.Common.finiteGibbsExpectation_peel_indexed"
     ],
-    "compiledConsumerCount": 5,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -126840,9 +126888,7 @@
     "dependents": [],
     "dependencies": [
       "SecondQuantization.Common.finiteGibbsExpectation_comp_eq_div_of_zetaCommutator",
-      "SecondQuantization.Common.finiteGibbsExpectation_eq_trace_div",
-      "SecondQuantization.Common.traceFock_diagonalEvolution_ne_zero",
-      "SecondQuantization.Common.tsumTrace_diagonalEvolution_comp_peel"
+      "SecondQuantization.Common.finiteGibbsExpectation_peel_indexed"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -126943,7 +126989,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ {Config : Type u_1} [inst : Fintype Config] [inst_1 : Nonempty Config] (energy : Config → ℝ) (β q1 : ℝ) (ζ : ℂ)\n  (C1 : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config)\n  (l :\n    List ((SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config) × ℂ)),\n  (SecondQuantization.Common.heisenbergEvolve energy (-β)) C1 = Complex.exp ↑(q1 * -β) • C1 →\n    (∀ p ∈ l, ScalarExchange.zetaCommutator ζ C1 p.1 = p.2 • LinearMap.id) →\n      1 - ζ ^ l.length * Complex.exp ↑(q1 * β) ≠ 0 →\n        SecondQuantization.Common.finiteGibbsExpectation energy β (C1 ∘ₗ (List.map Prod.fst l).prod) =\n          (∑ j,\n              ζ ^ ↑j * l[↑j].2 *\n                SecondQuantization.Common.finiteGibbsExpectation energy β (List.map Prod.fst (l.eraseIdx ↑j)).prod) /\n            (1 - ζ ^ l.length * Complex.exp ↑(q1 * β))",
     "standardAxioms": [
       "Classical.choice",
@@ -126951,7 +126997,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -126962,7 +127008,9 @@
     "docString": "The normalized peel identity, as an indexed `Finset.sum`. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "SecondQuantization.Common.finiteGibbsExpectation_four_point"
+    ],
     "dependencies": [
       "ScalarExchange.peelSumWithCoefficients_eq_sum",
       "SecondQuantization.Common.finiteGibbsExpectation_eq_trace_div",
@@ -126971,8 +127019,10 @@
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "SecondQuantization.Common.finiteGibbsExpectation_four_point"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -127503,7 +127553,6 @@
       "SecondQuantization.Common.grandCanonicalGibbsSummable_iff_shifted",
       "SecondQuantization.Common.grandCanonicalPartitionFunction_eq_shifted",
       "SecondQuantization.Fermionic.eigenbasisGibbsEnergyExpectation_fermionEnergy_eq_sum_fermiDirac",
-      "SecondQuantization.Fermionic.finiteGrandCanonicalGibbsDensityOperator_expectation_finiteSecondQuantization",
       "SecondQuantization.Fermionic.vonNeumannEntropy_finiteGrandCanonicalGibbs_toReal_eq_sum_fermiDirac",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.Gibbs.0.SecondQuantization.Fermionic.grandCanonicalEnergy_eq_fermionEnergy"
     ],
@@ -127518,11 +127567,10 @@
       "SecondQuantization.Common.grandCanonicalGibbsSummable_iff_shifted",
       "SecondQuantization.Common.grandCanonicalPartitionFunction_eq_shifted",
       "SecondQuantization.Fermionic.eigenbasisGibbsEnergyExpectation_fermionEnergy_eq_sum_fermiDirac",
-      "SecondQuantization.Fermionic.finiteGrandCanonicalGibbsDensityOperator_expectation_finiteSecondQuantization",
       "SecondQuantization.Fermionic.vonNeumannEntropy_finiteGrandCanonicalGibbs_toReal_eq_sum_fermiDirac",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.Gibbs.0.SecondQuantization.Fermionic.grandCanonicalEnergy_eq_fermionEnergy"
     ],
-    "compiledConsumerCount": 8,
+    "compiledConsumerCount": 7,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -134698,7 +134746,6 @@
     "dependents": [
       "SecondQuantization.Common.constantCoeff_dysonTraceSeries_ne_zero",
       "SecondQuantization.Common.finiteGibbsExpectation_comp_eq_div_of_zetaCommutator",
-      "SecondQuantization.Common.finiteGibbsExpectation_four_point",
       "SecondQuantization.Common.finiteGibbsExpectation_peel_indexed"
     ],
     "dependencies": [
@@ -134712,10 +134759,9 @@
     "compiledConsumers": [
       "SecondQuantization.Common.constantCoeff_dysonTraceSeries_ne_zero",
       "SecondQuantization.Common.finiteGibbsExpectation_comp_eq_div_of_zetaCommutator",
-      "SecondQuantization.Common.finiteGibbsExpectation_four_point",
       "SecondQuantization.Common.finiteGibbsExpectation_peel_indexed"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -134930,7 +134976,6 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Common.finiteGibbsExpectation_four_point",
       "SecondQuantization.Common.finiteGibbsExpectation_peel_indexed",
       "SecondQuantization.Common.normalizedTsumTrace_comp_eq_div_of_zetaCommutator"
     ],
@@ -134944,11 +134989,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.finiteGibbsExpectation_four_point",
       "SecondQuantization.Common.finiteGibbsExpectation_peel_indexed",
       "SecondQuantization.Common.normalizedTsumTrace_comp_eq_div_of_zetaCommutator"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -150066,7 +150110,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] {n : ℕ} (ε : Mode → ℝ) (β : ℝ) (i j : Mode)\n  (τ τ' : ℝ) (q : Fin n → SecondQuantization.Common.QuarticVertexLabel Mode) (σ : Fin n → ℝ),\n  SecondQuantization.Common.finiteGibbsExpectation (SecondQuantization.Fermionic.fermionEnergy ε) β\n      (SecondQuantization.Fermionic.mixedTimeOrderedVertexComp ε i j τ τ' q σ) =\n    SecondQuantization.Fermionic.twoPointExternalOrderSign τ τ' *\n      ∑ pairing, SecondQuantization.Fermionic.orderedTwoPointPairingValue ε β i j τ τ' σ q pairing",
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] {n : ℕ} (ε : Mode → ℝ) (β μ : ℝ) (i j : Mode)\n  (τ τ' : ℝ) (q : Fin n → SecondQuantization.Common.QuarticVertexLabel Mode) (σ : Fin n → ℝ),\n  SecondQuantization.Common.finiteGibbsExpectation (SecondQuantization.Fermionic.fermionEnergy fun k => ε k - μ) β\n      (SecondQuantization.Fermionic.mixedTimeOrderedVertexComp ε i j τ τ' q σ) =\n    SecondQuantization.Fermionic.twoPointExternalOrderSign τ τ' *\n      ∑ pairing,\n        pairing.evaluation (Combinatorics.Pairing.weight SecondQuantization.Common.Statistics.fermion pairing)\n          fun a b =>\n          SecondQuantization.Fermionic.grandCanonicalTimedFieldPairContraction ε β μ\n            (SecondQuantization.Fermionic.mixedTimeOrderedAtomicFieldFamily i j τ τ' q σ a)\n            (SecondQuantization.Fermionic.mixedTimeOrderedAtomicFieldFamily i j τ τ' q σ b)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -150081,7 +150125,7 @@
     "name": "SecondQuantization.Fermionic.finiteGibbsExpectation_mixedTimeOrderedVertexComp_eq_sum_pairingValue",
     "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration.DysonCoefficient",
     "externalAxioms": [],
-    "docString": "At chemical potential μ = 0, the mixed event-level finite Gibbs expectation equals\nthe external-order sign times the canonical pairing sum. ",
+    "docString": "At explicit chemical potential μ, the mixed event-level finite Gibbs expectation\nequals the external-order sign times the grand-canonical pairing sum. Physical\ntime-labelled fields evolve with ε, while their Gibbs weight uses ε - μ. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
@@ -150139,7 +150183,6 @@
       "QuantumTheory.eigenbasisGibbsSummable_of_finite",
       "SecondQuantization.Common.completedProduct_comp_algebraicToCompleted_of_core",
       "SecondQuantization.Common.finiteGibbsExpectation_eq_completed_of_algebraicCore",
-      "SecondQuantization.Common.grandCanonicalEnergy_eq_shifted",
       "SecondQuantization.Fermionic.Lattice.occupationConjugate_dGamma_matrixUnit",
       "SecondQuantization.Fermionic.completedAnnihilate_comp_algebraicToCompleted",
       "SecondQuantization.Fermionic.completedCreate_comp_algebraicToCompleted",
@@ -161823,6 +161866,50 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {A : Type u_1} [inst : Semiring A] [inst_1 : Algebra ℂ A] (ζ : ℂ) (C : A) (l : List (A × ℂ)),\n  ScalarExchange.peelSumWithCoefficients ζ l = ScalarExchange.peelSum Prod.fst (fun x p => p.2) ζ (C, 0) l",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Analysis.ScalarExchange.Peel.0.ScalarExchange.peelSumWithCoefficients_eq_peelSum",
+    "module": "LeanCondensedMatter.Analysis.ScalarExchange.Peel",
+    "externalAxioms": [],
+    "docString": "Both peel sums encode the same recursion; the first label is only used to select\nits coefficients, which the paired representation already stores in each list element. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "ScalarExchange.mul_prod_eq_peelSumWithCoefficients",
+      "ScalarExchange.peelSumWithCoefficients_eq_sum"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "ScalarExchange.mul_prod_eq_peelSumWithCoefficients",
+      "ScalarExchange.peelSumWithCoefficients_eq_sum"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {α : Type u_1} {R : Type u_2} [inst : DecidableEq α] [inst_1 : CommRing R] {m : Finset α → R} {A B : Finset α},\n  Finpartition.IsIndependentAcross m A B →\n    ∀ T ⊆ A ⊔ B, Finpartition.momentFromCumulant (Finpartition.splitCumulant m A B) T = m T",
     "standardAxioms": [
       "Classical.choice",
@@ -165008,6 +165095,51 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {V : Type u_1} [inst : NormedAddCommGroup V] [inst_1 : InnerProductSpace ℝ V] {ι : Type u_2} [Finite ι]\n  (b : Module.Basis ι ℝ V),\n  Crystal.reciprocalLattice (Crystal.reciprocalLattice (Submodule.span ℤ (Set.range ⇑b))) =\n    Submodule.span ℤ (Set.range ⇑b)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Crystal.Lattice.0.LeanCondensedMatter.Crystal.reciprocalLattice_reciprocalLattice_span_of_basis",
+    "module": "LeanCondensedMatter.Crystal.Lattice",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "LeanCondensedMatter.Crystal.reciprocalLattice_reciprocalLattice"
+    ],
+    "dependencies": [
+      "LeanCondensedMatter.Crystal.reciprocalPairing_isSymm",
+      "LeanCondensedMatter.Crystal.reciprocalPairing_nondegenerate"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "LeanCondensedMatter.Crystal.reciprocalLattice_reciprocalLattice"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {V : Type u_1} [inst : NormedAddCommGroup V] [inst_1 : InnerProductSpace ℝ V] {ι : Type u_2} [inst_2 : Fintype ι]\n  (v : ι → V) (A : Matrix ι ι ℝ), (Matrix.gram ℝ fun j => ∑ i, A i j • v i) = A.transpose * Matrix.gram ℝ v * A",
     "standardAxioms": [
       "Classical.choice",
@@ -165020,8 +165152,8 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Crystal.Classification.0.LeanCondensedMatter.Crystal.latticePointGroup.gram_matrix_congruence",
-    "module": "LeanCondensedMatter.Crystal.Classification",
+    "name": "_private.LeanCondensedMatter.Crystal.LatticePointGroup.Gram.0.LeanCondensedMatter.Crystal.latticePointGroup.gram_matrix_congruence",
+    "module": "LeanCondensedMatter.Crystal.LatticePointGroup.Gram",
     "externalAxioms": [],
     "docString": "Changing a finite family of vectors by real matrix coefficients transforms its\nGram matrix by congruence. This helper stays private to the lattice-metric proof. ",
     "directWrapperTargetModule": null,
@@ -165062,8 +165194,8 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Crystal.Classification.0.LeanCondensedMatter.Crystal.latticePointGroup.integerShearBasis_apply_one",
-    "module": "LeanCondensedMatter.Crystal.Classification",
+    "name": "_private.LeanCondensedMatter.Crystal.LatticePointGroup.PlanarReduction.0.LeanCondensedMatter.Crystal.latticePointGroup.integerShearBasis_apply_one",
+    "module": "LeanCondensedMatter.Crystal.LatticePointGroup.PlanarReduction",
     "externalAxioms": [],
     "docString": null,
     "directWrapperTargetModule": null,
@@ -165104,8 +165236,8 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Crystal.Classification.0.LeanCondensedMatter.Crystal.latticePointGroup.integerShearBasis_apply_zero",
-    "module": "LeanCondensedMatter.Crystal.Classification",
+    "name": "_private.LeanCondensedMatter.Crystal.LatticePointGroup.PlanarReduction.0.LeanCondensedMatter.Crystal.latticePointGroup.integerShearBasis_apply_zero",
+    "module": "LeanCondensedMatter.Crystal.LatticePointGroup.PlanarReduction",
     "externalAxioms": [],
     "docString": null,
     "directWrapperTargetModule": null,
@@ -165118,51 +165250,6 @@
     "completedMention": false,
     "compiledConsumers": [
       "LeanCondensedMatter.Crystal.latticePointGroup.exists_gauss_reduced_basis"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {V : Type u_1} [inst : NormedAddCommGroup V] [inst_1 : InnerProductSpace ℝ V] {ι : Type u_2} [Finite ι]\n  (b : Module.Basis ι ℝ V),\n  Crystal.reciprocalLattice (Crystal.reciprocalLattice (Submodule.span ℤ (Set.range ⇑b))) =\n    Submodule.span ℤ (Set.range ⇑b)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Crystal.Lattice.0.LeanCondensedMatter.Crystal.reciprocalLattice_reciprocalLattice_span_of_basis",
-    "module": "LeanCondensedMatter.Crystal.Lattice",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "LeanCondensedMatter.Crystal.reciprocalLattice_reciprocalLattice"
-    ],
-    "dependencies": [
-      "LeanCondensedMatter.Crystal.reciprocalPairing_isSymm",
-      "LeanCondensedMatter.Crystal.reciprocalPairing_nondegenerate"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "LeanCondensedMatter.Crystal.reciprocalLattice_reciprocalLattice"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -178836,7 +178923,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Bosonic.FreeThermalField.freeGibbsExpectation_operator_comp_rotate"
+      "SecondQuantization.Bosonic.FreeThermalField.grandCanonicalGibbsExpectation_operator_comp_rotate"
     ],
     "dependencies": [
       "SecondQuantization.Common.tsumTrace_smul"
@@ -178844,7 +178931,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Bosonic.FreeThermalField.freeGibbsExpectation_operator_comp_rotate"
+      "SecondQuantization.Bosonic.FreeThermalField.grandCanonicalGibbsExpectation_operator_comp_rotate"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
