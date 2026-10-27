@@ -20,11 +20,7 @@ files / direct imports / DAGs / reachability             ↓
 Ordinary Lean library changes normally exercise both branches. Source-audit-only tooling does not
 force a library build, while advisory theorem-catalog tooling remains outside the pull-request gate.
 On `main`, advisory-tooling changes may request a build cache so the separate Lean Insights workflow
-can run against the merged commit. The retained re-audit advisory report uses Lean's
-`retainedNeedsReview` field (rather than recomputing its condition in Python) and
-compares to the previously published `graph-data` snapshot when usable. The GitHub
-Actions summary is brief; `retained-audit.json` contains the complete queues. A missing
-or invalid baseline produces current-only signals, not a fabricated change history.
+can run against the merged commit.
 
 Run the source audit with:
 
