@@ -307,6 +307,116 @@ theorem grandCanonicalGibbsDensityOperator_expectation_eq_tsum_canonical
         congrArg (fun T : CompletedFock Config →L[ℂ] CompletedFock Config => T * A) hOp
     _ = _ := hexchange
 
+/-- The trace-norm error from retaining a finite set of particle-number sectors
+equals the total probability of the discarded sectors. The truncated operator is
+the sharp-number coordinate compression of the grand-canonical density.
+No trace-class completeness theorem or finite-dimensional hypothesis is needed. -/
+theorem grandCanonicalGibbsDensityOperator_traceNorm_complement_projection
+    (ε : Mode → ℝ) (β μ : ℝ)
+    (hsum : EigenbasisGibbsSummable
+      (grandCanonicalEnergy (Config := Config) ε μ) β)
+    (F : Finset ℕ) :
+    ∃ hres : IsTraceClass
+        ((grandCanonicalGibbsDensityOperator (Config := Config) ε β μ hsum).op -
+          (completedCoordinateProjection
+            (fun c : Config => particleNumber (Mode := Mode) c ∈ F)).comp
+            ((grandCanonicalGibbsDensityOperator (Config := Config) ε β μ hsum).op.comp
+              (completedCoordinateProjection
+                (fun c : Config => particleNumber (Mode := Mode) c ∈ F)))),
+      hres.traceNorm =
+        ∑' N : ℕ,
+          if N ∈ F then 0 else
+            grandCanonicalSectorProbability (Config := Config) ε β μ N := by
+  classical
+  let ρ := grandCanonicalGibbsDensityOperator (Config := Config) ε β μ hsum
+  let b := completedHilbertBasis (Config := Config)
+  let Q := completedCoordinateProjection
+    (fun c : Config => particleNumber (Mode := Mode) c ∈ F)
+  let w : Config → ℝ :=
+    eigenbasisGibbsProbability (grandCanonicalEnergy ε μ) β
+  let tail : Config → ℝ := fun c =>
+    if particleNumber (Mode := Mode) c ∈ F then 0 else w c
+  have hw : Summable (fun c => ‖w c‖) := by
+    simpa only [w, eigenbasisGibbsProbability, Real.normalizedWeight,
+      eigenbasisPartitionFunction] using
+      (Real.summable_norm_normalizedWeight
+        (eigenbasisBoltzmannWeight (grandCanonicalEnergy (Config := Config) ε μ) β)
+        hsum)
+  have hw_nonneg : ∀ c, 0 ≤ w c := by
+    intro c
+    exact eigenbasisGibbsProbability_nonneg
+      (grandCanonicalEnergy (Config := Config) ε μ) β hsum c
+  have ht : Summable (fun c => ‖tail c‖) := by
+    refine Summable.of_norm_bounded hw ?_
+    intro c
+    by_cases hc : particleNumber (Mode := Mode) c ∈ F
+    · simp [tail, hc]
+    · simp [tail, hc]
+  have ht_nonneg : ∀ c, 0 ≤ tail c := by
+    intro c
+    by_cases hc : particleNumber (Mode := Mode) c ∈ F
+    · simp [tail, hc]
+    · simpa [tail, hc] using hw_nonneg c
+  let T := b.diagonalOp (fun c => (tail c : ℂ))
+  have hT : IsTraceClass T :=
+    b.diagonalOp_isTraceClass tail ht ht_nonneg
+  have hTpos : T.IsPositive := b.diagonalOp_isPositive tail ht ht_nonneg
+  have hTnorm : hT.traceNorm = ∑' c : Config, tail c := by
+    have h := hT.hasSum_diagonalExpectationValue_eq_traceNorm hTpos b
+    have h' : HasSum tail hT.traceNorm := by
+      apply HasSum.congr_fun h
+      intro c
+      simpa only [T] using
+        (b.diagonalExpectationValue_diagonalOp tail ht ht_nonneg c)
+    exact h'.tsum_eq.symm
+  have hOp : ρ.op - Q.comp (ρ.op.comp Q) = T := by
+    apply continuousLinearMap_ext_completedBasis
+    intro c
+    have happly :
+        T (completedBasisState c) = (tail c : ℂ) • completedBasisState c := by
+      simpa only [T, b, completedHilbertBasis_apply] using
+        (b.diagonalOp_apply_basis (fun i => (tail i : ℂ))
+          (by simpa using ht) c)
+    rw [sub_apply, ContinuousLinearMap.comp_apply, ContinuousLinearMap.comp_apply,
+      happly, grandCanonicalGibbsDensityOperator_apply_basis]
+    by_cases hc : particleNumber (Mode := Mode) c ∈ F
+    · simp [Q, tail, w, hc, completedCoordinateProjection_basisState]
+    · simp [Q, tail, w, hc, completedCoordinateProjection_basisState]
+  have hres : IsTraceClass (ρ.op - Q.comp (ρ.op.comp Q)) := by
+    rw [hOp]
+    exact hT
+  have htailgroup :
+      (∑' c : Config, tail c) =
+        ∑' N : ℕ,
+          if N ∈ F then 0 else
+            grandCanonicalSectorProbability (Config := Config) ε β μ N := by
+    have hgroups :=
+      ((Summable.of_norm ht).hasSum.tsum_fiberwise
+        (particleNumber (Mode := Mode) (Config := Config))).tsum_eq
+    rw [hgroups]
+    apply tsum_congr
+    intro N
+    by_cases hN : N ∈ F
+    · simp [tail, hN, (show ∀ n : ParticleNumberSector Mode Config N,
+        particleNumber (Mode := Mode) n.val = N from fun n => n.property)]
+    · simp only [if_neg hN]
+      calc
+        (∑' n : ParticleNumberSector Mode Config N, tail n.val) =
+            ∑' n : ParticleNumberSector Mode Config N, w n.val := by
+          apply tsum_congr
+          intro n
+          simp [tail, n.property, hN]
+        _ = _ := by
+          simpa only [w] using
+            (grandCanonicalSectorProbability_eq_tsum
+              (Config := Config) ε β μ N).symm
+  refine ⟨hres, ?_⟩
+  calc
+    hres.traceNorm = hT.traceNorm :=
+      IsTraceClass.traceNorm_congr hres hT hOp
+    _ = ∑' c : Config, tail c := hTnorm
+    _ = _ := htailgroup
+
 end
 
 end Common
