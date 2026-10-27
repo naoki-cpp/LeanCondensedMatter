@@ -1,4 +1,4 @@
-import Mathlib
+import Mathlib.Data.Fintype.BigOperators
 import LeanCondensedMatter.SecondQuantization.Common.Algebra.AlgebraicFock
 
 set_option linter.style.header false
