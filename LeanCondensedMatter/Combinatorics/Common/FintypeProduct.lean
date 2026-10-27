@@ -38,8 +38,6 @@ theorem dvd_sum_equiv_fst_of_dvd_card {α β γ : Type*}
     rw [← Equiv.sum_comp e.symm, sum_prod_type]
     simp [Finset.mul_sum]
   rw [hsum]
-  obtain ⟨k, hk⟩ := hcard
-  refine ⟨k * ∑ y : β, f y, ?_⟩
-  rw [hk, Nat.mul_assoc]
+  exact dvd_mul_of_dvd_left hcard _
 
 end Fintype
