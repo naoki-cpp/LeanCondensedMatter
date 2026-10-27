@@ -111301,7 +111301,7 @@
     "dependencies": [
       "Combinatorics.Pairing.normalizedPairSigmaEquiv_apply_of_strictMono",
       "SecondQuantization.Common.QuarticDiagram.componentOrderedLeg_strictMono",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Pairing.ComponentPairEquiv.0.SecondQuantization.Common.QuarticDiagram.componentOrderedLegEquiv_partner"
+      "SecondQuantization.Common.QuarticDiagram.pairingInOrder_partner_componentOrderedLeg"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -111986,10 +111986,10 @@
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
-    "retainedNeedsReview": true,
+    "retainedNeedsReview": false,
     "retainedMention": true,
     "projectAxioms": [],
     "name": "SecondQuantization.Common.QuarticDiagram.pairingInOrder_partner_componentOrderedLeg",
@@ -111999,7 +111999,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Pairing.ComponentPairEquiv.0.SecondQuantization.Common.QuarticDiagram.componentOrderedLegEquiv_partner"
+      "SecondQuantization.Common.QuarticDiagram.componentPairEquiv_apply"
     ],
     "dependencies": [
       "Combinatorics.PairingOn.transport_partner",
@@ -112009,9 +112009,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Pairing.ComponentPairEquiv.0.SecondQuantization.Common.QuarticDiagram.componentOrderedLegEquiv_partner"
+      "SecondQuantization.Common.QuarticDiagram.componentPairEquiv",
+      "SecondQuantization.Common.QuarticDiagram.componentPairEquiv_apply"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -128070,7 +128071,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": false,
+    "terminal": true,
     "statement": "∀ {Mode : Type u_1} {Config : Type u_2} [inst : SecondQuantization.Common.OccupationBasis Mode Config] (ε : Mode → ℝ)\n  (β μ : ℝ), 0 ≤ SecondQuantization.Common.grandCanonicalParticleNumberExpectation ε β μ",
     "standardAxioms": [
       "Classical.choice",
@@ -128078,7 +128079,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -128089,18 +128090,14 @@
     "docString": "The grand-canonical mean particle number is nonnegative, including when its\nspectral `tsum` is interpreted by Lean outside the integrable domain. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.grandCanonicalTotalNumberExpectation_nonneg"
-    ],
+    "dependents": [],
     "dependencies": [
       "QuantumTheory.eigenbasisGibbsProbability_nonneg"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.grandCanonicalTotalNumberExpectation_nonneg"
-    ],
-    "compiledConsumerCount": 1,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -128114,15 +128111,15 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": false,
-    "statement": "∀ {Mode : Type u_1} {Config : Type u_2} [inst : SecondQuantization.Common.OccupationBasis Mode Config] (ε : Mode → ℝ)\n  (β μ : ℝ),\n  (Summable fun c =>\n      ‖QuantumTheory.eigenbasisGibbsProbability (SecondQuantization.Common.grandCanonicalEnergy ε μ) β c *\n          ↑(SecondQuantization.Common.particleNumber c)‖) →\n    ∑' (c : Config),\n        QuantumTheory.eigenbasisGibbsProbability (SecondQuantization.Common.grandCanonicalEnergy ε μ) β c *\n          ↑(SecondQuantization.Common.particleNumber c) =\n      ∑' (N : ℕ), ↑N * SecondQuantization.Common.grandCanonicalSectorProbability ε β μ N",
+    "terminal": true,
+    "statement": "∀ {Mode : Type u_1} {Config : Type u_2} [inst : SecondQuantization.Common.OccupationBasis Mode Config] (ε : Mode → ℝ)\n  (β μ : ℝ),\n  SecondQuantization.Common.GrandCanonicalParticleNumberIntegrable ε β μ →\n    SecondQuantization.Common.grandCanonicalParticleNumberExpectation ε β μ =\n      ∑' (N : ℕ), ↑N * SecondQuantization.Common.grandCanonicalSectorProbability ε β μ N",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -128133,18 +128130,14 @@
     "docString": "The first moment of a grand-canonical particle-number distribution is\nthe particle-number-weighted occupation-basis sum. The nonnegative count is\nunbounded; absolute integrability is therefore required independently of\nthe existence of a normalized Gibbs state. This is statistics-independent. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.grandCanonicalTotalNumberExpectation_eq_tsum_sector"
-    ],
+    "dependents": [],
     "dependencies": [
       "SecondQuantization.Common.grandCanonicalSectorProbability_eq_tsum"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.grandCanonicalTotalNumberExpectation_eq_tsum_sector"
-    ],
-    "compiledConsumerCount": 1,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -128748,13 +128741,13 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.hasSum_grandCanonicalTotalNumberExpectation"
+      "SecondQuantization.Fermionic.hasSum_grandCanonicalGibbsDensityOperator_totalNumber_diagonal"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.hasSum_grandCanonicalTotalNumberExpectation"
+      "SecondQuantization.Fermionic.hasSum_grandCanonicalGibbsDensityOperator_totalNumber_diagonal"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -134704,44 +134697,6 @@
       "SecondQuantization.Fermionic.timeOrderedExternalFields_swap"
     ],
     "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {Config : Type u_1} [inst : Fintype Config]\n  (A B : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config),\n  SecondQuantization.Common.traceFock (A ∘ₗ B) = SecondQuantization.Common.traceFock (B ∘ₗ A)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.traceFock_comp_comm",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Algebra.FiniteTrace",
-    "externalAxioms": [],
-    "docString": "The finite trace is cyclic under a two-operator swap, `Tr[AB] = Tr[BA]`. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -151828,86 +151783,6 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (β μ : ℝ),\n  SecondQuantization.Fermionic.GrandCanonicalTotalNumberIntegrable ε β μ →\n    SecondQuantization.Fermionic.grandCanonicalTotalNumberExpectation ε β μ =\n      ∑' (N : ℕ), ↑N * SecondQuantization.Common.grandCanonicalSectorProbability ε β μ N",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.grandCanonicalTotalNumberExpectation_eq_tsum_sector",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.TotalNumberExpectation",
-    "externalAxioms": [],
-    "docString": "The grand-canonical mean particle number is the first moment of the\nsharp-number sector distribution. Unlike bounded-observable sector mixing,\nthis identity requires integrability of the unbounded number operator. ",
-    "directWrapperTargetModule": "LeanCondensedMatter.SecondQuantization.Common.Thermal.GrandCanonicalSectorDecomposition",
-    "directWrapperOf": "SecondQuantization.Common.grandCanonicalParticleNumber_tsum_eq_sector_moment",
-    "dependents": [],
-    "dependencies": [
-      "SecondQuantization.Common.grandCanonicalParticleNumber_tsum_eq_sector_moment"
-    ],
-    "crossModuleDirectWrapper": true,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (β μ : ℝ),\n  0 ≤ SecondQuantization.Fermionic.grandCanonicalTotalNumberExpectation ε β μ",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.grandCanonicalTotalNumberExpectation_nonneg",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.TotalNumberExpectation",
-    "externalAxioms": [],
-    "docString": "The completed free total-number expectation is nonnegative. ",
-    "directWrapperTargetModule": "LeanCondensedMatter.SecondQuantization.Common.Thermal.GrandCanonicalSectorDecomposition",
-    "directWrapperOf": "SecondQuantization.Common.grandCanonicalParticleNumberExpectation_nonneg",
-    "dependents": [],
-    "dependencies": [
-      "SecondQuantization.Common.grandCanonicalParticleNumberExpectation_nonneg"
-    ],
-    "crossModuleDirectWrapper": true,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
     "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (β μ : ℝ)\n  (hsum : QuantumTheory.EigenbasisGibbsSummable (SecondQuantization.Common.grandCanonicalEnergy ε μ) β),\n  SecondQuantization.Fermionic.GrandCanonicalTotalNumberIntegrable ε β μ →\n    HasSum\n      (fun n =>\n        inner ℂ (SecondQuantization.Fermionic.completedBasisState n)\n          ((SecondQuantization.Common.grandCanonicalGibbsDensityOperator ε β μ hsum).op\n            (↑SecondQuantization.Fermionic.completedTotalNumberOperator\n              ⟨SecondQuantization.Fermionic.completedBasisState n, ⋯⟩)))\n      ↑(SecondQuantization.Fermionic.grandCanonicalTotalNumberExpectation ε β μ)",
     "standardAxioms": [
       "Classical.choice",
@@ -151928,58 +151803,14 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
+      "SecondQuantization.Common.hasSum_grandCanonicalParticleNumberExpectation",
       "SecondQuantization.Fermionic.completedBasisState_mem_completedTotalNumberDomain",
-      "SecondQuantization.Fermionic.grandCanonicalGibbsDensityOperator_totalNumber_diagonalTerm",
-      "SecondQuantization.Fermionic.hasSum_grandCanonicalTotalNumberExpectation"
+      "SecondQuantization.Fermionic.grandCanonicalGibbsDensityOperator_totalNumber_diagonalTerm"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [],
     "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (β μ : ℝ),\n  SecondQuantization.Fermionic.GrandCanonicalTotalNumberIntegrable ε β μ →\n    HasSum\n      (fun n =>\n        QuantumTheory.eigenbasisGibbsProbability (SecondQuantization.Common.grandCanonicalEnergy ε μ) β n *\n          ↑(SecondQuantization.Fermionic.particleNumber n))\n      (SecondQuantization.Fermionic.grandCanonicalTotalNumberExpectation ε β μ)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.hasSum_grandCanonicalTotalNumberExpectation",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.TotalNumberExpectation",
-    "externalAxioms": [],
-    "docString": "Integrable fermionic particle-number means have the expected spectral series. ",
-    "directWrapperTargetModule": "LeanCondensedMatter.SecondQuantization.Common.Thermal.GrandCanonicalSectorDecomposition",
-    "directWrapperOf": "SecondQuantization.Common.hasSum_grandCanonicalParticleNumberExpectation",
-    "dependents": [
-      "SecondQuantization.Fermionic.hasSum_grandCanonicalGibbsDensityOperator_totalNumber_diagonal"
-    ],
-    "dependencies": [
-      "SecondQuantization.Common.hasSum_grandCanonicalParticleNumberExpectation"
-    ],
-    "crossModuleDirectWrapper": true,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.hasSum_grandCanonicalGibbsDensityOperator_totalNumber_diagonal"
-    ],
-    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -182536,51 +182367,6 @@
       "SecondQuantization.Common.mixedTimeOrderedQuarticLegPosition_strictMono_of_strictAnti"
     ],
     "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Label : Type u_1} {N : ℕ} {S : Finset (Fin N)} (d : SecondQuantization.Common.QuarticDiagram Label N S)\n  (orders : d.ComponentVertexOrders) (shuffle : d.ComponentShuffle) (B : ↥d.vertexGraph.componentPartitionOn.parts)\n  (p : Fin (2 * (2 * (↑B).card))),\n  (d.pairingInOrder (d.assembleVertexOrder orders shuffle)).partner\n      ((SecondQuantization.Common.QuarticDiagram.componentOrderedLegEquiv✝ d shuffle) ⟨B, p⟩) =\n    (SecondQuantization.Common.QuarticDiagram.componentOrderedLegEquiv✝ d shuffle)\n      ⟨B, ((d.restrictComponent ⋯).pairingInOrder (orders B)).partner p⟩",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Pairing.ComponentPairEquiv.0.SecondQuantization.Common.QuarticDiagram.componentOrderedLegEquiv_partner",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Pairing.ComponentPairEquiv",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Pairing.ComponentPairing",
-    "directWrapperOf": "SecondQuantization.Common.QuarticDiagram.pairingInOrder_partner_componentOrderedLeg",
-    "dependents": [
-      "SecondQuantization.Common.QuarticDiagram.componentPairEquiv_apply"
-    ],
-    "dependencies": [
-      "SecondQuantization.Common.QuarticDiagram.pairingInOrder_partner_componentOrderedLeg"
-    ],
-    "crossModuleDirectWrapper": true,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.QuarticDiagram.componentPairEquiv",
-      "SecondQuantization.Common.QuarticDiagram.componentPairEquiv_apply"
-    ],
-    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
