@@ -52,3 +52,5 @@ docs/
 The theorem catalog keeps structural audit attributes on every declaration; entries listed in `docs/theorem-catalog-retained.md` remain in the full catalog but are omitted from unresolved review queues.
 
 Project-wide implementation, documentation, refactoring, proof, dependency, workflow, and commit rules live in [`docs/conventions.md`](docs/conventions.md). Topic-specific details belong in `docs/`; do not add long content sections to this file.
+
+When documentation and existing code disagree, assess each discrepancy on its merits rather than assuming either side is correct. Report the conflicting passages and declarations, which account is justified and why, and whether the documentation, the code, or both should be corrected. Distinguish evidence of what is currently implemented from evidence of what is mathematically or physically appropriate; if the evidence is insufficient, report the uncertainty and what would resolve it.
