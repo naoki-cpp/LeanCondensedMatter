@@ -123,6 +123,7 @@ theorem grandCanonicalParticleNumberIntegrable_of_finite [Finite Mode]
     ring
   simp only [freeEigenvalue]
   rw [hshift]
+  ring
 
 end
 end Bosonic
