@@ -42,9 +42,9 @@ structure FiniteReciprocalCurrentData (M ι d : Type*) where
   contact : M → d → d → ℂ
   energy_reverse : ∀ m a, energy (reverse m) a = energy m a
   probability_reverse : ∀ m a, probability (reverse m) a = probability m a
-  current_conj : ∀ m i a b, Complex.conj (current m i a b) = current m i b a
+  current_conj : ∀ m i a b, (starRingEnd ℂ) (current m i a b) = current m i b a
   current_reverse : ∀ m i a b,
-    current (reverse m) i a b = -Complex.conj (current m i a b)
+    current (reverse m) i a b = -(starRingEnd ℂ) (current m i a b)
   contact_reverse : ∀ m i j, contact m i j = contact (reverse m) j i
 
 namespace FiniteReciprocalCurrentData
