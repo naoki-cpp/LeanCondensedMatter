@@ -225,12 +225,8 @@ unbounded; absolute integrability is therefore required independently of
 the existence of a normalized Gibbs state. This is statistics-independent. -/
 theorem grandCanonicalParticleNumber_tsum_eq_sector_moment
     (ε : Mode → ℝ) (β μ : ℝ)
-    (hint : Summable fun c : Config =>
-      ‖eigenbasisGibbsProbability (grandCanonicalEnergy ε μ) β c *
-        (particleNumber (Mode := Mode) c : ℝ)‖) :
-    (∑' c : Config,
-      eigenbasisGibbsProbability (grandCanonicalEnergy ε μ) β c *
-        (particleNumber (Mode := Mode) c : ℝ)) =
+    (hint : GrandCanonicalParticleNumberIntegrable (Config := Config) ε β μ) :
+    grandCanonicalParticleNumberExpectation (Config := Config) ε β μ =
       ∑' N : ℕ, (N : ℝ) *
         grandCanonicalSectorProbability (Config := Config) ε β μ N := by
   let f : Config → ℝ := fun c =>
@@ -238,9 +234,8 @@ theorem grandCanonicalParticleNumber_tsum_eq_sector_moment
       (particleNumber (Mode := Mode) c : ℝ)
   have hf : Summable f := Summable.of_norm hint
   calc
-    (∑' c : Config,
-      eigenbasisGibbsProbability (grandCanonicalEnergy ε μ) β c *
-        (particleNumber (Mode := Mode) c : ℝ)) = ∑' c : Config, f c := rfl
+    grandCanonicalParticleNumberExpectation (Config := Config) ε β μ =
+        ∑' c : Config, f c := rfl
     _ = ∑' N : ℕ, ∑' n : ParticleNumberSector Mode Config N, f n.val :=
       (hf.hasSum.tsum_fiberwise
         (particleNumber (Mode := Mode) (Config := Config))).tsum_eq.symm
