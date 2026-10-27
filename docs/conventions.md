@@ -19,6 +19,7 @@ Lean/Mathlib style and project-wide conventions.
 
 ## Documentation and provenance
 
+- **Do not include personal information in repository content.** This applies to code, comments, docstrings, documentation, examples, fixtures, and generated artifacts. Do not include private names or contact details, personal account identifiers, or machine-specific paths containing usernames. Use repository-relative paths, environment variables, or clearly fictional placeholders instead. Review generated content and copied logs before committing; remove personal information without repeating it in explanations. Public author names needed for scholarly citations and required attribution are permitted.
 - **Code is the source of truth.** Keep notes consistent with current Lean declarations and enforced architecture. Use “proved” only for results that compile without `sorry`; otherwise record the statement as a target or conjecture in the relevant roadmap.
 - **Correctness is the kernel's job, not prose's.** Do not pad code with citations or explanation for facts the type checker already guarantees.
 - **Cite physical assumptions where they enter.** When a `def`, `structure`, or hypothesis embeds a physical modeling choice not forced by the mathematics, add a short source citation there. Routine lemmas need no citation.
