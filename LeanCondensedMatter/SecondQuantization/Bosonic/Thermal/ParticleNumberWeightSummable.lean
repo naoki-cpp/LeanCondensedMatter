@@ -1,5 +1,4 @@
 import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BoltzmannWeightSummable
-import LeanCondensedMatter.SecondQuantization.Common.Thermal.GrandCanonicalSectorDecomposition
 
 set_option linter.style.header false
 
@@ -84,46 +83,6 @@ theorem summable_particleNumber_boltzmannWeight [Finite Mode]
     Summable (fun n : Occupation Mode => (n j : ℝ) * boltzmannWeight ε β n) := by
   letI := Fintype.ofFinite Mode
   exact (hasSum_particleNumber_boltzmannWeight ε β hpos j).summable
-
-
-/-- Finite-mode free bosons with strictly positive grand-canonical gaps have an
-integrable total-number first moment. Hence the statistics-independent Common
-grand-canonical mean is a genuine convergent spectral expectation. -/
-theorem grandCanonicalParticleNumberIntegrable_of_finite [Finite Mode]
-    (ε : Mode → ℝ) (β μ : ℝ) (hpos : ∀ i, 0 < β * (ε i - μ)) :
-    Common.GrandCanonicalParticleNumberIntegrable
-      (Config := Occupation Mode) ε β μ := by
-  letI : Fintype Mode := Fintype.ofFinite Mode
-  let ξ : Mode → ℝ := fun i => ε i - μ
-  have hweighted : Summable (fun n : Occupation Mode =>
-      (particleNumber n : ℝ) * boltzmannWeight ξ β n) := by
-    have hterms : Summable (fun n : Occupation Mode =>
-        ∑ i : Mode, (n i : ℝ) * boltzmannWeight ξ β n) :=
-      summable_sum fun i (_ : i ∈ Finset.univ) =>
-        summable_particleNumber_boltzmannWeight ξ β hpos i
-    apply hterms.congr
-    intro n
-    rw [particleNumber_eq_sum_univ]
-    push_cast
-    rw [Finset.sum_mul]
-  unfold Common.GrandCanonicalParticleNumberIntegrable
-  have hscaled := hweighted.mul_left
-    (Common.grandCanonicalPartitionFunction (Config := Occupation Mode) ε β μ)⁻¹
-  apply hscaled.congr
-  intro n
-  rw [Real.norm_eq_abs, abs_of_nonneg (mul_nonneg
-    (QuantumTheory.eigenbasisGibbsProbability_nonneg
-      (Common.grandCanonicalEnergy (Config := Occupation Mode) ε μ) β n)
-    (Nat.cast_nonneg (particleNumber n)))]
-  simp only [QuantumTheory.eigenbasisGibbsProbability,
-    QuantumTheory.eigenbasisBoltzmannWeight, Common.grandCanonicalPartitionFunction,
-    Common.grandCanonicalEnergy_eq_shifted, ξ, boltzmannWeight]
-  have hshift : (fun i : Mode => ε i - μ) = (fun i : Mode => -μ + ε i) := by
-    funext i
-    ring
-  simp only [freeEigenvalue]
-  rw [hshift]
-  ring
 
 end
 end Bosonic
