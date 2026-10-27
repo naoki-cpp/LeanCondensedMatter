@@ -62,6 +62,8 @@ jobs:
             advisory:
               - 'scripts/check_declaration_catalog.py'
               - 'scripts/test_declaration_catalog.py'
+              - 'scripts/report_retained_catalog.py'
+              - 'scripts/test_report_retained_catalog.py'
               - 'scripts/generate_declaration_catalog.py'
               - 'scripts/CheckUnusedHypotheses.lean'
               - 'scripts/TheoremCatalog.lean'
@@ -129,6 +131,7 @@ jobs:
           python3 scripts/generate_declaration_catalog.py
           python3 scripts/check_declaration_catalog.py
           python3 -m unittest discover -s scripts -p 'test_declaration_catalog.py'
+          python3 -m unittest discover -s scripts -p 'test_report_retained_catalog.py'
 
       - name: Validate theorem replacement tooling
         if: needs.changes.outputs.advisory == 'true'
@@ -137,6 +140,16 @@ jobs:
           set -euo pipefail
           lake env lean scripts/TheoremReplacementAudit.lean
           python3 scripts/merge_theorem_replacements.py
+
+      - name: Report retained theorem evidence drift (advisory)
+        if: needs.changes.outputs.advisory == 'true'
+        shell: bash
+        run: |
+          previous="$RUNNER_TEMP/previous-theorems.json"
+          git fetch --quiet --depth=1 origin refs/heads/graph-data &&
+            git show FETCH_HEAD:theorems.json > "$previous" || rm -f "$previous"
+          python3 scripts/report_retained_catalog.py "$previous"
+          cat docs/generated/retained-audit.md >> "$GITHUB_STEP_SUMMARY"
 
       - name: Save project build cache
         if: steps.lean-build.outcome == 'success' && steps.project-cache.outputs.cache-hit != 'true'
