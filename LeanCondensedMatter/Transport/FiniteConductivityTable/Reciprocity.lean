@@ -35,10 +35,15 @@ noncomputable section
 The label `a` at reversed magnetization denotes the time reverse of label `a`
 at the original magnetization. The current matrix has odd time-reversal parity. -/
 structure FiniteReciprocalCurrentData (M ι d : Type*) where
+  /-- Reversal of the time-reversal-odd external parameters. -/
   reverse : M → M
+  /-- Energy eigenvalues in the paired spectral labeling. -/
   energy : M → ι → ℝ
+  /-- Diagonal occupation probabilities in that eigenbasis. -/
   probability : M → ι → ℝ
+  /-- Matrix elements of each directional charge current. -/
   current : M → d → ι → ι → ℂ
+  /-- Expectation of the first-order measured-current variation (contact term). -/
   contact : M → d → d → ℂ
   energy_reverse : ∀ m a, energy (reverse m) a = energy m a
   probability_reverse : ∀ m a, probability (reverse m) a = probability m a
