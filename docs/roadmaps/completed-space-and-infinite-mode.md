@@ -35,8 +35,14 @@ general coefficient vector is the adjoint of its bounded creation field. The cre
 anticommute, and their mixed CAR is the one-particle inner product times the identity. The adjoint
 field annihilates the vacuum; creation on the vacuum preserves the one-particle inner product.
 
-This field construction is a prerequisite, not yet the general unitary Fock lift. Constructing
-the induced Fock isometry and proving its compatibility with the fields remain obligations.
+`Fermionic.CompletedSpace.UnitaryLift` realizes the exterior algebra of the full one-particle
+ℓ² space by creation fields acting on the vacuum. This realization has dense range, and exterior
+transport by a one-particle isometry preserves its inner product. `completedFockUnitary` uses
+Mathlib's `LinearEquiv.extendOfIsometry` to lift an arbitrary one-particle unitary on ℓ² modes.
+It fixes the vacuum, intertwines the creation fields, and respects identity and composition.
+Strong continuity for a lifted time-evolution family and identification of its unbounded
+second-quantized generator remain separate obligations.
+
 In the pinned Mathlib revision, `Analysis.InnerProductSpace.ExteriorPower`
 provides a Hilbert structure only for real, finite-dimensional exterior powers; it cannot directly
 supply the complex infinite-dimensional construction needed here. A Hilbert basis in an infinite
