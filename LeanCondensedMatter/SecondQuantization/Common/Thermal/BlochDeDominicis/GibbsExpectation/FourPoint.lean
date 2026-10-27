@@ -58,7 +58,7 @@ theorem finiteGibbsExpectation_four_point (energy : Config → ℝ) (β q1 : ℝ
       (by simpa [hζ3] using hne)
     simpa [Fin.sum_univ_succ, List.eraseIdx_cons_zero, List.eraseIdx_cons_succ,
       List.map_cons, List.map_nil, List.prod_cons, List.prod_nil,
-      Module.End.mul_eq_comp, Module.End.one_eq_id] using hpeel
+      Module.End.mul_eq_comp, Module.End.one_eq_id, add_assoc] using hpeel
   rw [hζ3, hζ2] at h4
   have h12 := finiteGibbsExpectation_comp_eq_div_of_zetaCommutator energy β q1 ζ c12 C1 C2 hC1
     hcomm12 hne
