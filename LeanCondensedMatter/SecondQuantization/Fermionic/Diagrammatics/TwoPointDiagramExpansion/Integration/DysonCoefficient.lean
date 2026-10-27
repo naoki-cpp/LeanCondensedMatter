@@ -26,29 +26,31 @@ open Combinatorics Common
 
 variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
 
-/-- At chemical potential μ = 0, the mixed event-level finite Gibbs expectation equals
-the external-order sign times the canonical pairing sum. -/
+/-- At explicit chemical potential μ, the mixed event-level finite Gibbs expectation
+equals the external-order sign times the grand-canonical pairing sum. Physical
+time-labelled fields evolve with ε, while their Gibbs weight uses ε - μ. -/
 theorem finiteGibbsExpectation_mixedTimeOrderedVertexComp_eq_sum_pairingValue
-    {n : ℕ} (ε : Mode → ℝ) (β : ℝ) (i j : Mode) (τ τ' : ℝ)
+    {n : ℕ} (ε : Mode → ℝ) (β μ : ℝ) (i j : Mode) (τ τ' : ℝ)
     (q : Fin n → QuarticVertexLabel Mode) (σ : Fin n → ℝ) :
-    Common.finiteGibbsExpectation (fermionEnergy ε) β
+    Common.finiteGibbsExpectation (fermionEnergy (fun k => ε k - μ)) β
         (mixedTimeOrderedVertexComp ε i j τ τ' q σ) =
       twoPointExternalOrderSign τ τ' *
         ∑ pairing : Pairing (2 * n + 1),
-          orderedTwoPointPairingValue ε β i j τ τ' σ q pairing := by
+          pairing.evaluation (pairing.weight Common.Statistics.fermion)
+            (fun a b => grandCanonicalTimedFieldPairContraction ε β μ
+              (mixedTimeOrderedAtomicFieldFamily i j τ τ' q σ a)
+              (mixedTimeOrderedAtomicFieldFamily i j τ τ' q σ b)) := by
   rw [mixedTimeOrderedVertexComp_eq_prod_atomicOperators,
     Common.finiteGibbsExpectation, map_smul, smul_eq_mul]
   have hwick :=
     grandCanonicalGibbsExpectation_prod_timedFieldOperator_eq_sum_pairing
-      ε β 0 (2 * n + 1) (mixedTimeOrderedAtomicFieldFamily i j τ τ' q σ)
-  simp only [sub_zero] at hwick
+      ε β μ (2 * n + 1) (mixedTimeOrderedAtomicFieldFamily i j τ τ' q σ)
   have hpair (A B : TimedField Mode) :
-      Common.finiteGibbsExpectation (fermionEnergy ε) β
+      Common.finiteGibbsExpectation (fermionEnergy (fun k => ε k - μ)) β
         ((timedFieldOperator ε A).comp (timedFieldOperator ε B)) =
-      grandCanonicalTimedFieldPairContraction ε β 0 A B := by
-    simp only [grandCanonicalTimedFieldPairContraction, sub_zero]
+      grandCanonicalTimedFieldPairContraction ε β μ A B := rfl
   simp_rw [hpair] at hwick
-  change Common.finiteGibbsExpectation (fermionEnergy ε) β
+  change Common.finiteGibbsExpectation (fermionEnergy (fun k => ε k - μ)) β
     (List.prod (List.ofFn (mixedTimeOrderedAtomicOperatorFamily ε i j τ τ' q σ))) = _ at hwick
   have hfields :
       List.ofFn (mixedTimeOrderedAtomicFieldFamily i j τ τ' q σ) =
@@ -83,7 +85,6 @@ theorem finiteGibbsExpectation_mixedTimeOrderedVertexComp_eq_sum_pairingValue
   rw [hoperators] at hwick
   simp only [Common.finiteGibbsExpectation] at hwick
   rw [hwick]
-  rfl
 
 /-- Order-`n` perturbative two-point coefficient at explicit chemical potential μ.
 The finite Gibbs weight uses ε - μ, while the physical vertex and external-field
@@ -154,7 +155,17 @@ theorem twoPointDiagramCoefficient_eq_twoPointDysonCoefficient {n : ℕ}
   rw [hsum, Finset.mul_sum]
   apply Finset.sum_congr rfl
   intro q _
-  rw [finiteGibbsExpectation_mixedTimeOrderedVertexComp_eq_sum_pairingValue]
+  have hpoint :=
+    finiteGibbsExpectation_mixedTimeOrderedVertexComp_eq_sum_pairingValue
+      ε β 0 i j τ τ' q σ
+  simp only [sub_zero] at hpoint
+  rw [hpoint]
+  have hkernel :
+      mixedTimeOrderedAtomicPairValue ε β i j τ τ' σ q =
+        (fun a b => grandCanonicalTimedFieldPairContraction ε β 0
+          (mixedTimeOrderedAtomicFieldFamily i j τ τ' q σ a)
+          (mixedTimeOrderedAtomicFieldFamily i j τ τ' q σ b)) := rfl
+  simp only [orderedTwoPointPairingValue, hkernel]
   ring
 
 end Fermionic
