@@ -93452,7 +93452,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.grandCanonicalTotalNumberExpectation_nonneg"
+      "SecondQuantization.Common.grandCanonicalParticleNumberExpectation_nonneg"
     ],
     "dependencies": [
       "QuantumTheory.eigenbasisBoltzmannWeight_nonneg",
@@ -93462,7 +93462,7 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.gibbsEquilibriumDistribution",
-      "SecondQuantization.Fermionic.grandCanonicalTotalNumberExpectation_nonneg"
+      "SecondQuantization.Common.grandCanonicalParticleNumberExpectation_nonneg"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -128071,6 +128071,50 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {Mode : Type u_1} {Config : Type u_2} [inst : SecondQuantization.Common.OccupationBasis Mode Config] (ε : Mode → ℝ)\n  (β μ : ℝ), 0 ≤ SecondQuantization.Common.grandCanonicalParticleNumberExpectation ε β μ",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.grandCanonicalParticleNumberExpectation_nonneg",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Thermal.GrandCanonicalSectorDecomposition",
+    "externalAxioms": [],
+    "docString": "The grand-canonical mean particle number is nonnegative, including when its\nspectral `tsum` is interpreted by Lean outside the integrable domain. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.grandCanonicalTotalNumberExpectation_nonneg"
+    ],
+    "dependencies": [
+      "QuantumTheory.eigenbasisGibbsProbability_nonneg"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.grandCanonicalTotalNumberExpectation_nonneg"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {Mode : Type u_1} {Config : Type u_2} [inst : SecondQuantization.Common.OccupationBasis Mode Config] (ε : Mode → ℝ)\n  (β μ : ℝ),\n  (Summable fun c =>\n      ‖QuantumTheory.eigenbasisGibbsProbability (SecondQuantization.Common.grandCanonicalEnergy ε μ) β c *\n          ↑(SecondQuantization.Common.particleNumber c)‖) →\n    ∑' (c : Config),\n        QuantumTheory.eigenbasisGibbsProbability (SecondQuantization.Common.grandCanonicalEnergy ε μ) β c *\n          ↑(SecondQuantization.Common.particleNumber c) =\n      ∑' (N : ℕ), ↑N * SecondQuantization.Common.grandCanonicalSectorProbability ε β μ N",
     "standardAxioms": [
       "Classical.choice",
@@ -128671,6 +128715,48 @@
       "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonPartitionFunction.0.SecondQuantization.Common.radius_dysonTraceFPowerSeries_eq_top"
     ],
     "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} {Config : Type u_2} [inst : SecondQuantization.Common.OccupationBasis Mode Config] (ε : Mode → ℝ)\n  (β μ : ℝ),\n  SecondQuantization.Common.GrandCanonicalParticleNumberIntegrable ε β μ →\n    HasSum\n      (fun c =>\n        QuantumTheory.eigenbasisGibbsProbability (SecondQuantization.Common.grandCanonicalEnergy ε μ) β c *\n          ↑(SecondQuantization.Common.particleNumber c))\n      (SecondQuantization.Common.grandCanonicalParticleNumberExpectation ε β μ)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.hasSum_grandCanonicalParticleNumberExpectation",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Thermal.GrandCanonicalSectorDecomposition",
+    "externalAxioms": [],
+    "docString": "The particle-number mean is the sum of its spectral terms when integrable. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.hasSum_grandCanonicalTotalNumberExpectation"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.hasSum_grandCanonicalTotalNumberExpectation"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -151798,13 +151884,13 @@
     "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.TotalNumberExpectation",
     "externalAxioms": [],
     "docString": "The completed free total-number expectation is nonnegative. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
+    "directWrapperTargetModule": "LeanCondensedMatter.SecondQuantization.Common.Thermal.GrandCanonicalSectorDecomposition",
+    "directWrapperOf": "SecondQuantization.Common.grandCanonicalParticleNumberExpectation_nonneg",
     "dependents": [],
     "dependencies": [
-      "QuantumTheory.eigenbasisGibbsProbability_nonneg"
+      "SecondQuantization.Common.grandCanonicalParticleNumberExpectation_nonneg"
     ],
-    "crossModuleDirectWrapper": false,
+    "crossModuleDirectWrapper": true,
     "completedMention": false,
     "compiledConsumers": [],
     "compiledConsumerCount": 0,
@@ -151879,14 +151965,16 @@
     "name": "SecondQuantization.Fermionic.hasSum_grandCanonicalTotalNumberExpectation",
     "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.TotalNumberExpectation",
     "externalAxioms": [],
-    "docString": "Under the explicit number-integrability hypothesis, the total particle-number expectation is\nrepresented by an absolutely convergent occupation-basis series. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
+    "docString": "Integrable fermionic particle-number means have the expected spectral series. ",
+    "directWrapperTargetModule": "LeanCondensedMatter.SecondQuantization.Common.Thermal.GrandCanonicalSectorDecomposition",
+    "directWrapperOf": "SecondQuantization.Common.hasSum_grandCanonicalParticleNumberExpectation",
     "dependents": [
       "SecondQuantization.Fermionic.hasSum_grandCanonicalGibbsDensityOperator_totalNumber_diagonal"
     ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
+    "dependencies": [
+      "SecondQuantization.Common.hasSum_grandCanonicalParticleNumberExpectation"
+    ],
+    "crossModuleDirectWrapper": true,
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Fermionic.hasSum_grandCanonicalGibbsDensityOperator_totalNumber_diagonal"
