@@ -623,6 +623,11 @@ using a zero-consumer signal as grounds for changing its retention.
 - `SecondQuantization.Common.externalInsertionVertexOfLeg_interactionLeg` — canonical `@[simp]` identification of the interaction vertex of a quartic leg, dual to the external-insertion rule.
 - `SecondQuantization.Common.slotSplitVertexEquiv_inl` — canonical `@[simp]` evaluation of the slot-splitting vertex equivalence on the retained component, compatible with the public `slotSplitVertex` embedding.
 
+- `SecondQuantization.Common.TwoPointDiagram.ofSlotSplitVacuumNormalizedPairEmbedding_component` — identifies the connected-component block of an embedded normalized vacuum pair with the block of its vacuum-side vertex; a geometric endpoint used by the mixed-pair component decomposition.
+- `SecondQuantization.Common.TwoPointDiagram.ofSlotSplit_pairing_partner_vacuumOrderedLeg` — intertwines the vacuum pairing partner and the reassembled two-point diagram pairing on ordered vacuum legs, independently of imaginary-time ordering; reused by the mixed pairing embedding proofs.
+- `SecondQuantization.Common.TwoPointDiagram.slotSplitVacuumMixedPairEquiv_apply` — canonical `@[simp]` evaluation of the mixed-pair equivalence on a vacuum normalized pair; used when reindexing fermionic contraction products.
+- `SecondQuantization.Common.TwoPointDiagram.externalComponentLegEquiv_symm_restrictedPartner` — canonical `@[simp]` transport of restricted pairing partners through the inverse external-component leg equivalence, expressing a stable external/vacuum split invariant.
+
 ## Other retained API contracts (outside theorem audit)
 
 These structural interfaces are worth retaining, but they are not independent proof declarations
