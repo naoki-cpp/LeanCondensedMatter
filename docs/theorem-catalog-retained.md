@@ -635,6 +635,10 @@ using a zero-consumer signal as grounds for changing its retention.
 - `SecondQuantization.Common.TwoPointDiagram.externalVacuumSplit_fst_externalLabel` — Canonical `@[simp]` preservation law for the external labels of the component extracted by the external/vacuum decomposition.
 - `SecondQuantization.Common.ExternalInsertionDiagram.ofSlotSplit_pairing` — Canonical `@[simp]` computation rule exposing the binary pairing assembled by the external-insertion slot split, rather than a disposable proof-only forwarding lemma.
 
+- `SecondQuantization.Common.interactionSector_componentBlock_slotSplitVacuumVertex` — geometric identification of the interaction-vertex support of a reassembled vacuum component with its original quartic component. Used to establish component-map support preservation; it is a standalone graph-decomposition fact, not a throwaway proof cast.
+- `SecondQuantization.Common.componentBlock_slotSplitVacuumVertex_mem_vacuumComponentParts` — identifies any quartic-side vertex component as an ambient vacuum component. It supplies the well-typed vacuum-component embedding and is also used by the mixed-pair image decomposition.
+- `SecondQuantization.Common.TwoPointDiagram.ofSlotSplit_vacuumLeg_mem_right` — geometric characterization that every leg in an ambient vacuum component of a reassembled two-point diagram lies in the quartic side when the left piece is externally connected. Used in the vacuum mixed-pair image proof; distinct from pairing-order identities.
+
 ## Other retained API contracts (outside theorem audit)
 
 These structural interfaces are worth retaining, but they are not independent proof declarations
