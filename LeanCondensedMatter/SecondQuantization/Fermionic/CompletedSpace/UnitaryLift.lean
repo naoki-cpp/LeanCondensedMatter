@@ -40,7 +40,8 @@ def completedExterior :
   map_add' x y := by simp
   map_smul' a x := by simp
 
-private theorem completedExterior_algebraMap (a : ℂ) :
+/-- A scalar exterior expression is represented by the same multiple of the Fock vacuum. -/
+theorem completedExterior_algebraMap (a : ℂ) :
     completedExterior (algebraMap ℂ (AlgebraicFock (Common.CompletedFock Mode)) a) =
       a • completedBasisState (vacuum : Occupation Mode) := by
   change completedExteriorRepresentation (algebraMap ℂ _ a) _ = _

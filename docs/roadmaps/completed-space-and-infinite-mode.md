@@ -51,7 +51,14 @@ orbit-continuity hypothesis of
 the density, its diagonal realization, and bounded observables remain explicit inputs to that
 general theorem. For an unbounded self-adjoint one-particle generator, the existing
 `LinearPMap.stoneEvolutionUnitaryGroup` and `stoneEvolution_apply_continuous` provide the inputs.
-Identification of the lifted group's unbounded second-quantized generator remains separate.
+`Fermionic.CompletedSpace.Generator` identifies the zero-time derivative on finite exterior
+expressions from an explicitly invariant one-particle subspace. More generally, a realization
+`j : V →ₗ[ℂ] ℓ²(Mode)` with one-particle derivative `-i j(T v)` gives the realized Fock derivative
+`-i dΓ(T)` using the existing algebraic second quantization. The Stone specialization assumes
+`D ⊆ A.domain` and that `A` restricts to `T : D →ₗ[ℂ] D`. Invariance is an explicit condition:
+`A.domain` itself need not be invariant under `A`. This is an infinitesimal-action formula;
+it does not prove that the chosen subspace is an operator core, identify a maximal Fock domain,
+or identify the closure with a self-adjoint second-quantized generator.
 
 In the pinned Mathlib revision, `Analysis.InnerProductSpace.ExteriorPower`
 provides a Hilbert structure only for real, finite-dimensional exterior powers; it cannot directly
