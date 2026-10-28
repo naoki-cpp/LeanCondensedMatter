@@ -29,6 +29,14 @@ using a zero-consumer signal as grounds for changing its retention.
 
 ## Retained declarations
 
+- `QuantumTheory.DensityOperator.eigenvalue_nonneg` — canonical positivity theorem for the nonzero spectral eigenvalues of a density operator; downstream spectral probability identities use this physical state-level API.
+- `QuantumMechanics.SingleParticle.Continuum.ContinuumSchwartzEvolutionRepresentative1D.totalProbability_eq_initial` — named conservation-of-Born-probability endpoint for the Schwartz representative of a unitary continuum evolution.
+- `QuantumTheory.Transport.FiniteReciprocalCurrentData.conductivityFamily_isOnsagerReciprocal` — finite Kubo-data theorem deriving Onsager reciprocity from the antiunitary covariance and current hypotheses; it is the physical response endpoint, not an incidental forwarding lemma.
+- `SecondQuantization.Bosonic.grandCanonicalGibbsExpectation_eq_sum_pairing_concrete` — explicit-chemical-potential free-boson Wick/Bloch–de Dominicis factorization for the named grand-canonical Gibbs expectation; retain the physically meaningful pairing endpoint.
+- `SecondQuantization.Common.grandCanonicalPartitionFunction_pos` — grand-canonical partition-function positivity for an occupation basis with a vacuum; this is the normalization boundary for full-Fock Gibbs states and sector probabilities.
+- `siteProjector_apply` — canonical `[simp]` evaluation of the one-particle lattice-site projector on a finitely supported wavefunction; retain the named normal form even though it specializes the matrix-unit rule.
+- `ContinuousLinearMap.SpectralTraceClass.compact` — canonical projection of the bundled spectral trace-class condition to general trace-class compactness; retain the named property of the spectral bundle.
+
 - `Dyson.hasSum_intervalIntegral_integrand_of_bound` — generic dominated-convergence result exchanging an interacting Dyson/Volterra series with the Bochner interval integral under explicit continuous bounded-interaction hypotheses; this is an independent analytic endpoint, not a disposable one-consumer proof wrapper.
 - `QuantumTheory.Transport.SpectralSide.sign_opposite` — canonical `[simp]` law for the retarded/advanced spectral-side involution; retaining the sign reversal provides a stable normalization rule independently of its current regulator consumer.
 - `QuantumTheory.Transport.spectralParameter_im` — canonical `[simp]` evaluation of the imaginary part of a side-indexed complex spectral parameter as its signed regulator; this is the physical-to-analytic boundary even with a single compiled private consumer.
