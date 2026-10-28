@@ -95553,7 +95553,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -95565,9 +95565,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.gibbsState_eq_eigenbasisGibbsDensityOperator",
-      "SecondQuantization.Bosonic.inv_grandCanonicalPartitionFunction_smul_completedFreeHeatOperator_eq_gibbs",
-      "SecondQuantization.Bosonic.inv_grandCanonicalPartitionFunction_zero_smul_completedFreeHeatOperator_eq_gibbs"
+      "QuantumTheory.gibbsState_eq_eigenbasisGibbsDensityOperator"
     ],
     "dependencies": [
       "QuantumTheory.eigenbasisGibbsDensityOperator_apply_basis"
@@ -95575,11 +95573,9 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.gibbsState_eq_eigenbasisGibbsDensityOperator",
-      "SecondQuantization.Bosonic.inv_grandCanonicalPartitionFunction_smul_completedFreeHeatOperator_eq_gibbs",
-      "SecondQuantization.Bosonic.inv_grandCanonicalPartitionFunction_zero_smul_completedFreeHeatOperator_eq_gibbs"
+      "QuantumTheory.gibbsState_eq_eigenbasisGibbsDensityOperator"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -102018,9 +102014,7 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Bosonic.completedFreeHeatOperator_isTraceClass",
-      "SecondQuantization.Bosonic.completedFreeHeatOperator_trace_eq_grandCanonicalPartitionFunction_zero",
-      "SecondQuantization.Bosonic.inv_grandCanonicalPartitionFunction_smul_completedFreeHeatOperator_eq_gibbs",
-      "SecondQuantization.Bosonic.inv_grandCanonicalPartitionFunction_zero_smul_completedFreeHeatOperator_eq_gibbs"
+      "SecondQuantization.Bosonic.completedFreeHeatOperator_trace_eq_grandCanonicalPartitionFunction_zero"
     ],
     "dependencies": [
       "SecondQuantization.Bosonic.freeEigenvalue_nonneg",
@@ -102030,11 +102024,9 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Bosonic.completedFreeHeatOperator_isTraceClass",
-      "SecondQuantization.Bosonic.completedFreeHeatOperator_trace_eq_grandCanonicalPartitionFunction_zero",
-      "SecondQuantization.Bosonic.inv_grandCanonicalPartitionFunction_smul_completedFreeHeatOperator_eq_gibbs",
-      "SecondQuantization.Bosonic.inv_grandCanonicalPartitionFunction_zero_smul_completedFreeHeatOperator_eq_gibbs"
+      "SecondQuantization.Bosonic.completedFreeHeatOperator_trace_eq_grandCanonicalPartitionFunction_zero"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -102388,9 +102380,7 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Bosonic.completedFreeHeatOperator_isTraceClass",
-      "SecondQuantization.Bosonic.completedFreeHeatOperator_trace_eq_grandCanonicalPartitionFunction_zero",
-      "SecondQuantization.Bosonic.inv_grandCanonicalPartitionFunction_smul_completedFreeHeatOperator_eq_gibbs",
-      "SecondQuantization.Bosonic.inv_grandCanonicalPartitionFunction_zero_smul_completedFreeHeatOperator_eq_gibbs"
+      "SecondQuantization.Bosonic.completedFreeHeatOperator_trace_eq_grandCanonicalPartitionFunction_zero"
     ],
     "dependencies": [
       "SecondQuantization.Common.completedHilbertBasis_apply"
@@ -102399,11 +102389,9 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Bosonic.completedFreeHeatOperator_isTraceClass",
-      "SecondQuantization.Bosonic.completedFreeHeatOperator_trace_eq_grandCanonicalPartitionFunction_zero",
-      "SecondQuantization.Bosonic.inv_grandCanonicalPartitionFunction_smul_completedFreeHeatOperator_eq_gibbs",
-      "SecondQuantization.Bosonic.inv_grandCanonicalPartitionFunction_zero_smul_completedFreeHeatOperator_eq_gibbs"
+      "SecondQuantization.Bosonic.completedFreeHeatOperator_trace_eq_grandCanonicalPartitionFunction_zero"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -105444,92 +105432,6 @@
     "dependents": [],
     "dependencies": [
       "SecondQuantization.Common.heisenbergEvolve_diagonalOperator"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (β μ : ℝ) (hβ : 0 < β) (hgap : ∀ (i : Mode), 0 ≤ ε i - μ)\n  (hsum : QuantumTheory.EigenbasisGibbsSummable (SecondQuantization.Common.grandCanonicalEnergy ε μ) β),\n  (↑(SecondQuantization.Common.grandCanonicalPartitionFunction ε β μ))⁻¹ •\n      SecondQuantization.Bosonic.completedFreeHeatOperator (fun i => ε i - μ) β hβ hgap =\n    (SecondQuantization.Common.grandCanonicalGibbsDensityOperator ε β μ hsum).op",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Bosonic.inv_grandCanonicalPartitionFunction_smul_completedFreeHeatOperator_eq_gibbs",
-    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.Completed.FreeGibbs",
-    "externalAxioms": [],
-    "docString": "Normalize the bosonic heat operator generated by `K = H - μ N̂`\nto obtain the shared grand-canonical state at chemical potential `μ`. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "QuantumTheory.inv_partition_smul_heat_eq_eigenbasisGibbsDensityOperator_op",
-      "SecondQuantization.Bosonic.completedFreeHeatOperator_basisState",
-      "SecondQuantization.Bosonic.completedOccupationHilbertBasis_apply",
-      "SecondQuantization.Common.grandCanonicalEnergy_eq_shifted"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (β : ℝ) (hβ : 0 < β) (hε : ∀ (i : Mode), 0 ≤ ε i)\n  (hsum : QuantumTheory.EigenbasisGibbsSummable (SecondQuantization.Bosonic.freeEigenvalue ε) β),\n  (↑(SecondQuantization.Common.grandCanonicalPartitionFunction ε β 0))⁻¹ •\n      SecondQuantization.Bosonic.completedFreeHeatOperator ε β hβ hε =\n    (SecondQuantization.Common.grandCanonicalGibbsDensityOperator ε β 0 ⋯).op",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Bosonic.inv_grandCanonicalPartitionFunction_zero_smul_completedFreeHeatOperator_eq_gibbs",
-    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.Completed.FreeGibbs",
-    "externalAxioms": [],
-    "docString": "At μ = 0 the physical Boltzmann heat operator normalizes to the shared\ngrand-canonical Gibbs density. For arbitrary μ the thermal generator is H - μ N,\nnot the physical heat operator exp(-βH) appearing here. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "QuantumTheory.inv_partition_smul_heat_eq_eigenbasisGibbsDensityOperator_op",
-      "SecondQuantization.Bosonic.completedFreeHeatOperator_basisState",
-      "SecondQuantization.Bosonic.completedOccupationHilbertBasis_apply",
-      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.Completed.FreeGibbs.0.SecondQuantization.Bosonic.grandCanonicalEnergy_zero_eq_freeEigenvalue"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -113255,8 +113157,8 @@
     "soleCompiledConsumerPrivate": true,
     "singleCompiledConsumer": true,
     "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "SecondQuantization.Common.TwoPointDiagram.externalComponentLegEquiv_symm_restrictedPartner",
     "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.External.ExternalSlotSplit",
@@ -116480,8 +116382,8 @@
     "soleCompiledConsumerPrivate": true,
     "singleCompiledConsumer": true,
     "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "SecondQuantization.Common.TwoPointDiagram.ofSlotSplitVacuumNormalizedPairEmbedding_component",
     "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumPairImage",
@@ -116697,8 +116599,8 @@
     "soleCompiledConsumerPrivate": true,
     "singleCompiledConsumer": true,
     "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "SecondQuantization.Common.TwoPointDiagram.ofSlotSplit_pairing_partner_vacuumOrderedLeg",
     "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumLegOrder",
@@ -117715,8 +117617,8 @@
     "soleCompiledConsumerPrivate": true,
     "singleCompiledConsumer": true,
     "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "SecondQuantization.Common.TwoPointDiagram.slotSplitVacuumMixedPairEquiv_apply",
     "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumPairImage",
@@ -127284,7 +127186,6 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Bosonic.inv_grandCanonicalPartitionFunction_smul_completedFreeHeatOperator_eq_gibbs",
       "SecondQuantization.Common.grandCanonicalEnergy_shift_eq",
       "SecondQuantization.Common.grandCanonicalGibbsSummable_iff_shifted",
       "SecondQuantization.Common.grandCanonicalPartitionFunction_eq_shifted",
@@ -127298,7 +127199,6 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Bosonic.inv_grandCanonicalPartitionFunction_smul_completedFreeHeatOperator_eq_gibbs",
       "SecondQuantization.Common.grandCanonicalEnergy_shift_eq",
       "SecondQuantization.Common.grandCanonicalGibbsSummable_iff_shifted",
       "SecondQuantization.Common.grandCanonicalPartitionFunction_eq_shifted",
@@ -127306,7 +127206,7 @@
       "SecondQuantization.Fermionic.vonNeumannEntropy_finiteGrandCanonicalGibbs_toReal_eq_sum_fermiDirac",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.Gibbs.0.SecondQuantization.Fermionic.grandCanonicalEnergy_eq_fermionEnergy"
     ],
-    "compiledConsumerCount": 7,
+    "compiledConsumerCount": 6,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -179360,7 +179260,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -179372,17 +179272,15 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Bosonic.completedFreeHeatOperator_trace_eq_grandCanonicalPartitionFunction_zero",
-      "SecondQuantization.Bosonic.inv_grandCanonicalPartitionFunction_zero_smul_completedFreeHeatOperator_eq_gibbs"
+      "SecondQuantization.Bosonic.completedFreeHeatOperator_trace_eq_grandCanonicalPartitionFunction_zero"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Bosonic.completedFreeHeatOperator_trace_eq_grandCanonicalPartitionFunction_zero",
-      "SecondQuantization.Bosonic.inv_grandCanonicalPartitionFunction_zero_smul_completedFreeHeatOperator_eq_gibbs"
+      "SecondQuantization.Bosonic.completedFreeHeatOperator_trace_eq_grandCanonicalPartitionFunction_zero"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",

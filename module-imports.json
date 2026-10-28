@@ -5193,7 +5193,7 @@
       "imports": [
         "LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.Diagonal"
       ],
-      "externalImportCount": 0
+      "externalImportCount": 1
     },
     {
       "name": "LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.Diagonal",
