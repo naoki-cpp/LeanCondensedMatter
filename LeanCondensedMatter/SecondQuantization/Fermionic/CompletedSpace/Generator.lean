@@ -3,6 +3,7 @@ import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.Se
 import LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution
 import Mathlib.Analysis.Calculus.Deriv.Mul
 import Mathlib.Analysis.Normed.Operator.Bilinear
+import Mathlib.LinearAlgebra.Isomorphisms
 
 set_option linter.style.header false
 
@@ -114,6 +115,58 @@ theorem completedFock_stoneEvolution_hasDerivAt_zero
     have h := LinearPMap.stoneEvolution_apply_hasDerivAt_zero A hA ⟨v, hdom v⟩
     rw [hT v] at h
     exact h
+
+/-- The second-quantized Hamiltonian restricted to finite exterior expressions with factors
+in an explicitly invariant one-particle subspace. The domain is the realized image of that
+exterior algebra. The Stone derivative guarantees independence of the chosen expression.
+No closure or self-adjointness claim is included in this definition. -/
+def completedFockHamiltonianOn
+    (A : Common.CompletedFock Mode →ₗ.[ℂ] Common.CompletedFock Mode)
+    (hA : IsSelfAdjoint A) (D : Submodule ℂ (Common.CompletedFock Mode))
+    (T : D →ₗ[ℂ] D) (hdom : ∀ v : D, (v : Common.CompletedFock Mode) ∈ A.domain)
+    (hT : ∀ v : D, A ⟨v, hdom v⟩ = (T v : Common.CompletedFock Mode)) :
+    CompletedFockSpace Mode →ₗ.[ℂ] CompletedFockSpace Mode := by
+  let J := (completedExterior (Mode := Mode)).comp (ExteriorAlgebra.map D.subtype).toLinearMap
+  let L := J.comp (AlgebraicFock.dGamma D T)
+  have hker : LinearMap.ker J ≤ LinearMap.ker L := by
+    intro x hx
+    have hx' : completedExterior (ExteriorAlgebra.map D.subtype x) = 0 := hx
+    have hd := completedFock_stoneEvolution_hasDerivAt_zero A hA D T hdom hT x
+    simp only [hx', map_zero] at hd
+    have hz := hd.unique (hasDerivAt_const 0 (0 : CompletedFockSpace Mode))
+    exact (smul_eq_zero.mp hz).resolve_left (by norm_num)
+  exact
+    { domain := LinearMap.range J
+      toFun := ((LinearMap.ker J).liftQ L hker).comp J.quotKerEquivRange.symm.toLinearMap }
+
+/-- The realized partial Hamiltonian acts by the existing algebraic `dGamma` on each
+finite exterior expression, independently of its representation. -/
+theorem completedFockHamiltonianOn_apply
+    (A : Common.CompletedFock Mode →ₗ.[ℂ] Common.CompletedFock Mode)
+    (hA : IsSelfAdjoint A) (D : Submodule ℂ (Common.CompletedFock Mode))
+    (T : D →ₗ[ℂ] D) (hdom : ∀ v : D, (v : Common.CompletedFock Mode) ∈ A.domain)
+    (hT : ∀ v : D, A ⟨v, hdom v⟩ = (T v : Common.CompletedFock Mode))
+    (x : AlgebraicFock D) :
+    completedFockHamiltonianOn A hA D T hdom hT
+      ⟨completedExterior (ExteriorAlgebra.map D.subtype x), ⟨x, rfl⟩⟩ =
+        completedExterior (ExteriorAlgebra.map D.subtype (AlgebraicFock.dGamma D T x)) := by
+  simp [completedFockHamiltonianOn, LinearMap.quotKerEquivRange_symm_apply_image]
+
+/-- Every vector in the realized Hamiltonian's domain has lifted Stone derivative `-i Hψ`.
+This is an operator statement on the explicit partial domain, without a maximal-domain claim. -/
+theorem completedFockHamiltonianOn_hasDerivAt_zero
+    (A : Common.CompletedFock Mode →ₗ.[ℂ] Common.CompletedFock Mode)
+    (hA : IsSelfAdjoint A) (D : Submodule ℂ (Common.CompletedFock Mode))
+    (T : D →ₗ[ℂ] D) (hdom : ∀ v : D, (v : Common.CompletedFock Mode) ∈ A.domain)
+    (hT : ∀ v : D, A ⟨v, hdom v⟩ = (T v : Common.CompletedFock Mode))
+    (ψ : (completedFockHamiltonianOn A hA D T hdom hT).domain) :
+    HasDerivAt (fun t : ℝ =>
+      (completedFockUnitaryGroup (LinearPMap.stoneEvolutionUnitaryGroup A hA)
+        (Multiplicative.ofAdd t) : CompletedFockSpace Mode →L[ℂ] CompletedFockSpace Mode) ψ)
+      ((-Complex.I) • completedFockHamiltonianOn A hA D T hdom hT ψ) 0 := by
+  rcases ψ with ⟨ψ, x, rfl⟩
+  rw [completedFockHamiltonianOn_apply]
+  exact completedFock_stoneEvolution_hasDerivAt_zero A hA D T hdom hT x
 
 end
 end SecondQuantization.Fermionic

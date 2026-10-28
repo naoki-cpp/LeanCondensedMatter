@@ -60,6 +60,14 @@ expressions from an explicitly invariant one-particle subspace. More generally, 
 it does not prove that the chosen subspace is an operator core, identify a maximal Fock domain,
 or identify the closure with a self-adjoint second-quantized generator.
 
+`completedFockHamiltonianOn` packages this action as a complex-linear partial operator with
+domain the realized image of `AlgebraicFock D`. If an exterior expression realizes to zero, its
+`dΓ(T)` image also realizes to zero by uniqueness of the lifted Stone derivative. Mathlib's
+kernel quotient and range equivalence therefore descend the algebraic action to actual Fock
+vectors without choosing a representative. Every vector in this partial domain has derivative
+`-i Hψ`. Density of the domain, symmetry, closability and identification of a self-adjoint closure
+remain separate obligations; this construction alone does not establish them.
+
 In the pinned Mathlib revision, `Analysis.InnerProductSpace.ExteriorPower`
 provides a Hilbert structure only for real, finite-dimensional exterior powers; it cannot directly
 supply the complex infinite-dimensional construction needed here. A Hilbert basis in an infinite
