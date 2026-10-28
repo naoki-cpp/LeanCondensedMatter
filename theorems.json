@@ -733,8 +733,8 @@
     "soleCompiledConsumerPrivate": true,
     "singleCompiledConsumer": true,
     "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "Combinatorics.BinaryShuffle.leftSlot_consRight",
     "module": "LeanCondensedMatter.Combinatorics.Shuffle.BinaryShuffleSlots",
@@ -897,8 +897,8 @@
     "soleCompiledConsumerPrivate": true,
     "singleCompiledConsumer": true,
     "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "Combinatorics.BinaryShuffle.rightSlot_consRight_succ",
     "module": "LeanCondensedMatter.Combinatorics.Shuffle.BinaryShuffleSlots",
@@ -939,8 +939,8 @@
     "soleCompiledConsumerPrivate": true,
     "singleCompiledConsumer": true,
     "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "Combinatorics.BinaryShuffle.rightSlot_consRight_zero",
     "module": "LeanCondensedMatter.Combinatorics.Shuffle.BinaryShuffleSlots",
@@ -18534,7 +18534,7 @@
       "Dyson.coeff_one",
       "Dyson.intervalIntegral_integrand",
       "Dyson.norm_coeff_le_of_bound",
-      "SecondQuantization.Common.continuousDysonCoeff_eq_coeff",
+      "SecondQuantization.Common.finiteContinuousOperator_dysonCoeff_eq_coeff",
       "_private.LeanCondensedMatter.Analysis.Dyson.Basic.0.Dyson.coeff_neg"
     ],
     "dependencies": [],
@@ -18544,7 +18544,7 @@
       "Dyson.coeff_one",
       "Dyson.intervalIntegral_integrand",
       "Dyson.norm_coeff_le_of_bound",
-      "SecondQuantization.Common.continuousDysonCoeff_eq_coeff",
+      "SecondQuantization.Common.finiteContinuousOperator_dysonCoeff_eq_coeff",
       "_private.LeanCondensedMatter.Analysis.Dyson.Basic.0.Dyson.coeff_neg"
     ],
     "compiledConsumerCount": 5,
@@ -18561,7 +18561,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ {A : Type u_1} [inst : NormedRing A] [inst_1 : NormedAlgebra ℂ A] (V : ℝ → A) (τ : ℝ), Dyson.coeff V 0 τ = 1",
     "standardAxioms": [
       "Classical.choice",
@@ -18569,7 +18569,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": true,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -18580,12 +18580,16 @@
     "docString": null,
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "SecondQuantization.Common.finiteContinuousOperator_dysonCoeff_eq_coeff"
+    ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "SecondQuantization.Common.finiteContinuousOperator_dysonCoeff_eq_coeff"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -45828,8 +45832,8 @@
     "soleCompiledConsumerPrivate": true,
     "singleCompiledConsumer": true,
     "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "QuantumTheory.DensityOperator.expectation_effect_eq_probNNReal",
     "module": "LeanCondensedMatter.QuantumTheory.POVM.Born",
@@ -105109,7 +105113,7 @@
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": false,
+    "soleCompiledConsumerPrivate": true,
     "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
@@ -105122,7 +105126,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Bosonic.summable_particleNumber_boltzmannWeight"
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.TwoPoint.0.SecondQuantization.Bosonic.summable_imaginaryTimeEvolveFree_comp_create_mul_annihilate_diag"
     ],
     "dependencies": [
       "Finsupp.hasSum_prod_nonneg",
@@ -105132,7 +105136,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Bosonic.summable_particleNumber_boltzmannWeight"
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.TwoPoint.0.SecondQuantization.Bosonic.summable_imaginaryTimeEvolveFree_comp_create_mul_annihilate_diag"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -107405,50 +107409,6 @@
     "completedMention": false,
     "compiledConsumers": [],
     "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [Finite Mode] (ε : Mode → ℝ) (β : ℝ),\n  (∀ (i : Mode), 0 < β * ε i) →\n    ∀ (j : Mode), Summable fun n => ↑(n j) * SecondQuantization.Bosonic.boltzmannWeight ε β n",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Bosonic.summable_particleNumber_boltzmannWeight",
-    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.ParticleNumberWeightSummable",
-    "externalAxioms": [],
-    "docString": "The particle-number-weighted free Boltzmann series is summable for any finite mode type. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.TwoPoint.0.SecondQuantization.Bosonic.summable_imaginaryTimeEvolveFree_comp_create_mul_annihilate_diag"
-    ],
-    "dependencies": [
-      "SecondQuantization.Bosonic.hasSum_particleNumber_boltzmannWeight"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.TwoPoint.0.SecondQuantization.Bosonic.summable_imaginaryTimeEvolveFree_comp_create_mul_annihilate_diag"
-    ],
-    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -119062,8 +119022,8 @@
     "soleCompiledConsumerPrivate": true,
     "singleCompiledConsumer": true,
     "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "SecondQuantization.Common.analyticDysonPartitionFunction_zero",
     "module": "LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonPartitionFunction",
@@ -122052,8 +122012,8 @@
     "soleCompiledConsumerPrivate": true,
     "singleCompiledConsumer": true,
     "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "SecondQuantization.Common.completedPhaseMultiplier_apply",
     "module": "LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.CoordinateIsometry",
@@ -122097,8 +122057,8 @@
     "soleCompiledConsumerPrivate": true,
     "singleCompiledConsumer": true,
     "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "SecondQuantization.Common.completedPhaseMultiplier_basisState",
     "module": "LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.CoordinateIsometry",
@@ -122238,8 +122198,8 @@
     "soleCompiledConsumerPrivate": true,
     "singleCompiledConsumer": true,
     "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "SecondQuantization.Common.completedReindex_basisState",
     "module": "LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.CoordinateIsometry",
@@ -122794,136 +122754,6 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {Config : Type u_1} [inst : Fintype Config] (energy : Config → ℝ)\n  (V : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config) (n : ℕ),\n  SecondQuantization.Common.continuousDysonCoeff energy V n 0 = if n = 0 then 1 else 0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.continuousDysonCoeff_at_zero",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Perturbation.ContinuousDyson",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "SecondQuantization.Common.dysonCoeff_at_zero"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Config : Type u_1} [inst : Fintype Config] (energy : Config → ℝ)\n  (V : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config) (n : ℕ)\n  (τ : ℝ),\n  SecondQuantization.Common.continuousDysonCoeff energy V n τ =\n    Dyson.coeff (SecondQuantization.Common.continuousInteractionPicture energy V) n τ",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.continuousDysonCoeff_eq_coeff",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Perturbation.ContinuousDyson",
-    "externalAxioms": [],
-    "docString": "The transported finite-dimensional Dyson coefficient is the generic Dyson coefficient\nspecialized to the continuous interaction-picture family. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonPartitionFunction.0.SecondQuantization.Common.hasSum_dysonTraceCoeff_trace_dysonEvolution"
-    ],
-    "dependencies": [
-      "Dyson.coeff_succ",
-      "SecondQuantization.Common.continuousDysonCoeff_zero",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.ContinuousDyson.0.SecondQuantization.Common.continuousDysonCoeff_succ"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonPartitionFunction.0.SecondQuantization.Common.hasSum_dysonTraceCoeff_trace_dysonEvolution"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Config : Type u_1} [inst : Fintype Config] (energy : Config → ℝ)\n  (V : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config) (τ : ℝ),\n  SecondQuantization.Common.continuousDysonCoeff energy V 0 τ = 1",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.continuousDysonCoeff_zero",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Perturbation.ContinuousDyson",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.continuousDysonCoeff_eq_coeff"
-    ],
-    "dependencies": [
-      "SecondQuantization.Common.dysonCoeff_zero"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.continuousDysonCoeff_eq_coeff"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
     "statement": "∀ {Config : Type u_1} [inst : Fintype Config] (energy : Config → ℝ)\n  (V : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config) (τ : ℝ)\n  (m n : Config),\n  (SecondQuantization.Common.continuousInteractionPicture energy V τ) (SecondQuantization.Common.finiteAnalyticBasis n)\n      m =\n    Complex.exp ↑(τ * (energy m - energy n)) * SecondQuantization.Common.matrixCoeff V m n",
     "standardAxioms": [
       "Classical.choice",
@@ -123169,7 +122999,7 @@
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": true,
+    "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": true,
@@ -123182,7 +123012,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.ContinuousDyson.0.SecondQuantization.Common.continuousDysonCoeff_succ"
+      "SecondQuantization.Common.finiteContinuousOperator_dysonCoeff_eq_coeff"
     ],
     "dependencies": [
       "SecondQuantization.Common.finiteContinuousOperator_ext_basis",
@@ -123191,7 +123021,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.ContinuousDyson.0.SecondQuantization.Common.continuousDysonCoeff_succ"
+      "SecondQuantization.Common.finiteContinuousOperator_dysonCoeff_eq_coeff"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -123322,8 +123152,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.continuous_matrixCoeff_interactionPicture_comp_dysonCoeff",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.ContinuousDyson.0.SecondQuantization.Common.continuousDysonCoeff_succ"
+      "SecondQuantization.Common.finiteContinuousOperator_dysonCoeff_eq_coeff",
+      "SecondQuantization.Fermionic.continuous_matrixCoeff_interactionPicture_comp_dysonCoeff"
     ],
     "dependencies": [
       "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExpansion.0.SecondQuantization.Common.continuous_dysonCoeff_basisState_apply"
@@ -123331,8 +123161,8 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.continuous_matrixCoeff_interactionPicture_comp_dysonCoeff",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.ContinuousDyson.0.SecondQuantization.Common.continuousDysonCoeff_succ"
+      "SecondQuantization.Common.finiteContinuousOperator_dysonCoeff_eq_coeff",
+      "SecondQuantization.Fermionic.continuous_matrixCoeff_interactionPicture_comp_dysonCoeff"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -123369,8 +123199,8 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Common.continuous_continuousInteractionPicture",
+      "SecondQuantization.Common.finiteContinuousOperator_dysonCoeff_eq_coeff",
       "SecondQuantization.Fermionic.continuous_matrixCoeff_interactionPicture_comp_dysonCoeff",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.ContinuousDyson.0.SecondQuantization.Common.continuousDysonCoeff_succ",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExpansion.0.SecondQuantization.Common.continuous_dysonCoeff_basisState_apply"
     ],
     "dependencies": [
@@ -123380,8 +123210,8 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Common.continuous_continuousInteractionPicture",
+      "SecondQuantization.Common.finiteContinuousOperator_dysonCoeff_eq_coeff",
       "SecondQuantization.Fermionic.continuous_matrixCoeff_interactionPicture_comp_dysonCoeff",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.ContinuousDyson.0.SecondQuantization.Common.continuousDysonCoeff_succ",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExpansion.0.SecondQuantization.Common.continuous_dysonCoeff_basisState_apply"
     ],
     "compiledConsumerCount": 4,
@@ -124259,54 +124089,8 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": false,
-    "statement": "∀ {Config : Type u_1} (energy : Config → ℝ)\n  (V : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config) (n : ℕ),\n  SecondQuantization.Common.dysonCoeff energy V n 0 = if n = 0 then LinearMap.id else 0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.dysonCoeff_at_zero",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExpansion",
-    "externalAxioms": [],
-    "docString": "At zero imaginary time, only the zeroth Dyson coefficient is nonzero. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.continuousDysonCoeff_at_zero"
-    ],
-    "dependencies": [
-      "SecondQuantization.Common.dysonCoeff_succ_basisState_apply",
-      "SecondQuantization.Common.dysonCoeff_zero",
-      "SecondQuantization.Common.matrixCoeff_ext"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.continuousDysonCoeff_at_zero"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
     "terminal": true,
-    "statement": "∀ {Config : Type u_1} [Finite Config] (energy : Config → ℝ)\n  (V : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config),\n  (∀ (τ : ℝ), SecondQuantization.Common.interactionPicture energy V τ = V) →\n    ∀ (n : ℕ) (τ : ℝ), SecondQuantization.Common.dysonCoeff energy V n τ = ((-↑τ) ^ n / ↑n.factorial) • V ^ n",
+    "statement": "∀ {Config : Type u_1} (energy : Config → ℝ)\n  (V : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config) (n : ℕ),\n  SecondQuantization.Common.dysonCoeff energy V n 0 = if n = 0 then LinearMap.id else 0",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -124318,18 +124102,17 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "SecondQuantization.Common.dysonCoeff_eq_of_time_independent",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonOperatorIntegral",
+    "name": "SecondQuantization.Common.dysonCoeff_at_zero",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExpansion",
     "externalAxioms": [],
-    "docString": "In the time-independent case, each algebraic Dyson coefficient is the corresponding ordinary\nexponential-series coefficient. ",
+    "docString": "At zero imaginary time, only the zeroth Dyson coefficient is nonzero. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "SecondQuantization.Common.dysonCoeff_succ",
+      "SecondQuantization.Common.dysonCoeff_succ_basisState_apply",
       "SecondQuantization.Common.dysonCoeff_zero",
-      "SecondQuantization.Common.matrixCoeff_ext",
-      "SecondQuantization.Common.matrixCoeff_operatorIntervalIntegral"
+      "SecondQuantization.Common.matrixCoeff_ext"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -124449,55 +124232,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Config : Type u_1} [inst : Fintype Config] (energy : Config → ℝ)\n  (V : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config) (n : ℕ)\n  (τ : ℝ),\n  SecondQuantization.Common.dysonCoeff energy V (n + 1) τ =\n    -SecondQuantization.Common.operatorIntervalIntegral\n        (fun σ =>\n          SecondQuantization.Common.interactionPicture energy V σ ∘ₗ SecondQuantization.Common.dysonCoeff energy V n σ)\n        0 τ",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.dysonCoeff_succ",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonOperatorIntegral",
-    "externalAxioms": [],
-    "docString": "On a finite configuration type, the canonical reachable-support coefficient satisfies the\noperator-valued Dyson recursion reconstructed by `operatorIntervalIntegral`. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.dysonCoeff_eq_of_time_independent",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.ContinuousDyson.0.SecondQuantization.Common.continuousDysonCoeff_succ"
-    ],
-    "dependencies": [
-      "SecondQuantization.Common.dysonCoeff_succ_basisState_apply",
-      "SecondQuantization.Common.matrixCoeffLinear_apply",
-      "SecondQuantization.Common.matrixCoeff_ext",
-      "SecondQuantization.Common.matrixCoeff_operatorIntervalIntegral"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.dysonCoeff_eq_of_time_independent",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.ContinuousDyson.0.SecondQuantization.Common.continuousDysonCoeff_succ"
-    ],
-    "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ {Config : Type u_1} (energy : Config → ℝ)\n  (V : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config) (order : ℕ)\n  (τ : ℝ) (m n : Config),\n  ((SecondQuantization.Common.dysonCoeff energy V (order + 1) τ) (SecondQuantization.Common.basisState n)) m =\n    -∫ (σ : ℝ) in 0..τ,\n        ((SecondQuantization.Common.interactionPicture energy V σ)\n            ((SecondQuantization.Common.dysonCoeff energy V order σ) (SecondQuantization.Common.basisState n)))\n          m",
     "standardAxioms": [
       "Classical.choice",
@@ -124519,7 +124253,7 @@
     "dependents": [
       "SecondQuantization.Common.dysonCoeff_at_zero",
       "SecondQuantization.Common.dysonCoeff_quarticInteractionOn_eq_sum",
-      "SecondQuantization.Common.dysonCoeff_succ",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.ContinuousDyson.0.SecondQuantization.Common.dysonCoeff_succ",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExpansion.0.SecondQuantization.Common.continuous_dysonCoeff_basisState_apply"
     ],
     "dependencies": [
@@ -124531,7 +124265,7 @@
     "compiledConsumers": [
       "SecondQuantization.Common.dysonCoeff_at_zero",
       "SecondQuantization.Common.dysonCoeff_quarticInteractionOn_eq_sum",
-      "SecondQuantization.Common.dysonCoeff_succ",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.ContinuousDyson.0.SecondQuantization.Common.dysonCoeff_succ",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExpansion.0.SecondQuantization.Common.continuous_dysonCoeff_basisState_apply"
     ],
     "compiledConsumerCount": 4,
@@ -124569,11 +124303,10 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Bosonic.grandCanonicalGibbsDysonCoeff_zero",
-      "SecondQuantization.Common.continuousDysonCoeff_zero",
       "SecondQuantization.Common.dysonCoeff_at_zero",
-      "SecondQuantization.Common.dysonCoeff_eq_of_time_independent",
       "SecondQuantization.Common.dysonCoeff_quarticInteractionOn_eq_sum",
       "SecondQuantization.Common.dysonTraceCoeff_zero",
+      "SecondQuantization.Common.finiteContinuousOperator_dysonCoeff_eq_coeff",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExpansion.0.SecondQuantization.Common.continuous_dysonCoeff_basisState_apply"
     ],
     "dependencies": [
@@ -124584,14 +124317,13 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Bosonic.grandCanonicalGibbsDysonCoeff_zero",
-      "SecondQuantization.Common.continuousDysonCoeff_zero",
       "SecondQuantization.Common.dysonCoeff_at_zero",
-      "SecondQuantization.Common.dysonCoeff_eq_of_time_independent",
       "SecondQuantization.Common.dysonCoeff_quarticInteractionOn_eq_sum",
       "SecondQuantization.Common.dysonTraceCoeff_zero",
+      "SecondQuantization.Common.finiteContinuousOperator_dysonCoeff_eq_coeff",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExpansion.0.SecondQuantization.Common.continuous_dysonCoeff_basisState_apply"
     ],
-    "compiledConsumerCount": 7,
+    "compiledConsumerCount": 6,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -126370,6 +126102,57 @@
       "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.FiniteAnalyticBridge.0.SecondQuantization.Common.continuousOperatorIntervalIntegral_basis"
     ],
     "compiledConsumerCount": 4,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Config : Type u_1} [inst : Fintype Config] (energy : Config → ℝ)\n  (V : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config) (n : ℕ)\n  (τ : ℝ),\n  SecondQuantization.Common.finiteContinuousOperatorAlgEquiv (SecondQuantization.Common.dysonCoeff energy V n τ) =\n    Dyson.coeff (SecondQuantization.Common.continuousInteractionPicture energy V) n τ",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.finiteContinuousOperator_dysonCoeff_eq_coeff",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Perturbation.ContinuousDyson",
+    "externalAxioms": [],
+    "docString": "On finite configurations, the algebraic Dyson coefficient transported to the\ncontinuous-operator algebra is the generic analytic Dyson coefficient. The algebraic\ncoefficient remains the canonical construction for arbitrary configuration types. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonPartitionFunction.0.SecondQuantization.Common.hasSum_dysonTraceCoeff_trace_dysonEvolution"
+    ],
+    "dependencies": [
+      "Dyson.coeff_succ",
+      "Dyson.coeff_zero",
+      "SecondQuantization.Common.continuousOperatorIntervalIntegral_eq",
+      "SecondQuantization.Common.continuous_matrixCoeff_dysonCoeff",
+      "SecondQuantization.Common.continuous_matrixCoeff_interactionPicture",
+      "SecondQuantization.Common.dysonCoeff_zero",
+      "SecondQuantization.Common.matrixCoeff_comp",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.ContinuousDyson.0.SecondQuantization.Common.dysonCoeff_succ"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonPartitionFunction.0.SecondQuantization.Common.hasSum_dysonTraceCoeff_trace_dysonEvolution"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -130075,16 +129858,16 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Common.dysonCoeff_quarticInteractionOn_eq_sum",
-      "SecondQuantization.Common.dysonCoeff_succ",
-      "SecondQuantization.Common.heisenbergEvolve_eq_smul_of_carriesShift"
+      "SecondQuantization.Common.heisenbergEvolve_eq_smul_of_carriesShift",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.ContinuousDyson.0.SecondQuantization.Common.dysonCoeff_succ"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Common.dysonCoeff_quarticInteractionOn_eq_sum",
-      "SecondQuantization.Common.dysonCoeff_succ",
-      "SecondQuantization.Common.heisenbergEvolve_eq_smul_of_carriesShift"
+      "SecondQuantization.Common.heisenbergEvolve_eq_smul_of_carriesShift",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.ContinuousDyson.0.SecondQuantization.Common.dysonCoeff_succ"
     ],
     "compiledConsumerCount": 3,
     "axioms": [
@@ -130121,8 +129904,8 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Common.comp_operatorIntervalIntegral",
-      "SecondQuantization.Fermionic.continuous_matrixCoeff_interactionPicture_comp_dysonCoeff",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.ContinuousDyson.0.SecondQuantization.Common.continuousDysonCoeff_succ"
+      "SecondQuantization.Common.finiteContinuousOperator_dysonCoeff_eq_coeff",
+      "SecondQuantization.Fermionic.continuous_matrixCoeff_interactionPicture_comp_dysonCoeff"
     ],
     "dependencies": [
       "SecondQuantization.Common.matrixCoeff_comp_support"
@@ -130131,8 +129914,8 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Common.comp_operatorIntervalIntegral",
-      "SecondQuantization.Fermionic.continuous_matrixCoeff_interactionPicture_comp_dysonCoeff",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.ContinuousDyson.0.SecondQuantization.Common.continuousDysonCoeff_succ"
+      "SecondQuantization.Common.finiteContinuousOperator_dysonCoeff_eq_coeff",
+      "SecondQuantization.Fermionic.continuous_matrixCoeff_interactionPicture_comp_dysonCoeff"
     ],
     "compiledConsumerCount": 3,
     "axioms": [
@@ -130469,14 +130252,13 @@
     "dependents": [
       "SecondQuantization.Common.comp_operatorIntervalIntegral",
       "SecondQuantization.Common.dysonCoeff_at_zero",
-      "SecondQuantization.Common.dysonCoeff_eq_of_time_independent",
       "SecondQuantization.Common.dysonCoeff_quarticInteractionOn_eq_sum",
-      "SecondQuantization.Common.dysonCoeff_succ",
       "SecondQuantization.Common.heisenbergEvolve_eq_smul_of_carriesShift",
       "SecondQuantization.Common.operatorIntervalIntegral_add",
       "SecondQuantization.Common.operatorIntervalIntegral_same",
       "SecondQuantization.Common.operatorIntervalIntegral_smul",
-      "SecondQuantization.Common.operatorIntervalIntegral_zero"
+      "SecondQuantization.Common.operatorIntervalIntegral_zero",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.ContinuousDyson.0.SecondQuantization.Common.dysonCoeff_succ"
     ],
     "dependencies": [
       "SecondQuantization.Common.linearMap_ext_basisState"
@@ -130486,16 +130268,15 @@
     "compiledConsumers": [
       "SecondQuantization.Common.comp_operatorIntervalIntegral",
       "SecondQuantization.Common.dysonCoeff_at_zero",
-      "SecondQuantization.Common.dysonCoeff_eq_of_time_independent",
       "SecondQuantization.Common.dysonCoeff_quarticInteractionOn_eq_sum",
-      "SecondQuantization.Common.dysonCoeff_succ",
       "SecondQuantization.Common.heisenbergEvolve_eq_smul_of_carriesShift",
       "SecondQuantization.Common.operatorIntervalIntegral_add",
       "SecondQuantization.Common.operatorIntervalIntegral_same",
       "SecondQuantization.Common.operatorIntervalIntegral_smul",
-      "SecondQuantization.Common.operatorIntervalIntegral_zero"
+      "SecondQuantization.Common.operatorIntervalIntegral_zero",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.ContinuousDyson.0.SecondQuantization.Common.dysonCoeff_succ"
     ],
-    "compiledConsumerCount": 10,
+    "compiledConsumerCount": 9,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -130670,13 +130451,12 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Common.comp_operatorIntervalIntegral",
-      "SecondQuantization.Common.dysonCoeff_eq_of_time_independent",
-      "SecondQuantization.Common.dysonCoeff_succ",
       "SecondQuantization.Common.finiteGibbsExpectation_operatorIntervalIntegral",
       "SecondQuantization.Common.operatorIntervalIntegral_add",
       "SecondQuantization.Common.operatorIntervalIntegral_same",
       "SecondQuantization.Common.operatorIntervalIntegral_smul",
       "SecondQuantization.Common.operatorIntervalIntegral_zero",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.ContinuousDyson.0.SecondQuantization.Common.dysonCoeff_succ",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.FiniteAnalyticBridge.0.SecondQuantization.Common.continuousOperatorIntervalIntegral_basis"
     ],
     "dependencies": [],
@@ -130684,16 +130464,15 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Common.comp_operatorIntervalIntegral",
-      "SecondQuantization.Common.dysonCoeff_eq_of_time_independent",
-      "SecondQuantization.Common.dysonCoeff_succ",
       "SecondQuantization.Common.finiteGibbsExpectation_operatorIntervalIntegral",
       "SecondQuantization.Common.operatorIntervalIntegral_add",
       "SecondQuantization.Common.operatorIntervalIntegral_same",
       "SecondQuantization.Common.operatorIntervalIntegral_smul",
       "SecondQuantization.Common.operatorIntervalIntegral_zero",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.ContinuousDyson.0.SecondQuantization.Common.dysonCoeff_succ",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.FiniteAnalyticBridge.0.SecondQuantization.Common.continuousOperatorIntervalIntegral_basis"
     ],
-    "compiledConsumerCount": 9,
+    "compiledConsumerCount": 8,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -145177,8 +144956,8 @@
     "soleCompiledConsumerPrivate": true,
     "singleCompiledConsumer": true,
     "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "SecondQuantization.Fermionic.anticomm_create_annihilate",
     "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.CanonicalAnticommutationRelations",
@@ -155123,8 +154902,8 @@
     "soleCompiledConsumerPrivate": true,
     "singleCompiledConsumer": true,
     "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "SecondQuantization.Fermionic.toggleOccupationEquiv_symm",
     "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.Occupation",
@@ -179545,9 +179324,9 @@
       "SecondQuantization.Bosonic.summable_imaginaryTimeEvolveFree_comp_create_mul_annihilate"
     ],
     "dependencies": [
+      "SecondQuantization.Bosonic.hasSum_particleNumber_boltzmannWeight",
       "SecondQuantization.Bosonic.matrixCoeff_annihilate",
       "SecondQuantization.Bosonic.sqrt_natCast_mul_self",
-      "SecondQuantization.Bosonic.summable_particleNumber_boltzmannWeight",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.TwoPoint.0.SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_comp_create_removeOccupation"
     ],
     "crossModuleDirectWrapper": false,
@@ -185855,8 +185634,8 @@
       "ContinuousLinearMap.finiteDimensionalOperatorTrace_apply",
       "Dyson.exists_continuousBoundedInteraction",
       "Dyson.hasSum_evolution_of_bound",
-      "SecondQuantization.Common.continuousDysonCoeff_eq_coeff",
       "SecondQuantization.Common.continuous_continuousInteractionPicture",
+      "SecondQuantization.Common.finiteContinuousOperator_dysonCoeff_eq_coeff",
       "SecondQuantization.Common.finiteDimensionalOperatorTrace_finiteContinuousOperator"
     ],
     "crossModuleDirectWrapper": false,
@@ -186013,7 +185792,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Config : Type u_1} [inst : Fintype Config] (energy : Config → ℝ)\n  (V : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config) (n : ℕ)\n  (τ : ℝ),\n  SecondQuantization.Common.continuousDysonCoeff energy V (n + 1) τ =\n    -∫ (σ : ℝ) in 0..τ,\n        SecondQuantization.Common.continuousInteractionPicture energy V σ ∘SL\n          SecondQuantization.Common.continuousDysonCoeff energy V n σ",
+    "statement": "∀ {Config : Type u_1} [inst : Fintype Config] (energy : Config → ℝ)\n  (V : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config) (n : ℕ)\n  (τ : ℝ),\n  SecondQuantization.Common.dysonCoeff energy V (n + 1) τ =\n    -SecondQuantization.Common.operatorIntervalIntegral\n        (fun σ =>\n          SecondQuantization.Common.interactionPicture energy V σ ∘ₗ SecondQuantization.Common.dysonCoeff energy V n σ)\n        0 τ",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -186025,26 +185804,25 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.ContinuousDyson.0.SecondQuantization.Common.continuousDysonCoeff_succ",
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.ContinuousDyson.0.SecondQuantization.Common.dysonCoeff_succ",
     "module": "LeanCondensedMatter.SecondQuantization.Common.Perturbation.ContinuousDyson",
     "externalAxioms": [],
-    "docString": "The algebraic Dyson recursion transported to Mathlib's Bochner interval integral. ",
+    "docString": "On a finite configuration type, the canonical reachable-support coefficient satisfies the\noperator-valued Dyson recursion reconstructed by `operatorIntervalIntegral`. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Common.continuousDysonCoeff_eq_coeff"
+      "SecondQuantization.Common.finiteContinuousOperator_dysonCoeff_eq_coeff"
     ],
     "dependencies": [
-      "SecondQuantization.Common.continuousOperatorIntervalIntegral_eq",
-      "SecondQuantization.Common.continuous_matrixCoeff_dysonCoeff",
-      "SecondQuantization.Common.continuous_matrixCoeff_interactionPicture",
-      "SecondQuantization.Common.dysonCoeff_succ",
-      "SecondQuantization.Common.matrixCoeff_comp"
+      "SecondQuantization.Common.dysonCoeff_succ_basisState_apply",
+      "SecondQuantization.Common.matrixCoeffLinear_apply",
+      "SecondQuantization.Common.matrixCoeff_ext",
+      "SecondQuantization.Common.matrixCoeff_operatorIntervalIntegral"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.continuousDysonCoeff_eq_coeff"
+      "SecondQuantization.Common.finiteContinuousOperator_dysonCoeff_eq_coeff"
     ],
     "compiledConsumerCount": 1,
     "axioms": [

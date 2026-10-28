@@ -6142,15 +6142,6 @@
       "externalImportCount": 0
     },
     {
-      "name": "LeanCondensedMatter.SecondQuantization.Common.Interaction.Quartic.LocalLegExchange",
-      "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Interaction/Quartic/LocalLegExchange.lean",
-      "imports": [
-        "LeanCondensedMatter.SecondQuantization.Common.Algebra.ExchangeAlgebra",
-        "LeanCondensedMatter.SecondQuantization.Common.Interaction.Quartic"
-      ],
-      "externalImportCount": 0
-    },
-    {
       "name": "LeanCondensedMatter.SecondQuantization.Common.Interaction.Quartic",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Interaction/Quartic.lean",
       "imports": [
@@ -6184,8 +6175,9 @@
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Perturbation/ContinuousDyson.lean",
       "imports": [
         "LeanCondensedMatter.Analysis.Dyson.Basic",
-        "LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonOperatorIntegral",
-        "LeanCondensedMatter.SecondQuantization.Common.Perturbation.FiniteAnalyticBridge"
+        "LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExpansion",
+        "LeanCondensedMatter.SecondQuantization.Common.Perturbation.FiniteAnalyticBridge",
+        "LeanCondensedMatter.SecondQuantization.Common.Perturbation.FiniteOperatorIntegral"
       ],
       "externalImportCount": 0
     },
@@ -6205,15 +6197,6 @@
         "LeanCondensedMatter.SecondQuantization.Common.Perturbation.ContinuousDyson"
       ],
       "externalImportCount": 2
-    },
-    {
-      "name": "LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonOperatorIntegral",
-      "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Perturbation/DysonOperatorIntegral.lean",
-      "imports": [
-        "LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExpansion",
-        "LeanCondensedMatter.SecondQuantization.Common.Perturbation.FiniteOperatorIntegral"
-      ],
-      "externalImportCount": 1
     },
     {
       "name": "LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonTraceSeries",
@@ -6278,7 +6261,6 @@
         "LeanCondensedMatter.SecondQuantization.Common.Perturbation.ContinuousDyson",
         "LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExpansion",
         "LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExponential",
-        "LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonOperatorIntegral",
         "LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonTraceSeries",
         "LeanCondensedMatter.SecondQuantization.Common.Perturbation.FiniteAnalyticBridge",
         "LeanCondensedMatter.SecondQuantization.Common.Perturbation.FiniteOperatorIntegral",
