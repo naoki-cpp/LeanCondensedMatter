@@ -1,6 +1,7 @@
 import LeanCondensedMatter.Analysis.Dyson.Basic
 import LeanCondensedMatter.SecondQuantization.Common.Perturbation.FiniteAnalyticBridge
-import LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonOperatorIntegral
+import LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExpansion
+import LeanCondensedMatter.SecondQuantization.Common.Perturbation.FiniteOperatorIntegral
 
 set_option linter.style.header false
 
@@ -122,6 +123,27 @@ theorem continuousInteractionPicture_eq_conj (energy : Config → ℝ)
   simp only [continuousInteractionPicture, interactionPicture, heisenbergEvolve_eq_comp,
     continuousDiagonalEvolution]
   simp only [← Module.End.mul_eq_comp, ← ContinuousLinearMap.mul_def, map_mul]
+
+/-! ## Coefficientwise Dyson recursion on finite configurations -/
+
+/-- On a finite configuration type, the canonical reachable-support coefficient satisfies the
+operator-valued Dyson recursion reconstructed by `operatorIntervalIntegral`. -/
+private theorem dysonCoeff_succ (energy : Config → ℝ)
+    (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (n : ℕ) (τ : ℝ) :
+    dysonCoeff energy V (n + 1) τ =
+      - operatorIntervalIntegral
+          (fun σ => (interactionPicture energy V σ).comp (dysonCoeff energy V n σ)) 0 τ := by
+  apply matrixCoeff_ext
+  intro m n'
+  change dysonCoeff energy V (n + 1) τ (basisState n') m =
+    matrixCoeff
+      (- operatorIntervalIntegral
+        (fun σ => (interactionPicture energy V σ).comp (dysonCoeff energy V n σ)) 0 τ) m n'
+  rw [dysonCoeff_succ_basisState_apply]
+  simp only [← matrixCoeffLinear_apply, map_neg]
+  rw [matrixCoeffLinear_apply, matrixCoeff_operatorIntervalIntegral]
+  congr 1
+
 
 /-! ## Finite-configuration Dyson coefficient bridge -/
 
