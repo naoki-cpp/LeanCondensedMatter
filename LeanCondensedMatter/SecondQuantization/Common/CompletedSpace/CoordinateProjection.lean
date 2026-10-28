@@ -1,4 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.Diagonal
+import Mathlib.Order.Filter.Finite
 
 set_option linter.style.header false
 
@@ -107,16 +108,8 @@ theorem tendsto_completedCoordinateProjection_of_eventually
     Tendsto (fun i => completedCoordinateProjection (P i) ψ) l (𝓝 ψ) := by
   classical
   have hfinite (s : Finset Config) :
-      ∀ᶠ i in l, ∀ c ∈ s, P i c := by
-    induction s using Finset.induction_on with
-    | empty =>
-        filter_upwards [] with i c hc
-        simp at hc
-    | @insert c s hc ih =>
-        filter_upwards [hP c, ih] with i hci his d hd
-        rcases Finset.mem_insert.mp hd with rfl | hds
-        · exact hci
-        · exact his d hds
+      ∀ᶠ i in l, ∀ c ∈ s, P i c :=
+    (Finset.eventually_all s).2 (fun c _ => hP c)
   apply Metric.tendsto_nhds.2
   intro ε hε
   have hhalf : 0 < ε / 2 := half_pos hε
