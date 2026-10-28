@@ -14,9 +14,9 @@ explicit total-number integrability condition; existence of the completed free G
 is required only by the bridge back to the density operator.
 
 The operator and its maximal domain remain owned by `Fermionic.CompletedSpace.Diagonal`. This module
-owns only the thermal integrability condition and expectation for that concrete observable. Generic
-pure-point energy expectations remain in `QuantumTheory.Gibbs.EigenbasisExpectation`; no parallel
-public arbitrary-diagonal expectation API is introduced here.
+relates their completed Gibbs matrix elements to the common particle-number spectral expectation,
+using the common grand-canonical integrability condition. Generic pure-point energy expectations
+remain in `QuantumTheory.Gibbs.EigenbasisExpectation`.
 -/
 
 namespace SecondQuantization
@@ -27,17 +27,6 @@ open QuantumTheory
 noncomputable section
 
 variable {Mode : Type*}
-
-/-- Fermionic compatibility name for the statistics-independent grand-canonical
-particle-number integrability condition. -/
-abbrev GrandCanonicalTotalNumberIntegrable
-    (ε : Mode → ℝ) (β μ : ℝ) : Prop :=
-  Common.GrandCanonicalParticleNumberIntegrable (Config := Occupation Mode) ε β μ
-
-/-- Fermionic compatibility name for the common particle-number spectral mean. -/
-noncomputable abbrev grandCanonicalTotalNumberExpectation
-    (ε : Mode → ℝ) (β μ : ℝ) : ℝ :=
-  Common.grandCanonicalParticleNumberExpectation (Config := Occupation Mode) ε β μ
 
 /-- On each occupation basis state, the diagonal matrix element of the composed completed Gibbs
 density operator and total-number operator is the corresponding Gibbs probability times particle
@@ -66,14 +55,14 @@ completed total-number operator sum to the real spectral expectation. -/
 theorem hasSum_grandCanonicalGibbsDensityOperator_totalNumber_diagonal
     (ε : Mode → ℝ) (β μ : ℝ) (hsum : EigenbasisGibbsSummable
       (Common.grandCanonicalEnergy (Config := Occupation Mode) ε μ) β)
-    (hint : GrandCanonicalTotalNumberIntegrable ε β μ) :
+    (hint : Common.GrandCanonicalParticleNumberIntegrable (Config := Occupation Mode) ε β μ) :
     HasSum
       (fun n : Occupation Mode =>
         inner ℂ (completedBasisState n)
           ((Common.grandCanonicalGibbsDensityOperator (Config := Occupation Mode) ε β μ hsum).op
             (completedTotalNumberOperator
               ⟨completedBasisState n, completedBasisState_mem_completedTotalNumberDomain n⟩)))
-      (grandCanonicalTotalNumberExpectation ε β μ : ℂ) := by
+      (Common.grandCanonicalParticleNumberExpectation (Config := Occupation Mode) ε β μ : ℂ) := by
   have hcast :=
     (Common.hasSum_grandCanonicalParticleNumberExpectation
       (Config := Occupation Mode) ε β μ hint).mapL Complex.ofRealCLM
