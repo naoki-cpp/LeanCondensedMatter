@@ -82,7 +82,7 @@ theorem completedCoordinateProjection_algebraicToCompleted_of_support
 
 /-- A contractive coordinate projection moving no point of a fixed algebraic approximation
 moves an arbitrary completed vector by at most twice the approximation error. -/
-theorem dist_completedCoordinateProjection_le_two_mul_of_fixed
+private theorem dist_completedCoordinateProjection_le_two_mul_of_fixed
     (P : Config → Prop) (ψ φ : CompletedFock Config)
     (hφ : completedCoordinateProjection P φ = φ) :
     dist (completedCoordinateProjection P ψ) ψ ≤ 2 * dist ψ φ := by
