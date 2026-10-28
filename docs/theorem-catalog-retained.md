@@ -628,6 +628,13 @@ using a zero-consumer signal as grounds for changing its retention.
 - `SecondQuantization.Common.TwoPointDiagram.slotSplitVacuumMixedPairEquiv_apply` — canonical `@[simp]` evaluation of the mixed-pair equivalence on a vacuum normalized pair; used when reindexing fermionic contraction products.
 - `SecondQuantization.Common.TwoPointDiagram.externalComponentLegEquiv_symm_restrictedPartner` — canonical `@[simp]` transport of restricted pairing partners through the inverse external-component leg equivalence, expressing a stable external/vacuum split invariant.
 
+- `SecondQuantization.Common.TwoPointDiagram.ofSlotSplit_externalVacuumSplit` — Canonical round-trip for the two-point diagram's external-component/vacuum decomposition. Although it specializes the general split reconstruction, it states the geometric decomposition endpoint in terms of the diagram's own external component.
+- `SecondQuantization.Common.ExternalInsertionDiagram.externalBearing_vacuum_reconstruction` — Canonical reconstruction of an external-insertion diagram from all externally supported components and the vacuum complement; also used in the external-support connectivity argument without imposing connectivity among external insertions.
+- `SecondQuantization.Common.ExternalInsertionDiagram.ofSlotSplit_vertexWeight` — Statistics-independent, commutative-monoid factorization of interaction-vertex weights across an external-insertion slot split; the Dyson-sign identity builds on this more general result.
+- `SecondQuantization.Common.TwoPointDiagram.ofSlotSplit_externalLabel` — Canonical `@[simp]` computation rule identifying the external labels of a reassembled two-point diagram with those of its external piece.
+- `SecondQuantization.Common.TwoPointDiagram.externalVacuumSplit_fst_externalLabel` — Canonical `@[simp]` preservation law for the external labels of the component extracted by the external/vacuum decomposition.
+- `SecondQuantization.Common.ExternalInsertionDiagram.ofSlotSplit_pairing` — Canonical `@[simp]` computation rule exposing the binary pairing assembled by the external-insertion slot split, rather than a disposable proof-only forwarding lemma.
+
 ## Other retained API contracts (outside theorem audit)
 
 These structural interfaces are worth retaining, but they are not independent proof declarations
