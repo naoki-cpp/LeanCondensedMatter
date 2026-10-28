@@ -133166,7 +133166,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ {Config : Type u_1}\n  (V : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config) (order : ℕ)\n  (n : Config),\n  SecondQuantization.Common.reachableSupport V (order + 1) n =\n    (SecondQuantization.Common.reachableSupport V order n).biUnion fun k =>\n      (V (SecondQuantization.Common.basisState k)).support",
     "standardAxioms": [
       "Classical.choice",
@@ -133174,7 +133174,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": true,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -133185,12 +133185,16 @@
     "docString": null,
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "SecondQuantization.Common.support_interactionPicture_apply_subset_reachableSupport_succ"
+    ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "SecondQuantization.Common.support_interactionPicture_apply_subset_reachableSupport_succ"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -134142,8 +134146,8 @@
       "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExpansion.0.SecondQuantization.Common.dysonBasis_succ_apply"
     ],
     "dependencies": [
-      "SecondQuantization.Common.support_interactionPicture_basisState_subset",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.ReachableSupport.0.SecondQuantization.Common.mem_reachableSupport_succ_iff"
+      "SecondQuantization.Common.reachableSupport_succ",
+      "SecondQuantization.Common.support_interactionPicture_basisState_subset"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -186550,48 +186554,6 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Common.continuousOperatorIntervalIntegral_eq"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Config : Type u_1}\n  (V : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config) (order : ℕ)\n  (m n : Config),\n  m ∈ SecondQuantization.Common.reachableSupport V (order + 1) n ↔\n    ∃ k ∈ SecondQuantization.Common.reachableSupport V order n, m ∈ (V (SecondQuantization.Common.basisState k)).support",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.ReachableSupport.0.SecondQuantization.Common.mem_reachableSupport_succ_iff",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Perturbation.ReachableSupport",
-    "externalAxioms": [],
-    "docString": "Membership in the next reachable support is witnessed by an intermediate configuration in the\nprevious support and a nonzero matrix column of `V`. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.support_interactionPicture_apply_subset_reachableSupport_succ"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.support_interactionPicture_apply_subset_reachableSupport_succ"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
