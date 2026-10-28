@@ -29,6 +29,17 @@ using a zero-consumer signal as grounds for changing its retention.
 
 ## Retained declarations
 
+- `Combinatorics.BinaryShuffle.leftSlot_consRight` — canonical `@[simp]` recursion for left-slot coordinates when a right slot is prepended; it completes the public constructor computation rules of `BinaryShuffle`.
+- `Combinatorics.BinaryShuffle.rightSlot_consRight_zero` — canonical `@[simp]` evaluation of the new right-slot head at ambient position zero in `consRight`.
+- `Combinatorics.BinaryShuffle.rightSlot_consRight_succ` — canonical `@[simp]` successor recursion for right-slot coordinates of `consRight`; it is a stable shuffle normalization rule.
+- `QuantumTheory.DensityOperator.expectation_effect_eq_probNNReal` — canonical `@[simp]` bridge identifying the complex expectation of a POVM effect with its embedded nonnegative Born probability.
+- `SecondQuantization.Common.analyticDysonPartitionFunction_zero` — canonical `@[simp]` zero-coupling specialization of the interacting analytic partition function to the finite pure-point Gibbs partition function.
+- `SecondQuantization.Common.completedPhaseMultiplier_apply` — canonical `@[simp]` coordinate-action rule for the isometric phase multiplier, exposing the public completed-Fock API.
+- `SecondQuantization.Common.completedPhaseMultiplier_basisState` — canonical `@[simp]` basis-state evaluation of the isometric phase multiplier, even though it specializes the bounded diagonal-operator rule.
+- `SecondQuantization.Common.completedReindex_basisState` — canonical `@[simp]` basis-state transport under the completed-Fock reindexing isometry, including the inverse equivalence.
+- `SecondQuantization.Fermionic.anticomm_create_annihilate` — physical creation-first canonical anticommutation relation; the symmetric operator-order identity remains part of the public fermionic algebra API.
+- `SecondQuantization.Fermionic.toggleOccupationEquiv_symm` — canonical `@[simp]` involution law for the occupation-toggle equivalence, providing a public normalization rule for reversed toggles.
+
 - `QuantumTheory.DensityOperator.eigenvalue_nonneg` — canonical positivity theorem for the nonzero spectral eigenvalues of a density operator; downstream spectral probability identities use this physical state-level API.
 - `QuantumMechanics.SingleParticle.Continuum.ContinuumSchwartzEvolutionRepresentative1D.totalProbability_eq_initial` — named conservation-of-Born-probability endpoint for the Schwartz representative of a unitary continuum evolution.
 - `QuantumTheory.Transport.FiniteReciprocalCurrentData.conductivityFamily_isOnsagerReciprocal` — finite Kubo-data theorem deriving Onsager reciprocity from the antiunitary covariance and current hypotheses; it is the physical response endpoint, not an incidental forwarding lemma.
