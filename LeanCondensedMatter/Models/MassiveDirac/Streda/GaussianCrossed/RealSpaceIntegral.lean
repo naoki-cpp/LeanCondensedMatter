@@ -374,10 +374,26 @@ private theorem gaussianCrossedTraceKernel_spinRotation_conjugate
           (inPlaneSpinRotation angle * C * inPlaneSpinRotationInverse angle) *
           (inPlaneSpinRotation angle * D * inPlaneSpinRotationInverse angle)) =
         Matrix.trace (A * B * C * D) := by
-    rw [inPlaneSpinRotation_conjugate_mul angle A B,
-      inPlaneSpinRotation_conjugate_mul angle (A * B) C,
-      inPlaneSpinRotation_conjugate_mul angle (A * B * C) D,
-      inPlaneSpinRotation_conjugate_trace]
+    let U := inPlaneSpinRotation angle
+    let Uinv := inPlaneSpinRotationInverse angle
+    have hcancel : Uinv * U = (1 : Matrix2) :=
+      inPlaneSpinRotationInverse_mul angle
+    change Matrix.trace ((U * A * Uinv) * (U * B * Uinv) *
+      (U * C * Uinv) * (U * D * Uinv)) = Matrix.trace (A * B * C * D)
+    have hproduct :
+        (U * A * Uinv) * (U * B * Uinv) *
+            (U * C * Uinv) * (U * D * Uinv) =
+          U * (A * B * C * D) * Uinv := by
+      simp only [Matrix.mul_assoc]
+      repeat
+        rw [← Matrix.mul_assoc Uinv U, hcancel, Matrix.one_mul]
+    calc
+      _ = Matrix.trace (U * (A * B * C * D) * Uinv) :=
+        congrArg Matrix.trace hproduct
+      _ = Matrix.trace (Uinv * (U * (A * B * C * D))) := by
+        rw [Matrix.trace_mul_comm]
+      _ = Matrix.trace (A * B * C * D) := by
+        rw [← Matrix.mul_assoc, hcancel, Matrix.one_mul]
   cases diagram with
   | x =>
       simpa only [gaussianCrossedTraceKernel] using
