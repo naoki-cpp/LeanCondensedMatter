@@ -79,7 +79,8 @@ theorem completedFockUnitary_completedExterior_hasDerivAt_zero
         AlgebraicFock.dGamma_oneParticle_mul V T v x
       rw [hstep]
       simp only [map_add, smul_add, hcreate, completedFockUnitary_createField]
-      simpa only [hzero, LinearIsometryEquiv.refl_apply, completedFockUnitary_refl,
+      have hid : LinearIsometryEquiv.refl ℂ (Common.CompletedFock Mode) (j v) = j v := rfl
+      simpa only [hzero, hid, completedFockUnitary_refl,
         map_smul, smul_apply] using hd
 
 /-- For a self-adjoint one-particle Hamiltonian, the lifted Stone orbit has infinitesimal action
