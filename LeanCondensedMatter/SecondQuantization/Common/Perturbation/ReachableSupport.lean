@@ -41,14 +41,6 @@ theorem reachableSupport_succ
     reachableSupport V (order + 1) n =
       (reachableSupport V order n).biUnion fun k => (V (basisState k)).support := rfl
 
-/-- Membership in the next reachable support is witnessed by an intermediate configuration in the
-previous support and a nonzero matrix column of `V`. -/
-private theorem mem_reachableSupport_succ_iff
-    (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (order : ℕ) (m n : Config) :
-    m ∈ reachableSupport V (order + 1) n ↔
-      ∃ k ∈ reachableSupport V order n, m ∈ (V (basisState k)).support := by
-  simp [reachableSupport]
-
 /-- Applying an interaction-picture insertion to a vector supported at one reachable order produces
 only configurations reachable at the next order. -/
 theorem support_interactionPicture_apply_subset_reachableSupport_succ
@@ -57,7 +49,7 @@ theorem support_interactionPicture_apply_subset_reachableSupport_succ
     (hx : x.support ⊆ reachableSupport V order n) :
     (interactionPicture energy V τ x).support ⊆ reachableSupport V (order + 1) n := by
   intro m hm
-  rw [mem_reachableSupport_succ_iff]
+  rw [reachableSupport_succ, Finset.mem_biUnion]
   have hxRep : x = ∑ k ∈ x.support, x k • basisState k := by
     conv_lhs => rw [← Finsupp.sum_single x]
     rw [Finsupp.sum]
