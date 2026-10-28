@@ -29,8 +29,9 @@ noncomputable def completedCoordinateProjection (P : Config → Prop) :
   exact completedBoundedDiagonalOperator (fun c => if P c then 1 else 0) zero_le_one fun c => by
     by_cases h : P c <;> simp [h]
 
+open scoped Classical in
 @[simp]
-theorem completedCoordinateProjection_apply (P : Config → Prop) [DecidablePred P]
+theorem completedCoordinateProjection_apply (P : Config → Prop)
     (ψ : CompletedFock Config) (c : Config) :
     completedCoordinateProjection P ψ c = if P c then ψ c else 0 := by
   classical
@@ -52,10 +53,11 @@ theorem dist_completedCoordinateProjection_le (P : Config → Prop)
     dist (completedCoordinateProjection P ψ) (completedCoordinateProjection P φ) ≤ dist ψ φ := by
   simpa [dist_eq_norm, map_sub] using norm_completedCoordinateProjection_le P (ψ - φ)
 
+open scoped Classical in
 /-- A canonical basis state survives a coordinate projection exactly when its configuration
 satisfies the predicate. -/
 @[simp]
-theorem completedCoordinateProjection_basisState (P : Config → Prop) [DecidablePred P]
+theorem completedCoordinateProjection_basisState (P : Config → Prop)
     (c : Config) :
     completedCoordinateProjection P (completedBasisState c) =
       if P c then completedBasisState c else 0 := by
