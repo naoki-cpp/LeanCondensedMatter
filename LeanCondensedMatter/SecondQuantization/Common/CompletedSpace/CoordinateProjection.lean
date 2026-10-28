@@ -53,9 +53,9 @@ theorem dist_completedCoordinateProjection_le (P : Config → Prop)
     dist (completedCoordinateProjection P ψ) (completedCoordinateProjection P φ) ≤ dist ψ φ := by
   simpa [dist_eq_norm, map_sub] using norm_completedCoordinateProjection_le P (ψ - φ)
 
+open scoped Classical in
 /-- A canonical basis state survives a coordinate projection exactly when its configuration
 satisfies the predicate. -/
-open scoped Classical in
 @[simp]
 theorem completedCoordinateProjection_basisState (P : Config → Prop)
     (c : Config) :
