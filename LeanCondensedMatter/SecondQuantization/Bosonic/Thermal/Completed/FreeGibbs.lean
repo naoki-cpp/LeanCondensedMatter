@@ -113,27 +113,6 @@ theorem inv_grandCanonicalPartitionFunction_smul_completedFreeHeatOperator_eq_gi
         simp only [eigenbasisBoltzmannWeight, Common.grandCanonicalEnergy_eq_shifted,
           freeEigenvalue]))
 
-/-- At μ = 0 the physical Boltzmann heat operator normalizes to the shared
-grand-canonical Gibbs density. For arbitrary μ the thermal generator is H - μ N,
-not the physical heat operator exp(-βH) appearing here. -/
-/-- At μ = 0 the physical Boltzmann heat operator normalizes to the shared
-grand-canonical Gibbs density. For arbitrary μ the thermal generator is H - μ N,
-not the physical heat operator exp(-βH) appearing here. -/
-theorem inv_grandCanonicalPartitionFunction_zero_smul_completedFreeHeatOperator_eq_gibbs
-    (ε : Mode → ℝ) (β : ℝ) (hβ : 0 < β) (hε : ∀ i, 0 ≤ ε i)
-    (hsum : EigenbasisGibbsSummable (freeEigenvalue ε) β) :
-    ((Common.grandCanonicalPartitionFunction (Config := Occupation Mode) ε β 0)⁻¹ : ℂ) •
-        completedFreeHeatOperator ε β hβ hε =
-      (Common.grandCanonicalGibbsDensityOperator
-        (Config := Occupation Mode) ε β 0
-        (by
-          rw [grandCanonicalEnergy_zero_eq_freeEigenvalue]
-          exact hsum)).op := by
-  simpa only [sub_zero, grandCanonicalEnergy_zero_eq_freeEigenvalue] using
-    (inv_grandCanonicalPartitionFunction_smul_completedFreeHeatOperator_eq_gibbs
-      ε β 0 hβ (by simpa only [sub_zero] using hε)
-      (by simpa only [grandCanonicalEnergy_zero_eq_freeEigenvalue] using hsum))
-
 /-- The grand-canonical algebraic trace equals the actual trace of the
 completed free heat operator for the grand-canonical generator
 `K = H - μ N̂`. This identifies the occupation-trace
