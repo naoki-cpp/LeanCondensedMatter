@@ -2,6 +2,7 @@ import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.SmearedFi
 import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.Annihilation
 import Mathlib.Analysis.Normed.Operator.Extend
 import Mathlib.LinearAlgebra.CliffordAlgebra.Basic
+import Mathlib.Topology.EMetricSpace.Lipschitz
 
 set_option linter.style.header false
 
@@ -260,6 +261,77 @@ theorem completedFockUnitary_trans
           AlgebraicFock (Common.CompletedFock Mode) => completedExterior (F y))
       (ExteriorAlgebra.map_comp_map e.toLinearEquiv.toLinearMap
         f.toLinearEquiv.toLinearMap)).symm
+
+/-- Strongly continuous one-particle unitary families act jointly continuously on completed
+Fock space. No operator-norm continuity of the one-particle or Fock family is assumed. -/
+theorem completedFockUnitary_joint_continuous {X : Type*} [TopologicalSpace X]
+    (e : X → (Common.CompletedFock Mode ≃ₗᵢ[ℂ] Common.CompletedFock Mode))
+    (he : ∀ v, Continuous (fun t => e t v)) :
+    Continuous (fun p : CompletedFockSpace Mode × X => completedFockUnitary (e p.2) p.1) := by
+  have hcore (y : AlgebraicFock (Common.CompletedFock Mode)) :
+      Continuous (fun t => completedFockUnitary (e t) (completedExterior y)) := by
+    induction y using CliffordAlgebra.left_induction with
+    | algebraMap a =>
+        simp only [completedExterior_algebraMap, map_smul, completedFockUnitary_vacuum]
+        exact continuous_const
+    | add x y hx hy =>
+        simp only [map_add]
+        convert! hx.add hy using 1
+    | ι_mul x v hx =>
+        change Continuous (fun t =>
+          completedFockUnitary (e t) (completedExterior (AlgebraicFock.create _ v x)))
+        simp only [completedExterior_create, completedFockUnitary_createField]
+        exact (completedCreateField.continuous.comp (he v)).clm_apply hx
+  apply continuous_prod_of_dense_continuous_lipschitzWith _ 1 completedExterior_denseRange
+  · rintro _ ⟨y, rfl⟩
+    exact hcore y
+  · intro t
+    exact (completedFockUnitary (e t)).isometry.lipschitzWith
+
+/-- The fermionic Fock lift of a supplied one-parameter unitary group, in the bounded-operator
+unitary type used by the general linear-response API. -/
+def completedFockUnitaryGroup
+    (U : Multiplicative ℝ →* unitary (Common.CompletedFock Mode →L[ℂ] Common.CompletedFock Mode)) :
+    Multiplicative ℝ →* unitary (CompletedFockSpace Mode →L[ℂ] CompletedFockSpace Mode) where
+  toFun t := Unitary.linearIsometryEquiv.symm
+    (completedFockUnitary (Unitary.linearIsometryEquiv (U t)))
+  map_one' := by
+    apply Subtype.ext
+    apply ContinuousLinearMap.ext
+    intro x
+    change completedFockUnitary (Unitary.linearIsometryEquiv (U 1)) x = x
+    simp only [map_one]
+    exact completedFockUnitary_refl x
+  map_mul' t s := by
+    apply Subtype.ext
+    apply ContinuousLinearMap.ext
+    intro x
+    change completedFockUnitary (Unitary.linearIsometryEquiv (U (t * s))) x =
+      completedFockUnitary (Unitary.linearIsometryEquiv (U t))
+        (completedFockUnitary (Unitary.linearIsometryEquiv (U s)) x)
+    simp only [map_mul]
+    exact completedFockUnitary_trans (Unitary.linearIsometryEquiv (U s))
+      (Unitary.linearIsometryEquiv (U t)) x
+
+/-- Strong continuity of the one-particle group supplies the strong-continuity hypothesis
+required by the general density linear-response theorems on completed Fock space. -/
+theorem completedFockUnitaryGroup_apply_continuous
+    (U : Multiplicative ℝ →* unitary (Common.CompletedFock Mode →L[ℂ] Common.CompletedFock Mode))
+    (hU : ∀ v, Continuous (fun t : ℝ =>
+      (U (Multiplicative.ofAdd t) : Common.CompletedFock Mode →L[ℂ] Common.CompletedFock Mode) v))
+    (x : CompletedFockSpace Mode) :
+    Continuous (fun t : ℝ =>
+      (completedFockUnitaryGroup U (Multiplicative.ofAdd t) :
+        CompletedFockSpace Mode →L[ℂ] CompletedFockSpace Mode) x) := by
+  have he : ∀ v, Continuous (fun t : ℝ =>
+      Unitary.linearIsometryEquiv (U (Multiplicative.ofAdd t)) v) := hU
+  change Continuous (fun t : ℝ =>
+    completedFockUnitary (Unitary.linearIsometryEquiv (U (Multiplicative.ofAdd t))) x)
+  have hpair : Continuous (fun t : ℝ => (x, t)) :=
+    continuous_const.prodMk continuous_id
+  have h := (completedFockUnitary_joint_continuous
+    (fun t : ℝ => Unitary.linearIsometryEquiv (U (Multiplicative.ofAdd t))) he).comp hpair
+  simpa only [Function.comp_def] using h
 
 end
 end SecondQuantization.Fermionic

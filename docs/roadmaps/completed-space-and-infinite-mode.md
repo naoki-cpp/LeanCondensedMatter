@@ -40,8 +40,18 @@ field annihilates the vacuum; creation on the vacuum preserves the one-particle 
 transport by a one-particle isometry preserves its inner product. `completedFockUnitary` uses
 Mathlib's `LinearEquiv.extendOfIsometry` to lift an arbitrary one-particle unitary on ℓ² modes.
 It fixes the vacuum, intertwines the creation fields, and respects identity and composition.
-Strong continuity for a lifted time-evolution family and identification of its unbounded
-second-quantized generator remain separate obligations.
+`completedFockUnitary_joint_continuous` lifts strong continuity of a one-particle unitary family
+to joint continuity of its Fock action. On the dense exterior realization this follows by creation
+and addition; Mathlib's dense-continuity theorem extends it to all vectors using the common
+Lipschitz constant one. No operator-norm continuity is assumed.
+`completedFockUnitaryGroup` packages a supplied one-parameter unitary group in the bounded-operator
+unitary type used by linear response. `completedFockUnitaryGroup_apply_continuous` supplies the
+orbit-continuity hypothesis of
+`QuantumTheory.LinearResponse.continuous_commutatorSusceptibility_of_diagonal_density` directly;
+the density, its diagonal realization, and bounded observables remain explicit inputs to that
+general theorem. For an unbounded self-adjoint one-particle generator, the existing
+`LinearPMap.stoneEvolutionUnitaryGroup` and `stoneEvolution_apply_continuous` provide the inputs.
+Identification of the lifted group's unbounded second-quantized generator remains separate.
 
 In the pinned Mathlib revision, `Analysis.InnerProductSpace.ExteriorPower`
 provides a Hilbert structure only for real, finite-dimensional exterior powers; it cannot directly
