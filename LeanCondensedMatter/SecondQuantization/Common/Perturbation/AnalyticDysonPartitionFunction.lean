@@ -72,7 +72,7 @@ private theorem hasSum_dysonTraceCoeff_trace_dysonEvolution
   have htrace (n : ℕ) :
       traceLeft (Dyson.coeff (continuousInteractionPicture energy V) n β) =
         dysonTraceCoeff energy β V n := by
-    rw [← continuousDysonCoeff_eq_coeff]
+    rw [← finiteContinuousOperator_dysonCoeff_eq_coeff]
     change ContinuousLinearMap.finiteDimensionalOperatorTrace
       ((finiteContinuousOperatorAlgEquiv (diagonalEvolution energy (-β))).comp
         (finiteContinuousOperatorAlgEquiv (dysonCoeff energy V n β))) = _

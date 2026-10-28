@@ -11,10 +11,10 @@ set_option linter.style.header false
 This module promotes the statistics-independent finite-configuration operators to Mathlib's
 normed continuous-operator algebra on `FiniteAnalyticFock Config = Config → ℂ`.
 
-The algebraic definitions remain authoritative. The continuous operators below are transported
-images of `diagonalEvolution`, `interactionPicture`, and `dysonCoeff`; the Dyson successor equation
-is obtained from the existing coefficientwise recursion through
-`continuousOperatorIntervalIntegral_eq`, not redefined analytically.
+The algebraic definitions remain authoritative. The continuous free evolution and
+interaction-picture operators are transported from their algebraic counterparts. For finite
+configurations, the generic analytic Dyson coefficient agrees with the transported algebraic
+coefficient via `continuousOperatorIntervalIntegral_eq`.
 -/
 
 namespace SecondQuantization
@@ -124,29 +124,6 @@ theorem continuousInteractionPicture_eq_conj (energy : Config → ℝ)
     continuousDiagonalEvolution]
   simp only [← Module.End.mul_eq_comp, ← ContinuousLinearMap.mul_def, map_mul]
 
-/-! ## Continuous Dyson coefficients -/
-
-/-- The transported continuous realization of the algebraic Dyson coefficient. -/
-noncomputable def continuousDysonCoeff (energy : Config → ℝ)
-    (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (n : ℕ) (τ : ℝ) :
-    FiniteContinuousOperator Config :=
-  finiteContinuousOperatorAlgEquiv (dysonCoeff energy V n τ)
-
-@[simp]
-theorem continuousDysonCoeff_zero (energy : Config → ℝ)
-    (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (τ : ℝ) :
-    continuousDysonCoeff energy V 0 τ = 1 := by
-  rw [continuousDysonCoeff, dysonCoeff_zero, ← Module.End.one_eq_id, map_one]
-
-@[simp]
-theorem continuousDysonCoeff_at_zero (energy : Config → ℝ)
-    (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (n : ℕ) :
-    continuousDysonCoeff energy V n 0 = if n = 0 then 1 else 0 := by
-  rw [continuousDysonCoeff, dysonCoeff_at_zero]
-  by_cases h : n = 0
-  · rw [ite_eq_left h, ite_eq_left h, ← Module.End.one_eq_id, map_one]
-  · rw [ite_eq_right h, ite_eq_right h, map_zero]
-
 /-! ## Coefficientwise Dyson recursion on finite configurations -/
 
 /-- On a finite configuration type, the canonical reachable-support coefficient satisfies the
@@ -167,50 +144,43 @@ private theorem dysonCoeff_succ (energy : Config → ℝ)
   rw [matrixCoeffLinear_apply, matrixCoeff_operatorIntervalIntegral]
   congr 1
 
-/-- The algebraic Dyson recursion transported to Mathlib's Bochner interval integral. -/
-private theorem continuousDysonCoeff_succ (energy : Config → ℝ)
-    (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (n : ℕ) (τ : ℝ) :
-    continuousDysonCoeff energy V (n + 1) τ =
-      - ∫ σ in (0 : ℝ)..τ,
-          (continuousInteractionPicture energy V σ).comp
-            (continuousDysonCoeff energy V n σ) := by
-  have hcoeff : ∀ m n' : Config, Continuous (fun σ : ℝ =>
-      matrixCoeff ((interactionPicture energy V σ).comp
-        (dysonCoeff energy V n σ)) m n') := by
-    intro m n'
-    simp only [matrixCoeff_comp]
-    exact continuous_finsetSum _ fun k _ =>
-      (continuous_matrixCoeff_interactionPicture energy V m k).mul
-        (continuous_matrixCoeff_dysonCoeff energy V n k n')
-  rw [continuousDysonCoeff, dysonCoeff_succ, map_neg,
-    continuousOperatorIntervalIntegral_eq _ hcoeff]
-  apply congrArg Neg.neg
-  apply intervalIntegral.integral_congr
-  intro σ _
-  simp only [continuousInteractionPicture, continuousDysonCoeff]
-  simpa only [← Module.End.mul_eq_comp, ← ContinuousLinearMap.mul_def] using
-    map_mul (finiteContinuousOperatorAlgEquiv (Config := Config))
-      (interactionPicture energy V σ) (dysonCoeff energy V n σ)
 
+/-! ## Finite-configuration Dyson coefficient bridge -/
 
-/-- The transported finite-dimensional Dyson coefficient is the generic Dyson coefficient
-specialized to the continuous interaction-picture family. -/
-theorem continuousDysonCoeff_eq_coeff (energy : Config → ℝ)
+/-- On finite configurations, the algebraic Dyson coefficient transported to the
+continuous-operator algebra is the generic analytic Dyson coefficient. The algebraic
+coefficient remains the canonical construction for arbitrary configuration types. -/
+theorem finiteContinuousOperator_dysonCoeff_eq_coeff (energy : Config → ℝ)
     (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (n : ℕ) (τ : ℝ) :
-    continuousDysonCoeff energy V n τ =
+    finiteContinuousOperatorAlgEquiv (dysonCoeff energy V n τ) =
       Dyson.coeff (continuousInteractionPicture energy V) n τ := by
   induction n generalizing τ with
-  | zero => simp
+  | zero =>
+      rw [dysonCoeff_zero, ← Module.End.one_eq_id, map_one, Dyson.coeff_zero]
   | succ n ih =>
-      rw [continuousDysonCoeff_succ, Dyson.coeff_succ]
+      have hcoeff : ∀ m n' : Config, Continuous (fun σ : ℝ =>
+          matrixCoeff ((interactionPicture energy V σ).comp
+            (dysonCoeff energy V n σ)) m n') := by
+        intro m n'
+        simp only [matrixCoeff_comp]
+        exact continuous_finsetSum _ fun k _ =>
+          (continuous_matrixCoeff_interactionPicture energy V m k).mul
+            (continuous_matrixCoeff_dysonCoeff energy V n k n')
+      rw [dysonCoeff_succ, map_neg,
+        continuousOperatorIntervalIntegral_eq _ hcoeff, Dyson.coeff_succ]
       apply congrArg Neg.neg
       apply intervalIntegral.integral_congr
       intro σ _
-      change continuousInteractionPicture energy V σ *
-          continuousDysonCoeff energy V n σ =
-        continuousInteractionPicture energy V σ *
-          Dyson.coeff (continuousInteractionPicture energy V) n σ
-      rw [ih]
+      change
+        finiteContinuousOperatorAlgEquiv
+            ((interactionPicture energy V σ).comp (dysonCoeff energy V n σ)) =
+          continuousInteractionPicture energy V σ *
+            Dyson.coeff (continuousInteractionPicture energy V) n σ
+      rw [← ih σ]
+      simp only [continuousInteractionPicture]
+      simpa only [← Module.End.mul_eq_comp, ← ContinuousLinearMap.mul_def] using
+        map_mul (finiteContinuousOperatorAlgEquiv (Config := Config))
+          (interactionPicture energy V σ) (dysonCoeff energy V n σ)
 
 end
 end Common
