@@ -116,7 +116,7 @@ private theorem summable_imaginaryTimeEvolveFree_comp_create_mul_annihilate_diag
   rw [← hginj.summable_iff hvanish, hcomp]
   simpa [boltzmannWeight] using
     Complex.summable_ofReal.mpr
-      (summable_particleNumber_boltzmannWeight ε β hpos i)
+      ((hasSum_particleNumber_boltzmannWeight ε β hpos i).summable)
 
 /-- The rotated mixed-mode two-point double series is summable, including distinct modes. -/
 theorem summable_imaginaryTimeEvolveFree_comp_create_mul_annihilate
