@@ -1,4 +1,3 @@
-import LeanCondensedMatter.Analysis.SpecialFunctions.RegularizedHypergeometric
 import LeanCondensedMatter.Transport.Analysis.AngularHarmonics
 import LeanCondensedMatter.Transport.Analysis.ContinuumMeasure
 import LeanCondensedMatter.Transport.Analysis.FourierGeometry
@@ -281,6 +280,18 @@ theorem polarFourierZerothAngularKernel_eq_tsum_moments (z : ℝ) :
       rw [intervalIntegral.integral_const_mul]
     _ = _ := by rw [hcos]
 
+/-- The coefficient of the regularized hypergeometric series with lower parameter `k + 1`. -/
+private theorem regularizedHGFunCoeff_zero_singleton_nat_add_one (k n : ℕ) :
+    Complex.regularizedHGFunCoeff 0 {((k + 1 : ℕ) : ℂ)} n =
+      1 / ((Nat.factorial n : ℂ) * (Nat.factorial (n + k) : ℂ)) := by
+  have hgamma : Complex.Gamma (((k : ℂ) + 1) + (n : ℂ)) =
+      (Nat.factorial (n + k) : ℂ) := by
+    rw [show ((k : ℂ) + 1) + (n : ℂ) = ((n + k : ℕ) : ℂ) + 1 by
+      simp only [Nat.cast_add]
+      ring]
+    exact Complex.Gamma_nat_eq_factorial (n + k)
+  simp [Complex.regularizedHGFunCoeff, Nat.cast_add, hgamma]
+
 /-- A full-period cosine moment is bounded by the length of its integration interval. -/
 theorem polarFourierCosineMoment_norm_le (n : ℕ) :
     ‖polarFourierCosineMoment n‖ ≤ 2 * Real.pi := by
@@ -337,7 +348,7 @@ theorem polarFourierZerothMoment_even_eq_bessel (z : ℝ) (n : ℕ) :
       ((2 * Real.pi : ℝ) : ℂ) *
         (Complex.regularizedHGFunCoeff 0 {(1 : ℂ)} n *
           (-((z : ℂ) / 2) ^ 2) ^ n) := by
-  have hcoeff := Complex.regularizedHGFunCoeff_zero_singleton_nat_add_one 0 n
+  have hcoeff := regularizedHGFunCoeff_zero_singleton_nat_add_one 0 n
   norm_num only [Nat.add_zero] at hcoeff
   rw [polarFourierCosineMoment_even_factorial, hcoeff, ← pow_two]
   push_cast
@@ -508,8 +519,8 @@ private theorem regularizedHGFun_zero_one_hasDerivAt (w : ℂ) :
   have hcoeff (n : ℕ) :
       ((n + 1 : ℕ) : ℂ) * Complex.regularizedHGFunCoeff 0 {(1 : ℂ)} (n + 1) =
         Complex.regularizedHGFunCoeff 0 {(2 : ℂ)} n := by
-    have h0 := Complex.regularizedHGFunCoeff_zero_singleton_nat_add_one 0 (n + 1)
-    have h1 := Complex.regularizedHGFunCoeff_zero_singleton_nat_add_one 1 n
+    have h0 := regularizedHGFunCoeff_zero_singleton_nat_add_one 0 (n + 1)
+    have h1 := regularizedHGFunCoeff_zero_singleton_nat_add_one 1 n
     norm_num only [Nat.add_zero] at h0 h1
     rw [h0, h1, ← pow_two, Nat.factorial_succ]
     push_cast
@@ -616,9 +627,9 @@ private theorem regularizedHGFun_one_sub_two_eq_mul_three (w : ℂ) :
   let c3 : ℕ → ℂ := Complex.regularizedHGFunCoeff 0 {(3 : ℂ)}
   have hcoeff (n : ℕ) : c1 (n + 1) - c2 (n + 1) = c3 n := by
     dsimp only [c1, c2, c3]
-    have h0 := Complex.regularizedHGFunCoeff_zero_singleton_nat_add_one 0 (n + 1)
-    have h1 := Complex.regularizedHGFunCoeff_zero_singleton_nat_add_one 1 (n + 1)
-    have h2 := Complex.regularizedHGFunCoeff_zero_singleton_nat_add_one 2 n
+    have h0 := regularizedHGFunCoeff_zero_singleton_nat_add_one 0 (n + 1)
+    have h1 := regularizedHGFunCoeff_zero_singleton_nat_add_one 1 (n + 1)
+    have h2 := regularizedHGFunCoeff_zero_singleton_nat_add_one 2 n
     norm_num only [Nat.add_zero] at h0 h1 h2
     rw [h0, h1, h2, ← pow_two]
     simp only [Nat.factorial_succ]
@@ -634,8 +645,8 @@ private theorem regularizedHGFun_one_sub_two_eq_mul_three (w : ℂ) :
     ring
   have hzero : c1 0 = c2 0 := by
     dsimp only [c1, c2]
-    have h0 := Complex.regularizedHGFunCoeff_zero_singleton_nat_add_one 0 0
-    have h1 := Complex.regularizedHGFunCoeff_zero_singleton_nat_add_one 1 0
+    have h0 := regularizedHGFunCoeff_zero_singleton_nat_add_one 0 0
+    have h1 := regularizedHGFunCoeff_zero_singleton_nat_add_one 1 0
     norm_num at h0 h1
     rw [h0, h1]
   have hs1 : Summable (fun n : ℕ => c1 n * w ^ n) := by

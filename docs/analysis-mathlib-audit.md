@@ -34,13 +34,6 @@ Project modules must not duplicate these APIs under compatibility names.
 
 ## Thin retained corollaries
 
-`Analysis/SpecialFunctions/RegularizedHypergeometric.lean` owns the factorial formula for
-`Complex.regularizedHGFunCoeff 0 {k + 1} n` at natural `k` and `n`, with the lower parameter
-cast to `ℂ`. It follows from the coefficient definition and `Complex.Gamma_nat_eq_factorial`.
-The pinned Mathlib regularized-hypergeometric API supplies the definition and coefficient
-recurrences but not this factorial evaluation. Transport's Fourier-moment and Bessel proofs
-use the same formula at lower parameters 1, 2, and 3; its owner has no transport dependencies.
-
 The following remain because their statements match recurring project boundaries:
 
 | Project declaration | Mathlib basis | Purpose |

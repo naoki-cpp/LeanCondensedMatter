@@ -2,7 +2,6 @@ import LeanCondensedMatter.Analysis.Algebra.QuadraticNormalization
 import LeanCondensedMatter.Analysis.Operator.AlgebraRestriction
 import LeanCondensedMatter.Analysis.DiscreteLattice
 import LeanCondensedMatter.Analysis.Fourier.FiniteCyclic
-import LeanCondensedMatter.Analysis.SpecialFunctions.RegularizedHypergeometric
 import LeanCondensedMatter.Analysis.LatticeGeometry
 import LeanCondensedMatter.Analysis.Matrix.FinTwoCharpoly
 import LeanCondensedMatter.Analysis.ScalarExchange
