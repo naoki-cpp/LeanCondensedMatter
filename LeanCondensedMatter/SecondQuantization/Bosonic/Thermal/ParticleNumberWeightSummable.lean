@@ -1,4 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BoltzmannWeightSummable
+import LeanCondensedMatter.SecondQuantization.Common.Thermal.GrandCanonicalSectorDecomposition
 
 set_option linter.style.header false
 
@@ -12,6 +13,8 @@ index-weighted version and applies the same finite-product `Finsupp` summation t
 
 namespace SecondQuantization
 namespace Bosonic
+
+open QuantumTheory
 
 noncomputable section
 
@@ -74,6 +77,50 @@ theorem hasSum_particleNumber_boltzmannWeight (ε : Mode → ℝ) (β : ℝ)
     rw [Finset.prod_congr rfl hrest, mul_assoc, boltzmannWeight_eq_prod,
       Finset.mul_prod_erase Finset.univ (fun i => oneModeBoltzmannWeight β (ε i) (n i))
         (Finset.mem_univ j)]
+
+
+/-- Finite-mode bosonic grand-canonical Gibbs states have an integrable total
+particle-number observable when every shifted one-mode gap is positive.
+The expectation itself is the statistics-independent definition in `Common`. -/
+theorem grandCanonicalParticleNumberIntegrable_of_pos
+    (ε : Mode → ℝ) (β μ : ℝ)
+    (hpos : ∀ i, 0 < β * (ε i - μ)) :
+    Common.GrandCanonicalParticleNumberIntegrable
+      (Config := Occupation Mode) ε β μ := by
+  have hweighted : Summable (fun n : Occupation Mode =>
+      (particleNumber n : ℝ) * boltzmannWeight (fun i => ε i - μ) β n) := by
+    have hsum : Summable (fun n : Occupation Mode =>
+        ∑ i : Mode, (n i : ℝ) * boltzmannWeight (fun k => ε k - μ) β n) :=
+      summable_sum fun i (_ : i ∈ Finset.univ) =>
+        (hasSum_particleNumber_boltzmannWeight
+          (fun k => ε k - μ) β hpos i).summable
+    refine hsum.congr fun n => ?_
+    rw [particleNumber_eq_sum_univ, Nat.cast_sum, Finset.sum_mul]
+  have hraw : Summable (fun n : Occupation Mode =>
+      (particleNumber n : ℝ) *
+        eigenbasisBoltzmannWeight
+          (Common.grandCanonicalEnergy (Config := Occupation Mode) ε μ) β n) := by
+    refine hweighted.congr fun n => ?_
+    change
+      (particleNumber n : ℝ) * Real.exp (-β * freeEigenvalue (fun i => ε i - μ) n) =
+      (particleNumber n : ℝ) *
+        Real.exp (-β * Common.grandCanonicalEnergy (Config := Occupation Mode) ε μ n)
+    rw [Common.grandCanonicalEnergy_eq_shifted]
+    rfl
+  have hprob : Summable (fun n : Occupation Mode =>
+      eigenbasisGibbsProbability
+        (Common.grandCanonicalEnergy (Config := Occupation Mode) ε μ) β n *
+          (particleNumber n : ℝ)) := by
+    have hscaled := hraw.mul_left
+      ((Common.grandCanonicalPartitionFunction (Config := Occupation Mode) ε β μ)⁻¹)
+    refine hscaled.congr fun n => ?_
+    simp only [eigenbasisGibbsProbability, Common.grandCanonicalPartitionFunction]
+    ring
+  change Summable (fun n : Occupation Mode =>
+    ‖eigenbasisGibbsProbability
+        (Common.grandCanonicalEnergy (Config := Occupation Mode) ε μ) β n *
+        (particleNumber n : ℝ)‖)
+  exact hprob.norm
 
 end FintypeMode
 
