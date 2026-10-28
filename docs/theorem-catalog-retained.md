@@ -608,6 +608,18 @@ using a zero-consumer signal as grounds for changing its retention.
 - `Combinatorics.Pairing.normalizedPairSubtypeEndpointEquiv_apply_val` — simp projection formula for the endpoint equivalence restricted to partner-invariant position subsets; used by mixed diagram components.
 
 - `Combinatorics.MultiplicativeWeight.normalizedObjectMoment_cumulant_eq_connectedContribution` — generic connected-object Möbius-inversion identity under commutative-ring coefficients. The power-series cumulant bridge specializes this endpoint; inlining it into that analytic consumer would lose the statistics-independent combinatorial statement.
+- `SecondQuantization.Common.occupationEnergy_add_const` — energy-shift identity relating a uniform one-particle offset to total occupation number; the existing subtraction theorem supplies its proof but not its directly usable physical statement.
+- `SecondQuantization.Common.finiteContinuousOperator_dysonCoeff_eq_coeff` — finite-configuration bridge between algebraic Fock Dyson coefficients and the generic continuous-operator Dyson coefficients; retain the comparison rather than conflating the two constructions.
+- `SecondQuantization.Fermionic.AlgebraicFock.create_apply` — canonical `@[simp]` evaluation of the smeared creation operator as left multiplication by the one-particle exterior-algebra element.
+- `SecondQuantization.Fermionic.AlgebraicFock.create_comp_self` — canonical `@[simp]` fermionic nilpotency law for a repeated smeared creation operator; it is a physical CAR consequence and not a disposable proof helper.
+- `SecondQuantization.Fermionic.AlgebraicFock.finiteHilbertOperator_apply` — evaluation rule transporting an algebraic Fock endomorphism through the finite-Hilbert realization; it expresses the representation's action on vectors.
+- `SecondQuantization.Fermionic.AlgebraicFock.star_finiteHilbertOperator_create` — orthonormal-basis adjointness of the finite-Hilbert realizations of creation and annihilation, a substantive operator-theoretic endpoint used by the isometry construction.
+- `SecondQuantization.Common.twoPointLegDataCongr_inl` — canonical `@[simp]` evaluation of vertex relabeling on an external two-point leg; paired with the interaction-leg rule.
+- `SecondQuantization.Common.twoPointLegDataCongr_inr` — canonical `@[simp]` evaluation of vertex relabeling on an interaction leg, preserving its local slot while applying the vertex equivalence.
+- `SecondQuantization.Common.externalInsertionVertexOfLeg_externalLeg` — canonical `@[simp]` identification of the vertex of a labelled external insertion leg, part of the public diagram-incidence API.
+- `SecondQuantization.Common.externalInsertionVertexOfLeg_interactionLeg` — canonical `@[simp]` identification of the interaction vertex of a quartic leg, dual to the external-insertion rule.
+- `SecondQuantization.Common.slotSplitVertexEquiv_inl` — canonical `@[simp]` evaluation of the slot-splitting vertex equivalence on the retained component, compatible with the public `slotSplitVertex` embedding.
+
 ## Other retained API contracts (outside theorem audit)
 
 These structural interfaces are worth retaining, but they are not independent proof declarations
