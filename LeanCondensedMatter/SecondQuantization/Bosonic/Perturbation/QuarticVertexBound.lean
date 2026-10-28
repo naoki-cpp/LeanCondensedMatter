@@ -1,4 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Interaction
+import Mathlib.Analysis.Complex.Norm
 
 set_option linter.style.header false
 
