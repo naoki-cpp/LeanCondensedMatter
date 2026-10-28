@@ -123910,7 +123910,7 @@
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": false,
+    "soleCompiledConsumerPrivate": true,
     "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
@@ -123923,7 +123923,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Common.dist_completedCoordinateProjection_le_two_mul_of_fixed"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.CoordinateProjection.0.SecondQuantization.Common.dist_completedCoordinateProjection_le_two_mul_of_fixed"
     ],
     "dependencies": [
       "SecondQuantization.Common.norm_completedCoordinateProjection_le"
@@ -123931,51 +123931,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.dist_completedCoordinateProjection_le_two_mul_of_fixed"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Config : Type u_1} (P : Config → Prop) (ψ φ : ↥(SecondQuantization.Common.CompletedFock Config)),\n  (SecondQuantization.Common.completedCoordinateProjection P) φ = φ →\n    dist ((SecondQuantization.Common.completedCoordinateProjection P) ψ) ψ ≤ 2 * dist ψ φ",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.dist_completedCoordinateProjection_le_two_mul_of_fixed",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.CoordinateProjection",
-    "externalAxioms": [],
-    "docString": "A contractive coordinate projection moving no point of a fixed algebraic approximation\nmoves an arbitrary completed vector by at most twice the approximation error. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.tendsto_completedCoordinateProjection_of_eventually"
-    ],
-    "dependencies": [
-      "SecondQuantization.Common.dist_completedCoordinateProjection_le"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.tendsto_completedCoordinateProjection_of_eventually"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.CoordinateProjection.0.SecondQuantization.Common.dist_completedCoordinateProjection_le_two_mul_of_fixed"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -134138,7 +134094,7 @@
     "dependencies": [
       "SecondQuantization.Common.algebraicToCompleted_denseRange",
       "SecondQuantization.Common.completedCoordinateProjection_algebraicToCompleted_of_support",
-      "SecondQuantization.Common.dist_completedCoordinateProjection_le_two_mul_of_fixed"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.CoordinateProjection.0.SecondQuantization.Common.dist_completedCoordinateProjection_le_two_mul_of_fixed"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -179713,6 +179669,50 @@
     "completedMention": false,
     "compiledConsumers": [
       "_private.LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.CoordinateIsometry.0.SecondQuantization.Common.norm_completedReindexLinear"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Config : Type u_1} (P : Config → Prop) (ψ φ : ↥(SecondQuantization.Common.CompletedFock Config)),\n  (SecondQuantization.Common.completedCoordinateProjection P) φ = φ →\n    dist ((SecondQuantization.Common.completedCoordinateProjection P) ψ) ψ ≤ 2 * dist ψ φ",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.CoordinateProjection.0.SecondQuantization.Common.dist_completedCoordinateProjection_le_two_mul_of_fixed",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.CoordinateProjection",
+    "externalAxioms": [],
+    "docString": "A contractive coordinate projection moving no point of a fixed algebraic approximation\nmoves an arbitrary completed vector by at most twice the approximation error. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Common.tendsto_completedCoordinateProjection_of_eventually"
+    ],
+    "dependencies": [
+      "SecondQuantization.Common.dist_completedCoordinateProjection_le"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.tendsto_completedCoordinateProjection_of_eventually"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
