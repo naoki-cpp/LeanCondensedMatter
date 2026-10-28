@@ -3996,6 +3996,12 @@
       "externalImportCount": 0
     },
     {
+      "name": "LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.Antiunitary",
+      "sourceFile": "LeanCondensedMatter/QuantumTheory/LinearResponse/Dynamics/Antiunitary.lean",
+      "imports": [],
+      "externalImportCount": 1
+    },
+    {
       "name": "LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.ConservationLaws",
       "sourceFile": "LeanCondensedMatter/QuantumTheory/LinearResponse/Dynamics/ConservationLaws.lean",
       "imports": [
@@ -4314,6 +4320,7 @@
       "name": "LeanCondensedMatter.QuantumTheory.LinearResponse",
       "sourceFile": "LeanCondensedMatter/QuantumTheory/LinearResponse.lean",
       "imports": [
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.Antiunitary",
         "LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.ConservationLaws",
         "LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.EquationsOfMotion",
         "LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.Free",
@@ -4825,7 +4832,7 @@
       "imports": [
         "LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Interaction"
       ],
-      "externalImportCount": 0
+      "externalImportCount": 1
     },
     {
       "name": "LeanCondensedMatter.SecondQuantization.Bosonic.Perturbation",
@@ -6149,7 +6156,7 @@
       "imports": [
         "LeanCondensedMatter.SecondQuantization.Common.Algebra.AlgebraicFock"
       ],
-      "externalImportCount": 1
+      "externalImportCount": 2
     },
     {
       "name": "LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonPartitionFunction",
@@ -6862,7 +6869,7 @@
         "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.Annihilation",
         "LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.SmearedField"
       ],
-      "externalImportCount": 2
+      "externalImportCount": 3
     },
     {
       "name": "LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace",
@@ -8392,6 +8399,16 @@
       "externalImportCount": 0
     },
     {
+      "name": "LeanCondensedMatter.Transport.FiniteConductivityTable.Reciprocity.Antiunitary",
+      "sourceFile": "LeanCondensedMatter/Transport/FiniteConductivityTable/Reciprocity/Antiunitary.lean",
+      "imports": [
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.Antiunitary",
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann.Eigenbasis.Data",
+        "LeanCondensedMatter.Transport.FiniteConductivityTable.Reciprocity"
+      ],
+      "externalImportCount": 1
+    },
+    {
       "name": "LeanCondensedMatter.Transport.FiniteConductivityTable.Reciprocity",
       "sourceFile": "LeanCondensedMatter/Transport/FiniteConductivityTable/Reciprocity.lean",
       "imports": [
@@ -8673,6 +8690,7 @@
         "LeanCondensedMatter.Transport.FiniteConductivityTable",
         "LeanCondensedMatter.Transport.FiniteConductivityTable.Eigenbasis",
         "LeanCondensedMatter.Transport.FiniteConductivityTable.Reciprocity",
+        "LeanCondensedMatter.Transport.FiniteConductivityTable.Reciprocity.Antiunitary",
         "LeanCondensedMatter.Transport.KuboBastin",
         "LeanCondensedMatter.Transport.Resolvent",
         "LeanCondensedMatter.Transport.Streda",

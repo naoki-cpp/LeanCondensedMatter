@@ -15361,8 +15361,8 @@
     "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": false,
     "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "ContinuousLinearMap.SpectralTraceClass.compact",
     "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Bundled",
@@ -38403,8 +38403,8 @@
     "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": false,
     "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "QuantumMechanics.SingleParticle.Continuum.ContinuumSchwartzEvolutionRepresentative1D.totalProbability_eq_initial",
     "module": "LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Evolution.RepresentativeContinuity1D",
@@ -45568,8 +45568,8 @@
     "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": false,
     "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "QuantumTheory.DensityOperator.eigenvalue_nonneg",
     "module": "LeanCondensedMatter.QuantumTheory.DensityOperator.Basic",
@@ -70213,7 +70213,7 @@
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": false,
+    "soleCompiledConsumerPrivate": true,
     "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
@@ -70226,7 +70226,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Models.MassiveDirac.inPlaneSpinRotation_conjugate_mul"
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.RealSpaceIntegral.0.QuantumTheory.Models.MassiveDirac.gaussianCrossedTraceKernel_spinRotation_conjugate"
     ],
     "dependencies": [
       "QuantumTheory.Models.MassiveDirac.inPlaneSpinRotation_mul_inverse"
@@ -70234,7 +70234,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Models.MassiveDirac.inPlaneSpinRotation_conjugate_mul"
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.RealSpaceIntegral.0.QuantumTheory.Models.MassiveDirac.gaussianCrossedTraceKernel_spinRotation_conjugate"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -70393,8 +70393,8 @@
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -70406,7 +70406,6 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Models.MassiveDirac.inPlaneSpinRotation_conjugate_trace",
       "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.RealSpace.0.QuantumTheory.Models.MassiveDirac.gaussianCrossedAngularCurrentEntryKernel_sourceRotation"
     ],
     "dependencies": [
@@ -70416,96 +70415,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Models.MassiveDirac.inPlaneSpinRotation_conjugate_trace",
       "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.RealSpace.0.QuantumTheory.Models.MassiveDirac.gaussianCrossedAngularCurrentEntryKernel_sourceRotation"
-    ],
-    "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (angle : ℝ) (A B : QuantumTheory.Models.MassiveDirac.Matrix2),\n  QuantumTheory.Models.MassiveDirac.inPlaneSpinRotation angle * A *\n        QuantumTheory.Models.MassiveDirac.inPlaneSpinRotationInverse angle *\n      (QuantumTheory.Models.MassiveDirac.inPlaneSpinRotation angle * B *\n        QuantumTheory.Models.MassiveDirac.inPlaneSpinRotationInverse angle) =\n    QuantumTheory.Models.MassiveDirac.inPlaneSpinRotation angle * (A * B) *\n      QuantumTheory.Models.MassiveDirac.inPlaneSpinRotationInverse angle",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Models.MassiveDirac.inPlaneSpinRotation_conjugate_mul",
-    "module": "LeanCondensedMatter.Models.MassiveDirac.Model.Rotation",
-    "externalAxioms": [],
-    "docString": "Conjugation by an in-plane spinor is multiplicative. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.RealSpaceIntegral.0.QuantumTheory.Models.MassiveDirac.gaussianCrossedTraceKernel_spinRotation_conjugate"
-    ],
-    "dependencies": [
-      "QuantumTheory.Models.MassiveDirac.inPlaneSpinRotationInverse_mul"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.RealSpaceIntegral.0.QuantumTheory.Models.MassiveDirac.gaussianCrossedTraceKernel_spinRotation_conjugate"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (angle : ℝ) (M : QuantumTheory.Models.MassiveDirac.Matrix2),\n  (QuantumTheory.Models.MassiveDirac.inPlaneSpinRotation angle * M *\n        QuantumTheory.Models.MassiveDirac.inPlaneSpinRotationInverse angle).trace =\n    Matrix.trace M",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Models.MassiveDirac.inPlaneSpinRotation_conjugate_trace",
-    "module": "LeanCondensedMatter.Models.MassiveDirac.Model.Rotation",
-    "externalAxioms": [],
-    "docString": "Conjugation by an in-plane spinor preserves the two-band trace. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.RealSpaceIntegral.0.QuantumTheory.Models.MassiveDirac.gaussianCrossedTraceKernel_spinRotation_conjugate"
-    ],
-    "dependencies": [
-      "QuantumTheory.Models.MassiveDirac.inPlaneSpinRotation_conjugate_diagonal"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.RealSpaceIntegral.0.QuantumTheory.Models.MassiveDirac.gaussianCrossedTraceKernel_spinRotation_conjugate"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -83960,6 +83870,126 @@
   },
   {
     "terminal": true,
+    "statement": "∀ {M : Type u_1} {ι : Type u_2} {d : Type u_3} {H : Type u_4} [inst : NormedAddCommGroup H]\n  [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (data : QuantumTheory.Transport.AntiunitaryCurrentPairing M ι d H) [inst_3 : Fintype ι]\n  (volume : QuantumTheory.Transport.PositiveVolume) (omega eta : ℝ),\n  QuantumTheory.Transport.ConductivityTensor.IsOnsagerReciprocal\n    (data.toReciprocalCurrentData.conductivityFamily volume data.hbar omega eta) data.reverse",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.AntiunitaryCurrentPairing.conductivityFamily_isOnsagerReciprocal",
+    "module": "LeanCondensedMatter.Transport.FiniteConductivityTable.Reciprocity.Antiunitary",
+    "externalAxioms": [],
+    "docString": "Microscopic antiunitary current covariance is sufficient for the\nOnsager–Casimir property of the finite Kubo–Lehmann conductivity family,\nat a shared Planck constant and fixed driving/switching rates. ",
+    "directWrapperTargetModule": "LeanCondensedMatter.Transport.FiniteConductivityTable.Reciprocity",
+    "directWrapperOf": "QuantumTheory.Transport.FiniteReciprocalCurrentData.conductivityFamily_isOnsagerReciprocal",
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.Transport.FiniteReciprocalCurrentData.conductivityFamily_isOnsagerReciprocal"
+    ],
+    "crossModuleDirectWrapper": true,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {M : Type u_1} {ι : Type u_2} {d : Type u_3} {H : Type u_4} [inst : NormedAddCommGroup H]\n  [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (data : QuantumTheory.Transport.AntiunitaryCurrentPairing M ι d H) (m : M) (i : d) (a b : ι),\n  inner ℂ ((data.spectral (data.reverse m)).basis a)\n      ((data.current (data.reverse m) i) ((data.spectral (data.reverse m)).basis b)) =\n    -(starRingEnd ℂ) (inner ℂ ((data.spectral m).basis a) ((data.current m i) ((data.spectral m).basis b)))",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.AntiunitaryCurrentPairing.currentMatrixElement_reverse",
+    "module": "LeanCondensedMatter.Transport.FiniteConductivityTable.Reciprocity.Antiunitary",
+    "externalAxioms": [],
+    "docString": "Time-reversal covariance makes each reversed current matrix element\nthe negative conjugate of the original one. This is an operator-level\nderivation of the scalar condition used by the finite Lehmann theorem. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.AntiunitaryCurrentPairing.toReciprocalCurrentData"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {M : Type u_1} {ι : Type u_2} {d : Type u_3} {H : Type u_4} [inst : NormedAddCommGroup H]\n  [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (data : QuantumTheory.Transport.AntiunitaryCurrentPairing M ι d H) (m : M) (i : d) (a b : ι),\n  (starRingEnd ℂ) (inner ℂ ((data.spectral m).basis a) ((data.current m i) ((data.spectral m).basis b))) =\n    inner ℂ ((data.spectral m).basis b) ((data.current m i) ((data.spectral m).basis a))",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.AntiunitaryCurrentPairing.star_currentMatrixElement",
+    "module": "LeanCondensedMatter.Transport.FiniteConductivityTable.Reciprocity.Antiunitary",
+    "externalAxioms": [],
+    "docString": "Hermiticity of the charge-current operator determines the conjugate\ntransposed matrix element in its actual eigenbasis. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.AntiunitaryCurrentPairing.toReciprocalCurrentData"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
     "statement": "∀ {ι : Type u_1} (conductivity : QuantumTheory.Transport.ConductivityTensor ι) (i j : ι),\n  conductivity.component i j = conductivity.symmetricComponent i j + conductivity.hallComponent i j",
     "standardAxioms": [
       "Classical.choice",
@@ -85657,7 +85687,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ {M : Type u_1} {ι : Type u_2} {d : Type u_3} (data : QuantumTheory.Transport.FiniteReciprocalCurrentData M ι d)\n  [inst : Fintype ι] (volume : QuantumTheory.Transport.PositiveVolume) (hbar omega eta : ℝ),\n  QuantumTheory.Transport.ConductivityTensor.IsOnsagerReciprocal (data.conductivityFamily volume hbar omega eta)\n    data.reverse",
     "standardAxioms": [
       "Classical.choice",
@@ -85665,10 +85695,10 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "QuantumTheory.Transport.FiniteReciprocalCurrentData.conductivityFamily_isOnsagerReciprocal",
     "module": "LeanCondensedMatter.Transport.FiniteConductivityTable.Reciprocity",
@@ -85676,14 +85706,18 @@
     "docString": "Unlike the conditional tensor-level reciprocity projection, this theorem\n*derives* the Onsager property from energy, occupation, antiunitary-current,\nHermiticity, and contact-transformation hypotheses of the finite spectral Kubo data. ",
     "directWrapperTargetModule": "LeanCondensedMatter.Transport.FiniteConductivityTable.Reciprocity",
     "directWrapperOf": "QuantumTheory.Transport.FiniteReciprocalCurrentData.finiteConductivityTableValue_reverse",
-    "dependents": [],
+    "dependents": [
+      "QuantumTheory.Transport.AntiunitaryCurrentPairing.conductivityFamily_isOnsagerReciprocal"
+    ],
     "dependencies": [
       "QuantumTheory.Transport.FiniteReciprocalCurrentData.finiteConductivityTableValue_reverse"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.AntiunitaryCurrentPairing.conductivityFamily_isOnsagerReciprocal"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -89526,52 +89560,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (n : ℕ), Complex.regularizedHGFunCoeff 0 {1} n = 1 / ↑n.factorial ^ 2",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.polarFourierBesselZeroCoeff",
-    "module": "LeanCondensedMatter.Transport.Analysis.PolarFourier",
-    "externalAxioms": [],
-    "docString": "The zeroth-order regularized hypergeometric coefficient of Mathlib's Bessel function\nis a reciprocal square of a factorial. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.polarFourierZerothMoment_even_eq_bessel",
-      "_private.LeanCondensedMatter.Transport.Analysis.PolarFourier.0.QuantumTheory.Transport.regularizedHGFun_one_sub_two_eq_mul_three",
-      "_private.LeanCondensedMatter.Transport.Analysis.PolarFourier.0.QuantumTheory.Transport.regularizedHGFun_zero_one_hasDerivAt"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.polarFourierZerothMoment_even_eq_bessel",
-      "_private.LeanCondensedMatter.Transport.Analysis.PolarFourier.0.QuantumTheory.Transport.regularizedHGFun_one_sub_two_eq_mul_three",
-      "_private.LeanCondensedMatter.Transport.Analysis.PolarFourier.0.QuantumTheory.Transport.regularizedHGFun_zero_one_hasDerivAt"
-    ],
-    "compiledConsumerCount": 3,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ (n : ℕ),\n  QuantumTheory.Transport.polarFourierCosineMoment (n + 2) =\n    (↑n + 1) / (↑n + 2) * QuantumTheory.Transport.polarFourierCosineMoment n",
     "standardAxioms": [
       "Classical.choice",
@@ -90624,8 +90612,8 @@
       "QuantumTheory.Transport.polarFourierZerothAngularKernel_eq_besselJ"
     ],
     "dependencies": [
-      "QuantumTheory.Transport.polarFourierBesselZeroCoeff",
-      "QuantumTheory.Transport.polarFourierCosineMoment_even_factorial"
+      "QuantumTheory.Transport.polarFourierCosineMoment_even_factorial",
+      "_private.LeanCondensedMatter.Transport.Analysis.PolarFourier.0.QuantumTheory.Transport.regularizedHGFunCoeff_zero_singleton_nat_add_one"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -104615,8 +104603,8 @@
     "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": false,
     "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "SecondQuantization.Bosonic.grandCanonicalGibbsExpectation_eq_sum_pairing_concrete",
     "module": "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.ConcreteExpectationRecursion",
@@ -120920,7 +120908,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Config : Type u_1} (P : Config → Prop) [inst : DecidablePred P]\n  (ψ : ↥(SecondQuantization.Common.CompletedFock Config)) (c : Config),\n  ↑((SecondQuantization.Common.completedCoordinateProjection P) ψ) c = if P c then ↑ψ c else 0",
+    "statement": "∀ {Config : Type u_1} (P : Config → Prop) (ψ : ↥(SecondQuantization.Common.CompletedFock Config)) (c : Config),\n  ↑((SecondQuantization.Common.completedCoordinateProjection P) ψ) c = if P c then ↑ψ c else 0",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -120976,7 +120964,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Config : Type u_1} (P : Config → Prop) [inst : DecidablePred P] (c : Config),\n  (SecondQuantization.Common.completedCoordinateProjection P) (SecondQuantization.Common.completedBasisState c) =\n    if P c then SecondQuantization.Common.completedBasisState c else 0",
+    "statement": "∀ {Config : Type u_1} (P : Config → Prop) (c : Config),\n  (SecondQuantization.Common.completedCoordinateProjection P) (SecondQuantization.Common.completedBasisState c) =\n    if P c then SecondQuantization.Common.completedBasisState c else 0",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -127230,46 +127218,6 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {Config : Type u_1} [inst : Fintype Config]\n  (A : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config),\n  IsSelfAdjoint (SecondQuantization.Common.finiteHilbertOperatorAlgEquiv A) ↔\n    ∀ (m n : Config), star (SecondQuantization.Common.matrixCoeff A n m) = SecondQuantization.Common.matrixCoeff A m n",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.finiteHilbertOperator_isSelfAdjoint_iff_matrixCoeff",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Algebra.FiniteHilbertSelfAdjoint",
-    "externalAxioms": [],
-    "docString": "Coefficient-level criterion for self-adjointness after finite-Hilbert transport. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "SecondQuantization.Common.star_finiteHilbertOperator_eq_iff_matrixCoeff"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
     "statement": "∀ {Config : Type u_1} [inst : Fintype Config] (n : Config),\n  SecondQuantization.Common.finiteHilbertOrthonormalBasis n = SecondQuantization.Common.finiteHilbertBasisState n",
     "standardAxioms": [
       "Classical.choice",
@@ -128262,8 +128210,8 @@
     "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": false,
     "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "SecondQuantization.Common.grandCanonicalPartitionFunction_pos",
     "module": "LeanCondensedMatter.SecondQuantization.Common.Thermal.GrandCanonical",
@@ -134096,7 +134044,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -134108,7 +134056,6 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Common.finiteHilbertOperator_isSelfAdjoint_iff_matrixCoeff",
       "SecondQuantization.Fermionic.star_finiteHilbertCreate"
     ],
     "dependencies": [
@@ -134117,10 +134064,9 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.finiteHilbertOperator_isSelfAdjoint_iff_matrixCoeff",
       "SecondQuantization.Fermionic.star_finiteHilbertCreate"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -146740,6 +146686,7 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Fermionic.completedFockUnitary_createField",
+      "SecondQuantization.Fermionic.completedFockUnitary_joint_continuous",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.UnitaryLift.0.SecondQuantization.Fermionic.completedExterior_annihilate",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.UnitaryLift.0.SecondQuantization.Fermionic.completedExterior_denseRange",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.UnitaryLift.0.SecondQuantization.Fermionic.inner_completedExterior_create"
@@ -146749,11 +146696,52 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Fermionic.completedFockUnitary_createField",
+      "SecondQuantization.Fermionic.completedFockUnitary_joint_continuous",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.UnitaryLift.0.SecondQuantization.Fermionic.completedExterior_annihilate",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.UnitaryLift.0.SecondQuantization.Fermionic.completedExterior_denseRange",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.UnitaryLift.0.SecondQuantization.Fermionic.inner_completedExterior_create"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 5,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode]\n  (U :\n    Multiplicative ℝ →*\n      ↥(unitary\n          (↥(SecondQuantization.Common.CompletedFock Mode) →L[ℂ] ↥(SecondQuantization.Common.CompletedFock Mode)))),\n  (∀ (v : ↥(SecondQuantization.Common.CompletedFock Mode)), Continuous fun t => ↑(U (Multiplicative.ofAdd t)) v) →\n    ∀ (x : ↥(SecondQuantization.Fermionic.CompletedFockSpace Mode)),\n      Continuous fun t => ↑((SecondQuantization.Fermionic.completedFockUnitaryGroup U) (Multiplicative.ofAdd t)) x",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.completedFockUnitaryGroup_apply_continuous",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.UnitaryLift",
+    "externalAxioms": [],
+    "docString": "Strong continuity of the one-particle group supplies the strong-continuity hypothesis\nrequired by the general density linear-response theorems on completed Fock space. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "SecondQuantization.Fermionic.completedFockUnitary_joint_continuous"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -146818,7 +146806,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode]\n  (e : ↥(SecondQuantization.Common.CompletedFock Mode) ≃ₗᵢ[ℂ] ↥(SecondQuantization.Common.CompletedFock Mode))\n  (v : ↥(SecondQuantization.Common.CompletedFock Mode)) (x : ↥(SecondQuantization.Fermionic.CompletedFockSpace Mode)),\n  (SecondQuantization.Fermionic.completedFockUnitary e) ((SecondQuantization.Fermionic.completedCreateField v) x) =\n    (SecondQuantization.Fermionic.completedCreateField (e v)) ((SecondQuantization.Fermionic.completedFockUnitary e) x)",
     "standardAxioms": [
       "Classical.choice",
@@ -146826,7 +146814,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -146837,7 +146825,9 @@
     "docString": "A one-particle unitary intertwines arbitrary square-summable creation fields through its\nFock lift. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "SecondQuantization.Fermionic.completedFockUnitary_joint_continuous"
+    ],
     "dependencies": [
       "SecondQuantization.Fermionic.completedExterior_create",
       "SecondQuantization.Fermionic.completedFockUnitary_completedExterior",
@@ -146845,8 +146835,58 @@
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.completedFockUnitary_joint_continuous"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] {X : Type u_2} [inst_1 : TopologicalSpace X]\n  (e : X → ↥(SecondQuantization.Common.CompletedFock Mode) ≃ₗᵢ[ℂ] ↥(SecondQuantization.Common.CompletedFock Mode)),\n  (∀ (v : ↥(SecondQuantization.Common.CompletedFock Mode)), Continuous fun t => (e t) v) →\n    Continuous fun p => (SecondQuantization.Fermionic.completedFockUnitary (e p.2)) p.1",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.completedFockUnitary_joint_continuous",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.UnitaryLift",
+    "externalAxioms": [],
+    "docString": "Strongly continuous one-particle unitary families act jointly continuously on completed\nFock space. No operator-norm continuity of the one-particle or Fock family is assumed. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.completedFockUnitaryGroup_apply_continuous"
+    ],
+    "dependencies": [
+      "SecondQuantization.Fermionic.completedExterior_create",
+      "SecondQuantization.Fermionic.completedFockUnitary_createField",
+      "SecondQuantization.Fermionic.completedFockUnitary_vacuum",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.UnitaryLift.0.SecondQuantization.Fermionic.completedExterior_algebraMap",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.UnitaryLift.0.SecondQuantization.Fermionic.completedExterior_denseRange"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.completedFockUnitaryGroup_apply_continuous"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -146942,7 +146982,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode]\n  (e : ↥(SecondQuantization.Common.CompletedFock Mode) ≃ₗᵢ[ℂ] ↥(SecondQuantization.Common.CompletedFock Mode)),\n  (SecondQuantization.Fermionic.completedFockUnitary e)\n      (SecondQuantization.Fermionic.completedBasisState SecondQuantization.Fermionic.vacuum) =\n    SecondQuantization.Fermionic.completedBasisState SecondQuantization.Fermionic.vacuum",
     "standardAxioms": [
       "Classical.choice",
@@ -146950,7 +146990,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -146961,15 +147001,19 @@
     "docString": "The Fock lift fixes the vacuum. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "SecondQuantization.Fermionic.completedFockUnitary_joint_continuous"
+    ],
     "dependencies": [
       "SecondQuantization.Fermionic.completedFockUnitary_completedExterior",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.UnitaryLift.0.SecondQuantization.Fermionic.completedExterior_algebraMap"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.completedFockUnitary_joint_continuous"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -152069,7 +152113,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (β μ : ℝ)\n  (hsum : QuantumTheory.EigenbasisGibbsSummable (SecondQuantization.Common.grandCanonicalEnergy ε μ) β),\n  SecondQuantization.Fermionic.GrandCanonicalTotalNumberIntegrable ε β μ →\n    HasSum\n      (fun n =>\n        inner ℂ (SecondQuantization.Fermionic.completedBasisState n)\n          ((SecondQuantization.Common.grandCanonicalGibbsDensityOperator ε β μ hsum).op\n            (↑SecondQuantization.Fermionic.completedTotalNumberOperator\n              ⟨SecondQuantization.Fermionic.completedBasisState n, ⋯⟩)))\n      ↑(SecondQuantization.Fermionic.grandCanonicalTotalNumberExpectation ε β μ)",
+    "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (β μ : ℝ)\n  (hsum : QuantumTheory.EigenbasisGibbsSummable (SecondQuantization.Common.grandCanonicalEnergy ε μ) β),\n  SecondQuantization.Common.GrandCanonicalParticleNumberIntegrable ε β μ →\n    HasSum\n      (fun n =>\n        inner ℂ (SecondQuantization.Fermionic.completedBasisState n)\n          ((SecondQuantization.Common.grandCanonicalGibbsDensityOperator ε β μ hsum).op\n            (↑SecondQuantization.Fermionic.completedTotalNumberOperator\n              ⟨SecondQuantization.Fermionic.completedBasisState n, ⋯⟩)))\n      ↑(SecondQuantization.Common.grandCanonicalParticleNumberExpectation ε β μ)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -171995,8 +172039,7 @@
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedTraceKernel_polarPoint2D_eq_radial_tensor"
     ],
     "dependencies": [
-      "QuantumTheory.Models.MassiveDirac.inPlaneSpinRotation_conjugate_mul",
-      "QuantumTheory.Models.MassiveDirac.inPlaneSpinRotation_conjugate_trace"
+      "QuantumTheory.Models.MassiveDirac.inPlaneSpinRotationInverse_mul"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -188289,6 +188332,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "SecondQuantization.Fermionic.completedFockUnitary_joint_continuous",
       "SecondQuantization.Fermionic.completedFockUnitary_vacuum",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.UnitaryLift.0.SecondQuantization.Fermionic.completedExterior_annihilate",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.UnitaryLift.0.SecondQuantization.Fermionic.completedExterior_denseRange"
@@ -188297,11 +188341,12 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "SecondQuantization.Fermionic.completedFockUnitary_joint_continuous",
       "SecondQuantization.Fermionic.completedFockUnitary_vacuum",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.UnitaryLift.0.SecondQuantization.Fermionic.completedExterior_annihilate",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.UnitaryLift.0.SecondQuantization.Fermionic.completedExterior_denseRange"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -188386,6 +188431,7 @@
     "dependents": [
       "SecondQuantization.Fermionic.completedFockUnitary_completedExterior",
       "SecondQuantization.Fermionic.completedFockUnitary_createField",
+      "SecondQuantization.Fermionic.completedFockUnitary_joint_continuous",
       "SecondQuantization.Fermionic.completedFockUnitary_refl",
       "SecondQuantization.Fermionic.completedFockUnitary_trans"
     ],
@@ -188405,10 +188451,11 @@
       "SecondQuantization.Fermionic.completedFockUnitary",
       "SecondQuantization.Fermionic.completedFockUnitary_completedExterior",
       "SecondQuantization.Fermionic.completedFockUnitary_createField",
+      "SecondQuantization.Fermionic.completedFockUnitary_joint_continuous",
       "SecondQuantization.Fermionic.completedFockUnitary_refl",
       "SecondQuantization.Fermionic.completedFockUnitary_trans"
     ],
-    "compiledConsumerCount": 5,
+    "compiledConsumerCount": 6,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -192557,6 +192604,52 @@
   },
   {
     "terminal": false,
+    "statement": "∀ (k n : ℕ), Complex.regularizedHGFunCoeff 0 {↑(k + 1)} n = 1 / (↑n.factorial * ↑(n + k).factorial)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Transport.Analysis.PolarFourier.0.QuantumTheory.Transport.regularizedHGFunCoeff_zero_singleton_nat_add_one",
+    "module": "LeanCondensedMatter.Transport.Analysis.PolarFourier",
+    "externalAxioms": [],
+    "docString": "The coefficient of the regularized hypergeometric series with lower parameter `k + 1`. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.polarFourierZerothMoment_even_eq_bessel",
+      "_private.LeanCondensedMatter.Transport.Analysis.PolarFourier.0.QuantumTheory.Transport.regularizedHGFun_one_sub_two_eq_mul_three",
+      "_private.LeanCondensedMatter.Transport.Analysis.PolarFourier.0.QuantumTheory.Transport.regularizedHGFun_zero_one_hasDerivAt"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.polarFourierZerothMoment_even_eq_bessel",
+      "_private.LeanCondensedMatter.Transport.Analysis.PolarFourier.0.QuantumTheory.Transport.regularizedHGFun_one_sub_two_eq_mul_three",
+      "_private.LeanCondensedMatter.Transport.Analysis.PolarFourier.0.QuantumTheory.Transport.regularizedHGFun_zero_one_hasDerivAt"
+    ],
+    "compiledConsumerCount": 3,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ (w : ℂ), Complex.regularizedHGFun 0 {1} w - Complex.regularizedHGFun 0 {2} w = w * Complex.regularizedHGFun 0 {3} w",
     "standardAxioms": [
       "Classical.choice",
@@ -192579,7 +192672,7 @@
       "_private.LeanCondensedMatter.Transport.Analysis.PolarFourier.0.QuantumTheory.Transport.besselJ_zero_one_two_recurrence"
     ],
     "dependencies": [
-      "QuantumTheory.Transport.polarFourierBesselZeroCoeff"
+      "_private.LeanCondensedMatter.Transport.Analysis.PolarFourier.0.QuantumTheory.Transport.regularizedHGFunCoeff_zero_singleton_nat_add_one"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -192623,7 +192716,7 @@
       "_private.LeanCondensedMatter.Transport.Analysis.PolarFourier.0.QuantumTheory.Transport.besselJ_zero_hasDerivAt"
     ],
     "dependencies": [
-      "QuantumTheory.Transport.polarFourierBesselZeroCoeff"
+      "_private.LeanCondensedMatter.Transport.Analysis.PolarFourier.0.QuantumTheory.Transport.regularizedHGFunCoeff_zero_singleton_nat_add_one"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -195665,8 +195758,8 @@
     "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": true,
     "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
     "projectAxioms": [],
     "name": "siteProjector_apply",
     "module": "LeanCondensedMatter.Analysis.DiscreteLattice",
