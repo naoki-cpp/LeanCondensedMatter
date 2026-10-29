@@ -46,16 +46,11 @@ noncomputable def finiteDimensionalOperatorTrace :
     (H →L[ℂ] H) →L[ℂ] ℂ :=
   ((LinearMap.trace ℂ H).comp (ContinuousLinearMap.coeLM ℂ)).toContinuousLinearMap
 
-private theorem finiteDimensionalOperatorTrace_apply_private (operator : H →L[ℂ] H) :
-    finiteDimensionalOperatorTrace (H := H) operator =
-      LinearMap.trace ℂ H (operator : H →ₗ[ℂ] H) :=
-  rfl
-
 @[simp]
 theorem finiteDimensionalOperatorTrace_apply (operator : H →L[ℂ] H) :
     finiteDimensionalOperatorTrace (H := H) operator =
       LinearMap.trace ℂ H (operator : H →ₗ[ℂ] H) :=
-  finiteDimensionalOperatorTrace_apply_private operator
+  rfl
 
 /-- The finite-dimensional operator trace of a matrix transported through the canonical Euclidean
 matrix/operator equivalence is its ordinary matrix trace. -/
