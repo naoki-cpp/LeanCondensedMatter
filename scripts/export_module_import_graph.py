@@ -3,9 +3,10 @@
 from __future__ import annotations
 
 import json
+import re
 from pathlib import Path
 
-from architecture_audit_common import lean_files, lean_imports, module_name_from_path
+from architecture_audit_common import lean_files, lean_imports, lean_source, module_name_from_path
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -71,9 +72,37 @@ def import_overlap_candidates(modules: list[dict[str, object]]) -> list[tuple[st
     return candidates
 
 
-def is_module_system_file(relative_path: str) -> bool:
-    from architecture_audit_common import lean_source
+_IMPORT_COMMAND = re.compile(r"(?:public\\s+)?(?:meta\\s+)?import(?:\\s+all)?\\s+\\S+")
 
+
+def is_import_only_umbrella(relative_path: str) -> bool:
+    """Recognize import-only umbrella files, conservatively.
+
+    A matching subtree and no declarations or other commands are both required.
+    A semantic implementation file remains in review even if it has a matching
+    directory; unknown source commands also prevent automatic exclusion.
+    """
+    path = ROOT / relative_path
+    if not path.with_suffix("").is_dir():
+        return False
+    found_import = False
+    for line in lean_source(path).splitlines():
+        command = line.strip()
+        if not command or command in {
+            "module",
+            "public section",
+            "end",
+            "set_option linter.style.header false",
+        }:
+            continue
+        if _IMPORT_COMMAND.fullmatch(command):
+            found_import = True
+            continue
+        return False
+    return found_import
+
+
+def is_module_system_file(relative_path: str) -> bool:
     source = lean_source(ROOT / relative_path).lstrip().splitlines()
     return bool(source and source[0].strip() == "module")
 
@@ -93,31 +122,48 @@ def main() -> None:
         default=30,
         help="Maximum overlap candidates to show (default: 30)",
     )
+    parser.add_argument(
+        "--include-umbrellas",
+        action="store_true",
+        help="Also show import-only umbrella overlaps (normally excluded from review)",
+    )
     args = parser.parse_args()
     if args.limit < 0:
         parser.error("--limit must be nonnegative")
 
     inventory = export_modules()
     if args.report_overlaps:
-        candidates = import_overlap_candidates(inventory["modules"])
-        module_system = {
-            path: is_module_system_file(path) for path, _, _ in candidates
-        }
+        overlaps = import_overlap_candidates(inventory["modules"])
+        source_files = {path for path, _, _ in overlaps}
+        umbrellas = {path for path in source_files if is_import_only_umbrella(path)}
+        module_system = {path for path in source_files if is_module_system_file(path)}
+        candidates = (
+            overlaps if args.include_umbrellas
+            else [entry for entry in overlaps if entry[0] not in umbrellas]
+        )
         candidates.sort(
-            key=lambda candidate: (
-                not module_system[candidate[0]],
-                candidate[0],
-                candidate[1],
-                candidate[2],
+            key=lambda entry: (
+                entry[0] not in module_system,
+                entry[0] in umbrellas,
+                entry[0], entry[1], entry[2],
             )
         )
-        print(f"{len(candidates)} project-local transitive import overlap(s) (advisory only)")
+        umbrella_count = sum(path in umbrellas for path, _, _ in overlaps)
+        print(f"{len(overlaps)} project-local transitive overlaps (not proven redundant)")
+        print(f"{umbrella_count} import-only umbrella overlap(s) (intentional aggregation; "
+              "excluded by default)")
+        print(f"{len(overlaps) - umbrella_count} implementation / other overlap(s) "
+              "(manual review only)")
+        print(f"Showing {min(args.limit, len(candidates))} of {len(candidates)} "
+              "overlaps in selected scope")
         for path, target, via in candidates[:args.limit]:
-            flavor = "module" if module_system[path] else "legacy"
-            print(f"[{flavor}] {path}: `{target}` also reachable via `{via}`")
+            flavor = "module" if path in module_system else "legacy"
+            kind = "umbrella" if path in umbrellas else "review"
+            print(f"[{flavor}][{kind}] {path}: `{target}` also reachable via `{via}`")
         if len(candidates) > args.limit:
             print(f"... {len(candidates) - args.limit} more; increase --limit to see them")
-        print("Do not remove direct imports without checking Lean module visibility and compilation.")
+        print("This is a graph overlap, NOT evidence that the direct import can be removed. "
+              "Check Lean visibility and compile consumers before editing.")
         return
 
     OUTPUT.parent.mkdir(parents=True, exist_ok=True)
