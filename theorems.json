@@ -125860,7 +125860,6 @@
     "dependents": [
       "SecondQuantization.Common.continuousInteractionPicture_basis_apply_apply",
       "SecondQuantization.Common.continuous_finiteContinuousOperator",
-      "SecondQuantization.Common.finiteDimensionalOperatorTrace_finiteContinuousOperator",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.FiniteAnalyticBridge.0.SecondQuantization.Common.continuousOperatorIntervalIntegral_basis"
     ],
     "dependencies": [
@@ -125872,10 +125871,9 @@
     "compiledConsumers": [
       "SecondQuantization.Common.continuousInteractionPicture_basis_apply_apply",
       "SecondQuantization.Common.continuous_finiteContinuousOperator",
-      "SecondQuantization.Common.finiteDimensionalOperatorTrace_finiteContinuousOperator",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.FiniteAnalyticBridge.0.SecondQuantization.Common.continuousOperatorIntervalIntegral_basis"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -126030,7 +126028,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": false,
+    "terminal": true,
     "statement": "∀ {Config : Type u_1} [inst : Fintype Config] (A : SecondQuantization.Common.FiniteContinuousOperator Config),\n  ContinuousLinearMap.finiteDimensionalOperatorTrace A = ∑ n, A (SecondQuantization.Common.finiteAnalyticBasis n) n",
     "standardAxioms": [
       "Classical.choice",
@@ -126038,7 +126036,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -126049,16 +126047,12 @@
     "docString": null,
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.finiteDimensionalOperatorTrace_finiteContinuousOperator"
-    ],
+    "dependents": [],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.finiteDimensionalOperatorTrace_finiteContinuousOperator"
-    ],
-    "compiledConsumerCount": 1,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -126095,11 +126089,7 @@
       "SecondQuantization.Common.analyticDysonPartitionFunction_zero",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonPartitionFunction.0.SecondQuantization.Common.hasSum_dysonTraceCoeff_trace_dysonEvolution"
     ],
-    "dependencies": [
-      "SecondQuantization.Common.finiteContinuousOperator_basis_apply",
-      "SecondQuantization.Common.finiteDimensionalOperatorTrace_finiteAnalyticBasis",
-      "SecondQuantization.Common.traceFock_eq_sum_matrixCoeff"
-    ],
+    "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
@@ -134347,7 +134337,6 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Common.finiteDimensionalOperatorTrace_finiteContinuousOperator",
       "SecondQuantization.Common.finiteGibbsExpectation_comp_eq_div_of_zetaCommutator",
       "SecondQuantization.Common.finiteGibbsExpectation_eq_trace_div",
       "SecondQuantization.Common.traceFock_diagonalEvolution_eq_weightSum",
@@ -134358,14 +134347,13 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.finiteDimensionalOperatorTrace_finiteContinuousOperator",
       "SecondQuantization.Common.finiteGibbsExpectation_comp_eq_div_of_zetaCommutator",
       "SecondQuantization.Common.finiteGibbsExpectation_eq_trace_div",
       "SecondQuantization.Common.traceFock_diagonalEvolution_eq_weightSum",
       "SecondQuantization.Common.traceFock_id",
       "SecondQuantization.Common.tsumTrace_eq_traceFock"
     ],
-    "compiledConsumerCount": 6,
+    "compiledConsumerCount": 5,
     "axioms": [
       "Classical.choice",
       "Quot.sound",

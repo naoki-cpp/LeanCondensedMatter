@@ -871062,10 +871062,10 @@
   "statement":
   "∀ {Config : Type u_1} [inst : Fintype Config]\n  (F : ℝ → SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config),\n  (∀ (m n : Config), Continuous fun τ => SecondQuantization.Common.matrixCoeff (F τ) m n) →\n    ∀ (a b : ℝ),\n      SecondQuantization.Common.finiteContinuousOperatorAlgEquiv\n          (SecondQuantization.Common.operatorIntervalIntegral F a b) =\n        ∫ (τ : ℝ) in a..b, SecondQuantization.Common.finiteContinuousOperatorAlgEquiv (F τ)",
   "standardAxioms": ["Classical.choice", "Quot.sound", "propext"],
-  "sourceLine": 167,
+  "sourceLine": 170,
   "sourceFile":
   "LeanCondensedMatter/SecondQuantization/Common/Perturbation/FiniteAnalyticBridge.lean",
-  "sourceEndLine": 175,
+  "sourceEndLine": 178,
   "sourceEndColumn": 59,
   "sourceColumn": 8,
   "soleCompiledConsumerPrivate": false,
@@ -871096,7 +871096,7 @@
    "SecondQuantization.Common.matrixCoeff",
    "SecondQuantization.Common.operatorIntervalIntegral",
    "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.FiniteAnalyticBridge.0.SecondQuantization.Common.continuousOperatorIntervalIntegral_basis"],
-  "declarationStartLine": 165,
+  "declarationStartLine": 168,
   "crossModuleDirectWrapper": false,
   "completedMention": false,
   "compiledConsumers":
@@ -871313,10 +871313,10 @@
   "statement":
   "∀ {Config : Type u_1} [inst : Fintype Config]\n  (F : ℝ → SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config),\n  (∀ (m n : Config), Continuous fun τ => SecondQuantization.Common.matrixCoeff (F τ) m n) →\n    Continuous fun τ => SecondQuantization.Common.finiteContinuousOperatorAlgEquiv (F τ)",
   "standardAxioms": ["Classical.choice", "Quot.sound", "propext"],
-  "sourceLine": 117,
+  "sourceLine": 120,
   "sourceFile":
   "LeanCondensedMatter/SecondQuantization/Common/Perturbation/FiniteAnalyticBridge.lean",
-  "sourceEndLine": 133,
+  "sourceEndLine": 136,
   "sourceEndColumn": 89,
   "sourceColumn": 8,
   "soleCompiledConsumerPrivate": false,
@@ -871348,7 +871348,7 @@
    "SecondQuantization.Common.finiteContinuousOperatorAlgEquiv",
    "SecondQuantization.Common.finiteContinuousOperator_basis_apply",
    "SecondQuantization.Common.matrixCoeff"],
-  "declarationStartLine": 116,
+  "declarationStartLine": 119,
   "crossModuleDirectWrapper": false,
   "completedMention": false,
   "compiledConsumers":
@@ -886311,7 +886311,6 @@
    "SecondQuantization.Common.finiteContinuousOperator_basis_apply",
    "SecondQuantization.Common.finiteContinuousOperator_ext_basis",
    "SecondQuantization.Common.finiteDimensionalOperatorTrace_finiteAnalyticBasis",
-   "SecondQuantization.Common.finiteDimensionalOperatorTrace_finiteContinuousOperator",
    "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExponential.0.SecondQuantization.Common.continuousDiagonalHamiltonian_basis_apply",
    "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExponential.0.SecondQuantization.Common.exp_continuousDiagonalHamiltonian_basis_apply",
    "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExponential.0.SecondQuantization.Common.smul_continuousDiagonalHamiltonian_basis_apply",
@@ -886421,6 +886420,7 @@
    "SecondQuantization.Common.finiteContinuousOperatorAlgEquiv",
    "SecondQuantization.Common.finiteContinuousOperator_basis_apply",
    "SecondQuantization.Common.finiteContinuousOperator_equiv_apply",
+   "SecondQuantization.Common.finiteDimensionalOperatorTrace_finiteContinuousOperator",
    "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExponential.0.SecondQuantization.Common.continuousDiagonalHamiltonian_basis_apply"],
   "dependencies":
   ["SecondQuantization.Common.AlgebraicFock",
@@ -887000,7 +887000,6 @@
   "dependents":
   ["SecondQuantization.Common.continuousInteractionPicture_basis_apply_apply",
    "SecondQuantization.Common.continuous_finiteContinuousOperator",
-   "SecondQuantization.Common.finiteDimensionalOperatorTrace_finiteContinuousOperator",
    "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.FiniteAnalyticBridge.0.SecondQuantization.Common.continuousOperatorIntervalIntegral_basis"],
   "dependencies":
   ["SecondQuantization.Common.AlgebraicFock",
@@ -887019,9 +887018,8 @@
   "compiledConsumers":
   ["SecondQuantization.Common.continuousInteractionPicture_basis_apply_apply",
    "SecondQuantization.Common.continuous_finiteContinuousOperator",
-   "SecondQuantization.Common.finiteDimensionalOperatorTrace_finiteContinuousOperator",
    "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.FiniteAnalyticBridge.0.SecondQuantization.Common.continuousOperatorIntervalIntegral_basis"],
-  "compiledConsumerCount": 4,
+  "compiledConsumerCount": 3,
   "axioms": ["Classical.choice", "Quot.sound", "propext"]},
  {"valueDependencies":
   ["Dyson.coeff",
@@ -887547,10 +887545,10 @@
   "statement":
   "∀ {Config : Type u_1} [inst : Fintype Config] {A B : SecondQuantization.Common.FiniteContinuousOperator Config},\n  (∀ (n : Config),\n      A (SecondQuantization.Common.finiteAnalyticBasis n) = B (SecondQuantization.Common.finiteAnalyticBasis n)) →\n    A = B",
   "standardAxioms": ["Classical.choice", "Quot.sound", "propext"],
-  "sourceLine": 104,
+  "sourceLine": 107,
   "sourceFile":
   "LeanCondensedMatter/SecondQuantization/Common/Perturbation/FiniteAnalyticBridge.lean",
-  "sourceEndLine": 114,
+  "sourceEndLine": 117,
   "sourceEndColumn": 37,
   "sourceColumn": 8,
   "soleCompiledConsumerPrivate": false,
@@ -887577,7 +887575,7 @@
   ["SecondQuantization.Common.FiniteAnalyticFock",
    "SecondQuantization.Common.FiniteContinuousOperator",
    "SecondQuantization.Common.finiteAnalyticBasis"],
-  "declarationStartLine": 103,
+  "declarationStartLine": 106,
   "crossModuleDirectWrapper": false,
   "completedMention": false,
   "compiledConsumers":
@@ -887595,7 +887593,7 @@
    "SecondQuantization.Common.FiniteAnalyticFock",
    "SecondQuantization.Common.FiniteContinuousOperator",
    "SecondQuantization.Common.finiteAnalyticBasis"],
-  "terminal": false,
+  "terminal": true,
   "structuredStatement":
   {"version": 1,
    "fields": [],
@@ -887677,7 +887675,7 @@
   "sourceEndColumn": 61,
   "sourceColumn": 8,
   "soleCompiledConsumerPrivate": false,
-  "singleCompiledConsumer": true,
+  "singleCompiledConsumer": false,
   "simpLemma": false,
   "retainedNeedsReview": false,
   "retainedMention": false,
@@ -887693,8 +887691,7 @@
   "docString": null,
   "directWrapperTargetModule": null,
   "directWrapperOf": null,
-  "dependents":
-  ["SecondQuantization.Common.finiteDimensionalOperatorTrace_finiteContinuousOperator"],
+  "dependents": [],
   "dependencies":
   ["ContinuousLinearMap.finiteDimensionalOperatorTrace",
    "SecondQuantization.Common.FiniteAnalyticFock",
@@ -887703,22 +887700,17 @@
   "declarationStartLine": 86,
   "crossModuleDirectWrapper": false,
   "completedMention": false,
-  "compiledConsumers":
-  ["SecondQuantization.Common.finiteDimensionalOperatorTrace_finiteContinuousOperator"],
-  "compiledConsumerCount": 1,
+  "compiledConsumers": [],
+  "compiledConsumerCount": 0,
   "axioms": ["Classical.choice", "Quot.sound", "propext"]},
  {"valueDependencies":
   ["ContinuousLinearMap.finiteDimensionalOperatorTrace",
    "SecondQuantization.Common.AlgebraicFock",
    "SecondQuantization.Common.FiniteAnalyticFock",
    "SecondQuantization.Common.FiniteContinuousOperator",
-   "SecondQuantization.Common.finiteAnalyticBasis",
+   "SecondQuantization.Common.finiteAnalyticFockEquiv",
    "SecondQuantization.Common.finiteContinuousOperatorAlgEquiv",
-   "SecondQuantization.Common.finiteContinuousOperator_basis_apply",
-   "SecondQuantization.Common.finiteDimensionalOperatorTrace_finiteAnalyticBasis",
-   "SecondQuantization.Common.matrixCoeff",
-   "SecondQuantization.Common.traceFock",
-   "SecondQuantization.Common.traceFock_eq_sum_matrixCoeff"],
+   "SecondQuantization.Common.traceFock"],
   "typeDependencies":
   ["ContinuousLinearMap.finiteDimensionalOperatorTrace",
    "SecondQuantization.Common.AlgebraicFock",
@@ -887830,8 +887822,8 @@
   "sourceLine": 95,
   "sourceFile":
   "LeanCondensedMatter/SecondQuantization/Common/Perturbation/FiniteAnalyticBridge.lean",
-  "sourceEndLine": 100,
-  "sourceEndColumn": 41,
+  "sourceEndLine": 103,
+  "sourceEndColumn": 67,
   "sourceColumn": 8,
   "soleCompiledConsumerPrivate": false,
   "singleCompiledConsumer": false,
@@ -887859,13 +887851,9 @@
    "SecondQuantization.Common.AlgebraicFock",
    "SecondQuantization.Common.FiniteAnalyticFock",
    "SecondQuantization.Common.FiniteContinuousOperator",
-   "SecondQuantization.Common.finiteAnalyticBasis",
+   "SecondQuantization.Common.finiteAnalyticFockEquiv",
    "SecondQuantization.Common.finiteContinuousOperatorAlgEquiv",
-   "SecondQuantization.Common.finiteContinuousOperator_basis_apply",
-   "SecondQuantization.Common.finiteDimensionalOperatorTrace_finiteAnalyticBasis",
-   "SecondQuantization.Common.matrixCoeff",
-   "SecondQuantization.Common.traceFock",
-   "SecondQuantization.Common.traceFock_eq_sum_matrixCoeff"],
+   "SecondQuantization.Common.traceFock"],
   "declarationStartLine": 94,
   "crossModuleDirectWrapper": false,
   "completedMention": false,
@@ -908887,7 +908875,6 @@
    "SecondQuantization.Common.dysonCoeff_quarticInteractionOn_eq_sum",
    "SecondQuantization.Common.finiteContinuousOperator_basis_apply",
    "SecondQuantization.Common.finiteContinuousOperator_dysonCoeff_eq_coeff",
-   "SecondQuantization.Common.finiteDimensionalOperatorTrace_finiteContinuousOperator",
    "SecondQuantization.Common.finiteGibbsExpectation_comp_eq_div_of_zetaCommutator",
    "SecondQuantization.Common.finiteGibbsExpectation_eq_sum",
    "SecondQuantization.Common.finiteGibbsExpectation_eq_summableDiagonalTraceRatioLinear",
@@ -935693,8 +935680,7 @@
   "directWrapperTargetModule": null,
   "directWrapperOf": null,
   "dependents":
-  ["SecondQuantization.Common.finiteDimensionalOperatorTrace_finiteContinuousOperator",
-   "SecondQuantization.Common.finiteGibbsExpectation_comp_eq_div_of_zetaCommutator",
+  ["SecondQuantization.Common.finiteGibbsExpectation_comp_eq_div_of_zetaCommutator",
    "SecondQuantization.Common.finiteGibbsExpectation_eq_trace_div",
    "SecondQuantization.Common.finiteGibbsExpectation_peel_indexed._simp_1_1",
    "SecondQuantization.Common.traceFock_diagonalEvolution_eq_weightSum",
@@ -935708,13 +935694,12 @@
   "crossModuleDirectWrapper": false,
   "completedMention": false,
   "compiledConsumers":
-  ["SecondQuantization.Common.finiteDimensionalOperatorTrace_finiteContinuousOperator",
-   "SecondQuantization.Common.finiteGibbsExpectation_comp_eq_div_of_zetaCommutator",
+  ["SecondQuantization.Common.finiteGibbsExpectation_comp_eq_div_of_zetaCommutator",
    "SecondQuantization.Common.finiteGibbsExpectation_eq_trace_div",
    "SecondQuantization.Common.traceFock_diagonalEvolution_eq_weightSum",
    "SecondQuantization.Common.traceFock_id",
    "SecondQuantization.Common.tsumTrace_eq_traceFock"],
-  "compiledConsumerCount": 6,
+  "compiledConsumerCount": 5,
   "axioms": ["Classical.choice", "Quot.sound", "propext"]},
  {"valueDependencies":
   ["SecondQuantization.Common.AlgebraicFock",
@@ -1249578,10 +1249563,10 @@
   "statement":
   "∀ {Config : Type u_1} [inst : Fintype Config]\n  (F : ℝ → SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config),\n  (∀ (m n : Config), Continuous fun τ => SecondQuantization.Common.matrixCoeff (F τ) m n) →\n    ∀ (a b : ℝ) (n : Config),\n      (SecondQuantization.Common.finiteContinuousOperatorAlgEquiv\n            (SecondQuantization.Common.operatorIntervalIntegral F a b))\n          (SecondQuantization.Common.finiteAnalyticBasis n) =\n        (∫ (τ : ℝ) in a..b, SecondQuantization.Common.finiteContinuousOperatorAlgEquiv (F τ))\n          (SecondQuantization.Common.finiteAnalyticBasis n)",
   "standardAxioms": ["Classical.choice", "Quot.sound", "propext"],
-  "sourceLine": 137,
+  "sourceLine": 140,
   "sourceFile":
   "LeanCondensedMatter/SecondQuantization/Common/Perturbation/FiniteAnalyticBridge.lean",
-  "sourceEndLine": 163,
+  "sourceEndLine": 166,
   "sourceEndColumn": 69,
   "sourceColumn": 16,
   "soleCompiledConsumerPrivate": false,
@@ -1249615,7 +1249600,7 @@
    "SecondQuantization.Common.matrixCoeff",
    "SecondQuantization.Common.matrixCoeff_operatorIntervalIntegral",
    "SecondQuantization.Common.operatorIntervalIntegral"],
-  "declarationStartLine": 135,
+  "declarationStartLine": 138,
   "crossModuleDirectWrapper": false,
   "completedMention": false,
   "compiledConsumers":
