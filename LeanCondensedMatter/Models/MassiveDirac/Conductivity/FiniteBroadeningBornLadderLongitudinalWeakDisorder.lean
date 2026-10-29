@@ -4,7 +4,6 @@ import LeanCondensedMatter.Models.MassiveDirac.Conductivity.Longitudinal.BornRel
 import LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.LongitudinalZeroBroadeningWeakDisorder
 import Mathlib.Tactic.FieldSimp
 import Mathlib.Tactic.Linarith
-import Mathlib.Tactic.NormCast
 
 set_option linter.style.header false
 
