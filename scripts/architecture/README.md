@@ -68,6 +68,37 @@ review candidates with Lean's import analysis tools and compile the module and c
 before removing an import or changing its visibility. This audit does not enforce a fixed
 import count, disallow all public imports, or attempt to minimize Mathlib imports automatically.
 
+### Advisory transitive overlap report
+
+For manual import reduction, reuse the documentation site's existing project-module
+import graph exporter. CI runs the same read-only report, but a nonempty report does not
+fail the build:
+
+```bash
+python3 scripts/export_module_import_graph.py --report-overlaps --limit 30
+```
+
+The report puts module-system files first and shows when one *project-local* direct
+import is also transitively reachable through another direct project import. Import-only
+umbrella files (a matching subtree, with only import commands, documentation, and the
+standard header option) are **counted separately and hidden from the default review
+list**. Run with `--include-umbrellas` to show them for diagnostics. Other files are
+marked `[review]`, **not** "redundant" or "safe to delete". An implementation may
+intentionally import a direct owner despite also reaching it through another module.
+This source-only classification is conservative and does not infer public visibility,
+declaration usage, or Mathlib's internal graph. The ordinary JSON export is unchanged.
+
+Review each candidate with Lean's own import tools. In a temporary edit of an
+already-migrated `module` file, add `meta import ImportGraph.Tools.NormImports`
+and invoke `#norm_imports` to inspect import-block normalization, then undo the
+temporary diagnostic import. The tool preserves the required visibility and phase
+of the available imports, but not all intentional source-level ownership choices.
+For declaration-level minimum-import investigations, use the relevant Lean tools
+with their documented syntax/tactic limitations. Finally, compile the edited file
+and its downstream consumers before deleting or narrowing any direct import.
+Legacy non-module files require a separate review: `#norm_imports` does not support
+them yet. Do not change imports just to eliminate every overlap warning.
+
 ## Declarative source topology
 
 `check_architecture_graphs.py` owns dependency direction and reachability. Its data lives here:
