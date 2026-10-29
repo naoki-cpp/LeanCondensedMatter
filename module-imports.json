@@ -6185,7 +6185,8 @@
       "name": "LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExpansion",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Perturbation/DysonExpansion.lean",
       "imports": [
-        "LeanCondensedMatter.SecondQuantization.Common.Perturbation.FiniteSupportIntegral"
+        "LeanCondensedMatter.SecondQuantization.Common.Perturbation.FiniteSupportIntegral",
+        "LeanCondensedMatter.SecondQuantization.Common.Perturbation.ReachableSupport"
       ],
       "externalImportCount": 0
     },
@@ -6230,7 +6231,7 @@
       "name": "LeanCondensedMatter.SecondQuantization.Common.Perturbation.FiniteSupportIntegral",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Perturbation/FiniteSupportIntegral.lean",
       "imports": [
-        "LeanCondensedMatter.SecondQuantization.Common.Perturbation.ReachableSupport"
+        "LeanCondensedMatter.SecondQuantization.Common.Algebra.AlgebraicFock"
       ],
       "externalImportCount": 2
     },
@@ -6807,6 +6808,16 @@
       "externalImportCount": 0
     },
     {
+      "name": "LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.Generator",
+      "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/CompletedSpace/Generator.lean",
+      "imports": [
+        "LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution",
+        "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.SecondQuantization",
+        "LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.UnitaryLift"
+      ],
+      "externalImportCount": 2
+    },
+    {
       "name": "LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.ModeTruncation",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/CompletedSpace/ModeTruncation.lean",
       "imports": [
@@ -6864,6 +6875,7 @@
         "LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.Diagonal",
         "LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.DiagonalAnalytic",
         "LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.FreeHamiltonianLadder",
+        "LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.Generator",
         "LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.ModeTruncation",
         "LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.Operators",
         "LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.ProductDomain",
