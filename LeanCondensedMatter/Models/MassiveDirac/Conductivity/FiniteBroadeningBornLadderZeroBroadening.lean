@@ -3,7 +3,6 @@ import LeanCondensedMatter.Models.MassiveDirac.Conductivity.FiniteBroadeningBorn
 import LeanCondensedMatter.Models.MassiveDirac.Conductivity.Hall.FiniteBroadeningBornLadderZeroBroadening
 import LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.Radial
 import LeanCondensedMatter.Models.MassiveDirac.TransportDomain
-import Mathlib.Tactic
 
 set_option linter.style.header false
 
