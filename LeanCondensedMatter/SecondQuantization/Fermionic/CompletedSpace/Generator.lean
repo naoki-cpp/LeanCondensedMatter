@@ -164,8 +164,10 @@ theorem completedFockHamiltonianOn_apply
   let J := (completedExterior (Mode := Mode)).comp (ExteriorAlgebra.map D.subtype).toLinearMap
   change ((LinearMap.ker J).liftQ (J.comp (AlgebraicFock.dGamma D T))
     (completedExterior_ker_le_dGamma A hA D T hdom hT))
-      (J.quotKerEquivRange.symm ⟨J x, ⟨x, rfl⟩⟩) = _
-  rw [LinearMap.quotKerEquivRange_symm_apply_image]
+      (J.quotKerEquivRange.symm ⟨J x, LinearMap.mem_range_self J x⟩) = _
+  exact congrArg ((LinearMap.ker J).liftQ (J.comp (AlgebraicFock.dGamma D T))
+    (completedExterior_ker_le_dGamma A hA D T hdom hT))
+      (LinearMap.quotKerEquivRange_symm_apply_image (f := J) x (LinearMap.mem_range_self J x))
 
 /-- Every vector in the realized Hamiltonian's domain has lifted Stone derivative `-i Hψ`.
 This is an operator statement on the explicit partial domain, without a maximal-domain claim. -/
