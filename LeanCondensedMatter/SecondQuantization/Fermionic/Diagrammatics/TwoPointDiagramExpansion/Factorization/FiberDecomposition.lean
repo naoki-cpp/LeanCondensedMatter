@@ -89,30 +89,29 @@ noncomputable def fixedExternalFiberEquiv (T : Finset (Fin n)) :
     {d : FixedExternalTwoPointWickDiagram Mode n i j // d.1.externalInteractionPart = T} ≃
       {ext : FixedExternalTwoPointWickDiagramOn Mode n T i j //
           ext.1.IsExternallyConnected} ×
-        QuarticWickDiagram Mode n ((Finset.univ : Finset (Fin n)) \ T) where
-  toFun d :=
-    (⟨⟨d.1.1.slotSplitExternal (Finset.subset_univ T)
-          (Common.isSplit_slotLegSplitting_of_interactionSector_eq (Finset.subset_univ T) d.2),
-        d.1.2⟩,
-      Common.isExternallyConnected_slotSplitExternal (Finset.subset_univ T) d.2 _⟩,
-     d.1.1.slotSplitVacuum (Finset.subset_univ T)
-       (Common.isSplit_slotLegSplitting_of_interactionSector_eq (Finset.subset_univ T) d.2))
-  invFun p :=
-    ⟨⟨Common.TwoPointDiagram.ofSlotSplit (Finset.subset_univ T) p.1.1.1 p.2, p.1.1.2⟩,
-      Common.interactionSector_externalComponent_ofSlotSplit (Finset.subset_univ T)
-        p.1.1.1 p.2 p.1.2⟩
-  left_inv d :=
-    Subtype.ext (Subtype.ext
-      (Common.TwoPointDiagram.ofSlotSplit_slotSplit (Finset.subset_univ T) d.1.1
-        (Common.isSplit_slotLegSplitting_of_interactionSector_eq (Finset.subset_univ T) d.2)))
-  right_inv p := by
-    obtain ⟨⟨⟨ext, hlabel⟩, hconn⟩, vac⟩ := p
-    simp only [Prod.mk.injEq]
-    refine ⟨Subtype.ext (Subtype.ext ?_), ?_⟩
-    · exact Common.TwoPointDiagram.slotSplitExternal_ofSlotSplit (Finset.subset_univ T)
-        ext vac _
-    · exact Common.TwoPointDiagram.slotSplitVacuum_ofSlotSplit (Finset.subset_univ T)
-        ext vac _
+        QuarticWickDiagram Mode n ((Finset.univ : Finset (Fin n)) \ T) :=
+  let e := Common.TwoPointDiagram.externalFiberEquiv (Finset.subset_univ T)
+  { toFun d :=
+      let p := e ⟨d.1.1, d.2⟩
+      (⟨⟨p.1.1, d.1.2⟩, p.1.2⟩, p.2)
+    invFun p :=
+      let d := e.symm (⟨p.1.1.1, p.1.2⟩, p.2)
+      ⟨⟨d.1, p.1.1.2⟩, d.2⟩
+    left_inv d := by
+      apply Subtype.ext
+      apply Subtype.ext
+      change (e.symm (e ⟨d.1.1, d.2⟩)).1 = d.1.1
+      exact congrArg Subtype.val (e.left_inv ⟨d.1.1, d.2⟩)
+    right_inv p := by
+      have hr := e.right_inv (⟨p.1.1.1, p.1.2⟩, p.2)
+      apply Prod.ext
+      · apply Subtype.ext
+        apply Subtype.ext
+        change (e (e.symm (⟨p.1.1.1, p.1.2⟩, p.2))).1.1 = p.1.1.1
+        exact congrArg (fun q => q.1.1) hr
+      · change (e (e.symm (⟨p.1.1.1, p.1.2⟩, p.2))).2 = p.2
+        exact congrArg Prod.snd hr
+  }
 
 omit [LinearOrder Mode] [Fintype Mode] in
 /-- After reindexing a fiber, the standalone external piece at any identified slot count is exactly
