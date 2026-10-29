@@ -131,7 +131,7 @@ theorem idxOf_flatMap_block_lt_uniform
   have hidxNe : events.idxOf event ≠ events.idxOf other := by
     intro heq
     exact heventNe ((List.idxOf_inj hEvent).mp heq)
-  rcases lt_trichotomy (events.idxOf event) (events.idxOf other) with hlt | heq | hgt
+  by_cases hlt : events.idxOf event < events.idxOf other
   · have hxz : (events.flatMap f).idxOf x < (events.flatMap f).idxOf z :=
       idxOf_flatMap_lt_of_idxOf_lt f events event other x z
         hNodup hEvent hOther hx hzOther hlt
@@ -139,8 +139,8 @@ theorem idxOf_flatMap_block_lt_uniform
       idxOf_flatMap_lt_of_idxOf_lt f events event other y z
         hNodup hEvent hOther hy hzOther hlt
     simp [hxz, hyz]
-  · exact (hidxNe heq).elim
-  · have hzx : (events.flatMap f).idxOf z < (events.flatMap f).idxOf x :=
+  · have hgt : events.idxOf other < events.idxOf event := by omega
+    have hzx : (events.flatMap f).idxOf z < (events.flatMap f).idxOf x :=
       idxOf_flatMap_lt_of_idxOf_lt f events other event z x
         hNodup hOther hEvent hzOther hx hgt
     have hzy : (events.flatMap f).idxOf z < (events.flatMap f).idxOf y :=
