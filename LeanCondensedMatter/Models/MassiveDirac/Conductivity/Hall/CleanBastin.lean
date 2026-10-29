@@ -2,7 +2,7 @@ import LeanCondensedMatter.Models.MassiveDirac.Bastin.CleanLimit
 import LeanCondensedMatter.Models.MassiveDirac.Conductivity.Hall.Intrinsic.Conductivity
 import LeanCondensedMatter.QuantumTheory.PlanckConstant
 import LeanCondensedMatter.Transport.Streda.PhysicalMomentum2DNormalization
-import Mathlib.Tactic
+import Mathlib.Tactic.FieldSimp
 
 set_option linter.style.header false
 
