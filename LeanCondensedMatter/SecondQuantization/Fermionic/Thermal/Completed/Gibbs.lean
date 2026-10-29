@@ -81,26 +81,6 @@ private theorem completedFreeGibbsProbability_removeOccupation_of_mem
   simp only [eigenbasisGibbsProbability, hweight]
   ring
 
-/-- Complex form of the free Gibbs insertion ratio, matching the scalar used in operator identities. -/
-theorem coe_completedFreeGibbsProbability_insertOccupation_of_not_mem
-    (ε : Mode → ℝ) (β μ : ℝ) {i : Mode} {n : Occupation Mode} (hi : i ∉ n) :
-    (eigenbasisGibbsProbability (Common.grandCanonicalEnergy (Config := Occupation Mode) ε μ) β (insertOccupation i n) : ℂ) =
-      Complex.exp (-(β : ℂ) * ((ε i - μ) : ℂ)) *
-        (eigenbasisGibbsProbability (Common.grandCanonicalEnergy (Config := Occupation Mode) ε μ) β n : ℂ) := by
-  rw [completedFreeGibbsProbability_insertOccupation_of_not_mem ε β μ hi]
-  push_cast
-  rfl
-
-/-- Complex form of the free Gibbs removal ratio, matching the scalar used in operator identities. -/
-theorem coe_completedFreeGibbsProbability_removeOccupation_of_mem
-    (ε : Mode → ℝ) (β μ : ℝ) {i : Mode} {n : Occupation Mode} (hi : i ∈ n) :
-    (eigenbasisGibbsProbability (Common.grandCanonicalEnergy (Config := Occupation Mode) ε μ) β (removeOccupation i n) : ℂ) =
-      Complex.exp ((β : ℂ) * ((ε i - μ) : ℂ)) *
-        (eigenbasisGibbsProbability (Common.grandCanonicalEnergy (Config := Occupation Mode) ε μ) β n : ℂ) := by
-  rw [completedFreeGibbsProbability_removeOccupation_of_mem ε β μ hi]
-  push_cast
-  rfl
-
 /-- Completed free-Gibbs creation intertwining:
 `ρβ,μ aᵢ† = exp (-β (εᵢ - μ)) aᵢ† ρβ,μ` as an identity of bounded operators. -/
 theorem grandCanonicalGibbsDensityOperator_comp_create
@@ -132,11 +112,20 @@ theorem grandCanonicalGibbsDensityOperator_comp_create
       hρ, map_smul,
       completedCreate_basisState_of_mem hi]
     simp
-  · rw [completedCreate_basisState_of_not_mem hi, map_smul,
+  · have hprob :
+        (eigenbasisGibbsProbability
+          (Common.grandCanonicalEnergy (Config := Occupation Mode) ε μ) β
+          (insertOccupation i n) : ℂ) =
+        Complex.exp (-(β : ℂ) * ((ε i - μ) : ℂ)) *
+          (eigenbasisGibbsProbability
+            (Common.grandCanonicalEnergy (Config := Occupation Mode) ε μ) β n : ℂ) := by
+      rw [completedFreeGibbsProbability_insertOccupation_of_not_mem ε β μ hi]
+      push_cast
+      rfl
+    rw [completedCreate_basisState_of_not_mem hi, map_smul,
       hρ,
       hρ, map_smul,
-      completedCreate_basisState_of_not_mem hi,
-      coe_completedFreeGibbsProbability_insertOccupation_of_not_mem ε β μ hi]
+      completedCreate_basisState_of_not_mem hi, hprob]
     have hcast : ((ε i - μ : ℝ) : ℂ) = (ε i : ℂ) - (μ : ℂ) := by
       push_cast
       ring
@@ -172,11 +161,20 @@ theorem grandCanonicalGibbsDensityOperator_comp_annihilate
       (Common.grandCanonicalGibbsDensityOperator_apply_basis
         (Config := Occupation Mode) ε β μ hsum m)
   by_cases hi : i ∈ n
-  · rw [completedAnnihilate_basisState_of_mem hi, map_smul,
+  · have hprob :
+        (eigenbasisGibbsProbability
+          (Common.grandCanonicalEnergy (Config := Occupation Mode) ε μ) β
+          (removeOccupation i n) : ℂ) =
+        Complex.exp ((β : ℂ) * ((ε i - μ) : ℂ)) *
+          (eigenbasisGibbsProbability
+            (Common.grandCanonicalEnergy (Config := Occupation Mode) ε μ) β n : ℂ) := by
+      rw [completedFreeGibbsProbability_removeOccupation_of_mem ε β μ hi]
+      push_cast
+      rfl
+    rw [completedAnnihilate_basisState_of_mem hi, map_smul,
       hρ,
       hρ, map_smul,
-      completedAnnihilate_basisState_of_mem hi,
-      coe_completedFreeGibbsProbability_removeOccupation_of_mem ε β μ hi]
+      completedAnnihilate_basisState_of_mem hi, hprob]
     have hcast : ((ε i - μ : ℝ) : ℂ) = (ε i : ℂ) - (μ : ℂ) := by
       push_cast
       ring
