@@ -17,9 +17,8 @@ of `q ∈ T` satisfying `R p q`. The original self-product identity is an immedi
 specialization. This counting law is independent of pairing or crossing structures.
 -/
 
-open scoped Classical in
 theorem Finset.card_filter_product_eq_sum_card_filter {α β : Type*}
-    (S : Finset α) (T : Finset β) (R : α → β → Prop) :
+    (S : Finset α) (T : Finset β) (R : α → β → Prop) [DecidableRel R] :
     ((S.product T).filter fun pq => R pq.1 pq.2).card =
       ∑ p ∈ S, (T.filter fun q => R p q).card := by
   rw [Finset.card_filter]
