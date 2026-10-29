@@ -9,13 +9,10 @@ set_option linter.style.header false
 /-!
 # Completed free-fermion Gibbs state and ladder intertwining
 
-This module owns the representation-specific completed-Fock-space interface to the generic
-pure-point Gibbs state: occupation-basis expectation formulas and the bounded creation/annihilation
-intertwining identities used by the completed thermal theory.
-
-The density construction is `Common.grandCanonicalGibbsDensityOperator` on fermionic occupations.
-This module supplies only occupation-basis and bounded CAR intertwining results. The Gibbs
-generator is `K = H - μ N̂` while physical time evolution remains under `H`.
+The common pure-point grand-canonical Gibbs density acts on fermionic occupations.
+This module proves its bounded creation/annihilation intertwining identities directly
+from the common occupation-basis action and the fermionic occupation-shift formulas.
+The Gibbs generator is `K = H - μ N̂` while physical time evolution remains under `H`.
 -/
 
 namespace SecondQuantization
@@ -34,23 +31,6 @@ private theorem grandCanonicalEnergy_eq_fermionEnergy (ε : Mode → ℝ) (μ : 
       fermionEnergy (fun i => ε i - μ) := by
   funext n
   exact Common.grandCanonicalEnergy_eq_shifted ε μ n
-
-/-- Occupation-basis action of the common grand-canonical Gibbs density, in the fermionic
-completed-Fock representation. -/
-@[simp]
-theorem grandCanonicalGibbsDensityOperator_apply_basis
-    (ε : Mode → ℝ) (β μ : ℝ)
-    (hsum : EigenbasisGibbsSummable
-      (Common.grandCanonicalEnergy (Config := Occupation Mode) ε μ) β)
-    (n : Occupation Mode) :
-    (Common.grandCanonicalGibbsDensityOperator (Config := Occupation Mode) ε β μ hsum).op
-        (completedBasisState n) =
-      (eigenbasisGibbsProbability
-        (Common.grandCanonicalEnergy (Config := Occupation Mode) ε μ) β n : ℂ) •
-        completedBasisState n := by
-  simpa only [completedBasisState] using
-    (Common.grandCanonicalGibbsDensityOperator_apply_basis
-      (Config := Occupation Mode) ε β μ hsum n)
 
 end
 end Fermionic
@@ -138,14 +118,23 @@ theorem grandCanonicalGibbsDensityOperator_comp_create
       Complex.exp (-(β : ℂ) * ((ε i - μ : ℝ) : ℂ)) •
         completedCreate i
           ((Common.grandCanonicalGibbsDensityOperator (Config := Occupation Mode) ε β μ hsum).op (completedBasisState n))
+  have hρ (m : Occupation Mode) :
+      (Common.grandCanonicalGibbsDensityOperator (Config := Occupation Mode) ε β μ hsum).op
+          (completedBasisState m) =
+        (eigenbasisGibbsProbability
+          (Common.grandCanonicalEnergy (Config := Occupation Mode) ε μ) β m : ℂ) •
+          completedBasisState m := by
+    simpa only [completedBasisState] using
+      (Common.grandCanonicalGibbsDensityOperator_apply_basis
+        (Config := Occupation Mode) ε β μ hsum m)
   by_cases hi : i ∈ n
   · rw [completedCreate_basisState_of_mem hi, map_zero,
-      grandCanonicalGibbsDensityOperator_apply_basis, map_smul,
+      hρ, map_smul,
       completedCreate_basisState_of_mem hi]
     simp
   · rw [completedCreate_basisState_of_not_mem hi, map_smul,
-      grandCanonicalGibbsDensityOperator_apply_basis,
-      grandCanonicalGibbsDensityOperator_apply_basis, map_smul,
+      hρ,
+      hρ, map_smul,
       completedCreate_basisState_of_not_mem hi,
       coe_completedFreeGibbsProbability_insertOccupation_of_not_mem ε β μ hi]
     have hcast : ((ε i - μ : ℝ) : ℂ) = (ε i : ℂ) - (μ : ℂ) := by
@@ -173,10 +162,19 @@ theorem grandCanonicalGibbsDensityOperator_comp_annihilate
       Complex.exp ((β : ℂ) * ((ε i - μ : ℝ) : ℂ)) •
         completedAnnihilate i
           ((Common.grandCanonicalGibbsDensityOperator (Config := Occupation Mode) ε β μ hsum).op (completedBasisState n))
+  have hρ (m : Occupation Mode) :
+      (Common.grandCanonicalGibbsDensityOperator (Config := Occupation Mode) ε β μ hsum).op
+          (completedBasisState m) =
+        (eigenbasisGibbsProbability
+          (Common.grandCanonicalEnergy (Config := Occupation Mode) ε μ) β m : ℂ) •
+          completedBasisState m := by
+    simpa only [completedBasisState] using
+      (Common.grandCanonicalGibbsDensityOperator_apply_basis
+        (Config := Occupation Mode) ε β μ hsum m)
   by_cases hi : i ∈ n
   · rw [completedAnnihilate_basisState_of_mem hi, map_smul,
-      grandCanonicalGibbsDensityOperator_apply_basis,
-      grandCanonicalGibbsDensityOperator_apply_basis, map_smul,
+      hρ,
+      hρ, map_smul,
       completedAnnihilate_basisState_of_mem hi,
       coe_completedFreeGibbsProbability_removeOccupation_of_mem ε β μ hi]
     have hcast : ((ε i - μ : ℝ) : ℂ) = (ε i : ℂ) - (μ : ℂ) := by
@@ -187,7 +185,7 @@ theorem grandCanonicalGibbsDensityOperator_comp_annihilate
     congr 1
     ring
   · rw [completedAnnihilate_basisState_of_not_mem hi, map_zero,
-      grandCanonicalGibbsDensityOperator_apply_basis, map_smul,
+      hρ, map_smul,
       completedAnnihilate_basisState_of_not_mem hi]
     simp
 
