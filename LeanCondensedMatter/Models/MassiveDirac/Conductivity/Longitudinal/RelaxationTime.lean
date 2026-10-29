@@ -1,7 +1,11 @@
 import LeanCondensedMatter.Models.MassiveDirac.Model.FermiSurface
 import LeanCondensedMatter.Transport.Analysis.RelaxationTime
 import LeanCondensedMatter.Transport.Analysis.ContinuumMeasure
-import Mathlib.Tactic
+import Mathlib.Tactic.FieldSimp
+import Mathlib.Tactic.Linarith
+import Mathlib.Tactic.NormNum
+import Mathlib.Tactic.Positivity
+import Mathlib.Tactic.Ring
 
 set_option linter.style.header false
 
