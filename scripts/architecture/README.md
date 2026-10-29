@@ -71,7 +71,8 @@ import count, disallow all public imports, or attempt to minimize Mathlib import
 ### Advisory transitive overlap report
 
 For manual import reduction, reuse the documentation site's existing project-module
-import graph exporter (this mode does not modify files or run in blocking CI):
+import graph exporter. CI runs the same read-only report, but a nonempty report does not
+fail the build:
 
 ```bash
 python3 scripts/export_module_import_graph.py --report-overlaps --limit 30
