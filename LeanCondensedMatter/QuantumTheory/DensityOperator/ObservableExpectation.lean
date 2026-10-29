@@ -1,5 +1,6 @@
 import LeanCondensedMatter.QuantumTheory.DensityOperator.ExpectationOrder
 import LeanCondensedMatter.QuantumTheory.DensityOperator.PureState
+import LeanCondensedMatter.QuantumTheory.Postulates
 import Mathlib.LinearAlgebra.Complex.Module
 
 /-!
@@ -81,11 +82,9 @@ theorem DensityOperator.expectation_pure_observable
   have hc_norm : ‖c‖ = 1 := by
     have hnorm := congrArg norm hc
     simpa [norm_smul, ψ.2, he_norm] using hnorm
-  have hscaled : ‖c • ψ.1‖ = 1 := by
-    rw [hc, he_norm]
-  have hphase := expValue_smul_of_norm_eq_one A ψ hc_norm hscaled
+  have hphase := expValue_smul_of_norm_eq_one A ψ hc_norm
   have hinner : inner ℂ e (A.1 e) = expValue A ψ := by
-    simpa [expValue, hc] using hphase
+    simpa [expValue, phaseState, hc] using hphase
   change (a₀.1.1 : ℂ) * inner ℂ e (A.1 e) = expValue A ψ
   simpa [ha₀] using hinner
 

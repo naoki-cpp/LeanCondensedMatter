@@ -11,6 +11,10 @@ proof text.
 Representatives are useful for wavefunction calculations and are not identified by equality under
 global phase.
 
+`QuantumTheory.Postulates` owns `phaseState`, which multiplies a representative by a unit
+complex phase and supplies its normalization proof. Density-state and time-evolution results
+use this same construction; phase invariance does not identify representatives by vector equality.
+
 `QuantumTheory.DensityOperator H` is the canonical density-state type. It contains a bounded operator,
 positivity, general trace-class membership, and normalization of the canonical complex trace to `1`.
 Compactness, self-adjointness, spectral summability, and the real spectral-trace formula are derived. `QuantumTheory.PureState H` is the subtype of density operators represented by

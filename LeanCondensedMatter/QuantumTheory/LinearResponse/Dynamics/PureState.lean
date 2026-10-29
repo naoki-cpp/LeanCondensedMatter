@@ -1,4 +1,5 @@
 import LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.Free
+import LeanCondensedMatter.QuantumTheory.Postulates
 
 set_option linter.style.header false
 
@@ -24,16 +25,6 @@ theorem norm_freePropagator_apply (t : ℝ) (x : H) :
     ‖freePropagator system t x‖ = ‖x‖ := by
   exact ContinuousLinearMap.norm_map_of_mem_unitary
     (freePropagator_mem_unitary system t) x
-
-/-- Multiplication of a normalized state representative by a unit complex phase. -/
-def phaseState (c : ℂ) (hc : ‖c‖ = 1) (ψ : StateVector H) : StateVector H :=
-  ⟨c • ψ.1, by rw [norm_smul, hc, ψ.2, one_mul]⟩
-
-omit [CompleteSpace H] in
-@[simp]
-theorem phaseState_val (c : ℂ) (hc : ‖c‖ = 1) (ψ : StateVector H) :
-    (phaseState c hc ψ).1 = c • ψ.1 :=
-  rfl
 
 /-- Schrödinger-picture evolution of a normalized pure state. -/
 noncomputable def evolveState (ψ : StateVector H) (t : ℝ) : StateVector H :=
