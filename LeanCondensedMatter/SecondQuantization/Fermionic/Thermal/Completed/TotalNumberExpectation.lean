@@ -50,9 +50,10 @@ theorem hasSum_grandCanonicalGibbsDensityOperator_totalNumber_diagonal
     have hnorm : ‖completedBasisState n‖ = 1 := by
       rw [← completedOccupationHilbertBasis_apply]
       exact (completedOccupationHilbertBasis (Mode := Mode)).orthonormal.norm_eq_one n
-    rw [completedTotalNumberOperator_basisState, map_smul,
-      Common.grandCanonicalGibbsDensityOperator_apply_basis, inner_smul_right, inner_smul_right,
-      inner_self_eq_norm_sq_to_K, hnorm]
+    rw [completedTotalNumberOperator_basisState, map_smul]
+    simp only [completedBasisState] at hnorm ⊢
+    rw [Common.grandCanonicalGibbsDensityOperator_apply_basis,
+      inner_smul_right, inner_smul_right, inner_self_eq_norm_sq_to_K, hnorm]
     norm_num
     ring
 
