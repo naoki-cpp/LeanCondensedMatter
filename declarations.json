@@ -470543,10 +470543,10 @@
      "implicit": false,
      "id": "_uniq.49985"}]},
   "statement": "QuantumTheory.Models.MassiveDirac.Band → ℝ → ℝ → ℝ → ℝ → ℝ",
-  "sourceLine": 74,
+  "sourceLine": 75,
   "sourceFile":
   "LeanCondensedMatter/Models/MassiveDirac/Bastin/RadialDominatedConvergence.lean",
-  "sourceEndLine": 77,
+  "sourceEndLine": 78,
   "sourceEndColumn": 59,
   "sourceColumn": 4,
   "projection": false,
@@ -470564,7 +470564,7 @@
   "dependencies":
   ["QuantumTheory.Models.MassiveDirac.Band",
    "QuantumTheory.Models.MassiveDirac.radialCleanInterbandBastinPairLimitDensity"],
-  "declarationStartLine": 73},
+  "declarationStartLine": 74},
  {"valueDependencies":
   ["QuantumTheory.Models.MassiveDirac.Band",
    "QuantumTheory.Models.MassiveDirac.cleanInterbandBastinPairEnergyShellIntegral",
@@ -470818,10 +470818,10 @@
      "id": "_uniq.64427"}]},
   "statement":
   "QuantumTheory.Models.MassiveDirac.Band → ℝ → ℝ → ℝ → ℝ → ℝ → ℝ → ℝ",
-  "sourceLine": 68,
+  "sourceLine": 69,
   "sourceFile":
   "LeanCondensedMatter/Models/MassiveDirac/Bastin/RadialDominatedConvergence.lean",
-  "sourceEndLine": 71,
+  "sourceEndLine": 72,
   "sourceEndColumn": 67,
   "sourceColumn": 4,
   "projection": false,
@@ -470838,7 +470838,7 @@
   "dependencies":
   ["QuantumTheory.Models.MassiveDirac.Band",
    "QuantumTheory.Models.MassiveDirac.radialInterbandBastinPairDensity"],
-  "declarationStartLine": 67},
+  "declarationStartLine": 68},
  {"valueDependencies":
   ["QuantumTheory.Models.MassiveDirac.Band",
    "QuantumTheory.Models.MassiveDirac.forceMatrixBerryCurvature._proof_1",
@@ -492356,10 +492356,10 @@
   "statement":
   "∀ (band : QuantumTheory.Models.MassiveDirac.Band) (e v m p offset radius broadening : ℝ),\n  m ≠ 0 →\n    radius < 2 * |m| →\n      |offset| ≤ radius →\n        0 ≤ broadening →\n          ‖↑(Lorentzian.spectralKernel offset broadening) *\n                QuantumTheory.Models.MassiveDirac.targetCenteredInterbandSpectatorCurrentFactor band e v m p 0\n                  (offset, broadening)‖ ≤\n            QuantumTheory.Models.MassiveDirac.radialInterbandSpectatorUniformBound e v m radius *\n              Lorentzian.spectralKernel offset broadening",
   "standardAxioms": ["Classical.choice", "Quot.sound", "propext"],
-  "sourceLine": 25,
+  "sourceLine": 28,
   "sourceFile":
   "LeanCondensedMatter/Models/MassiveDirac/Bastin/RadialPairUniformBound.lean",
-  "sourceEndLine": 51,
+  "sourceEndLine": 54,
   "sourceEndColumn": 62,
   "sourceColumn": 8,
   "soleCompiledConsumerPrivate": false,
@@ -492390,7 +492390,7 @@
    "QuantumTheory.Models.MassiveDirac.norm_targetCenteredInterbandSpectatorCurrentFactor_radial_le",
    "QuantumTheory.Models.MassiveDirac.radialInterbandSpectatorUniformBound",
    "QuantumTheory.Models.MassiveDirac.targetCenteredInterbandSpectatorCurrentFactor"],
-  "declarationStartLine": 24,
+  "declarationStartLine": 27,
   "crossModuleDirectWrapper": false,
   "completedMention": false,
   "compiledConsumers":
@@ -492753,10 +492753,10 @@
   "statement":
   "∀ (side : QuantumTheory.Transport.SpectralSide) (band : QuantumTheory.Models.MassiveDirac.Band)\n  (v m p offset radius broadening : ℝ),\n  radius < 2 * |m| →\n    |offset| ≤ radius →\n      ‖(↑(QuantumTheory.Models.MassiveDirac.interbandEnergyGap band v m p 0 + offset) +\n              ↑(side.regulator broadening) * Complex.I)⁻¹‖ ≤\n        (QuantumTheory.Models.MassiveDirac.radialBastinMassWindowMargin m radius)⁻¹",
   "standardAxioms": ["Classical.choice", "Quot.sound", "propext"],
-  "sourceLine": 66,
+  "sourceLine": 68,
   "sourceFile":
   "LeanCondensedMatter/Models/MassiveDirac/Bastin/RadialSpectatorUniformBound.lean",
-  "sourceEndLine": 81,
+  "sourceEndLine": 83,
   "sourceEndColumn": 12,
   "sourceColumn": 8,
   "soleCompiledConsumerPrivate": false,
@@ -492787,7 +492787,7 @@
    "QuantumTheory.Transport.SpectralSide",
    "QuantumTheory.Transport.SpectralSide.regulator",
    "_private.LeanCondensedMatter.Models.MassiveDirac.Bastin.RadialSpectatorUniformBound.0.QuantumTheory.Models.MassiveDirac.radialBastinMassWindowMargin_le_norm_spectralDenominator"],
-  "declarationStartLine": 64,
+  "declarationStartLine": 66,
   "crossModuleDirectWrapper": false,
   "completedMention": false,
   "compiledConsumers":
@@ -492994,10 +492994,10 @@
   "statement":
   "∀ (band : QuantumTheory.Models.MassiveDirac.Band) (e v m p radius broadening : ℝ),\n  m ≠ 0 →\n    0 < radius →\n      radius < 2 * |m| →\n        0 < broadening →\n          ‖QuantumTheory.Models.MassiveDirac.targetCenteredInterbandBastinPairIntegral band e v m p 0 radius\n                broadening‖ ≤\n            QuantumTheory.Models.MassiveDirac.radialInterbandBastinPairUniformBound e v m radius",
   "standardAxioms": ["Classical.choice", "Quot.sound", "propext"],
-  "sourceLine": 102,
+  "sourceLine": 105,
   "sourceFile":
   "LeanCondensedMatter/Models/MassiveDirac/Bastin/RadialPairUniformBound.lean",
-  "sourceEndLine": 124,
+  "sourceEndLine": 127,
   "sourceEndColumn": 55,
   "sourceColumn": 8,
   "soleCompiledConsumerPrivate": true,
@@ -493031,7 +493031,7 @@
    "QuantumTheory.Models.MassiveDirac.targetCenteredInterbandBastinPairIntegral",
    "QuantumTheory.Models.MassiveDirac.targetCenteredInterbandBastinPairIntegral_eq_neg_two_i_mul_poleIntegral",
    "QuantumTheory.Models.MassiveDirac.targetCenteredInterbandSpectatorCurrentPoleIntegral"],
-  "declarationStartLine": 101,
+  "declarationStartLine": 104,
   "crossModuleDirectWrapper": false,
   "completedMention": false,
   "compiledConsumers":
@@ -493238,10 +493238,10 @@
   "statement":
   "∀ (band : QuantumTheory.Models.MassiveDirac.Band) (e v m p offset radius broadening : ℝ),\n  m ≠ 0 →\n    radius < 2 * |m| →\n      |offset| ≤ radius →\n        ‖QuantumTheory.Models.MassiveDirac.targetCenteredInterbandSpectatorCurrentFactor band e v m p 0\n              (offset, broadening)‖ ≤\n          QuantumTheory.Models.MassiveDirac.radialInterbandSpectatorUniformBound e v m radius",
   "standardAxioms": ["Classical.choice", "Quot.sound", "propext"],
-  "sourceLine": 97,
+  "sourceLine": 99,
   "sourceFile":
   "LeanCondensedMatter/Models/MassiveDirac/Bastin/RadialSpectatorUniformBound.lean",
-  "sourceEndLine": 148,
+  "sourceEndLine": 150,
   "sourceEndColumn": 9,
   "sourceColumn": 8,
   "soleCompiledConsumerPrivate": false,
@@ -493281,7 +493281,7 @@
    "QuantumTheory.Transport.SpectralSide.regulator_advanced",
    "QuantumTheory.Transport.SpectralSide.regulator_retarded",
    "QuantumTheory.Transport.SpectralSide.retarded"],
-  "declarationStartLine": 95,
+  "declarationStartLine": 97,
   "crossModuleDirectWrapper": false,
   "completedMention": false,
   "compiledConsumers":
@@ -493509,10 +493509,10 @@
   "statement":
   "∀ (band : QuantumTheory.Models.MassiveDirac.Band) (e v m p radius broadening : ℝ),\n  m ≠ 0 →\n    0 < radius →\n      radius < 2 * |m| →\n        0 < broadening →\n          ‖QuantumTheory.Models.MassiveDirac.targetCenteredInterbandSpectatorCurrentPoleIntegral band e v m p 0 radius\n                broadening‖ ≤\n            QuantumTheory.Models.MassiveDirac.radialInterbandSpectatorUniformBound e v m radius *\n              ∫ (offset : ℝ) in -radius..radius, Lorentzian.spectralKernel offset broadening",
   "standardAxioms": ["Classical.choice", "Quot.sound", "propext"],
-  "sourceLine": 55,
+  "sourceLine": 58,
   "sourceFile":
   "LeanCondensedMatter/Models/MassiveDirac/Bastin/RadialPairUniformBound.lean",
-  "sourceEndLine": 85,
+  "sourceEndLine": 88,
   "sourceEndColumn": 13,
   "sourceColumn": 8,
   "soleCompiledConsumerPrivate": false,
@@ -493543,7 +493543,7 @@
    "QuantumTheory.Models.MassiveDirac.radialInterbandSpectatorUniformBound",
    "QuantumTheory.Models.MassiveDirac.targetCenteredInterbandSpectatorCurrentFactor",
    "QuantumTheory.Models.MassiveDirac.targetCenteredInterbandSpectatorCurrentPoleIntegral"],
-  "declarationStartLine": 53,
+  "declarationStartLine": 56,
   "crossModuleDirectWrapper": false,
   "completedMention": false,
   "compiledConsumers":
@@ -493758,10 +493758,10 @@
   "statement":
   "∀ (band : QuantumTheory.Models.MassiveDirac.Band) (e v m p fermiEnergy radius broadening : ℝ),\n  m ≠ 0 →\n    0 < radius →\n      radius < 2 * |m| →\n        0 < broadening →\n          ‖QuantumTheory.Models.MassiveDirac.targetCenteredZeroTemperatureInterbandBastinPairIntegral band e v m p 0\n                fermiEnergy radius broadening‖ ≤\n            QuantumTheory.Models.MassiveDirac.radialInterbandBastinPairUniformBound e v m radius",
   "standardAxioms": ["Classical.choice", "Quot.sound", "propext"],
-  "sourceLine": 151,
+  "sourceLine": 153,
   "sourceFile":
   "LeanCondensedMatter/Models/MassiveDirac/Bastin/ZeroTemperaturePair.lean",
-  "sourceEndLine": 173,
+  "sourceEndLine": 175,
   "sourceEndColumn": 55,
   "sourceColumn": 8,
   "soleCompiledConsumerPrivate": false,
@@ -493794,7 +493794,7 @@
    "QuantumTheory.Models.MassiveDirac.targetCenteredZeroTemperatureInterbandBastinPairIntegral",
    "QuantumTheory.Models.MassiveDirac.targetCenteredZeroTemperatureInterbandBastinPairIntegral_eq_neg_two_i_mul_poleIntegral",
    "QuantumTheory.Models.MassiveDirac.targetCenteredZeroTemperatureInterbandSpectatorCurrentPoleIntegral"],
-  "declarationStartLine": 149,
+  "declarationStartLine": 151,
   "crossModuleDirectWrapper": false,
   "completedMention": false,
   "compiledConsumers": [],
@@ -494031,10 +494031,10 @@
   "statement":
   "∀ (band : QuantumTheory.Models.MassiveDirac.Band) (e v m p fermiEnergy radius broadening : ℝ),\n  m ≠ 0 →\n    0 < radius →\n      radius < 2 * |m| →\n        0 < broadening →\n          ‖QuantumTheory.Models.MassiveDirac.targetCenteredZeroTemperatureInterbandSpectatorCurrentPoleIntegral band e v\n                m p 0 fermiEnergy radius broadening‖ ≤\n            QuantumTheory.Models.MassiveDirac.radialInterbandSpectatorUniformBound e v m radius *\n              ∫ (offset : ℝ) in -radius..radius, Lorentzian.spectralKernel offset broadening",
   "standardAxioms": ["Classical.choice", "Quot.sound", "propext"],
-  "sourceLine": 115,
+  "sourceLine": 117,
   "sourceFile":
   "LeanCondensedMatter/Models/MassiveDirac/Bastin/ZeroTemperaturePair.lean",
-  "sourceEndLine": 147,
+  "sourceEndLine": 149,
   "sourceEndColumn": 13,
   "sourceColumn": 8,
   "soleCompiledConsumerPrivate": false,
@@ -494067,7 +494067,7 @@
    "QuantumTheory.Models.MassiveDirac.targetCenteredInterbandSpectatorCurrentFactor",
    "QuantumTheory.Models.MassiveDirac.targetCenteredZeroTemperatureInterbandSpectatorCurrentPoleIntegral",
    "QuantumTheory.zeroTemperatureOccupation"],
-  "declarationStartLine": 113,
+  "declarationStartLine": 115,
   "crossModuleDirectWrapper": false,
   "completedMention": false,
   "compiledConsumers":
@@ -494365,10 +494365,10 @@
   "statement":
   "∀ (band : QuantumTheory.Models.MassiveDirac.Band) (e v m p fermiEnergy offset radius broadening : ℝ),\n  m ≠ 0 →\n    radius < 2 * |m| →\n      |offset| ≤ radius →\n        0 ≤ broadening →\n          ‖↑(QuantumTheory.zeroTemperatureOccupation fermiEnergy\n                    (QuantumTheory.Models.MassiveDirac.bandEnergy band v m p 0 + offset)) *\n                (↑(Lorentzian.spectralKernel offset broadening) *\n                  QuantumTheory.Models.MassiveDirac.targetCenteredInterbandSpectatorCurrentFactor band e v m p 0\n                    (offset, broadening))‖ ≤\n            QuantumTheory.Models.MassiveDirac.radialInterbandSpectatorUniformBound e v m radius *\n              Lorentzian.spectralKernel offset broadening",
   "standardAxioms": ["Classical.choice", "Quot.sound", "propext"],
-  "sourceLine": 81,
+  "sourceLine": 83,
   "sourceFile":
   "LeanCondensedMatter/Models/MassiveDirac/Bastin/ZeroTemperaturePair.lean",
-  "sourceEndLine": 111,
+  "sourceEndLine": 113,
   "sourceEndColumn": 76,
   "sourceColumn": 8,
   "soleCompiledConsumerPrivate": false,
@@ -494400,7 +494400,7 @@
    "QuantumTheory.Models.MassiveDirac.targetCenteredInterbandSpectatorCurrentFactor",
    "QuantumTheory.norm_zeroTemperatureOccupation_complex_le_one",
    "QuantumTheory.zeroTemperatureOccupation"],
-  "declarationStartLine": 79,
+  "declarationStartLine": 81,
   "crossModuleDirectWrapper": false,
   "completedMention": false,
   "compiledConsumers":
@@ -502314,9 +502314,9 @@
   "statement":
   "∀ (band : QuantumTheory.Models.MassiveDirac.Band) (v m px py : ℝ),\n  QuantumTheory.Transport.scalarResolventCoefficient (↑(QuantumTheory.Models.MassiveDirac.bandEnergy band v m px py))\n      (QuantumTheory.Models.MassiveDirac.bandEnergy (QuantumTheory.Models.MassiveDirac.oppositeBand band) v m px py) =\n    (↑(QuantumTheory.Models.MassiveDirac.interbandEnergyGap band v m px py))⁻¹",
   "standardAxioms": ["Classical.choice", "Quot.sound", "propext"],
-  "sourceLine": 28,
+  "sourceLine": 27,
   "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Bastin/Spectator.lean",
-  "sourceEndLine": 34,
+  "sourceEndLine": 33,
   "sourceEndColumn": 55,
   "sourceColumn": 8,
   "soleCompiledConsumerPrivate": false,
@@ -502343,7 +502343,7 @@
    "QuantumTheory.Models.MassiveDirac.interbandEnergyGap",
    "QuantumTheory.Models.MassiveDirac.oppositeBand",
    "QuantumTheory.Transport.scalarResolventCoefficient"],
-  "declarationStartLine": 26,
+  "declarationStartLine": 25,
   "crossModuleDirectWrapper": false,
   "completedMention": false,
   "compiledConsumers": [],
@@ -502669,10 +502669,10 @@
      "implicit": false,
      "id": "_uniq.73040"}]},
   "statement": "ℝ → ℝ → ℝ",
-  "sourceLine": 25,
+  "sourceLine": 27,
   "sourceFile":
   "LeanCondensedMatter/Models/MassiveDirac/Bastin/RadialSpectatorUniformBound.lean",
-  "sourceEndLine": 26,
+  "sourceEndLine": 28,
   "sourceEndColumn": 18,
   "sourceColumn": 4,
   "projection": false,
@@ -502693,7 +502693,7 @@
    "_private.LeanCondensedMatter.Models.MassiveDirac.Bastin.RadialSpectatorUniformBound.0.QuantumTheory.Models.MassiveDirac.radialBastinMassWindowMargin_le_norm_spectralDenominator"],
   "dependencies":
   ["QuantumTheory.Models.MassiveDirac.radialBastinMassWindowMargin._proof_1"],
-  "declarationStartLine": 24},
+  "declarationStartLine": 26},
  {"valueDependencies": [],
   "typeDependencies": [],
   "structuredStatement": null,
@@ -502844,10 +502844,10 @@
   "statement":
   "∀ (band : QuantumTheory.Models.MassiveDirac.Band) (v m p offset radius : ℝ),\n  |offset| ≤ radius →\n    QuantumTheory.Models.MassiveDirac.radialBastinMassWindowMargin m radius ≤\n      |QuantumTheory.Models.MassiveDirac.interbandEnergyGap band v m p 0 + offset|",
   "standardAxioms": ["Classical.choice", "Quot.sound", "propext"],
-  "sourceLine": 36,
+  "sourceLine": 38,
   "sourceFile":
   "LeanCondensedMatter/Models/MassiveDirac/Bastin/RadialSpectatorUniformBound.lean",
-  "sourceEndLine": 47,
+  "sourceEndLine": 49,
   "sourceEndColumn": 10,
   "sourceColumn": 8,
   "soleCompiledConsumerPrivate": true,
@@ -502877,7 +502877,7 @@
    "QuantumTheory.Models.MassiveDirac.radialBastinMassWindowMargin._proof_1",
    "QuantumTheory.Models.MassiveDirac.two_mul_abs_mass_le_abs_interbandEnergyGap",
    "QuantumTheory.Transport.abs_gap_sub_radius_le_abs_gap_add_offset"],
-  "declarationStartLine": 34,
+  "declarationStartLine": 36,
   "crossModuleDirectWrapper": false,
   "completedMention": false,
   "compiledConsumers":
@@ -502960,10 +502960,10 @@
   "statement":
   "∀ (m radius : ℝ), radius < 2 * |m| → 0 < QuantumTheory.Models.MassiveDirac.radialBastinMassWindowMargin m radius",
   "standardAxioms": ["Classical.choice", "Quot.sound", "propext"],
-  "sourceLine": 29,
+  "sourceLine": 31,
   "sourceFile":
   "LeanCondensedMatter/Models/MassiveDirac/Bastin/RadialSpectatorUniformBound.lean",
-  "sourceEndLine": 32,
+  "sourceEndLine": 34,
   "sourceEndColumn": 27,
   "sourceColumn": 8,
   "soleCompiledConsumerPrivate": false,
@@ -502988,7 +502988,7 @@
   "dependencies":
   ["QuantumTheory.Models.MassiveDirac.radialBastinMassWindowMargin",
    "QuantumTheory.Models.MassiveDirac.radialBastinMassWindowMargin._proof_1"],
-  "declarationStartLine": 28,
+  "declarationStartLine": 30,
   "crossModuleDirectWrapper": false,
   "completedMention": false,
   "compiledConsumers":
@@ -503163,10 +503163,10 @@
      "implicit": false,
      "id": "_uniq.53256"}]},
   "statement": "QuantumTheory.Models.MassiveDirac.Band → ℝ → ℝ → ℝ → ℝ → ℝ",
-  "sourceLine": 41,
+  "sourceLine": 42,
   "sourceFile":
   "LeanCondensedMatter/Models/MassiveDirac/Bastin/RadialDominatedConvergence.lean",
-  "sourceEndLine": 43,
+  "sourceEndLine": 44,
   "sourceEndColumn": 57,
   "sourceColumn": 4,
   "projection": false,
@@ -503187,7 +503187,7 @@
   "dependencies":
   ["QuantumTheory.Models.MassiveDirac.Band",
    "QuantumTheory.Models.MassiveDirac.cleanInterbandBastinPairLimitDensity"],
-  "declarationStartLine": 40},
+  "declarationStartLine": 41},
  {"valueDependencies":
   ["QuantumTheory.Models.MassiveDirac.Band",
    "QuantumTheory.Models.MassiveDirac.Band.casesOn",
@@ -504221,10 +504221,10 @@
      "id": "_uniq.58489"}]},
   "statement":
   "QuantumTheory.Models.MassiveDirac.Band → ℝ → ℝ → ℝ → ℝ → ℝ → ℝ → ℝ",
-  "sourceLine": 35,
+  "sourceLine": 36,
   "sourceFile":
   "LeanCondensedMatter/Models/MassiveDirac/Bastin/RadialDominatedConvergence.lean",
-  "sourceEndLine": 38,
+  "sourceEndLine": 39,
   "sourceEndColumn": 40,
   "sourceColumn": 4,
   "projection": false,
@@ -504244,7 +504244,7 @@
   "dependencies":
   ["QuantumTheory.Models.MassiveDirac.Band",
    "QuantumTheory.Models.MassiveDirac.targetCenteredInterbandBastinPairIntegral"],
-  "declarationStartLine": 32},
+  "declarationStartLine": 33},
  {"valueDependencies":
   ["QuantumTheory.Models.MassiveDirac.radialInterbandBastinPairUniformBound._proof_1",
    "QuantumTheory.Models.MassiveDirac.radialInterbandSpectatorUniformBound"],
@@ -504283,10 +504283,10 @@
      "implicit": false,
      "id": "_uniq.59720"}]},
   "statement": "ℝ → ℝ → ℝ → ℝ → ℝ",
-  "sourceLine": 88,
+  "sourceLine": 91,
   "sourceFile":
   "LeanCondensedMatter/Models/MassiveDirac/Bastin/RadialPairUniformBound.lean",
-  "sourceEndLine": 90,
+  "sourceEndLine": 93,
   "sourceEndColumn": 67,
   "sourceColumn": 4,
   "projection": false,
@@ -504308,7 +504308,7 @@
   "dependencies":
   ["QuantumTheory.Models.MassiveDirac.radialInterbandBastinPairUniformBound._proof_1",
    "QuantumTheory.Models.MassiveDirac.radialInterbandSpectatorUniformBound"],
-  "declarationStartLine": 87},
+  "declarationStartLine": 90},
  {"valueDependencies": [],
   "typeDependencies": [],
   "structuredStatement": null,
@@ -504400,10 +504400,10 @@
   "statement":
   "∀ (e v m radius : ℝ), 0 ≤ QuantumTheory.Models.MassiveDirac.radialInterbandBastinPairUniformBound e v m radius",
   "standardAxioms": ["Classical.choice", "Quot.sound", "propext"],
-  "sourceLine": 93,
+  "sourceLine": 96,
   "sourceFile":
   "LeanCondensedMatter/Models/MassiveDirac/Bastin/RadialPairUniformBound.lean",
-  "sourceEndLine": 99,
+  "sourceEndLine": 102,
   "sourceEndColumn": 12,
   "sourceColumn": 8,
   "soleCompiledConsumerPrivate": false,
@@ -504431,7 +504431,7 @@
    "QuantumTheory.Models.MassiveDirac.radialInterbandBastinPairUniformBound._proof_1",
    "QuantumTheory.Models.MassiveDirac.radialInterbandSpectatorUniformBound",
    "QuantumTheory.Models.MassiveDirac.radialInterbandSpectatorUniformBound_nonneg"],
-  "declarationStartLine": 92,
+  "declarationStartLine": 95,
   "crossModuleDirectWrapper": false,
   "completedMention": false,
   "compiledConsumers":
@@ -504548,10 +504548,10 @@
      "implicit": false,
      "id": "_uniq.84911"}]},
   "statement": "ℝ → ℝ → ℝ → ℝ → ℝ",
-  "sourceLine": 84,
+  "sourceLine": 86,
   "sourceFile":
   "LeanCondensedMatter/Models/MassiveDirac/Bastin/RadialSpectatorUniformBound.lean",
-  "sourceEndLine": 86,
+  "sourceEndLine": 88,
   "sourceEndColumn": 69,
   "sourceColumn": 4,
   "projection": false,
@@ -504577,7 +504577,7 @@
   "dependencies":
   ["QuantumTheory.Models.MassiveDirac.radialBastinMassWindowMargin",
    "QuantumTheory.Models.MassiveDirac.radialBastinMassWindowMargin._proof_1"],
-  "declarationStartLine": 83},
+  "declarationStartLine": 85},
  {"valueDependencies":
   ["QuantumTheory.Models.MassiveDirac.radialBastinMassWindowMargin",
    "QuantumTheory.Models.MassiveDirac.radialBastinMassWindowMargin._proof_1",
@@ -504645,10 +504645,10 @@
   "statement":
   "∀ (e v m radius : ℝ), 0 ≤ QuantumTheory.Models.MassiveDirac.radialInterbandSpectatorUniformBound e v m radius",
   "standardAxioms": ["Classical.choice", "Quot.sound", "propext"],
-  "sourceLine": 89,
+  "sourceLine": 91,
   "sourceFile":
   "LeanCondensedMatter/Models/MassiveDirac/Bastin/RadialSpectatorUniformBound.lean",
-  "sourceEndLine": 93,
+  "sourceEndLine": 95,
   "sourceEndColumn": 12,
   "sourceColumn": 8,
   "soleCompiledConsumerPrivate": false,
@@ -504676,7 +504676,7 @@
   ["QuantumTheory.Models.MassiveDirac.radialBastinMassWindowMargin",
    "QuantumTheory.Models.MassiveDirac.radialBastinMassWindowMargin._proof_1",
    "QuantumTheory.Models.MassiveDirac.radialInterbandSpectatorUniformBound"],
-  "declarationStartLine": 88,
+  "declarationStartLine": 90,
   "crossModuleDirectWrapper": false,
   "completedMention": false,
   "compiledConsumers":
@@ -508987,9 +508987,9 @@
      "id": "_uniq.43504"}]},
   "statement":
   "QuantumTheory.Models.MassiveDirac.Band → ℝ → ℝ → ℝ → ℝ → ℝ → ℝ × ℝ → ℂ",
-  "sourceLine": 26,
+  "sourceLine": 25,
   "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Bastin/PoleHall.lean",
-  "sourceEndLine": 29,
+  "sourceEndLine": 28,
   "sourceEndColumn": 71,
   "sourceColumn": 18,
   "projection": false,
@@ -509023,7 +509023,7 @@
    "QuantumTheory.Models.MassiveDirac.bandEnergy",
    "QuantumTheory.Models.MassiveDirac.interbandSpectatorCurrentFactor",
    "QuantumTheory.Models.MassiveDirac.targetCenteredInterbandSpectatorCurrentFactor._proof_1"],
-  "declarationStartLine": 24},
+  "declarationStartLine": 23},
  {"valueDependencies": [],
   "typeDependencies": [],
   "structuredStatement": null,
@@ -509241,9 +509241,9 @@
   "statement":
   "∀ (band : QuantumTheory.Models.MassiveDirac.Band) (e v m px py : ℝ) (p : ℝ × ℝ),\n  QuantumTheory.Models.MassiveDirac.targetCenteredInterbandSpectatorCurrentFactor band e v m px py p =\n    QuantumTheory.Transport.interbandPoleRegularFactor\n      (QuantumTheory.Models.MassiveDirac.interbandEnergyGap band v m px py)\n      (QuantumTheory.Models.MassiveDirac.currentBandBlockTrace 0 1 (QuantumTheory.Models.MassiveDirac.oppositeBand band)\n        band e v m px py)\n      (QuantumTheory.Models.MassiveDirac.currentBandBlockTrace 1 0 (QuantumTheory.Models.MassiveDirac.oppositeBand band)\n        band e v m px py)\n      p",
   "standardAxioms": ["Classical.choice", "Quot.sound", "propext"],
-  "sourceLine": 33,
+  "sourceLine": 32,
   "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Bastin/PoleHall.lean",
-  "sourceEndLine": 52,
+  "sourceEndLine": 51,
   "sourceEndColumn": 60,
   "sourceColumn": 8,
   "soleCompiledConsumerPrivate": false,
@@ -509288,7 +509288,7 @@
    "QuantumTheory.Transport.spectralParameter",
    "QuantumTheory.Transport.targetCenteredSourceCoefficient",
    "QuantumTheory.Transport.targetCenteredSourceCoefficient_eq"],
-  "declarationStartLine": 31,
+  "declarationStartLine": 30,
   "crossModuleDirectWrapper": false,
   "completedMention": false,
   "compiledConsumers":
@@ -510072,10 +510072,10 @@
      "id": "_uniq.84810"}]},
   "statement":
   "QuantumTheory.Models.MassiveDirac.Band → ℝ → ℝ → ℝ → ℝ → ℝ → ℝ → ℝ → ℝ → ℂ",
-  "sourceLine": 40,
+  "sourceLine": 42,
   "sourceFile":
   "LeanCondensedMatter/Models/MassiveDirac/Bastin/ZeroTemperaturePair.lean",
-  "sourceEndLine": 46,
+  "sourceEndLine": 48,
   "sourceEndColumn": 55,
   "sourceColumn": 18,
   "projection": false,
@@ -510097,7 +510097,7 @@
    "QuantumTheory.Models.MassiveDirac.oppositeBand",
    "QuantumTheory.Models.MassiveDirac.targetCenteredZeroTemperatureInterbandBastinPairIntegral._proof_1",
    "QuantumTheory.zeroTemperatureOccupation"],
-  "declarationStartLine": 38},
+  "declarationStartLine": 40},
  {"valueDependencies": [],
   "typeDependencies": [],
   "structuredStatement": null,
@@ -510292,10 +510292,10 @@
   "statement":
   "∀ (band : QuantumTheory.Models.MassiveDirac.Band) (e v m px py fermiEnergy radius broadening : ℝ),\n  broadening ≠ 0 →\n    QuantumTheory.Models.MassiveDirac.targetCenteredZeroTemperatureInterbandBastinPairIntegral band e v m px py\n        fermiEnergy radius broadening =\n      -2 * Complex.I *\n        QuantumTheory.Models.MassiveDirac.targetCenteredZeroTemperatureInterbandSpectatorCurrentPoleIntegral band e v m\n          px py fermiEnergy radius broadening",
   "standardAxioms": ["Classical.choice", "Quot.sound", "propext"],
-  "sourceLine": 49,
+  "sourceLine": 51,
   "sourceFile":
   "LeanCondensedMatter/Models/MassiveDirac/Bastin/ZeroTemperaturePair.lean",
-  "sourceEndLine": 77,
+  "sourceEndLine": 79,
   "sourceEndColumn": 6,
   "sourceColumn": 8,
   "soleCompiledConsumerPrivate": false,
@@ -510332,7 +510332,7 @@
    "QuantumTheory.Models.MassiveDirac.targetCenteredZeroTemperatureInterbandBastinPairIntegral._proof_1",
    "QuantumTheory.Models.MassiveDirac.targetCenteredZeroTemperatureInterbandSpectatorCurrentPoleIntegral",
    "QuantumTheory.zeroTemperatureOccupation"],
-  "declarationStartLine": 48,
+  "declarationStartLine": 50,
   "crossModuleDirectWrapper": false,
   "completedMention": false,
   "compiledConsumers":
@@ -510417,10 +510417,10 @@
      "id": "_uniq.75793"}]},
   "statement":
   "QuantumTheory.Models.MassiveDirac.Band → ℝ → ℝ → ℝ → ℝ → ℝ → ℝ → ℝ → ℝ → ℂ",
-  "sourceLine": 29,
+  "sourceLine": 31,
   "sourceFile":
   "LeanCondensedMatter/Models/MassiveDirac/Bastin/ZeroTemperaturePair.lean",
-  "sourceEndLine": 36,
+  "sourceEndLine": 38,
   "sourceEndColumn": 48,
   "sourceColumn": 18,
   "projection": false,
@@ -510442,7 +510442,7 @@
    "QuantumTheory.Models.MassiveDirac.bandEnergy",
    "QuantumTheory.Models.MassiveDirac.targetCenteredInterbandSpectatorCurrentFactor",
    "QuantumTheory.zeroTemperatureOccupation"],
-  "declarationStartLine": 28},
+  "declarationStartLine": 30},
  {"valueDependencies":
   ["QuantumTheory.Models.MassiveDirac.Band",
    "QuantumTheory.Models.MassiveDirac.bandEnergy",
@@ -529550,10 +529550,10 @@
   "statement":
   "∀ (band : QuantumTheory.Models.MassiveDirac.Band) (e v m radius pMax : ℝ),\n  m ≠ 0 →\n    0 ≤ pMax →\n      0 < radius →\n        radius < 2 * |m| →\n          Filter.Tendsto\n            (fun broadening =>\n              QuantumTheory.Models.MassiveDirac.finiteRadialInterbandBastinPairIntegral band e v m radius pMax\n                broadening)\n            (nhdsWithin 0 (Set.Ioi 0))\n            (nhds (QuantumTheory.Models.MassiveDirac.finiteRadialCleanInterbandBastinPairIntegral band e v m pMax))",
   "standardAxioms": ["Classical.choice", "Quot.sound", "propext"],
-  "sourceLine": 188,
+  "sourceLine": 189,
   "sourceFile":
   "LeanCondensedMatter/Models/MassiveDirac/Bastin/RadialDominatedConvergence.lean",
-  "sourceEndLine": 219,
+  "sourceEndLine": 220,
   "sourceEndColumn": 49,
   "sourceColumn": 8,
   "soleCompiledConsumerPrivate": false,
@@ -529587,7 +529587,7 @@
    "_private.LeanCondensedMatter.Models.MassiveDirac.Bastin.RadialDominatedConvergence.0.QuantumTheory.Models.MassiveDirac.radialInterbandBastinDominatingConstant",
    "_private.LeanCondensedMatter.Models.MassiveDirac.Bastin.RadialDominatedConvergence.0.QuantumTheory.Models.MassiveDirac.stronglyMeasurable_radialInterbandBastinPairDensity",
    "_private.LeanCondensedMatter.Models.MassiveDirac.Bastin.RadialDominatedConvergence.0.QuantumTheory.Models.MassiveDirac.tendsto_radialInterbandBastinPairDensity"],
-  "declarationStartLine": 185,
+  "declarationStartLine": 186,
   "crossModuleDirectWrapper": false,
   "completedMention": false,
   "compiledConsumers": [],
@@ -530823,9 +530823,9 @@
   "statement":
   "∀ (side : QuantumTheory.Transport.SpectralSide) (band : QuantumTheory.Models.MassiveDirac.Band) (v m px py : ℝ),\n  QuantumTheory.Models.MassiveDirac.energy v m px py ≠ 0 →\n    Filter.Tendsto\n      (fun broadening =>\n        QuantumTheory.Transport.scalarResolventCoefficient\n          (QuantumTheory.Transport.spectralParameter side (QuantumTheory.Models.MassiveDirac.bandEnergy band v m px py)\n            broadening)\n          (QuantumTheory.Models.MassiveDirac.bandEnergy (QuantumTheory.Models.MassiveDirac.oppositeBand band) v m px\n            py))\n      (nhds 0) (nhds (↑(QuantumTheory.Models.MassiveDirac.interbandEnergyGap band v m px py))⁻¹)",
   "standardAxioms": ["Classical.choice", "Quot.sound", "propext"],
-  "sourceLine": 38,
+  "sourceLine": 37,
   "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Bastin/Spectator.lean",
-  "sourceEndLine": 50,
+  "sourceEndLine": 49,
   "sourceEndColumn": 64,
   "sourceColumn": 8,
   "soleCompiledConsumerPrivate": false,
@@ -530858,7 +530858,7 @@
    "QuantumTheory.Transport.scalarResolventCoefficient",
    "QuantumTheory.Transport.spectralParameter",
    "QuantumTheory.Transport.tendsto_scalarResolventCoefficient_spectralParameter_zero"],
-  "declarationStartLine": 36,
+  "declarationStartLine": 35,
   "crossModuleDirectWrapper": false,
   "completedMention": false,
   "compiledConsumers":
@@ -531020,9 +531020,9 @@
   "statement":
   "∀ (side : QuantumTheory.Transport.SpectralSide) (band : QuantumTheory.Models.MassiveDirac.Band) (v m px py : ℝ),\n  QuantumTheory.Models.MassiveDirac.energy v m px py ≠ 0 →\n    Filter.Tendsto\n      (fun broadening =>\n        QuantumTheory.Transport.scalarResolventCoefficient\n            (QuantumTheory.Transport.spectralParameter side\n              (QuantumTheory.Models.MassiveDirac.bandEnergy band v m px py) broadening)\n            (QuantumTheory.Models.MassiveDirac.bandEnergy (QuantumTheory.Models.MassiveDirac.oppositeBand band) v m px\n              py) ^\n          2)\n      (nhds 0) (nhds ((↑(QuantumTheory.Models.MassiveDirac.interbandEnergyGap band v m px py))⁻¹ ^ 2))",
   "standardAxioms": ["Classical.choice", "Quot.sound", "propext"],
-  "sourceLine": 54,
+  "sourceLine": 53,
   "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Bastin/Spectator.lean",
-  "sourceEndLine": 64,
+  "sourceEndLine": 63,
   "sourceEndColumn": 31,
   "sourceColumn": 8,
   "soleCompiledConsumerPrivate": false,
@@ -531054,7 +531054,7 @@
    "QuantumTheory.Transport.SpectralSide",
    "QuantumTheory.Transport.scalarResolventCoefficient",
    "QuantumTheory.Transport.spectralParameter"],
-  "declarationStartLine": 52,
+  "declarationStartLine": 51,
   "crossModuleDirectWrapper": false,
   "completedMention": false,
   "compiledConsumers":
@@ -1141212,10 +1141212,10 @@
   "statement":
   "∀ (band : QuantumTheory.Models.MassiveDirac.Band) (e v m radius pMax p broadening : ℝ),\n  m ≠ 0 →\n    0 < radius →\n      radius < 2 * |m| →\n        p ∈ Set.Icc 0 pMax →\n          0 < broadening →\n            ‖QuantumTheory.Models.MassiveDirac.radialInterbandBastinPairDensity band e v m radius p broadening‖ ≤\n              QuantumTheory.Models.MassiveDirac.radialInterbandBastinDominatingConstant✝ e v m radius pMax",
   "standardAxioms": ["Classical.choice", "Quot.sound", "propext"],
-  "sourceLine": 157,
+  "sourceLine": 158,
   "sourceFile":
   "LeanCondensedMatter/Models/MassiveDirac/Bastin/RadialDominatedConvergence.lean",
-  "sourceEndLine": 183,
+  "sourceEndLine": 184,
   "sourceEndColumn": 40,
   "sourceColumn": 16,
   "soleCompiledConsumerPrivate": false,
@@ -1141246,7 +1141246,7 @@
    "QuantumTheory.Models.MassiveDirac.radialInterbandBastinPairUniformBound_nonneg",
    "QuantumTheory.Models.MassiveDirac.targetCenteredInterbandBastinPairIntegral",
    "_private.LeanCondensedMatter.Models.MassiveDirac.Bastin.RadialDominatedConvergence.0.QuantumTheory.Models.MassiveDirac.radialInterbandBastinDominatingConstant"],
-  "declarationStartLine": 155,
+  "declarationStartLine": 156,
   "crossModuleDirectWrapper": false,
   "completedMention": false,
   "compiledConsumers":
@@ -1141297,10 +1141297,10 @@
      "implicit": false,
      "id": "_uniq.70812"}]},
   "statement": "ℝ → ℝ → ℝ → ℝ → ℝ → ℝ",
-  "sourceLine": 80,
+  "sourceLine": 81,
   "sourceFile":
   "LeanCondensedMatter/Models/MassiveDirac/Bastin/RadialDominatedConvergence.lean",
-  "sourceEndLine": 82,
+  "sourceEndLine": 83,
   "sourceEndColumn": 59,
   "sourceColumn": 12,
   "projection": false,
@@ -1141317,7 +1141317,7 @@
    "_private.LeanCondensedMatter.Models.MassiveDirac.Bastin.RadialDominatedConvergence.0.QuantumTheory.Models.MassiveDirac.norm_radialInterbandBastinPairDensity_le_dominatingConstant"],
   "dependencies":
   ["QuantumTheory.Models.MassiveDirac.radialInterbandBastinPairUniformBound"],
-  "declarationStartLine": 79},
+  "declarationStartLine": 80},
  {"valueDependencies":
   ["QuantumTheory.Models.MassiveDirac.Band",
    "QuantumTheory.Models.MassiveDirac.radialInterbandBastinPairDensity",
@@ -1141442,10 +1141442,10 @@
   "statement":
   "∀ (band : QuantumTheory.Models.MassiveDirac.Band) (e v m radius broadening : ℝ),\n  m ≠ 0 →\n    0 < radius →\n      0 < broadening →\n        MeasureTheory.StronglyMeasurable fun p =>\n          QuantumTheory.Models.MassiveDirac.radialInterbandBastinPairDensity band e v m radius p broadening",
   "standardAxioms": ["Classical.choice", "Quot.sound", "propext"],
-  "sourceLine": 142,
+  "sourceLine": 143,
   "sourceFile":
   "LeanCondensedMatter/Models/MassiveDirac/Bastin/RadialDominatedConvergence.lean",
-  "sourceEndLine": 153,
+  "sourceEndLine": 154,
   "sourceEndColumn": 64,
   "sourceColumn": 16,
   "soleCompiledConsumerPrivate": false,
@@ -1141473,7 +1141473,7 @@
    "QuantumTheory.Models.MassiveDirac.radialInterbandBastinPairDensity",
    "QuantumTheory.Models.MassiveDirac.targetCenteredInterbandBastinPairIntegral",
    "_private.LeanCondensedMatter.Models.MassiveDirac.Bastin.RadialDominatedConvergence.0.QuantumTheory.Models.MassiveDirac.stronglyMeasurable_targetCenteredInterbandBastinPairIntegral_radial"],
-  "declarationStartLine": 141,
+  "declarationStartLine": 142,
   "crossModuleDirectWrapper": false,
   "completedMention": false,
   "compiledConsumers":
@@ -1141571,10 +1141571,10 @@
   "statement":
   "∀ (band : QuantumTheory.Models.MassiveDirac.Band) (e v m broadening : ℝ),\n  m ≠ 0 →\n    MeasureTheory.StronglyMeasurable fun z =>\n      ↑(Lorentzian.spectralKernel z.2 broadening) *\n        QuantumTheory.Models.MassiveDirac.targetCenteredInterbandSpectatorCurrentFactor band e v m z.1 0\n          (z.2, broadening)",
   "standardAxioms": ["Classical.choice", "Quot.sound", "propext"],
-  "sourceLine": 86,
+  "sourceLine": 87,
   "sourceFile":
   "LeanCondensedMatter/Models/MassiveDirac/Bastin/RadialDominatedConvergence.lean",
-  "sourceEndLine": 114,
+  "sourceEndLine": 115,
   "sourceEndColumn": 15,
   "sourceColumn": 16,
   "soleCompiledConsumerPrivate": true,
@@ -1141611,7 +1141611,7 @@
    "QuantumTheory.Models.MassiveDirac.radialInterbandCurrentAmplitude",
    "QuantumTheory.Models.MassiveDirac.targetCenteredInterbandSpectatorCurrentFactor",
    "QuantumTheory.Models.MassiveDirac.targetCenteredInterbandSpectatorCurrentFactor_radial_eq"],
-  "declarationStartLine": 84,
+  "declarationStartLine": 85,
   "crossModuleDirectWrapper": false,
   "completedMention": false,
   "compiledConsumers":
@@ -1141745,10 +1141745,10 @@
   "statement":
   "∀ (band : QuantumTheory.Models.MassiveDirac.Band) (e v m radius broadening : ℝ),\n  m ≠ 0 →\n    0 < radius →\n      0 < broadening →\n        MeasureTheory.StronglyMeasurable fun p =>\n          QuantumTheory.Models.MassiveDirac.targetCenteredInterbandBastinPairIntegral band e v m p 0 radius broadening",
   "standardAxioms": ["Classical.choice", "Quot.sound", "propext"],
-  "sourceLine": 118,
+  "sourceLine": 119,
   "sourceFile":
   "LeanCondensedMatter/Models/MassiveDirac/Bastin/RadialDominatedConvergence.lean",
-  "sourceEndLine": 139,
+  "sourceEndLine": 140,
   "sourceEndColumn": 44,
   "sourceColumn": 16,
   "soleCompiledConsumerPrivate": true,
@@ -1141779,7 +1141779,7 @@
    "QuantumTheory.Models.MassiveDirac.targetCenteredInterbandSpectatorCurrentFactor",
    "QuantumTheory.Models.MassiveDirac.targetCenteredInterbandSpectatorCurrentPoleIntegral",
    "_private.LeanCondensedMatter.Models.MassiveDirac.Bastin.RadialDominatedConvergence.0.QuantumTheory.Models.MassiveDirac.stronglyMeasurable_radialInterbandPoleIntegrand"],
-  "declarationStartLine": 116,
+  "declarationStartLine": 117,
   "crossModuleDirectWrapper": false,
   "completedMention": false,
   "compiledConsumers":
@@ -1141967,10 +1141967,10 @@
   "statement":
   "∀ (band : QuantumTheory.Models.MassiveDirac.Band) (e v m radius p : ℝ),\n  m ≠ 0 →\n    0 < radius →\n      radius < 2 * |m| →\n        Filter.Tendsto\n          (fun broadening =>\n            QuantumTheory.Models.MassiveDirac.radialInterbandBastinPairDensity band e v m radius p broadening)\n          (nhdsWithin 0 (Set.Ioi 0))\n          (nhds (QuantumTheory.Models.MassiveDirac.radialCleanInterbandBastinPairLimitDensity band e v m p))",
   "standardAxioms": ["Classical.choice", "Quot.sound", "propext"],
-  "sourceLine": 47,
+  "sourceLine": 48,
   "sourceFile":
   "LeanCondensedMatter/Models/MassiveDirac/Bastin/RadialDominatedConvergence.lean",
-  "sourceEndLine": 65,
+  "sourceEndLine": 66,
   "sourceEndColumn": 36,
   "sourceColumn": 16,
   "soleCompiledConsumerPrivate": false,
@@ -1142006,7 +1142006,7 @@
    "QuantumTheory.Models.MassiveDirac.radius_lt_abs_interbandEnergyGap_of_lt_two_mul_abs_mass",
    "QuantumTheory.Models.MassiveDirac.targetCenteredInterbandBastinPairIntegral",
    "QuantumTheory.Models.MassiveDirac.tendsto_targetCenteredInterbandBastinPairIntegral_re_berryCurvature"],
-  "declarationStartLine": 45,
+  "declarationStartLine": 46,
   "crossModuleDirectWrapper": false,
   "completedMention": false,
   "compiledConsumers":
@@ -1142500,10 +1142500,10 @@
   "statement":
   "∀ (side : QuantumTheory.Transport.SpectralSide) (band : QuantumTheory.Models.MassiveDirac.Band)\n  (v m p offset radius broadening : ℝ),\n  |offset| ≤ radius →\n    QuantumTheory.Models.MassiveDirac.radialBastinMassWindowMargin m radius ≤\n      ‖↑(QuantumTheory.Models.MassiveDirac.interbandEnergyGap band v m p 0 + offset) +\n          ↑(side.regulator broadening) * Complex.I‖",
   "standardAxioms": ["Classical.choice", "Quot.sound", "propext"],
-  "sourceLine": 51,
+  "sourceLine": 53,
   "sourceFile":
   "LeanCondensedMatter/Models/MassiveDirac/Bastin/RadialSpectatorUniformBound.lean",
-  "sourceEndLine": 62,
+  "sourceEndLine": 64,
   "sourceEndColumn": 40,
   "sourceColumn": 16,
   "soleCompiledConsumerPrivate": false,
@@ -1142533,7 +1142533,7 @@
    "QuantumTheory.Models.MassiveDirac.radialBastinMassWindowMargin_le_abs_gap_add_offset",
    "QuantumTheory.Transport.SpectralSide",
    "QuantumTheory.Transport.SpectralSide.regulator"],
-  "declarationStartLine": 49,
+  "declarationStartLine": 51,
   "crossModuleDirectWrapper": false,
   "completedMention": false,
   "compiledConsumers":

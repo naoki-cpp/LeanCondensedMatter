@@ -1900,7 +1900,7 @@
         "LeanCondensedMatter.Models.MassiveDirac.Bastin.PoleFactor",
         "LeanCondensedMatter.Models.MassiveDirac.Model.OperatorSpectral"
       ],
-      "externalImportCount": 1
+      "externalImportCount": 0
     },
     {
       "name": "LeanCondensedMatter.Models.MassiveDirac.Bastin.RadialDominatedConvergence",
@@ -1911,7 +1911,7 @@
         "LeanCondensedMatter.Models.MassiveDirac.Bastin.RadialPairUniformBound",
         "LeanCondensedMatter.Models.MassiveDirac.Model.Interband"
       ],
-      "externalImportCount": 3
+      "externalImportCount": 4
     },
     {
       "name": "LeanCondensedMatter.Models.MassiveDirac.Bastin.RadialEnergyBridge",
@@ -1930,7 +1930,7 @@
         "LeanCondensedMatter.Models.MassiveDirac.Bastin.PairIntegral",
         "LeanCondensedMatter.Models.MassiveDirac.Bastin.RadialSpectatorUniformBound"
       ],
-      "externalImportCount": 1
+      "externalImportCount": 4
     },
     {
       "name": "LeanCondensedMatter.Models.MassiveDirac.Bastin.RadialSpectatorBound",
@@ -1948,7 +1948,7 @@
       "imports": [
         "LeanCondensedMatter.Models.MassiveDirac.Bastin.RadialSpectatorBound"
       ],
-      "externalImportCount": 1
+      "externalImportCount": 3
     },
     {
       "name": "LeanCondensedMatter.Models.MassiveDirac.Bastin.Spectator",
@@ -1956,7 +1956,7 @@
       "imports": [
         "LeanCondensedMatter.Models.MassiveDirac.Bastin.Limit"
       ],
-      "externalImportCount": 1
+      "externalImportCount": 0
     },
     {
       "name": "LeanCondensedMatter.Models.MassiveDirac.Bastin.ZeroTemperaturePair",
@@ -1966,7 +1966,7 @@
         "LeanCondensedMatter.Models.MassiveDirac.Bastin.RadialPairUniformBound",
         "LeanCondensedMatter.QuantumTheory.Occupation.ZeroTemperature"
       ],
-      "externalImportCount": 1
+      "externalImportCount": 3
     },
     {
       "name": "LeanCondensedMatter.Models.MassiveDirac.Bastin",
