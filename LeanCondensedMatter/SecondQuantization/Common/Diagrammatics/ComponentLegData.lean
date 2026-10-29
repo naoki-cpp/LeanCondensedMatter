@@ -1,5 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalComponents
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.InteractionSector
+import Mathlib.Algebra.Group.Nat.Even
 import Mathlib.Logic.Equiv.Sum
 import Mathlib.Logic.Equiv.Prod
 
@@ -90,11 +91,8 @@ theorem externalCardEven_of_equiv_sum_prod
       Fintype.card Leg =
         Fintype.card ExternalData + Fintype.card InteractionData * Fintype.card LocalData := by
     rw [Fintype.card_congr legEquiv, Fintype.card_sum, Fintype.card_prod]
-  rcases hLeg with ⟨k, hk⟩
-  rcases hLocal with ⟨l, hl⟩
-  rw [hl, Nat.mul_add] at hcard
-  refine ⟨k - Fintype.card InteractionData * l, ?_⟩
-  omega
+  rw [hcard, Nat.even_add] at hLeg
+  exact hLeg.mpr (Nat.even_mul.mpr (Or.inr hLocal))
 
 end Common
 end SecondQuantization
