@@ -117,6 +117,21 @@ theorem completedFock_stoneEvolution_hasDerivAt_zero
     rw [hT v] at h
     exact h
 
+private theorem completedExterior_ker_le_dGamma
+    (A : Common.CompletedFock Mode →ₗ.[ℂ] Common.CompletedFock Mode)
+    (hA : IsSelfAdjoint A) (D : Submodule ℂ (Common.CompletedFock Mode))
+    (T : D →ₗ[ℂ] D) (hdom : ∀ v : D, (v : Common.CompletedFock Mode) ∈ A.domain)
+    (hT : ∀ v : D, A ⟨v, hdom v⟩ = (T v : Common.CompletedFock Mode)) :
+    LinearMap.ker (completedExterior.comp (ExteriorAlgebra.map D.subtype).toLinearMap) ≤
+      LinearMap.ker ((completedExterior.comp (ExteriorAlgebra.map D.subtype).toLinearMap).comp
+        (AlgebraicFock.dGamma D T)) := by
+  intro x hx
+  have hx' : completedExterior (ExteriorAlgebra.map D.subtype x) = 0 := hx
+  have hd := completedFock_stoneEvolution_hasDerivAt_zero A hA D T hdom hT x
+  simp only [hx', map_zero] at hd
+  have hz := hd.unique (hasDerivAt_const 0 (0 : CompletedFockSpace Mode))
+  exact (smul_eq_zero.mp hz).resolve_left (by norm_num)
+
 /-- The second-quantized Hamiltonian restricted to finite exterior expressions with factors
 in an explicitly invariant one-particle subspace. The domain is the realized image of that
 exterior algebra. The Stone derivative guarantees independence of the chosen expression.
@@ -129,13 +144,8 @@ def completedFockHamiltonianOn
     CompletedFockSpace Mode →ₗ.[ℂ] CompletedFockSpace Mode := by
   let J := (completedExterior (Mode := Mode)).comp (ExteriorAlgebra.map D.subtype).toLinearMap
   let L := J.comp (AlgebraicFock.dGamma D T)
-  have hker : LinearMap.ker J ≤ LinearMap.ker L := by
-    intro x hx
-    have hx' : completedExterior (ExteriorAlgebra.map D.subtype x) = 0 := hx
-    have hd := completedFock_stoneEvolution_hasDerivAt_zero A hA D T hdom hT x
-    simp only [hx', map_zero] at hd
-    have hz := hd.unique (hasDerivAt_const 0 (0 : CompletedFockSpace Mode))
-    exact (smul_eq_zero.mp hz).resolve_left (by norm_num)
+  have hker : LinearMap.ker J ≤ LinearMap.ker L :=
+    completedExterior_ker_le_dGamma A hA D T hdom hT
   exact
     { domain := LinearMap.range J
       toFun := ((LinearMap.ker J).liftQ L hker).comp J.quotKerEquivRange.symm.toLinearMap }
@@ -152,8 +162,9 @@ theorem completedFockHamiltonianOn_apply
       ⟨completedExterior (ExteriorAlgebra.map D.subtype x), ⟨x, rfl⟩⟩ =
         completedExterior (ExteriorAlgebra.map D.subtype (AlgebraicFock.dGamma D T x)) := by
   let J := (completedExterior (Mode := Mode)).comp (ExteriorAlgebra.map D.subtype).toLinearMap
-  change ((LinearMap.ker J).liftQ (J.comp (AlgebraicFock.dGamma D T)) _)
-    (J.quotKerEquivRange.symm ⟨J x, _⟩) = _
+  change ((LinearMap.ker J).liftQ (J.comp (AlgebraicFock.dGamma D T))
+    (completedExterior_ker_le_dGamma A hA D T hdom hT))
+      (J.quotKerEquivRange.symm ⟨J x, ⟨x, rfl⟩⟩) = _
   rw [LinearMap.quotKerEquivRange_symm_apply_image]
 
 /-- Every vector in the realized Hamiltonian's domain has lifted Stone derivative `-i Hψ`.
