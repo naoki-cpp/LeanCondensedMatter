@@ -31,7 +31,7 @@ variable {Mode : Type*}
 /-- On each occupation basis state, the diagonal matrix element of the composed completed Gibbs
 density operator and total-number operator is the corresponding Gibbs probability times particle
 number. -/
-theorem grandCanonicalGibbsDensityOperator_totalNumber_diagonalTerm
+private theorem grandCanonicalGibbsDensityOperator_totalNumber_diagonalTerm
     (ε : Mode → ℝ) (β μ : ℝ) (hsum : EigenbasisGibbsSummable
       (Common.grandCanonicalEnergy (Config := Occupation Mode) ε μ) β)
     (n : Occupation Mode) :
