@@ -3,7 +3,6 @@ import LeanCondensedMatter.Models.MassiveDirac.Conductivity.Hall.FiniteBroadenin
 import LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.HallZeroBroadeningWeakDisorder
 import Mathlib.Tactic.FieldSimp
 import Mathlib.Tactic.Linarith
-import Mathlib.Tactic.NormCast
 import Mathlib.Tactic.Ring
 
 set_option linter.style.header false
