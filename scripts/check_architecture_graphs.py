@@ -5,6 +5,7 @@ from pathlib import Path
 from architecture_audit_common import (
     ArchitectureGraph,
     check_architecture_graph_imports,
+    check_direct_import_hygiene,
     check_lean_import_syntax,
     finish_audit,
     load_architecture_graph,
@@ -57,6 +58,7 @@ def main() -> int:
     # Source topology depends on understanding every import command. Validate the parser's supported
     # syntax repository-wide before any graph is allowed to ignore an import-looking line.
     check_lean_import_syntax(errors, root=ROOT, source_root=LEAN)
+    check_direct_import_hygiene(errors, root=ROOT, source_root=LEAN)
 
     valid_specs: dict[Path, bool] = {}
     for spec in SCOPED_SPECS:

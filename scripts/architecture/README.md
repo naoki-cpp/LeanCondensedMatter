@@ -53,6 +53,21 @@ lake env lean scripts/CheckNoSorry.lean
 lake lint
 ```
 
+## Direct import hygiene
+
+The primary source audit also checks every project Lean source file, including
+`LeanCondensedMatter.lean`, for duplicate *identical import commands*, imports of the
+module itself, and direct imports of project modules without a matching source file.
+Import modifiers remain significant: for example, `public import A` together with
+`import all A` is not a duplicate command and can be intentional.
+
+A directly imported module can be transitively reachable through another import and still
+be an intentional source-level dependency. Likewise, `public import` may be required to
+expose a signature. Do not treat graph reachability as proof of an unnecessary import:
+review candidates with Lean's import analysis tools and compile the module and consumers
+before removing an import or changing its visibility. This audit does not enforce a fixed
+import count, disallow all public imports, or attempt to minimize Mathlib imports automatically.
+
 ## Declarative source topology
 
 `check_architecture_graphs.py` owns dependency direction and reachability. Its data lives here:
