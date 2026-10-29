@@ -93,6 +93,9 @@ jobs:
       - name: Test advisory import overlap reporting
         run: python3 -m unittest discover -s scripts -p 'test_import_overlaps.py'
 
+      - name: Report project-local import overlap candidates (advisory)
+        run: python3 scripts/export_module_import_graph.py --report-overlaps --limit 30
+
   build:
     needs: changes
     if: needs.changes.outputs.lean == 'true' || needs.changes.outputs.advisory == 'true'
