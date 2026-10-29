@@ -5,7 +5,6 @@ import LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.HallZeroBroaden
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.ContinuumMeasurePrefactor
 import Mathlib.Tactic.FieldSimp
 import Mathlib.Tactic.Linarith
-import Mathlib.Tactic.NormCast
 import Mathlib.Tactic.Ring
 
 set_option linter.style.header false
