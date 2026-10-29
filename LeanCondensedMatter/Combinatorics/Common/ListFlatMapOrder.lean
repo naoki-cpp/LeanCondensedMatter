@@ -116,20 +116,19 @@ theorem idxOf_flatMap_block_lt_iff
         simpa only [Nat.add_lt_add_iff_left] using
           ih (event := event) (x := x) (y := y) hNodupTail hEvent hx hy
 
-/-- If one event occurs before another in a duplicate-free event list, every element in the first
-block occurs before every element in the second block of the duplicate-free flattened list. -/
+/-- If one event occurs before another in an event list, every element in the first block
+occurs before every element in the second block of the duplicate-free flattened list.
+The event list itself need not be duplicate-free (e.g. it may repeat empty blocks). -/
 theorem idxOf_flatMap_lt_of_idxOf_lt
     {α β : Type*} [DecidableEq α] [DecidableEq β]
     (f : α → List β) (events : List α) (a b : α) (x y : β)
-    (hEventsNodup : events.Nodup) (hFlatNodup : (events.flatMap f).Nodup)
+    (hFlatNodup : (events.flatMap f).Nodup)
     (ha : a ∈ events) (hb : b ∈ events) (hx : x ∈ f a) (hy : y ∈ f b)
     (hab : events.idxOf a < events.idxOf b) :
     (events.flatMap f).idxOf x < (events.flatMap f).idxOf y := by
   induction events generalizing a b x y with
   | nil => simp at ha
   | cons head tail ih =>
-      have hheadNotMem : head ∉ tail := (List.nodup_cons.1 hEventsNodup).1
-      have hEventsNodupTail : tail.Nodup := (List.nodup_cons.1 hEventsNodup).2
       simp only [List.flatMap_cons] at hFlatNodup ⊢
       have hFlatNodupTail : (tail.flatMap f).Nodup := hFlatNodup.of_append_right
       have hDisjoint : List.Disjoint (f head) (tail.flatMap f) := hFlatNodup.disjoint
@@ -152,24 +151,9 @@ theorem idxOf_flatMap_lt_of_idxOf_lt
           omega
       · rcases hb with hbEq | hb
         · subst b
-          have hheadNeA : head ≠ a := by
-            intro hEq
-            subst a
-            exact hheadNotMem ha
-          rw [List.idxOf_cons_ne tail hheadNeA, List.idxOf_cons_self] at hab
+          rw [List.idxOf_cons_self] at hab
           omega
-        · have hheadNeA : head ≠ a := by
-            intro hEq
-            subst a
-            exact hheadNotMem ha
-          have hheadNeB : head ≠ b := by
-            intro hEq
-            subst b
-            exact hheadNotMem hb
-          have habTail : tail.idxOf a < tail.idxOf b := by
-            simpa [List.idxOf_cons_ne tail hheadNeA,
-              List.idxOf_cons_ne tail hheadNeB] using hab
-          have hxTail : x ∈ tail.flatMap f := by
+        · have hxTail : x ∈ tail.flatMap f := by
             rw [List.mem_flatMap]
             exact ⟨a, ha, hx⟩
           have hyTail : y ∈ tail.flatMap f := by
@@ -181,10 +165,21 @@ theorem idxOf_flatMap_lt_of_idxOf_lt
           have hyNotHead : y ∉ f head := by
             intro hyHead
             exact (List.disjoint_left.1 hDisjoint) hyHead hyTail
+          have hheadNeA : head ≠ a := by
+            intro hEq
+            subst a
+            exact hxNotHead hx
+          have hheadNeB : head ≠ b := by
+            intro hEq
+            subst b
+            exact hyNotHead hy
+          have habTail : tail.idxOf a < tail.idxOf b := by
+            simpa [List.idxOf_cons_ne tail hheadNeA,
+              List.idxOf_cons_ne tail hheadNeB] using hab
           rw [List.idxOf_append_of_notMem hxNotHead,
             List.idxOf_append_of_notMem hyNotHead]
           simpa only [Nat.add_lt_add_iff_left] using
             ih (a := a) (b := b) (x := x) (y := y)
-              hEventsNodupTail hFlatNodupTail ha hb hx hy habTail
+              hFlatNodupTail ha hb hx hy habTail
 
 end List
