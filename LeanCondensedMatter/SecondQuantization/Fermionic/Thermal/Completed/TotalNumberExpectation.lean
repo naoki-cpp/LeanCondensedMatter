@@ -51,7 +51,7 @@ theorem hasSum_grandCanonicalGibbsDensityOperator_totalNumber_diagonal
       rw [← completedOccupationHilbertBasis_apply]
       exact (completedOccupationHilbertBasis (Mode := Mode)).orthonormal.norm_eq_one n
     rw [completedTotalNumberOperator_basisState, map_smul,
-      grandCanonicalGibbsDensityOperator_apply_basis, inner_smul_right, inner_smul_right,
+      Common.grandCanonicalGibbsDensityOperator_apply_basis, inner_smul_right, inner_smul_right,
       inner_self_eq_norm_sq_to_K, hnorm]
     norm_num
     ring
