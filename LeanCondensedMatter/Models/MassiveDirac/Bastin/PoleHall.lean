@@ -1,6 +1,5 @@
 import LeanCondensedMatter.Models.MassiveDirac.Model.OperatorSpectral
 import LeanCondensedMatter.Models.MassiveDirac.Bastin.PoleFactor
-import Mathlib.Tactic
 
 set_option linter.style.header false
 

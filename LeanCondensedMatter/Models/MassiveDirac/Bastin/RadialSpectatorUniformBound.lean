@@ -1,5 +1,7 @@
 import LeanCondensedMatter.Models.MassiveDirac.Bastin.RadialSpectatorBound
-import Mathlib.Tactic
+import Mathlib.Tactic.Linarith
+import Mathlib.Tactic.Positivity
+import Mathlib.Tactic.Ring
 
 set_option linter.style.header false
 
