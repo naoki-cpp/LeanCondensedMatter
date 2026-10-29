@@ -145152,94 +145152,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (ε : Mode → ℝ) (β μ : ℝ) {i : Mode}\n  {n : SecondQuantization.Fermionic.Occupation Mode},\n  i ∉ n →\n    ↑(QuantumTheory.eigenbasisGibbsProbability (SecondQuantization.Common.grandCanonicalEnergy ε μ) β\n          (SecondQuantization.Fermionic.insertOccupation i n)) =\n      Complex.exp (-↑β * (↑(ε i) - ↑μ)) *\n        ↑(QuantumTheory.eigenbasisGibbsProbability (SecondQuantization.Common.grandCanonicalEnergy ε μ) β n)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.coe_completedFreeGibbsProbability_insertOccupation_of_not_mem",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.Gibbs",
-    "externalAxioms": [],
-    "docString": "Complex form of the free Gibbs insertion ratio, matching the scalar used in operator identities. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.grandCanonicalGibbsDensityOperator_comp_create"
-    ],
-    "dependencies": [
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.Gibbs.0.SecondQuantization.Fermionic.completedFreeGibbsProbability_insertOccupation_of_not_mem"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.grandCanonicalGibbsDensityOperator_comp_create"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (ε : Mode → ℝ) (β μ : ℝ) {i : Mode}\n  {n : SecondQuantization.Fermionic.Occupation Mode},\n  i ∈ n →\n    ↑(QuantumTheory.eigenbasisGibbsProbability (SecondQuantization.Common.grandCanonicalEnergy ε μ) β\n          (SecondQuantization.Fermionic.removeOccupation i n)) =\n      Complex.exp (↑β * (↑(ε i) - ↑μ)) *\n        ↑(QuantumTheory.eigenbasisGibbsProbability (SecondQuantization.Common.grandCanonicalEnergy ε μ) β n)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.coe_completedFreeGibbsProbability_removeOccupation_of_mem",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.Gibbs",
-    "externalAxioms": [],
-    "docString": "Complex form of the free Gibbs removal ratio, matching the scalar used in operator identities. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.grandCanonicalGibbsDensityOperator_comp_annihilate"
-    ],
-    "dependencies": [
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.Gibbs.0.SecondQuantization.Fermionic.completedFreeGibbsProbability_removeOccupation_of_mem"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.grandCanonicalGibbsDensityOperator_comp_annihilate"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ {Mode : Type u_1} [inst : Fintype Mode] (ε : Mode → ℝ) (β μ : ℝ),\n  ↑(SecondQuantization.Common.grandCanonicalPartitionFunction ε β μ) = ∏ i, (1 + Complex.exp (-↑β * ↑(ε i - μ)))",
     "standardAxioms": [
       "Classical.choice",
@@ -151334,9 +151246,9 @@
     "dependencies": [
       "SecondQuantization.Common.continuousLinearMap_ext_completedBasis",
       "SecondQuantization.Common.grandCanonicalGibbsDensityOperator_apply_basis",
-      "SecondQuantization.Fermionic.coe_completedFreeGibbsProbability_removeOccupation_of_mem",
       "SecondQuantization.Fermionic.completedAnnihilate_basisState_of_mem",
-      "SecondQuantization.Fermionic.completedAnnihilate_basisState_of_not_mem"
+      "SecondQuantization.Fermionic.completedAnnihilate_basisState_of_not_mem",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.Gibbs.0.SecondQuantization.Fermionic.completedFreeGibbsProbability_removeOccupation_of_mem"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -151382,9 +151294,9 @@
     "dependencies": [
       "SecondQuantization.Common.continuousLinearMap_ext_completedBasis",
       "SecondQuantization.Common.grandCanonicalGibbsDensityOperator_apply_basis",
-      "SecondQuantization.Fermionic.coe_completedFreeGibbsProbability_insertOccupation_of_not_mem",
       "SecondQuantization.Fermionic.completedCreate_basisState_of_mem",
-      "SecondQuantization.Fermionic.completedCreate_basisState_of_not_mem"
+      "SecondQuantization.Fermionic.completedCreate_basisState_of_not_mem",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.Gibbs.0.SecondQuantization.Fermionic.completedFreeGibbsProbability_insertOccupation_of_not_mem"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -190243,7 +190155,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.coe_completedFreeGibbsProbability_insertOccupation_of_not_mem"
+      "SecondQuantization.Fermionic.grandCanonicalGibbsDensityOperator_comp_create"
     ],
     "dependencies": [
       "SecondQuantization.Fermionic.fermionEnergy_eq_sum",
@@ -190252,7 +190164,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.coe_completedFreeGibbsProbability_insertOccupation_of_not_mem"
+      "SecondQuantization.Fermionic.grandCanonicalGibbsDensityOperator_comp_create"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -190288,7 +190200,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.coe_completedFreeGibbsProbability_removeOccupation_of_mem"
+      "SecondQuantization.Fermionic.grandCanonicalGibbsDensityOperator_comp_annihilate"
     ],
     "dependencies": [
       "SecondQuantization.Fermionic.fermionEnergy_eq_sum",
@@ -190297,7 +190209,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.coe_completedFreeGibbsProbability_removeOccupation_of_mem"
+      "SecondQuantization.Fermionic.grandCanonicalGibbsDensityOperator_comp_annihilate"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
