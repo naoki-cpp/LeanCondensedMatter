@@ -242,7 +242,7 @@ private theorem tendsto_completedFreeModeRetainedExpectation
       (Common.grandCanonicalGibbsDensityOperator (Config := Occupation Mode) ε β μ hsum).hasSum_expectation_diagonal
         A completedOccupationHilbertBasis (eigenbasisGibbsProbability (Common.grandCanonicalEnergy (Config := Occupation Mode) ε μ) β)
         (fun n => by
-          simpa only [completedBasisState] using
+          simpa only [completedOccupationHilbertBasis_apply, completedBasisState] using
             (Common.grandCanonicalGibbsDensityOperator_apply_basis
               (Config := Occupation Mode) ε β μ hsum n))
   have h := tendsto_tsum_ite_of_eventually term hsumDiag.summable.norm
