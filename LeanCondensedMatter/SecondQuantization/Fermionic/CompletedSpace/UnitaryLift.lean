@@ -3,6 +3,7 @@ import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.An
 import Mathlib.Analysis.Normed.Operator.Extend
 import Mathlib.LinearAlgebra.CliffordAlgebra.Basic
 import Mathlib.Topology.EMetricSpace.Lipschitz
+import Mathlib.Topology.Algebra.Module.Basic
 
 set_option linter.style.header false
 
@@ -262,6 +263,57 @@ theorem completedFockUnitary_trans
           AlgebraicFock (Common.CompletedFock Mode) => completedExterior (F y))
       (ExteriorAlgebra.map_comp_map e.toLinearEquiv.toLinearMap
         f.toLinearEquiv.toLinearMap)).symm
+
+/-- Finite exterior expressions from a dense one-particle realization are dense in completed
+Fock space. No boundedness or norm on the source vector space is required. -/
+theorem completedExterior_map_denseRange {V : Type*} [AddCommGroup V] [Module ℂ V]
+    (j : V →ₗ[ℂ] Common.CompletedFock Mode) (hj : DenseRange j) :
+    DenseRange (fun x : AlgebraicFock V => completedExterior (ExteriorAlgebra.map j x)) := by
+  let J := (completedExterior (Mode := Mode)).comp (ExteriorAlgebra.map j).toLinearMap
+  let S := (LinearMap.range J).topologicalClosure
+  have hclosed : IsClosed (S : Set (CompletedFockSpace Mode)) :=
+    (LinearMap.range J).isClosed_topologicalClosure
+  have hcreate (v : V) (x : AlgebraicFock V) :
+      J (AlgebraicFock.create V v x) = completedCreateField (j v) (J x) := by
+    change completedExterior (ExteriorAlgebra.map j (AlgebraicFock.create V v x)) = _
+    simp only [AlgebraicFock.create_apply, AlgebraicFock.oneParticle, map_mul,
+      ExteriorAlgebra.map_apply_ι]
+    exact completedExterior_create (j v) (ExteriorAlgebra.map j x)
+  have hstable (v : V) (y : CompletedFockSpace Mode) (hy : y ∈ S) :
+      completedCreateField (j v) y ∈ S := by
+    have hsub : (LinearMap.range J : Set (CompletedFockSpace Mode)) ⊆
+        (completedCreateField (j v)) ⁻¹' (S : Set (CompletedFockSpace Mode)) := by
+      rintro _ ⟨x, rfl⟩
+      exact (LinearMap.range J).le_topologicalClosure
+        ⟨AlgebraicFock.create V v x, hcreate v x⟩
+    exact (closure_minimal hsub
+      (hclosed.preimage (completedCreateField (j v)).continuous)) hy
+  have hstable_all (v : Common.CompletedFock Mode) (y : CompletedFockSpace Mode)
+      (hy : y ∈ S) : completedCreateField v y ∈ S := by
+    refine hj.induction_on v (hclosed.preimage ?_) ?_
+    · exact completedCreateField.continuous.clm_apply continuous_const
+    · intro a
+      exact hstable a y hy
+  have hmem (x : AlgebraicFock (Common.CompletedFock Mode)) : completedExterior x ∈ S := by
+    induction x using CliffordAlgebra.left_induction with
+    | algebraMap a =>
+        apply (LinearMap.range J).le_topologicalClosure
+        refine ⟨algebraMap ℂ (AlgebraicFock V) a, ?_⟩
+        simp only [J, LinearMap.comp_apply, AlgHom.toLinearMap_apply, AlgHom.commutes]
+    | add x y hx hy =>
+        rw [map_add]
+        exact S.add_mem hx hy
+    | ι_mul x v hx =>
+        change completedExterior (AlgebraicFock.create _ v x) ∈ S
+        rw [completedExterior_create]
+        exact hstable_all v (completedExterior x) hx
+  have hsub : Set.range (completedExterior (Mode := Mode)) ⊆
+      (S : Set (CompletedFockSpace Mode)) := by
+    rintro _ ⟨y, rfl⟩
+    exact hmem y
+  intro x
+  change x ∈ S
+  exact (closure_minimal hsub hclosed) (completedExterior_denseRange x)
 
 /-- Strongly continuous one-particle unitary families act jointly continuously on completed
 Fock space. No operator-norm continuity of the one-particle or Fock family is assumed. -/

@@ -65,8 +65,13 @@ domain the realized image of `AlgebraicFock D`. If an exterior expression realiz
 `dΓ(T)` image also realizes to zero by uniqueness of the lifted Stone derivative. Mathlib's
 kernel quotient and range equivalence therefore descend the algebraic action to actual Fock
 vectors without choosing a representative. Every vector in this partial domain has derivative
-`-i Hψ`. Density of the domain, symmetry, closability and identification of a self-adjoint closure
-remain separate obligations; this construction alone does not establish them.
+`-i Hψ`. `completedExterior_map_denseRange` transfers density of a one-particle realization to its
+finite exterior realization, so `completedFockHamiltonianOn_dense_domain` gives a dense domain
+whenever `D` is dense. `completedFockHamiltonianOn_isFormalAdjoint` proves symmetry by
+differentiating preservation of the inner product under the lifted unitary group. Density and
+symmetry allow Mathlib's `LinearPMap.IsFormalAdjoint.le_adjoint` and `adjoint_isClosed` to supply
+a closed adjoint extension. Identification of the closure as self-adjoint, maximal-domain
+identification and the operator-core property remain separate obligations.
 
 In the pinned Mathlib revision, `Analysis.InnerProductSpace.ExteriorPower`
 provides a Hilbert structure only for real, finite-dimensional exterior powers; it cannot directly

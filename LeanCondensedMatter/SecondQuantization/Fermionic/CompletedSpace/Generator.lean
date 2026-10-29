@@ -4,6 +4,7 @@ import LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolution
 import Mathlib.Analysis.Calculus.Deriv.Mul
 import Mathlib.Analysis.Normed.Operator.Bilinear
 import Mathlib.LinearAlgebra.Isomorphisms
+import Mathlib.Analysis.InnerProductSpace.Calculus
 
 set_option linter.style.header false
 
@@ -150,7 +151,10 @@ theorem completedFockHamiltonianOn_apply
     completedFockHamiltonianOn A hA D T hdom hT
       ⟨completedExterior (ExteriorAlgebra.map D.subtype x), ⟨x, rfl⟩⟩ =
         completedExterior (ExteriorAlgebra.map D.subtype (AlgebraicFock.dGamma D T x)) := by
-  simp [completedFockHamiltonianOn, LinearMap.quotKerEquivRange_symm_apply_image]
+  let J := (completedExterior (Mode := Mode)).comp (ExteriorAlgebra.map D.subtype).toLinearMap
+  change ((LinearMap.ker J).liftQ (J.comp (AlgebraicFock.dGamma D T)) _)
+    (J.quotKerEquivRange.symm ⟨J x, _⟩) = _
+  rw [LinearMap.quotKerEquivRange_symm_apply_image]
 
 /-- Every vector in the realized Hamiltonian's domain has lifted Stone derivative `-i Hψ`.
 This is an operator statement on the explicit partial domain, without a maximal-domain claim. -/
@@ -165,8 +169,49 @@ theorem completedFockHamiltonianOn_hasDerivAt_zero
         (Multiplicative.ofAdd t) : CompletedFockSpace Mode →L[ℂ] CompletedFockSpace Mode) ψ)
       ((-Complex.I) • completedFockHamiltonianOn A hA D T hdom hT ψ) 0 := by
   rcases ψ with ⟨ψ, x, rfl⟩
+  simp only [LinearMap.comp_apply, AlgHom.toLinearMap_apply]
   rw [completedFockHamiltonianOn_apply]
   exact completedFock_stoneEvolution_hasDerivAt_zero A hA D T hdom hT x
+
+/-- A dense invariant one-particle subspace gives a densely defined realized Fock Hamiltonian. -/
+theorem completedFockHamiltonianOn_dense_domain
+    (A : Common.CompletedFock Mode →ₗ.[ℂ] Common.CompletedFock Mode)
+    (hA : IsSelfAdjoint A) (D : Submodule ℂ (Common.CompletedFock Mode))
+    (T : D →ₗ[ℂ] D) (hdom : ∀ v : D, (v : Common.CompletedFock Mode) ∈ A.domain)
+    (hT : ∀ v : D, A ⟨v, hdom v⟩ = (T v : Common.CompletedFock Mode))
+    (hD : Dense (D : Set (Common.CompletedFock Mode))) :
+    Dense ((completedFockHamiltonianOn A hA D T hdom hT).domain :
+      Set (CompletedFockSpace Mode)) := by
+  have hj : DenseRange D.subtype := by
+    have heq : Set.range D.subtype = (D : Set (Common.CompletedFock Mode)) := by
+      ext v
+      simp
+    intro v
+    simpa only [heq] using hD v
+  exact completedExterior_map_denseRange D.subtype hj
+
+/-- The realized partial Fock Hamiltonian is symmetric. This follows from differentiating
+unitarity on two domain vectors and does not require density of the chosen one-particle subspace. -/
+theorem completedFockHamiltonianOn_isFormalAdjoint
+    (A : Common.CompletedFock Mode →ₗ.[ℂ] Common.CompletedFock Mode)
+    (hA : IsSelfAdjoint A) (D : Submodule ℂ (Common.CompletedFock Mode))
+    (T : D →ₗ[ℂ] D) (hdom : ∀ v : D, (v : Common.CompletedFock Mode) ∈ A.domain)
+    (hT : ∀ v : D, A ⟨v, hdom v⟩ = (T v : Common.CompletedFock Mode)) :
+    (completedFockHamiltonianOn A hA D T hdom hT).IsFormalAdjoint
+      (completedFockHamiltonianOn A hA D T hdom hT) := by
+  intro ψ φ
+  have hd := (completedFockHamiltonianOn_hasDerivAt_zero A hA D T hdom hT ψ).inner ℂ
+    (completedFockHamiltonianOn_hasDerivAt_zero A hA D T hdom hT φ)
+  simp only [Unitary.inner_map_map] at hd
+  have hz := hd.unique (hasDerivAt_const 0 (inner ℂ (ψ : CompletedFockSpace Mode)
+    (φ : CompletedFockSpace Mode)))
+  have hz' : (-Complex.I) * inner ℂ (ψ : CompletedFockSpace Mode)
+        (completedFockHamiltonianOn A hA D T hdom hT φ) +
+      Complex.I * inner ℂ (completedFockHamiltonianOn A hA D T hdom hT ψ)
+        (φ : CompletedFockSpace Mode) = 0 := by
+    simpa [inner_smul_left, inner_smul_right] using hz
+  apply mul_left_cancel₀ (show Complex.I ≠ 0 by norm_num)
+  linear_combination hz'
 
 end
 end SecondQuantization.Fermionic
