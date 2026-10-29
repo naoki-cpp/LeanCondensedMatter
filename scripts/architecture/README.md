@@ -68,6 +68,31 @@ review candidates with Lean's import analysis tools and compile the module and c
 before removing an import or changing its visibility. This audit does not enforce a fixed
 import count, disallow all public imports, or attempt to minimize Mathlib imports automatically.
 
+### Advisory transitive overlap report
+
+For manual import reduction, reuse the documentation site's existing project-module
+import graph exporter (this mode does not modify files or run in blocking CI):
+
+```bash
+python3 scripts/export_module_import_graph.py --report-overlaps --limit 30
+```
+
+The report puts module-system files first and shows when one *project-local* direct
+import is also transitively reachable through another direct project import.
+It does not analyze Mathlib's internal graph, infer public visibility, or prove
+an import is removable. The ordinary JSON export is unchanged.
+
+Review each candidate with Lean's own import tools. In a temporary edit of an
+already-migrated `module` file, add `meta import ImportGraph.Tools.NormImports`
+and invoke `#norm_imports` to inspect import-block normalization, then undo the
+temporary diagnostic import. The tool preserves the required visibility and phase
+of the available imports, but not all intentional source-level ownership choices.
+For declaration-level minimum-import investigations, use the relevant Lean tools
+with their documented syntax/tactic limitations. Finally, compile the edited file
+and its downstream consumers before deleting or narrowing any direct import.
+Legacy non-module files require a separate review: `#norm_imports` does not support
+them yet. Do not change imports just to eliminate every overlap warning.
+
 ## Declarative source topology
 
 `check_architecture_graphs.py` owns dependency direction and reachability. Its data lives here:
