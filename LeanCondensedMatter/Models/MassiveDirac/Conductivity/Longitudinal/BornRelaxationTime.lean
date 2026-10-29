@@ -1,6 +1,8 @@
 import LeanCondensedMatter.Models.MassiveDirac.Conductivity.Longitudinal.RelaxationTime
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.TransportRate
-import Mathlib.Tactic
+import Mathlib.Tactic.FieldSimp
+import Mathlib.Tactic.NormNum
+import Mathlib.Tactic.Positivity
 
 set_option linter.style.header false
 
