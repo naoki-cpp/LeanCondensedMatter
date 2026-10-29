@@ -72,7 +72,7 @@ def import_overlap_candidates(modules: list[dict[str, object]]) -> list[tuple[st
     return candidates
 
 
-_IMPORT_COMMAND = re.compile(r"(?:public\\s+)?(?:meta\\s+)?import(?:\\s+all)?\\s+\\S+")
+_IMPORT_COMMAND = re.compile(r"(?:public\s+)?(?:meta\s+)?import(?:\s+all)?\s+\S+")
 
 
 def is_import_only_umbrella(relative_path: str) -> bool:
