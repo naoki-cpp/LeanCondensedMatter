@@ -33939,7 +33939,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {α : Type u_1} {β : Type u_2} [inst : DecidableEq α] [inst_1 : DecidableEq β] (f : α → List β) (events : List α)\n  (a b : α) (x y : β),\n  events.Nodup →\n    (List.flatMap f events).Nodup →\n      a ∈ events →\n        b ∈ events →\n          x ∈ f a →\n            y ∈ f b →\n              List.idxOf a events < List.idxOf b events →\n                List.idxOf x (List.flatMap f events) < List.idxOf y (List.flatMap f events)",
+    "statement": "∀ {α : Type u_1} {β : Type u_2} [inst : DecidableEq α] [inst_1 : DecidableEq β] (f : α → List β) (events : List α)\n  (a b : α) (x y : β),\n  (List.flatMap f events).Nodup →\n    a ∈ events →\n      b ∈ events →\n        x ∈ f a →\n          y ∈ f b →\n            List.idxOf a events < List.idxOf b events →\n              List.idxOf x (List.flatMap f events) < List.idxOf y (List.flatMap f events)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -33954,7 +33954,7 @@
     "name": "List.idxOf_flatMap_lt_of_idxOf_lt",
     "module": "LeanCondensedMatter.Combinatorics.Common.ListFlatMapOrder",
     "externalAxioms": [],
-    "docString": "If one event occurs before another in a duplicate-free event list, every element in the first\nblock occurs before every element in the second block of the duplicate-free flattened list. ",
+    "docString": "If one event occurs before another in an event list, every element in the first block\noccurs before every element in the second block of the duplicate-free flattened list.\nThe event list itself need not be duplicate-free (e.g. it may repeat empty blocks). ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
@@ -100201,7 +100201,7 @@
       "SecondQuantization.Bosonic.summable_shiftedOccupationPowerProduct_boltzmannWeight"
     ],
     "dependencies": [
-      "SecondQuantization.Bosonic.freeEigenvalue_eq_sum_univ"
+      "SecondQuantization.Bosonic.freeEigenvalue_eq_finsupp_sum"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -103841,9 +103841,9 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "SecondQuantization.Bosonic.boltzmannWeight_eq_prod",
       "SecondQuantization.Bosonic.eigenbasisGibbsSummable_freeEigenvalue_of_mode",
       "SecondQuantization.Bosonic.freeEigenvalue_add",
-      "SecondQuantization.Bosonic.freeEigenvalue_eq_sum_univ",
       "SecondQuantization.Bosonic.freeEigenvalue_nonneg",
       "SecondQuantization.Bosonic.freeEigenvalue_singleOccupation"
     ],
@@ -103851,57 +103851,13 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "SecondQuantization.Bosonic.boltzmannWeight_eq_prod",
       "SecondQuantization.Bosonic.eigenbasisGibbsSummable_freeEigenvalue_of_mode",
       "SecondQuantization.Bosonic.freeEigenvalue_add",
-      "SecondQuantization.Bosonic.freeEigenvalue_eq_sum_univ",
       "SecondQuantization.Bosonic.freeEigenvalue_nonneg",
       "SecondQuantization.Bosonic.freeEigenvalue_singleOccupation"
     ],
     "compiledConsumerCount": 5,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : Fintype Mode] (ε : Mode → ℝ) (n : SecondQuantization.Bosonic.Occupation Mode),\n  SecondQuantization.Bosonic.freeEigenvalue ε n = ∑ i, ↑(n i) * ε i",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Bosonic.freeEigenvalue_eq_sum_univ",
-    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BoltzmannWeightFactorization",
-    "externalAxioms": [],
-    "docString": "The free energy is the sum over all modes; terms outside the support vanish. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Bosonic.boltzmannWeight_eq_prod"
-    ],
-    "dependencies": [
-      "SecondQuantization.Bosonic.freeEigenvalue_eq_finsupp_sum"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Bosonic.boltzmannWeight_eq_prod"
-    ],
-    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -132420,8 +132376,7 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Common.mixedTimeOrderedAtomicLegs_nodup",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointImaginaryTimeOrder.0.SecondQuantization.Common.twoPointTimedEventBeforeOrEqual_of_position_lt",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointMixedLegOrder.0.SecondQuantization.Common.mixedTimeOrderedAtomicLegPosition_lt_of_eventPosition_lt"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointImaginaryTimeOrder.0.SecondQuantization.Common.twoPointTimedEventBeforeOrEqual_of_position_lt"
     ],
     "dependencies": [
       "SecondQuantization.Common.orderedTwoPointTimedEvents_perm"
@@ -132431,10 +132386,9 @@
     "compiledConsumers": [
       "SecondQuantization.Common.mixedTimeOrderedAtomicLegs_nodup",
       "SecondQuantization.Common.orderedTwoPointTimedEventEquiv",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointImaginaryTimeOrder.0.SecondQuantization.Common.twoPointTimedEventBeforeOrEqual_of_position_lt",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointMixedLegOrder.0.SecondQuantization.Common.mixedTimeOrderedAtomicLegPosition_lt_of_eventPosition_lt"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointImaginaryTimeOrder.0.SecondQuantization.Common.twoPointTimedEventBeforeOrEqual_of_position_lt"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -185094,8 +185048,7 @@
       "SecondQuantization.Common.mixedTimeOrderedAtomicLegPosition_val",
       "SecondQuantization.Common.mixedTimeOrderedAtomicLegs_nodup",
       "SecondQuantization.Common.orderedTwoPointLeg_mem_eventAtomicLegs",
-      "SecondQuantization.Common.orderedTwoPointTimedEvents_all_mem",
-      "SecondQuantization.Common.orderedTwoPointTimedEvents_nodup"
+      "SecondQuantization.Common.orderedTwoPointTimedEvents_all_mem"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
