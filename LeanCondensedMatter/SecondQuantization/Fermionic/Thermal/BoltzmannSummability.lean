@@ -84,6 +84,7 @@ theorem grandCanonicalGibbsSummable_of_mode
       (Common.grandCanonicalEnergy (Config := Occupation Mode) ε μ) β := by
   apply (Common.grandCanonicalGibbsSummable_iff_shifted
     (Config := Occupation Mode) ε β μ).2
+  change EigenbasisGibbsSummable (fermionEnergy (fun i => ε i - μ)) β
   unfold EigenbasisGibbsSummable
   have hprod :
       Summable fun n : Finset Mode =>
