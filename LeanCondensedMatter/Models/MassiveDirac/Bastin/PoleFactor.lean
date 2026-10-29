@@ -2,7 +2,7 @@ import LeanCondensedMatter.Models.MassiveDirac.Model.OperatorSpectral
 import LeanCondensedMatter.Models.MassiveDirac.Bastin.Interband
 import LeanCondensedMatter.Analysis.Lorentzian.Kernel
 import LeanCondensedMatter.Transport.Streda.InterbandPole
-import Mathlib.Tactic
+import Mathlib.Tactic.Ring
 
 set_option linter.style.header false
 
