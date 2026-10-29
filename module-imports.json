@@ -6223,7 +6223,7 @@
       "name": "LeanCondensedMatter.SecondQuantization.Common.Perturbation.FiniteOperatorIntegral",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Common/Perturbation/FiniteOperatorIntegral.lean",
       "imports": [
-        "LeanCondensedMatter.SecondQuantization.Common.Algebra.DiagonalTrace"
+        "LeanCondensedMatter.SecondQuantization.Common.Algebra.AlgebraicFock"
       ],
       "externalImportCount": 1
     },
