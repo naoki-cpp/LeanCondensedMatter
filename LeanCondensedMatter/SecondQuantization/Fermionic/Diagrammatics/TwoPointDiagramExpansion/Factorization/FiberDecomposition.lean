@@ -101,6 +101,10 @@ noncomputable def fixedExternalFiberEquiv (T : Finset (Fin n)) :
   left_inv d := by
     apply Subtype.ext
     apply Subtype.ext
+    change
+      ((Common.TwoPointDiagram.externalFiberEquiv (Finset.subset_univ T)).symm
+        ((Common.TwoPointDiagram.externalFiberEquiv (Finset.subset_univ T))
+          ⟨d.1.1, d.2⟩)).1 = d.1.1
     exact congrArg Subtype.val
       ((Common.TwoPointDiagram.externalFiberEquiv
         (Finset.subset_univ T)).left_inv ⟨d.1.1, d.2⟩)
@@ -110,8 +114,16 @@ noncomputable def fixedExternalFiberEquiv (T : Finset (Fin n)) :
     apply Prod.ext
     · apply Subtype.ext
       apply Subtype.ext
+      change
+        ((Common.TwoPointDiagram.externalFiberEquiv (Finset.subset_univ T))
+          ((Common.TwoPointDiagram.externalFiberEquiv (Finset.subset_univ T)).symm
+            (⟨p.1.1.1, p.1.2⟩, p.2))).1.1 = p.1.1.1
       exact congrArg (fun q => q.1.1) hr
-    · exact congrArg Prod.snd hr
+    · change
+        ((Common.TwoPointDiagram.externalFiberEquiv (Finset.subset_univ T))
+          ((Common.TwoPointDiagram.externalFiberEquiv (Finset.subset_univ T)).symm
+            (⟨p.1.1.1, p.1.2⟩, p.2))).2 = p.2
+      exact congrArg Prod.snd hr
 
 omit [LinearOrder Mode] [Fintype Mode] in
 /-- After reindexing a fiber, the standalone external piece at any identified slot count is exactly
