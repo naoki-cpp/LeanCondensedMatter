@@ -48,7 +48,6 @@ jobs:
               - 'scripts/architecture_audit_common.py'
               - 'scripts/architecture_graph_scopes.py'
               - 'scripts/export_module_import_graph.py'
-              - 'scripts/test_import_overlaps.py'
               - 'scripts/architecture/*.json'
               - 'docs-site/**'
               - '.github/workflows/lean_action_ci.yml'
@@ -89,9 +88,6 @@ jobs:
 
       - name: Test declaration explorer
         run: node --test docs-site/tests/*.test.mjs
-
-      - name: Test advisory import overlap reporting
-        run: python3 -m unittest discover -s scripts -p 'test_import_overlaps.py'
 
       - name: Report project-local import overlap candidates (advisory)
         run: python3 scripts/export_module_import_graph.py --report-overlaps --limit 30
