@@ -1,4 +1,6 @@
 import LeanCondensedMatter.Analysis.ScalarExchange.Basic
+import Mathlib.Algebra.BigOperators.Fin
+import Mathlib.Tactic.LinearCombination
 
 set_option linter.style.header false
 
