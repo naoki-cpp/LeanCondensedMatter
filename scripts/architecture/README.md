@@ -78,9 +78,14 @@ python3 scripts/export_module_import_graph.py --report-overlaps --limit 30
 ```
 
 The report puts module-system files first and shows when one *project-local* direct
-import is also transitively reachable through another direct project import.
-It does not analyze Mathlib's internal graph, infer public visibility, or prove
-an import is removable. The ordinary JSON export is unchanged.
+import is also transitively reachable through another direct project import. Import-only
+umbrella files (a matching subtree, with only import commands, documentation, and the
+standard header option) are **counted separately and hidden from the default review
+list**. Run with `--include-umbrellas` to show them for diagnostics. Other files are
+marked `[review]`, **not** "redundant" or "safe to delete". An implementation may
+intentionally import a direct owner despite also reaching it through another module.
+This source-only classification is conservative and does not infer public visibility,
+declaration usage, or Mathlib's internal graph. The ordinary JSON export is unchanged.
 
 Review each candidate with Lean's own import tools. In a temporary edit of an
 already-migrated `module` file, add `meta import ImportGraph.Tools.NormImports`
