@@ -27,22 +27,19 @@ noncomputable def boltzmannWeight (ε : Mode → ℝ) (β : ℝ) (n : Occupation
 
 variable [Fintype Mode]
 
-/-- The free energy is the sum over all modes; terms outside the support vanish. -/
-theorem freeEigenvalue_eq_sum_univ (ε : Mode → ℝ) (n : Occupation Mode) :
-    freeEigenvalue ε n = ∑ i, (n i : ℝ) * ε i := by
-  rw [freeEigenvalue_eq_finsupp_sum]
-  simp only [Finsupp.sum]
-  apply Finset.sum_subset (Finset.subset_univ _)
-  intro i _ hi
-  simp only [Finsupp.mem_support_iff, not_not] at hi
-  rw [hi]
-  simp
-
 /-- The free Boltzmann weight factors into one-mode Boltzmann weights. -/
 theorem boltzmannWeight_eq_prod (ε : Mode → ℝ) (β : ℝ) (n : Occupation Mode) :
     boltzmannWeight ε β n = ∏ i, oneModeBoltzmannWeight β (ε i) (n i) := by
   unfold boltzmannWeight oneModeBoltzmannWeight
-  rw [freeEigenvalue_eq_sum_univ, ← Real.exp_sum]
+  have henergy : freeEigenvalue ε n = ∑ i, (n i : ℝ) * ε i := by
+    rw [freeEigenvalue_eq_finsupp_sum]
+    simp only [Finsupp.sum]
+    apply Finset.sum_subset (Finset.subset_univ _)
+    intro i _ hi
+    simp only [Finsupp.mem_support_iff, not_not] at hi
+    rw [hi]
+    simp
+  rw [henergy, ← Real.exp_sum]
   congr 1
   rw [Finset.mul_sum]
   exact Finset.sum_congr rfl fun i _ => by ring
