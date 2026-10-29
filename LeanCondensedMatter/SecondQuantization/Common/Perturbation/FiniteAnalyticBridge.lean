@@ -96,8 +96,11 @@ theorem finiteDimensionalOperatorTrace_finiteContinuousOperator
     (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
     ContinuousLinearMap.finiteDimensionalOperatorTrace (finiteContinuousOperatorAlgEquiv A) =
       traceFock A := by
-  simp only [finiteDimensionalOperatorTrace_finiteAnalyticBasis, traceFock_eq_sum_matrixCoeff,
-    finiteContinuousOperator_basis_apply]
+  change LinearMap.trace ℂ (FiniteAnalyticFock Config)
+      ((finiteAnalyticFockEquiv (Config := Config)).conjAlgEquiv ℂ A) =
+    LinearMap.trace ℂ (AlgebraicFock Config) A
+  exact LinearMap.trace_map
+    ((finiteAnalyticFockEquiv (Config := Config)).conjAlgEquiv ℂ) A
 
 set_option linter.unusedFintypeInType false in
 /-- Two continuous finite operators that agree on every standard basis vector are equal. -/
