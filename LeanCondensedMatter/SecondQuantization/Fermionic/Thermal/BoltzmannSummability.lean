@@ -51,31 +51,6 @@ theorem eigenbasisBoltzmannWeight_fermionEnergy_eq_prod
     _ = ∏ i ∈ n, eigenbasisBoltzmannWeight ε β i := by
       rfl
 
-private theorem eigenbasisBoltzmannWeight_fermionEnergy_summable_of_mode
-    (ε : Mode → ℝ) (β : ℝ) (hmode : EigenbasisGibbsSummable ε β) :
-    Summable (eigenbasisBoltzmannWeight (fermionEnergy ε) β) := by
-  have hprod :
-      Summable fun n : Finset Mode =>
-        ∏ i ∈ n, eigenbasisBoltzmannWeight ε β i :=
-    summable_finsetProd_of_summable_nonneg
-      (eigenbasisBoltzmannWeight_nonneg ε β)
-      (eigenbasisBoltzmannWeight_summable ε β hmode)
-  have hweights :
-      eigenbasisBoltzmannWeight (fermionEnergy ε) β =
-        fun n : Occupation Mode => ∏ i ∈ n, eigenbasisBoltzmannWeight ε β i := by
-    funext n
-    exact eigenbasisBoltzmannWeight_fermionEnergy_eq_prod ε β n
-  rw [hweights]
-  exact hprod
-
-/-- One-particle pure-point Gibbs summability implies summability of the free fermion Gibbs weights
-over all finite occupation configurations. -/
-private theorem eigenbasisGibbsSummable_fermionEnergy_of_mode
-    (ε : Mode → ℝ) (β : ℝ) (hmode : EigenbasisGibbsSummable ε β) :
-    EigenbasisGibbsSummable (fermionEnergy ε) β := by
-  unfold EigenbasisGibbsSummable
-  exact (eigenbasisBoltzmannWeight_fermionEnergy_summable_of_mode ε β hmode).norm
-
 /-- Under one-particle pure-point Gibbs summability, the free fermion partition function is the
 infinite product `∏ᵢ (1 + exp (-β εᵢ))`. -/
 private theorem eigenbasisPartitionFunction_fermionEnergy_eq_tprod_one_add
@@ -109,8 +84,21 @@ theorem grandCanonicalGibbsSummable_of_mode
       (Common.grandCanonicalEnergy (Config := Occupation Mode) ε μ) β := by
   apply (Common.grandCanonicalGibbsSummable_iff_shifted
     (Config := Occupation Mode) ε β μ).2
-  exact eigenbasisGibbsSummable_fermionEnergy_of_mode
-    (fun i => ε i - μ) β hmode
+  unfold EigenbasisGibbsSummable
+  have hprod :
+      Summable fun n : Finset Mode =>
+        ∏ i ∈ n, eigenbasisBoltzmannWeight (fun i => ε i - μ) β i :=
+    summable_finsetProd_of_summable_nonneg
+      (eigenbasisBoltzmannWeight_nonneg (fun i => ε i - μ) β)
+      (eigenbasisBoltzmannWeight_summable (fun i => ε i - μ) β hmode)
+  have hweights :
+      eigenbasisBoltzmannWeight (fermionEnergy (fun i => ε i - μ)) β =
+        fun n : Occupation Mode =>
+          ∏ i ∈ n, eigenbasisBoltzmannWeight (fun i => ε i - μ) β i := by
+    funext n
+    exact eigenbasisBoltzmannWeight_fermionEnergy_eq_prod (fun i => ε i - μ) β n
+  rw [hweights]
+  exact hprod.norm
 
 /-- The full-Fock grand partition function of free fermions on arbitrary modes
 factorizes into the infinite product of one-mode contributions at explicit `μ`.
