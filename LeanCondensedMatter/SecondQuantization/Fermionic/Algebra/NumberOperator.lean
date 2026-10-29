@@ -27,16 +27,13 @@ noncomputable def numberOperator (i : Mode) :
     OccupationFock Mode →ₗ[ℂ] OccupationFock Mode :=
   (create i).comp (annihilate i)
 
-private theorem numberOperator_apply (i : Mode) (x : OccupationFock Mode) :
-    numberOperator i x = create i (annihilate i x) :=
-  rfl
-
 /-- **The number-operator eigenvalue equation**, on basis states: `Nᵢ` acts as the identity on
 occupied modes and as zero on unoccupied ones — occupation-number states are simultaneous
 eigenvectors of every `numberOperator i`, with eigenvalue `0` or `1`. -/
 theorem numberOperator_basisState (i : Mode) (n : Occupation Mode) :
     numberOperator i (basisState n) = if i ∈ n then basisState n else 0 := by
-  rw [numberOperator_apply]
+  change create i (annihilate i (basisState n)) =
+    if i ∈ n then basisState n else 0
   by_cases hi : i ∈ n
   · rw [ite_eq_left hi]
     have hnotmem : i ∉ removeOccupation i n := Finset.notMem_erase i n
