@@ -12,76 +12,6 @@ list-index bookkeeping from the diagrammatic mixed-event order arguments that us
 
 namespace List
 
-/-- In a duplicate-free flattened list, two elements of one block have the same order relation to an
-element outside that block. -/
-theorem idxOf_flatMap_block_lt_uniform
-    {α β : Type*} [DecidableEq β] (f : α → List β)
-    (events : List α) (event : α) (x y z : β)
-    (hNodup : (events.flatMap f).Nodup)
-    (hEvent : event ∈ events) (hx : x ∈ f event) (hy : y ∈ f event)
-    (hz : z ∈ events.flatMap f) (hzOutside : z ∉ f event) :
-    ((events.flatMap f).idxOf x < (events.flatMap f).idxOf z) =
-      ((events.flatMap f).idxOf y < (events.flatMap f).idxOf z) := by
-  induction events generalizing event x y z with
-  | nil => simp at hEvent
-  | cons a events ih =>
-      simp only [List.flatMap_cons] at hNodup hz ⊢
-      have hNodupTail : (events.flatMap f).Nodup := hNodup.of_append_right
-      have hDisjoint : List.Disjoint (f a) (events.flatMap f) := hNodup.disjoint
-      rw [List.mem_cons] at hEvent
-      rcases hEvent with rfl | hEvent
-      · have hzTail : z ∈ events.flatMap f := by
-          rw [List.mem_append] at hz
-          exact hz.resolve_left hzOutside
-        have hxLt : (f event).idxOf x < (f event).length :=
-          List.idxOf_lt_length_of_mem hx
-        have hyLt : (f event).idxOf y < (f event).length :=
-          List.idxOf_lt_length_of_mem hy
-        rw [List.idxOf_append_of_mem hx, List.idxOf_append_of_mem hy,
-          List.idxOf_append_of_notMem hzOutside]
-        have hxBefore :
-            (f event).idxOf x < (f event).length + (events.flatMap f).idxOf z := by
-          omega
-        have hyBefore :
-            (f event).idxOf y < (f event).length + (events.flatMap f).idxOf z := by
-          omega
-        simp [hxBefore, hyBefore]
-      · have hxTail : x ∈ events.flatMap f := by
-          rw [List.mem_flatMap]
-          exact ⟨event, hEvent, hx⟩
-        have hyTail : y ∈ events.flatMap f := by
-          rw [List.mem_flatMap]
-          exact ⟨event, hEvent, hy⟩
-        have hxNotHead : x ∉ f a := by
-          intro hxa
-          exact (List.disjoint_left.1 hDisjoint) hxa hxTail
-        have hyNotHead : y ∉ f a := by
-          intro hya
-          exact (List.disjoint_left.1 hDisjoint) hya hyTail
-        rw [List.mem_append] at hz
-        rcases hz with hzHead | hzTail
-        · have hzLt : (f a).idxOf z < (f a).length :=
-            List.idxOf_lt_length_of_mem hzHead
-          rw [List.idxOf_append_of_notMem hxNotHead,
-            List.idxOf_append_of_notMem hyNotHead,
-            List.idxOf_append_of_mem hzHead]
-          have hxNotBefore :
-              ¬ (f a).length + (events.flatMap f).idxOf x < (f a).idxOf z := by
-            omega
-          have hyNotBefore :
-              ¬ (f a).length + (events.flatMap f).idxOf y < (f a).idxOf z := by
-            omega
-          simp [hxNotBefore, hyNotBefore]
-        · have hzNotHead : z ∉ f a := by
-            intro hza
-            exact (List.disjoint_left.1 hDisjoint) hza hzTail
-          rw [List.idxOf_append_of_notMem hxNotHead,
-            List.idxOf_append_of_notMem hyNotHead,
-            List.idxOf_append_of_notMem hzNotHead]
-          simpa only [Nat.add_lt_add_iff_left] using
-            ih (event := event) (x := x) (y := y) (z := z)
-              hNodupTail hEvent hx hy hzTail hzOutside
-
 /-- Inside one block of a duplicate-free flattened list, global order is exactly local block order. -/
 theorem idxOf_flatMap_block_lt_iff
     {α β : Type*} [DecidableEq β] (f : α → List β)
@@ -181,5 +111,45 @@ theorem idxOf_flatMap_lt_of_idxOf_lt
           simpa only [Nat.add_lt_add_iff_left] using
             ih (a := a) (b := b) (x := x) (y := y)
               hFlatNodupTail ha hb hx hy habTail
+
+/-- In a duplicate-free flattened list, two elements of one block have the same order relation to an
+element outside that block. -/
+theorem idxOf_flatMap_block_lt_uniform
+    {α β : Type*} [DecidableEq β] (f : α → List β)
+    (events : List α) (event : α) (x y z : β)
+    (hNodup : (events.flatMap f).Nodup)
+    (hEvent : event ∈ events) (hx : x ∈ f event) (hy : y ∈ f event)
+    (hz : z ∈ events.flatMap f) (hzOutside : z ∉ f event) :
+    ((events.flatMap f).idxOf x < (events.flatMap f).idxOf z) =
+      ((events.flatMap f).idxOf y < (events.flatMap f).idxOf z) := by
+  classical
+  obtain ⟨other, hOther, hzOther⟩ := List.mem_flatMap.mp hz
+  have heventNe : event ≠ other := by
+    intro heq
+    subst other
+    exact hzOutside hzOther
+  have hidxNe : events.idxOf event ≠ events.idxOf other := by
+    intro heq
+    exact heventNe ((List.idxOf_inj hEvent).mp heq)
+  by_cases hlt : events.idxOf event < events.idxOf other
+  · have hxz : (events.flatMap f).idxOf x < (events.flatMap f).idxOf z :=
+      idxOf_flatMap_lt_of_idxOf_lt f events event other x z
+        hNodup hEvent hOther hx hzOther hlt
+    have hyz : (events.flatMap f).idxOf y < (events.flatMap f).idxOf z :=
+      idxOf_flatMap_lt_of_idxOf_lt f events event other y z
+        hNodup hEvent hOther hy hzOther hlt
+    simp [hxz, hyz]
+  · have hgt : events.idxOf other < events.idxOf event := by omega
+    have hzx : (events.flatMap f).idxOf z < (events.flatMap f).idxOf x :=
+      idxOf_flatMap_lt_of_idxOf_lt f events other event z x
+        hNodup hOther hEvent hzOther hx hgt
+    have hzy : (events.flatMap f).idxOf z < (events.flatMap f).idxOf y :=
+      idxOf_flatMap_lt_of_idxOf_lt f events other event z y
+        hNodup hOther hEvent hzOther hy hgt
+    have hxz : ¬ (events.flatMap f).idxOf x < (events.flatMap f).idxOf z :=
+      by omega
+    have hyz : ¬ (events.flatMap f).idxOf y < (events.flatMap f).idxOf z :=
+      by omega
+    simp [hxz, hyz]
 
 end List
