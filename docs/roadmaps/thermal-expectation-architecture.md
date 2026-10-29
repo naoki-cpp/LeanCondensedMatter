@@ -220,11 +220,13 @@ Finite-coordinate trace ratios are handled directly by
 `Common.finiteGibbsExpectation_eq_summableDiagonalTraceRatioLinear` from #4074.
 
 Unbounded observables do not use `DensityOperator.expectation`. The completed total-number operator
-is owned by `Fermionic.CompletedSpace.Diagonal`, while
-`Fermionic.Thermal.Completed.TotalNumberExpectation` defines its explicit Gibbs-integrability
-condition and spectral expectation. Potentially unbounded energy expectation remains generic in
-`QuantumTheory.Gibbs.EigenbasisExpectation`; there is no public arbitrary-diagonal thermal
-expectation API.
+is owned by `Fermionic.CompletedSpace.Diagonal`. Its integrability condition and spectral mean
+are the statistics-independent `Common.GrandCanonicalParticleNumberIntegrable` and
+`Common.grandCanonicalParticleNumberExpectation`; the fermionic
+`Thermal.Completed.TotalNumberExpectation` module connects this mean to diagonal matrix elements
+of the completed density and unbounded number operators. Potentially unbounded energy expectation
+remains generic in `QuantumTheory.Gibbs.EigenbasisExpectation`; there is no public
+arbitrary-diagonal thermal expectation API.
 
 Bosonic two-field occupation-diagonal coefficients are algebraic imaginary-time facts, owned by
 `Bosonic/ImaginaryTime/ImaginaryTimeEvolution.lean`. The single mode-indexed theorem
