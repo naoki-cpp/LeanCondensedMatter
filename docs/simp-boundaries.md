@@ -212,7 +212,7 @@ The following declaration families are deliberate API normalization boundaries:
 - `eigenbasisTransitionData_energyGap`
 - `eigenbasisTransitionData_weight_diag`
 - `norm_freePropagator_apply`
-- `phaseState_val`
+- `QuantumTheory.phaseState_val` in `Postulates`
 - `evolveState_val`
 - `evolveState_zero`
 - `evolveState_neg_after`
