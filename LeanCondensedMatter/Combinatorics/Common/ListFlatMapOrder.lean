@@ -147,9 +147,9 @@ theorem idxOf_flatMap_block_lt_uniform
       idxOf_flatMap_lt_of_idxOf_lt f events other event z y
         hNodup hOther hEvent hzOther hy hgt
     have hxz : ¬ (events.flatMap f).idxOf x < (events.flatMap f).idxOf z :=
-      not_lt_of_ge (le_of_lt hzx)
+      by omega
     have hyz : ¬ (events.flatMap f).idxOf y < (events.flatMap f).idxOf z :=
-      not_lt_of_ge (le_of_lt hzy)
+      by omega
     simp [hxz, hyz]
 
 end List
