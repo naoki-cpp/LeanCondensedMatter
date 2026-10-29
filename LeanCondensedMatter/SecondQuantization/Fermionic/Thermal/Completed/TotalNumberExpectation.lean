@@ -28,28 +28,6 @@ noncomputable section
 
 variable {Mode : Type*}
 
-/-- On each occupation basis state, the diagonal matrix element of the composed completed Gibbs
-density operator and total-number operator is the corresponding Gibbs probability times particle
-number. -/
-private theorem grandCanonicalGibbsDensityOperator_totalNumber_diagonalTerm
-    (ε : Mode → ℝ) (β μ : ℝ) (hsum : EigenbasisGibbsSummable
-      (Common.grandCanonicalEnergy (Config := Occupation Mode) ε μ) β)
-    (n : Occupation Mode) :
-    inner ℂ (completedBasisState n)
-        ((Common.grandCanonicalGibbsDensityOperator (Config := Occupation Mode) ε β μ hsum).op
-          (completedTotalNumberOperator
-            ⟨completedBasisState n, completedBasisState_mem_completedTotalNumberDomain n⟩)) =
-      (eigenbasisGibbsProbability (Common.grandCanonicalEnergy (Config := Occupation Mode) ε μ) β n *
-        (particleNumber n : ℝ) : ℝ) := by
-  have hnorm : ‖completedBasisState n‖ = 1 := by
-    rw [← completedOccupationHilbertBasis_apply]
-    exact (completedOccupationHilbertBasis (Mode := Mode)).orthonormal.norm_eq_one n
-  rw [completedTotalNumberOperator_basisState, map_smul,
-    grandCanonicalGibbsDensityOperator_apply_basis, inner_smul_right, inner_smul_right,
-    inner_self_eq_norm_sq_to_K, hnorm]
-  norm_num
-  ring
-
 /-- The diagonal matrix elements of the actual completed Gibbs density operator composed with the
 completed total-number operator sum to the real spectral expectation. -/
 theorem hasSum_grandCanonicalGibbsDensityOperator_totalNumber_diagonal
@@ -67,7 +45,16 @@ theorem hasSum_grandCanonicalGibbsDensityOperator_totalNumber_diagonal
     (Common.hasSum_grandCanonicalParticleNumberExpectation
       (Config := Occupation Mode) ε β μ hint).mapL Complex.ofRealCLM
   simp only [Complex.ofRealCLM_apply] at hcast
-  simpa only [grandCanonicalGibbsDensityOperator_totalNumber_diagonalTerm] using hcast
+  exact HasSum.congr_fun hcast fun n => by
+    symm
+    have hnorm : ‖completedBasisState n‖ = 1 := by
+      rw [← completedOccupationHilbertBasis_apply]
+      exact (completedOccupationHilbertBasis (Mode := Mode)).orthonormal.norm_eq_one n
+    rw [completedTotalNumberOperator_basisState, map_smul,
+      grandCanonicalGibbsDensityOperator_apply_basis, inner_smul_right, inner_smul_right,
+      inner_self_eq_norm_sq_to_K, hnorm]
+    norm_num
+    ring
 
 end
 end Fermionic
