@@ -79,7 +79,10 @@ theorem externalInsertionOfSlotSplit_dysonFixedTimeAmplitude_eq_local_mul_vacuum
           (Combinatorics.subsetSumSdiffEquiv (Finset.subset_univ T))).symm
     change (-1 : ℂ) ^ n *
       (ExternalInsertionDiagram.ofSlotSplit (Finset.subset_univ T) ext vac).vertexWeight g = _
-    rw [hcard, pow_add, ExternalInsertionDiagram.ofSlotSplit_vertexWeight]
+    have hpow : (-1 : ℂ) ^ n =
+        (-1 : ℂ) ^ T.card * (-1 : ℂ) ^ S.card := by
+      rw [hcard, pow_add]
+    rw [hpow, ExternalInsertionDiagram.ofSlotSplit_vertexWeight]
     ring
   change (-1 : ℂ) ^ n *
       (externalInsertionMixedAtomicOrderSign externalTime σ *
