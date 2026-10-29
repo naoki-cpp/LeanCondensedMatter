@@ -72,10 +72,15 @@ theorem externalInsertionOfSlotSplit_dysonFixedTimeAmplitude_eq_local_mul_vacuum
       (-1 : ℂ) ^ n * d.vertexWeight g =
         ((-1 : ℂ) ^ T.card * ext.vertexWeight g) *
           ((-1 : ℂ) ^ S.card * vac.vertexWeight g) := by
-    simpa only [Finset.card_univ, Fintype.card_fin] using
-      (ExternalInsertionDiagram.ofSlotSplit_dysonSign_mul_vertexWeight
-        (S := (Finset.univ : Finset (Fin n)))
-        (Finset.subset_univ T) ext vac g)
+    have hcard : n = T.card + S.card := by
+      simpa only [S, Fintype.card_sum, Fintype.card_coe,
+        Finset.card_univ, Fintype.card_fin] using
+        (Fintype.card_congr
+          (Combinatorics.subsetSumSdiffEquiv (Finset.subset_univ T))).symm
+    change (-1 : ℂ) ^ n *
+      (ExternalInsertionDiagram.ofSlotSplit (Finset.subset_univ T) ext vac).vertexWeight g = _
+    rw [hcard, pow_add, ExternalInsertionDiagram.ofSlotSplit_vertexWeight]
+    ring
   change (-1 : ℂ) ^ n *
       (externalInsertionMixedAtomicOrderSign externalTime σ *
         d.vertexWeight g * d.mixedPairingValue ε β externalTime σ) =
