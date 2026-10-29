@@ -1279,8 +1279,7 @@
       "name": "LeanCondensedMatter.Combinatorics.PerfectPairing.CrossingParity",
       "sourceFile": "LeanCondensedMatter/Combinatorics/PerfectPairing/CrossingParity.lean",
       "imports": [
-        "LeanCondensedMatter.Combinatorics.PerfectPairing.Crossing",
-        "LeanCondensedMatter.Combinatorics.PerfectPairing.PairEndpoints"
+        "LeanCondensedMatter.Combinatorics.PerfectPairing.Crossing"
       ],
       "externalImportCount": 0
     },
@@ -1853,7 +1852,7 @@
         "LeanCondensedMatter.Models.MassiveDirac.Model.Berry.Symmetry",
         "LeanCondensedMatter.Models.MassiveDirac.Model.OperatorSpectral"
       ],
-      "externalImportCount": 1
+      "externalImportCount": 3
     },
     {
       "name": "LeanCondensedMatter.Models.MassiveDirac.Bastin.Limit",
@@ -1862,7 +1861,7 @@
         "LeanCondensedMatter.Models.MassiveDirac.Bastin.Bands",
         "LeanCondensedMatter.Models.MassiveDirac.Model.OperatorSpectral"
       ],
-      "externalImportCount": 2
+      "externalImportCount": 1
     },
     {
       "name": "LeanCondensedMatter.Models.MassiveDirac.Bastin.PairBerry",
@@ -1871,7 +1870,7 @@
         "LeanCondensedMatter.Models.MassiveDirac.Bastin.PairIntegral",
         "LeanCondensedMatter.Models.MassiveDirac.Model.OperatorSpectral"
       ],
-      "externalImportCount": 1
+      "externalImportCount": 2
     },
     {
       "name": "LeanCondensedMatter.Models.MassiveDirac.Bastin.PairIntegral",
