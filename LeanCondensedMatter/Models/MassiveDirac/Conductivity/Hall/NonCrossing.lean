@@ -2,7 +2,6 @@ import LeanCondensedMatter.Models.MassiveDirac.Conductivity.Hall.FiniteBroadenin
 import LeanCondensedMatter.QuantumTheory.PlanckConstant
 import Mathlib.Tactic.FieldSimp
 import Mathlib.Tactic.Linarith
-import Mathlib.Tactic.NormCast
 import Mathlib.Tactic.NormNum
 import Mathlib.Tactic.Ring
 
