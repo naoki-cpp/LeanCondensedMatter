@@ -15,6 +15,10 @@ global phase.
 complex phase and supplies its normalization proof. Density-state and time-evolution results
 use this same construction; phase invariance does not identify representatives by vector equality.
 
+The rank-one constructor `pure` uses positivity, general trace-class membership, and the rank-one
+trace formula for normalization. `purity_pure` follows from the density-state expectation formula
+and the action of the rank-one projection on its normalized vector.
+
 `QuantumTheory.DensityOperator H` is the canonical density-state type. It contains a bounded operator,
 positivity, general trace-class membership, and normalization of the canonical complex trace to `1`.
 Compactness, self-adjointness, spectral summability, and the real spectral-trace formula are derived. `QuantumTheory.PureState H` is the subtype of density operators represented by

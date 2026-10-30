@@ -1,5 +1,6 @@
 import LeanCondensedMatter.QuantumTheory.DensityOperator.PureState
 import LeanCondensedMatter.QuantumTheory.DensityOperator.ExpectationOrder
+import LeanCondensedMatter.QuantumTheory.DensityOperator.ObservableExpectation
 
 /-!
 # Purity of density operators
@@ -75,14 +76,11 @@ theorem DensityOperator.expectation_op (ρ : DensityOperator H) :
 
 /-- A rank-one density operator has purity one. -/
 theorem purity_pure (ψ : StateVector H) : purity (pure ψ) = 1 := by
-  letI := uniqueEigenvectorIndexRankOne ψ.2
-  change (∑' a : EigenvectorIndex
-    (InnerProductSpace.rankOne ℂ ψ.1 ψ.1 : H →L[ℂ] H), a.1.1 ^ 2) = 1
-  rw [tsum_eq_single (uniqueEigenvectorIndexRankOne ψ.2).default (fun b hb =>
-    absurd (Subsingleton.elim b (uniqueEigenvectorIndexRankOne ψ.2).default) hb)]
-  have hdefault : (uniqueEigenvectorIndexRankOne ψ.2).default.1.1 = 1 := rfl
-  rw [hdefault]
-  norm_num
+  apply Complex.ofReal_injective
+  rw [← (pure ψ).expectation_op,
+    DensityOperator.expectation_pure_observable ψ ⟨(pure ψ).op, (pure ψ).isSelfAdjoint⟩]
+  change inner ℂ ψ.1 ((InnerProductSpace.rankOne ℂ ψ.1 ψ.1) ψ.1) = 1
+  simp [InnerProductSpace.rankOne_apply, inner_smul_right, inner_self_eq_norm_sq_to_K, ψ.2]
 
 /-- Purity one forces every nonzero spectral eigenvalue of a density operator to equal one. -/
 theorem DensityOperator.eigenvalue_eq_one_of_purity_eq_one
