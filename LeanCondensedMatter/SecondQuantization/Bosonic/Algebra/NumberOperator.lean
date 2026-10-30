@@ -35,6 +35,8 @@ theorem numberOperator_eq_diagonalOperator (i : Mode) :
       Common.diagonalOperator (fun n : Occupation Mode => (n i : ℂ)) := by
   apply Common.linearMap_ext_basisState
   intro n
+  change numberOperator i (basisState n) =
+    Common.diagonalOperator (fun m : Occupation Mode => (m i : ℂ)) (basisState n)
   rw [numberOperator_basisState, Common.diagonalOperator_basisState]
 
 /-- The reordering identity `a_i a_i† = id + N_i`. -/
