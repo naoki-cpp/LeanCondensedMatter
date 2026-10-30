@@ -5,7 +5,8 @@ import LeanCondensedMatter.Models.Parabolic2DEG.Green
 import LeanCondensedMatter.Transport.Streda.RetardedAdvanced
 import LeanCondensedMatter.Transport.Streda.ConductivityNormalization
 import Mathlib.Analysis.SpecialFunctions.Integrals.Basic
-import Mathlib.Tactic
+import Mathlib.Tactic.FieldSimp
+import Mathlib.Tactic.Ring
 
 set_option linter.style.header false
 
