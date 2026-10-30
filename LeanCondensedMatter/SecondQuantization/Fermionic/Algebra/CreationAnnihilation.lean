@@ -179,11 +179,7 @@ theorem matrixCoeff_create (i : Mode) (m n : Occupation Mode) :
         (if i ∈ n then 0 else (fermionSign i n : ℂ))
       else 0 := by
   classical
-  by_cases h : m = insertOccupation i n
-  · simpa [h] using
-      (Common.matrixCoeff_eq_ite_of_basisState_smul (m := m) (create_basisState_eq i n))
-  · simpa [h] using
-      (Common.matrixCoeff_eq_ite_of_basisState_smul (m := m) (create_basisState_eq i n))
+  exact Common.matrixCoeff_eq_ite_of_basisState_smul (m := m) (create_basisState_eq i n)
 
 /-- Matrix coefficients of fermionic annihilation are supported on the removed occupation state. -/
 theorem matrixCoeff_annihilate (i : Mode) (m n : Occupation Mode) :
@@ -192,11 +188,7 @@ theorem matrixCoeff_annihilate (i : Mode) (m n : Occupation Mode) :
         (if i ∈ n then (fermionSign i n : ℂ) else 0)
       else 0 := by
   classical
-  by_cases h : m = removeOccupation i n
-  · simpa [h] using
-      (Common.matrixCoeff_eq_ite_of_basisState_smul (m := m) (annihilate_basisState_eq i n))
-  · simpa [h] using
-      (Common.matrixCoeff_eq_ite_of_basisState_smul (m := m) (annihilate_basisState_eq i n))
+  exact Common.matrixCoeff_eq_ite_of_basisState_smul (m := m) (annihilate_basisState_eq i n)
 
 /-- **The vacuum cannot be annihilated at any mode.** -/
 @[simp]
