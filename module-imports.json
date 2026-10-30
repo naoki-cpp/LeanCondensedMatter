@@ -292,7 +292,7 @@
       "name": "LeanCondensedMatter.Analysis.Lorentzian.Kernel",
       "sourceFile": "LeanCondensedMatter/Analysis/Lorentzian/Kernel.lean",
       "imports": [],
-      "externalImportCount": 3
+      "externalImportCount": 6
     },
     {
       "name": "LeanCondensedMatter.Analysis.Lorentzian.Pole",

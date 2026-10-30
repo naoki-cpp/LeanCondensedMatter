@@ -124240,6 +124240,50 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {Config : Type u_1} (x : SecondQuantization.Common.AlgebraicFock Config),\n  x = ∑ k ∈ x.support, x k • SecondQuantization.Common.basisState k",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.eq_sum_smul_basisState",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Algebra.AlgebraicFock",
+    "externalAxioms": [],
+    "docString": "Every algebraic Fock vector is the finite sum of its configuration-basis coordinates. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Common.linearMap_apply_eq_finsetSum_of_support_subset",
+      "SecondQuantization.Common.support_interactionPicture_apply_subset_reachableSupport_succ"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.linearMap_apply_eq_finsetSum_of_support_subset",
+      "SecondQuantization.Common.support_interactionPicture_apply_subset_reachableSupport_succ"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {s : SecondQuantization.Common.Statistics} {Mode : Type u_1} {Config : Type u_2} [inst : DecidableEq Mode]\n  [inst_1 : SecondQuantization.Common.ExchangeAlgebra s Mode Config] (i : Mode),\n  SecondQuantization.Common.exchangeCommutator s (SecondQuantization.Common.ExchangeAlgebra.annihilate s i)\n      (SecondQuantization.Common.ExchangeAlgebra.create s i) =\n    LinearMap.id",
     "standardAxioms": [
       "Classical.choice",
@@ -129410,6 +129454,52 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {Config : Type u_1}\n  (A : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config)\n  (x : SecondQuantization.Common.AlgebraicFock Config) (S : Finset Config),\n  x.support ⊆ S → ∀ (m : Config), (A x) m = ∑ k ∈ S, SecondQuantization.Common.matrixCoeff A m k * x k",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Common.linearMap_apply_eq_finsetSum_of_support_subset",
+    "module": "LeanCondensedMatter.SecondQuantization.Common.Algebra.AlgebraicFock",
+    "externalAxioms": [],
+    "docString": "A linear operator acts coordinatewise by its matrix coefficients on any finite set\ncontaining the input vector's support. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Common.matrixCoeff_comp_support",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExpansion.0.SecondQuantization.Common.continuous_dysonCoeff_basisState_apply"
+    ],
+    "dependencies": [
+      "SecondQuantization.Common.eq_sum_smul_basisState"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Common.matrixCoeff_comp_support",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExpansion.0.SecondQuantization.Common.continuous_dysonCoeff_basisState_apply"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {Config : Type u_1} {W : Type u_2} [inst : AddCommGroup W] [inst_1 : _root_.Module ℂ W]\n  {f g : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] W},\n  (∀ (c : Config), f (SecondQuantization.Common.basisState c) = g (SecondQuantization.Common.basisState c)) → f = g",
     "standardAxioms": [
       "Classical.choice",
@@ -129762,7 +129852,9 @@
       "SecondQuantization.Common.matrixCoeff_comp",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Algebra.DiagonalTrace.0.SecondQuantization.Common.matrixCoeff_comp_eq_tsum"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "SecondQuantization.Common.linearMap_apply_eq_finsetSum_of_support_subset"
+    ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
@@ -133951,6 +134043,7 @@
       "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExpansion.0.SecondQuantization.Common.dysonBasis_succ_apply"
     ],
     "dependencies": [
+      "SecondQuantization.Common.eq_sum_smul_basisState",
       "SecondQuantization.Common.reachableSupport_succ",
       "SecondQuantization.Common.support_interactionPicture_basisState_subset"
     ],
@@ -185906,8 +185999,8 @@
       "SecondQuantization.Common.continuous_matrixCoeff_interactionPicture",
       "SecondQuantization.Common.dysonCoeff_succ_basisState_apply",
       "SecondQuantization.Common.dysonCoeff_zero",
-      "SecondQuantization.Common.support_dysonCoeff_basisState_subset_reachableSupport",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExpansion.0.SecondQuantization.Common.linearMap_apply_eq_finsetSum_of_support_subset"
+      "SecondQuantization.Common.linearMap_apply_eq_finsetSum_of_support_subset",
+      "SecondQuantization.Common.support_dysonCoeff_basisState_subset_reachableSupport"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -186052,48 +186145,6 @@
       "SecondQuantization.Common.support_dysonCoeff_basisState_subset_reachableSupport"
     ],
     "compiledConsumerCount": 3,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Config : Type u_1}\n  (A : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config)\n  (x : SecondQuantization.Common.AlgebraicFock Config) (S : Finset Config),\n  x.support ⊆ S → ∀ (m : Config), (A x) m = ∑ k ∈ S, SecondQuantization.Common.matrixCoeff A m k * x k",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExpansion.0.SecondQuantization.Common.linearMap_apply_eq_finsetSum_of_support_subset",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExpansion",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExpansion.0.SecondQuantization.Common.continuous_dysonCoeff_basisState_apply"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExpansion.0.SecondQuantization.Common.continuous_dysonCoeff_basisState_apply"
-    ],
-    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
