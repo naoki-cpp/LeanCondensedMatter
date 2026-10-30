@@ -1,7 +1,10 @@
 import LeanCondensedMatter.Transport.Analysis.RelaxationTime
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.SingleParticleRate
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.ScalarAngularWeights
-import Mathlib.Tactic
+import Mathlib.Tactic.FieldSimp
+import Mathlib.Tactic.NormNum
+import Mathlib.Tactic.Positivity
+import Mathlib.Tactic.Ring
 
 set_option linter.style.header false
 
