@@ -1,7 +1,9 @@
 import LeanCondensedMatter.QuantumTheory.PlanckConstant
 import LeanCondensedMatter.Models.MassiveDirac.Conductivity.Hall.NonCrossing
 import LeanCondensedMatter.Models.MassiveDirac.Conductivity.Hall.Intrinsic
-import Mathlib.Tactic
+import Mathlib.Tactic.FieldSimp
+import Mathlib.Tactic.Linarith
+import Mathlib.Tactic.Ring
 
 set_option linter.style.header false
 
