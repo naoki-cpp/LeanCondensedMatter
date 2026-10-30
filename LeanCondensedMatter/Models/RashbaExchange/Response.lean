@@ -5,7 +5,7 @@ import LeanCondensedMatter.Models.RashbaExchange.Current
 import LeanCondensedMatter.Transport.Streda.ConductivityNormalization
 import LeanCondensedMatter.Transport.Streda.TraceRepresentation
 import Mathlib.Analysis.SpecialFunctions.Integrals.Basic
-import Mathlib.Tactic
+import Mathlib.Tactic.Ring
 
 set_option linter.style.header false
 
