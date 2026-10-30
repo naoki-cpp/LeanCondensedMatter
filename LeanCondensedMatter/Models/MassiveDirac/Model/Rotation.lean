@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Models.MassiveDirac.Model.Operator
-import Mathlib.Tactic
+import Mathlib.Tactic.Ring
 
 set_option linter.style.header false
 
