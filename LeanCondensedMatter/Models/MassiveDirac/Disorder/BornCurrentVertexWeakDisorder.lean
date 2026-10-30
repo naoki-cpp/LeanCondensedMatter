@@ -2,7 +2,12 @@ import LeanCondensedMatter.Analysis.Lorentzian.RadialQuadratic
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.BornCurrentVertexRung
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.TransportRate
 import Mathlib.Topology.Algebra.Order.Field
-import Mathlib.Tactic
+import Mathlib.Tactic.FieldSimp
+import Mathlib.Tactic.FunProp
+import Mathlib.Tactic.Linarith
+import Mathlib.Tactic.NormNum
+import Mathlib.Tactic.Positivity
+import Mathlib.Tactic.Ring
 
 set_option linter.style.header false
 

@@ -4,7 +4,7 @@ import LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialKernel
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.ContinuumMeasurePrefactor
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic
 import Mathlib.Topology.Algebra.Module.Star
-import Mathlib.Tactic
+import Mathlib.Tactic.Ring
 
 set_option linter.style.header false
 
