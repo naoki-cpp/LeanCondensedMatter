@@ -113,30 +113,6 @@ theorem support_dysonCoeff_basisState_subset_reachableSupport (energy : Config �
   rw [dysonCoeff_basisState]
   exact support_dysonBasis_subset_reachableSupport energy V order τ n
 
-private theorem linearMap_apply_eq_finsetSum_of_support_subset
-    (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
-    (x : AlgebraicFock Config) (S : Finset Config) (hx : x.support ⊆ S) (m : Config) :
-    A x m = ∑ k ∈ S, matrixCoeff A m k * x k := by
-  classical
-  calc
-    A x m = A (x.sum Finsupp.single) m := by rw [Finsupp.sum_single]
-    _ = (x.sum fun k c => A (Finsupp.single k c)) m := by
-      rw [map_finsuppSum]
-    _ = x.sum (fun k c => A (Finsupp.single k c) m) := by
-      rw [Finsupp.sum_apply]
-    _ = ∑ k ∈ S, A (Finsupp.single k (x k)) m := by
-      rw [Finsupp.sum_of_support_subset x hx]
-      intro k _
-      simp
-    _ = ∑ k ∈ S, matrixCoeff A m k * x k := by
-      apply Finset.sum_congr rfl
-      intro k _
-      have hsingle : (Finsupp.single k (x k) : AlgebraicFock Config) =
-          x k • basisState k := (Finsupp.smul_single_one k (x k)).symm
-      rw [hsingle, map_smul, Finsupp.smul_apply]
-      change x k * matrixCoeff A m k = matrixCoeff A m k * x k
-      exact mul_comm _ _
-
 private theorem continuous_dysonCoeff_basisState_apply (energy : Config → ℝ)
     (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
     ∀ (order : ℕ) (m n : Config),

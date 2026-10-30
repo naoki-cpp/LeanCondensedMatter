@@ -49,10 +49,8 @@ theorem support_interactionPicture_apply_subset_reachableSupport_succ
     (τ : ℝ) (order : ℕ) (n : Config) (x : AlgebraicFock Config)
     (hx : x.support ⊆ reachableSupport V order n) :
     (interactionPicture energy V τ x).support ⊆ reachableSupport V (order + 1) n := by
-  have hxRep : x = ∑ k ∈ x.support, x k • basisState k := by
-    conv_lhs => rw [← Finsupp.sum_single x]
-    rw [Finsupp.sum]
-    exact Finset.sum_congr rfl fun k _ => (Finsupp.smul_single_one k _).symm
+  have hxRep : x = ∑ k ∈ x.support, x k • basisState k :=
+    eq_sum_smul_basisState x
   have hImage :
       interactionPicture energy V τ x =
         ∑ k ∈ x.support, x k • interactionPicture energy V τ (basisState k) := by
