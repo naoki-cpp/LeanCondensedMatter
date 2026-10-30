@@ -1,6 +1,10 @@
 import LeanCondensedMatter.Analysis.Lorentzian.Kernel
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic
-import Mathlib.Tactic
+import Mathlib.Tactic.FieldSimp
+import Mathlib.Tactic.FunProp
+import Mathlib.Tactic.Linarith
+import Mathlib.Tactic.Positivity
+import Mathlib.Tactic.Ring
 
 set_option linter.style.header false
 
