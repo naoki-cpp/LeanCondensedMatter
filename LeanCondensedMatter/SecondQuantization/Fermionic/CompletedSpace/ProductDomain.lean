@@ -47,63 +47,63 @@ theorem freeHamiltonianWeight_toggle_of_not_mem (ε : Mode → ℝ)
   simpa [freeHamiltonianWeight] using
     congrArg (fun x : ℝ => (x : ℂ)) (fermionEnergy_insertOccupation_of_not_mem (ε := ε) h)
 
+/-! A weighted toggle bound transfers maximal diagonal-domain membership.
+The finite constant shift is handled by the Common diagonal-domain theorem. -/
+private theorem mem_completedFreeHamiltonianDomain_of_toggle_bound
+    (ε : Mode → ℝ) (i : Mode) (c : ℂ)
+    {ψ φ : CompletedFockSpace Mode}
+    (hψ : ψ ∈ completedFreeHamiltonianDomain ε)
+    (hbound : ∀ n : Occupation Mode,
+      ‖freeHamiltonianWeight ε n * φ n‖ ≤
+        ‖(freeHamiltonianWeight ε (toggleOccupation i n) + c) *
+          ψ (toggleOccupation i n)‖) :
+    φ ∈ completedFreeHamiltonianDomain ε := by
+  change ψ ∈ Common.completedDiagonalDomain (freeHamiltonianWeight ε) at hψ
+  change φ ∈ Common.completedDiagonalDomain (freeHamiltonianWeight ε)
+  rw [Common.mem_completedDiagonalDomain_iff]
+  have hshift :
+      ψ ∈ Common.completedDiagonalDomain
+        (fun n => freeHamiltonianWeight ε n + c) :=
+    Common.mem_completedDiagonalDomain_add_const (freeHamiltonianWeight ε) c hψ
+  let x :
+      (Common.completedDiagonalOperator
+        (fun n => freeHamiltonianWeight ε n + c)).domain := ⟨ψ, hshift⟩
+  have hout := lp.memℓp
+    (Common.completedReindex (toggleOccupationEquiv i)
+      (Common.completedDiagonalOperator
+        (fun n => freeHamiltonianWeight ε n + c) x))
+  exact hout.mono' fun n => by
+    rw [Common.completedReindex_apply, toggleOccupationEquiv_apply,
+      Common.completedDiagonalOperator_apply]
+    exact hbound n
+
 /-- Bounded fermionic creation preserves the maximal domain of the completed free Hamiltonian. -/
 theorem completedCreate_mem_completedFreeHamiltonianDomain
     (ε : Mode → ℝ) (i : Mode) {ψ : CompletedFockSpace Mode}
     (hψ : ψ ∈ completedFreeHamiltonianDomain ε) :
     completedCreate i ψ ∈ completedFreeHamiltonianDomain ε := by
-  change ψ ∈ Common.completedDiagonalDomain (freeHamiltonianWeight ε) at hψ
-  change completedCreate i ψ ∈ Common.completedDiagonalDomain (freeHamiltonianWeight ε)
-  rw [Common.mem_completedDiagonalDomain_iff]
-  have hshift :
-      ψ ∈ Common.completedDiagonalDomain
-        (fun n => freeHamiltonianWeight ε n + (ε i : ℂ)) :=
-    Common.mem_completedDiagonalDomain_add_const
-      (freeHamiltonianWeight ε) (ε i : ℂ) hψ
-  let x :
-      (Common.completedDiagonalOperator
-        (fun n => freeHamiltonianWeight ε n + (ε i : ℂ))).domain := ⟨ψ, hshift⟩
-  have hout := lp.memℓp
-    (Common.completedReindex (toggleOccupationEquiv i)
-      (Common.completedDiagonalOperator
-        (fun n => freeHamiltonianWeight ε n + (ε i : ℂ)) x))
-  exact hout.mono' fun n => by
-    by_cases h : i ∈ n
-    · rw [completedCreate_apply, ite_eq_left h, Common.completedReindex_apply, toggleOccupationEquiv_apply,
-        Common.completedDiagonalOperator_apply, freeHamiltonianWeight_toggle_of_mem ε h]
-      simpa [x, norm_fermionPhase]
-    · simp only [completedCreate_apply, ite_eq_right h, mul_zero, norm_zero]
-      exact norm_nonneg _
+  apply mem_completedFreeHamiltonianDomain_of_toggle_bound ε i (ε i : ℂ) hψ
+  intro n
+  by_cases h : i ∈ n
+  · rw [completedCreate_apply, ite_eq_left h,
+      freeHamiltonianWeight_toggle_of_mem ε h]
+    simp [norm_mul, norm_fermionPhase]
+  · rw [completedCreate_apply, ite_eq_right h]
+    simp
 
 /-- Bounded fermionic annihilation preserves the maximal domain of the completed free Hamiltonian. -/
 theorem completedAnnihilate_mem_completedFreeHamiltonianDomain
     (ε : Mode → ℝ) (i : Mode) {ψ : CompletedFockSpace Mode}
     (hψ : ψ ∈ completedFreeHamiltonianDomain ε) :
     completedAnnihilate i ψ ∈ completedFreeHamiltonianDomain ε := by
-  change ψ ∈ Common.completedDiagonalDomain (freeHamiltonianWeight ε) at hψ
-  change completedAnnihilate i ψ ∈ Common.completedDiagonalDomain (freeHamiltonianWeight ε)
-  rw [Common.mem_completedDiagonalDomain_iff]
-  have hshift :
-      ψ ∈ Common.completedDiagonalDomain
-        (fun n => freeHamiltonianWeight ε n + (-(ε i : ℂ))) :=
-    Common.mem_completedDiagonalDomain_add_const
-      (freeHamiltonianWeight ε) (-(ε i : ℂ)) hψ
-  let x :
-      (Common.completedDiagonalOperator
-        (fun n => freeHamiltonianWeight ε n + (-(ε i : ℂ)))).domain := ⟨ψ, hshift⟩
-  have hout := lp.memℓp
-    (Common.completedReindex (toggleOccupationEquiv i)
-      (Common.completedDiagonalOperator
-        (fun n => freeHamiltonianWeight ε n + (-(ε i : ℂ))) x))
-  exact hout.mono' fun n => by
-    by_cases h : i ∈ n
-    · simp only [completedAnnihilate_apply, ite_eq_left h, mul_zero, norm_zero]
-      exact norm_nonneg _
-    · rw [completedAnnihilate_apply, ite_eq_right h, Common.completedReindex_apply, toggleOccupationEquiv_apply,
-        Common.completedDiagonalOperator_apply]
-      have hE := freeHamiltonianWeight_toggle_of_not_mem ε h
-      rw [hE]
-      simpa [x, norm_fermionPhase]
+  apply mem_completedFreeHamiltonianDomain_of_toggle_bound ε i (-(ε i : ℂ)) hψ
+  intro n
+  by_cases h : i ∈ n
+  · rw [completedAnnihilate_apply, ite_eq_left h]
+    simp
+  · rw [completedAnnihilate_apply, ite_eq_right h]
+    rw [freeHamiltonianWeight_toggle_of_not_mem ε h]
+    simpa [norm_mul, norm_fermionPhase]
 
 /-- The product `H a†` as an honest linear map on `Dom(H)`. -/
 noncomputable def completedFreeHamiltonianAfterCreate (ε : Mode → ℝ) (i : Mode) :
