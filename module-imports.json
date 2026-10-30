@@ -306,7 +306,7 @@
       "name": "LeanCondensedMatter.Analysis.Lorentzian.RadialQuadratic",
       "sourceFile": "LeanCondensedMatter/Analysis/Lorentzian/RadialQuadratic.lean",
       "imports": [],
-      "externalImportCount": 3
+      "externalImportCount": 6
     },
     {
       "name": "LeanCondensedMatter.Analysis.Lorentzian.Weighted",
