@@ -26,17 +26,6 @@ def finiteSecondQuantization :
   ((boundedOneBodyOperator (Site := Site)).toLinearMap.comp
     (Common.finiteHilbertOperatorAlgEquiv (Config := Site)).symm.toLinearMap).toContinuousLinearMap
 
-/-- The finite Hilbert realization of second quantization preserves commutators. -/
-theorem finiteSecondQuantization_lie
-    (A B : EuclideanSpace ℂ Site →L[ℂ] EuclideanSpace ℂ Site) :
-    finiteSecondQuantization ⁅A, B⁆ =
-      ⁅finiteSecondQuantization A, finiteSecondQuantization B⁆ := by
-  let e := Common.finiteHilbertOperatorAlgEquiv (Config := Site)
-  change boundedOneBodyOperator (e.symm (A * B - B * A)) =
-    ⁅boundedOneBodyOperator (e.symm A), boundedOneBodyOperator (e.symm B)⁆
-  rw [map_sub, map_mul, map_mul]
-  exact LieHom.map_lie (boundedOneBodyOperator (Site := Site)) _ _
-
 /-- Exponential evolution of one-particle observables lifts exactly to the full finite Fock
 space. For real-time Hamiltonian evolution, take an imaginary scalar multiple of the Hamiltonian
 as `generator`; no self-adjointness is needed for the algebraic conjugation identity itself. -/
@@ -52,7 +41,11 @@ theorem finiteSecondQuantization_exp_conjugate
     ((finiteSecondQuantization (Site := Site)).restrictScalars ℝ) generator
     (finiteSecondQuantization generator) ?_ observable t
   intro x
-  exact finiteSecondQuantization_lie generator x
+  let e := Common.finiteHilbertOperatorAlgEquiv (Config := Site)
+  change boundedOneBodyOperator (e.symm (generator * x - x * generator)) =
+    ⁅boundedOneBodyOperator (e.symm generator), boundedOneBodyOperator (e.symm x)⁆
+  rw [map_sub, map_mul, map_mul]
+  exact LieHom.map_lie (boundedOneBodyOperator (Site := Site)) _ _
 
 end
 end SecondQuantization.Fermionic.Lattice

@@ -24,23 +24,6 @@ Středa response matrices are not physical conductivity tensors. Physical prefac
 continuum normalization, and required limits remain explicit before constructing
 `Transport.Core.ConductivityTensor`.
 
-## One-particle reduction of fermionic response
-
-`Fermionic.Transport.OneBodyResponse` gives the commutator susceptibility of finite sums of
-completed creation-annihilation bilinears in terms of a supplied one-particle two-point function
-and the inverse one-particle unitary evolution. The mode type may be infinite and the coefficient
-vectors may have infinite support. Only the observable sums are finite; arbitrary unbounded one-body
-observables and infinite-volume thermal-state existence are not asserted. Quartic terms cancel
-by CAR, so no Wick factorization hypothesis is required.
-
-For the existing finite-lattice `boundedFluxRetardedResponse`, the quadratic-dynamics condition
-identifies the full-Fock Schrödinger generator with finite second quantization of the supplied
-one-particle generator. Its response in a diagonal grand-canonical initial state is the
-Fermi-weighted diagonal of the evolved one-particle commutator, with the causal time cutoff.
-The state energies and dynamical generator are independent inputs; an equilibrium application
-must identify them consistently. This reduction does not change the general interacting
-response or supply contact terms, frequency integrals, conductivity normalization, or limits.
-
 ## Tensor symmetry and magnetic reciprocity
 
 `Transport.Core.ConductivityTensor` carries physical, already-normalized conductivity.
