@@ -1,6 +1,8 @@
 import Mathlib.LinearAlgebra.Matrix.Notation
 import Mathlib.LinearAlgebra.Matrix.Trace
-import Mathlib.Tactic
+import Mathlib.Tactic.FieldSimp
+import Mathlib.Tactic.Positivity
+import Mathlib.Tactic.Ring
 
 set_option linter.style.header false
 
