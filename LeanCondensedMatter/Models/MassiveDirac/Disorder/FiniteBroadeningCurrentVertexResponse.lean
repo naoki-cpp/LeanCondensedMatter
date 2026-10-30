@@ -1,6 +1,5 @@
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningLadderZeroBroadening
 import LeanCondensedMatter.Models.MassiveDirac.Model.Operator
-import Mathlib.Tactic
 
 set_option linter.style.header false
 
