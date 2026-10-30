@@ -89,6 +89,13 @@ bounded map.
 
 ## Thermal boundary
 
+The completed fields and Fock unitary lift are consumed by
+`Fermionic.Transport.OneBodyResponse`: finite-rank bilinear commutator susceptibilities reduce
+to the one-particle two-point function under lifted dynamics. This result does not require
+identification of a closed Fock generator and does not construct the thermal state. The supplied
+covariance must be realized by the stated expectation; a Fermi-function or infinite-volume
+interpretation requires its own state bridge.
+
 Completed thermal specializations live under `SecondQuantization.Fermionic.Thermal.Completed`.
 The full-Fock grand-canonical state uses `Common.grandCanonicalGibbsDensityOperator` with explicit
 chemical potential `μ`, whose normalization reuses `QuantumTheory.Gibbs.Eigenbasis`.
