@@ -767,9 +767,8 @@ theorem polarFourierFirstCosineAngularKernel_two_mul_eq_zeroth_sub_second (z : �
     intro θ
     simpa [sine, cosine] using (Real.hasDerivAt_sin θ).ofReal_comp
   have hphase : ∀ θ : ℝ, HasDerivAt phase
-      ((-Complex.I * (z : ℂ) * sine θ) * phase θ) θ := by
-    intro θ
-    exact polarFourierRadialPhase_hasDerivAt z θ
+      ((-Complex.I * (z : ℂ) * sine θ) * phase θ) θ :=
+    polarFourierRadialPhase_hasDerivAt z
   have hzero :
       (∫ θ in (0 : ℝ)..(2 * Real.pi),
         cosine θ * phase θ +
@@ -783,11 +782,11 @@ theorem polarFourierFirstCosineAngularKernel_two_mul_eq_zeroth_sub_second (z : �
       (hcvprime.intervalIntegrable _ _)
     simpa [sine, cosine] using h
   have hcosInt : IntervalIntegrable (fun θ : ℝ => cosine θ * phase θ)
-      volume 0 (2 * Real.pi) := by
-    exact (hccos.mul hcphase).intervalIntegrable _ _
+      volume 0 (2 * Real.pi) :=
+    (hccos.mul hcphase).intervalIntegrable _ _
   have hsinSqInt : IntervalIntegrable
-      (fun θ : ℝ => phase θ * sine θ ^ 2) volume 0 (2 * Real.pi) := by
-    exact (hcphase.mul (hcsin.pow 2)).intervalIntegrable _ _
+      (fun θ : ℝ => phase θ * sine θ ^ 2) volume 0 (2 * Real.pi) :=
+    (hcphase.mul (hcsin.pow 2)).intervalIntegrable _ _
   have hfirst :
       (∫ θ in (0 : ℝ)..(2 * Real.pi), cosine θ * phase θ) =
         (Complex.I * (z : ℂ)) *
@@ -834,11 +833,7 @@ theorem polarFourierFirstCosineAngularKernel_two_mul_eq_zeroth_sub_second (z : �
       polarFourierFirstCosineAngularKernel z =
         (Complex.I * (z : ℂ)) *
           (∫ θ in (0 : ℝ)..(2 * Real.pi), phase θ * sine θ ^ 2) := by
-    rw [polarFourierFirstCosineAngularKernel]
-    convert hfirst using 1
-    apply intervalIntegral.integral_congr
-    intro θ _
-    simp [cosine, phase, mul_comm]
+    simpa [polarFourierFirstCosineAngularKernel, cosine, phase, mul_comm] using hfirst
   calc
     2 * polarFourierFirstCosineAngularKernel z =
         (Complex.I * (z : ℂ)) *
