@@ -1,7 +1,6 @@
 import LeanCondensedMatter.Analysis.InternalSpace.Pauli
 import LeanCondensedMatter.Transport.Analysis.ContinuumMeasure
 import LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.RealSpace
-import Mathlib.Tactic
 
 set_option linter.style.header false
 
