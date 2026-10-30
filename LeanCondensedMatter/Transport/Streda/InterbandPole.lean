@@ -1,7 +1,10 @@
 import LeanCondensedMatter.Transport.Resolvent.Spectral
 import LeanCondensedMatter.Analysis.Lorentzian.Pole
 import Mathlib.Analysis.Normed.Group.Bounded
-import Mathlib.Tactic
+import Mathlib.Tactic.FunProp
+import Mathlib.Tactic.Linarith
+import Mathlib.Tactic.NormNum
+import Mathlib.Tactic.Ring
 
 set_option linter.style.header false
 
