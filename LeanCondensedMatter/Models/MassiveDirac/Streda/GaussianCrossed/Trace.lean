@@ -1,5 +1,6 @@
 import LeanCondensedMatter.Models.MassiveDirac.Model.Basic
-import Mathlib.Tactic
+import Mathlib.Tactic.Abel
+import Mathlib.Tactic.Ring
 
 set_option linter.style.header false
 

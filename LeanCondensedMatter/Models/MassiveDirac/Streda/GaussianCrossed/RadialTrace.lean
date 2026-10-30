@@ -2,7 +2,7 @@ import LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornRadi
 import LeanCondensedMatter.Transport.Analysis.ContinuumMeasure
 import LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.RealSpace
 import LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.RadialHarmonics
-import Mathlib.Tactic
+import Mathlib.Tactic.Ring
 
 set_option linter.style.header false
 

@@ -1,7 +1,9 @@
 import LeanCondensedMatter.Transport.Analysis.ContinuumMeasure
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornRadialMoments
 import LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.RadialCoefficients
-import Mathlib.Tactic
+import Mathlib.Tactic.FieldSimp
+import Mathlib.Tactic.FunProp
+import Mathlib.Tactic.Ring
 
 set_option linter.style.header false
 
