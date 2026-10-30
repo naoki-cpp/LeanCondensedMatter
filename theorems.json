@@ -13395,6 +13395,7 @@
       "QuantumTheory.DensityOperator.expectation_eq_linearMap_trace",
       "QuantumTheory.DensityOperator.expectation_eq_spectral_tsum",
       "QuantumTheory.DensityOperator.expectation_id",
+      "QuantumTheory.DensityOperator.expectation_pure_observable",
       "QuantumTheory.DensityOperator.hasSum_expectation_diagonal",
       "QuantumTheory.LinearResponse.expectation_evolveDensityOperator_eq_heisenberg",
       "SecondQuantization.Common.grandCanonicalGibbsDensityOperator_expectation_eq_tsum_canonical",
@@ -13416,6 +13417,7 @@
       "QuantumTheory.DensityOperator.expectation_eq_linearMap_trace",
       "QuantumTheory.DensityOperator.expectation_eq_spectral_tsum",
       "QuantumTheory.DensityOperator.expectation_id",
+      "QuantumTheory.DensityOperator.expectation_pure_observable",
       "QuantumTheory.DensityOperator.hasSum_expectation_diagonal",
       "QuantumTheory.LinearResponse.expectation_evolveDensityOperator_eq_heisenberg",
       "SecondQuantization.Common.grandCanonicalGibbsDensityOperator_expectation_eq_tsum_canonical",
@@ -13423,7 +13425,7 @@
       "_private.LeanCondensedMatter.QuantumTheory.DensityOperator.Expectation.0.QuantumTheory.trace_comp_right_norm_le",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Thermal.CanonicalGrandCanonicalCompatibility.0.SecondQuantization.Common.grandCanonicalGibbsDensityOperator_trace_tsum_canonical_blocks"
     ],
-    "compiledConsumerCount": 13,
+    "compiledConsumerCount": 14,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -14953,6 +14955,7 @@
     "directWrapperOf": null,
     "dependents": [
       "QuantumTheory.DensityOperator.expectation_id",
+      "QuantumTheory.DensityOperator.expectation_pure_observable",
       "SecondQuantization.Common.grandCanonicalGibbsDensityOperator_expectation_eq_tsum_canonical",
       "SecondQuantization.Fermionic.CompletedThermalLadder.grandCanonicalGibbsExpectation_operator_comp",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Thermal.CanonicalGrandCanonicalCompatibility.0.SecondQuantization.Common.grandCanonicalGibbsDensityOperator_trace_tsum_canonical_blocks"
@@ -14962,11 +14965,12 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.DensityOperator.expectation_id",
+      "QuantumTheory.DensityOperator.expectation_pure_observable",
       "SecondQuantization.Common.grandCanonicalGibbsDensityOperator_expectation_eq_tsum_canonical",
       "SecondQuantization.Fermionic.CompletedThermalLadder.grandCanonicalGibbsExpectation_operator_comp",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Thermal.CanonicalGrandCanonicalCompatibility.0.SecondQuantization.Common.grandCanonicalGibbsDensityOperator_trace_tsum_canonical_blocks"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 5,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -15148,6 +15152,7 @@
       "ContinuousLinearMap.IsTraceClass.trace_eq_linearMap_trace",
       "ContinuousLinearMap.IsTraceClass.trace_eq_spectralTrace",
       "ContinuousLinearMap.IsTraceClass.trace_im_eq_zero_of_isSelfAdjoint",
+      "ContinuousLinearMap.IsTraceClass.trace_rankOne",
       "ContinuousLinearMap.IsTraceClass.trace_smul",
       "ContinuousLinearMap.IsTraceClass.trace_zero"
     ],
@@ -15164,10 +15169,11 @@
       "ContinuousLinearMap.IsTraceClass.trace_eq_linearMap_trace",
       "ContinuousLinearMap.IsTraceClass.trace_eq_spectralTrace",
       "ContinuousLinearMap.IsTraceClass.trace_im_eq_zero_of_isSelfAdjoint",
+      "ContinuousLinearMap.IsTraceClass.trace_rankOne",
       "ContinuousLinearMap.IsTraceClass.trace_smul",
       "ContinuousLinearMap.IsTraceClass.trace_zero"
     ],
-    "compiledConsumerCount": 9,
+    "compiledConsumerCount": 10,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -15250,6 +15256,50 @@
     "completedMention": false,
     "compiledConsumers": [],
     "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H] {x y : H}\n  (hT : (((InnerProductSpace.rankOne ℂ) x) y).IsTraceClass), hT.trace = inner ℂ y x",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "ContinuousLinearMap.IsTraceClass.trace_rankOne",
+    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Trace",
+    "externalAxioms": [],
+    "docString": "The trace of a rank-one operator is the inner product of its defining vectors. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.DensityOperator.expectation_pure_observable"
+    ],
+    "dependencies": [
+      "ContinuousLinearMap.IsTraceClass.trace_eq_tsum_inner"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.DensityOperator.expectation_pure_observable"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -15376,7 +15426,6 @@
       "QuantumTheory.DensityOperator.expectation_eq_spectral_tsum",
       "QuantumTheory.DensityOperator.expectation_im_eq_zero_of_isSymmetric",
       "QuantumTheory.DensityOperator.expectation_op",
-      "QuantumTheory.DensityOperator.expectation_pure_observable",
       "QuantumTheory.DensityOperator.expectation_re_nonneg_of_isPositive",
       "QuantumTheory.DensityOperator.summable_expectation_term",
       "QuantumTheory.hasSum_eigenvalue_mul_energy",
@@ -15400,7 +15449,6 @@
       "QuantumTheory.DensityOperator.expectation_eq_spectral_tsum",
       "QuantumTheory.DensityOperator.expectation_im_eq_zero_of_isSymmetric",
       "QuantumTheory.DensityOperator.expectation_op",
-      "QuantumTheory.DensityOperator.expectation_pure_observable",
       "QuantumTheory.DensityOperator.expectation_re_nonneg_of_isPositive",
       "QuantumTheory.DensityOperator.summable_expectation_term",
       "QuantumTheory.hasSum_eigenvalue_mul_energy",
@@ -15413,7 +15461,7 @@
       "_private.LeanCondensedMatter.QuantumTheory.POVM.Born.0.QuantumTheory.hasSum_probabilityKernel_outcome",
       "_private.LeanCondensedMatter.QuantumTheory.POVM.Born.0.QuantumTheory.probabilityKernel_nonneg"
     ],
-    "compiledConsumerCount": 17,
+    "compiledConsumerCount": 16,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -15908,7 +15956,6 @@
       "QuantumTheory.DensityOperator.exists_diagonal_hilbertBasis",
       "QuantumTheory.DensityOperator.expectation_eq_spectral_tsum",
       "QuantumTheory.DensityOperator.expectation_op",
-      "QuantumTheory.DensityOperator.expectation_pure_observable",
       "QuantumTheory.hasSum_negMulLog_eigenvalues",
       "QuantumTheory.helmholtzFreeEnergy_eq_iff_eq_gibbsState",
       "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Bundled.0.ContinuousLinearMap.exists_abs_diagonal_hilbertBasis"
@@ -15923,12 +15970,11 @@
       "QuantumTheory.DensityOperator.exists_diagonal_hilbertBasis",
       "QuantumTheory.DensityOperator.expectation_eq_spectral_tsum",
       "QuantumTheory.DensityOperator.expectation_op",
-      "QuantumTheory.DensityOperator.expectation_pure_observable",
       "QuantumTheory.hasSum_negMulLog_eigenvalues",
       "QuantumTheory.helmholtzFreeEnergy_eq_iff_eq_gibbsState",
       "_private.LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Bundled.0.ContinuousLinearMap.exists_abs_diagonal_hilbertBasis"
     ],
-    "compiledConsumerCount": 10,
+    "compiledConsumerCount": 9,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -45797,6 +45843,7 @@
       "QuantumTheory.DensityOperator.expectation_eq_linearMap_trace",
       "QuantumTheory.DensityOperator.expectation_eq_spectral_tsum",
       "QuantumTheory.DensityOperator.expectation_id",
+      "QuantumTheory.DensityOperator.expectation_pure_observable",
       "QuantumTheory.DensityOperator.hasSum_expectation_diagonal",
       "QuantumTheory.LinearResponse.expectation_evolveDensityOperator_eq_heisenberg",
       "SecondQuantization.Common.grandCanonicalGibbsDensityOperator_expectation_eq_tsum_canonical",
@@ -45810,13 +45857,14 @@
       "QuantumTheory.DensityOperator.expectation_eq_linearMap_trace",
       "QuantumTheory.DensityOperator.expectation_eq_spectral_tsum",
       "QuantumTheory.DensityOperator.expectation_id",
+      "QuantumTheory.DensityOperator.expectation_pure_observable",
       "QuantumTheory.DensityOperator.hasSum_expectation_diagonal",
       "QuantumTheory.LinearResponse.expectation_evolveDensityOperator_eq_heisenberg",
       "SecondQuantization.Common.grandCanonicalGibbsDensityOperator_expectation_eq_tsum_canonical",
       "SecondQuantization.Fermionic.CompletedThermalLadder.grandCanonicalGibbsExpectation_operator_comp",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Thermal.CanonicalGrandCanonicalCompatibility.0.SecondQuantization.Common.grandCanonicalGibbsDensityOperator_trace_tsum_canonical_blocks"
     ],
-    "compiledConsumerCount": 8,
+    "compiledConsumerCount": 9,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -45944,7 +45992,6 @@
     "dependents": [
       "QuantumTheory.DensityOperator.expectation_im_eq_zero_of_isSymmetric",
       "QuantumTheory.DensityOperator.expectation_op",
-      "QuantumTheory.DensityOperator.expectation_pure_observable",
       "QuantumTheory.DensityOperator.expectation_re_nonneg_of_isPositive",
       "QuantumTheory.hasSum_eigenvalue_mul_energy",
       "_private.LeanCondensedMatter.QuantumTheory.POVM.Born.0.QuantumTheory.hasSum_probabilityKernel_eigenvector"
@@ -45966,12 +46013,11 @@
     "compiledConsumers": [
       "QuantumTheory.DensityOperator.expectation_im_eq_zero_of_isSymmetric",
       "QuantumTheory.DensityOperator.expectation_op",
-      "QuantumTheory.DensityOperator.expectation_pure_observable",
       "QuantumTheory.DensityOperator.expectation_re_nonneg_of_isPositive",
       "QuantumTheory.hasSum_eigenvalue_mul_energy",
       "_private.LeanCondensedMatter.QuantumTheory.POVM.Born.0.QuantumTheory.hasSum_probabilityKernel_eigenvector"
     ],
-    "compiledConsumerCount": 6,
+    "compiledConsumerCount": 5,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -46400,13 +46446,10 @@
       "QuantumTheory.LinearResponse.expValue_evolveState_eq_heisenberg"
     ],
     "dependencies": [
-      "ContinuousLinearMap.SpectralTraceClass.compact",
-      "ContinuousLinearMap.apply_eigenvectorFamily",
-      "QuantumTheory.DensityOperator.expectation_eq_spectral_tsum",
-      "QuantumTheory.DensityOperator.spectralTraceClass",
-      "QuantumTheory.eigenspace_rankOne_one",
-      "QuantumTheory.eigenvectorFamily_norm_eq_one",
-      "QuantumTheory.expValue_smul_of_norm_eq_one"
+      "ContinuousLinearMap.IsTraceClass.comp_right",
+      "ContinuousLinearMap.IsTraceClass.trace_congr",
+      "ContinuousLinearMap.IsTraceClass.trace_rankOne",
+      "QuantumTheory.DensityOperator.expectation_apply"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -47349,7 +47392,6 @@
       "QuantumTheory.DensityOperator.expectation_eq_spectral_tsum",
       "QuantumTheory.DensityOperator.expectation_im_eq_zero_of_isSymmetric",
       "QuantumTheory.DensityOperator.expectation_op",
-      "QuantumTheory.DensityOperator.expectation_pure_observable",
       "QuantumTheory.DensityOperator.expectation_re_nonneg_of_isPositive",
       "QuantumTheory.DensityOperator.summable_expectation_term",
       "QuantumTheory.hasSum_eigenvalue_mul_energy",
@@ -47371,7 +47413,6 @@
       "QuantumTheory.DensityOperator.expectation_eq_spectral_tsum",
       "QuantumTheory.DensityOperator.expectation_im_eq_zero_of_isSymmetric",
       "QuantumTheory.DensityOperator.expectation_op",
-      "QuantumTheory.DensityOperator.expectation_pure_observable",
       "QuantumTheory.DensityOperator.expectation_re_nonneg_of_isPositive",
       "QuantumTheory.DensityOperator.summable_expectation_term",
       "QuantumTheory.hasSum_eigenvalue_mul_energy",
@@ -47383,7 +47424,7 @@
       "_private.LeanCondensedMatter.QuantumTheory.POVM.Born.0.QuantumTheory.hasSum_probabilityKernel_outcome",
       "_private.LeanCondensedMatter.QuantumTheory.POVM.Born.0.QuantumTheory.probabilityKernel_nonneg"
     ],
-    "compiledConsumerCount": 15,
+    "compiledConsumerCount": 14,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -93723,7 +93764,6 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.DensityOperator.expectation_pure_observable",
       "QuantumTheory.finrank_eigenspace_rankOne_one",
       "QuantumTheory.pure_eq_iff_exists_phase"
     ],
@@ -93731,11 +93771,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.DensityOperator.expectation_pure_observable",
       "QuantumTheory.finrank_eigenspace_rankOne_one",
       "QuantumTheory.pure_eq_iff_exists_phase"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -93770,7 +93809,6 @@
     "directWrapperOf": null,
     "dependents": [
       "QuantumTheory.DensityOperator.expectation_op",
-      "QuantumTheory.DensityOperator.expectation_pure_observable",
       "QuantumTheory.DensityOperator.summable_expectation_term",
       "QuantumTheory.helmholtzFreeEnergy_eq_components",
       "QuantumTheory.helmholtzFreeEnergy_eq_iff_eq_gibbsState",
@@ -93787,7 +93825,6 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.DensityOperator.expectation_op",
-      "QuantumTheory.DensityOperator.expectation_pure_observable",
       "QuantumTheory.DensityOperator.summable_expectation_term",
       "QuantumTheory.helmholtzFreeEnergy_eq_components",
       "QuantumTheory.helmholtzFreeEnergy_eq_iff_eq_gibbsState",
@@ -93795,7 +93832,7 @@
       "QuantumTheory.isPureDensity_of_purity_eq_one",
       "_private.LeanCondensedMatter.QuantumTheory.POVM.Born.0.QuantumTheory.hasSum_probabilityKernel_outcome"
     ],
-    "compiledConsumerCount": 8,
+    "compiledConsumerCount": 7,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -94089,7 +94126,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -94101,17 +94138,15 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.DensityOperator.expectation_pure_observable",
       "QuantumTheory.observableExpValue_smul_of_norm_eq_one"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.DensityOperator.expectation_pure_observable",
       "QuantumTheory.observableExpValue_smul_of_norm_eq_one"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -146867,7 +146902,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (ε : Mode → ℝ) (i : Mode),\n  SecondQuantization.Fermionic.completedFreeHamiltonianAfterAnnihilate ε i -\n      SecondQuantization.Fermionic.completedAnnihilateAfterFreeHamiltonian ε i =\n    -↑(ε i) • SecondQuantization.Fermionic.completedAnnihilateFromFreeHamiltonianDomain ε i",
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (ε : Mode → ℝ) (i : Mode),\n  SecondQuantization.Fermionic.completedFreeHamiltonianAfterAnnihilate ε i -\n      SecondQuantization.Fermionic.completedAnnihilateAfterFreeHamiltonian ε i =\n    -↑(ε i) •\n      ↑(SecondQuantization.Fermionic.completedAnnihilate i) ∘ₗ\n        (SecondQuantization.Fermionic.completedFreeHamiltonianDomain ε).subtype",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -146908,7 +146943,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (ε : Mode → ℝ) (i : Mode),\n  SecondQuantization.Fermionic.completedFreeHamiltonianAfterCreate ε i -\n      SecondQuantization.Fermionic.completedCreateAfterFreeHamiltonian ε i =\n    ↑(ε i) • SecondQuantization.Fermionic.completedCreateFromFreeHamiltonianDomain ε i",
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (ε : Mode → ℝ) (i : Mode),\n  SecondQuantization.Fermionic.completedFreeHamiltonianAfterCreate ε i -\n      SecondQuantization.Fermionic.completedCreateAfterFreeHamiltonian ε i =\n    ↑(ε i) •\n      ↑(SecondQuantization.Fermionic.completedCreate i) ∘ₗ\n        (SecondQuantization.Fermionic.completedFreeHamiltonianDomain ε).subtype",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",

@@ -1030,7 +1030,7 @@
       "name": "LeanCondensedMatter.Analysis.ScalarExchange.Basic",
       "sourceFile": "LeanCondensedMatter/Analysis/ScalarExchange/Basic.lean",
       "imports": [],
-      "externalImportCount": 1
+      "externalImportCount": 5
     },
     {
       "name": "LeanCondensedMatter.Analysis.ScalarExchange.Peel",
@@ -1038,7 +1038,7 @@
       "imports": [
         "LeanCondensedMatter.Analysis.ScalarExchange.Basic"
       ],
-      "externalImportCount": 0
+      "externalImportCount": 2
     },
     {
       "name": "LeanCondensedMatter.Analysis.ScalarExchange",
@@ -2010,7 +2010,7 @@
         "LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.LongitudinalZeroBroadeningWeakDisorder",
         "LeanCondensedMatter.Transport.Analysis.ContinuumMeasure"
       ],
-      "externalImportCount": 1
+      "externalImportCount": 2
     },
     {
       "name": "LeanCondensedMatter.Models.MassiveDirac.Conductivity.FiniteBroadeningBornLadderLongitudinalZeroBroadening",
@@ -2032,7 +2032,7 @@
         "LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.Radial",
         "LeanCondensedMatter.Models.MassiveDirac.TransportDomain"
       ],
-      "externalImportCount": 1
+      "externalImportCount": 0
     },
     {
       "name": "LeanCondensedMatter.Models.MassiveDirac.Conductivity.Hall.CleanBastin",
@@ -2062,7 +2062,7 @@
         "LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.HallZeroBroadeningWeakDisorder",
         "LeanCondensedMatter.Transport.Analysis.ContinuumMeasure"
       ],
-      "externalImportCount": 1
+      "externalImportCount": 3
     },
     {
       "name": "LeanCondensedMatter.Models.MassiveDirac.Conductivity.Hall.FiniteBroadeningBornLadderZeroBroadening",
@@ -2092,7 +2092,7 @@
         "LeanCondensedMatter.Models.MassiveDirac.Conductivity.Hall.NonCrossingMechanismClassification",
         "LeanCondensedMatter.QuantumTheory.PlanckConstant"
       ],
-      "externalImportCount": 1
+      "externalImportCount": 3
     },
     {
       "name": "LeanCondensedMatter.Models.MassiveDirac.Conductivity.Hall.Intrinsic.Conductivity",
@@ -2120,7 +2120,7 @@
         "LeanCondensedMatter.Models.MassiveDirac.Conductivity.Hall.FiniteBroadeningBornLadderProjection",
         "LeanCondensedMatter.QuantumTheory.PlanckConstant"
       ],
-      "externalImportCount": 1
+      "externalImportCount": 4
     },
     {
       "name": "LeanCondensedMatter.Models.MassiveDirac.Conductivity.Hall.NonCrossingDecomposition",
@@ -2130,7 +2130,7 @@
         "LeanCondensedMatter.Models.MassiveDirac.Conductivity.Hall.NonCrossing",
         "LeanCondensedMatter.QuantumTheory.PlanckConstant"
       ],
-      "externalImportCount": 1
+      "externalImportCount": 3
     },
     {
       "name": "LeanCondensedMatter.Models.MassiveDirac.Conductivity.Hall.NonCrossingMechanismClassification",
@@ -2142,7 +2142,7 @@
         "LeanCondensedMatter.QuantumTheory.PlanckConstant",
         "LeanCondensedMatter.Transport.Analysis.ContinuumMeasure"
       ],
-      "externalImportCount": 1
+      "externalImportCount": 3
     },
     {
       "name": "LeanCondensedMatter.Models.MassiveDirac.Conductivity.Hall",
@@ -2168,7 +2168,7 @@
         "LeanCondensedMatter.Models.MassiveDirac.Conductivity.Longitudinal.RelaxationTime",
         "LeanCondensedMatter.Models.MassiveDirac.Disorder.TransportRate"
       ],
-      "externalImportCount": 1
+      "externalImportCount": 3
     },
     {
       "name": "LeanCondensedMatter.Models.MassiveDirac.Conductivity.Longitudinal.RelaxationTime",
@@ -2178,7 +2178,7 @@
         "LeanCondensedMatter.Transport.Analysis.ContinuumMeasure",
         "LeanCondensedMatter.Transport.Analysis.RelaxationTime"
       ],
-      "externalImportCount": 1
+      "externalImportCount": 5
     },
     {
       "name": "LeanCondensedMatter.Models.MassiveDirac.Conductivity.Longitudinal",
@@ -2207,7 +2207,7 @@
         "LeanCondensedMatter.Models.MassiveDirac.Model.FermiSurface",
         "LeanCondensedMatter.Transport.Analysis.ContinuumMeasure"
       ],
-      "externalImportCount": 1
+      "externalImportCount": 5
     },
     {
       "name": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.Denominator",
@@ -2215,7 +2215,7 @@
       "imports": [
         "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.SelfEnergy"
       ],
-      "externalImportCount": 5
+      "externalImportCount": 9
     },
     {
       "name": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialKernel",
@@ -2223,7 +2223,7 @@
       "imports": [
         "LeanCondensedMatter.Models.MassiveDirac.Propagator.Basic"
       ],
-      "externalImportCount": 1
+      "externalImportCount": 3
     },
     {
       "name": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.SelfEnergy",
@@ -2243,7 +2243,7 @@
         "LeanCondensedMatter.Analysis.Lorentzian.RadialQuadratic",
         "LeanCondensedMatter.Models.MassiveDirac.Disorder.BornCurrentVertexRung"
       ],
-      "externalImportCount": 2
+      "externalImportCount": 5
     },
     {
       "name": "LeanCondensedMatter.Models.MassiveDirac.Disorder.BornCurrentVertexRung",
@@ -2255,7 +2255,7 @@
         "LeanCondensedMatter.Models.MassiveDirac.Vertex.PauliRung",
         "LeanCondensedMatter.Transport.Analysis.ContinuumMeasure"
       ],
-      "externalImportCount": 1
+      "externalImportCount": 4
     },
     {
       "name": "LeanCondensedMatter.Models.MassiveDirac.Disorder.BornCurrentVertexWeakDisorder",
@@ -2265,7 +2265,7 @@
         "LeanCondensedMatter.Models.MassiveDirac.Disorder.BornCurrentVertexRung",
         "LeanCondensedMatter.Models.MassiveDirac.Disorder.TransportRate"
       ],
-      "externalImportCount": 2
+      "externalImportCount": 7
     },
     {
       "name": "LeanCondensedMatter.Models.MassiveDirac.Disorder.BornPropagator",
@@ -2275,7 +2275,7 @@
         "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialKernel",
         "LeanCondensedMatter.Models.MassiveDirac.Propagator.Basic"
       ],
-      "externalImportCount": 1
+      "externalImportCount": 2
     },
     {
       "name": "LeanCondensedMatter.Models.MassiveDirac.Disorder.ContinuumMeasurePrefactor",
@@ -3746,6 +3746,7 @@
       "name": "LeanCondensedMatter.QuantumTheory.DensityOperator.ObservableExpectation",
       "sourceFile": "LeanCondensedMatter/QuantumTheory/DensityOperator/ObservableExpectation.lean",
       "imports": [
+        "LeanCondensedMatter.Analysis.Operator.TraceClass.Trace",
         "LeanCondensedMatter.QuantumTheory.DensityOperator.ExpectationOrder",
         "LeanCondensedMatter.QuantumTheory.DensityOperator.PureState",
         "LeanCondensedMatter.QuantumTheory.Postulates"
@@ -5252,7 +5253,7 @@
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalComponents",
         "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.InteractionSector"
       ],
-      "externalImportCount": 2
+      "externalImportCount": 3
     },
     {
       "name": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalComponents",
@@ -6253,7 +6254,7 @@
       "imports": [
         "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.InteractionPicture"
       ],
-      "externalImportCount": 0
+      "externalImportCount": 1
     },
     {
       "name": "LeanCondensedMatter.SecondQuantization.Common.Perturbation",
@@ -8365,7 +8366,7 @@
         "LeanCondensedMatter.Transport.Disorder.Ladder",
         "LeanCondensedMatter.Transport.Disorder.SCBA"
       ],
-      "externalImportCount": 1
+      "externalImportCount": 0
     },
     {
       "name": "LeanCondensedMatter.Transport.Disorder",
@@ -8582,7 +8583,7 @@
       "name": "LeanCondensedMatter.Transport.Streda.ResponseMatrix",
       "sourceFile": "LeanCondensedMatter/Transport/Streda/ResponseMatrix.lean",
       "imports": [],
-      "externalImportCount": 2
+      "externalImportCount": 1
     },
     {
       "name": "LeanCondensedMatter.Transport.Streda.ResponseMatrixRepresentation",
@@ -8591,7 +8592,7 @@
         "LeanCondensedMatter.Transport.Streda.ResponseMatrix",
         "LeanCondensedMatter.Transport.Streda.TraceRepresentation"
       ],
-      "externalImportCount": 0
+      "externalImportCount": 1
     },
     {
       "name": "LeanCondensedMatter.Transport.Streda.RetardedAdvanced",
