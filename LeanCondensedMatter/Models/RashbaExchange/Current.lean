@@ -1,7 +1,6 @@
 import LeanCondensedMatter.Models.RashbaExchange.Model.OperatorSpectral
 import LeanCondensedMatter.Models.RashbaExchange.ResponseParameters
 import LeanCondensedMatter.Analysis.Operator.FiniteTrace
-import Mathlib.Tactic
 
 set_option linter.style.header false
 
