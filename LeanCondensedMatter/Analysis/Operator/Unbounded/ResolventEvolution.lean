@@ -149,24 +149,14 @@ private theorem resolventApproximationEvolution_domain_cauchy
     have hsscaled :
         ‖boundedSelfAdjointApproximation A hA s hs (x : H) - A x‖ * (2 * |t|) < ε :=
       (lt_div_iff₀ hden).mp hsconv
+    have hhalf (a : ℝ) (ha : a * (2 * |t|) < ε) : a * |t| < ε / 2 := by
+      nlinarith only [ha]
     have hrhalf :
-        ‖boundedSelfAdjointApproximation A hA r hr (x : H) - A x‖ * |t| < ε / 2 := by
-      have h := hrscaled
-      have hre :
-          ‖boundedSelfAdjointApproximation A hA r hr (x : H) - A x‖ * (2 * |t|) =
-            2 * (‖boundedSelfAdjointApproximation A hA r hr (x : H) - A x‖ * |t|) := by
-        ring
-      rw [hre] at h
-      linarith
+        ‖boundedSelfAdjointApproximation A hA r hr (x : H) - A x‖ * |t| < ε / 2 :=
+      hhalf _ hrscaled
     have hshalf :
-        ‖boundedSelfAdjointApproximation A hA s hs (x : H) - A x‖ * |t| < ε / 2 := by
-      have h := hsscaled
-      have hre :
-          ‖boundedSelfAdjointApproximation A hA s hs (x : H) - A x‖ * (2 * |t|) =
-            2 * (‖boundedSelfAdjointApproximation A hA s hs (x : H) - A x‖ * |t|) := by
-        ring
-      rw [hre] at h
-      linarith
+        ‖boundedSelfAdjointApproximation A hA s hs (x : H) - A x‖ * |t| < ε / 2 :=
+      hhalf _ hsscaled
     have hdiff :
         ‖(boundedSelfAdjointApproximation A hA r hr -
             boundedSelfAdjointApproximation A hA s hs) (x : H)‖ ≤
