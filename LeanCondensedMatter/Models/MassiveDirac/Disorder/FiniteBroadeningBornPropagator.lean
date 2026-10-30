@@ -2,7 +2,8 @@ import LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.SelfEnergy
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialKernel
 import LeanCondensedMatter.Models.MassiveDirac.Model.Operator
 import Mathlib.LinearAlgebra.Matrix.NonsingularInverse
-import Mathlib.Tactic
+import Mathlib.Tactic.Linarith
+import Mathlib.Tactic.Ring
 
 set_option linter.style.header false
 

@@ -1,7 +1,10 @@
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexZeroBroadening
 import LeanCondensedMatter.Models.MassiveDirac.TransportDomain
 import Mathlib.MeasureTheory.Integral.Bochner.Basic
-import Mathlib.Tactic
+import Mathlib.Tactic.FunProp
+import Mathlib.Tactic.GCongr
+import Mathlib.Tactic.Linarith
+import Mathlib.Tactic.Ring
 
 set_option linter.style.header false
 
