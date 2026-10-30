@@ -1,7 +1,9 @@
 import LeanCondensedMatter.Transport.Disorder.Ladder
 import Mathlib.Topology.Instances.Matrix
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic
-import Mathlib.Tactic
+import Mathlib.Tactic.FieldSimp
+import Mathlib.Tactic.FunProp
+import Mathlib.Tactic.Ring
 
 set_option linter.style.header false
 
