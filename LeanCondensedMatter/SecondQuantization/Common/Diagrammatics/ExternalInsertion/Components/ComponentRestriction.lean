@@ -323,11 +323,8 @@ private theorem ExternalInsertionDiagram.componentDiagramLeg_strictMono
       (B : Finset (ExternalInsertionVertex E S))
   let localEquiv := externalInsertionLegEquiv (d.externalPairCount B) T
   intro a b hab
-  let la := localEquiv a
-  let lb := localEquiv b
-  have ha : localEquiv.symm la = a := by simp [la]
-  have hb : localEquiv.symm lb = b := by simp [lb]
-  rw [← ha, ← hb] at hab ⊢
+  obtain ⟨la, rfl⟩ := localEquiv.symm.surjective a
+  obtain ⟨lb, rfl⟩ := localEquiv.symm.surjective b
   rcases la with e | ⟨v, l⟩ <;> rcases lb with f | ⟨w, k⟩
   · change
       (externalInsertionExternalLeg (d.externalPairCount B) T e).val <
@@ -357,17 +354,11 @@ private theorem ExternalInsertionDiagram.componentDiagramLeg_strictMono
     have hbound := (d.externalSectorOrderIso B e).1.isLt
     omega
   · change
-      externalInsertionInteractionLeg (E := d.externalPairCount B) v l <
-        externalInsertionExternalLeg (d.externalPairCount B) T f at hab
-    change
       (externalInsertionInteractionLeg (E := d.externalPairCount B) v l).val <
         (externalInsertionExternalLeg (d.externalPairCount B) T f).val at hab
     simp at hab
     omega
   · change
-      externalInsertionInteractionLeg (E := d.externalPairCount B) v l <
-        externalInsertionInteractionLeg (E := d.externalPairCount B) w k at hab
-    change
       d.componentDiagramLeg B
           (externalInsertionInteractionLeg (E := d.externalPairCount B) v l) <
         d.componentDiagramLeg B
@@ -389,18 +380,14 @@ private theorem ExternalInsertionDiagram.componentDiagramLeg_strictMono
       omega
     · have hrank_ne :
           ((T.orderIsoOfFin rfl).symm v).val ≠
-            ((T.orderIsoOfFin rfl).symm w).val := by
-        intro h
-        apply hvw
-        exact (T.orderIsoOfFin rfl).symm.injective (Fin.ext h)
+            ((T.orderIsoOfFin rfl).symm w).val :=
+        fun h => hvw ((T.orderIsoOfFin rfl).symm.injective (Fin.ext h))
       have hrank :
           ((T.orderIsoOfFin rfl).symm v).val <
             ((T.orderIsoOfFin rfl).symm w).val := by
         have hl := l.isLt
         have hk := k.isLt
         omega
-      have hvwT : v < w := by
-        simpa using (T.orderIsoOfFin rfl).strictMono hrank
       have hamb :
           ((S.orderIsoOfFin rfl).symm
             (⟨v.1, interactionSector_subset
@@ -410,7 +397,7 @@ private theorem ExternalInsertionDiagram.componentDiagramLeg_strictMono
               (B : Finset (ExternalInsertionVertex E S)) w.2⟩ : ↥S)).val := by
         apply (S.orderIsoOfFin rfl).symm.strictMono
         change v.1 < w.1
-        exact hvwT
+        exact (T.orderIsoOfFin rfl).strictMono hrank
       have hl := l.isLt
       have hk := k.isLt
       omega
