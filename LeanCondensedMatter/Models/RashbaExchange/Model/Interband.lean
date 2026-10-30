@@ -1,5 +1,6 @@
 import LeanCondensedMatter.Models.RashbaExchange.Model.Spectral
-import Mathlib.Tactic
+import Mathlib.Tactic.FieldSimp
+import Mathlib.Tactic.Ring
 
 set_option linter.style.header false
 
