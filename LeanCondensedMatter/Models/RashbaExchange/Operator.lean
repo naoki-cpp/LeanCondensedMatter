@@ -2,7 +2,6 @@ import LeanCondensedMatter.Models.RashbaExchange.Model
 import Mathlib.Analysis.InnerProductSpace.PiL2
 import Mathlib.Analysis.CStarAlgebra.Matrix
 import Mathlib.Analysis.Matrix.Hermitian
-import Mathlib.Tactic
 
 set_option linter.style.header false
 
