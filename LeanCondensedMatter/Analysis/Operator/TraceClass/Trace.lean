@@ -70,6 +70,15 @@ theorem trace_eq_tsum_inner {T : H →L[ℂ] H} (hT : IsTraceClass T)
   unfold trace
   exact trace_tsum_eq _ d T hT
 
+/-- The trace of a rank-one operator is the inner product of its defining vectors. -/
+theorem trace_rankOne {x y : H}
+    (hT : IsTraceClass (InnerProductSpace.rankOne ℂ x y)) :
+    hT.trace = inner ℂ y x := by
+  obtain ⟨w, d, -⟩ := exists_hilbertBasis (𝕜 := ℂ) (E := H)
+  rw [hT.trace_eq_tsum_inner d]
+  simpa only [InnerProductSpace.rankOne_apply, inner_smul_right] using
+    d.tsum_inner_mul_inner y x
+
 /-- The trace of a Hilbert--Schmidt factorization `T = A† B` is the
 Hilbert--Schmidt inner product of its factors in any Hilbert basis. -/
 theorem trace_eq_innerHS_of_factorization

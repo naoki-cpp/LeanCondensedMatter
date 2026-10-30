@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Analysis.Operator.TraceClass.Trace
 import LeanCondensedMatter.QuantumTheory.DensityOperator.ExpectationOrder
 import LeanCondensedMatter.QuantumTheory.DensityOperator.PureState
 import LeanCondensedMatter.QuantumTheory.Postulates
@@ -49,44 +50,20 @@ canonical vector-state expectation. -/
 theorem DensityOperator.expectation_pure_observable
     (ψ : StateVector H) (A : Observable H) :
     (pure ψ).expectation A.1 = expValue A ψ := by
-  letI := uniqueEigenvectorIndexRankOne ψ.2
-  rw [(pure ψ).expectation_eq_spectral_tsum A.1]
-  change
-    (∑' a : EigenvectorIndex
-      (InnerProductSpace.rankOne ℂ ψ.1 ψ.1 : H →L[ℂ] H),
-      (a.1.1 : ℂ) *
-        inner ℂ (eigenvectorFamily (pure ψ).spectralTraceClass.compact a)
-          (A.1 (eigenvectorFamily (pure ψ).spectralTraceClass.compact a))) =
-      expValue A ψ
-  rw [tsum_eq_single (uniqueEigenvectorIndexRankOne ψ.2).default (fun b hb =>
-    absurd (Subsingleton.elim b (uniqueEigenvectorIndexRankOne ψ.2).default) hb)]
-  let a₀ := (uniqueEigenvectorIndexRankOne ψ.2).default
-  let e := eigenvectorFamily (pure ψ).spectralTraceClass.compact a₀
-  have ha₀ : a₀.1.1 = 1 := rfl
-  have he_norm : ‖e‖ = 1 := by
-    simpa [e, a₀] using eigenvectorFamily_norm_eq_one (pure ψ) a₀
-  have he_eigen :
-      ((InnerProductSpace.rankOne ℂ ψ.1 ψ.1 : H →L[ℂ] H) : H →ₗ[ℂ] H) e =
-        (1 : ℂ) • e := by
-    have h := apply_eigenvectorFamily (pure ψ).spectralTraceClass.compact a₀
-    change
-      ((InnerProductSpace.rankOne ℂ ψ.1 ψ.1 : H →L[ℂ] H) : H →ₗ[ℂ] H) e =
-        (a₀.1.1 : ℂ) • e at h
-    simpa [ha₀] using h
-  have he_mem :
-      e ∈ Module.End.eigenspace
-        ((InnerProductSpace.rankOne ℂ ψ.1 ψ.1 : H →L[ℂ] H) : H →ₗ[ℂ] H) 1 :=
-    Module.End.mem_eigenspace_iff.mpr (by simpa using he_eigen)
-  rw [eigenspace_rankOne_one ψ.2] at he_mem
-  rcases Submodule.mem_span_singleton.mp he_mem with ⟨c, hc⟩
-  have hc_norm : ‖c‖ = 1 := by
-    have hnorm := congrArg norm hc
-    simpa [norm_smul, ψ.2, he_norm] using hnorm
-  have hphase := expValue_smul_of_norm_eq_one A ψ hc_norm
-  have hinner : inner ℂ e (A.1 e) = expValue A ψ := by
-    simpa [expValue, phaseState, hc] using hphase
-  change (a₀.1.1 : ℂ) * inner ℂ e (A.1 e) = expValue A ψ
-  simpa [ha₀] using hinner
+  have hproduct : (pure ψ).op * A.1 =
+      InnerProductSpace.rankOne ℂ ψ.1 (ContinuousLinearMap.adjoint A.1 ψ.1) := by
+    ext x
+    change (inner ℂ ψ.1 (A.1 x)) • ψ.1 =
+      (inner ℂ (ContinuousLinearMap.adjoint A.1 ψ.1) x) • ψ.1
+    rw [ContinuousLinearMap.adjoint_inner_left]
+  have htrace : IsTraceClass
+      (InnerProductSpace.rankOne ℂ ψ.1 (ContinuousLinearMap.adjoint A.1 ψ.1)) := by
+    rw [← hproduct]
+    exact (pure ψ).isTraceClass.comp_right A.1
+  rw [DensityOperator.expectation_apply,
+    IsTraceClass.trace_congr ((pure ψ).isTraceClass.comp_right A.1) htrace hproduct,
+    htrace.trace_rankOne]
+  exact ContinuousLinearMap.adjoint_inner_left A.1 ψ.1 ψ.1
 
 /-- The real observable expectation in a rank-one density operator agrees with the lossless real
 vector-state expectation. -/
