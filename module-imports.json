@@ -3747,7 +3747,8 @@
       "sourceFile": "LeanCondensedMatter/QuantumTheory/DensityOperator/ObservableExpectation.lean",
       "imports": [
         "LeanCondensedMatter.QuantumTheory.DensityOperator.ExpectationOrder",
-        "LeanCondensedMatter.QuantumTheory.DensityOperator.PureState"
+        "LeanCondensedMatter.QuantumTheory.DensityOperator.PureState",
+        "LeanCondensedMatter.QuantumTheory.Postulates"
       ],
       "externalImportCount": 1
     },
@@ -3764,7 +3765,8 @@
       "name": "LeanCondensedMatter.QuantumTheory.DensityOperator.PureState",
       "sourceFile": "LeanCondensedMatter/QuantumTheory/DensityOperator/PureState.lean",
       "imports": [
-        "LeanCondensedMatter.QuantumTheory.DensityOperator.Pure"
+        "LeanCondensedMatter.QuantumTheory.DensityOperator.Pure",
+        "LeanCondensedMatter.QuantumTheory.Postulates"
       ],
       "externalImportCount": 0
     },
@@ -4045,7 +4047,8 @@
       "name": "LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.PureState",
       "sourceFile": "LeanCondensedMatter/QuantumTheory/LinearResponse/Dynamics/PureState.lean",
       "imports": [
-        "LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.Free"
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.Free",
+        "LeanCondensedMatter.QuantumTheory.Postulates"
       ],
       "externalImportCount": 0
     },
@@ -6814,7 +6817,7 @@
         "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.SecondQuantization",
         "LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.UnitaryLift"
       ],
-      "externalImportCount": 2
+      "externalImportCount": 4
     },
     {
       "name": "LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.ModeTruncation",
@@ -6861,7 +6864,7 @@
         "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.Annihilation",
         "LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.SmearedField"
       ],
-      "externalImportCount": 3
+      "externalImportCount": 4
     },
     {
       "name": "LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace",
