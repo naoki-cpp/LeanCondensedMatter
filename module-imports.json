@@ -300,7 +300,7 @@
       "imports": [
         "LeanCondensedMatter.Analysis.Lorentzian.Kernel"
       ],
-      "externalImportCount": 2
+      "externalImportCount": 6
     },
     {
       "name": "LeanCondensedMatter.Analysis.Lorentzian.RadialQuadratic",
@@ -2302,7 +2302,7 @@
         "LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornDysonShift",
         "LeanCondensedMatter.Transport.Analysis.ContinuumMeasure"
       ],
-      "externalImportCount": 3
+      "externalImportCount": 6
     },
     {
       "name": "LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornPropagator",
@@ -2312,7 +2312,7 @@
         "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.SelfEnergy",
         "LeanCondensedMatter.Models.MassiveDirac.Model.Operator"
       ],
-      "externalImportCount": 2
+      "externalImportCount": 3
     },
     {
       "name": "LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornRadialMoments",
@@ -2322,7 +2322,7 @@
         "LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornInvertibility",
         "LeanCondensedMatter.Transport.Analysis.ContinuumMeasure"
       ],
-      "externalImportCount": 1
+      "externalImportCount": 2
     },
     {
       "name": "LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornRadialRealSpacePropagator",
@@ -2353,7 +2353,7 @@
         "LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornPropagator",
         "LeanCondensedMatter.Transport.Analysis.ContinuumMeasure"
       ],
-      "externalImportCount": 1
+      "externalImportCount": 4
     },
     {
       "name": "LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertex",
@@ -2374,7 +2374,7 @@
         "LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningLadderZeroBroadening",
         "LeanCondensedMatter.Models.MassiveDirac.Model.Operator"
       ],
-      "externalImportCount": 1
+      "externalImportCount": 0
     },
     {
       "name": "LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexZeroBroadening",
@@ -2384,7 +2384,7 @@
         "LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornZeroBroadening",
         "LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertex"
       ],
-      "externalImportCount": 1
+      "externalImportCount": 2
     },
     {
       "name": "LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexZeroBroadeningIntegral",
@@ -2393,7 +2393,7 @@
         "LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexZeroBroadening",
         "LeanCondensedMatter.Models.MassiveDirac.TransportDomain"
       ],
-      "externalImportCount": 2
+      "externalImportCount": 5
     },
     {
       "name": "LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexZeroBroadeningTransverseWeakDisorder",
@@ -2401,7 +2401,7 @@
       "imports": [
         "LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexZeroBroadeningWeakDisorder"
       ],
-      "externalImportCount": 1
+      "externalImportCount": 4
     },
     {
       "name": "LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexZeroBroadeningWeakDisorder",
@@ -2411,7 +2411,7 @@
         "LeanCondensedMatter.Models.MassiveDirac.Disorder.BornCurrentVertexRung",
         "LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexZeroBroadeningIntegral"
       ],
-      "externalImportCount": 1
+      "externalImportCount": 5
     },
     {
       "name": "LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningLadderZeroBroadening",
@@ -2430,7 +2430,7 @@
         "LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexZeroBroadeningTransverseWeakDisorder",
         "LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningLadderZeroBroadeningWeakDisorder"
       ],
-      "externalImportCount": 1
+      "externalImportCount": 4
     },
     {
       "name": "LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningLadderZeroBroadeningWeakDisorder",
@@ -2449,7 +2449,7 @@
         "LeanCondensedMatter.Models.MassiveDirac.Model.FermiSurfaceOverlap",
         "LeanCondensedMatter.Transport.Analysis.AngularHarmonics"
       ],
-      "externalImportCount": 2
+      "externalImportCount": 3
     },
     {
       "name": "LeanCondensedMatter.Models.MassiveDirac.Disorder.ScalarCovariance",
@@ -2466,7 +2466,7 @@
       "imports": [
         "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.Damping"
       ],
-      "externalImportCount": 1
+      "externalImportCount": 3
     },
     {
       "name": "LeanCondensedMatter.Models.MassiveDirac.Disorder.TMatrix.BornDysonLoop",
@@ -2484,7 +2484,7 @@
       "imports": [
         "LeanCondensedMatter.Models.MassiveDirac.Model.Operator"
       ],
-      "externalImportCount": 3
+      "externalImportCount": 4
     },
     {
       "name": "LeanCondensedMatter.Models.MassiveDirac.Disorder.TMatrix",
@@ -2503,7 +2503,7 @@
         "LeanCondensedMatter.Models.MassiveDirac.Disorder.SingleParticleRate",
         "LeanCondensedMatter.Transport.Analysis.RelaxationTime"
       ],
-      "externalImportCount": 1
+      "externalImportCount": 4
     },
     {
       "name": "LeanCondensedMatter.Models.MassiveDirac.Disorder",
@@ -2533,7 +2533,7 @@
       "imports": [
         "LeanCondensedMatter.Analysis.InternalSpace.Pauli"
       ],
-      "externalImportCount": 1
+      "externalImportCount": 3
     },
     {
       "name": "LeanCondensedMatter.Models.MassiveDirac.Model.Berry.Bridge",
@@ -2578,7 +2578,7 @@
       "imports": [
         "LeanCondensedMatter.Models.MassiveDirac.Model.Kinematics"
       ],
-      "externalImportCount": 1
+      "externalImportCount": 5
     },
     {
       "name": "LeanCondensedMatter.Models.MassiveDirac.Model.FermiSurfaceOverlap",
@@ -2587,7 +2587,7 @@
         "LeanCondensedMatter.Models.MassiveDirac.Model.FermiSurface",
         "LeanCondensedMatter.Models.MassiveDirac.Model.Spectral"
       ],
-      "externalImportCount": 1
+      "externalImportCount": 2
     },
     {
       "name": "LeanCondensedMatter.Models.MassiveDirac.Model.Interband",
@@ -2604,7 +2604,7 @@
         "LeanCondensedMatter.Models.MassiveDirac.Model.Basic",
         "LeanCondensedMatter.Transport.Analysis.AngularHarmonics"
       ],
-      "externalImportCount": 4
+      "externalImportCount": 7
     },
     {
       "name": "LeanCondensedMatter.Models.MassiveDirac.Model.Occupation",
@@ -2730,7 +2730,7 @@
         "LeanCondensedMatter.Models.MassiveDirac.Conductivity.Longitudinal.BornRelaxationTime",
         "LeanCondensedMatter.Models.MassiveDirac.Scaling.Domain"
       ],
-      "externalImportCount": 1
+      "externalImportCount": 2
     },
     {
       "name": "LeanCondensedMatter.Models.MassiveDirac.Scaling.Pair",
@@ -2753,7 +2753,7 @@
         "LeanCondensedMatter.Models.MassiveDirac.TransportDomain",
         "LeanCondensedMatter.Transport.Analysis.ContinuumMeasure"
       ],
-      "externalImportCount": 1
+      "externalImportCount": 3
     },
     {
       "name": "LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.HallZeroBroadeningProvenance",
@@ -2763,7 +2763,7 @@
         "LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.HallZeroBroadeningWeakDisorder",
         "LeanCondensedMatter.Transport.Analysis.ContinuumMeasure"
       ],
-      "externalImportCount": 1
+      "externalImportCount": 4
     },
     {
       "name": "LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.HallZeroBroadeningWeakDisorder",
@@ -2773,7 +2773,7 @@
         "LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.HallZeroBroadeningIntegral",
         "LeanCondensedMatter.Transport.Analysis.ContinuumMeasure"
       ],
-      "externalImportCount": 1
+      "externalImportCount": 4
     },
     {
       "name": "LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.LongitudinalSameSide",
@@ -2782,7 +2782,7 @@
         "LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornInvertibility",
         "LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornZeroBroadening"
       ],
-      "externalImportCount": 2
+      "externalImportCount": 5
     },
     {
       "name": "LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.LongitudinalZeroBroadeningIntegral",
@@ -2795,7 +2795,7 @@
         "LeanCondensedMatter.Models.MassiveDirac.TransportDomain",
         "LeanCondensedMatter.Transport.Analysis.ContinuumMeasure"
       ],
-      "externalImportCount": 1
+      "externalImportCount": 3
     },
     {
       "name": "LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.LongitudinalZeroBroadeningWeakDisorder",
@@ -2806,7 +2806,7 @@
         "LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.LongitudinalZeroBroadeningIntegral",
         "LeanCondensedMatter.Transport.Analysis.ContinuumMeasure"
       ],
-      "externalImportCount": 1
+      "externalImportCount": 2
     },
     {
       "name": "LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.Radial",
@@ -2816,7 +2816,7 @@
         "LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.RadialIntegrand",
         "LeanCondensedMatter.Models.MassiveDirac.Vertex.PauliRung"
       ],
-      "externalImportCount": 1
+      "externalImportCount": 2
     },
     {
       "name": "LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.RadialDenominator",
@@ -2833,7 +2833,7 @@
       "imports": [
         "LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.TraceBridge"
       ],
-      "externalImportCount": 1
+      "externalImportCount": 0
     },
     {
       "name": "LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.TraceBridge",
@@ -2955,7 +2955,7 @@
       "imports": [
         "LeanCondensedMatter.Transport.Disorder.Ladder"
       ],
-      "externalImportCount": 3
+      "externalImportCount": 5
     },
     {
       "name": "LeanCondensedMatter.Models.MassiveDirac.Vertex.PauliRung",

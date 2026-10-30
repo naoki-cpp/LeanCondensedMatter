@@ -121319,12 +121319,11 @@
       "SecondQuantization.Bosonic.completedCreate_mem_completedAnnihilateDomain_of_mem_completedNumberOperatorDomain",
       "SecondQuantization.Common.completedDiagonalHeatOperator_apply_of_eigenvector",
       "SecondQuantization.Common.completedDiagonalOperator_basisState",
-      "SecondQuantization.Fermionic.completedAnnihilate_mem_completedFreeHamiltonianDomain",
-      "SecondQuantization.Fermionic.completedCreate_mem_completedFreeHamiltonianDomain",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.LadderAnalytic.0.SecondQuantization.Bosonic.completedCreateDiagonal_pullback_eq",
       "_private.LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.DiagonalAnalytic.0.SecondQuantization.Common.completedDiagonalOperator_adjoint_le_conj",
       "_private.LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.DiagonalAnalytic.0.SecondQuantization.Common.completedDiagonalOperator_isFormalAdjoint_conj",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.DiagonalAnalytic.0.SecondQuantization.Common.mem_completedDiagonalOperator_graph_iff"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.DiagonalAnalytic.0.SecondQuantization.Common.mem_completedDiagonalOperator_graph_iff",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.ProductDomain.0.SecondQuantization.Fermionic.mem_completedFreeHamiltonianDomain_of_toggle_bound"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
@@ -121333,14 +121332,13 @@
       "SecondQuantization.Bosonic.completedCreate_mem_completedAnnihilateDomain_of_mem_completedNumberOperatorDomain",
       "SecondQuantization.Common.completedDiagonalHeatOperator_apply_of_eigenvector",
       "SecondQuantization.Common.completedDiagonalOperator_basisState",
-      "SecondQuantization.Fermionic.completedAnnihilate_mem_completedFreeHamiltonianDomain",
-      "SecondQuantization.Fermionic.completedCreate_mem_completedFreeHamiltonianDomain",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.LadderAnalytic.0.SecondQuantization.Bosonic.completedCreateDiagonal_pullback_eq",
       "_private.LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.DiagonalAnalytic.0.SecondQuantization.Common.completedDiagonalOperator_adjoint_le_conj",
       "_private.LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.DiagonalAnalytic.0.SecondQuantization.Common.completedDiagonalOperator_isFormalAdjoint_conj",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.DiagonalAnalytic.0.SecondQuantization.Common.mem_completedDiagonalOperator_graph_iff"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.DiagonalAnalytic.0.SecondQuantization.Common.mem_completedDiagonalOperator_graph_iff",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.ProductDomain.0.SecondQuantization.Fermionic.mem_completedFreeHamiltonianDomain_of_toggle_bound"
     ],
-    "compiledConsumerCount": 9,
+    "compiledConsumerCount": 8,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -122020,18 +122018,16 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Common.completedReindex_basisState",
-      "SecondQuantization.Fermionic.completedAnnihilate_mem_completedFreeHamiltonianDomain",
-      "SecondQuantization.Fermionic.completedCreate_mem_completedFreeHamiltonianDomain"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.ProductDomain.0.SecondQuantization.Fermionic.mem_completedFreeHamiltonianDomain_of_toggle_bound"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Common.completedReindex_basisState",
-      "SecondQuantization.Fermionic.completedAnnihilate_mem_completedFreeHamiltonianDomain",
-      "SecondQuantization.Fermionic.completedCreate_mem_completedFreeHamiltonianDomain"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.ProductDomain.0.SecondQuantization.Fermionic.mem_completedFreeHamiltonianDomain_of_toggle_bound"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -130493,10 +130489,9 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.completedAnnihilate_mem_completedFreeHamiltonianDomain",
-      "SecondQuantization.Fermionic.completedCreate_mem_completedFreeHamiltonianDomain",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.ProductDomain.0.SecondQuantization.Bosonic.mem_completedNumberOperatorDomain_add_one",
-      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.ProductDomain.0.SecondQuantization.Bosonic.mem_completedNumberOperatorDomain_of_create_mem_annihilateDomain"
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.ProductDomain.0.SecondQuantization.Bosonic.mem_completedNumberOperatorDomain_of_create_mem_annihilateDomain",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.ProductDomain.0.SecondQuantization.Fermionic.mem_completedFreeHamiltonianDomain_of_toggle_bound"
     ],
     "dependencies": [
       "SecondQuantization.Common.mem_completedDiagonalDomain_iff"
@@ -130504,12 +130499,11 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.completedAnnihilate_mem_completedFreeHamiltonianDomain",
-      "SecondQuantization.Fermionic.completedCreate_mem_completedFreeHamiltonianDomain",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.ProductDomain.0.SecondQuantization.Bosonic.mem_completedNumberOperatorDomain_add_one",
-      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.ProductDomain.0.SecondQuantization.Bosonic.mem_completedNumberOperatorDomain_of_create_mem_annihilateDomain"
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.ProductDomain.0.SecondQuantization.Bosonic.mem_completedNumberOperatorDomain_of_create_mem_annihilateDomain",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.ProductDomain.0.SecondQuantization.Fermionic.mem_completedFreeHamiltonianDomain_of_toggle_bound"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -130549,15 +130543,14 @@
       "SecondQuantization.Bosonic.completedNumberOperatorDomain_le_completedCreateDomain",
       "SecondQuantization.Common.algebraicToCompleted_mem_completedDiagonalDomain",
       "SecondQuantization.Common.mem_completedDiagonalDomain_add_const",
-      "SecondQuantization.Fermionic.completedAnnihilate_mem_completedFreeHamiltonianDomain",
-      "SecondQuantization.Fermionic.completedCreate_mem_completedFreeHamiltonianDomain",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.LadderAnalytic.0.SecondQuantization.Bosonic.completedAnnihilate_adjoint_domain_le_createDomain",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.LadderAnalytic.0.SecondQuantization.Bosonic.completedCoordinatePullback_mem_completedCreateDomain",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.LadderAnalytic.0.SecondQuantization.Bosonic.completedCreate_adjoint_domain_le_annihilateDomain",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.ProductDomain.0.SecondQuantization.Bosonic.mem_completedNumberOperatorDomain_of_annihilate_mem_createDomain",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.ProductDomain.0.SecondQuantization.Bosonic.mem_completedNumberOperatorDomain_of_create_mem_annihilateDomain",
       "_private.LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.DiagonalAnalytic.0.SecondQuantization.Common.completedDiagonalOperator_adjoint_domain_le_conj",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.DiagonalAnalytic.0.SecondQuantization.Common.mem_completedDiagonalOperator_graph_iff"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.DiagonalAnalytic.0.SecondQuantization.Common.mem_completedDiagonalOperator_graph_iff",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.ProductDomain.0.SecondQuantization.Fermionic.mem_completedFreeHamiltonianDomain_of_toggle_bound"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
@@ -130569,17 +130562,16 @@
       "SecondQuantization.Bosonic.completedNumberOperatorDomain_le_completedCreateDomain",
       "SecondQuantization.Common.algebraicToCompleted_mem_completedDiagonalDomain",
       "SecondQuantization.Common.mem_completedDiagonalDomain_add_const",
-      "SecondQuantization.Fermionic.completedAnnihilate_mem_completedFreeHamiltonianDomain",
-      "SecondQuantization.Fermionic.completedCreate_mem_completedFreeHamiltonianDomain",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.LadderAnalytic.0.SecondQuantization.Bosonic.completedAnnihilate_adjoint_domain_le_createDomain",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.LadderAnalytic.0.SecondQuantization.Bosonic.completedCoordinatePullback_mem_completedCreateDomain",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.LadderAnalytic.0.SecondQuantization.Bosonic.completedCreate_adjoint_domain_le_annihilateDomain",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.ProductDomain.0.SecondQuantization.Bosonic.mem_completedNumberOperatorDomain_of_annihilate_mem_createDomain",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.ProductDomain.0.SecondQuantization.Bosonic.mem_completedNumberOperatorDomain_of_create_mem_annihilateDomain",
       "_private.LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.DiagonalAnalytic.0.SecondQuantization.Common.completedDiagonalOperator_adjoint_domain_le_conj",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.DiagonalAnalytic.0.SecondQuantization.Common.mem_completedDiagonalOperator_graph_iff"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.DiagonalAnalytic.0.SecondQuantization.Common.mem_completedDiagonalOperator_graph_iff",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.ProductDomain.0.SecondQuantization.Fermionic.mem_completedFreeHamiltonianDomain_of_toggle_bound"
     ],
-    "compiledConsumerCount": 15,
+    "compiledConsumerCount": 14,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -145500,14 +145492,10 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "SecondQuantization.Common.completedDiagonalOperator_apply",
-      "SecondQuantization.Common.completedReindex_apply",
-      "SecondQuantization.Common.mem_completedDiagonalDomain_add_const",
-      "SecondQuantization.Common.mem_completedDiagonalDomain_iff",
       "SecondQuantization.Fermionic.completedAnnihilate_apply",
       "SecondQuantization.Fermionic.freeHamiltonianWeight_toggle_of_not_mem",
       "SecondQuantization.Fermionic.norm_fermionPhase",
-      "SecondQuantization.Fermionic.toggleOccupationEquiv_apply"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.ProductDomain.0.SecondQuantization.Fermionic.mem_completedFreeHamiltonianDomain_of_toggle_bound"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -146230,14 +146218,10 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "SecondQuantization.Common.completedDiagonalOperator_apply",
-      "SecondQuantization.Common.completedReindex_apply",
-      "SecondQuantization.Common.mem_completedDiagonalDomain_add_const",
-      "SecondQuantization.Common.mem_completedDiagonalDomain_iff",
       "SecondQuantization.Fermionic.completedCreate_apply",
       "SecondQuantization.Fermionic.freeHamiltonianWeight_toggle_of_mem",
       "SecondQuantization.Fermionic.norm_fermionPhase",
-      "SecondQuantization.Fermionic.toggleOccupationEquiv_apply"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.ProductDomain.0.SecondQuantization.Fermionic.mem_completedFreeHamiltonianDomain_of_toggle_bound"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -154960,19 +154944,17 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.completedAnnihilate_mem_completedFreeHamiltonianDomain",
-      "SecondQuantization.Fermionic.completedCreate_mem_completedFreeHamiltonianDomain",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.Operators.0.SecondQuantization.Fermionic.completedSignedToggle_basisState"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.Operators.0.SecondQuantization.Fermionic.completedSignedToggle_basisState",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.ProductDomain.0.SecondQuantization.Fermionic.mem_completedFreeHamiltonianDomain_of_toggle_bound"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.completedAnnihilate_mem_completedFreeHamiltonianDomain",
-      "SecondQuantization.Fermionic.completedCreate_mem_completedFreeHamiltonianDomain",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.Operators.0.SecondQuantization.Fermionic.completedSignedToggle_basisState"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.Operators.0.SecondQuantization.Fermionic.completedSignedToggle_basisState",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.ProductDomain.0.SecondQuantization.Fermionic.mem_completedFreeHamiltonianDomain_of_toggle_bound"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -187992,6 +187974,56 @@
       "SecondQuantization.Fermionic.completedCreate_basisState_of_not_mem"
     ],
     "compiledConsumerCount": 4,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] (ε : Mode → ℝ) (i : Mode) (c : ℂ)\n  {ψ φ : ↥(SecondQuantization.Fermionic.CompletedFockSpace Mode)},\n  ψ ∈ SecondQuantization.Fermionic.completedFreeHamiltonianDomain ε →\n    (∀ (n : SecondQuantization.Fermionic.Occupation Mode),\n        ‖SecondQuantization.Fermionic.freeHamiltonianWeight ε n * ↑φ n‖ ≤\n          ‖(SecondQuantization.Fermionic.freeHamiltonianWeight ε (SecondQuantization.Fermionic.toggleOccupation i n) +\n                c) *\n              ↑ψ (SecondQuantization.Fermionic.toggleOccupation i n)‖) →\n      φ ∈ SecondQuantization.Fermionic.completedFreeHamiltonianDomain ε",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.ProductDomain.0.SecondQuantization.Fermionic.mem_completedFreeHamiltonianDomain_of_toggle_bound",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.ProductDomain",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.completedAnnihilate_mem_completedFreeHamiltonianDomain",
+      "SecondQuantization.Fermionic.completedCreate_mem_completedFreeHamiltonianDomain"
+    ],
+    "dependencies": [
+      "SecondQuantization.Common.completedDiagonalOperator_apply",
+      "SecondQuantization.Common.completedReindex_apply",
+      "SecondQuantization.Common.mem_completedDiagonalDomain_add_const",
+      "SecondQuantization.Common.mem_completedDiagonalDomain_iff",
+      "SecondQuantization.Fermionic.toggleOccupationEquiv_apply"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.completedAnnihilate_mem_completedFreeHamiltonianDomain",
+      "SecondQuantization.Fermionic.completedCreate_mem_completedFreeHamiltonianDomain"
+    ],
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
