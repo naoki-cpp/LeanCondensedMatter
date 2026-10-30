@@ -61,17 +61,12 @@ private theorem mem_completedFreeHamiltonianDomain_of_toggle_bound
   change ψ ∈ Common.completedDiagonalDomain (freeHamiltonianWeight ε) at hψ
   change φ ∈ Common.completedDiagonalDomain (freeHamiltonianWeight ε)
   rw [Common.mem_completedDiagonalDomain_iff]
-  have hshift :
-      ψ ∈ Common.completedDiagonalDomain
-        (fun n => freeHamiltonianWeight ε n + c) :=
+  have hshift :=
     Common.mem_completedDiagonalDomain_add_const (freeHamiltonianWeight ε) c hψ
-  let x :
-      (Common.completedDiagonalOperator
-        (fun n => freeHamiltonianWeight ε n + c)).domain := ⟨ψ, hshift⟩
   have hout := lp.memℓp
     (Common.completedReindex (toggleOccupationEquiv i)
       (Common.completedDiagonalOperator
-        (fun n => freeHamiltonianWeight ε n + c) x))
+        (fun n => freeHamiltonianWeight ε n + c) ⟨ψ, hshift⟩))
   exact hout.mono' fun n => by
     rw [Common.completedReindex_apply, toggleOccupationEquiv_apply,
       Common.completedDiagonalOperator_apply]
@@ -88,9 +83,8 @@ theorem completedCreate_mem_completedFreeHamiltonianDomain
   · rw [completedCreate_apply, ite_eq_left h,
       freeHamiltonianWeight_toggle_of_mem ε h]
     simp [norm_fermionPhase]
-  · rw [completedCreate_apply, ite_eq_right h]
-    simp only [mul_zero, norm_zero, norm_mul]
-    exact mul_nonneg (norm_nonneg _) (norm_nonneg _)
+  · simp only [completedCreate_apply, ite_eq_right h, mul_zero, norm_zero, norm_mul]
+    positivity
 
 /-- Bounded fermionic annihilation preserves the maximal domain of the completed free Hamiltonian. -/
 theorem completedAnnihilate_mem_completedFreeHamiltonianDomain
@@ -100,9 +94,8 @@ theorem completedAnnihilate_mem_completedFreeHamiltonianDomain
   apply mem_completedFreeHamiltonianDomain_of_toggle_bound ε i (-(ε i : ℂ)) hψ
   intro n
   by_cases h : i ∈ n
-  · rw [completedAnnihilate_apply, ite_eq_left h]
-    simp only [mul_zero, norm_zero, norm_mul]
-    exact mul_nonneg (norm_nonneg _) (norm_nonneg _)
+  · simp only [completedAnnihilate_apply, ite_eq_left h, mul_zero, norm_zero, norm_mul]
+    positivity
   · rw [completedAnnihilate_apply, ite_eq_right h]
     rw [freeHamiltonianWeight_toggle_of_not_mem ε h]
     simpa [norm_mul, norm_fermionPhase]
