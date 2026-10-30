@@ -130,6 +130,31 @@ theorem matrixCoeff_ext {Config : Type*}
   intro m
   exact h m n
 
+/-- A linear operator acts coordinatewise by its matrix coefficients on any finite set
+containing the input vector's support. -/
+theorem linearMap_apply_eq_finsetSum_of_support_subset {Config : Type*}
+    (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
+    (x : AlgebraicFock Config) (S : Finset Config) (hx : x.support ⊆ S) (m : Config) :
+    A x m = ∑ k ∈ S, matrixCoeff A m k * x k := by
+  classical
+  calc
+    A x m = A (∑ k ∈ x.support, x k • basisState k) m := by
+      rw [← eq_sum_smul_basisState x]
+    _ = ∑ k ∈ x.support, matrixCoeff A m k * x k := by
+      rw [map_sum, Finsupp.finsetSum_apply]
+      apply Finset.sum_congr rfl
+      intro k _
+      rw [map_smul, Finsupp.smul_apply]
+      change x k * matrixCoeff A m k = matrixCoeff A m k * x k
+      exact mul_comm _ _
+    _ = ∑ k ∈ S, matrixCoeff A m k * x k := by
+      apply Finset.sum_subset hx
+      intro k _ hk
+      have hz : x k = 0 := by
+        by_contra hn
+        exact hk (Finsupp.mem_support_iff.mpr hn)
+      rw [hz, mul_zero]
+
 /-- **`matrixCoeff` under composition, as a sum over `B`'s finite support**:
 `(AB)_{mn} = Σ_{k ∈ supp(B|n⟩)} A_{mk} B_{kn}`. This holds for arbitrary `Config`, because an
 `AlgebraicFock Config` vector is finitely supported even when `Config` itself is infinite. -/
@@ -137,14 +162,10 @@ theorem matrixCoeff_comp_support {Config : Type*}
     (A B : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (m n : Config) :
     matrixCoeff (A.comp B) m n =
       ∑ k ∈ (B (basisState n)).support, matrixCoeff A m k * matrixCoeff B k n := by
-  have hx : B (basisState n) =
-      ∑ k ∈ (B (basisState n)).support, matrixCoeff B k n • basisState k :=
-    eq_sum_smul_basisState (B (basisState n))
-  rw [matrixCoeff, LinearMap.comp_apply]
-  conv_lhs => rw [hx]
-  rw [map_sum]
-  simp only [map_smul, Finsupp.finsetSum_apply, Finsupp.smul_apply, smul_eq_mul]
-  exact Finset.sum_congr rfl fun k _ => mul_comm _ _
+  change A (B (basisState n)) m =
+    ∑ k ∈ (B (basisState n)).support, matrixCoeff A m k * (B (basisState n)) k
+  exact linearMap_apply_eq_finsetSum_of_support_subset A (B (basisState n))
+    (B (basisState n)).support (Subset.rfl) m
 
 /-- **`matrixCoeff` under composition is ordinary matrix multiplication** on a finite
 configuration type: `(AB)_{mn} = Σₖ A_{mk} B_{kn}`. -/
