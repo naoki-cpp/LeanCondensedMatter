@@ -1,6 +1,6 @@
 import LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.Radial
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexResponse
-import Mathlib.Tactic
+import Mathlib.Tactic.Ring
 
 set_option linter.style.header false
 
