@@ -55,8 +55,8 @@ theorem numberOperator_eq_diagonalOperator (i : Mode) :
   change numberOperator i (basisState n) =
     Common.diagonalOperator (fun n : Occupation Mode => if i ∈ n then (1 : ℂ) else 0)
       (basisState n)
-  rw [numberOperator_basisState, Common.diagonalOperator_basisState]
-  by_cases hi : i ∈ n <;> simp [hi]
+  rw [numberOperator_basisState]
+  by_cases hi : i ∈ n <;> simp [hi, basisState, Common.diagonalOperator_basisState]
 
 /-- **`c_i c_i† = id - N_i`**, an instance of `Common.annihilate_comp_create_self`. -/
 theorem annihilate_comp_create_self (i : Mode) :
