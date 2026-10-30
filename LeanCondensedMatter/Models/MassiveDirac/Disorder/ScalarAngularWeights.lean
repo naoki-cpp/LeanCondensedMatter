@@ -1,7 +1,8 @@
 import LeanCondensedMatter.Transport.Analysis.AngularHarmonics
 import LeanCondensedMatter.Models.MassiveDirac.Model.FermiSurfaceOverlap
 import Mathlib.Analysis.SpecialFunctions.Integrals.Basic
-import Mathlib.Tactic
+import Mathlib.Tactic.FieldSimp
+import Mathlib.Tactic.Ring
 
 set_option linter.style.header false
 
