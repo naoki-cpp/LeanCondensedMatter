@@ -337,20 +337,16 @@ private theorem tendsto_regularFactorErrorIntegral_zero
   have hinnerNonneg : 0 ≤ innerRadius := hinnerPos.le
   have hnested : innerRadius ≤ radius := by
     dsimp [innerRadius]
-    calc
-      min (radius / 2) (δ / 2) ≤ radius / 2 := min_le_left _ _
-      _ ≤ radius := by linarith
+    exact (min_le_left _ _).trans (by linarith)
   have hinnerLtDelta : innerRadius < δ := by
     dsimp [innerRadius]
-    calc
-      min (radius / 2) (δ / 2) ≤ δ / 2 := min_le_right _ _
-      _ < δ := by linarith
+    exact lt_of_le_of_lt (min_le_right _ _) (by linarith)
   let etaRadius : ℝ := min δ etaMax
   have hetaRadiusPos : 0 < etaRadius := by
     dsimp [etaRadius]
     exact lt_min_iff.mpr ⟨hδ, hetaMax⟩
-  have hwithin_le : nhdsWithin 0 (Set.Ioi 0) ≤ nhds (0 : ℝ) := by
-    exact inf_le_left
+  have hwithin_le : nhdsWithin 0 (Set.Ioi 0) ≤ nhds (0 : ℝ) :=
+    inf_le_left
   have hetaSmall : ∀ᶠ broadening : ℝ in nhdsWithin 0 (Set.Ioi 0),
       broadening < etaRadius :=
     hwithin_le (Iio_mem_nhds hetaRadiusPos)
@@ -370,20 +366,20 @@ private theorem tendsto_regularFactorErrorIntegral_zero
         tailTolerance :=
     (Metric.tendsto_nhds.1 htail) tailTolerance htailTolerancePos
   filter_upwards [hetaPos, hetaSmall, htailClose] with broadening hbroadening hsmall htailCloseAt
-  have hbroadeningLtDelta : broadening < δ := by
-    exact lt_of_lt_of_le hsmall (min_le_left _ _)
-  have hbroadeningLtEtaMax : broadening < etaMax := by
-    exact lt_of_lt_of_le hsmall (min_le_right _ _)
+  have hbroadeningLtDelta : broadening < δ :=
+    lt_of_lt_of_le hsmall (min_le_left _ _)
+  have hbroadeningLtEtaMax : broadening < etaMax :=
+    lt_of_lt_of_le hsmall (min_le_right _ _)
   have hlocalAt : ∀ offset : ℝ, |offset| ≤ innerRadius →
       ‖regularFactorError factor offset broadening‖ ≤ tolerance := by
     intro offset hoffset
     have hoffsetLtDelta : |offset| < δ := lt_of_le_of_lt hoffset hinnerLtDelta
     have hbroadeningAbsLtDelta : |broadening| < δ := by
       simpa [abs_of_pos hbroadening] using hbroadeningLtDelta
-    have hoffsetWindow : |offset| ≤ radius := le_trans hoffset hnested
     have hmem : (offset, broadening) ∈
         Set.Icc (-radius) radius ×ˢ Set.Icc (0 : ℝ) etaMax :=
-      ⟨abs_le.mp hoffsetWindow, ⟨hbroadening.le, hbroadeningLtEtaMax.le⟩⟩
+      ⟨abs_le.mp (hoffset.trans hnested),
+        ⟨hbroadening.le, hbroadeningLtEtaMax.le⟩⟩
     have h := hlocal offset broadening hmem hoffsetLtDelta hbroadeningAbsLtDelta
     simpa [regularFactorError] using h.le
   have hannulusAt : ∀ offset : ℝ,
@@ -449,10 +445,8 @@ private theorem tendsto_regularFactorErrorIntegral_zero
         field_simp [ne_of_gt hpiOnePos]
   have htailLt :
       spectralTailMass innerRadius radius broadening < tailTolerance := by
-    have habs :
-        |spectralTailMass innerRadius radius broadening| < tailTolerance := by
-      simpa [Real.dist_eq] using htailCloseAt
-    exact lt_of_le_of_lt (le_abs_self _) habs
+    exact lt_of_le_of_lt (le_abs_self _) (by
+      simpa [Real.dist_eq] using htailCloseAt)
   have houterTermLe :
       C * spectralTailMass innerRadius radius broadening ≤ ε / 4 := by
     calc
