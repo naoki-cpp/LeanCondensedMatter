@@ -56,20 +56,14 @@ private theorem norm_sqrt_natCast_add_one_le_norm_natCast_add_one (k : ℕ) :
   rw [hcast, Complex.norm_real, Real.norm_of_nonneg (by positivity)]
   exact sqrt_natCast_add_one_le_natCast_add_one k
 
-private theorem mem_completedNumberOperatorDomain_add_one
-    (i : Mode) {ψ : CompletedFockSpace Mode}
-    (hψ : ψ ∈ completedNumberOperatorDomain i) :
-    ψ ∈ Common.completedDiagonalDomain (fun n : Occupation Mode => (n i : ℂ) + 1) := by
-  exact Common.mem_completedDiagonalDomain_add_const
-    (fun n : Occupation Mode => (n i : ℂ)) 1 hψ
-
 /-- The number-operator domain lies in the annihilation domain. -/
 theorem completedNumberOperatorDomain_le_completedAnnihilateDomain (i : Mode) :
     completedNumberOperatorDomain i ≤ completedAnnihilateDomain i := by
   intro ψ hψ
   rw [Common.mem_completedDiagonalDomain_iff]
   have hshift :=
-    mem_completedNumberOperatorDomain_add_one i hψ
+    Common.mem_completedDiagonalDomain_add_const
+      (fun n : Occupation Mode => (n i : ℂ)) 1 hψ
   rw [Common.mem_completedDiagonalDomain_iff] at hshift
   exact hshift.mono' fun n => by
     simp only [norm_mul]
@@ -82,7 +76,8 @@ theorem completedNumberOperatorDomain_le_completedCreateDomain (i : Mode) :
   intro ψ hψ
   rw [Common.mem_completedDiagonalDomain_iff]
   have hshift :=
-    mem_completedNumberOperatorDomain_add_one i hψ
+    Common.mem_completedDiagonalDomain_add_const
+      (fun n : Occupation Mode => (n i : ℂ)) 1 hψ
   rw [Common.mem_completedDiagonalDomain_iff] at hshift
   exact hshift.mono' fun n => by
     simp only [norm_mul]
@@ -128,17 +123,15 @@ theorem completedCreate_mem_completedAnnihilateDomain_of_mem_completedNumberOper
       completedAnnihilateDomain i := by
   rw [Common.mem_completedDiagonalDomain_iff]
   have hshift :=
-    mem_completedNumberOperatorDomain_add_one i ψ.2
-  let x :
-      (Common.completedDiagonalOperator
-        (fun n : Occupation Mode => (n i : ℂ) + 1)).domain :=
-    ⟨(ψ : CompletedFockSpace Mode), hshift⟩
+    Common.mem_completedDiagonalDomain_add_const
+      (fun n : Occupation Mode => (n i : ℂ)) 1 ψ.2
   have hmem :=
     lp.memℓp
       (Common.completedCoordinateEmbedding
         (createOccupation i) (createOccupation_injective i)
         (Common.completedDiagonalOperator
-          (fun n : Occupation Mode => (n i : ℂ) + 1) x))
+          (fun n : Occupation Mode => (n i : ℂ) + 1)
+          ⟨(ψ : CompletedFockSpace Mode), hshift⟩))
   convert hmem using 1
   funext n
   rw [Common.completedCoordinateEmbedding_apply]
@@ -161,7 +154,6 @@ theorem completedCreate_mem_completedAnnihilateDomain_of_mem_completedNumberOper
     rw [(createOccupation_injective i).extend_apply,
       completedCreate_apply, ite_eq_right hni,
       Common.completedDiagonalOperator_apply]
-    dsimp [x]
     change
       (Real.sqrt (n i : ℝ) : ℂ) *
           ((Real.sqrt (n i : ℝ) : ℂ) *
@@ -297,21 +289,12 @@ theorem mem_completedNumberOperatorDomain_iff_create_mem_completedAnnihilateDoma
   · rintro ⟨hψ, hout⟩
     exact mem_completedNumberOperatorDomain_of_create_mem_annihilateDomain i hψ hout
 
-/-- Annihilation restricted from `Dom(Nᵢ)` to its natural domain. -/
-private noncomputable def completedAnnihilateFromNumberDomain (i : Mode) :
-    completedNumberOperatorDomain i →ₗ[ℂ] (completedAnnihilate i).domain :=
-  Submodule.inclusion (completedNumberOperatorDomain_le_completedAnnihilateDomain i)
-
-/-- Creation restricted from `Dom(Nᵢ)` to its natural domain. -/
-private noncomputable def completedCreateFromNumberDomain (i : Mode) :
-    completedNumberOperatorDomain i →ₗ[ℂ] (completedCreate i).domain :=
-  Submodule.inclusion (completedNumberOperatorDomain_le_completedCreateDomain i)
-
 private noncomputable def completedAnnihilateIntoCreateDomain (i : Mode) :
     completedNumberOperatorDomain i →ₗ[ℂ] (completedCreate i).domain :=
   LinearMap.codRestrict
     (completedCreate i).domain
-    ((completedAnnihilate i).toFun.comp (completedAnnihilateFromNumberDomain i))
+    ((completedAnnihilate i).toFun.comp
+      (Submodule.inclusion (completedNumberOperatorDomain_le_completedAnnihilateDomain i)))
     (fun ψ =>
       completedAnnihilate_mem_completedCreateDomain_of_mem_completedNumberOperatorDomain i ψ)
 
@@ -319,7 +302,8 @@ private noncomputable def completedCreateIntoAnnihilateDomain (i : Mode) :
     completedNumberOperatorDomain i →ₗ[ℂ] (completedAnnihilate i).domain :=
   LinearMap.codRestrict
     (completedAnnihilate i).domain
-    ((completedCreate i).toFun.comp (completedCreateFromNumberDomain i))
+    ((completedCreate i).toFun.comp
+      (Submodule.inclusion (completedNumberOperatorDomain_le_completedCreateDomain i)))
     (fun ψ =>
       completedCreate_mem_completedAnnihilateDomain_of_mem_completedNumberOperatorDomain i ψ)
 
