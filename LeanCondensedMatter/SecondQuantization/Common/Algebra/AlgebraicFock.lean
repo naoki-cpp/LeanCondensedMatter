@@ -46,6 +46,13 @@ theorem basisState_linearIndependent {Config : Type*} :
   change LinearIndependent ℂ (fun c => Finsupp.single c (1 : ℂ))
   exact Finsupp.basisSingleOne.linearIndependent
 
+/-- Every algebraic Fock vector is the finite sum of its configuration-basis coordinates. -/
+theorem eq_sum_smul_basisState {Config : Type*} (x : AlgebraicFock Config) :
+    x = ∑ k ∈ x.support, x k • basisState k := by
+  conv_lhs => rw [← Finsupp.sum_single x]
+  rw [Finsupp.sum]
+  exact Finset.sum_congr rfl fun k _ => (Finsupp.smul_single_one k _).symm
+
 /-- Two linear maps out of `AlgebraicFock Config` into any complex module that agree on every basis
 state are equal. -/
 theorem linearMap_ext_basisState {Config W : Type*} [AddCommGroup W] [Module ℂ W]
@@ -131,10 +138,8 @@ theorem matrixCoeff_comp_support {Config : Type*}
     matrixCoeff (A.comp B) m n =
       ∑ k ∈ (B (basisState n)).support, matrixCoeff A m k * matrixCoeff B k n := by
   have hx : B (basisState n) =
-      ∑ k ∈ (B (basisState n)).support, matrixCoeff B k n • basisState k := by
-    conv_lhs => rw [← Finsupp.sum_single (B (basisState n))]
-    rw [Finsupp.sum]
-    exact Finset.sum_congr rfl fun k _ => (Finsupp.smul_single_one k _).symm
+      ∑ k ∈ (B (basisState n)).support, matrixCoeff B k n • basisState k :=
+    eq_sum_smul_basisState (B (basisState n))
   rw [matrixCoeff, LinearMap.comp_apply]
   conv_lhs => rw [hx]
   rw [map_sum]
