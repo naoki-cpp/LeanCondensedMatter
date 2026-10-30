@@ -397,7 +397,7 @@ private theorem ExternalInsertionDiagram.componentDiagramLeg_strictMono
               (B : Finset (ExternalInsertionVertex E S)) w.2⟩ : ↥S)).val := by
         apply (S.orderIsoOfFin rfl).symm.strictMono
         change v.1 < w.1
-        exact (T.orderIsoOfFin rfl).strictMono hrank
+        simpa using (T.orderIsoOfFin rfl).strictMono hrank
       have hl := l.isLt
       have hk := k.isLt
       omega
