@@ -42,25 +42,17 @@ private theorem completedSignedToggle_apply (i : Mode) (ψ : CompletedFockSpace 
       fermionPhase i (toggleOccupation i n) * ψ (toggleOccupation i n) := by
   simp [completedSignedToggle, toggleOccupationEquiv_apply]
 
-private noncomputable def completedCreateMap (i : Mode) :
+/-- Bounded fermionic creation on completed Fock space. -/
+noncomputable def completedCreate (i : Mode) :
     CompletedFockSpace Mode →L[ℂ] CompletedFockSpace Mode :=
   (Common.completedCoordinateProjection (fun n : Occupation Mode => i ∈ n)).comp
     (completedSignedToggle i)
 
-private noncomputable def completedAnnihilateMap (i : Mode) :
-    CompletedFockSpace Mode →L[ℂ] CompletedFockSpace Mode :=
-  (Common.completedCoordinateProjection (fun n : Occupation Mode => i ∉ n)).comp
-    (completedSignedToggle i)
-
-/-- Bounded fermionic creation on completed Fock space. -/
-noncomputable def completedCreate (i : Mode) :
-    CompletedFockSpace Mode →L[ℂ] CompletedFockSpace Mode :=
-  completedCreateMap i
-
 /-- Bounded fermionic annihilation on completed Fock space. -/
 noncomputable def completedAnnihilate (i : Mode) :
     CompletedFockSpace Mode →L[ℂ] CompletedFockSpace Mode :=
-  completedAnnihilateMap i
+  (Common.completedCoordinateProjection (fun n : Occupation Mode => i ∉ n)).comp
+    (completedSignedToggle i)
 
 @[simp]
 theorem completedCreate_apply (i : Mode) (ψ : CompletedFockSpace Mode)
@@ -68,7 +60,7 @@ theorem completedCreate_apply (i : Mode) (ψ : CompletedFockSpace Mode)
     completedCreate i ψ n =
       if i ∈ n then fermionPhase i (toggleOccupation i n) * ψ (toggleOccupation i n) else 0 := by
   classical
-  simp [completedCreate, completedCreateMap, completedSignedToggle_apply,
+  simp [completedCreate, completedSignedToggle_apply,
     Common.completedCoordinateProjection_apply]
 
 @[simp]
@@ -77,7 +69,7 @@ theorem completedAnnihilate_apply (i : Mode) (ψ : CompletedFockSpace Mode)
     completedAnnihilate i ψ n =
       if i ∈ n then 0 else fermionPhase i (toggleOccupation i n) * ψ (toggleOccupation i n) := by
   classical
-  simp [completedAnnihilate, completedAnnihilateMap, completedSignedToggle_apply,
+  simp [completedAnnihilate, completedSignedToggle_apply,
     Common.completedCoordinateProjection_apply]
 
 private theorem completedSignedToggle_basisState (i : Mode) (n : Occupation Mode) :
@@ -97,7 +89,7 @@ private theorem completedSignedToggle_basisState (i : Mode) (n : Occupation Mode
 @[simp]
 theorem completedCreate_basisState_of_mem {i : Mode} {n : Occupation Mode} (hi : i ∈ n) :
     completedCreate i (completedBasisState n) = 0 := by
-  rw [completedCreate, completedCreateMap, ContinuousLinearMap.comp_apply,
+  rw [completedCreate, ContinuousLinearMap.comp_apply,
     completedSignedToggle_basisState, map_smul]
   change fermionPhase i n •
       Common.completedCoordinateProjection (fun m : Occupation Mode => i ∈ m)
@@ -109,7 +101,7 @@ theorem completedCreate_basisState_of_mem {i : Mode} {n : Occupation Mode} (hi :
 theorem completedCreate_basisState_of_not_mem {i : Mode} {n : Occupation Mode} (hi : i ∉ n) :
     completedCreate i (completedBasisState n) =
       fermionPhase i n • completedBasisState (insertOccupation i n) := by
-  rw [completedCreate, completedCreateMap, ContinuousLinearMap.comp_apply,
+  rw [completedCreate, ContinuousLinearMap.comp_apply,
     completedSignedToggle_basisState, map_smul]
   change fermionPhase i n •
       Common.completedCoordinateProjection (fun m : Occupation Mode => i ∈ m)
@@ -121,7 +113,7 @@ theorem completedCreate_basisState_of_not_mem {i : Mode} {n : Occupation Mode} (
 @[simp]
 theorem completedAnnihilate_basisState_of_not_mem {i : Mode} {n : Occupation Mode} (hi : i ∉ n) :
     completedAnnihilate i (completedBasisState n) = 0 := by
-  rw [completedAnnihilate, completedAnnihilateMap, ContinuousLinearMap.comp_apply,
+  rw [completedAnnihilate, ContinuousLinearMap.comp_apply,
     completedSignedToggle_basisState, map_smul]
   change fermionPhase i n •
       Common.completedCoordinateProjection (fun m : Occupation Mode => i ∉ m)
@@ -133,7 +125,7 @@ theorem completedAnnihilate_basisState_of_not_mem {i : Mode} {n : Occupation Mod
 theorem completedAnnihilate_basisState_of_mem {i : Mode} {n : Occupation Mode} (hi : i ∈ n) :
     completedAnnihilate i (completedBasisState n) =
       fermionPhase i n • completedBasisState (removeOccupation i n) := by
-  rw [completedAnnihilate, completedAnnihilateMap, ContinuousLinearMap.comp_apply,
+  rw [completedAnnihilate, ContinuousLinearMap.comp_apply,
     completedSignedToggle_basisState, map_smul]
   change fermionPhase i n •
       Common.completedCoordinateProjection (fun m : Occupation Mode => i ∉ m)
