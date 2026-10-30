@@ -165,7 +165,7 @@ theorem matrixCoeff_comp_support {Config : Type*}
   change A (B (basisState n)) m =
     ∑ k ∈ (B (basisState n)).support, matrixCoeff A m k * (B (basisState n)) k
   exact linearMap_apply_eq_finsetSum_of_support_subset A (B (basisState n))
-    (B (basisState n)).support (Subset.rfl) m
+    (B (basisState n)).support (subset_refl _) m
 
 /-- **`matrixCoeff` under composition is ordinary matrix multiplication** on a finite
 configuration type: `(AB)_{mn} = Σₖ A_{mk} B_{kn}`. -/
