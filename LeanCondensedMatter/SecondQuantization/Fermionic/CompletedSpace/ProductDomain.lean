@@ -89,7 +89,7 @@ theorem completedCreate_mem_completedFreeHamiltonianDomain
       freeHamiltonianWeight_toggle_of_mem ε h]
     simp [norm_fermionPhase]
   · rw [completedCreate_apply, ite_eq_right h]
-    simp only [zero_mul, norm_zero, norm_mul]
+    simp only [mul_zero, norm_zero, norm_mul]
     exact mul_nonneg (norm_nonneg _) (norm_nonneg _)
 
 /-- Bounded fermionic annihilation preserves the maximal domain of the completed free Hamiltonian. -/
@@ -101,7 +101,7 @@ theorem completedAnnihilate_mem_completedFreeHamiltonianDomain
   intro n
   by_cases h : i ∈ n
   · rw [completedAnnihilate_apply, ite_eq_left h]
-    simp only [zero_mul, norm_zero, norm_mul]
+    simp only [mul_zero, norm_zero, norm_mul]
     exact mul_nonneg (norm_nonneg _) (norm_nonneg _)
   · rw [completedAnnihilate_apply, ite_eq_right h]
     rw [freeHamiltonianWeight_toggle_of_not_mem ε h]
