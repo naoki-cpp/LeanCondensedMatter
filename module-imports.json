@@ -2866,7 +2866,7 @@
         "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.RealSpace",
         "LeanCondensedMatter.Transport.Analysis.ContinuumMeasure"
       ],
-      "externalImportCount": 1
+      "externalImportCount": 0
     },
     {
       "name": "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.RadialHarmonics",
@@ -2876,7 +2876,7 @@
         "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.RadialCoefficients",
         "LeanCondensedMatter.Transport.Analysis.ContinuumMeasure"
       ],
-      "externalImportCount": 1
+      "externalImportCount": 3
     },
     {
       "name": "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.RadialTrace",
@@ -2917,7 +2917,7 @@
       "imports": [
         "LeanCondensedMatter.Models.MassiveDirac.Model.Basic"
       ],
-      "externalImportCount": 1
+      "externalImportCount": 2
     },
     {
       "name": "LeanCondensedMatter.Models.MassiveDirac.Streda",
@@ -8560,7 +8560,7 @@
         "LeanCondensedMatter.Analysis.Lorentzian.Pole",
         "LeanCondensedMatter.Transport.Resolvent.Spectral"
       ],
-      "externalImportCount": 2
+      "externalImportCount": 5
     },
     {
       "name": "LeanCondensedMatter.Transport.Streda.OperatorKernel",

@@ -128789,8 +128789,7 @@
       "SecondQuantization.Common.grandCanonicalGibbsDensityOperator_op_eq_tsum_canonical",
       "SecondQuantization.Common.inner_completedBasisState_coordinatePullback_comp",
       "SecondQuantization.Fermionic.inner_completedBasisState_left",
-      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.LadderAnalytic.0.SecondQuantization.Bosonic.completedAnnihilate_adjoint_apply",
-      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.LadderAnalytic.0.SecondQuantization.Bosonic.completedCreate_adjoint_apply",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.LadderAnalytic.0.SecondQuantization.Bosonic.adjoint_apply_of_basisState",
       "_private.LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.DiagonalAnalytic.0.SecondQuantization.Common.completedDiagonalOperator_adjoint_apply"
     ],
     "dependencies": [],
@@ -128802,11 +128801,10 @@
       "SecondQuantization.Common.grandCanonicalGibbsDensityOperator_op_eq_tsum_canonical",
       "SecondQuantization.Common.inner_completedBasisState_coordinatePullback_comp",
       "SecondQuantization.Fermionic.inner_completedBasisState_left",
-      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.LadderAnalytic.0.SecondQuantization.Bosonic.completedAnnihilate_adjoint_apply",
-      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.LadderAnalytic.0.SecondQuantization.Bosonic.completedCreate_adjoint_apply",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.LadderAnalytic.0.SecondQuantization.Bosonic.adjoint_apply_of_basisState",
       "_private.LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.DiagonalAnalytic.0.SecondQuantization.Common.completedDiagonalOperator_adjoint_apply"
     ],
-    "compiledConsumerCount": 8,
+    "compiledConsumerCount": 7,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -177937,6 +177935,52 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {Mode : Type u_1}\n  (A :\n    ↥(SecondQuantization.Bosonic.CompletedFockSpace Mode) →ₗ.[ℂ] ↥(SecondQuantization.Bosonic.CompletedFockSpace Mode)),\n  Dense ↑A.domain →\n    ∀ (f : SecondQuantization.Bosonic.Occupation Mode → SecondQuantization.Bosonic.Occupation Mode)\n      (w : SecondQuantization.Bosonic.Occupation Mode → ℂ)\n      (hmem :\n        ∀ (n : SecondQuantization.Bosonic.Occupation Mode),\n          SecondQuantization.Bosonic.completedBasisState n ∈ A.domain),\n      (∀ (n : SecondQuantization.Bosonic.Occupation Mode),\n          ↑A ⟨SecondQuantization.Bosonic.completedBasisState n, ⋯⟩ =\n            w n • SecondQuantization.Bosonic.completedBasisState (f n)) →\n        ∀ (y : ↥A.adjoint.domain) (n : SecondQuantization.Bosonic.Occupation Mode),\n          ↑(↑A.adjoint y) n = star (w n) * ↑↑y (f n)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.LadderAnalytic.0.SecondQuantization.Bosonic.adjoint_apply_of_basisState",
+    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.LadderAnalytic",
+    "externalAxioms": [],
+    "docString": "A basis-action formula determines the coordinates of the adjoint on its domain. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.LadderAnalytic.0.SecondQuantization.Bosonic.completedAnnihilate_adjoint_apply",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.LadderAnalytic.0.SecondQuantization.Bosonic.completedCreate_adjoint_apply"
+    ],
+    "dependencies": [
+      "SecondQuantization.Common.inner_completedBasisState_left"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.LadderAnalytic.0.SecondQuantization.Bosonic.completedAnnihilate_adjoint_apply",
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.LadderAnalytic.0.SecondQuantization.Bosonic.completedCreate_adjoint_apply"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {Mode : Type u_1} (i : Mode) (y : ↥(SecondQuantization.Bosonic.completedAnnihilate i).adjoint.domain)\n  (n : SecondQuantization.Bosonic.Occupation Mode),\n  ↑(↑(SecondQuantization.Bosonic.completedAnnihilate i).adjoint y) n =\n    ↑√↑(n i) * ↑↑y (SecondQuantization.Bosonic.removeOccupation i n)",
     "standardAxioms": [
       "Classical.choice",
@@ -177963,7 +178007,7 @@
       "SecondQuantization.Bosonic.completedAnnihilate_basisState",
       "SecondQuantization.Bosonic.completedAnnihilate_denseDomain",
       "SecondQuantization.Bosonic.completedBasisState_mem_completedAnnihilateDomain",
-      "SecondQuantization.Common.inner_completedBasisState_left"
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.LadderAnalytic.0.SecondQuantization.Bosonic.adjoint_apply_of_basisState"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -178158,7 +178202,7 @@
       "SecondQuantization.Bosonic.completedBasisState_mem_completedCreateDomain",
       "SecondQuantization.Bosonic.completedCreate_basisState",
       "SecondQuantization.Bosonic.completedCreate_denseDomain",
-      "SecondQuantization.Common.inner_completedBasisState_left"
+      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.LadderAnalytic.0.SecondQuantization.Bosonic.adjoint_apply_of_basisState"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
