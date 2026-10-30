@@ -1,6 +1,7 @@
 import LeanCondensedMatter.Models.MassiveDirac.Model.FermiSurface
 import LeanCondensedMatter.Models.MassiveDirac.Model.Spectral
-import Mathlib.Tactic
+import Mathlib.Tactic.FieldSimp
+import Mathlib.Tactic.Ring
 
 set_option linter.style.header false
 

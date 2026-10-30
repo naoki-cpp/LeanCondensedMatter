@@ -2,7 +2,7 @@ import LeanCondensedMatter.Transport.Analysis.AngularHarmonics
 import LeanCondensedMatter.Models.MassiveDirac.Model.Kinematics
 import LeanCondensedMatter.Models.MassiveDirac.Propagator.Symmetry
 import Mathlib.Analysis.SpecialFunctions.Integrals.Basic
-import Mathlib.Tactic
+import Mathlib.Tactic.Ring
 
 set_option linter.style.header false
 
