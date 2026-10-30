@@ -1,4 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.InteractionPicture
+import Mathlib.Algebra.BigOperators.Finsupp.Basic
 
 set_option linter.style.header false
 
@@ -48,28 +49,22 @@ theorem support_interactionPicture_apply_subset_reachableSupport_succ
     (τ : ℝ) (order : ℕ) (n : Config) (x : AlgebraicFock Config)
     (hx : x.support ⊆ reachableSupport V order n) :
     (interactionPicture energy V τ x).support ⊆ reachableSupport V (order + 1) n := by
-  intro m hm
-  rw [reachableSupport_succ, Finset.mem_biUnion]
   have hxRep : x = ∑ k ∈ x.support, x k • basisState k := by
     conv_lhs => rw [← Finsupp.sum_single x]
     rw [Finsupp.sum]
     exact Finset.sum_congr rfl fun k _ => (Finsupp.smul_single_one k _).symm
-  by_contra hnot
-  have hzero : interactionPicture energy V τ x m = 0 := by
-    rw [hxRep, map_sum, Finsupp.finsetSum_apply]
-    apply Finset.sum_eq_zero
-    intro k hk
-    have hkReach : k ∈ reachableSupport V order n := hx hk
-    have hmk : m ∉ (interactionPicture energy V τ (basisState k)).support := by
-      intro hmem
-      apply hnot
-      exact ⟨k, hkReach,
-        support_interactionPicture_basisState_subset energy V τ k hmem⟩
-    have hcol : interactionPicture energy V τ (basisState k) m = 0 := by
-      by_contra hne
-      exact hmk (Finsupp.mem_support_iff.mpr hne)
-    simp [hcol]
-  exact (Finsupp.mem_support_iff.mp hm) hzero
+  have hImage :
+      interactionPicture energy V τ x =
+        ∑ k ∈ x.support, x k • interactionPicture energy V τ (basisState k) := by
+    conv_lhs => rw [hxRep, map_sum]
+    simp only [map_smul]
+  intro m hm
+  rw [reachableSupport_succ, Finset.mem_biUnion]
+  rw [hImage] at hm
+  obtain ⟨k, hk, hmk⟩ := Finset.mem_biUnion.mp (Finsupp.support_finsetSum hm)
+  exact ⟨k, hx hk,
+    support_interactionPicture_basisState_subset energy V τ k
+      (Finsupp.support_smul hmk)⟩
 
 end Common
 end SecondQuantization
