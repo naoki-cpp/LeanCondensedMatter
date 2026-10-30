@@ -22,20 +22,10 @@ noncomputable section
 
 variable {Mode : Type*} [LinearOrder Mode]
 
-/-- Creation viewed as an ambient-valued linear map whose source is `Dom(H)`. -/
-noncomputable def completedCreateFromFreeHamiltonianDomain (ε : Mode → ℝ) (i : Mode) :
-    completedFreeHamiltonianDomain ε →ₗ[ℂ] CompletedFockSpace Mode :=
-  (completedCreate i).toLinearMap.comp (completedFreeHamiltonianDomain ε).subtype
-
-/-- Annihilation viewed as an ambient-valued linear map whose source is `Dom(H)`. -/
-noncomputable def completedAnnihilateFromFreeHamiltonianDomain (ε : Mode → ℝ) (i : Mode) :
-    completedFreeHamiltonianDomain ε →ₗ[ℂ] CompletedFockSpace Mode :=
-  (completedAnnihilate i).toLinearMap.comp (completedFreeHamiltonianDomain ε).subtype
-
 /-- The completed free-Hamiltonian creation commutator as an identity of linear maps on `Dom(H)`. -/
 theorem completedFreeHamiltonian_create_commutator (ε : Mode → ℝ) (i : Mode) :
     completedFreeHamiltonianAfterCreate ε i - completedCreateAfterFreeHamiltonian ε i =
-      (ε i : ℂ) • completedCreateFromFreeHamiltonianDomain ε i := by
+      (ε i : ℂ) • ((completedCreate i).toLinearMap.comp (completedFreeHamiltonianDomain ε).subtype) := by
   apply LinearMap.ext
   intro ψ
   apply lp.ext
@@ -43,7 +33,7 @@ theorem completedFreeHamiltonian_create_commutator (ε : Mode → ℝ) (i : Mode
   change
     completedFreeHamiltonianAfterCreate ε i ψ n -
         completedCreateAfterFreeHamiltonian ε i ψ n =
-      (ε i : ℂ) * completedCreateFromFreeHamiltonianDomain ε i ψ n
+      (ε i : ℂ) * ((completedCreate i).toLinearMap.comp (completedFreeHamiltonianDomain ε).subtype) ψ n
   have hHa :
       completedFreeHamiltonianAfterCreate ε i ψ n =
         freeHamiltonianWeight ε n *
@@ -54,7 +44,7 @@ theorem completedFreeHamiltonian_create_commutator (ε : Mode → ℝ) (i : Mode
         completedCreate i ((completedFreeHamiltonian ε).toFun ψ) n := by
     rfl
   have hrestrict :
-      completedCreateFromFreeHamiltonianDomain ε i ψ n =
+      ((completedCreate i).toLinearMap.comp (completedFreeHamiltonianDomain ε).subtype) ψ n =
         completedCreate i (ψ : CompletedFockSpace Mode) n := by
     rfl
   have hH (m : Occupation Mode) :
@@ -72,7 +62,7 @@ theorem completedFreeHamiltonian_create_commutator (ε : Mode → ℝ) (i : Mode
 `Dom(H)`. -/
 theorem completedFreeHamiltonian_annihilate_commutator (ε : Mode → ℝ) (i : Mode) :
     completedFreeHamiltonianAfterAnnihilate ε i - completedAnnihilateAfterFreeHamiltonian ε i =
-      (-(ε i : ℂ)) • completedAnnihilateFromFreeHamiltonianDomain ε i := by
+      (-(ε i : ℂ)) • ((completedAnnihilate i).toLinearMap.comp (completedFreeHamiltonianDomain ε).subtype) := by
   apply LinearMap.ext
   intro ψ
   apply lp.ext
@@ -80,7 +70,7 @@ theorem completedFreeHamiltonian_annihilate_commutator (ε : Mode → ℝ) (i : 
   change
     completedFreeHamiltonianAfterAnnihilate ε i ψ n -
         completedAnnihilateAfterFreeHamiltonian ε i ψ n =
-      (-(ε i : ℂ)) * completedAnnihilateFromFreeHamiltonianDomain ε i ψ n
+      (-(ε i : ℂ)) * ((completedAnnihilate i).toLinearMap.comp (completedFreeHamiltonianDomain ε).subtype) ψ n
   have hHa :
       completedFreeHamiltonianAfterAnnihilate ε i ψ n =
         freeHamiltonianWeight ε n *
@@ -91,7 +81,7 @@ theorem completedFreeHamiltonian_annihilate_commutator (ε : Mode → ℝ) (i : 
         completedAnnihilate i ((completedFreeHamiltonian ε).toFun ψ) n := by
     rfl
   have hrestrict :
-      completedAnnihilateFromFreeHamiltonianDomain ε i ψ n =
+      ((completedAnnihilate i).toLinearMap.comp (completedFreeHamiltonianDomain ε).subtype) ψ n =
         completedAnnihilate i (ψ : CompletedFockSpace Mode) n := by
     rfl
   have hH (m : Occupation Mode) :
