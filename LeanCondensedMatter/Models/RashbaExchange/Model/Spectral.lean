@@ -1,7 +1,10 @@
 import LeanCondensedMatter.Analysis.Algebra.QuadraticNormalization
 import Mathlib.RingTheory.Idempotents
 import LeanCondensedMatter.Models.RashbaExchange.Model
-import Mathlib.Tactic
+import Mathlib.Tactic.Linarith
+import Mathlib.Tactic.NormNum
+import Mathlib.Tactic.Positivity
+import Mathlib.Tactic.Ring
 
 set_option linter.style.header false
 
