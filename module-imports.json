@@ -216,7 +216,9 @@
     {
       "name": "LeanCondensedMatter.Analysis.Inequalities.Gibbs",
       "sourceFile": "LeanCondensedMatter/Analysis/Inequalities/Gibbs.lean",
-      "imports": [],
+      "imports": [
+        "LeanCondensedMatter.Analysis.InfiniteSum.Order"
+      ],
       "externalImportCount": 5
     },
     {
@@ -3861,7 +3863,6 @@
       "sourceFile": "LeanCondensedMatter/QuantumTheory/Gibbs/DistributionUniqueness.lean",
       "imports": [
         "LeanCondensedMatter.Analysis.Inequalities.Gibbs",
-        "LeanCondensedMatter.Analysis.InfiniteSum.Order",
         "LeanCondensedMatter.QuantumTheory.Gibbs.DistributionVariational"
       ],
       "externalImportCount": 0
@@ -3916,7 +3917,6 @@
       "imports": [
         "LeanCondensedMatter.Analysis.Inequalities.Gibbs",
         "LeanCondensedMatter.Analysis.Inequalities.PeierlsBogoliubovEquality",
-        "LeanCondensedMatter.Analysis.InfiniteSum.Order",
         "LeanCondensedMatter.QuantumTheory.Gibbs.FreeEnergy"
       ],
       "externalImportCount": 0
