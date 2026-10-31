@@ -316422,7 +316422,6 @@
    "QuantumTheory.LinearResponse.eigenbasisNormalizedExpectation_apply",
    "QuantumTheory.LinearResponse.expectation_commutator_firstVariation_eq_integral",
    "QuantumTheory.LinearResponse.finiteTimeAdiabaticFrequencyDomainSusceptibility",
-   "QuantumTheory.LinearResponse.finiteTimeAdiabaticFrequencyDomainSusceptibility.eq_1",
    "QuantumTheory.LinearResponse.frequencyDomainSusceptibility",
    "QuantumTheory.LinearResponse.frequencyDomainSusceptibility.eq_1",
    "QuantumTheory.LinearResponse.frequencyDomainSusceptibility_zero_frequency",
@@ -321085,10 +321084,10 @@
   "statement":
   "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (channel : QuantumTheory.LinearResponse.ResponseChannel H) (U : Multiplicative ℝ →* ↥(unitary (H →L[ℂ] H))) (hbar : ℝ)\n  (expectation : QuantumTheory.LinearResponse.NormalizedExpectation H),\n  QuantumTheory.LinearResponse.IsStationary U expectation →\n    ∀ (ω η : ℝ),\n      QuantumTheory.LinearResponse.AdiabaticLagIntegrable\n          (fun τ =>\n            QuantumTheory.LinearResponse.commutatorSusceptibility U hbar expectation channel.measured channel.source τ\n              0)\n          ω η →\n        QuantumTheory.LinearResponse.HasInfiniteObservationTimeLimit\n          (channel.finiteTimeAdiabaticResponse U hbar expectation ω η)\n          (channel.infiniteTimeAdiabaticResponse U hbar expectation ω η)",
   "standardAxioms": ["Classical.choice", "Quot.sound", "propext"],
-  "sourceLine": 146,
+  "sourceLine": 133,
   "sourceFile":
   "LeanCondensedMatter/QuantumTheory/LinearResponse/Frequency/InfiniteTime.lean",
-  "sourceEndLine": 165,
+  "sourceEndLine": 152,
   "sourceEndColumn": 47,
   "sourceColumn": 8,
   "soleCompiledConsumerPrivate": false,
@@ -321132,7 +321131,7 @@
    "QuantumTheory.LinearResponse.instCoeFunNormalizedExpectationForallContinuousLinearMapComplexId._proof_2",
    "QuantumTheory.LinearResponse.instCoeFunNormalizedExpectationForallContinuousLinearMapComplexId._proof_3",
    "QuantumTheory.LinearResponse.instCoeFunNormalizedExpectationForallContinuousLinearMapComplexId._proof_4"],
-  "declarationStartLine": 144,
+  "declarationStartLine": 131,
   "crossModuleDirectWrapper": false,
   "completedMention": false,
   "compiledConsumers":
@@ -321397,10 +321396,10 @@
   "statement":
   "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (channel : QuantumTheory.LinearResponse.ResponseChannel H) (U : Multiplicative ℝ →* ↥(unitary (H →L[ℂ] H))) (hbar : ℝ)\n  (expectation : QuantumTheory.LinearResponse.NormalizedExpectation H),\n  QuantumTheory.LinearResponse.IsStationary U expectation →\n    ∀ (ω η : ℝ),\n      0 < η →\n        Measurable\n            (QuantumTheory.LinearResponse.retardedTimeDifferenceKernel U hbar expectation channel.measured\n              channel.source) →\n          QuantumTheory.LinearResponse.HasInfiniteObservationTimeLimit\n            (channel.finiteTimeAdiabaticResponse U hbar expectation ω η)\n            (channel.infiniteTimeAdiabaticResponse U hbar expectation ω η)",
   "standardAxioms": ["Classical.choice", "Quot.sound", "propext"],
-  "sourceLine": 169,
+  "sourceLine": 156,
   "sourceFile":
   "LeanCondensedMatter/QuantumTheory/LinearResponse/Frequency/InfiniteTime.lean",
-  "sourceEndLine": 190,
+  "sourceEndLine": 177,
   "sourceEndColumn": 27,
   "sourceColumn": 8,
   "soleCompiledConsumerPrivate": false,
@@ -321441,7 +321440,7 @@
    "QuantumTheory.LinearResponse.commutatorSusceptibility",
    "QuantumTheory.LinearResponse.retardedTimeDifferenceKernel",
    "QuantumTheory.LinearResponse.retardedTimeDifferenceKernel_eq_commutatorSusceptibility_of_nonneg"],
-  "declarationStartLine": 167,
+  "declarationStartLine": 154,
   "crossModuleDirectWrapper": false,
   "completedMention": false,
   "compiledConsumers":
@@ -321588,10 +321587,10 @@
      "id": "_uniq.45570"}]},
   "statement":
   "{H : Type u_1} →\n  [inst : NormedAddCommGroup H] →\n    [inst_1 : InnerProductSpace ℂ H] →\n      [inst_2 : CompleteSpace H] →\n        QuantumTheory.LinearResponse.ResponseChannel H →\n          (Multiplicative ℝ →* ↥(unitary (H →L[ℂ] H))) →\n            ℝ → QuantumTheory.LinearResponse.NormalizedExpectation H → ℝ → ℝ → ℂ",
-  "sourceLine": 136,
+  "sourceLine": 123,
   "sourceFile":
   "LeanCondensedMatter/QuantumTheory/LinearResponse/Frequency/InfiniteTime.lean",
-  "sourceEndLine": 142,
+  "sourceEndLine": 129,
   "sourceEndColumn": 43,
   "sourceColumn": 18,
   "projection": false,
@@ -321624,7 +321623,7 @@
    "QuantumTheory.LinearResponse.instCoeFunNormalizedExpectationForallContinuousLinearMapComplexId._proof_2",
    "QuantumTheory.LinearResponse.instCoeFunNormalizedExpectationForallContinuousLinearMapComplexId._proof_3",
    "QuantumTheory.LinearResponse.instCoeFunNormalizedExpectationForallContinuousLinearMapComplexId._proof_4"],
-  "declarationStartLine": 134},
+  "declarationStartLine": 121},
  {"valueDependencies": ["QuantumTheory.LinearResponse.ResponseChannel"],
   "typeDependencies": ["QuantumTheory.LinearResponse.ResponseChannel"],
   "structuredStatement":
@@ -324532,7 +324531,6 @@
    "QuantumTheory.LinearResponse.adiabaticFrequencySusceptibilityIntegrand_zero_rate",
    "QuantumTheory.LinearResponse.adiabaticIntegrable_of_pos",
    "QuantumTheory.LinearResponse.finiteTimeAdiabaticFrequencyDomainSusceptibility",
-   "QuantumTheory.LinearResponse.finiteTimeAdiabaticFrequencyDomainSusceptibility.eq_1",
    "QuantumTheory.LinearResponse.infiniteTimeAdiabaticTransform_commutator_eq_susceptibility",
    "QuantumTheory.LinearResponse.integral_adiabaticFrequencySusceptibilityIntegrand_eq_Ioi_zero",
    "QuantumTheory.LinearResponse.integral_adiabaticFrequencySusceptibilityIntegrand_zero_rate_eq_frequencyDomain",
@@ -341276,8 +341274,7 @@
   "docString":
   "The switched response observed only over the finite causal window `(0,T]`. ",
   "dependents":
-  ["QuantumTheory.LinearResponse.finiteTimeAdiabaticFrequencyDomainSusceptibility.eq_1",
-   "QuantumTheory.LinearResponse.finiteTime_eigenbasisPhysicalSusceptibility_has_both_local_three_stage_limits",
+  ["QuantumTheory.LinearResponse.finiteTime_eigenbasisPhysicalSusceptibility_has_both_local_three_stage_limits",
    "QuantumTheory.LinearResponse.tendsto_finiteTimeAdiabaticFrequencyDomainSusceptibility_atTop"],
   "dependencies":
   ["QuantumTheory.LinearResponse.NormalizedExpectation",
@@ -341305,42 +341302,8 @@
   "docString": null,
   "dependents":
   ["QuantumTheory.LinearResponse.ResponseChannel.infiniteTimeAdiabaticResponse",
-   "QuantumTheory.LinearResponse.finiteTimeAdiabaticFrequencyDomainSusceptibility",
-   "QuantumTheory.LinearResponse.finiteTimeAdiabaticFrequencyDomainSusceptibility.eq_1"],
+   "QuantumTheory.LinearResponse.finiteTimeAdiabaticFrequencyDomainSusceptibility"],
   "dependencies": [],
-  "declarationStartLine": null},
- {"valueDependencies":
-  ["QuantumTheory.LinearResponse.NormalizedExpectation",
-   "QuantumTheory.LinearResponse.finiteTimeAdiabaticFrequencyDomainSusceptibility",
-   "QuantumTheory.LinearResponse.finiteTimeAdiabaticFrequencyDomainSusceptibility._proof_1"],
-  "typeDependencies":
-  ["QuantumTheory.LinearResponse.NormalizedExpectation",
-   "QuantumTheory.LinearResponse.adiabaticFrequencySusceptibilityIntegrand",
-   "QuantumTheory.LinearResponse.finiteTimeAdiabaticFrequencyDomainSusceptibility",
-   "QuantumTheory.LinearResponse.finiteTimeAdiabaticFrequencyDomainSusceptibility._proof_1"],
-  "structuredStatement": null,
-  "statement":
-  "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (U : Multiplicative ℝ →* ↥(unitary (H →L[ℂ] H))) (hbar : ℝ)\n  (expectation : QuantumTheory.LinearResponse.NormalizedExpectation H) (A B : H →L[ℂ] H) (omega eta T : ℝ),\n  QuantumTheory.LinearResponse.finiteTimeAdiabaticFrequencyDomainSusceptibility U hbar expectation A B omega eta T =\n    ∫ (τ : ℝ) in Set.Ioc 0 T,\n      QuantumTheory.LinearResponse.adiabaticFrequencySusceptibilityIntegrand U hbar expectation A B omega eta τ",
-  "sourceLine": null,
-  "sourceFile":
-  "LeanCondensedMatter/QuantumTheory/LinearResponse/Frequency/InfiniteTime.lean",
-  "sourceEndLine": null,
-  "sourceEndColumn": null,
-  "sourceColumn": null,
-  "projection": false,
-  "name":
-  "QuantumTheory.LinearResponse.finiteTimeAdiabaticFrequencyDomainSusceptibility.eq_1",
-  "module":
-  "LeanCondensedMatter.QuantumTheory.LinearResponse.Frequency.InfiniteTime",
-  "kind": "theorem",
-  "generated": true,
-  "docString": null,
-  "dependents": [],
-  "dependencies":
-  ["QuantumTheory.LinearResponse.NormalizedExpectation",
-   "QuantumTheory.LinearResponse.adiabaticFrequencySusceptibilityIntegrand",
-   "QuantumTheory.LinearResponse.finiteTimeAdiabaticFrequencyDomainSusceptibility",
-   "QuantumTheory.LinearResponse.finiteTimeAdiabaticFrequencyDomainSusceptibility._proof_1"],
   "declarationStartLine": null},
  {"valueDependencies": ["QuantumTheory.LinearResponse.adiabaticFrequencyPhase"],
   "typeDependencies": [],
@@ -351555,10 +351518,10 @@
   "statement":
   "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (U : Multiplicative ℝ →* ↥(unitary (H →L[ℂ] H))) (hbar : ℝ)\n  (expectation : QuantumTheory.LinearResponse.NormalizedExpectation H) (A B : H →L[ℂ] H) (ω η : ℝ),\n  QuantumTheory.LinearResponse.infiniteTimeAdiabaticTransform\n      (fun τ => QuantumTheory.LinearResponse.commutatorSusceptibility U hbar expectation A B τ 0) ω η =\n    QuantumTheory.LinearResponse.adiabaticFrequencyDomainSusceptibility U hbar expectation A B ω η",
   "standardAxioms": ["Classical.choice", "Quot.sound", "propext"],
-  "sourceLine": 117,
+  "sourceLine": 104,
   "sourceFile":
   "LeanCondensedMatter/QuantumTheory/LinearResponse/Frequency/InfiniteTime.lean",
-  "sourceEndLine": 130,
+  "sourceEndLine": 117,
   "sourceEndColumn": 43,
   "sourceColumn": 8,
   "soleCompiledConsumerPrivate": false,
@@ -351594,7 +351557,7 @@
    "QuantumTheory.LinearResponse.integral_adiabaticFrequencySusceptibilityIntegrand_eq_Ioi_zero",
    "QuantumTheory.LinearResponse.retardedTimeDifferenceKernel",
    "QuantumTheory.LinearResponse.retardedTimeDifferenceKernel_eq_commutatorSusceptibility_of_nonneg"],
-  "declarationStartLine": 115,
+  "declarationStartLine": 102,
   "crossModuleDirectWrapper": false,
   "completedMention": false,
   "compiledConsumers":
@@ -367289,10 +367252,7 @@
    "QuantumTheory.LinearResponse.adiabaticFrequencyDomainSusceptibility.eq_1",
    "QuantumTheory.LinearResponse.adiabaticFrequencySusceptibilityIntegrand",
    "QuantumTheory.LinearResponse.finiteTimeAdiabaticFrequencyDomainSusceptibility",
-   "QuantumTheory.LinearResponse.integral_adiabaticFrequencySusceptibilityIntegrand_eq_Ioi_zero",
-   "QuantumTheory.LinearResponse.tendsto_finiteTimeAdiabaticFrequencyDomainSusceptibility_atTop._simp_1_1",
-   "QuantumTheory.LinearResponse.tendsto_finiteTimeAdiabaticFrequencyDomainSusceptibility_atTop._simp_1_2",
-   "QuantumTheory.LinearResponse.tendsto_finiteTimeAdiabaticFrequencyDomainSusceptibility_atTop._simp_1_3"],
+   "QuantumTheory.LinearResponse.integral_adiabaticFrequencySusceptibilityIntegrand_eq_Ioi_zero"],
   "typeDependencies":
   ["QuantumTheory.LinearResponse.NormalizedExpectation",
    "QuantumTheory.LinearResponse.adiabaticFrequencyDomainSusceptibility",
@@ -367519,8 +367479,8 @@
   "sourceLine": 79,
   "sourceFile":
   "LeanCondensedMatter/QuantumTheory/LinearResponse/Frequency/InfiniteTime.lean",
-  "sourceEndLine": 113,
-  "sourceEndColumn": 70,
+  "sourceEndLine": 100,
+  "sourceEndColumn": 42,
   "sourceColumn": 8,
   "soleCompiledConsumerPrivate": false,
   "singleCompiledConsumer": true,
@@ -367548,10 +367508,7 @@
    "QuantumTheory.LinearResponse.adiabaticFrequencyDomainSusceptibility.eq_1",
    "QuantumTheory.LinearResponse.adiabaticFrequencySusceptibilityIntegrand",
    "QuantumTheory.LinearResponse.finiteTimeAdiabaticFrequencyDomainSusceptibility",
-   "QuantumTheory.LinearResponse.integral_adiabaticFrequencySusceptibilityIntegrand_eq_Ioi_zero",
-   "QuantumTheory.LinearResponse.tendsto_finiteTimeAdiabaticFrequencyDomainSusceptibility_atTop._simp_1_1",
-   "QuantumTheory.LinearResponse.tendsto_finiteTimeAdiabaticFrequencyDomainSusceptibility_atTop._simp_1_2",
-   "QuantumTheory.LinearResponse.tendsto_finiteTimeAdiabaticFrequencyDomainSusceptibility_atTop._simp_1_3"],
+   "QuantumTheory.LinearResponse.integral_adiabaticFrequencySusceptibilityIntegrand_eq_Ioi_zero"],
   "declarationStartLine": 77,
   "crossModuleDirectWrapper": false,
   "completedMention": false,
@@ -367559,75 +367516,6 @@
   ["QuantumTheory.LinearResponse.finiteTime_eigenbasisPhysicalSusceptibility_has_both_local_three_stage_limits"],
   "compiledConsumerCount": 1,
   "axioms": ["Classical.choice", "Quot.sound", "propext"]},
- {"valueDependencies": [],
-  "typeDependencies": [],
-  "structuredStatement": null,
-  "statement":
-  "∀ {α : Type u} {ι : Sort v} {x : α} {s : ι → Set α}, (x ∈ ⋃ i, s i) = ∃ i, x ∈ s i",
-  "sourceLine": null,
-  "sourceFile":
-  "LeanCondensedMatter/QuantumTheory/LinearResponse/Frequency/InfiniteTime.lean",
-  "sourceEndLine": null,
-  "sourceEndColumn": null,
-  "sourceColumn": null,
-  "projection": false,
-  "name":
-  "QuantumTheory.LinearResponse.tendsto_finiteTimeAdiabaticFrequencyDomainSusceptibility_atTop._simp_1_1",
-  "module":
-  "LeanCondensedMatter.QuantumTheory.LinearResponse.Frequency.InfiniteTime",
-  "kind": "theorem",
-  "generated": true,
-  "docString": null,
-  "dependents":
-  ["QuantumTheory.LinearResponse.tendsto_finiteTimeAdiabaticFrequencyDomainSusceptibility_atTop"],
-  "dependencies": [],
-  "declarationStartLine": null},
- {"valueDependencies": [],
-  "typeDependencies": [],
-  "structuredStatement": null,
-  "statement":
-  "∀ {α : Type u_1} [inst : Preorder α] {a b x : α}, (x ∈ Set.Ioc a b) = (a < x ∧ x ≤ b)",
-  "sourceLine": null,
-  "sourceFile":
-  "LeanCondensedMatter/QuantumTheory/LinearResponse/Frequency/InfiniteTime.lean",
-  "sourceEndLine": null,
-  "sourceEndColumn": null,
-  "sourceColumn": null,
-  "projection": false,
-  "name":
-  "QuantumTheory.LinearResponse.tendsto_finiteTimeAdiabaticFrequencyDomainSusceptibility_atTop._simp_1_2",
-  "module":
-  "LeanCondensedMatter.QuantumTheory.LinearResponse.Frequency.InfiniteTime",
-  "kind": "theorem",
-  "generated": true,
-  "docString": null,
-  "dependents":
-  ["QuantumTheory.LinearResponse.tendsto_finiteTimeAdiabaticFrequencyDomainSusceptibility_atTop"],
-  "dependencies": [],
-  "declarationStartLine": null},
- {"valueDependencies": [],
-  "typeDependencies": [],
-  "structuredStatement": null,
-  "statement":
-  "∀ {α : Type u_1} [inst : Preorder α] {b x : α}, (x ∈ Set.Ioi b) = (b < x)",
-  "sourceLine": null,
-  "sourceFile":
-  "LeanCondensedMatter/QuantumTheory/LinearResponse/Frequency/InfiniteTime.lean",
-  "sourceEndLine": null,
-  "sourceEndColumn": null,
-  "sourceColumn": null,
-  "projection": false,
-  "name":
-  "QuantumTheory.LinearResponse.tendsto_finiteTimeAdiabaticFrequencyDomainSusceptibility_atTop._simp_1_3",
-  "module":
-  "LeanCondensedMatter.QuantumTheory.LinearResponse.Frequency.InfiniteTime",
-  "kind": "theorem",
-  "generated": true,
-  "docString": null,
-  "dependents":
-  ["QuantumTheory.LinearResponse.tendsto_finiteTimeAdiabaticFrequencyDomainSusceptibility_atTop"],
-  "dependencies": [],
-  "declarationStartLine": null},
  {"valueDependencies":
   ["QuantumTheory.LinearResponse.heisenbergEvolution",
    "QuantumTheory.LinearResponse.timeDependentInteractionPerturbation._proof_1",
