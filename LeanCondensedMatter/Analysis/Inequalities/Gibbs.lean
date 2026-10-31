@@ -241,7 +241,7 @@ theorem tsum_negMulLog_eq_gibbs_iff
       le_antisymm (tsum_div_le_one hq_tsum_le hZ) (by linarith)
     have hqsum : (∑' i, q i) = Z := by
       have hdiv : (∑' i, q i) / Z = 1 := by
-        rw [tsum_div_const]
+        rw [← tsum_div_const]
         exact hqZsum
       exact (div_eq_one_iff_eq hZ.ne').mp hdiv
     have hsum_eq : (∑' i, Real.negMulLog (p i)) =
@@ -257,7 +257,7 @@ theorem tsum_negMulLog_eq_gibbs_iff
       _ = p i * (β * energy i) + p i * Real.log Z - p i + q i / Z := by ring
   · rintro ⟨hqsum, hterm⟩
     have hqZsum : (∑' i, q i / Z) = 1 := by
-      rw [← tsum_div_const, hqsum, div_self hZ.ne']
+      rw [tsum_div_const, hqsum, div_self hZ.ne']
     calc
       (∑' i, Real.negMulLog (p i)) =
           ∑' i, (β * (p i * energy i) + p i * Real.log Z - p i + q i / Z) := by
