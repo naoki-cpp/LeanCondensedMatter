@@ -35,13 +35,15 @@ boundary modes are later work.
 | [Retarded susceptibility](../../LeanCondensedMatter/QuantumTheory/LinearResponse/Response/RetardedSusceptibility.lean) | Bounded quantum commutator response; microscopic magnetic observables and a comparison with macroscopic susceptibility remain to be constructed. |
 | [Crystal lattice](../../LeanCondensedMatter/Crystal/Lattice.lean) and [Brillouin quotient](../../LeanCondensedMatter/Crystal/Brillouin.lean) | Reciprocal-space conventions for later periodic models; the finite-ring Fourier basis uses Mathlib cyclic characters and orthonormal-basis construction. |
 
-The SW1 survey of pinned Mathlib v4.34.1 uses `EuclideanSpace`, coordinate permutations
+The finite-spin representation uses Mathlib's `EuclideanSpace`, coordinate permutations
 through `LinearIsometryEquiv.piLpCongrLeft`, `LinearMap.isometryOfInner`, and the existing
 symmetric/positive operator APIs. The representation therefore uses canonical finite
 function Hilbert spaces rather than introducing a custom inner product or tensor API.
-The SW2 survey reuses `ZMod.stdAddChar`, its primitive-character sum, and
+The spectrum proofs reuse `ZMod.stdAddChar`, its primitive-character sum, and
 `basisOfOrthonormalOfCardEqFinrank` to construct the normalized Fourier basis in
 [FiniteCyclic](../../LeanCondensedMatter/Analysis/Fourier/FiniteCyclic.lean).
+With pinned Mathlib v4.35.0, the shared operator and spectrum reuse cyclic characters and the finite
+Fourier basis; no spin representation is imported by their mathematical owner.
 The small-wavevector limit uses Mathlib's continuous `Real.sinc` and the double-angle
 identity. No custom Fourier transform, inner product, or differentiation theory is needed.
 
@@ -87,8 +89,10 @@ is proved under the weaker condition J >= 0; no ground-state uniqueness is claim
 
 Dependency: SW1. Source: (2.90)-(2.94), pp. 48-49.
 
-`ZMod.fourierBasis` is a complete normalized Fourier basis;
-`oneMagnonLaplacian_fourierBasis` proves its eigenvalue equation for LJ, with
+`ZMod.fourierBasis` is a complete normalized Fourier basis; the shared weighted cyclic
+Laplacian and its spectrum are owned by
+[CyclicLaplacian](../../LeanCondensedMatter/Analysis/Fourier/CyclicLaplacian.lean).
+`ZMod.cyclicLaplacian_fourierBasis` proves its eigenvalue equation for LJ, with
 
 \[
 E_q=2J(1-\cos(2\pi q/N)).
@@ -97,8 +101,8 @@ E_q=2J(1-\cos(2\pi q/N)).
 `wavevector` gives the representative 2 pi q.val/(N a) for positive lattice spacing a.
 `dispersion_wavevector` identifies its energy with the finite-mode eigenvalue.
 `excitationHamiltonian_fourierMode` transports the equation to the full spin space
-for N >= 3. `oneMagnonEnergy_zero` gives zero shifted energy for q=0;
-`oneMagnonEnergy_pos` proves strict positivity for J > 0 and q != 0 modulo N.
+for N >= 3. `ZMod.cyclicLaplacianEigenvalue_zero` gives zero shifted energy for q=0;
+`ZMod.cyclicLaplacianEigenvalue_pos` proves strict positivity for J > 0 and q != 0 modulo N.
 
 For lattice spacing a > 0, define the continuous dispersion expression
 E(k)=2J(1-cos(ka)). `tendsto_dispersion_div_sq` proves E(k)/k^2 -> J a^2 through nonzero k.
@@ -167,7 +171,7 @@ bond-once convention before transferring its coefficients.
 
 [QuadraticMagnonFourier](../../LeanCondensedMatter/Models/Heisenberg/QuadraticMagnonFourier.lean)
 identifies the site excitation Hamiltonian with the algebraic second quantization
-of `oneMagnonLaplacian (J * twiceSpin)`. Its complete Fourier diagonalization is
+of `ZMod.cyclicLaplacian (J * twiceSpin)`. Its complete Fourier diagonalization is
 `excitationHamiltonian_eq_sum_fourier`: the excitation operator equals the sum of
 Fourier-mode number operators with energies
 2J(2s)(1 - cos(2πq/N)). This is an operator identity on unrestricted algebraic Fock
