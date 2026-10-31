@@ -1,7 +1,7 @@
+import LeanCondensedMatter.Analysis.Operator.AdjointConjugation
 import LeanCondensedMatter.QuantumTheory.DensityOperator.Expectation
 import LeanCondensedMatter.QuantumTheory.LinearResponse.Perturbation.Hermitian
-import Mathlib.Analysis.Calculus.Deriv.Mul
-import Mathlib.Analysis.Calculus.Deriv.Star
+import Mathlib.Analysis.Calculus.Deriv.Basic
 import Mathlib.Algebra.Lie.OfAssociative
 
 set_option linter.style.header false
@@ -48,8 +48,8 @@ variable (U : Multiplicative ℝ →* unitary (H →L[ℂ] H)) (hbar : ℝ)
 noncomputable def perturbedDensityOperator
     (ρ : DensityOperator H) (V : ℝ → (H →L[ℂ] H))
     (lam t : ℝ) : H →L[ℂ] H :=
-  timeDependentInteractionPropagator U hbar V lam t * ρ.op *
-    star (timeDependentInteractionPropagator U hbar V lam t)
+  ContinuousLinearMap.adjointConjugate
+    (timeDependentInteractionPropagator U hbar V lam t) ρ.op
 
 /-- The general first variation of `U_{I,λ} ρ₀ U_{I,λ}†` at zero coupling. -/
 noncomputable def densityOperatorFirstVariation
@@ -81,16 +81,9 @@ theorem hasDerivAt_perturbedDensityOperator_zero_of_bound
       (timeDependentPropagatorFirstVariation U hbar V t)
       0 :=
     hasDerivAt_timeDependentInteractionPropagator_zero_of_bound U hbar hM hV ht
-  have hUstar : HasDerivAt
-      (fun lam : ℝ => star (timeDependentInteractionPropagator U hbar V lam t))
-      (star (timeDependentPropagatorFirstVariation U hbar V t))
-      0 := by
-    simpa [Function.comp_def] using hU.star
-  have hleft := hU.mul_const ρ.op
-  have hprod := hleft.mul hUstar
-  rw [hasDerivAt_iff_tendsto]
-  rw [hasDerivAt_iff_tendsto] at hprod
-  simpa [perturbedDensityOperator, densityOperatorFirstVariation] using hprod
+  simpa [perturbedDensityOperator, densityOperatorFirstVariation,
+    ContinuousLinearMap.adjointConjugate] using
+      ContinuousLinearMap.hasDerivAt_adjointConjugate hU ρ.op
 
 /-- If the first propagator variation is skew-adjoint, the density variation is its commutator with
 `ρ₀`. -/

@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Analysis.Operator.AdjointConjugation
 import LeanCondensedMatter.QuantumTheory.LinearResponse.Response.SourceCoupling
 import LeanCondensedMatter.QuantumTheory.LinearResponse.Response.Channel
 import Mathlib.Analysis.Complex.RealDeriv
@@ -80,7 +81,7 @@ theorem hasDerivAt_affinePerturbedExpectation_zero_of_bound_kubo
   rw [hasDerivAt_iff_tendsto]
   rw [hasDerivAt_iff_tendsto] at hsum
   simpa [affinePerturbedExpectation, timeDependentPerturbedObservable,
-    heisenbergEvolution_apply, mul_add, add_mul] using hsum
+    ContinuousLinearMap.adjointConjugate, heisenbergEvolution_apply, mul_add, add_mul] using hsum
 
 /-- For a real-valued source profile, the affine expectation derivative is the channel's causal
 response. The observable variation is the actual affine coefficient, including any source factor
