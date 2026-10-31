@@ -91,26 +91,13 @@ theorem tendsto_finiteTimeAdiabaticFrequencyDomainSusceptibility_atTop
   rw [adiabaticFrequencyDomainSusceptibility,
     integral_adiabaticFrequencySusceptibilityIntegrand_eq_Ioi_zero
       U hbar expectation A B omega eta]
-  let f : ℝ → ℂ :=
-    adiabaticFrequencySusceptibilityIntegrand U hbar expectation A B omega eta
-  have hunion : (⋃ T : ℝ, Ioc (0 : ℝ) T) = Ioi 0 := by
-    ext τ
-    simp only [mem_iUnion, mem_Ioc, mem_Ioi]
-    constructor
-    · rintro ⟨T, hpos, _⟩
-      exact hpos
-    · intro hpos
-      exact ⟨τ, hpos, le_rfl⟩
-  have ht := tendsto_setIntegral_of_monotone
-    (f := f) (μ := volume)
-    (s := fun T : ℝ => Ioc 0 T)
-    (fun _ => measurableSet_Ioc)
-    (fun _ _ hab _ hx => ⟨hx.1, hx.2.trans hab⟩)
-    (by
-      rw [hunion]
-      exact hInt.integrableOn)
-  rw [hunion] at ht
-  simpa [finiteTimeAdiabaticFrequencyDomainSusceptibility, f] using ht
+  have ht := intervalIntegral_tendsto_integral_Ioi
+    (μ := volume)
+    (f := adiabaticFrequencySusceptibilityIntegrand U hbar expectation A B omega eta)
+    (b := fun T : ℝ => T) (0 : ℝ) hInt.integrableOn tendsto_id
+  apply ht.congr'
+  filter_upwards [eventually_ge_atTop (0 : ℝ)] with T hT
+  exact intervalIntegral.integral_of_le hT
 
 /-- On the causal half-line the commutator lag transform equals the whole-line retarded
 susceptibility. This is an identity of totalized integrals, not a regulator-removal limit. -/
