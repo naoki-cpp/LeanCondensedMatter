@@ -1,4 +1,3 @@
-import LeanCondensedMatter.Analysis.InfiniteSum.Order
 import LeanCondensedMatter.Analysis.Inequalities.Gibbs
 import LeanCondensedMatter.QuantumTheory.Gibbs.DistributionVariational
 
@@ -57,104 +56,19 @@ private theorem gibbsVariational_entropy_eq_iff
     have hlogEq : -Real.log (q i) = β * E i := by
       simp [q, eigenbasisBoltzmannWeight]
     exact hlogEq.le
-  have hbound : ∀ i, Real.negMulLog (p.probability i) ≤
-      β * (p.probability i * E i) + p.probability i * Real.log Z -
-        p.probability i + q i / Z := by
-    intro i
-    have hb := Real.negMulLog_le_of_neg_log_le
-      (p := p.probability i) (q := q i) (Z := Z) (u := β * E i)
-      (p.nonneg i) (eigenbasisBoltzmannWeight_pos E β i) hZpos (hlog i)
-    nlinarith [hb]
-  obtain ⟨hB, hBsumRaw⟩ :=
-    Real.summable_gibbsComparison_and_tsum_eq
-      p.probability q E β Z p.hasSum_one hEnergy hqsum
-  have hqsum_le : ∑' i, q i ≤ Z := by
-    rfl
-  obtain ⟨hEntropySummable, _⟩ :=
-    Real.summable_negMulLog_and_tsum_le_gibbs
-      p.probability q E β Z p.nonneg p.hasSum_one hEnergy
-      hqsum hqsum_le (fun i => eigenbasisBoltzmannWeight_pos E β i) hZpos hlog
-  have hqZ : ∑' i, q i / Z = 1 := by
-    rw [show (∑' i, q i / Z) = (∑' i, q i) / Z by
-      rw [← tsum_div_const]]
-    change eigenbasisPartitionFunction E β / Z = 1
-    rw [show eigenbasisPartitionFunction E β = Z by rfl, div_self hZpos.ne']
-  have hBsum :
-      ∑' i, (β * (p.probability i * E i) + p.probability i * Real.log Z -
-        p.probability i + q i / Z) =
-        β * p.energy + Real.log Z := by
-    calc
-      ∑' i, (β * (p.probability i * E i) + p.probability i * Real.log Z -
-          p.probability i + q i / Z) =
-          β * (∑' i, p.probability i * E i) + Real.log Z - 1 + ∑' i, q i / Z :=
-        hBsumRaw
-      _ = β * p.energy + Real.log Z := by
-        rw [hqZ]
-        simp only [GibbsVariationalDistribution.energy]
-        ring
+  have hcore := Real.tsum_negMulLog_eq_gibbs_iff
+    p.probability q E β Z p.nonneg p.hasSum_one hEnergy hqsum (by rfl)
+    (fun i => eigenbasisBoltzmannWeight_pos E β i) hZpos hlog
+  change (∑' i, Real.negMulLog (p.probability i)) =
+      β * (∑' i, p.probability i * E i) + Real.log Z ↔ _
+  rw [hcore]
   constructor
-  · intro heq
-    have heqZ : p.entropy = β * p.energy + Real.log Z := by
-      simpa [Z] using heq
-    have hsum_eq :
-        (∑' i, Real.negMulLog (p.probability i)) =
-          ∑' i, (β * (p.probability i * E i) + p.probability i * Real.log Z -
-            p.probability i + q i / Z) := by
-      calc
-        (∑' i, Real.negMulLog (p.probability i)) = p.entropy := rfl
-        _ = β * p.energy + Real.log Z := heqZ
-        _ = ∑' i, (β * (p.probability i * E i) + p.probability i * Real.log Z -
-            p.probability i + q i / Z) := hBsum.symm
-    have hterm_eq : ∀ i, Real.negMulLog (p.probability i) =
-        β * (p.probability i * E i) + p.probability i * Real.log Z -
-          p.probability i + q i / Z :=
-      hEntropySummable.pointwise_eq_of_tsum_eq_of_le hB hbound hsum_eq
-    intro i
-    have hqpos : 0 < q i := by
-      simpa [q] using eigenbasisBoltzmannWeight_pos E β i
-    have hqZpos : 0 < q i / Z := div_pos hqpos hZpos
-    have henergylog :
-        β * (p.probability i * E i) =
-          -p.probability i * Real.log (q i) := by
-      simp only [q, eigenbasisBoltzmannWeight, Real.log_exp]
-      ring
-    have hlogdiv : Real.log (q i / Z) = Real.log (q i) - Real.log Z :=
-      Real.log_div hqpos.ne' hZpos.ne'
-    have hscalar :
-        Real.negMulLog (p.probability i) + p.probability i - q i / Z =
-          -p.probability i * Real.log (q i / Z) := by
-      have hterm := hterm_eq i
-      rw [hlogdiv]
-      rw [henergylog] at hterm
-      nlinarith [hterm]
-    have hpq :=
-      (Real.gibbs_scalar_ineq_eq_iff (p.probability i) (q i / Z)
-        (p.nonneg i) hqZpos).mp hscalar
-    calc
-      p.probability i = q i / Z := hpq
-      _ = eigenbasisGibbsProbability E β i := by
-        simp [q, Z, eigenbasisGibbsProbability, div_eq_mul_inv, mul_comm]
+  · rintro ⟨_, hterm⟩ i
+    simpa [q, Z, eigenbasisGibbsProbability, div_eq_mul_inv, mul_comm] using (hterm i).1
   · intro hp
-    have hterm_eq : ∀ i, Real.negMulLog (p.probability i) =
-        β * (p.probability i * E i) + p.probability i * Real.log Z -
-          p.probability i + q i / Z := by
-      intro i
-      have hqpos : 0 < q i := by
-        simpa [q] using eigenbasisBoltzmannWeight_pos E β i
-      have hpq : p.probability i = q i / Z := by
-        calc
-          p.probability i = eigenbasisGibbsProbability E β i := hp i
-          _ = q i / Z := by
-            simp [q, Z, eigenbasisGibbsProbability, div_eq_mul_inv, mul_comm]
-      rw [hpq, Real.negMulLog, Real.log_div hqpos.ne' hZpos.ne']
-      simp only [q, eigenbasisBoltzmannWeight, Real.log_exp]
-      ring
-    calc
-      p.entropy = ∑' i, Real.negMulLog (p.probability i) := rfl
-      _ = ∑' i, (β * (p.probability i * E i) + p.probability i * Real.log Z -
-          p.probability i + q i / Z) := tsum_congr hterm_eq
-      _ = β * p.energy + Real.log Z := hBsum
-      _ = β * p.energy + Real.log (eigenbasisPartitionFunction E β) := by rfl
+    refine ⟨rfl, fun i => ⟨?_, ?_⟩⟩
+    · simpa [q, Z, eigenbasisGibbsProbability, div_eq_mul_inv, mul_comm] using hp i
+    · simp [q, eigenbasisBoltzmannWeight]
 
 /-- Equality in the countable energy-level Helmholtz lower bound holds exactly when the competitor
 probabilities are the normalized Gibbs probabilities. -/

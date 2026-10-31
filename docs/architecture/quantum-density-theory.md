@@ -155,10 +155,12 @@ specializations of the same state model.
 
 ## Gibbs states and free energy
 
-Scalar Gibbs inequalities and summable-family entropy comparison belong to
+Scalar Gibbs inequalities, summable-family entropy comparison, and their equality conditions belong to
 Analysis/Inequalities/Gibbs.lean under Real. Bounded operator free-energy results and
 countable probability-distribution variational and uniqueness results use this mathematical owner directly.
 Normalization, positive comparison weights, and energy summability remain explicit hypotheses.
+Equality forces saturation of the comparison mass and logarithmic bounds; zero probabilities are
+allowed in the hypotheses. Operator-specific Peierls equality and spectral completeness remain downstream.
 
 
 For a bounded self-adjoint Hamiltonian `Hop`, `gibbsOp Hop β` is defined by continuous functional
