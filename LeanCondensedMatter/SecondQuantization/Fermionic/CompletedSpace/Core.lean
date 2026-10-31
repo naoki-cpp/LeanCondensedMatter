@@ -19,6 +19,11 @@ noncomputable section
 variable {Mode : Type*}
 variable [LinearOrder Mode]
 
+private theorem algebraicToCompleted_basisState' (n : Occupation Mode) :
+    algebraicToCompleted (basisState n) = completedBasisState n := by
+  simpa [algebraicToCompleted, basisState, completedBasisState] using
+    (Common.algebraicToCompleted_basisState (Config := Occupation Mode) n)
+
 /-- Completed creation agrees with algebraic creation on every finite-support vector. -/
 theorem completedCreate_comp_algebraicToCompleted (i : Mode) :
     (completedCreate i).toLinearMap.comp algebraicToCompleted =
@@ -27,15 +32,11 @@ theorem completedCreate_comp_algebraicToCompleted (i : Mode) :
   intro n
   change completedCreate i (algebraicToCompleted (basisState n)) =
     algebraicToCompleted (create i (basisState n))
-  have hbasis (m : Occupation Mode) :
-      algebraicToCompleted (basisState m) = completedBasisState m := by
-    simpa [algebraicToCompleted, basisState, completedBasisState] using
-      (Common.algebraicToCompleted_basisState (Config := Occupation Mode) m)
-  rw [hbasis n]
+  rw [algebraicToCompleted_basisState' n]
   by_cases hi : i ∈ n
   · simp [create_basisState_of_mem hi, completedCreate_basisState_of_mem hi]
   · simp [create_basisState_of_not_mem hi, completedCreate_basisState_of_not_mem hi,
-      fermionPhase, hbasis]
+      fermionPhase, algebraicToCompleted_basisState']
 
 /-- Completed annihilation agrees with algebraic annihilation on every finite-support vector. -/
 theorem completedAnnihilate_comp_algebraicToCompleted (i : Mode) :
@@ -45,14 +46,10 @@ theorem completedAnnihilate_comp_algebraicToCompleted (i : Mode) :
   intro n
   change completedAnnihilate i (algebraicToCompleted (basisState n)) =
     algebraicToCompleted (annihilate i (basisState n))
-  have hbasis (m : Occupation Mode) :
-      algebraicToCompleted (basisState m) = completedBasisState m := by
-    simpa [algebraicToCompleted, basisState, completedBasisState] using
-      (Common.algebraicToCompleted_basisState (Config := Occupation Mode) m)
-  rw [hbasis n]
+  rw [algebraicToCompleted_basisState' n]
   by_cases hi : i ∈ n
   · simp [annihilate_basisState_of_mem hi, completedAnnihilate_basisState_of_mem hi,
-      fermionPhase, hbasis]
+      fermionPhase, algebraicToCompleted_basisState']
   · simp [annihilate_basisState_of_not_mem hi, completedAnnihilate_basisState_of_not_mem hi]
 
 /-- Completed creation and annihilation are Hilbert adjoints for arbitrary mode types. -/
