@@ -1,3 +1,4 @@
+import Mathlib.Basic.Real.Basic
 import Mathlib.LinearAlgebra.Matrix.Notation
 import Mathlib.LinearAlgebra.Matrix.Trace
 import Mathlib.Tactic.FieldSimp
