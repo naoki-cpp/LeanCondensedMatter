@@ -34,7 +34,15 @@ theorem hasDerivAt_adjointConjugate
     (hU : HasDerivAt U U' x) (T : H →L[ℂ] H) :
     HasDerivAt (fun s => adjointConjugate (U s) T)
       (U' * T * star (U x) + U x * T * star U') x := by
-  simpa [Function.comp_def, adjointConjugate] using (hU.mul_const T).mul hU.star
+  change HasDerivAt (fun s : ℝ => U s * T * star (U s))
+    (U' * T * star (U x) + U x * T * star U') x
+  have hfun :
+      (fun s : ℝ => U s * T) * (fun s => star (U s)) =
+        fun s => U s * T * star (U s) := by
+    funext s
+    simp only [Pi.mul_apply]
+  rw [← hfun]
+  exact (hU.mul_const T).mul hU.star
 
 /-- Adjoint conjugation transports a rank-one operator by applying the conjugating operator to both
 vectors. -/
