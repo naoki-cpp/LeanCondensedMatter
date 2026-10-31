@@ -1818,7 +1818,7 @@
       "imports": [
         "LeanCondensedMatter.Crystal.Brillouin"
       ],
-      "externalImportCount": 9
+      "externalImportCount": 12
     },
     {
       "name": "LeanCondensedMatter.Models.MassiveDirac.Bastin.Bands",
@@ -2998,7 +2998,7 @@
       "name": "LeanCondensedMatter.Models.OrbitalRelaxation.Finite",
       "sourceFile": "LeanCondensedMatter/Models/OrbitalRelaxation/Finite.lean",
       "imports": [],
-      "externalImportCount": 3
+      "externalImportCount": 6
     },
     {
       "name": "LeanCondensedMatter.Models.OrbitalRelaxation.T2gProjectors",
@@ -3021,7 +3021,7 @@
       "name": "LeanCondensedMatter.Models.Parabolic2DEG.Model",
       "sourceFile": "LeanCondensedMatter/Models/Parabolic2DEG/Model.lean",
       "imports": [],
-      "externalImportCount": 3
+      "externalImportCount": 2
     },
     {
       "name": "LeanCondensedMatter.Models.Parabolic2DEG.Response",
@@ -3034,7 +3034,7 @@
         "LeanCondensedMatter.Transport.Streda.ConductivityNormalization",
         "LeanCondensedMatter.Transport.Streda.RetardedAdvanced"
       ],
-      "externalImportCount": 2
+      "externalImportCount": 3
     },
     {
       "name": "LeanCondensedMatter.Models.Parabolic2DEG.ResponseParameters",
@@ -3074,7 +3074,7 @@
         "LeanCondensedMatter.Models.RashbaExchange.Model.OperatorSpectral",
         "LeanCondensedMatter.Models.RashbaExchange.ResponseParameters"
       ],
-      "externalImportCount": 1
+      "externalImportCount": 0
     },
     {
       "name": "LeanCondensedMatter.Models.RashbaExchange.Green",
@@ -3092,7 +3092,7 @@
       "imports": [
         "LeanCondensedMatter.Models.RashbaExchange.Model.Spectral"
       ],
-      "externalImportCount": 1
+      "externalImportCount": 2
     },
     {
       "name": "LeanCondensedMatter.Models.RashbaExchange.Model.OperatorSpectral",
@@ -3111,7 +3111,7 @@
         "LeanCondensedMatter.Analysis.Algebra.QuadraticNormalization",
         "LeanCondensedMatter.Models.RashbaExchange.Model"
       ],
-      "externalImportCount": 2
+      "externalImportCount": 5
     },
     {
       "name": "LeanCondensedMatter.Models.RashbaExchange.Model",
@@ -3127,7 +3127,7 @@
       "imports": [
         "LeanCondensedMatter.Models.RashbaExchange.Model"
       ],
-      "externalImportCount": 4
+      "externalImportCount": 3
     },
     {
       "name": "LeanCondensedMatter.Models.RashbaExchange.Response",
