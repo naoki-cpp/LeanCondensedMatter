@@ -2,6 +2,7 @@ import LeanCondensedMatter.Analysis.Operator.TraceClass.Norm
 import LeanCondensedMatter.Analysis.Operator.TraceClass.Trace
 import LeanCondensedMatter.Analysis.Operator.TraceClass.Compact
 import LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Basic
+import LeanCondensedMatter.Analysis.HilbertBasis
 
 set_option linter.style.header false
 
@@ -17,6 +18,26 @@ noncomputable section
 namespace ContinuousLinearMap
 
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
+
+/-- A positive rank-one operator is trace class, without any normalization of its vector. -/
+theorem isTraceClass_rankOne_self (x : H) :
+    IsTraceClass (InnerProductSpace.rankOne ℂ x x) := by
+  obtain ⟨w, b, -⟩ := exists_hilbertBasis (𝕜 := ℂ) (E := H)
+  let T : H →L[ℂ] H := InnerProductSpace.rankOne ℂ x x
+  have hpos : T.IsPositive := InnerProductSpace.isPositive_rankOne_self x
+  have hdiag (i : w) :
+      diagonalExpectationValue T hpos.isSelfAdjoint (b i) =
+        ‖(inner ℂ x (b i) : ℂ)‖ ^ 2 := by
+    apply Complex.ofReal_injective
+    rw [coe_diagonalExpectationValue_right]
+    simp only [T, InnerProductSpace.rankOne_apply, inner_smul_right]
+    rw [show (inner ℂ (b i) x : ℂ) = starRingEnd ℂ (inner ℂ x (b i)) from
+      (inner_conj_symm (b i) x).symm, Complex.mul_conj, Complex.normSq_eq_norm_sq]
+  apply (isTraceClass_iff_isTraceClassWrt b T).mpr
+  have habs : CFC.abs T = T :=
+    CFC.abs_of_nonneg T (nonneg_iff_isPositive.mpr hpos)
+  simpa only [IsTraceClassWrt, habs] using
+    ((b.hasSum_norm_sq_inner x).summable.congr fun i => (hdiag i).symm)
 
 namespace IsTraceClass
 
