@@ -16112,6 +16112,7 @@
       "ContinuousLinearMap.diagonalExpectationValue_zero",
       "ContinuousLinearMap.hasSum_eigen_expansion_diagonalExpectationValue",
       "ContinuousLinearMap.isTraceClass_iff_exists_hilbertSchmidt_factorization",
+      "ContinuousLinearMap.isTraceClass_rankOne_self",
       "HilbertBasis.diagonalExpectationValue_diagonalOp",
       "QuantumTheory.DensityOperator.hasSum_diagonal_weights",
       "QuantumTheory.DensityOperator.hasSum_observableExpectation_diagonal",
@@ -16144,6 +16145,7 @@
       "ContinuousLinearMap.diagonalExpectationValue_zero",
       "ContinuousLinearMap.hasSum_eigen_expansion_diagonalExpectationValue",
       "ContinuousLinearMap.isTraceClass_iff_exists_hilbertSchmidt_factorization",
+      "ContinuousLinearMap.isTraceClass_rankOne_self",
       "HilbertBasis.diagonalExpectationValue_diagonalOp",
       "QuantumTheory.DensityOperator.hasSum_diagonal_weights",
       "QuantumTheory.DensityOperator.hasSum_observableExpectation_diagonal",
@@ -16158,7 +16160,7 @@
       "_private.LeanCondensedMatter.QuantumTheory.POVM.Born.0.QuantumTheory.hasSum_probabilityKernel_eigenvector",
       "_private.LeanCondensedMatter.QuantumTheory.POVM.Born.0.QuantumTheory.hasSum_probabilityKernel_outcome"
     ],
-    "compiledConsumerCount": 25,
+    "compiledConsumerCount": 26,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -17744,6 +17746,7 @@
       "ContinuousLinearMap.isTraceClass_iff_exists_hilbertSchmidt_factorization",
       "ContinuousLinearMap.isTraceClass_iff_hasSummableRealEigenvalues",
       "ContinuousLinearMap.isTraceClass_of_finiteDimensional",
+      "ContinuousLinearMap.isTraceClass_rankOne_self",
       "ContinuousLinearMap.isTraceClass_zero",
       "HilbertBasis.diagonalOp_isTraceClass"
     ],
@@ -17761,10 +17764,11 @@
       "ContinuousLinearMap.isTraceClass_iff_exists_hilbertSchmidt_factorization",
       "ContinuousLinearMap.isTraceClass_iff_hasSummableRealEigenvalues",
       "ContinuousLinearMap.isTraceClass_of_finiteDimensional",
+      "ContinuousLinearMap.isTraceClass_rankOne_self",
       "ContinuousLinearMap.isTraceClass_zero",
       "HilbertBasis.diagonalOp_isTraceClass"
     ],
-    "compiledConsumerCount": 9,
+    "compiledConsumerCount": 10,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -17807,6 +17811,48 @@
       "QuantumTheory.DensityOperator.ofFiniteDimensional"
     ],
     "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H] (x : H),\n  (((InnerProductSpace.rankOne ℂ) x) x).IsTraceClass",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "ContinuousLinearMap.isTraceClass_rankOne_self",
+    "module": "LeanCondensedMatter.Analysis.Operator.TraceClass.Positive",
+    "externalAxioms": [],
+    "docString": "A positive rank-one operator is trace class, without any normalization of its vector. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "ContinuousLinearMap.coe_diagonalExpectationValue_right",
+      "ContinuousLinearMap.isTraceClass_iff_isTraceClassWrt",
+      "HilbertBasis.hasSum_norm_sq_inner"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -23592,6 +23638,7 @@
     "directWrapperOf": null,
     "dependents": [
       "ContinuousLinearMap.hasSum_diagonalExpectationValue_eq_spectralTrace",
+      "ContinuousLinearMap.isTraceClass_rankOne_self",
       "ContinuousLinearMap.summable_norm_sq_adjoint_apply_and_tsum_eq",
       "_private.LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.Compact.0.ContinuousLinearMap.IsHilbertSchmidt.norm_sub_finiteRangeApprox_sq_le",
       "_private.LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.InnerProduct.0.ContinuousLinearMap.summable_inner_resolution_product"
@@ -23601,11 +23648,12 @@
     "completedMention": false,
     "compiledConsumers": [
       "ContinuousLinearMap.hasSum_diagonalExpectationValue_eq_spectralTrace",
+      "ContinuousLinearMap.isTraceClass_rankOne_self",
       "ContinuousLinearMap.summable_norm_sq_adjoint_apply_and_tsum_eq",
       "_private.LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.Compact.0.ContinuousLinearMap.IsHilbertSchmidt.norm_sub_finiteRangeApprox_sq_le",
       "_private.LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.InnerProduct.0.ContinuousLinearMap.summable_inner_resolution_product"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 5,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -46379,7 +46427,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": true,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -46391,7 +46439,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.DensityOperator.linearMap_trace_sq_eq_purity"
+      "QuantumTheory.DensityOperator.linearMap_trace_sq_eq_purity",
+      "QuantumTheory.purity_pure"
     ],
     "dependencies": [
       "ContinuousLinearMap.IsTraceClass.isCompact",
@@ -46406,9 +46455,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.DensityOperator.linearMap_trace_sq_eq_purity"
+      "QuantumTheory.DensityOperator.linearMap_trace_sq_eq_purity",
+      "QuantumTheory.purity_pure"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -46443,7 +46493,8 @@
     "directWrapperOf": null,
     "dependents": [
       "QuantumTheory.DensityOperator.observableExpectation_pure",
-      "QuantumTheory.LinearResponse.expValue_evolveState_eq_heisenberg"
+      "QuantumTheory.LinearResponse.expValue_evolveState_eq_heisenberg",
+      "QuantumTheory.purity_pure"
     ],
     "dependencies": [
       "ContinuousLinearMap.IsTraceClass.comp_right",
@@ -46455,9 +46506,10 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.DensityOperator.observableExpectation_pure",
-      "QuantumTheory.LinearResponse.expValue_evolveState_eq_heisenberg"
+      "QuantumTheory.LinearResponse.expValue_evolveState_eq_heisenberg",
+      "QuantumTheory.purity_pure"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -46947,7 +46999,8 @@
       "QuantumTheory.DensityOperator.hasSum_expectation_diagonal",
       "QuantumTheory.DensityOperator.realTrace_op_eq_one",
       "QuantumTheory.DensityOperator.spectralTrace_op_eq_one",
-      "QuantumTheory.DensityOperator.traceNorm_eq_one"
+      "QuantumTheory.DensityOperator.traceNorm_eq_one",
+      "QuantumTheory.purity_pure"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
@@ -46959,9 +47012,10 @@
       "QuantumTheory.DensityOperator.hasSum_expectation_diagonal",
       "QuantumTheory.DensityOperator.realTrace_op_eq_one",
       "QuantumTheory.DensityOperator.spectralTrace_op_eq_one",
-      "QuantumTheory.DensityOperator.traceNorm_eq_one"
+      "QuantumTheory.DensityOperator.traceNorm_eq_one",
+      "QuantumTheory.purity_pure"
     ],
-    "compiledConsumerCount": 7,
+    "compiledConsumerCount": 8,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -96298,7 +96352,11 @@
     "dependents": [
       "QuantumTheory.isPureDensity_iff_purity_eq_one"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "QuantumTheory.DensityOperator.expectation_op",
+      "QuantumTheory.DensityOperator.expectation_pure_observable",
+      "QuantumTheory.DensityOperator.isSelfAdjoint"
+    ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [

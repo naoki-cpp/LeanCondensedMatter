@@ -647,6 +647,7 @@
       "name": "LeanCondensedMatter.Analysis.Operator.TraceClass.Positive",
       "sourceFile": "LeanCondensedMatter/Analysis/Operator/TraceClass/Positive.lean",
       "imports": [
+        "LeanCondensedMatter.Analysis.HilbertBasis",
         "LeanCondensedMatter.Analysis.Operator.TraceClass.Compact",
         "LeanCondensedMatter.Analysis.Operator.TraceClass.Norm",
         "LeanCondensedMatter.Analysis.Operator.TraceClass.Spectral.Basic",
@@ -3758,6 +3759,8 @@
       "sourceFile": "LeanCondensedMatter/QuantumTheory/DensityOperator/Pure.lean",
       "imports": [
         "LeanCondensedMatter.Analysis.Operator.Compact",
+        "LeanCondensedMatter.Analysis.Operator.TraceClass.Positive",
+        "LeanCondensedMatter.Analysis.Operator.TraceClass.Trace",
         "LeanCondensedMatter.QuantumTheory.DensityOperator.Basic"
       ],
       "externalImportCount": 0
@@ -3776,6 +3779,7 @@
       "sourceFile": "LeanCondensedMatter/QuantumTheory/DensityOperator/Purity.lean",
       "imports": [
         "LeanCondensedMatter.QuantumTheory.DensityOperator.ExpectationOrder",
+        "LeanCondensedMatter.QuantumTheory.DensityOperator.ObservableExpectation",
         "LeanCondensedMatter.QuantumTheory.DensityOperator.PureState"
       ],
       "externalImportCount": 0
