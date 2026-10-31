@@ -1,4 +1,5 @@
-import Mathlib.Tactic
+import Mathlib.Algebra.Star.Basic
+import Mathlib.Tactic.NoncommRing
 
 set_option linter.style.header false
 
