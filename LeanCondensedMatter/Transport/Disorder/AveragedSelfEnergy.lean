@@ -1,7 +1,8 @@
 import LeanCondensedMatter.Transport.Disorder.Resolvent
 import LeanCondensedMatter.Transport.Resolvent.SelfEnergy
 import Mathlib.Analysis.Normed.Operator.Banach
-import Mathlib.Tactic
+import Mathlib.Tactic.NormNum
+import Mathlib.Tactic.Ring
 
 set_option linter.style.header false
 
