@@ -1,5 +1,6 @@
 import LeanCondensedMatter.Models.Heisenberg.QuadraticMagnon
-import LeanCondensedMatter.Models.Heisenberg.SpinWaveSpectrum
+import LeanCondensedMatter.Analysis.Fourier.CyclicLaplacian
+import LeanCondensedMatter.Analysis.Fourier.FiniteCyclic
 import LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.FiniteModes
 
 set_option linter.style.header false
@@ -45,23 +46,23 @@ private theorem sum_shift {A : Type*} [AddCommMonoid A] (f : ZMod N → A) :
   exact Equiv.sum_comp e f
 
 /-- The site quadratic operator is the second quantization of the periodic Laplacian.
-At 2s=1 its one-particle operator is exactly the operator used in SW2. -/
+At 2s=1 its one-particle operator is the exact spin ring's one-magnon restriction. -/
 theorem excitationHamiltonian_eq_secondQuantization (J : ℝ) (twiceSpin : ℕ) :
     excitationHamiltonian (N := N) J twiceSpin =
-      secondQuantization (oneMagnonLaplacian (J * twiceSpin)) := by
+      secondQuantization (ZMod.cyclicLaplacian (J * twiceSpin)) := by
   classical
   have hn := sum_shift (N := N) (fun i => numberOperator i)
   have hh : (∑ i : ZMod N, (create (i + 1)).comp (annihilate i)) =
       ∑ i : ZMod N, (create i).comp (annihilate (i - 1)) := by
     simpa using sum_shift (N := N) (fun i => (create i).comp (annihilate (i - 1)))
   have hcoeff (i j : ZMod N) :
-      oneMagnonLaplacian (J * twiceSpin) (EuclideanSpace.single j 1) i =
+      ZMod.cyclicLaplacian (J * twiceSpin) (EuclideanSpace.single j 1) i =
         ((J : ℂ) * twiceSpin) *
           (2 * (if i = j then 1 else 0) - (if i - 1 = j then 1 else 0) -
             (if i + 1 = j then 1 else 0)) := by
-    simp [oneMagnonLaplacian, PiLp.single_apply]
+    simp [ZMod.cyclicLaplacian, PiLp.single_apply]
   have hrow (i : ZMod N) :
-      (∑ j : ZMod N, oneMagnonLaplacian (J * twiceSpin) (EuclideanSpace.single j 1) i •
+      (∑ j : ZMod N, ZMod.cyclicLaplacian (J * twiceSpin) (EuclideanSpace.single j 1) i •
         (create i).comp (annihilate j)) =
       ((J : ℂ) * twiceSpin) • ((2 : ℂ) • numberOperator i -
         (create i).comp (annihilate (i - 1)) - (create i).comp (annihilate (i + 1))) := by
@@ -79,11 +80,11 @@ theorem excitationHamiltonian_eq_secondQuantization (J : ℝ) (twiceSpin : ℕ) 
 The summands are energy times Fourier-mode number operators. -/
 theorem excitationHamiltonian_eq_sum_fourier (J : ℝ) (twiceSpin : ℕ) :
     excitationHamiltonian (N := N) J twiceSpin =
-      ∑ q : ZMod N, (oneMagnonEnergy (J * twiceSpin) q : ℂ) •
+      ∑ q : ZMod N, (ZMod.cyclicLaplacianEigenvalue (J * twiceSpin) q : ℂ) •
         (createVector (ZMod.fourierBasis q)).comp (annihilateVector (ZMod.fourierBasis q)) := by
   rw [excitationHamiltonian_eq_secondQuantization]
   exact secondQuantization_eq_sum_of_eigenbasis ZMod.fourierBasis _ _
-    (oneMagnonLaplacian_fourierBasis (J * twiceSpin))
+    (ZMod.cyclicLaplacian_fourierBasis (J * twiceSpin))
 
 end
 end Models.Heisenberg.QuadraticMagnon
