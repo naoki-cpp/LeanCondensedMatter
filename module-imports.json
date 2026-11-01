@@ -218,9 +218,7 @@
     {
       "name": "LeanCondensedMatter.Analysis.Inequalities.Gibbs",
       "sourceFile": "LeanCondensedMatter/Analysis/Inequalities/Gibbs.lean",
-      "imports": [
-        "LeanCondensedMatter.Analysis.InfiniteSum.Order"
-      ],
+      "imports": [],
       "externalImportCount": 5
     },
     {
@@ -278,13 +276,13 @@
       "name": "LeanCondensedMatter.Analysis.InternalSpace.Pauli",
       "sourceFile": "LeanCondensedMatter/Analysis/InternalSpace/Pauli.lean",
       "imports": [],
-      "externalImportCount": 7
+      "externalImportCount": 10
     },
     {
       "name": "LeanCondensedMatter.Analysis.LatticeGeometry",
       "sourceFile": "LeanCondensedMatter/Analysis/LatticeGeometry.lean",
       "imports": [],
-      "externalImportCount": 3
+      "externalImportCount": 2
     },
     {
       "name": "LeanCondensedMatter.Analysis.Lorentzian.Kernel",
@@ -335,7 +333,7 @@
       "name": "LeanCondensedMatter.Analysis.Operator.AdjointConjugation",
       "sourceFile": "LeanCondensedMatter/Analysis/Operator/AdjointConjugation.lean",
       "imports": [],
-      "externalImportCount": 1
+      "externalImportCount": 4
     },
     {
       "name": "LeanCondensedMatter.Analysis.Operator.AlgebraRestriction",
@@ -498,7 +496,7 @@
       "name": "LeanCondensedMatter.Analysis.Operator.Spectral.DissipativeShift",
       "sourceFile": "LeanCondensedMatter/Analysis/Operator/Spectral/DissipativeShift.lean",
       "imports": [],
-      "externalImportCount": 3
+      "externalImportCount": 4
     },
     {
       "name": "LeanCondensedMatter.Analysis.Operator.Spectral.EigenvectorFamily",
@@ -2536,9 +2534,10 @@
       "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/ManyBody/PointwiseHall.lean",
       "imports": [
         "LeanCondensedMatter.Models.MassiveDirac.Bastin.Interband",
+        "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreePartitionFunction",
         "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.TwoModeResponse"
       ],
-      "externalImportCount": 1
+      "externalImportCount": 3
     },
     {
       "name": "LeanCondensedMatter.Models.MassiveDirac.Model.Basic",
@@ -3316,7 +3315,7 @@
       "imports": [
         "LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Continuity.Scalar1D"
       ],
-      "externalImportCount": 1
+      "externalImportCount": 2
     },
     {
       "name": "LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Continuity.OperatorCurrentBridge1D",
@@ -3385,7 +3384,7 @@
         "LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Continuity.SchwartzIntegral1D",
         "LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Probability.Integral1D"
       ],
-      "externalImportCount": 2
+      "externalImportCount": 1
     },
     {
       "name": "LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Continuity.Weak1D",
@@ -3395,7 +3394,7 @@
         "LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Continuity.Scalar1D",
         "LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Probability.Integral1D"
       ],
-      "externalImportCount": 1
+      "externalImportCount": 0
     },
     {
       "name": "LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Continuity",
@@ -3415,13 +3414,13 @@
         "LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Electromagnetic.MinimalCoupling1D",
         "LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Probability.Basic1D"
       ],
-      "externalImportCount": 1
+      "externalImportCount": 2
     },
     {
       "name": "LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Electromagnetic.MinimalCoupling1D",
       "sourceFile": "LeanCondensedMatter/QuantumMechanics/SingleParticle/Continuum/Electromagnetic/MinimalCoupling1D.lean",
       "imports": [],
-      "externalImportCount": 1
+      "externalImportCount": 3
     },
     {
       "name": "LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Evolution.Interface1D",
@@ -3429,7 +3428,7 @@
       "imports": [
         "LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Hamiltonian.Basic1D"
       ],
-      "externalImportCount": 2
+      "externalImportCount": 1
     },
     {
       "name": "LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Evolution.Probability1D",
@@ -3438,7 +3437,7 @@
         "LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Evolution.Interface1D",
         "LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.L2.Probability1D"
       ],
-      "externalImportCount": 1
+      "externalImportCount": 0
     },
     {
       "name": "LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Evolution.RepresentativeContinuity1D",
@@ -3447,7 +3446,7 @@
         "LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Continuity.SchwartzIntegral1D",
         "LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Evolution.Probability1D"
       ],
-      "externalImportCount": 1
+      "externalImportCount": 0
     },
     {
       "name": "LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Evolution.Stone1D",
@@ -3474,7 +3473,7 @@
       "imports": [
         "LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.L2.Multiplication1D"
       ],
-      "externalImportCount": 3
+      "externalImportCount": 2
     },
     {
       "name": "LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Hamiltonian.Closed1D",
@@ -3482,7 +3481,7 @@
       "imports": [
         "LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Hamiltonian.Regularity1D"
       ],
-      "externalImportCount": 2
+      "externalImportCount": 4
     },
     {
       "name": "LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Hamiltonian.DenseDomain1D",
@@ -3509,7 +3508,7 @@
       "imports": [
         "LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Hamiltonian.Closed1D"
       ],
-      "externalImportCount": 4
+      "externalImportCount": 5
     },
     {
       "name": "LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Hamiltonian.MaximalLaplacian1D",
@@ -3525,7 +3524,7 @@
       "imports": [
         "LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Hamiltonian.MaximalLaplacian1D"
       ],
-      "externalImportCount": 1
+      "externalImportCount": 3
     },
     {
       "name": "LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Hamiltonian.SelfAdjoint1D",
@@ -3537,7 +3536,7 @@
         "LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Hamiltonian.Symmetry1D",
         "LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.L2.Multiplication1D"
       ],
-      "externalImportCount": 1
+      "externalImportCount": 2
     },
     {
       "name": "LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Hamiltonian.Symmetry1D",
@@ -3546,7 +3545,7 @@
         "LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Hamiltonian.LaplacianSymmetry1D",
         "LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.L2.Multiplication1D"
       ],
-      "externalImportCount": 2
+      "externalImportCount": 1
     },
     {
       "name": "LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.L2.Multiplication1D",
@@ -3563,13 +3562,13 @@
         "LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.L2.Multiplication1D",
         "LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Probability.Integral1D"
       ],
-      "externalImportCount": 3
+      "externalImportCount": 2
     },
     {
       "name": "LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Probability.Basic1D",
       "sourceFile": "LeanCondensedMatter/QuantumMechanics/SingleParticle/Continuum/Probability/Basic1D.lean",
       "imports": [],
-      "externalImportCount": 1
+      "externalImportCount": 2
     },
     {
       "name": "LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Probability.Integral1D",
@@ -3585,7 +3584,7 @@
       "imports": [
         "LeanCondensedMatter.Analysis.Operator.SchwartzKinetic1D"
       ],
-      "externalImportCount": 2
+      "externalImportCount": 4
     },
     {
       "name": "LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.SchwartzTwoLevelSchrodinger1D",
@@ -3594,7 +3593,7 @@
         "LeanCondensedMatter.Analysis.Operator.SchwartzTwoLevel1D",
         "LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.SchwartzSchrodinger1D"
       ],
-      "externalImportCount": 2
+      "externalImportCount": 1
     },
     {
       "name": "LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum",
@@ -3649,7 +3648,7 @@
       "name": "LeanCondensedMatter.QuantumMechanics.SingleParticle.OrbitalAngularMomentum",
       "sourceFile": "LeanCondensedMatter/QuantumMechanics/SingleParticle/OrbitalAngularMomentum.lean",
       "imports": [],
-      "externalImportCount": 2
+      "externalImportCount": 4
     },
     {
       "name": "LeanCondensedMatter.QuantumMechanics.SingleParticle.SymmetrizedVelocityCurrent",
@@ -3933,12 +3932,6 @@
       "externalImportCount": 0
     },
     {
-      "name": "LeanCondensedMatter.QuantumTheory.Gibbs.FreeBoltzmannKernel",
-      "sourceFile": "LeanCondensedMatter/QuantumTheory/Gibbs/FreeBoltzmannKernel.lean",
-      "imports": [],
-      "externalImportCount": 2
-    },
-    {
       "name": "LeanCondensedMatter.QuantumTheory.Gibbs.FreeEnergy",
       "sourceFile": "LeanCondensedMatter/QuantumTheory/Gibbs/FreeEnergy.lean",
       "imports": [
@@ -4003,7 +3996,6 @@
         "LeanCondensedMatter.QuantumTheory.Gibbs.EigenbasisExpectation",
         "LeanCondensedMatter.QuantumTheory.Gibbs.EnergyExpectation",
         "LeanCondensedMatter.QuantumTheory.Gibbs.EqualityComponents",
-        "LeanCondensedMatter.QuantumTheory.Gibbs.FreeBoltzmannKernel",
         "LeanCondensedMatter.QuantumTheory.Gibbs.FreeEnergy",
         "LeanCondensedMatter.QuantumTheory.Gibbs.HeatOperator",
         "LeanCondensedMatter.QuantumTheory.Gibbs.MinimizerUniqueness",
@@ -4249,10 +4241,11 @@
       "name": "LeanCondensedMatter.QuantumTheory.LinearResponse.Perturbation.DensityFirstVariation",
       "sourceFile": "LeanCondensedMatter/QuantumTheory/LinearResponse/Perturbation/DensityFirstVariation.lean",
       "imports": [
+        "LeanCondensedMatter.Analysis.Operator.AdjointConjugation",
         "LeanCondensedMatter.QuantumTheory.DensityOperator.Expectation",
         "LeanCondensedMatter.QuantumTheory.LinearResponse.Perturbation.Hermitian"
       ],
-      "externalImportCount": 3
+      "externalImportCount": 2
     },
     {
       "name": "LeanCondensedMatter.QuantumTheory.LinearResponse.Perturbation.Hermitian",
@@ -4277,6 +4270,7 @@
       "sourceFile": "LeanCondensedMatter/QuantumTheory/LinearResponse/Perturbation/Unitary.lean",
       "imports": [
         "LeanCondensedMatter.Analysis.Dyson.Unitary",
+        "LeanCondensedMatter.Analysis.Operator.AdjointConjugation",
         "LeanCondensedMatter.QuantumTheory.LinearResponse.Response.KuboFormula"
       ],
       "externalImportCount": 0
@@ -4303,6 +4297,7 @@
       "name": "LeanCondensedMatter.QuantumTheory.LinearResponse.Response.KuboFormula",
       "sourceFile": "LeanCondensedMatter/QuantumTheory/LinearResponse/Response/KuboFormula.lean",
       "imports": [
+        "LeanCondensedMatter.Analysis.Operator.AdjointConjugation",
         "LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.Stationarity",
         "LeanCondensedMatter.QuantumTheory.LinearResponse.Expectation.Density",
         "LeanCondensedMatter.QuantumTheory.LinearResponse.Perturbation.Hermitian"
@@ -4313,6 +4308,7 @@
       "name": "LeanCondensedMatter.QuantumTheory.LinearResponse.Response.ObservableVariation",
       "sourceFile": "LeanCondensedMatter/QuantumTheory/LinearResponse/Response/ObservableVariation.lean",
       "imports": [
+        "LeanCondensedMatter.Analysis.Operator.AdjointConjugation",
         "LeanCondensedMatter.QuantumTheory.LinearResponse.Response.Channel",
         "LeanCondensedMatter.QuantumTheory.LinearResponse.Response.SourceCoupling"
       ],
@@ -4394,7 +4390,7 @@
       "name": "LeanCondensedMatter.QuantumTheory.Occupation.ZeroTemperature",
       "sourceFile": "LeanCondensedMatter/QuantumTheory/Occupation/ZeroTemperature.lean",
       "imports": [],
-      "externalImportCount": 3
+      "externalImportCount": 1
     },
     {
       "name": "LeanCondensedMatter.QuantumTheory.Occupation",
@@ -4459,7 +4455,7 @@
         "LeanCondensedMatter.QuantumTheory.LocalizedSpin",
         "LeanCondensedMatter.QuantumTheory.SpinHalf"
       ],
-      "externalImportCount": 2
+      "externalImportCount": 4
     },
     {
       "name": "LeanCondensedMatter.QuantumTheory.SpinHalf",
@@ -5027,10 +5023,9 @@
       "name": "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.FreePartitionDeterminant",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Bosonic/Thermal/FreePartitionDeterminant.lean",
       "imports": [
-        "LeanCondensedMatter.QuantumTheory.Gibbs.FreeBoltzmannKernel",
         "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BoltzmannWeightSummable"
       ],
-      "externalImportCount": 2
+      "externalImportCount": 4
     },
     {
       "name": "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.FreePartitionFunction",
