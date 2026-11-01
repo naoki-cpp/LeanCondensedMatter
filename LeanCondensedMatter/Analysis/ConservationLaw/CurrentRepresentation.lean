@@ -1,4 +1,4 @@
-import Mathlib.Tactic
+import Mathlib.Algebra.Module.LinearMap.Defs
 
 set_option linter.style.header false
 
