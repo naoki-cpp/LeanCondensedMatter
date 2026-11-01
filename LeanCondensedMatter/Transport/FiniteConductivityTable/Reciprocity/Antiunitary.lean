@@ -109,7 +109,7 @@ theorem currentMatrixElement_reverse (m : M) (i : d) (a b : ι) :
       (data.current_covariant m i ((data.spectral m).basis b))
     simpa only [neg_neg] using h.symm
   rw [data.basis_reverse m a, data.basis_reverse m b, hcov]
-  simp only [inner_neg_right, data.timeReversal.inner_map]
+  simp only [inner_neg_right, AntiunitaryMap.inner_map]
 
 /-- Canonical scalar spectral input built from a genuine eigenbasis and
 current operators, with all required reversal identities proved above. -/
