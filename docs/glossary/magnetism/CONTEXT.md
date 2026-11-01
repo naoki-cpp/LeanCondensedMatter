@@ -22,3 +22,10 @@ _Avoid_: exact many-spin dynamics
 The transverse magnetic response tensor obtained from linearized magnetization dynamics
 around a specified saturated equilibrium, with field and time conventions fixed.
 _Avoid_: microscopic Kubo susceptibility without a comparison theorem
+
+**Cyclic Laplacian**:
+The nearest-neighbor difference operator on a periodic ring, sending an amplitude
+f at site i to w times (2f(i) - f(i-1) - f(i+1)), with site labels taken modulo
+the number of sites. Its real weight w acquires an exchange-energy interpretation
+only after identification with a spin or magnon model.
+_Avoid_: a full many-spin Hamiltonian

@@ -1,7 +1,7 @@
 import LeanCondensedMatter.Analysis.Lorentzian.Weighted
 import LeanCondensedMatter.QuantumTheory.Occupation.ZeroTemperature
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic
-import Mathlib.Tactic
+import Mathlib.Tactic.Ring
 
 set_option linter.style.header false
 

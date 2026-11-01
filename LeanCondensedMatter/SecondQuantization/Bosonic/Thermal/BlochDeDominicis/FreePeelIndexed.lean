@@ -32,30 +32,30 @@ namespace FreeThermalField
 variable [Fintype Mode]
 
 /-- The whole finite CCR peel is in the convergence-aware free-Gibbs domain. -/
-theorem operatorPeelSum_mem_freeGibbsDomain
-    (ε : Mode → ℝ) (β : ℝ) (hpos : ∀ i, 0 < β * ε i)
+theorem operatorPeelSum_mem_grandCanonicalGibbsDomain
+    (ε : Mode → ℝ) (β μ : ℝ) (hpos : ∀ i, 0 < β * (ε i - μ))
     (C₁ : FreeThermalField Mode) (l : List (FreeThermalField Mode)) :
-    C₁.operatorPeelSum l ∈ freeGibbsDomain ε β := by
+    C₁.operatorPeelSum l ∈ grandCanonicalGibbsDomain ε β μ := by
   have h : C₁.operatorPeelSum l =
       ∑ j : Fin l.length,
         C₁.exchangeValue (l[(j : ℕ)]'j.isLt) • orderedProduct (l.eraseIdx j) := by
     simpa only [operatorPeelSum, one_pow, one_mul, orderedProduct] using
       ScalarExchange.peelSum_eq_sum operator exchangeValue (1 : ℂ) C₁ l
-  rw [h, mem_freeGibbsDomain_iff]
-  exact freeGibbsSummable_sum ε β
+  rw [h, mem_grandCanonicalGibbsDomain_iff]
+  exact grandCanonicalGibbsSummable_sum ε β μ
     (fun j : Fin l.length =>
       C₁.exchangeValue (l[(j : ℕ)]'j.isLt) • orderedProduct (l.eraseIdx j))
-    (fun j => freeGibbsSummable_smul ε β _
-      (FreeThermalField.freeGibbsSummable_orderedProduct ε β hpos (l.eraseIdx j)))
+    (fun j => grandCanonicalGibbsSummable_smul ε β μ _
+      (FreeThermalField.grandCanonicalGibbsSummable_orderedProduct ε β μ hpos (l.eraseIdx j)))
 
 /-- Expectation of the bosonic CCR peel as a finite sum over the removed tail position. -/
-theorem freeGibbsExpectation_operatorPeelSum_eq_sum
-    (ε : Mode → ℝ) (β : ℝ) (hpos : ∀ i, 0 < β * ε i)
+theorem grandCanonicalGibbsExpectation_operatorPeelSum_eq_sum
+    (ε : Mode → ℝ) (β μ : ℝ) (hpos : ∀ i, 0 < β * (ε i - μ))
     (C₁ : FreeThermalField Mode) (l : List (FreeThermalField Mode)) :
-    freeGibbsExpectation ε β (C₁.operatorPeelSum l) =
+    grandCanonicalGibbsExpectation ε β μ (C₁.operatorPeelSum l) =
       ∑ j : Fin l.length,
         C₁.exchangeValue (l[(j : ℕ)]'j.isLt) *
-          freeGibbsExpectation ε β (orderedProduct (l.eraseIdx j)) := by
+          grandCanonicalGibbsExpectation ε β μ (orderedProduct (l.eraseIdx j)) := by
   have h : C₁.operatorPeelSum l =
       ∑ j : Fin l.length,
         C₁.exchangeValue (l[(j : ℕ)]'j.isLt) • orderedProduct (l.eraseIdx j) := by
@@ -63,23 +63,23 @@ theorem freeGibbsExpectation_operatorPeelSum_eq_sum
       ScalarExchange.peelSum_eq_sum operator exchangeValue (1 : ℂ) C₁ l
   rw [h]
   calc
-    freeGibbsExpectation ε β
+    grandCanonicalGibbsExpectation ε β μ
         (∑ j : Fin l.length,
           C₁.exchangeValue (l[(j : ℕ)]'j.isLt) • orderedProduct (l.eraseIdx j)) =
         ∑ j : Fin l.length,
-          freeGibbsExpectation ε β
+          grandCanonicalGibbsExpectation ε β μ
             (C₁.exchangeValue (l[(j : ℕ)]'j.isLt) • orderedProduct (l.eraseIdx j)) :=
-      freeGibbsExpectation_sum_of_summable ε β
+      grandCanonicalGibbsExpectation_sum_of_summable ε β μ
         (fun j : Fin l.length =>
           C₁.exchangeValue (l[(j : ℕ)]'j.isLt) • orderedProduct (l.eraseIdx j))
-        (fun j => freeGibbsSummable_smul ε β _
-          (FreeThermalField.freeGibbsSummable_orderedProduct ε β hpos (l.eraseIdx j)))
+        (fun j => grandCanonicalGibbsSummable_smul ε β μ _
+          (FreeThermalField.grandCanonicalGibbsSummable_orderedProduct ε β μ hpos (l.eraseIdx j)))
     _ = ∑ j : Fin l.length,
         C₁.exchangeValue (l[(j : ℕ)]'j.isLt) *
-          freeGibbsExpectation ε β (orderedProduct (l.eraseIdx j)) := by
+          grandCanonicalGibbsExpectation ε β μ (orderedProduct (l.eraseIdx j)) := by
       apply Finset.sum_congr rfl
       intro j _
-      rw [freeGibbsExpectation_smul]
+      rw [grandCanonicalGibbsExpectation_smul]
 
 end FreeThermalField
 

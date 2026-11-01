@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Transport.KuboBastin.Eigenbasis
 import LeanCondensedMatter.Transport.KuboBastin.Finite
 import LeanCondensedMatter.Transport.KuboBastin.OccupationInterpolation
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.FundThmCalculus
@@ -39,19 +40,6 @@ variable [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
 variable (system : BoundedFreeSystem H)
 variable (data : EnergyEigenbasisLehmannData system ι)
 
-/-- Matrix elements and retarded-resolvent factor of one generalized eigenbasis Bastin transition,
-with the occupation difference removed. -/
-noncomputable def eigenbasisKuboBastinVertexTransitionFactor
-    (measured source : H →L[ℂ] H)
-    (omega eta : ℝ) (mn : ι × ι) : ℂ :=
-  inner ℂ (data.basis mn.1) (measured (data.basis mn.2)) *
-    inner ℂ (data.basis mn.2) (source (data.basis mn.1)) *
-    inner ℂ (data.basis mn.2)
-      (retardedResolvent system.hamiltonian.1
-        (kuboBastinRetardedEnergy system.hbar omega (data.energy mn.1))
-        (kuboBastinEnergyBroadening system.hbar eta)
-        (data.basis mn.2))
-
 /-- One generalized eigenbasis Kubo–Bastin transition with its discrete occupation difference
 replaced by an oriented energy integral of the occupation derivative. -/
 noncomputable def eigenbasisKuboBastinOccupationResolvedVertexTerm
@@ -74,12 +62,10 @@ theorem eigenbasisKuboBastinSpectralVertexTerm_eq_occupationResolved
         system data interpolation measured source omega eta mn := by
   unfold eigenbasisKuboBastinSpectralVertexTerm
     eigenbasisKuboBastinOccupationResolvedVertexTerm
-    eigenbasisKuboBastinVertexTransitionFactor
   rw [show (((data.probability mn.1 - data.probability mn.2 : ℝ) : ℂ)) =
       ∫ energy in data.energy mn.2..data.energy mn.1,
         interpolation.occupationDerivative energy by
     simpa using interpolation.probability_sub_eq_integral system mn.1 mn.2]
-  ring
 
 variable [Fintype ι]
 

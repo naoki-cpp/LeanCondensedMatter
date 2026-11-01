@@ -28,12 +28,12 @@ variable (system : BoundedFreeSystem H)
 
 /-- Heisenberg evolution of an observable, bundled with the preserved self-adjointness proof. -/
 noncomputable def heisenbergObservable (A : Observable H) (t : ℝ) : Observable H :=
-  ⟨heisenbergEvolution system t A.1, by
+  ⟨heisenbergEvolution (freePropagatorGroup system) t A.1, by
     rw [isSelfAdjoint_iff, ← map_star, A.2.star_eq]⟩
 
 @[simp]
 theorem coe_heisenbergObservable (A : Observable H) (t : ℝ) :
-    (heisenbergObservable system A t).1 = heisenbergEvolution system t A.1 :=
+    (heisenbergObservable system A t).1 = heisenbergEvolution (freePropagatorGroup system) t A.1 :=
   rfl
 
 /-- Schrödinger-picture evolution of a density operator by unitary conjugation. -/
@@ -107,10 +107,10 @@ pictures for every bounded operator. -/
 theorem expectation_evolveDensityOperator_eq_heisenberg
     (ρ : DensityOperator H) (A : H →L[ℂ] H) (t : ℝ) :
     (evolveDensityOperator system ρ t).expectation A =
-      ρ.expectation (heisenbergEvolution system t A) := by
+      ρ.expectation (heisenbergEvolution (freePropagatorGroup system) t A) := by
   rw [DensityOperator.expectation_apply, DensityOperator.expectation_apply]
   simpa only [evolveDensityOperator, ContinuousLinearMap.adjointConjugate,
-    heisenbergEvolution_apply, ← star_freePropagator system t, mul_assoc] using
+    heisenbergEvolution_freePropagatorGroup_apply, ← star_freePropagator system t, mul_assoc] using
     (((ρ.isTraceClass.comp_right (star (freePropagator system t))).comp_right A).trace_comp_comm
       (freePropagator system t)).symm
 

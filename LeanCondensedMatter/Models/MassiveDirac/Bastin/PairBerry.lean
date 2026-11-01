@@ -1,5 +1,7 @@
+import LeanCondensedMatter.Models.MassiveDirac.Model.OperatorSpectral
 import LeanCondensedMatter.Models.MassiveDirac.Bastin.PairIntegral
-import Mathlib.Tactic
+import Mathlib.Tactic.FieldSimp
+import Mathlib.Tactic.Ring
 
 set_option linter.style.header false
 
@@ -76,14 +78,14 @@ theorem tendsto_targetCenteredInterbandBastinPairIntegral_re_berryCurvature
   have hgeneric :=
     tendsto_interbandBastinPoleIntegral_re
       (interbandEnergyGap band v m px py)
-      (bastinBandBlockTrace 0 1 (oppositeBand band) band e v m px py)
-      (bastinBandBlockTrace 1 0 (oppositeBand band) band e v m px py)
+      (currentBandBlockTrace 0 1 (oppositeBand band) band e v m px py)
+      (currentBandBlockTrace 1 0 (oppositeBand band) band e v m px py)
       radius hradiusPos hradius
   have him :
       (interbandPoleRegularFactor
         (interbandEnergyGap band v m px py)
-        (bastinBandBlockTrace 0 1 (oppositeBand band) band e v m px py)
-        (bastinBandBlockTrace 1 0 (oppositeBand band) band e v m px py)
+        (currentBandBlockTrace 0 1 (oppositeBand band) band e v m px py)
+        (currentBandBlockTrace 1 0 (oppositeBand band) band e v m px py)
         (0, 0)).im =
       -(e ^ 2 * berryCurvature band v m px py) := by
     rw [← targetCenteredInterbandSpectatorCurrentFactor_eq_interbandPoleRegularFactor]
@@ -93,8 +95,8 @@ theorem tendsto_targetCenteredInterbandBastinPairIntegral_re_berryCurvature
       (fun broadening : ℝ =>
         (interbandBastinPoleIntegral
           (interbandEnergyGap band v m px py)
-          (bastinBandBlockTrace 0 1 (oppositeBand band) band e v m px py)
-          (bastinBandBlockTrace 1 0 (oppositeBand band) band e v m px py)
+          (currentBandBlockTrace 0 1 (oppositeBand band) band e v m px py)
+          (currentBandBlockTrace 1 0 (oppositeBand band) band e v m px py)
           radius broadening).re)
       (nhdsWithin 0 (Set.Ioi 0))
       (nhds (-2 * Real.pi * (e ^ 2 * berryCurvature band v m px py))) := by

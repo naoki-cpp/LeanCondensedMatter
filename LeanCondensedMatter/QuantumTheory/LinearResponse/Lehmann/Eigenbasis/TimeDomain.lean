@@ -170,7 +170,7 @@ theorem eigenbasisExpectation_heisenberg_mul_eq_tsum
     (A B : H →L[ℂ] H) (τ : ℝ)
     (hsum : EigenbasisTimeDomainSummable system data A B) :
     eigenbasisNormalizedExpectation system data
-        (heisenbergEvolution system τ A * B) =
+        (heisenbergEvolution (freePropagatorGroup system) τ A * B) =
       ∑' mn : ι × ι,
         eigenbasisForwardTimeTerm system data A B τ mn := by
   rw [eigenbasisNormalizedExpectation_apply]
@@ -180,7 +180,7 @@ theorem eigenbasisExpectation_heisenberg_mul_eq_tsum
   intro m
   simp only [mul_apply_eq_comp]
   have hinner := data.basis.hasSum_inner_mul_inner
-    (((heisenbergEvolution system τ A)†) (data.basis m))
+    (((heisenbergEvolution (freePropagatorGroup system) τ A)†) (data.basis m))
     (B (data.basis m))
   have hscaled := hinner.mul_left (data.probability m : ℂ)
   rw [← ContinuousLinearMap.adjoint_inner_left]
@@ -198,7 +198,7 @@ theorem eigenbasisExpectation_mul_heisenberg_eq_tsum
     (A B : H →L[ℂ] H) (τ : ℝ)
     (hsum : EigenbasisTimeDomainSummable system data A B) :
     eigenbasisNormalizedExpectation system data
-        (B * heisenbergEvolution system τ A) =
+        (B * heisenbergEvolution (freePropagatorGroup system) τ A) =
       ∑' mn : ι × ι,
         eigenbasisBackwardTimeTerm system data A B τ mn := by
   rw [eigenbasisNormalizedExpectation_apply]
@@ -209,7 +209,7 @@ theorem eigenbasisExpectation_mul_heisenberg_eq_tsum
   simp only [mul_apply_eq_comp]
   have hinner := data.basis.hasSum_inner_mul_inner
     ((B†) (data.basis m))
-    (heisenbergEvolution system τ A (data.basis m))
+    (heisenbergEvolution (freePropagatorGroup system) τ A (data.basis m))
   have hscaled := hinner.mul_left (data.probability m : ℂ)
   rw [← ContinuousLinearMap.adjoint_inner_left]
   rw [← hscaled.tsum_eq]
@@ -263,7 +263,7 @@ theorem commutatorSusceptibility_eigenbasis_eq_timeDomainSeries
     (data : EnergyEigenbasisLehmannData system ι)
     (A B : H →L[ℂ] H) (τ : ℝ)
     (hsum : EigenbasisTimeDomainSummable system data A B) :
-    commutatorSusceptibility system
+    commutatorSusceptibility (freePropagatorGroup system) system.hbar
         (eigenbasisNormalizedExpectation system data) A B τ 0 =
       eigenbasisTimeDomainSeries system data A B τ := by
   rw [commutatorSusceptibility]
@@ -280,11 +280,11 @@ theorem retardedTimeDifferenceKernel_eigenbasis_eq_timeDomainSeries_of_nonneg
     (data : EnergyEigenbasisLehmannData system ι)
     (A B : H →L[ℂ] H) {τ : ℝ} (hτ : 0 ≤ τ)
     (hsum : EigenbasisTimeDomainSummable system data A B) :
-    retardedTimeDifferenceKernel system
+    retardedTimeDifferenceKernel (freePropagatorGroup system) system.hbar
         (eigenbasisNormalizedExpectation system data) A B τ =
       eigenbasisTimeDomainSeries system data A B τ := by
   rw [retardedTimeDifferenceKernel_eq_commutatorSusceptibility_of_nonneg
-    system (eigenbasisNormalizedExpectation system data) A B hτ]
+    (freePropagatorGroup system) system.hbar (eigenbasisNormalizedExpectation system data) A B hτ]
   exact commutatorSusceptibility_eigenbasis_eq_timeDomainSeries
     system data A B τ hsum
 
@@ -293,7 +293,7 @@ transition sum. -/
 theorem retardedTimeDifferenceKernel_eigenbasis_eq_finite_sum_of_nonneg
     [Fintype ι] (data : EnergyEigenbasisLehmannData system ι)
     (A B : H →L[ℂ] H) {τ : ℝ} (hτ : 0 ≤ τ) :
-    retardedTimeDifferenceKernel system
+    retardedTimeDifferenceKernel (freePropagatorGroup system) system.hbar
         (eigenbasisNormalizedExpectation system data) A B τ =
       ∑ mn : ι × ι,
         eigenbasisTimeDomainTerm system data A B τ mn := by

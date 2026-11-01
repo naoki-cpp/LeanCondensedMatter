@@ -1,5 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.ConvergenceAwareGibbs
 import LeanCondensedMatter.QuantumTheory.Gibbs.Boltzmann
+import LeanCondensedMatter.SecondQuantization.Common.Thermal.GrandCanonical
 import Mathlib.Analysis.SpecialFunctions.Log.Summable
 import Mathlib.Data.Finsupp.Basic
 
@@ -13,7 +14,7 @@ temperature, the existing occupation-level Boltzmann summability theorem supplie
 `QuantumTheory.EigenbasisGibbsSummable` hypothesis for `freeEigenvalue ε`.
 
 This module is representation-independent: it also identifies the convergence-aware algebraic
-`freeGibbsPartition` with the canonical pure-point partition function. Completed-space heat and
+`grandCanonicalAlgebraicPartition` with the shared grand partition function. Completed-space heat and
 density operators consume these results downstream.
 -/
 
@@ -26,18 +27,23 @@ noncomputable section
 
 variable {Mode : Type*}
 
-/-- The algebraic occupation trace and the canonical pure-point partition sum are the same
-for arbitrary bosonic mode types. This coordinate identity does not assert convergence. -/
-theorem freeGibbsPartition_eq_coe_eigenbasisPartitionFunction
-    (ε : Mode → ℝ) (β : ℝ) :
-    freeGibbsPartition ε β =
-      (eigenbasisPartitionFunction (freeEigenvalue ε) β : ℂ) := by
-  unfold freeGibbsPartition Common.tsumTrace eigenbasisPartitionFunction
+/-- The algebraic grand-canonical diagonal trace agrees with the shared
+real grand partition function, for arbitrary mode types and chemical potential.
+This coordinate identity does not claim convergence. -/
+theorem grandCanonicalAlgebraicPartition_eq_coe_grandCanonicalPartitionFunction
+    (ε : Mode → ℝ) (β μ : ℝ) :
+    grandCanonicalAlgebraicPartition ε β μ =
+      (Common.grandCanonicalPartitionFunction
+        (Config := Occupation Mode) ε β μ : ℂ) := by
+  unfold grandCanonicalAlgebraicPartition Common.tsumTrace
+  rw [Common.grandCanonicalPartitionFunction_eq_shifted]
+  unfold eigenbasisPartitionFunction
   rw [Complex.ofReal_tsum]
   apply tsum_congr
   intro n
   simp only [matrixCoeff_imaginaryTimeEvolveFree_self, eigenbasisBoltzmannWeight,
     Complex.ofReal_exp]
+  rfl
 
 /-- Positive one-mode gaps and summable one-particle Boltzmann weights imply convergence
 of the free-boson Gibbs partition sum over all finitely supported occupations, even for
@@ -134,18 +140,43 @@ theorem eigenbasisGibbsSummable_freeEigenvalue_of_mode
     exact (abs_of_nonneg
       (eigenbasisBoltzmannWeight_nonneg (freeEigenvalue ε) β n)).symm
 
+/-- If every bosonic mode has positive grand-canonical gap and the
+one-mode shifted Boltzmann family is summable, then the full bosonic
+occupation Gibbs weights of `H - μ N̂` are summable.
+
+For infinitely many modes the second hypothesis is essential: positive
+mode gaps by themselves do not control the total occupation partition sum. -/
+theorem eigenbasisGibbsSummable_grandCanonicalEnergy_of_mode
+    (ε : Mode → ℝ) (β μ : ℝ)
+    (hpos : ∀ i, 0 < β * (ε i - μ))
+    (hmode : EigenbasisGibbsSummable (fun i => ε i - μ) β) :
+    EigenbasisGibbsSummable
+      (Common.grandCanonicalEnergy (Config := Occupation Mode) ε μ) β := by
+  rw [Common.grandCanonicalGibbsSummable_iff_shifted]
+  change EigenbasisGibbsSummable (freeEigenvalue (fun i => ε i - μ)) β
+  exact eigenbasisGibbsSummable_freeEigenvalue_of_mode (fun i => ε i - μ) β
+    hpos hmode
+
 variable [Finite Mode]
 
 /-- Positive one-particle energies make the free occupation Boltzmann weights absolutely summable. -/
 theorem eigenbasisGibbsSummable_freeEigenvalue
     (ε : Mode → ℝ) (β : ℝ) (hβ : 0 < β) (hε : ∀ i, 0 < ε i) :
     EigenbasisGibbsSummable (freeEigenvalue ε) β := by
-  letI := Fintype.ofFinite Mode
-  unfold EigenbasisGibbsSummable
-  have hsum := summable_boltzmannWeight ε β (fun i => mul_pos hβ (hε i))
-  exact hsum.congr fun n => by
-    simp [boltzmannWeight, eigenbasisBoltzmannWeight, Real.norm_eq_abs,
-      abs_of_nonneg (Real.exp_nonneg _)]
+  exact eigenbasisGibbsSummable_freeEigenvalue_of_mode ε β
+    (fun i => mul_pos hβ (hε i)) (eigenbasisGibbsSummable_of_finite ε β)
+
+/-- For finitely many bosonic modes, positive inverse temperature and
+chemical potential below every one-particle energy imply existence of a
+normalizable grand-canonical Gibbs state on the full occupation Fock space. -/
+theorem eigenbasisGibbsSummable_grandCanonicalEnergy
+    (ε : Mode → ℝ) (β μ : ℝ) (hβ : 0 < β)
+    (hgap : ∀ i, μ < ε i) :
+    EigenbasisGibbsSummable
+      (Common.grandCanonicalEnergy (Config := Occupation Mode) ε μ) β := by
+  exact eigenbasisGibbsSummable_grandCanonicalEnergy_of_mode ε β μ
+    (fun i => mul_pos hβ (sub_pos.mpr (hgap i)))
+    (eigenbasisGibbsSummable_of_finite (fun i => ε i - μ) β)
 
 end
 end Bosonic

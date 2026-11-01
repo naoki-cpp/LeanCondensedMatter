@@ -116,26 +116,6 @@ theorem schrodinger_weak_continuity_interval_zero_boundary
     hschrodinger htestIntegrable hcurrentIntegrable]
   simp [weightedBoundaryCurrent1D, ha, hb]
 
-/-- Probability-density specialization of the generic interval weak balance. -/
-theorem weak_continuity_interval_of_pointwise
-    (a b : ℝ)
-    {test testDerivative current currentDerivative densityTimeDerivative : ℝ → ℝ}
-    (hcontinuity : ∀ x, densityTimeDerivative x + currentDerivative x = 0)
-    (htest : ∀ x ∈ [[a, b]], HasDerivAt test (testDerivative x) x)
-    (hcurrent : ∀ x ∈ [[a, b]], HasDerivAt current (currentDerivative x) x)
-    (htestIntegrable : IntervalIntegrable testDerivative volume a b)
-    (hcurrentIntegrable : IntervalIntegrable currentDerivative volume a b) :
-    intervalSmearedDensityRate1D a b test densityTimeDerivative =
-      intervalSmearedCurrentPairing1D a b testDerivative current -
-        weightedBoundaryCurrent1D a b test current := by
-  have hweak := ConservationLaw.weak_continuity_interval_of_pointwise
-    (a := a) (b := b) (test := test) (testDerivative := testDerivative)
-    (current := current) (currentDerivative := currentDerivative)
-    (densityTimeDerivative := densityTimeDerivative)
-    hcontinuity htest hcurrent htestIntegrable hcurrentIntegrable
-  simpa [intervalSmearedDensityRate1D, intervalSmearedCurrentPairing1D,
-    weightedBoundaryCurrent1D] using hweak
-
 end
 end Continuum
 end SingleParticle

@@ -2,7 +2,8 @@ import LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.SelfEnergy
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialKernel
 import LeanCondensedMatter.Models.MassiveDirac.Model.Operator
 import Mathlib.LinearAlgebra.Matrix.NonsingularInverse
-import Mathlib.Tactic
+import Mathlib.Tactic.Linarith
+import Mathlib.Tactic.Ring
 
 set_option linter.style.header false
 
@@ -68,6 +69,22 @@ noncomputable def finiteCutoffContinuumBornDysonDenominator
       side v m probeEnergy broadening disorderStrength hbar pMax ^ 2 -
     ((v ^ 2 * (px ^ 2 + py ^ 2) : ℝ) : ℂ)
 
+/-- The model's radial Dyson denominator is the canonical massive-Dirac
+radial polynomial evaluated at the Born-renormalized spectral parameters. -/
+theorem finiteCutoffContinuumBornDysonDenominator_eq_radial
+    (side : SpectralSide)
+    (v m p probeEnergy broadening disorderStrength hbar pMax : ℝ) :
+    massiveDiracRadialDenominator v p
+        (finiteCutoffContinuumBornEffectiveEnergy
+          side v m probeEnergy broadening disorderStrength hbar pMax)
+        (finiteCutoffContinuumBornEffectiveMass
+          side v m probeEnergy broadening disorderStrength hbar pMax) =
+      finiteCutoffContinuumBornDysonDenominator
+        side v m p 0 probeEnergy broadening disorderStrength hbar pMax := by
+  unfold massiveDiracRadialDenominator finiteCutoffContinuumBornDysonDenominator
+  push_cast
+  ring
+
 /-- Product of the radial retarded and advanced finite-`η` Born-Dyson denominators. -/
 def finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct
     (v m p probeEnergy broadening disorderStrength hbar pMax : ℝ) : ℂ :=
@@ -93,10 +110,7 @@ theorem finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct_eq_mul
           .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax := by
   unfold finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct
     massiveDiracRetardedAdvancedRadialDenominatorProduct
-  congr 1 <;>
-    unfold massiveDiracRadialDenominator finiteCutoffContinuumBornDysonDenominator <;>
-    push_cast <;>
-    ring
+  simp only [finiteCutoffContinuumBornDysonDenominator_eq_radial]
 
 /-- Scalar Pauli coefficient of the finite-`η` Born-Dyson propagator candidate. -/
 noncomputable def finiteCutoffContinuumBornDysonScalarCoefficient
@@ -233,6 +247,28 @@ theorem finiteCutoffContinuumBornDysonGreenOperator_polar_eq
       (finiteCutoffContinuumBornEffectiveMass
         side v m probeEnergy broadening disorderStrength hbar pMax)
       v p θ)
+
+/-- Matrix-valued polar Born-Dyson Green identity, shared by momentum-space spinor
+rotation and the full-angle real-space Fourier constructions. -/
+theorem finiteCutoffContinuumBornDysonGreenMatrix_polar_eq
+    (side : SpectralSide)
+    (v m p θ probeEnergy broadening disorderStrength hbar pMax : ℝ) :
+    finiteCutoffContinuumBornDysonGreenMatrix
+        side v m (p * Real.cos θ) (p * Real.sin θ)
+        probeEnergy broadening disorderStrength hbar pMax =
+      polarPauliMatrix
+        (finiteCutoffContinuumBornDysonScalarCoefficient
+          side v m p 0 probeEnergy broadening disorderStrength hbar pMax)
+        (finiteCutoffContinuumBornDysonPauliCoefficient .x
+          side v m p 0 probeEnergy broadening disorderStrength hbar pMax)
+        (finiteCutoffContinuumBornDysonPauliCoefficient .z
+          side v m p 0 probeEnergy broadening disorderStrength hbar pMax) θ := by
+  apply (Matrix.toEuclideanCLM :
+    Matrix2 ≃⋆ₐ[ℂ] (DiracHilbert →L[ℂ] DiracHilbert)).injective
+  simpa [finiteCutoffContinuumBornDysonGreenOperator, polarPauliOperator,
+    matrixOperator] using
+    (finiteCutoffContinuumBornDysonGreenOperator_polar_eq
+      side v m p θ probeEnergy broadening disorderStrength hbar pMax)
 
 /-- At zero disorder strength the finite-`η` Born-Dyson denominator reduces to the clean Pauli Green
 denominator. -/

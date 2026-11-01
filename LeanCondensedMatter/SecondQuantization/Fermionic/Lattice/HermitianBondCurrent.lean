@@ -63,7 +63,7 @@ theorem boundedBondOperator_eq (K : LocallyFiniteHopping Site) (x y : Site) :
     rw [map_sub, map_smul, map_smul]
     rfl
   rw [hdGamma]
-  change (boundedLatticeOperatorAlgEquiv (Site := Site)) (_ - _) = _
+  change (AlgebraicFock.finiteHilbertOperatorAlgEquiv (Mode := Site) Finsupp.basisSingleOne) (_ - _) = _
   rw [map_sub, map_smul, map_smul]
   rfl
 
@@ -93,7 +93,7 @@ theorem boundedBondCurrent_eq_peierlsCoupling_smul
     boundedBondCurrent ℏ q K x y =
       peierlsCoupling ℏ q • K.boundedBondOperator x y := by
   unfold boundedBondCurrent bondCurrent LocallyFiniteHopping.boundedBondOperator peierlsCoupling
-  change (boundedLatticeOperatorAlgEquiv (Site := Site)) (_ • _) = _
+  change (AlgebraicFock.finiteHilbertOperatorAlgEquiv (Mode := Site) Finsupp.basisSingleOne) (_ • _) = _
   rw [map_smul]
   rfl
 

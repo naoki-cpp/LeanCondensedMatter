@@ -1,6 +1,5 @@
 import Mathlib.Analysis.InnerProductSpace.Adjoint
 import Mathlib.Analysis.InnerProductSpace.Basic
-import Mathlib.Tactic
 
 set_option linter.style.header false
 

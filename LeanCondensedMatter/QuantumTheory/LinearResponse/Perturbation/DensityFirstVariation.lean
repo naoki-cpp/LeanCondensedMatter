@@ -42,26 +42,26 @@ noncomputable section
 
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
 
-variable (system : BoundedFreeSystem H)
+variable (U : Multiplicative ℝ →* unitary (H →L[ℂ] H)) (hbar : ℝ)
 
 /-- The bounded-operator representative of the interaction-picture perturbed density. -/
 noncomputable def perturbedDensityOperator
     (ρ : DensityOperator H) (V : ℝ → (H →L[ℂ] H))
     (lam t : ℝ) : H →L[ℂ] H :=
-  timeDependentInteractionPropagator system V lam t * ρ.op *
-    star (timeDependentInteractionPropagator system V lam t)
+  timeDependentInteractionPropagator U hbar V lam t * ρ.op *
+    star (timeDependentInteractionPropagator U hbar V lam t)
 
 /-- The general first variation of `U_{I,λ} ρ₀ U_{I,λ}†` at zero coupling. -/
 noncomputable def densityOperatorFirstVariation
     (ρ : DensityOperator H) (V : ℝ → (H →L[ℂ] H))
     (t : ℝ) : H →L[ℂ] H :=
-  timeDependentPropagatorFirstVariation system V t * ρ.op +
-    ρ.op * star (timeDependentPropagatorFirstVariation system V t)
+  timeDependentPropagatorFirstVariation U hbar V t * ρ.op +
+    ρ.op * star (timeDependentPropagatorFirstVariation U hbar V t)
 
 @[simp]
 theorem perturbedDensityOperator_zero_coupling
     (ρ : DensityOperator H) (V : ℝ → (H →L[ℂ] H)) (t : ℝ) :
-    perturbedDensityOperator system ρ V 0 t = ρ.op := by
+    perturbedDensityOperator U hbar ρ V 0 t = ρ.op := by
   simp [perturbedDensityOperator]
 
 /-- The interaction-picture density representative is differentiable at zero coupling, with first
@@ -70,20 +70,20 @@ theorem hasDerivAt_perturbedDensityOperator_zero_of_bound
     (ρ : DensityOperator H)
     {V : ℝ → (H →L[ℂ] H)} {β M t : ℝ} (hM : 0 ≤ M)
     (hV : ∀ s ∈ Set.Icc (0 : ℝ) β,
-      ‖timeDependentInteractionPerturbation system V s‖ ≤ M)
+      ‖timeDependentInteractionPerturbation U V s‖ ≤ M)
     (ht : t ∈ Set.Icc (0 : ℝ) β) :
     HasDerivAt
-      (fun lam : ℝ => perturbedDensityOperator system ρ V lam t)
-      (densityOperatorFirstVariation system ρ V t)
+      (fun lam : ℝ => perturbedDensityOperator U hbar ρ V lam t)
+      (densityOperatorFirstVariation U hbar ρ V t)
       0 := by
   have hU : HasDerivAt
-      (fun lam : ℝ => timeDependentInteractionPropagator system V lam t)
-      (timeDependentPropagatorFirstVariation system V t)
+      (fun lam : ℝ => timeDependentInteractionPropagator U hbar V lam t)
+      (timeDependentPropagatorFirstVariation U hbar V t)
       0 :=
-    hasDerivAt_timeDependentInteractionPropagator_zero_of_bound system hM hV ht
+    hasDerivAt_timeDependentInteractionPropagator_zero_of_bound U hbar hM hV ht
   have hUstar : HasDerivAt
-      (fun lam : ℝ => star (timeDependentInteractionPropagator system V lam t))
-      (star (timeDependentPropagatorFirstVariation system V t))
+      (fun lam : ℝ => star (timeDependentInteractionPropagator U hbar V lam t))
+      (star (timeDependentPropagatorFirstVariation U hbar V t))
       0 := by
     simpa [Function.comp_def] using hU.star
   have hleft := hU.mul_const ρ.op
@@ -96,10 +96,10 @@ theorem hasDerivAt_perturbedDensityOperator_zero_of_bound
 `ρ₀`. -/
 theorem densityOperatorFirstVariation_eq_lie_of_star_eq_neg
     (ρ : DensityOperator H) (V : ℝ → (H →L[ℂ] H)) (t : ℝ)
-    (hK : star (timeDependentPropagatorFirstVariation system V t) =
-      -timeDependentPropagatorFirstVariation system V t) :
-    densityOperatorFirstVariation system ρ V t =
-      ⁅timeDependentPropagatorFirstVariation system V t, ρ.op⁆ := by
+    (hK : star (timeDependentPropagatorFirstVariation U hbar V t) =
+      -timeDependentPropagatorFirstVariation U hbar V t) :
+    densityOperatorFirstVariation U hbar ρ V t =
+      ⁅timeDependentPropagatorFirstVariation U hbar V t, ρ.op⁆ := by
   rw [LieRing.of_associative_ring_bracket]
   simp only [densityOperatorFirstVariation, hK, mul_neg, sub_eq_add_neg]
 
@@ -108,10 +108,10 @@ Liouville commutator `[K_V(t), ρ₀]`. -/
 theorem densityOperatorFirstVariation_eq_lie_of_isSelfAdjoint
     (ρ : DensityOperator H) (V : ℝ → (H →L[ℂ] H))
     (hV : ∀ s, IsSelfAdjoint (V s)) (t : ℝ) :
-    densityOperatorFirstVariation system ρ V t =
-      ⁅timeDependentPropagatorFirstVariation system V t, ρ.op⁆ :=
-  densityOperatorFirstVariation_eq_lie_of_star_eq_neg system ρ V t
-    (star_timeDependentPropagatorFirstVariation_eq_neg_of_isSelfAdjoint system V hV t)
+    densityOperatorFirstVariation U hbar ρ V t =
+      ⁅timeDependentPropagatorFirstVariation U hbar V t, ρ.op⁆ :=
+  densityOperatorFirstVariation_eq_lie_of_star_eq_neg U hbar ρ V t
+    (star_timeDependentPropagatorFirstVariation_eq_neg_of_isSelfAdjoint U hbar V hV t)
 
 end
 end LinearResponse

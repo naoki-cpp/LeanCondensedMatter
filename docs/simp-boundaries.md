@@ -170,6 +170,9 @@ The following declaration families are deliberate API normalization boundaries:
 - `PureState.val_ofStateVector`
 - `PureState.ofStateVector_smul_of_norm_eq_one`
 - all current simp rules in `LinearResponse/Dynamics/Free`
+- `heisenbergEvolution_zero`, `heisenbergEvolution_heisenbergEvolution`, and
+  `norm_heisenbergEvolution` in `LinearResponse/Dynamics/Unitary`
+- `LinearPMap.stoneEvolutionUnitaryGroup_apply`
 - `DensityOperator.normalizePositive_op`
 - all current simp rules in `LinearResponse/HarmonicSource`
 - all current simp rules in `LinearResponse/FrequencyDomain`
@@ -192,7 +195,6 @@ The following declaration families are deliberate API normalization boundaries:
 - `DensityOperator.ofFiniteDimensional_op`
 - `DensityOperator.expectation_id`
 - `perturbedDensityOperator_zero_coupling`
-- `constantCoeff_freeExchangeGrandPartitionSeries`
 - `timeDependentInteractionPerturbation_sourceCoupledPerturbation`
 - `timeDependentInteractionPropagator_zero_coupling`
 - `timeDependentInteractionPropagator_zero_time`
@@ -210,7 +212,7 @@ The following declaration families are deliberate API normalization boundaries:
 - `eigenbasisTransitionData_energyGap`
 - `eigenbasisTransitionData_weight_diag`
 - `norm_freePropagator_apply`
-- `phaseState_val`
+- `QuantumTheory.phaseState_val` in `Postulates`
 - `evolveState_val`
 - `evolveState_zero`
 - `evolveState_neg_after`
@@ -303,10 +305,19 @@ The following current simp boundaries are Green:
 - `pauliGreenDenominator_radial_re`
 - `pauliGreenDenominator_radial_im`
 
+## Green: completed fermionic fields
+
+- `SecondQuantization.Fermionic.star_completedCreate` — the adjoint of a mode creation operator
+  normalizes to the existing annihilation operator, consistently with the finite realization.
+- `SecondQuantization.Fermionic.completedCreateField_basisState` — a mode-basis coefficient
+  vector evaluates the extended field to the existing mode creation operator.
+
 ## Explicit-only reviewed boundaries
 
 These declarations are intentionally ordinary theorems rather than global simp rules. Their use is
 a substantive proof step, a coordinate/representation expansion, or a nontrivial analytic fact.
+
+- `SecondQuantization.Common.finiteDimensionalOperatorTrace_finiteAnalyticBasis` — occupation-basis coordinate expansion; the generic trace evaluation remains the global normal form.
 
 - `ConservationLaw.symmetrizedProductBilinear_apply` — explicit bridge from the bilinear owner to the pointwise wrapper; keeping it out of the global simp set avoids a rewrite cycle.
 - `InternalSpace.dotProduct_pauliAxis` — explicit x/y/z coordinate expansion.

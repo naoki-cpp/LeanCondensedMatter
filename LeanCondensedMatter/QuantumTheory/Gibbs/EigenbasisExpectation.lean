@@ -30,7 +30,7 @@ theorem hasSum_eigenbasisGibbsEnergyExpectation
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
 
 /-- If the same energy data are represented by a bounded observable, the spectral-series energy
-expectation agrees with the canonical density-state energy expectation. -/
+expectation agrees with the density-operator energy expectation. -/
 theorem eigenbasisGibbsEnergyExpectation_eq_energyExpValue [Nonempty ι]
     (b : HilbertBasis ι ℂ H) (E : ι → ℝ) (β : ℝ)
     (hsum : EigenbasisGibbsSummable E β) (Hop : Observable H)

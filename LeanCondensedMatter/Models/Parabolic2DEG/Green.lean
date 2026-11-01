@@ -1,6 +1,6 @@
 import LeanCondensedMatter.Models.Parabolic2DEG.ResponseParameters
 import LeanCondensedMatter.Transport.Resolvent.Spectral
-import Mathlib.Tactic
+import Mathlib.Tactic.FunProp
 
 set_option linter.style.header false
 

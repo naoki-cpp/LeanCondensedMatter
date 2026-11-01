@@ -3,8 +3,19 @@ import LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventConvergence
 import LeanCondensedMatter.Analysis.Operator.BoundedUnitaryEvolution
 import Mathlib.Analysis.Normed.Operator.Completeness
 import Mathlib.Analysis.Calculus.Deriv.Slope
+import Mathlib.Analysis.Calculus.MeanValue
+import Mathlib.Analysis.Calculus.Deriv.Mul
+import Mathlib.Analysis.SpecialFunctions.Exponential
 import Mathlib.Topology.MetricSpace.Cauchy
-import Mathlib.Tactic
+import Mathlib.Algebra.Group.TypeTags.Basic
+import Mathlib.Algebra.Star.Unitary
+import Mathlib.Tactic.Abel
+import Mathlib.Tactic.FunProp
+import Mathlib.Tactic.GCongr
+import Mathlib.Tactic.Linarith
+import Mathlib.Tactic.NormNum
+import Mathlib.Tactic.Positivity
+import Mathlib.Tactic.Ring
 
 set_option linter.style.header false
 
@@ -144,24 +155,14 @@ private theorem resolventApproximationEvolution_domain_cauchy
     have hsscaled :
         ‖boundedSelfAdjointApproximation A hA s hs (x : H) - A x‖ * (2 * |t|) < ε :=
       (lt_div_iff₀ hden).mp hsconv
+    have hhalf (a : ℝ) (ha : a * (2 * |t|) < ε) : a * |t| < ε / 2 := by
+      nlinarith only [ha]
     have hrhalf :
-        ‖boundedSelfAdjointApproximation A hA r hr (x : H) - A x‖ * |t| < ε / 2 := by
-      have h := hrscaled
-      have hre :
-          ‖boundedSelfAdjointApproximation A hA r hr (x : H) - A x‖ * (2 * |t|) =
-            2 * (‖boundedSelfAdjointApproximation A hA r hr (x : H) - A x‖ * |t|) := by
-        ring
-      rw [hre] at h
-      linarith
+        ‖boundedSelfAdjointApproximation A hA r hr (x : H) - A x‖ * |t| < ε / 2 :=
+      hhalf _ hrscaled
     have hshalf :
-        ‖boundedSelfAdjointApproximation A hA s hs (x : H) - A x‖ * |t| < ε / 2 := by
-      have h := hsscaled
-      have hre :
-          ‖boundedSelfAdjointApproximation A hA s hs (x : H) - A x‖ * (2 * |t|) =
-            2 * (‖boundedSelfAdjointApproximation A hA s hs (x : H) - A x‖ * |t|) := by
-        ring
-      rw [hre] at h
-      linarith
+        ‖boundedSelfAdjointApproximation A hA s hs (x : H) - A x‖ * |t| < ε / 2 :=
+      hhalf _ hsscaled
     have hdiff :
         ‖(boundedSelfAdjointApproximation A hA r hr -
             boundedSelfAdjointApproximation A hA s hs) (x : H)‖ ≤
@@ -255,6 +256,7 @@ private theorem norm_resolventApproximationEvolution_sub_atScale_le
             (positiveApproximationScale_pos s) x‖ * |t|
   exact norm_resolventApproximationEvolution_sub_le
     A hA r (positiveApproximationScale s) hr (positiveApproximationScale_pos s) t x
+
 
 
 end
@@ -574,6 +576,23 @@ theorem stoneEvolution_mul_star
         star (stoneEvolution A hA t) = 1 := by
   rw [stoneEvolution_star, ← stoneEvolution_add]
   simp
+
+/-- The Stone propagators as a one-parameter group of unitary bounded operators.
+The generator is allowed to be unbounded; no operator-norm continuity is asserted. -/
+noncomputable def stoneEvolutionUnitaryGroup
+    (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) :
+    Multiplicative ℝ →* unitary (H →L[ℂ] H) where
+  toFun t := ⟨stoneEvolution A hA t.toAdd, by
+    rw [Unitary.mem_iff]
+    exact ⟨stoneEvolution_star_mul A hA t.toAdd, stoneEvolution_mul_star A hA t.toAdd⟩⟩
+  map_one' := Subtype.ext (stoneEvolution_zero A hA)
+  map_mul' t s := Subtype.ext (stoneEvolution_add A hA t.toAdd s.toAdd)
+
+@[simp]
+theorem stoneEvolutionUnitaryGroup_apply
+    (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (t : ℝ) :
+    (stoneEvolutionUnitaryGroup A hA (Multiplicative.ofAdd t) : H →L[ℂ] H) =
+      stoneEvolution A hA t := rfl
 
 end
 
@@ -996,6 +1015,65 @@ theorem stoneEvolution_apply_hasDerivAt
   have h := stoneEvolution_apply_hasDerivAt_intertwined A hA x t
   rw [stoneEvolution_apply_domain A hA t x]
   exact h
+
+/-- Stone evolution multiplies a real-energy eigenvector by its scalar Schrödinger phase. The
+generator may be unbounded; only the eigenvector is required to lie in its domain. -/
+theorem stoneEvolution_eigenvector
+    (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (x : A.domain) (E : ℝ)
+    (hx : A x = (E : ℂ) • (x : H)) (t : ℝ) :
+    stoneEvolution A hA t (x : H) =
+      Complex.exp (t • ((-I : ℂ) * (E : ℂ))) • (x : H) := by
+  let f (s : ℝ) := stoneEvolution A hA s (x : H)
+  let c : ℂ := (-I : ℂ) * (E : ℂ)
+  have hf (s : ℝ) : HasDerivAt f (c • f s) s := by
+    have h := stoneEvolution_apply_hasDerivAt_intertwined A hA x s
+    rw [hx, (stoneEvolution A hA s).map_smul, smul_smul] at h
+    exact h
+  let g (s : ℝ) := Complex.exp (s • (-c)) • f s
+  have hg (s : ℝ) : HasDerivAt g 0 s := by
+    have hp : HasDerivAt (fun r : ℝ => Complex.exp (r • (-c)))
+        ((-c) * Complex.exp (s • (-c))) s := by
+      simpa only [← Complex.exp_eq_exp_ℂ] using
+        (_root_.hasDerivAt_exp_smul_const' (-c) s)
+    have h := hp.smul (hf s)
+    have hz : Complex.exp (s • (-c)) • (c • f s) +
+        ((-c) * Complex.exp (s • (-c))) • f s = 0 := by
+      rw [smul_smul, ← add_smul]
+      have hscalar : Complex.exp (s • (-c)) * c +
+          (-c) * Complex.exp (s • (-c)) = 0 := by ring
+      rw [hscalar, zero_smul]
+    exact h.congr_deriv hz
+  have hconst := is_const_of_deriv_eq_zero
+    (fun s => (hg s).differentiableAt) (fun s => (hg s).deriv) t 0
+  have heq : Complex.exp (-(t • c)) • f t = (x : H) := by
+    simpa only [g, smul_neg, zero_smul, neg_zero, Complex.exp_zero, one_smul, f,
+      stoneEvolution_zero, one_apply_eq_self] using hconst
+  have hunit : Complex.exp (t • c) * Complex.exp (-(t • c)) = 1 := by
+    rw [← Complex.exp_add, add_neg_cancel, Complex.exp_zero]
+  change f t = Complex.exp (t • c) • (x : H)
+  rw [← heq, smul_smul, hunit, one_smul]
+
+/-- A real-energy eigenvector has time-independent bounded-observable expectations under Stone
+evolution. No domain assumption is imposed on the observable. -/
+theorem inner_stoneEvolution_eigenvector
+    (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (x : A.domain) (E : ℝ)
+    (hx : A x = (E : ℂ) • (x : H)) (B : H →L[ℂ] H) (t : ℝ) :
+    inner ℂ (stoneEvolution A hA t (x : H))
+        (B (stoneEvolution A hA t (x : H))) = inner ℂ (x : H) (B (x : H)) := by
+  let c : ℂ := (-I : ℂ) * (E : ℂ)
+  have hc : starRingEnd ℂ c = -c := by
+    simp only [c, (starRingEnd ℂ).map_mul, (starRingEnd ℂ).map_neg,
+      Complex.conj_I, Complex.conj_ofReal, neg_neg, neg_mul]
+  have htc : starRingEnd ℂ (t • c) = -(t • c) := by
+    change star (t • c) = -(t • c)
+    rw [star_smul]
+    change t • (starRingEnd ℂ c) = -(t • c)
+    rw [hc, smul_neg]
+  have hunit : starRingEnd ℂ (Complex.exp (t • c)) * Complex.exp (t • c) = 1 := by
+    rw [← Complex.exp_conj, htc, ← Complex.exp_add, neg_add_cancel, Complex.exp_zero]
+  rw [stoneEvolution_eigenvector A hA x E hx t, B.map_smul,
+    inner_smul_left, inner_smul_right, ← mul_assoc]
+  exact congrArg (fun z : ℂ => z * inner ℂ (x : H) (B (x : H))) hunit |>.trans (one_mul _)
 
 end
 

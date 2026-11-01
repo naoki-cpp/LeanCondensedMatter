@@ -78,31 +78,27 @@ theorem reachable_sum_inr_iff
     (G ⊕g H).Reachable (Sum.inr x) (Sum.inr y) ↔ H.Reachable x y := by
   classical
   constructor
-  · rintro ⟨p⟩
-    have hclosed (z : W) (w : V ⊕ W)
-        (hadj : (G ⊕g H).Adj (Sum.inr z) w) :
-        ∃ z' : W, w = Sum.inr z' := by
-      cases w with
-      | inl u =>
-          exact False.elim
-            (SimpleGraph.not_adj_sum_inl_inr u z ((G ⊕g H).adj_symm hadj))
-      | inr u => exact ⟨u, rfl⟩
-    have hlift :
-        ∀ {u v : V ⊕ W}, (G ⊕g H).Walk u v →
-          ∀ z : W, u = Sum.inr z →
-            ∃ z' : W, v = Sum.inr z' ∧ H.Reachable z z' := by
-      intro u v q
-      induction q with
-      | nil => exact fun z hz => ⟨z, hz, SimpleGraph.Reachable.refl _⟩
-      | cons hadj q ih =>
-          intro z hz
-          subst hz
-          obtain ⟨z', hz'⟩ := hclosed z _ hadj
-          obtain ⟨y, hy, hreach⟩ := ih z' hz'
-          refine ⟨y, hy, SimpleGraph.Reachable.trans ?_ hreach⟩
-          exact SimpleGraph.Adj.reachable ((SimpleGraph.sum_adj_inr).1 (hz' ▸ hadj))
-    obtain ⟨z, hz, hreach⟩ := hlift p x rfl
-    exact (Sum.inr.inj hz).symm ▸ hreach
+  · intro h
+    have path :
+        Relation.ReflTransGen (G ⊕g H).Adj (Sum.inr x) (Sum.inr y) :=
+      (SimpleGraph.reachable_iff_reflTransGen _ _).mp h
+    have lift : ∀ {z : V ⊕ W},
+        Relation.ReflTransGen (G ⊕g H).Adj (Sum.inr x) z →
+          ∃ w : W, z = Sum.inr w ∧ H.Reachable x w := by
+      intro z hz
+      induction hz with
+      | refl => exact ⟨x, rfl, SimpleGraph.Reachable.refl x⟩
+      | @tail b c _ hadj ih =>
+          obtain ⟨w, rfl, hw⟩ := ih
+          cases c with
+          | inl a =>
+              exact False.elim
+                (SimpleGraph.not_adj_sum_inl_inr a w ((G ⊕g H).adj_symm hadj))
+          | inr v =>
+              exact ⟨v, rfl, hw.trans
+                (SimpleGraph.Adj.reachable ((SimpleGraph.sum_adj_inr).1 hadj))⟩
+    obtain ⟨w, hw, hreach⟩ := lift path
+    exact (Sum.inr.inj hw).symm ▸ hreach
   · intro hreach
     exact hreach.map SimpleGraph.Embedding.sumInr.toHom
 

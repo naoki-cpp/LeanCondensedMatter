@@ -1,8 +1,8 @@
+import LeanCondensedMatter.Analysis.Operator.TraceClass.Trace
 import LeanCondensedMatter.QuantumTheory.DensityOperator.Basic
 import LeanCondensedMatter.QuantumTheory.DensityOperator.DiagonalFormula
 import LeanCondensedMatter.QuantumTheory.DensityOperator.Purity
 import Mathlib.Analysis.InnerProductSpace.Trace
-import Mathlib.Analysis.Normed.Operator.Compact.FiniteDimension
 
 /-!
 # Finite-dimensional density-operator specialization
@@ -25,48 +25,12 @@ variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
 noncomputable def DensityOperator.ofFiniteDimensional
     (ρ : H →L[ℂ] H) (hpos : ρ.IsPositive)
     (htrace : LinearMap.trace ℂ H (ρ : H →ₗ[ℂ] H) = 1) : DensityOperator H := by
-  have hsymm : ρ.IsSymmetric := hpos.isSelfAdjoint.isSymmetric
-  have hcompact : IsCompactOperator ρ :=
-    isCompactOperator_of_locallyCompactSpace_dom ρ
-  letI : Finite (EigenvectorIndex ρ) :=
-    (orthonormal_eigenvectorFamily hcompact hsymm).linearIndependent.finite
-  have hsummable : HasSummableRealEigenvalues ρ := Summable.of_finite
-  let hstc : SpectralTraceClass ρ :=
-    SpectralTraceClass.ofPositive hcompact hpos hsummable
-  refine
+  let hρ := isTraceClass_of_finiteDimensional ρ
+  exact
     { op := ρ
       pos := hpos
-      isTraceClass := hstc.isTraceClass
-      trace_eq_one := ?_ }
-  rw [hstc.isTraceClass.trace_eq_spectralTrace hstc.isSelfAdjoint]
-  let b : OrthonormalBasis (Fin (Module.finrank ℂ H)) ℂ H :=
-    hsymm.eigenvectorBasis rfl
-  have hb (i : Fin (Module.finrank ℂ H)) :
-      ρ (b i) = (hsymm.eigenvalues rfl i : ℂ) • b i := by
-    change (ρ : H →ₗ[ℂ] H) (b i) = (hsymm.eigenvalues rfl i : ℂ) • b i
-    simpa [b] using hsymm.apply_eigenvectorBasis rfl i
-  have hsum := (hstc.hasSum_diagonalExpectationValue b.toHilbertBasis).tsum_eq
-  rw [tsum_fintype] at hsum
-  have heigenComplex :
-      ((∑ i, hsymm.eigenvalues rfl i : ℝ) : ℂ) =
-        LinearMap.trace ℂ H (ρ : H →ₗ[ℂ] H) :=
-    (hsymm.trace_eq_sum_eigenvalues (hn := rfl)).symm
-  rw [htrace] at heigenComplex
-  have heigen : ∑ i, hsymm.eigenvalues rfl i = 1 := by
-    exact_mod_cast heigenComplex
-  have hspectral : spectralTrace ρ = 1 := by
-    calc
-      spectralTrace ρ = ∑ i, diagonalExpectationValue ρ hstc.isSelfAdjoint (b i) := by
-        simpa using hsum.symm
-      _ = ∑ i, hsymm.eigenvalues rfl i := by
-        apply Finset.sum_congr rfl
-        intro i _
-        apply Complex.ofReal_injective
-        rw [coe_diagonalExpectationValue_right, hb i, inner_smul_right,
-          inner_self_eq_norm_sq_to_K, b.norm_eq_one]
-        simp
-      _ = 1 := heigen
-  exact_mod_cast hspectral
+      isTraceClass := hρ
+      trace_eq_one := hρ.trace_eq_linearMap_trace.trans htrace }
 
 @[simp]
 theorem DensityOperator.ofFiniteDimensional_op
@@ -80,15 +44,8 @@ theorem DensityOperator.expectation_eq_linearMap_trace (ρ : DensityOperator H)
     (A : H →L[ℂ] H) :
     ρ.expectation A =
       LinearMap.trace ℂ H ((ρ.op ∘L A : H →L[ℂ] H) : H →ₗ[ℂ] H) := by
-  let b : OrthonormalBasis (Fin (Module.finrank ℂ H)) ℂ H :=
-    ρ.isSymmetric.eigenvectorBasis rfl
-  rw [ρ.expectation_apply,
-    (ρ.isTraceClass.comp_right A).trace_eq_tsum_inner b.toHilbertBasis]
-  rw [tsum_fintype]
-  symm
-  simpa [ContinuousLinearMap.mul_def] using
-    (LinearMap.trace_eq_sum_inner
-      ((ρ.op ∘L A : H →L[ℂ] H) : H →ₗ[ℂ] H) b)
+  rw [ρ.expectation_apply]
+  exact (ρ.isTraceClass.comp_right A).trace_eq_linearMap_trace
 
 /-- In finite dimensions, the ordinary trace of a density operator is one. -/
 theorem DensityOperator.linearMap_trace_eq_one (ρ : DensityOperator H) :

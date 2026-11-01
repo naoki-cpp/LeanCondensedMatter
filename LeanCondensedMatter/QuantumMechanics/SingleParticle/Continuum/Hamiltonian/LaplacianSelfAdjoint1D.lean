@@ -1,4 +1,7 @@
-import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Hamiltonian.SelfAdjointCriterion1D
+import LeanCondensedMatter.Analysis.Operator.Unbounded.SelfAdjointCriterion
+import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Hamiltonian.Closed1D
+import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Hamiltonian.DenseDomain1D
+import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Hamiltonian.LaplacianSymmetry1D
 import Mathlib.Analysis.Calculus.Deriv.Star
 import Mathlib.Analysis.Distribution.SchwartzSpace.Deriv
 import Mathlib.Analysis.RCLike.Lemmas
@@ -9,7 +12,7 @@ set_option linter.style.header false
 /-!
 # Self-adjointness of the one-dimensional free Laplacian
 
-This file proves the reverse adjoint-domain inclusion isolated by the preceding criterion layer.
+Self-adjointness follows from the generic partial-operator criterion and reverse adjoint-domain inclusion.
 For a vector in the adjoint domain of the `H²` Laplacian, the adjoint relation is tested against
 complex-conjugated Schwartz functions. This identifies the adjoint value as the distributional
 Laplacian of the original vector. Maximal-domain regularity then forces the vector back into `H²`.
@@ -129,8 +132,11 @@ theorem continuumH2LaplacianPMap1D_adjoint_domain_le :
 
 /-- The free distributional Laplacian on `H²(ℝ)` is self-adjoint on physical `L²(ℝ, ℂ)`. -/
 theorem continuumH2LaplacianPMap1D_isSelfAdjoint :
-    IsSelfAdjoint continuumH2LaplacianPMap1D :=
-  continuumH2LaplacianPMap1D_isSelfAdjoint_iff_adjoint_domain_le.mpr
+    IsSelfAdjoint continuumH2LaplacianPMap1D := by
+  apply (LinearPMap.isSelfAdjoint_iff_adjoint_domain_le_of_isFormalAdjoint
+    (A := continuumH2LaplacianPMap1D)
+    continuumH2Domain1D_dense continuumH2LaplacianPMap1D_isFormalAdjoint).mpr
+  simpa only [continuumH2LaplacianPMap1D_domain] using
     continuumH2LaplacianPMap1D_adjoint_domain_le
 
 end

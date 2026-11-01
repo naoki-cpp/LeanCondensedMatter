@@ -1,5 +1,4 @@
 import LeanCondensedMatter.Models.MassiveDirac.Bastin.Limit
-import Mathlib.Tactic
 
 set_option linter.style.header false
 

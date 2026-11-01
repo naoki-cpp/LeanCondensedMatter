@@ -55,6 +55,17 @@ noncomputable def currentBandBlockTrace
     (bandProjectorOperator target v m px py * currentOperator μ e v *
       bandProjectorOperator source v m px py * currentOperator ν e v)
 
+/-- Reversing the current order exchanges the source and target band labels. -/
+theorem currentBandBlockTrace_swap
+    (μ ν : Fin 2) (source target : Band) (e v m px py : ℝ) :
+    currentBandBlockTrace ν μ source target e v m px py =
+      currentBandBlockTrace μ ν target source e v m px py := by
+  unfold currentBandBlockTrace
+  simpa only [mul_assoc] using
+    (finiteDimensionalOperatorTrace_mul_comm
+      (bandProjectorOperator target v m px py * currentOperator ν e v)
+      (bandProjectorOperator source v m px py * currentOperator μ e v))
+
 /-- The bounded-operator projectors inherit the complete orthogonal family
 from the matrix realization under the algebra equivalence. -/
 theorem bandProjectorOperator_completeOrthogonalIdempotents

@@ -48,6 +48,33 @@ theorem completedFiniteHilbertEquiv_basisState (c : Config) :
     completedFiniteHilbertEquiv_algebraicToCompleted]
   exact finiteHilbertFockEquiv_basisState c
 
+
+/-- A bounded completed operator agreeing with an algebraic endomorphism on the
+finite-support core is the finite-Hilbert realization transported back to completed space. -/
+theorem completedOperator_eq_transport_of_algebraicCore
+    (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
+    (T : CompletedFock Config →L[ℂ] CompletedFock Config)
+    (hcore : T.toLinearMap.comp algebraicToCompleted =
+      algebraicToCompleted.comp A) :
+    (completedFiniteHilbertEquiv (Config := Config)).symm.toContinuousLinearEquiv.toContinuousLinearMap.comp
+      ((finiteHilbertOperatorAlgEquiv A).comp
+        (completedFiniteHilbertEquiv (Config := Config)).toContinuousLinearEquiv.toContinuousLinearMap) = T := by
+  let e := completedFiniteHilbertEquiv (Config := Config)
+  apply continuousLinearMap_ext_algebraicCore
+  intro x
+  change e.symm (finiteHilbertOperatorAlgEquiv A (e (algebraicToCompleted x))) =
+    T (algebraicToCompleted x)
+  rw [completedFiniteHilbertEquiv_algebraicToCompleted]
+  change e.symm (finiteHilbertFockEquiv
+    (A ((finiteHilbertFockEquiv (Config := Config)).symm
+      (finiteHilbertFockEquiv x)))) = T (algebraicToCompleted x)
+  rw [LinearEquiv.symm_apply_apply]
+  rw [← completedFiniteHilbertEquiv_algebraicToCompleted, e.symm_apply_apply]
+  have h := congrArg
+    (fun f : AlgebraicFock Config →ₗ[ℂ] CompletedFock Config => f x) hcore
+  change T (algebraicToCompleted x) = algebraicToCompleted (A x) at h
+  exact h.symm
+
 end
 end Common
 end SecondQuantization

@@ -1,5 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.CanonicalAnticommutationRelations
 import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.ExchangeAlgebra
+import LeanCondensedMatter.SecondQuantization.Common.Algebra.AlgebraicFock
 import LeanCondensedMatter.SecondQuantization.Common.Algebra.ExchangeCommutator
 import Mathlib.Tactic.Abel
 
@@ -26,16 +27,13 @@ noncomputable def numberOperator (i : Mode) :
     OccupationFock Mode →ₗ[ℂ] OccupationFock Mode :=
   (create i).comp (annihilate i)
 
-private theorem numberOperator_apply (i : Mode) (x : OccupationFock Mode) :
-    numberOperator i x = create i (annihilate i x) :=
-  rfl
-
 /-- **The number-operator eigenvalue equation**, on basis states: `Nᵢ` acts as the identity on
 occupied modes and as zero on unoccupied ones — occupation-number states are simultaneous
 eigenvectors of every `numberOperator i`, with eigenvalue `0` or `1`. -/
 theorem numberOperator_basisState (i : Mode) (n : Occupation Mode) :
     numberOperator i (basisState n) = if i ∈ n then basisState n else 0 := by
-  rw [numberOperator_apply]
+  change create i (annihilate i (basisState n)) =
+    if i ∈ n then basisState n else 0
   by_cases hi : i ∈ n
   · rw [ite_eq_left hi]
     have hnotmem : i ∉ removeOccupation i n := Finset.notMem_erase i n
@@ -58,9 +56,7 @@ theorem numberOperator_eq_diagonalOperator (i : Mode) :
     Common.diagonalOperator (fun n : Occupation Mode => if i ∈ n then (1 : ℂ) else 0)
       (basisState n)
   rw [numberOperator_basisState]
-  by_cases hi : i ∈ n
-  · simp [hi, basisState, Common.diagonalOperator_basisState]
-  · simp [hi, basisState, Common.diagonalOperator_basisState]
+  by_cases hi : i ∈ n <;> simp [hi, basisState, Common.diagonalOperator_basisState]
 
 /-- **`c_i c_i† = id - N_i`**, an instance of `Common.annihilate_comp_create_self`. -/
 theorem annihilate_comp_create_self (i : Mode) :
@@ -70,25 +66,13 @@ theorem annihilate_comp_create_self (i : Mode) :
   rwa [Common.Statistics.zetaInt_fermion, Int.cast_neg, Int.cast_one, neg_one_smul,
     ← sub_eq_add_neg] at h
 
-/-- The number operator vanishes after a same-mode annihilation, by `cᵢ cᵢ = 0`. -/
-private theorem numberOperator_comp_annihilate (i : Mode) :
-    (numberOperator i).comp (annihilate i) = 0 := by
-  rw [numberOperator, LinearMap.comp_assoc, annihilate_comp_self, LinearMap.comp_zero]
-
-/-- **`Nᵢ` is idempotent**: `Nᵢ ∘ Nᵢ = Nᵢ`. Algebraically this follows from CAR:
-`cᵢ cᵢ† = id - Nᵢ` and `cᵢ cᵢ = 0`; no occupation-basis expansion is needed. -/
+/-- **`Nᵢ` is idempotent**: its diagonal occupation eigenvalues are zero or one. -/
 theorem numberOperator_comp_self (i : Mode) :
     (numberOperator i).comp (numberOperator i) = numberOperator i := by
-  apply LinearMap.ext
-  intro x
-  change create i (annihilate i (create i (annihilate i x))) =
-    create i (annihilate i x)
-  have hcar := DFunLike.congr_fun (annihilate_comp_create_self i) (annihilate i x)
-  simp only [LinearMap.comp_apply, LinearMap.sub_apply, LinearMap.id_apply] at hcar
-  rw [hcar, map_sub]
-  have hz := DFunLike.congr_fun (numberOperator_comp_annihilate i) x
-  simp only [LinearMap.comp_apply, LinearMap.zero_apply] at hz
-  rw [hz, map_zero, sub_zero]
+  simp only [numberOperator_eq_diagonalOperator, Common.diagonalOperator_comp]
+  congr 1
+  funext n
+  by_cases hi : i ∈ n <;> simp [hi]
 
 /-- **`cᵢ cᵢ†` is idempotent**: `(cᵢ cᵢ†)(cᵢ cᵢ†) = cᵢ cᵢ†`, from `cᵢ cᵢ† = id - Nᵢ`
 (`annihilate_comp_create_self`) and `Nᵢ`'s idempotency. -/

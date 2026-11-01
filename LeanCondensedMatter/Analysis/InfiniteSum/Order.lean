@@ -40,8 +40,8 @@ theorem Summable.tsum_comp_injective_lt_of_exists_not_mem
 
 /-- If two summable real families are pointwise ordered and have the same total sum, then they are
 equal term by term. -/
-theorem pointwise_eq_of_tsum_eq_of_le {ι : Type*} {f g : ι → ℝ}
-    (hfg : ∀ i, f i ≤ g i) (hf : Summable f) (hg : Summable g)
+theorem Summable.pointwise_eq_of_tsum_eq_of_le {ι : Type*} {f g : ι → ℝ}
+    (hf : Summable f) (hg : Summable g) (hfg : ∀ i, f i ≤ g i)
     (hsum : ∑' i, f i = ∑' i, g i) :
     ∀ i, f i = g i := by
   intro i

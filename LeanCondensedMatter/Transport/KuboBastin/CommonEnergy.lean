@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Analysis.Calculus.IntervalLocalization
+import LeanCondensedMatter.Transport.KuboBastin.Eigenbasis
 import LeanCondensedMatter.Transport.KuboBastin.Occupation
 
 set_option linter.style.header false

@@ -1,4 +1,6 @@
 import LeanCondensedMatter.Analysis.Operator.Compact
+import LeanCondensedMatter.Analysis.Operator.TraceClass.Positive
+import LeanCondensedMatter.Analysis.Operator.TraceClass.Trace
 import LeanCondensedMatter.QuantumTheory.DensityOperator.Basic
 
 /-!
@@ -58,7 +60,7 @@ theorem finrank_eigenspace_rankOne_one {ψ : H} (hψ : ‖ψ‖ = 1) :
   exact finrank_span_singleton (by rw [ne_eq, ← norm_eq_zero, hψ]; norm_num)
 
 /-- The eigenvector index of a unit rank-one projector has a unique element. -/
-@[reducible] def uniqueEigenvectorIndexRankOne {ψ : H} (hψ : ‖ψ‖ = 1) :
+@[reducible] private def uniqueEigenvectorIndexRankOne {ψ : H} (hψ : ‖ψ‖ = 1) :
     Unique (EigenvectorIndex (InnerProductSpace.rankOne ℂ ψ ψ : H →L[ℂ] H)) where
   default := ⟨⟨1, one_ne_zero⟩, ⟨0, by
     change 0 < Module.finrank ℂ (Module.End.eigenspace
@@ -107,19 +109,12 @@ theorem rankOne_spectralTrace_eq_one {ψ : H} (hψ : ‖ψ‖ = 1) :
   rfl
 
 /-- A normalized pure state defines its rank-one density operator. -/
-noncomputable def pure (ψ : StateVector H) : DensityOperator H := by
-  let htraceClass : SpectralTraceClass
-      (InnerProductSpace.rankOne ℂ ψ.1 ψ.1 : H →L[ℂ] H) :=
-    SpectralTraceClass.ofPositive
-      (InnerProductSpace.isCompactOperator_rankOne ψ.1 ψ.1)
-      (InnerProductSpace.isPositive_rankOne_self ψ.1)
-      (rankOne_hasSummableRealEigenvalues ψ.2)
-  exact {
-    op := InnerProductSpace.rankOne ℂ ψ.1 ψ.1
-    pos := InnerProductSpace.isPositive_rankOne_self ψ.1
-    isTraceClass := htraceClass.isTraceClass
-    trace_eq_one := by
-      rw [htraceClass.isTraceClass.trace_eq_spectralTrace htraceClass.isSelfAdjoint]
-      exact_mod_cast rankOne_spectralTrace_eq_one ψ.2 }
+noncomputable def pure (ψ : StateVector H) : DensityOperator H where
+  op := InnerProductSpace.rankOne ℂ ψ.1 ψ.1
+  pos := InnerProductSpace.isPositive_rankOne_self ψ.1
+  isTraceClass := isTraceClass_rankOne_self ψ.1
+  trace_eq_one := by
+    rw [(isTraceClass_rankOne_self ψ.1).trace_rankOne, inner_self_eq_norm_sq_to_K, ψ.2]
+    norm_num
 
 end QuantumTheory

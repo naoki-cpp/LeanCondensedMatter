@@ -70,7 +70,7 @@ noncomputable def externalInsertionMixedTimeOrderedAtomicPairValue
     (externalTime : Fin (2 * E) → ℝ)
     (q : Fin n → QuarticVertexLabel Mode) (σ : Fin n → ℝ)
     (a b : Fin (2 * (2 * n + E))) : ℂ :=
-  timedFieldPairContraction ε β
+  grandCanonicalTimedFieldPairContraction ε β 0
     (externalInsertionMixedTimeOrderedAtomicFieldFamily externalLabel externalTime q σ a)
     (externalInsertionMixedTimeOrderedAtomicFieldFamily externalLabel externalTime q σ b)
 
@@ -137,7 +137,7 @@ theorem externalInsertionMixedTimeOrderedAtomicPairValue_map
       externalInsertionMixedTimeOrderedAtomicLegEquiv_position]
     exact (orderedExternalInsertionLegField_map
       fExternal fInteraction externalLabel externalTime q σ leg).symm
-  exact congrArg₂ (timedFieldPairContraction ε β) (hfield a) (hfield b)
+  exact congrArg₂ (grandCanonicalTimedFieldPairContraction ε β 0) (hfield a) (hfield b)
 
 variable [Fintype Mode]
 

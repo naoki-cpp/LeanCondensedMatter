@@ -24,6 +24,11 @@ Hamiltonians, convergence assumptions, physical specializations, and final physi
 A declaration should not remain in a statistics-specific layer merely because that is where its proof
 was first developed.
 
+Ordinary finite-dimensional operator trace is owned by `Analysis.Operator.FiniteTrace`
+for normed spaces; its adjoint law retains the inner-product-space assumption. Common's
+finite analytic Fock adapter owns the occupation-basis formula and algebraic-trace transport,
+while the analytic Dyson partition function uses the Analysis trace directly.
+
 Statistics-independent complex Peierls phase kernels and their scalar derivatives are owned by
 `QuantumTheory.PeierlsPhase`. One-particle Peierls hopping, link current, and contact operators
 with their algebraic source derivatives are owned by `QuantumTheory.PeierlsLattice`;
@@ -168,6 +173,9 @@ physics-facing connected theorems
 ```
 
 Common owns component and shuffle structure when no fermionic sign or energy data is required.
+Canonical increasing enumeration of finite slot sets belongs to
+`Combinatorics.Shuffle.SlotShuffle`. Two-point and external-insertion standardization both
+use these equivalences while retaining their separate leg and pairing representations.
 Finite-partition sums of ordered-simplex integrals are owned by
 `Analysis.OrderedSimplex.PartitionOrderIntegral`. Its factorization theorem requires local
 measurable boundedness and equality of assembled integrands with shuffled local products.
@@ -252,7 +260,7 @@ signs remain Fermionic consumers.
 The generic `Pairing.interComponentCrossingCount_mod_two_eq_orderedBlockInversionCount`
 identifies residual crossing parity with the ordered block-inversion parity for both fixed and
 mixed component shuffles. Fermionic `ComponentSign` defines the fixed external regrouping
-exchange sign; `ComponentOrderSign` applies the generic crossing-parity identity directly for
+exchange sign; `ComponentPairingValue` applies the generic crossing-parity identity directly for
 the mixed pairing coordinates. Fermionic pairing evaluation applies
 `Pairing.crossingCount_eq_sum_localCrossingCount_add_inter` for the exact crossing decomposition,
 then uses the exchange-weight identity in `Common.Thermal.BlochDeDominicis.PairingWeight`.
@@ -438,20 +446,16 @@ the operator-integral compatibility theorem on the analytic side, and basis, adj
 self-adjointness criteria on the Hilbert side. The two realizations are not identified merely because
 they are finite-dimensional.
 
-## Free exchange grand-partition boundary
+## Thermal partition ownership
 
-The statistics-independent finite-mode formal grand-product backend is owned upstream by
-`QuantumTheory.Gibbs.FreeExchangeCycleSeries`, next to the diagonal one-particle Boltzmann kernel
-and the exchange-weighted connected-cycle series. Its grand-product construction is explicitly
-restricted to the physical exchange weights `ζ = +1` and `ζ = -1`; the generic permutation
-connected-cycle series remains available for arbitrary exchange weight where its stated algebraic
-hypotheses hold.
+`QuantumTheory.Gibbs.FreeBoltzmannKernel` owns the one-particle Boltzmann kernel, which does not
+require occupation configurations or particle-number grading. The abstract exchange-weighted
+connected-cycle combinatorics stays in `Permutation.TraceLog`.
 
-Formal Bose/Fermi grand-partition series and connected-cycle identities are consumed directly from
-the Gibbs-level owner with the appropriate exchange weight. The bosonic thermal modules own the
-inverse-determinant identity for the convergent occupation-space partition function.
-Bosonic occupation-space convergence and analytic partition-function results remain in the bosonic
-thermal modules. No formal series is evaluated at one by this construction.
+Particle-number ensembles and Bose/Fermi partition functions belong to `SecondQuantization`.
+The fermionic finite-mode product and the bosonic convergent occupation-space partition function
+remain in their statistics-specific thermal modules. Their analytic hypotheses must not be
+inferred from formal permutation or power-series identities.
 
 ## Bosonic boundary
 

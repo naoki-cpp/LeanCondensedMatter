@@ -4,7 +4,8 @@ import LeanCondensedMatter.Models.MassiveDirac.Model.Interband
 import LeanCondensedMatter.Models.MassiveDirac.Bastin.RadialPairUniformBound
 import Mathlib.MeasureTheory.Integral.Bochner.Basic
 import Mathlib.MeasureTheory.Integral.Prod
-import Mathlib.Tactic
+import Mathlib.Tactic.Linarith
+import Mathlib.Tactic.Ring
 
 set_option linter.style.header false
 

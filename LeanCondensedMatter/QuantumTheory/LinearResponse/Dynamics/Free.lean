@@ -1,8 +1,7 @@
 import LeanCondensedMatter.Analysis.Operator.BoundedUnitaryEvolution
+import LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.Unitary
 import LeanCondensedMatter.QuantumTheory.Postulates
 import Mathlib.Analysis.SpecialFunctions.Exponential
-import Mathlib.Algebra.Star.UnitaryStarAlgAut
-import Mathlib.Algebra.Lie.OfAssociative
 
 set_option linter.style.header false
 
@@ -19,17 +18,17 @@ and the corresponding Heisenberg evolution is
 
 `A_I(t) = U₀(-t) A U₀(t)`.
 
-At fixed time, `heisenbergEvolution system t` is the corresponding star-algebra automorphism.
+At fixed time, `heisenbergEvolution (freePropagatorGroup system) t` is the corresponding
+star-algebra automorphism.
 Consumers use its standard mapping laws; the product formula is an explicit evaluation theorem.
 
-The API is dimension-independent. Unbounded Hamiltonians remain outside scope because their
-exponentials and products require operator-domain arguments.
+This module constructs the bounded-generator instance of the unitary-group dynamics. The algebraic
+Heisenberg laws and stationarity do not require this bounded-generator construction. Norm
+continuity and generator differentiation remain specific to the bounded realization.
 -/
 
 namespace QuantumTheory
 namespace LinearResponse
-
-attribute [local instance 100] LieRing.ofAssociativeRing
 
 noncomputable section
 
@@ -137,60 +136,22 @@ theorem freePropagator_mem_unitary (t : ℝ) :
   rw [Unitary.mem_iff]
   exact ⟨star_mul_freePropagator system t, freePropagator_mul_star system t⟩
 
-/-- The free propagator bundled as a unitary element. -/
-noncomputable def freePropagatorUnitary (t : ℝ) : unitary (H →L[ℂ] H) :=
-  ⟨freePropagator system t, freePropagator_mem_unitary system t⟩
+/-- The bounded Schrödinger propagators as a one-parameter unitary group. -/
+noncomputable def freePropagatorGroup : Multiplicative ℝ →* unitary (H →L[ℂ] H) where
+  toFun t := ⟨freePropagator system t.toAdd, freePropagator_mem_unitary system t.toAdd⟩
+  map_one' := Subtype.ext (freePropagator_zero system)
+  map_mul' t s := Subtype.ext (freePropagator_add system t.toAdd s.toAdd)
 
-/-- Free Heisenberg evolution at fixed time, as a star-algebra automorphism. -/
-noncomputable def heisenbergEvolution (t : ℝ) :
-    (H →L[ℂ] H) ≃⋆ₐ[ℂ] (H →L[ℂ] H) :=
-  Unitary.conjStarAlgAut ℂ (H →L[ℂ] H) (freePropagatorUnitary system (-t))
+@[simp]
+theorem freePropagatorGroup_apply (t : ℝ) :
+    (freePropagatorGroup system (Multiplicative.ofAdd t) : H →L[ℂ] H) =
+      freePropagator system t := rfl
 
 /-- Applying Heisenberg evolution uses the convention `U₀(-t) A U₀(t)`. -/
-theorem heisenbergEvolution_apply (t : ℝ) (A : H →L[ℂ] H) :
-    heisenbergEvolution system t A =
+theorem heisenbergEvolution_freePropagatorGroup_apply (t : ℝ) (A : H →L[ℂ] H) :
+    heisenbergEvolution (freePropagatorGroup system) t A =
       freePropagator system (-t) * A * freePropagator system t := by
-  simp [heisenbergEvolution, freePropagatorUnitary, star_freePropagator]
-
-@[simp]
-theorem heisenbergEvolution_zero (A : H →L[ℂ] H) :
-    heisenbergEvolution system 0 A = A := by
-  simp [heisenbergEvolution_apply]
-
-/-- Applying free Heisenberg evolution successively adds the two time parameters. -/
-@[simp]
-theorem heisenbergEvolution_heisenbergEvolution
-    (A : H →L[ℂ] H) (t s : ℝ) :
-    heisenbergEvolution system s (heisenbergEvolution system t A) =
-      heisenbergEvolution system (t + s) A := by
-  simp_rw [heisenbergEvolution_apply]
-  rw [show -(t + s) = -s + -t by ring, freePropagator_add, freePropagator_add]
-  noncomm_ring
-
-/-- A two-time Heisenberg commutator is the evolution of a relative-time commutator. -/
-theorem lie_heisenbergEvolution_eq_relativeTime
-    (A B : H →L[ℂ] H) (t s : ℝ) :
-    ⁅heisenbergEvolution system t A, heisenbergEvolution system s B⁆ =
-      heisenbergEvolution system s ⁅heisenbergEvolution system (t - s) A, B⁆ := by
-  have htime :
-      heisenbergEvolution system s (heisenbergEvolution system (t - s) A) =
-        heisenbergEvolution system t A := by
-    rw [heisenbergEvolution_heisenbergEvolution, sub_add_cancel]
-  rw [← htime]
-  simp only [LieRing.of_associative_ring_bracket, map_sub, map_mul]
-
-/-- Unitary free conjugation preserves the operator norm exactly. -/
-@[simp]
-theorem norm_heisenbergEvolution (A : H →L[ℂ] H) (t : ℝ) :
-    ‖heisenbergEvolution system t A‖ = ‖A‖ := by
-  have hU := freePropagator_mem_unitary system t
-  rw [heisenbergEvolution_apply, ← star_freePropagator system t]
-  calc
-    ‖star (freePropagator system t) * A * freePropagator system t‖ =
-        ‖star (freePropagator system t) * A‖ :=
-      CStarRing.norm_mul_mem_unitary _ hU
-    _ = ‖A‖ :=
-      CStarRing.norm_mem_unitary_mul A (Unitary.star_mem hU)
+  simp only [heisenbergEvolution_apply, freePropagatorGroup_apply, star_freePropagator]
 
 /-- The free propagator depends continuously on real time in operator norm. -/
 theorem continuous_freePropagator : Continuous (freePropagator system) := by
@@ -201,10 +162,10 @@ theorem continuous_freePropagator : Continuous (freePropagator system) := by
 
 /-- Free Heisenberg evolution of a fixed bounded observable is norm-continuous in time. -/
 theorem continuous_heisenbergEvolution (A : H →L[ℂ] H) :
-    Continuous (fun t : ℝ => heisenbergEvolution system t A) := by
+    Continuous (fun t : ℝ => heisenbergEvolution (freePropagatorGroup system) t A) := by
   have hneg : Continuous (fun t : ℝ => freePropagator system (-t)) :=
     (continuous_freePropagator system).comp continuous_neg
-  simp_rw [heisenbergEvolution_apply]
+  simp_rw [heisenbergEvolution_freePropagatorGroup_apply]
   exact (hneg.mul continuous_const).mul (continuous_freePropagator system)
 
 end

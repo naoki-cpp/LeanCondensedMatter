@@ -1,4 +1,5 @@
 import LeanCondensedMatter.QuantumTheory.DensityOperator.Pure
+import LeanCondensedMatter.QuantumTheory.Postulates
 
 /-!
 # Physical pure states
@@ -30,7 +31,7 @@ theorem isPureDensity_pure (ψ : StateVector H) : IsPureDensity (pure ψ) :=
 /-- The rank-one density operator is invariant under multiplication of its representative by a
 unit-modulus global phase. -/
 theorem pure_smul_of_norm_eq_one (ψ : StateVector H) {c : ℂ} (hc : ‖c‖ = 1) :
-    pure (⟨c • ψ.1, by rw [norm_smul, hc, ψ.2, one_mul]⟩ : StateVector H) = pure ψ := by
+    pure (phaseState c hc ψ) = pure ψ := by
   apply DensityOperator.ext
   change InnerProductSpace.rankOne ℂ (c • ψ.1) (c • ψ.1) =
     InnerProductSpace.rankOne ℂ ψ.1 ψ.1
@@ -69,7 +70,7 @@ theorem pure_eq_iff_exists_phase (ψ φ : StateVector H) :
     simpa [norm_smul, ψ.2, φ.2] using hnorm
   · rintro ⟨c, hc, hφ⟩
     have hstate :
-        φ = (⟨c • ψ.1, by rw [norm_smul, hc, ψ.2, one_mul]⟩ : StateVector H) := by
+        φ = phaseState c hc ψ := by
       apply Subtype.ext
       exact hφ
     rw [hstate]
@@ -95,7 +96,7 @@ theorem exists_stateVector (ρ : PureState H) :
 global-phase-related representatives. -/
 @[simp]
 theorem ofStateVector_smul_of_norm_eq_one (ψ : StateVector H) {c : ℂ} (hc : ‖c‖ = 1) :
-    ofStateVector (⟨c • ψ.1, by rw [norm_smul, hc, ψ.2, one_mul]⟩ : StateVector H) =
+    ofStateVector (phaseState c hc ψ) =
       ofStateVector ψ := by
   apply Subtype.ext
   exact pure_smul_of_norm_eq_one ψ hc

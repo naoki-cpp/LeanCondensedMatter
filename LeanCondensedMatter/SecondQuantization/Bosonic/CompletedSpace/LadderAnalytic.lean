@@ -131,53 +131,36 @@ theorem completedAnnihilate_isFormalAdjoint_completedCreate (i : Mode) :
     (completedAnnihilate i).IsFormalAdjoint (completedCreate i) :=
   (completedCreate_isFormalAdjoint_completedAnnihilate i).symm
 
+/-- A basis-action formula determines the coordinates of the adjoint on its domain. -/
+private theorem adjoint_apply_of_basisState
+    (A : CompletedFockSpace Mode →ₗ.[ℂ] CompletedFockSpace Mode)
+    (hdense : Dense ((A.domain : Submodule ℂ (CompletedFockSpace Mode)) :
+      Set (CompletedFockSpace Mode)))
+    (f : Occupation Mode → Occupation Mode) (w : Occupation Mode → ℂ)
+    (hmem : ∀ n, completedBasisState n ∈ A.domain)
+    (hbasis : ∀ n,
+      A ⟨completedBasisState n, hmem n⟩ = w n • completedBasisState (f n))
+    (y : A.adjoint.domain) (n : Occupation Mode) :
+    A.adjoint y n = star (w n) * (y : CompletedFockSpace Mode) (f n) := by
+  have h := ((A.adjoint_isFormalAdjoint hdense).symm
+    (⟨completedBasisState n, hmem n⟩ : A.domain) y)
+  rw [hbasis n] at h
+  change inner ℂ (w n • completedBasisState (f n)) (y : CompletedFockSpace Mode) =
+    inner ℂ (completedBasisState n) (A.adjoint y) at h
+  rw [inner_smul_left] at h
+  simp only [completedBasisState, Common.inner_completedBasisState_left] at h
+  exact h.symm
+
 private theorem completedCreate_adjoint_apply
     (i : Mode) (y : (completedCreate i).adjoint.domain) (n : Occupation Mode) :
     (completedCreate i).adjoint y n =
       (Real.sqrt (n i + 1 : ℝ) : ℂ) *
         (y : CompletedFockSpace Mode) (createOccupation i n) := by
-  let e : (completedCreate i).domain :=
-    ⟨completedBasisState n, completedBasisState_mem_completedCreateDomain i n⟩
-  have h :=
-    ((completedCreate i).adjoint_isFormalAdjoint
-      (completedCreate_denseDomain i)).symm e y
-  have he :
-      completedCreate i e =
-        (Real.sqrt (n i + 1 : ℝ) : ℂ) •
-          completedBasisState (createOccupation i n) := by
-    exact completedCreate_basisState i n _
-  rw [he] at h
-  dsimp [e] at h
-  have hleft :
-      inner ℂ (completedBasisState (createOccupation i n))
-          (y : CompletedFockSpace Mode) =
-        (y : CompletedFockSpace Mode) (createOccupation i n) := by
-    simpa [completedBasisState] using
-      (Common.inner_completedBasisState_left
-        (Config := Occupation Mode) (createOccupation i n)
-        (y : CompletedFockSpace Mode))
-  have hright :
-      inner ℂ (completedBasisState n) ((completedCreate i).adjoint y) =
-        (completedCreate i).adjoint y n := by
-    simpa [completedBasisState] using
-      (Common.inner_completedBasisState_left
-        (Config := Occupation Mode) n ((completedCreate i).adjoint y))
-  calc
-    (completedCreate i).adjoint y n =
-        inner ℂ (completedBasisState n) ((completedCreate i).adjoint y) :=
-      hright.symm
-    _ = inner ℂ
-        ((Real.sqrt (n i + 1 : ℝ) : ℂ) •
-          completedBasisState (createOccupation i n))
-        (y : CompletedFockSpace Mode) := h.symm
-    _ = star (Real.sqrt (n i + 1 : ℝ) : ℂ) *
-        inner ℂ (completedBasisState (createOccupation i n))
-          (y : CompletedFockSpace Mode) := by
-      exact inner_smul_left _ _ _
-    _ = (Real.sqrt (n i + 1 : ℝ) : ℂ) *
-        (y : CompletedFockSpace Mode) (createOccupation i n) := by
-      rw [hleft]
-      simp
+  simpa using
+    (adjoint_apply_of_basisState (completedCreate i) (completedCreate_denseDomain i)
+      (createOccupation i) (fun n => (Real.sqrt (n i + 1 : ℝ) : ℂ))
+      (fun n => completedBasisState_mem_completedCreateDomain i n)
+      (fun n => completedCreate_basisState i n _) y n)
 
 private theorem completedCreate_adjoint_domain_le_annihilateDomain (i : Mode) :
     (completedCreate i).adjoint.domain ≤ completedAnnihilateDomain i := by
@@ -236,48 +219,11 @@ private theorem completedAnnihilate_adjoint_apply
     (completedAnnihilate i).adjoint y n =
       (Real.sqrt (n i : ℝ) : ℂ) *
         (y : CompletedFockSpace Mode) (removeOccupation i n) := by
-  let e : (completedAnnihilate i).domain :=
-    ⟨completedBasisState n, completedBasisState_mem_completedAnnihilateDomain i n⟩
-  have h :=
-    ((completedAnnihilate i).adjoint_isFormalAdjoint
-      (completedAnnihilate_denseDomain i)).symm e y
-  have he :
-      completedAnnihilate i e =
-        (Real.sqrt (n i : ℝ) : ℂ) •
-          completedBasisState (removeOccupation i n) := by
-    exact completedAnnihilate_basisState i n _
-  rw [he] at h
-  dsimp [e] at h
-  have hleft :
-      inner ℂ (completedBasisState (removeOccupation i n))
-          (y : CompletedFockSpace Mode) =
-        (y : CompletedFockSpace Mode) (removeOccupation i n) := by
-    simpa [completedBasisState] using
-      (Common.inner_completedBasisState_left
-        (Config := Occupation Mode) (removeOccupation i n)
-        (y : CompletedFockSpace Mode))
-  have hright :
-      inner ℂ (completedBasisState n) ((completedAnnihilate i).adjoint y) =
-        (completedAnnihilate i).adjoint y n := by
-    simpa [completedBasisState] using
-      (Common.inner_completedBasisState_left
-        (Config := Occupation Mode) n ((completedAnnihilate i).adjoint y))
-  calc
-    (completedAnnihilate i).adjoint y n =
-        inner ℂ (completedBasisState n) ((completedAnnihilate i).adjoint y) :=
-      hright.symm
-    _ = inner ℂ
-        ((Real.sqrt (n i : ℝ) : ℂ) •
-          completedBasisState (removeOccupation i n))
-        (y : CompletedFockSpace Mode) := h.symm
-    _ = star (Real.sqrt (n i : ℝ) : ℂ) *
-        inner ℂ (completedBasisState (removeOccupation i n))
-          (y : CompletedFockSpace Mode) := by
-      exact inner_smul_left _ _ _
-    _ = (Real.sqrt (n i : ℝ) : ℂ) *
-        (y : CompletedFockSpace Mode) (removeOccupation i n) := by
-      rw [hleft]
-      simp
+  simpa using
+    (adjoint_apply_of_basisState (completedAnnihilate i) (completedAnnihilate_denseDomain i)
+      (removeOccupation i) (fun n => (Real.sqrt (n i : ℝ) : ℂ))
+      (fun n => completedBasisState_mem_completedAnnihilateDomain i n)
+      (fun n => completedAnnihilate_basisState i n _) y n)
 
 private theorem completedAnnihilate_adjoint_domain_le_createDomain (i : Mode) :
     (completedAnnihilate i).adjoint.domain ≤ completedCreateDomain i := by

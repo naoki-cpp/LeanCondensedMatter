@@ -1,6 +1,7 @@
 import LeanCondensedMatter.Models.MassiveDirac.Scaling.Domain
 import LeanCondensedMatter.Models.MassiveDirac.Conductivity.Longitudinal.BornRelaxationTime
-import Mathlib.Tactic
+import Mathlib.Tactic.FieldSimp
+import Mathlib.Tactic.NormNum
 
 set_option linter.style.header false
 

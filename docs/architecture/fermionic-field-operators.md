@@ -24,6 +24,31 @@ these canonical rank-one maps to lattice `matrixUnit` operators.
 A chosen ordered mode basis gives the occupation representation `Fermionic.OccupationFock Mode`, with
 an explicit linear equivalence to `AlgebraicFock` that intertwines the ladder operators.
 
+For a finite mode basis, `AlgebraicFock.finiteHilbertOperatorAlgEquiv` transports exterior-Fock
+operators to the existing occupation-Hilbert realization. The lattice layer consumes this general
+transport with the site basis. For an orthonormal one-particle basis,
+`star_finiteHilbertOperator_create` identifies the realized smeared creation and annihilation
+operators as adjoints. `finiteHilbertEquiv` supplies the vector coordinates used by the same
+operator realization.
+
+Mathlib's `ExteriorAlgebra.map` is the canonical lift of a one-particle linear map; no parallel
+Fock-map definition is needed. `AlgebraicFock.SecondQuantizationNaturality` supplies its compatibility
+with `dGamma`: one-particle intertwiners lift to Fock-space intertwiners, and linear equivalences
+give covariance under conjugation. This algebraic transport does not by itself establish a Hilbert
+isometry or a transformation law for Gibbs density operators.
+
+`AlgebraicFock.Annihilation` also owns transport of dual contraction: pulling a covector back along
+a one-particle linear map makes annihilation commute with the exterior lift. For a one-particle
+linear isometry, the inner-product dual pulls back to the original smearing vector, giving the
+corresponding smeared-annihilation identity. No exterior-space norm is assumed by these laws.
+The pinned Mathlib exterior-power inner product is real-only; its complex analogue is not available
+as a Fock-unitarity shortcut. `AlgebraicFock.FiniteHilbertIsometry` instead uses the existing complex
+occupation-Hilbert inner product, creation/annihilation adjointness, and exterior induction to show
+that the exterior lift of a one-particle isometry preserves inner products in any finite
+orthonormal coordinate bases. `finiteHilbertMap` bundles the unitary lift of a one-particle unitary;
+its vector action is the existing exterior map. This finite-mode construction does not establish
+an infinite-mode completed-Fock lift or by itself identify a particular Gibbs state.
+
 The completed representation
 
 ```text

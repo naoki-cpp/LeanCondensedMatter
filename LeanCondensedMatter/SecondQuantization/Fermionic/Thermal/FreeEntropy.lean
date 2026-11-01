@@ -1,4 +1,7 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreePartitionFunction
+import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.OneBodyExpectation
+import LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.BoundedEvolution
+import LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.RankOneSecondQuantization
 import LeanCondensedMatter.QuantumTheory.Gibbs.EigenbasisEntropy
 
 set_option linter.style.header false
@@ -6,10 +9,13 @@ set_option linter.style.header false
 /-!
 # Entropy of the finite free-fermion Gibbs state
 
-The canonical free Gibbs density operator is the finite pure-point Gibbs state specialized to the
-fermionic occupation basis. The generic pure-point Gibbs entropy identity gives
-`S = β ⟨E⟩ + log Z`; mode factorization then reduces this to the sum of independent one-mode
-binary entropies.
+The public entropy endpoint uses the generic finite pure-point Gibbs density state
+at the explicit grand-canonical energy `K(n) = E(n) - μ N(n)`, not a fixed-`N`
+canonical state or a new fermion-specific density constructor.
+The generic identity `S = β ⟨K⟩ + log Ξ`, together with the finite fermionic
+product factorization, reduces entropy to independent binary mode entropies.
+The finite one-body expectation is evaluated using the explicit-`μ` grand-canonical
+Gibbs state and finite-coordinate second quantization.
 -/
 
 namespace SecondQuantization
@@ -28,21 +34,19 @@ local instance instDecidableEqFreeEntropy : DecidableEq Mode := Classical.decEq 
 noncomputable def fermiDiracOccupation (ε : Mode → ℝ) (β : ℝ) (i : Mode) : ℝ :=
   (Real.exp (β * ε i) + 1)⁻¹
 
-/-- The normalized probability of an occupation configuration in the free Gibbs state. -/
-noncomputable def freeGibbsConfigurationProbability
-    (ε : Mode → ℝ) (β : ℝ) (n : Occupation Mode) : ℝ :=
-  eigenbasisGibbsProbability (fermionEnergy ε) β n
-
 omit [LinearOrder Mode] in
 private theorem eigenbasisPartitionFunction_fermionEnergy_eq_prod
     (ε : Mode → ℝ) (β : ℝ) :
     eigenbasisPartitionFunction (fermionEnergy ε) β =
       ∏ i, (1 + Real.exp (-β * ε i)) := by
   apply Complex.ofReal_injective
-  rw [← freePartitionFunction_eq_coe_eigenbasisPartitionFunction,
-    freePartitionFunction_eq_prod]
+  have h := coe_grandCanonicalPartitionFunction_eq_prod ε β 0
+  rw [Common.grandCanonicalPartitionFunction_eq_shifted] at h
+  simp only [sub_zero] at h
+  change ((eigenbasisPartitionFunction (fermionEnergy ε) β : ℝ) : ℂ) =
+    ∏ i, (1 + Complex.exp (-(β : ℂ) * (ε i : ℂ))) at h
   push_cast [Complex.ofReal_exp]
-  rfl
+  exact h
 
 omit [LinearOrder Mode] in
 private theorem log_eigenbasisPartitionFunction_fermionEnergy_eq_sum
@@ -57,48 +61,38 @@ private theorem log_eigenbasisPartitionFunction_fermionEnergy_eq_sum
       (fun i _ => ne_of_gt (by positivity)))
 
 omit [LinearOrder Mode] in
-/-- The total probability of configurations containing mode `i` is its Fermi–Dirac occupation. -/
-theorem sum_freeGibbsConfigurationProbability_filter_mem
-    (ε : Mode → ℝ) (β : ℝ) (i : Mode) :
-    ∑ n ∈ (Finset.univ : Finset (Occupation Mode)).filter (i ∈ ·),
-        freeGibbsConfigurationProbability ε β n =
-      fermiDiracOccupation ε β i := by
-  letI : LinearOrder Mode :=
-    LinearOrder.lift' (Fintype.equivFin Mode) (Fintype.equivFin Mode).injective
-  have h := freeGibbsDensityOperator_expectation_numberOperator ε β i
-  rw [freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation,
-    Common.finiteGibbsExpectation_eq_sum, numberOperator_eq_diagonalOperator] at h
-  apply Complex.ofReal_injective
-  push_cast
-  simpa [Common.matrixCoeff_diagonalOperator, Finset.sum_filter, mul_ite,
-    freeGibbsConfigurationProbability, fermiDiracOccupation] using h
-
-omit [LinearOrder Mode] in
 /-- The free-fermion Gibbs mean energy is the mode-energy sum weighted by Fermi–Dirac occupations. -/
 theorem eigenbasisGibbsEnergyExpectation_fermionEnergy_eq_sum_fermiDirac
     (ε : Mode → ℝ) (β : ℝ) :
     eigenbasisGibbsEnergyExpectation (fermionEnergy ε) β =
       ∑ i, ε i * fermiDiracOccupation ε β i := by
+  letI : LinearOrder Mode :=
+    LinearOrder.lift' (Fintype.equivFin Mode) (Fintype.equivFin Mode).injective
+  let D := Common.diagonalOperator (fun i => (ε i : ℂ))
+  have h := finiteGrandCanonicalGibbsDensityOperator_expectation_finiteSecondQuantization ε β 0
+    (Common.finiteHilbertOperatorAlgEquiv D)
+  have hE : Common.grandCanonicalEnergy (Config := Occupation Mode) ε 0 =
+      fermionEnergy (fun i => ε i - 0) := by
+    funext n
+    exact Common.grandCanonicalEnergy_eq_shifted ε 0 n
+  rw [hE] at h
+  simp only [sub_zero] at h
+  have hquant : Lattice.finiteSecondQuantization (Common.finiteHilbertOperatorAlgEquiv D) =
+      Lattice.boundedOneBodyOperator D := by
+    simp [Lattice.finiteSecondQuantization]
+  rw [hquant] at h
+  simp only [AlgEquiv.symm_apply_apply] at h
+  change Common.finiteGibbsExpectation (fermionEnergy ε) β
+    (AlgebraicFock.occupationConjugate
+      (Finsupp.basisSingleOne : Module.Basis Mode ℂ (Mode →₀ ℂ))
+      (AlgebraicFock.dGamma ((Mode →₀ ℂ)) D)) = _ at h
+  rw [Lattice.occupationConjugate_dGamma_diagonalOperator,
+    Common.finiteGibbsExpectation_eq_sum] at h
+  apply Complex.ofReal_injective
   rw [eigenbasisGibbsEnergyExpectation, tsum_fintype]
-  change
-    (∑ n : Occupation Mode,
-        freeGibbsConfigurationProbability ε β n * fermionEnergy ε n) =
-      ∑ i, ε i * fermiDiracOccupation ε β i
-  calc
-    (∑ n : Occupation Mode,
-        freeGibbsConfigurationProbability ε β n * fermionEnergy ε n) =
-        ∑ n : Occupation Mode, ∑ i : Mode,
-          if i ∈ n then freeGibbsConfigurationProbability ε β n * ε i else 0 := by
-      simp [fermionEnergy_eq_sum, Finset.mul_sum]
-    _ = ∑ i : Mode, ∑ n : Occupation Mode,
-          if i ∈ n then freeGibbsConfigurationProbability ε β n * ε i else 0 := by
-      rw [Finset.sum_comm]
-    _ = ∑ i, ε i * fermiDiracOccupation ε β i := by
-      apply Finset.sum_congr rfl
-      intro i _
-      rw [← Finset.sum_filter]
-      simp_rw [mul_comm (freeGibbsConfigurationProbability ε β _) (ε i)]
-      rw [← Finset.mul_sum, sum_freeGibbsConfigurationProbability_filter_mem]
+  push_cast [fermiDiracOccupation, Complex.ofReal_exp]
+  simpa [D, Common.matrixCoeff_diagonalOperator, Common.diagonalOperator_apply,
+    latticeKet, Finsupp.single_apply, fermionEnergy_eq_sum, div_eq_mul_inv] using h
 
 omit [LinearOrder Mode] [Fintype Mode] in
 private theorem fermiDiracOccupation_eq_exp_neg_div
@@ -140,40 +134,46 @@ private theorem binaryEntropy_fermiDiracOccupation
   ring
 
 omit [LinearOrder Mode] in
-/-- The finite free-fermion entropy is the sum of binary entropies of the Fermi–Dirac modes. -/
-theorem vonNeumannEntropy_freeGibbsDensityOperator_toReal_eq_sum_fermiDirac
-    (ε : Mode → ℝ) (β : ℝ) :
-    (vonNeumannEntropy (freeGibbsDensityOperator ε β)).toReal =
-      ∑ i, (Real.negMulLog (fermiDiracOccupation ε β i) +
-        Real.negMulLog (1 - fermiDiracOccupation ε β i)) := by
-  have hIntegrable :
-      EigenbasisGibbsEnergyIntegrable (fermionEnergy ε) β := by
-    exact Summable.of_finite
-  have hEntropy :
-      (vonNeumannEntropy (freeGibbsDensityOperator ε β)).toReal =
-        β * eigenbasisGibbsEnergyExpectation (fermionEnergy ε) β +
-          Real.log (eigenbasisPartitionFunction (fermionEnergy ε) β) := by
-    simpa [freeGibbsDensityOperator] using
-      (vonNeumannEntropy_eigenbasisGibbsDensityOperator
+/-- The full-occupation-space finite fermionic grand-canonical Gibbs entropy is the
+sum of binary entropies for occupations at the effective energy `ε - μ`.
+This uses the generic pure-point Gibbs density state directly, without a second finite
+fermionic density constructor. It does not assert a fixed-particle-number canonical entropy. -/
+theorem vonNeumannEntropy_finiteGrandCanonicalGibbs_toReal_eq_sum_fermiDirac
+    (ε : Mode → ℝ) (β μ : ℝ) :
+    (vonNeumannEntropy
+      (eigenbasisGibbsDensityOperator
         (Common.finiteHilbertBasis (Config := Occupation Mode))
-        (fermionEnergy ε) β
-        (eigenbasisGibbsSummable_of_finite (fermionEnergy ε) β)
-        hIntegrable).2
-  rw [hEntropy,
+        (Common.grandCanonicalEnergy (Config := Occupation Mode) ε μ) β
+        (eigenbasisGibbsSummable_of_finite
+          (Common.grandCanonicalEnergy (Config := Occupation Mode) ε μ) β))).toReal =
+      ∑ i, (Real.negMulLog (fermiDiracOccupation (fun j => ε j - μ) β i) +
+        Real.negMulLog (1 - fermiDiracOccupation (fun j => ε j - μ) β i)) := by
+  let ξ : Mode → ℝ := fun i => ε i - μ
+  have hE : Common.grandCanonicalEnergy (Config := Occupation Mode) ε μ =
+      fermionEnergy ξ := by
+    funext n
+    exact Common.grandCanonicalEnergy_eq_shifted ε μ n
+  rw [hE]
+  have hIntegrable : EigenbasisGibbsEnergyIntegrable (fermionEnergy ξ) β :=
+    Summable.of_finite
+  rw [(vonNeumannEntropy_eigenbasisGibbsDensityOperator
+    (Common.finiteHilbertBasis (Config := Occupation Mode))
+    (fermionEnergy ξ) β
+    (eigenbasisGibbsSummable_of_finite (fermionEnergy ξ) β) hIntegrable).2,
     eigenbasisGibbsEnergyExpectation_fermionEnergy_eq_sum_fermiDirac,
     log_eigenbasisPartitionFunction_fermionEnergy_eq_sum]
   calc
-    β * (∑ i, ε i * fermiDiracOccupation ε β i) +
-        ∑ i, Real.log (1 + Real.exp (-β * ε i)) =
-      ∑ i, ((β * ε i) * fermiDiracOccupation ε β i +
-        Real.log (1 + Real.exp (-β * ε i))) := by
+    β * (∑ i, ξ i * fermiDiracOccupation ξ β i) +
+        ∑ i, Real.log (1 + Real.exp (-β * ξ i)) =
+      ∑ i, ((β * ξ i) * fermiDiracOccupation ξ β i +
+        Real.log (1 + Real.exp (-β * ξ i))) := by
       rw [Finset.mul_sum, Finset.sum_add_distrib]
       ring_nf
-    _ = ∑ i, (Real.negMulLog (fermiDiracOccupation ε β i) +
-        Real.negMulLog (1 - fermiDiracOccupation ε β i)) := by
+    _ = ∑ i, (Real.negMulLog (fermiDiracOccupation ξ β i) +
+        Real.negMulLog (1 - fermiDiracOccupation ξ β i)) := by
       apply Finset.sum_congr rfl
       intro i hi
-      exact (binaryEntropy_fermiDiracOccupation ε β i).symm
+      exact (binaryEntropy_fermiDiracOccupation ξ β i).symm
 
 end
 end Fermionic

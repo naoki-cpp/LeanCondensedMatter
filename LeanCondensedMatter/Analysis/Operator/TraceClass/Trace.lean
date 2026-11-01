@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Analysis.Operator.TraceClass.Factorization.Basic
+import Mathlib.Analysis.InnerProductSpace.Trace
 
 set_option linter.style.header false
 
@@ -68,6 +69,15 @@ theorem trace_eq_tsum_inner {T : H →L[ℂ] H} (hT : IsTraceClass T)
     hT.trace = ∑' i, inner ℂ (d i) (T (d i)) := by
   unfold trace
   exact trace_tsum_eq _ d T hT
+
+/-- The trace of a rank-one operator is the inner product of its defining vectors. -/
+theorem trace_rankOne {x y : H}
+    (hT : IsTraceClass (InnerProductSpace.rankOne ℂ x y)) :
+    hT.trace = inner ℂ y x := by
+  obtain ⟨w, d, -⟩ := exists_hilbertBasis (𝕜 := ℂ) (E := H)
+  rw [hT.trace_eq_tsum_inner d]
+  simpa only [InnerProductSpace.rankOne_apply, inner_smul_right] using
+    d.tsum_inner_mul_inner y x
 
 /-- The trace of a Hilbert--Schmidt factorization `T = A† B` is the
 Hilbert--Schmidt inner product of its factors in any Hilbert basis. -/
@@ -144,5 +154,24 @@ theorem hasSum_realTrace {T : H →L[ℂ] H}
   exact Complex.hasSum_ofReal.mp hcomplex
 
 end IsTraceClass
+
+section FiniteDimensional
+
+variable [FiniteDimensional ℂ H]
+
+/-- Every bounded operator on a finite-dimensional Hilbert space is trace class. -/
+theorem isTraceClass_of_finiteDimensional (T : H →L[ℂ] H) : IsTraceClass T := by
+  apply (isTraceClass_iff_isTraceClassWrt
+    (stdOrthonormalBasis ℂ H).toHilbertBasis T).2
+  exact Summable.of_finite
+
+/-- In finite dimensions, the canonical trace agrees with the ordinary linear-map trace. -/
+theorem IsTraceClass.trace_eq_linearMap_trace {T : H →L[ℂ] H} (hT : IsTraceClass T) :
+    hT.trace = LinearMap.trace ℂ H (T : H →ₗ[ℂ] H) := by
+  rw [hT.trace_eq_tsum_inner (stdOrthonormalBasis ℂ H).toHilbertBasis, tsum_fintype]
+  simp only [OrthonormalBasis.coe_toHilbertBasis]
+  exact (LinearMap.trace_eq_sum_inner _ (stdOrthonormalBasis ℂ H)).symm
+
+end FiniteDimensional
 
 end ContinuousLinearMap

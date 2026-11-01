@@ -1,6 +1,6 @@
 import Mathlib.Basic.Real.Basic
 import Mathlib.Basic.Complex.Basic
-import Mathlib.Tactic
+import Mathlib.Tactic.NormNum
 
 set_option linter.style.header false
 

@@ -17,7 +17,9 @@ set_option linter.style.header false
 
 This module owns general ordinary finite-dimensional trace infrastructure for bounded endomorphisms.
 The trace is bundled as a continuous complex-linear functional, with reusable cyclicity,
-matrix/operator transport, and differentiation facts.
+matrix/operator transport, and differentiation facts. The ordinary trace, cyclicity, and
+differentiation only require a finite-dimensional normed space; the adjoint law requires an
+inner-product space.
 
 Mathlib supplies the underlying `LinearMap.trace`, finite-dimensional cyclicity, the canonical
 Euclidean matrix/operator equivalence, and derivative composition machinery. This file provides the
@@ -32,8 +34,11 @@ namespace ContinuousLinearMap
 
 noncomputable section
 
-variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
-  [FiniteDimensional ℂ H]
+variable {H : Type*} [NormedAddCommGroup H]
+
+section Normed
+
+variable [NormedSpace ℂ H] [FiniteDimensional ℂ H]
 
 /-- Ordinary finite-dimensional trace, bundled as a continuous linear functional on bounded
 endomorphisms. Continuity follows because the bounded-endomorphism space is finite-dimensional. -/
@@ -74,7 +79,31 @@ theorem finiteDimensionalOperatorTrace_mul_comm
   simp only [finiteDimensionalOperatorTrace_apply]
   exact LinearMap.trace_mul_comm ℂ (left : H →ₗ[ℂ] H) (right : H →ₗ[ℂ] H)
 
-section
+/-- Applying the finite-dimensional trace to a differentiable real-energy operator path preserves
+its derivative. -/
+theorem hasDerivAt_finiteDimensionalOperatorTrace_comp
+    {operatorPath : ℝ → H →L[ℂ] H} {operatorDerivative : H →L[ℂ] H}
+    {energy : ℝ} (hoperator : HasDerivAt operatorPath operatorDerivative energy) :
+    HasDerivAt
+      (fun x : ℝ => finiteDimensionalOperatorTrace (H := H) (operatorPath x))
+      (finiteDimensionalOperatorTrace (H := H) operatorDerivative)
+      energy := by
+  have htrace :
+      HasFDerivAt (finiteDimensionalOperatorTrace (H := H))
+        ((finiteDimensionalOperatorTrace (H := H)).restrictScalars ℝ)
+        (operatorPath energy) :=
+    ((finiteDimensionalOperatorTrace (H := H)).hasFDerivAt).restrictScalars ℝ
+  change HasDerivAt
+    ((finiteDimensionalOperatorTrace (H := H)) ∘ operatorPath)
+    (finiteDimensionalOperatorTrace (H := H) operatorDerivative)
+    energy
+  simpa using htrace.comp_hasDerivAt energy hoperator
+
+end Normed
+
+section InnerProduct
+
+variable [InnerProductSpace ℂ H] [FiniteDimensional ℂ H]
 
 local instance : CompleteSpace H := FiniteDimensional.complete ℂ H
 
@@ -95,27 +124,7 @@ theorem finiteDimensionalOperatorTrace_star
   rw [ContinuousLinearMap.adjoint_inner_right]
   exact (inner_conj_symm _ _).symm
 
-end
-
-/-- Applying the finite-dimensional trace to a differentiable real-energy operator path preserves
-its derivative. -/
-theorem hasDerivAt_finiteDimensionalOperatorTrace_comp
-    {operatorPath : ℝ → H →L[ℂ] H} {operatorDerivative : H →L[ℂ] H}
-    {energy : ℝ} (hoperator : HasDerivAt operatorPath operatorDerivative energy) :
-    HasDerivAt
-      (fun x : ℝ => finiteDimensionalOperatorTrace (H := H) (operatorPath x))
-      (finiteDimensionalOperatorTrace (H := H) operatorDerivative)
-      energy := by
-  have htrace :
-      HasFDerivAt (finiteDimensionalOperatorTrace (H := H))
-        ((finiteDimensionalOperatorTrace (H := H)).restrictScalars ℝ)
-        (operatorPath energy) :=
-    ((finiteDimensionalOperatorTrace (H := H)).hasFDerivAt).restrictScalars ℝ
-  change HasDerivAt
-    ((finiteDimensionalOperatorTrace (H := H)) ∘ operatorPath)
-    (finiteDimensionalOperatorTrace (H := H) operatorDerivative)
-    energy
-  simpa using htrace.comp_hasDerivAt energy hoperator
+end InnerProduct
 
 end
 

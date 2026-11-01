@@ -1,7 +1,7 @@
 import LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Interaction
+import Mathlib.Analysis.Complex.Norm
 
 set_option linter.style.header false
-set_option linter.unusedFintypeInType false
 
 /-!
 # Total-particle-number bound for a bosonic quartic vertex
@@ -18,7 +18,7 @@ open Common
 
 noncomputable section
 
-variable {Mode : Type*} [Fintype Mode]
+variable {Mode : Type*}
 
 /-- Four square-root ladder factors bounded by the same nonnegative number have product bounded by
 its square. -/

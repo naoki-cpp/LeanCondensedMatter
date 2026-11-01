@@ -24,6 +24,59 @@ SecondQuantization.Fermionic.CompletedFockSpace Mode
 
 Uniformly bounded coordinatewise scalar multiplication uses Mathlib `lp.mapCLM`, specialized locally
 to completed-space diagonal operators.
+
+`Fermionic.CompletedSpace.SmearedField` extends finite linear combinations of the existing
+mode creation operators to all square-summable one-particle mode coefficients. The CAR bound
+`‖c†(v)‖ ≤ ‖v‖₂` supplies the hypothesis for Mathlib's `LinearMap.extendOfNorm`; the algebraic
+inclusion has dense range. Mode-basis coefficients recover the existing creation operators.
+`star_completedCreate` identifies the completed mode operators as Hilbert adjoints using the
+same conjugate-transpose coefficient theorem as the finite realization. Annihilation of a
+general coefficient vector is the adjoint of its bounded creation field. The creation fields
+anticommute, and their mixed CAR is the one-particle inner product times the identity. The adjoint
+field annihilates the vacuum; creation on the vacuum preserves the one-particle inner product.
+
+`Fermionic.CompletedSpace.UnitaryLift` realizes the exterior algebra of the full one-particle
+ℓ² space by creation fields acting on the vacuum. This realization has dense range, and exterior
+transport by a one-particle isometry preserves its inner product. `completedFockUnitary` uses
+Mathlib's `LinearEquiv.extendOfIsometry` to lift an arbitrary one-particle unitary on ℓ² modes.
+It fixes the vacuum, intertwines the creation fields, and respects identity and composition.
+`completedFockUnitary_joint_continuous` lifts strong continuity of a one-particle unitary family
+to joint continuity of its Fock action. On the dense exterior realization this follows by creation
+and addition; Mathlib's dense-continuity theorem extends it to all vectors using the common
+Lipschitz constant one. No operator-norm continuity is assumed.
+`completedFockUnitaryGroup` packages a supplied one-parameter unitary group in the bounded-operator
+unitary type used by linear response. `completedFockUnitaryGroup_apply_continuous` supplies the
+orbit-continuity hypothesis of
+`QuantumTheory.LinearResponse.continuous_commutatorSusceptibility_of_diagonal_density` directly;
+the density, its diagonal realization, and bounded observables remain explicit inputs to that
+general theorem. For an unbounded self-adjoint one-particle generator, the existing
+`LinearPMap.stoneEvolutionUnitaryGroup` and `stoneEvolution_apply_continuous` provide the inputs.
+`Fermionic.CompletedSpace.Generator` identifies the zero-time derivative on finite exterior
+expressions from an explicitly invariant one-particle subspace. More generally, a realization
+`j : V →ₗ[ℂ] ℓ²(Mode)` with one-particle derivative `-i j(T v)` gives the realized Fock derivative
+`-i dΓ(T)` using the existing algebraic second quantization. The Stone specialization assumes
+`D ⊆ A.domain` and that `A` restricts to `T : D →ₗ[ℂ] D`. Invariance is an explicit condition:
+`A.domain` itself need not be invariant under `A`. This is an infinitesimal-action formula;
+it does not prove that the chosen subspace is an operator core, identify a maximal Fock domain,
+or identify the closure with a self-adjoint second-quantized generator.
+
+`completedFockHamiltonianOn` packages this action as a complex-linear partial operator with
+domain the realized image of `AlgebraicFock D`. If an exterior expression realizes to zero, its
+`dΓ(T)` image also realizes to zero by uniqueness of the lifted Stone derivative. Mathlib's
+kernel quotient and range equivalence therefore descend the algebraic action to actual Fock
+vectors without choosing a representative. Every vector in this partial domain has derivative
+`-i Hψ`. `completedExterior_map_denseRange` transfers density of a one-particle realization to its
+finite exterior realization, so `completedFockHamiltonianOn_dense_domain` gives a dense domain
+whenever `D` is dense. `completedFockHamiltonianOn_isFormalAdjoint` proves symmetry by
+differentiating preservation of the inner product under the lifted unitary group. Density and
+symmetry allow Mathlib's `LinearPMap.IsFormalAdjoint.le_adjoint` and `adjoint_isClosed` to supply
+a closed adjoint extension. Identification of the closure as self-adjoint, maximal-domain
+identification and the operator-core property remain separate obligations.
+
+In the pinned Mathlib revision, `Analysis.InnerProductSpace.ExteriorPower`
+provides a Hilbert structure only for real, finite-dimensional exterior powers; it cannot directly
+supply the complex infinite-dimensional construction needed here. A Hilbert basis in an infinite
+one-particle space must not be substituted for a finite-support algebraic basis.
 For a diagonal algebraic Fock operator, a continuous extension to the completed space exists
 **if and only if its complex diagonal weights are uniformly bounded**. The general theorem
 `exists_bounded_diagonal_extension_iff` needs no `Finite` or `Fintype` hypothesis;
@@ -36,24 +89,37 @@ bounded map.
 
 ## Thermal boundary
 
-Completed thermal specializations live under `SecondQuantization.Fermionic.Thermal.Completed`, while
-the state-level pure-point Gibbs construction is owned by `QuantumTheory.Gibbs.Eigenbasis`.
+Completed thermal specializations live under `SecondQuantization.Fermionic.Thermal.Completed`.
+The full-Fock grand-canonical state uses `Common.grandCanonicalGibbsDensityOperator` with explicit
+chemical potential `μ`, whose normalization reuses `QuantumTheory.Gibbs.Eigenbasis`.
 
 The completed free-fermion route includes:
 
-- pure-point Gibbs states under explicit `EigenbasisGibbsSummable` hypotheses;
+- grand-canonical pure-point Gibbs states with explicit `μ` and occupation-weight summability;
 - occupation-basis formulas for bounded expectations and an explicit integrability domain for the
   completed total-number expectation;
 - generic unbounded energy expectation through `QuantumTheory.Gibbs.EigenbasisExpectation`;
 - a one-particle sufficient condition for free-fermion Gibbs summability and the corresponding
   partition-product identity;
-- bounded thermal ladder packaging, Gibbs intertwining, KMS rotation, CAR peel, and the completed
-  Bloch--de Dominicis recursion;
-- finite-mode Gibbs truncations and convergence of bounded-observable expectations to the completed
-  pure-point Gibbs expectation.
+- bounded thermal ladder packaging, Gibbs intertwining and KMS rotation with factors
+  `exp(±β(εᵢ - μ))`, CAR peel, and the completed Bloch--de Dominicis recursion;
+- finite mode-supported sums of bounded creation-annihilation bilinears with their
+  Fermi-weighted diagonal Gibbs means, owned by `Fermionic.Thermal.OneBodyExpectation`;
+- finite-mode Gibbs truncations at explicit `μ` and convergence of bounded-observable expectations
+  to the completed grand-canonical Gibbs expectation.
 
 The last item is weak convergence against bounded observables, not a thermodynamic limit or a general
-trace-norm convergence theorem.
+trace-norm convergence theorem. For finite fermionic mode sets, the completed grand-canonical density
+is intertwined with the finite Gibbs density under `Common.completedFiniteHilbertEquiv`;
+the finite density expectation is the `Common.summableDiagonalTraceRatioLinear` of #4074.
+This finite bridge does not extend to a trace-ratio identification for arbitrary completed operators.
+
+The finite second-quantization expectation in `Thermal.OneBodyExpectation` consumes the same
+completed finite-sum theorem through the existing algebraic-core expectation bridge. The full mode
+type need not be finite for the completed theorem: only the observable's specified mode support
+is finite. This is not yet the general finite-rank formula, because a finite-rank one-particle
+operator can have vectors with infinite support in the chosen mode basis. Arbitrary one-body
+observables and unbounded `dΓ(A)` still require their own realization and integrability conditions.
 
 ## Completed bosonic free thermal representation
 
@@ -63,9 +129,10 @@ the same Common completed occupation-space infrastructure. The free heat operato
 For arbitrary `Mode`, an explicit `EigenbasisGibbsSummable (freeEigenvalue ε) β` hypothesis
 supplies:
 
-- trace-classness of the completed free heat operator;
-- equality of its trace with the convergence-aware algebraic `freeGibbsPartition`;
-- the canonical pure-point Gibbs density operator, its basis action, and normalization.
+- trace-classness of the physical completed free heat operator `exp(-βH)`;
+- equality of its trace with the explicit grand-canonical partition function at `μ = 0`;
+- normalization to `Common.grandCanonicalGibbsDensityOperator ε β 0`. General `μ`
+  is supplied directly by the Common API, not a bosonic zero-μ constructor.
 
 For finite `Mode`, the geometric-series theorem `eigenbasisGibbsSummable_freeEigenvalue`
 supplies occupation summability under positive mode energies. For arbitrary `Mode`, the theorem
@@ -101,6 +168,33 @@ independent finite Gibbs state model is required.
 For arbitrary `Mode`, finite-mode projections indexed by `Finset Mode` are contractions, eventually
 fix algebraic vectors, and converge strongly to the identity. No countability assumption on `Mode` is
 needed for that representation-level statement.
+
+## Stationary completed Gibbs states
+
+`Common.Thermal.CompletedResponse` connects the existing summable grand-canonical density
+to the unitary-group linear-response interface: it is stationary under Stone evolution of any
+real diagonal energy function on the same occupation basis. The statement applies to both
+statistics without a finite-mode hypothesis. Physical Hamiltonian energies divided by ℏ may be
+used independently of the thermal generator `E - μ N`. The observable remains bounded; this
+does not supply response theory for unbounded currents or an infinite-volume equilibrium state.
+
+The analysis input is `LinearPMap.stoneEvolution_eigenvector`: a domain eigenvector of real
+energy `E` evolves by the phase `exp(-i t E)`. It follows from the existing strong Stone derivative,
+Mathlib's exponential derivative, and derivative-zero constancy using an integrating factor.
+Eigenvector expectation invariance now follows from cancellation of this phase with its conjugate.
+For completed diagonal generators, `completedDiagonalOperator_basisState` supplies the eigenvector
+hypothesis directly. This identifies occupation-basis time evolution without a finite-mode
+assumption; it does not construct the Fock lift of a general unitary mixing one-particle modes.
+
+`Common.Thermal.CompletedResponse` supplies positive-switching-rate integrability of the existing
+adiabatic scalar kernel for this completed Gibbs density under real diagonal Stone dynamics.
+`DensityOperator.continuous_expectation_of_diagonal` uses continuous diagonal matrix coefficients
+and a uniform operator bound, with the density weights providing a summable majorant through
+Mathlib's `continuous_tsum`. `Response.DensitySusceptibility` applies that fact to the scalar
+commutator using strong continuity of the unitary group. It does not require operator-norm
+continuity of observable orbits, and does not extend this conclusion to arbitrary normalized
+functionals. The causal extension is measurable and the existing exponential-damping theorem
+then gives integrability for every positive switching rate. The zero-rate limit remains separate.
 
 ## Open work
 

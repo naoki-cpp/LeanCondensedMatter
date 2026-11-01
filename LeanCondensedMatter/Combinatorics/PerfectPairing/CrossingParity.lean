@@ -1,5 +1,4 @@
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Crossing
-import LeanCondensedMatter.Combinatorics.PerfectPairing.PairEndpoints
 
 set_option linter.style.header false
 

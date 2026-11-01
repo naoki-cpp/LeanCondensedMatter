@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Analysis.InternalSpace.Pauli
 import LeanCondensedMatter.Transport.Analysis.ContinuumMeasure
 import LeanCondensedMatter.Transport.Analysis.PolarFourier
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornInvertibility
@@ -183,6 +184,17 @@ noncomputable def finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient
     (finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix
       side v m probeEnergy broadening disorderStrength hbar pMax radius) axis
 
+/-- The symmetric off-diagonal entries of the radial Green matrix imply that
+its Pauli-y coefficient vanishes on the radial axis for either spectral side. -/
+theorem finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient_y_eq_zero
+    (side : SpectralSide)
+    (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ) :
+    finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient
+        .y side v m probeEnergy broadening disorderStrength hbar pMax radius = 0 := by
+  simp [finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient,
+    finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix,
+    InternalSpace.pauliVectorCoefficient]
+
 /-- Pointwise scalar Pauli kernel of the positive-axis radial Born-Dyson Green integrand. -/
 noncomputable def finiteCutoffContinuumBornDysonRadialGreenScalarKernel
     (side : SpectralSide)
@@ -254,67 +266,105 @@ theorem finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix_apply_eq_entryK
             side v m probeEnergy broadening disorderStrength hbar pMax radius p i j := by
   fin_cases i <;> fin_cases j <;> rfl
 
-/-- The scalar Pauli coefficient of the radial Green matrix is a combination of its two
-scalar entry-kernel integrals; no matrix operation remains on the right-hand side. -/
-theorem finiteCutoffContinuumBornDysonRadialGreenScalarCoefficient_eq_entryKernel_integrals
+/-- In the finite-broadening finite-cutoff regime, the radial Green scalar coefficient is the momentum
+measure prefactor times the integral of its explicit pointwise Pauli scalar kernel. -/
+theorem finiteCutoffContinuumBornDysonRadialGreenScalarCoefficient_eq_radialKernel_integral
     (side : SpectralSide)
-    (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ) :
+    (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ)
+    (hbroadening : broadening ≠ 0) (hdisorder : 0 ≤ disorderStrength)
+    (hpMax : 0 ≤ pMax) :
     finiteCutoffContinuumBornDysonRadialGreenScalarCoefficient
         side v m probeEnergy broadening disorderStrength hbar pMax radius =
-      (((momentumMeasurePrefactor hbar : ℝ) : ℂ) *
-          (∫ p in (0 : ℝ)..pMax,
-            finiteCutoffContinuumBornDysonRadialGreenEntryKernel
-              side v m probeEnergy broadening disorderStrength hbar pMax radius p 0 0) +
-        ((momentumMeasurePrefactor hbar : ℝ) : ℂ) *
-          (∫ p in (0 : ℝ)..pMax,
-            finiteCutoffContinuumBornDysonRadialGreenEntryKernel
-              side v m probeEnergy broadening disorderStrength hbar pMax radius p 1 1)) / 2 := by
+      (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
+        ∫ p in (0 : ℝ)..pMax,
+          finiteCutoffContinuumBornDysonRadialGreenScalarKernel
+            side v m probeEnergy broadening disorderStrength hbar pMax radius p := by
+  have hentry : ∀ i j, IntervalIntegrable
+      (fun p : ℝ => finiteCutoffContinuumBornDysonRadialGreenEntryKernel
+        side v m probeEnergy broadening disorderStrength hbar pMax radius p i j)
+      MeasureTheory.volume 0 pMax := by
+    intro i j
+    exact intervalIntegrable_finiteCutoffContinuumBornDysonRadialGreenEntryKernel
+      side v m probeEnergy broadening disorderStrength hbar pMax radius
+      hbroadening hdisorder hpMax i j
+  have hmatrix :
+      finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix
+          side v m probeEnergy broadening disorderStrength hbar pMax radius =
+        fun i j =>
+          (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
+            ∫ p in (0 : ℝ)..pMax,
+              finiteCutoffContinuumBornDysonRadialGreenEntryKernel
+                side v m probeEnergy broadening disorderStrength hbar pMax radius p i j := by
+    ext i j
+    exact finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix_apply_eq_entryKernel_integral
+      side v m probeEnergy broadening disorderStrength hbar pMax radius i j
   unfold finiteCutoffContinuumBornDysonRadialGreenScalarCoefficient
-  rw [InternalSpace.pauliScalarCoefficient]
-  rw [finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix_apply_eq_entryKernel_integral,
-    finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix_apply_eq_entryKernel_integral]
+  rw [hmatrix]
+  trans (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
+    ∫ p in (0 : ℝ)..pMax, InternalSpace.pauliScalarCoefficient
+      (finiteCutoffContinuumBornDysonRadialGreenEntryKernel
+        side v m probeEnergy broadening disorderStrength hbar pMax radius p)
+  · exact InternalSpace.pauliScalarCoefficient_prefactor_intervalIntegral
+      (prefactor := (((momentumMeasurePrefactor hbar : ℝ) : ℂ)))
+      (kernel := fun p i j => finiteCutoffContinuumBornDysonRadialGreenEntryKernel
+        side v m probeEnergy broadening disorderStrength hbar pMax radius p i j)
+      (hkernel := hentry)
+  apply congrArg (fun z : ℂ => (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) * z)
+  apply intervalIntegral.integral_congr
+  intro p _
+  exact finiteCutoffContinuumBornDysonRadialGreenEntryKernel_pauliScalarCoefficient
+    side v m probeEnergy broadening disorderStrength hbar pMax radius p
 
-/-- Each Pauli-vector component of the radial Green matrix is a scalar combination of entry-kernel
-integrals. This is the matrix-free boundary consumed by crossed radial traces. -/
-theorem finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient_eq_entryKernel_integrals
+/-- In the finite-broadening finite-cutoff regime, every radial Green Pauli component is the momentum
+measure prefactor times the integral of its explicit pointwise Pauli-vector kernel. -/
+theorem finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient_eq_radialKernel_integral
     (axis : PauliAxis) (side : SpectralSide)
-    (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ) :
+    (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ)
+    (hbroadening : broadening ≠ 0) (hdisorder : 0 ≤ disorderStrength)
+    (hpMax : 0 ≤ pMax) :
     finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient
         axis side v m probeEnergy broadening disorderStrength hbar pMax radius =
-      match axis with
-      | .x =>
-          (((momentumMeasurePrefactor hbar : ℝ) : ℂ) *
-              (∫ p in (0 : ℝ)..pMax,
-                finiteCutoffContinuumBornDysonRadialGreenEntryKernel
-                  side v m probeEnergy broadening disorderStrength hbar pMax radius p 0 1) +
-            ((momentumMeasurePrefactor hbar : ℝ) : ℂ) *
-              (∫ p in (0 : ℝ)..pMax,
-                finiteCutoffContinuumBornDysonRadialGreenEntryKernel
-                  side v m probeEnergy broadening disorderStrength hbar pMax radius p 1 0)) / 2
-      | .y =>
-          Complex.I *
-            (((momentumMeasurePrefactor hbar : ℝ) : ℂ) *
-                (∫ p in (0 : ℝ)..pMax,
-                  finiteCutoffContinuumBornDysonRadialGreenEntryKernel
-                    side v m probeEnergy broadening disorderStrength hbar pMax radius p 0 1) -
-              ((momentumMeasurePrefactor hbar : ℝ) : ℂ) *
-                (∫ p in (0 : ℝ)..pMax,
-                  finiteCutoffContinuumBornDysonRadialGreenEntryKernel
-                    side v m probeEnergy broadening disorderStrength hbar pMax radius p 1 0)) / 2
-      | .z =>
-          (((momentumMeasurePrefactor hbar : ℝ) : ℂ) *
-              (∫ p in (0 : ℝ)..pMax,
-                finiteCutoffContinuumBornDysonRadialGreenEntryKernel
-                  side v m probeEnergy broadening disorderStrength hbar pMax radius p 0 0) -
-            ((momentumMeasurePrefactor hbar : ℝ) : ℂ) *
-              (∫ p in (0 : ℝ)..pMax,
-                finiteCutoffContinuumBornDysonRadialGreenEntryKernel
-                  side v m probeEnergy broadening disorderStrength hbar pMax radius p 1 1)) / 2 := by
+      (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
+        ∫ p in (0 : ℝ)..pMax,
+          finiteCutoffContinuumBornDysonRadialGreenPauliKernel
+            axis side v m probeEnergy broadening disorderStrength hbar pMax radius p := by
+  have hentry : ∀ i j, IntervalIntegrable
+      (fun p : ℝ => finiteCutoffContinuumBornDysonRadialGreenEntryKernel
+        side v m probeEnergy broadening disorderStrength hbar pMax radius p i j)
+      MeasureTheory.volume 0 pMax := by
+    intro i j
+    exact intervalIntegrable_finiteCutoffContinuumBornDysonRadialGreenEntryKernel
+      side v m probeEnergy broadening disorderStrength hbar pMax radius
+      hbroadening hdisorder hpMax i j
+  have hmatrix :
+      finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix
+          side v m probeEnergy broadening disorderStrength hbar pMax radius =
+        fun i j =>
+          (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
+            ∫ p in (0 : ℝ)..pMax,
+              finiteCutoffContinuumBornDysonRadialGreenEntryKernel
+                side v m probeEnergy broadening disorderStrength hbar pMax radius p i j := by
+    ext i j
+    exact finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix_apply_eq_entryKernel_integral
+      side v m probeEnergy broadening disorderStrength hbar pMax radius i j
   unfold finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient
-  cases axis <;>
-    simp only [InternalSpace.pauliVectorCoefficient] <;>
-    rw [finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix_apply_eq_entryKernel_integral,
-      finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix_apply_eq_entryKernel_integral]
+  rw [hmatrix]
+  have hmove := InternalSpace.pauliVectorCoefficient_prefactor_intervalIntegral
+    (axis := axis)
+    (prefactor := (((momentumMeasurePrefactor hbar : ℝ) : ℂ)))
+    (kernel := fun p i j => finiteCutoffContinuumBornDysonRadialGreenEntryKernel
+      side v m probeEnergy broadening disorderStrength hbar pMax radius p i j)
+    (hkernel := hentry)
+  trans (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
+    ∫ p in (0 : ℝ)..pMax, InternalSpace.pauliVectorCoefficient
+      (finiteCutoffContinuumBornDysonRadialGreenEntryKernel
+        side v m probeEnergy broadening disorderStrength hbar pMax radius p) axis
+  · exact hmove
+  apply congrArg (fun z : ℂ => (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) * z)
+  apply intervalIntegral.integral_congr
+  intro p _
+  exact finiteCutoffContinuumBornDysonRadialGreenEntryKernel_pauliVectorCoefficient
+    axis side v m probeEnergy broadening disorderStrength hbar pMax radius p
 
 private theorem finiteCutoffContinuumBornDysonRadialGreenEntryKernel_neg_radius
     (side : SpectralSide)
@@ -326,51 +376,14 @@ private theorem finiteCutoffContinuumBornDysonRadialGreenEntryKernel_neg_radius
         finiteCutoffContinuumBornDysonRadialGreenEntryKernel
           side v m probeEnergy broadening disorderStrength hbar pMax radius p i j *
         sigmaZ j j := by
-  let a := finiteCutoffContinuumBornDysonScalarCoefficient
-    side v m p 0 probeEnergy broadening disorderStrength hbar pMax
-  let b := finiteCutoffContinuumBornDysonPauliCoefficient .x
-    side v m p 0 probeEnergy broadening disorderStrength hbar pMax
-  let d := finiteCutoffContinuumBornDysonPauliCoefficient .z
-    side v m p 0 probeEnergy broadening disorderStrength hbar pMax
   have harg : p * (-radius) / hbar = -(p * radius / hbar) := by
     ring
-  fin_cases i <;> fin_cases j
-  · change
-      (p : ℂ) *
-          (polarFourierZerothAngularKernel (p * (-radius) / hbar) * (a + d)) =
-        sigmaZ 0 0 *
-            ((p : ℂ) *
-              (polarFourierZerothAngularKernel (p * radius / hbar) * (a + d))) *
-          sigmaZ 0 0
-    rw [harg, polarFourierZerothAngularKernel_neg]
-    simp [sigmaZ, InternalSpace.pauliZ]
-  · change
-      (p : ℂ) *
-          (polarFourierFirstCosineAngularKernel (p * (-radius) / hbar) * b) =
-        sigmaZ 0 0 *
-            ((p : ℂ) *
-              (polarFourierFirstCosineAngularKernel (p * radius / hbar) * b)) *
-          sigmaZ 1 1
-    rw [harg, polarFourierFirstCosineAngularKernel_neg]
-    simp [sigmaZ, InternalSpace.pauliZ]
-  · change
-      (p : ℂ) *
-          (polarFourierFirstCosineAngularKernel (p * (-radius) / hbar) * b) =
-        sigmaZ 1 1 *
-            ((p : ℂ) *
-              (polarFourierFirstCosineAngularKernel (p * radius / hbar) * b)) *
-          sigmaZ 0 0
-    rw [harg, polarFourierFirstCosineAngularKernel_neg]
-    simp [sigmaZ, InternalSpace.pauliZ]
-  · change
-      (p : ℂ) *
-          (polarFourierZerothAngularKernel (p * (-radius) / hbar) * (a - d)) =
-        sigmaZ 1 1 *
-            ((p : ℂ) *
-              (polarFourierZerothAngularKernel (p * radius / hbar) * (a - d))) *
-          sigmaZ 1 1
-    rw [harg, polarFourierZerothAngularKernel_neg]
-    simp [sigmaZ, InternalSpace.pauliZ]
+  fin_cases i <;> fin_cases j <;>
+    dsimp [finiteCutoffContinuumBornDysonRadialGreenEntryKernel] <;>
+    rw [harg] <;>
+    simp [polarFourierZerothAngularKernel_neg,
+      polarFourierFirstCosineAngularKernel_neg,
+      sigmaZ, InternalSpace.pauliZ]
 
 /-- Reversing the radial real-space coordinate conjugates the massive-Dirac Green matrix by
 `σ_z`. The diagonal zeroth-harmonic channels are even, while the off-diagonal first-harmonic

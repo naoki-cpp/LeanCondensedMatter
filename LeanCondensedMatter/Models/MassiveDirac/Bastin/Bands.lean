@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Models.MassiveDirac.Model.OperatorSpectral
 import LeanCondensedMatter.Models.MassiveDirac.Bastin.Berry
 
 set_option linter.style.header false
@@ -27,59 +28,6 @@ open QuantumTheory.Transport
 
 open ContinuousLinearMap
 
-/-- Natural ordered trace `Tr(j_μ P_source j_ν P_target)` produced by the Bastin kernel. -/
-noncomputable def bastinBandBlockTrace
-    (μ ν : Fin 2) (source target : Band) (e v m px py : ℝ) : ℂ :=
-  finiteDimensionalOperatorTrace
-    (currentOperator μ e v * bandProjectorOperator source v m px py *
-      currentOperator ν e v * bandProjectorOperator target v m px py)
-
-/-- Cyclicity identifies the direct Bastin block with the corresponding projector-first block. -/
-theorem bastinBandBlockTrace_eq_currentBandBlockTrace
-    (μ ν : Fin 2) (source target : Band) (e v m px py : ℝ) :
-    bastinBandBlockTrace μ ν source target e v m px py =
-      currentBandBlockTrace μ ν source target e v m px py := by
-  unfold bastinBandBlockTrace currentBandBlockTrace
-  calc
-    finiteDimensionalOperatorTrace
-        (currentOperator μ e v * bandProjectorOperator source v m px py *
-          currentOperator ν e v * bandProjectorOperator target v m px py) =
-      finiteDimensionalOperatorTrace
-        ((currentOperator μ e v * bandProjectorOperator source v m px py *
-          currentOperator ν e v) * bandProjectorOperator target v m px py) := by rfl
-    _ = finiteDimensionalOperatorTrace
-        (bandProjectorOperator target v m px py *
-          (currentOperator μ e v * bandProjectorOperator source v m px py *
-            currentOperator ν e v)) :=
-      finiteDimensionalOperatorTrace_mul_comm _ _
-    _ = finiteDimensionalOperatorTrace
-        (bandProjectorOperator target v m px py * currentOperator μ e v *
-          bandProjectorOperator source v m px py * currentOperator ν e v) := by
-      simp only [mul_assoc]
-
-/-- Reversing the current order exchanges the source and target band labels. -/
-theorem bastinBandBlockTrace_swap
-    (μ ν : Fin 2) (source target : Band) (e v m px py : ℝ) :
-    bastinBandBlockTrace ν μ source target e v m px py =
-      bastinBandBlockTrace μ ν target source e v m px py := by
-  unfold bastinBandBlockTrace
-  calc
-    finiteDimensionalOperatorTrace
-        (currentOperator ν e v * bandProjectorOperator source v m px py *
-          currentOperator μ e v * bandProjectorOperator target v m px py) =
-      finiteDimensionalOperatorTrace
-        ((currentOperator ν e v * bandProjectorOperator source v m px py) *
-          (currentOperator μ e v * bandProjectorOperator target v m px py)) := by
-      simp only [mul_assoc]
-    _ = finiteDimensionalOperatorTrace
-        ((currentOperator μ e v * bandProjectorOperator target v m px py) *
-          (currentOperator ν e v * bandProjectorOperator source v m px py)) :=
-      finiteDimensionalOperatorTrace_mul_comm _ _
-    _ = finiteDimensionalOperatorTrace
-        (currentOperator μ e v * bandProjectorOperator target v m px py *
-          currentOperator ν e v * bandProjectorOperator source v m px py) := by
-      simp only [mul_assoc]
-
 /-- Difference of retarded and advanced scalar resolvent coefficients for one band. -/
 noncomputable def spectralDifferenceCoefficient
     (band : Band) (v m px py probeEnergy broadening : ℝ) : ℂ :=
@@ -103,8 +51,8 @@ noncomputable def bastinBandPairContribution
     (advancedSpectralParameter probeEnergy broadening)
     (bandEnergy source v m px py)
   let d := spectralDifferenceCoefficient target v m px py probeEnergy broadening
-  r ^ 2 * d * bastinBandBlockTrace μ ν source target e v m px py -
-    a ^ 2 * d * bastinBandBlockTrace ν μ source target e v m px py
+  r ^ 2 * d * currentBandBlockTrace μ ν source target e v m px py -
+    a ^ 2 * d * currentBandBlockTrace ν μ source target e v m px py
 
 /-- Diagonal/intraband part of the finite-broadening projector Hall trace. -/
 noncomputable def diagonalBastinTraceContribution
@@ -126,6 +74,17 @@ theorem projectorBastinTraceIntegrand_eq_band_sum
     projectorBastinTraceIntegrand e v m px py probeEnergy broadening =
       ∑ source : Band, ∑ target : Band,
         bastinBandPairContribution 0 1 source target e v m px py probeEnergy broadening := by
+  have hblock (μ ν : Fin 2) (source target : Band) :
+      finiteDimensionalOperatorTrace
+          (currentOperator μ e v * bandProjectorOperator source v m px py *
+            currentOperator ν e v * bandProjectorOperator target v m px py) =
+        currentBandBlockTrace μ ν source target e v m px py := by
+    unfold currentBandBlockTrace
+    simpa only [mul_assoc] using
+      (finiteDimensionalOperatorTrace_mul_comm
+        (currentOperator μ e v * bandProjectorOperator source v m px py *
+          currentOperator ν e v)
+        (bandProjectorOperator target v m px py))
   unfold projectorBastinTraceIntegrand
   dsimp only [projectorBastinOperatorIntegrand]
   unfold projectorResolvent
@@ -136,9 +95,9 @@ theorem projectorBastinTraceIntegrand_eq_band_sum
     (fun band => bandProjectorOperator band v m px py)
     (bandProjectorOperator_completeOrthogonalIdempotents v m px py hE).toOrthogonalIdempotents]
   simp only [sum_band]
-  unfold bastinBandPairContribution spectralDifferenceCoefficient bastinBandBlockTrace
+  unfold bastinBandPairContribution spectralDifferenceCoefficient
   simp only [add_mul, sub_mul, mul_add, mul_sub, mul_smul_comm, smul_mul_assoc]
-  simp only [map_add, map_sub, map_smul]
+  simp only [map_add, map_sub, map_smul, hblock]
   ring_nf
 
 /-- Exact finite-broadening separation into diagonal and interband sectors. -/

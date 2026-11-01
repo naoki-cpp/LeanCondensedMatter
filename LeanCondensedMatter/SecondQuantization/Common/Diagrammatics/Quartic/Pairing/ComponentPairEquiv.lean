@@ -35,16 +35,6 @@ private noncomputable def QuarticDiagram.componentOrderedLegEquiv {S : Finset (F
       ((Equiv.prodCongr shuffle.slotEquiv (Equiv.refl (Fin 4))).trans
         (orderedQuarticLegEquiv S.card).symm))
 
-private theorem QuarticDiagram.componentOrderedLegEquiv_partner {S : Finset (Fin N)}
-    (d : QuarticDiagram Label N S) (orders : d.ComponentVertexOrders)
-    (shuffle : d.ComponentShuffle) (B : d.vertexGraph.componentPartitionOn.parts)
-    (p : Fin (2 * (2 * (B : Finset (Fin N)).card))) :
-    (d.pairingInOrder (d.assembleVertexOrder orders shuffle)).partner
-        (d.componentOrderedLegEquiv shuffle ⟨B, p⟩) =
-      d.componentOrderedLegEquiv shuffle
-        ⟨B, ((d.restrictComponent B.2).pairingInOrder (orders B)).partner p⟩ := by
-  exact d.pairingInOrder_partner_componentOrderedLeg orders shuffle B p
-
 /-- Component-local normalized pairs are equivalent to the normalized pairs of the assembled global
 pairing. -/
 noncomputable def QuarticDiagram.componentPairEquiv {S : Finset (Fin N)}
@@ -55,7 +45,7 @@ noncomputable def QuarticDiagram.componentPairEquiv {S : Finset (Fin N)}
   (d.pairingInOrder (d.assembleVertexOrder orders shuffle)).normalizedPairSigmaEquiv
     (fun B => (d.restrictComponent B.2).pairingInOrder (orders B))
     (d.componentOrderedLegEquiv shuffle)
-    (d.componentOrderedLegEquiv_partner orders shuffle)
+    (d.pairingInOrder_partner_componentOrderedLeg orders shuffle)
 
 @[simp]
 theorem QuarticDiagram.componentPairEquiv_apply {S : Finset (Fin N)}
@@ -73,7 +63,7 @@ theorem QuarticDiagram.componentPairEquiv_apply {S : Finset (Fin N)}
       (d.pairingInOrder (d.assembleVertexOrder orders shuffle))
       (fun C => (d.restrictComponent C.2).pairingInOrder (orders C))
       (d.componentOrderedLegEquiv shuffle)
-      (d.componentOrderedLegEquiv_partner orders shuffle)
+      (d.pairingInOrder_partner_componentOrderedLeg orders shuffle)
       (fun C => d.componentOrderedLeg_strictMono shuffle C)
       B pr)
 

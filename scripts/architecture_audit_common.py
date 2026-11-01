@@ -210,9 +210,50 @@ def lean_imports(path: Path) -> tuple[str, ...]:
 
 def check_lean_import_syntax(errors: list[str], *, root: Path, source_root: Path) -> None:
     """Fail closed on import-looking commands not understood by the source audit parser."""
-    for path in lean_files(source_root):
+    source_files = list(lean_files(source_root))
+    public_umbrella = root / "LeanCondensedMatter.lean"
+    if public_umbrella.is_file():
+        source_files.append(public_umbrella)
+    for path in source_files:
         for line_no, error in _invalid_import_commands(path):
             errors.append(f"{relative(root, path)}:{line_no}: {error}")
+
+
+def check_direct_import_hygiene(errors: list[str], *, root: Path, source_root: Path) -> None:
+    """Reject duplicate commands, self imports, and unresolved project source imports.
+
+    Import modifiers matter: `public import A` and `import all A` can both be needed.
+    Neither transitive reachability nor a plain `import A` makes a direct import unnecessary
+    in the Lean module system, so those judgments remain a compile-backed review task.
+    """
+    source_files = list(lean_files(source_root))
+    public_umbrella = root / "LeanCondensedMatter.lean"
+    if public_umbrella.is_file():
+        source_files.append(public_umbrella)
+    for path in source_files:
+        source_module = module_name_from_path(root, path)
+        first_seen: dict[str, int] = {}
+        for line_no, line in enumerate(lean_source(path).splitlines(), start=1):
+            imported, error = _parse_import_line(line)
+            if imported is None or error is not None:
+                continue  # Unsupported syntax is reported by check_lean_import_syntax.
+            command = " ".join(line.split())
+            if command in first_seen:
+                errors.append(
+                    f"{relative(root, path)}:{line_no}: duplicate import `{command}` "
+                    f"(first at line {first_seen[command]})"
+                )
+            else:
+                first_seen[command] = line_no
+            if imported == source_module:
+                errors.append(f"{relative(root, path)}:{line_no}: module imports itself")
+            if module_matches_prefix(imported, "LeanCondensedMatter"):
+                target = root.joinpath(*imported.split(".")).with_suffix(".lean")
+                if not target.is_file():
+                    errors.append(
+                        f"{relative(root, path)}:{line_no}: project module `{imported}` "
+                        "has no source file"
+                    )
 
 
 def module_matches_prefix(module: str, prefix: str) -> bool:

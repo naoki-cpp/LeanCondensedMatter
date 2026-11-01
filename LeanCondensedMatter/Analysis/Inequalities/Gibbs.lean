@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Analysis.InfiniteSum.Order
 import Mathlib.Analysis.SpecialFunctions.Log.NegMulLog
 import Mathlib.Topology.Algebra.InfiniteSum.Real
 import Mathlib.Tactic.FieldSimp
@@ -10,7 +11,7 @@ set_option linter.style.header false
 # Scalar and summable-family Gibbs inequalities
 
 Entropy comparison for normalized nonnegative real families, with explicit summability,
-positive comparison weights, and logarithmic energy bounds.
+positive comparison weights, logarithmic energy bounds, and their equality conditions.
 -/
 
 namespace Real
@@ -73,6 +74,49 @@ theorem negMulLog_le_of_neg_log_le {p q Z u : ℝ} (hp : 0 ≤ p) (hq : 0 < q) (
     have := mul_le_mul_of_nonneg_left hlog hp
     nlinarith [this]
   nlinarith [hgibbs, hlogdiv, hmul]
+
+/-- Equality in the scalar Gibbs comparison forces the normalized comparison weight and
+logarithmic bound to be attained, including when the probability is only assumed nonnegative. -/
+theorem negMulLog_eq_iff_of_neg_log_le {p q Z u : ℝ}
+    (hp : 0 ≤ p) (hq : 0 < q) (hZ : 0 < Z) (hlog : -Real.log q ≤ u) :
+    Real.negMulLog p = p * u + p * Real.log Z - p + q / Z ↔
+      p = q / Z ∧ -Real.log q = u := by
+  have hqZpos : 0 < q / Z := div_pos hq hZ
+  have hgibbs := Real.gibbs_scalar_ineq p (q / Z) hp hqZpos
+  have hlogdiv : Real.log (q / Z) = Real.log q - Real.log Z :=
+    Real.log_div hq.ne' hZ.ne'
+  have hAB :
+      Real.negMulLog p ≤ -p * Real.log q + p * Real.log Z - p + q / Z := by
+    nlinarith [hgibbs, hlogdiv]
+  have hmul : -p * Real.log q ≤ p * u := by
+    have := mul_le_mul_of_nonneg_left hlog hp
+    nlinarith
+  have hBC :
+      -p * Real.log q + p * Real.log Z - p + q / Z ≤
+        p * u + p * Real.log Z - p + q / Z := by
+    linarith
+  constructor
+  · intro hAC
+    have hBCeq :
+        -p * Real.log q + p * Real.log Z - p + q / Z =
+          p * u + p * Real.log Z - p + q / Z := by
+      apply le_antisymm hBC
+      rw [← hAC]
+      exact hAB
+    have hscalar :
+        Real.negMulLog p + p - q / Z = -p * Real.log (q / Z) := by
+      rw [hlogdiv]
+      nlinarith
+    have hpq := (Real.gibbs_scalar_ineq_eq_iff p (q / Z) hp hqZpos).mp hscalar
+    have hppos : 0 < p := hpq.symm ▸ hqZpos
+    have hlogeq : -Real.log q = u := by
+      nlinarith [hBCeq, hppos]
+    exact ⟨hpq, hlogeq⟩
+  · rintro ⟨hpq, hlogeq⟩
+    have hscalar :=
+      (Real.gibbs_scalar_ineq_eq_iff p (q / Z) hp hqZpos).mpr hpq
+    rw [hlogdiv] at hscalar
+    nlinarith
 
 /-- The sum of `q i / Z` is at most one when `∑' i, q i ≤ Z` and `Z > 0`. -/
 theorem tsum_div_le_one {ι : Type*} {q : ι → ℝ} {Z : ℝ}
@@ -167,5 +211,63 @@ theorem summable_negMulLog_and_tsum_le_gibbs
         linarith
       _ = β * (∑' i, p i * energy i) + Real.log Z := by ring
   exact ⟨hnegMulLog_summable, hfinal⟩
+
+/-- Equality in the countable Gibbs entropy bound holds exactly when the comparison mass,
+normalized weights, and logarithmic energy bounds are all saturated. Zero probabilities are allowed
+in the hypotheses; equality forces them to coincide with the positive normalized weights. -/
+theorem tsum_negMulLog_eq_gibbs_iff
+    {ι : Type*} (p q energy : ι → ℝ) (β Z : ℝ)
+    (hp_nonneg : ∀ i, 0 ≤ p i) (hp_hasSum : HasSum p 1)
+    (henergy : Summable fun i => p i * energy i)
+    (hq_summable : Summable q) (hq_tsum_le : ∑' i, q i ≤ Z)
+    (hq_pos : ∀ i, 0 < q i) (hZ : 0 < Z)
+    (hlog : ∀ i, -Real.log (q i) ≤ β * energy i) :
+    (∑' i, Real.negMulLog (p i)) = β * (∑' i, p i * energy i) + Real.log Z ↔
+      (∑' i, q i) = Z ∧ ∀ i, p i = q i / Z ∧ -Real.log (q i) = β * energy i := by
+  obtain ⟨hB, hBsum⟩ :=
+    summable_gibbsComparison_and_tsum_eq p q energy β Z hp_hasSum henergy hq_summable
+  obtain ⟨hentropy, _⟩ := summable_negMulLog_and_tsum_le_gibbs
+    p q energy β Z hp_nonneg hp_hasSum henergy hq_summable hq_tsum_le hq_pos hZ hlog
+  have hbound : ∀ i, Real.negMulLog (p i) ≤
+      β * (p i * energy i) + p i * Real.log Z - p i + q i / Z := by
+    intro i
+    have hb := negMulLog_le_of_neg_log_le (hp_nonneg i) (hq_pos i) hZ (hlog i)
+    nlinarith [hb]
+  constructor
+  · intro heq
+    have hsum_le := hentropy.tsum_le_tsum hbound hB
+    rw [heq, hBsum] at hsum_le
+    have hqZsum : (∑' i, q i / Z) = 1 :=
+      le_antisymm (tsum_div_le_one hq_tsum_le hZ) (by linarith)
+    have hqsum : (∑' i, q i) = Z := by
+      have hdiv : (∑' i, q i) / Z = 1 := by
+        rw [← tsum_div_const]
+        exact hqZsum
+      exact (div_eq_one_iff_eq hZ.ne').mp hdiv
+    have hsum_eq : (∑' i, Real.negMulLog (p i)) =
+        ∑' i, (β * (p i * energy i) + p i * Real.log Z - p i + q i / Z) := by
+      rw [heq, hBsum, hqZsum]
+      ring
+    have hterm := hentropy.pointwise_eq_of_tsum_eq_of_le hB hbound hsum_eq
+    refine ⟨hqsum, fun i => ?_⟩
+    apply (negMulLog_eq_iff_of_neg_log_le (hp_nonneg i) (hq_pos i) hZ (hlog i)).mp
+    calc
+      Real.negMulLog (p i) =
+          β * (p i * energy i) + p i * Real.log Z - p i + q i / Z := hterm i
+      _ = p i * (β * energy i) + p i * Real.log Z - p i + q i / Z := by ring
+  · rintro ⟨hqsum, hterm⟩
+    have hqZsum : (∑' i, q i / Z) = 1 := by
+      rw [tsum_div_const, hqsum, div_self hZ.ne']
+    calc
+      (∑' i, Real.negMulLog (p i)) =
+          ∑' i, (β * (p i * energy i) + p i * Real.log Z - p i + q i / Z) := by
+        apply tsum_congr
+        intro i
+        have hi := (negMulLog_eq_iff_of_neg_log_le
+          (hp_nonneg i) (hq_pos i) hZ (hlog i)).mpr (hterm i)
+        nlinarith [hi]
+      _ = β * (∑' i, p i * energy i) + Real.log Z := by
+        rw [hBsum, hqZsum]
+        ring
 
 end Real

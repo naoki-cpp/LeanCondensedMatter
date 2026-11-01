@@ -77,13 +77,6 @@ theorem hasSum_particleNumber_boltzmannWeight (ε : Mode → ℝ) (β : ℝ)
 
 end FintypeMode
 
-/-- The particle-number-weighted free Boltzmann series is summable for any finite mode type. -/
-theorem summable_particleNumber_boltzmannWeight [Finite Mode]
-    (ε : Mode → ℝ) (β : ℝ) (hpos : ∀ i, 0 < β * ε i) (j : Mode) :
-    Summable (fun n : Occupation Mode => (n j : ℝ) * boltzmannWeight ε β n) := by
-  letI := Fintype.ofFinite Mode
-  exact (hasSum_particleNumber_boltzmannWeight ε β hpos j).summable
-
 end
 end Bosonic
 end SecondQuantization

@@ -19,6 +19,25 @@ basis and transport of algebraic Fock endomorphisms to bounded operators. The th
 generic pure-point Gibbs density operator from `QuantumTheory.Gibbs.Eigenbasis`; the finite
 SecondQuantization layer only supplies the representation-specific adapter.
 
+`Common.gibbsExpectation energy β hsum` is the dimension-independent normalized Gibbs
+functional on bounded operators of `CompletedFock Config`. It requires summable Boltzmann
+weights but **not** `Fintype Config`, and it delegates to the existing
+`DensityOperator.expectation` without constructing a second density state.
+`Common.finiteGibbsExpectation energy β A` remains a finite-algebraic evaluation adapter.
+The canonical `finiteGibbsExpectation_eq_completed_of_algebraicCore` bridge directly
+identifies these two APIs whenever the bounded completed operator extends `A`.
+The finite fermionic two-point contractions now use that bridge directly at explicit
+chemical potential, deriving their Fermi–Dirac values from completed bounded CAR/KMS
+operators. The free grand-canonical Green function evaluates its finite Gibbs
+expectation without routing through the old density-specific contraction API.
+The finite-mode-supported one-body bilinear mean now states its result using
+`Common.gibbsExpectation` directly, for arbitrary fermionic mode types under
+the grand-canonical Gibbs summability hypothesis. The finite second-quantized
+one-body expectation remains a finite-coordinate theorem, bridged to this
+completed bounded-operator mean rather than re-proving its Gibbs average.
+Finite-coordinate trace-ratio and Wick lemmas remain finite specializations; this
+does not assert bounded extensions of arbitrary infinite-dimensional ladder products.
+
 The finite Gibbs expectation satisfies the usual trace-ratio formula
 
 ```text
@@ -40,7 +59,8 @@ The reusable finite coordinate layer is split by responsibility:
 | `QuantumTheory/Gibbs/Boltzmann.lean` | Real Boltzmann weights, partition functions, normalized probabilities, and summability. |
 | `QuantumTheory/Gibbs/Eigenbasis.lean` | Gibbs density states built from energy eigenbases and scalar Boltzmann data. |
 | `Common/Algebra/FiniteHilbertOperator.lean` | Finite Hilbert realization and algebraic-operator transport. |
-| `Common/Thermal/FiniteGibbsExpectationBridge.lean` | Canonical finite density-state expectation adapter and pure-point probability formula. |
+| `Common/Thermal/GibbsExpectation.lean` | Summability-aware Gibbs expectation on bounded completed operators, independent of finite configuration types. |
+| `Common/Thermal/FiniteGibbsExpectationBridge.lean` | Finite algebraic Gibbs adapter and finite probability formula. |
 | `Common/Thermal/FiniteGibbsCoordinate.lean` | Complex Boltzmann weights, diagonal-evolution traces, and trace-ratio formulas. |
 | `Common/Algebra/DiagonalTrace.lean` | Summability-aware diagonal trace infrastructure. |
 | `Common/Algebra/FiniteTrace.lean` | Canonical finite algebraic Fock trace and unnormalized scalar weight sums. |
@@ -51,6 +71,51 @@ Raw `weightSum` formulas are scalar coordinate infrastructure, not normalized-st
 meaning. For finite fermionic mode types,
 `freePartitionFunction_eq_coe_eigenbasisPartitionFunction` identifies the complex finite-coordinate
 partition function with the canonical real pure-point partition function after coercion to `ℂ`.
+
+## Canonical and grand-canonical conditioning
+
+`Common/Thermal/GrandCanonicalSectorDecomposition.lean` owns the scalar bridge:
+restricting grand-canonical Boltzmann weights to sharp-number sectors gives
+the canonical weights multiplied by `exp (β μ N)`. Global Gibbs summability
+implies summability in every sector, without a finite occupation-basis hypothesis.
+For a nonempty sector the probability is `p_N = exp (β μ N) Z_N / Ξ > 0`;
+empty sectors contribute zero without a normalized canonical density.
+
+The same module uses sigma-fiber reindexing to prove
+`Ξ = ∑_N exp (β μ N) Z_N` and `∑_N p_N = 1`.
+`Common/Thermal/CanonicalGrandCanonicalCompatibility.lean` uses this scalar
+data to prove the completed-Fock bounded-operator identity
+`P_N ρ_GC P_N = p_N ρ_{N,full}`, where `ρ_{N,full}` is the existing
+isometric zero extension of the canonical density. The left-hand side
+is an unnormalized positive operator, not itself a density state.
+The full grand-canonical density is also the operator-norm convergent series
+`ρ_GC = ∑_N p_N ρ_{N,full}`, with empty sectors contributing zero. This
+follows by regrouping the absolutely summable occupation-basis rank-one
+operator series. Each block is trace class; trace-norm convergence is not
+asserted by this operator-norm identity.
+
+The bounded-observable expectation identity uses the corresponding absolutely
+convergent diagonal trace series and the full-Fock canonical sector formula.
+Operator-norm convergence alone would not justify interchanging traces and
+infinite sums.
+
+PR #4097 now proves the **bounded-observable** grand-canonical expectation decomposition
+by sharp particle-number sector (including empty sectors). PR #4100 connects that
+sector-weighted mixture of canonical expectations to the completed fermionic Wick
+pairing theorem; it does **not** assert Wick factorization for a single sharp-`N` state.
+PRs #4102 and #4108 identify the first particle-number moment of sector probabilities
+under explicit integrability assumptions, without applying bounded-observable expectation
+to an unbounded number operator.
+
+Trace-norm convergence of the sector mixture, sector-probability conservation
+under specified open-system dynamics, and relative-entropy/thermalization results
+remain separate questions. A fixed mean particle number `⟨N̂⟩` does not determine
+a sharp-number sector or the complete sector distribution `p_N`. Likewise,
+`[H, N̂] = 0` conserves the sector probabilities under unitary evolution, but
+does not by itself imply relaxation to a canonical Gibbs state. Conservation
+of each `p_N` under open dynamics requires that the dynamics preserve the
+corresponding number-sector projectors; thermalization within those sectors
+requires additional dynamical assumptions.
 
 ## Generic pairing recursion
 
@@ -79,30 +144,89 @@ whether those configurations represent a fixed-`N` sector or the full Fock space
 ## Fermionic implementations
 
 The finite Gibbs implementation specializes the generic recursion using the finite pure-point Gibbs
-state, imaginary-time evolution, trace-ratio identity, and KMS/exchange relations. The finite
-density-state specialization depends directly on `fermionEnergy` and the generic pure-point state;
-finite complex Boltzmann coordinates are a separate proof/perturbation lane.
+state, imaginary-time evolution, trace-ratio identity, and KMS/exchange relations.
+The finite quartic Dyson coefficient identity accepts an arbitrary occupation-energy
+function for `Common.finiteGibbsExpectation`, while the physical imaginary-time generator
+remains `fermionEnergy ε`.
+The external-insertion mixed-atomic and interaction-picture vertex Dyson coefficient APIs
+accept explicit μ and evaluate directly via `Common.finiteGibbsExpectation` at
+`fermionEnergy (ε - μ)`, while existing diagrammatic and vacuum-factorization theorems
+remain explicitly restricted to μ = 0 until the full diagrammatic API migrates.
+The finite two-point operator Dyson coefficient and its unnormalized formal series now
+also use explicit μ through the generic finite Gibbs expectation. Their current
+identities with Wick diagrams, connected components and normalized partition series
+remain explicitly specialized to μ = 0; nonzero-μ linked-cluster factorization
+requires migrating the diagram-side amplitudes and partition trace together. Concrete ensemble-specific Dyson/Wick statements choose the Gibbs
+energy separately; no finite density-state adapter is required by the coefficient expansion.
+Finite fermionic contractions, one-body expectations, Wick amplitudes, and Dyson consumers
+use the generic finite Gibbs expectation or eigenbasis density operator directly, with
+`Common.grandCanonicalEnergy ε μ` when the chemical potential is explicit.
+Where the diagrammatic series still specializes to `μ = 0`, this choice is explicit
+and does not constitute a fixed-number canonical state.
+`grandCanonicalTimedFieldPairContraction ε β μ` uses the generic finite Gibbs functional
+at effective dispersion `ε - μ` with physical imaginary-time fields at `ε`. Existing
+diagrammatic consumers explicitly choose `μ = 0` until their higher-level APIs migrate.
+The finite `Fermionic.grandCanonicalFreeGreenFunction ε β μ` instead uses the generic
+`Common.finiteGibbsExpectation` at `Common.grandCanonicalEnergy ε μ`;
+its imaginary-time field evolution uses physical energies `ε`, while its
+Fermi–Dirac factors depend on `ε - μ`.
+The one-body endpoint `finiteGrandCanonicalGibbsDensityOperator_expectation_finiteSecondQuantization`
+instead takes explicit `μ` and evaluates the generic eigenbasis Gibbs state at
+`Common.grandCanonicalEnergy ε μ`. Its finite mean-energy consumer passes `μ = 0`
+explicitly. The binary-entropy endpoint likewise uses the generic finite Gibbs state
+at explicit chemical potential. The older
+finite `freeBoltzmannWeight` and `freePartitionFunction` specializations are removed in
+the #3986 partition migration: generic coordinate weights are
+`Common.boltzmannWeight`, and the physical full-Fock partition is
+`Common.grandCanonicalPartitionFunction ε β μ`. The finite fermionic product theorem accepts explicit `μ`. The previous finite
+implicit-μ density constructor and its consumer-specific expectation bridge have been
+removed. Finite density-state expectations use the generic pure-point Gibbs state
+directly; finite complex Boltzmann coordinates remain a separate proof/perturbation lane.
 
-`Fermionic.Thermal.FreeEntropy` derives the finite occupation marginal from the canonical
-number-operator expectation. The mean energy then uses this marginal, while the binary-entropy
-formula specializes the generic pure-point Gibbs entropy identity. These are thermodynamic
+`Fermionic.Thermal.FreeEntropy` uses the full-occupation grand-canonical one-body
+expectation, not a sharp-number canonical expectation, to derive finite mean-energy
+and one-mode occupations. The binary-entropy formula specializes the generic
+pure-point Gibbs entropy identity. These are thermodynamic
 consequences of the same density state, not a separate probability-state construction.
 
-`Fermionic.Thermal.BoltzmannSummability` owns the representation-independent theorem that
-one-particle Gibbs summability implies summability over fermionic occupation configurations.
+`Fermionic.Thermal.BoltzmannSummability` owns the **arbitrary-mode** fermionic theorem
+that one-particle Gibbs summability at the effective dispersion `ε - μ` implies
+summability over **all** occupation configurations at explicit `μ`. It also proves the
+infinite-product partition formula `Ξ(β, μ) = ∏' i (1 + exp (-β(ε i - μ)))`.
+Neither theorem assumes `[Fintype Mode]`; finite coordinate formulas should be viewed as
+downstream specializations. In infinite systems where the one-particle weights are not
+summable, the normal full-Fock Gibbs density is not constructed by these results; a
+separate algebraic KMS/quasifree treatment may be required.
+
+The completed CAR algebra identifies each bounded occupation projection
+`completedNumberOperator i` with `completedCreate i ∘ completedAnnihilate i`, for
+arbitrary modes. The two-point Gibbs pairing formula then proves the **single-mode
+Fermi--Dirac expectation** at explicit `μ`, without `[Fintype Mode]` or a finite trace.
+This is an exact expectation of a bounded projection, not an assertion that the
+potentially unbounded *total* number or Hamiltonian is a bounded observable.
 
 The completed free-fermion implementation lives under `Fermionic.Thermal.Completed`.
-`completedFreeGibbsDensityOperator` is the representation-specific name for the generic pure-point
-Gibbs state on the completed occupation Hilbert basis. Bounded completed ladder operators then provide
-KMS, first-pair/peel, and pairing-recursion results without introducing a finite-mode assumption into
-the generic recursion.
+It uses `Common.grandCanonicalGibbsDensityOperator (Config := Fermionic.Occupation Mode) ε β μ`
+without an additional zero-chemical-potential fermionic density constructor. Its completed CAR
+intertwining and KMS factors use the effective thermal dispersion `ε i - μ`. The first-pair/peel
+and Wick pairing recursion are instantiated for this explicit grand-canonical state, with no
+finite-mode assumption introduced into the generic recursion. Fermionic KMS factors are
+exponentials of real energies, so `1 + g` is automatically nonzero; the completed fermionic
+pairing-recursion adapter consequently uses `admissible := True`. The Gibbs state still requires
+summability over occupation configurations. Finite-mode contraction and one-body expectations
+use `Common.finiteGibbsExpectation_eq_completed_of_algebraicCore` directly to transport
+expectations from algebraic observables to their bounded completed extensions.
+Finite-coordinate trace ratios are handled directly by
+`Common.finiteGibbsExpectation_eq_summableDiagonalTraceRatioLinear` from #4074.
 
 Unbounded observables do not use `DensityOperator.expectation`. The completed total-number operator
-is owned by `Fermionic.CompletedSpace.Diagonal`, while
-`Fermionic.Thermal.Completed.TotalNumberExpectation` defines its explicit Gibbs-integrability
-condition and spectral expectation. Potentially unbounded energy expectation remains generic in
-`QuantumTheory.Gibbs.EigenbasisExpectation`; there is no public arbitrary-diagonal thermal
-expectation API.
+is owned by `Fermionic.CompletedSpace.Diagonal`. Its integrability condition and spectral mean
+are the statistics-independent `Common.GrandCanonicalParticleNumberIntegrable` and
+`Common.grandCanonicalParticleNumberExpectation`; the fermionic
+`Thermal.Completed.TotalNumberExpectation` module connects this mean to diagonal matrix elements
+of the completed density and unbounded number operators. Potentially unbounded energy expectation
+remains generic in `QuantumTheory.Gibbs.EigenbasisExpectation`; there is no public
+arbitrary-diagonal thermal expectation API.
 
 Bosonic two-field occupation-diagonal coefficients are algebraic imaginary-time facts, owned by
 `Bosonic/ImaginaryTime/ImaginaryTimeEvolution.lean`. The single mode-indexed theorem
@@ -117,19 +241,21 @@ Even for finite `Mode`,
 Bosonic.Occupation Mode := Mode →₀ ℕ
 ```
 
-is infinite. `Bosonic/Thermal/ConvergenceAwareGibbs.lean` therefore defines a normalized functional
-on an explicit summability domain rather than pretending that finite-configuration traces apply.
-The linear expectation is defined on the summable-operator submodule; additivity retains explicit summability hypotheses.
+is infinite. `Bosonic/Thermal/ConvergenceAwareGibbs.lean` therefore defines a grand-canonical normalized functional parameterized by explicit `ε`, `β`,
+and `μ` on a summability domain, rather than pretending that finite-configuration traces apply.
+The linear expectation is defined on the summable-operator submodule; additivity retains explicit summability hypotheses. The shared effective-energy transport uses `ξ i = ε i - μ`; physical Dyson evolution continues to use `ε`.
 
 `Bosonic/Thermal/FreeThermalField.lean` owns the free thermal field labels, ordered algebraic-Fock
 products, and normalized pair kernel independently of pairing recursion. KMS, product summability,
 and the kernel's equality to Gibbs two-field expectations consume these data directly.
-`Bosonic/Thermal/BlochDeDominicis/ConcreteExpectationRecursion.lean` constructs the Common
-recursion directly with `freeGibbsExpectation`. Under explicit positive one-mode Boltzmann
-exponents, `FreeThermalField.freeGibbsSummable_orderedProduct` proves summability of every finite
-field product, including every remaining product after pair deletion. The first-pair recurrence
-uses those analytic results before the representation-independent pairing induction is applied.
-No additional zero-totalization of the domain expectation is needed.
+`Bosonic/Thermal/BlochDeDominicis/ConcreteExpectationRecursion.lean` directly instantiates
+the Common pairing recursion with `grandCanonicalGibbsExpectation ε β μ`; its
+KMS factors and pair kernel use the effective thermal energy `ξ i = ε i - μ`.
+The public `grandCanonicalGibbsExpectation_eq_sum_pairing_concrete` accepts explicit `μ`.
+Under `0 < β * (ε i - μ)`, finite ordered free-field products have summable Gibbs numerators,
+including products after pair deletion. The first-pair recurrence and KMS rotation supply the
+analytic hypotheses before the representation-independent pairing induction. This grand-canonical
+Wick conclusion does not extend automatically to a sharp-particle-number canonical state.
 
 ## Dependency boundary
 
@@ -159,20 +285,28 @@ independent of the ensemble: the operator algebra and the chosen state are separ
 | Normalized two-point subtraction and composite-current field expansions | `QuantumTheory.LinearResponse.connectedCorrelation`, `Fermionic.Transport.CurrentInsertions` | The subtraction and finite-sum expansion do not require Gibbs; physical second-cumulant interpretation requires normalization. |
 | Abstract thermal pairing induction | `Common.Thermal.BlochDeDominicis.ExpectationRecursion` | The induction is generic, but each concrete state must prove its first-pair recurrence; fixed-`N` Wick factorization is **not** automatic. |
 | Finite trace ratios and normalized Dyson trace-series coefficients | `Common.Thermal.FiniteGibbsCoordinate`, `Common.Perturbation.DysonTraceSeries` | Concrete Gibbs specialization on the supplied finite configuration type. That type may be a selected sector or all configurations; the trace ratio alone does not select an ensemble. |
-| Completed / infinite-occupation Gibbs realizations | `QuantumTheory.Gibbs.Eigenbasis`, `Bosonic.Thermal.ConvergenceAwareGibbs` | Density states require summable weights; unbounded bosonic algebraic observables also require an explicit summability domain. |
+| Completed / infinite-occupation Gibbs realizations | `QuantumTheory.Gibbs.Eigenbasis`, `Bosonic.Thermal.ConvergenceAwareGibbs` | Density states require summable weights; unbounded bosonic algebraic observables also require an explicit summability domain with `μ` in the thermal weight. |
 
 **Migration policy.** Introduce a sharp `N` or chemical potential `μ` only in the
 appropriate physical state constructors and their genuinely ensemble-dependent expectations.
 Do not thread either parameter through formal Dyson coefficients, generic pairing
 combinatorics, abstract connected correlations, or cumulant inversion. The grand-canonical
-KMS evolution uses `H - μ N̂` on its specified observable algebra; fixed-`N` states require
-a separate analysis of the number-preserving algebra and higher cumulants. A finite-mode
-bosonic Fock occupation type is still infinite, so a finite-configuration theorem never
-justifies omitting its summability hypotheses.
+KMS rotation uses the effective Gibbs generator `K = H - μ N̂`, whereas
+the physical imaginary-time field and Dyson evolution used here is generated
+by `H`. A sharp-`N` canonical state is not generally KMS for charged
+creation/annihilation fields on the full field algebra; any KMS assertion
+restricted to the number-preserving subalgebra needs its own domain and
+hypotheses. Such restricted KMS conditions do not determine the sector
+weights `p_N` or imply thermalization. A finite-mode bosonic Fock occupation
+type is still infinite, so a finite-configuration theorem never justifies
+omitting its summability hypotheses.
 
-This audit records **module ownership**, not completion of the fixed-`N` or `μ`-dependent
-state construction. Those constructions, their full consumer migration, and their physical
-verification remain open in #3986.
+The fixed-`N` canonical and explicit-`μ` grand-canonical state constructions and
+migration of their legacy implicit-`μ = 0` finite-fermion and bosonic free-field
+adapters are implemented. The remaining **nonzero-`μ` diagrammatic
+linked-cluster factorization**, sharp-sector dynamical/KMS questions, and
+interacting or infinite-volume limits require separate theorems; they are not
+consequences of the completed API migration.
 
 ## Open work
 
@@ -197,6 +331,12 @@ rotation. Bosonic and completed fermionic first-pair reductions apply it with re
 `1` and `-1` respectively. Their KMS proofs, denominator nonvanishing, and fermionic odd-tail
 sign proof remain in the representation-specific consumers. The algebraic identity assumes only
 a field and the two scalar equalities, and introduces no thermal-state contract.
+
+`Common/Thermal/BlochDeDominicis/ExpectationRecursion.lean` also owns
+`indexedPeel_sum_eq_firstPair`: it distributes the scalar KMS ratio through a finite indexed
+peel, reindexes each erased tail, and replaces bare exchange coefficients by normalized
+contractions. Both completed fermionic and free bosonic first-pair adapters use this same
+sum conversion; their exchange/KMS and analytic conditions remain representation-specific.
 
 `Common/Thermal/BlochDeDominicis/NormalizedTwoPointTrace.lean` applies the general trace peel
 theorem to a singleton coefficient-paired tail. Its

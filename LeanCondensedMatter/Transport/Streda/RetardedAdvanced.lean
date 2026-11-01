@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Transport.Streda.TraceKernel
-import Mathlib.Tactic
+import Mathlib.Tactic.Ring
 
 set_option linter.style.header false
 

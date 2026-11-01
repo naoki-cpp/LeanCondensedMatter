@@ -1,5 +1,7 @@
 import LeanCondensedMatter.Models.MassiveDirac.Propagator.Basic
-import Mathlib.Tactic
+import Mathlib.Tactic.FieldSimp
+import Mathlib.Tactic.Positivity
+import Mathlib.Tactic.Ring
 
 set_option linter.style.header false
 

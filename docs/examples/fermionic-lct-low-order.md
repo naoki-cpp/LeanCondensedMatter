@@ -1,10 +1,9 @@
 # Low-order fermionic linked-cluster identities
 
 The finite-mode fermionic Linked Cluster Theorem is available for every nonzero perturbation order.
-The orders `1`, `2`, and `3` are also exposed explicitly because they make the factorial and
-disconnected-subtraction conventions readable without unfolding the general moment-cumulant
-machinery. These identities are an opt-in example/regression surface; the canonical linked-cluster
-umbrella exports the general formal and analytic theorems instead.
+The orders `1`, `2`, and `3` make the factorial and disconnected-subtraction conventions readable
+without unfolding the general moment-cumulant machinery. The explicit identities below are examples
+of generic power-series theorems, not separate fermionic diagrammatic API declarations.
 
 Write
 
@@ -24,9 +23,11 @@ The first identity fixes the normalization. The second displays cancellation of 
 single-vertex components. The third displays both one-plus-two decompositions and the partition into
 three singletons.
 
-The generic power-series formulas live in
-`Analysis/PowerSeries/LowOrderLog.lean`. The fermionic specializations live in
-`SecondQuantization/Fermionic/Diagrammatics/LinkedCluster/LowOrder.lean`.
+The generic, kernel-checked formulas live in `Analysis/PowerSeries/LowOrderLog.lean`:
+`Combinatorics.factorial_mul_coeff_logOf_one_eq`, `_two_eq`, and `_three_eq`.
+They apply directly to the normalized fermionic `Common.dysonTraceSeries`, whose constant coefficient
+is one by `PowerSeries.constantCoeff_normalizeByConstantCoeff` and
+`Common.constantCoeff_dysonTraceSeries_ne_zero`. No specialized fermionic wrappers are maintained.
 
 Connected-diagram statements at orders `1`, `2`, and `3` are obtained by specializing the
 general fermionic linked-cluster theorem. Analytic low-order statements similarly follow by

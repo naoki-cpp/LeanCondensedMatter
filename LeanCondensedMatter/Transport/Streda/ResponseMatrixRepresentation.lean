@@ -1,5 +1,6 @@
 import LeanCondensedMatter.Transport.Streda.ResponseMatrix
 import LeanCondensedMatter.Transport.Streda.TraceRepresentation
+import Mathlib.Tactic.Ring
 
 set_option linter.style.header false
 

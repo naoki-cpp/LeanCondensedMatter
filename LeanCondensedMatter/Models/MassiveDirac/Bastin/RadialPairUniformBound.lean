@@ -1,6 +1,9 @@
 import LeanCondensedMatter.Models.MassiveDirac.Bastin.RadialSpectatorUniformBound
 import LeanCondensedMatter.Models.MassiveDirac.Bastin.PairIntegral
-import Mathlib.Tactic
+import Mathlib.Tactic.Linarith
+import Mathlib.Tactic.NormNum
+import Mathlib.Tactic.Positivity
+import Mathlib.Tactic.Ring
 
 set_option linter.style.header false
 

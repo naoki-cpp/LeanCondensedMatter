@@ -1,8 +1,9 @@
 import LeanCondensedMatter.Transport.Analysis.ContinuumMeasure
 import LeanCondensedMatter.Models.MassiveDirac.Conductivity.FiniteBroadeningBornLadderLongitudinalZeroBroadening
 import LeanCondensedMatter.Models.MassiveDirac.Conductivity.Longitudinal.BornRelaxationTime
-import LeanCondensedMatter.Models.MassiveDirac.Streda.FiniteBroadeningBornLadderLongitudinalZeroBroadeningWeakDisorder
-import Mathlib.Tactic
+import LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.LongitudinalZeroBroadeningWeakDisorder
+import Mathlib.Tactic.FieldSimp
+import Mathlib.Tactic.Linarith
 
 set_option linter.style.header false
 

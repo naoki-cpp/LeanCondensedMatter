@@ -1,21 +1,18 @@
-import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeBoltzmannCore
-import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsDensityOperator
-import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.NumberOperator
-import LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTime.ImaginaryTimeEvolution
-import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.GibbsExpectation.TwoPoint
+import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.Hamiltonian
+import LeanCondensedMatter.SecondQuantization.Common.Thermal.GrandCanonical
+import LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsCoordinate
 
 set_option linter.style.header false
 
 /-!
-# The free fermion partition function factorizes, and gives the Fermi–Dirac distribution
+# Factorization of the finite fermionic grand-canonical partition function
 
-The closed-form free-fermion occupation number `⟨N_i⟩₀ = 1/(e^{βε_i}+1)` follows from the
-mode-by-mode product factorization of the finite free partition function,
+For a finite mode type the common grand-canonical partition function is
 
-`Z₀(β) = Σₙ e^{-β E(n)} = ∏ᵢ (1 + e^{-βε_i})`.
+`Ξ(β, μ) = ∑ₙ exp(-β(E(n)-μ N(n))) = ∏ᵢ (1 + exp(-β(εᵢ-μ)))`.
 
-Unlike the bosonic case (`Bosonic/Thermal/FreePartitionFunction.lean`), each fermionic mode's
-occupation is `0` or `1`, so every sum is manifestly finite.
+The proof uses the shared grand-canonical energy and generic finite Boltzmann coordinates.
+There is no parallel finite Gibbs state or implicit zero-chemical-potential partition API.
 -/
 
 namespace SecondQuantization
@@ -24,65 +21,41 @@ namespace Fermionic
 variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
 
 omit [LinearOrder Mode] [Fintype Mode] in
-/-- **The free Boltzmann weight factorizes mode-by-mode**: `e^{-β E(n)} = ∏_{i ∈ n} e^{-βε_i}`,
-since `E(n) = Σ_{i ∈ n} ε_i`. -/
-theorem freeBoltzmannWeight_eq_prod (ε : Mode → ℝ) (β : ℝ) (n : Occupation Mode) :
-    freeBoltzmannWeight ε β n = ∏ i ∈ n, Complex.exp (-(β : ℂ) * (ε i : ℂ)) := by
-  rw [freeBoltzmannWeight, Common.boltzmannWeight, fermionEnergy_eq_sum, Finset.mul_sum]
+private theorem boltzmannWeight_fermionEnergy_eq_prod
+    (ξ : Mode → ℝ) (β : ℝ) (n : Occupation Mode) :
+    Common.boltzmannWeight (fermionEnergy ξ) β n =
+      ∏ i ∈ n, Complex.exp (-(β : ℂ) * (ξ i : ℂ)) := by
+  rw [Common.boltzmannWeight, fermionEnergy_eq_sum, Finset.mul_sum]
   push_cast
   rw [Complex.exp_sum]
 
 omit [LinearOrder Mode] [Fintype Mode] in
-/-- **The free Boltzmann weight, summed over all subsets of a fixed mode set `s`, factorizes** as
-a product over `s`: `Σ_{t ⊆ s} e^{-β E(t)} = ∏_{i ∈ s} (1 + e^{-βε_i})`. The general-`s` form
-keeps the mode-set factorization available independently of the `s = univ` partition function. -/
-theorem sum_freeBoltzmannWeight_powerset_eq_prod (ε : Mode → ℝ) (β : ℝ) (s : Finset Mode) :
-    ∑ t ∈ s.powerset, freeBoltzmannWeight ε β t =
-      ∏ j ∈ s, (1 + Complex.exp (-(β : ℂ) * (ε j : ℂ))) := by
+private theorem sum_boltzmannWeight_powerset_eq_prod
+    (ξ : Mode → ℝ) (β : ℝ) (s : Finset Mode) :
+    ∑ t ∈ s.powerset, Common.boltzmannWeight (fermionEnergy ξ) β t =
+      ∏ j ∈ s, (1 + Complex.exp (-(β : ℂ) * (ξ j : ℂ))) := by
   classical
-  simp_rw [freeBoltzmannWeight_eq_prod]
-  have h := Finset.prod_add (fun j => Complex.exp (-(β : ℂ) * (ε j : ℂ))) (fun _ => (1 : ℂ)) s
+  simp_rw [boltzmannWeight_fermionEnergy_eq_prod]
+  have h := Finset.prod_add (fun j => Complex.exp (-(β : ℂ) * (ξ j : ℂ)))
+    (fun _ => (1 : ℂ)) s
   simp only [Finset.prod_const_one, mul_one] at h
   rw [← h]
   exact Finset.prod_congr rfl fun j _ => add_comm _ _
 
-
 omit [LinearOrder Mode] in
-/-- **The free partition function factorizes into a product over modes**:
-`Z₀(β) = ∏ᵢ (1 + e^{-βε_i})`. -/
-theorem freePartitionFunction_eq_prod (ε : Mode → ℝ) (β : ℝ) :
-    freePartitionFunction ε β = ∏ i, (1 + Complex.exp (-(β : ℂ) * (ε i : ℂ))) := by
-  classical
-  rw [freePartitionFunction, ← Finset.powerset_univ]
-  exact sum_freeBoltzmannWeight_powerset_eq_prod ε β Finset.univ
-
-/-- **The closed-form Fermi–Dirac occupation number.** `⟨N_i⟩₀,β = 1/(e^{βε_i}+1)`. -/
-theorem freeGibbsDensityOperator_expectation_numberOperator
-    (ε : Mode → ℝ) (β : ℝ) (i : Mode) :
-    (freeGibbsDensityOperator ε β).expectation
-        (Common.finiteHilbertOperatorAlgEquiv (numberOperator i)) =
-      1 / (Complex.exp ((β : ℂ) * (ε i : ℂ)) + 1) := by
-  rw [freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation]
-  change Common.finiteGibbsExpectation (fermionEnergy ε) β
-      ((create i).comp (annihilate i)) =
-    1 / (Complex.exp ((β : ℂ) * (ε i : ℂ)) + 1)
-  have hC :
-      Common.heisenbergEvolve (fermionEnergy ε) (-β) (create i) =
-        Complex.exp (((ε i) * (-β) : ℝ) : ℂ) • create i := by
-    have h := Common.heisenbergEvolve_eq_smul_of_carriesShift
-      (fermionEnergy ε) (ε i) (-β) (create i)
-      (carriesEnergyShift_create ε i)
-    simpa [mul_comm] using h
-  have hcomm :
-      Common.exchangeCommutator Common.Statistics.fermion (create i) (annihilate i) =
-        (1 : ℂ) • (LinearMap.id : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) := by
-    simpa [Common.exchangeCommutator, Common.Statistics.zetaInt_fermion] using
-      (anticomm_create_annihilate (Mode := Mode) i i)
-  have hne := one_sub_zetaInt_fermion_mul_exp_ne_zero (ε i) β
-  have h := Common.finiteGibbsExpectation_comp_eq_div_of_exchangeCommutator
-    (fermionEnergy ε) β (ε i) Common.Statistics.fermion (1 : ℂ)
-    (create i) (annihilate i) hC hcomm hne
-  simpa [Common.Statistics.zetaInt_fermion, mul_comm, add_comm] using h
+/-- The grand-canonical partition sum over finite fermionic occupation Fock space
+factorizes into one-mode terms at explicit chemical potential `μ`. The normalization
+uses the shared real partition function; this identity is its complex coordinate form. -/
+theorem coe_grandCanonicalPartitionFunction_eq_prod
+    (ε : Mode → ℝ) (β μ : ℝ) :
+    (Common.grandCanonicalPartitionFunction (Config := Occupation Mode) ε β μ : ℂ) =
+      ∏ i, (1 + Complex.exp (-(β : ℂ) * ((ε i - μ : ℝ) : ℂ))) := by
+  rw [Common.grandCanonicalPartitionFunction_eq_shifted]
+  rw [Common.coe_eigenbasisPartitionFunction_eq_sum_boltzmannWeight]
+  change (∑ n : Occupation Mode,
+      Common.boltzmannWeight (fermionEnergy (fun i => ε i - μ)) β n) = _
+  rw [← Finset.powerset_univ]
+  exact sum_boltzmannWeight_powerset_eq_prod (fun i => ε i - μ) β Finset.univ
 
 end Fermionic
 end SecondQuantization

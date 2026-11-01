@@ -1,6 +1,7 @@
 import LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.Basic
 import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BoltzmannSummability
 import LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.Heat
+import LeanCondensedMatter.SecondQuantization.Common.Thermal.GrandCanonical
 import LeanCondensedMatter.QuantumTheory.Gibbs.HeatOperator
 
 set_option linter.style.header false
@@ -8,10 +9,12 @@ set_option linter.style.header false
 /-!
 # Completed free-boson heat and Gibbs operators
 
-For arbitrary bosonic mode types, nonnegative one-particle energies define a bounded completed
-free heat operator. Summability of the occupation Boltzmann weights makes this operator trace
-class and gives the canonical pure-point Gibbs density operator and trace normalization.
-The finite-mode positive-energy theorem supplies this summability hypothesis when applicable.
+For arbitrary bosonic mode types, nonnegative one-particle energies define the bounded
+physical heat operator exp(-βH). When its occupation weights are summable, its trace
+and normalized operator coincide with the explicit-μ grand-canonical construction
+in Common.Thermal at μ = 0. The grand-canonical density for arbitrary μ is owned
+directly by Common.grandCanonicalGibbsDensityOperator: there is no silent μ = 0
+bosonic density constructor or second normalization implementation here.
 No bounded bosonic ladder operator is introduced.
 -/
 
@@ -24,6 +27,13 @@ open ContinuousLinearMap
 noncomputable section
 
 variable {Mode : Type*}
+
+/-- At zero chemical potential, the grand-canonical excitation generator
+reduces to the physical free-boson energy. -/
+private theorem grandCanonicalEnergy_zero_eq_freeEigenvalue (ε : Mode → ℝ) :
+    Common.grandCanonicalEnergy (Config := Occupation Mode) ε 0 = freeEigenvalue ε := by
+  funext n
+  simp [Common.grandCanonicalEnergy, freeEigenvalue]
 
 /-- The bounded completed free-boson heat operator `exp (-β H₀)`. -/
 noncomputable def completedFreeHeatOperator
@@ -64,13 +74,15 @@ theorem completedFreeHeatOperator_isTraceClass
     rw [completedOccupationHilbertBasis_apply, completedFreeHeatOperator_basisState]
     rfl
 
-/-- The trace of completed free heat data equals the algebraic bosonic partition function. -/
-theorem completedFreeHeatOperator_trace_eq_freeGibbsPartition
+/-- The trace of the physical free heat operator is the explicit grand-canonical
+partition function specialized to zero chemical potential. -/
+theorem completedFreeHeatOperator_trace_eq_grandCanonicalPartitionFunction_zero
     (ε : Mode → ℝ) (β : ℝ) (hβ : 0 < β) (hε : ∀ i, 0 ≤ ε i)
     (hsum : EigenbasisGibbsSummable (freeEigenvalue ε) β) :
     (completedFreeHeatOperator_isTraceClass ε β hβ hε hsum).trace =
-      freeGibbsPartition ε β := by
-  rw [freeGibbsPartition_eq_coe_eigenbasisPartitionFunction ε β]
+      (Common.grandCanonicalPartitionFunction (Config := Occupation Mode) ε β 0 : ℂ) := by
+  rw [Common.grandCanonicalPartitionFunction,
+    grandCanonicalEnergy_zero_eq_freeEigenvalue]
   exact heatTrace_eq_eigenbasisPartitionFunction_of_basis_action
     (completedFreeHeatOperator ε β hβ hε)
     (completedFreeHeatOperator_isTraceClass ε β hβ hε hsum)
@@ -79,44 +91,26 @@ theorem completedFreeHeatOperator_trace_eq_freeGibbsPartition
       rw [completedOccupationHilbertBasis_apply, completedFreeHeatOperator_basisState]
       rfl)
 
-/-- Canonical completed free-boson Gibbs density operator under occupation Gibbs summability. -/
-noncomputable def completedFreeGibbsDensityOperator
-    (ε : Mode → ℝ) (β : ℝ)
-    (hsum : EigenbasisGibbsSummable (freeEigenvalue ε) β) :
-    DensityOperator (CompletedFockSpace Mode) :=
-  eigenbasisGibbsDensityOperator completedOccupationHilbertBasis
-    (freeEigenvalue ε) β hsum
-
-@[simp]
-theorem completedFreeGibbsDensityOperator_apply_basis
-    (ε : Mode → ℝ) (β : ℝ)
-    (hsum : EigenbasisGibbsSummable (freeEigenvalue ε) β)
-    (n : Occupation Mode) :
-    (completedFreeGibbsDensityOperator ε β hsum).op (completedBasisState n) =
-      (eigenbasisGibbsProbability (freeEigenvalue ε) β n : ℂ) •
-        completedBasisState n := by
-  simpa [completedFreeGibbsDensityOperator, completedOccupationHilbertBasis,
-    completedBasisState] using
-    eigenbasisGibbsDensityOperator_apply_basis
-      (completedOccupationHilbertBasis (Mode := Mode))
-      (freeEigenvalue ε) β hsum n
-
-/-- Normalize the completed free heat operator to obtain its canonical Gibbs density operator. -/
-theorem inv_freeGibbsPartition_smul_completedFreeHeatOperator_eq_completedFreeGibbsDensityOperator_op
-    (ε : Mode → ℝ) (β : ℝ) (hβ : 0 < β) (hε : ∀ i, 0 ≤ ε i)
-    (hsum : EigenbasisGibbsSummable (freeEigenvalue ε) β) :
-    (freeGibbsPartition ε β)⁻¹ •
-        completedFreeHeatOperator ε β hβ hε =
-      (completedFreeGibbsDensityOperator ε β hsum).op := by
-  rw [freeGibbsPartition_eq_coe_eigenbasisPartitionFunction ε β]
-  simpa [completedFreeGibbsDensityOperator] using
-    (inv_partition_smul_heat_eq_eigenbasisGibbsDensityOperator_op
-      (completedFreeHeatOperator ε β hβ hε)
-      (completedOccupationHilbertBasis (Mode := Mode))
-      (freeEigenvalue ε) β hsum
-      (fun n => by
-        rw [completedOccupationHilbertBasis_apply, completedFreeHeatOperator_basisState]
-        rfl))
+/-- The grand-canonical algebraic trace equals the actual trace of the
+completed free heat operator for the grand-canonical generator
+`K = H - μ N̂`. This identifies the occupation-trace
+and completed trace-class normalizations at arbitrary explicit μ. -/
+theorem grandCanonicalAlgebraicPartition_eq_completedFreeHeatOperator_trace
+    (ε : Mode → ℝ) (β μ : ℝ) (hβ : 0 < β)
+    (hgap : ∀ i, 0 ≤ ε i - μ)
+    (hsum : EigenbasisGibbsSummable
+      (Common.grandCanonicalEnergy (Config := Occupation Mode) ε μ) β) :
+    grandCanonicalAlgebraicPartition ε β μ =
+      (completedFreeHeatOperator_isTraceClass (fun i => ε i - μ) β hβ hgap
+        ((Common.grandCanonicalGibbsSummable_iff_shifted
+          (Config := Occupation Mode) ε β μ).1 hsum)).trace := by
+  rw [grandCanonicalAlgebraicPartition_eq_coe_grandCanonicalPartitionFunction]
+  have hshift := completedFreeHeatOperator_trace_eq_grandCanonicalPartitionFunction_zero
+    (fun i => ε i - μ) β hβ hgap
+    ((Common.grandCanonicalGibbsSummable_iff_shifted
+      (Config := Occupation Mode) ε β μ).1 hsum)
+  rw [hshift]
+  simp only [Common.grandCanonicalPartitionFunction_eq_shifted, sub_zero]
 
 end
 end Bosonic

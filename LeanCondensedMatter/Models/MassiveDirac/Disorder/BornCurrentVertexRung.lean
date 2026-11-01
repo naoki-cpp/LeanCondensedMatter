@@ -3,7 +3,10 @@ import LeanCondensedMatter.Analysis.Lorentzian.RadialQuadratic
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.BornPropagator
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.ContinuumMeasurePrefactor
 import LeanCondensedMatter.Models.MassiveDirac.Vertex.PauliRung
-import Mathlib.Tactic
+import Mathlib.Tactic.FieldSimp
+import Mathlib.Tactic.Linarith
+import Mathlib.Tactic.NormNum
+import Mathlib.Tactic.Ring
 
 set_option linter.style.header false
 

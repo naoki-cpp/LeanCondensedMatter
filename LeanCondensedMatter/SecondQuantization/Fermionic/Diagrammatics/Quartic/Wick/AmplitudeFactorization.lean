@@ -59,8 +59,8 @@ theorem orderedQuarticPairValue_componentOrderedLeg (ε : Mode → ℝ) (β : �
         (d.componentOrderedLeg shuffle B a) (d.componentOrderedLeg shuffle B b) =
       orderedQuarticPairValue ε β (d.restrictComponent B.2) (orders B)
         (shuffle.timeAssignment τ B) a b := by
-  rw [orderedQuarticPairValue_eq_freeGibbsDensityOperator_expectation,
-    orderedQuarticPairValue_eq_freeGibbsDensityOperator_expectation,
+  rw [orderedQuarticPairValue_eq_finiteGibbsExpectation,
+    orderedQuarticPairValue_eq_finiteGibbsExpectation,
     orderedQuarticLegOperator_componentOrderedLeg,
     orderedQuarticLegOperator_componentOrderedLeg]
 

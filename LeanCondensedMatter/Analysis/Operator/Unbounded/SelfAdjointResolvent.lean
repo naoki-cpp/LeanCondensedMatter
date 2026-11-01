@@ -3,7 +3,9 @@ import Mathlib.Analysis.InnerProductSpace.Projection.Submodule
 import Mathlib.Analysis.Complex.Norm
 import Mathlib.Analysis.Normed.Group.Completeness
 import Mathlib.Topology.Sequences
-import Mathlib.Tactic
+import Mathlib.Tactic.Abel
+import Mathlib.Tactic.Linarith
+import Mathlib.Tactic.Ring
 
 set_option linter.style.header false
 

@@ -39,33 +39,33 @@ noncomputable def QuarticDiagram.orderedFreeThermalFieldFamily {S : Finset (Fin 
 
 /-- The concrete free thermal contraction value of one ordered bosonic quartic diagram. -/
 noncomputable def QuarticDiagram.orderedThermalPairingValue
-    (ε : Mode → ℝ) (β : ℝ) {S : Finset (Fin N)}
+    (ε : Mode → ℝ) (β μ : ℝ) {S : Finset (Fin N)}
     (d : Common.QuarticDiagram (Common.QuarticVertexLabel Mode) N S)
     (order : Common.QuarticVertexOrder S) : ℂ :=
   (d.pairingInOrder order).evaluation
     ((d.pairingInOrder order).weight .boson)
-    (fun a b => freeThermalPairValue ε β
+    (fun a b => freeThermalPairValue (fun i => ε i - μ) β
       (QuarticDiagram.orderedFreeThermalFieldFamily d order a)
       (QuarticDiagram.orderedFreeThermalFieldFamily d order b))
 
 /-- The coefficientwise scalar amplitude of one ordered bosonic quartic diagram, including the
 Dyson sign and quartic coupling product. -/
 noncomputable def QuarticDiagram.orderedThermalAmplitude
-    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
+    (ε : Mode → ℝ) (β μ : ℝ) (g : QuarticVertexLabel Mode → ℂ)
     {S : Finset (Fin N)}
     (d : Common.QuarticDiagram (Common.QuarticVertexLabel Mode) N S)
     (order : Common.QuarticVertexOrder S) : ℂ :=
   (-1 : ℂ) ^ S.card * d.vertexWeight g *
-    QuarticDiagram.orderedThermalPairingValue ε β d order
+    QuarticDiagram.orderedThermalPairingValue ε β μ d order
 
 /-- The full Wick pairing sum for the ordered vertex labels underlying a quartic diagram. -/
 noncomputable def QuarticDiagram.orderedThermalWickSum
-    (ε : Mode → ℝ) (β : ℝ) {S : Finset (Fin N)}
+    (ε : Mode → ℝ) (β μ : ℝ) {S : Finset (Fin N)}
     (d : Common.QuarticDiagram (Common.QuarticVertexLabel Mode) N S)
     (order : Common.QuarticVertexOrder S) : ℂ :=
   ∑ pairing : Pairing (2 * S.card),
     pairing.evaluation (pairing.weight .boson)
-      (fun a b => freeThermalPairValue ε β
+      (fun a b => freeThermalPairValue (fun i => ε i - μ) β
         (QuarticDiagram.orderedFreeThermalFieldFamily d order a)
         (QuarticDiagram.orderedFreeThermalFieldFamily d order b))
 

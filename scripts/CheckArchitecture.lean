@@ -219,7 +219,8 @@ private def pureStateDynamicsOwnerRequirements : Array OwnerRequirement :=
   let moduleName := `LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.PureState
   #[
     { declaration := `QuantumTheory.LinearResponse.norm_freePropagator_apply, moduleName },
-    { declaration := `QuantumTheory.LinearResponse.phaseState, moduleName },
+    { declaration := `QuantumTheory.phaseState,
+      moduleName := `LeanCondensedMatter.QuantumTheory.Postulates },
     { declaration := `QuantumTheory.LinearResponse.evolveState, moduleName },
     { declaration := `QuantumTheory.LinearResponse.evolveState_zero, moduleName },
     { declaration := `QuantumTheory.LinearResponse.evolveState_add, moduleName },
@@ -364,7 +365,7 @@ private def semanticOwnerRequirements : Array OwnerRequirement :=
     { declaration := `SecondQuantization.Common.finiteGibbsExpectationLinearMap, moduleName := finiteGibbsModule },
     { declaration := `SecondQuantization.Common.finiteGibbsExpectation, moduleName := finiteGibbsModule },
     { declaration := `SecondQuantization.Common.finiteGibbsExpectation_eq_sum, moduleName := finiteGibbsModule },
-    { declaration := `SecondQuantization.Fermionic.vonNeumannEntropy_freeGibbsDensityOperator_toReal_eq_sum_fermiDirac,
+    { declaration := `SecondQuantization.Fermionic.vonNeumannEntropy_finiteGrandCanonicalGibbs_toReal_eq_sum_fermiDirac,
       moduleName := freeEntropyModule },
     { declaration := `SecondQuantization.Common.BlochDeDominicis.ExpectationPairingRecursion,
       moduleName := recursionModule },

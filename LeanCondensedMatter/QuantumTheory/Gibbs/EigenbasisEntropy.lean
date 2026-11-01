@@ -6,7 +6,7 @@ import LeanCondensedMatter.QuantumTheory.Gibbs.EigenbasisExpectation
 
 For a countable pure-point Gibbs state, absolute integrability of the energy series is enough to
 make the entropy series absolutely summable. The resulting von Neumann entropy therefore satisfies
-the canonical Gibbs identity without representing the potentially unbounded energy data by a
+the Gibbs entropy identity without representing the potentially unbounded energy data by a
 bounded observable.
 -/
 

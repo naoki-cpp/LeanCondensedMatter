@@ -2,7 +2,7 @@ module
 
 public import Mathlib.Algebra.Ring.Defs
 public import Mathlib.Data.Nat.Basic
-public import Mathlib.Tactic.Conv
+import Mathlib.Algebra.Group.Basic
 
 public section
 
@@ -24,8 +24,11 @@ namespace Combinatorics
 /-- A power of an involutive scalar (`ζ * ζ = 1`) only depends on the exponent's parity. -/
 theorem pow_eq_of_mod_two_eq {R : Type*} [Monoid R] {ζ : R} (hζ : ζ * ζ = 1) {a b : ℕ}
     (h : a % 2 = b % 2) : ζ ^ a = ζ ^ b := by
-  conv_lhs => rw [← Nat.div_add_mod a 2]
-  conv_rhs => rw [← Nat.div_add_mod b 2, ← h]
-  rw [pow_add, pow_add, pow_mul, pow_mul, sq, hζ, one_pow, one_pow]
+  have hζ2 : ζ ^ 2 = 1 := by
+    simpa only [pow_two] using hζ
+  calc
+    ζ ^ a = ζ ^ (a % 2) := pow_eq_pow_mod a hζ2
+    _ = ζ ^ (b % 2) := by rw [h]
+    _ = ζ ^ b := (pow_eq_pow_mod b hζ2).symm
 
 end Combinatorics

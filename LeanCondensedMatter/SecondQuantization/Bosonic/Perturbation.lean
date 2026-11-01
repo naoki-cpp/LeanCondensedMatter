@@ -1,5 +1,4 @@
 import LeanCondensedMatter.SecondQuantization.Bosonic.Perturbation.DysonGibbsSeries
-import LeanCondensedMatter.SecondQuantization.Bosonic.Perturbation.GibbsInteractionPicture
 import LeanCondensedMatter.SecondQuantization.Bosonic.Perturbation.QuarticVertexBound
 import LeanCondensedMatter.SecondQuantization.Bosonic.Perturbation.QuarticGibbsSummable
 import LeanCondensedMatter.SecondQuantization.Bosonic.Perturbation.QuarticDysonExpansion

@@ -1,6 +1,6 @@
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornPropagator
 import Mathlib.LinearAlgebra.Matrix.NonsingularInverse
-import Mathlib.Tactic
+import Mathlib.Tactic.Ring
 
 set_option linter.style.header false
 

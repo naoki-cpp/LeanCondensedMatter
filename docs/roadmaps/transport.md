@@ -24,6 +24,42 @@ Středa response matrices are not physical conductivity tensors. Physical prefac
 continuum normalization, and required limits remain explicit before constructing
 `Transport.Core.ConductivityTensor`.
 
+## Tensor symmetry and magnetic reciprocity
+
+`Transport.Core.ConductivityTensor` carries physical, already-normalized conductivity.
+Its `symmetricComponent` and `hallComponent` are complementary index-exchange projections;
+`component_eq_symmetricComponent_add_hallComponent` reconstructs the ordered component.
+The former contains the longitudinal response, while the latter is the Hall response.
+
+`ConductivityTensor.IsOnsagerReciprocal` is an **explicit hypothesis** on a family of
+conductivity tensors indexed by a reversed control parameter (e.g. magnetization).
+Under this hypothesis, the symmetric projection and longitudinal conductivity are even under
+reversal, and the Hall projection is odd. These are algebraic consequences, not a
+derivation of microscopic reciprocity.
+
+`FiniteConductivityTable.Reciprocity` now supplies a finite-spectral charge-current
+bridge: equal reversed spectral energies/occupations, conjugate odd-current matrix elements,
+Hermitian currents, and the reciprocal contact term imply equality of the canonical
+finite Lehmann response and normalized physical conductivity with transposed directions.
+It constructs a `ConductivityTensor` family satisfying `IsOnsagerReciprocal` without
+postulating conductivity reciprocity.
+
+`LinearResponse.Dynamics.Antiunitary` specifies a bijective conjugate-linear
+inner-product-preserving Hilbert-space transformation. The finite-spectral
+`FiniteConductivityTable.Reciprocity.Antiunitary` bridge now proves the required current
+matrix-element conjugation/reversal rules from *operator-level* Hermiticity,
+antiunitary current covariance, and paired eigenbases. It then consumes the existing
+Lehmann Onsager theorem. Hamiltonian covariance, eigenbasis pairing, equilibrium-state
+transformation, and reciprocal contact response remain supplied model assumptions.
+
+The next proof target is to discharge those hypotheses directly in representative magnetic
+models and, independently, to derive reciprocity from the causal Kubo channel with
+explicit stationary-state transformation and source/contact conventions. No DC,
+zero-switching, or thermodynamic limit follows automatically. Concrete AMR additionally requires
+a magnetization-dependent Hamiltonian, model-specific conductivity response, tensor
+invertibility, and the resistivity (rather than conductivity) angular comparison.
+Planar Hall resistivity must not be identified with the Hall projection of conductivity.
+
 ## Proved disorder chain
 
 ```text

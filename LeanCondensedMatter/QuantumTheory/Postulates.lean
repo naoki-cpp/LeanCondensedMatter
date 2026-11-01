@@ -23,6 +23,17 @@ vectors that differ by global phase. -/
 def StateVector (H : Type*) [NormedAddCommGroup H] :=
   { ψ : H // ‖ψ‖ = 1 }
 
+variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
+
+/-- Multiplication of a normalized state representative by a unit complex phase. -/
+def phaseState (c : ℂ) (hc : ‖c‖ = 1) (ψ : StateVector H) : StateVector H :=
+  ⟨c • ψ.1, by rw [norm_smul, hc, ψ.2, one_mul]⟩
+
+@[simp]
+theorem phaseState_val (c : ℂ) (hc : ‖c‖ = 1) (ψ : StateVector H) :
+    (phaseState c hc ψ).1 = c • ψ.1 :=
+  rfl
+
 /-- **Observable (definition).** An observable is a self-adjoint bounded linear operator
 on the state space. Self-adjointness is what makes `expValue_im_eq_zero` below hold; it is
 not an independent postulate but the defining property that makes an operator eligible to
@@ -30,7 +41,7 @@ represent a measurable physical quantity. -/
 def Observable (H : Type*) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] :=
   { A : H →L[ℂ] H // IsSelfAdjoint A }
 
-variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
+variable [CompleteSpace H]
 variable (A : Observable H) (ψ : StateVector H)
 
 /-- The canonical complex expectation of an observable `A` in a state-vector representative `ψ`,
@@ -70,8 +81,8 @@ theorem coe_observableExpValue :
 
 /-- **Phase indeterminacy.** Multiplying a representative by a unit-modulus complex number (a global
 phase) does not change the expectation value of any observable. -/
-theorem expValue_smul_of_norm_eq_one {c : ℂ} (hc : ‖c‖ = 1) (hψ' : ‖c • ψ.1‖ = 1) :
-    expValue A ⟨c • ψ.1, hψ'⟩ = expValue A ψ := by
+theorem expValue_smul_of_norm_eq_one {c : ℂ} (hc : ‖c‖ = 1) :
+    expValue A (phaseState c hc ψ) = expValue A ψ := by
   change inner ℂ (c • ψ.1) (A.1 (c • ψ.1)) = inner ℂ ψ.1 (A.1 ψ.1)
   have h1 : c * (starRingEnd ℂ) c = 1 := by
     rw [Complex.mul_conj, Complex.normSq_eq_norm_sq, hc]; norm_num
@@ -79,14 +90,10 @@ theorem expValue_smul_of_norm_eq_one {c : ℂ} (hc : ‖c‖ = 1) (hψ' : ‖c �
   rw [← mul_assoc, h1, one_mul]
 
 /-- The lossless real vector-state observable expectation is also invariant under global phase. -/
-theorem observableExpValue_smul_of_norm_eq_one {c : ℂ} (hc : ‖c‖ = 1)
-    (hψ' : ‖c • ψ.1‖ = 1) :
-    observableExpValue A ⟨c • ψ.1, hψ'⟩ = observableExpValue A ψ := by
+theorem observableExpValue_smul_of_norm_eq_one {c : ℂ} (hc : ‖c‖ = 1) :
+    observableExpValue A (phaseState c hc ψ) = observableExpValue A ψ := by
   apply Complex.ofReal_injective
-  calc
-    (observableExpValue A ⟨c • ψ.1, hψ'⟩ : ℂ) =
-        expValue A ⟨c • ψ.1, hψ'⟩ := coe_observableExpValue A ⟨c • ψ.1, hψ'⟩
-    _ = expValue A ψ := expValue_smul_of_norm_eq_one A ψ hc hψ'
-    _ = (observableExpValue A ψ : ℂ) := (coe_observableExpValue A ψ).symm
+  simp only [coe_observableExpValue]
+  exact expValue_smul_of_norm_eq_one A ψ hc
 
 end QuantumTheory

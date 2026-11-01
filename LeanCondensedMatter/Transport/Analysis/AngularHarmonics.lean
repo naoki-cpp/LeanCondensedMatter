@@ -1,5 +1,7 @@
 import Mathlib.Analysis.SpecialFunctions.Integrals.Basic
-import Mathlib.Tactic
+import Mathlib.Tactic.FunProp
+import Mathlib.Tactic.Linarith
+import Mathlib.Tactic.Ring
 
 set_option linter.style.header false
 
@@ -160,6 +162,28 @@ theorem AngularHarmonicCoefficients.integral_eval
     integral_complex_cos_sq_sub_sin_sq_zero_two_pi,
     integral_complex_cos_mul_sin_zero_two_pi]
   simp
+
+/-- Full angular projection inside an arbitrary weighted radial interval integral.
+Only the constant harmonic survives, with no assumptions on the radial weight or
+coefficients beyond those used by ordinary interval integration. -/
+theorem AngularHarmonicCoefficients.intervalIntegral_weighted_integral_eval
+    (a b : ℝ) (weight : ℝ → ℂ)
+    (coefficients : ℝ → AngularHarmonicCoefficients ℂ) :
+    (∫ radius in a..b,
+        ∫ angle in (0 : ℝ)..(2 * Real.pi),
+          weight radius * (coefficients radius).eval angle) =
+      (((2 * Real.pi : ℝ) : ℂ)) *
+        ∫ radius in a..b, weight radius * (coefficients radius).constant := by
+  calc
+    _ = ∫ radius in a..b,
+          (((2 * Real.pi : ℝ) : ℂ)) *
+            (weight radius * (coefficients radius).constant) := by
+      apply intervalIntegral.integral_congr
+      intro radius _
+      dsimp only
+      rw [intervalIntegral.integral_const_mul, (coefficients radius).integral_eval]
+      simp; ring
+    _ = _ := by rw [intervalIntegral.integral_const_mul]
 
 /-- A complex linear combination of the first sine and cosine harmonics integrates to zero. -/
 theorem integral_complex_cos_mul_add_sin_mul_zero_two_pi (cCos cSin : ℂ) :

@@ -27,22 +27,22 @@ variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
 /-- Order-n Dyson coefficient of full interaction-picture quartic
 vertices inserted among a fixed family of external fermionic fields.
 
-The Gibbs state is the normalized free density state; the Dyson (-1)^n
+The Gibbs state is the normalized grand-canonical finite Gibbs expectation
+with explicit μ; physical imaginary-time evolution remains at ε. The Dyson (-1)^n
 factor is distinct from the fermionic mixed-time ordering sign. -/
 noncomputable def externalInsertionVertexDysonCoefficient {E : ℕ}
-    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
+    (ε : Mode → ℝ) (β μ : ℝ) (g : QuarticVertexLabel Mode → ℂ)
     (externalLabel : Fin (2 * E) → ExternalFieldLabel Mode)
     (externalTime : Fin (2 * E) → ℝ) (n : ℕ) : ℂ :=
   intervalIntegral.orderedSimplexIntegral n β
     (fun σ => (-1 : ℂ) ^ n *
       ∑ q : Fin n → QuarticVertexLabel Mode,
         (∏ i : Fin n, g (q i)) *
-          (freeGibbsDensityOperator ε β).expectation
-            (Common.finiteHilbertOperatorAlgEquiv
-              (externalInsertionMixedTimeOrderedVertexComp
-                ε externalLabel externalTime q σ)))
+          Common.finiteGibbsExpectation (fermionEnergy (fun i => ε i - μ)) β
+            (externalInsertionMixedTimeOrderedVertexComp
+              ε externalLabel externalTime q σ))
 
-/-- The free-Gibbs interaction-picture vertex Dyson coefficient equals the
+/-- At μ = 0, the interaction-picture vertex Dyson coefficient equals the
 integrated Wick-diagram coefficient at each finite perturbative order. -/
 theorem externalInsertionVertexDysonCoefficient_eq_externalInsertionDysonCoefficient
     {E : ℕ} (ε : Mode → ℝ) (β : ℝ)
@@ -50,13 +50,13 @@ theorem externalInsertionVertexDysonCoefficient_eq_externalInsertionDysonCoeffic
     (externalLabel : Fin (2 * E) → ExternalFieldLabel Mode)
     (externalTime : Fin (2 * E) → ℝ) (n : ℕ) :
     externalInsertionVertexDysonCoefficient
-        ε β g externalLabel externalTime n =
+        ε β 0 g externalLabel externalTime n =
       externalInsertionDysonCoefficient
         ε β g externalLabel externalTime n := by
   calc
-    externalInsertionVertexDysonCoefficient ε β g externalLabel externalTime n =
+    externalInsertionVertexDysonCoefficient ε β 0 g externalLabel externalTime n =
         externalInsertionMixedAtomicDysonCoefficient
-          ε β g externalLabel externalTime n := by
+          ε β 0 g externalLabel externalTime n := by
       unfold externalInsertionVertexDysonCoefficient
         externalInsertionMixedAtomicDysonCoefficient
       apply intervalIntegral.orderedSimplexIntegral_congr
@@ -66,30 +66,29 @@ theorem externalInsertionVertexDysonCoefficient_eq_externalInsertionDysonCoeffic
       apply Finset.sum_congr rfl
       intro q _
       rw [externalInsertionMixedTimeOrderedVertexComp_eq_atomicProduct]
-      simp only [freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation,
-        Common.finiteGibbsExpectation, map_smul, smul_eq_mul]
+      simp only [sub_zero, Common.finiteGibbsExpectation, map_smul, smul_eq_mul]
       ring
     _ = externalInsertionDysonCoefficient
           ε β g externalLabel externalTime n :=
       externalInsertionMixedAtomicDysonCoefficient_eq_externalInsertionDysonCoefficient
         ε β g externalLabel externalTime n
 
-/-- Formal series of free-Gibbs interaction-picture vertex Dyson coefficients. -/
+/-- Formal series of explicit-μ free-Gibbs interaction-picture vertex Dyson coefficients. -/
 noncomputable def externalInsertionVertexDysonSeries {E : ℕ}
-    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
+    (ε : Mode → ℝ) (β μ : ℝ) (g : QuarticVertexLabel Mode → ℂ)
     (externalLabel : Fin (2 * E) → ExternalFieldLabel Mode)
     (externalTime : Fin (2 * E) → ℝ) : PowerSeries ℂ :=
   PowerSeries.mk (externalInsertionVertexDysonCoefficient
-    ε β g externalLabel externalTime)
+    ε β μ g externalLabel externalTime)
 
-/-- The interaction-picture vertex Dyson formal series is the already-proved
+/-- At μ = 0, the interaction-picture vertex Dyson formal series is the already-proved
 diagrammatic external-insertion series. -/
 theorem externalInsertionVertexDysonSeries_eq_externalInsertionDysonSeries
     {E : ℕ} (ε : Mode → ℝ) (β : ℝ)
     (g : QuarticVertexLabel Mode → ℂ)
     (externalLabel : Fin (2 * E) → ExternalFieldLabel Mode)
     (externalTime : Fin (2 * E) → ℝ) :
-    externalInsertionVertexDysonSeries ε β g externalLabel externalTime =
+    externalInsertionVertexDysonSeries ε β 0 g externalLabel externalTime =
       externalInsertionDysonSeries ε β g externalLabel externalTime := by
   ext n
   simp only [externalInsertionVertexDysonSeries, externalInsertionDysonSeries,
@@ -97,7 +96,7 @@ theorem externalInsertionVertexDysonSeries_eq_externalInsertionDysonSeries
   exact externalInsertionVertexDysonCoefficient_eq_externalInsertionDysonCoefficient
     ε β g externalLabel externalTime n
 
-/-- The interaction-picture vertex Dyson formal series contains precisely the
+/-- At μ = 0, the interaction-picture vertex Dyson formal series contains precisely the
 vacuum-free external contribution times the normalized vacuum partition
 series. Externally supported but mutually disconnected components remain. -/
 theorem externalInsertionVertexDysonSeries_eq_vacuumFree_mul_normalizedDysonPartitionSeries
@@ -105,7 +104,7 @@ theorem externalInsertionVertexDysonSeries_eq_vacuumFree_mul_normalizedDysonPart
     (g : QuarticVertexLabel Mode → ℂ)
     (externalLabel : Fin (2 * E) → ExternalFieldLabel Mode)
     (externalTime : Fin (2 * E) → ℝ) :
-    externalInsertionVertexDysonSeries ε β g externalLabel externalTime =
+    externalInsertionVertexDysonSeries ε β 0 g externalLabel externalTime =
       vacuumFreeExternalInsertionDysonSeries ε β g externalLabel externalTime *
         PowerSeries.normalizeByConstantCoeff
           (Common.dysonTraceSeries (fermionEnergy ε) β (quarticInteraction g)) := by

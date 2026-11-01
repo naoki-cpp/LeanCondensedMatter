@@ -1,4 +1,8 @@
-import Mathlib.Tactic
+import Mathlib.Algebra.BigOperators.Group.Finset.Sigma
+import Mathlib.Algebra.BigOperators.GroupWithZero.Action
+import Mathlib.Algebra.BigOperators.Ring.Finset
+import Mathlib.Basic.Complex.Basic
+import Mathlib.Tactic.Module
 
 set_option linter.style.header false
 

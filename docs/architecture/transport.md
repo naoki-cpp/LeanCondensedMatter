@@ -323,6 +323,23 @@ The Hall and longitudinal Středa radial integrals use the shared integration la
 the existing full-vector convergence law for the same action. The ordered Hall sign and the
 longitudinal bare RR/AA remainder remain with their respective response constructions.
 
+`MassiveDirac.Streda.BornLadder` groups the finite-broadening trace bridge, radial
+integrands and denominator forms, and the separate longitudinal and ordered-Hall
+zero-broadening/weak-disorder response boundaries. `BornLadder.LongitudinalSameSide`
+owns the bare RR/AA remainder as a distinct contribution to the Středa surface response,
+not as part of the singular RA ladder. These response-specific files remain separate
+from the generic Born–Dyson denominator and radial-moment laws owned by `Disorder`.
+`MassiveDirac.Streda` is the public umbrella for these leaves alongside
+the independent `Streda.GaussianCrossed` package.
+
+`Disorder.FiniteBroadeningBornRadialMoments` owns the finite-cutoff Born–Dyson single-pole
+logarithmic integral, the arbitrary-weight retarded–advanced double-pole spectral difference,
+and its logarithmic specialization. These are model-level denominator identities independent
+of a particular response channel. The Gaussian-crossed K0/K2 current harmonics
+consume the common owner directly, rather than importing the longitudinal same-side
+Středa remainder merely to obtain a radial logarithmic primitive. The RR/AA
+same-side remainder stays in its own response-specific module.
+
 `Disorder.FiniteBroadeningCurrentVertexResponse` owns the source-indexed dressed current,
 its source evaluations, and its fixed-disorder zero-broadening insertion. Continuity of the
 in-plane rotation and current realization belongs to `Vertex.InPlaneLadder` and `Model.Operator`.
@@ -345,8 +362,29 @@ integral is formed. Real-space crossed Fourier blocks already contain their phys
 measures upstream, so a later crossed conductivity boundary must consume only the remaining
 trace/current normalization rather than attach another momentum measure.
 
+`MassiveDirac.Streda.GaussianCrossed.RealSpaceIntegral` owns the angular projection,
+pointwise antisymmetric radial trace tensors, and regulated polar position-space integrals
+for both crossed topologies. `MassiveDirac.Streda.GaussianCrossed.ExplicitMoments`
+consumes those tensors and reduces their X/Psi antisymmetric components to explicit
+K0/K1/K2 momentum moments. Intermediate harmonic reductions stay private in that owner.
+`Conductivity.Hall.GaussianCrossed` consumes both the regulated integral boundary and
+the explicit moments to attach physical current and trace prefactors. Ordered radial
+kernels remain distinct from the antisymmetric trace used for Hall conductivity.
+
+`Analysis.InternalSpace.Pauli` owns coefficient extraction through entrywise interval
+integrals with a complex prefactor. These laws use Mathlib's integral addition,
+subtraction, division, and constant-multiplication results; no additional linear-map
+representation is needed. `Disorder.FiniteBroadeningBornRadialRealSpacePropagator`
+owns the radial Green coefficient integration laws, while
+`Streda.GaussianCrossed.RadialCoefficients` owns the crossed-current laws. Both consume
+the same model-independent Pauli integration laws with explicit entrywise integrability.
+
 Concrete models may consume generic Transport and Analysis results, but reusable mathematics or
 transport infrastructure should be moved upstream rather than duplicated in a concrete model.
+Massive-Dirac Bastin band, pole, and Berry calculations consume the ordered
+`Model.OperatorSpectral.currentBandBlockTrace` directly. The finite band-sum expansion
+normalizes its current-first trace order locally using finite trace cyclicity; it does
+not expose a second trace representation to downstream consumers.
 The canonical top-level owner of all three concrete benchmark families is `Models`;
 `Transport` contains only reusable model-independent theory.
 

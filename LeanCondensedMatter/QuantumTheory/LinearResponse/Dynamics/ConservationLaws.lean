@@ -38,12 +38,12 @@ theorem commute_freePropagator_of_commute_hamiltonian
 /-- A bounded operator commuting with the Hamiltonian is fixed by Heisenberg evolution. -/
 theorem heisenbergEvolution_eq_self_of_commute_hamiltonian
     (A : H →L[ℂ] H) (hA : Commute system.hamiltonian.1 A) (t : ℝ) :
-    heisenbergEvolution system t A = A := by
+    heisenbergEvolution (freePropagatorGroup system) t A = A := by
   have hU := commute_freePropagator_of_commute_hamiltonian system A hA t
   calc
-    heisenbergEvolution system t A =
+    heisenbergEvolution (freePropagatorGroup system) t A =
         freePropagator system (-t) * A * freePropagator system t :=
-      heisenbergEvolution_apply system t A
+      heisenbergEvolution_freePropagatorGroup_apply system t A
     _ = freePropagator system (-t) * (A * freePropagator system t) :=
       mul_assoc _ _ _
     _ = freePropagator system (-t) * (freePropagator system t * A) := by
@@ -127,7 +127,7 @@ conjugation. -/
 theorem adjointConjugate_freePropagator_eq_self_of_commute_hamiltonian
     (A : H →L[ℂ] H) (hA : Commute system.hamiltonian.1 A) (t : ℝ) :
     adjointConjugate (freePropagator system t) A = A := by
-  simpa [adjointConjugate, heisenbergEvolution_apply, star_freePropagator] using
+  simpa [adjointConjugate, heisenbergEvolution_freePropagatorGroup_apply, star_freePropagator] using
     heisenbergEvolution_eq_self_of_commute_hamiltonian system A hA (-t)
 
 /-- A density operator commuting with the Hamiltonian is stationary under Schrödinger evolution. -/
@@ -141,7 +141,7 @@ theorem evolveDensityOperator_eq_self_of_commute_hamiltonian
 for the existing linear-response API. -/
 theorem isStationary_toNormalizedExpectation_of_commute_hamiltonian
     (ρ : DensityOperator H) (hρ : Commute system.hamiltonian.1 ρ.op) :
-    IsStationary system ρ.toNormalizedExpectation := by
+    IsStationary (freePropagatorGroup system) ρ.toNormalizedExpectation := by
   intro t A
   rw [DensityOperator.toNormalizedExpectation_apply,
     DensityOperator.toNormalizedExpectation_apply]

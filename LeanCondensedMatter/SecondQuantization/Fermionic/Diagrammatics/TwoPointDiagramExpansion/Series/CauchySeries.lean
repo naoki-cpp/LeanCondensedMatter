@@ -28,7 +28,7 @@ the connected two-point coefficients with the normalized vacuum partition coeffi
 theorem twoPointDysonCoefficient_eq_sum_connectedTwoPointDysonCoefficient_mul_normalizedDysonPartitionCoeff
     (ε : Mode → ℝ) (β : ℝ) (hβ : 0 ≤ β)
     (g : QuarticVertexLabel Mode → ℂ) (i j : Mode) (τ τ' : ℝ) (n : ℕ) :
-    twoPointDysonCoefficient (n := n) ε β g i j τ τ' =
+    twoPointDysonCoefficient (n := n) ε β 0 g i j τ τ' =
       ∑ m ∈ Finset.range (n + 1),
         connectedTwoPointDysonCoefficient ε β g i j τ τ' m *
           PowerSeries.coeff (n - m) (PowerSeries.normalizeByConstantCoeff (Common.dysonTraceSeries (fermionEnergy ε) β (quarticInteraction g))) := by
@@ -74,7 +74,7 @@ zero-external-leg Dyson partition series. -/
 theorem twoPointDysonSeries_eq_connectedTwoPointDysonSeries_mul_normalizedDysonPartitionSeries
     (ε : Mode → ℝ) (β : ℝ) (hβ : 0 ≤ β)
     (g : QuarticVertexLabel Mode → ℂ) (i j : Mode) (τ τ' : ℝ) :
-    twoPointDysonSeries ε β g i j τ τ' =
+    twoPointDysonSeries ε β 0 g i j τ τ' =
       connectedTwoPointDysonSeries ε β g i j τ τ' *
         PowerSeries.normalizeByConstantCoeff
           (Common.dysonTraceSeries (fermionEnergy ε) β (quarticInteraction g)) := by

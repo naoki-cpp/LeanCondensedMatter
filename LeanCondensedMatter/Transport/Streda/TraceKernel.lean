@@ -1,6 +1,6 @@
 import LeanCondensedMatter.Analysis.Operator.FiniteTrace
 import LeanCondensedMatter.Transport.Streda.OperatorKernel
-import Mathlib.Tactic
+import Mathlib.Tactic.Ring
 
 set_option linter.style.header false
 

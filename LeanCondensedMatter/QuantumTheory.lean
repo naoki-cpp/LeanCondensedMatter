@@ -1,4 +1,5 @@
 import LeanCondensedMatter.QuantumTheory.LocalizedSpin
+import LeanCondensedMatter.QuantumTheory.PlanckConstant
 import LeanCondensedMatter.QuantumTheory.Postulates
 import LeanCondensedMatter.QuantumTheory.SpinHalf
 import LeanCondensedMatter.QuantumTheory.SpinHalf.Finite

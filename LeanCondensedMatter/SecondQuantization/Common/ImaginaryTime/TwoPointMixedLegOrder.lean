@@ -207,7 +207,6 @@ private theorem mixedTimeOrderedAtomicLegPosition_lt_of_eventPosition_lt {n : �
   have h := List.idxOf_flatMap_lt_of_idxOf_lt twoPointTimedEventAtomicLegs
     (orderedTwoPointTimedEvents τ τ' σ)
     (orderedTwoPointLegEvent x) (orderedTwoPointLegEvent y) x y
-    (orderedTwoPointTimedEvents_nodup τ τ' σ)
     (mixedTimeOrderedAtomicLegs_nodup τ τ' σ)
     (orderedTwoPointTimedEvents_all_mem τ τ' σ (orderedTwoPointLegEvent x))
     (orderedTwoPointTimedEvents_all_mem τ τ' σ (orderedTwoPointLegEvent y))

@@ -54,7 +54,7 @@ theorem electromagnetic_schrodinger_weak_continuity_interval
         weightedBoundaryCurrent1D a b test
           (fun x => electromagneticProbabilityCurrentValue1D
             q ℏ mass (vectorPotential x) (ψ x) (ψx x)) := by
-  apply weak_continuity_interval_of_pointwise a b
+  apply ConservationLaw.weak_continuity_interval_of_pointwise a b
   · intro x
     exact electromagnetic_probability_continuity_balance_of_schrodinger
       q ℏ mass (vectorPotential x) (vectorPotentialDerivative x) (scalarPotential x)

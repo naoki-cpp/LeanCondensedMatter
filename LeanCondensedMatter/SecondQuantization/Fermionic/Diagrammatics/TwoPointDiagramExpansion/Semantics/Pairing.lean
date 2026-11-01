@@ -80,7 +80,7 @@ noncomputable def mixedTimeOrderedAtomicPairValue {n : ℕ}
     (ε : Mode → ℝ) (β : ℝ) (i j : Mode) (τ τ' : ℝ)
     (σ : Fin n → ℝ) (q : Fin n → QuarticVertexLabel Mode)
     (a b : Fin (2 * (2 * n + 1))) : ℂ :=
-  timedFieldPairContraction ε β
+  grandCanonicalTimedFieldPairContraction ε β 0
     (mixedTimeOrderedAtomicFieldFamily i j τ τ' q σ a)
     (mixedTimeOrderedAtomicFieldFamily i j τ τ' q σ b)
 

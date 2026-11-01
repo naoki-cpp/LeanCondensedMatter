@@ -44,8 +44,8 @@ identity. Fermionic connected-diagram statements use the specialized
 `Common.dysonTraceSeries (fermionEnergy ε) β V` and its `PowerSeries.normalizeByConstantCoeff`/
 `PowerSeries.logOf` operations directly, without a parallel fermionic partition-series API.
 The fermionic Dyson pairing proof uses the generic normalized-coefficient theorem together
-with `freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation` directly; no separate
-fermionic vertex-moment adapter is needed.
+with `Common.finiteGibbsExpectation` directly; no separate fermionic density-state
+or vertex-moment adapter is needed.
 
 ## Analytic log-partition theorem
 
@@ -116,17 +116,11 @@ insertions and higher-point source consumers give it independent semantics.
 
 ## Low-order identities
 
-Orders `1`, `2`, and `3` remain available as explicit readable formal-log examples and
-regression theorems in
-
-```text
-Fermionic/Diagrammatics/LinkedCluster/LowOrder.lean
-```
-
-The module records only the moment-cumulant subtraction polynomials. Connected-diagram and analytic
-low-order statements are obtained by specializing the canonical general formal and analytic
-endpoints rather than by separate public wrappers. `LowOrder` remains opt-in and is not part of
-the canonical `LinkedCluster` umbrella.
+The explicit order-`1`, order-`2`, and order-`3` formal-log formulas are the generic theorems in
+`Analysis/PowerSeries/LowOrderLog.lean`, applied to the normalized fermionic Dyson trace series.
+They are illustrated in [the low-order example](../examples/fermionic-lct-low-order.md).
+Connected-diagram and analytic low-order statements follow by specializing the canonical
+general formal and analytic endpoints.
 
 ## Replica-method proof track
 

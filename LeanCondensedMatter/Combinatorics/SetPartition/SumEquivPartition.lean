@@ -56,27 +56,10 @@ theorem mem_rightImage_iff_not_mem_leftImage
     [Fintype α] [Fintype β] [DecidableEq γ]
     (e : α ⊕ β ≃ γ) (x : γ) :
     x ∈ rightImage e ↔ x ∉ leftImage e := by
-  constructor
-  · intro hright hleft
-    obtain ⟨b, hb⟩ := (mem_rightImage_iff e x).1 hright
-    obtain ⟨a, ha⟩ := (mem_leftImage_iff e x).1 hleft
-    have htag : (Sum.inr b : α ⊕ β) = Sum.inl a :=
-      e.injective (hb.trans ha.symm)
-    cases htag
-  · intro hleft
-    cases hpre : e.symm x with
-    | inl a =>
-        exfalso
-        apply hleft
-        exact (mem_leftImage_iff e x).2 ⟨a, by
-          have h := e.apply_symm_apply x
-          rw [hpre] at h
-          exact h⟩
-    | inr b =>
-        exact (mem_rightImage_iff e x).2 ⟨b, by
-          have h := e.apply_symm_apply x
-          rw [hpre] at h
-          exact h⟩
+  rw [mem_rightImage_iff e x, mem_leftImage_iff e x]
+  change x ∈ Set.range (e ∘ Sum.inr) ↔
+    x ∈ (Set.range (e ∘ Sum.inl))ᶜ
+  rw [Set.range_comp, Set.range_comp, ← Set.compl_range_inl, e.image_compl]
 
 /-- Finset form of the right-image/complement identity. -/
 theorem rightImage_eq_sdiff_leftImage

@@ -1,7 +1,8 @@
 import LeanCondensedMatter.Models.MassiveDirac.Model.Operator
 import Mathlib.Algebra.Group.Units.Basic
 import Mathlib.Analysis.Normed.Ring.Units
-import Mathlib.Tactic
+import Mathlib.Tactic.Abel
+import Mathlib.Tactic.Ring
 
 set_option linter.style.header false
 

@@ -96,6 +96,20 @@ theorem finiteGibbsExpectation_eq_trace_div (energy : Config → ℝ) (β : ℝ)
   push_cast
   field_simp
 
+/-- The finite density-state Gibbs expectation evaluates the common summable
+diagonal-trace ratio, with its convergence domain automatic for finite configurations. -/
+theorem finiteGibbsExpectation_eq_summableDiagonalTraceRatioLinear
+    (energy : Config → ℝ) (β : ℝ)
+    (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
+    finiteGibbsExpectation energy β A =
+      summableDiagonalTraceRatioLinear (diagonalEvolution energy (-β))
+        ⟨A, Summable.of_finite⟩ := by
+  change finiteGibbsExpectation energy β A =
+    tsumTrace ((diagonalEvolution energy (-β)).comp A) /
+      tsumTrace (diagonalEvolution energy (-β))
+  rw [tsumTrace_eq_traceFock, tsumTrace_eq_traceFock]
+  exact finiteGibbsExpectation_eq_trace_div energy β A
+
 /-- The canonical finite Gibbs expectation commutes with coefficientwise finite operator
 integration. -/
 theorem finiteGibbsExpectation_operatorIntervalIntegral

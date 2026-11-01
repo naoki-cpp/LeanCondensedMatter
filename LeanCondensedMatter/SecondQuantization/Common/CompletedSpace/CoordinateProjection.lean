@@ -1,4 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.Diagonal
+import Mathlib.Order.Filter.Finite
 
 set_option linter.style.header false
 
@@ -15,6 +16,8 @@ layers keep only the predicates and their physical or combinatorial semantics.
 namespace SecondQuantization
 namespace Common
 
+open Filter Topology
+
 noncomputable section
 
 variable {Config : Type*}
@@ -27,8 +30,9 @@ noncomputable def completedCoordinateProjection (P : Config → Prop) :
   exact completedBoundedDiagonalOperator (fun c => if P c then 1 else 0) zero_le_one fun c => by
     by_cases h : P c <;> simp [h]
 
+open scoped Classical in
 @[simp]
-theorem completedCoordinateProjection_apply (P : Config → Prop) [DecidablePred P]
+theorem completedCoordinateProjection_apply (P : Config → Prop)
     (ψ : CompletedFock Config) (c : Config) :
     completedCoordinateProjection P ψ c = if P c then ψ c else 0 := by
   classical
@@ -50,15 +54,78 @@ theorem dist_completedCoordinateProjection_le (P : Config → Prop)
     dist (completedCoordinateProjection P ψ) (completedCoordinateProjection P φ) ≤ dist ψ φ := by
   simpa [dist_eq_norm, map_sub] using norm_completedCoordinateProjection_le P (ψ - φ)
 
+open scoped Classical in
 /-- A canonical basis state survives a coordinate projection exactly when its configuration
 satisfies the predicate. -/
 @[simp]
-theorem completedCoordinateProjection_basisState (P : Config → Prop) [DecidablePred P]
+theorem completedCoordinateProjection_basisState (P : Config → Prop)
     (c : Config) :
     completedCoordinateProjection P (completedBasisState c) =
       if P c then completedBasisState c else 0 := by
   classical
   by_cases hc : P c <;> simp [completedCoordinateProjection, hc]
+
+
+/-- A coordinate projection fixes an algebraic vector whenever its mask retains every
+configuration in that vector's finite support. -/
+theorem completedCoordinateProjection_algebraicToCompleted_of_support
+    (P : Config → Prop) (x : AlgebraicFock Config)
+    (hP : ∀ c ∈ x.support, P c) :
+    completedCoordinateProjection P (algebraicToCompleted x) = algebraicToCompleted x := by
+  classical
+  ext c
+  rw [completedCoordinateProjection_apply]
+  by_cases hc : x c = 0
+  · simp [algebraicToCompleted_apply, hc]
+  · have hpc : P c := hP c (Finsupp.mem_support_iff.mpr hc)
+    simp [algebraicToCompleted_apply, hpc]
+
+/-- A contractive coordinate projection moving no point of a fixed algebraic approximation
+moves an arbitrary completed vector by at most twice the approximation error. -/
+private theorem dist_completedCoordinateProjection_le_two_mul_of_fixed
+    (P : Config → Prop) (ψ φ : CompletedFock Config)
+    (hφ : completedCoordinateProjection P φ = φ) :
+    dist (completedCoordinateProjection P ψ) ψ ≤ 2 * dist ψ φ := by
+  have hcontract :
+      dist (completedCoordinateProjection P ψ) (completedCoordinateProjection P φ) ≤
+        dist ψ φ := dist_completedCoordinateProjection_le P ψ φ
+  calc
+    dist (completedCoordinateProjection P ψ) ψ ≤
+        dist (completedCoordinateProjection P ψ) (completedCoordinateProjection P φ) +
+          dist (completedCoordinateProjection P φ) ψ := dist_triangle _ _ _
+    _ = dist (completedCoordinateProjection P ψ) (completedCoordinateProjection P φ) +
+          dist φ ψ := by rw [hφ]
+    _ ≤ dist ψ φ + dist φ ψ := by
+      exact add_le_add hcontract (le_refl _)
+    _ = 2 * dist ψ φ := by rw [dist_comm φ ψ, two_mul]
+
+/-- Coordinate projections converge strongly to the identity along any filter of masks
+eventually retaining each fixed configuration. The configuration type and filter index
+need not be countable; no finite-rank assumption is made. -/
+theorem tendsto_completedCoordinateProjection_of_eventually
+    {ι : Type*} (l : Filter ι) (P : ι → Config → Prop)
+    (hP : ∀ c : Config, ∀ᶠ i in l, P i c) (ψ : CompletedFock Config) :
+    Tendsto (fun i => completedCoordinateProjection (P i) ψ) l (𝓝 ψ) := by
+  classical
+  have hfinite (s : Finset Config) :
+      ∀ᶠ i in l, ∀ c ∈ s, P i c :=
+    (Finset.eventually_all s).2 (fun c _ => hP c)
+  apply Metric.tendsto_nhds.2
+  intro ε hε
+  have hhalf : 0 < ε / 2 := half_pos hε
+  rcases algebraicToCompleted_denseRange.exists_dist_lt ψ hhalf with ⟨x, hx⟩
+  have hfix :
+      ∀ᶠ i in l, completedCoordinateProjection (P i) (algebraicToCompleted x) =
+        algebraicToCompleted x := by
+    filter_upwards [hfinite x.support] with i hi
+    exact completedCoordinateProjection_algebraicToCompleted_of_support (P i) x hi
+  filter_upwards [hfix] with i hi
+  calc
+    dist (completedCoordinateProjection (P i) ψ) ψ ≤
+        2 * dist ψ (algebraicToCompleted x) :=
+      dist_completedCoordinateProjection_le_two_mul_of_fixed
+        (P i) ψ (algebraicToCompleted x) hi
+    _ < ε := by linarith
 
 end
 end Common

@@ -1,6 +1,6 @@
 import LeanCondensedMatter.Analysis.Operator.Unbounded.BoundedResolvent
 import Mathlib.Analysis.InnerProductSpace.Adjoint
-import Mathlib.Tactic
+import Mathlib.Tactic.Abel
 
 set_option linter.style.header false
 

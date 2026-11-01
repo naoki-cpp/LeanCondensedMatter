@@ -1,5 +1,5 @@
 import LeanCondensedMatter.QuantumTheory.SpinHalf.Finite
-import Mathlib.Data.ZMod.Basic
+import LeanCondensedMatter.Analysis.Fourier.CyclicLaplacian
 
 set_option linter.style.header false
 
@@ -118,30 +118,12 @@ theorem excitationHamiltonian_oneMagnonKet (J : ℝ) (k : ZMod N) :
   simp_rw [hterm]
   simp [Finset.sum_add_distrib]
 
-/-- The periodic nearest-neighbor discrete Laplacian acting on magnon amplitudes. -/
-def oneMagnonLaplacian (J : ℝ) : EuclideanSpace ℂ (ZMod N) →ₗ[ℂ]
-    EuclideanSpace ℂ (ZMod N) where
-  toFun ψ := WithLp.toLp 2 fun i => (J : ℂ) * (2 * ψ i - ψ (i - 1) - ψ (i + 1))
-  map_add' ψ φ := by ext i; simp; ring
-  map_smul' a ψ := by ext i; simp; ring
-
-omit [NeZero N] in
-private theorem oneMagnonLaplacian_single (J : ℝ) (k : ZMod N) :
-    oneMagnonLaplacian J (EuclideanSpace.single k 1) =
-      (J : ℂ) • ((EuclideanSpace.single k 1 - EuclideanSpace.single (k + 1) 1) +
-        (EuclideanSpace.single k 1 - EuclideanSpace.single (k - 1) 1)) := by
-  ext i
-  have hleft : i - 1 = k ↔ i = k + 1 := sub_eq_iff_eq_add
-  have hright : i + 1 = k ↔ i = k - 1 := eq_sub_iff_add_eq.symm
-  simp [oneMagnonLaplacian, PiLp.single_apply, hleft, hright]
-  split_ifs <;> ring
-
 include hN in
 /-- The exact one-magnon restriction of the full spin Hamiltonian. The embedding is
 isometric, and this identity proves that its range is invariant. -/
 theorem excitationHamiltonian_comp_oneMagnonEmbedding (J : ℝ) :
     (excitationHamiltonian (N := N) J).comp oneMagnonEmbedding.toLinearMap =
-      oneMagnonEmbedding.toLinearMap.comp (oneMagnonLaplacian J) := by
+      oneMagnonEmbedding.toLinearMap.comp (ZMod.cyclicLaplacian J) := by
   apply (EuclideanSpace.basisFun (ZMod N) ℂ).toBasis.ext
   intro k
   simp only [OrthonormalBasis.coe_toBasis, EuclideanSpace.basisFun_apply,
@@ -149,7 +131,7 @@ theorem excitationHamiltonian_comp_oneMagnonEmbedding (J : ℝ) :
   have hemb (i : ZMod N) : oneMagnonEmbedding (EuclideanSpace.single i 1) =
       oneMagnonKet i := by
     simp [oneMagnonEmbedding_apply, PiLp.single_apply]
-  rw [hemb, excitationHamiltonian_oneMagnonKet hN, oneMagnonLaplacian_single]
+  rw [hemb, excitationHamiltonian_oneMagnonKet hN, ZMod.cyclicLaplacian_single]
   simp only [map_smul, map_add, map_sub, hemb]
 
 end

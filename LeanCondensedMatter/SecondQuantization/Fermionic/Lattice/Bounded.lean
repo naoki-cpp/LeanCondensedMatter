@@ -1,6 +1,6 @@
 import LeanCondensedMatter.QuantumTheory.PeierlsLattice
 import LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.DiscreteLattice
-import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.OccupationEquivalence
+import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.FiniteHilbertRealization
 import LeanCondensedMatter.SecondQuantization.Common.Algebra.FiniteHilbertOperator
 
 set_option linter.style.header false
@@ -48,21 +48,12 @@ section FiniteLattice
 
 variable [Fintype Site]
 
-/-- The complete representation transport from basis-independent exterior-Fock endomorphisms to
-bounded operators on the finite-lattice Hilbert Fock space. -/
-noncomputable def boundedLatticeOperatorAlgEquiv :
-    (AlgebraicFock ((Site →₀ ℂ)) →ₗ[ℂ]
-        AlgebraicFock ((Site →₀ ℂ))) ≃ₐ[ℂ]
-      (FiniteLatticeHilbertFock Site →L[ℂ] FiniteLatticeHilbertFock Site) :=
-  ((AlgebraicFock.occupationEquiv (Finsupp.basisSingleOne : Module.Basis Site ℂ (Site →₀ ℂ))).symm.conjAlgEquiv ℂ).trans
-    (Common.finiteHilbertOperatorAlgEquiv (Config := Occupation Site))
-
 /-- The bounded finite-lattice realization of an exterior-Fock algebraic endomorphism. -/
 noncomputable def boundedLatticeOperator
     (A : AlgebraicFock ((Site →₀ ℂ)) →ₗ[ℂ]
       AlgebraicFock ((Site →₀ ℂ))) :
     FiniteLatticeHilbertFock Site →L[ℂ] FiniteLatticeHilbertFock Site :=
-  boundedLatticeOperatorAlgEquiv A
+  AlgebraicFock.finiteHilbertOperatorAlgEquiv (Mode := Site) Finsupp.basisSingleOne A
 
 
 /-- Finite-lattice second quantization as a complex-linear Lie algebra homomorphism.
@@ -70,7 +61,7 @@ It preserves commutators, not products, on the full finite Hilbert Fock space. -
 noncomputable def boundedOneBodyOperator :
     ((Site →₀ ℂ) →ₗ[ℂ] (Site →₀ ℂ)) →ₗ⁅ℂ⁆
       (FiniteLatticeHilbertFock Site →L[ℂ] FiniteLatticeHilbertFock Site) where
-  toLinearMap := (boundedLatticeOperatorAlgEquiv (Site := Site)).toLinearMap.comp
+  toLinearMap := (AlgebraicFock.finiteHilbertOperatorAlgEquiv (Mode := Site) Finsupp.basisSingleOne).toLinearMap.comp
     (AlgebraicFock.dGammaLieHom ((Site →₀ ℂ))).toLinearMap
   map_lie' := by
     intro S T
@@ -114,10 +105,10 @@ theorem boundedOneBodyOperator_oneParticleBondCurrent
     (K : LocallyFiniteHopping Site) (ℏ q : ℂ) (x y : Site) :
     boundedOneBodyOperator (K.oneParticleBondCurrent ℏ q x y) =
       boundedBondCurrent ℏ q K x y := by
-  change (boundedLatticeOperatorAlgEquiv (Site := Site))
+  change (AlgebraicFock.finiteHilbertOperatorAlgEquiv (Mode := Site) Finsupp.basisSingleOne)
       (AlgebraicFock.dGammaLinear ((Site →₀ ℂ))
         (peierlsCoupling ℏ q • K.bondOperator x y)) =
-    (boundedLatticeOperatorAlgEquiv (Site := Site))
+    (AlgebraicFock.finiteHilbertOperatorAlgEquiv (Mode := Site) Finsupp.basisSingleOne)
       (peierlsCoupling ℏ q • AlgebraicFock.dGamma ((Site →₀ ℂ)) (K.bondOperator x y))
   rw [map_smul, AlgebraicFock.dGammaLinear_apply]
 
@@ -143,8 +134,8 @@ theorem hasAlgebraicDerivAt_boundedPeierlsBondHamiltonian_zero
 theorem boundedBondCurrent_swap (ℏ q : ℂ) (K : LocallyFiniteHopping Site)
     (x y : Site) :
     boundedBondCurrent ℏ q K y x = -boundedBondCurrent ℏ q K x y := by
-  change (boundedLatticeOperatorAlgEquiv (Site := Site)) (bondCurrent ℏ q K y x) =
-    -(boundedLatticeOperatorAlgEquiv (Site := Site)) (bondCurrent ℏ q K x y)
+  change (AlgebraicFock.finiteHilbertOperatorAlgEquiv (Mode := Site) Finsupp.basisSingleOne) (bondCurrent ℏ q K y x) =
+    -(AlgebraicFock.finiteHilbertOperatorAlgEquiv (Mode := Site) Finsupp.basisSingleOne) (bondCurrent ℏ q K x y)
   rw [bondCurrent_swap, map_neg]
 
 /-- The algebraic local continuity equation survives exactly in the bounded finite-lattice Hilbert
@@ -154,7 +145,7 @@ theorem bounded_discrete_continuity (ℏ q : ℂ)
     (Complex.I / ℏ) •
           ⁅boundedHoppingHamiltonian K, boundedLatticeOperator (siteChargeDensity q x)⁆ +
         ∑ y ∈ K.incident x, boundedBondCurrent ℏ q K x y = 0 := by
-  have h := congrArg (boundedLatticeOperatorAlgEquiv (Site := Site))
+  have h := congrArg (AlgebraicFock.finiteHilbertOperatorAlgEquiv (Mode := Site) Finsupp.basisSingleOne)
     (discrete_continuity ℏ q K x)
   simpa only [boundedLatticeOperator, boundedHoppingHamiltonian,
     boundedBondCurrent, LieRing.of_associative_ring_bracket,

@@ -7,6 +7,21 @@ description: Behavior-preserving refactor pass over this project's Lean code —
 
 A behavior-preserving cleanup pass. Preserve the mathematics and physical meaning; improve where proofs, declarations, and responsibilities live and how shared structure is exposed.
 
+## Guiding philosophy
+
+Refactoring is an opportunity to reassess the conceptual design of the library, not merely to shorten proofs or rearrange existing code. Preserve mathematical and physical meaning while seeking a more coherent, general, reusable, and economical expression of the underlying theory.
+
+- **Question inherited structure.** Existing declarations, boundaries, dependencies, and APIs are candidates for reconsideration, not constraints to preserve for their own sake.
+- **Seek natural generality.** Distinguish essential hypotheses from implementation artifacts, and prefer the weakest useful assumptions and the most appropriate level of abstraction.
+- **Respect conceptual ownership.** Foundational ideas should not depend on specialized concepts merely for convenience; abstractions and dependencies should reflect the theory they express.
+- **Consolidate rather than accumulate.** Consider whether a new result can replace existing declarations, eliminate redundant wrappers, and migrate consumers instead of creating another parallel API.
+- **Balance abstraction against complexity.** Generalization and unification are means, not ends. Keep genuinely distinct concepts separate, and reject abstractions whose costs exceed their explanatory or reuse value.
+- **Evaluate system-wide effects.** Assess the consequences for callers, dependency direction, public surface, proof complexity, and future extension rather than optimizing local line counts alone.
+- **Revisit earlier decisions.** As the theory and library evolve, reconsider previous choices without treating historical compatibility or earlier refactoring outcomes as intrinsically authoritative.
+- **Verify while simplifying.** Maintain correctness and the intended semantics through suitable checks while reducing unnecessary implementation and maintenance burden.
+
+These are decision principles, not prescriptions for a particular module hierarchy, file layout, or implementation technique. Apply them alongside the concrete audit heuristics below, and explain trade-offs when principles pull in different directions.
+
 ## What to look for
 
 Scan the target source scope, excluding generated and build artifacts, for these patterns in priority order:

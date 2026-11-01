@@ -8,7 +8,10 @@ import Mathlib.Analysis.SpecificLimits.Normed
 import Mathlib.MeasureTheory.Integral.DominatedConvergence
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.Periodic
 import Mathlib.Topology.Algebra.InfiniteSum.ContinuousEval
-import Mathlib.Tactic
+import Mathlib.Tactic.FieldSimp
+import Mathlib.Tactic.FunProp
+import Mathlib.Tactic.NormNum
+import Mathlib.Tactic.Ring
 
 set_option linter.style.header false
 
@@ -280,15 +283,17 @@ theorem polarFourierZerothAngularKernel_eq_tsum_moments (z : ℝ) :
       rw [intervalIntegral.integral_const_mul]
     _ = _ := by rw [hcos]
 
-/-- The zeroth-order regularized hypergeometric coefficient of Mathlib's Bessel function
-is a reciprocal square of a factorial. -/
-theorem polarFourierBesselZeroCoeff (n : ℕ) :
-    Complex.regularizedHGFunCoeff 0 {(1 : ℂ)} n =
-      1 / (Nat.factorial n : ℂ) ^ 2 := by
-  have hgamma : Complex.Gamma ((1 : ℂ) + (n : ℂ)) =
-      (Nat.factorial n : ℂ) := by
-    simpa only [add_comm] using Complex.Gamma_nat_eq_factorial n
-  simp [Complex.regularizedHGFunCoeff, hgamma, pow_two]
+/-- The coefficient of the regularized hypergeometric series with lower parameter `k + 1`. -/
+private theorem regularizedHGFunCoeff_zero_singleton_nat_add_one (k n : ℕ) :
+    Complex.regularizedHGFunCoeff 0 {((k + 1 : ℕ) : ℂ)} n =
+      1 / ((Nat.factorial n : ℂ) * (Nat.factorial (n + k) : ℂ)) := by
+  have hgamma : Complex.Gamma (((k : ℂ) + 1) + (n : ℂ)) =
+      (Nat.factorial (n + k) : ℂ) := by
+    rw [show ((k : ℂ) + 1) + (n : ℂ) = ((n + k : ℕ) : ℂ) + 1 by
+      simp only [Nat.cast_add]
+      ring]
+    exact Complex.Gamma_nat_eq_factorial (n + k)
+  simp [Complex.regularizedHGFunCoeff, Nat.cast_add, hgamma]
 
 /-- A full-period cosine moment is bounded by the length of its integration interval. -/
 theorem polarFourierCosineMoment_norm_le (n : ℕ) :
@@ -346,7 +351,9 @@ theorem polarFourierZerothMoment_even_eq_bessel (z : ℝ) (n : ℕ) :
       ((2 * Real.pi : ℝ) : ℂ) *
         (Complex.regularizedHGFunCoeff 0 {(1 : ℂ)} n *
           (-((z : ℂ) / 2) ^ 2) ^ n) := by
-  rw [polarFourierCosineMoment_even_factorial, polarFourierBesselZeroCoeff]
+  have hcoeff := regularizedHGFunCoeff_zero_singleton_nat_add_one 0 n
+  norm_num only [Nat.add_zero] at hcoeff
+  rw [polarFourierCosineMoment_even_factorial, hcoeff, ← pow_two]
   push_cast
   have hI : (Complex.I * (z : ℂ)) ^ (2 * n) = (-(z : ℂ) ^ 2) ^ n := by
     rw [pow_mul, mul_pow, Complex.I_sq]
@@ -515,16 +522,10 @@ private theorem regularizedHGFun_zero_one_hasDerivAt (w : ℂ) :
   have hcoeff (n : ℕ) :
       ((n + 1 : ℕ) : ℂ) * Complex.regularizedHGFunCoeff 0 {(1 : ℂ)} (n + 1) =
         Complex.regularizedHGFunCoeff 0 {(2 : ℂ)} n := by
-    have hg : Complex.Gamma ((2 : ℂ) + (n : ℂ)) =
-        (Nat.factorial (n + 1) : ℂ) := by
-      convert Complex.Gamma_nat_eq_factorial (n + 1) using 1
-      push_cast
-      ring
-    rw [polarFourierBesselZeroCoeff]
-    have htwo : Complex.regularizedHGFunCoeff 0 {(2 : ℂ)} n =
-        1 / ((Nat.factorial n : ℂ) * (Nat.factorial (n + 1) : ℂ)) := by
-      simp [Complex.regularizedHGFunCoeff, hg]
-    rw [htwo, Nat.factorial_succ]
+    have h0 := regularizedHGFunCoeff_zero_singleton_nat_add_one 0 (n + 1)
+    have h1 := regularizedHGFunCoeff_zero_singleton_nat_add_one 1 n
+    norm_num only [Nat.add_zero] at h0 h1
+    rw [h0, h1, ← pow_two, Nat.factorial_succ]
     push_cast
     have hn : (n + 1 : ℂ) ≠ 0 := by exact_mod_cast Nat.succ_ne_zero n
     have hf : (Nat.factorial n : ℂ) ≠ 0 := by
@@ -627,25 +628,13 @@ private theorem regularizedHGFun_one_sub_two_eq_mul_three (w : ℂ) :
   let c1 : ℕ → ℂ := Complex.regularizedHGFunCoeff 0 {(1 : ℂ)}
   let c2 : ℕ → ℂ := Complex.regularizedHGFunCoeff 0 {(2 : ℂ)}
   let c3 : ℕ → ℂ := Complex.regularizedHGFunCoeff 0 {(3 : ℂ)}
-  have hc2 (n : ℕ) :
-      c2 n = 1 / ((Nat.factorial n : ℂ) * (Nat.factorial (n + 1) : ℂ)) := by
-    have hg : Complex.Gamma ((2 : ℂ) + (n : ℂ)) =
-        (Nat.factorial (n + 1) : ℂ) := by
-      convert Complex.Gamma_nat_eq_factorial (n + 1) using 1
-      push_cast
-      ring
-    simp [c2, Complex.regularizedHGFunCoeff, hg]
-  have hc3 (n : ℕ) :
-      c3 n = 1 / ((Nat.factorial n : ℂ) * (Nat.factorial (n + 2) : ℂ)) := by
-    have hg : Complex.Gamma ((3 : ℂ) + (n : ℂ)) =
-        (Nat.factorial (n + 2) : ℂ) := by
-      convert Complex.Gamma_nat_eq_factorial (n + 2) using 1
-      push_cast
-      ring
-    simp [c3, Complex.regularizedHGFunCoeff, hg]
   have hcoeff (n : ℕ) : c1 (n + 1) - c2 (n + 1) = c3 n := by
-    rw [show c1 (n + 1) = 1 / (Nat.factorial (n + 1) : ℂ) ^ 2 by
-      exact polarFourierBesselZeroCoeff (n + 1), hc2, hc3]
+    dsimp only [c1, c2, c3]
+    have h0 := regularizedHGFunCoeff_zero_singleton_nat_add_one 0 (n + 1)
+    have h1 := regularizedHGFunCoeff_zero_singleton_nat_add_one 1 (n + 1)
+    have h2 := regularizedHGFunCoeff_zero_singleton_nat_add_one 2 n
+    norm_num only [Nat.add_zero] at h0 h1 h2
+    rw [h0, h1, h2, ← pow_two]
     simp only [Nat.factorial_succ]
     push_cast
     have hn : (n + 1 : ℂ) ≠ 0 := by exact_mod_cast Nat.succ_ne_zero n
@@ -658,9 +647,11 @@ private theorem regularizedHGFun_one_sub_two_eq_mul_three (w : ℂ) :
     field_simp [hn2]
     ring
   have hzero : c1 0 = c2 0 := by
-    rw [show c1 0 = 1 / (Nat.factorial 0 : ℂ) ^ 2 by
-      exact polarFourierBesselZeroCoeff 0, hc2]
-    norm_num
+    dsimp only [c1, c2]
+    have h0 := regularizedHGFunCoeff_zero_singleton_nat_add_one 0 0
+    have h1 := regularizedHGFunCoeff_zero_singleton_nat_add_one 1 0
+    norm_num at h0 h1
+    rw [h0, h1]
   have hs1 : Summable (fun n : ℕ => c1 n * w ^ n) := by
     simpa only [c1, Complex.regularizedHGFunSeries,
       FormalMultilinearSeries.ofScalars_apply_eq, smul_eq_mul] using
@@ -779,9 +770,8 @@ theorem polarFourierFirstCosineAngularKernel_two_mul_eq_zeroth_sub_second (z : �
     intro θ
     simpa [sine, cosine] using (Real.hasDerivAt_sin θ).ofReal_comp
   have hphase : ∀ θ : ℝ, HasDerivAt phase
-      ((-Complex.I * (z : ℂ) * sine θ) * phase θ) θ := by
-    intro θ
-    exact polarFourierRadialPhase_hasDerivAt z θ
+      ((-Complex.I * (z : ℂ) * sine θ) * phase θ) θ :=
+    polarFourierRadialPhase_hasDerivAt z
   have hzero :
       (∫ θ in (0 : ℝ)..(2 * Real.pi),
         cosine θ * phase θ +
@@ -795,11 +785,11 @@ theorem polarFourierFirstCosineAngularKernel_two_mul_eq_zeroth_sub_second (z : �
       (hcvprime.intervalIntegrable _ _)
     simpa [sine, cosine] using h
   have hcosInt : IntervalIntegrable (fun θ : ℝ => cosine θ * phase θ)
-      volume 0 (2 * Real.pi) := by
-    exact (hccos.mul hcphase).intervalIntegrable _ _
+      volume 0 (2 * Real.pi) :=
+    (hccos.mul hcphase).intervalIntegrable _ _
   have hsinSqInt : IntervalIntegrable
-      (fun θ : ℝ => phase θ * sine θ ^ 2) volume 0 (2 * Real.pi) := by
-    exact (hcphase.mul (hcsin.pow 2)).intervalIntegrable _ _
+      (fun θ : ℝ => phase θ * sine θ ^ 2) volume 0 (2 * Real.pi) :=
+    (hcphase.mul (hcsin.pow 2)).intervalIntegrable _ _
   have hfirst :
       (∫ θ in (0 : ℝ)..(2 * Real.pi), cosine θ * phase θ) =
         (Complex.I * (z : ℂ)) *
@@ -846,11 +836,7 @@ theorem polarFourierFirstCosineAngularKernel_two_mul_eq_zeroth_sub_second (z : �
       polarFourierFirstCosineAngularKernel z =
         (Complex.I * (z : ℂ)) *
           (∫ θ in (0 : ℝ)..(2 * Real.pi), phase θ * sine θ ^ 2) := by
-    rw [polarFourierFirstCosineAngularKernel]
-    convert hfirst using 1
-    apply intervalIntegral.integral_congr
-    intro θ _
-    simp [cosine, phase, mul_comm]
+    simpa [polarFourierFirstCosineAngularKernel, cosine, phase, mul_comm] using hfirst
   calc
     2 * polarFourierFirstCosineAngularKernel z =
         (Complex.I * (z : ℂ)) *

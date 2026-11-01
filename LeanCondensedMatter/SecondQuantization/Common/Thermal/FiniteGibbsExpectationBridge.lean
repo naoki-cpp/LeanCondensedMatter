@@ -58,55 +58,30 @@ theorem finiteGibbsExpectation_eq_sum (energy : Config → ℝ) (β : ℝ)
     finiteGibbsExpectation energy β A =
       ∑ n : Config, (eigenbasisGibbsProbability energy β n : ℂ) * matrixCoeff A n n := by
   classical
-  have hbase :
-      (eigenbasisGibbsDensityOperator
-        (finiteHilbertBasis (Config := Config)) energy β
-        (eigenbasisGibbsSummable_of_finite energy β)).expectation
-          (finiteHilbertOperatorAlgEquiv A) =
-        ∑ n : Config,
-          (eigenbasisGibbsProbability energy β n : ℂ) *
-            inner ℂ ((finiteHilbertOrthonormalBasis (Config := Config)) n)
-              (finiteHilbertOperatorAlgEquiv A
-                ((finiteHilbertOrthonormalBasis (Config := Config)) n)) := by
-    simpa only [tsum_fintype, finiteHilbertBasis_apply,
-      finiteHilbertOrthonormalBasis_apply] using
-      (eigenbasisGibbsDensityOperator
-        (finiteHilbertBasis (Config := Config)) energy β
-        (eigenbasisGibbsSummable_of_finite energy β)).expectation_eq_tsum_diagonal
+  change (eigenbasisGibbsDensityOperator
+      (finiteHilbertBasis (Config := Config)) energy β
+      (eigenbasisGibbsSummable_of_finite energy β)).expectation
+        (finiteHilbertOperatorAlgEquiv A) =
+      ∑ n : Config, (eigenbasisGibbsProbability energy β n : ℂ) * matrixCoeff A n n
+  rw [(eigenbasisGibbsDensityOperator
+      (finiteHilbertBasis (Config := Config)) energy β
+      (eigenbasisGibbsSummable_of_finite energy β)).expectation_eq_tsum_diagonal
         (finiteHilbertOperatorAlgEquiv A)
         (finiteHilbertBasis (Config := Config))
         (eigenbasisGibbsProbability energy β)
         (eigenbasisGibbsDensityOperator_apply_basis
           (finiteHilbertBasis (Config := Config)) energy β
-          (eigenbasisGibbsSummable_of_finite energy β))
-  have hinner (n : Config) :
-      inner ℂ ((finiteHilbertOrthonormalBasis (Config := Config)) n)
-        (finiteHilbertOperatorAlgEquiv A
-          ((finiteHilbertOrthonormalBasis (Config := Config)) n)) =
-        matrixCoeff A n n := by
-    rw [finiteHilbertOrthonormalBasis_apply]
-    change inner ℂ (EuclideanSpace.single n 1)
-      (finiteHilbertOperatorAlgEquiv A (finiteHilbertBasisState n)) = matrixCoeff A n n
-    rw [EuclideanSpace.inner_single_left]
-    simp only [map_one, one_mul]
-    exact finiteHilbertOperator_basis_apply A n n
-  rw [finiteGibbsExpectation, finiteGibbsExpectationLinearMap, LinearMap.comp_apply]
-  calc
-    (eigenbasisGibbsDensityOperator
-        (finiteHilbertBasis (Config := Config)) energy β
-        (eigenbasisGibbsSummable_of_finite energy β)).expectation
-          (finiteHilbertOperatorAlgEquiv A) =
-        ∑ n : Config,
-          (eigenbasisGibbsProbability energy β n : ℂ) *
-            inner ℂ ((finiteHilbertOrthonormalBasis (Config := Config)) n)
-              (finiteHilbertOperatorAlgEquiv A
-                ((finiteHilbertOrthonormalBasis (Config := Config)) n)) :=
-      hbase
-    _ = ∑ n : Config, (eigenbasisGibbsProbability energy β n : ℂ) * matrixCoeff A n n := by
-      apply Finset.sum_congr rfl
-      intro n _
-      rw [hinner n]
-
+          (eigenbasisGibbsSummable_of_finite energy β))]
+  rw [tsum_fintype]
+  apply Finset.sum_congr rfl
+  intro n _
+  simp only [finiteHilbertBasis_apply]
+  congr 1
+  change inner ℂ (EuclideanSpace.single n 1)
+    (finiteHilbertOperatorAlgEquiv A (finiteHilbertBasisState n)) = matrixCoeff A n n
+  rw [EuclideanSpace.inner_single_left]
+  simp only [map_one, one_mul]
+  exact finiteHilbertOperator_basis_apply A n n
 
 end
 end Common

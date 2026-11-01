@@ -4,6 +4,9 @@ import LeanCondensedMatter.Crystal.Translation
 import LeanCondensedMatter.Crystal.Periodicity
 import LeanCondensedMatter.Crystal.Lattice
 import LeanCondensedMatter.Crystal.PointGroup
+import LeanCondensedMatter.Crystal.LatticePointGroup.Gram
+import LeanCondensedMatter.Crystal.LatticePointGroup.PlanarReduction
+import LeanCondensedMatter.Crystal.LatticePointGroup.PlanarGram
 import LeanCondensedMatter.Crystal.Classification
 import LeanCondensedMatter.Crystal.Brillouin
 

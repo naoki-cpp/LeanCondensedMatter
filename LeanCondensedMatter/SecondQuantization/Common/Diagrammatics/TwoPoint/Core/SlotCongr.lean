@@ -23,27 +23,6 @@ open Combinatorics
 
 variable {ExternalLabel InternalLabel : Type*} {N M : ℕ} {T : Finset (Fin N)} {U : Finset (Fin M)}
 
-/-- The increasing enumeration of a finite slot set, viewed as a relabeling onto a standard
-full slot set whose size is identified by the supplied cardinality equality. -/
-noncomputable def standardSlotEquivOfCardEq (T : Finset (Fin N)) {m : ℕ}
-    (h : T.card = m) :
-    ↥T ≃ ↥(Finset.univ : Finset (Fin m)) :=
-  (T.orderIsoOfFin h).toEquiv.symm.trans
-    (Equiv.subtypeUnivEquiv (fun x : Fin m => Finset.mem_univ x)).symm
-
-@[simp]
-theorem standardSlotEquivOfCardEq_symm_coe (T : Finset (Fin N)) {m : ℕ}
-    (h : T.card = m) (v : ↥(Finset.univ : Finset (Fin m))) :
-    (((standardSlotEquivOfCardEq T h).symm v : ↥T) : Fin N) =
-      T.orderEmbOfFin h (v : Fin m) := by
-  simp [standardSlotEquivOfCardEq, Finset.coe_orderIsoOfFin_apply]
-
-/-- The increasing enumeration of a finite slot set, viewed as a relabeling onto the standard full
-slot set of the same cardinality. -/
-noncomputable def standardSlotEquiv (T : Finset (Fin N)) :
-    ↥T ≃ ↥(Finset.univ : Finset (Fin T.card)) :=
-  standardSlotEquivOfCardEq T rfl
-
 /-- Relabeling the interaction vertices relabels the two-point vertices. -/
 def twoPointVertexCongr (e : ↥T ≃ ↥U) : TwoPointVertex T ≃ TwoPointVertex U :=
   Equiv.sumCongr (Equiv.refl (Fin 2)) e

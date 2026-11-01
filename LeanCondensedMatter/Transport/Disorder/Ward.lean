@@ -1,6 +1,5 @@
 import LeanCondensedMatter.Transport.Disorder.Ladder
 import LeanCondensedMatter.Transport.Disorder.SCBA
-import Mathlib.Tactic
 
 set_option linter.style.header false
 

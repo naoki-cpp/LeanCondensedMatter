@@ -65,41 +65,41 @@ theorem QuarticDiagram.freeThermalPairValue_componentOrderedLeg
 /-- The bosonic thermal contraction value of an assembled pairing is the product of the thermal
 contraction values of its connected-component restrictions. -/
 theorem QuarticDiagram.orderedThermalPairingValue_eq_prod_components
-    (ε : Mode → ℝ) (β : ℝ) {S : Finset (Fin N)}
+    (ε : Mode → ℝ) (β μ : ℝ) {S : Finset (Fin N)}
     (d : Common.QuarticDiagram (Common.QuarticVertexLabel Mode) N S)
     (orders : d.ComponentVertexOrders)
     (shuffle : d.ComponentShuffle) :
-    QuarticDiagram.orderedThermalPairingValue ε β d (d.assembleVertexOrder orders shuffle) =
+    QuarticDiagram.orderedThermalPairingValue ε β μ d (d.assembleVertexOrder orders shuffle) =
       ∏ B : d.vertexGraph.componentPartitionOn.parts,
-        QuarticDiagram.orderedThermalPairingValue ε β (d.restrictComponent B.2) (orders B) := by
+        QuarticDiagram.orderedThermalPairingValue ε β μ (d.restrictComponent B.2) (orders B) := by
   classical
   simpa only [QuarticDiagram.orderedThermalPairingValue] using
     d.pairingInOrder_evaluation_eq_prod_components Statistics.boson orders shuffle
-      (fun a b => freeThermalPairValue ε β
+      (fun a b => freeThermalPairValue (fun i => ε i - μ) β
         (QuarticDiagram.orderedFreeThermalFieldFamily d
           (d.assembleVertexOrder orders shuffle) a)
         (QuarticDiagram.orderedFreeThermalFieldFamily d
           (d.assembleVertexOrder orders shuffle) b))
-      (fun B a b => freeThermalPairValue ε β
+      (fun B a b => freeThermalPairValue (fun i => ε i - μ) β
         (QuarticDiagram.orderedFreeThermalFieldFamily (d.restrictComponent B.2) (orders B) a)
         (QuarticDiagram.orderedFreeThermalFieldFamily (d.restrictComponent B.2) (orders B) b))
       (fun B a b =>
-        QuarticDiagram.freeThermalPairValue_componentOrderedLeg ε β d orders shuffle B a b)
+        QuarticDiagram.freeThermalPairValue_componentOrderedLeg (fun i => ε i - μ) β d orders shuffle B a b)
 
 /-- The coefficientwise bosonic ordered thermal amplitude factors over connected components. -/
 theorem QuarticDiagram.orderedThermalAmplitude_eq_prod_components
-    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
+    (ε : Mode → ℝ) (β μ : ℝ) (g : QuarticVertexLabel Mode → ℂ)
     {S : Finset (Fin N)}
     (d : Common.QuarticDiagram (Common.QuarticVertexLabel Mode) N S)
     (orders : d.ComponentVertexOrders) (shuffle : d.ComponentShuffle) :
-    QuarticDiagram.orderedThermalAmplitude ε β g d (d.assembleVertexOrder orders shuffle) =
+    QuarticDiagram.orderedThermalAmplitude ε β μ g d (d.assembleVertexOrder orders shuffle) =
       ∏ B : d.vertexGraph.componentPartitionOn.parts,
-        QuarticDiagram.orderedThermalAmplitude ε β g (d.restrictComponent B.2) (orders B) := by
+        QuarticDiagram.orderedThermalAmplitude ε β μ g (d.restrictComponent B.2) (orders B) := by
   classical
   unfold QuarticDiagram.orderedThermalAmplitude
   rw [Common.QuarticDiagram.dysonSign_mul_vertexWeight_eq_prod_components d g]
   simp only [Common.QuarticDiagram.restrictComponentConnected]
-  rw [QuarticDiagram.orderedThermalPairingValue_eq_prod_components ε β d orders shuffle]
+  rw [QuarticDiagram.orderedThermalPairingValue_eq_prod_components ε β μ d orders shuffle]
   rw [← Finset.prod_mul_distrib]
 
 end

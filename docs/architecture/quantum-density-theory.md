@@ -11,6 +11,14 @@ proof text.
 Representatives are useful for wavefunction calculations and are not identified by equality under
 global phase.
 
+`QuantumTheory.Postulates` owns `phaseState`, which multiplies a representative by a unit
+complex phase and supplies its normalization proof. Density-state and time-evolution results
+use this same construction; phase invariance does not identify representatives by vector equality.
+
+The rank-one constructor `pure` uses positivity, general trace-class membership, and the rank-one
+trace formula for normalization. `purity_pure` follows from the density-state expectation formula
+and the action of the rank-one projection on its normalized vector.
+
 `QuantumTheory.DensityOperator H` is the canonical density-state type. It contains a bounded operator,
 positivity, general trace-class membership, and normalization of the canonical complex trace to `1`.
 Compactness, self-adjointness, spectral summability, and the real spectral-trace formula are derived. `QuantumTheory.PureState H` is the subtype of density operators represented by
@@ -147,10 +155,12 @@ specializations of the same state model.
 
 ## Gibbs states and free energy
 
-Scalar Gibbs inequalities and summable-family entropy comparison belong to
+Scalar Gibbs inequalities, summable-family entropy comparison, and their equality conditions belong to
 Analysis/Inequalities/Gibbs.lean under Real. Bounded operator free-energy results and
 countable probability-distribution variational and uniqueness results use this mathematical owner directly.
 Normalization, positive comparison weights, and energy summability remain explicit hypotheses.
+Equality forces saturation of the comparison mass and logarithmic bounds; zero probabilities are
+allowed in the hypotheses. Operator-specific Peierls equality and spectral completeness remain downstream.
 
 
 For a bounded self-adjoint Hamiltonian `Hop`, `gibbsOp Hop β` is defined by continuous functional
@@ -159,6 +169,10 @@ directly; compactness, spectral summability, and strictly positive trace are der
 
 `Gibbs/Boltzmann.lean` owns real energy-level weights and probabilities independently of
 Hilbert spaces; `Gibbs/Eigenbasis.lean` constructs density operators from those scalar data.
+It also owns transport between energy bases with the same energy labels: a bounded map carrying
+one basis to the other intertwines the Gibbs density operators, and a linear isometry equivalence
+preserves expectations when observables are pulled back by its inverse. Statistics-specific Fock
+layers supply the basis correspondence and isometry; the Gibbs layer does not construct them.
 `Gibbs/HeatOperator.lean` identifies this state with `gibbsState` when the basis diagonalizes
 the bounded Hamiltonian, and identifies the spectral trace of its heat operator with the
 partition sum. Bounded Gibbs entropy uses this equality and the canonical identity in

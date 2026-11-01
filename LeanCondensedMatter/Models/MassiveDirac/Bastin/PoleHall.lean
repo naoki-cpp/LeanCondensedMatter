@@ -1,5 +1,5 @@
+import LeanCondensedMatter.Models.MassiveDirac.Model.OperatorSpectral
 import LeanCondensedMatter.Models.MassiveDirac.Bastin.PoleFactor
-import Mathlib.Tactic
 
 set_option linter.style.header false
 
@@ -34,8 +34,8 @@ theorem targetCenteredInterbandSpectatorCurrentFactor_eq_interbandPoleRegularFac
     targetCenteredInterbandSpectatorCurrentFactor band e v m px py p =
       interbandPoleRegularFactor
         (interbandEnergyGap band v m px py)
-        (bastinBandBlockTrace 0 1 (oppositeBand band) band e v m px py)
-        (bastinBandBlockTrace 1 0 (oppositeBand band) band e v m px py)
+        (currentBandBlockTrace 0 1 (oppositeBand band) band e v m px py)
+        (currentBandBlockTrace 1 0 (oppositeBand band) band e v m px py)
         p := by
   unfold targetCenteredInterbandSpectatorCurrentFactor
     interbandSpectatorCurrentFactor interbandPoleRegularFactor

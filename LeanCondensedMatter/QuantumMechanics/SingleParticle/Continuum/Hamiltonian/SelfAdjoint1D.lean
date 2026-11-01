@@ -1,5 +1,8 @@
+import LeanCondensedMatter.Analysis.Operator.Unbounded.SelfAdjointCriterion
 import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.L2.Multiplication1D
+import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Hamiltonian.DenseDomain1D
 import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Hamiltonian.LaplacianSelfAdjoint1D
+import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Hamiltonian.Symmetry1D
 import Mathlib.Tactic
 
 set_option linter.style.header false
@@ -95,11 +98,13 @@ theorem continuumRealPotentialSchrodingerHamiltonian1D_isSelfAdjoint
     (κ : ℝ) (potential : ℝ → ℝ)
     (hpotential : MemLp (fun x => (potential x : ℂ)) ∞ (volume : Measure ℝ))
     (hκ : κ ≠ 0) :
-    IsSelfAdjoint (continuumRealPotentialSchrodingerHamiltonian1D κ potential hpotential) :=
-  continuumRealPotentialSchrodingerHamiltonian1D_isSelfAdjoint_iff_adjoint_domain_le
-    κ potential hpotential |>.mpr
-      (continuumRealPotentialSchrodingerHamiltonian1D_adjoint_domain_le
-        κ potential hpotential hκ)
+    IsSelfAdjoint (continuumRealPotentialSchrodingerHamiltonian1D κ potential hpotential) := by
+  apply (LinearPMap.isSelfAdjoint_iff_adjoint_domain_le_of_isFormalAdjoint
+    (A := continuumRealPotentialSchrodingerHamiltonian1D κ potential hpotential)
+    (continuumRealPotentialSchrodingerHamiltonian1D_denseDomain κ potential hpotential)
+    (continuumRealPotentialSchrodingerHamiltonian1D_isFormalAdjoint κ potential hpotential)).mpr
+  simpa only [continuumRealPotentialSchrodingerHamiltonian1D_domain] using
+    continuumRealPotentialSchrodingerHamiltonian1D_adjoint_domain_le κ potential hpotential hκ
 
 end
 end Continuum

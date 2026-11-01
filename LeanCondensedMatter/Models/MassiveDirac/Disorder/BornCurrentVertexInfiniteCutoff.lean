@@ -1,7 +1,10 @@
 import LeanCondensedMatter.Analysis.Lorentzian.RadialQuadratic
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.BornCurrentVertexRung
 import Mathlib.Analysis.SpecificLimits.Basic
-import Mathlib.Tactic
+import Mathlib.Tactic.FieldSimp
+import Mathlib.Tactic.Linarith
+import Mathlib.Tactic.NormNum
+import Mathlib.Tactic.Ring
 
 set_option linter.style.header false
 

@@ -8,7 +8,6 @@ import LeanCondensedMatter.Models.MassiveDirac.Conductivity.Hall.NonCrossingDeco
 import LeanCondensedMatter.Models.MassiveDirac.Conductivity.Hall.NonCrossingMechanismClassification
 import LeanCondensedMatter.Models.MassiveDirac.Conductivity.Hall.CleanBastin
 import LeanCondensedMatter.Models.MassiveDirac.Conductivity.Hall.Intrinsic
-import LeanCondensedMatter.Models.MassiveDirac.Conductivity.Normalization
 
 set_option linter.style.header false
 

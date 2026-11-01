@@ -49,23 +49,23 @@ private theorem QuarticDiagram.quarticVertexSequenceTimeFactor_assembleVertexOrd
 /-- Complete fixed-order integrand, with the time-independent Dyson prefactor and
 thermal pairing value included in the scalar multiplying the time factor. -/
 private noncomputable def QuarticDiagram.dysonThermalIntegrand
-    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
+    (ε : Mode → ℝ) (β μ : ℝ) (g : QuarticVertexLabel Mode → ℂ)
     {N : ℕ} {S : Finset (Fin N)}
     (d : Common.QuarticDiagram (QuarticVertexLabel Mode) N S)
     (order : Common.QuarticVertexOrder S) (τ : Fin S.card → ℝ) : ℂ :=
   ((-1 : ℂ) ^ S.card * d.vertexWeight g *
-    QuarticDiagram.orderedThermalPairingValue ε β d order) *
+    QuarticDiagram.orderedThermalPairingValue ε β μ d order) *
       Common.quarticVertexSequenceTimeFactor ε (fun i => d.vertexLabel (order i)) τ
 
 omit [Finite Mode] in
 private theorem QuarticDiagram.orderedDysonThermalAmplitude_eq_integral
-    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
+    (ε : Mode → ℝ) (β μ : ℝ) (g : QuarticVertexLabel Mode → ℂ)
     {N : ℕ} {S : Finset (Fin N)}
     (d : Common.QuarticDiagram (QuarticVertexLabel Mode) N S)
     (order : Common.QuarticVertexOrder S) (t : ℝ) :
-    QuarticDiagram.orderedDysonThermalAmplitude ε β g d order t =
+    QuarticDiagram.orderedDysonThermalAmplitude ε β μ g d order t =
       intervalIntegral.orderedSimplexIntegral S.card t
-        (QuarticDiagram.dysonThermalIntegrand ε β g d order) := by
+        (QuarticDiagram.dysonThermalIntegrand ε β μ g d order) := by
   unfold QuarticDiagram.orderedDysonThermalAmplitude Common.quarticDysonSequenceCoeff
     QuarticDiagram.dysonThermalIntegrand
   rw [intervalIntegral.orderedSimplexIntegral_smul,
@@ -77,30 +77,30 @@ omit [Finite Mode] in
 the diagram. The proof reindexes global vertex orders into component-local orders and shuffles, then
 uses the finite-family ordered-simplex shuffle identity for the time integrals. -/
 theorem QuarticDiagram.dysonThermalAmplitude_eq_prod_components
-    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
+    (ε : Mode → ℝ) (β μ : ℝ) (g : QuarticVertexLabel Mode → ℂ)
     {N : ℕ} {S : Finset (Fin N)}
     (d : Common.QuarticDiagram (QuarticVertexLabel Mode) N S) (t : ℝ) :
-    QuarticDiagram.dysonThermalAmplitude ε β g d t =
+    QuarticDiagram.dysonThermalAmplitude ε β μ g d t =
       ∏ B : d.vertexGraph.componentPartitionOn.parts,
-        QuarticDiagram.dysonThermalAmplitude ε β g (d.restrictComponent B.2) t := by
+        QuarticDiagram.dysonThermalAmplitude ε β μ g (d.restrictComponent B.2) t := by
   classical
   unfold QuarticDiagram.dysonThermalAmplitude
   simp_rw [QuarticDiagram.orderedDysonThermalAmplitude_eq_integral]
   exact Finpartition.sum_order_orderedSimplexIntegral_eq_prod_sum_partOrders
     d.vertexGraph.componentPartitionOn t
-    (fun order => QuarticDiagram.dysonThermalIntegrand ε β g d order)
-    (fun B order => QuarticDiagram.dysonThermalIntegrand ε β g
+    (fun order => QuarticDiagram.dysonThermalIntegrand ε β μ g d order)
+    (fun B order => QuarticDiagram.dysonThermalIntegrand ε β μ g
       (d.restrictComponent B.2) order)
     (fun orders shuffle => by
-      change QuarticDiagram.dysonThermalIntegrand ε β g d
+      change QuarticDiagram.dysonThermalIntegrand ε β μ g d
           (d.assembleVertexOrder orders shuffle) =
         shuffle.ambientIntegrand
           (fun B : d.vertexGraph.componentPartitionOn.parts =>
-            QuarticDiagram.dysonThermalIntegrand ε β g (d.restrictComponent B.2) (orders B))
+            QuarticDiagram.dysonThermalIntegrand ε β μ g (d.restrictComponent B.2) (orders B))
       funext τ
       dsimp only [QuarticDiagram.dysonThermalIntegrand]
       rw [Common.QuarticDiagram.dysonSign_mul_vertexWeight_eq_prod_components d g,
-        QuarticDiagram.orderedThermalPairingValue_eq_prod_components ε β d orders shuffle,
+        QuarticDiagram.orderedThermalPairingValue_eq_prod_components ε β μ d orders shuffle,
         QuarticDiagram.quarticVertexSequenceTimeFactor_assembleVertexOrder ε d orders shuffle τ]
       simp only [FamilySlotShuffleTo.ambientIntegrand, QuarticDiagram.dysonThermalIntegrand,
         Common.QuarticDiagram.restrictComponentConnected, Finset.prod_mul_distrib])

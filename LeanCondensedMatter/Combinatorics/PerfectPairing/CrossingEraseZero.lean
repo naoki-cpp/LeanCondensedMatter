@@ -41,7 +41,7 @@ theorem Pairing.crossingCount_eraseZeroPair {n : ℕ} (pairing : Pairing (n + 1)
     exact Finset.sum_congr rfl fun p hp => by rw [hAterm p hp]
   have hAcross : ((A.product A).filter (fun pp => Crosses pp.1 pp.2)).card =
       ∑ p ∈ A, (A.filter (fun q => Crosses p q)).card :=
-    Finset.card_filter_product_eq_sum_card_filter A Crosses
+    Finset.card_filter_product_eq_sum_card_filter A A Crosses
   have hbij :
       ((pairing.eraseZeroPair.pairs.product pairing.eraseZeroPair.pairs).filter
         (fun pp => Crosses pp.1 pp.2)).card =
