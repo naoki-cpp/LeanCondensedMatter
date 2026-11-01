@@ -47,10 +47,9 @@ theorem mem_simultaneousSubspace_of_mem_spinAlgebra (hbar : ℝ) (twiceSpin : �
     A ψ ∈ simultaneousSubspace twiceSpin := by
   induction hA using Algebra.adjoin_induction generalizing ψ with
   | mem A hA =>
-    rw [simultaneousSubspace_eq_iInf] at hψ ⊢
-    apply Submodule.mem_iInf.mpr
+    rw [simultaneousSubspace_eq_iInf, Submodule.mem_iInf] at hψ ⊢
     intro j
-    have hj := Submodule.mem_iInf.mp hψ j
+    have hj := hψ j
     simp only [Set.mem_insert_iff, Set.mem_singleton_iff] at hA
     rcases hA with rfl | rfl | rfl
     · exact spinPlus_mem_physicalSubspace hbar twiceSpin i j ψ hj
