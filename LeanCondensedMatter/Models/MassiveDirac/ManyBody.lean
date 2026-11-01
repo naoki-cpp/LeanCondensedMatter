@@ -3,6 +3,7 @@ import LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.BoundedEvolution
 import LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.BoundedMatrixUnitAdjoint
 import LeanCondensedMatter.QuantumTheory.Gibbs.State
 import LeanCondensedMatter.QuantumTheory.LinearResponse.Expectation.Density
+import LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.Free
 import LeanCondensedMatter.QuantumTheory.LinearResponse.Response.ObservableVariation
 import Mathlib.Order.Prod.Lex.Basic
 
@@ -109,10 +110,11 @@ theorem hamiltonian_shiftedMomentum (momentum : Momentum → ℝ × ℝ)
   apply Finset.sum_congr rfl
   intro p _
   have hp := hmatrix (momentum p).1 (momentum p).2
+  have hlift := congrArg (fun M : Matrix2 => finiteSecondQuantization
+    (SecondQuantization.Common.finiteHilbertOperatorAlgEquiv (liftMatrix p M))) hp
+  simp only [map_sub, map_smul] at hlift
   fin_cases direction <;>
-    simpa [shiftedMomentum, map_sub, map_smul] using
-      congrArg (fun M : Matrix2 => finiteSecondQuantization
-        (SecondQuantization.Common.finiteHilbertOperatorAlgEquiv (liftMatrix p M))) hp
+    simpa [shiftedMomentum] using hlift
 
 /-- The negative vector-potential derivative is the total creation-annihilation current. -/
 theorem hasDerivAt_hamiltonian_shiftedMomentum (momentum : Momentum → ℝ × ℝ)
