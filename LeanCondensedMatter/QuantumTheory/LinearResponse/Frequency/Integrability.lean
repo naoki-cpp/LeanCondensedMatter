@@ -107,7 +107,7 @@ theorem adiabaticIntegrable_of_pos
   refine ⟨hη, ?_⟩
   let C := retardedTimeDifferenceKernelNormBound hbar expectation A B
   have hphase : IntegrableOn (adiabaticFrequencyPhase ω η) (Ici 0) volume := by
-    exact integrableOn_Ici_iff_integrableOn_Ioi.mpr
+    exact (integrableOn_Ici_iff_integrableOn_Ioi (by finiteness)).2
       (integrableOn_adiabaticFrequencyPhase_Ioi ω η 0 hη)
   have hkernelMeas : AEStronglyMeasurable
       (retardedTimeDifferenceKernel U hbar expectation A B)
