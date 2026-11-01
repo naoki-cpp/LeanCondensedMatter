@@ -735,14 +735,7 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceCurrentBlock_polar
         0 pMax (fun p => s • radial 0 p) (fun p => c • radial 1 p)
         (hscaled 0 s) (hscaled 1 c)]
       rw [InternalSpace.intervalIntegralPauliMatrix_smul, InternalSpace.intervalIntegralPauliMatrix_smul]
-  have hfun : angular = fun p =>
-      inPlaneSpinRotation angle *
-        (if source = 0 then c • radial 0 p - s • radial 1 p
-        else s • radial 0 p + c • radial 1 p) *
-        inPlaneSpinRotationInverse angle := by
-    funext p
-    exact hpoint p
-  rw [hangular, hfun, intervalIntegralMatrix2_spinRotation_conjugate, hmix]
+  rw [hangular, funext hpoint, intervalIntegralMatrix2_spinRotation_conjugate, hmix]
   rw [hradial 0, hradial 1]
   have htransport (M : Matrix2) :
       prefactor • (inPlaneSpinRotation angle * M * inPlaneSpinRotationInverse angle) =
