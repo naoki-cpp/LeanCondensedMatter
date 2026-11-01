@@ -154,13 +154,13 @@ def system (momentum : Momentum → ℝ × ℝ) (v m hbar : ℝ) (hbar_pos : 0 <
   hbar := hbar
   hbar_pos := hbar_pos
 
+set_option maxHeartbeats 800000 in
 /-- The actual finite-Fock Gibbs state at chemical potential zero supplies the expectation
 in the general Kubo theorem. The affine Dirac Hamiltonian has field-independent currents,
 so the measured current has zero explicit variation and the fixed channel has zero contact.
 `horizon` is a time interval endpoint, distinct from the inverse temperature. Analytic bounds
 and interval integrability of the applied source remain explicit hypotheses. The derivative is
 written using the second quantization of the commutator of one-particle current orbits. -/
-set_option maxHeartbeats 800000 in
 theorem hasDerivAt_gibbsCurrentResponse
     (momentum : Momentum → ℝ × ℝ) (measuredDirection sourceDirection : Fin 2)
     (e v m hbar inverseTemperature : ℝ) (hbar_pos : 0 < hbar)
@@ -221,9 +221,11 @@ theorem hasDerivAt_gibbsCurrentResponse
     rw [map_sub, map_mul, map_mul]
     exact LieHom.map_lie (boundedOneBodyOperator (Site := Momentum ×ₗ Fin 2)) _ _
   have h := ResponseChannel.hasDerivAt_affineSourceCoupledExpectation_zero_of_bound_retarded
-    (ResponseChannel.fixed (current measuredDirection e v) (current sourceDirection e v))
+    (H := Hilbert Momentum)
+    (ResponseChannel.fixed (current (Momentum := Momentum) measuredDirection e v)
+      (current (Momentum := Momentum) sourceDirection e v))
     (freePropagatorGroup S) hbar expectation f
-    (current_isSelfAdjoint sourceDirection e v) hM hV ht hInt
+    (current_isSelfAdjoint (Momentum := Momentum) sourceDirection e v) hM hV ht hInt
   have hresponse :
       (ResponseChannel.fixed (current measuredDirection e v) (current sourceDirection e v)).causalResponse
         (freePropagatorGroup S) hbar expectation f t =
