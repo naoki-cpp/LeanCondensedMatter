@@ -84,54 +84,54 @@ theorem integrableOn_adiabaticFrequencyPhase_Ioi
       (Ioi c) volume
   exact integrableOn_exp_mul_complex_Ioi hre c
 
+private theorem adiabaticFrequencySusceptibilityIntegrand_eq_indicator
+    (expectation : NormalizedExpectation H)
+    (A B : H →L[ℂ] H) (omega eta : ℝ) :
+    adiabaticFrequencySusceptibilityIntegrand U hbar expectation A B omega eta =
+      (Ici (0 : ℝ)).indicator
+        (adiabaticFrequencySusceptibilityIntegrand U hbar expectation A B omega eta) := by
+  funext τ
+  by_cases hτ : τ ∈ Ici (0 : ℝ)
+  · simp [hτ]
+  · have hneg : τ < 0 := by simpa [Set.mem_Ici, not_le] using hτ
+    have hzero := adiabaticFrequencySusceptibilityIntegrand_eq_zero_of_neg
+      U hbar expectation A B omega eta hneg
+    simp [hτ, hzero]
+
 /-- A measurable scalar kernel of bounded observables is integrable at positive switching rate. -/
 theorem adiabaticIntegrable_of_pos
     (expectation : NormalizedExpectation H)
     (A B : H →L[ℂ] H) (ω η : ℝ) (hη : 0 < η)
     (hMeas : Measurable (retardedTimeDifferenceKernel U hbar expectation A B)) :
     AdiabaticIntegrable U hbar expectation A B ω η := by
-  classical
   refine ⟨hη, ?_⟩
   let C := retardedTimeDifferenceKernelNormBound hbar expectation A B
-  let S : Set ℝ := Ioi (-1 : ℝ)
-  have hphase : IntegrableOn (adiabaticFrequencyPhase ω η) S volume := by
-    simpa [S] using integrableOn_adiabaticFrequencyPhase_Ioi ω η (-1) hη
+  have hphase : IntegrableOn (adiabaticFrequencyPhase ω η) (Ici 0) volume := by
+    exact integrableOn_Ici_iff_integrableOn_Ioi.mpr
+      (integrableOn_adiabaticFrequencyPhase_Ioi ω η 0 hη)
   have hkernelMeas : AEStronglyMeasurable
       (retardedTimeDifferenceKernel U hbar expectation A B)
-      (volume.restrict S) :=
+      (volume.restrict (Ici 0)) :=
     hMeas.aestronglyMeasurable
-  have hkernelBound : ∀ᵐ τ ∂volume.restrict S,
+  have hkernelBound : ∀ᵐ τ ∂volume.restrict (Ici 0),
       ‖retardedTimeDifferenceKernel U hbar expectation A B τ‖ ≤ C :=
     Filter.Eventually.of_forall fun τ =>
       norm_retardedTimeDifferenceKernel_le U hbar expectation A B τ
   have hprod : IntegrableOn (fun τ : ℝ =>
       retardedTimeDifferenceKernel U hbar expectation A B τ *
-        adiabaticFrequencyPhase ω η τ) S volume := by
+        adiabaticFrequencyPhase ω η τ) (Ici 0) volume := by
     exact hphase.bdd_mul hkernelMeas hkernelBound
   have hintegrand : IntegrableOn
       (adiabaticFrequencySusceptibilityIntegrand U hbar expectation A B ω η)
-      S volume := by
+      (Ici 0) volume := by
     apply hprod.congr_fun
     · intro τ _
       rw [adiabaticFrequencySusceptibilityIntegrand]
       exact mul_comm _ _
-    · exact measurableSet_Ioi
-  have hpiece : Integrable
-      (S.piecewise
-        (adiabaticFrequencySusceptibilityIntegrand U hbar expectation A B ω η)
-        (fun _ : ℝ => (0 : ℂ))) volume :=
-    Integrable.piecewise (measurableSet_Ioi : MeasurableSet S).nullMeasurableSet
-      hintegrand integrableOn_zero
-  refine hpiece.congr (Filter.Eventually.of_forall fun τ => ?_)
-  by_cases hτ : τ ∈ S
-  · simp [Set.piecewise, hτ]
-  · have hnot : ¬ (-1 : ℝ) < τ := by
-      simpa [S] using hτ
-    have hle : τ ≤ -1 := le_of_not_gt hnot
-    have hneg : τ < 0 := lt_of_le_of_lt hle (by norm_num)
-    have hzero := adiabaticFrequencySusceptibilityIntegrand_eq_zero_of_neg
-      U hbar expectation A B ω η hneg
-    simp [Set.piecewise, hτ, hzero]
+    · exact measurableSet_Ici
+  have hfull := hintegrand.integrable_indicator measurableSet_Ici
+  rwa [← adiabaticFrequencySusceptibilityIntegrand_eq_indicator U hbar expectation A B ω η]
+    at hfull
 
 /-- Causality reduces the fixed-rate frequency integrand to the open positive half-line. -/
 theorem integral_adiabaticFrequencySusceptibilityIntegrand_eq_Ioi_zero
@@ -147,14 +147,8 @@ theorem integral_adiabaticFrequencySusceptibilityIntegrand_eq_Ioi_zero
       ∫ τ : ℝ,
         (Ici (0 : ℝ)).indicator
           (adiabaticFrequencySusceptibilityIntegrand U hbar expectation A B omega eta) τ := by
-      apply integral_congr_ae
-      filter_upwards [] with τ
-      by_cases hτ : τ ∈ Ici (0 : ℝ)
-      · simp [hτ]
-      · have hneg : τ < 0 := by simpa [Set.mem_Ici, not_le] using hτ
-        have hzero := adiabaticFrequencySusceptibilityIntegrand_eq_zero_of_neg
-          U hbar expectation A B omega eta hneg
-        simp [hτ, hzero]
+      rw [← adiabaticFrequencySusceptibilityIntegrand_eq_indicator
+        U hbar expectation A B omega eta]
     _ = ∫ τ : ℝ in Ici 0,
         adiabaticFrequencySusceptibilityIntegrand U hbar expectation A B omega eta τ :=
       integral_indicator measurableSet_Ici
