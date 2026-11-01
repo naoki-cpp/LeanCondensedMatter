@@ -2,7 +2,9 @@ module
 
 public import LeanCondensedMatter.Analysis.Operator.SchwartzKinetic1D
 import Mathlib.Algebra.Lie.OfAssociative
-import Mathlib.Tactic
+import Mathlib.Tactic.Abel
+import Mathlib.Tactic.Module
+import Mathlib.Tactic.Ring
 
 public section
 

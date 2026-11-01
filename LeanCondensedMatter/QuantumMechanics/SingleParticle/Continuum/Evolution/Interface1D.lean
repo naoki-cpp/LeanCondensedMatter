@@ -1,6 +1,5 @@
 import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Hamiltonian.Basic1D
 import Mathlib.Analysis.Calculus.Deriv.Basic
-import Mathlib.Tactic
 
 set_option linter.style.header false
 

@@ -1,4 +1,5 @@
-import Mathlib.Tactic
+import Mathlib.Analysis.Complex.Norm
+import Mathlib.Tactic.Ring
 
 set_option linter.style.header false
 

@@ -2,7 +2,7 @@ import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Evolution.I
 import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Hamiltonian.SelfAdjoint1D
 import LeanCondensedMatter.Analysis.Operator.Unbounded
 import Mathlib.Analysis.Calculus.Deriv.Comp
-import Mathlib.Tactic
+import Mathlib.Tactic.Ring
 
 set_option linter.style.header false
 

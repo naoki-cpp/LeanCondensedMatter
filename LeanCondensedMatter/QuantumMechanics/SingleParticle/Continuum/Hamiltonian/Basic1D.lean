@@ -1,7 +1,6 @@
 import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.L2.Multiplication1D
 import Mathlib.Analysis.Distribution.Sobolev
 import Mathlib.LinearAlgebra.LinearPMap
-import Mathlib.Tactic
 
 set_option linter.style.header false
 

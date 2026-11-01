@@ -1,7 +1,6 @@
 import LeanCondensedMatter.Analysis.Operator.SchwartzTwoLevel1D
 import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.SchwartzSchrodinger1D
 import Mathlib.Algebra.Lie.OfAssociative
-import Mathlib.Tactic
 
 set_option linter.style.header false
 
