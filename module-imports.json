@@ -196,6 +196,14 @@
       "externalImportCount": 2
     },
     {
+      "name": "LeanCondensedMatter.Analysis.Fourier.CyclicLaplacian",
+      "sourceFile": "LeanCondensedMatter/Analysis/Fourier/CyclicLaplacian.lean",
+      "imports": [
+        "LeanCondensedMatter.Analysis.Fourier.FiniteCyclic"
+      ],
+      "externalImportCount": 3
+    },
+    {
       "name": "LeanCondensedMatter.Analysis.Fourier.FiniteCyclic",
       "sourceFile": "LeanCondensedMatter/Analysis/Fourier/FiniteCyclic.lean",
       "imports": [],
@@ -1061,6 +1069,7 @@
         "LeanCondensedMatter.Analysis.ConservationLaw",
         "LeanCondensedMatter.Analysis.DiscreteLattice",
         "LeanCondensedMatter.Analysis.Dyson",
+        "LeanCondensedMatter.Analysis.Fourier.CyclicLaplacian",
         "LeanCondensedMatter.Analysis.Fourier.FiniteCyclic",
         "LeanCondensedMatter.Analysis.FunctionalCalculus.CFC",
         "LeanCondensedMatter.Analysis.Inequalities",
@@ -1771,8 +1780,9 @@
       "name": "LeanCondensedMatter.Models.Heisenberg.QuadraticMagnonFourier",
       "sourceFile": "LeanCondensedMatter/Models/Heisenberg/QuadraticMagnonFourier.lean",
       "imports": [
+        "LeanCondensedMatter.Analysis.Fourier.CyclicLaplacian",
+        "LeanCondensedMatter.Analysis.Fourier.FiniteCyclic",
         "LeanCondensedMatter.Models.Heisenberg.QuadraticMagnon",
-        "LeanCondensedMatter.Models.Heisenberg.SpinWaveSpectrum",
         "LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.FiniteModes"
       ],
       "externalImportCount": 0
@@ -1781,6 +1791,7 @@
       "name": "LeanCondensedMatter.Models.Heisenberg.SpinWaveSpectrum",
       "sourceFile": "LeanCondensedMatter/Models/Heisenberg/SpinWaveSpectrum.lean",
       "imports": [
+        "LeanCondensedMatter.Analysis.Fourier.CyclicLaplacian",
         "LeanCondensedMatter.Analysis.Fourier.FiniteCyclic",
         "LeanCondensedMatter.Models.Heisenberg"
       ],
@@ -1790,9 +1801,10 @@
       "name": "LeanCondensedMatter.Models.Heisenberg",
       "sourceFile": "LeanCondensedMatter/Models/Heisenberg.lean",
       "imports": [
+        "LeanCondensedMatter.Analysis.Fourier.CyclicLaplacian",
         "LeanCondensedMatter.QuantumTheory.SpinHalf.Finite"
       ],
-      "externalImportCount": 1
+      "externalImportCount": 0
     },
     {
       "name": "LeanCondensedMatter.Models.HolsteinPrimakoff.MultiSite",
@@ -8219,7 +8231,7 @@
       "name": "LeanCondensedMatter.Transport.Analysis.AngularHarmonics",
       "sourceFile": "LeanCondensedMatter/Transport/Analysis/AngularHarmonics.lean",
       "imports": [],
-      "externalImportCount": 2
+      "externalImportCount": 4
     },
     {
       "name": "LeanCondensedMatter.Transport.Analysis.ContinuumMeasure",
@@ -8241,7 +8253,7 @@
         "LeanCondensedMatter.Transport.Analysis.ContinuumMeasure",
         "LeanCondensedMatter.Transport.Analysis.FourierGeometry"
       ],
-      "externalImportCount": 8
+      "externalImportCount": 11
     },
     {
       "name": "LeanCondensedMatter.Transport.Analysis.RelaxationTime",
@@ -8299,7 +8311,7 @@
         "LeanCondensedMatter.Transport.Disorder.Resolvent",
         "LeanCondensedMatter.Transport.Resolvent.SelfEnergy"
       ],
-      "externalImportCount": 2
+      "externalImportCount": 3
     },
     {
       "name": "LeanCondensedMatter.Transport.Disorder.Born",
@@ -8407,7 +8419,7 @@
         "LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann.Eigenbasis.Data",
         "LeanCondensedMatter.Transport.FiniteConductivityTable.Reciprocity"
       ],
-      "externalImportCount": 1
+      "externalImportCount": 0
     },
     {
       "name": "LeanCondensedMatter.Transport.FiniteConductivityTable.Reciprocity",
@@ -8505,7 +8517,7 @@
       "name": "LeanCondensedMatter.Transport.Resolvent.SelfEnergy",
       "sourceFile": "LeanCondensedMatter/Transport/Resolvent/SelfEnergy.lean",
       "imports": [],
-      "externalImportCount": 1
+      "externalImportCount": 2
     },
     {
       "name": "LeanCondensedMatter.Transport.Resolvent.Spectral",

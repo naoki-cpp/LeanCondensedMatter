@@ -35839,7 +35839,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {N : ℕ} [inst : NeZero N] (J : ℝ) (twiceSpin : ℕ),\n  Models.Heisenberg.QuadraticMagnon.excitationHamiltonian J twiceSpin =\n    SecondQuantization.Bosonic.secondQuantization (Models.Heisenberg.oneMagnonLaplacian (J * ↑twiceSpin))",
+    "statement": "∀ {N : ℕ} [inst : NeZero N] (J : ℝ) (twiceSpin : ℕ),\n  Models.Heisenberg.QuadraticMagnon.excitationHamiltonian J twiceSpin =\n    SecondQuantization.Bosonic.secondQuantization (ZMod.cyclicLaplacian (J * ↑twiceSpin))",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -35854,7 +35854,7 @@
     "name": "Models.Heisenberg.QuadraticMagnon.excitationHamiltonian_eq_secondQuantization",
     "module": "LeanCondensedMatter.Models.Heisenberg.QuadraticMagnonFourier",
     "externalAxioms": [],
-    "docString": "The site quadratic operator is the second quantization of the periodic Laplacian.\nAt 2s=1 its one-particle operator is exactly the operator used in SW2. ",
+    "docString": "The site quadratic operator is the second quantization of the periodic Laplacian.\nAt 2s=1 its one-particle operator is the exact spin ring's one-magnon restriction. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
@@ -35883,7 +35883,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {N : ℕ} [inst : NeZero N] (J : ℝ) (twiceSpin : ℕ),\n  Models.Heisenberg.QuadraticMagnon.excitationHamiltonian J twiceSpin =\n    ∑ q,\n      ↑(Models.Heisenberg.oneMagnonEnergy (J * ↑twiceSpin) q) •\n        SecondQuantization.Bosonic.createVector (ZMod.fourierBasis q) ∘ₗ\n          SecondQuantization.Bosonic.annihilateVector (ZMod.fourierBasis q)",
+    "statement": "∀ {N : ℕ} [inst : NeZero N] (J : ℝ) (twiceSpin : ℕ),\n  Models.Heisenberg.QuadraticMagnon.excitationHamiltonian J twiceSpin =\n    ∑ q,\n      ↑(ZMod.cyclicLaplacianEigenvalue (J * ↑twiceSpin) q) •\n        SecondQuantization.Bosonic.createVector (ZMod.fourierBasis q) ∘ₗ\n          SecondQuantization.Bosonic.annihilateVector (ZMod.fourierBasis q)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -35904,8 +35904,8 @@
     "dependents": [],
     "dependencies": [
       "Models.Heisenberg.QuadraticMagnon.excitationHamiltonian_eq_secondQuantization",
-      "Models.Heisenberg.oneMagnonLaplacian_fourierBasis",
-      "SecondQuantization.Bosonic.secondQuantization_eq_sum_of_eigenbasis"
+      "SecondQuantization.Bosonic.secondQuantization_eq_sum_of_eigenbasis",
+      "ZMod.cyclicLaplacian_fourierBasis"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -36091,7 +36091,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {N : ℕ} [NeZero N] (J a : ℝ),\n  a ≠ 0 →\n    ∀ (q : ZMod N),\n      Models.Heisenberg.dispersion J a (Models.Heisenberg.wavevector a q) = Models.Heisenberg.oneMagnonEnergy J q",
+    "statement": "∀ {N : ℕ} [NeZero N] (J a : ℝ),\n  a ≠ 0 →\n    ∀ (q : ZMod N),\n      Models.Heisenberg.dispersion J a (Models.Heisenberg.wavevector a q) = ZMod.cyclicLaplacianEigenvalue J q",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -36129,7 +36129,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {N : ℕ} [inst : NeZero N],\n  2 < N →\n    ∀ (J : ℝ),\n      Models.Heisenberg.excitationHamiltonian J ∘ₗ QuantumTheory.SpinHalf.oneMagnonEmbedding.toLinearMap =\n        QuantumTheory.SpinHalf.oneMagnonEmbedding.toLinearMap ∘ₗ Models.Heisenberg.oneMagnonLaplacian J",
+    "statement": "∀ {N : ℕ} [inst : NeZero N],\n  2 < N →\n    ∀ (J : ℝ),\n      Models.Heisenberg.excitationHamiltonian J ∘ₗ QuantumTheory.SpinHalf.oneMagnonEmbedding.toLinearMap =\n        QuantumTheory.SpinHalf.oneMagnonEmbedding.toLinearMap ∘ₗ ZMod.cyclicLaplacian J",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -36152,7 +36152,7 @@
     ],
     "dependencies": [
       "Models.Heisenberg.excitationHamiltonian_oneMagnonKet",
-      "_private.LeanCondensedMatter.Models.Heisenberg.0.Models.Heisenberg.oneMagnonLaplacian_single"
+      "ZMod.cyclicLaplacian_single"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -36174,7 +36174,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {N : ℕ} [inst : NeZero N],\n  2 < N →\n    ∀ (J : ℝ) (q : ZMod N),\n      (Models.Heisenberg.excitationHamiltonian J) (QuantumTheory.SpinHalf.oneMagnonEmbedding q.fourierMode) =\n        ↑(Models.Heisenberg.oneMagnonEnergy J q) • QuantumTheory.SpinHalf.oneMagnonEmbedding q.fourierMode",
+    "statement": "∀ {N : ℕ} [inst : NeZero N],\n  2 < N →\n    ∀ (J : ℝ) (q : ZMod N),\n      (Models.Heisenberg.excitationHamiltonian J) (QuantumTheory.SpinHalf.oneMagnonEmbedding q.fourierMode) =\n        ↑(ZMod.cyclicLaplacianEigenvalue J q) • QuantumTheory.SpinHalf.oneMagnonEmbedding q.fourierMode",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -36189,13 +36189,13 @@
     "name": "Models.Heisenberg.excitationHamiltonian_fourierMode",
     "module": "LeanCondensedMatter.Models.Heisenberg.SpinWaveSpectrum",
     "externalAxioms": [],
-    "docString": "Exact full-spin one-magnon eigenstates, using the isometric embedding from SW1. ",
+    "docString": "Exact full-spin one-magnon eigenstates, using the isometric one-magnon embedding. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
       "Models.Heisenberg.excitationHamiltonian_comp_oneMagnonEmbedding",
-      "Models.Heisenberg.oneMagnonLaplacian_fourierMode"
+      "ZMod.cyclicLaplacian_fourierMode"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -36450,211 +36450,6 @@
     "completedMention": false,
     "compiledConsumers": [],
     "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {N : ℕ} (J : ℝ), 0 ≤ J → ∀ (q : ZMod N), 0 ≤ Models.Heisenberg.oneMagnonEnergy J q",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "Models.Heisenberg.oneMagnonEnergy_nonneg",
-    "module": "LeanCondensedMatter.Models.Heisenberg.SpinWaveSpectrum",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {N : ℕ} [NeZero N] (J : ℝ), 0 < J → ∀ (q : ZMod N), q ≠ 0 → 0 < Models.Heisenberg.oneMagnonEnergy J q",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "Models.Heisenberg.oneMagnonEnergy_pos",
-    "module": "LeanCondensedMatter.Models.Heisenberg.SpinWaveSpectrum",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {N : ℕ} (J : ℝ), Models.Heisenberg.oneMagnonEnergy J 0 = 0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "Models.Heisenberg.oneMagnonEnergy_zero",
-    "module": "LeanCondensedMatter.Models.Heisenberg.SpinWaveSpectrum",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {N : ℕ} [inst : NeZero N] (J : ℝ) (q : ZMod N),\n  (Models.Heisenberg.oneMagnonLaplacian J) (ZMod.fourierBasis q) =\n    ↑(Models.Heisenberg.oneMagnonEnergy J q) • ZMod.fourierBasis q",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "Models.Heisenberg.oneMagnonLaplacian_fourierBasis",
-    "module": "LeanCondensedMatter.Models.Heisenberg.SpinWaveSpectrum",
-    "externalAxioms": [],
-    "docString": "The complete normalized Fourier basis consists of eigenvectors of the exact\none-magnon operator. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "Models.Heisenberg.QuadraticMagnon.excitationHamiltonian_eq_sum_fourier"
-    ],
-    "dependencies": [
-      "Models.Heisenberg.oneMagnonLaplacian_fourierMode",
-      "ZMod.fourierBasis_apply"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "Models.Heisenberg.QuadraticMagnon.excitationHamiltonian_eq_sum_fourier"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {N : ℕ} [inst : NeZero N] (J : ℝ) (q : ZMod N),\n  (Models.Heisenberg.oneMagnonLaplacian J) q.fourierMode = ↑(Models.Heisenberg.oneMagnonEnergy J q) • q.fourierMode",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "Models.Heisenberg.oneMagnonLaplacian_fourierMode",
-    "module": "LeanCondensedMatter.Models.Heisenberg.SpinWaveSpectrum",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "Models.Heisenberg.excitationHamiltonian_fourierMode",
-      "Models.Heisenberg.oneMagnonLaplacian_fourierBasis"
-    ],
-    "dependencies": [
-      "_private.LeanCondensedMatter.Models.Heisenberg.SpinWaveSpectrum.0.Models.Heisenberg.phase_sum"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "Models.Heisenberg.excitationHamiltonian_fourierMode",
-      "Models.Heisenberg.oneMagnonLaplacian_fourierBasis"
-    ],
-    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -156741,6 +156536,253 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
+    "terminal": true,
+    "statement": "∀ {N : ℕ} (w : ℝ), 0 ≤ w → ∀ (q : ZMod N), 0 ≤ ZMod.cyclicLaplacianEigenvalue w q",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "ZMod.cyclicLaplacianEigenvalue_nonneg",
+    "module": "LeanCondensedMatter.Analysis.Fourier.CyclicLaplacian",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {N : ℕ} [NeZero N] (w : ℝ), 0 < w → ∀ (q : ZMod N), q ≠ 0 → 0 < ZMod.cyclicLaplacianEigenvalue w q",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "ZMod.cyclicLaplacianEigenvalue_pos",
+    "module": "LeanCondensedMatter.Analysis.Fourier.CyclicLaplacian",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {N : ℕ} (w : ℝ), ZMod.cyclicLaplacianEigenvalue w 0 = 0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "ZMod.cyclicLaplacianEigenvalue_zero",
+    "module": "LeanCondensedMatter.Analysis.Fourier.CyclicLaplacian",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {N : ℕ} [inst : NeZero N] (w : ℝ) (q : ZMod N),\n  (ZMod.cyclicLaplacian w) (ZMod.fourierBasis q) = ↑(ZMod.cyclicLaplacianEigenvalue w q) • ZMod.fourierBasis q",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "ZMod.cyclicLaplacian_fourierBasis",
+    "module": "LeanCondensedMatter.Analysis.Fourier.CyclicLaplacian",
+    "externalAxioms": [],
+    "docString": "The complete normalized Fourier basis diagonalizes the weighted cyclic Laplacian. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "Models.Heisenberg.QuadraticMagnon.excitationHamiltonian_eq_sum_fourier"
+    ],
+    "dependencies": [
+      "ZMod.cyclicLaplacian_fourierMode",
+      "ZMod.fourierBasis_apply"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "Models.Heisenberg.QuadraticMagnon.excitationHamiltonian_eq_sum_fourier"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {N : ℕ} [inst : NeZero N] (w : ℝ) (q : ZMod N),\n  (ZMod.cyclicLaplacian w) q.fourierMode = ↑(ZMod.cyclicLaplacianEigenvalue w q) • q.fourierMode",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "ZMod.cyclicLaplacian_fourierMode",
+    "module": "LeanCondensedMatter.Analysis.Fourier.CyclicLaplacian",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "Models.Heisenberg.excitationHamiltonian_fourierMode",
+      "ZMod.cyclicLaplacian_fourierBasis"
+    ],
+    "dependencies": [
+      "_private.LeanCondensedMatter.Analysis.Fourier.CyclicLaplacian.0.ZMod.phase_sum"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "Models.Heisenberg.excitationHamiltonian_fourierMode",
+      "ZMod.cyclicLaplacian_fourierBasis"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {N : ℕ} (w : ℝ) (k : ZMod N),\n  (ZMod.cyclicLaplacian w) (EuclideanSpace.single k 1) =\n    ↑w •\n      (EuclideanSpace.single k 1 - EuclideanSpace.single (k + 1) 1 +\n        (EuclideanSpace.single k 1 - EuclideanSpace.single (k - 1) 1))",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "ZMod.cyclicLaplacian_single",
+    "module": "LeanCondensedMatter.Analysis.Fourier.CyclicLaplacian",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "Models.Heisenberg.excitationHamiltonian_comp_oneMagnonEmbedding"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "Models.Heisenberg.excitationHamiltonian_comp_oneMagnonEmbedding"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
     "terminal": false,
     "statement": "∀ {N : ℕ} [inst : NeZero N] (q : ZMod N), ZMod.fourierBasis q = q.fourierMode",
     "standardAxioms": [
@@ -156762,7 +156804,7 @@
     "directWrapperOf": null,
     "dependents": [
       "Models.Heisenberg.QuadraticMagnon.comm_fourier_annihilate_create",
-      "Models.Heisenberg.oneMagnonLaplacian_fourierBasis"
+      "ZMod.cyclicLaplacian_fourierBasis"
     ],
     "dependencies": [
       "ZMod.orthonormal_fourierMode"
@@ -156771,7 +156813,7 @@
     "completedMention": false,
     "compiledConsumers": [
       "Models.Heisenberg.QuadraticMagnon.comm_fourier_annihilate_create",
-      "Models.Heisenberg.oneMagnonLaplacian_fourierBasis"
+      "ZMod.cyclicLaplacian_fourierBasis"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -156856,14 +156898,14 @@
     "directWrapperOf": null,
     "dependents": [
       "ZMod.orthonormal_fourierMode",
-      "_private.LeanCondensedMatter.Models.Heisenberg.SpinWaveSpectrum.0.Models.Heisenberg.phase_sum"
+      "_private.LeanCondensedMatter.Analysis.Fourier.CyclicLaplacian.0.ZMod.phase_sum"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
       "ZMod.orthonormal_fourierMode",
-      "_private.LeanCondensedMatter.Models.Heisenberg.SpinWaveSpectrum.0.Models.Heisenberg.phase_sum"
+      "_private.LeanCondensedMatter.Analysis.Fourier.CyclicLaplacian.0.ZMod.phase_sum"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
@@ -156994,6 +157036,50 @@
     "completedMention": false,
     "compiledConsumers": [
       "Dyson.evolution_neg_neg"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {N : ℕ} [inst : NeZero N] (q : ZMod N),\n  ZMod.stdAddChar q + ZMod.stdAddChar (-q) = ↑(2 * Real.cos (2 * Real.pi * (↑q.val / ↑N)))",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Analysis.Fourier.CyclicLaplacian.0.ZMod.phase_sum",
+    "module": "LeanCondensedMatter.Analysis.Fourier.CyclicLaplacian",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "ZMod.cyclicLaplacian_fourierMode"
+    ],
+    "dependencies": [
+      "ZMod.stdAddChar_conj"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "ZMod.cyclicLaplacian_fourierMode"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -165647,48 +165733,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {N : ℕ} (J : ℝ) (k : ZMod N),\n  (Models.Heisenberg.oneMagnonLaplacian J) (EuclideanSpace.single k 1) =\n    ↑J •\n      (EuclideanSpace.single k 1 - EuclideanSpace.single (k + 1) 1 +\n        (EuclideanSpace.single k 1 - EuclideanSpace.single (k - 1) 1))",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Models.Heisenberg.0.Models.Heisenberg.oneMagnonLaplacian_single",
-    "module": "LeanCondensedMatter.Models.Heisenberg",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "Models.Heisenberg.excitationHamiltonian_comp_oneMagnonEmbedding"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "Models.Heisenberg.excitationHamiltonian_comp_oneMagnonEmbedding"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ {N : ℕ}, 2 < N → ∀ (i : ZMod N), i ≠ i + 1",
     "standardAxioms": [
       "Quot.sound",
@@ -165757,50 +165801,6 @@
     "completedMention": false,
     "compiledConsumers": [
       "Models.Heisenberg.QuadraticMagnon.excitationHamiltonian_eq_secondQuantization"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {N : ℕ} [inst : NeZero N] (q : ZMod N),\n  ZMod.stdAddChar q + ZMod.stdAddChar (-q) = ↑(2 * Real.cos (2 * Real.pi * (↑q.val / ↑N)))",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Models.Heisenberg.SpinWaveSpectrum.0.Models.Heisenberg.phase_sum",
-    "module": "LeanCondensedMatter.Models.Heisenberg.SpinWaveSpectrum",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "Models.Heisenberg.oneMagnonLaplacian_fourierMode"
-    ],
-    "dependencies": [
-      "ZMod.stdAddChar_conj"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "Models.Heisenberg.oneMagnonLaplacian_fourierMode"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
