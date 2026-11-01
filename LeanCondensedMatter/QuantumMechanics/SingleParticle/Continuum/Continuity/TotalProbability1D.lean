@@ -1,7 +1,6 @@
 import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Continuity.SchwartzIntegral1D
 import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Probability.Integral1D
 import Mathlib.Analysis.Calculus.ParametricIntegral
-import Mathlib.Tactic
 
 set_option linter.style.header false
 
