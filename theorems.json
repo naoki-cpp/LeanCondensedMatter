@@ -16613,6 +16613,7 @@
       "ContinuousLinearMap.finiteDimensionalOperatorTrace_star",
       "ContinuousLinearMap.finiteDimensionalOperatorTrace_toEuclideanCLM",
       "ContinuousLinearMap.hasDerivAt_finiteDimensionalOperatorTrace_comp",
+      "QuantumTheory.Models.MassiveDirac.cleanBandFockHallDensity_eq_neg_chargeSq_berryCurvature",
       "QuantumTheory.Models.MassiveDirac.currentBandBlockTrace_interband_eq_chargeSq_forceMatrixTraceNumerator",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceIntegral_eq_radialCoefficient",
       "QuantumTheory.Models.MassiveDirac.forceMatrixTraceNumerator_eq_hamiltonianDerivativeMatrixElements",
@@ -16637,6 +16638,7 @@
       "ContinuousLinearMap.finiteDimensionalOperatorTrace_star",
       "ContinuousLinearMap.finiteDimensionalOperatorTrace_toEuclideanCLM",
       "ContinuousLinearMap.hasDerivAt_finiteDimensionalOperatorTrace_comp",
+      "QuantumTheory.Models.MassiveDirac.cleanBandFockHallDensity_eq_neg_chargeSq_berryCurvature",
       "QuantumTheory.Models.MassiveDirac.currentBandBlockTrace_interband_eq_chargeSq_forceMatrixTraceNumerator",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceIntegral_eq_radialCoefficient",
       "QuantumTheory.Models.MassiveDirac.forceMatrixTraceNumerator_eq_hamiltonianDerivativeMatrixElements",
@@ -16651,7 +16653,7 @@
       "_private.LeanCondensedMatter.Transport.Streda.TraceSpectral.0.QuantumTheory.Transport.finiteDimensionalOperatorTrace_eq_sum_inner_energyEigenbasis",
       "_private.LeanCondensedMatter.Transport.Topology.0.QuantumTheory.Transport.Topology.PeriodicBlochProjector.rankOneProjectorCurvature_eq"
     ],
-    "compiledConsumerCount": 17,
+    "compiledConsumerCount": 18,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -48501,7 +48503,8 @@
     "directWrapperOf": null,
     "dependents": [
       "QuantumTheory.LinearResponse.finiteTime_eigenbasisPhysicalSusceptibility_has_both_local_three_stage_limits",
-      "QuantumTheory.Transport.adiabaticFrequencyDomainSusceptibility_eq_bastinSpectralVertexSum"
+      "QuantumTheory.Transport.adiabaticFrequencyDomainSusceptibility_eq_bastinSpectralVertexSum",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Transport.TwoModeResponse.0.SecondQuantization.Fermionic.Transport.twoModeFockLehmannTableResponse_eq_kubo"
     ],
     "dependencies": [
       "QuantumTheory.LinearResponse.adiabaticFrequencyDomainSusceptibility_eigenbasis_eq_lehmannSeries",
@@ -48512,9 +48515,10 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.LinearResponse.finiteTime_eigenbasisPhysicalSusceptibility_has_both_local_three_stage_limits",
-      "QuantumTheory.Transport.adiabaticFrequencyDomainSusceptibility_eq_bastinSpectralVertexSum"
+      "QuantumTheory.Transport.adiabaticFrequencyDomainSusceptibility_eq_bastinSpectralVertexSum",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Transport.TwoModeResponse.0.SecondQuantization.Fermionic.Transport.twoModeFockLehmannTableResponse_eq_kubo"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -53347,7 +53351,8 @@
     "dependents": [
       "QuantumTheory.LinearResponse.hasStaticLimit_lehmannTerm",
       "SecondQuantization.Fermionic.Validation.twoSiteDimerFrequencyDenominator_ne_zero",
-      "SecondQuantization.Fermionic.Validation.twoSiteDimerGroundState_lehmannResponse_frequency"
+      "SecondQuantization.Fermionic.Validation.twoSiteDimerGroundState_lehmannResponse_frequency",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Transport.TwoModeResponse.0.SecondQuantization.Fermionic.Transport.tendsto_twoModeFockHallResponse_re"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
@@ -53355,9 +53360,10 @@
     "compiledConsumers": [
       "QuantumTheory.LinearResponse.hasStaticLimit_lehmannTerm",
       "SecondQuantization.Fermionic.Validation.twoSiteDimerFrequencyDenominator_ne_zero",
-      "SecondQuantization.Fermionic.Validation.twoSiteDimerGroundState_lehmannResponse_frequency"
+      "SecondQuantization.Fermionic.Validation.twoSiteDimerGroundState_lehmannResponse_frequency",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Transport.TwoModeResponse.0.SecondQuantization.Fermionic.Transport.tendsto_twoModeFockHallResponse_re"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -58059,6 +58065,7 @@
     "directWrapperOf": null,
     "dependents": [
       "QuantumTheory.Models.MassiveDirac.lowerBand_isFilled_of_pos_fermiEnergy",
+      "QuantumTheory.Models.MassiveDirac.tendsto_pointwiseFockHallResponse_re",
       "_private.LeanCondensedMatter.Models.MassiveDirac.Model.OperatorSpectral.BerryPointwise.0.QuantumTheory.Models.MassiveDirac.bandProjectorOperator_apply_pointwiseEigenbasis",
       "_private.LeanCondensedMatter.Models.MassiveDirac.Model.OperatorSpectral.BerryPointwise.0.QuantumTheory.Models.MassiveDirac.sortedEigenvalues_eq_bandEnergy"
     ],
@@ -58067,10 +58074,11 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.Models.MassiveDirac.lowerBand_isFilled_of_pos_fermiEnergy",
+      "QuantumTheory.Models.MassiveDirac.tendsto_pointwiseFockHallResponse_re",
       "_private.LeanCondensedMatter.Models.MassiveDirac.Model.OperatorSpectral.BerryPointwise.0.QuantumTheory.Models.MassiveDirac.bandProjectorOperator_apply_pointwiseEigenbasis",
       "_private.LeanCondensedMatter.Models.MassiveDirac.Model.OperatorSpectral.BerryPointwise.0.QuantumTheory.Models.MassiveDirac.sortedEigenvalues_eq_bandEnergy"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -58150,6 +58158,7 @@
     "dependents": [
       "QuantumTheory.Models.MassiveDirac.bandEnergy_upper_lt_fermi_iff_lt_metallicFermiRadius",
       "QuantumTheory.Models.MassiveDirac.mem_upperBand_radialFermiSurface_iff_eq_metallicFermiRadius",
+      "QuantumTheory.Models.MassiveDirac.tendsto_pointwiseFockHallResponse_re",
       "QuantumTheory.Models.MassiveDirac.upperBand_zeroTemperatureOccupation_eq_one_iff",
       "_private.LeanCondensedMatter.Models.MassiveDirac.Model.OperatorSpectral.BerryPointwise.0.QuantumTheory.Models.MassiveDirac.bandProjectorOperator_apply_pointwiseEigenbasis",
       "_private.LeanCondensedMatter.Models.MassiveDirac.Model.OperatorSpectral.BerryPointwise.0.QuantumTheory.Models.MassiveDirac.sortedEigenvalues_eq_bandEnergy"
@@ -58160,11 +58169,12 @@
     "compiledConsumers": [
       "QuantumTheory.Models.MassiveDirac.bandEnergy_upper_lt_fermi_iff_lt_metallicFermiRadius",
       "QuantumTheory.Models.MassiveDirac.mem_upperBand_radialFermiSurface_iff_eq_metallicFermiRadius",
+      "QuantumTheory.Models.MassiveDirac.tendsto_pointwiseFockHallResponse_re",
       "QuantumTheory.Models.MassiveDirac.upperBand_zeroTemperatureOccupation_eq_one_iff",
       "_private.LeanCondensedMatter.Models.MassiveDirac.Model.OperatorSpectral.BerryPointwise.0.QuantumTheory.Models.MassiveDirac.bandProjectorOperator_apply_pointwiseEigenbasis",
       "_private.LeanCondensedMatter.Models.MassiveDirac.Model.OperatorSpectral.BerryPointwise.0.QuantumTheory.Models.MassiveDirac.sortedEigenvalues_eq_bandEnergy"
     ],
-    "compiledConsumerCount": 5,
+    "compiledConsumerCount": 6,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -58279,7 +58289,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -58291,6 +58301,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "QuantumTheory.Models.MassiveDirac.cleanBandFockHallDensity_eq_neg_chargeSq_berryCurvature",
       "QuantumTheory.Models.MassiveDirac.forceMatrixTraceNumerator_eq_hamiltonianDerivativeMatrixElements"
     ],
     "dependencies": [
@@ -58299,9 +58310,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.cleanBandFockHallDensity_eq_neg_chargeSq_berryCurvature",
       "QuantumTheory.Models.MassiveDirac.forceMatrixTraceNumerator_eq_hamiltonianDerivativeMatrixElements"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -58769,7 +58781,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -58781,6 +58793,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "QuantumTheory.Models.MassiveDirac.cleanBandFockHallDensity_eq_neg_chargeSq_berryCurvature",
       "QuantumTheory.Models.MassiveDirac.targetCenteredInterbandSpectatorCurrentFactor_zero_im_eq_neg_chargeSq_berryCurvature"
     ],
     "dependencies": [
@@ -58795,9 +58808,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.cleanBandFockHallDensity_eq_neg_chargeSq_berryCurvature",
       "QuantumTheory.Models.MassiveDirac.targetCenteredInterbandSpectatorCurrentFactor_zero_im_eq_neg_chargeSq_berryCurvature"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -59144,6 +59158,53 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
+    "terminal": false,
+    "statement": "∀ (band : QuantumTheory.Models.MassiveDirac.Band) (e v m px py : ℝ),\n  QuantumTheory.Models.MassiveDirac.cleanBandFockHallDensity band e v m px py =\n    -(e ^ 2 * QuantumTheory.Models.MassiveDirac.berryCurvature band v m px py)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.MassiveDirac.cleanBandFockHallDensity_eq_neg_chargeSq_berryCurvature",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.ManyBody.PointwiseHall",
+    "externalAxioms": [],
+    "docString": "The current-matrix coefficient extracted from the full-Fock Kubo limit equals the\ncanonical negative charge-squared Berry curvature for the occupied band. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.MassiveDirac.cleanInterbandBastinPairLimitDensity_eq"
+    ],
+    "dependencies": [
+      "ContinuousLinearMap.finiteDimensionalOperatorTrace_apply",
+      "QuantumTheory.Models.MassiveDirac.bandProjectorOperator_eq_rankOne_pointwiseEigenbasis",
+      "QuantumTheory.Models.MassiveDirac.bastinInterbandBlockDifference_im_div_gap_sq_eq_neg_chargeSq_berryCurvature",
+      "QuantumTheory.Models.MassiveDirac.currentBandBlockTrace_swap"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.cleanInterbandBastinPairLimitDensity_eq"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
     "terminal": true,
     "statement": "∀ (band : QuantumTheory.Models.MassiveDirac.Band) (e m energy₀ energy₁ : ℝ),\n  QuantumTheory.Models.MassiveDirac.cleanInterbandBastinPairEnergyShellIntegral band e m energy₀ energy₁ =\n    -2 * Real.pi * e ^ 2 * QuantumTheory.Models.MassiveDirac.energyShellBerryWeight band m energy₀ energy₁",
     "standardAxioms": [
@@ -59169,6 +59230,52 @@
     "completedMention": false,
     "compiledConsumers": [],
     "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (band : QuantumTheory.Models.MassiveDirac.Band) (e v m px py : ℝ),\n  QuantumTheory.Models.MassiveDirac.cleanInterbandBastinPairLimitDensity band e v m px py =\n    -2 * Real.pi * (e ^ 2 * QuantumTheory.Models.MassiveDirac.berryCurvature band v m px py)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.MassiveDirac.cleanInterbandBastinPairLimitDensity_eq",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Bastin.CleanLimit",
+    "externalAxioms": [],
+    "docString": "The full-Fock clean Hall density reproduces the local Bastin pole coefficient. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.MassiveDirac.radialCleanInterbandBastinPairLimitDensity_eq_energyDensity_mul_deriv",
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Bastin.RadialDominatedConvergence.0.QuantumTheory.Models.MassiveDirac.tendsto_radialInterbandBastinPairDensity"
+    ],
+    "dependencies": [
+      "QuantumTheory.Models.MassiveDirac.cleanBandFockHallDensity_eq_neg_chargeSq_berryCurvature"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.radialCleanInterbandBastinPairLimitDensity_eq_energyDensity_mul_deriv",
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Bastin.RadialDominatedConvergence.0.QuantumTheory.Models.MassiveDirac.tendsto_radialInterbandBastinPairDensity"
+    ],
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -61066,6 +61173,7 @@
     "directWrapperOf": null,
     "dependents": [
       "QuantumTheory.Models.MassiveDirac.bastinInterbandBlockDifference_im_div_gap_sq_eq_neg_chargeSq_berryCurvature",
+      "QuantumTheory.Models.MassiveDirac.cleanBandFockHallDensity_eq_neg_chargeSq_berryCurvature",
       "QuantumTheory.Models.MassiveDirac.targetCenteredInterbandSpectatorCurrentFactor_radial_eq"
     ],
     "dependencies": [
@@ -61075,9 +61183,10 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.Models.MassiveDirac.bastinInterbandBlockDifference_im_div_gap_sq_eq_neg_chargeSq_berryCurvature",
+      "QuantumTheory.Models.MassiveDirac.cleanBandFockHallDensity_eq_neg_chargeSq_berryCurvature",
       "QuantumTheory.Models.MassiveDirac.targetCenteredInterbandSpectatorCurrentFactor_radial_eq"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -70604,7 +70713,8 @@
       "QuantumTheory.Models.MassiveDirac.bandEnergy_ne_oppositeBandEnergy",
       "QuantumTheory.Models.MassiveDirac.bastinInterbandBlockDifference_im_div_gap_sq_eq_neg_chargeSq_berryCurvature",
       "QuantumTheory.Models.MassiveDirac.pointwiseBerryCurvature_xy_eq_forceMatrixBerryCurvature",
-      "QuantumTheory.Models.MassiveDirac.targetCenteredInterbandSpectatorCurrentFactor_zero_im_eq_neg_chargeSq_berryCurvature"
+      "QuantumTheory.Models.MassiveDirac.targetCenteredInterbandSpectatorCurrentFactor_zero_im_eq_neg_chargeSq_berryCurvature",
+      "QuantumTheory.Models.MassiveDirac.tendsto_pointwiseFockHallResponse_re"
     ],
     "dependencies": [
       "QuantumTheory.Models.MassiveDirac.interbandEnergyGap_eq"
@@ -70615,9 +70725,10 @@
       "QuantumTheory.Models.MassiveDirac.bandEnergy_ne_oppositeBandEnergy",
       "QuantumTheory.Models.MassiveDirac.bastinInterbandBlockDifference_im_div_gap_sq_eq_neg_chargeSq_berryCurvature",
       "QuantumTheory.Models.MassiveDirac.pointwiseBerryCurvature_xy_eq_forceMatrixBerryCurvature",
-      "QuantumTheory.Models.MassiveDirac.targetCenteredInterbandSpectatorCurrentFactor_zero_im_eq_neg_chargeSq_berryCurvature"
+      "QuantumTheory.Models.MassiveDirac.targetCenteredInterbandSpectatorCurrentFactor_zero_im_eq_neg_chargeSq_berryCurvature",
+      "QuantumTheory.Models.MassiveDirac.tendsto_pointwiseFockHallResponse_re"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 5,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -73608,6 +73719,7 @@
     "dependencies": [
       "QuantumTheory.Models.MassiveDirac.berryCurvature_lower",
       "QuantumTheory.Models.MassiveDirac.berryCurvature_upper",
+      "QuantumTheory.Models.MassiveDirac.cleanInterbandBastinPairLimitDensity_eq",
       "QuantumTheory.Models.MassiveDirac.energy_pos_of_mass_ne_zero"
     ],
     "crossModuleDirectWrapper": false,
@@ -77740,6 +77852,55 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
+    "terminal": false,
+    "statement": "∀ (occupied : Finset QuantumTheory.Models.MassiveDirac.Band) (e v m px py hbar : ℝ) (hhbar : 0 < hbar)\n  (hE : QuantumTheory.Models.MassiveDirac.energy v m px py ≠ 0),\n  Filter.Tendsto\n    (fun eta => (QuantumTheory.Models.MassiveDirac.pointwiseFockHallResponse occupied e v m px py hbar hhbar eta hE).re)\n    (nhdsWithin 0 (Set.Ioi 0))\n    (nhds (hbar * ∑ band ∈ occupied, QuantumTheory.Models.MassiveDirac.cleanBandFockHallDensity band e v m px py))",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.MassiveDirac.tendsto_pointwiseFockHallResponse_re",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.ManyBody.PointwiseHall",
+    "externalAxioms": [],
+    "docString": "The clean density is obtained by taking the switching-rate limit of the actual four-state\nFock response, rather than postulating a one-particle Berry weight. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.MassiveDirac.tendsto_zeroTemperaturePointwiseFockHallResponse_re"
+    ],
+    "dependencies": [
+      "QuantumTheory.Models.MassiveDirac.bandEnergy_lower",
+      "QuantumTheory.Models.MassiveDirac.bandEnergy_upper",
+      "QuantumTheory.Models.MassiveDirac.interbandEnergyGap_ne_zero_of_energy_ne_zero",
+      "SecondQuantization.Fermionic.Transport.tendsto_twoModeFockHallKuboResponse_re",
+      "_private.LeanCondensedMatter.Models.MassiveDirac.ManyBody.PointwiseHall.0.QuantumTheory.Models.MassiveDirac.pureProbability_hasSum",
+      "_private.LeanCondensedMatter.Models.MassiveDirac.ManyBody.PointwiseHall.0.QuantumTheory.Models.MassiveDirac.pureProbability_nonneg"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.tendsto_zeroTemperaturePointwiseFockHallResponse_re"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
     "terminal": true,
     "statement": "∀ (e v m px py probeEnergy : ℝ),\n  QuantumTheory.Models.MassiveDirac.energy v m px py ≠ 0 →\n    probeEnergy ≠ QuantumTheory.Models.MassiveDirac.bandEnergy QuantumTheory.Models.MassiveDirac.Band.lower v m px py →\n      probeEnergy ≠\n          QuantumTheory.Models.MassiveDirac.bandEnergy QuantumTheory.Models.MassiveDirac.Band.upper v m px py →\n        Filter.Tendsto\n          (fun broadening =>\n            QuantumTheory.Models.MassiveDirac.projectorBastinTraceIntegrand e v m px py probeEnergy broadening)\n          (nhds 0) (nhds 0)",
     "standardAxioms": [
@@ -77907,6 +78068,46 @@
       "QuantumTheory.Models.MassiveDirac.tendsto_intrinsicHallConductivityCutoff_atTop"
     ],
     "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (e v m px py fermiEnergy hbar : ℝ) (hhbar : 0 < hbar) (hE : QuantumTheory.Models.MassiveDirac.energy v m px py ≠ 0),\n  Filter.Tendsto\n    (fun eta =>\n      2 * Real.pi / hbar *\n        (QuantumTheory.Models.MassiveDirac.pointwiseFockHallResponse\n            {band | QuantumTheory.Models.MassiveDirac.bandEnergy band v m px py < fermiEnergy} e v m px py hbar hhbar\n            eta hE).re)\n    (nhdsWithin 0 (Set.Ioi 0))\n    (nhds\n      (∑ band,\n        QuantumTheory.zeroTemperatureOccupation fermiEnergy\n            (QuantumTheory.Models.MassiveDirac.bandEnergy band v m px py) *\n          QuantumTheory.Models.MassiveDirac.cleanInterbandBastinPairLimitDensity band e v m px py))",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.MassiveDirac.tendsto_zeroTemperaturePointwiseFockHallResponse_re",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Bastin.CleanLimit",
+    "externalAxioms": [],
+    "docString": "Filling the two Fock modes below the Fermi energy gives the occupation-weighted clean\nBastin density used by the existing momentum integrals. The occupied configuration is one\nnormalized many-body state, including the vacuum and doubly occupied cases. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.Models.MassiveDirac.tendsto_pointwiseFockHallResponse_re"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -126574,16 +126775,18 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Common.finiteGibbsExpectation_eq_completed_of_algebraicCore",
-      "SecondQuantization.Common.finiteGibbsExpectation_eq_sum"
+      "SecondQuantization.Common.finiteGibbsExpectation_eq_sum",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Transport.TwoModeResponse.0.SecondQuantization.Fermionic.Transport.twoModeFockLehmannTableResponse_eq_kubo"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Common.finiteGibbsExpectation_eq_completed_of_algebraicCore",
-      "SecondQuantization.Common.finiteGibbsExpectation_eq_sum"
+      "SecondQuantization.Common.finiteGibbsExpectation_eq_sum",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Transport.TwoModeResponse.0.SecondQuantization.Fermionic.Transport.twoModeFockLehmannTableResponse_eq_kubo"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -126716,7 +126919,8 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Common.finiteGibbsExpectation_eq_sum",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Algebra.FiniteHilbertSelfAdjoint.0.SecondQuantization.Common.finiteHilbertOperatorMatrix_apply"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Algebra.FiniteHilbertSelfAdjoint.0.SecondQuantization.Common.finiteHilbertOperatorMatrix_apply",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Transport.TwoModeResponse.0.SecondQuantization.Fermionic.Transport.twoModeFockLehmannTableResponse_eq_kubo"
     ],
     "dependencies": [
       "SecondQuantization.Common.finiteHilbertOperator_basisState"
@@ -126725,9 +126929,10 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Common.finiteGibbsExpectation_eq_sum",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Algebra.FiniteHilbertSelfAdjoint.0.SecondQuantization.Common.finiteHilbertOperatorMatrix_apply"
+      "_private.LeanCondensedMatter.SecondQuantization.Common.Algebra.FiniteHilbertSelfAdjoint.0.SecondQuantization.Common.finiteHilbertOperatorMatrix_apply",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Transport.TwoModeResponse.0.SecondQuantization.Fermionic.Transport.twoModeFockLehmannTableResponse_eq_kubo"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -141284,6 +141489,51 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
+    "terminal": false,
+    "statement": "∀ (energy : Fin 2 → ℝ) (probability : SecondQuantization.Fermionic.Occupation (Fin 2) → ℝ)\n  (A B : Matrix (Fin 2) (Fin 2) ℂ) (hbar : ℝ) (hhbar : 0 < hbar)\n  (hpos : ∀ (n : SecondQuantization.Fermionic.Occupation (Fin 2)), 0 ≤ probability n) (hsum : HasSum probability 1),\n  energy 0 - energy 1 ≠ 0 →\n    Filter.Tendsto\n      (fun eta =>\n        (SecondQuantization.Fermionic.Transport.twoModeFockHallKuboResponse energy probability A B hbar hhbar hpos hsum\n            eta).re)\n      (nhdsWithin 0 (Set.Ioi 0))\n      (nhds (SecondQuantization.Fermionic.Transport.twoModeFockHallCleanResponse energy probability A B hbar))",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.Transport.tendsto_twoModeFockHallKuboResponse_re",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.TwoModeResponse",
+    "externalAxioms": [],
+    "docString": "The clean density follows from the actual full-Fock Kubo theory for every normalized\ndiagonal state. The hypotheses concern the chosen state and the one-particle gap only. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.MassiveDirac.tendsto_pointwiseFockHallResponse_re"
+    ],
+    "dependencies": [
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Transport.TwoModeResponse.0.SecondQuantization.Fermionic.Transport.tendsto_twoModeFockHallResponse_re",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Transport.TwoModeResponse.0.SecondQuantization.Fermionic.Transport.twoModeFockLehmannTableResponse_eq_kubo"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.tendsto_pointwiseFockHallResponse_re"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
     "terminal": true,
     "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] (ε : Mode → ℝ) (jx jy : Mode → Mode → ℂ)\n  {τ τ' : ℝ},\n  τ' < τ →\n    SecondQuantization.Fermionic.Transport.timeOrderedBilinearCurrents ε jx jy τ τ' =\n      ∑ i,\n        ∑ j,\n          ∑ k,\n            ∑ l,\n              (jx i j * jy k l) •\n                (SecondQuantization.Fermionic.externalFieldOperator ε τ\n                      (SecondQuantization.Fermionic.ExternalFieldLabel.creation i) ∘ₗ\n                    SecondQuantization.Fermionic.externalFieldOperator ε τ\n                      (SecondQuantization.Fermionic.ExternalFieldLabel.annihilation j)) ∘ₗ\n                  SecondQuantization.Fermionic.externalFieldOperator ε τ'\n                      (SecondQuantization.Fermionic.ExternalFieldLabel.creation k) ∘ₗ\n                    SecondQuantization.Fermionic.externalFieldOperator ε τ'\n                      (SecondQuantization.Fermionic.ExternalFieldLabel.annihilation l)",
     "standardAxioms": [
@@ -144194,16 +144444,18 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Fermionic.annihilate_basisState_of_mem",
-      "SecondQuantization.Fermionic.annihilate_basisState_of_not_mem"
+      "SecondQuantization.Fermionic.annihilate_basisState_of_not_mem",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Transport.TwoModeResponse.0.SecondQuantization.Fermionic.Transport.twoModeFockLehmannTableResponse_eq"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Fermionic.annihilate_basisState_of_mem",
-      "SecondQuantization.Fermionic.annihilate_basisState_of_not_mem"
+      "SecondQuantization.Fermionic.annihilate_basisState_of_not_mem",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Transport.TwoModeResponse.0.SecondQuantization.Fermionic.Transport.twoModeFockLehmannTableResponse_eq"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -147762,16 +148014,18 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Fermionic.create_basisState_of_mem",
-      "SecondQuantization.Fermionic.create_basisState_of_not_mem"
+      "SecondQuantization.Fermionic.create_basisState_of_not_mem",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Transport.TwoModeResponse.0.SecondQuantization.Fermionic.Transport.twoModeFockLehmannTableResponse_eq"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Fermionic.create_basisState_of_mem",
-      "SecondQuantization.Fermionic.create_basisState_of_not_mem"
+      "SecondQuantization.Fermionic.create_basisState_of_not_mem",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Transport.TwoModeResponse.0.SecondQuantization.Fermionic.Transport.twoModeFockLehmannTableResponse_eq"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -149788,7 +150042,8 @@
       "SecondQuantization.Fermionic.fermionEnergy_removeOccupation_of_mem",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.Gibbs.0.SecondQuantization.Fermionic.completedFreeGibbsProbability_insertOccupation_of_not_mem",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.Gibbs.0.SecondQuantization.Fermionic.completedFreeGibbsProbability_removeOccupation_of_mem",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreePartitionFunction.0.SecondQuantization.Fermionic.boltzmannWeight_fermionEnergy_eq_prod"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreePartitionFunction.0.SecondQuantization.Fermionic.boltzmannWeight_fermionEnergy_eq_prod",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Transport.TwoModeResponse.0.SecondQuantization.Fermionic.Transport.twoModeFockLehmannTableResponse_eq"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
@@ -149800,9 +150055,10 @@
       "SecondQuantization.Fermionic.fermionEnergy_removeOccupation_of_mem",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.Gibbs.0.SecondQuantization.Fermionic.completedFreeGibbsProbability_insertOccupation_of_not_mem",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.Gibbs.0.SecondQuantization.Fermionic.completedFreeGibbsProbability_removeOccupation_of_mem",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreePartitionFunction.0.SecondQuantization.Fermionic.boltzmannWeight_fermionEnergy_eq_prod"
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreePartitionFunction.0.SecondQuantization.Fermionic.boltzmannWeight_fermionEnergy_eq_prod",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Transport.TwoModeResponse.0.SecondQuantization.Fermionic.Transport.twoModeFockLehmannTableResponse_eq"
     ],
-    "compiledConsumerCount": 7,
+    "compiledConsumerCount": 8,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -166794,6 +167050,7 @@
       "QuantumTheory.Models.MassiveDirac.tendsto_finiteRadialInterbandBastinPairIntegral"
     ],
     "dependencies": [
+      "QuantumTheory.Models.MassiveDirac.cleanInterbandBastinPairLimitDensity_eq",
       "QuantumTheory.Models.MassiveDirac.energy_pos_of_mass_ne_zero",
       "QuantumTheory.Models.MassiveDirac.radius_lt_abs_interbandEnergyGap_of_lt_two_mul_abs_mass",
       "QuantumTheory.Models.MassiveDirac.tendsto_targetCenteredInterbandBastinPairIntegral_re_berryCurvature"
@@ -169774,6 +170031,92 @@
       "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.TMatrix.BornDysonLoop.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenEntryKernel_zero_disorder_zero_radius"
     ],
     "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (occupied : Finset (Fin 2)), HasSum (fun n => if n = occupied then 1 else 0) 1",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Models.MassiveDirac.ManyBody.PointwiseHall.0.QuantumTheory.Models.MassiveDirac.pureProbability_hasSum",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.ManyBody.PointwiseHall",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.MassiveDirac.tendsto_pointwiseFockHallResponse_re"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.pointwiseFockHallResponse",
+      "QuantumTheory.Models.MassiveDirac.tendsto_pointwiseFockHallResponse_re"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (occupied n : Finset (Fin 2)), 0 ≤ if n = occupied then 1 else 0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Models.MassiveDirac.ManyBody.PointwiseHall.0.QuantumTheory.Models.MassiveDirac.pureProbability_nonneg",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.ManyBody.PointwiseHall",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.MassiveDirac.tendsto_pointwiseFockHallResponse_re"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.pointwiseFockHallResponse",
+      "QuantumTheory.Models.MassiveDirac.tendsto_pointwiseFockHallResponse_re"
+    ],
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -190945,6 +191288,143 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Fermionic.coe_grandCanonicalPartitionFunction_eq_prod"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (energy : Fin 2 → ℝ) (probability : SecondQuantization.Fermionic.Occupation (Fin 2) → ℝ)\n  (A B : Matrix (Fin 2) (Fin 2) ℂ) (hbar : ℝ),\n  hbar ≠ 0 →\n    energy 0 - energy 1 ≠ 0 →\n      Filter.Tendsto\n        (fun eta =>\n          (SecondQuantization.Fermionic.Transport.twoModeFockHallResponse✝ energy probability A B hbar eta).re)\n        (nhdsWithin 0 (Set.Ioi 0))\n        (nhds (SecondQuantization.Fermionic.Transport.twoModeFockHallCleanResponse energy probability A B hbar))",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Transport.TwoModeResponse.0.SecondQuantization.Fermionic.Transport.tendsto_twoModeFockHallResponse_re",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.TwoModeResponse",
+    "externalAxioms": [],
+    "docString": "The clean Hall coefficient is the actual positive-switching-rate limit of the four-state\nFock Lehmann response, including the electric-field conversion. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.Transport.tendsto_twoModeFockHallKuboResponse_re"
+    ],
+    "dependencies": [
+      "QuantumTheory.LinearResponse.lehmannDenominator_ne_zero",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Transport.TwoModeResponse.0.SecondQuantization.Fermionic.Transport.twoModeFockLehmannTableResponse_eq"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.Transport.tendsto_twoModeFockHallKuboResponse_re"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (energy : Fin 2 → ℝ) (probability : SecondQuantization.Fermionic.Occupation (Fin 2) → ℝ)\n  (A B : Matrix (Fin 2) (Fin 2) ℂ) (hbar omega eta : ℝ),\n  QuantumTheory.LinearResponse.finiteLehmannTableResponse hbar omega eta\n      (SecondQuantization.Fermionic.Transport.twoModeFockLehmannTable✝ energy probability A B) =\n    (QuantumTheory.LinearResponse.orderedLehmannTransitionData hbar (energy 0) (energy 1) (probability {0})\n            (probability {1}) (A 0 1) (B 1 0)).frequencyTerm\n        omega eta +\n      (QuantumTheory.LinearResponse.orderedLehmannTransitionData hbar (energy 1) (energy 0) (probability {1})\n            (probability {0}) (A 1 0) (B 0 1)).frequencyTerm\n        omega eta",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Transport.TwoModeResponse.0.SecondQuantization.Fermionic.Transport.twoModeFockLehmannTableResponse_eq",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.TwoModeResponse",
+    "externalAxioms": [],
+    "docString": "Summing all many-body transitions leaves exactly the two one-particle transfer terms.\nNo normalization or thermal assumption is needed for this algebraic reduction. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Transport.TwoModeResponse.0.SecondQuantization.Fermionic.Transport.tendsto_twoModeFockHallResponse_re"
+    ],
+    "dependencies": [
+      "SecondQuantization.Fermionic.annihilate_basisState",
+      "SecondQuantization.Fermionic.create_basisState",
+      "SecondQuantization.Fermionic.fermionEnergy_eq_sum"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Transport.TwoModeResponse.0.SecondQuantization.Fermionic.Transport.tendsto_twoModeFockHallResponse_re"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (energy : Fin 2 → ℝ) (probability : SecondQuantization.Fermionic.Occupation (Fin 2) → ℝ)\n  (A B : Matrix (Fin 2) (Fin 2) ℂ) (hbar omega eta : ℝ) (hhbar : 0 < hbar)\n  (hpos : ∀ (n : SecondQuantization.Fermionic.Occupation (Fin 2)), 0 ≤ probability n) (hsum : HasSum probability 1),\n  0 < eta →\n    let S := SecondQuantization.Fermionic.Transport.twoModeFockSystem✝ energy hbar hhbar;\n    have D := SecondQuantization.Fermionic.Transport.twoModeFockEigenbasisData✝ energy probability hbar hhbar hpos hsum;\n    QuantumTheory.LinearResponse.finiteLehmannTableResponse hbar omega eta\n        (SecondQuantization.Fermionic.Transport.twoModeFockLehmannTable✝ energy probability A B) =\n      QuantumTheory.LinearResponse.adiabaticFrequencyDomainSusceptibility\n        (QuantumTheory.LinearResponse.freePropagatorGroup S) hbar\n        (QuantumTheory.LinearResponse.eigenbasisNormalizedExpectation S D)\n        (SecondQuantization.Common.finiteHilbertOperatorAlgEquiv\n          (SecondQuantization.Fermionic.Transport.twoModeVertex✝ A))\n        (SecondQuantization.Common.finiteHilbertOperatorAlgEquiv\n          (SecondQuantization.Fermionic.Transport.twoModeVertex✝ B))\n        omega eta",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Transport.TwoModeResponse.0.SecondQuantization.Fermionic.Transport.twoModeFockLehmannTableResponse_eq_kubo",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.TwoModeResponse",
+    "externalAxioms": [],
+    "docString": "The four-state scalar response is supplied by the existing operator-level causal Kubo\ntheorem for the bounded creation-annihilation vertices and the normalized diagonal state. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.Transport.tendsto_twoModeFockHallKuboResponse_re"
+    ],
+    "dependencies": [
+      "QuantumTheory.LinearResponse.adiabaticFrequencyDomainSusceptibility_eigenbasis_eq_finite_sum",
+      "SecondQuantization.Common.finiteHilbertBasis_apply",
+      "SecondQuantization.Common.finiteHilbertOperator_basis_apply"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.Transport.tendsto_twoModeFockHallKuboResponse_re"
     ],
     "compiledConsumerCount": 1,
     "axioms": [

@@ -1855,9 +1855,10 @@
       "name": "LeanCondensedMatter.Models.MassiveDirac.Bastin.CleanLimit",
       "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Bastin/CleanLimit.lean",
       "imports": [
+        "LeanCondensedMatter.Models.MassiveDirac.ManyBody.PointwiseHall",
         "LeanCondensedMatter.Models.MassiveDirac.Model.Berry.Occupation"
       ],
-      "externalImportCount": 1
+      "externalImportCount": 2
     },
     {
       "name": "LeanCondensedMatter.Models.MassiveDirac.Bastin.Interband",
@@ -2543,6 +2544,15 @@
       "externalImportCount": 0
     },
     {
+      "name": "LeanCondensedMatter.Models.MassiveDirac.ManyBody.PointwiseHall",
+      "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/ManyBody/PointwiseHall.lean",
+      "imports": [
+        "LeanCondensedMatter.Models.MassiveDirac.Bastin.Interband",
+        "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.TwoModeResponse"
+      ],
+      "externalImportCount": 1
+    },
+    {
       "name": "LeanCondensedMatter.Models.MassiveDirac.Model.Basic",
       "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Model/Basic.lean",
       "imports": [
@@ -2990,6 +3000,7 @@
         "LeanCondensedMatter.Models.MassiveDirac.Conductivity.Hall",
         "LeanCondensedMatter.Models.MassiveDirac.Conductivity.Longitudinal",
         "LeanCondensedMatter.Models.MassiveDirac.Disorder",
+        "LeanCondensedMatter.Models.MassiveDirac.ManyBody.PointwiseHall",
         "LeanCondensedMatter.Models.MassiveDirac.Model",
         "LeanCondensedMatter.Models.MassiveDirac.Propagator",
         "LeanCondensedMatter.Models.MassiveDirac.Scaling.Longitudinal",
@@ -3288,7 +3299,7 @@
         "LeanCondensedMatter.Analysis.ConservationLaw.CurrentRepresentation",
         "LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Continuity.Schwartz1D"
       ],
-      "externalImportCount": 1
+      "externalImportCount": 3
     },
     {
       "name": "LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Continuity.Electromagnetic1D",
@@ -3298,7 +3309,7 @@
         "LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Electromagnetic.Current1D",
         "LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Electromagnetic.MinimalCoupling1D"
       ],
-      "externalImportCount": 1
+      "externalImportCount": 3
     },
     {
       "name": "LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Continuity.ElectromagneticWeak1D",
@@ -3326,7 +3337,7 @@
         "LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Continuity.CurrentRepresentation1D",
         "LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.SchwartzSchrodinger1D"
       ],
-      "externalImportCount": 1
+      "externalImportCount": 3
     },
     {
       "name": "LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Continuity.Scalar1D",
@@ -3334,7 +3345,7 @@
       "imports": [
         "LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Probability.Basic1D"
       ],
-      "externalImportCount": 3
+      "externalImportCount": 5
     },
     {
       "name": "LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Continuity.Schwartz1D",
@@ -3377,7 +3388,7 @@
       "imports": [
         "LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Continuity.Weak1D"
       ],
-      "externalImportCount": 2
+      "externalImportCount": 1
     },
     {
       "name": "LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Continuity.TotalProbability1D",
@@ -8096,6 +8107,17 @@
         "LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.Bounded"
       ],
       "externalImportCount": 0
+    },
+    {
+      "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.TwoModeResponse",
+      "sourceFile": "LeanCondensedMatter/SecondQuantization/Fermionic/Transport/TwoModeResponse.lean",
+      "imports": [
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann.Eigenbasis.FrequencyDomain",
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann.FiniteTable",
+        "LeanCondensedMatter.SecondQuantization.Common.Algebra.FiniteHilbertSelfAdjoint",
+        "LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.Hamiltonian"
+      ],
+      "externalImportCount": 4
     },
     {
       "name": "LeanCondensedMatter.SecondQuantization.Fermionic.Transport",
