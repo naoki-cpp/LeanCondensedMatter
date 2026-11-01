@@ -106,10 +106,8 @@ theorem polarPauliMatrix_inPlane_sandwich_eq_harmonics
     InternalSpace.pauliAxisComponent, InternalSpace.dotProduct_pauliAxis,
     InternalSpace.pauliCombination_eq_components, polarPauliInPlaneHarmonics,
     AngularHarmonicCoefficients.eval]
-  have hI : Complex.I ^ 2 = (-1 : ℂ) := by
-    simpa [pow_two] using Complex.I_mul_I
   ring_nf
-  simp [hI]
+  simp [Complex.I_sq]
   module
 
 /-- The full-angle retarded-advanced polar Pauli rung acts through the canonical in-plane ladder
