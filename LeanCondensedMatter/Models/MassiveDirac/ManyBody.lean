@@ -1,6 +1,7 @@
 import LeanCondensedMatter.Models.MassiveDirac.Model.Operator
 import LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.BoundedEvolution
 import LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.BoundedMatrixUnitAdjoint
+import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.TwoModeResponse
 import LeanCondensedMatter.QuantumTheory.Gibbs.State
 import LeanCondensedMatter.QuantumTheory.LinearResponse.Expectation.Density
 import LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.Free

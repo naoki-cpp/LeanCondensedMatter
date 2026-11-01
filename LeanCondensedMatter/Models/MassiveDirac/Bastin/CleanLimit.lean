@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Models.MassiveDirac.Model.Berry.Occupation
+import LeanCondensedMatter.Models.MassiveDirac.ManyBody.PointwiseHall
 import Mathlib.Tactic.Ring
 
 set_option linter.style.header false
@@ -28,7 +29,16 @@ noncomputable section
 /-- Named real clean-limit profile extracted from the opposite-source interband Bastin pair. -/
 def cleanInterbandBastinPairLimitDensity
     (band : Band) (e v m px py : ℝ) : ℝ :=
-  -2 * Real.pi * (e ^ 2 * berryCurvature band v m px py)
+  2 * Real.pi * cleanBandFockHallDensity band e v m px py
+
+/-- The full-Fock clean Hall density reproduces the local Bastin pole coefficient. -/
+theorem cleanInterbandBastinPairLimitDensity_eq
+    (band : Band) (e v m px py : ℝ) :
+    cleanInterbandBastinPairLimitDensity band e v m px py =
+      -2 * Real.pi * (e ^ 2 * berryCurvature band v m px py) := by
+  rw [cleanInterbandBastinPairLimitDensity,
+    cleanBandFockHallDensity_eq_neg_chargeSq_berryCurvature]
+  ring
 
 /-- Radial positive-energy-coordinate density obtained from the clean local Bastin-pair profile.
 The Berry part is exactly `radialBerryEnergyDensity`; the factor `-2π e²` is the local pair limit
