@@ -155,8 +155,8 @@ private theorem twoModeFockLehmannTableResponse_eq
     LinearMap.smul_apply, LinearMap.comp_apply]
   simp [ha, hc,
     map_smul, fermionSign, insertOccupation, removeOccupation,
-    fermionEnergy_eq_sum] <;>
-    simp [Common.basisState, Finsupp.single_apply, hf, hn, Ne.symm hn]
+    fermionEnergy_eq_sum]
+  simp [Common.basisState, hf, hn, Ne.symm hn]
 
 /-- Antisymmetric current response converted from vector potential to electric field at zero
 frequency. This is a response density before a momentum measure or volume factor is applied. -/

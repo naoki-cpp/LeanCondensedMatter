@@ -154,6 +154,7 @@ theorem cleanBandFockHallDensity_eq_neg_chargeSq_berryCurvature
     (simp [twoModeFockHallCleanResponse, bandMode, modeBand,
       bastinInterbandBlockDifference, hmat, interbandEnergyGap, bandEnergy,
       currentBandBlockTrace_swap])
+  all_goals ring
 
 end
 end QuantumTheory.Models.MassiveDirac
