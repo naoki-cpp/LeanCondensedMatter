@@ -202,11 +202,6 @@ theorem completedCreate_adjoint_eq_completedAnnihilate (i : Mode) :
     intro x y hxy
     ext n
     rw [completedCreate_adjoint_apply, completedAnnihilate_apply]
-    change
-      (Real.sqrt (n i + 1 : ℝ) : ℂ) *
-          (x : CompletedFockSpace Mode) (createOccupation i n) =
-        (Real.sqrt (n i + 1 : ℝ) : ℂ) *
-          (y : CompletedFockSpace Mode) (createOccupation i n)
     rw [hxy]
   · exact
       (completedCreate_isFormalAdjoint_completedAnnihilate i).le_adjoint
@@ -253,11 +248,6 @@ theorem completedAnnihilate_adjoint_eq_completedCreate (i : Mode) :
     · rw [ite_eq_left hni, hni]
       simp
     · rw [ite_eq_right hni]
-      change
-        (Real.sqrt (n i : ℝ) : ℂ) *
-            (x : CompletedFockSpace Mode) (removeOccupation i n) =
-          (Real.sqrt (n i : ℝ) : ℂ) *
-            (y : CompletedFockSpace Mode) (removeOccupation i n)
       rw [hxy]
   · exact
       (completedAnnihilate_isFormalAdjoint_completedCreate i).le_adjoint
