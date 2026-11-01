@@ -1,6 +1,7 @@
 import Mathlib.Analysis.Calculus.Deriv.Support
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.IntegrationByParts
-import Mathlib.Tactic
+import Mathlib.Tactic.Linarith
+import Mathlib.Tactic.Ring
 
 set_option linter.style.header false
 
