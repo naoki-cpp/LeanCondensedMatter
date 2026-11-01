@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Analysis.Operator.AdjointConjugation
 import LeanCondensedMatter.Analysis.Dyson.Unitary
 import LeanCondensedMatter.QuantumTheory.LinearResponse.Response.KuboFormula
 
@@ -100,7 +101,8 @@ theorem timeDependentPerturbedObservableMap_one_of_isSelfAdjoint
     (ht : t ∈ Icc (0 : ℝ) β) :
     timeDependentPerturbedObservableMap U hbar V lam t 1 = 1 := by
   rw [timeDependentPerturbedObservableMap_apply]
-  simp only [timeDependentPerturbedObservable, map_one, mul_one]
+  simp only [timeDependentPerturbedObservable, ContinuousLinearMap.adjointConjugate,
+    map_one, mul_one, star_star]
   exact (timeDependentInteractionPropagator_unitary_relations_of_isSelfAdjoint
     U hbar hVself lam hβ hM hVcont hVbound ht).1
 

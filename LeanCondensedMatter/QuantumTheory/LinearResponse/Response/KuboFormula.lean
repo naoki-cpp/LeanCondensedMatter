@@ -1,9 +1,10 @@
+import LeanCondensedMatter.Analysis.Operator.AdjointConjugation
 import LeanCondensedMatter.QuantumTheory.LinearResponse.Expectation.Density
 import LeanCondensedMatter.QuantumTheory.LinearResponse.Perturbation.Hermitian
 import LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.Stationarity
 import Mathlib.Analysis.Calculus.FDeriv.Comp
 import Mathlib.Analysis.Calculus.FDeriv.Linear
-import Mathlib.Analysis.Calculus.Deriv.Star
+import Mathlib.Analysis.Calculus.Deriv.Basic
 import Mathlib.Analysis.Normed.Operator.Mul
 import Mathlib.Algebra.Lie.OfAssociative
 
@@ -68,9 +69,9 @@ variable (U : Multiplicative ℝ →* unitary (H →L[ℂ] H)) (hbar : ℝ)
 noncomputable def timeDependentPerturbedObservable
     (V : ℝ → (H →L[ℂ] H)) (A : H →L[ℂ] H)
     (lam t : ℝ) : H →L[ℂ] H :=
-  star (timeDependentInteractionPropagator U hbar V lam t) *
-    heisenbergEvolution U t A *
-      timeDependentInteractionPropagator U hbar V lam t
+  ContinuousLinearMap.adjointConjugate
+    (star (timeDependentInteractionPropagator U hbar V lam t))
+    (heisenbergEvolution U t A)
 
 /-- The continuous linear map sending an ordinary observable `A` to its perturbed
 interaction-picture representative `U_I† A_I U_I`. -/
@@ -91,7 +92,7 @@ theorem timeDependentPerturbedObservableMap_apply
     timeDependentPerturbedObservableMap U hbar V lam t A =
       timeDependentPerturbedObservable U hbar V A lam t := by
   simp [timeDependentPerturbedObservableMap, timeDependentPerturbedObservable,
-    heisenbergEvolution_apply, mul_assoc]
+    ContinuousLinearMap.adjointConjugate, heisenbergEvolution_apply, mul_assoc]
 
 /-- The perturbed expectation functional derived from the ordinary expectation by pullback along
 `A ↦ U_I† A_I U_I`. -/
@@ -116,7 +117,7 @@ theorem timeDependentPerturbedObservable_zero_coupling
     (V : ℝ → (H →L[ℂ] H)) (A : H →L[ℂ] H) (t : ℝ) :
     timeDependentPerturbedObservable U hbar V A 0 t =
       heisenbergEvolution U t A := by
-  simp [timeDependentPerturbedObservable]
+  simp [timeDependentPerturbedObservable, ContinuousLinearMap.adjointConjugate]
 
 /-- At zero coupling, the perturbed functional is the ordinary expectation composed with free
 Heisenberg evolution. -/
@@ -156,16 +157,9 @@ theorem hasDerivAt_timeDependentPerturbedObservable_zero_of_bound
       (timeDependentPropagatorFirstVariation U hbar V t)
       0 :=
     hasDerivAt_timeDependentInteractionPropagator_zero_of_bound U hbar hM hV ht
-  have hUstar : HasDerivAt
-      (fun lam : ℝ => star (timeDependentInteractionPropagator U hbar V lam t))
-      (star (timeDependentPropagatorFirstVariation U hbar V t))
-      0 := by
-    simpa [Function.comp_def] using hU.star
-  have hleft := hUstar.mul_const (heisenbergEvolution U t A)
-  have hprod := hleft.mul hU
-  rw [hasDerivAt_iff_tendsto]
-  rw [hasDerivAt_iff_tendsto] at hprod
-  simpa [timeDependentPerturbedObservable, mul_assoc] using hprod
+  simpa [timeDependentPerturbedObservable, ContinuousLinearMap.adjointConjugate] using
+    ContinuousLinearMap.hasDerivAt_adjointConjugate hU.star
+      (heisenbergEvolution U t A)
 
 /-- Applying the ordinary expectation to the observable first variation gives the derivative of the
 pulled-back perturbed expectation. -/
