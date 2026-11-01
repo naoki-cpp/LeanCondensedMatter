@@ -4,7 +4,10 @@ import Mathlib.LinearAlgebra.CrossProduct
 import Mathlib.LinearAlgebra.Matrix.Notation
 import Mathlib.LinearAlgebra.LinearIndependent.Lemmas
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic
-import Mathlib.Tactic
+import Mathlib.Tactic.FinCases
+import Mathlib.Tactic.Module
+import Mathlib.Tactic.NormNum
+import Mathlib.Tactic.Ring
 
 set_option linter.style.header false
 
