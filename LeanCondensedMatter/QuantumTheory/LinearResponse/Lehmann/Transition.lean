@@ -1,5 +1,6 @@
 import Mathlib.Analysis.SpecialFunctions.ImproperIntegrals
 import Mathlib.Topology.Algebra.InfiniteSum.Module
+import Mathlib.MeasureTheory.Integral.DominatedConvergence
 
 set_option linter.style.header false
 
@@ -142,6 +143,98 @@ theorem norm_timeTerm
 noncomputable def frequencyTerm
     {hbar : ℝ} (transition : LehmannTransitionData hbar) (omega eta : ℝ) : ℂ :=
   lehmannTerm hbar omega eta transition.energyGap transition.weight
+
+/-- A transition multiplied by the damped frequency phase, before restricting time to the causal half-line. -/
+noncomputable def adiabaticTimeTerm
+    {hbar : ℝ} (transition : LehmannTransitionData hbar) (omega eta t : ℝ) : ℂ :=
+  Complex.exp ((Complex.I * (omega : ℂ) - (eta : ℂ)) * (t : ℂ)) *
+    transition.timeTerm t
+
+/-- The switched integrand written directly from the canonical transition record. -/
+theorem adiabaticTimeTerm_eq_weight_mul_mode
+    {hbar : ℝ} (transition : LehmannTransitionData hbar) (omega eta : ℝ)
+    (τ : ℝ) :
+    transition.adiabaticTimeTerm omega eta τ =
+      transition.weight *
+        lehmannMode hbar omega eta
+          transition.energyGap τ := by
+  rw [adiabaticTimeTerm, timeTerm,
+    lehmannMode, lehmannDenominator]
+  rw [show
+      Complex.exp
+          ((Complex.I * (omega : ℂ) - (eta : ℂ)) * (τ : ℂ)) *
+          (transition.weight *
+            Complex.exp
+              (Complex.I *
+                ((((transition.energyGap * τ) /
+                  hbar : ℝ)) : ℂ))) =
+        transition.weight *
+          (Complex.exp
+              ((Complex.I * (omega : ℂ) - (eta : ℂ)) * (τ : ℂ)) *
+            Complex.exp
+              (Complex.I *
+                ((((transition.energyGap * τ) /
+                  hbar : ℝ)) : ℂ))) by ring]
+  rw [← Complex.exp_add]
+  congr 2
+  push_cast
+  ring
+
+/-- The causal integral of one switched transition is its canonical fixed-rate frequency term. -/
+theorem integral_adiabaticTimeTerm_Ioi_zero
+    {hbar : ℝ} (transition : LehmannTransitionData hbar) (omega eta : ℝ)
+    (hη : 0 < eta) :
+    (∫ τ : ℝ in Ioi 0,
+      transition.adiabaticTimeTerm omega eta τ) =
+      transition.frequencyTerm omega eta := by
+  rw [setIntegral_congr_fun measurableSet_Ioi fun τ _ =>
+    adiabaticTimeTerm_eq_weight_mul_mode
+      transition omega eta τ]
+  rw [integral_const_mul]
+  rw [integral_lehmannMode_Ioi_zero_eq_resolvent
+    hbar omega eta
+      transition.energyGap hη]
+  rfl
+
+/-- Absolute weight summability permits exchanging the transition sum with the causal integral. -/
+theorem integral_tsum_adiabaticTimeTerm_Ioi_zero
+    {κ : Type*} [Countable κ] {hbar : ℝ}
+    (transition : κ → LehmannTransitionData hbar) (omega eta : ℝ)
+    (hη : 0 < eta) (hweight : Summable fun j => ‖(transition j).weight‖) :
+    (∫ t : ℝ in Ioi 0, ∑' j, (transition j).adiabaticTimeTerm omega eta t) =
+      ∑' j, (transition j).frequencyTerm omega eta := by
+  have hInt : ∀ j, IntegrableOn
+      ((transition j).adiabaticTimeTerm omega eta) (Ioi 0) volume := by
+    intro j
+    have hmode := integrableOn_lehmannMode_Ioi_zero
+      hbar omega eta (transition j).energyGap hη
+    have hweighted := hmode.const_mul (transition j).weight
+    apply hweighted.congr_fun
+    · intro t _
+      exact ((transition j).adiabaticTimeTerm_eq_weight_mul_mode omega eta t).symm
+    · exact measurableSet_Ioi
+  have hSum : Summable fun j =>
+      ∫ t : ℝ in Ioi 0, ‖(transition j).adiabaticTimeTerm omega eta t‖ := by
+    let C : ℝ := ∫ t : ℝ in Ioi 0,
+      ‖Complex.exp ((Complex.I * (omega : ℂ) - (eta : ℂ)) * (t : ℂ))‖
+    apply (hweight.mul_left C).congr
+    intro j
+    symm
+    calc
+      (∫ t : ℝ in Ioi 0, ‖(transition j).adiabaticTimeTerm omega eta t‖) =
+          ∫ t : ℝ in Ioi 0, ‖(transition j).weight‖ *
+            ‖Complex.exp ((Complex.I * (omega : ℂ) - (eta : ℂ)) * (t : ℂ))‖ := by
+        apply setIntegral_congr_fun measurableSet_Ioi
+        intro t _
+        simp only [adiabaticTimeTerm, norm_mul, norm_timeTerm]
+        ring
+      _ = ‖(transition j).weight‖ * C := by rw [integral_const_mul]
+      _ = C * ‖(transition j).weight‖ := by ring
+  rw [← MeasureTheory.integral_tsum_of_summable_integral_norm
+    (μ := volume.restrict (Ioi 0)) hInt hSum]
+  apply tsum_congr
+  intro j
+  exact (transition j).integral_adiabaticTimeTerm_Ioi_zero omega eta hη
 
 end LehmannTransitionData
 
