@@ -2,7 +2,6 @@ import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.L2.Multipli
 import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Probability.Integral1D
 import Mathlib.Analysis.Distribution.SchwartzSpace.Basic
 import Mathlib.MeasureTheory.Integral.Bochner.ContinuousLinearMap
-import Mathlib.Tactic
 
 set_option linter.style.header false
 
