@@ -152,11 +152,13 @@ theorem tendsto_pointwiseGrandCanonicalFockHallResponse_re
     rw [hf]
     have h0 := ne_of_gt (add_pos zero_lt_one (Real.exp_pos (-beta * (eps 0 - mu))))
     have h1 := ne_of_gt (add_pos zero_lt_one (Real.exp_pos (-beta * (eps 1 - mu))))
-    fin_cases i <;>
-      simp only [p, eigenbasisGibbsProbability, hZ, eigenbasisBoltzmannWeight,
-        henergy, SecondQuantization.Fermionic.fermionEnergy_eq_sum,
-        Finset.sum_insert, Finset.sum_singleton, Finset.mem_singleton,
-        Fin.zero_ne_one, not_false_eq_true, mul_add, Real.exp_add]
+    simp only [p, eigenbasisGibbsProbability]
+    simp only [hZ]
+    simp only [eigenbasisBoltzmannWeight, henergy,
+      SecondQuantization.Fermionic.fermionEnergy_eq_sum,
+      Finset.sum_insert (by decide : (0 : Fin 2) ∉ {1}), Finset.sum_singleton,
+      mul_add, Real.exp_add]
+    fin_cases i
     all_goals field_simp [h0, h1]
     all_goals ring
   have h := tendsto_pointwiseDiagonalFockHallResponse_re p
@@ -164,7 +166,7 @@ theorem tendsto_pointwiseGrandCanonicalFockHallResponse_re
     (hasSum_eigenbasisGibbsProbability E beta (eigenbasisGibbsSummable_of_finite E beta))
     e v m px py hbar hhbar hE
   simp_rw [hocc] at h
-  simpa only [eps, modeBand, sum_band] using h
+  simpa [eps, modeBand, sum_band, pointwiseGrandCanonicalFockHallResponse, p, E] using h
 
 /-- A filled configuration is a special case of the normalized diagonal-state response. -/
 theorem tendsto_pointwiseFockHallResponse_re
@@ -191,9 +193,11 @@ theorem tendsto_pointwiseFockHallResponse_re
     rw [hstates] at hmem
     simp only [Finset.mem_insert, Finset.mem_singleton] at hmem
     have hmodes : (Finset.univ : Finset (Fin 2)) = {0, 1} := by decide
+    have hn0 : ({0, 1} : Finset (Fin 2)) ≠ {0} := by decide
+    have hn1 : ({0, 1} : Finset (Fin 2)) ≠ {1} := by decide
     rcases hmem with rfl | rfl | rfl | rfl <;>
       simp [sum_band, p, modes, hmodes, modeBand, Finset.filter_insert,
-        Finset.filter_singleton]
+        Finset.filter_singleton, hn0, hn1, Ne.symm hn0, Ne.symm hn1]
   rw [hvalue] at h
   exact h
 
