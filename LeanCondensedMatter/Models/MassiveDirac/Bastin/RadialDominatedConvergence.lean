@@ -62,7 +62,7 @@ private theorem tendsto_radialInterbandBastinPairDensity
     tendsto_targetCenteredInterbandBastinPairIntegral_re_berryCurvature
       band e v m p 0 radius hE hradiusPos hgap
   unfold radialInterbandBastinPairDensity radialCleanInterbandBastinPairLimitDensity
-    cleanInterbandBastinPairLimitDensity
+  rw [cleanInterbandBastinPairLimitDensity_eq]
   exact tendsto_const_nhds.mul hpair
 
 /-- Finite radial momentum integral of the finite-broadening interband Bastin-pair density. -/

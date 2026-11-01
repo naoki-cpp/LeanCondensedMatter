@@ -42,7 +42,8 @@ theorem radialCleanInterbandBastinPairLimitDensity_eq_energyDensity_mul_deriv
   have hE : energy v m p 0 ≠ 0 :=
     ne_of_gt (energy_pos_of_mass_ne_zero v m p 0 hm)
   unfold radialCleanInterbandBastinPairLimitDensity
-    cleanInterbandBastinPairLimitDensity cleanInterbandBastinPairRadialEnergyDensity
+  rw [cleanInterbandBastinPairLimitDensity_eq]
+  unfold cleanInterbandBastinPairRadialEnergyDensity
     radialBerryEnergyDensity radialEnergyDerivative
   cases band <;>
     simp [berryCurvature_lower, berryCurvature_upper, bandSign] <;>

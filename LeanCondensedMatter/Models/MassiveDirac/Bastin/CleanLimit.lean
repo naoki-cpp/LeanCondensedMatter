@@ -1,5 +1,7 @@
 import LeanCondensedMatter.Models.MassiveDirac.Model.Berry.Occupation
+import LeanCondensedMatter.Models.MassiveDirac.ManyBody.PointwiseHall
 import Mathlib.Tactic.Ring
+import Mathlib.Tactic.FieldSimp
 
 set_option linter.style.header false
 
@@ -28,7 +30,40 @@ noncomputable section
 /-- Named real clean-limit profile extracted from the opposite-source interband Bastin pair. -/
 def cleanInterbandBastinPairLimitDensity
     (band : Band) (e v m px py : ℝ) : ℝ :=
-  -2 * Real.pi * (e ^ 2 * berryCurvature band v m px py)
+  2 * Real.pi * cleanBandFockHallDensity band e v m px py
+
+/-- The full-Fock clean Hall density reproduces the local Bastin pole coefficient. -/
+theorem cleanInterbandBastinPairLimitDensity_eq
+    (band : Band) (e v m px py : ℝ) :
+    cleanInterbandBastinPairLimitDensity band e v m px py =
+      -2 * Real.pi * (e ^ 2 * berryCurvature band v m px py) := by
+  rw [cleanInterbandBastinPairLimitDensity,
+    cleanBandFockHallDensity_eq_neg_chargeSq_berryCurvature]
+  ring
+
+/-- Filling the two Fock modes below the Fermi energy gives the occupation-weighted clean
+Bastin density used by the existing momentum integrals. The occupied configuration is one
+normalized many-body state, including the vacuum and doubly occupied cases. -/
+theorem tendsto_zeroTemperaturePointwiseFockHallResponse_re
+    (e v m px py fermiEnergy hbar : ℝ) (hhbar : 0 < hbar)
+    (hE : energy v m px py ≠ 0) :
+    Filter.Tendsto (fun eta => (2 * Real.pi / hbar) *
+      (pointwiseFockHallResponse
+        (Finset.univ.filter (fun band => bandEnergy band v m px py < fermiEnergy))
+        e v m px py hbar hhbar eta hE).re)
+      (nhdsWithin 0 (Set.Ioi 0))
+      (nhds (∑ band : Band, zeroTemperatureOccupation fermiEnergy (bandEnergy band v m px py) *
+        cleanInterbandBastinPairLimitDensity band e v m px py)) := by
+  classical
+  have h := tendsto_pointwiseFockHallResponse_re
+    (Finset.univ.filter (fun band => bandEnergy band v m px py < fermiEnergy))
+    e v m px py hbar hhbar hE
+  have hscaled := (tendsto_const_nhds (x := 2 * Real.pi / hbar)).mul h
+  have hcancel : (2 * Real.pi / hbar) * hbar = 2 * Real.pi := by
+    field_simp [hhbar.ne']
+  simp only [← mul_assoc, hcancel] at hscaled
+  simpa [Finset.sum_filter, Finset.mul_sum, zeroTemperatureOccupation,
+    cleanInterbandBastinPairLimitDensity, mul_assoc] using hscaled
 
 /-- Radial positive-energy-coordinate density obtained from the clean local Bastin-pair profile.
 The Berry part is exactly `radialBerryEnergyDensity`; the factor `-2π e²` is the local pair limit
