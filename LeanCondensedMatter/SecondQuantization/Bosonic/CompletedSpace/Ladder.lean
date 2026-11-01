@@ -138,19 +138,9 @@ private theorem completedAnnihilatePullback_basisState_of_pos
         (createOccupation i) (createOccupation_injective i)
         (completedBasisState n) =
       completedBasisState (removeOccupation i n) := by
-  classical
-  ext m
-  rw [Common.completedCoordinatePullback_apply]
-  by_cases hm : m = removeOccupation i n
-  · subst m
-    rw [createOccupation_removeOccupation_of_pos hni]
-    simp [completedBasisState]
-  · have hcreate : createOccupation i m ≠ n := by
-      intro h
-      apply hm
-      have h' := congrArg (removeOccupation i) h
-      simpa only [removeOccupation_createOccupation] using h'
-    simp [completedBasisState, hcreate, hm]
+  simpa only [completedBasisState, createOccupation_removeOccupation_of_pos hni] using
+    (Common.completedCoordinatePullback_basisState_of_image
+      (createOccupation i) (createOccupation_injective i) (removeOccupation i n))
 
 private theorem completedCreateDiagonal_basisState (i : Mode) (n : Occupation Mode) :
     Common.completedDiagonalOperator
