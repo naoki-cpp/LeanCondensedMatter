@@ -1,5 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.TwoModeResponse
 import LeanCondensedMatter.Models.MassiveDirac.Bastin.Interband
+import Mathlib.Tactic.Ring
 
 set_option linter.style.header false
 
@@ -27,7 +28,7 @@ private def bandMode : Band → Fin 2
 
 private theorem pureProbability_nonneg (occupied n : Finset (Fin 2)) :
     0 ≤ (if n = occupied then (1 : ℝ) else 0) := by
-  split_ifs <;> norm_num
+  by_cases h : n = occupied <;> simp [h]
 
 private theorem pureProbability_hasSum (occupied : Finset (Fin 2)) :
     HasSum (fun n : Finset (Fin 2) => if n = occupied then (1 : ℝ) else 0) 1 := by
@@ -103,8 +104,8 @@ theorem tendsto_pointwiseFockHallResponse_re
       (pointwiseFockCurrentMatrix 1 e v m px py hE) hbar =
         hbar * ∑ band ∈ occupied, cleanBandFockHallDensity band e v m px py := by
     rcases hcases with rfl | rfl | rfl | rfl <;>
-      simp [modes, hmodes, modeBand, bandMode, cleanBandFockHallDensity, hE,
-        twoModeFockHallCleanResponse, hf0, hf1, hfall, hn0, hn1] <;> ring
+      (simp [modes, hmodes, modeBand, bandMode, cleanBandFockHallDensity, hE,
+        twoModeFockHallCleanResponse, hf0, hf1, hfall, hn0, hn1]; ring_nf; simp)
   rw [hvalue] at h
   exact h
 
