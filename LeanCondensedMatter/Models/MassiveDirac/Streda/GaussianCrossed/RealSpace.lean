@@ -486,13 +486,6 @@ private theorem gaussianCrossedAngularCurrentEntryKernel_sourceRotation
       (((Real.cos angle : ℝ) : ℂ) ^ 2) =
         1 - (((Real.sin angle : ℝ) : ℂ) ^ 2) := by
     linear_combination htrig
-  have hI2 : Complex.I ^ 2 = (-1 : ℂ) := by
-    simpa [pow_two] using Complex.I_mul_I
-  have hI3 : Complex.I ^ 3 = -Complex.I := by
-    calc
-      Complex.I ^ 3 = Complex.I ^ 2 * Complex.I := by ring
-      _ = (-1 : ℂ) * Complex.I := by rw [hI2]
-      _ = -Complex.I := by ring
   ext i j
   fin_cases source <;> fin_cases i <;> fin_cases j
   all_goals first
@@ -508,7 +501,7 @@ private theorem gaussianCrossedAngularCurrentEntryKernel_sourceRotation
       smul_eq_mul]
   all_goals try simp only [← Complex.ofReal_cos, ← Complex.ofReal_sin]
   all_goals ring_nf
-  all_goals simp only [hI2, hI3]
+  all_goals simp only [Complex.I_sq, Complex.I_pow_three]
   all_goals try simp only [hcosSq]
   all_goals ring
 
