@@ -9,7 +9,13 @@ import Mathlib.Analysis.SpecialFunctions.Exponential
 import Mathlib.Topology.MetricSpace.Cauchy
 import Mathlib.Algebra.Group.TypeTags.Basic
 import Mathlib.Algebra.Star.Unitary
-import Mathlib.Tactic
+import Mathlib.Tactic.Abel
+import Mathlib.Tactic.FunProp
+import Mathlib.Tactic.GCongr
+import Mathlib.Tactic.Linarith
+import Mathlib.Tactic.NormNum
+import Mathlib.Tactic.Positivity
+import Mathlib.Tactic.Ring
 
 set_option linter.style.header false
 
