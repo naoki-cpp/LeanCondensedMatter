@@ -2,7 +2,7 @@ import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Continuity.
 import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Continuity.CompactSupport1D
 import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Continuity.Schwartz1D
 import LeanCondensedMatter.Analysis.ConservationLaw.WeakConservation1D
-import Mathlib.Tactic
+import Mathlib.Tactic.Module
 
 set_option linter.style.header false
 

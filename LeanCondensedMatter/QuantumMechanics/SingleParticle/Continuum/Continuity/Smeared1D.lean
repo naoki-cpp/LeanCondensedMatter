@@ -1,6 +1,5 @@
 import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Continuity.Weak1D
 import Mathlib.Analysis.Calculus.ParametricIntervalIntegral
-import Mathlib.Tactic
 
 set_option linter.style.header false
 

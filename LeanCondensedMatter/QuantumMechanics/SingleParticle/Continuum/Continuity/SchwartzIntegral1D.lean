@@ -1,6 +1,6 @@
 import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Continuity.CurrentRepresentation1D
 import Mathlib.Analysis.Distribution.SchwartzSpace.Deriv
-import Mathlib.Tactic
+import Mathlib.Tactic.Linarith
 
 set_option linter.style.header false
 

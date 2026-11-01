@@ -1,7 +1,7 @@
 import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Continuity.Weak1D
 import Mathlib.Analysis.Complex.RealDeriv
 import Mathlib.Analysis.Distribution.SchwartzSpace.Deriv
-import Mathlib.Tactic
+import Mathlib.Tactic.Module
 
 set_option linter.style.header false
 
