@@ -287,11 +287,13 @@ theorem pauliVectorCoefficient_prefactor_intervalIntegral
   cases axis <;> simp only [pauliVectorCoefficient]
   · rw [intervalIntegral.integral_div,
       intervalIntegral.integral_add (hkernel 0 1) (hkernel 1 0)]
+    ring
   · rw [intervalIntegral.integral_div, intervalIntegral.integral_const_mul,
       intervalIntegral.integral_sub (hkernel 0 1) (hkernel 1 0)]
+    ring
   · rw [intervalIntegral.integral_div,
       intervalIntegral.integral_sub (hkernel 0 0) (hkernel 1 1)]
-  all_goals ring
+    ring
 
 /-- Every complex two-level matrix is its scalar Pauli-affine coefficient times the identity plus
 the Pauli synthesis of its three axis coefficients. -/
