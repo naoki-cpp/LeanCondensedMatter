@@ -138,7 +138,7 @@ private theorem completedAnnihilatePullback_basisState_of_pos
         (createOccupation i) (createOccupation_injective i)
         (completedBasisState n) =
       completedBasisState (removeOccupation i n) := by
-  simpa only [createOccupation_removeOccupation_of_pos hni] using
+  simpa only [completedBasisState, createOccupation_removeOccupation_of_pos hni] using
     (Common.completedCoordinatePullback_basisState_of_image
       (createOccupation i) (createOccupation_injective i) (removeOccupation i n))
 
