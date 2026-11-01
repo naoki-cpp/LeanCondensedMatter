@@ -84,10 +84,6 @@ private theorem twoModeFockLehmannTableResponse_eq_kubo
         (Common.finiteHilbertOperatorAlgEquiv (twoModeVertex A))
         (Common.finiteHilbertOperatorAlgEquiv (twoModeVertex B)) omega eta := by
   dsimp only
-  rw [adiabaticFrequencyDomainSusceptibility_eigenbasis_eq_finite_sum
-    (twoModeFockSystem energy hbar hhbar)
-    (twoModeFockEigenbasisData energy probability hbar hhbar hpos hsum)
-    _ _ omega eta heta]
   have hcoeff (V : OccupationFock (Fin 2) →ₗ[ℂ] OccupationFock (Fin 2))
       (m n : Occupation (Fin 2)) :
       inner ℂ (Common.finiteHilbertBasis m)
@@ -98,8 +94,19 @@ private theorem twoModeFockLehmannTableResponse_eq_kubo
       (Common.finiteHilbertOperatorAlgEquiv V (Common.finiteHilbertBasisState n)) = _
     rw [EuclideanSpace.inner_single_left]
     simp only [map_one, one_mul, Common.finiteHilbertOperator_basis_apply]
-  simp only [finiteLehmannTableResponse, finiteLehmannTableTransitionData,
-    twoModeFockLehmannTable, eigenbasisTransitionData, twoModeFockEigenbasisData, hcoeff]
+  calc
+    _ = ∑ mn : Occupation (Fin 2) × Occupation (Fin 2),
+        (eigenbasisTransitionData (twoModeFockSystem energy hbar hhbar)
+          (twoModeFockEigenbasisData energy probability hbar hhbar hpos hsum)
+          (Common.finiteHilbertOperatorAlgEquiv (twoModeVertex A))
+          (Common.finiteHilbertOperatorAlgEquiv (twoModeVertex B)) mn).frequencyTerm omega eta := by
+      simp only [finiteLehmannTableResponse, finiteLehmannTableTransitionData,
+        twoModeFockLehmannTable, eigenbasisTransitionData, twoModeFockEigenbasisData, hcoeff]
+    _ = _ := (adiabaticFrequencyDomainSusceptibility_eigenbasis_eq_finite_sum
+      (twoModeFockSystem energy hbar hhbar)
+      (twoModeFockEigenbasisData energy probability hbar hhbar hpos hsum)
+      (Common.finiteHilbertOperatorAlgEquiv (twoModeVertex A))
+      (Common.finiteHilbertOperatorAlgEquiv (twoModeVertex B)) omega eta heta).symm
 
 set_option maxHeartbeats 800000 in
 -- Expanding the four occupation states evaluates the creation-annihilation signs explicitly.
@@ -120,7 +127,9 @@ private theorem twoModeFockLehmannTableResponse_eq
   have hsum (f : Occupation (Fin 2) → ℂ) :
       (∑ n, f n) = f ∅ + f {0} + f {1} + f {0, 1} := by
     rw [hstates]
-    norm_num [Finset.sum_insert, Finset.sum_singleton] <;> ring
+    rw [Finset.sum_insert (by decide), Finset.sum_insert (by decide),
+      Finset.sum_insert (by decide), Finset.sum_singleton]
+    ring
   have ha (i : Fin 2) (n : Occupation (Fin 2)) :
       annihilate i (Common.basisState n) =
         if i ∈ n then (fermionSign i n : ℂ) • Common.basisState (removeOccupation i n) else 0 := by
@@ -132,12 +141,15 @@ private theorem twoModeFockLehmannTableResponse_eq
   unfold finiteLehmannTableResponse
   rw [Fintype.sum_prod_type]
   simp_rw [hsum]
-  simp [twoModeFockLehmannTable, finiteLehmannTableTransitionData,
+  simp only [twoModeFockLehmannTable, finiteLehmannTableTransitionData,
     LehmannTransitionData.frequencyTerm, orderedLehmannTransitionData,
     lehmannTerm, twoModeVertex, Common.matrixCoeff,
-    LinearMap.smul_apply, LinearMap.comp_apply, ha, hc,
+    Fin.sum_univ_two, LinearMap.sum_apply, LinearMap.add_apply,
+    LinearMap.smul_apply, LinearMap.comp_apply]
+  simp [ha, hc,
     map_smul, fermionSign, insertOccupation, removeOccupation,
-    Fin.sum_univ_two, fermionEnergy_eq_sum, Common.basisState, Finsupp.single_apply]
+    fermionEnergy_eq_sum] <;>
+    simp [Common.basisState, Finsupp.single_apply]
 
 /-- Antisymmetric current response converted from vector potential to electric field at zero
 frequency. This is a response density before a momentum measure or volume factor is applied. -/
@@ -171,6 +183,7 @@ private theorem tendsto_twoModeFockHallResponse_re
       (A 0 1 * B 1 0 - B 0 1 * A 1 0)
   let F := fun eta : ℝ => numerator /
     (lehmannDenominator hbar 0 eta gap * lehmannDenominator hbar 0 eta (-gap))
+  have hhbarC : (hbar : ℂ) ≠ 0 := by exact_mod_cast hhbar
   have hrewrite (eta : ℝ) (heta : 0 < eta) :
       twoModeFockHallResponse energy probability A B hbar eta = F eta := by
     have hden := lehmannDenominator_ne_zero hbar 0 eta gap heta.ne'
@@ -179,16 +192,16 @@ private theorem tendsto_twoModeFockHallResponse_re
     unfold twoModeFockHallResponse
     rw [twoModeFockLehmannTableResponse_eq, twoModeFockLehmannTableResponse_eq]
     have hswap : energy 1 - energy 0 = -gap := by dsimp [gap]; ring
+    have hforward : energy 0 - energy 1 = gap := rfl
     simp only [LehmannTransitionData.frequencyTerm, orderedLehmannTransitionData,
-      lehmannTerm, hswap]
+      lehmannTerm, hswap, hforward]
     change _ = numerator /
       (lehmannDenominator hbar 0 eta gap * lehmannDenominator hbar 0 eta (-gap))
     dsimp [numerator]
-    field_simp [hden, hden', hetaC]
+    field_simp [hden, hden', hetaC, hhbarC]
     simp only [lehmannDenominator]
     push_cast
     ring
-  have hhbarC : (hbar : ℂ) ≠ 0 := by exact_mod_cast hhbar
   have hgapC : (gap : ℂ) ≠ 0 := by exact_mod_cast hgap
   have hden0 : lehmannDenominator hbar 0 0 gap *
       lehmannDenominator hbar 0 0 (-gap) ≠ 0 := by
@@ -204,11 +217,16 @@ private theorem tendsto_twoModeFockHallResponse_re
     dsimp [F, numerator, lehmannDenominator]
     push_cast
     field_simp [hhbarC, hgapC]
-    ring_nf <;> norm_num
+    ring_nf <;> norm_num <;> ring
   have hreal : (F 0).re = twoModeFockHallCleanResponse energy probability A B hbar := by
     rw [heval]
-    rw [← Complex.ofReal_pow, div_eq_mul_inv, ← Complex.ofReal_inv]
-    simp [twoModeFockHallCleanResponse, gap, Complex.mul_re, Complex.mul_im] <;> ring
+    rw [← Complex.ofReal_pow, Complex.div_ofReal_re]
+    simp only [Complex.mul_re, Complex.mul_im, Complex.neg_re, Complex.neg_im,
+      Complex.I_re, Complex.I_im, Complex.ofReal_re, Complex.ofReal_im,
+      mul_zero, zero_mul, sub_zero, zero_sub, one_mul, zero_add, add_zero,
+      twoModeFockHallCleanResponse]
+    dsimp only [gap]
+    ring
   have hlimit : Filter.Tendsto (fun eta => (F eta).re) (nhdsWithin 0 (Set.Ioi 0))
       (nhds (F 0).re) :=
     Complex.continuous_re.continuousAt.tendsto.comp

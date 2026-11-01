@@ -304,6 +304,16 @@ integrability remain explicit hypotheses. This finite-mode construction does not
 the many-body Gibbs response with the continuum one-particle conductivity calculations;
 that reduction, volume normalization and continuum limits require separate results.
 
+The clean Hall density has a separate pointwise construction in
+`MassiveDirac.ManyBody.PointwiseHall`: at each momentum the two energy bands form a four-state
+fermionic Fock system. Its normalized occupied configuration enters the existing causal Kubo
+theory. The antisymmetric electric-field response has a clean switching-rate limit, whose band
+coefficients equal the canonical Berry density. `Bastin.CleanLimit` uses these coefficients as
+the clean local density; radial change-of-variables and dominated-convergence consumers use its
+proved Berry representation. This connects local Fock responses to the existing clean integrals,
+without constructing a single global infinite-volume density operator. It does not identify
+finite switching rate with a finite physical scattering width, or supply a disorder approximation.
+
 Its explicit clean Pauli Green operator and continuum Born self-energy follow the same split as the
 generic disorder layer: arbitrary-regulator definitions/theorems own the analytic calculation, while
 side-indexed objects are retained only at reusable physical boundaries such as broadening limits,
