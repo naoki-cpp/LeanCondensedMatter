@@ -260,10 +260,8 @@ private theorem eventually_norm_finiteCutoffContinuumBornDysonDenominator_lower_
     rw [hdiff]
     simpa [c, dist_eq_norm] using hcloseAt
   have htri : ‖D0‖ ≤ ‖D - D0‖ + ‖D‖ := by
-    calc
-      ‖D0‖ = ‖(D0 - D) + D‖ := by ring_nf
-      _ ≤ ‖D0 - D‖ + ‖D‖ := norm_add_le _ _
-      _ = ‖D - D0‖ + ‖D‖ := by rw [norm_sub_rev]
+    simpa only [sub_add_cancel, norm_sub_rev] using
+      (norm_add_le (D0 - D) D)
   have hboundaryLower : δ ≤ ‖D0‖ := by
     simpa [δ, D0] using hmin hp
   dsimp [c] at herr ⊢
@@ -327,11 +325,9 @@ theorem tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoeffic
               i j v m p probeEnergy broadening disorderStrength hbar pMax)
           (volume.restrict (Set.Icc 0 pMax)) := by
     filter_upwards [self_mem_nhdsWithin] with broadening hbroadening
-    have hcontinuous :=
-      continuous_finiteBroadeningBornCurrentRungRadialIntegrand
-        i j v m probeEnergy broadening disorderStrength hbar pMax
-        (ne_of_gt hbroadening) hdisorder hpMax
-    exact hcontinuous.stronglyMeasurable.aestronglyMeasurable
+    exact (continuous_finiteBroadeningBornCurrentRungRadialIntegrand
+      i j v m probeEnergy broadening disorderStrength hbar pMax
+      (ne_of_gt hbroadening) hdisorder hpMax).stronglyMeasurable.aestronglyMeasurable
   have hBound :
       ∀ᶠ broadening : ℝ in nhdsWithin 0 (Set.Ioi 0),
         ∀ᵐ p ∂(volume.restrict (Set.Icc 0 pMax)),
@@ -357,18 +353,15 @@ theorem tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoeffic
     let numerator :=
       finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumerator
         i j v m probeEnergy broadening disorderStrength hbar pMax
-    have hnumErr : ‖numerator - numeratorBoundary‖ < 1 := by
-      simpa only [numerator, dist_eq_norm] using hnumCloseAt
     have hnumBound : ‖numerator‖ ≤ ‖numeratorBoundary‖ + 1 := by
-      calc
-        ‖numerator‖ = ‖(numerator - numeratorBoundary) + numeratorBoundary‖ := by
-          rw [sub_add_cancel]
-        _ ≤ ‖numerator - numeratorBoundary‖ + ‖numeratorBoundary‖ := norm_add_le _ _
-        _ ≤ _ := by linarith
+      have htri := norm_add_le (numerator - numeratorBoundary) numeratorBoundary
+      rw [sub_add_cancel] at htri
+      have hnumErr : ‖numerator - numeratorBoundary‖ < 1 := by
+        simpa only [numerator, dist_eq_norm] using hnumCloseAt
+      linarith
     dsimp only [numerator] at hnumBound
     have hpNorm : ‖(p : ℂ)‖ ≤ pMax := by
-      rw [Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg hp.1]
-      exact hp.2
+      simpa only [Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg hp.1] using hp.2
     rw [finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungRadialIntegrand,
       finiteCutoffContinuumBornDysonRetardedAdvancedAngularCoefficient_eq_denominatorForm]
     simp only [norm_mul]
@@ -376,8 +369,8 @@ theorem tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoeffic
     simp only [← mul_assoc]
     gcongr
   have hBoundIntegrable :
-      Integrable (fun _ : ℝ => boundValue) (volume.restrict (Set.Icc 0 pMax)) := by
-    exact integrableOn_const isCompact_Icc.measure_lt_top.ne
+      Integrable (fun _ : ℝ => boundValue) (volume.restrict (Set.Icc 0 pMax)) :=
+    integrableOn_const isCompact_Icc.measure_lt_top.ne
   exact
     tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedCurrentRungCoefficient_broadening_zero_of_dominated
       i j v m probeEnergy disorderStrength hbar pMax hpMax hvelocity hmetal hcutoff hden
