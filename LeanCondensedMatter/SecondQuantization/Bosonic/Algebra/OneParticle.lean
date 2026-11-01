@@ -38,6 +38,7 @@ theorem createVector_fockVacuum (v : EuclideanSpace ℂ Mode) :
     createVector v fockVacuum = oneParticleEmbedding v := by
   simp [createVector, oneParticleEmbedding, LinearMap.sum_apply]
 
+omit [Fintype Mode] in
 private theorem annihilate_basisState_singleOccupation (i j : Mode) :
     annihilate i (basisState (singleOccupation j)) =
       if i = j then fockVacuum else 0 := by
@@ -79,8 +80,13 @@ theorem secondQuantization_comp_oneParticleEmbedding
   simp only [OrthonormalBasis.coe_toBasis, EuclideanSpace.basisFun_apply,
     LinearMap.comp_apply]
   rw [oneParticleEmbedding_single]
+  have hhop (i k : Mode) :
+      create i (annihilate k (basisState (singleOccupation j))) =
+        if k = j then basisState (singleOccupation i) else 0 := by
+    rw [annihilate_basisState_singleOccupation]
+    split_ifs <;> simp
   simp [secondQuantization, oneParticleEmbedding, LinearMap.sum_apply,
-    LinearMap.comp_apply, annihilate_basisState_singleOccupation, ite_smul]
+    LinearMap.comp_apply, hhop, smul_ite]
 
 end
 end SecondQuantization.Bosonic
