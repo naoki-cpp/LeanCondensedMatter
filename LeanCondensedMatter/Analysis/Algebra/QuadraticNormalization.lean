@@ -1,6 +1,6 @@
 module
 
-public import Mathlib.Tactic.FieldSimp
+import Mathlib.Tactic.FieldSimp
 public import Mathlib.Algebra.Algebra.Basic
 
 public section
