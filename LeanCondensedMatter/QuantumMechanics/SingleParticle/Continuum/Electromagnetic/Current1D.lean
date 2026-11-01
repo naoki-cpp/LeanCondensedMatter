@@ -1,6 +1,7 @@
 import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Probability.Basic1D
 import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Electromagnetic.MinimalCoupling1D
-import Mathlib.Tactic
+import Mathlib.Tactic.FieldSimp
+import Mathlib.Tactic.Ring
 
 set_option linter.style.header false
 
