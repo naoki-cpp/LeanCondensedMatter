@@ -132,6 +132,16 @@ theorem completedBasisState_mem_completedAnnihilateDomain (i : Mode) (n : Occupa
   exact Common.completedBasisState_mem_completedDiagonalDomain
     (fun m : Occupation Mode => (Real.sqrt (m i : ℝ) : ℂ)) n
 
+private theorem completedAnnihilatePullback_basisState_of_pos
+    (i : Mode) {n : Occupation Mode} (hni : n i ≠ 0) :
+    Common.completedCoordinatePullback
+        (createOccupation i) (createOccupation_injective i)
+        (completedBasisState n) =
+      completedBasisState (removeOccupation i n) := by
+  simpa only [createOccupation_removeOccupation_of_pos hni] using
+    (Common.completedCoordinatePullback_basisState_of_image
+      (createOccupation i) (createOccupation_injective i) (removeOccupation i n))
+
 private theorem completedCreateDiagonal_basisState (i : Mode) (n : Occupation Mode) :
     Common.completedDiagonalOperator
         (fun m : Occupation Mode => (Real.sqrt (m i + 1 : ℝ) : ℂ))
@@ -188,10 +198,7 @@ theorem completedAnnihilate_basisState (i : Mode) (n : Occupation Mode)
   rw [completedAnnihilateDiagonal_basisState, map_smul]
   by_cases hni : n i = 0
   · simp [hni]
-  · have hshift := Common.completedCoordinatePullback_basisState_of_image
-      (createOccupation i) (createOccupation_injective i) (removeOccupation i n)
-    rw [createOccupation_removeOccupation_of_pos hni] at hshift
-    rw [hshift]
+  · rw [completedAnnihilatePullback_basisState_of_pos i hni]
 
 private noncomputable def algebraicToCompletedCreateDomain (i : Mode) :
     FockSpace Mode →ₗ[ℂ] (completedCreate i).domain := by
