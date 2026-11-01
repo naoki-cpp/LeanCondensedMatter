@@ -160,6 +160,7 @@ so the measured current has zero explicit variation and the fixed channel has ze
 `horizon` is a time interval endpoint, distinct from the inverse temperature. Analytic bounds
 and interval integrability of the applied source remain explicit hypotheses. The derivative is
 written using the second quantization of the commutator of one-particle current orbits. -/
+set_option maxHeartbeats 800000 in
 theorem hasDerivAt_gibbsCurrentResponse
     (momentum : Momentum → ℝ × ℝ) (measuredDirection sourceDirection : Fin 2)
     (e v m hbar inverseTemperature : ℝ) (hbar_pos : 0 < hbar)
@@ -173,12 +174,14 @@ theorem hasDerivAt_gibbsCurrentResponse
         (sourceCoupledPerturbation f (current sourceDirection e v)))
       MeasureTheory.volume 0 t) :
     let S := system momentum v m hbar hbar_pos
-    let expectation := (gibbsState S.hamiltonian inverseTemperature).toNormalizedExpectation
-    let C := ResponseChannel.fixed (current (Momentum := Momentum) measuredDirection e v)
+    let expectation : NormalizedExpectation (Hilbert Momentum) :=
+      (gibbsState S.hamiltonian inverseTemperature).toNormalizedExpectation
+    let C : ResponseChannel (Hilbert Momentum) :=
+      ResponseChannel.fixed (current (Momentum := Momentum) measuredDirection e v)
       (current sourceDirection e v)
     let generator := (-(Complex.I / (hbar : ℂ))) • oneParticleHamiltonian momentum v m
     let evolvedCurrent := fun (direction : Fin 2) (time : ℝ) =>
-      NormedSpace.exp ((-time) • generator) * oneParticleCurrent direction e v *
+      NormedSpace.exp ((-time) • generator) * oneParticleCurrent (Momentum := Momentum) direction e v *
         NormedSpace.exp (time • generator)
     HasDerivAt
       (fun lam : ℝ => affinePerturbedExpectation (freePropagatorGroup S) hbar expectation
@@ -189,10 +192,11 @@ theorem hasDerivAt_gibbsCurrentResponse
             ⁅evolvedCurrent measuredDirection t, evolvedCurrent sourceDirection s⁆)
         else 0)) 0 := by
   let S := system momentum v m hbar hbar_pos
-  let expectation := (gibbsState S.hamiltonian inverseTemperature).toNormalizedExpectation
+  let expectation : NormalizedExpectation (Hilbert Momentum) :=
+    (gibbsState S.hamiltonian inverseTemperature).toNormalizedExpectation
   let generator := (-(Complex.I / (hbar : ℂ))) • oneParticleHamiltonian momentum v m
   let evolvedCurrent := fun (direction : Fin 2) (time : ℝ) =>
-    NormedSpace.exp ((-time) • generator) * oneParticleCurrent direction e v *
+    NormedSpace.exp ((-time) • generator) * oneParticleCurrent (Momentum := Momentum) direction e v *
       NormedSpace.exp (time • generator)
   have horbit (direction : Fin 2) (time : ℝ) :
       heisenbergEvolution (freePropagatorGroup S) time (current direction e v) =
