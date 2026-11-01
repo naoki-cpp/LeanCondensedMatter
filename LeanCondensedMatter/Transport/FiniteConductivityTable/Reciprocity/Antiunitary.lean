@@ -1,7 +1,6 @@
 import LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.Antiunitary
 import LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann.Eigenbasis.Data
 import LeanCondensedMatter.Transport.FiniteConductivityTable.Reciprocity
-import Mathlib.Tactic
 
 set_option linter.style.header false
 

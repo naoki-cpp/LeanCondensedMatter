@@ -1,6 +1,6 @@
 import LeanCondensedMatter.Transport.FiniteConductivityTable
 import LeanCondensedMatter.Transport.Core.ConductivityTensor
-import Mathlib.Tactic
+import Mathlib.Tactic.Ring
 
 set_option linter.style.header false
 
