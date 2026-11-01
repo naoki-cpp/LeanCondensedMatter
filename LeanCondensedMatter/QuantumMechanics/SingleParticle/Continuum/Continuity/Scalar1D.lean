@@ -1,7 +1,9 @@
 import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Probability.Basic1D
 import Mathlib.Analysis.Calculus.Deriv.Add
 import Mathlib.Analysis.Calculus.Deriv.Mul
-import Mathlib.Tactic
+import Mathlib.Tactic.FieldSimp
+import Mathlib.Tactic.Module
+import Mathlib.Tactic.Ring
 
 set_option linter.style.header false
 
