@@ -36501,52 +36501,6 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": false,
-    "statement": "∀ {Mode : Type u_1} (twiceSpin : ℕ) (i : Mode) (n : SecondQuantization.Bosonic.Occupation Mode),\n  n i ≤ twiceSpin → SecondQuantization.Bosonic.basisState n ∈ Models.HolsteinPrimakoff.physicalSubspace twiceSpin i",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "Models.HolsteinPrimakoff.basisState_mem_physicalSubspace",
-    "module": "LeanCondensedMatter.Models.HolsteinPrimakoff",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "Models.HolsteinPrimakoff.spinMinus_mem_physicalSubspace",
-      "Models.HolsteinPrimakoff.spinPlus_mem_physicalSubspace",
-      "Models.HolsteinPrimakoff.spinZ_mem_physicalSubspace"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "Models.HolsteinPrimakoff.spinMinus_mem_physicalSubspace",
-      "Models.HolsteinPrimakoff.spinPlus_mem_physicalSubspace",
-      "Models.HolsteinPrimakoff.spinZ_mem_physicalSubspace"
-    ],
-    "compiledConsumerCount": 3,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
     "terminal": true,
     "statement": "∀ {Mode : Type u_1} (hbar : ℝ) (twiceSpin : ℕ) (i : Mode),\n  ∀ ψ ∈ Models.HolsteinPrimakoff.physicalSubspace twiceSpin i,\n    (ScalarExchange.zetaCommutator 1 (Models.HolsteinPrimakoff.spinPlus hbar twiceSpin i)\n          (Models.HolsteinPrimakoff.spinMinus hbar twiceSpin i))\n        ψ =\n      (2 * ↑hbar) • (Models.HolsteinPrimakoff.spinZ hbar twiceSpin i) ψ",
     "standardAxioms": [
@@ -36840,9 +36794,10 @@
       "Models.HolsteinPrimakoff.spinRepresentation_intertwines"
     ],
     "dependencies": [
-      "_private.LeanCondensedMatter.Models.HolsteinPrimakoff.MultiSite.0.Models.HolsteinPrimakoff.spinMinus_mem_simultaneousSubspace",
-      "_private.LeanCondensedMatter.Models.HolsteinPrimakoff.MultiSite.0.Models.HolsteinPrimakoff.spinPlus_mem_simultaneousSubspace",
-      "_private.LeanCondensedMatter.Models.HolsteinPrimakoff.MultiSite.0.Models.HolsteinPrimakoff.spinZ_mem_simultaneousSubspace"
+      "Models.HolsteinPrimakoff.simultaneousSubspace_eq_iInf",
+      "Models.HolsteinPrimakoff.spinMinus_mem_physicalSubspace",
+      "Models.HolsteinPrimakoff.spinPlus_mem_physicalSubspace",
+      "Models.HolsteinPrimakoff.spinZ_mem_physicalSubspace"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -36864,7 +36819,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ {Mode : Type u_1} (twiceSpin : ℕ),\n  Models.HolsteinPrimakoff.simultaneousSubspace twiceSpin = ⨅ i, Models.HolsteinPrimakoff.physicalSubspace twiceSpin i",
     "standardAxioms": [
       "Classical.choice",
@@ -36872,7 +36827,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -36883,58 +36838,16 @@
     "docString": null,
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "_private.LeanCondensedMatter.Models.HolsteinPrimakoff.MultiSite.0.Models.HolsteinPrimakoff.physicalSubspace_eq_supported"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Mode : Type u_1} (twiceSpin : ℕ),\n  Models.HolsteinPrimakoff.simultaneousSubspace twiceSpin =\n    Submodule.span ℂ (SecondQuantization.Bosonic.basisState '' {n | ∀ (i : Mode), n i ≤ twiceSpin})",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "Models.HolsteinPrimakoff.simultaneousSubspace_eq_span",
-    "module": "LeanCondensedMatter.Models.HolsteinPrimakoff.MultiSite",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
     "dependents": [
-      "_private.LeanCondensedMatter.Models.HolsteinPrimakoff.MultiSite.0.Models.HolsteinPrimakoff.basisState_mem_simultaneousSubspace",
-      "_private.LeanCondensedMatter.Models.HolsteinPrimakoff.MultiSite.0.Models.HolsteinPrimakoff.preserves_simultaneousSubspace"
+      "Models.HolsteinPrimakoff.mem_simultaneousSubspace_of_mem_spinAlgebra"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "_private.LeanCondensedMatter.Models.HolsteinPrimakoff.MultiSite.0.Models.HolsteinPrimakoff.basisState_mem_simultaneousSubspace",
-      "_private.LeanCondensedMatter.Models.HolsteinPrimakoff.MultiSite.0.Models.HolsteinPrimakoff.preserves_simultaneousSubspace"
+      "Models.HolsteinPrimakoff.mem_simultaneousSubspace_of_mem_spinAlgebra"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -36974,7 +36887,6 @@
       "_private.LeanCondensedMatter.Models.HolsteinPrimakoff.0.Models.HolsteinPrimakoff.spinMinus_spinPlus_basisState",
       "_private.LeanCondensedMatter.Models.HolsteinPrimakoff.0.Models.HolsteinPrimakoff.spinPlus_spinMinus_basisState",
       "_private.LeanCondensedMatter.Models.HolsteinPrimakoff.MultiSite.0.Models.HolsteinPrimakoff.spinMinus_comm_spinMinus",
-      "_private.LeanCondensedMatter.Models.HolsteinPrimakoff.MultiSite.0.Models.HolsteinPrimakoff.spinMinus_mem_simultaneousSubspace",
       "_private.LeanCondensedMatter.Models.HolsteinPrimakoff.MultiSite.0.Models.HolsteinPrimakoff.spinPlus_comm_spinMinus",
       "_private.LeanCondensedMatter.Models.HolsteinPrimakoff.MultiSite.0.Models.HolsteinPrimakoff.spinZ_comm_spinMinus"
     ],
@@ -36991,11 +36903,10 @@
       "_private.LeanCondensedMatter.Models.HolsteinPrimakoff.0.Models.HolsteinPrimakoff.spinMinus_spinPlus_basisState",
       "_private.LeanCondensedMatter.Models.HolsteinPrimakoff.0.Models.HolsteinPrimakoff.spinPlus_spinMinus_basisState",
       "_private.LeanCondensedMatter.Models.HolsteinPrimakoff.MultiSite.0.Models.HolsteinPrimakoff.spinMinus_comm_spinMinus",
-      "_private.LeanCondensedMatter.Models.HolsteinPrimakoff.MultiSite.0.Models.HolsteinPrimakoff.spinMinus_mem_simultaneousSubspace",
       "_private.LeanCondensedMatter.Models.HolsteinPrimakoff.MultiSite.0.Models.HolsteinPrimakoff.spinPlus_comm_spinMinus",
       "_private.LeanCondensedMatter.Models.HolsteinPrimakoff.MultiSite.0.Models.HolsteinPrimakoff.spinZ_comm_spinMinus"
     ],
-    "compiledConsumerCount": 9,
+    "compiledConsumerCount": 8,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -37017,7 +36928,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -37029,8 +36940,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "Models.HolsteinPrimakoff.spinMinus_mem_physicalSubspace",
-      "_private.LeanCondensedMatter.Models.HolsteinPrimakoff.MultiSite.0.Models.HolsteinPrimakoff.spinMinus_mem_simultaneousSubspace"
+      "Models.HolsteinPrimakoff.spinMinus_mem_physicalSubspace"
     ],
     "dependencies": [
       "Models.HolsteinPrimakoff.spinMinus_basisState"
@@ -37038,10 +36948,9 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "Models.HolsteinPrimakoff.spinMinus_mem_physicalSubspace",
-      "_private.LeanCondensedMatter.Models.HolsteinPrimakoff.MultiSite.0.Models.HolsteinPrimakoff.spinMinus_mem_simultaneousSubspace"
+      "Models.HolsteinPrimakoff.spinMinus_mem_physicalSubspace"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -37055,15 +36964,15 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
-    "statement": "∀ {Mode : Type u_1} (hbar : ℝ) (twiceSpin : ℕ) (i : Mode),\n  ∀ ψ ∈ Models.HolsteinPrimakoff.physicalSubspace twiceSpin i,\n    (Models.HolsteinPrimakoff.spinMinus hbar twiceSpin i) ψ ∈ Models.HolsteinPrimakoff.physicalSubspace twiceSpin i",
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} (hbar : ℝ) (twiceSpin : ℕ) (i j : Mode),\n  ∀ ψ ∈ Models.HolsteinPrimakoff.physicalSubspace twiceSpin j,\n    (Models.HolsteinPrimakoff.spinMinus hbar twiceSpin i) ψ ∈ Models.HolsteinPrimakoff.physicalSubspace twiceSpin j",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -37071,21 +36980,25 @@
     "name": "Models.HolsteinPrimakoff.spinMinus_mem_physicalSubspace",
     "module": "LeanCondensedMatter.Models.HolsteinPrimakoff",
     "externalAxioms": [],
-    "docString": null,
+    "docString": "Local spin lowering preserves every site's cap, vanishing at its own upper endpoint. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "Models.HolsteinPrimakoff.mem_simultaneousSubspace_of_mem_spinAlgebra"
+    ],
     "dependencies": [
-      "Models.HolsteinPrimakoff.basisState_mem_physicalSubspace",
       "Models.HolsteinPrimakoff.spinMinus_basisState",
       "Models.HolsteinPrimakoff.spinMinus_basisState_of_top",
+      "SecondQuantization.Bosonic.createOccupation_apply_ne",
       "SecondQuantization.Bosonic.createOccupation_apply_same",
       "_private.LeanCondensedMatter.Models.HolsteinPrimakoff.0.Models.HolsteinPrimakoff.preserves_physicalSubspace"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "Models.HolsteinPrimakoff.mem_simultaneousSubspace_of_mem_spinAlgebra"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -37126,7 +37039,6 @@
       "_private.LeanCondensedMatter.Models.HolsteinPrimakoff.0.Models.HolsteinPrimakoff.spinPlus_spinMinus_basisState",
       "_private.LeanCondensedMatter.Models.HolsteinPrimakoff.MultiSite.0.Models.HolsteinPrimakoff.spinPlus_comm_spinMinus",
       "_private.LeanCondensedMatter.Models.HolsteinPrimakoff.MultiSite.0.Models.HolsteinPrimakoff.spinPlus_comm_spinPlus",
-      "_private.LeanCondensedMatter.Models.HolsteinPrimakoff.MultiSite.0.Models.HolsteinPrimakoff.spinPlus_mem_simultaneousSubspace",
       "_private.LeanCondensedMatter.Models.HolsteinPrimakoff.MultiSite.0.Models.HolsteinPrimakoff.spinZ_comm_spinPlus"
     ],
     "dependencies": [
@@ -37144,10 +37056,9 @@
       "_private.LeanCondensedMatter.Models.HolsteinPrimakoff.0.Models.HolsteinPrimakoff.spinPlus_spinMinus_basisState",
       "_private.LeanCondensedMatter.Models.HolsteinPrimakoff.MultiSite.0.Models.HolsteinPrimakoff.spinPlus_comm_spinMinus",
       "_private.LeanCondensedMatter.Models.HolsteinPrimakoff.MultiSite.0.Models.HolsteinPrimakoff.spinPlus_comm_spinPlus",
-      "_private.LeanCondensedMatter.Models.HolsteinPrimakoff.MultiSite.0.Models.HolsteinPrimakoff.spinPlus_mem_simultaneousSubspace",
       "_private.LeanCondensedMatter.Models.HolsteinPrimakoff.MultiSite.0.Models.HolsteinPrimakoff.spinZ_comm_spinPlus"
     ],
-    "compiledConsumerCount": 9,
+    "compiledConsumerCount": 8,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -37207,15 +37118,15 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
-    "statement": "∀ {Mode : Type u_1} (hbar : ℝ) (twiceSpin : ℕ) (i : Mode),\n  ∀ ψ ∈ Models.HolsteinPrimakoff.physicalSubspace twiceSpin i,\n    (Models.HolsteinPrimakoff.spinPlus hbar twiceSpin i) ψ ∈ Models.HolsteinPrimakoff.physicalSubspace twiceSpin i",
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} (hbar : ℝ) (twiceSpin : ℕ) (i j : Mode),\n  ∀ ψ ∈ Models.HolsteinPrimakoff.physicalSubspace twiceSpin j,\n    (Models.HolsteinPrimakoff.spinPlus hbar twiceSpin i) ψ ∈ Models.HolsteinPrimakoff.physicalSubspace twiceSpin j",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -37223,20 +37134,24 @@
     "name": "Models.HolsteinPrimakoff.spinPlus_mem_physicalSubspace",
     "module": "LeanCondensedMatter.Models.HolsteinPrimakoff",
     "externalAxioms": [],
-    "docString": null,
+    "docString": "Local spin raising preserves the occupation cap at every site. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "Models.HolsteinPrimakoff.mem_simultaneousSubspace_of_mem_spinAlgebra"
+    ],
     "dependencies": [
-      "Models.HolsteinPrimakoff.basisState_mem_physicalSubspace",
       "Models.HolsteinPrimakoff.spinPlus_basisState",
+      "SecondQuantization.Bosonic.removeOccupation_apply_ne",
       "SecondQuantization.Bosonic.removeOccupation_apply_same",
       "_private.LeanCondensedMatter.Models.HolsteinPrimakoff.0.Models.HolsteinPrimakoff.preserves_physicalSubspace"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "Models.HolsteinPrimakoff.mem_simultaneousSubspace_of_mem_spinAlgebra"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -37358,8 +37273,7 @@
       "Models.HolsteinPrimakoff.spinZ_mem_physicalSubspace",
       "_private.LeanCondensedMatter.Models.HolsteinPrimakoff.MultiSite.0.Models.HolsteinPrimakoff.spinZ_comm_spinMinus",
       "_private.LeanCondensedMatter.Models.HolsteinPrimakoff.MultiSite.0.Models.HolsteinPrimakoff.spinZ_comm_spinPlus",
-      "_private.LeanCondensedMatter.Models.HolsteinPrimakoff.MultiSite.0.Models.HolsteinPrimakoff.spinZ_comm_spinZ",
-      "_private.LeanCondensedMatter.Models.HolsteinPrimakoff.MultiSite.0.Models.HolsteinPrimakoff.spinZ_mem_simultaneousSubspace"
+      "_private.LeanCondensedMatter.Models.HolsteinPrimakoff.MultiSite.0.Models.HolsteinPrimakoff.spinZ_comm_spinZ"
     ],
     "dependencies": [
       "SecondQuantization.Bosonic.numberOperator_basisState"
@@ -37373,10 +37287,9 @@
       "Models.HolsteinPrimakoff.spinZ_mem_physicalSubspace",
       "_private.LeanCondensedMatter.Models.HolsteinPrimakoff.MultiSite.0.Models.HolsteinPrimakoff.spinZ_comm_spinMinus",
       "_private.LeanCondensedMatter.Models.HolsteinPrimakoff.MultiSite.0.Models.HolsteinPrimakoff.spinZ_comm_spinPlus",
-      "_private.LeanCondensedMatter.Models.HolsteinPrimakoff.MultiSite.0.Models.HolsteinPrimakoff.spinZ_comm_spinZ",
-      "_private.LeanCondensedMatter.Models.HolsteinPrimakoff.MultiSite.0.Models.HolsteinPrimakoff.spinZ_mem_simultaneousSubspace"
+      "_private.LeanCondensedMatter.Models.HolsteinPrimakoff.MultiSite.0.Models.HolsteinPrimakoff.spinZ_comm_spinZ"
     ],
-    "compiledConsumerCount": 8,
+    "compiledConsumerCount": 7,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -37390,15 +37303,15 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
-    "statement": "∀ {Mode : Type u_1} (hbar : ℝ) (twiceSpin : ℕ) (i : Mode),\n  ∀ ψ ∈ Models.HolsteinPrimakoff.physicalSubspace twiceSpin i,\n    (Models.HolsteinPrimakoff.spinZ hbar twiceSpin i) ψ ∈ Models.HolsteinPrimakoff.physicalSubspace twiceSpin i",
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} (hbar : ℝ) (twiceSpin : ℕ) (i j : Mode),\n  ∀ ψ ∈ Models.HolsteinPrimakoff.physicalSubspace twiceSpin j,\n    (Models.HolsteinPrimakoff.spinZ hbar twiceSpin i) ψ ∈ Models.HolsteinPrimakoff.physicalSubspace twiceSpin j",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -37406,19 +37319,22 @@
     "name": "Models.HolsteinPrimakoff.spinZ_mem_physicalSubspace",
     "module": "LeanCondensedMatter.Models.HolsteinPrimakoff",
     "externalAxioms": [],
-    "docString": null,
+    "docString": "The longitudinal spin component preserves the occupation cap at every site. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "Models.HolsteinPrimakoff.mem_simultaneousSubspace_of_mem_spinAlgebra"
+    ],
     "dependencies": [
-      "Models.HolsteinPrimakoff.basisState_mem_physicalSubspace",
       "Models.HolsteinPrimakoff.spinZ_basisState",
       "_private.LeanCondensedMatter.Models.HolsteinPrimakoff.0.Models.HolsteinPrimakoff.preserves_physicalSubspace"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "Models.HolsteinPrimakoff.mem_simultaneousSubspace_of_mem_spinAlgebra"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -47888,6 +47804,142 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {hbar : ℝ} (transition : QuantumTheory.LinearResponse.LehmannTransitionData hbar) (omega eta τ : ℝ),\n  transition.adiabaticTimeTerm omega eta τ =\n    transition.weight * QuantumTheory.LinearResponse.lehmannMode hbar omega eta transition.energyGap τ",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.LinearResponse.LehmannTransitionData.adiabaticTimeTerm_eq_weight_mul_mode",
+    "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann.Transition",
+    "externalAxioms": [],
+    "docString": "The switched integrand written directly from the canonical transition record. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.LinearResponse.LehmannTransitionData.integral_adiabaticTimeTerm_Ioi_zero",
+      "QuantumTheory.LinearResponse.LehmannTransitionData.integral_tsum_adiabaticTimeTerm_Ioi_zero"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.LinearResponse.LehmannTransitionData.integral_adiabaticTimeTerm_Ioi_zero",
+      "QuantumTheory.LinearResponse.LehmannTransitionData.integral_tsum_adiabaticTimeTerm_Ioi_zero"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {hbar : ℝ} (transition : QuantumTheory.LinearResponse.LehmannTransitionData hbar) (omega eta : ℝ),\n  0 < eta → ∫ (τ : ℝ) in Set.Ioi 0, transition.adiabaticTimeTerm omega eta τ = transition.frequencyTerm omega eta",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.LinearResponse.LehmannTransitionData.integral_adiabaticTimeTerm_Ioi_zero",
+    "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann.Transition",
+    "externalAxioms": [],
+    "docString": "The causal integral of one switched transition is its canonical fixed-rate frequency term. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.LinearResponse.LehmannTransitionData.integral_tsum_adiabaticTimeTerm_Ioi_zero"
+    ],
+    "dependencies": [
+      "QuantumTheory.LinearResponse.LehmannTransitionData.adiabaticTimeTerm_eq_weight_mul_mode",
+      "QuantumTheory.LinearResponse.integral_lehmannMode_Ioi_zero_eq_resolvent"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.LinearResponse.LehmannTransitionData.integral_tsum_adiabaticTimeTerm_Ioi_zero"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {κ : Type u_1} [Countable κ] {hbar : ℝ} (transition : κ → QuantumTheory.LinearResponse.LehmannTransitionData hbar)\n  (omega eta : ℝ),\n  0 < eta →\n    (Summable fun j => ‖(transition j).weight‖) →\n      ∫ (t : ℝ) in Set.Ioi 0, ∑' (j : κ), (transition j).adiabaticTimeTerm omega eta t =\n        ∑' (j : κ), (transition j).frequencyTerm omega eta",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.LinearResponse.LehmannTransitionData.integral_tsum_adiabaticTimeTerm_Ioi_zero",
+    "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann.Transition",
+    "externalAxioms": [],
+    "docString": "Absolute weight summability permits exchanging the transition sum with the causal integral. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.LinearResponse.adiabaticFrequencyDomainSusceptibility_eigenbasis_eq_lehmannSeries"
+    ],
+    "dependencies": [
+      "QuantumTheory.LinearResponse.LehmannTransitionData.adiabaticTimeTerm_eq_weight_mul_mode",
+      "QuantumTheory.LinearResponse.LehmannTransitionData.integral_adiabaticTimeTerm_Ioi_zero",
+      "QuantumTheory.LinearResponse.LehmannTransitionData.norm_timeTerm",
+      "QuantumTheory.LinearResponse.integrableOn_lehmannMode_Ioi_zero"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.LinearResponse.adiabaticFrequencyDomainSusceptibility_eigenbasis_eq_lehmannSeries"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {hbar : ℝ} (transition : QuantumTheory.LinearResponse.LehmannTransitionData hbar) (t : ℝ),\n  ‖transition.timeTerm t‖ = ‖transition.weight‖",
     "standardAxioms": [
       "Classical.choice",
@@ -47907,13 +47959,13 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.LinearResponse.integral_tsum_eigenbasisAdiabaticTransitionIntegrand_Ioi_zero"
+      "QuantumTheory.LinearResponse.LehmannTransitionData.integral_tsum_adiabaticTimeTerm_Ioi_zero"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.LinearResponse.integral_tsum_eigenbasisAdiabaticTransitionIntegrand_Ioi_zero"
+      "QuantumTheory.LinearResponse.LehmannTransitionData.integral_tsum_adiabaticTimeTerm_Ioi_zero"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -48502,8 +48554,8 @@
     ],
     "dependencies": [
       "QuantumTheory.LinearResponse.EigenbasisTimeDomainSummable.lehmannSummable",
+      "QuantumTheory.LinearResponse.LehmannTransitionData.integral_tsum_adiabaticTimeTerm_Ioi_zero",
       "QuantumTheory.LinearResponse.integral_adiabaticFrequencySusceptibilityIntegrand_eq_Ioi_zero",
-      "QuantumTheory.LinearResponse.integral_tsum_eigenbasisAdiabaticTransitionIntegrand_Ioi_zero",
       "QuantumTheory.LinearResponse.retardedTimeDifferenceKernel_eigenbasis_eq_timeDomainSeries_of_nonneg"
     ],
     "crossModuleDirectWrapper": false,
@@ -49210,6 +49262,52 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {α : Type u_1} [inst : TopologicalSpace α] {x : α} (hbar energyGap : ℝ) (weight : ℂ) {omega eta : α → ℝ},\n  ContinuousAt omega x →\n    ContinuousAt eta x →\n      weight = 0 ∨ QuantumTheory.LinearResponse.lehmannDenominator hbar (omega x) (eta x) energyGap ≠ 0 →\n        ContinuousAt (fun y => QuantumTheory.LinearResponse.lehmannTerm hbar (omega y) (eta y) energyGap weight) x",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.LinearResponse.continuousAt_lehmannTerm",
+    "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann.Transition",
+    "externalAxioms": [],
+    "docString": "A scalar Lehmann term is continuous along continuous frequency and rate paths when its\nweight vanishes or its denominator is nonzero at the point. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.LinearResponse.hasAdiabaticRemovalLimit_lehmannTerm",
+      "QuantumTheory.LinearResponse.hasStaticLimit_lehmannTerm",
+      "QuantumTheory.LinearResponse.hasStaticLimit_lehmannTerm_zero_rate"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.LinearResponse.hasAdiabaticRemovalLimit_lehmannTerm",
+      "QuantumTheory.LinearResponse.hasStaticLimit_lehmannTerm",
+      "QuantumTheory.LinearResponse.hasStaticLimit_lehmannTerm_zero_rate"
+    ],
+    "compiledConsumerCount": 3,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {ι : Type u_1} {H : Type u_2} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] (U : Multiplicative ℝ →* ↥(unitary (H →L[ℂ] H))) (hbar : ℝ)\n  (ρ : QuantumTheory.DensityOperator H) (b : HilbertBasis ι ℂ H) (w : ι → ℝ),\n  (∀ (i : ι), ρ.op (b i) = ↑(w i) • b i) →\n    (∀ (x : H), Continuous fun t => ↑(U (Multiplicative.ofAdd t)) x) →\n      ∀ (A B : H →L[ℂ] H),\n        Continuous fun t =>\n          QuantumTheory.LinearResponse.commutatorSusceptibility U hbar ρ.toNormalizedExpectation A B t 0",
     "standardAxioms": [
       "Classical.choice",
@@ -49464,50 +49562,6 @@
       "QuantumTheory.LinearResponse.densityOperatorFirstVariation_eq_lie_of_isSelfAdjoint"
     ],
     "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {ι : Type u_2} (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (data : QuantumTheory.LinearResponse.EnergyEigenbasisLehmannData system ι) (A B : H →L[ℂ] H) (omega eta : ℝ)\n  (mn : ι × ι) (τ : ℝ),\n  QuantumTheory.LinearResponse.eigenbasisAdiabaticTransitionIntegrand system data A B omega eta mn τ =\n    (QuantumTheory.LinearResponse.eigenbasisTransitionData system data A B mn).weight *\n      QuantumTheory.LinearResponse.lehmannMode system.hbar omega eta\n        (QuantumTheory.LinearResponse.eigenbasisTransitionData system data A B mn).energyGap τ",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.LinearResponse.eigenbasisAdiabaticTransitionIntegrand_eq_transitionMode",
-    "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann.Eigenbasis.FrequencyDomain",
-    "externalAxioms": [],
-    "docString": "The switched integrand written directly from the canonical transition record. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.LinearResponse.integral_eigenbasisAdiabaticTransitionIntegrand_Ioi_zero",
-      "QuantumTheory.LinearResponse.integral_tsum_eigenbasisAdiabaticTransitionIntegrand_Ioi_zero"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.LinearResponse.integral_eigenbasisAdiabaticTransitionIntegrand_Ioi_zero",
-      "QuantumTheory.LinearResponse.integral_tsum_eigenbasisAdiabaticTransitionIntegrand_Ioi_zero"
-    ],
-    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -51742,6 +51796,7 @@
       "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann.Limits.0.QuantumTheory.LinearResponse.eventually_hasAdiabaticRemovalLimit_finset_frequencyTerm"
     ],
     "dependencies": [
+      "QuantumTheory.LinearResponse.continuousAt_lehmannTerm",
       "QuantumTheory.LinearResponse.lehmannDenominator_zero_rate_ne_zero"
     ],
     "crossModuleDirectWrapper": false,
@@ -52280,6 +52335,7 @@
       "QuantumTheory.LinearResponse.finset_frequencyTerm_has_both_local_iterated_limits"
     ],
     "dependencies": [
+      "QuantumTheory.LinearResponse.continuousAt_lehmannTerm",
       "QuantumTheory.LinearResponse.lehmannDenominator_ne_zero"
     ],
     "crossModuleDirectWrapper": false,
@@ -52324,6 +52380,7 @@
       "QuantumTheory.LinearResponse.finset_frequencyTerm_has_both_local_iterated_limits"
     ],
     "dependencies": [
+      "QuantumTheory.LinearResponse.continuousAt_lehmannTerm",
       "QuantumTheory.LinearResponse.lehmannDenominator_zero_rate_ne_zero"
     ],
     "crossModuleDirectWrapper": false,
@@ -52850,7 +52907,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.LinearResponse.integral_tsum_eigenbasisAdiabaticTransitionIntegrand_Ioi_zero"
+      "QuantumTheory.LinearResponse.LehmannTransitionData.integral_tsum_adiabaticTimeTerm_Ioi_zero"
     ],
     "dependencies": [
       "QuantumTheory.LinearResponse.lehmannDenominator_re"
@@ -52858,7 +52915,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.LinearResponse.integral_tsum_eigenbasisAdiabaticTransitionIntegrand_Ioi_zero"
+      "QuantumTheory.LinearResponse.LehmannTransitionData.integral_tsum_adiabaticTimeTerm_Ioi_zero"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -52963,51 +53020,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {ι : Type u_2} (system : QuantumTheory.LinearResponse.BoundedFreeSystem H)\n  (data : QuantumTheory.LinearResponse.EnergyEigenbasisLehmannData system ι) (A B : H →L[ℂ] H) (omega eta : ℝ)\n  (mn : ι × ι),\n  0 < eta →\n    ∫ (τ : ℝ) in Set.Ioi 0,\n        QuantumTheory.LinearResponse.eigenbasisAdiabaticTransitionIntegrand system data A B omega eta mn τ =\n      (QuantumTheory.LinearResponse.eigenbasisTransitionData system data A B mn).frequencyTerm omega eta",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.LinearResponse.integral_eigenbasisAdiabaticTransitionIntegrand_Ioi_zero",
-    "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann.Eigenbasis.FrequencyDomain",
-    "externalAxioms": [],
-    "docString": "The causal integral of one switched transition is its canonical fixed-rate frequency term. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.LinearResponse.integral_tsum_eigenbasisAdiabaticTransitionIntegrand_Ioi_zero"
-    ],
-    "dependencies": [
-      "QuantumTheory.LinearResponse.eigenbasisAdiabaticTransitionIntegrand_eq_transitionMode",
-      "QuantumTheory.LinearResponse.integral_lehmannMode_Ioi_zero_eq_resolvent"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.LinearResponse.integral_tsum_eigenbasisAdiabaticTransitionIntegrand_Ioi_zero"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ (hbar omega eta energyGap : ℝ),\n  0 < eta →\n    ∫ (t : ℝ) in Set.Ioi 0, QuantumTheory.LinearResponse.lehmannMode hbar omega eta energyGap t =\n      (QuantumTheory.LinearResponse.lehmannDenominator hbar omega eta energyGap)⁻¹",
     "standardAxioms": [
       "Classical.choice",
@@ -53027,7 +53039,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.LinearResponse.integral_eigenbasisAdiabaticTransitionIntegrand_Ioi_zero"
+      "QuantumTheory.LinearResponse.LehmannTransitionData.integral_adiabaticTimeTerm_Ioi_zero"
     ],
     "dependencies": [
       "QuantumTheory.LinearResponse.lehmannDenominator_re"
@@ -53035,54 +53047,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.LinearResponse.integral_eigenbasisAdiabaticTransitionIntegrand_Ioi_zero"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {ι : Type u_2} (system : QuantumTheory.LinearResponse.BoundedFreeSystem H) [Countable ι]\n  (data : QuantumTheory.LinearResponse.EnergyEigenbasisLehmannData system ι) (A B : H →L[ℂ] H) (omega eta : ℝ),\n  0 < eta →\n    QuantumTheory.LinearResponse.EigenbasisLehmannSummable system data A B →\n      ∫ (τ : ℝ) in Set.Ioi 0,\n          ∑' (mn : ι × ι),\n            QuantumTheory.LinearResponse.eigenbasisAdiabaticTransitionIntegrand system data A B omega eta mn τ =\n        QuantumTheory.LinearResponse.eigenbasisLehmannSeries system data A B omega eta",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.LinearResponse.integral_tsum_eigenbasisAdiabaticTransitionIntegrand_Ioi_zero",
-    "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann.Eigenbasis.FrequencyDomain",
-    "externalAxioms": [],
-    "docString": "Absolute summability of transition weights suffices to exchange the countable transition sum\nwith the causal fixed-positive-rate Bochner integral. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.LinearResponse.adiabaticFrequencyDomainSusceptibility_eigenbasis_eq_lehmannSeries"
-    ],
-    "dependencies": [
-      "QuantumTheory.LinearResponse.LehmannTransitionData.norm_timeTerm",
-      "QuantumTheory.LinearResponse.eigenbasisAdiabaticTransitionIntegrand_eq_transitionMode",
-      "QuantumTheory.LinearResponse.integrableOn_lehmannMode_Ioi_zero",
-      "QuantumTheory.LinearResponse.integral_eigenbasisAdiabaticTransitionIntegrand_Ioi_zero"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.LinearResponse.adiabaticFrequencyDomainSusceptibility_eigenbasis_eq_lehmannSeries"
+      "QuantumTheory.LinearResponse.LehmannTransitionData.integral_adiabaticTimeTerm_Ioi_zero"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -102698,11 +102663,11 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "Models.HolsteinPrimakoff.spinMinus_mem_physicalSubspace",
       "SecondQuantization.Bosonic.createOccupation_removeOccupation_of_pos",
       "SecondQuantization.Bosonic.removeOccupation_createOccupation",
       "SecondQuantization.Bosonic.removeOccupation_createOccupation_of_ne",
       "_private.LeanCondensedMatter.Models.HolsteinPrimakoff.MultiSite.0.Models.HolsteinPrimakoff.spinMinus_comm_spinMinus",
-      "_private.LeanCondensedMatter.Models.HolsteinPrimakoff.MultiSite.0.Models.HolsteinPrimakoff.spinMinus_mem_simultaneousSubspace",
       "_private.LeanCondensedMatter.Models.HolsteinPrimakoff.MultiSite.0.Models.HolsteinPrimakoff.spinPlus_comm_spinMinus",
       "_private.LeanCondensedMatter.Models.HolsteinPrimakoff.MultiSite.0.Models.HolsteinPrimakoff.spinZ_comm_spinMinus",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.CCR.0.SecondQuantization.Bosonic.comm_annihilate_create_basisState",
@@ -102713,11 +102678,11 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "Models.HolsteinPrimakoff.spinMinus_mem_physicalSubspace",
       "SecondQuantization.Bosonic.createOccupation_removeOccupation_of_pos",
       "SecondQuantization.Bosonic.removeOccupation_createOccupation",
       "SecondQuantization.Bosonic.removeOccupation_createOccupation_of_ne",
       "_private.LeanCondensedMatter.Models.HolsteinPrimakoff.MultiSite.0.Models.HolsteinPrimakoff.spinMinus_comm_spinMinus",
-      "_private.LeanCondensedMatter.Models.HolsteinPrimakoff.MultiSite.0.Models.HolsteinPrimakoff.spinMinus_mem_simultaneousSubspace",
       "_private.LeanCondensedMatter.Models.HolsteinPrimakoff.MultiSite.0.Models.HolsteinPrimakoff.spinPlus_comm_spinMinus",
       "_private.LeanCondensedMatter.Models.HolsteinPrimakoff.MultiSite.0.Models.HolsteinPrimakoff.spinZ_comm_spinMinus",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.CCR.0.SecondQuantization.Bosonic.comm_annihilate_create_basisState",
@@ -102773,7 +102738,6 @@
       "SecondQuantization.Bosonic.tsumTrace_annihilate_comp",
       "SecondQuantization.Bosonic.tsumTrace_create_comp",
       "_private.LeanCondensedMatter.Models.HolsteinPrimakoff.0.Models.HolsteinPrimakoff.spinPlus_spinMinus_basisState",
-      "_private.LeanCondensedMatter.Models.HolsteinPrimakoff.MultiSite.0.Models.HolsteinPrimakoff.spinMinus_mem_simultaneousSubspace",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.LadderTraceCyclicity.0.SecondQuantization.Bosonic.annihilate_apply_coord",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.LadderTraceCyclicity.0.SecondQuantization.Bosonic.create_apply_coord",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.LadderAnalytic.0.SecondQuantization.Bosonic.completedAnnihilate_adjoint_domain_le_createDomain",
@@ -102806,7 +102770,6 @@
       "SecondQuantization.Bosonic.tsumTrace_annihilate_comp",
       "SecondQuantization.Bosonic.tsumTrace_create_comp",
       "_private.LeanCondensedMatter.Models.HolsteinPrimakoff.0.Models.HolsteinPrimakoff.spinPlus_spinMinus_basisState",
-      "_private.LeanCondensedMatter.Models.HolsteinPrimakoff.MultiSite.0.Models.HolsteinPrimakoff.spinMinus_mem_simultaneousSubspace",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.LadderTraceCyclicity.0.SecondQuantization.Bosonic.annihilate_apply_coord",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.LadderTraceCyclicity.0.SecondQuantization.Bosonic.create_apply_coord",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.LadderAnalytic.0.SecondQuantization.Bosonic.completedAnnihilate_adjoint_domain_le_createDomain",
@@ -102820,7 +102783,7 @@
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.TwoPoint.0.SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_comp_create_mul_matrixCoeff_annihilate_of_ne",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.TwoPoint.0.SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_comp_create_removeOccupation"
     ],
-    "compiledConsumerCount": 28,
+    "compiledConsumerCount": 27,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -106638,6 +106601,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "Models.HolsteinPrimakoff.spinPlus_mem_physicalSubspace",
       "SecondQuantization.Bosonic.createOccupation_removeOccupation_of_pos",
       "SecondQuantization.Bosonic.diagonalCoeff_evolve_annihilate_comp_create",
       "SecondQuantization.Bosonic.removeOccupation_comm",
@@ -106645,7 +106609,6 @@
       "SecondQuantization.Bosonic.removeOccupation_createOccupation_of_ne",
       "_private.LeanCondensedMatter.Models.HolsteinPrimakoff.MultiSite.0.Models.HolsteinPrimakoff.spinPlus_comm_spinMinus",
       "_private.LeanCondensedMatter.Models.HolsteinPrimakoff.MultiSite.0.Models.HolsteinPrimakoff.spinPlus_comm_spinPlus",
-      "_private.LeanCondensedMatter.Models.HolsteinPrimakoff.MultiSite.0.Models.HolsteinPrimakoff.spinPlus_mem_simultaneousSubspace",
       "_private.LeanCondensedMatter.Models.HolsteinPrimakoff.MultiSite.0.Models.HolsteinPrimakoff.spinZ_comm_spinPlus",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.CCR.0.SecondQuantization.Bosonic.comm_annihilate_annihilate_basisState",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.CCR.0.SecondQuantization.Bosonic.comm_annihilate_create_basisState",
@@ -106657,6 +106620,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "Models.HolsteinPrimakoff.spinPlus_mem_physicalSubspace",
       "SecondQuantization.Bosonic.createOccupation_removeOccupation_of_pos",
       "SecondQuantization.Bosonic.diagonalCoeff_evolve_annihilate_comp_create",
       "SecondQuantization.Bosonic.removeOccupation_comm",
@@ -106664,7 +106628,6 @@
       "SecondQuantization.Bosonic.removeOccupation_createOccupation_of_ne",
       "_private.LeanCondensedMatter.Models.HolsteinPrimakoff.MultiSite.0.Models.HolsteinPrimakoff.spinPlus_comm_spinMinus",
       "_private.LeanCondensedMatter.Models.HolsteinPrimakoff.MultiSite.0.Models.HolsteinPrimakoff.spinPlus_comm_spinPlus",
-      "_private.LeanCondensedMatter.Models.HolsteinPrimakoff.MultiSite.0.Models.HolsteinPrimakoff.spinPlus_mem_simultaneousSubspace",
       "_private.LeanCondensedMatter.Models.HolsteinPrimakoff.MultiSite.0.Models.HolsteinPrimakoff.spinZ_comm_spinPlus",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.CCR.0.SecondQuantization.Bosonic.comm_annihilate_annihilate_basisState",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.CCR.0.SecondQuantization.Bosonic.comm_annihilate_create_basisState",
@@ -106715,7 +106678,6 @@
       "SecondQuantization.Bosonic.removeOccupation_createOccupation",
       "SecondQuantization.Bosonic.removeOccupation_createOccupation_of_ne",
       "_private.LeanCondensedMatter.Models.HolsteinPrimakoff.0.Models.HolsteinPrimakoff.spinMinus_spinPlus_basisState",
-      "_private.LeanCondensedMatter.Models.HolsteinPrimakoff.MultiSite.0.Models.HolsteinPrimakoff.spinPlus_mem_simultaneousSubspace",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.LadderTraceCyclicity.0.SecondQuantization.Bosonic.create_apply_coord",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.OrderedProductSummable.0.SecondQuantization.Bosonic.FreeThermalField.orderedProduct_basisState_bound_aux",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.TwoPoint.0.SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_comp_create_removeOccupation"
@@ -106733,12 +106695,11 @@
       "SecondQuantization.Bosonic.removeOccupation_createOccupation",
       "SecondQuantization.Bosonic.removeOccupation_createOccupation_of_ne",
       "_private.LeanCondensedMatter.Models.HolsteinPrimakoff.0.Models.HolsteinPrimakoff.spinMinus_spinPlus_basisState",
-      "_private.LeanCondensedMatter.Models.HolsteinPrimakoff.MultiSite.0.Models.HolsteinPrimakoff.spinPlus_mem_simultaneousSubspace",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.LadderTraceCyclicity.0.SecondQuantization.Bosonic.create_apply_coord",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.OrderedProductSummable.0.SecondQuantization.Bosonic.FreeThermalField.orderedProduct_basisState_bound_aux",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.TwoPoint.0.SecondQuantization.Bosonic.matrixCoeff_imaginaryTimeEvolveFree_comp_create_removeOccupation"
     ],
-    "compiledConsumerCount": 13,
+    "compiledConsumerCount": 12,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -118397,12 +118358,11 @@
       "SecondQuantization.Common.completedDiagonalOperator_comp_algebraicCore",
       "SecondQuantization.Common.completedFiniteHilbertEquiv_basisState",
       "SecondQuantization.Common.continuousLinearMap_ext_completedBasis",
-      "SecondQuantization.Fermionic.completedAnnihilate_comp_algebraicToCompleted",
       "SecondQuantization.Fermionic.completedCreateField_basisState",
-      "SecondQuantization.Fermionic.completedCreate_comp_algebraicToCompleted",
       "SecondQuantization.Fermionic.star_completedCreate",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.Ladder.0.SecondQuantization.Bosonic.algebraicToCompleted_basisState'",
       "_private.LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.Diagonal.0.SecondQuantization.Common.norm_weight_le_of_bounded_diagonal_extension",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.Core.0.SecondQuantization.Fermionic.algebraicToCompleted_basisState'",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.UnitaryLift.0.SecondQuantization.Fermionic.completedExterior_denseRange"
     ],
     "dependencies": [],
@@ -118415,15 +118375,14 @@
       "SecondQuantization.Common.completedDiagonalOperator_comp_algebraicCore",
       "SecondQuantization.Common.completedFiniteHilbertEquiv_basisState",
       "SecondQuantization.Common.continuousLinearMap_ext_completedBasis",
-      "SecondQuantization.Fermionic.completedAnnihilate_comp_algebraicToCompleted",
       "SecondQuantization.Fermionic.completedCreateField_basisState",
-      "SecondQuantization.Fermionic.completedCreate_comp_algebraicToCompleted",
       "SecondQuantization.Fermionic.star_completedCreate",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.Ladder.0.SecondQuantization.Bosonic.algebraicToCompleted_basisState'",
       "_private.LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.Diagonal.0.SecondQuantization.Common.norm_weight_le_of_bounded_diagonal_extension",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.Core.0.SecondQuantization.Fermionic.algebraicToCompleted_basisState'",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.UnitaryLift.0.SecondQuantization.Fermionic.completedExterior_denseRange"
     ],
-    "compiledConsumerCount": 13,
+    "compiledConsumerCount": 12,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -145381,12 +145340,12 @@
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.CanonicalAnticommutationRelations.0.SecondQuantization.Fermionic.completedAnnihilate_algebraicToCompleted"
     ],
     "dependencies": [
-      "SecondQuantization.Common.algebraicToCompleted_basisState",
       "SecondQuantization.Common.linearMap_ext_basisState",
       "SecondQuantization.Fermionic.annihilate_basisState_of_mem",
       "SecondQuantization.Fermionic.annihilate_basisState_of_not_mem",
       "SecondQuantization.Fermionic.completedAnnihilate_basisState_of_mem",
-      "SecondQuantization.Fermionic.completedAnnihilate_basisState_of_not_mem"
+      "SecondQuantization.Fermionic.completedAnnihilate_basisState_of_not_mem",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.Core.0.SecondQuantization.Fermionic.algebraicToCompleted_basisState'"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -146057,12 +146016,12 @@
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.CanonicalAnticommutationRelations.0.SecondQuantization.Fermionic.completedCreate_algebraicToCompleted"
     ],
     "dependencies": [
-      "SecondQuantization.Common.algebraicToCompleted_basisState",
       "SecondQuantization.Common.linearMap_ext_basisState",
       "SecondQuantization.Fermionic.completedCreate_basisState_of_mem",
       "SecondQuantization.Fermionic.completedCreate_basisState_of_not_mem",
       "SecondQuantization.Fermionic.create_basisState_of_mem",
-      "SecondQuantization.Fermionic.create_basisState_of_not_mem"
+      "SecondQuantization.Fermionic.create_basisState_of_not_mem",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.Core.0.SecondQuantization.Fermionic.algebraicToCompleted_basisState'"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -166137,144 +166096,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} (twiceSpin : ℕ) (n : SecondQuantization.Bosonic.Occupation Mode),\n  (∀ (i : Mode), n i ≤ twiceSpin) →\n    SecondQuantization.Bosonic.basisState n ∈ Models.HolsteinPrimakoff.simultaneousSubspace twiceSpin",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Models.HolsteinPrimakoff.MultiSite.0.Models.HolsteinPrimakoff.basisState_mem_simultaneousSubspace",
-    "module": "LeanCondensedMatter.Models.HolsteinPrimakoff.MultiSite",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.Models.HolsteinPrimakoff.MultiSite.0.Models.HolsteinPrimakoff.spinMinus_mem_simultaneousSubspace",
-      "_private.LeanCondensedMatter.Models.HolsteinPrimakoff.MultiSite.0.Models.HolsteinPrimakoff.spinPlus_mem_simultaneousSubspace",
-      "_private.LeanCondensedMatter.Models.HolsteinPrimakoff.MultiSite.0.Models.HolsteinPrimakoff.spinZ_mem_simultaneousSubspace"
-    ],
-    "dependencies": [
-      "Models.HolsteinPrimakoff.simultaneousSubspace_eq_span"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.Models.HolsteinPrimakoff.MultiSite.0.Models.HolsteinPrimakoff.spinMinus_mem_simultaneousSubspace",
-      "_private.LeanCondensedMatter.Models.HolsteinPrimakoff.MultiSite.0.Models.HolsteinPrimakoff.spinPlus_mem_simultaneousSubspace",
-      "_private.LeanCondensedMatter.Models.HolsteinPrimakoff.MultiSite.0.Models.HolsteinPrimakoff.spinZ_mem_simultaneousSubspace"
-    ],
-    "compiledConsumerCount": 3,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Mode : Type u_1} (twiceSpin : ℕ) (i : Mode),\n  Models.HolsteinPrimakoff.physicalSubspace twiceSpin i = Finsupp.supported ℂ ℂ {n | n i ≤ twiceSpin}",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Models.HolsteinPrimakoff.MultiSite.0.Models.HolsteinPrimakoff.physicalSubspace_eq_supported",
-    "module": "LeanCondensedMatter.Models.HolsteinPrimakoff.MultiSite",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "Models.HolsteinPrimakoff.simultaneousSubspace_eq_iInf"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "Models.HolsteinPrimakoff.simultaneousSubspace_eq_iInf"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Mode : Type u_1} (twiceSpin : ℕ)\n  (A : SecondQuantization.Bosonic.FockSpace Mode →ₗ[ℂ] SecondQuantization.Bosonic.FockSpace Mode),\n  (∀ (n : SecondQuantization.Bosonic.Occupation Mode),\n      (∀ (i : Mode), n i ≤ twiceSpin) →\n        A (SecondQuantization.Bosonic.basisState n) ∈ Models.HolsteinPrimakoff.simultaneousSubspace twiceSpin) →\n    ∀ ψ ∈ Models.HolsteinPrimakoff.simultaneousSubspace twiceSpin,\n      A ψ ∈ Models.HolsteinPrimakoff.simultaneousSubspace twiceSpin",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Models.HolsteinPrimakoff.MultiSite.0.Models.HolsteinPrimakoff.preserves_simultaneousSubspace",
-    "module": "LeanCondensedMatter.Models.HolsteinPrimakoff.MultiSite",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.Models.HolsteinPrimakoff.MultiSite.0.Models.HolsteinPrimakoff.spinMinus_mem_simultaneousSubspace",
-      "_private.LeanCondensedMatter.Models.HolsteinPrimakoff.MultiSite.0.Models.HolsteinPrimakoff.spinPlus_mem_simultaneousSubspace",
-      "_private.LeanCondensedMatter.Models.HolsteinPrimakoff.MultiSite.0.Models.HolsteinPrimakoff.spinZ_mem_simultaneousSubspace"
-    ],
-    "dependencies": [
-      "Models.HolsteinPrimakoff.simultaneousSubspace_eq_span"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.Models.HolsteinPrimakoff.MultiSite.0.Models.HolsteinPrimakoff.spinMinus_mem_simultaneousSubspace",
-      "_private.LeanCondensedMatter.Models.HolsteinPrimakoff.MultiSite.0.Models.HolsteinPrimakoff.spinPlus_mem_simultaneousSubspace",
-      "_private.LeanCondensedMatter.Models.HolsteinPrimakoff.MultiSite.0.Models.HolsteinPrimakoff.spinZ_mem_simultaneousSubspace"
-    ],
-    "compiledConsumerCount": 3,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ {Mode : Type u_1} (hbar : ℝ) (twiceSpin : ℕ) {i j : Mode},\n  i ≠ j →\n    Commute (Models.HolsteinPrimakoff.spinMinus hbar twiceSpin i) (Models.HolsteinPrimakoff.spinMinus hbar twiceSpin j)",
     "standardAxioms": [
       "Classical.choice",
@@ -166306,55 +166127,6 @@
     "completedMention": false,
     "compiledConsumers": [
       "Models.HolsteinPrimakoff.commute_of_mem_spinAlgebra"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Mode : Type u_1} (hbar : ℝ) (twiceSpin : ℕ) (i : Mode),\n  ∀ ψ ∈ Models.HolsteinPrimakoff.simultaneousSubspace twiceSpin,\n    (Models.HolsteinPrimakoff.spinMinus hbar twiceSpin i) ψ ∈ Models.HolsteinPrimakoff.simultaneousSubspace twiceSpin",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Models.HolsteinPrimakoff.MultiSite.0.Models.HolsteinPrimakoff.spinMinus_mem_simultaneousSubspace",
-    "module": "LeanCondensedMatter.Models.HolsteinPrimakoff.MultiSite",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "Models.HolsteinPrimakoff.mem_simultaneousSubspace_of_mem_spinAlgebra"
-    ],
-    "dependencies": [
-      "Models.HolsteinPrimakoff.spinMinus_basisState",
-      "Models.HolsteinPrimakoff.spinMinus_basisState_of_top",
-      "SecondQuantization.Bosonic.createOccupation_apply_ne",
-      "SecondQuantization.Bosonic.createOccupation_apply_same",
-      "_private.LeanCondensedMatter.Models.HolsteinPrimakoff.MultiSite.0.Models.HolsteinPrimakoff.basisState_mem_simultaneousSubspace",
-      "_private.LeanCondensedMatter.Models.HolsteinPrimakoff.MultiSite.0.Models.HolsteinPrimakoff.preserves_simultaneousSubspace"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "Models.HolsteinPrimakoff.mem_simultaneousSubspace_of_mem_spinAlgebra"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -166451,54 +166223,6 @@
     "completedMention": false,
     "compiledConsumers": [
       "Models.HolsteinPrimakoff.commute_of_mem_spinAlgebra"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Mode : Type u_1} (hbar : ℝ) (twiceSpin : ℕ) (i : Mode),\n  ∀ ψ ∈ Models.HolsteinPrimakoff.simultaneousSubspace twiceSpin,\n    (Models.HolsteinPrimakoff.spinPlus hbar twiceSpin i) ψ ∈ Models.HolsteinPrimakoff.simultaneousSubspace twiceSpin",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Models.HolsteinPrimakoff.MultiSite.0.Models.HolsteinPrimakoff.spinPlus_mem_simultaneousSubspace",
-    "module": "LeanCondensedMatter.Models.HolsteinPrimakoff.MultiSite",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "Models.HolsteinPrimakoff.mem_simultaneousSubspace_of_mem_spinAlgebra"
-    ],
-    "dependencies": [
-      "Models.HolsteinPrimakoff.spinPlus_basisState",
-      "SecondQuantization.Bosonic.removeOccupation_apply_ne",
-      "SecondQuantization.Bosonic.removeOccupation_apply_same",
-      "_private.LeanCondensedMatter.Models.HolsteinPrimakoff.MultiSite.0.Models.HolsteinPrimakoff.basisState_mem_simultaneousSubspace",
-      "_private.LeanCondensedMatter.Models.HolsteinPrimakoff.MultiSite.0.Models.HolsteinPrimakoff.preserves_simultaneousSubspace"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "Models.HolsteinPrimakoff.mem_simultaneousSubspace_of_mem_spinAlgebra"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -166638,52 +166362,6 @@
     "completedMention": false,
     "compiledConsumers": [
       "Models.HolsteinPrimakoff.commute_of_mem_spinAlgebra"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Mode : Type u_1} (hbar : ℝ) (twiceSpin : ℕ) (i : Mode),\n  ∀ ψ ∈ Models.HolsteinPrimakoff.simultaneousSubspace twiceSpin,\n    (Models.HolsteinPrimakoff.spinZ hbar twiceSpin i) ψ ∈ Models.HolsteinPrimakoff.simultaneousSubspace twiceSpin",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Models.HolsteinPrimakoff.MultiSite.0.Models.HolsteinPrimakoff.spinZ_mem_simultaneousSubspace",
-    "module": "LeanCondensedMatter.Models.HolsteinPrimakoff.MultiSite",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "Models.HolsteinPrimakoff.mem_simultaneousSubspace_of_mem_spinAlgebra"
-    ],
-    "dependencies": [
-      "Models.HolsteinPrimakoff.spinZ_basisState",
-      "_private.LeanCondensedMatter.Models.HolsteinPrimakoff.MultiSite.0.Models.HolsteinPrimakoff.basisState_mem_simultaneousSubspace",
-      "_private.LeanCondensedMatter.Models.HolsteinPrimakoff.MultiSite.0.Models.HolsteinPrimakoff.preserves_simultaneousSubspace"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "Models.HolsteinPrimakoff.mem_simultaneousSubspace_of_mem_spinAlgebra"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -187964,6 +187642,52 @@
     "compiledConsumers": [
       "SecondQuantization.Fermionic.completedAnticomm_annihilate_create",
       "SecondQuantization.Fermionic.completedAnticomm_create_create"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {Mode : Type u_1} (n : SecondQuantization.Fermionic.Occupation Mode),\n  SecondQuantization.Fermionic.algebraicToCompleted (SecondQuantization.Fermionic.basisState n) =\n    SecondQuantization.Fermionic.completedBasisState n",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.Core.0.SecondQuantization.Fermionic.algebraicToCompleted_basisState'",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.Core",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.completedAnnihilate_comp_algebraicToCompleted",
+      "SecondQuantization.Fermionic.completedCreate_comp_algebraicToCompleted"
+    ],
+    "dependencies": [
+      "SecondQuantization.Common.algebraicToCompleted_basisState"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.completedAnnihilate_comp_algebraicToCompleted",
+      "SecondQuantization.Fermionic.completedCreate_comp_algebraicToCompleted"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
