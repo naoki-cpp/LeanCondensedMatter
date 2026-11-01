@@ -34,13 +34,11 @@ theorem hasDerivAt_adjointConjugate
     (hU : HasDerivAt U U' x) (T : H →L[ℂ] H) :
     HasDerivAt (fun s => adjointConjugate (U s) T)
       (U' * T * star (U x) + U x * T * star U') x := by
-  change HasDerivAt (fun s : ℝ => U s * T * star (U s))
-    (U' * T * star (U x) + U x * T * star U') x
   have hfun :
       (fun s : ℝ => U s * T) * (fun s => star (U s)) =
-        fun s => U s * T * star (U s) := by
+        fun s => adjointConjugate (U s) T := by
     funext s
-    simp only [Pi.mul_apply]
+    simp only [Pi.mul_apply, adjointConjugate]
   rw [← hfun]
   exact (hU.mul_const T).mul hU.star
 
