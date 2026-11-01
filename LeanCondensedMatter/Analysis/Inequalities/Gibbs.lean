@@ -1,4 +1,3 @@
-import LeanCondensedMatter.Analysis.InfiniteSum.Order
 import Mathlib.Analysis.SpecialFunctions.Log.NegMulLog
 import Mathlib.Topology.Algebra.InfiniteSum.Real
 import Mathlib.Tactic.FieldSimp
@@ -248,7 +247,13 @@ theorem tsum_negMulLog_eq_gibbs_iff
         ∑' i, (β * (p i * energy i) + p i * Real.log Z - p i + q i / Z) := by
       rw [heq, hBsum, hqZsum]
       ring
-    have hterm := hentropy.pointwise_eq_of_tsum_eq_of_le hB hbound hsum_eq
+    have hterm (i : ι) :
+        Real.negMulLog (p i) =
+          β * (p i * energy i) + p i * Real.log Z - p i + q i / Z := by
+      apply le_antisymm (hbound i)
+      by_contra hnot
+      exact (ne_of_lt (Summable.tsum_lt_tsum hbound
+        (lt_of_not_ge hnot) hentropy hB)) hsum_eq
     refine ⟨hqsum, fun i => ?_⟩
     apply (negMulLog_eq_iff_of_neg_log_le (hp_nonneg i) (hq_pos i) hZ (hlog i)).mp
     calc
