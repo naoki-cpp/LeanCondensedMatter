@@ -161,6 +161,7 @@ theorem tendsto_pointwiseGrandCanonicalFockHallResponse_re
       mul_add, Real.exp_add]
     fin_cases i
     all_goals field_simp [h0, h1]
+    all_goals simp only [sub_eq_add_neg, add_comm]
     all_goals ring
   have h := tendsto_pointwiseDiagonalFockHallResponse_re p
     (eigenbasisGibbsProbability_nonneg E beta)
