@@ -105,7 +105,9 @@ theorem tendsto_pointwiseFockHallResponse_re
         hbar * ∑ band ∈ occupied, cleanBandFockHallDensity band e v m px py := by
     rcases hcases with rfl | rfl | rfl | rfl <;>
       (simp [modes, hmodes, modeBand, bandMode, cleanBandFockHallDensity, hE,
-        twoModeFockHallCleanResponse, hf0, hf1, hfall, hn0, hn1]; ring_nf; simp)
+        twoModeFockHallCleanResponse, hf0, hf1, hfall, hn0, hn1])
+    all_goals ring_nf
+    all_goals simp
   rw [hvalue] at h
   exact h
 
@@ -151,7 +153,7 @@ theorem cleanBandFockHallDensity_eq_neg_chargeSq_berryCurvature
   cases band <;>
     (simp [twoModeFockHallCleanResponse, bandMode, modeBand,
       bastinInterbandBlockDifference, hmat, interbandEnergyGap, bandEnergy,
-      currentBandBlockTrace_swap]; ring)
+      currentBandBlockTrace_swap])
 
 end
 end QuantumTheory.Models.MassiveDirac
