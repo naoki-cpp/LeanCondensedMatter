@@ -122,6 +122,25 @@ noncomputable def lehmannTerm
     (hbar omega eta energyGap : ℝ) (weight : ℂ) : ℂ :=
   weight * (lehmannDenominator hbar omega eta energyGap)⁻¹
 
+/-- A scalar Lehmann term is continuous along continuous frequency and rate paths when its
+weight vanishes or its denominator is nonzero at the point. -/
+theorem continuousAt_lehmannTerm
+    {α : Type*} [TopologicalSpace α] {x : α}
+    (hbar energyGap : ℝ) (weight : ℂ) {omega eta : α → ℝ}
+    (homega : ContinuousAt omega x) (heta : ContinuousAt eta x)
+    (hregular : weight = 0 ∨
+      lehmannDenominator hbar (omega x) (eta x) energyGap ≠ 0) :
+    ContinuousAt (fun y => lehmannTerm hbar (omega y) (eta y) energyGap weight) x := by
+  rcases hregular with hweight | hden
+  · subst weight
+    simp only [lehmannTerm, zero_mul]
+    exact continuousAt_const
+  · have hcont : ContinuousAt
+        (fun y => lehmannDenominator hbar (omega y) (eta y) energyGap) x := by
+      unfold lehmannDenominator
+      fun_prop
+    exact continuousAt_const.mul (hcont.inv₀ hden)
+
 namespace LehmannTransitionData
 
 /-- Time-domain contribution of one canonical transition. -/

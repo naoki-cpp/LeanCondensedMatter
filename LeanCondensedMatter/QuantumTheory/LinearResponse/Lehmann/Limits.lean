@@ -28,17 +28,9 @@ theorem hasStaticLimit_lehmannTerm
     HasStaticLimit
       (fun omega : ℝ => lehmannTerm hbar omega eta energyGap weight)
       (lehmannTerm hbar 0 eta energyGap weight) := by
-  have hden : ContinuousAt
-      (fun omega : ℝ => lehmannDenominator hbar omega eta energyGap) 0 := by
-    unfold lehmannDenominator
-    fun_prop
-  have hcont : ContinuousAt
-      (fun omega : ℝ => lehmannTerm hbar omega eta energyGap weight) 0 := by
-    unfold lehmannTerm
-    exact continuousAt_const.mul
-      (hden.inv₀ (lehmannDenominator_ne_zero
-        hbar 0 eta energyGap heta))
-  simpa [HasStaticLimit] using hcont.tendsto
+  simpa [HasStaticLimit] using
+    (continuousAt_lehmannTerm hbar energyGap weight continuousAt_id continuousAt_const
+      (Or.inr (lehmannDenominator_ne_zero hbar 0 eta energyGap heta))).tendsto
 
 /-- Regulator removal for one scalar term, provided its weight vanishes or it is nonresonant. -/
 theorem hasAdiabaticRemovalLimit_lehmannTerm
@@ -47,20 +39,10 @@ theorem hasAdiabaticRemovalLimit_lehmannTerm
     HasAdiabaticRemovalLimit
       (fun eta : ℝ => lehmannTerm hbar omega eta energyGap weight)
       (lehmannTerm hbar omega 0 energyGap weight) := by
-  rcases hregular with hweight | hdetuning
-  · subst weight
-    simp [HasAdiabaticRemovalLimit, lehmannTerm]
-  · have hden : ContinuousAt
-        (fun eta : ℝ => lehmannDenominator hbar omega eta energyGap) 0 := by
-      unfold lehmannDenominator
-      fun_prop
-    have hcont : ContinuousAt
-        (fun eta : ℝ => lehmannTerm hbar omega eta energyGap weight) 0 := by
-      unfold lehmannTerm
-      exact continuousAt_const.mul
-        (hden.inv₀ (lehmannDenominator_zero_rate_ne_zero
-          hbar omega energyGap hdetuning))
-    exact hcont.tendsto.mono_left nhdsWithin_le_nhds
+  have hden : weight = 0 ∨ lehmannDenominator hbar omega 0 energyGap ≠ 0 :=
+    hregular.imp id (lehmannDenominator_zero_rate_ne_zero hbar omega energyGap)
+  exact (continuousAt_lehmannTerm hbar energyGap weight continuousAt_const
+    continuousAt_id hden).tendsto.mono_left nhdsWithin_le_nhds
 
 /-- Static continuity of one zero-rate term under zero weight or nonzero energy gap. -/
 theorem hasStaticLimit_lehmannTerm_zero_rate
@@ -69,24 +51,14 @@ theorem hasStaticLimit_lehmannTerm_zero_rate
     HasStaticLimit
       (fun omega : ℝ => lehmannTerm hbar omega 0 energyGap weight)
       (lehmannTerm hbar 0 0 energyGap weight) := by
-  rcases hregular with hweight | hgap
-  · subst weight
-    simp [HasStaticLimit, lehmannTerm]
-  · have hgapDiv : energyGap / hbar ≠ 0 :=
-      div_ne_zero hgap hhbar
-    have hdetuning : (0 : ℝ) + energyGap / hbar ≠ 0 := by
-      simpa only [zero_add] using hgapDiv
-    have hden : ContinuousAt
-        (fun omega : ℝ => lehmannDenominator hbar omega 0 energyGap) 0 := by
-      unfold lehmannDenominator
-      fun_prop
-    have hcont : ContinuousAt
-        (fun omega : ℝ => lehmannTerm hbar omega 0 energyGap weight) 0 := by
-      unfold lehmannTerm
-      exact continuousAt_const.mul
-        (hden.inv₀ (lehmannDenominator_zero_rate_ne_zero
-          hbar 0 energyGap hdetuning))
-    simpa [HasStaticLimit] using hcont.tendsto
+  have hden : weight = 0 ∨ lehmannDenominator hbar 0 0 energyGap ≠ 0 := by
+    rcases hregular with hweight | hgap
+    · exact Or.inl hweight
+    · exact Or.inr (lehmannDenominator_zero_rate_ne_zero hbar 0 energyGap
+        (by simpa only [zero_add] using div_ne_zero hgap hhbar))
+  simpa [HasStaticLimit] using
+    (continuousAt_lehmannTerm hbar energyGap weight continuousAt_id
+      continuousAt_const hden).tendsto
 
 /-- Near zero frequency, every finite static-nonresonant sum admits regulator removal. -/
 private theorem eventually_hasAdiabaticRemovalLimit_finset_frequencyTerm
