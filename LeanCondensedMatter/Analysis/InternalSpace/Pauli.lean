@@ -304,26 +304,13 @@ theorem eq_pauliAffine_coefficients (M : PauliMatrix) :
     M =
       pauliScalarCoefficient M • (1 : PauliMatrix) +
         pauliCombination (pauliVectorCoefficient M) := by
-  have hI : Complex.I ^ 2 = (-1 : ℂ) := by
-    simpa [pow_two] using Complex.I_mul_I
   ext i j
-  fin_cases i <;> fin_cases j
-  · simp [pauliScalarCoefficient, pauliVectorCoefficient, pauliCombination_eq_components,
+  fin_cases i <;> fin_cases j <;>
+    simp [pauliScalarCoefficient, pauliVectorCoefficient, pauliCombination_eq_components,
       pauliX, pauliY, pauliZ]
-    ring
-  · simp [pauliScalarCoefficient, pauliVectorCoefficient, pauliCombination_eq_components,
-      pauliX, pauliY, pauliZ]
-    ring_nf
-    simp only [hI]
-    ring
-  · simp [pauliScalarCoefficient, pauliVectorCoefficient, pauliCombination_eq_components,
-      pauliX, pauliY, pauliZ]
-    ring_nf
-    simp only [hI]
-    ring
-  · simp [pauliScalarCoefficient, pauliVectorCoefficient, pauliCombination_eq_components,
-      pauliX, pauliY, pauliZ]
-    ring
+  all_goals ring_nf
+  all_goals simp only [Complex.I_sq]
+  all_goals ring
 
 /-- Conjugation by `σ_z` leaves the scalar Pauli coefficient unchanged. -/
 @[simp] theorem pauliScalarCoefficient_pauliZ_conjugate (M : PauliMatrix) :
