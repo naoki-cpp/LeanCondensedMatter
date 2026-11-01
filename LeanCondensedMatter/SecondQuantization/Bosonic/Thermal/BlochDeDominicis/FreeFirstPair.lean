@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Analysis.Exponential
+import Mathlib.Analysis.SpecialFunctions.Complex.Log
 import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.FreePeelIndexed
 import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.ConcretePairKernel
 
@@ -73,11 +73,15 @@ theorem grandCanonicalGibbsExpectation_cons_eq_kmsRatio_mul_operatorPeelSum
     apply sub_ne_zero.mpr
     cases C with
     | annihilate i =>
-        apply Complex.exp_ne_one_of_re_ne_zero
-        simpa using ne_of_gt (hpos i)
+        intro heq
+        have hre := Complex.re_eq_re_of_cexp_eq_cexp
+          (heq.trans Complex.exp_zero.symm)
+        exact (ne_of_gt (hpos i)) (by simpa using hre)
     | create i =>
-        apply Complex.exp_ne_one_of_re_ne_zero
-        simpa using neg_ne_zero.mpr (ne_of_gt (hpos i))
+        intro heq
+        have hre := Complex.re_eq_re_of_cexp_eq_cexp
+          (heq.trans Complex.exp_zero.symm)
+        exact (neg_ne_zero.mpr (ne_of_gt (hpos i))) (by simpa using hre)
   exact ScalarExchange.eq_div_mul_of_eq_add_mul_of_eq_mul E P R 1 (C.kmsFactor (fun i => ε i - μ) β)
     (by simpa only [one_mul] using hpeel) hkms
     hden

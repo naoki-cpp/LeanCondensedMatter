@@ -355,12 +355,7 @@ composition.
 
 ## Exponential denominators
 
-`Analysis/Exponential.lean` owns `Complex.exp_ne_one_of_re_ne_zero`: a complex exponential
-is different from one when its exponent has nonzero real part. The bosonic Bose and KMS denominator
-proofs use this fact directly, supplying positivity or negativity of the exponent from their
-explicit positive Boltzmann-exponent hypothesis. No representation-specific denominator theorem
-is needed.
-
-Mathlib's `Complex.norm_exp` and `Real.exp_eq_one_iff` provide the norm and real-exponential steps.
-The shared theorem combines those existing results; it does not require a classification of complex
-exponential periods.
+The bosonic Bose and KMS denominator proofs use Mathlib's
+`Complex.re_eq_re_of_cexp_eq_cexp` directly: an exponential equal to one has exponent with
+zero real part. Positivity or negativity of the exponent follows from the explicit positive
+Boltzmann-exponent hypothesis. No representation-specific denominator theorem is needed.

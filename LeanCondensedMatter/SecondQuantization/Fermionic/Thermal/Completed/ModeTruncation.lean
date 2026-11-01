@@ -1,7 +1,7 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.ModeTruncation
 import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.Hamiltonian
 import LeanCondensedMatter.QuantumTheory.Gibbs.Boltzmann
-import LeanCondensedMatter.Analysis.InfiniteSum.Truncation
+import Mathlib.Analysis.Normed.Group.Tannery
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.Gibbs
 
 set_option linter.style.header false
@@ -89,14 +89,28 @@ theorem tendsto_completedFreeModeTruncatedPartitionFunction
       (Common.grandCanonicalEnergy (Config := Occupation Mode) ε μ) β) :
     Tendsto (fun S : Finset Mode => completedFreeModeTruncatedPartitionFunction ε β μ S)
       atTop (𝓝 (eigenbasisPartitionFunction (Common.grandCanonicalEnergy (Config := Occupation Mode) ε μ) β)) := by
+  let weight : Occupation Mode → ℝ :=
+    eigenbasisBoltzmannWeight
+      (Common.grandCanonicalEnergy (Config := Occupation Mode) ε μ) β
+  have hpoint (n : Occupation Mode) :
+      Tendsto (fun S : Finset Mode => if n ⊆ S then weight n else 0)
+        atTop (𝓝 (weight n)) := by
+    apply tendsto_const_nhds.congr'
+    filter_upwards [eventually_ge_atTop n] with S hS
+    simp [hS]
+  have hbound :
+      ∀ᶠ S in (atTop : Filter (Finset Mode)),
+        ∀ n : Occupation Mode, ‖if n ⊆ S then weight n else 0‖ ≤ ‖weight n‖ := by
+    filter_upwards [] with S
+    intro n
+    by_cases h : n ⊆ S <;> simp [h]
+  have hlimit := tendsto_tsum_of_dominated_convergence
+    (f := fun (S : Finset Mode) (n : Occupation Mode) =>
+      if n ⊆ S then weight n else 0)
+    (g := weight) (bound := fun n => ‖weight n‖)
+    hsum hpoint hbound
   simpa only [completedFreeModeTruncatedPartitionFunction,
-    completedFreeModeTruncatedWeight, eigenbasisPartitionFunction] using
-    (tendsto_tsum_ite_of_eventually
-      (eigenbasisBoltzmannWeight
-        (Common.grandCanonicalEnergy (Config := Occupation Mode) ε μ) β)
-      hsum (atTop : Filter (Finset Mode))
-      (fun S (n : Occupation Mode) => n ⊆ S)
-      (fun n => eventually_ge_atTop n))
+    completedFreeModeTruncatedWeight, eigenbasisPartitionFunction, weight] using hlimit
 
 /-- Normalized Gibbs probability in the finite-mode truncated state. -/
 noncomputable def completedFreeModeTruncatedGibbsProbability (ε : Mode → ℝ) (β μ : ℝ)
@@ -245,10 +259,23 @@ private theorem tendsto_completedFreeModeRetainedExpectation
           simpa only [completedOccupationHilbertBasis_apply, completedBasisState] using
             (Common.grandCanonicalGibbsDensityOperator_apply_basis
               (Config := Occupation Mode) ε β μ hsum n))
-  have h := tendsto_tsum_ite_of_eventually term hsumDiag.summable.norm
-    (atTop : Filter (Finset Mode))
-    (fun S (n : Occupation Mode) => n ⊆ S)
-    (fun n => eventually_ge_atTop n)
+  have hpoint (n : Occupation Mode) :
+      Tendsto (fun S : Finset Mode => if n ⊆ S then term n else 0)
+        atTop (𝓝 (term n)) := by
+    apply tendsto_const_nhds.congr'
+    filter_upwards [eventually_ge_atTop n] with S hS
+    simp [hS]
+  have hbound :
+      ∀ᶠ S in (atTop : Filter (Finset Mode)),
+        ∀ n : Occupation Mode, ‖if n ⊆ S then term n else 0‖ ≤ ‖term n‖ := by
+    filter_upwards [] with S
+    intro n
+    by_cases h : n ⊆ S <;> simp [h]
+  have h := tendsto_tsum_of_dominated_convergence
+    (f := fun (S : Finset Mode) (n : Occupation Mode) =>
+      if n ⊆ S then term n else 0)
+    (g := term) (bound := fun n => ‖term n‖)
+    hsumDiag.summable.norm hpoint hbound
   rw [hsumDiag.tsum_eq] at h
   simpa [completedFreeModeRetainedExpectation, term] using h
 
