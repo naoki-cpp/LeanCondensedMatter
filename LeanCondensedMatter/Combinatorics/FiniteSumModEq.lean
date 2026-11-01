@@ -4,7 +4,7 @@ public import Mathlib.Algebra.BigOperators.Group.Finset.Sigma
 public import Mathlib.Algebra.BigOperators.ModEq
 public import Mathlib.Data.Finset.Prod
 public import Mathlib.Data.ZMod.Basic
-public import Mathlib.Tactic.Ring
+import Mathlib.Tactic.Ring
 
 -- Used only to rewrite casts of finite sums in proofs; not part of this module's public API.
 import Mathlib.Algebra.BigOperators.Ring.Finset
