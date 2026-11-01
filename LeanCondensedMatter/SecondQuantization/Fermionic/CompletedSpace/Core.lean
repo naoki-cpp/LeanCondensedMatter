@@ -17,12 +17,13 @@ namespace Fermionic
 noncomputable section
 
 variable {Mode : Type*}
-variable [LinearOrder Mode]
 
 private theorem algebraicToCompleted_basisState' (n : Occupation Mode) :
     algebraicToCompleted (basisState n) = completedBasisState n := by
   simpa [algebraicToCompleted, basisState, completedBasisState] using
     (Common.algebraicToCompleted_basisState (Config := Occupation Mode) n)
+
+variable [LinearOrder Mode]
 
 /-- Completed creation agrees with algebraic creation on every finite-support vector. -/
 theorem completedCreate_comp_algebraicToCompleted (i : Mode) :
