@@ -42,19 +42,21 @@ private def pointwiseFockCurrentMatrix (direction : Fin 2) (e v m px py : ℝ)
     (currentOperator direction e v
       ((pointwiseEigenbasisData v m px py hE).eigenbasis (modeBand j)))
 
-/-- Antisymmetric four-state Fock Kubo response of a specified occupied-band configuration.
-Time is scaled with `hbar = 1`; the physical static trace normalization is attached downstream. -/
-def pointwiseFockHallResponse (occupied : Finset Band) (e v m px py eta : ℝ)
+/-- Antisymmetric four-state Fock Kubo response of a specified occupied-band configuration,
+with the physical reduced Planck constant supplied to the time evolution. -/
+def pointwiseFockHallResponse (occupied : Finset Band) (e v m px py hbar : ℝ)
+    (hhbar : 0 < hbar) (eta : ℝ)
     (hE : energy v m px py ≠ 0) : ℂ :=
   let modes := Finset.univ.filter (fun i => modeBand i ∈ occupied)
   twoModeFockHallKuboResponse (fun i => bandEnergy (modeBand i) v m px py)
     (fun n => if n = modes then 1 else 0)
     (pointwiseFockCurrentMatrix 0 e v m px py hE)
-    (pointwiseFockCurrentMatrix 1 e v m px py hE) 1 (by norm_num)
+    (pointwiseFockCurrentMatrix 1 e v m px py hE) hbar hhbar
     (pureProbability_nonneg modes) (pureProbability_hasSum modes) eta
 
-/-- Clean real Hall density of the singly occupied band, evaluated through the full-Fock
-transition coefficient. At the Dirac degeneracy the totalized density is set to zero. -/
+/-- Clean Hall coefficient per unit reduced Planck constant for a singly occupied band,
+evaluated through the full-Fock transition coefficient. At the Dirac degeneracy the totalized
+density is set to zero. The physical response limit carries an explicit factor `hbar`. -/
 def cleanBandFockHallDensity (band : Band) (e v m px py : ℝ) : ℝ :=
   if hE : energy v m px py ≠ 0 then
     twoModeFockHallCleanResponse (fun i => bandEnergy (modeBand i) v m px py)
@@ -66,10 +68,11 @@ def cleanBandFockHallDensity (band : Band) (e v m px py : ℝ) : ℝ :=
 /-- The clean density is obtained by taking the switching-rate limit of the actual four-state
 Fock response, rather than postulating a one-particle Berry weight. -/
 theorem tendsto_pointwiseFockHallResponse_re
-    (occupied : Finset Band) (e v m px py : ℝ) (hE : energy v m px py ≠ 0) :
-    Filter.Tendsto (fun eta => (pointwiseFockHallResponse occupied e v m px py eta hE).re)
+    (occupied : Finset Band) (e v m px py hbar : ℝ) (hhbar : 0 < hbar)
+    (hE : energy v m px py ≠ 0) :
+    Filter.Tendsto (fun eta => (pointwiseFockHallResponse occupied e v m px py hbar hhbar eta hE).re)
       (nhdsWithin 0 (Set.Ioi 0))
-      (nhds (∑ band ∈ occupied, cleanBandFockHallDensity band e v m px py)) := by
+      (nhds (hbar * ∑ band ∈ occupied, cleanBandFockHallDensity band e v m px py)) := by
   classical
   let modes := Finset.univ.filter (fun i : Fin 2 => modeBand i ∈ occupied)
   have hgap : bandEnergy (modeBand 0) v m px py - bandEnergy (modeBand 1) v m px py ≠ 0 := by
@@ -79,7 +82,7 @@ theorem tendsto_pointwiseFockHallResponse_re
     (fun i => bandEnergy (modeBand i) v m px py)
     (fun n => if n = modes then 1 else 0)
     (pointwiseFockCurrentMatrix 0 e v m px py hE)
-    (pointwiseFockCurrentMatrix 1 e v m px py hE) 1 (by norm_num)
+    (pointwiseFockCurrentMatrix 1 e v m px py hE) hbar hhbar
     (pureProbability_nonneg modes) (pureProbability_hasSum modes) hgap
   have hstates : (Finset.univ : Finset (Finset Band)) =
       {∅, {.lower}, {.upper}, {.lower, .upper}} := by decide
@@ -91,16 +94,17 @@ theorem tendsto_pointwiseFockHallResponse_re
   have hmodes : (Finset.univ : Finset (Fin 2)) = {0, 1} := by decide
   have hf0 : ({0, 1} : Finset (Fin 2)).filter (fun i => i = 0) = {0} := by decide
   have hf1 : ({0, 1} : Finset (Fin 2)).filter (fun i => i ≠ 0) = {1} := by decide
+  have hfall : ({0, 1} : Finset (Fin 2)).filter (fun i => i = 0 ∨ i ≠ 0) = {0, 1} := by decide
   have hn0 : ({0} : Finset (Fin 2)) ≠ {0, 1} := by decide
   have hn1 : ({1} : Finset (Fin 2)) ≠ {0, 1} := by decide
   have hvalue : twoModeFockHallCleanResponse
       (fun i => bandEnergy (modeBand i) v m px py) (fun n => if n = modes then 1 else 0)
       (pointwiseFockCurrentMatrix 0 e v m px py hE)
-      (pointwiseFockCurrentMatrix 1 e v m px py hE) 1 =
-        ∑ band ∈ occupied, cleanBandFockHallDensity band e v m px py := by
+      (pointwiseFockCurrentMatrix 1 e v m px py hE) hbar =
+        hbar * ∑ band ∈ occupied, cleanBandFockHallDensity band e v m px py := by
     rcases hcases with rfl | rfl | rfl | rfl <;>
       simp [modes, hmodes, modeBand, bandMode, cleanBandFockHallDensity, hE,
-        twoModeFockHallCleanResponse, hf0, hf1, hn0, hn1] <;> ring
+        twoModeFockHallCleanResponse, hf0, hf1, hfall, hn0, hn1] <;> ring
   rw [hvalue] at h
   exact h
 

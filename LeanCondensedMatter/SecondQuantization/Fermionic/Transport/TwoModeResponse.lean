@@ -2,7 +2,10 @@ import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.Hamiltonian
 import LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann.FiniteTable
 import LeanCondensedMatter.SecondQuantization.Common.Algebra.FiniteHilbertSelfAdjoint
 import LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann.Eigenbasis.FrequencyDomain
-import Mathlib.Tactic
+import Mathlib.Tactic.NormNum
+import Mathlib.Tactic.Ring
+import Mathlib.Tactic.FieldSimp
+import Mathlib.Tactic.FunProp
 
 set_option linter.style.header false
 

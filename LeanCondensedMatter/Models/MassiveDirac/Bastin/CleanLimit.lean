@@ -1,6 +1,7 @@
 import LeanCondensedMatter.Models.MassiveDirac.Model.Berry.Occupation
 import LeanCondensedMatter.Models.MassiveDirac.ManyBody.PointwiseHall
 import Mathlib.Tactic.Ring
+import Mathlib.Tactic.FieldSimp
 
 set_option linter.style.header false
 
@@ -44,19 +45,23 @@ theorem cleanInterbandBastinPairLimitDensity_eq
 Bastin density used by the existing momentum integrals. The occupied configuration is one
 normalized many-body state, including the vacuum and doubly occupied cases. -/
 theorem tendsto_zeroTemperaturePointwiseFockHallResponse_re
-    (e v m px py fermiEnergy : ℝ) (hE : energy v m px py ≠ 0) :
-    Filter.Tendsto (fun eta => 2 * Real.pi *
+    (e v m px py fermiEnergy hbar : ℝ) (hhbar : 0 < hbar)
+    (hE : energy v m px py ≠ 0) :
+    Filter.Tendsto (fun eta => (2 * Real.pi / hbar) *
       (pointwiseFockHallResponse
         (Finset.univ.filter (fun band => bandEnergy band v m px py < fermiEnergy))
-        e v m px py eta hE).re)
+        e v m px py hbar hhbar eta hE).re)
       (nhdsWithin 0 (Set.Ioi 0))
       (nhds (∑ band : Band, zeroTemperatureOccupation fermiEnergy (bandEnergy band v m px py) *
         cleanInterbandBastinPairLimitDensity band e v m px py)) := by
   classical
   have h := tendsto_pointwiseFockHallResponse_re
     (Finset.univ.filter (fun band => bandEnergy band v m px py < fermiEnergy))
-    e v m px py hE
-  have hscaled := (tendsto_const_nhds (x := 2 * Real.pi)).mul h
+    e v m px py hbar hhbar hE
+  have hscaled := (tendsto_const_nhds (x := 2 * Real.pi / hbar)).mul h
+  have hcancel : (2 * Real.pi / hbar) * hbar = 2 * Real.pi := by
+    field_simp [hhbar.ne']
+  simp only [← mul_assoc, hcancel] at hscaled
   simpa [Finset.sum_filter, Finset.mul_sum, zeroTemperatureOccupation,
     cleanInterbandBastinPairLimitDensity, mul_assoc] using hscaled
 
