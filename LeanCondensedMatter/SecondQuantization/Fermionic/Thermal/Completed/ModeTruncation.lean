@@ -259,10 +259,23 @@ private theorem tendsto_completedFreeModeRetainedExpectation
           simpa only [completedOccupationHilbertBasis_apply, completedBasisState] using
             (Common.grandCanonicalGibbsDensityOperator_apply_basis
               (Config := Occupation Mode) ε β μ hsum n))
-  have h := tendsto_tsum_ite_of_eventually term hsumDiag.summable.norm
-    (atTop : Filter (Finset Mode))
-    (fun S (n : Occupation Mode) => n ⊆ S)
-    (fun n => eventually_ge_atTop n)
+  have hpoint (n : Occupation Mode) :
+      Tendsto (fun S : Finset Mode => if n ⊆ S then term n else 0)
+        atTop (𝓝 (term n)) := by
+    apply tendsto_const_nhds.congr'
+    filter_upwards [eventually_ge_atTop n] with S hS
+    simp [hS]
+  have hbound :
+      ∀ᶠ S in (atTop : Filter (Finset Mode)),
+        ∀ n : Occupation Mode, ‖if n ⊆ S then term n else 0‖ ≤ ‖term n‖ := by
+    filter_upwards [] with S
+    intro n
+    by_cases h : n ⊆ S <;> simp [h]
+  have h := tendsto_tsum_of_dominated_convergence
+    (f := fun (S : Finset Mode) (n : Occupation Mode) =>
+      if n ⊆ S then term n else 0)
+    (g := term) (bound := fun n => ‖term n‖)
+    hsumDiag.summable.norm hpoint hbound
   rw [hsumDiag.tsum_eq] at h
   simpa [completedFreeModeRetainedExpectation, term] using h
 
