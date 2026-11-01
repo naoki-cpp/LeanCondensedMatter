@@ -1,5 +1,7 @@
 import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Hamiltonian.MaximalLaplacian1D
-import Mathlib.Tactic
+import Mathlib.Tactic.FieldSimp
+import Mathlib.Tactic.FunProp
+import Mathlib.Tactic.NormNum
 
 set_option linter.style.header false
 

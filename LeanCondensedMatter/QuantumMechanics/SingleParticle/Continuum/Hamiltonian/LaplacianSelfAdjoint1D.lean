@@ -5,7 +5,7 @@ import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Hamiltonian
 import Mathlib.Analysis.Calculus.Deriv.Star
 import Mathlib.Analysis.Distribution.SchwartzSpace.Deriv
 import Mathlib.Analysis.RCLike.Lemmas
-import Mathlib.Tactic
+import Mathlib.Tactic.NormNum
 
 set_option linter.style.header false
 
