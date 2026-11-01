@@ -1,7 +1,8 @@
 module
 
 public import Mathlib.Analysis.Distribution.SchwartzSpace.Deriv
-import Mathlib.Tactic
+import Mathlib.Tactic.Module
+import Mathlib.Tactic.Ring
 
 public section
 

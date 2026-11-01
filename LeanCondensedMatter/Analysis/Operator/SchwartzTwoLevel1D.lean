@@ -1,7 +1,7 @@
 import LeanCondensedMatter.Analysis.InternalSpace.Pauli
 import LeanCondensedMatter.Analysis.Operator.SchwartzKinetic1D
 import Mathlib.Algebra.Lie.OfAssociative
-import Mathlib.Tactic
+import Mathlib.Tactic.Ring
 
 set_option linter.style.header false
 
