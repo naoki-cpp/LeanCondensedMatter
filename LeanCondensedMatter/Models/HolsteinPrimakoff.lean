@@ -114,6 +114,7 @@ theorem spinPlus_mem_physicalSubspace (hbar : ℝ) (twiceSpin : ℕ) (i j : Mode
   rw [spinPlus_basisState]
   apply Submodule.smul_mem
   apply Finsupp.single_mem_supported
+  change removeOccupation i n j ≤ twiceSpin
   by_cases hji : j = i
   · subst j
     simp only [removeOccupation_apply_same]
@@ -134,11 +135,13 @@ theorem spinMinus_mem_physicalSubspace (hbar : ℝ) (twiceSpin : ℕ) (i j : Mod
     · rw [spinMinus_basisState]
       apply Submodule.smul_mem
       apply Finsupp.single_mem_supported
+      change createOccupation i n i ≤ twiceSpin
       simp only [createOccupation_apply_same]
       omega
   · rw [spinMinus_basisState]
     apply Submodule.smul_mem
     apply Finsupp.single_mem_supported
+    change createOccupation i n j ≤ twiceSpin
     simpa only [createOccupation_apply_ne hji] using hn
 
 /-- The longitudinal spin component preserves the occupation cap at every site. -/
