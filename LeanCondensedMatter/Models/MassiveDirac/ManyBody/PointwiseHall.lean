@@ -73,7 +73,8 @@ theorem tendsto_pointwiseFockHallResponse_re
   classical
   let modes := Finset.univ.filter (fun i : Fin 2 => modeBand i ∈ occupied)
   have hgap : bandEnergy (modeBand 0) v m px py - bandEnergy (modeBand 1) v m px py ≠ 0 := by
-    simpa [modeBand] using interbandEnergyGap_ne_zero_of_energy_ne_zero Band.lower v m px py hE
+    simpa [modeBand, interbandEnergyGap, bandEnergy] using
+      interbandEnergyGap_ne_zero_of_energy_ne_zero Band.lower v m px py hE
   have h := tendsto_twoModeFockHallKuboResponse_re
     (fun i => bandEnergy (modeBand i) v m px py)
     (fun n => if n = modes then 1 else 0)
@@ -88,6 +89,10 @@ theorem tendsto_pointwiseFockHallResponse_re
     rw [hstates] at hmem
     simpa only [Finset.mem_insert, Finset.mem_singleton] using hmem
   have hmodes : (Finset.univ : Finset (Fin 2)) = {0, 1} := by decide
+  have hf0 : ({0, 1} : Finset (Fin 2)).filter (fun i => i = 0) = {0} := by decide
+  have hf1 : ({0, 1} : Finset (Fin 2)).filter (fun i => i ≠ 0) = {1} := by decide
+  have hn0 : ({0} : Finset (Fin 2)) ≠ {0, 1} := by decide
+  have hn1 : ({1} : Finset (Fin 2)) ≠ {0, 1} := by decide
   have hvalue : twoModeFockHallCleanResponse
       (fun i => bandEnergy (modeBand i) v m px py) (fun n => if n = modes then 1 else 0)
       (pointwiseFockCurrentMatrix 0 e v m px py hE)
@@ -95,7 +100,7 @@ theorem tendsto_pointwiseFockHallResponse_re
         ∑ band ∈ occupied, cleanBandFockHallDensity band e v m px py := by
     rcases hcases with rfl | rfl | rfl | rfl <;>
       simp [modes, hmodes, modeBand, bandMode, cleanBandFockHallDensity, hE,
-        twoModeFockHallCleanResponse] <;> ring
+        twoModeFockHallCleanResponse, hf0, hf1, hn0, hn1] <;> ring
   rw [hvalue] at h
   exact h
 
@@ -106,7 +111,7 @@ theorem cleanBandFockHallDensity_eq_neg_chargeSq_berryCurvature
     cleanBandFockHallDensity band e v m px py = -(e ^ 2 * berryCurvature band v m px py) := by
   by_cases hE : energy v m px py ≠ 0
   swap
-  · simp [cleanBandFockHallDensity, hE, berryCurvature, not_ne_iff.mp hE]
+  · simp [cleanBandFockHallDensity, berryCurvature, not_ne_iff.mp hE]
   let data := pointwiseEigenbasisData v m px py hE
   have hblock (mu nu : Fin 2) (source target : Band) :
       currentBandBlockTrace mu nu source target e v m px py =
@@ -118,24 +123,32 @@ theorem cleanBandFockHallDensity_eq_neg_chargeSq_berryCurvature
     change _ = inner ℂ (data.eigenbasis target)
       (currentOperator mu e v (data.eigenbasis source)) *
         inner ℂ (data.eigenbasis source) (currentOperator nu e v (data.eigenbasis target))
+    generalize currentOperator mu e v = J₁
+    generalize currentOperator nu e v = J₂
     rw [show InnerProductSpace.rankOne ℂ (data.eigenbasis target) (data.eigenbasis target) *
-        currentOperator mu e v *
+        J₁ *
         InnerProductSpace.rankOne ℂ (data.eigenbasis source) (data.eigenbasis source) *
-        currentOperator nu e v =
-      inner ℂ (data.eigenbasis target) (currentOperator mu e v (data.eigenbasis source)) •
+        J₂ =
+      inner ℂ (data.eigenbasis target) (J₁ (data.eigenbasis source)) •
         InnerProductSpace.rankOne ℂ (data.eigenbasis target)
-          ((currentOperator nu e v).adjoint (data.eigenbasis source)) by
+          (J₂.adjoint (data.eigenbasis source)) by
       simp [ContinuousLinearMap.mul_def, InnerProductSpace.comp_rankOne,
         InnerProductSpace.rankOne_comp, ContinuousLinearMap.adjoint_inner_left]]
     simp [finiteDimensionalOperatorTrace_apply, InnerProductSpace.trace_rankOne,
       ContinuousLinearMap.adjoint_inner_left]
+  have hmat (mu nu : Fin 2) (i j : Fin 2) :
+      pointwiseFockCurrentMatrix mu e v m px py hE i j *
+        pointwiseFockCurrentMatrix nu e v m px py hE j i =
+      currentBandBlockTrace mu nu (modeBand j) (modeBand i) e v m px py := by
+    simpa only [pointwiseFockCurrentMatrix, data] using
+      (hblock mu nu (modeBand j) (modeBand i)).symm
   rw [← bastinInterbandBlockDifference_im_div_gap_sq_eq_neg_chargeSq_berryCurvature
     band e v m px py hE]
   unfold cleanBandFockHallDensity
-  rw [dif_pos hE]
+  rw [dite_eq_left hE]
   cases band <;>
-    simp [twoModeFockHallCleanResponse, bandMode, modeBand, pointwiseFockCurrentMatrix,
-      bastinInterbandBlockDifference, hblock, data, interbandEnergyGap, bandEnergy,
+    simp [twoModeFockHallCleanResponse, bandMode, modeBand,
+      bastinInterbandBlockDifference, hmat, interbandEnergyGap, bandEnergy,
       currentBandBlockTrace_swap, mul_comm] <;> ring
 
 end
