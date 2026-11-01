@@ -1,6 +1,5 @@
 import Mathlib.Algebra.Lie.OfAssociative
-import Mathlib.Basic.Complex.Basic
-import Mathlib.Tactic.Module
+import Mathlib.Tactic
 
 set_option linter.style.header false
 
