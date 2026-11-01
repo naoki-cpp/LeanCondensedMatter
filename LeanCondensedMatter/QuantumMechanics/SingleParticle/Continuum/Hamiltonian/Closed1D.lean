@@ -1,6 +1,8 @@
 import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Hamiltonian.Regularity1D
 import Mathlib.Topology.Algebra.Module.LinearPMap
-import Mathlib.Tactic
+import Mathlib.Tactic.Abel
+import Mathlib.Tactic.FieldSimp
+import Mathlib.Tactic.FunProp
 
 set_option linter.style.header false
 
