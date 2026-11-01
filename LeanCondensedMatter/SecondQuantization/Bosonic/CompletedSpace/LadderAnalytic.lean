@@ -185,11 +185,9 @@ private theorem completedCreate_adjoint_domain_le_annihilateDomain (i : Mode) :
       have hcoord := congrArg (fun q : Occupation Mode => q i) hm
       rw [createOccupation_apply_same, hni] at hcoord
       omega
-  · have hrepr : createOccupation i (removeOccupation i n) = n :=
-      createOccupation_removeOccupation_of_pos hni
+  · have hrepr := createOccupation_removeOccupation_of_pos hni
     have hcoord : (removeOccupation i n) i + 1 = n i := by
-      have h := congrArg (fun q : Occupation Mode => q i) hrepr
-      simpa only [createOccupation_apply_same] using h
+      rw [removeOccupation_apply_same]; omega
     have hcoord_real : ((removeOccupation i n) i : ℝ) + 1 = (n i : ℝ) := by
       exact_mod_cast hcoord
     conv_rhs => rw [← hrepr]
