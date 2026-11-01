@@ -65,6 +65,25 @@ theorem tendsto_zeroTemperaturePointwiseFockHallResponse_re
   simpa [Finset.sum_filter, Finset.mul_sum, zeroTemperatureOccupation,
     cleanInterbandBastinPairLimitDensity, mul_assoc] using hscaled
 
+/-- The grand-canonical many-body response gives the Fermi--Dirac weighted clean Bastin
+density with the same physical normalization as the zero-temperature expression. This is a
+pointwise clean-limit statement, not an interchange of temperature, momentum, and rate limits. -/
+theorem tendsto_grandCanonicalPointwiseFockHallResponse_re
+    (beta mu e v m px py hbar : ℝ) (hhbar : 0 < hbar)
+    (hE : energy v m px py ≠ 0) :
+    Filter.Tendsto (fun eta => (2 * Real.pi / hbar) *
+      (pointwiseGrandCanonicalFockHallResponse beta mu e v m px py hbar hhbar eta hE).re)
+      (nhdsWithin 0 (Set.Ioi 0))
+      (nhds (∑ band : Band,
+        (Real.exp (beta * (bandEnergy band v m px py - mu)) + 1)⁻¹ *
+          cleanInterbandBastinPairLimitDensity band e v m px py)) := by
+  have h := tendsto_pointwiseGrandCanonicalFockHallResponse_re beta mu e v m px py hbar hhbar hE
+  have hscaled := (tendsto_const_nhds (x := 2 * Real.pi / hbar)).mul h
+  have hcancel : (2 * Real.pi / hbar) * hbar = 2 * Real.pi := by
+    field_simp [hhbar.ne']
+  simp only [← mul_assoc, hcancel] at hscaled
+  simpa [Finset.mul_sum, cleanInterbandBastinPairLimitDensity, mul_assoc, mul_left_comm] using hscaled
+
 /-- Radial positive-energy-coordinate density obtained from the clean local Bastin-pair profile.
 The Berry part is exactly `radialBerryEnergyDensity`; the factor `-2π e²` is the local pair limit
 proved upstream. -/
