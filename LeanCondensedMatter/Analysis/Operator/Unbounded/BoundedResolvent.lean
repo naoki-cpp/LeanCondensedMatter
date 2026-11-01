@@ -2,7 +2,6 @@ import LeanCondensedMatter.Analysis.Operator.Unbounded.SelfAdjointResolvent
 import Mathlib.Analysis.Normed.Operator.ContinuousLinearMap
 import Mathlib.LinearAlgebra.Isomorphisms
 import Mathlib.Topology.Algebra.Module.ContinuousLinearMap.Restrict
-import Mathlib.Tactic
 
 set_option linter.style.header false
 
