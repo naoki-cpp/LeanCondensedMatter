@@ -151,6 +151,12 @@ theorem createOccupation_apply_ne {i j : Mode} (h : j ≠ i) (n : Occupation Mod
     createOccupation i n j = n j := by
   simp [createOccupation, singleOccupation, h]
 
+/-- Creating at mode `i` cannot produce a configuration with zero occupancy there. -/
+theorem not_mem_range_createOccupation_of_zero {i : Mode} {n : Occupation Mode}
+    (hni : n i = 0) : n ∉ Set.range (createOccupation i) := by
+  rintro ⟨m, rfl⟩
+  simp at hni
+
 /-- Remove one particle from mode `i`, with zero left unchanged. -/
 noncomputable def removeOccupation (i : Mode) (n : Occupation Mode) : Occupation Mode :=
   n.update i (n i - 1)

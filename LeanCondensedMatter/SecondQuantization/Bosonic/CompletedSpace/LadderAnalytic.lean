@@ -174,11 +174,7 @@ private theorem completedCreate_adjoint_domain_le_annihilateDomain (i : Mode) :
     simp only [Nat.cast_zero, Real.sqrt_zero, Complex.ofReal_zero, zero_mul]
     rw [Function.extend_apply']
     · rfl
-    · intro h
-      rcases h with ⟨m, hm⟩
-      have hcoord := congrArg (fun q : Occupation Mode => q i) hm
-      rw [createOccupation_apply_same, hni] at hcoord
-      omega
+    · exact not_mem_range_createOccupation_of_zero hni
   · have hrepr := createOccupation_removeOccupation_of_pos hni
     have hcoord : (removeOccupation i n) i + 1 = n i := by
       rw [removeOccupation_apply_same]; omega

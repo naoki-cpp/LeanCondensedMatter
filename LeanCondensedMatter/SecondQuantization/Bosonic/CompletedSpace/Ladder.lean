@@ -83,11 +83,7 @@ theorem completedCreate_apply (i : Mode) (ψ : (completedCreate i).domain)
   by_cases hni : n i = 0
   · rw [ite_eq_left hni, Function.extend_apply']
     · rfl
-    · intro h
-      rcases h with ⟨m, hm⟩
-      have hcoord := congrArg (fun q : Occupation Mode => q i) hm
-      rw [createOccupation_apply_same, hni] at hcoord
-      omega
+    · exact not_mem_range_createOccupation_of_zero hni
   · rw [ite_eq_right hni]
     have hrepr := createOccupation_removeOccupation_of_pos hni
     have hcoord : (removeOccupation i n) i + 1 = n i := by
