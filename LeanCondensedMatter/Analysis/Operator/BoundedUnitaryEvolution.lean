@@ -4,7 +4,8 @@ import Mathlib.Analysis.SpecialFunctions.Exponential
 import Mathlib.Analysis.Complex.RealDeriv
 import Mathlib.Analysis.Calculus.FDeriv.CompCLM
 import Mathlib.Analysis.Calculus.MeanValue
-import Mathlib.Tactic
+import Mathlib.Tactic.FunProp
+import Mathlib.Tactic.Ring
 
 set_option linter.style.header false
 
