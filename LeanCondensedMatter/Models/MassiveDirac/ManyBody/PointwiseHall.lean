@@ -152,11 +152,12 @@ theorem tendsto_pointwiseGrandCanonicalFockHallResponse_re
     rw [hf]
     have h0 := ne_of_gt (add_pos zero_lt_one (Real.exp_pos (-beta * (eps 0 - mu))))
     have h1 := ne_of_gt (add_pos zero_lt_one (Real.exp_pos (-beta * (eps 1 - mu))))
+    have h01 : (0 : Fin 2) ∉ ({1} : Finset (Fin 2)) := by decide
     simp only [p, eigenbasisGibbsProbability]
     simp only [hZ]
     simp only [eigenbasisBoltzmannWeight, henergy,
       SecondQuantization.Fermionic.fermionEnergy_eq_sum,
-      Finset.sum_insert (by decide : (0 : Fin 2) ∉ {1}), Finset.sum_singleton,
+      Finset.sum_insert h01, Finset.sum_singleton,
       mul_add, Real.exp_add]
     fin_cases i
     all_goals field_simp [h0, h1]
