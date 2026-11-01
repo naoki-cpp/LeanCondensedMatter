@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Analysis.Operator.Unbounded.CayleyTransform
-import Mathlib.Tactic
+import Mathlib.Tactic.Ring
 
 set_option linter.style.header false
 
