@@ -291,20 +291,7 @@ prefactor is attached; only then is it exposed through `Core.ConductivityTensor`
 cutoff-removal, or zero-broadening limit is part of this benchmark.
 
 `Models.MassiveDirac` is the public route for the massive-Dirac transport benchmark.
-`Models.MassiveDirac.ManyBody` constructs its clean Hamiltonian on the full fermionic
-Fock space of a finite set of physical momenta, with two internal modes per momentum.
-Its finite one-particle Hamiltonian and current are realized by the canonical continuous
-`Fermionic.Lattice.finiteSecondQuantization` map. Adjoint identities use the matrix-unit
-expansion law in `Fermionic.Lattice.BoundedMatrixUnitAdjoint`. It supplies its Hamiltonian,
-current operators and finite-dimensional Gibbs state to
-the general bounded linear-response theorem. Uniform minimal coupling shifts momentum
-by `+e A` for charge `-e`; the affine Dirac Hamiltonian has a field-independent current
-and zero explicit contact term on this fixed mode set. Source bounds and interval
-integrability remain explicit hypotheses. This finite-mode construction does not identify
-the many-body Gibbs response with the continuum one-particle conductivity calculations;
-that reduction, volume normalization and continuum limits require separate results.
-
-The clean Hall density has a separate pointwise construction in
+The clean Hall density is constructed in
 `MassiveDirac.ManyBody.PointwiseHall`: at each momentum the two energy bands form a four-state
 fermionic Fock system. Its normalized occupied configuration enters the existing causal Kubo
 theory. The antisymmetric electric-field response has a clean switching-rate limit, whose band

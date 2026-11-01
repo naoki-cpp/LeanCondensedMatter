@@ -89,11 +89,12 @@ private theorem twoModeFockLehmannTableResponse_eq_kubo
       inner ℂ (Common.finiteHilbertBasis m)
         (Common.finiteHilbertOperatorAlgEquiv V (Common.finiteHilbertBasis n)) =
           Common.matrixCoeff V m n := by
-    simp only [Common.finiteHilbertBasis_apply]
-    change inner ℂ (EuclideanSpace.single m 1)
-      (Common.finiteHilbertOperatorAlgEquiv V (Common.finiteHilbertBasisState n)) = _
+    simp only [Common.finiteHilbertBasis_apply, Common.finiteHilbertBasisState,
+      EuclideanSpace.basisFun_apply]
     rw [EuclideanSpace.inner_single_left]
-    simp only [map_one, one_mul, Common.finiteHilbertOperator_basis_apply]
+    simp only [map_one, one_mul]
+    simpa only [Common.finiteHilbertBasisState, EuclideanSpace.basisFun_apply] using
+      Common.finiteHilbertOperator_basis_apply V m n
   calc
     _ = ∑ mn : Occupation (Fin 2) × Occupation (Fin 2),
         (eigenbasisTransitionData (twoModeFockSystem energy hbar hhbar)
@@ -101,7 +102,8 @@ private theorem twoModeFockLehmannTableResponse_eq_kubo
           (Common.finiteHilbertOperatorAlgEquiv (twoModeVertex A))
           (Common.finiteHilbertOperatorAlgEquiv (twoModeVertex B)) mn).frequencyTerm omega eta := by
       simp only [finiteLehmannTableResponse, finiteLehmannTableTransitionData,
-        twoModeFockLehmannTable, eigenbasisTransitionData, twoModeFockEigenbasisData, hcoeff]
+        twoModeFockLehmannTable, eigenbasisTransitionData, twoModeFockEigenbasisData, hcoeff,
+        twoModeFockSystem]
     _ = _ := (adiabaticFrequencyDomainSusceptibility_eigenbasis_eq_finite_sum
       (twoModeFockSystem energy hbar hhbar)
       (twoModeFockEigenbasisData energy probability hbar hhbar hpos hsum)
@@ -138,18 +140,20 @@ private theorem twoModeFockLehmannTableResponse_eq
       create i (Common.basisState n) =
         if i ∈ n then 0 else (fermionSign i n : ℂ) • Common.basisState (insertOccupation i n) := by
     simpa only [basisState, createBasis] using create_basisState i n
+  have hf : ({1} : Occupation (Fin 2)).filter (fun i => i = 0) = ∅ := by decide
+  have hn : ({0} : Occupation (Fin 2)) ≠ {0, 1} := by decide
   unfold finiteLehmannTableResponse
   rw [Fintype.sum_prod_type]
   simp_rw [hsum]
   simp only [twoModeFockLehmannTable, finiteLehmannTableTransitionData,
     LehmannTransitionData.frequencyTerm, orderedLehmannTransitionData,
     lehmannTerm, twoModeVertex, Common.matrixCoeff,
-    Fin.sum_univ_two, LinearMap.sum_apply, LinearMap.add_apply,
+    Fin.sum_univ_two, LinearMap.add_apply,
     LinearMap.smul_apply, LinearMap.comp_apply]
   simp [ha, hc,
     map_smul, fermionSign, insertOccupation, removeOccupation,
     fermionEnergy_eq_sum] <;>
-    simp [Common.basisState, Finsupp.single_apply]
+    simp [Common.basisState, Finsupp.single_apply, hf, hn, Ne.symm hn]
 
 /-- Antisymmetric current response converted from vector potential to electric field at zero
 frequency. This is a response density before a momentum measure or volume factor is applied. -/
@@ -217,13 +221,13 @@ private theorem tendsto_twoModeFockHallResponse_re
     dsimp [F, numerator, lehmannDenominator]
     push_cast
     field_simp [hhbarC, hgapC]
-    ring_nf <;> norm_num <;> ring
+    ring_nf; norm_num; ring
   have hreal : (F 0).re = twoModeFockHallCleanResponse energy probability A B hbar := by
     rw [heval]
     rw [← Complex.ofReal_pow, Complex.div_ofReal_re]
     simp only [Complex.mul_re, Complex.mul_im, Complex.neg_re, Complex.neg_im,
       Complex.I_re, Complex.I_im, Complex.ofReal_re, Complex.ofReal_im,
-      mul_zero, zero_mul, sub_zero, zero_sub, one_mul, zero_add, add_zero,
+      mul_zero, zero_mul, sub_zero, one_mul, zero_add,
       twoModeFockHallCleanResponse]
     dsimp only [gap]
     ring
