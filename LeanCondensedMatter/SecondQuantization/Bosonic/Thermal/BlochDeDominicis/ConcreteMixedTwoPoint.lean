@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Analysis.Exponential
+import Mathlib.Analysis.SpecialFunctions.Complex.Log
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.NormalizedTwoPointTrace
 import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.FreeKMSRotation
 import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.TwoPoint
@@ -41,10 +41,13 @@ theorem grandCanonicalGibbsExpectation_annihilate_comp_create_concrete
   let ξ : Mode → ℝ := fun k => ε k - μ
   change grandCanonicalGibbsExpectation ε β μ ((annihilate i).comp (create j)) =
     if i = j then (1 - Complex.exp (((-(ξ i) * β : ℝ) : ℂ)))⁻¹ else 0
-  have hden : 1 - Complex.exp (((-(ξ i) * β : ℝ) : ℂ)) ≠ 0 :=
-    sub_ne_zero.mpr (Ne.symm (Complex.exp_ne_one_of_re_ne_zero (by
-      change -(ξ i) * β ≠ 0
-      nlinarith [hpos i])))
+  have hden : 1 - Complex.exp (((-(ξ i) * β : ℝ) : ℂ)) ≠ 0 := by
+    apply sub_ne_zero.mpr
+    intro heq
+    have hre := Complex.re_eq_re_of_cexp_eq_cexp
+      (heq.symm.trans Complex.exp_zero.symm)
+    have hzero : -(ξ i) * β = 0 := by simpa using hre
+    nlinarith [hpos i]
   have hvalue :
       grandCanonicalGibbsExpectation ε β μ ((annihilate i).comp (create j)) =
         (if i = j then (1 : ℂ) else 0) /
