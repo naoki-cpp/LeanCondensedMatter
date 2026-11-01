@@ -387,7 +387,6 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel_pa
       gaussianCrossedCurrentCoefficientVector, polarPauliInPlaneHarmonics,
       sigmaX, sigmaY, sigmaZ, InternalSpace.pauliX, InternalSpace.pauliY,
       InternalSpace.pauliZ]
-  all_goals ring_nf
   all_goals simp [Complex.I_sq, Complex.I_pow_three]
   all_goals ring
 
