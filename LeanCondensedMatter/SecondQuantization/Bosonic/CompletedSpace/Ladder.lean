@@ -142,24 +142,6 @@ private theorem completedAnnihilatePullback_basisState_of_pos
     (Common.completedCoordinatePullback_basisState_of_image
       (createOccupation i) (createOccupation_injective i) (removeOccupation i n))
 
-private theorem completedCreateDiagonal_basisState (i : Mode) (n : Occupation Mode) :
-    Common.completedDiagonalOperator
-        (fun m : Occupation Mode => (Real.sqrt (m i + 1 : ℝ) : ℂ))
-        ⟨completedBasisState n, completedBasisState_mem_completedCreateDomain i n⟩ =
-      (Real.sqrt (n i + 1 : ℝ) : ℂ) • completedBasisState n := by
-  simpa [completedBasisState] using
-    (Common.completedDiagonalOperator_basisState
-      (fun m : Occupation Mode => (Real.sqrt (m i + 1 : ℝ) : ℂ)) n)
-
-private theorem completedAnnihilateDiagonal_basisState (i : Mode) (n : Occupation Mode) :
-    Common.completedDiagonalOperator
-        (fun m : Occupation Mode => (Real.sqrt (m i : ℝ) : ℂ))
-        ⟨completedBasisState n, completedBasisState_mem_completedAnnihilateDomain i n⟩ =
-      (Real.sqrt (n i : ℝ) : ℂ) • completedBasisState n := by
-  simpa [completedBasisState] using
-    (Common.completedDiagonalOperator_basisState
-      (fun m : Occupation Mode => (Real.sqrt (m i : ℝ) : ℂ)) n)
-
 /-- Occupation-basis action of completed bosonic creation. -/
 @[simp]
 theorem completedCreate_basisState (i : Mode) (n : Occupation Mode)
@@ -174,7 +156,7 @@ theorem completedCreate_basisState (i : Mode) (n : Occupation Mode)
           (fun m : Occupation Mode => (Real.sqrt (m i + 1 : ℝ) : ℂ))
           ⟨completedBasisState n, h⟩) =
       _
-  rw [completedCreateDiagonal_basisState, map_smul]
+  simp only [completedBasisState, Common.completedDiagonalOperator_basisState, map_smul]
   exact congrArg
     (fun z : CompletedFockSpace Mode =>
       (Real.sqrt (n i + 1 : ℝ) : ℂ) • z)
@@ -195,10 +177,13 @@ theorem completedAnnihilate_basisState (i : Mode) (n : Occupation Mode)
           (fun m : Occupation Mode => (Real.sqrt (m i : ℝ) : ℂ))
           ⟨completedBasisState n, h⟩) =
       _
-  rw [completedAnnihilateDiagonal_basisState, map_smul]
+  simp only [completedBasisState, Common.completedDiagonalOperator_basisState, map_smul]
   by_cases hni : n i = 0
   · simp [hni]
-  · rw [completedAnnihilatePullback_basisState_of_pos i hni]
+  · simpa only [completedBasisState] using
+      congrArg
+        (fun z : CompletedFockSpace Mode => (Real.sqrt (n i : ℝ) : ℂ) • z)
+        (completedAnnihilatePullback_basisState_of_pos i hni)
 
 private noncomputable def algebraicToCompletedCreateDomain (i : Mode) :
     FockSpace Mode →ₗ[ℂ] (completedCreate i).domain := by
