@@ -1,7 +1,9 @@
 import LeanCondensedMatter.QuantumTheory.SpinHalf
 import LeanCondensedMatter.QuantumTheory.LocalizedSpin
 import Mathlib.Analysis.InnerProductSpace.Positive
-import Mathlib.Tactic
+import Mathlib.Tactic.FinCases
+import Mathlib.Tactic.Linarith
+import Mathlib.Tactic.Ring
 
 set_option linter.style.header false
 
