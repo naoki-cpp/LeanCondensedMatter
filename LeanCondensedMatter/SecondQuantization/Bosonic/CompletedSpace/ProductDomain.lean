@@ -145,11 +145,9 @@ theorem completedCreate_mem_completedAnnihilateDomain_of_mem_completedNumberOper
       have hcoord := congrArg (fun q : Occupation Mode => q i) hm
       rw [createOccupation_apply_same, hni] at hcoord
       omega
-  · have hrepr : createOccupation i (removeOccupation i n) = n :=
-      createOccupation_removeOccupation_of_pos hni
+  · have hrepr := createOccupation_removeOccupation_of_pos hni
     have hcoord : (removeOccupation i n) i + 1 = n i := by
-      have h := congrArg (fun q : Occupation Mode => q i) hrepr
-      simpa only [createOccupation_apply_same] using h
+      rw [removeOccupation_apply_same]; omega
     conv_rhs => rw [← hrepr]
     rw [(createOccupation_injective i).extend_apply,
       completedCreate_apply, ite_eq_right hni,
@@ -194,11 +192,9 @@ private theorem mem_completedNumberOperatorDomain_of_annihilate_mem_createDomain
       have hcoord := congrArg (fun q : Occupation Mode => q i) hm
       rw [createOccupation_apply_same, hni] at hcoord
       omega
-  · have hrepr : createOccupation i (removeOccupation i n) = n :=
-      createOccupation_removeOccupation_of_pos hni
+  · have hrepr := createOccupation_removeOccupation_of_pos hni
     have hcoord : (removeOccupation i n) i + 1 = n i := by
-      have h := congrArg (fun q : Occupation Mode => q i) hrepr
-      simpa only [createOccupation_apply_same] using h
+      rw [removeOccupation_apply_same]; omega
     conv_rhs => rw [← hrepr]
     rw [(createOccupation_injective i).extend_apply]
     change
@@ -336,11 +332,9 @@ theorem completedCreateAfterAnnihilate_eq_numberOperator (i : Mode) :
   · rw [ite_eq_left hni, hni]
     simp
   · rw [ite_eq_right hni, completedAnnihilate_apply]
-    have hrepr : createOccupation i (removeOccupation i n) = n :=
-      createOccupation_removeOccupation_of_pos hni
+    have hrepr := createOccupation_removeOccupation_of_pos hni
     have hcoord : (removeOccupation i n) i + 1 = n i := by
-      have h := congrArg (fun q : Occupation Mode => q i) hrepr
-      simpa only [createOccupation_apply_same] using h
+      rw [removeOccupation_apply_same]; omega
     have hcoord_real : ((removeOccupation i n) i : ℝ) + 1 = (n i : ℝ) := by
       exact_mod_cast hcoord
     rw [hcoord_real, ← mul_assoc, sqrt_natCast_mul_self, hrepr]
