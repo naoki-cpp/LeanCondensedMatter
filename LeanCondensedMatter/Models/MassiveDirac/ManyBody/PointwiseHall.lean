@@ -125,9 +125,6 @@ theorem cleanBandFockHallDensity_eq_neg_chargeSq_berryCurvature
     unfold currentBandBlockTrace
     rw [bandProjectorOperator_eq_rankOne_pointwiseEigenbasis target v m px py hE,
       bandProjectorOperator_eq_rankOne_pointwiseEigenbasis source v m px py hE]
-    change _ = inner ℂ (data.eigenbasis target)
-      (currentOperator mu e v (data.eigenbasis source)) *
-        inner ℂ (data.eigenbasis source) (currentOperator nu e v (data.eigenbasis target))
     generalize currentOperator mu e v = J₁
     generalize currentOperator nu e v = J₂
     rw [show InnerProductSpace.rankOne ℂ (data.eigenbasis target) (data.eigenbasis target) *
@@ -152,9 +149,9 @@ theorem cleanBandFockHallDensity_eq_neg_chargeSq_berryCurvature
   unfold cleanBandFockHallDensity
   rw [dite_eq_left hE]
   cases band <;>
-    simp [twoModeFockHallCleanResponse, bandMode, modeBand,
+    (simp [twoModeFockHallCleanResponse, bandMode, modeBand,
       bastinInterbandBlockDifference, hmat, interbandEnergyGap, bandEnergy,
-      currentBandBlockTrace_swap, mul_comm] <;> ring
+      currentBandBlockTrace_swap]; ring)
 
 end
 end QuantumTheory.Models.MassiveDirac
