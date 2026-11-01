@@ -17,7 +17,6 @@ namespace Fermionic
 noncomputable section
 
 variable {Mode : Type*}
-
 private theorem algebraicToCompleted_basisState' (n : Occupation Mode) :
     algebraicToCompleted (basisState n) = completedBasisState n := by
   simpa [algebraicToCompleted, basisState, completedBasisState] using
