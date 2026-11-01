@@ -298,7 +298,12 @@ theory. The antisymmetric electric-field response has a clean switching-rate lim
 coefficients equal the canonical Berry density. `Bastin.CleanLimit` uses these coefficients as
 the clean local density; radial change-of-variables and dominated-convergence consumers use its
 proved Berry representation. This connects local Fock responses to the existing clean integrals,
-without constructing a single global infinite-volume density operator. It does not identify
+without constructing a single global infinite-volume density operator. The same pointwise
+response accepts any normalized occupation-diagonal state; pure occupied configurations and
+grand-canonical Gibbs states are realizations of that API. Summing the Gibbs probabilities over
+configurations containing a band gives its Fermi--Dirac occupation, so the finite-temperature
+clean limit has the same band-density coefficients. This pointwise result does not interchange
+the rate limit with momentum integration or a temperature limit. It does not identify
 finite switching rate with a finite physical scattering width, or supply a disorder approximation.
 
 Its explicit clean Pauli Green operator and continuum Born self-energy follow the same split as the
