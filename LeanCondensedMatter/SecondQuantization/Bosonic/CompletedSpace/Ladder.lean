@@ -180,7 +180,10 @@ theorem completedAnnihilate_basisState (i : Mode) (n : Occupation Mode)
   simp only [completedBasisState, Common.completedDiagonalOperator_basisState, map_smul]
   by_cases hni : n i = 0
   · simp [hni]
-  · rw [completedAnnihilatePullback_basisState_of_pos i hni]
+  · simpa only [completedBasisState] using
+      congrArg
+        (fun z : CompletedFockSpace Mode => (Real.sqrt (n i : ℝ) : ℂ) • z)
+        (completedAnnihilatePullback_basisState_of_pos i hni)
 
 private noncomputable def algebraicToCompletedCreateDomain (i : Mode) :
     FockSpace Mode →ₗ[ℂ] (completedCreate i).domain := by
