@@ -21,8 +21,4 @@ theorem Finset.card_filter_product_eq_sum_card_filter {α β : Type*}
     (S : Finset α) (T : Finset β) (R : α → β → Prop) [DecidableRel R] :
     ((S.product T).filter fun pq => R pq.1 pq.2).card =
       ∑ p ∈ S, (T.filter fun q => R p q).card := by
-  rw [Finset.card_filter]
-  change (∑ i ∈ S ×ˢ T, if R i.1 i.2 then 1 else 0) =
-    ∑ p ∈ S, (T.filter fun q => R p q).card
-  rw [Finset.sum_product]
-  simp_rw [Finset.card_filter]
+  simp only [Finset.card_filter, Finset.sum_product]
