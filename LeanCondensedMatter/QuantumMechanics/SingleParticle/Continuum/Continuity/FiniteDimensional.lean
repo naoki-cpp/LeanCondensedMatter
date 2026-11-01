@@ -1,4 +1,5 @@
 import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Continuity.Scalar1D
+import Mathlib.Basic.Complex.BigOperators
 import Mathlib.Tactic.Module
 
 set_option linter.style.header false
