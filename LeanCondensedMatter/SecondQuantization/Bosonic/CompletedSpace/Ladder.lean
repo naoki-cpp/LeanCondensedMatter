@@ -199,7 +199,12 @@ theorem completedCreate_comp_algebraicCore (i : Mode) :
       algebraicToCompleted.comp (create i) := by
   apply Common.linearMap_ext_basisState
   intro n
-  simp only [LinearMap.comp_apply]
+  change
+    (completedCreate i).toFun
+        ((Common.algebraicToCompletedDiagonalDomain
+          (fun m : Occupation Mode => (Real.sqrt (m i + 1 : ℝ) : ℂ)))
+          (basisState n)) =
+      algebraicToCompleted (create i (basisState n))
   have hmem : completedBasisState n ∈ (completedCreate i).domain := by
     change completedBasisState n ∈ completedCreateDomain i
     exact completedBasisState_mem_completedCreateDomain i n
@@ -221,7 +226,12 @@ theorem completedAnnihilate_comp_algebraicCore (i : Mode) :
       algebraicToCompleted.comp (annihilate i) := by
   apply Common.linearMap_ext_basisState
   intro n
-  simp only [LinearMap.comp_apply]
+  change
+    (completedAnnihilate i).toFun
+        ((Common.algebraicToCompletedDiagonalDomain
+          (fun m : Occupation Mode => (Real.sqrt (m i : ℝ) : ℂ)))
+          (basisState n)) =
+      algebraicToCompleted (annihilate i (basisState n))
   have hmem : completedBasisState n ∈ (completedAnnihilate i).domain := by
     change completedBasisState n ∈ completedAnnihilateDomain i
     exact completedBasisState_mem_completedAnnihilateDomain i n
