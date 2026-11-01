@@ -208,7 +208,10 @@ theorem integral_tsum_adiabaticTimeTerm_Ioi_zero
     intro j
     have hmode := integrableOn_lehmannMode_Ioi_zero
       hbar omega eta (transition j).energyGap hη
-    have hweighted := hmode.const_mul (transition j).weight
+    have hweighted : IntegrableOn (fun t : ℝ =>
+        (transition j).weight * lehmannMode hbar omega eta (transition j).energyGap t)
+        (Ioi 0) volume :=
+      hmode.const_mul (transition j).weight
     apply hweighted.congr_fun
     · intro t _
       exact ((transition j).adiabaticTimeTerm_eq_weight_mul_mode omega eta t).symm
