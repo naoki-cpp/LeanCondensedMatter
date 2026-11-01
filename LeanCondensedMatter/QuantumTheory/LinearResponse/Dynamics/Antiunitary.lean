@@ -22,8 +22,11 @@ theorem inner_map {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     (θ : AntiunitaryMap H) (x y : H) :
     inner ℂ (θ x) (θ y) = (starRingEnd ℂ) (inner ℂ x y) := by
   have hI (v : H) : θ (Complex.I • v) = -(Complex.I • θ v) := by
-    simpa only [starRingEnd_apply, Complex.star_def, Complex.conj_I, neg_smul]
-      using (θ.map_smulₛₗ Complex.I v)
+    calc
+      θ (Complex.I • v) = ((starRingEnd ℂ) Complex.I) • θ v :=
+        θ.map_smulₛₗ Complex.I v
+      _ = -(Complex.I • θ v) := by
+        rw [starRingEnd_apply, Complex.star_def, Complex.conj_I, neg_smul]
   apply Complex.ext
   · rw [starRingEnd_apply, Complex.star_def, Complex.conj_re]
     rw [← RCLike.re_eq_complex_re]
@@ -34,6 +37,8 @@ theorem inner_map {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     rw [← RCLike.im_eq_complex_im]
     rw [im_inner_eq_norm_sub_i_smul_mul_self_sub_norm_add_i_smul_mul_self_div_four,
       im_inner_eq_norm_sub_i_smul_mul_self_sub_norm_add_i_smul_mul_self_div_four]
+    have hIeq : (RCLike.I : ℂ) = Complex.I := rfl
+    rw [hIeq]
     have hsub : θ x - Complex.I • θ y = θ (x + Complex.I • y) := by
       rw [map_add, hI]
       abel
