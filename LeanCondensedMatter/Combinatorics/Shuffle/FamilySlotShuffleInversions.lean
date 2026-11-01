@@ -1,7 +1,7 @@
 import LeanCondensedMatter.Combinatorics.Shuffle.FamilySlotShuffle
 import LeanCondensedMatter.Combinatorics.FiniteSumModEq
 import Mathlib.Algebra.BigOperators.ModEq
-import Mathlib.Tactic
+import Lean.Elab.Tactic.Omega
 import Mathlib.Tactic.Ring
 
 set_option linter.style.header false
