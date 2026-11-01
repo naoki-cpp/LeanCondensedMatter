@@ -62,7 +62,7 @@ noncomputable def densityOperatorFirstVariation
 theorem perturbedDensityOperator_zero_coupling
     (ρ : DensityOperator H) (V : ℝ → (H →L[ℂ] H)) (t : ℝ) :
     perturbedDensityOperator U hbar ρ V 0 t = ρ.op := by
-  simp [perturbedDensityOperator]
+  simp [perturbedDensityOperator, ContinuousLinearMap.adjointConjugate]
 
 /-- The interaction-picture density representative is differentiable at zero coupling, with first
 variation `K_V ρ₀ + ρ₀ K_V†`. -/
