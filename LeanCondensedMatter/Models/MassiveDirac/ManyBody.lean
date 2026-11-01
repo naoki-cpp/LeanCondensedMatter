@@ -14,14 +14,18 @@ Each sampled physical momentum has two internal modes. The Hilbert space include
 occupation sector, and the Hamiltonian is `∑ p a b, h(p) a b c†(p,a)c(p,b)`.
 The model uses the clean Hamiltonian and electron charge `-e` of `Model.Basic`.
 Minimal coupling shifts physical momentum by `+e A`; its current is `-∂H/∂A`.
-The finite set of modes is held fixed under that shift. No continuum limit or reduction of
-many-body thermal response to a one-particle trace is asserted here.
+The finite set of modes is held fixed under that shift. In the Gibbs current-response derivative,
+the current evolution and commutator are evaluated on the one-particle space before second
+quantization. The remaining expectation is the actual many-body Gibbs expectation; its evaluation
+as a Fermi-weighted one-particle trace and the continuum limit are separate results.
 -/
 
 namespace QuantumTheory.Models.MassiveDirac.FiniteFock
 
 open SecondQuantization.Fermionic.Lattice LinearResponse
 open scoped BigOperators
+
+attribute [local instance 100] LieRing.ofAssociativeRing
 
 noncomputable section
 
@@ -152,31 +156,80 @@ def system (momentum : Momentum → ℝ × ℝ) (v m hbar : ℝ) (hbar_pos : 0 <
 in the general Kubo theorem. The affine Dirac Hamiltonian has field-independent currents,
 so the measured current has zero explicit variation and the fixed channel has zero contact.
 `horizon` is a time interval endpoint, distinct from the inverse temperature. Analytic bounds
-and interval integrability of the applied source remain explicit hypotheses. -/
+and interval integrability of the applied source remain explicit hypotheses. The derivative is
+written using the second quantization of the commutator of one-particle current orbits. -/
 theorem hasDerivAt_gibbsCurrentResponse
     (momentum : Momentum → ℝ × ℝ) (measuredDirection sourceDirection : Fin 2)
     (e v m hbar inverseTemperature : ℝ) (hbar_pos : 0 < hbar)
     (f : ℝ → ℝ) {horizon M t : ℝ} (hM : 0 ≤ M)
     (hV : ∀ s ∈ Set.Icc (0 : ℝ) horizon,
-      ‖timeDependentInteractionPerturbation (system momentum v m hbar hbar_pos)
+      ‖timeDependentInteractionPerturbation (freePropagatorGroup (system momentum v m hbar hbar_pos))
         (sourceCoupledPerturbation f (current sourceDirection e v)) s‖ ≤ M)
     (ht : t ∈ Set.Icc (0 : ℝ) horizon)
     (hInt : IntervalIntegrable
-      (timeDependentInteractionPerturbation (system momentum v m hbar hbar_pos)
+      (timeDependentInteractionPerturbation (freePropagatorGroup (system momentum v m hbar hbar_pos))
         (sourceCoupledPerturbation f (current sourceDirection e v)))
       MeasureTheory.volume 0 t) :
     let S := system momentum v m hbar hbar_pos
     let expectation := (gibbsState S.hamiltonian inverseTemperature).toNormalizedExpectation
     let C := ResponseChannel.fixed (current (Momentum := Momentum) measuredDirection e v)
       (current sourceDirection e v)
+    let generator := (-(Complex.I / (hbar : ℂ))) • oneParticleHamiltonian momentum v m
+    let evolvedCurrent := fun (direction : Fin 2) (time : ℝ) =>
+      NormedSpace.exp ((-time) • generator) * oneParticleCurrent direction e v *
+        NormedSpace.exp (time • generator)
     HasDerivAt
-      (fun lam : ℝ => affinePerturbedExpectation S expectation
+      (fun lam : ℝ => affinePerturbedExpectation (freePropagatorGroup S) hbar expectation
         (sourceCoupledPerturbation f C.source) C.measured C.observableVariation lam t)
-      (C.causalResponse S expectation f t) 0 := by
-  exact ResponseChannel.hasDerivAt_affineSourceCoupledExpectation_zero_of_bound_retarded
-      (ResponseChannel.fixed (current measuredDirection e v) (current sourceDirection e v))
-      (system momentum v m hbar hbar_pos) _ f
-      (current_isSelfAdjoint sourceDirection e v) hM hV ht hInt
+      (∫ s in (0 : ℝ)..t, (f s : ℂ) *
+        (if s ≤ t then (Complex.I / (hbar : ℂ)) *
+          expectation (finiteSecondQuantization
+            ⁅evolvedCurrent measuredDirection t, evolvedCurrent sourceDirection s⁆)
+        else 0)) 0 := by
+  let S := system momentum v m hbar hbar_pos
+  let expectation := (gibbsState S.hamiltonian inverseTemperature).toNormalizedExpectation
+  let generator := (-(Complex.I / (hbar : ℂ))) • oneParticleHamiltonian momentum v m
+  let evolvedCurrent := fun (direction : Fin 2) (time : ℝ) =>
+    NormedSpace.exp ((-time) • generator) * oneParticleCurrent direction e v *
+      NormedSpace.exp (time • generator)
+  have horbit (direction : Fin 2) (time : ℝ) :
+      heisenbergEvolution (freePropagatorGroup S) time (current direction e v) =
+        finiteSecondQuantization (evolvedCurrent direction time) := by
+    rw [heisenbergEvolution_freePropagatorGroup_apply]
+    have hscalar (r : ℝ) (A : Hilbert Momentum →L[ℂ] Hilbert Momentum) :
+        (r : ℂ) • A = r • A := algebraMap_smul ℂ r A
+    have hlift : finiteSecondQuantization generator = schrodingerGenerator S := by
+      simp only [generator, map_smul, schrodingerGenerator, S, system, hamiltonian]
+    have h := finiteSecondQuantization_exp_conjugate generator
+      (oneParticleCurrent (Momentum := Momentum) direction e v) (-time)
+    simpa only [evolvedCurrent, freePropagator, hscalar, hlift, neg_smul,
+      neg_neg, current] using h.symm
+  have hbracket (A B : EuclideanSpace ℂ (Momentum ×ₗ Fin 2) →L[ℂ]
+      EuclideanSpace ℂ (Momentum ×ₗ Fin 2)) :
+      finiteSecondQuantization ⁅A, B⁆ =
+        ⁅finiteSecondQuantization A, finiteSecondQuantization B⁆ := by
+    let E := SecondQuantization.Common.finiteHilbertOperatorAlgEquiv
+      (Config := Momentum ×ₗ Fin 2)
+    change boundedOneBodyOperator (E.symm (A * B - B * A)) =
+      ⁅boundedOneBodyOperator (E.symm A), boundedOneBodyOperator (E.symm B)⁆
+    rw [map_sub, map_mul, map_mul]
+    exact LieHom.map_lie (boundedOneBodyOperator (Site := Momentum ×ₗ Fin 2)) _ _
+  have h := ResponseChannel.hasDerivAt_affineSourceCoupledExpectation_zero_of_bound_retarded
+    (ResponseChannel.fixed (current measuredDirection e v) (current sourceDirection e v))
+    (freePropagatorGroup S) hbar expectation f
+    (current_isSelfAdjoint sourceDirection e v) hM hV ht hInt
+  have hresponse :
+      (ResponseChannel.fixed (current measuredDirection e v) (current sourceDirection e v)).causalResponse
+        (freePropagatorGroup S) hbar expectation f t =
+      ∫ s in (0 : ℝ)..t, (f s : ℂ) *
+        (if s ≤ t then (Complex.I / (hbar : ℂ)) *
+          expectation (finiteSecondQuantization
+            ⁅evolvedCurrent measuredDirection t, evolvedCurrent sourceDirection s⁆)
+        else 0) := by
+    rw [ResponseChannel.fixed_causalResponse_eq]
+    simp only [retardedSusceptibility, commutatorSusceptibility, horbit, ← hbracket]
+  rw [hresponse] at h
+  exact h
 
 end
 end QuantumTheory.Models.MassiveDirac.FiniteFock
