@@ -39,7 +39,7 @@ private def liftMatrix (p : Momentum) :
     Matrix2 →ₗ[ℂ] ((Momentum ×ₗ Fin 2 →₀ ℂ) →ₗ[ℂ] (Momentum ×ₗ Fin 2 →₀ ℂ)) where
   toFun M := ∑ a, ∑ b, M a b • matrixUnit (toLex (p, a)) (toLex (p, b))
   map_add' M N := by simp [add_smul, Finset.sum_add_distrib]
-  map_smul' z M := by simp [smul_smul, Finset.smul_sum]
+  map_smul' z M := by simp [smul_smul]
 
 private theorem star_liftMatrix (p : Momentum) (M : Matrix2) :
     star (boundedOneBodyOperator (liftMatrix p M)) =
@@ -155,6 +155,7 @@ def system (momentum : Momentum → ℝ × ℝ) (v m hbar : ℝ) (hbar_pos : 0 <
   hbar_pos := hbar_pos
 
 set_option maxHeartbeats 800000 in
+-- The bundled Gibbs state and composed Fock response require a larger elaboration budget.
 /-- The actual finite-Fock Gibbs state at chemical potential zero supplies the expectation
 in the general Kubo theorem. The affine Dirac Hamiltonian has field-independent currents,
 so the measured current has zero explicit variation and the fixed channel has zero contact.
