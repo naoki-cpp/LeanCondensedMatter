@@ -1,4 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.NumberOperator
+import Mathlib.LinearAlgebra.Finsupp.Supported
 import Mathlib.LinearAlgebra.Span.Basic
 
 set_option linter.style.header false
@@ -23,9 +24,10 @@ noncomputable section
 variable {Mode : Type*}
 
 /-- The physical occupation sector at one site, with occupation at most 2s.
-Other modes are spectators. A many-site physical domain imposes each site's cap. -/
+Other modes are spectators. A many-site physical domain imposes each site's cap.
+Stancil-Prabhakar, Section 2.7.1. -/
 def physicalSubspace (twiceSpin : ℕ) (i : Mode) : Submodule ℂ (FockSpace Mode) :=
-  Submodule.span ℂ (basisState '' {n : Occupation Mode | n i ≤ twiceSpin})
+  Finsupp.supported ℂ ℂ {n : Occupation Mode | n i ≤ twiceSpin}
 
 /-- The square-root occupation factor sqrt(2s-N), diagonal in the occupation basis.
 Only its action on the capped physical sector is interpreted as a spin operator. -/
@@ -90,10 +92,6 @@ theorem spinMinus_basisState_of_top (hbar : ℝ) (twiceSpin : ℕ) (i : Mode)
     spinMinus hbar twiceSpin i (basisState n) = 0 := by
   simp [spinMinus_basisState, hn]
 
-theorem basisState_mem_physicalSubspace (twiceSpin : ℕ) (i : Mode) (n : Occupation Mode)
-    (hn : n i ≤ twiceSpin) : basisState n ∈ physicalSubspace twiceSpin i :=
-  Submodule.subset_span ⟨n, hn, rfl⟩
-
 private theorem preserves_physicalSubspace (twiceSpin : ℕ) (i : Mode)
     (A : FockSpace Mode →ₗ[ℂ] FockSpace Mode)
     (hA : ∀ n : Occupation Mode, n i ≤ twiceSpin →
@@ -101,43 +99,56 @@ private theorem preserves_physicalSubspace (twiceSpin : ℕ) (i : Mode)
     (ψ : FockSpace Mode) (hψ : ψ ∈ physicalSubspace twiceSpin i) :
     A ψ ∈ physicalSubspace twiceSpin i := by
   have h : physicalSubspace twiceSpin i ≤ (physicalSubspace twiceSpin i).comap A := by
+    conv_lhs => rw [physicalSubspace, Finsupp.supported_eq_span_single]
     apply Submodule.span_le.mpr
     rintro _ ⟨n, hn, rfl⟩
     exact hA n hn
   exact h hψ
 
-theorem spinPlus_mem_physicalSubspace (hbar : ℝ) (twiceSpin : ℕ) (i : Mode)
-    (ψ : FockSpace Mode) (hψ : ψ ∈ physicalSubspace twiceSpin i) :
-    spinPlus hbar twiceSpin i ψ ∈ physicalSubspace twiceSpin i := by
-  apply preserves_physicalSubspace twiceSpin i _ _ ψ hψ
+/-- Local spin raising preserves the occupation cap at every site. -/
+theorem spinPlus_mem_physicalSubspace (hbar : ℝ) (twiceSpin : ℕ) (i j : Mode)
+    (ψ : FockSpace Mode) (hψ : ψ ∈ physicalSubspace twiceSpin j) :
+    spinPlus hbar twiceSpin i ψ ∈ physicalSubspace twiceSpin j := by
+  apply preserves_physicalSubspace twiceSpin j _ _ ψ hψ
   intro n hn
   rw [spinPlus_basisState]
   apply Submodule.smul_mem
-  apply basisState_mem_physicalSubspace
-  simp only [removeOccupation_apply_same]
-  omega
+  apply Finsupp.single_mem_supported
+  by_cases hji : j = i
+  · subst j
+    simp only [removeOccupation_apply_same]
+    omega
+  · simpa only [removeOccupation_apply_ne hji] using hn
 
-theorem spinMinus_mem_physicalSubspace (hbar : ℝ) (twiceSpin : ℕ) (i : Mode)
-    (ψ : FockSpace Mode) (hψ : ψ ∈ physicalSubspace twiceSpin i) :
-    spinMinus hbar twiceSpin i ψ ∈ physicalSubspace twiceSpin i := by
-  apply preserves_physicalSubspace twiceSpin i _ _ ψ hψ
+/-- Local spin lowering preserves every site's cap, vanishing at its own upper endpoint. -/
+theorem spinMinus_mem_physicalSubspace (hbar : ℝ) (twiceSpin : ℕ) (i j : Mode)
+    (ψ : FockSpace Mode) (hψ : ψ ∈ physicalSubspace twiceSpin j) :
+    spinMinus hbar twiceSpin i ψ ∈ physicalSubspace twiceSpin j := by
+  apply preserves_physicalSubspace twiceSpin j _ _ ψ hψ
   intro n hn
-  by_cases ht : n i = twiceSpin
-  · rw [spinMinus_basisState_of_top hbar twiceSpin i n ht]
-    exact Submodule.zero_mem _
+  by_cases hji : j = i
+  · subst j
+    by_cases ht : n i = twiceSpin
+    · rw [spinMinus_basisState_of_top hbar twiceSpin i n ht]
+      exact Submodule.zero_mem _
+    · rw [spinMinus_basisState]
+      apply Submodule.smul_mem
+      apply Finsupp.single_mem_supported
+      simp only [createOccupation_apply_same]
+      omega
   · rw [spinMinus_basisState]
     apply Submodule.smul_mem
-    apply basisState_mem_physicalSubspace
-    simp only [createOccupation_apply_same]
-    omega
+    apply Finsupp.single_mem_supported
+    simpa only [createOccupation_apply_ne hji] using hn
 
-theorem spinZ_mem_physicalSubspace (hbar : ℝ) (twiceSpin : ℕ) (i : Mode)
-    (ψ : FockSpace Mode) (hψ : ψ ∈ physicalSubspace twiceSpin i) :
-    spinZ hbar twiceSpin i ψ ∈ physicalSubspace twiceSpin i := by
-  apply preserves_physicalSubspace twiceSpin i _ _ ψ hψ
+/-- The longitudinal spin component preserves the occupation cap at every site. -/
+theorem spinZ_mem_physicalSubspace (hbar : ℝ) (twiceSpin : ℕ) (i j : Mode)
+    (ψ : FockSpace Mode) (hψ : ψ ∈ physicalSubspace twiceSpin j) :
+    spinZ hbar twiceSpin i ψ ∈ physicalSubspace twiceSpin j := by
+  apply preserves_physicalSubspace twiceSpin j _ _ ψ hψ
   intro n hn
   rw [spinZ_basisState]
-  exact Submodule.smul_mem _ _ (basisState_mem_physicalSubspace twiceSpin i n hn)
+  exact Submodule.smul_mem _ _ (Finsupp.single_mem_supported ℂ 1 hn)
 
 private theorem sqrt_nat_sq (n : ℕ) :
     (Real.sqrt (n : ℝ) : ℂ) ^ 2 = n := by
@@ -196,6 +207,7 @@ private theorem eq_on_physicalSubspace (twiceSpin : ℕ) (i : Mode)
     (hAB : ∀ n : Occupation Mode, n i ≤ twiceSpin → A (basisState n) = B (basisState n))
     (ψ : FockSpace Mode) (hψ : ψ ∈ physicalSubspace twiceSpin i) : A ψ = B ψ := by
   have h : physicalSubspace twiceSpin i ≤ LinearMap.ker (A - B) := by
+    rw [physicalSubspace, Finsupp.supported_eq_span_single]
     apply Submodule.span_le.mpr
     rintro _ ⟨n, hn, rfl⟩
     change A (basisState n) - B (basisState n) = 0

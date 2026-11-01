@@ -116,14 +116,16 @@ Source: Section 2.7.1, pp. 55-60, especially (2.146)-(2.166).
 
 [Models/HolsteinPrimakoff](../../LeanCondensedMatter/Models/HolsteinPrimakoff.lean)
 implements the exact local representation on the existing algebraic bosonic Fock
-space. `physicalSubspace twiceSpin i` is the span of occupation states with
+space. `physicalSubspace twiceSpin i` is the supported submodule of occupation states with
 n_i <= twiceSpin; other modes are spectators. `spinPlus`, `spinMinus`, and `spinZ`
-preserve this subspace. Their basis actions and endpoint annihilation are proved,
+preserve the occupation cap at every site; the simultaneous sector is their intersection.
+Their basis actions and endpoint annihilation are proved,
 as are [S+, S-] = 2 hbar Sz and [Sz, S±] = ± hbar S±. The first commutator is
 restricted to the physical sector. These are algebraic-domain statements, not
 Hilbert-space completion or truncated canonical bosonic commutators.
 
-The pinned Mathlib survey reuses `Submodule.span` and kernel/comap containment to
+The pinned Mathlib survey reuses `Finsupp.supported`, `supported_eq_span_single`,
+`single_mem_supported`, and kernel/comap containment to
 extend basis identities to every vector in the physical sector. The existing
 `Common.diagonalOperator` implements the square-root factor, existing bosonic
 creation and annihilation supply the oscillator actions, and `Real.sq_sqrt`
@@ -133,7 +135,9 @@ low-occupation expansion.
 
 [HP/MultiSite](../../LeanCondensedMatter/Models/HolsteinPrimakoff/MultiSite.lean)
 defines `simultaneousSubspace` with every site's occupation at most 2s, and proves
-that it equals the intersection of the local physical sectors. For finitely many
+that it equals the intersection of the local physical sectors. Preservation of this
+intersection follows from local cap preservation, without a second basis calculation.
+For finitely many
 sites, `spinStateEquiv` identifies the full `LocalizedSpin.State` with this sector,
 preserving configuration basis vectors. The common spin length is represented by
 the natural parameter `twiceSpin`; site-dependent spin lengths are not part of this interface.
