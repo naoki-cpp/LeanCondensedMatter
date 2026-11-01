@@ -448,9 +448,10 @@ they are finite-dimensional.
 
 ## Thermal partition ownership
 
-`QuantumTheory.Gibbs.FreeBoltzmannKernel` owns the one-particle Boltzmann kernel, which does not
-require occupation configurations or particle-number grading. The abstract exchange-weighted
-connected-cycle combinatorics stays in `Permutation.TraceLog`.
+For finite-mode bosonic thermodynamics, the one-particle Boltzmann kernel is represented directly
+using Mathlib's `Matrix.diagonal` on the exponential mode weights. The partition-function
+determinant identity is owned by `SecondQuantization.Bosonic.Thermal.FreePartitionDeterminant`.
+The abstract exchange-weighted connected-cycle combinatorics stays in `Permutation.TraceLog`.
 
 Particle-number ensembles and Bose/Fermi partition functions belong to `SecondQuantization`.
 The fermionic finite-mode product and the bosonic convergent occupation-space partition function
