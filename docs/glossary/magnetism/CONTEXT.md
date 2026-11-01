@@ -29,3 +29,10 @@ f at site i to w times (2f(i) - f(i-1) - f(i+1)), with site labels taken modulo
 the number of sites. Its real weight w acquires an exchange-energy interpretation
 only after identification with a spin or magnon model.
 _Avoid_: a full many-spin Hamiltonian
+
+**One-boson sector**:
+The subspace of algebraic bosonic occupation states with total particle number one.
+It represents a single magnon in the quadratic magnon model after the model's
+one-particle operator has been identified. Its state space is distinct from the
+one-magnon sector of the exact spin system.
+_Avoid_: equality of full spin and bosonic Fock spaces

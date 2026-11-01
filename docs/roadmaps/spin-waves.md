@@ -188,8 +188,19 @@ the same-type commutators vanish. Thus the normalized Fourier fields preserve CC
 The pinned Mathlib survey reuses `OrthonormalBasis.sum_repr'` and the existing Fourier
 eigenbasis to diagonalize number-conserving second quantization for any complete finite
 orthonormal eigenbasis. No custom Fourier transform or completed Fock-space unitary is used.
-At 2s=1 the one-particle kernel is the SW2 Laplacian. Its intertwining with an actual
-one-boson state embedding remains to be proved.
+[OneParticle](../../LeanCondensedMatter/SecondQuantization/Bosonic/Algebra/OneParticle.lean)
+defines the injective linear map from finite one-particle amplitudes to algebraic Fock
+vectors supported on configurations with total particle number one. It agrees with
+creation of the amplitude from the vacuum. The theorem
+`secondQuantization_comp_oneParticleEmbedding` proves dΓ(T) U = U T for every finite
+one-particle endomorphism T. The Mathlib survey reuses the canonical Euclidean basis,
+linear-map extensionality, and `Finsupp.supported`; the oscillator action uses existing CCR.
+`excitationHamiltonian_comp_oneParticleEmbedding` specializes this identity to the
+quadratic ring, and `excitationHamiltonian_oneParticle_fourierBasis` gives its actual
+one-boson Fourier eigenstates. At 2s=1 this amplitude operator is the same cyclic
+Laplacian as the exact spin-1/2 one-magnon restriction. This identifies the two
+restrictions through their common amplitudes, not their full many-body Hamiltonians.
+No completed Fock-space isometry or surjectivity onto a completed sector is claimed.
 
 An error estimate between exact and quadratic dynamics is a separate target with
 specified states, occupation control, time interval, and norm or observable error.

@@ -237,6 +237,13 @@ their canonical basis, slot, component, or zero/identity forms. It does not auth
 representation-expansion theorems merely because they live under `SecondQuantization`; new simp
 rules must still satisfy the general policy.
 
+The bosonic one-particle computation rules reduce distinguished basis/vacuum actions
+to their canonical occupation or amplitude form:
+
+- `SecondQuantization.Bosonic.create_fockVacuum`
+- `SecondQuantization.Bosonic.oneParticleEmbedding_single`
+- `SecondQuantization.Bosonic.annihilate_oneParticleEmbedding`
+
 ## Green: Transport
 
 The following current simp boundaries are Green:
