@@ -15,6 +15,7 @@ namespace QuantumTheory.Models.MassiveDirac
 
 open SecondQuantization.Fermionic.Transport
 open ContinuousLinearMap
+open scoped BigOperators
 
 noncomputable section
 
@@ -24,14 +25,14 @@ private def bandMode : Band → Fin 2
   | .lower => 0
   | .upper => 1
 
-private theorem pureProbability_nonneg (band : Band) (n : Finset (Fin 2)) :
-    0 ≤ (if n = {bandMode band} then (1 : ℝ) else 0) := by
+private theorem pureProbability_nonneg (occupied n : Finset (Fin 2)) :
+    0 ≤ (if n = occupied then (1 : ℝ) else 0) := by
   split_ifs <;> norm_num
 
-private theorem pureProbability_hasSum (band : Band) :
-    HasSum (fun n : Finset (Fin 2) => if n = {bandMode band} then (1 : ℝ) else 0) 1 := by
+private theorem pureProbability_hasSum (occupied : Finset (Fin 2)) :
+    HasSum (fun n : Finset (Fin 2) => if n = occupied then (1 : ℝ) else 0) 1 := by
   classical
-  have h : Summable (fun n : Finset (Fin 2) => if n = {bandMode band} then (1 : ℝ) else 0) :=
+  have h : Summable (fun n : Finset (Fin 2) => if n = occupied then (1 : ℝ) else 0) :=
     Summable.of_finite
   simpa [tsum_fintype] using h.hasSum
 
@@ -41,15 +42,16 @@ private def pointwiseFockCurrentMatrix (direction : Fin 2) (e v m px py : ℝ)
     (currentOperator direction e v
       ((pointwiseEigenbasisData v m px py hE).eigenbasis (modeBand j)))
 
-/-- Antisymmetric four-state Fock Kubo response of one occupied band at fixed momentum.
+/-- Antisymmetric four-state Fock Kubo response of a specified occupied-band configuration.
 Time is scaled with `hbar = 1`; the physical static trace normalization is attached downstream. -/
-def pointwiseBandFockHallResponse (band : Band) (e v m px py eta : ℝ)
+def pointwiseFockHallResponse (occupied : Finset Band) (e v m px py eta : ℝ)
     (hE : energy v m px py ≠ 0) : ℂ :=
+  let modes := Finset.univ.filter (fun i => modeBand i ∈ occupied)
   twoModeFockHallKuboResponse (fun i => bandEnergy (modeBand i) v m px py)
-    (fun n => if n = {bandMode band} then 1 else 0)
+    (fun n => if n = modes then 1 else 0)
     (pointwiseFockCurrentMatrix 0 e v m px py hE)
     (pointwiseFockCurrentMatrix 1 e v m px py hE) 1 (by norm_num)
-    (pureProbability_nonneg band) (pureProbability_hasSum band) eta
+    (pureProbability_nonneg modes) (pureProbability_hasSum modes) eta
 
 /-- Clean real Hall density of the singly occupied band, evaluated through the full-Fock
 transition coefficient. At the Dirac degeneracy the totalized density is set to zero. -/
@@ -63,14 +65,39 @@ def cleanBandFockHallDensity (band : Band) (e v m px py : ℝ) : ℝ :=
 
 /-- The clean density is obtained by taking the switching-rate limit of the actual four-state
 Fock response, rather than postulating a one-particle Berry weight. -/
-theorem tendsto_pointwiseBandFockHallResponse_re
-    (band : Band) (e v m px py : ℝ) (hE : energy v m px py ≠ 0) :
-    Filter.Tendsto (fun eta => (pointwiseBandFockHallResponse band e v m px py eta hE).re)
-      (nhdsWithin 0 (Set.Ioi 0)) (nhds (cleanBandFockHallDensity band e v m px py)) := by
-  unfold pointwiseBandFockHallResponse cleanBandFockHallDensity
-  rw [dif_pos hE]
-  apply tendsto_twoModeFockHallKuboResponse_re
-  simpa [modeBand] using interbandEnergyGap_ne_zero_of_energy_ne_zero Band.lower v m px py hE
+theorem tendsto_pointwiseFockHallResponse_re
+    (occupied : Finset Band) (e v m px py : ℝ) (hE : energy v m px py ≠ 0) :
+    Filter.Tendsto (fun eta => (pointwiseFockHallResponse occupied e v m px py eta hE).re)
+      (nhdsWithin 0 (Set.Ioi 0))
+      (nhds (∑ band ∈ occupied, cleanBandFockHallDensity band e v m px py)) := by
+  classical
+  let modes := Finset.univ.filter (fun i : Fin 2 => modeBand i ∈ occupied)
+  have hgap : bandEnergy (modeBand 0) v m px py - bandEnergy (modeBand 1) v m px py ≠ 0 := by
+    simpa [modeBand] using interbandEnergyGap_ne_zero_of_energy_ne_zero Band.lower v m px py hE
+  have h := tendsto_twoModeFockHallKuboResponse_re
+    (fun i => bandEnergy (modeBand i) v m px py)
+    (fun n => if n = modes then 1 else 0)
+    (pointwiseFockCurrentMatrix 0 e v m px py hE)
+    (pointwiseFockCurrentMatrix 1 e v m px py hE) 1 (by norm_num)
+    (pureProbability_nonneg modes) (pureProbability_hasSum modes) hgap
+  have hstates : (Finset.univ : Finset (Finset Band)) =
+      {∅, {.lower}, {.upper}, {.lower, .upper}} := by decide
+  have hcases : occupied = ∅ ∨ occupied = {.lower} ∨ occupied = {.upper} ∨
+      occupied = {.lower, .upper} := by
+    have hmem := Finset.mem_univ occupied
+    rw [hstates] at hmem
+    simpa only [Finset.mem_insert, Finset.mem_singleton] using hmem
+  have hmodes : (Finset.univ : Finset (Fin 2)) = {0, 1} := by decide
+  have hvalue : twoModeFockHallCleanResponse
+      (fun i => bandEnergy (modeBand i) v m px py) (fun n => if n = modes then 1 else 0)
+      (pointwiseFockCurrentMatrix 0 e v m px py hE)
+      (pointwiseFockCurrentMatrix 1 e v m px py hE) 1 =
+        ∑ band ∈ occupied, cleanBandFockHallDensity band e v m px py := by
+    rcases hcases with rfl | rfl | rfl | rfl <;>
+      simp [modes, hmodes, modeBand, bandMode, cleanBandFockHallDensity, hE,
+        twoModeFockHallCleanResponse] <;> ring
+  rw [hvalue] at h
+  exact h
 
 /-- The current-matrix coefficient extracted from the full-Fock Kubo limit equals the
 canonical negative charge-squared Berry curvature for the occupied band. -/

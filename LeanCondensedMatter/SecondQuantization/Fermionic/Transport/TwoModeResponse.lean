@@ -21,13 +21,13 @@ open scoped BigOperators
 
 noncomputable section
 
-def twoModeVertex (A : Matrix (Fin 2) (Fin 2) ℂ) :
+private def twoModeVertex (A : Matrix (Fin 2) (Fin 2) ℂ) :
     OccupationFock (Fin 2) →ₗ[ℂ] OccupationFock (Fin 2) :=
   ∑ i, ∑ j, A i j • (create i).comp (annihilate j)
 
 /-- The full four-state Fock spectral table of two independent modes and one-body vertices.
 Physical diagonal states supply nonnegative probabilities whose sum is one. -/
-def twoModeFockLehmannTable (energy : Fin 2 → ℝ)
+private def twoModeFockLehmannTable (energy : Fin 2 → ℝ)
     (probability : Occupation (Fin 2) → ℝ)
     (A B : Matrix (Fin 2) (Fin 2) ℂ) :
     FiniteLehmannTable (Occupation (Fin 2)) where
@@ -37,18 +37,21 @@ def twoModeFockLehmannTable (energy : Fin 2 → ℝ)
   matrixB := Common.matrixCoeff (twoModeVertex B)
 
 /-- Bounded full-Fock dynamics of the two independent energy modes. -/
-def twoModeFockSystem (energy : Fin 2 → ℝ) (hbar : ℝ) (hhbar : 0 < hbar) :
+private def twoModeFockSystem (energy : Fin 2 → ℝ) (hbar : ℝ) (hhbar : 0 < hbar) :
     BoundedFreeSystem (Common.FiniteHilbertFock (Occupation (Fin 2))) where
   hamiltonian := ⟨Common.finiteHilbertOperatorAlgEquiv (freeHamiltonian energy), by
     rw [isSelfAdjoint_iff, Common.star_finiteHilbertOperator_eq_iff_matrixCoeff]
     intro m n
-    simp [freeHamiltonian, Common.matrixCoeff_diagonalOperator, eq_comm]⟩
+    by_cases h : m = n
+    · subst n
+      simp [freeHamiltonian, Common.matrixCoeff_diagonalOperator]
+    · simp [freeHamiltonian, Common.matrixCoeff_diagonalOperator, h, Ne.symm h]⟩
   hbar := hbar
   hbar_pos := hhbar
 
 /-- A normalized diagonal probability on all four Fock states supplies the actual state data
 of the Kubo theorem, without replacing those probabilities by one-particle occupations. -/
-def twoModeFockEigenbasisData (energy : Fin 2 → ℝ)
+private def twoModeFockEigenbasisData (energy : Fin 2 → ℝ)
     (probability : Occupation (Fin 2) → ℝ) (hbar : ℝ) (hhbar : 0 < hbar)
     (hpos : ∀ n, 0 ≤ probability n) (hsum : HasSum probability 1) :
     EnergyEigenbasisLehmannData (twoModeFockSystem energy hbar hhbar) (Occupation (Fin 2)) where
@@ -64,11 +67,12 @@ def twoModeFockEigenbasisData (energy : Fin 2 → ℝ)
     rw [Common.finiteHilbertBasis_apply, Common.finiteHilbertOperator_basisState]
     have h := freeHamiltonian_basisState energy n
     change freeHamiltonian energy (Common.basisState n) = _ at h
-    rw [h, map_smul, Common.finiteHilbertFockEquiv_basisState]
+    rw [h, map_smul]
+    simp only [basisState, Common.finiteHilbertFockEquiv_basisState]
 
 /-- The four-state scalar response is supplied by the existing operator-level causal Kubo
 theorem for the bounded creation-annihilation vertices and the normalized diagonal state. -/
-theorem twoModeFockLehmannTableResponse_eq_kubo
+private theorem twoModeFockLehmannTableResponse_eq_kubo
     (energy : Fin 2 → ℝ) (probability : Occupation (Fin 2) → ℝ)
     (A B : Matrix (Fin 2) (Fin 2) ℂ) (hbar omega eta : ℝ) (hhbar : 0 < hbar)
     (hpos : ∀ n, 0 ≤ probability n) (hsum : HasSum probability 1) (heta : 0 < eta) :
@@ -80,20 +84,22 @@ theorem twoModeFockLehmannTableResponse_eq_kubo
         (Common.finiteHilbertOperatorAlgEquiv (twoModeVertex A))
         (Common.finiteHilbertOperatorAlgEquiv (twoModeVertex B)) omega eta := by
   dsimp only
-  rw [adiabaticFrequencyDomainSusceptibility_eigenbasis_eq_finite_sum]
-  · have hcoeff (V : OccupationFock (Fin 2) →ₗ[ℂ] OccupationFock (Fin 2))
-        (m n : Occupation (Fin 2)) :
-        inner ℂ (Common.finiteHilbertBasis m)
-          (Common.finiteHilbertOperatorAlgEquiv V (Common.finiteHilbertBasis n)) =
-            Common.matrixCoeff V m n := by
-      simp only [Common.finiteHilbertBasis_apply]
-      change inner ℂ (EuclideanSpace.single m 1)
-        (Common.finiteHilbertOperatorAlgEquiv V (Common.finiteHilbertBasisState n)) = _
-      rw [EuclideanSpace.inner_single_left]
-      simp only [map_one, one_mul, Common.finiteHilbertOperator_basis_apply]
-    simp only [finiteLehmannTableResponse, finiteLehmannTableTransitionData,
-      twoModeFockLehmannTable, eigenbasisTransitionData, twoModeFockEigenbasisData, hcoeff]
-  · exact heta
+  rw [adiabaticFrequencyDomainSusceptibility_eigenbasis_eq_finite_sum
+    (twoModeFockSystem energy hbar hhbar)
+    (twoModeFockEigenbasisData energy probability hbar hhbar hpos hsum)
+    _ _ omega eta heta]
+  have hcoeff (V : OccupationFock (Fin 2) →ₗ[ℂ] OccupationFock (Fin 2))
+      (m n : Occupation (Fin 2)) :
+      inner ℂ (Common.finiteHilbertBasis m)
+        (Common.finiteHilbertOperatorAlgEquiv V (Common.finiteHilbertBasis n)) =
+          Common.matrixCoeff V m n := by
+    simp only [Common.finiteHilbertBasis_apply]
+    change inner ℂ (EuclideanSpace.single m 1)
+      (Common.finiteHilbertOperatorAlgEquiv V (Common.finiteHilbertBasisState n)) = _
+    rw [EuclideanSpace.inner_single_left]
+    simp only [map_one, one_mul, Common.finiteHilbertOperator_basis_apply]
+  simp only [finiteLehmannTableResponse, finiteLehmannTableTransitionData,
+    twoModeFockLehmannTable, eigenbasisTransitionData, twoModeFockEigenbasisData, hcoeff]
 
 set_option maxHeartbeats 800000 in
 -- Expanding the four occupation states evaluates the creation-annihilation signs explicitly.
@@ -111,15 +117,27 @@ private theorem twoModeFockLehmannTableResponse_eq
   classical
   have hstates : (Finset.univ : Finset (Occupation (Fin 2))) =
       {∅, {0}, {1}, {0, 1}} := by decide
+  have hsum (f : Occupation (Fin 2) → ℂ) :
+      (∑ n, f n) = f ∅ + f {0} + f {1} + f {0, 1} := by
+    rw [hstates]
+    norm_num [Finset.sum_insert, Finset.sum_singleton] <;> ring
+  have ha (i : Fin 2) (n : Occupation (Fin 2)) :
+      annihilate i (Common.basisState n) =
+        if i ∈ n then (fermionSign i n : ℂ) • Common.basisState (removeOccupation i n) else 0 := by
+    simpa only [basisState, annihilateBasis] using annihilate_basisState i n
+  have hc (i : Fin 2) (n : Occupation (Fin 2)) :
+      create i (Common.basisState n) =
+        if i ∈ n then 0 else (fermionSign i n : ℂ) • Common.basisState (insertOccupation i n) := by
+    simpa only [basisState, createBasis] using create_basisState i n
   unfold finiteLehmannTableResponse
   rw [Fintype.sum_prod_type]
-  simp [hstates, twoModeFockLehmannTable, finiteLehmannTableTransitionData,
+  simp_rw [hsum]
+  simp [twoModeFockLehmannTable, finiteLehmannTableTransitionData,
     LehmannTransitionData.frequencyTerm, orderedLehmannTransitionData,
-    lehmannTerm, twoModeVertex, Common.matrixCoeff, Common.basisState,
-    LinearMap.sum_apply, LinearMap.smul_apply, LinearMap.comp_apply,
-    basisState, create_basisState, annihilate_basisState, createBasis, annihilateBasis,
+    lehmannTerm, twoModeVertex, Common.matrixCoeff,
+    LinearMap.smul_apply, LinearMap.comp_apply, ha, hc,
     map_smul, fermionSign, insertOccupation, removeOccupation,
-    Fin.sum_univ_two, fermionEnergy_eq_sum, Finsupp.single_apply]
+    Fin.sum_univ_two, fermionEnergy_eq_sum, Common.basisState, Finsupp.single_apply]
 
 /-- Antisymmetric current response converted from vector potential to electric field at zero
 frequency. This is a response density before a momentum measure or volume factor is applied. -/
@@ -186,14 +204,15 @@ private theorem tendsto_twoModeFockHallResponse_re
     dsimp [F, numerator, lehmannDenominator]
     push_cast
     field_simp [hhbarC, hgapC]
-    ring
+    ring_nf <;> norm_num
   have hreal : (F 0).re = twoModeFockHallCleanResponse energy probability A B hbar := by
     rw [heval]
-    simp [twoModeFockHallCleanResponse, gap, Complex.div_re, Complex.normSq,
-      Complex.mul_re, Complex.mul_im]
-    field_simp [hgap]
-    ring
-  have hlimit := (hcont.tendsto.mono_left nhdsWithin_le_nhds).re
+    rw [← Complex.ofReal_pow, div_eq_mul_inv, ← Complex.ofReal_inv]
+    simp [twoModeFockHallCleanResponse, gap, Complex.mul_re, Complex.mul_im] <;> ring
+  have hlimit : Filter.Tendsto (fun eta => (F eta).re) (nhdsWithin 0 (Set.Ioi 0))
+      (nhds (F 0).re) :=
+    Complex.continuous_re.continuousAt.tendsto.comp
+      (hcont.tendsto.mono_left nhdsWithin_le_nhds)
   rw [hreal] at hlimit
   apply hlimit.congr'
   filter_upwards [self_mem_nhdsWithin] with eta heta
