@@ -284,17 +284,14 @@ theorem pauliVectorCoefficient_prefactor_intervalIntegral
     (hkernel : ∀ i j, IntervalIntegrable (fun p => kernel p i j) volume a b) :
     pauliVectorCoefficient (fun i j => prefactor * ∫ p in a..b, kernel p i j) axis =
       prefactor * ∫ p in a..b, pauliVectorCoefficient (kernel p) axis := by
-  cases axis
-  · simp only [pauliVectorCoefficient]
-    rw [intervalIntegral.integral_div,
+  cases axis <;> simp only [pauliVectorCoefficient]
+  · rw [intervalIntegral.integral_div,
       intervalIntegral.integral_add (hkernel 0 1) (hkernel 1 0)]
     ring
-  · simp only [pauliVectorCoefficient]
-    rw [intervalIntegral.integral_div, intervalIntegral.integral_const_mul,
+  · rw [intervalIntegral.integral_div, intervalIntegral.integral_const_mul,
       intervalIntegral.integral_sub (hkernel 0 1) (hkernel 1 0)]
     ring
-  · simp only [pauliVectorCoefficient]
-    rw [intervalIntegral.integral_div,
+  · rw [intervalIntegral.integral_div,
       intervalIntegral.integral_sub (hkernel 0 0) (hkernel 1 1)]
     ring
 
