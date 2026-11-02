@@ -197,19 +197,13 @@ theorem completedDiagonalOperator_adjoint_eq (w : Config → ℂ) :
 theorem completedDiagonalOperator_isFormalAdjoint_self (w : Config → ℂ)
     (hw : ∀ c, star (w c) = w c) :
     (completedDiagonalOperator w).IsFormalAdjoint (completedDiagonalOperator w) := by
-  have h := completedDiagonalOperator_isFormalAdjoint_conj w
-  have hwfun : (fun c => star (w c)) = w := funext hw
-  rw [hwfun] at h
-  exact h
+  simpa only [funext hw] using completedDiagonalOperator_isFormalAdjoint_conj w
 
 /-- A maximal diagonal operator with conjugation-fixed weights is self-adjoint. -/
 theorem completedDiagonalOperator_isSelfAdjoint_of_star (w : Config → ℂ)
     (hw : ∀ c, star (w c) = w c) :
     IsSelfAdjoint (completedDiagonalOperator w) := by
-  rw [LinearPMap.isSelfAdjoint_def, completedDiagonalOperator_adjoint_eq]
-  congr 1
-  funext c
-  exact hw c
+  rw [LinearPMap.isSelfAdjoint_def, completedDiagonalOperator_adjoint_eq, funext hw]
 
 end
 end Common
