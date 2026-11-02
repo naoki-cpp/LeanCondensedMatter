@@ -80,8 +80,8 @@ theorem diagonalExpectationValue_nonneg
 /-- The diagonal expectation of a positive operator, with nonnegativity carried in the codomain. -/
 noncomputable def diagonalExpectationNNReal
     (T : H →L[ℂ] H) (hT : T.IsPositive) (x : H) : NNReal :=
-  ⟨diagonalExpectationValue T hT.isSelfAdjoint x,
-    diagonalExpectationValue_nonneg T hT x⟩
+  NNReal.mk (diagonalExpectationValue T hT.isSelfAdjoint x)
+    (diagonalExpectationValue_nonneg T hT x)
 
 @[simp]
 theorem coe_diagonalExpectationNNReal
