@@ -23,8 +23,9 @@ variable (system : BoundedFreeSystem H)
 @[simp]
 theorem norm_freePropagator_apply (t : ℝ) (x : H) :
     ‖freePropagator system t x‖ = ‖x‖ := by
-  exact ContinuousLinearMap.norm_map_of_mem_unitary
-    (freePropagator_mem_unitary system t) x
+  simpa only [freePropagatorGroup_apply] using
+    ContinuousLinearMap.norm_map_of_mem_unitary
+      (freePropagatorGroup system (Multiplicative.ofAdd t)).property x
 
 /-- Schrödinger-picture evolution of a normalized pure state. -/
 noncomputable def evolveState (ψ : StateVector H) (t : ℝ) : StateVector H :=
