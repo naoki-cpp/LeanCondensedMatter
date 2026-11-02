@@ -51186,52 +51186,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H) (t : ℝ),\n  QuantumTheory.LinearResponse.freePropagator system t ∈ unitary (H →L[ℂ] H)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.LinearResponse.freePropagator_mem_unitary",
-    "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.Free",
-    "externalAxioms": [],
-    "docString": "Every free Schrödinger propagator is a unitary element of the bounded-operator C⋆-algebra. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.LinearResponse.norm_freePropagator_apply"
-    ],
-    "dependencies": [
-      "QuantumTheory.LinearResponse.freePropagator_mul_star",
-      "QuantumTheory.LinearResponse.star_mul_freePropagator"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.LinearResponse.norm_freePropagator_apply"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
+    "terminal": true,
     "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H) (t : ℝ),\n  QuantumTheory.LinearResponse.freePropagator system t * star (QuantumTheory.LinearResponse.freePropagator system t) = 1",
     "standardAxioms": [
       "Classical.choice",
@@ -51239,7 +51194,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": true,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -51250,9 +51205,7 @@
     "docString": "The adjoint of the free propagator is its right inverse. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.LinearResponse.freePropagator_mem_unitary"
-    ],
+    "dependents": [],
     "dependencies": [
       "QuantumTheory.LinearResponse.freePropagator_add",
       "QuantumTheory.LinearResponse.freePropagator_zero",
@@ -51260,10 +51213,8 @@
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.LinearResponse.freePropagator_mem_unitary"
-    ],
-    "compiledConsumerCount": 1,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -53105,18 +53056,18 @@
     "directWrapperOf": null,
     "dependents": [
       "QuantumTheory.LinearResponse.hasStaticLimit_lehmannTerm",
+      "SecondQuantization.Fermionic.Transport.twoModeFockHallKuboResponse_re",
       "SecondQuantization.Fermionic.Validation.twoSiteDimerFrequencyDenominator_ne_zero",
-      "SecondQuantization.Fermionic.Validation.twoSiteDimerGroundState_lehmannResponse_frequency",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Transport.TwoModeResponse.0.SecondQuantization.Fermionic.Transport.tendsto_twoModeFockHallResponse_re"
+      "SecondQuantization.Fermionic.Validation.twoSiteDimerGroundState_lehmannResponse_frequency"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.LinearResponse.hasStaticLimit_lehmannTerm",
+      "SecondQuantization.Fermionic.Transport.twoModeFockHallKuboResponse_re",
       "SecondQuantization.Fermionic.Validation.twoSiteDimerFrequencyDenominator_ne_zero",
-      "SecondQuantization.Fermionic.Validation.twoSiteDimerGroundState_lehmannResponse_frequency",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Transport.TwoModeResponse.0.SecondQuantization.Fermionic.Transport.tendsto_twoModeFockHallResponse_re"
+      "SecondQuantization.Fermionic.Validation.twoSiteDimerGroundState_lehmannResponse_frequency"
     ],
     "compiledConsumerCount": 4,
     "axioms": [
@@ -53464,9 +53415,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [],
-    "dependencies": [
-      "QuantumTheory.LinearResponse.freePropagator_mem_unitary"
-    ],
+    "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [],
@@ -54926,7 +54875,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": true,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -54938,7 +54887,6 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.LinearResponse.freePropagator_mem_unitary",
       "QuantumTheory.LinearResponse.heisenbergEvolution_eq_self_of_commute_hamiltonian"
     ],
     "dependencies": [
@@ -54949,10 +54897,9 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.LinearResponse.freePropagator_mem_unitary",
       "QuantumTheory.LinearResponse.heisenbergEvolution_eq_self_of_commute_hamiltonian"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -100733,8 +100680,8 @@
     ],
     "dependencies": [
       "SecondQuantization.Bosonic.completedAnnihilate_denseDomain",
-      "SecondQuantization.Bosonic.completedAnnihilate_isFormalAdjoint_completedCreate",
       "SecondQuantization.Bosonic.completedCreate_apply",
+      "SecondQuantization.Bosonic.completedCreate_isFormalAdjoint_completedAnnihilate",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.LadderAnalytic.0.SecondQuantization.Bosonic.completedAnnihilate_adjoint_apply",
       "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.LadderAnalytic.0.SecondQuantization.Bosonic.completedAnnihilate_adjoint_domain_le_createDomain"
     ],
@@ -100983,50 +100930,6 @@
     "completedMention": false,
     "compiledConsumers": [],
     "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Mode : Type u_1} (i : Mode),\n  (SecondQuantization.Bosonic.completedAnnihilate i).IsFormalAdjoint (SecondQuantization.Bosonic.completedCreate i)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Bosonic.completedAnnihilate_isFormalAdjoint_completedCreate",
-    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.LadderAnalytic",
-    "externalAxioms": [],
-    "docString": "Completed annihilation is the reverse formal adjoint of completed creation. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Bosonic.completedAnnihilate_adjoint_eq_completedCreate"
-    ],
-    "dependencies": [
-      "SecondQuantization.Bosonic.completedCreate_isFormalAdjoint_completedAnnihilate"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Bosonic.completedAnnihilate_adjoint_eq_completedCreate"
-    ],
-    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -101669,7 +101572,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Bosonic.completedAnnihilate_isFormalAdjoint_completedCreate",
+      "SecondQuantization.Bosonic.completedAnnihilate_adjoint_eq_completedCreate",
       "SecondQuantization.Bosonic.completedCreate_adjoint_eq_completedAnnihilate"
     ],
     "dependencies": [
@@ -101681,7 +101584,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Bosonic.completedAnnihilate_isFormalAdjoint_completedCreate",
+      "SecondQuantization.Bosonic.completedAnnihilate_adjoint_eq_completedCreate",
       "SecondQuantization.Bosonic.completedCreate_adjoint_eq_completedAnnihilate"
     ],
     "compiledConsumerCount": 2,
@@ -139072,8 +138975,8 @@
     "dependencies": [
       "SecondQuantization.Common.measurableSet_twoPointOrderSignatureFiber",
       "SecondQuantization.Fermionic.FixedExternalTwoPointWickDiagram.dysonFixedTimeAmplitude_eq_externalSign_mul_prod_components",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Analysis.DiagramRegularity.0.SecondQuantization.Fermionic.FixedExternalTwoPointWickDiagram.continuous_mixedComponentDysonFixedTimeChamberRepresentative",
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Analysis.DiagramRegularity.0.SecondQuantization.Fermionic.FixedExternalTwoPointWickDiagram.mixedComponentDysonFixedTimeChamberRepresentative_eq_of_comparisons",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Analysis.DiagramRegularity.0.SecondQuantization.Fermionic.continuous_orderedTwoPointLegPairContraction",
       "intervalIntegral.MeasurableLocallyBounded.finsetProd",
       "intervalIntegral.MeasurableLocallyBounded.mul",
       "intervalIntegral.finiteSignatureBase_signature_eq",
@@ -141120,8 +141023,7 @@
       "QuantumTheory.Models.MassiveDirac.tendsto_pointwiseDiagonalFockHallResponse_re"
     ],
     "dependencies": [
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Transport.TwoModeResponse.0.SecondQuantization.Fermionic.Transport.tendsto_twoModeFockHallResponse_re",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Transport.TwoModeResponse.0.SecondQuantization.Fermionic.Transport.twoModeFockLehmannTableResponse_eq_kubo"
+      "SecondQuantization.Fermionic.Transport.twoModeFockHallKuboResponse_re"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -141251,6 +141153,52 @@
     "completedMention": false,
     "compiledConsumers": [],
     "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (energy : Fin 2 → ℝ) (probability : SecondQuantization.Fermionic.Occupation (Fin 2) → ℝ)\n  (A B : Matrix (Fin 2) (Fin 2) ℂ) (hbar : ℝ) (hhbar : 0 < hbar)\n  (hpos : ∀ (n : SecondQuantization.Fermionic.Occupation (Fin 2)), 0 ≤ probability n) (hsum : HasSum probability 1)\n  (eta : ℝ),\n  0 < eta →\n    (SecondQuantization.Fermionic.Transport.twoModeFockHallKuboResponse energy probability A B hbar hhbar hpos hsum\n          eta).re =\n      hbar * (probability {0} - probability {1}) * (A 0 1 * B 1 0 - B 0 1 * A 1 0).im /\n        ((energy 0 - energy 1) ^ 2 + (hbar * eta) ^ 2)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "SecondQuantization.Fermionic.Transport.twoModeFockHallKuboResponse_re",
+    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.TwoModeResponse",
+    "externalAxioms": [],
+    "docString": "At positive switching rate the real static Hall response is a real rational function.\nThe regulator is the switching rate in physical time, so its energy scale is `hbar * eta`.\nThis is an exact full-Fock response identity, before momentum integration. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "SecondQuantization.Fermionic.Transport.tendsto_twoModeFockHallKuboResponse_re"
+    ],
+    "dependencies": [
+      "QuantumTheory.LinearResponse.lehmannDenominator_ne_zero",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Transport.TwoModeResponse.0.SecondQuantization.Fermionic.Transport.twoModeFockLehmannTableResponse_eq",
+      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Transport.TwoModeResponse.0.SecondQuantization.Fermionic.Transport.twoModeFockLehmannTableResponse_eq_kubo"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "SecondQuantization.Fermionic.Transport.tendsto_twoModeFockHallKuboResponse_re"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -177885,9 +177833,7 @@
     "dependents": [
       "SecondQuantization.Bosonic.completedNumberOperatorDomain_le_completedCreateDomain"
     ],
-    "dependencies": [
-      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.ProductDomain.0.SecondQuantization.Bosonic.sqrt_natCast_add_one_le_natCast_add_one"
-    ],
+    "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
@@ -177929,97 +177875,11 @@
     "dependents": [
       "SecondQuantization.Bosonic.completedNumberOperatorDomain_le_completedAnnihilateDomain"
     ],
-    "dependencies": [
-      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.ProductDomain.0.SecondQuantization.Bosonic.sqrt_natCast_le_natCast_add_one"
-    ],
+    "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Bosonic.completedNumberOperatorDomain_le_completedAnnihilateDomain"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (k : ℕ), √(↑k + 1) ≤ ↑k + 1",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.ProductDomain.0.SecondQuantization.Bosonic.sqrt_natCast_add_one_le_natCast_add_one",
-    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.ProductDomain",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.ProductDomain.0.SecondQuantization.Bosonic.norm_sqrt_natCast_add_one_le_norm_natCast_add_one"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.ProductDomain.0.SecondQuantization.Bosonic.norm_sqrt_natCast_add_one_le_norm_natCast_add_one"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (k : ℕ), √↑k ≤ ↑k + 1",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.ProductDomain.0.SecondQuantization.Bosonic.sqrt_natCast_le_natCast_add_one",
-    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.ProductDomain",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.ProductDomain.0.SecondQuantization.Bosonic.norm_sqrt_natCast_le_norm_natCast_add_one"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.ProductDomain.0.SecondQuantization.Bosonic.norm_sqrt_natCast_le_norm_natCast_add_one"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -188481,50 +188341,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] {n : ℕ} {i j : Mode}\n  (d : SecondQuantization.Fermionic.FixedExternalTwoPointWickDiagram Mode n i j) (ε : Mode → ℝ) (β : ℝ)\n  (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ) (τ τ' : ℝ) (σ₀ : Fin n → ℝ)\n  (B : ↥(SecondQuantization.Common.TwoPointDiagram.vertexGraph ↑d).componentPartition.parts),\n  Continuous\n    (SecondQuantization.Fermionic.FixedExternalTwoPointWickDiagram.mixedComponentDysonFixedTimeChamberRepresentative✝ d\n      ε β g τ τ' σ₀ B)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Analysis.DiagramRegularity.0.SecondQuantization.Fermionic.FixedExternalTwoPointWickDiagram.continuous_mixedComponentDysonFixedTimeChamberRepresentative",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Analysis.DiagramRegularity",
-    "externalAxioms": [],
-    "docString": "The Dyson-signed chamber representative is globally continuous. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.FixedExternalTwoPointWickDiagram.measurableLocallyBounded_dysonFixedTimeAmplitude"
-    ],
-    "dependencies": [
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Analysis.DiagramRegularity.0.SecondQuantization.Fermionic.continuous_orderedTwoPointLegPairContraction"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.FixedExternalTwoPointWickDiagram.measurableLocallyBounded_dysonFixedTimeAmplitude"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ {Mode : Type u_1} [inst : LinearOrder Mode] [inst_1 : Fintype Mode] {n : ℕ} {i j : Mode}\n  (d : SecondQuantization.Fermionic.FixedExternalTwoPointWickDiagram Mode n i j) (ε : Mode → ℝ) (β : ℝ)\n  (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ) (τ τ' : ℝ) (σ₀ σ : Fin n → ℝ)\n  (B : ↥(SecondQuantization.Common.TwoPointDiagram.vertexGraph ↑d).componentPartition.parts),\n  SecondQuantization.Common.twoPointOrderSignature τ τ' σ₀ = SecondQuantization.Common.twoPointOrderSignature τ τ' σ →\n    SecondQuantization.Fermionic.FixedExternalTwoPointWickDiagram.mixedComponentDysonFixedTimeChamberRepresentative✝ d ε\n        β g τ τ' σ₀ B σ =\n      d.mixedComponentDysonFixedTimeValue ε β g τ τ' σ B",
     "standardAxioms": [
       "Classical.choice",
@@ -188578,7 +188394,7 @@
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": true,
+    "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
@@ -188591,7 +188407,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Analysis.DiagramRegularity.0.SecondQuantization.Fermionic.FixedExternalTwoPointWickDiagram.continuous_mixedComponentDysonFixedTimeChamberRepresentative"
+      "SecondQuantization.Fermionic.FixedExternalTwoPointWickDiagram.measurableLocallyBounded_dysonFixedTimeAmplitude"
     ],
     "dependencies": [
       "SecondQuantization.Fermionic.grandCanonicalTimedFieldPairContraction_eq"
@@ -188599,7 +188415,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Analysis.DiagramRegularity.0.SecondQuantization.Fermionic.FixedExternalTwoPointWickDiagram.continuous_mixedComponentDysonFixedTimeChamberRepresentative"
+      "SecondQuantization.Fermionic.FixedExternalTwoPointWickDiagram.measurableLocallyBounded_dysonFixedTimeAmplitude"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -190575,58 +190391,13 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (energy : Fin 2 → ℝ) (probability : SecondQuantization.Fermionic.Occupation (Fin 2) → ℝ)\n  (A B : Matrix (Fin 2) (Fin 2) ℂ) (hbar : ℝ),\n  hbar ≠ 0 →\n    energy 0 - energy 1 ≠ 0 →\n      Filter.Tendsto\n        (fun eta =>\n          (SecondQuantization.Fermionic.Transport.twoModeFockHallResponse✝ energy probability A B hbar eta).re)\n        (nhdsWithin 0 (Set.Ioi 0))\n        (nhds (SecondQuantization.Fermionic.Transport.twoModeFockHallCleanResponse energy probability A B hbar))",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Transport.TwoModeResponse.0.SecondQuantization.Fermionic.Transport.tendsto_twoModeFockHallResponse_re",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.TwoModeResponse",
-    "externalAxioms": [],
-    "docString": "The clean Hall coefficient is the actual positive-switching-rate limit of the four-state\nFock Lehmann response, including the electric-field conversion. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Fermionic.Transport.tendsto_twoModeFockHallKuboResponse_re"
-    ],
-    "dependencies": [
-      "QuantumTheory.LinearResponse.lehmannDenominator_ne_zero",
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Transport.TwoModeResponse.0.SecondQuantization.Fermionic.Transport.twoModeFockLehmannTableResponse_eq"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Fermionic.Transport.tendsto_twoModeFockHallKuboResponse_re"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ (energy : Fin 2 → ℝ) (probability : SecondQuantization.Fermionic.Occupation (Fin 2) → ℝ)\n  (A B : Matrix (Fin 2) (Fin 2) ℂ) (hbar omega eta : ℝ),\n  QuantumTheory.LinearResponse.finiteLehmannTableResponse hbar omega eta\n      (SecondQuantization.Fermionic.Transport.twoModeFockLehmannTable✝ energy probability A B) =\n    (QuantumTheory.LinearResponse.orderedLehmannTransitionData hbar (energy 0) (energy 1) (probability {0})\n            (probability {1}) (A 0 1) (B 1 0)).frequencyTerm\n        omega eta +\n      (QuantumTheory.LinearResponse.orderedLehmannTransitionData hbar (energy 1) (energy 0) (probability {1})\n            (probability {0}) (A 1 0) (B 0 1)).frequencyTerm\n        omega eta",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": true,
+    "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
@@ -190639,7 +190410,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Transport.TwoModeResponse.0.SecondQuantization.Fermionic.Transport.tendsto_twoModeFockHallResponse_re"
+      "SecondQuantization.Fermionic.Transport.twoModeFockHallKuboResponse_re"
     ],
     "dependencies": [
       "SecondQuantization.Fermionic.annihilate_basisState",
@@ -190649,7 +190420,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Transport.TwoModeResponse.0.SecondQuantization.Fermionic.Transport.tendsto_twoModeFockHallResponse_re"
+      "SecondQuantization.Fermionic.Transport.twoModeFockHallKuboResponse_re"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -190685,7 +190456,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Fermionic.Transport.tendsto_twoModeFockHallKuboResponse_re"
+      "SecondQuantization.Fermionic.Transport.twoModeFockHallKuboResponse_re"
     ],
     "dependencies": [
       "QuantumTheory.LinearResponse.adiabaticFrequencyDomainSusceptibility_eigenbasis_eq_finite_sum",
@@ -190695,7 +190466,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Fermionic.Transport.tendsto_twoModeFockHallKuboResponse_re"
+      "SecondQuantization.Fermionic.Transport.twoModeFockHallKuboResponse_re"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
