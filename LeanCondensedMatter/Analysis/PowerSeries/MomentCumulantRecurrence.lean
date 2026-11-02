@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Analysis.PowerSeries.LogAlgebra
+import LeanCondensedMatter.Analysis.PowerSeries.Normalization
 import LeanCondensedMatter.Analysis.PowerSeries.Moment
 import Mathlib.Tactic.Ring
 

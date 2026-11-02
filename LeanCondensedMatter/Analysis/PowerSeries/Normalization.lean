@@ -4,14 +4,17 @@ import Mathlib.Basic.Complex.Basic
 set_option linter.style.header false
 
 /-!
-# Normalization of power series by their constant coefficient
+# Normalization and logarithmic derivative of formal power series
 
 For a power series with nonzero constant coefficient, multiplication by its inverse produces a
 series with constant coefficient `1`. Mathlib's `PowerSeries.logOf` is the authoritative formal
-logarithm.
+logarithm. For a normalized series, the formal logarithmic derivative satisfies the usual product
+identity.
 -/
 
 namespace PowerSeries
+
+section ConstantCoeff
 
 variable {R : Type*} [Field R]
 
@@ -62,5 +65,38 @@ theorem coeff_one_logOf {Z : PowerSeries ℂ} (hZ : constantCoeff Z = 1) :
   rw [logOf_eq, coeff_subst' hsub, finsum_eq_single _ 1 hterm, coeff_one_log,
     one_smul, pow_one, map_sub, coeff_one]
   simp
+
+end ConstantCoeff
+
+section LogDerivative
+
+variable {R : Type*} [CommRing R] [Algebra ℚ R]
+
+/-- Logarithmic derivative identity for a normalized power series over a rational algebra. -/
+theorem derivative_logOf_mul {Z : PowerSeries R}
+    (hZ : PowerSeries.constantCoeff Z = 1) :
+    d⁄dX (PowerSeries.logOf Z) * Z = d⁄dX Z := by
+  have hsub : PowerSeries.HasSubst (Z - 1) :=
+    PowerSeries.HasSubst.of_constantCoeff_zero' (by simp [hZ])
+  have hgeom := congrArg (fun f : PowerSeries R => f.subst (Z - 1))
+    derivative_log_mul_one_add_X
+  have hone : (1 : PowerSeries R).subst (Z - 1) = 1 := by
+    rw [show (1 : PowerSeries R) = PowerSeries.C 1 by rfl, PowerSeries.subst_C]
+    rfl
+  have hgeom' :
+      (d⁄dX (PowerSeries.log R)).subst (Z - 1) * Z = 1 := by
+    rw [PowerSeries.subst_mul hsub, PowerSeries.subst_add hsub,
+      PowerSeries.subst_X hsub, hone] at hgeom
+    simpa using hgeom
+  rw [PowerSeries.logOf_eq, PowerSeries.derivative_subst hsub]
+  have hderiv : d⁄dX (Z - 1) = d⁄dX Z := by simp
+  rw [hderiv]
+  calc
+    ((d⁄dX (PowerSeries.log R)).subst (Z - 1) * d⁄dX Z) * Z =
+        ((d⁄dX (PowerSeries.log R)).subst (Z - 1) * Z) * d⁄dX Z := by
+          ring
+    _ = d⁄dX Z := by rw [hgeom']; simp
+
+end LogDerivative
 
 end PowerSeries
