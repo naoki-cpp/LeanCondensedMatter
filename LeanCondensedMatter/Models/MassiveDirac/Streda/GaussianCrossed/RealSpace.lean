@@ -706,18 +706,14 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceCurrentBlock_polar
             c • InternalSpace.intervalIntegralPauliMatrix 0 pMax (radial 1) := by
     have hscaled (src : Fin 2) (t : ℂ) (i j : Fin 2) :
         IntervalIntegrable (fun p : ℝ => (t • radial src p) i j)
-          MeasureTheory.volume 0 pMax := by
-      change IntervalIntegrable (fun p : ℝ => t * radial src p i j)
-        MeasureTheory.volume 0 pMax
-      exact (hradialInt src i j).const_mul t
-    by_cases hs : source = 0
-    · simp only [hs, ite_true]
-      rw [InternalSpace.intervalIntegralPauliMatrix_sub
+          MeasureTheory.volume 0 pMax :=
+      (hradialInt src i j).const_mul t
+    split_ifs with hs
+    · rw [InternalSpace.intervalIntegralPauliMatrix_sub
         0 pMax (fun p => c • radial 0 p) (fun p => s • radial 1 p)
         (hscaled 0 c) (hscaled 1 s)]
       rw [InternalSpace.intervalIntegralPauliMatrix_smul, InternalSpace.intervalIntegralPauliMatrix_smul]
-    · simp only [hs, ite_false]
-      rw [InternalSpace.intervalIntegralPauliMatrix_add
+    · rw [InternalSpace.intervalIntegralPauliMatrix_add
         0 pMax (fun p => s • radial 0 p) (fun p => c • radial 1 p)
         (hscaled 0 s) (hscaled 1 c)]
       rw [InternalSpace.intervalIntegralPauliMatrix_smul, InternalSpace.intervalIntegralPauliMatrix_smul]
