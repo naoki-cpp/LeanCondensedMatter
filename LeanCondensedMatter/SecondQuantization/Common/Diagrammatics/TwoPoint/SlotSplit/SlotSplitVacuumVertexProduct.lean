@@ -43,29 +43,16 @@ private theorem TwoPointDiagram.prod_slotSplitVacuumComponentPart_eq_restrictCom
     exact interactionSector_slotSplitVacuumComponentPart h ext vac C
   let e : ↥A ≃ ↥(C : Finset (Fin N)) :=
     Equiv.subtypeEquivRight fun v => by rw [hpart]
-  change (∏ v : ↥A,
-      w ((TwoPointDiagram.ofSlotSplit h ext vac).vertexLabel
-        ⟨v.1, interactionSector_subset
-          ((slotSplitVacuumComponentPart h ext vac C).1.1 :
-            Finset (TwoPointVertex S)) v.2⟩)) = _
-  calc
-    (∏ v : ↥A,
-        w ((TwoPointDiagram.ofSlotSplit h ext vac).vertexLabel
-          ⟨v.1, interactionSector_subset
-            ((slotSplitVacuumComponentPart h ext vac C).1.1 :
-              Finset (TwoPointVertex S)) v.2⟩)) =
-      ∏ v : ↥A, w ((vac.restrictComponent C.2).vertexLabel (e v)) := by
-        apply Fintype.prod_congr
-        intro v
-        rw [TwoPointDiagram.ofSlotSplit_vertexLabel_of_not_mem]
-        · unfold QuarticDiagram.restrictComponent
-          congr 2
-        · have hvComp : (v : Fin N) ∈ S \ T :=
-            vac.vertexGraph.componentPartitionOn.le C.2 (e v).2
-          exact (Finset.mem_sdiff.mp hvComp).2
-    _ = ∏ v : ↥(C : Finset (Fin N)),
-        w ((vac.restrictComponent C.2).vertexLabel v) :=
-      Equiv.prod_comp e (fun v => w ((vac.restrictComponent C.2).vertexLabel v))
+  rw [← Equiv.prod_comp e
+    (fun v => w ((vac.restrictComponent C.2).vertexLabel v))]
+  apply Fintype.prod_congr
+  intro v
+  rw [TwoPointDiagram.ofSlotSplit_vertexLabel_of_not_mem]
+  · unfold QuarticDiagram.restrictComponent
+    congr 2
+  · have hvComp : (v : Fin N) ∈ S \ T :=
+      vac.vertexGraph.componentPartitionOn.le C.2 (e v).2
+    exact (Finset.mem_sdiff.mp hvComp).2
 
 /-- The product of arbitrary vertex-local weights over all ambient vacuum components is exactly the
 product over all vertices of the standalone quartic vacuum piece. -/
