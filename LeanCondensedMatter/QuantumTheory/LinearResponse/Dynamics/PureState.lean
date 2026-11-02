@@ -56,19 +56,13 @@ theorem evolveState_add (ψ : StateVector H) (t s : ℝ) :
 @[simp]
 theorem evolveState_neg_after (ψ : StateVector H) (t : ℝ) :
     evolveState system (evolveState system ψ t) (-t) = ψ := by
-  apply Subtype.ext
-  change freePropagator system (-t) (freePropagator system t ψ.1) = ψ.1
-  simpa [mul_apply_eq_comp] using
-    congrArg (fun U : H →L[ℂ] H => U ψ.1) (freePropagator_neg_mul system t)
+  simpa using (evolveState_add system ψ (-t) t)
 
 /-- Positive-time evolution undoes negative-time evolution. -/
 @[simp]
 theorem evolveState_after_neg (ψ : StateVector H) (t : ℝ) :
     evolveState system (evolveState system ψ (-t)) t = ψ := by
-  apply Subtype.ext
-  change freePropagator system t (freePropagator system (-t) ψ.1) = ψ.1
-  simpa [mul_apply_eq_comp] using
-    congrArg (fun U : H →L[ℂ] H => U ψ.1) (freePropagator_mul_neg system t)
+  simpa using (evolveState_add system ψ t (-t))
 
 /-- Schrödinger evolution commutes exactly with a change of global-phase representative. -/
 @[simp]
