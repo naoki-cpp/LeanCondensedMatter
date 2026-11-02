@@ -25,28 +25,17 @@ noncomputable section
 
 variable {Mode : Type*}
 
-private theorem sqrt_natCast_le_natCast_add_one (k : ℕ) :
-    Real.sqrt (k : ℝ) ≤ (k : ℝ) + 1 := by
-  rw [Real.sqrt_le_iff]
-  constructor
-  · positivity
-  · have hk : 0 ≤ (k : ℝ) := by positivity
-    nlinarith
-
-private theorem sqrt_natCast_add_one_le_natCast_add_one (k : ℕ) :
-    Real.sqrt ((k : ℝ) + 1) ≤ (k : ℝ) + 1 := by
-  apply (Real.sqrt_le_self_iff).2
-  right
-  have hk : (0 : ℝ) ≤ (k : ℝ) := by positivity
-  linarith
-
 private theorem norm_sqrt_natCast_le_norm_natCast_add_one (k : ℕ) :
     ‖(Real.sqrt (k : ℝ) : ℂ)‖ ≤ ‖(k : ℂ) + 1‖ := by
   rw [Complex.norm_real, Real.norm_of_nonneg (Real.sqrt_nonneg _)]
   have hcast : (k : ℂ) + 1 = (((k : ℝ) + 1 : ℝ) : ℂ) := by
     norm_num
   rw [hcast, Complex.norm_real, Real.norm_of_nonneg (by positivity)]
-  exact sqrt_natCast_le_natCast_add_one k
+  rw [Real.sqrt_le_iff]
+  constructor
+  · positivity
+  · have hk : 0 ≤ (k : ℝ) := by positivity
+    nlinarith
 
 private theorem norm_sqrt_natCast_add_one_le_norm_natCast_add_one (k : ℕ) :
     ‖(Real.sqrt ((k : ℝ) + 1) : ℂ)‖ ≤ ‖(k : ℂ) + 1‖ := by
@@ -54,7 +43,10 @@ private theorem norm_sqrt_natCast_add_one_le_norm_natCast_add_one (k : ℕ) :
   have hcast : (k : ℂ) + 1 = (((k : ℝ) + 1 : ℝ) : ℂ) := by
     norm_num
   rw [hcast, Complex.norm_real, Real.norm_of_nonneg (by positivity)]
-  exact sqrt_natCast_add_one_le_natCast_add_one k
+  apply (Real.sqrt_le_self_iff).2
+  right
+  have hk : (0 : ℝ) ≤ (k : ℝ) := by positivity
+  linarith
 
 /-- The number-operator domain lies in the annihilation domain. -/
 theorem completedNumberOperatorDomain_le_completedAnnihilateDomain (i : Mode) :
