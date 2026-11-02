@@ -37,17 +37,6 @@ noncomputable def grandCanonicalGibbsDysonCoeff
   grandCanonicalGibbsExpectation ε β μ
     (Common.dysonCoeff (freeEigenvalue ε) V order t)
 
-set_option linter.unusedFintypeInType false in
-/-- The zeroth grand-canonical bosonic Dyson coefficient is one under the explicit positive Gibbs
-hypothesis. -/
-@[simp]
-theorem grandCanonicalGibbsDysonCoeff_zero [Fintype Mode]
-    (ε : Mode → ℝ) (β μ : ℝ) (hpos : ∀ i, 0 < β * (ε i - μ))
-    (V : FockSpace Mode →ₗ[ℂ] FockSpace Mode) (t : ℝ) :
-    grandCanonicalGibbsDysonCoeff ε β μ V 0 t = 1 := by
-  rw [grandCanonicalGibbsDysonCoeff, Common.dysonCoeff_zero]
-  exact grandCanonicalGibbsExpectation_id ε β μ hpos
-
 /-- Formal series whose coefficients are the convergence-aware normalized free-Gibbs Dyson
 coefficients evaluated at imaginary time `β` and explicit chemical potential `μ`. -/
 noncomputable def grandCanonicalGibbsDysonSeries
@@ -72,8 +61,9 @@ theorem constantCoeff_grandCanonicalGibbsDysonSeries
     (ε : Mode → ℝ) (β μ : ℝ) (hpos : ∀ i, 0 < β * (ε i - μ))
     (V : FockSpace Mode →ₗ[ℂ] FockSpace Mode) :
     PowerSeries.constantCoeff (grandCanonicalGibbsDysonSeries ε β μ V) = 1 := by
-  rw [← PowerSeries.coeff_zero_eq_constantCoeff, coeff_grandCanonicalGibbsDysonSeries]
-  exact grandCanonicalGibbsDysonCoeff_zero ε β μ hpos V β
+  rw [← PowerSeries.coeff_zero_eq_constantCoeff, coeff_grandCanonicalGibbsDysonSeries,
+    grandCanonicalGibbsDysonCoeff, Common.dysonCoeff_zero]
+  exact grandCanonicalGibbsExpectation_id ε β μ hpos
 
 end
 end Bosonic
