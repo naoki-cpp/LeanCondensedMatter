@@ -125,24 +125,17 @@ initial vector. -/
 theorem norm_boundedUnitaryEvolution_apply_sub_le
     (B : H →L[ℂ] H) (hB : IsSelfAdjoint B) (t : ℝ) (x : H) :
     ‖boundedUnitaryEvolution B t x - x‖ ≤ ‖B x‖ * |t| := by
-  have hderiv : ∀ τ ∈ (Set.univ : Set ℝ),
-      HasDerivWithinAt (fun s : ℝ => boundedUnitaryEvolution B s x)
-        ((boundedUnitaryEvolution B τ * ((-I : ℂ) • B)) x) Set.univ τ :=
-    fun τ _ => (boundedUnitaryEvolution_apply_hasDerivAt B τ x).hasDerivWithinAt
-  have hbound : ∀ τ ∈ (Set.univ : Set ℝ),
+  have hbound (τ : ℝ) :
       ‖((boundedUnitaryEvolution B τ * ((-I : ℂ) • B)) x)‖ ≤ ‖B x‖ := by
-    intro τ _
-    change ‖boundedUnitaryEvolution B τ (((-I : ℂ) • B) x)‖ ≤ ‖B x‖
-    rw [boundedUnitaryEvolution_apply_norm B hB τ]
-    change ‖(-I : ℂ) • B x‖ ≤ ‖B x‖
-    rw [norm_smul]
-    simp
-  have hmv := Convex.norm_image_sub_le_of_norm_hasDerivWithin_le
-    (f := fun s : ℝ => boundedUnitaryEvolution B s x)
-    (f' := fun τ : ℝ => (boundedUnitaryEvolution B τ * ((-I : ℂ) • B)) x)
-    (s := Set.univ) (x := (0 : ℝ)) (y := t)
-    hderiv hbound convex_univ (Set.mem_univ 0) (Set.mem_univ t)
-  simpa using hmv
+    simpa [mul_apply_eq_comp, norm_smul] using
+      le_of_eq (boundedUnitaryEvolution_apply_norm B hB τ ((-I : ℂ) • B x))
+  simpa using
+    (Convex.norm_image_sub_le_of_norm_hasDerivWithin_le
+      (f := fun s : ℝ => boundedUnitaryEvolution B s x)
+      (f' := fun τ : ℝ => (boundedUnitaryEvolution B τ * ((-I : ℂ) • B)) x)
+      (s := Set.univ) (x := (0 : ℝ)) (y := t)
+      (fun τ _ => (boundedUnitaryEvolution_apply_hasDerivAt B τ x).hasDerivWithinAt)
+      (fun τ _ => hbound τ) convex_univ (Set.mem_univ 0) (Set.mem_univ t))
 
 end
 
