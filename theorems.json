@@ -101841,46 +101841,6 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
-    "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ), IsSelfAdjoint (SecondQuantization.Bosonic.completedFreeHamiltonian ε)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Bosonic.completedFreeHamiltonian_isSelfAdjoint",
-    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.DiagonalAnalytic",
-    "externalAxioms": [],
-    "docString": "The completed free bosonic Hamiltonian is self-adjoint for arbitrary real one-particle\nenergies. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "SecondQuantization.Common.completedDiagonalOperator_isSelfAdjoint_of_star"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
     "terminal": false,
     "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (β : ℝ) (hβ : 0 < β) (hε : ∀ (i : Mode), 0 ≤ ε i)\n  (n : SecondQuantization.Bosonic.Occupation Mode),\n  (SecondQuantization.Bosonic.completedFreeHeatOperator ε β hβ hε) (SecondQuantization.Bosonic.completedBasisState n) =\n    ↑(Real.exp (-β * SecondQuantization.Bosonic.freeEigenvalue ε n)) • SecondQuantization.Bosonic.completedBasisState n",
     "standardAxioms": [
@@ -102189,46 +102149,6 @@
     "dependencies": [
       "SecondQuantization.Bosonic.numberOperator_eq_diagonalOperator",
       "SecondQuantization.Common.completedDiagonalOperator_comp_algebraicCore"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {Mode : Type u_1} (i : Mode), IsSelfAdjoint (SecondQuantization.Bosonic.completedNumberOperator i)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Bosonic.completedNumberOperator_isSelfAdjoint",
-    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.DiagonalAnalytic",
-    "externalAxioms": [],
-    "docString": "The completed single-mode bosonic number operator is self-adjoint. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "SecondQuantization.Common.completedDiagonalOperator_isSelfAdjoint_of_star"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -120689,7 +120609,6 @@
       "SecondQuantization.Fermionic.completedAnnihilate_basisState_of_not_mem",
       "SecondQuantization.Fermionic.completedCreate_basisState_of_mem",
       "SecondQuantization.Fermionic.completedCreate_basisState_of_not_mem",
-      "SecondQuantization.Fermionic.completedModeTruncation_basisState",
       "SecondQuantization.Fermionic.completedNumberOperator_basisState"
     ],
     "dependencies": [
@@ -120704,10 +120623,9 @@
       "SecondQuantization.Fermionic.completedAnnihilate_basisState_of_not_mem",
       "SecondQuantization.Fermionic.completedCreate_basisState_of_mem",
       "SecondQuantization.Fermionic.completedCreate_basisState_of_not_mem",
-      "SecondQuantization.Fermionic.completedModeTruncation_basisState",
       "SecondQuantization.Fermionic.completedNumberOperator_basisState"
     ],
-    "compiledConsumerCount": 8,
+    "compiledConsumerCount": 7,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -121008,53 +120926,8 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": false,
-    "statement": "∀ {Config : Type u_1} (energy : Config → ℝ) (β E₀ : ℝ) (hβ : 0 < β) (hlower : ∀ (c : Config), E₀ ≤ energy c),\n  (SecondQuantization.Common.completedDiagonalHeatOperator energy β E₀ hβ hlower).IsPositive",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.completedDiagonalHeatOperator_isPositive",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.Heat",
-    "externalAxioms": [],
-    "docString": "A completed diagonal heat operator is positive. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.completedDiagonalHeatOperator_isSelfAdjoint"
-    ],
-    "dependencies": [
-      "SecondQuantization.Common.completedBoundedDiagonalOperator_isPositive_of_nonneg",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.Heat.0.SecondQuantization.Common.completedDiagonalHeatWeight_bound"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.completedDiagonalHeatOperator_isSelfAdjoint"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
     "terminal": true,
-    "statement": "∀ {Config : Type u_1} (energy : Config → ℝ) (β E₀ : ℝ) (hβ : 0 < β) (hlower : ∀ (c : Config), E₀ ≤ energy c),\n  IsSelfAdjoint (SecondQuantization.Common.completedDiagonalHeatOperator energy β E₀ hβ hlower)",
+    "statement": "∀ {Config : Type u_1} (energy : Config → ℝ) (β E₀ : ℝ) (hβ : 0 < β) (hlower : ∀ (c : Config), E₀ ≤ energy c),\n  (SecondQuantization.Common.completedDiagonalHeatOperator energy β E₀ hβ hlower).IsPositive",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -121066,15 +120939,16 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "SecondQuantization.Common.completedDiagonalHeatOperator_isSelfAdjoint",
+    "name": "SecondQuantization.Common.completedDiagonalHeatOperator_isPositive",
     "module": "LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.Heat",
     "externalAxioms": [],
-    "docString": "A completed diagonal heat operator is self-adjoint. ",
+    "docString": "A completed diagonal heat operator is positive. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "SecondQuantization.Common.completedDiagonalHeatOperator_isPositive"
+      "SecondQuantization.Common.completedBoundedDiagonalOperator_isPositive_of_nonneg",
+      "_private.LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.Heat.0.SecondQuantization.Common.completedDiagonalHeatWeight_bound"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -121501,12 +121375,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Bosonic.completedFreeHamiltonian_isSelfAdjoint",
-      "SecondQuantization.Bosonic.completedNumberOperator_isSelfAdjoint",
       "SecondQuantization.Common.adiabaticIntegrable_grandCanonicalGibbsDensityOperator",
-      "SecondQuantization.Common.isStationary_grandCanonicalGibbsDensityOperator",
-      "SecondQuantization.Fermionic.completedFreeHamiltonian_isSelfAdjoint",
-      "SecondQuantization.Fermionic.completedTotalNumberOperator_isSelfAdjoint"
+      "SecondQuantization.Common.isStationary_grandCanonicalGibbsDensityOperator"
     ],
     "dependencies": [
       "SecondQuantization.Common.completedDiagonalOperator_adjoint_eq"
@@ -121514,14 +121384,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Bosonic.completedFreeHamiltonian_isSelfAdjoint",
-      "SecondQuantization.Bosonic.completedNumberOperator_isSelfAdjoint",
       "SecondQuantization.Common.adiabaticIntegrable_grandCanonicalGibbsDensityOperator",
-      "SecondQuantization.Common.isStationary_grandCanonicalGibbsDensityOperator",
-      "SecondQuantization.Fermionic.completedFreeHamiltonian_isSelfAdjoint",
-      "SecondQuantization.Fermionic.completedTotalNumberOperator_isSelfAdjoint"
+      "SecondQuantization.Common.isStationary_grandCanonicalGibbsDensityOperator"
     ],
-    "compiledConsumerCount": 6,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -147000,46 +146866,6 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
-    "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ), IsSelfAdjoint (SecondQuantization.Fermionic.completedFreeHamiltonian ε)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.completedFreeHamiltonian_isSelfAdjoint",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.DiagonalAnalytic",
-    "externalAxioms": [],
-    "docString": "The completed free Hamiltonian is self-adjoint. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "SecondQuantization.Common.completedDiagonalOperator_isSelfAdjoint_of_star"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
     "terminal": false,
     "statement": "∀ {Mode : Type u_1} (ε : Mode → ℝ) (β μ : ℝ) (S : Finset Mode) (n : SecondQuantization.Fermionic.Occupation Mode),\n  (SecondQuantization.Fermionic.completedFreeModeTruncatedGibbsDensityOperator ε β μ S).op\n      (SecondQuantization.Fermionic.completedBasisState n) =\n    ↑(SecondQuantization.Fermionic.completedFreeModeTruncatedGibbsProbability ε β μ S n) •\n      SecondQuantization.Fermionic.completedBasisState n",
     "standardAxioms": [
@@ -147159,46 +146985,6 @@
     "dependents": [],
     "dependencies": [
       "SecondQuantization.Common.completedCoordinateProjection_apply"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {Mode : Type u_1} (S : Finset Mode) (n : SecondQuantization.Fermionic.Occupation Mode),\n  (SecondQuantization.Fermionic.completedModeTruncation S) (SecondQuantization.Fermionic.completedBasisState n) =\n    if n ⊆ S then SecondQuantization.Fermionic.completedBasisState n else 0",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.completedModeTruncation_basisState",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.ModeTruncation",
-    "externalAxioms": [],
-    "docString": "A basis state survives exactly when its occupation configuration is contained in `S`. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "SecondQuantization.Common.completedCoordinateProjection_basisState"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -147382,46 +147168,6 @@
       "SecondQuantization.Fermionic.hasSum_grandCanonicalGibbsDensityOperator_totalNumber_diagonal"
     ],
     "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {Mode : Type u_2}, IsSelfAdjoint SecondQuantization.Fermionic.completedTotalNumberOperator",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Fermionic.completedTotalNumberOperator_isSelfAdjoint",
-    "module": "LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.DiagonalAnalytic",
-    "externalAxioms": [],
-    "docString": "The completed total number operator is self-adjoint. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "SecondQuantization.Common.completedDiagonalOperator_isSelfAdjoint_of_star"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
