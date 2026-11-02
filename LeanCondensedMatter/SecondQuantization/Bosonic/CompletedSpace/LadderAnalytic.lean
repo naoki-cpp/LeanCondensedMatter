@@ -120,11 +120,6 @@ theorem completedCreate_isFormalAdjoint_completedAnnihilate (i : Mode) :
       rw [completedCreateDiagonal_pullback_eq]
       rfl
 
-/-- Completed annihilation is the reverse formal adjoint of completed creation. -/
-theorem completedAnnihilate_isFormalAdjoint_completedCreate (i : Mode) :
-    (completedAnnihilate i).IsFormalAdjoint (completedCreate i) :=
-  (completedCreate_isFormalAdjoint_completedAnnihilate i).symm
-
 /-- A basis-action formula determines the coordinates of the adjoint on its domain. -/
 private theorem adjoint_apply_of_basisState
     (A : CompletedFockSpace Mode →ₗ.[ℂ] CompletedFockSpace Mode)
