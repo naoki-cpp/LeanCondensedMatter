@@ -218,12 +218,13 @@ theorem twoModeFockHallKuboResponse_re
     push_cast
     ring_nf
     norm_num
-    ring
+    all_goals ring
   rw [hcomplex, Complex.div_ofReal_re]
   simp only [Complex.mul_re, Complex.mul_im, Complex.neg_re, Complex.neg_im,
     Complex.I_re, Complex.I_im, Complex.ofReal_re, Complex.ofReal_im,
     mul_zero, zero_mul, sub_zero, one_mul, zero_add]
-  rfl
+  dsimp only [gap]
+  ring
 
 /-- The clean density follows from the actual full-Fock Kubo theory for every normalized
 diagonal state. The hypotheses concern the chosen state and the one-particle gap only. -/
