@@ -29,17 +29,14 @@ private noncomputable def ExternalInsertionWickDiagram.dysonFixedTimeChamberRepr
     (externalTime : Fin (2 * E) → ℝ) (σ₀ : Fin n → ℝ) :
     (Fin n → ℝ) → ℂ :=
   let p := d.pairingInMixedOrder externalTime σ₀
+  let order := externalInsertionMixedTimeOrderedAtomicLegEquiv externalTime σ₀
   fun σ =>
+    let fields := (orderedExternalInsertionLegField d.externalLabel externalTime
+      d.vertexLabelSequence σ) ∘ order
     ((-1 : ℂ) ^ n * externalInsertionMixedAtomicOrderSign externalTime σ₀ *
       d.vertexWeight g * p.weight Common.Statistics.fermion) *
     ∏ pr ∈ p.pairs,
-      grandCanonicalTimedFieldPairContraction ε β 0
-        (orderedExternalInsertionLegField d.externalLabel externalTime
-          d.vertexLabelSequence σ
-          (externalInsertionMixedTimeOrderedAtomicLegEquiv externalTime σ₀ pr.1))
-        (orderedExternalInsertionLegField d.externalLabel externalTime
-          d.vertexLabelSequence σ
-          (externalInsertionMixedTimeOrderedAtomicLegEquiv externalTime σ₀ pr.2))
+      grandCanonicalTimedFieldPairContraction ε β 0 (fields pr.1) (fields pr.2)
 
 private theorem ExternalInsertionWickDiagram.dysonFixedTimeChamberRepresentative_eq_of_sameChamber
     {E n : ℕ} (d : ExternalInsertionWickDiagram Mode E n)
