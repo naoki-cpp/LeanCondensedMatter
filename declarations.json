@@ -237828,9 +237828,9 @@
   "statement":
   "∀ {Z : PowerSeries ℂ}, PowerSeries.constantCoeff Z = 1 → (PowerSeries.coeff 1) Z.logOf = (PowerSeries.coeff 1) Z",
   "standardAxioms": ["Classical.choice", "Quot.sound", "propext"],
-  "sourceLine": 52,
+  "sourceLine": 47,
   "sourceFile": "LeanCondensedMatter/Analysis/PowerSeries/Normalization.lean",
-  "sourceEndLine": 78,
+  "sourceEndLine": 73,
   "sourceEndColumn": 6,
   "sourceColumn": 8,
   "soleCompiledConsumerPrivate": false,
@@ -237855,7 +237855,7 @@
    "PowerSeries.coeff_one_logOf._proof_1_2",
    "PowerSeries.coeff_one_logOf._proof_1_3",
    "PowerSeries.coeff_one_logOf._proof_1_4"],
-  "declarationStartLine": 50,
+  "declarationStartLine": 45,
   "crossModuleDirectWrapper": false,
   "completedMention": false,
   "compiledConsumers": [],
@@ -239121,8 +239121,8 @@
   "standardAxioms": ["Classical.choice", "Quot.sound", "propext"],
   "sourceLine": 38,
   "sourceFile": "LeanCondensedMatter/Analysis/PowerSeries/Normalization.lean",
-  "sourceEndLine": 48,
-  "sourceEndColumn": 61,
+  "sourceEndLine": 43,
+  "sourceEndColumn": 77,
   "sourceColumn": 8,
   "soleCompiledConsumerPrivate": false,
   "singleCompiledConsumer": false,
@@ -328170,10 +328170,10 @@
   "statement":
   "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H),\n  Continuous (QuantumTheory.LinearResponse.freePropagator system)",
   "standardAxioms": ["Classical.choice", "Quot.sound", "propext"],
-  "sourceLine": 157,
+  "sourceLine": 151,
   "sourceFile":
   "LeanCondensedMatter/QuantumTheory/LinearResponse/Dynamics/Free.lean",
-  "sourceEndLine": 161,
+  "sourceEndLine": 155,
   "sourceEndColumn": 53,
   "sourceColumn": 8,
   "soleCompiledConsumerPrivate": false,
@@ -328201,7 +328201,7 @@
    "QuantumTheory.LinearResponse.BoundedFreeSystem.hbar",
    "QuantumTheory.LinearResponse.freePropagator",
    "_private.LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.Free.0.QuantumTheory.LinearResponse.freePropagator_eq_boundedUnitaryEvolution"],
-  "declarationStartLine": 156,
+  "declarationStartLine": 150,
   "crossModuleDirectWrapper": false,
   "completedMention": false,
   "compiledConsumers":
@@ -328316,10 +328316,10 @@
   "statement":
   "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H) (A : H →L[ℂ] H),\n  Continuous fun t =>\n    (QuantumTheory.LinearResponse.heisenbergEvolution (QuantumTheory.LinearResponse.freePropagatorGroup system) t) A",
   "standardAxioms": ["Classical.choice", "Quot.sound", "propext"],
-  "sourceLine": 164,
+  "sourceLine": 158,
   "sourceFile":
   "LeanCondensedMatter/QuantumTheory/LinearResponse/Dynamics/Free.lean",
-  "sourceEndLine": 169,
+  "sourceEndLine": 163,
   "sourceEndColumn": 74,
   "sourceColumn": 8,
   "soleCompiledConsumerPrivate": false,
@@ -328348,7 +328348,7 @@
    "QuantumTheory.LinearResponse.freePropagatorGroup",
    "QuantumTheory.LinearResponse.heisenbergEvolution",
    "QuantumTheory.LinearResponse.heisenbergEvolution_freePropagatorGroup_apply"],
-  "declarationStartLine": 163,
+  "declarationStartLine": 157,
   "crossModuleDirectWrapper": false,
   "completedMention": false,
   "compiledConsumers":
@@ -341403,10 +341403,10 @@
      "id": "_uniq.73293"}]},
   "statement":
   "{H : Type u_1} →\n  [inst : NormedAddCommGroup H] →\n    [inst_1 : InnerProductSpace ℂ H] →\n      [inst_2 : CompleteSpace H] →\n        QuantumTheory.LinearResponse.BoundedFreeSystem H → Multiplicative ℝ →* ↥(unitary (H →L[ℂ] H))",
-  "sourceLine": 140,
+  "sourceLine": 134,
   "sourceFile":
   "LeanCondensedMatter/QuantumTheory/LinearResponse/Dynamics/Free.lean",
-  "sourceEndLine": 143,
+  "sourceEndLine": 137,
   "sourceEndColumn": 73,
   "sourceColumn": 18,
   "projection": false,
@@ -341463,7 +341463,7 @@
    "QuantumTheory.LinearResponse.freePropagatorGroup._proof_2",
    "QuantumTheory.LinearResponse.freePropagatorGroup._proof_4",
    "QuantumTheory.LinearResponse.freePropagatorGroup._proof_6"],
-  "declarationStartLine": 139},
+  "declarationStartLine": 133},
  {"valueDependencies": [],
   "typeDependencies": [],
   "structuredStatement": null,
@@ -341774,10 +341774,10 @@
   "statement":
   "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H) (t : ℝ),\n  ↑((QuantumTheory.LinearResponse.freePropagatorGroup system) (Multiplicative.ofAdd t)) =\n    QuantumTheory.LinearResponse.freePropagator system t",
   "standardAxioms": ["Classical.choice", "Quot.sound", "propext"],
-  "sourceLine": 146,
+  "sourceLine": 140,
   "sourceFile":
   "LeanCondensedMatter/QuantumTheory/LinearResponse/Dynamics/Free.lean",
-  "sourceEndLine": 148,
+  "sourceEndLine": 142,
   "sourceEndColumn": 36,
   "sourceColumn": 8,
   "soleCompiledConsumerPrivate": false,
@@ -341800,7 +341800,7 @@
   ["QuantumTheory.LinearResponse.BoundedFreeSystem",
    "QuantumTheory.LinearResponse.freePropagator",
    "QuantumTheory.LinearResponse.freePropagatorGroup"],
-  "declarationStartLine": 145,
+  "declarationStartLine": 139,
   "crossModuleDirectWrapper": false,
   "completedMention": false,
   "compiledConsumers": [],
@@ -342340,10 +342340,10 @@
   "statement":
   "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H) (t : ℝ),\n  QuantumTheory.LinearResponse.freePropagator system t ∈ unitary (H →L[ℂ] H)",
   "standardAxioms": ["Classical.choice", "Quot.sound", "propext"],
-  "sourceLine": 134,
+  "sourceLine": 128,
   "sourceFile":
   "LeanCondensedMatter/QuantumTheory/LinearResponse/Dynamics/Free.lean",
-  "sourceEndLine": 137,
+  "sourceEndLine": 131,
   "sourceEndColumn": 76,
   "sourceColumn": 8,
   "soleCompiledConsumerPrivate": false,
@@ -342374,7 +342374,7 @@
    "QuantumTheory.LinearResponse.freePropagator",
    "QuantumTheory.LinearResponse.freePropagator_mul_star",
    "QuantumTheory.LinearResponse.star_mul_freePropagator"],
-  "declarationStartLine": 133,
+  "declarationStartLine": 127,
   "crossModuleDirectWrapper": false,
   "completedMention": false,
   "compiledConsumers":
@@ -342503,11 +342503,11 @@
   "statement":
   "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H) (t : ℝ),\n  QuantumTheory.LinearResponse.freePropagator system t * QuantumTheory.LinearResponse.freePropagator system (-t) = 1",
   "standardAxioms": ["Classical.choice", "Quot.sound", "propext"],
-  "sourceLine": 112,
+  "sourceLine": 109,
   "sourceFile":
   "LeanCondensedMatter/QuantumTheory/LinearResponse/Dynamics/Free.lean",
-  "sourceEndLine": 117,
-  "sourceEndColumn": 20,
+  "sourceEndLine": 111,
+  "sourceEndColumn": 53,
   "sourceColumn": 8,
   "soleCompiledConsumerPrivate": false,
   "singleCompiledConsumer": false,
@@ -342532,7 +342532,7 @@
    "QuantumTheory.LinearResponse.freePropagator",
    "QuantumTheory.LinearResponse.freePropagator_add",
    "QuantumTheory.LinearResponse.freePropagator_zero"],
-  "declarationStartLine": 111,
+  "declarationStartLine": 108,
   "crossModuleDirectWrapper": false,
   "completedMention": false,
   "compiledConsumers":
@@ -342663,10 +342663,10 @@
   "statement":
   "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H) (t : ℝ),\n  QuantumTheory.LinearResponse.freePropagator system t * star (QuantumTheory.LinearResponse.freePropagator system t) = 1",
   "standardAxioms": ["Classical.choice", "Quot.sound", "propext"],
-  "sourceLine": 128,
+  "sourceLine": 122,
   "sourceFile":
   "LeanCondensedMatter/QuantumTheory/LinearResponse/Dynamics/Free.lean",
-  "sourceEndLine": 131,
+  "sourceEndLine": 125,
   "sourceEndColumn": 39,
   "sourceColumn": 8,
   "soleCompiledConsumerPrivate": false,
@@ -342690,7 +342690,7 @@
    "QuantumTheory.LinearResponse.freePropagator",
    "QuantumTheory.LinearResponse.freePropagator_mul_neg",
    "QuantumTheory.LinearResponse.star_freePropagator"],
-  "declarationStartLine": 126,
+  "declarationStartLine": 120,
   "crossModuleDirectWrapper": false,
   "completedMention": false,
   "compiledConsumers":
@@ -342822,8 +342822,8 @@
   "sourceLine": 104,
   "sourceFile":
   "LeanCondensedMatter/QuantumTheory/LinearResponse/Dynamics/Free.lean",
-  "sourceEndLine": 109,
-  "sourceEndColumn": 20,
+  "sourceEndLine": 106,
+  "sourceEndColumn": 53,
   "sourceColumn": 8,
   "soleCompiledConsumerPrivate": false,
   "singleCompiledConsumer": false,
@@ -349476,10 +349476,10 @@
   "statement":
   "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H) (t : ℝ) (A : H →L[ℂ] H),\n  (QuantumTheory.LinearResponse.heisenbergEvolution (QuantumTheory.LinearResponse.freePropagatorGroup system) t) A =\n    QuantumTheory.LinearResponse.freePropagator system (-t) * A * QuantumTheory.LinearResponse.freePropagator system t",
   "standardAxioms": ["Classical.choice", "Quot.sound", "propext"],
-  "sourceLine": 151,
+  "sourceLine": 145,
   "sourceFile":
   "LeanCondensedMatter/QuantumTheory/LinearResponse/Dynamics/Free.lean",
-  "sourceEndLine": 154,
+  "sourceEndLine": 148,
   "sourceEndColumn": 87,
   "sourceColumn": 8,
   "soleCompiledConsumerPrivate": false,
@@ -349514,7 +349514,7 @@
    "QuantumTheory.LinearResponse.heisenbergEvolution",
    "QuantumTheory.LinearResponse.heisenbergEvolution_apply",
    "QuantumTheory.LinearResponse.star_freePropagator"],
-  "declarationStartLine": 150,
+  "declarationStartLine": 144,
   "crossModuleDirectWrapper": false,
   "completedMention": false,
   "compiledConsumers":
@@ -364659,10 +364659,10 @@
   "statement":
   "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H) (t : ℝ),\n  star (QuantumTheory.LinearResponse.freePropagator system t) * QuantumTheory.LinearResponse.freePropagator system t = 1",
   "standardAxioms": ["Classical.choice", "Quot.sound", "propext"],
-  "sourceLine": 121,
+  "sourceLine": 115,
   "sourceFile":
   "LeanCondensedMatter/QuantumTheory/LinearResponse/Dynamics/Free.lean",
-  "sourceEndLine": 124,
+  "sourceEndLine": 118,
   "sourceEndColumn": 39,
   "sourceColumn": 8,
   "soleCompiledConsumerPrivate": false,
@@ -364688,7 +364688,7 @@
    "QuantumTheory.LinearResponse.freePropagator",
    "QuantumTheory.LinearResponse.freePropagator_neg_mul",
    "QuantumTheory.LinearResponse.star_freePropagator"],
-  "declarationStartLine": 119,
+  "declarationStartLine": 113,
   "crossModuleDirectWrapper": false,
   "completedMention": false,
   "compiledConsumers":
@@ -439183,10 +439183,10 @@
   "statement":
   "∀ (source : Fin 2) (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ),\n  QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock source v m\n      probeEnergy broadening disorderStrength hbar pMax (-radius) =\n    -(QuantumTheory.Models.MassiveDirac.sigmaZ *\n          QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock\n            source v m probeEnergy broadening disorderStrength hbar pMax radius *\n        QuantumTheory.Models.MassiveDirac.sigmaZ)",
   "standardAxioms": ["Classical.choice", "Quot.sound", "propext"],
-  "sourceLine": 755,
+  "sourceLine": 751,
   "sourceFile":
   "LeanCondensedMatter/Models/MassiveDirac/Streda/GaussianCrossed/RealSpace.lean",
-  "sourceEndLine": 768,
+  "sourceEndLine": 764,
   "sourceEndColumn": 87,
   "sourceColumn": 16,
   "soleCompiledConsumerPrivate": false,
@@ -439219,7 +439219,7 @@
    "QuantumTheory.Models.MassiveDirac.sigmaZ",
    "QuantumTheory.Transport.momentumMeasurePrefactor",
    "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.RealSpace.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel_neg_radius"],
-  "declarationStartLine": 753,
+  "declarationStartLine": 749,
   "crossModuleDirectWrapper": false,
   "completedMention": false,
   "compiledConsumers":
@@ -443792,8 +443792,8 @@
   "sourceLine": 634,
   "sourceFile":
   "LeanCondensedMatter/Models/MassiveDirac/Streda/GaussianCrossed/RealSpace.lean",
-  "sourceEndLine": 732,
-  "sourceEndColumn": 85,
+  "sourceEndLine": 728,
+  "sourceEndColumn": 55,
   "sourceColumn": 8,
   "soleCompiledConsumerPrivate": false,
   "singleCompiledConsumer": true,
@@ -444861,10 +444861,10 @@
      "id": "_uniq.80389"}]},
   "statement":
   "QuantumTheory.Models.MassiveDirac.GaussianCrossedDiagram → ℝ → ℝ → ℝ → ℝ → ℝ → ℝ → ℝ → (Fin 2 → ℝ) → ℂ",
-  "sourceLine": 772,
+  "sourceLine": 768,
   "sourceFile":
   "LeanCondensedMatter/Models/MassiveDirac/Streda/GaussianCrossed/RealSpace.lean",
-  "sourceEndLine": 784,
+  "sourceEndLine": 780,
   "sourceEndColumn": 5,
   "sourceColumn": 18,
   "projection": false,
@@ -444891,7 +444891,7 @@
    "QuantumTheory.Models.MassiveDirac.gaussianCrossedTraceKernel",
    "QuantumTheory.Transport.SpectralSide.advanced",
    "QuantumTheory.Transport.SpectralSide.retarded"],
-  "declarationStartLine": 770},
+  "declarationStartLine": 766},
  {"valueDependencies":
   ["QuantumTheory.Models.MassiveDirac.GaussianCrossedDiagram",
    "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedTraceKernel"],
@@ -445266,10 +445266,10 @@
   "statement":
   "∀ (v m probeEnergy broadening disorderStrength hbar pMax : ℝ) (r : Fin 2 → ℝ),\n  (QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedTraceKernel\n        QuantumTheory.Models.MassiveDirac.GaussianCrossedDiagram.psi v m probeEnergy broadening disorderStrength hbar\n        pMax r).im =\n    0",
   "standardAxioms": ["Classical.choice", "Quot.sound", "propext"],
-  "sourceLine": 788,
+  "sourceLine": 784,
   "sourceFile":
   "LeanCondensedMatter/Models/MassiveDirac/Streda/GaussianCrossed/RealSpace.lean",
-  "sourceEndLine": 794,
+  "sourceEndLine": 790,
   "sourceEndColumn": 49,
   "sourceColumn": 16,
   "soleCompiledConsumerPrivate": false,
@@ -445300,7 +445300,7 @@
    "QuantumTheory.Models.MassiveDirac.gaussianCrossedTraceKernel_psi_im",
    "QuantumTheory.Transport.SpectralSide.advanced",
    "QuantumTheory.Transport.SpectralSide.retarded"],
-  "declarationStartLine": 786,
+  "declarationStartLine": 782,
   "crossModuleDirectWrapper": false,
   "completedMention": false,
   "compiledConsumers":
@@ -865232,8 +865232,8 @@
   "sourceLine": 197,
   "sourceFile":
   "LeanCondensedMatter/SecondQuantization/Common/CompletedSpace/DiagonalAnalytic.lean",
-  "sourceEndLine": 203,
-  "sourceEndColumn": 9,
+  "sourceEndLine": 200,
+  "sourceEndColumn": 79,
   "sourceColumn": 8,
   "soleCompiledConsumerPrivate": false,
   "singleCompiledConsumer": true,
@@ -865320,11 +865320,11 @@
   "statement":
   "∀ {Config : Type u_1} (w : Config → ℂ),\n  (∀ (c : Config), star (w c) = w c) → IsSelfAdjoint (SecondQuantization.Common.completedDiagonalOperator w)",
   "standardAxioms": ["Classical.choice", "Quot.sound", "propext"],
-  "sourceLine": 206,
+  "sourceLine": 203,
   "sourceFile":
   "LeanCondensedMatter/SecondQuantization/Common/CompletedSpace/DiagonalAnalytic.lean",
-  "sourceEndLine": 212,
-  "sourceEndColumn": 12,
+  "sourceEndLine": 206,
+  "sourceEndColumn": 84,
   "sourceColumn": 8,
   "soleCompiledConsumerPrivate": false,
   "singleCompiledConsumer": false,
@@ -865356,7 +865356,7 @@
    "SecondQuantization.Common.CompletedFock._proof_1",
    "SecondQuantization.Common.completedDiagonalOperator",
    "SecondQuantization.Common.completedDiagonalOperator_adjoint_eq"],
-  "declarationStartLine": 205,
+  "declarationStartLine": 202,
   "crossModuleDirectWrapper": false,
   "completedMention": false,
   "compiledConsumers":
@@ -1172681,10 +1172681,10 @@
   "statement":
   "∀ (source : Fin 2) (v m probeEnergy broadening disorderStrength hbar pMax radius p : ℝ) (i j : Fin 2),\n  QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel source v m\n      probeEnergy broadening disorderStrength hbar pMax (-radius) p i j =\n    -(QuantumTheory.Models.MassiveDirac.sigmaZ i i *\n          QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel source\n            v m probeEnergy broadening disorderStrength hbar pMax radius p i j *\n        QuantumTheory.Models.MassiveDirac.sigmaZ j j)",
   "standardAxioms": ["Classical.choice", "Quot.sound", "propext"],
-  "sourceLine": 734,
+  "sourceLine": 730,
   "sourceFile":
   "LeanCondensedMatter/Models/MassiveDirac/Streda/GaussianCrossed/RealSpace.lean",
-  "sourceEndLine": 751,
+  "sourceEndLine": 747,
   "sourceEndColumn": 27,
   "sourceColumn": 16,
   "soleCompiledConsumerPrivate": false,
@@ -1172735,7 +1172735,7 @@
    "QuantumTheory.Transport.polarFourierZerothAngularKernel",
    "QuantumTheory.Transport.polarFourierZerothAngularKernel_neg",
    "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.RealSpace.0.QuantumTheory.Models.MassiveDirac.gaussianCrossedCurrentCoefficientVector"],
-  "declarationStartLine": 734,
+  "declarationStartLine": 730,
   "crossModuleDirectWrapper": false,
   "completedMention": false,
   "compiledConsumers":
