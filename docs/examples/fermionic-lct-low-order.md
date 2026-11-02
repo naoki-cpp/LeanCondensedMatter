@@ -23,8 +23,11 @@ The first identity fixes the normalization. The second displays cancellation of 
 single-vertex components. The third displays both one-plus-two decompositions and the partition into
 three singletons.
 
-The generic, kernel-checked formulas live in `Analysis/PowerSeries/LowOrderLog.lean`:
-`Combinatorics.factorial_mul_coeff_logOf_one_eq`, `_two_eq`, and `_three_eq`.
+The generic, kernel-checked first-order formula is `PowerSeries.coeff_one_logOf` in
+`Analysis/PowerSeries/Normalization.lean`. The second- and third-order formulas are
+`Combinatorics.factorial_mul_coeff_logOf_two_eq` and
+`Combinatorics.factorial_mul_coeff_logOf_three_eq` in
+`Analysis/PowerSeries/LowOrderLog.lean`.
 They apply directly to the normalized fermionic `Common.dysonTraceSeries`, whose constant coefficient
 is one by `PowerSeries.constantCoeff_normalizeByConstantCoeff` and
 `Common.constantCoeff_dysonTraceSeries_ne_zero`. No specialized fermionic wrappers are maintained.
