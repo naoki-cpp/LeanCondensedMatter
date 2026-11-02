@@ -171,7 +171,12 @@ theorem TwoPointDiagram.ofSlotSplit_mixedComponentCrossingCount_vacuum_eq
       symm
       rw [TwoPointDiagram.slotSplitVacuumComponentPairEquiv_apply,
         TwoPointDiagram.slotSplitVacuumComponentPairEquiv_apply,
-        TwoPointDiagram.slotSplitVacuumNormalizedPairEmbedding_crosses_iff,
+        TwoPointDiagram.slotSplitVacuumNormalizedPairEmbedding_apply,
+        TwoPointDiagram.slotSplitVacuumNormalizedPairEmbedding_apply,
+        crosses_map_iff
+          (mixedTimeOrderedQuarticLegMapPosition (slotSplitVacuumSlot T) τ τ' σ)
+          (mixedTimeOrderedQuarticLegMapPosition_strictMono_of_strictAnti
+            (slotSplitVacuumSlot T) (slotSplitVacuumSlot_strictMono T) τ τ' σ hσ),
         vac.fixedOrderComponentPairEmbedding_crosses_iff])
 
 end Common
