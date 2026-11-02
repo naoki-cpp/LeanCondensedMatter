@@ -135,7 +135,8 @@ private theorem spinZ_comm_spinZ (hbar : ℝ) (twiceSpin : ℕ) (i j : Mode) :
       Common.diagonalOperator (fun n : Occupation Mode =>
         (hbar : ℂ) * ((twiceSpin : ℂ) / 2 - n k)) :=
     Common.linearMap_ext_basisState fun n => by
-      exact spinZ_basisState hbar twiceSpin k n
+      simpa only [Common.diagonalOperator_basisState, basisState] using
+        (spinZ_basisState hbar twiceSpin k n)
   rw [hz i, hz j]
   exact Commute.map (mul_comm _ _)
     (Common.diagonalOperator (Config := Occupation Mode))
