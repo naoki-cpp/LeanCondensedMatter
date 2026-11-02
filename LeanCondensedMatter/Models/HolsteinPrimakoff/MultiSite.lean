@@ -49,14 +49,12 @@ theorem mem_simultaneousSubspace_of_mem_spinAlgebra (hbar : ℝ) (twiceSpin : �
   | mem A hA =>
     rw [simultaneousSubspace_eq_iInf, Submodule.mem_iInf] at hψ ⊢
     intro j
-    have hj := hψ j
     simp only [Set.mem_insert_iff, Set.mem_singleton_iff] at hA
     rcases hA with rfl | rfl | rfl
-    · exact spinPlus_mem_physicalSubspace hbar twiceSpin i j ψ hj
-    · exact spinMinus_mem_physicalSubspace hbar twiceSpin i j ψ hj
-    · exact spinZ_mem_physicalSubspace hbar twiceSpin i j ψ hj
+    · exact spinPlus_mem_physicalSubspace hbar twiceSpin i j ψ (hψ j)
+    · exact spinMinus_mem_physicalSubspace hbar twiceSpin i j ψ (hψ j)
+    · exact spinZ_mem_physicalSubspace hbar twiceSpin i j ψ (hψ j)
   | algebraMap c =>
-    change c • ψ ∈ simultaneousSubspace twiceSpin
     exact Submodule.smul_mem _ c hψ
   | add A B _ _ hA hB =>
     exact Submodule.add_mem _ (hA ψ hψ) (hB ψ hψ)
