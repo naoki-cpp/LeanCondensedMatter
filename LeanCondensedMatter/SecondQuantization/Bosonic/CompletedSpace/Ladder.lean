@@ -132,16 +132,6 @@ theorem completedBasisState_mem_completedAnnihilateDomain (i : Mode) (n : Occupa
   exact Common.completedBasisState_mem_completedDiagonalDomain
     (fun m : Occupation Mode => (Real.sqrt (m i : ℝ) : ℂ)) n
 
-private theorem completedAnnihilatePullback_basisState_of_pos
-    (i : Mode) {n : Occupation Mode} (hni : n i ≠ 0) :
-    Common.completedCoordinatePullback
-        (createOccupation i) (createOccupation_injective i)
-        (completedBasisState n) =
-      completedBasisState (removeOccupation i n) := by
-  simpa only [completedBasisState, createOccupation_removeOccupation_of_pos hni] using
-    (Common.completedCoordinatePullback_basisState_of_image
-      (createOccupation i) (createOccupation_injective i) (removeOccupation i n))
-
 /-- Occupation-basis action of completed bosonic creation. -/
 @[simp]
 theorem completedCreate_basisState (i : Mode) (n : Occupation Mode)
@@ -180,10 +170,11 @@ theorem completedAnnihilate_basisState (i : Mode) (n : Occupation Mode)
   simp only [completedBasisState, Common.completedDiagonalOperator_basisState, map_smul]
   by_cases hni : n i = 0
   · simp [hni]
-  · simpa only [completedBasisState] using
+  · simpa only [completedBasisState, createOccupation_removeOccupation_of_pos hni] using
       congrArg
         (fun z : CompletedFockSpace Mode => (Real.sqrt (n i : ℝ) : ℂ) • z)
-        (completedAnnihilatePullback_basisState_of_pos i hni)
+        (Common.completedCoordinatePullback_basisState_of_image
+          (createOccupation i) (createOccupation_injective i) (removeOccupation i n))
 
 private theorem algebraicToCompleted_basisState' (n : Occupation Mode) :
     algebraicToCompleted (basisState n) = completedBasisState n := by
