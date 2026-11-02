@@ -88,7 +88,7 @@ theorem hasDerivAt_finiteDimensionalOperatorTrace_comp
       (fun x : ℝ => finiteDimensionalOperatorTrace (H := H) (operatorPath x))
       (finiteDimensionalOperatorTrace (H := H) operatorDerivative)
       energy := by
-  simpa only [Function.comp_def] using
+  simpa using
     (((finiteDimensionalOperatorTrace (H := H)).hasFDerivAt).restrictScalars ℝ).comp_hasDerivAt
       energy hoperator
 
