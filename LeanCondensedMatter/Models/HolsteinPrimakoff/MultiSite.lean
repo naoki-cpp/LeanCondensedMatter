@@ -209,11 +209,9 @@ theorem spinRepresentation_intertwines (hbar : ℝ) (twiceSpin : ℕ) (i : Mode)
     (ψ : QuantumTheory.LocalizedSpin.State twiceSpin Mode) :
     (spinStateEquiv twiceSpin (spinRepresentation hbar twiceSpin i A ψ) : FockSpace Mode) =
       A.val (spinStateEquiv twiceSpin ψ) := by
-  change ((spinStateEquiv twiceSpin) ((spinStateEquiv twiceSpin).symm
-    ((A.val.restrict (fun ψ hψ =>
-      mem_simultaneousSubspace_of_mem_spinAlgebra hbar twiceSpin i A.val A.property ψ hψ))
-        (spinStateEquiv twiceSpin ψ))) : FockSpace Mode) = _
-  rw [LinearEquiv.apply_symm_apply]
+  simp only [spinRepresentation, AlgHom.comp_apply, AlgEquiv.coe_toAlgHom,
+    LinearEquiv.conjAlgEquiv_apply, LinearMap.comp_apply, LinearEquiv.coe_coe,
+    LinearEquiv.symm_symm, LinearEquiv.apply_symm_apply]
   rfl
 
 /-- The transported local algebras commute on the finite-spin state space at distinct sites. -/
