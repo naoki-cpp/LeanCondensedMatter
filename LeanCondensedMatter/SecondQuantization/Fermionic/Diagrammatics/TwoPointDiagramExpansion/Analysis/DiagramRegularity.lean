@@ -24,17 +24,6 @@ open Common
 
 variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
 
-/-- Fixed standard-leg contractions are continuous in the ambient interaction-time assignment. -/
-private theorem continuous_orderedTwoPointLegPairContraction
-    {n : ℕ} (ε : Mode → ℝ) (β : ℝ) (i j : Mode) (τ τ' : ℝ)
-    (q : Fin n → QuarticVertexLabel Mode) (x y : OrderedTwoPointLeg n) :
-    Continuous (fun σ : Fin n → ℝ =>
-      orderedTwoPointLegPairContraction ε β i j τ τ' q σ x y) := by
-  rcases x with x | x <;> rcases y with y | y <;>
-    simp only [orderedTwoPointLegPairContraction, orderedTwoPointLegField,
-      orderedTwoPointLegTime, orderedTwoPointLegFieldLabel, grandCanonicalTimedFieldPairContraction_eq] <;>
-    fun_prop
-
 /-- Continuous chamber representative of the Dyson-signed component fixed-time value. -/
 private noncomputable def FixedExternalTwoPointWickDiagram.mixedComponentDysonFixedTimeChamberRepresentative
     {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
@@ -111,9 +100,12 @@ theorem FixedExternalTwoPointWickDiagram.measurableLocallyBounded_dysonFixedTime
             exact continuous_const.mul
               (continuous_const.mul
                 (continuous_const.mul
-                  (continuous_finsetProd _ fun pr _ =>
-                    continuous_orderedTwoPointLegPairContraction ε β i j τ τ'
-                      d.vertexLabelSequence _ _)))
+                  (continuous_finsetProd _ fun pr _ => by
+                    simp only [orderedTwoPointLegPairContraction,
+                      orderedTwoPointLegField, orderedTwoPointLegTime,
+                      orderedTwoPointLegFieldLabel,
+                      grandCanonicalTimedFieldPairContraction_eq]
+                    fun_prop)))
           · intro σ
             exact
               (d.mixedComponentDysonFixedTimeChamberRepresentative_eq_of_comparisons
