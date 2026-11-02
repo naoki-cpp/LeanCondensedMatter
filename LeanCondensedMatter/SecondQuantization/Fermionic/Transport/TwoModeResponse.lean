@@ -228,6 +228,9 @@ theorem twoModeFockHallKuboResponse_re
     field_simp [hminus, hplus, hDC, hhbarC]
     ring_nf
     norm_num
+    have hDC' : (hbar : ℂ) ^ 2 * (eta : ℂ) ^ 2 + (gap : ℂ) ^ 2 ≠ 0 := by
+      simpa only [mul_pow, add_comm] using hDC
+    field_simp [hDC']
     all_goals ring
   rw [hcomplex, Complex.div_ofReal_re]
   simp only [Complex.mul_re, Complex.mul_im, Complex.neg_re, Complex.neg_im,
