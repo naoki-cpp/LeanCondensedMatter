@@ -5,9 +5,9 @@ set_option linter.style.header false
 /-!
 # Low-order coefficients of a normalized formal logarithm
 
-This file exposes the first three factorial-normalized coefficients of `PowerSeries.logOf` in terms
-of the coefficients of a power series with constant coefficient one. The formulas are the first
-three moment-cumulant identities in explicit coefficient form.
+This file exposes the second and third factorial-normalized coefficients of `PowerSeries.logOf`.
+The first-order formula is already `PowerSeries.coeff_one_logOf` in `Normalization.lean`.
+These are the low-order moment-cumulant identities for a series with constant coefficient one.
 -/
 
 open scoped BigOperators
@@ -52,14 +52,6 @@ theorem powerSeriesCumulantCoeff_three_eq {Z : PowerSeries ℂ}
   rw [powerSeriesCumulantCoeff_one_eq hZ, powerSeriesCumulantCoeff_two_eq hZ] at hrec
   ring_nf at hrec ⊢
   linear_combination -hrec
-
-/-- First factorial-normalized coefficient of `logOf Z`. -/
-theorem factorial_mul_coeff_logOf_one_eq {Z : PowerSeries ℂ}
-    (hZ : PowerSeries.constantCoeff Z = 1) :
-    ((1 : ℕ).factorial : ℂ) * PowerSeries.coeff 1 (PowerSeries.logOf Z) =
-      PowerSeries.coeff 1 Z := by
-  simpa [powerSeriesCumulantCoeff, powerSeriesMomentCoeff] using
-    powerSeriesCumulantCoeff_one_eq hZ
 
 /-- Second factorial-normalized coefficient of `logOf Z`. -/
 theorem factorial_mul_coeff_logOf_two_eq {Z : PowerSeries ℂ}
