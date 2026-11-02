@@ -217,6 +217,15 @@ theorem twoModeFockHallKuboResponse_re
     simp only [lehmannDenominator] at hden hden' ⊢
     push_cast at hden hden' hDC ⊢
     field_simp [hden, hden', hetaC, hhbarC, hDC]
+    have hminus : (hbar : ℂ) * (eta : ℂ) - Complex.I * (gap : ℂ) ≠ 0 := by
+      intro hz
+      have hr := congrArg Complex.re hz
+      exact (mul_ne_zero hhbar.ne' heta.ne') (by simpa using hr)
+    have hplus : (hbar : ℂ) * (eta : ℂ) + Complex.I * (gap : ℂ) ≠ 0 := by
+      intro hz
+      have hr := congrArg Complex.re hz
+      exact (mul_ne_zero hhbar.ne' heta.ne') (by simpa using hr)
+    field_simp [hminus, hplus, hDC, hhbarC]
     ring_nf
     norm_num
     all_goals ring
