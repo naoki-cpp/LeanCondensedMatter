@@ -214,9 +214,9 @@ theorem twoModeFockHallKuboResponse_re
     have hforward : energy 0 - energy 1 = gap := rfl
     simp only [LehmannTransitionData.frequencyTerm, orderedLehmannTransitionData,
       lehmannTerm, hswap, hforward]
+    simp only [lehmannDenominator] at hden hden' ⊢
+    push_cast at hden hden' hDC ⊢
     field_simp [hden, hden', hetaC, hhbarC, hDC]
-    simp only [lehmannDenominator]
-    push_cast
     ring_nf
     norm_num
     all_goals ring
