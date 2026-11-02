@@ -103,18 +103,12 @@ theorem freePropagator_add (t s : ℝ) :
 /-- The negative-time propagator is a left inverse. -/
 theorem freePropagator_neg_mul (t : ℝ) :
     freePropagator system (-t) * freePropagator system t = 1 := by
-  calc
-    freePropagator system (-t) * freePropagator system t =
-        freePropagator system (-t + t) := (freePropagator_add system (-t) t).symm
-    _ = 1 := by simp
+  simpa using (freePropagator_add system (-t) t).symm
 
 /-- The negative-time propagator is a right inverse. -/
 theorem freePropagator_mul_neg (t : ℝ) :
     freePropagator system t * freePropagator system (-t) = 1 := by
-  calc
-    freePropagator system t * freePropagator system (-t) =
-        freePropagator system (t + -t) := (freePropagator_add system t (-t)).symm
-    _ = 1 := by simp
+  simpa using (freePropagator_add system t (-t)).symm
 
 /-- The adjoint of the free propagator is its left inverse. -/
 @[simp]
