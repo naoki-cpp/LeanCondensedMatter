@@ -145,10 +145,6 @@ using a zero-consumer signal as grounds for changing its retention.
   division-free statistics-independent trace-log identity for a finite kernel at arbitrary exchange
   weight, including `ζ = 0`; the nonzero diagonal endpoint is derived from this reusable
   formal-series boundary by scalar cancellation.
-- `Finset.card_filter_product_eq_sum_card_filter` — canonical generic double-counting identity for a
-  filtered finite product, allowing different left and right element types and sets. Its
-  crossing-count consumer specializes to a self-product; the theorem is independent of pairing
-  or crossing structure.
 - `QuantumMechanics.SingleParticle.Continuum.l2MultiplicationOperator1D_apply` — deliberate `[simp]`
   boundary for the continuum-domain multiplication-operator vocabulary. The proof delegates to the
   analysis-level operator theorem, but the specialization is the normalization rule for this API.

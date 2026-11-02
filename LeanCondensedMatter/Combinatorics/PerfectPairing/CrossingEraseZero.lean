@@ -1,6 +1,8 @@
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Crossing
 import LeanCondensedMatter.Combinatorics.PerfectPairing.EraseZero
-import LeanCondensedMatter.Combinatorics.Common.FinsetProduct
+import Mathlib.Data.Finset.Prod
+import Mathlib.Algebra.BigOperators.Group.Finset.Piecewise
+import Mathlib.Algebra.BigOperators.Group.Finset.Sigma
 
 set_option linter.style.header false
 
@@ -26,9 +28,17 @@ theorem Pairing.crossingCount_eraseZeroPair {n : ℕ} (pairing : Pairing (n + 1)
   have hFmem : F ∈ S := pairing.firstPair_mem_pairs
   have hFnotA : F ∉ A := fun h => (Finset.mem_erase.mp h).1 rfl
   have hsplit : S = insert F A := (Finset.insert_erase hFmem).symm
+  have hcount (B C : Finset (Fin (2 * (n + 1)) × Fin (2 * (n + 1)))) :
+      ((B.product C).filter fun pq => Crosses pq.1 pq.2).card =
+        ∑ p ∈ B, (C.filter fun q => Crosses p q).card := by
+    rw [Finset.card_filter]
+    change (∑ i ∈ B ×ˢ C, if Crosses i.1 i.2 then 1 else 0) =
+      ∑ p ∈ B, (C.filter fun q => Crosses p q).card
+    rw [Finset.sum_product]
+    simp_rw [Finset.card_filter]
   have hsum : pairing.crossingCount =
       (S.filter (fun q => Crosses F q)).card + ∑ p ∈ A, (S.filter (fun q => Crosses p q)).card := by
-    rw [Pairing.crossingCount, ← hS, Finset.card_filter_product_eq_sum_card_filter, hsplit,
+    rw [Pairing.crossingCount, ← hS, hcount, hsplit,
       Finset.sum_insert hFnotA, ← hsplit]
   have hFterm : (S.filter (fun q => Crosses F q)).card = pairing.crossingsWithFirstPair := rfl
   have hAterm : ∀ p ∈ A, S.filter (fun q => Crosses p q) = A.filter (fun q => Crosses p q) := by
@@ -41,7 +51,7 @@ theorem Pairing.crossingCount_eraseZeroPair {n : ℕ} (pairing : Pairing (n + 1)
     exact Finset.sum_congr rfl fun p hp => by rw [hAterm p hp]
   have hAcross : ((A.product A).filter (fun pp => Crosses pp.1 pp.2)).card =
       ∑ p ∈ A, (A.filter (fun q => Crosses p q)).card :=
-    Finset.card_filter_product_eq_sum_card_filter A A Crosses
+    hcount A A
   have hbij :
       ((pairing.eraseZeroPair.pairs.product pairing.eraseZeroPair.pairs).filter
         (fun pp => Crosses pp.1 pp.2)).card =
