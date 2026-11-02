@@ -50,7 +50,7 @@ theorem heisenbergEvolution_eq_self_of_commute_hamiltonian
       rw [← hU.eq]
     _ = (freePropagator system (-t) * freePropagator system t) * A :=
       (mul_assoc _ _ _).symm
-    _ = A := by rw [freePropagator_neg_mul, one_mul]
+    _ = A := by rw [← star_freePropagator system t, star_mul_freePropagator, one_mul]
 
 /-- An observable commuting with the Hamiltonian is fixed as a bundled Heisenberg observable. -/
 theorem heisenbergObservable_eq_self_of_commute_hamiltonian
