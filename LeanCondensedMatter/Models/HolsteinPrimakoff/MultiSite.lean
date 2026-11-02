@@ -67,61 +67,73 @@ private theorem spinPlus_comm_spinPlus (hbar : ℝ) (twiceSpin : ℕ)
     {i j : Mode} (hij : i ≠ j) : Commute (spinPlus hbar twiceSpin i) (spinPlus hbar twiceSpin j) := by
   change (spinPlus hbar twiceSpin i).comp (spinPlus hbar twiceSpin j) =
     (spinPlus hbar twiceSpin j).comp (spinPlus hbar twiceSpin i)
-  apply Common.linearMap_ext_basisState
-  intro n
-  simp only [LinearMap.comp_apply, spinPlus_basisState, map_smul, removeOccupation_apply_ne hij,
+  apply Common.linearMap_ext_basisState; intro n
+  change spinPlus hbar twiceSpin i (spinPlus hbar twiceSpin j (basisState n)) =
+    spinPlus hbar twiceSpin j (spinPlus hbar twiceSpin i (basisState n))
+  simp only [spinPlus_basisState, map_smul, removeOccupation_apply_ne hij,
     removeOccupation_apply_ne hij.symm, smul_smul, removeOccupation_comm hij]
-  congr 1 <;> ring
+  congr 1
+  ring
 
 private theorem spinMinus_comm_spinMinus (hbar : ℝ) (twiceSpin : ℕ)
     {i j : Mode} (hij : i ≠ j) : Commute (spinMinus hbar twiceSpin i) (spinMinus hbar twiceSpin j) := by
   change (spinMinus hbar twiceSpin i).comp (spinMinus hbar twiceSpin j) =
     (spinMinus hbar twiceSpin j).comp (spinMinus hbar twiceSpin i)
-  apply Common.linearMap_ext_basisState
-  intro n
-  simp only [LinearMap.comp_apply, spinMinus_basisState, map_smul, createOccupation_apply_ne hij,
+  apply Common.linearMap_ext_basisState; intro n
+  change spinMinus hbar twiceSpin i (spinMinus hbar twiceSpin j (basisState n)) =
+    spinMinus hbar twiceSpin j (spinMinus hbar twiceSpin i (basisState n))
+  simp only [spinMinus_basisState, map_smul, createOccupation_apply_ne hij,
     createOccupation_apply_ne hij.symm, smul_smul, createOccupation_comm i j]
-  congr 1 <;> ring
+  congr 1
+  ring
 
 private theorem spinPlus_comm_spinMinus (hbar : ℝ) (twiceSpin : ℕ)
     {i j : Mode} (hij : i ≠ j) : Commute (spinPlus hbar twiceSpin i) (spinMinus hbar twiceSpin j) := by
   change (spinPlus hbar twiceSpin i).comp (spinMinus hbar twiceSpin j) =
     (spinMinus hbar twiceSpin j).comp (spinPlus hbar twiceSpin i)
-  apply Common.linearMap_ext_basisState
-  intro n
-  simp only [LinearMap.comp_apply, spinPlus_basisState, spinMinus_basisState, map_smul,
+  apply Common.linearMap_ext_basisState; intro n
+  change spinPlus hbar twiceSpin i (spinMinus hbar twiceSpin j (basisState n)) =
+    spinMinus hbar twiceSpin j (spinPlus hbar twiceSpin i (basisState n))
+  simp only [spinPlus_basisState, spinMinus_basisState, map_smul,
     createOccupation_apply_ne hij, removeOccupation_apply_ne hij.symm, smul_smul,
     removeOccupation_createOccupation_of_ne hij]
-  congr 1 <;> ring
+  congr 1
+  ring
 
 private theorem spinZ_comm_spinPlus (hbar : ℝ) (twiceSpin : ℕ)
     {i j : Mode} (hij : i ≠ j) : Commute (spinZ hbar twiceSpin i) (spinPlus hbar twiceSpin j) := by
   change (spinZ hbar twiceSpin i).comp (spinPlus hbar twiceSpin j) =
     (spinPlus hbar twiceSpin j).comp (spinZ hbar twiceSpin i)
-  apply Common.linearMap_ext_basisState
-  intro n
-  simp only [LinearMap.comp_apply, spinZ_basisState, spinPlus_basisState, map_smul,
+  apply Common.linearMap_ext_basisState; intro n
+  change spinZ hbar twiceSpin i (spinPlus hbar twiceSpin j (basisState n)) =
+    spinPlus hbar twiceSpin j (spinZ hbar twiceSpin i (basisState n))
+  simp only [spinZ_basisState, spinPlus_basisState, map_smul,
     removeOccupation_apply_ne hij, smul_smul]
-  congr 1 <;> ring
+  congr 1
+  ring
 
 private theorem spinZ_comm_spinMinus (hbar : ℝ) (twiceSpin : ℕ)
     {i j : Mode} (hij : i ≠ j) : Commute (spinZ hbar twiceSpin i) (spinMinus hbar twiceSpin j) := by
   change (spinZ hbar twiceSpin i).comp (spinMinus hbar twiceSpin j) =
     (spinMinus hbar twiceSpin j).comp (spinZ hbar twiceSpin i)
-  apply Common.linearMap_ext_basisState
-  intro n
-  simp only [LinearMap.comp_apply, spinZ_basisState, spinMinus_basisState, map_smul,
+  apply Common.linearMap_ext_basisState; intro n
+  change spinZ hbar twiceSpin i (spinMinus hbar twiceSpin j (basisState n)) =
+    spinMinus hbar twiceSpin j (spinZ hbar twiceSpin i (basisState n))
+  simp only [spinZ_basisState, spinMinus_basisState, map_smul,
     createOccupation_apply_ne hij, smul_smul]
-  congr 1 <;> ring
+  congr 1
+  ring
 
 private theorem spinZ_comm_spinZ (hbar : ℝ) (twiceSpin : ℕ) (i j : Mode) :
     Commute (spinZ hbar twiceSpin i) (spinZ hbar twiceSpin j) := by
   change (spinZ hbar twiceSpin i).comp (spinZ hbar twiceSpin j) =
     (spinZ hbar twiceSpin j).comp (spinZ hbar twiceSpin i)
-  apply Common.linearMap_ext_basisState
-  intro n
-  simp only [LinearMap.comp_apply, spinZ_basisState, map_smul, smul_smul]
-  congr 1 <;> ring
+  apply Common.linearMap_ext_basisState; intro n
+  change spinZ hbar twiceSpin i (spinZ hbar twiceSpin j (basisState n)) =
+    spinZ hbar twiceSpin j (spinZ hbar twiceSpin i (basisState n))
+  simp only [spinZ_basisState, map_smul, smul_smul]
+  congr 1
+  ring
 
 /-- Distinct sites' local spin algebras commute, including all local spin polynomials.
 This holds on the ambient algebraic Fock space and hence on its physical sector. -/
