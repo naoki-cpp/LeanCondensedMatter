@@ -954,12 +954,6 @@
       "externalImportCount": 0
     },
     {
-      "name": "LeanCondensedMatter.Analysis.PowerSeries.LogAlgebra",
-      "sourceFile": "LeanCondensedMatter/Analysis/PowerSeries/LogAlgebra.lean",
-      "imports": [],
-      "externalImportCount": 2
-    },
-    {
       "name": "LeanCondensedMatter.Analysis.PowerSeries.LowOrderLog",
       "sourceFile": "LeanCondensedMatter/Analysis/PowerSeries/LowOrderLog.lean",
       "imports": [
@@ -980,8 +974,8 @@
       "name": "LeanCondensedMatter.Analysis.PowerSeries.MomentCumulantRecurrence",
       "sourceFile": "LeanCondensedMatter/Analysis/PowerSeries/MomentCumulantRecurrence.lean",
       "imports": [
-        "LeanCondensedMatter.Analysis.PowerSeries.LogAlgebra",
-        "LeanCondensedMatter.Analysis.PowerSeries.Moment"
+        "LeanCondensedMatter.Analysis.PowerSeries.Moment",
+        "LeanCondensedMatter.Analysis.PowerSeries.Normalization"
       ],
       "externalImportCount": 1
     },
@@ -1015,7 +1009,6 @@
       "imports": [
         "LeanCondensedMatter.Analysis.PowerSeries.AnalyticLog",
         "LeanCondensedMatter.Analysis.PowerSeries.Cumulant",
-        "LeanCondensedMatter.Analysis.PowerSeries.LogAlgebra",
         "LeanCondensedMatter.Analysis.PowerSeries.Moment",
         "LeanCondensedMatter.Analysis.PowerSeries.Normalization",
         "LeanCondensedMatter.Analysis.PowerSeries.Replica",
@@ -4798,12 +4791,11 @@
       "name": "LeanCondensedMatter.SecondQuantization.Bosonic.Perturbation.DysonGibbsSeries",
       "sourceFile": "LeanCondensedMatter/SecondQuantization/Bosonic/Perturbation/DysonGibbsSeries.lean",
       "imports": [
-        "LeanCondensedMatter.Analysis.PowerSeries.LogAlgebra",
         "LeanCondensedMatter.SecondQuantization.Bosonic.ImaginaryTime.ImaginaryTimeEvolution",
         "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.ConvergenceAwareGibbs",
         "LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExpansion"
       ],
-      "externalImportCount": 0
+      "externalImportCount": 1
     },
     {
       "name": "LeanCondensedMatter.SecondQuantization.Bosonic.Perturbation.QuarticDysonExpansion",
