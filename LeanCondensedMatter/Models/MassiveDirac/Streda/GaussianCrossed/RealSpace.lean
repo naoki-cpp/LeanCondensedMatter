@@ -471,14 +471,10 @@ private theorem gaussianCrossedAngularCurrentEntryKernel_sourceRotation
               finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel
                 1 v m probeEnergy broadening disorderStrength hbar pMax radius p i j) : Matrix2) *
         inPlaneSpinRotationInverse angle := by
-  have htrig :
-      (((Real.cos angle : ℝ) : ℂ) ^ 2) +
-        (((Real.sin angle : ℝ) : ℂ) ^ 2) = 1 := by
-    exact_mod_cast Real.cos_sq_add_sin_sq angle
   have hcosSq :
       (((Real.cos angle : ℝ) : ℂ) ^ 2) =
         1 - (((Real.sin angle : ℝ) : ℂ) ^ 2) := by
-    linear_combination htrig
+    exact_mod_cast Real.cos_sq' angle
   ext i j
   fin_cases source <;> fin_cases i <;> fin_cases j
   all_goals first
