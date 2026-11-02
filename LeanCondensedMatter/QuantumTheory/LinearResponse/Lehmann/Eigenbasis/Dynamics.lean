@@ -139,6 +139,7 @@ theorem freePropagator_apply_energyEigenbasis
   have hop' : HasSum
       (fun n : ℕ => (((n.factorial : ℂ)⁻¹ * c ^ n) • v))
       (freePropagator system t v) := by
+    rw [freePropagator_eq_exp]
     convert hop using 1
     · ext n
       simp only [ContinuousLinearMap.apply_apply, smul_apply]

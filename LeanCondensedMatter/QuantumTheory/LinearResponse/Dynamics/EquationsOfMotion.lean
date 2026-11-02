@@ -39,7 +39,7 @@ theorem hasDerivAt_freePropagator (t : ℝ) :
   have h := hasDerivAt_exp_smul_const' (schrodingerGenerator system) t
   rw [hasDerivAt_iff_tendsto]
   rw [hasDerivAt_iff_tendsto] at h
-  simpa only [freePropagator, Complex.coe_smul] using h
+  simpa only [freePropagator_eq_exp, Complex.coe_smul] using h
 
 /-- Explicit bounded Schrödinger equation
 `dψ/dt = -(i/ℏ) H₀ ψ`. -/
@@ -63,7 +63,7 @@ theorem heisenbergEquation (A : H →L[ℂ] H) (t : ℝ) :
       NormedSpace.exp (s • (-schrodingerGenerator system)) * A *
           NormedSpace.exp (-(s • (-schrodingerGenerator system))) =
         heisenbergEvolution (freePropagatorGroup system) s A := by
-    simp only [heisenbergEvolution_freePropagatorGroup_apply, freePropagator, Complex.coe_smul,
+    simp only [heisenbergEvolution_freePropagatorGroup_apply, freePropagator_eq_exp, Complex.coe_smul,
       smul_neg, neg_smul, neg_neg]
   have hderiv :
       (-schrodingerGenerator system) * heisenbergEvolution (freePropagatorGroup system) t A -

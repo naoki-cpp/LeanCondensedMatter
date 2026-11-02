@@ -59,17 +59,14 @@ noncomputable def schrodingerGenerator : H →L[ℂ] H :=
 
 /-- The free Schrödinger propagator `U₀(t) = exp (-(i t / ℏ) H₀)`. -/
 noncomputable def freePropagator (t : ℝ) : H →L[ℂ] H :=
-  NormedSpace.exp ((t : ℂ) • schrodingerGenerator system)
+  LinearPMap.boundedUnitaryEvolution
+    (((system.hbar : ℂ)⁻¹) • system.hamiltonian.1) t
 
-/-- The bounded free propagator is the generic bounded unitary evolution of the Hamiltonian scaled
-by `ℏ⁻¹`. This bridge keeps the physical free-dynamics API on the shared operator-theoretic
-implementation. -/
-private theorem freePropagator_eq_boundedUnitaryEvolution (t : ℝ) :
+/-- The explicit Schrödinger exponential form of the free propagator. -/
+theorem freePropagator_eq_exp (t : ℝ) :
     freePropagator system t =
-      LinearPMap.boundedUnitaryEvolution
-        (((system.hbar : ℂ)⁻¹) • system.hamiltonian.1) t := by
-  unfold freePropagator
-  rw [LinearPMap.boundedUnitaryEvolution_eq_exp]
+      NormedSpace.exp ((t : ℂ) • schrodingerGenerator system) := by
+  rw [freePropagator, LinearPMap.boundedUnitaryEvolution_eq_exp]
   congr 1
   simp only [schrodingerGenerator, smul_smul, div_eq_mul_inv]
   congr 1
@@ -77,13 +74,13 @@ private theorem freePropagator_eq_boundedUnitaryEvolution (t : ℝ) :
 
 @[simp]
 theorem freePropagator_zero : freePropagator system 0 = 1 := by
-  simp only [freePropagator_eq_boundedUnitaryEvolution,
+  simp only [freePropagator,
     LinearPMap.boundedUnitaryEvolution_zero]
 
 /-- The adjoint of the free propagator is the negative-time propagator. -/
 theorem star_freePropagator (t : ℝ) :
     star (freePropagator system t) = freePropagator system (-t) := by
-  simp only [freePropagator_eq_boundedUnitaryEvolution]
+  simp only [freePropagator]
   exact LinearPMap.boundedUnitaryEvolution_star _ (by
     apply IsSelfAdjoint.smul
     · rw [isSelfAdjoint_iff, Complex.star_def]
@@ -94,7 +91,7 @@ theorem star_freePropagator (t : ℝ) :
 theorem freePropagator_add (t s : ℝ) :
     freePropagator system (t + s) =
       freePropagator system t * freePropagator system s := by
-  simp only [freePropagator_eq_boundedUnitaryEvolution,
+  simp only [freePropagator,
     LinearPMap.boundedUnitaryEvolution_add]
 
 /-- The adjoint of the free propagator is its left inverse. -/
@@ -134,7 +131,7 @@ theorem heisenbergEvolution_freePropagatorGroup_apply (t : ℝ) (A : H →L[ℂ]
 /-- The free propagator depends continuously on real time in operator norm. -/
 theorem continuous_freePropagator : Continuous (freePropagator system) := by
   change Continuous (fun t : ℝ => freePropagator system t)
-  simpa only [freePropagator_eq_boundedUnitaryEvolution] using
+  simpa only [freePropagator] using
     (LinearPMap.boundedUnitaryEvolution_continuous
       (((system.hbar : ℂ)⁻¹) • system.hamiltonian.1))
 
