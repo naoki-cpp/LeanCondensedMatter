@@ -471,10 +471,6 @@ private theorem gaussianCrossedAngularCurrentEntryKernel_sourceRotation
               finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel
                 1 v m probeEnergy broadening disorderStrength hbar pMax radius p i j) : Matrix2) *
         inPlaneSpinRotationInverse angle := by
-  have hcosSq :
-      (((Real.cos angle : ℝ) : ℂ) ^ 2) =
-        1 - (((Real.sin angle : ℝ) : ℂ) ^ 2) := by
-    exact_mod_cast Real.cos_sq' angle
   ext i j
   fin_cases source <;> fin_cases i <;> fin_cases j
   all_goals first
@@ -489,8 +485,7 @@ private theorem gaussianCrossedAngularCurrentEntryKernel_sourceRotation
       InternalSpace.pauliZ, Matrix.smul_apply, Matrix.add_apply,
       smul_eq_mul]
   all_goals simp only [← Complex.ofReal_cos, ← Complex.ofReal_sin]
-  all_goals ring_nf <;>
-    simp only [Complex.I_sq, Complex.I_pow_three, hcosSq] <;> ring
+  all_goals ring_nf
 
 /-- Arbitrary-angle polar Fourier representation of the model's crossed-current
 matrix. The underlying advanced-current-retarded Pauli sandwich is the same
