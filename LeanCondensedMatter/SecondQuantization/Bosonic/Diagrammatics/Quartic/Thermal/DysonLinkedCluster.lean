@@ -25,12 +25,12 @@ variable {Mode : Type*} [Fintype Mode]
 
 /-- Bosonic quartic Dyson Linked Cluster Theorem for the physical convergence-aware Gibbs
 coefficients. -/
-theorem factorial_mul_coeff_grandCanonicalGibbsDysonFormalLog_eq_sum_connectedDysonThermalAmplitude
+theorem factorial_mul_coeff_logOf_grandCanonicalGibbsDysonSeries_eq_sum_connectedDysonThermalAmplitude
     (ε : Mode → ℝ) (β μ : ℝ) (hpos : ∀ i, 0 < β * (ε i - μ))
     (g : QuarticVertexLabel Mode → ℂ) (n : ℕ) (hn : n ≠ 0) :
     (n.factorial : ℂ) *
         PowerSeries.coeff n
-          (grandCanonicalGibbsDysonFormalLog ε β μ (quarticInteraction g)) =
+          (PowerSeries.logOf (grandCanonicalGibbsDysonSeries ε β μ (quarticInteraction g))) =
       ∑ d : Common.ConnectedQuarticDiagram (QuarticVertexLabel Mode) n Finset.univ,
         QuarticDiagram.dysonThermalAmplitude ε β μ g d.1 β := by
   let W := quarticDysonThermalDiagramMultiplicativeWeight (N := n) ε β μ g β
@@ -50,9 +50,9 @@ theorem factorial_mul_coeff_grandCanonicalGibbsDysonFormalLog_eq_sum_connectedDy
   calc
     (n.factorial : ℂ) *
         PowerSeries.coeff n
-          (grandCanonicalGibbsDysonFormalLog ε β μ (quarticInteraction g)) =
+          (PowerSeries.logOf (grandCanonicalGibbsDysonSeries ε β μ (quarticInteraction g))) =
         W.connectedContribution (Finset.univ : Finset (Fin n)) := by
-      simpa [grandCanonicalGibbsDysonFormalLog] using
+      simpa using
         (Combinatorics.factorial_mul_coeff_logOf_eq_connectedContribution
           hZ W hMoment huniv)
     _ = ∑ d : Common.ConnectedQuarticDiagram (QuarticVertexLabel Mode) n Finset.univ,
