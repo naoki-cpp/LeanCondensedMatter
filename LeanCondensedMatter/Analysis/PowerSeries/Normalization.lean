@@ -49,19 +49,10 @@ theorem coeff_one_logOf {Z : PowerSeries ℂ} (hZ : constantCoeff Z = 1) :
   have hsub : HasSubst (Z - 1) :=
     HasSubst.of_constantCoeff_zero' (by simp [hZ])
   have hZ1 : constantCoeff (Z - 1) = 0 := by simp [hZ]
-  have hant : Finset.antidiagonal 1 = {(0, 1), (1, 0)} := rfl
   have hpow : ∀ d, 2 ≤ d → coeff 1 ((Z - 1) ^ d) = 0 := by
     intro d hd
-    obtain ⟨e, rfl⟩ : ∃ e, d = e + 1 := ⟨d - 1, by omega⟩
-    have he : 1 ≤ e := by omega
-    rw [pow_succ', coeff_mul, hant]
-    have hcoeff0 : coeff 0 ((Z - 1) ^ e) = 0 := by
-      rw [coeff_zero_eq_constantCoeff, map_pow, hZ1, zero_pow (by omega : e ≠ 0)]
-    have hcoeff0' : coeff 0 (Z - 1) = 0 := by
-      rw [coeff_zero_eq_constantCoeff]
-      exact hZ1
-    rw [Finset.sum_insert (by decide), Finset.sum_singleton, hcoeff0', hcoeff0]
-    ring
+    have hd' : d - 1 ≠ 0 := by omega
+    simp [coeff_one_pow, hZ1, hd']
   have hterm : ∀ d : ℕ, d ≠ 1 →
       coeff d (log ℂ) • coeff 1 ((Z - 1) ^ d) = 0 := by
     intro d hd
