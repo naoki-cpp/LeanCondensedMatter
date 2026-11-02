@@ -40,12 +40,7 @@ theorem mul_inv_eq_of_eq_mul_of_constantCoeff_ne_zero
     (hvacuum : constantCoeff vacuum ≠ 0)
     (hsource : source = normalized * vacuum) :
     source * vacuum⁻¹ = normalized := by
-  rw [hsource]
-  calc
-    (normalized * vacuum) * vacuum⁻¹ = normalized * (vacuum⁻¹ * vacuum) := by
-      ac_rfl
-    _ = normalized := by
-      rw [PowerSeries.inv_mul_cancel vacuum hvacuum, mul_one]
+  rw [hsource, mul_assoc, PowerSeries.mul_inv_cancel vacuum hvacuum, mul_one]
 
 /-- The order-one coefficient of `logOf Z` equals the order-one coefficient of a normalized
 complex power series `Z`. -/
