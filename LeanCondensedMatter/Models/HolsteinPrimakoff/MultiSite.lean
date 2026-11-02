@@ -141,26 +141,22 @@ theorem commute_of_mem_spinAlgebra (hbar : ℝ) (twiceSpin : ℕ) {i j : Mode} (
     {A B : FockSpace Mode →ₗ[ℂ] FockSpace Mode}
     (hA : A ∈ spinAlgebra hbar twiceSpin i) (hB : B ∈ spinAlgebra hbar twiceSpin j) :
     Commute A B := by
-  have hgen : ∀ a ∈ ({spinPlus hbar twiceSpin i, spinMinus hbar twiceSpin i,
-      spinZ hbar twiceSpin i} : Set (FockSpace Mode →ₗ[ℂ] FockSpace Mode)),
-      ∀ b ∈ ({spinPlus hbar twiceSpin j, spinMinus hbar twiceSpin j,
-      spinZ hbar twiceSpin j} : Set (FockSpace Mode →ₗ[ℂ] FockSpace Mode)), Commute a b := by
-    intro a ha b hb
-    simp only [Set.mem_insert_iff, Set.mem_singleton_iff] at ha hb
-    rcases ha with rfl | rfl | rfl <;> rcases hb with rfl | rfl | rfl
-    · exact spinPlus_comm_spinPlus hbar twiceSpin hij
-    · exact spinPlus_comm_spinMinus hbar twiceSpin hij
-    · exact (spinZ_comm_spinPlus hbar twiceSpin hij.symm).symm
-    · exact (spinPlus_comm_spinMinus hbar twiceSpin hij.symm).symm
-    · exact spinMinus_comm_spinMinus hbar twiceSpin hij
-    · exact (spinZ_comm_spinMinus hbar twiceSpin hij.symm).symm
-    · exact spinZ_comm_spinPlus hbar twiceSpin hij
-    · exact spinZ_comm_spinMinus hbar twiceSpin hij
-    · exact spinZ_comm_spinZ hbar twiceSpin i j
   apply Algebra.commute_of_mem_adjoin_of_forall_mem_commute hB
   intro b hb
-  exact (Algebra.commute_of_mem_adjoin_of_forall_mem_commute hA
-    (fun a ha => (hgen a ha b hb).symm)).symm
+  refine (Algebra.commute_of_mem_adjoin_of_forall_mem_commute hA ?_).symm
+  intro a ha
+  suffices h : Commute a b from h.symm
+  simp only [Set.mem_insert_iff, Set.mem_singleton_iff] at ha hb
+  rcases ha with rfl | rfl | rfl <;> rcases hb with rfl | rfl | rfl
+  · exact spinPlus_comm_spinPlus hbar twiceSpin hij
+  · exact spinPlus_comm_spinMinus hbar twiceSpin hij
+  · exact (spinZ_comm_spinPlus hbar twiceSpin hij.symm).symm
+  · exact (spinPlus_comm_spinMinus hbar twiceSpin hij.symm).symm
+  · exact spinMinus_comm_spinMinus hbar twiceSpin hij
+  · exact (spinZ_comm_spinMinus hbar twiceSpin hij.symm).symm
+  · exact spinZ_comm_spinPlus hbar twiceSpin hij
+  · exact spinZ_comm_spinMinus hbar twiceSpin hij
+  · exact spinZ_comm_spinZ hbar twiceSpin i j
 
 section FiniteSites
 variable [Fintype Mode]
