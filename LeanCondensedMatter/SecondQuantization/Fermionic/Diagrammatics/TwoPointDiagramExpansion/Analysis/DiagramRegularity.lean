@@ -105,7 +105,7 @@ theorem FixedExternalTwoPointWickDiagram.measurableLocallyBounded_dysonFixedTime
                       orderedTwoPointLegField, orderedTwoPointLegTime,
                       orderedTwoPointLegFieldLabel,
                       grandCanonicalTimedFieldPairContraction_eq]
-                    fun_prop)))
+                    split <;> split <;> fun_prop)))
           · intro σ
             exact
               (d.mixedComponentDysonFixedTimeChamberRepresentative_eq_of_comparisons
