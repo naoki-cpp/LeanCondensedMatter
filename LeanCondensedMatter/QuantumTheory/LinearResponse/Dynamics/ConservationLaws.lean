@@ -33,7 +33,7 @@ theorem commute_freePropagator_of_commute_hamiltonian
   have hgenerator : Commute (schrodingerGenerator system) A := by
     simpa [schrodingerGenerator] using
       hA.smul_left (-(Complex.I / (system.hbar : ℂ)))
-  simpa [freePropagator] using (hgenerator.smul_left (t : ℂ)).exp_left
+  simpa [freePropagator_eq_exp] using (hgenerator.smul_left (t : ℂ)).exp_left
 
 /-- A bounded operator commuting with the Hamiltonian is fixed by Heisenberg evolution. -/
 theorem heisenbergEvolution_eq_self_of_commute_hamiltonian
