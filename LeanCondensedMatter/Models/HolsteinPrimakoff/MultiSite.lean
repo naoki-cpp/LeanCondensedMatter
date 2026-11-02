@@ -209,7 +209,7 @@ theorem spinRepresentation_intertwines (hbar : ℝ) (twiceSpin : ℕ) (i : Mode)
     (ψ : QuantumTheory.LocalizedSpin.State twiceSpin Mode) :
     (spinStateEquiv twiceSpin (spinRepresentation hbar twiceSpin i A ψ) : FockSpace Mode) =
       A.val (spinStateEquiv twiceSpin ψ) := by
-  change ((spinStateEquiv twiceSpin) ((spinStateEquiv twiceSpin).symm _) : FockSpace Mode) = _
+  change (↑((spinStateEquiv twiceSpin) ((spinStateEquiv twiceSpin).symm _)) : FockSpace Mode) = _
   rw [LinearEquiv.apply_symm_apply]
   rfl
 
