@@ -100,29 +100,19 @@ theorem freePropagator_add (t s : ℝ) :
     freePropagator_eq_boundedUnitaryEvolution system s]
   exact LinearPMap.boundedUnitaryEvolution_add _ t s
 
-/-- The negative-time propagator is a left inverse. -/
-theorem freePropagator_neg_mul (t : ℝ) :
-    freePropagator system (-t) * freePropagator system t = 1 := by
-  simpa using (freePropagator_add system (-t) t).symm
-
-/-- The negative-time propagator is a right inverse. -/
-theorem freePropagator_mul_neg (t : ℝ) :
-    freePropagator system t * freePropagator system (-t) = 1 := by
-  simpa using (freePropagator_add system t (-t)).symm
-
 /-- The adjoint of the free propagator is its left inverse. -/
 @[simp]
 theorem star_mul_freePropagator (t : ℝ) :
     star (freePropagator system t) * freePropagator system t = 1 := by
   rw [star_freePropagator]
-  exact freePropagator_neg_mul system t
+  simpa using (freePropagator_add system (-t) t).symm
 
 /-- The adjoint of the free propagator is its right inverse. -/
 @[simp]
 theorem freePropagator_mul_star (t : ℝ) :
     freePropagator system t * star (freePropagator system t) = 1 := by
   rw [star_freePropagator]
-  exact freePropagator_mul_neg system t
+  simpa using (freePropagator_add system t (-t)).symm
 
 /-- Every free Schrödinger propagator is a unitary element of the bounded-operator C⋆-algebra. -/
 theorem freePropagator_mem_unitary (t : ℝ) :
