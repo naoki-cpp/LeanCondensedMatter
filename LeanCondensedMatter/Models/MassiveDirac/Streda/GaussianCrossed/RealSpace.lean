@@ -719,17 +719,9 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceCurrentBlock_polar
       rw [InternalSpace.intervalIntegralPauliMatrix_smul, InternalSpace.intervalIntegralPauliMatrix_smul]
   rw [hangular, funext hpoint, intervalIntegralMatrix2_spinRotation_conjugate, hmix]
   rw [hradial 0, hradial 1]
-  have htransport (M : Matrix2) :
-      prefactor • (inPlaneSpinRotation angle * M * inPlaneSpinRotationInverse angle) =
-        inPlaneSpinRotation angle * (prefactor • M) * inPlaneSpinRotationInverse angle := by
-    simp only [mul_smul_comm, smul_mul_assoc]
-  by_cases hs : source = 0
-  · simp only [hs, ite_true]
-    rw [htransport]
-    simp only [smul_sub, smul_smul, mul_comm prefactor c, mul_comm prefactor s, c, s]
-  · simp only [hs, ite_false]
-    rw [htransport]
-    simp only [smul_add, smul_smul, mul_comm prefactor c, mul_comm prefactor s, c, s]
+  split_ifs <;>
+    simp only [mul_smul_comm, smul_mul_assoc, smul_add, smul_sub,
+      smul_smul, mul_comm prefactor c, mul_comm prefactor s, c, s]
 
 private theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel_neg_radius
     (source : Fin 2)
