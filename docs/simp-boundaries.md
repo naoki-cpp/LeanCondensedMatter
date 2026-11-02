@@ -78,7 +78,6 @@ homomorphic normalization rules:
 - `finiteDimensionalOperatorTrace_apply`
 - `L2Multiplication.multiplicationOperator_apply`
 - `L2Multiplication.multiplicationLinear_apply`
-- `PowerSeries.logOf_one`
 - `FamilySlotShuffleTo.timeAssignment_apply`
 - `boundedUnitaryEvolution_zero`
 - `resolventApproximationEvolution_zero`
