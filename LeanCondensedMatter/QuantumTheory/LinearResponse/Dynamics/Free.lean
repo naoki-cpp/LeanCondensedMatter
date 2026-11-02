@@ -114,15 +114,12 @@ theorem freePropagator_mul_star (t : ℝ) :
   rw [star_freePropagator]
   simpa using (freePropagator_add system t (-t)).symm
 
-/-- Every free Schrödinger propagator is a unitary element of the bounded-operator C⋆-algebra. -/
-theorem freePropagator_mem_unitary (t : ℝ) :
-    freePropagator system t ∈ unitary (H →L[ℂ] H) := by
-  rw [Unitary.mem_iff]
-  exact ⟨star_mul_freePropagator system t, freePropagator_mul_star system t⟩
-
 /-- The bounded Schrödinger propagators as a one-parameter unitary group. -/
 noncomputable def freePropagatorGroup : Multiplicative ℝ →* unitary (H →L[ℂ] H) where
-  toFun t := ⟨freePropagator system t.toAdd, freePropagator_mem_unitary system t.toAdd⟩
+  toFun t := ⟨freePropagator system t.toAdd, by
+    rw [Unitary.mem_iff]
+    exact ⟨star_mul_freePropagator system t.toAdd,
+      freePropagator_mul_star system t.toAdd⟩⟩
   map_one' := Subtype.ext (freePropagator_zero system)
   map_mul' t s := Subtype.ext (freePropagator_add system t.toAdd s.toAdd)
 
