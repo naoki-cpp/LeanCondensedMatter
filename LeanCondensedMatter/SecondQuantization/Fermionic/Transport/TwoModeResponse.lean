@@ -158,15 +158,6 @@ private theorem twoModeFockLehmannTableResponse_eq
     fermionEnergy_eq_sum]
   simp [Common.basisState, hf, hn, Ne.symm hn]
 
-/-- Antisymmetric current response converted from vector potential to electric field at zero
-frequency. This is a response density before a momentum measure or volume factor is applied. -/
-private def twoModeFockHallResponse (energy : Fin 2 → ℝ)
-    (probability : Occupation (Fin 2) → ℝ)
-    (A B : Matrix (Fin 2) (Fin 2) ℂ) (hbar eta : ℝ) : ℂ :=
-  (finiteLehmannTableResponse hbar 0 eta (twoModeFockLehmannTable energy probability A B) -
-    finiteLehmannTableResponse hbar 0 eta (twoModeFockLehmannTable energy probability B A)) /
-      (2 * (-(eta : ℂ)))
-
 /-- Real clean Hall coefficient obtained from the full Fock response. The imaginary part is
 the antisymmetric spectral current numerator, not a real-valued conversion of an operator. -/
 def twoModeFockHallCleanResponse (energy : Fin 2 → ℝ)
@@ -174,74 +165,6 @@ def twoModeFockHallCleanResponse (energy : Fin 2 → ℝ)
     (A B : Matrix (Fin 2) (Fin 2) ℂ) (hbar : ℝ) : ℝ :=
   hbar * (probability {0} - probability {1}) *
     (A 0 1 * B 1 0 - B 0 1 * A 1 0).im / (energy 0 - energy 1) ^ 2
-
-/-- The clean Hall coefficient is the actual positive-switching-rate limit of the four-state
-Fock Lehmann response, including the electric-field conversion. -/
-private theorem tendsto_twoModeFockHallResponse_re
-    (energy : Fin 2 → ℝ) (probability : Occupation (Fin 2) → ℝ)
-    (A B : Matrix (Fin 2) (Fin 2) ℂ) (hbar : ℝ) (hhbar : hbar ≠ 0)
-    (hgap : energy 0 - energy 1 ≠ 0) :
-    Filter.Tendsto (fun eta : ℝ => (twoModeFockHallResponse energy probability A B hbar eta).re)
-      (nhdsWithin 0 (Set.Ioi 0))
-      (nhds (twoModeFockHallCleanResponse energy probability A B hbar)) := by
-  let gap := energy 0 - energy 1
-  let numerator := -Complex.I / (hbar : ℂ) *
-    ((probability {0} - probability {1} : ℝ) : ℂ) *
-      (A 0 1 * B 1 0 - B 0 1 * A 1 0)
-  let F := fun eta : ℝ => numerator /
-    (lehmannDenominator hbar 0 eta gap * lehmannDenominator hbar 0 eta (-gap))
-  have hhbarC : (hbar : ℂ) ≠ 0 := by exact_mod_cast hhbar
-  have hrewrite (eta : ℝ) (heta : 0 < eta) :
-      twoModeFockHallResponse energy probability A B hbar eta = F eta := by
-    have hden := lehmannDenominator_ne_zero hbar 0 eta gap heta.ne'
-    have hden' := lehmannDenominator_ne_zero hbar 0 eta (-gap) heta.ne'
-    have hetaC : (eta : ℂ) ≠ 0 := by exact_mod_cast heta.ne'
-    unfold twoModeFockHallResponse
-    rw [twoModeFockLehmannTableResponse_eq, twoModeFockLehmannTableResponse_eq]
-    have hswap : energy 1 - energy 0 = -gap := by dsimp [gap]; ring
-    have hforward : energy 0 - energy 1 = gap := rfl
-    simp only [LehmannTransitionData.frequencyTerm, orderedLehmannTransitionData,
-      lehmannTerm, hswap, hforward]
-    change _ = numerator /
-      (lehmannDenominator hbar 0 eta gap * lehmannDenominator hbar 0 eta (-gap))
-    dsimp [numerator]
-    field_simp [hden, hden', hetaC, hhbarC]
-    simp only [lehmannDenominator]
-    push_cast
-    ring
-  have hgapC : (gap : ℂ) ≠ 0 := by exact_mod_cast hgap
-  have hden0 : lehmannDenominator hbar 0 0 gap *
-      lehmannDenominator hbar 0 0 (-gap) ≠ 0 := by
-    simp [lehmannDenominator, hgapC, hhbarC]
-  have hcont : ContinuousAt F 0 := by
-    apply ContinuousAt.div continuousAt_const
-    · dsimp [lehmannDenominator]
-      fun_prop
-    · exact hden0
-  have heval : F 0 =
-      -(Complex.I * (hbar : ℂ)) * ((probability {0} - probability {1} : ℝ) : ℂ) *
-        (A 0 1 * B 1 0 - B 0 1 * A 1 0) / (gap : ℂ) ^ 2 := by
-    dsimp [F, numerator, lehmannDenominator]
-    push_cast
-    field_simp [hhbarC, hgapC]
-    ring_nf; norm_num; ring
-  have hreal : (F 0).re = twoModeFockHallCleanResponse energy probability A B hbar := by
-    rw [heval]
-    rw [← Complex.ofReal_pow, Complex.div_ofReal_re]
-    simp only [Complex.mul_re, Complex.mul_im, Complex.neg_re, Complex.neg_im,
-      Complex.I_re, Complex.I_im, Complex.ofReal_re, Complex.ofReal_im,
-      mul_zero, zero_mul, sub_zero, one_mul, zero_add,
-      twoModeFockHallCleanResponse]
-    dsimp only [gap]
-    ring
-  have hlimit : Filter.Tendsto (fun eta => (F eta).re) (nhdsWithin 0 (Set.Ioi 0))
-      (nhds (F 0).re) :=
-    Complex.continuous_re.continuousAt.tendsto.comp
-      (hcont.tendsto.mono_left nhdsWithin_le_nhds)
-  rw [hreal] at hlimit
-  apply hlimit.congr'
-  filter_upwards [self_mem_nhdsWithin] with eta heta
-  exact congrArg Complex.re (hrewrite eta heta).symm
 
 /-- Antisymmetric physical Kubo susceptibility in the normalized full-Fock state, including
 the zero-frequency vector-potential to electric-field factor. -/
@@ -258,6 +181,64 @@ def twoModeFockHallKuboResponse (energy : Fin 2 → ℝ)
     adiabaticFrequencyDomainSusceptibility (freePropagatorGroup S) hbar omega VB VA 0 eta) /
       (2 * (-(eta : ℂ)))
 
+/-- At positive switching rate the real static Hall response is a real rational function.
+The regulator is the switching rate in physical time, so its energy scale is `hbar * eta`.
+This is an exact full-Fock response identity, before momentum integration. -/
+theorem twoModeFockHallKuboResponse_re
+    (energy : Fin 2 → ℝ) (probability : Occupation (Fin 2) → ℝ)
+    (A B : Matrix (Fin 2) (Fin 2) ℂ) (hbar : ℝ) (hhbar : 0 < hbar)
+    (hpos : ∀ n, 0 ≤ probability n) (hsum : HasSum probability 1)
+    (eta : ℝ) (heta : 0 < eta) :
+    (twoModeFockHallKuboResponse energy probability A B hbar hhbar hpos hsum eta).re =
+      hbar * (probability {0} - probability {1}) *
+        (A 0 1 * B 1 0 - B 0 1 * A 1 0).im /
+          ((energy 0 - energy 1) ^ 2 + (hbar * eta) ^ 2) := by
+  let gap := energy 0 - energy 1
+  have hhbarC : (hbar : ℂ) ≠ 0 := by exact_mod_cast hhbar.ne'
+  have hetaC : (eta : ℂ) ≠ 0 := by exact_mod_cast heta.ne'
+  have hden := lehmannDenominator_ne_zero hbar 0 eta gap heta.ne'
+  have hden' := lehmannDenominator_ne_zero hbar 0 eta (-gap) heta.ne'
+  have hD : 0 < gap ^ 2 + (hbar * eta) ^ 2 :=
+    add_pos_of_nonneg_of_pos (sq_nonneg gap) (sq_pos_of_ne_zero (mul_ne_zero hhbar.ne' heta.ne'))
+  have hDC : ((gap ^ 2 + (hbar * eta) ^ 2 : ℝ) : ℂ) ≠ 0 := by exact_mod_cast hD.ne'
+  have hcomplex : twoModeFockHallKuboResponse energy probability A B hbar hhbar hpos hsum eta =
+      -(Complex.I * (hbar : ℂ)) * ((probability {0} - probability {1} : ℝ) : ℂ) *
+        (A 0 1 * B 1 0 - B 0 1 * A 1 0) /
+          ((gap ^ 2 + (hbar * eta) ^ 2 : ℝ) : ℂ) := by
+    unfold twoModeFockHallKuboResponse
+    dsimp only
+    rw [← twoModeFockLehmannTableResponse_eq_kubo energy probability A B hbar 0 eta hhbar hpos hsum heta,
+      ← twoModeFockLehmannTableResponse_eq_kubo energy probability B A hbar 0 eta hhbar hpos hsum heta]
+    rw [twoModeFockLehmannTableResponse_eq, twoModeFockLehmannTableResponse_eq]
+    have hswap : energy 1 - energy 0 = -gap := by dsimp [gap]; ring
+    have hforward : energy 0 - energy 1 = gap := rfl
+    simp only [LehmannTransitionData.frequencyTerm, orderedLehmannTransitionData,
+      lehmannTerm, hswap, hforward]
+    simp only [lehmannDenominator] at hden hden' ⊢
+    push_cast at hden hden' hDC ⊢
+    field_simp [hden, hden', hetaC, hhbarC, hDC]
+    have hminus : (hbar : ℂ) * (eta : ℂ) - Complex.I * (gap : ℂ) ≠ 0 := by
+      intro hz
+      have hr := congrArg Complex.re hz
+      exact (mul_ne_zero hhbar.ne' heta.ne') (by simpa using hr)
+    have hplus : (hbar : ℂ) * (eta : ℂ) + Complex.I * (gap : ℂ) ≠ 0 := by
+      intro hz
+      have hr := congrArg Complex.re hz
+      exact (mul_ne_zero hhbar.ne' heta.ne') (by simpa using hr)
+    field_simp [hminus, hplus, hDC, hhbarC]
+    ring_nf
+    norm_num
+    have hDC' : (hbar : ℂ) ^ 2 * (eta : ℂ) ^ 2 + (gap : ℂ) ^ 2 ≠ 0 := by
+      simpa only [mul_pow, add_comm] using hDC
+    field_simp [hDC']
+    all_goals ring
+  rw [hcomplex, Complex.div_ofReal_re]
+  simp only [Complex.mul_re, Complex.mul_im, Complex.neg_re, Complex.neg_im,
+    Complex.I_re, Complex.I_im, Complex.ofReal_re, Complex.ofReal_im,
+    mul_zero, zero_mul, sub_zero, one_mul, zero_add]
+  dsimp only [gap]
+  ring
+
 /-- The clean density follows from the actual full-Fock Kubo theory for every normalized
 diagonal state. The hypotheses concern the chosen state and the one-particle gap only. -/
 theorem tendsto_twoModeFockHallKuboResponse_re
@@ -269,13 +250,19 @@ theorem tendsto_twoModeFockHallKuboResponse_re
       (twoModeFockHallKuboResponse energy probability A B hbar hhbar hpos hsum eta).re)
       (nhdsWithin 0 (Set.Ioi 0))
       (nhds (twoModeFockHallCleanResponse energy probability A B hbar)) := by
-  have h := tendsto_twoModeFockHallResponse_re energy probability A B hbar hhbar.ne' hgap
-  apply h.congr'
+  let F := fun eta : ℝ => hbar * (probability {0} - probability {1}) *
+    (A 0 1 * B 1 0 - B 0 1 * A 1 0).im /
+      ((energy 0 - energy 1) ^ 2 + (hbar * eta) ^ 2)
+  have hcont : ContinuousAt F 0 := by
+    apply ContinuousAt.div continuousAt_const
+    · fun_prop
+    · simpa using pow_ne_zero 2 hgap
+  have hlimit : Filter.Tendsto F (nhdsWithin 0 (Set.Ioi 0))
+      (nhds (twoModeFockHallCleanResponse energy probability A B hbar)) := by
+    simpa [F, twoModeFockHallCleanResponse] using hcont.tendsto.mono_left nhdsWithin_le_nhds
+  apply hlimit.congr'
   filter_upwards [self_mem_nhdsWithin] with eta heta
-  congr 1
-  unfold twoModeFockHallResponse twoModeFockHallKuboResponse
-  rw [twoModeFockLehmannTableResponse_eq_kubo energy probability A B hbar 0 eta hhbar hpos hsum heta,
-    twoModeFockLehmannTableResponse_eq_kubo energy probability B A hbar 0 eta hhbar hpos hsum heta]
+  exact (twoModeFockHallKuboResponse_re energy probability A B hbar hhbar hpos hsum eta heta).symm
 
 end
 end SecondQuantization.Fermionic.Transport
