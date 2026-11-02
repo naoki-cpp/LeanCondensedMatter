@@ -339,7 +339,7 @@
       "name": "LeanCondensedMatter.Analysis.Operator.AlgebraRestriction",
       "sourceFile": "LeanCondensedMatter/Analysis/Operator/AlgebraRestriction.lean",
       "imports": [],
-      "externalImportCount": 3
+      "externalImportCount": 2
     },
     {
       "name": "LeanCondensedMatter.Analysis.Operator.BerryGeometry.Connection",

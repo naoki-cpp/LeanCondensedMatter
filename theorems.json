@@ -4804,7 +4804,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": false,
+    "terminal": true,
     "statement": "∀ {n m : ℕ} (small : Combinatorics.Pairing n) (big : Combinatorics.Pairing m) (e : Fin (2 * n) ↪o Fin (2 * m))\n  (hpartner : ∀ (i : Fin (2 * n)), big.partner (e i) = e (small.partner i)) (p q : small.NormalizedPair),\n  Combinatorics.Crosses ↑((small.normalizedPairEmbedding big e hpartner) p)\n      ↑((small.normalizedPairEmbedding big e hpartner) q) ↔\n    Combinatorics.Crosses ↑p ↑q",
     "standardAxioms": [
       "Classical.choice",
@@ -4812,7 +4812,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -4823,18 +4823,14 @@
     "docString": "A partner-intertwining order embedding preserves and reflects crossings between normalized\npairs. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.TwoPointDiagram.slotSplitVacuumNormalizedPairEmbedding_crosses_iff"
-    ],
+    "dependents": [],
     "dependencies": [
       "Combinatorics.crosses_map_iff"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.TwoPointDiagram.slotSplitVacuumNormalizedPairEmbedding_crosses_iff"
-    ],
-    "compiledConsumerCount": 1,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -8540,6 +8536,7 @@
       "Combinatorics.Pairing.normalizedPairEmbedding_crosses_iff",
       "SecondQuantization.Common.QuarticDiagram.fixedOrderComponentPairEmbedding_crosses_iff",
       "SecondQuantization.Common.TwoPointDiagram.mixedComponentCrossingCount_externalComponentPart",
+      "SecondQuantization.Common.TwoPointDiagram.ofSlotSplit_mixedComponentCrossingCount_vacuum_eq",
       "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.SplitCrossing.0.Combinatorics.Pairing.sum_sum_crosses_map_eq_crossingCount"
     ],
     "dependencies": [],
@@ -8551,9 +8548,10 @@
       "Combinatorics.Pairing.normalizedPairEmbedding_crosses_iff",
       "SecondQuantization.Common.QuarticDiagram.fixedOrderComponentPairEmbedding_crosses_iff",
       "SecondQuantization.Common.TwoPointDiagram.mixedComponentCrossingCount_externalComponentPart",
+      "SecondQuantization.Common.TwoPointDiagram.ofSlotSplit_mixedComponentCrossingCount_vacuum_eq",
       "_private.LeanCondensedMatter.Combinatorics.PerfectPairing.SplitCrossing.0.Combinatorics.Pairing.sum_sum_crosses_map_eq_crossingCount"
     ],
-    "compiledConsumerCount": 6,
+    "compiledConsumerCount": 7,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -15963,9 +15961,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [],
-    "dependencies": [
-      "_private.LeanCondensedMatter.Analysis.Operator.DiagonalExpectation.0.ContinuousLinearMap.coe_diagonalExpectationNNReal_private"
-    ],
+    "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [],
@@ -36549,7 +36545,7 @@
     "dependents": [],
     "dependencies": [
       "Models.HolsteinPrimakoff.commute_of_mem_spinAlgebra",
-      "Models.HolsteinPrimakoff.spinRepresentation_intertwines"
+      "Models.HolsteinPrimakoff.mem_simultaneousSubspace_of_mem_spinAlgebra"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -36634,6 +36630,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "Models.HolsteinPrimakoff.commute_spinRepresentation_of_ne",
       "Models.HolsteinPrimakoff.spinRepresentation_intertwines"
     ],
     "dependencies": [
@@ -36645,10 +36642,11 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "Models.HolsteinPrimakoff.commute_spinRepresentation_of_ne",
       "Models.HolsteinPrimakoff.spinRepresentation",
       "Models.HolsteinPrimakoff.spinRepresentation_intertwines"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -37008,7 +37006,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": false,
+    "terminal": true,
     "statement": "∀ {Mode : Type u_1} [inst : Fintype Mode] (hbar : ℝ) (twiceSpin : ℕ) (i : Mode)\n  (A : ↥(Models.HolsteinPrimakoff.spinAlgebra hbar twiceSpin i)) (ψ : QuantumTheory.LocalizedSpin.State twiceSpin Mode),\n  ↑((Models.HolsteinPrimakoff.spinStateEquiv twiceSpin)\n        (((Models.HolsteinPrimakoff.spinRepresentation hbar twiceSpin i) A) ψ)) =\n    ↑A ↑((Models.HolsteinPrimakoff.spinStateEquiv twiceSpin) ψ)",
     "standardAxioms": [
       "Classical.choice",
@@ -37016,7 +37014,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -37027,18 +37025,14 @@
     "docString": "The state identification intertwines the finite-spin action with the original\nbosonic operator, including products and linear combinations in the local spin algebra. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [
-      "Models.HolsteinPrimakoff.commute_spinRepresentation_of_ne"
-    ],
+    "dependents": [],
     "dependencies": [
       "Models.HolsteinPrimakoff.mem_simultaneousSubspace_of_mem_spinAlgebra"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [
-      "Models.HolsteinPrimakoff.commute_spinRepresentation_of_ne"
-    ],
-    "compiledConsumerCount": 1,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -116287,9 +116281,12 @@
     ],
     "dependencies": [
       "Combinatorics.Pairing.crossingCount_eq_sum_crosses",
+      "Combinatorics.crosses_map_iff",
       "Combinatorics.sum_sum_crosses_eq_of_equiv",
       "SecondQuantization.Common.QuarticDiagram.fixedOrderComponentPairEmbedding_crosses_iff",
-      "SecondQuantization.Common.TwoPointDiagram.slotSplitVacuumNormalizedPairEmbedding_crosses_iff",
+      "SecondQuantization.Common.TwoPointDiagram.slotSplitVacuumNormalizedPairEmbedding_apply",
+      "SecondQuantization.Common.mixedTimeOrderedQuarticLegMapPosition_strictMono_of_strictAnti",
+      "SecondQuantization.Common.slotSplitVacuumSlot_strictMono",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumComponentPair.0.SecondQuantization.Common.TwoPointDiagram.slotSplitVacuumComponentPairEquiv_apply"
     ],
     "crossModuleDirectWrapper": false,
@@ -117421,7 +117418,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": true,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -117433,61 +117430,17 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Common.TwoPointDiagram.ofSlotSplitVacuumNormalizedPairEmbedding_component"
+      "SecondQuantization.Common.TwoPointDiagram.ofSlotSplitVacuumNormalizedPairEmbedding_component",
+      "SecondQuantization.Common.TwoPointDiagram.ofSlotSplit_mixedComponentCrossingCount_vacuum_eq"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.TwoPointDiagram.ofSlotSplitVacuumNormalizedPairEmbedding_component"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {n : ℕ} (T : Finset (Fin n))\n  (ext : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel n T)\n  (vac : SecondQuantization.Common.QuarticDiagram InternalLabel n (Finset.univ \\ T)) (τ τ' : ℝ) (σ : Fin n → ℝ)\n  (hσ : StrictAnti (σ ∘ SecondQuantization.Common.slotSplitVacuumSlot T))\n  (p q : (vac.pairingInOrder (SecondQuantization.Common.slotSplitVacuumOrder T)).NormalizedPair),\n  Combinatorics.Crosses\n      ↑((SecondQuantization.Common.TwoPointDiagram.slotSplitVacuumNormalizedPairEmbedding T ext vac τ τ' σ hσ) p)\n      ↑((SecondQuantization.Common.TwoPointDiagram.slotSplitVacuumNormalizedPairEmbedding T ext vac τ τ' σ hσ) q) ↔\n    Combinatorics.Crosses ↑p ↑q",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": true,
-    "retainedMention": true,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.TwoPointDiagram.slotSplitVacuumNormalizedPairEmbedding_crosses_iff",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumPairing",
-    "externalAxioms": [],
-    "docString": "The vacuum normalized-pair embedding preserves and reflects crossings. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
+      "SecondQuantization.Common.TwoPointDiagram.ofSlotSplitVacuumNormalizedPairEmbedding_component",
       "SecondQuantization.Common.TwoPointDiagram.ofSlotSplit_mixedComponentCrossingCount_vacuum_eq"
     ],
-    "dependencies": [
-      "Combinatorics.Pairing.normalizedPairEmbedding_crosses_iff",
-      "SecondQuantization.Common.slotSplitVacuumSlot_strictMono",
-      "_private.LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumPairing.0.SecondQuantization.Common.TwoPointDiagram.ofSlotSplit_pairingInMixedOrder_partner_vacuumOrderedLeg"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.TwoPointDiagram.ofSlotSplit_mixedComponentCrossingCount_vacuum_eq"
-    ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -131238,7 +131191,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ {m n : ℕ} (f : Fin m → Fin n),\n  StrictMono f →\n    ∀ (τ τ' : ℝ) (σ : Fin n → ℝ),\n      StrictAnti (σ ∘ f) → StrictMono (SecondQuantization.Common.mixedTimeOrderedQuarticLegMapPosition f τ τ' σ)",
     "standardAxioms": [
       "Classical.choice",
@@ -131246,7 +131199,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -131257,7 +131210,9 @@
     "docString": "A strictly monotone slot embedding preserves the fixed quartic leg order whenever the inherited\nlocal interaction times are strictly decreasing. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "SecondQuantization.Common.TwoPointDiagram.ofSlotSplit_mixedComponentCrossingCount_vacuum_eq"
+    ],
     "dependencies": [
       "SecondQuantization.Common.mixedTimeOrderedAtomicLegPosition_map_lt_iff",
       "SecondQuantization.Common.mixedTimeOrderedQuarticLegPosition_strictMono_of_strictAnti"
@@ -131265,9 +131220,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "SecondQuantization.Common.TwoPointDiagram.ofSlotSplit_mixedComponentCrossingCount_vacuum_eq",
       "SecondQuantization.Common.mixedTimeOrderedQuarticLegMapOrderEmbedding"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -133144,15 +133100,15 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Common.TwoPointDiagram.slotSplitVacuumNormalizedPairEmbedding_crosses_iff",
+      "SecondQuantization.Common.TwoPointDiagram.ofSlotSplit_mixedComponentCrossingCount_vacuum_eq",
       "SecondQuantization.Fermionic.fixedExternalShuffleFiber_dysonAmplitude_eq_orderedSimplexIntegral"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "SecondQuantization.Common.TwoPointDiagram.ofSlotSplit_mixedComponentCrossingCount_vacuum_eq",
       "SecondQuantization.Common.TwoPointDiagram.slotSplitVacuumNormalizedPairEmbedding",
-      "SecondQuantization.Common.TwoPointDiagram.slotSplitVacuumNormalizedPairEmbedding_crosses_iff",
       "SecondQuantization.Fermionic.fixedExternalShuffleFiber_dysonAmplitude_eq_orderedSimplexIntegral"
     ],
     "compiledConsumerCount": 3,
@@ -158288,48 +158244,6 @@
     "completedMention": false,
     "compiledConsumers": [
       "LinearPMap.boundedUnitaryEvolution_add"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (T : H →L[ℂ] H) (hT : T.IsPositive) (x : H), ↑(T.diagonalExpectationNNReal hT x) = T.diagonalExpectationValue ⋯ x",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Analysis.Operator.DiagonalExpectation.0.ContinuousLinearMap.coe_diagonalExpectationNNReal_private",
-    "module": "LeanCondensedMatter.Analysis.Operator.DiagonalExpectation",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "ContinuousLinearMap.coe_diagonalExpectationNNReal"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "ContinuousLinearMap.coe_diagonalExpectationNNReal"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -183565,7 +183479,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": false,
+    "terminal": true,
     "statement": "∀ {ExternalLabel : Type u_1} {InternalLabel : Type u_2} {n : ℕ} (T : Finset (Fin n))\n  (ext : SecondQuantization.Common.TwoPointDiagram ExternalLabel InternalLabel n T)\n  (vac : SecondQuantization.Common.QuarticDiagram InternalLabel n (Finset.univ \\ T)) (τ τ' : ℝ) (σ : Fin n → ℝ)\n  (p : Fin (2 * (2 * (Finset.univ \\ T).card))),\n  have d := SecondQuantization.Common.TwoPointDiagram.ofSlotSplit ⋯ ext vac;\n  (d.pairingInMixedOrder τ τ' σ).partner\n      (SecondQuantization.Common.mixedTimeOrderedQuarticLegMapPosition (SecondQuantization.Common.slotSplitVacuumSlot T)\n        τ τ' σ p) =\n    SecondQuantization.Common.mixedTimeOrderedQuarticLegMapPosition (SecondQuantization.Common.slotSplitVacuumSlot T) τ\n      τ' σ ((vac.pairingInOrder (SecondQuantization.Common.slotSplitVacuumOrder T)).partner p)",
     "standardAxioms": [
       "Classical.choice",
@@ -183573,7 +183487,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -183584,9 +183498,7 @@
     "docString": "The mixed-order partner on a reassembled diagram is the mixed position of the corresponding\nfixed-order quartic vacuum partner. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.TwoPointDiagram.slotSplitVacuumNormalizedPairEmbedding_crosses_iff"
-    ],
+    "dependents": [],
     "dependencies": [
       "SecondQuantization.Common.TwoPointDiagram.ofSlotSplit_pairing_partner_vacuumOrderedLeg",
       "SecondQuantization.Common.TwoPointDiagram.pairingInMixedOrder_partner_legPosition"
@@ -183594,10 +183506,9 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Common.TwoPointDiagram.slotSplitVacuumNormalizedPairEmbedding",
-      "SecondQuantization.Common.TwoPointDiagram.slotSplitVacuumNormalizedPairEmbedding_crosses_iff"
+      "SecondQuantization.Common.TwoPointDiagram.slotSplitVacuumNormalizedPairEmbedding"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
