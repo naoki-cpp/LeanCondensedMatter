@@ -120,11 +120,6 @@ theorem completedCreate_isFormalAdjoint_completedAnnihilate (i : Mode) :
       rw [completedCreateDiagonal_pullback_eq]
       rfl
 
-/-- Completed annihilation is the reverse formal adjoint of completed creation. -/
-theorem completedAnnihilate_isFormalAdjoint_completedCreate (i : Mode) :
-    (completedAnnihilate i).IsFormalAdjoint (completedCreate i) :=
-  (completedCreate_isFormalAdjoint_completedAnnihilate i).symm
-
 /-- A basis-action formula determines the coordinates of the adjoint on its domain. -/
 private theorem adjoint_apply_of_basisState
     (A : CompletedFockSpace Mode →ₗ.[ℂ] CompletedFockSpace Mode)
@@ -240,7 +235,7 @@ theorem completedAnnihilate_adjoint_eq_completedCreate (i : Mode) :
     · rw [ite_eq_right hni]
       rw [hxy]
   · exact
-      (completedAnnihilate_isFormalAdjoint_completedCreate i).le_adjoint
+      ((completedCreate_isFormalAdjoint_completedAnnihilate i).symm).le_adjoint
         (completedAnnihilate_denseDomain i)
 
 /-- Completed bosonic creation is closed on its maximal weighted-shift domain. -/
