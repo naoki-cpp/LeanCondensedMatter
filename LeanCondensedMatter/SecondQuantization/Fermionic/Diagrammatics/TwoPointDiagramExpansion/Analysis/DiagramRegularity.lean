@@ -49,21 +49,6 @@ private noncomputable def FixedExternalTwoPointWickDiagram.mixedComponentDysonFi
             (mixedTimeOrderedAtomicLegEquiv τ τ' σ₀ pr.1.1.1)
             (mixedTimeOrderedAtomicLegEquiv τ τ' σ₀ pr.1.1.2)))
 
-/-- The Dyson-signed chamber representative is globally continuous. -/
-private theorem FixedExternalTwoPointWickDiagram.continuous_mixedComponentDysonFixedTimeChamberRepresentative
-    {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
-    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
-    (τ τ' : ℝ) (σ₀ : Fin n → ℝ) (B : d.1.vertexGraph.componentPartition.parts) :
-    Continuous (d.mixedComponentDysonFixedTimeChamberRepresentative ε β g τ τ' σ₀ B) := by
-  unfold FixedExternalTwoPointWickDiagram.mixedComponentDysonFixedTimeChamberRepresentative
-  exact continuous_const.mul
-    (continuous_const.mul
-      (continuous_const.mul
-        (continuous_finsetProd _ fun pr _ =>
-          continuous_orderedTwoPointLegPairContraction ε β i j τ τ' d.vertexLabelSequence
-            (mixedTimeOrderedAtomicLegEquiv τ τ' σ₀ pr.1.1.1)
-            (mixedTimeOrderedAtomicLegEquiv τ τ' σ₀ pr.1.1.2))))
-
 /-- On the base chamber, the Dyson-signed representative agrees with the actual component factor. -/
 private theorem FixedExternalTwoPointWickDiagram.mixedComponentDysonFixedTimeChamberRepresentative_eq_of_comparisons
     {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
@@ -122,8 +107,13 @@ theorem FixedExternalTwoPointWickDiagram.measurableLocallyBounded_dysonFixedTime
             simpa [twoPointOrderSignatureFiber] using
               measurableSet_twoPointOrderSignatureFiber τ τ' s
           · intro s
-            exact d.continuous_mixedComponentDysonFixedTimeChamberRepresentative
-              ε β g τ τ' (intervalIntegral.finiteSignatureBase (twoPointOrderSignature τ τ') s) B
+            unfold FixedExternalTwoPointWickDiagram.mixedComponentDysonFixedTimeChamberRepresentative
+            exact continuous_const.mul
+              (continuous_const.mul
+                (continuous_const.mul
+                  (continuous_finsetProd _ fun pr _ =>
+                    continuous_orderedTwoPointLegPairContraction ε β i j τ τ'
+                      d.vertexLabelSequence _ _)))
           · intro σ
             exact
               (d.mixedComponentDysonFixedTimeChamberRepresentative_eq_of_comparisons
