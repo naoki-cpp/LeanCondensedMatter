@@ -22,11 +22,7 @@ theorem prod_equiv_sigma {α ι M : Type*} [Fintype α] [Fintype ι]
     {F : ι → Type*} [∀ i, Fintype (F i)] [CommMonoid M]
     (e : α ≃ Σ i, F i) (f : α → M) :
     (∏ x : α, f x) = ∏ i : ι, ∏ y : F i, f (e.symm ⟨i, y⟩) := by
-  calc
-    (∏ x : α, f x) = ∏ z : Σ i, F i, f (e.symm z) :=
-      (Equiv.prod_comp e.symm f).symm
-    _ = ∏ i : ι, ∏ y : F i, f (e.symm ⟨i, y⟩) :=
-      Fintype.prod_sigma _
+  simpa only [Fintype.prod_sigma] using (Equiv.prod_comp e.symm f).symm
 
 /-- A first-coordinate sum is divisible by every divisor of the repeated fiber's cardinality. -/
 theorem dvd_sum_equiv_fst_of_dvd_card {α β γ : Type*}
