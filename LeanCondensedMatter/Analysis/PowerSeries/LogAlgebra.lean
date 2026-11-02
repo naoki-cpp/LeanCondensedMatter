@@ -73,15 +73,6 @@ theorem logOf_mul {F G : PowerSeries ℂ}
       PowerSeries.constantCoeff_logOf hF, PowerSeries.constantCoeff_logOf hG]
     simp
 
-/-- The formal logarithm of one is zero. -/
-@[simp]
-theorem logOf_one : PowerSeries.logOf (1 : PowerSeries ℂ) = 0 := by
-  apply PowerSeries.derivative.ext
-  · have h := derivative_logOf_mul (Z := (1 : PowerSeries ℂ)) (by simp)
-    simpa using h
-  · rw [PowerSeries.constantCoeff_logOf (by simp)]
-    simp
-
 /-- The formal logarithm of the inverse of a normalized complex power series is the negative
 formal logarithm. -/
 theorem logOf_inv {F : PowerSeries ℂ}
@@ -90,8 +81,9 @@ theorem logOf_inv {F : PowerSeries ℂ}
   have hFinv : PowerSeries.constantCoeff F⁻¹ = 1 := by simp [hF]
   have hmul := logOf_mul hF hFinv
   have hF0 : PowerSeries.constantCoeff F ≠ 0 := by simp [hF]
-  rw [PowerSeries.mul_inv_cancel F hF0, logOf_one] at hmul
-  exact eq_neg_of_add_eq_zero_left (by simpa [add_comm] using hmul.symm)
+  rw [PowerSeries.mul_inv_cancel F hF0] at hmul
+  exact eq_neg_of_add_eq_zero_left
+    (by simpa [add_comm, PowerSeries.logOf_eq] using hmul.symm)
 
 /-- The formal logarithm of a normalized linear factor is the corresponding rescaled scalar
 `log(1 + X)` series. -/
@@ -110,7 +102,7 @@ theorem logOf_finset_prod {ι : Type*} (s : Finset ι) (F : ι → PowerSeries �
     PowerSeries.logOf (∏ i ∈ s, F i) = ∑ i ∈ s, PowerSeries.logOf (F i) := by
   classical
   induction s using Finset.induction_on with
-  | empty => simp
+  | empty => simp [PowerSeries.logOf_eq]
   | @insert a s ha ih =>
       rw [Finset.prod_insert ha, Finset.sum_insert ha]
       rw [PowerSeries.logOf_mul (hF a) (by simp [hF])]
