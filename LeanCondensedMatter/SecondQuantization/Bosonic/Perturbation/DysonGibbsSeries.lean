@@ -8,10 +8,10 @@ set_option linter.style.header false
 /-!
 # Bosonic Dyson Gibbs formal series
 
-A finite-order physical-H bosonic Dyson coefficient can be evaluated in a convergence-aware
-explicit-μ grand-canonical Gibbs
-functional without asserting any all-order analytic convergence. This file packages those normalized
-finite-order coefficients into a formal power series.
+This file packages the explicit-μ grand-canonical free-Gibbs trace ratios of finite-order
+physical-H bosonic Dyson coefficients into a formal power series. The trace ratio is totalized:
+for a general interaction, the series definition alone does not prove summability of its
+individual Gibbs numerators.
 
 For quartic interactions, downstream diagrammatic theorems prove Gibbs-domain membership at every
 finite Dyson order by expanding each coefficient into a finite sum of thermal-field products. No
@@ -74,13 +74,6 @@ theorem constantCoeff_grandCanonicalGibbsDysonSeries
     PowerSeries.constantCoeff (grandCanonicalGibbsDysonSeries ε β μ V) = 1 := by
   rw [← PowerSeries.coeff_zero_eq_constantCoeff, coeff_grandCanonicalGibbsDysonSeries]
   exact grandCanonicalGibbsDysonCoeff_zero ε β μ hpos V β
-
-/-- Formal logarithm of the normalized physical bosonic Dyson series. This is purely coefficientwise;
-it does not assert convergence to an interacting bosonic partition function. -/
-noncomputable def grandCanonicalGibbsDysonFormalLog
-    (ε : Mode → ℝ) (β μ : ℝ)
-    (V : FockSpace Mode →ₗ[ℂ] FockSpace Mode) : PowerSeries ℂ :=
-  PowerSeries.logOf (grandCanonicalGibbsDysonSeries ε β μ V)
 
 end
 end Bosonic
