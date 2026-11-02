@@ -53,27 +53,17 @@ private theorem ExternalInsertionWickDiagram.dysonFixedTimeChamberRepresentative
     externalInsertionMixedTimeOrderedAtomicLegEquiv_eq_of_comparisons
       externalTime σ₀ σ
       ((externalInsertionOrderSignature_eq_iff externalTime σ₀ σ).mp hSignature)
-  have hperm :
-      externalInsertionStandardToMixedAtomicPositionEquiv externalTime σ₀ =
-        externalInsertionStandardToMixedAtomicPositionEquiv externalTime σ := by
-    unfold externalInsertionStandardToMixedAtomicPositionEquiv
-    rw [hlegs]
-  have hpair : d.pairingInMixedOrder externalTime σ₀ =
-      d.pairingInMixedOrder externalTime σ := by
-    unfold ExternalInsertionDiagram.pairingInMixedOrder
-      externalInsertionMixedTimeAmbientPositionEquiv
-    rw [hperm]
-  have hsign : externalInsertionMixedAtomicOrderSign externalTime σ₀ =
-      externalInsertionMixedAtomicOrderSign externalTime σ := by
-    unfold externalInsertionMixedAtomicOrderSign
-    rw [hperm]
   dsimp [ExternalInsertionWickDiagram.dysonFixedTimeChamberRepresentative,
     ExternalInsertionWickDiagram.dysonFixedTimeAmplitude,
     ExternalInsertionWickDiagram.fixedTimeAmplitude,
     ExternalInsertionWickDiagram.mixedPairingValue, Pairing.evaluation,
     externalInsertionMixedTimeOrderedAtomicPairValue,
-    externalInsertionMixedTimeOrderedAtomicFieldFamily]
-  rw [hsign, hpair, hlegs]
+    externalInsertionMixedTimeOrderedAtomicFieldFamily,
+    externalInsertionMixedAtomicOrderSign,
+    ExternalInsertionDiagram.pairingInMixedOrder,
+    externalInsertionMixedTimeAmbientPositionEquiv,
+    externalInsertionStandardToMixedAtomicPositionEquiv]
+  rw [hlegs]
   ring
 
 /-- The arbitrary-external fermionic Dyson fixed-time integrand is measurable
