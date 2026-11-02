@@ -94,17 +94,6 @@ theorem boundedUnitaryEvolution_star
     simpa only [isSelfAdjoint_iff] using hB
   simp [boundedUnitaryEvolution, NormedSpace.star_exp, hBstar, star_unitaryTimeCoefficient]
 
-/-- A bounded self-adjoint exponential is unitary. -/
-private theorem boundedUnitaryEvolution_mem_unitary
-    (B : H →L[ℂ] H) (hB : IsSelfAdjoint B) (t : ℝ) :
-    boundedUnitaryEvolution B t ∈ unitary (H →L[ℂ] H) := by
-  let +nondep : NormedAlgebra ℚ (H →L[ℂ] H) :=
-    .restrictScalars ℚ ℂ (H →L[ℂ] H)
-  apply NormedSpace.exp_mem_unitary_of_mem_skewAdjoint
-  exact hB.smul_mem_skewAdjoint (by
-    rw [skewAdjoint.mem_iff]
-    simp [unitaryTimeCoefficient])
-
 /-- The bounded exponential group is continuous in operator norm, hence in particular strongly
 continuous on every vector. -/
 theorem boundedUnitaryEvolution_continuous (B : H →L[ℂ] H) :
@@ -114,30 +103,27 @@ theorem boundedUnitaryEvolution_continuous (B : H →L[ℂ] H) :
   unfold boundedUnitaryEvolution unitaryTimeCoefficient
   exact NormedSpace.exp_continuous.comp (by fun_prop)
 
-/-- The operator-norm derivative of the bounded unitary evolution. -/
-private theorem boundedUnitaryEvolution_hasDerivAt (B : H →L[ℂ] H) (t : ℝ) :
-    HasDerivAt (fun τ : ℝ => boundedUnitaryEvolution B τ)
-      (boundedUnitaryEvolution B t * ((-I : ℂ) • B)) t := by
-  have hc :=
-    hasDerivAt_exp_smul_const ((-I : ℂ) • B) (t : ℂ)
-  have hr := (hc.hasFDerivAt.restrictScalars ℝ).comp t Complex.ofRealCLM.hasFDerivAt
-  have hd := hr.hasDerivAt
-  simpa [Function.comp_def, boundedUnitaryEvolution, unitaryTimeCoefficient, smul_smul] using hd
-
 /-- The bounded-generator differential equation after evaluating the propagator on a vector. -/
 theorem boundedUnitaryEvolution_apply_hasDerivAt (B : H →L[ℂ] H) (t : ℝ) (x : H) :
     HasDerivAt (fun τ : ℝ => boundedUnitaryEvolution B τ x)
       ((boundedUnitaryEvolution B t * ((-I : ℂ) • B)) x) t := by
-  have h := (((ContinuousLinearMap.apply ℂ H) x).restrictScalars ℝ).hasFDerivAt.comp t
-    (boundedUnitaryEvolution_hasDerivAt B t).hasFDerivAt
-  simpa [Function.comp_def] using h.hasDerivAt
+  have hc := hasDerivAt_exp_smul_const ((-I : ℂ) • B) (t : ℂ)
+  have hr := (hc.hasFDerivAt.restrictScalars ℝ).comp t Complex.ofRealCLM.hasFDerivAt
+  have h := (((ContinuousLinearMap.apply ℂ H) x).restrictScalars ℝ).hasFDerivAt.comp t hr
+  simpa [Function.comp_def, boundedUnitaryEvolution, unitaryTimeCoefficient, smul_smul] using
+    h.hasDerivAt
 
 /-- A bounded self-adjoint exponential preserves the norm of every vector. -/
 theorem boundedUnitaryEvolution_apply_norm
     (B : H →L[ℂ] H) (hB : IsSelfAdjoint B) (t : ℝ) (x : H) :
     ‖boundedUnitaryEvolution B t x‖ = ‖x‖ := by
-  exact ContinuousLinearMap.norm_map_of_mem_unitary
-    (boundedUnitaryEvolution_mem_unitary B hB t) x
+  apply ContinuousLinearMap.norm_map_of_mem_unitary
+  let +nondep : NormedAlgebra ℚ (H →L[ℂ] H) :=
+    .restrictScalars ℚ ℂ (H →L[ℂ] H)
+  apply NormedSpace.exp_mem_unitary_of_mem_skewAdjoint
+  exact hB.smul_mem_skewAdjoint (by
+    rw [skewAdjoint.mem_iff]
+    simp [unitaryTimeCoefficient])
 
 /-- The displacement under bounded self-adjoint evolution is controlled by the generator on the
 initial vector. -/
