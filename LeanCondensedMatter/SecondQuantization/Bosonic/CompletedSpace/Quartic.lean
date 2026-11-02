@@ -67,15 +67,12 @@ private theorem completedCreate_algebraicToCompleted
         (Common.algebraicToCompletedDiagonalDomain
           (fun n : Occupation Mode => (Real.sqrt (n i + 1 : ℝ) : ℂ)) x) =
       algebraicToCompleted (create i x) at hcore
-  have hcore' := hcore
   have hdomain :
       Common.algebraicToCompletedDiagonalDomain
           (fun n : Occupation Mode => (Real.sqrt (n i + 1 : ℝ) : ℂ)) x =
-        ⟨algebraicToCompleted x, h⟩ := by
-    apply Subtype.ext
-    rfl
-  rw [hdomain] at hcore'
-  exact hcore'
+        ⟨algebraicToCompleted x, h⟩ := Subtype.ext rfl
+  rw [hdomain] at hcore
+  exact hcore
 
 private theorem completedAnnihilate_algebraicToCompleted
     (i : Mode) (x : FockSpace Mode)
@@ -90,15 +87,12 @@ private theorem completedAnnihilate_algebraicToCompleted
         (Common.algebraicToCompletedDiagonalDomain
           (fun n : Occupation Mode => (Real.sqrt (n i : ℝ) : ℂ)) x) =
       algebraicToCompleted (annihilate i x) at hcore
-  have hcore' := hcore
   have hdomain :
       Common.algebraicToCompletedDiagonalDomain
           (fun n : Occupation Mode => (Real.sqrt (n i : ℝ) : ℂ)) x =
-        ⟨algebraicToCompleted x, h⟩ := by
-    apply Subtype.ext
-    rfl
-  rw [hdomain] at hcore'
-  exact hcore'
+        ⟨algebraicToCompleted x, h⟩ := Subtype.ext rfl
+  rw [hdomain] at hcore
+  exact hcore
 
 private theorem completedQuarticVertexOperator_algebraicCore_aux
     (q : Common.QuarticVertexLabel Mode) (x : FockSpace Mode) :
