@@ -83,18 +83,12 @@ noncomputable def diagonalExpectationNNReal
   ⟨diagonalExpectationValue T hT.isSelfAdjoint x,
     diagonalExpectationValue_nonneg T hT x⟩
 
-private theorem coe_diagonalExpectationNNReal_private
-    (T : H →L[ℂ] H) (hT : T.IsPositive) (x : H) :
-    (diagonalExpectationNNReal T hT x : ℝ) =
-      diagonalExpectationValue T hT.isSelfAdjoint x :=
-  rfl
-
 @[simp]
 theorem coe_diagonalExpectationNNReal
     (T : H →L[ℂ] H) (hT : T.IsPositive) (x : H) :
     (diagonalExpectationNNReal T hT x : ℝ) =
       diagonalExpectationValue T hT.isSelfAdjoint x :=
-  coe_diagonalExpectationNNReal_private T hT x
+  rfl
 
 /-- Lossless diagonal expectation is additive in the operator. -/
 @[simp]
