@@ -84,7 +84,7 @@ theorem ExternalInsertionWickDiagram.measurableLocallyBounded_dysonFixedTimeAmpl
     apply continuous_const.mul
     apply continuous_finsetProd
     intro pr _
-    simp only [grandCanonicalTimedFieldPairContraction_eq,
+    simp only [grandCanonicalTimedFieldPairContraction_eq, Function.comp_apply,
       orderedExternalInsertionLegField, orderedExternalInsertionLegTime,
       orderedExternalInsertionLegFieldLabel]
     split <;> split <;> fun_prop
