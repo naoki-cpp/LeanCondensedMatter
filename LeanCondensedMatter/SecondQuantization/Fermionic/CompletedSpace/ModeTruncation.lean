@@ -43,14 +43,6 @@ theorem completedModeTruncation_apply (S : Finset Mode)
     (Common.completedCoordinateProjection_apply
       (Config := Occupation Mode) (fun m : Occupation Mode => m ⊆ S) ψ n)
 
-/-- A basis state survives exactly when its occupation configuration is contained in `S`. -/
-theorem completedModeTruncation_basisState (S : Finset Mode) (n : Occupation Mode) :
-    completedModeTruncation S (completedBasisState n) =
-      if n ⊆ S then completedBasisState n else 0 := by
-  simpa [completedModeTruncation, completedBasisState] using
-    (Common.completedCoordinateProjection_basisState
-      (Config := Occupation Mode) (fun m : Occupation Mode => m ⊆ S) n)
-
 /-- Finite-mode truncations converge strongly to the identity as the finite mode set increases.
 This is a net convergence theorem over `Finset Mode`, not a sequential statement. -/
 theorem tendsto_completedModeTruncation (ψ : CompletedFockSpace Mode) :
