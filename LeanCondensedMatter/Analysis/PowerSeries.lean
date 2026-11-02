@@ -1,6 +1,5 @@
 import LeanCondensedMatter.Analysis.PowerSeries.Normalization
 import LeanCondensedMatter.Analysis.PowerSeries.Moment
-import LeanCondensedMatter.Analysis.PowerSeries.LogAlgebra
 import LeanCondensedMatter.Analysis.PowerSeries.Replica
 import LeanCondensedMatter.Analysis.PowerSeries.ReplicaBridge
 import LeanCondensedMatter.Analysis.PowerSeries.Cumulant
@@ -13,7 +12,7 @@ set_option linter.style.header false
 
 Public package boundary for the reusable formal power-series workflow used by
 linked-cluster and thermal consumers. It exports constant-coefficient normalization,
-factorial-normalized finite-set moments, formal-log algebra, and the finite-set cumulant
+factorial-normalized finite-set moments, formal-log derivative identities, and the finite-set cumulant
 bridge. Consumers who need order-specific logarithm formulas can import
 `Analysis.PowerSeries.LowOrderLog`.
 
