@@ -76,11 +76,7 @@ theorem logOf_mul {F G : PowerSeries ℂ}
 /-- The formal logarithm of one is zero. -/
 @[simp]
 theorem logOf_one : PowerSeries.logOf (1 : PowerSeries ℂ) = 0 := by
-  apply PowerSeries.derivative.ext
-  · have h := derivative_logOf_mul (Z := (1 : PowerSeries ℂ)) (by simp)
-    simpa using h
-  · rw [PowerSeries.constantCoeff_logOf (by simp)]
-    simp
+  simp [PowerSeries.logOf_eq]
 
 /-- The formal logarithm of the inverse of a normalized complex power series is the negative
 formal logarithm. -/
