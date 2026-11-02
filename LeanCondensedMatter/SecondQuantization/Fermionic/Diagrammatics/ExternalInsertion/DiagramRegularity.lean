@@ -41,24 +41,6 @@ private noncomputable def ExternalInsertionWickDiagram.dysonFixedTimeChamberRepr
           d.vertexLabelSequence σ
           (externalInsertionMixedTimeOrderedAtomicLegEquiv externalTime σ₀ pr.2))
 
-private theorem ExternalInsertionWickDiagram.continuous_dysonFixedTimeChamberRepresentative
-    {E n : ℕ} (d : ExternalInsertionWickDiagram Mode E n)
-    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
-    (externalTime : Fin (2 * E) → ℝ) (σ₀ : Fin n → ℝ) :
-    Continuous (d.dysonFixedTimeChamberRepresentative ε β g externalTime σ₀) := by
-  unfold ExternalInsertionWickDiagram.dysonFixedTimeChamberRepresentative
-  apply continuous_const.mul
-  apply continuous_finsetProd
-  intro pr _
-  generalize ha :
-      externalInsertionMixedTimeOrderedAtomicLegEquiv externalTime σ₀ pr.1 = a
-  generalize hb :
-      externalInsertionMixedTimeOrderedAtomicLegEquiv externalTime σ₀ pr.2 = b
-  rcases a with a | ⟨v, l⟩ <;> rcases b with b | ⟨w, k⟩ <;>
-    simp only [grandCanonicalTimedFieldPairContraction_eq, orderedExternalInsertionLegField,
-      orderedExternalInsertionLegTime, orderedExternalInsertionLegFieldLabel] <;>
-    fun_prop
-
 private theorem ExternalInsertionWickDiagram.dysonFixedTimeChamberRepresentative_eq_of_sameChamber
     {E n : ℕ} (d : ExternalInsertionWickDiagram Mode E n)
     (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
@@ -111,8 +93,14 @@ theorem ExternalInsertionWickDiagram.measurableLocallyBounded_dysonFixedTimeAmpl
     simpa [externalInsertionOrderSignatureFiber] using
       measurableSet_externalInsertionOrderSignatureFiber externalTime s
   · intro s
-    exact d.continuous_dysonFixedTimeChamberRepresentative ε β g externalTime
-      (intervalIntegral.finiteSignatureBase (externalInsertionOrderSignature externalTime) s)
+    unfold ExternalInsertionWickDiagram.dysonFixedTimeChamberRepresentative
+    apply continuous_const.mul
+    apply continuous_finsetProd
+    intro pr _
+    simp only [grandCanonicalTimedFieldPairContraction_eq,
+      orderedExternalInsertionLegField, orderedExternalInsertionLegTime,
+      orderedExternalInsertionLegFieldLabel]
+    split <;> split <;> fun_prop
   · intro σ
     exact (d.dysonFixedTimeChamberRepresentative_eq_of_sameChamber
       ε β g externalTime
