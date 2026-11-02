@@ -1,6 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.Basic
 import LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.Diagonal
-import LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.DiagonalAnalytic
 import LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.Ladder
 import LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.LadderAnalytic
 import LeanCondensedMatter.SecondQuantization.Bosonic.CompletedSpace.ProductDomain
