@@ -488,10 +488,9 @@ private theorem gaussianCrossedAngularCurrentEntryKernel_sourceRotation
       sigmaX, sigmaY, sigmaZ, InternalSpace.pauliX, InternalSpace.pauliY,
       InternalSpace.pauliZ, Matrix.smul_apply, Matrix.add_apply,
       smul_eq_mul]
-  all_goals try simp only [← Complex.ofReal_cos, ← Complex.ofReal_sin]
+  all_goals simp only [← Complex.ofReal_cos, ← Complex.ofReal_sin]
   all_goals ring_nf
-  all_goals simp only [Complex.I_sq, Complex.I_pow_three]
-  all_goals try simp only [hcosSq]
+  all_goals simp only [Complex.I_sq, Complex.I_pow_three, hcosSq]
   all_goals ring
 
 /-- Arbitrary-angle polar Fourier representation of the model's crossed-current
