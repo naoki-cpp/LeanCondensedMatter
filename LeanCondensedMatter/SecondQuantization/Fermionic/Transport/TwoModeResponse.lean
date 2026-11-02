@@ -206,6 +206,7 @@ theorem twoModeFockHallKuboResponse_re
         (A 0 1 * B 1 0 - B 0 1 * A 1 0) /
           ((gap ^ 2 + (hbar * eta) ^ 2 : ℝ) : ℂ) := by
     unfold twoModeFockHallKuboResponse
+    dsimp only
     rw [← twoModeFockLehmannTableResponse_eq_kubo energy probability A B hbar 0 eta hhbar hpos hsum heta,
       ← twoModeFockLehmannTableResponse_eq_kubo energy probability B A hbar 0 eta hhbar hpos hsum heta]
     rw [twoModeFockLehmannTableResponse_eq, twoModeFockLehmannTableResponse_eq]
