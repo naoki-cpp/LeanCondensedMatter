@@ -86,25 +86,16 @@ private theorem FixedExternalTwoPointWickDiagram.mixedComponentDysonFixedTimeCha
   apply congrArg (fun z : ℂ =>
     d.1.mixedComponentWeight Common.Statistics.fermion τ τ' σ B * z)
   let e := d.1.mixedComponentPairTimeEquiv τ τ' σ₀ σ B
-  calc
-    (∏ pr : d.1.MixedComponentPair τ τ' σ₀ B,
-        orderedTwoPointLegPairContraction ε β i j τ τ' d.vertexLabelSequence σ
-          (mixedTimeOrderedAtomicLegEquiv τ τ' σ₀ pr.1.1.1)
-          (mixedTimeOrderedAtomicLegEquiv τ τ' σ₀ pr.1.1.2)) =
-      ∏ pr : d.1.MixedComponentPair τ τ' σ₀ B,
-        d.mixedPairContractionValue ε β τ τ' σ (e pr).1 := by
-      apply Fintype.prod_congr
-      intro pr
-      have hLegs :=
-        d.1.mixedComponentPairTimeEquiv_endpointLegs_eq_of_comparisons
-          τ τ' σ₀ σ B hComparisons pr
-      rw [d.mixedPairContractionValue_eq_orderedTwoPointLegPairContraction]
-      rw [hLegs.1, hLegs.2]
-    _ = ∏ q : d.1.MixedComponentPair τ τ' σ B,
-        d.mixedPairContractionValue ε β τ τ' σ q.1 := by
-      exact Equiv.prod_comp e
-        (fun q : d.1.MixedComponentPair τ τ' σ B =>
-          d.mixedPairContractionValue ε β τ τ' σ q.1)
+  rw [← Equiv.prod_comp e
+    (fun q : d.1.MixedComponentPair τ τ' σ B =>
+      d.mixedPairContractionValue ε β τ τ' σ q.1)]
+  apply Fintype.prod_congr
+  intro pr
+  have hLegs :=
+    d.1.mixedComponentPairTimeEquiv_endpointLegs_eq_of_comparisons
+      τ τ' σ₀ σ B hComparisons pr
+  rw [d.mixedPairContractionValue_eq_orderedTwoPointLegPairContraction,
+    hLegs.1, hLegs.2]
 
 /-- The signed pointwise amplitude of one diagram is measurably locally bounded. -/
 theorem FixedExternalTwoPointWickDiagram.measurableLocallyBounded_dysonFixedTimeAmplitude
