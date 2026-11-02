@@ -102,7 +102,7 @@ theorem logOf_finset_prod {ι : Type*} (s : Finset ι) (F : ι → PowerSeries �
     PowerSeries.logOf (∏ i ∈ s, F i) = ∑ i ∈ s, PowerSeries.logOf (F i) := by
   classical
   induction s using Finset.induction_on with
-  | empty => simp
+  | empty => simp [PowerSeries.logOf_eq]
   | @insert a s ha ih =>
       rw [Finset.prod_insert ha, Finset.sum_insert ha]
       rw [PowerSeries.logOf_mul (hF a) (by simp [hF])]
