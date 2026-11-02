@@ -4045,8 +4045,7 @@
       "Combinatorics.Pairing.firstPair_mem_pairs",
       "Combinatorics.Pairing.pairs_erase_firstPair_eq_image",
       "Combinatorics.crosses_map_iff",
-      "Combinatorics.not_crosses_firstPair",
-      "Finset.card_filter_product_eq_sum_card_filter"
+      "Combinatorics.not_crosses_firstPair"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -22482,48 +22481,6 @@
     "completedMention": false,
     "compiledConsumers": [
       "Combinatorics.MultiplicativeWeight.objectMoment_eq_momentFromCumulant"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {α : Type u_1} {β : Type u_2} (S : Finset α) (T : Finset β) (R : α → β → Prop) [inst : DecidableRel R],\n  {pq ∈ S.product T | R pq.1 pq.2}.card = ∑ p ∈ S, {q ∈ T | R p q}.card",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": true,
-    "retainedMention": true,
-    "projectAxioms": [],
-    "name": "Finset.card_filter_product_eq_sum_card_filter",
-    "module": "LeanCondensedMatter.Combinatorics.Common.FinsetProduct",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "Combinatorics.Pairing.crossingCount_eraseZeroPair"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "Combinatorics.Pairing.crossingCount_eraseZeroPair"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -50241,7 +50198,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H) (ψ : QuantumTheory.StateVector H) (t s : ℝ),\n  QuantumTheory.LinearResponse.evolveState system (QuantumTheory.LinearResponse.evolveState system ψ s) t =\n    QuantumTheory.LinearResponse.evolveState system ψ (t + s)",
     "standardAxioms": [
       "Classical.choice",
@@ -50260,14 +50217,20 @@
     "docString": "Pure-state evolution is an action of additive time. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "QuantumTheory.LinearResponse.evolveState_after_neg",
+      "QuantumTheory.LinearResponse.evolveState_neg_after"
+    ],
     "dependencies": [
       "QuantumTheory.LinearResponse.freePropagator_add"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "QuantumTheory.LinearResponse.evolveState_after_neg",
+      "QuantumTheory.LinearResponse.evolveState_neg_after"
+    ],
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -50302,7 +50265,8 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "QuantumTheory.LinearResponse.freePropagator_mul_neg"
+      "QuantumTheory.LinearResponse.evolveState_add",
+      "QuantumTheory.LinearResponse.evolveState_zero"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -50342,7 +50306,8 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "QuantumTheory.LinearResponse.freePropagator_neg_mul"
+      "QuantumTheory.LinearResponse.evolveState_add",
+      "QuantumTheory.LinearResponse.evolveState_zero"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -50437,7 +50402,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H) (ψ : QuantumTheory.StateVector H),\n  QuantumTheory.LinearResponse.evolveState system ψ 0 = ψ",
     "standardAxioms": [
       "Classical.choice",
@@ -50456,14 +50421,20 @@
     "docString": "Pure-state evolution is the identity at time zero. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "QuantumTheory.LinearResponse.evolveState_after_neg",
+      "QuantumTheory.LinearResponse.evolveState_neg_after"
+    ],
     "dependencies": [
       "QuantumTheory.LinearResponse.freePropagator_zero"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "QuantumTheory.LinearResponse.evolveState_after_neg",
+      "QuantumTheory.LinearResponse.evolveState_neg_after"
+    ],
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -51151,8 +51122,8 @@
     "directWrapperOf": null,
     "dependents": [
       "QuantumTheory.LinearResponse.evolveState_add",
-      "QuantumTheory.LinearResponse.freePropagator_mul_neg",
-      "QuantumTheory.LinearResponse.freePropagator_neg_mul"
+      "QuantumTheory.LinearResponse.freePropagator_mul_star",
+      "QuantumTheory.LinearResponse.star_mul_freePropagator"
     ],
     "dependencies": [
       "LinearPMap.boundedUnitaryEvolution_add",
@@ -51162,8 +51133,8 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.LinearResponse.evolveState_add",
-      "QuantumTheory.LinearResponse.freePropagator_mul_neg",
-      "QuantumTheory.LinearResponse.freePropagator_neg_mul"
+      "QuantumTheory.LinearResponse.freePropagator_mul_star",
+      "QuantumTheory.LinearResponse.star_mul_freePropagator"
     ],
     "compiledConsumerCount": 3,
     "axioms": [
@@ -51267,53 +51238,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H) (t : ℝ),\n  QuantumTheory.LinearResponse.freePropagator system t * QuantumTheory.LinearResponse.freePropagator system (-t) = 1",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.LinearResponse.freePropagator_mul_neg",
-    "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.Free",
-    "externalAxioms": [],
-    "docString": "The negative-time propagator is a right inverse. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.LinearResponse.evolveState_after_neg",
-      "QuantumTheory.LinearResponse.freePropagator_mul_star"
-    ],
-    "dependencies": [
-      "QuantumTheory.LinearResponse.freePropagator_add",
-      "QuantumTheory.LinearResponse.freePropagator_zero"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.LinearResponse.evolveState_after_neg",
-      "QuantumTheory.LinearResponse.freePropagator_mul_star"
-    ],
-    "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H) (t : ℝ),\n  QuantumTheory.LinearResponse.freePropagator system t * star (QuantumTheory.LinearResponse.freePropagator system t) = 1",
     "standardAxioms": [
       "Classical.choice",
@@ -51336,7 +51260,8 @@
       "QuantumTheory.LinearResponse.freePropagator_mem_unitary"
     ],
     "dependencies": [
-      "QuantumTheory.LinearResponse.freePropagator_mul_neg",
+      "QuantumTheory.LinearResponse.freePropagator_add",
+      "QuantumTheory.LinearResponse.freePropagator_zero",
       "QuantumTheory.LinearResponse.star_freePropagator"
     ],
     "crossModuleDirectWrapper": false,
@@ -51345,55 +51270,6 @@
       "QuantumTheory.LinearResponse.freePropagator_mem_unitary"
     ],
     "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (system : QuantumTheory.LinearResponse.BoundedFreeSystem H) (t : ℝ),\n  QuantumTheory.LinearResponse.freePropagator system (-t) * QuantumTheory.LinearResponse.freePropagator system t = 1",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.LinearResponse.freePropagator_neg_mul",
-    "module": "LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.Free",
-    "externalAxioms": [],
-    "docString": "The negative-time propagator is a left inverse. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.LinearResponse.evolveState_neg_after",
-      "QuantumTheory.LinearResponse.heisenbergEvolution_eq_self_of_commute_hamiltonian",
-      "QuantumTheory.LinearResponse.star_mul_freePropagator"
-    ],
-    "dependencies": [
-      "QuantumTheory.LinearResponse.freePropagator_add",
-      "QuantumTheory.LinearResponse.freePropagator_zero"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.LinearResponse.evolveState_neg_after",
-      "QuantumTheory.LinearResponse.heisenbergEvolution_eq_self_of_commute_hamiltonian",
-      "QuantumTheory.LinearResponse.star_mul_freePropagator"
-    ],
-    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -51428,8 +51304,8 @@
     "directWrapperOf": null,
     "dependents": [
       "QuantumTheory.LinearResponse.evolveState_zero",
-      "QuantumTheory.LinearResponse.freePropagator_mul_neg",
-      "QuantumTheory.LinearResponse.freePropagator_neg_mul"
+      "QuantumTheory.LinearResponse.freePropagator_mul_star",
+      "QuantumTheory.LinearResponse.star_mul_freePropagator"
     ],
     "dependencies": [
       "LinearPMap.boundedUnitaryEvolution_zero",
@@ -51439,8 +51315,8 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.LinearResponse.evolveState_zero",
-      "QuantumTheory.LinearResponse.freePropagator_mul_neg",
-      "QuantumTheory.LinearResponse.freePropagator_neg_mul"
+      "QuantumTheory.LinearResponse.freePropagator_mul_star",
+      "QuantumTheory.LinearResponse.star_mul_freePropagator"
     ],
     "compiledConsumerCount": 3,
     "axioms": [
@@ -52419,8 +52295,9 @@
     ],
     "dependencies": [
       "QuantumTheory.LinearResponse.commute_freePropagator_of_commute_hamiltonian",
-      "QuantumTheory.LinearResponse.freePropagator_neg_mul",
-      "QuantumTheory.LinearResponse.heisenbergEvolution_freePropagatorGroup_apply"
+      "QuantumTheory.LinearResponse.heisenbergEvolution_freePropagatorGroup_apply",
+      "QuantumTheory.LinearResponse.star_freePropagator",
+      "QuantumTheory.LinearResponse.star_mul_freePropagator"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -55010,6 +54887,7 @@
       "QuantumTheory.LinearResponse.adjointConjugate_freePropagator_eq_self_of_commute_hamiltonian",
       "QuantumTheory.LinearResponse.expectation_evolveDensityOperator_eq_heisenberg",
       "QuantumTheory.LinearResponse.freePropagator_mul_star",
+      "QuantumTheory.LinearResponse.heisenbergEvolution_eq_self_of_commute_hamiltonian",
       "QuantumTheory.LinearResponse.heisenbergEvolution_freePropagatorGroup_apply",
       "QuantumTheory.LinearResponse.inner_energyEigenbasis_heisenbergEvolution",
       "QuantumTheory.LinearResponse.star_mul_freePropagator",
@@ -55026,12 +54904,13 @@
       "QuantumTheory.LinearResponse.adjointConjugate_freePropagator_eq_self_of_commute_hamiltonian",
       "QuantumTheory.LinearResponse.expectation_evolveDensityOperator_eq_heisenberg",
       "QuantumTheory.LinearResponse.freePropagator_mul_star",
+      "QuantumTheory.LinearResponse.heisenbergEvolution_eq_self_of_commute_hamiltonian",
       "QuantumTheory.LinearResponse.heisenbergEvolution_freePropagatorGroup_apply",
       "QuantumTheory.LinearResponse.inner_energyEigenbasis_heisenbergEvolution",
       "QuantumTheory.LinearResponse.star_mul_freePropagator",
       "QuantumTheory.LinearResponse.vonNeumannEquation"
     ],
-    "compiledConsumerCount": 7,
+    "compiledConsumerCount": 8,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -55053,7 +54932,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": true,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -55065,18 +54944,21 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.LinearResponse.freePropagator_mem_unitary"
+      "QuantumTheory.LinearResponse.freePropagator_mem_unitary",
+      "QuantumTheory.LinearResponse.heisenbergEvolution_eq_self_of_commute_hamiltonian"
     ],
     "dependencies": [
-      "QuantumTheory.LinearResponse.freePropagator_neg_mul",
+      "QuantumTheory.LinearResponse.freePropagator_add",
+      "QuantumTheory.LinearResponse.freePropagator_zero",
       "QuantumTheory.LinearResponse.star_freePropagator"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.LinearResponse.freePropagator_mem_unitary"
+      "QuantumTheory.LinearResponse.freePropagator_mem_unitary",
+      "QuantumTheory.LinearResponse.heisenbergEvolution_eq_self_of_commute_hamiltonian"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
