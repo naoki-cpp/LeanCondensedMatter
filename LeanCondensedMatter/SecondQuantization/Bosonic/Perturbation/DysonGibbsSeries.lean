@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Analysis.PowerSeries.LogAlgebra
+import Mathlib.RingTheory.PowerSeries.Log
 import LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExpansion
 import LeanCondensedMatter.SecondQuantization.Bosonic.ImaginaryTime.ImaginaryTimeEvolution
 import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.ConvergenceAwareGibbs
