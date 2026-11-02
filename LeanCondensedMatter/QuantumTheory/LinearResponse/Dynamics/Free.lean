@@ -77,14 +77,13 @@ private theorem freePropagator_eq_boundedUnitaryEvolution (t : ℝ) :
 
 @[simp]
 theorem freePropagator_zero : freePropagator system 0 = 1 := by
-  rw [freePropagator_eq_boundedUnitaryEvolution]
-  exact LinearPMap.boundedUnitaryEvolution_zero _
+  simp only [freePropagator_eq_boundedUnitaryEvolution,
+    LinearPMap.boundedUnitaryEvolution_zero]
 
 /-- The adjoint of the free propagator is the negative-time propagator. -/
 theorem star_freePropagator (t : ℝ) :
     star (freePropagator system t) = freePropagator system (-t) := by
-  rw [freePropagator_eq_boundedUnitaryEvolution system t,
-    freePropagator_eq_boundedUnitaryEvolution system (-t)]
+  simp only [freePropagator_eq_boundedUnitaryEvolution]
   exact LinearPMap.boundedUnitaryEvolution_star _ (by
     apply IsSelfAdjoint.smul
     · rw [isSelfAdjoint_iff, Complex.star_def]
@@ -95,10 +94,8 @@ theorem star_freePropagator (t : ℝ) :
 theorem freePropagator_add (t s : ℝ) :
     freePropagator system (t + s) =
       freePropagator system t * freePropagator system s := by
-  rw [freePropagator_eq_boundedUnitaryEvolution system (t + s),
-    freePropagator_eq_boundedUnitaryEvolution system t,
-    freePropagator_eq_boundedUnitaryEvolution system s]
-  exact LinearPMap.boundedUnitaryEvolution_add _ t s
+  simp only [freePropagator_eq_boundedUnitaryEvolution,
+    LinearPMap.boundedUnitaryEvolution_add]
 
 /-- The adjoint of the free propagator is its left inverse. -/
 @[simp]
