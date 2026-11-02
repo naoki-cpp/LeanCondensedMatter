@@ -50,7 +50,7 @@ private theorem TwoPointDiagram.prod_slotSplitVacuumComponentPart_eq_restrictCom
   rw [TwoPointDiagram.ofSlotSplit_vertexLabel_of_not_mem]
   · unfold QuarticDiagram.restrictComponent
     congr 2
-  · have hvComp : (v : Fin N) ∈ S \\ T :=
+  · have hvComp : (v : Fin N) ∈ S \ T :=
       vac.vertexGraph.componentPartitionOn.le C.2 (e v).2
     exact (Finset.mem_sdiff.mp hvComp).2
 
