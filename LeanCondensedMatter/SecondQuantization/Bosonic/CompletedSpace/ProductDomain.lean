@@ -323,9 +323,12 @@ theorem completedCreateAfterAnnihilate_eq_numberOperator (i : Mode) :
       exact_mod_cast hcoord
     rw [hcoord_real, ← mul_assoc, sqrt_natCast_mul_self, hrepr]
 
-private theorem completedAnnihilateAfterCreate_eq_createAfterAnnihilate_add_id (i : Mode) :
+/-- On the common product domain, `aᵢ aᵢ† = 1 + Nᵢ`. -/
+theorem completedAnnihilateAfterCreate_eq_id_add_numberOperator (i : Mode) :
     completedAnnihilateAfterCreate i =
-      completedCreateAfterAnnihilate i + (completedNumberOperatorDomain i).subtype := by
+      (completedNumberOperatorDomain i).subtype +
+        (show completedNumberOperatorDomain i →ₗ[ℂ] CompletedFockSpace Mode from
+          (completedNumberOperator i).toFun) := by
   apply LinearMap.ext
   intro ψ
   apply lp.ext
@@ -336,16 +339,8 @@ private theorem completedAnnihilateAfterCreate_eq_createAfterAnnihilate_add_id (
             ⟨(ψ : CompletedFockSpace Mode),
               completedNumberOperatorDomain_le_completedCreateDomain i ψ.2⟩,
           completedCreate_mem_completedAnnihilateDomain_of_mem_completedNumberOperatorDomain i ψ⟩ n =
-      completedCreateAfterAnnihilate i ψ n + (ψ : CompletedFockSpace Mode) n
-  rw [completedCreateAfterAnnihilate_eq_numberOperator]
-  change
-    completedAnnihilate i
-        ⟨completedCreate i
-            ⟨(ψ : CompletedFockSpace Mode),
-              completedNumberOperatorDomain_le_completedCreateDomain i ψ.2⟩,
-          completedCreate_mem_completedAnnihilateDomain_of_mem_completedNumberOperatorDomain i ψ⟩ n =
-      (n i : ℂ) * (ψ : CompletedFockSpace Mode) n +
-        (ψ : CompletedFockSpace Mode) n
+      (ψ : CompletedFockSpace Mode) n +
+        (n i : ℂ) * (ψ : CompletedFockSpace Mode) n
   rw [completedAnnihilate_apply, completedCreate_apply]
   have hpos : createOccupation i n i ≠ 0 := by
     rw [createOccupation_apply_same]
@@ -358,16 +353,6 @@ private theorem completedAnnihilateAfterCreate_eq_createAfterAnnihilate_add_id (
         rw [createOccupation_apply_same]
         simpa [Nat.cast_add, Nat.cast_one] using hsqrt]
   ring
-
-/-- On the common product domain, `aᵢ aᵢ† = 1 + Nᵢ`. -/
-theorem completedAnnihilateAfterCreate_eq_id_add_numberOperator (i : Mode) :
-    completedAnnihilateAfterCreate i =
-      (completedNumberOperatorDomain i).subtype +
-        (show completedNumberOperatorDomain i →ₗ[ℂ] CompletedFockSpace Mode from
-          (completedNumberOperator i).toFun) := by
-  rw [completedAnnihilateAfterCreate_eq_createAfterAnnihilate_add_id,
-    completedCreateAfterAnnihilate_eq_numberOperator]
-  abel
 
 /-- Equal-mode completed bosonic CCR on the explicit common product domain `Dom(Nᵢ)`. -/
 theorem completedComm_annihilate_create_self (i : Mode) :
