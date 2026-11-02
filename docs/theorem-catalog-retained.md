@@ -385,8 +385,6 @@ using a zero-consumer signal as grounds for changing its retention.
 - `SecondQuantization.Common.TwoPointDiagram.prod_slotSplitVacuumComponents_eq_vacuumVertexProduct` —
   The product of arbitrary vertex-local weights over all ambient vacuum components is exactly the
   product over all vertices of the standalone quartic vacuum piece.
-- `SecondQuantization.Common.TwoPointDiagram.slotSplitVacuumNormalizedPairEmbedding_crosses_iff` —
-  The vacuum normalized-pair embedding preserves and reflects crossings.
 - `SecondQuantization.Common.continuousDiagonalEvolution_comp_neg` — canonical right-inverse law for the transported finite-dimensional free evolution; it complements the used left-inverse rule and preserves the symmetric evolution API.
 - `SecondQuantization.Common.operatorIntervalIntegral_add` — additive linearity of coefficientwise finite-dimensional operator integration under the explicit matrix-coefficient integrability hypotheses; retain as a reusable integration law.
 - `SecondQuantization.Common.operatorIntervalIntegral_smul` — scalar-linearity of coefficientwise finite-dimensional operator integration, independent of the current call sites; retain as part of the integration API.
