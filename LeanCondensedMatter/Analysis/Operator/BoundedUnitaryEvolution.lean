@@ -58,9 +58,11 @@ theorem boundedUnitaryEvolution_add (B : H →L[ℂ] H) (t s : ℝ) :
   change NormedSpace.exp (unitaryTimeCoefficient (t + s) • B) =
       NormedSpace.exp (unitaryTimeCoefficient t • B) *
       NormedSpace.exp (unitaryTimeCoefficient s • B)
-  rw [show unitaryTimeCoefficient (t + s) =
-    unitaryTimeCoefficient t + unitaryTimeCoefficient s by
-      simp [unitaryTimeCoefficient, add_mul, neg_add], add_smul]
+  have hcoeff : unitaryTimeCoefficient (t + s) =
+      unitaryTimeCoefficient t + unitaryTimeCoefficient s := by
+    simp [unitaryTimeCoefficient]
+    ring
+  rw [hcoeff, add_smul]
   let +nondep : NormedAlgebra ℚ (H →L[ℂ] H) :=
     .restrictScalars ℚ ℂ (H →L[ℂ] H)
   exact NormedSpace.exp_add_of_commute (𝔸 := H →L[ℂ] H)
