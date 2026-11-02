@@ -541,22 +541,6 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceCurrentBlock_polar
         firstSine := (harmonics p).firstSine i j
         secondCosine := (harmonics p).secondCosine i j
         secondMixed := (harmonics p).secondMixed i j }
-  have hA (p θ : ℝ) :
-      finiteCutoffContinuumBornDysonGreenMatrix
-          .advanced v m (p * Real.cos θ) (p * Real.sin θ)
-          probeEnergy broadening disorderStrength hbar pMax =
-        polarPauliMatrix (aA p) (bA p) (dA p) θ := by
-    simpa [aA, bA, dA] using
-      (finiteCutoffContinuumBornDysonGreenMatrix_polar_eq
-        .advanced v m p θ probeEnergy broadening disorderStrength hbar pMax)
-  have hR (p θ : ℝ) :
-      finiteCutoffContinuumBornDysonGreenMatrix
-          .retarded v m (p * Real.cos θ) (p * Real.sin θ)
-          probeEnergy broadening disorderStrength hbar pMax =
-        polarPauliMatrix (aR p) (bR p) (dR p) θ := by
-    simpa [aR, bR, dR] using
-      (finiteCutoffContinuumBornDysonGreenMatrix_polar_eq
-        .retarded v m p θ probeEnergy broadening disorderStrength hbar pMax)
   have hvertex :
       coefficients 0 • sigmaX + coefficients 1 • sigmaY =
         factor • directionPauli source := by
@@ -584,9 +568,11 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceCurrentBlock_polar
             probeEnergy broadening disorderStrength hbar pMax) i j) =
         fun p θ => (entryHarmonics i j p).eval θ := by
     funext p θ
-    rw [hA, hR, ← hvertex, polarPauliMatrix_inPlane_sandwich_eq_harmonics]
-    simp [entryHarmonics, harmonics, AngularHarmonicCoefficients.eval,
-      Matrix.add_apply, Matrix.smul_apply, smul_eq_mul]
+    rw [finiteCutoffContinuumBornDysonGreenMatrix_polar_eq,
+      finiteCutoffContinuumBornDysonGreenMatrix_polar_eq,
+      ← hvertex, polarPauliMatrix_inPlane_sandwich_eq_harmonics]
+    simp [entryHarmonics, harmonics, aA, bA, dA, aR, bR, dR,
+      AngularHarmonicCoefficients.eval, Matrix.add_apply, Matrix.smul_apply, smul_eq_mul]
   rw [hfield]
   simpa [finiteCutoffContinuumBornDysonGaussianCrossedAngularCurrentEntryKernel,
     factor, coefficients, harmonics, entryHarmonics, aA, bA, dA, aR, bR, dR] using
