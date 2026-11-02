@@ -83,29 +83,6 @@ theorem TwoPointDiagram.slotSplitVacuumNormalizedPairEmbedding_apply
           (slotSplitVacuumSlot T) τ τ' σ pr.1.2) := by
   rfl
 
-/-- The vacuum normalized-pair embedding preserves and reflects crossings. -/
-theorem TwoPointDiagram.slotSplitVacuumNormalizedPairEmbedding_crosses_iff
-    (T : Finset (Fin n))
-    (ext : TwoPointDiagram ExternalLabel InternalLabel n T)
-    (vac : QuarticDiagram InternalLabel n ((Finset.univ : Finset (Fin n)) \ T))
-    (τ τ' : ℝ) (σ : Fin n → ℝ)
-    (hσ : StrictAnti (σ ∘ slotSplitVacuumSlot T))
-    (p q : (vac.pairingInOrder (slotSplitVacuumOrder T)).NormalizedPair) :
-    Crosses
-        (TwoPointDiagram.slotSplitVacuumNormalizedPairEmbedding
-          T ext vac τ τ' σ hσ p).1
-        (TwoPointDiagram.slotSplitVacuumNormalizedPairEmbedding
-          T ext vac τ τ' σ hσ q).1 ↔
-      Crosses p.1 q.1 := by
-  let d := TwoPointDiagram.ofSlotSplit (Finset.subset_univ T) ext vac
-  simpa only [TwoPointDiagram.slotSplitVacuumNormalizedPairEmbedding] using
-    (vac.pairingInOrder (slotSplitVacuumOrder T)).normalizedPairEmbedding_crosses_iff
-      (d.pairingInMixedOrder τ τ' σ)
-      (mixedTimeOrderedQuarticLegMapOrderEmbedding
-        (slotSplitVacuumSlot T) (slotSplitVacuumSlot_strictMono T) τ τ' σ hσ)
-      (TwoPointDiagram.ofSlotSplit_pairingInMixedOrder_partner_vacuumOrderedLeg
-        T ext vac τ τ' σ)
-      p q
 
 end Common
 end SecondQuantization
