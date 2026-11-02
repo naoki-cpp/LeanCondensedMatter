@@ -84,13 +84,6 @@ theorem completedDiagonalHeatOperator_isPositive
     (completedDiagonalHeatWeight_bound energy β E₀ hβ hlower)
     (fun c => Real.exp_nonneg _)
 
-/-- A completed diagonal heat operator is self-adjoint. -/
-theorem completedDiagonalHeatOperator_isSelfAdjoint
-    (energy : Config → ℝ) (β E₀ : ℝ) (hβ : 0 < β)
-    (hlower : ∀ c, E₀ ≤ energy c) :
-    IsSelfAdjoint (completedDiagonalHeatOperator energy β E₀ hβ hlower) :=
-  (completedDiagonalHeatOperator_isPositive energy β E₀ hβ hlower).isSelfAdjoint
-
 /-- On a nonempty configuration space, the completed diagonal heat operator is nonzero. -/
 theorem completedDiagonalHeatOperator_ne_zero [Nonempty Config]
     (energy : Config → ℝ) (β E₀ : ℝ) (hβ : 0 < β)
