@@ -110,7 +110,7 @@ private theorem grandCanonicalGibbsDysonCoeff_quarticInteraction_eq_sum_pairingE
       (Equiv.subtypeUnivEquiv (fun x => Finset.mem_univ x))
   rw [← Equiv.sum_comp e]
   simpa [quarticInteraction, quarticInteractionOn, Common.quarticInteraction,
-    e, Equiv.arrowCongr] using
+    e, Equiv.arrowCongr, Equiv.subtypeUnivEquiv] using
     (grandCanonicalGibbsDysonCoeff_quarticInteractionOn_eq_sum_pairingEvaluation
       (Finset.univ : Finset (QuarticVertexLabel Mode)) ε β μ hpos g n t)
 
