@@ -239,26 +239,6 @@ private theorem boundedSelfAdjointApproximationAtScale_apply_tendsto
   simpa [boundedSelfAdjointApproximationAtScale, positiveApproximationScale,
     max_eq_right h1r, dist_eq_norm] using h
 
-/-- The totalized evolution and generator approximations use the same regularization scale. -/
-private theorem norm_resolventApproximationEvolution_sub_atScale_le
-    (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A)
-    (r : ℝ) (hr : 0 < r) (s t : ℝ) (x : H) :
-    ‖resolventApproximationEvolution A hA r hr t x -
-        resolventApproximationEvolutionAtScale A hA s t x‖ ≤
-      ‖boundedSelfAdjointApproximation A hA r hr x -
-          boundedSelfAdjointApproximationAtScale A hA s x‖ * |t| := by
-  change
-    ‖resolventApproximationEvolution A hA r hr t x -
-        resolventApproximationEvolution A hA (positiveApproximationScale s)
-          (positiveApproximationScale_pos s) t x‖ ≤
-      ‖boundedSelfAdjointApproximation A hA r hr x -
-          boundedSelfAdjointApproximation A hA (positiveApproximationScale s)
-            (positiveApproximationScale_pos s) x‖ * |t|
-  exact norm_resolventApproximationEvolution_sub_le
-    A hA r (positiveApproximationScale s) hr (positiveApproximationScale_pos s) t x
-
-
-
 end
 
 end LinearPMap
@@ -431,15 +411,6 @@ private theorem resolventApproximationEvolutionAtScale_zero
   unfold resolventApproximationEvolutionAtScale
   exact resolventApproximationEvolution_zero A hA _ _
 
-/-- The totalized bounded approximants preserve distances. -/
-private theorem resolventApproximationEvolutionAtScale_dist_eq
-    (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (r t : ℝ) (x y : H) :
-    dist (resolventApproximationEvolutionAtScale A hA r t x)
-        (resolventApproximationEvolutionAtScale A hA r t y) = dist x y := by
-  rw [dist_eq_norm, dist_eq_norm,
-    ← (resolventApproximationEvolutionAtScale A hA r t).map_sub]
-  exact resolventApproximationEvolutionAtScale_apply_norm A hA r t (x - y)
-
 /-- The strong-limit evolution is the identity at time zero, pointwise. -/
 private theorem resolventEvolutionStrongLimit_zero_apply
     (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (x : H) :
@@ -505,7 +476,10 @@ private theorem tendsto_resolventApproximationEvolutionAtScale_comp_apply
           (stoneEvolution A hA s x)) =
         dist (resolventApproximationEvolutionAtScale A hA r s x)
           (stoneEvolution A hA s x) :=
-    resolventApproximationEvolutionAtScale_dist_eq A hA r t _ _
+    by
+      rw [dist_eq_norm, dist_eq_norm,
+        ← (resolventApproximationEvolutionAtScale A hA r t).map_sub]
+      exact resolventApproximationEvolutionAtScale_apply_norm A hA r t _
   rw [hiso] at htri
   exact lt_of_le_of_lt htri (by linarith)
 
@@ -887,8 +861,12 @@ private theorem norm_stoneEvolution_sub_resolventApproximationEvolution_le
           ‖Ar (x : H) - A x‖ * |t| ≤ 0 := by
     apply le_of_tendsto hdiff
     exact Filter.Eventually.of_forall fun s => by
-      have hpair := norm_resolventApproximationEvolution_sub_atScale_le
-        A hA r hr s t (x : H)
+      have hpair := norm_resolventApproximationEvolution_sub_le
+        A hA r (positiveApproximationScale s) hr (positiveApproximationScale_pos s) t
+          (x : H)
+      change ‖Ur (x : H) - resolventApproximationEvolutionAtScale A hA s t (x : H)‖ ≤
+        ‖Ar (x : H) - boundedSelfAdjointApproximationAtScale A hA s (x : H)‖ * |t|
+        at hpair
       linarith
   rw [norm_sub_rev]
   linarith
