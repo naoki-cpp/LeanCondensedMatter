@@ -2,6 +2,7 @@ import LeanCondensedMatter.Models.Heisenberg.QuadraticMagnon
 import LeanCondensedMatter.Analysis.Fourier.CyclicLaplacian
 import LeanCondensedMatter.Analysis.Fourier.FiniteCyclic
 import LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.FiniteModes
+import LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.OneParticle
 
 set_option linter.style.header false
 
@@ -85,6 +86,26 @@ theorem excitationHamiltonian_eq_sum_fourier (J : ℝ) (twiceSpin : ℕ) :
   rw [excitationHamiltonian_eq_secondQuantization]
   exact secondQuantization_eq_sum_of_eigenbasis ZMod.fourierBasis _ _
     (ZMod.cyclicLaplacian_fourierBasis (J * twiceSpin))
+
+/-- The quadratic ring acts on embedded one-boson amplitudes by its cyclic Laplacian.
+At twiceSpin = 1 this is the same amplitude operator as the exact spin-1/2 one-magnon restriction. -/
+theorem excitationHamiltonian_comp_oneParticleEmbedding (J : ℝ) (twiceSpin : ℕ) :
+    (excitationHamiltonian (N := N) J twiceSpin).comp oneParticleEmbedding =
+      oneParticleEmbedding.comp (ZMod.cyclicLaplacian (J * twiceSpin)) := by
+  rw [excitationHamiltonian_eq_secondQuantization]
+  exact secondQuantization_comp_oneParticleEmbedding _
+
+/-- Embedded Fourier amplitudes are actual one-boson eigenstates of the quadratic ring. -/
+theorem excitationHamiltonian_oneParticle_fourierBasis (J : ℝ) (twiceSpin : ℕ) (q : ZMod N) :
+    excitationHamiltonian J twiceSpin (oneParticleEmbedding (ZMod.fourierBasis q)) =
+      (ZMod.cyclicLaplacianEigenvalue (J * twiceSpin) q : ℂ) •
+        oneParticleEmbedding (ZMod.fourierBasis q) := by
+  have h := LinearMap.congr_fun
+    (excitationHamiltonian_comp_oneParticleEmbedding (N := N) J twiceSpin) (ZMod.fourierBasis q)
+  change excitationHamiltonian J twiceSpin (oneParticleEmbedding (ZMod.fourierBasis q)) =
+    oneParticleEmbedding (ZMod.cyclicLaplacian (J * twiceSpin) (ZMod.fourierBasis q)) at h
+  rw [ZMod.cyclicLaplacian_fourierBasis, map_smul] at h
+  exact h
 
 end
 end Models.Heisenberg.QuadraticMagnon

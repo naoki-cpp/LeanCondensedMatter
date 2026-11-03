@@ -97,6 +97,12 @@ theorem matrixCoeff_annihilate (i : Mode) (m n : Occupation Mode) :
     simpa [h] using
       (Common.matrixCoeff_eq_ite_of_basisState_smul (m := m) (annihilate_basisState_eq i n))
 
+/-- Creating a particle from the vacuum gives the corresponding one-particle basis state. -/
+@[simp]
+theorem create_fockVacuum (i : Mode) :
+    create i (fockVacuum : FockSpace Mode) = basisState (singleOccupation i) := by
+  simp [fockVacuum, create_basisState_eq, vacuum, createOccupation]
+
 @[simp]
 theorem annihilate_fockVacuum (i : Mode) :
     annihilate i (fockVacuum : FockSpace Mode) = 0 :=
