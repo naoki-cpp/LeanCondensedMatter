@@ -50,16 +50,8 @@ private theorem star_imaginaryParameter_im_ne_zero {r : ℝ} (hr : 0 < r) :
 private noncomputable def regularizerCoefficient (r : ℝ) : ℂ :=
   ((r / 2 : ℝ) : ℂ) * I
 
-private theorem star_regularizerCoefficient (r : ℝ) :
-    star (regularizerCoefficient r) = -regularizerCoefficient r := by
-  simp [regularizerCoefficient]
-
 private noncomputable def approximationCoefficient (r : ℝ) : ℂ :=
   ((r ^ 2 / 2 : ℝ) : ℂ)
-
-private theorem star_approximationCoefficient (r : ℝ) :
-    star (approximationCoefficient r) = approximationCoefficient r := by
-  simp [approximationCoefficient]
 
 /-- The bounded symmetric resolvent regularizer
 `Jᵣ = (i r / 2) ((A + i r)⁻¹ - (A - i r)⁻¹)`. -/
@@ -84,10 +76,12 @@ theorem resolventRegularizer_apply
 theorem resolventRegularizer_isSelfAdjoint
     (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (r : ℝ) (hr : 0 < r) :
     IsSelfAdjoint (resolventRegularizer A hA r hr) := by
+  have hstar : star (regularizerCoefficient r) = -regularizerCoefficient r := by
+    simp [regularizerCoefficient]
   rw [isSelfAdjoint_iff]
   simp only [resolventRegularizer, star_smul, star_sub,
     ContinuousLinearMap.star_eq_adjoint, nonrealResolvent_adjoint,
-    star_regularizerCoefficient, star_star]
+    hstar, star_star]
   module
 
 /-- The bounded self-adjoint resolvent approximation
@@ -113,10 +107,12 @@ theorem boundedSelfAdjointApproximation_apply
 theorem boundedSelfAdjointApproximation_isSelfAdjoint
     (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (r : ℝ) (hr : 0 < r) :
     IsSelfAdjoint (boundedSelfAdjointApproximation A hA r hr) := by
+  have hstar : star (approximationCoefficient r) = approximationCoefficient r := by
+    simp [approximationCoefficient]
   rw [isSelfAdjoint_iff]
   simp only [boundedSelfAdjointApproximation, star_smul, star_add,
     ContinuousLinearMap.star_eq_adjoint, nonrealResolvent_adjoint,
-    star_approximationCoefficient, star_star]
+    hstar, star_star]
   module
 
 /-- Resolvents commute with applying the generator on its domain in the expected affine form. -/
