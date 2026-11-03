@@ -966531,8 +966531,8 @@
   "sourceLine": 191,
   "sourceFile":
   "LeanCondensedMatter/SecondQuantization/Fermionic/Diagrammatics/ExternalInsertion/ComponentPairingValue.lean",
-  "sourceEndLine": 224,
-  "sourceEndColumn": 57,
+  "sourceEndLine": 213,
+  "sourceEndColumn": 53,
   "sourceColumn": 8,
   "soleCompiledConsumerPrivate": true,
   "singleCompiledConsumer": true,
