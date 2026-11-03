@@ -104,30 +104,14 @@ private theorem grandCanonicalGibbsDysonCoeff_quarticInteraction_eq_sum_pairingE
                   (quarticFreeThermalFieldFamily q a)
                   (quarticFreeThermalFieldFamily q b)) := by
   classical
-  have h := grandCanonicalGibbsDysonCoeff_quarticInteractionOn_eq_sum_pairingEvaluation
-    (Finset.univ : Finset (QuarticVertexLabel Mode)) ε β μ hpos g n t
   let e : (Fin n → ↥(Finset.univ : Finset (QuarticVertexLabel Mode))) ≃
       (Fin n → QuarticVertexLabel Mode) :=
     Equiv.arrowCongr (Equiv.refl (Fin n))
       (Equiv.subtypeUnivEquiv (fun x => Finset.mem_univ x))
-  calc
-    _ = ∑ q : Fin n → ↥(Finset.univ : Finset (QuarticVertexLabel Mode)),
-          Common.quarticDysonSequenceCoeff ε g
-              (fun i => (q i : QuarticVertexLabel Mode)) t *
-            ∑ pairing : Pairing (2 * n),
-              pairing.evaluation (pairing.weight .boson)
-                (fun a b =>
-                  freeThermalPairValue (fun i => ε i - μ) β
-                    (quarticFreeThermalFieldFamily
-                      (fun i => (q i : QuarticVertexLabel Mode)) a)
-                    (quarticFreeThermalFieldFamily
-                      (fun i => (q i : QuarticVertexLabel Mode)) b)) := by
-            simpa only [quarticInteraction, quarticInteractionOn,
-              Common.quarticInteraction] using h
-    _ = _ := by
-      refine Fintype.sum_equiv e _ _ ?_
-      intro q
-      rfl
+  rw [← Equiv.sum_comp e]
+  simpa only [quarticInteraction, quarticInteractionOn, Common.quarticInteraction] using
+    (grandCanonicalGibbsDysonCoeff_quarticInteractionOn_eq_sum_pairingEvaluation
+      (Finset.univ : Finset (QuarticVertexLabel Mode)) ε β μ hpos g n t)
 
 omit [Finite Mode] in
 /-- The physical finite-order bosonic quartic Dyson coefficient is the sum of fixed-order physical
