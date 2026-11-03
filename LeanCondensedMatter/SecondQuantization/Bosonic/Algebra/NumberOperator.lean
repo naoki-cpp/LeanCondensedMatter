@@ -36,6 +36,13 @@ theorem numberOperator_eq_diagonalOperator (i : Mode) :
   exact Common.eq_diagonalOperator_of_basisState _ _
     (fun n => numberOperator_basisState i n)
 
+/-- The bosonic ladder-product number operator agrees with the common occupation-number
+operator. -/
+theorem numberOperator_eq_occupationNumberOperator (i : Mode) :
+    numberOperator i =
+      Common.occupationNumberOperator (Config := Occupation Mode) i :=
+  numberOperator_eq_diagonalOperator i
+
 /-- The reordering identity `a_i a_i† = id + N_i`. -/
 theorem annihilate_comp_create_self (i : Mode) :
     (annihilate i).comp (create i) =
