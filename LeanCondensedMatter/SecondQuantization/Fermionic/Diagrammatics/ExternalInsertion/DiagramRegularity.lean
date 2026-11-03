@@ -89,12 +89,9 @@ theorem ExternalInsertionWickDiagram.measurableLocallyBounded_dysonFixedTimeAmpl
       orderedExternalInsertionLegFieldLabel]
     split <;> split <;> fun_prop
   · intro σ
-    exact (d.dysonFixedTimeChamberRepresentative_eq_of_sameChamber
-      ε β g externalTime
-      (intervalIntegral.finiteSignatureBase (externalInsertionOrderSignature externalTime)
-        (externalInsertionOrderSignature externalTime σ)) σ
-      (intervalIntegral.finiteSignatureBase_signature_eq
-        (externalInsertionOrderSignature externalTime) σ)).symm
+    symm
+    apply d.dysonFixedTimeChamberRepresentative_eq_of_sameChamber
+    exact intervalIntegral.finiteSignatureBase_signature_eq _ σ
 
 end Fermionic
 end SecondQuantization
