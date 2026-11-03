@@ -185,13 +185,9 @@ theorem spinStateEquiv_single (twiceSpin : ℕ)
     (spinStateEquiv twiceSpin (EuclideanSpace.single c 1) : FockSpace Mode) =
       basisState (configurationEquivOccupation twiceSpin c).val := by
   classical
-  change ((Finsupp.supportedEquivFinsupp
-    {n : Occupation Mode | ∀ i, n i ≤ twiceSpin}).symm
-      ((Finsupp.domLCongr (configurationEquivOccupation twiceSpin))
-        ((Finsupp.linearEquivFunOnFinite ℂ ℂ _).symm (Pi.single c 1))) : FockSpace Mode) = _
-  rw [Finsupp.linearEquivFunOnFinite_symm_single, Finsupp.domLCongr_single,
+  simp only [spinStateEquiv, LinearEquiv.trans_apply,
+    Finsupp.linearEquivFunOnFinite_symm_single, Finsupp.domLCongr_single,
     Finsupp.supportedEquivFinsupp_symm_single]
-  rfl
 
 /-- The exact action of the local HP spin algebra on the full finite-spin state space.
 Restriction to the all-site physical sector precedes transport through the state equivalence. -/
