@@ -29,7 +29,7 @@ local instance instDecidableEqQuarticThermalComponentFactorization : DecidableEq
 
 /-- The ordered free thermal field family is local under the Common component ordered-leg
 embedding. -/
-theorem QuarticDiagram.orderedFreeThermalFieldFamily_componentOrderedLeg
+private theorem QuarticDiagram.orderedFreeThermalFieldFamily_componentOrderedLeg
     {S : Finset (Fin N)}
     (d : Common.QuarticDiagram (Common.QuarticVertexLabel Mode) N S)
     (orders : d.ComponentVertexOrders) (shuffle : d.ComponentShuffle)
@@ -42,25 +42,6 @@ theorem QuarticDiagram.orderedFreeThermalFieldFamily_componentOrderedLeg
     Common.orderedQuarticLegFamily
   simp only [d.orderedQuarticLegEquiv_componentOrderedLeg]
   rw [d.restrictComponent_vertexLabel_componentOrder orders shuffle B]
-
-/-- The free thermal pair kernel agrees between a component-local ordered pair and its image in an
-assembled global order. -/
-theorem QuarticDiagram.freeThermalPairValue_componentOrderedLeg
-    (ε : Mode → ℝ) (β : ℝ) {S : Finset (Fin N)}
-    (d : Common.QuarticDiagram (Common.QuarticVertexLabel Mode) N S)
-    (orders : d.ComponentVertexOrders)
-    (shuffle : d.ComponentShuffle) (B : d.vertexGraph.componentPartitionOn.parts)
-    (a b : Fin (2 * (2 * (B : Finset (Fin N)).card))) :
-    freeThermalPairValue ε β
-        (QuarticDiagram.orderedFreeThermalFieldFamily d
-          (d.assembleVertexOrder orders shuffle) (d.componentOrderedLeg shuffle B a))
-        (QuarticDiagram.orderedFreeThermalFieldFamily d
-          (d.assembleVertexOrder orders shuffle) (d.componentOrderedLeg shuffle B b)) =
-      freeThermalPairValue ε β
-        (QuarticDiagram.orderedFreeThermalFieldFamily (d.restrictComponent B.2) (orders B) a)
-        (QuarticDiagram.orderedFreeThermalFieldFamily (d.restrictComponent B.2) (orders B) b) := by
-  rw [QuarticDiagram.orderedFreeThermalFieldFamily_componentOrderedLeg d orders shuffle B,
-    QuarticDiagram.orderedFreeThermalFieldFamily_componentOrderedLeg d orders shuffle B]
 
 /-- The bosonic thermal contraction value of an assembled pairing is the product of the thermal
 contraction values of its connected-component restrictions. -/
@@ -83,8 +64,9 @@ theorem QuarticDiagram.orderedThermalPairingValue_eq_prod_components
       (fun B a b => freeThermalPairValue (fun i => ε i - μ) β
         (QuarticDiagram.orderedFreeThermalFieldFamily (d.restrictComponent B.2) (orders B) a)
         (QuarticDiagram.orderedFreeThermalFieldFamily (d.restrictComponent B.2) (orders B) b))
-      (fun B a b =>
-        QuarticDiagram.freeThermalPairValue_componentOrderedLeg (fun i => ε i - μ) β d orders shuffle B a b)
+      (fun B a b => by
+        rw [QuarticDiagram.orderedFreeThermalFieldFamily_componentOrderedLeg d orders shuffle B,
+          QuarticDiagram.orderedFreeThermalFieldFamily_componentOrderedLeg d orders shuffle B])
 
 /-- The coefficientwise bosonic ordered thermal amplitude factors over connected components. -/
 theorem QuarticDiagram.orderedThermalAmplitude_eq_prod_components
