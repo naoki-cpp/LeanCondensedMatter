@@ -85,23 +85,6 @@ theorem CarriesShift.sum {Config G ι : Type*} [AddCommGroup G]
         exact hA j (Finset.mem_insert_of_mem hj)
       simpa only [Finset.sum_insert hi] using hhead.add (ih htail)
 
-/-- If a basis vector is sent to a scalar multiple of one target basis vector with grading shift
-`q`, every nonzero matrix coefficient in that column has the same grading shift. -/
-theorem grading_eq_of_matrixCoeff_ne_zero_of_basisState_smul
-    {Config G : Type*} [AddCommGroup G] {grading : Config → G}
-    {A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config}
-    {m n k : Config} {c : ℂ} {q : G}
-    (hA : A (basisState n) = c • basisState k) (hmn : matrixCoeff A m n ≠ 0)
-    (hk : grading k = grading n + q) :
-    grading m = grading n + q := by
-  have hm : m = k := by
-    by_contra hmk
-    apply hmn
-    rw [matrixCoeff_eq_ite_of_basisState_smul hA]
-    simp [hmk]
-  rw [hm]
-  exact hk
-
 /-- An operator whose basis action is a single target basis vector carries a fixed grading
 shift whenever its nonzero coefficients select targets with that shift. This applies equally to
 fermionic signed ladder operators and bosonic square-root-weighted ladder operators. -/
