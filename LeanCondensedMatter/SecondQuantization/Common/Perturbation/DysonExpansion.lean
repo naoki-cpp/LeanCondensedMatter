@@ -57,22 +57,6 @@ private theorem support_dysonBasis_subset_reachableSupport (energy : Config → 
         (fun σ => interactionPicture energy V σ (dysonBasis energy V order σ n))
         0 τ
 
-private theorem dysonBasis_succ_apply (energy : Config → ℝ)
-    (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
-    (order : ℕ) (τ : ℝ) (m n : Config) :
-    dysonBasis energy V (order + 1) τ n m =
-      - ∫ σ in (0 : ℝ)..τ,
-          interactionPicture energy V σ (dysonBasis energy V order σ n) m := by
-  rw [dysonBasis_succ]
-  change - finiteSupportIntervalIntegral (reachableSupport V (order + 1) n)
-      (fun σ => interactionPicture energy V σ (dysonBasis energy V order σ n))
-      0 τ m = _
-  rw [finiteSupportIntervalIntegral_apply]
-  intro σ
-  exact support_interactionPicture_apply_subset_reachableSupport_succ energy V σ order n
-    (dysonBasis energy V order σ n)
-    (support_dysonBasis_subset_reachableSupport energy V order σ n)
-
 /-- The canonical finite-order Dyson coefficient on an arbitrary configuration type. -/
 noncomputable def dysonCoeff (energy : Config → ℝ)
     (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (order : ℕ) (τ : ℝ) :
@@ -102,8 +86,12 @@ theorem dysonCoeff_succ_basisState_apply (energy : Config → ℝ)
       - ∫ σ in (0 : ℝ)..τ,
           interactionPicture energy V σ
             (dysonCoeff energy V order σ (basisState n)) m := by
-  rw [dysonCoeff_basisState]
-  simpa only [dysonCoeff_basisState] using dysonBasis_succ_apply energy V order τ m n
+  simp only [dysonCoeff_basisState]
+  rw [dysonBasis_succ, finiteSupportIntervalIntegral_apply]
+  intro σ
+  exact support_interactionPicture_apply_subset_reachableSupport_succ energy V σ order n
+    (dysonBasis energy V order σ n)
+    (support_dysonBasis_subset_reachableSupport energy V order σ n)
 
 /-- Every finite-order operator column is supported in the corresponding reachable set. -/
 theorem support_dysonCoeff_basisState_subset_reachableSupport (energy : Config → ℝ)
@@ -152,20 +140,6 @@ theorem continuous_matrixCoeff_dysonCoeff (energy : Config → ℝ)
     Continuous (fun τ : ℝ => matrixCoeff (dysonCoeff energy V order τ) m n) := by
   change Continuous (fun τ : ℝ => dysonCoeff energy V order τ (basisState n) m)
   exact continuous_dysonCoeff_basisState_apply energy V order m n
-
-/-- At zero imaginary time, only the zeroth Dyson coefficient is nonzero. -/
-theorem dysonCoeff_at_zero (energy : Config → ℝ)
-    (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (n : ℕ) :
-    dysonCoeff energy V n 0 = if n = 0 then LinearMap.id else 0 := by
-  cases n with
-  | zero => simp [dysonCoeff_zero]
-  | succ k =>
-      simp only [Nat.succ_ne_zero, ite_false]
-      apply matrixCoeff_ext
-      intro m n'
-      change dysonCoeff energy V (k + 1) 0 (basisState n') m = matrixCoeff 0 m n'
-      rw [dysonCoeff_succ_basisState_apply, intervalIntegral.integral_same]
-      simp [matrixCoeff]
 
 end Common
 end SecondQuantization
