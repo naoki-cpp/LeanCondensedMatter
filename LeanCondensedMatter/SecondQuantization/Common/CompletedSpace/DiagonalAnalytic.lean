@@ -98,6 +98,8 @@ theorem completedDiagonalOperator_isClosed (w : Config → ℂ) :
             z.2 c = w c * z.1 c} := by
     ext z
     rw [Set.mem_iInter]
+    change z ∈ (completedDiagonalOperator w).graph ↔
+      ∀ c : Config, z.2 c = w c * z.1 c
     constructor
     · intro hz c
       rw [LinearPMap.mem_graph_iff] at hz
