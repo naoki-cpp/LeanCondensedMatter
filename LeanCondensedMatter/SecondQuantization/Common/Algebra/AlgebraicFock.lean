@@ -233,6 +233,14 @@ theorem diagonalOperator_basisState {Config : Type*} (a : Config → ℂ) (c : C
     diagonalOperator a (basisState c) = a c • basisState c :=
   diagonalOperatorLinear_basisState a c
 
+/-- A linear operator acting diagonally on every occupation-basis state equals the
+corresponding diagonal operator. -/
+theorem eq_diagonalOperator_of_basisState {Config : Type*}
+    (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (w : Config → ℂ)
+    (h : ∀ n, A (basisState n) = w n • basisState n) :
+    A = diagonalOperator w :=
+  linearMap_ext_basisState fun n => (h n).trans (diagonalOperator_basisState w n).symm
+
 /-- A basis-diagonal operator rescales each coordinate independently. -/
 theorem diagonalOperator_apply {Config : Type*} (a : Config → ℂ)
     (x : AlgebraicFock Config) (c : Config) :
