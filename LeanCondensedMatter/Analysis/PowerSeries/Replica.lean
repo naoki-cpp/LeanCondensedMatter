@@ -38,12 +38,6 @@ private theorem coeff_sub_one_pow_eq_zero_of_lt
   exact (ENat.natCast_lt_natCast.mpr h).trans_le
     (le_order_pow_of_constantCoeff_eq_zero k (by simp [hZ]))
 
-private theorem descPochhammer_eval_nat (n k : ℕ) :
-    (descPochhammer R k).eval (n : R) =
-      (k.factorial : R) * (n.choose k : R) := by
-  rw [descPochhammer_eval_eq_descFactorial,
-    Nat.descFactorial_eq_factorial_mul_choose, Nat.cast_mul]
-
 /-- Evaluating the fixed-order replica polynomial at a natural replica number gives the
 factorial-normalized coefficient of the corresponding power of the series. -/
 theorem replicaCoeffPolynomial_eval_nat [CharZero R]
@@ -60,7 +54,8 @@ theorem replicaCoeffPolynomial_eval_nat [CharZero R]
     rw [Finset.mul_sum]
     apply Finset.sum_congr rfl
     intro k hk
-    rw [Polynomial.eval_mul, Polynomial.eval_C, descPochhammer_eval_nat]
+    rw [Polynomial.eval_mul, Polynomial.eval_C, descPochhammer_eval_eq_descFactorial,
+      Nat.descFactorial_eq_factorial_mul_choose, Nat.cast_mul]
     change
       (((m.factorial : R) / (k.factorial : R)) * coeff m (U ^ k)) *
           ((k.factorial : R) * (n.choose k : R)) =
