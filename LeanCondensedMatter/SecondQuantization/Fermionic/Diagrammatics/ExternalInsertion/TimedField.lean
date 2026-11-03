@@ -92,11 +92,7 @@ theorem orderedExternalInsertionLegField_map
         (q ∘ fInteraction) (σ ∘ fInteraction) leg =
       orderedExternalInsertionLegField externalLabel externalTime q σ
         (orderedExternalInsertionLegMap fExternal fInteraction leg) := by
-  cases leg with
-  | inl e => rfl
-  | inr p =>
-      rcases p with ⟨v, l⟩
-      rfl
+  rcases leg with e | ⟨v, l⟩ <;> rfl
 
 /-- The actual finite-mode free-Gibbs contraction is invariant under the induced
 relabeling of atomic legs, with both times and field labels pulled back along the
