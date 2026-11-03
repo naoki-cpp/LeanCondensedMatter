@@ -124,20 +124,10 @@ theorem externalInsertionMixedTimeOrderedAtomicPairValue_map
           (externalTime ∘ fExternal) (σ ∘ fInteraction) a)
         (externalInsertionMixedTimeOrderedAtomicLegPosition
           (externalTime ∘ fExternal) (σ ∘ fInteraction) b) := by
-  have hfield (leg : OrderedExternalInsertionLeg E₁ m) :
-      externalInsertionMixedTimeOrderedAtomicFieldFamily externalLabel externalTime q σ
-          (externalInsertionMixedTimeOrderedAtomicLegPosition externalTime σ
-            (orderedExternalInsertionLegMap fExternal fInteraction leg)) =
-        externalInsertionMixedTimeOrderedAtomicFieldFamily
-          (externalLabel ∘ fExternal) (externalTime ∘ fExternal)
-          (q ∘ fInteraction) (σ ∘ fInteraction)
-          (externalInsertionMixedTimeOrderedAtomicLegPosition
-            (externalTime ∘ fExternal) (σ ∘ fInteraction) leg) := by
-    simp only [externalInsertionMixedTimeOrderedAtomicFieldFamily,
-      externalInsertionMixedTimeOrderedAtomicLegEquiv_position]
-    exact (orderedExternalInsertionLegField_map
-      fExternal fInteraction externalLabel externalTime q σ leg).symm
-  exact congrArg₂ (grandCanonicalTimedFieldPairContraction ε β 0) (hfield a) (hfield b)
+  simp only [externalInsertionMixedTimeOrderedAtomicPairValue,
+    externalInsertionMixedTimeOrderedAtomicFieldFamily,
+    externalInsertionMixedTimeOrderedAtomicLegEquiv_position,
+    orderedExternalInsertionLegField_map]
 
 variable [Fintype Mode]
 
