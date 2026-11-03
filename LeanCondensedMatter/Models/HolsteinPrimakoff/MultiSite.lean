@@ -221,15 +221,9 @@ theorem commute_spinRepresentation_of_ne (hbar : ℝ) (twiceSpin : ℕ)
       (spinRepresentation hbar twiceSpin j B) := by
   have hA := mem_simultaneousSubspace_of_mem_spinAlgebra hbar twiceSpin i A.val A.property
   have hB := mem_simultaneousSubspace_of_mem_spinAlgebra hbar twiceSpin j B.val B.property
-  have hcomm : Commute (A.val.restrict hA) (B.val.restrict hB) := by
-    change (A.val.restrict hA).comp (B.val.restrict hB) =
-      (B.val.restrict hB).comp (A.val.restrict hA)
-    apply LinearMap.ext
-    intro ψ
-    apply Subtype.ext
-    exact LinearMap.congr_fun
-      (commute_of_mem_spinAlgebra hbar twiceSpin hij A.property B.property).eq ψ
-  exact Commute.map hcomm
+  exact Commute.map
+    (LinearMap.restrict_commute
+      (commute_of_mem_spinAlgebra hbar twiceSpin hij A.property B.property) hA hB)
     ((spinStateEquiv (Mode := Mode) twiceSpin).symm.conjAlgEquiv ℂ).toAlgHom
 
 end FiniteSites
