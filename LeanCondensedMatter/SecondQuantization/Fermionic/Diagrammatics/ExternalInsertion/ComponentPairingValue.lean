@@ -111,6 +111,15 @@ theorem ExternalInsertionWickDiagram.externalInsertionMixedTimeOrderedAtomicPair
     ((interactionSector
       (B : Finset (ExternalInsertionVertex E (Finset.univ : Finset (Fin n))))).orderIsoOfFin
         rfl v).1
+  have hExternalLabel :
+      d.externalLabel ∘ fExternal = (d.componentOrderedDiagram B).externalLabel := rfl
+  have hExternalTime :
+      externalTime ∘ fExternal = d.componentExternalTime externalTime B := rfl
+  have hVertexLabel :
+      d.vertexLabelSequence ∘ fInteraction =
+        (d.componentOrderedDiagram B).vertexLabelSequence := rfl
+  have hInteractionTime :
+      σ ∘ fInteraction = d.componentInteractionTime σ B := rfl
   have h :=
     externalInsertionMixedTimeOrderedAtomicPairValue_map ε β fExternal fInteraction
       d.externalLabel externalTime d.vertexLabelSequence σ
@@ -118,8 +127,10 @@ theorem ExternalInsertionWickDiagram.externalInsertionMixedTimeOrderedAtomicPair
         (d.componentExternalTime externalTime B) (d.componentInteractionTime σ B) a)
       (externalInsertionMixedTimeOrderedAtomicLegEquiv
         (d.componentExternalTime externalTime B) (d.componentInteractionTime σ B) b)
-  simpa only [externalInsertionMixedTimeOrderedAtomicLegPosition,
-    Equiv.symm_apply_apply] using h
+  rw [hExternalLabel, hExternalTime, hVertexLabel, hInteractionTime] at h
+  simp only [externalInsertionMixedTimeOrderedAtomicLegPosition,
+    Equiv.symm_apply_apply] at h
+  exact h
 
 variable [Fintype Mode]
 
