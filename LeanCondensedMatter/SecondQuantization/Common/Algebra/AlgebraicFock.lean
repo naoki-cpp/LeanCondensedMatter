@@ -1,4 +1,3 @@
-import LeanCondensedMatter.SecondQuantization.Common.Algebra.OccupationBasis
 import Mathlib.Algebra.Algebra.Pi
 import Mathlib.Basic.Complex.Basic
 import Mathlib.Data.Finsupp.Basic
@@ -240,14 +239,6 @@ theorem eq_diagonalOperator_of_basisState {Config : Type*}
     (h : ∀ n, A (basisState n) = w n • basisState n) :
     A = diagonalOperator w :=
   linearMap_ext_basisState fun n => (h n).trans (diagonalOperator_basisState w n).symm
-
-/-- Occupation-number operator associated with a mode, independent of particle statistics.
-Concrete ladder-operator realizations prove their equality with this diagonal operator. -/
-noncomputable def occupationNumberOperator {Mode Config : Type*}
-    [OccupationBasis Mode Config] (i : Mode) :
-    AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config :=
-  diagonalOperator (fun n =>
-    (OccupationBasis.occupation (Mode := Mode) (Config := Config) n i : ℂ))
 
 /-- A basis-diagonal operator rescales each coordinate independently. -/
 theorem diagonalOperator_apply {Config : Type*} (a : Config → ℂ)
