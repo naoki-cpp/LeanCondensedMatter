@@ -50,7 +50,7 @@ noncomputable def finiteDimensionalOperatorTrace :
 theorem finiteDimensionalOperatorTrace_apply (operator : H →L[ℂ] H) :
     finiteDimensionalOperatorTrace (H := H) operator =
       LinearMap.trace ℂ H (operator : H →ₗ[ℂ] H) :=
-  rfl
+  (rfl)
 
 /-- The finite-dimensional operator trace of a matrix transported through the canonical Euclidean
 matrix/operator equivalence is its ordinary matrix trace. -/
