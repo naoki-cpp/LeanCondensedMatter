@@ -88,31 +88,29 @@ theorem imaginaryTimeEvolve_interactionHamiltonian (ε : Mode → ℝ) (Vint : M
 /-- Annihilation at mode `i` carries free-energy shift `-ε i`. -/
 theorem carriesEnergyShift_annihilate (ε : Mode → ℝ) (i : Mode) :
     Common.CarriesShift (fermionEnergy ε) (annihilate i) (-ε i) := by
-  intro m n hmn
-  change annihilate i (basisState n) m ≠ 0 at hmn
+  refine Common.CarriesShift.of_basisState_smul
+    (target := removeOccupation i)
+    (coeff := fun n : Occupation Mode =>
+      if i ∈ n then (fermionSign i n : ℂ) else 0)
+    (annihilate_basisState_eq i) ?_
+  intro n hn
   by_cases hi : i ∈ n
-  · apply Common.grading_eq_of_matrixCoeff_ne_zero_of_basisState_smul
-      (annihilate_basisState_of_mem hi) hmn
-    rw [fermionEnergy_removeOccupation_of_mem hi]
+  · rw [fermionEnergy_removeOccupation_of_mem hi]
     ring
-  · exfalso
-    apply hmn
-    rw [annihilate_basisState_of_not_mem hi]
-    rfl
+  · simp [hi] at hn
 
 /-- Creation at mode `i` carries free-energy shift `+ε i`. -/
 theorem carriesEnergyShift_create (ε : Mode → ℝ) (i : Mode) :
     Common.CarriesShift (fermionEnergy ε) (create i) (ε i) := by
-  intro m n hmn
-  change create i (basisState n) m ≠ 0 at hmn
+  refine Common.CarriesShift.of_basisState_smul
+    (target := insertOccupation i)
+    (coeff := fun n : Occupation Mode =>
+      if i ∈ n then 0 else (fermionSign i n : ℂ))
+    (create_basisState_eq i) ?_
+  intro n hn
   by_cases hi : i ∈ n
-  · exfalso
-    apply hmn
-    rw [create_basisState_of_mem hi]
-    rfl
-  · apply Common.grading_eq_of_matrixCoeff_ne_zero_of_basisState_smul
-      (create_basisState_of_not_mem hi) hmn
-    rw [fermionEnergy_insertOccupation_of_not_mem hi]
+  · simp [hi] at hn
+  · exact fermionEnergy_insertOccupation_of_not_mem hi
 
 /-! ## Evolved creation and annihilation operators -/
 

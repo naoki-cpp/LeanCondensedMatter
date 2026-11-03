@@ -120,26 +120,26 @@ theorem imaginaryTimeEvolve_freeHamiltonian (ε : Mode → ℝ) (τ : ℝ) :
 /-- Annihilation at mode `i` carries free-energy shift `-ε i`. -/
 theorem carriesEnergyShift_annihilate (ε : Mode → ℝ) (i : Mode) :
     Common.CarriesShift (freeEigenvalue ε) (annihilate i) (-ε i) := by
-  intro m n hmn
-  change annihilate i (basisState n) m ≠ 0 at hmn
-  by_cases hi : n i = 0
-  · exfalso
-    apply hmn
-    rw [annihilate_basisState_of_zero hi]
-    rfl
-  · apply Common.grading_eq_of_matrixCoeff_ne_zero_of_basisState_smul
-      (annihilate_basisState_of_pos hi) hmn
-    rw [freeEigenvalue_removeOccupation_of_pos hi]
-    ring
+  refine Common.CarriesShift.of_basisState_smul
+    (target := removeOccupation i)
+    (coeff := fun n : Occupation Mode => (Real.sqrt (n i : ℝ) : ℂ))
+    (annihilate_basisState_eq i) ?_
+  intro n hn
+  have hi : n i ≠ 0 := by
+    intro h
+    simp [h] at hn
+  rw [freeEigenvalue_removeOccupation_of_pos hi]
+  ring
 
 /-- Creation at mode `i` carries free-energy shift `+ε i`. -/
 theorem carriesEnergyShift_create (ε : Mode → ℝ) (i : Mode) :
     Common.CarriesShift (freeEigenvalue ε) (create i) (ε i) := by
-  intro m n hmn
-  change create i (basisState n) m ≠ 0 at hmn
-  apply Common.grading_eq_of_matrixCoeff_ne_zero_of_basisState_smul
-    (create_basisState_eq i n) hmn
-  rw [freeEigenvalue_createOccupation]
+  refine Common.CarriesShift.of_basisState_smul
+    (target := createOccupation i)
+    (coeff := fun n : Occupation Mode => (Real.sqrt (n i + 1 : ℝ) : ℂ))
+    (create_basisState_eq i) ?_
+  intro n _
+  exact freeEigenvalue_createOccupation ε i n
 
 /-- The annihilation operator evolves with energy shift `-ε i`. -/
 theorem imaginaryTimeEvolve_annihilate (ε : Mode → ℝ) (τ : ℝ) (i : Mode) :

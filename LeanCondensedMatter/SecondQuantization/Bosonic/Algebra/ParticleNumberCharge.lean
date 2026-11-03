@@ -9,8 +9,8 @@ set_option linter.style.header false
 The bosonic mirror of `Fermionic/Algebra/ParticleNumberCharge.lean`: instantiates
 `Common.CarriesShift` for `annihilate i`/`create i`, with `particleNumber` (cast to `ℤ`) as the
 additive grading. The proof needs no positivity fact about the `√n`/`√(n+1)` normalization
-coefficients — `Common.grading_eq_of_matrixCoeff_ne_zero_of_basisState_smul` packages the support-selection
-argument, leaving only the occupation update and particle-number difference in these proofs.
+coefficients — `Common.CarriesShift.of_basisState_smul` reduces support selection
+to the occupation update and particle-number difference.
 -/
 
 namespace SecondQuantization
@@ -23,30 +23,32 @@ variable {Mode : Type*}
 theorem carriesParticleNumberCharge_annihilate (i : Mode) :
     Common.CarriesShift
       (fun n : Occupation Mode => (particleNumber n : ℤ)) (annihilate i) (-1) := by
-  classical
-  intro m n hmn
-  change annihilate i (basisState n) m ≠ 0 at hmn
-  by_cases hi : n i = 0
-  · rw [annihilate_basisState_of_zero hi] at hmn
-    simp at hmn
-  · apply Common.grading_eq_of_matrixCoeff_ne_zero_of_basisState_smul
-      (annihilate_basisState_of_pos hi) hmn
-    have hcard := particleNumber_removeOccupation_of_pos hi
-    change (particleNumber (removeOccupation i n) : ℤ) = (particleNumber n : ℤ) + (-1)
-    omega
+  refine Common.CarriesShift.of_basisState_smul
+    (target := removeOccupation i)
+    (coeff := fun n : Occupation Mode => (Real.sqrt (n i : ℝ) : ℂ))
+    (annihilate_basisState_eq i) ?_
+  intro n hn
+  have hi : n i ≠ 0 := by
+    intro h
+    simp [h] at hn
+  have hcard := particleNumber_removeOccupation_of_pos hi
+  change (particleNumber (removeOccupation i n) : ℤ) =
+    (particleNumber n : ℤ) + (-1)
+  omega
 
 /-- **`create i` carries particle-number charge `+1`**: it only ever connects a basis state `m` to
 a basis state `n` with one more particle. -/
 theorem carriesParticleNumberCharge_create (i : Mode) :
     Common.CarriesShift
       (fun n : Occupation Mode => (particleNumber n : ℤ)) (create i) 1 := by
-  classical
-  intro m n hmn
-  change create i (basisState n) m ≠ 0 at hmn
-  apply Common.grading_eq_of_matrixCoeff_ne_zero_of_basisState_smul
-    (create_basisState_eq i n) hmn
+  refine Common.CarriesShift.of_basisState_smul
+    (target := createOccupation i)
+    (coeff := fun n : Occupation Mode => (Real.sqrt (n i + 1 : ℝ) : ℂ))
+    (create_basisState_eq i) ?_
+  intro n _
   have hcard := particleNumber_createOccupation i n
-  change (particleNumber (createOccupation i n) : ℤ) = (particleNumber n : ℤ) + 1
+  change (particleNumber (createOccupation i n) : ℤ) =
+    (particleNumber n : ℤ) + 1
   omega
 
 end Bosonic
