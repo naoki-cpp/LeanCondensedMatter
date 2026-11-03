@@ -54,24 +54,6 @@ noncomputable def imaginaryTimeEvolve (ε : Mode → ℝ) (τ : ℝ)
     OccupationFock Mode →ₗ[ℂ] OccupationFock Mode :=
   Common.heisenbergEvolve (fermionEnergy ε) τ A
 
-omit [LinearOrder Mode] in
-/-- Unfolds `imaginaryTimeEvolve` back down to `imaginaryTimeEvolveFree`, matching the shape most
-proofs below need — `A(τ) := e^{τH₀} A e^{-τH₀}`, applied to a vector. -/
-theorem imaginaryTimeEvolve_apply (ε : Mode → ℝ) (τ : ℝ)
-    (A : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) (x : OccupationFock Mode) :
-    imaginaryTimeEvolve ε τ A x =
-      imaginaryTimeEvolveFree ε τ (A (imaginaryTimeEvolveFree ε (-τ) x)) :=
-  rfl
-
-omit [LinearOrder Mode] in
-/-- **The free Hamiltonian evolves trivially under its own flow**: `H₀(τ) = H₀`, since `H₀` is
-diagonal in the very basis `e^{τH₀}` acts on by a scalar. -/
-theorem imaginaryTimeEvolve_freeHamiltonian (ε : Mode → ℝ) (τ : ℝ) :
-    imaginaryTimeEvolve ε τ (freeHamiltonian ε) = freeHamiltonian ε := by
-  simpa only [imaginaryTimeEvolve, freeHamiltonian] using
-    Common.heisenbergEvolve_diagonalOperator (fermionEnergy ε) τ
-      (fun n : Occupation Mode => (fermionEnergy ε n : ℂ))
-
 /-! ## Evolution of the diagonal density-density interaction -/
 
 omit [LinearOrder Mode] in
