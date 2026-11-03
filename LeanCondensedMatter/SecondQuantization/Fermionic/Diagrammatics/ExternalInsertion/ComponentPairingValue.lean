@@ -58,6 +58,10 @@ theorem ExternalInsertionWickDiagram.relativeComponentShuffleSign_eq_external_mu
     Int.cast_pow, Int.cast_neg, Int.cast_one]
   rw [pow_add]
   unfold componentExternalOrderSign
+  have hfixed :=
+    d.componentLegShuffle_orderedBlockInversionCount_mod_two_eq_external blockOrder
+  change fixedShuffle.orderedBlockInversionCount blockOrder % 2 =
+    d.componentExternalShuffle.orderedBlockInversionCount blockOrder % 2 at hfixed
   have hmixed :=
     Pairing.interComponentCrossingCount_mod_two_eq_orderedBlockInversionCount
       (d.pairingInMixedOrder externalTime σ)
@@ -73,8 +77,7 @@ theorem ExternalInsertionWickDiagram.relativeComponentShuffleSign_eq_external_mu
             Pairing.pairEndpointEquiv_apply, Pairing.pairEndpoint, pairEndpointAt,
             d.componentMixedPairEquiv_apply externalTime σ])
       blockOrder
-  rw [pow_eq_of_mod_two_eq (show ((-1 : ℂ) * -1) = 1 by norm_num)
-    (d.componentLegShuffle_orderedBlockInversionCount_mod_two_eq_external blockOrder)]
+  rw [pow_eq_of_mod_two_eq (show ((-1 : ℂ) * -1) = 1 by norm_num) hfixed]
   rw [pow_eq_of_mod_two_eq (show ((-1 : ℂ) * -1) = 1 by norm_num) hmixed.symm]
   simp only [Common.Statistics.zetaInt_fermion, Int.cast_neg, Int.cast_one]
 
