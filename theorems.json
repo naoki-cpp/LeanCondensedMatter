@@ -122988,7 +122988,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": false,
+    "terminal": true,
     "statement": "∀ {Config : Type u_1} (energy : Config → ℝ) (τ : ℝ),\n  SecondQuantization.Common.diagonalEvolution energy τ ∘ₗ SecondQuantization.Common.diagonalEvolution energy (-τ) =\n    LinearMap.id",
     "standardAxioms": [
       "Classical.choice",
@@ -122996,7 +122996,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": true,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -123007,19 +123007,15 @@
     "docString": "**`e^{τH₀}` and `e^{-τH₀}` are mutually inverse.** ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.heisenbergEvolve_diagonalOperator"
-    ],
+    "dependents": [],
     "dependencies": [
       "SecondQuantization.Common.diagonalEvolution_add",
       "SecondQuantization.Common.diagonalEvolution_zero"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.heisenbergEvolve_diagonalOperator"
-    ],
-    "compiledConsumerCount": 1,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -123152,7 +123148,7 @@
       "SecondQuantization.Common.continuousDiagonalEvolution_zero",
       "SecondQuantization.Common.diagonalEvolution_comp_neg",
       "SecondQuantization.Common.diagonalEvolution_neg_comp",
-      "SecondQuantization.Common.heisenbergEvolve_zero"
+      "SecondQuantization.Common.interactionPicture_zero"
     ],
     "dependencies": [
       "SecondQuantization.Common.diagonalEvolution_basisState",
@@ -123164,7 +123160,7 @@
       "SecondQuantization.Common.continuousDiagonalEvolution_zero",
       "SecondQuantization.Common.diagonalEvolution_comp_neg",
       "SecondQuantization.Common.diagonalEvolution_neg_comp",
-      "SecondQuantization.Common.heisenbergEvolve_zero"
+      "SecondQuantization.Common.interactionPicture_zero"
     ],
     "compiledConsumerCount": 4,
     "axioms": [
@@ -123324,7 +123320,6 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Common.diagonalEvolution_add",
-      "SecondQuantization.Common.heisenbergEvolve_diagonalOperator",
       "SecondQuantization.Fermionic.numberOperator_comp_self"
     ],
     "dependencies": [],
@@ -123332,10 +123327,9 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Common.diagonalEvolution_add",
-      "SecondQuantization.Common.heisenbergEvolve_diagonalOperator",
       "SecondQuantization.Fermionic.numberOperator_comp_self"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -127946,9 +127940,9 @@
       "SecondQuantization.Fermionic.imaginaryTimeEvolve_interactionHamiltonian"
     ],
     "dependencies": [
-      "SecondQuantization.Common.diagonalEvolution_comp_neg",
-      "SecondQuantization.Common.diagonalOperator_comp",
-      "SecondQuantization.Common.heisenbergEvolve_eq_comp"
+      "SecondQuantization.Common.matrixCoeff_diagonalOperator",
+      "SecondQuantization.Common.matrixCoeff_ext",
+      "SecondQuantization.Common.matrixCoeff_heisenbergEvolve"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -127991,8 +127985,7 @@
     "dependents": [
       "SecondQuantization.Common.continuousInteractionPicture_eq_conj",
       "SecondQuantization.Common.diagonalEvolution_comp_eq_smul_comp_diagonalEvolution",
-      "SecondQuantization.Common.heisenbergEvolve_diagonalOperator",
-      "SecondQuantization.Common.heisenbergEvolve_zero",
+      "SecondQuantization.Common.interactionPicture_zero",
       "SecondQuantization.Common.matrixCoeff_heisenbergEvolve"
     ],
     "dependencies": [],
@@ -128001,11 +127994,10 @@
     "compiledConsumers": [
       "SecondQuantization.Common.continuousInteractionPicture_eq_conj",
       "SecondQuantization.Common.diagonalEvolution_comp_eq_smul_comp_diagonalEvolution",
-      "SecondQuantization.Common.heisenbergEvolve_diagonalOperator",
-      "SecondQuantization.Common.heisenbergEvolve_zero",
+      "SecondQuantization.Common.interactionPicture_zero",
       "SecondQuantization.Common.matrixCoeff_heisenbergEvolve"
     ],
-    "compiledConsumerCount": 5,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -128194,51 +128186,6 @@
       "_private.LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Semantics.Flattening.0.SecondQuantization.Fermionic.prod_twoPointTimedEventAtomicOperators"
     ],
     "compiledConsumerCount": 3,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Config : Type u_1} (energy : Config → ℝ)\n  (A : SecondQuantization.Common.AlgebraicFock Config →ₗ[ℂ] SecondQuantization.Common.AlgebraicFock Config),\n  (SecondQuantization.Common.heisenbergEvolve energy 0) A = A",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": true,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Common.heisenbergEvolve_zero",
-    "module": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.DiagonalEvolution",
-    "externalAxioms": [],
-    "docString": "**At `τ = 0`, imaginary-time evolution is trivial**: `A(0) = A`. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Common.interactionPicture_zero"
-    ],
-    "dependencies": [
-      "SecondQuantization.Common.diagonalEvolution_zero",
-      "SecondQuantization.Common.heisenbergEvolve_eq_comp"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Common.interactionPicture_zero"
-    ],
-    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -128457,15 +128404,16 @@
     "module": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.InteractionPicture",
     "externalAxioms": [],
     "docString": "At zero imaginary time, the interaction picture is the original operator. ",
-    "directWrapperTargetModule": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.DiagonalEvolution",
-    "directWrapperOf": "SecondQuantization.Common.heisenbergEvolve_zero",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Common.continuousInteractionPicture_zero"
     ],
     "dependencies": [
-      "SecondQuantization.Common.heisenbergEvolve_zero"
+      "SecondQuantization.Common.diagonalEvolution_zero",
+      "SecondQuantization.Common.heisenbergEvolve_eq_comp"
     ],
-    "crossModuleDirectWrapper": true,
+    "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Common.continuousInteractionPicture_zero"
@@ -129517,6 +129465,7 @@
     "directWrapperOf": null,
     "dependents": [
       "SecondQuantization.Common.diagonalOperator_injective",
+      "SecondQuantization.Common.heisenbergEvolve_diagonalOperator",
       "SecondQuantization.Common.matrixCoeff_diagonalEvolution_eq_ite",
       "SecondQuantization.Fermionic.eigenbasisGibbsEnergyExpectation_fermionEnergy_eq_sum_fermiDirac"
     ],
@@ -129528,10 +129477,11 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Common.diagonalOperator_injective",
+      "SecondQuantization.Common.heisenbergEvolve_diagonalOperator",
       "SecondQuantization.Common.matrixCoeff_diagonalEvolution_eq_ite",
       "SecondQuantization.Fermionic.eigenbasisGibbsEnergyExpectation_fermionEnergy_eq_sum_fermiDirac"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -129678,6 +129628,7 @@
       "SecondQuantization.Common.comp_operatorIntervalIntegral",
       "SecondQuantization.Common.dysonCoeff_at_zero",
       "SecondQuantization.Common.dysonCoeff_quarticInteractionOn_eq_sum",
+      "SecondQuantization.Common.heisenbergEvolve_diagonalOperator",
       "SecondQuantization.Common.heisenbergEvolve_eq_smul_of_carriesShift",
       "SecondQuantization.Common.operatorIntervalIntegral_add",
       "SecondQuantization.Common.operatorIntervalIntegral_same",
@@ -129694,6 +129645,7 @@
       "SecondQuantization.Common.comp_operatorIntervalIntegral",
       "SecondQuantization.Common.dysonCoeff_at_zero",
       "SecondQuantization.Common.dysonCoeff_quarticInteractionOn_eq_sum",
+      "SecondQuantization.Common.heisenbergEvolve_diagonalOperator",
       "SecondQuantization.Common.heisenbergEvolve_eq_smul_of_carriesShift",
       "SecondQuantization.Common.operatorIntervalIntegral_add",
       "SecondQuantization.Common.operatorIntervalIntegral_same",
@@ -129701,7 +129653,7 @@
       "SecondQuantization.Common.operatorIntervalIntegral_zero",
       "_private.LeanCondensedMatter.SecondQuantization.Common.Perturbation.ContinuousDyson.0.SecondQuantization.Common.dysonCoeff_succ"
     ],
-    "compiledConsumerCount": 9,
+    "compiledConsumerCount": 10,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -129735,6 +129687,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "SecondQuantization.Common.heisenbergEvolve_diagonalOperator",
       "SecondQuantization.Common.heisenbergEvolve_eq_smul_of_carriesShift",
       "SecondQuantization.Common.matrixCoeff_interactionPicture"
     ],
@@ -129746,10 +129699,11 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "SecondQuantization.Common.heisenbergEvolve_diagonalOperator",
       "SecondQuantization.Common.heisenbergEvolve_eq_smul_of_carriesShift",
       "SecondQuantization.Common.matrixCoeff_interactionPicture"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -129824,8 +129778,8 @@
     "module": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.InteractionPicture",
     "externalAxioms": [],
     "docString": "Matrix coefficients acquire the exponential of the free energy difference. No `Fintype`\nassumption on `Config` is needed. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
+    "directWrapperTargetModule": "LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.DiagonalEvolution",
+    "directWrapperOf": "SecondQuantization.Common.matrixCoeff_heisenbergEvolve",
     "dependents": [
       "SecondQuantization.Common.continuousInteractionPicture_basis_apply_apply",
       "SecondQuantization.Common.continuous_matrixCoeff_interactionPicture",
@@ -129834,7 +129788,7 @@
     "dependencies": [
       "SecondQuantization.Common.matrixCoeff_heisenbergEvolve"
     ],
-    "crossModuleDirectWrapper": false,
+    "crossModuleDirectWrapper": true,
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Common.continuousInteractionPicture_basis_apply_apply",
@@ -174948,55 +174902,11 @@
     "dependents": [
       "_private.LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Hamiltonian.LaplacianSelfAdjoint1D.0.QuantumMechanics.SingleParticle.Continuum.laplacian_schwartzConj1D"
     ],
-    "dependencies": [
-      "_private.LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Hamiltonian.LaplacianSelfAdjoint1D.0.QuantumMechanics.SingleParticle.Continuum.deriv_schwartzConj1D"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Hamiltonian.LaplacianSelfAdjoint1D.0.QuantumMechanics.SingleParticle.Continuum.laplacian_schwartzConj1D"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (f : SchwartzMap ℝ ℂ) (x : ℝ),\n  deriv (⇑(QuantumMechanics.SingleParticle.Continuum.schwartzConj1D✝ f)) x = star (deriv (⇑f) x)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Hamiltonian.LaplacianSelfAdjoint1D.0.QuantumMechanics.SingleParticle.Continuum.deriv_schwartzConj1D",
-    "module": "LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Hamiltonian.LaplacianSelfAdjoint1D",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Hamiltonian.LaplacianSelfAdjoint1D.0.QuantumMechanics.SingleParticle.Continuum.derivCLM_schwartzConj1D"
-    ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "_private.LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Hamiltonian.LaplacianSelfAdjoint1D.0.QuantumMechanics.SingleParticle.Continuum.derivCLM_schwartzConj1D"
+      "_private.LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Hamiltonian.LaplacianSelfAdjoint1D.0.QuantumMechanics.SingleParticle.Continuum.laplacian_schwartzConj1D"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
