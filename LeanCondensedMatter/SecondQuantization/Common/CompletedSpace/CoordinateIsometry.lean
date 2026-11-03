@@ -47,17 +47,15 @@ private theorem norm_completedReindexLinear_le (e : Config ≃ Config)
     simpa [completedReindexLinear] using
       (Equiv.tsum_eq e (fun c : Config => ‖ψ c‖ ^ (2 : ℝ≥0∞).toReal))
 
-private theorem completedReindexLinear_symm_apply (e : Config ≃ Config)
-    (ψ : CompletedFock Config) :
-    completedReindexLinear e.symm (completedReindexLinear e ψ) = ψ := by
-  ext c
-  simp [completedReindexLinear]
-
 private theorem norm_completedReindexLinear (e : Config ≃ Config)
     (ψ : CompletedFock Config) :
     ‖completedReindexLinear e ψ‖ = ‖ψ‖ := by
   apply le_antisymm (norm_completedReindexLinear_le e ψ)
-  simpa [completedReindexLinear_symm_apply] using
+  have hsymm :
+      completedReindexLinear e.symm (completedReindexLinear e ψ) = ψ := by
+    ext c
+    simp [completedReindexLinear]
+  simpa only [hsymm] using
     norm_completedReindexLinear_le e.symm (completedReindexLinear e ψ)
 
 /-- Reindex completed Fock amplitudes along a configuration equivalence. -/
