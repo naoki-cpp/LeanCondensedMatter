@@ -26,17 +26,6 @@ variable {Mode : Type*} [Finite Mode]
 /-- File-local classical equality matches the concrete free-thermal pair kernel. -/
 local instance instDecidableEqQuarticDysonExpansion : DecidableEq Mode := Classical.decEq Mode
 
-/-- Every finite bare quartic vertex sequence has a summable free-Gibbs numerator under the
-positive one-mode Boltzmann hypothesis. -/
-theorem quarticVertexSequenceOperator_mem_grandCanonicalGibbsDomain
-    (ε : Mode → ℝ) (β μ : ℝ) (hpos : ∀ i, 0 < β * (ε i - μ))
-    {n : ℕ} (q : Fin n → QuarticVertexLabel Mode) :
-    Common.quarticVertexSequenceOperator create annihilate q ∈
-      grandCanonicalGibbsDomain ε β μ := by
-  letI := Fintype.ofFinite Mode
-  rw [mem_grandCanonicalGibbsDomain_iff, ← quarticFreeThermalOrderedProduct_eq_quarticVertexSequenceOperator]
-  exact FreeThermalField.grandCanonicalGibbsSummable_orderedProduct ε β μ hpos _
-
 /-- Every finite Dyson coefficient of a finitely supported quartic interaction belongs to the
 free-Gibbs domain. This is proved coefficientwise from the finite vertex-sequence expansion and does
 not exchange the infinite Gibbs sum with the recursive Dyson integral. -/
@@ -50,9 +39,10 @@ theorem dysonCoeff_quarticInteractionOn_mem_grandCanonicalGibbsDomain
   classical
   rw [dysonCoeff_quarticInteractionOn_eq_sum support ε g n t]
   exact Submodule.sum_mem (grandCanonicalGibbsDomain ε β μ) fun q _ =>
-    (grandCanonicalGibbsDomain ε β μ).smul_mem _
-      (quarticVertexSequenceOperator_mem_grandCanonicalGibbsDomain ε β μ hpos
-        (fun i => (q i : QuarticVertexLabel Mode)))
+    (grandCanonicalGibbsDomain ε β μ).smul_mem _ (by
+      rw [mem_grandCanonicalGibbsDomain_iff,
+        ← quarticFreeThermalOrderedProduct_eq_quarticVertexSequenceOperator]
+      exact FreeThermalField.grandCanonicalGibbsSummable_orderedProduct ε β μ hpos _)
 
 /-- The convergence-aware Gibbs expectation of a finite-order quartic Dyson coefficient is a finite
 sum over support-valued vertex sequences and bosonic pairings. The scalar
