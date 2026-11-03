@@ -154,35 +154,27 @@ private theorem completedDiagonalOperator_adjoint_apply (w : Config → ℂ)
   rw [inner_smul_left, inner_completedBasisState_left, inner_completedBasisState_left] at h
   exact h.symm
 
-private theorem completedDiagonalOperator_adjoint_domain_le_conj (w : Config → ℂ) :
-    (completedDiagonalOperator w).adjoint.domain ≤
-      completedDiagonalDomain (fun c => star (w c)) := by
-  intro y hy
-  rw [mem_completedDiagonalDomain_iff]
-  let y' : (completedDiagonalOperator w).adjoint.domain := ⟨y, hy⟩
-  convert (lp.memℓp ((completedDiagonalOperator w).adjoint y')) using 1
-  funext c
-  exact (completedDiagonalOperator_adjoint_apply w y' c).symm
-
-private theorem completedDiagonalOperator_adjoint_le_conj (w : Config → ℂ) :
-    (completedDiagonalOperator w).adjoint ≤
-      completedDiagonalOperator (fun c => star (w c)) := by
-  refine ⟨completedDiagonalOperator_adjoint_domain_le_conj w, ?_⟩
-  intro x y hxy
-  ext c
-  rw [completedDiagonalOperator_adjoint_apply, completedDiagonalOperator_apply]
-  change star (w c) * (x : CompletedFock Config) c =
-    star (w c) * (y : CompletedFock Config) c
-  rw [hxy]
-
 /-- The adjoint of a maximal diagonal multiplication operator is exactly multiplication by the
 complex-conjugated weight on its maximal weighted `ℓ²` domain. -/
 theorem completedDiagonalOperator_adjoint_eq (w : Config → ℂ) :
     (completedDiagonalOperator w).adjoint =
-      completedDiagonalOperator (fun c => star (w c)) :=
-  le_antisymm (completedDiagonalOperator_adjoint_le_conj w)
-    ((completedDiagonalOperator_isFormalAdjoint_conj w).le_adjoint
-      (completedDiagonalOperator_denseDomain w))
+      completedDiagonalOperator (fun c => star (w c)) := by
+  apply le_antisymm
+  · refine ⟨?_, ?_⟩
+    · intro y hy
+      rw [mem_completedDiagonalDomain_iff]
+      let y' : (completedDiagonalOperator w).adjoint.domain := ⟨y, hy⟩
+      convert (lp.memℓp ((completedDiagonalOperator w).adjoint y')) using 1
+      funext c
+      exact (completedDiagonalOperator_adjoint_apply w y' c).symm
+    · intro x y hxy
+      ext c
+      rw [completedDiagonalOperator_adjoint_apply, completedDiagonalOperator_apply]
+      change star (w c) * (x : CompletedFock Config) c =
+        star (w c) * (y : CompletedFock Config) c
+      rw [hxy]
+  · exact (completedDiagonalOperator_isFormalAdjoint_conj w).le_adjoint
+      (completedDiagonalOperator_denseDomain w)
 
 /-- A diagonal operator whose weights are fixed by complex conjugation is formally symmetric. -/
 theorem completedDiagonalOperator_isFormalAdjoint_self (w : Config → ℂ)
