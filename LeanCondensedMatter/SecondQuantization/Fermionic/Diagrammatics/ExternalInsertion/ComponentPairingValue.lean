@@ -58,12 +58,10 @@ theorem ExternalInsertionWickDiagram.relativeComponentShuffleSign_eq_external_mu
     Int.cast_pow, Int.cast_neg, Int.cast_one]
   rw [pow_add]
   unfold componentExternalOrderSign
-  have hfixed :
-      fixedShuffle.orderedBlockInversionCount blockOrder % 2 =
-        d.componentExternalShuffle.orderedBlockInversionCount blockOrder % 2 := by
-    change d.componentLegShuffle.orderedBlockInversionCount blockOrder % 2 =
-      d.componentExternalShuffle.orderedBlockInversionCount blockOrder % 2
-    exact d.componentLegShuffle_orderedBlockInversionCount_mod_two_eq_external blockOrder
+  have hfixed :=
+    d.componentLegShuffle_orderedBlockInversionCount_mod_two_eq_external blockOrder
+  change fixedShuffle.orderedBlockInversionCount blockOrder % 2 =
+    d.componentExternalShuffle.orderedBlockInversionCount blockOrder % 2 at hfixed
   have hmixed :=
     Pairing.interComponentCrossingCount_mod_two_eq_orderedBlockInversionCount
       (d.pairingInMixedOrder externalTime σ)
