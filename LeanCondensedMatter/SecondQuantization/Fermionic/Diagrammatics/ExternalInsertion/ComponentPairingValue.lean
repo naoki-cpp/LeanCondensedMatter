@@ -128,14 +128,8 @@ theorem ExternalInsertionWickDiagram.externalInsertionMixedTimeOrderedAtomicPair
       (externalInsertionMixedTimeOrderedAtomicLegEquiv
         (d.componentExternalTime externalTime B) (d.componentInteractionTime σ B) b)
   rw [hExternalLabel, hExternalTime, hVertexLabel, hInteractionTime] at h
-  have hposition (p) :
-      externalInsertionMixedTimeOrderedAtomicLegPosition
-          (d.componentExternalTime externalTime B) (d.componentInteractionTime σ B)
-          (externalInsertionMixedTimeOrderedAtomicLegEquiv
-            (d.componentExternalTime externalTime B) (d.componentInteractionTime σ B) p) = p :=
-    (externalInsertionMixedTimeOrderedAtomicLegEquiv
-      (d.componentExternalTime externalTime B) (d.componentInteractionTime σ B)).symm_apply_apply p
-  rw [hposition a, hposition b] at h
+  simp only [externalInsertionMixedTimeOrderedAtomicLegPosition,
+    Equiv.symm_apply_apply] at h
   exact h
 
 variable [Fintype Mode]
