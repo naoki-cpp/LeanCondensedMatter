@@ -108,13 +108,6 @@ theorem heisenbergEvolve_eq_comp (energy : Config → ℝ) (τ : ℝ)
   intro x
   rfl
 
-/-- **At `τ = 0`, imaginary-time evolution is trivial**: `A(0) = A`. -/
-@[simp]
-theorem heisenbergEvolve_zero (energy : Config → ℝ)
-    (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
-    heisenbergEvolve energy 0 A = A := by
-  simp [heisenbergEvolve_eq_comp]
-
 /-! ## Matrix coefficients -/
 
 /-- **`diagonalEvolution`'s matrix coefficients**: diagonal, `exp(τ · energy n)` on the diagonal
