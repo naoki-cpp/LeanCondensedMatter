@@ -113,8 +113,7 @@ theorem heisenbergEvolve_eq_comp (energy : Config → ℝ) (τ : ℝ)
 theorem heisenbergEvolve_zero (energy : Config → ℝ)
     (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
     heisenbergEvolve energy 0 A = A := by
-  rw [heisenbergEvolve_eq_comp]
-  simp
+  simp [heisenbergEvolve_eq_comp]
 
 /-! ## Matrix coefficients -/
 
@@ -158,16 +157,10 @@ theorem matrixCoeff_heisenbergEvolve (energy : Config → ℝ) (τ : ℝ)
 /-- Every basis-diagonal operator is fixed by diagonal Heisenberg evolution. -/
 theorem heisenbergEvolve_diagonalOperator (energy : Config → ℝ) (τ : ℝ) (a : Config → ℂ) :
     heisenbergEvolve energy τ (diagonalOperator a) = diagonalOperator a := by
-  rw [heisenbergEvolve_eq_comp]
-  have hcomm :
-      (diagonalEvolution energy τ).comp (diagonalOperator a) =
-        (diagonalOperator a).comp (diagonalEvolution energy τ) := by
-    rw [diagonalEvolution, diagonalOperator_comp, diagonalOperator_comp]
-    congr 1
-    funext c
-    ring
-  rw [← LinearMap.comp_assoc, hcomm, LinearMap.comp_assoc,
-    diagonalEvolution_comp_neg, LinearMap.comp_id]
+  apply matrixCoeff_ext
+  intro m n
+  simp only [matrixCoeff_heisenbergEvolve, matrixCoeff_diagonalOperator]
+  by_cases h : m = n <;> simp [h]
 
 /-! ## The KMS-type commutation relation, for an operator with a known eigenvalue shift -/
 
