@@ -25,8 +25,8 @@ noncomputable def interactionPicture (energy : Config → ℝ)
 @[simp]
 theorem interactionPicture_zero (energy : Config → ℝ)
     (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
-    interactionPicture energy V 0 = V :=
-  heisenbergEvolve_zero energy V
+    interactionPicture energy V 0 = V := by
+  simp [interactionPicture, heisenbergEvolve_eq_comp]
 
 /-- Matrix coefficients acquire the exponential of the free energy difference. No `Fintype`
 assumption on `Config` is needed. -/
