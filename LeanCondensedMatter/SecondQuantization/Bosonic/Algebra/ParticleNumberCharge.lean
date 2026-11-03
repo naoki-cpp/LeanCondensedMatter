@@ -9,8 +9,8 @@ set_option linter.style.header false
 The bosonic mirror of `Fermionic/Algebra/ParticleNumberCharge.lean`: instantiates
 `Common.CarriesShift` for `annihilate i`/`create i`, with `particleNumber` (cast to `ℤ`) as the
 additive grading. The proof needs no positivity fact about the `√n`/`√(n+1)` normalization
-coefficients — `Common.grading_eq_of_matrixCoeff_ne_zero_of_basisState_smul` packages the support-selection
-argument, leaving only the occupation update and particle-number difference in these proofs.
+coefficients — `Common.CarriesShift.of_basisState_smul` reduces support selection
+to the occupation update and particle-number difference.
 -/
 
 namespace SecondQuantization
