@@ -26,23 +26,6 @@ variable {Mode : Type*} [Finite Mode]
 /-- File-local classical equality matches the concrete free-thermal pair kernel. -/
 local instance instDecidableEqQuarticDysonExpansion : DecidableEq Mode := Classical.decEq Mode
 
-/-- The concrete Gibbs expectation of the ordered quartic local-leg product is exactly the sum over
-the pairing amplitudes carried by the existing quartic diagram combinatorics. -/
-theorem QuarticDiagram.grandCanonicalGibbsExpectation_eq_orderedThermalWickSum
-    (ε : Mode → ℝ) (β μ : ℝ) (hpos : ∀ i, 0 < β * (ε i - μ))
-    {S : Finset (Fin N)}
-    (d : Common.QuarticDiagram (Common.QuarticVertexLabel Mode) N S)
-    (order : Common.QuarticVertexOrder S) :
-    grandCanonicalGibbsExpectation ε β μ
-        (quarticFreeThermalOrderedProduct (fun i => d.vertexLabel (order i))) =
-      QuarticDiagram.orderedThermalWickSum ε β μ d order := by
-  letI := Fintype.ofFinite Mode
-  have hwick := grandCanonicalGibbsExpectation_eq_sum_pairing_concrete ε β μ hpos
-    (2 * S.card) (quarticFreeThermalFieldFamily fun i => d.vertexLabel (order i))
-  simpa [quarticFreeThermalOrderedProduct, QuarticDiagram.orderedFreeThermalFieldFamily,
-    QuarticDiagram.orderedThermalWickSum, Combinatorics.Pairing.evaluation] using hwick
-
-
 /-- Every finite bare quartic vertex sequence has a summable free-Gibbs numerator under the
 positive one-mode Boltzmann hypothesis. -/
 theorem quarticVertexSequenceOperator_mem_grandCanonicalGibbsDomain
