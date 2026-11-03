@@ -88,15 +88,6 @@ noncomputable def diagonalEvolutionEquiv (energy : Config → ℝ) (τ : ℝ) :
     rw [diagonalEvolution_comp_neg]
     rfl
 
-private theorem diagonalEvolutionEquiv_trans (energy : Config → ℝ) (s t : ℝ) :
-    (diagonalEvolutionEquiv energy s).trans (diagonalEvolutionEquiv energy t) =
-      diagonalEvolutionEquiv energy (s + t) := by
-  apply LinearEquiv.ext
-  intro x
-  change ((diagonalEvolution energy t).comp (diagonalEvolution energy s)) x =
-    diagonalEvolution energy (s + t) x
-  rw [diagonalEvolution_add, add_comm t s]
-
 /-! ## Algebraic Heisenberg-type evolution of a general operator -/
 
 /-- **The algebraic imaginary-time (Heisenberg-type) evolution of operators under the diagonal
@@ -163,20 +154,6 @@ theorem matrixCoeff_heisenbergEvolve (energy : Config → ℝ) (τ : ℝ)
   congr 2
   push_cast
   ring
-
-/-- **`heisenbergEvolve` is a one-parameter semigroup**: `A(s)(t) = A(s + t)`. -/
-theorem heisenbergEvolve_heisenbergEvolve (energy : Config → ℝ) (s t : ℝ)
-    (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
-    heisenbergEvolve energy t (heisenbergEvolve energy s A) =
-      heisenbergEvolve energy (s + t) A := by
-  change
-    (diagonalEvolutionEquiv energy t).conjAlgEquiv ℂ
-        ((diagonalEvolutionEquiv energy s).conjAlgEquiv ℂ A) =
-      (diagonalEvolutionEquiv energy (s + t)).conjAlgEquiv ℂ A
-  rw [← diagonalEvolutionEquiv_trans energy s t]
-  apply LinearMap.ext
-  intro x
-  rfl
 
 /-- Every basis-diagonal operator is fixed by diagonal Heisenberg evolution. -/
 theorem heisenbergEvolve_diagonalOperator (energy : Config → ℝ) (τ : ℝ) (a : Config → ℂ) :
