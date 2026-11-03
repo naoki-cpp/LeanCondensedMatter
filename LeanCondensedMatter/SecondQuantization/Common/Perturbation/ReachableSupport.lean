@@ -32,11 +32,6 @@ noncomputable def reachableSupport
       (reachableSupport V order n).biUnion fun k => (V (basisState k)).support
 
 @[simp]
-theorem reachableSupport_zero
-    (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (n : Config) :
-    reachableSupport V 0 n = {n} := rfl
-
-@[simp]
 theorem reachableSupport_succ
     (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (order : ℕ) (n : Config) :
     reachableSupport V (order + 1) n =
