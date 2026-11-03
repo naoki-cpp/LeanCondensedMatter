@@ -162,6 +162,7 @@ theorem completedDiagonalOperator_adjoint_eq (w : Config → ℂ) :
   apply le_antisymm
   · refine ⟨?_, ?_⟩
     · intro y hy
+      change y ∈ completedDiagonalDomain (fun c => star (w c))
       rw [mem_completedDiagonalDomain_iff]
       let y' : (completedDiagonalOperator w).adjoint.domain := ⟨y, hy⟩
       convert (lp.memℓp ((completedDiagonalOperator w).adjoint y')) using 1
