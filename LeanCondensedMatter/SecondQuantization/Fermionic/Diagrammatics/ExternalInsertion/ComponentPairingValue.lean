@@ -163,11 +163,6 @@ theorem ExternalInsertionWickDiagram.mixedPairingValue_eq_inter_mul_prod_compone
       (d.componentExternalTime externalTime B)
       (d.componentOrderedDiagram B).vertexLabelSequence
       (d.componentInteractionTime σ B)
-  change pairing.evaluation (pairing.weight Common.Statistics.fermion) pairValue =
-    (Common.Statistics.fermion.zetaInt : ℂ) ^
-      pairing.interComponentCrossingCount (d.componentMixedPairEquiv externalTime σ) *
-    ∏ B, (localPairing B).evaluation
-      ((localPairing B).weight Common.Statistics.fermion) (localPairValue B)
   exact Pairing.evaluation_eq_mul_prod_components
     pairing localPairing (d.componentMixedPairEquiv externalTime σ)
     (pairing.weight Common.Statistics.fermion)
@@ -183,8 +178,7 @@ theorem ExternalInsertionWickDiagram.mixedPairingValue_eq_inter_mul_prod_compone
         (fun B => Equiv.refl _)
         (fun B => d.componentMixedPosition externalTime σ B)
         (fun B => d.componentMixedPosition_strictMono externalTime σ B)
-        (fun B pr => by
-          exact d.componentMixedPairEquiv_apply externalTime σ B pr)))
+        (d.componentMixedPairEquiv_apply externalTime σ)))
     (fun B pr => by
       rw [d.componentMixedPairEquiv_apply externalTime σ B pr]
       exact d.externalInsertionMixedTimeOrderedAtomicPairValue_componentMixedPosition
