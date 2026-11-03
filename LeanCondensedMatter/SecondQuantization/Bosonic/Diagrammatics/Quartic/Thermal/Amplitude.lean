@@ -58,17 +58,6 @@ noncomputable def QuarticDiagram.orderedThermalAmplitude
   (-1 : ℂ) ^ S.card * d.vertexWeight g *
     QuarticDiagram.orderedThermalPairingValue ε β μ d order
 
-/-- The full Wick pairing sum for the ordered vertex labels underlying a quartic diagram. -/
-noncomputable def QuarticDiagram.orderedThermalWickSum
-    (ε : Mode → ℝ) (β μ : ℝ) {S : Finset (Fin N)}
-    (d : Common.QuarticDiagram (Common.QuarticVertexLabel Mode) N S)
-    (order : Common.QuarticVertexOrder S) : ℂ :=
-  ∑ pairing : Pairing (2 * S.card),
-    pairing.evaluation (pairing.weight .boson)
-      (fun a b => freeThermalPairValue (fun i => ε i - μ) β
-        (QuarticDiagram.orderedFreeThermalFieldFamily d order a)
-        (QuarticDiagram.orderedFreeThermalFieldFamily d order b))
-
 
 end
 end Bosonic
