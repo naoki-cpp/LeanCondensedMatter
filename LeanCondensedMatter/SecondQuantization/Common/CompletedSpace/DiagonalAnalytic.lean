@@ -86,31 +86,6 @@ theorem completedDiagonalOperator_denseDomain (w : Config → ℂ) :
   rintro _ ⟨x, rfl⟩
   exact algebraicToCompleted_mem_completedDiagonalDomain w x
 
-private theorem mem_completedDiagonalOperator_graph_iff (w : Config → ℂ)
-    (z : CompletedFock Config × CompletedFock Config) :
-    z ∈ (completedDiagonalOperator w).graph ↔
-      ∀ c : Config, z.2 c = w c * z.1 c := by
-  constructor
-  · intro hz c
-    rw [LinearPMap.mem_graph_iff] at hz
-    obtain ⟨x, hx, hfx⟩ := hz
-    calc
-      z.2 c = (completedDiagonalOperator w x) c :=
-        (congrArg (fun ψ : CompletedFock Config => ψ c) hfx).symm
-      _ = w c * (x : CompletedFock Config) c := completedDiagonalOperator_apply w x c
-      _ = w c * z.1 c := by rw [hx]
-  · intro hz
-    have hdomain : z.1 ∈ completedDiagonalDomain w := by
-      rw [mem_completedDiagonalDomain_iff]
-      convert (lp.memℓp z.2) using 1
-      funext c
-      exact (hz c).symm
-    rw [LinearPMap.mem_graph_iff]
-    refine ⟨⟨z.1, hdomain⟩, rfl, ?_⟩
-    ext c
-    rw [completedDiagonalOperator_apply]
-    exact (hz c).symm
-
 /-- A maximal diagonal multiplication operator is closed for an arbitrary complex weight. -/
 theorem completedDiagonalOperator_isClosed (w : Config → ℂ) :
     (completedDiagonalOperator w).IsClosed := by
@@ -123,7 +98,28 @@ theorem completedDiagonalOperator_isClosed (w : Config → ℂ) :
             z.2 c = w c * z.1 c} := by
     ext z
     rw [Set.mem_iInter]
-    exact mem_completedDiagonalOperator_graph_iff w z
+    change z ∈ (completedDiagonalOperator w).graph ↔
+      ∀ c : Config, z.2 c = w c * z.1 c
+    constructor
+    · intro hz c
+      rw [LinearPMap.mem_graph_iff] at hz
+      obtain ⟨x, hx, hfx⟩ := hz
+      calc
+        z.2 c = (completedDiagonalOperator w x) c :=
+          (congrArg (fun ψ : CompletedFock Config => ψ c) hfx).symm
+        _ = w c * (x : CompletedFock Config) c := completedDiagonalOperator_apply w x c
+        _ = w c * z.1 c := by rw [hx]
+    · intro hz
+      have hdomain : z.1 ∈ completedDiagonalDomain w := by
+        rw [mem_completedDiagonalDomain_iff]
+        convert (lp.memℓp z.2) using 1
+        funext c
+        exact (hz c).symm
+      rw [LinearPMap.mem_graph_iff]
+      refine ⟨⟨z.1, hdomain⟩, rfl, ?_⟩
+      ext c
+      rw [completedDiagonalOperator_apply]
+      exact (hz c).symm
   rw [hgraph]
   apply isClosed_iInter
   intro c
@@ -141,12 +137,6 @@ private theorem completedDiagonalOperator_isFormalAdjoint_conj (w : Config → �
   intro c
   rw [completedDiagonalOperator_apply, completedDiagonalOperator_apply]
   simp [mul_assoc, mul_left_comm]
-
-private theorem completedDiagonalOperator_conj_le_adjoint (w : Config → ℂ) :
-    completedDiagonalOperator (fun c => star (w c)) ≤
-      (completedDiagonalOperator w).adjoint :=
-  (completedDiagonalOperator_isFormalAdjoint_conj w).le_adjoint
-    (completedDiagonalOperator_denseDomain w)
 
 private theorem completedDiagonalOperator_adjoint_apply (w : Config → ℂ)
     (y : (completedDiagonalOperator w).adjoint.domain) (c : Config) :
@@ -191,7 +181,8 @@ theorem completedDiagonalOperator_adjoint_eq (w : Config → ℂ) :
     (completedDiagonalOperator w).adjoint =
       completedDiagonalOperator (fun c => star (w c)) :=
   le_antisymm (completedDiagonalOperator_adjoint_le_conj w)
-    (completedDiagonalOperator_conj_le_adjoint w)
+    ((completedDiagonalOperator_isFormalAdjoint_conj w).le_adjoint
+      (completedDiagonalOperator_denseDomain w))
 
 /-- A diagonal operator whose weights are fixed by complex conjugation is formally symmetric. -/
 theorem completedDiagonalOperator_isFormalAdjoint_self (w : Config → ℂ)
