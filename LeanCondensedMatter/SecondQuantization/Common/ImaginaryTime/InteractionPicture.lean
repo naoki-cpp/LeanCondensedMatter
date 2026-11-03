@@ -33,8 +33,8 @@ assumption on `Config` is needed. -/
 theorem matrixCoeff_interactionPicture (energy : Config → ℝ)
     (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (τ : ℝ) (m n : Config) :
     matrixCoeff (interactionPicture energy V τ) m n =
-      Complex.exp ((τ * (energy m - energy n) : ℝ) : ℂ) * matrixCoeff V m n := by
-  simpa only [interactionPicture] using matrixCoeff_heisenbergEvolve energy τ V m n
+      Complex.exp ((τ * (energy m - energy n) : ℝ) : ℂ) * matrixCoeff V m n :=
+  matrixCoeff_heisenbergEvolve energy τ V m n
 
 /-- Diagonal imaginary-time evolution changes coefficients but does not create new output basis
 states in a fixed matrix column. -/
@@ -47,8 +47,7 @@ theorem support_interactionPicture_basisState_subset (energy : Config → ℝ)
   change matrixCoeff (interactionPicture energy V τ) m n ≠ 0 at hm
   change matrixCoeff V m n ≠ 0
   rw [matrixCoeff_interactionPicture] at hm
-  intro hzero
-  exact hm (by simp [hzero])
+  exact fun hzero => hm (by simp [hzero])
 
 /-- Every interaction-picture matrix coefficient is continuous in imaginary time. -/
 theorem continuous_matrixCoeff_interactionPicture (energy : Config → ℝ)
