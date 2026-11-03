@@ -36,16 +36,11 @@ private theorem schwartzConj1D_apply (f : SchwartzMap ℝ ℂ) (x : ℝ) :
     schwartzConj1D f x = star (f x) :=
   rfl
 
-private theorem deriv_schwartzConj1D (f : SchwartzMap ℝ ℂ) (x : ℝ) :
-    deriv (schwartzConj1D f) x = star (deriv f x) := by
-  change deriv (fun y : ℝ => star (f y)) x = star (deriv (f : ℝ → ℂ) x)
-  exact (SchwartzMap.hasDerivAt f x).star.deriv
-
 private theorem derivCLM_schwartzConj1D (f : SchwartzMap ℝ ℂ) :
     SchwartzMap.derivCLM ℂ ℂ (schwartzConj1D f) =
       schwartzConj1D (SchwartzMap.derivCLM ℂ ℂ f) := by
   ext x
-  simpa [schwartzConj1D_apply] using deriv_schwartzConj1D f x
+  simpa [schwartzConj1D_apply] using (SchwartzMap.hasDerivAt f x).star.deriv
 
 private theorem schwartz_laplacian_eq_second_deriv (f : SchwartzMap ℝ ℂ) :
     Δ f = SchwartzMap.derivCLM ℂ ℂ (SchwartzMap.derivCLM ℂ ℂ f) := by
