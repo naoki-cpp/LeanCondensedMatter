@@ -80,25 +80,6 @@ theorem completedCoordinateProjection_algebraicToCompleted_of_support
   · have hpc : P c := hP c (Finsupp.mem_support_iff.mpr hc)
     simp [algebraicToCompleted_apply, hpc]
 
-/-- A contractive coordinate projection moving no point of a fixed algebraic approximation
-moves an arbitrary completed vector by at most twice the approximation error. -/
-private theorem dist_completedCoordinateProjection_le_two_mul_of_fixed
-    (P : Config → Prop) (ψ φ : CompletedFock Config)
-    (hφ : completedCoordinateProjection P φ = φ) :
-    dist (completedCoordinateProjection P ψ) ψ ≤ 2 * dist ψ φ := by
-  have hcontract :
-      dist (completedCoordinateProjection P ψ) (completedCoordinateProjection P φ) ≤
-        dist ψ φ := dist_completedCoordinateProjection_le P ψ φ
-  calc
-    dist (completedCoordinateProjection P ψ) ψ ≤
-        dist (completedCoordinateProjection P ψ) (completedCoordinateProjection P φ) +
-          dist (completedCoordinateProjection P φ) ψ := dist_triangle _ _ _
-    _ = dist (completedCoordinateProjection P ψ) (completedCoordinateProjection P φ) +
-          dist φ ψ := by rw [hφ]
-    _ ≤ dist ψ φ + dist φ ψ := by
-      exact add_le_add hcontract (le_refl _)
-    _ = 2 * dist ψ φ := by rw [dist_comm φ ψ, two_mul]
-
 /-- Coordinate projections converge strongly to the identity along any filter of masks
 eventually retaining each fixed configuration. The configuration type and filter index
 need not be countable; no finite-rank assumption is made. -/
@@ -120,11 +101,24 @@ theorem tendsto_completedCoordinateProjection_of_eventually
     filter_upwards [hfinite x.support] with i hi
     exact completedCoordinateProjection_algebraicToCompleted_of_support (P i) x hi
   filter_upwards [hfix] with i hi
+  have hcontract :
+      dist (completedCoordinateProjection (P i) ψ)
+          (completedCoordinateProjection (P i) (algebraicToCompleted x)) ≤
+        dist ψ (algebraicToCompleted x) :=
+    dist_completedCoordinateProjection_le (P i) ψ (algebraicToCompleted x)
   calc
     dist (completedCoordinateProjection (P i) ψ) ψ ≤
-        2 * dist ψ (algebraicToCompleted x) :=
-      dist_completedCoordinateProjection_le_two_mul_of_fixed
-        (P i) ψ (algebraicToCompleted x) hi
+        dist (completedCoordinateProjection (P i) ψ)
+            (completedCoordinateProjection (P i) (algebraicToCompleted x)) +
+          dist (completedCoordinateProjection (P i) (algebraicToCompleted x)) ψ :=
+      dist_triangle _ _ _
+    _ = dist (completedCoordinateProjection (P i) ψ)
+          (completedCoordinateProjection (P i) (algebraicToCompleted x)) +
+        dist (algebraicToCompleted x) ψ := by rw [hi]
+    _ ≤ dist ψ (algebraicToCompleted x) + dist (algebraicToCompleted x) ψ := by
+      exact add_le_add hcontract (le_refl _)
+    _ = 2 * dist ψ (algebraicToCompleted x) := by
+      rw [dist_comm (algebraicToCompleted x) ψ, two_mul]
     _ < ε := by linarith
 
 end
