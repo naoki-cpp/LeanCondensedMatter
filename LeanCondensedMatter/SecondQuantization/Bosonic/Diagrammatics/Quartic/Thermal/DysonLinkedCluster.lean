@@ -1,5 +1,6 @@
 import LeanCondensedMatter.Analysis.PowerSeries.Cumulant
-import LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion.Moment
+import LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion.Factorization
+import LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion.Pairing
 import LeanCondensedMatter.SecondQuantization.Bosonic.Perturbation.DysonGibbsSeries
 
 set_option linter.style.header false
@@ -33,7 +34,14 @@ theorem factorial_mul_coeff_logOf_grandCanonicalGibbsDysonSeries_eq_sum_connecte
           (PowerSeries.logOf (grandCanonicalGibbsDysonSeries ε β μ (quarticInteraction g))) =
       ∑ d : Common.ConnectedQuarticDiagram (QuarticVertexLabel Mode) n Finset.univ,
         QuarticDiagram.dysonThermalAmplitude ε β μ g d.1 β := by
-  let W := quarticDysonThermalDiagramMultiplicativeWeight (N := n) ε β μ g β
+  let W : Combinatorics.MultiplicativeWeight
+      (Common.quarticDiagramConnectedDecomposition (QuarticVertexLabel Mode) n) ℂ :=
+    Common.QuarticDiagram.multiplicativeWeight
+      (N := n)
+      (fun d => QuarticDiagram.dysonThermalAmplitude ε β μ g d β)
+      (fun d => by
+        simpa only [Common.QuarticDiagram.restrictComponentConnected] using
+          QuarticDiagram.dysonThermalAmplitude_eq_prod_components ε β μ g d β)
   have hZ :
       PowerSeries.constantCoeff
           (grandCanonicalGibbsDysonSeries ε β μ (quarticInteraction g)) = 1 :=
@@ -42,9 +50,16 @@ theorem factorial_mul_coeff_logOf_grandCanonicalGibbsDysonSeries_eq_sum_connecte
       Combinatorics.powerSeriesMomentSetFunction (α := Fin n)
           (grandCanonicalGibbsDysonSeries ε β μ (quarticInteraction g)) hZ =
         W.normalizedObjectMoment := by
-    simpa only [W] using
-      (powerSeriesMomentSetFunction_grandCanonicalGibbsDysonSeries_eq_dysonThermalObjectMoment
-        (N := n) ε β μ hpos g hZ)
+    rw [Combinatorics.powerSeriesMomentSetFunction_eq_iff]
+    intro S
+    simp only [Combinatorics.powerSeriesMomentCoeff, coeff_grandCanonicalGibbsDysonSeries]
+    change
+      (S.card.factorial : ℂ) *
+          grandCanonicalGibbsDysonCoeff ε β μ (quarticInteraction g) S.card β =
+        ∑ d : Common.QuarticDiagram (QuarticVertexLabel Mode) n S,
+          QuarticDiagram.dysonThermalAmplitude ε β μ g d β
+    exact factorial_mul_grandCanonicalGibbsDysonCoeff_quarticInteraction_eq_sum_dysonThermalAmplitude
+      ε β μ hpos g S β
   have huniv : (Finset.univ : Finset (Fin n)) ≠ ∅ :=
     (Finset.univ_nonempty_iff.mpr ⟨⟨0, Nat.pos_of_ne_zero hn⟩⟩).ne_empty
   calc
