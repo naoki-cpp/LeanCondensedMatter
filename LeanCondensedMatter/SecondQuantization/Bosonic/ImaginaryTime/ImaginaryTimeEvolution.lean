@@ -102,19 +102,6 @@ noncomputable def imaginaryTimeEvolve (ε : Mode → ℝ) (τ : ℝ)
     FockSpace Mode →ₗ[ℂ] FockSpace Mode :=
   Common.heisenbergEvolve (freeEigenvalue ε) τ A
 
-theorem imaginaryTimeEvolve_apply (ε : Mode → ℝ) (τ : ℝ)
-    (A : FockSpace Mode →ₗ[ℂ] FockSpace Mode) (x : FockSpace Mode) :
-    imaginaryTimeEvolve ε τ A x =
-      imaginaryTimeEvolveFree ε τ (A (imaginaryTimeEvolveFree ε (-τ) x)) :=
-  rfl
-
-/-- The free Hamiltonian is fixed by its own imaginary-time evolution. -/
-theorem imaginaryTimeEvolve_freeHamiltonian (ε : Mode → ℝ) (τ : ℝ) :
-    imaginaryTimeEvolve ε τ (freeHamiltonian ε) = freeHamiltonian ε := by
-  simpa only [imaginaryTimeEvolve, freeHamiltonian] using
-    Common.heisenbergEvolve_diagonalOperator (freeEigenvalue ε) τ
-      (fun n : Occupation Mode => (freeEigenvalue ε n : ℂ))
-
 /-! ## Energy shifts of creation and annihilation -/
 
 /-- Annihilation at mode `i` carries free-energy shift `-ε i`. -/
