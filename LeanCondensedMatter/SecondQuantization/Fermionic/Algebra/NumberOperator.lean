@@ -50,13 +50,10 @@ basis-diagonal operator API. -/
 theorem numberOperator_eq_diagonalOperator (i : Mode) :
     numberOperator i =
       Common.diagonalOperator (fun n : Occupation Mode => if i ∈ n then (1 : ℂ) else 0) := by
-  apply Common.linearMap_ext_basisState
+  apply Common.eq_diagonalOperator_of_basisState
   intro n
-  change numberOperator i (basisState n) =
-    Common.diagonalOperator (fun n : Occupation Mode => if i ∈ n then (1 : ℂ) else 0)
-      (basisState n)
-  rw [numberOperator_basisState]
-  by_cases hi : i ∈ n <;> simp [hi, basisState, Common.diagonalOperator_basisState]
+  by_cases hi : i ∈ n <;>
+    simpa [basisState, hi] using (numberOperator_basisState i n)
 
 /-- **`c_i c_i† = id - N_i`**, an instance of `Common.annihilate_comp_create_self`. -/
 theorem annihilate_comp_create_self (i : Mode) :
