@@ -56,6 +56,17 @@ theorem numberOperator_eq_diagonalOperator (i : Mode) :
     (if i ∈ n then (1 : ℂ) else 0) • basisState n
   by_cases hi : i ∈ n <;> simpa [hi] using (numberOperator_basisState i n)
 
+/-- The fermionic ladder-product number operator agrees with the common occupation-number
+operator. The common operator is defined without choosing CAR or CCR statistics. -/
+theorem numberOperator_eq_occupationNumberOperator (i : Mode) :
+    numberOperator i =
+      Common.occupationNumberOperator (Config := Occupation Mode) i := by
+  rw [numberOperator_eq_diagonalOperator]
+  unfold Common.occupationNumberOperator
+  congr 1
+  funext n
+  by_cases hi : i ∈ n <;> simp [occupationBasis, hi]
+
 /-- **`c_i c_i† = id - N_i`**, an instance of `Common.annihilate_comp_create_self`. -/
 theorem annihilate_comp_create_self (i : Mode) :
     (annihilate i).comp (create i) = LinearMap.id - numberOperator i := by
