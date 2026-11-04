@@ -106,25 +106,18 @@ private theorem norm_resolventApproximationEvolution_sub_le
   rw [boundedUnitaryEvolution_apply_norm As hAs t]
   exact norm_boundedUnitaryEvolution_apply_sub_le D hD t x
 
-private def positiveApproximationScale (r : ℝ) : ℝ :=
-  max 1 r
-
-private theorem positiveApproximationScale_pos (r : ℝ) :
-    0 < positiveApproximationScale r := by
-  exact lt_of_lt_of_le zero_lt_one (le_max_left 1 r)
-
 /-- A total real-indexed version of the bounded resolvent approximation. -/
 private def boundedSelfAdjointApproximationAtScale
     (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (r : ℝ) : H →L[ℂ] H :=
-  boundedSelfAdjointApproximation A hA (positiveApproximationScale r)
-    (positiveApproximationScale_pos r)
+  boundedSelfAdjointApproximation A hA (max 1 r)
+    (zero_lt_one.trans_le (le_max_left 1 r))
 
 /-- A total real-indexed version of the resolvent evolution, obtained by clipping the scale below
 at one. -/
 private def resolventApproximationEvolutionAtScale
     (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (r t : ℝ) : H →L[ℂ] H :=
-  resolventApproximationEvolution A hA (positiveApproximationScale r)
-    (positiveApproximationScale_pos r) t
+  resolventApproximationEvolution A hA (max 1 r)
+    (zero_lt_one.trans_le (le_max_left 1 r)) t
 
 /-- On the generator domain, the totalized resolvent evolutions form a Cauchy sequence at
 positive infinity. -/
@@ -175,7 +168,7 @@ private theorem resolventApproximationEvolutionAtScale_apply_domain_cauchySeq
     have hnorm :=
       (norm_resolventApproximationEvolution_sub_le A hA r s hrpos hspos t (x : H)).trans_lt
         ((mul_le_mul_of_nonneg_right hdiff (abs_nonneg t)).trans_lt hsum)
-    simpa [dist_eq_norm, resolventApproximationEvolutionAtScale, positiveApproximationScale,
+    simpa [dist_eq_norm, resolventApproximationEvolutionAtScale,
       max_eq_right h1r, max_eq_right h1s] using hnorm
 
 /-- On the original domain, the totalized bounded approximations converge strongly to the
@@ -193,7 +186,7 @@ private theorem boundedSelfAdjointApproximationAtScale_apply_tendsto
   have h1r : 1 ≤ r := (le_max_right R 1).trans hr
   have hrpos : 0 < r := zero_lt_one.trans_le h1r
   have h := hconv r hRr hrpos
-  simpa [boundedSelfAdjointApproximationAtScale, positiveApproximationScale,
+  simpa [boundedSelfAdjointApproximationAtScale,
     max_eq_right h1r, dist_eq_norm] using h
 
 end
@@ -804,7 +797,7 @@ private theorem norm_stoneEvolution_sub_resolventApproximationEvolution_le
     apply le_of_tendsto hdiff
     exact Filter.Eventually.of_forall fun s => by
       have hpair := norm_resolventApproximationEvolution_sub_le
-        A hA r (positiveApproximationScale s) hr (positiveApproximationScale_pos s) t
+        A hA r (max 1 s) hr (zero_lt_one.trans_le (le_max_left 1 s)) t
           (x : H)
       change ‖Ur (x : H) - resolventApproximationEvolutionAtScale A hA s t (x : H)‖ ≤
         ‖Ar (x : H) - boundedSelfAdjointApproximationAtScale A hA s (x : H)‖ * |t|
