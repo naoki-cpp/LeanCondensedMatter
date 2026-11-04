@@ -103,7 +103,6 @@ theorem expectation_stationary (m : M) (t : ℝ) (A : H →L[ℂ] H) :
 
 /-- Taking the adjoint of a Heisenberg-evolved Hermitian observable does
 not change that observable. -/
-omit [FiniteDimensional ℂ H] in
 private theorem star_evolved_of_selfAdjoint
     (sys : BoundedFreeSystem H) (A : H →L[ℂ] H)
     (hA : IsSelfAdjoint A) (t : ℝ) :
