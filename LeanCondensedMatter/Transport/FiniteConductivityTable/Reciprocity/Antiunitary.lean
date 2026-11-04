@@ -1,191 +1,320 @@
-import LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.Antiunitary
-import LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann.Eigenbasis.Data
 import LeanCondensedMatter.Transport.FiniteConductivityTable.Reciprocity
+import Mathlib.Analysis.SpecialFunctions.Exponential
+import Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic
 
 set_option linter.style.header false
 
 /-!
-# Antiunitary-to-Lehmann charge-current reciprocity bridge
+# Operator time reversal and finite-time Kubo conductivity
 
-The input is a family of bounded self-adjoint free systems with genuine
-energy eigenbases, a common reduced Planck constant, and a supplied
-antiunitary map. The reversed eigenbasis is the antiunitary image of the
-original eigenbasis, and directional charge currents are self-adjoint
-and odd under the antiunitary covariance relation.
+Hamiltonian covariance and preservation of operator exponentials give
+the reversal law for the Schrödinger propagators. Together with
+stationarity of the positive density state, this proves reciprocity of
+the current-current Kubo kernel. The contact contribution is also
+derived from its operator covariance and Hermiticity.
 
-These operator-level assumptions imply the conjugation and reversal
-identities required by `FiniteReciprocalCurrentData`. The generic finite
-Kubo–Lehmann reciprocity theorem then gives reciprocal normalized
-conductivity tensors without assuming the conductivity identity itself.
-
-Checking Hamiltonian covariance, basis pairing, and Peierls-contact
-covariance for a concrete material remains a model-specific obligation.
-
-If the control reversal is involutive, the exact same-label basis pairing
-also forces the square of the antiunitary map to be the identity on the
-entire Hilbert space. Thus this interface excludes a nonzero spin-half
-time reversal with square minus identity.
+Unlike exact eigenvector pairing, these operator hypotheses permit a
+Kramers antiunitary with square minus identity on state vectors.
+The finite-time transform is kept separate from the infinite-time,
+zero-switching, DC, and thermodynamic limits.
 -/
 
 namespace QuantumTheory.Transport
 
 open QuantumTheory.LinearResponse
+open ContinuousLinearMap
 
 noncomputable section
 
-/-- Operator-level data sufficient to instantiate the finite Lehmann
-charge-current Onsager theorem. The system's spectral eigenbasis is
-explicit, rather than an arbitrary table of matrix elements. -/
-structure AntiunitaryCurrentPairing (M ι d H : Type*)
-    [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] where
-  /-- Reversal of all time-reversal-odd controls. -/
-  reverse : M → M
-  /-- Shared physical reduced Planck constant. -/
-  hbar : ℝ
-  /-- The bounded quantum system for each set of controls. -/
-  system : M → BoundedFreeSystem H
-  /-- The system-specific Planck constants agree with the shared one. -/
-  system_hbar : ∀ m, (system m).hbar = hbar
-  /-- A genuine energy eigenbasis and its normalized diagonal state. -/
-  spectral : (m : M) → EnergyEigenbasisLehmannData (system m) ι
-  /-- Supplied antiunitary on the common Hilbert space. -/
-  timeReversal : AntiunitaryMap H
-  /-- Reversed eigenstates are antiunitary images, at the same spectral label. -/
-  basis_reverse : ∀ m a,
-    (spectral (reverse m)).basis a =
-      timeReversal.toFun ((spectral m).basis a)
-  /-- Reversed energy eigenvalues agree in the paired labeling. -/
-  energy_reverse : ∀ m a,
-    (spectral (reverse m)).energy a = (spectral m).energy a
-  /-- The paired equilibrium occupations agree. -/
-  probability_reverse : ∀ m a,
-    (spectral (reverse m)).probability a = (spectral m).probability a
-  /-- Directional bounded charge-current operators. -/
-  current : M → d → (H →L[ℂ] H)
-  /-- The charge-current operators are Hermitian. -/
-  current_selfAdjoint : ∀ m i, IsSelfAdjoint (current m i)
-  /-- Each charge current is odd under antiunitary time reversal. -/
-  current_covariant : ∀ m i x,
-    timeReversal.toFun (current m i x) =
-      -(current (reverse m) i (timeReversal.toFun x))
-  /-- Scalar expectation of the observable-variation/contact term. -/
-  contact : M → d → d → ℂ
-  /-- Reciprocal contact expectations of the two current directions. -/
-  contact_reverse : ∀ m i j, contact m i j = contact (reverse m) j i
+namespace KuboTimeReversalData
 
-namespace AntiunitaryCurrentPairing
+variable {M d H : Type*}
+variable [NormedAddCommGroup H] [InnerProductSpace ℂ H]
+variable [CompleteSpace H] [FiniteDimensional ℂ H]
+variable (data : KuboTimeReversalData M d H)
 
-variable {M ι d H : Type*}
-variable [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
-variable (data : AntiunitaryCurrentPairing M ι d H)
+/-- Complex conjugation of the Schrödinger generator reverses its sign. -/
+theorem transform_schrodingerGenerator (m : M) :
+    data.transform (schrodingerGenerator (data.system m)) =
+      -(schrodingerGenerator (data.system (data.reverse m))) := by
+  simp only [schrodingerGenerator, data.transform_smul,
+    data.hamiltonian_reverse, data.system_hbar]
+  simp
 
-/-- Applying the exact same-label reversed-basis identity twice fixes
-every eigenbasis vector whenever the control reversal closes in two steps. -/
-private theorem timeReversal_sq_apply_basis
-    (m : M) (hreverse : data.reverse (data.reverse m) = m) (a : ι) :
-    data.timeReversal.toFun
-      (data.timeReversal.toFun ((data.spectral m).basis a)) =
-      (data.spectral m).basis a := by
+/-- Hamiltonian covariance induces negative-time covariance of the
+free Schrödinger propagator. -/
+theorem transform_freePropagator (m : M) (t : ℝ) :
+    data.transform (freePropagator (data.system m) t) =
+      freePropagator (data.system (data.reverse m)) (-t) := by
+  rw [freePropagator_eq_exp, freePropagator_eq_exp, data.transform_exp,
+    data.transform_smul, data.transform_schrodingerGenerator m]
+  simp
+
+/-- Antiunitarity reverses the time argument of Heisenberg evolution. -/
+theorem transform_heisenbergEvolution (m : M) (t : ℝ)
+    (A : H →L[ℂ] H) :
+    data.transform
+        (heisenbergEvolution (freePropagatorGroup (data.system m)) t A) =
+      heisenbergEvolution
+        (freePropagatorGroup (data.system (data.reverse m))) (-t)
+          (data.transform A) := by
+  rw [heisenbergEvolution_freePropagatorGroup_apply,
+    heisenbergEvolution_freePropagatorGroup_apply,
+    data.transform_mul, data.transform_mul,
+    data.transform_freePropagator m (-t),
+    data.transform_freePropagator m t]
+  simp
+
+/-- A density operator commuting with the Hamiltonian gives a stationary
+finite-trace expectation, without imposing spectral-basis constraints. -/
+theorem expectation_stationary (m : M) (t : ℝ) (A : H →L[ℂ] H) :
+    data.expectation m
+        (heisenbergEvolution (freePropagatorGroup (data.system m)) t A) =
+      data.expectation m A := by
+  let sys := data.system m
+  let ρ := (data.density m).op
+  let U := freePropagator sys
+  have hcomm : Commute (U t) ρ :=
+    commute_freePropagator_of_commute_hamiltonian sys ρ
+      (data.density_stationary m) t
+  have hunit : U t * U (-t) = 1 := by
+    dsimp [U]
+    rw [← freePropagator_add, add_neg_cancel, freePropagator_zero]
+  change finiteDimensionalOperatorTrace
+      (ρ * heisenbergEvolution (freePropagatorGroup sys) t A) =
+        finiteDimensionalOperatorTrace (ρ * A)
+  rw [heisenbergEvolution_freePropagatorGroup_apply]
   calc
-    _ = data.timeReversal.toFun
-          ((data.spectral (data.reverse m)).basis a) :=
-      congrArg data.timeReversal.toFun (data.basis_reverse m a).symm
-    _ = (data.spectral (data.reverse (data.reverse m))).basis a :=
-      (data.basis_reverse (data.reverse m) a).symm
-    _ = (data.spectral m).basis a := by rw [hreverse]
+    finiteDimensionalOperatorTrace (ρ * (U (-t) * A * U t)) =
+        finiteDimensionalOperatorTrace ((ρ * U (-t) * A) * U t) := by
+      simp only [mul_assoc]
+    _ = finiteDimensionalOperatorTrace (U t * (ρ * U (-t) * A)) :=
+      finiteDimensionalOperatorTrace_mul_comm _ _
+    _ = finiteDimensionalOperatorTrace (ρ * A) := by
+      rw [show U t * (ρ * U (-t) * A) = ρ * A by
+        calc
+          U t * (ρ * U (-t) * A) =
+              (U t * ρ) * U (-t) * A := by simp only [mul_assoc]
+          _ = (ρ * U t) * U (-t) * A := by rw [hcomm.eq]
+          _ = ρ * A := by rw [mul_assoc, hunit, mul_one]]
 
-/-- With a two-step control reversal, exact same-label eigenbasis pairing
-forces the antiunitary square to be the identity on the *whole* Hilbert
-space, not merely on individual eigenvectors. This rules out the usual
-spin-half time reversal (whose square is minus identity) on a nonzero
-Hilbert space. No assumption on the current or contact term is needed. -/
-theorem timeReversal_sq_eq_id
-    (m : M) (hreverse : data.reverse (data.reverse m) = m) :
-    (fun x : H => data.timeReversal.toFun (data.timeReversal.toFun x)) =
-      (id : H → H) := by
-  funext x
-  let b := (data.spectral m).basis
-  apply b.repr.injective
-  ext a
-  simp only [HilbertBasis.repr_apply_apply]
+/-- Taking the adjoint of a Heisenberg-evolved Hermitian observable does
+not change that observable. -/
+private theorem star_evolved_of_selfAdjoint
+    (sys : BoundedFreeSystem H) (A : H →L[ℂ] H)
+    (hA : IsSelfAdjoint A) (t : ℝ) :
+    star (heisenbergEvolution (freePropagatorGroup sys) t A) =
+      heisenbergEvolution (freePropagatorGroup sys) t A := by
+  rw [← map_star, ContinuousLinearMap.star_eq_adjoint, hA.adjoint_eq]
+
+/-- Finite-trace expectation is complex-linear in the observable. -/
+private theorem expectation_sub (m : M)
+    (A B : H →L[ℂ] H) :
+    data.expectation m (A - B) =
+      data.expectation m A - data.expectation m B := by
+  simp [expectation, mul_sub]
+
+/-- Time reversal exchanges the measured and source slots of a two-point
+equilibrium correlation, including the reversal of the time argument
+and its cancellation by stationarity. -/
+theorem correlation_reverse_of_odd (m : M) (t : ℝ)
+    (A B A' B' : H →L[ℂ] H)
+    (hA : IsSelfAdjoint A')
+    (hB : IsSelfAdjoint B')
+    (hTA : data.transform A = -A')
+    (hTB : data.transform B = -B') :
+    data.expectation m
+        (heisenbergEvolution (freePropagatorGroup (data.system m)) t A * B) =
+      data.expectation (data.reverse m)
+        (heisenbergEvolution
+          (freePropagatorGroup (data.system (data.reverse m))) t B' * A') := by
+  let U := freePropagatorGroup (data.system (data.reverse m))
+  have hprod :
+      data.transform
+        (heisenbergEvolution (freePropagatorGroup (data.system m)) t A * B) =
+      heisenbergEvolution U (-t) A' * B' := by
+    rw [data.transform_mul, data.transform_heisenbergEvolution, hTA, hTB]
+    simp [U]
+  have hAstar : star (heisenbergEvolution U (-t) A') =
+      heisenbergEvolution U (-t) A' :=
+    data.star_evolved_of_selfAdjoint _ A' hA (-t)
+  have hBstar : star B' = B' := by
+    rw [ContinuousLinearMap.star_eq_adjoint, hB.adjoint_eq]
+  have hstar :
+      star (data.expectation (data.reverse m)
+          (heisenbergEvolution U (-t) A' * B')) =
+        data.expectation (data.reverse m)
+          (B' * heisenbergEvolution U (-t) A') := by
+    rw [← data.expectation_star, star_mul, hBstar, hAstar]
+  have hshift :
+      data.expectation (data.reverse m)
+          (B' * heisenbergEvolution U (-t) A') =
+        data.expectation (data.reverse m)
+          (heisenbergEvolution U t B' * A') := by
+    rw [← data.expectation_stationary (data.reverse m) t
+      (B' * heisenbergEvolution U (-t) A')]
+    rw [map_mul, heisenbergEvolution_heisenbergEvolution]
+    simp
   calc
-    inner ℂ (b a) (data.timeReversal.toFun (data.timeReversal.toFun x)) =
-        inner ℂ
-          (data.timeReversal.toFun (data.timeReversal.toFun (b a)))
-          (data.timeReversal.toFun (data.timeReversal.toFun x)) := by
-            rw [data.timeReversal_sq_apply_basis m hreverse a]
-    _ = inner ℂ (b a) x := by
-      rw [data.timeReversal.inner_map, data.timeReversal.inner_map]
-      simp
+    data.expectation m
+        (heisenbergEvolution (freePropagatorGroup (data.system m)) t A * B) =
+      star (data.expectation (data.reverse m)
+        (data.transform
+          (heisenbergEvolution (freePropagatorGroup (data.system m)) t A * B))) := by
+      simpa using (congrArg star
+        (data.expectation_reverse m
+          (heisenbergEvolution (freePropagatorGroup (data.system m)) t A * B))).symm
+    _ = star (data.expectation (data.reverse m)
+        (heisenbergEvolution U (-t) A' * B')) := by rw [hprod]
+    _ = data.expectation (data.reverse m)
+        (B' * heisenbergEvolution U (-t) A') := hstar
+    _ = data.expectation (data.reverse m)
+        (heisenbergEvolution U t B' * A') := hshift
 
+/-- The current-current commutator is reciprocal under simultaneous
+reversal of the magnetic controls and exchange of current directions. -/
+theorem current_commutator_reverse (m : M) (i j : d) (t : ℝ) :
+    data.expectation m
+        (heisenbergEvolution (freePropagatorGroup (data.system m)) t
+          (data.current m i) * data.current m j -
+          data.current m j *
+            heisenbergEvolution (freePropagatorGroup (data.system m)) t
+              (data.current m i)) =
+      data.expectation (data.reverse m)
+        (heisenbergEvolution
+            (freePropagatorGroup (data.system (data.reverse m))) t
+              (data.current (data.reverse m) j) *
+                data.current (data.reverse m) i -
+          data.current (data.reverse m) i *
+            heisenbergEvolution
+              (freePropagatorGroup (data.system (data.reverse m))) t
+                (data.current (data.reverse m) j)) := by
+  let A := data.current m i
+  let B := data.current m j
+  let Ap := data.current (data.reverse m) i
+  let Bp := data.current (data.reverse m) j
+  let U := freePropagatorGroup (data.system m)
+  let Up := freePropagatorGroup (data.system (data.reverse m))
+  have hfirst :
+      data.expectation m (heisenbergEvolution U t A * B) =
+        data.expectation (data.reverse m)
+          (heisenbergEvolution Up t Bp * Ap) :=
+    data.correlation_reverse_of_odd m t A B Ap Bp
+      (data.current_selfAdjoint (data.reverse m) i)
+      (data.current_selfAdjoint (data.reverse m) j)
+      (data.current_reverse m i) (data.current_reverse m j)
+  have hAst : star A = A := by
+    rw [ContinuousLinearMap.star_eq_adjoint,
+      (data.current_selfAdjoint m i).adjoint_eq]
+  have hBst : star B = B := by
+    rw [ContinuousLinearMap.star_eq_adjoint,
+      (data.current_selfAdjoint m j).adjoint_eq]
+  have hApst : star Ap = Ap := by
+    rw [ContinuousLinearMap.star_eq_adjoint,
+      (data.current_selfAdjoint (data.reverse m) i).adjoint_eq]
+  have hsecond :
+      data.expectation m (B * heisenbergEvolution U t A) =
+        data.expectation (data.reverse m)
+          (Ap * heisenbergEvolution Up t Bp) := by
+    calc
+      _ = star (data.expectation m
+          (heisenbergEvolution U t A * B)) := by
+        rw [← data.expectation_star, star_mul, hBst]
+        rw [data.star_evolved_of_selfAdjoint
+          (data.system m) A (data.current_selfAdjoint m i) t]
+      _ = star (data.expectation (data.reverse m)
+          (heisenbergEvolution Up t Bp * Ap)) := by rw [hfirst]
+      _ = data.expectation (data.reverse m)
+          (Ap * heisenbergEvolution Up t Bp) := by
+        rw [← data.expectation_star, star_mul, hApst]
+        rw [data.star_evolved_of_selfAdjoint
+          (data.system (data.reverse m)) Bp
+          (data.current_selfAdjoint (data.reverse m) j) t]
+  rw [data.expectation_sub, data.expectation_sub, hfirst, hsecond]
 
-/-- Hermiticity of the charge-current operator determines the conjugate
-transposed matrix element in its actual eigenbasis. -/
-theorem star_currentMatrixElement (m : M) (i : d) (a b : ι) :
-    (starRingEnd ℂ)
-        (inner ℂ ((data.spectral m).basis a)
-          (data.current m i ((data.spectral m).basis b))) =
-      inner ℂ ((data.spectral m).basis b)
-        (data.current m i ((data.spectral m).basis a)) := by
+/-- The physical contact response is reciprocal as a consequence of
+operator covariance and Hermiticity, not a scalar reciprocity axiom. -/
+theorem contact_expectation_reverse (m : M) (i j : d) :
+    data.expectation m (data.contact m i j) =
+      data.expectation (data.reverse m)
+        (data.contact (data.reverse m) j i) := by
+  have hself : star (data.contact m i j) = data.contact m i j := by
+    rw [ContinuousLinearMap.star_eq_adjoint,
+      (data.contact_selfAdjoint m i j).adjoint_eq]
   calc
-    _ = inner ℂ (data.current m i ((data.spectral m).basis b))
-          ((data.spectral m).basis a) := by
-          simp [inner_conj_symm]
-    _ = inner ℂ ((data.spectral m).basis b)
-          (data.current m i ((data.spectral m).basis a)) := by
-          exact (data.current_selfAdjoint m i).isSymmetric.apply_clm _ _
+    data.expectation m (data.contact m i j) =
+        star (data.expectation m (data.contact m i j)) := by
+      rw [← data.expectation_star, hself]
+    _ = data.expectation (data.reverse m)
+          (data.transform (data.contact m i j)) :=
+      (data.expectation_reverse m _).symm
+    _ = data.expectation (data.reverse m)
+          (data.contact (data.reverse m) j i) := by
+      rw [data.contact_reverse m i j]
 
-/-- Time-reversal covariance makes each reversed current matrix element
-the negative conjugate of the original one. This is an operator-level
-derivation of the scalar condition used by the finite Lehmann theorem. -/
-theorem currentMatrixElement_reverse (m : M) (i : d) (a b : ι) :
-    inner ℂ ((data.spectral (data.reverse m)).basis a)
-      (data.current (data.reverse m) i
-        ((data.spectral (data.reverse m)).basis b)) =
-      -(starRingEnd ℂ)
-        (inner ℂ ((data.spectral m).basis a)
-          (data.current m i ((data.spectral m).basis b))) := by
-  have hcov :
-      data.current (data.reverse m) i
-          (data.timeReversal.toFun ((data.spectral m).basis b)) =
-        -(data.timeReversal.toFun
-          (data.current m i ((data.spectral m).basis b))) := by
-    have h := congrArg (fun x : H => -x)
-      (data.current_covariant m i ((data.spectral m).basis b))
-    simpa only [neg_neg] using h.symm
-  rw [data.basis_reverse m a, data.basis_reverse m b, hcov]
-  simp only [inner_neg_right, data.timeReversal.inner_map]
+/-- Finite-time retarded current-current Kubo kernel. -/
+noncomputable def currentKuboKernel (m : M) (i j : d) (t : ℝ) : ℂ :=
+  (Complex.I / (data.system m).hbar) *
+    data.expectation m
+      (heisenbergEvolution (freePropagatorGroup (data.system m)) t
+        (data.current m i) * data.current m j -
+       data.current m j *
+        heisenbergEvolution (freePropagatorGroup (data.system m)) t
+          (data.current m i))
 
-/-- Canonical scalar spectral input built from a genuine eigenbasis and
-current operators, with all required reversal identities proved above. -/
-noncomputable def toReciprocalCurrentData :
-    FiniteReciprocalCurrentData M ι d where
-  reverse := data.reverse
-  energy := fun m => (data.spectral m).energy
-  probability := fun m => (data.spectral m).probability
-  current := fun m i a b =>
-    inner ℂ ((data.spectral m).basis a)
-      (data.current m i ((data.spectral m).basis b))
-  contact := data.contact
-  energy_reverse := data.energy_reverse
-  probability_reverse := data.probability_reverse
-  current_conj := data.star_currentMatrixElement
-  current_reverse := data.currentMatrixElement_reverse
-  contact_reverse := data.contact_reverse
+theorem currentKuboKernel_reverse (m : M) (i j : d) (t : ℝ) :
+    data.currentKuboKernel m i j t =
+      data.currentKuboKernel (data.reverse m) j i t := by
+  unfold currentKuboKernel
+  rw [data.system_hbar m, data.system_hbar (data.reverse m),
+    data.current_commutator_reverse m i j t]
 
-/-- Microscopic antiunitary current covariance is sufficient for the
-Onsager–Casimir property of the finite Kubo–Lehmann conductivity family,
-at a shared Planck constant and fixed driving/switching rates. -/
-theorem conductivityFamily_isOnsagerReciprocal [Fintype ι]
-    (volume : PositiveVolume) (omega eta : ℝ) :
+/-- A finite-time exponentially switched transform of the Kubo kernel.
+This is not an infinite-time or DC limit. -/
+noncomputable def integratedCurrentKuboKernel
+    (m : M) (i j : d) (omega eta duration : ℝ) : ℂ :=
+  ∫ t in (0 : ℝ)..duration,
+    Complex.exp ((-(eta : ℂ) + Complex.I * (omega : ℂ)) * (t : ℂ)) *
+      data.currentKuboKernel m i j t
+
+theorem integratedCurrentKuboKernel_reverse
+    (m : M) (i j : d) (omega eta duration : ℝ) :
+    data.integratedCurrentKuboKernel m i j omega eta duration =
+      data.integratedCurrentKuboKernel (data.reverse m) j i omega eta duration := by
+  unfold integratedCurrentKuboKernel
+  apply intervalIntegral.integral_congr
+  intro t ht
+  rw [data.currentKuboKernel_reverse m i j t]
+
+/-- Conductivity evaluated from the finite-time Kubo kernel and its
+microscopic contact operator, using the canonical electric-field factor. -/
+noncomputable def conductivityComponent
+    (volume : PositiveVolume) (omega eta duration : ℝ)
+    (m : M) (i j : d) : ℂ :=
+  (data.integratedCurrentKuboKernel m i j omega eta duration +
+      data.expectation m (data.contact m i j)) *
+    finiteVolumeConductivityNormalization volume omega eta
+
+/-- Finite-time conductivity tensor constructed entirely from microscopic
+density, Hamiltonian, current, and contact covariance hypotheses. -/
+noncomputable def conductivityFamily
+    (volume : PositiveVolume) (omega eta duration : ℝ) :
+    M → ConductivityTensor d :=
+  fun m => { component := data.conductivityComponent volume omega eta duration m }
+
+/-- Onsager–Casimir reciprocity is proved without an eigenbasis pairing
+assumption or a postulated equality of conductivity components. -/
+theorem conductivityFamily_isOnsagerReciprocal
+    (volume : PositiveVolume) (omega eta duration : ℝ) :
     ConductivityTensor.IsOnsagerReciprocal
-      ((data.toReciprocalCurrentData).conductivityFamily
-        volume data.hbar omega eta)
-      data.reverse := by
-  exact (data.toReciprocalCurrentData).conductivityFamily_isOnsagerReciprocal
-    volume data.hbar omega eta
+      (data.conductivityFamily volume omega eta duration) data.reverse := by
+  intro m i j
+  change data.conductivityComponent volume omega eta duration m i j =
+    data.conductivityComponent volume omega eta duration (data.reverse m) j i
+  unfold conductivityComponent
+  rw [data.integratedCurrentKuboKernel_reverse m i j omega eta duration,
+    data.contact_expectation_reverse m i j]
 
-end AntiunitaryCurrentPairing
+end KuboTimeReversalData
 
-end
 end QuantumTheory.Transport
