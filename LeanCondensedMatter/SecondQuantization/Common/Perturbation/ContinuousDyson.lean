@@ -110,8 +110,6 @@ theorem continuousInteractionPicture_eq_conj (energy : Config → ℝ)
     continuousDiagonalEvolution]
   simp only [← Module.End.mul_eq_comp, ← ContinuousLinearMap.mul_def, map_mul]
 
-/-! ## Coefficientwise Dyson recursion on finite configurations -/
-
 /-! ## Finite-configuration Dyson coefficient bridge -/
 
 /-- On finite configurations, the algebraic Dyson coefficient transported to the
