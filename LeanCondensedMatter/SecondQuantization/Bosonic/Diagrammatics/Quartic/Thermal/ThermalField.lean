@@ -61,8 +61,7 @@ theorem quarticFreeThermalOrderedProduct_eq_quarticVertexSequenceOperator {n : â
   apply congrArg List.ofFn
   funext i
   simp [quarticFreeThermalField, FreeThermalField.operator, Common.quarticLocalLeg,
-    Common.quarticVertexOperator, Common.quarticLocalLegOperator, List.ofFn_succ,
-    Module.End.mul_eq_comp]
+    Common.quarticVertexOperator, List.ofFn_succ, Module.End.mul_eq_comp]
 
 end
 end Bosonic
