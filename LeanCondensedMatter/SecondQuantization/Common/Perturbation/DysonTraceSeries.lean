@@ -39,21 +39,14 @@ noncomputable def dysonTraceSeries (energy : Config → ℝ) (β : ℝ)
     (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) : PowerSeries ℂ :=
   PowerSeries.mk (dysonTraceCoeff energy β V)
 
-/-- The zeroth Dyson trace coefficient is the finite free weight sum. -/
-@[simp]
-theorem dysonTraceCoeff_zero (energy : Config → ℝ) (β : ℝ)
-    (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
-    dysonTraceCoeff energy β V 0 = weightSum (boltzmannWeight energy β) := by
-  rw [dysonTraceCoeff, dysonCoeff_zero, LinearMap.comp_id,
-    traceFock_diagonalEvolution_eq_weightSum]
-
 /-- The constant coefficient of the finite Dyson trace series is the finite free weight sum. -/
 theorem constantCoeff_dysonTraceSeries (energy : Config → ℝ) (β : ℝ)
     (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
     PowerSeries.constantCoeff (dysonTraceSeries energy β V) =
       weightSum (boltzmannWeight energy β) := by
   rw [← PowerSeries.coeff_zero_eq_constantCoeff, dysonTraceSeries, PowerSeries.coeff_mk,
-    dysonTraceCoeff_zero]
+    dysonTraceCoeff, dysonCoeff_zero, LinearMap.comp_id,
+    traceFock_diagonalEvolution_eq_weightSum]
 
 variable [Nonempty Config]
 
