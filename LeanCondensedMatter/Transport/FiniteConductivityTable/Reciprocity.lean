@@ -91,7 +91,7 @@ theorem expectation_star (m : M) (A : H →L[ℂ] H) :
         finiteDimensionalOperatorTrace (star A * (data.density m).op) :=
       finiteDimensionalOperatorTrace_mul_comm _ _
     _ = finiteDimensionalOperatorTrace (star ((data.density m).op * A)) := by
-      rw [star_mul, ← ContinuousLinearMap.star_eq_adjoint,
+      rw [star_mul, ContinuousLinearMap.star_eq_adjoint,
         (data.density m).isSelfAdjoint.adjoint_eq]
     _ = star (finiteDimensionalOperatorTrace ((data.density m).op * A)) :=
       finiteDimensionalOperatorTrace_star _
