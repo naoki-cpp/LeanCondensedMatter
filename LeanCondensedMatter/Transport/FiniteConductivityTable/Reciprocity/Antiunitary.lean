@@ -203,9 +203,6 @@ theorem current_commutator_reverse (m : M) (i j : d) (t : ℝ) :
       (data.current_selfAdjoint (data.reverse m) i)
       (data.current_selfAdjoint (data.reverse m) j)
       (data.current_reverse m i) (data.current_reverse m j)
-  have hAst : star A = A := by
-    rw [ContinuousLinearMap.star_eq_adjoint,
-      (data.current_selfAdjoint m i).adjoint_eq]
   have hBst : star B = B := by
     rw [ContinuousLinearMap.star_eq_adjoint,
       (data.current_selfAdjoint m j).adjoint_eq]
