@@ -635,10 +635,10 @@ private theorem stoneEvolution_nonrealResolvent_apply
         apply Commute.smul_left
         apply Commute.smul_left
         apply Commute.add_left
-        · exact nonrealResolvent_commute A hA _ z
-            (imaginaryParameter_im_ne_zero hr) hz
-        · exact nonrealResolvent_commute A hA _ z
-            (star_imaginaryParameter_im_ne_zero hr) hz
+        · exact nonrealResolvent_commute A hA (((max 1 r : ℝ) : ℂ) * I) z
+            (by simpa using ne_of_gt hr) hz
+        · exact nonrealResolvent_commute A hA (star (((max 1 r : ℝ) : ℂ) * I)) z
+            (by simpa using neg_ne_zero.mpr (ne_of_gt hr)) hz
       have happ := congrArg (fun T : H →L[ℂ] H => T y) hcomm.eq
       simpa using happ))
     hright
