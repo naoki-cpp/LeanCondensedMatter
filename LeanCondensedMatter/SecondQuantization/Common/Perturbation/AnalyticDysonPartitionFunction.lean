@@ -50,17 +50,16 @@ theorem analyticDysonPartitionFunction_eq_trace_dysonEvolution
   exact (continuousDiagonalEvolution_neg_mul_dysonEvolution_eq_exp
     energy V hβ lam).symm
 
-/-! ## Convergence of the Dyson trace series -/
+/-! ## Partition-function series and analyticity -/
 
-/-- The scalar Dyson trace series converges to the trace of the free evolution composed with the
-interaction-picture Dyson evolution. -/
-private theorem hasSum_dysonTraceCoeff_trace_dysonEvolution
+/-- The Common Dyson trace coefficients sum to the interacting partition function. -/
+theorem hasSum_dysonTraceCoeff_analyticDysonPartitionFunction
     (energy : Config → ℝ) {β : ℝ} (hβ : 0 ≤ β)
     (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (lam : ℂ) :
-    HasSum (fun n : ℕ => lam ^ n * dysonTraceCoeff energy β V n)
-      (ContinuousLinearMap.finiteDimensionalOperatorTrace
-        ((continuousDiagonalEvolution energy (-β)).comp
-          (Dyson.evolution (continuousInteractionPicture energy V) lam β))) := by
+    HasSum
+      (fun n : ℕ => lam ^ n * dysonTraceCoeff energy β V n)
+      (analyticDysonPartitionFunction energy β V lam) := by
+  rw [analyticDysonPartitionFunction_eq_trace_dysonEvolution energy hβ V lam]
   obtain ⟨M, hBound⟩ := Dyson.exists_continuousBoundedInteraction
     (continuousInteractionPicture energy V) hβ
     (continuous_continuousInteractionPicture energy V)
@@ -93,18 +92,6 @@ private theorem hasSum_dysonTraceCoeff_trace_dysonEvolution
   rw [hterms] at h
   simpa [traceLeft, ContinuousLinearMap.mul_def] using h
 
-/-! ## Partition-function series and analyticity -/
-
-/-- The Common Dyson trace coefficients sum to the interacting partition function. -/
-theorem hasSum_dysonTraceCoeff_analyticDysonPartitionFunction
-    (energy : Config → ℝ) {β : ℝ} (hβ : 0 ≤ β)
-    (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (lam : ℂ) :
-    HasSum
-      (fun n : ℕ => lam ^ n * dysonTraceCoeff energy β V n)
-      (analyticDysonPartitionFunction energy β V lam) := by
-  rw [analyticDysonPartitionFunction_eq_trace_dysonEvolution energy hβ V lam]
-  exact hasSum_dysonTraceCoeff_trace_dysonEvolution energy hβ V lam
-
 /-- The one-variable formal multilinear series of Common Dyson trace coefficients. -/
 noncomputable def dysonTraceFPowerSeries (energy : Config → ℝ) (β : ℝ)
     (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
@@ -129,25 +116,21 @@ private theorem radius_dysonTraceFPowerSeries_eq_top
       energy hβ V (r : ℂ)).summable.norm
   simpa [dysonTraceFPowerSeries, norm_mul, norm_pow, mul_comm] using hs
 
-private theorem hasFPowerSeriesOnBall_analyticDysonPartitionFunction
-    (energy : Config → ℝ) {β : ℝ} (hβ : 0 ≤ β)
-    (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
-    HasFPowerSeriesOnBall (analyticDysonPartitionFunction energy β V)
-      (dysonTraceFPowerSeries energy β V) 0 ⊤ := by
-  refine ⟨?_, by simp, ?_⟩
-  · rw [radius_dysonTraceFPowerSeries_eq_top energy hβ V]
-  · intro lam _
-    simpa [dysonTraceFPowerSeries,
-      FormalMultilinearSeries.ofScalars_apply_eq, smul_eq_mul, mul_comm] using
-      hasSum_dysonTraceCoeff_analyticDysonPartitionFunction energy hβ V lam
-
 /-- Taylor-series packaging at zero for downstream analytic logarithms. -/
 theorem hasFPowerSeriesAt_analyticDysonPartitionFunction
     (energy : Config → ℝ) {β : ℝ} (hβ : 0 ≤ β)
     (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
     HasFPowerSeriesAt (analyticDysonPartitionFunction energy β V)
-      (dysonTraceFPowerSeries energy β V) 0 :=
-  (hasFPowerSeriesOnBall_analyticDysonPartitionFunction energy hβ V).hasFPowerSeriesAt
+      (dysonTraceFPowerSeries energy β V) 0 := by
+  have hBall : HasFPowerSeriesOnBall (analyticDysonPartitionFunction energy β V)
+      (dysonTraceFPowerSeries energy β V) 0 ⊤ := by
+    refine ⟨?_, by simp, ?_⟩
+    · rw [radius_dysonTraceFPowerSeries_eq_top energy hβ V]
+    · intro lam _
+      simpa [dysonTraceFPowerSeries,
+        FormalMultilinearSeries.ofScalars_apply_eq, smul_eq_mul, mul_comm] using
+        hasSum_dysonTraceCoeff_analyticDysonPartitionFunction energy hβ V lam
+  exact hBall.hasFPowerSeriesAt
 
 /-- At zero coupling, the analytic partition function is the canonical finite pure-point
 partition function for any inverse temperature. -/
