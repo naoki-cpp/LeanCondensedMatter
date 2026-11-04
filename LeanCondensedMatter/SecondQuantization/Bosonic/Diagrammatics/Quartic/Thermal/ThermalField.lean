@@ -31,15 +31,6 @@ def quarticFreeThermalField (q : QuarticVertexLabel Mode) (l : Fin 4) : FreeTher
   | .create i => .create i
   | .annihilate i => .annihilate i
 
-/-- The thermal-field realization agrees with the existing quartic local-leg operator. -/
-theorem FreeThermalField.operator_quarticFreeThermalField
-    (q : QuarticVertexLabel Mode) (l : Fin 4) :
-    FreeThermalField.operator (quarticFreeThermalField q l) =
-      Common.quarticLocalLegOperator Bosonic.create Bosonic.annihilate q l := by
-  cases h : Common.quarticLocalLeg q l <;>
-    simp [quarticFreeThermalField, Common.quarticLocalLegOperator,
-      FreeThermalField.operator, h]
-
 /-- Flatten `n` ordered quartic vertices into their `4 n` free thermal field labels. -/
 noncomputable def quarticFreeThermalFieldFamily {n : ℕ}
     (q : Fin n → QuarticVertexLabel Mode) : Fin (2 * (2 * n)) → FreeThermalField Mode :=
@@ -69,9 +60,8 @@ theorem quarticFreeThermalOrderedProduct_eq_quarticVertexSequenceOperator {n : �
   apply congrArg List.prod
   apply congrArg List.ofFn
   funext i
-  simp [FreeThermalField.operator_quarticFreeThermalField,
-    Common.quarticVertexOperator,
-    Common.quarticLocalLegOperator, List.ofFn_succ, Module.End.mul_eq_comp]
+  simp [quarticFreeThermalField, FreeThermalField.operator, Common.quarticLocalLeg,
+    Common.quarticVertexOperator, List.ofFn_succ, Module.End.mul_eq_comp]
 
 end
 end Bosonic
