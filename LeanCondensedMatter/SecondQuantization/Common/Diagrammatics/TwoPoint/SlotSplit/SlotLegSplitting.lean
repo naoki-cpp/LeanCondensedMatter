@@ -72,7 +72,7 @@ theorem slotLegSplitting_eq_externalInsertion
     {S T : Finset (Fin N)} (h : T ⊆ S) :
     slotLegSplitting h =
       (Equiv.sumCongr (twoPointExternalInsertionLegEquiv T)
-        (Equiv.refl (Fin (2 * (2 * (S \\ T).card))))).trans
+        (Equiv.refl (Fin (2 * (2 * (S \ T).card))))).trans
         ((externalInsertionSlotLegSplitting (E := 1) h).trans
           (twoPointExternalInsertionLegEquiv S).symm) := by
   apply Equiv.ext
@@ -89,7 +89,7 @@ theorem slotLegSplitting_eq_externalInsertion
           simp [slotLegSplitting, twoPointExternalInsertionLegEquiv,
             externalInsertionSlotLegSplitting]
   | inr i =>
-      obtain ⟨p, rfl⟩ := (quarticLegEquiv (S \\ T)).symm.surjective i
+      obtain ⟨p, rfl⟩ := (quarticLegEquiv (S \ T)).symm.surjective i
       obtain ⟨v, l⟩ := p
       simp [slotLegSplitting, twoPointExternalInsertionLegEquiv,
         externalInsertionSlotLegSplitting]
