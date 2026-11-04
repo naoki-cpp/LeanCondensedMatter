@@ -48,24 +48,6 @@ theorem matrixCoeff_operatorIntervalIntegral
   rw [matrixCoeff, hbasis, operatorIntervalIntegralBasis]
   rfl
 
-@[simp]
-theorem operatorIntervalIntegral_zero (a b : ℝ) :
-    operatorIntervalIntegral
-      (fun _ : ℝ => (0 : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)) a b = 0 := by
-  apply matrixCoeff_ext
-  intro m n
-  rw [matrixCoeff_operatorIntervalIntegral]
-  simp [matrixCoeff]
-
-@[simp]
-theorem operatorIntervalIntegral_same
-    (F : ℝ → AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (a : ℝ) :
-    operatorIntervalIntegral F a a = 0 := by
-  apply matrixCoeff_ext
-  intro m n
-  rw [matrixCoeff_operatorIntervalIntegral, intervalIntegral.integral_same, matrixCoeff]
-  simp
-
 theorem operatorIntervalIntegral_add
     (F G : ℝ → AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (a b : ℝ)
     (hF : ∀ m n, IntervalIntegrable (fun τ => matrixCoeff (F τ) m n) MeasureTheory.volume a b)
