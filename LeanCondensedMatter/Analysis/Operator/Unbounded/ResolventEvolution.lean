@@ -329,23 +329,20 @@ open scoped InnerProductSpace Topology
 
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
 
-/-- The strong-limit evolution is the identity at time zero, pointwise. -/
-private theorem resolventEvolutionStrongLimit_zero_apply
-    (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (x : H) :
-    resolventEvolutionStrongLimit A hA 0 x = x := by
-  have hlimit := tendsto_resolventApproximationEvolutionAtScale_apply A hA 0 x
-  exact tendsto_nhds_unique hlimit <|
-    (tendsto_const_nhds : Tendsto (fun _ : ℝ => x) atTop (𝓝 x)).congr'
-      (Eventually.of_forall fun r => by
-        simp [resolventApproximationEvolutionAtScale])
-
 /-- The bundled strong-limit evolution is the identity at time zero. -/
 @[simp]
 theorem stoneEvolution_zero
     (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) :
     stoneEvolution A hA 0 = 1 := by
   ext x
-  simpa using resolventEvolutionStrongLimit_zero_apply A hA x
+  have hlimit := tendsto_resolventApproximationEvolutionAtScale_apply A hA 0 x
+  have hconst :
+      Tendsto (fun r : ℝ => resolventApproximationEvolutionAtScale A hA r 0 x)
+        atTop (𝓝 x) := by
+    simpa [resolventApproximationEvolutionAtScale] using
+      (tendsto_const_nhds : Tendsto (fun _ : ℝ => x) atTop (𝓝 x))
+  simpa only [stoneEvolution_apply, one_apply_eq_self] using
+    tendsto_nhds_unique hlimit hconst
 
 /-- Applying the same varying isometry to a convergent varying vector preserves convergence.  This
 is the only extra analytic input needed to pass the approximating group law to the strong limit. -/
@@ -445,9 +442,9 @@ theorem stoneEvolution_star
   have hcancel :
       stoneEvolution A hA t
         (stoneEvolution A hA (-t) x) = x := by
-    simpa only [stoneEvolution_apply, add_neg_cancel,
-      resolventEvolutionStrongLimit_zero_apply] using
-      (resolventEvolutionStrongLimit_add_time_apply A hA t (-t) x).symm
+    have hgroup := congrArg (fun U : H →L[ℂ] H => U x)
+      (stoneEvolution_add A hA t (-t))
+    simpa [stoneEvolution_zero, mul_apply_eq_comp] using hgroup.symm
   rw [hcancel] at hinner
   exact hinner.symm
 
