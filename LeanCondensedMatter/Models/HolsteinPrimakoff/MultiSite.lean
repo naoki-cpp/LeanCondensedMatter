@@ -124,14 +124,14 @@ private theorem spinZ_comm_spinMinus (hbar : ℝ) (twiceSpin : ℕ)
 
 private theorem spinZ_comm_spinZ (hbar : ℝ) (twiceSpin : ℕ) (i j : Mode) :
     Commute (spinZ hbar twiceSpin i) (spinZ hbar twiceSpin j) := by
-  change (spinZ hbar twiceSpin i).comp (spinZ hbar twiceSpin j) =
-    (spinZ hbar twiceSpin j).comp (spinZ hbar twiceSpin i)
-  apply Common.linearMap_ext_basisState; intro n
-  change spinZ hbar twiceSpin i (spinZ hbar twiceSpin j (basisState n)) =
-    spinZ hbar twiceSpin j (spinZ hbar twiceSpin i (basisState n))
-  simp only [spinZ_basisState, map_smul, smul_smul]
-  congr 1
-  ring
+  let w (k : Mode) (n : Occupation Mode) : ℂ :=
+    (hbar : ℂ) * ((twiceSpin : ℂ) / 2 - n k)
+  have hd (k : Mode) : spinZ hbar twiceSpin k = Common.diagonalOperator (w k) := by
+    apply Common.eq_diagonalOperator_of_basisState
+    intro n
+    exact spinZ_basisState hbar twiceSpin k n
+  rw [hd i, hd j]
+  exact (Commute.all (w i) (w j)).map Common.diagonalOperator
 
 /-- Distinct sites' local spin algebras commute, including all local spin polynomials.
 This holds on the ambient algebraic Fock space and hence on its physical sector. -/
