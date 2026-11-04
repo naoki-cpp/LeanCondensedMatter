@@ -784,32 +784,6 @@ private theorem norm_stoneEvolution_sub_resolventApproximationEvolution_le
   rw [norm_sub_rev]
   linarith
 
-private theorem norm_slope_sub_resolventApproximationEvolution_le
-    (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A)
-    (r : ℝ) (hr : 0 < r) (t : ℝ) (ht : t ≠ 0) (x : A.domain) :
-    ‖t⁻¹ •
-          (stoneEvolution A hA t (x : H) - (x : H)) -
-        t⁻¹ •
-          (resolventApproximationEvolution A hA r hr t (x : H) - (x : H))‖ ≤
-      ‖boundedSelfAdjointApproximation A hA r hr (x : H) - A x‖ := by
-  have hbound :=
-    norm_stoneEvolution_sub_resolventApproximationEvolution_le
-      A hA r hr t x
-  rw [← smul_sub, sub_sub_sub_cancel_right, norm_smul]
-  change |t⁻¹| *
-      ‖stoneEvolution A hA t (x : H) -
-        resolventApproximationEvolution A hA r hr t (x : H)‖ ≤ _
-  rw [abs_inv]
-  calc
-    |t|⁻¹ *
-        ‖stoneEvolution A hA t (x : H) -
-          resolventApproximationEvolution A hA r hr t (x : H)‖
-        ≤ |t|⁻¹ *
-            (‖boundedSelfAdjointApproximation A hA r hr (x : H) - A x‖ * |t|) :=
-      mul_le_mul_of_nonneg_left hbound (inv_nonneg.mpr (abs_nonneg t))
-    _ = ‖boundedSelfAdjointApproximation A hA r hr (x : H) - A x‖ := by
-      rw [mul_left_comm, inv_mul_cancel₀ (abs_ne_zero.mpr ht), mul_one]
-
 /-- At zero time, the strong Stone evolution has infinitesimal generator `-i A` on `A.domain`. -/
 theorem stoneEvolution_apply_hasDerivAt_zero
     (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (x : A.domain) :
@@ -839,15 +813,20 @@ theorem stoneEvolution_apply_hasDerivAt_zero
   filter_upwards [happ, self_mem_nhdsWithin] with t htapp htmem
   have ht : t ≠ 0 := by
     simpa using htmem
-  have hfirst :=
-    norm_slope_sub_resolventApproximationEvolution_le A hA r hr t ht x
   have hfirst' :
       dist
           (t⁻¹ • (stoneEvolution A hA t (x : H) - (x : H)))
           (t⁻¹ • (resolventApproximationEvolution A hA r hr t (x : H) - (x : H))) <
         ε / 3 := by
-    rw [dist_eq_norm]
-    exact lt_of_le_of_lt hfirst hgen
+    rw [dist_eq_norm, ← smul_sub, sub_sub_sub_cancel_right, norm_smul]
+    change |t⁻¹| *
+      ‖stoneEvolution A hA t (x : H) -
+        resolventApproximationEvolution A hA r hr t (x : H)‖ < ε / 3
+    rw [abs_inv]
+    apply lt_of_le_of_lt ?_ hgen
+    apply (inv_mul_le_iff₀ (abs_pos.mpr ht)).2
+    simpa only [mul_comm] using
+      norm_stoneEvolution_sub_resolventApproximationEvolution_le A hA r hr t x
   have hsecond :
       dist
           (t⁻¹ • (resolventApproximationEvolution A hA r hr t (x : H) - (x : H)))
