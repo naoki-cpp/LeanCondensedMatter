@@ -47,8 +47,6 @@ noncomputable def imaginaryTimeEvolve (ε : Mode → ℝ) (τ : ℝ)
     OccupationFock Mode →ₗ[ℂ] OccupationFock Mode :=
   Common.heisenbergEvolve (fermionEnergy ε) τ A
 
-/-! ## Evolution of the diagonal density-density interaction -/
-
 /-! ## Energy shifts of creation and annihilation -/
 
 /-- Annihilation at mode `i` carries free-energy shift `-ε i`. -/
