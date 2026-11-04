@@ -22,19 +22,6 @@ noncomputable section
 
 variable {Mode : Type*} [Fintype Mode]
 
-/-- A single ordered quartic vertex belongs to the explicit free-Gibbs domain under the usual
-positive one-mode Boltzmann exponents. -/
-theorem quarticVertexOperator_mem_grandCanonicalGibbsDomain
-    (ε : Mode → ℝ) (β μ : ℝ) (hpos : ∀ i, 0 < β * (ε i - μ))
-    (q : QuarticVertexLabel Mode) :
-    quarticVertexOperator q ∈ grandCanonicalGibbsDomain ε β μ := by
-  change grandCanonicalGibbsSummable ε β μ (quarticVertexOperator q)
-  simpa only [FreeThermalField.orderedProduct_cons, FreeThermalField.orderedProduct_nil,
-    FreeThermalField.operator, LinearMap.comp_id,
-    quarticVertexOperator, Common.quarticVertexOperator] using
-    (FreeThermalField.grandCanonicalGibbsSummable_orderedProduct ε β μ hpos
-      [.create q.create₁, .create q.create₂, .annihilate q.annihilate₂, .annihilate q.annihilate₁])
-
 /-- Every finitely supported bosonic quartic interaction belongs to the free-Gibbs domain. -/
 theorem quarticInteractionOn_mem_grandCanonicalGibbsDomain
     (support : Finset (QuarticVertexLabel Mode))
@@ -44,8 +31,14 @@ theorem quarticInteractionOn_mem_grandCanonicalGibbsDomain
   classical
   change (∑ q ∈ support, g q • quarticVertexOperator q) ∈ grandCanonicalGibbsDomain ε β μ
   exact Submodule.sum_mem (grandCanonicalGibbsDomain ε β μ) fun q hq =>
-    (grandCanonicalGibbsDomain ε β μ).smul_mem (g q)
-      (quarticVertexOperator_mem_grandCanonicalGibbsDomain ε β μ hpos q)
+    (grandCanonicalGibbsDomain ε β μ).smul_mem (g q) (by
+      change grandCanonicalGibbsSummable ε β μ (quarticVertexOperator q)
+      simpa only [FreeThermalField.orderedProduct_cons, FreeThermalField.orderedProduct_nil,
+        FreeThermalField.operator, LinearMap.comp_id,
+        quarticVertexOperator, Common.quarticVertexOperator] using
+        (FreeThermalField.grandCanonicalGibbsSummable_orderedProduct ε β μ hpos
+          [.create q.create₁, .create q.create₂, .annihilate q.annihilate₂,
+            .annihilate q.annihilate₁]))
 
 end
 end Bosonic
