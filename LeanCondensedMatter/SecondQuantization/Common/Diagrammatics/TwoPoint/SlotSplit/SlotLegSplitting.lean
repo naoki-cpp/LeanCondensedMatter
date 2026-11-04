@@ -1,4 +1,5 @@
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.Diagram
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.ExternalInsertionEquiv
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.SlotSplit.SlotLegSplitting
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Leg
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Diagram
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Split
@@ -32,19 +33,17 @@ variable {N : ℕ}
 the legs of `S \ T`. -/
 noncomputable def slotLegSplitting {S : Finset (Fin N)} {T : Finset (Fin N)} (h : T ⊆ S) :
     Combinatorics.PositionSplitting (2 * T.card + 1) (2 * (S \ T).card) (2 * S.card + 1) :=
-  (Equiv.sumCongr (twoPointLegEquiv T) (quarticLegEquiv (S \ T))).trans
-    (((Equiv.sumAssoc (Fin 2) (↥T × Fin 4) (↥(S \ T) × Fin 4)).trans
-      (Equiv.sumCongr (Equiv.refl (Fin 2))
-        ((Equiv.sumProdDistrib (↥T) (↥(S \ T)) (Fin 4)).symm.trans
-          (Equiv.prodCongr (Combinatorics.subsetSumSdiffEquiv h) (Equiv.refl (Fin 4)))))).trans
-      (twoPointLegEquiv S).symm)
+  (Equiv.sumCongr (twoPointExternalInsertionLegEquiv T)
+    (Equiv.refl (Fin (2 * (S \ T).card)))).trans
+    ((externalInsertionSlotLegSplitting (E := 1) h).trans
+      (twoPointExternalInsertionLegEquiv S).symm)
 
 /-- External legs land on the left part. -/
 @[simp]
 theorem slotLegSplitting_external {S T : Finset (Fin N)} (h : T ⊆ S) (e : Fin 2) :
     slotLegSplitting h (Sum.inl ((twoPointLegEquiv T).symm (Sum.inl e))) =
       (twoPointLegEquiv S).symm (Sum.inl e) := by
-  simp [slotLegSplitting]
+  simp [slotLegSplitting, twoPointExternalInsertionLegEquiv]
 
 /-- A left interaction leg lands on the corresponding ambient leg. -/
 @[simp]
@@ -52,7 +51,7 @@ theorem slotLegSplitting_left_interaction {S T : Finset (Fin N)} (h : T ⊆ S)
     (v : ↥T) (l : Fin 4) :
     slotLegSplitting h (Sum.inl ((twoPointLegEquiv T).symm (Sum.inr (v, l)))) =
       (twoPointLegEquiv S).symm (Sum.inr (⟨v.1, h v.2⟩, l)) := by
-  simp [slotLegSplitting]
+  simp [slotLegSplitting, twoPointExternalInsertionLegEquiv]
 
 /-- A right interaction leg lands on the corresponding ambient leg. -/
 @[simp]
@@ -61,7 +60,7 @@ theorem slotLegSplitting_right_interaction {S T : Finset (Fin N)} (h : T ⊆ S)
     slotLegSplitting h (Sum.inr ((quarticLegEquiv (S \ T)).symm (v, l))) =
       (twoPointLegEquiv S).symm
         (Sum.inr (⟨v.1, (Finset.mem_sdiff.mp v.2).1⟩, l)) := by
-  simp [slotLegSplitting]
+  simp [slotLegSplitting, twoPointExternalInsertionLegEquiv]
 
 variable {ExternalLabel InternalLabel : Type*}
 
