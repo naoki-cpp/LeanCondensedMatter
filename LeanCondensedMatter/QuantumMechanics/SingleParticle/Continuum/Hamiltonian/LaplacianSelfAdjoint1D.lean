@@ -2,10 +2,8 @@ import LeanCondensedMatter.Analysis.Operator.Unbounded.SelfAdjointCriterion
 import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Hamiltonian.Closed1D
 import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Hamiltonian.DenseDomain1D
 import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Hamiltonian.LaplacianSymmetry1D
-import Mathlib.Analysis.Calculus.Deriv.Star
 import Mathlib.Analysis.Distribution.SchwartzSpace.Deriv
 import Mathlib.Analysis.RCLike.Lemmas
-import Mathlib.Tactic.NormNum
 
 set_option linter.style.header false
 
@@ -36,28 +34,15 @@ private theorem schwartzConj1D_apply (f : SchwartzMap ℝ ℂ) (x : ℝ) :
     schwartzConj1D f x = star (f x) :=
   rfl
 
-private theorem derivCLM_schwartzConj1D (f : SchwartzMap ℝ ℂ) :
-    SchwartzMap.derivCLM ℂ ℂ (schwartzConj1D f) =
-      schwartzConj1D (SchwartzMap.derivCLM ℂ ℂ f) := by
-  ext x
-  have hderiv :
-      deriv (schwartzConj1D f) x = star (deriv (f : ℝ → ℂ) x) := by
-    change deriv (fun y : ℝ => star (f y)) x = star (deriv (f : ℝ → ℂ) x)
-    exact (SchwartzMap.hasDerivAt f x).star.deriv
-  simpa [schwartzConj1D_apply] using hderiv
-
-private theorem schwartz_laplacian_eq_second_deriv (f : SchwartzMap ℝ ℂ) :
-    Δ f = SchwartzMap.derivCLM ℂ ℂ (SchwartzMap.derivCLM ℂ ℂ f) := by
-  ext x
-  rw [SchwartzMap.laplacian_apply, InnerProductSpace.laplacian_eq_iteratedDeriv_real]
-  change iteratedDeriv 2 (f : ℝ → ℂ) x = deriv (SchwartzMap.derivCLM ℂ ℂ f) x
-  rw [show (2 : ℕ) = 1 + 1 by norm_num, iteratedDeriv_succ', iteratedDeriv_one]
-  rfl
-
 private theorem laplacian_schwartzConj1D (f : SchwartzMap ℝ ℂ) :
     Δ (schwartzConj1D f) = schwartzConj1D (Δ f) := by
-  rw [schwartz_laplacian_eq_second_deriv, schwartz_laplacian_eq_second_deriv]
-  rw [derivCLM_schwartzConj1D, derivCLM_schwartzConj1D]
+  ext x
+  simp only [SchwartzMap.laplacian_apply, schwartzConj1D_apply]
+  change Δ ((RCLike.conjCLE (K := ℂ)) ∘ (f : ℝ → ℂ)) x =
+    (RCLike.conjCLE (K := ℂ)) (Δ (f : ℝ → ℂ) x)
+  exact congrFun
+    (InnerProductSpace.laplacian_CLE_comp_left
+      (l := RCLike.conjCLE (K := ℂ)) (f := (f : ℝ → ℂ))) x
 
 /-- On a Schwartz core vector, the explicit `H²` Laplacian is represented by the classical
 Schwartz Laplacian. -/
