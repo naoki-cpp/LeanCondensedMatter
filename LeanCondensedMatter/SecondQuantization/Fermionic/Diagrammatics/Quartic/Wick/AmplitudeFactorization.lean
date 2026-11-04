@@ -46,24 +46,6 @@ private theorem orderedQuarticLegOperator_componentOrderedLeg
     Combinatorics.FamilySlotShuffleTo.timeAssignment_apply]
   rw [d.restrictComponent_vertexLabel_componentOrder orders shuffle B]
 
-variable [Fintype Mode]
-
-/-- Pair values agree after embedding both component-local ordered legs into the assembled global
-ordered-leg enumeration. -/
-theorem orderedQuarticPairValue_componentOrderedLeg (ε : Mode → ℝ) (β : ℝ)
-    {S : Finset (Fin N)} (d : QuarticWickDiagram Mode N S)
-    (orders : d.ComponentVertexOrders) (shuffle : d.ComponentShuffle)
-    (τ : Fin S.card → ℝ) (B : d.vertexGraph.componentPartitionOn.parts)
-    (a b : Fin (2 * (2 * (B : Finset (Fin N)).card))) :
-    orderedQuarticPairValue ε β d (d.assembleVertexOrder orders shuffle) τ
-        (d.componentOrderedLeg shuffle B a) (d.componentOrderedLeg shuffle B b) =
-      orderedQuarticPairValue ε β (d.restrictComponent B.2) (orders B)
-        (shuffle.timeAssignment τ B) a b := by
-  rw [orderedQuarticPairValue_eq_finiteGibbsExpectation,
-    orderedQuarticPairValue_eq_finiteGibbsExpectation,
-    orderedQuarticLegOperator_componentOrderedLeg,
-    orderedQuarticLegOperator_componentOrderedLeg]
-
 end ComponentPairValue
 
 variable [LinearOrder Mode] [Fintype Mode]
@@ -89,8 +71,11 @@ theorem QuarticWickDiagram.contractionIntegrand_assembleVertexOrder_eq_prod_comp
       (orderedQuarticPairValue ε β d (d.assembleVertexOrder orders shuffle) τ)
       (fun B => orderedQuarticPairValue ε β (d.restrictComponent B.2) (orders B)
         (shuffle.timeAssignment τ B))
-      (fun B a b => orderedQuarticPairValue_componentOrderedLeg
-        ε β d orders shuffle τ B a b)
+      (fun B a b => by
+        rw [orderedQuarticPairValue_eq_finiteGibbsExpectation,
+          orderedQuarticPairValue_eq_finiteGibbsExpectation,
+          orderedQuarticLegOperator_componentOrderedLeg,
+          orderedQuarticLegOperator_componentOrderedLeg])
 
 /-! ## Wick amplitude factorization -/
 
