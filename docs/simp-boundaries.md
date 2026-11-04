@@ -82,7 +82,6 @@ homomorphic normalization rules:
 - `boundedUnitaryEvolution_zero`
 - `resolventApproximationEvolution_zero`
 - `stoneEvolution_apply`
-- `resolventApproximationEvolutionAtScale_zero`
 - `stoneEvolution_zero`
 - `shiftDomainMap_apply`
 - `Fredholm.diagonalDet_fintype`

@@ -329,14 +329,6 @@ open scoped InnerProductSpace Topology
 
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
 
-/-- The totalized bounded approximants retain the zero-time identity. -/
-@[simp]
-private theorem resolventApproximationEvolutionAtScale_zero
-    (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (r : ℝ) :
-    resolventApproximationEvolutionAtScale A hA r 0 = 1 := by
-  unfold resolventApproximationEvolutionAtScale
-  exact boundedUnitaryEvolution_zero _
-
 /-- The strong-limit evolution is the identity at time zero, pointwise. -/
 private theorem resolventEvolutionStrongLimit_zero_apply
     (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (x : H) :
@@ -345,9 +337,7 @@ private theorem resolventEvolutionStrongLimit_zero_apply
   exact tendsto_nhds_unique hlimit <|
     (tendsto_const_nhds : Tendsto (fun _ : ℝ => x) atTop (𝓝 x)).congr'
       (Eventually.of_forall fun r => by
-        have happ := congrArg (fun T : H →L[ℂ] H => T x)
-          (resolventApproximationEvolutionAtScale_zero A hA r)
-        simpa using happ.symm)
+        simp [resolventApproximationEvolutionAtScale])
 
 /-- The bundled strong-limit evolution is the identity at time zero. -/
 @[simp]
