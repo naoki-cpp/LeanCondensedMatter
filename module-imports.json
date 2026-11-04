@@ -3487,7 +3487,7 @@
         "LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Hamiltonian.DenseDomain1D",
         "LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Hamiltonian.LaplacianSymmetry1D"
       ],
-      "externalImportCount": 4
+      "externalImportCount": 2
     },
     {
       "name": "LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Hamiltonian.LaplacianSymmetry1D",
