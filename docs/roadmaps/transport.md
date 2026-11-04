@@ -52,6 +52,14 @@ antiunitary current covariance, and paired eigenbases. It then consumes the exis
 Lehmann Onsager theorem. Hamiltonian covariance, eigenbasis pairing, equilibrium-state
 transformation, and reciprocal contact response remain supplied model assumptions.
 
+The exact same-label reversed-basis condition entails an additional restriction:
+if reversing the controls twice returns the original system, the square of the
+antiunitary map is the identity on the entire Hilbert space
+(`AntiunitaryCurrentPairing.timeReversal_sq_eq_id`). Consequently this
+interface cannot directly represent spin-half/Kramers time reversal, whose
+square is minus identity on a nonzero Hilbert space. A basis-independent
+operator/state covariance formulation is needed to include those systems.
+
 The next proof target is to discharge those hypotheses directly in representative magnetic
 models and, independently, to derive reciprocity from the causal Kubo channel with
 explicit stationary-state transformation and source/contact conventions. No DC,
