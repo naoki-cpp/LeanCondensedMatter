@@ -40,6 +40,9 @@ theorem transform_schrodingerGenerator (m : M) :
   simp only [schrodingerGenerator, data.transform_smul,
     data.hamiltonian_reverse, data.system_hbar]
   simp
+  rw [← neg_smul]
+  congr 1
+  ring
 
 /-- Hamiltonian covariance induces negative-time covariance of the
 free Schrödinger propagator. -/
@@ -63,7 +66,6 @@ theorem transform_heisenbergEvolution (m : M) (t : ℝ)
     data.transform_mul, data.transform_mul,
     data.transform_freePropagator m (-t),
     data.transform_freePropagator m t]
-  simp
 
 /-- A density operator commuting with the Hamiltonian gives a stationary
 finite-trace expectation, without imposing spectral-basis constraints. -/
@@ -96,10 +98,12 @@ theorem expectation_stationary (m : M) (t : ℝ) (A : H →L[ℂ] H) :
           U t * (ρ * U (-t) * A) =
               (U t * ρ) * U (-t) * A := by simp only [mul_assoc]
           _ = (ρ * U t) * U (-t) * A := by rw [hcomm.eq]
-          _ = ρ * A := by rw [mul_assoc, hunit, mul_one]]
+          _ = ρ * (U t * U (-t)) * A := by simp only [mul_assoc]
+          _ = ρ * A := by rw [hunit, mul_one]]
 
 /-- Taking the adjoint of a Heisenberg-evolved Hermitian observable does
 not change that observable. -/
+omit [FiniteDimensional ℂ H] in
 private theorem star_evolved_of_selfAdjoint
     (sys : BoundedFreeSystem H) (A : H →L[ℂ] H)
     (hA : IsSelfAdjoint A) (t : ℝ) :
@@ -137,7 +141,7 @@ theorem correlation_reverse_of_odd (m : M) (t : ℝ)
     simp [U]
   have hAstar : star (heisenbergEvolution U (-t) A') =
       heisenbergEvolution U (-t) A' :=
-    data.star_evolved_of_selfAdjoint _ A' hA (-t)
+    star_evolved_of_selfAdjoint _ A' hA (-t)
   have hBstar : star B' = B' := by
     rw [ContinuousLinearMap.star_eq_adjoint, hB.adjoint_eq]
   have hstar :
@@ -154,7 +158,7 @@ theorem correlation_reverse_of_odd (m : M) (t : ℝ)
     rw [← data.expectation_stationary (data.reverse m) t
       (B' * heisenbergEvolution U (-t) A')]
     rw [map_mul, heisenbergEvolution_heisenbergEvolution]
-    simp
+    simp [U]
   calc
     data.expectation m
         (heisenbergEvolution (freePropagatorGroup (data.system m)) t A * B) =
@@ -217,14 +221,14 @@ theorem current_commutator_reverse (m : M) (i j : d) (t : ℝ) :
       _ = star (data.expectation m
           (heisenbergEvolution U t A * B)) := by
         rw [← data.expectation_star, star_mul, hBst]
-        rw [data.star_evolved_of_selfAdjoint
+        rw [star_evolved_of_selfAdjoint
           (data.system m) A (data.current_selfAdjoint m i) t]
       _ = star (data.expectation (data.reverse m)
           (heisenbergEvolution Up t Bp * Ap)) := by rw [hfirst]
       _ = data.expectation (data.reverse m)
           (Ap * heisenbergEvolution Up t Bp) := by
         rw [← data.expectation_star, star_mul, hApst]
-        rw [data.star_evolved_of_selfAdjoint
+        rw [star_evolved_of_selfAdjoint
           (data.system (data.reverse m)) Bp
           (data.current_selfAdjoint (data.reverse m) j) t]
   rw [data.expectation_sub, data.expectation_sub, hfirst, hsecond]
@@ -281,6 +285,10 @@ theorem integratedCurrentKuboKernel_reverse
   unfold integratedCurrentKuboKernel
   apply intervalIntegral.integral_congr
   intro t ht
+  change Complex.exp ((-(eta : ℂ) + Complex.I * (omega : ℂ)) * (t : ℂ)) *
+      data.currentKuboKernel m i j t =
+    Complex.exp ((-(eta : ℂ) + Complex.I * (omega : ℂ)) * (t : ℂ)) *
+      data.currentKuboKernel (data.reverse m) j i t
   rw [data.currentKuboKernel_reverse m i j t]
 
 /-- Conductivity evaluated from the finite-time Kubo kernel and its
