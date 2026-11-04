@@ -207,9 +207,6 @@ using a zero-consumer signal as grounds for changing its retention.
 - `Combinatorics.permutationSum_eq_momentFromCumulant` — semantic connected-decomposition endpoint
   identifying the project-local permutation sum with the moment transform of the single-cycle
   contribution; the module explicitly reserves public declarations for this moment characterization.
-- `LinearPMap.resolventApproximationEvolution_add` — one-parameter-group law for the named bounded
-  resolvent-approximation evolution; it is part of the construction API, not just a specialization of
-  the generic bounded exponential theorem.
 - `LinearPMap.resolventApproximationEvolution_apply_hasDerivAt` — vectorwise bounded-generator
   differential equation for the named resolvent approximation, forming the strong-evolution bridge
   used by the Stone construction.

@@ -48,14 +48,6 @@ theorem resolventApproximationEvolution_zero
     resolventApproximationEvolution A hA r hr 0 = 1 := by
   exact boundedUnitaryEvolution_zero _
 
-/-- Each bounded resolvent approximation gives a one-parameter group. -/
-theorem resolventApproximationEvolution_add
-    (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (r : ℝ) (hr : 0 < r) (t s : ℝ) :
-    resolventApproximationEvolution A hA r hr (t + s) =
-      resolventApproximationEvolution A hA r hr t *
-        resolventApproximationEvolution A hA r hr s := by
-  exact boundedUnitaryEvolution_add _ t s
-
 /-- The resolvent-approximating evolution satisfies its bounded-generator equation vectorwise. -/
 theorem resolventApproximationEvolution_apply_hasDerivAt
     (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (r : ℝ) (hr : 0 < r) (t : ℝ) (x : H) :
@@ -112,12 +104,10 @@ private def boundedSelfAdjointApproximationAtScale
   boundedSelfAdjointApproximation A hA (max 1 r)
     (zero_lt_one.trans_le (le_max_left 1 r))
 
-/-- A total real-indexed version of the resolvent evolution, obtained by clipping the scale below
-at one. -/
+/-- Bounded evolution of the totalized self-adjoint resolvent approximation. -/
 private def resolventApproximationEvolutionAtScale
     (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (r t : ℝ) : H →L[ℂ] H :=
-  resolventApproximationEvolution A hA (max 1 r)
-    (zero_lt_one.trans_le (le_max_left 1 r)) t
+  boundedUnitaryEvolution (boundedSelfAdjointApproximationAtScale A hA r) t
 
 /-- On the generator domain, the totalized resolvent evolutions form a Cauchy sequence at
 positive infinity. -/
@@ -169,6 +159,7 @@ private theorem resolventApproximationEvolutionAtScale_apply_domain_cauchySeq
       (norm_resolventApproximationEvolution_sub_le A hA r s hrpos hspos t (x : H)).trans_lt
         ((mul_le_mul_of_nonneg_right hdiff (abs_nonneg t)).trans_lt hsum)
     simpa [dist_eq_norm, resolventApproximationEvolutionAtScale,
+      boundedSelfAdjointApproximationAtScale, resolventApproximationEvolution,
       max_eq_right h1r, max_eq_right h1s] using hnorm
 
 /-- On the original domain, the totalized bounded approximations converge strongly to the
@@ -246,7 +237,7 @@ private theorem tendsto_resolventApproximationEvolutionAtScale_apply
     · intro r
       rw [isometry_iff_dist_eq]
       intro y z
-      unfold resolventApproximationEvolutionAtScale resolventApproximationEvolution
+      unfold resolventApproximationEvolutionAtScale boundedSelfAdjointApproximationAtScale
       rw [dist_eq_norm, dist_eq_norm, ←
         (boundedUnitaryEvolution (boundedSelfAdjointApproximation A hA _ _) t).map_sub]
       apply boundedUnitaryEvolution_apply_norm
@@ -273,7 +264,7 @@ variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteS
 private theorem resolventApproximationEvolutionAtScale_apply_norm
     (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (r t : ℝ) (x : H) :
     ‖resolventApproximationEvolutionAtScale A hA r t x‖ = ‖x‖ := by
-  unfold resolventApproximationEvolutionAtScale resolventApproximationEvolution
+  unfold resolventApproximationEvolutionAtScale boundedSelfAdjointApproximationAtScale
   apply boundedUnitaryEvolution_apply_norm
   exact boundedSelfAdjointApproximation_isSelfAdjoint A hA _ _
 
@@ -344,7 +335,7 @@ private theorem resolventApproximationEvolutionAtScale_zero
     (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (r : ℝ) :
     resolventApproximationEvolutionAtScale A hA r 0 = 1 := by
   unfold resolventApproximationEvolutionAtScale
-  exact resolventApproximationEvolution_zero A hA _ _
+  exact boundedUnitaryEvolution_zero _
 
 /-- The strong-limit evolution is the identity at time zero, pointwise. -/
 private theorem resolventEvolutionStrongLimit_zero_apply
@@ -434,7 +425,7 @@ private theorem resolventEvolutionStrongLimit_add_time_apply
             resolventApproximationEvolutionAtScale A hA r t *
               resolventApproximationEvolutionAtScale A hA r s := by
         unfold resolventApproximationEvolutionAtScale
-        exact resolventApproximationEvolution_add A hA _ _ t s
+        exact boundedUnitaryEvolution_add _ t s
       simpa using
         (congrArg (fun T : H →L[ℂ] H => T x) hgroup).symm)
 
@@ -522,7 +513,7 @@ private theorem norm_resolventApproximationEvolutionAtScale_apply_sub_le_domain
     (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (r t : ℝ) (x : A.domain) :
     ‖resolventApproximationEvolutionAtScale A hA r t (x : H) - (x : H)‖ ≤
       ‖A x‖ * |t| := by
-  unfold resolventApproximationEvolutionAtScale resolventApproximationEvolution
+  unfold resolventApproximationEvolutionAtScale boundedSelfAdjointApproximationAtScale
   calc
     ‖boundedUnitaryEvolution (boundedSelfAdjointApproximation A hA _ _) t (x : H) - (x : H)‖
         ≤ ‖boundedSelfAdjointApproximation A hA _ _ (x : H)‖ * |t| :=
@@ -664,7 +655,7 @@ private theorem stoneEvolution_nonrealResolvent_apply
           Commute (resolventApproximationEvolutionAtScale A hA r t)
             (nonrealResolvent A hA z hz) := by
         unfold resolventApproximationEvolutionAtScale
-          resolventApproximationEvolution boundedUnitaryEvolution
+          boundedSelfAdjointApproximationAtScale boundedUnitaryEvolution
         exact
           ((boundedSelfAdjointApproximation_nonrealResolvent_commute A hA _ _ z hz).smul_left _).exp_left
       have happ := congrArg (fun T : H →L[ℂ] H => T y) hcomm.eq
