@@ -116,4 +116,5 @@ theorem expectation_reverse (m : M) (A : H →L[ℂ] H) :
 
 end KuboTimeReversalData
 
+end
 end QuantumTheory.Transport
