@@ -603,20 +603,6 @@ open scoped InnerProductSpace Topology
 
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
 
-/-- The bounded self-adjoint approximant commutes with every nonreal resolvent. -/
-private theorem boundedSelfAdjointApproximation_nonrealResolvent_commute
-    (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A)
-    (r : ℝ) (hr : 0 < r) (z : ℂ) (hz : z.im ≠ 0) :
-    Commute (boundedSelfAdjointApproximation A hA r hr)
-      (nonrealResolvent A hA z hz) := by
-  unfold boundedSelfAdjointApproximation
-  apply Commute.smul_left
-  apply Commute.add_left
-  · exact nonrealResolvent_commute A hA ((r : ℂ) * I) z
-      (by simpa using ne_of_gt hr) hz
-  · exact nonrealResolvent_commute A hA (star ((r : ℂ) * I)) z
-      (by simpa using neg_ne_zero.mpr (ne_of_gt hr)) hz
-
 /-- Nonreal resolvent commutation passes through the vectorwise strong limit. -/
 private theorem stoneEvolution_nonrealResolvent_apply
     (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A)
@@ -641,10 +627,18 @@ private theorem stoneEvolution_nonrealResolvent_apply
       have hcomm :
           Commute (resolventApproximationEvolutionAtScale A hA r t)
             (nonrealResolvent A hA z hz) := by
+        have hr : 0 < max 1 r := zero_lt_one.trans_le (le_max_left 1 r)
         unfold resolventApproximationEvolutionAtScale
           boundedSelfAdjointApproximationAtScale boundedUnitaryEvolution
-        exact
-          ((boundedSelfAdjointApproximation_nonrealResolvent_commute A hA _ _ z hz).smul_left _).exp_left
+          boundedSelfAdjointApproximation
+        apply Commute.exp_left
+        apply Commute.smul_left
+        apply Commute.smul_left
+        apply Commute.add_left
+        · exact nonrealResolvent_commute A hA _ z
+            (by simpa using ne_of_gt hr) hz
+        · exact nonrealResolvent_commute A hA _ z
+            (by simpa using neg_ne_zero.mpr (ne_of_gt hr)) hz
       have happ := congrArg (fun T : H →L[ℂ] H => T y) hcomm.eq
       simpa using happ))
     hright
