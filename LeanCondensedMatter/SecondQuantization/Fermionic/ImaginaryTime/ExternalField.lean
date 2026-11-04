@@ -1,7 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TimeOrdering
 import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.FieldLabel
 import LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTime.ImaginaryTimeEvolution
-import LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTime.TwoPoint
 
 set_option linter.style.header false
 
@@ -9,8 +8,7 @@ set_option linter.style.header false
 # Fermionic external fields in imaginary time
 
 This module connects the fermionic external-field labels to free imaginary-time evolved creation and
-annihilation operators. It defines time ordering for arbitrary labelled external fields and
-identifies the canonical annihilation/creation label pair with `twoPointTimeOrderedProduct`.
+annihilation operators. It defines time ordering for arbitrary labelled external fields.
 
 For `τ < τ'`, reordering two odd external fields contributes the fermionic exchange sign through
 `Common.timeOrderedProduct Statistics.fermion`.
@@ -55,15 +53,6 @@ noncomputable def timeOrderedExternalFields (ε : Mode → ℝ)
     OccupationFock Mode →ₗ[ℂ] OccupationFock Mode :=
   Common.timeOrderedProduct Common.Statistics.fermion
     (externalFieldOperator ε τA A) (externalFieldOperator ε τB B) τA τB
-
-/-- The canonical annihilation/creation labels reproduce the diagram-independent two-point
-operator. -/
-@[simp]
-theorem timeOrderedExternalFields_annihilation_creation (ε : Mode → ℝ)
-    (i j : Mode) (τ τ' : ℝ) :
-    timeOrderedExternalFields ε (.annihilation i) (.creation j) τ τ' =
-      twoPointTimeOrderedProduct ε i j τ τ' :=
-  rfl
 
 /-- Swapping both external fields and their times produces the fermionic exchange sign. -/
 theorem timeOrderedExternalFields_swap (ε : Mode → ℝ)
