@@ -55,8 +55,10 @@ private theorem completedCoordinatePullback_mem_completedCreateDomain
           (fun n : Occupation Mode => (Real.sqrt (n i : ℝ) : ℂ)) y))
   convert hmem using 1
   funext n
-  simp only [Common.completedCoordinatePullback_apply, createOccupation_apply_same,
-    Nat.cast_add, Nat.cast_one]
+  simp only [Common.completedCoordinatePullback_apply]
+  change _ = (Real.sqrt ((createOccupation i n) i : ℝ) : ℂ) *
+    (y : CompletedFockSpace Mode) (createOccupation i n)
+  rw [createOccupation_apply_same, Nat.cast_add, Nat.cast_one]
 
 private theorem completedCreateDiagonal_pullback_eq
     (i : Mode) (y : (completedAnnihilate i).domain) :
@@ -72,8 +74,10 @@ private theorem completedCreateDiagonal_pullback_eq
           (fun n : Occupation Mode => (Real.sqrt (n i : ℝ) : ℂ)) y) := by
   ext n
   simp only [Common.completedDiagonalOperator_apply,
-    Common.completedCoordinatePullback_apply, createOccupation_apply_same,
-    Nat.cast_add, Nat.cast_one]
+    Common.completedCoordinatePullback_apply]
+  change _ = (Real.sqrt ((createOccupation i n) i : ℝ) : ℂ) *
+    (y : CompletedFockSpace Mode) (createOccupation i n)
+  rw [createOccupation_apply_same, Nat.cast_add, Nat.cast_one]
 
 /-- Completed creation and annihilation are formal adjoints on their maximal weighted domains. -/
 theorem completedCreate_isFormalAdjoint_completedAnnihilate (i : Mode) :
