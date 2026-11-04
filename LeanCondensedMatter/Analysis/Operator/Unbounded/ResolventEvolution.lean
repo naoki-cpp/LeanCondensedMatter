@@ -48,14 +48,6 @@ theorem resolventApproximationEvolution_zero
     resolventApproximationEvolution A hA r hr 0 = 1 := by
   exact boundedUnitaryEvolution_zero _
 
-/-- Each bounded resolvent approximation gives a one-parameter group. -/
-theorem resolventApproximationEvolution_add
-    (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (r : ℝ) (hr : 0 < r) (t s : ℝ) :
-    resolventApproximationEvolution A hA r hr (t + s) =
-      resolventApproximationEvolution A hA r hr t *
-        resolventApproximationEvolution A hA r hr s := by
-  exact boundedUnitaryEvolution_add _ t s
-
 /-- The resolvent-approximating evolution satisfies its bounded-generator equation vectorwise. -/
 theorem resolventApproximationEvolution_apply_hasDerivAt
     (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (r : ℝ) (hr : 0 < r) (t : ℝ) (x : H) :
