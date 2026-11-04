@@ -167,7 +167,7 @@ private theorem resolventApproximationEvolutionAtScale_apply_domain_cauchySeq
       (norm_resolventApproximationEvolution_sub_le A hA r s hrpos hspos t (x : H)).trans_lt
         ((mul_le_mul_of_nonneg_right hdiff (abs_nonneg t)).trans_lt hsum)
     simpa [dist_eq_norm, resolventApproximationEvolutionAtScale,
-      boundedSelfAdjointApproximationAtScale,
+      boundedSelfAdjointApproximationAtScale, resolventApproximationEvolution,
       max_eq_right h1r, max_eq_right h1s] using hnorm
 
 /-- On the original domain, the totalized bounded approximations converge strongly to the
