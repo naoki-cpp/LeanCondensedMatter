@@ -269,44 +269,14 @@ private theorem cauchySeq_apply_of_isometry_of_dense
   obtain ⟨i₀, hi₀⟩ := Metric.cauchySeq_iff.1 (hcauchy y hys) (ε / 3) hε3
   refine ⟨i₀, ?_⟩
   intro i hi j hj
-  have hleft : dist (F i x) (F i y) < ε / 3 := by
-    rw [(hF i).dist_eq]
-    exact hxy
   have hmid : dist (F i y) (F j y) < ε / 3 := hi₀ i hi j hj
-  have hright : dist (F j y) (F j x) < ε / 3 := by
-    rw [(hF j).dist_eq, dist_comm]
-    exact hxy
   calc
     dist (F i x) (F j x) ≤
-        dist (F i x) (F i y) + (dist (F i y) (F j y) + dist (F j y) (F j x)) := by
-      calc
-        dist (F i x) (F j x) ≤
-            dist (F i x) (F i y) + dist (F i y) (F j x) := dist_triangle _ _ _
-        _ ≤ dist (F i x) (F i y) +
-            (dist (F i y) (F j y) + dist (F j y) (F j x)) := by
-          gcongr
-          exact dist_triangle _ _ _
-    _ < ε := by linarith
-
-/-- For every fixed time and vector, the totalized resolvent approximations are a Cauchy sequence
-as the real scale tends to positive infinity. -/
-private theorem resolventApproximationEvolutionAtScale_apply_cauchySeq
-    (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (t : ℝ) (x : H) :
-    CauchySeq (fun r : ℝ => resolventApproximationEvolutionAtScale A hA r t x) := by
-  apply cauchySeq_apply_of_isometry_of_dense
-    (fun r y => resolventApproximationEvolutionAtScale A hA r t y)
-    hA.dense_domain
-  · intro r
-    rw [isometry_iff_dist_eq]
-    intro y z
-    unfold resolventApproximationEvolutionAtScale resolventApproximationEvolution
-    rw [dist_eq_norm, dist_eq_norm, ←
-      (boundedUnitaryEvolution (boundedSelfAdjointApproximation A hA _ _) t).map_sub]
-    apply boundedUnitaryEvolution_apply_norm
-    exact boundedSelfAdjointApproximation_isSelfAdjoint A hA _ _
-  · intro y hy
-    exact resolventApproximationEvolutionAtScale_apply_domain_cauchySeq
-      A hA t ⟨y, hy⟩
+        dist (F i x) (F i y) + dist (F i y) (F j y) +
+          dist (F j y) (F j x) := dist_triangle4 _ _ _ _
+    _ < ε := by
+      rw [(hF i).dist_eq, (hF j).dist_eq, dist_comm y x]
+      linarith
 
 /-- The vectorwise strong limit of the resolvent-approximating unitary evolutions. -/
 private def resolventEvolutionStrongLimit
@@ -318,8 +288,23 @@ private theorem tendsto_resolventApproximationEvolutionAtScale_apply
     (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (t : ℝ) (x : H) :
     Tendsto (fun r : ℝ => resolventApproximationEvolutionAtScale A hA r t x)
       atTop (𝓝 (resolventEvolutionStrongLimit A hA t x)) := by
-  simpa [resolventEvolutionStrongLimit] using
-    (resolventApproximationEvolutionAtScale_apply_cauchySeq A hA t x).tendsto_limUnder
+  have hcauchy :
+      CauchySeq (fun r : ℝ => resolventApproximationEvolutionAtScale A hA r t x) := by
+    apply cauchySeq_apply_of_isometry_of_dense
+      (fun r y => resolventApproximationEvolutionAtScale A hA r t y)
+      hA.dense_domain
+    · intro r
+      rw [isometry_iff_dist_eq]
+      intro y z
+      unfold resolventApproximationEvolutionAtScale resolventApproximationEvolution
+      rw [dist_eq_norm, dist_eq_norm, ←
+        (boundedUnitaryEvolution (boundedSelfAdjointApproximation A hA _ _) t).map_sub]
+      apply boundedUnitaryEvolution_apply_norm
+      exact boundedSelfAdjointApproximation_isSelfAdjoint A hA _ _
+    · intro y hy
+      exact resolventApproximationEvolutionAtScale_apply_domain_cauchySeq
+        A hA t ⟨y, hy⟩
+  simpa [resolventEvolutionStrongLimit] using hcauchy.tendsto_limUnder
 
 end
 
