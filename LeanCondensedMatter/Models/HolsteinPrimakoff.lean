@@ -163,12 +163,6 @@ private theorem sqrt_deviation_sq (twiceSpin n : ℕ) (hn : n ≤ twiceSpin) :
     sub_nonneg.mpr (by exact_mod_cast hn)
   exact_mod_cast Real.sq_sqrt h
 
-private theorem pred_cast (n : ℕ) (hn : n ≠ 0) :
-    ((n - 1 : ℕ) : ℂ) = (n : ℂ) - 1 := by
-  have h : ((n - 1 : ℕ) : ℂ) + 1 = (n : ℂ) := by
-    exact_mod_cast (show n - 1 + 1 = n by omega)
-  linear_combination h
-
 private theorem spinPlus_spinMinus_basisState (hbar : ℝ) (twiceSpin : ℕ) (i : Mode)
     (n : Occupation Mode) (hn : n i ≤ twiceSpin) :
     spinPlus hbar twiceSpin i (spinMinus hbar twiceSpin i (basisState n)) =
@@ -203,7 +197,7 @@ private theorem spinMinus_spinPlus_basisState (hbar : ℝ) (twiceSpin : ℕ) (i 
     calc
       _ = (hbar : ℂ) ^ 2 * (Real.sqrt (n i : ℝ) : ℂ) ^ 2 *
           (Real.sqrt ((twiceSpin : ℝ) - (n i - 1 : ℕ)) : ℂ) ^ 2 := by ring
-      _ = _ := by rw [sqrt_nat_sq, hd, pred_cast (n i) hz]; ring
+      _ = _ := by rw [sqrt_nat_sq, hd, Nat.cast_pred (Nat.pos_of_ne_zero hz)]; ring
 
 /-- The exact local spin ladder commutator [S+, S-] = 2 hbar Sz on the physical sector.
 The occupation cap is required; no unrestricted boson-spin equivalence is asserted. -/
@@ -241,7 +235,7 @@ theorem comm_spinZ_spinPlus (hbar : ℝ) (twiceSpin : ℕ) (i : Mode) :
   · simp only [ScalarExchange.zetaCommutator_apply, spinPlus_basisState,
       spinZ_basisState, map_smul, removeOccupation_apply_same,
       smul_smul]
-    rw [pred_cast (n i) hz, ← sub_smul]
+    rw [Nat.cast_pred (Nat.pos_of_ne_zero hz), ← sub_smul]
     congr 1
     ring
 
