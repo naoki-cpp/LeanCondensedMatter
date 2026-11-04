@@ -50,6 +50,7 @@ structure KuboTimeReversalData (M d H : Type*)
   density : M → DensityOperator H
   density_stationary : ∀ m, Commute (system m).hamiltonian.1 (density m).op
   transform : (H →L[ℂ] H) → (H →L[ℂ] H)
+  transform_add : ∀ A B, transform (A + B) = transform A + transform B
   transform_mul : ∀ A B, transform (A * B) = transform A * transform B
   transform_star : ∀ A, transform (star A) = star (transform A)
   transform_smul : ∀ (c : ℂ) A, transform (c • A) = (star c) • transform A
@@ -91,7 +92,7 @@ theorem expectation_star (m : M) (A : H →L[ℂ] H) :
         finiteDimensionalOperatorTrace (star A * (data.density m).op) :=
       finiteDimensionalOperatorTrace_mul_comm _ _
     _ = finiteDimensionalOperatorTrace (star ((data.density m).op * A)) := by
-      rw [star_mul, ContinuousLinearMap.star_eq_adjoint,
+      simp only [star_mul, ContinuousLinearMap.star_eq_adjoint,
         (data.density m).isSelfAdjoint.adjoint_eq]
     _ = star (finiteDimensionalOperatorTrace ((data.density m).op * A)) :=
       finiteDimensionalOperatorTrace_star _
