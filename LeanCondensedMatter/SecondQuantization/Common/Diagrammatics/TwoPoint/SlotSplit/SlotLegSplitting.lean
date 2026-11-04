@@ -34,7 +34,7 @@ the legs of `S \ T`. -/
 noncomputable def slotLegSplitting {S : Finset (Fin N)} {T : Finset (Fin N)} (h : T ⊆ S) :
     Combinatorics.PositionSplitting (2 * T.card + 1) (2 * (S \ T).card) (2 * S.card + 1) :=
   (Equiv.sumCongr (twoPointExternalInsertionLegEquiv T)
-    (Equiv.refl (Fin (2 * (S \ T).card)))).trans
+    (Equiv.refl (Fin (2 * (2 * (S \ T).card))))).trans
     ((externalInsertionSlotLegSplitting (E := 1) h).trans
       (twoPointExternalInsertionLegEquiv S).symm)
 
