@@ -168,7 +168,7 @@ private theorem resolventApproximationEvolutionAtScale_apply_domain_cauchySeq
             boundedSelfAdjointApproximation A hA s hspos) (x : H)‖ ≤
           ‖boundedSelfAdjointApproximation A hA r hrpos (x : H) - A x‖ +
             ‖boundedSelfAdjointApproximation A hA s hspos (x : H) - A x‖ := by
-      simpa only [ContinuousLinearMap.sub_apply, sub_sub_sub_cancel_right] using
+      simpa only [_root_.sub_apply, sub_sub_sub_cancel_right] using
         (norm_sub_le
           (boundedSelfAdjointApproximation A hA r hrpos (x : H) - A x)
           (boundedSelfAdjointApproximation A hA s hspos (x : H) - A x))
