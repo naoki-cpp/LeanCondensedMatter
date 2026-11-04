@@ -135,14 +135,16 @@ theorem continuous_finiteContinuousOperator
     simpa only [hcol, finiteContinuousOperator_basis_apply] using hF m n
   exact (columns.symm.continuous.comp hcolumns).congr fun τ => columns.symm_apply_apply _
 
-/-- Compatibility on each analytic basis vector between the coefficientwise algebraic integral and
-Mathlib's Bochner interval integral of transported continuous operators. -/
-private theorem continuousOperatorIntervalIntegral_basis
+/-- The transported coefficientwise algebraic interval integral equals Mathlib's Bochner interval
+integral of the transported continuous-operator family. -/
+theorem continuousOperatorIntervalIntegral_eq
     (F : ℝ → AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
     (hF : ∀ m n : Config, Continuous (fun τ : ℝ => matrixCoeff (F τ) m n))
-    (a b : ℝ) (n : Config) :
-    finiteContinuousOperatorAlgEquiv (operatorIntervalIntegral F a b) (finiteAnalyticBasis n) =
-      (∫ τ in a..b, finiteContinuousOperatorAlgEquiv (F τ)) (finiteAnalyticBasis n) := by
+    (a b : ℝ) :
+    finiteContinuousOperatorAlgEquiv (operatorIntervalIntegral F a b) =
+      ∫ τ in a..b, finiteContinuousOperatorAlgEquiv (F τ) := by
+  apply finiteContinuousOperator_ext_basis
+  intro n
   classical
   have hop : Continuous (fun τ : ℝ => finiteContinuousOperatorAlgEquiv (F τ)) :=
     continuous_finiteContinuousOperator F hF
@@ -164,18 +166,6 @@ private theorem continuousOperatorIntervalIntegral_basis
     hvecInt]
   exact intervalIntegral.integral_congr fun τ _ => by
     simpa using (finiteContinuousOperator_basis_apply (F τ) m n).symm
-
-/-- The transported coefficientwise algebraic interval integral equals Mathlib's Bochner interval
-integral of the transported continuous-operator family. -/
-theorem continuousOperatorIntervalIntegral_eq
-    (F : ℝ → AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
-    (hF : ∀ m n : Config, Continuous (fun τ : ℝ => matrixCoeff (F τ) m n))
-    (a b : ℝ) :
-    finiteContinuousOperatorAlgEquiv (operatorIntervalIntegral F a b) =
-      ∫ τ in a..b, finiteContinuousOperatorAlgEquiv (F τ) := by
-  apply finiteContinuousOperator_ext_basis
-  intro n
-  exact continuousOperatorIntervalIntegral_basis F hF a b n
 
 end
 end Common
