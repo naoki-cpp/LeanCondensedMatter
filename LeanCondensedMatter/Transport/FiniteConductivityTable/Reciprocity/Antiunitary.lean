@@ -20,6 +20,11 @@ conductivity tensors without assuming the conductivity identity itself.
 
 Checking Hamiltonian covariance, basis pairing, and Peierls-contact
 covariance for a concrete material remains a model-specific obligation.
+
+If the control reversal is involutive, the exact same-label basis pairing
+also forces the square of the antiunitary map to be the identity on the
+entire Hilbert space. Thus this interface excludes a nonzero spin-half
+time reversal with square minus identity.
 -/
 
 namespace QuantumTheory.Transport
@@ -73,6 +78,46 @@ namespace AntiunitaryCurrentPairing
 variable {M ι d H : Type*}
 variable [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
 variable (data : AntiunitaryCurrentPairing M ι d H)
+
+/-- Applying the exact same-label reversed-basis identity twice fixes
+every eigenbasis vector whenever the control reversal closes in two steps. -/
+private theorem timeReversal_sq_apply_basis
+    (m : M) (hreverse : data.reverse (data.reverse m) = m) (a : ι) :
+    data.timeReversal.toFun
+      (data.timeReversal.toFun ((data.spectral m).basis a)) =
+      (data.spectral m).basis a := by
+  calc
+    _ = data.timeReversal.toFun
+          ((data.spectral (data.reverse m)).basis a) :=
+      congrArg data.timeReversal.toFun (data.basis_reverse m a).symm
+    _ = (data.spectral (data.reverse (data.reverse m))).basis a :=
+      (data.basis_reverse (data.reverse m) a).symm
+    _ = (data.spectral m).basis a := by rw [hreverse]
+
+/-- With a two-step control reversal, exact same-label eigenbasis pairing
+forces the antiunitary square to be the identity on the *whole* Hilbert
+space, not merely on individual eigenvectors. This rules out the usual
+spin-half time reversal (whose square is minus identity) on a nonzero
+Hilbert space. No assumption on the current or contact term is needed. -/
+theorem timeReversal_sq_eq_id
+    (m : M) (hreverse : data.reverse (data.reverse m) = m) :
+    (fun x : H => data.timeReversal.toFun (data.timeReversal.toFun x)) =
+      (id : H → H) := by
+  funext x
+  let b := (data.spectral m).basis
+  apply b.repr.injective
+  ext a
+  simp only [HilbertBasis.repr_apply_apply]
+  calc
+    inner ℂ (b a) (data.timeReversal.toFun (data.timeReversal.toFun x)) =
+        inner ℂ
+          (data.timeReversal.toFun (data.timeReversal.toFun (b a)))
+          (data.timeReversal.toFun (data.timeReversal.toFun x)) := by
+            rw [data.timeReversal_sq_apply_basis m hreverse a]
+    _ = inner ℂ (b a) x := by
+      rw [data.timeReversal.inner_map, data.timeReversal.inner_map]
+      simp
+
 
 /-- Hermiticity of the charge-current operator determines the conjugate
 transposed matrix element in its actual eigenbasis. -/
