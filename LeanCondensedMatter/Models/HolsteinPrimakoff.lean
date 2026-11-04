@@ -205,20 +205,6 @@ private theorem spinMinus_spinPlus_basisState (hbar : ℝ) (twiceSpin : ℕ) (i 
           (Real.sqrt ((twiceSpin : ℝ) - (n i - 1 : ℕ)) : ℂ) ^ 2 := by ring
       _ = _ := by rw [sqrt_nat_sq, hd, pred_cast (n i) hz]; ring
 
-private theorem eq_on_physicalSubspace (twiceSpin : ℕ) (i : Mode)
-    (A B : FockSpace Mode →ₗ[ℂ] FockSpace Mode)
-    (hAB : ∀ n : Occupation Mode, n i ≤ twiceSpin → A (basisState n) = B (basisState n))
-    (ψ : FockSpace Mode) (hψ : ψ ∈ physicalSubspace twiceSpin i) : A ψ = B ψ := by
-  have h : physicalSubspace twiceSpin i ≤ LinearMap.ker (A - B) := by
-    rw [physicalSubspace, Finsupp.supported_eq_span_single]
-    apply Submodule.span_le.mpr
-    rintro _ ⟨n, hn, rfl⟩
-    change A (basisState n) - B (basisState n) = 0
-    exact sub_eq_zero.mpr (hAB n hn)
-  have hker := h hψ
-  change A ψ - B ψ = 0 at hker
-  exact sub_eq_zero.mp hker
-
 /-- The exact local spin ladder commutator [S+, S-] = 2 hbar Sz on the physical sector.
 The occupation cap is required; no unrestricted boson-spin equivalence is asserted. -/
 theorem comm_spinPlus_spinMinus (hbar : ℝ) (twiceSpin : ℕ) (i : Mode)
@@ -226,9 +212,12 @@ theorem comm_spinPlus_spinMinus (hbar : ℝ) (twiceSpin : ℕ) (i : Mode)
     ScalarExchange.zetaCommutator (1 : ℂ) (spinPlus hbar twiceSpin i)
       (spinMinus hbar twiceSpin i) ψ =
         (2 * (hbar : ℂ)) • spinZ hbar twiceSpin i ψ := by
-  apply eq_on_physicalSubspace twiceSpin i _
-    ((2 * (hbar : ℂ)) • spinZ hbar twiceSpin i) _ ψ hψ
-  intro n hn
+  rw [← LinearMap.smul_apply]
+  apply LinearMap.eqOn_span
+    (s := (fun n : Occupation Mode => basisState n) '' {n | n i ≤ twiceSpin})
+    ?_ (by simpa only [physicalSubspace, Finsupp.supported_eq_span_single,
+      basisState, Common.basisState] using hψ)
+  rintro _ ⟨n, hn, rfl⟩
   simp only [ScalarExchange.zetaCommutator_apply,
     spinPlus_spinMinus_basisState hbar twiceSpin i n hn,
     spinMinus_spinPlus_basisState hbar twiceSpin i n hn,
