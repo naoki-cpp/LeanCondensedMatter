@@ -36,13 +36,6 @@ noncomputable def imaginaryTimeEvolveFree (ε : Mode → ℝ) (τ : ℝ) :
     OccupationFock Mode →ₗ[ℂ] OccupationFock Mode :=
   Common.diagonalEvolution (fermionEnergy ε) τ
 
-omit [LinearOrder Mode] in
-theorem imaginaryTimeEvolveFree_basisState (ε : Mode → ℝ) (τ : ℝ) (n : Occupation Mode) :
-    imaginaryTimeEvolveFree ε τ (basisState n) =
-      Complex.exp ((τ * fermionEnergy ε n : ℝ) : ℂ) • basisState n := by
-  simp only [imaginaryTimeEvolveFree, basisState]
-  exact Common.diagonalEvolution_basisState (fermionEnergy ε) τ n
-
 /-! ## Algebraic Heisenberg-type evolution of a general operator -/
 
 /-- **The algebraic imaginary-time conjugation of an operator `A` under the free diagonal
@@ -110,26 +103,6 @@ theorem imaginaryTimeEvolve_create (ε : Mode → ℝ) (τ : ℝ) (i : Mode) :
   change Common.heisenbergEvolve (fermionEnergy ε) τ (create i) = _
   simpa using
     Common.heisenbergEvolve_eq_smul_of_carriesShift
-      (fermionEnergy ε) (ε i) τ (create i) (carriesEnergyShift_create ε i)
-
-/-! ## The KMS-type commutation relation with `e^{τH₀}` -/
-
-/-- **The KMS-type relation for the annihilation operator**: `e^{τH₀} c_i = e^{-τε_i} c_i e^{τH₀}`. -/
-theorem imaginaryTimeEvolveFree_comp_annihilate (ε : Mode → ℝ) (τ : ℝ) (i : Mode) :
-    (imaginaryTimeEvolveFree ε τ).comp (annihilate i) =
-      Complex.exp (-(τ : ℂ) * (ε i : ℂ)) • ((annihilate i).comp (imaginaryTimeEvolveFree ε τ)) := by
-  change (Common.diagonalEvolution (fermionEnergy ε) τ).comp (annihilate i) = _
-  simpa [imaginaryTimeEvolveFree, mul_neg, neg_mul] using
-    Common.diagonalEvolution_comp_of_carriesShift
-      (fermionEnergy ε) (-ε i) τ (annihilate i) (carriesEnergyShift_annihilate ε i)
-
-/-- **The KMS-type relation for the creation operator**: `e^{τH₀} c_i† = e^{τε_i} c_i† e^{τH₀}`. -/
-theorem imaginaryTimeEvolveFree_comp_create (ε : Mode → ℝ) (τ : ℝ) (i : Mode) :
-    (imaginaryTimeEvolveFree ε τ).comp (create i) =
-      Complex.exp ((τ : ℂ) * (ε i : ℂ)) • ((create i).comp (imaginaryTimeEvolveFree ε τ)) := by
-  change (Common.diagonalEvolution (fermionEnergy ε) τ).comp (create i) = _
-  simpa [imaginaryTimeEvolveFree] using
-    Common.diagonalEvolution_comp_of_carriesShift
       (fermionEnergy ε) (ε i) τ (create i) (carriesEnergyShift_create ε i)
 
 end Fermionic

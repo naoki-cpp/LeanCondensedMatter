@@ -43,37 +43,6 @@ noncomputable def completedFreeHamiltonian (ε : Mode → ℝ) :
     CompletedFockSpace Mode →ₗ.[ℂ] CompletedFockSpace Mode :=
   Common.completedDiagonalOperator fun n : Occupation Mode => (freeEigenvalue ε n : ℂ)
 
-/-- Every occupation-basis vector lies in the completed single-mode number-operator domain. -/
-theorem completedBasisState_mem_completedNumberOperatorDomain (i : Mode) (n : Occupation Mode) :
-    completedBasisState n ∈ completedNumberOperatorDomain i := by
-  exact Common.completedBasisState_mem_completedDiagonalDomain
-    (fun m : Occupation Mode => (m i : ℂ)) n
-
-/-- Occupation-basis vectors diagonalize the completed single-mode number operator. -/
-@[simp]
-theorem completedNumberOperator_basisState (i : Mode) (n : Occupation Mode) :
-    completedNumberOperator i
-        ⟨completedBasisState n, completedBasisState_mem_completedNumberOperatorDomain i n⟩ =
-      (n i : ℂ) • completedBasisState n := by
-  exact Common.completedDiagonalOperator_basisState
-    (fun m : Occupation Mode => (m i : ℂ)) n
-
-/-- Every occupation-basis vector lies in the completed free-Hamiltonian domain. -/
-theorem completedBasisState_mem_completedFreeHamiltonianDomain
-    (ε : Mode → ℝ) (n : Occupation Mode) :
-    completedBasisState n ∈ completedFreeHamiltonianDomain ε := by
-  exact Common.completedBasisState_mem_completedDiagonalDomain
-    (fun m : Occupation Mode => (freeEigenvalue ε m : ℂ)) n
-
-/-- Occupation-basis vectors diagonalize the completed free Hamiltonian. -/
-@[simp]
-theorem completedFreeHamiltonian_basisState (ε : Mode → ℝ) (n : Occupation Mode) :
-    completedFreeHamiltonian ε
-        ⟨completedBasisState n, completedBasisState_mem_completedFreeHamiltonianDomain ε n⟩ =
-      (freeEigenvalue ε n : ℂ) • completedBasisState n := by
-  exact Common.completedDiagonalOperator_basisState
-    (fun m : Occupation Mode => (freeEigenvalue ε m : ℂ)) n
-
 /-- On the finite-support core, the completed single-mode number operator agrees with the algebraic
 operator `aᵢ† aᵢ`. -/
 theorem completedNumberOperator_comp_algebraicCore (i : Mode) :
