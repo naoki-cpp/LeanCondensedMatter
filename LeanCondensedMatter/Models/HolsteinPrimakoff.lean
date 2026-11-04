@@ -215,7 +215,8 @@ theorem comm_spinPlus_spinMinus (hbar : ℝ) (twiceSpin : ℕ) (i : Mode)
   rw [← LinearMap.smul_apply]
   apply LinearMap.eqOn_span
     (s := (fun n : Occupation Mode => basisState n) '' {n | n i ≤ twiceSpin})
-    ?_ (by simpa only [physicalSubspace, Finsupp.supported_eq_span_single] using hψ)
+    ?_ (by simpa only [physicalSubspace, Finsupp.supported_eq_span_single,
+      basisState, Common.basisState] using hψ)
   rintro _ ⟨n, hn, rfl⟩
   simp only [ScalarExchange.zetaCommutator_apply,
     spinPlus_spinMinus_basisState hbar twiceSpin i n hn,
