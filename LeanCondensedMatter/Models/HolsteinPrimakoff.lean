@@ -212,6 +212,7 @@ theorem comm_spinPlus_spinMinus (hbar : ℝ) (twiceSpin : ℕ) (i : Mode)
     ScalarExchange.zetaCommutator (1 : ℂ) (spinPlus hbar twiceSpin i)
       (spinMinus hbar twiceSpin i) ψ =
         (2 * (hbar : ℂ)) • spinZ hbar twiceSpin i ψ := by
+  rw [← LinearMap.smul_apply]
   apply LinearMap.eqOn_span
     (s := (fun n : Occupation Mode => basisState n) '' {n | n i ≤ twiceSpin})
     ?_ (by simpa only [physicalSubspace, Finsupp.supported_eq_span_single] using hψ)
