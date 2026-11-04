@@ -49,15 +49,6 @@ noncomputable def imaginaryTimeEvolve (ε : Mode → ℝ) (τ : ℝ)
 
 /-! ## Evolution of the diagonal density-density interaction -/
 
-omit [LinearOrder Mode] in
-/-- The density-density `interactionHamiltonian` is time-independent under free imaginary-time
-evolution, since it is diagonal in the occupation basis. -/
-theorem imaginaryTimeEvolve_interactionHamiltonian (ε : Mode → ℝ) (Vint : Mode → Mode → ℝ)
-    (τ : ℝ) : imaginaryTimeEvolve ε τ (interactionHamiltonian Vint) = interactionHamiltonian Vint := by
-  simpa only [imaginaryTimeEvolve, interactionHamiltonian] using
-    Common.heisenbergEvolve_diagonalOperator (fermionEnergy ε) τ
-      (fun n : Occupation Mode => (∑ i ∈ n, ∑ j ∈ n, (Vint i j : ℂ)))
-
 /-! ## Energy shifts of creation and annihilation -/
 
 /-- Annihilation at mode `i` carries free-energy shift `-ε i`. -/
