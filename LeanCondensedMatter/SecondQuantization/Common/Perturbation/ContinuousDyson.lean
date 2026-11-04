@@ -90,20 +90,6 @@ noncomputable def continuousInteractionPicture (energy : Config → ℝ)
     FiniteContinuousOperator Config :=
   finiteContinuousOperatorAlgEquiv (interactionPicture energy V τ)
 
-@[simp]
-theorem continuousInteractionPicture_basis_apply_apply (energy : Config → ℝ)
-    (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (τ : ℝ) (m n : Config) :
-    continuousInteractionPicture energy V τ (finiteAnalyticBasis n) m =
-      Complex.exp ((τ * (energy m - energy n) : ℝ) : ℂ) * matrixCoeff V m n := by
-  rw [continuousInteractionPicture, finiteContinuousOperator_basis_apply,
-    matrixCoeff_interactionPicture]
-
-@[simp]
-theorem continuousInteractionPicture_zero (energy : Config → ℝ)
-    (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
-    continuousInteractionPicture energy V 0 = finiteContinuousOperatorAlgEquiv V := by
-  simp [continuousInteractionPicture]
-
 /-- The continuous interaction-picture family is continuous in imaginary time. -/
 theorem continuous_continuousInteractionPicture (energy : Config → ℝ)
     (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
@@ -123,27 +109,6 @@ theorem continuousInteractionPicture_eq_conj (energy : Config → ℝ)
   simp only [continuousInteractionPicture, interactionPicture, heisenbergEvolve_eq_comp,
     continuousDiagonalEvolution]
   simp only [← Module.End.mul_eq_comp, ← ContinuousLinearMap.mul_def, map_mul]
-
-/-! ## Coefficientwise Dyson recursion on finite configurations -/
-
-/-- On a finite configuration type, the canonical reachable-support coefficient satisfies the
-operator-valued Dyson recursion reconstructed by `operatorIntervalIntegral`. -/
-private theorem dysonCoeff_succ (energy : Config → ℝ)
-    (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (n : ℕ) (τ : ℝ) :
-    dysonCoeff energy V (n + 1) τ =
-      - operatorIntervalIntegral
-          (fun σ => (interactionPicture energy V σ).comp (dysonCoeff energy V n σ)) 0 τ := by
-  apply matrixCoeff_ext
-  intro m n'
-  change dysonCoeff energy V (n + 1) τ (basisState n') m =
-    matrixCoeff
-      (- operatorIntervalIntegral
-        (fun σ => (interactionPicture energy V σ).comp (dysonCoeff energy V n σ)) 0 τ) m n'
-  rw [dysonCoeff_succ_basisState_apply]
-  simp only [← matrixCoeffLinear_apply, map_neg]
-  rw [matrixCoeffLinear_apply, matrixCoeff_operatorIntervalIntegral]
-  congr 1
-
 
 /-! ## Finite-configuration Dyson coefficient bridge -/
 
@@ -166,7 +131,20 @@ theorem finiteContinuousOperator_dysonCoeff_eq_coeff (energy : Config → ℝ)
         exact continuous_finsetSum _ fun k _ =>
           (continuous_matrixCoeff_interactionPicture energy V m k).mul
             (continuous_matrixCoeff_dysonCoeff energy V n k n')
-      rw [dysonCoeff_succ, map_neg,
+      have hrec : dysonCoeff energy V (n + 1) τ =
+          - operatorIntervalIntegral
+              (fun σ => (interactionPicture energy V σ).comp (dysonCoeff energy V n σ)) 0 τ := by
+        apply matrixCoeff_ext
+        intro m n'
+        change dysonCoeff energy V (n + 1) τ (basisState n') m =
+          matrixCoeff
+            (- operatorIntervalIntegral
+              (fun σ => (interactionPicture energy V σ).comp (dysonCoeff energy V n σ)) 0 τ) m n'
+        rw [dysonCoeff_succ_basisState_apply]
+        simp only [← matrixCoeffLinear_apply, map_neg]
+        rw [matrixCoeffLinear_apply, matrixCoeff_operatorIntervalIntegral]
+        congr 1
+      rw [hrec, map_neg,
         continuousOperatorIntervalIntegral_eq _ hcoeff, Dyson.coeff_succ]
       apply congrArg Neg.neg
       apply intervalIntegral.integral_congr
