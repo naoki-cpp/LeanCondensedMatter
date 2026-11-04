@@ -87,7 +87,11 @@ theorem dysonCoeff_succ_basisState_apply (energy : Config → ℝ)
           interactionPicture energy V σ
             (dysonCoeff energy V order σ (basisState n)) m := by
   simp only [dysonCoeff_basisState]
-  rw [dysonBasis_succ, finiteSupportIntervalIntegral_apply]
+  rw [dysonBasis_succ]
+  change - finiteSupportIntervalIntegral (reachableSupport V (order + 1) n)
+      (fun σ => interactionPicture energy V σ (dysonBasis energy V order σ n))
+      0 τ m = _
+  rw [finiteSupportIntervalIntegral_apply]
   intro σ
   exact support_interactionPicture_apply_subset_reachableSupport_succ energy V σ order n
     (dysonBasis energy V order σ n)
