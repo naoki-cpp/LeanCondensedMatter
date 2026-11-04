@@ -126,80 +126,6 @@ private def resolventApproximationEvolutionAtScale
   resolventApproximationEvolution A hA (positiveApproximationScale r)
     (positiveApproximationScale_pos r) t
 
-/-- On the original domain, the bounded resolvent evolutions are strongly Cauchy at each fixed
-real time. -/
-private theorem resolventApproximationEvolution_domain_cauchy
-    (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (x : A.domain)
-    (t : ℝ) (ε : ℝ) (hε : 0 < ε) :
-    ∃ R : ℝ, 0 < R ∧ ∀ r s : ℝ, R ≤ r → R ≤ s →
-      ∀ hr : 0 < r, ∀ hs : 0 < s,
-        ‖resolventApproximationEvolution A hA r hr t (x : H) -
-            resolventApproximationEvolution A hA s hs t (x : H)‖ < ε := by
-  by_cases ht : t = 0
-  · refine ⟨1, by norm_num, ?_⟩
-    intro r s _ _ hr hs
-    simpa [ht, resolventApproximationEvolution_zero] using hε
-  · have habs : 0 < |t| := abs_pos.mpr ht
-    have hden : 0 < 2 * |t| := by positivity
-    have hδ : 0 < ε / (2 * |t|) := by positivity
-    obtain ⟨R, hR, hconv⟩ :=
-      boundedSelfAdjointApproximation_strong_convergence A hA x
-        (ε / (2 * |t|)) hδ
-    refine ⟨R, hR, ?_⟩
-    intro r s hRr hRs hr hs
-    have hrconv := hconv r hRr hr
-    have hsconv := hconv s hRs hs
-    have hrscaled :
-        ‖boundedSelfAdjointApproximation A hA r hr (x : H) - A x‖ * (2 * |t|) < ε :=
-      (lt_div_iff₀ hden).mp hrconv
-    have hsscaled :
-        ‖boundedSelfAdjointApproximation A hA s hs (x : H) - A x‖ * (2 * |t|) < ε :=
-      (lt_div_iff₀ hden).mp hsconv
-    have hhalf (a : ℝ) (ha : a * (2 * |t|) < ε) : a * |t| < ε / 2 := by
-      nlinarith only [ha]
-    have hrhalf :
-        ‖boundedSelfAdjointApproximation A hA r hr (x : H) - A x‖ * |t| < ε / 2 :=
-      hhalf _ hrscaled
-    have hshalf :
-        ‖boundedSelfAdjointApproximation A hA s hs (x : H) - A x‖ * |t| < ε / 2 :=
-      hhalf _ hsscaled
-    have hdiff :
-        ‖(boundedSelfAdjointApproximation A hA r hr -
-            boundedSelfAdjointApproximation A hA s hs) (x : H)‖ ≤
-          ‖boundedSelfAdjointApproximation A hA r hr (x : H) - A x‖ +
-            ‖boundedSelfAdjointApproximation A hA s hs (x : H) - A x‖ := by
-      calc
-        ‖(boundedSelfAdjointApproximation A hA r hr -
-            boundedSelfAdjointApproximation A hA s hs) (x : H)‖ =
-            ‖(boundedSelfAdjointApproximation A hA r hr (x : H) - A x) -
-              (boundedSelfAdjointApproximation A hA s hs (x : H) - A x)‖ := by
-                congr 1
-                change
-                  boundedSelfAdjointApproximation A hA r hr (x : H) -
-                      boundedSelfAdjointApproximation A hA s hs (x : H) =
-                    (boundedSelfAdjointApproximation A hA r hr (x : H) - A x) -
-                      (boundedSelfAdjointApproximation A hA s hs (x : H) - A x)
-                abel
-        _ ≤ ‖boundedSelfAdjointApproximation A hA r hr (x : H) - A x‖ +
-              ‖boundedSelfAdjointApproximation A hA s hs (x : H) - A x‖ :=
-            norm_sub_le _ _
-    have hsum :
-        (‖boundedSelfAdjointApproximation A hA r hr (x : H) - A x‖ +
-          ‖boundedSelfAdjointApproximation A hA s hs (x : H) - A x‖) * |t| < ε := by
-      calc
-        (‖boundedSelfAdjointApproximation A hA r hr (x : H) - A x‖ +
-            ‖boundedSelfAdjointApproximation A hA s hs (x : H) - A x‖) * |t| =
-            ‖boundedSelfAdjointApproximation A hA r hr (x : H) - A x‖ * |t| +
-              ‖boundedSelfAdjointApproximation A hA s hs (x : H) - A x‖ * |t| := by
-                rw [add_mul]
-        _ < ε := by linarith
-    have hmul :
-        ‖(boundedSelfAdjointApproximation A hA r hr -
-            boundedSelfAdjointApproximation A hA s hs) (x : H)‖ * |t| < ε := by
-      exact lt_of_le_of_lt (mul_le_mul_of_nonneg_right hdiff (abs_nonneg t)) hsum
-    exact lt_of_le_of_lt
-      (norm_resolventApproximationEvolution_sub_le A hA r s hr hs t (x : H)) hmul
-
 /-- On the generator domain, the totalized resolvent evolutions form a Cauchy sequence at
 positive infinity. -/
 private theorem resolventApproximationEvolutionAtScale_apply_domain_cauchySeq
@@ -207,19 +133,50 @@ private theorem resolventApproximationEvolutionAtScale_apply_domain_cauchySeq
     CauchySeq (fun r : ℝ => resolventApproximationEvolutionAtScale A hA r t (x : H)) := by
   refine Metric.cauchySeq_iff.2 ?_
   intro ε hε
-  obtain ⟨R, hR, hcauchy⟩ :=
-    resolventApproximationEvolution_domain_cauchy A hA x t ε hε
-  refine ⟨max R 1, ?_⟩
-  intro r hr s hs
-  have hRr : R ≤ r := (le_max_left R 1).trans hr
-  have hRs : R ≤ s := (le_max_left R 1).trans hs
-  have h1r : 1 ≤ r := (le_max_right R 1).trans hr
-  have h1s : 1 ≤ s := (le_max_right R 1).trans hs
-  have hrpos : 0 < r := zero_lt_one.trans_le h1r
-  have hspos : 0 < s := zero_lt_one.trans_le h1s
-  have hnorm := hcauchy r s hRr hRs hrpos hspos
-  simpa [dist_eq_norm, resolventApproximationEvolutionAtScale, positiveApproximationScale,
-    max_eq_right h1r, max_eq_right h1s] using hnorm
+  by_cases ht : t = 0
+  · refine ⟨0, ?_⟩
+    intro r hr s hs
+    simpa [ht, resolventApproximationEvolutionAtScale] using hε
+  · have habs : 0 < |t| := abs_pos.mpr ht
+    have hden : 0 < 2 * |t| := by positivity
+    obtain ⟨R, hR, hconv⟩ :=
+      boundedSelfAdjointApproximation_strong_convergence A hA x
+        (ε / (2 * |t|)) (by positivity)
+    refine ⟨max R 1, ?_⟩
+    intro r hr s hs
+    have hRr : R ≤ r := (le_max_left R 1).trans hr
+    have hRs : R ≤ s := (le_max_left R 1).trans hs
+    have h1r : 1 ≤ r := (le_max_right R 1).trans hr
+    have h1s : 1 ≤ s := (le_max_right R 1).trans hs
+    have hrpos : 0 < r := zero_lt_one.trans_le h1r
+    have hspos : 0 < s := zero_lt_one.trans_le h1s
+    have hrscaled :
+        ‖boundedSelfAdjointApproximation A hA r hrpos (x : H) - A x‖ *
+            (2 * |t|) < ε :=
+      (lt_div_iff₀ hden).mp (hconv r hRr hrpos)
+    have hsscaled :
+        ‖boundedSelfAdjointApproximation A hA s hspos (x : H) - A x‖ *
+            (2 * |t|) < ε :=
+      (lt_div_iff₀ hden).mp (hconv s hRs hspos)
+    have hsum :
+        (‖boundedSelfAdjointApproximation A hA r hrpos (x : H) - A x‖ +
+          ‖boundedSelfAdjointApproximation A hA s hspos (x : H) - A x‖) *
+            |t| < ε := by
+      nlinarith only [hrscaled, hsscaled]
+    have hdiff :
+        ‖(boundedSelfAdjointApproximation A hA r hrpos -
+            boundedSelfAdjointApproximation A hA s hspos) (x : H)‖ ≤
+          ‖boundedSelfAdjointApproximation A hA r hrpos (x : H) - A x‖ +
+            ‖boundedSelfAdjointApproximation A hA s hspos (x : H) - A x‖ := by
+      simpa only [ContinuousLinearMap.sub_apply, sub_sub_sub_cancel_right] using
+        (norm_sub_le
+          (boundedSelfAdjointApproximation A hA r hrpos (x : H) - A x)
+          (boundedSelfAdjointApproximation A hA s hspos (x : H) - A x))
+    have hnorm :=
+      (norm_resolventApproximationEvolution_sub_le A hA r s hrpos hspos t (x : H)).trans_lt
+        ((mul_le_mul_of_nonneg_right hdiff (abs_nonneg t)).trans_lt hsum)
+    simpa [dist_eq_norm, resolventApproximationEvolutionAtScale, positiveApproximationScale,
+      max_eq_right h1r, max_eq_right h1s] using hnorm
 
 /-- On the original domain, the totalized bounded approximations converge strongly to the
 self-adjoint operator. -/
