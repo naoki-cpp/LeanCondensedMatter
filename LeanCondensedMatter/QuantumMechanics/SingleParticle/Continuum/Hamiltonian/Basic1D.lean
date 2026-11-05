@@ -112,9 +112,9 @@ theorem l2ToTemperedDistribution1D_continuumH2Laplacian1D
   change l2ToTemperedDistribution1D
     ((LinearEquiv.ofInjective l2ToTemperedDistribution1D.toLinearMap
       l2ToTemperedDistribution1D_injective).symm
-      (((LineDeriv.laplacianCLM ℂ ℝ 𝓢'(ℝ, ℂ)).toLinearMap.comp
+      ((((LineDeriv.laplacianCLM ℂ ℝ 𝓢'(ℝ, ℂ)).toLinearMap.comp
         (l2ToTemperedDistribution1D.toLinearMap.comp continuumH2Domain1D.subtype)).codRestrict
-          l2ToTemperedDistribution1D.toLinearMap.range _) ψ) = _
+          l2ToTemperedDistribution1D.toLinearMap.range _) ψ)) = _
   rw [LinearEquiv.ofInjective_symm_apply]
   exact TemperedDistribution.laplacianCLM_apply _
 
