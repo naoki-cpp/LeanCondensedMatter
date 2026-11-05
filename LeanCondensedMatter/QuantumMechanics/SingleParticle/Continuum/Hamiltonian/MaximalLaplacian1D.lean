@@ -29,66 +29,44 @@ open scoped ENNReal MeasureTheory SchwartzMap Laplacian LineDeriv
 /-- The maximal distributional Laplacian domain in `L²(ℝ, ℂ)`: a wavefunction belongs to the
  domain exactly when its distributional Laplacian has an `L²` representative. -/
 noncomputable def continuumMaximalLaplacianDomain1D :
-    Submodule ℂ ContinuumL2Wavefunction1D where
-  carrier := {ψ | ∃ φ : ContinuumL2Wavefunction1D,
-    l2ToTemperedDistribution1D φ = Δ (l2ToTemperedDistribution1D ψ)}
-  zero_mem' := by
-    refine ⟨0, ?_⟩
-    rw [map_zero]
-    simpa only [TemperedDistribution.laplacianCLM_apply] using
-      (LineDeriv.laplacianCLM ℂ ℝ 𝓢'(ℝ, ℂ)).map_zero.symm
-  add_mem' := by
-    rintro ψ φ ⟨u, hu⟩ ⟨v, hv⟩
-    refine ⟨u + v, ?_⟩
-    calc
-      l2ToTemperedDistribution1D (u + v) =
-          l2ToTemperedDistribution1D u + l2ToTemperedDistribution1D v := by rw [map_add]
-      _ = Δ (l2ToTemperedDistribution1D ψ) + Δ (l2ToTemperedDistribution1D φ) := by
-        rw [hu, hv]
-      _ = Δ (l2ToTemperedDistribution1D ψ + l2ToTemperedDistribution1D φ) := by
-        symm
-        simpa only [TemperedDistribution.laplacianCLM_apply] using
-          (LineDeriv.laplacianCLM ℂ ℝ 𝓢'(ℝ, ℂ)).map_add
-            (l2ToTemperedDistribution1D ψ) (l2ToTemperedDistribution1D φ)
-      _ = Δ (l2ToTemperedDistribution1D (ψ + φ)) := by rw [map_add]
-  smul_mem' := by
-    rintro c ψ ⟨u, hu⟩
-    refine ⟨c • u, ?_⟩
-    calc
-      l2ToTemperedDistribution1D (c • u) = c • l2ToTemperedDistribution1D u := by rw [map_smul]
-      _ = c • Δ (l2ToTemperedDistribution1D ψ) := by rw [hu]
-      _ = Δ (c • l2ToTemperedDistribution1D ψ) := by
-        symm
-        simpa only [TemperedDistribution.laplacianCLM_apply, RingHom.id_apply] using
-          (LineDeriv.laplacianCLM ℂ ℝ 𝓢'(ℝ, ℂ)).map_smul c
-            (l2ToTemperedDistribution1D ψ)
-      _ = Δ (l2ToTemperedDistribution1D (c • ψ)) := by rw [map_smul]
+    Submodule ℂ ContinuumL2Wavefunction1D :=
+  (l2ToTemperedDistribution1D.toLinearMap.range).comap
+    ((LineDeriv.laplacianCLM ℂ ℝ 𝓢'(ℝ, ℂ)).toLinearMap.comp
+      l2ToTemperedDistribution1D.toLinearMap)
 
 @[simp]
 theorem mem_continuumMaximalLaplacianDomain1D_iff (ψ : ContinuumL2Wavefunction1D) :
     ψ ∈ continuumMaximalLaplacianDomain1D ↔
       ∃ φ : ContinuumL2Wavefunction1D,
-        l2ToTemperedDistribution1D φ = Δ (l2ToTemperedDistribution1D ψ) :=
-  Iff.rfl
+        l2ToTemperedDistribution1D φ = Δ (l2ToTemperedDistribution1D ψ) := by
+  change
+    ((LineDeriv.laplacianCLM ℂ ℝ 𝓢'(ℝ, ℂ)).toLinearMap.comp
+        l2ToTemperedDistribution1D.toLinearMap) ψ ∈
+      l2ToTemperedDistribution1D.toLinearMap.range ↔ _
+  simp only [LinearMap.mem_range, LinearMap.comp_apply,
+    TemperedDistribution.laplacianCLM_apply]
 
 /-- Every `H²` wavefunction belongs to the maximal distributional Laplacian domain. -/
 theorem continuumH2Domain1D_le_continuumMaximalLaplacianDomain1D :
     continuumH2Domain1D ≤ continuumMaximalLaplacianDomain1D := by
   intro ψ hψ
   let ψH2 : continuumH2Domain1D := ⟨ψ, hψ⟩
+  apply (mem_continuumMaximalLaplacianDomain1D_iff ψ).mpr
   refine ⟨continuumH2Laplacian1D ψH2, ?_⟩
   exact l2ToTemperedDistribution1D_continuumH2Laplacian1D ψH2
 
 /-- The unique `L²` representative of the distributional Laplacian on the maximal domain. -/
 private noncomputable def continuumMaximalLaplacianValue1D
     (ψ : continuumMaximalLaplacianDomain1D) : ContinuumL2Wavefunction1D :=
-  Classical.choose ψ.property
+  Classical.choose
+    ((mem_continuumMaximalLaplacianDomain1D_iff _).mp ψ.property)
 
 private theorem l2ToTemperedDistribution1D_continuumMaximalLaplacianValue1D
     (ψ : continuumMaximalLaplacianDomain1D) :
     l2ToTemperedDistribution1D (continuumMaximalLaplacianValue1D ψ) =
       Δ (l2ToTemperedDistribution1D (ψ : ContinuumL2Wavefunction1D)) :=
-  Classical.choose_spec ψ.property
+  Classical.choose_spec
+    ((mem_continuumMaximalLaplacianDomain1D_iff _).mp ψ.property)
 
 /-- The maximal distributional Laplacian, as a linear map from its explicit domain to `L²`. -/
 noncomputable def continuumMaximalLaplacianOnDomain1D :
@@ -165,7 +143,8 @@ theorem mem_continuumMaximalLaplacian1D_graph_iff
         l2ToTemperedDistribution1D_continuumMaximalLaplacian1D ψ
       _ = Δ (l2ToTemperedDistribution1D z.1) := by rw [hψ]
   · intro hz
-    have hdomain : z.1 ∈ continuumMaximalLaplacianDomain1D := ⟨z.2, hz⟩
+    have hdomain : z.1 ∈ continuumMaximalLaplacianDomain1D :=
+      (mem_continuumMaximalLaplacianDomain1D_iff z.1).mpr ⟨z.2, hz⟩
     rw [LinearPMap.mem_graph_iff]
     refine ⟨⟨z.1, hdomain⟩, rfl, ?_⟩
     apply l2ToTemperedDistribution1D_injective
