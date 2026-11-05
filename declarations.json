@@ -247938,10 +247938,10 @@
   "statement":
   "QuantumMechanics.SingleParticle.Continuum.continuumH2Domain1D =\n  QuantumMechanics.SingleParticle.Continuum.continuumMaximalLaplacianDomain1D",
   "standardAxioms": ["Classical.choice", "Quot.sound", "propext"],
-  "sourceLine": 73,
+  "sourceLine": 69,
   "sourceFile":
   "LeanCondensedMatter/QuantumMechanics/SingleParticle/Continuum/Hamiltonian/Regularity1D.lean",
-  "sourceEndLine": 76,
+  "sourceEndLine": 72,
   "sourceEndColumn": 60,
   "sourceColumn": 8,
   "soleCompiledConsumerPrivate": false,
@@ -247973,7 +247973,7 @@
    "QuantumMechanics.SingleParticle.Continuum.continuumH2Domain1D_le_continuumMaximalLaplacianDomain1D",
    "QuantumMechanics.SingleParticle.Continuum.continuumMaximalLaplacianDomain1D",
    "QuantumMechanics.SingleParticle.Continuum.continuumMaximalLaplacianDomain1D_le_continuumH2Domain1D"],
-  "declarationStartLine": 72,
+  "declarationStartLine": 68,
   "crossModuleDirectWrapper": false,
   "completedMention": false,
   "compiledConsumers":
@@ -250280,10 +250280,10 @@
   "statement":
   "QuantumMechanics.SingleParticle.Continuum.continuumMaximalLaplacianDomain1D ≤\n  QuantumMechanics.SingleParticle.Continuum.continuumH2Domain1D",
   "standardAxioms": ["Classical.choice", "Quot.sound", "propext"],
-  "sourceLine": 57,
+  "sourceLine": 53,
   "sourceFile":
   "LeanCondensedMatter/QuantumMechanics/SingleParticle/Continuum/Hamiltonian/Regularity1D.lean",
-  "sourceEndLine": 70,
+  "sourceEndLine": 66,
   "sourceEndColumn": 49,
   "sourceColumn": 8,
   "soleCompiledConsumerPrivate": false,
@@ -250317,7 +250317,7 @@
    "QuantumMechanics.SingleParticle.Continuum.mem_continuumH2Domain1D_iff",
    "QuantumMechanics.SingleParticle.Continuum.mem_continuumMaximalLaplacianDomain1D_iff",
    "_private.LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Hamiltonian.Regularity1D.0.QuantumMechanics.SingleParticle.Continuum.besselPotential_two_eq_sub_laplacian"],
-  "declarationStartLine": 56,
+  "declarationStartLine": 52,
   "crossModuleDirectWrapper": false,
   "completedMention": false,
   "compiledConsumers":
@@ -433667,10 +433667,10 @@
   "statement":
   "∀ (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ),\n  broadening ≠ 0 →\n    0 ≤ disorderStrength →\n      0 ≤ pMax →\n        have factor :=\n          QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedCurrentFactor v m probeEnergy\n            broadening disorderStrength hbar pMax;\n        have aA := fun p =>\n          QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonScalarCoefficient\n            QuantumTheory.Transport.SpectralSide.advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax;\n        have aR := fun p =>\n          QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonScalarCoefficient\n            QuantumTheory.Transport.SpectralSide.retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax;\n        have dA := fun p =>\n          QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonPauliCoefficient InternalSpace.PauliAxis.z\n            QuantumTheory.Transport.SpectralSide.advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax;\n        have dR := fun p =>\n          QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonPauliCoefficient InternalSpace.PauliAxis.z\n            QuantumTheory.Transport.SpectralSide.retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax;\n        have bA := fun p =>\n          QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonPauliCoefficient InternalSpace.PauliAxis.x\n            QuantumTheory.Transport.SpectralSide.advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax;\n        have bR := fun p =>\n          QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonPauliCoefficient InternalSpace.PauliAxis.x\n            QuantumTheory.Transport.SpectralSide.retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax;\n        have isotropic :=\n          ↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n            ∫ (p : ℝ) in 0..pMax,\n              2 * ↑p *\n                (QuantumTheory.Transport.polarFourierZerothAngularKernel (p * radius / hbar) *\n                  ((aA p * aR p - dA p * dR p) * factor));\n        have anisotropic :=\n          ↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n            ∫ (p : ℝ) in 0..pMax,\n              2 * ↑p *\n                (QuantumTheory.Transport.polarFourierSecondCosineAngularKernel (p * radius / hbar) *\n                  (bA p * bR p * factor));\n        QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient\n              InternalSpace.PauliAxis.x 0 v m probeEnergy broadening disorderStrength hbar pMax radius *\n            QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient\n              InternalSpace.PauliAxis.y 1 v m probeEnergy broadening disorderStrength hbar pMax radius =\n          (isotropic ^ 2 - anisotropic ^ 2) / 4",
   "standardAxioms": ["Classical.choice", "Quot.sound", "propext"],
-  "sourceLine": 696,
+  "sourceLine": 698,
   "sourceFile":
   "LeanCondensedMatter/Models/MassiveDirac/Streda/GaussianCrossed/RadialHarmonics.lean",
-  "sourceEndLine": 741,
+  "sourceEndLine": 743,
   "sourceEndColumn": 6,
   "sourceColumn": 8,
   "soleCompiledConsumerPrivate": false,
@@ -433708,7 +433708,7 @@
    "QuantumTheory.Transport.momentumMeasurePrefactor",
    "QuantumTheory.Transport.polarFourierSecondCosineAngularKernel",
    "QuantumTheory.Transport.polarFourierZerothAngularKernel"],
-  "declarationStartLine": 692,
+  "declarationStartLine": 694,
   "crossModuleDirectWrapper": false,
   "completedMention": false,
   "compiledConsumers":
@@ -433939,7 +433939,9 @@
    "QuantumTheory.Transport.SpectralSide.retarded",
    "QuantumTheory.Transport.momentumMeasurePrefactor",
    "QuantumTheory.Transport.polarFourierSecondCosineAngularKernel",
-   "QuantumTheory.Transport.polarFourierZerothAngularKernel"],
+   "QuantumTheory.Transport.polarFourierSecondCosineAngularKernel_eq_besselJ",
+   "QuantumTheory.Transport.polarFourierZerothAngularKernel",
+   "QuantumTheory.Transport.polarFourierZerothAngularKernel_eq_besselJ"],
   "typeDependencies":
   ["InternalSpace.PauliAxis.x",
    "InternalSpace.PauliAxis.y",
@@ -433950,16 +433952,14 @@
    "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornEffectiveMass",
    "QuantumTheory.Transport.SpectralSide.advanced",
    "QuantumTheory.Transport.SpectralSide.retarded",
-   "QuantumTheory.Transport.momentumMeasurePrefactor",
-   "QuantumTheory.Transport.polarFourierSecondCosineAngularKernel",
-   "QuantumTheory.Transport.polarFourierZerothAngularKernel"],
+   "QuantumTheory.Transport.momentumMeasurePrefactor"],
   "terminal": true,
   "structuredStatement":
   {"version": 1,
    "fields": [],
    "conclusion":
    {"text":
-    "have energyR :=\n  QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornEffectiveEnergy\n    QuantumTheory.Transport.SpectralSide.retarded v m probeEnergy broadening disorderStrength hbar pMax;\nhave energyA :=\n  QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornEffectiveEnergy\n    QuantumTheory.Transport.SpectralSide.advanced v m probeEnergy broadening disorderStrength hbar pMax;\nhave massR :=\n  QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornEffectiveMass QuantumTheory.Transport.SpectralSide.retarded\n    v m probeEnergy broadening disorderStrength hbar pMax;\nhave massA :=\n  QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornEffectiveMass QuantumTheory.Transport.SpectralSide.advanced\n    v m probeEnergy broadening disorderStrength hbar pMax;\nhave factor :=\n  QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedCurrentFactor v m probeEnergy\n    broadening disorderStrength hbar pMax;\nhave gap := energyA ^ 2 - massA ^ 2 - (energyR ^ 2 - massR ^ 2);\nhave jxx :=\n  QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient\n    InternalSpace.PauliAxis.x 0 v m probeEnergy broadening disorderStrength hbar pMax radius;\nhave jyy :=\n  QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient\n    InternalSpace.PauliAxis.y 1 v m probeEnergy broadening disorderStrength hbar pMax radius;\nhave k0Weight := fun p =>\n  2 * ↑p * QuantumTheory.Transport.polarFourierZerothAngularKernel (p * radius / hbar) *\n    ((energyA * energyR - massA * massR) * factor);\nhave k2Weight := fun p =>\n  2 * ↑p * QuantumTheory.Transport.polarFourierSecondCosineAngularKernel (p * radius / hbar) * (↑(v * p) ^ 2 * factor);\ngap * (jxx + jyy) =\n    ↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n      ∫ (p : ℝ) in 0..pMax,\n        k0Weight p *\n          ((QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominator\n                QuantumTheory.Transport.SpectralSide.retarded v m p 0 probeEnergy broadening disorderStrength hbar\n                pMax)⁻¹ -\n            (QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominator\n                QuantumTheory.Transport.SpectralSide.advanced v m p 0 probeEnergy broadening disorderStrength hbar\n                pMax)⁻¹) ∧\n  gap * (jxx - jyy) =\n    ↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n      ∫ (p : ℝ) in 0..pMax,\n        k2Weight p *\n          ((QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominator\n                QuantumTheory.Transport.SpectralSide.retarded v m p 0 probeEnergy broadening disorderStrength hbar\n                pMax)⁻¹ -\n            (QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominator\n                QuantumTheory.Transport.SpectralSide.advanced v m p 0 probeEnergy broadening disorderStrength hbar\n                pMax)⁻¹)",
+    "have energyR :=\n  QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornEffectiveEnergy\n    QuantumTheory.Transport.SpectralSide.retarded v m probeEnergy broadening disorderStrength hbar pMax;\nhave energyA :=\n  QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornEffectiveEnergy\n    QuantumTheory.Transport.SpectralSide.advanced v m probeEnergy broadening disorderStrength hbar pMax;\nhave massR :=\n  QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornEffectiveMass QuantumTheory.Transport.SpectralSide.retarded\n    v m probeEnergy broadening disorderStrength hbar pMax;\nhave massA :=\n  QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornEffectiveMass QuantumTheory.Transport.SpectralSide.advanced\n    v m probeEnergy broadening disorderStrength hbar pMax;\nhave factor :=\n  QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedCurrentFactor v m probeEnergy\n    broadening disorderStrength hbar pMax;\nhave gap := energyA ^ 2 - massA ^ 2 - (energyR ^ 2 - massR ^ 2);\nhave jxx :=\n  QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient\n    InternalSpace.PauliAxis.x 0 v m probeEnergy broadening disorderStrength hbar pMax radius;\nhave jyy :=\n  QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient\n    InternalSpace.PauliAxis.y 1 v m probeEnergy broadening disorderStrength hbar pMax radius;\nhave k0Weight := fun p =>\n  2 * ↑p * (↑(2 * Real.pi) * Complex.besselJ 0 ↑(p * radius / hbar)) * ((energyA * energyR - massA * massR) * factor);\nhave k2Weight := fun p => 2 * ↑p * -(↑(2 * Real.pi) * Complex.besselJ 2 ↑(p * radius / hbar)) * (↑(v * p) ^ 2 * factor);\ngap * (jxx + jyy) =\n    ↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n      ∫ (p : ℝ) in 0..pMax,\n        k0Weight p *\n          ((QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominator\n                QuantumTheory.Transport.SpectralSide.retarded v m p 0 probeEnergy broadening disorderStrength hbar\n                pMax)⁻¹ -\n            (QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominator\n                QuantumTheory.Transport.SpectralSide.advanced v m p 0 probeEnergy broadening disorderStrength hbar\n                pMax)⁻¹) ∧\n  gap * (jxx - jyy) =\n    ↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n      ∫ (p : ℝ) in 0..pMax,\n        k2Weight p *\n          ((QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominator\n                QuantumTheory.Transport.SpectralSide.retarded v m p 0 probeEnergy broadening disorderStrength hbar\n                pMax)⁻¹ -\n            (QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominator\n                QuantumTheory.Transport.SpectralSide.advanced v m p 0 probeEnergy broadening disorderStrength hbar\n                pMax)⁻¹)",
     "kind": "text"},
    "binders":
    [{"typeText": "ℝ",
@@ -434073,12 +434073,12 @@
      "implicit": false,
      "id": "_uniq.46845"}]},
   "statement":
-  "∀ (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ),\n  broadening ≠ 0 →\n    0 ≤ disorderStrength →\n      0 ≤ pMax →\n        have energyR :=\n          QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornEffectiveEnergy\n            QuantumTheory.Transport.SpectralSide.retarded v m probeEnergy broadening disorderStrength hbar pMax;\n        have energyA :=\n          QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornEffectiveEnergy\n            QuantumTheory.Transport.SpectralSide.advanced v m probeEnergy broadening disorderStrength hbar pMax;\n        have massR :=\n          QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornEffectiveMass\n            QuantumTheory.Transport.SpectralSide.retarded v m probeEnergy broadening disorderStrength hbar pMax;\n        have massA :=\n          QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornEffectiveMass\n            QuantumTheory.Transport.SpectralSide.advanced v m probeEnergy broadening disorderStrength hbar pMax;\n        have factor :=\n          QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedCurrentFactor v m probeEnergy\n            broadening disorderStrength hbar pMax;\n        have gap := energyA ^ 2 - massA ^ 2 - (energyR ^ 2 - massR ^ 2);\n        have jxx :=\n          QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient\n            InternalSpace.PauliAxis.x 0 v m probeEnergy broadening disorderStrength hbar pMax radius;\n        have jyy :=\n          QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient\n            InternalSpace.PauliAxis.y 1 v m probeEnergy broadening disorderStrength hbar pMax radius;\n        have k0Weight := fun p =>\n          2 * ↑p * QuantumTheory.Transport.polarFourierZerothAngularKernel (p * radius / hbar) *\n            ((energyA * energyR - massA * massR) * factor);\n        have k2Weight := fun p =>\n          2 * ↑p * QuantumTheory.Transport.polarFourierSecondCosineAngularKernel (p * radius / hbar) *\n            (↑(v * p) ^ 2 * factor);\n        gap * (jxx + jyy) =\n            ↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n              ∫ (p : ℝ) in 0..pMax,\n                k0Weight p *\n                  ((QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominator\n                        QuantumTheory.Transport.SpectralSide.retarded v m p 0 probeEnergy broadening disorderStrength\n                        hbar pMax)⁻¹ -\n                    (QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominator\n                        QuantumTheory.Transport.SpectralSide.advanced v m p 0 probeEnergy broadening disorderStrength\n                        hbar pMax)⁻¹) ∧\n          gap * (jxx - jyy) =\n            ↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n              ∫ (p : ℝ) in 0..pMax,\n                k2Weight p *\n                  ((QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominator\n                        QuantumTheory.Transport.SpectralSide.retarded v m p 0 probeEnergy broadening disorderStrength\n                        hbar pMax)⁻¹ -\n                    (QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominator\n                        QuantumTheory.Transport.SpectralSide.advanced v m p 0 probeEnergy broadening disorderStrength\n                        hbar pMax)⁻¹)",
+  "∀ (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ),\n  broadening ≠ 0 →\n    0 ≤ disorderStrength →\n      0 ≤ pMax →\n        have energyR :=\n          QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornEffectiveEnergy\n            QuantumTheory.Transport.SpectralSide.retarded v m probeEnergy broadening disorderStrength hbar pMax;\n        have energyA :=\n          QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornEffectiveEnergy\n            QuantumTheory.Transport.SpectralSide.advanced v m probeEnergy broadening disorderStrength hbar pMax;\n        have massR :=\n          QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornEffectiveMass\n            QuantumTheory.Transport.SpectralSide.retarded v m probeEnergy broadening disorderStrength hbar pMax;\n        have massA :=\n          QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornEffectiveMass\n            QuantumTheory.Transport.SpectralSide.advanced v m probeEnergy broadening disorderStrength hbar pMax;\n        have factor :=\n          QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedCurrentFactor v m probeEnergy\n            broadening disorderStrength hbar pMax;\n        have gap := energyA ^ 2 - massA ^ 2 - (energyR ^ 2 - massR ^ 2);\n        have jxx :=\n          QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient\n            InternalSpace.PauliAxis.x 0 v m probeEnergy broadening disorderStrength hbar pMax radius;\n        have jyy :=\n          QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient\n            InternalSpace.PauliAxis.y 1 v m probeEnergy broadening disorderStrength hbar pMax radius;\n        have k0Weight := fun p =>\n          2 * ↑p * (↑(2 * Real.pi) * Complex.besselJ 0 ↑(p * radius / hbar)) *\n            ((energyA * energyR - massA * massR) * factor);\n        have k2Weight := fun p =>\n          2 * ↑p * -(↑(2 * Real.pi) * Complex.besselJ 2 ↑(p * radius / hbar)) * (↑(v * p) ^ 2 * factor);\n        gap * (jxx + jyy) =\n            ↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n              ∫ (p : ℝ) in 0..pMax,\n                k0Weight p *\n                  ((QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominator\n                        QuantumTheory.Transport.SpectralSide.retarded v m p 0 probeEnergy broadening disorderStrength\n                        hbar pMax)⁻¹ -\n                    (QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominator\n                        QuantumTheory.Transport.SpectralSide.advanced v m p 0 probeEnergy broadening disorderStrength\n                        hbar pMax)⁻¹) ∧\n          gap * (jxx - jyy) =\n            ↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n              ∫ (p : ℝ) in 0..pMax,\n                k2Weight p *\n                  ((QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominator\n                        QuantumTheory.Transport.SpectralSide.retarded v m p 0 probeEnergy broadening disorderStrength\n                        hbar pMax)⁻¹ -\n                    (QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominator\n                        QuantumTheory.Transport.SpectralSide.advanced v m p 0 probeEnergy broadening disorderStrength\n                        hbar pMax)⁻¹)",
   "standardAxioms": ["Classical.choice", "Quot.sound", "propext"],
   "sourceLine": 307,
   "sourceFile":
   "LeanCondensedMatter/Models/MassiveDirac/Streda/GaussianCrossed/RadialHarmonics.lean",
-  "sourceEndLine": 400,
+  "sourceEndLine": 402,
   "sourceEndColumn": 50,
   "sourceColumn": 8,
   "soleCompiledConsumerPrivate": false,
@@ -434096,7 +434096,7 @@
   "generated": false,
   "externalAxioms": [],
   "docString":
-  "The two physical diagonal crossed-current harmonics, after multiplication\nby the finite-regulator RA spectral-center gap, become differences of\nsingle-side radial Dyson resolvent moments. The K0 and K2 weights retain\ntheir independent spectral numerator, current factor, and one momentum\nmeasure each. No division by the center gap or regulator limit is used. ",
+  "The two physical diagonal crossed-current harmonics, after multiplication\nby the finite-regulator RA spectral-center gap, become differences of\nsingle-side radial Dyson resolvent moments. The exact J0 and -J2 Fourier--Bessel weights retain\ntheir independent spectral numerator, current factor, and one momentum\nmeasure each. No division by the center gap or regulator limit is used. ",
   "directWrapperTargetModule": null,
   "directWrapperOf": null,
   "dependents": [],
@@ -434115,7 +434115,9 @@
    "QuantumTheory.Transport.SpectralSide.retarded",
    "QuantumTheory.Transport.momentumMeasurePrefactor",
    "QuantumTheory.Transport.polarFourierSecondCosineAngularKernel",
-   "QuantumTheory.Transport.polarFourierZerothAngularKernel"],
+   "QuantumTheory.Transport.polarFourierSecondCosineAngularKernel_eq_besselJ",
+   "QuantumTheory.Transport.polarFourierZerothAngularKernel",
+   "QuantumTheory.Transport.polarFourierZerothAngularKernel_eq_besselJ"],
   "declarationStartLine": 302,
   "crossModuleDirectWrapper": false,
   "completedMention": false,
@@ -434271,10 +434273,10 @@
   "statement":
   "∀ (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ),\n  broadening ≠ 0 →\n    0 ≤ disorderStrength →\n      0 ≤ pMax →\n        have factor :=\n          QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedCurrentFactor v m probeEnergy\n            broadening disorderStrength hbar pMax;\n        have aA := fun p =>\n          QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonScalarCoefficient\n            QuantumTheory.Transport.SpectralSide.advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax;\n        have aR := fun p =>\n          QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonScalarCoefficient\n            QuantumTheory.Transport.SpectralSide.retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax;\n        have dA := fun p =>\n          QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonPauliCoefficient InternalSpace.PauliAxis.z\n            QuantumTheory.Transport.SpectralSide.advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax;\n        have dR := fun p =>\n          QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonPauliCoefficient InternalSpace.PauliAxis.z\n            QuantumTheory.Transport.SpectralSide.retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax;\n        have bA := fun p =>\n          QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonPauliCoefficient InternalSpace.PauliAxis.x\n            QuantumTheory.Transport.SpectralSide.advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax;\n        have bR := fun p =>\n          QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonPauliCoefficient InternalSpace.PauliAxis.x\n            QuantumTheory.Transport.SpectralSide.retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax;\n        have jxx :=\n          QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient\n            InternalSpace.PauliAxis.x 0 v m probeEnergy broadening disorderStrength hbar pMax radius;\n        have jyy :=\n          QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient\n            InternalSpace.PauliAxis.y 1 v m probeEnergy broadening disorderStrength hbar pMax radius;\n        have isotropic :=\n          ↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n            ∫ (p : ℝ) in 0..pMax,\n              2 * ↑p *\n                (QuantumTheory.Transport.polarFourierZerothAngularKernel (p * radius / hbar) *\n                  ((aA p * aR p - dA p * dR p) * factor));\n        have anisotropic :=\n          ↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n            ∫ (p : ℝ) in 0..pMax,\n              2 * ↑p *\n                (QuantumTheory.Transport.polarFourierSecondCosineAngularKernel (p * radius / hbar) *\n                  (bA p * bR p * factor));\n        jxx = (isotropic + anisotropic) / 2 ∧ jyy = (isotropic - anisotropic) / 2",
   "standardAxioms": ["Classical.choice", "Quot.sound", "propext"],
-  "sourceLine": 641,
+  "sourceLine": 643,
   "sourceFile":
   "LeanCondensedMatter/Models/MassiveDirac/Streda/GaussianCrossed/RadialHarmonics.lean",
-  "sourceEndLine": 689,
+  "sourceEndLine": 691,
   "sourceEndColumn": 60,
   "sourceColumn": 8,
   "soleCompiledConsumerPrivate": false,
@@ -434315,7 +434317,7 @@
    "QuantumTheory.Transport.momentumMeasurePrefactor",
    "QuantumTheory.Transport.polarFourierSecondCosineAngularKernel",
    "QuantumTheory.Transport.polarFourierZerothAngularKernel"],
-  "declarationStartLine": 635,
+  "declarationStartLine": 637,
   "crossModuleDirectWrapper": false,
   "completedMention": false,
   "compiledConsumers":
@@ -434800,10 +434802,10 @@
   "statement":
   "∀ (v m probeEnergy broadening disorderStrength hbar pMax : ℝ),\n  broadening ≠ 0 →\n    0 ≤ disorderStrength →\n      0 ≤ pMax →\n        QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient\n            InternalSpace.PauliAxis.x 0 v m probeEnergy broadening disorderStrength hbar pMax 0 =\n          QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient\n            InternalSpace.PauliAxis.y 1 v m probeEnergy broadening disorderStrength hbar pMax 0",
   "standardAxioms": ["Classical.choice", "Quot.sound", "propext"],
-  "sourceLine": 405,
+  "sourceLine": 407,
   "sourceFile":
   "LeanCondensedMatter/Models/MassiveDirac/Streda/GaussianCrossed/RadialHarmonics.lean",
-  "sourceEndLine": 418,
+  "sourceEndLine": 420,
   "sourceEndColumn": 73,
   "sourceColumn": 8,
   "soleCompiledConsumerPrivate": false,
@@ -434842,7 +434844,7 @@
    "QuantumTheory.Transport.polarFourierSecondCosineAngularKernel",
    "QuantumTheory.Transport.polarFourierSecondCosineAngularKernel_zero",
    "QuantumTheory.Transport.polarFourierZerothAngularKernel"],
-  "declarationStartLine": 402,
+  "declarationStartLine": 404,
   "crossModuleDirectWrapper": false,
   "completedMention": false,
   "compiledConsumers":
@@ -435193,10 +435195,10 @@
   "statement":
   "∀ (v m probeEnergy broadening disorderStrength hbar pMax : ℝ),\n  v ≠ 0 →\n    broadening ≠ 0 →\n      0 ≤ disorderStrength →\n        0 ≤ pMax →\n          0 <\n              (QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornEffectiveEnergy\n                      QuantumTheory.Transport.SpectralSide.retarded v m probeEnergy broadening disorderStrength hbar\n                      pMax ^\n                    2 -\n                  QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornEffectiveMass\n                      QuantumTheory.Transport.SpectralSide.retarded v m probeEnergy broadening disorderStrength hbar\n                      pMax ^\n                    2).re →\n            0 <\n                (QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornEffectiveEnergy\n                        QuantumTheory.Transport.SpectralSide.advanced v m probeEnergy broadening disorderStrength hbar\n                        pMax ^\n                      2 -\n                    QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornEffectiveMass\n                        QuantumTheory.Transport.SpectralSide.advanced v m probeEnergy broadening disorderStrength hbar\n                        pMax ^\n                      2).re →\n              have energyR :=\n                QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornEffectiveEnergy\n                  QuantumTheory.Transport.SpectralSide.retarded v m probeEnergy broadening disorderStrength hbar pMax;\n              have energyA :=\n                QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornEffectiveEnergy\n                  QuantumTheory.Transport.SpectralSide.advanced v m probeEnergy broadening disorderStrength hbar pMax;\n              have massR :=\n                QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornEffectiveMass\n                  QuantumTheory.Transport.SpectralSide.retarded v m probeEnergy broadening disorderStrength hbar pMax;\n              have massA :=\n                QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornEffectiveMass\n                  QuantumTheory.Transport.SpectralSide.advanced v m probeEnergy broadening disorderStrength hbar pMax;\n              have gap := energyA ^ 2 - massA ^ 2 - (energyR ^ 2 - massR ^ 2);\n              have factor :=\n                QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedCurrentFactor v m\n                  probeEnergy broadening disorderStrength hbar pMax;\n              have logDiff :=\n                Complex.log\n                      (QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominator\n                        QuantumTheory.Transport.SpectralSide.retarded v m pMax 0 probeEnergy broadening disorderStrength\n                        hbar pMax) -\n                    Complex.log\n                      (QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominator\n                        QuantumTheory.Transport.SpectralSide.retarded v m 0 0 probeEnergy broadening disorderStrength\n                        hbar pMax) -\n                  (Complex.log\n                      (QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominator\n                        QuantumTheory.Transport.SpectralSide.advanced v m pMax 0 probeEnergy broadening disorderStrength\n                        hbar pMax) -\n                    Complex.log\n                      (QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominator\n                        QuantumTheory.Transport.SpectralSide.advanced v m 0 0 probeEnergy broadening disorderStrength\n                        hbar pMax));\n              have value :=\n                gap⁻¹ *\n                  (↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) * ↑(2 * Real.pi) *\n                      ((energyA * energyR - massA * massR) * factor) *\n                    (-(2 * ↑v ^ 2)⁻¹ * logDiff));\n              QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient\n                    InternalSpace.PauliAxis.x 0 v m probeEnergy broadening disorderStrength hbar pMax 0 =\n                  value ∧\n                QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient\n                    InternalSpace.PauliAxis.y 1 v m probeEnergy broadening disorderStrength hbar pMax 0 =\n                  value",
   "standardAxioms": ["Classical.choice", "Quot.sound", "propext"],
-  "sourceLine": 549,
+  "sourceLine": 551,
   "sourceFile":
   "LeanCondensedMatter/Models/MassiveDirac/Streda/GaussianCrossed/RadialHarmonics.lean",
-  "sourceEndLine": 633,
+  "sourceEndLine": 635,
   "sourceEndColumn": 38,
   "sourceColumn": 8,
   "soleCompiledConsumerPrivate": false,
@@ -435231,7 +435233,7 @@
    "QuantumTheory.Transport.SpectralSide.advanced",
    "QuantumTheory.Transport.SpectralSide.retarded",
    "QuantumTheory.Transport.momentumMeasurePrefactor"],
-  "declarationStartLine": 544,
+  "declarationStartLine": 546,
   "crossModuleDirectWrapper": false,
   "completedMention": false,
   "compiledConsumers": [],
@@ -435717,10 +435719,10 @@
   "statement":
   "∀ (v m probeEnergy broadening disorderStrength hbar pMax : ℝ),\n  v ≠ 0 →\n    broadening ≠ 0 →\n      0 ≤ disorderStrength →\n        0 ≤ pMax →\n          0 <\n              (QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornEffectiveEnergy\n                      QuantumTheory.Transport.SpectralSide.retarded v m probeEnergy broadening disorderStrength hbar\n                      pMax ^\n                    2 -\n                  QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornEffectiveMass\n                      QuantumTheory.Transport.SpectralSide.retarded v m probeEnergy broadening disorderStrength hbar\n                      pMax ^\n                    2).re →\n            0 <\n                (QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornEffectiveEnergy\n                        QuantumTheory.Transport.SpectralSide.advanced v m probeEnergy broadening disorderStrength hbar\n                        pMax ^\n                      2 -\n                    QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornEffectiveMass\n                        QuantumTheory.Transport.SpectralSide.advanced v m probeEnergy broadening disorderStrength hbar\n                        pMax ^\n                      2).re →\n              have energyR :=\n                QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornEffectiveEnergy\n                  QuantumTheory.Transport.SpectralSide.retarded v m probeEnergy broadening disorderStrength hbar pMax;\n              have energyA :=\n                QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornEffectiveEnergy\n                  QuantumTheory.Transport.SpectralSide.advanced v m probeEnergy broadening disorderStrength hbar pMax;\n              have massR :=\n                QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornEffectiveMass\n                  QuantumTheory.Transport.SpectralSide.retarded v m probeEnergy broadening disorderStrength hbar pMax;\n              have massA :=\n                QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornEffectiveMass\n                  QuantumTheory.Transport.SpectralSide.advanced v m probeEnergy broadening disorderStrength hbar pMax;\n              have gap := energyA ^ 2 - massA ^ 2 - (energyR ^ 2 - massR ^ 2);\n              have factor :=\n                QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedCurrentFactor v m\n                  probeEnergy broadening disorderStrength hbar pMax;\n              have logDiff :=\n                Complex.log\n                      (QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominator\n                        QuantumTheory.Transport.SpectralSide.retarded v m pMax 0 probeEnergy broadening disorderStrength\n                        hbar pMax) -\n                    Complex.log\n                      (QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominator\n                        QuantumTheory.Transport.SpectralSide.retarded v m 0 0 probeEnergy broadening disorderStrength\n                        hbar pMax) -\n                  (Complex.log\n                      (QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominator\n                        QuantumTheory.Transport.SpectralSide.advanced v m pMax 0 probeEnergy broadening disorderStrength\n                        hbar pMax) -\n                    Complex.log\n                      (QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominator\n                        QuantumTheory.Transport.SpectralSide.advanced v m 0 0 probeEnergy broadening disorderStrength\n                        hbar pMax));\n              have value :=\n                ↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) * ↑(2 * Real.pi) *\n                    ((energyA * energyR - massA * massR) * factor) *\n                  (-(2 * ↑v ^ 2)⁻¹ * logDiff);\n              gap *\n                    QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient\n                      InternalSpace.PauliAxis.x 0 v m probeEnergy broadening disorderStrength hbar pMax 0 =\n                  value ∧\n                gap *\n                    QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient\n                      InternalSpace.PauliAxis.y 1 v m probeEnergy broadening disorderStrength hbar pMax 0 =\n                  value",
   "standardAxioms": ["Classical.choice", "Quot.sound", "propext"],
-  "sourceLine": 427,
+  "sourceLine": 429,
   "sourceFile":
   "LeanCondensedMatter/Models/MassiveDirac/Streda/GaussianCrossed/RadialHarmonics.lean",
-  "sourceEndLine": 542,
+  "sourceEndLine": 544,
   "sourceEndColumn": 61,
   "sourceColumn": 8,
   "soleCompiledConsumerPrivate": false,
@@ -435761,7 +435763,7 @@
    "QuantumTheory.Transport.polarFourierSecondCosineAngularKernel",
    "QuantumTheory.Transport.polarFourierZerothAngularKernel",
    "QuantumTheory.Transport.polarFourierZerothAngularKernel_zero"],
-  "declarationStartLine": 420,
+  "declarationStartLine": 422,
   "crossModuleDirectWrapper": false,
   "completedMention": false,
   "compiledConsumers":
@@ -437918,10 +437920,10 @@
   "statement":
   "∀ (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ),\n  broadening ≠ 0 →\n    0 ≤ disorderStrength →\n      0 ≤ pMax →\n        have factor :=\n          QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedCurrentFactor v m probeEnergy\n            broadening disorderStrength hbar pMax;\n        have aA := fun p =>\n          QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonScalarCoefficient\n            QuantumTheory.Transport.SpectralSide.advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax;\n        have aR := fun p =>\n          QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonScalarCoefficient\n            QuantumTheory.Transport.SpectralSide.retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax;\n        have dA := fun p =>\n          QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonPauliCoefficient InternalSpace.PauliAxis.z\n            QuantumTheory.Transport.SpectralSide.advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax;\n        have dR := fun p =>\n          QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonPauliCoefficient InternalSpace.PauliAxis.z\n            QuantumTheory.Transport.SpectralSide.retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax;\n        have bA := fun p =>\n          QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonPauliCoefficient InternalSpace.PauliAxis.x\n            QuantumTheory.Transport.SpectralSide.advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax;\n        have bR := fun p =>\n          QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonPauliCoefficient InternalSpace.PauliAxis.x\n            QuantumTheory.Transport.SpectralSide.retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax;\n        have isotropic :=\n          ↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n            ∫ (p : ℝ) in 0..pMax,\n              2 * ↑p *\n                (QuantumTheory.Transport.polarFourierZerothAngularKernel (p * radius / hbar) *\n                  ((aA p * aR p - dA p * dR p) * factor));\n        have anisotropic :=\n          ↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n            ∫ (p : ℝ) in 0..pMax,\n              2 * ↑p *\n                (QuantumTheory.Transport.polarFourierSecondCosineAngularKernel (p * radius / hbar) *\n                  (bA p * bR p * factor));\n        have firstX :=\n          ↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n            ∫ (p : ℝ) in 0..pMax,\n              ↑p *\n                (QuantumTheory.Transport.polarFourierFirstCosineAngularKernel (p * radius / hbar) *\n                  ((aR p * bA p + aA p * bR p) * factor));\n        have firstY :=\n          ↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n            ∫ (p : ℝ) in 0..pMax,\n              ↑p *\n                (QuantumTheory.Transport.polarFourierFirstCosineAngularKernel (p * radius / hbar) *\n                  (-Complex.I * (bR p * dA p - bA p * dR p) * factor));\n        have transverse :=\n          QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient\n            InternalSpace.PauliAxis.y 0 v m probeEnergy broadening disorderStrength hbar pMax radius;\n        QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentScalarCoefficient 0\n                v m probeEnergy broadening disorderStrength hbar pMax radius *\n              QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient\n                InternalSpace.PauliAxis.y 1 v m probeEnergy broadening disorderStrength hbar pMax radius -\n            QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentScalarCoefficient\n                1 v m probeEnergy broadening disorderStrength hbar pMax radius *\n              transverse =\n          firstX * ((isotropic - anisotropic) / 2) - firstY * transverse",
   "standardAxioms": ["Classical.choice", "Quot.sound", "propext"],
-  "sourceLine": 749,
+  "sourceLine": 751,
   "sourceFile":
   "LeanCondensedMatter/Models/MassiveDirac/Streda/GaussianCrossed/RadialHarmonics.lean",
-  "sourceEndLine": 813,
+  "sourceEndLine": 815,
   "sourceEndColumn": 36,
   "sourceColumn": 8,
   "soleCompiledConsumerPrivate": false,
@@ -437962,7 +437964,7 @@
    "QuantumTheory.Transport.polarFourierFirstCosineAngularKernel",
    "QuantumTheory.Transport.polarFourierSecondCosineAngularKernel",
    "QuantumTheory.Transport.polarFourierZerothAngularKernel"],
-  "declarationStartLine": 744,
+  "declarationStartLine": 746,
   "crossModuleDirectWrapper": false,
   "completedMention": false,
   "compiledConsumers":
@@ -649232,7 +649234,7 @@
   "sourceEndColumn": 42,
   "sourceColumn": 8,
   "soleCompiledConsumerPrivate": false,
-  "singleCompiledConsumer": true,
+  "singleCompiledConsumer": false,
   "simpLemma": false,
   "retainedNeedsReview": false,
   "retainedMention": false,
@@ -649249,7 +649251,8 @@
   "directWrapperTargetModule": null,
   "directWrapperOf": null,
   "dependents":
-  ["QuantumTheory.Transport.polarFourierSecondCosineAngularKernel_neg"],
+  ["QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient_diagonal_spectral_difference",
+   "QuantumTheory.Transport.polarFourierSecondCosineAngularKernel_neg"],
   "dependencies":
   ["QuantumTheory.Transport.polarFourierFirstCosineAngularKernel",
    "QuantumTheory.Transport.polarFourierFirstCosineAngularKernel_eq_besselJ",
@@ -649263,8 +649266,9 @@
   "crossModuleDirectWrapper": false,
   "completedMention": false,
   "compiledConsumers":
-  ["QuantumTheory.Transport.polarFourierSecondCosineAngularKernel_neg"],
-  "compiledConsumerCount": 1,
+  ["QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient_diagonal_spectral_difference",
+   "QuantumTheory.Transport.polarFourierSecondCosineAngularKernel_neg"],
+  "compiledConsumerCount": 2,
   "axioms": ["Classical.choice", "Quot.sound", "propext"]},
  {"valueDependencies":
   ["QuantumTheory.Transport.polarFourierSecondCosineAngularKernel",
@@ -649814,7 +649818,8 @@
   "directWrapperTargetModule": null,
   "directWrapperOf": null,
   "dependents":
-  ["QuantumTheory.Transport.polarFourierFirstCosineAngularKernel_eq_besselJ",
+  ["QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient_diagonal_spectral_difference",
+   "QuantumTheory.Transport.polarFourierFirstCosineAngularKernel_eq_besselJ",
    "QuantumTheory.Transport.polarFourierSecondCosineAngularKernel_eq_besselJ",
    "QuantumTheory.Transport.polarFourierZerothAngularKernel_neg"],
   "dependencies":
@@ -649831,10 +649836,11 @@
   "crossModuleDirectWrapper": false,
   "completedMention": false,
   "compiledConsumers":
-  ["QuantumTheory.Transport.polarFourierFirstCosineAngularKernel_eq_besselJ",
+  ["QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient_diagonal_spectral_difference",
+   "QuantumTheory.Transport.polarFourierFirstCosineAngularKernel_eq_besselJ",
    "QuantumTheory.Transport.polarFourierSecondCosineAngularKernel_eq_besselJ",
    "QuantumTheory.Transport.polarFourierZerothAngularKernel_neg"],
-  "compiledConsumerCount": 3,
+  "compiledConsumerCount": 4,
   "axioms": ["Classical.choice", "Quot.sound", "propext"]},
  {"valueDependencies": [],
   "typeDependencies": [],
@@ -1186467,7 +1186473,7 @@
   "sourceLine": 29,
   "sourceFile":
   "LeanCondensedMatter/QuantumMechanics/SingleParticle/Continuum/Hamiltonian/Regularity1D.lean",
-  "sourceEndLine": 54,
+  "sourceEndLine": 50,
   "sourceEndColumn": 6,
   "sourceColumn": 16,
   "soleCompiledConsumerPrivate": false,
