@@ -301,7 +301,7 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficie
 
 /-- The two physical diagonal crossed-current harmonics, after multiplication
 by the finite-regulator RA spectral-center gap, become differences of
-single-side radial Dyson resolvent moments. The K0 and K2 weights retain
+single-side radial Dyson resolvent moments. The exact J0 and -J2 Fourier--Bessel weights retain
 their independent spectral numerator, current factor, and one momentum
 measure each. No division by the center gap or regulator limit is used. -/
 theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient_diagonal_spectral_difference
@@ -324,10 +324,10 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficie
     let jyy := finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient
       .y 1 v m probeEnergy broadening disorderStrength hbar pMax radius
     let k0Weight := fun p : ℝ =>
-      2 * (p : ℂ) * polarFourierZerothAngularKernel (p * radius / hbar) *
+      2 * (p : ℂ) * (((2 * Real.pi : ℝ) : ℂ) * Complex.besselJ 0 ((p * radius / hbar : ℝ) : ℂ)) *
         ((energyA * energyR - massA * massR) * factor)
     let k2Weight := fun p : ℝ =>
-      2 * (p : ℂ) * polarFourierSecondCosineAngularKernel (p * radius / hbar) *
+      2 * (p : ℂ) * (-(((2 * Real.pi : ℝ) : ℂ) * Complex.besselJ 2 ((p * radius / hbar : ℝ) : ℂ))) *
         ((((v * p : ℝ) : ℂ) ^ 2) * factor)
     (gap * (jxx + jyy) =
       (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
@@ -357,10 +357,10 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficie
     v m probeEnergy broadening disorderStrength hbar pMax
   let gap := energyA ^ 2 - massA ^ 2 - (energyR ^ 2 - massR ^ 2)
   let k0Weight : ℝ → ℂ := fun p =>
-    2 * (p : ℂ) * polarFourierZerothAngularKernel (p * radius / hbar) *
+    2 * (p : ℂ) * (((2 * Real.pi : ℝ) : ℂ) * Complex.besselJ 0 ((p * radius / hbar : ℝ) : ℂ)) *
       ((energyA * energyR - massA * massR) * factor)
   let k2Weight : ℝ → ℂ := fun p =>
-    2 * (p : ℂ) * polarFourierSecondCosineAngularKernel (p * radius / hbar) *
+    2 * (p : ℂ) * (-(((2 * Real.pi : ℝ) : ℂ) * Complex.besselJ 2 ((p * radius / hbar : ℝ) : ℂ))) *
       ((((v * p : ℝ) : ℂ) ^ 2) * factor)
   have hdiag :=
     finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient_diagonal_ra_denominator_harmonics
@@ -375,6 +375,8 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficie
       v m probeEnergy broadening disorderStrength hbar pMax
       hbroadening hdisorder hpMax k2Weight
   dsimp only at hdiag hk0 hk2 ⊢
+  simp only [polarFourierZerothAngularKernel_eq_besselJ,
+    polarFourierSecondCosineAngularKernel_eq_besselJ] at hdiag
   have hweight (kernel numerator : ℝ → ℂ) :
       (∫ p in (0 : ℝ)..pMax,
         2 * (p : ℂ) *
@@ -390,10 +392,10 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficie
     intro p _
     ring
   have hweight0 := hweight
-    (fun p => polarFourierZerothAngularKernel (p * radius / hbar))
+    (fun p => (((2 * Real.pi : ℝ) : ℂ) * Complex.besselJ 0 ((p * radius / hbar : ℝ) : ℂ)))
     (fun _ => energyA * energyR - massA * massR)
   have hweight2 := hweight
-    (fun p => polarFourierSecondCosineAngularKernel (p * radius / hbar))
+    (fun p => (-(((2 * Real.pi : ℝ) : ℂ) * Complex.besselJ 2 ((p * radius / hbar : ℝ) : ℂ))))
     (fun p => (((v * p : ℝ) : ℂ) ^ 2))
   constructor
   · rw [hdiag.1, hweight0, mul_left_comm gap, hk0]
