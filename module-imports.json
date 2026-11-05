@@ -3503,7 +3503,7 @@
       "imports": [
         "LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Hamiltonian.DenseDomain1D"
       ],
-      "externalImportCount": 2
+      "externalImportCount": 3
     },
     {
       "name": "LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Hamiltonian.Regularity1D",

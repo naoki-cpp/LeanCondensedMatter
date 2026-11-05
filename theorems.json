@@ -38688,7 +38688,7 @@
       "QuantumMechanics.SingleParticle.Continuum.continuumH2Domain1D_le_continuumMaximalLaplacianDomain1D",
       "QuantumMechanics.SingleParticle.Continuum.l2ToTemperedDistribution1D_continuumH2Laplacian1D",
       "QuantumMechanics.SingleParticle.Continuum.l2ToTemperedDistribution1D_injective",
-      "_private.LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Hamiltonian.MaximalLaplacian1D.0.QuantumMechanics.SingleParticle.Continuum.l2ToTemperedDistribution1D_continuumMaximalLaplacianValue1D"
+      "_private.LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Hamiltonian.MaximalLaplacian1D.0.QuantumMechanics.SingleParticle.Continuum.l2ToTemperedDistribution1D_continuumMaximalLaplacianOnDomain1D"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -41672,7 +41672,7 @@
       "QuantumMechanics.SingleParticle.Continuum.l2ToTemperedDistribution1D_continuumSchrodingerHamiltonian1D"
     ],
     "dependencies": [
-      "_private.LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Hamiltonian.Basic1D.0.QuantumMechanics.SingleParticle.Continuum.l2ToTemperedDistribution1D_continuumH2LaplacianValue1D"
+      "QuantumMechanics.SingleParticle.Continuum.l2ToTemperedDistribution1D_injective"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -41720,7 +41720,7 @@
       "QuantumMechanics.SingleParticle.Continuum.mem_continuumMaximalLaplacian1D_graph_iff"
     ],
     "dependencies": [
-      "_private.LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Hamiltonian.MaximalLaplacian1D.0.QuantumMechanics.SingleParticle.Continuum.l2ToTemperedDistribution1D_continuumMaximalLaplacianValue1D"
+      "_private.LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Hamiltonian.MaximalLaplacian1D.0.QuantumMechanics.SingleParticle.Continuum.l2ToTemperedDistribution1D_continuumMaximalLaplacianOnDomain1D"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -41808,19 +41808,25 @@
     "dependents": [
       "QuantumMechanics.SingleParticle.Continuum.continuumH2Laplacian1D_schwartz_toLp",
       "QuantumMechanics.SingleParticle.Continuum.continuumMaximalLaplacian1D_agrees_on_H2",
+      "QuantumMechanics.SingleParticle.Continuum.l2ToTemperedDistribution1D_continuumH2Laplacian1D",
       "QuantumMechanics.SingleParticle.Continuum.mem_continuumMaximalLaplacian1D_graph_iff",
-      "QuantumMechanics.SingleParticle.Continuum.mem_continuumSchrodingerHamiltonian1D_graph_iff"
+      "QuantumMechanics.SingleParticle.Continuum.mem_continuumSchrodingerHamiltonian1D_graph_iff",
+      "_private.LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Hamiltonian.MaximalLaplacian1D.0.QuantumMechanics.SingleParticle.Continuum.l2ToTemperedDistribution1D_continuumMaximalLaplacianOnDomain1D"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "QuantumMechanics.SingleParticle.Continuum.continuumH2Laplacian1D",
       "QuantumMechanics.SingleParticle.Continuum.continuumH2Laplacian1D_schwartz_toLp",
       "QuantumMechanics.SingleParticle.Continuum.continuumMaximalLaplacian1D_agrees_on_H2",
+      "QuantumMechanics.SingleParticle.Continuum.continuumMaximalLaplacianOnDomain1D",
+      "QuantumMechanics.SingleParticle.Continuum.l2ToTemperedDistribution1D_continuumH2Laplacian1D",
       "QuantumMechanics.SingleParticle.Continuum.mem_continuumMaximalLaplacian1D_graph_iff",
-      "QuantumMechanics.SingleParticle.Continuum.mem_continuumSchrodingerHamiltonian1D_graph_iff"
+      "QuantumMechanics.SingleParticle.Continuum.mem_continuumSchrodingerHamiltonian1D_graph_iff",
+      "_private.LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Hamiltonian.MaximalLaplacian1D.0.QuantumMechanics.SingleParticle.Continuum.l2ToTemperedDistribution1D_continuumMaximalLaplacianOnDomain1D"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 8,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -41906,7 +41912,7 @@
       "QuantumMechanics.SingleParticle.Continuum.l2ToTemperedDistribution1D_continuumMaximalLaplacian1D",
       "QuantumMechanics.SingleParticle.Continuum.l2ToTemperedDistribution1D_injective",
       "QuantumMechanics.SingleParticle.Continuum.mem_continuumMaximalLaplacianDomain1D_iff",
-      "_private.LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Hamiltonian.MaximalLaplacian1D.0.QuantumMechanics.SingleParticle.Continuum.l2ToTemperedDistribution1D_continuumMaximalLaplacianValue1D"
+      "_private.LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Hamiltonian.MaximalLaplacian1D.0.QuantumMechanics.SingleParticle.Continuum.l2ToTemperedDistribution1D_continuumMaximalLaplacianOnDomain1D"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -41951,8 +41957,7 @@
       "QuantumMechanics.SingleParticle.Continuum.continuumH2LaplacianPMap1D_adjoint_domain_le",
       "QuantumMechanics.SingleParticle.Continuum.continuumMaximalLaplacianDomain1D_le_continuumH2Domain1D",
       "QuantumMechanics.SingleParticle.Continuum.mem_continuumMaximalLaplacian1D_graph_iff",
-      "QuantumMechanics.SingleParticle.Continuum.mem_continuumSchrodingerHamiltonian1D_graph_iff",
-      "_private.LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Hamiltonian.MaximalLaplacian1D.0.QuantumMechanics.SingleParticle.Continuum.l2ToTemperedDistribution1D_continuumMaximalLaplacianValue1D"
+      "QuantumMechanics.SingleParticle.Continuum.mem_continuumSchrodingerHamiltonian1D_graph_iff"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
@@ -41962,10 +41967,9 @@
       "QuantumMechanics.SingleParticle.Continuum.continuumH2LaplacianPMap1D_adjoint_domain_le",
       "QuantumMechanics.SingleParticle.Continuum.continuumMaximalLaplacianDomain1D_le_continuumH2Domain1D",
       "QuantumMechanics.SingleParticle.Continuum.mem_continuumMaximalLaplacian1D_graph_iff",
-      "QuantumMechanics.SingleParticle.Continuum.mem_continuumSchrodingerHamiltonian1D_graph_iff",
-      "_private.LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Hamiltonian.MaximalLaplacian1D.0.QuantumMechanics.SingleParticle.Continuum.l2ToTemperedDistribution1D_continuumMaximalLaplacianValue1D"
+      "QuantumMechanics.SingleParticle.Continuum.mem_continuumSchrodingerHamiltonian1D_graph_iff"
     ],
-    "compiledConsumerCount": 6,
+    "compiledConsumerCount": 5,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -173464,15 +173468,15 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": false,
+    "terminal": true,
     "statement": "∀ (ψ : ↥QuantumMechanics.SingleParticle.Continuum.continuumH2Domain1D),\n  TemperedDistribution.MemSobolev 0 2\n    (Laplacian.laplacian (QuantumMechanics.SingleParticle.Continuum.l2ToTemperedDistribution1D ↑ψ))",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": true,
-    "singleCompiledConsumer": true,
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -173483,62 +173487,14 @@
     "docString": null,
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [
-      "_private.LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Hamiltonian.Basic1D.0.QuantumMechanics.SingleParticle.Continuum.l2ToTemperedDistribution1D_continuumH2LaplacianValue1D"
-    ],
+    "dependents": [],
     "dependencies": [
       "QuantumMechanics.SingleParticle.Continuum.mem_continuumH2Domain1D_iff"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [
-      "_private.LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Hamiltonian.Basic1D.0.QuantumMechanics.SingleParticle.Continuum.l2ToTemperedDistribution1D_continuumH2LaplacianValue1D"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (ψ : ↥QuantumMechanics.SingleParticle.Continuum.continuumH2Domain1D),\n  QuantumMechanics.SingleParticle.Continuum.l2ToTemperedDistribution1D\n      (QuantumMechanics.SingleParticle.Continuum.continuumH2LaplacianValue1D✝ ψ) =\n    Laplacian.laplacian (QuantumMechanics.SingleParticle.Continuum.l2ToTemperedDistribution1D ↑ψ)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Hamiltonian.Basic1D.0.QuantumMechanics.SingleParticle.Continuum.l2ToTemperedDistribution1D_continuumH2LaplacianValue1D",
-    "module": "LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Hamiltonian.Basic1D",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumMechanics.SingleParticle.Continuum.l2ToTemperedDistribution1D_continuumH2Laplacian1D"
-    ],
-    "dependencies": [
-      "_private.LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Hamiltonian.Basic1D.0.QuantumMechanics.SingleParticle.Continuum.continuumH2Laplacian_memSobolev_zero"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumMechanics.SingleParticle.Continuum.l2ToTemperedDistribution1D_continuumH2Laplacian1D"
-    ],
-    "compiledConsumerCount": 1,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -173717,7 +173673,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (ψ : ↥QuantumMechanics.SingleParticle.Continuum.continuumMaximalLaplacianDomain1D),\n  QuantumMechanics.SingleParticle.Continuum.l2ToTemperedDistribution1D\n      (QuantumMechanics.SingleParticle.Continuum.continuumMaximalLaplacianValue1D✝ ψ) =\n    Laplacian.laplacian (QuantumMechanics.SingleParticle.Continuum.l2ToTemperedDistribution1D ↑ψ)",
+    "statement": "∀ (ψ : ↥QuantumMechanics.SingleParticle.Continuum.continuumMaximalLaplacianDomain1D),\n  QuantumMechanics.SingleParticle.Continuum.l2ToTemperedDistribution1D\n      (QuantumMechanics.SingleParticle.Continuum.continuumMaximalLaplacianOnDomain1D ψ) =\n    Laplacian.laplacian (QuantumMechanics.SingleParticle.Continuum.l2ToTemperedDistribution1D ↑ψ)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -173729,7 +173685,7 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Hamiltonian.MaximalLaplacian1D.0.QuantumMechanics.SingleParticle.Continuum.l2ToTemperedDistribution1D_continuumMaximalLaplacianValue1D",
+    "name": "_private.LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Hamiltonian.MaximalLaplacian1D.0.QuantumMechanics.SingleParticle.Continuum.l2ToTemperedDistribution1D_continuumMaximalLaplacianOnDomain1D",
     "module": "LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Hamiltonian.MaximalLaplacian1D",
     "externalAxioms": [],
     "docString": null,
@@ -173741,7 +173697,7 @@
       "QuantumMechanics.SingleParticle.Continuum.mem_continuumMaximalLaplacian1D_graph_iff"
     ],
     "dependencies": [
-      "QuantumMechanics.SingleParticle.Continuum.mem_continuumMaximalLaplacianDomain1D_iff"
+      "QuantumMechanics.SingleParticle.Continuum.l2ToTemperedDistribution1D_injective"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
