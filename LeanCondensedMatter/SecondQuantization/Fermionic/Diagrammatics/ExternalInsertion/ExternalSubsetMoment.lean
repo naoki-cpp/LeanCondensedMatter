@@ -396,39 +396,6 @@ theorem externalSubsetSourceCumulantSeries_reconstruct
             (M S - ∑ π : {π : Finpartition S // π ≠ ⊤}, f π.1) := by rw [hrec]
       _ = M S := by abel
 
-/-- The precise remaining physical bridge for Phase 5: once the actual
-vacuum-normalized Wick/Dyson moments satisfy the signed external-partition
-identity, the recursively defined fermionic *source cumulant* is the fully
-externally connected integrated diagram sum.
-
-This theorem uses genuine signed moment inversion; it does not assume
-unsigned Möbius inversion or conflate vacuum-freeness with connectivity.
-Its hypothesis is the still-required diagram-assembly/shuffle identity. -/
-theorem externalSubsetSourceCumulantSeries_eq_connectedDiagramSeries_of_signedMoments
-    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
-    (labels : Fin (2 * E) → ExternalFieldLabel Mode)
-    (times : Fin (2 * E) → ℝ)
-    (hDiagram : ∀ S : Finset (Fin (2 * E)),
-      externalSubsetMomentSeries ε β g labels times S =
-        externalSubsetSignedConnectedMomentSeries ε β g labels times S) :
-    externalSubsetSourceCumulantSeries
-        (externalSubsetMomentSeries ε β g labels times) =
-      externalSubsetConnectedDiagramSeries ε β g labels times := by
-  apply externalPartitionWeightedMoment_injective
-  · simp
-  · intro S
-    calc
-      Finpartition.weightedMomentFromCumulant
-          (fun _ π => PowerSeries.C (externalPartitionSourceSign π))
-          (externalSubsetSourceCumulantSeries
-            (externalSubsetMomentSeries ε β g labels times)) S =
-        externalSubsetMomentSeries ε β g labels times S :=
-          externalSubsetSourceCumulantSeries_reconstruct
-            (externalSubsetMomentSeries ε β g labels times) (by simp) S
-      _ = Finpartition.weightedMomentFromCumulant
-          (fun _ π => PowerSeries.C (externalPartitionSourceSign π))
-          (externalSubsetConnectedDiagramSeries ε β g labels times) S := hDiagram S
-
 @[simp]
 theorem externalSubsetMomentSeries_empty
     (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
@@ -511,6 +478,40 @@ theorem externalSubsetSignedConnectedMomentSeries_eq_zero_of_odd
     unfold Finpartition.partitionProduct
     exact Finset.prod_eq_zero hB hzero
   rw [hprod, mul_zero]
+
+/-- The precise remaining physical bridge for Phase 5: once the actual
+vacuum-normalized Wick/Dyson moments satisfy the signed external-partition
+identity, the recursively defined fermionic *source cumulant* is the fully
+externally connected integrated diagram sum.
+
+This theorem uses genuine signed moment inversion; it does not assume
+unsigned Möbius inversion or conflate vacuum-freeness with connectivity.
+Its hypothesis is the still-required diagram-assembly/shuffle identity. -/
+theorem externalSubsetSourceCumulantSeries_eq_connectedDiagramSeries_of_signedMoments
+    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
+    (labels : Fin (2 * E) → ExternalFieldLabel Mode)
+    (times : Fin (2 * E) → ℝ)
+    (hDiagram : ∀ S : Finset (Fin (2 * E)),
+      externalSubsetMomentSeries ε β g labels times S =
+        externalSubsetSignedConnectedMomentSeries ε β g labels times S) :
+    externalSubsetSourceCumulantSeries
+        (externalSubsetMomentSeries ε β g labels times) =
+      externalSubsetConnectedDiagramSeries ε β g labels times := by
+  apply externalPartitionWeightedMoment_injective
+  · simp
+  · intro S
+    calc
+      Finpartition.weightedMomentFromCumulant
+          (fun _ π => PowerSeries.C (externalPartitionSourceSign π))
+          (externalSubsetSourceCumulantSeries
+            (externalSubsetMomentSeries ε β g labels times)) S =
+        externalSubsetMomentSeries ε β g labels times S :=
+          externalSubsetSourceCumulantSeries_reconstruct
+            (externalSubsetMomentSeries ε β g labels times) (by simp) S
+      _ = Finpartition.weightedMomentFromCumulant
+          (fun _ π => PowerSeries.C (externalPartitionSourceSign π))
+          (externalSubsetConnectedDiagramSeries ε β g labels times) S := hDiagram S
+
 
 end Fermionic
 end SecondQuantization
