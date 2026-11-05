@@ -175,6 +175,84 @@ noncomputable def externalSubsetSignedConnectedMomentSeries
     (fun _ π => PowerSeries.C (externalPartitionSourceSign π))
     (externalSubsetConnectedDiagramSeries ε β g labels times) S
 
+/-- A non-top external partition cannot contain the entire ambient source
+set as one of its blocks. This strict decrease underpins the recursive
+fermionic cumulant inversion, without postulating an unsigned Möbius formula. -/
+private theorem externalPartition_part_ssubset_of_ne_top
+    {S : Finset (Fin (2 * E))} (π : Finpartition S)
+    (hne : π ≠ ⊤) {B : Finset (Fin (2 * E))}
+    (hB : B ∈ π.parts) : B ⊂ S := by
+  have hsubset : B ⊆ S := π.le hB
+  have hproper : B ≠ S := by
+    intro hEq
+    have htopLe : (⊤ : Finpartition S) ≤ π := by
+      intro T hT
+      have hT' : T = S :=
+        Finset.mem_singleton.mp (Finpartition.parts_top_subset S hT)
+      subst T
+      exact ⟨B, hB, by simp [hEq]⟩
+    exact hne (le_antisymm le_top htopLe)
+  exact Finset.ssubset_iff_subset_ne.mpr ⟨hsubset, hproper⟩
+
+/-- The signed external-source moment transform is injective on normalized
+connected-block functions (whose empty-set values agree). In particular,
+there is no ambiguity in defining connected source cumulants from physical
+moments, provided the signed Dyson partition identity is established.
+
+The proof is triangular on proper external subsets: the one-block term has
+sign one, and every other partition uses strictly smaller blocks. It does
+not apply ordinary unsigned Möbius inversion to signed partition weights. -/
+theorem externalPartitionWeightedMoment_injective
+    (κ κ' : Finset (Fin (2 * E)) → PowerSeries ℂ)
+    (hEmpty : κ ∅ = κ' ∅)
+    (hMoments : ∀ S : Finset (Fin (2 * E)),
+      Finpartition.weightedMomentFromCumulant
+        (fun _ π => PowerSeries.C (externalPartitionSourceSign π)) κ S =
+      Finpartition.weightedMomentFromCumulant
+        (fun _ π => PowerSeries.C (externalPartitionSourceSign π)) κ' S) :
+    κ = κ' := by
+  classical
+  funext S
+  refine Finset.strongInductionOn S ?_
+  intro S ih
+  by_cases hS : S = ∅
+  · simpa only [hS] using hEmpty
+  · have hprod (π : Finpartition S) (hne : π ≠ ⊤) :
+        Finpartition.partitionProduct κ π =
+          Finpartition.partitionProduct κ' π := by
+      unfold Finpartition.partitionProduct
+      apply Finset.prod_congr rfl
+      intro B hB
+      exact ih B (externalPartition_part_ssubset_of_ne_top π hne hB)
+    have hrest :
+        (∑ π ∈ (Finset.univ : Finset (Finpartition S)).erase ⊤,
+          PowerSeries.C (externalPartitionSourceSign π) *
+            Finpartition.partitionProduct κ π) =
+        (∑ π ∈ (Finset.univ : Finset (Finpartition S)).erase ⊤,
+          PowerSeries.C (externalPartitionSourceSign π) *
+            Finpartition.partitionProduct κ' π) := by
+      apply Finset.sum_congr rfl
+      intro π hπ
+      rw [hprod π (Finset.mem_erase.mp hπ).1]
+    have hsource := hMoments S
+    unfold Finpartition.weightedMomentFromCumulant at hsource
+    rw [← Finset.sum_erase_add Finset.univ
+      (fun π : Finpartition S =>
+        PowerSeries.C (externalPartitionSourceSign π) *
+          Finpartition.partitionProduct κ π) (Finset.mem_univ ⊤),
+      ← Finset.sum_erase_add Finset.univ
+      (fun π : Finpartition S =>
+        PowerSeries.C (externalPartitionSourceSign π) *
+          Finpartition.partitionProduct κ' π) (Finset.mem_univ ⊤)] at hsource
+    rw [hrest] at hsource
+    have htop (k : Finset (Fin (2 * E)) → PowerSeries ℂ) :
+        PowerSeries.C (externalPartitionSourceSign (⊤ : Finpartition S)) *
+          Finpartition.partitionProduct k (⊤ : Finpartition S) = k S := by
+      rw [externalPartitionSourceSign_top, Finpartition.partitionProduct_top hS]
+      simp
+    rw [htop κ, htop κ'] at hsource
+    exact add_left_cancel hsource
+
 @[simp]
 theorem externalSubsetMomentSeries_empty
     (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
