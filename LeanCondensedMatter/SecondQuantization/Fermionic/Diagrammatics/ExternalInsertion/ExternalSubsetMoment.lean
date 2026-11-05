@@ -51,9 +51,9 @@ noncomputable def evenExternalSubsetTimes
     Fin (2 * (S.card / 2)) → ℝ :=
   fun i => times (evenExternalSubsetOrderIso S heven i).1
 
+omit [LinearOrder Mode] [Fintype Mode] in
 /-- Restricting fixed external field labels by their canonical subset order
 agrees definitionally with the labels on the standalone connected component. -/
-omit [LinearOrder Mode] [Fintype Mode] in
 theorem evenExternalSubsetLabels_componentOrderedDiagram
     {n : ℕ} (d : ExternalInsertionWickDiagram Mode E n)
     (B : d.vertexGraph.componentPartition.parts) :
@@ -63,9 +63,9 @@ theorem evenExternalSubsetLabels_componentOrderedDiagram
         (d.componentOrderedDiagram B).externalLabel := by
   rfl
 
+omit [LinearOrder Mode] [Fintype Mode] in
 /-- The same increasing external-slot reindexing transports the actual
 insertion times, without sorting by the imaginary-time value. -/
-omit [LinearOrder Mode] [Fintype Mode] in
 theorem evenExternalSubsetTimes_component
     {n : ℕ} (d : ExternalInsertionWickDiagram Mode E n)
     (times : Fin (2 * E) → ℝ)
