@@ -1,8 +1,10 @@
 import LeanCondensedMatter.Transport.Reciprocity.Data
 import LeanCondensedMatter.QuantumTheory.LinearResponse.Frequency.FiniteTime
+import LeanCondensedMatter.Transport.Core.ConductivityNormalization
+import LeanCondensedMatter.Transport.Core.ConductivityTensor
+import Mathlib.Tactic.Ring
 import Mathlib.Algebra.Lie.OfAssociative
 import Mathlib.Analysis.SpecialFunctions.Exponential
-import Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic
 
 set_option linter.style.header false
 
