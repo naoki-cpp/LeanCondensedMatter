@@ -1,4 +1,5 @@
 import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Hamiltonian.DenseDomain1D
+import Mathlib.Algebra.Module.Submodule.Equiv
 import Mathlib.Topology.Algebra.Module.LinearPMap
 import Mathlib.Tactic.Module
 
@@ -59,43 +60,15 @@ theorem continuumH2Domain1D_le_continuumMaximalLaplacianDomain1D :
   refine ⟨continuumH2Laplacian1D ψH2, ?_⟩
   exact l2ToTemperedDistribution1D_continuumH2Laplacian1D ψH2
 
-/-- The unique `L²` representative of the distributional Laplacian on the maximal domain. -/
-private noncomputable def continuumMaximalLaplacianValue1D
-    (ψ : continuumMaximalLaplacianDomain1D) : ContinuumL2Wavefunction1D :=
-  Classical.choose
-    ((mem_continuumMaximalLaplacianDomain1D_iff _).mp ψ.property)
-
-private theorem l2ToTemperedDistribution1D_continuumMaximalLaplacianValue1D
-    (ψ : continuumMaximalLaplacianDomain1D) :
-    l2ToTemperedDistribution1D (continuumMaximalLaplacianValue1D ψ) =
-      Δ (l2ToTemperedDistribution1D (ψ : ContinuumL2Wavefunction1D)) :=
-  Classical.choose_spec
-    ((mem_continuumMaximalLaplacianDomain1D_iff _).mp ψ.property)
-
-/-- The maximal distributional Laplacian, as a linear map from its explicit domain to `L²`. -/
+/-- The maximal distributional Laplacian, as a linear map from its explicit domain to `L²`.
+The distributional Laplacian lands in the range of the injective `L²` embedding. -/
 noncomputable def continuumMaximalLaplacianOnDomain1D :
-    continuumMaximalLaplacianDomain1D →ₗ[ℂ] ContinuumL2Wavefunction1D where
-  toFun := continuumMaximalLaplacianValue1D
-  map_add' ψ φ := by
-    apply l2ToTemperedDistribution1D_injective
-    rw [map_add]
-    rw [l2ToTemperedDistribution1D_continuumMaximalLaplacianValue1D,
-      l2ToTemperedDistribution1D_continuumMaximalLaplacianValue1D,
-      l2ToTemperedDistribution1D_continuumMaximalLaplacianValue1D]
-    simp only [Submodule.coe_add, map_add]
-    simpa only [TemperedDistribution.laplacianCLM_apply] using
-      (LineDeriv.laplacianCLM ℂ ℝ 𝓢'(ℝ, ℂ)).map_add
-        (l2ToTemperedDistribution1D (ψ : ContinuumL2Wavefunction1D))
-        (l2ToTemperedDistribution1D (φ : ContinuumL2Wavefunction1D))
-  map_smul' c ψ := by
-    apply l2ToTemperedDistribution1D_injective
-    rw [map_smul]
-    rw [l2ToTemperedDistribution1D_continuumMaximalLaplacianValue1D,
-      l2ToTemperedDistribution1D_continuumMaximalLaplacianValue1D]
-    simp only [Submodule.coe_smul, map_smul]
-    simpa only [TemperedDistribution.laplacianCLM_apply, RingHom.id_apply] using
-      (LineDeriv.laplacianCLM ℂ ℝ 𝓢'(ℝ, ℂ)).map_smul c
-        (l2ToTemperedDistribution1D (ψ : ContinuumL2Wavefunction1D))
+    continuumMaximalLaplacianDomain1D →ₗ[ℂ] ContinuumL2Wavefunction1D :=
+  (LinearEquiv.ofInjective l2ToTemperedDistribution1D.toLinearMap
+    l2ToTemperedDistribution1D_injective).symm.toLinearMap.comp
+      (((LineDeriv.laplacianCLM ℂ ℝ 𝓢'(ℝ, ℂ)).toLinearMap.comp
+        l2ToTemperedDistribution1D.toLinearMap).submoduleComap
+          l2ToTemperedDistribution1D.toLinearMap.range)
 
 /-- The maximal distributional Laplacian as a partial linear map on physical `L²`. -/
 noncomputable def continuumMaximalLaplacian1D :
@@ -112,8 +85,15 @@ theorem continuumMaximalLaplacian1D_domain :
 theorem l2ToTemperedDistribution1D_continuumMaximalLaplacian1D
     (ψ : continuumMaximalLaplacianDomain1D) :
     l2ToTemperedDistribution1D (continuumMaximalLaplacian1D ψ) =
-      Δ (l2ToTemperedDistribution1D (ψ : ContinuumL2Wavefunction1D)) :=
-  l2ToTemperedDistribution1D_continuumMaximalLaplacianValue1D ψ
+      Δ (l2ToTemperedDistribution1D (ψ : ContinuumL2Wavefunction1D)) := by
+  change l2ToTemperedDistribution1D
+    ((LinearEquiv.ofInjective l2ToTemperedDistribution1D.toLinearMap
+      l2ToTemperedDistribution1D_injective).symm
+      (((LineDeriv.laplacianCLM ℂ ℝ 𝓢'(ℝ, ℂ)).toLinearMap.comp
+        l2ToTemperedDistribution1D.toLinearMap).submoduleComap
+          l2ToTemperedDistribution1D.toLinearMap.range) ψ) = _
+  rw [LinearEquiv.ofInjective_symm_apply]
+  exact TemperedDistribution.laplacianCLM_apply _
 
 /-- The maximal Laplacian agrees with the previously constructed `H²` Laplacian on `H²`. -/
 theorem continuumMaximalLaplacian1D_agrees_on_H2 (ψ : continuumH2Domain1D) :
@@ -122,12 +102,7 @@ theorem continuumMaximalLaplacian1D_agrees_on_H2 (ψ : continuumH2Domain1D) :
           continuumH2Domain1D_le_continuumMaximalLaplacianDomain1D ψ.property⟩ =
       continuumH2Laplacian1D ψ := by
   apply l2ToTemperedDistribution1D_injective
-  change l2ToTemperedDistribution1D
-      (continuumMaximalLaplacianValue1D
-        ⟨(ψ : ContinuumL2Wavefunction1D),
-          continuumH2Domain1D_le_continuumMaximalLaplacianDomain1D ψ.property⟩) =
-    l2ToTemperedDistribution1D (continuumH2Laplacian1D ψ)
-  rw [l2ToTemperedDistribution1D_continuumMaximalLaplacianValue1D,
+  rw [l2ToTemperedDistribution1D_continuumMaximalLaplacian1D,
     l2ToTemperedDistribution1D_continuumH2Laplacian1D]
 
 /-- Graph membership in the maximal Laplacian is exactly the distributional Laplacian equation. -/
@@ -152,10 +127,7 @@ theorem mem_continuumMaximalLaplacian1D_graph_iff
     rw [LinearPMap.mem_graph_iff]
     refine ⟨⟨z.1, hdomain⟩, rfl, ?_⟩
     apply l2ToTemperedDistribution1D_injective
-    change l2ToTemperedDistribution1D
-        (continuumMaximalLaplacianValue1D ⟨z.1, hdomain⟩) =
-      l2ToTemperedDistribution1D z.2
-    rw [l2ToTemperedDistribution1D_continuumMaximalLaplacianValue1D]
+    rw [l2ToTemperedDistribution1D_continuumMaximalLaplacian1D]
     exact hz.symm
 
 /-- The maximal distributional Laplacian is a closed unbounded operator on `L²(ℝ, ℂ)`. -/
