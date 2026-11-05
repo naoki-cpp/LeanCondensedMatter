@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Transport.FiniteConductivityTable.Reciprocity
+import LeanCondensedMatter.QuantumTheory.LinearResponse.Frequency.FiniteTime
 import Mathlib.Analysis.SpecialFunctions.Exponential
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic
 
@@ -270,33 +271,12 @@ theorem currentKuboKernel_reverse (m : M) (i j : d) (t : ℝ) :
   rw [data.system_hbar m, data.system_hbar (data.reverse m),
     data.current_commutator_reverse m i j t]
 
-/-- A finite-time exponentially switched transform of the Kubo kernel.
-This is not an infinite-time or DC limit. -/
-noncomputable def integratedCurrentKuboKernel
-    (m : M) (i j : d) (omega eta duration : ℝ) : ℂ :=
-  ∫ t in (0 : ℝ)..duration,
-    Complex.exp ((-(eta : ℂ) + Complex.I * (omega : ℂ)) * (t : ℂ)) *
-      data.currentKuboKernel m i j t
-
-theorem integratedCurrentKuboKernel_reverse
-    (m : M) (i j : d) (omega eta duration : ℝ) :
-    data.integratedCurrentKuboKernel m i j omega eta duration =
-      data.integratedCurrentKuboKernel (data.reverse m) j i omega eta duration := by
-  unfold integratedCurrentKuboKernel
-  apply intervalIntegral.integral_congr
-  intro t ht
-  change Complex.exp ((-(eta : ℂ) + Complex.I * (omega : ℂ)) * (t : ℂ)) *
-      data.currentKuboKernel m i j t =
-    Complex.exp ((-(eta : ℂ) + Complex.I * (omega : ℂ)) * (t : ℂ)) *
-      data.currentKuboKernel (data.reverse m) j i t
-  rw [data.currentKuboKernel_reverse m i j t]
-
 /-- Conductivity evaluated from the finite-time Kubo kernel and its
 microscopic contact operator, using the canonical electric-field factor. -/
 noncomputable def conductivityComponent
     (volume : PositiveVolume) (omega eta duration : ℝ)
     (m : M) (i j : d) : ℂ :=
-  (data.integratedCurrentKuboKernel m i j omega eta duration +
+  (finiteTimeAdiabaticTransform (data.currentKuboKernel m i j) omega eta duration +
       data.expectation m (data.contact m i j)) *
     finiteVolumeConductivityNormalization volume omega eta
 
@@ -317,8 +297,12 @@ theorem conductivityFamily_isOnsagerReciprocal
   change data.conductivityComponent volume omega eta duration m i j =
     data.conductivityComponent volume omega eta duration (data.reverse m) j i
   unfold conductivityComponent
-  rw [data.integratedCurrentKuboKernel_reverse m i j omega eta duration,
-    data.contact_expectation_reverse m i j]
+  have hkernel :
+      (data.currentKuboKernel m i j) =
+        (data.currentKuboKernel (data.reverse m) j i) := by
+    funext t
+    exact data.currentKuboKernel_reverse m i j t
+  rw [hkernel, data.contact_expectation_reverse m i j]
 
 end KuboTimeReversalData
 
