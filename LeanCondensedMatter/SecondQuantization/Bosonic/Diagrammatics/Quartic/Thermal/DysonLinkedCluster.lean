@@ -63,16 +63,9 @@ theorem factorial_mul_coeff_logOf_grandCanonicalGibbsDysonSeries_eq_sum_connecte
       ε β μ hpos g S β
   have huniv : (Finset.univ : Finset (Fin n)) ≠ ∅ :=
     (Finset.univ_nonempty_iff.mpr ⟨⟨0, Nat.pos_of_ne_zero hn⟩⟩).ne_empty
-  calc
-    (n.factorial : ℂ) *
-        PowerSeries.coeff n
-          (PowerSeries.logOf (grandCanonicalGibbsDysonSeries ε β μ (quarticInteraction g))) =
-        W.connectedContribution (Finset.univ : Finset (Fin n)) := by
-      simpa using
-        (Combinatorics.factorial_mul_coeff_logOf_eq_connectedContribution
-          hZ W hMoment huniv)
-    _ = ∑ d : Common.ConnectedQuarticDiagram (QuarticVertexLabel Mode) n Finset.univ,
-          QuarticDiagram.dysonThermalAmplitude ε β μ g d.1 β := rfl
+  simpa only [Finset.card_univ, Fintype.card_fin] using
+    (Combinatorics.factorial_mul_coeff_logOf_eq_connectedContribution
+      hZ W hMoment huniv)
 
 end
 end Bosonic
