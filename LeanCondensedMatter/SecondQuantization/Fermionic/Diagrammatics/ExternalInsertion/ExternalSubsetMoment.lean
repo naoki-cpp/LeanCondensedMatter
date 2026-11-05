@@ -178,5 +178,57 @@ theorem externalSubsetSeries_eq_zero_of_odd
     exact hodd (by simp)
   simp [externalSubsetMomentSeries, externalSubsetConnectedDiagramSeries, hne, hodd]
 
+
+/-- Every partition of an odd-sized external subset contains an odd-sized block.
+This makes the odd-fermion vanishing visible directly in the signed source
+partition expansion, rather than only in the Wick-diagram definitions. -/
+private theorem odd_externalSubset_has_odd_partition_block
+    {S : Finset (Fin (2 * E))} (π : Finpartition S)
+    (hodd : ¬ Even S.card) :
+    ∃ B ∈ π.parts, ¬ Even B.card := by
+  classical
+  by_contra h
+  have hall : ∀ B ∈ π.parts, Even B.card := by
+    intro B hB
+    by_contra hBodd
+    exact h ⟨B, hB, hBodd⟩
+  have hsum : ∀ T : Finset (Finset (Fin (2 * E))),
+      T ⊆ π.parts → Even (∑ B ∈ T, B.card) := by
+    intro T
+    induction T using Finset.induction_on with
+    | empty =>
+        intro _
+        simp
+    | @insert B T hBT ih =>
+        intro hsub
+        rw [Finset.sum_insert hBT]
+        apply Even.add
+        · exact hall B (hsub (Finset.mem_insert_self B T))
+        · exact ih (Finset.Subset.trans (Finset.subset_insert B T) hsub)
+  have hπ := hsum π.parts (Finset.Subset.refl _)
+  exact hodd (by simpa only [π.sum_card_parts] using hπ)
+
+/-- The signed connected-partition expression respects fermion parity:
+an odd number of source insertions gives zero term by term. No hypothesis
+identifying the diagrammatic moments with the partition expression is used. -/
+theorem externalSubsetSignedConnectedMomentSeries_eq_zero_of_odd
+    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
+    (labels : Fin (2 * E) → ExternalFieldLabel Mode)
+    (times : Fin (2 * E) → ℝ)
+    (S : Finset (Fin (2 * E))) (hodd : ¬ Even S.card) :
+    externalSubsetSignedConnectedMomentSeries ε β g labels times S = 0 := by
+  classical
+  unfold externalSubsetSignedConnectedMomentSeries Finpartition.weightedMomentFromCumulant
+  apply Finset.sum_eq_zero
+  intro π _
+  obtain ⟨B, hB, hBodd⟩ := odd_externalSubset_has_odd_partition_block π hodd
+  have hzero : externalSubsetConnectedDiagramSeries ε β g labels times B = 0 :=
+    (externalSubsetSeries_eq_zero_of_odd ε β g labels times B hBodd).2
+  have hprod : Finpartition.partitionProduct
+      (externalSubsetConnectedDiagramSeries ε β g labels times) π = 0 := by
+    unfold Finpartition.partitionProduct
+    exact Finset.prod_eq_zero hB hzero
+  rw [hprod, mul_zero]
+
 end Fermionic
 end SecondQuantization
