@@ -99,7 +99,8 @@ theorem mem_continuumSchrodingerHamiltonian1D_graph_iff
       have hcoef : -((κ : ℂ)⁻¹) * -(κ : ℂ) = 1 := by
         field_simp [hκc]
       rw [hcoef, one_smul]
-    have hmax : z.1 ∈ continuumMaximalLaplacianDomain1D := ⟨φ, hφ⟩
+    have hmax : z.1 ∈ continuumMaximalLaplacianDomain1D :=
+      (mem_continuumMaximalLaplacianDomain1D_iff z.1).mpr ⟨φ, hφ⟩
     have hH2 : z.1 ∈ continuumH2Domain1D :=
       continuumMaximalLaplacianDomain1D_le_continuumH2Domain1D hmax
     rw [LinearPMap.mem_graph_iff]
