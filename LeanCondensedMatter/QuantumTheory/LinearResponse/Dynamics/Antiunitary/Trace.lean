@@ -21,7 +21,7 @@ noncomputable section
 namespace AntiunitaryMap
 
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
-variable [CompleteSpace H] [FiniteDimensional ℂ H]
+variable [FiniteDimensional ℂ H]
 variable (Θ : AntiunitaryMap H)
 
 /-- The ordinary finite-dimensional trace is conjugated by the induced
