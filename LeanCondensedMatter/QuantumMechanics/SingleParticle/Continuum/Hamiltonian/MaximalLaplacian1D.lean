@@ -69,7 +69,7 @@ noncomputable def continuumMaximalLaplacianOnDomain1D :
       (((LineDeriv.laplacianCLM ℂ ℝ 𝓢'(ℝ, ℂ)).toLinearMap.comp
         (l2ToTemperedDistribution1D.toLinearMap.comp
           continuumMaximalLaplacianDomain1D.subtype)).codRestrict
-            l2ToTemperedDistribution1D.toLinearMap.range (fun ψ => ψ.property)
+            l2ToTemperedDistribution1D.toLinearMap.range (fun ψ => ψ.property))
 
 /-- The maximal distributional Laplacian as a partial linear map on physical `L²`. -/
 noncomputable def continuumMaximalLaplacian1D :
