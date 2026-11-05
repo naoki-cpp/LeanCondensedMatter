@@ -39,6 +39,7 @@ Transport/
 │                  finite Lehmann + contact + positive-volume E-field normalization
 ├── FiniteConductivityTable/Eigenbasis.lean
 │                  statistics-independent eigenbasis/channel-to-scalar adapter
+├── Reciprocity/   operator time-reversal covariance and finite-time Kubo conductivity
 ├── Resolvent/     signed spectral regulator, physical spectral sides, self-energy algebra
 ├── Spectral/      response-neutral adapters from supplied spectral data to resolvent algebra
 ├── Analysis/      occupations, 2D continuum measure, angular harmonics, polar Fourier, relaxation time
@@ -46,6 +47,12 @@ Transport/
 ├── Streda/        static response kernels, traces, integration, response matrices
 └── Disorder/      exact finite disorder, Green operators, Born, SCBA, ladder algebra
 ```
+
+`Transport.Reciprocity.Data` owns transport-specific microscopic time-reversal hypotheses;
+`Transport.Reciprocity.Kubo` derives finite-time conductivity reciprocity from the canonical
+Kubo susceptibility and finite-time adiabatic transform. The finite-spectral scalar
+conductivity evaluator remains under `FiniteConductivityTable` and is not a dependency of
+this Kubo theorem.
 
 `Core.ConductivityNormalization` owns both the model-independent `PositiveVolume` datum and
 the finite-volume electric-field conversion. Consumers use that owner directly; the underlying

@@ -37,28 +37,36 @@ Under this hypothesis, the symmetric projection and longitudinal conductivity ar
 reversal, and the Hall projection is odd. These are algebraic consequences, not a
 derivation of microscopic reciprocity.
 
-`FiniteConductivityTable.Reciprocity` now supplies a finite-spectral charge-current
-bridge: equal reversed spectral energies/occupations, conjugate odd-current matrix elements,
-Hermitian currents, and the reciprocal contact term imply equality of the canonical
-finite Lehmann response and normalized physical conductivity with transposed directions.
-It constructs a `ConductivityTensor` family satisfying `IsOnsagerReciprocal` without
-postulating conductivity reciprocity.
+The `Transport.Reciprocity.Data` module defines
+`KuboTimeReversalData` on a finite-dimensional Hilbert space. It uses a
+positive normalized density operator commuting with the Hamiltonian, a
+conjugate-linear multiplicative time-reversal action on bounded operators,
+and the transformation laws of the Hamiltonian, density, directional charge
+currents, and contact operators. The canonical `DensityOperator.expectation` and `toNormalizedExpectation` APIs
+supply state expectations without choosing an eigenbasis. In particular, there is no
+same-label pairing requirement that would exclude Kramers systems.
 
-`LinearResponse.Dynamics.Antiunitary` specifies a bijective conjugate-linear
-inner-product-preserving Hilbert-space transformation. The finite-spectral
-`FiniteConductivityTable.Reciprocity.Antiunitary` bridge now proves the required current
-matrix-element conjugation/reversal rules from *operator-level* Hermiticity,
-antiunitary current covariance, and paired eigenbases. It then consumes the existing
-Lehmann Onsager theorem. Hamiltonian covariance, eigenbasis pairing, equilibrium-state
-transformation, and reciprocal contact response remain supplied model assumptions.
+`Transport.Reciprocity.Kubo` derives the reversed
+Schrödinger/Heisenberg evolution, stationarity, and the reciprocal two-point
+current correlation; the contact expectation is reciprocal by operator
+covariance and Hermiticity. The finite-time, exponentially switched Kubo
+response with canonical electric-field normalization thus satisfies
+`ConductivityTensor.IsOnsagerReciprocal`. This is a finite-time statement,
+not the earlier infinite-time Lehmann evaluation. Its operator action
+records trace-conjugation and exponential preservation explicitly; the
+construction of this action from a specific Hilbert-space antiunitary
+remains a model-level mathematical bridge.
 
-The next proof target is to discharge those hypotheses directly in representative magnetic
-models and, independently, to derive reciprocity from the causal Kubo channel with
-explicit stationary-state transformation and source/contact conventions. No DC,
-zero-switching, or thermodynamic limit follows automatically. Concrete AMR additionally requires
-a magnetization-dependent Hamiltonian, model-specific conductivity response, tensor
-invertibility, and the resistivity (rather than conductivity) angular comparison.
-Planar Hall resistivity must not be identified with the Hall projection of conductivity.
+The next targets are to instantiate the induced operator action in a
+spin-half model with time reversal squared equal to minus identity,
+derive Peierls contact covariance from a magnetic Hamiltonian family,
+and prove an infinite-time Kubo limit under explicit convergence
+hypotheses. No DC, zero-switching, or thermodynamic limit follows
+automatically. Concrete AMR additionally requires a magnetization-dependent
+Hamiltonian, model-specific conductivity response, tensor invertibility,
+and the resistivity (rather than conductivity) angular comparison.
+Planar Hall resistivity must not be identified with the Hall projection
+of conductivity.
 
 ## Proved disorder chain
 
