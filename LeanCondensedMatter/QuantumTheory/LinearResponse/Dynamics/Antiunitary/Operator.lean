@@ -47,11 +47,16 @@ theorem inverse_smul (c : ℂ) (x : H) :
   simp
 
 theorem map_neg (x : H) : Θ.toFun (-x) = -(Θ.toFun x) := by
-  simpa only [neg_one_smul, map_neg] using Θ.map_smul (-1 : ℂ) x
+  calc
+    Θ.toFun (-x) = ((starRingEnd ℂ) (-1 : ℂ)) • Θ.toFun x := by
+      simpa only [neg_one_smul] using Θ.map_smul (-1 : ℂ) x
+    _ = -(Θ.toFun x) := by simp
 
 theorem map_zero : Θ.toFun (0 : H) = 0 := by
-  have h := Θ.map_smul (0 : ℂ) (0 : H)
-  simpa only [zero_smul] using h
+  calc
+    Θ.toFun (0 : H) = Θ.toFun ((0 : ℂ) • (0 : H)) := by rw [zero_smul]
+    _ = ((starRingEnd ℂ) (0 : ℂ)) • Θ.toFun (0 : H) := Θ.map_smul _ _
+    _ = 0 := by simp
 
 /-- Antiunitary conjugation sends a bounded complex-linear operator to
 another bounded complex-linear operator. Finite dimensionality supplies
@@ -62,11 +67,11 @@ noncomputable def conjugateOperator [FiniteDimensional ℂ H]
     { toFun := fun x => Θ.toFun (A (Θ.inverse x))
       map_add' := by
         intro x y
-        rw [Θ.inverse_add, map_add, Θ.map_add]
+        simp only [Θ.inverse_add, map_add, Θ.map_add]
       map_smul' := by
         intro c x
-        rw [Θ.inverse_smul, map_smul, Θ.map_smul]
-        simp }
+        simp only [Θ.inverse_smul, map_smul, Θ.map_smul,
+          RingHom.id_apply, starRingEnd_apply, star_star] }
 
 @[simp]
 theorem conjugateOperator_apply [FiniteDimensional ℂ H]
@@ -79,7 +84,7 @@ theorem conjugateOperator_add [FiniteDimensional ℂ H]
     Θ.conjugateOperator (A + B) =
       Θ.conjugateOperator A + Θ.conjugateOperator B := by
   ext x
-  simp only [conjugateOperator_apply, ContinuousLinearMap.add_apply, map_add, Θ.map_add]
+  simp only [conjugateOperator_apply, add_apply, Θ.map_add]
 
 @[simp]
 theorem conjugateOperator_mul [FiniteDimensional ℂ H]
@@ -87,7 +92,8 @@ theorem conjugateOperator_mul [FiniteDimensional ℂ H]
     Θ.conjugateOperator (A * B) =
       Θ.conjugateOperator A * Θ.conjugateOperator B := by
   ext x
-  simp only [conjugateOperator_apply, ContinuousLinearMap.mul_apply_eq_comp]
+  change Θ.toFun (A (B (Θ.inverse x))) =
+    Θ.toFun (A (Θ.inverse (Θ.toFun (B (Θ.inverse x)))))
   rw [Θ.inverse_apply]
 
 @[simp]
@@ -96,20 +102,22 @@ theorem conjugateOperator_smul [FiniteDimensional ℂ H]
     Θ.conjugateOperator (c • A) =
       ((starRingEnd ℂ) c) • Θ.conjugateOperator A := by
   ext x
-  simp only [conjugateOperator_apply, ContinuousLinearMap.smul_apply, smul_apply]
+  simp only [conjugateOperator_apply, smul_apply]
   exact Θ.map_smul c (A (Θ.inverse x))
 
 @[simp]
 theorem conjugateOperator_one [FiniteDimensional ℂ H] :
     Θ.conjugateOperator (1 : H →L[ℂ] H) = 1 := by
   ext x
-  simp only [conjugateOperator_apply, one_apply, Θ.apply_inverse]
+  change Θ.toFun (Θ.inverse x) = x
+  exact Θ.apply_inverse x
 
 @[simp]
 theorem conjugateOperator_zero [FiniteDimensional ℂ H] :
     Θ.conjugateOperator (0 : H →L[ℂ] H) = 0 := by
   ext x
-  simp only [conjugateOperator_apply, zero_apply, Θ.map_zero]
+  change Θ.toFun (0 : H) = 0
+  exact Θ.map_zero
 
 /-- The induced operator action preserves adjoints. No vector-level
 involution hypothesis is required. -/
@@ -147,8 +155,9 @@ theorem conjugateOperator_involutive_of_square_neg [FiniteDimensional ℂ H]
     rw [Θ.apply_inverse, Θ.map_neg, hsq]
     simp
   ext x
-  simp only [conjugateOperator_apply, hinv]
-  rw [Θ.map_neg, Θ.map_neg, hsq]
+  simp only [conjugateOperator_apply, hinv, neg_neg]
+  rw [hsq x]
+  rw [map_neg, hsq]
   simp
 
 end AntiunitaryMap
