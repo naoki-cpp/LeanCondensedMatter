@@ -67,8 +67,9 @@ noncomputable def continuumMaximalLaplacianOnDomain1D :
   (LinearEquiv.ofInjective l2ToTemperedDistribution1D.toLinearMap
     l2ToTemperedDistribution1D_injective).symm.toLinearMap.comp
       (((LineDeriv.laplacianCLM ℂ ℝ 𝓢'(ℝ, ℂ)).toLinearMap.comp
-        l2ToTemperedDistribution1D.toLinearMap).submoduleComap
-          l2ToTemperedDistribution1D.toLinearMap.range)
+        (l2ToTemperedDistribution1D.toLinearMap.comp
+          continuumMaximalLaplacianDomain1D.subtype)).codRestrict
+            l2ToTemperedDistribution1D.toLinearMap.range (fun ψ => ψ.property)
 
 /-- The maximal distributional Laplacian as a partial linear map on physical `L²`. -/
 noncomputable def continuumMaximalLaplacian1D :
@@ -86,12 +87,13 @@ theorem l2ToTemperedDistribution1D_continuumMaximalLaplacian1D
     (ψ : continuumMaximalLaplacianDomain1D) :
     l2ToTemperedDistribution1D (continuumMaximalLaplacian1D ψ) =
       Δ (l2ToTemperedDistribution1D (ψ : ContinuumL2Wavefunction1D)) := by
-  change l2ToTemperedDistribution1D
+  change l2ToTemperedDistribution1D.toLinearMap
     ((LinearEquiv.ofInjective l2ToTemperedDistribution1D.toLinearMap
       l2ToTemperedDistribution1D_injective).symm
       ((((LineDeriv.laplacianCLM ℂ ℝ 𝓢'(ℝ, ℂ)).toLinearMap.comp
-        l2ToTemperedDistribution1D.toLinearMap).submoduleComap
-          l2ToTemperedDistribution1D.toLinearMap.range) ψ)) = _
+        (l2ToTemperedDistribution1D.toLinearMap.comp
+          continuumMaximalLaplacianDomain1D.subtype)).codRestrict
+            l2ToTemperedDistribution1D.toLinearMap.range _) ψ)) = _
   rw [LinearEquiv.ofInjective_symm_apply]
   exact TemperedDistribution.laplacianCLM_apply _
 
