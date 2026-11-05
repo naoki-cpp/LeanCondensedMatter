@@ -69,14 +69,13 @@ structure KuboTimeReversalData (M d H : Type*)
   density_reverse : ∀ m,
     transform (density m).op = (density (reverse m)).op
   /-- Measured and source charge-current operators, indexed by direction. -/
-  current : M → d → (H →L[ℂ] H)
-  current_selfAdjoint : ∀ m i, IsSelfAdjoint (current m i)
-  current_reverse : ∀ m i, transform (current m i) = -(current (reverse m) i)
+  current : M → d → Observable H
+  current_reverse : ∀ m i,
+    transform (current m i).1 = -(current (reverse m) i).1
   /-- Explicit observable-variation/contact operator for each ordered direction pair. -/
-  contact : M → d → d → (H →L[ℂ] H)
-  contact_selfAdjoint : ∀ m i j, IsSelfAdjoint (contact m i j)
+  contact : M → d → d → Observable H
   contact_reverse : ∀ m i j,
-    transform (contact m i j) = contact (reverse m) j i
+    transform (contact m i j).1 = (contact (reverse m) j i).1
 
 namespace KuboTimeReversalData
 
