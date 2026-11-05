@@ -1322,7 +1322,9 @@ theorem polarFourierFirstCosineAngularKernel_hasDerivAt (z : ℝ) :
       · dsimp [polarFourierRadialPhase]
         ring
     have h := hbase.mul_const ((Real.cos θ : ℝ) : ℂ)
-    convert h using 1 <;> dsimp [derivative] <;> ring
+    convert h using 1
+    dsimp [derivative]
+    ring
   have hcont (x : ℝ) : Continuous (fun θ : ℝ =>
       polarFourierRadialPhase x θ * ((Real.cos θ : ℝ) : ℂ)) := by
     dsimp [polarFourierRadialPhase]
@@ -1422,7 +1424,8 @@ theorem polarFourierHarmonicEnergy_hasDerivAt (z : ℝ) :
           polarFourierSecondCosineAngularKernel z)) z := by
   have h0 := (polarFourierZerothAngularKernel_hasDerivAt z).pow 2
   have h1 := (polarFourierFirstCosineAngularKernel_hasDerivAt z).pow 2
-  convert h0.sub h1 using 1 <;> ring
+  convert h0.sub h1 using 1
+  ring
 
 
 /-- The first-harmonic radial product has an exact finite-interval primitive.
