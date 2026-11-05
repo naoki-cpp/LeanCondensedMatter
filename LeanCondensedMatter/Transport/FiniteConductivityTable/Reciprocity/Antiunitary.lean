@@ -28,6 +28,15 @@ noncomputable section
 
 namespace KuboTimeReversalData
 
+/-- Self-adjointness is preserved by free Heisenberg evolution. -/
+private theorem star_evolved_of_selfAdjoint
+    {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
+    (sys : BoundedFreeSystem H) (A : H →L[ℂ] H)
+    (hA : IsSelfAdjoint A) (t : ℝ) :
+    star (heisenbergEvolution (freePropagatorGroup sys) t A) =
+      heisenbergEvolution (freePropagatorGroup sys) t A := by
+  rw [← map_star, ContinuousLinearMap.star_eq_adjoint, hA.adjoint_eq]
+
 variable {M d H : Type*}
 variable [NormedAddCommGroup H] [InnerProductSpace ℂ H]
 variable [CompleteSpace H] [FiniteDimensional ℂ H]
@@ -39,7 +48,8 @@ theorem transform_schrodingerGenerator (m : M) :
       -(schrodingerGenerator (data.system (data.reverse m))) := by
   simp only [schrodingerGenerator, data.transform_smul,
     data.hamiltonian_reverse, data.system_hbar]
-  simp
+  simp only [star_neg, star_div₀, RCLike.star_def, Complex.conj_I,
+    Complex.conj_ofReal, neg_smul, neg_neg]
   rw [← neg_smul]
   congr 1
   ring
@@ -100,15 +110,6 @@ theorem expectation_stationary (m : M) (t : ℝ) (A : H →L[ℂ] H) :
           _ = (ρ * U t) * U (-t) * A := by rw [hcomm.eq]
           _ = ρ * (U t * U (-t)) * A := by simp only [mul_assoc]
           _ = ρ * A := by rw [hunit, mul_one]]
-
-/-- Taking the adjoint of a Heisenberg-evolved Hermitian observable does
-not change that observable. -/
-private theorem star_evolved_of_selfAdjoint
-    (sys : BoundedFreeSystem H) (A : H →L[ℂ] H)
-    (hA : IsSelfAdjoint A) (t : ℝ) :
-    star (heisenbergEvolution (freePropagatorGroup sys) t A) =
-      heisenbergEvolution (freePropagatorGroup sys) t A := by
-  rw [← map_star, ContinuousLinearMap.star_eq_adjoint, hA.adjoint_eq]
 
 /-- Finite-trace expectation is complex-linear in the observable. -/
 private theorem expectation_sub (m : M)
