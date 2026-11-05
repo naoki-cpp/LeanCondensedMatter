@@ -102712,48 +102712,6 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {Mode : Type u_1} [inst : Fintype Mode] (ε : Mode → ℝ) (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ)\n  (n : ℕ) (t : ℝ),\n  SecondQuantization.Common.dysonCoeff (SecondQuantization.Bosonic.freeEigenvalue ε)\n      (SecondQuantization.Bosonic.quarticInteraction g) n t =\n    ∑ q,\n      SecondQuantization.Common.quarticDysonSequenceCoeff ε g q t •\n        SecondQuantization.Common.quarticVertexSequenceOperator SecondQuantization.Bosonic.create\n          SecondQuantization.Bosonic.annihilate q",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "SecondQuantization.Bosonic.dysonCoeff_quarticInteraction_eq_sum",
-    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.Perturbation.QuarticDysonExpansion",
-    "externalAxioms": [],
-    "docString": "On a finite mode type, the bosonic quartic Dyson coefficient is the direct specialization of\nthe Common all-label quartic Dyson expansion. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "SecondQuantization.Bosonic.imaginaryTimeEvolve_annihilate",
-      "SecondQuantization.Bosonic.imaginaryTimeEvolve_create",
-      "SecondQuantization.Common.dysonCoeff_quarticInteraction_eq_sum"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
     "statement": "∀ {Mode : Type u_1} [Finite Mode] (ε : Mode → ℝ) (β : ℝ),\n  0 < β →\n    (∀ (i : Mode), 0 < ε i) → QuantumTheory.EigenbasisGibbsSummable (SecondQuantization.Bosonic.freeEigenvalue ε) β",
     "standardAxioms": [
       "Classical.choice",
@@ -104532,7 +104490,6 @@
     "dependents": [
       "SecondQuantization.Bosonic.diagonalCoeff_evolve_annihilate_comp_create",
       "SecondQuantization.Bosonic.dysonCoeff_quarticInteractionOn_eq_sum",
-      "SecondQuantization.Bosonic.dysonCoeff_quarticInteraction_eq_sum",
       "SecondQuantization.Bosonic.grandCanonicalGibbsExpectation_annihilate_comp_create_concrete"
     ],
     "dependencies": [
@@ -104544,10 +104501,9 @@
     "compiledConsumers": [
       "SecondQuantization.Bosonic.diagonalCoeff_evolve_annihilate_comp_create",
       "SecondQuantization.Bosonic.dysonCoeff_quarticInteractionOn_eq_sum",
-      "SecondQuantization.Bosonic.dysonCoeff_quarticInteraction_eq_sum",
       "SecondQuantization.Bosonic.grandCanonicalGibbsExpectation_annihilate_comp_create_concrete"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -104569,7 +104525,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -104581,8 +104537,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Bosonic.dysonCoeff_quarticInteractionOn_eq_sum",
-      "SecondQuantization.Bosonic.dysonCoeff_quarticInteraction_eq_sum"
+      "SecondQuantization.Bosonic.dysonCoeff_quarticInteractionOn_eq_sum"
     ],
     "dependencies": [
       "SecondQuantization.Bosonic.carriesEnergyShift_create",
@@ -104591,10 +104546,9 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Bosonic.dysonCoeff_quarticInteractionOn_eq_sum",
-      "SecondQuantization.Bosonic.dysonCoeff_quarticInteraction_eq_sum"
+      "SecondQuantization.Bosonic.dysonCoeff_quarticInteractionOn_eq_sum"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -122985,7 +122939,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -122997,7 +122951,6 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "SecondQuantization.Bosonic.dysonCoeff_quarticInteraction_eq_sum",
       "SecondQuantization.Fermionic.finiteGibbsExpectation_comp_dysonCoeff_quarticInteraction"
     ],
     "dependencies": [
@@ -123006,10 +122959,9 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "SecondQuantization.Bosonic.dysonCoeff_quarticInteraction_eq_sum",
       "SecondQuantization.Fermionic.finiteGibbsExpectation_comp_dysonCoeff_quarticInteraction"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
