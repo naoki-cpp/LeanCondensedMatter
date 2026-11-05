@@ -1,6 +1,7 @@
 import LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.Antiunitary
 import Mathlib.Topology.Algebra.Module.FiniteDimension
 import Mathlib.Analysis.InnerProductSpace.Adjoint
+import Mathlib.Analysis.Normed.Algebra.Exponential
 
 set_option linter.style.header false
 
@@ -154,6 +155,39 @@ theorem conjugateOperator_star [FiniteDimensional ℂ H] [CompleteSpace H]
     _ = inner ℂ x (Θ.conjugateOperator A y) := by
       rw [Θ.apply_inverse]
       rfl
+
+/-- The operator action is a unital ring homomorphism, regardless of the
+square of the underlying antiunitary. -/
+noncomputable def conjugateOperatorRingHom [FiniteDimensional ℂ H] :
+    (H →L[ℂ] H) →+* (H →L[ℂ] H) where
+  toFun := Θ.conjugateOperator
+  map_one' := Θ.conjugateOperator_one
+  map_mul' := Θ.conjugateOperator_mul
+  map_zero' := Θ.conjugateOperator_zero
+  map_add' := Θ.conjugateOperator_add
+
+/-- The conjugate-linear action is real-linear. This gives continuity of
+the operator action on finite-dimensional bounded endomorphisms. -/
+private noncomputable def conjugateOperatorRealLinear [FiniteDimensional ℂ H] :
+    (H →L[ℂ] H) →ₗ[ℝ] (H →L[ℂ] H) where
+  toFun := Θ.conjugateOperator
+  map_add' := Θ.conjugateOperator_add
+  map_smul' := by
+    intro r A
+    simpa only [Complex.real_smul, starRingEnd_apply, Complex.conj_ofReal] using
+      Θ.conjugateOperator_smul (r : ℂ) A
+
+/-- Antiunitary conjugation commutes with bounded-operator exponentiation.
+The proof uses the continuous real-linear ring homomorphism, and no
+assumption that the state-level time-reversal operator squares to one. -/
+theorem conjugateOperator_exp [FiniteDimensional ℂ H] [CompleteSpace H]
+    (A : H →L[ℂ] H) :
+    Θ.conjugateOperator (NormedSpace.exp A) =
+      NormedSpace.exp (Θ.conjugateOperator A) := by
+  haveI : FiniteDimensional ℝ (H →L[ℂ] H) := inferInstance
+  have hcont : Continuous (Θ.conjugateOperator : (H →L[ℂ] H) → (H →L[ℂ] H)) :=
+    Θ.conjugateOperatorRealLinear.continuous_of_finiteDimensional
+  exact NormedSpace.map_exp (Θ.conjugateOperatorRingHom) hcont A
 
 /-- For a spin-half antiunitary with square minus identity, the induced
 action on bounded observables is involutive. -/
