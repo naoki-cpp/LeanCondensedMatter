@@ -11,6 +11,7 @@ import Mathlib.Topology.Algebra.InfiniteSum.ContinuousEval
 import Mathlib.Tactic.FieldSimp
 import Mathlib.Tactic.FunProp
 import Mathlib.Tactic.NormNum
+import Mathlib.Tactic.Linarith
 import Mathlib.Tactic.Ring
 
 set_option linter.style.header false
@@ -1290,6 +1291,117 @@ theorem finiteCutoffPhysicalMomentumPolarFourier_polarPoint2D_harmonics
   simp_rw [physicalMomentumPolarFourierPhase_polarPoint2D]
   exact (coefficients p).integral_polarFourierRadialPhase_shifted
     (p * radius / hbar) p angle
+
+/-- Differentiating the first polar Fourier harmonic produces precisely the
+isotropic plus second-harmonic channels. This is an all-real-argument
+differential identity, not an origin-only or asymptotic statement. -/
+theorem polarFourierFirstCosineAngularKernel_hasDerivAt (z : ℝ) :
+    HasDerivAt polarFourierFirstCosineAngularKernel
+      ((Complex.I / 2) *
+        (polarFourierZerothAngularKernel z +
+          polarFourierSecondCosineAngularKernel z)) z := by
+  let derivative : ℝ → ℝ → ℂ := fun x θ =>
+    Complex.I * ((((Real.cos θ : ℝ) : ℂ)) ^ 2) * polarFourierRadialPhase x θ
+  have hdiff (x θ : ℝ) :
+      HasDerivAt (fun t : ℝ =>
+        polarFourierRadialPhase t θ * ((Real.cos θ : ℝ) : ℂ))
+        (derivative x θ) x := by
+    have hmul : HasDerivAt (fun t : ℝ => t * Real.cos θ)
+        (Real.cos θ) x := by
+      simpa using (hasDerivAt_id x).mul_const (Real.cos θ)
+    have harg : HasDerivAt
+        (fun t : ℝ => Complex.I * ((t * Real.cos θ : ℝ) : ℂ))
+        (Complex.I * ((Real.cos θ : ℝ) : ℂ)) x :=
+      hmul.ofReal_comp |>.const_mul Complex.I
+    have hphase := (Complex.hasDerivAt_exp _).comp x harg
+    have hbase : HasDerivAt (fun t : ℝ => polarFourierRadialPhase t θ)
+        (Complex.I * ((Real.cos θ : ℝ) : ℂ) *
+          polarFourierRadialPhase x θ) x := by
+      convert hphase using 1
+      · rfl
+      · dsimp [polarFourierRadialPhase]
+        ring
+    have h := hbase.mul_const ((Real.cos θ : ℝ) : ℂ)
+    convert h using 1
+    · rfl
+    · dsimp [derivative]
+      ring
+  have hcont (x : ℝ) : Continuous (fun θ : ℝ =>
+      polarFourierRadialPhase x θ * ((Real.cos θ : ℝ) : ℂ)) := by
+    dsimp [polarFourierRadialPhase]
+    fun_prop
+  have hcont' (x : ℝ) : Continuous (derivative x) := by
+    dsimp [derivative, polarFourierRadialPhase]
+    fun_prop
+  have hbound (x θ : ℝ) : ‖derivative x θ‖ ≤ (1 : ℝ) := by
+    have hcos := Real.abs_cos_le_one θ
+    have hnorm : ‖derivative x θ‖ = |Real.cos θ| ^ 2 := by
+      simp only [derivative, norm_mul, Complex.norm_I, Complex.norm_real,
+        Real.norm_eq_abs, norm_pow, norm_polarFourierRadialPhase, one_mul, mul_one]
+    rw [hnorm]
+    nlinarith [abs_nonneg (Real.cos θ)]
+  have hmain :
+      HasDerivAt
+        (fun x : ℝ => ∫ θ in (0 : ℝ)..(2 * Real.pi),
+          polarFourierRadialPhase x θ * ((Real.cos θ : ℝ) : ℂ))
+        (∫ θ in (0 : ℝ)..(2 * Real.pi), derivative z θ) z := by
+    exact (intervalIntegral.hasDerivAt_integral_of_dominated_loc_of_deriv_le
+      (F := fun x θ => polarFourierRadialPhase x θ * ((Real.cos θ : ℝ) : ℂ))
+      (F' := derivative)
+      (bound := fun _θ : ℝ => (1 : ℝ))
+      (s := Set.univ) (x₀ := z) (a := (0 : ℝ)) (b := 2 * Real.pi)
+      Filter.univ_mem
+      (Filter.Eventually.of_forall fun x => (hcont x).aestronglyMeasurable)
+      ((hcont z).intervalIntegrable _ _)
+      ((hcont' z).aestronglyMeasurable)
+      (Filter.Eventually.of_forall fun θ _ x _ => hbound x θ)
+      (intervalIntegrable_const)
+      (Filter.Eventually.of_forall fun θ _ x _ => hdiff x θ)).2
+  have hrew :
+      (∫ θ in (0 : ℝ)..(2 * Real.pi), derivative z θ) =
+        (Complex.I / 2) *
+          (polarFourierZerothAngularKernel z +
+            polarFourierSecondCosineAngularKernel z) := by
+    calc
+      (∫ θ in (0 : ℝ)..(2 * Real.pi), derivative z θ) =
+          ∫ θ in (0 : ℝ)..(2 * Real.pi),
+            (Complex.I / 2) *
+              (polarFourierRadialPhase z θ +
+                polarFourierRadialPhase z θ *
+                  (((Real.cos θ : ℝ) : ℂ) ^ 2 -
+                    ((Real.sin θ : ℝ) : ℂ) ^ 2)) := by
+        apply intervalIntegral.integral_congr
+        intro θ _
+        have hs : (((Real.sin θ : ℝ) : ℂ) ^ 2) +
+            (((Real.cos θ : ℝ) : ℂ) ^ 2) = 1 := by
+          exact_mod_cast Real.sin_sq_add_cos_sq θ
+        dsimp [derivative]
+        linear_combination (Complex.I / 2 * polarFourierRadialPhase z θ) * hs
+      _ = (Complex.I / 2) *
+          (∫ θ in (0 : ℝ)..(2 * Real.pi),
+            polarFourierRadialPhase z θ +
+              polarFourierRadialPhase z θ *
+                (((Real.cos θ : ℝ) : ℂ) ^ 2 -
+                  ((Real.sin θ : ℝ) : ℂ) ^ 2)) := by
+        rw [intervalIntegral.integral_const_mul]
+      _ = _ := by
+        rw [intervalIntegral.integral_add]
+        · rfl
+        · exact (by fun_prop : Continuous (polarFourierRadialPhase z)).intervalIntegrable _ _
+        · exact (by
+            fun_prop : Continuous (fun θ : ℝ =>
+              polarFourierRadialPhase z θ *
+                (((Real.cos θ : ℝ) : ℂ) ^ 2 -
+                  ((Real.sin θ : ℝ) : ℂ) ^ 2))).intervalIntegrable _ _
+  change HasDerivAt
+    (fun x : ℝ => ∫ θ in (0 : ℝ)..(2 * Real.pi),
+      polarFourierRadialPhase x θ * ((Real.cos θ : ℝ) : ℂ))
+    ((Complex.I / 2) *
+      (polarFourierZerothAngularKernel z +
+        polarFourierSecondCosineAngularKernel z)) z
+  rw [← hrew]
+  exact hmain
+
 
 end
 
