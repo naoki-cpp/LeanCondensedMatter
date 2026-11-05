@@ -1,5 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentSign
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.DysonSeries
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.MixedOrderData
 import LeanCondensedMatter.Combinatorics.Cumulant.Moment
 import Mathlib.Data.Fintype.EquivFin
 
@@ -49,6 +50,29 @@ noncomputable def evenExternalSubsetTimes
     (S : Finset (Fin (2 * E))) (heven : Even S.card) :
     Fin (2 * (S.card / 2)) → ℝ :=
   fun i => times (evenExternalSubsetOrderIso S heven i).1
+
+/-- Restricting fixed external field labels by their canonical subset order
+agrees definitionally with the labels on the standalone connected component. -/
+theorem evenExternalSubsetLabels_componentOrderedDiagram
+    {n : ℕ} (d : ExternalInsertionWickDiagram Mode E n)
+    (B : d.vertexGraph.componentPartition.parts) :
+    evenExternalSubsetLabels d.externalLabel
+      ((B : Finset (ExternalInsertionVertex E (Finset.univ : Finset (Fin n)))).toLeft)
+      (d.externalSector_card_even B) =
+        (d.componentOrderedDiagram B).externalLabel := by
+  rfl
+
+/-- The same increasing external-slot reindexing transports the actual
+insertion times, without sorting by the imaginary-time value. -/
+theorem evenExternalSubsetTimes_component
+    {n : ℕ} (d : ExternalInsertionWickDiagram Mode E n)
+    (times : Fin (2 * E) → ℝ)
+    (B : d.vertexGraph.componentPartition.parts) :
+    evenExternalSubsetTimes times
+      ((B : Finset (ExternalInsertionVertex E (Finset.univ : Finset (Fin n)))).toLeft)
+      (d.externalSector_card_even B) =
+        d.componentExternalTime times B := by
+  rfl
 
 /-- Fully external-connected, vacuum-free Dyson coefficient using the actual
 integrated signed Wick diagram amplitude, with all labels and times fixed. -/
