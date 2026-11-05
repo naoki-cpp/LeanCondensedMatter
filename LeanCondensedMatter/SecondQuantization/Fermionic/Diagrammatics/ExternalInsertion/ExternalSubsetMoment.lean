@@ -1,5 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentSign
-import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.DysonSeries
+import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.InteractionPictureVertexDyson
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.MixedOrderData
 import LeanCondensedMatter.Combinatorics.Cumulant.Moment
 import Mathlib.Data.Fintype.EquivFin
@@ -110,6 +110,33 @@ noncomputable def externalSubsetMomentSeries
       (evenExternalSubsetLabels labels S heven)
       (evenExternalSubsetTimes times S heven)
   else exact 0
+
+/-- The source-subset moment is the vacuum-normalized *physical* vertex-Dyson
+correlator for every nonempty even external subset. Multiplication by the
+normalized vacuum partition series recovers the operator insertion series.
+This bridge uses the existing Gibbs/Wick and Cauchy factorization theorems;
+it does not assume the distinct external components are connected. -/
+theorem externalSubsetMomentSeries_mul_normalizedPartition_eq_vertexDysonSeries
+    (ε : Mode → ℝ) (β : ℝ) (hβ : 0 ≤ β)
+    (g : QuarticVertexLabel Mode → ℂ)
+    (labels : Fin (2 * E) → ExternalFieldLabel Mode)
+    (times : Fin (2 * E) → ℝ)
+    (S : Finset (Fin (2 * E))) (hS : S ≠ ∅) (heven : Even S.card) :
+    externalSubsetMomentSeries ε β g labels times S *
+        PowerSeries.normalizeByConstantCoeff
+          (Common.dysonTraceSeries (fermionEnergy ε) β (quarticInteraction g)) =
+      externalInsertionVertexDysonSeries ε β 0 g
+        (evenExternalSubsetLabels labels S heven)
+        (evenExternalSubsetTimes times S heven) := by
+  have hm : externalSubsetMomentSeries ε β g labels times S =
+      vacuumFreeExternalInsertionDysonSeries ε β g
+        (evenExternalSubsetLabels labels S heven)
+        (evenExternalSubsetTimes times S heven) := by
+    simp [externalSubsetMomentSeries, hS, heven]
+  rw [hm]
+  exact (externalInsertionVertexDysonSeries_eq_vacuumFree_mul_normalizedDysonPartitionSeries
+    ε β hβ g (evenExternalSubsetLabels labels S heven)
+    (evenExternalSubsetTimes times S heven)).symm
 
 /-- A connected-diagram contribution for each external subset. Odd and empty
 subsets contribute zero. This is defined from the actual integrated diagrams,
