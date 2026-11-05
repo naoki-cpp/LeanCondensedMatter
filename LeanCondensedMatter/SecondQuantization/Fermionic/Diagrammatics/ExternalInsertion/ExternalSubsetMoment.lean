@@ -280,6 +280,68 @@ theorem externalPartitionWeightedMoment_injective
     rw [htop κ, htop κ'] at hsource
     exact add_left_cancel hsource
 
+/-- Finite fermionic source cumulants, defined recursively from the complete
+subset moment function. The recursion is along *strict* subset, since only
+non-top partitions require values at proper blocks. No Grassmann algebra and
+no unjustified ordinary unsigned partition inversion are introduced. -/
+noncomputable def externalSubsetSourceCumulantSeries
+    (M : Finset (Fin (2 * E)) → PowerSeries ℂ) :
+    Finset (Fin (2 * E)) → PowerSeries ℂ := by
+  classical
+  let wf : WellFounded
+      (fun T S : Finset (Fin (2 * E)) => T ⊂ S) := inferInstance
+  exact wf.fix (fun S ih =>
+    if S = ∅ then 0
+    else M S -
+      ∑ π : {π : Finpartition S // π ≠ ⊤},
+        PowerSeries.C (externalPartitionSourceSign π.1) *
+          ∏ B : π.1.parts,
+            ih (B : Finset (Fin (2 * E)))
+              (externalPartition_part_ssubset_of_ne_top π.1 π.2 B.2))
+
+/-- The recursive source cumulant is normalized to zero on empty insertion
+sets. The normalized empty source moment, in contrast, is one. -/
+@[simp]
+theorem externalSubsetSourceCumulantSeries_empty
+    (M : Finset (Fin (2 * E)) → PowerSeries ℂ) :
+    externalSubsetSourceCumulantSeries M ∅ = 0 := by
+  classical
+  unfold externalSubsetSourceCumulantSeries
+  rw [WellFounded.fix_eq]
+  simp
+
+/-- The defining triangular equation for fermionic source cumulants. -/
+theorem externalSubsetSourceCumulantSeries_eq_sub_properPartitions
+    (M : Finset (Fin (2 * E)) → PowerSeries ℂ)
+    (S : Finset (Fin (2 * E))) (hS : S ≠ ∅) :
+    externalSubsetSourceCumulantSeries M S =
+      M S -
+        ∑ π : {π : Finpartition S // π ≠ ⊤},
+          PowerSeries.C (externalPartitionSourceSign π.1) *
+            Finpartition.partitionProduct (externalSubsetSourceCumulantSeries M) π.1 := by
+  classical
+  unfold externalSubsetSourceCumulantSeries
+  rw [WellFounded.fix_eq]
+  simp only [hS, if_false]
+  congr 1
+  apply Finset.sum_congr rfl
+  intro π _
+  apply congrArg (fun z : PowerSeries ℂ =>
+    PowerSeries.C (externalPartitionSourceSign π.1) * z)
+  rw [Finpartition.partitionProduct,
+    Finset.prod_coe_sort π.1.parts
+      (fun B => (WellFounded.fix
+        (fun S ih =>
+          if S = ∅ then (0 : PowerSeries ℂ)
+          else M S -
+            ∑ ρ : {ρ : Finpartition S // ρ ≠ ⊤},
+              PowerSeries.C (externalPartitionSourceSign ρ.1) *
+                ∏ C : ρ.1.parts,
+                  ih (C : Finset (Fin (2 * E)))
+                    (externalPartition_part_ssubset_of_ne_top ρ.1 ρ.2 C.2))
+        : Finset (Fin (2 * E)) → PowerSeries ℂ) B)]
+  rfl
+
 @[simp]
 theorem externalSubsetMomentSeries_empty
     (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
