@@ -1322,10 +1322,7 @@ theorem polarFourierFirstCosineAngularKernel_hasDerivAt (z : ℝ) :
       · dsimp [polarFourierRadialPhase]
         ring
     have h := hbase.mul_const ((Real.cos θ : ℝ) : ℂ)
-    convert h using 1
-    · rfl
-    · dsimp [derivative]
-      ring
+    convert h using 1 <;> dsimp [derivative] <;> ring
   have hcont (x : ℝ) : Continuous (fun θ : ℝ =>
       polarFourierRadialPhase x θ * ((Real.cos θ : ℝ) : ℂ)) := by
     dsimp [polarFourierRadialPhase]
@@ -1387,12 +1384,17 @@ theorem polarFourierFirstCosineAngularKernel_hasDerivAt (z : ℝ) :
       _ = _ := by
         rw [intervalIntegral.integral_add]
         · rfl
-        · exact (by fun_prop : Continuous (polarFourierRadialPhase z)).intervalIntegrable _ _
-        · exact (by
-            fun_prop : Continuous (fun θ : ℝ =>
+        · have hc : Continuous (polarFourierRadialPhase z) := by
+            dsimp [polarFourierRadialPhase]
+            fun_prop
+          exact hc.intervalIntegrable _ _
+        · have hc : Continuous (fun θ : ℝ =>
               polarFourierRadialPhase z θ *
                 (((Real.cos θ : ℝ) : ℂ) ^ 2 -
-                  ((Real.sin θ : ℝ) : ℂ) ^ 2))).intervalIntegrable _ _
+                  ((Real.sin θ : ℝ) : ℂ) ^ 2)) := by
+            dsimp [polarFourierRadialPhase]
+            fun_prop
+          exact hc.intervalIntegrable _ _
   change HasDerivAt
     (fun x : ℝ => ∫ θ in (0 : ℝ)..(2 * Real.pi),
       polarFourierRadialPhase x θ * ((Real.cos θ : ℝ) : ℂ))
