@@ -80,10 +80,8 @@ theorem mem_continuumH2Domain1D_iff (ψ : ContinuumL2Wavefunction1D) :
 private theorem continuumH2Laplacian_memSobolev_zero (ψ : continuumH2Domain1D) :
     TemperedDistribution.MemSobolev 0 2
       (Δ (l2ToTemperedDistribution1D (ψ : ContinuumL2Wavefunction1D))) := by
-  have hψ : TemperedDistribution.MemSobolev (2 : ℝ) 2
-      (l2ToTemperedDistribution1D (ψ : ContinuumL2Wavefunction1D)) :=
-    (mem_continuumH2Domain1D_iff (ψ : ContinuumL2Wavefunction1D)).mp ψ.property
-  simpa using TemperedDistribution.MemSobolev.laplacian hψ
+  simpa using TemperedDistribution.MemSobolev.laplacian
+    ((mem_continuumH2Domain1D_iff (ψ : ContinuumL2Wavefunction1D)).mp ψ.property)
 
 /-- The unique `L²` representative of the distributional Laplacian of an `H²` wavefunction. -/
 private noncomputable def continuumH2LaplacianValue1D
