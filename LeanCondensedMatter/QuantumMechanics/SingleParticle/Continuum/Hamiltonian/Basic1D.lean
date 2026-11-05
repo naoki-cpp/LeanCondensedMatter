@@ -101,7 +101,7 @@ noncomputable def continuumH2Laplacian1D :
               (LineDeriv.laplacianCLM ℂ ℝ 𝓢'(ℝ, ℂ))
                 (l2ToTemperedDistribution1D (ψ : ContinuumL2Wavefunction1D))
             rw [TemperedDistribution.laplacianCLM_apply]
-            simpa [l2ToTemperedDistribution1D] using hφ.symm)
+            simpa [l2ToTemperedDistribution1D] using hφ.symm))
 
 /-- The `L²` value produced by `continuumH2Laplacian1D` represents exactly the distributional
 Laplacian of the original `L²` wavefunction. -/
@@ -109,7 +109,7 @@ theorem l2ToTemperedDistribution1D_continuumH2Laplacian1D
     (ψ : continuumH2Domain1D) :
     l2ToTemperedDistribution1D (continuumH2Laplacian1D ψ) =
       Δ (l2ToTemperedDistribution1D (ψ : ContinuumL2Wavefunction1D)) := by
-  change l2ToTemperedDistribution1D
+  change l2ToTemperedDistribution1D.toLinearMap
     ((LinearEquiv.ofInjective l2ToTemperedDistribution1D.toLinearMap
       l2ToTemperedDistribution1D_injective).symm
       ((((LineDeriv.laplacianCLM ℂ ℝ 𝓢'(ℝ, ℂ)).toLinearMap.comp
