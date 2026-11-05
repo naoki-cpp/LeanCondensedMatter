@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Combinatorics.Shuffle.FamilySlotShuffleInversions
+import LeanCondensedMatter.Combinatorics.Shuffle.FinpartitionOrderShuffle
 import LeanCondensedMatter.Combinatorics.ExchangeSign
 import LeanCondensedMatter.SecondQuantization.Common.Algebra.Statistics
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentRestriction
@@ -24,6 +25,50 @@ namespace Fermionic
 open Combinatorics
 
 variable {ExternalLabel InternalLabel : Type*} {E N : ℕ}
+
+/-- The increasing ambient order of all external fermion slots. -/
+private noncomputable def externalPartitionIncreasingOrder (E : ℕ) :
+    Fin ((Finset.univ : Finset (Fin (2 * E))).card) ≃
+      ↥(Finset.univ : Finset (Fin (2 * E))) :=
+  ((Finset.univ : Finset (Fin (2 * E))).orderIsoOfFin rfl).toEquiv
+
+/-- The canonical shuffle of the increasing external slots, grouped by blocks of
+an external partition and kept in increasing order within each block.
+
+This construction depends only on the external partition, not on interaction
+vertices or an arbitrary ordering of graph components. -/
+noncomputable def externalPartitionShuffle
+    (π : Finpartition (Finset.univ : Finset (Fin (2 * E)))) : π.PartShuffle := by
+  let order := externalPartitionIncreasingOrder E
+  let localOrders := π.partOrdersOfOrder order
+  exact π.shuffleOfOrder order localOrders
+    (π.partOrdersCompatible_partOrdersOfOrder order)
+
+/-- Fermionic Koszul sign for grouping external insertions by partition blocks.
+Unlike an unsigned moment decomposition, this records interleavings of distinct
+externally supported components. Blocks are ordered explicitly; the sign will
+be shown independent of that choice for even-sized blocks. -/
+noncomputable def externalPartitionOrderSign
+    (π : Finpartition (Finset.univ : Finset (Fin (2 * E))))
+    (blockOrder : π.parts ≃ Fin (Fintype.card π.parts)) : ℂ :=
+  (Common.Statistics.fermion.zetaInt : ℂ) ^
+    (externalPartitionShuffle π).orderedBlockInversionCount blockOrder
+
+/-- An even-block external partition has a well-defined fermionic regrouping
+sign, independent of the chosen order of its blocks. This is the source-side
+sign convention needed before identifying signed partition moments with
+fixed-label/time Wick-diagram sums. -/
+theorem externalPartitionOrderSign_eq_of_blockOrder
+    (π : Finpartition (Finset.univ : Finset (Fin (2 * E))))
+    (heven : ∀ B : π.parts, Even (B : Finset (Fin (2 * E))).card)
+    (order₁ order₂ : π.parts ≃ Fin (Fintype.card π.parts)) :
+    externalPartitionOrderSign π order₁ = externalPartitionOrderSign π order₂ := by
+  unfold externalPartitionOrderSign
+  exact pow_eq_of_mod_two_eq
+    (ζ := (Common.Statistics.fermion.zetaInt : ℂ))
+    (by norm_num [Common.Statistics.zetaInt_fermion])
+    ((externalPartitionShuffle π).orderedBlockInversionCount_modEq_of_even_sizes
+      order₁ order₂ heven)
 
 /-- Fermionic exchange sign for regrouping ambient external insertions into component blocks,
 preserving the canonical increasing external order inside each component. -/
