@@ -1,5 +1,4 @@
 import LeanCondensedMatter.Analysis.OrderedSimplex.PartitionOrderIntegral
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentDecompositionEquiv
 import LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.ComponentFactorization
 import LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion.DysonAmplitude
 
@@ -20,9 +19,8 @@ open Common Combinatorics
 
 noncomputable section
 
-variable {Mode : Type*} [Finite Mode]
+variable {Mode : Type*}
 
-omit [Finite Mode] in
 /-- The scalar quartic imaginary-time factor of an assembled global order is the family-shuffle
 integrand of the corresponding component-local time factors. -/
 private theorem QuarticDiagram.quarticVertexSequenceTimeFactor_assembleVertexOrder
@@ -57,7 +55,6 @@ private noncomputable def QuarticDiagram.dysonThermalIntegrand
     QuarticDiagram.orderedThermalPairingValue ε β μ d order) *
       Common.quarticVertexSequenceTimeFactor ε (fun i => d.vertexLabel (order i)) τ
 
-omit [Finite Mode] in
 private theorem QuarticDiagram.orderedDysonThermalAmplitude_eq_integral
     (ε : Mode → ℝ) (β μ : ℝ) (g : QuarticVertexLabel Mode → ℂ)
     {N : ℕ} {S : Finset (Fin N)}
@@ -72,7 +69,6 @@ private theorem QuarticDiagram.orderedDysonThermalAmplitude_eq_integral
     Common.QuarticDiagram.vertexWeight_eq_prod_vertexLabel_order d g order]
   ring
 
-omit [Finite Mode] in
 /-- The physical bosonic quartic Dyson diagram amplitude factors over the connected components of
 the diagram. The proof reindexes global vertex orders into component-local orders and shuffles, then
 uses the finite-family ordered-simplex shuffle identity for the time integrals. -/
