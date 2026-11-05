@@ -134,6 +134,34 @@ noncomputable def externalPartitionSourceSign
     {S : Finset (Fin (2 * E))} (π : Finpartition S) : ℂ :=
   externalPartitionOrderSign π (Fintype.equivFin π.parts)
 
+/-- Grouping an external set into a single source block has trivial
+fermionic shuffle sign. This is the diagonal normalization needed for the
+triangular source moment-to-cumulant transform. -/
+theorem externalPartitionSourceSign_top
+    (S : Finset (Fin (2 * E))) :
+    externalPartitionSourceSign (⊤ : Finpartition S) = 1 := by
+  classical
+  haveI : Subsingleton (↥(⊤ : Finpartition S).parts) := by
+    constructor
+    intro B C
+    apply Subtype.ext
+    have hB : (B : Finset (Fin (2 * E))) = S :=
+      Finset.mem_singleton.mp (Finpartition.parts_top_subset S B.2)
+    have hC : (C : Finset (Fin (2 * E))) = S :=
+      Finset.mem_singleton.mp (Finpartition.parts_top_subset S C.2)
+    exact hB.trans hC.symm
+  have hzero :
+      (externalPartitionShuffle (⊤ : Finpartition S)).orderedBlockInversionCount
+          (Fintype.equivFin (⊤ : Finpartition S).parts) = 0 := by
+    unfold Combinatorics.FamilySlotShuffleTo.orderedBlockInversionCount
+    apply Finset.sum_eq_zero
+    intro BC hBC
+    have hne := (Finset.mem_offDiag.mp hBC).2.2
+    exact (hne (Subsingleton.elim BC.1 BC.2)).elim
+  unfold externalPartitionSourceSign externalPartitionOrderSign
+  rw [hzero]
+  simp
+
 /-- The signed partition expansion predicted by the source/cumulant identity,
 formed from the actual fully connected diagrammatic contributions.
 The remaining Phase 5 theorem must identify this with
