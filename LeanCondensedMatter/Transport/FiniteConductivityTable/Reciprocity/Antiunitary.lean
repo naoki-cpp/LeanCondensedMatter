@@ -78,47 +78,6 @@ theorem transform_heisenbergEvolution (m : M) (t : ℝ)
     data.transform_freePropagator m (-t),
     data.transform_freePropagator m t]
 
-/-- A density operator commuting with the Hamiltonian gives a stationary
-finite-trace expectation, without imposing spectral-basis constraints. -/
-theorem expectation_stationary (m : M) (t : ℝ) (A : H →L[ℂ] H) :
-    data.expectation m
-        (heisenbergEvolution (freePropagatorGroup (data.system m)) t A) =
-      data.expectation m A := by
-  let sys := data.system m
-  let ρ := (data.density m).op
-  let U := freePropagator sys
-  have hcomm : Commute (U t) ρ :=
-    commute_freePropagator_of_commute_hamiltonian sys ρ
-      (data.density_stationary m) t
-  have hunit : U t * U (-t) = 1 := by
-    dsimp [U]
-    rw [← freePropagator_add, add_neg_cancel, freePropagator_zero]
-  change finiteDimensionalOperatorTrace
-      (ρ * heisenbergEvolution (freePropagatorGroup sys) t A) =
-        finiteDimensionalOperatorTrace (ρ * A)
-  rw [heisenbergEvolution_freePropagatorGroup_apply]
-  calc
-    finiteDimensionalOperatorTrace (ρ * (U (-t) * A * U t)) =
-        finiteDimensionalOperatorTrace ((ρ * U (-t) * A) * U t) := by
-      simp only [mul_assoc]
-    _ = finiteDimensionalOperatorTrace (U t * (ρ * U (-t) * A)) :=
-      finiteDimensionalOperatorTrace_mul_comm _ _
-    _ = finiteDimensionalOperatorTrace (ρ * A) := by
-      rw [show U t * (ρ * U (-t) * A) = ρ * A by
-        calc
-          U t * (ρ * U (-t) * A) =
-              (U t * ρ) * U (-t) * A := by simp only [mul_assoc]
-          _ = (ρ * U t) * U (-t) * A := by rw [hcomm.eq]
-          _ = ρ * (U t * U (-t)) * A := by simp only [mul_assoc]
-          _ = ρ * A := by rw [hunit, mul_one]]
-
-/-- Finite-trace expectation is complex-linear in the observable. -/
-private theorem expectation_sub (m : M)
-    (A B : H →L[ℂ] H) :
-    data.expectation m (A - B) =
-      data.expectation m A - data.expectation m B := by
-  simp [expectation, mul_sub]
-
 /-- Time reversal exchanges the measured and source slots of a two-point
 equilibrium correlation, including the reversal of the time argument
 and its cancellation by stationarity. -/
@@ -128,9 +87,9 @@ theorem correlation_reverse_of_odd (m : M) (t : ℝ)
     (hB : IsSelfAdjoint B')
     (hTA : data.transform A = -A')
     (hTB : data.transform B = -B') :
-    data.expectation m
+    (data.density m).expectation
         (heisenbergEvolution (freePropagatorGroup (data.system m)) t A * B) =
-      data.expectation (data.reverse m)
+      (data.density (data.reverse m)).expectation
         (heisenbergEvolution
           (freePropagatorGroup (data.system (data.reverse m))) t B' * A') := by
   let U := freePropagatorGroup (data.system (data.reverse m))
@@ -146,46 +105,55 @@ theorem correlation_reverse_of_odd (m : M) (t : ℝ)
   have hBstar : star B' = B' := by
     rw [ContinuousLinearMap.star_eq_adjoint, hB.adjoint_eq]
   have hstar :
-      star (data.expectation (data.reverse m)
+      star ((data.density (data.reverse m)).expectation
           (heisenbergEvolution U (-t) A' * B')) =
-        data.expectation (data.reverse m)
+        (data.density (data.reverse m)).expectation
           (B' * heisenbergEvolution U (-t) A') := by
-    rw [← data.expectation_star, star_mul, hBstar, hAstar]
+    rw [← (data.density (data.reverse m)).expectation_star, star_mul, hBstar, hAstar]
   have hshift :
-      data.expectation (data.reverse m)
+      (data.density (data.reverse m)).expectation
           (B' * heisenbergEvolution U (-t) A') =
-        data.expectation (data.reverse m)
+        (data.density (data.reverse m)).expectation
           (heisenbergEvolution U t B' * A') := by
-    rw [← data.expectation_stationary (data.reverse m) t
-      (B' * heisenbergEvolution U (-t) A')]
+    have hstationary :
+        IsStationary U (data.density (data.reverse m)).toNormalizedExpectation :=
+      isStationary_toNormalizedExpectation_of_commute_hamiltonian
+        (data.system (data.reverse m)) (data.density (data.reverse m))
+        (data.density_stationary (data.reverse m))
+    have h := hstationary t (B' * heisenbergEvolution U (-t) A')
+    change (data.density (data.reverse m)).expectation
+        (heisenbergEvolution U t (B' * heisenbergEvolution U (-t) A')) =
+      (data.density (data.reverse m)).expectation
+        (B' * heisenbergEvolution U (-t) A') at h
+    rw [← h]
     rw [map_mul, heisenbergEvolution_heisenbergEvolution]
     simp [U]
   calc
-    data.expectation m
+    (data.density m).expectation
         (heisenbergEvolution (freePropagatorGroup (data.system m)) t A * B) =
-      star (data.expectation (data.reverse m)
+      star ((data.density (data.reverse m)).expectation
         (data.transform
           (heisenbergEvolution (freePropagatorGroup (data.system m)) t A * B))) := by
       simpa using (congrArg star
         (data.expectation_reverse m
           (heisenbergEvolution (freePropagatorGroup (data.system m)) t A * B))).symm
-    _ = star (data.expectation (data.reverse m)
+    _ = star ((data.density (data.reverse m)).expectation
         (heisenbergEvolution U (-t) A' * B')) := by rw [hprod]
-    _ = data.expectation (data.reverse m)
+    _ = (data.density (data.reverse m)).expectation
         (B' * heisenbergEvolution U (-t) A') := hstar
-    _ = data.expectation (data.reverse m)
+    _ = (data.density (data.reverse m)).expectation
         (heisenbergEvolution U t B' * A') := hshift
 
 /-- The current-current commutator is reciprocal under simultaneous
 reversal of the magnetic controls and exchange of current directions. -/
 theorem current_commutator_reverse (m : M) (i j : d) (t : ℝ) :
-    data.expectation m
+    (data.density m).expectation
         (heisenbergEvolution (freePropagatorGroup (data.system m)) t
           (data.current m i) * data.current m j -
           data.current m j *
             heisenbergEvolution (freePropagatorGroup (data.system m)) t
               (data.current m i)) =
-      data.expectation (data.reverse m)
+      (data.density (data.reverse m)).expectation
         (heisenbergEvolution
             (freePropagatorGroup (data.system (data.reverse m))) t
               (data.current (data.reverse m) j) *
@@ -201,8 +169,8 @@ theorem current_commutator_reverse (m : M) (i j : d) (t : ℝ) :
   let U := freePropagatorGroup (data.system m)
   let Up := freePropagatorGroup (data.system (data.reverse m))
   have hfirst :
-      data.expectation m (heisenbergEvolution U t A * B) =
-        data.expectation (data.reverse m)
+      (data.density m).expectation (heisenbergEvolution U t A * B) =
+        (data.density (data.reverse m)).expectation
           (heisenbergEvolution Up t Bp * Ap) :=
     data.correlation_reverse_of_odd m t A B Ap Bp
       (data.current_selfAdjoint (data.reverse m) i)
@@ -215,49 +183,49 @@ theorem current_commutator_reverse (m : M) (i j : d) (t : ℝ) :
     rw [ContinuousLinearMap.star_eq_adjoint,
       (data.current_selfAdjoint (data.reverse m) i).adjoint_eq]
   have hsecond :
-      data.expectation m (B * heisenbergEvolution U t A) =
-        data.expectation (data.reverse m)
+      (data.density m).expectation (B * heisenbergEvolution U t A) =
+        (data.density (data.reverse m)).expectation
           (Ap * heisenbergEvolution Up t Bp) := by
     calc
-      _ = star (data.expectation m
+      _ = star ((data.density m).expectation
           (heisenbergEvolution U t A * B)) := by
-        rw [← data.expectation_star, star_mul, hBst]
+        rw [← (data.density (data.reverse m)).expectation_star, star_mul, hBst]
         rw [star_evolved_of_selfAdjoint
           (data.system m) A (data.current_selfAdjoint m i) t]
-      _ = star (data.expectation (data.reverse m)
+      _ = star ((data.density (data.reverse m)).expectation
           (heisenbergEvolution Up t Bp * Ap)) := by rw [hfirst]
-      _ = data.expectation (data.reverse m)
+      _ = (data.density (data.reverse m)).expectation
           (Ap * heisenbergEvolution Up t Bp) := by
-        rw [← data.expectation_star, star_mul, hApst]
+        rw [← (data.density (data.reverse m)).expectation_star, star_mul, hApst]
         rw [star_evolved_of_selfAdjoint
           (data.system (data.reverse m)) Bp
           (data.current_selfAdjoint (data.reverse m) j) t]
-  rw [data.expectation_sub, data.expectation_sub, hfirst, hsecond]
+  rw [map_sub, map_sub, hfirst, hsecond]
 
 /-- The physical contact response is reciprocal as a consequence of
 operator covariance and Hermiticity, not a scalar reciprocity axiom. -/
 theorem contact_expectation_reverse (m : M) (i j : d) :
-    data.expectation m (data.contact m i j) =
-      data.expectation (data.reverse m)
+    (data.density m).expectation (data.contact m i j) =
+      (data.density (data.reverse m)).expectation
         (data.contact (data.reverse m) j i) := by
   have hself : star (data.contact m i j) = data.contact m i j := by
     rw [ContinuousLinearMap.star_eq_adjoint,
       (data.contact_selfAdjoint m i j).adjoint_eq]
   calc
-    data.expectation m (data.contact m i j) =
-        star (data.expectation m (data.contact m i j)) := by
-      rw [← data.expectation_star, hself]
-    _ = data.expectation (data.reverse m)
+    (data.density m).expectation (data.contact m i j) =
+        star ((data.density m).expectation (data.contact m i j)) := by
+      rw [← (data.density m).expectation_star, hself]
+    _ = (data.density (data.reverse m)).expectation
           (data.transform (data.contact m i j)) :=
       (data.expectation_reverse m _).symm
-    _ = data.expectation (data.reverse m)
+    _ = (data.density (data.reverse m)).expectation
           (data.contact (data.reverse m) j i) := by
       rw [data.contact_reverse m i j]
 
 /-- Finite-time retarded current-current Kubo kernel. -/
 noncomputable def currentKuboKernel (m : M) (i j : d) (t : ℝ) : ℂ :=
   (Complex.I / (data.system m).hbar) *
-    data.expectation m
+    (data.density m).expectation
       (heisenbergEvolution (freePropagatorGroup (data.system m)) t
         (data.current m i) * data.current m j -
        data.current m j *
@@ -277,7 +245,7 @@ noncomputable def conductivityComponent
     (volume : PositiveVolume) (omega eta duration : ℝ)
     (m : M) (i j : d) : ℂ :=
   (finiteTimeAdiabaticTransform (data.currentKuboKernel m i j) omega eta duration +
-      data.expectation m (data.contact m i j)) *
+      (data.density m).expectation (data.contact m i j)) *
     finiteVolumeConductivityNormalization volume omega eta
 
 /-- Finite-time conductivity tensor constructed entirely from microscopic
