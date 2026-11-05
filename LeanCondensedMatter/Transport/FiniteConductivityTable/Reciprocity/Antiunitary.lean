@@ -1,5 +1,6 @@
 import LeanCondensedMatter.Transport.FiniteConductivityTable.Reciprocity
 import LeanCondensedMatter.QuantumTheory.LinearResponse.Frequency.FiniteTime
+import Mathlib.Algebra.Lie.OfAssociative
 import Mathlib.Analysis.SpecialFunctions.Exponential
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic
 
@@ -222,38 +223,39 @@ theorem contact_expectation_reverse (m : M) (i j : d) :
           (data.contact (data.reverse m) j i) := by
       rw [data.contact_reverse m i j]
 
-/-- Finite-time retarded current-current Kubo kernel. -/
-noncomputable def currentKuboKernel (m : M) (i j : d) (t : ℝ) : ℂ :=
-  (Complex.I / (data.system m).hbar) *
-    (data.density m).expectation
-      (heisenbergEvolution (freePropagatorGroup (data.system m)) t
-        (data.current m i) * data.current m j -
-       data.current m j *
-        heisenbergEvolution (freePropagatorGroup (data.system m)) t
-          (data.current m i))
-
-theorem currentKuboKernel_reverse (m : M) (i j : d) (t : ℝ) :
-    data.currentKuboKernel m i j t =
-      data.currentKuboKernel (data.reverse m) j i t := by
-  unfold currentKuboKernel
+/-- Onsager–Casimir reciprocity of the canonical Kubo commutator
+susceptibility, without defining another current-specific response kernel. -/
+theorem commutatorSusceptibility_reverse (m : M) (i j : d) (t : ℝ) :
+    commutatorSusceptibility
+      (freePropagatorGroup (data.system m)) (data.system m).hbar
+      (data.density m).toNormalizedExpectation
+      (data.current m i) (data.current m j) t 0 =
+    commutatorSusceptibility
+      (freePropagatorGroup (data.system (data.reverse m)))
+      (data.system (data.reverse m)).hbar
+      (data.density (data.reverse m)).toNormalizedExpectation
+      (data.current (data.reverse m) j)
+      (data.current (data.reverse m) i) t 0 := by
+  simp only [commutatorSusceptibility, heisenbergEvolution_zero,
+    LieRing.of_associative_ring_bracket, DensityOperator.toNormalizedExpectation_apply]
   rw [data.system_hbar m, data.system_hbar (data.reverse m),
     data.current_commutator_reverse m i j t]
 
-/-- Conductivity evaluated from the finite-time Kubo kernel and its
-microscopic contact operator, using the canonical electric-field factor. -/
-noncomputable def conductivityComponent
-    (volume : PositiveVolume) (omega eta duration : ℝ)
-    (m : M) (i j : d) : ℂ :=
-  (finiteTimeAdiabaticTransform (data.currentKuboKernel m i j) omega eta duration +
-      (data.density m).expectation (data.contact m i j)) *
-    finiteVolumeConductivityNormalization volume omega eta
-
-/-- Finite-time conductivity tensor constructed entirely from microscopic
-density, Hamiltonian, current, and contact covariance hypotheses. -/
+/-- Finite-time conductivity constructed from the existing Kubo susceptibility
+and finite-time adiabatic transform, with the physical contact correction. -/
 noncomputable def conductivityFamily
     (volume : PositiveVolume) (omega eta duration : ℝ) :
     M → ConductivityTensor d :=
-  fun m => { component := data.conductivityComponent volume omega eta duration m }
+  fun m =>
+    { component := fun i j =>
+        (finiteTimeAdiabaticTransform
+          (fun t => commutatorSusceptibility
+            (freePropagatorGroup (data.system m)) (data.system m).hbar
+            (data.density m).toNormalizedExpectation
+            (data.current m i) (data.current m j) t 0)
+          omega eta duration +
+          (data.density m).expectation (data.contact m i j)) *
+        finiteVolumeConductivityNormalization volume omega eta }
 
 /-- Onsager–Casimir reciprocity is proved without an eigenbasis pairing
 assumption or a postulated equality of conductivity components. -/
@@ -262,14 +264,37 @@ theorem conductivityFamily_isOnsagerReciprocal
     ConductivityTensor.IsOnsagerReciprocal
       (data.conductivityFamily volume omega eta duration) data.reverse := by
   intro m i j
-  change data.conductivityComponent volume omega eta duration m i j =
-    data.conductivityComponent volume omega eta duration (data.reverse m) j i
-  unfold conductivityComponent
   have hkernel :
-      (data.currentKuboKernel m i j) =
-        (data.currentKuboKernel (data.reverse m) j i) := by
+      (fun t : ℝ => commutatorSusceptibility
+          (freePropagatorGroup (data.system m)) (data.system m).hbar
+          (data.density m).toNormalizedExpectation
+          (data.current m i) (data.current m j) t 0) =
+      (fun t : ℝ => commutatorSusceptibility
+          (freePropagatorGroup (data.system (data.reverse m)))
+          (data.system (data.reverse m)).hbar
+          (data.density (data.reverse m)).toNormalizedExpectation
+          (data.current (data.reverse m) j)
+          (data.current (data.reverse m) i) t 0) := by
     funext t
-    exact data.currentKuboKernel_reverse m i j t
+    exact data.commutatorSusceptibility_reverse m i j t
+  change
+    (finiteTimeAdiabaticTransform
+      (fun t => commutatorSusceptibility
+        (freePropagatorGroup (data.system m)) (data.system m).hbar
+        (data.density m).toNormalizedExpectation
+        (data.current m i) (data.current m j) t 0) omega eta duration +
+      (data.density m).expectation (data.contact m i j)) *
+      finiteVolumeConductivityNormalization volume omega eta =
+    (finiteTimeAdiabaticTransform
+      (fun t => commutatorSusceptibility
+        (freePropagatorGroup (data.system (data.reverse m)))
+        (data.system (data.reverse m)).hbar
+        (data.density (data.reverse m)).toNormalizedExpectation
+        (data.current (data.reverse m) j)
+        (data.current (data.reverse m) i) t 0) omega eta duration +
+      (data.density (data.reverse m)).expectation
+        (data.contact (data.reverse m) j i)) *
+      finiteVolumeConductivityNormalization volume omega eta
   rw [hkernel, data.contact_expectation_reverse m i j]
 
 end KuboTimeReversalData
