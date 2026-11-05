@@ -92,7 +92,7 @@ theorem adjoint_denseDomain_of_isClosed
     rw [hgraph] at hy0
     obtain ⟨q, hq⟩ := A.mem_graph_iff'.1 hy0
     have hq0 : (q : H) = 0 := congrArg Prod.fst hq
-    have hqy : A q = y := (congrArg Prod.snd hq).symm
+    have hqy : A q = y := congrArg Prod.snd hq
     have hqzero : q = 0 := Subtype.ext hq0
     rw [hqzero] at hqy
     simp only [map_zero] at hqy
