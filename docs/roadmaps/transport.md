@@ -52,10 +52,14 @@ current correlation; the contact expectation is reciprocal by operator
 covariance and Hermiticity. The finite-time, exponentially switched Kubo
 response with canonical electric-field normalization thus satisfies
 `ConductivityTensor.IsOnsagerReciprocal`. This is a finite-time statement,
-not the earlier infinite-time Lehmann evaluation. Its operator action
-records trace-conjugation and exponential preservation explicitly; the
-construction of this action from a specific Hilbert-space antiunitary
-remains a model-level mathematical bridge.
+not the earlier infinite-time Lehmann evaluation. The `QuantumTheory.LinearResponse.Dynamics.Antiunitary.Operator`
+module constructs the bounded-operator action `A ↦ Θ A Θ⁻¹` directly from
+a Mathlib continuous star-linear equivalence and proves the algebraic,
+adjoint, and finite-dimensional exponential transformation laws. It also
+shows that `Θ² = -I` on states induces an involution on observables.
+The finite-trace conjugation law and a constructor that discharges the
+remaining `KuboTimeReversalData` transformation hypotheses are not yet
+proved.
 
 The next targets are to instantiate the induced operator action in a
 spin-half model with time reversal squared equal to minus identity,
