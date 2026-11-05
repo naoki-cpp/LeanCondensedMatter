@@ -331,16 +331,8 @@ theorem dysonCoeff_quarticInteraction_eq_sum [Fintype Mode]
   let e :
       (Fin n → ↥(Finset.univ : Finset (QuarticVertexLabel Mode))) ≃
         (Fin n → QuarticVertexLabel Mode) :=
-    { toFun := fun q i => q i
-      invFun := fun q i => ⟨q i, Finset.mem_univ _⟩
-      left_inv := by
-        intro q
-        funext i
-        apply Subtype.ext
-        rfl
-      right_inv := by
-        intro q
-        rfl }
+    Equiv.piCongrRight fun _ =>
+      Equiv.subtypeUnivEquiv (fun _ : QuarticVertexLabel Mode => Finset.mem_univ _)
   let F : (Fin n → QuarticVertexLabel Mode) →
       (AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) := fun q =>
     quarticDysonSequenceCoeff ε g q t •
