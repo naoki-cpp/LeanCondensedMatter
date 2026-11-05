@@ -83,54 +83,40 @@ private theorem continuumH2Laplacian_memSobolev_zero (ψ : continuumH2Domain1D) 
   simpa using TemperedDistribution.MemSobolev.laplacian
     ((mem_continuumH2Domain1D_iff (ψ : ContinuumL2Wavefunction1D)).mp ψ.property)
 
-/-- The unique `L²` representative of the distributional Laplacian of an `H²` wavefunction. -/
-private noncomputable def continuumH2LaplacianValue1D
-    (ψ : continuumH2Domain1D) : ContinuumL2Wavefunction1D :=
-  Classical.choose
-    (TemperedDistribution.memSobolev_zero_iff.mp
-      (continuumH2Laplacian_memSobolev_zero ψ))
-
-private theorem l2ToTemperedDistribution1D_continuumH2LaplacianValue1D
-    (ψ : continuumH2Domain1D) :
-    l2ToTemperedDistribution1D (continuumH2LaplacianValue1D ψ) =
-      Δ (l2ToTemperedDistribution1D (ψ : ContinuumL2Wavefunction1D)) := by
-  have hrepr := Classical.choose_spec
-    (TemperedDistribution.memSobolev_zero_iff.mp
-      (continuumH2Laplacian_memSobolev_zero ψ))
-  simpa [l2ToTemperedDistribution1D, continuumH2LaplacianValue1D] using hrepr.symm
-
-/-- The distributional Laplacian on the explicit `H²` domain, returned as an `L²` wavefunction. -/
+/-- The distributional Laplacian on the explicit `H²` domain, returned as an `L²`
+wavefunction. Its values lie in the range of the injective `L²` embedding. -/
 noncomputable def continuumH2Laplacian1D :
-    continuumH2Domain1D →ₗ[ℂ] ContinuumL2Wavefunction1D where
-  toFun := continuumH2LaplacianValue1D
-  map_add' ψ φ := by
-    apply l2ToTemperedDistribution1D_injective
-    rw [map_add]
-    rw [l2ToTemperedDistribution1D_continuumH2LaplacianValue1D,
-      l2ToTemperedDistribution1D_continuumH2LaplacianValue1D,
-      l2ToTemperedDistribution1D_continuumH2LaplacianValue1D]
-    simp only [Submodule.coe_add, map_add]
-    simpa only [TemperedDistribution.laplacianCLM_apply] using
-      (LineDeriv.laplacianCLM ℂ ℝ 𝓢'(ℝ, ℂ)).map_add
-        (l2ToTemperedDistribution1D (ψ : ContinuumL2Wavefunction1D))
-        (l2ToTemperedDistribution1D (φ : ContinuumL2Wavefunction1D))
-  map_smul' c ψ := by
-    apply l2ToTemperedDistribution1D_injective
-    rw [map_smul]
-    rw [l2ToTemperedDistribution1D_continuumH2LaplacianValue1D,
-      l2ToTemperedDistribution1D_continuumH2LaplacianValue1D]
-    simp only [Submodule.coe_smul, map_smul]
-    simpa only [TemperedDistribution.laplacianCLM_apply, RingHom.id_apply] using
-      (LineDeriv.laplacianCLM ℂ ℝ 𝓢'(ℝ, ℂ)).map_smul c
-        (l2ToTemperedDistribution1D (ψ : ContinuumL2Wavefunction1D))
+    continuumH2Domain1D →ₗ[ℂ] ContinuumL2Wavefunction1D :=
+  (LinearEquiv.ofInjective l2ToTemperedDistribution1D.toLinearMap
+    l2ToTemperedDistribution1D_injective).symm.toLinearMap.comp
+      (((LineDeriv.laplacianCLM ℂ ℝ 𝓢'(ℝ, ℂ)).toLinearMap.comp
+        (l2ToTemperedDistribution1D.toLinearMap.comp continuumH2Domain1D.subtype)).codRestrict
+          l2ToTemperedDistribution1D.toLinearMap.range (by
+            intro ψ
+            obtain ⟨φ, hφ⟩ := TemperedDistribution.memSobolev_zero_iff.mp
+              (continuumH2Laplacian_memSobolev_zero ψ)
+            apply LinearMap.mem_range.mpr
+            refine ⟨φ, ?_⟩
+            change l2ToTemperedDistribution1D φ =
+              (LineDeriv.laplacianCLM ℂ ℝ 𝓢'(ℝ, ℂ))
+                (l2ToTemperedDistribution1D (ψ : ContinuumL2Wavefunction1D))
+            rw [TemperedDistribution.laplacianCLM_apply]
+            simpa [l2ToTemperedDistribution1D] using hφ.symm))
 
 /-- The `L²` value produced by `continuumH2Laplacian1D` represents exactly the distributional
 Laplacian of the original `L²` wavefunction. -/
 theorem l2ToTemperedDistribution1D_continuumH2Laplacian1D
     (ψ : continuumH2Domain1D) :
     l2ToTemperedDistribution1D (continuumH2Laplacian1D ψ) =
-      Δ (l2ToTemperedDistribution1D (ψ : ContinuumL2Wavefunction1D)) :=
-  l2ToTemperedDistribution1D_continuumH2LaplacianValue1D ψ
+      Δ (l2ToTemperedDistribution1D (ψ : ContinuumL2Wavefunction1D)) := by
+  change l2ToTemperedDistribution1D.toLinearMap
+    ((LinearEquiv.ofInjective l2ToTemperedDistribution1D.toLinearMap
+      l2ToTemperedDistribution1D_injective).symm
+      ((((LineDeriv.laplacianCLM ℂ ℝ 𝓢'(ℝ, ℂ)).toLinearMap.comp
+        (l2ToTemperedDistribution1D.toLinearMap.comp continuumH2Domain1D.subtype)).codRestrict
+          l2ToTemperedDistribution1D.toLinearMap.range _) ψ)) = _
+  rw [LinearEquiv.ofInjective_symm_apply]
+  exact TemperedDistribution.laplacianCLM_apply _
 
 /-- Schrödinger action on the explicit `H²` domain for kinetic coefficient `κ` and an essentially
 bounded complex potential. -/
