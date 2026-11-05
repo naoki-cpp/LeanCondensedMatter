@@ -752,16 +752,10 @@ private theorem norm_stoneEvolution_sub_resolventApproximationEvolution_le
         (𝓝 (‖Ar (x : H) - A x‖ * |t|)) := by
     exact (tendsto_const_nhds.sub hAconv).norm.mul_const |t|
   rw [norm_sub_rev]
-  apply sub_nonpos.mp
-  apply le_of_tendsto (hU.sub hgen)
-  exact Filter.Eventually.of_forall fun s => by
-    have hpair := norm_resolventApproximationEvolution_sub_le
+  exact le_of_tendsto_of_tendsto' hU hgen fun s =>
+    norm_resolventApproximationEvolution_sub_le
       A hA r (max 1 s) hr (zero_lt_one.trans_le (le_max_left 1 s)) t
         (x : H)
-    change ‖Ur (x : H) - resolventApproximationEvolutionAtScale A hA s t (x : H)‖ ≤
-      ‖Ar (x : H) - boundedSelfAdjointApproximationAtScale A hA s (x : H)‖ * |t|
-      at hpair
-    exact sub_nonpos.mpr hpair
 
 /-- At zero time, the strong Stone evolution has infinitesimal generator `-i A` on `A.domain`. -/
 theorem stoneEvolution_apply_hasDerivAt_zero
