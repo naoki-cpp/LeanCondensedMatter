@@ -36,10 +36,6 @@ private theorem besselPotential_two_eq_sub_laplacian (f : 𝓢'(ℝ, ℂ)) :
       (((2 * Real.pi) ^ 2 : ℝ)⁻¹) * (-((2 * Real.pi) ^ 2 : ℝ)) = -1 := by
     field_simp [hpi]
   rw [smul_smul, hcoef, neg_one_smul, sub_neg_eq_add]
-  have hconst :
-      TemperedDistribution.fourierMultiplierCLM ℂ (fun _ : ℝ => (1 : ℂ)) f = f := by
-    simp
-  rw [← hconst]
   have hsymbol :
       (fun x : ℝ => Complex.ofReal ((1 + ‖x‖ ^ 2) ^ ((2 : ℝ) / 2))) =
         (fun _ : ℝ => (1 : ℂ)) +
