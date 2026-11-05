@@ -37,16 +37,16 @@ Under this hypothesis, the symmetric projection and longitudinal conductivity ar
 reversal, and the Hall projection is odd. These are algebraic consequences, not a
 derivation of microscopic reciprocity.
 
-The operator-level `FiniteConductivityTable.Reciprocity` specialization defines
+The `Transport.Reciprocity.Data` module defines
 `KuboTimeReversalData` on a finite-dimensional Hilbert space. It uses a
 positive normalized density operator commuting with the Hamiltonian, a
 conjugate-linear multiplicative time-reversal action on bounded operators,
 and the transformation laws of the Hamiltonian, density, directional charge
-currents, and contact operators. The ordinary finite trace constructs
-expectations without choosing an eigenbasis. In particular, there is no
+currents, and contact operators. The canonical `DensityOperator.expectation` and `toNormalizedExpectation` APIs
+supply state expectations without choosing an eigenbasis. In particular, there is no
 same-label pairing requirement that would exclude Kramers systems.
 
-`FiniteConductivityTable.Reciprocity.Antiunitary` derives the reversed
+`Transport.Reciprocity.Kubo` derives the reversed
 Schrödinger/Heisenberg evolution, stationarity, and the reciprocal two-point
 current correlation; the contact expectation is reciprocal by operator
 covariance and Hermiticity. The finite-time, exponentially switched Kubo
