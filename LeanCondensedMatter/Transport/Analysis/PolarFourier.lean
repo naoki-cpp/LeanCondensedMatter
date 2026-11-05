@@ -1385,14 +1385,18 @@ theorem polarFourierFirstCosineAngularKernel_hasDerivAt (z : ℝ) :
         rw [intervalIntegral.integral_add]
         · rfl
         · have hc : Continuous (polarFourierRadialPhase z) := by
-            dsimp [polarFourierRadialPhase]
+            change Continuous (fun θ : ℝ =>
+              Complex.exp (Complex.I * (((z * Real.cos θ : ℝ) : ℂ))))
             fun_prop
           exact hc.intervalIntegrable _ _
         · have hc : Continuous (fun θ : ℝ =>
               polarFourierRadialPhase z θ *
                 (((Real.cos θ : ℝ) : ℂ) ^ 2 -
                   ((Real.sin θ : ℝ) : ℂ) ^ 2)) := by
-            dsimp [polarFourierRadialPhase]
+            change Continuous (fun θ : ℝ =>
+              Complex.exp (Complex.I * (((z * Real.cos θ : ℝ) : ℂ))) *
+                (((Real.cos θ : ℝ) : ℂ) ^ 2 -
+                  ((Real.sin θ : ℝ) : ℂ) ^ 2))
             fun_prop
           exact hc.intervalIntegrable _ _
   change HasDerivAt
