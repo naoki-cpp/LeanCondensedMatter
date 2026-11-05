@@ -189,7 +189,7 @@ theorem current_commutator_reverse (m : M) (i j : d) (t : ℝ) :
     calc
       _ = star ((data.density m).expectation
           (heisenbergEvolution U t A * B)) := by
-        rw [← (data.density (data.reverse m)).expectation_star, star_mul, hBst]
+        rw [← (data.density m).expectation_star, star_mul, hBst]
         rw [star_evolved_of_selfAdjoint
           (data.system m) A (data.current_selfAdjoint m i) t]
       _ = star ((data.density (data.reverse m)).expectation
