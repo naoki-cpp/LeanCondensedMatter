@@ -31,11 +31,6 @@ open scoped ENNReal MeasureTheory InnerProductSpace SchwartzMap Laplacian LineDe
 private def laplacianFourierSymbol1D (x : ℝ) : ℂ :=
   ((-((2 * Real.pi) ^ 2) * ‖x‖ ^ 2 : ℝ) : ℂ)
 
-private theorem laplacianFourierSymbol1D_hasTemperateGrowth :
-    laplacianFourierSymbol1D.HasTemperateGrowth := by
-  unfold laplacianFourierSymbol1D
-  fun_prop
-
 private theorem inner_laplacianFourierSymbol1D_mul
     (x : ℝ) (z w : ℂ) :
     inner ℂ (laplacianFourierSymbol1D x * z) w =
@@ -104,7 +99,9 @@ theorem fourier_continuumH2Laplacian1D_ae
   apply ae_eq_mul_of_l2ToTemperedDistribution_eq_smulLeft
     (𝓕 (continuumH2Laplacian1D ψ) : ContinuumL2Wavefunction1D)
     (𝓕 (ψ : ContinuumL2Wavefunction1D) : ContinuumL2Wavefunction1D)
-    laplacianFourierSymbol1D laplacianFourierSymbol1D_hasTemperateGrowth
+    laplacianFourierSymbol1D (by
+      unfold laplacianFourierSymbol1D
+      fun_prop)
   have hleft :
       l2ToTemperedDistribution1D
           (𝓕 (continuumH2Laplacian1D ψ) : ContinuumL2Wavefunction1D) =
