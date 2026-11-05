@@ -89,9 +89,9 @@ theorem l2ToTemperedDistribution1D_continuumMaximalLaplacian1D
   change l2ToTemperedDistribution1D
     ((LinearEquiv.ofInjective l2ToTemperedDistribution1D.toLinearMap
       l2ToTemperedDistribution1D_injective).symm
-      (((LineDeriv.laplacianCLM ℂ ℝ 𝓢'(ℝ, ℂ)).toLinearMap.comp
+      ((((LineDeriv.laplacianCLM ℂ ℝ 𝓢'(ℝ, ℂ)).toLinearMap.comp
         l2ToTemperedDistribution1D.toLinearMap).submoduleComap
-          l2ToTemperedDistribution1D.toLinearMap.range) ψ) = _
+          l2ToTemperedDistribution1D.toLinearMap.range) ψ)) = _
   rw [LinearEquiv.ofInjective_symm_apply]
   exact TemperedDistribution.laplacianCLM_apply _
 
