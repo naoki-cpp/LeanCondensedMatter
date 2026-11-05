@@ -162,24 +162,6 @@ private theorem resolventApproximationEvolutionAtScale_apply_domain_cauchySeq
       boundedSelfAdjointApproximationAtScale, resolventApproximationEvolution,
       max_eq_right h1r, max_eq_right h1s] using hnorm
 
-/-- On the original domain, the totalized bounded approximations converge strongly to the
-self-adjoint operator. -/
-private theorem boundedSelfAdjointApproximationAtScale_apply_tendsto
-    (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (x : A.domain) :
-    Tendsto (fun r : ℝ => boundedSelfAdjointApproximationAtScale A hA r (x : H))
-      atTop (𝓝 (A x)) := by
-  rw [Metric.tendsto_nhds]
-  intro ε hε
-  obtain ⟨R, hR, hconv⟩ :=
-    boundedSelfAdjointApproximation_strong_convergence A hA x ε hε
-  filter_upwards [eventually_ge_atTop (max R 1)] with r hr
-  have hRr : R ≤ r := (le_max_left R 1).trans hr
-  have h1r : 1 ≤ r := (le_max_right R 1).trans hr
-  have hrpos : 0 < r := zero_lt_one.trans_le h1r
-  have h := hconv r hRr hrpos
-  simpa [boundedSelfAdjointApproximationAtScale,
-    max_eq_right h1r, dist_eq_norm] using h
-
 end
 
 end LinearPMap
@@ -753,8 +735,15 @@ private theorem norm_stoneEvolution_sub_resolventApproximationEvolution_le
   have hAconv :
       Tendsto
         (fun s : ℝ => boundedSelfAdjointApproximationAtScale A hA s (x : H))
-        atTop (𝓝 (A x)) :=
-    boundedSelfAdjointApproximationAtScale_apply_tendsto A hA x
+        atTop (𝓝 (A x)) := by
+    rw [Metric.tendsto_nhds]
+    intro ε hε
+    obtain ⟨R, _, hconv⟩ :=
+      boundedSelfAdjointApproximation_strong_convergence A hA x ε hε
+    filter_upwards [eventually_ge_atTop R] with s hs
+    simpa [boundedSelfAdjointApproximationAtScale, dist_eq_norm] using
+      hconv (max 1 s) (hs.trans (le_max_right 1 s))
+        (zero_lt_one.trans_le (le_max_left 1 s))
   have hgen :
       Tendsto
         (fun s : ℝ =>
