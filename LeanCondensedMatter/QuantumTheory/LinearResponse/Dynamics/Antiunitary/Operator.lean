@@ -2,6 +2,8 @@ import LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.Antiunitary
 import Mathlib.Topology.Algebra.Module.FiniteDimension
 import Mathlib.Analysis.InnerProductSpace.Adjoint
 import Mathlib.Analysis.Normed.Algebra.Exponential
+import Mathlib.LinearAlgebra.Complex.FiniteDimensional
+import Mathlib.Analysis.RCLike.Basic
 
 set_option linter.style.header false
 
@@ -174,7 +176,8 @@ private noncomputable def conjugateOperatorRealLinear [FiniteDimensional ℂ H] 
   map_add' := Θ.conjugateOperator_add
   map_smul' := by
     intro r A
-    simpa only [Complex.real_smul, starRingEnd_apply, Complex.conj_ofReal] using
+    simpa only [RCLike.real_smul_eq_coe_smul (K := ℂ), starRingEnd_apply,
+      Complex.conj_ofReal] using
       Θ.conjugateOperator_smul (r : ℂ) A
 
 /-- Antiunitary conjugation commutes with bounded-operator exponentiation.
@@ -184,7 +187,11 @@ theorem conjugateOperator_exp [FiniteDimensional ℂ H] [CompleteSpace H]
     (A : H →L[ℂ] H) :
     Θ.conjugateOperator (NormedSpace.exp A) =
       NormedSpace.exp (Θ.conjugateOperator A) := by
-  haveI : FiniteDimensional ℝ (H →L[ℂ] H) := inferInstance
+  haveI : FiniteDimensional ℂ (H →L[ℂ] H) := inferInstance
+  haveI : FiniteDimensional ℝ (H →L[ℂ] H) :=
+    FiniteDimensional.complexToReal _
+  letI : NormedAlgebra ℚ (H →L[ℂ] H) :=
+    NormedAlgebra.restrictScalars ℚ ℂ _
   have hcont : Continuous (Θ.conjugateOperator : (H →L[ℂ] H) → (H →L[ℂ] H)) :=
     Θ.conjugateOperatorRealLinear.continuous_of_finiteDimensional
   exact NormedSpace.map_exp (Θ.conjugateOperatorRingHom) hcont A
