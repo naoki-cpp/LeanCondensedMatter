@@ -176,9 +176,11 @@ private noncomputable def conjugateOperatorRealLinear [FiniteDimensional ℂ H] 
   map_add' := Θ.conjugateOperator_add
   map_smul' := by
     intro r A
-    simpa only [RCLike.real_smul_eq_coe_smul (K := ℂ), starRingEnd_apply,
-      RCLike.star_def, Complex.conj_ofReal, RingHom.id_apply] using
-      Θ.conjugateOperator_smul (r : ℂ) A
+    have hstar : (starRingEnd ℂ) (r : ℂ) = (r : ℂ) := by
+      change Complex.conj (r : ℂ) = (r : ℂ)
+      exact Complex.conj_ofReal r
+    simpa only [RCLike.real_smul_eq_coe_smul (K := ℂ), RingHom.id_apply,
+      hstar] using Θ.conjugateOperator_smul (r : ℂ) A
 
 /-- Antiunitary conjugation commutes with bounded-operator exponentiation.
 The proof uses the continuous real-linear ring homomorphism, and no
