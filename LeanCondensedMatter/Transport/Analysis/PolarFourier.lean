@@ -1469,6 +1469,98 @@ theorem integral_polarFourierHarmonicEnergy (a b : ℝ) :
     (fun z _ => polarFourierHarmonicEnergy_hasDerivAt z) hint
 
 
+/-- The Bessel recurrence eliminates the apparent singularity of J₁(z)²/z
+at the origin, with the convention that division by zero is zero. -/
+theorem besselJ_one_sq_div_eq_half_product (z : ℝ) :
+    Complex.besselJ 1 (z : ℂ) ^ 2 / (z : ℂ) =
+      Complex.besselJ 1 (z : ℂ) *
+        (Complex.besselJ 0 (z : ℂ) + Complex.besselJ 2 (z : ℂ)) / 2 := by
+  by_cases hz : z = 0
+  · subst z
+    simp [Complex.besselJ_zero]
+  · have hzc : (z : ℂ) ≠ 0 := by exact_mod_cast hz
+    apply (div_eq_iff hzc).2
+    have hrec := besselJ_zero_one_two_recurrence (z : ℂ)
+    linear_combination (Complex.besselJ 1 (z : ℂ) / 2) * hrec
+
+/-- Exact finite-interval evaluation of the Bessel-square radial integral.
+The formula holds for arbitrary real endpoints because J₁(0) = 0 gives the
+continuous extension of the quotient at the origin. In particular, no
+unproved Bessel asymptotic or improper-integral limit is used. -/
+theorem integral_besselJ_one_sq_div (a b : ℝ) :
+    (∫ z in a..b, Complex.besselJ 1 (z : ℂ) ^ 2 / (z : ℂ)) =
+      ((Complex.besselJ 0 (a : ℂ) ^ 2 + Complex.besselJ 1 (a : ℂ) ^ 2) -
+        (Complex.besselJ 0 (b : ℂ) ^ 2 + Complex.besselJ 1 (b : ℂ) ^ 2)) / 2 := by
+  let c : ℂ := ((2 * Real.pi : ℝ) : ℂ)
+  have hc : c ≠ 0 := by
+    dsimp [c]
+    have h : (2 * Real.pi : ℝ) ≠ 0 :=
+      mul_ne_zero (by norm_num) Real.pi_ne_zero
+    exact_mod_cast h
+  have hbridge (z : ℝ) :
+      polarFourierZerothAngularKernel z ^ 2 -
+        polarFourierFirstCosineAngularKernel z ^ 2 =
+      c ^ 2 *
+        (Complex.besselJ 0 (z : ℂ) ^ 2 +
+          Complex.besselJ 1 (z : ℂ) ^ 2) := by
+    rw [polarFourierZerothAngularKernel_eq_besselJ,
+      polarFourierFirstCosineAngularKernel_eq_besselJ]
+    change (c * Complex.besselJ 0 (z : ℂ)) ^ 2 -
+      (c * Complex.I * Complex.besselJ 1 (z : ℂ)) ^ 2 =
+        c ^ 2 * (Complex.besselJ 0 (z : ℂ) ^ 2 +
+          Complex.besselJ 1 (z : ℂ) ^ 2)
+    calc
+      _ = c ^ 2 * Complex.besselJ 0 (z : ℂ) ^ 2 -
+          c ^ 2 * Complex.I ^ 2 * Complex.besselJ 1 (z : ℂ) ^ 2 := by ring
+      _ = _ := by rw [Complex.I_sq]; ring
+  have hpoint (z : ℝ) :
+      Complex.I * polarFourierFirstCosineAngularKernel z *
+          (polarFourierZerothAngularKernel z -
+            polarFourierSecondCosineAngularKernel z) =
+        (-2 * c ^ 2) * (Complex.besselJ 1 (z : ℂ) ^ 2 / (z : ℂ)) := by
+    rw [polarFourierFirstCosineAngularKernel_eq_besselJ,
+      polarFourierZerothAngularKernel_eq_besselJ,
+      polarFourierSecondCosineAngularKernel_eq_besselJ,
+      besselJ_one_sq_div_eq_half_product]
+    change Complex.I * (c * Complex.I * Complex.besselJ 1 (z : ℂ)) *
+        (c * Complex.besselJ 0 (z : ℂ) -
+          -(c * Complex.besselJ 2 (z : ℂ))) =
+      (-2 * c ^ 2) *
+        (Complex.besselJ 1 (z : ℂ) *
+          (Complex.besselJ 0 (z : ℂ) + Complex.besselJ 2 (z : ℂ)) / 2)
+    calc
+      _ = Complex.I ^ 2 * c ^ 2 * Complex.besselJ 1 (z : ℂ) *
+          (Complex.besselJ 0 (z : ℂ) + Complex.besselJ 2 (z : ℂ)) := by ring
+      _ = _ := by rw [Complex.I_sq]; ring
+  have hLin :
+      (∫ z in a..b,
+        Complex.I * polarFourierFirstCosineAngularKernel z *
+          (polarFourierZerothAngularKernel z -
+            polarFourierSecondCosineAngularKernel z)) =
+        (-2 * c ^ 2) *
+          (∫ z in a..b, Complex.besselJ 1 (z : ℂ) ^ 2 / (z : ℂ)) := by
+    rw [← intervalIntegral.integral_const_mul]
+    apply intervalIntegral.integral_congr
+    intro z _
+    exact hpoint z
+  have hftc := integral_polarFourierHarmonicEnergy a b
+  rw [hLin, hbridge b, hbridge a] at hftc
+  have hc2 : c ^ 2 ≠ 0 := pow_ne_zero 2 hc
+  have hfactor :
+      c ^ 2 * (2 * (∫ z in a..b,
+          Complex.besselJ 1 (z : ℂ) ^ 2 / (z : ℂ)) -
+        ((Complex.besselJ 0 (a : ℂ) ^ 2 + Complex.besselJ 1 (a : ℂ) ^ 2) -
+          (Complex.besselJ 0 (b : ℂ) ^ 2 + Complex.besselJ 1 (b : ℂ) ^ 2))) = 0 := by
+    linear_combination -hftc
+  have htwo :
+      2 * (∫ z in a..b, Complex.besselJ 1 (z : ℂ) ^ 2 / (z : ℂ)) =
+        (Complex.besselJ 0 (a : ℂ) ^ 2 + Complex.besselJ 1 (a : ℂ) ^ 2) -
+          (Complex.besselJ 0 (b : ℂ) ^ 2 + Complex.besselJ 1 (b : ℂ) ^ 2) :=
+    sub_eq_zero.mp ((mul_eq_zero.mp hfactor).resolve_left hc2)
+  apply (eq_div_iff (by norm_num : (2 : ℂ) ≠ 0)).2
+  linear_combination htwo
+
+
 end
 
 end Transport
