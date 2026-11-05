@@ -125,7 +125,7 @@ theorem grandCanonicalGibbsDysonCoeff_quarticInteraction_eq_sum_orderedDysonTher
                   (quarticFreeThermalFieldFamily q b)) := by
         rw [← Equiv.sum_comp e]
         simpa [quarticInteraction, quarticInteractionOn, Common.quarticInteraction,
-          e, Equiv.piCongrRight, Equiv.subtypeUnivEquiv, Function.comp_def] using
+          e, Equiv.piCongrRight, Equiv.subtypeUnivEquiv, Pi.map, Function.comp_def] using
           (grandCanonicalGibbsDysonCoeff_quarticInteractionOn_eq_sum_pairingEvaluation
             (Finset.univ : Finset (QuarticVertexLabel Mode)) ε β μ hpos g S.card t)
     _ = ∑ q : Fin S.card → QuarticVertexLabel Mode,
