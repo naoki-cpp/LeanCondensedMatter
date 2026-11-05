@@ -334,6 +334,64 @@ theorem externalSubsetSourceCumulantSeries_eq_sub_properPartitions
   exact (Finset.prod_coe_sort π.1.parts
     (externalSubsetSourceCumulantSeries M)).symm
 
+/-- The signed source moment transform is inverted by finite subset
+recursion, provided the empty moment is one. This supplies an explicit
+fermionic cumulant/source convention before any physical n-point theorem.
+No assumption about diagram factorization is needed for this algebraic step. -/
+theorem externalSubsetSourceCumulantSeries_reconstruct
+    (M : Finset (Fin (2 * E)) → PowerSeries ℂ)
+    (hEmpty : M ∅ = 1)
+    (S : Finset (Fin (2 * E))) :
+    Finpartition.weightedMomentFromCumulant
+      (fun _ π => PowerSeries.C (externalPartitionSourceSign π))
+      (externalSubsetSourceCumulantSeries M) S = M S := by
+  classical
+  let κ := externalSubsetSourceCumulantSeries M
+  by_cases hS : S = ∅
+  · subst S
+    letI : Unique (Finpartition (∅ : Finset (Fin (2 * E)))) :=
+      inferInstanceAs (Unique (Finpartition (⊥ : Finset (Fin (2 * E)))))
+    unfold Finpartition.weightedMomentFromCumulant
+    rw [Fintype.sum_unique]
+    have htop : (default : Finpartition (∅ : Finset (Fin (2 * E)))) = ⊤ :=
+      Subsingleton.elim _ _
+    rw [htop, externalPartitionSourceSign_top]
+    have hparts : (⊤ : Finpartition (∅ : Finset (Fin (2 * E)))).parts = ∅ := by
+      simp [Finpartition.parts_eq_empty_iff]
+    simp [Finpartition.partitionProduct, hparts, hEmpty]
+  · let f : Finpartition S → PowerSeries ℂ := fun π =>
+      PowerSeries.C (externalPartitionSourceSign π) *
+        Finpartition.partitionProduct κ π
+    have hrest :
+        (∑ π ∈ (Finset.univ : Finset (Finpartition S)).erase ⊤, f π) =
+          ∑ π : {π : Finpartition S // π ≠ ⊤}, f π.1 := by
+      rw [Finset.sum_subtype
+        ((Finset.univ : Finset (Finpartition S)).erase ⊤)
+        (fun π => by simp) f]
+    have htop : f (⊤ : Finpartition S) = κ S := by
+      change PowerSeries.C (externalPartitionSourceSign (⊤ : Finpartition S)) *
+        Finpartition.partitionProduct κ (⊤ : Finpartition S) = κ S
+      rw [externalPartitionSourceSign_top, Finpartition.partitionProduct_top hS]
+      simp
+    have hsum :
+        Finpartition.weightedMomentFromCumulant
+          (fun _ π => PowerSeries.C (externalPartitionSourceSign π)) κ S =
+        (∑ π ∈ (Finset.univ : Finset (Finpartition S)).erase ⊤, f π) + κ S := by
+      change (∑ π : Finpartition S, f π) = _
+      rw [← Finset.sum_erase_add Finset.univ f (Finset.mem_univ (⊤ : Finpartition S))]
+      rw [htop]
+    have hrec := externalSubsetSourceCumulantSeries_eq_sub_properPartitions M S hS
+    change κ S = M S -
+      ∑ π : {π : Finpartition S // π ≠ ⊤}, f π.1 at hrec
+    calc
+      Finpartition.weightedMomentFromCumulant
+          (fun _ π => PowerSeries.C (externalPartitionSourceSign π)) κ S =
+          (∑ π ∈ (Finset.univ : Finset (Finpartition S)).erase ⊤, f π) + κ S := hsum
+      _ = (∑ π : {π : Finpartition S // π ≠ ⊤}, f π.1) + κ S := by rw [hrest]
+      _ = (∑ π : {π : Finpartition S // π ≠ ⊤}, f π.1) +
+            (M S - ∑ π : {π : Finpartition S // π ≠ ⊤}, f π.1) := by rw [hrec]
+      _ = M S := by abel
+
 @[simp]
 theorem externalSubsetMomentSeries_empty
     (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
