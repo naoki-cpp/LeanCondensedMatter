@@ -43,8 +43,12 @@ theorem mem_continuumMaximalLaplacianDomain1D_iff (ψ : ContinuumL2Wavefunction1
     ((LineDeriv.laplacianCLM ℂ ℝ 𝓢'(ℝ, ℂ)).toLinearMap.comp
         l2ToTemperedDistribution1D.toLinearMap) ψ ∈
       l2ToTemperedDistribution1D.toLinearMap.range ↔ _
-  simp only [LinearMap.mem_range, LinearMap.comp_apply,
-    TemperedDistribution.laplacianCLM_apply]
+  simp only [LinearMap.mem_range, LinearMap.comp_apply]
+  change
+    (∃ φ : ContinuumL2Wavefunction1D,
+      l2ToTemperedDistribution1D φ =
+        (LineDeriv.laplacianCLM ℂ ℝ 𝓢'(ℝ, ℂ)) (l2ToTemperedDistribution1D ψ)) ↔ _
+  simp only [TemperedDistribution.laplacianCLM_apply]
 
 /-- Every `H²` wavefunction belongs to the maximal distributional Laplacian domain. -/
 theorem continuumH2Domain1D_le_continuumMaximalLaplacianDomain1D :
