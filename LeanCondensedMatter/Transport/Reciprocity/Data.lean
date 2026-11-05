@@ -74,26 +74,20 @@ variable [NormedAddCommGroup H] [InnerProductSpace ℂ H]
 variable [CompleteSpace H] [FiniteDimensional ℂ H]
 variable (data : KuboTimeReversalData M d H)
 
-/-- The derived time-reversal action on bounded observables. Not a
-separate symmetry hypothesis: it is conjugation by `data.timeReversal`. -/
-noncomputable def transform (data : KuboTimeReversalData M d H)
-    (A : H →L[ℂ] H) : H →L[ℂ] H :=
-  data.timeReversal.conjugateOperator A
-
 /-- Microscopic density covariance and the conjugate-linearity of the
 finite trace imply the transformation law for arbitrary expectations. -/
 theorem expectation_reverse (m : M) (A : H →L[ℂ] H) :
-    (data.density (data.reverse m)).expectation (data.transform A) =
+    (data.density (data.reverse m)).expectation (data.timeReversal.conjugateOperator A) =
       star ((data.density m).expectation A) := by
   rw [(data.density (data.reverse m)).expectation_eq_finiteDimensionalOperatorTrace,
     (data.density m).expectation_eq_finiteDimensionalOperatorTrace]
   calc
-    finiteDimensionalOperatorTrace ((data.density (data.reverse m)).op * data.transform A) =
+    finiteDimensionalOperatorTrace ((data.density (data.reverse m)).op * data.timeReversal.conjugateOperator A) =
         finiteDimensionalOperatorTrace
-          (data.transform (data.density m).op * data.transform A) := by
+          (data.timeReversal.conjugateOperator (data.density m).op * data.timeReversal.conjugateOperator A) := by
       rw [data.density_reverse m]
     _ = finiteDimensionalOperatorTrace
-          (data.transform ((data.density m).op * A)) := by
+          (data.timeReversal.conjugateOperator ((data.density m).op * A)) := by
       exact (congrArg finiteDimensionalOperatorTrace
         (data.timeReversal.conjugateOperator_mul (data.density m).op A)).symm
     _ = star (finiteDimensionalOperatorTrace ((data.density m).op * A)) :=
