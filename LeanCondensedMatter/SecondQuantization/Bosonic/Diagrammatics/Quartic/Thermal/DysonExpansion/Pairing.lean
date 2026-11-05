@@ -104,8 +104,8 @@ theorem grandCanonicalGibbsDysonCoeff_quarticInteraction_eq_sum_orderedDysonTher
   classical
   let e : (Fin S.card → ↥(Finset.univ : Finset (QuarticVertexLabel Mode))) ≃
       (Fin S.card → QuarticVertexLabel Mode) :=
-    Equiv.piCongrRight fun _ =>
-      Equiv.subtypeUnivEquiv (fun _ : QuarticVertexLabel Mode => Finset.mem_univ _)
+    Equiv.arrowCongr (Equiv.refl (Fin S.card))
+      (Equiv.subtypeUnivEquiv (fun x => Finset.mem_univ x))
   let F : Common.OrderedQuarticDiagramData (QuarticVertexLabel Mode) S.card → ℂ := fun x =>
     Common.quarticDysonSequenceCoeff ε g x.1 t *
       x.2.evaluation (x.2.weight .boson)
@@ -125,7 +125,7 @@ theorem grandCanonicalGibbsDysonCoeff_quarticInteraction_eq_sum_orderedDysonTher
                   (quarticFreeThermalFieldFamily q b)) := by
         rw [← Equiv.sum_comp e]
         simpa [quarticInteraction, quarticInteractionOn, Common.quarticInteraction,
-          e, Equiv.piCongrRight, Equiv.subtypeUnivEquiv, Pi.map, Function.comp_def] using
+          e, Equiv.arrowCongr, Equiv.subtypeUnivEquiv, Function.comp_def] using
           (grandCanonicalGibbsDysonCoeff_quarticInteractionOn_eq_sum_pairingEvaluation
             (Finset.univ : Finset (QuarticVertexLabel Mode)) ε β μ hpos g S.card t)
     _ = ∑ q : Fin S.card → QuarticVertexLabel Mode,
