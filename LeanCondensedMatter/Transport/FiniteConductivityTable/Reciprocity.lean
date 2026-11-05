@@ -43,12 +43,17 @@ with the measured/source direction indices exchanged. -/
 structure KuboTimeReversalData (M d H : Type*)
     [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     [CompleteSpace H] [FiniteDimensional ℂ H] where
+  /-- Reversal of the time-reversal-odd control parameters. -/
   reverse : M → M
+  /-- Bounded Hamiltonian and free evolution at each control parameter. -/
   system : M → BoundedFreeSystem H
+  /-- Common reduced Planck constant across the parameter family. -/
   hbar : ℝ
   system_hbar : ∀ m, (system m).hbar = hbar
+  /-- Positive normalized equilibrium density operator. -/
   density : M → DensityOperator H
   density_stationary : ∀ m, Commute (system m).hamiltonian.1 (density m).op
+  /-- Conjugate-linear operator action induced by microscopic time reversal. -/
   transform : (H →L[ℂ] H) → (H →L[ℂ] H)
   transform_add : ∀ A B, transform (A + B) = transform A + transform B
   transform_mul : ∀ A B, transform (A * B) = transform A * transform B
@@ -63,9 +68,11 @@ structure KuboTimeReversalData (M d H : Type*)
       (system (reverse m)).hamiltonian.1
   density_reverse : ∀ m,
     transform (density m).op = (density (reverse m)).op
+  /-- Measured and source charge-current operators, indexed by direction. -/
   current : M → d → (H →L[ℂ] H)
   current_selfAdjoint : ∀ m i, IsSelfAdjoint (current m i)
   current_reverse : ∀ m i, transform (current m i) = -(current (reverse m) i)
+  /-- Explicit observable-variation/contact operator for each ordered direction pair. -/
   contact : M → d → d → (H →L[ℂ] H)
   contact_selfAdjoint : ∀ m i j, IsSelfAdjoint (contact m i j)
   contact_reverse : ∀ m i j,
