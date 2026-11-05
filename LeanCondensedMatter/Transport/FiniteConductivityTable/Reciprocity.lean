@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Analysis.Operator.FiniteTrace
-import LeanCondensedMatter.QuantumTheory.DensityOperator.Basic
+import LeanCondensedMatter.QuantumTheory.DensityOperator.Finite
 import LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.ConservationLaws
 import LeanCondensedMatter.Transport.Core.ConductivityNormalization
 import LeanCondensedMatter.Transport.Core.ConductivityTensor
@@ -85,31 +85,13 @@ variable [NormedAddCommGroup H] [InnerProductSpace ℂ H]
 variable [CompleteSpace H] [FiniteDimensional ℂ H]
 variable (data : KuboTimeReversalData M d H)
 
-/-- The finite-dimensional equilibrium expectation, with no chosen eigenbasis. -/
-noncomputable def expectation (m : M) (A : H →L[ℂ] H) : ℂ :=
-  finiteDimensionalOperatorTrace ((data.density m).op * A)
-
-/-- Reality of equilibrium expectations of adjoints follows from the
-self-adjoint density operator and cyclicity of the finite trace. -/
-theorem expectation_star (m : M) (A : H →L[ℂ] H) :
-    data.expectation m (star A) = star (data.expectation m A) := by
-  unfold expectation
-  calc
-    finiteDimensionalOperatorTrace ((data.density m).op * star A) =
-        finiteDimensionalOperatorTrace (star A * (data.density m).op) :=
-      finiteDimensionalOperatorTrace_mul_comm _ _
-    _ = finiteDimensionalOperatorTrace (star ((data.density m).op * A)) := by
-      simp only [star_mul, ContinuousLinearMap.star_eq_adjoint,
-        (data.density m).isSelfAdjoint.adjoint_eq]
-    _ = star (finiteDimensionalOperatorTrace ((data.density m).op * A)) :=
-      finiteDimensionalOperatorTrace_star _
-
 /-- Microscopic density covariance and the conjugate-linearity of the
 finite trace imply the transformation law for arbitrary expectations. -/
 theorem expectation_reverse (m : M) (A : H →L[ℂ] H) :
-    data.expectation (data.reverse m) (data.transform A) =
-      star (data.expectation m A) := by
-  unfold expectation
+    (data.density (data.reverse m)).expectation (data.transform A) =
+      star ((data.density m).expectation A) := by
+  rw [(data.density (data.reverse m)).expectation_eq_finiteDimensionalOperatorTrace,
+    (data.density m).expectation_eq_finiteDimensionalOperatorTrace]
   calc
     finiteDimensionalOperatorTrace ((data.density (data.reverse m)).op * data.transform A) =
         finiteDimensionalOperatorTrace
