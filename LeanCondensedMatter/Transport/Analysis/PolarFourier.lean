@@ -1405,6 +1405,22 @@ theorem polarFourierFirstCosineAngularKernel_hasDerivAt (z : ℝ) :
   exact hmain
 
 
+/-- A finite-radius conservation-law primitive for the first two radial Fourier
+harmonics. Its derivative involves the same K0-minus-K2 channel that occurs in
+the Gaussian-crossed current moments; the identity is valid including z = 0. -/
+theorem polarFourierHarmonicEnergy_hasDerivAt (z : ℝ) :
+    HasDerivAt
+      (fun t : ℝ =>
+        polarFourierZerothAngularKernel t ^ 2 -
+          polarFourierFirstCosineAngularKernel t ^ 2)
+      (Complex.I * polarFourierFirstCosineAngularKernel z *
+        (polarFourierZerothAngularKernel z -
+          polarFourierSecondCosineAngularKernel z)) z := by
+  have h0 := (polarFourierZerothAngularKernel_hasDerivAt z).pow 2
+  have h1 := (polarFourierFirstCosineAngularKernel_hasDerivAt z).pow 2
+  convert h0.sub h1 using 1 <;> ring
+
+
 end
 
 end Transport
