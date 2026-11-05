@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Analysis.Operator.TraceClass.Trace
+import LeanCondensedMatter.Analysis.Operator.FiniteTrace
 import LeanCondensedMatter.QuantumTheory.DensityOperator.Basic
 import LeanCondensedMatter.QuantumTheory.DensityOperator.DiagonalFormula
 import LeanCondensedMatter.QuantumTheory.DensityOperator.Purity
@@ -46,6 +47,28 @@ theorem DensityOperator.expectation_eq_linearMap_trace (ρ : DensityOperator H)
       LinearMap.trace ℂ H ((ρ.op ∘L A : H →L[ℂ] H) : H →ₗ[ℂ] H) := by
   rw [ρ.expectation_apply]
   exact (ρ.isTraceClass.comp_right A).trace_eq_linearMap_trace
+
+/-- In finite dimensions, the canonical density expectation is the ordinary
+operator trace of the density multiplied by the observable. -/
+theorem DensityOperator.expectation_eq_finiteDimensionalOperatorTrace
+    (ρ : DensityOperator H) (A : H →L[ℂ] H) :
+    ρ.expectation A = finiteDimensionalOperatorTrace (ρ.op * A) := by
+  rw [ρ.expectation_eq_linearMap_trace, finiteDimensionalOperatorTrace_apply]
+  rfl
+
+/-- The finite-dimensional density expectation respects operator adjoints. -/
+theorem DensityOperator.expectation_star (ρ : DensityOperator H) (A : H →L[ℂ] H) :
+    ρ.expectation (star A) = star (ρ.expectation A) := by
+  rw [ρ.expectation_eq_finiteDimensionalOperatorTrace,
+    ρ.expectation_eq_finiteDimensionalOperatorTrace]
+  calc
+    finiteDimensionalOperatorTrace (ρ.op * star A) =
+        finiteDimensionalOperatorTrace (star A * ρ.op) :=
+      finiteDimensionalOperatorTrace_mul_comm _ _
+    _ = finiteDimensionalOperatorTrace (star (ρ.op * A)) := by
+      simp only [star_mul, ContinuousLinearMap.star_eq_adjoint, ρ.isSelfAdjoint.adjoint_eq]
+    _ = star (finiteDimensionalOperatorTrace (ρ.op * A)) :=
+      finiteDimensionalOperatorTrace_star _
 
 /-- In finite dimensions, the ordinary trace of a density operator is one. -/
 theorem DensityOperator.linearMap_trace_eq_one (ρ : DensityOperator H) :
