@@ -1,9 +1,6 @@
 import LeanCondensedMatter.Analysis.Operator.FiniteTrace
 import LeanCondensedMatter.QuantumTheory.DensityOperator.Finite
 import LeanCondensedMatter.QuantumTheory.LinearResponse.Dynamics.ConservationLaws
-import LeanCondensedMatter.Transport.Core.ConductivityNormalization
-import LeanCondensedMatter.Transport.Core.ConductivityTensor
-import Mathlib.Tactic
 
 set_option linter.style.header false
 
