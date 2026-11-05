@@ -322,7 +322,7 @@ theorem externalSubsetSourceCumulantSeries_eq_sub_properPartitions
   classical
   unfold externalSubsetSourceCumulantSeries
   rw [WellFounded.fix_eq]
-  simp only [hS, if_false]
+  simp only [hS, ite_false]
   congr 1
   apply Finset.sum_congr rfl
   intro π _
@@ -331,8 +331,8 @@ theorem externalSubsetSourceCumulantSeries_eq_sub_properPartitions
   change (∏ B : π.1.parts,
       externalSubsetSourceCumulantSeries M (B : Finset (Fin (2 * E)))) =
     Finpartition.partitionProduct (externalSubsetSourceCumulantSeries M) π.1
-  exact (Finset.prod_coe_sort π.1.parts
-    (externalSubsetSourceCumulantSeries M)).symm
+  exact Finset.prod_coe_sort π.1.parts
+    (externalSubsetSourceCumulantSeries M)
 
 /-- The signed source moment transform is inverted by finite subset
 recursion, provided the empty moment is one. This supplies an explicit
@@ -355,7 +355,10 @@ theorem externalSubsetSourceCumulantSeries_reconstruct
     rw [Fintype.sum_unique]
     have htop : (default : Finpartition (∅ : Finset (Fin (2 * E)))) = ⊤ :=
       Subsingleton.elim _ _
-    rw [htop, externalPartitionSourceSign_top]
+    rw [htop]
+    change PowerSeries.C (externalPartitionSourceSign (⊤ : Finpartition (∅ : Finset (Fin (2 * E))))) *
+      Finpartition.partitionProduct (externalSubsetSourceCumulantSeries M) ⊤ = M ∅
+    rw [externalPartitionSourceSign_top]
     have hparts : (⊤ : Finpartition (∅ : Finset (Fin (2 * E)))).parts = ∅ := by
       simp [Finpartition.parts_eq_empty_iff]
     simp [Finpartition.partitionProduct, hparts, hEmpty]
@@ -366,6 +369,7 @@ theorem externalSubsetSourceCumulantSeries_reconstruct
         (∑ π ∈ (Finset.univ : Finset (Finpartition S)).erase ⊤, f π) =
           ∑ π : {π : Finpartition S // π ≠ ⊤}, f π.1 := by
       rw [Finset.sum_subtype
+        (p := fun π : Finpartition S => π ≠ ⊤)
         ((Finset.univ : Finset (Finpartition S)).erase ⊤)
         (fun π => by simp) f]
     have htop : f (⊤ : Finpartition S) = κ S := by
