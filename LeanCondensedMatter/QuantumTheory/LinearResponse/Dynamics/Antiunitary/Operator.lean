@@ -67,11 +67,23 @@ noncomputable def conjugateOperator [FiniteDimensional ℂ H]
     { toFun := fun x => Θ.toFun (A (Θ.inverse x))
       map_add' := by
         intro x y
-        simp only [Θ.inverse_add, map_add, Θ.map_add]
+        calc
+          Θ.toFun (A (Θ.inverse (x + y))) =
+              Θ.toFun (A (Θ.inverse x + Θ.inverse y)) := by rw [Θ.inverse_add]
+          _ = Θ.toFun (A (Θ.inverse x) + A (Θ.inverse y)) := by rw [A.map_add]
+          _ = Θ.toFun (A (Θ.inverse x)) + Θ.toFun (A (Θ.inverse y)) :=
+            Θ.map_add _ _
       map_smul' := by
         intro c x
-        simp only [Θ.inverse_smul, map_smul, Θ.map_smul,
-          RingHom.id_apply, starRingEnd_apply, star_star] }
+        calc
+          Θ.toFun (A (Θ.inverse (c • x))) =
+              Θ.toFun (A (((starRingEnd ℂ) c) • Θ.inverse x)) := by
+                rw [Θ.inverse_smul]
+          _ = Θ.toFun (((starRingEnd ℂ) c) • A (Θ.inverse x)) := by
+                rw [A.map_smul]
+          _ = ((starRingEnd ℂ) ((starRingEnd ℂ) c)) •
+                Θ.toFun (A (Θ.inverse x)) := Θ.map_smul _ _
+          _ = (RingHom.id ℂ) c • Θ.toFun (A (Θ.inverse x)) := by simp }
 
 @[simp]
 theorem conjugateOperator_apply [FiniteDimensional ℂ H]
@@ -155,9 +167,10 @@ theorem conjugateOperator_involutive_of_square_neg [FiniteDimensional ℂ H]
     rw [Θ.apply_inverse, Θ.map_neg, hsq]
     simp
   ext x
-  simp only [conjugateOperator_apply, hinv, neg_neg]
-  rw [hsq x]
-  rw [map_neg, hsq]
+  simp only [conjugateOperator_apply, hinv]
+  rw [Θ.map_neg (Θ.toFun x)]
+  simp only [neg_neg]
+  rw [hsq x, A.map_neg, hsq]
   simp
 
 end AntiunitaryMap
