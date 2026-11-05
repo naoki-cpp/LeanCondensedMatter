@@ -136,7 +136,9 @@ private noncomputable def conjugateOperatorRealLinear :
     change Θ.conjugateOperator ((r : ℂ) • A) =
       (r : ℂ) • Θ.conjugateOperator A
     rw [Θ.conjugateOperator_smul]
-    rw [starRingEnd_apply, RCLike.star_def, RCLike.conj_ofReal]
+    have hr : (starRingEnd ℂ) (r : ℂ) = (r : ℂ) :=
+      RCLike.conj_ofReal (K := ℂ) r
+    rw [hr]
 
 /-- Antiunitary conjugation commutes with bounded-operator exponentiation.
 Finite-dimensionality is used to establish continuity on the operator space. -/
