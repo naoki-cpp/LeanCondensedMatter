@@ -28,12 +28,37 @@ theorem continuous_quarticVertexSequenceTimeFactor {n : ℕ}
     Complex.continuous_exp.comp
       (((Complex.continuous_ofReal.comp (continuous_apply i))).mul continuous_const)
 
+/-- The one-vertex scalar time factor is continuous in imaginary time. -/
+theorem continuous_quarticVertexTimeFactor
+    (ε : Mode → ℝ) (q : QuarticVertexLabel Mode) :
+    Continuous (quarticVertexTimeFactor ε q) := by
+  unfold quarticVertexTimeFactor
+  exact Complex.continuous_exp.comp
+    ((Complex.continuous_ofReal.comp continuous_id).mul continuous_const)
+
 /-- Scalar coefficient of one fixed vertex-label sequence in a quartic Dyson expansion. -/
 noncomputable def quarticDysonSequenceCoeff {n : ℕ}
     (ε : Mode → ℝ) (g : QuarticVertexLabel Mode → ℂ)
     (q : Fin n → QuarticVertexLabel Mode) (t : ℝ) : ℂ :=
   ((-1 : ℂ) ^ n * ∏ i, g (q i)) *
     intervalIntegral.orderedSimplexIntegral n t (quarticVertexSequenceTimeFactor ε q)
+
+/-- A fixed vertex-sequence Dyson coefficient is continuous in its upper imaginary-time bound. -/
+theorem continuous_quarticDysonSequenceCoeff {n : ℕ}
+    (ε : Mode → ℝ) (g : QuarticVertexLabel Mode → ℂ)
+    (q : Fin n → QuarticVertexLabel Mode) :
+    Continuous (quarticDysonSequenceCoeff ε g q) := by
+  have hintegrand : Continuous (Function.uncurry
+      (fun (_ : ℝ) (τ : Fin n → ℝ) => quarticVertexSequenceTimeFactor ε q τ)) :=
+    (continuous_quarticVertexSequenceTimeFactor ε q).comp continuous_snd
+  have hsimplex :=
+    intervalIntegral.continuous_orderedSimplexIntegral_of_continuous n id
+      (fun (_ : ℝ) τ => quarticVertexSequenceTimeFactor ε q τ)
+      continuous_id hintegrand
+  change Continuous (fun t : ℝ =>
+    ((-1 : ℂ) ^ n * ∏ i, g (q i)) *
+      intervalIntegral.orderedSimplexIntegral n t (quarticVertexSequenceTimeFactor ε q))
+  exact continuous_const.mul hsimplex
 
 /-- Prepending a vertex gives the outer-time recursion for a fixed-sequence Dyson coefficient. -/
 theorem quarticDysonSequenceCoeff_cons {n : ℕ}
@@ -241,33 +266,11 @@ theorem dysonCoeff_quarticInteractionOn_eq_sum
                     (fun i => (q i : QuarticVertexLabel Mode))) m k)
             MeasureTheory.volume 0 t := by
         intro q
-        have htime : Continuous (quarticVertexTimeFactor ε (q 0)) := by
-          unfold quarticVertexTimeFactor
-          exact Complex.continuous_exp.comp
-            ((Complex.continuous_ofReal.comp continuous_id).mul continuous_const)
-        have hseq : Continuous
-            (quarticDysonSequenceCoeff ε g
-              (fun i => (q i.succ : QuarticVertexLabel Mode))) := by
-          have hintegrand : Continuous (Function.uncurry
-              (fun (_ : ℝ) (τ : Fin n → ℝ) =>
-                quarticVertexSequenceTimeFactor ε
-                  (fun i => (q i.succ : QuarticVertexLabel Mode)) τ)) :=
-            (continuous_quarticVertexSequenceTimeFactor ε
-              (fun i => (q i.succ : QuarticVertexLabel Mode))).comp continuous_snd
-          have hsimplex :=
-            intervalIntegral.continuous_orderedSimplexIntegral_of_continuous n id
-              (fun (_ : ℝ) τ =>
-                quarticVertexSequenceTimeFactor ε
-                  (fun i => (q i.succ : QuarticVertexLabel Mode)) τ)
-              continuous_id hintegrand
-          change Continuous (fun u : ℝ =>
-            ((-1 : ℂ) ^ n * ∏ i, g (q i.succ)) *
-              intervalIntegral.orderedSimplexIntegral n u
-                (quarticVertexSequenceTimeFactor ε
-                  (fun i => (q i.succ : QuarticVertexLabel Mode))))
-          exact continuous_const.mul hsimplex
-        exact (((continuous_const.mul htime).mul hseq).mul
-          continuous_const).intervalIntegrable 0 t
+        exact ((((continuous_const.mul
+          (continuous_quarticVertexTimeFactor ε (q 0))).mul
+            (continuous_quarticDysonSequenceCoeff ε g
+              (fun i => (q i.succ : QuarticVertexLabel Mode)))).mul
+              continuous_const).intervalIntegrable 0 t)
       rw [intervalIntegral.integral_finsetSum (fun q _ => hintegrability q)]
       have hright :
           matrixCoeff
@@ -328,16 +331,8 @@ theorem dysonCoeff_quarticInteraction_eq_sum [Fintype Mode]
   let e :
       (Fin n → ↥(Finset.univ : Finset (QuarticVertexLabel Mode))) ≃
         (Fin n → QuarticVertexLabel Mode) :=
-    { toFun := fun q i => q i
-      invFun := fun q i => ⟨q i, Finset.mem_univ _⟩
-      left_inv := by
-        intro q
-        funext i
-        apply Subtype.ext
-        rfl
-      right_inv := by
-        intro q
-        rfl }
+    Equiv.piCongrRight fun _ =>
+      Equiv.subtypeUnivEquiv (fun _ : QuarticVertexLabel Mode => Finset.mem_univ _)
   let F : (Fin n → QuarticVertexLabel Mode) →
       (AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) := fun q =>
     quarticDysonSequenceCoeff ε g q t •
