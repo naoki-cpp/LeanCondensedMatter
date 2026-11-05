@@ -63,7 +63,8 @@ theorem factorial_mul_coeff_logOf_grandCanonicalGibbsDysonSeries_eq_sum_connecte
       ε β μ hpos g S β
   have huniv : (Finset.univ : Finset (Fin n)) ≠ ∅ :=
     (Finset.univ_nonempty_iff.mpr ⟨⟨0, Nat.pos_of_ne_zero hn⟩⟩).ne_empty
-  simpa only [Finset.card_univ, Fintype.card_fin] using
+  change _ = W.connectedContribution (Finset.univ : Finset (Fin n))
+  simpa using
     (Combinatorics.factorial_mul_coeff_logOf_eq_connectedContribution
       hZ W hMoment huniv)
 
