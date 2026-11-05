@@ -16564,6 +16564,7 @@
       "ContinuousLinearMap.finiteDimensionalOperatorTrace_star",
       "ContinuousLinearMap.finiteDimensionalOperatorTrace_toEuclideanCLM",
       "ContinuousLinearMap.hasDerivAt_finiteDimensionalOperatorTrace_comp",
+      "QuantumTheory.DensityOperator.expectation_eq_finiteDimensionalOperatorTrace",
       "QuantumTheory.Models.MassiveDirac.cleanBandFockHallDensity_eq_neg_chargeSq_berryCurvature",
       "QuantumTheory.Models.MassiveDirac.currentBandBlockTrace_interband_eq_chargeSq_forceMatrixTraceNumerator",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceIntegral_eq_radialCoefficient",
@@ -16587,6 +16588,7 @@
       "ContinuousLinearMap.finiteDimensionalOperatorTrace_star",
       "ContinuousLinearMap.finiteDimensionalOperatorTrace_toEuclideanCLM",
       "ContinuousLinearMap.hasDerivAt_finiteDimensionalOperatorTrace_comp",
+      "QuantumTheory.DensityOperator.expectation_eq_finiteDimensionalOperatorTrace",
       "QuantumTheory.Models.MassiveDirac.cleanBandFockHallDensity_eq_neg_chargeSq_berryCurvature",
       "QuantumTheory.Models.MassiveDirac.currentBandBlockTrace_interband_eq_chargeSq_forceMatrixTraceNumerator",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceIntegral_eq_radialCoefficient",
@@ -16602,7 +16604,7 @@
       "_private.LeanCondensedMatter.Transport.Streda.TraceSpectral.0.QuantumTheory.Transport.finiteDimensionalOperatorTrace_eq_sum_inner_energyEigenbasis",
       "_private.LeanCondensedMatter.Transport.Topology.0.QuantumTheory.Transport.Topology.PeriodicBlochProjector.rankOneProjectorCurvature_eq"
     ],
-    "compiledConsumerCount": 18,
+    "compiledConsumerCount": 19,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -16636,6 +16638,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "QuantumTheory.DensityOperator.expectation_star",
       "QuantumTheory.Models.MassiveDirac.currentBandBlockTrace_swap",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceIntegral_eq_radialCoefficient",
       "QuantumTheory.Models.MassiveDirac.projectorBastinTraceIntegrand_eq_band_sum",
@@ -16649,6 +16652,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "QuantumTheory.DensityOperator.expectation_star",
       "QuantumTheory.Models.MassiveDirac.currentBandBlockTrace_swap",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDressedSurfaceAngularTraceIntegral_eq_radialCoefficient",
       "QuantumTheory.Models.MassiveDirac.projectorBastinTraceIntegrand_eq_band_sum",
@@ -16656,7 +16660,7 @@
       "QuantumTheory.Transport.regularizedStredaResidualSeaTraceKernel_swap",
       "QuantumTheory.Transport.regularizedStredaSurfacePrimitiveTrace_eq_suppliedGreen"
     ],
-    "compiledConsumerCount": 6,
+    "compiledConsumerCount": 7,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -16678,7 +16682,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -16690,6 +16694,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "QuantumTheory.DensityOperator.expectation_star",
       "QuantumTheory.Transport.Topology.PeriodicBlochProjector.berryCurvatureComplex_isSelfAdjoint"
     ],
     "dependencies": [
@@ -16699,9 +16704,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "QuantumTheory.DensityOperator.expectation_star",
       "QuantumTheory.Transport.Topology.PeriodicBlochProjector.berryCurvatureComplex_isSelfAdjoint"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -38275,7 +38281,8 @@
       "QuantumMechanics.SingleParticle.Continuum.continuumMaximalLaplacian1D_denseDomain"
     ],
     "dependencies": [
-      "QuantumMechanics.SingleParticle.Continuum.l2ToTemperedDistribution1D_continuumH2Laplacian1D"
+      "QuantumMechanics.SingleParticle.Continuum.l2ToTemperedDistribution1D_continuumH2Laplacian1D",
+      "QuantumMechanics.SingleParticle.Continuum.mem_continuumMaximalLaplacianDomain1D_iff"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -41898,6 +41905,7 @@
     "dependencies": [
       "QuantumMechanics.SingleParticle.Continuum.l2ToTemperedDistribution1D_continuumMaximalLaplacian1D",
       "QuantumMechanics.SingleParticle.Continuum.l2ToTemperedDistribution1D_injective",
+      "QuantumMechanics.SingleParticle.Continuum.mem_continuumMaximalLaplacianDomain1D_iff",
       "_private.LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Hamiltonian.MaximalLaplacian1D.0.QuantumMechanics.SingleParticle.Continuum.l2ToTemperedDistribution1D_continuumMaximalLaplacianValue1D"
     ],
     "crossModuleDirectWrapper": false,
@@ -41939,17 +41947,25 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "QuantumMechanics.SingleParticle.Continuum.continuumH2Domain1D_le_continuumMaximalLaplacianDomain1D",
       "QuantumMechanics.SingleParticle.Continuum.continuumH2LaplacianPMap1D_adjoint_domain_le",
-      "QuantumMechanics.SingleParticle.Continuum.continuumMaximalLaplacianDomain1D_le_continuumH2Domain1D"
+      "QuantumMechanics.SingleParticle.Continuum.continuumMaximalLaplacianDomain1D_le_continuumH2Domain1D",
+      "QuantumMechanics.SingleParticle.Continuum.mem_continuumMaximalLaplacian1D_graph_iff",
+      "QuantumMechanics.SingleParticle.Continuum.mem_continuumSchrodingerHamiltonian1D_graph_iff",
+      "_private.LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Hamiltonian.MaximalLaplacian1D.0.QuantumMechanics.SingleParticle.Continuum.l2ToTemperedDistribution1D_continuumMaximalLaplacianValue1D"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "QuantumMechanics.SingleParticle.Continuum.continuumH2Domain1D_le_continuumMaximalLaplacianDomain1D",
       "QuantumMechanics.SingleParticle.Continuum.continuumH2LaplacianPMap1D_adjoint_domain_le",
-      "QuantumMechanics.SingleParticle.Continuum.continuumMaximalLaplacianDomain1D_le_continuumH2Domain1D"
+      "QuantumMechanics.SingleParticle.Continuum.continuumMaximalLaplacianDomain1D_le_continuumH2Domain1D",
+      "QuantumMechanics.SingleParticle.Continuum.mem_continuumMaximalLaplacian1D_graph_iff",
+      "QuantumMechanics.SingleParticle.Continuum.mem_continuumSchrodingerHamiltonian1D_graph_iff",
+      "_private.LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Hamiltonian.MaximalLaplacian1D.0.QuantumMechanics.SingleParticle.Continuum.l2ToTemperedDistribution1D_continuumMaximalLaplacianValue1D"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 6,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -41989,7 +42005,8 @@
       "QuantumMechanics.SingleParticle.Continuum.continuumMaximalLaplacianDomain1D_le_continuumH2Domain1D",
       "QuantumMechanics.SingleParticle.Continuum.l2MultiplicationOperator1D_apply",
       "QuantumMechanics.SingleParticle.Continuum.l2ToTemperedDistribution1D_continuumSchrodingerHamiltonian1D",
-      "QuantumMechanics.SingleParticle.Continuum.l2ToTemperedDistribution1D_injective"
+      "QuantumMechanics.SingleParticle.Continuum.l2ToTemperedDistribution1D_injective",
+      "QuantumMechanics.SingleParticle.Continuum.mem_continuumMaximalLaplacianDomain1D_iff"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -45336,6 +45353,53 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  [inst_3 : FiniteDimensional ℂ H] (ρ : QuantumTheory.DensityOperator H) (A : H →L[ℂ] H),\n  ρ.expectation A = ContinuousLinearMap.finiteDimensionalOperatorTrace (ρ.op * A)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.DensityOperator.expectation_eq_finiteDimensionalOperatorTrace",
+    "module": "LeanCondensedMatter.QuantumTheory.DensityOperator.Finite",
+    "externalAxioms": [],
+    "docString": "In finite dimensions, the canonical density expectation is the ordinary\noperator trace of the density multiplied by the observable. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.DensityOperator.expectation_star",
+      "QuantumTheory.Transport.KuboTimeReversalData.expectation_reverse"
+    ],
+    "dependencies": [
+      "ContinuousLinearMap.finiteDimensionalOperatorTrace_apply",
+      "QuantumTheory.DensityOperator.expectation_eq_linearMap_trace"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.DensityOperator.expectation_star",
+      "QuantumTheory.Transport.KuboTimeReversalData.expectation_reverse"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  [FiniteDimensional ℂ H] (ρ : QuantumTheory.DensityOperator H) (A : H →L[ℂ] H),\n  ρ.expectation A = (LinearMap.trace ℂ H) ↑(ρ.op ∘SL A)",
     "standardAxioms": [
       "Classical.choice",
@@ -45355,6 +45419,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "QuantumTheory.DensityOperator.expectation_eq_finiteDimensionalOperatorTrace",
       "QuantumTheory.DensityOperator.linearMap_trace_eq_one",
       "QuantumTheory.DensityOperator.linearMap_trace_sq_eq_purity"
     ],
@@ -45366,10 +45431,11 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "QuantumTheory.DensityOperator.expectation_eq_finiteDimensionalOperatorTrace",
       "QuantumTheory.DensityOperator.linearMap_trace_eq_one",
       "QuantumTheory.DensityOperator.linearMap_trace_sq_eq_purity"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -45937,6 +46003,57 @@
   },
   {
     "terminal": false,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  [FiniteDimensional ℂ H] (ρ : QuantumTheory.DensityOperator H) (A : H →L[ℂ] H),\n  ρ.expectation (star A) = star (ρ.expectation A)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.DensityOperator.expectation_star",
+    "module": "LeanCondensedMatter.QuantumTheory.DensityOperator.Finite",
+    "externalAxioms": [],
+    "docString": "The finite-dimensional density expectation respects operator adjoints. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.KuboTimeReversalData.contact_expectation_reverse",
+      "QuantumTheory.Transport.KuboTimeReversalData.correlation_reverse_of_odd",
+      "QuantumTheory.Transport.KuboTimeReversalData.current_commutator_reverse"
+    ],
+    "dependencies": [
+      "ContinuousLinearMap.finiteDimensionalOperatorTrace_mul_comm",
+      "ContinuousLinearMap.finiteDimensionalOperatorTrace_star",
+      "QuantumTheory.DensityOperator.expectation_eq_finiteDimensionalOperatorTrace",
+      "QuantumTheory.DensityOperator.isSelfAdjoint"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.KuboTimeReversalData.contact_expectation_reverse",
+      "QuantumTheory.Transport.KuboTimeReversalData.correlation_reverse_of_odd",
+      "QuantumTheory.Transport.KuboTimeReversalData.current_commutator_reverse"
+    ],
+    "compiledConsumerCount": 3,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {ρ σ : QuantumTheory.DensityOperator H}, ρ.op = σ.op → ρ = σ",
     "standardAxioms": [
       "Classical.choice",
@@ -46359,6 +46476,7 @@
     "directWrapperOf": null,
     "dependents": [
       "QuantumTheory.DensityOperator.expectation_eq_spectral_tsum",
+      "QuantumTheory.DensityOperator.expectation_star",
       "QuantumTheory.DensityOperator.hasSum_diagonal_weights",
       "QuantumTheory.DensityOperator.hasSum_eigenvalues_eq_one",
       "QuantumTheory.DensityOperator.hasSum_expectation_diagonal",
@@ -46372,6 +46490,7 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.DensityOperator.expectation_eq_spectral_tsum",
+      "QuantumTheory.DensityOperator.expectation_star",
       "QuantumTheory.DensityOperator.hasSum_diagonal_weights",
       "QuantumTheory.DensityOperator.hasSum_eigenvalues_eq_one",
       "QuantumTheory.DensityOperator.hasSum_expectation_diagonal",
@@ -46380,7 +46499,7 @@
       "QuantumTheory.DensityOperator.traceNorm_eq_one",
       "QuantumTheory.purity_pure"
     ],
-    "compiledConsumerCount": 8,
+    "compiledConsumerCount": 9,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -51028,7 +51147,8 @@
       "QuantumTheory.LinearResponse.commute_freePropagator_of_commute_hamiltonian",
       "QuantumTheory.LinearResponse.freePropagator_apply_energyEigenbasis",
       "QuantumTheory.LinearResponse.hasDerivAt_freePropagator",
-      "QuantumTheory.LinearResponse.heisenbergEquation"
+      "QuantumTheory.LinearResponse.heisenbergEquation",
+      "QuantumTheory.Transport.KuboTimeReversalData.transform_freePropagator"
     ],
     "dependencies": [
       "LinearPMap.boundedUnitaryEvolution_eq_exp"
@@ -51039,9 +51159,10 @@
       "QuantumTheory.LinearResponse.commute_freePropagator_of_commute_hamiltonian",
       "QuantumTheory.LinearResponse.freePropagator_apply_energyEigenbasis",
       "QuantumTheory.LinearResponse.hasDerivAt_freePropagator",
-      "QuantumTheory.LinearResponse.heisenbergEquation"
+      "QuantumTheory.LinearResponse.heisenbergEquation",
+      "QuantumTheory.Transport.KuboTimeReversalData.transform_freePropagator"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 5,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -52162,7 +52283,8 @@
       "QuantumTheory.LinearResponse.heisenbergEquation",
       "QuantumTheory.LinearResponse.heisenbergEvolution_eq_self_of_commute_hamiltonian",
       "QuantumTheory.LinearResponse.inner_energyEigenbasis_heisenbergEvolution",
-      "QuantumTheory.LinearResponse.vonNeumannEquation"
+      "QuantumTheory.LinearResponse.vonNeumannEquation",
+      "QuantumTheory.Transport.KuboTimeReversalData.transform_heisenbergEvolution"
     ],
     "dependencies": [
       "QuantumTheory.LinearResponse.heisenbergEvolution_apply",
@@ -52177,9 +52299,10 @@
       "QuantumTheory.LinearResponse.heisenbergEquation",
       "QuantumTheory.LinearResponse.heisenbergEvolution_eq_self_of_commute_hamiltonian",
       "QuantumTheory.LinearResponse.inner_energyEigenbasis_heisenbergEvolution",
-      "QuantumTheory.LinearResponse.vonNeumannEquation"
+      "QuantumTheory.LinearResponse.vonNeumannEquation",
+      "QuantumTheory.Transport.KuboTimeReversalData.transform_heisenbergEvolution"
     ],
-    "compiledConsumerCount": 7,
+    "compiledConsumerCount": 8,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -52201,7 +52324,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": true,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -52213,7 +52336,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.LinearResponse.lie_heisenbergEvolution_eq_relativeTime"
+      "QuantumTheory.LinearResponse.lie_heisenbergEvolution_eq_relativeTime",
+      "QuantumTheory.Transport.KuboTimeReversalData.correlation_reverse_of_odd"
     ],
     "dependencies": [
       "QuantumTheory.LinearResponse.heisenbergEvolution_apply"
@@ -52221,9 +52345,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.LinearResponse.lie_heisenbergEvolution_eq_relativeTime"
+      "QuantumTheory.LinearResponse.lie_heisenbergEvolution_eq_relativeTime",
+      "QuantumTheory.Transport.KuboTimeReversalData.correlation_reverse_of_odd"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -52260,7 +52385,9 @@
       "QuantumTheory.LinearResponse.commutatorSusceptibility_eigenbasis_eq_timeDomainSeries",
       "QuantumTheory.LinearResponse.commutatorSusceptibility_eq_timeDifference_of_stationary",
       "QuantumTheory.LinearResponse.continuous_commutatorSusceptibility_of_diagonal_density",
-      "QuantumTheory.LinearResponse.continuous_commutatorSusceptibility_timeDifference"
+      "QuantumTheory.LinearResponse.continuous_commutatorSusceptibility_timeDifference",
+      "QuantumTheory.Transport.KuboTimeReversalData.commutatorSusceptibility_reverse",
+      "QuantumTheory.Transport.KuboTimeReversalData.correlation_reverse_of_odd"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
@@ -52269,9 +52396,11 @@
       "QuantumTheory.LinearResponse.commutatorSusceptibility_eigenbasis_eq_timeDomainSeries",
       "QuantumTheory.LinearResponse.commutatorSusceptibility_eq_timeDifference_of_stationary",
       "QuantumTheory.LinearResponse.continuous_commutatorSusceptibility_of_diagonal_density",
-      "QuantumTheory.LinearResponse.continuous_commutatorSusceptibility_timeDifference"
+      "QuantumTheory.LinearResponse.continuous_commutatorSusceptibility_timeDifference",
+      "QuantumTheory.Transport.KuboTimeReversalData.commutatorSusceptibility_reverse",
+      "QuantumTheory.Transport.KuboTimeReversalData.correlation_reverse_of_odd"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 6,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -52868,7 +52997,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -52880,7 +53009,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.LinearResponse.isStationary_eigenbasisNormalizedExpectation"
+      "QuantumTheory.LinearResponse.isStationary_eigenbasisNormalizedExpectation",
+      "QuantumTheory.Transport.KuboTimeReversalData.correlation_reverse_of_odd"
     ],
     "dependencies": [
       "QuantumTheory.DensityOperator.toNormalizedExpectation_apply",
@@ -52890,9 +53020,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.LinearResponse.isStationary_eigenbasisNormalizedExpectation"
+      "QuantumTheory.LinearResponse.isStationary_eigenbasisNormalizedExpectation",
+      "QuantumTheory.Transport.KuboTimeReversalData.correlation_reverse_of_odd"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -83626,126 +83757,6 @@
   },
   {
     "terminal": true,
-    "statement": "∀ {M : Type u_1} {ι : Type u_2} {d : Type u_3} {H : Type u_4} [inst : NormedAddCommGroup H]\n  [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (data : QuantumTheory.Transport.AntiunitaryCurrentPairing M ι d H) [inst_3 : Fintype ι]\n  (volume : QuantumTheory.Transport.PositiveVolume) (omega eta : ℝ),\n  QuantumTheory.Transport.ConductivityTensor.IsOnsagerReciprocal\n    (data.toReciprocalCurrentData.conductivityFamily volume data.hbar omega eta) data.reverse",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.AntiunitaryCurrentPairing.conductivityFamily_isOnsagerReciprocal",
-    "module": "LeanCondensedMatter.Transport.FiniteConductivityTable.Reciprocity.Antiunitary",
-    "externalAxioms": [],
-    "docString": "Microscopic antiunitary current covariance is sufficient for the\nOnsager–Casimir property of the finite Kubo–Lehmann conductivity family,\nat a shared Planck constant and fixed driving/switching rates. ",
-    "directWrapperTargetModule": "LeanCondensedMatter.Transport.FiniteConductivityTable.Reciprocity",
-    "directWrapperOf": "QuantumTheory.Transport.FiniteReciprocalCurrentData.conductivityFamily_isOnsagerReciprocal",
-    "dependents": [],
-    "dependencies": [
-      "QuantumTheory.Transport.FiniteReciprocalCurrentData.conductivityFamily_isOnsagerReciprocal"
-    ],
-    "crossModuleDirectWrapper": true,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {M : Type u_1} {ι : Type u_2} {d : Type u_3} {H : Type u_4} [inst : NormedAddCommGroup H]\n  [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (data : QuantumTheory.Transport.AntiunitaryCurrentPairing M ι d H) (m : M) (i : d) (a b : ι),\n  inner ℂ ((data.spectral (data.reverse m)).basis a)\n      ((data.current (data.reverse m) i) ((data.spectral (data.reverse m)).basis b)) =\n    -(starRingEnd ℂ) (inner ℂ ((data.spectral m).basis a) ((data.current m i) ((data.spectral m).basis b)))",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.AntiunitaryCurrentPairing.currentMatrixElement_reverse",
-    "module": "LeanCondensedMatter.Transport.FiniteConductivityTable.Reciprocity.Antiunitary",
-    "externalAxioms": [],
-    "docString": "Time-reversal covariance makes each reversed current matrix element\nthe negative conjugate of the original one. This is an operator-level\nderivation of the scalar condition used by the finite Lehmann theorem. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.AntiunitaryCurrentPairing.toReciprocalCurrentData"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {M : Type u_1} {ι : Type u_2} {d : Type u_3} {H : Type u_4} [inst : NormedAddCommGroup H]\n  [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (data : QuantumTheory.Transport.AntiunitaryCurrentPairing M ι d H) (m : M) (i : d) (a b : ι),\n  (starRingEnd ℂ) (inner ℂ ((data.spectral m).basis a) ((data.current m i) ((data.spectral m).basis b))) =\n    inner ℂ ((data.spectral m).basis b) ((data.current m i) ((data.spectral m).basis a))",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.AntiunitaryCurrentPairing.star_currentMatrixElement",
-    "module": "LeanCondensedMatter.Transport.FiniteConductivityTable.Reciprocity.Antiunitary",
-    "externalAxioms": [],
-    "docString": "Hermiticity of the charge-current operator determines the conjugate\ntransposed matrix element in its actual eigenbasis. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.AntiunitaryCurrentPairing.toReciprocalCurrentData"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
     "statement": "∀ {ι : Type u_1} (conductivity : QuantumTheory.Transport.ConductivityTensor ι) (i j : ι),\n  conductivity.component i j = conductivity.symmetricComponent i j + conductivity.hallComponent i j",
     "standardAxioms": [
       "Classical.choice",
@@ -85444,218 +85455,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ {M : Type u_1} {ι : Type u_2} {d : Type u_3} (data : QuantumTheory.Transport.FiniteReciprocalCurrentData M ι d)\n  [inst : Fintype ι] (volume : QuantumTheory.Transport.PositiveVolume) (hbar omega eta : ℝ),\n  QuantumTheory.Transport.ConductivityTensor.IsOnsagerReciprocal (data.conductivityFamily volume hbar omega eta)\n    data.reverse",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": true,
-    "retainedMention": true,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.FiniteReciprocalCurrentData.conductivityFamily_isOnsagerReciprocal",
-    "module": "LeanCondensedMatter.Transport.FiniteConductivityTable.Reciprocity",
-    "externalAxioms": [],
-    "docString": "Unlike the conditional tensor-level reciprocity projection, this theorem\n*derives* the Onsager property from energy, occupation, antiunitary-current,\nHermiticity, and contact-transformation hypotheses of the finite spectral Kubo data. ",
-    "directWrapperTargetModule": "LeanCondensedMatter.Transport.FiniteConductivityTable.Reciprocity",
-    "directWrapperOf": "QuantumTheory.Transport.FiniteReciprocalCurrentData.finiteConductivityTableValue_reverse",
-    "dependents": [
-      "QuantumTheory.Transport.AntiunitaryCurrentPairing.conductivityFamily_isOnsagerReciprocal"
-    ],
-    "dependencies": [
-      "QuantumTheory.Transport.FiniteReciprocalCurrentData.finiteConductivityTableValue_reverse"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.AntiunitaryCurrentPairing.conductivityFamily_isOnsagerReciprocal"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ {M : Type u_1} {ι : Type u_2} {d : Type u_3} (data : QuantumTheory.Transport.FiniteReciprocalCurrentData M ι d)\n  (m : M) (i j : d) (a b : ι),\n  data.current m i a b * data.current m j b a =\n    data.current (data.reverse m) j a b * data.current (data.reverse m) i b a",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.FiniteReciprocalCurrentData.current_product_reverse",
-    "module": "LeanCondensedMatter.Transport.FiniteConductivityTable.Reciprocity",
-    "externalAxioms": [],
-    "docString": "The antiunitary reversal and Hermiticity hypotheses give the transposed\nordered product of the two current vertices, including the two odd-current signs. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {M : Type u_1} {ι : Type u_2} {d : Type u_3} (data : QuantumTheory.Transport.FiniteReciprocalCurrentData M ι d)\n  [inst : Fintype ι] (volume : QuantumTheory.Transport.PositiveVolume) (hbar omega eta : ℝ) (m : M) (i j : d),\n  QuantumTheory.Transport.finiteConductivityTableValue volume hbar omega eta (data.finiteTable m i j) =\n    QuantumTheory.Transport.finiteConductivityTableValue volume hbar omega eta (data.finiteTable (data.reverse m) j i)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.FiniteReciprocalCurrentData.finiteConductivityTableValue_reverse",
-    "module": "LeanCondensedMatter.Transport.FiniteConductivityTable.Reciprocity",
-    "externalAxioms": [],
-    "docString": "Reciprocity of the *physical* finite-volume conductivity follows from the\nspectral Kubo theorem and the independently supplied reciprocal contact term. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.FiniteReciprocalCurrentData.conductivityFamily_isOnsagerReciprocal"
-    ],
-    "dependencies": [
-      "QuantumTheory.Transport.FiniteReciprocalCurrentData.finiteLehmannTableResponse_reverse"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.FiniteReciprocalCurrentData.conductivityFamily_isOnsagerReciprocal"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {M : Type u_1} {ι : Type u_2} {d : Type u_3} (data : QuantumTheory.Transport.FiniteReciprocalCurrentData M ι d)\n  [inst : Fintype ι] (hbar omega eta : ℝ) (m : M) (i j : d),\n  QuantumTheory.LinearResponse.finiteLehmannTableResponse hbar omega eta (data.finiteTable m i j).lehmann =\n    QuantumTheory.LinearResponse.finiteLehmannTableResponse hbar omega eta\n      (data.finiteTable (data.reverse m) j i).lehmann",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.FiniteReciprocalCurrentData.finiteLehmannTableResponse_reverse",
-    "module": "LeanCondensedMatter.Transport.FiniteConductivityTable.Reciprocity",
-    "externalAxioms": [],
-    "docString": "The full finite Lehmann *vertex* response is reciprocal, at any supplied\nfrequency and switching rate. This is a spectral Kubo result, not a tensor axiom. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.FiniteReciprocalCurrentData.finiteConductivityTableValue_reverse"
-    ],
-    "dependencies": [
-      "QuantumTheory.Transport.FiniteReciprocalCurrentData.transition_reverse"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.FiniteReciprocalCurrentData.finiteConductivityTableValue_reverse"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {M : Type u_1} {ι : Type u_2} {d : Type u_3} (data : QuantumTheory.Transport.FiniteReciprocalCurrentData M ι d)\n  (hbar omega eta : ℝ) (m : M) (i j : d) (a b : ι),\n  (QuantumTheory.LinearResponse.finiteLehmannTableTransitionData hbar (data.finiteTable m i j).lehmann\n          (a, b)).frequencyTerm\n      omega eta =\n    (QuantumTheory.LinearResponse.finiteLehmannTableTransitionData hbar (data.finiteTable (data.reverse m) j i).lehmann\n          (a, b)).frequencyTerm\n      omega eta",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Transport.FiniteReciprocalCurrentData.transition_reverse",
-    "module": "LeanCondensedMatter.Transport.FiniteConductivityTable.Reciprocity",
-    "externalAxioms": [],
-    "docString": "Equality of *canonical* finite Lehmann transition terms after time reversal.\nThe energy gap and causal frequency denominator are preserved, without swapping\nthe ordered spectral indices or altering the frequency/regulator. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Transport.FiniteReciprocalCurrentData.finiteLehmannTableResponse_reverse"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Transport.FiniteReciprocalCurrentData.finiteLehmannTableResponse_reverse"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ {A : Type u_1} [inst : Ring A] {freeGreen dressedGreen selfEnergy freeInverse dressedInverse : A},\n  freeInverse * freeGreen = 1 →\n    freeGreen * freeInverse = 1 →\n      dressedInverse * dressedGreen = 1 →\n        dressedGreen * dressedInverse = 1 →\n          (QuantumTheory.Transport.IsSelfEnergy freeGreen dressedGreen selfEnergy ↔\n            selfEnergy = freeInverse - dressedInverse)",
     "standardAxioms": [
       "propext"
@@ -85837,6 +85636,411 @@
     "compiledConsumers": [],
     "compiledConsumerCount": 0,
     "axioms": [],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {M : Type u_1} {d : Type u_2} {H : Type u_3} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] [inst_3 : FiniteDimensional ℂ H]\n  (data : QuantumTheory.Transport.KuboTimeReversalData M d H) (m : M) (i j : d) (t : ℝ),\n  QuantumTheory.LinearResponse.commutatorSusceptibility\n      (QuantumTheory.LinearResponse.freePropagatorGroup (data.system m)) (data.system m).hbar\n      (data.density m).toNormalizedExpectation (↑(data.current m i)) (↑(data.current m j)) t 0 =\n    QuantumTheory.LinearResponse.commutatorSusceptibility\n      (QuantumTheory.LinearResponse.freePropagatorGroup (data.system (data.reverse m)))\n      (data.system (data.reverse m)).hbar (data.density (data.reverse m)).toNormalizedExpectation\n      (↑(data.current (data.reverse m) j)) (↑(data.current (data.reverse m) i)) t 0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.KuboTimeReversalData.commutatorSusceptibility_reverse",
+    "module": "LeanCondensedMatter.Transport.Reciprocity.Kubo",
+    "externalAxioms": [],
+    "docString": "Onsager–Casimir reciprocity of the canonical Kubo commutator\nsusceptibility, without defining another current-specific response kernel. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.KuboTimeReversalData.conductivityFamily_isOnsagerReciprocal"
+    ],
+    "dependencies": [
+      "QuantumTheory.LinearResponse.heisenbergEvolution_zero",
+      "QuantumTheory.Transport.KuboTimeReversalData.current_commutator_reverse"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.KuboTimeReversalData.conductivityFamily_isOnsagerReciprocal"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ {M : Type u_1} {d : Type u_2} {H : Type u_3} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] [inst_3 : FiniteDimensional ℂ H]\n  (data : QuantumTheory.Transport.KuboTimeReversalData M d H) (volume : QuantumTheory.Transport.PositiveVolume)\n  (omega eta duration : ℝ),\n  QuantumTheory.Transport.ConductivityTensor.IsOnsagerReciprocal (data.conductivityFamily volume omega eta duration)\n    data.reverse",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": true,
+    "retainedMention": true,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.KuboTimeReversalData.conductivityFamily_isOnsagerReciprocal",
+    "module": "LeanCondensedMatter.Transport.Reciprocity.Kubo",
+    "externalAxioms": [],
+    "docString": "Onsager–Casimir reciprocity is proved without an eigenbasis pairing\nassumption or a postulated equality of conductivity components. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.Transport.KuboTimeReversalData.commutatorSusceptibility_reverse",
+      "QuantumTheory.Transport.KuboTimeReversalData.contact_expectation_reverse"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {M : Type u_1} {d : Type u_2} {H : Type u_3} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] [inst_3 : FiniteDimensional ℂ H]\n  (data : QuantumTheory.Transport.KuboTimeReversalData M d H) (m : M) (i j : d),\n  (data.density m).expectation ↑(data.contact m i j) =\n    (data.density (data.reverse m)).expectation ↑(data.contact (data.reverse m) j i)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.KuboTimeReversalData.contact_expectation_reverse",
+    "module": "LeanCondensedMatter.Transport.Reciprocity.Kubo",
+    "externalAxioms": [],
+    "docString": "The physical contact response is reciprocal as a consequence of\noperator covariance and Hermiticity, not a scalar reciprocity axiom. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.KuboTimeReversalData.conductivityFamily_isOnsagerReciprocal"
+    ],
+    "dependencies": [
+      "QuantumTheory.DensityOperator.expectation_star",
+      "QuantumTheory.Transport.KuboTimeReversalData.expectation_reverse"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.KuboTimeReversalData.conductivityFamily_isOnsagerReciprocal"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {M : Type u_1} {d : Type u_2} {H : Type u_3} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] [inst_3 : FiniteDimensional ℂ H]\n  (data : QuantumTheory.Transport.KuboTimeReversalData M d H) (m : M) (t : ℝ) (A B A' B' : H →L[ℂ] H),\n  IsSelfAdjoint A' →\n    IsSelfAdjoint B' →\n      data.transform A = -A' →\n        data.transform B = -B' →\n          (data.density m).expectation\n              ((QuantumTheory.LinearResponse.heisenbergEvolution\n                    (QuantumTheory.LinearResponse.freePropagatorGroup (data.system m)) t)\n                  A *\n                B) =\n            (data.density (data.reverse m)).expectation\n              ((QuantumTheory.LinearResponse.heisenbergEvolution\n                    (QuantumTheory.LinearResponse.freePropagatorGroup (data.system (data.reverse m))) t)\n                  B' *\n                A')",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.KuboTimeReversalData.correlation_reverse_of_odd",
+    "module": "LeanCondensedMatter.Transport.Reciprocity.Kubo",
+    "externalAxioms": [],
+    "docString": "Time reversal exchanges the measured and source slots of a two-point\nequilibrium correlation, including the reversal of the time argument\nand its cancellation by stationarity. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.KuboTimeReversalData.current_commutator_reverse"
+    ],
+    "dependencies": [
+      "QuantumTheory.DensityOperator.expectation_star",
+      "QuantumTheory.LinearResponse.heisenbergEvolution_heisenbergEvolution",
+      "QuantumTheory.LinearResponse.heisenbergEvolution_zero",
+      "QuantumTheory.LinearResponse.isStationary_toNormalizedExpectation_of_commute_hamiltonian",
+      "QuantumTheory.Transport.KuboTimeReversalData.expectation_reverse",
+      "QuantumTheory.Transport.KuboTimeReversalData.transform_heisenbergEvolution",
+      "_private.LeanCondensedMatter.Transport.Reciprocity.Kubo.0.QuantumTheory.Transport.KuboTimeReversalData.star_evolved_of_selfAdjoint"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.KuboTimeReversalData.current_commutator_reverse"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {M : Type u_1} {d : Type u_2} {H : Type u_3} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] [inst_3 : FiniteDimensional ℂ H]\n  (data : QuantumTheory.Transport.KuboTimeReversalData M d H) (m : M) (i j : d) (t : ℝ),\n  (data.density m).expectation\n      ((QuantumTheory.LinearResponse.heisenbergEvolution\n              (QuantumTheory.LinearResponse.freePropagatorGroup (data.system m)) t)\n            ↑(data.current m i) *\n          ↑(data.current m j) -\n        ↑(data.current m j) *\n          (QuantumTheory.LinearResponse.heisenbergEvolution\n              (QuantumTheory.LinearResponse.freePropagatorGroup (data.system m)) t)\n            ↑(data.current m i)) =\n    (data.density (data.reverse m)).expectation\n      ((QuantumTheory.LinearResponse.heisenbergEvolution\n              (QuantumTheory.LinearResponse.freePropagatorGroup (data.system (data.reverse m))) t)\n            ↑(data.current (data.reverse m) j) *\n          ↑(data.current (data.reverse m) i) -\n        ↑(data.current (data.reverse m) i) *\n          (QuantumTheory.LinearResponse.heisenbergEvolution\n              (QuantumTheory.LinearResponse.freePropagatorGroup (data.system (data.reverse m))) t)\n            ↑(data.current (data.reverse m) j))",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.KuboTimeReversalData.current_commutator_reverse",
+    "module": "LeanCondensedMatter.Transport.Reciprocity.Kubo",
+    "externalAxioms": [],
+    "docString": "The current-current commutator is reciprocal under simultaneous\nreversal of the magnetic controls and exchange of current directions. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.KuboTimeReversalData.commutatorSusceptibility_reverse"
+    ],
+    "dependencies": [
+      "QuantumTheory.DensityOperator.expectation_star",
+      "QuantumTheory.Transport.KuboTimeReversalData.correlation_reverse_of_odd",
+      "_private.LeanCondensedMatter.Transport.Reciprocity.Kubo.0.QuantumTheory.Transport.KuboTimeReversalData.star_evolved_of_selfAdjoint"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.KuboTimeReversalData.commutatorSusceptibility_reverse"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {M : Type u_1} {d : Type u_2} {H : Type u_3} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] [inst_3 : FiniteDimensional ℂ H]\n  (data : QuantumTheory.Transport.KuboTimeReversalData M d H) (m : M) (A : H →L[ℂ] H),\n  (data.density (data.reverse m)).expectation (data.transform A) = star ((data.density m).expectation A)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.KuboTimeReversalData.expectation_reverse",
+    "module": "LeanCondensedMatter.Transport.Reciprocity.Data",
+    "externalAxioms": [],
+    "docString": "Microscopic density covariance and the conjugate-linearity of the\nfinite trace imply the transformation law for arbitrary expectations. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.KuboTimeReversalData.contact_expectation_reverse",
+      "QuantumTheory.Transport.KuboTimeReversalData.correlation_reverse_of_odd"
+    ],
+    "dependencies": [
+      "QuantumTheory.DensityOperator.expectation_eq_finiteDimensionalOperatorTrace"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.KuboTimeReversalData.contact_expectation_reverse",
+      "QuantumTheory.Transport.KuboTimeReversalData.correlation_reverse_of_odd"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {M : Type u_1} {d : Type u_2} {H : Type u_3} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] [inst_3 : FiniteDimensional ℂ H]\n  (data : QuantumTheory.Transport.KuboTimeReversalData M d H) (m : M) (t : ℝ),\n  data.transform (QuantumTheory.LinearResponse.freePropagator (data.system m) t) =\n    QuantumTheory.LinearResponse.freePropagator (data.system (data.reverse m)) (-t)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.KuboTimeReversalData.transform_freePropagator",
+    "module": "LeanCondensedMatter.Transport.Reciprocity.Kubo",
+    "externalAxioms": [],
+    "docString": "Hamiltonian covariance induces negative-time covariance of the\nfree Schrödinger propagator. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.KuboTimeReversalData.transform_heisenbergEvolution"
+    ],
+    "dependencies": [
+      "QuantumTheory.LinearResponse.freePropagator_eq_exp",
+      "QuantumTheory.Transport.KuboTimeReversalData.transform_schrodingerGenerator"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.KuboTimeReversalData.transform_heisenbergEvolution"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {M : Type u_1} {d : Type u_2} {H : Type u_3} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] [inst_3 : FiniteDimensional ℂ H]\n  (data : QuantumTheory.Transport.KuboTimeReversalData M d H) (m : M) (t : ℝ) (A : H →L[ℂ] H),\n  data.transform\n      ((QuantumTheory.LinearResponse.heisenbergEvolution\n          (QuantumTheory.LinearResponse.freePropagatorGroup (data.system m)) t)\n        A) =\n    (QuantumTheory.LinearResponse.heisenbergEvolution\n        (QuantumTheory.LinearResponse.freePropagatorGroup (data.system (data.reverse m))) (-t))\n      (data.transform A)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.KuboTimeReversalData.transform_heisenbergEvolution",
+    "module": "LeanCondensedMatter.Transport.Reciprocity.Kubo",
+    "externalAxioms": [],
+    "docString": "Antiunitarity reverses the time argument of Heisenberg evolution. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.KuboTimeReversalData.correlation_reverse_of_odd"
+    ],
+    "dependencies": [
+      "QuantumTheory.LinearResponse.heisenbergEvolution_freePropagatorGroup_apply",
+      "QuantumTheory.Transport.KuboTimeReversalData.transform_freePropagator"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.KuboTimeReversalData.correlation_reverse_of_odd"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {M : Type u_1} {d : Type u_2} {H : Type u_3} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H]\n  [inst_2 : CompleteSpace H] [inst_3 : FiniteDimensional ℂ H]\n  (data : QuantumTheory.Transport.KuboTimeReversalData M d H) (m : M),\n  data.transform (QuantumTheory.LinearResponse.schrodingerGenerator (data.system m)) =\n    -QuantumTheory.LinearResponse.schrodingerGenerator (data.system (data.reverse m))",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.KuboTimeReversalData.transform_schrodingerGenerator",
+    "module": "LeanCondensedMatter.Transport.Reciprocity.Kubo",
+    "externalAxioms": [],
+    "docString": "Complex conjugation of the Schrödinger generator reverses its sign. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.KuboTimeReversalData.transform_freePropagator"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.KuboTimeReversalData.transform_freePropagator"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
     "definitionallyEquivalentTo": [],
     "replacementCandidates": [],
     "replacementCandidateCount": 0,
@@ -103562,7 +103766,7 @@
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": true,
+    "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
@@ -103575,7 +103779,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion.Pairing.0.SecondQuantization.Bosonic.grandCanonicalGibbsDysonCoeff_quarticInteraction_eq_sum_pairingEvaluation"
+      "SecondQuantization.Bosonic.grandCanonicalGibbsDysonCoeff_quarticInteraction_eq_sum_orderedDysonThermalAmplitude"
     ],
     "dependencies": [
       "SecondQuantization.Bosonic.FreeThermalField.grandCanonicalGibbsSummable_orderedProduct",
@@ -103589,7 +103793,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion.Pairing.0.SecondQuantization.Bosonic.grandCanonicalGibbsDysonCoeff_quarticInteraction_eq_sum_pairingEvaluation"
+      "SecondQuantization.Bosonic.grandCanonicalGibbsDysonCoeff_quarticInteraction_eq_sum_orderedDysonThermalAmplitude"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -103628,7 +103832,8 @@
       "SecondQuantization.Bosonic.factorial_mul_grandCanonicalGibbsDysonCoeff_quarticInteraction_eq_sum_dysonThermalAmplitude"
     ],
     "dependencies": [
-      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion.Pairing.0.SecondQuantization.Bosonic.grandCanonicalGibbsDysonCoeff_quarticInteraction_eq_sum_pairingEvaluation"
+      "SecondQuantization.Bosonic.grandCanonicalGibbsDysonCoeff_quarticInteractionOn_eq_sum_pairingEvaluation",
+      "SecondQuantization.Common.BlochDeDominicis.Pairing.weight_boson"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -107109,7 +107314,7 @@
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": true,
+    "soleCompiledConsumerPrivate": false,
     "singleCompiledConsumer": true,
     "simpLemma": true,
     "retainedNeedsReview": false,
@@ -107122,13 +107327,13 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion.Pairing.0.SecondQuantization.Bosonic.grandCanonicalGibbsDysonCoeff_quarticInteraction_eq_sum_pairingEvaluation"
+      "SecondQuantization.Bosonic.grandCanonicalGibbsDysonCoeff_quarticInteraction_eq_sum_orderedDysonThermalAmplitude"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion.Pairing.0.SecondQuantization.Bosonic.grandCanonicalGibbsDysonCoeff_quarticInteraction_eq_sum_pairingEvaluation"
+      "SecondQuantization.Bosonic.grandCanonicalGibbsDysonCoeff_quarticInteraction_eq_sum_orderedDysonThermalAmplitude"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -173535,7 +173740,9 @@
       "QuantumMechanics.SingleParticle.Continuum.l2ToTemperedDistribution1D_continuumMaximalLaplacian1D",
       "QuantumMechanics.SingleParticle.Continuum.mem_continuumMaximalLaplacian1D_graph_iff"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "QuantumMechanics.SingleParticle.Continuum.mem_continuumMaximalLaplacianDomain1D_iff"
+    ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
@@ -175846,51 +176053,6 @@
     "completedMention": false,
     "compiledConsumers": [
       "SecondQuantization.Bosonic.QuarticDiagram.dysonThermalAmplitude_eq_prod_components"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ {Mode : Type u_1} [inst : Fintype Mode] (ε : Mode → ℝ) (β μ : ℝ),\n  (∀ (i : Mode), 0 < β * (ε i - μ)) →\n    ∀ (g : SecondQuantization.Common.QuarticVertexLabel Mode → ℂ) (n : ℕ) (t : ℝ),\n      SecondQuantization.Bosonic.grandCanonicalGibbsDysonCoeff ε β μ (SecondQuantization.Bosonic.quarticInteraction g) n\n          t =\n        ∑ q,\n          SecondQuantization.Common.quarticDysonSequenceCoeff ε g q t *\n            ∑ pairing,\n              pairing.evaluation (Combinatorics.Pairing.weight SecondQuantization.Common.Statistics.boson pairing)\n                fun a b =>\n                SecondQuantization.Bosonic.freeThermalPairValue (fun i => ε i - μ) β\n                  (SecondQuantization.Bosonic.quarticFreeThermalFieldFamily q a)\n                  (SecondQuantization.Bosonic.quarticFreeThermalFieldFamily q b)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion.Pairing.0.SecondQuantization.Bosonic.grandCanonicalGibbsDysonCoeff_quarticInteraction_eq_sum_pairingEvaluation",
-    "module": "LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.DysonExpansion.Pairing",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "SecondQuantization.Bosonic.grandCanonicalGibbsDysonCoeff_quarticInteraction_eq_sum_orderedDysonThermalAmplitude"
-    ],
-    "dependencies": [
-      "SecondQuantization.Bosonic.grandCanonicalGibbsDysonCoeff_quarticInteractionOn_eq_sum_pairingEvaluation",
-      "SecondQuantization.Common.BlochDeDominicis.Pairing.weight_boson"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "SecondQuantization.Bosonic.grandCanonicalGibbsDysonCoeff_quarticInteraction_eq_sum_orderedDysonThermalAmplitude"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -188918,6 +189080,50 @@
     "compiledConsumers": [
       "QuantumTheory.Transport.FiniteDisorderEnsemble.FiniteSCBASolution.green_mul_shift",
       "QuantumTheory.Transport.FiniteDisorderEnsemble.FiniteSCBASolution.shift_mul_green"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  (sys : QuantumTheory.LinearResponse.BoundedFreeSystem H) (A : H →L[ℂ] H),\n  IsSelfAdjoint A →\n    ∀ (t : ℝ),\n      star\n          ((QuantumTheory.LinearResponse.heisenbergEvolution (QuantumTheory.LinearResponse.freePropagatorGroup sys) t)\n            A) =\n        (QuantumTheory.LinearResponse.heisenbergEvolution (QuantumTheory.LinearResponse.freePropagatorGroup sys) t) A",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Transport.Reciprocity.Kubo.0.QuantumTheory.Transport.KuboTimeReversalData.star_evolved_of_selfAdjoint",
+    "module": "LeanCondensedMatter.Transport.Reciprocity.Kubo",
+    "externalAxioms": [],
+    "docString": "Self-adjointness is preserved by free Heisenberg evolution. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.KuboTimeReversalData.correlation_reverse_of_odd",
+      "QuantumTheory.Transport.KuboTimeReversalData.current_commutator_reverse"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.KuboTimeReversalData.correlation_reverse_of_odd",
+      "QuantumTheory.Transport.KuboTimeReversalData.current_commutator_reverse"
     ],
     "compiledConsumerCount": 2,
     "axioms": [
