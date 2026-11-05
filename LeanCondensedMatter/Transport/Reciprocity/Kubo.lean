@@ -150,23 +150,23 @@ reversal of the magnetic controls and exchange of current directions. -/
 theorem current_commutator_reverse (m : M) (i j : d) (t : ℝ) :
     (data.density m).expectation
         (heisenbergEvolution (freePropagatorGroup (data.system m)) t
-          (data.current m i) * data.current m j -
-          data.current m j *
+          ((data.current m i).1) * (data.current m j).1 -
+          (data.current m j).1 *
             heisenbergEvolution (freePropagatorGroup (data.system m)) t
-              (data.current m i)) =
+              ((data.current m i).1)) =
       (data.density (data.reverse m)).expectation
         (heisenbergEvolution
             (freePropagatorGroup (data.system (data.reverse m))) t
-              (data.current (data.reverse m) j) *
-                data.current (data.reverse m) i -
-          data.current (data.reverse m) i *
+              ((data.current (data.reverse m) j).1) *
+                (data.current (data.reverse m) i).1 -
+          (data.current (data.reverse m) i).1 *
             heisenbergEvolution
               (freePropagatorGroup (data.system (data.reverse m))) t
-                (data.current (data.reverse m) j)) := by
-  let A := data.current m i
-  let B := data.current m j
-  let Ap := data.current (data.reverse m) i
-  let Bp := data.current (data.reverse m) j
+                ((data.current (data.reverse m) j).1)) := by
+  let A := (data.current m i).1
+  let B := (data.current m j).1
+  let Ap := (data.current (data.reverse m) i).1
+  let Bp := (data.current (data.reverse m) j).1
   let U := freePropagatorGroup (data.system m)
   let Up := freePropagatorGroup (data.system (data.reverse m))
   have hfirst :
@@ -174,15 +174,15 @@ theorem current_commutator_reverse (m : M) (i j : d) (t : ℝ) :
         (data.density (data.reverse m)).expectation
           (heisenbergEvolution Up t Bp * Ap) :=
     data.correlation_reverse_of_odd m t A B Ap Bp
-      (data.current_selfAdjoint (data.reverse m) i)
-      (data.current_selfAdjoint (data.reverse m) j)
+      ((data.current (data.reverse m) i).2)
+      ((data.current (data.reverse m) j).2)
       (data.current_reverse m i) (data.current_reverse m j)
   have hBst : star B = B := by
     rw [ContinuousLinearMap.star_eq_adjoint,
-      (data.current_selfAdjoint m j).adjoint_eq]
+      ((data.current m j).2).adjoint_eq]
   have hApst : star Ap = Ap := by
     rw [ContinuousLinearMap.star_eq_adjoint,
-      (data.current_selfAdjoint (data.reverse m) i).adjoint_eq]
+      ((data.current (data.reverse m) i).2).adjoint_eq]
   have hsecond :
       (data.density m).expectation (B * heisenbergEvolution U t A) =
         (data.density (data.reverse m)).expectation
@@ -192,7 +192,7 @@ theorem current_commutator_reverse (m : M) (i j : d) (t : ℝ) :
           (heisenbergEvolution U t A * B)) := by
         rw [← (data.density m).expectation_star, star_mul, hBst]
         rw [star_evolved_of_selfAdjoint
-          (data.system m) A (data.current_selfAdjoint m i) t]
+          (data.system m) A ((data.current m i).2) t]
       _ = star ((data.density (data.reverse m)).expectation
           (heisenbergEvolution Up t Bp * Ap)) := by rw [hfirst]
       _ = (data.density (data.reverse m)).expectation
@@ -200,27 +200,27 @@ theorem current_commutator_reverse (m : M) (i j : d) (t : ℝ) :
         rw [← (data.density (data.reverse m)).expectation_star, star_mul, hApst]
         rw [star_evolved_of_selfAdjoint
           (data.system (data.reverse m)) Bp
-          (data.current_selfAdjoint (data.reverse m) j) t]
+          ((data.current (data.reverse m) j).2) t]
   rw [map_sub, map_sub, hfirst, hsecond]
 
 /-- The physical contact response is reciprocal as a consequence of
 operator covariance and Hermiticity, not a scalar reciprocity axiom. -/
 theorem contact_expectation_reverse (m : M) (i j : d) :
-    (data.density m).expectation (data.contact m i j) =
+    (data.density m).expectation ((data.contact m i j).1) =
       (data.density (data.reverse m)).expectation
-        (data.contact (data.reverse m) j i) := by
-  have hself : star (data.contact m i j) = data.contact m i j := by
+        ((data.contact (data.reverse m) j i).1) := by
+  have hself : star ((data.contact m i j).1) = (data.contact m i j).1 := by
     rw [ContinuousLinearMap.star_eq_adjoint,
-      (data.contact_selfAdjoint m i j).adjoint_eq]
+      ((data.contact m i j).2).adjoint_eq]
   calc
-    (data.density m).expectation (data.contact m i j) =
-        star ((data.density m).expectation (data.contact m i j)) := by
+    (data.density m).expectation ((data.contact m i j).1) =
+        star ((data.density m).expectation ((data.contact m i j).1)) := by
       rw [← (data.density m).expectation_star, hself]
     _ = (data.density (data.reverse m)).expectation
-          (data.transform (data.contact m i j)) :=
+          (data.transform ((data.contact m i j).1)) :=
       (data.expectation_reverse m _).symm
     _ = (data.density (data.reverse m)).expectation
-          (data.contact (data.reverse m) j i) := by
+          ((data.contact (data.reverse m) j i).1) := by
       rw [data.contact_reverse m i j]
 
 /-- Onsager–Casimir reciprocity of the canonical Kubo commutator
@@ -229,13 +229,13 @@ theorem commutatorSusceptibility_reverse (m : M) (i j : d) (t : ℝ) :
     commutatorSusceptibility
       (freePropagatorGroup (data.system m)) (data.system m).hbar
       (data.density m).toNormalizedExpectation
-      (data.current m i) (data.current m j) t 0 =
+      ((data.current m i).1) ((data.current m j).1) t 0 =
     commutatorSusceptibility
       (freePropagatorGroup (data.system (data.reverse m)))
       (data.system (data.reverse m)).hbar
       (data.density (data.reverse m)).toNormalizedExpectation
-      (data.current (data.reverse m) j)
-      (data.current (data.reverse m) i) t 0 := by
+      ((data.current (data.reverse m) j).1)
+      ((data.current (data.reverse m) i).1) t 0 := by
   simp only [commutatorSusceptibility, heisenbergEvolution_zero,
     LieRing.of_associative_ring_bracket, DensityOperator.toNormalizedExpectation_apply]
   rw [data.system_hbar m, data.system_hbar (data.reverse m),
@@ -252,9 +252,9 @@ noncomputable def conductivityFamily
           (fun t => commutatorSusceptibility
             (freePropagatorGroup (data.system m)) (data.system m).hbar
             (data.density m).toNormalizedExpectation
-            (data.current m i) (data.current m j) t 0)
+            ((data.current m i).1) ((data.current m j).1) t 0)
           omega eta duration +
-          (data.density m).expectation (data.contact m i j)) *
+          (data.density m).expectation ((data.contact m i j).1)) *
         finiteVolumeConductivityNormalization volume omega eta }
 
 /-- Onsager–Casimir reciprocity is proved without an eigenbasis pairing
@@ -268,13 +268,13 @@ theorem conductivityFamily_isOnsagerReciprocal
       (fun t : ℝ => commutatorSusceptibility
           (freePropagatorGroup (data.system m)) (data.system m).hbar
           (data.density m).toNormalizedExpectation
-          (data.current m i) (data.current m j) t 0) =
+          ((data.current m i).1) ((data.current m j).1) t 0) =
       (fun t : ℝ => commutatorSusceptibility
           (freePropagatorGroup (data.system (data.reverse m)))
           (data.system (data.reverse m)).hbar
           (data.density (data.reverse m)).toNormalizedExpectation
-          (data.current (data.reverse m) j)
-          (data.current (data.reverse m) i) t 0) := by
+          ((data.current (data.reverse m) j).1)
+          ((data.current (data.reverse m) i).1) t 0) := by
     funext t
     exact data.commutatorSusceptibility_reverse m i j t
   change
@@ -282,18 +282,18 @@ theorem conductivityFamily_isOnsagerReciprocal
       (fun t => commutatorSusceptibility
         (freePropagatorGroup (data.system m)) (data.system m).hbar
         (data.density m).toNormalizedExpectation
-        (data.current m i) (data.current m j) t 0) omega eta duration +
-      (data.density m).expectation (data.contact m i j)) *
+        ((data.current m i).1) ((data.current m j).1) t 0) omega eta duration +
+      (data.density m).expectation ((data.contact m i j).1)) *
       finiteVolumeConductivityNormalization volume omega eta =
     (finiteTimeAdiabaticTransform
       (fun t => commutatorSusceptibility
         (freePropagatorGroup (data.system (data.reverse m)))
         (data.system (data.reverse m)).hbar
         (data.density (data.reverse m)).toNormalizedExpectation
-        (data.current (data.reverse m) j)
-        (data.current (data.reverse m) i) t 0) omega eta duration +
+        ((data.current (data.reverse m) j).1)
+        ((data.current (data.reverse m) i).1) t 0) omega eta duration +
       (data.density (data.reverse m)).expectation
-        (data.contact (data.reverse m) j i)) *
+        ((data.contact (data.reverse m) j i).1)) *
       finiteVolumeConductivityNormalization volume omega eta
   rw [hkernel, data.contact_expectation_reverse m i j]
 
