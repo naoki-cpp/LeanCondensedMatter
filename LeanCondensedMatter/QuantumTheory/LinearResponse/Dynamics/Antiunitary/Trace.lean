@@ -40,7 +40,9 @@ theorem conjugateOperator_trace (A : H →L[ℂ] H) :
       Orthonormal ℂ
         ((Set.univ : Set (Fin (Module.finrank ℂ H))).domRestrict
           (fun i => Θ.equiv (b i))) := by
-    simpa using horth.comp
+    change Orthonormal ℂ
+      (fun i : (Set.univ : Set (Fin (Module.finrank ℂ H))) => Θ.equiv (b i))
+    exact horth.comp
       (fun i : (Set.univ : Set (Fin (Module.finrank ℂ H))) => (i : Fin (Module.finrank ℂ H)))
       Subtype.val_injective
   obtain ⟨b', hb'⟩ :=
@@ -52,7 +54,10 @@ theorem conjugateOperator_trace (A : H →L[ℂ] H) :
   apply Finset.sum_congr rfl
   intro i hi
   rw [hb' i]
-  simp only [conjugateOperator_apply, Θ.equiv.symm_apply_apply]
+  change inner ℂ (Θ.equiv (b i))
+      (Θ.equiv (A (Θ.equiv.symm (Θ.equiv (b i))))) =
+    (starRingEnd ℂ) (inner ℂ (b i) (A (b i)))
+  rw [Θ.equiv.symm_apply_apply]
   exact Θ.inner_map (b i) (A (b i))
 
 end AntiunitaryMap
