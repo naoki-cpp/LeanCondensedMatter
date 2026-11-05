@@ -50,7 +50,7 @@ variable (data : KuboTimeReversalData M d H)
 theorem transform_schrodingerGenerator (m : M) :
     data.transform (schrodingerGenerator (data.system m)) =
       -(schrodingerGenerator (data.system (data.reverse m))) := by
-  simp only [schrodingerGenerator, data.transform_smul,
+  simp only [schrodingerGenerator, data.timeReversal.conjugateOperator_smul,
     data.hamiltonian_reverse, data.system_hbar]
   simp only [star_neg, star_div₀, RCLike.star_def, Complex.conj_I,
     Complex.conj_ofReal, neg_smul, neg_neg]
@@ -63,8 +63,8 @@ free Schrödinger propagator. -/
 theorem transform_freePropagator (m : M) (t : ℝ) :
     data.transform (freePropagator (data.system m) t) =
       freePropagator (data.system (data.reverse m)) (-t) := by
-  rw [freePropagator_eq_exp, freePropagator_eq_exp, data.transform_exp,
-    data.transform_smul, data.transform_schrodingerGenerator m]
+  rw [freePropagator_eq_exp, freePropagator_eq_exp, data.timeReversal.conjugateOperator_exp,
+    data.timeReversal.conjugateOperator_smul, data.transform_schrodingerGenerator m]
   simp
 
 /-- Antiunitarity reverses the time argument of Heisenberg evolution. -/
@@ -77,7 +77,7 @@ theorem transform_heisenbergEvolution (m : M) (t : ℝ)
           (data.transform A) := by
   rw [heisenbergEvolution_freePropagatorGroup_apply,
     heisenbergEvolution_freePropagatorGroup_apply,
-    data.transform_mul, data.transform_mul,
+    data.timeReversal.conjugateOperator_mul, data.timeReversal.conjugateOperator_mul,
     data.transform_freePropagator m (-t),
     data.transform_freePropagator m t]
 
@@ -100,7 +100,7 @@ theorem correlation_reverse_of_odd (m : M) (t : ℝ)
       data.transform
         (heisenbergEvolution (freePropagatorGroup (data.system m)) t A * B) =
       heisenbergEvolution U (-t) A' * B' := by
-    rw [data.transform_mul, data.transform_heisenbergEvolution, hTA, hTB]
+    rw [data.timeReversal.conjugateOperator_mul, data.transform_heisenbergEvolution, hTA, hTB]
     simp [U]
   have hAstar : star (heisenbergEvolution U (-t) A') =
       heisenbergEvolution U (-t) A' :=
