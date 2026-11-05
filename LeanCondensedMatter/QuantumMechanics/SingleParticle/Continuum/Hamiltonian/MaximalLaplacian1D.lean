@@ -104,8 +104,17 @@ theorem continuumMaximalLaplacian1D_agrees_on_H2 (ψ : continuumH2Domain1D) :
           continuumH2Domain1D_le_continuumMaximalLaplacianDomain1D ψ.property⟩ =
       continuumH2Laplacian1D ψ := by
   apply l2ToTemperedDistribution1D_injective
-  rw [l2ToTemperedDistribution1D_continuumMaximalLaplacian1D,
-    l2ToTemperedDistribution1D_continuumH2Laplacian1D]
+  change l2ToTemperedDistribution1D
+      (continuumMaximalLaplacianOnDomain1D
+        ⟨(ψ : ContinuumL2Wavefunction1D),
+          continuumH2Domain1D_le_continuumMaximalLaplacianDomain1D ψ.property⟩) =
+    l2ToTemperedDistribution1D (continuumH2Laplacian1D ψ)
+  have hmax := l2ToTemperedDistribution1D_continuumMaximalLaplacian1D
+    (⟨(ψ : ContinuumL2Wavefunction1D),
+      continuumH2Domain1D_le_continuumMaximalLaplacianDomain1D ψ.property⟩ :
+        continuumMaximalLaplacianDomain1D)
+  simpa only [continuumMaximalLaplacian1D,
+    l2ToTemperedDistribution1D_continuumH2Laplacian1D] using hmax
 
 /-- Graph membership in the maximal Laplacian is exactly the distributional Laplacian equation. -/
 theorem mem_continuumMaximalLaplacian1D_graph_iff
@@ -129,8 +138,13 @@ theorem mem_continuumMaximalLaplacian1D_graph_iff
     rw [LinearPMap.mem_graph_iff]
     refine ⟨⟨z.1, hdomain⟩, rfl, ?_⟩
     apply l2ToTemperedDistribution1D_injective
-    rw [l2ToTemperedDistribution1D_continuumMaximalLaplacian1D]
-    exact hz.symm
+    change l2ToTemperedDistribution1D
+        (continuumMaximalLaplacianOnDomain1D ⟨z.1, hdomain⟩) =
+      l2ToTemperedDistribution1D z.2
+    have hmax := l2ToTemperedDistribution1D_continuumMaximalLaplacian1D
+      (⟨z.1, hdomain⟩ : continuumMaximalLaplacianDomain1D)
+    rw [← hz]
+    simpa only [continuumMaximalLaplacian1D] using hmax
 
 /-- The maximal distributional Laplacian is a closed unbounded operator on `L²(ℝ, ℂ)`. -/
 theorem continuumMaximalLaplacian1D_isClosed : continuumMaximalLaplacian1D.IsClosed := by
