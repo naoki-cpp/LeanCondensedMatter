@@ -328,19 +328,11 @@ theorem externalSubsetSourceCumulantSeries_eq_sub_properPartitions
   intro π _
   apply congrArg (fun z : PowerSeries ℂ =>
     PowerSeries.C (externalPartitionSourceSign π.1) * z)
-  rw [Finpartition.partitionProduct,
-    Finset.prod_coe_sort π.1.parts
-      (fun B => (WellFounded.fix
-        (fun S ih =>
-          if S = ∅ then (0 : PowerSeries ℂ)
-          else M S -
-            ∑ ρ : {ρ : Finpartition S // ρ ≠ ⊤},
-              PowerSeries.C (externalPartitionSourceSign ρ.1) *
-                ∏ C : ρ.1.parts,
-                  ih (C : Finset (Fin (2 * E)))
-                    (externalPartition_part_ssubset_of_ne_top ρ.1 ρ.2 C.2))
-        : Finset (Fin (2 * E)) → PowerSeries ℂ) B)]
-  rfl
+  change (∏ B : π.1.parts,
+      externalSubsetSourceCumulantSeries M (B : Finset (Fin (2 * E)))) =
+    Finpartition.partitionProduct (externalSubsetSourceCumulantSeries M) π.1
+  exact (Finset.prod_coe_sort π.1.parts
+    (externalSubsetSourceCumulantSeries M)).symm
 
 @[simp]
 theorem externalSubsetMomentSeries_empty
