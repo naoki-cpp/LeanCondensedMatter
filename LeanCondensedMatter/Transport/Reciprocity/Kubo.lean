@@ -52,11 +52,15 @@ theorem transform_schrodingerGenerator (m : M) :
       -(schrodingerGenerator (data.system (data.reverse m))) := by
   simp only [schrodingerGenerator, data.timeReversal.conjugateOperator_smul,
     data.hamiltonian_reverse, data.system_hbar]
-  simp only [starRingEnd_apply, star_neg, star_div₀, RCLike.star_def,
-    Complex.conj_I, Complex.conj_ofReal, neg_smul, neg_neg]
-  rw [← neg_smul]
-  congr 1
-  ring
+  have hcoeff :
+      (starRingEnd ℂ) (-(Complex.I / (data.hbar : ℂ))) =
+        Complex.I / (data.hbar : ℂ) := by
+    change star (-(Complex.I / (data.hbar : ℂ))) =
+      Complex.I / (data.hbar : ℂ)
+    rw [star_neg, star_div₀]
+    simp only [RCLike.star_def, Complex.conj_I, Complex.conj_ofReal]
+    ring
+  rw [hcoeff]
 
 /-- Hamiltonian covariance induces negative-time covariance of the
 free Schrödinger propagator. -/
