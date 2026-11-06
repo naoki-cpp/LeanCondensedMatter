@@ -125,6 +125,30 @@ theorem evenExternalSubsetTimes_externalPartitionBlock
   rw [hblock] at hheq
   exact hheq
 
+/-- Reindex the *actual* finite sum of vacuum-free fixed-label Dyson
+diagrams by their induced external-component partition and the corresponding
+diagram fiber. This is the first finite-sum step toward the physical signed
+moment formula: no factorization assumption is used, and the partition is
+calculated from each Wick diagram's real pairing graph. -/
+theorem vacuumFreeExternalInsertionDysonCoefficient_eq_sum_externalPartitionFibers
+    {K : ℕ} (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
+    (labels : Fin (2 * K) → ExternalFieldLabel Mode)
+    (times : Fin (2 * K) → ℝ) (n : ℕ) :
+    vacuumFreeExternalInsertionDysonCoefficient ε β g labels times n =
+      ∑ π : Finpartition (Finset.univ : Finset (Fin (2 * K))),
+        ∑ d : {d : VacuumFreeFixedExternalInsertionWickDiagram Mode K n labels //
+          externalComponentPartition d.1.1.vertexGraph = π},
+            d.1.1.1.dysonAmplitude ε β g times := by
+  classical
+  let D := VacuumFreeFixedExternalInsertionWickDiagram Mode K n labels
+  let blockPartition : D → Finpartition (Finset.univ : Finset (Fin (2 * K))) :=
+    fun d => externalComponentPartition d.1.1.vertexGraph
+  let weight : D → ℂ := fun d => d.1.1.dysonAmplitude ε β g times
+  change (∑ d : D, weight d) =
+    ∑ π, ∑ d : {d : D // blockPartition d = π}, weight d.1
+  rw [← Fintype.sum_sigma]
+  exact (Equiv.sum_comp (Equiv.sigmaFiberEquiv blockPartition) weight).symm
+
 /-- Fully external-connected, vacuum-free Dyson coefficient using the actual
 integrated signed Wick diagram amplitude, with all labels and times fixed. -/
 noncomputable def connectedExternalInsertionDysonCoefficient {K : ℕ}
