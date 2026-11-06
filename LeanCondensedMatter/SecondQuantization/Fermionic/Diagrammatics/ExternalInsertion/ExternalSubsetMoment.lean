@@ -355,9 +355,9 @@ theorem externalPartitionSourceSign_eq_componentExternalOrderSign_of_vacuumFree
     (e.trans sourceOrder).trans (Fin.castOrderIso hcard.symm).toEquiv
   have hset (B : d.vertexGraph.componentPartition.parts) :
       d.componentExternalShuffle.blockSlotSet B =
-        (externalPartitionShuffle π).blockSlotSet (e B) := by
+        (externalPartitionShuffleFull π).blockSlotSet (e B) := by
     rw [d.componentExternalShuffle_blockSlotSet,
-      externalPartitionShuffle_blockSlotSet_univ]
+      externalPartitionShuffleFull_blockSlotSet]
     exact (d.vacuumFreeComponentsEquivExternalBlocks_apply hVac B).symm
   have horder (B C : d.vertexGraph.componentPartition.parts) :
       compOrder B < compOrder C ↔
@@ -370,14 +370,18 @@ theorem externalPartitionSourceSign_eq_componentExternalOrderSign_of_vacuumFree
     · exact (Fin.castOrderIso hcard.symm).strictMono
   have hcount :
       d.componentExternalShuffle.orderedBlockInversionCount compOrder =
-        (externalPartitionShuffle π).orderedBlockInversionCount sourceOrder :=
+        (externalPartitionShuffleFull π).orderedBlockInversionCount sourceOrder :=
     d.componentExternalShuffle.orderedBlockInversionCount_eq_of_blockSlotSet
       (externalPartitionShuffle π) e hset compOrder sourceOrder horder
   calc
     externalPartitionSourceSign π =
         externalPartitionOrderSign π sourceOrder := rfl
+    _ = (Common.Statistics.fermion.zetaInt : ℂ) ^
+          (externalPartitionShuffleFull π).orderedBlockInversionCount sourceOrder := by
+      unfold externalPartitionOrderSign
+      rw [externalPartitionShuffleFull_orderedBlockInversionCount]
     _ = componentExternalOrderSign d compOrder := by
-      unfold externalPartitionOrderSign componentExternalOrderSign
+      unfold componentExternalOrderSign
       exact congrArg (fun n : ℕ => (Common.Statistics.fermion.zetaInt : ℂ) ^ n)
         hcount.symm
     _ = componentExternalOrderSign d blockOrder :=
