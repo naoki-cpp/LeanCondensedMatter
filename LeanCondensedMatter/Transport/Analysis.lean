@@ -3,6 +3,7 @@ import LeanCondensedMatter.Transport.Analysis.BesselRadialMoments
 import LeanCondensedMatter.Transport.Analysis.ContinuumMeasure
 import LeanCondensedMatter.Transport.Analysis.FourierGeometry
 import LeanCondensedMatter.Transport.Analysis.PolarFourier
+import LeanCondensedMatter.Transport.Analysis.PolarFourierRadialDerivative
 import LeanCondensedMatter.Transport.Analysis.RelaxationTime
 import LeanCondensedMatter.Transport.Analysis.ZeroTemperatureLorentzian
 
@@ -13,7 +14,8 @@ set_option linter.style.header false
 
 Model-independent analytical tools used in transport calculations: angular harmonics,
 Fermi-edge formulas, finite-dimensional Fourier geometry,
-continuum momentum measures, polar Fourier reduction, Bessel radial-moment analysis,
+continuum momentum measures, polar Fourier reduction, finite-cutoff radial Fourier differentiation,
+Bessel radial-moment analysis,
 and positive relaxation-time data.
 
 These results make no choice of Hamiltonian, disorder model, response approximation, or
