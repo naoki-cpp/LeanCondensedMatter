@@ -5,6 +5,7 @@ import LeanCondensedMatter.Transport.Analysis.FourierGeometry
 import LeanCondensedMatter.Transport.Analysis.PolarFourier
 import LeanCondensedMatter.Transport.Analysis.PolarFourierRadialDerivative
 import LeanCondensedMatter.Transport.Analysis.PolarFourierRadialPrimitive
+import LeanCondensedMatter.Transport.Analysis.PolarFourierRadialLimit
 import LeanCondensedMatter.Transport.Analysis.RelaxationTime
 import LeanCondensedMatter.Transport.Analysis.ZeroTemperatureLorentzian
 
