@@ -313,6 +313,7 @@ theorem finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix_eq_scalarGenera
       InternalSpace.eq_pauliAffine_coefficients G
     _ = _ := by
       rw [InternalSpace.pauliCombination_eq_components]
+      simp only [← add_assoc]
       change
         finiteCutoffContinuumBornDysonRadialGreenScalarCoefficient
             side v m probeEnergy broadening disorderStrength hbar pMax radius •
