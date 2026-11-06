@@ -1,5 +1,6 @@
 import LeanCondensedMatter.Combinatorics.Shuffle.FamilyOrderShuffle
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ComponentRestriction
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ExternalPartition
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Ordered
 
 set_option linter.style.header false
@@ -105,6 +106,67 @@ theorem ExternalInsertionDiagram.assembleInteractionOrder_symm_apply
       d.vertexGraph ⟨B, orders B j⟩).symm
   rw [hambient]
   simpa [ExternalInsertionDiagram.assembleInteractionOrder] using h
+
+/-- A vacuum-free diagram's total interaction order is the sum of the local
+interaction orders indexed by *external partition blocks*.
+
+This is the cardinality identity that makes external-block shuffle
+decomposition possible, including blocks carrying zero interaction vertices. -/
+theorem ExternalInsertionDiagram.sum_externalBlockInteractionSector_card_eq
+    {S : Finset (Fin N)}
+    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
+    (hVac : HasNoVacuumComponent d.vertexGraph) :
+    (∑ P : (externalComponentPartition d.vertexGraph).parts,
+      (interactionSector
+        (((d.vacuumFreeComponentsEquivExternalBlocks hVac).symm P).1 :
+          Finset (ExternalInsertionVertex E S))).card) = S.card := by
+  classical
+  let e := d.vacuumFreeComponentsEquivExternalBlocks hVac
+  let size : d.vertexGraph.componentPartition.parts → ℕ :=
+    fun B => (interactionSector (B.1 : Finset (ExternalInsertionVertex E S))).card
+  calc
+    (∑ P : (externalComponentPartition d.vertexGraph).parts,
+      (interactionSector
+        (((d.vacuumFreeComponentsEquivExternalBlocks hVac).symm P).1 :
+          Finset (ExternalInsertionVertex E S))).card) =
+      ∑ B : d.vertexGraph.componentPartition.parts, size B := by
+        exact Equiv.sum_comp e.symm size
+    _ = S.card := by
+      simpa [size] using sum_interactionSector_card_eq d.vertexGraph
+
+/-- The actual interaction-order shuffle family of a vacuum-free diagram,
+initially indexed by full graph components, is equivalent to a family
+indexed by the external insertion partition.
+
+This transports the *whole finite shuffle index type*, not just its
+cardinality or an arbitrary representative. In particular, zero-interaction
+external blocks remain present in the family. -/
+noncomputable def ExternalInsertionDiagram.vacuumFreeExternalBlockInteractionShuffleEquiv
+    {S : Finset (Fin N)}
+    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
+    (hVac : HasNoVacuumComponent d.vertexGraph) :
+    d.ComponentInteractionOrderShuffle ≃
+      FamilySlotShuffleTo
+        (fun P : (externalComponentPartition d.vertexGraph).parts =>
+          (interactionSector
+            (((d.vacuumFreeComponentsEquivExternalBlocks hVac).symm P).1 :
+              Finset (ExternalInsertionVertex E S))).card)
+        S.card := by
+  classical
+  let e := d.vacuumFreeComponentsEquivExternalBlocks hVac
+  let size : d.vertexGraph.componentPartition.parts → ℕ :=
+    fun B => (interactionSector (B.1 : Finset (ExternalInsertionVertex E S))).card
+  have hs : (∑ B, size B) = S.card := by
+    simpa [size] using sum_interactionSector_card_eq d.vertexGraph
+  have hsP : (∑ P, size (e.symm P)) = S.card := by
+    calc
+      (∑ P, size (e.symm P)) = ∑ B, size B := Equiv.sum_comp e.symm size
+      _ = S.card := hs
+  exact
+    ((FamilySlotShuffleTo.castTotalEquiv hs.symm).trans
+      (FamilySlotShuffle.reindexEquiv e.symm size)).trans
+      (FamilySlotShuffleTo.castTotalEquiv hsP)
+
 
 end Common
 end SecondQuantization
