@@ -93,6 +93,36 @@ theorem FamilySlotShuffleTo.blockInversionCount_eq_of_blockSlotSet
       τ.blockInversionCount_eq_sum_blockSlotSet (e.injective.ne hij),
       hset i, hset j]
 
+/-- Casting the ambient finite slot count preserves the number of
+inversions between any two distinct blocks, since the cast preserves
+the ambient linear order. -/
+theorem FamilySlotShuffleTo.castTotalEquiv_blockInversionCount
+    {size : ι → ℕ} {m n : ℕ}
+    (shuffle : FamilySlotShuffleTo size m) (h : m = n) (i j : ι) :
+    ((FamilySlotShuffleTo.castTotalEquiv h) shuffle).blockInversionCount i j =
+      shuffle.blockInversionCount i j := by
+  classical
+  by_cases hij : i = j
+  · subst j
+    simp
+  · rw [FamilySlotShuffleTo.blockInversionCount_of_ne hij,
+      shuffle.blockInversionCount_of_ne hij]
+    apply Finset.sum_congr rfl
+    intro p _
+    apply Finset.sum_congr rfl
+    intro q _
+    have hlt : (Fin.castOrderIso h) (shuffle.slotEquiv ⟨j, q⟩) <
+        (Fin.castOrderIso h) (shuffle.slotEquiv ⟨i, p⟩) ↔
+        shuffle.slotEquiv ⟨j, q⟩ < shuffle.slotEquiv ⟨i, p⟩ := by
+      constructor
+      · intro h'
+        simpa using (Fin.castOrderIso h.symm).strictMono h'
+      · exact (Fin.castOrderIso h).strictMono
+    change (if (Fin.castOrderIso h) (shuffle.slotEquiv ⟨j, q⟩) <
+        (Fin.castOrderIso h) (shuffle.slotEquiv ⟨i, p⟩) then 1 else 0) =
+      (if shuffle.slotEquiv ⟨j, q⟩ < shuffle.slotEquiv ⟨i, p⟩ then 1 else 0)
+    simp only [hlt]
+
 /-- Total inter-block inversion count relative to an explicit ordering of the blocks.
 
 The order selects exactly one orientation of every unordered pair of distinct blocks. Keeping that
@@ -103,6 +133,23 @@ noncomputable def FamilySlotShuffleTo.orderedBlockInversionCount [Fintype ι]
   ∑ ij ∈ (Finset.univ : Finset ι).offDiag,
     if blockOrder ij.1 < blockOrder ij.2
     then shuffle.blockInversionCount ij.1 ij.2 else 0
+
+/-- Ambient-size casts also preserve the total ordered inter-block
+inversion count, for every explicit order of the blocks. -/
+theorem FamilySlotShuffleTo.castTotalEquiv_orderedBlockInversionCount
+    [Fintype ι] {size : ι → ℕ} {m n : ℕ}
+    (shuffle : FamilySlotShuffleTo size m) (h : m = n)
+    (order : ι ≃ Fin (Fintype.card ι)) :
+    ((FamilySlotShuffleTo.castTotalEquiv h) shuffle).orderedBlockInversionCount order =
+      shuffle.orderedBlockInversionCount order := by
+  classical
+  unfold FamilySlotShuffleTo.orderedBlockInversionCount
+  apply Finset.sum_congr rfl
+  intro p _
+  by_cases hlt : order p.1 < order p.2
+  · simp only [hlt, ite_true]
+    exact shuffle.castTotalEquiv_blockInversionCount h p.1 p.2
+  · simp [hlt]
 
 /-- Pointwise modular agreement of inter-block inversion counts transports to the total ordered
 inter-block inversion count for the same block order. -/
