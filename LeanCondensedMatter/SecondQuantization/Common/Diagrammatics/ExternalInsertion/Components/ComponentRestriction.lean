@@ -462,5 +462,50 @@ theorem ExternalInsertionDiagram.componentLegShuffle_slotEquiv_apply
   rfl
 
 
+/-- Rebuild the full pairing of an external-insertion diagram from the
+pairings restricted to **all of its actual connected components**.
+
+The canonical component-leg shuffle identifies the disjoint sum of local
+flattened legs with the original flattened legs. Unlike an abstract
+independent-component assembly, this definition does not yet choose an
+arbitrary external partition or distribute interaction labels between its
+blocks. -/
+noncomputable def ExternalInsertionDiagram.reassembleComponentPairing
+    {S : Finset (Fin N)}
+    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S) :
+    Pairing (2 * S.card + E) :=
+  (Combinatorics.PairingOn.sigmaCongrRight
+    (fun B : d.vertexGraph.componentPartition.parts =>
+      (d.restrictComponent B).pairing)).transport
+        d.componentLegShuffle.slotEquiv.symm
+
+/-- Restriction followed by pairing reassembly recovers the *original
+physical pairing*, without losing interaction legs, external vertices,
+or component-local pairing information.
+
+The proof uses the existing exact partner-preservation theorem for
+component restriction, not an assumption about independent diagrams. -/
+theorem ExternalInsertionDiagram.reassembleComponentPairing_eq
+    {S : Finset (Fin N)}
+    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S) :
+    d.reassembleComponentPairing = d.pairing := by
+  classical
+  apply Combinatorics.PairingOn.ext
+  apply Equiv.ext
+  intro leg
+  obtain ⟨⟨B, i⟩, rfl⟩ := d.componentLegShuffle.slotEquiv.surjective leg
+  change
+    ((Combinatorics.PairingOn.sigmaCongrRight
+        (fun C : d.vertexGraph.componentPartition.parts =>
+          (d.restrictComponent C).pairing)).transport
+       d.componentLegShuffle.slotEquiv.symm).partner
+        (d.componentLegShuffle.slotEquiv ⟨B, i⟩) =
+      d.pairing.partner (d.componentLegShuffle.slotEquiv ⟨B, i⟩)
+  rw [Combinatorics.PairingOn.transport_partner,
+    Equiv.symm_apply_apply, Combinatorics.PairingOn.sigmaCongrRight_partner]
+  simpa only [d.componentLegShuffle_slotEquiv_apply] using
+    d.componentDiagramLeg_restrictComponent_pairing_partner B i
+
+
 end Common
 end SecondQuantization
