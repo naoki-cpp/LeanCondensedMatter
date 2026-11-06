@@ -65,9 +65,10 @@ private theorem externalSubsetIncreasingOrder_univ_apply
   let canonical := (Fin.castOrderIso hcard).trans idIso
   have h : ((Finset.univ : Finset (Fin (2 * E))).orderIsoOfFin rfl) =
       canonical := Subsingleton.elim _ _
-  simpa [externalSubsetIncreasingOrder, canonical, idIso] using
-    congrArg (fun iso : Fin (Finset.univ : Finset (Fin (2 * E))).card ≃o
-      ↥(Finset.univ : Finset (Fin (2 * E))) => (iso i).1) h
+  change (((Finset.univ : Finset (Fin (2 * E))).orderIsoOfFin rfl) i).1 =
+    Fin.cast hcard i
+  rw [h]
+  rfl
 
 /-- The source shuffle of the *full* external slot family, transported
 from ambient size `Finset.univ.card` to the definitionally distinct
@@ -99,7 +100,8 @@ theorem externalPartitionShuffleFull_blockSlotSet
   have ho (z : ↥(Finset.univ : Finset (Fin (2 * E)))) :
       Fin.cast hcard (o.symm z) = z.1 := by
     obtain ⟨i, rfl⟩ := o.surjective z
-    simpa using (externalSubsetIncreasingOrder_univ_apply i).symm
+    simpa only [Equiv.symm_apply_apply] using
+      (externalSubsetIncreasingOrder_univ_apply i).symm
   have hslot (i : Fin (P : Finset (Fin (2 * E))).card) :
       (externalPartitionShuffleFull π).slotEquiv ⟨P, i⟩ =
         (orders P i).1 := by
