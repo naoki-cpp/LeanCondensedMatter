@@ -167,19 +167,9 @@ theorem externalSubsetSourceCumulantSeries_reconstruct
   let κ := externalSubsetSourceCumulantSeries M
   by_cases hS : S = ∅
   · subst S
-    letI : Unique (Finpartition (∅ : Finset (Fin (2 * E)))) :=
-      inferInstanceAs (Unique (Finpartition (⊥ : Finset (Fin (2 * E)))))
-    unfold Finpartition.weightedMomentFromCumulant
-    rw [Fintype.sum_unique]
-    have htop : (default : Finpartition (∅ : Finset (Fin (2 * E)))) = ⊤ :=
-      Subsingleton.elim _ _
-    rw [htop]
-    change PowerSeries.C (externalPartitionSourceSign (⊤ : Finpartition (∅ : Finset (Fin (2 * E))))) *
-      Finpartition.partitionProduct (externalSubsetSourceCumulantSeries M) ⊤ = M ∅
-    rw [externalPartitionSourceSign_top]
-    have hparts : (⊤ : Finpartition (∅ : Finset (Fin (2 * E)))).parts = ∅ := by
-      simp [Finpartition.parts_eq_empty_iff]
-    simp [Finpartition.partitionProduct, hparts, hEmpty]
+    rw [Finpartition.weightedMomentFromCumulant_empty,
+      externalPartitionSourceSign_top, hEmpty]
+    simp
   · let f : Finpartition S → PowerSeries ℂ := fun π =>
       PowerSeries.C (externalPartitionSourceSign π) *
         Finpartition.partitionProduct κ π
