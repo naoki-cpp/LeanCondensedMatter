@@ -43,6 +43,60 @@ noncomputable def externalPartitionShuffle
   exact π.shuffleOfOrder order localOrders
     (π.partOrdersCompatible_partOrdersOfOrder order)
 
+/-- On the full finite external-slot set, the canonical increasing
+enumeration has the identity as its underlying slot map. -/
+private theorem externalSubsetIncreasingOrder_univ_apply
+    (i : Fin (2 * E)) :
+    (externalSubsetIncreasingOrder
+      (Finset.univ : Finset (Fin (2 * E))) i).1 = i := by
+  classical
+  let canonical : Fin (2 * E) ≃o ↥(Finset.univ : Finset (Fin (2 * E))) := {
+    toEquiv := {
+      toFun := fun x => ⟨x, Finset.mem_univ x⟩
+      invFun := Subtype.val
+      left_inv := fun _ => rfl
+      right_inv := fun x => Subtype.ext rfl
+    }
+    map_rel_iff' := by intro x y; rfl
+  }
+  have h : ((Finset.univ : Finset (Fin (2 * E))).orderIsoOfFin rfl) =
+      canonical := Subsingleton.elim _ _
+  exact congrArg (fun iso : Fin (2 * E) ≃o
+      ↥(Finset.univ : Finset (Fin (2 * E))) => (iso i).1) h
+
+/-- The canonical source-partition shuffle occupies precisely the source
+slots in its block when the ambient source is the full external family.
+Thus the source regrouping and the physical component shuffle can be
+compared through their occupied-slot sets alone. -/
+theorem externalPartitionShuffle_blockSlotSet_univ
+    (π : Finpartition (Finset.univ : Finset (Fin (2 * E))))
+    (P : π.parts) :
+    (externalPartitionShuffle π).blockSlotSet P =
+      (P : Finset (Fin (2 * E))) := by
+  classical
+  let o := externalSubsetIncreasingOrder (Finset.univ : Finset (Fin (2 * E)))
+  let orders := π.partOrdersOfOrder o
+  have ho (z : ↥(Finset.univ : Finset (Fin (2 * E)))) :
+      o.symm z = z.1 := by
+    obtain ⟨i, rfl⟩ := o.surjective z
+    exact (externalSubsetIncreasingOrder_univ_apply i).symm
+  have hslot (i : Fin (P : Finset (Fin (2 * E))).card) :
+      (externalPartitionShuffle π).slotEquiv ⟨P, i⟩ =
+        (orders P i).1 := by
+    calc
+      (externalPartitionShuffle π).slotEquiv ⟨P, i⟩ =
+          o.symm (π.equivSigmaParts.symm ⟨P, orders P i⟩) := rfl
+      _ = (π.equivSigmaParts.symm ⟨P, orders P i⟩).1 := ho _
+      _ = (orders P i).1 := rfl
+  ext x
+  simp only [FamilySlotShuffleTo.blockSlotSet, Finset.mem_image,
+    Finset.mem_univ, true_and, hslot]
+  constructor
+  · rintro ⟨i, hi⟩
+    simpa [hi] using (orders P i).2
+  · intro hx
+    exact ⟨(orders P).symm ⟨x, hx⟩, by simp⟩
+
 /-- Fermionic Koszul sign for grouping a subset of external insertions by
 partition blocks. The order on the blocks is explicit, because the sign
 of odd blocks need not be order independent. Physical nonvanishing blocks
