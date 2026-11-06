@@ -201,13 +201,14 @@ theorem massiveDiracRadialFourierKernel_tendsto_atTop_uv
         (p : ℂ) * polarFourierZerothAngularKernel (p * c) *
           (massiveDiracRadialDenominator v p energy mass)⁻¹)
       Filter.atTop (nhds value) := by
-  refine ⟨_, ?_⟩
-  exact tendsto_integral_massiveDiracRadialDenominator_inv_fourierKernel_of_conditions
-    v c a energy mass hc hden
-    (massiveDiracRadialFourierRemainder_integrableOn_uv
-      v c a energy mass hv hden ha)
-    (massiveDiracRadialDenominator_firstHarmonicBoundary_tendsto_zero
-      v c energy mass hv)
+  have hlimit :=
+    tendsto_integral_massiveDiracRadialDenominator_inv_fourierKernel_of_conditions
+      v c a energy mass hc hden
+      (massiveDiracRadialFourierRemainder_integrableOn_uv
+        v c a energy mass hv hden ha)
+      (massiveDiracRadialDenominator_firstHarmonicBoundary_tendsto_zero
+        v c energy mass hv)
+  exact ⟨_, hlimit⟩
 
 /-- The original radial Green resolvent integral from zero momentum has
 a finite ultraviolet-cutoff limit at *fixed* nonvanishing complex
@@ -249,10 +250,14 @@ theorem massiveDiracRadialFourierKernel_tendsto_atTop
       (∫ p in (0 : ℝ)..b, f p) =
         (∫ p in (0 : ℝ)..cutoff, f p) +
         (∫ p in cutoff..b, f p) :=
-    intervalIntegral.integral_add_adjacent_intervals hleft
-      (hf.intervalIntegrable cutoff b)
+    (intervalIntegral.integral_add_adjacent_intervals hleft
+      (hf.intervalIntegrable cutoff b)).symm
   refine ⟨(∫ p in (0 : ℝ)..cutoff, f p) + value, ?_⟩
-  have hsum := (Filter.tendsto_const_nhds.add htail)
+  have hconst : Filter.Tendsto
+      (fun _ : ℝ => ∫ p in (0 : ℝ)..cutoff, f p)
+      Filter.atTop (nhds (∫ p in (0 : ℝ)..cutoff, f p)) :=
+    tendsto_const_nhds
+  have hsum := hconst.add htail
   exact hsum.congr' (Filter.Eventually.of_forall fun b => (hsplit b).symm)
 
 end
