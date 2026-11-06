@@ -367,12 +367,12 @@ theorem externalPartitionSourceSign_eq_componentExternalOrderSign_of_vacuumFree
     constructor
     · intro h
       simpa using (Fin.castOrderIso hcard).strictMono h
-    · exact (Fin.castOrderIso hcard.symm).strictMono
+    · intro h; exact (Fin.castOrderIso hcard.symm).strictMono h
   have hcount :
       d.componentExternalShuffle.orderedBlockInversionCount compOrder =
         (externalPartitionShuffleFull π).orderedBlockInversionCount sourceOrder :=
     d.componentExternalShuffle.orderedBlockInversionCount_eq_of_blockSlotSet
-      (externalPartitionShuffle π) e hset compOrder sourceOrder horder
+      (externalPartitionShuffleFull π) e hset compOrder sourceOrder horder
   calc
     externalPartitionSourceSign π =
         externalPartitionOrderSign π sourceOrder := rfl
