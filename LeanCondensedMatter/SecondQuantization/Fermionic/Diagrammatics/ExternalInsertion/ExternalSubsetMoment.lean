@@ -183,6 +183,30 @@ noncomputable def connectedExternalInsertionDysonCoefficient {K : ℕ}
     if AllExternalVerticesConnected d.1.1.vertexGraph then
       d.1.1.dysonAmplitude ε β g times else 0
 
+/-- For any nonempty family of external insertions, the **actual**
+fixed-label connected Dyson coefficient is exactly the top external-partition
+fiber of the vacuum-free diagram sum.
+
+No quotient by vacuum diagrams or formal cumulant inversion is used here:
+connectivity is identified with the genuine graph-induced external partition
+of each Wick pairing. -/
+theorem connectedExternalInsertionDysonCoefficient_eq_topPartitionFiber
+    {K : ℕ} (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
+    (labels : Fin (2 * K) → ExternalFieldLabel Mode)
+    (times : Fin (2 * K) → ℝ) (n : ℕ)
+    (anchor : Fin (2 * K)) :
+    connectedExternalInsertionDysonCoefficient ε β g labels times n =
+      ∑ d : VacuumFreeFixedExternalInsertionWickDiagram Mode K n labels,
+        if externalComponentPartition d.1.1.vertexGraph = ⊤ then
+          d.1.1.dysonAmplitude ε β g times else 0 := by
+  classical
+  unfold connectedExternalInsertionDysonCoefficient
+  apply Finset.sum_congr
+  · ext d
+    simp
+  · intro d _
+    simp only [← (d.1.1.allExternalVerticesConnected_iff_externalComponentPartition_eq_top anchor)]
+
 /-- The formal Dyson series of the fully external-connected diagram sector.
 It is not identified with a source cumulant without the signed moment theorem. -/
 noncomputable def connectedExternalInsertionDysonSeries {K : ℕ}
