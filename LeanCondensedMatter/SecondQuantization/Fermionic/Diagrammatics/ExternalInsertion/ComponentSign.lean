@@ -44,13 +44,16 @@ noncomputable def externalPartitionShuffle
     (π.partOrdersCompatible_partOrdersOfOrder order)
 
 /-- On the full finite external-slot set, the canonical increasing
-enumeration has the identity as its underlying slot map. -/
+enumeration agrees with the order-preserving cast from its cardinality
+to the actual external-slot count `2 * E`. -/
 private theorem externalSubsetIncreasingOrder_univ_apply
-    (i : Fin (2 * E)) :
+    (i : Fin (Finset.univ : Finset (Fin (2 * E))).card) :
     (externalSubsetIncreasingOrder
-      (Finset.univ : Finset (Fin (2 * E))) i).1 = i := by
+      (Finset.univ : Finset (Fin (2 * E))) i).1 =
+      Fin.cast (by simp) i := by
   classical
-  let canonical : Fin (2 * E) ≃o ↥(Finset.univ : Finset (Fin (2 * E))) := {
+  let hcard : (Finset.univ : Finset (Fin (2 * E))).card = 2 * E := by simp
+  let idIso : Fin (2 * E) ≃o ↥(Finset.univ : Finset (Fin (2 * E))) := {
     toEquiv := {
       toFun := fun x => ⟨x, Finset.mem_univ x⟩
       invFun := Subtype.val
@@ -59,33 +62,50 @@ private theorem externalSubsetIncreasingOrder_univ_apply
     }
     map_rel_iff' := by intro x y; rfl
   }
+  let canonical := (Fin.castOrderIso hcard).trans idIso
   have h : ((Finset.univ : Finset (Fin (2 * E))).orderIsoOfFin rfl) =
       canonical := Subsingleton.elim _ _
-  exact congrArg (fun iso : Fin (2 * E) ≃o
+  simpa [externalSubsetIncreasingOrder, canonical, idIso] using
+    congrArg (fun iso : Fin (Finset.univ : Finset (Fin (2 * E))).card ≃o
       ↥(Finset.univ : Finset (Fin (2 * E))) => (iso i).1) h
 
-/-- The canonical source-partition shuffle occupies precisely the source
-slots in its block when the ambient source is the full external family.
-Thus the source regrouping and the physical component shuffle can be
-compared through their occupied-slot sets alone. -/
-theorem externalPartitionShuffle_blockSlotSet_univ
+/-- The source shuffle of the *full* external slot family, transported
+from ambient size `Finset.univ.card` to the definitionally distinct
+but equal slot count `2 * E`. -/
+noncomputable def externalPartitionShuffleFull
+    (π : Finpartition (Finset.univ : Finset (Fin (2 * E)))) :
+    FamilySlotShuffleTo (fun P : π.parts => (P : Finset (Fin (2 * E))).card) (2 * E) :=
+  (FamilySlotShuffleTo.castTotalEquiv (by simp)) (externalPartitionShuffle π)
+
+/-- The ambient-size cast preserves the source regrouping inversion count. -/
+theorem externalPartitionShuffleFull_orderedBlockInversionCount
+    (π : Finpartition (Finset.univ : Finset (Fin (2 * E))))
+    (order : π.parts ≃ Fin (Fintype.card π.parts)) :
+    (externalPartitionShuffleFull π).orderedBlockInversionCount order =
+      (externalPartitionShuffle π).orderedBlockInversionCount order :=
+  (externalPartitionShuffle π).castTotalEquiv_orderedBlockInversionCount (by simp) order
+
+/-- The canonical full-source shuffle occupies exactly the source slots
+belonging to each partition block. -/
+theorem externalPartitionShuffleFull_blockSlotSet
     (π : Finpartition (Finset.univ : Finset (Fin (2 * E))))
     (P : π.parts) :
-    (externalPartitionShuffle π).blockSlotSet P =
+    (externalPartitionShuffleFull π).blockSlotSet P =
       (P : Finset (Fin (2 * E))) := by
   classical
   let o := externalSubsetIncreasingOrder (Finset.univ : Finset (Fin (2 * E)))
   let orders := π.partOrdersOfOrder o
+  let hcard : (Finset.univ : Finset (Fin (2 * E))).card = 2 * E := by simp
   have ho (z : ↥(Finset.univ : Finset (Fin (2 * E)))) :
-      o.symm z = z.1 := by
+      Fin.cast hcard (o.symm z) = z.1 := by
     obtain ⟨i, rfl⟩ := o.surjective z
-    exact (externalSubsetIncreasingOrder_univ_apply i).symm
+    simpa using (externalSubsetIncreasingOrder_univ_apply i).symm
   have hslot (i : Fin (P : Finset (Fin (2 * E))).card) :
-      (externalPartitionShuffle π).slotEquiv ⟨P, i⟩ =
+      (externalPartitionShuffleFull π).slotEquiv ⟨P, i⟩ =
         (orders P i).1 := by
     calc
-      (externalPartitionShuffle π).slotEquiv ⟨P, i⟩ =
-          o.symm (π.equivSigmaParts.symm ⟨P, orders P i⟩) := rfl
+      (externalPartitionShuffleFull π).slotEquiv ⟨P, i⟩ =
+          Fin.cast hcard (o.symm (π.equivSigmaParts.symm ⟨P, orders P i⟩)) := rfl
       _ = (π.equivSigmaParts.symm ⟨P, orders P i⟩).1 := ho _
       _ = (orders P i).1 := rfl
   ext x
