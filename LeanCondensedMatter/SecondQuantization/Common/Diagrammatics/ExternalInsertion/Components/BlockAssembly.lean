@@ -211,5 +211,38 @@ theorem ExternalInsertionBlockLayout.assembleDiagram_partner
   simp [ExternalInsertionBlockLayout.assembleDiagram]
 
 
+/-- Independent block assembly is **injective on the complete labelled
+diagram data**: all local external labels, interaction labels and pairing
+partners can be recovered from the assembled diagram.
+
+This is the essential inverse-information statement for arbitrary external
+partitions, separate from the remaining proof that connected local diagrams
+produce exactly the prescribed graph component partition. -/
+theorem ExternalInsertionBlockLayout.assembleDiagram_injective
+    {ExternalLabel InternalLabel : Type*}
+    (layout : ExternalInsertionBlockLayout E N) (S : Finset (Fin N)) :
+    Function.Injective (layout.assembleDiagram (ExternalLabel := ExternalLabel)
+      (InternalLabel := InternalLabel) S) := by
+  intro F G h
+  funext B
+  apply ExternalInsertionDiagram.ext
+  · funext e
+    have he := congrArg (fun d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S =>
+      d.externalLabel (layout.sourceEquiv.symm ⟨B, e⟩)) h
+    simpa only [layout.assembleDiagram_externalLabel] using he
+  · funext v
+    have hv := congrArg (fun d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S =>
+      d.vertexLabel ((layout.interactionEquiv S).symm ⟨B, v⟩)) h
+    simpa only [layout.assembleDiagram_vertexLabel] using hv
+  · apply Combinatorics.PairingOn.ext
+    apply Equiv.ext
+    intro p
+    have hp := congrArg (fun d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S =>
+      d.pairing.partner ((layout.legEquiv S).symm ⟨B, p⟩)) h
+    simp only [layout.assembleDiagram_partner] at hp
+    have hpair := (layout.legEquiv S).symm.injective hp
+    exact eq_of_heq (Sigma.mk.inj_iff.mp hpair).2
+
+
 end Common
 end SecondQuantization
