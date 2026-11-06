@@ -493,9 +493,8 @@ theorem ExternalInsertionDiagram.assembleComponentPairing_unshuffle
     (d.assembleComponentPairing componentPairings).transport
         d.componentLegShuffle.slotEquiv =
       Combinatorics.PairingOn.sigmaCongrRight componentPairings := by
-  exact Combinatorics.PairingOn.transport_symm_transport
-    (Combinatorics.PairingOn.sigmaCongrRight componentPairings)
-    d.componentLegShuffle.slotEquiv
+  unfold ExternalInsertionDiagram.assembleComponentPairing
+  rw [Combinatorics.PairingOn.transport_symm_transport]
 
 /-- A pairing assembled from independent components preserves the block index
 of every flattened leg and applies precisely the chosen componentPairings pairing inside
@@ -511,11 +510,11 @@ theorem ExternalInsertionDiagram.assembleComponentPairing_partner
         (B : Finset (ExternalInsertionVertex E S))).card + d.externalPairCount B))) :
     (d.assembleComponentPairing componentPairings).partner (d.componentDiagramLeg B p) =
       d.componentDiagramLeg B ((componentPairings B).partner p) := by
-  change ((Combinatorics.PairingOn.sigmaCongrRight componentPairings).transport
-      d.componentLegShuffle.slotEquiv.symm).partner
-        (d.componentLegShuffle.slotEquiv ⟨B, p⟩) =
-    d.componentLegShuffle.slotEquiv ⟨B, (componentPairings B).partner p⟩
-  simp
+  rw [← d.componentLegShuffle_slotEquiv_apply B p,
+    ← d.componentLegShuffle_slotEquiv_apply B ((componentPairings B).partner p)]
+  unfold ExternalInsertionDiagram.assembleComponentPairing
+  rw [Combinatorics.PairingOn.transport_partner, Equiv.symm_apply_apply,
+    Combinatorics.PairingOn.sigmaCongrRight_partner, Equiv.symm_symm]
 
 /-- No information about the independent family of componentPairings pairings is lost by
 assembling it into an ambient perfect pairing. -/
