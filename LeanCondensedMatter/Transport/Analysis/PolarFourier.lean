@@ -1561,6 +1561,54 @@ theorem integral_besselJ_one_sq_div (a b : ℝ) :
   linear_combination htwo
 
 
+/-- Real Cartesian channels of the canonical angular Fourier kernels. They
+obey the same first-order system as the first two integer-order Bessel functions. -/
+private noncomputable def polarFourierBesselX (r : ℝ) : ℝ :=
+  (polarFourierZerothAngularKernel r).re
+
+private noncomputable def polarFourierBesselY (r : ℝ) : ℝ :=
+  (polarFourierFirstCosineAngularKernel r).im
+
+private theorem polarFourierBesselX_hasDerivAt (r : ℝ) :
+    HasDerivAt polarFourierBesselX (-polarFourierBesselY r) r := by
+  have h := ((Complex.reCLM.hasFDerivAt.comp r
+    (polarFourierZerothAngularKernel_hasDerivAt r).hasFDerivAt).hasDerivAt)
+  convert h using 1
+  · rfl
+  · simp [polarFourierBesselY, Complex.mul_re]
+
+private theorem polarFourierBesselY_hasDerivAt (r : ℝ) (hr : r ≠ 0) :
+    HasDerivAt polarFourierBesselY
+      (polarFourierBesselX r - polarFourierBesselY r / r) r := by
+  have h := ((Complex.imCLM.hasFDerivAt.comp r
+    (polarFourierFirstCosineAngularKernel_hasDerivAt r).hasFDerivAt).hasDerivAt)
+  have hangle := congrArg Complex.im
+    (polarFourierFirstCosineAngularKernel_two_mul_eq_zeroth_sub_second r)
+  have hs :
+      ((Complex.I / 2) *
+        (polarFourierZerothAngularKernel r +
+          polarFourierSecondCosineAngularKernel r)).im =
+        (polarFourierZerothAngularKernel r).re / 2 +
+          (polarFourierSecondCosineAngularKernel r).re / 2 := by
+    simp [Complex.mul_im, Complex.div_eq_mul_inv]
+  have hrec :
+      2 * polarFourierBesselY r =
+        r * (polarFourierBesselX r -
+          (polarFourierSecondCosineAngularKernel r).re) := by
+    simpa [polarFourierBesselY, polarFourierBesselX,
+      Complex.mul_im, Complex.mul_re, Complex.I_re, Complex.I_im] using hangle
+  have hcoeff :
+      (polarFourierZerothAngularKernel r).re / 2 +
+        (polarFourierSecondCosineAngularKernel r).re / 2 =
+      polarFourierBesselX r - polarFourierBesselY r / r := by
+    apply (eq_div_iff hr).2
+    dsimp [polarFourierBesselX]
+    linear_combination -(1 / 2 : ℝ) * hrec
+  convert h using 1
+  · rfl
+  · rw [hs, hcoeff]
+
+
 end
 
 end Transport
