@@ -99,7 +99,9 @@ theorem evenExternalSubsetLabels_externalPartitionBlock
   have hblock := d.vacuumFreeComponentsEquivExternalBlocks_symm_apply hVac P
   have h := evenExternalSubsetLabels_componentOrderedDiagram (d := d) B
   have hheq := heq_of_eq h
-  simpa only [hblock] using hheq
+  dsimp only [B] at hheq
+  rw [hblock] at hheq
+  exact hheq
 
 omit [Fintype Mode] in
 /-- The same external-block transport preserves the insertion times in
@@ -119,7 +121,9 @@ theorem evenExternalSubsetTimes_externalPartitionBlock
   have hblock := d.vacuumFreeComponentsEquivExternalBlocks_symm_apply hVac P
   have h := evenExternalSubsetTimes_component (d := d) times B
   have hheq := heq_of_eq h
-  simpa only [hblock] using hheq
+  dsimp only [B] at hheq
+  rw [hblock] at hheq
+  exact hheq
 
 /-- Fully external-connected, vacuum-free Dyson coefficient using the actual
 integrated signed Wick diagram amplitude, with all labels and times fixed. -/
