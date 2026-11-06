@@ -64,7 +64,6 @@ theorem polarFourierFirstCosineAngularKernel_radialPrimitive_hasDerivAt
           polarFourierSecondCosineAngularKernel (p * c)))) p := by
     convert hk' using 1
     · rfl
-    · rfl
   have h := ((hasDerivAt_id p).ofReal_comp).mul hk
   have hrec :=
     polarFourierFirstCosineAngularKernel_two_mul_eq_zeroth_sub_second (p * c)
@@ -93,7 +92,16 @@ theorem polarFourierFirstCosineAngularKernel_radialPrimitive_hasDerivAt
       _ = _ := by rw [hrec']; ring
   convert h using 1
   · rfl
-  · exact hcoef.symm
+  · calc
+      _ = polarFourierFirstCosineAngularKernel (p * c) +
+          (p : ℂ) *
+            (((Complex.I / 2) *
+              (polarFourierZerothAngularKernel (p * c) +
+                polarFourierSecondCosineAngularKernel (p * c))) * (c : ℂ)) :=
+        hcoef.symm
+      _ = _ := by
+        simp only [Complex.ofReal_one, one_mul, id_eq]
+        ring
 
 /-- Integration by parts for a finite radial Fourier transform, with no
 restriction on the (possibly zero or negative) Fourier scale `c`.
