@@ -55,8 +55,16 @@ theorem polarFourierFirstCosineAngularKernel_radialPrimitive_hasDerivAt
         polarFourierZerothAngularKernel (p * c)) p := by
   have harg : HasDerivAt (fun x : ℝ => x * c) c p := by
     simpa using (hasDerivAt_id p).mul_const c
-  have hk := ((polarFourierFirstCosineAngularKernel_hasDerivAt
-    (p * c)).hasFDerivAt.comp p harg.hasFDerivAt).hasDerivAt
+  have hk' := (polarFourierFirstCosineAngularKernel_hasDerivAt
+    (p * c)).scomp p harg
+  have hk : HasDerivAt
+      (fun x : ℝ => polarFourierFirstCosineAngularKernel (x * c))
+      ((c : ℂ) * ((Complex.I / 2) *
+        (polarFourierZerothAngularKernel (p * c) +
+          polarFourierSecondCosineAngularKernel (p * c)))) p := by
+    convert hk' using 1
+    · rfl
+    · rfl
   have h := ((hasDerivAt_id p).ofReal_comp).mul hk
   have hrec :=
     polarFourierFirstCosineAngularKernel_two_mul_eq_zeroth_sub_second (p * c)
