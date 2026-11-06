@@ -205,5 +205,48 @@ theorem ExternalInsertionDiagram.vacuumFreeComponentsEquivExternalBlocks_symm_ap
   simpa using h.symm
 
 
+/-- For a diagram with at least one external insertion, all external vertices
+are mutually connected precisely when their induced external-component
+partition is the one-block (top) partition.
+
+The diagram may still have vacuum components: neither side requires the
+whole vertex graph to be preconnected. -/
+theorem ExternalInsertionDiagram.allExternalVerticesConnected_iff_externalComponentPartition_eq_top
+    {S : Finset (Fin N)}
+    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
+    (anchor : Fin (2 * E)) :
+    AllExternalVerticesConnected d.vertexGraph ↔
+      externalComponentPartition d.vertexGraph = ⊤ := by
+  classical
+  letI : Nonempty (Fin (2 * E)) := ⟨anchor⟩
+  constructor
+  · intro hconnected
+    have hparts :
+        (externalComponentPartition d.vertexGraph).parts =
+          {(Finset.univ : Finset (Fin (2 * E)))} :=
+      (allExternalVerticesConnected_iff_externalComponentPartition_parts_eq_singleton
+        d.vertexGraph).mp hconnected
+    apply le_antisymm le_top
+    intro B hB
+    have hBeq : B = (Finset.univ : Finset (Fin (2 * E))) :=
+      Finset.mem_singleton.mp (Finpartition.parts_top_subset _ hB)
+    refine ⟨Finset.univ, ?_, ?_⟩
+    · rw [hparts]
+      exact Finset.mem_singleton_self _
+    · simp [hBeq]
+  · intro htop a b
+    have hpart : (externalComponentPartition d.vertexGraph).part a =
+        (Finset.univ : Finset (Fin (2 * E))) := by
+      have hmem : (externalComponentPartition d.vertexGraph).part a ∈
+          (⊤ : Finpartition (Finset.univ : Finset (Fin (2 * E)))).parts := by
+        rw [← htop]
+        exact (externalComponentPartition d.vertexGraph).part_mem.2
+          (Finset.mem_univ a)
+      exact Finset.mem_singleton.mp (Finpartition.parts_top_subset _ hmem)
+    apply (mem_externalComponentPartition_part d.vertexGraph a b).mp
+    rw [hpart]
+    exact Finset.mem_univ b
+
+
 end Common
 end SecondQuantization
