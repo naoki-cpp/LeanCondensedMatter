@@ -1603,16 +1603,16 @@ private theorem polarFourierBesselY_hasDerivAt (r : ℝ) (hr : r ≠ 0) :
       (polarFourierZerothAngularKernel r).re / 2 +
         (polarFourierSecondCosineAngularKernel r).re / 2 =
       polarFourierBesselX r - polarFourierBesselY r / r := by
-    dsimp [polarFourierBesselX]
+    dsimp [polarFourierBesselX] at hrec ⊢
     field_simp [hr]
     nlinarith [hrec]
-  change HasDerivAt polarFourierBesselY
-    ((Complex.I / 2 *
-      (polarFourierZerothAngularKernel r +
-        polarFourierSecondCosineAngularKernel r)).im) r at h
   convert h using 1
   · rfl
-  · rw [hs, hcoeff]
+  · change polarFourierBesselX r - polarFourierBesselY r / r =
+        ((Complex.I / 2) *
+          (polarFourierZerothAngularKernel r +
+            polarFourierSecondCosineAngularKernel r)).im
+    rw [hs, hcoeff]
 
 
 /-- A quantitative Lyapunov argument for the radial Bessel first-order system.
@@ -1641,7 +1641,9 @@ private theorem besselRadialSystem_energy_tendsto_zero
     have hxy' : 2 * (x r * y r) ≤ r * E r := by
       nlinarith [hxy, hrE]
     have hdiv : 2 * (x r * y r) / r ≤ E r :=
-      (div_le_iff₀ (by linarith : 0 < r)).2 hxy'
+      (div_le_iff₀ (by linarith : 0 < r)).2 (by nlinarith [hxy'])
+    have hrewrite : 2 * (x r * y r / r) = 2 * (x r * y r) / r := by ring
+    rw [← hrewrite] at hdiv
     dsimp [F]
     linarith
   have hF_nonneg (r : ℝ) (hr : 2 ≤ r) : 0 ≤ F r := by
@@ -1671,7 +1673,7 @@ private theorem besselRadialSystem_energy_tendsto_zero
     have hxy' : 3 * (x r * y r) ≤ r * E r := by
       nlinarith [hxy, hrE, hE_nonneg r]
     have hdiv : 3 * (x r * y r) / r ≤ E r :=
-      (div_le_iff₀ (by linarith : 0 < r)).2 hxy'
+      (div_le_iff₀ (by linarith : 0 < r)).2 (by nlinarith [hxy'])
     exact mul_nonpos_of_nonneg_of_nonpos (hF_nonneg r hr) (by linarith)
   have hanti : AntitoneOn H (Set.Ici (2 : ℝ)) := by
     apply antitoneOn_of_deriv_nonpos (convex_Ici (2 : ℝ))
@@ -1712,7 +1714,7 @@ private theorem besselRadialSystem_energy_tendsto_zero
   have hFLim : Filter.Tendsto F Filter.atTop (nhds 0) := by
     have hroot : Filter.Tendsto (fun r : ℝ => Real.sqrt (F r ^ 2))
         Filter.atTop (nhds 0) := by
-      simpa only [Real.sqrt_zero] using
+      simpa only [Function.comp_def, Real.sqrt_zero] using
         (Real.continuous_sqrt.tendsto 0).comp hSqLim
     apply hroot.congr'
     filter_upwards [Filter.eventually_ge_atTop (2 : ℝ)] with r hr
