@@ -473,11 +473,11 @@ needed to assemble components over an *arbitrary* external source partition. -/
 noncomputable def ExternalInsertionDiagram.assembleComponentPairing
     {S : Finset (Fin N)}
     (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
-    (local : ∀ B : d.vertexGraph.componentPartition.parts,
+    (componentPairings : ∀ B : d.vertexGraph.componentPartition.parts,
       Pairing (2 * (interactionSector
         (B : Finset (ExternalInsertionVertex E S))).card + d.externalPairCount B)) :
     Pairing (2 * S.card + E) :=
-  (Combinatorics.PairingOn.sigmaCongrRight local).transport
+  (Combinatorics.PairingOn.sigmaCongrRight componentPairings).transport
     d.componentLegShuffle.slotEquiv.symm
 
 /-- Independent pairing assembly is **right-inverse to unshuffling** the
@@ -487,37 +487,37 @@ any connectedness or Dyson-amplitude arguments are introduced. -/
 theorem ExternalInsertionDiagram.assembleComponentPairing_unshuffle
     {S : Finset (Fin N)}
     (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
-    (local : ∀ B : d.vertexGraph.componentPartition.parts,
+    (componentPairings : ∀ B : d.vertexGraph.componentPartition.parts,
       Pairing (2 * (interactionSector
         (B : Finset (ExternalInsertionVertex E S))).card + d.externalPairCount B)) :
-    (d.assembleComponentPairing local).transport
+    (d.assembleComponentPairing componentPairings).transport
         d.componentLegShuffle.slotEquiv =
-      Combinatorics.PairingOn.sigmaCongrRight local := by
+      Combinatorics.PairingOn.sigmaCongrRight componentPairings := by
   exact Combinatorics.PairingOn.transport_symm_transport
-    (Combinatorics.PairingOn.sigmaCongrRight local)
+    (Combinatorics.PairingOn.sigmaCongrRight componentPairings)
     d.componentLegShuffle.slotEquiv
 
 /-- A pairing assembled from independent components preserves the block index
-of every flattened leg and applies precisely the chosen local pairing inside
+of every flattened leg and applies precisely the chosen componentPairings pairing inside
 that block. -/
 theorem ExternalInsertionDiagram.assembleComponentPairing_partner
     {S : Finset (Fin N)}
     (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
-    (local : ∀ B : d.vertexGraph.componentPartition.parts,
+    (componentPairings : ∀ B : d.vertexGraph.componentPartition.parts,
       Pairing (2 * (interactionSector
         (B : Finset (ExternalInsertionVertex E S))).card + d.externalPairCount B))
     (B : d.vertexGraph.componentPartition.parts)
     (p : Fin (2 * (2 * (interactionSector
         (B : Finset (ExternalInsertionVertex E S))).card + d.externalPairCount B))) :
-    (d.assembleComponentPairing local).partner (d.componentDiagramLeg B p) =
-      d.componentDiagramLeg B ((local B).partner p) := by
-  change ((Combinatorics.PairingOn.sigmaCongrRight local).transport
+    (d.assembleComponentPairing componentPairings).partner (d.componentDiagramLeg B p) =
+      d.componentDiagramLeg B ((componentPairings B).partner p) := by
+  change ((Combinatorics.PairingOn.sigmaCongrRight componentPairings).transport
       d.componentLegShuffle.slotEquiv.symm).partner
         (d.componentLegShuffle.slotEquiv ⟨B, p⟩) =
-    d.componentLegShuffle.slotEquiv ⟨B, (local B).partner p⟩
+    d.componentLegShuffle.slotEquiv ⟨B, (componentPairings B).partner p⟩
   simp
 
-/-- No information about the independent family of local pairings is lost by
+/-- No information about the independent family of componentPairings pairings is lost by
 assembling it into an ambient perfect pairing. -/
 theorem ExternalInsertionDiagram.assembleComponentPairing_injective
     {S : Finset (Fin N)}
