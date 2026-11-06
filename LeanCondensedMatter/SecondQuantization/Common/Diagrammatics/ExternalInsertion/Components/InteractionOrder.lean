@@ -158,10 +158,8 @@ noncomputable def ExternalInsertionDiagram.vacuumFreeExternalBlockInteractionShu
     fun B => (interactionSector (B.1 : Finset (ExternalInsertionVertex E S))).card
   have hs : (∑ B, size B) = S.card := by
     simpa [size] using sum_interactionSector_card_eq d.vertexGraph
-  have hsP : (∑ P, size (e.symm P)) = S.card := by
-    calc
-      (∑ P, size (e.symm P)) = ∑ B, size B := Equiv.sum_comp e.symm size
-      _ = S.card := hs
+  have hsP : (∑ P, size (e.symm P)) = S.card :=
+    d.sum_externalBlockInteractionSector_card_eq hVac
   exact
     ((FamilySlotShuffleTo.castTotalEquiv hs.symm).trans
       (FamilySlotShuffle.reindexEquiv e.symm size)).trans
