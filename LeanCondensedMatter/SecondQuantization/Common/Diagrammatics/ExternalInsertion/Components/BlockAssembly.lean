@@ -175,7 +175,9 @@ theorem ExternalInsertionBlockLayout.assembleDiagram_externalLabel
     (i : Fin (2 * ((B : Finset (Fin (2 * E))).card / 2))) :
     (layout.assembleDiagram S F).externalLabel
         (layout.sourceEquiv.symm ⟨B, i⟩) = (F B).externalLabel i := by
-  simp [ExternalInsertionBlockLayout.assembleDiagram]
+  change (F (layout.sourceEquiv (layout.sourceEquiv.symm ⟨B, i⟩)).1).externalLabel
+    (layout.sourceEquiv (layout.sourceEquiv.symm ⟨B, i⟩)).2 = _
+  rw [Equiv.apply_symm_apply]
 
 /-- The assembled interaction labels are exactly the independently
 specified block labels, at their original ambient interaction vertices. -/
@@ -189,7 +191,9 @@ theorem ExternalInsertionBlockLayout.assembleDiagram_vertexLabel
     (B : layout.partition.parts) (v : ↥(layout.interactionBlock S B)) :
     (layout.assembleDiagram S F).vertexLabel
         ((layout.interactionEquiv S).symm ⟨B, v⟩) = (F B).vertexLabel v := by
-  simp [ExternalInsertionBlockLayout.assembleDiagram]
+  change (F ((layout.interactionEquiv S) ((layout.interactionEquiv S).symm ⟨B, v⟩)).1).vertexLabel
+    ((layout.interactionEquiv S) ((layout.interactionEquiv S).symm ⟨B, v⟩)).2 = _
+  rw [Equiv.apply_symm_apply]
 
 /-- An assembled pairing stays in the specified external block on both
 ends of every pair, and its within-block partner is the original local
