@@ -50,7 +50,6 @@ theorem massiveDiracRadialDenominator_inv_hasDerivAt
     ring
   have hinv := hD.fun_inv hden
   convert hinv using 1
-  · rfl
   · rw [div_eq_mul_inv, inv_pow]
     ring
 
