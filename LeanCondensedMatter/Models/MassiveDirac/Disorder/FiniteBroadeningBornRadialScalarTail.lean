@@ -1,5 +1,6 @@
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornRadialScalarGenerator
 import LeanCondensedMatter.Transport.Analysis.PolarFourierRadialPrimitive
+import LeanCondensedMatter.Transport.Analysis.PolarFourierRadialLimit
 import Mathlib.Tactic.FunProp
 import Mathlib.Tactic.Ring
 
@@ -131,6 +132,58 @@ theorem finiteCutoffContinuumBornDysonRadialScalarKernel_by_parts
     hden
   dsimp only
   simpa only [finiteCutoffContinuumBornDysonDenominator_eq_radial] using h
+
+/-- A cutoff limit theorem for a quadratic massive-Dirac Fourier resolvent,
+assuming exactly the two ultraviolet conditions isolated by the preceding
+finite-interval integration-by-parts theorem. This statement keeps the
+complex spectral center fixed while its radial integration cutoff increases.
+It does not take the cutoff of a self-consistent Born self-energy. -/
+theorem tendsto_integral_massiveDiracRadialDenominator_inv_fourierKernel_of_conditions
+    (v c a : ℝ) (energy mass : ℂ) (hc : c ≠ 0)
+    (hden : ∀ p : ℝ, massiveDiracRadialDenominator v p energy mass ≠ 0)
+    (hint : IntegrableOn (fun p : ℝ =>
+      (p : ℂ) * polarFourierFirstCosineAngularKernel (p * c) *
+        ((2 : ℂ) * (v : ℂ) ^ 2 * (p : ℂ) *
+          (massiveDiracRadialDenominator v p energy mass)⁻¹ ^ 2))
+      (Set.Ioi a))
+    (hboundary : Filter.Tendsto (fun b : ℝ =>
+      (b : ℂ) * polarFourierFirstCosineAngularKernel (b * c) *
+        (massiveDiracRadialDenominator v b energy mass)⁻¹)
+      Filter.atTop (nhds 0)) :
+    Filter.Tendsto
+      (fun b : ℝ => ∫ p in a..b,
+        (p : ℂ) * polarFourierZerothAngularKernel (p * c) *
+          (massiveDiracRadialDenominator v p energy mass)⁻¹)
+      Filter.atTop
+      (nhds ((-((a : ℂ) *
+          polarFourierFirstCosineAngularKernel (a * c) *
+          (massiveDiracRadialDenominator v a energy mass)⁻¹) -
+        ∫ p in Set.Ioi a, (p : ℂ) *
+          polarFourierFirstCosineAngularKernel (p * c) *
+          ((2 : ℂ) * (v : ℂ) ^ 2 * (p : ℂ) *
+            (massiveDiracRadialDenominator v p energy mass)⁻¹ ^ 2)) /
+        (Complex.I * (c : ℂ)))) := by
+  have hDcont : Continuous
+      (fun p : ℝ => massiveDiracRadialDenominator v p energy mass) := by
+    unfold massiveDiracRadialDenominator
+    fun_prop
+  have hInvCont : Continuous
+      (fun p : ℝ => (massiveDiracRadialDenominator v p energy mass)⁻¹) :=
+    hDcont.inv₀ hden
+  have hDerivativeCont : Continuous
+      (fun p : ℝ =>
+        (2 : ℂ) * (v : ℂ) ^ 2 * (p : ℂ) *
+          (massiveDiracRadialDenominator v p energy mass)⁻¹ ^ 2) :=
+    ((continuous_const.mul
+      (Complex.continuous_ofReal.comp continuous_id)).mul
+        (hInvCont.pow 2))
+  exact tendsto_integral_polarFourierZerothAngularKernel_of_by_parts
+    c a hc
+    (fun p : ℝ => (massiveDiracRadialDenominator v p energy mass)⁻¹)
+    (fun p : ℝ => (2 : ℂ) * (v : ℂ) ^ 2 * (p : ℂ) *
+      (massiveDiracRadialDenominator v p energy mass)⁻¹ ^ 2)
+    (fun p => massiveDiracRadialDenominator_inv_hasDerivAt v p energy mass (hden p))
+    hDerivativeCont hint hboundary
 
 end
 
