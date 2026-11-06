@@ -91,7 +91,7 @@ private theorem evenExternalSubsetRestriction_heq_of_eq
   cases hST
   rfl
 
-omit [Fintype Mode] in
+omit [LinearOrder Mode] [Fintype Mode] in
 /-- On each external-partition block of a vacuum-free diagram, the field
 labels used by the source-subset moment are exactly the labels of the
 canonical standalone connected-component diagram.
@@ -124,7 +124,7 @@ theorem evenExternalSubsetLabels_externalPartitionBlock
       (d.externalSector_card_even B) hblock.symm
   exact htransport.trans (heq_of_eq h)
 
-omit [Fintype Mode] in
+omit [LinearOrder Mode] [Fintype Mode] in
 /-- The same external-block transport preserves the insertion times in
 increasing source-slot order, not in the order of their numerical values. -/
 theorem evenExternalSubsetTimes_externalPartitionBlock
@@ -173,10 +173,18 @@ theorem vacuumFreeExternalInsertionDysonCoefficient_eq_sum_externalPartitionFibe
   let blockPartition : D → Finpartition (Finset.univ : Finset (Fin (2 * K))) :=
     fun d => externalComponentPartition d.1.1.vertexGraph
   let weight : D → ℂ := fun d => d.1.1.dysonAmplitude ε β g times
+  letI : ∀ π : Finpartition (Finset.univ : Finset (Fin (2 * K))),
+      Fintype {d : D // blockPartition d = π} := fun _ => Fintype.ofFinite _
   change (∑ d : D, weight d) =
     ∑ π, ∑ d : {d : D // blockPartition d = π}, weight d.1
-  rw [← Fintype.sum_sigma]
-  exact (Equiv.sum_comp (Equiv.sigmaFiberEquiv blockPartition) weight).symm
+  calc
+    (∑ d : D, weight d) =
+        ∑ x : Σ π, {d : D // blockPartition d = π},
+          weight ((Equiv.sigmaFiberEquiv blockPartition) x) :=
+      (Equiv.sum_comp (Equiv.sigmaFiberEquiv blockPartition) weight).symm
+    _ = ∑ π, ∑ d : {d : D // blockPartition d = π}, weight d.1 := by
+      rw [Fintype.sum_sigma]
+      rfl
 
 /-- Fully external-connected, vacuum-free Dyson coefficient using the actual
 integrated signed Wick diagram amplitude, with all labels and times fixed. -/
