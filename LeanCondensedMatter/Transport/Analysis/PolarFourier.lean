@@ -1608,11 +1608,8 @@ private theorem polarFourierBesselY_hasDerivAt (r : ℝ) (hr : r ≠ 0) :
     nlinarith [hrec]
   convert h using 1
   · rfl
-  · change polarFourierBesselX r - polarFourierBesselY r / r =
-        ((Complex.I / 2) *
-          (polarFourierZerothAngularKernel r +
-            polarFourierSecondCosineAngularKernel r)).im
-    rw [hs, hcoeff]
+  · simpa [Complex.imCLM, ContinuousLinearMap.toSpanSingleton,
+      ContinuousLinearMap.compSL] using (hcoeff.symm.trans hs.symm)
 
 
 /-- A quantitative Lyapunov argument for the radial Bessel first-order system.
@@ -1721,7 +1718,8 @@ private theorem besselRadialSystem_energy_tendsto_zero
     rw [Real.sqrt_sq_eq_abs, abs_of_nonneg (hF_nonneg r hr)]
   have hDouble : Filter.Tendsto (fun r : ℝ => 2 * F r)
       Filter.atTop (nhds 0) := by
-    convert (tendsto_const_nhds.mul hFLim) using 1 <;> norm_num
+    convert (tendsto_const_nhds.mul hFLim) using 1
+    norm_num
   have hELim : Filter.Tendsto E Filter.atTop (nhds 0) := by
     apply squeeze_zero'
     · filter_upwards [Filter.eventually_ge_atTop (2 : ℝ)] with r hr
