@@ -78,6 +78,19 @@ theorem evenExternalSubsetTimes_component
   rfl
 
 
+/-- Restricting an external-field family to an even subset is invariant,
+up to dependent equality, under equality of the actual source slot sets.
+The two parity witnesses need not be definitionally the same. -/
+private theorem evenExternalSubsetRestriction_heq_of_eq
+    {Value : Type*} (F : Fin (2 * E) → Value)
+    {S T : Finset (Fin (2 * E))}
+    (hs : Even S.card) (ht : Even T.card) (hST : S = T) :
+    HEq
+      (fun i => F (evenExternalSubsetOrderIso S hs i).1)
+      (fun i => F (evenExternalSubsetOrderIso T ht i).1) := by
+  cases hST
+  rfl
+
 omit [Fintype Mode] in
 /-- On each external-partition block of a vacuum-free diagram, the field
 labels used by the source-subset moment are exactly the labels of the
@@ -98,10 +111,18 @@ theorem evenExternalSubsetLabels_externalPartitionBlock
   let B := (d.vacuumFreeComponentsEquivExternalBlocks hVac).symm P
   have hblock := d.vacuumFreeComponentsEquivExternalBlocks_symm_apply hVac P
   have h := evenExternalSubsetLabels_componentOrderedDiagram (d := d) B
-  have hheq := heq_of_eq h
-  dsimp only [B] at hheq
-  rw [hblock] at hheq
-  exact hheq
+  have htransport : HEq
+      (evenExternalSubsetLabels d.externalLabel
+        (P : Finset (Fin (2 * E)))
+        (d.externalComponentPartition_block_card_even P.1 P.2))
+      (evenExternalSubsetLabels d.externalLabel
+        (B.1 : Finset (ExternalInsertionVertex E
+          (Finset.univ : Finset (Fin n)))).toLeft
+        (d.externalSector_card_even B)) :=
+    evenExternalSubsetRestriction_heq_of_eq d.externalLabel
+      (d.externalComponentPartition_block_card_even P.1 P.2)
+      (d.externalSector_card_even B) hblock.symm
+  exact htransport.trans (heq_of_eq h)
 
 omit [Fintype Mode] in
 /-- The same external-block transport preserves the insertion times in
@@ -120,10 +141,18 @@ theorem evenExternalSubsetTimes_externalPartitionBlock
   let B := (d.vacuumFreeComponentsEquivExternalBlocks hVac).symm P
   have hblock := d.vacuumFreeComponentsEquivExternalBlocks_symm_apply hVac P
   have h := evenExternalSubsetTimes_component (d := d) times B
-  have hheq := heq_of_eq h
-  dsimp only [B] at hheq
-  rw [hblock] at hheq
-  exact hheq
+  have htransport : HEq
+      (evenExternalSubsetTimes times
+        (P : Finset (Fin (2 * E)))
+        (d.externalComponentPartition_block_card_even P.1 P.2))
+      (evenExternalSubsetTimes times
+        (B.1 : Finset (ExternalInsertionVertex E
+          (Finset.univ : Finset (Fin n)))).toLeft
+        (d.externalSector_card_even B)) :=
+    evenExternalSubsetRestriction_heq_of_eq times
+      (d.externalComponentPartition_block_card_even P.1 P.2)
+      (d.externalSector_card_even B) hblock.symm
+  exact htransport.trans (heq_of_eq h)
 
 /-- Reindex the *actual* finite sum of vacuum-free fixed-label Dyson
 diagrams by their induced external-component partition and the corresponding
