@@ -8202,6 +8202,14 @@
       "externalImportCount": 4
     },
     {
+      "name": "LeanCondensedMatter.Transport.Analysis.BesselRadialMoments",
+      "sourceFile": "LeanCondensedMatter/Transport/Analysis/BesselRadialMoments.lean",
+      "imports": [
+        "LeanCondensedMatter.Transport.Analysis.PolarFourier"
+      ],
+      "externalImportCount": 1
+    },
+    {
       "name": "LeanCondensedMatter.Transport.Analysis.ContinuumMeasure",
       "sourceFile": "LeanCondensedMatter/Transport/Analysis/ContinuumMeasure.lean",
       "imports": [],
@@ -8221,7 +8229,7 @@
         "LeanCondensedMatter.Transport.Analysis.ContinuumMeasure",
         "LeanCondensedMatter.Transport.Analysis.FourierGeometry"
       ],
-      "externalImportCount": 11
+      "externalImportCount": 12
     },
     {
       "name": "LeanCondensedMatter.Transport.Analysis.RelaxationTime",
@@ -8243,6 +8251,7 @@
       "sourceFile": "LeanCondensedMatter/Transport/Analysis.lean",
       "imports": [
         "LeanCondensedMatter.Transport.Analysis.AngularHarmonics",
+        "LeanCondensedMatter.Transport.Analysis.BesselRadialMoments",
         "LeanCondensedMatter.Transport.Analysis.ContinuumMeasure",
         "LeanCondensedMatter.Transport.Analysis.FourierGeometry",
         "LeanCondensedMatter.Transport.Analysis.PolarFourier",

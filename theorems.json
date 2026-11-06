@@ -87546,6 +87546,46 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
+    "terminal": true,
+    "statement": "∀ (z : ℝ), Complex.besselJ 1 ↑z ^ 2 / ↑z = Complex.besselJ 1 ↑z * (Complex.besselJ 0 ↑z + Complex.besselJ 2 ↑z) / 2",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.besselJ_one_sq_div_eq_half_product",
+    "module": "LeanCondensedMatter.Transport.Analysis.PolarFourier",
+    "externalAxioms": [],
+    "docString": "The Bessel recurrence eliminates the apparent singularity of J₁(z)²/z\nat the origin, with the convention that division by zero is zero. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "_private.LeanCondensedMatter.Transport.Analysis.PolarFourier.0.QuantumTheory.Transport.besselJ_zero_one_two_recurrence"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
     "terminal": false,
     "statement": "∀ (gap : ℝ) (forward reverse : ℂ) (p : ℝ × ℝ),\n  gap + p.1 ≠ 0 → ContinuousAt (QuantumTheory.Transport.interbandPoleRegularFactor gap forward reverse) p",
     "standardAxioms": [
@@ -89920,6 +89960,50 @@
   },
   {
     "terminal": false,
+    "statement": "∀ (z : ℝ),\n  HasDerivAt QuantumTheory.Transport.polarFourierFirstCosineAngularKernel\n    (Complex.I / 2 *\n      (QuantumTheory.Transport.polarFourierZerothAngularKernel z +\n        QuantumTheory.Transport.polarFourierSecondCosineAngularKernel z))\n    z",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.polarFourierFirstCosineAngularKernel_hasDerivAt",
+    "module": "LeanCondensedMatter.Transport.Analysis.PolarFourier",
+    "externalAxioms": [],
+    "docString": "Differentiating the first polar Fourier harmonic produces precisely the\nisotropic plus second-harmonic channels. This is an all-real-argument\ndifferential identity, not an origin-only or asymptotic statement. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.polarFourierHarmonicEnergy_hasDerivAt"
+    ],
+    "dependencies": [
+      "_private.LeanCondensedMatter.Transport.Analysis.PolarFourier.0.QuantumTheory.Transport.norm_polarFourierRadialPhase"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.polarFourierHarmonicEnergy_hasDerivAt"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ (z : ℝ),\n  QuantumTheory.Transport.polarFourierFirstCosineAngularKernel (-z) =\n    -QuantumTheory.Transport.polarFourierFirstCosineAngularKernel z",
     "standardAxioms": [
       "Classical.choice",
@@ -90044,6 +90128,47 @@
       "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.TMatrix.BornDysonLoop.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenEntryKernel_zero_disorder_zero_radius"
     ],
     "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (z : ℝ),\n  HasDerivAt\n    (fun t =>\n      QuantumTheory.Transport.polarFourierZerothAngularKernel t ^ 2 -\n        QuantumTheory.Transport.polarFourierFirstCosineAngularKernel t ^ 2)\n    (Complex.I * QuantumTheory.Transport.polarFourierFirstCosineAngularKernel z *\n      (QuantumTheory.Transport.polarFourierZerothAngularKernel z -\n        QuantumTheory.Transport.polarFourierSecondCosineAngularKernel z))\n    z",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.polarFourierHarmonicEnergy_hasDerivAt",
+    "module": "LeanCondensedMatter.Transport.Analysis.PolarFourier",
+    "externalAxioms": [],
+    "docString": "A finite-radius conservation-law primitive for the first two radial Fourier\nharmonics. Its derivative involves the same K0-minus-K2 channel that occurs in\nthe Gaussian-crossed current moments; the identity is valid including z = 0. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.Transport.polarFourierFirstCosineAngularKernel_hasDerivAt",
+      "QuantumTheory.Transport.polarFourierZerothAngularKernel_hasDerivAt"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -90431,7 +90556,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -90443,7 +90568,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Transport.polarFourierFirstCosineAngularKernel_eq_besselJ"
+      "QuantumTheory.Transport.polarFourierFirstCosineAngularKernel_eq_besselJ",
+      "QuantumTheory.Transport.polarFourierHarmonicEnergy_hasDerivAt"
     ],
     "dependencies": [
       "_private.LeanCondensedMatter.Transport.Analysis.PolarFourier.0.QuantumTheory.Transport.norm_polarFourierRadialPhase"
@@ -90451,9 +90577,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Transport.polarFourierFirstCosineAngularKernel_eq_besselJ"
+      "QuantumTheory.Transport.polarFourierFirstCosineAngularKernel_eq_besselJ",
+      "QuantumTheory.Transport.polarFourierHarmonicEnergy_hasDerivAt"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -188139,7 +188266,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -188151,6 +188278,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "QuantumTheory.Transport.besselJ_one_sq_div_eq_half_product",
       "QuantumTheory.Transport.polarFourierSecondCosineAngularKernel_eq_besselJ"
     ],
     "dependencies": [
@@ -188159,9 +188287,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "QuantumTheory.Transport.besselJ_one_sq_div_eq_half_product",
       "QuantumTheory.Transport.polarFourierSecondCosineAngularKernel_eq_besselJ"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -188361,7 +188490,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -188373,15 +188502,17 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "QuantumTheory.Transport.polarFourierFirstCosineAngularKernel_hasDerivAt",
       "QuantumTheory.Transport.polarFourierZerothAngularKernel_hasDerivAt"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "QuantumTheory.Transport.polarFourierFirstCosineAngularKernel_hasDerivAt",
       "QuantumTheory.Transport.polarFourierZerothAngularKernel_hasDerivAt"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
