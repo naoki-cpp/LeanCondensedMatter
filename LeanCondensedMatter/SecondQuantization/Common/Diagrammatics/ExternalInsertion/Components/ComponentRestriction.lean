@@ -462,6 +462,78 @@ theorem ExternalInsertionDiagram.componentLegShuffle_slotEquiv_apply
   rfl
 
 
+/-- Assemble an **independent family of local perfect pairings** into an
+ambient external-insertion pairing, using the canonical component-leg shuffle
+of a fixed reference diagram.
+
+The reference diagram supplies the disjoint leg sectors, not the pairings to
+assemble. In particular, the local pairing family may differ from every
+component pairing of the reference diagram. A separate construction is still
+needed to assemble components over an *arbitrary* external source partition. -/
+noncomputable def ExternalInsertionDiagram.assembleComponentPairing
+    {S : Finset (Fin N)}
+    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
+    (local : ∀ B : d.vertexGraph.componentPartition.parts,
+      Pairing (2 * (interactionSector
+        (B : Finset (ExternalInsertionVertex E S))).card + d.externalPairCount B)) :
+    Pairing (2 * S.card + E) :=
+  (Combinatorics.PairingOn.sigmaCongrRight local).transport
+    d.componentLegShuffle.slotEquiv.symm
+
+/-- Independent pairing assembly is **right-inverse to unshuffling** the
+ambient flattened-leg positions. This proves the inverse pairing law before
+any connectedness or Dyson-amplitude arguments are introduced. -/
+@[simp]
+theorem ExternalInsertionDiagram.assembleComponentPairing_unshuffle
+    {S : Finset (Fin N)}
+    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
+    (local : ∀ B : d.vertexGraph.componentPartition.parts,
+      Pairing (2 * (interactionSector
+        (B : Finset (ExternalInsertionVertex E S))).card + d.externalPairCount B)) :
+    (d.assembleComponentPairing local).transport
+        d.componentLegShuffle.slotEquiv =
+      Combinatorics.PairingOn.sigmaCongrRight local := by
+  exact Combinatorics.PairingOn.transport_symm_transport
+    (Combinatorics.PairingOn.sigmaCongrRight local)
+    d.componentLegShuffle.slotEquiv
+
+/-- A pairing assembled from independent components preserves the block index
+of every flattened leg and applies precisely the chosen local pairing inside
+that block. -/
+theorem ExternalInsertionDiagram.assembleComponentPairing_partner
+    {S : Finset (Fin N)}
+    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
+    (local : ∀ B : d.vertexGraph.componentPartition.parts,
+      Pairing (2 * (interactionSector
+        (B : Finset (ExternalInsertionVertex E S))).card + d.externalPairCount B))
+    (B : d.vertexGraph.componentPartition.parts)
+    (p : Fin (2 * (2 * (interactionSector
+        (B : Finset (ExternalInsertionVertex E S))).card + d.externalPairCount B))) :
+    (d.assembleComponentPairing local).partner (d.componentDiagramLeg B p) =
+      d.componentDiagramLeg B ((local B).partner p) := by
+  change ((Combinatorics.PairingOn.sigmaCongrRight local).transport
+      d.componentLegShuffle.slotEquiv.symm).partner
+        (d.componentLegShuffle.slotEquiv ⟨B, p⟩) =
+    d.componentLegShuffle.slotEquiv ⟨B, (local B).partner p⟩
+  simp
+
+/-- No information about the independent family of local pairings is lost by
+assembling it into an ambient perfect pairing. -/
+theorem ExternalInsertionDiagram.assembleComponentPairing_injective
+    {S : Finset (Fin N)}
+    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S) :
+    Function.Injective (d.assembleComponentPairing) := by
+  intro left right h
+  funext B
+  apply Combinatorics.PairingOn.ext
+  apply Equiv.ext
+  intro p
+  have hpartner := congrArg (fun q : Pairing (2 * S.card + E) =>
+    q.partner (d.componentDiagramLeg B p)) h
+  rw [d.assembleComponentPairing_partner left B p,
+    d.assembleComponentPairing_partner right B p] at hpartner
+  exact (d.componentDiagramLeg_strictMono B).injective hpartner
+
 /-- Rebuild the full pairing of an external-insertion diagram from the
 pairings restricted to **all of its actual connected components**.
 
@@ -474,10 +546,7 @@ noncomputable def ExternalInsertionDiagram.reassembleComponentPairing
     {S : Finset (Fin N)}
     (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S) :
     Pairing (2 * S.card + E) :=
-  (Combinatorics.PairingOn.sigmaCongrRight
-    (fun B : d.vertexGraph.componentPartition.parts =>
-      (d.restrictComponent B).pairing)).transport
-        d.componentLegShuffle.slotEquiv.symm
+  d.assembleComponentPairing (fun B => (d.restrictComponent B).pairing)
 
 /-- Restriction followed by pairing reassembly recovers the *original
 physical pairing*, without losing interaction legs, external vertices,
