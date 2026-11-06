@@ -154,49 +154,26 @@ theorem evenExternalSubsetTimes_externalPartitionBlock
       (d.externalSector_card_even B) hblock.symm
   exact htransport.trans (heq_of_eq h)
 
-/-- The fixed-label vacuum-free diagrams in a prescribed external-component
-partition fiber form a finite type. The instance is defined explicitly so
-the fiber can be used in theorem statements, outside a `by classical` block. -/
-private noncomputable instance externalPartitionDiagramFiberFintype
-    {K n : ℕ} (labels : Fin (2 * K) → ExternalFieldLabel Mode)
-    (π : Finpartition (Finset.univ : Finset (Fin (2 * K)))) :
-    Fintype {d : VacuumFreeFixedExternalInsertionWickDiagram Mode K n labels //
-      externalComponentPartition d.1.1.vertexGraph = π} := by
-  classical
-  exact Fintype.ofFinite _
+/-- Reindex the actual vacuum-free fixed-label Dyson-diagram coefficient by its
+induced external-component partition. The indicator selects precisely the
+fiber over each partition; retaining the ambient finite type avoids creating
+additional dependent-fiber `Fintype` instances in a theorem statement.
 
-open Classical in
-/-- Reindex the *actual* finite sum of vacuum-free fixed-label Dyson
-diagrams by their induced external-component partition and the corresponding
-diagram fiber. This is the first finite-sum step toward the physical signed
-moment formula: no factorization assumption is used, and the partition is
-calculated from each Wick diagram's real pairing graph. -/
+This is a finite reindexing, not yet the connected-component amplitude
+factorization or the physical signed partition identity. -/
 theorem vacuumFreeExternalInsertionDysonCoefficient_eq_sum_externalPartitionFibers
     {K : ℕ} (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
     (labels : Fin (2 * K) → ExternalFieldLabel Mode)
     (times : Fin (2 * K) → ℝ) (n : ℕ) :
     vacuumFreeExternalInsertionDysonCoefficient ε β g labels times n =
       ∑ π : Finpartition (Finset.univ : Finset (Fin (2 * K))),
-        ∑ d : {d : VacuumFreeFixedExternalInsertionWickDiagram Mode K n labels //
-          externalComponentPartition d.1.1.vertexGraph = π},
-            d.1.1.1.dysonAmplitude ε β g times := by
+        ∑ d : VacuumFreeFixedExternalInsertionWickDiagram Mode K n labels,
+          if externalComponentPartition d.1.1.vertexGraph = π then
+            d.1.1.dysonAmplitude ε β g times else 0 := by
   classical
-  let D := VacuumFreeFixedExternalInsertionWickDiagram Mode K n labels
-  let blockPartition : D → Finpartition (Finset.univ : Finset (Fin (2 * K))) :=
-    fun d => externalComponentPartition d.1.1.vertexGraph
-  let weight : D → ℂ := fun d => d.1.1.dysonAmplitude ε β g times
-  letI : ∀ π : Finpartition (Finset.univ : Finset (Fin (2 * K))),
-      Fintype {d : D // blockPartition d = π} := fun _ => Fintype.ofFinite _
-  change (∑ d : D, weight d) =
-    ∑ π, ∑ d : {d : D // blockPartition d = π}, weight d.1
-  calc
-    (∑ d : D, weight d) =
-        ∑ x : Σ π, {d : D // blockPartition d = π},
-          weight ((Equiv.sigmaFiberEquiv blockPartition) x) :=
-      (Equiv.sum_comp (Equiv.sigmaFiberEquiv blockPartition) weight).symm
-    _ = ∑ π, ∑ d : {d : D // blockPartition d = π}, weight d.1 := by
-      rw [Fintype.sum_sigma]
-      rfl
+  unfold vacuumFreeExternalInsertionDysonCoefficient
+  rw [Finset.sum_comm]
+  simp
 
 /-- Fully external-connected, vacuum-free Dyson coefficient using the actual
 integrated signed Wick diagram amplitude, with all labels and times fixed. -/
