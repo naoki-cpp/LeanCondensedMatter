@@ -1744,6 +1744,117 @@ theorem polarFourierBesselEnergy_tendsto_zero :
     exact polarFourierBesselY_hasDerivAt r (by linarith)
 
 
+/-- The zeroth Fourier harmonic is real, and equals the real embedding of its
+radial Lyapunov-system coordinate. -/
+private theorem polarFourierZerothAngularKernel_eq_ofReal_re (r : ℝ) :
+    polarFourierZerothAngularKernel r = (polarFourierBesselX r : ℂ) := by
+  have him : (polarFourierZerothAngularKernel r).im = 0 := by
+    have h := congrArg Complex.im (polarFourierZerothAngularKernel_conj r)
+    simp only [Complex.conj_im] at h
+    linarith
+  apply Complex.ext
+  · simp [polarFourierBesselX]
+  · simpa using him
+
+/-- The first-cosine Fourier harmonic is purely imaginary, with imaginary
+coordinate given by the other component of the Lyapunov system. -/
+private theorem polarFourierFirstCosineAngularKernel_eq_I_ofReal_im (r : ℝ) :
+    polarFourierFirstCosineAngularKernel r =
+      Complex.I * (polarFourierBesselY r : ℂ) := by
+  have hre : (polarFourierFirstCosineAngularKernel r).re = 0 := by
+    have h := congrArg Complex.re (polarFourierFirstCosineAngularKernel_conj r)
+    simp only [Complex.conj_re, Complex.neg_re] at h
+    linarith
+  apply Complex.ext
+  · simp [Complex.mul_re, hre]
+  · simp [Complex.mul_im, polarFourierBesselY]
+
+/-- The squared Fourier harmonics have a vanishing limit at large positive
+radius. This is a consequence of the explicit radial ODE energy bound, not a
+postulated Bessel-function asymptotic. -/
+theorem polarFourierHarmonicEnergy_tendsto_zero :
+    Filter.Tendsto (fun r : ℝ =>
+      polarFourierZerothAngularKernel r ^ 2 -
+        polarFourierFirstCosineAngularKernel r ^ 2)
+      Filter.atTop (nhds (0 : ℂ)) := by
+  have hcast : Filter.Tendsto (fun r : ℝ =>
+      ((polarFourierBesselX r ^ 2 + polarFourierBesselY r ^ 2 : ℝ) : ℂ))
+      Filter.atTop (nhds (0 : ℂ)) := by
+    simpa only [Function.comp_def, Complex.ofReal_zero] using
+      (Complex.continuous_ofReal.tendsto 0).comp
+        polarFourierBesselEnergy_tendsto_zero
+  apply hcast.congr'
+  exact Filter.Eventually.of_forall fun r => by
+    rw [polarFourierZerothAngularKernel_eq_ofReal_re,
+      polarFourierFirstCosineAngularKernel_eq_I_ofReal_im]
+    push_cast
+    rw [mul_pow, Complex.I_sq]
+    ring
+
+/-- The squared sum of the canonical integer-order Bessel functions decays
+at infinity, following from the proved Fourier--Bessel identities and
+the Lyapunov bound. -/
+theorem besselJ_zero_sq_add_one_sq_tendsto_zero :
+    Filter.Tendsto (fun r : ℝ =>
+      Complex.besselJ 0 (r : ℂ) ^ 2 +
+        Complex.besselJ 1 (r : ℂ) ^ 2)
+      Filter.atTop (nhds (0 : ℂ)) := by
+  let c : ℂ := ((2 * Real.pi : ℝ) : ℂ)
+  have hc : c ≠ 0 := by
+    dsimp [c]
+    have hr : (2 * Real.pi : ℝ) ≠ 0 :=
+      mul_ne_zero (by norm_num) Real.pi_ne_zero
+    exact_mod_cast hr
+  have hbridge (r : ℝ) :
+      polarFourierZerothAngularKernel r ^ 2 -
+        polarFourierFirstCosineAngularKernel r ^ 2 =
+      c ^ 2 * (Complex.besselJ 0 (r : ℂ) ^ 2 +
+        Complex.besselJ 1 (r : ℂ) ^ 2) := by
+    rw [polarFourierZerothAngularKernel_eq_besselJ,
+      polarFourierFirstCosineAngularKernel_eq_besselJ]
+    change (c * Complex.besselJ 0 (r : ℂ)) ^ 2 -
+      (c * Complex.I * Complex.besselJ 1 (r : ℂ)) ^ 2 =
+        c ^ 2 * (Complex.besselJ 0 (r : ℂ) ^ 2 +
+          Complex.besselJ 1 (r : ℂ) ^ 2)
+    calc
+      _ = c ^ 2 * Complex.besselJ 0 (r : ℂ) ^ 2 -
+          c ^ 2 * Complex.I ^ 2 * Complex.besselJ 1 (r : ℂ) ^ 2 := by ring
+      _ = _ := by rw [Complex.I_sq]; ring
+  have hscaled : Filter.Tendsto (fun r : ℝ =>
+      (c ^ 2)⁻¹ * (polarFourierZerothAngularKernel r ^ 2 -
+        polarFourierFirstCosineAngularKernel r ^ 2))
+      Filter.atTop (nhds (0 : ℂ)) := by
+    simpa only [mul_zero] using
+      (polarFourierHarmonicEnergy_tendsto_zero.const_mul (c ^ 2)⁻¹)
+  apply hscaled.congr'
+  exact Filter.Eventually.of_forall fun r => by
+    rw [hbridge r]
+    field_simp [pow_ne_zero 2 hc]
+
+/-- The large-cutoff limit of the finite-interval first-order Bessel radial
+moment is exactly one half. The result is stated as a limit of finite
+interval integrals, without conflating it with an unproved Bochner
+integrability statement on an infinite set. -/
+theorem tendsto_integral_besselJ_one_sq_div :
+    Filter.Tendsto (fun R : ℝ =>
+      ∫ r in (0 : ℝ)..R, Complex.besselJ 1 (r : ℂ) ^ 2 / (r : ℂ))
+      Filter.atTop (nhds (1 / 2 : ℂ)) := by
+  have hpoint (R : ℝ) :
+      (∫ r in (0 : ℝ)..R, Complex.besselJ 1 (r : ℂ) ^ 2 / (r : ℂ)) =
+        (1 - (Complex.besselJ 0 (R : ℂ) ^ 2 +
+          Complex.besselJ 1 (R : ℂ) ^ 2)) / 2 := by
+    rw [integral_besselJ_one_sq_div 0 R]
+    simp [Complex.besselJ_zero]
+  have hconst : Filter.Tendsto (fun _ : ℝ => (1 : ℂ))
+      Filter.atTop (nhds 1) := tendsto_const_nhds
+  have hlimit := (hconst.sub besselJ_zero_sq_add_one_sq_tendsto_zero).div_const
+    (2 : ℂ)
+  convert hlimit using 1
+  · funext R
+    exact hpoint R
+  · norm_num
+
+
 end
 
 end Transport
