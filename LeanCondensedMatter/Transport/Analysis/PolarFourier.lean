@@ -1730,6 +1730,20 @@ private theorem besselRadialSystem_energy_tendsto_zero
   exact hELim
 
 
+/-- The real scalar/vector channels of the exact radial Fourier kernel decay
+jointly, by the Lyapunov bound for their proved first-order radial system. -/
+theorem polarFourierBesselEnergy_tendsto_zero :
+    Filter.Tendsto (fun r : ℝ =>
+      polarFourierBesselX r ^ 2 + polarFourierBesselY r ^ 2)
+      Filter.atTop (nhds 0) := by
+  apply besselRadialSystem_energy_tendsto_zero
+    polarFourierBesselX polarFourierBesselY
+  · intro r _
+    exact polarFourierBesselX_hasDerivAt r
+  · intro r hr
+    exact polarFourierBesselY_hasDerivAt r (by linarith)
+
+
 end
 
 end Transport
