@@ -1785,6 +1785,9 @@ theorem polarFourierHarmonicEnergy_tendsto_zero :
         polarFourierBesselEnergy_tendsto_zero
   apply hcast.congr'
   exact Filter.Eventually.of_forall fun r => by
+    change ((polarFourierBesselX r ^ 2 + polarFourierBesselY r ^ 2 : ℝ) : ℂ) =
+      polarFourierZerothAngularKernel r ^ 2 -
+        polarFourierFirstCosineAngularKernel r ^ 2
     rw [polarFourierZerothAngularKernel_eq_ofReal_re,
       polarFourierFirstCosineAngularKernel_eq_I_ofReal_im]
     push_cast
@@ -1828,6 +1831,10 @@ theorem besselJ_zero_sq_add_one_sq_tendsto_zero :
       (polarFourierHarmonicEnergy_tendsto_zero.const_mul (c ^ 2)⁻¹)
   apply hscaled.congr'
   exact Filter.Eventually.of_forall fun r => by
+    change (c ^ 2)⁻¹ *
+      (polarFourierZerothAngularKernel r ^ 2 -
+        polarFourierFirstCosineAngularKernel r ^ 2) =
+      Complex.besselJ 0 (r : ℂ) ^ 2 + Complex.besselJ 1 (r : ℂ) ^ 2
     rw [hbridge r]
     field_simp [pow_ne_zero 2 hc]
 
