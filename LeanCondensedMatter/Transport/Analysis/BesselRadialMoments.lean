@@ -26,6 +26,46 @@ noncomputable section
 open MeasureTheory
 open scoped Interval ComplexConjugate
 
+/-- The first-harmonic radial product has an exact finite-interval primitive.
+This is the finite-radius endpoint identity needed before an improper
+Bessel-square integral and its regulator limits can be established. -/
+theorem integral_polarFourierHarmonicEnergy (a b : ℝ) :
+    (∫ z in a..b,
+      Complex.I * polarFourierFirstCosineAngularKernel z *
+        (polarFourierZerothAngularKernel z -
+          polarFourierSecondCosineAngularKernel z)) =
+      (polarFourierZerothAngularKernel b ^ 2 -
+        polarFourierFirstCosineAngularKernel b ^ 2) -
+      (polarFourierZerothAngularKernel a ^ 2 -
+        polarFourierFirstCosineAngularKernel a ^ 2) := by
+  have hc0 : Continuous polarFourierZerothAngularKernel :=
+    continuous_iff_continuousAt.mpr fun z =>
+      (polarFourierZerothAngularKernel_hasDerivAt z).continuousAt
+  have hc1 : Continuous polarFourierFirstCosineAngularKernel :=
+    continuous_iff_continuousAt.mpr fun z =>
+      (polarFourierFirstCosineAngularKernel_hasDerivAt z).continuousAt
+  have hJ2 : Continuous (fun z : ℝ => Complex.besselJ 2 (z : ℂ)) := by
+    have h : Continuous (Complex.besselJ (2 : ℂ)) := by
+      rw [continuous_iff_continuousAt]
+      intro w
+      simpa using (Complex.analyticAt_besselJ_int (2 : ℤ) w).continuousAt
+    exact h.comp Complex.continuous_ofReal
+  have hc2 : Continuous polarFourierSecondCosineAngularKernel := by
+    have hfun : polarFourierSecondCosineAngularKernel =
+        fun z : ℝ =>
+          -(((2 * Real.pi : ℝ) : ℂ) * Complex.besselJ 2 (z : ℂ)) := by
+      funext z
+      exact polarFourierSecondCosineAngularKernel_eq_besselJ z
+    rw [hfun]
+    exact (continuous_const.mul hJ2).neg
+  have hint : IntervalIntegrable (fun z : ℝ =>
+      Complex.I * polarFourierFirstCosineAngularKernel z *
+        (polarFourierZerothAngularKernel z -
+          polarFourierSecondCosineAngularKernel z)) volume a b :=
+    ((continuous_const.mul hc1).mul (hc0.sub hc2)).intervalIntegrable a b
+  exact intervalIntegral.integral_eq_sub_of_hasDerivAt
+    (fun z _ => polarFourierHarmonicEnergy_hasDerivAt z) hint
+
 /-- The Fourier normalization of the squared J₀/J₁ energy, shared by the
 finite-interval moment and its large-radius limit. -/
 private theorem polarFourierHarmonicEnergy_eq_besselJ (r : ℝ) :
