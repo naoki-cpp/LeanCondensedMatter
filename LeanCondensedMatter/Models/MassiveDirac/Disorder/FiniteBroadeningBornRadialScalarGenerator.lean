@@ -94,7 +94,6 @@ theorem finiteCutoffContinuumBornDysonRadialScalarGreenGenerator_hasDerivAt
   convert h.const_mul (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) using 1
   · funext r
     rfl
-  · rfl
 
 /-- The diagonal scalar Green component is the effective Dyson energy
 times the common radial scalar generator. -/
@@ -221,7 +220,6 @@ theorem finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient_x_eq_deriv_gen
         (((v * p : ℝ) : ℂ)) := by
     push_cast
     field_simp [hhbar]
-    ring
   have hpoint (p : ℝ) :
       finiteCutoffContinuumBornDysonRadialGreenPauliKernel .x
         side v m probeEnergy broadening disorderStrength hbar pMax radius p =
@@ -231,17 +229,21 @@ theorem finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient_x_eq_deriv_gen
       InternalSpace.pauliAxisComponent]
     rw [show (((v * p : ℝ) : ℂ)) =
       (((hbar * v : ℝ) : ℂ)) * ((p / hbar : ℝ) : ℂ) from (hratio p).symm]
+    have hunit : (-Complex.I) * Complex.I = (1 : ℂ) := by
+      calc
+        _ = -(Complex.I ^ 2) := by ring
+        _ = 1 := by rw [Complex.I_sq]; ring
     calc
-      _ = (p : ℂ) *
-          (Complex.I * -Complex.I) *
-          (((hbar * v : ℝ) : ℂ) * ((p / hbar : ℝ) : ℂ)) *
-          (finiteCutoffContinuumBornDysonDenominator
-            side v m p 0 probeEnergy broadening disorderStrength hbar pMax)⁻¹ *
-          polarFourierFirstCosineAngularKernel (p * radius / hbar) := by
+      _ = ((-Complex.I) * Complex.I) *
+          ((p : ℂ) *
+            (finiteCutoffContinuumBornDysonDenominator
+              side v m p 0 probeEnergy broadening disorderStrength hbar pMax)⁻¹ *
+            (((hbar * v : ℝ) : ℂ)) *
+            ((p / hbar : ℝ) : ℂ) *
+            polarFourierFirstCosineAngularKernel (p * radius / hbar)) := by
+        rw [hunit]
         ring
-      _ = _ := by rw [show Complex.I * -Complex.I = (1 : ℂ) by
-        rw [← neg_mul, ← pow_two, Complex.I_sq]; ring]
-        ring
+      _ = _ := by ring
   have hderiv := finiteCutoffContinuumBornDysonRadialScalarGreenGenerator_hasDerivAt
     side v m probeEnergy broadening disorderStrength hbar pMax radius
     hbroadening hdisorder hpMax
