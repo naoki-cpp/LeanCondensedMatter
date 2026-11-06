@@ -109,20 +109,11 @@ theorem evenExternalSubsetLabels_externalPartitionBlock
       ((d.componentOrderedDiagram
         ((d.vacuumFreeComponentsEquivExternalBlocks hVac).symm P)).externalLabel) := by
   let B := (d.vacuumFreeComponentsEquivExternalBlocks hVac).symm P
-  have hblock := d.vacuumFreeComponentsEquivExternalBlocks_symm_apply hVac P
-  have h := evenExternalSubsetLabels_componentOrderedDiagram (d := d) B
-  have htransport : HEq
-      (evenExternalSubsetLabels d.externalLabel
-        (P : Finset (Fin (2 * E)))
-        (d.externalComponentPartition_block_card_even P.1 P.2))
-      (evenExternalSubsetLabels d.externalLabel
-        (B.1 : Finset (ExternalInsertionVertex E
-          (Finset.univ : Finset (Fin n)))).toLeft
-        (d.externalSector_card_even B)) :=
-    evenExternalSubsetRestriction_heq_of_eq d.externalLabel
-      (d.externalComponentPartition_block_card_even P.1 P.2)
-      (d.externalSector_card_even B) hblock.symm
-  exact htransport.trans (heq_of_eq h)
+  exact (evenExternalSubsetRestriction_heq_of_eq d.externalLabel
+    (d.externalComponentPartition_block_card_even P.1 P.2)
+    (d.externalSector_card_even B)
+    (d.vacuumFreeComponentsEquivExternalBlocks_symm_apply hVac P).symm).trans
+      (heq_of_eq (evenExternalSubsetLabels_componentOrderedDiagram (d := d) B))
 
 omit [LinearOrder Mode] [Fintype Mode] in
 /-- The same external-block transport preserves the insertion times in
@@ -139,20 +130,11 @@ theorem evenExternalSubsetTimes_externalPartitionBlock
       (d.componentExternalTime times
         ((d.vacuumFreeComponentsEquivExternalBlocks hVac).symm P)) := by
   let B := (d.vacuumFreeComponentsEquivExternalBlocks hVac).symm P
-  have hblock := d.vacuumFreeComponentsEquivExternalBlocks_symm_apply hVac P
-  have h := evenExternalSubsetTimes_component (d := d) times B
-  have htransport : HEq
-      (evenExternalSubsetTimes times
-        (P : Finset (Fin (2 * E)))
-        (d.externalComponentPartition_block_card_even P.1 P.2))
-      (evenExternalSubsetTimes times
-        (B.1 : Finset (ExternalInsertionVertex E
-          (Finset.univ : Finset (Fin n)))).toLeft
-        (d.externalSector_card_even B)) :=
-    evenExternalSubsetRestriction_heq_of_eq times
-      (d.externalComponentPartition_block_card_even P.1 P.2)
-      (d.externalSector_card_even B) hblock.symm
-  exact htransport.trans (heq_of_eq h)
+  exact (evenExternalSubsetRestriction_heq_of_eq times
+    (d.externalComponentPartition_block_card_even P.1 P.2)
+    (d.externalSector_card_even B)
+    (d.vacuumFreeComponentsEquivExternalBlocks_symm_apply hVac P).symm).trans
+      (heq_of_eq (evenExternalSubsetTimes_component (d := d) times B))
 
 omit [LinearOrder Mode] in
 /-- Explicit finite enumeration of vacuum-free fixed-label diagrams, available
