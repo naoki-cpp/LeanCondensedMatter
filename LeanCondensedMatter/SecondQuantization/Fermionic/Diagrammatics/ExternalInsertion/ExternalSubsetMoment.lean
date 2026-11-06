@@ -88,15 +88,17 @@ theorem evenExternalSubsetLabels_externalPartitionBlock
     {n : ℕ} (d : ExternalInsertionWickDiagram Mode E n)
     (hVac : HasNoVacuumComponent d.vertexGraph)
     (P : (externalComponentPartition d.vertexGraph).parts) :
-    evenExternalSubsetLabels d.externalLabel
-      (P : Finset (Fin (2 * E)))
-      (d.externalComponentPartition_block_card_even P.1 P.2) =
-      (d.componentOrderedDiagram
-        ((d.vacuumFreeComponentsEquivExternalBlocks hVac).symm P)).externalLabel := by
+    HEq
+      (evenExternalSubsetLabels d.externalLabel
+        (P : Finset (Fin (2 * E)))
+        (d.externalComponentPartition_block_card_even P.1 P.2))
+      ((d.componentOrderedDiagram
+        ((d.vacuumFreeComponentsEquivExternalBlocks hVac).symm P)).externalLabel) := by
   let B := (d.vacuumFreeComponentsEquivExternalBlocks hVac).symm P
   have hblock := d.vacuumFreeComponentsEquivExternalBlocks_symm_apply hVac P
   have h := evenExternalSubsetLabels_componentOrderedDiagram (d := d) B
-  simpa only [← hblock] using h
+  have hheq := heq_of_eq h
+  simpa only [← hblock] using hheq
 
 /-- The same external-block transport preserves the insertion times in
 increasing source-slot order, not in the order of their numerical values. -/
@@ -105,15 +107,17 @@ theorem evenExternalSubsetTimes_externalPartitionBlock
     (hVac : HasNoVacuumComponent d.vertexGraph)
     (times : Fin (2 * E) → ℝ)
     (P : (externalComponentPartition d.vertexGraph).parts) :
-    evenExternalSubsetTimes times
-      (P : Finset (Fin (2 * E)))
-      (d.externalComponentPartition_block_card_even P.1 P.2) =
-      d.componentExternalTime times
-        ((d.vacuumFreeComponentsEquivExternalBlocks hVac).symm P) := by
+    HEq
+      (evenExternalSubsetTimes times
+        (P : Finset (Fin (2 * E)))
+        (d.externalComponentPartition_block_card_even P.1 P.2))
+      (d.componentExternalTime times
+        ((d.vacuumFreeComponentsEquivExternalBlocks hVac).symm P)) := by
   let B := (d.vacuumFreeComponentsEquivExternalBlocks hVac).symm P
   have hblock := d.vacuumFreeComponentsEquivExternalBlocks_symm_apply hVac P
   have h := evenExternalSubsetTimes_component (d := d) times B
-  simpa only [← hblock] using h
+  have hheq := heq_of_eq h
+  simpa only [← hblock] using hheq
 
 /-- Fully external-connected, vacuum-free Dyson coefficient using the actual
 integrated signed Wick diagram amplitude, with all labels and times fixed. -/
