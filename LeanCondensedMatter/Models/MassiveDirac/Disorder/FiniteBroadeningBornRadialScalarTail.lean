@@ -1,5 +1,6 @@
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornRadialScalarGenerator
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVBound
+import LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVIntegrability
 import LeanCondensedMatter.Transport.Analysis.PolarFourierRadialPrimitive
 import LeanCondensedMatter.Transport.Analysis.PolarFourierRadialLimit
 import Mathlib.Tactic.FunProp
@@ -185,6 +186,79 @@ theorem tendsto_integral_massiveDiracRadialDenominator_inv_fourierKernel_of_cond
       (massiveDiracRadialDenominator v p energy mass)⁻¹ ^ 2)
     (fun p => massiveDiracRadialDenominator_inv_hasDerivAt v p energy mass (hden p))
     hDerivativeCont hint hboundary
+
+/-- Unconditional convergence of the *fixed-spectral-center* massive-Dirac
+radial Fourier integral from a sufficiently large positive momentum.
+The needed ultraviolet integrability and vanishing boundary term are
+now derived from the quadratic denominator, rather than assumed. -/
+theorem massiveDiracRadialFourierKernel_tendsto_atTop_uv
+    (v c a : ℝ) (energy mass : ℂ) (hv : v ≠ 0) (hc : c ≠ 0)
+    (hden : ∀ p : ℝ, massiveDiracRadialDenominator v p energy mass ≠ 0)
+    (ha : max (1 : ℝ)
+        (2 * ‖energy ^ 2 - mass ^ 2‖ / v ^ 2) ≤ a) :
+    ∃ value : ℂ, Filter.Tendsto
+      (fun b : ℝ => ∫ p in a..b,
+        (p : ℂ) * polarFourierZerothAngularKernel (p * c) *
+          (massiveDiracRadialDenominator v p energy mass)⁻¹)
+      Filter.atTop (nhds value) := by
+  have hlimit :=
+    tendsto_integral_massiveDiracRadialDenominator_inv_fourierKernel_of_conditions
+      v c a energy mass hc hden
+      (massiveDiracRadialFourierRemainder_integrableOn_uv
+        v c a energy mass hv hden ha)
+      (massiveDiracRadialDenominator_firstHarmonicBoundary_tendsto_zero
+        v c energy mass hv)
+  exact ⟨_, hlimit⟩
+
+/-- The original radial Green resolvent integral from zero momentum has
+a finite ultraviolet-cutoff limit at *fixed* nonvanishing complex
+spectral denominator. The compact low-momentum contribution is
+integrable by continuity; the large-momentum tail uses the proved
+`p⁻²` remainder estimate. -/
+theorem massiveDiracRadialFourierKernel_tendsto_atTop
+    (v c : ℝ) (energy mass : ℂ) (hv : v ≠ 0) (hc : c ≠ 0)
+    (hden : ∀ p : ℝ, massiveDiracRadialDenominator v p energy mass ≠ 0) :
+    ∃ value : ℂ, Filter.Tendsto
+      (fun b : ℝ => ∫ p in (0 : ℝ)..b,
+        (p : ℂ) * polarFourierZerothAngularKernel (p * c) *
+          (massiveDiracRadialDenominator v p energy mass)⁻¹)
+      Filter.atTop (nhds value) := by
+  let cutoff : ℝ :=
+    max 1 (2 * ‖energy ^ 2 - mass ^ 2‖ / v ^ 2)
+  let f : ℝ → ℂ := fun p =>
+    (p : ℂ) * polarFourierZerothAngularKernel (p * c) *
+      (massiveDiracRadialDenominator v p energy mass)⁻¹
+  obtain ⟨value, htail⟩ :=
+    massiveDiracRadialFourierKernel_tendsto_atTop_uv
+      v c cutoff energy mass hv hc hden le_rfl
+  have hDcont : Continuous
+      (fun p : ℝ => massiveDiracRadialDenominator v p energy mass) := by
+    unfold massiveDiracRadialDenominator
+    fun_prop
+  have hInvCont : Continuous
+      (fun p : ℝ => (massiveDiracRadialDenominator v p energy mass)⁻¹) :=
+    hDcont.inv₀ hden
+  have hKcont : Continuous
+      (fun p : ℝ => polarFourierZerothAngularKernel (p * c)) :=
+    continuous_polarFourierZerothAngularKernel.comp
+      (continuous_id.mul continuous_const)
+  have hf : Continuous f :=
+    ((Complex.continuous_ofReal.comp continuous_id).mul hKcont).mul hInvCont
+  have hleft : IntervalIntegrable f volume (0 : ℝ) cutoff :=
+    hf.intervalIntegrable _ _
+  have hsplit (b : ℝ) :
+      (∫ p in (0 : ℝ)..b, f p) =
+        (∫ p in (0 : ℝ)..cutoff, f p) +
+        (∫ p in cutoff..b, f p) :=
+    (intervalIntegral.integral_add_adjacent_intervals hleft
+      (hf.intervalIntegrable cutoff b)).symm
+  refine ⟨(∫ p in (0 : ℝ)..cutoff, f p) + value, ?_⟩
+  have hconst : Filter.Tendsto
+      (fun _ : ℝ => ∫ p in (0 : ℝ)..cutoff, f p)
+      Filter.atTop (nhds (∫ p in (0 : ℝ)..cutoff, f p)) :=
+    tendsto_const_nhds
+  have hsum := hconst.add htail
+  exact hsum.congr' (Filter.Eventually.of_forall fun b => (hsplit b).symm)
 
 end
 
