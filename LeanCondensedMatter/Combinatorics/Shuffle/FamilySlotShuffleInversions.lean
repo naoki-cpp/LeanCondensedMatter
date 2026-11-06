@@ -105,7 +105,7 @@ theorem FamilySlotShuffleTo.castTotalEquiv_blockInversionCount
   by_cases hij : i = j
   · subst j
     simp
-  · rw [FamilySlotShuffleTo.blockInversionCount_of_ne hij,
+  · rw [((FamilySlotShuffleTo.castTotalEquiv h) shuffle).blockInversionCount_of_ne hij,
       shuffle.blockInversionCount_of_ne hij]
     apply Finset.sum_congr rfl
     intro p _
