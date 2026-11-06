@@ -2215,6 +2215,15 @@
       "externalImportCount": 3
     },
     {
+      "name": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVBound",
+      "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Disorder/Born/RadialUVBound.lean",
+      "imports": [
+        "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialKernel",
+        "LeanCondensedMatter.Transport.Analysis.PolarFourierRadialDerivative"
+      ],
+      "externalImportCount": 4
+    },
+    {
       "name": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.SelfEnergy",
       "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Disorder/Born/SelfEnergy.lean",
       "imports": [
@@ -2333,6 +2342,17 @@
         "LeanCondensedMatter.Transport.Analysis.PolarFourierRadialDerivative"
       ],
       "externalImportCount": 3
+    },
+    {
+      "name": "LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornRadialScalarTail",
+      "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Disorder/FiniteBroadeningBornRadialScalarTail.lean",
+      "imports": [
+        "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVBound",
+        "LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornRadialScalarGenerator",
+        "LeanCondensedMatter.Transport.Analysis.PolarFourierRadialLimit",
+        "LeanCondensedMatter.Transport.Analysis.PolarFourierRadialPrimitive"
+      ],
+      "externalImportCount": 2
     },
     {
       "name": "LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornRealSpacePropagator",
@@ -2514,6 +2534,7 @@
         "LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornRadialMoments",
         "LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornRadialRealSpacePropagator",
         "LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornRadialScalarGenerator",
+        "LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornRadialScalarTail",
         "LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornRealSpacePropagator",
         "LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexResponse",
         "LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningLadderZeroBroadeningTransverseWeakDisorder",
@@ -8250,6 +8271,22 @@
       "externalImportCount": 3
     },
     {
+      "name": "LeanCondensedMatter.Transport.Analysis.PolarFourierRadialLimit",
+      "sourceFile": "LeanCondensedMatter/Transport/Analysis/PolarFourierRadialLimit.lean",
+      "imports": [
+        "LeanCondensedMatter.Transport.Analysis.PolarFourierRadialPrimitive"
+      ],
+      "externalImportCount": 1
+    },
+    {
+      "name": "LeanCondensedMatter.Transport.Analysis.PolarFourierRadialPrimitive",
+      "sourceFile": "LeanCondensedMatter/Transport/Analysis/PolarFourierRadialPrimitive.lean",
+      "imports": [
+        "LeanCondensedMatter.Transport.Analysis.PolarFourierRadialDerivative"
+      ],
+      "externalImportCount": 1
+    },
+    {
       "name": "LeanCondensedMatter.Transport.Analysis.RelaxationTime",
       "sourceFile": "LeanCondensedMatter/Transport/Analysis/RelaxationTime.lean",
       "imports": [],
@@ -8274,6 +8311,8 @@
         "LeanCondensedMatter.Transport.Analysis.FourierGeometry",
         "LeanCondensedMatter.Transport.Analysis.PolarFourier",
         "LeanCondensedMatter.Transport.Analysis.PolarFourierRadialDerivative",
+        "LeanCondensedMatter.Transport.Analysis.PolarFourierRadialLimit",
+        "LeanCondensedMatter.Transport.Analysis.PolarFourierRadialPrimitive",
         "LeanCondensedMatter.Transport.Analysis.RelaxationTime",
         "LeanCondensedMatter.Transport.Analysis.ZeroTemperatureLorentzian"
       ],
