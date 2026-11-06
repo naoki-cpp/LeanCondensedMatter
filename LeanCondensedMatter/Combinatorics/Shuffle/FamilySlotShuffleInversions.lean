@@ -117,7 +117,7 @@ theorem FamilySlotShuffleTo.castTotalEquiv_blockInversionCount
       constructor
       · intro h'
         simpa using (Fin.castOrderIso h.symm).strictMono h'
-      · exact (Fin.castOrderIso h).strictMono
+      · intro h'; exact (Fin.castOrderIso h).strictMono h'
     change (if (Fin.castOrderIso h) (shuffle.slotEquiv ⟨j, q⟩) <
         (Fin.castOrderIso h) (shuffle.slotEquiv ⟨i, p⟩) then 1 else 0) =
       (if shuffle.slotEquiv ⟨j, q⟩ < shuffle.slotEquiv ⟨i, p⟩ then 1 else 0)
