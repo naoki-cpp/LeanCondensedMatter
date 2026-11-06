@@ -182,6 +182,28 @@ theorem ExternalInsertionDiagram.componentExternalShuffle_slotEquiv_apply
   rfl
 
 
+/-- The ambient external slots occupied by a full-graph component's
+canonical external shuffle are exactly the external vertices of that
+component. This is the graph-side occupied-slot identity used for
+fermionic source-partition sign comparison. -/
+theorem ExternalInsertionDiagram.componentExternalShuffle_blockSlotSet
+    {S : Finset (Fin N)}
+    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
+    (B : d.vertexGraph.componentPartition.parts) :
+    d.componentExternalShuffle.blockSlotSet B =
+      (B.1 : Finset (ExternalInsertionVertex E S)).toLeft := by
+  classical
+  ext e
+  simp only [FamilySlotShuffleTo.blockSlotSet, Finset.mem_image,
+    Finset.mem_univ, true_and]
+  constructor
+  · rintro ⟨i, hi⟩
+    rw [d.componentExternalShuffle_slotEquiv_apply] at hi
+    simpa [hi] using (d.externalSectorOrderIso B i).2
+  · intro he
+    refine ⟨(d.externalSectorOrderIso B).symm ⟨e, he⟩, ?_⟩
+    simp [d.componentExternalShuffle_slotEquiv_apply]
+
 /-- Vacuum components do not contribute inversions with any other component when
 they occupy the left argument of the external-only shuffle. -/
 theorem ExternalInsertionDiagram.componentExternalShuffle_blockInversionCount_zero_of_left_vacuum
