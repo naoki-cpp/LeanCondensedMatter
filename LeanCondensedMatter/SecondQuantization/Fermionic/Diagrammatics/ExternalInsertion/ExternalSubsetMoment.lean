@@ -154,6 +154,7 @@ theorem evenExternalSubsetTimes_externalPartitionBlock
       (d.externalSector_card_even B) hblock.symm
   exact htransport.trans (heq_of_eq h)
 
+open Classical in
 /-- Reindex the *actual* finite sum of vacuum-free fixed-label Dyson
 diagrams by their induced external-component partition and the corresponding
 diagram fiber. This is the first finite-sum step toward the physical signed
