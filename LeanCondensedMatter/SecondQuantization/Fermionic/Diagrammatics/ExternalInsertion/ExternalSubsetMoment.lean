@@ -309,6 +309,25 @@ theorem externalPartitionSourceSign_top
   rw [hzero]
   simp
 
+/-- On a diagram whose external insertions are mutually connected,
+the source-partition sign and the actual graph-component regrouping sign
+agree: both are one. Pure-vacuum components may be present.
+
+This is the top-partition case of the still-needed general signed
+diagram/partition correspondence. -/
+theorem externalPartitionSourceSign_eq_componentExternalOrderSign_of_connected
+    {n : ℕ} (d : ExternalInsertionWickDiagram Mode E n)
+    (anchor : Fin (2 * E))
+    (hconnected : AllExternalVerticesConnected d.vertexGraph)
+    (blockOrder : d.vertexGraph.componentPartition.parts ≃
+      Fin (Fintype.card d.vertexGraph.componentPartition.parts)) :
+    externalPartitionSourceSign (externalComponentPartition d.vertexGraph) =
+      componentExternalOrderSign d blockOrder := by
+  rw [(d.allExternalVerticesConnected_iff_externalComponentPartition_eq_top anchor).mp
+    hconnected, externalPartitionSourceSign_top,
+    componentExternalOrderSign_eq_one_of_allExternalVerticesConnected
+      d anchor hconnected blockOrder]
+
 /-- The signed partition expansion predicted by the source/cumulant identity,
 formed from the actual fully connected diagrammatic contributions.
 The remaining Phase 5 theorem must identify this with
