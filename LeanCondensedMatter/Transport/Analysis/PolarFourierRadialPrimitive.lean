@@ -86,6 +86,70 @@ theorem polarFourierFirstCosineAngularKernel_radialPrimitive_hasDerivAt
   · rfl
   · exact hcoef.symm
 
+/-- Integration by parts for a finite radial Fourier transform, with no
+restriction on the (possibly zero or negative) Fourier scale `c`.
+The first harmonic replaces the zeroth one at the cost of differentiating
+the radial weight. This is the exact finite-cutoff identity used before
+taking the ultraviolet limit of a massive-Dirac Green integral. -/
+theorem integral_polarFourierZerothAngularKernel_mul_weight_by_parts
+    (c a b : ℝ) (weight weight' : ℝ → ℂ)
+    (hweight : ∀ p : ℝ, HasDerivAt weight (weight' p) p)
+    (hweight' : Continuous weight') :
+    (Complex.I * (c : ℂ)) *
+        (∫ p in a..b, (p : ℂ) *
+          polarFourierZerothAngularKernel (p * c) * weight p) =
+      ((b : ℂ) * polarFourierFirstCosineAngularKernel (b * c) * weight b) -
+      ((a : ℂ) * polarFourierFirstCosineAngularKernel (a * c) * weight a) -
+      (∫ p in a..b,
+        (p : ℂ) * polarFourierFirstCosineAngularKernel (p * c) * weight' p) := by
+  let u : ℝ → ℂ := fun p =>
+    (p : ℂ) * polarFourierFirstCosineAngularKernel (p * c)
+  let u' : ℝ → ℂ := fun p =>
+    Complex.I * (c : ℂ) * (p : ℂ) *
+      polarFourierZerothAngularKernel (p * c)
+  have hc0 : Continuous (fun p : ℝ => polarFourierZerothAngularKernel (p * c)) :=
+    continuous_polarFourierZerothAngularKernel.comp
+      (continuous_id.mul continuous_const)
+  have hc1 : Continuous (fun p : ℝ => polarFourierFirstCosineAngularKernel (p * c)) :=
+    continuous_polarFourierFirstCosineAngularKernel.comp
+      (continuous_id.mul continuous_const)
+  have hcu : Continuous u :=
+    (Complex.continuous_ofReal.comp continuous_id).mul hc1
+  have hcu' : Continuous u' :=
+    (continuous_const.mul
+      (Complex.continuous_ofReal.comp continuous_id)).mul hc0
+  have hcw : Continuous weight :=
+    continuous_iff_continuousAt.mpr fun p => (hweight p).continuousAt
+  have hfirst : IntervalIntegrable
+      (fun p : ℝ => u' p * weight p) MeasureTheory.volume a b :=
+    (hcu'.mul hcw).intervalIntegrable a b
+  have hsecond : IntervalIntegrable
+      (fun p : ℝ => u p * weight' p) MeasureTheory.volume a b :=
+    (hcu.mul hweight').intervalIntegrable a b
+  have hmain := intervalIntegral.integral_deriv_mul_eq_sub
+    (a := a) (b := b) (u := u) (v := weight)
+    (u' := u') (v' := weight')
+    (fun p _ => polarFourierFirstCosineAngularKernel_radialPrimitive_hasDerivAt c p)
+    (fun p _ => hweight p)
+    hfirst hsecond
+  have hsum :
+      (∫ p in a..b, u' p * weight p) +
+        (∫ p in a..b, u p * weight' p) =
+          u b * weight b - u a * weight a := by
+    rw [← intervalIntegral.integral_add hfirst hsecond]
+    exact hmain
+  calc
+    _ = ∫ p in a..b, u' p * weight p := by
+      rw [← intervalIntegral.integral_const_mul]
+      apply intervalIntegral.integral_congr
+      intro p _
+      dsimp [u']
+      ring
+    _ = (u b * weight b - u a * weight a) -
+          (∫ p in a..b, u p * weight' p) :=
+      eq_sub_iff_add_eq.mpr hsum
+    _ = _ := rfl
+
 end
 
 end QuantumTheory.Transport
