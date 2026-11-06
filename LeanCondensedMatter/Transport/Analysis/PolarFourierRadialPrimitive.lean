@@ -43,7 +43,8 @@ theorem polarFourierFirstCosineAngularKernel_mul_argument_hasDerivAt
       _ = _ := by rw [hrec]; ring
   convert h using 1
   · rfl
-  · simpa using hcoef.symm
+  · dsimp
+    simpa using hcoef.symm
 
 /-- The scaled radial primitive. The Fourier scale `c` may have either
 sign, and the formula remains valid for `c = 0`. -/
