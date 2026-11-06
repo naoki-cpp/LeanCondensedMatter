@@ -127,6 +127,51 @@ theorem FamilySlotShuffleTo.orderedBlockInversionCount_modEq_of_blockInversionCo
   · simp only [hlt, ite_false]
     exact Nat.ModEq.refl 0
 
+/-- Equality of the occupied ambient slots for each block implies equality
+of the total ordered inter-block inversion counts, after reindexing the block
+names and respecting their chosen orders.
+
+This formulation avoids casts between different block-local `Fin` types
+and applies to both graph components and source-partition blocks. -/
+theorem FamilySlotShuffleTo.orderedBlockInversionCount_eq_of_blockSlotSet
+    {κ : Type*} [Fintype ι] [Fintype κ]
+    {size₁ : ι → ℕ} {size₂ : κ → ℕ} {total : ℕ}
+    (σ : FamilySlotShuffleTo size₁ total)
+    (τ : FamilySlotShuffleTo size₂ total)
+    (e : ι ≃ κ)
+    (hset : ∀ i, σ.blockSlotSet i = τ.blockSlotSet (e i))
+    (orderσ : ι ≃ Fin (Fintype.card ι))
+    (orderτ : κ ≃ Fin (Fintype.card κ))
+    (horder : ∀ i j, orderσ i < orderσ j ↔
+      orderτ (e i) < orderτ (e j)) :
+    σ.orderedBlockInversionCount orderσ =
+      τ.orderedBlockInversionCount orderτ := by
+  classical
+  unfold FamilySlotShuffleTo.orderedBlockInversionCount
+  refine Finset.sum_bij (fun p _ => (e p.1, e p.2)) ?_ ?_ ?_ ?_
+  · intro p hp
+    exact Finset.mem_offDiag.mpr
+      ⟨Finset.mem_univ _, Finset.mem_univ _,
+        e.injective.ne (Finset.mem_offDiag.mp hp).2.2⟩
+  · intro p _ q _ heq
+    exact Prod.ext (e.injective (congrArg Prod.fst heq))
+      (e.injective (congrArg Prod.snd heq))
+  · intro q hq
+    refine ⟨(e.symm q.1, e.symm q.2), ?_, ?_⟩
+    · refine Finset.mem_offDiag.mpr ⟨Finset.mem_univ _, Finset.mem_univ _, ?_⟩
+      intro h
+      apply (Finset.mem_offDiag.mp hq).2.2
+      simpa using congrArg e h
+    · ext <;> simp
+  · intro p _
+    by_cases hlt : orderσ p.1 < orderσ p.2
+    · have hlt' := (horder p.1 p.2).mp hlt
+      simp only [hlt, hlt', ite_true]
+      exact σ.blockInversionCount_eq_of_blockSlotSet τ e hset p.1 p.2
+    · have hlt' : ¬ orderτ (e p.1) < orderτ (e p.2) :=
+        fun h => hlt ((horder p.1 p.2).mpr h)
+      simp [hlt, hlt']
+
 /-- For distinct blocks, the two opposite inter-block inversion counts add up
 to the total number of pairs of slots between the blocks. -/
 theorem FamilySlotShuffleTo.blockInversionCount_add_swap
