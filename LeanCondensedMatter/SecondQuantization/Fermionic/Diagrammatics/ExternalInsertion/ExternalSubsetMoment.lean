@@ -552,6 +552,19 @@ theorem externalSubsetConnectedDiagramSeries_empty
     externalSubsetConnectedDiagramSeries ε β g labels times ∅ = 0 := by
   simp [externalSubsetConnectedDiagramSeries]
 
+/-- The signed connected-diagram partition formula has the same
+vacuum normalization as the physical subset Dyson moment: it is one at
+the empty source set, without assigning an empty connected diagram. -/
+@[simp]
+theorem externalSubsetSignedConnectedMomentSeries_empty
+    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
+    (labels : Fin (2 * E) → ExternalFieldLabel Mode)
+    (times : Fin (2 * E) → ℝ) :
+    externalSubsetSignedConnectedMomentSeries ε β g labels times ∅ = 1 := by
+  unfold externalSubsetSignedConnectedMomentSeries
+  rw [Finpartition.weightedMomentFromCumulant_empty]
+  simp [externalPartitionSourceSign_top]
+
 /-- Odd external subsets carry neither a normalized moment nor a connected
 Wick-diagram contribution. -/
 theorem externalSubsetSeries_eq_zero_of_odd
@@ -618,6 +631,33 @@ theorem externalSubsetSignedConnectedMomentSeries_eq_zero_of_odd
     unfold Finpartition.partitionProduct
     exact Finset.prod_eq_zero hB hzero
   rw [hprod, mul_zero]
+
+/-- Empty and odd external subsets already satisfy the physical
+signed partition identity, unconditionally. Thus completing Phase 5
+requires proving that identity **only for nonempty even subsets**.
+
+The remaining hypothesis is genuinely diagrammatic: it is not replaced
+by an unsigned moment inversion or by defining the connected weights
+from the moments. -/
+theorem externalSubsetMomentSeries_eq_signedConnected_of_nonempty_even
+    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
+    (labels : Fin (2 * E) → ExternalFieldLabel Mode)
+    (times : Fin (2 * E) → ℝ)
+    (hEven : ∀ S : Finset (Fin (2 * E)), S ≠ ∅ → Even S.card →
+      externalSubsetMomentSeries ε β g labels times S =
+        externalSubsetSignedConnectedMomentSeries ε β g labels times S) :
+    ∀ S : Finset (Fin (2 * E)),
+      externalSubsetMomentSeries ε β g labels times S =
+        externalSubsetSignedConnectedMomentSeries ε β g labels times S := by
+  intro S
+  by_cases hEmpty : S = ∅
+  · subst S
+    simp
+  · by_cases hParity : Even S.card
+    · exact hEven S hEmpty hParity
+    · rw [(externalSubsetSeries_eq_zero_of_odd ε β g labels times S hParity).1,
+        externalSubsetSignedConnectedMomentSeries_eq_zero_of_odd
+          ε β g labels times S hParity]
 
 /-- The precise remaining physical bridge for Phase 5: once the actual
 vacuum-normalized Wick/Dyson moments satisfy the signed external-partition
