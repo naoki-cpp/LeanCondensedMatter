@@ -183,7 +183,7 @@ theorem vacuumFreeExternalInsertionDysonCoefficient_eq_sum_externalPartitionFibe
   classical
   unfold vacuumFreeExternalInsertionDysonCoefficient
   rw [Finset.sum_comm]
-  simp
+  simp only [Finset.sum_ite_eq, Finset.mem_univ, ↓reduceIte]
   apply Finset.sum_congr
   · ext d
     simp
