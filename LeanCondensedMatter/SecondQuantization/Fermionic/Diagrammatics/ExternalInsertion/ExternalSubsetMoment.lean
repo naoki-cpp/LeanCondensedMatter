@@ -183,7 +183,12 @@ theorem vacuumFreeExternalInsertionDysonCoefficient_eq_sum_externalPartitionFibe
   classical
   unfold vacuumFreeExternalInsertionDysonCoefficient
   rw [Finset.sum_comm]
-  simp
+  simp only [Finset.sum_ite_eq', Finset.mem_univ, if_true]
+  apply Finset.sum_congr
+  · ext d
+    simp
+  · intro d _
+    rfl
 
 /-- Fully external-connected, vacuum-free Dyson coefficient using the actual
 integrated signed Wick diagram amplitude, with all labels and times fixed. -/
