@@ -329,6 +329,7 @@ theorem externalPartitionSourceSign_eq_componentExternalOrderSign_of_connected
     componentExternalOrderSign_eq_one_of_allExternalVerticesConnected
       d anchor hconnected blockOrder]
 
+omit [LinearOrder Mode] [Fintype Mode] in
 /-- For every vacuum-free physical Wick diagram, its source external-partition
 shuffle sign equals the sign obtained from the actual full-graph connected
 components, with any chosen component order.
