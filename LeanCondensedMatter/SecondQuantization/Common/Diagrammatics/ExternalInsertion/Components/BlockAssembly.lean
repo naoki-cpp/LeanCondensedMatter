@@ -29,8 +29,11 @@ and each interaction vertex is assigned to exactly one external block.
 This covers precisely the vacuum-free block layouts needed for the
 nonempty-even external-source moment formula. -/
 structure ExternalInsertionBlockLayout (E N : ℕ) where
+  /-- Prescribed partition of all external fermion slots. -/
   partition : Finpartition (Finset.univ : Finset (Fin (2 * E)))
+  /-- Physical pairing parity: each external block contains an even number of legs. -/
   evenBlocks : ∀ B : partition.parts, Even (B : Finset (Fin (2 * E))).card
+  /-- Assignment of ambient interaction vertices to external partition blocks. -/
   interactionOwner : Fin N → partition.parts
 
 variable {E N : ℕ}
