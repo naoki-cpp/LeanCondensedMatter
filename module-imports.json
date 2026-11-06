@@ -2326,6 +2326,15 @@
       "externalImportCount": 0
     },
     {
+      "name": "LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornRadialScalarGenerator",
+      "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Disorder/FiniteBroadeningBornRadialScalarGenerator.lean",
+      "imports": [
+        "LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornRadialRealSpacePropagator",
+        "LeanCondensedMatter.Transport.Analysis.PolarFourierRadialDerivative"
+      ],
+      "externalImportCount": 3
+    },
+    {
       "name": "LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornRealSpacePropagator",
       "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Disorder/FiniteBroadeningBornRealSpacePropagator.lean",
       "imports": [
@@ -2504,6 +2513,7 @@
         "LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornDysonShift",
         "LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornRadialMoments",
         "LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornRadialRealSpacePropagator",
+        "LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornRadialScalarGenerator",
         "LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornRealSpacePropagator",
         "LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexResponse",
         "LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningLadderZeroBroadeningTransverseWeakDisorder",
@@ -8232,6 +8242,14 @@
       "externalImportCount": 12
     },
     {
+      "name": "LeanCondensedMatter.Transport.Analysis.PolarFourierRadialDerivative",
+      "sourceFile": "LeanCondensedMatter/Transport/Analysis/PolarFourierRadialDerivative.lean",
+      "imports": [
+        "LeanCondensedMatter.Transport.Analysis.PolarFourier"
+      ],
+      "externalImportCount": 3
+    },
+    {
       "name": "LeanCondensedMatter.Transport.Analysis.RelaxationTime",
       "sourceFile": "LeanCondensedMatter/Transport/Analysis/RelaxationTime.lean",
       "imports": [],
@@ -8255,6 +8273,7 @@
         "LeanCondensedMatter.Transport.Analysis.ContinuumMeasure",
         "LeanCondensedMatter.Transport.Analysis.FourierGeometry",
         "LeanCondensedMatter.Transport.Analysis.PolarFourier",
+        "LeanCondensedMatter.Transport.Analysis.PolarFourierRadialDerivative",
         "LeanCondensedMatter.Transport.Analysis.RelaxationTime",
         "LeanCondensedMatter.Transport.Analysis.ZeroTemperatureLorentzian"
       ],
