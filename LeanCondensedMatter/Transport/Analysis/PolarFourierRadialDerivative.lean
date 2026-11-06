@@ -73,22 +73,26 @@ theorem hasDerivAt_integral_polarFourierZerothAngularKernel
     have harg : HasDerivAt (fun t : ℝ => p * t / hbar) (p / hbar) r := by
       convert (((hasDerivAt_id r).const_mul p).div_const hbar) using 1 <;>
         first | rfl | ring
-    have hk := (polarFourierZerothAngularKernel_hasDerivAt
-      (p * r / hbar)).comp r harg
+    have hk := ((polarFourierZerothAngularKernel_hasDerivAt
+      (p * r / hbar)).hasFDerivAt.comp r harg.hasFDerivAt).hasDerivAt
     have h := hk.const_mul (weight p)
     convert h using 1
     · rfl
     · dsimp [F']
       push_cast
       ring
+  have hcontArg (r : ℝ) : Continuous (fun p : ℝ => p * r / hbar) := by
+    fun_prop
+  have hcontRatio : Continuous (fun p : ℝ => p / hbar) := by
+    fun_prop
   have hcont (r : ℝ) : Continuous (F r) := by
     dsimp [F]
-    exact hweight.mul (hc0.comp (by fun_prop))
+    exact hweight.mul (hc0.comp (hcontArg r))
   have hcont' (r : ℝ) : Continuous (F' r) := by
     dsimp [F']
-    exact hweight.mul ((continuous_const.mul
-      ((Complex.continuous_ofReal.comp (by fun_prop)).mul
-        (hc1.comp (by fun_prop)))))
+    exact hweight.mul
+      ((continuous_const.mul (Complex.continuous_ofReal.comp hcontRatio)).mul
+        (hc1.comp (hcontArg r)))
   have hbound (r p : ℝ) : ‖F' r p‖ ≤ bound p := by
     have hn : ‖F' r p‖ =
         (‖weight p‖ * |p / hbar|) *
@@ -102,7 +106,7 @@ theorem hasDerivAt_integral_polarFourierZerothAngularKernel
       (polarFourierFirstCosineAngularKernel_norm_le _) (by positivity)
   have hboundCont : Continuous bound := by
     dsimp [bound]
-    fun_prop
+    exact (hweight.norm.mul hcontRatio.abs).mul continuous_const
   have hmain :=
     (intervalIntegral.hasDerivAt_integral_of_dominated_loc_of_deriv_le
       (F := F) (F' := F') (bound := bound)
@@ -114,6 +118,9 @@ theorem hasDerivAt_integral_polarFourierZerothAngularKernel
       (Filter.Eventually.of_forall fun p _ r _ => hbound r p)
       (hboundCont.intervalIntegrable _ _)
       (Filter.Eventually.of_forall fun p _ r _ => hderiv r p)).2
+  change HasDerivAt
+    (fun r : ℝ => ∫ p in (0 : ℝ)..pMax, F r p)
+    (∫ p in (0 : ℝ)..pMax, F' radius p) radius
   exact hmain
 
 end
