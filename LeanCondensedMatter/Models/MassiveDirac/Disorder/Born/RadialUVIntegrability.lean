@@ -49,7 +49,7 @@ theorem massiveDiracRadialFourierRemainder_norm_le
         (2 * v ^ 2 * p) *
         ‖(massiveDiracRadialDenominator v p energy mass)⁻¹‖ ^ 2 := by
     simp only [norm_mul, norm_pow, Complex.norm_real, Real.norm_eq_abs,
-      abs_of_pos hp0, norm_ofNat]
+      abs_of_pos hp0, norm_two]
     rw [sq_abs]
     ring
   rw [hnorm]
