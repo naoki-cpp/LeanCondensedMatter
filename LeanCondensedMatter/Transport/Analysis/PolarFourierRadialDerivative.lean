@@ -107,6 +107,8 @@ theorem hasDerivAt_integral_polarFourierZerothAngularKernel
   have hboundCont : Continuous bound := by
     dsimp [bound]
     exact (hweight.norm.mul hcontRatio.abs).mul continuous_const
+  have hboundInt : IntervalIntegrable bound volume 0 pMax :=
+    hboundCont.intervalIntegrable 0 pMax
   have hmain :=
     (intervalIntegral.hasDerivAt_integral_of_dominated_loc_of_deriv_le
       (F := F) (F' := F') (bound := bound)
@@ -116,7 +118,7 @@ theorem hasDerivAt_integral_polarFourierZerothAngularKernel
       ((hcont radius).intervalIntegrable _ _)
       ((hcont' radius).aestronglyMeasurable)
       (Filter.Eventually.of_forall fun p _ r _ => hbound r p)
-      (hboundCont.intervalIntegrable _ _)
+      hboundInt
       (Filter.Eventually.of_forall fun p _ r _ => hderiv r p)).2
   change HasDerivAt
     (fun r : ℝ => ∫ p in (0 : ℝ)..pMax, F r p)
