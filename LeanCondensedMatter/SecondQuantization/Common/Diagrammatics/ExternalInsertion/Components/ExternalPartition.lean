@@ -144,5 +144,109 @@ theorem ExternalInsertionDiagram.supportedComponentsEquivExternalBlocks_apply
       (B.1.1 : Finset (ExternalInsertionVertex E S)).toLeft := by
   rfl
 
+/-- In a diagram with no vacuum components, *all* graph components are
+externally supported. Consequently, the full connected-component partition
+is canonically equivalent to the partition of external insertions.
+
+Unlike the unrestricted supported-component equivalence, this does not retain
+any vacuum-only component: it is the exact indexing equivalence used to
+reindex the product of connected Dyson component amplitudes. -/
+noncomputable def ExternalInsertionDiagram.vacuumFreeComponentsEquivExternalBlocks
+    {S : Finset (Fin N)}
+    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
+    (hVac : HasNoVacuumComponent d.vertexGraph) :
+    d.vertexGraph.componentPartition.parts ≃
+      (externalComponentPartition d.vertexGraph).parts := by
+  classical
+  have hall :
+      ∀ B : d.vertexGraph.componentPartition.parts,
+        B ∈ externallySupportedComponentParts d.vertexGraph := by
+    intro B
+    exact (mem_externallySupportedComponentParts d.vertexGraph B).2
+      ((hasNoVacuumComponent_iff_forall_component_meetsExternal d.vertexGraph).1 hVac B)
+  let allToSupported : d.vertexGraph.componentPartition.parts ≃
+      {B : d.vertexGraph.componentPartition.parts //
+        B ∈ externallySupportedComponentParts d.vertexGraph} := {
+    toFun := fun B => ⟨B, hall B⟩
+    invFun := fun B => B.1
+    left_inv := fun _ => rfl
+    right_inv := fun B => by cases B; rfl
+  }
+  exact allToSupported.trans d.supportedComponentsEquivExternalBlocks
+
+/-- The external block of a vacuum-free diagram component consists of precisely
+the external vertices of that full component. -/
+@[simp]
+theorem ExternalInsertionDiagram.vacuumFreeComponentsEquivExternalBlocks_apply
+    {S : Finset (Fin N)}
+    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
+    (hVac : HasNoVacuumComponent d.vertexGraph)
+    (B : d.vertexGraph.componentPartition.parts) :
+    (((d.vacuumFreeComponentsEquivExternalBlocks hVac B :
+      (externalComponentPartition d.vertexGraph).parts) :
+        Finset (Fin (2 * E)))) =
+      (B.1 : Finset (ExternalInsertionVertex E S)).toLeft := by
+  simp [ExternalInsertionDiagram.vacuumFreeComponentsEquivExternalBlocks,
+    ExternalInsertionDiagram.supportedComponentsEquivExternalBlocks_apply]
+
+/-- Every external partition block of a vacuum-free diagram has a unique
+full-graph component preimage. This is an actual diagrammatic inverse,
+not just a cardinality equality. -/
+theorem ExternalInsertionDiagram.vacuumFreeComponentsEquivExternalBlocks_symm_apply
+    {S : Finset (Fin N)}
+    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
+    (hVac : HasNoVacuumComponent d.vertexGraph)
+    (P : (externalComponentPartition d.vertexGraph).parts) :
+    (((d.vacuumFreeComponentsEquivExternalBlocks hVac).symm P).1 :
+      Finset (ExternalInsertionVertex E S)).toLeft =
+        (P : Finset (Fin (2 * E))) := by
+  have h := d.vacuumFreeComponentsEquivExternalBlocks_apply hVac
+    ((d.vacuumFreeComponentsEquivExternalBlocks hVac).symm P)
+  simpa using h.symm
+
+
+/-- For a diagram with at least one external insertion, all external vertices
+are mutually connected precisely when their induced external-component
+partition is the one-block (top) partition.
+
+The diagram may still have vacuum components: neither side requires the
+whole vertex graph to be preconnected. -/
+theorem ExternalInsertionDiagram.allExternalVerticesConnected_iff_externalComponentPartition_eq_top
+    {S : Finset (Fin N)}
+    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
+    (anchor : Fin (2 * E)) :
+    AllExternalVerticesConnected d.vertexGraph ↔
+      externalComponentPartition d.vertexGraph = ⊤ := by
+  classical
+  letI : Nonempty (Fin (2 * E)) := ⟨anchor⟩
+  constructor
+  · intro hconnected
+    have hparts :
+        (externalComponentPartition d.vertexGraph).parts =
+          {(Finset.univ : Finset (Fin (2 * E)))} :=
+      (allExternalVerticesConnected_iff_externalComponentPartition_parts_eq_singleton
+        d.vertexGraph).mp hconnected
+    apply le_antisymm le_top
+    intro B hB
+    have hBeq : B = (Finset.univ : Finset (Fin (2 * E))) :=
+      Finset.mem_singleton.mp (Finpartition.parts_top_subset _ hB)
+    refine ⟨Finset.univ, ?_, ?_⟩
+    · rw [hparts]
+      exact Finset.mem_singleton_self _
+    · simp [hBeq]
+  · intro htop a b
+    have hpart : (externalComponentPartition d.vertexGraph).part a =
+        (Finset.univ : Finset (Fin (2 * E))) := by
+      have hmem : (externalComponentPartition d.vertexGraph).part a ∈
+          (⊤ : Finpartition (Finset.univ : Finset (Fin (2 * E)))).parts := by
+        rw [← htop]
+        exact (externalComponentPartition d.vertexGraph).part_mem.2
+          (Finset.mem_univ a)
+      exact Finset.mem_singleton.mp (Finpartition.parts_top_subset _ hmem)
+    apply (mem_externalComponentPartition_part d.vertexGraph a b).mp
+    rw [hpart]
+    exact Finset.mem_univ b
+
+
 end Common
 end SecondQuantization

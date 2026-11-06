@@ -47,6 +47,82 @@ theorem FamilySlotShuffleTo.blockInversionCount_of_ne {size : ι → ℕ} {total
   classical
   simp [FamilySlotShuffleTo.blockInversionCount, hij]
 
+/-- The actual ambient positions occupied by one block of a finite-family
+shuffle. This set is independent of how the block's local slots are named. -/
+noncomputable def FamilySlotShuffleTo.blockSlotSet
+    {size : ι → ℕ} {total : ℕ}
+    (shuffle : FamilySlotShuffleTo size total) (i : ι) :
+    Finset (Fin total) :=
+  Finset.univ.image (fun p : Fin (size i) => shuffle.slotEquiv ⟨i, p⟩)
+
+/-- An inter-block inversion count depends only on the two sets of ambient
+positions occupied by the blocks, not their local enumerations. -/
+theorem FamilySlotShuffleTo.blockInversionCount_eq_sum_blockSlotSet
+    {size : ι → ℕ} {total : ℕ}
+    (shuffle : FamilySlotShuffleTo size total)
+    {i j : ι} (hij : i ≠ j) :
+    shuffle.blockInversionCount i j =
+      ∑ x ∈ shuffle.blockSlotSet i,
+        ∑ y ∈ shuffle.blockSlotSet j, if y < x then 1 else 0 := by
+  classical
+  symm
+  rw [shuffle.blockInversionCount_of_ne hij]
+  unfold FamilySlotShuffleTo.blockSlotSet
+  rw [Finset.sum_image (fun p _ q _ h => (shuffle.strictMono i).injective h)]
+  apply Finset.sum_congr rfl
+  intro p _
+  rw [Finset.sum_image (fun q _ r _ h => (shuffle.strictMono j).injective h)]
+
+/-- Reindexing the block names does not change pairwise inversion counts
+when each named block occupies the same ambient positions.
+
+The two shuffle families may have *different local slot sizes*; no casts
+between their dependent slot types are needed. -/
+theorem FamilySlotShuffleTo.blockInversionCount_eq_of_blockSlotSet
+    {κ : Type*} {size₁ : ι → ℕ} {size₂ : κ → ℕ} {total : ℕ}
+    (σ : FamilySlotShuffleTo size₁ total)
+    (τ : FamilySlotShuffleTo size₂ total)
+    (e : ι ≃ κ)
+    (hset : ∀ i, σ.blockSlotSet i = τ.blockSlotSet (e i))
+    (i j : ι) :
+    σ.blockInversionCount i j = τ.blockInversionCount (e i) (e j) := by
+  by_cases hij : i = j
+  · subst j
+    simp
+  · rw [σ.blockInversionCount_eq_sum_blockSlotSet hij,
+      τ.blockInversionCount_eq_sum_blockSlotSet (e.injective.ne hij),
+      hset i, hset j]
+
+/-- Casting the ambient finite slot count preserves the number of
+inversions between any two distinct blocks, since the cast preserves
+the ambient linear order. -/
+theorem FamilySlotShuffleTo.castTotalEquiv_blockInversionCount
+    {size : ι → ℕ} {m n : ℕ}
+    (shuffle : FamilySlotShuffleTo size m) (h : m = n) (i j : ι) :
+    ((FamilySlotShuffleTo.castTotalEquiv h) shuffle).blockInversionCount i j =
+      shuffle.blockInversionCount i j := by
+  classical
+  by_cases hij : i = j
+  · subst j
+    simp
+  · rw [((FamilySlotShuffleTo.castTotalEquiv h) shuffle).blockInversionCount_of_ne hij,
+      shuffle.blockInversionCount_of_ne hij]
+    apply Finset.sum_congr rfl
+    intro p _
+    apply Finset.sum_congr rfl
+    intro q _
+    have hlt : (Fin.castOrderIso h) (shuffle.slotEquiv ⟨j, q⟩) <
+        (Fin.castOrderIso h) (shuffle.slotEquiv ⟨i, p⟩) ↔
+        shuffle.slotEquiv ⟨j, q⟩ < shuffle.slotEquiv ⟨i, p⟩ := by
+      constructor
+      · intro h'
+        simpa using (Fin.castOrderIso h.symm).strictMono h'
+      · intro h'; exact (Fin.castOrderIso h).strictMono h'
+    change (if (Fin.castOrderIso h) (shuffle.slotEquiv ⟨j, q⟩) <
+        (Fin.castOrderIso h) (shuffle.slotEquiv ⟨i, p⟩) then 1 else 0) =
+      (if shuffle.slotEquiv ⟨j, q⟩ < shuffle.slotEquiv ⟨i, p⟩ then 1 else 0)
+    simp only [hlt]
+
 /-- Total inter-block inversion count relative to an explicit ordering of the blocks.
 
 The order selects exactly one orientation of every unordered pair of distinct blocks. Keeping that
@@ -57,6 +133,23 @@ noncomputable def FamilySlotShuffleTo.orderedBlockInversionCount [Fintype ι]
   ∑ ij ∈ (Finset.univ : Finset ι).offDiag,
     if blockOrder ij.1 < blockOrder ij.2
     then shuffle.blockInversionCount ij.1 ij.2 else 0
+
+/-- Ambient-size casts also preserve the total ordered inter-block
+inversion count, for every explicit order of the blocks. -/
+theorem FamilySlotShuffleTo.castTotalEquiv_orderedBlockInversionCount
+    [Fintype ι] {size : ι → ℕ} {m n : ℕ}
+    (shuffle : FamilySlotShuffleTo size m) (h : m = n)
+    (order : ι ≃ Fin (Fintype.card ι)) :
+    ((FamilySlotShuffleTo.castTotalEquiv h) shuffle).orderedBlockInversionCount order =
+      shuffle.orderedBlockInversionCount order := by
+  classical
+  unfold FamilySlotShuffleTo.orderedBlockInversionCount
+  apply Finset.sum_congr rfl
+  intro p _
+  by_cases hlt : order p.1 < order p.2
+  · simp only [hlt, ite_true]
+    exact shuffle.castTotalEquiv_blockInversionCount h p.1 p.2
+  · simp [hlt]
 
 /-- Pointwise modular agreement of inter-block inversion counts transports to the total ordered
 inter-block inversion count for the same block order. -/
@@ -80,6 +173,51 @@ theorem FamilySlotShuffleTo.orderedBlockInversionCount_modEq_of_blockInversionCo
     exact h ij.1 ij.2 hij.2.2
   · simp only [hlt, ite_false]
     exact Nat.ModEq.refl 0
+
+/-- Equality of the occupied ambient slots for each block implies equality
+of the total ordered inter-block inversion counts, after reindexing the block
+names and respecting their chosen orders.
+
+This formulation avoids casts between different block-local `Fin` types
+and applies to both graph components and source-partition blocks. -/
+theorem FamilySlotShuffleTo.orderedBlockInversionCount_eq_of_blockSlotSet
+    {κ : Type*} [Fintype ι] [Fintype κ]
+    {size₁ : ι → ℕ} {size₂ : κ → ℕ} {total : ℕ}
+    (σ : FamilySlotShuffleTo size₁ total)
+    (τ : FamilySlotShuffleTo size₂ total)
+    (e : ι ≃ κ)
+    (hset : ∀ i, σ.blockSlotSet i = τ.blockSlotSet (e i))
+    (orderσ : ι ≃ Fin (Fintype.card ι))
+    (orderτ : κ ≃ Fin (Fintype.card κ))
+    (horder : ∀ i j, orderσ i < orderσ j ↔
+      orderτ (e i) < orderτ (e j)) :
+    σ.orderedBlockInversionCount orderσ =
+      τ.orderedBlockInversionCount orderτ := by
+  classical
+  unfold FamilySlotShuffleTo.orderedBlockInversionCount
+  refine Finset.sum_bij (fun p _ => (e p.1, e p.2)) ?_ ?_ ?_ ?_
+  · intro p hp
+    exact Finset.mem_offDiag.mpr
+      ⟨Finset.mem_univ _, Finset.mem_univ _,
+        e.injective.ne (Finset.mem_offDiag.mp hp).2.2⟩
+  · intro p _ q _ heq
+    exact Prod.ext (e.injective (congrArg Prod.fst heq))
+      (e.injective (congrArg Prod.snd heq))
+  · intro q hq
+    refine ⟨(e.symm q.1, e.symm q.2), ?_, ?_⟩
+    · refine Finset.mem_offDiag.mpr ⟨Finset.mem_univ _, Finset.mem_univ _, ?_⟩
+      intro h
+      apply (Finset.mem_offDiag.mp hq).2.2
+      simpa using congrArg e h
+    · ext <;> simp
+  · intro p _
+    by_cases hlt : orderσ p.1 < orderσ p.2
+    · have hlt' := (horder p.1 p.2).mp hlt
+      simp only [hlt, hlt', ite_true]
+      exact σ.blockInversionCount_eq_of_blockSlotSet τ e hset p.1 p.2
+    · have hlt' : ¬ orderτ (e p.1) < orderτ (e p.2) :=
+        fun h => hlt ((horder p.1 p.2).mpr h)
+      simp [hlt, hlt']
 
 /-- For distinct blocks, the two opposite inter-block inversion counts add up
 to the total number of pairs of slots between the blocks. -/

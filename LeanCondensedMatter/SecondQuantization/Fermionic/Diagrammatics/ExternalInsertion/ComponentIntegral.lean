@@ -1,5 +1,6 @@
 import LeanCondensedMatter.Analysis.OrderedSimplex.FamilyShuffle
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.InteractionOrder
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ExternalPartition
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.Integral
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentAmplitude
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.DiagramRegularity
@@ -131,6 +132,48 @@ theorem ExternalInsertionWickDiagram.sum_componentInteractionOrderShuffle_ordere
   exact ExternalInsertionWickDiagram.orderedSimplexIntegral_dysonFixedTimeAmplitude
       (d.componentOrderedDiagram B)
     ε β g (d.componentExternalTime externalTime B)
+
+/-- For a vacuum-free external-insertion diagram, reindex the *integrated*
+Dyson component factorization by external-partition blocks rather than full
+graph components. The interaction-order shuffle sum is essential:
+individual ordered-simplex terms do not factor into component integrals.
+
+This is the diagram-side reindexing needed for the signed source moment
+identity; it uses the actual local Wick diagrams, local labels and times. -/
+theorem ExternalInsertionWickDiagram.sum_componentInteractionOrderShuffle_orderedDysonAmplitude_eq_externalPartitionProduct
+    {E n : ℕ} (d : ExternalInsertionWickDiagram Mode E n)
+    (hVac : HasNoVacuumComponent d.vertexGraph)
+    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
+    (externalTime : Fin (2 * E) → ℝ)
+    (blockOrder : d.vertexGraph.componentPartition.parts ≃
+      Fin (Fintype.card d.vertexGraph.componentPartition.parts)) :
+    (∑ shuffle : d.ComponentInteractionOrderShuffle,
+      d.orderedDysonAmplitude ε β g externalTime
+        (d.assembleInteractionOrder d.canonicalComponentInteractionOrders shuffle)) =
+      componentExternalOrderSign d blockOrder *
+        ∏ P : (externalComponentPartition d.vertexGraph).parts,
+          ExternalInsertionWickDiagram.dysonAmplitude
+              (d.componentOrderedDiagram
+                ((d.vacuumFreeComponentsEquivExternalBlocks hVac).symm P))
+              ε β g (d.componentExternalTime externalTime
+                ((d.vacuumFreeComponentsEquivExternalBlocks hVac).symm P)) := by
+  classical
+  let F : d.vertexGraph.componentPartition.parts → ℂ :=
+    fun B => ExternalInsertionWickDiagram.dysonAmplitude
+      (d.componentOrderedDiagram B) ε β g (d.componentExternalTime externalTime B)
+  calc
+    (∑ shuffle : d.ComponentInteractionOrderShuffle,
+      d.orderedDysonAmplitude ε β g externalTime
+        (d.assembleInteractionOrder d.canonicalComponentInteractionOrders shuffle)) =
+      componentExternalOrderSign d blockOrder * ∏ B, F B :=
+        d.sum_componentInteractionOrderShuffle_orderedDysonAmplitude_eq_componentExternalOrderSign_mul_prod_components
+          ε β g externalTime blockOrder
+    _ = componentExternalOrderSign d blockOrder *
+        ∏ P : (externalComponentPartition d.vertexGraph).parts,
+          F ((d.vacuumFreeComponentsEquivExternalBlocks hVac).symm P) := by
+      congr 1
+      exact (Equiv.prod_comp (d.vacuumFreeComponentsEquivExternalBlocks hVac).symm F).symm
+
 
 end Fermionic
 end SecondQuantization
