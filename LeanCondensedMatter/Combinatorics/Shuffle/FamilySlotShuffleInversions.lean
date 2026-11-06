@@ -47,6 +47,51 @@ theorem FamilySlotShuffleTo.blockInversionCount_of_ne {size : ι → ℕ} {total
   classical
   simp [FamilySlotShuffleTo.blockInversionCount, hij]
 
+/-- The actual ambient positions occupied by one block of a finite-family
+shuffle. This set is independent of how the block's local slots are named. -/
+noncomputable def FamilySlotShuffleTo.blockSlotSet
+    {size : ι → ℕ} {total : ℕ}
+    (shuffle : FamilySlotShuffleTo size total) (i : ι) :
+    Finset (Fin total) :=
+  Finset.univ.image (fun p : Fin (size i) => shuffle.slotEquiv ⟨i, p⟩)
+
+/-- An inter-block inversion count depends only on the two sets of ambient
+positions occupied by the blocks, not their local enumerations. -/
+theorem FamilySlotShuffleTo.blockInversionCount_eq_sum_blockSlotSet
+    {size : ι → ℕ} {total : ℕ}
+    (shuffle : FamilySlotShuffleTo size total)
+    {i j : ι} (hij : i ≠ j) :
+    shuffle.blockInversionCount i j =
+      ∑ x ∈ shuffle.blockSlotSet i,
+        ∑ y ∈ shuffle.blockSlotSet j, if y < x then 1 else 0 := by
+  classical
+  rw [shuffle.blockInversionCount_of_ne hij]
+  unfold FamilySlotShuffleTo.blockSlotSet
+  rw [Finset.sum_image (shuffle.strictMono i).injective]
+  apply Finset.sum_congr rfl
+  intro p _
+  rw [Finset.sum_image (shuffle.strictMono j).injective]
+
+/-- Reindexing the block names does not change pairwise inversion counts
+when each named block occupies the same ambient positions.
+
+The two shuffle families may have *different local slot sizes*; no casts
+between their dependent slot types are needed. -/
+theorem FamilySlotShuffleTo.blockInversionCount_eq_of_blockSlotSet
+    {κ : Type*} {size₁ : ι → ℕ} {size₂ : κ → ℕ} {total : ℕ}
+    (σ : FamilySlotShuffleTo size₁ total)
+    (τ : FamilySlotShuffleTo size₂ total)
+    (e : ι ≃ κ)
+    (hset : ∀ i, σ.blockSlotSet i = τ.blockSlotSet (e i))
+    (i j : ι) :
+    σ.blockInversionCount i j = τ.blockInversionCount (e i) (e j) := by
+  by_cases hij : i = j
+  · subst j
+    simp
+  · rw [σ.blockInversionCount_eq_sum_blockSlotSet hij,
+      τ.blockInversionCount_eq_sum_blockSlotSet (e.injective.ne hij),
+      hset i, hset j]
+
 /-- Total inter-block inversion count relative to an explicit ordering of the blocks.
 
 The order selects exactly one orientation of every unordered pair of distinct blocks. Keeping that
