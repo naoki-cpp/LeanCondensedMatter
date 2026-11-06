@@ -309,6 +309,7 @@ theorem externalPartitionSourceSign_top
   rw [hzero]
   simp
 
+omit [LinearOrder Mode] [Fintype Mode] in
 /-- On a diagram whose external insertions are mutually connected,
 the source-partition sign and the actual graph-component regrouping sign
 agree: both are one. Pure-vacuum components may be present.
