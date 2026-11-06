@@ -154,10 +154,10 @@ theorem evenExternalSubsetTimes_externalPartitionBlock
       (d.externalSector_card_even B) hblock.symm
   exact htransport.trans (heq_of_eq h)
 
+omit [LinearOrder Mode] in
 /-- Explicit finite enumeration of vacuum-free fixed-label diagrams, available
 when the target type is mentioned in a theorem statement rather than inside
 a `by classical` proof. -/
-omit [LinearOrder Mode] in
 private noncomputable instance vacuumFreeFixedExternalInsertionWickDiagramFintype
     {K n : ℕ} (labels : Fin (2 * K) → ExternalFieldLabel Mode) :
     Fintype (VacuumFreeFixedExternalInsertionWickDiagram Mode K n labels) := by
