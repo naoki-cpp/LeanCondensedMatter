@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornRadialScalarGenerator
+import LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVBound
 import LeanCondensedMatter.Transport.Analysis.PolarFourierRadialPrimitive
 import LeanCondensedMatter.Transport.Analysis.PolarFourierRadialLimit
 import Mathlib.Tactic.FunProp
