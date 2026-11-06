@@ -329,6 +329,60 @@ theorem externalPartitionSourceSign_eq_componentExternalOrderSign_of_connected
     componentExternalOrderSign_eq_one_of_allExternalVerticesConnected
       d anchor hconnected blockOrder]
 
+/-- For every vacuum-free physical Wick diagram, its source external-partition
+shuffle sign equals the sign obtained from the actual full-graph connected
+components, with any chosen component order.
+
+The proof uses the *sets of occupied ambient external slots*, rather than
+casting between separately indexed local `Fin` types. The occupied sets agree
+by the exact connected-component/external-block equivalence, and the order
+independence uses even external component sizes. -/
+theorem externalPartitionSourceSign_eq_componentExternalOrderSign_of_vacuumFree
+    {n : ℕ} (d : ExternalInsertionWickDiagram Mode E n)
+    (hVac : HasNoVacuumComponent d.vertexGraph)
+    (blockOrder : d.vertexGraph.componentPartition.parts ≃
+      Fin (Fintype.card d.vertexGraph.componentPartition.parts)) :
+    externalPartitionSourceSign (externalComponentPartition d.vertexGraph) =
+      componentExternalOrderSign d blockOrder := by
+  classical
+  let π := externalComponentPartition d.vertexGraph
+  let e := d.vacuumFreeComponentsEquivExternalBlocks hVac
+  let sourceOrder : π.parts ≃ Fin (Fintype.card π.parts) := Fintype.equivFin π.parts
+  let hcard : Fintype.card d.vertexGraph.componentPartition.parts =
+      Fintype.card π.parts := Fintype.card_congr e
+  let compOrder : d.vertexGraph.componentPartition.parts ≃
+      Fin (Fintype.card d.vertexGraph.componentPartition.parts) :=
+    (e.trans sourceOrder).trans (Fin.castOrderIso hcard.symm).toEquiv
+  have hset (B : d.vertexGraph.componentPartition.parts) :
+      d.componentExternalShuffle.blockSlotSet B =
+        (externalPartitionShuffle π).blockSlotSet (e B) := by
+    rw [d.componentExternalShuffle_blockSlotSet,
+      externalPartitionShuffle_blockSlotSet_univ]
+    exact (d.vacuumFreeComponentsEquivExternalBlocks_apply hVac B).symm
+  have horder (B C : d.vertexGraph.componentPartition.parts) :
+      compOrder B < compOrder C ↔
+        sourceOrder (e B) < sourceOrder (e C) := by
+    change (Fin.castOrderIso hcard.symm) (sourceOrder (e B)) <
+        (Fin.castOrderIso hcard.symm) (sourceOrder (e C)) ↔ _
+    constructor
+    · intro h
+      simpa using (Fin.castOrderIso hcard).strictMono h
+    · exact (Fin.castOrderIso hcard.symm).strictMono
+  have hcount :
+      d.componentExternalShuffle.orderedBlockInversionCount compOrder =
+        (externalPartitionShuffle π).orderedBlockInversionCount sourceOrder :=
+    d.componentExternalShuffle.orderedBlockInversionCount_eq_of_blockSlotSet
+      (externalPartitionShuffle π) e hset compOrder sourceOrder horder
+  calc
+    externalPartitionSourceSign π =
+        externalPartitionOrderSign π sourceOrder := rfl
+    _ = componentExternalOrderSign d compOrder := by
+      unfold externalPartitionOrderSign componentExternalOrderSign
+      exact congrArg (fun n : ℕ => (Common.Statistics.fermion.zetaInt : ℂ) ^ n)
+        hcount.symm
+    _ = componentExternalOrderSign d blockOrder :=
+      componentExternalOrderSign_eq_of_blockOrder d compOrder blockOrder
+
 /-- The signed partition expansion predicted by the source/cumulant identity,
 formed from the actual fully connected diagrammatic contributions.
 The remaining Phase 5 theorem must identify this with
