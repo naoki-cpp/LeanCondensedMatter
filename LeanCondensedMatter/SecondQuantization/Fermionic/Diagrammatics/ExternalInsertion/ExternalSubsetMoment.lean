@@ -76,6 +76,44 @@ theorem evenExternalSubsetTimes_component
         d.componentExternalTime times B := by
   rfl
 
+
+/-- On each external-partition block of a vacuum-free diagram, the field
+labels used by the source-subset moment are exactly the labels of the
+canonical standalone connected-component diagram.
+
+The inverse component/block equivalence is essential here: the statement
+does not select an arbitrary representative of a block. -/
+theorem evenExternalSubsetLabels_externalPartitionBlock
+    {n : ℕ} (d : ExternalInsertionWickDiagram Mode E n)
+    (hVac : HasNoVacuumComponent d.vertexGraph)
+    (P : (externalComponentPartition d.vertexGraph).parts) :
+    evenExternalSubsetLabels d.externalLabel
+      (P : Finset (Fin (2 * E)))
+      (d.externalComponentPartition_block_card_even P.1 P.2) =
+      (d.componentOrderedDiagram
+        ((d.vacuumFreeComponentsEquivExternalBlocks hVac).symm P)).externalLabel := by
+  let B := (d.vacuumFreeComponentsEquivExternalBlocks hVac).symm P
+  have hblock := d.vacuumFreeComponentsEquivExternalBlocks_symm_apply hVac P
+  have h := evenExternalSubsetLabels_componentOrderedDiagram (d := d) B
+  simpa only [← hblock] using h
+
+/-- The same external-block transport preserves the insertion times in
+increasing source-slot order, not in the order of their numerical values. -/
+theorem evenExternalSubsetTimes_externalPartitionBlock
+    {n : ℕ} (d : ExternalInsertionWickDiagram Mode E n)
+    (hVac : HasNoVacuumComponent d.vertexGraph)
+    (times : Fin (2 * E) → ℝ)
+    (P : (externalComponentPartition d.vertexGraph).parts) :
+    evenExternalSubsetTimes times
+      (P : Finset (Fin (2 * E)))
+      (d.externalComponentPartition_block_card_even P.1 P.2) =
+      d.componentExternalTime times
+        ((d.vacuumFreeComponentsEquivExternalBlocks hVac).symm P) := by
+  let B := (d.vacuumFreeComponentsEquivExternalBlocks hVac).symm P
+  have hblock := d.vacuumFreeComponentsEquivExternalBlocks_symm_apply hVac P
+  have h := evenExternalSubsetTimes_component (d := d) times B
+  simpa only [← hblock] using h
+
 /-- Fully external-connected, vacuum-free Dyson coefficient using the actual
 integrated signed Wick diagram amplitude, with all labels and times fixed. -/
 noncomputable def connectedExternalInsertionDysonCoefficient {K : ℕ}
