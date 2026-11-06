@@ -136,5 +136,80 @@ noncomputable def ExternalInsertionBlockLayout.legEquiv
         ((B : Finset (Fin (2 * E))).card / 2)
         (layout.interactionBlock S B)).symm))
 
+/-- Assemble a labelled Wick diagram from **independent, block-local**
+external-insertion diagrams.
+
+The external source slots are assigned to blocks in increasing source order,
+and interaction vertices retain their original ambient labels. The pairing is
+the disjoint union of the chosen local pairings, transported along the
+concrete flattened-leg equivalence above.
+
+This defines a physical pairing; identifying its connected-component
+partition with the *given* external partition additionally requires that
+each chosen block diagram is fully connected. -/
+noncomputable def ExternalInsertionBlockLayout.assembleDiagram
+    {ExternalLabel InternalLabel : Type*}
+    (layout : ExternalInsertionBlockLayout E N) (S : Finset (Fin N))
+    (F : ∀ B : layout.partition.parts,
+      ExternalInsertionDiagram ExternalLabel InternalLabel
+        ((B : Finset (Fin (2 * E))).card / 2) N (layout.interactionBlock S B)) :
+    ExternalInsertionDiagram ExternalLabel InternalLabel E N S where
+  externalLabel e :=
+    (F (layout.sourceEquiv e).1).externalLabel (layout.sourceEquiv e).2
+  vertexLabel v :=
+    (F (layout.interactionEquiv S v).1).vertexLabel (layout.interactionEquiv S v).2
+  pairing :=
+    (Combinatorics.PairingOn.sigmaCongrRight (fun B => (F B).pairing)).transport
+      (layout.legEquiv S)
+
+/-- The assembled external field labels are exactly the independently
+specified block labels in their canonical increasing source order. -/
+@[simp]
+theorem ExternalInsertionBlockLayout.assembleDiagram_externalLabel
+    {ExternalLabel InternalLabel : Type*}
+    (layout : ExternalInsertionBlockLayout E N) (S : Finset (Fin N))
+    (F : ∀ B : layout.partition.parts,
+      ExternalInsertionDiagram ExternalLabel InternalLabel
+        ((B : Finset (Fin (2 * E))).card / 2) N (layout.interactionBlock S B))
+    (B : layout.partition.parts)
+    (i : Fin (2 * ((B : Finset (Fin (2 * E))).card / 2))) :
+    (layout.assembleDiagram S F).externalLabel
+        (layout.sourceEquiv.symm ⟨B, i⟩) = (F B).externalLabel i := by
+  simp [ExternalInsertionBlockLayout.assembleDiagram]
+
+/-- The assembled interaction labels are exactly the independently
+specified block labels, at their original ambient interaction vertices. -/
+@[simp]
+theorem ExternalInsertionBlockLayout.assembleDiagram_vertexLabel
+    {ExternalLabel InternalLabel : Type*}
+    (layout : ExternalInsertionBlockLayout E N) (S : Finset (Fin N))
+    (F : ∀ B : layout.partition.parts,
+      ExternalInsertionDiagram ExternalLabel InternalLabel
+        ((B : Finset (Fin (2 * E))).card / 2) N (layout.interactionBlock S B))
+    (B : layout.partition.parts) (v : ↥(layout.interactionBlock S B)) :
+    (layout.assembleDiagram S F).vertexLabel
+        ((layout.interactionEquiv S).symm ⟨B, v⟩) = (F B).vertexLabel v := by
+  simp [ExternalInsertionBlockLayout.assembleDiagram]
+
+/-- An assembled pairing stays in the specified external block on both
+ends of every pair, and its within-block partner is the original local
+pairing partner. This is the independent-block counterpart of the
+component-restriction partner theorem. -/
+@[simp]
+theorem ExternalInsertionBlockLayout.assembleDiagram_partner
+    {ExternalLabel InternalLabel : Type*}
+    (layout : ExternalInsertionBlockLayout E N) (S : Finset (Fin N))
+    (F : ∀ B : layout.partition.parts,
+      ExternalInsertionDiagram ExternalLabel InternalLabel
+        ((B : Finset (Fin (2 * E))).card / 2) N (layout.interactionBlock S B))
+    (B : layout.partition.parts)
+    (i : Fin (2 * (2 * (layout.interactionBlock S B).card +
+      ((B : Finset (Fin (2 * E))).card / 2)))) :
+    (layout.assembleDiagram S F).pairing.partner
+        ((layout.legEquiv S).symm ⟨B, i⟩) =
+      (layout.legEquiv S).symm ⟨B, (F B).pairing.partner i⟩ := by
+  simp [ExternalInsertionBlockLayout.assembleDiagram]
+
+
 end Common
 end SecondQuantization
