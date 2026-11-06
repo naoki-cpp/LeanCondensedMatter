@@ -95,6 +95,39 @@ theorem finiteCutoffContinuumBornDysonRadialScalarGreenGenerator_hasDerivAt
   · funext r
     rfl
 
+/-- A model-local linearity bridge for radial Green coefficients. The
+normalization is carried once by the scalar generator, while a constant
+effective spectral coefficient factors outside the *finite* momentum
+integral. Both the identity and the hypotheses are independent of the
+Pauli channel that supplies `kernel`. -/
+private theorem finiteCutoffContinuumBornDyson_radialKernel_eq_scaledGenerator
+    (side : SpectralSide)
+    (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ)
+    (coeff : ℂ) (kernel : ℝ → ℂ)
+    (hkernel : ∀ p : ℝ, kernel p =
+      coeff *
+        ((p : ℂ) *
+          (finiteCutoffContinuumBornDysonDenominator
+            side v m p 0 probeEnergy broadening disorderStrength hbar pMax)⁻¹ *
+          polarFourierZerothAngularKernel (p * radius / hbar))) :
+    (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
+      (∫ p in (0 : ℝ)..pMax, kernel p) =
+      coeff * finiteCutoffContinuumBornDysonRadialScalarGreenGenerator
+        side v m probeEnergy broadening disorderStrength hbar pMax radius := by
+  have hpoint :
+      (∫ p in (0 : ℝ)..pMax, kernel p) =
+        ∫ p in (0 : ℝ)..pMax, coeff *
+          ((p : ℂ) *
+            (finiteCutoffContinuumBornDysonDenominator
+              side v m p 0 probeEnergy broadening disorderStrength hbar pMax)⁻¹ *
+            polarFourierZerothAngularKernel (p * radius / hbar)) := by
+    apply intervalIntegral.integral_congr
+    intro p _
+    exact hkernel p
+  rw [hpoint, intervalIntegral.integral_const_mul]
+  dsimp [finiteCutoffContinuumBornDysonRadialScalarGreenGenerator]
+  ring
+
 /-- The diagonal scalar Green component is the effective Dyson energy
 times the common radial scalar generator. -/
 theorem finiteCutoffContinuumBornDysonRadialGreenScalarCoefficient_eq_generator
@@ -110,37 +143,20 @@ theorem finiteCutoffContinuumBornDysonRadialGreenScalarCoefficient_eq_generator
         side v m probeEnergy broadening disorderStrength hbar pMax radius := by
   let energy := finiteCutoffContinuumBornEffectiveEnergy
     side v m probeEnergy broadening disorderStrength hbar pMax
-  let k : ℝ → ℂ := fun p =>
-    (p : ℂ) *
-      (finiteCutoffContinuumBornDysonDenominator
-        side v m p 0 probeEnergy broadening disorderStrength hbar pMax)⁻¹ *
-      polarFourierZerothAngularKernel (p * radius / hbar)
-  have hpoint (p : ℝ) :
-      finiteCutoffContinuumBornDysonRadialGreenScalarKernel
-          side v m probeEnergy broadening disorderStrength hbar pMax radius p =
-        energy * k p := by
-    dsimp [energy, k, finiteCutoffContinuumBornDysonRadialGreenScalarKernel,
-      finiteCutoffContinuumBornDysonScalarCoefficient]
-    ring
   calc
     _ = (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
-      ∫ p in (0 : ℝ)..pMax,
-        finiteCutoffContinuumBornDysonRadialGreenScalarKernel
-          side v m probeEnergy broadening disorderStrength hbar pMax radius p :=
+        ∫ p in (0 : ℝ)..pMax,
+          finiteCutoffContinuumBornDysonRadialGreenScalarKernel
+            side v m probeEnergy broadening disorderStrength hbar pMax radius p :=
       finiteCutoffContinuumBornDysonRadialGreenScalarCoefficient_eq_radialKernel_integral
         side v m probeEnergy broadening disorderStrength hbar pMax radius
         hbroadening hdisorder hpMax
-    _ = (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
-        ∫ p in (0 : ℝ)..pMax, energy * k p := by
-      congr 1
-      apply intervalIntegral.integral_congr
-      intro p _
-      exact hpoint p
-    _ = energy *
-        finiteCutoffContinuumBornDysonRadialScalarGreenGenerator
+    _ = energy * finiteCutoffContinuumBornDysonRadialScalarGreenGenerator
           side v m probeEnergy broadening disorderStrength hbar pMax radius := by
-      rw [intervalIntegral.integral_const_mul]
-      dsimp [finiteCutoffContinuumBornDysonRadialScalarGreenGenerator, k]
+      apply finiteCutoffContinuumBornDyson_radialKernel_eq_scaledGenerator
+      intro p
+      dsimp [energy, finiteCutoffContinuumBornDysonRadialGreenScalarKernel,
+        finiteCutoffContinuumBornDysonScalarCoefficient]
       ring
 
 /-- The z-Pauli Green component is the effective Dyson mass times the
@@ -158,38 +174,21 @@ theorem finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient_z_eq_generator
         side v m probeEnergy broadening disorderStrength hbar pMax radius := by
   let mass := finiteCutoffContinuumBornEffectiveMass
     side v m probeEnergy broadening disorderStrength hbar pMax
-  let k : ℝ → ℂ := fun p =>
-    (p : ℂ) *
-      (finiteCutoffContinuumBornDysonDenominator
-        side v m p 0 probeEnergy broadening disorderStrength hbar pMax)⁻¹ *
-      polarFourierZerothAngularKernel (p * radius / hbar)
-  have hpoint (p : ℝ) :
-      finiteCutoffContinuumBornDysonRadialGreenPauliKernel .z
-          side v m probeEnergy broadening disorderStrength hbar pMax radius p =
-        mass * k p := by
-    dsimp [mass, k, finiteCutoffContinuumBornDysonRadialGreenPauliKernel,
-      finiteCutoffContinuumBornDysonPauliCoefficient,
-      InternalSpace.pauliAxisComponent]
-    ring
   calc
     _ = (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
-      ∫ p in (0 : ℝ)..pMax,
-        finiteCutoffContinuumBornDysonRadialGreenPauliKernel .z
-          side v m probeEnergy broadening disorderStrength hbar pMax radius p :=
+        ∫ p in (0 : ℝ)..pMax,
+          finiteCutoffContinuumBornDysonRadialGreenPauliKernel .z
+            side v m probeEnergy broadening disorderStrength hbar pMax radius p :=
       finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient_eq_radialKernel_integral
         .z side v m probeEnergy broadening disorderStrength hbar pMax radius
         hbroadening hdisorder hpMax
-    _ = (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
-        ∫ p in (0 : ℝ)..pMax, mass * k p := by
-      congr 1
-      apply intervalIntegral.integral_congr
-      intro p _
-      exact hpoint p
-    _ = mass *
-        finiteCutoffContinuumBornDysonRadialScalarGreenGenerator
+    _ = mass * finiteCutoffContinuumBornDysonRadialScalarGreenGenerator
           side v m probeEnergy broadening disorderStrength hbar pMax radius := by
-      rw [intervalIntegral.integral_const_mul]
-      dsimp [finiteCutoffContinuumBornDysonRadialScalarGreenGenerator, k]
+      apply finiteCutoffContinuumBornDyson_radialKernel_eq_scaledGenerator
+      intro p
+      dsimp [mass, finiteCutoffContinuumBornDysonRadialGreenPauliKernel,
+        finiteCutoffContinuumBornDysonPauliCoefficient,
+        InternalSpace.pauliAxisComponent]
       ring
 
 /-- At finite broadening and finite momentum cutoff, the in-plane radial
