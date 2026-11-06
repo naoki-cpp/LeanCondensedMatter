@@ -26,6 +26,22 @@ noncomputable section
 open MeasureTheory
 open scoped Interval ComplexConjugate
 
+/-- The Fourier normalization of the squared J₀/J₁ energy, shared by the
+finite-interval moment and its large-radius limit. -/
+private theorem polarFourierHarmonicEnergy_eq_besselJ (r : ℝ) :
+    polarFourierZerothAngularKernel r ^ 2 -
+      polarFourierFirstCosineAngularKernel r ^ 2 =
+      (((2 * Real.pi : ℝ) : ℂ) ^ 2) *
+        (Complex.besselJ 0 (r : ℂ) ^ 2 +
+          Complex.besselJ 1 (r : ℂ) ^ 2) := by
+  rw [polarFourierZerothAngularKernel_eq_besselJ,
+    polarFourierFirstCosineAngularKernel_eq_besselJ]
+  calc
+    _ = (((2 * Real.pi : ℝ) : ℂ) ^ 2) *
+        (Complex.besselJ 0 (r : ℂ) ^ 2 -
+          Complex.I ^ 2 * Complex.besselJ 1 (r : ℂ) ^ 2) := by ring
+    _ = _ := by rw [Complex.I_sq]; ring
+
 /-- Exact finite-interval evaluation of the Bessel-square radial integral.
 The formula holds for arbitrary real endpoints because J₁(0) = 0 gives the
 continuous extension of the quotient at the origin. In particular, no
@@ -46,16 +62,7 @@ theorem integral_besselJ_one_sq_div (a b : ℝ) :
       c ^ 2 *
         (Complex.besselJ 0 (z : ℂ) ^ 2 +
           Complex.besselJ 1 (z : ℂ) ^ 2) := by
-    rw [polarFourierZerothAngularKernel_eq_besselJ,
-      polarFourierFirstCosineAngularKernel_eq_besselJ]
-    change (c * Complex.besselJ 0 (z : ℂ)) ^ 2 -
-      (c * Complex.I * Complex.besselJ 1 (z : ℂ)) ^ 2 =
-        c ^ 2 * (Complex.besselJ 0 (z : ℂ) ^ 2 +
-          Complex.besselJ 1 (z : ℂ) ^ 2)
-    calc
-      _ = c ^ 2 * Complex.besselJ 0 (z : ℂ) ^ 2 -
-          c ^ 2 * Complex.I ^ 2 * Complex.besselJ 1 (z : ℂ) ^ 2 := by ring
-      _ = _ := by rw [Complex.I_sq]; ring
+    simpa only [c] using polarFourierHarmonicEnergy_eq_besselJ z
   have hpoint (z : ℝ) :
       Complex.I * polarFourierFirstCosineAngularKernel z *
           (polarFourierZerothAngularKernel z -
@@ -355,16 +362,7 @@ theorem besselJ_zero_sq_add_one_sq_tendsto_zero :
         polarFourierFirstCosineAngularKernel r ^ 2 =
       c ^ 2 * (Complex.besselJ 0 (r : ℂ) ^ 2 +
         Complex.besselJ 1 (r : ℂ) ^ 2) := by
-    rw [polarFourierZerothAngularKernel_eq_besselJ,
-      polarFourierFirstCosineAngularKernel_eq_besselJ]
-    change (c * Complex.besselJ 0 (r : ℂ)) ^ 2 -
-      (c * Complex.I * Complex.besselJ 1 (r : ℂ)) ^ 2 =
-        c ^ 2 * (Complex.besselJ 0 (r : ℂ) ^ 2 +
-          Complex.besselJ 1 (r : ℂ) ^ 2)
-    calc
-      _ = c ^ 2 * Complex.besselJ 0 (r : ℂ) ^ 2 -
-          c ^ 2 * Complex.I ^ 2 * Complex.besselJ 1 (r : ℂ) ^ 2 := by ring
-      _ = _ := by rw [Complex.I_sq]; ring
+    simpa only [c] using polarFourierHarmonicEnergy_eq_besselJ r
   have hscaled : Filter.Tendsto (fun r : ℝ =>
       (c ^ 2)⁻¹ * (polarFourierZerothAngularKernel r ^ 2 -
         polarFourierFirstCosineAngularKernel r ^ 2))
