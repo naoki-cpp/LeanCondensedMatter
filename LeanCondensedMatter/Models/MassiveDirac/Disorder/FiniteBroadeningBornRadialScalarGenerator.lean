@@ -267,6 +267,69 @@ theorem finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient_x_eq_deriv_gen
       dsimp [alpha, d]
       ring
 
+/-- The full finite-cutoff radial Born--Dyson Dirac Green matrix is generated
+by a single scalar Fourier integral: the scalar and out-of-plane channels
+multiply the generator, while the in-plane Dirac term differentiates it.
+This is the exact matrix-level bridge needed before identifying the
+scalar kernel with a branch-dependent Hankel/Y-Bessel boundary value. -/
+theorem finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix_eq_scalarGenerator
+    (side : SpectralSide)
+    (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ)
+    (hhbar : hbar ≠ 0)
+    (hbroadening : broadening ≠ 0) (hdisorder : 0 ≤ disorderStrength)
+    (hpMax : 0 ≤ pMax) :
+    finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix
+        side v m probeEnergy broadening disorderStrength hbar pMax radius =
+      (finiteCutoffContinuumBornEffectiveEnergy
+          side v m probeEnergy broadening disorderStrength hbar pMax *
+        finiteCutoffContinuumBornDysonRadialScalarGreenGenerator
+          side v m probeEnergy broadening disorderStrength hbar pMax radius) •
+        (1 : Matrix2) +
+      ((-Complex.I * (((hbar * v : ℝ) : ℂ))) *
+        deriv (fun r : ℝ => finiteCutoffContinuumBornDysonRadialScalarGreenGenerator
+          side v m probeEnergy broadening disorderStrength hbar pMax r) radius) •
+        InternalSpace.pauliX +
+      (finiteCutoffContinuumBornEffectiveMass
+          side v m probeEnergy broadening disorderStrength hbar pMax *
+        finiteCutoffContinuumBornDysonRadialScalarGreenGenerator
+          side v m probeEnergy broadening disorderStrength hbar pMax radius) •
+        InternalSpace.pauliZ := by
+  let G : Matrix2 := finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix
+    side v m probeEnergy broadening disorderStrength hbar pMax radius
+  have hs := finiteCutoffContinuumBornDysonRadialGreenScalarCoefficient_eq_generator
+    side v m probeEnergy broadening disorderStrength hbar pMax radius
+    hbroadening hdisorder hpMax
+  have hx := finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient_x_eq_deriv_generator
+    side v m probeEnergy broadening disorderStrength hbar pMax radius
+    hhbar hbroadening hdisorder hpMax
+  have hy := finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient_y_eq_zero
+    side v m probeEnergy broadening disorderStrength hbar pMax radius
+  have hz := finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient_z_eq_generator
+    side v m probeEnergy broadening disorderStrength hbar pMax radius
+    hbroadening hdisorder hpMax
+  calc
+    _ = InternalSpace.pauliScalarCoefficient G • (1 : Matrix2) +
+        InternalSpace.pauliCombination (InternalSpace.pauliVectorCoefficient G) :=
+      InternalSpace.eq_pauliAffine_coefficients G
+    _ = _ := by
+      rw [InternalSpace.pauliCombination_eq_components]
+      change
+        finiteCutoffContinuumBornDysonRadialGreenScalarCoefficient
+            side v m probeEnergy broadening disorderStrength hbar pMax radius •
+            (1 : Matrix2) +
+          (finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient .x
+              side v m probeEnergy broadening disorderStrength hbar pMax radius) •
+            InternalSpace.pauliX +
+          (finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient .y
+              side v m probeEnergy broadening disorderStrength hbar pMax radius) •
+            InternalSpace.pauliY +
+          (finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient .z
+              side v m probeEnergy broadening disorderStrength hbar pMax radius) •
+            InternalSpace.pauliZ = _
+      rw [hs, hx, hy, hz]
+      simp
+
+
 end
 
 end MassiveDirac
