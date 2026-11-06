@@ -166,11 +166,12 @@ noncomputable def ExternalInsertionDiagram.vacuumFreeComponentsEquivExternalBloc
       ((hasNoVacuumComponent_iff_forall_component_meetsExternal d.vertexGraph).1 hVac B)
   let allToSupported : d.vertexGraph.componentPartition.parts ≃
       {B : d.vertexGraph.componentPartition.parts //
-        B ∈ externallySupportedComponentParts d.vertexGraph} where
-    toFun B := ⟨B, hall B⟩
+        B ∈ externallySupportedComponentParts d.vertexGraph} := {
+    toFun := fun B => ⟨B, hall B⟩
     invFun := fun B => B.1
     left_inv := fun _ => rfl
     right_inv := fun B => by cases B; rfl
+  }
   exact allToSupported.trans d.supportedComponentsEquivExternalBlocks
 
 /-- The external block of a vacuum-free diagram component consists of precisely
@@ -185,7 +186,8 @@ theorem ExternalInsertionDiagram.vacuumFreeComponentsEquivExternalBlocks_apply
       (externalComponentPartition d.vertexGraph).parts) :
         Finset (Fin (2 * E)))) =
       (B.1 : Finset (ExternalInsertionVertex E S)).toLeft := by
-  rfl
+  simp [ExternalInsertionDiagram.vacuumFreeComponentsEquivExternalBlocks,
+    ExternalInsertionDiagram.supportedComponentsEquivExternalBlocks_apply]
 
 /-- Every external partition block of a vacuum-free diagram has a unique
 full-graph component preimage. This is an actual diagrammatic inverse,
