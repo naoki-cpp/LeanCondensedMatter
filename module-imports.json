@@ -2224,6 +2224,14 @@
       "externalImportCount": 4
     },
     {
+      "name": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVIntegrability",
+      "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Disorder/Born/RadialUVIntegrability.lean",
+      "imports": [
+        "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVBound"
+      ],
+      "externalImportCount": 6
+    },
+    {
       "name": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.SelfEnergy",
       "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Disorder/Born/SelfEnergy.lean",
       "imports": [
@@ -2348,6 +2356,7 @@
       "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Disorder/FiniteBroadeningBornRadialScalarTail.lean",
       "imports": [
         "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVBound",
+        "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVIntegrability",
         "LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornRadialScalarGenerator",
         "LeanCondensedMatter.Transport.Analysis.PolarFourierRadialLimit",
         "LeanCondensedMatter.Transport.Analysis.PolarFourierRadialPrimitive"

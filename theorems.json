@@ -71633,7 +71633,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ (v c : ℝ) (energy mass : ℂ),\n  v ≠ 0 →\n    Filter.Tendsto\n      (fun p =>\n        ↑p * QuantumTheory.Transport.polarFourierFirstCosineAngularKernel (p * c) *\n          (QuantumTheory.Models.MassiveDirac.massiveDiracRadialDenominator v p energy mass)⁻¹)\n      Filter.atTop (nhds 0)",
     "standardAxioms": [
       "Classical.choice",
@@ -71641,7 +71641,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -71652,15 +71652,19 @@
     "docString": "The ultraviolet boundary term in the radial Fourier integration-by-parts\nidentity vanishes for a quadratic massive-Dirac denominator with nonzero\nvelocity. The proof uses only the explicit quadratic resolvent bound and\nthe uniform `2π` bound on the first angular harmonic, not Bessel asymptotics. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierKernel_tendsto_atTop_uv"
+    ],
     "dependencies": [
       "QuantumTheory.Models.MassiveDirac.massiveDiracRadialDenominator_inv_norm_le_half_quadratic_inv",
       "QuantumTheory.Transport.polarFourierFirstCosineAngularKernel_norm_le"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierKernel_tendsto_atTop_uv"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -71726,7 +71730,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -71738,7 +71742,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialDenominator_firstHarmonicBoundary_tendsto_zero"
+      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialDenominator_firstHarmonicBoundary_tendsto_zero",
+      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierRemainder_norm_le"
     ],
     "dependencies": [
       "QuantumTheory.Models.MassiveDirac.massiveDiracRadialDenominator_norm_ge_half_quadratic"
@@ -71746,9 +71751,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialDenominator_firstHarmonicBoundary_tendsto_zero"
+      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialDenominator_firstHarmonicBoundary_tendsto_zero",
+      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierRemainder_norm_le"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -71831,6 +71837,183 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.Models.MassiveDirac.massiveDiracRadialDenominator_inv_norm_le_half_quadratic_inv"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (v c : ℝ) (energy mass : ℂ),\n  v ≠ 0 →\n    c ≠ 0 →\n      (∀ (p : ℝ), QuantumTheory.Models.MassiveDirac.massiveDiracRadialDenominator v p energy mass ≠ 0) →\n        ∃ value,\n          Filter.Tendsto\n            (fun b =>\n              ∫ (p : ℝ) in 0..b,\n                ↑p * QuantumTheory.Transport.polarFourierZerothAngularKernel (p * c) *\n                  (QuantumTheory.Models.MassiveDirac.massiveDiracRadialDenominator v p energy mass)⁻¹)\n            Filter.atTop (nhds value)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierKernel_tendsto_atTop",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornRadialScalarTail",
+    "externalAxioms": [],
+    "docString": "The original radial Green resolvent integral from zero momentum has\na finite ultraviolet-cutoff limit at *fixed* nonvanishing complex\nspectral denominator. The compact low-momentum contribution is\nintegrable by continuity; the large-momentum tail uses the proved\n`p⁻²` remainder estimate. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierKernel_tendsto_atTop_uv",
+      "QuantumTheory.Transport.continuous_polarFourierZerothAngularKernel"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (v c a : ℝ) (energy mass : ℂ),\n  v ≠ 0 →\n    c ≠ 0 →\n      (∀ (p : ℝ), QuantumTheory.Models.MassiveDirac.massiveDiracRadialDenominator v p energy mass ≠ 0) →\n        max 1 (2 * ‖energy ^ 2 - mass ^ 2‖ / v ^ 2) ≤ a →\n          ∃ value,\n            Filter.Tendsto\n              (fun b =>\n                ∫ (p : ℝ) in a..b,\n                  ↑p * QuantumTheory.Transport.polarFourierZerothAngularKernel (p * c) *\n                    (QuantumTheory.Models.MassiveDirac.massiveDiracRadialDenominator v p energy mass)⁻¹)\n              Filter.atTop (nhds value)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierKernel_tendsto_atTop_uv",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornRadialScalarTail",
+    "externalAxioms": [],
+    "docString": "Unconditional convergence of the *fixed-spectral-center* massive-Dirac\nradial Fourier integral from a sufficiently large positive momentum.\nThe needed ultraviolet integrability and vanishing boundary term are\nnow derived from the quadratic denominator, rather than assumed. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierKernel_tendsto_atTop"
+    ],
+    "dependencies": [
+      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialDenominator_firstHarmonicBoundary_tendsto_zero",
+      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierRemainder_integrableOn_uv",
+      "QuantumTheory.Models.MassiveDirac.tendsto_integral_massiveDiracRadialDenominator_inv_fourierKernel_of_conditions"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierKernel_tendsto_atTop"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (v c a : ℝ) (energy mass : ℂ),\n  v ≠ 0 →\n    (∀ (p : ℝ), QuantumTheory.Models.MassiveDirac.massiveDiracRadialDenominator v p energy mass ≠ 0) →\n      max 1 (2 * ‖energy ^ 2 - mass ^ 2‖ / v ^ 2) ≤ a →\n        MeasureTheory.IntegrableOn\n          (fun p =>\n            ↑p * QuantumTheory.Transport.polarFourierFirstCosineAngularKernel (p * c) *\n              (2 * ↑v ^ 2 * ↑p *\n                (QuantumTheory.Models.MassiveDirac.massiveDiracRadialDenominator v p energy mass)⁻¹ ^ 2))\n          (Set.Ioi a) MeasureTheory.volume",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierRemainder_integrableOn_uv",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVIntegrability",
+    "externalAxioms": [],
+    "docString": "Integrability on any ultraviolet half-line beyond the explicit\nquadratic-dominance threshold. The complex spectral center is held fixed. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierKernel_tendsto_atTop_uv"
+    ],
+    "dependencies": [
+      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierRemainder_norm_le",
+      "QuantumTheory.Transport.continuous_polarFourierFirstCosineAngularKernel"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierKernel_tendsto_atTop_uv"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (v c p : ℝ) (energy mass : ℂ),\n  v ≠ 0 →\n    max 1 (2 * ‖energy ^ 2 - mass ^ 2‖ / v ^ 2) ≤ p →\n      ‖↑p * QuantumTheory.Transport.polarFourierFirstCosineAngularKernel (p * c) *\n            (2 * ↑v ^ 2 * ↑p *\n              (QuantumTheory.Models.MassiveDirac.massiveDiracRadialDenominator v p energy mass)⁻¹ ^ 2)‖ ≤\n        16 * Real.pi / v ^ 2 * p ^ (-2)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierRemainder_norm_le",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVIntegrability",
+    "externalAxioms": [],
+    "docString": "The differentiated massive-Dirac resolvent remainder is at most\n`16π/(v²p²)` beyond the explicit quadratic-dominance threshold. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierRemainder_integrableOn_uv"
+    ],
+    "dependencies": [
+      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialDenominator_inv_norm_le_half_quadratic_inv",
+      "QuantumTheory.Transport.polarFourierFirstCosineAngularKernel_norm_le"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierRemainder_integrableOn_uv"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -77899,7 +78082,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ (v c a : ℝ) (energy mass : ℂ),\n  c ≠ 0 →\n    (∀ (p : ℝ), QuantumTheory.Models.MassiveDirac.massiveDiracRadialDenominator v p energy mass ≠ 0) →\n      MeasureTheory.IntegrableOn\n          (fun p =>\n            ↑p * QuantumTheory.Transport.polarFourierFirstCosineAngularKernel (p * c) *\n              (2 * ↑v ^ 2 * ↑p *\n                (QuantumTheory.Models.MassiveDirac.massiveDiracRadialDenominator v p energy mass)⁻¹ ^ 2))\n          (Set.Ioi a) MeasureTheory.volume →\n        Filter.Tendsto\n            (fun b =>\n              ↑b * QuantumTheory.Transport.polarFourierFirstCosineAngularKernel (b * c) *\n                (QuantumTheory.Models.MassiveDirac.massiveDiracRadialDenominator v b energy mass)⁻¹)\n            Filter.atTop (nhds 0) →\n          Filter.Tendsto\n            (fun b =>\n              ∫ (p : ℝ) in a..b,\n                ↑p * QuantumTheory.Transport.polarFourierZerothAngularKernel (p * c) *\n                  (QuantumTheory.Models.MassiveDirac.massiveDiracRadialDenominator v p energy mass)⁻¹)\n            Filter.atTop\n            (nhds\n              ((-(↑a * QuantumTheory.Transport.polarFourierFirstCosineAngularKernel (a * c) *\n                      (QuantumTheory.Models.MassiveDirac.massiveDiracRadialDenominator v a energy mass)⁻¹) -\n                  ∫ (p : ℝ) in Set.Ioi a,\n                    ↑p * QuantumTheory.Transport.polarFourierFirstCosineAngularKernel (p * c) *\n                      (2 * ↑v ^ 2 * ↑p *\n                        (QuantumTheory.Models.MassiveDirac.massiveDiracRadialDenominator v p energy mass)⁻¹ ^ 2)) /\n                (Complex.I * ↑c)))",
     "standardAxioms": [
       "Classical.choice",
@@ -77907,7 +78090,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -77918,15 +78101,19 @@
     "docString": "A cutoff limit theorem for a quadratic massive-Dirac Fourier resolvent,\nassuming exactly the two ultraviolet conditions isolated by the preceding\nfinite-interval integration-by-parts theorem. This statement keeps the\ncomplex spectral center fixed while its radial integration cutoff increases.\nIt does not take the cutoff of a self-consistent Born self-energy. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierKernel_tendsto_atTop_uv"
+    ],
     "dependencies": [
       "QuantumTheory.Models.MassiveDirac.massiveDiracRadialDenominator_inv_hasDerivAt",
       "QuantumTheory.Transport.tendsto_integral_polarFourierZerothAngularKernel_of_by_parts"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierKernel_tendsto_atTop_uv"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -88192,6 +88379,7 @@
     "dependents": [
       "QuantumTheory.Models.MassiveDirac.continuous_finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel",
       "QuantumTheory.Models.MassiveDirac.continuous_finiteCutoffContinuumBornDysonRadialGreenEntryKernel",
+      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierRemainder_integrableOn_uv",
       "QuantumTheory.Transport.integral_polarFourierZerothAngularKernel_mul_weight_by_parts"
     ],
     "dependencies": [],
@@ -88200,9 +88388,10 @@
     "compiledConsumers": [
       "QuantumTheory.Models.MassiveDirac.continuous_finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel",
       "QuantumTheory.Models.MassiveDirac.continuous_finiteCutoffContinuumBornDysonRadialGreenEntryKernel",
+      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierRemainder_integrableOn_uv",
       "QuantumTheory.Transport.integral_polarFourierZerothAngularKernel_mul_weight_by_parts"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -88280,6 +88469,7 @@
     "dependents": [
       "QuantumTheory.Models.MassiveDirac.continuous_finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel",
       "QuantumTheory.Models.MassiveDirac.continuous_finiteCutoffContinuumBornDysonRadialGreenEntryKernel",
+      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierKernel_tendsto_atTop",
       "QuantumTheory.Transport.integral_polarFourierZerothAngularKernel_mul_weight_by_parts"
     ],
     "dependencies": [],
@@ -88288,9 +88478,10 @@
     "compiledConsumers": [
       "QuantumTheory.Models.MassiveDirac.continuous_finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel",
       "QuantumTheory.Models.MassiveDirac.continuous_finiteCutoffContinuumBornDysonRadialGreenEntryKernel",
+      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierKernel_tendsto_atTop",
       "QuantumTheory.Transport.integral_polarFourierZerothAngularKernel_mul_weight_by_parts"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -90759,6 +90950,7 @@
     "directWrapperOf": null,
     "dependents": [
       "QuantumTheory.Models.MassiveDirac.massiveDiracRadialDenominator_firstHarmonicBoundary_tendsto_zero",
+      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierRemainder_norm_le",
       "QuantumTheory.Transport.hasDerivAt_integral_polarFourierZerothAngularKernel"
     ],
     "dependencies": [],
@@ -90766,9 +90958,10 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.Models.MassiveDirac.massiveDiracRadialDenominator_firstHarmonicBoundary_tendsto_zero",
+      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierRemainder_norm_le",
       "QuantumTheory.Transport.hasDerivAt_integral_polarFourierZerothAngularKernel"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
