@@ -1590,7 +1590,8 @@ private theorem polarFourierBesselY_hasDerivAt (r : ℝ) (hr : r ≠ 0) :
           polarFourierSecondCosineAngularKernel r)).im =
         (polarFourierZerothAngularKernel r).re / 2 +
           (polarFourierSecondCosineAngularKernel r).re / 2 := by
-    simp [Complex.mul_im, Complex.div_eq_mul_inv]
+    simp [Complex.mul_im, div_eq_mul_inv]
+    ring
   have hrec :
       2 * polarFourierBesselY r =
         r * (polarFourierBesselX r -
@@ -1601,9 +1602,13 @@ private theorem polarFourierBesselY_hasDerivAt (r : ℝ) (hr : r ≠ 0) :
       (polarFourierZerothAngularKernel r).re / 2 +
         (polarFourierSecondCosineAngularKernel r).re / 2 =
       polarFourierBesselX r - polarFourierBesselY r / r := by
-    apply (eq_div_iff hr).2
     dsimp [polarFourierBesselX]
-    linear_combination -(1 / 2 : ℝ) * hrec
+    field_simp [hr]
+    nlinarith [hrec]
+  change HasDerivAt polarFourierBesselY
+    ((Complex.I / 2 *
+      (polarFourierZerothAngularKernel r +
+        polarFourierSecondCosineAngularKernel r)).im) r at h
   convert h using 1
   · rfl
   · rw [hs, hcoeff]
