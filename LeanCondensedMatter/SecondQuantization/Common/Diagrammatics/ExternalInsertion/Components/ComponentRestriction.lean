@@ -503,7 +503,7 @@ theorem ExternalInsertionDiagram.reassembleComponentPairing_eq
       d.pairing.partner (d.componentLegShuffle.slotEquiv ⟨B, i⟩)
   rw [Combinatorics.PairingOn.transport_partner,
     Equiv.symm_apply_apply, Combinatorics.PairingOn.sigmaCongrRight_partner]
-  simpa only [d.componentLegShuffle_slotEquiv_apply] using
+  simpa only [Equiv.symm_symm, d.componentLegShuffle_slotEquiv_apply] using
     d.componentDiagramLeg_restrictComponent_pairing_partner B i
 
 
