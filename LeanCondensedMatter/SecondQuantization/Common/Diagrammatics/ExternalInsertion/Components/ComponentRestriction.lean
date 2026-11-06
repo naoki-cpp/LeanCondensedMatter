@@ -494,7 +494,7 @@ theorem ExternalInsertionDiagram.assembleComponentPairing_unshuffle
         d.componentLegShuffle.slotEquiv =
       Combinatorics.PairingOn.sigmaCongrRight componentPairings := by
   unfold ExternalInsertionDiagram.assembleComponentPairing
-  rw [Combinatorics.PairingOn.transport_symm_transport]
+  rw [Combinatorics.PairingOn.transport_transport_symm]
 
 /-- A pairing assembled from independent components preserves the block index
 of every flattened leg and applies precisely the chosen componentPairings pairing inside
