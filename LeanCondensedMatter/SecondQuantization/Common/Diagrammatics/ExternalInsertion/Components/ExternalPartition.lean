@@ -144,5 +144,64 @@ theorem ExternalInsertionDiagram.supportedComponentsEquivExternalBlocks_apply
       (B.1.1 : Finset (ExternalInsertionVertex E S)).toLeft := by
   rfl
 
+/-- In a diagram with no vacuum components, *all* graph components are
+externally supported. Consequently, the full connected-component partition
+is canonically equivalent to the partition of external insertions.
+
+Unlike the unrestricted supported-component equivalence, this does not retain
+any vacuum-only component: it is the exact indexing equivalence used to
+reindex the product of connected Dyson component amplitudes. -/
+noncomputable def ExternalInsertionDiagram.vacuumFreeComponentsEquivExternalBlocks
+    {S : Finset (Fin N)}
+    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
+    (hVac : HasNoVacuumComponent d.vertexGraph) :
+    d.vertexGraph.componentPartition.parts ≃
+      (externalComponentPartition d.vertexGraph).parts := by
+  classical
+  have hall :
+      ∀ B : d.vertexGraph.componentPartition.parts,
+        B ∈ externallySupportedComponentParts d.vertexGraph := by
+    intro B
+    exact (mem_externallySupportedComponentParts d.vertexGraph B).2
+      ((hasNoVacuumComponent_iff_forall_component_meetsExternal d.vertexGraph).1 hVac B)
+  let allToSupported : d.vertexGraph.componentPartition.parts ≃
+      {B : d.vertexGraph.componentPartition.parts //
+        B ∈ externallySupportedComponentParts d.vertexGraph} where
+    toFun B := ⟨B, hall B⟩
+    invFun := fun B => B.1
+    left_inv := fun _ => rfl
+    right_inv := fun B => by cases B; rfl
+  exact allToSupported.trans d.supportedComponentsEquivExternalBlocks
+
+/-- The external block of a vacuum-free diagram component consists of precisely
+the external vertices of that full component. -/
+@[simp]
+theorem ExternalInsertionDiagram.vacuumFreeComponentsEquivExternalBlocks_apply
+    {S : Finset (Fin N)}
+    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
+    (hVac : HasNoVacuumComponent d.vertexGraph)
+    (B : d.vertexGraph.componentPartition.parts) :
+    (((d.vacuumFreeComponentsEquivExternalBlocks hVac B :
+      (externalComponentPartition d.vertexGraph).parts) :
+        Finset (Fin (2 * E)))) =
+      (B.1 : Finset (ExternalInsertionVertex E S)).toLeft := by
+  rfl
+
+/-- Every external partition block of a vacuum-free diagram has a unique
+full-graph component preimage. This is an actual diagrammatic inverse,
+not just a cardinality equality. -/
+theorem ExternalInsertionDiagram.vacuumFreeComponentsEquivExternalBlocks_symm_apply
+    {S : Finset (Fin N)}
+    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
+    (hVac : HasNoVacuumComponent d.vertexGraph)
+    (P : (externalComponentPartition d.vertexGraph).parts) :
+    (((d.vacuumFreeComponentsEquivExternalBlocks hVac).symm P).1 :
+      Finset (ExternalInsertionVertex E S)).toLeft =
+        (P : Finset (Fin (2 * E))) := by
+  have h := d.vacuumFreeComponentsEquivExternalBlocks_apply hVac
+    ((d.vacuumFreeComponentsEquivExternalBlocks hVac).symm P)
+  simpa using h.symm
+
+
 end Common
 end SecondQuantization
