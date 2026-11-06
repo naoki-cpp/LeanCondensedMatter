@@ -152,15 +152,15 @@ theorem ExternalInsertionWickDiagram.sum_componentInteractionOrderShuffle_ordere
         (d.assembleInteractionOrder d.canonicalComponentInteractionOrders shuffle)) =
       componentExternalOrderSign d blockOrder *
         ∏ P : (externalComponentPartition d.vertexGraph).parts,
-          (d.componentOrderedDiagram
-            ((d.vacuumFreeComponentsEquivExternalBlocks hVac).symm P)).dysonAmplitude
-              ε β g
-              (d.componentExternalTime externalTime
+          ExternalInsertionWickDiagram.dysonAmplitude
+              (d.componentOrderedDiagram
+                ((d.vacuumFreeComponentsEquivExternalBlocks hVac).symm P))
+              ε β g (d.componentExternalTime externalTime
                 ((d.vacuumFreeComponentsEquivExternalBlocks hVac).symm P)) := by
   classical
   let F : d.vertexGraph.componentPartition.parts → ℂ :=
-    fun B => (d.componentOrderedDiagram B).dysonAmplitude
-      ε β g (d.componentExternalTime externalTime B)
+    fun B => ExternalInsertionWickDiagram.dysonAmplitude
+      (d.componentOrderedDiagram B) ε β g (d.componentExternalTime externalTime B)
   calc
     (∑ shuffle : d.ComponentInteractionOrderShuffle,
       d.orderedDysonAmplitude ε β g externalTime
