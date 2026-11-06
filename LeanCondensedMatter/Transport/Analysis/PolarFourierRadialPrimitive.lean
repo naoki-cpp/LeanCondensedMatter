@@ -43,7 +43,7 @@ theorem polarFourierFirstCosineAngularKernel_mul_argument_hasDerivAt
       _ = _ := by rw [hrec]; ring
   convert h using 1
   · rfl
-  · exact hcoef.symm
+  · simpa using hcoef.symm
 
 /-- The scaled radial primitive. The Fourier scale `c` may have either
 sign, and the formula remains valid for `c = 0`. -/
@@ -55,8 +55,9 @@ theorem polarFourierFirstCosineAngularKernel_radialPrimitive_hasDerivAt
         polarFourierZerothAngularKernel (p * c)) p := by
   have harg : HasDerivAt (fun x : ℝ => x * c) c p := by
     simpa using (hasDerivAt_id p).mul_const c
-  have h := ((hasDerivAt_id p).ofReal_comp).mul
-    ((polarFourierFirstCosineAngularKernel_hasDerivAt (p * c)).comp p harg)
+  have hk := ((polarFourierFirstCosineAngularKernel_hasDerivAt
+    (p * c)).hasFDerivAt.comp p harg.hasFDerivAt).hasDerivAt
+  have h := ((hasDerivAt_id p).ofReal_comp).mul hk
   have hrec :=
     polarFourierFirstCosineAngularKernel_two_mul_eq_zeroth_sub_second (p * c)
   have hcoef :
@@ -131,7 +132,7 @@ theorem integral_polarFourierZerothAngularKernel_mul_weight_by_parts
     (u' := u') (v' := weight')
     (fun p _ => polarFourierFirstCosineAngularKernel_radialPrimitive_hasDerivAt c p)
     (fun p _ => hweight p)
-    hfirst hsecond
+    (hcu'.intervalIntegrable a b) (hweight'.intervalIntegrable a b)
   have hsum :
       (∫ p in a..b, u' p * weight p) +
         (∫ p in a..b, u p * weight' p) =
