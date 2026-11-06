@@ -65,12 +65,13 @@ theorem FamilySlotShuffleTo.blockInversionCount_eq_sum_blockSlotSet
       ∑ x ∈ shuffle.blockSlotSet i,
         ∑ y ∈ shuffle.blockSlotSet j, if y < x then 1 else 0 := by
   classical
+  symm
   rw [shuffle.blockInversionCount_of_ne hij]
   unfold FamilySlotShuffleTo.blockSlotSet
-  rw [Finset.sum_image (shuffle.strictMono i).injective]
+  rw [Finset.sum_image (fun p _ q _ h => (shuffle.strictMono i).injective h)]
   apply Finset.sum_congr rfl
   intro p _
-  rw [Finset.sum_image (shuffle.strictMono j).injective]
+  rw [Finset.sum_image (fun q _ r _ h => (shuffle.strictMono j).injective h)]
 
 /-- Reindexing the block names does not change pairwise inversion counts
 when each named block occupies the same ambient positions.
