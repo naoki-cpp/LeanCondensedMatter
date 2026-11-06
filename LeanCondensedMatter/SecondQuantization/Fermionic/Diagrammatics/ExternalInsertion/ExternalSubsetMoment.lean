@@ -154,6 +154,17 @@ theorem evenExternalSubsetTimes_externalPartitionBlock
       (d.externalSector_card_even B) hblock.symm
   exact htransport.trans (heq_of_eq h)
 
+/-- The fixed-label vacuum-free diagrams in a prescribed external-component
+partition fiber form a finite type. The instance is defined explicitly so
+the fiber can be used in theorem statements, outside a `by classical` block. -/
+private noncomputable instance externalPartitionDiagramFiberFintype
+    {K n : ℕ} (labels : Fin (2 * K) → ExternalFieldLabel Mode)
+    (π : Finpartition (Finset.univ : Finset (Fin (2 * K)))) :
+    Fintype {d : VacuumFreeFixedExternalInsertionWickDiagram Mode K n labels //
+      externalComponentPartition d.1.1.vertexGraph = π} := by
+  classical
+  exact Fintype.ofFinite _
+
 open Classical in
 /-- Reindex the *actual* finite sum of vacuum-free fixed-label Dyson
 diagrams by their induced external-component partition and the corresponding
