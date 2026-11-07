@@ -114,6 +114,25 @@ theorem tendsto_integral_crossedXBesselIntegrand
       (integral_crossedXBesselIntegrand_eq_endpoints Y0 Y1 hW R).symm
   exact hlimit.congr' (Filter.Eventually.of_forall hpoint)
 
+
+/-- The Wronskian-reduced crossed-X Bessel moment has the exact
+universal limit `1/π`, independently of the concrete Y-Bessel
+implementation, as soon as the Wronskian condition is established. -/
+theorem tendsto_integral_crossedXBesselIntegrand_one_div_pi
+    (Y0 Y1 : ℝ → ℂ) (hW : CrossedXBesselWronskian Y0 Y1) :
+    Filter.Tendsto
+      (fun R : ℝ => ∫ r in (0 : ℝ)..R,
+        Complex.besselJ 1 (r : ℂ) ^ 2 *
+          (Complex.besselJ 1 (r : ℂ) * Y0 r -
+            Complex.besselJ 0 (r : ℂ) * Y1 r))
+      Filter.atTop (nhds (((1 / Real.pi : ℝ) : ℂ))) := by
+  have hscale : (((2 / Real.pi : ℝ) : ℂ)) * (1 / 2 : ℂ) =
+      ((1 / Real.pi : ℝ) : ℂ) := by
+    push_cast
+    ring
+  simpa only [hscale] using
+    (tendsto_integral_crossedXBesselIntegrand Y0 Y1 hW)
+
 end
 
 end Transport
