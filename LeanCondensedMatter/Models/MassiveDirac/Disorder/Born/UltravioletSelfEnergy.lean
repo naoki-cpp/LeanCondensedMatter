@@ -144,6 +144,44 @@ theorem tendsto_finiteCutoffContinuumBornEffectiveMass_shift_normalized_re_atBot
   unfold finiteCutoffContinuumBornEffectiveMass
   ring
 
+/-- The scalar and z components of the finite-cutoff Born self-energy
+have exactly the same radial logarithm. Their numerators are therefore
+proportional, even before taking any ultraviolet or regulator limit. -/
+theorem finiteCutoffContinuumBornSelfEnergyCoefficient_scalar_z_balance
+    (side : SpectralSide)
+    (v m probeEnergy broadening disorderStrength hbar pMax : ℝ) :
+    (m : ℂ) *
+        finiteCutoffContinuumBornSelfEnergyCoefficient .scalar
+          side v m probeEnergy broadening disorderStrength hbar pMax =
+      spectralParameter side probeEnergy broadening *
+        finiteCutoffContinuumBornSelfEnergyCoefficient .z
+          side v m probeEnergy broadening disorderStrength hbar pMax := by
+  rw [finiteCutoffContinuumBornSelfEnergyCoefficient_eq_denominatorIntegral,
+    finiteCutoffContinuumBornSelfEnergyCoefficient_eq_denominatorIntegral]
+  simp only [bornSelfEnergyChannelWeight, bornSelfEnergyChannelWeightOfRegulator,
+    spectralParameter]
+  ring
+
+/-- Although the two Born-Dyson spectral parameters may each acquire
+a logarithmically divergent correction, this combination is exactly
+cutoff-independent. It is an algebraic identity, not a renormalized
+infinite-cutoff Green function or a Ward identity. -/
+theorem finiteCutoffContinuumBornEffectiveEnergyMass_cutoff_invariant
+    (side : SpectralSide)
+    (v m probeEnergy broadening disorderStrength hbar pMax : ℝ) :
+    (m : ℂ) *
+        finiteCutoffContinuumBornEffectiveEnergy
+          side v m probeEnergy broadening disorderStrength hbar pMax +
+      spectralParameter side probeEnergy broadening *
+        finiteCutoffContinuumBornEffectiveMass
+          side v m probeEnergy broadening disorderStrength hbar pMax =
+      2 * (m : ℂ) * spectralParameter side probeEnergy broadening := by
+  have hbalance := finiteCutoffContinuumBornSelfEnergyCoefficient_scalar_z_balance
+    side v m probeEnergy broadening disorderStrength hbar pMax
+  unfold finiteCutoffContinuumBornEffectiveEnergy
+    finiteCutoffContinuumBornEffectiveMass
+  linear_combination -hbalance
+
 end
 
 end QuantumTheory.Models.MassiveDirac
