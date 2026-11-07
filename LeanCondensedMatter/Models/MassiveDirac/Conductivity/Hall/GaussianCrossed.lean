@@ -2,6 +2,8 @@ import LeanCondensedMatter.Transport.Streda.ConductivityNormalization
 import LeanCondensedMatter.Models.MassiveDirac.Conductivity.Hall.GaussianCrossedBenchmark
 import LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.RealSpaceIntegral
 import LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.ExplicitMoments
+import LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.GreenGeneratorMinors
+import LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.MasslessX
 
 set_option linter.style.header false
 
@@ -117,6 +119,67 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedOrderedXYConductivity_x_eq_
     v m probeEnergy broadening disorderStrength hbar pMax radius
     hbroadening hdisorder hpMax]
   ring
+
+/-- The physically normalized finite-regulator X conductivity, after
+eliminating all three retarded/advanced Green Pauli minors in favor of
+the **two common scalar Green generators and their first derivatives**.
+This keeps the crossed-current Pauli channels, both Born impurity
+correlators, the real-space Jacobian, and exactly the original
+trace-only Bastin/current normalization.
+
+This is an exact finite-momentum/finite-radius/finite-broadening
+evaluation *boundary*. The final radial integral is not evaluated here. -/
+theorem finiteCutoffContinuumBornDysonGaussianCrossedOrderedXYConductivity_x_eq_generator_radial_integral
+    (e v m probeEnergy broadening disorderStrength hbar pMax rMax : ℝ)
+    (hhbar : hbar ≠ 0)
+    (hbroadening : broadening ≠ 0) (hdisorder : 0 ≤ disorderStrength)
+    (hpMax : 0 ≤ pMax) :
+    finiteCutoffContinuumBornDysonGaussianCrossedOrderedXYConductivity
+        .x e v m probeEnergy broadening disorderStrength hbar pMax rMax =
+      (((bastinStredaTraceConductivityPrefactor hbar * (e * v) ^ 2 : ℝ) : ℂ)) *
+        (((disorderStrength ^ 2 : ℝ) : ℂ)) * (((2 * Real.pi : ℝ) : ℂ)) *
+        ∫ radius in (0 : ℝ)..rMax,
+          (radius : ℂ) *
+            finiteCutoffContinuumBornDysonGaussianCrossedXGeneratorRadialAmplitude
+              v m probeEnergy broadening disorderStrength hbar pMax radius := by
+  rw [finiteCutoffContinuumBornDysonGaussianCrossedOrderedXYConductivity_eq_radial_antisymmetric_trace
+    .x e v m probeEnergy broadening disorderStrength hbar pMax rMax
+    hbroadening hdisorder hpMax]
+  congr 1
+  apply intervalIntegral.integral_congr
+  intro radius _
+  dsimp only
+  rw [finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_x_antisymmetric_eq_generator_amplitude
+    v m probeEnergy broadening disorderStrength hbar pMax radius
+    hhbar hbroadening hdisorder hpMax]
+  ring
+
+/-- At *any finite regulator* the physically normalized Gaussian crossed
+X Hall conductivity vanishes at zero Dirac mass, even for positive Born
+scalar disorder strength. The proof uses the actual Born-Dyson effective
+mass and two current-Pauli zero-mass selection rules, rather than the
+weak-disorder closed Ado benchmark.
+
+This exact massless statement is not an evaluation of the massive-metal
+X integral or its ultraviolet/broadening limits. -/
+@[simp] theorem finiteCutoffContinuumBornDysonGaussianCrossedOrderedXYConductivity_x_zero_mass
+    (e v probeEnergy broadening disorderStrength hbar pMax rMax : ℝ)
+    (hhbar : hbar ≠ 0)
+    (hbroadening : broadening ≠ 0) (hdisorder : 0 ≤ disorderStrength)
+    (hpMax : 0 ≤ pMax) :
+    finiteCutoffContinuumBornDysonGaussianCrossedOrderedXYConductivity
+      .x e v 0 probeEnergy broadening disorderStrength hbar pMax rMax = 0 := by
+  rw [finiteCutoffContinuumBornDysonGaussianCrossedOrderedXYConductivity_x_eq_generator_radial_integral
+    e v 0 probeEnergy broadening disorderStrength hbar pMax rMax
+    hhbar hbroadening hdisorder hpMax]
+  have hzero (radius : ℝ) :
+      finiteCutoffContinuumBornDysonGaussianCrossedXGeneratorRadialAmplitude
+        v 0 probeEnergy broadening disorderStrength hbar pMax radius = 0 :=
+    finiteCutoffContinuumBornDysonGaussianCrossedXGeneratorRadialAmplitude_zero_mass
+      v probeEnergy broadening disorderStrength hbar pMax radius
+      hbroadening hdisorder hpMax
+  simp_rw [hzero]
+  simp
 
 /-- The regulated physical X Hall radial integrand is expressed solely in the
 canonical K0/K1/K2 momentum moments, with the remaining retarded/advanced
