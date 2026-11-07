@@ -105,7 +105,7 @@ theorem tendsto_finiteCutoffContinuumBornEffectiveEnergy_shift_normalized_re_atB
           finiteCutoffContinuumBornEffectiveEnergy side
             v m probeEnergy broadening disorderStrength hbar pMax) /
           (((disorderStrength * fullAngleMomentumMeasurePrefactor hbar : ℝ) : ℂ) *
-            bornSelfEnergyChannelWeight .scalar side m probeEnergy broadening)).re))
+            bornSelfEnergyChannelWeight .scalar side m probeEnergy broadening)).re)
       atTop atBot := by
   have h :=
     tendsto_finiteCutoffContinuumBornSelfEnergyCoefficient_normalized_re_atBot
@@ -132,7 +132,7 @@ theorem tendsto_finiteCutoffContinuumBornEffectiveMass_shift_normalized_re_atBot
         ((finiteCutoffContinuumBornEffectiveMass side
             v m probeEnergy broadening disorderStrength hbar pMax - (m : ℂ)) /
           (((disorderStrength * fullAngleMomentumMeasurePrefactor hbar : ℝ) : ℂ) *
-            bornSelfEnergyChannelWeight .z side m probeEnergy broadening)).re))
+            bornSelfEnergyChannelWeight .z side m probeEnergy broadening)).re)
       atTop atBot := by
   have h :=
     tendsto_finiteCutoffContinuumBornSelfEnergyCoefficient_normalized_re_atBot
@@ -211,7 +211,7 @@ theorem tendsto_finiteCutoffContinuumBornSelfEnergyCoefficient_scalar_normalized
         ((finiteCutoffContinuumBornSelfEnergyCoefficient .scalar side
           v m probeEnergy broadening disorderStrength hbar pMax /
           (((disorderStrength * fullAngleMomentumMeasurePrefactor hbar : ℝ) : ℂ) *
-            bornSelfEnergyChannelWeight .scalar side m probeEnergy broadening)).re)
+            bornSelfEnergyChannelWeight .scalar side m probeEnergy broadening)).re))
       atTop atBot := by
   have hmeasure : 0 < fullAngleMomentumMeasurePrefactor hbar := by
     unfold fullAngleMomentumMeasurePrefactor momentumMeasurePrefactor
@@ -239,7 +239,7 @@ theorem tendsto_finiteCutoffContinuumBornSelfEnergyCoefficient_z_normalized_re_a
         ((finiteCutoffContinuumBornSelfEnergyCoefficient .z side
           v m probeEnergy broadening disorderStrength hbar pMax /
           (((disorderStrength * fullAngleMomentumMeasurePrefactor hbar : ℝ) : ℂ) *
-            bornSelfEnergyChannelWeight .z side m probeEnergy broadening)).re)
+            bornSelfEnergyChannelWeight .z side m probeEnergy broadening)).re))
       atTop atBot := by
   have hmeasure : 0 < fullAngleMomentumMeasurePrefactor hbar := by
     unfold fullAngleMomentumMeasurePrefactor momentumMeasurePrefactor
