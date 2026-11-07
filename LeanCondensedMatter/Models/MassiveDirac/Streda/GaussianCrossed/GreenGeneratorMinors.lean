@@ -103,6 +103,83 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedXGreenMinors_eq_generators
   · ring
   constructor <;> ring
 
+
+/-- The exact radial Pauli trace amplitude used for the finite-cutoff X
+Hall integral, with *every Green minor* reduced to the scalar
+generators `F_R,F_A` and their first real-space derivatives.
+
+Current-source Pauli coefficients remain the physical, finite-cutoff
+Gaussian-crossed current blocks; no independent scalar/current model
+is introduced. In particular, the retarded/advanced Green arguments
+are `-radius`, as required by the original X topology. -/
+noncomputable def finiteCutoffContinuumBornDysonGaussianCrossedXGeneratorRadialAmplitude
+    (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ) : ℂ :=
+  let Jx := finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock
+    0 v m probeEnergy broadening disorderStrength hbar pMax radius
+  let Jy := finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock
+    1 v m probeEnergy broadening disorderStrength hbar pMax radius
+  let a := InternalSpace.pauliScalarCoefficient Jx
+  let c := InternalSpace.pauliScalarCoefficient Jy
+  let u := InternalSpace.pauliVectorCoefficient Jx
+  let w := InternalSpace.pauliVectorCoefficient Jy
+  let eR := finiteCutoffContinuumBornEffectiveEnergy
+    .retarded v m probeEnergy broadening disorderStrength hbar pMax
+  let eA := finiteCutoffContinuumBornEffectiveEnergy
+    .advanced v m probeEnergy broadening disorderStrength hbar pMax
+  let mR := finiteCutoffContinuumBornEffectiveMass
+    .retarded v m probeEnergy broadening disorderStrength hbar pMax
+  let mA := finiteCutoffContinuumBornEffectiveMass
+    .advanced v m probeEnergy broadening disorderStrength hbar pMax
+  let fR := finiteCutoffContinuumBornDysonRadialScalarGreenGenerator
+    .retarded v m probeEnergy broadening disorderStrength hbar pMax (-radius)
+  let fA := finiteCutoffContinuumBornDysonRadialScalarGreenGenerator
+    .advanced v m probeEnergy broadening disorderStrength hbar pMax (-radius)
+  let dfR := deriv (fun r : ℝ => finiteCutoffContinuumBornDysonRadialScalarGreenGenerator
+    .retarded v m probeEnergy broadening disorderStrength hbar pMax r) (-radius)
+  let dfA := deriv (fun r : ℝ => finiteCutoffContinuumBornDysonRadialScalarGreenGenerator
+    .advanced v m probeEnergy broadening disorderStrength hbar pMax r) (-radius)
+  2 * Complex.I *
+    ((a * w .y - c * u .y) *
+        ((-Complex.I * (((hbar * v : ℝ) : ℂ))) *
+          (mA * dfR * fA - mR * fR * dfA)) +
+      ((eR * mA - eA * mR) * fR * fA) *
+        (w .y * u .x + (u .y) ^ 2) +
+      ((-Complex.I * (((hbar * v : ℝ) : ℂ))) *
+        (eA * fA * dfR - eR * fR * dfA)) *
+        (w .y * u .z - u .y * w .z))
+
+/-- Finite-regulator X radial antisymmetric source trace in terms of
+two scalar Green generators and their derivatives, with all current
+Pauli coefficients unchanged. The equality is *pointwise in radius*
+and precedes the real-space integration. -/
+theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_x_antisymmetric_eq_generator_amplitude
+    (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ)
+    (hhbar : hbar ≠ 0)
+    (hbroadening : broadening ≠ 0)
+    (hdisorder : 0 ≤ disorderStrength) (hpMax : 0 ≤ pMax) :
+    finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor .x
+        v m probeEnergy broadening disorderStrength hbar pMax radius 0 1 -
+      finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor .x
+        v m probeEnergy broadening disorderStrength hbar pMax radius 1 0 =
+      2 * finiteCutoffContinuumBornDysonGaussianCrossedXGeneratorRadialAmplitude
+        v m probeEnergy broadening disorderStrength hbar pMax radius := by
+  have htrace :=
+    finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_x_antisymmetric_eq_transverse_minors
+      v m probeEnergy broadening disorderStrength hbar pMax radius
+      hbroadening hdisorder hpMax
+  obtain ⟨hscalarZ, hxZ, hscalarX⟩ :=
+    finiteCutoffContinuumBornDysonGaussianCrossedXGreenMinors_eq_generators
+      v m probeEnergy broadening disorderStrength hbar pMax (-radius)
+      hhbar hbroadening hdisorder hpMax
+  dsimp only at htrace hscalarZ hxZ hscalarX
+  rw [htrace]
+  unfold finiteCutoffContinuumBornDysonGaussianCrossedXGeneratorRadialAmplitude
+  dsimp only
+  simp only [finiteCutoffContinuumBornDysonRadialGreenScalarCoefficient,
+    finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient] at hscalarZ hxZ hscalarX
+  rw [hscalarZ, hxZ, hscalarX]
+  ring
+
 end
 
 end QuantumTheory.Models.MassiveDirac
