@@ -101,11 +101,18 @@ theorem tendsto_integral_crossedXBesselIntegrand
       Filter.atTop (nhds ((((2 / Real.pi : ℝ) : ℂ)) * (1 / 2 : ℂ))) := by
   have hlimit := (tendsto_integral_besselJ_one_sq_div).const_mul
     (((2 / Real.pi : ℝ) : ℂ))
-  exact hlimit.congr' (Filter.Eventually.of_forall fun R =>
-    (integral_crossedXBesselIntegrand_eq_endpoints Y0 Y1 hW R).symm.trans
-      (by
-        rw [integral_besselJ_one_sq_div]
-        simp [Complex.besselJ_zero]))
+  have hpoint (R : ℝ) :
+      (((2 / Real.pi : ℝ) : ℂ)) *
+          (∫ r in (0 : ℝ)..R,
+            Complex.besselJ 1 (r : ℂ) ^ 2 / (r : ℂ)) =
+        ∫ r in (0 : ℝ)..R,
+          Complex.besselJ 1 (r : ℂ) ^ 2 *
+            (Complex.besselJ 1 (r : ℂ) * Y0 r -
+              Complex.besselJ 0 (r : ℂ) * Y1 r) := by
+    rw [integral_besselJ_one_sq_div]
+    simpa [Complex.besselJ_zero] using
+      (integral_crossedXBesselIntegrand_eq_endpoints Y0 Y1 hW R).symm
+  exact hlimit.congr' (Filter.Eventually.of_forall hpoint)
 
 end
 
