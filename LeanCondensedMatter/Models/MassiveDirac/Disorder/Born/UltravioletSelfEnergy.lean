@@ -81,7 +81,8 @@ theorem tendsto_finiteCutoffContinuumBornSelfEnergyCoefficient_normalized_re_atB
       finiteCutoffContinuumBornDenominatorIntegral
         side v m probeEnergy broadening pMax := by
     rw [finiteCutoffContinuumBornSelfEnergyCoefficient_eq_denominatorIntegral]
-    field_simp [hfactor]
+    apply (div_eq_iff hfactor).2
+    ring
   convert hJ using 1
   funext pMax
   rw [hident]
