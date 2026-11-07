@@ -28,6 +28,8 @@ namespace QuantumTheory.Models.MassiveDirac
 noncomputable section
 
 open QuantumTheory.Transport
+open MeasureTheory
+open scoped Interval
 
 /-- The exact closed-form crossed correction required to turn the proved non-crossing Ado result
 into the full Gaussian-disorder Ado benchmark.
@@ -142,6 +144,58 @@ theorem adoEq18SkewBenchmark_neg_mass
           (5 * probeEnergy ^ 2 + 3 * m ^ 2) /
           (2 * probeEnergy * (probeEnergy ^ 2 + 3 * m ^ 2) ^ 2))) := by
   ring
+
+
+/-- The **reference Bessel integral** underlying Ado et al. Eq. (16a)
+reproduces the closed crossed-X benchmark Eq. (17).
+
+This consumes the formally proved J₁²/r moment and requires only the
+*explicit* first/second-kind Bessel Wronskian relation. It does **not**
+assert that the model's cutoff-dependent Born-Dyson crossed-X integral
+has this Bessel representation, or justify its regulator limits. Those
+physical bridge theorems remain the outstanding Phase 7 obligations. -/
+theorem adoCrossedXBesselReference_tendsto_benchmark
+    (Y0 Y1 : ℝ → ℂ) (hW : CrossedXBesselWronskian Y0 Y1)
+    (e hbar m probeEnergy : ℝ) :
+    Filter.Tendsto
+      (fun R : ℝ =>
+        (((Real.pi : ℝ) : ℂ)) *
+          (((4 * e ^ 2 / planckConstantFromReduced hbar) *
+            (probeEnergy * m * (probeEnergy ^ 2 - m ^ 2) /
+              (probeEnergy ^ 2 + 3 * m ^ 2) ^ 2) : ℝ) : ℂ) *
+          (∫ r in (0 : ℝ)..R,
+            Complex.besselJ 1 (r : ℂ) ^ 2 *
+              (Complex.besselJ 1 (r : ℂ) * Y0 r -
+                Complex.besselJ 0 (r : ℂ) * Y1 r)))
+      Filter.atTop (nhds
+        ((((4 * e ^ 2 / planckConstantFromReduced hbar) *
+            (probeEnergy * m * (probeEnergy ^ 2 - m ^ 2) /
+              (probeEnergy ^ 2 + 3 * m ^ 2) ^ 2) : ℝ) : ℂ))) := by
+  let factor : ℂ :=
+    (((4 * e ^ 2 / planckConstantFromReduced hbar) *
+      (probeEnergy * m * (probeEnergy ^ 2 - m ^ 2) /
+        (probeEnergy ^ 2 + 3 * m ^ 2) ^ 2) : ℝ) : ℂ)
+  have hpiReal : Real.pi * (1 / Real.pi) = 1 := by
+    field_simp [Real.pi_ne_zero]
+  have hpi : (((Real.pi : ℝ) : ℂ)) * (((1 / Real.pi : ℝ) : ℂ)) = 1 := by
+    exact_mod_cast hpiReal
+  have hfactor :
+      (((Real.pi : ℝ) : ℂ)) * factor * (((1 / Real.pi : ℝ) : ℂ)) =
+        factor := by
+    calc
+      _ = factor * ((((Real.pi : ℝ) : ℂ)) * (((1 / Real.pi : ℝ) : ℂ))) := by ring
+      _ = factor := by rw [hpi]; ring
+  have hlimit :=
+    (tendsto_integral_crossedXBesselIntegrand_one_div_pi Y0 Y1 hW).const_mul
+      ((((Real.pi : ℝ) : ℂ)) * factor)
+  change Filter.Tendsto
+    (fun R : ℝ => (((Real.pi : ℝ) : ℂ)) * factor *
+      (∫ r in (0 : ℝ)..R,
+        Complex.besselJ 1 (r : ℂ) ^ 2 *
+          (Complex.besselJ 1 (r : ℂ) * Y0 r -
+            Complex.besselJ 0 (r : ℂ) * Y1 r)))
+    Filter.atTop (nhds factor)
+  simpa only [hfactor] using hlimit
 
 end
 
