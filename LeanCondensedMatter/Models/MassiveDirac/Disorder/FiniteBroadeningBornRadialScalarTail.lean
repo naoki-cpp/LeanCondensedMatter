@@ -260,6 +260,46 @@ theorem massiveDiracRadialFourierKernel_tendsto_atTop
   have hsum := hconst.add htail
   exact hsum.congr' (Filter.Eventually.of_forall fun b => (hsplit b).symm)
 
+
+/-- With the finite-cutoff Born self-energy *frozen* at `pMax`, the
+massive-Dirac radial resolvent Fourier integral converges as its independent
+outer momentum bound `b` tends to infinity, away from zero Fourier scale.
+
+The physical Born-Dyson denominator is nonzero at every real momentum under
+finite broadening and nonnegative disorder, so the fixed-spectral-center
+theorem applies without a separate denominator hypothesis. This does **not**
+send the Born self-energy's own cutoff `pMax` to infinity: the diagonal
+limit `b = pMax → ∞` requires a distinct argument. -/
+theorem finiteCutoffContinuumBornDysonRadialScalarKernel_tendsto_atTop
+    (side : SpectralSide)
+    (v m probeEnergy broadening disorderStrength hbar pMax c : ℝ)
+    (hv : v ≠ 0) (hc : c ≠ 0)
+    (hbroadening : broadening ≠ 0) (hdisorder : 0 ≤ disorderStrength)
+    (hpMax : 0 ≤ pMax) :
+    ∃ value : ℂ, Filter.Tendsto
+      (fun b : ℝ => ∫ p in (0 : ℝ)..b,
+        (p : ℂ) * polarFourierZerothAngularKernel (p * c) *
+          (finiteCutoffContinuumBornDysonDenominator
+            side v m p 0 probeEnergy broadening disorderStrength hbar pMax)⁻¹)
+      Filter.atTop (nhds value) := by
+  have hden (p : ℝ) :
+      massiveDiracRadialDenominator v p
+        (finiteCutoffContinuumBornEffectiveEnergy
+          side v m probeEnergy broadening disorderStrength hbar pMax)
+        (finiteCutoffContinuumBornEffectiveMass
+          side v m probeEnergy broadening disorderStrength hbar pMax) ≠ 0 := by
+    rw [finiteCutoffContinuumBornDysonDenominator_eq_radial]
+    exact finiteCutoffContinuumBornDysonDenominator_ne_zero
+      side v m p 0 probeEnergy broadening disorderStrength hbar pMax
+      hbroadening hdisorder hpMax
+  simpa only [finiteCutoffContinuumBornDysonDenominator_eq_radial] using
+    (massiveDiracRadialFourierKernel_tendsto_atTop v c
+      (finiteCutoffContinuumBornEffectiveEnergy
+        side v m probeEnergy broadening disorderStrength hbar pMax)
+      (finiteCutoffContinuumBornEffectiveMass
+        side v m probeEnergy broadening disorderStrength hbar pMax)
+      hv hc hden)
+
 end
 
 end QuantumTheory.Models.MassiveDirac
