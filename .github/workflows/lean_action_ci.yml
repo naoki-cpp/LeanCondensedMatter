@@ -41,6 +41,7 @@ jobs:
               - 'LeanCondensedMatter.lean'
               - 'LeanCondensedMatter/**/*.lean'
               - 'scripts/check_architecture.py'
+              - 'scripts/massive_dirac_radial_grid.py'
               - 'scripts/check_architecture_graphs.py'
               - 'scripts/check_source_contracts.py'
               - 'scripts/check_transport_hierarchy.py'
@@ -88,6 +89,9 @@ jobs:
 
       - name: Test declaration explorer
         run: node --test docs-site/tests/*.test.mjs
+
+      - name: Check massive-Dirac finite momentum-grid reference
+        run: python3 scripts/massive_dirac_radial_grid.py --check
 
       - name: Report project-local import overlap candidates (advisory)
         run: python3 scripts/export_module_import_graph.py --report-overlaps --limit 30
