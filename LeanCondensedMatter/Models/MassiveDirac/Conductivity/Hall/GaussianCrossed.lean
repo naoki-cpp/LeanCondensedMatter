@@ -119,6 +119,39 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedOrderedXYConductivity_x_eq_
     hbroadening hdisorder hpMax]
   ring
 
+/-- The physically normalized finite-regulator X conductivity, after
+eliminating all three retarded/advanced Green Pauli minors in favor of
+the **two common scalar Green generators and their first derivatives**.
+This keeps the crossed-current Pauli channels, both Born impurity
+correlators, the real-space Jacobian, and exactly the original
+trace-only Bastin/current normalization.
+
+This is an exact finite-momentum/finite-radius/finite-broadening
+evaluation *boundary*. The final radial integral is not evaluated here. -/
+theorem finiteCutoffContinuumBornDysonGaussianCrossedOrderedXYConductivity_x_eq_generator_radial_integral
+    (e v m probeEnergy broadening disorderStrength hbar pMax rMax : ℝ)
+    (hhbar : hbar ≠ 0)
+    (hbroadening : broadening ≠ 0) (hdisorder : 0 ≤ disorderStrength)
+    (hpMax : 0 ≤ pMax) :
+    finiteCutoffContinuumBornDysonGaussianCrossedOrderedXYConductivity
+        .x e v m probeEnergy broadening disorderStrength hbar pMax rMax =
+      (((bastinStredaTraceConductivityPrefactor hbar * (e * v) ^ 2 : ℝ) : ℂ)) *
+        (((disorderStrength ^ 2 : ℝ) : ℂ)) * (((2 * Real.pi : ℝ) : ℂ)) *
+        ∫ radius in (0 : ℝ)..rMax,
+          (radius : ℂ) *
+            finiteCutoffContinuumBornDysonGaussianCrossedXGeneratorRadialAmplitude
+              v m probeEnergy broadening disorderStrength hbar pMax radius := by
+  rw [finiteCutoffContinuumBornDysonGaussianCrossedOrderedXYConductivity_eq_radial_antisymmetric_trace
+    .x e v m probeEnergy broadening disorderStrength hbar pMax rMax
+    hbroadening hdisorder hpMax]
+  congr 1
+  apply intervalIntegral.integral_congr
+  intro radius _
+  rw [finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_x_antisymmetric_eq_generator_amplitude
+    v m probeEnergy broadening disorderStrength hbar pMax radius
+    hhbar hbroadening hdisorder hpMax]
+  ring
+
 /-- The regulated physical X Hall radial integrand is expressed solely in the
 canonical K0/K1/K2 momentum moments, with the remaining retarded/advanced
 Green scalar and z coefficients, transverse source-x current, and diagonal
