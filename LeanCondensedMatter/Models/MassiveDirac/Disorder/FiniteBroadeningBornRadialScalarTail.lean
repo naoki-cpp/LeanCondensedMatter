@@ -343,6 +343,7 @@ theorem finiteCutoffContinuumBornDysonRadialScalarGreenGenerator_zero_disorder_t
     congr 1
     apply intervalIntegral.integral_congr
     intro p _
+    dsimp only
     rw [← finiteCutoffContinuumBornDysonDenominator_eq_radial]
     simp only [finiteCutoffContinuumBornEffectiveEnergy,
       finiteCutoffContinuumBornEffectiveMass,
