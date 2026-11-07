@@ -3,6 +3,7 @@ import LeanCondensedMatter.Models.MassiveDirac.Conductivity.Hall.GaussianCrossed
 import LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.RealSpaceIntegral
 import LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.ExplicitMoments
 import LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.GreenGeneratorMinors
+import LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.MasslessX
 
 set_option linter.style.header false
 
@@ -152,6 +153,33 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedOrderedXYConductivity_x_eq_
     v m probeEnergy broadening disorderStrength hbar pMax radius
     hhbar hbroadening hdisorder hpMax]
   ring
+
+/-- At *any finite regulator* the physically normalized Gaussian crossed
+X Hall conductivity vanishes at zero Dirac mass, even for positive Born
+scalar disorder strength. The proof uses the actual Born-Dyson effective
+mass and two current-Pauli zero-mass selection rules, rather than the
+weak-disorder closed Ado benchmark.
+
+This exact massless statement is not an evaluation of the massive-metal
+X integral or its ultraviolet/broadening limits. -/
+@[simp] theorem finiteCutoffContinuumBornDysonGaussianCrossedOrderedXYConductivity_x_zero_mass
+    (e v probeEnergy broadening disorderStrength hbar pMax rMax : ℝ)
+    (hhbar : hbar ≠ 0)
+    (hbroadening : broadening ≠ 0) (hdisorder : 0 ≤ disorderStrength)
+    (hpMax : 0 ≤ pMax) :
+    finiteCutoffContinuumBornDysonGaussianCrossedOrderedXYConductivity
+      .x e v 0 probeEnergy broadening disorderStrength hbar pMax rMax = 0 := by
+  rw [finiteCutoffContinuumBornDysonGaussianCrossedOrderedXYConductivity_x_eq_generator_radial_integral
+    e v 0 probeEnergy broadening disorderStrength hbar pMax rMax
+    hhbar hbroadening hdisorder hpMax]
+  have hzero (radius : ℝ) :
+      finiteCutoffContinuumBornDysonGaussianCrossedXGeneratorRadialAmplitude
+        v 0 probeEnergy broadening disorderStrength hbar pMax radius = 0 :=
+    finiteCutoffContinuumBornDysonGaussianCrossedXGeneratorRadialAmplitude_zero_mass
+      v probeEnergy broadening disorderStrength hbar pMax radius
+      hbroadening hdisorder hpMax
+  simp_rw [hzero]
+  simp
 
 /-- The regulated physical X Hall radial integrand is expressed solely in the
 canonical K0/K1/K2 momentum moments, with the remaining retarded/advanced
