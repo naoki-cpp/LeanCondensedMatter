@@ -1,6 +1,7 @@
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.Denominator
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornPropagator
 import Mathlib.Tactic.FieldSimp
+import Mathlib.Tactic.Positivity
 import Mathlib.Tactic.Ring
 
 set_option linter.style.header false
@@ -181,6 +182,82 @@ theorem finiteCutoffContinuumBornEffectiveEnergyMass_cutoff_invariant
   unfold finiteCutoffContinuumBornEffectiveEnergy
     finiteCutoffContinuumBornEffectiveMass
   linear_combination -hbalance
+
+/-- The scalar Born-channel numerator cannot vanish at nonzero
+external broadening, for either causal spectral side. -/
+private theorem bornSelfEnergyScalarWeight_ne_zero
+    (side : SpectralSide) (m probeEnergy broadening : ℝ)
+    (hbroadening : broadening ≠ 0) :
+    bornSelfEnergyChannelWeight .scalar side m probeEnergy broadening ≠ 0 := by
+  intro hz
+  have him := congrArg Complex.im hz
+  have hzero : side.regulator broadening = 0 := by
+    simpa [bornSelfEnergyChannelWeight, bornSelfEnergyChannelWeightOfRegulator,
+      spectralParameterOfRegulator_im] using him
+  exact side.regulator_ne_zero hbroadening hzero
+
+/-- In the physical regime of positive disorder strength and Planck
+constant, the scalar Born self-energy has an ultraviolet-divergent
+normalized real projection without any additional prefactor hypothesis.
+The nonzero broadening guarantees its scalar spectral numerator is nonzero. -/
+theorem tendsto_finiteCutoffContinuumBornSelfEnergyCoefficient_scalar_normalized_re_atBot
+    (side : SpectralSide)
+    (v m probeEnergy broadening disorderStrength hbar : ℝ)
+    (hv : v ≠ 0) (henergy : probeEnergy ≠ 0)
+    (hbroadening : broadening ≠ 0) (hdisorder : 0 < disorderStrength)
+    (hhbar : 0 < hbar) :
+    Tendsto
+      (fun pMax : ℝ =>
+        ((finiteCutoffContinuumBornSelfEnergyCoefficient .scalar side
+          v m probeEnergy broadening disorderStrength hbar pMax /
+          (((disorderStrength * fullAngleMomentumMeasurePrefactor hbar : ℝ) : ℂ) *
+            bornSelfEnergyChannelWeight .scalar side m probeEnergy broadening)).re)
+      atTop atBot := by
+  have hmeasure : 0 < fullAngleMomentumMeasurePrefactor hbar := by
+    unfold fullAngleMomentumMeasurePrefactor momentumMeasurePrefactor
+    positivity
+  have hfactor :
+      ((disorderStrength * fullAngleMomentumMeasurePrefactor hbar : ℝ) : ℂ) *
+        bornSelfEnergyChannelWeight .scalar side m probeEnergy broadening ≠ 0 :=
+    mul_ne_zero
+      (Complex.ofReal_ne_zero.mpr (mul_pos hdisorder hmeasure).ne')
+      (bornSelfEnergyScalarWeight_ne_zero side m probeEnergy broadening hbroadening)
+  exact tendsto_finiteCutoffContinuumBornSelfEnergyCoefficient_normalized_re_atBot
+    .scalar side v m probeEnergy broadening disorderStrength hbar
+    hv henergy hbroadening hfactor
+
+/-- The z-Pauli Born coefficient also has a divergent normalized real
+projection when the bare mass is nonzero. -/
+theorem tendsto_finiteCutoffContinuumBornSelfEnergyCoefficient_z_normalized_re_atBot
+    (side : SpectralSide)
+    (v m probeEnergy broadening disorderStrength hbar : ℝ)
+    (hv : v ≠ 0) (hm : m ≠ 0) (henergy : probeEnergy ≠ 0)
+    (hbroadening : broadening ≠ 0) (hdisorder : 0 < disorderStrength)
+    (hhbar : 0 < hbar) :
+    Tendsto
+      (fun pMax : ℝ =>
+        ((finiteCutoffContinuumBornSelfEnergyCoefficient .z side
+          v m probeEnergy broadening disorderStrength hbar pMax /
+          (((disorderStrength * fullAngleMomentumMeasurePrefactor hbar : ℝ) : ℂ) *
+            bornSelfEnergyChannelWeight .z side m probeEnergy broadening)).re)
+      atTop atBot := by
+  have hmeasure : 0 < fullAngleMomentumMeasurePrefactor hbar := by
+    unfold fullAngleMomentumMeasurePrefactor momentumMeasurePrefactor
+    positivity
+  have hweight :
+      bornSelfEnergyChannelWeight .z side m probeEnergy broadening ≠ 0 := by
+    simpa [bornSelfEnergyChannelWeight,
+      bornSelfEnergyChannelWeightOfRegulator] using
+      (Complex.ofReal_ne_zero.mpr hm)
+  have hfactor :
+      ((disorderStrength * fullAngleMomentumMeasurePrefactor hbar : ℝ) : ℂ) *
+        bornSelfEnergyChannelWeight .z side m probeEnergy broadening ≠ 0 :=
+    mul_ne_zero
+      (Complex.ofReal_ne_zero.mpr (mul_pos hdisorder hmeasure).ne')
+      hweight
+  exact tendsto_finiteCutoffContinuumBornSelfEnergyCoefficient_normalized_re_atBot
+    .z side v m probeEnergy broadening disorderStrength hbar
+    hv henergy hbroadening hfactor
 
 end
 
