@@ -324,7 +324,7 @@ theorem finiteCutoffContinuumBornDysonRadialScalarGreenGenerator_zero_disorder_t
     have hphysical := finiteCutoffContinuumBornDysonDenominator_ne_zero
       side v m p 0 probeEnergy broadening 0 hbar 0
       hbroadening (le_refl (0 : ℝ)) (le_refl (0 : ℝ))
-    rw [finiteCutoffContinuumBornDysonDenominator_eq_radial] at hphysical
+    rw [← finiteCutoffContinuumBornDysonDenominator_eq_radial] at hphysical
     simpa [finiteCutoffContinuumBornEffectiveEnergy,
       finiteCutoffContinuumBornEffectiveMass] using hphysical
   obtain ⟨limit, hlimit⟩ :=
@@ -343,7 +343,7 @@ theorem finiteCutoffContinuumBornDysonRadialScalarGreenGenerator_zero_disorder_t
     congr 1
     apply intervalIntegral.integral_congr
     intro p _
-    rw [finiteCutoffContinuumBornDysonDenominator_eq_radial]
+    rw [← finiteCutoffContinuumBornDysonDenominator_eq_radial]
     simp only [finiteCutoffContinuumBornEffectiveEnergy,
       finiteCutoffContinuumBornEffectiveMass,
       finiteCutoffContinuumBornSelfEnergyCoefficient_zero_disorder,
