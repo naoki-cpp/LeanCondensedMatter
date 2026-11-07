@@ -2243,6 +2243,15 @@
       "externalImportCount": 3
     },
     {
+      "name": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.UltravioletSelfEnergy",
+      "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Disorder/Born/UltravioletSelfEnergy.lean",
+      "imports": [
+        "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.Denominator",
+        "LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornPropagator"
+      ],
+      "externalImportCount": 3
+    },
+    {
       "name": "LeanCondensedMatter.Models.MassiveDirac.Disorder.BornCurrentVertexInfiniteCutoff",
       "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Disorder/BornCurrentVertexInfiniteCutoff.lean",
       "imports": [
@@ -2350,6 +2359,14 @@
         "LeanCondensedMatter.Transport.Analysis.PolarFourierRadialDerivative"
       ],
       "externalImportCount": 3
+    },
+    {
+      "name": "LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornRadialScalarGrid",
+      "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Disorder/FiniteBroadeningBornRadialScalarGrid.lean",
+      "imports": [
+        "LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornRadialScalarGenerator"
+      ],
+      "externalImportCount": 2
     },
     {
       "name": "LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornRadialScalarTail",
@@ -2536,6 +2553,7 @@
       "name": "LeanCondensedMatter.Models.MassiveDirac.Disorder",
       "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Disorder.lean",
       "imports": [
+        "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.UltravioletSelfEnergy",
         "LeanCondensedMatter.Models.MassiveDirac.Disorder.BornCurrentVertexInfiniteCutoff",
         "LeanCondensedMatter.Models.MassiveDirac.Disorder.BornCurrentVertexWeakDisorder",
         "LeanCondensedMatter.Models.MassiveDirac.Disorder.ContinuumMeasurePrefactor",
@@ -2543,6 +2561,7 @@
         "LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornRadialMoments",
         "LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornRadialRealSpacePropagator",
         "LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornRadialScalarGenerator",
+        "LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornRadialScalarGrid",
         "LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornRadialScalarTail",
         "LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornRealSpacePropagator",
         "LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexResponse",

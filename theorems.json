@@ -61866,6 +61866,158 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
+    "terminal": true,
+    "statement": "∀ (side : QuantumTheory.Transport.SpectralSide) (v m probeEnergy broadening disorderStrength hbar pMax radius p : ℝ),\n  QuantumTheory.Models.MassiveDirac.finiteCutoffBornDysonRadialScalarGridKernel side v m probeEnergy broadening\n      disorderStrength hbar pMax radius p =\n    ↑p *\n        (QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominator side v m p 0 probeEnergy broadening\n            disorderStrength hbar pMax)⁻¹ *\n      QuantumTheory.Transport.polarFourierZerothAngularKernel (p * radius / hbar)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.MassiveDirac.finiteCutoffBornDysonRadialScalarGridKernel_eq",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornRadialScalarGrid",
+    "externalAxioms": [],
+    "docString": "Exactly the regulated scalar Green-generator integrand, before integration. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (side : QuantumTheory.Transport.SpectralSide) (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ),\n  QuantumTheory.Models.MassiveDirac.finiteCutoffBornDysonRadialScalarMidpointGrid side v m probeEnergy broadening\n      disorderStrength hbar pMax radius 0 =\n    0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.MassiveDirac.finiteCutoffBornDysonRadialScalarMidpointGrid_zero_count",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornRadialScalarGrid",
+    "externalAxioms": [],
+    "docString": "No sample points means that the numerical finite-grid value is zero. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (side : QuantumTheory.Transport.SpectralSide) (v m probeEnergy broadening disorderStrength hbar radius : ℝ)\n  (count : ℕ),\n  QuantumTheory.Models.MassiveDirac.finiteCutoffBornDysonRadialScalarMidpointGrid side v m probeEnergy broadening\n      disorderStrength hbar 0 radius count =\n    0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.MassiveDirac.finiteCutoffBornDysonRadialScalarMidpointGrid_zero_cutoff",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornRadialScalarGrid",
+    "externalAxioms": [],
+    "docString": "The zero-width cutoff is zero at any grid resolution, regardless of\nthe value of the complex spectral denominator at the endpoint. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (pMax : ℝ) (count index : ℕ),\n  0 < pMax →\n    index < count →\n      0 < QuantumTheory.Models.MassiveDirac.finiteCutoffBornRadialMidpoint pMax count index ∧\n        QuantumTheory.Models.MassiveDirac.finiteCutoffBornRadialMidpoint pMax count index < pMax",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.MassiveDirac.finiteCutoffBornRadialMidpoint_mem_Ioo",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornRadialScalarGrid",
+    "externalAxioms": [],
+    "docString": "Every sampled midpoint lies strictly inside a positive cutoff interval. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
     "terminal": false,
     "statement": "∀ (side : QuantumTheory.Transport.SpectralSide) (v m probeEnergy pMax : ℝ),\n  (QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDenominatorIntegralBoundaryValue side v m probeEnergy\n        pMax).im =\n    -(2 * v ^ 2)⁻¹ * (side.sign * Real.pi)",
     "standardAxioms": [
@@ -62286,7 +62438,9 @@
     "directWrapperOf": null,
     "dependents": [
       "QuantumTheory.Models.MassiveDirac.finiteBroadeningBornDyson_singlePoleRadialIntegral_eq_log_of_center_re_pos",
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialScalarGreenGenerator_zero_disorder_tendsto_atTop",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialScalarKernel_by_parts",
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialScalarKernel_tendsto_atTop",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadial_center_gap_ne_zero_of_re_pos",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadial_ra_weighted_moment_mul_center_gap",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct_eq_mul"
@@ -62296,12 +62450,14 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.Models.MassiveDirac.finiteBroadeningBornDyson_singlePoleRadialIntegral_eq_log_of_center_re_pos",
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialScalarGreenGenerator_zero_disorder_tendsto_atTop",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialScalarKernel_by_parts",
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialScalarKernel_tendsto_atTop",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadial_center_gap_ne_zero_of_re_pos",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadial_ra_weighted_moment_mul_center_gap",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct_eq_mul"
     ],
-    "compiledConsumerCount": 5,
+    "compiledConsumerCount": 7,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -62339,7 +62495,9 @@
       "QuantumTheory.Models.MassiveDirac.continuous_finiteCutoffContinuumBornDysonScalarCoefficient_radial",
       "QuantumTheory.Models.MassiveDirac.finiteBroadeningBornDyson_singlePoleRadialIntegral_eq_log_of_center_re_pos",
       "QuantumTheory.Models.MassiveDirac.finiteBroadeningSameSide_integrable_and_integral_eq_endpoint",
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialScalarGreenGenerator_zero_disorder_tendsto_atTop",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialScalarKernel_by_parts",
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialScalarKernel_tendsto_atTop",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadial_center_gap_ne_zero_of_re_pos",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadial_ra_pole_moment_mul_center_gap_eq_log",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadial_ra_weighted_moment_mul_center_gap",
@@ -62358,14 +62516,16 @@
       "QuantumTheory.Models.MassiveDirac.continuous_finiteCutoffContinuumBornDysonScalarCoefficient_radial",
       "QuantumTheory.Models.MassiveDirac.finiteBroadeningBornDyson_singlePoleRadialIntegral_eq_log_of_center_re_pos",
       "QuantumTheory.Models.MassiveDirac.finiteBroadeningSameSide_integrable_and_integral_eq_endpoint",
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialScalarGreenGenerator_zero_disorder_tendsto_atTop",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialScalarKernel_by_parts",
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialScalarKernel_tendsto_atTop",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadial_center_gap_ne_zero_of_re_pos",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadial_ra_pole_moment_mul_center_gap_eq_log",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadial_ra_weighted_moment_mul_center_gap",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRetardedAdvancedDenominatorProduct_ne_zero",
       "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornRadialScalarGenerator.0.QuantumTheory.Models.MassiveDirac.continuous_finiteCutoffContinuumBornDysonScalarGreenWeight"
     ],
-    "compiledConsumerCount": 10,
+    "compiledConsumerCount": 12,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -65772,7 +65932,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -65784,6 +65944,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenScalarZ_zero_disorder_tendsto_atTop",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix_eq_scalarGenerator"
     ],
     "dependencies": [
@@ -65793,9 +65954,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenScalarZ_zero_disorder_tendsto_atTop",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix_eq_scalarGenerator"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -65817,7 +65979,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -65829,6 +65991,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenScalarZ_zero_disorder_tendsto_atTop",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix_eq_scalarGenerator"
     ],
     "dependencies": [
@@ -65838,9 +66001,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenScalarZ_zero_disorder_tendsto_atTop",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix_eq_scalarGenerator"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -65896,6 +66060,49 @@
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenScalarCoefficient_eq_generator"
     ],
     "compiledConsumerCount": 5,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (side : QuantumTheory.Transport.SpectralSide) (v m probeEnergy broadening hbar radius : ℝ),\n  v ≠ 0 →\n    hbar ≠ 0 →\n      radius ≠ 0 →\n        broadening ≠ 0 →\n          ∃ value,\n            Filter.Tendsto\n                (fun pMax =>\n                  QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenScalarCoefficient side v m\n                    probeEnergy broadening 0 hbar pMax radius)\n                Filter.atTop (nhds (QuantumTheory.Transport.spectralParameter side probeEnergy broadening * value)) ∧\n              Filter.Tendsto\n                (fun pMax =>\n                  QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient\n                    InternalSpace.PauliAxis.z side v m probeEnergy broadening 0 hbar pMax radius)\n                Filter.atTop (nhds (↑m * value))",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenScalarZ_zero_disorder_tendsto_atTop",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornRadialScalarTail",
+    "externalAxioms": [],
+    "docString": "The clean diagonal ultraviolet limit of the common scalar generator\nalso controls the **physical** identity and z-Pauli coefficients of the\nradial Green matrix. Both limits share the same generator limit and retain\nthe effective-energy/mass factors, which become the bare spectral center\nand mass when the Born disorder strength is zero.\n\nThe in-plane derivative coefficient is not included: differentiating\nan infinite-cutoff limit requires separate uniform estimates. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient_z_eq_generator",
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenScalarCoefficient_eq_generator",
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialScalarGreenGenerator_zero_disorder_tendsto_atTop",
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornSelfEnergyCoefficient_zero_disorder"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -66195,6 +66402,53 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
+    "terminal": false,
+    "statement": "∀ (side : QuantumTheory.Transport.SpectralSide) (v m probeEnergy broadening hbar radius : ℝ),\n  v ≠ 0 →\n    hbar ≠ 0 →\n      radius ≠ 0 →\n        broadening ≠ 0 →\n          ∃ value,\n            Filter.Tendsto\n              (fun pMax =>\n                QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialScalarGreenGenerator side v m\n                  probeEnergy broadening 0 hbar pMax radius)\n              Filter.atTop (nhds value)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialScalarGreenGenerator_zero_disorder_tendsto_atTop",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornRadialScalarTail",
+    "externalAxioms": [],
+    "docString": "On the clean (`disorderStrength = 0`) slice, the *actual* finite-cutoff\nradial scalar Green generator converges when its Born and outer momentum\ncutoffs increase together. This is a diagonal cutoff limit, unlike the\nfrozen-self-energy statement above: the dependence on `pMax` disappears\nbecause the Born self-energy vanishes identically.\n\nThe conclusion is for nonzero real-space Fourier scale `radius / hbar`\nand nonzero external broadening. It makes no claim for finite disorder. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenScalarZ_zero_disorder_tendsto_atTop"
+    ],
+    "dependencies": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominator_eq_radial",
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominator_ne_zero",
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornSelfEnergyCoefficient_zero_disorder",
+      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierKernel_tendsto_atTop"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenScalarZ_zero_disorder_tendsto_atTop"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
     "terminal": true,
     "statement": "∀ (side : QuantumTheory.Transport.SpectralSide) (v m probeEnergy broadening disorderStrength hbar pMax c a b : ℝ),\n  broadening ≠ 0 →\n    0 ≤ disorderStrength →\n      0 ≤ pMax →\n        have D := fun p =>\n          QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominator side v m p 0 probeEnergy\n            broadening disorderStrength hbar pMax;\n        Complex.I * ↑c *\n            ∫ (p : ℝ) in a..b, ↑p * QuantumTheory.Transport.polarFourierZerothAngularKernel (p * c) * (D p)⁻¹ =\n          ↑b * QuantumTheory.Transport.polarFourierFirstCosineAngularKernel (b * c) * (D b)⁻¹ -\n              ↑a * QuantumTheory.Transport.polarFourierFirstCosineAngularKernel (a * c) * (D a)⁻¹ -\n            ∫ (p : ℝ) in a..b,\n              ↑p * QuantumTheory.Transport.polarFourierFirstCosineAngularKernel (p * c) *\n                (2 * ↑v ^ 2 * ↑p * (D p)⁻¹ ^ 2)",
     "standardAxioms": [
@@ -66219,6 +66473,48 @@
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominator_eq_radial",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominator_ne_zero",
       "QuantumTheory.Models.MassiveDirac.integral_massiveDiracRadialDenominator_inv_fourierKernel_by_parts"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (side : QuantumTheory.Transport.SpectralSide) (v m probeEnergy broadening disorderStrength hbar pMax c : ℝ),\n  v ≠ 0 →\n    c ≠ 0 →\n      broadening ≠ 0 →\n        0 ≤ disorderStrength →\n          0 ≤ pMax →\n            ∃ value,\n              Filter.Tendsto\n                (fun b =>\n                  ∫ (p : ℝ) in 0..b,\n                    ↑p * QuantumTheory.Transport.polarFourierZerothAngularKernel (p * c) *\n                      (QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominator side v m p 0\n                          probeEnergy broadening disorderStrength hbar pMax)⁻¹)\n                Filter.atTop (nhds value)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialScalarKernel_tendsto_atTop",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornRadialScalarTail",
+    "externalAxioms": [],
+    "docString": "With the finite-cutoff Born self-energy *frozen* at `pMax`, the\nmassive-Dirac radial resolvent Fourier integral converges as its independent\nouter momentum bound `b` tends to infinity, away from zero Fourier scale.\n\nThe physical Born-Dyson denominator is nonzero at every real momentum under\nfinite broadening and nonnegative disorder, so the fixed-spectral-center\ntheorem applies without a separate denominator hypothesis. This does **not**\nsend the Born self-energy's own cutoff `pMax` to infinity: the diagonal\nlimit `b = pMax → ∞` requires a distinct argument. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominator_eq_radial",
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominator_ne_zero",
+      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierKernel_tendsto_atTop"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -67966,6 +68262,46 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
+    "terminal": true,
+    "statement": "∀ (side : QuantumTheory.Transport.SpectralSide) (v m probeEnergy broadening disorderStrength hbar pMax : ℝ),\n  ↑m *\n        QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornEffectiveEnergy side v m probeEnergy broadening\n          disorderStrength hbar pMax +\n      QuantumTheory.Transport.spectralParameter side probeEnergy broadening *\n        QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornEffectiveMass side v m probeEnergy broadening\n          disorderStrength hbar pMax =\n    2 * ↑m * QuantumTheory.Transport.spectralParameter side probeEnergy broadening",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornEffectiveEnergyMass_cutoff_invariant",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.UltravioletSelfEnergy",
+    "externalAxioms": [],
+    "docString": "Although the two Born-Dyson spectral parameters may each acquire\na logarithmically divergent correction, this combination is exactly\ncutoff-independent. It is an algebraic identity, not a renormalized\ninfinite-cutoff Green function or a Ward identity. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornSelfEnergyCoefficient_scalar_z_balance"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
     "terminal": false,
     "statement": "∀ (v m probeEnergy regulator pMax : ℝ),\n  regulator ≠ 0 →\n    QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornGreenIntegralOfRegulator v m probeEnergy regulator pMax =\n      QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornIntegralOfRegulator\n            QuantumTheory.Models.MassiveDirac.BornSelfEnergyChannel.scalar v m probeEnergy regulator pMax •\n          1 +\n        QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornIntegralOfRegulator\n            QuantumTheory.Models.MassiveDirac.BornSelfEnergyChannel.z v m probeEnergy regulator pMax •\n          QuantumTheory.Models.MassiveDirac.matrixOperator QuantumTheory.Models.MassiveDirac.sigmaZ",
     "standardAxioms": [
@@ -68021,7 +68357,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -68033,6 +68369,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornSelfEnergyCoefficient_eq_denominatorIntegral",
       "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornIntegral_broadening_zero"
     ],
     "dependencies": [
@@ -68041,9 +68378,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornSelfEnergyCoefficient_eq_denominatorIntegral",
       "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornIntegral_broadening_zero"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -68194,6 +68532,136 @@
   },
   {
     "terminal": false,
+    "statement": "∀ (channel : QuantumTheory.Models.MassiveDirac.BornSelfEnergyChannel) (side : QuantumTheory.Transport.SpectralSide)\n  (v m probeEnergy broadening disorderStrength hbar pMax : ℝ),\n  QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornSelfEnergyCoefficient channel side v m probeEnergy\n      broadening disorderStrength hbar pMax =\n    ↑(disorderStrength * QuantumTheory.Transport.fullAngleMomentumMeasurePrefactor hbar) *\n        QuantumTheory.Models.MassiveDirac.bornSelfEnergyChannelWeight channel side m probeEnergy broadening *\n      QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDenominatorIntegral side v m probeEnergy broadening\n        pMax",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornSelfEnergyCoefficient_eq_denominatorIntegral",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.UltravioletSelfEnergy",
+    "externalAxioms": [],
+    "docString": "Both surviving Born channels use the same finite-cutoff denominator\nintegral; the only channel dependence is the fixed complex numerator.\nThe continuum disorder and momentum-measure factor occurs exactly once. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornSelfEnergyCoefficient_scalar_z_balance",
+      "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornSelfEnergyCoefficient_normalized_re_atBot"
+    ],
+    "dependencies": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornIntegral_eq_weight_mul_denominatorIntegral"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornSelfEnergyCoefficient_scalar_z_balance",
+      "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornSelfEnergyCoefficient_normalized_re_atBot"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (channel : QuantumTheory.Models.MassiveDirac.BornSelfEnergyChannel) (side : QuantumTheory.Transport.SpectralSide)\n  (v m probeEnergy broadening disorderStrength hbar : ℝ),\n  v ≠ 0 →\n    probeEnergy ≠ 0 →\n      broadening ≠ 0 →\n        ↑(disorderStrength * QuantumTheory.Transport.fullAngleMomentumMeasurePrefactor hbar) *\n              QuantumTheory.Models.MassiveDirac.bornSelfEnergyChannelWeight channel side m probeEnergy broadening ≠\n            0 →\n          ¬∃ limit,\n              Filter.Tendsto\n                (fun pMax =>\n                  QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornSelfEnergyCoefficient channel side v m\n                    probeEnergy broadening disorderStrength hbar pMax)\n                Filter.atTop (nhds limit)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornSelfEnergyCoefficient_no_finite_uv_limit",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.UltravioletSelfEnergy",
+    "externalAxioms": [],
+    "docString": "At fixed nonzero normalization, no complex finite ultraviolet limit\nexists for a channel's continuum Born self-energy coefficient. The proof\nreduces a hypothetical finite complex limit to a finite limit of the\nnormalized real projection, contradicting its proved `atBot` behavior. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornSelfEnergyCoefficient_normalized_re_atBot"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (side : QuantumTheory.Transport.SpectralSide) (v m probeEnergy broadening disorderStrength hbar pMax : ℝ),\n  ↑m *\n      QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornSelfEnergyCoefficient\n        QuantumTheory.Models.MassiveDirac.BornSelfEnergyChannel.scalar side v m probeEnergy broadening disorderStrength\n        hbar pMax =\n    QuantumTheory.Transport.spectralParameter side probeEnergy broadening *\n      QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornSelfEnergyCoefficient\n        QuantumTheory.Models.MassiveDirac.BornSelfEnergyChannel.z side v m probeEnergy broadening disorderStrength hbar\n        pMax",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornSelfEnergyCoefficient_scalar_z_balance",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.UltravioletSelfEnergy",
+    "externalAxioms": [],
+    "docString": "The scalar and z components of the finite-cutoff Born self-energy\nhave exactly the same radial logarithm. Their numerators are therefore\nproportional, even before taking any ultraviolet or regulator limit. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornEffectiveEnergyMass_cutoff_invariant"
+    ],
+    "dependencies": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornSelfEnergyCoefficient_eq_denominatorIntegral"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornEffectiveEnergyMass_cutoff_invariant"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ (channel : QuantumTheory.Models.MassiveDirac.BornSelfEnergyChannel) (side : QuantumTheory.Transport.SpectralSide)\n  (v m probeEnergy broadening hbar pMax : ℝ),\n  QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornSelfEnergyCoefficient channel side v m probeEnergy\n      broadening 0 hbar pMax =\n    0",
     "standardAxioms": [
       "Classical.choice",
@@ -68215,6 +68683,8 @@
     "dependents": [
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominator_zero_disorder",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGreenOperator_zero_disorder",
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenScalarZ_zero_disorder_tendsto_atTop",
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialScalarGreenGenerator_zero_disorder_tendsto_atTop",
       "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.TMatrix.BornDysonLoop.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonPauliCoefficient_z_zero_disorder",
       "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.TMatrix.BornDysonLoop.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonScalarCoefficient_zero_disorder"
     ],
@@ -68224,10 +68694,12 @@
     "compiledConsumers": [
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominator_zero_disorder",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGreenOperator_zero_disorder",
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenScalarZ_zero_disorder_tendsto_atTop",
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialScalarGreenGenerator_zero_disorder_tendsto_atTop",
       "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.TMatrix.BornDysonLoop.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonPauliCoefficient_z_zero_disorder",
       "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.TMatrix.BornDysonLoop.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonScalarCoefficient_zero_disorder"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 6,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -71852,7 +72324,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ (v c : ℝ) (energy mass : ℂ),\n  v ≠ 0 →\n    c ≠ 0 →\n      (∀ (p : ℝ), QuantumTheory.Models.MassiveDirac.massiveDiracRadialDenominator v p energy mass ≠ 0) →\n        ∃ value,\n          Filter.Tendsto\n            (fun b =>\n              ∫ (p : ℝ) in 0..b,\n                ↑p * QuantumTheory.Transport.polarFourierZerothAngularKernel (p * c) *\n                  (QuantumTheory.Models.MassiveDirac.massiveDiracRadialDenominator v p energy mass)⁻¹)\n            Filter.atTop (nhds value)",
     "standardAxioms": [
       "Classical.choice",
@@ -71871,15 +72343,21 @@
     "docString": "The original radial Green resolvent integral from zero momentum has\na finite ultraviolet-cutoff limit at *fixed* nonvanishing complex\nspectral denominator. The compact low-momentum contribution is\nintegrable by continuity; the large-momentum tail uses the proved\n`p⁻²` remainder estimate. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialScalarGreenGenerator_zero_disorder_tendsto_atTop",
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialScalarKernel_tendsto_atTop"
+    ],
     "dependencies": [
       "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierKernel_tendsto_atTop_uv",
       "QuantumTheory.Transport.continuous_polarFourierZerothAngularKernel"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialScalarGreenGenerator_zero_disorder_tendsto_atTop",
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialScalarKernel_tendsto_atTop"
+    ],
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -75967,7 +76445,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ (v m probeEnergy regulator : ℝ),\n  v ≠ 0 →\n    probeEnergy ≠ 0 →\n      regulator ≠ 0 →\n        Filter.Tendsto\n          (fun pMax =>\n            (QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDenominatorIntegralOfRegulator v m probeEnergy\n                regulator pMax).re)\n          Filter.atTop Filter.atBot",
     "standardAxioms": [
       "Classical.choice",
@@ -75975,7 +76453,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -75986,7 +76464,9 @@
     "docString": "At fixed finite nonzero signed regulator, the exact continuum Born denominator real part has a\nlogarithmic ultraviolet divergence to `-∞`. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornSelfEnergyCoefficient_normalized_re_atBot"
+    ],
     "dependencies": [
       "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.Denominator.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDenominatorIntegralOfRegulator_re_eq",
       "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.Denominator.0.QuantumTheory.Models.MassiveDirac.pauliGreenDenominatorOfRegulator_radial_norm_eq_sqrt",
@@ -75994,8 +76474,10 @@
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornSelfEnergyCoefficient_normalized_re_atBot"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -77368,6 +77850,46 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
+    "terminal": true,
+    "statement": "∀ (side : QuantumTheory.Transport.SpectralSide) (v m probeEnergy broadening disorderStrength hbar : ℝ),\n  v ≠ 0 →\n    probeEnergy ≠ 0 →\n      broadening ≠ 0 →\n        ↑(disorderStrength * QuantumTheory.Transport.fullAngleMomentumMeasurePrefactor hbar) *\n              QuantumTheory.Models.MassiveDirac.bornSelfEnergyChannelWeight\n                QuantumTheory.Models.MassiveDirac.BornSelfEnergyChannel.scalar side m probeEnergy broadening ≠\n            0 →\n          Filter.Tendsto\n            (fun pMax =>\n              ((QuantumTheory.Transport.spectralParameter side probeEnergy broadening -\n                    QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornEffectiveEnergy side v m probeEnergy\n                      broadening disorderStrength hbar pMax) /\n                  (↑(disorderStrength * QuantumTheory.Transport.fullAngleMomentumMeasurePrefactor hbar) *\n                    QuantumTheory.Models.MassiveDirac.bornSelfEnergyChannelWeight\n                      QuantumTheory.Models.MassiveDirac.BornSelfEnergyChannel.scalar side m probeEnergy broadening)).re)\n            Filter.atTop Filter.atBot",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornEffectiveEnergy_shift_normalized_re_atBot",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.UltravioletSelfEnergy",
+    "externalAxioms": [],
+    "docString": "The scalar Born shift of the Dyson effective energy inherits the\nsame divergent normalized real projection as the physical self-energy. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornSelfEnergyCoefficient_normalized_re_atBot"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
     "terminal": false,
     "statement": "∀ (side : QuantumTheory.Transport.SpectralSide) (v m probeEnergy disorderStrength hbar pMax : ℝ),\n  v ≠ 0 →\n    |m| < probeEnergy →\n      probeEnergy ^ 2 - m ^ 2 < v ^ 2 * pMax ^ 2 →\n        Filter.Tendsto\n          (fun broadening =>\n            QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornEffectiveMass side v m probeEnergy broadening\n              disorderStrength hbar pMax)\n          (nhdsWithin 0 (Set.Ioi 0))\n          (nhds\n            (QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornEffectiveMassZeroBroadeningBoundary side v m\n              probeEnergy disorderStrength hbar pMax))",
     "standardAxioms": [
@@ -77403,6 +77925,46 @@
       "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDysonRetardedAdvancedAngularNumerator_broadening_zero"
     ],
     "compiledConsumerCount": 3,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (side : QuantumTheory.Transport.SpectralSide) (v m probeEnergy broadening disorderStrength hbar : ℝ),\n  v ≠ 0 →\n    probeEnergy ≠ 0 →\n      broadening ≠ 0 →\n        ↑(disorderStrength * QuantumTheory.Transport.fullAngleMomentumMeasurePrefactor hbar) *\n              QuantumTheory.Models.MassiveDirac.bornSelfEnergyChannelWeight\n                QuantumTheory.Models.MassiveDirac.BornSelfEnergyChannel.z side m probeEnergy broadening ≠\n            0 →\n          Filter.Tendsto\n            (fun pMax =>\n              ((QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornEffectiveMass side v m probeEnergy broadening\n                      disorderStrength hbar pMax -\n                    ↑m) /\n                  (↑(disorderStrength * QuantumTheory.Transport.fullAngleMomentumMeasurePrefactor hbar) *\n                    QuantumTheory.Models.MassiveDirac.bornSelfEnergyChannelWeight\n                      QuantumTheory.Models.MassiveDirac.BornSelfEnergyChannel.z side m probeEnergy broadening)).re)\n            Filter.atTop Filter.atBot",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornEffectiveMass_shift_normalized_re_atBot",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.UltravioletSelfEnergy",
+    "externalAxioms": [],
+    "docString": "The mass channel shifts the Dyson effective Dirac mass by the same\nultraviolet-divergent Born coefficient, with the channel factor removed. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornSelfEnergyCoefficient_normalized_re_atBot"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -77760,6 +78322,141 @@
       "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornZSelfEnergyCoefficient_im_broadening_zero"
     ],
     "compiledConsumerCount": 4,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (channel : QuantumTheory.Models.MassiveDirac.BornSelfEnergyChannel) (side : QuantumTheory.Transport.SpectralSide)\n  (v m probeEnergy broadening disorderStrength hbar : ℝ),\n  v ≠ 0 →\n    probeEnergy ≠ 0 →\n      broadening ≠ 0 →\n        ↑(disorderStrength * QuantumTheory.Transport.fullAngleMomentumMeasurePrefactor hbar) *\n              QuantumTheory.Models.MassiveDirac.bornSelfEnergyChannelWeight channel side m probeEnergy broadening ≠\n            0 →\n          Filter.Tendsto\n            (fun pMax =>\n              (QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornSelfEnergyCoefficient channel side v m\n                    probeEnergy broadening disorderStrength hbar pMax /\n                  (↑(disorderStrength * QuantumTheory.Transport.fullAngleMomentumMeasurePrefactor hbar) *\n                    QuantumTheory.Models.MassiveDirac.bornSelfEnergyChannelWeight channel side m probeEnergy\n                      broadening)).re)\n            Filter.atTop Filter.atBot",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornSelfEnergyCoefficient_normalized_re_atBot",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.UltravioletSelfEnergy",
+    "externalAxioms": [],
+    "docString": "The real part of each channel coefficient, divided by its *nonzero*\nphysical disorder/measure/numerator factor, tends to negative infinity as\nthe momentum cutoff increases. This is the sharp obstruction to taking\nan unrenormalized ultraviolet limit at fixed nonzero Born coupling. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornSelfEnergyCoefficient_no_finite_uv_limit",
+      "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornEffectiveEnergy_shift_normalized_re_atBot",
+      "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornEffectiveMass_shift_normalized_re_atBot",
+      "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornSelfEnergyCoefficient_scalar_normalized_re_atBot",
+      "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornSelfEnergyCoefficient_z_normalized_re_atBot"
+    ],
+    "dependencies": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornSelfEnergyCoefficient_eq_denominatorIntegral",
+      "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornDenominatorIntegralOfRegulator_re_atTop",
+      "QuantumTheory.Transport.SpectralSide.regulator_ne_zero"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornSelfEnergyCoefficient_no_finite_uv_limit",
+      "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornEffectiveEnergy_shift_normalized_re_atBot",
+      "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornEffectiveMass_shift_normalized_re_atBot",
+      "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornSelfEnergyCoefficient_scalar_normalized_re_atBot",
+      "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornSelfEnergyCoefficient_z_normalized_re_atBot"
+    ],
+    "compiledConsumerCount": 5,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (side : QuantumTheory.Transport.SpectralSide) (v m probeEnergy broadening disorderStrength hbar : ℝ),\n  v ≠ 0 →\n    probeEnergy ≠ 0 →\n      broadening ≠ 0 →\n        0 < disorderStrength →\n          0 < hbar →\n            Filter.Tendsto\n              (fun pMax =>\n                (QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornSelfEnergyCoefficient\n                      QuantumTheory.Models.MassiveDirac.BornSelfEnergyChannel.scalar side v m probeEnergy broadening\n                      disorderStrength hbar pMax /\n                    (↑(disorderStrength * QuantumTheory.Transport.fullAngleMomentumMeasurePrefactor hbar) *\n                      QuantumTheory.Models.MassiveDirac.bornSelfEnergyChannelWeight\n                        QuantumTheory.Models.MassiveDirac.BornSelfEnergyChannel.scalar side m probeEnergy\n                        broadening)).re)\n              Filter.atTop Filter.atBot",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornSelfEnergyCoefficient_scalar_normalized_re_atBot",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.UltravioletSelfEnergy",
+    "externalAxioms": [],
+    "docString": "In the physical regime of positive disorder strength and Planck\nconstant, the scalar Born self-energy has an ultraviolet-divergent\nnormalized real projection without any additional prefactor hypothesis.\nThe nonzero broadening guarantees its scalar spectral numerator is nonzero. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornSelfEnergyCoefficient_normalized_re_atBot",
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.UltravioletSelfEnergy.0.QuantumTheory.Models.MassiveDirac.bornSelfEnergyScalarWeight_ne_zero"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (side : QuantumTheory.Transport.SpectralSide) (v m probeEnergy broadening disorderStrength hbar : ℝ),\n  v ≠ 0 →\n    m ≠ 0 →\n      probeEnergy ≠ 0 →\n        broadening ≠ 0 →\n          0 < disorderStrength →\n            0 < hbar →\n              Filter.Tendsto\n                (fun pMax =>\n                  (QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornSelfEnergyCoefficient\n                        QuantumTheory.Models.MassiveDirac.BornSelfEnergyChannel.z side v m probeEnergy broadening\n                        disorderStrength hbar pMax /\n                      (↑(disorderStrength * QuantumTheory.Transport.fullAngleMomentumMeasurePrefactor hbar) *\n                        QuantumTheory.Models.MassiveDirac.bornSelfEnergyChannelWeight\n                          QuantumTheory.Models.MassiveDirac.BornSelfEnergyChannel.z side m probeEnergy broadening)).re)\n                Filter.atTop Filter.atBot",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornSelfEnergyCoefficient_z_normalized_re_atBot",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.UltravioletSelfEnergy",
+    "externalAxioms": [],
+    "docString": "The z-Pauli Born coefficient also has a divergent normalized real\nprojection when the bare mass is nonzero. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornSelfEnergyCoefficient_normalized_re_atBot"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -86937,10 +87634,12 @@
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornSelfEnergy_eq",
       "QuantumTheory.Models.MassiveDirac.matrixOperator_finiteCutoffContinuumBornDysonGreenLoopMatrix_zero_disorder_eq",
       "QuantumTheory.Models.MassiveDirac.star_finiteCutoffContinuumBornSelfEnergy",
+      "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornSelfEnergyCoefficient_normalized_re_atBot",
       "QuantumTheory.Models.Parabolic2DEG.greenDenominator_ne_zero",
       "QuantumTheory.Models.Parabolic2DEG.greenOperator_apply",
       "QuantumTheory.Transport.spectralResolvent_mul_spectralShift",
       "QuantumTheory.Transport.spectralShift_mul_spectralResolvent",
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.UltravioletSelfEnergy.0.QuantumTheory.Models.MassiveDirac.bornSelfEnergyScalarWeight_ne_zero",
       "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornInvertibility.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonShiftOperator_injective",
       "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.TMatrix.BornDysonLoop.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGreenLoopMatrix_zero_disorder_eq_channels"
     ],
@@ -86953,14 +87652,16 @@
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornSelfEnergy_eq",
       "QuantumTheory.Models.MassiveDirac.matrixOperator_finiteCutoffContinuumBornDysonGreenLoopMatrix_zero_disorder_eq",
       "QuantumTheory.Models.MassiveDirac.star_finiteCutoffContinuumBornSelfEnergy",
+      "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornSelfEnergyCoefficient_normalized_re_atBot",
       "QuantumTheory.Models.Parabolic2DEG.greenDenominator_ne_zero",
       "QuantumTheory.Models.Parabolic2DEG.greenOperator_apply",
       "QuantumTheory.Transport.spectralResolvent_mul_spectralShift",
       "QuantumTheory.Transport.spectralShift_mul_spectralResolvent",
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.UltravioletSelfEnergy.0.QuantumTheory.Models.MassiveDirac.bornSelfEnergyScalarWeight_ne_zero",
       "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornInvertibility.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonShiftOperator_injective",
       "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.TMatrix.BornDysonLoop.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGreenLoopMatrix_zero_disorder_eq_channels"
     ],
-    "compiledConsumerCount": 11,
+    "compiledConsumerCount": 13,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -92689,7 +93390,8 @@
       "QuantumTheory.Transport.resolvent_spectralParameterOfRegulator_mul_spectralShift",
       "QuantumTheory.Transport.spectralParameter_im",
       "QuantumTheory.Transport.spectralShift_mul_resolvent_spectralParameterOfRegulator",
-      "SecondQuantization.Fermionic.Validation.twoLevel_scalarCurrent_spectralTraceSum_one_one"
+      "SecondQuantization.Fermionic.Validation.twoLevel_scalarCurrent_spectralTraceSum_one_one",
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.UltravioletSelfEnergy.0.QuantumTheory.Models.MassiveDirac.bornSelfEnergyScalarWeight_ne_zero"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
@@ -92704,9 +93406,10 @@
       "QuantumTheory.Transport.resolvent_spectralParameterOfRegulator_mul_spectralShift",
       "QuantumTheory.Transport.spectralParameter_im",
       "QuantumTheory.Transport.spectralShift_mul_resolvent_spectralParameterOfRegulator",
-      "SecondQuantization.Fermionic.Validation.twoLevel_scalarCurrent_spectralTraceSum_one_one"
+      "SecondQuantization.Fermionic.Validation.twoLevel_scalarCurrent_spectralTraceSum_one_one",
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.UltravioletSelfEnergy.0.QuantumTheory.Models.MassiveDirac.bornSelfEnergyScalarWeight_ne_zero"
     ],
-    "compiledConsumerCount": 10,
+    "compiledConsumerCount": 11,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -166804,6 +167507,51 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.Models.MassiveDirac.star_finiteCutoffContinuumBornSelfEnergy"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (side : QuantumTheory.Transport.SpectralSide) (m probeEnergy broadening : ℝ),\n  broadening ≠ 0 →\n    QuantumTheory.Models.MassiveDirac.bornSelfEnergyChannelWeight\n        QuantumTheory.Models.MassiveDirac.BornSelfEnergyChannel.scalar side m probeEnergy broadening ≠\n      0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.UltravioletSelfEnergy.0.QuantumTheory.Models.MassiveDirac.bornSelfEnergyScalarWeight_ne_zero",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.UltravioletSelfEnergy",
+    "externalAxioms": [],
+    "docString": "The scalar Born-channel numerator cannot vanish at nonzero\nexternal broadening, for either causal spectral side. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornSelfEnergyCoefficient_scalar_normalized_re_atBot"
+    ],
+    "dependencies": [
+      "QuantumTheory.Transport.SpectralSide.regulator_ne_zero",
+      "QuantumTheory.Transport.spectralParameterOfRegulator_im"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornSelfEnergyCoefficient_scalar_normalized_re_atBot"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
