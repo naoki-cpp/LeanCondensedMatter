@@ -259,6 +259,49 @@ theorem tendsto_finiteCutoffContinuumBornSelfEnergyCoefficient_z_normalized_re_a
     .z side v m probeEnergy broadening disorderStrength hbar
     hv henergy hbroadening hfactor
 
+/-- At fixed nonzero normalization, no complex finite ultraviolet limit
+exists for a channel's continuum Born self-energy coefficient. The proof
+reduces a hypothetical finite complex limit to a finite limit of the
+normalized real projection, contradicting its proved `atBot` behavior. -/
+theorem finiteCutoffContinuumBornSelfEnergyCoefficient_no_finite_uv_limit
+    (channel : BornSelfEnergyChannel) (side : SpectralSide)
+    (v m probeEnergy broadening disorderStrength hbar : ℝ)
+    (hv : v ≠ 0) (henergy : probeEnergy ≠ 0) (hbroadening : broadening ≠ 0)
+    (hfactor :
+      ((disorderStrength * fullAngleMomentumMeasurePrefactor hbar : ℝ) : ℂ) *
+        bornSelfEnergyChannelWeight channel side m probeEnergy broadening ≠ 0) :
+    ¬ ∃ limit : ℂ, Tendsto
+      (fun pMax : ℝ =>
+        finiteCutoffContinuumBornSelfEnergyCoefficient channel side
+          v m probeEnergy broadening disorderStrength hbar pMax)
+      atTop (nhds limit) := by
+  let factor : ℂ :=
+    ((disorderStrength * fullAngleMomentumMeasurePrefactor hbar : ℝ) : ℂ) *
+      bornSelfEnergyChannelWeight channel side m probeEnergy broadening
+  let sigma : ℝ → ℂ := fun pMax =>
+    finiteCutoffContinuumBornSelfEnergyCoefficient channel side
+      v m probeEnergy broadening disorderStrength hbar pMax
+  have hdiv : Tendsto
+      (fun pMax : ℝ => (sigma pMax / factor).re) atTop atBot :=
+    tendsto_finiteCutoffContinuumBornSelfEnergyCoefficient_normalized_re_atBot
+      channel side v m probeEnergy broadening disorderStrength hbar
+      hv henergy hbroadening hfactor
+  rintro ⟨limit, hlimit⟩
+  have hfinite : Tendsto
+      (fun pMax : ℝ => (sigma pMax / factor).re)
+      atTop (nhds (limit / factor).re) := by
+    exact (Complex.continuous_re.tendsto (limit / factor)).comp
+      (hlimit.div_const factor)
+  let a : ℝ := (limit / factor).re
+  have hupper : ∀ᶠ pMax in atTop,
+      (sigma pMax / factor).re ≤ a - 2 :=
+    hdiv.eventually (Filter.eventually_le_atBot (a - 2))
+  have hlower : ∀ᶠ pMax in atTop,
+      a - 1 < (sigma pMax / factor).re :=
+    hfinite.eventually (Ioi_mem_nhds (by linarith : a - 1 < a))
+  obtain ⟨pMax, hpUpper, hpLower⟩ := (hupper.and hlower).exists
+  linarith
+
 end
 
 end QuantumTheory.Models.MassiveDirac
