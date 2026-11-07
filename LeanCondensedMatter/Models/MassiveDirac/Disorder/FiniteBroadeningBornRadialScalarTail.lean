@@ -300,6 +300,64 @@ theorem finiteCutoffContinuumBornDysonRadialScalarKernel_tendsto_atTop
         side v m probeEnergy broadening disorderStrength hbar pMax)
       hv hc hden)
 
+
+/-- On the clean (`disorderStrength = 0`) slice, the *actual* finite-cutoff
+radial scalar Green generator converges when its Born and outer momentum
+cutoffs increase together. This is a diagonal cutoff limit, unlike the
+frozen-self-energy statement above: the dependence on `pMax` disappears
+because the Born self-energy vanishes identically.
+
+The conclusion is for nonzero real-space Fourier scale `radius / hbar`
+and nonzero external broadening. It makes no claim for finite disorder. -/
+theorem finiteCutoffContinuumBornDysonRadialScalarGreenGenerator_zero_disorder_tendsto_atTop
+    (side : SpectralSide)
+    (v m probeEnergy broadening hbar radius : ℝ)
+    (hv : v ≠ 0) (hhbar : hbar ≠ 0) (hradius : radius ≠ 0)
+    (hbroadening : broadening ≠ 0) :
+    ∃ value : ℂ, Filter.Tendsto
+      (fun pMax : ℝ => finiteCutoffContinuumBornDysonRadialScalarGreenGenerator
+        side v m probeEnergy broadening 0 hbar pMax radius)
+      Filter.atTop (nhds value) := by
+  have hden (p : ℝ) :
+      massiveDiracRadialDenominator v p
+        (spectralParameter side probeEnergy broadening) (m : ℂ) ≠ 0 := by
+    have hphysical := finiteCutoffContinuumBornDysonDenominator_ne_zero
+      side v m p 0 probeEnergy broadening 0 hbar 0
+      hbroadening (le_refl (0 : ℝ)) (le_refl (0 : ℝ))
+    rw [finiteCutoffContinuumBornDysonDenominator_eq_radial] at hphysical
+    simpa [finiteCutoffContinuumBornEffectiveEnergy,
+      finiteCutoffContinuumBornEffectiveMass] using hphysical
+  obtain ⟨limit, hlimit⟩ :=
+    massiveDiracRadialFourierKernel_tendsto_atTop v (radius / hbar)
+      (spectralParameter side probeEnergy broadening) (m : ℂ)
+      hv (div_ne_zero hradius hhbar) hden
+  have heq (pMax : ℝ) :
+      finiteCutoffContinuumBornDysonRadialScalarGreenGenerator
+        side v m probeEnergy broadening 0 hbar pMax radius =
+      (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
+        ∫ p in (0 : ℝ)..pMax,
+          (p : ℂ) * polarFourierZerothAngularKernel (p * (radius / hbar)) *
+            (massiveDiracRadialDenominator v p
+              (spectralParameter side probeEnergy broadening) (m : ℂ))⁻¹ := by
+    unfold finiteCutoffContinuumBornDysonRadialScalarGreenGenerator
+    congr 1
+    apply intervalIntegral.integral_congr
+    intro p _
+    rw [finiteCutoffContinuumBornDysonDenominator_eq_radial]
+    simp only [finiteCutoffContinuumBornEffectiveEnergy,
+      finiteCutoffContinuumBornEffectiveMass,
+      finiteCutoffContinuumBornSelfEnergyCoefficient_zero_disorder,
+      sub_zero, add_zero]
+    rw [show p * radius / hbar = p * (radius / hbar) by ring]
+    ring
+  have hconstant : Filter.Tendsto
+      (fun _ : ℝ => (((momentumMeasurePrefactor hbar : ℝ) : ℂ)))
+      Filter.atTop (nhds (((momentumMeasurePrefactor hbar : ℝ) : ℂ))) :=
+    tendsto_const_nhds
+  refine ⟨(((momentumMeasurePrefactor hbar : ℝ) : ℂ)) * limit, ?_⟩
+  exact (hconstant.mul hlimit).congr'
+    (Filter.Eventually.of_forall fun pMax => (heq pMax).symm)
+
 end
 
 end QuantumTheory.Models.MassiveDirac
