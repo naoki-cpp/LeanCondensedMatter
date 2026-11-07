@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.Denominator
+import LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornPropagator
 import Mathlib.Tactic.FieldSimp
 import Mathlib.Tactic.Ring
 
@@ -87,6 +88,61 @@ theorem tendsto_finiteCutoffContinuumBornSelfEnergyCoefficient_normalized_re_atB
   funext pMax
   rw [hident]
   rfl
+
+/-- The scalar Born shift of the Dyson effective energy inherits the
+same divergent normalized real projection as the physical self-energy. -/
+theorem tendsto_finiteCutoffContinuumBornEffectiveEnergy_shift_normalized_re_atBot
+    (side : SpectralSide)
+    (v m probeEnergy broadening disorderStrength hbar : ℝ)
+    (hv : v ≠ 0) (henergy : probeEnergy ≠ 0) (hbroadening : broadening ≠ 0)
+    (hfactor :
+      ((disorderStrength * fullAngleMomentumMeasurePrefactor hbar : ℝ) : ℂ) *
+        bornSelfEnergyChannelWeight .scalar side m probeEnergy broadening ≠ 0) :
+    Tendsto
+      (fun pMax : ℝ =>
+        ((spectralParameter side probeEnergy broadening -
+          finiteCutoffContinuumBornEffectiveEnergy side
+            v m probeEnergy broadening disorderStrength hbar pMax) /
+          (((disorderStrength * fullAngleMomentumMeasurePrefactor hbar : ℝ) : ℂ) *
+            bornSelfEnergyChannelWeight .scalar side m probeEnergy broadening)).re)
+      atTop atBot := by
+  have h :=
+    tendsto_finiteCutoffContinuumBornSelfEnergyCoefficient_normalized_re_atBot
+      .scalar side v m probeEnergy broadening disorderStrength hbar
+      hv henergy hbroadening hfactor
+  convert h using 1
+  funext pMax
+  congr 1
+  congr 1
+  unfold finiteCutoffContinuumBornEffectiveEnergy
+  ring
+
+/-- The mass channel shifts the Dyson effective Dirac mass by the same
+ultraviolet-divergent Born coefficient, with the channel factor removed. -/
+theorem tendsto_finiteCutoffContinuumBornEffectiveMass_shift_normalized_re_atBot
+    (side : SpectralSide)
+    (v m probeEnergy broadening disorderStrength hbar : ℝ)
+    (hv : v ≠ 0) (henergy : probeEnergy ≠ 0) (hbroadening : broadening ≠ 0)
+    (hfactor :
+      ((disorderStrength * fullAngleMomentumMeasurePrefactor hbar : ℝ) : ℂ) *
+        bornSelfEnergyChannelWeight .z side m probeEnergy broadening ≠ 0) :
+    Tendsto
+      (fun pMax : ℝ =>
+        ((finiteCutoffContinuumBornEffectiveMass side
+            v m probeEnergy broadening disorderStrength hbar pMax - (m : ℂ)) /
+          (((disorderStrength * fullAngleMomentumMeasurePrefactor hbar : ℝ) : ℂ) *
+            bornSelfEnergyChannelWeight .z side m probeEnergy broadening)).re)
+      atTop atBot := by
+  have h :=
+    tendsto_finiteCutoffContinuumBornSelfEnergyCoefficient_normalized_re_atBot
+      .z side v m probeEnergy broadening disorderStrength hbar
+      hv henergy hbroadening hfactor
+  convert h using 1
+  funext pMax
+  congr 1
+  congr 1
+  unfold finiteCutoffContinuumBornEffectiveMass
+  ring
 
 end
 
