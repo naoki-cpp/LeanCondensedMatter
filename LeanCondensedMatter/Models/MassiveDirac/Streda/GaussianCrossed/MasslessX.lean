@@ -87,7 +87,7 @@ even when the physical Gaussian disorder correlator is positive. -/
   dsimp only [finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient] at hy hz
   dsimp only
   simp only [finiteCutoffContinuumBornEffectiveMass_zero_mass,
-    zero_mul, mul_zero, sub_self, sub_zero, add_zero]
+    zero_mul, mul_zero, sub_self, add_zero]
   rw [hy, hz]
   ring
 
