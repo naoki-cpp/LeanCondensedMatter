@@ -118,7 +118,7 @@ theorem massiveDiracRadialFourierUVValue_neg
 
 /-- The center-indexed canonical UV Green function is even for every
 complex spectral center away from the real axis. -/
-private theorem complex_sqrt_sq_spectral_center (z : ℂ) :
+theorem complex_sqrt_sq_spectral_center (z : ℂ) :
     (Complex.sqrt z) ^ 2 = z := by
   simpa [Complex.sqrt] using (Complex.cpow_ofNat_inv_pow z 2)
 
