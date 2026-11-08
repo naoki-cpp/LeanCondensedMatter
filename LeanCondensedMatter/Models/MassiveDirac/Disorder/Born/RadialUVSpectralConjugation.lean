@@ -103,7 +103,7 @@ theorem massiveDiracRadialFourierUVValue_conj
             (massiveDiracRadialDenominator v p (conj energy) (conj mass))⁻¹ :=
     integral_massiveDiracRadialFourier_conj v c b energy mass
   exact tendsto_nhds_unique
-    (hconj.congr' (Filter.Eventually.of_forall fun b => (hpoint b).symm))
+    (hconj.congr' (Filter.Eventually.of_forall hpoint))
     hadv
 
 /-- The center-only canonical function has the natural conjugation
@@ -119,8 +119,11 @@ theorem massiveDiracRadialFourierUVCenter_conj
   have hconjEq :
       (conj energy) ^ 2 - (conj (0 : ℂ)) ^ 2 = conj center := by
     simpa only [map_sub, map_pow] using (congrArg conj hcenterEq)
+  have hnonreal : (energy ^ 2 - (0 : ℂ) ^ 2).im ≠ 0 := by
+    rw [hcenterEq]
+    exact hcenter
   have h := massiveDiracRadialFourierUVValue_conj
-    v c energy 0 hv hc (by simpa [hcenterEq] using hcenter)
+    v c energy 0 hv hc hnonreal
   rw [massiveDiracRadialFourierUVValue_eq_center,
     massiveDiracRadialFourierUVValue_eq_center, hcenterEq, hconjEq] at h
   exact h
