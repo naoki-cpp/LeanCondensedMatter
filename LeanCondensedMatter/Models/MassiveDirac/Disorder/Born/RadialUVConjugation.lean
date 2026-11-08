@@ -101,7 +101,7 @@ theorem massiveDiracRadialFourierUVValue_conj
             (conj energy) (conj mass))⁻¹ :=
     massiveDiracRadialFourierInterval_conj v c b energy mass
   have hconj' := hconj.congr'
-    (Filter.Eventually.of_forall fun b => (heq b).symm)
+    (Filter.Eventually.of_forall fun b => heq b)
   exact tendsto_nhds_unique hconj' hadv
 
 /-- The canonical Bessel-J spectral-center UV value has the correct
