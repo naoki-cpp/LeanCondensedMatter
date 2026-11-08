@@ -57637,6 +57637,46 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
+    "terminal": true,
+    "statement": "∀ (Y0 Y1 : ℝ → ℂ),\n  QuantumTheory.Transport.CrossedXBesselWronskian Y0 Y1 →\n    ∀ (e hbar m probeEnergy : ℝ),\n      Filter.Tendsto\n        (fun R =>\n          ↑Real.pi *\n              ↑(4 * e ^ 2 / QuantumTheory.planckConstantFromReduced hbar *\n                  (probeEnergy * m * (probeEnergy ^ 2 - m ^ 2) / (probeEnergy ^ 2 + 3 * m ^ 2) ^ 2)) *\n            ∫ (r : ℝ) in 0..R, Complex.besselJ 1 ↑r ^ 2 * (Complex.besselJ 1 ↑r * Y0 r - Complex.besselJ 0 ↑r * Y1 r))\n        Filter.atTop\n        (nhds\n          ↑(4 * e ^ 2 / QuantumTheory.planckConstantFromReduced hbar *\n              (probeEnergy * m * (probeEnergy ^ 2 - m ^ 2) / (probeEnergy ^ 2 + 3 * m ^ 2) ^ 2)))",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.MassiveDirac.adoCrossedXBesselReference_tendsto_benchmark",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Conductivity.Hall.GaussianCrossedBenchmark",
+    "externalAxioms": [],
+    "docString": "The **reference Bessel integral** underlying Ado et al. Eq. (16a)\nreproduces the closed crossed-X benchmark Eq. (17).\n\nThis consumes the formally proved J₁²/r moment and requires only the\n*explicit* first/second-kind Bessel Wronskian relation. It does **not**\nassert that the model's cutoff-dependent Born-Dyson crossed-X integral\nhas this Bessel representation, or justify its regulator limits. Those\nphysical bridge theorems remain the outstanding Phase 7 obligations. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.Transport.tendsto_integral_crossedXBesselIntegrand_one_div_pi"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
     "terminal": false,
     "statement": "∀ (e hbar m probeEnergy : ℝ),\n  probeEnergy ≠ 0 →\n    e ^ 2 / QuantumTheory.planckConstantFromReduced hbar *\n        (m * (probeEnergy ^ 2 - m ^ 2) * (5 * probeEnergy ^ 2 + 3 * m ^ 2) /\n          (2 * probeEnergy * (probeEnergy ^ 2 + 3 * m ^ 2) ^ 2)) =\n      -(e ^ 2 / QuantumTheory.planckConstantFromReduced hbar) *\n          (3 * m * (probeEnergy ^ 2 - m ^ 2) ^ 2 / (2 * probeEnergy * (probeEnergy ^ 2 + 3 * m ^ 2) ^ 2)) +\n        4 * e ^ 2 / QuantumTheory.planckConstantFromReduced hbar *\n          (probeEnergy * m * (probeEnergy ^ 2 - m ^ 2) / (probeEnergy ^ 2 + 3 * m ^ 2) ^ 2)",
     "standardAxioms": [
@@ -62731,6 +62771,7 @@
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedOrderedXYConductivity_psi_eq_real_minor_radial_integral",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedOrderedXYConductivity_psi_eq_transverse_radial_integral",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedOrderedXYConductivity_x_eq_explicit_k0_k1_k2_moments_integral",
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedOrderedXYConductivity_x_eq_generator_radial_integral",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedOrderedXYConductivity_x_eq_transverse_radial_integral"
     ],
     "dependencies": [
@@ -62743,9 +62784,10 @@
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedOrderedXYConductivity_psi_eq_real_minor_radial_integral",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedOrderedXYConductivity_psi_eq_transverse_radial_integral",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedOrderedXYConductivity_x_eq_explicit_k0_k1_k2_moments_integral",
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedOrderedXYConductivity_x_eq_generator_radial_integral",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedOrderedXYConductivity_x_eq_transverse_radial_integral"
     ],
-    "compiledConsumerCount": 5,
+    "compiledConsumerCount": 6,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -62963,6 +63005,94 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
+    "terminal": false,
+    "statement": "∀ (e v m probeEnergy broadening disorderStrength hbar pMax rMax : ℝ),\n  hbar ≠ 0 →\n    broadening ≠ 0 →\n      0 ≤ disorderStrength →\n        0 ≤ pMax →\n          QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedOrderedXYConductivity\n              QuantumTheory.Models.MassiveDirac.GaussianCrossedDiagram.x e v m probeEnergy broadening disorderStrength\n              hbar pMax rMax =\n            ↑(QuantumTheory.Transport.bastinStredaTraceConductivityPrefactor hbar * (e * v) ^ 2) *\n                  ↑(disorderStrength ^ 2) *\n                ↑(2 * Real.pi) *\n              ∫ (radius : ℝ) in 0..rMax,\n                ↑radius *\n                  QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedXGeneratorRadialAmplitude\n                    v m probeEnergy broadening disorderStrength hbar pMax radius",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedOrderedXYConductivity_x_eq_generator_radial_integral",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Conductivity.Hall.GaussianCrossed",
+    "externalAxioms": [],
+    "docString": "The physically normalized finite-regulator X conductivity, after\neliminating all three retarded/advanced Green Pauli minors in favor of\nthe **two common scalar Green generators and their first derivatives**.\nThis keeps the crossed-current Pauli channels, both Born impurity\ncorrelators, the real-space Jacobian, and exactly the original\ntrace-only Bastin/current normalization.\n\nThis is an exact finite-momentum/finite-radius/finite-broadening\nevaluation *boundary*. The final radial integral is not evaluated here. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedOrderedXYConductivity_x_eq_retardedGenerator_radial_integral",
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedOrderedXYConductivity_x_zero_mass"
+    ],
+    "dependencies": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedOrderedXYConductivity_eq_radial_antisymmetric_trace",
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_x_antisymmetric_eq_generator_amplitude"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedOrderedXYConductivity_x_eq_retardedGenerator_radial_integral",
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedOrderedXYConductivity_x_zero_mass"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (e v m probeEnergy broadening disorderStrength hbar pMax rMax : ℝ),\n  hbar ≠ 0 →\n    broadening ≠ 0 →\n      0 ≤ disorderStrength →\n        0 ≤ pMax →\n          QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedOrderedXYConductivity\n              QuantumTheory.Models.MassiveDirac.GaussianCrossedDiagram.x e v m probeEnergy broadening disorderStrength\n              hbar pMax rMax =\n            ↑(QuantumTheory.Transport.bastinStredaTraceConductivityPrefactor hbar * (e * v) ^ 2) *\n                  ↑(disorderStrength ^ 2) *\n                ↑(2 * Real.pi) *\n              ∫ (radius : ℝ) in 0..rMax,\n                ↑radius *\n                  QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedXRetardedGeneratorRadialAmplitude\n                    v m probeEnergy broadening disorderStrength hbar pMax radius",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedOrderedXYConductivity_x_eq_retardedGenerator_radial_integral",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Conductivity.Hall.GaussianCrossed",
+    "externalAxioms": [],
+    "docString": "The complete, physically normalized finite-regulator X Hall\nconductivity is a radial integral depending on **one causal scalar\nBorn-Dyson Fourier generator and its real-space derivative**, together\nwith the explicitly retained effective spectral centers and crossed\ncurrent blocks. The advanced generator is its complex conjugate.\n\nThis is the precise real-space boundary immediately preceding any\nHankel/Bessel representation; neither the UV limit nor the radial\nintegral is evaluated. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedOrderedXYConductivity_x_eq_generator_radial_integral",
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedXGeneratorRadialAmplitude_eq_retarded"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
     "terminal": true,
     "statement": "∀ (e v m probeEnergy broadening disorderStrength hbar pMax rMax : ℝ),\n  broadening ≠ 0 →\n    0 ≤ disorderStrength →\n      0 ≤ pMax →\n        QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedOrderedXYConductivity\n            QuantumTheory.Models.MassiveDirac.GaussianCrossedDiagram.x e v m probeEnergy broadening disorderStrength\n            hbar pMax rMax =\n          ↑(QuantumTheory.Transport.bastinStredaTraceConductivityPrefactor hbar * (e * v) ^ 2) *\n                ↑(disorderStrength ^ 2) *\n              ↑(2 * Real.pi) *\n            ∫ (radius : ℝ) in 0..rMax,\n              ↑radius *\n                have Jx :=\n                  QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock\n                    0 v m probeEnergy broadening disorderStrength hbar pMax radius;\n                have Jy :=\n                  QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock\n                    1 v m probeEnergy broadening disorderStrength hbar pMax radius;\n                have GR :=\n                  QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix\n                    QuantumTheory.Transport.SpectralSide.retarded v m probeEnergy broadening disorderStrength hbar pMax\n                    (-radius);\n                have GA :=\n                  QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix\n                    QuantumTheory.Transport.SpectralSide.advanced v m probeEnergy broadening disorderStrength hbar pMax\n                    (-radius);\n                have a := InternalSpace.pauliScalarCoefficient Jx;\n                have b := InternalSpace.pauliScalarCoefficient GR;\n                have c := InternalSpace.pauliScalarCoefficient Jy;\n                have d := InternalSpace.pauliScalarCoefficient GA;\n                have u := InternalSpace.pauliVectorCoefficient Jx;\n                have vr := InternalSpace.pauliVectorCoefficient GR;\n                have w := InternalSpace.pauliVectorCoefficient Jy;\n                have va := InternalSpace.pauliVectorCoefficient GA;\n                2 * Complex.I *\n                  ((a * w InternalSpace.PauliAxis.y - c * u InternalSpace.PauliAxis.y) *\n                        (vr InternalSpace.PauliAxis.x * va InternalSpace.PauliAxis.z -\n                          vr InternalSpace.PauliAxis.z * va InternalSpace.PauliAxis.x) +\n                      (b * va InternalSpace.PauliAxis.z - d * vr InternalSpace.PauliAxis.z) *\n                        (w InternalSpace.PauliAxis.y * u InternalSpace.PauliAxis.x + u InternalSpace.PauliAxis.y ^ 2) +\n                    (d * vr InternalSpace.PauliAxis.x - b * va InternalSpace.PauliAxis.x) *\n                      (w InternalSpace.PauliAxis.y * u InternalSpace.PauliAxis.z -\n                        u InternalSpace.PauliAxis.y * w InternalSpace.PauliAxis.z))",
     "standardAxioms": [
@@ -62986,6 +63116,47 @@
     "dependencies": [
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedOrderedXYConductivity_eq_radial_antisymmetric_trace",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_x_antisymmetric_eq_transverse_minors"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (e v probeEnergy broadening disorderStrength hbar pMax rMax : ℝ),\n  hbar ≠ 0 →\n    broadening ≠ 0 →\n      0 ≤ disorderStrength →\n        0 ≤ pMax →\n          QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedOrderedXYConductivity\n              QuantumTheory.Models.MassiveDirac.GaussianCrossedDiagram.x e v 0 probeEnergy broadening disorderStrength\n              hbar pMax rMax =\n            0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedOrderedXYConductivity_x_zero_mass",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Conductivity.Hall.GaussianCrossed",
+    "externalAxioms": [],
+    "docString": "At *any finite regulator* the physically normalized Gaussian crossed\nX Hall conductivity vanishes at zero Dirac mass, even for positive Born\nscalar disorder strength. The proof uses the actual Born-Dyson effective\nmass and two current-Pauli zero-mass selection rules, rather than the\nweak-disorder closed Ado benchmark.\n\nThis exact massless statement is not an evaluation of the massive-metal\nX integral or its ultraviolet/broadening limits. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedOrderedXYConductivity_x_eq_generator_radial_integral",
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedXGeneratorRadialAmplitude_zero_mass"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -63398,6 +63569,7 @@
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient_y_zero_eq_neg_x_one",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrent_first_harmonic_channels",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrent_origin_scalar_and_z_eq_zero",
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrent_yz_zero_mass",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_psi_eq_harmonic_components",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_x_eq_harmonic_components",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_psi_antisymmetric_eq_explicit_k0_k1_k2_moments",
@@ -63416,12 +63588,13 @@
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient_y_zero_eq_neg_x_one",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrent_first_harmonic_channels",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrent_origin_scalar_and_z_eq_zero",
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrent_yz_zero_mass",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_psi_eq_harmonic_components",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_x_eq_harmonic_components",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_psi_antisymmetric_eq_explicit_k0_k1_k2_moments",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_x_antisymmetric_eq_explicit_k0_k1_k2_moments"
     ],
-    "compiledConsumerCount": 8,
+    "compiledConsumerCount": 9,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -63704,6 +63877,94 @@
   },
   {
     "terminal": false,
+    "statement": "∀ (v probeEnergy broadening disorderStrength hbar pMax radius p : ℝ),\n  QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliKernel\n      InternalSpace.PauliAxis.y 0 v 0 probeEnergy broadening disorderStrength hbar pMax radius p =\n    0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliKernel_y_zero_mass",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.MasslessX",
+    "externalAxioms": [],
+    "docString": "The source-x current's transverse Pauli-y radial kernel vanishes at\nzero mass. Its numerator contains a z-Pauli Green coefficient. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrent_yz_zero_mass"
+    ],
+    "dependencies": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonPauliCoefficient_z_zero_mass"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrent_yz_zero_mass"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (v probeEnergy broadening disorderStrength hbar pMax radius p : ℝ),\n  QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliKernel\n      InternalSpace.PauliAxis.z 0 v 0 probeEnergy broadening disorderStrength hbar pMax radius p =\n    0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliKernel_z_zero_mass",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.MasslessX",
+    "externalAxioms": [],
+    "docString": "The source-x current's z-Pauli radial kernel likewise vanishes at\nzero Dirac mass. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrent_yz_zero_mass"
+    ],
+    "dependencies": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonPauliCoefficient_z_zero_mass"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrent_yz_zero_mass"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ (source : Fin 2) (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ),\n  broadening ≠ 0 →\n    0 ≤ disorderStrength →\n      0 ≤ pMax →\n        QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentScalarCoefficient\n            source v m probeEnergy broadening disorderStrength hbar pMax radius =\n          ↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n            ∫ (p : ℝ) in 0..pMax,\n              QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentScalarKernel\n                source v m probeEnergy broadening disorderStrength hbar pMax radius p",
     "standardAxioms": [
       "Classical.choice",
@@ -63879,6 +64140,52 @@
       "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.ExplicitMoments.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_x_antisymmetric_eq_first_harmonic_minor"
     ],
     "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (v probeEnergy broadening disorderStrength hbar pMax radius : ℝ),\n  broadening ≠ 0 →\n    0 ≤ disorderStrength →\n      0 ≤ pMax →\n        QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient\n              InternalSpace.PauliAxis.y 0 v 0 probeEnergy broadening disorderStrength hbar pMax radius =\n            0 ∧\n          QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient\n              InternalSpace.PauliAxis.z 0 v 0 probeEnergy broadening disorderStrength hbar pMax radius =\n            0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrent_yz_zero_mass",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.MasslessX",
+    "externalAxioms": [],
+    "docString": "The two vanishing pointwise current kernels also vanish *after* the\nfull finite radial momentum integration. This uses finite-broadening\ncontinuity rather than exchanging any cutoff limit with integration. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedXGeneratorRadialAmplitude_zero_mass"
+    ],
+    "dependencies": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient_eq_radialKernel_integral",
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliKernel_y_zero_mass",
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliKernel_z_zero_mass"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedXGeneratorRadialAmplitude_zero_mass"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -64692,6 +64999,51 @@
   },
   {
     "terminal": false,
+    "statement": "∀ (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ),\n  hbar ≠ 0 →\n    broadening ≠ 0 →\n      0 ≤ disorderStrength →\n        0 ≤ pMax →\n          QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor\n                QuantumTheory.Models.MassiveDirac.GaussianCrossedDiagram.x v m probeEnergy broadening disorderStrength\n                hbar pMax radius 0 1 -\n              QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor\n                QuantumTheory.Models.MassiveDirac.GaussianCrossedDiagram.x v m probeEnergy broadening disorderStrength\n                hbar pMax radius 1 0 =\n            2 *\n              QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedXGeneratorRadialAmplitude v\n                m probeEnergy broadening disorderStrength hbar pMax radius",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_x_antisymmetric_eq_generator_amplitude",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.GreenGeneratorMinors",
+    "externalAxioms": [],
+    "docString": "Finite-regulator X radial antisymmetric source trace in terms of\ntwo scalar Green generators and their derivatives, with all current\nPauli coefficients unchanged. The equality is *pointwise in radius*\nand precedes the real-space integration. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedOrderedXYConductivity_x_eq_generator_radial_integral"
+    ],
+    "dependencies": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_x_antisymmetric_eq_transverse_minors",
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedXGreenMinors_eq_generators"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedOrderedXYConductivity_x_eq_generator_radial_integral"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ),\n  broadening ≠ 0 →\n    0 ≤ disorderStrength →\n      0 ≤ pMax →\n        have Jx :=\n          QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock 0 v\n            m probeEnergy broadening disorderStrength hbar pMax radius;\n        have Jy :=\n          QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock 1 v\n            m probeEnergy broadening disorderStrength hbar pMax radius;\n        have GR :=\n          QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix\n            QuantumTheory.Transport.SpectralSide.retarded v m probeEnergy broadening disorderStrength hbar pMax\n            (-radius);\n        have GA :=\n          QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix\n            QuantumTheory.Transport.SpectralSide.advanced v m probeEnergy broadening disorderStrength hbar pMax\n            (-radius);\n        have a := InternalSpace.pauliScalarCoefficient Jx;\n        have b := InternalSpace.pauliScalarCoefficient GR;\n        have c := InternalSpace.pauliScalarCoefficient Jy;\n        have d := InternalSpace.pauliScalarCoefficient GA;\n        have u := InternalSpace.pauliVectorCoefficient Jx;\n        have vr := InternalSpace.pauliVectorCoefficient GR;\n        have w := InternalSpace.pauliVectorCoefficient Jy;\n        have va := InternalSpace.pauliVectorCoefficient GA;\n        QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor\n              QuantumTheory.Models.MassiveDirac.GaussianCrossedDiagram.x v m probeEnergy broadening disorderStrength\n              hbar pMax radius 0 1 -\n            QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor\n              QuantumTheory.Models.MassiveDirac.GaussianCrossedDiagram.x v m probeEnergy broadening disorderStrength\n              hbar pMax radius 1 0 =\n          4 * Complex.I *\n            ((a * w InternalSpace.PauliAxis.y - c * u InternalSpace.PauliAxis.y) *\n                  (vr InternalSpace.PauliAxis.x * va InternalSpace.PauliAxis.z -\n                    vr InternalSpace.PauliAxis.z * va InternalSpace.PauliAxis.x) +\n                (b * va InternalSpace.PauliAxis.z - d * vr InternalSpace.PauliAxis.z) *\n                  (w InternalSpace.PauliAxis.y * u InternalSpace.PauliAxis.x + u InternalSpace.PauliAxis.y ^ 2) +\n              (d * vr InternalSpace.PauliAxis.x - b * va InternalSpace.PauliAxis.x) *\n                (w InternalSpace.PauliAxis.y * u InternalSpace.PauliAxis.z -\n                  u InternalSpace.PauliAxis.y * w InternalSpace.PauliAxis.z))",
     "standardAxioms": [
       "Classical.choice",
@@ -64712,6 +65064,7 @@
     "directWrapperOf": null,
     "dependents": [
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedOrderedXYConductivity_x_eq_transverse_radial_integral",
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_x_antisymmetric_eq_generator_amplitude",
       "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.ExplicitMoments.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_x_antisymmetric_eq_diagonal_harmonic_squares"
     ],
     "dependencies": [
@@ -64724,9 +65077,10 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedOrderedXYConductivity_x_eq_transverse_radial_integral",
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_x_antisymmetric_eq_generator_amplitude",
       "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.ExplicitMoments.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_x_antisymmetric_eq_diagonal_harmonic_squares"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -65240,6 +65594,142 @@
   },
   {
     "terminal": false,
+    "statement": "∀ (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ),\n  broadening ≠ 0 →\n    QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedXGeneratorRadialAmplitude v m\n        probeEnergy broadening disorderStrength hbar pMax radius =\n      QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedXRetardedGeneratorRadialAmplitude v\n        m probeEnergy broadening disorderStrength hbar pMax radius",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedXGeneratorRadialAmplitude_eq_retarded",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.GreenGeneratorMinors",
+    "externalAxioms": [],
+    "docString": "Exact equality of the X generator amplitude and the\nsingle-causal-branch expression. The reduction relies only on the\nphysical finite-cutoff denominator's retarded/advanced adjointness. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedOrderedXYConductivity_x_eq_retardedGenerator_radial_integral"
+    ],
+    "dependencies": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialScalarGreenGenerator_conj",
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialScalarGreenGenerator_deriv_conj"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedOrderedXYConductivity_x_eq_retardedGenerator_radial_integral"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (v probeEnergy broadening disorderStrength hbar pMax radius : ℝ),\n  broadening ≠ 0 →\n    0 ≤ disorderStrength →\n      0 ≤ pMax →\n        QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedXGeneratorRadialAmplitude v 0\n            probeEnergy broadening disorderStrength hbar pMax radius =\n          0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedXGeneratorRadialAmplitude_zero_mass",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.MasslessX",
+    "externalAxioms": [],
+    "docString": "All three minors in the generator-factored finite-radius X amplitude\nvanish at zero Dirac mass. In particular the massless X kernel is zero\neven when the physical Gaussian disorder correlator is positive. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedOrderedXYConductivity_x_zero_mass"
+    ],
+    "dependencies": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrent_yz_zero_mass",
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornEffectiveMass_zero_mass"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedOrderedXYConductivity_x_zero_mass"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ),\n  hbar ≠ 0 →\n    broadening ≠ 0 →\n      0 ≤ disorderStrength →\n        0 ≤ pMax →\n          have eR :=\n            QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornEffectiveEnergy\n              QuantumTheory.Transport.SpectralSide.retarded v m probeEnergy broadening disorderStrength hbar pMax;\n          have eA :=\n            QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornEffectiveEnergy\n              QuantumTheory.Transport.SpectralSide.advanced v m probeEnergy broadening disorderStrength hbar pMax;\n          have mR :=\n            QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornEffectiveMass\n              QuantumTheory.Transport.SpectralSide.retarded v m probeEnergy broadening disorderStrength hbar pMax;\n          have mA :=\n            QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornEffectiveMass\n              QuantumTheory.Transport.SpectralSide.advanced v m probeEnergy broadening disorderStrength hbar pMax;\n          have fR :=\n            QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialScalarGreenGenerator\n              QuantumTheory.Transport.SpectralSide.retarded v m probeEnergy broadening disorderStrength hbar pMax\n              radius;\n          have fA :=\n            QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialScalarGreenGenerator\n              QuantumTheory.Transport.SpectralSide.advanced v m probeEnergy broadening disorderStrength hbar pMax\n              radius;\n          have dfR :=\n            deriv\n              (fun r =>\n                QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialScalarGreenGenerator\n                  QuantumTheory.Transport.SpectralSide.retarded v m probeEnergy broadening disorderStrength hbar pMax r)\n              radius;\n          have dfA :=\n            deriv\n              (fun r =>\n                QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialScalarGreenGenerator\n                  QuantumTheory.Transport.SpectralSide.advanced v m probeEnergy broadening disorderStrength hbar pMax r)\n              radius;\n          have sR :=\n            QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenScalarCoefficient\n              QuantumTheory.Transport.SpectralSide.retarded v m probeEnergy broadening disorderStrength hbar pMax\n              radius;\n          have sA :=\n            QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenScalarCoefficient\n              QuantumTheory.Transport.SpectralSide.advanced v m probeEnergy broadening disorderStrength hbar pMax\n              radius;\n          have zR :=\n            QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient\n              InternalSpace.PauliAxis.z QuantumTheory.Transport.SpectralSide.retarded v m probeEnergy broadening\n              disorderStrength hbar pMax radius;\n          have zA :=\n            QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient\n              InternalSpace.PauliAxis.z QuantumTheory.Transport.SpectralSide.advanced v m probeEnergy broadening\n              disorderStrength hbar pMax radius;\n          have xR :=\n            QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient\n              InternalSpace.PauliAxis.x QuantumTheory.Transport.SpectralSide.retarded v m probeEnergy broadening\n              disorderStrength hbar pMax radius;\n          have xA :=\n            QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient\n              InternalSpace.PauliAxis.x QuantumTheory.Transport.SpectralSide.advanced v m probeEnergy broadening\n              disorderStrength hbar pMax radius;\n          sR * zA - sA * zR = (eR * mA - eA * mR) * fR * fA ∧\n            xR * zA - zR * xA = -Complex.I * ↑(hbar * v) * (mA * dfR * fA - mR * fR * dfA) ∧\n              sA * xR - sR * xA = -Complex.I * ↑(hbar * v) * (eA * fA * dfR - eR * fR * dfA)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedXGreenMinors_eq_generators",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.GreenGeneratorMinors",
+    "externalAxioms": [],
+    "docString": "The three retarded/advanced Green Pauli minors appearing in the finite-radius\nX topology all depend on only two scalar Fourier generators and their radial\nderivatives.\n\nThe first line eliminates four separate K0 Green moments in favor of\n`(E_R M_A - E_A M_R) F_R F_A`. The other two lines isolate precisely the\ntwo first-order radial derivative structures required to integrate the\nX trace. The third minor has the A-scalar/R-x ordering of the physical\nX Hall integrand, not the opposite sign.\n\nAt fixed nonzero `ℏ`, broadening, and nonnegative disorder/cutoff\nthese are algebraic consequences of the actual Born-Dyson propagator. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_x_antisymmetric_eq_generator_amplitude"
+    ],
+    "dependencies": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient_x_eq_deriv_generator",
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient_z_eq_generator",
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenScalarCoefficient_eq_generator"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_x_antisymmetric_eq_generator_amplitude"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ (side : QuantumTheory.Transport.SpectralSide) (v m probeEnergy broadening disorderStrength hbar pMax : ℝ)\n  (i j : Fin 2),\n  QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGreenLoopMatrix side v m probeEnergy broadening\n      disorderStrength hbar pMax i j =\n    ↑(QuantumTheory.Transport.momentumMeasurePrefactor hbar) *\n      ∫ (p : ℝ) in 0..pMax,\n        QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenEntryKernel side v m probeEnergy\n          broadening disorderStrength hbar pMax 0 p i j",
     "standardAxioms": [
       "Classical.choice",
@@ -65636,6 +66126,52 @@
   },
   {
     "terminal": false,
+    "statement": "∀ (side : QuantumTheory.Transport.SpectralSide) (v px py probeEnergy broadening disorderStrength hbar pMax : ℝ),\n  QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonPauliCoefficient InternalSpace.PauliAxis.z side v 0 px\n      py probeEnergy broadening disorderStrength hbar pMax =\n    0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonPauliCoefficient_z_zero_mass",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.MasslessX",
+    "externalAxioms": [],
+    "docString": "A finite-cutoff massless Dirac propagator has no z-Pauli component\nfor either causal side, even with scalar Born self-energy. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliKernel_y_zero_mass",
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliKernel_z_zero_mass"
+    ],
+    "dependencies": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornEffectiveMass_zero_mass"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliKernel_y_zero_mass",
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliKernel_z_zero_mass"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ (side : QuantumTheory.Transport.SpectralSide) (v m probeEnergy broadening disorderStrength hbar pMax radius p : ℝ),\n  (InternalSpace.pauliScalarCoefficient fun i j =>\n      QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenEntryKernel side v m probeEnergy\n        broadening disorderStrength hbar pMax radius p i j) =\n    QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenScalarKernel side v m probeEnergy\n      broadening disorderStrength hbar pMax radius p",
     "standardAxioms": [
       "Classical.choice",
@@ -65788,7 +66324,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -65800,6 +66336,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedXGreenMinors_eq_generators",
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenPauli_x_conj_eq_neg_advanced",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix_eq_scalarGenerator"
     ],
     "dependencies": [
@@ -65809,9 +66347,11 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedXGreenMinors_eq_generators",
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenPauli_x_conj_eq_neg_advanced",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix_eq_scalarGenerator"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -65944,6 +66484,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedXGreenMinors_eq_generators",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenScalarZ_zero_disorder_tendsto_atTop",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix_eq_scalarGenerator"
     ],
@@ -65954,10 +66495,52 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedXGreenMinors_eq_generators",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenScalarZ_zero_disorder_tendsto_atTop",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix_eq_scalarGenerator"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 3,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ),\n  hbar ≠ 0 →\n    broadening ≠ 0 →\n      0 ≤ disorderStrength →\n        0 ≤ pMax →\n          (starRingEnd ℂ)\n              (QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient\n                InternalSpace.PauliAxis.x QuantumTheory.Transport.SpectralSide.retarded v m probeEnergy broadening\n                disorderStrength hbar pMax radius) =\n            -QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient\n                InternalSpace.PauliAxis.x QuantumTheory.Transport.SpectralSide.advanced v m probeEnergy broadening\n                disorderStrength hbar pMax radius",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenPauli_x_conj_eq_neg_advanced",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornRadialConjugation",
+    "externalAxioms": [],
+    "docString": "The radial Pauli-x retarded/advanced Green components are\n**anti**-conjugates at the *same signed real-space radius*.\nThe minus sign is the parity of the first Fourier harmonic.\nThis is an exact physical Born-Dyson identity at finite regulator. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient_x_eq_deriv_generator",
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialScalarGreenGenerator_deriv_conj"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -65991,6 +66574,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedXGreenMinors_eq_generators",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenScalarZ_zero_disorder_tendsto_atTop",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix_eq_scalarGenerator"
     ],
@@ -66001,10 +66585,11 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedXGreenMinors_eq_generators",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenScalarZ_zero_disorder_tendsto_atTop",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix_eq_scalarGenerator"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -66344,6 +66929,99 @@
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_psi_antisymmetric_eq_transverse_minors"
     ],
     "compiledConsumerCount": 5,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ),\n  broadening ≠ 0 →\n    (starRingEnd ℂ)\n        (QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialScalarGreenGenerator\n          QuantumTheory.Transport.SpectralSide.retarded v m probeEnergy broadening disorderStrength hbar pMax radius) =\n      QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialScalarGreenGenerator\n        QuantumTheory.Transport.SpectralSide.advanced v m probeEnergy broadening disorderStrength hbar pMax radius",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialScalarGreenGenerator_conj",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornRadialConjugation",
+    "externalAxioms": [],
+    "docString": "Advanced scalar Green Fourier generator is exactly the complex conjugate\nof its retarded partner at every finite cutoff. In particular this statement\nincludes the momentum measure and the cutoff-dependent self-energy at the\n*same* cutoff, rather than freezing spectral parameters. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedXGeneratorRadialAmplitude_eq_retarded",
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialScalarGreenGenerator_deriv_conj"
+    ],
+    "dependencies": [
+      "QuantumTheory.Models.MassiveDirac.star_finiteCutoffContinuumBornDysonDenominator",
+      "QuantumTheory.Transport.polarFourierZerothAngularKernel_conj"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedXGeneratorRadialAmplitude_eq_retarded",
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialScalarGreenGenerator_deriv_conj"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ),\n  broadening ≠ 0 →\n    deriv\n        (fun r =>\n          QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialScalarGreenGenerator\n            QuantumTheory.Transport.SpectralSide.advanced v m probeEnergy broadening disorderStrength hbar pMax r)\n        radius =\n      (starRingEnd ℂ)\n        (deriv\n          (fun r =>\n            QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialScalarGreenGenerator\n              QuantumTheory.Transport.SpectralSide.retarded v m probeEnergy broadening disorderStrength hbar pMax r)\n          radius)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialScalarGreenGenerator_deriv_conj",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornRadialConjugation",
+    "externalAxioms": [],
+    "docString": "The advanced and retarded scalar radial derivatives are also conjugate.\nThe domain variable is real, so conjugation is a linear operation over the\ndomain field: this is *not* complex differentiation of a nonholomorphic\nconjugate function. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedXGeneratorRadialAmplitude_eq_retarded",
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenPauli_x_conj_eq_neg_advanced"
+    ],
+    "dependencies": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialScalarGreenGenerator_conj"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedXGeneratorRadialAmplitude_eq_retarded",
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenPauli_x_conj_eq_neg_advanced"
+    ],
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -68303,6 +68981,52 @@
   },
   {
     "terminal": false,
+    "statement": "∀ (side : QuantumTheory.Transport.SpectralSide) (v probeEnergy broadening disorderStrength hbar pMax : ℝ),\n  QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornEffectiveMass side v 0 probeEnergy broadening\n      disorderStrength hbar pMax =\n    0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornEffectiveMass_zero_mass",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.UltravioletSelfEnergy",
+    "externalAxioms": [],
+    "docString": "Consequently no `σ_z` mass is generated by scalar Born disorder in the\nmassless sector, at any finite cutoff. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedXGeneratorRadialAmplitude_zero_mass",
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonPauliCoefficient_z_zero_mass"
+    ],
+    "dependencies": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornSelfEnergyCoefficient_z_zero_mass"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedXGeneratorRadialAmplitude_zero_mass",
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonPauliCoefficient_z_zero_mass"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
     "statement": "∀ (v m probeEnergy regulator pMax : ℝ),\n  regulator ≠ 0 →\n    QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornGreenIntegralOfRegulator v m probeEnergy regulator pMax =\n      QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornIntegralOfRegulator\n            QuantumTheory.Models.MassiveDirac.BornSelfEnergyChannel.scalar v m probeEnergy regulator pMax •\n          1 +\n        QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornIntegralOfRegulator\n            QuantumTheory.Models.MassiveDirac.BornSelfEnergyChannel.z v m probeEnergy regulator pMax •\n          QuantumTheory.Models.MassiveDirac.matrixOperator QuantumTheory.Models.MassiveDirac.sigmaZ",
     "standardAxioms": [
       "Classical.choice",
@@ -68552,6 +69276,7 @@
     "directWrapperOf": null,
     "dependents": [
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornSelfEnergyCoefficient_scalar_z_balance",
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornSelfEnergyCoefficient_z_zero_mass",
       "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornSelfEnergyCoefficient_normalized_re_atBot"
     ],
     "dependencies": [
@@ -68561,9 +69286,10 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornSelfEnergyCoefficient_scalar_z_balance",
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornSelfEnergyCoefficient_z_zero_mass",
       "QuantumTheory.Models.MassiveDirac.tendsto_finiteCutoffContinuumBornSelfEnergyCoefficient_normalized_re_atBot"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -68646,6 +69372,50 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornEffectiveEnergyMass_cutoff_invariant"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (side : QuantumTheory.Transport.SpectralSide) (v probeEnergy broadening disorderStrength hbar pMax : ℝ),\n  QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornSelfEnergyCoefficient\n      QuantumTheory.Models.MassiveDirac.BornSelfEnergyChannel.z side v 0 probeEnergy broadening disorderStrength hbar\n      pMax =\n    0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": true,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornSelfEnergyCoefficient_z_zero_mass",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.UltravioletSelfEnergy",
+    "externalAxioms": [],
+    "docString": "In the massless Dirac model the Born z-Pauli self-energy is identically\nzero at every finite momentum cutoff and for either causal spectral side.\nThis follows from the *actual physical Born integral*, not from a\nweak-disorder or zero-broadening approximation. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornEffectiveMass_zero_mass"
+    ],
+    "dependencies": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornSelfEnergyCoefficient_eq_denominatorIntegral"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornEffectiveMass_zero_mass"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -75138,6 +75908,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialScalarGreenGenerator_conj",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadial_center_gap_ne_zero_of_re_pos",
       "QuantumTheory.Models.MassiveDirac.star_finiteCutoffContinuumBornDysonGreenOperator"
     ],
@@ -75148,10 +75919,11 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialScalarGreenGenerator_conj",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadial_center_gap_ne_zero_of_re_pos",
       "QuantumTheory.Models.MassiveDirac.star_finiteCutoffContinuumBornDysonGreenOperator"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -88976,7 +89748,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ (z : ℝ), Complex.besselJ 1 ↑z ^ 2 / ↑z = Complex.besselJ 1 ↑z * (Complex.besselJ 0 ↑z + Complex.besselJ 2 ↑z) / 2",
     "standardAxioms": [
       "Classical.choice",
@@ -88984,7 +89756,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -88995,14 +89767,63 @@
     "docString": "The Bessel recurrence eliminates the apparent singularity of J₁(z)²/z\nat the origin, with the convention that division by zero is zero. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "QuantumTheory.Transport.integral_besselJ_one_sq_div"
+    ],
     "dependencies": [
       "_private.LeanCondensedMatter.Transport.Analysis.PolarFourier.0.QuantumTheory.Transport.besselJ_zero_one_two_recurrence"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.integral_besselJ_one_sq_div"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "Filter.Tendsto (fun r => Complex.besselJ 0 ↑r ^ 2 + Complex.besselJ 1 ↑r ^ 2) Filter.atTop (nhds 0)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.besselJ_zero_sq_add_one_sq_tendsto_zero",
+    "module": "LeanCondensedMatter.Transport.Analysis.BesselRadialMoments",
+    "externalAxioms": [],
+    "docString": "The squared sum of the canonical integer-order Bessel functions decays\nat infinity, following from the proved Fourier--Bessel identities and\nthe Lyapunov bound. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.tendsto_integral_besselJ_one_sq_div"
+    ],
+    "dependencies": [
+      "QuantumTheory.Transport.polarFourierHarmonicEnergy_tendsto_zero",
+      "_private.LeanCondensedMatter.Transport.Analysis.BesselRadialMoments.0.QuantumTheory.Transport.polarFourierHarmonicEnergy_eq_besselJ"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.tendsto_integral_besselJ_one_sq_div"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -89441,6 +90262,48 @@
     "completedMention": false,
     "compiledConsumers": [
       "_private.LeanCondensedMatter.Transport.Streda.OperatorKernel.0.QuantumTheory.Transport.continuous_retardedAdvancedResolvents_energy"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (Y0 Y1 : ℝ → ℂ),\n  QuantumTheory.Transport.CrossedXBesselWronskian Y0 Y1 →\n    ∀ (r : ℝ),\n      Complex.besselJ 1 ↑r ^ 2 * (Complex.besselJ 1 ↑r * Y0 r - Complex.besselJ 0 ↑r * Y1 r) =\n        ↑(2 / Real.pi) * (Complex.besselJ 1 ↑r ^ 2 / ↑r)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.crossedXBesselIntegrand_eq_one_sq_div",
+    "module": "LeanCondensedMatter.Transport.Analysis.BesselCrossedXMoment",
+    "externalAxioms": [],
+    "docString": "Exact Wronskian reduction of the X radial integrand, including the\norigin via the continuous J₁²/r extension. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.integral_crossedXBesselIntegrand_eq_endpoints"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.integral_crossedXBesselIntegrand_eq_endpoints"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -90395,6 +91258,59 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
+    "terminal": false,
+    "statement": "∀ (a b : ℝ),\n  ∫ (z : ℝ) in a..b, Complex.besselJ 1 ↑z ^ 2 / ↑z =\n    (Complex.besselJ 0 ↑a ^ 2 + Complex.besselJ 1 ↑a ^ 2 - (Complex.besselJ 0 ↑b ^ 2 + Complex.besselJ 1 ↑b ^ 2)) / 2",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.integral_besselJ_one_sq_div",
+    "module": "LeanCondensedMatter.Transport.Analysis.BesselRadialMoments",
+    "externalAxioms": [],
+    "docString": "Exact finite-interval evaluation of the Bessel-square radial integral.\nThe formula holds for arbitrary real endpoints because J₁(0) = 0 gives the\ncontinuous extension of the quotient at the origin. In particular, no\nunproved Bessel asymptotic or improper-integral limit is used. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.integral_crossedXBesselIntegrand_eq_endpoints",
+      "QuantumTheory.Transport.tendsto_integral_besselJ_one_sq_div",
+      "QuantumTheory.Transport.tendsto_integral_crossedXBesselIntegrand"
+    ],
+    "dependencies": [
+      "QuantumTheory.Transport.besselJ_one_sq_div_eq_half_product",
+      "QuantumTheory.Transport.integral_polarFourierHarmonicEnergy",
+      "QuantumTheory.Transport.polarFourierFirstCosineAngularKernel_eq_besselJ",
+      "QuantumTheory.Transport.polarFourierSecondCosineAngularKernel_eq_besselJ",
+      "QuantumTheory.Transport.polarFourierZerothAngularKernel_eq_besselJ",
+      "_private.LeanCondensedMatter.Transport.Analysis.BesselRadialMoments.0.QuantumTheory.Transport.polarFourierHarmonicEnergy_eq_besselJ"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.integral_crossedXBesselIntegrand_eq_endpoints",
+      "QuantumTheory.Transport.tendsto_integral_besselJ_one_sq_div",
+      "QuantumTheory.Transport.tendsto_integral_crossedXBesselIntegrand"
+    ],
+    "compiledConsumerCount": 3,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
     "terminal": true,
     "statement": "∀ (cCos cSin : ℂ), ∫ (θ : ℝ) in 0..2 * Real.pi, ↑(Real.cos θ) * cCos + ↑(Real.sin θ) * cSin = 0",
     "standardAxioms": [
@@ -90466,6 +91382,51 @@
       "QuantumTheory.Transport.integral_quadratic_cos_zero_two_pi"
     ],
     "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (Y0 Y1 : ℝ → ℂ),\n  QuantumTheory.Transport.CrossedXBesselWronskian Y0 Y1 →\n    ∀ (R : ℝ),\n      ∫ (r : ℝ) in 0..R, Complex.besselJ 1 ↑r ^ 2 * (Complex.besselJ 1 ↑r * Y0 r - Complex.besselJ 0 ↑r * Y1 r) =\n        ↑(2 / Real.pi) * ((1 - (Complex.besselJ 0 ↑R ^ 2 + Complex.besselJ 1 ↑R ^ 2)) / 2)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.integral_crossedXBesselIntegrand_eq_endpoints",
+    "module": "LeanCondensedMatter.Transport.Analysis.BesselCrossedXMoment",
+    "externalAxioms": [],
+    "docString": "The finite-radius Gaussian crossed X Bessel integral is an explicit\nendpoint expression, under only the standard Wronskian condition.\nThe Y functions never need values or continuity at r=0. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.tendsto_integral_crossedXBesselIntegrand"
+    ],
+    "dependencies": [
+      "QuantumTheory.Transport.crossedXBesselIntegrand_eq_one_sq_div",
+      "QuantumTheory.Transport.integral_besselJ_one_sq_div"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.tendsto_integral_crossedXBesselIntegrand"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -90597,6 +91558,53 @@
     "completedMention": false,
     "compiledConsumers": [
       "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.RadialTrace.0.QuantumTheory.Models.MassiveDirac.gaussianCrossedRadialFirstHarmonicIntegral_eq_difference"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (a b : ℝ),\n  ∫ (z : ℝ) in a..b,\n      Complex.I * QuantumTheory.Transport.polarFourierFirstCosineAngularKernel z *\n        (QuantumTheory.Transport.polarFourierZerothAngularKernel z -\n          QuantumTheory.Transport.polarFourierSecondCosineAngularKernel z) =\n    QuantumTheory.Transport.polarFourierZerothAngularKernel b ^ 2 -\n        QuantumTheory.Transport.polarFourierFirstCosineAngularKernel b ^ 2 -\n      (QuantumTheory.Transport.polarFourierZerothAngularKernel a ^ 2 -\n        QuantumTheory.Transport.polarFourierFirstCosineAngularKernel a ^ 2)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.integral_polarFourierHarmonicEnergy",
+    "module": "LeanCondensedMatter.Transport.Analysis.BesselRadialMoments",
+    "externalAxioms": [],
+    "docString": "The first-harmonic radial product has an exact finite-interval primitive.\nThis is the finite-radius endpoint identity needed before an improper\nBessel-square integral and its regulator limits can be established. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.integral_besselJ_one_sq_div"
+    ],
+    "dependencies": [
+      "QuantumTheory.Transport.polarFourierFirstCosineAngularKernel_hasDerivAt",
+      "QuantumTheory.Transport.polarFourierHarmonicEnergy_hasDerivAt",
+      "QuantumTheory.Transport.polarFourierSecondCosineAngularKernel_eq_besselJ",
+      "QuantumTheory.Transport.polarFourierZerothAngularKernel_hasDerivAt"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.integral_besselJ_one_sq_div"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -91401,15 +92409,15 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ (z : ℝ),\n  (starRingEnd ℂ) (QuantumTheory.Transport.polarFourierFirstCosineAngularKernel z) =\n    -QuantumTheory.Transport.polarFourierFirstCosineAngularKernel z",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
     "simpLemma": true,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -91420,7 +92428,9 @@
     "docString": "The first cosine angular Fourier kernel is purely imaginary for real radial arguments. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "_private.LeanCondensedMatter.Transport.Analysis.BesselRadialMoments.0.QuantumTheory.Transport.polarFourierFirstCosineAngularKernel_eq_I_ofReal_im"
+    ],
     "dependencies": [
       "QuantumTheory.Transport.polarFourierFirstCosineAngularKernel_neg",
       "_private.LeanCondensedMatter.Transport.Analysis.PolarFourier.0.QuantumTheory.Transport.integral_polarFourier_conj",
@@ -91428,8 +92438,10 @@
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.Transport.Analysis.BesselRadialMoments.0.QuantumTheory.Transport.polarFourierFirstCosineAngularKernel_eq_I_ofReal_im"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -91463,8 +92475,10 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "QuantumTheory.Transport.integral_besselJ_one_sq_div",
       "QuantumTheory.Transport.polarFourierFirstCosineAngularKernel_neg",
-      "QuantumTheory.Transport.polarFourierSecondCosineAngularKernel_eq_besselJ"
+      "QuantumTheory.Transport.polarFourierSecondCosineAngularKernel_eq_besselJ",
+      "_private.LeanCondensedMatter.Transport.Analysis.BesselRadialMoments.0.QuantumTheory.Transport.polarFourierHarmonicEnergy_eq_besselJ"
     ],
     "dependencies": [
       "QuantumTheory.Transport.polarFourierZerothAngularKernel_eq_besselJ",
@@ -91474,10 +92488,12 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "QuantumTheory.Transport.integral_besselJ_one_sq_div",
       "QuantumTheory.Transport.polarFourierFirstCosineAngularKernel_neg",
-      "QuantumTheory.Transport.polarFourierSecondCosineAngularKernel_eq_besselJ"
+      "QuantumTheory.Transport.polarFourierSecondCosineAngularKernel_eq_besselJ",
+      "_private.LeanCondensedMatter.Transport.Analysis.BesselRadialMoments.0.QuantumTheory.Transport.polarFourierHarmonicEnergy_eq_besselJ"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -91512,9 +92528,11 @@
     "directWrapperOf": null,
     "dependents": [
       "QuantumTheory.Transport.hasDerivAt_integral_polarFourierZerothAngularKernel",
+      "QuantumTheory.Transport.integral_polarFourierHarmonicEnergy",
       "QuantumTheory.Transport.polarFourierFirstCosineAngularKernel_mul_argument_hasDerivAt",
       "QuantumTheory.Transport.polarFourierFirstCosineAngularKernel_radialPrimitive_hasDerivAt",
-      "QuantumTheory.Transport.polarFourierHarmonicEnergy_hasDerivAt"
+      "QuantumTheory.Transport.polarFourierHarmonicEnergy_hasDerivAt",
+      "_private.LeanCondensedMatter.Transport.Analysis.BesselRadialMoments.0.QuantumTheory.Transport.polarFourierBesselY_hasDerivAt"
     ],
     "dependencies": [
       "_private.LeanCondensedMatter.Transport.Analysis.PolarFourier.0.QuantumTheory.Transport.norm_polarFourierRadialPhase"
@@ -91523,11 +92541,13 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.Transport.hasDerivAt_integral_polarFourierZerothAngularKernel",
+      "QuantumTheory.Transport.integral_polarFourierHarmonicEnergy",
       "QuantumTheory.Transport.polarFourierFirstCosineAngularKernel_mul_argument_hasDerivAt",
       "QuantumTheory.Transport.polarFourierFirstCosineAngularKernel_radialPrimitive_hasDerivAt",
-      "QuantumTheory.Transport.polarFourierHarmonicEnergy_hasDerivAt"
+      "QuantumTheory.Transport.polarFourierHarmonicEnergy_hasDerivAt",
+      "_private.LeanCondensedMatter.Transport.Analysis.BesselRadialMoments.0.QuantumTheory.Transport.polarFourierBesselY_hasDerivAt"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 6,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -91744,7 +92764,8 @@
       "QuantumTheory.Transport.integral_polarFourierFirstCosineAngularKernel_two_mul_eq_zeroth_sub_second",
       "QuantumTheory.Transport.polarFourierFirstCosineAngularKernel_mul_argument_hasDerivAt",
       "QuantumTheory.Transport.polarFourierFirstCosineAngularKernel_radialPrimitive_hasDerivAt",
-      "QuantumTheory.Transport.polarFourierSecondCosineAngularKernel_eq_besselJ"
+      "QuantumTheory.Transport.polarFourierSecondCosineAngularKernel_eq_besselJ",
+      "_private.LeanCondensedMatter.Transport.Analysis.BesselRadialMoments.0.QuantumTheory.Transport.polarFourierBesselY_hasDerivAt"
     ],
     "dependencies": [
       "_private.LeanCondensedMatter.Transport.Analysis.PolarFourier.0.QuantumTheory.Transport.polarFourierRadialPhase_hasDerivAt"
@@ -91755,9 +92776,10 @@
       "QuantumTheory.Transport.integral_polarFourierFirstCosineAngularKernel_two_mul_eq_zeroth_sub_second",
       "QuantumTheory.Transport.polarFourierFirstCosineAngularKernel_mul_argument_hasDerivAt",
       "QuantumTheory.Transport.polarFourierFirstCosineAngularKernel_radialPrimitive_hasDerivAt",
-      "QuantumTheory.Transport.polarFourierSecondCosineAngularKernel_eq_besselJ"
+      "QuantumTheory.Transport.polarFourierSecondCosineAngularKernel_eq_besselJ",
+      "_private.LeanCondensedMatter.Transport.Analysis.BesselRadialMoments.0.QuantumTheory.Transport.polarFourierBesselY_hasDerivAt"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 5,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -91815,7 +92837,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ (z : ℝ),\n  HasDerivAt\n    (fun t =>\n      QuantumTheory.Transport.polarFourierZerothAngularKernel t ^ 2 -\n        QuantumTheory.Transport.polarFourierFirstCosineAngularKernel t ^ 2)\n    (Complex.I * QuantumTheory.Transport.polarFourierFirstCosineAngularKernel z *\n      (QuantumTheory.Transport.polarFourierZerothAngularKernel z -\n        QuantumTheory.Transport.polarFourierSecondCosineAngularKernel z))\n    z",
     "standardAxioms": [
       "Classical.choice",
@@ -91823,7 +92845,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -91834,15 +92856,65 @@
     "docString": "A finite-radius conservation-law primitive for the first two radial Fourier\nharmonics. Its derivative involves the same K0-minus-K2 channel that occurs in\nthe Gaussian-crossed current moments; the identity is valid including z = 0. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "QuantumTheory.Transport.integral_polarFourierHarmonicEnergy"
+    ],
     "dependencies": [
       "QuantumTheory.Transport.polarFourierFirstCosineAngularKernel_hasDerivAt",
       "QuantumTheory.Transport.polarFourierZerothAngularKernel_hasDerivAt"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.integral_polarFourierHarmonicEnergy"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "Filter.Tendsto\n  (fun r =>\n    QuantumTheory.Transport.polarFourierZerothAngularKernel r ^ 2 -\n      QuantumTheory.Transport.polarFourierFirstCosineAngularKernel r ^ 2)\n  Filter.atTop (nhds 0)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.polarFourierHarmonicEnergy_tendsto_zero",
+    "module": "LeanCondensedMatter.Transport.Analysis.BesselRadialMoments",
+    "externalAxioms": [],
+    "docString": "The squared Fourier harmonics have a vanishing limit at large positive\nradius. This is a consequence of the explicit radial ODE energy bound, not a\npostulated Bessel-function asymptotic. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.besselJ_zero_sq_add_one_sq_tendsto_zero"
+    ],
+    "dependencies": [
+      "_private.LeanCondensedMatter.Transport.Analysis.BesselRadialMoments.0.QuantumTheory.Transport.polarFourierBesselEnergy_tendsto_zero",
+      "_private.LeanCondensedMatter.Transport.Analysis.BesselRadialMoments.0.QuantumTheory.Transport.polarFourierFirstCosineAngularKernel_eq_I_ofReal_im",
+      "_private.LeanCondensedMatter.Transport.Analysis.BesselRadialMoments.0.QuantumTheory.Transport.polarFourierZerothAngularKernel_eq_ofReal_re"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.besselJ_zero_sq_add_one_sq_tendsto_zero"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -91919,6 +92991,8 @@
     "directWrapperOf": null,
     "dependents": [
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient_diagonal_spectral_difference",
+      "QuantumTheory.Transport.integral_besselJ_one_sq_div",
+      "QuantumTheory.Transport.integral_polarFourierHarmonicEnergy",
       "QuantumTheory.Transport.polarFourierSecondCosineAngularKernel_neg"
     ],
     "dependencies": [
@@ -91932,9 +93006,11 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient_diagonal_spectral_difference",
+      "QuantumTheory.Transport.integral_besselJ_one_sq_div",
+      "QuantumTheory.Transport.integral_polarFourierHarmonicEnergy",
       "QuantumTheory.Transport.polarFourierSecondCosineAngularKernel_neg"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 4,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -92040,7 +93116,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ (z : ℝ),\n  (starRingEnd ℂ) (QuantumTheory.Transport.polarFourierZerothAngularKernel z) =\n    QuantumTheory.Transport.polarFourierZerothAngularKernel z",
     "standardAxioms": [
       "Classical.choice",
@@ -92059,7 +93135,10 @@
     "docString": "The zeroth angular Fourier kernel is real for real radial arguments. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialScalarGreenGenerator_conj",
+      "_private.LeanCondensedMatter.Transport.Analysis.BesselRadialMoments.0.QuantumTheory.Transport.polarFourierZerothAngularKernel_eq_ofReal_re"
+    ],
     "dependencies": [
       "QuantumTheory.Transport.polarFourierZerothAngularKernel_neg",
       "_private.LeanCondensedMatter.Transport.Analysis.PolarFourier.0.QuantumTheory.Transport.integral_polarFourier_conj",
@@ -92067,8 +93146,11 @@
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialScalarGreenGenerator_conj",
+      "_private.LeanCondensedMatter.Transport.Analysis.BesselRadialMoments.0.QuantumTheory.Transport.polarFourierZerothAngularKernel_eq_ofReal_re"
+    ],
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -92103,9 +93185,11 @@
     "directWrapperOf": null,
     "dependents": [
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient_diagonal_spectral_difference",
+      "QuantumTheory.Transport.integral_besselJ_one_sq_div",
       "QuantumTheory.Transport.polarFourierFirstCosineAngularKernel_eq_besselJ",
       "QuantumTheory.Transport.polarFourierSecondCosineAngularKernel_eq_besselJ",
-      "QuantumTheory.Transport.polarFourierZerothAngularKernel_neg"
+      "QuantumTheory.Transport.polarFourierZerothAngularKernel_neg",
+      "_private.LeanCondensedMatter.Transport.Analysis.BesselRadialMoments.0.QuantumTheory.Transport.polarFourierHarmonicEnergy_eq_besselJ"
     ],
     "dependencies": [
       "QuantumTheory.Transport.polarFourierBesselJZero_eq_tsum",
@@ -92118,11 +93202,13 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient_diagonal_spectral_difference",
+      "QuantumTheory.Transport.integral_besselJ_one_sq_div",
       "QuantumTheory.Transport.polarFourierFirstCosineAngularKernel_eq_besselJ",
       "QuantumTheory.Transport.polarFourierSecondCosineAngularKernel_eq_besselJ",
-      "QuantumTheory.Transport.polarFourierZerothAngularKernel_neg"
+      "QuantumTheory.Transport.polarFourierZerothAngularKernel_neg",
+      "_private.LeanCondensedMatter.Transport.Analysis.BesselRadialMoments.0.QuantumTheory.Transport.polarFourierHarmonicEnergy_eq_besselJ"
     ],
-    "compiledConsumerCount": 4,
+    "compiledConsumerCount": 6,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -92243,8 +93329,10 @@
     "directWrapperOf": null,
     "dependents": [
       "QuantumTheory.Transport.hasDerivAt_integral_polarFourierZerothAngularKernel",
+      "QuantumTheory.Transport.integral_polarFourierHarmonicEnergy",
       "QuantumTheory.Transport.polarFourierFirstCosineAngularKernel_eq_besselJ",
-      "QuantumTheory.Transport.polarFourierHarmonicEnergy_hasDerivAt"
+      "QuantumTheory.Transport.polarFourierHarmonicEnergy_hasDerivAt",
+      "_private.LeanCondensedMatter.Transport.Analysis.BesselRadialMoments.0.QuantumTheory.Transport.polarFourierBesselX_hasDerivAt"
     ],
     "dependencies": [
       "_private.LeanCondensedMatter.Transport.Analysis.PolarFourier.0.QuantumTheory.Transport.norm_polarFourierRadialPhase"
@@ -92253,10 +93341,12 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.Transport.hasDerivAt_integral_polarFourierZerothAngularKernel",
+      "QuantumTheory.Transport.integral_polarFourierHarmonicEnergy",
       "QuantumTheory.Transport.polarFourierFirstCosineAngularKernel_eq_besselJ",
-      "QuantumTheory.Transport.polarFourierHarmonicEnergy_hasDerivAt"
+      "QuantumTheory.Transport.polarFourierHarmonicEnergy_hasDerivAt",
+      "_private.LeanCondensedMatter.Transport.Analysis.BesselRadialMoments.0.QuantumTheory.Transport.polarFourierBesselX_hasDerivAt"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 5,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -94159,6 +95249,141 @@
       "QuantumTheory.Models.MassiveDirac.targetCenteredInterbandSpectatorCurrentFactor_radial_eq"
     ],
     "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "Filter.Tendsto (fun R => ∫ (r : ℝ) in 0..R, Complex.besselJ 1 ↑r ^ 2 / ↑r) Filter.atTop (nhds (1 / 2))",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.tendsto_integral_besselJ_one_sq_div",
+    "module": "LeanCondensedMatter.Transport.Analysis.BesselRadialMoments",
+    "externalAxioms": [],
+    "docString": "The large-cutoff limit of the finite-interval first-order Bessel radial\nmoment is exactly one half. The result is stated as a limit of finite\ninterval integrals, without conflating it with an unproved Bochner\nintegrability statement on an infinite set. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.tendsto_integral_crossedXBesselIntegrand"
+    ],
+    "dependencies": [
+      "QuantumTheory.Transport.besselJ_zero_sq_add_one_sq_tendsto_zero",
+      "QuantumTheory.Transport.integral_besselJ_one_sq_div"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.tendsto_integral_crossedXBesselIntegrand"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (Y0 Y1 : ℝ → ℂ),\n  QuantumTheory.Transport.CrossedXBesselWronskian Y0 Y1 →\n    Filter.Tendsto\n      (fun R =>\n        ∫ (r : ℝ) in 0..R, Complex.besselJ 1 ↑r ^ 2 * (Complex.besselJ 1 ↑r * Y0 r - Complex.besselJ 0 ↑r * Y1 r))\n      Filter.atTop (nhds (↑(2 / Real.pi) * (1 / 2)))",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.tendsto_integral_crossedXBesselIntegrand",
+    "module": "LeanCondensedMatter.Transport.Analysis.BesselCrossedXMoment",
+    "externalAxioms": [],
+    "docString": "The entire Wronskian-reduced Bessel part of the Ado X diagram is\nevaluated: the radial-cutoff limit is exactly 1/π.\n\nThis theorem does not identify the physical finite-Born X diagram with\nthe Bessel integrand; in particular no ultraviolet, zero-broadening,\nweak-disorder or real-space Fourier limit is smuggled into the statement. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.tendsto_integral_crossedXBesselIntegrand_one_div_pi"
+    ],
+    "dependencies": [
+      "QuantumTheory.Transport.integral_besselJ_one_sq_div",
+      "QuantumTheory.Transport.integral_crossedXBesselIntegrand_eq_endpoints",
+      "QuantumTheory.Transport.tendsto_integral_besselJ_one_sq_div"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.tendsto_integral_crossedXBesselIntegrand_one_div_pi"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (Y0 Y1 : ℝ → ℂ),\n  QuantumTheory.Transport.CrossedXBesselWronskian Y0 Y1 →\n    Filter.Tendsto\n      (fun R =>\n        ∫ (r : ℝ) in 0..R, Complex.besselJ 1 ↑r ^ 2 * (Complex.besselJ 1 ↑r * Y0 r - Complex.besselJ 0 ↑r * Y1 r))\n      Filter.atTop (nhds ↑(1 / Real.pi))",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.tendsto_integral_crossedXBesselIntegrand_one_div_pi",
+    "module": "LeanCondensedMatter.Transport.Analysis.BesselCrossedXMoment",
+    "externalAxioms": [],
+    "docString": "The Wronskian-reduced crossed-X Bessel moment has the exact\nuniversal limit `1/π`, independently of the concrete Y-Bessel\nimplementation, as soon as the Wronskian condition is established. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.MassiveDirac.adoCrossedXBesselReference_tendsto_benchmark"
+    ],
+    "dependencies": [
+      "QuantumTheory.Transport.tendsto_integral_crossedXBesselIntegrand"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.adoCrossedXBesselReference_tendsto_benchmark"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -190012,6 +191237,318 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.Transport.AngularHarmonicCoefficients.integral_eval"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (x y : ℝ → ℝ),\n  (∀ (r : ℝ), 2 ≤ r → HasDerivAt x (-y r) r) →\n    (∀ (r : ℝ), 2 ≤ r → HasDerivAt y (x r - y r / r) r) →\n      Filter.Tendsto (fun r => x r ^ 2 + y r ^ 2) Filter.atTop (nhds 0)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Transport.Analysis.BesselRadialMoments.0.QuantumTheory.Transport.besselRadialSystem_energy_tendsto_zero",
+    "module": "LeanCondensedMatter.Transport.Analysis.BesselRadialMoments",
+    "externalAxioms": [],
+    "docString": "A quantitative Lyapunov argument for the radial Bessel first-order system.\nThe corrected energy `F = x² + y² - xy/r` obeys\n`d/dr (r F²) = F (-x²-y²+3xy/r) ≤ 0` for `r ≥ 2`.\nConsequently the energy tends to zero without invoking an asymptotic\nBessel expansion or assuming Fourier decay. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.Transport.Analysis.BesselRadialMoments.0.QuantumTheory.Transport.polarFourierBesselEnergy_tendsto_zero"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.Transport.Analysis.BesselRadialMoments.0.QuantumTheory.Transport.polarFourierBesselEnergy_tendsto_zero"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "Filter.Tendsto\n  (fun r => QuantumTheory.Transport.polarFourierBesselX✝ r ^ 2 + QuantumTheory.Transport.polarFourierBesselY✝ r ^ 2)\n  Filter.atTop (nhds 0)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Transport.Analysis.BesselRadialMoments.0.QuantumTheory.Transport.polarFourierBesselEnergy_tendsto_zero",
+    "module": "LeanCondensedMatter.Transport.Analysis.BesselRadialMoments",
+    "externalAxioms": [],
+    "docString": "The real scalar/vector channels of the exact radial Fourier kernel decay\njointly, by the Lyapunov bound for their proved first-order radial system. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.polarFourierHarmonicEnergy_tendsto_zero"
+    ],
+    "dependencies": [
+      "_private.LeanCondensedMatter.Transport.Analysis.BesselRadialMoments.0.QuantumTheory.Transport.besselRadialSystem_energy_tendsto_zero",
+      "_private.LeanCondensedMatter.Transport.Analysis.BesselRadialMoments.0.QuantumTheory.Transport.polarFourierBesselX_hasDerivAt",
+      "_private.LeanCondensedMatter.Transport.Analysis.BesselRadialMoments.0.QuantumTheory.Transport.polarFourierBesselY_hasDerivAt"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.polarFourierHarmonicEnergy_tendsto_zero"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (r : ℝ), HasDerivAt QuantumTheory.Transport.polarFourierBesselX✝ (-QuantumTheory.Transport.polarFourierBesselY✝ r) r",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Transport.Analysis.BesselRadialMoments.0.QuantumTheory.Transport.polarFourierBesselX_hasDerivAt",
+    "module": "LeanCondensedMatter.Transport.Analysis.BesselRadialMoments",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.Transport.Analysis.BesselRadialMoments.0.QuantumTheory.Transport.polarFourierBesselEnergy_tendsto_zero"
+    ],
+    "dependencies": [
+      "QuantumTheory.Transport.polarFourierZerothAngularKernel_hasDerivAt"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.Transport.Analysis.BesselRadialMoments.0.QuantumTheory.Transport.polarFourierBesselEnergy_tendsto_zero"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (r : ℝ),\n  r ≠ 0 →\n    HasDerivAt QuantumTheory.Transport.polarFourierBesselY✝\n      (QuantumTheory.Transport.polarFourierBesselX✝ r - QuantumTheory.Transport.polarFourierBesselY✝ r / r) r",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": true,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Transport.Analysis.BesselRadialMoments.0.QuantumTheory.Transport.polarFourierBesselY_hasDerivAt",
+    "module": "LeanCondensedMatter.Transport.Analysis.BesselRadialMoments",
+    "externalAxioms": [],
+    "docString": null,
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "_private.LeanCondensedMatter.Transport.Analysis.BesselRadialMoments.0.QuantumTheory.Transport.polarFourierBesselEnergy_tendsto_zero"
+    ],
+    "dependencies": [
+      "QuantumTheory.Transport.polarFourierFirstCosineAngularKernel_hasDerivAt",
+      "QuantumTheory.Transport.polarFourierFirstCosineAngularKernel_two_mul_eq_zeroth_sub_second"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "_private.LeanCondensedMatter.Transport.Analysis.BesselRadialMoments.0.QuantumTheory.Transport.polarFourierBesselEnergy_tendsto_zero"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (r : ℝ),\n  QuantumTheory.Transport.polarFourierFirstCosineAngularKernel r =\n    Complex.I * ↑(QuantumTheory.Transport.polarFourierBesselY✝ r)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Transport.Analysis.BesselRadialMoments.0.QuantumTheory.Transport.polarFourierFirstCosineAngularKernel_eq_I_ofReal_im",
+    "module": "LeanCondensedMatter.Transport.Analysis.BesselRadialMoments",
+    "externalAxioms": [],
+    "docString": "The first-cosine Fourier harmonic is purely imaginary, with imaginary\ncoordinate given by the other component of the Lyapunov system. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.polarFourierHarmonicEnergy_tendsto_zero"
+    ],
+    "dependencies": [
+      "QuantumTheory.Transport.polarFourierFirstCosineAngularKernel_conj"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.polarFourierHarmonicEnergy_tendsto_zero"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (r : ℝ),\n  QuantumTheory.Transport.polarFourierZerothAngularKernel r ^ 2 -\n      QuantumTheory.Transport.polarFourierFirstCosineAngularKernel r ^ 2 =\n    ↑(2 * Real.pi) ^ 2 * (Complex.besselJ 0 ↑r ^ 2 + Complex.besselJ 1 ↑r ^ 2)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Transport.Analysis.BesselRadialMoments.0.QuantumTheory.Transport.polarFourierHarmonicEnergy_eq_besselJ",
+    "module": "LeanCondensedMatter.Transport.Analysis.BesselRadialMoments",
+    "externalAxioms": [],
+    "docString": "The Fourier normalization of the squared J₀/J₁ energy, shared by the\nfinite-interval moment and its large-radius limit. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.besselJ_zero_sq_add_one_sq_tendsto_zero",
+      "QuantumTheory.Transport.integral_besselJ_one_sq_div"
+    ],
+    "dependencies": [
+      "QuantumTheory.Transport.polarFourierFirstCosineAngularKernel_eq_besselJ",
+      "QuantumTheory.Transport.polarFourierZerothAngularKernel_eq_besselJ"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.besselJ_zero_sq_add_one_sq_tendsto_zero",
+      "QuantumTheory.Transport.integral_besselJ_one_sq_div"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (r : ℝ), QuantumTheory.Transport.polarFourierZerothAngularKernel r = ↑(QuantumTheory.Transport.polarFourierBesselX✝ r)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Transport.Analysis.BesselRadialMoments.0.QuantumTheory.Transport.polarFourierZerothAngularKernel_eq_ofReal_re",
+    "module": "LeanCondensedMatter.Transport.Analysis.BesselRadialMoments",
+    "externalAxioms": [],
+    "docString": "The zeroth Fourier harmonic is real, and equals the real embedding of its\nradial Lyapunov-system coordinate. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Transport.polarFourierHarmonicEnergy_tendsto_zero"
+    ],
+    "dependencies": [
+      "QuantumTheory.Transport.polarFourierZerothAngularKernel_conj"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Transport.polarFourierHarmonicEnergy_tendsto_zero"
     ],
     "compiledConsumerCount": 1,
     "axioms": [

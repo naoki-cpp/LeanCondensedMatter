@@ -2069,6 +2069,8 @@
       "imports": [
         "LeanCondensedMatter.Models.MassiveDirac.Conductivity.Hall.GaussianCrossedBenchmark",
         "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.ExplicitMoments",
+        "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.GreenGeneratorMinors",
+        "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.MasslessX",
         "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.RealSpaceIntegral",
         "LeanCondensedMatter.Transport.Streda.ConductivityNormalization"
       ],
@@ -2079,7 +2081,8 @@
       "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Conductivity/Hall/GaussianCrossedBenchmark.lean",
       "imports": [
         "LeanCondensedMatter.Models.MassiveDirac.Conductivity.Hall.NonCrossingMechanismClassification",
-        "LeanCondensedMatter.QuantumTheory.PlanckConstant"
+        "LeanCondensedMatter.QuantumTheory.PlanckConstant",
+        "LeanCondensedMatter.Transport.Analysis.BesselCrossedXMoment"
       ],
       "externalImportCount": 3
     },
@@ -2328,6 +2331,15 @@
         "LeanCondensedMatter.Models.MassiveDirac.Model.Operator"
       ],
       "externalImportCount": 3
+    },
+    {
+      "name": "LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornRadialConjugation",
+      "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Disorder/FiniteBroadeningBornRadialConjugation.lean",
+      "imports": [
+        "LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornDysonShift",
+        "LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornRadialScalarGenerator"
+      ],
+      "externalImportCount": 1
     },
     {
       "name": "LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornRadialMoments",
@@ -2913,6 +2925,25 @@
         "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.RadialHarmonics",
         "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.RadialTrace",
         "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.RealSpaceIntegral"
+      ],
+      "externalImportCount": 0
+    },
+    {
+      "name": "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.GreenGeneratorMinors",
+      "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Streda/GaussianCrossed/GreenGeneratorMinors.lean",
+      "imports": [
+        "LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornRadialConjugation",
+        "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.RealSpaceIntegral"
+      ],
+      "externalImportCount": 1
+    },
+    {
+      "name": "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.MasslessX",
+      "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Streda/GaussianCrossed/MasslessX.lean",
+      "imports": [
+        "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.UltravioletSelfEnergy",
+        "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.GreenGeneratorMinors",
+        "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.RadialCoefficients"
       ],
       "externalImportCount": 0
     },
@@ -8259,6 +8290,14 @@
       "sourceFile": "LeanCondensedMatter/Transport/Analysis/AngularHarmonics.lean",
       "imports": [],
       "externalImportCount": 4
+    },
+    {
+      "name": "LeanCondensedMatter.Transport.Analysis.BesselCrossedXMoment",
+      "sourceFile": "LeanCondensedMatter/Transport/Analysis/BesselCrossedXMoment.lean",
+      "imports": [
+        "LeanCondensedMatter.Transport.Analysis.BesselRadialMoments"
+      ],
+      "externalImportCount": 0
     },
     {
       "name": "LeanCondensedMatter.Transport.Analysis.BesselRadialMoments",
