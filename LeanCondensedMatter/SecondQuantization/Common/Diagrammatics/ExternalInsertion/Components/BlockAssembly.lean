@@ -495,6 +495,33 @@ theorem ExternalInsertionBlockLayout.externalComponentPartition_assembleDiagram
     exact (externalComponentPartition (layout.assembleDiagram S F).vertexGraph).part_mem.2
       (Finset.mem_univ e)
 
+/-- Connected local blocks also ensure that no internal-only vacuum
+component survives the assembly. Each prescribed partition part is
+nonempty and therefore supplies an external vertex reachable from all
+its assigned interaction vertices. -/
+theorem ExternalInsertionBlockLayout.hasNoVacuumComponent_assembleDiagram
+    {ExternalLabel InternalLabel : Type*}
+    (layout : ExternalInsertionBlockLayout E N) (S : Finset (Fin N))
+    (F : ∀ B : layout.partition.parts,
+      ExternalInsertionDiagram ExternalLabel InternalLabel
+        ((B : Finset (Fin (2 * E))).card / 2) N (layout.interactionBlock S B))
+    (hconnected : ∀ B, (F B).vertexGraph.Preconnected) :
+    HasNoVacuumComponent (layout.assembleDiagram S F).vertexGraph := by
+  intro v
+  let B : layout.partition.parts := (layout.interactionEquiv S v).1
+  have hnonempty : (B : Finset (Fin (2 * E))).Nonempty :=
+    Finset.nonempty_iff_ne_empty.mpr (layout.partition.ne_bot B.2)
+  obtain ⟨e, he⟩ := hnonempty
+  refine ⟨e, ?_⟩
+  apply (layout.assembleDiagram_reachable_iff_same_block S F hconnected
+    (Sum.inl e) (Sum.inr v)).2
+  have hsource : (layout.sourceEquiv e).1 = B := by
+    apply Subtype.ext
+    simpa only [layout.sourceEquiv_fst] using
+      (layout.partition.part_eq_of_mem B.2 he)
+  simpa only [layout.vertexEquiv_external, layout.vertexEquiv_interaction] using
+    hsource
+
 /-- Independent block assembly is **injective on the complete labelled
 diagram data**: all local external labels, interaction labels and pairing
 partners can be recovered from the assembled diagram.
