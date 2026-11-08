@@ -104,6 +104,30 @@ theorem finiteCutoffContinuumBornDysonRadialScalarGreenGenerator_deriv_conj
   rw [hfun]
   exact deriv.star
 
+
+/-- The radial Pauli-x retarded/advanced Green components are
+**anti**-conjugates at the *same signed real-space radius*.
+The minus sign is the parity of the first Fourier harmonic.
+This is an exact physical Born-Dyson identity at finite regulator. -/
+theorem finiteCutoffContinuumBornDysonRadialGreenPauli_x_conj_eq_neg_advanced
+    (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ)
+    (hhbar : hbar ≠ 0) (hbroadening : broadening ≠ 0)
+    (hdisorder : 0 ≤ disorderStrength) (hpMax : 0 ≤ pMax) :
+    conj (finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient .x
+      .retarded v m probeEnergy broadening disorderStrength hbar pMax radius) =
+      -finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient .x
+        .advanced v m probeEnergy broadening disorderStrength hbar pMax radius := by
+  rw [finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient_x_eq_deriv_generator
+    .retarded v m probeEnergy broadening disorderStrength hbar pMax radius
+    hhbar hbroadening hdisorder hpMax,
+    finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient_x_eq_deriv_generator
+    .advanced v m probeEnergy broadening disorderStrength hbar pMax radius
+    hhbar hbroadening hdisorder hpMax]
+  simp only [map_mul, map_neg, Complex.conj_I, Complex.conj_ofReal]
+  rw [← finiteCutoffContinuumBornDysonRadialScalarGreenGenerator_deriv_conj
+    v m probeEnergy broadening disorderStrength hbar pMax radius hbroadening]
+  ring
+
 end
 
 end QuantumTheory.Models.MassiveDirac
