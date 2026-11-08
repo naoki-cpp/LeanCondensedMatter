@@ -94,6 +94,7 @@ theorem finiteCutoffContinuumBornDysonRadialFrozenKernel_tendsto_uvValue
     apply congrArg (fun z : ℂ => (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) * z)
     apply intervalIntegral.integral_congr
     intro p _
+    dsimp only
     rw [show p * radius / hbar = p * (radius / hbar) by ring]
     rw [show massiveDiracRadialDenominator v p energy mass =
       finiteCutoffContinuumBornDysonDenominator
