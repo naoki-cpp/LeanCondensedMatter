@@ -771,5 +771,78 @@ theorem ExternalInsertionDiagram.externalBlockLayout_interactionBlock
       (d.externalBlockLayout hVac anchor).interactionOwner v = P from
         ⟨hvS, howner⟩)
 
+
+/-- The external block owner of every physical vertex is precisely the
+external support of its actual graph component. This includes occupied
+quartic interaction vertices, not just external source insertions. -/
+theorem ExternalInsertionDiagram.externalBlockLayout_vertexPart
+    {ExternalLabel InternalLabel : Type*} {S : Finset (Fin N)}
+    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
+    (hVac : HasNoVacuumComponent d.vertexGraph)
+    (anchor : Fin (2 * E)) (v : ExternalInsertionVertex E S) :
+    (((d.externalBlockLayout hVac anchor).vertexEquiv S v).1 :
+      Finset (Fin (2 * E))) = (d.vertexGraph.componentBlock v).toLeft := by
+  cases v with
+  | inl e =>
+      simpa only [ExternalInsertionBlockLayout.vertexEquiv_external,
+        ExternalInsertionBlockLayout.sourceEquiv_fst] using
+        d.externalComponentPartition_part_eq_toLeft_componentBlock e
+  | inr w =>
+      change ((d.externalBlockLayout hVac anchor).interactionOwner w.1).1 =
+        (d.vertexGraph.componentBlock (Sum.inr w)).toLeft
+      rw [d.externalBlockLayout_interactionOwner hVac anchor w]
+      exact d.vacuumFreeComponentsEquivExternalBlocks_apply hVac _
+
+/-- The physical component layout does not split a paired propagator
+between external blocks: both endpoints of every pair lie in the
+same actual graph component, hence in its same external block. -/
+theorem ExternalInsertionDiagram.externalBlockLayout_partner_block
+    {ExternalLabel InternalLabel : Type*} {S : Finset (Fin N)}
+    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
+    (hVac : HasNoVacuumComponent d.vertexGraph)
+    (anchor : Fin (2 * E))
+    (leg : Fin (2 * (2 * S.card + E))) :
+    ((d.externalBlockLayout hVac anchor).legEquiv S
+      (d.pairing.partner leg)).1 =
+      ((d.externalBlockLayout hVac anchor).legEquiv S leg).1 := by
+  let layout := d.externalBlockLayout hVac anchor
+  apply Subtype.ext
+  calc
+    ((layout.legEquiv S (d.pairing.partner leg)).1 : Finset (Fin (2 * E))) =
+        ((layout.vertexEquiv S
+          (externalInsertionVertexOfLeg (d.pairing.partner leg))).1 :
+          Finset (Fin (2 * E))) :=
+      (congrArg Subtype.val
+        (congrArg Sigma.fst
+          (layout.vertexEquiv_vertexOfLeg S (d.pairing.partner leg)))).symm
+    _ = (d.vertexGraph.componentBlock
+          (externalInsertionVertexOfLeg (d.pairing.partner leg))).toLeft :=
+      d.externalBlockLayout_vertexPart hVac anchor _
+    _ = (d.vertexGraph.componentBlock
+          (externalInsertionVertexOfLeg leg)).toLeft :=
+      congrArg Finset.toLeft
+        (d.pairing.vertexGraph_componentBlock_partner
+          (externalInsertionVertexOfLeg (E := E)) leg).symm
+    _ = ((layout.vertexEquiv S (externalInsertionVertexOfLeg leg)).1 :
+          Finset (Fin (2 * E))) :=
+      (d.externalBlockLayout_vertexPart hVac anchor _).symm
+    _ = ((layout.legEquiv S leg).1 : Finset (Fin (2 * E))) :=
+      congrArg Subtype.val
+        (congrArg Sigma.fst (layout.vertexEquiv_vertexOfLeg S leg))
+
+/-- The actual graph-component partition of a vacuum-free diagram gives a
+physical block layout whose restricted local diagrams reassemble to the
+*same labelled diagram and pairing*, not just an equal partition. -/
+theorem ExternalInsertionDiagram.assembleDiagram_restrictPhysicalBlocks
+    {ExternalLabel InternalLabel : Type*} {S : Finset (Fin N)}
+    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
+    (hVac : HasNoVacuumComponent d.vertexGraph)
+    (anchor : Fin (2 * E)) :
+    (d.externalBlockLayout hVac anchor).assembleDiagram S
+      ((d.externalBlockLayout hVac anchor).restrictBlock S d
+        (d.externalBlockLayout_partner_block hVac anchor)) = d :=
+  (d.externalBlockLayout hVac anchor).assembleDiagram_restrictBlock S d
+    (d.externalBlockLayout_partner_block hVac anchor)
+
 end Common
 end SecondQuantization
