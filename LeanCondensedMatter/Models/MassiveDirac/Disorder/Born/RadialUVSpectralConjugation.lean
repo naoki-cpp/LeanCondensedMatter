@@ -118,8 +118,7 @@ theorem massiveDiracRadialFourierUVCenter_conj
     simp [energy, complex_sqrt_sq_spectral_center]
   have hconjEq :
       (conj energy) ^ 2 - (conj (0 : ℂ)) ^ 2 = conj center := by
-    simp only [map_pow, map_sub]
-    rw [hcenterEq]
+    simpa only [map_sub, map_pow] using (congrArg conj hcenterEq)
   have h := massiveDiracRadialFourierUVValue_conj
     v c energy 0 hv hc (by simpa [hcenterEq] using hcenter)
   rw [massiveDiracRadialFourierUVValue_eq_center,
