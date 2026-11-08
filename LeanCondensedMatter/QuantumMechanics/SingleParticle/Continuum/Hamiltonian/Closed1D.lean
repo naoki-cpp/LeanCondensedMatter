@@ -88,7 +88,6 @@ theorem mem_continuumSchrodingerHamiltonian1D_graph_iff
     rw [← hx, ← hy, map_sub, hH]
     abel
   · intro hz
-    simp only [l2MultiplicationOperator1D_apply] at hz
     have hκc : (κ : ℂ) ≠ 0 := by exact_mod_cast hκ
     let φ : ContinuumL2Wavefunction1D :=
       -((κ : ℂ)⁻¹) • (z.2 - l2MultiplicationOperator1D potential z.1)
@@ -114,7 +113,7 @@ theorem mem_continuumSchrodingerHamiltonian1D_graph_iff
     rw [map_sub] at hz
     rw [← hz]
     have hψcoe : (ψ : ContinuumL2Wavefunction1D) = z.1 := rfl
-    rw [hψcoe, l2MultiplicationOperator1D_apply]
+    rw [hψcoe]
     abel
 
 /-- The one-dimensional Schrödinger Hamiltonian with an essentially bounded potential is closed on
