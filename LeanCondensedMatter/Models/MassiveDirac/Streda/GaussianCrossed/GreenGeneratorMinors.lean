@@ -26,6 +26,8 @@ namespace QuantumTheory.Models.MassiveDirac
 
 noncomputable section
 
+open scoped ComplexConjugate
+
 /-- The three retarded/advanced Green Pauli minors appearing in the finite-radius
 X topology all depend on only two scalar Fourier generators and their radial
 derivatives.
