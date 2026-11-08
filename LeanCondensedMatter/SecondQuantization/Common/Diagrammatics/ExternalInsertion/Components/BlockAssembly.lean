@@ -1,5 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Core.Diagram
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalComponents
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ExternalPartition
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Transport
 import Mathlib.Order.Partition.Finpartition
 import Mathlib.Data.Finset.Sort
@@ -553,6 +554,75 @@ theorem ExternalInsertionBlockLayout.assembleDiagram_injective
     simp only [layout.assembleDiagram_partner] at hp
     have hpair := (layout.legEquiv S).symm.injective hp
     exact eq_of_heq (Sigma.mk.inj_iff.mp hpair).2
+
+
+
+/-- A vacuum-free *physical* external-insertion diagram canonically determines
+an independent external-block layout. For occupied interaction vertices the
+owner is their actual graph component, transported to the external partition.
+The anchor supplies an arbitrary default owner only for vertices outside
+the active interaction set; none of these vertices enters the diagram. -/
+noncomputable def ExternalInsertionDiagram.externalBlockLayout
+    {ExternalLabel InternalLabel : Type*} {S : Finset (Fin N)}
+    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
+    (hVac : HasNoVacuumComponent d.vertexGraph)
+    (anchor : Fin (2 * E)) : ExternalInsertionBlockLayout E N where
+  partition := externalComponentPartition d.vertexGraph
+  evenBlocks := fun B =>
+    d.externalComponentPartition_block_card_even B.1 B.2
+  interactionOwner := fun v =>
+    if hv : v ∈ S then
+      d.vacuumFreeComponentsEquivExternalBlocks hVac
+        ⟨d.vertexGraph.componentBlock (Sum.inr (⟨v, hv⟩ : ↥S)),
+          d.vertexGraph.componentBlock_mem_componentPartition
+            (Sum.inr (⟨v, hv⟩ : ↥S))⟩
+    else
+      ⟨(externalComponentPartition d.vertexGraph).part anchor,
+        (externalComponentPartition d.vertexGraph).part_mem.2
+          (Finset.mem_univ anchor)⟩
+
+/-- The constructed layout uses the exact physical external-component
+partition, with no coarsening or formal proxy partition. -/
+@[simp]
+theorem ExternalInsertionDiagram.externalBlockLayout_partition
+    {ExternalLabel InternalLabel : Type*} {S : Finset (Fin N)}
+    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
+    (hVac : HasNoVacuumComponent d.vertexGraph)
+    (anchor : Fin (2 * E)) :
+    (d.externalBlockLayout hVac anchor).partition =
+      externalComponentPartition d.vertexGraph := rfl
+
+/-- On active interaction vertices the layout assignment is the unique
+actual connected component, identified with its external block. -/
+theorem ExternalInsertionDiagram.externalBlockLayout_interactionOwner
+    {ExternalLabel InternalLabel : Type*} {S : Finset (Fin N)}
+    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
+    (hVac : HasNoVacuumComponent d.vertexGraph)
+    (anchor : Fin (2 * E)) (v : ↥S) :
+    (d.externalBlockLayout hVac anchor).interactionOwner v.1 =
+      d.vacuumFreeComponentsEquivExternalBlocks hVac
+        ⟨d.vertexGraph.componentBlock (Sum.inr v),
+          d.vertexGraph.componentBlock_mem_componentPartition (Sum.inr v)⟩ := by
+  simp [ExternalInsertionDiagram.externalBlockLayout, v.2]
+
+/-- If an external insertion reaches an interaction vertex, the latter's
+assigned block is exactly the external partition part of that insertion.
+This gives the physical ownership direction needed by fiber restriction. -/
+theorem ExternalInsertionDiagram.externalBlockLayout_owner_eq_part_of_reachable
+    {ExternalLabel InternalLabel : Type*} {S : Finset (Fin N)}
+    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
+    (hVac : HasNoVacuumComponent d.vertexGraph)
+    (anchor : Fin (2 * E)) (v : ↥S) (e : Fin (2 * E))
+    (h : d.vertexGraph.Reachable (Sum.inl e) (Sum.inr v)) :
+    ((d.externalBlockLayout hVac anchor).interactionOwner v.1).1 =
+      (externalComponentPartition d.vertexGraph).part e := by
+  rw [d.externalBlockLayout_interactionOwner hVac anchor v]
+  calc
+    _ = (d.vertexGraph.componentBlock (Sum.inr v)).toLeft :=
+      d.vacuumFreeComponentsEquivExternalBlocks_apply hVac _
+    _ = (d.vertexGraph.componentBlock (Sum.inl e)).toLeft :=
+      congrArg Finset.toLeft (d.vertexGraph.componentBlock_eq_of_reachable h.symm)
+    _ = _ := (d.externalComponentPartition_part_eq_toLeft_componentBlock e).symm
 
 
 end Common
