@@ -646,14 +646,18 @@ theorem ExternalInsertionDiagram.externalBlockLayout_interactionBlock
   constructor
   · intro hv
     have hfilter : v ∈ S ∧
-        (d.externalBlockLayout hVac anchor).interactionOwner v = P :=
-      Finset.mem_filter.mp hv
+        (d.externalBlockLayout hVac anchor).interactionOwner v = P := by
+      simpa only [ExternalInsertionBlockLayout.interactionBlock,
+        Finset.mem_filter] using hv
     let V : ↥S := ⟨v, hfilter.1⟩
     let C : d.vertexGraph.componentPartition.parts :=
       ⟨d.vertexGraph.componentBlock (Sum.inr V),
         d.vertexGraph.componentBlock_mem_componentPartition (Sum.inr V)⟩
     have howner : equiv C = P := by
-      simpa only [d.externalBlockLayout_interactionOwner hVac anchor V] using hfilter.2
+      have heq : (d.externalBlockLayout hVac anchor).interactionOwner V.1 = P :=
+        hfilter.2
+      rw [d.externalBlockLayout_interactionOwner hVac anchor V] at heq
+      exact heq
     have hC : C = equiv.symm P := by
       apply equiv.injective
       simpa only [howner, Equiv.apply_symm_apply]
@@ -679,18 +683,15 @@ theorem ExternalInsertionDiagram.externalBlockLayout_interactionBlock
       apply Subtype.ext
       exact (d.vertexGraph.componentBlock_eq_iff_mem
         (equiv.symm P).2 (Sum.inr V)).2 hmem
-    apply Finset.mem_filter.mpr
-    refine ⟨hvS, ?_⟩
-    change (if h : v ∈ S then
-      equiv ⟨d.vertexGraph.componentBlock (Sum.inr (⟨v, h⟩ : ↥S)),
-        d.vertexGraph.componentBlock_mem_componentPartition
-          (Sum.inr (⟨v, h⟩ : ↥S))⟩
-      else
-        ⟨(externalComponentPartition d.vertexGraph).part anchor,
-          (externalComponentPartition d.vertexGraph).part_mem.2
-            (Finset.mem_univ anchor)⟩) = P
-    simp only [dif_pos hvS]
-    simpa only [hC, Equiv.apply_symm_apply]
+    have howner :
+        (d.externalBlockLayout hVac anchor).interactionOwner V.1 = P := by
+      rw [d.externalBlockLayout_interactionOwner hVac anchor V]
+      change equiv C = P
+      rw [hC, Equiv.apply_symm_apply]
+    simpa only [ExternalInsertionBlockLayout.interactionBlock,
+      Finset.mem_filter] using (show v ∈ S ∧
+      (d.externalBlockLayout hVac anchor).interactionOwner v = P from
+        ⟨hvS, howner⟩)
 
 end Common
 end SecondQuantization
