@@ -113,9 +113,7 @@ theorem mem_continuumSchrodingerHamiltonian1D_graph_iff
     rw [l2ToTemperedDistribution1D_continuumSchrodingerHamiltonian1D]
     rw [map_sub] at hz
     rw [← hz]
-    have hψcoe : (ψ : ContinuumL2Wavefunction1D) = z.1 := rfl
-    rw [hψcoe, l2MultiplicationOperator1D_apply]
-    abel
+    simp only [ψ, Subtype.coe_mk, l2MultiplicationOperator1D_apply, sub_add_cancel]
 
 /-- The one-dimensional Schrödinger Hamiltonian with an essentially bounded potential is closed on
 `H²(ℝ)` whenever the kinetic coefficient is nonzero. -/
