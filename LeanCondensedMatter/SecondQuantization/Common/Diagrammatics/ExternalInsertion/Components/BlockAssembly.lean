@@ -433,6 +433,63 @@ theorem ExternalInsertionBlockLayout.assembleDiagram_reachable_iff_same_block
     subst C
     exact ((hconnected B) u w').map (layout.blockGraphHom S F B)
 
+/-- The block selected by the increasing source-slot equivalence is
+precisely the part of the prescribed partition containing that source. -/
+@[simp]
+theorem ExternalInsertionBlockLayout.sourceEquiv_fst
+    (layout : ExternalInsertionBlockLayout E N) (e : Fin (2 * E)) :
+    ((layout.sourceEquiv e).1 : Finset (Fin (2 * E))) =
+      layout.partition.part e := by
+  rfl
+
+/-- Independent assembly of preconnected local diagrams has exactly the
+prescribed external connected-component partition. This is a statement
+about actual assembled pairings, not a postulated partition of diagrams. -/
+theorem ExternalInsertionBlockLayout.externalComponentPartition_assembleDiagram
+    {ExternalLabel InternalLabel : Type*}
+    (layout : ExternalInsertionBlockLayout E N) (S : Finset (Fin N))
+    (F : ∀ B : layout.partition.parts,
+      ExternalInsertionDiagram ExternalLabel InternalLabel
+        ((B : Finset (Fin (2 * E))).card / 2) N (layout.interactionBlock S B))
+    (hconnected : ∀ B, (F B).vertexGraph.Preconnected) :
+    externalComponentPartition (layout.assembleDiagram S F).vertexGraph =
+      layout.partition := by
+  classical
+  have howner (e f : Fin (2 * E)) :
+      (layout.sourceEquiv e).1 = (layout.sourceEquiv f).1 ↔
+        f ∈ layout.partition.part e := by
+    constructor
+    · intro h
+      have heq : layout.partition.part f = layout.partition.part e := by
+        simpa only [layout.sourceEquiv_fst] using
+          (congrArg Subtype.val h).symm
+      exact (layout.partition.mem_part_iff_part_eq_part
+        (Finset.mem_univ f) (Finset.mem_univ e)).2 heq
+    · intro h
+      have heq := (layout.partition.mem_part_iff_part_eq_part
+        (Finset.mem_univ f) (Finset.mem_univ e)).1 h
+      apply Subtype.ext
+      simpa only [layout.sourceEquiv_fst] using heq.symm
+  have hpart (e : Fin (2 * E)) :
+      (externalComponentPartition (layout.assembleDiagram S F).vertexGraph).part e =
+        layout.partition.part e := by
+    ext f
+    rw [mem_externalComponentPartition_part,
+      layout.assembleDiagram_reachable_iff_same_block S F hconnected]
+    simpa only [layout.vertexEquiv_external] using (howner e f)
+  apply Finpartition.ext
+  apply Finset.Subset.antisymm
+  · intro B hB
+    obtain ⟨e, -, he⟩ :=
+      (externalComponentPartition (layout.assembleDiagram S F).vertexGraph).part_surjOn hB
+    rw [← he, hpart e]
+    exact layout.partition.part_mem.2 (Finset.mem_univ e)
+  · intro B hB
+    obtain ⟨e, -, he⟩ := layout.partition.part_surjOn hB
+    rw [← he, ← hpart e]
+    exact (externalComponentPartition (layout.assembleDiagram S F).vertexGraph).part_mem.2
+      (Finset.mem_univ e)
+
 /-- Independent block assembly is **injective on the complete labelled
 diagram data**: all local external labels, interaction labels and pairing
 partners can be recovered from the assembled diagram.
