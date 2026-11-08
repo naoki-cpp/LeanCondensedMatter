@@ -69,7 +69,7 @@ theorem finiteCutoffContinuumBornDysonRadialScalarGreenGenerator_conj
   congr 1
   apply intervalIntegral.integral_congr
   intro p _
-  simp only [map_mul, map_inv, Complex.conj_ofReal,
+  simp only [map_mul, Complex.conj_inv, Complex.conj_ofReal,
     polarFourierZerothAngularKernel_conj]
   have hden := star_finiteCutoffContinuumBornDysonDenominator
     .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax hbroadening
