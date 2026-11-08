@@ -625,5 +625,72 @@ theorem ExternalInsertionDiagram.externalBlockLayout_owner_eq_part_of_reachable
     _ = _ := (d.externalComponentPartition_part_eq_toLeft_componentBlock e).symm
 
 
+
+/-- The interaction sector of an independently indexed physical block is
+*exactly* the interaction sector of the corresponding actual connected
+component. Thus the interaction assignment in the physical layout is not
+additional combinatorial data. -/
+theorem ExternalInsertionDiagram.externalBlockLayout_interactionBlock
+    {ExternalLabel InternalLabel : Type*} {S : Finset (Fin N)}
+    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
+    (hVac : HasNoVacuumComponent d.vertexGraph)
+    (anchor : Fin (2 * E))
+    (P : (externalComponentPartition d.vertexGraph).parts) :
+    (d.externalBlockLayout hVac anchor).interactionBlock S P =
+      interactionSector
+        (((d.vacuumFreeComponentsEquivExternalBlocks hVac).symm P).1 :
+          Finset (ExternalInsertionVertex E S)) := by
+  classical
+  let equiv := d.vacuumFreeComponentsEquivExternalBlocks hVac
+  ext v
+  constructor
+  · intro hv
+    have hfilter : v ∈ S ∧
+        (d.externalBlockLayout hVac anchor).interactionOwner v = P :=
+      Finset.mem_filter.mp hv
+    let V : ↥S := ⟨v, hfilter.1⟩
+    let C : d.vertexGraph.componentPartition.parts :=
+      ⟨d.vertexGraph.componentBlock (Sum.inr V),
+        d.vertexGraph.componentBlock_mem_componentPartition (Sum.inr V)⟩
+    have howner : equiv C = P := by
+      simpa only [d.externalBlockLayout_interactionOwner hVac anchor V] using hfilter.2
+    have hC : C = equiv.symm P := by
+      apply equiv.injective
+      simpa only [howner, Equiv.apply_symm_apply]
+    apply (mem_interactionSector_subtype
+      ((equiv.symm P).1 : Finset (ExternalInsertionVertex E S)) V).2
+    have hmem : (Sum.inr V : ExternalInsertionVertex E S) ∈
+        (C.1 : Finset (ExternalInsertionVertex E S)) :=
+      d.vertexGraph.self_mem_componentBlock (Sum.inr V)
+    simpa only [hC] using hmem
+  · intro hv
+    have hvS : v ∈ S :=
+      interactionSector_subset
+        (((equiv.symm P).1 : Finset (ExternalInsertionVertex E S))) hv
+    let V : ↥S := ⟨v, hvS⟩
+    let C : d.vertexGraph.componentPartition.parts :=
+      ⟨d.vertexGraph.componentBlock (Sum.inr V),
+        d.vertexGraph.componentBlock_mem_componentPartition (Sum.inr V)⟩
+    have hmem : (Sum.inr V : ExternalInsertionVertex E S) ∈
+        ((equiv.symm P).1 : Finset (ExternalInsertionVertex E S)) :=
+      (mem_interactionSector_subtype
+        ((equiv.symm P).1 : Finset (ExternalInsertionVertex E S)) V).1 hv
+    have hC : C = equiv.symm P := by
+      apply Subtype.ext
+      exact (d.vertexGraph.componentBlock_eq_iff_mem
+        (equiv.symm P).2 (Sum.inr V)).2 hmem
+    apply Finset.mem_filter.mpr
+    refine ⟨hvS, ?_⟩
+    change (if h : v ∈ S then
+      equiv ⟨d.vertexGraph.componentBlock (Sum.inr (⟨v, h⟩ : ↥S)),
+        d.vertexGraph.componentBlock_mem_componentPartition
+          (Sum.inr (⟨v, h⟩ : ↥S))⟩
+      else
+        ⟨(externalComponentPartition d.vertexGraph).part anchor,
+          (externalComponentPartition d.vertexGraph).part_mem.2
+            (Finset.mem_univ anchor)⟩) = P
+    simp only [dif_pos hvS]
+    simpa only [hC, Equiv.apply_symm_apply]
+
 end Common
 end SecondQuantization
