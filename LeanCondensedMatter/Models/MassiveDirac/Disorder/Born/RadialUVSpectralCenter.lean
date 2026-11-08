@@ -130,8 +130,12 @@ theorem massiveDiracRadialFourierUVCenter_neg
       massiveDiracRadialFourierUVCenter v c center := by
   have hminus : (Complex.sqrt center) ^ 2 - (0 : ℂ) ^ 2 = center := by
     simp [complex_sqrt_sq_spectral_center]
+  have hnonreal :
+      ((Complex.sqrt center) ^ 2 - (0 : ℂ) ^ 2).im ≠ 0 := by
+    rw [hminus]
+    exact hcenter
   have h := massiveDiracRadialFourierUVValue_neg
-    v c (Complex.sqrt center) 0 hv hc (by simpa [hminus] using hcenter)
+    v c (Complex.sqrt center) 0 hv hc hnonreal
   rw [massiveDiracRadialFourierUVValue_eq_center,
     massiveDiracRadialFourierUVValue_eq_center, hminus] at h
   exact h
