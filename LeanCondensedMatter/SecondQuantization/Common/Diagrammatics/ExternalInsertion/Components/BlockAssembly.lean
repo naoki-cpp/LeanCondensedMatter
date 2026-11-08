@@ -374,6 +374,65 @@ theorem ExternalInsertionBlockLayout.assembleDiagram_external_reachable_same_blo
   simpa only [layout.vertexEquiv_external] using
     (layout.assembleDiagram_reachable_same_block S F h)
 
+/-- Undo the flattened-leg equivalence at one local leg while
+keeping its incident vertex. -/
+theorem ExternalInsertionBlockLayout.vertexOfLeg_legEquiv_symm
+    (layout : ExternalInsertionBlockLayout E N) (S : Finset (Fin N))
+    (B : layout.partition.parts)
+    (leg : Fin (2 * (2 * (layout.interactionBlock S B).card +
+      ((B : Finset (Fin (2 * E))).card / 2)))) :
+    externalInsertionVertexOfLeg ((layout.legEquiv S).symm ⟨B, leg⟩) =
+      (layout.vertexEquiv S).symm ⟨B, externalInsertionVertexOfLeg leg⟩ := by
+  apply (layout.vertexEquiv S).injective
+  simp only [layout.vertexEquiv_vertexOfLeg, Equiv.apply_symm_apply]
+
+/-- Every local block vertex graph maps into the assembled physical graph.
+In particular, this map transports a local connected path into a physical
+connected path; it preserves interaction vertices as well as sources. -/
+noncomputable def ExternalInsertionBlockLayout.blockGraphHom
+    {ExternalLabel InternalLabel : Type*}
+    (layout : ExternalInsertionBlockLayout E N) (S : Finset (Fin N))
+    (F : ∀ B : layout.partition.parts,
+      ExternalInsertionDiagram ExternalLabel InternalLabel
+        ((B : Finset (Fin (2 * E))).card / 2) N (layout.interactionBlock S B))
+    (B : layout.partition.parts) :
+    (F B).vertexGraph →g (layout.assembleDiagram S F).vertexGraph where
+  toFun u := (layout.vertexEquiv S).symm ⟨B, u⟩
+  map_rel' := by
+    intro u v h
+    obtain ⟨hne, leg, hu, hv⟩ := h
+    refine ⟨?_, (layout.legEquiv S).symm ⟨B, leg⟩, ?_, ?_⟩
+    · intro hEq
+      apply hne
+      have hSigma := (layout.vertexEquiv S).symm.injective hEq
+      exact eq_of_heq (Sigma.mk.inj_iff.mp hSigma).2
+    · rw [layout.vertexOfLeg_legEquiv_symm, hu]
+    · rw [layout.assembleDiagram_partner,
+        layout.vertexOfLeg_legEquiv_symm, hv]
+
+/-- If all independently supplied local graphs are preconnected, then
+global reachability is exactly agreement of the assigned external blocks.
+The forward implication holds without any connectedness assumptions. -/
+theorem ExternalInsertionBlockLayout.assembleDiagram_reachable_iff_same_block
+    {ExternalLabel InternalLabel : Type*}
+    (layout : ExternalInsertionBlockLayout E N) (S : Finset (Fin N))
+    (F : ∀ B : layout.partition.parts,
+      ExternalInsertionDiagram ExternalLabel InternalLabel
+        ((B : Finset (Fin (2 * E))).card / 2) N (layout.interactionBlock S B))
+    (hconnected : ∀ B, (F B).vertexGraph.Preconnected)
+    (v w : ExternalInsertionVertex E S) :
+    (layout.assembleDiagram S F).vertexGraph.Reachable v w ↔
+      (layout.vertexEquiv S v).1 = (layout.vertexEquiv S w).1 := by
+  constructor
+  · exact layout.assembleDiagram_reachable_same_block S F
+  · intro hblock
+    obtain ⟨⟨B, u⟩, hv⟩ := (layout.vertexEquiv S).symm.surjective v
+    obtain ⟨⟨C, w'⟩, hw⟩ := (layout.vertexEquiv S).symm.surjective w
+    rw [← hv, ← hw] at hblock ⊢
+    simp only [Equiv.apply_symm_apply] at hblock
+    subst C
+    exact ((hconnected B) u w').map (layout.blockGraphHom S F B)
+
 /-- Independent block assembly is **injective on the complete labelled
 diagram data**: all local external labels, interaction labels and pairing
 partners can be recovered from the assembled diagram.
