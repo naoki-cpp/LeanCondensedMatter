@@ -118,6 +118,11 @@ jobs:
           restore-keys: |
             project-build-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('lean-toolchain', 'lake-manifest.json', 'lakefile.toml') }}-
 
+      # lean-action unconditionally uses curl to fetch elan. Retry transient
+      # GitHub release HTTP 503/504 instead of failing a valid Lean build.
+      - name: Enable resilient elan downloads
+        run: bash .github/scripts/enable_curl_retry.sh
+
       - name: Build Lean library
         id: lean-build
         uses: leanprover/lean-action@50fcf42d2e460296f1a34b402e990d1b24f8b596 # v1
@@ -192,6 +197,10 @@ jobs:
           path: .lake/build
           key: project-build-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('lean-toolchain', 'lake-manifest.json', 'lakefile.toml') }}-${{ github.sha }}
           fail-on-cache-miss: true
+
+      # Each matrix runner installs elan afresh; protect its bootstrap too.
+      - name: Enable resilient elan downloads
+        run: bash .github/scripts/enable_curl_retry.sh
 
       - name: Set up Lean and dependency cache
         uses: leanprover/lean-action@50fcf42d2e460296f1a34b402e990d1b24f8b596 # v1
