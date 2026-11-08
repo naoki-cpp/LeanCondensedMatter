@@ -197,6 +197,31 @@ theorem ExternalInsertionBlockLayout.legEquiv_interactionLeg
   simp [ExternalInsertionBlockLayout.legEquiv, externalInsertionInteractionLeg,
     sumSigmaEquiv]
 
+/-- A leg and its incident vertex have exactly the same independent
+external-block owner. More strongly, the vertex inside that block is
+preserved by the two canonical equivalences. -/
+theorem ExternalInsertionBlockLayout.vertexEquiv_vertexOfLeg
+    (layout : ExternalInsertionBlockLayout E N) (S : Finset (Fin N))
+    (leg : Fin (2 * (2 * S.card + E))) :
+    layout.vertexEquiv S (externalInsertionVertexOfLeg leg) =
+      ⟨(layout.legEquiv S leg).1,
+        externalInsertionVertexOfLeg (layout.legEquiv S leg).2⟩ := by
+  classical
+  cases hleg : externalInsertionLegEquiv E S leg with
+  | inl e =>
+    have heq : leg = externalInsertionExternalLeg E S e := by
+      apply (externalInsertionLegEquiv E S).injective
+      simpa [externalInsertionExternalLeg] using hleg
+    rw [heq]
+    simp
+  | inr p =>
+    obtain ⟨v, i⟩ := p
+    have heq : leg = externalInsertionInteractionLeg (E := E) v i := by
+      apply (externalInsertionLegEquiv E S).injective
+      simpa [externalInsertionInteractionLeg] using hleg
+    rw [heq]
+    simp
+
 /-- Assemble a labelled Wick diagram from **independent, block-local**
 external-insertion diagrams.
 
