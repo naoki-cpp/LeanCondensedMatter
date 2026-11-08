@@ -110,7 +110,7 @@ theorem massiveDiracRadialFourier_tendsto_uvFinitePartAt
           (p : ℂ) * polarFourierFirstCosineAngularKernel (p * c) *
             ((2 : ℂ) * (v : ℂ) ^ 2 * (p : ℂ) *
               (massiveDiracRadialDenominator v p energy mass)⁻¹ ^ 2)) /
-        (Complex.I * (c : ℂ))))
+        (Complex.I * (c : ℂ)))))
   exact hsum.congr' (Filter.Eventually.of_forall fun b => (hsplit b).symm)
 
 /-- Independence of the arbitrary UV splitting scale. Both finite-part
@@ -124,7 +124,7 @@ theorem massiveDiracRadialFourierUVFinitePartAt_eq_of_scales
     (hb : max (1 : ℝ) (2 * ‖energy ^ 2 - mass ^ 2‖ / v ^ 2) ≤ b) :
     massiveDiracRadialFourierUVFinitePartAt v c a energy mass =
       massiveDiracRadialFourierUVFinitePartAt v c b energy mass := by
-  exact Filter.tendsto_nhds_unique
+  exact tendsto_nhds_unique
     (massiveDiracRadialFourier_tendsto_uvFinitePartAt
       v c a energy mass hv hc hden ha)
     (massiveDiracRadialFourier_tendsto_uvFinitePartAt
