@@ -785,7 +785,8 @@ theorem ExternalInsertionDiagram.externalBlockLayout_vertexPart
   cases v with
   | inl e =>
       simpa only [ExternalInsertionBlockLayout.vertexEquiv_external,
-        ExternalInsertionBlockLayout.sourceEquiv_fst] using
+        ExternalInsertionBlockLayout.sourceEquiv_fst,
+        d.externalBlockLayout_partition hVac anchor] using
         d.externalComponentPartition_part_eq_toLeft_componentBlock e
   | inr w =>
       change ((d.externalBlockLayout hVac anchor).interactionOwner w.1).1 =
