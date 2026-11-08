@@ -69,7 +69,7 @@ theorem continuumRealPotentialSchrodingerHamiltonian1D_adjoint_domain_le
     inner ℂ (-((κ : ℂ)⁻¹) • (wH - M u)) (ψ : ContinuumL2Wavefunction1D) =
       inner ℂ u (continuumH2Laplacian1D ψ)
   rw [inner_smul_left, inner_sub_left]
-  simp only [map_neg, map_inv, Complex.conj_ofReal]
+  simp
   rw [hadj, hM, inner_add_right, inner_smul_right]
   have hκc : (κ : ℂ) ≠ 0 := by exact_mod_cast hκ
   field_simp [hκc]
