@@ -1,4 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Core.Diagram
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalComponents
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Transport
 import Mathlib.Order.Partition.Finpartition
 import Mathlib.Data.Finset.Sort
