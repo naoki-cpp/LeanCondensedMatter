@@ -1,5 +1,6 @@
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVFinitePart
 import Mathlib.Tactic.FunProp
+import Mathlib.Analysis.RCLike.Sqrt
 
 set_option linter.style.header false
 
@@ -117,13 +118,18 @@ theorem massiveDiracRadialFourierUVValue_neg
 
 /-- The center-indexed canonical UV Green function is even for every
 complex spectral center away from the real axis. -/
+private theorem complex_sqrt_sq_spectral_center (z : ℂ) :
+    (Complex.sqrt z) ^ 2 = z := by
+  simpa [Complex.sqrt] using (Complex.cpow_ofNat_inv_pow z 2)
+
+/-- Center-argument parity, independent of the chosen square root. -/
 theorem massiveDiracRadialFourierUVCenter_neg
     (v c : ℝ) (center : ℂ)
     (hv : v ≠ 0) (hc : c ≠ 0) (hcenter : center.im ≠ 0) :
     massiveDiracRadialFourierUVCenter v (-c) center =
       massiveDiracRadialFourierUVCenter v c center := by
   have hminus : (Complex.sqrt center) ^ 2 - (0 : ℂ) ^ 2 = center := by
-    simp [Complex.sq_sqrt]
+    simp [complex_sqrt_sq_spectral_center]
   have h := massiveDiracRadialFourierUVValue_neg
     v c (Complex.sqrt center) 0 hv hc (by simpa [hminus] using hcenter)
   rw [massiveDiracRadialFourierUVValue_eq_center,
