@@ -46,7 +46,26 @@ theorem finiteCutoffContinuumBornDysonRadialScalarGreenGenerator_conj
   unfold finiteCutoffContinuumBornDysonRadialScalarGreenGenerator
   rw [map_mul]
   simp only [Complex.conj_ofReal]
-  rw [← Complex.conjLIE.toLinearIsometry.intervalIntegral_comp_comm]
+  have hmove :
+      conj (∫ p in (0 : ℝ)..pMax,
+        (p : ℂ) *
+          (finiteCutoffContinuumBornDysonDenominator
+            .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax)⁻¹ *
+          polarFourierZerothAngularKernel (p * radius / hbar)) =
+        ∫ p in (0 : ℝ)..pMax,
+          conj ((p : ℂ) *
+            (finiteCutoffContinuumBornDysonDenominator
+              .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax)⁻¹ *
+            polarFourierZerothAngularKernel (p * radius / hbar)) := by
+    simpa using
+      ((Complex.conjLIE.toLinearIsometry).intervalIntegral_comp_comm
+        (f := fun p : ℝ =>
+          (p : ℂ) *
+            (finiteCutoffContinuumBornDysonDenominator
+              .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax)⁻¹ *
+            polarFourierZerothAngularKernel (p * radius / hbar))
+        (a := (0 : ℝ)) (b := pMax)).symm
+  rw [hmove]
   congr 1
   apply intervalIntegral.integral_congr
   intro p _
