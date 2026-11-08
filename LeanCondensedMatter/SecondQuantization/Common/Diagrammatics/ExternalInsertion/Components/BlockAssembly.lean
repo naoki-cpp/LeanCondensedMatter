@@ -139,6 +139,64 @@ noncomputable def ExternalInsertionBlockLayout.legEquiv
         ((B : Finset (Fin (2 * E))).card / 2)
         (layout.interactionBlock S B)).symm))
 
+/-- The exact vertex analogue of `legEquiv`. Both source insertions
+and ambient interaction vertices are assigned to the same independent
+external block as their incident legs. -/
+noncomputable def ExternalInsertionBlockLayout.vertexEquiv
+    (layout : ExternalInsertionBlockLayout E N) (S : Finset (Fin N)) :
+    ExternalInsertionVertex E S ≃
+      Σ B : layout.partition.parts,
+        ExternalInsertionVertex
+          ((B : Finset (Fin (2 * E))).card / 2) (layout.interactionBlock S B) :=
+  (Equiv.sumCongr layout.sourceEquiv (layout.interactionEquiv S)).trans
+    sumSigmaEquiv
+
+@[simp]
+theorem ExternalInsertionBlockLayout.vertexEquiv_external
+    (layout : ExternalInsertionBlockLayout E N) (S : Finset (Fin N))
+    (e : Fin (2 * E)) :
+    layout.vertexEquiv S (Sum.inl e) =
+      ⟨(layout.sourceEquiv e).1, Sum.inl (layout.sourceEquiv e).2⟩ := by
+  rfl
+
+@[simp]
+theorem ExternalInsertionBlockLayout.vertexEquiv_interaction
+    (layout : ExternalInsertionBlockLayout E N) (S : Finset (Fin N))
+    (v : ↥S) :
+    layout.vertexEquiv S (Sum.inr v) =
+      ⟨(layout.interactionEquiv S v).1,
+        Sum.inr (layout.interactionEquiv S v).2⟩ := by
+  rfl
+
+/-- The leg equivalence assigns each external insertion to its exact
+source-partition block, retaining its increasing local external slot. -/
+@[simp]
+theorem ExternalInsertionBlockLayout.legEquiv_externalLeg
+    (layout : ExternalInsertionBlockLayout E N) (S : Finset (Fin N))
+    (e : Fin (2 * E)) :
+    layout.legEquiv S (externalInsertionExternalLeg E S e) =
+      ⟨(layout.sourceEquiv e).1,
+        externalInsertionExternalLeg
+          ((layout.sourceEquiv e).1.1.card / 2)
+          (layout.interactionBlock S (layout.sourceEquiv e).1)
+          (layout.sourceEquiv e).2⟩ := by
+  simp [ExternalInsertionBlockLayout.legEquiv, externalInsertionExternalLeg,
+    sumSigmaEquiv]
+
+/-- The leg equivalence assigns each quartic leg to its vertex's block,
+without changing the quartic local leg index. -/
+@[simp]
+theorem ExternalInsertionBlockLayout.legEquiv_interactionLeg
+    (layout : ExternalInsertionBlockLayout E N) (S : Finset (Fin N))
+    (v : ↥S) (i : Fin 4) :
+    layout.legEquiv S (externalInsertionInteractionLeg (E := E) v i) =
+      ⟨(layout.interactionEquiv S v).1,
+        externalInsertionInteractionLeg
+          (E := ((layout.interactionEquiv S v).1.1.card / 2))
+          (layout.interactionEquiv S v).2 i⟩ := by
+  simp [ExternalInsertionBlockLayout.legEquiv, externalInsertionInteractionLeg,
+    sumSigmaEquiv]
+
 /-- Assemble a labelled Wick diagram from **independent, block-local**
 external-insertion diagrams.
 
