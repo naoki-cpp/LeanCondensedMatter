@@ -52,9 +52,9 @@ theorem continuumH2LaplacianPMap1D_eq_continuumMaximalLaplacian1D :
     continuumH2LaplacianPMap1D = continuumMaximalLaplacian1D := by
   apply LinearPMap.ext continuumH2Domain1D_eq_continuumMaximalLaplacianDomain1D
   intro x hx hmax
-  let ψ : continuumH2Domain1D := ⟨x, hx⟩
-  have hagree := continuumMaximalLaplacian1D_agrees_on_H2 ψ
-  simpa [continuumH2LaplacianPMap1D, ψ] using hagree.symm
+  change continuumH2Laplacian1D ⟨x, hx⟩ =
+    continuumMaximalLaplacian1D ⟨x, hmax⟩
+  exact (continuumMaximalLaplacian1D_agrees_on_H2 ⟨x, hx⟩).symm
 
 /-- The distributional Laplacian on the explicit `H²` domain is closed. -/
 theorem continuumH2LaplacianPMap1D_isClosed : continuumH2LaplacianPMap1D.IsClosed := by
@@ -113,9 +113,7 @@ theorem mem_continuumSchrodingerHamiltonian1D_graph_iff
     rw [l2ToTemperedDistribution1D_continuumSchrodingerHamiltonian1D]
     rw [map_sub] at hz
     rw [← hz]
-    have hψcoe : (ψ : ContinuumL2Wavefunction1D) = z.1 := rfl
-    rw [hψcoe, l2MultiplicationOperator1D_apply]
-    abel
+    simp only [ψ, l2MultiplicationOperator1D_apply, sub_add_cancel]
 
 /-- The one-dimensional Schrödinger Hamiltonian with an essentially bounded potential is closed on
 `H²(ℝ)` whenever the kinetic coefficient is nonzero. -/
