@@ -180,6 +180,70 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_x_antisym
   rw [hscalarZ, hxZ, hscalarX]
   ring
 
+
+/-- Single-causal-branch presentation of the *physical regulated X radial
+amplitude*. The advanced scalar Green Fourier generator and its derivative
+are replaced by conjugates of the retarded ones at the same -radius.
+
+This retains the finite Born-Dyson current block, both effective R/A
+spectral centers, the original crossed trace normalization, and finite
+momentum/real-space cutoffs. It does not assume an infinite-cutoff
+Hankel formula or evaluate the last radial integral. -/
+noncomputable def finiteCutoffContinuumBornDysonGaussianCrossedXRetardedGeneratorRadialAmplitude
+    (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ) : ℂ :=
+  let Jx := finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock
+    0 v m probeEnergy broadening disorderStrength hbar pMax radius
+  let Jy := finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock
+    1 v m probeEnergy broadening disorderStrength hbar pMax radius
+  let a := InternalSpace.pauliScalarCoefficient Jx
+  let c := InternalSpace.pauliScalarCoefficient Jy
+  let u := InternalSpace.pauliVectorCoefficient Jx
+  let w := InternalSpace.pauliVectorCoefficient Jy
+  let eR := finiteCutoffContinuumBornEffectiveEnergy
+    .retarded v m probeEnergy broadening disorderStrength hbar pMax
+  let eA := finiteCutoffContinuumBornEffectiveEnergy
+    .advanced v m probeEnergy broadening disorderStrength hbar pMax
+  let mR := finiteCutoffContinuumBornEffectiveMass
+    .retarded v m probeEnergy broadening disorderStrength hbar pMax
+  let mA := finiteCutoffContinuumBornEffectiveMass
+    .advanced v m probeEnergy broadening disorderStrength hbar pMax
+  let fR := finiteCutoffContinuumBornDysonRadialScalarGreenGenerator
+    .retarded v m probeEnergy broadening disorderStrength hbar pMax (-radius)
+  let fA := conj (finiteCutoffContinuumBornDysonRadialScalarGreenGenerator
+    .retarded v m probeEnergy broadening disorderStrength hbar pMax (-radius))
+  let dfR := deriv (fun r : ℝ => finiteCutoffContinuumBornDysonRadialScalarGreenGenerator
+    .retarded v m probeEnergy broadening disorderStrength hbar pMax r) (-radius)
+  let dfA := conj (deriv (fun r : ℝ =>
+    finiteCutoffContinuumBornDysonRadialScalarGreenGenerator
+      .retarded v m probeEnergy broadening disorderStrength hbar pMax r) (-radius))
+  2 * Complex.I *
+    ((a * w .y - c * u .y) *
+        ((-Complex.I * (((hbar * v : ℝ) : ℂ))) *
+          (mA * dfR * fA - mR * fR * dfA)) +
+      ((eR * mA - eA * mR) * fR * fA) *
+        (w .y * u .x + (u .y) ^ 2) +
+      ((-Complex.I * (((hbar * v : ℝ) : ℂ))) *
+        (eA * fA * dfR - eR * fR * dfA)) *
+        (w .y * u .z - u .y * w .z))
+
+/-- Exact equality of the X generator amplitude and the
+single-causal-branch expression. The reduction relies only on the
+physical finite-cutoff denominator's retarded/advanced adjointness. -/
+theorem finiteCutoffContinuumBornDysonGaussianCrossedXGeneratorRadialAmplitude_eq_retarded
+    (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ)
+    (hbroadening : broadening ≠ 0) :
+    finiteCutoffContinuumBornDysonGaussianCrossedXGeneratorRadialAmplitude
+      v m probeEnergy broadening disorderStrength hbar pMax radius =
+    finiteCutoffContinuumBornDysonGaussianCrossedXRetardedGeneratorRadialAmplitude
+      v m probeEnergy broadening disorderStrength hbar pMax radius := by
+  unfold finiteCutoffContinuumBornDysonGaussianCrossedXGeneratorRadialAmplitude
+    finiteCutoffContinuumBornDysonGaussianCrossedXRetardedGeneratorRadialAmplitude
+  dsimp only
+  rw [finiteCutoffContinuumBornDysonRadialScalarGreenGenerator_conj
+    v m probeEnergy broadening disorderStrength hbar pMax (-radius) hbroadening,
+    ← finiteCutoffContinuumBornDysonRadialScalarGreenGenerator_deriv_conj
+      v m probeEnergy broadening disorderStrength hbar pMax (-radius) hbroadening]
+
 end
 
 end QuantumTheory.Models.MassiveDirac
