@@ -214,6 +214,7 @@ theorem ExternalInsertionBlockLayout.vertexEquiv_vertexOfLeg
       apply (externalInsertionLegEquiv E S).injective
       simpa [externalInsertionExternalLeg] using hleg
     rw [heq]
+    rw [layout.legEquiv_externalLeg]
     simp
   | inr p =>
     obtain ⟨v, i⟩ := p
@@ -221,6 +222,7 @@ theorem ExternalInsertionBlockLayout.vertexEquiv_vertexOfLeg
       apply (externalInsertionLegEquiv E S).injective
       simpa [externalInsertionInteractionLeg] using hleg
     rw [heq]
+    rw [layout.legEquiv_interactionLeg]
     simp
 
 /-- Assemble a labelled Wick diagram from **independent, block-local**
@@ -385,7 +387,9 @@ theorem ExternalInsertionBlockLayout.vertexOfLeg_legEquiv_symm
     externalInsertionVertexOfLeg ((layout.legEquiv S).symm ⟨B, leg⟩) =
       (layout.vertexEquiv S).symm ⟨B, externalInsertionVertexOfLeg leg⟩ := by
   apply (layout.vertexEquiv S).injective
-  simp only [layout.vertexEquiv_vertexOfLeg, Equiv.apply_symm_apply]
+  rw [layout.vertexEquiv_vertexOfLeg]
+  rw [(layout.legEquiv S).apply_symm_apply]
+  rw [(layout.vertexEquiv S).apply_symm_apply]
 
 /-- Every local block vertex graph maps into the assembled physical graph.
 In particular, this map transports a local connected path into a physical
