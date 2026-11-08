@@ -557,6 +557,84 @@ theorem ExternalInsertionBlockLayout.assembleDiagram_injective
 
 
 
+/-- A pairing whose partners stay in their prescribed external blocks
+also preserves the dependent sigma index after transport by the concrete
+flattened-leg equivalence. -/
+private theorem ExternalInsertionBlockLayout.pairingTransport_preserves_block
+    {ExternalLabel InternalLabel : Type*}
+    (layout : ExternalInsertionBlockLayout E N) (S : Finset (Fin N))
+    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
+    (hblock : ∀ leg,
+      (layout.legEquiv S (d.pairing.partner leg)).1 =
+        (layout.legEquiv S leg).1) :
+    ∀ x, ((d.pairing.transport (layout.legEquiv S).symm).partner x).1 = x.1 := by
+  intro x
+  have hx := hblock ((layout.legEquiv S).symm x)
+  simpa only [PairingOn.transport_partner, Equiv.symm_symm,
+    Equiv.apply_symm_apply] using hx
+
+/-- Extract a labelled local diagram from a physical pairing respecting a
+prescribed independent-block layout. Local external slots and interaction
+vertices retain their original ambient identities and order; the local
+pairing is obtained by restricting the transported ambient involution. -/
+noncomputable def ExternalInsertionBlockLayout.restrictBlock
+    {ExternalLabel InternalLabel : Type*}
+    (layout : ExternalInsertionBlockLayout E N) (S : Finset (Fin N))
+    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
+    (hblock : ∀ leg,
+      (layout.legEquiv S (d.pairing.partner leg)).1 =
+        (layout.legEquiv S leg).1)
+    (B : layout.partition.parts) :
+    ExternalInsertionDiagram ExternalLabel InternalLabel
+      ((B : Finset (Fin (2 * E))).card / 2) N (layout.interactionBlock S B) where
+  externalLabel e := d.externalLabel (layout.sourceEquiv.symm ⟨B, e⟩)
+  vertexLabel v := d.vertexLabel ((layout.interactionEquiv S).symm ⟨B, v⟩)
+  pairing := (d.pairing.transport (layout.legEquiv S).symm).sigmaFiberPairing
+    (layout.pairingTransport_preserves_block S d hblock) B
+
+/-- Reassembly of all restricted labelled blocks recovers exactly the
+original physical diagram, including every label and pairing partner. -/
+theorem ExternalInsertionBlockLayout.assembleDiagram_restrictBlock
+    {ExternalLabel InternalLabel : Type*}
+    (layout : ExternalInsertionBlockLayout E N) (S : Finset (Fin N))
+    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
+    (hblock : ∀ leg,
+      (layout.legEquiv S (d.pairing.partner leg)).1 =
+        (layout.legEquiv S leg).1) :
+    layout.assembleDiagram S (layout.restrictBlock S d hblock) = d := by
+  apply ExternalInsertionDiagram.ext
+  · funext e
+    change d.externalLabel (layout.sourceEquiv.symm (layout.sourceEquiv e)) =
+      d.externalLabel e
+    rw [Equiv.symm_apply_apply]
+  · funext v
+    change d.vertexLabel ((layout.interactionEquiv S).symm
+      (layout.interactionEquiv S v)) = d.vertexLabel v
+    rw [Equiv.symm_apply_apply]
+  · change
+      (PairingOn.sigmaCongrRight (fun B =>
+        (d.pairing.transport (layout.legEquiv S).symm).sigmaFiberPairing
+          (layout.pairingTransport_preserves_block S d hblock) B)).transport
+        (layout.legEquiv S) = d.pairing
+    rw [PairingOn.sigmaCongrRight_sigmaFiberPairing,
+      PairingOn.transport_transport_symm]
+
+/-- Restriction is also a left inverse of independent assembly, without
+a connectedness hypothesis: the assembled pairing respects every assigned
+block, and injectivity of assembly recovers all local diagram data. -/
+theorem ExternalInsertionBlockLayout.restrictBlock_assembleDiagram
+    {ExternalLabel InternalLabel : Type*}
+    (layout : ExternalInsertionBlockLayout E N) (S : Finset (Fin N))
+    (F : ∀ B : layout.partition.parts,
+      ExternalInsertionDiagram ExternalLabel InternalLabel
+        ((B : Finset (Fin (2 * E))).card / 2) N (layout.interactionBlock S B)) :
+    (fun B => layout.restrictBlock S (layout.assembleDiagram S F)
+      (layout.assembleDiagram_partner_block S F) B) = F := by
+  apply layout.assembleDiagram_injective S
+  exact layout.assembleDiagram_restrictBlock S
+    (layout.assembleDiagram S F) (layout.assembleDiagram_partner_block S F)
+
+
 /-- A vacuum-free *physical* external-insertion diagram canonically determines
 an independent external-block layout. For occupied interaction vertices the
 owner is their actual graph component, transported to the external partition.
