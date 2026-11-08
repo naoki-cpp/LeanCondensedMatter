@@ -301,6 +301,79 @@ theorem ExternalInsertionBlockLayout.assembleDiagram_partner
   simp [ExternalInsertionBlockLayout.assembleDiagram]
 
 
+/-- A paired leg in the assembled diagram remains in its original
+external block. This rules out propagators between independently assembled
+blocks, including blocks with no interaction vertices. -/
+theorem ExternalInsertionBlockLayout.assembleDiagram_partner_block
+    {ExternalLabel InternalLabel : Type*}
+    (layout : ExternalInsertionBlockLayout E N) (S : Finset (Fin N))
+    (F : ∀ B : layout.partition.parts,
+      ExternalInsertionDiagram ExternalLabel InternalLabel
+        ((B : Finset (Fin (2 * E))).card / 2) N (layout.interactionBlock S B))
+    (leg : Fin (2 * (2 * S.card + E))) :
+    (layout.legEquiv S ((layout.assembleDiagram S F).pairing.partner leg)).1 =
+      (layout.legEquiv S leg).1 := by
+  change (layout.legEquiv S
+    (((PairingOn.sigmaCongrRight (fun B => (F B).pairing)).transport
+      (layout.legEquiv S)).partner leg)).1 = _
+  rw [PairingOn.transport_partner, Equiv.apply_symm_apply]
+  cases h : layout.legEquiv S leg with
+  | mk B i =>
+    simp only [PairingOn.sigmaCongrRight_partner]
+
+/-- A propagator in the assembled physical vertex graph cannot connect
+different source-partition blocks, independently of whether the local graphs
+are connected. -/
+theorem ExternalInsertionBlockLayout.assembleDiagram_adj_same_block
+    {ExternalLabel InternalLabel : Type*}
+    (layout : ExternalInsertionBlockLayout E N) (S : Finset (Fin N))
+    (F : ∀ B : layout.partition.parts,
+      ExternalInsertionDiagram ExternalLabel InternalLabel
+        ((B : Finset (Fin (2 * E))).card / 2) N (layout.interactionBlock S B))
+    {v w : ExternalInsertionVertex E S}
+    (h : (layout.assembleDiagram S F).vertexGraph.Adj v w) :
+    (layout.vertexEquiv S v).1 = (layout.vertexEquiv S w).1 := by
+  obtain ⟨_, leg, hv, hw⟩ := h
+  have hsource := congrArg Sigma.fst (layout.vertexEquiv_vertexOfLeg S leg)
+  rw [hv] at hsource
+  have htarget := congrArg Sigma.fst
+    (layout.vertexEquiv_vertexOfLeg S
+      ((layout.assembleDiagram S F).pairing.partner leg))
+  rw [hw] at htarget
+  exact hsource.trans ((layout.assembleDiagram_partner_block S F leg).symm.trans
+    htarget.symm)
+
+/-- All vertices connected by a path in an independently assembled diagram
+belong to the same prescribed external block. -/
+theorem ExternalInsertionBlockLayout.assembleDiagram_reachable_same_block
+    {ExternalLabel InternalLabel : Type*}
+    (layout : ExternalInsertionBlockLayout E N) (S : Finset (Fin N))
+    (F : ∀ B : layout.partition.parts,
+      ExternalInsertionDiagram ExternalLabel InternalLabel
+        ((B : Finset (Fin (2 * E))).card / 2) N (layout.interactionBlock S B))
+    {v w : ExternalInsertionVertex E S}
+    (h : (layout.assembleDiagram S F).vertexGraph.Reachable v w) :
+    (layout.vertexEquiv S v).1 = (layout.vertexEquiv S w).1 := by
+  simpa only [Relation.reflTransGen_eq_self] using
+    (Relation.ReflTransGen.lift (p := Eq)
+      (fun x : ExternalInsertionVertex E S => (layout.vertexEquiv S x).1)
+      (fun _ _ hadj => layout.assembleDiagram_adj_same_block S F hadj))
+      v w ((SimpleGraph.reachable_iff_reflTransGen _ _).mp h)
+
+/-- In particular, different prescribed external partition blocks never
+become connected through the assembled pairing. -/
+theorem ExternalInsertionBlockLayout.assembleDiagram_external_reachable_same_block
+    {ExternalLabel InternalLabel : Type*}
+    (layout : ExternalInsertionBlockLayout E N) (S : Finset (Fin N))
+    (F : ∀ B : layout.partition.parts,
+      ExternalInsertionDiagram ExternalLabel InternalLabel
+        ((B : Finset (Fin (2 * E))).card / 2) N (layout.interactionBlock S B))
+    {e f : Fin (2 * E)}
+    (h : (layout.assembleDiagram S F).vertexGraph.Reachable (Sum.inl e) (Sum.inl f)) :
+    (layout.sourceEquiv e).1 = (layout.sourceEquiv f).1 := by
+  simpa only [layout.vertexEquiv_external] using
+    (layout.assembleDiagram_reachable_same_block S F h)
+
 /-- Independent block assembly is **injective on the complete labelled
 diagram data**: all local external labels, interaction labels and pairing
 partners can be recovered from the assembled diagram.
