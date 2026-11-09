@@ -9,18 +9,17 @@ set_option linter.style.header false
 /-!
 # Radial Gaussian crossed trace kernels
 
-This module reduces the model-specific finite-cutoff Gaussian crossed `X` / `Psi` trace kernels to
-one-dimensional radial Green and current blocks on the real-space radial axis. The canonical
-topology still contains `r ↦ -r`, but the massive-Dirac Green/current inversion laws eliminate
-negative-radius Green/current blocks from the identities used by the antisymmetric Hall trace.
+This module specializes the canonical Gaussian crossed `X` / `Psi` trace topology to
+one-dimensional radial Green and current blocks. The massive-Dirac inversion laws handle
+the negative-radius arguments in the X/Psi traces.
 
-The radial Green/current Pauli coefficient bridges and their Fourier-harmonic identities live in
-`Disorder.FiniteBroadeningBornRadialRealSpacePropagator` / `GaussianCrossedRadialCoefficients`
-and `GaussianCrossedRadialHarmonics` respectively. This trace
-module consumes them and reuses the canonical topology from `GaussianCrossedTrace`; it does not
-redefine the `X` / `Psi` matrix products. The module retains the first-harmonic Fourier reduction and the Green/current minor identities
-consumed by the antisymmetric Hall trace. No real-space angular integration, cutoff removal, broadening/disorder limit, or
-conductivity normalization is introduced here.
+The module retains the first-harmonic Fourier recurrence, Green/current Pauli minor
+identities needed by the antisymmetric Hall reduction, and the Cartesian-to-radial-axis
+trace bridge. The Fourier coefficients are owned by the disorder propagator and
+`GaussianCrossed.RadialCoefficients` / `GaussianCrossed.RadialHarmonics` layers.
+
+No real-space angular integration, regulator limit, or conductivity normalization is
+introduced here.
 -/
 
 namespace QuantumTheory.Models.MassiveDirac
