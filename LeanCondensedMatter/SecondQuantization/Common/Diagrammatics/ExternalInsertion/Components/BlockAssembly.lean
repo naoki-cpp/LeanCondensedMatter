@@ -782,10 +782,10 @@ diagrams by their independent local labelled diagrams. This is the
 diagram-pairing sum conversion underlying fixed-order Dyson-fiber sums;
 the integrand can be the physical integrated amplitude itself. -/
 theorem ExternalInsertionBlockLayout.sum_blockRespecting_eq_sum_local
-    {ExternalLabel InternalLabel : Type*}
-    [Finite ExternalLabel] [Finite InternalLabel]
+    {ExternalLabel InternalLabel M : Type*}
+    [Fintype ExternalLabel] [Fintype InternalLabel] [AddCommMonoid M]
     (layout : ExternalInsertionBlockLayout E N) (S : Finset (Fin N))
-    (weight : ExternalInsertionDiagram ExternalLabel InternalLabel E N S → ℂ) :
+    (weight : ExternalInsertionDiagram ExternalLabel InternalLabel E N S → M) :
     (∑ d : {d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S //
         ∀ leg, (layout.legEquiv S (d.pairing.partner leg)).1 =
           (layout.legEquiv S leg).1}, weight d.1) =
