@@ -185,6 +185,7 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrent_z_minor_eq_k0
       hbroadening hdisorder hpMax
   dsimp only at h ⊢
   rcases h with ⟨_, _, hzX, hzY⟩
+  dsimp only [finiteCutoffContinuumBornDysonRadialPauliData] at hzX hzY
   rw [gaussianCrossedRadialFirstHarmonicIntegral_eq_difference hbar pMax radius] at hzX hzY
   rw [hzX, hzY]
   ring
