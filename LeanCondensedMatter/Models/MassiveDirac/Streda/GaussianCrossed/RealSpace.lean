@@ -536,6 +536,7 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceCurrentBlock_polar
       AngularHarmonicCoefficients.eval, Matrix.add_apply, Matrix.smul_apply, smul_eq_mul]
   rw [hfield]
   simpa [finiteCutoffContinuumBornDysonGaussianCrossedAngularCurrentEntryKernel,
+    finiteCutoffContinuumBornDysonRadialPauliData,
     factor, coefficients, harmonics, entryHarmonics, aA, bA, dA, aR, bR, dR] using
     (finiteCutoffPhysicalMomentumPolarFourier_polarPoint2D_harmonics
       hbar pMax radius angle (entryHarmonics i j))
