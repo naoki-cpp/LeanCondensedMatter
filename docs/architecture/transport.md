@@ -385,8 +385,9 @@ integrals with a complex prefactor. These laws use Mathlib's integral addition,
 subtraction, division, and constant-multiplication results; no additional linear-map
 representation is needed. `Disorder.FiniteBroadeningBornRadialRealSpacePropagator`
 owns the radial Green coefficient integration laws, while
-`Streda.GaussianCrossed.RadialCoefficients` owns the crossed-current laws. Both consume
-the same model-independent Pauli integration laws with explicit entrywise integrability.
+`Streda.GaussianCrossed.RealSpace` owns the crossed-current coefficient integration laws
+alongside their pointwise kernels. Both models use the same model-independent Pauli
+integration identities with explicit entrywise integrability.
 
 Concrete models may consume generic Transport and Analysis results, but reusable mathematics or
 transport infrastructure should be moved upstream rather than duplicated in a concrete model.
