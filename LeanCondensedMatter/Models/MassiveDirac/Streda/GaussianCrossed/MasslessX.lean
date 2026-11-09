@@ -1,6 +1,6 @@
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.UltravioletSelfEnergy
 import LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.GreenGeneratorMinors
-import LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.RadialCoefficients
+import LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.RealSpace
 
 set_option linter.style.header false
 
