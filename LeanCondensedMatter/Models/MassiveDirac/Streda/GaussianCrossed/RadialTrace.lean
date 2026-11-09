@@ -13,10 +13,10 @@ This module specializes the canonical Gaussian crossed `X` / `Psi` trace topolog
 one-dimensional radial Green and current blocks. The massive-Dirac inversion laws handle
 the negative-radius arguments in the X/Psi traces.
 
-The module retains the first-harmonic Fourier recurrence, Green/current Pauli minor
-identities needed by the antisymmetric Hall reduction, and the Cartesian-to-radial-axis
-trace bridge. The Fourier coefficients are owned by the disorder propagator and
-`GaussianCrossed.RadialCoefficients` / `GaussianCrossed.RadialHarmonics` layers.
+The first-harmonic Fourier recurrence gives K0-K2 moment identities for Green/current
+Pauli minors in the antisymmetric Hall trace. The Cartesian-to-radial-axis identity
+relates the two-dimensional trace to its radial form. Fourier coefficient properties
+are supplied by the radial Green propagator and Gaussian-crossed harmonic layers.
 
 No real-space angular integration, regulator limit, or conductivity normalization is
 introduced here.
@@ -47,8 +47,8 @@ noncomputable def finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel
         source v m probeEnergy broadening disorderStrength hbar pMax ρ)
     radius
 
-/-- Local normalized radial Fourier recurrence consumed by the X and Psi trace reductions.
-The public upstream identity retains its division-free normalization. -/
+/-- The first-cosine Fourier moment equals a K0-K2 moment multiplied by
+`i * (radius / hbar) / 2`. The identity requires no nonzero-radius hypothesis. -/
 private theorem gaussianCrossedRadialFirstHarmonicIntegral_eq_difference
     (hbar pMax radius : ℝ) (f : ℝ → ℂ) :
     (∫ p in (0 : ℝ)..pMax,
@@ -64,9 +64,8 @@ private theorem gaussianCrossedRadialFirstHarmonicIntegral_eq_difference
   linear_combination (1 / 2 : ℂ) * h
 
 /-- At negative real-space radius, the retarded or advanced Green Pauli-x
-coefficient is a single K0-K2 momentum moment times the exact K1
-Fourier recurrence factor. This does not alter the Fourier momentum
-measure or take a regulator limit. -/
+coefficient is a K0-K2 momentum moment times the first-harmonic Fourier factor.
+The identity holds at finite cutoff and broadening with the physical momentum measure. -/
 theorem finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient_x_negRadius_eq_k0_sub_k2
     (side : SpectralSide)
     (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ)
@@ -94,10 +93,8 @@ theorem finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient_x_negRadius_eq
   rw [h]
   ring
 
-/-- The second independent X Hall Green minor combines a Pauli-x and
-a Pauli-scalar coefficient at negative real-space radius. The common
-K1 factor reduces to a K0-K2 momentum moment without adding a new
-Fourier measure or changing any finite regulator. -/
+/-- The scalar-x Green minor in the X Hall trace is a K0-K2 momentum
+moment times the common first-harmonic Fourier factor at finite regulators. -/
 theorem finiteCutoffContinuumBornDysonRadialGreen_ra_scalar_x_minor_eq_k0_sub_k2
     (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ)
     (hbroadening : broadening ≠ 0) (hdisorder : 0 ≤ disorderStrength)
@@ -137,9 +134,9 @@ theorem finiteCutoffContinuumBornDysonRadialGreen_ra_scalar_x_minor_eq_k0_sub_k2
 trace has a common first-harmonic factor. The two source-z current coefficients
 reduce from K1 to K0-K2 momentum integrals via the exact Fourier recurrence.
 
-The factor `i (radius / hbar) / 2` is retained without dividing by radius
-or assuming `hbar ≠ 0`. The finite cutoff, broadening, transverse current,
-and physical momentum measure remain unchanged. -/
+The identity uses the factor `i (radius / hbar) / 2` without imposing
+`hbar ≠ 0` or a nonzero-radius hypothesis. Each current block carries its
+physical momentum-measure prefactor. -/
 theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrent_z_minor_eq_k0_sub_k2
     (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ)
     (hbroadening : broadening ≠ 0) (hdisorder : 0 ≤ disorderStrength)
@@ -197,9 +194,9 @@ amplitude has only K0 and K2 momentum moments. The first-harmonic
 in-plane components share the explicit factor `i * (radius / hbar) / 2`,
 which is factored out before the remaining real-space radius integral.
 
-This identity keeps the physical Fourier momentum measure in *each* Green
-block. It makes no assumption about the sign of `radius`, removes no
-regulator, and does not evaluate the remaining radial integral. -/
+The identity is pointwise in the real-space radius at finite regulators,
+with a physical Fourier momentum-measure prefactor in each Green block.
+The real-space radial integral is not evaluated. -/
 theorem finiteCutoffContinuumBornDysonRadialGreen_ra_xz_minor_eq_harmonic_moments
     (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ)
     (hbroadening : broadening ≠ 0) (hdisorder : 0 ≤ disorderStrength)
@@ -258,8 +255,8 @@ theorem finiteCutoffContinuumBornDysonRadialGreen_ra_xz_minor_eq_harmonic_moment
   rw [hRx, hAx, hRz, hAz]
   ring
 
-/-- On the real-space radial axis, the two-dimensional crossed trace kernel is exactly the radial
-trace kernel assembled from the already reduced Green and current blocks. -/
+/-- On the real-space radial axis, the two-dimensional crossed trace kernel equals
+the trace of the radial Green and current blocks. -/
 theorem finiteCutoffContinuumBornDysonGaussianCrossedTraceKernel_radialAxis_eq
     (diagram : GaussianCrossedDiagram)
     (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ) :
@@ -277,8 +274,8 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedTraceKernel_radialAxis_eq
     simp only [finiteCutoffContinuumBornDysonGaussianCrossedRealSpaceCurrentBlock_radialAxis_eq,
       finiteCutoffContinuumBornDysonRealSpaceGreenMatrix_radialAxis_eq]
 
-/-- The radial `Psi` trace kernel remains real because its Hermitian-conjugate partner is included at
-trace level. -/
+/-- The radial `Psi` trace kernel is real because its definition includes the
+Hermitian-conjugate partner. -/
 @[simp] theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel_psi_im
     (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ) :
     (finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceKernel
