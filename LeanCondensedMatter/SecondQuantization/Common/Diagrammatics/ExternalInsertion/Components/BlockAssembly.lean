@@ -794,15 +794,9 @@ theorem ExternalInsertionBlockLayout.sum_blockRespecting_eq_sum_local
             ((B : Finset (Fin (2 * E))).card / 2) N (layout.interactionBlock S B),
         weight (layout.assembleDiagram S F) := by
   classical
-  letI : Fintype (∀ B : layout.partition.parts,
-        ExternalInsertionDiagram ExternalLabel InternalLabel
-          ((B : Finset (Fin (2 * E))).card / 2) N
-          (layout.interactionBlock S B)) := Fintype.ofFinite _
-  letI : Fintype {d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S //
-        ∀ leg, (layout.legEquiv S (d.pairing.partner leg)).1 =
-          (layout.legEquiv S leg).1} := Fintype.ofFinite _
-  exact (Equiv.sum_comp (layout.assemblyEquivBlockRespecting S)
-    (fun d => weight d.1)).symm
+  simpa only [layout.assemblyEquivBlockRespecting_apply] using
+    (Equiv.sum_comp (layout.assemblyEquivBlockRespecting S)
+      (fun d => weight d.1)).symm
 
 /-- The assembled diagram has prescribed external field labels exactly
 when every local block carries the induced increasing-order restriction
@@ -829,6 +823,9 @@ theorem ExternalInsertionBlockLayout.assembleDiagram_externalLabel_eq_iff
       (layout.sourceEquiv e).2
     change (F (layout.sourceEquiv e).1).externalLabel
       (layout.sourceEquiv e).2 = labels e
+    change (F (layout.sourceEquiv e).1).externalLabel
+      (layout.sourceEquiv e).2 =
+        labels (layout.sourceEquiv.symm (layout.sourceEquiv e)) at he
     simpa only [Equiv.symm_apply_apply] using he
 
 /-- Blockwise assembly remains an exact equivalence after *fixing* the
@@ -868,6 +865,7 @@ noncomputable def ExternalInsertionBlockLayout.assemblyEquivBlockRespectingFixed
 over independently chosen local labels and pairings with those exact
 external field labels. In particular, the weight may be the integrated
 Dyson amplitude at one fixed perturbative order. -/
+open Classical in
 theorem ExternalInsertionBlockLayout.sum_blockRespectingFixedLabels_eq_sum_local
     {ExternalLabel InternalLabel M : Type*}
     [Fintype ExternalLabel] [Fintype InternalLabel] [AddCommMonoid M]
@@ -885,17 +883,9 @@ theorem ExternalInsertionBlockLayout.sum_blockRespectingFixedLabels_eq_sum_local
           fun i => labels (layout.sourceEquiv.symm ⟨B, i⟩)},
         weight (layout.assembleDiagram S F.1) := by
   classical
-  letI : Fintype {F : ∀ B : layout.partition.parts,
-        ExternalInsertionDiagram ExternalLabel InternalLabel
-          ((B : Finset (Fin (2 * E))).card / 2) N (layout.interactionBlock S B) //
-      ∀ B : layout.partition.parts,
-        (F B).externalLabel =
-          fun i => labels (layout.sourceEquiv.symm ⟨B, i⟩)} := Fintype.ofFinite _
-  letI : Fintype {d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S //
-      (∀ leg, (layout.legEquiv S (d.pairing.partner leg)).1 =
-        (layout.legEquiv S leg).1) ∧ d.externalLabel = labels} := Fintype.ofFinite _
-  exact (Equiv.sum_comp (layout.assemblyEquivBlockRespectingFixedLabels S labels)
-    (fun d => weight d.1)).symm
+  simpa only [ExternalInsertionBlockLayout.assemblyEquivBlockRespectingFixedLabels]
+    using (Equiv.sum_comp (layout.assemblyEquivBlockRespectingFixedLabels S labels)
+      (fun d => weight d.1)).symm
 
 /-- A vacuum-free *physical* external-insertion diagram canonically determines
 an independent external-block layout. For occupied interaction vertices the
