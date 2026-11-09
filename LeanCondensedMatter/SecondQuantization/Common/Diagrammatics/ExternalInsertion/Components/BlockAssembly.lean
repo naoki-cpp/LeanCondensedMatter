@@ -745,6 +745,65 @@ theorem ExternalInsertionBlockLayout.restrictBlock_assembleDiagram
     (layout.assembleDiagram S F) (layout.assembleDiagram_partner_block S F)
 
 
+/-- The complete family of block-local labelled pairings is equivalent
+to the global labelled diagrams whose propagators respect the prescribed
+external-block layout. Both sides retain every external/interaction label
+and every pairing partner. -/
+noncomputable def ExternalInsertionBlockLayout.assemblyEquivBlockRespecting
+    {ExternalLabel InternalLabel : Type*}
+    (layout : ExternalInsertionBlockLayout E N) (S : Finset (Fin N)) :
+    (∀ B : layout.partition.parts,
+      ExternalInsertionDiagram ExternalLabel InternalLabel
+        ((B : Finset (Fin (2 * E))).card / 2) N (layout.interactionBlock S B)) ≃
+    {d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S //
+      ∀ leg, (layout.legEquiv S (d.pairing.partner leg)).1 =
+        (layout.legEquiv S leg).1} where
+  toFun F := ⟨layout.assembleDiagram S F, layout.assembleDiagram_partner_block S F⟩
+  invFun d := layout.restrictBlock S d.1 d.2
+  left_inv F := layout.restrictBlock_assembleDiagram S F
+  right_inv d := by
+    apply Subtype.ext
+    exact layout.assembleDiagram_restrictBlock S d.1 d.2
+
+/-- The block-assembly equivalence recovers the *exact* original physical
+diagram from the inverse image, rather than only its connected partition. -/
+@[simp]
+theorem ExternalInsertionBlockLayout.assemblyEquivBlockRespecting_apply
+    {ExternalLabel InternalLabel : Type*}
+    (layout : ExternalInsertionBlockLayout E N) (S : Finset (Fin N))
+    (F : ∀ B : layout.partition.parts,
+      ExternalInsertionDiagram ExternalLabel InternalLabel
+        ((B : Finset (Fin (2 * E))).card / 2) N (layout.interactionBlock S B)) :
+    (layout.assemblyEquivBlockRespecting S F).1 = layout.assembleDiagram S F :=
+  rfl
+
+/-- Reindex *any* finite weighted sum of block-respecting physical
+diagrams by their independent local labelled diagrams. This is the
+diagram-pairing sum conversion underlying fixed-order Dyson-fiber sums;
+the integrand can be the physical integrated amplitude itself. -/
+theorem ExternalInsertionBlockLayout.sum_blockRespecting_eq_sum_local
+    {ExternalLabel InternalLabel : Type*}
+    [Finite ExternalLabel] [Finite InternalLabel]
+    (layout : ExternalInsertionBlockLayout E N) (S : Finset (Fin N))
+    (weight : ExternalInsertionDiagram ExternalLabel InternalLabel E N S → ℂ) :
+    (∑ d : {d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S //
+        ∀ leg, (layout.legEquiv S (d.pairing.partner leg)).1 =
+          (layout.legEquiv S leg).1}, weight d.1) =
+      ∑ F : ∀ B : layout.partition.parts,
+          ExternalInsertionDiagram ExternalLabel InternalLabel
+            ((B : Finset (Fin (2 * E))).card / 2) N (layout.interactionBlock S B),
+        weight (layout.assembleDiagram S F) := by
+  classical
+  letI : Fintype (∀ B : layout.partition.parts,
+        ExternalInsertionDiagram ExternalLabel InternalLabel
+          ((B : Finset (Fin (2 * E))).card / 2) N
+          (layout.interactionBlock S B)) := Fintype.ofFinite _
+  letI : Fintype {d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S //
+        ∀ leg, (layout.legEquiv S (d.pairing.partner leg)).1 =
+          (layout.legEquiv S leg).1} := Fintype.ofFinite _
+  exact (Equiv.sum_comp (layout.assemblyEquivBlockRespecting S)
+    (fun d => weight d.1)).symm
+
 /-- A vacuum-free *physical* external-insertion diagram canonically determines
 an independent external-block layout. For occupied interaction vertices the
 owner is their actual graph component, transported to the external partition.
