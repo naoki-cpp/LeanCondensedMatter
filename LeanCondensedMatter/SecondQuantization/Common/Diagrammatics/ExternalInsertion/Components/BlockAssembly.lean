@@ -16,9 +16,10 @@ Unlike restricting the components of a pre-existing diagram, this construction
 starts from the external source partition and an independent interaction-slot
 assignment. It is statistics-independent.
 
-A further connectedness theorem is needed to identify these blocks with the
-graph components of the assembled pairing; no such assertion is built into the
-layout or the assembly definitions.
+For preconnected local vertex graphs, the assembled pairing has exactly the
+prescribed external-component partition. Conversely, a vacuum-free physical
+diagram with a chosen external anchor determines a block layout whose
+restrictions reassemble the original labels and pairing.
 -/
 
 namespace SecondQuantization
