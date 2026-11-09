@@ -266,13 +266,13 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficie
     congr 1
     apply intervalIntegral.integral_congr
     intro p _
-    dsimp only
+    dsimp only [finiteCutoffContinuumBornDysonRadialPauliData]
     rw [finiteCutoffContinuumBornDysonRadial_ra_scalar_sub_z_product_eq]
   · rw [h.2]
     congr 1
     apply intervalIntegral.integral_congr
     intro p _
-    dsimp only
+    dsimp only [finiteCutoffContinuumBornDysonRadialPauliData]
     rw [finiteCutoffContinuumBornDysonRadial_ra_x_product_eq]
 
 /-- The two physical diagonal crossed-current harmonics, after multiplication
