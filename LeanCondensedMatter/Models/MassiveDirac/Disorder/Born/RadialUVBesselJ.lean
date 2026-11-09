@@ -1,24 +1,20 @@
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornRadialFrozenUV
+import LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVSpectralConjugation
 
 set_option linter.style.header false
 
 /-!
-# Exact Bessel-J representation of the cutoff-independent massive-Dirac Green kernel
+# Massive-Dirac radial UV Fourier value in the Bessel-J representation
 
-The ultraviolet finite part established in `Born.RadialUVFinitePart` is
-written entirely in Mathlib's **actual first-kind Bessel functions**
-`Complex.besselJ 0` and `Complex.besselJ 1`, not the abstract polar
-angular Fourier kernels. It depends on the complex *spectral center*
-`s = E²-M²`, allowing its later identification with an outgoing
-Hankel function of `sqrt(s) r / v`.
+The cutoff-independent radial Fourier UV value is expressed in terms of
+`Complex.besselJ 0` and `Complex.besselJ 1` at the quadratic spectral center
+`s = E² - M²`. The order-one tail integral is absolutely convergent.
+The normalization is fixed by the polar Fourier kernels.
 
-The order-one Bessel integral is absolutely convergent on the UV tail.
-No arbitrary Bessel-Y function, Wronskian assumption, or unproved
-Hankel identity is used. This provides an exact, normalized analytic
-boundary for the remaining Hankel-Y identification in Phase 7.
+The Born effective energy and mass are held fixed during the outer momentum
+UV limit. Schwarz reflection follows from the finite-cutoff conjugation
+identity and uniqueness of the spectral UV limit.
 
-The physically cut-off Born effective parameters are **frozen** during
-the outer momentum-UV limit. No diagonal Born cutoff limit is claimed.
 -/
 
 namespace QuantumTheory.Models.MassiveDirac
@@ -27,12 +23,11 @@ noncomputable section
 
 open QuantumTheory.Transport
 open MeasureTheory
-open scoped Interval
+open scoped Interval ComplexConjugate
 
 /-- Fully explicit Bessel-J form of the massive-Dirac Fourier UV finite
 part, parametrized by the complex quadratic spectral center rather
-than separate energy and mass. The factors of `2π` and `i` are
-inherited from the exact full-angle Fourier–Bessel identities. -/
+than separate energy and mass. The factors of `2π` and `i` follow from the full-angle Fourier–Bessel identities. -/
 noncomputable def massiveDiracRadialBesselJCenterUVFinitePartAt
     (v c a : ℝ) (center : ℂ) : ℂ :=
   (∫ p in (0 : ℝ)..a,
@@ -73,9 +68,7 @@ noncomputable def massiveDiracRadialBesselJCenterUVValue
   massiveDiracRadialBesselJCenterUVFinitePartAt
     v c (max (1 : ℝ) (2 * ‖center‖ / v ^ 2)) center
 
-/-- The existing explicitly evaluated Fourier UV finite part is
-precisely the Bessel-J spectral-center value, not an unrelated
-model of the Green function or a hypothesized Hankel boundary. -/
+/-- The Fourier UV finite part equals the Bessel-J spectral-center value. -/
 theorem massiveDiracRadialFourierUVValue_eq_besselJCenter
     (v c : ℝ) (energy mass : ℂ) :
     massiveDiracRadialFourierUVValue v c energy mass =
@@ -107,10 +100,8 @@ theorem massiveDiracRadialBesselJ_tendsto_uvValue
   simpa only [polarFourierZerothAngularKernel_eq_besselJ,
     massiveDiracRadialDenominator] using hlimit
 
-/-- The finite-Born reference-cutoff radial Green UV value inherits
-exactly the same canonical Bessel-J spectral center. The physical
-momentum-measure prefactor is carried once, unchanged from the
-original finite-cutoff propagator. -/
+/-- The finite-Born reference-cutoff radial Green UV value has the same
+Bessel-J spectral center and one physical momentum-measure prefactor. -/
 theorem finiteCutoffContinuumBornDysonRadialFrozenUVValue_eq_besselJCenter
     (side : SpectralSide)
     (v m probeEnergy broadening disorderStrength hbar pRef radius : ℝ) :
@@ -125,6 +116,34 @@ theorem finiteCutoffContinuumBornDysonRadialFrozenUVValue_eq_besselJCenter
   unfold finiteCutoffContinuumBornDysonRadialFrozenUVValue
   dsimp only
   rw [massiveDiracRadialFourierUVValue_eq_besselJCenter]
+
+
+/-- Schwarz reflection of the Bessel-J spectral-center UV value under
+complex conjugation of the spectral parameters `energy` and `mass`.
+The hypothesis excludes a real quadratic spectral center. -/
+theorem massiveDiracRadialBesselJCenterUVValue_conj_of_energy_mass
+    (v c : ℝ) (energy mass : ℂ)
+    (hv : v ≠ 0) (hc : c ≠ 0)
+    (hcenter : (energy ^ 2 - mass ^ 2).im ≠ 0) :
+    conj (massiveDiracRadialBesselJCenterUVValue
+      v c (energy ^ 2 - mass ^ 2)) =
+    massiveDiracRadialBesselJCenterUVValue
+      v c (conj (energy ^ 2 - mass ^ 2)) := by
+  calc
+    conj (massiveDiracRadialBesselJCenterUVValue
+      v c (energy ^ 2 - mass ^ 2)) =
+        conj (massiveDiracRadialFourierUVValue v c energy mass) := by
+      rw [massiveDiracRadialFourierUVValue_eq_besselJCenter]
+    _ = massiveDiracRadialFourierUVValue
+          v c (conj energy) (conj mass) :=
+      massiveDiracRadialFourierUVValue_conj v c energy mass hv hc hcenter
+    _ = massiveDiracRadialBesselJCenterUVValue
+          v c ((conj energy) ^ 2 - (conj mass) ^ 2) :=
+      massiveDiracRadialFourierUVValue_eq_besselJCenter
+        v c (conj energy) (conj mass)
+    _ = massiveDiracRadialBesselJCenterUVValue
+          v c (conj (energy ^ 2 - mass ^ 2)) := by
+      simp only [map_sub, map_pow]
 
 end
 
