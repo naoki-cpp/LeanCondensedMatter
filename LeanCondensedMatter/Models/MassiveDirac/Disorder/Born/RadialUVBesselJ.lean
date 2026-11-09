@@ -49,12 +49,11 @@ noncomputable def massiveDiracRadialBesselJCenterUVFinitePartAt
 /-- No assumptions are needed for the finite-part change of basis:
 the result is *exactly* the full-angle Bessel J0/J1 transform with
 its spectral center `E²-M²`, including both UV boundary terms. -/
-theorem massiveDiracRadialFourierUVFinitePartAt_eq_besselJCenter
-    (v c a : ℝ) (energy mass : ℂ) :
-    massiveDiracRadialFourierUVFinitePartAt v c a energy mass =
-      massiveDiracRadialBesselJCenterUVFinitePartAt
-        v c a (energy ^ 2 - mass ^ 2) := by
-  unfold massiveDiracRadialFourierUVFinitePartAt
+theorem massiveDiracRadialFourierUVFinitePartCenter_eq_besselJCenter
+    (v c a : ℝ) (center : ℂ) :
+    massiveDiracRadialFourierUVFinitePartCenter v c a center =
+      massiveDiracRadialBesselJCenterUVFinitePartAt v c a center := by
+  unfold massiveDiracRadialFourierUVFinitePartCenter
     massiveDiracRadialBesselJCenterUVFinitePartAt
   simp_rw [polarFourierZerothAngularKernel_eq_besselJ,
     polarFourierFirstCosineAngularKernel_eq_besselJ]
@@ -69,14 +68,13 @@ noncomputable def massiveDiracRadialBesselJCenterUVValue
     v c (max (1 : ℝ) (2 * ‖center‖ / v ^ 2)) center
 
 /-- The Fourier UV finite part equals the Bessel-J spectral-center value. -/
-theorem massiveDiracRadialFourierUVValue_eq_besselJCenter
-    (v c : ℝ) (energy mass : ℂ) :
-    massiveDiracRadialFourierUVValue v c energy mass =
-      massiveDiracRadialBesselJCenterUVValue
-        v c (energy ^ 2 - mass ^ 2) := by
-  unfold massiveDiracRadialFourierUVValue massiveDiracRadialBesselJCenterUVValue
-  exact massiveDiracRadialFourierUVFinitePartAt_eq_besselJCenter
-    v c (max (1 : ℝ) (2 * ‖energy ^ 2 - mass ^ 2‖ / v ^ 2)) energy mass
+theorem massiveDiracRadialFourierUVCenter_eq_besselJCenter
+    (v c : ℝ) (center : ℂ) :
+    massiveDiracRadialFourierUVCenter v c center =
+      massiveDiracRadialBesselJCenterUVValue v c center := by
+  unfold massiveDiracRadialFourierUVCenter massiveDiracRadialBesselJCenterUVValue
+  exact massiveDiracRadialFourierUVFinitePartCenter_eq_besselJCenter
+    v c (max (1 : ℝ) (2 * ‖center‖ / v ^ 2)) center
 
 /-- Exact order-zero Bessel-J resolvent UV limit, with an explicitly
 identified finite part and a standard complex spectral branch condition.
@@ -96,7 +94,7 @@ theorem massiveDiracRadialBesselJ_tendsto_uvValue
         v c (energy ^ 2 - mass ^ 2))) := by
   have hlimit := massiveDiracRadialFourier_tendsto_uvValue
     v c energy mass hv hc hcenter
-  rw [massiveDiracRadialFourierUVValue_eq_besselJCenter] at hlimit
+  rw [massiveDiracRadialFourierUVCenter_eq_besselJCenter] at hlimit
   simpa only [polarFourierZerothAngularKernel_eq_besselJ,
     massiveDiracRadialDenominator] using hlimit
 
@@ -115,35 +113,26 @@ theorem finiteCutoffContinuumBornDysonRadialFrozenUVValue_eq_besselJCenter
               side v m probeEnergy broadening disorderStrength hbar pRef) ^ 2) := by
   unfold finiteCutoffContinuumBornDysonRadialFrozenUVValue
   dsimp only
-  rw [massiveDiracRadialFourierUVValue_eq_besselJCenter]
+  rw [massiveDiracRadialFourierUVCenter_eq_besselJCenter]
 
 
 /-- Schwarz reflection of the Bessel-J spectral-center UV value under
 complex conjugation of the spectral parameters `energy` and `mass`.
 The hypothesis excludes a real quadratic spectral center. -/
-theorem massiveDiracRadialBesselJCenterUVValue_conj_of_energy_mass
-    (v c : ℝ) (energy mass : ℂ)
+theorem massiveDiracRadialBesselJCenterUVValue_conj
+    (v c : ℝ) (center : ℂ)
     (hv : v ≠ 0) (hc : c ≠ 0)
-    (hcenter : (energy ^ 2 - mass ^ 2).im ≠ 0) :
-    conj (massiveDiracRadialBesselJCenterUVValue
-      v c (energy ^ 2 - mass ^ 2)) =
-    massiveDiracRadialBesselJCenterUVValue
-      v c (conj (energy ^ 2 - mass ^ 2)) := by
+    (hcenter : center.im ≠ 0) :
+    conj (massiveDiracRadialBesselJCenterUVValue v c center) =
+      massiveDiracRadialBesselJCenterUVValue v c (conj center) := by
   calc
-    conj (massiveDiracRadialBesselJCenterUVValue
-      v c (energy ^ 2 - mass ^ 2)) =
-        conj (massiveDiracRadialFourierUVValue v c energy mass) := by
-      rw [massiveDiracRadialFourierUVValue_eq_besselJCenter]
-    _ = massiveDiracRadialFourierUVValue
-          v c (conj energy) (conj mass) :=
-      massiveDiracRadialFourierUVValue_conj v c energy mass hv hc hcenter
-    _ = massiveDiracRadialBesselJCenterUVValue
-          v c ((conj energy) ^ 2 - (conj mass) ^ 2) :=
-      massiveDiracRadialFourierUVValue_eq_besselJCenter
-        v c (conj energy) (conj mass)
-    _ = massiveDiracRadialBesselJCenterUVValue
-          v c (conj (energy ^ 2 - mass ^ 2)) := by
-      simp only [map_sub, map_pow]
+    conj (massiveDiracRadialBesselJCenterUVValue v c center) =
+        conj (massiveDiracRadialFourierUVCenter v c center) := by
+      rw [massiveDiracRadialFourierUVCenter_eq_besselJCenter]
+    _ = massiveDiracRadialFourierUVCenter v c (conj center) :=
+      massiveDiracRadialFourierUVCenter_conj v c center hv hc hcenter
+    _ = massiveDiracRadialBesselJCenterUVValue v c (conj center) :=
+      massiveDiracRadialFourierUVCenter_eq_besselJCenter v c (conj center)
 
 end
 

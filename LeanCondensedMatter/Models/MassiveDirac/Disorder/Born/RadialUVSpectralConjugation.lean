@@ -68,12 +68,12 @@ theorem integral_massiveDiracRadialFourier_conj
 conjugation of its fixed energy and mass arguments, at a nonreal
 quadratic spectral center. The proof uses actual cutoff-integral
 conjugation and uniqueness of the previously proved limits. -/
-theorem massiveDiracRadialFourierUVValue_conj
+private theorem massiveDiracRadialFourierUVCenter_conj_of_energy_mass
     (v c : ℝ) (energy mass : ℂ)
     (hv : v ≠ 0) (hc : c ≠ 0)
     (hcenter : (energy ^ 2 - mass ^ 2).im ≠ 0) :
-    conj (massiveDiracRadialFourierUVValue v c energy mass) =
-      massiveDiracRadialFourierUVValue v c (conj energy) (conj mass) := by
+    conj (massiveDiracRadialFourierUVCenter v c (energy ^ 2 - mass ^ 2)) =
+      massiveDiracRadialFourierUVCenter v c ((conj energy) ^ 2 - (conj mass) ^ 2) := by
   have hcenterStar :
       ((conj energy) ^ 2 - (conj mass) ^ 2).im ≠ 0 := by
     have hstar :
@@ -92,7 +92,7 @@ theorem massiveDiracRadialFourierUVValue_conj
           (p : ℂ) * polarFourierZerothAngularKernel (p * c) *
             (massiveDiracRadialDenominator v p energy mass)⁻¹))
         Filter.atTop
-        (nhds (conj (massiveDiracRadialFourierUVValue v c energy mass))) :=
+        (nhds (conj (massiveDiracRadialFourierUVCenter v c (energy ^ 2 - mass ^ 2)))) :=
     (Complex.continuous_conj.tendsto _).comp hret
   have hpoint (b : ℝ) :
       conj (∫ p in (0 : ℝ)..b,
@@ -122,10 +122,9 @@ theorem massiveDiracRadialFourierUVCenter_conj
   have hnonreal : (energy ^ 2 - (0 : ℂ) ^ 2).im ≠ 0 := by
     rw [hcenterEq]
     exact hcenter
-  have h := massiveDiracRadialFourierUVValue_conj
+  have h := massiveDiracRadialFourierUVCenter_conj_of_energy_mass
     v c energy 0 hv hc hnonreal
-  rw [massiveDiracRadialFourierUVValue_eq_center,
-    massiveDiracRadialFourierUVValue_eq_center, hcenterEq, hconjEq] at h
+  rw [hcenterEq, hconjEq] at h
   exact h
 
 end

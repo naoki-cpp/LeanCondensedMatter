@@ -20,7 +20,7 @@ for later outgoing/Hankel boundary identification.
 
 The spectral energy and mass here are *fixed*. The physical Born
 self-energy at nonzero disorder diverges in the unrenormalized UV
-limit (#4509); the conclusions below must not be applied to running
+limit; the conclusions below must not be applied to running
 finite-cutoff Born effective parameters without a separately proved
 renormalization/uniform-convergence result.
 -/
@@ -37,17 +37,17 @@ open scoped Interval
 K0 kernel from zero to an auxiliary scale and integrating the K1 tail
 by parts. The UV remainder is absolutely integrable under the hypotheses
 of the corresponding convergence theorem. -/
-noncomputable def massiveDiracRadialFourierUVFinitePartAt
-    (v c a : ℝ) (energy mass : ℂ) : ℂ :=
+noncomputable def massiveDiracRadialFourierUVFinitePartCenter
+    (v c a : ℝ) (center : ℂ) : ℂ :=
   (∫ p in (0 : ℝ)..a,
       (p : ℂ) * polarFourierZerothAngularKernel (p * c) *
-        (massiveDiracRadialDenominator v p energy mass)⁻¹) +
+        (center - ((v ^ 2 * p ^ 2 : ℝ) : ℂ))⁻¹) +
     ((-((a : ℂ) * polarFourierFirstCosineAngularKernel (a * c) *
-        (massiveDiracRadialDenominator v a energy mass)⁻¹) -
+        (center - ((v ^ 2 * a ^ 2 : ℝ) : ℂ))⁻¹) -
       ∫ p in Set.Ioi a,
         (p : ℂ) * polarFourierFirstCosineAngularKernel (p * c) *
           ((2 : ℂ) * (v : ℂ) ^ 2 * (p : ℂ) *
-            (massiveDiracRadialDenominator v p energy mass)⁻¹ ^ 2)) /
+            (center - ((v ^ 2 * p ^ 2 : ℝ) : ℂ))⁻¹ ^ 2)) /
       (Complex.I * (c : ℂ)))
 
 /-- The finite-part expression is exactly the cutoff limit of the
@@ -64,7 +64,7 @@ theorem massiveDiracRadialFourier_tendsto_uvFinitePartAt
         (p : ℂ) * polarFourierZerothAngularKernel (p * c) *
           (massiveDiracRadialDenominator v p energy mass)⁻¹)
       Filter.atTop (nhds
-        (massiveDiracRadialFourierUVFinitePartAt v c a energy mass)) := by
+        (massiveDiracRadialFourierUVFinitePartCenter v c a (energy ^ 2 - mass ^ 2))) := by
   let f : ℝ → ℂ := fun p =>
     (p : ℂ) * polarFourierZerothAngularKernel (p * c) *
       (massiveDiracRadialDenominator v p energy mass)⁻¹
@@ -122,8 +122,8 @@ theorem massiveDiracRadialFourierUVFinitePartAt_eq_of_scales
     (hden : ∀ p : ℝ, massiveDiracRadialDenominator v p energy mass ≠ 0)
     (ha : max (1 : ℝ) (2 * ‖energy ^ 2 - mass ^ 2‖ / v ^ 2) ≤ a)
     (hb : max (1 : ℝ) (2 * ‖energy ^ 2 - mass ^ 2‖ / v ^ 2) ≤ b) :
-    massiveDiracRadialFourierUVFinitePartAt v c a energy mass =
-      massiveDiracRadialFourierUVFinitePartAt v c b energy mass := by
+    massiveDiracRadialFourierUVFinitePartCenter v c a (energy ^ 2 - mass ^ 2) =
+      massiveDiracRadialFourierUVFinitePartCenter v c b (energy ^ 2 - mass ^ 2) := by
   exact tendsto_nhds_unique
     (massiveDiracRadialFourier_tendsto_uvFinitePartAt
       v c a energy mass hv hc hden ha)
@@ -149,10 +149,10 @@ theorem massiveDiracRadialDenominator_ne_zero_of_center_im_ne_zero
 /-- A canonical finite-part choice of scale, just above the proved
 quadratic-dominance threshold. The resulting value does not depend
 on any other valid splitting scale. -/
-noncomputable def massiveDiracRadialFourierUVValue
-    (v c : ℝ) (energy mass : ℂ) : ℂ :=
-  massiveDiracRadialFourierUVFinitePartAt
-    v c (max (1 : ℝ) (2 * ‖energy ^ 2 - mass ^ 2‖ / v ^ 2)) energy mass
+noncomputable def massiveDiracRadialFourierUVCenter
+    (v c : ℝ) (center : ℂ) : ℂ :=
+  massiveDiracRadialFourierUVFinitePartCenter
+    v c (max (1 : ℝ) (2 * ‖center‖ / v ^ 2)) center
 
 /-- Concrete, finite and cutoff-independent Fourier UV value at any
 nonzero spatial Fourier scale, provided the spectral center remains
@@ -165,8 +165,8 @@ theorem massiveDiracRadialFourier_tendsto_uvValue
       (fun b : ℝ => ∫ p in (0 : ℝ)..b,
         (p : ℂ) * polarFourierZerothAngularKernel (p * c) *
           (massiveDiracRadialDenominator v p energy mass)⁻¹)
-      Filter.atTop (nhds (massiveDiracRadialFourierUVValue v c energy mass)) := by
-  unfold massiveDiracRadialFourierUVValue
+      Filter.atTop (nhds (massiveDiracRadialFourierUVCenter v c (energy ^ 2 - mass ^ 2))) := by
+  unfold massiveDiracRadialFourierUVCenter
   exact massiveDiracRadialFourier_tendsto_uvFinitePartAt
     v c (max (1 : ℝ) (2 * ‖energy ^ 2 - mass ^ 2‖ / v ^ 2))
     energy mass hv hc

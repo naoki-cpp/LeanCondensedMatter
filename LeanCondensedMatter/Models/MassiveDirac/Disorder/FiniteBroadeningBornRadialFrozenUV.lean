@@ -40,7 +40,7 @@ noncomputable def finiteCutoffContinuumBornDysonRadialFrozenUVValue
   let mass := finiteCutoffContinuumBornEffectiveMass
     side v m probeEnergy broadening disorderStrength hbar pRef
   (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
-    massiveDiracRadialFourierUVValue v (radius / hbar) energy mass
+    massiveDiracRadialFourierUVCenter v (radius / hbar) (energy ^ 2 - mass ^ 2)
 
 /-- At a frozen physical Born cutoff, the exact scalar Fourier Green
 kernel converges to an **explicit** UV finite-part expression,
@@ -109,8 +109,8 @@ theorem finiteCutoffContinuumBornDysonRadialFrozenKernel_tendsto_uvValue
             side v m p 0 probeEnergy broadening disorderStrength hbar pRef)⁻¹))
     Filter.atTop
     (nhds ((((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
-      massiveDiracRadialFourierUVFinitePartAt v (radius / hbar)
-        (max (1 : ℝ) (2 * ‖energy ^ 2 - mass ^ 2‖ / v ^ 2)) energy mass))
+      massiveDiracRadialFourierUVFinitePartCenter v (radius / hbar)
+        (max (1 : ℝ) (2 * ‖energy ^ 2 - mass ^ 2‖ / v ^ 2)) (energy ^ 2 - mass ^ 2)))
   exact hscaled.congr' (Filter.Eventually.of_forall fun outer => (hpoint outer).symm)
 
 end
