@@ -2990,17 +2990,7 @@
       "imports": [
         "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.UltravioletSelfEnergy",
         "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.GreenGeneratorMinors",
-        "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.RadialCoefficients"
-      ],
-      "externalImportCount": 0
-    },
-    {
-      "name": "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.RadialCoefficients",
-      "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Streda/GaussianCrossed/RadialCoefficients.lean",
-      "imports": [
-        "LeanCondensedMatter.Analysis.InternalSpace.Pauli",
-        "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.RealSpace",
-        "LeanCondensedMatter.Transport.Analysis.ContinuumMeasure"
+        "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.RealSpace"
       ],
       "externalImportCount": 0
     },
@@ -3009,7 +2999,7 @@
       "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Streda/GaussianCrossed/RadialHarmonics.lean",
       "imports": [
         "LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornRadialMoments",
-        "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.RadialCoefficients",
+        "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.RealSpace",
         "LeanCondensedMatter.Transport.Analysis.ContinuumMeasure"
       ],
       "externalImportCount": 3
@@ -3029,6 +3019,7 @@
       "name": "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.RealSpace",
       "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Streda/GaussianCrossed/RealSpace.lean",
       "imports": [
+        "LeanCondensedMatter.Analysis.InternalSpace.Pauli",
         "LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornRealSpacePropagator",
         "LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningCurrentVertexResponse",
         "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.Trace",
@@ -3070,7 +3061,6 @@
         "LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.RadialIntegrand",
         "LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.TraceBridge",
         "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.ExplicitMoments",
-        "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.RadialCoefficients",
         "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.RadialHarmonics",
         "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.RadialTrace",
         "LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.RealSpace",
