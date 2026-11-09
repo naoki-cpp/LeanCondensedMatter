@@ -116,7 +116,7 @@ theorem massiveDiracRadialFourier_tendsto_uvFinitePartAt
 /-- Independence of the arbitrary UV splitting scale. Both finite-part
 expressions are proved limits of **the same** physical K0 Fourier
 integral; their equality is not imposed as a renormalization axiom. -/
-theorem massiveDiracRadialFourierUVFinitePartAt_eq_of_scales
+theorem massiveDiracRadialFourierUVFinitePartCenter_eq_of_scales
     (v c a b : ℝ) (energy mass : ℂ)
     (hv : v ≠ 0) (hc : c ≠ 0)
     (hden : ∀ p : ℝ, massiveDiracRadialDenominator v p energy mass ≠ 0)
