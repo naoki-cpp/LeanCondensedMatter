@@ -1040,5 +1040,29 @@ theorem ExternalInsertionDiagram.restrictPhysicalBlocks_preconnected
   simp
 
 
+
+/-- Constructive decomposition of every vacuum-free physical diagram
+(with a chosen external anchor) into a family of *preconnected* local
+diagrams over its actual external-component partition. Their exact
+independent assembly returns the original diagram, including labels
+and Wick-pairing partners. This establishes the diagram-level
+surjectivity needed before summing Dyson amplitudes over fibers. -/
+theorem ExternalInsertionDiagram.exists_preconnectedPhysicalBlockAssembly
+    {ExternalLabel InternalLabel : Type*} {S : Finset (Fin N)}
+    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
+    (hVac : HasNoVacuumComponent d.vertexGraph)
+    (anchor : Fin (2 * E)) :
+    ∃ F : ∀ B : (d.externalBlockLayout hVac anchor).partition.parts,
+        ExternalInsertionDiagram ExternalLabel InternalLabel
+          ((B : Finset (Fin (2 * E))).card / 2) N
+          ((d.externalBlockLayout hVac anchor).interactionBlock S B),
+      (∀ B, (F B).vertexGraph.Preconnected) ∧
+        (d.externalBlockLayout hVac anchor).assembleDiagram S F = d := by
+  refine ⟨(d.externalBlockLayout hVac anchor).restrictBlock S d
+    (d.externalBlockLayout_partner_block hVac anchor), ?_, ?_⟩
+  · exact d.restrictPhysicalBlocks_preconnected hVac anchor
+  · exact d.assembleDiagram_restrictPhysicalBlocks hVac anchor
+
+
 end Common
 end SecondQuantization
