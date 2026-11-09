@@ -57,7 +57,6 @@ theorem massiveDiracRadialFourierUVFinitePartCenter_eq_besselJCenter
     massiveDiracRadialBesselJCenterUVFinitePartAt
   simp_rw [polarFourierZerothAngularKernel_eq_besselJ,
     polarFourierFirstCosineAngularKernel_eq_besselJ]
-  rfl
 
 /-- Canonically normalized Bessel-J spectral-center Fourier value.
 Its split scale is fixed solely by the norm of the spectral center,
