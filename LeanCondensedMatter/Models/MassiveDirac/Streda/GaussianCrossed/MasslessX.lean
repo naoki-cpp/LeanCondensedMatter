@@ -39,7 +39,8 @@ zero mass. Its numerator contains a z-Pauli Green coefficient. -/
     (v probeEnergy broadening disorderStrength hbar pMax radius p : ℝ) :
     finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliKernel
       .y 0 v 0 probeEnergy broadening disorderStrength hbar pMax radius p = 0 := by
-  simp [finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliKernel]
+  simp [finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliKernel,
+    finiteCutoffContinuumBornDysonRadialPauliData]
 
 /-- The source-x current's z-Pauli radial kernel likewise vanishes at
 zero Dirac mass. -/
@@ -47,7 +48,8 @@ zero Dirac mass. -/
     (v probeEnergy broadening disorderStrength hbar pMax radius p : ℝ) :
     finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliKernel
       .z 0 v 0 probeEnergy broadening disorderStrength hbar pMax radius p = 0 := by
-  simp [finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliKernel]
+  simp [finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliKernel,
+    finiteCutoffContinuumBornDysonRadialPauliData]
 
 /-- The two vanishing pointwise current kernels also vanish *after* the
 full finite radial momentum integration. This uses finite-broadening
