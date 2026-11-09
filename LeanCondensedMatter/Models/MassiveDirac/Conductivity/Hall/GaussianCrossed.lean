@@ -354,6 +354,7 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedOrderedXYConductivity_x_eq_
   rw [finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_x_antisymmetric_eq_explicit_k0_k1_k2_moments
     v m probeEnergy broadening disorderStrength hbar pMax radius
     hbroadening hdisorder hpMax]
+  dsimp only [finiteCutoffContinuumBornDysonRadialPauliData]
 
 /-- The regulated physical Psi Hall contribution is the finite-radius integral
 of its transverse-current-reduced antisymmetric Pauli amplitude and its
@@ -537,6 +538,7 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedOrderedXYConductivity_psi_e
   rw [finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_psi_antisymmetric_eq_explicit_k0_k1_k2_moments
     v m probeEnergy broadening disorderStrength hbar pMax radius
     hbroadening hdisorder hpMax]
+  dsimp only [finiteCutoffContinuumBornDysonRadialPauliData]
 
 /-- The physically normalized finite-cutoff finite-broadening Gaussian crossed correction.
 
