@@ -417,6 +417,53 @@ noncomputable def ExternalInsertionBlockLayout.blockGraphHom
     · rw [layout.assembleDiagram_partner,
         layout.vertexOfLeg_legEquiv_symm, hv]
 
+/-- Between two vertices belonging to one prescribed external block,
+the assembled physical graph has an edge exactly when the corresponding
+local graph has that edge. In particular, an ambient edge cannot introduce
+additional adjacency within a block beyond its local pairing. -/
+theorem ExternalInsertionBlockLayout.blockGraphHom_adj_iff
+    {ExternalLabel InternalLabel : Type*}
+    (layout : ExternalInsertionBlockLayout E N) (S : Finset (Fin N))
+    (F : ∀ B : layout.partition.parts,
+      ExternalInsertionDiagram ExternalLabel InternalLabel
+        ((B : Finset (Fin (2 * E))).card / 2) N (layout.interactionBlock S B))
+    (B : layout.partition.parts)
+    (u v : ExternalInsertionVertex
+      ((B : Finset (Fin (2 * E))).card / 2) (layout.interactionBlock S B)) :
+    (F B).vertexGraph.Adj u v ↔
+      (layout.assembleDiagram S F).vertexGraph.Adj
+        ((layout.vertexEquiv S).symm ⟨B, u⟩)
+        ((layout.vertexEquiv S).symm ⟨B, v⟩) := by
+  constructor
+  · intro h
+    exact (layout.blockGraphHom S F B).map_rel h
+  · rintro ⟨hne, leg, hsrc, htar⟩
+    obtain ⟨⟨C, p⟩, rfl⟩ := (layout.legEquiv S).symm.surjective leg
+    have hSrc :
+        (layout.vertexEquiv S).symm ⟨C, externalInsertionVertexOfLeg p⟩ =
+          (layout.vertexEquiv S).symm ⟨B, u⟩ := by
+      rw [← layout.vertexOfLeg_legEquiv_symm]
+      exact hsrc
+    have hSig := (layout.vertexEquiv S).symm.injective hSrc
+    have hCB : C = B := congrArg Sigma.fst hSig
+    subst C
+    have hu : externalInsertionVertexOfLeg p = u :=
+      eq_of_heq (Sigma.mk.inj_iff.mp hSig).2
+    have hTar :
+        (layout.vertexEquiv S).symm
+            ⟨B, externalInsertionVertexOfLeg ((F B).pairing.partner p)⟩ =
+          (layout.vertexEquiv S).symm ⟨B, v⟩ := by
+      rw [← layout.vertexOfLeg_legEquiv_symm,
+        ← layout.assembleDiagram_partner S F B p]
+      exact htar
+    have hv : externalInsertionVertexOfLeg ((F B).pairing.partner p) = v :=
+      eq_of_heq (Sigma.mk.inj_iff.mp
+        ((layout.vertexEquiv S).symm.injective hTar)).2
+    refine ⟨?_, p, hu, hv⟩
+    intro huv
+    exact hne (congrArg
+      (fun w => (layout.vertexEquiv S).symm ⟨B, w⟩) huv)
+
 /-- If all independently supplied local graphs are preconnected, then
 global reachability is exactly agreement of the assigned external blocks.
 The forward implication holds without any connectedness assumptions. -/
