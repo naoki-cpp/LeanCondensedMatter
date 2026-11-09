@@ -2218,6 +2218,15 @@
       "externalImportCount": 3
     },
     {
+      "name": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVBesselJ",
+      "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Disorder/Born/RadialUVBesselJ.lean",
+      "imports": [
+        "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVSpectralConjugation",
+        "LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornRadialFrozenUV"
+      ],
+      "externalImportCount": 0
+    },
+    {
       "name": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVBound",
       "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Disorder/Born/RadialUVBound.lean",
       "imports": [
@@ -2227,12 +2236,36 @@
       "externalImportCount": 4
     },
     {
+      "name": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVFinitePart",
+      "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Disorder/Born/RadialUVFinitePart.lean",
+      "imports": [
+        "LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornRadialScalarTail"
+      ],
+      "externalImportCount": 1
+    },
+    {
       "name": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVIntegrability",
       "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Disorder/Born/RadialUVIntegrability.lean",
       "imports": [
         "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVBound"
       ],
       "externalImportCount": 6
+    },
+    {
+      "name": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVSpectralCenter",
+      "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Disorder/Born/RadialUVSpectralCenter.lean",
+      "imports": [
+        "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVFinitePart"
+      ],
+      "externalImportCount": 2
+    },
+    {
+      "name": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVSpectralConjugation",
+      "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Disorder/Born/RadialUVSpectralConjugation.lean",
+      "imports": [
+        "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVSpectralCenter"
+      ],
+      "externalImportCount": 1
     },
     {
       "name": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.SelfEnergy",
@@ -2340,6 +2373,15 @@
         "LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornRadialScalarGenerator"
       ],
       "externalImportCount": 1
+    },
+    {
+      "name": "LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornRadialFrozenUV",
+      "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Disorder/FiniteBroadeningBornRadialFrozenUV.lean",
+      "imports": [
+        "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVFinitePart",
+        "LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornInvertibility"
+      ],
+      "externalImportCount": 0
     },
     {
       "name": "LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornRadialMoments",
@@ -2565,11 +2607,16 @@
       "name": "LeanCondensedMatter.Models.MassiveDirac.Disorder",
       "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Disorder.lean",
       "imports": [
+        "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVBesselJ",
+        "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVFinitePart",
+        "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVSpectralCenter",
+        "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVSpectralConjugation",
         "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.UltravioletSelfEnergy",
         "LeanCondensedMatter.Models.MassiveDirac.Disorder.BornCurrentVertexInfiniteCutoff",
         "LeanCondensedMatter.Models.MassiveDirac.Disorder.BornCurrentVertexWeakDisorder",
         "LeanCondensedMatter.Models.MassiveDirac.Disorder.ContinuumMeasurePrefactor",
         "LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornDysonShift",
+        "LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornRadialFrozenUV",
         "LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornRadialMoments",
         "LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornRadialRealSpacePropagator",
         "LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornRadialScalarGenerator",
