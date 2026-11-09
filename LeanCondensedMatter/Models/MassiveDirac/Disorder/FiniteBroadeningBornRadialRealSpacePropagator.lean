@@ -342,17 +342,16 @@ theorem finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient_eq_radialKerne
       hbroadening hdisorder hpMax i j
   unfold finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient
   rw [finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix_eq_entryKernel_integral]
-  have hmove := InternalSpace.pauliVectorCoefficient_prefactor_intervalIntegral
-    (axis := axis)
-    (prefactor := (((momentumMeasurePrefactor hbar : ℝ) : ℂ)))
-    (kernel := fun p i j => finiteCutoffContinuumBornDysonRadialGreenEntryKernel
-      side v m probeEnergy broadening disorderStrength hbar pMax radius p i j)
-    (hkernel := hentry)
   trans (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
     ∫ p in (0 : ℝ)..pMax, InternalSpace.pauliVectorCoefficient
       (finiteCutoffContinuumBornDysonRadialGreenEntryKernel
         side v m probeEnergy broadening disorderStrength hbar pMax radius p) axis
-  · exact hmove
+  · exact InternalSpace.pauliVectorCoefficient_prefactor_intervalIntegral
+      (axis := axis)
+      (prefactor := (((momentumMeasurePrefactor hbar : ℝ) : ℂ)))
+      (kernel := fun p i j => finiteCutoffContinuumBornDysonRadialGreenEntryKernel
+        side v m probeEnergy broadening disorderStrength hbar pMax radius p i j)
+      (hkernel := hentry)
   apply congrArg (fun z : ℂ => (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) * z)
   apply intervalIntegral.integral_congr
   intro p _
