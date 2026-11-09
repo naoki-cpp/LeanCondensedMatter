@@ -21,7 +21,7 @@ open MeasureTheory
 open QuantumTheory.Transport
 open scoped Interval
 
-private theorem complex_sqrt_sq_spectral_center (z : ℂ) :
+theorem complex_sqrt_sq_spectral_center (z : ℂ) :
     (Complex.sqrt z) ^ 2 = z := by
   simpa [Complex.sqrt] using (Complex.cpow_ofNat_inv_pow z 2)
 
