@@ -861,11 +861,26 @@ noncomputable def ExternalInsertionBlockLayout.assemblyEquivBlockRespectingFixed
     apply Subtype.ext
     exact layout.assembleDiagram_restrictBlock S d.1 d.2.1
 
+/-- The fixed-label equivalence preserves the assembled diagram itself. -/
+@[simp]
+theorem ExternalInsertionBlockLayout.assemblyEquivBlockRespectingFixedLabels_apply
+    {ExternalLabel InternalLabel : Type*}
+    (layout : ExternalInsertionBlockLayout E N) (S : Finset (Fin N))
+    (labels : Fin (2 * E) → ExternalLabel)
+    (F : {F : ∀ B : layout.partition.parts,
+      ExternalInsertionDiagram ExternalLabel InternalLabel
+        ((B : Finset (Fin (2 * E))).card / 2) N (layout.interactionBlock S B) //
+      ∀ B : layout.partition.parts,
+        (F B).externalLabel =
+          fun i => labels (layout.sourceEquiv.symm ⟨B, i⟩)}) :
+    (layout.assemblyEquivBlockRespectingFixedLabels S labels F).1 =
+      layout.assembleDiagram S F.1 := rfl
+
+open Classical in
 /-- Finite weighted fixed-external-label diagram sums can be reindexed
 over independently chosen local labels and pairings with those exact
 external field labels. In particular, the weight may be the integrated
 Dyson amplitude at one fixed perturbative order. -/
-open Classical in
 theorem ExternalInsertionBlockLayout.sum_blockRespectingFixedLabels_eq_sum_local
     {ExternalLabel InternalLabel M : Type*}
     [Fintype ExternalLabel] [Fintype InternalLabel] [AddCommMonoid M]
@@ -883,8 +898,8 @@ theorem ExternalInsertionBlockLayout.sum_blockRespectingFixedLabels_eq_sum_local
           fun i => labels (layout.sourceEquiv.symm ⟨B, i⟩)},
         weight (layout.assembleDiagram S F.1) := by
   classical
-  simpa only [ExternalInsertionBlockLayout.assemblyEquivBlockRespectingFixedLabels]
-    using (Equiv.sum_comp (layout.assemblyEquivBlockRespectingFixedLabels S labels)
+  simpa only [layout.assemblyEquivBlockRespectingFixedLabels_apply] using
+    (Equiv.sum_comp (layout.assemblyEquivBlockRespectingFixedLabels S labels)
       (fun d => weight d.1)).symm
 
 /-- A vacuum-free *physical* external-insertion diagram canonically determines
