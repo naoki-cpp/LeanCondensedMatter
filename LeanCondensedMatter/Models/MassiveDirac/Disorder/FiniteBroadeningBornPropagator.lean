@@ -136,8 +136,11 @@ noncomputable def finiteCutoffContinuumBornDysonPauliCoefficient
 /-- Nonzero Pauli coefficients of the Born-Dyson Green propagator on the radial
 momentum axis `(p, 0)`. The remaining Pauli-y coefficient vanishes on this axis. -/
 structure FiniteCutoffBornDysonRadialPauliData where
+  /-- Coefficient of the identity matrix in the radial Green propagator. -/
   scalar : ℂ
+  /-- Coefficient of the momentum-axis Pauli matrix `σₓ`. -/
   x : ℂ
+  /-- Coefficient of the mass-axis Pauli matrix `σ_z`. -/
   z : ℂ
 
 /-- Scalar, in-plane, and mass-axis Pauli coefficients of a radial Born-Dyson Green
