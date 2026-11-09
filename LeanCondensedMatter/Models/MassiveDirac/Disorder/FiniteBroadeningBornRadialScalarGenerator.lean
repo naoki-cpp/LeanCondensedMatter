@@ -156,6 +156,7 @@ theorem finiteCutoffContinuumBornDysonRadialGreenScalarCoefficient_eq_generator
       apply finiteCutoffContinuumBornDyson_radialKernel_eq_scaledGenerator
       intro p
       dsimp [energy, finiteCutoffContinuumBornDysonRadialGreenScalarKernel,
+        finiteCutoffContinuumBornDysonRadialPauliData,
         finiteCutoffContinuumBornDysonScalarCoefficient]
       ring
 
@@ -187,6 +188,7 @@ theorem finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient_z_eq_generator
       apply finiteCutoffContinuumBornDyson_radialKernel_eq_scaledGenerator
       intro p
       dsimp [mass, finiteCutoffContinuumBornDysonRadialGreenPauliKernel,
+        finiteCutoffContinuumBornDysonRadialPauliData,
         finiteCutoffContinuumBornDysonPauliCoefficient,
         InternalSpace.pauliAxisComponent]
       ring
@@ -224,6 +226,7 @@ theorem finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient_x_eq_deriv_gen
         side v m probeEnergy broadening disorderStrength hbar pMax radius p =
         alpha * d p := by
     dsimp [alpha, d, finiteCutoffContinuumBornDysonRadialGreenPauliKernel,
+      finiteCutoffContinuumBornDysonRadialPauliData,
       finiteCutoffContinuumBornDysonPauliCoefficient,
       InternalSpace.pauliAxisComponent]
     rw [show (((v * p : ℝ) : ℂ)) =

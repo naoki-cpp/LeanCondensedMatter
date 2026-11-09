@@ -87,6 +87,7 @@ private theorem finiteCutoffContinuumBornDysonRadialGreenEntryKernel_zero_disord
               .z v m probeEnergy (side.regulator broadening) p • sigmaZ) i j) := by
   fin_cases i <;> fin_cases j <;>
     simp [finiteCutoffContinuumBornDysonRadialGreenEntryKernel,
+      finiteCutoffContinuumBornDysonRadialPauliData,
       polarFourierZerothAngularKernel_zero, polarFourierFirstCosineAngularKernel_zero,
       finiteCutoffContinuumBornDysonScalarCoefficient_zero_disorder,
       finiteCutoffContinuumBornDysonPauliCoefficient_z_zero_disorder,

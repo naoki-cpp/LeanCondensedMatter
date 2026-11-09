@@ -432,8 +432,10 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_x_antisym
   dsimp only [finiteCutoffContinuumBornDysonRadialGreenScalarCoefficient,
     finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient,
     finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient] at hsr hsa hzr hza hux hwy
-  dsimp only [finiteCutoffContinuumBornDysonRadialGreenScalarKernel] at hsr hsa
-  dsimp only [finiteCutoffContinuumBornDysonRadialGreenPauliKernel] at hzr hza
+  dsimp only [finiteCutoffContinuumBornDysonRadialGreenScalarKernel,
+    finiteCutoffContinuumBornDysonRadialPauliData] at hsr hsa
+  dsimp only [finiteCutoffContinuumBornDysonRadialGreenPauliKernel,
+    finiteCutoffContinuumBornDysonRadialPauliData] at hzr hza
   dsimp only [finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliKernel] at hux
   simp only [ite_true] at hux
   dsimp only at hsr hsa hzr hza hux hwy ⊢
@@ -702,8 +704,10 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_psi_antis
   dsimp only [finiteCutoffContinuumBornDysonRadialGreenScalarCoefficient,
     finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient,
     finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient] at hscalar hz htransverse
-  dsimp only [finiteCutoffContinuumBornDysonRadialGreenScalarKernel] at hscalar
-  dsimp only [finiteCutoffContinuumBornDysonRadialGreenPauliKernel] at hz
+  dsimp only [finiteCutoffContinuumBornDysonRadialGreenScalarKernel,
+    finiteCutoffContinuumBornDysonRadialPauliData] at hscalar
+  dsimp only [finiteCutoffContinuumBornDysonRadialGreenPauliKernel,
+    finiteCutoffContinuumBornDysonRadialPauliData] at hz
   dsimp only [finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliKernel] at htransverse
   simp only [ite_true] at htransverse
   dsimp only at hscalar hz htransverse ⊢

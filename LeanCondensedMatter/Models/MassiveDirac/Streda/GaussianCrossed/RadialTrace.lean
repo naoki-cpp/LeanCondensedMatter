@@ -87,7 +87,8 @@ theorem finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient_x_negRadius_eq
     finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient_eq_radialKernel_integral
       .x side v m probeEnergy broadening disorderStrength hbar pMax (-radius)
       hbroadening hdisorder hpMax
-  dsimp only [finiteCutoffContinuumBornDysonRadialGreenPauliKernel] at h
+  dsimp only [finiteCutoffContinuumBornDysonRadialGreenPauliKernel,
+    finiteCutoffContinuumBornDysonRadialPauliData] at h
   rw [gaussianCrossedRadialFirstHarmonicIntegral_eq_difference hbar pMax (-radius)] at h
   dsimp only
   rw [h]
@@ -250,7 +251,8 @@ theorem finiteCutoffContinuumBornDysonRadialGreen_ra_xz_minor_eq_harmonic_moment
     finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient_eq_radialKernel_integral
       .z .advanced v m probeEnergy broadening disorderStrength hbar pMax radius
       hbroadening hdisorder hpMax
-  dsimp only [finiteCutoffContinuumBornDysonRadialGreenPauliKernel] at hRz hAz
+  dsimp only [finiteCutoffContinuumBornDysonRadialGreenPauliKernel,
+    finiteCutoffContinuumBornDysonRadialPauliData] at hRz hAz
   simp only [neg_neg] at hRx hAx
   dsimp only at hRx hAx hRz hAz ⊢
   rw [hRx, hAx, hRz, hAz]

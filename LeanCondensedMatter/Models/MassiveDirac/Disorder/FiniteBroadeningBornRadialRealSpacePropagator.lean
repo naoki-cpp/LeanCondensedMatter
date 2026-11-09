@@ -88,17 +88,13 @@ noncomputable def finiteCutoffContinuumBornDysonRadialGreenEntryKernel
     (side : SpectralSide)
     (v m probeEnergy broadening disorderStrength hbar pMax radius p : ℝ)
     (i j : Fin 2) : ℂ :=
-  let a := finiteCutoffContinuumBornDysonScalarCoefficient
-    side v m p 0 probeEnergy broadening disorderStrength hbar pMax
-  let b := finiteCutoffContinuumBornDysonPauliCoefficient .x
-    side v m p 0 probeEnergy broadening disorderStrength hbar pMax
-  let d := finiteCutoffContinuumBornDysonPauliCoefficient .z
-    side v m p 0 probeEnergy broadening disorderStrength hbar pMax
+  let data := finiteCutoffContinuumBornDysonRadialPauliData
+    side v m p probeEnergy broadening disorderStrength hbar pMax
   let k0 := polarFourierZerothAngularKernel (p * radius / hbar)
   let k1 := polarFourierFirstCosineAngularKernel (p * radius / hbar)
   (p : ℂ) *
-    (!![k0 * (a + d), k1 * b;
-        k1 * b, k0 * (a - d)] : Matrix2) i j
+    (!![k0 * (data.scalar + data.z), k1 * data.x;
+        k1 * data.x, k0 * (data.scalar - data.z)] : Matrix2) i j
 
 /-- In the finite-broadening finite-cutoff regime, every radial Green entry kernel is
 continuous in radial momentum. -/
@@ -148,25 +144,19 @@ the off-diagonal in-plane channel carries the first-cosine kernel. -/
 noncomputable def finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix
     (side : SpectralSide)
     (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ) : Matrix2 :=
-  let a : ℝ → ℂ := fun p =>
-    finiteCutoffContinuumBornDysonScalarCoefficient
-      side v m p 0 probeEnergy broadening disorderStrength hbar pMax
-  let b : ℝ → ℂ := fun p =>
-    finiteCutoffContinuumBornDysonPauliCoefficient .x
-      side v m p 0 probeEnergy broadening disorderStrength hbar pMax
-  let d : ℝ → ℂ := fun p =>
-    finiteCutoffContinuumBornDysonPauliCoefficient .z
-      side v m p 0 probeEnergy broadening disorderStrength hbar pMax
+  let data := fun p : ℝ =>
+    finiteCutoffContinuumBornDysonRadialPauliData
+      side v m p probeEnergy broadening disorderStrength hbar pMax
   let prefactor : ℂ := ((momentumMeasurePrefactor hbar : ℝ) : ℂ)
   let k0 : ℝ → ℂ := fun p =>
     polarFourierZerothAngularKernel (p * radius / hbar)
   let k1 : ℝ → ℂ := fun p =>
     polarFourierFirstCosineAngularKernel (p * radius / hbar)
   !![
-    prefactor * ∫ p in (0 : ℝ)..pMax, (p : ℂ) * (k0 p * (a p + d p)),
-    prefactor * ∫ p in (0 : ℝ)..pMax, (p : ℂ) * (k1 p * b p);
-    prefactor * ∫ p in (0 : ℝ)..pMax, (p : ℂ) * (k1 p * b p),
-    prefactor * ∫ p in (0 : ℝ)..pMax, (p : ℂ) * (k0 p * (a p - d p))]
+    prefactor * ∫ p in (0 : ℝ)..pMax, (p : ℂ) * (k0 p * ((data p).scalar + (data p).z)),
+    prefactor * ∫ p in (0 : ℝ)..pMax, (p : ℂ) * (k1 p * (data p).x);
+    prefactor * ∫ p in (0 : ℝ)..pMax, (p : ℂ) * (k1 p * (data p).x),
+    prefactor * ∫ p in (0 : ℝ)..pMax, (p : ℂ) * (k0 p * ((data p).scalar - (data p).z))]
 
 /-- Scalar Pauli coefficient of the positive-axis radial Born-Dyson Green matrix. -/
 noncomputable def finiteCutoffContinuumBornDysonRadialGreenScalarCoefficient
@@ -199,25 +189,23 @@ theorem finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient_y_eq_zero
 noncomputable def finiteCutoffContinuumBornDysonRadialGreenScalarKernel
     (side : SpectralSide)
     (v m probeEnergy broadening disorderStrength hbar pMax radius p : ℝ) : ℂ :=
-  let a := finiteCutoffContinuumBornDysonScalarCoefficient
-    side v m p 0 probeEnergy broadening disorderStrength hbar pMax
+  let data := finiteCutoffContinuumBornDysonRadialPauliData
+    side v m p probeEnergy broadening disorderStrength hbar pMax
   let k0 := polarFourierZerothAngularKernel (p * radius / hbar)
-  (p : ℂ) * (k0 * a)
+  (p : ℂ) * (k0 * data.scalar)
 
 /-- Pointwise Pauli-vector kernel of the positive-axis radial Born-Dyson Green integrand. -/
 noncomputable def finiteCutoffContinuumBornDysonRadialGreenPauliKernel
     (axis : PauliAxis) (side : SpectralSide)
     (v m probeEnergy broadening disorderStrength hbar pMax radius p : ℝ) : ℂ :=
-  let b := finiteCutoffContinuumBornDysonPauliCoefficient .x
-    side v m p 0 probeEnergy broadening disorderStrength hbar pMax
-  let d := finiteCutoffContinuumBornDysonPauliCoefficient .z
-    side v m p 0 probeEnergy broadening disorderStrength hbar pMax
+  let data := finiteCutoffContinuumBornDysonRadialPauliData
+    side v m p probeEnergy broadening disorderStrength hbar pMax
   let k0 := polarFourierZerothAngularKernel (p * radius / hbar)
   let k1 := polarFourierFirstCosineAngularKernel (p * radius / hbar)
   match axis with
-  | .x => (p : ℂ) * (k1 * b)
+  | .x => (p : ℂ) * (k1 * data.x)
   | .y => 0
-  | .z => (p : ℂ) * (k0 * d)
+  | .z => (p : ℂ) * (k0 * data.z)
 
 /-- The pointwise radial Green entry kernel has exactly the scalar coefficient carried by the
 zeroth angular Fourier channel. -/

@@ -254,6 +254,7 @@ theorem finiteCutoffContinuumBornDysonRealSpaceGreenMatrix_radialAxis_eq
   fin_cases i <;> fin_cases j <;>
     simp [finiteCutoffContinuumBornDysonAngularGreenEntryKernel,
       finiteCutoffContinuumBornDysonRadialGreenEntryKernel,
+      finiteCutoffContinuumBornDysonRadialPauliData,
       sigmaX, sigmaY, sigmaZ, InternalSpace.pauliX, InternalSpace.pauliY,
       InternalSpace.pauliZ, sub_eq_add_neg]
 
