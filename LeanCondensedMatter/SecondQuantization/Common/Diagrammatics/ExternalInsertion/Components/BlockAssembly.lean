@@ -464,6 +464,68 @@ theorem ExternalInsertionBlockLayout.blockGraphHom_adj_iff
     exact hne (congrArg
       (fun w => (layout.vertexEquiv S).symm ⟨B, w⟩) huv)
 
+/-- For vertices within one prescribed external block, local
+reachability is equivalent to physical reachability after assembly.
+The reverse implication follows by lifting each physical edge of a
+path back into the corresponding local pairing, using the exact
+blockwise adjacency equivalence. -/
+theorem ExternalInsertionBlockLayout.blockGraphHom_reachable_iff
+    {ExternalLabel InternalLabel : Type*}
+    (layout : ExternalInsertionBlockLayout E N) (S : Finset (Fin N))
+    (F : ∀ B : layout.partition.parts,
+      ExternalInsertionDiagram ExternalLabel InternalLabel
+        ((B : Finset (Fin (2 * E))).card / 2) N (layout.interactionBlock S B))
+    (B : layout.partition.parts)
+    (u v : ExternalInsertionVertex
+      ((B : Finset (Fin (2 * E))).card / 2) (layout.interactionBlock S B)) :
+    (F B).vertexGraph.Reachable u v ↔
+      (layout.assembleDiagram S F).vertexGraph.Reachable
+        ((layout.vertexEquiv S).symm ⟨B, u⟩)
+        ((layout.vertexEquiv S).symm ⟨B, v⟩) := by
+  constructor
+  · intro h
+    exact h.map (layout.blockGraphHom S F B)
+  · intro h
+    have hPath :
+        Relation.ReflTransGen (layout.assembleDiagram S F).vertexGraph.Adj
+          ((layout.vertexEquiv S).symm ⟨B, u⟩)
+          ((layout.vertexEquiv S).symm ⟨B, v⟩) :=
+      (SimpleGraph.reachable_iff_reflTransGen _ _).mp h
+    have hLift : ∀ {z : ExternalInsertionVertex E S},
+        Relation.ReflTransGen (layout.assembleDiagram S F).vertexGraph.Adj
+            ((layout.vertexEquiv S).symm ⟨B, u⟩) z →
+          ∃ w, z = (layout.vertexEquiv S).symm ⟨B, w⟩ ∧
+            (F B).vertexGraph.Reachable u w := by
+      intro z hz
+      induction hz with
+      | refl =>
+          exact ⟨u, rfl, SimpleGraph.Reachable.refl u⟩
+      | @tail a c _ hadj ih =>
+          obtain ⟨w, rfl, hw⟩ := ih
+          have hsame : B = (layout.vertexEquiv S c).1 := by
+            simpa only [Equiv.apply_symm_apply] using
+              (layout.assembleDiagram_adj_same_block S F hadj)
+          cases hc : layout.vertexEquiv S c with
+          | mk C w' =>
+              have hBC : B = C := by
+                simpa only [hc] using hsame
+              subst C
+              have hval : c = (layout.vertexEquiv S).symm ⟨B, w'⟩ := by
+                calc
+                  c = (layout.vertexEquiv S).symm (layout.vertexEquiv S c) :=
+                    ((layout.vertexEquiv S).symm_apply_apply c).symm
+                  _ = _ := by rw [hc]
+              have hEdge : (layout.assembleDiagram S F).vertexGraph.Adj
+                  ((layout.vertexEquiv S).symm ⟨B, w⟩)
+                  ((layout.vertexEquiv S).symm ⟨B, w'⟩) := by
+                simpa only [hval] using hadj
+              have hLocal := (layout.blockGraphHom_adj_iff S F B w w').2 hEdge
+              exact ⟨w', hval, hw.trans (SimpleGraph.Adj.reachable hLocal)⟩
+    obtain ⟨w, heq, hw⟩ := hLift hPath
+    have hSig := (layout.vertexEquiv S).symm.injective heq.symm
+    have hwv : w = v := eq_of_heq (Sigma.mk.inj_iff.mp hSig).2
+    simpa only [hwv] using hw
+
 /-- If all independently supplied local graphs are preconnected, then
 global reachability is exactly agreement of the assigned external blocks.
 The forward implication holds without any connectedness assumptions. -/
