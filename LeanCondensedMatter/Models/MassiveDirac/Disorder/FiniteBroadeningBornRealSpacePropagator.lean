@@ -53,27 +53,23 @@ theorem finiteCutoffContinuumBornDysonGreenMatrix_polar_spinRotation
         finiteCutoffContinuumBornDysonGreenMatrix
           side v m p 0 probeEnergy broadening disorderStrength hbar pMax *
         inPlaneSpinRotationInverse angle := by
-  let a := finiteCutoffContinuumBornDysonScalarCoefficient
-    side v m p 0 probeEnergy broadening disorderStrength hbar pMax
-  let b := finiteCutoffContinuumBornDysonPauliCoefficient .x
-    side v m p 0 probeEnergy broadening disorderStrength hbar pMax
-  let d := finiteCutoffContinuumBornDysonPauliCoefficient .z
-    side v m p 0 probeEnergy broadening disorderStrength hbar pMax
+  let data := finiteCutoffContinuumBornDysonRadialPauliData
+    side v m p probeEnergy broadening disorderStrength hbar pMax
   have hpolar (θ : ℝ) :
       finiteCutoffContinuumBornDysonGreenMatrix
           side v m (p * Real.cos θ) (p * Real.sin θ)
           probeEnergy broadening disorderStrength hbar pMax =
-        polarPauliMatrix a b d θ := by
-    simpa [a, b, d] using
+        polarPauliMatrix data.scalar data.x data.z θ := by
+    simpa [data, finiteCutoffContinuumBornDysonRadialPauliData] using
       (finiteCutoffContinuumBornDysonGreenMatrix_polar_eq
         side v m p θ probeEnergy broadening disorderStrength hbar pMax)
   have haxis :
       finiteCutoffContinuumBornDysonGreenMatrix
           side v m p 0 probeEnergy broadening disorderStrength hbar pMax =
-        polarPauliMatrix a b d 0 := by
+        polarPauliMatrix data.scalar data.x data.z 0 := by
     simpa using hpolar 0
   rw [hpolar angle, haxis]
-  exact polarPauliMatrix_eq_spinRotation a b d angle
+  exact polarPauliMatrix_eq_spinRotation data.scalar data.x data.z angle
 
 /-- Finite-cutoff angular Green entry kernel at an arbitrary polar real-space point.
 The constant Pauli channels carry `K0`; the in-plane Pauli vector rotates as
@@ -83,18 +79,14 @@ noncomputable def finiteCutoffContinuumBornDysonAngularGreenEntryKernel
     (side : SpectralSide)
     (v m probeEnergy broadening disorderStrength hbar pMax radius angle p : ℝ)
     (i j : Fin 2) : ℂ :=
-  let a := finiteCutoffContinuumBornDysonScalarCoefficient
-    side v m p 0 probeEnergy broadening disorderStrength hbar pMax
-  let b := finiteCutoffContinuumBornDysonPauliCoefficient .x
-    side v m p 0 probeEnergy broadening disorderStrength hbar pMax
-  let d := finiteCutoffContinuumBornDysonPauliCoefficient .z
-    side v m p 0 probeEnergy broadening disorderStrength hbar pMax
+  let data := finiteCutoffContinuumBornDysonRadialPauliData
+    side v m p probeEnergy broadening disorderStrength hbar pMax
   (p : ℂ) *
     (polarFourierZerothAngularKernel (p * radius / hbar) *
-        (a • (1 : Matrix2) + d • sigmaZ) i j +
+        (data.scalar • (1 : Matrix2) + data.z • sigmaZ) i j +
       polarFourierFirstCosineAngularKernel (p * radius / hbar) *
-        (((Real.cos angle : ℝ) : ℂ) * (b • sigmaX) i j +
-          (((Real.sin angle : ℝ) : ℂ)) * (b • sigmaY) i j))
+        (((Real.cos angle : ℝ) : ℂ) * (data.x • sigmaX) i j +
+          (((Real.sin angle : ℝ) : ℂ)) * (data.x • sigmaY) i j))
 
 /-- Algebraic spinor covariance of the K0/K1 polar momentum integrand.
 Both the angular and radial-axis matrices are expressed with the same
@@ -147,7 +139,8 @@ theorem finiteCutoffContinuumBornDysonAngularGreenEntryKernel_eq_spinRotation
         ((p : ℂ) • polarPauliMatrix (k0 * a) (k1 * b) (k0 * d) 0) *
         inPlaneSpinRotationInverse angle := by
   dsimp only
-  simpa only [finiteCutoffContinuumBornDysonAngularGreenEntryKernel] using
+  simpa only [finiteCutoffContinuumBornDysonAngularGreenEntryKernel,
+    finiteCutoffContinuumBornDysonRadialPauliData] using
     (angularGreenPauliKernel_eq_spinRotation
       (p : ℂ)
       (polarFourierZerothAngularKernel (p * radius / hbar))
@@ -175,19 +168,13 @@ theorem finiteCutoffContinuumBornDysonRealSpaceGreenMatrix_polarPoint2D_eq_angul
         ∫ p in (0 : ℝ)..pMax,
           finiteCutoffContinuumBornDysonAngularGreenEntryKernel
             side v m probeEnergy broadening disorderStrength hbar pMax radius angle p i j := by
-  let a : ℝ → ℂ := fun p =>
-    finiteCutoffContinuumBornDysonScalarCoefficient
-      side v m p 0 probeEnergy broadening disorderStrength hbar pMax
-  let b : ℝ → ℂ := fun p =>
-    finiteCutoffContinuumBornDysonPauliCoefficient .x
-      side v m p 0 probeEnergy broadening disorderStrength hbar pMax
-  let d : ℝ → ℂ := fun p =>
-    finiteCutoffContinuumBornDysonPauliCoefficient .z
-      side v m p 0 probeEnergy broadening disorderStrength hbar pMax
+  let data := fun p : ℝ =>
+    finiteCutoffContinuumBornDysonRadialPauliData
+      side v m p probeEnergy broadening disorderStrength hbar pMax
   let harmonics : ℝ → AngularHarmonicCoefficients Matrix2 := fun p =>
-    { constant := a p • (1 : Matrix2) + d p • sigmaZ
-      firstCosine := b p • sigmaX
-      firstSine := b p • sigmaY
+    { constant := (data p).scalar • (1 : Matrix2) + (data p).z • sigmaZ
+      firstCosine := (data p).x • sigmaX
+      firstSine := (data p).x • sigmaY
       secondCosine := 0
       secondMixed := 0 }
   let entryHarmonics : Fin 2 → Fin 2 → ℝ → AngularHarmonicCoefficients ℂ :=
@@ -201,8 +188,8 @@ theorem finiteCutoffContinuumBornDysonRealSpaceGreenMatrix_polarPoint2D_eq_angul
       finiteCutoffContinuumBornDysonGreenMatrix
           side v m (p * Real.cos θ) (p * Real.sin θ)
           probeEnergy broadening disorderStrength hbar pMax =
-        polarPauliMatrix (a p) (b p) (d p) θ := by
-    simpa [a, b, d] using
+        polarPauliMatrix (data p).scalar (data p).x (data p).z θ := by
+    simpa [data, finiteCutoffContinuumBornDysonRadialPauliData] using
       (finiteCutoffContinuumBornDysonGreenMatrix_polar_eq
         side v m p θ probeEnergy broadening disorderStrength hbar pMax)
   have hfield (p θ : ℝ) :
@@ -230,7 +217,8 @@ theorem finiteCutoffContinuumBornDysonRealSpaceGreenMatrix_polarPoint2D_eq_angul
         (polarPoint2D radius angle) = _
   simp_rw [hentry i j]
   simpa [finiteCutoffContinuumBornDysonAngularGreenEntryKernel,
-    entryHarmonics, harmonics, a, b, d, Matrix.zero_apply,
+    entryHarmonics, harmonics, data,
+    finiteCutoffContinuumBornDysonRadialPauliData, Matrix.zero_apply,
     smul_eq_mul] using
     (finiteCutoffPhysicalMomentumPolarFourier_polarPoint2D_harmonics
       hbar pMax radius angle (entryHarmonics i j))
@@ -291,15 +279,11 @@ theorem finiteCutoffContinuumBornDysonRealSpaceGreenMatrix_polarPoint2D_eq_radia
         inPlaneSpinRotationInverse angle := by
   rw [← finiteCutoffContinuumBornDysonRealSpaceGreenMatrix_radialAxis_eq]
   let base : ℝ → Matrix2 := fun p =>
-    let a := finiteCutoffContinuumBornDysonScalarCoefficient
-      side v m p 0 probeEnergy broadening disorderStrength hbar pMax
-    let b := finiteCutoffContinuumBornDysonPauliCoefficient .x
-      side v m p 0 probeEnergy broadening disorderStrength hbar pMax
-    let d := finiteCutoffContinuumBornDysonPauliCoefficient .z
-      side v m p 0 probeEnergy broadening disorderStrength hbar pMax
+    let data := finiteCutoffContinuumBornDysonRadialPauliData
+      side v m p probeEnergy broadening disorderStrength hbar pMax
     let k0 := polarFourierZerothAngularKernel (p * radius / hbar)
     let k1 := polarFourierFirstCosineAngularKernel (p * radius / hbar)
-    (p : ℂ) • polarPauliMatrix (k0 * a) (k1 * b) (k0 * d) 0
+    (p : ℂ) • polarPauliMatrix (k0 * data.scalar) (k1 * data.x) (k0 * data.z) 0
   let angular : ℝ → ℝ → Matrix2 := fun θ p =>
     fun i j =>
       finiteCutoffContinuumBornDysonAngularGreenEntryKernel
