@@ -952,7 +952,9 @@ theorem ExternalInsertionDiagram.reachable_iff_externalBlockLayout_same_block
           d.vacuumFreeComponentsEquivExternalBlocks_apply hVac _
         _ = (d.vertexGraph.componentBlock w).toLeft := hBlocks
         _ = _ :=
-          (d.vacuumFreeComponentsEquivExternalBlocks_apply hVac _).symm
+          (d.vacuumFreeComponentsEquivExternalBlocks_apply hVac
+            ⟨d.vertexGraph.componentBlock w,
+              d.vertexGraph.componentBlock_mem_componentPartition w⟩).symm
     have hComp : d.vertexGraph.componentBlock v =
         d.vertexGraph.componentBlock w :=
       congrArg Subtype.val
