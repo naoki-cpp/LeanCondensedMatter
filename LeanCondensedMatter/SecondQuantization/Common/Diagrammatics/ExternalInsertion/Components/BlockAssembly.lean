@@ -903,6 +903,62 @@ theorem ExternalInsertionDiagram.externalBlockLayout_vertexPart
       rw [d.externalBlockLayout_interactionOwner hVac anchor w]
       exact d.vacuumFreeComponentsEquivExternalBlocks_apply hVac _
 
+/-- In a vacuum-free physical diagram, two vertices are reachable
+precisely when their canonical external-block owners agree. This uses the
+injectivity of the equivalence between actual graph components and external
+partition parts, rather than assuming equal external support determines
+connectivity for arbitrary graphs. -/
+theorem ExternalInsertionDiagram.reachable_iff_externalBlockLayout_same_block
+    {ExternalLabel InternalLabel : Type*} {S : Finset (Fin N)}
+    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
+    (hVac : HasNoVacuumComponent d.vertexGraph)
+    (anchor : Fin (2 * E)) (v w : ExternalInsertionVertex E S) :
+    d.vertexGraph.Reachable v w ↔
+      ((d.externalBlockLayout hVac anchor).vertexEquiv S v).1 =
+        ((d.externalBlockLayout hVac anchor).vertexEquiv S w).1 := by
+  constructor
+  · intro h
+    apply Subtype.ext
+    calc
+      (((d.externalBlockLayout hVac anchor).vertexEquiv S v).1 :
+          Finset (Fin (2 * E))) =
+          (d.vertexGraph.componentBlock v).toLeft :=
+        d.externalBlockLayout_vertexPart hVac anchor v
+      _ = (d.vertexGraph.componentBlock w).toLeft :=
+        congrArg Finset.toLeft (d.vertexGraph.componentBlock_eq_of_reachable h)
+      _ = (((d.externalBlockLayout hVac anchor).vertexEquiv S w).1 :
+          Finset (Fin (2 * E))) :=
+        (d.externalBlockLayout_vertexPart hVac anchor w).symm
+  · intro h
+    have hBlocks : (d.vertexGraph.componentBlock v).toLeft =
+        (d.vertexGraph.componentBlock w).toLeft := by
+      calc
+        _ = (((d.externalBlockLayout hVac anchor).vertexEquiv S v).1 :
+            Finset (Fin (2 * E))) :=
+          (d.externalBlockLayout_vertexPart hVac anchor v).symm
+        _ = (((d.externalBlockLayout hVac anchor).vertexEquiv S w).1 :
+            Finset (Fin (2 * E))) := congrArg Subtype.val h
+        _ = _ := d.externalBlockLayout_vertexPart hVac anchor w
+    have hEquiv :
+        d.vacuumFreeComponentsEquivExternalBlocks hVac
+            ⟨d.vertexGraph.componentBlock v,
+              d.vertexGraph.componentBlock_mem_componentPartition v⟩ =
+          d.vacuumFreeComponentsEquivExternalBlocks hVac
+            ⟨d.vertexGraph.componentBlock w,
+              d.vertexGraph.componentBlock_mem_componentPartition w⟩ := by
+      apply Subtype.ext
+      calc
+        _ = (d.vertexGraph.componentBlock v).toLeft :=
+          d.vacuumFreeComponentsEquivExternalBlocks_apply hVac _
+        _ = (d.vertexGraph.componentBlock w).toLeft := hBlocks
+        _ = _ :=
+          (d.vacuumFreeComponentsEquivExternalBlocks_apply hVac _).symm
+    have hComp : d.vertexGraph.componentBlock v =
+        d.vertexGraph.componentBlock w :=
+      congrArg Subtype.val
+        ((d.vacuumFreeComponentsEquivExternalBlocks hVac).injective hEquiv)
+    exact (d.vertexGraph.componentBlock_eq_iff_reachable v w).mp hComp
+
 /-- The physical component layout does not split a paired propagator
 between external blocks: both endpoints of every pair lie in the
 same actual graph component, hence in its same external block. -/
@@ -953,6 +1009,34 @@ theorem ExternalInsertionDiagram.assembleDiagram_restrictPhysicalBlocks
         (d.externalBlockLayout_partner_block hVac anchor)) = d :=
   (d.externalBlockLayout hVac anchor).assembleDiagram_restrictBlock S d
     (d.externalBlockLayout_partner_block hVac anchor)
+
+/-- Every block extracted from a vacuum-free physical diagram is
+preconnected in its own vertex graph. The proof reflects actual physical
+paths through the assembly/restriction round trip; it does not postulate
+local connectivity as an extra assumption. -/
+theorem ExternalInsertionDiagram.restrictPhysicalBlocks_preconnected
+    {ExternalLabel InternalLabel : Type*} {S : Finset (Fin N)}
+    (d : ExternalInsertionDiagram ExternalLabel InternalLabel E N S)
+    (hVac : HasNoVacuumComponent d.vertexGraph)
+    (anchor : Fin (2 * E))
+    (B : (d.externalBlockLayout hVac anchor).partition.parts) :
+    ((d.externalBlockLayout hVac anchor).restrictBlock S d
+      (d.externalBlockLayout_partner_block hVac anchor) B).vertexGraph.Preconnected := by
+  let layout := d.externalBlockLayout hVac anchor
+  let F := layout.restrictBlock S d
+    (d.externalBlockLayout_partner_block hVac anchor)
+  have hRound : layout.assembleDiagram S F = d :=
+    d.assembleDiagram_restrictPhysicalBlocks hVac anchor
+  intro u v
+  apply (layout.blockGraphHom_reachable_iff S F B u v).2
+  rw [hRound]
+  apply (d.reachable_iff_externalBlockLayout_same_block hVac anchor _ _).2
+  change (layout.vertexEquiv S
+      ((layout.vertexEquiv S).symm ⟨B, u⟩)).1 =
+    (layout.vertexEquiv S
+      ((layout.vertexEquiv S).symm ⟨B, v⟩)).1
+  simp
+
 
 end Common
 end SecondQuantization
