@@ -116,9 +116,8 @@ theorem finiteCutoffContinuumBornDysonRadialFrozenUVValue_eq_besselJCenter
   rw [massiveDiracRadialFourierUVCenter_eq_besselJCenter]
 
 
-/-- Schwarz reflection of the Bessel-J spectral-center UV value under
-complex conjugation of the spectral parameters `energy` and `mass`.
-The hypothesis excludes a real quadratic spectral center. -/
+/-- Schwarz reflection of the Bessel-J UV value under conjugation of its
+quadratic spectral center, away from the real axis. -/
 theorem massiveDiracRadialBesselJCenterUVValue_conj
     (v c : ℝ) (center : ℂ)
     (hv : v ≠ 0) (hc : c ≠ 0)
