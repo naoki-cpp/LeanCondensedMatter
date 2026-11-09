@@ -175,7 +175,7 @@ private theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_x
       hbroadening hdisorder hpMax
   dsimp only [finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentScalarCoefficient,
     finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient] at hs hz
-  dsimp only at hs hz ⊢
+  dsimp only [finiteCutoffContinuumBornDysonRadialPauliData] at hs hz ⊢
   rw [hs, hz]
 
 private theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_x_antisymmetric_eq_green_harmonic_minors
