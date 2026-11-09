@@ -815,7 +815,12 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficie
     ∫ p in (0 : ℝ)..pMax, InternalSpace.pauliVectorCoefficient
       (finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel
         source v m probeEnergy broadening disorderStrength hbar pMax radius p) axis
-  · exact hmove
+  · exact InternalSpace.pauliVectorCoefficient_prefactor_intervalIntegral
+      (axis := axis)
+      (prefactor := (((momentumMeasurePrefactor hbar : ℝ) : ℂ)))
+      (kernel := fun p i j => finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel
+        source v m probeEnergy broadening disorderStrength hbar pMax radius p i j)
+      (hkernel := hentry)
   apply congrArg (fun z : ℂ => (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) * z)
   apply intervalIntegral.integral_congr
   intro p _
