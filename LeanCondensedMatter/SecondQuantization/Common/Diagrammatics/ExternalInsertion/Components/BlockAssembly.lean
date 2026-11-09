@@ -784,10 +784,9 @@ theorem ExternalInsertionDiagram.externalBlockLayout_vertexPart
       Finset (Fin (2 * E))) = (d.vertexGraph.componentBlock v).toLeft := by
   cases v with
   | inl e =>
-      simpa only [ExternalInsertionBlockLayout.vertexEquiv_external,
-        ExternalInsertionBlockLayout.sourceEquiv_fst,
-        d.externalBlockLayout_partition hVac anchor] using
-        d.externalComponentPartition_part_eq_toLeft_componentBlock e
+      change (d.externalBlockLayout hVac anchor).partition.part e =
+        (d.vertexGraph.componentBlock (Sum.inl e)).toLeft
+      exact d.externalComponentPartition_part_eq_toLeft_componentBlock e
   | inr w =>
       change ((d.externalBlockLayout hVac anchor).interactionOwner w.1).1 =
         (d.vertexGraph.componentBlock (Sum.inr w)).toLeft
