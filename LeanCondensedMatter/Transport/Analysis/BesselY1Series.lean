@@ -103,6 +103,55 @@ noncomputable def besselY1Series (z : ℂ) : ℂ :=
         Complex.besselJ 1 z -
       (z / 4) * besselY1HarmonicCorrection z)
 
+
+/-- Exact Wronskian algebra for the *concrete* convergent DLMF Y₀/Y₁
+series. The logarithm and Euler–Mascheroni terms cancel completely.
+Thus the sole remaining nonalgebraic Wronskian obligation is an identity
+between Mathlib J₀/J₁ and the two convergent harmonic corrections.
+This theorem does **not** assume or prove that remaining identity. -/
+theorem besselY0Y1Wronskian_eq_harmonicCorrections (z : ℂ) :
+    Complex.besselJ 1 z * besselY0Series z -
+      Complex.besselJ 0 z * besselY1Series z =
+    (((2 / Real.pi : ℝ) : ℂ)) *
+      (Complex.besselJ 0 z * z⁻¹ -
+        Complex.besselJ 1 z * besselY0HarmonicCorrection z +
+        (z / 4) * Complex.besselJ 0 z * besselY1HarmonicCorrection z) := by
+  unfold besselY0Series besselY1Series
+  ring
+
+/-- Reduction of the J/Y Wronskian theorem to one explicit
+harmonic-number series identity. The hypothesis is kept visible
+rather than incorrectly presenting the Wronskian as proved. -/
+theorem besselY0Y1Wronskian_of_harmonicIdentity
+    (z : ℂ) (hz : z ≠ 0)
+    (hidentity :
+      Complex.besselJ 0 z -
+          z * Complex.besselJ 1 z * besselY0HarmonicCorrection z +
+          (z ^ 2 / 4) * Complex.besselJ 0 z *
+            besselY1HarmonicCorrection z = 1) :
+    Complex.besselJ 1 z * besselY0Series z -
+      Complex.besselJ 0 z * besselY1Series z =
+        (((2 / Real.pi : ℝ) : ℂ)) * z⁻¹ := by
+  rw [besselY0Y1Wronskian_eq_harmonicCorrections]
+  have hcancel :
+      Complex.besselJ 0 z * z⁻¹ -
+          Complex.besselJ 1 z * besselY0HarmonicCorrection z +
+          (z / 4) * Complex.besselJ 0 z * besselY1HarmonicCorrection z = z⁻¹ := by
+    apply (mul_left_cancel₀ hz)
+    calc
+      z * (Complex.besselJ 0 z * z⁻¹ -
+          Complex.besselJ 1 z * besselY0HarmonicCorrection z +
+          (z / 4) * Complex.besselJ 0 z * besselY1HarmonicCorrection z) =
+          Complex.besselJ 0 z -
+          z * Complex.besselJ 1 z * besselY0HarmonicCorrection z +
+          (z ^ 2 / 4) * Complex.besselJ 0 z *
+            besselY1HarmonicCorrection z := by
+              field_simp [hz]
+              ring
+      _ = 1 := hidentity
+      _ = z * z⁻¹ := by field_simp [hz]
+  rw [hcancel]
+
 end
 
 end QuantumTheory.Transport
