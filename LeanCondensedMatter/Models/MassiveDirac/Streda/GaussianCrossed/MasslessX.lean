@@ -86,6 +86,7 @@ even when the physical Gaussian disorder correlator is positive. -/
       v probeEnergy broadening disorderStrength hbar pMax radius
       hbroadening hdisorder hpMax
   unfold finiteCutoffContinuumBornDysonGaussianCrossedXGeneratorRadialAmplitude
+    gaussianCrossedXAmplitudeWithAdvancedGenerator
   dsimp only [finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient] at hy hz
   dsimp only
   simp only [finiteCutoffContinuumBornEffectiveMass_zero_mass,
