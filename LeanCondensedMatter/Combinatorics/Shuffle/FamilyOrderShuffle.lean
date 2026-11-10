@@ -475,4 +475,43 @@ theorem assignmentShuffleOfSize_symm_owner
   simpa [σ, hback] using
     (assignmentShuffleOfSize_apply_owner owner hcard i j).symm
 
+open Classical in
+/-- At fixed block sizes, assignments of all ambient slots to named
+blocks, each with exactly its prescribed size, are equivalent to
+order-preserving family shuffles. This includes empty blocks. -/
+noncomputable def familyShuffleOwnerEquiv
+    {ι : Type*} [Fintype ι] {size : ι → ℕ} {total : ℕ} :
+    FamilySlotShuffleTo size total ≃
+      {owner : Fin total → ι //
+        ∀ i, Fintype.card {v : Fin total // owner v = i} = size i} where
+  toFun σ :=
+    ⟨fun v => (σ.slotEquiv.symm v).1, fun i => σ.card_ownerFiber i⟩
+  invFun o := assignmentShuffleOfSize o.1 o.2
+  left_inv σ := by
+    apply FamilySlotShuffleTo.eq_of_same_owner
+    intro v
+    exact (assignmentShuffleOfSize_symm_owner
+      (fun v => (σ.slotEquiv.symm v).1)
+      (fun i => σ.card_ownerFiber i) v)
+  right_inv o := by
+    apply Subtype.ext
+    funext v
+    exact assignmentShuffleOfSize_symm_owner o.1 o.2 v
+
+open Classical in
+/-- Reindex an arbitrary weighted family-shuffle sum by assignments
+with the same fixed local cardinalities. In particular, this counts
+no spurious permutations of the slots inside a block. -/
+theorem sum_familyShuffles_eq_sum_fixedSizeOwners
+    {ι M : Type*} [Fintype ι] [AddCommMonoid M]
+    {size : ι → ℕ} {total : ℕ}
+    (weight : FamilySlotShuffleTo size total → M) :
+    (∑ σ : FamilySlotShuffleTo size total, weight σ) =
+      ∑ o : {owner : Fin total → ι //
+          ∀ i, Fintype.card {v : Fin total // owner v = i} = size i},
+        weight (familyShuffleOwnerEquiv.symm o) := by
+  classical
+  exact (Equiv.sum_comp
+    (familyShuffleOwnerEquiv (ι := ι) (size := size) (total := total)).symm weight).symm
+
 end Combinatorics
