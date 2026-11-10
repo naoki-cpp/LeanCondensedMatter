@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVSpectralCenter
+import LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVFinitePart
 import Mathlib.Analysis.Complex.Basic
 
 set_option linter.style.header false
