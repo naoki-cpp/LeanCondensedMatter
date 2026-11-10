@@ -81,7 +81,13 @@ theorem besselFormalH1_derivative_relation :
     simp only [map_sub, PowerSeries.coeff_succ_X_mul,
       PowerSeries.coeff_ofNat_mul, PowerSeries.coeff_derivative]
     simp only [PowerSeries.coeff_one, Nat.succ_ne_zero, ↓reduceIte, sub_zero]
-    simpa only [mul_assoc] using (besselFormalH1_coeff n)
+    calc
+      _ = 2 * ((n + 1 : ℕ) : ℂ) *
+            PowerSeries.coeff (n + 1) besselFormalH0 -
+          PowerSeries.coeff (n + 1) besselFormalJ0 := besselFormalH1_coeff n
+      _ = _ := by
+        simp only [Nat.cast_add, Nat.cast_one]
+        ring
 
 /-- Formal version of the actual Wronskian-reducing identity,
 now **unconditionally proved** for the factorial/harmonic
