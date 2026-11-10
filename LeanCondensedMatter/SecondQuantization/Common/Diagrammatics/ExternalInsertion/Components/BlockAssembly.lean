@@ -2,6 +2,8 @@ import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInser
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalComponents
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ExternalPartition
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Transport
+import LeanCondensedMatter.Combinatorics.Shuffle.FamilyOrderShuffle
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Ordered
 import Mathlib.Order.Partition.Finpartition
 import Mathlib.Data.Finset.Sort
 
@@ -1277,6 +1279,52 @@ theorem ExternalInsertionBlockLayout.sum_interactionBlock_card_eq
   classical
   have h := Fintype.card_congr (layout.interactionEquiv S)
   simpa only [Fintype.card_sigma, Fintype.card_coe] using h.symm
+
+/-- Every global interaction-vertex order decomposes uniquely into one
+local order for each independently assigned external block and an
+order-preserving shuffle of those local slots. In particular, blocks
+with no interaction vertices retain their unique empty local order. -/
+noncomputable def ExternalInsertionBlockLayout.interactionOrderDecompositionEquiv
+    (layout : ExternalInsertionBlockLayout E N) :
+    QuarticVertexOrder (Finset.univ : Finset (Fin N)) ≃
+      FamilyOrdersOf
+        (fun B : layout.partition.parts =>
+          ↥(layout.interactionBlock (Finset.univ : Finset (Fin N)) B))
+        (fun B => (layout.interactionBlock
+          (Finset.univ : Finset (Fin N)) B).card) ×
+      FamilySlotShuffleTo
+        (fun B : layout.partition.parts =>
+          (layout.interactionBlock (Finset.univ : Finset (Fin N)) B).card)
+        (Finset.univ : Finset (Fin N)).card := by
+  classical
+  exact familyOrderDecompositionEquivOfSize
+    (fun B : layout.partition.parts =>
+      ↥(layout.interactionBlock (Finset.univ : Finset (Fin N)) B))
+    (fun B => (layout.interactionBlock
+      (Finset.univ : Finset (Fin N)) B).card)
+    (fun B => by simp)
+    (layout.interactionEquiv (Finset.univ : Finset (Fin N)))
+
+/-- Reindex a finite sum over every ambient interaction order by the
+independent local block orders and their interleavings, with no
+multiplicity or omission even for zero-interaction blocks. -/
+theorem ExternalInsertionBlockLayout.sum_interactionOrders_eq_sum_blockOrders_shuffles
+    (layout : ExternalInsertionBlockLayout E N)
+    {M : Type*} [AddCommMonoid M]
+    (weight : QuarticVertexOrder (Finset.univ : Finset (Fin N)) → M) :
+    (∑ order : QuarticVertexOrder (Finset.univ : Finset (Fin N)), weight order) =
+      ∑ data : FamilyOrdersOf
+          (fun B : layout.partition.parts =>
+            ↥(layout.interactionBlock (Finset.univ : Finset (Fin N)) B))
+          (fun B => (layout.interactionBlock
+            (Finset.univ : Finset (Fin N)) B).card) ×
+          FamilySlotShuffleTo
+            (fun B : layout.partition.parts =>
+              (layout.interactionBlock (Finset.univ : Finset (Fin N)) B).card)
+            (Finset.univ : Finset (Fin N)).card,
+        weight (layout.interactionOrderDecompositionEquiv.symm data) := by
+  classical
+  exact (Equiv.sum_comp layout.interactionOrderDecompositionEquiv.symm weight).symm
 
 /-- Two external block layouts are equal if their source partitions and
 underlying interaction-owner blocks coincide. The evenness witnesses are
