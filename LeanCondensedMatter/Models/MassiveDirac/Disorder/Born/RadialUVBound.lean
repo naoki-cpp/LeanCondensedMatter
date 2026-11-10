@@ -23,16 +23,14 @@ noncomputable section
 
 open QuantumTheory.Transport
 
-/-- The massive-Dirac radial denominator is bounded below by half its
-quadratic momentum term beyond an explicit positive threshold. This is
-a norm estimate for an arbitrary complex spectral center, not an
-asymptotic statement that assumes a real spectral pole. -/
-theorem massiveDiracRadialCenter_norm_ge_half_quadratic
+/-- The reciprocal quadratic resolvent norm is bounded by the
+inverse half-dispersion beyond the center-dependent UV threshold. -/
+theorem massiveDiracRadialCenter_inv_norm_le_half_quadratic_inv
     (v p : ℝ) (center : ℂ) (hv : v ≠ 0)
     (hp : max (1 : ℝ)
         (2 * ‖center‖ / v ^ 2) ≤ p) :
-    v ^ 2 * p ^ 2 / 2 ≤
-      ‖center - ((v ^ 2 * p ^ 2 : ℝ) : ℂ)‖ := by
+    ‖(center - ((v ^ 2 * p ^ 2 : ℝ) : ℂ))⁻¹‖ ≤
+      (v ^ 2 * p ^ 2 / 2)⁻¹ := by
   have hv2 : 0 < v ^ 2 := sq_pos_of_ne_zero hv
   have hp1 : 1 ≤ p := (le_max_left _ _).trans hp
   have hpA : 2 * ‖center‖ / v ^ 2 ≤ p :=
@@ -56,25 +54,13 @@ theorem massiveDiracRadialCenter_norm_ge_half_quadratic
   have htri :=
     norm_sub_le (center - ((v ^ 2 * p ^ 2 : ℝ) : ℂ)) center
   rw [hdiff, norm_neg, hnorm] at htri
-  linarith
-
-/-- The corresponding inverse quadratic-denominator norm is bounded by
-the reciprocal half-dispersion. Both the positive threshold and
-nonvanishing of the denominator follow from the bound itself. -/
-theorem massiveDiracRadialCenter_inv_norm_le_half_quadratic_inv
-    (v p : ℝ) (center : ℂ) (hv : v ≠ 0)
-    (hp : max (1 : ℝ)
-        (2 * ‖center‖ / v ^ 2) ≤ p) :
-    ‖(center - ((v ^ 2 * p ^ 2 : ℝ) : ℂ))⁻¹‖ ≤
-      (v ^ 2 * p ^ 2 / 2)⁻¹ := by
-  have hden := massiveDiracRadialCenter_norm_ge_half_quadratic
-    v p center hv hp
-  have hv2 : 0 < v ^ 2 := sq_pos_of_ne_zero hv
-  have hp1 : 1 ≤ p := (le_max_left _ _).trans hp
+  have hden : v ^ 2 * p ^ 2 / 2 ≤
+      ‖center - ((v ^ 2 * p ^ 2 : ℝ) : ℂ)‖ := by
+    linarith
   have hpos : 0 < v ^ 2 * p ^ 2 / 2 := by positivity
-  have hnorm : 0 < ‖(center - ((v ^ 2 * p ^ 2 : ℝ) : ℂ))‖ :=
+  have hnormpos : 0 < ‖center - ((v ^ 2 * p ^ 2 : ℝ) : ℂ)‖ :=
     lt_of_lt_of_le hpos hden
-  rw [norm_inv, inv_le_inv₀ hnorm hpos]
+  rw [norm_inv, inv_le_inv₀ hnormpos hpos]
   exact hden
 
 /-- The ultraviolet boundary term in the radial Fourier integration-by-parts
@@ -98,12 +84,8 @@ theorem massiveDiracRadialDenominator_firstHarmonicBoundary_tendsto_zero
     have hp1 : 1 ≤ p := (le_max_left _ _).trans hp
     have hp0 : 0 < p := by linarith
     have hK := polarFourierFirstCosineAngularKernel_norm_le (p * c)
-    have hD :
-        ‖(massiveDiracRadialDenominator v p energy mass)⁻¹‖ ≤
-          (v ^ 2 * p ^ 2 / 2)⁻¹ := by
-      simpa only [massiveDiracRadialDenominator] using
-        (massiveDiracRadialCenter_inv_norm_le_half_quadratic_inv
-          v p (energy ^ 2 - mass ^ 2) hv hp)
+    have hD := massiveDiracRadialCenter_inv_norm_le_half_quadratic_inv
+      v p (energy ^ 2 - mass ^ 2) hv hp
     calc
       ‖(p : ℂ) * polarFourierFirstCosineAngularKernel (p * c) *
           (massiveDiracRadialDenominator v p energy mass)⁻¹‖ =
