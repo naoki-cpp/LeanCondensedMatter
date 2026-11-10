@@ -67,7 +67,7 @@ theorem norm_besselY1HarmonicTerm_le_two_expTerm (z : ℂ) (n : ℕ) :
       have hnorm :
           ‖((((harmonic n : ℝ) + (harmonic (n + 1) : ℝ)) : ℂ))‖ =
             ((harmonic n : ℝ) + (harmonic (n + 1) : ℝ)) := by
-        simpa [Complex.norm_real, Real.norm_eq_abs] using
+        simpa only [Complex.norm_real, Real.norm_eq_abs] using
           (abs_of_nonneg hH.1)
       simp only [besselY1HarmonicTerm, norm_div, norm_mul,
         norm_pow, norm_neg, hnorm, Complex.norm_natCast,
