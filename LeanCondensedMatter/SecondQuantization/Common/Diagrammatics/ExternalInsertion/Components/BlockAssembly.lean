@@ -1267,5 +1267,63 @@ theorem ExternalInsertionBlockLayout.externalBlockLayout_assembleDiagram_interac
       exact layout.partition.part_eq_of_mem B.2 he
 
 
+
+/-- The active interaction sectors assigned to an external partition form
+an exact disjoint decomposition of the global interaction sector. In
+particular, empty local interaction blocks contribute zero to this sum. -/
+theorem ExternalInsertionBlockLayout.sum_interactionBlock_card_eq
+    (layout : ExternalInsertionBlockLayout E N) (S : Finset (Fin N)) :
+    (∑ B : layout.partition.parts, (layout.interactionBlock S B).card) = S.card := by
+  classical
+  have h := Fintype.card_congr (layout.interactionEquiv S)
+  simpa only [Fintype.card_sigma, Fintype.card_coe] using h.symm
+
+/-- Two external block layouts are equal if their source partitions and
+underlying interaction-owner blocks coincide. The evenness witnesses are
+propositions, so they carry no additional data. -/
+theorem ExternalInsertionBlockLayout.ext_of_partition_owner
+    {left right : ExternalInsertionBlockLayout E N}
+    (hpart : left.partition = right.partition)
+    (howner : ∀ v : Fin N,
+      (left.interactionOwner v : Finset (Fin (2 * E))) =
+        (right.interactionOwner v : Finset (Fin (2 * E)))) :
+    left = right := by
+  cases left with
+  | mk π heven owner =>
+    cases right with
+    | mk ρ heven' owner' =>
+      dsimp at hpart
+      cases hpart
+      have hfunc : owner = owner' := by
+        funext v
+        exact Subtype.ext (howner v)
+      cases hfunc
+      rfl
+
+/-- At full interaction order, reconstructing the physical connected
+components of an independently assembled family of preconnected local
+diagrams recovers its *entire original layout*, not just the external
+partition or individual active interaction owners. -/
+theorem ExternalInsertionBlockLayout.externalBlockLayout_assembleDiagram_eq
+    {ExternalLabel InternalLabel : Type*}
+    (layout : ExternalInsertionBlockLayout E N)
+    (F : ∀ B : layout.partition.parts,
+      ExternalInsertionDiagram ExternalLabel InternalLabel
+        ((B : Finset (Fin (2 * E))).card / 2) N
+        (layout.interactionBlock (Finset.univ : Finset (Fin N)) B))
+    (hconnected : ∀ B, (F B).vertexGraph.Preconnected)
+    (anchor : Fin (2 * E)) :
+    (layout.assembleDiagram (Finset.univ : Finset (Fin N)) F).externalBlockLayout
+        (layout.hasNoVacuumComponent_assembleDiagram
+          (Finset.univ : Finset (Fin N)) F hconnected) anchor = layout := by
+  apply ExternalInsertionBlockLayout.ext_of_partition_owner
+  · exact layout.externalComponentPartition_assembleDiagram
+      (Finset.univ : Finset (Fin N)) F hconnected
+  · intro v
+    exact layout.externalBlockLayout_assembleDiagram_interactionOwner
+      (Finset.univ : Finset (Fin N)) F hconnected anchor
+      ⟨v, Finset.mem_univ v⟩
+
+
 end Common
 end SecondQuantization
