@@ -30,10 +30,15 @@ open scoped Interval
 /-- Fourier-harmonic current channels shared by the X and Psi crossed diagrams.
 Each entry includes its physical momentum measure and fixed regulator data. -/
 structure GaussianCrossedCurrentFourierMoments where
+  /-- Zeroth-harmonic isotropic channel of the diagonal current block. -/
   isotropic : ℂ
+  /-- Second-cosine-harmonic anisotropic channel of the diagonal current block. -/
   anisotropic : ℂ
+  /-- First-cosine-harmonic scalar–in-plane-Pauli current channel. -/
   firstX : ℂ
+  /-- First-cosine-harmonic in-plane–out-of-plane-Pauli current channel. -/
   firstY : ℂ
+  /-- Zeroth-harmonic transverse scalar–out-of-plane-Pauli current channel. -/
   transverse : ℂ
 
 /-- Finite-cutoff zeroth-, first- and second-harmonic current moments
