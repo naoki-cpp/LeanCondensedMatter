@@ -73,20 +73,12 @@ noncomputable def continuumSchrodingerEvolution1D
     have hscale : HasDerivAt (fun τ : ℝ => τ / hbar) (1 / hbar) t := by
       simpa [div_eq_mul_inv] using (hasDerivAt_id t).mul_const hbar⁻¹
     have hcomp := hU.scomp t hscale
-    have hcast : ((hbar⁻¹ : ℝ) : ℂ) = (hbar : ℂ)⁻¹ := by
-      exact RCLike.ofReal_inv hbar
-    have hcoeff : (hbar⁻¹ : ℝ) • (-Complex.I : ℂ) = -(Complex.I / (hbar : ℂ)) := by
+    have hcoeff : (hbar⁻¹ : ℝ) • (-Complex.I : ℂ) =
+        -(Complex.I / (hbar : ℂ)) := by
       change ((hbar⁻¹ : ℝ) : ℂ) * (-Complex.I) = _
-      rw [hcast]
+      rw [RCLike.ofReal_inv]
       ring
-    have hrescale (v : ContinuumL2Wavefunction1D) :
-        (hbar⁻¹ : ℝ) • ((-Complex.I : ℂ) • v) =
-          (-(Complex.I / (hbar : ℂ))) • v := by
-      rw [← smul_assoc, hcoeff]
-    have hcomp' := hcomp
-    simp only [one_div] at hcomp'
-    rw [hrescale] at hcomp'
-    simpa [Function.comp_def, H] using hcomp'
+    simpa only [one_div, ← smul_assoc, hcoeff, Function.comp_def, H] using hcomp
 
 end
 end Continuum
