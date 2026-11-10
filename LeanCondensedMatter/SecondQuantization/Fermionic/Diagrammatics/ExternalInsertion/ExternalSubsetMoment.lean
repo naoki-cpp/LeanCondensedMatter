@@ -225,7 +225,7 @@ theorem vacuumFreeExternalInsertionDysonCoefficient_eq_sum_connectedBlockFamilie
     (times : Fin (2 * K) → ℝ) :
     vacuumFreeExternalInsertionDysonCoefficient ε β g labels times n =
       ∑ p ∈ ExternalInsertionBlockLayout.connectedAssemblyFiniteDomain
-          (ExternalLabel := ExternalFieldLabel Mode)
+          (E := K) (N := n) (ExternalLabel := ExternalFieldLabel Mode)
           (InternalLabel := QuarticVertexLabel Mode) anchor,
         if (ExternalInsertionBlockLayout.assembleConnectedBlockFamily p).1.externalLabel =
             labels then
