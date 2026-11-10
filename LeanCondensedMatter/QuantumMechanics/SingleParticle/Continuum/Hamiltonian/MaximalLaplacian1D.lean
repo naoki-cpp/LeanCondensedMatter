@@ -111,12 +111,7 @@ theorem continuumMaximalLaplacian1D_agrees_on_H2 (ψ : continuumH2Domain1D) :
           continuumH2Domain1D_le_continuumMaximalLaplacianDomain1D ψ.property⟩ =
       continuumH2Laplacian1D ψ := by
   apply l2ToTemperedDistribution1D_injective
-  change l2ToTemperedDistribution1D
-      (continuumMaximalLaplacianOnDomain1D
-        ⟨(ψ : ContinuumL2Wavefunction1D),
-          continuumH2Domain1D_le_continuumMaximalLaplacianDomain1D ψ.property⟩) =
-    l2ToTemperedDistribution1D (continuumH2Laplacian1D ψ)
-  rw [l2ToTemperedDistribution1D_continuumMaximalLaplacianOnDomain1D,
+  rw [l2ToTemperedDistribution1D_continuumMaximalLaplacian1D,
     l2ToTemperedDistribution1D_continuumH2Laplacian1D]
 
 /-- Graph membership in the maximal Laplacian is exactly the distributional Laplacian equation. -/
@@ -141,10 +136,7 @@ theorem mem_continuumMaximalLaplacian1D_graph_iff
     rw [LinearPMap.mem_graph_iff]
     refine ⟨⟨z.1, hdomain⟩, rfl, ?_⟩
     apply l2ToTemperedDistribution1D_injective
-    change l2ToTemperedDistribution1D
-        (continuumMaximalLaplacianOnDomain1D ⟨z.1, hdomain⟩) =
-      l2ToTemperedDistribution1D z.2
-    rw [l2ToTemperedDistribution1D_continuumMaximalLaplacianOnDomain1D]
+    rw [l2ToTemperedDistribution1D_continuumMaximalLaplacian1D]
     exact hz.symm
 
 /-- The maximal distributional Laplacian is a closed unbounded operator on `L²(ℝ, ℂ)`. -/
@@ -158,17 +150,12 @@ theorem continuumMaximalLaplacian1D_isClosed : continuumMaximalLaplacian1D.IsClo
     exact mem_continuumMaximalLaplacian1D_graph_iff z
   rw [hgraph]
   apply isClosed_eq
-  · exact l2ToTemperedDistribution1D.continuous.comp
-      (continuous_snd : Continuous
-        (fun z : ContinuumL2Wavefunction1D × ContinuumL2Wavefunction1D => z.2))
+  · exact l2ToTemperedDistribution1D.continuous.comp (by fun_prop)
   · have hcont :
         Continuous (fun z : ContinuumL2Wavefunction1D × ContinuumL2Wavefunction1D =>
           (LineDeriv.laplacianCLM ℂ ℝ 𝓢'(ℝ, ℂ))
             (l2ToTemperedDistribution1D z.1)) := by
-      exact (LineDeriv.laplacianCLM ℂ ℝ 𝓢'(ℝ, ℂ)).continuous.comp
-        (l2ToTemperedDistribution1D.continuous.comp
-          (continuous_fst : Continuous
-            (fun z : ContinuumL2Wavefunction1D × ContinuumL2Wavefunction1D => z.1)))
+      fun_prop
     simpa only [TemperedDistribution.laplacianCLM_apply] using hcont
 
 /-- The maximal distributional Laplacian is densely defined because it contains the dense `H²`
