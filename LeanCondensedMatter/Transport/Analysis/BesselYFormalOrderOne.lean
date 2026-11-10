@@ -1,5 +1,4 @@
 import LeanCondensedMatter.Transport.Analysis.BesselYFormalCoefficients
-import Mathlib.Tactic.Omega
 
 set_option linter.style.header false
 
