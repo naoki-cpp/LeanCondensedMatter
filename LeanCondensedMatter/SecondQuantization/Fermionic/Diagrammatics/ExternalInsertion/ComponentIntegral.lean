@@ -4,6 +4,7 @@ import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInser
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.Integral
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentAmplitude
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.DiagramRegularity
+import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalSourceSign
 
 set_option linter.style.header false
 
@@ -174,6 +175,34 @@ theorem ExternalInsertionWickDiagram.sum_componentInteractionOrderShuffle_ordere
       congr 1
       exact (Equiv.prod_comp (d.vacuumFreeComponentsEquivExternalBlocks hVac).symm F).symm
 
+
+
+/-- The summed interaction-order shuffle orbit of a vacuum-free physical
+diagram factors with the **canonical fermionic external-partition source
+sign**, not merely an arbitrarily ordered component sign. Each factor is
+the integrated amplitude of its actual connected component with the
+correct increasing local external labels and times. -/
+theorem ExternalInsertionWickDiagram.sum_componentInteractionOrderShuffle_orderedDysonAmplitude_eq_sourceSign_mul_externalPartitionProduct
+    {E n : ℕ} (d : ExternalInsertionWickDiagram Mode E n)
+    (hVac : HasNoVacuumComponent d.vertexGraph)
+    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
+    (externalTime : Fin (2 * E) → ℝ)
+    (blockOrder : d.vertexGraph.componentPartition.parts ≃
+      Fin (Fintype.card d.vertexGraph.componentPartition.parts)) :
+    (∑ shuffle : d.ComponentInteractionOrderShuffle,
+      d.orderedDysonAmplitude ε β g externalTime
+        (d.assembleInteractionOrder d.canonicalComponentInteractionOrders shuffle)) =
+      externalPartitionSourceSign (externalComponentPartition d.vertexGraph) *
+        ∏ P : (externalComponentPartition d.vertexGraph).parts,
+          ExternalInsertionWickDiagram.dysonAmplitude
+            (d.componentOrderedDiagram
+              ((d.vacuumFreeComponentsEquivExternalBlocks hVac).symm P))
+            ε β g (d.componentExternalTime externalTime
+              ((d.vacuumFreeComponentsEquivExternalBlocks hVac).symm P)) := by
+  rw [d.sum_componentInteractionOrderShuffle_orderedDysonAmplitude_eq_externalPartitionProduct
+    hVac ε β g externalTime blockOrder]
+  rw [externalPartitionSourceSign_eq_componentExternalOrderSign_of_vacuumFree
+    d hVac blockOrder]
 
 end Fermionic
 end SecondQuantization
