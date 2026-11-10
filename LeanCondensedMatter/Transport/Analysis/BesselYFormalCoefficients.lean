@@ -94,7 +94,9 @@ theorem besselFormalJ0_frobenius :
     PowerSeries.coeff_derivative]
   calc
     _ = ((n + 1 : ℕ) : ℂ) ^ 2 *
-          PowerSeries.coeff (n + 1) besselFormalJ0 := by ring_nf
+          PowerSeries.coeff (n + 1) besselFormalJ0 := by
+      simp only [Nat.cast_add, Nat.cast_one]
+      ring
     _ = _ := besselFormalJ0_coeff_succ n
 
 /-- The concrete harmonic series solves the inhomogeneous
@@ -111,14 +113,17 @@ theorem besselFormalH0_frobenius :
   have h := besselFormalH0_coeff_succ n
   calc
     _ = ((n + 1 : ℕ) : ℂ) ^ 2 *
-        PowerSeries.coeff (n + 1) besselFormalH0 := by ring_nf
+        PowerSeries.coeff (n + 1) besselFormalH0 := by
+      simp only [Nat.cast_add, Nat.cast_one]
+      ring
     _ = PowerSeries.coeff n besselFormalH0 +
         ((n + 1 : ℕ) : ℂ) *
           PowerSeries.coeff (n + 1) besselFormalJ0 := h
     _ = PowerSeries.coeff n
         (besselFormalH0 + PowerSeries.derivative besselFormalJ0) := by
       simp only [map_add, PowerSeries.coeff_derivative]
-      ring_nf
+      simp only [Nat.cast_add, Nat.cast_one]
+      ring
 
 /-- Formal Bessel J₀ and the harmonic correction have exactly
 the Frobenius initial coefficients; in particular no singular
