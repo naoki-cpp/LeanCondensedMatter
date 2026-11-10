@@ -1305,6 +1305,51 @@ noncomputable def ExternalInsertionBlockLayout.interactionOrderDecompositionEqui
     (fun B => by simp)
     (layout.interactionEquiv (Finset.univ : Finset (Fin N)))
 
+/-- The interaction vertex at each shuffled global slot is exactly
+the vertex identified by the corresponding local block order. The
+ambient order is arbitrary, so this applies to the actual ordered Dyson
+integrand, not just the canonical increasing vertex order. -/
+theorem ExternalInsertionBlockLayout.interactionOrderDecomposition_slotVertex
+    (layout : ExternalInsertionBlockLayout E N)
+    (order : QuarticVertexOrder (Finset.univ : Finset (Fin N)))
+    (B : layout.partition.parts)
+    (j : Fin (layout.interactionBlock (Finset.univ : Finset (Fin N)) B).card) :
+    order ((layout.interactionOrderDecompositionEquiv order).2.slotEquiv ⟨B, j⟩) =
+      (layout.interactionEquiv (Finset.univ : Finset (Fin N))).symm
+        ⟨B, (layout.interactionOrderDecompositionEquiv order).1 B j⟩ := by
+  classical
+  exact familyOrderDecompositionEquivOfSize_shuffle_slot
+    (fun C : layout.partition.parts =>
+      ↥(layout.interactionBlock (Finset.univ : Finset (Fin N)) C))
+    (fun C => (layout.interactionBlock
+      (Finset.univ : Finset (Fin N)) C).card)
+    (fun C => by simp)
+    (layout.interactionEquiv (Finset.univ : Finset (Fin N)))
+    order B j
+
+/-- Every shuffled slot in an arbitrary global interaction order belongs
+to its specified physical external-source block; interleavings cannot
+move quartic vertices across assigned blocks. -/
+theorem ExternalInsertionBlockLayout.interactionOrderDecomposition_slot_owner
+    (layout : ExternalInsertionBlockLayout E N)
+    (order : QuarticVertexOrder (Finset.univ : Finset (Fin N)))
+    (B : layout.partition.parts)
+    (j : Fin (layout.interactionBlock (Finset.univ : Finset (Fin N)) B).card) :
+    layout.interactionOwner
+      (order ((layout.interactionOrderDecompositionEquiv order).2.slotEquiv ⟨B, j⟩)).1 = B := by
+  classical
+  rw [layout.interactionOrderDecomposition_slotVertex order B j]
+  let v := (layout.interactionOrderDecompositionEquiv order).1 B j
+  have hmem : (v.1 : Fin N) ∈
+      layout.interactionBlock (Finset.univ : Finset (Fin N)) B := v.2
+  have howner := (Finset.mem_filter.mp hmem).2
+  have hv :
+      ((layout.interactionEquiv (Finset.univ : Finset (Fin N))).symm
+        ⟨B, v⟩).1 = v.1 := by
+    apply Subtype.ext
+    rfl
+  simpa only [hv] using howner
+
 /-- Reindex a finite sum over every ambient interaction order by the
 independent local block orders and their interleavings, with no
 multiplicity or omission even for zero-interaction blocks. -/
