@@ -199,6 +199,33 @@ theorem massiveDiracRadialFourier_tendsto_uvValue_center
   simp only [massiveDiracRadialDenominator, hcenterEq] at h
   exact h
 
+/-- Evenness is inherited from the finite-cutoff angular kernel, without
+a choice of square-root branch or a running Born limit. -/
+theorem massiveDiracRadialFourierUVCenter_neg
+    (v c : ℝ) (center : ℂ)
+    (hv : v ≠ 0) (hc : c ≠ 0) (hcenter : center.im ≠ 0) :
+    massiveDiracRadialFourierUVCenter v (-c) center =
+      massiveDiracRadialFourierUVCenter v c center := by
+  have hneg := massiveDiracRadialFourier_tendsto_uvValue_center
+    v (-c) center hv (neg_ne_zero.mpr hc) hcenter
+  have hpos := massiveDiracRadialFourier_tendsto_uvValue_center
+    v c center hv hc hcenter
+  have heq (b : ℝ) :
+      (∫ p in (0 : ℝ)..b,
+        (p : ℂ) * polarFourierZerothAngularKernel (p * -c) *
+          (center - ((v ^ 2 * p ^ 2 : ℝ) : ℂ))⁻¹) =
+        (∫ p in (0 : ℝ)..b,
+          (p : ℂ) * polarFourierZerothAngularKernel (p * c) *
+            (center - ((v ^ 2 * p ^ 2 : ℝ) : ℂ))⁻¹) := by
+    apply intervalIntegral.integral_congr
+    intro p _
+    dsimp only
+    rw [show p * -c = -(p * c) by ring,
+      polarFourierZerothAngularKernel_neg]
+  exact tendsto_nhds_unique
+    (hneg.congr' (Filter.Eventually.of_forall heq))
+    hpos
+
 end
 
 end QuantumTheory.Models.MassiveDirac
