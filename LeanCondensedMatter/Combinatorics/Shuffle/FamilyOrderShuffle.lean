@@ -297,6 +297,7 @@ open Classical in
 ambient slots to family blocks. This is the assignment-side counterpart of
 `familyOrderDecompositionEquiv`, specialized to the identity ambient order.
 A block with no assigned slots retains its zero-size local fiber. -/
+@[nolint unusedArguments]
 noncomputable def ownerCanonicalShuffle
     {ι : Type*} [Fintype ι] {total : ℕ} (owner : Fin total → ι) :
     FamilySlotShuffleTo
