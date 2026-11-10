@@ -1405,9 +1405,13 @@ theorem ExternalInsertionBlockLayout.interactionAssignmentShuffle_blockSlots
   · intro hv
     have howner : layout.interactionOwner v = B :=
       (Finset.mem_filter.mp hv).2
-    obtain ⟨B', j⟩ := σ.slotEquiv.symm v
-    have hback : σ.slotEquiv ⟨B', j⟩ = v :=
-      σ.slotEquiv.apply_symm_apply v
+    rcases hslot : σ.slotEquiv.symm v with ⟨B', j⟩
+    have hback : σ.slotEquiv ⟨B', j⟩ = v := by
+      calc
+        σ.slotEquiv ⟨B', j⟩ =
+            σ.slotEquiv (σ.slotEquiv.symm v) :=
+          congrArg σ.slotEquiv hslot.symm
+        _ = v := σ.slotEquiv.apply_symm_apply v
     have hB : B' = B := by
       have h := layout.interactionAssignmentShuffle_apply_owner B' j
       rw [hback] at h
