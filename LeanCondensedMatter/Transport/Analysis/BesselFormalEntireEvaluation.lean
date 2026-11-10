@@ -80,6 +80,62 @@ theorem besselEntireCoefficientEval_sub (f g : ℂ⟦X⟧) (x : ℂ)
       ring
     _ = _ := hf.tsum_sub hg
 
+/-- Cauchy convolution is itself summable when the two coefficientwise
+series are absolutely summable. This makes multiplication composable with
+addition and multiplication by X. -/
+theorem summable_besselEntireCoefficientEval_mul (f g : ℂ⟦X⟧) (x : ℂ)
+    (hf : Summable (fun n : ℕ => PowerSeries.coeff n f * x ^ n))
+    (hg : Summable (fun n : ℕ => PowerSeries.coeff n g * x ^ n)) :
+    Summable (fun n : ℕ => PowerSeries.coeff n (f * g) * x ^ n) := by
+  have hs :
+      Summable (fun n : ℕ =>
+        ∑ p ∈ Finset.antidiagonal n,
+          (PowerSeries.coeff p.1 f * x ^ p.1) *
+            (PowerSeries.coeff p.2 g * x ^ p.2)) :=
+    (summable_norm_sum_mul_antidiagonal_of_summable_norm hf.norm hg.norm).of_norm
+  convert hs using 1
+  funext n
+  rw [PowerSeries.coeff_mul, Finset.sum_mul]
+  apply Finset.sum_congr rfl
+  intro p hp
+  rw [← Finset.mem_antidiagonal.mp hp, pow_add]
+  ring
+
+/-- Addition preserves summable coefficientwise complex evaluation. -/
+theorem summable_besselEntireCoefficientEval_add (f g : ℂ⟦X⟧) (x : ℂ)
+    (hf : Summable (fun n : ℕ => PowerSeries.coeff n f * x ^ n))
+    (hg : Summable (fun n : ℕ => PowerSeries.coeff n g * x ^ n)) :
+    Summable (fun n : ℕ => PowerSeries.coeff n (f + g) * x ^ n) := by
+  convert hf.add hg using 1
+  funext n
+  rw [map_add]
+  ring
+
+/-- Scaling a formal series by two preserves convergence. -/
+theorem summable_besselEntireCoefficientEval_two_mul (f : ℂ⟦X⟧) (x : ℂ)
+    (hf : Summable (fun n : ℕ => PowerSeries.coeff n f * x ^ n)) :
+    Summable (fun n : ℕ => PowerSeries.coeff n (2 * f) * x ^ n) := by
+  convert hf.mul_left (2 : ℂ) using 1
+  funext n
+  rw [PowerSeries.coeff_ofNat_mul]
+  ring
+
+/-- Scaling a formal series by two commutes with convergent evaluation. -/
+theorem besselEntireCoefficientEval_two_mul (f : ℂ⟦X⟧) (x : ℂ)
+    (hf : Summable (fun n : ℕ => PowerSeries.coeff n f * x ^ n)) :
+    besselEntireCoefficientEval (2 * f) x =
+      2 * besselEntireCoefficientEval f x := by
+  unfold besselEntireCoefficientEval
+  calc
+    (∑' n : ℕ, PowerSeries.coeff n (2 * f) * x ^ n) =
+        ∑' n : ℕ, (2 : ℂ) * (PowerSeries.coeff n f * x ^ n) := by
+      apply tsum_congr
+      intro n
+      rw [PowerSeries.coeff_ofNat_mul]
+      ring
+    _ = (2 : ℂ) * (∑' n : ℕ, PowerSeries.coeff n f * x ^ n) :=
+      hf.tsum_mul_left 2
+
 /-- The formal product by X is compatible with coefficientwise evaluation
 at any complex argument whenever the original series is summable. -/
 theorem besselEntireCoefficientEval_X_mul (f : ℂ⟦X⟧) (x : ℂ)
