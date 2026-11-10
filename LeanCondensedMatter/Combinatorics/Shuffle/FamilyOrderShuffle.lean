@@ -301,7 +301,7 @@ theorem assembleFamilyOrderOfSize_slot {total : ℕ} (size : ι → ℕ)
     F size ambientEquiv orders shuffle i j
   have h' :=
     congrArg (assembleFamilyOrderOfSize F size ambientEquiv orders shuffle) h
-  simpa using h'.symm
+  simpa only [Equiv.apply_symm_apply] using h'.symm
 
 /-- A global order on a finite family is equivalent to local fiber orders together with an
 order-preserving family shuffle. -/
