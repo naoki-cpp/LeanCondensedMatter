@@ -32,7 +32,7 @@ theorem massiveDiracRadialCenter_norm_ge_half_quadratic
     (hp : max (1 : ℝ)
         (2 * ‖center‖ / v ^ 2) ≤ p) :
     v ^ 2 * p ^ 2 / 2 ≤
-      ‖(center - ((v ^ 2 * p ^ 2 : ℝ) : ℂ))‖ := by
+      ‖center - ((v ^ 2 * p ^ 2 : ℝ) : ℂ)‖ := by
   have hv2 : 0 < v ^ 2 := sq_pos_of_ne_zero hv
   have hp1 : 1 ≤ p := (le_max_left _ _).trans hp
   have hpA : 2 * ‖center‖ / v ^ 2 ≤ p :=
@@ -50,12 +50,11 @@ theorem massiveDiracRadialCenter_norm_ge_half_quadratic
     simpa only [Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg hquad]
   have hdiff :
       (center - ((v ^ 2 * p ^ 2 : ℝ) : ℂ)) -
-        (center) =
+        center =
         -(((v ^ 2 * p ^ 2 : ℝ) : ℂ)) := by
     ring
   have htri :=
-    norm_sub_le ((center - ((v ^ 2 * p ^ 2 : ℝ) : ℂ)))
-      (center)
+    norm_sub_le (center - ((v ^ 2 * p ^ 2 : ℝ) : ℂ)) center
   rw [hdiff, norm_neg, hnorm] at htri
   linarith
 
@@ -66,10 +65,10 @@ theorem massiveDiracRadialCenter_inv_norm_le_half_quadratic_inv
     (v p : ℝ) (center : ℂ) (hv : v ≠ 0)
     (hp : max (1 : ℝ)
         (2 * ‖center‖ / v ^ 2) ≤ p) :
-    ‖((center - ((v ^ 2 * p ^ 2 : ℝ) : ℂ)))⁻¹‖ ≤
+    ‖(center - ((v ^ 2 * p ^ 2 : ℝ) : ℂ))⁻¹‖ ≤
       (v ^ 2 * p ^ 2 / 2)⁻¹ := by
   have hden := massiveDiracRadialCenter_norm_ge_half_quadratic
-    v p energy mass hv hp
+    v p center hv hp
   have hv2 : 0 < v ^ 2 := sq_pos_of_ne_zero hv
   have hp1 : 1 ≤ p := (le_max_left _ _).trans hp
   have hpos : 0 < v ^ 2 * p ^ 2 / 2 := by positivity
