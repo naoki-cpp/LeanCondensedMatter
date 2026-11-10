@@ -1,5 +1,6 @@
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornRadialScalarTail
 import Mathlib.Tactic.FunProp
+import Mathlib.Analysis.RCLike.Sqrt
 
 set_option linter.style.header false
 
@@ -173,6 +174,30 @@ theorem massiveDiracRadialFourier_tendsto_uvValue
     (fun p => massiveDiracRadialDenominator_ne_zero_of_center_im_ne_zero
       v p energy mass hcenter)
     le_rfl
+
+/-- The finite-cutoff zeroth-harmonic Fourier integral converges to its
+canonical UV value at a nonreal quadratic spectral center. The result
+does not depend on choosing a square-root branch. -/
+theorem massiveDiracRadialFourier_tendsto_uvValue_center
+    (v c : ℝ) (center : ℂ)
+    (hv : v ≠ 0) (hc : c ≠ 0) (hcenter : center.im ≠ 0) :
+    Filter.Tendsto
+      (fun b : ℝ => ∫ p in (0 : ℝ)..b,
+        (p : ℂ) * polarFourierZerothAngularKernel (p * c) *
+          (center - ((v ^ 2 * p ^ 2 : ℝ) : ℂ))⁻¹)
+      Filter.atTop (nhds (massiveDiracRadialFourierUVCenter v c center)) := by
+  let energy : ℂ := Complex.sqrt center
+  have hsq : (Complex.sqrt center) ^ 2 = center := by
+    simpa [Complex.sqrt] using (Complex.cpow_ofNat_inv_pow center 2)
+  have hcenterEq : energy ^ 2 - (0 : ℂ) ^ 2 = center := by
+    simpa [energy] using hsq
+  have hnonreal : (energy ^ 2 - (0 : ℂ) ^ 2).im ≠ 0 := by
+    rw [hcenterEq]
+    exact hcenter
+  have h := massiveDiracRadialFourier_tendsto_uvValue
+    v c energy 0 hv hc hnonreal
+  simp only [massiveDiracRadialDenominator, zero_pow, sub_zero, hcenterEq] at h
+  exact h
 
 end
 
