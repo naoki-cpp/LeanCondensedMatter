@@ -109,7 +109,7 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedXGreenMinors_eq_generators
 /-- The regulated X current amplitude with an explicitly supplied advanced
 scalar Green generator and its radial derivative at `-radius`. The
 retarded Green data and physical current blocks remain fixed. -/
-private noncomputable def gaussianCrossedXAmplitudeWithAdvancedGenerator
+noncomputable def gaussianCrossedXAmplitudeWithAdvancedGenerator
     (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ)
     (fA dfA : ℂ) : ℂ :=
   let Jx := finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock
