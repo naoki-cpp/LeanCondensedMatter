@@ -1372,6 +1372,50 @@ theorem ExternalInsertionBlockLayout.assembleDiagram_vertexLabel_at_shuffledSlot
     (Finset.univ : Finset (Fin N)) F B
     ((layout.interactionOrderDecompositionEquiv order).1 B j)
 
+/-- Every product of physical quartic-vertex labels factors into the
+products on the independently assembled blocks, with the exact local
+vertex orders induced by any global Dyson time order. No permutation
+multiplicity is introduced by the shuffle. -/
+theorem ExternalInsertionBlockLayout.assembleDiagram_vertexLabel_orderProduct
+    {ExternalLabel InternalLabel M : Type*} [CommMonoid M]
+    (layout : ExternalInsertionBlockLayout E N)
+    (F : ∀ B : layout.partition.parts,
+      ExternalInsertionDiagram ExternalLabel InternalLabel
+        ((B : Finset (Fin (2 * E))).card / 2) N
+        (layout.interactionBlock (Finset.univ : Finset (Fin N)) B))
+    (g : InternalLabel → M)
+    (order : QuarticVertexOrder (Finset.univ : Finset (Fin N))) :
+    (∏ j : Fin (Finset.univ : Finset (Fin N)).card,
+      g ((layout.assembleDiagram (Finset.univ : Finset (Fin N)) F).vertexLabel
+        (order j))) =
+      ∏ B : layout.partition.parts,
+        ∏ j : Fin (layout.interactionBlock (Finset.univ : Finset (Fin N)) B).card,
+          g ((F B).vertexLabel ((layout.interactionOrderDecompositionEquiv order).1 B j)) := by
+  classical
+  let shuffle := (layout.interactionOrderDecompositionEquiv order).2
+  calc
+    (∏ j : Fin (Finset.univ : Finset (Fin N)).card,
+      g ((layout.assembleDiagram (Finset.univ : Finset (Fin N)) F).vertexLabel
+        (order j))) =
+      ∏ z : Σ B : layout.partition.parts,
+        Fin (layout.interactionBlock (Finset.univ : Finset (Fin N)) B).card,
+        g ((layout.assembleDiagram (Finset.univ : Finset (Fin N)) F).vertexLabel
+          (order (shuffle.slotEquiv z))) := by
+        exact (Equiv.prod_comp shuffle.slotEquiv
+          (fun j => g ((layout.assembleDiagram
+            (Finset.univ : Finset (Fin N)) F).vertexLabel (order j)))).symm
+    _ = ∏ B : layout.partition.parts,
+        ∏ j : Fin (layout.interactionBlock (Finset.univ : Finset (Fin N)) B).card,
+          g ((F B).vertexLabel
+            ((layout.interactionOrderDecompositionEquiv order).1 B j)) := by
+      rw [Fintype.prod_sigma]
+      apply Finset.prod_congr rfl
+      intro B _
+      apply Finset.prod_congr rfl
+      intro j _
+      exact congrArg g
+        (layout.assembleDiagram_vertexLabel_at_shuffledSlot F order B j)
+
 /-- Reindex a finite sum over every ambient interaction order by the
 independent local block orders and their interleavings, with no
 multiplicity or omission even for zero-interaction blocks. -/
