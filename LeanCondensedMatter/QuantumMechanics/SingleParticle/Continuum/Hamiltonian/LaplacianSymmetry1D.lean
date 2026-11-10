@@ -102,21 +102,13 @@ theorem fourier_continuumH2Laplacian1D_ae
     laplacianFourierSymbol1D (by
       unfold laplacianFourierSymbol1D
       fun_prop)
-  have hleft :
-      l2ToTemperedDistribution1D
-          (𝓕 (continuumH2Laplacian1D ψ) : ContinuumL2Wavefunction1D) =
-        𝓕 (l2ToTemperedDistribution1D (continuumH2Laplacian1D ψ)) := by
+  have hFourier (v : ContinuumL2Wavefunction1D) :
+      l2ToTemperedDistribution1D (𝓕 v) = 𝓕 (l2ToTemperedDistribution1D v) := by
     simpa [l2ToTemperedDistribution1D] using
-      (MeasureTheory.Lp.fourier_toTemperedDistribution_eq
-        (continuumH2Laplacian1D ψ)).symm
-  have hright :
-      l2ToTemperedDistribution1D
-          (𝓕 (ψ : ContinuumL2Wavefunction1D) : ContinuumL2Wavefunction1D) =
-        𝓕 (l2ToTemperedDistribution1D (ψ : ContinuumL2Wavefunction1D)) := by
-    simpa [l2ToTemperedDistribution1D] using
-      (MeasureTheory.Lp.fourier_toTemperedDistribution_eq
-        (ψ : ContinuumL2Wavefunction1D)).symm
-  rw [hleft, hright, fourier_l2ToTemperedDistribution1D_continuumH2Laplacian1D]
+      (MeasureTheory.Lp.fourier_toTemperedDistribution_eq v).symm
+  rw [hFourier (continuumH2Laplacian1D ψ),
+    hFourier (ψ : ContinuumL2Wavefunction1D),
+    fourier_l2ToTemperedDistribution1D_continuumH2Laplacian1D]
   change
     (((-(2 * Real.pi) ^ 2 : ℂ) •
         TemperedDistribution.smulLeftCLM ℂ
