@@ -187,29 +187,6 @@ theorem tendsto_integral_massiveDiracRadialDenominator_inv_fourierKernel_of_cond
     (fun p => massiveDiracRadialDenominator_inv_hasDerivAt v p energy mass (hden p))
     hDerivativeCont hint hboundary
 
-/-- Unconditional convergence of the *fixed-spectral-center* massive-Dirac
-radial Fourier integral from a sufficiently large positive momentum.
-The needed ultraviolet integrability and vanishing boundary term are
-now derived from the quadratic denominator, rather than assumed. -/
-theorem massiveDiracRadialFourierKernel_tendsto_atTop_uv
-    (v c a : ℝ) (energy mass : ℂ) (hv : v ≠ 0) (hc : c ≠ 0)
-    (hden : ∀ p : ℝ, massiveDiracRadialDenominator v p energy mass ≠ 0)
-    (ha : max (1 : ℝ)
-        (2 * ‖energy ^ 2 - mass ^ 2‖ / v ^ 2) ≤ a) :
-    ∃ value : ℂ, Filter.Tendsto
-      (fun b : ℝ => ∫ p in a..b,
-        (p : ℂ) * polarFourierZerothAngularKernel (p * c) *
-          (massiveDiracRadialDenominator v p energy mass)⁻¹)
-      Filter.atTop (nhds value) := by
-  have hlimit :=
-    tendsto_integral_massiveDiracRadialDenominator_inv_fourierKernel_of_conditions
-      v c a energy mass hc hden
-      (massiveDiracRadialFourierRemainder_integrableOn_uv
-        v c a energy mass hv hden ha)
-      (massiveDiracRadialDenominator_firstHarmonicBoundary_tendsto_zero
-        v c energy mass hv)
-  exact ⟨_, hlimit⟩
-
 /-- The original radial Green resolvent integral from zero momentum has
 a finite ultraviolet-cutoff limit at *fixed* nonvanishing complex
 spectral denominator. The compact low-momentum contribution is
@@ -228,9 +205,13 @@ theorem massiveDiracRadialFourierKernel_tendsto_atTop
   let f : ℝ → ℂ := fun p =>
     (p : ℂ) * polarFourierZerothAngularKernel (p * c) *
       (massiveDiracRadialDenominator v p energy mass)⁻¹
-  obtain ⟨value, htail⟩ :=
-    massiveDiracRadialFourierKernel_tendsto_atTop_uv
-      v c cutoff energy mass hv hc hden le_rfl
+  have htail :=
+    tendsto_integral_massiveDiracRadialDenominator_inv_fourierKernel_of_conditions
+      v c cutoff energy mass hc hden
+      (massiveDiracRadialFourierRemainder_integrableOn_uv
+        v c cutoff energy mass hv hden le_rfl)
+      (massiveDiracRadialDenominator_firstHarmonicBoundary_tendsto_zero
+        v c energy mass hv)
   have hDcont : Continuous
       (fun p : ℝ => massiveDiracRadialDenominator v p energy mass) := by
     unfold massiveDiracRadialDenominator
@@ -252,53 +233,12 @@ theorem massiveDiracRadialFourierKernel_tendsto_atTop
         (∫ p in cutoff..b, f p) :=
     (intervalIntegral.integral_add_adjacent_intervals hleft
       (hf.intervalIntegrable cutoff b)).symm
-  refine ⟨(∫ p in (0 : ℝ)..cutoff, f p) + value, ?_⟩
   have hconst : Filter.Tendsto
       (fun _ : ℝ => ∫ p in (0 : ℝ)..cutoff, f p)
       Filter.atTop (nhds (∫ p in (0 : ℝ)..cutoff, f p)) :=
     tendsto_const_nhds
   have hsum := hconst.add htail
-  exact hsum.congr' (Filter.Eventually.of_forall fun b => (hsplit b).symm)
-
-
-/-- With the finite-cutoff Born self-energy *frozen* at `pMax`, the
-massive-Dirac radial resolvent Fourier integral converges as its independent
-outer momentum bound `b` tends to infinity, away from zero Fourier scale.
-
-The physical Born-Dyson denominator is nonzero at every real momentum under
-finite broadening and nonnegative disorder, so the fixed-spectral-center
-theorem applies without a separate denominator hypothesis. This does **not**
-send the Born self-energy's own cutoff `pMax` to infinity: the diagonal
-limit `b = pMax → ∞` requires a distinct argument. -/
-theorem finiteCutoffContinuumBornDysonRadialScalarKernel_tendsto_atTop
-    (side : SpectralSide)
-    (v m probeEnergy broadening disorderStrength hbar pMax c : ℝ)
-    (hv : v ≠ 0) (hc : c ≠ 0)
-    (hbroadening : broadening ≠ 0) (hdisorder : 0 ≤ disorderStrength)
-    (hpMax : 0 ≤ pMax) :
-    ∃ value : ℂ, Filter.Tendsto
-      (fun b : ℝ => ∫ p in (0 : ℝ)..b,
-        (p : ℂ) * polarFourierZerothAngularKernel (p * c) *
-          (finiteCutoffContinuumBornDysonDenominator
-            side v m p 0 probeEnergy broadening disorderStrength hbar pMax)⁻¹)
-      Filter.atTop (nhds value) := by
-  have hden (p : ℝ) :
-      massiveDiracRadialDenominator v p
-        (finiteCutoffContinuumBornEffectiveEnergy
-          side v m probeEnergy broadening disorderStrength hbar pMax)
-        (finiteCutoffContinuumBornEffectiveMass
-          side v m probeEnergy broadening disorderStrength hbar pMax) ≠ 0 := by
-    rw [finiteCutoffContinuumBornDysonDenominator_eq_radial]
-    exact finiteCutoffContinuumBornDysonDenominator_ne_zero
-      side v m p 0 probeEnergy broadening disorderStrength hbar pMax
-      hbroadening hdisorder hpMax
-  simpa only [finiteCutoffContinuumBornDysonDenominator_eq_radial] using
-    (massiveDiracRadialFourierKernel_tendsto_atTop v c
-      (finiteCutoffContinuumBornEffectiveEnergy
-        side v m probeEnergy broadening disorderStrength hbar pMax)
-      (finiteCutoffContinuumBornEffectiveMass
-        side v m probeEnergy broadening disorderStrength hbar pMax)
-      hv hc hden)
+  exact ⟨_, hsum.congr' (Filter.Eventually.of_forall fun b => (hsplit b).symm)⟩
 
 
 /-- On the clean (`disorderStrength = 0`) slice, the *actual* finite-cutoff
