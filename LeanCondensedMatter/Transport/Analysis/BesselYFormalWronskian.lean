@@ -1,4 +1,3 @@
-import LeanCondensedMatter.Transport.Analysis.BesselY1Series
 import Mathlib.RingTheory.PowerSeries.Derivative
 import Mathlib.Tactic.Ring
 import Mathlib.Tactic.LinearCombination
@@ -23,7 +22,7 @@ The algebraic first integral is
 
   A² + 2x(A' B - A B') = 1,
 
-provided A(0)=1, B(0)=0. This is the universal formal
+provided A(0)=1; no normalization of B(0) is required. This is the universal formal
 Wronskian conservation law. Crucially it is proved over the
 **formal power series ring** and requires no convergence or
 termwise differentiation theorem.
@@ -60,10 +59,8 @@ theorem besselFormalWronskianInvariant_eq_one
         PowerSeries.derivative A = A)
     (hB : PowerSeries.X * PowerSeries.derivative (PowerSeries.derivative B) +
         PowerSeries.derivative B = B + PowerSeries.derivative A)
-    (hA0 : PowerSeries.constantCoeff A = 1)
-    (hB0 : PowerSeries.constantCoeff B = 0) :
+    (hA0 : PowerSeries.constantCoeff A = 1) :
     besselFormalWronskianInvariant A B = 1 := by
-  let D : ℂ⟦X⟧ → ℂ⟦X⟧ := fun f => PowerSeries.derivative f
   have hderiv :
       PowerSeries.derivative (besselFormalWronskianInvariant A B) = 0 := by
     unfold besselFormalWronskianInvariant
@@ -76,7 +73,7 @@ theorem besselFormalWronskianInvariant_eq_one
         (besselFormalWronskianInvariant A B) =
           PowerSeries.constantCoeff (1 : ℂ⟦X⟧) := by
     unfold besselFormalWronskianInvariant
-    simp [hA0, hB0, PowerSeries.constantCoeff_X]
+    simp [hA0, PowerSeries.constantCoeff_X]
   exact PowerSeries.derivative.ext
     (by simpa only [PowerSeries.derivative_one] using hderiv) hconst
 
