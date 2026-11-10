@@ -1325,5 +1325,83 @@ theorem ExternalInsertionBlockLayout.externalBlockLayout_assembleDiagram_eq
       ⟨v, Finset.mem_univ v⟩
 
 
+
+/-- Connected independent labelled blocks over all ambient interaction
+slots. Every block is required to be preconnected, so the assembled
+diagram has no disconnected vacuum component. -/
+abbrev ExternalInsertionBlockLayout.ConnectedBlockFamily
+    {ExternalLabel InternalLabel : Type*}
+    (layout : ExternalInsertionBlockLayout E N) :=
+  {F : ∀ B : layout.partition.parts,
+      ExternalInsertionDiagram ExternalLabel InternalLabel
+        ((B : Finset (Fin (2 * E))).card / 2) N
+        (layout.interactionBlock (Finset.univ : Finset (Fin N)) B) //
+    ∀ B, (F B).vertexGraph.Preconnected}
+
+/-- Every vacuum-free physical diagram with a chosen external anchor has a
+unique description as an independently assigned external-block layout
+together with one connected local labelled diagram per block.
+The equivalence includes interaction-vertex ownership and all pairing
+and label data; no quotient or diagram multiplicity is introduced. -/
+noncomputable def ExternalInsertionBlockLayout.connectedAssemblyEquiv
+    {ExternalLabel InternalLabel : Type*} (anchor : Fin (2 * E)) :
+    (Σ layout : ExternalInsertionBlockLayout E N,
+      layout.ConnectedBlockFamily (ExternalLabel := ExternalLabel)
+        (InternalLabel := InternalLabel)) ≃
+    {d : ExternalInsertionDiagram ExternalLabel InternalLabel E N
+      (Finset.univ : Finset (Fin N)) //
+        HasNoVacuumComponent d.vertexGraph} := by
+  let assemble :
+      (Σ layout : ExternalInsertionBlockLayout E N,
+        layout.ConnectedBlockFamily (ExternalLabel := ExternalLabel)
+          (InternalLabel := InternalLabel)) →
+      {d : ExternalInsertionDiagram ExternalLabel InternalLabel E N
+        (Finset.univ : Finset (Fin N)) //
+          HasNoVacuumComponent d.vertexGraph} :=
+    fun p => ⟨p.1.assembleDiagram (Finset.univ : Finset (Fin N)) p.2.1,
+      p.1.hasNoVacuumComponent_assembleDiagram
+        (Finset.univ : Finset (Fin N)) p.2.1 p.2.2⟩
+  apply Equiv.ofBijective assemble
+  constructor
+  · intro x y h
+    rcases x with ⟨layoutX, ⟨FX, hX⟩⟩
+    rcases y with ⟨layoutY, ⟨FY, hY⟩⟩
+    have hdiagram :
+        layoutX.assembleDiagram (Finset.univ : Finset (Fin N)) FX =
+          layoutY.assembleDiagram (Finset.univ : Finset (Fin N)) FY :=
+      congrArg Subtype.val h
+    have hphysical :
+        (layoutX.assembleDiagram (Finset.univ : Finset (Fin N)) FX).externalBlockLayout
+            (layoutX.hasNoVacuumComponent_assembleDiagram
+              (Finset.univ : Finset (Fin N)) FX hX) anchor =
+          (layoutY.assembleDiagram (Finset.univ : Finset (Fin N)) FY).externalBlockLayout
+            (layoutY.hasNoVacuumComponent_assembleDiagram
+              (Finset.univ : Finset (Fin N)) FY hY) anchor := by
+      cases hdiagram
+      rfl
+    have hlayout : layoutX = layoutY := by
+      calc
+        layoutX =
+            (layoutX.assembleDiagram (Finset.univ : Finset (Fin N)) FX).externalBlockLayout
+              (layoutX.hasNoVacuumComponent_assembleDiagram
+                (Finset.univ : Finset (Fin N)) FX hX) anchor :=
+          (layoutX.externalBlockLayout_assembleDiagram_eq FX hX anchor).symm
+        _ = _ := hphysical
+        _ = layoutY := layoutY.externalBlockLayout_assembleDiagram_eq FY hY anchor
+    cases hlayout
+    have hfam : FX = FY :=
+      layoutX.assembleDiagram_injective (Finset.univ : Finset (Fin N)) hdiagram
+    cases hfam
+    rfl
+  · intro d
+    rcases d with ⟨d, hVac⟩
+    let layout := d.externalBlockLayout hVac anchor
+    let F := layout.restrictBlock (Finset.univ : Finset (Fin N)) d
+      (d.externalBlockLayout_partner_block hVac anchor)
+    refine ⟨⟨layout, ⟨F, d.restrictPhysicalBlocks_preconnected hVac anchor⟩⟩, ?_⟩
+    apply Subtype.ext
+    exact d.assembleDiagram_restrictPhysicalBlocks hVac anchor
+
+
 end Common
 end SecondQuantization
