@@ -284,30 +284,24 @@ noncomputable def familyOrderDecompositionEquivOfSize {total : ℕ} (size : ι �
     ext z
     simp [order, assembleFamilyOrderOfSize]
 
-/-- Under the decomposition of a global order, the ambient vertex at
-a shuffled slot is *exactly* the local vertex carried by that block.
-This is stronger than a cardinality identity and retains empty fibers. -/
-theorem familyOrderDecompositionEquivOfSize_shuffle_slot
-    {total : ℕ} (size : ι → ℕ)
-    (hcard : ∀ i, Fintype.card (F i) = size i)
+omit [Fintype ι] [Fintype α] [∀ i, Fintype (F i)] in
+/-- Reassembling a family order places the prescribed block-local
+vertex at exactly its shuffled global slot. Unlike the inverse
+decomposition theorem, this requires no finiteness assumptions on
+either the family index or the ambient vertex type. -/
+theorem assembleFamilyOrderOfSize_slot {total : ℕ} (size : ι → ℕ)
     (ambientEquiv : α ≃ Σ i, F i)
-    (order : Fin total ≃ α)
+    (orders : FamilyOrdersOf F size)
+    (shuffle : FamilySlotShuffleTo size total)
     (i : ι) (j : Fin (size i)) :
-    order ((familyOrderDecompositionEquivOfSize F size hcard ambientEquiv
-      order).2.slotEquiv ⟨i, j⟩) =
-      ambientEquiv.symm
-        ⟨i, (familyOrderDecompositionEquivOfSize F size hcard ambientEquiv
-          order).1 i j⟩ := by
-  let e := familyOrderDecompositionEquivOfSize (total := total) F size hcard ambientEquiv
-  let data := e order
-  have hassemble :
-      assembleFamilyOrderOfSize F size ambientEquiv data.1 data.2 = order :=
-    e.symm_apply_apply order
-  have hslot := assembleFamilyOrderOfSize_symm_apply
-    F size ambientEquiv data.1 data.2 i j
-  rw [hassemble] at hslot
-  have h := congrArg order hslot
-  simpa [data, e] using h.symm
+    (assembleFamilyOrderOfSize F size ambientEquiv orders shuffle)
+        (shuffle.slotEquiv ⟨i, j⟩) =
+      ambientEquiv.symm ⟨i, orders i j⟩ := by
+  have h := assembleFamilyOrderOfSize_symm_apply
+    F size ambientEquiv orders shuffle i j
+  have h' :=
+    congrArg (assembleFamilyOrderOfSize F size ambientEquiv orders shuffle) h
+  simpa using h'.symm
 
 /-- A global order on a finite family is equivalent to local fiber orders together with an
 order-preserving family shuffle. -/
