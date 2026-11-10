@@ -1326,6 +1326,20 @@ theorem ExternalInsertionBlockLayout.externalBlockLayout_assembleDiagram_eq
 
 
 
+/-- The physical block layout depends only on the labelled diagram,
+not on which proof of absence of vacuum components is supplied. -/
+theorem ExternalInsertionDiagram.externalBlockLayout_congr
+    {ExternalLabel InternalLabel : Type*}
+    {d e : ExternalInsertionDiagram ExternalLabel InternalLabel E N
+      (Finset.univ : Finset (Fin N))}
+    (h : d = e)
+    (hVacD : HasNoVacuumComponent d.vertexGraph)
+    (hVacE : HasNoVacuumComponent e.vertexGraph)
+    (anchor : Fin (2 * E)) :
+    d.externalBlockLayout hVacD anchor = e.externalBlockLayout hVacE anchor := by
+  subst e
+  rfl
+
 /-- Connected independent labelled blocks over all ambient interaction
 slots. Every block is required to be preconnected, so the assembled
 diagram has no disconnected vacuum component. -/
@@ -1373,12 +1387,8 @@ theorem ExternalInsertionBlockLayout.assembleConnectedBlockFamily_injective
             (Finset.univ : Finset (Fin N)) FX hX) anchor =
         (layoutY.assembleDiagram (Finset.univ : Finset (Fin N)) FY).externalBlockLayout
           (layoutY.hasNoVacuumComponent_assembleDiagram
-            (Finset.univ : Finset (Fin N)) FY hY) anchor := by
-    exact congrArg
-      (fun d : {d : ExternalInsertionDiagram ExternalLabel InternalLabel E N
-          (Finset.univ : Finset (Fin N)) //
-            HasNoVacuumComponent d.vertexGraph} =>
-        d.1.externalBlockLayout d.2 anchor) h
+            (Finset.univ : Finset (Fin N)) FY hY) anchor :=
+    ExternalInsertionDiagram.externalBlockLayout_congr hdiagram _ _ anchor
   have hlayout : layoutX = layoutY := by
     calc
       layoutX =
