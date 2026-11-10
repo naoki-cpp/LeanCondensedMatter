@@ -59164,7 +59164,7 @@
     "name": "QuantumTheory.Models.MassiveDirac.complex_sqrt_sq_spectral_center",
     "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVSpectralCenter",
     "externalAxioms": [],
-    "docString": "The center-indexed canonical UV Green function is even for every\ncomplex spectral center away from the real axis. ",
+    "docString": null,
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
@@ -65848,7 +65848,7 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVValue_eq_besselJCenter"
+      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVCenter_eq_besselJCenter"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -71556,7 +71556,7 @@
       "Quot.sound",
       "propext"
     ],
-    "soleCompiledConsumerPrivate": false,
+    "soleCompiledConsumerPrivate": true,
     "singleCompiledConsumer": true,
     "simpLemma": false,
     "retainedNeedsReview": false,
@@ -71569,7 +71569,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVValue_conj"
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVSpectralConjugation.0.QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVCenter_conj_of_energy_mass"
     ],
     "dependencies": [
       "QuantumTheory.Models.MassiveDirac.massiveDiracRadialDenominator_conj",
@@ -71578,7 +71578,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVValue_conj"
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVSpectralConjugation.0.QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVCenter_conj_of_energy_mass"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -72545,7 +72545,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ (v c : ℝ) (energy mass : ℂ),\n  v ≠ 0 →\n    c ≠ 0 →\n      (energy ^ 2 - mass ^ 2).im ≠ 0 →\n        (starRingEnd ℂ)\n            (QuantumTheory.Models.MassiveDirac.massiveDiracRadialBesselJCenterUVValue v c (energy ^ 2 - mass ^ 2)) =\n          QuantumTheory.Models.MassiveDirac.massiveDiracRadialBesselJCenterUVValue v c\n            ((starRingEnd ℂ) (energy ^ 2 - mass ^ 2))",
+    "statement": "∀ (v c : ℝ) (center : ℂ),\n  v ≠ 0 →\n    c ≠ 0 →\n      center.im ≠ 0 →\n        (starRingEnd ℂ) (QuantumTheory.Models.MassiveDirac.massiveDiracRadialBesselJCenterUVValue v c center) =\n          QuantumTheory.Models.MassiveDirac.massiveDiracRadialBesselJCenterUVValue v c ((starRingEnd ℂ) center)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -72557,16 +72557,16 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "QuantumTheory.Models.MassiveDirac.massiveDiracRadialBesselJCenterUVValue_conj_of_energy_mass",
+    "name": "QuantumTheory.Models.MassiveDirac.massiveDiracRadialBesselJCenterUVValue_conj",
     "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVBesselJ",
     "externalAxioms": [],
-    "docString": "Schwarz reflection of the Bessel-J spectral-center UV value under\ncomplex conjugation of the spectral parameters `energy` and `mass`.\nThe hypothesis excludes a real quadratic spectral center. ",
+    "docString": "Schwarz reflection of the Bessel-J UV value under conjugation of its\nquadratic spectral center, away from the real axis. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVValue_conj",
-      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVValue_eq_besselJCenter"
+      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVCenter_conj",
+      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVCenter_eq_besselJCenter"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -72606,7 +72606,7 @@
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
-      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVValue_eq_besselJCenter",
+      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVCenter_eq_besselJCenter",
       "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourier_tendsto_uvValue",
       "QuantumTheory.Transport.polarFourierZerothAngularKernel_eq_besselJ"
     ],
@@ -73161,8 +73161,53 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
+    "terminal": false,
     "statement": "∀ (v c : ℝ) (center : ℂ),\n  v ≠ 0 →\n    c ≠ 0 →\n      center.im ≠ 0 →\n        (starRingEnd ℂ) (QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVCenter v c center) =\n          QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVCenter v c ((starRingEnd ℂ) center)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVCenter_conj",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVSpectralConjugation",
+    "externalAxioms": [],
+    "docString": "The center-only canonical function has the natural conjugation\nsymmetry under Z -> conj Z, without choosing a square-root branch. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialBesselJCenterUVValue_conj"
+    ],
+    "dependencies": [
+      "QuantumTheory.Models.MassiveDirac.complex_sqrt_sq_spectral_center",
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVSpectralConjugation.0.QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVCenter_conj_of_energy_mass"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialBesselJCenterUVValue_conj"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (v c : ℝ) (center : ℂ),\n  QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVCenter v c center =\n    QuantumTheory.Models.MassiveDirac.massiveDiracRadialBesselJCenterUVValue v c center",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -73174,22 +73219,28 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVCenter_conj",
-    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVSpectralConjugation",
+    "name": "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVCenter_eq_besselJCenter",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVBesselJ",
     "externalAxioms": [],
-    "docString": "The center-only canonical function has the natural conjugation\nsymmetry under Z -> conj Z, without choosing a square-root branch. ",
+    "docString": "The Fourier UV finite part equals the Bessel-J spectral-center value. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialFrozenUVValue_eq_besselJCenter",
+      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialBesselJCenterUVValue_conj",
+      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialBesselJ_tendsto_uvValue"
+    ],
     "dependencies": [
-      "QuantumTheory.Models.MassiveDirac.complex_sqrt_sq_spectral_center",
-      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVValue_conj",
-      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVValue_eq_center"
+      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVFinitePartCenter_eq_besselJCenter"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialFrozenUVValue_eq_besselJCenter",
+      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialBesselJCenterUVValue_conj",
+      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialBesselJ_tendsto_uvValue"
+    ],
+    "compiledConsumerCount": 3,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -73219,14 +73270,14 @@
     "name": "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVCenter_neg",
     "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVSpectralCenter",
     "externalAxioms": [],
-    "docString": "Center-argument parity, independent of the chosen square root. ",
+    "docString": "Evenness of the center-indexed Fourier UV boundary. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [],
     "dependencies": [
       "QuantumTheory.Models.MassiveDirac.complex_sqrt_sq_spectral_center",
-      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVValue_eq_center",
-      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVValue_neg"
+      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourier_tendsto_uvValue",
+      "QuantumTheory.Transport.polarFourierZerothAngularKernel_neg"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -73246,7 +73297,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (v c a : ℝ) (energy mass : ℂ),\n  QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVFinitePartAt v c a energy mass =\n    QuantumTheory.Models.MassiveDirac.massiveDiracRadialBesselJCenterUVFinitePartAt v c a (energy ^ 2 - mass ^ 2)",
+    "statement": "∀ (v c a : ℝ) (center : ℂ),\n  QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVFinitePartCenter v c a center =\n    QuantumTheory.Models.MassiveDirac.massiveDiracRadialBesselJCenterUVFinitePartAt v c a center",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -73258,14 +73309,14 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVFinitePartAt_eq_besselJCenter",
+    "name": "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVFinitePartCenter_eq_besselJCenter",
     "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVBesselJ",
     "externalAxioms": [],
     "docString": "No assumptions are needed for the finite-part change of basis:\nthe result is *exactly* the full-angle Bessel J0/J1 transform with\nits spectral center `E²-M²`, including both UV boundary terms. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVValue_eq_besselJCenter"
+      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVCenter_eq_besselJCenter"
     ],
     "dependencies": [
       "QuantumTheory.Transport.polarFourierFirstCosineAngularKernel_eq_besselJ",
@@ -73274,7 +73325,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVValue_eq_besselJCenter"
+      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVCenter_eq_besselJCenter"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -73291,7 +73342,7 @@
   },
   {
     "terminal": true,
-    "statement": "∀ (v c a : ℝ) (energy mass : ℂ),\n  QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVFinitePartAt v c a energy mass =\n    QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVFinitePartCenter v c a (energy ^ 2 - mass ^ 2)",
+    "statement": "∀ (v c a b : ℝ) (energy mass : ℂ),\n  v ≠ 0 →\n    c ≠ 0 →\n      (∀ (p : ℝ), QuantumTheory.Models.MassiveDirac.massiveDiracRadialDenominator v p energy mass ≠ 0) →\n        max 1 (2 * ‖energy ^ 2 - mass ^ 2‖ / v ^ 2) ≤ a →\n          max 1 (2 * ‖energy ^ 2 - mass ^ 2‖ / v ^ 2) ≤ b →\n            QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVFinitePartCenter v c a\n                (energy ^ 2 - mass ^ 2) =\n              QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVFinitePartCenter v c b\n                (energy ^ 2 - mass ^ 2)",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -73303,45 +73354,7 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
-    "name": "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVFinitePartAt_eq_center",
-    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVSpectralCenter",
-    "externalAxioms": [],
-    "docString": "The finite-part formula is literally a function of E²-M²:\nneither separate E nor M survives its UV definition. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ (v c a b : ℝ) (energy mass : ℂ),\n  v ≠ 0 →\n    c ≠ 0 →\n      (∀ (p : ℝ), QuantumTheory.Models.MassiveDirac.massiveDiracRadialDenominator v p energy mass ≠ 0) →\n        max 1 (2 * ‖energy ^ 2 - mass ^ 2‖ / v ^ 2) ≤ a →\n          max 1 (2 * ‖energy ^ 2 - mass ^ 2‖ / v ^ 2) ≤ b →\n            QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVFinitePartAt v c a energy mass =\n              QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVFinitePartAt v c b energy mass",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVFinitePartAt_eq_of_scales",
+    "name": "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVFinitePartCenter_eq_of_scales",
     "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVFinitePart",
     "externalAxioms": [],
     "docString": "Independence of the arbitrary UV splitting scale. Both finite-part\nexpressions are proved limits of **the same** physical K0 Fourier\nintegral; their equality is not imposed as a renormalization axiom. ",
@@ -73369,233 +73382,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (v c : ℝ) (energy mass : ℂ),\n  v ≠ 0 →\n    c ≠ 0 →\n      (energy ^ 2 - mass ^ 2).im ≠ 0 →\n        (starRingEnd ℂ) (QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVValue v c energy mass) =\n          QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVValue v c ((starRingEnd ℂ) energy)\n            ((starRingEnd ℂ) mass)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVValue_conj",
-    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVSpectralConjugation",
-    "externalAxioms": [],
-    "docString": "The canonical Fourier UV Green function commutes with complex\nconjugation of its fixed energy and mass arguments, at a nonreal\nquadratic spectral center. The proof uses actual cutoff-integral\nconjugation and uniqueness of the previously proved limits. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialBesselJCenterUVValue_conj_of_energy_mass",
-      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVCenter_conj"
-    ],
-    "dependencies": [
-      "QuantumTheory.Models.MassiveDirac.integral_massiveDiracRadialFourier_conj",
-      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourier_tendsto_uvValue"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialBesselJCenterUVValue_conj_of_energy_mass",
-      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVCenter_conj"
-    ],
-    "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (v c : ℝ) (energy mass : ℂ),\n  QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVValue v c energy mass =\n    QuantumTheory.Models.MassiveDirac.massiveDiracRadialBesselJCenterUVValue v c (energy ^ 2 - mass ^ 2)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVValue_eq_besselJCenter",
-    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVBesselJ",
-    "externalAxioms": [],
-    "docString": "The Fourier UV finite part equals the Bessel-J spectral-center value. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialFrozenUVValue_eq_besselJCenter",
-      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialBesselJCenterUVValue_conj_of_energy_mass",
-      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialBesselJ_tendsto_uvValue"
-    ],
-    "dependencies": [
-      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVFinitePartAt_eq_besselJCenter"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialFrozenUVValue_eq_besselJCenter",
-      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialBesselJCenterUVValue_conj_of_energy_mass",
-      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialBesselJ_tendsto_uvValue"
-    ],
-    "compiledConsumerCount": 3,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (v c : ℝ) (energy mass : ℂ),\n  QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVValue v c energy mass =\n    QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVCenter v c (energy ^ 2 - mass ^ 2)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVValue_eq_center",
-    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVSpectralCenter",
-    "externalAxioms": [],
-    "docString": "The canonical fixed-spectral Fourier UV value from #4514 is exactly\nthe center-only form, with no square-root branch choice. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVCenter_conj",
-      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVCenter_neg",
-      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVValue_eq_of_center"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVCenter_conj",
-      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVCenter_neg",
-      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVValue_eq_of_center"
-    ],
-    "compiledConsumerCount": 3,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": true,
-    "statement": "∀ (v c : ℝ) (energy mass energy' mass' : ℂ),\n  energy ^ 2 - mass ^ 2 = energy' ^ 2 - mass' ^ 2 →\n    QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVValue v c energy mass =\n      QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVValue v c energy' mass'",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVValue_eq_of_center",
-    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVSpectralCenter",
-    "externalAxioms": [],
-    "docString": "Two possibly different complex energy/mass pairs with equal quadratic\nspectral centers have the same canonical Fourier ultraviolet value. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [],
-    "dependencies": [
-      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVValue_eq_center"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (v c : ℝ) (energy mass : ℂ),\n  v ≠ 0 →\n    c ≠ 0 →\n      (energy ^ 2 - mass ^ 2).im ≠ 0 →\n        QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVValue v (-c) energy mass =\n          QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVValue v c energy mass",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVValue_neg",
-    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVSpectralCenter",
-    "externalAxioms": [],
-    "docString": "Evenness of the canonical K0 Fourier UV boundary in real-space\nseparation. This follows from the Fourier K0 parity and the unique\nfixed-spectral-center cutoff limit, without a Hankel formula. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVCenter_neg"
-    ],
-    "dependencies": [
-      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourier_tendsto_uvValue",
-      "QuantumTheory.Transport.polarFourierZerothAngularKernel_neg"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVCenter_neg"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (v c a : ℝ) (energy mass : ℂ),\n  v ≠ 0 →\n    c ≠ 0 →\n      (∀ (p : ℝ), QuantumTheory.Models.MassiveDirac.massiveDiracRadialDenominator v p energy mass ≠ 0) →\n        max 1 (2 * ‖energy ^ 2 - mass ^ 2‖ / v ^ 2) ≤ a →\n          Filter.Tendsto\n            (fun b =>\n              ∫ (p : ℝ) in 0..b,\n                ↑p * QuantumTheory.Transport.polarFourierZerothAngularKernel (p * c) *\n                  (QuantumTheory.Models.MassiveDirac.massiveDiracRadialDenominator v p energy mass)⁻¹)\n            Filter.atTop\n            (nhds (QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVFinitePartAt v c a energy mass))",
+    "statement": "∀ (v c a : ℝ) (energy mass : ℂ),\n  v ≠ 0 →\n    c ≠ 0 →\n      (∀ (p : ℝ), QuantumTheory.Models.MassiveDirac.massiveDiracRadialDenominator v p energy mass ≠ 0) →\n        max 1 (2 * ‖energy ^ 2 - mass ^ 2‖ / v ^ 2) ≤ a →\n          Filter.Tendsto\n            (fun b =>\n              ∫ (p : ℝ) in 0..b,\n                ↑p * QuantumTheory.Transport.polarFourierZerothAngularKernel (p * c) *\n                  (QuantumTheory.Models.MassiveDirac.massiveDiracRadialDenominator v p energy mass)⁻¹)\n            Filter.atTop\n            (nhds\n              (QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVFinitePartCenter v c a\n                (energy ^ 2 - mass ^ 2)))",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -73615,7 +73402,7 @@
     "directWrapperOf": null,
     "dependents": [
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialFrozenKernel_tendsto_uvValue",
-      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVFinitePartAt_eq_of_scales",
+      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVFinitePartCenter_eq_of_scales",
       "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourier_tendsto_uvValue"
     ],
     "dependencies": [
@@ -73628,7 +73415,7 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialFrozenKernel_tendsto_uvValue",
-      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVFinitePartAt_eq_of_scales",
+      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVFinitePartCenter_eq_of_scales",
       "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourier_tendsto_uvValue"
     ],
     "compiledConsumerCount": 3,
@@ -73646,7 +73433,7 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (v c : ℝ) (energy mass : ℂ),\n  v ≠ 0 →\n    c ≠ 0 →\n      (energy ^ 2 - mass ^ 2).im ≠ 0 →\n        Filter.Tendsto\n          (fun b =>\n            ∫ (p : ℝ) in 0..b,\n              ↑p * QuantumTheory.Transport.polarFourierZerothAngularKernel (p * c) *\n                (QuantumTheory.Models.MassiveDirac.massiveDiracRadialDenominator v p energy mass)⁻¹)\n          Filter.atTop (nhds (QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVValue v c energy mass))",
+    "statement": "∀ (v c : ℝ) (energy mass : ℂ),\n  v ≠ 0 →\n    c ≠ 0 →\n      (energy ^ 2 - mass ^ 2).im ≠ 0 →\n        Filter.Tendsto\n          (fun b =>\n            ∫ (p : ℝ) in 0..b,\n              ↑p * QuantumTheory.Transport.polarFourierZerothAngularKernel (p * c) *\n                (QuantumTheory.Models.MassiveDirac.massiveDiracRadialDenominator v p energy mass)⁻¹)\n          Filter.atTop\n          (nhds (QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVCenter v c (energy ^ 2 - mass ^ 2)))",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -73666,8 +73453,8 @@
     "directWrapperOf": null,
     "dependents": [
       "QuantumTheory.Models.MassiveDirac.massiveDiracRadialBesselJ_tendsto_uvValue",
-      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVValue_conj",
-      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVValue_neg"
+      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVCenter_neg",
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVSpectralConjugation.0.QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVCenter_conj_of_energy_mass"
     ],
     "dependencies": [
       "QuantumTheory.Models.MassiveDirac.massiveDiracRadialDenominator_ne_zero_of_center_im_ne_zero",
@@ -73677,8 +73464,8 @@
     "completedMention": false,
     "compiledConsumers": [
       "QuantumTheory.Models.MassiveDirac.massiveDiracRadialBesselJ_tendsto_uvValue",
-      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVValue_conj",
-      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVValue_neg"
+      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVCenter_neg",
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVSpectralConjugation.0.QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVCenter_conj_of_energy_mass"
     ],
     "compiledConsumerCount": 3,
     "axioms": [
@@ -92896,7 +92683,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVFinitePartAt_eq_besselJCenter",
+      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVFinitePartCenter_eq_besselJCenter",
       "QuantumTheory.Transport.integral_besselJ_one_sq_div",
       "QuantumTheory.Transport.polarFourierFirstCosineAngularKernel_neg",
       "QuantumTheory.Transport.polarFourierSecondCosineAngularKernel_eq_besselJ",
@@ -92910,7 +92697,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVFinitePartAt_eq_besselJCenter",
+      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVFinitePartCenter_eq_besselJCenter",
       "QuantumTheory.Transport.integral_besselJ_one_sq_div",
       "QuantumTheory.Transport.polarFourierFirstCosineAngularKernel_neg",
       "QuantumTheory.Transport.polarFourierSecondCosineAngularKernel_eq_besselJ",
@@ -93611,7 +93398,7 @@
     "dependents": [
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient_diagonal_spectral_difference",
       "QuantumTheory.Models.MassiveDirac.massiveDiracRadialBesselJ_tendsto_uvValue",
-      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVFinitePartAt_eq_besselJCenter",
+      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVFinitePartCenter_eq_besselJCenter",
       "QuantumTheory.Transport.integral_besselJ_one_sq_div",
       "QuantumTheory.Transport.polarFourierFirstCosineAngularKernel_eq_besselJ",
       "QuantumTheory.Transport.polarFourierSecondCosineAngularKernel_eq_besselJ",
@@ -93630,7 +93417,7 @@
     "compiledConsumers": [
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient_diagonal_spectral_difference",
       "QuantumTheory.Models.MassiveDirac.massiveDiracRadialBesselJ_tendsto_uvValue",
-      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVFinitePartAt_eq_besselJCenter",
+      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVFinitePartCenter_eq_besselJCenter",
       "QuantumTheory.Transport.integral_besselJ_one_sq_div",
       "QuantumTheory.Transport.polarFourierFirstCosineAngularKernel_eq_besselJ",
       "QuantumTheory.Transport.polarFourierSecondCosineAngularKernel_eq_besselJ",
@@ -93809,7 +93596,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVValue_neg",
+      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVCenter_neg",
       "QuantumTheory.Transport.polarFourierZerothAngularKernel_conj",
       "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornRadialRealSpacePropagator.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenEntryKernel_neg_radius",
       "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.RealSpace.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel_neg_radius"
@@ -93820,7 +93607,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVValue_neg",
+      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVCenter_neg",
       "QuantumTheory.Transport.polarFourierZerothAngularKernel_conj",
       "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornRadialRealSpacePropagator.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialGreenEntryKernel_neg_radius",
       "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.GaussianCrossed.RealSpace.0.QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentEntryKernel_neg_radius"
@@ -168772,6 +168559,51 @@
       "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.Denominator.0.QuantumTheory.Models.MassiveDirac.tendsto_arg_pauliGreenDenominator_zero_radial_broadening_zero"
     ],
     "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (v c : ℝ) (energy mass : ℂ),\n  v ≠ 0 →\n    c ≠ 0 →\n      (energy ^ 2 - mass ^ 2).im ≠ 0 →\n        (starRingEnd ℂ)\n            (QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVCenter v c (energy ^ 2 - mass ^ 2)) =\n          QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVCenter v c\n            ((starRingEnd ℂ) energy ^ 2 - (starRingEnd ℂ) mass ^ 2)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVSpectralConjugation.0.QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVCenter_conj_of_energy_mass",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVSpectralConjugation",
+    "externalAxioms": [],
+    "docString": "The canonical Fourier UV Green function commutes with complex\nconjugation of its fixed energy and mass arguments, at a nonreal\nquadratic spectral center. The proof uses actual cutoff-integral\nconjugation and uniqueness of the previously proved limits. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVCenter_conj"
+    ],
+    "dependencies": [
+      "QuantumTheory.Models.MassiveDirac.integral_massiveDiracRadialFourier_conj",
+      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourier_tendsto_uvValue"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVCenter_conj"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",

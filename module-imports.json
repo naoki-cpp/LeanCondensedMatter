@@ -2257,7 +2257,7 @@
       "imports": [
         "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVFinitePart"
       ],
-      "externalImportCount": 2
+      "externalImportCount": 1
     },
     {
       "name": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVSpectralConjugation",
