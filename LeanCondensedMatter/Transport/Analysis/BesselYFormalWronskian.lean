@@ -1,4 +1,5 @@
 import Mathlib.RingTheory.PowerSeries.Derivative
+import Mathlib.Analysis.Complex.Basic
 import Mathlib.Tactic.Ring
 import Mathlib.Tactic.LinearCombination
 
