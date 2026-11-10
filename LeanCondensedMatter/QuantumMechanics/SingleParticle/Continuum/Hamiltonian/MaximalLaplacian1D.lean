@@ -158,17 +158,12 @@ theorem continuumMaximalLaplacian1D_isClosed : continuumMaximalLaplacian1D.IsClo
     exact mem_continuumMaximalLaplacian1D_graph_iff z
   rw [hgraph]
   apply isClosed_eq
-  · exact l2ToTemperedDistribution1D.continuous.comp
-      (continuous_snd : Continuous
-        (fun z : ContinuumL2Wavefunction1D × ContinuumL2Wavefunction1D => z.2))
+  · exact l2ToTemperedDistribution1D.continuous.comp (by fun_prop)
   · have hcont :
         Continuous (fun z : ContinuumL2Wavefunction1D × ContinuumL2Wavefunction1D =>
           (LineDeriv.laplacianCLM ℂ ℝ 𝓢'(ℝ, ℂ))
             (l2ToTemperedDistribution1D z.1)) := by
-      exact (LineDeriv.laplacianCLM ℂ ℝ 𝓢'(ℝ, ℂ)).continuous.comp
-        (l2ToTemperedDistribution1D.continuous.comp
-          (continuous_fst : Continuous
-            (fun z : ContinuumL2Wavefunction1D × ContinuumL2Wavefunction1D => z.1)))
+      fun_prop
     simpa only [TemperedDistribution.laplacianCLM_apply] using hcont
 
 /-- The maximal distributional Laplacian is densely defined because it contains the dense `H²`
