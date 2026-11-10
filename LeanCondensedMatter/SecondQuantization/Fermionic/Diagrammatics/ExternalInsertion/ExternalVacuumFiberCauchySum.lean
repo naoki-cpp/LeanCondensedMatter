@@ -40,11 +40,11 @@ private def vacuumFreeFixedExternalSubtypeEquiv {E m : ℕ}
     rcases d with ⟨⟨d, hl⟩, hd⟩
     rfl
 
+open Classical in
 /-- A fixed-external-label vacuum-free diagram sum is the same as the
 unrestricted vacuum-free sum with an exact external-label indicator.
 The weight may already impose an independent condition, such as fixing
 the physical external-component partition. -/
-open Classical in
 theorem sum_vacuumFreeFixedExternalInsertionWickDiagram_eq_sum_if
     {E m : ℕ} {M : Type*} [AddCommMonoid M]
     (externalLabel : Fin (2 * E) → ExternalFieldLabel Mode)
