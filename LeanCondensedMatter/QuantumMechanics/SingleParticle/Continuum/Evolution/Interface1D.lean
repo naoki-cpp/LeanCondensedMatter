@@ -68,25 +68,13 @@ theorem ContinuumSchrodingerEvolution1D.hbar_ne_zero : evolution.hbar ≠ 0 :=
 theorem ContinuumSchrodingerEvolution1D.norm_propagator_apply
     (t : ℝ) (ψ : ContinuumL2Wavefunction1D) :
     ‖evolution.propagator t ψ‖ = ‖ψ‖ := by
-  have hstarMul : star (evolution.propagator t) * evolution.propagator t = 1 := by
-    rw [evolution.propagator_star]
-    calc
-      evolution.propagator (-t) * evolution.propagator t =
-          evolution.propagator (-t + t) := (evolution.propagator_add (-t) t).symm
-      _ = 1 := by simp [evolution.propagator_zero]
-  have hcomp :
-      ContinuousLinearMap.adjoint (evolution.propagator t) ∘SL evolution.propagator t = 1 := by
-    apply ContinuousLinearMap.ext
-    intro x
-    have h := congrArg
-      (fun U : ContinuumL2Wavefunction1D →L[ℂ] ContinuumL2Wavefunction1D => U x)
-      hstarMul
-    change ContinuousLinearMap.adjoint (evolution.propagator t)
-        (evolution.propagator t x) = x at h
-    exact h
-  exact
-    ((ContinuousLinearMap.norm_map_iff_adjoint_comp_self
-      (evolution.propagator t)).2 hcomp) ψ
+  apply ContinuousLinearMap.norm_map_of_mem_unitary
+  rw [Unitary.mem_iff]
+  constructor
+  · rw [evolution.propagator_star, ← evolution.propagator_add]
+    simp [evolution.propagator_zero]
+  · rw [evolution.propagator_star, ← evolution.propagator_add]
+    simp [evolution.propagator_zero]
 
 end
 end Continuum
