@@ -26,16 +26,15 @@ noncomputable section
 
 open QuantumTheory.Transport
 
-/-- At finite broadening, the radial Born-Dyson scalar coefficient is continuous in radial
-momentum. -/
-theorem continuous_finiteCutoffContinuumBornDysonScalarCoefficient_radial
+/-- The inverse finite-cutoff Born-Dyson denominator is continuous on the radial momentum axis. -/
+private theorem continuous_finiteCutoffContinuumBornDysonDenominator_inv_radial
     (side : SpectralSide)
     (v m probeEnergy broadening disorderStrength hbar pMax : ℝ)
     (hbroadening : broadening ≠ 0) (hdisorder : 0 ≤ disorderStrength)
     (hpMax : 0 ≤ pMax) :
     Continuous fun p : ℝ =>
-      finiteCutoffContinuumBornDysonScalarCoefficient
-        side v m p 0 probeEnergy broadening disorderStrength hbar pMax := by
+      (finiteCutoffContinuumBornDysonDenominator
+        side v m p 0 probeEnergy broadening disorderStrength hbar pMax)⁻¹ := by
   have hden : ∀ p : ℝ,
       finiteCutoffContinuumBornDysonDenominator
         side v m p 0 probeEnergy broadening disorderStrength hbar pMax ≠ 0 := by
@@ -48,8 +47,23 @@ theorem continuous_finiteCutoffContinuumBornDysonScalarCoefficient_radial
         side v m p 0 probeEnergy broadening disorderStrength hbar pMax := by
     unfold finiteCutoffContinuumBornDysonDenominator
     fun_prop
+  exact hdenContinuous.inv₀ hden
+
+/-- At finite broadening, the radial Born-Dyson scalar coefficient is continuous in radial
+momentum. -/
+theorem continuous_finiteCutoffContinuumBornDysonScalarCoefficient_radial
+    (side : SpectralSide)
+    (v m probeEnergy broadening disorderStrength hbar pMax : ℝ)
+    (hbroadening : broadening ≠ 0) (hdisorder : 0 ≤ disorderStrength)
+    (hpMax : 0 ≤ pMax) :
+    Continuous fun p : ℝ =>
+      finiteCutoffContinuumBornDysonScalarCoefficient
+        side v m p 0 probeEnergy broadening disorderStrength hbar pMax := by
+  have hinv := continuous_finiteCutoffContinuumBornDysonDenominator_inv_radial
+    side v m probeEnergy broadening disorderStrength hbar pMax
+    hbroadening hdisorder hpMax
   unfold finiteCutoffContinuumBornDysonScalarCoefficient
-  exact (hdenContinuous.inv₀ hden).mul continuous_const
+  exact hinv.mul continuous_const
 
 /-- At finite broadening, every radial Born-Dyson Pauli coefficient is continuous in radial
 momentum. -/
@@ -61,22 +75,9 @@ theorem continuous_finiteCutoffContinuumBornDysonPauliCoefficient_radial
     Continuous fun p : ℝ =>
       finiteCutoffContinuumBornDysonPauliCoefficient
         axis side v m p 0 probeEnergy broadening disorderStrength hbar pMax := by
-  have hden : ∀ p : ℝ,
-      finiteCutoffContinuumBornDysonDenominator
-        side v m p 0 probeEnergy broadening disorderStrength hbar pMax ≠ 0 := by
-    intro p
-    exact finiteCutoffContinuumBornDysonDenominator_ne_zero
-      side v m p 0 probeEnergy broadening disorderStrength hbar pMax
-      hbroadening hdisorder hpMax
-  have hdenContinuous : Continuous fun p : ℝ =>
-      finiteCutoffContinuumBornDysonDenominator
-        side v m p 0 probeEnergy broadening disorderStrength hbar pMax := by
-    unfold finiteCutoffContinuumBornDysonDenominator
-    fun_prop
-  have hinv : Continuous fun p : ℝ =>
-      (finiteCutoffContinuumBornDysonDenominator
-        side v m p 0 probeEnergy broadening disorderStrength hbar pMax)⁻¹ :=
-    hdenContinuous.inv₀ hden
+  have hinv := continuous_finiteCutoffContinuumBornDysonDenominator_inv_radial
+    side v m probeEnergy broadening disorderStrength hbar pMax
+    hbroadening hdisorder hpMax
   unfold finiteCutoffContinuumBornDysonPauliCoefficient
   cases axis <;>
     simp only [InternalSpace.pauliAxisComponent] <;>
