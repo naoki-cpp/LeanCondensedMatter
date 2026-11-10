@@ -1326,6 +1326,94 @@ theorem ExternalInsertionBlockLayout.sum_interactionOrders_eq_sum_blockOrders_sh
   classical
   exact (Equiv.sum_comp layout.interactionOrderDecompositionEquiv.symm weight).symm
 
+/-- The interaction fiber of an independently assigned external block
+has exactly the cardinality of the corresponding owner subtype. -/
+theorem ExternalInsertionBlockLayout.card_ownerFiber_eq_interactionBlock
+    (layout : ExternalInsertionBlockLayout E N)
+    (B : layout.partition.parts) :
+    Fintype.card {v : Fin N // layout.interactionOwner v = B} =
+      (layout.interactionBlock (Finset.univ : Finset (Fin N)) B).card := by
+  classical
+  let e : {v : Fin N // layout.interactionOwner v = B} ≃
+      ↥(layout.interactionBlock (Finset.univ : Finset (Fin N)) B) where
+    toFun v := ⟨v.1, Finset.mem_filter.mpr ⟨Finset.mem_univ _, v.2⟩⟩
+    invFun v := ⟨v.1, (Finset.mem_filter.mp v.2).2⟩
+    left_inv := by intro v; rfl
+    right_inv := by intro v; rfl
+  simpa using Fintype.card_congr e
+
+/-- Forget the arbitrary ambient interaction order and retain the
+canonical shuffle determined by which external block owns each vertex.
+The local slots are in increasing ambient vertex order, and the slot
+sizes are the *actual* interaction-block cardinalities. -/
+noncomputable def ExternalInsertionBlockLayout.interactionAssignmentShuffle
+    (layout : ExternalInsertionBlockLayout E N) :
+    FamilySlotShuffleTo
+      (fun B : layout.partition.parts =>
+        (layout.interactionBlock (Finset.univ : Finset (Fin N)) B).card) N := by
+  classical
+  let σ := ownerCanonicalShuffle layout.interactionOwner
+  let h : ∀ B : layout.partition.parts,
+      (layout.interactionBlock (Finset.univ : Finset (Fin N)) B).card =
+        Fintype.card {v : Fin N // layout.interactionOwner v = B} :=
+    fun B => (layout.card_ownerFiber_eq_interactionBlock B).symm
+  exact {
+    slotEquiv := (Equiv.sigmaCongrRight (fun B => finCongr (h B))).trans σ.slotEquiv
+    strictMono := by
+      intro B a b hab
+      change σ.slotEquiv ⟨B, finCongr (h B) a⟩ <
+        σ.slotEquiv ⟨B, finCongr (h B) b⟩
+      exact σ.strictMono B ((Fin.castOrderIso (h B)).strictMono hab)
+  }
+
+/-- A local shuffle slot occupies an interaction vertex assigned to the
+same physical external block. This includes the unique empty local order. -/
+theorem ExternalInsertionBlockLayout.interactionAssignmentShuffle_apply_owner
+    (layout : ExternalInsertionBlockLayout E N)
+    (B : layout.partition.parts)
+    (j : Fin (layout.interactionBlock (Finset.univ : Finset (Fin N)) B).card) :
+    layout.interactionOwner
+      (layout.interactionAssignmentShuffle.slotEquiv ⟨B, j⟩) = B := by
+  classical
+  let σ := ownerCanonicalShuffle layout.interactionOwner
+  let h : ∀ B : layout.partition.parts,
+      (layout.interactionBlock (Finset.univ : Finset (Fin N)) B).card =
+        Fintype.card {v : Fin N // layout.interactionOwner v = B} :=
+    fun B => (layout.card_ownerFiber_eq_interactionBlock B).symm
+  change layout.interactionOwner
+    (σ.slotEquiv ⟨B, finCongr (h B) j⟩) = B
+  exact ownerCanonicalShuffle_apply_owner layout.interactionOwner B (finCongr (h B) j)
+
+/-- The canonical owner shuffle preserves the *exact set* of ambient
+interaction vertices in each external block, not only its cardinality. -/
+theorem ExternalInsertionBlockLayout.interactionAssignmentShuffle_blockSlots
+    (layout : ExternalInsertionBlockLayout E N)
+    (B : layout.partition.parts) :
+    (Finset.univ.image (fun j : Fin
+      (layout.interactionBlock (Finset.univ : Finset (Fin N)) B).card =>
+        layout.interactionAssignmentShuffle.slotEquiv ⟨B, j⟩)) =
+      layout.interactionBlock (Finset.univ : Finset (Fin N)) B := by
+  classical
+  let σ := layout.interactionAssignmentShuffle
+  ext v
+  constructor
+  · intro hv
+    obtain ⟨j, _, rfl⟩ := Finset.mem_image.mp hv
+    exact Finset.mem_filter.mpr
+      ⟨Finset.mem_univ _, layout.interactionAssignmentShuffle_apply_owner B j⟩
+  · intro hv
+    have howner : layout.interactionOwner v = B :=
+      (Finset.mem_filter.mp hv).2
+    obtain ⟨B', j⟩ := σ.slotEquiv.symm v
+    have hback : σ.slotEquiv ⟨B', j⟩ = v :=
+      σ.slotEquiv.apply_symm_apply v
+    have hB : B' = B := by
+      have h := layout.interactionAssignmentShuffle_apply_owner B' j
+      rw [hback] at h
+      exact h.symm.trans howner
+    subst B'
+    exact Finset.mem_image.mpr ⟨j, Finset.mem_univ _, hback⟩
+
 /-- Two external block layouts are equal if their source partitions and
 underlying interaction-owner blocks coincide. The evenness witnesses are
 propositions, so they carry no additional data. -/
