@@ -72,22 +72,21 @@ theorem continuumH2LaplacianPMap1D_adjoint_domain_le :
           u := by
     let fH2 : continuumH2Domain1D :=
       ⟨f.toLp 2 (volume : Measure ℝ), schwartz_toLp_mem_continuumH2Domain1D f⟩
-    have hadj :=
-      LinearPMap.adjoint_isFormalAdjoint continuumH2Domain1D_dense uAdj fH2
-    have hswap :
-        inner ℂ (f.toLp 2 (volume : Measure ℝ)) w =
-          inner ℂ (continuumH2Laplacian1D fH2) u := by
-      calc
-        inner ℂ (f.toLp 2 (volume : Measure ℝ)) w =
-            (starRingEnd ℂ) (inner ℂ w (f.toLp 2 (volume : Measure ℝ))) := by
-              exact (inner_conj_symm (f.toLp 2 (volume : Measure ℝ)) w).symm
-        _ = (starRingEnd ℂ) (inner ℂ u (continuumH2Laplacian1D fH2)) := by
-              rw [show inner ℂ w (f.toLp 2 (volume : Measure ℝ)) =
-                inner ℂ u (continuumH2Laplacian1D fH2) by
-                  simpa [w, uAdj, fH2, continuumH2LaplacianPMap1D] using hadj]
-        _ = inner ℂ (continuumH2Laplacian1D fH2) u := by
-              exact inner_conj_symm (continuumH2Laplacian1D fH2) u
-    simpa [fH2] using hswap
+    have hadj :
+        inner ℂ w (f.toLp 2 (volume : Measure ℝ)) =
+          inner ℂ u (continuumH2Laplacian1D fH2) := by
+      simpa [w, uAdj, fH2, continuumH2LaplacianPMap1D] using
+        (LinearPMap.adjoint_isFormalAdjoint continuumH2Domain1D_dense uAdj fH2)
+    change inner ℂ (f.toLp 2 (volume : Measure ℝ)) w =
+      inner ℂ (continuumH2Laplacian1D fH2) u
+    calc
+      inner ℂ (f.toLp 2 (volume : Measure ℝ)) w =
+          (starRingEnd ℂ) (inner ℂ w (f.toLp 2 (volume : Measure ℝ))) :=
+        (inner_conj_symm _ w).symm
+      _ = (starRingEnd ℂ) (inner ℂ u (continuumH2Laplacian1D fH2)) :=
+        congrArg (starRingEnd ℂ) hadj
+      _ = inner ℂ (continuumH2Laplacian1D fH2) u :=
+        inner_conj_symm _ u
   have hcore := hinner (schwartzConj1D g)
   rw [continuumH2Laplacian1D_schwartz_toLp] at hcore
   simp only [l2ToTemperedDistribution1D,
@@ -95,23 +94,21 @@ theorem continuumH2LaplacianPMap1D_adjoint_domain_le :
     MeasureTheory.Lp.toTemperedDistribution_apply,
     TemperedDistribution.laplacian_apply_apply]
   change (∫ x, g x * w x) = ∫ x, (Δ g) x * u x
+  have hIntegral (f : SchwartzMap ℝ ℂ) (v : ContinuumL2Wavefunction1D) :
+      (∫ x, f x * v x) =
+        inner ℂ ((schwartzConj1D f).toLp 2 (volume : Measure ℝ)) v := by
+    rw [MeasureTheory.L2.inner_def]
+    apply integral_congr_ae
+    filter_upwards [(schwartzConj1D f).coeFn_toLp 2 (volume : Measure ℝ)] with x hx
+    rw [hx]
+    simp [schwartzConj1D_apply, RCLike.inner_apply, mul_comm]
   calc
     (∫ x, g x * w x) =
-        inner ℂ ((schwartzConj1D g).toLp 2 (volume : Measure ℝ)) w := by
-      rw [MeasureTheory.L2.inner_def]
-      apply integral_congr_ae
-      filter_upwards [(schwartzConj1D g).coeFn_toLp 2 (volume : Measure ℝ)] with x hx
-      rw [hx]
-      simp [schwartzConj1D_apply, RCLike.inner_apply, mul_comm]
+        inner ℂ ((schwartzConj1D g).toLp 2 (volume : Measure ℝ)) w := hIntegral g w
     _ = inner ℂ ((Δ (schwartzConj1D g)).toLp 2 (volume : Measure ℝ)) u := hcore
     _ = inner ℂ ((schwartzConj1D (Δ g)).toLp 2 (volume : Measure ℝ)) u := by
       rw [laplacian_schwartzConj1D]
-    _ = ∫ x, (Δ g) x * u x := by
-      rw [MeasureTheory.L2.inner_def]
-      apply integral_congr_ae
-      filter_upwards [(schwartzConj1D (Δ g)).coeFn_toLp 2 (volume : Measure ℝ)] with x hx
-      rw [hx]
-      simp [schwartzConj1D_apply, RCLike.inner_apply, mul_comm]
+    _ = ∫ x, (Δ g) x * u x := (hIntegral (Δ g) u).symm
   all_goals rfl
 
 /-- The free distributional Laplacian on `H²(ℝ)` is self-adjoint on physical `L²(ℝ, ℂ)`. -/
