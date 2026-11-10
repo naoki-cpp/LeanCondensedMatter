@@ -292,4 +292,50 @@ noncomputable def familyOrderDecompositionEquiv {total : ℕ}
       FamilyOrders F × FamilySlotShuffleTo (fun i => Fintype.card (F i)) total :=
   familyOrderDecompositionEquivOfSize F (fun i => Fintype.card (F i)) (fun _ => rfl) ambientEquiv
 
+/-- The canonically increasing shuffle determined by an assignment of
+ambient slots to family blocks. This is the assignment-side counterpart of
+`familyOrderDecompositionEquiv`, specialized to the identity ambient order.
+A block with no assigned slots retains its zero-size local fiber. -/
+noncomputable def ownerCanonicalShuffle
+    {ι : Type*} [Fintype ι] {total : ℕ} (owner : Fin total → ι) :
+    FamilySlotShuffleTo
+      (fun i => Fintype.card {v : Fin total // owner v = i}) total := by
+  classical
+  exact
+    (familyOrderDecompositionEquiv
+      (fun i : ι => {v : Fin total // owner v = i})
+      (Equiv.sigmaFiberEquiv owner).symm
+      (Equiv.refl (Fin total))).2
+
+/-- Each slot in the shuffle of a particular owner fiber retains that
+owner, even if the other fibers have zero cardinality. -/
+theorem ownerCanonicalShuffle_apply_owner
+    {ι : Type*} [Fintype ι] {total : ℕ} (owner : Fin total → ι)
+    (i : ι) (j : Fin (Fintype.card {v : Fin total // owner v = i})) :
+    owner ((ownerCanonicalShuffle owner).slotEquiv ⟨i, j⟩) = i := by
+  classical
+  let orders :=
+    familyOrdersOfOrder
+      (fun i : ι => {v : Fin total // owner v = i})
+      (fun i => Fintype.card {v : Fin total // owner v = i})
+      (fun _ => rfl)
+      (Equiv.sigmaFiberEquiv owner).symm (Equiv.refl (Fin total))
+  have h := (orders i j).property
+  change owner ((orders i j).1) = i
+  exact h
+
+/-- Recover the exact assigned owner of every ambient interaction slot
+by unshuffling the canonical owner shuffle. -/
+theorem ownerCanonicalShuffle_symm_owner
+    {ι : Type*} [Fintype ι] {total : ℕ} (owner : Fin total → ι)
+    (v : Fin total) :
+    ((ownerCanonicalShuffle owner).slotEquiv.symm v).1 = owner v := by
+  classical
+  let σ := ownerCanonicalShuffle owner
+  obtain ⟨i, j⟩ := σ.slotEquiv.symm v
+  have hback : σ.slotEquiv ⟨i, j⟩ = v :=
+    σ.slotEquiv.apply_symm_apply v
+  simpa [σ, hback] using
+    (ownerCanonicalShuffle_apply_owner owner i j).symm
+
 end Combinatorics
