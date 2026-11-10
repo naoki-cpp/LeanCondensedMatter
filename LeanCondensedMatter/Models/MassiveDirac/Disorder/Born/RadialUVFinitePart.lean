@@ -115,6 +115,23 @@ theorem massiveDiracRadialFourier_tendsto_uvFinitePartAt
         (Complex.I * (c : ℂ)))))
   exact hsum.congr' (Filter.Eventually.of_forall fun b => (hsplit b).symm)
 
+/-- The original existential Fourier UV limit follows from the explicit
+finite-part boundary, without repeating the low-momentum/tail split proof. -/
+theorem massiveDiracRadialFourierKernel_tendsto_atTop
+    (v c : ℝ) (energy mass : ℂ) (hv : v ≠ 0) (hc : c ≠ 0)
+    (hden : ∀ p : ℝ, massiveDiracRadialDenominator v p energy mass ≠ 0) :
+    ∃ value : ℂ, Filter.Tendsto
+      (fun b : ℝ => ∫ p in (0 : ℝ)..b,
+        (p : ℂ) * polarFourierZerothAngularKernel (p * c) *
+          (massiveDiracRadialDenominator v p energy mass)⁻¹)
+      Filter.atTop (nhds value) := by
+  exact ⟨massiveDiracRadialFourierUVFinitePartCenter
+      v c (max (1 : ℝ) (2 * ‖energy ^ 2 - mass ^ 2‖ / v ^ 2))
+        (energy ^ 2 - mass ^ 2),
+    massiveDiracRadialFourier_tendsto_uvFinitePartAt
+      v c (max (1 : ℝ) (2 * ‖energy ^ 2 - mass ^ 2‖ / v ^ 2))
+      energy mass hv hc hden le_rfl⟩
+
 /-- The fixed-spectral UV finite-part limit depends only on the
 quadratic center, without choosing an energy/mass decomposition. -/
 theorem massiveDiracRadialFourier_tendsto_uvFinitePartAt_center
