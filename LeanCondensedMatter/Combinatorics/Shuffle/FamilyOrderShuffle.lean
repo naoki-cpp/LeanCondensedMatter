@@ -505,9 +505,9 @@ enumeration in the type of a theorem about weighted sums. -/
 noncomputable def fixedSizeOwnerFiniteDomain
     {ι : Type*} [Fintype ι] {size : ι → ℕ} {total : ℕ} :
     Finset {owner : Fin total → ι //
-      ∀ i, Fintype.card {v : Fin total // owner v = i} = size i} := by
-  classical
-  exact Finset.univ
+      ∀ i, Fintype.card {v : Fin total // owner v = i} = size i} :=
+  (Finset.univ : Finset (FamilySlotShuffleTo size total)).image
+    (familyShuffleOwnerEquiv (ι := ι) (size := size) (total := total))
 
 /-- Reindex an arbitrary weighted family-shuffle sum by assignments
 with the same fixed local cardinalities. In particular, this counts
@@ -520,8 +520,11 @@ theorem sum_familyShuffles_eq_sum_fixedSizeOwners
       ∑ o ∈ fixedSizeOwnerFiniteDomain (ι := ι) (size := size) (total := total),
         weight (familyShuffleOwnerEquiv.symm o) := by
   classical
-  simpa [fixedSizeOwnerFiniteDomain] using
-    (Equiv.sum_comp
-      (familyShuffleOwnerEquiv (ι := ι) (size := size) (total := total)).symm weight).symm
+  unfold fixedSizeOwnerFiniteDomain
+  rw [Finset.sum_image]
+  · simp
+  · intro x _ y _ h
+    exact (familyShuffleOwnerEquiv (ι := ι) (size := size)
+      (total := total)).injective h
 
 end Combinatorics
