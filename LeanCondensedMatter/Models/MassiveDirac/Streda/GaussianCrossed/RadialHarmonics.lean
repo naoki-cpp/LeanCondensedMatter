@@ -27,10 +27,15 @@ open QuantumTheory.Transport
 /-- Canonical regulated K0/K1/K2 Fourier moments of the Gaussian-crossed current.
 The momentum-measure factor occurs once in each moment. -/
 structure GaussianCrossedRadialCurrentFourierMoments where
+  /-- Zeroth-harmonic isotropic channel of the diagonal current block. -/
   isotropic : ℂ
+  /-- Second-cosine-harmonic anisotropic channel of the diagonal current block. -/
   anisotropic : ℂ
+  /-- First-cosine-harmonic scalar–in-plane-Pauli current channel. -/
   firstX : ℂ
+  /-- First-cosine-harmonic in-plane–out-of-plane-Pauli current channel. -/
   firstY : ℂ
+  /-- Zeroth-harmonic transverse scalar–out-of-plane-Pauli current channel. -/
   transverse : ℂ
 
 /-- Current Fourier moments shared by the X and Psi Gaussian-crossed radial traces. -/
