@@ -1221,5 +1221,51 @@ theorem ExternalInsertionDiagram.exists_preconnectedPhysicalBlockAssembly
   · exact d.assembleDiagram_restrictPhysicalBlocks hVac anchor
 
 
+
+/-- For an assembly of connected local diagrams, extracting the physical
+external-component layout recovers the originally assigned block of every
+*active* interaction vertex. An assignment on inactive ambient vertices is
+irrelevant; at full interaction order there are no inactive vertices. -/
+theorem ExternalInsertionBlockLayout.externalBlockLayout_assembleDiagram_interactionOwner
+    {ExternalLabel InternalLabel : Type*}
+    (layout : ExternalInsertionBlockLayout E N) (S : Finset (Fin N))
+    (F : ∀ B : layout.partition.parts,
+      ExternalInsertionDiagram ExternalLabel InternalLabel
+        ((B : Finset (Fin (2 * E))).card / 2) N (layout.interactionBlock S B))
+    (hconnected : ∀ B, (F B).vertexGraph.Preconnected)
+    (anchor : Fin (2 * E)) (v : ↥S) :
+    (((layout.assembleDiagram S F).externalBlockLayout
+        (layout.hasNoVacuumComponent_assembleDiagram S F hconnected) anchor).interactionOwner v.1 :
+          Finset (Fin (2 * E))) =
+      (layout.interactionOwner v.1 : Finset (Fin (2 * E))) := by
+  let B : layout.partition.parts := layout.interactionOwner v.1
+  have hnonempty : (B : Finset (Fin (2 * E))).Nonempty :=
+    Finset.nonempty_iff_ne_empty.mpr (layout.partition.ne_bot B.2)
+  obtain ⟨e, he⟩ := hnonempty
+  have hsource : (layout.sourceEquiv e).1 = B := by
+    apply Subtype.ext
+    simpa only [layout.sourceEquiv_fst] using
+      (layout.partition.part_eq_of_mem B.2 he)
+  have hinteraction : (layout.interactionEquiv S v).1 = B := by
+    rfl
+  have hReach :
+      (layout.assembleDiagram S F).vertexGraph.Reachable (Sum.inl e) (Sum.inr v) := by
+    apply (layout.assembleDiagram_reachable_iff_same_block S F hconnected
+      (Sum.inl e) (Sum.inr v)).2
+    simpa only [layout.vertexEquiv_external, layout.vertexEquiv_interaction] using
+      hsource.trans hinteraction.symm
+  calc
+    (((layout.assembleDiagram S F).externalBlockLayout
+        (layout.hasNoVacuumComponent_assembleDiagram S F hconnected) anchor).interactionOwner v.1 :
+          Finset (Fin (2 * E))) =
+        (externalComponentPartition (layout.assembleDiagram S F).vertexGraph).part e :=
+      (layout.assembleDiagram S F).externalBlockLayout_owner_eq_part_of_reachable
+        (layout.hasNoVacuumComponent_assembleDiagram S F hconnected) anchor v e hReach
+    _ = layout.partition.part e := by
+      rw [layout.externalComponentPartition_assembleDiagram S F hconnected]
+    _ = (layout.interactionOwner v.1 : Finset (Fin (2 * E))) := by
+      exact layout.partition.part_eq_of_mem B.2 he
+
+
 end Common
 end SecondQuantization
