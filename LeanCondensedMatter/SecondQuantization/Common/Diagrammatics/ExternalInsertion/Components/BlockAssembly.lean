@@ -1318,14 +1318,24 @@ theorem ExternalInsertionBlockLayout.interactionOrderDecomposition_slotVertex
       (layout.interactionEquiv (Finset.univ : Finset (Fin N))).symm
         ⟨B, (layout.interactionOrderDecompositionEquiv order).1 B j⟩ := by
   classical
-  exact familyOrderDecompositionEquivOfSize_shuffle_slot
-    (fun C : layout.partition.parts =>
-      ↥(layout.interactionBlock (Finset.univ : Finset (Fin N)) C))
-    (fun C => (layout.interactionBlock
-      (Finset.univ : Finset (Fin N)) C).card)
-    (fun C => by simp)
-    (layout.interactionEquiv (Finset.univ : Finset (Fin N)))
-    order B j
+  let e := layout.interactionOrderDecompositionEquiv
+  let data := e order
+  let family : layout.partition.parts → Type :=
+    fun C => ↥(layout.interactionBlock (Finset.univ : Finset (Fin N)) C)
+  let size : layout.partition.parts → ℕ :=
+    fun C => (layout.interactionBlock (Finset.univ : Finset (Fin N)) C).card
+  let ambient := layout.interactionEquiv (Finset.univ : Finset (Fin N))
+  have hassemble :
+      assembleFamilyOrderOfSize family size ambient data.1 data.2 = order :=
+    e.symm_apply_apply order
+  change order (data.2.slotEquiv ⟨B, j⟩) =
+    ambient.symm ⟨B, data.1 B j⟩
+  calc
+    order (data.2.slotEquiv ⟨B, j⟩) =
+      (assembleFamilyOrderOfSize family size ambient data.1 data.2)
+        (data.2.slotEquiv ⟨B, j⟩) := by rw [hassemble]
+    _ = ambient.symm ⟨B, data.1 B j⟩ :=
+      assembleFamilyOrderOfSize_slot family size ambient data.1 data.2 B j
 
 /-- Every shuffled slot in an arbitrary global interaction order belongs
 to its specified physical external-source block; interleavings cannot
