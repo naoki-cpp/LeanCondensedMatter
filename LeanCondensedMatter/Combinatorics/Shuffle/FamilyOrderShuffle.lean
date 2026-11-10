@@ -335,9 +335,13 @@ theorem ownerCanonicalShuffle_symm_owner
     ((ownerCanonicalShuffle owner).slotEquiv.symm v).1 = owner v := by
   classical
   let σ := ownerCanonicalShuffle owner
-  obtain ⟨i, j⟩ := σ.slotEquiv.symm v
-  have hback : σ.slotEquiv ⟨i, j⟩ = v :=
-    σ.slotEquiv.apply_symm_apply v
+  rcases hslot : σ.slotEquiv.symm v with ⟨i, j⟩
+  have hback : σ.slotEquiv ⟨i, j⟩ = v := by
+    calc
+      σ.slotEquiv ⟨i, j⟩ =
+          σ.slotEquiv (σ.slotEquiv.symm v) :=
+        congrArg σ.slotEquiv hslot.symm
+      _ = v := σ.slotEquiv.apply_symm_apply v
   simpa [σ, hback] using
     (ownerCanonicalShuffle_apply_owner owner i j).symm
 
