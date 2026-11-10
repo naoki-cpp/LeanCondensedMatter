@@ -1326,6 +1326,7 @@ theorem ExternalInsertionBlockLayout.sum_interactionOrders_eq_sum_blockOrders_sh
   classical
   exact (Equiv.sum_comp layout.interactionOrderDecompositionEquiv.symm weight).symm
 
+open Classical in
 /-- The interaction fiber of an independently assigned external block
 has exactly the cardinality of the corresponding owner subtype. -/
 theorem ExternalInsertionBlockLayout.card_ownerFiber_eq_interactionBlock
