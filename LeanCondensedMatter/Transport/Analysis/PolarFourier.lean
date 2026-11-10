@@ -285,7 +285,7 @@ theorem polarFourierZerothAngularKernel_eq_tsum_moments (z : ℝ) :
     _ = _ := by rw [hcos]
 
 /-- The coefficient of the regularized hypergeometric series with lower parameter `k + 1`. -/
-private theorem regularizedHGFunCoeff_zero_singleton_nat_add_one (k n : ℕ) :
+theorem regularizedHGFunCoeff_zero_singleton_nat_add_one (k n : ℕ) :
     Complex.regularizedHGFunCoeff 0 {((k + 1 : ℕ) : ℂ)} n =
       1 / ((Nat.factorial n : ℂ) * (Nat.factorial (n + k) : ℂ)) := by
   have hgamma : Complex.Gamma (((k : ℂ) + 1) + (n : ℂ)) =
