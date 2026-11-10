@@ -26,106 +26,65 @@ open MeasureTheory
 open QuantumTheory.Transport
 open scoped Interval ComplexConjugate
 
-/-- The quadratic massive-Dirac radial denominator conjugates by
-conjugating its two complex spectral parameters. -/
-theorem massiveDiracRadialDenominator_conj
-    (v p : ℝ) (energy mass : ℂ) :
-    conj (massiveDiracRadialDenominator v p energy mass) =
-      massiveDiracRadialDenominator v p (conj energy) (conj mass) := by
-  simp [massiveDiracRadialDenominator, map_sub, map_pow, Complex.conj_ofReal]
-
-/-- Complex conjugation commutes with each finite radial Fourier
-integral at a fixed complex spectral center. -/
-theorem integral_massiveDiracRadialFourier_conj
-    (v c b : ℝ) (energy mass : ℂ) :
+/-- Each finite-cutoff Fourier integral conjugates under conjugation
+of its quadratic spectral center. -/
+private theorem integral_massiveDiracRadialFourierCenter_conj
+    (v c b : ℝ) (center : ℂ) :
     conj (∫ p in (0 : ℝ)..b,
       (p : ℂ) * polarFourierZerothAngularKernel (p * c) *
-        (massiveDiracRadialDenominator v p energy mass)⁻¹) =
+        (center - ((v ^ 2 * p ^ 2 : ℝ) : ℂ))⁻¹) =
       ∫ p in (0 : ℝ)..b,
         (p : ℂ) * polarFourierZerothAngularKernel (p * c) *
-          (massiveDiracRadialDenominator v p (conj energy) (conj mass))⁻¹ := by
-  have hmove :
-      conj (∫ p in (0 : ℝ)..b,
-        (p : ℂ) * polarFourierZerothAngularKernel (p * c) *
-          (massiveDiracRadialDenominator v p energy mass)⁻¹) =
-        ∫ p in (0 : ℝ)..b,
-          conj ((p : ℂ) * polarFourierZerothAngularKernel (p * c) *
-            (massiveDiracRadialDenominator v p energy mass)⁻¹) := by
-    simpa using
-      ((Complex.conjLIE.toLinearIsometry).intervalIntegral_comp_comm
-        (f := fun p : ℝ =>
-          (p : ℂ) * polarFourierZerothAngularKernel (p * c) *
-            (massiveDiracRadialDenominator v p energy mass)⁻¹)
-        (a := (0 : ℝ)) (b := b)).symm
-  rw [hmove]
-  apply intervalIntegral.integral_congr
-  intro p _
-  simp only [map_mul, Complex.conj_inv, Complex.conj_ofReal,
-    polarFourierZerothAngularKernel_conj]
-  rw [massiveDiracRadialDenominator_conj]
+          (conj center - ((v ^ 2 * p ^ 2 : ℝ) : ℂ))⁻¹ := by
+  let f : ℝ → ℂ := fun p =>
+    (p : ℂ) * polarFourierZerothAngularKernel (p * c) *
+      (center - ((v ^ 2 * p ^ 2 : ℝ) : ℂ))⁻¹
+  change conj (∫ p in (0 : ℝ)..b, f p) = _
+  calc
+    conj (∫ p in (0 : ℝ)..b, f p) =
+        ∫ p in (0 : ℝ)..b, conj (f p) := by
+      simpa using
+        ((Complex.conjLIE.toLinearIsometry).intervalIntegral_comp_comm
+          (f := f) (a := (0 : ℝ)) (b := b)).symm
+    _ = _ := by
+      apply intervalIntegral.integral_congr
+      intro p _
+      simp only [f, map_mul, Complex.conj_inv, Complex.conj_ofReal,
+        polarFourierZerothAngularKernel_conj, map_sub]
 
-/-- The canonical Fourier UV Green function commutes with complex
-conjugation of its fixed energy and mass arguments, at a nonreal
-quadratic spectral center. The proof uses actual cutoff-integral
-conjugation and uniqueness of the previously proved limits. -/
-private theorem massiveDiracRadialFourierUVCenter_conj_of_energy_mass
-    (v c : ℝ) (energy mass : ℂ)
-    (hv : v ≠ 0) (hc : c ≠ 0)
-    (hcenter : (energy ^ 2 - mass ^ 2).im ≠ 0) :
-    conj (massiveDiracRadialFourierUVCenter v c (energy ^ 2 - mass ^ 2)) =
-      massiveDiracRadialFourierUVCenter v c ((conj energy) ^ 2 - (conj mass) ^ 2) := by
-  have hcenterStar :
-      ((conj energy) ^ 2 - (conj mass) ^ 2).im ≠ 0 := by
-    have hstar :
-        (conj energy) ^ 2 - (conj mass) ^ 2 =
-          conj (energy ^ 2 - mass ^ 2) := by
-      simp only [map_pow, map_sub]
-    rw [hstar, Complex.conj_im]
-    exact neg_ne_zero.mpr hcenter
-  have hret := massiveDiracRadialFourier_tendsto_uvValue
-    v c energy mass hv hc hcenter
-  have hadv := massiveDiracRadialFourier_tendsto_uvValue
-    v c (conj energy) (conj mass) hv hc hcenterStar
-  have hconj :
-      Filter.Tendsto (fun b : ℝ =>
-        conj (∫ p in (0 : ℝ)..b,
-          (p : ℂ) * polarFourierZerothAngularKernel (p * c) *
-            (massiveDiracRadialDenominator v p energy mass)⁻¹))
-        Filter.atTop
-        (nhds (conj (massiveDiracRadialFourierUVCenter v c (energy ^ 2 - mass ^ 2)))) :=
-    (Complex.continuous_conj.tendsto _).comp hret
-  have hpoint (b : ℝ) :
-      conj (∫ p in (0 : ℝ)..b,
-        (p : ℂ) * polarFourierZerothAngularKernel (p * c) *
-          (massiveDiracRadialDenominator v p energy mass)⁻¹) =
-        ∫ p in (0 : ℝ)..b,
-          (p : ℂ) * polarFourierZerothAngularKernel (p * c) *
-            (massiveDiracRadialDenominator v p (conj energy) (conj mass))⁻¹ :=
-    integral_massiveDiracRadialFourier_conj v c b energy mass
-  exact tendsto_nhds_unique
-    (hconj.congr' (Filter.Eventually.of_forall hpoint))
-    hadv
-
-/-- The center-only canonical function has the natural conjugation
-symmetry under Z -> conj Z, without choosing a square-root branch. -/
+/-- The center-only UV value conjugates under Z ↦ conj Z, using
+the symmetry of its finite-cutoff Fourier integrals. -/
 theorem massiveDiracRadialFourierUVCenter_conj
     (v c : ℝ) (center : ℂ)
     (hv : v ≠ 0) (hc : c ≠ 0) (hcenter : center.im ≠ 0) :
     conj (massiveDiracRadialFourierUVCenter v c center) =
       massiveDiracRadialFourierUVCenter v c (conj center) := by
-  let energy : ℂ := Complex.sqrt center
-  have hcenterEq : energy ^ 2 - (0 : ℂ) ^ 2 = center := by
-    simp [energy, complex_sqrt_sq_spectral_center]
-  have hconjEq :
-      (conj energy) ^ 2 - (conj (0 : ℂ)) ^ 2 = conj center := by
-    simpa only [map_sub, map_pow] using (congrArg conj hcenterEq)
-  have hnonreal : (energy ^ 2 - (0 : ℂ) ^ 2).im ≠ 0 := by
-    rw [hcenterEq]
-    exact hcenter
-  have h := massiveDiracRadialFourierUVCenter_conj_of_energy_mass
-    v c energy 0 hv hc hnonreal
-  rw [hcenterEq, hconjEq] at h
-  exact h
+  have hcenterStar : (conj center).im ≠ 0 := by
+    rw [Complex.conj_im]
+    exact neg_ne_zero.mpr hcenter
+  have hret := massiveDiracRadialFourier_tendsto_uvValue_center
+    v c center hv hc hcenter
+  have hadv := massiveDiracRadialFourier_tendsto_uvValue_center
+    v c (conj center) hv hc hcenterStar
+  have hconj :
+      Filter.Tendsto (fun b : ℝ =>
+        conj (∫ p in (0 : ℝ)..b,
+          (p : ℂ) * polarFourierZerothAngularKernel (p * c) *
+            (center - ((v ^ 2 * p ^ 2 : ℝ) : ℂ))⁻¹))
+        Filter.atTop
+        (nhds (conj (massiveDiracRadialFourierUVCenter v c center))) :=
+    (Complex.continuous_conj.tendsto _).comp hret
+  have hpoint (b : ℝ) :
+      conj (∫ p in (0 : ℝ)..b,
+        (p : ℂ) * polarFourierZerothAngularKernel (p * c) *
+          (center - ((v ^ 2 * p ^ 2 : ℝ) : ℂ))⁻¹) =
+        ∫ p in (0 : ℝ)..b,
+          (p : ℂ) * polarFourierZerothAngularKernel (p * c) *
+            (conj center - ((v ^ 2 * p ^ 2 : ℝ) : ℂ))⁻¹ :=
+    integral_massiveDiracRadialFourierCenter_conj v c b center
+  exact tendsto_nhds_unique
+    (hconj.congr' (Filter.Eventually.of_forall hpoint))
+    hadv
 
 end
 
