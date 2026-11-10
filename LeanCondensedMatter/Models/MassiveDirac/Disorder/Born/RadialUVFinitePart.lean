@@ -1,6 +1,7 @@
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornRadialScalarTail
 import Mathlib.Tactic.FunProp
 import Mathlib.Analysis.RCLike.Sqrt
+import Mathlib.Analysis.Complex.Basic
 
 set_option linter.style.header false
 
@@ -225,6 +226,68 @@ theorem massiveDiracRadialFourierUVCenter_neg
   exact tendsto_nhds_unique
     (hneg.congr' (Filter.Eventually.of_forall heq))
     hpos
+
+open scoped ComplexConjugate
+
+/-- Each finite-cutoff Fourier integral conjugates under conjugation
+of its quadratic spectral center. -/
+private theorem integral_massiveDiracRadialFourierCenter_conj
+    (v c b : ℝ) (center : ℂ) :
+    conj (∫ p in (0 : ℝ)..b,
+      (p : ℂ) * polarFourierZerothAngularKernel (p * c) *
+        (center - ((v ^ 2 * p ^ 2 : ℝ) : ℂ))⁻¹) =
+      ∫ p in (0 : ℝ)..b,
+        (p : ℂ) * polarFourierZerothAngularKernel (p * c) *
+          (conj center - ((v ^ 2 * p ^ 2 : ℝ) : ℂ))⁻¹ := by
+  let f : ℝ → ℂ := fun p =>
+    (p : ℂ) * polarFourierZerothAngularKernel (p * c) *
+      (center - ((v ^ 2 * p ^ 2 : ℝ) : ℂ))⁻¹
+  change conj (∫ p in (0 : ℝ)..b, f p) = _
+  calc
+    conj (∫ p in (0 : ℝ)..b, f p) =
+        ∫ p in (0 : ℝ)..b, conj (f p) := by
+      simpa using
+        ((Complex.conjLIE.toLinearIsometry).intervalIntegral_comp_comm
+          (f := f) (a := (0 : ℝ)) (b := b)).symm
+    _ = _ := by
+      apply intervalIntegral.integral_congr
+      intro p _
+      simp only [f, map_mul, Complex.conj_inv, Complex.conj_ofReal,
+        polarFourierZerothAngularKernel_conj, map_sub]
+
+/-- The center-only UV value conjugates under Z ↦ conj Z, using
+the symmetry of its finite-cutoff Fourier integrals. -/
+theorem massiveDiracRadialFourierUVCenter_conj
+    (v c : ℝ) (center : ℂ)
+    (hv : v ≠ 0) (hc : c ≠ 0) (hcenter : center.im ≠ 0) :
+    conj (massiveDiracRadialFourierUVCenter v c center) =
+      massiveDiracRadialFourierUVCenter v c (conj center) := by
+  have hcenterStar : (conj center).im ≠ 0 := by
+    rw [Complex.conj_im]
+    exact neg_ne_zero.mpr hcenter
+  have hret := massiveDiracRadialFourier_tendsto_uvValue_center
+    v c center hv hc hcenter
+  have hadv := massiveDiracRadialFourier_tendsto_uvValue_center
+    v c (conj center) hv hc hcenterStar
+  have hconj :
+      Filter.Tendsto (fun b : ℝ =>
+        conj (∫ p in (0 : ℝ)..b,
+          (p : ℂ) * polarFourierZerothAngularKernel (p * c) *
+            (center - ((v ^ 2 * p ^ 2 : ℝ) : ℂ))⁻¹))
+        Filter.atTop
+        (nhds (conj (massiveDiracRadialFourierUVCenter v c center))) :=
+    (Complex.continuous_conj.tendsto _).comp hret
+  have hpoint (b : ℝ) :
+      conj (∫ p in (0 : ℝ)..b,
+        (p : ℂ) * polarFourierZerothAngularKernel (p * c) *
+          (center - ((v ^ 2 * p ^ 2 : ℝ) : ℂ))⁻¹) =
+        ∫ p in (0 : ℝ)..b,
+          (p : ℂ) * polarFourierZerothAngularKernel (p * c) *
+            (conj center - ((v ^ 2 * p ^ 2 : ℝ) : ℂ))⁻¹ :=
+    integral_massiveDiracRadialFourierCenter_conj v c b center
+  exact tendsto_nhds_unique
+    (hconj.congr' (Filter.Eventually.of_forall hpoint))
+    hadv
 
 end
 

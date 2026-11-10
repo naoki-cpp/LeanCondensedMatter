@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornRadialFrozenUV
-import LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVSpectralConjugation
+import LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVFinitePart
 
 set_option linter.style.header false
 
