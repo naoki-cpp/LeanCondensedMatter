@@ -1335,12 +1335,14 @@ theorem ExternalInsertionBlockLayout.card_ownerFiber_eq_interactionBlock
     Fintype.card {v : Fin N // layout.interactionOwner v = B} =
       (layout.interactionBlock (Finset.univ : Finset (Fin N)) B).card := by
   classical
+  letI : DecidableEq layout.partition.parts := Classical.decEq _
   let e : {v : Fin N // layout.interactionOwner v = B} ≃
-      ↥(layout.interactionBlock (Finset.univ : Finset (Fin N)) B) where
-    toFun v := ⟨v.1, Finset.mem_filter.mpr ⟨Finset.mem_univ _, v.2⟩⟩
-    invFun v := ⟨v.1, (Finset.mem_filter.mp v.2).2⟩
+      ↥(layout.interactionBlock (Finset.univ : Finset (Fin N)) B) := {
+    toFun := fun v => ⟨v.1, Finset.mem_filter.mpr ⟨Finset.mem_univ _, v.2⟩⟩
+    invFun := fun v => ⟨v.1, (Finset.mem_filter.mp v.2).2⟩
     left_inv := by intro v; rfl
     right_inv := by intro v; rfl
+  }
   simpa using Fintype.card_congr e
 
 /-- Forget the arbitrary ambient interaction order and retain the
@@ -1353,6 +1355,7 @@ noncomputable def ExternalInsertionBlockLayout.interactionAssignmentShuffle
       (fun B : layout.partition.parts =>
         (layout.interactionBlock (Finset.univ : Finset (Fin N)) B).card) N := by
   classical
+  letI : DecidableEq layout.partition.parts := Classical.decEq _
   let σ := ownerCanonicalShuffle layout.interactionOwner
   let h : ∀ B : layout.partition.parts,
       (layout.interactionBlock (Finset.univ : Finset (Fin N)) B).card =
@@ -1376,6 +1379,7 @@ theorem ExternalInsertionBlockLayout.interactionAssignmentShuffle_apply_owner
     layout.interactionOwner
       (layout.interactionAssignmentShuffle.slotEquiv ⟨B, j⟩) = B := by
   classical
+  letI : DecidableEq layout.partition.parts := Classical.decEq _
   let σ := ownerCanonicalShuffle layout.interactionOwner
   let h : ∀ B : layout.partition.parts,
       (layout.interactionBlock (Finset.univ : Finset (Fin N)) B).card =
