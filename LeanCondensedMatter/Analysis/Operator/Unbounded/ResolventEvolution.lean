@@ -835,7 +835,7 @@ private theorem stoneEvolution_apply_hasDerivAt_intertwined
     · funext h
       rw [stoneEvolution_add]
       rfl
-    · simp only [map_smul]
+    · exact ((stoneEvolution A hA s).map_smul _ _).symm
   have hshift :=
     htranslated.scomp_of_eq s ((hasDerivAt_id s).sub_const s) (by simp)
   simpa [Function.comp_def] using hshift
