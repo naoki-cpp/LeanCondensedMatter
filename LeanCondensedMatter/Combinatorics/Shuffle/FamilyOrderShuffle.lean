@@ -298,7 +298,7 @@ theorem familyOrderDecompositionEquivOfSize_shuffle_slot
       ambientEquiv.symm
         ⟨i, (familyOrderDecompositionEquivOfSize F size hcard ambientEquiv
           order).1 i j⟩ := by
-  let e := familyOrderDecompositionEquivOfSize F size hcard ambientEquiv
+  let e := familyOrderDecompositionEquivOfSize (total := total) F size hcard ambientEquiv
   let data := e order
   have hassemble :
       assembleFamilyOrderOfSize F size ambientEquiv data.1 data.2 = order :=
