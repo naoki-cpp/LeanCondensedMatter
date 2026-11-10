@@ -1493,5 +1493,57 @@ theorem ExternalInsertionBlockLayout.sum_vacuumFree_eq_sum_connectedBlockFamilie
       anchor).symm.injective h
 
 
+open Classical in
+/-- Reindex one *fixed external-component partition fiber* of the
+vacuum-free physical diagram sum by exactly those independent connected
+block layouts whose prescribed source partition is the given fiber.
+The equality is valid for arbitrary weights and preserves the original
+labelled diagram, pairing and interaction-vertex ownership. -/
+theorem ExternalInsertionBlockLayout.sum_externalPartitionFiber_eq_sum_connectedBlockFamilies
+    {ExternalLabel InternalLabel M : Type*}
+    [Fintype ExternalLabel] [Fintype InternalLabel] [AddCommMonoid M]
+    (anchor : Fin (2 * E))
+    (π : Finpartition (Finset.univ : Finset (Fin (2 * E))))
+    (weight : ExternalInsertionDiagram ExternalLabel InternalLabel E N
+      (Finset.univ : Finset (Fin N)) → M) :
+    (∑ d : {d : ExternalInsertionDiagram ExternalLabel InternalLabel E N
+        (Finset.univ : Finset (Fin N)) //
+          HasNoVacuumComponent d.vertexGraph},
+      if externalComponentPartition d.1.vertexGraph = π then weight d.1 else 0) =
+      ∑ p ∈ ExternalInsertionBlockLayout.connectedAssemblyFiniteDomain
+          (ExternalLabel := ExternalLabel) (InternalLabel := InternalLabel) anchor,
+        if p.1.partition = π then
+          weight (ExternalInsertionBlockLayout.assembleConnectedBlockFamily p).1
+        else 0 := by
+  classical
+  calc
+    (∑ d : {d : ExternalInsertionDiagram ExternalLabel InternalLabel E N
+        (Finset.univ : Finset (Fin N)) //
+          HasNoVacuumComponent d.vertexGraph},
+      if externalComponentPartition d.1.vertexGraph = π then weight d.1 else 0) =
+      ∑ p ∈ ExternalInsertionBlockLayout.connectedAssemblyFiniteDomain
+          (ExternalLabel := ExternalLabel) (InternalLabel := InternalLabel) anchor,
+        if externalComponentPartition
+            (ExternalInsertionBlockLayout.assembleConnectedBlockFamily p).1.vertexGraph = π
+          then weight (ExternalInsertionBlockLayout.assembleConnectedBlockFamily p).1
+          else 0 :=
+        ExternalInsertionBlockLayout.sum_vacuumFree_eq_sum_connectedBlockFamilies
+          anchor (fun d => if externalComponentPartition d.vertexGraph = π then weight d else 0)
+    _ = ∑ p ∈ ExternalInsertionBlockLayout.connectedAssemblyFiniteDomain
+          (ExternalLabel := ExternalLabel) (InternalLabel := InternalLabel) anchor,
+        if p.1.partition = π then
+          weight (ExternalInsertionBlockLayout.assembleConnectedBlockFamily p).1
+        else 0 := by
+      apply Finset.sum_congr rfl
+      intro p _
+      have hπ :
+          externalComponentPartition
+            (ExternalInsertionBlockLayout.assembleConnectedBlockFamily p).1.vertexGraph =
+            p.1.partition :=
+        p.1.externalComponentPartition_assembleDiagram
+          (Finset.univ : Finset (Fin N)) p.2.1 p.2.2
+      rw [hπ]
+
+
 end Common
 end SecondQuantization
