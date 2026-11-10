@@ -1377,8 +1377,11 @@ noncomputable def ExternalInsertionBlockLayout.connectedAssemblyEquiv
           (layoutY.assembleDiagram (Finset.univ : Finset (Fin N)) FY).externalBlockLayout
             (layoutY.hasNoVacuumComponent_assembleDiagram
               (Finset.univ : Finset (Fin N)) FY hY) anchor := by
-      cases hdiagram
-      rfl
+      exact congrArg
+        (fun d : {d : ExternalInsertionDiagram ExternalLabel InternalLabel E N
+            (Finset.univ : Finset (Fin N)) //
+              HasNoVacuumComponent d.vertexGraph} =>
+          d.1.externalBlockLayout d.2 anchor) h
     have hlayout : layoutX = layoutY := by
       calc
         layoutX =
