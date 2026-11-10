@@ -1350,6 +1350,28 @@ theorem ExternalInsertionBlockLayout.interactionOrderDecomposition_slot_owner
     rfl
   simpa only [hv] using howner
 
+/-- An assembled Wick diagram retains the *actual quartic interaction
+label* at each local vertex when the ambient order is decomposed into
+block-local orders and its order-preserving shuffle. This is the
+vertex-label transport needed in the ordered Dyson integrand. -/
+theorem ExternalInsertionBlockLayout.assembleDiagram_vertexLabel_at_shuffledSlot
+    {ExternalLabel InternalLabel : Type*}
+    (layout : ExternalInsertionBlockLayout E N)
+    (F : ∀ B : layout.partition.parts,
+      ExternalInsertionDiagram ExternalLabel InternalLabel
+        ((B : Finset (Fin (2 * E))).card / 2) N
+        (layout.interactionBlock (Finset.univ : Finset (Fin N)) B))
+    (order : QuarticVertexOrder (Finset.univ : Finset (Fin N)))
+    (B : layout.partition.parts)
+    (j : Fin (layout.interactionBlock (Finset.univ : Finset (Fin N)) B).card) :
+    (layout.assembleDiagram (Finset.univ : Finset (Fin N)) F).vertexLabel
+      (order ((layout.interactionOrderDecompositionEquiv order).2.slotEquiv ⟨B, j⟩)) =
+        (F B).vertexLabel ((layout.interactionOrderDecompositionEquiv order).1 B j) := by
+  rw [layout.interactionOrderDecomposition_slotVertex order B j]
+  exact layout.assembleDiagram_vertexLabel
+    (Finset.univ : Finset (Fin N)) F B
+    ((layout.interactionOrderDecompositionEquiv order).1 B j)
+
 /-- Reindex a finite sum over every ambient interaction order by the
 independent local block orders and their interleavings, with no
 multiplicity or omission even for zero-interaction blocks. -/
