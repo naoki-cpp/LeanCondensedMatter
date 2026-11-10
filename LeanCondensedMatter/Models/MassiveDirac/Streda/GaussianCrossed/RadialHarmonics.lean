@@ -24,6 +24,59 @@ noncomputable section
 open MeasureTheory
 open QuantumTheory.Transport
 
+/-- Canonical regulated K0/K1/K2 Fourier moments of the Gaussian-crossed current.
+The momentum-measure factor occurs once in each moment. -/
+structure GaussianCrossedRadialCurrentFourierMoments where
+  isotropic : ℂ
+  anisotropic : ℂ
+  firstX : ℂ
+  firstY : ℂ
+  transverse : ℂ
+
+/-- Current Fourier moments shared by the X and Psi Gaussian-crossed radial traces. -/
+noncomputable def finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentFourierMoments
+    (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ) :
+    GaussianCrossedRadialCurrentFourierMoments :=
+  let factor := finiteCutoffContinuumBornDysonGaussianCrossedCurrentFactor
+    v m probeEnergy broadening disorderStrength hbar pMax
+  let advanced := fun p : ℝ =>
+    finiteCutoffContinuumBornDysonRadialPauliData
+      .advanced v m p probeEnergy broadening disorderStrength hbar pMax
+  let retarded := fun p : ℝ =>
+    finiteCutoffContinuumBornDysonRadialPauliData
+      .retarded v m p probeEnergy broadening disorderStrength hbar pMax
+  { isotropic :=
+      (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
+        ∫ p in (0 : ℝ)..pMax,
+          2 * (p : ℂ) *
+            (polarFourierZerothAngularKernel (p * radius / hbar) *
+              (((advanced p).scalar * (retarded p).scalar -
+                (advanced p).z * (retarded p).z) * factor))
+    anisotropic :=
+      (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
+        ∫ p in (0 : ℝ)..pMax,
+          2 * (p : ℂ) *
+            (polarFourierSecondCosineAngularKernel (p * radius / hbar) *
+              ((advanced p).x * (retarded p).x * factor))
+    firstX :=
+      (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
+        ∫ p in (0 : ℝ)..pMax,
+          (p : ℂ) * (polarFourierFirstCosineAngularKernel (p * radius / hbar) *
+            (((retarded p).scalar * (advanced p).x +
+              (advanced p).scalar * (retarded p).x) * factor))
+    firstY :=
+      (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
+        ∫ p in (0 : ℝ)..pMax,
+          (p : ℂ) * (polarFourierFirstCosineAngularKernel (p * radius / hbar) *
+            ((-Complex.I * ((retarded p).x * (advanced p).z -
+              (advanced p).x * (retarded p).z)) * factor))
+    transverse :=
+      (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
+        ∫ p in (0 : ℝ)..pMax,
+          (p : ℂ) * (polarFourierZerothAngularKernel (p * radius / hbar) *
+            (Complex.I * ((retarded p).scalar * (advanced p).z -
+              (advanced p).scalar * (retarded p).z) * factor)) }
+
 /-- The four non-diagonal first-harmonic channels of the regulated Gaussian-crossed
 radial current are exact source-resolved scalar momentum integrals. The source-x and
 source-y Pauli-scalar and Pauli-z components all use the same Fourier K1 kernel,
