@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Transport.Analysis.BesselYFormalWronskian
+import Mathlib.NumberTheory.Harmonic.EulerMascheroni
 import Mathlib.Tactic.FieldSimp
 import Mathlib.Tactic.NormNum
 
@@ -143,7 +144,6 @@ theorem besselFormalJ0H0_wronskian :
       PowerSeries.derivative_X, mul_one, one_mul, add_comm] using
         besselFormalH0_frobenius
   · exact besselFormalJ0_constantCoeff
-  · exact besselFormalH0_constantCoeff
 
 end
 
