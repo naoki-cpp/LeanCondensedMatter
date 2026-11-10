@@ -39,8 +39,12 @@ theorem massiveDiracRadialFourierRemainder_norm_le
   have hp0 : 0 < p := by linarith
   have hv2 : 0 < v ^ 2 := sq_pos_of_ne_zero hv
   have hK := polarFourierFirstCosineAngularKernel_norm_le (p * c)
-  have hD := massiveDiracRadialDenominator_inv_norm_le_half_quadratic_inv
-    v p energy mass hv hp
+  have hD :
+      ‖(massiveDiracRadialDenominator v p energy mass)⁻¹‖ ≤
+        (v ^ 2 * p ^ 2 / 2)⁻¹ := by
+    simpa only [massiveDiracRadialDenominator] using
+      (massiveDiracRadialCenter_inv_norm_le_half_quadratic_inv
+        v p (energy ^ 2 - mass ^ 2) hv hp)
   have hnorm :
       ‖(p : ℂ) * polarFourierFirstCosineAngularKernel (p * c) *
           ((2 : ℂ) * (v : ℂ) ^ 2 * (p : ℂ) *
