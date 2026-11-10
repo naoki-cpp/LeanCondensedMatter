@@ -233,13 +233,12 @@ theorem massiveDiracRadialFourierKernel_tendsto_atTop
         (∫ p in cutoff..b, f p) :=
     (intervalIntegral.integral_add_adjacent_intervals hleft
       (hf.intervalIntegrable cutoff b)).symm
-  refine ⟨_, ?_⟩
   have hconst : Filter.Tendsto
       (fun _ : ℝ => ∫ p in (0 : ℝ)..cutoff, f p)
       Filter.atTop (nhds (∫ p in (0 : ℝ)..cutoff, f p)) :=
     tendsto_const_nhds
   have hsum := hconst.add htail
-  exact hsum.congr' (Filter.Eventually.of_forall fun b => (hsplit b).symm)
+  exact ⟨_, hsum.congr' (Filter.Eventually.of_forall fun b => (hsplit b).symm)⟩
 
 
 /-- On the clean (`disorderStrength = 0`) slice, the *actual* finite-cutoff
