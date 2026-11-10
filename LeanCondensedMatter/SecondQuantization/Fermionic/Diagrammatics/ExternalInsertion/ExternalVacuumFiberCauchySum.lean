@@ -40,6 +40,42 @@ private def vacuumFreeFixedExternalSubtypeEquiv {E m : ℕ}
     rcases d with ⟨⟨d, hl⟩, hd⟩
     rfl
 
+/-- A fixed-external-label vacuum-free diagram sum is the same as the
+unrestricted vacuum-free sum with an exact external-label indicator.
+The weight may already impose an independent condition, such as fixing
+the physical external-component partition. -/
+open Classical in
+theorem sum_vacuumFreeFixedExternalInsertionWickDiagram_eq_sum_if
+    {E m : ℕ} {M : Type*} [AddCommMonoid M]
+    (externalLabel : Fin (2 * E) → ExternalFieldLabel Mode)
+    (weight : ExternalInsertionWickDiagram Mode E m → M) :
+    (∑ d : VacuumFreeFixedExternalInsertionWickDiagram Mode E m externalLabel,
+      weight d.1.1) =
+      ∑ ext : {d : ExternalInsertionWickDiagram Mode E m //
+        HasNoVacuumComponent d.vertexGraph},
+        if ext.1.externalLabel = externalLabel then weight ext.1 else 0 := by
+  classical
+  let X := {d : ExternalInsertionWickDiagram Mode E m //
+    HasNoVacuumComponent d.vertexGraph}
+  let e := vacuumFreeFixedExternalSubtypeEquiv (Mode := Mode) (m := m) externalLabel
+  calc
+    (∑ d : VacuumFreeFixedExternalInsertionWickDiagram Mode E m externalLabel,
+      weight d.1.1) =
+        ∑ d : {d : X // d.1.externalLabel = externalLabel},
+          weight d.1.1 := by
+        exact (Equiv.sum_comp e
+          (fun d : VacuumFreeFixedExternalInsertionWickDiagram Mode E m externalLabel =>
+            weight d.1.1)).symm
+    _ = ∑ ext : X,
+          if ext.1.externalLabel = externalLabel then weight ext.1 else 0 := by
+      simpa only [Finset.sum_filter] using
+        (Finset.sum_subtype
+          (p := fun ext : X => ext.1.externalLabel = externalLabel)
+          ((Finset.univ : Finset X).filter
+            (fun ext => ext.1.externalLabel = externalLabel))
+          (fun _ => by simp)
+          (fun ext : X => weight ext.1)).symm
+
 open Classical in
 theorem vacuumFreeExternalInsertionDysonCoefficient_eq_sum_if
     {E m : ℕ} (ε : Mode → ℝ) (β : ℝ)
@@ -51,28 +87,9 @@ theorem vacuumFreeExternalInsertionDysonCoefficient_eq_sum_if
         HasNoVacuumComponent d.vertexGraph},
         if ext.1.externalLabel = externalLabel then
           ext.1.dysonAmplitude ε β g externalTime else 0 := by
-  classical
   unfold vacuumFreeExternalInsertionDysonCoefficient
-  let X := {d : ExternalInsertionWickDiagram Mode E m //
-    HasNoVacuumComponent d.vertexGraph}
-  let e := vacuumFreeFixedExternalSubtypeEquiv (Mode := Mode) (m := m) externalLabel
-  calc
-    (∑ d : VacuumFreeFixedExternalInsertionWickDiagram Mode E m externalLabel,
-      d.1.1.dysonAmplitude ε β g externalTime) =
-        ∑ d : {d : X // d.1.externalLabel = externalLabel},
-          d.1.1.dysonAmplitude ε β g externalTime := by
-        exact (Equiv.sum_comp e (fun d : VacuumFreeFixedExternalInsertionWickDiagram
-          Mode E m externalLabel => d.1.1.dysonAmplitude ε β g externalTime)).symm
-    _ = ∑ ext : X,
-          if ext.1.externalLabel = externalLabel then
-            ext.1.dysonAmplitude ε β g externalTime else 0 := by
-      simpa only [Finset.sum_filter] using
-        (Finset.sum_subtype
-          (p := fun ext : X => ext.1.externalLabel = externalLabel)
-          ((Finset.univ : Finset X).filter
-            (fun ext => ext.1.externalLabel = externalLabel))
-          (fun _ => by simp)
-          (fun ext : X => ext.1.dysonAmplitude ε β g externalTime)).symm
+  exact sum_vacuumFreeFixedExternalInsertionWickDiagram_eq_sum_if
+    externalLabel (fun d => d.dysonAmplitude ε β g externalTime)
 
 open Classical in
 /-- The sum over all fixed-cardinality external-support fibers is one factor
