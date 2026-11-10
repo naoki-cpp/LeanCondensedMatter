@@ -350,7 +350,7 @@ theorem ownerCanonicalShuffle_symm_owner
 ambient owner of each slot. Indeed, each block is necessarily enumerated
 in increasing ambient-slot order. Empty blocks cause no exception. -/
 theorem FamilySlotShuffleTo.eq_of_same_owner
-    {ι : Type*} [Fintype ι] {size : ι → ℕ} {total : ℕ}
+    {ι : Type*} {size : ι → ℕ} {total : ℕ}
     (σ τ : FamilySlotShuffleTo size total)
     (howner : ∀ v : Fin total,
       (σ.slotEquiv.symm v).1 = (τ.slotEquiv.symm v).1) :
@@ -395,7 +395,7 @@ open Classical in
 /-- Every shuffle has exactly the prescribed number of ambient slots
 owned by each block, including empty blocks. -/
 theorem FamilySlotShuffleTo.card_ownerFiber
-    {ι : Type*} [Fintype ι] {size : ι → ℕ} {total : ℕ}
+    {ι : Type*} {size : ι → ℕ} {total : ℕ}
     (σ : FamilySlotShuffleTo size total) (i : ι) :
     Fintype.card {v : Fin total // (σ.slotEquiv.symm v).1 = i} = size i := by
   classical
@@ -419,7 +419,7 @@ theorem FamilySlotShuffleTo.card_ownerFiber
           σ.slotEquiv (σ.slotEquiv.symm v) :=
         congrArg σ.slotEquiv hslot.symm
       _ = v := σ.slotEquiv.apply_symm_apply v
-  simpa using Fintype.card_congr (Equiv.ofBijective f ⟨hinj, hsurj⟩)
+  simpa using (Fintype.card_congr (Equiv.ofBijective f ⟨hinj, hsurj⟩)).symm
 
 open Classical in
 /-- Construct the unique order-preserving shuffle of a fixed prescribed
@@ -499,6 +499,16 @@ noncomputable def familyShuffleOwnerEquiv
     exact assignmentShuffleOfSize_symm_owner o.1 o.2 v
 
 open Classical in
+/-- Canonical finite enumeration of fixed-size owner assignments.
+Keeping the finite set explicit avoids selecting an unrelated subtype
+enumeration in the type of a theorem about weighted sums. -/
+noncomputable def fixedSizeOwnerFiniteDomain
+    {ι : Type*} [Fintype ι] {size : ι → ℕ} {total : ℕ} :
+    Finset {owner : Fin total → ι //
+      ∀ i, Fintype.card {v : Fin total // owner v = i} = size i} := by
+  classical
+  exact Finset.univ
+
 /-- Reindex an arbitrary weighted family-shuffle sum by assignments
 with the same fixed local cardinalities. In particular, this counts
 no spurious permutations of the slots inside a block. -/
@@ -507,11 +517,11 @@ theorem sum_familyShuffles_eq_sum_fixedSizeOwners
     {size : ι → ℕ} {total : ℕ}
     (weight : FamilySlotShuffleTo size total → M) :
     (∑ σ : FamilySlotShuffleTo size total, weight σ) =
-      ∑ o : {owner : Fin total → ι //
-          ∀ i, Fintype.card {v : Fin total // owner v = i} = size i},
+      ∑ o ∈ fixedSizeOwnerFiniteDomain (ι := ι) (size := size) (total := total),
         weight (familyShuffleOwnerEquiv.symm o) := by
   classical
-  exact (Equiv.sum_comp
-    (familyShuffleOwnerEquiv (ι := ι) (size := size) (total := total)).symm weight).symm
+  simpa [fixedSizeOwnerFiniteDomain] using
+    (Equiv.sum_comp
+      (familyShuffleOwnerEquiv (ι := ι) (size := size) (total := total)).symm weight).symm
 
 end Combinatorics
