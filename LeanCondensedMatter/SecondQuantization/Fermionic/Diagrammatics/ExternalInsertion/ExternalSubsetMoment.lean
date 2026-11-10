@@ -241,12 +241,12 @@ theorem vacuumFreeExternalInsertionDysonCoefficient_eq_sum_connectedBlockFamilie
     (fun d : ExternalInsertionWickDiagram Mode K n =>
       if d.externalLabel = labels then d.dysonAmplitude ε β g times else 0)
 
+open Classical in
 /-- For a *fixed physical external-component partition*, the actual
 fixed-external-label Dyson diagram fiber is reindexed by independent
 connected block families with exactly that prescribed source partition.
 The external-field-label condition is retained on the assembled diagram;
 the integration amplitudes themselves are not yet factorized. -/
-open Classical in
 theorem sum_fixedExternalPartitionFiber_eq_sum_connectedBlockFamilies
     {K n : ℕ} (anchor : Fin (2 * K))
     (π : Finpartition (Finset.univ : Finset (Fin (2 * K))))
