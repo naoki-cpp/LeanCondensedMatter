@@ -64,18 +64,21 @@ theorem norm_besselY1HarmonicTerm_le_two_expTerm (z : ℂ) (n : ℕ) :
         ((harmonic n : ℝ) + (harmonic (n + 1) : ℝ)) *
           (‖z / 2‖ ^ 2) ^ n /
           ((n.factorial : ℝ) * ((n + 1).factorial : ℝ)) := by
+      have hnorm :
+          ‖((((harmonic n : ℝ) + (harmonic (n + 1) : ℝ)) : ℂ))‖ =
+            ((harmonic n : ℝ) + (harmonic (n + 1) : ℝ)) := by
+        simp only [Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg hH.1]
       simp only [besselY1HarmonicTerm, norm_div, norm_mul,
-        norm_pow, norm_neg, Complex.norm_real,
-        Complex.norm_natCast, Real.norm_eq_abs,
-        abs_of_nonneg hH.1]
-      ring
+        norm_pow, norm_neg, hnorm, Complex.norm_natCast,
+        Real.norm_eq_abs]
+      ring_nf
     _ ≤ (2 * ((n + 1).factorial : ℝ)) *
           (‖z / 2‖ ^ 2) ^ n /
           ((n.factorial : ℝ) * ((n + 1).factorial : ℝ)) := by
       gcongr
+      exact hH.2
     _ = 2 * ((‖z / 2‖ ^ 2) ^ n / (n.factorial : ℝ)) := by
       field_simp
-      ring
 
 /-- The order-one second-kind Bessel harmonic correction converges
 absolutely everywhere in the complex plane. -/
@@ -147,7 +150,6 @@ theorem besselY0Y1Wronskian_of_harmonicIdentity
           (z ^ 2 / 4) * Complex.besselJ 0 z *
             besselY1HarmonicCorrection z := by
               field_simp [hz]
-              ring
       _ = 1 := hidentity
       _ = z * z⁻¹ := by field_simp [hz]
   rw [hcancel]
