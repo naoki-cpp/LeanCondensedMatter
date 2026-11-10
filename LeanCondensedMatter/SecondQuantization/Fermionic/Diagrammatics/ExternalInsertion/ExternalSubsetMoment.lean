@@ -1,5 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalSourceCumulant
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.InteractionPictureVertexDyson
+import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ExternalVacuumFiberCauchySum
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.MixedOrderData
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ExternalPartition
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.BlockAssembly
@@ -208,6 +209,37 @@ theorem externalInsertionDysonAmplitude_sum_blockRespectingFixedLabels
         (InternalLabel := QuarticVertexLabel Mode)
         (Finset.univ : Finset (Fin n)) labels)
       (fun d => ExternalInsertionWickDiagram.dysonAmplitude d.1 ε β g times)).symm
+
+open Classical in
+/-- The actual order-`n` vacuum-free Dyson coefficient, with the external
+field labels fixed, is an explicit finite sum over all independent
+preconnected local external-block diagrams and their interaction-vertex
+assignments. The canonical assembly equivalence ensures that each physical
+Wick diagram appears exactly once; the external-label indicator excludes
+precisely the assembled diagrams with different prescribed insertions.
+The shuffle/integral product decomposition is a separate subsequent step. -/
+theorem vacuumFreeExternalInsertionDysonCoefficient_eq_sum_connectedBlockFamilies
+    {K n : ℕ} (anchor : Fin (2 * K))
+    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
+    (labels : Fin (2 * K) → ExternalFieldLabel Mode)
+    (times : Fin (2 * K) → ℝ) :
+    vacuumFreeExternalInsertionDysonCoefficient ε β g labels times n =
+      ∑ p ∈ ExternalInsertionBlockLayout.connectedAssemblyFiniteDomain
+          (ExternalLabel := ExternalFieldLabel Mode)
+          (InternalLabel := QuarticVertexLabel Mode) anchor,
+        if (ExternalInsertionBlockLayout.assembleConnectedBlockFamily p).1.externalLabel =
+            labels then
+          ExternalInsertionWickDiagram.dysonAmplitude
+            (ExternalInsertionBlockLayout.assembleConnectedBlockFamily p).1
+            ε β g times
+        else 0 := by
+  classical
+  rw [vacuumFreeExternalInsertionDysonCoefficient_eq_sum_if]
+  exact ExternalInsertionBlockLayout.sum_vacuumFree_eq_sum_connectedBlockFamilies
+    (ExternalLabel := ExternalFieldLabel Mode)
+    (InternalLabel := QuarticVertexLabel Mode) anchor
+    (fun d : ExternalInsertionWickDiagram Mode K n =>
+      if d.externalLabel = labels then d.dysonAmplitude ε β g times else 0)
 
 /-- Fully external-connected, vacuum-free Dyson coefficient using the actual
 integrated signed Wick diagram amplitude, with all labels and times fixed. -/
