@@ -1,6 +1,7 @@
 import LeanCondensedMatter.Analysis.OrderedSimplex.BinarySlotShuffle
 import LeanCondensedMatter.Analysis.OrderedSimplex.FamilyShuffleIntegrand
 import LeanCondensedMatter.Combinatorics.Shuffle.FamilySlotShuffleDecomposition
+import LeanCondensedMatter.Combinatorics.Shuffle.FamilyOrderShuffle
 
 set_option linter.style.header false
 
@@ -245,6 +246,39 @@ theorem FamilySlotShuffleTo.sum_integral_eq_prod
     _ = ∏ i, orderedSimplexIntegral (size i) β (localIntegrand i) :=
       FamilySlotShuffle.sum_integral_eq_prod
         size β localIntegrand hlocal
+
+/-- The finite-family ordered-simplex integral product identity, indexed by
+assignments of ambient interaction slots to blocks rather than by
+order-preserving shuffles. The owner/shuffle equivalence ensures every
+assignment with prescribed block sizes occurs once, including zero-size
+blocks. This is an analytic bridge; identifying physical Wick-diagram
+amplitudes with these local integrands is a separate step. -/
+theorem FamilySlotShuffleTo.sum_fixedSizeOwner_integral_eq_prod
+    (size : ι → ℕ) (total : ℕ)
+    (hTotal : (∑ i, size i) = total) (β : ℝ)
+    (localIntegrand : ∀ i, (Fin (size i) → ℝ) → ℂ)
+    (hlocal : ∀ i, MeasurableLocallyBounded (localIntegrand i)) :
+    (∑ owner ∈ fixedSizeOwnerFiniteDomain
+        (ι := ι) (size := size) (total := total),
+      orderedSimplexIntegral total β
+        ((familyShuffleOwnerEquiv.symm owner).ambientIntegrand localIntegrand)) =
+      ∏ i, orderedSimplexIntegral (size i) β (localIntegrand i) := by
+  classical
+  calc
+    (∑ owner ∈ fixedSizeOwnerFiniteDomain
+        (ι := ι) (size := size) (total := total),
+      orderedSimplexIntegral total β
+        ((familyShuffleOwnerEquiv.symm owner).ambientIntegrand localIntegrand)) =
+      ∑ shuffle : FamilySlotShuffleTo size total,
+        orderedSimplexIntegral total β
+          (shuffle.ambientIntegrand localIntegrand) := by
+      exact (sum_familyShuffles_eq_sum_fixedSizeOwners
+        (size := size) (total := total)
+        (fun shuffle =>
+          orderedSimplexIntegral total β
+            (shuffle.ambientIntegrand localIntegrand))).symm
+    _ = _ := FamilySlotShuffleTo.sum_integral_eq_prod
+      size total hTotal β localIntegrand hlocal
 
 end
 
