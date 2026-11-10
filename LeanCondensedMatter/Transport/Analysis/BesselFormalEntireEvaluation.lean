@@ -136,12 +136,12 @@ theorem besselEntireCoefficientEval_two_mul (f : ℂ⟦X⟧) (x : ℂ)
     _ = (2 : ℂ) * (∑' n : ℕ, PowerSeries.coeff n f * x ^ n) :=
       hf.tsum_mul_left 2
 
-/-- The formal product by X is compatible with coefficientwise evaluation
-at any complex argument whenever the original series is summable. -/
-theorem besselEntireCoefficientEval_X_mul (f : ℂ⟦X⟧) (x : ℂ)
+/-- Formal multiplication by X shifts a summable coefficient sequence
+and therefore preserves convergence at the chosen complex argument. -/
+theorem summable_besselEntireCoefficientEval_X_mul (f : ℂ⟦X⟧) (x : ℂ)
     (hf : Summable (fun n : ℕ => PowerSeries.coeff n f * x ^ n)) :
-    besselEntireCoefficientEval (PowerSeries.X * f) x =
-      x * besselEntireCoefficientEval f x := by
+    Summable (fun n : ℕ =>
+      PowerSeries.coeff n (PowerSeries.X * f) * x ^ n) := by
   have htail :
       Summable (fun n : ℕ =>
         PowerSeries.coeff (n + 1) (PowerSeries.X * f) * x ^ (n + 1)) := by
@@ -149,11 +149,16 @@ theorem besselEntireCoefficientEval_X_mul (f : ℂ⟦X⟧) (x : ℂ)
     funext n
     rw [PowerSeries.coeff_succ_X_mul, pow_succ]
     ring
-  have hall :
-      Summable (fun n : ℕ =>
-        PowerSeries.coeff n (PowerSeries.X * f) * x ^ n) := by
-    apply (summable_nat_add_iff 1).2
-    simpa only [Nat.add_one] using htail
+  apply (summable_nat_add_iff 1).2
+  simpa only [Nat.add_one] using htail
+
+/-- The formal product by X is compatible with coefficientwise evaluation
+at any complex argument whenever the original series is summable. -/
+theorem besselEntireCoefficientEval_X_mul (f : ℂ⟦X⟧) (x : ℂ)
+    (hf : Summable (fun n : ℕ => PowerSeries.coeff n f * x ^ n)) :
+    besselEntireCoefficientEval (PowerSeries.X * f) x =
+      x * besselEntireCoefficientEval f x := by
+  have hall := summable_besselEntireCoefficientEval_X_mul f x hf
   unfold besselEntireCoefficientEval
   rw [hall.tsum_eq_zero_add]
   simp only [PowerSeries.coeff_zero_X_mul, zero_mul, zero_add]
