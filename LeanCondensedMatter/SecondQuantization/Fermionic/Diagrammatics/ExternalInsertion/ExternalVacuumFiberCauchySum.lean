@@ -41,7 +41,7 @@ private def vacuumFreeFixedExternalSubtypeEquiv {E m : ℕ}
     rfl
 
 open Classical in
-private theorem vacuumFreeExternalInsertionDysonCoefficient_eq_sum_if
+theorem vacuumFreeExternalInsertionDysonCoefficient_eq_sum_if
     {E m : ℕ} (ε : Mode → ℝ) (β : ℝ)
     (g : QuarticVertexLabel Mode → ℂ)
     (externalLabel : Fin (2 * E) → ExternalFieldLabel Mode)
