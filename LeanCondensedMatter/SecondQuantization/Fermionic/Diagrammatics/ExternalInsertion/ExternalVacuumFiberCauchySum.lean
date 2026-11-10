@@ -48,6 +48,7 @@ the physical external-component partition. -/
 theorem sum_vacuumFreeFixedExternalInsertionWickDiagram_eq_sum_if
     {E m : ℕ} {M : Type*} [AddCommMonoid M]
     (externalLabel : Fin (2 * E) → ExternalFieldLabel Mode)
+    [Fintype (VacuumFreeFixedExternalInsertionWickDiagram Mode E m externalLabel)]
     (weight : ExternalInsertionWickDiagram Mode E m → M) :
     (∑ d : VacuumFreeFixedExternalInsertionWickDiagram Mode E m externalLabel,
       weight d.1.1) =
