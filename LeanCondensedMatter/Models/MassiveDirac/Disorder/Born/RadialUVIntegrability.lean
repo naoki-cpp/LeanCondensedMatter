@@ -41,6 +41,7 @@ theorem massiveDiracRadialFourierRemainder_norm_le
   have hK := polarFourierFirstCosineAngularKernel_norm_le (p * c)
   have hD := massiveDiracRadialCenter_inv_norm_le_half_quadratic_inv
     v p (energy ^ 2 - mass ^ 2) hv hp
+  change ‖(massiveDiracRadialDenominator v p energy mass)⁻¹‖ ≤ _ at hD
   have hnorm :
       ‖(p : ℂ) * polarFourierFirstCosineAngularKernel (p * c) *
           ((2 : ℂ) * (v : ℂ) ^ 2 * (p : ℂ) *
