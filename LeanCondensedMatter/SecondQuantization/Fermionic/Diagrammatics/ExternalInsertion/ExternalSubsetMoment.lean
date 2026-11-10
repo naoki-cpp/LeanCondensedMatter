@@ -202,11 +202,12 @@ theorem externalInsertionDysonAmplitude_sum_blockRespectingFixedLabels
         ExternalInsertionWickDiagram.dysonAmplitude
           (layout.assembleDiagram (Finset.univ : Finset (Fin n)) F.1)
           ε β g times := by
-  classical
-  exact layout.sum_blockRespectingFixedLabels_eq_sum_local
-    (Finset.univ : Finset (Fin n)) labels
-    (fun d : ExternalInsertionWickDiagram Mode K n =>
-      d.dysonAmplitude ε β g times)
+  simpa only [layout.assemblyEquivBlockRespectingFixedLabels_apply] using
+    (Equiv.sum_comp
+      (layout.assemblyEquivBlockRespectingFixedLabels
+        (InternalLabel := QuarticVertexLabel Mode)
+        (Finset.univ : Finset (Fin n)) labels)
+      (fun d => ExternalInsertionWickDiagram.dysonAmplitude d.1 ε β g times)).symm
 
 /-- Fully external-connected, vacuum-free Dyson coefficient using the actual
 integrated signed Wick diagram amplitude, with all labels and times fixed. -/
