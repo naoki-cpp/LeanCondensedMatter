@@ -66,7 +66,7 @@ theorem finiteCutoffContinuumBornDysonRadialFrozenKernel_tendsto_uvValue
   let mass := finiteCutoffContinuumBornEffectiveMass
     side v m probeEnergy broadening disorderStrength hbar pRef
   have hden (p : ℝ) :
-      massiveDiracRadialDenominator v p energy mass ≠ 0 := by
+      energy ^ 2 - mass ^ 2 - ((v ^ 2 * p ^ 2 : ℝ) : ℂ) ≠ 0 := by
     change massiveDiracRadialDenominator v p
         (finiteCutoffContinuumBornEffectiveEnergy
           side v m probeEnergy broadening disorderStrength hbar pRef)
@@ -76,31 +76,30 @@ theorem finiteCutoffContinuumBornDysonRadialFrozenKernel_tendsto_uvValue
     exact finiteCutoffContinuumBornDysonDenominator_ne_zero
       side v m p 0 probeEnergy broadening disorderStrength hbar pRef
       hbroadening hdisorder hpRef
-  have hlimit := massiveDiracRadialFourier_tendsto_uvFinitePartAt
+  have hlimit := massiveDiracRadialFourier_tendsto_uvFinitePartAt_center
     v (radius / hbar)
     (max (1 : ℝ) (2 * ‖energy ^ 2 - mass ^ 2‖ / v ^ 2))
-    energy mass hv (div_ne_zero hradius hhbar) hden le_rfl
-  have hscaled := hlimit.const_mul (((momentumMeasurePrefactor hbar : ℝ) : ℂ))
+    (energy ^ 2 - mass ^ 2) hv (div_ne_zero hradius hhbar) hden le_rfl
   have hpoint (outer : ℝ) :
-      (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
-        (∫ p in (0 : ℝ)..outer,
-          (p : ℂ) * polarFourierZerothAngularKernel (p * radius / hbar) *
-            (finiteCutoffContinuumBornDysonDenominator
-              side v m p 0 probeEnergy broadening disorderStrength hbar pRef)⁻¹) =
-      (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
-        (∫ p in (0 : ℝ)..outer,
-          (p : ℂ) * polarFourierZerothAngularKernel (p * (radius / hbar)) *
-            (massiveDiracRadialDenominator v p energy mass)⁻¹) := by
-    apply congrArg (fun z : ℂ => (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) * z)
+      (∫ p in (0 : ℝ)..outer,
+        (p : ℂ) * polarFourierZerothAngularKernel (p * radius / hbar) *
+          (finiteCutoffContinuumBornDysonDenominator
+            side v m p 0 probeEnergy broadening disorderStrength hbar pRef)⁻¹) =
+      (∫ p in (0 : ℝ)..outer,
+        (p : ℂ) * polarFourierZerothAngularKernel (p * (radius / hbar)) *
+          (energy ^ 2 - mass ^ 2 - ((v ^ 2 * p ^ 2 : ℝ) : ℂ))⁻¹) := by
     apply intervalIntegral.integral_congr
     intro p _
     dsimp only
     rw [show p * radius / hbar = p * (radius / hbar) by ring]
-    rw [show massiveDiracRadialDenominator v p energy mass =
+    rw [show energy ^ 2 - mass ^ 2 - ((v ^ 2 * p ^ 2 : ℝ) : ℂ) =
       finiteCutoffContinuumBornDysonDenominator
-        side v m p 0 probeEnergy broadening disorderStrength hbar pRef from
-      finiteCutoffContinuumBornDysonDenominator_eq_radial
-        side v m p probeEnergy broadening disorderStrength hbar pRef]
+        side v m p 0 probeEnergy broadening disorderStrength hbar pRef from by
+      simpa only [massiveDiracRadialDenominator] using
+        (finiteCutoffContinuumBornDysonDenominator_eq_radial
+          side v m p probeEnergy broadening disorderStrength hbar pRef)]
+  have hphysical := hlimit.congr'
+    (Filter.Eventually.of_forall fun outer => (hpoint outer).symm)
   change Filter.Tendsto
     (fun outer : ℝ => (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
       (∫ p in (0 : ℝ)..outer,
@@ -111,7 +110,7 @@ theorem finiteCutoffContinuumBornDysonRadialFrozenKernel_tendsto_uvValue
     (nhds ((((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
       massiveDiracRadialFourierUVFinitePartCenter v (radius / hbar)
         (max (1 : ℝ) (2 * ‖energy ^ 2 - mass ^ 2‖ / v ^ 2)) (energy ^ 2 - mass ^ 2)))
-  exact hscaled.congr' (Filter.Eventually.of_forall fun outer => (hpoint outer).symm)
+  exact hphysical.const_mul (((momentumMeasurePrefactor hbar : ℝ) : ℂ))
 
 end
 
