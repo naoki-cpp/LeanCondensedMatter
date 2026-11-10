@@ -241,6 +241,59 @@ theorem vacuumFreeExternalInsertionDysonCoefficient_eq_sum_connectedBlockFamilie
     (fun d : ExternalInsertionWickDiagram Mode K n =>
       if d.externalLabel = labels then d.dysonAmplitude ε β g times else 0)
 
+/-- For a *fixed physical external-component partition*, the actual
+fixed-external-label Dyson diagram fiber is reindexed by independent
+connected block families with exactly that prescribed source partition.
+The external-field-label condition is retained on the assembled diagram;
+the integration amplitudes themselves are not yet factorized. -/
+open Classical in
+theorem sum_fixedExternalPartitionFiber_eq_sum_connectedBlockFamilies
+    {K n : ℕ} (anchor : Fin (2 * K))
+    (π : Finpartition (Finset.univ : Finset (Fin (2 * K))))
+    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
+    (labels : Fin (2 * K) → ExternalFieldLabel Mode)
+    (times : Fin (2 * K) → ℝ) :
+    (∑ d : VacuumFreeFixedExternalInsertionWickDiagram Mode K n labels,
+      if externalComponentPartition d.1.1.vertexGraph = π then
+        d.1.1.dysonAmplitude ε β g times else 0) =
+      ∑ p ∈ ExternalInsertionBlockLayout.connectedAssemblyFiniteDomain
+          (E := K) (N := n) (ExternalLabel := ExternalFieldLabel Mode)
+          (InternalLabel := QuarticVertexLabel Mode) anchor,
+        if p.1.partition = π then
+          if (ExternalInsertionBlockLayout.assembleConnectedBlockFamily p).1.externalLabel =
+              labels then
+            ExternalInsertionWickDiagram.dysonAmplitude
+              (ExternalInsertionBlockLayout.assembleConnectedBlockFamily p).1
+              ε β g times
+          else 0
+        else 0 := by
+  classical
+  have hFixed :=
+    sum_vacuumFreeFixedExternalInsertionWickDiagram_eq_sum_if
+      (Mode := Mode) labels (fun d : ExternalInsertionWickDiagram Mode K n =>
+        if externalComponentPartition d.vertexGraph = π then
+          d.dysonAmplitude ε β g times else 0)
+  calc
+    (∑ d : VacuumFreeFixedExternalInsertionWickDiagram Mode K n labels,
+      if externalComponentPartition d.1.1.vertexGraph = π then
+        d.1.1.dysonAmplitude ε β g times else 0) =
+      ∑ d : {d : ExternalInsertionWickDiagram Mode K n //
+          HasNoVacuumComponent d.vertexGraph},
+        if externalComponentPartition d.1.vertexGraph = π then
+          if d.1.externalLabel = labels then
+            d.1.dysonAmplitude ε β g times else 0
+        else 0 := by
+      rw [hFixed]
+      apply Finset.sum_congr rfl
+      intro d _
+      by_cases hp : externalComponentPartition d.1.vertexGraph = π <;> simp [hp]
+    _ = _ :=
+      ExternalInsertionBlockLayout.sum_externalPartitionFiber_eq_sum_connectedBlockFamilies
+        (ExternalLabel := ExternalFieldLabel Mode)
+        (InternalLabel := QuarticVertexLabel Mode) anchor π
+        (fun d => if d.externalLabel = labels then
+          d.dysonAmplitude ε β g times else 0)
+
 /-- Fully external-connected, vacuum-free Dyson coefficient using the actual
 integrated signed Wick diagram amplitude, with all labels and times fixed. -/
 noncomputable def connectedExternalInsertionDysonCoefficient {K : ℕ}
