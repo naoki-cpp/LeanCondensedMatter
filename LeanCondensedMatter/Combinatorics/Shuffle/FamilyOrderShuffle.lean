@@ -292,6 +292,7 @@ noncomputable def familyOrderDecompositionEquiv {total : ℕ}
       FamilyOrders F × FamilySlotShuffleTo (fun i => Fintype.card (F i)) total :=
   familyOrderDecompositionEquivOfSize F (fun i => Fintype.card (F i)) (fun _ => rfl) ambientEquiv
 
+open Classical in
 /-- The canonically increasing shuffle determined by an assignment of
 ambient slots to family blocks. This is the assignment-side counterpart of
 `familyOrderDecompositionEquiv`, specialized to the identity ambient order.
@@ -307,6 +308,7 @@ noncomputable def ownerCanonicalShuffle
       (Equiv.sigmaFiberEquiv owner).symm
       (Equiv.refl (Fin total))).2
 
+open Classical in
 /-- Each slot in the shuffle of a particular owner fiber retains that
 owner, even if the other fibers have zero cardinality. -/
 theorem ownerCanonicalShuffle_apply_owner
@@ -324,6 +326,7 @@ theorem ownerCanonicalShuffle_apply_owner
   change owner ((orders i j).1) = i
   exact h
 
+open Classical in
 /-- Recover the exact assigned owner of every ambient interaction slot
 by unshuffling the canonical owner shuffle. -/
 theorem ownerCanonicalShuffle_symm_owner
