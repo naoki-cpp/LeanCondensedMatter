@@ -27,6 +27,181 @@ open QuantumTheory.Transport
 open MeasureTheory
 open scoped Interval
 
+/-- Explicit finite-regulator X Fourier-moment radial amplitude. Each
+moment retains its own physical momentum-measure factor; no cutoff or
+broadening limit is taken. -/
+noncomputable def finiteCutoffContinuumBornDysonGaussianCrossedXFourierMomentKernel
+    (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ) : ℂ :=
+  let factor := finiteCutoffContinuumBornDysonGaussianCrossedCurrentFactor
+     v m probeEnergy broadening disorderStrength hbar pMax
+  let advanced := fun p : ℝ =>
+     finiteCutoffContinuumBornDysonRadialPauliData
+       .advanced v m p probeEnergy broadening disorderStrength hbar pMax
+  let retarded := fun p : ℝ =>
+     finiteCutoffContinuumBornDysonRadialPauliData
+       .retarded v m p probeEnergy broadening disorderStrength hbar pMax
+  let isotropic :=
+     (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
+       ∫ p in (0 : ℝ)..pMax,
+         2 * (p : ℂ) *
+           (polarFourierZerothAngularKernel (p * radius / hbar) *
+             (((advanced p).scalar * (retarded p).scalar - (advanced p).z * (retarded p).z) * factor))
+  let anisotropic :=
+     (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
+       ∫ p in (0 : ℝ)..pMax,
+         2 * (p : ℂ) *
+           (polarFourierSecondCosineAngularKernel (p * radius / hbar) *
+             ((advanced p).x * (retarded p).x * factor))
+  let firstX :=
+     (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
+       ∫ p in (0 : ℝ)..pMax,
+         (p : ℂ) * (polarFourierFirstCosineAngularKernel (p * radius / hbar) *
+           (((retarded p).scalar * (advanced p).x + (advanced p).scalar * (retarded p).x) * factor))
+  let firstY :=
+     (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
+       ∫ p in (0 : ℝ)..pMax,
+         (p : ℂ) * (polarFourierFirstCosineAngularKernel (p * radius / hbar) *
+           ((-Complex.I * ((retarded p).x * (advanced p).z - (advanced p).x * (retarded p).z)) * factor))
+  let moment := fun f : ℝ → ℂ =>
+     (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
+       ∫ p in (0 : ℝ)..pMax,
+         (p : ℂ) ^ 2 *
+           ((polarFourierZerothAngularKernel (p * radius / hbar) -
+             polarFourierSecondCosineAngularKernel (p * radius / hbar)) * f p)
+  let zX := moment (fun p => ((retarded p).x * (advanced p).z + (advanced p).x * (retarded p).z) * factor)
+  let zY := moment (fun p => (-Complex.I * ((advanced p).scalar * (retarded p).x - (retarded p).scalar * (advanced p).x)) * factor)
+  let first := Complex.I * (((radius / hbar : ℝ) : ℂ)) / 2
+  let greenBR := fun p : ℝ =>
+     finiteCutoffContinuumBornDysonPauliCoefficient .x
+       .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax
+  let greenBA := fun p : ℝ =>
+     finiteCutoffContinuumBornDysonPauliCoefficient .x
+       .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax
+  let greenDR := fun p : ℝ =>
+     finiteCutoffContinuumBornDysonPauliCoefficient .z
+       .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax
+  let greenDA := fun p : ℝ =>
+     finiteCutoffContinuumBornDysonPauliCoefficient .z
+       .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax
+  let greenFirst := Complex.I * ((((-radius) / hbar : ℝ) : ℂ)) / 2
+  let greenSecondMoment := fun f : ℝ → ℂ =>
+     (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
+       ∫ p in (0 : ℝ)..pMax,
+         (p : ℂ) ^ 2 *
+           ((polarFourierZerothAngularKernel (p * (-radius) / hbar) -
+             polarFourierSecondCosineAngularKernel (p * (-radius) / hbar)) * f p)
+  let greenZerothMoment := fun f : ℝ → ℂ =>
+     (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
+       ∫ p in (0 : ℝ)..pMax,
+         (p : ℂ) * (polarFourierZerothAngularKernel (p * (-radius) / hbar) * f p)
+  let greenScalarR :=
+     (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
+       ∫ p in (0 : ℝ)..pMax,
+         (p : ℂ) * (polarFourierZerothAngularKernel (p * (-radius) / hbar) *
+           finiteCutoffContinuumBornDysonScalarCoefficient
+             .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax)
+  let greenScalarA :=
+     (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
+       ∫ p in (0 : ℝ)..pMax,
+         (p : ℂ) * (polarFourierZerothAngularKernel (p * (-radius) / hbar) *
+           finiteCutoffContinuumBornDysonScalarCoefficient
+             .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax)
+  let greenZR :=
+     (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
+       ∫ p in (0 : ℝ)..pMax,
+         (p : ℂ) * (polarFourierZerothAngularKernel (p * (-radius) / hbar) *
+           finiteCutoffContinuumBornDysonPauliCoefficient .z
+             .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax)
+  let greenZA :=
+     (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
+       ∫ p in (0 : ℝ)..pMax,
+         (p : ℂ) * (polarFourierZerothAngularKernel (p * (-radius) / hbar) *
+           finiteCutoffContinuumBornDysonPauliCoefficient .z
+             .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax)
+  let transverseX :=
+     (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
+       ∫ p in (0 : ℝ)..pMax,
+         (p : ℂ) * (polarFourierZerothAngularKernel (p * radius / hbar) *
+           (Complex.I * ((retarded p).scalar * (advanced p).z - (advanced p).scalar * (retarded p).z) * factor))
+  let diagonalY := (isotropic - anisotropic) / 2
+  let greenXZ := greenFirst *
+     (greenSecondMoment greenBR * greenZerothMoment greenDA -
+       greenZerothMoment greenDR * greenSecondMoment greenBA)
+  let greenScalarX := greenFirst *
+     (greenScalarA * greenSecondMoment greenBR - greenScalarR * greenSecondMoment greenBA)
+  2 * Complex.I *
+    ((firstX * diagonalY - firstY * transverseX) *
+        greenXZ +
+      (greenScalarR * greenZA - greenScalarA * greenZR) *
+        ((isotropic ^ 2 - anisotropic ^ 2) / 4 + transverseX ^ 2) +
+      greenScalarX * (first * (diagonalY * zX - transverseX * zY)))
+
+/-- Explicit finite-regulator Psi Fourier-moment radial amplitude. Each
+moment retains its own physical momentum-measure factor; no cutoff or
+broadening limit is taken. -/
+noncomputable def finiteCutoffContinuumBornDysonGaussianCrossedPsiFourierMomentKernel
+    (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ) : ℂ :=
+  let factor := finiteCutoffContinuumBornDysonGaussianCrossedCurrentFactor
+     v m probeEnergy broadening disorderStrength hbar pMax
+  let advanced := fun p : ℝ =>
+     finiteCutoffContinuumBornDysonRadialPauliData
+       .advanced v m p probeEnergy broadening disorderStrength hbar pMax
+  let retarded := fun p : ℝ =>
+     finiteCutoffContinuumBornDysonRadialPauliData
+       .retarded v m p probeEnergy broadening disorderStrength hbar pMax
+  let isotropic :=
+     (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
+       ∫ p in (0 : ℝ)..pMax,
+         2 * (p : ℂ) *
+           (polarFourierZerothAngularKernel (p * radius / hbar) *
+             (((advanced p).scalar * (retarded p).scalar - (advanced p).z * (retarded p).z) * factor))
+  let anisotropic :=
+     (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
+       ∫ p in (0 : ℝ)..pMax,
+         2 * (p : ℂ) *
+           (polarFourierSecondCosineAngularKernel (p * radius / hbar) *
+             ((advanced p).x * (retarded p).x * factor))
+  let firstX :=
+     (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
+       ∫ p in (0 : ℝ)..pMax,
+         (p : ℂ) * (polarFourierFirstCosineAngularKernel (p * radius / hbar) *
+           (((retarded p).scalar * (advanced p).x + (advanced p).scalar * (retarded p).x) * factor))
+  let firstY :=
+     (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
+       ∫ p in (0 : ℝ)..pMax,
+         (p : ℂ) * (polarFourierFirstCosineAngularKernel (p * radius / hbar) *
+           ((-Complex.I * ((retarded p).x * (advanced p).z - (advanced p).x * (retarded p).z)) * factor))
+  let greenFirst := Complex.I * (((radius / hbar : ℝ) : ℂ)) / 2
+  let greenSecondMoment :=
+     (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
+       ∫ p in (0 : ℝ)..pMax,
+         (p : ℂ) ^ 2 *
+           ((polarFourierZerothAngularKernel (p * radius / hbar) -
+             polarFourierSecondCosineAngularKernel (p * radius / hbar)) *
+             finiteCutoffContinuumBornDysonPauliCoefficient .x
+               .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax)
+  let greenScalar :=
+     (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
+       ∫ p in (0 : ℝ)..pMax,
+         (p : ℂ) * (polarFourierZerothAngularKernel (p * radius / hbar) *
+           finiteCutoffContinuumBornDysonScalarCoefficient
+             .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax)
+  let greenZ :=
+     (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
+       ∫ p in (0 : ℝ)..pMax,
+         (p : ℂ) * (polarFourierZerothAngularKernel (p * radius / hbar) *
+           finiteCutoffContinuumBornDysonPauliCoefficient .z
+             .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax)
+  let transverse :=
+     (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
+       ∫ p in (0 : ℝ)..pMax,
+         (p : ℂ) * (polarFourierZerothAngularKernel (p * radius / hbar) *
+           (Complex.I * ((retarded p).scalar * (advanced p).z - (advanced p).scalar * (retarded p).z) * factor))
+  let minor := (greenFirst * greenSecondMoment) *
+     (firstX * ((isotropic - anisotropic) / 2) - firstY * transverse) -
+     greenScalar * (transverse ^ 2 + (isotropic ^ 2 - anisotropic ^ 2) / 4)
+  ((-8 * (greenZ.re * minor.im + greenZ.im * minor.re) : ℝ) : ℂ)
+
 private theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_x_antisymmetric_eq_diagonal_harmonic_squares
     (v m probeEnergy broadening disorderStrength hbar pMax radius : ℝ)
     (hbroadening : broadening ≠ 0) (hdisorder : 0 ≤ disorderStrength)
@@ -299,109 +474,9 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_x_antisym
         .x v m probeEnergy broadening disorderStrength hbar pMax radius 0 1 -
       finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor
         .x v m probeEnergy broadening disorderStrength hbar pMax radius 1 0) / 2 =
-      let factor := finiteCutoffContinuumBornDysonGaussianCrossedCurrentFactor
-         v m probeEnergy broadening disorderStrength hbar pMax
-      let advanced := fun p : ℝ =>
-         finiteCutoffContinuumBornDysonRadialPauliData
-           .advanced v m p probeEnergy broadening disorderStrength hbar pMax
-      let retarded := fun p : ℝ =>
-         finiteCutoffContinuumBornDysonRadialPauliData
-           .retarded v m p probeEnergy broadening disorderStrength hbar pMax
-      let isotropic :=
-         (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
-           ∫ p in (0 : ℝ)..pMax,
-             2 * (p : ℂ) *
-               (polarFourierZerothAngularKernel (p * radius / hbar) *
-                 (((advanced p).scalar * (retarded p).scalar - (advanced p).z * (retarded p).z) * factor))
-      let anisotropic :=
-         (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
-           ∫ p in (0 : ℝ)..pMax,
-             2 * (p : ℂ) *
-               (polarFourierSecondCosineAngularKernel (p * radius / hbar) *
-                 ((advanced p).x * (retarded p).x * factor))
-      let firstX :=
-         (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
-           ∫ p in (0 : ℝ)..pMax,
-             (p : ℂ) * (polarFourierFirstCosineAngularKernel (p * radius / hbar) *
-               (((retarded p).scalar * (advanced p).x + (advanced p).scalar * (retarded p).x) * factor))
-      let firstY :=
-         (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
-           ∫ p in (0 : ℝ)..pMax,
-             (p : ℂ) * (polarFourierFirstCosineAngularKernel (p * radius / hbar) *
-               ((-Complex.I * ((retarded p).x * (advanced p).z - (advanced p).x * (retarded p).z)) * factor))
-      let moment := fun f : ℝ → ℂ =>
-         (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
-           ∫ p in (0 : ℝ)..pMax,
-             (p : ℂ) ^ 2 *
-               ((polarFourierZerothAngularKernel (p * radius / hbar) -
-                 polarFourierSecondCosineAngularKernel (p * radius / hbar)) * f p)
-      let zX := moment (fun p => ((retarded p).x * (advanced p).z + (advanced p).x * (retarded p).z) * factor)
-      let zY := moment (fun p => (-Complex.I * ((advanced p).scalar * (retarded p).x - (retarded p).scalar * (advanced p).x)) * factor)
-      let first := Complex.I * (((radius / hbar : ℝ) : ℂ)) / 2
-      let greenBR := fun p : ℝ =>
-         finiteCutoffContinuumBornDysonPauliCoefficient .x
-           .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax
-      let greenBA := fun p : ℝ =>
-         finiteCutoffContinuumBornDysonPauliCoefficient .x
-           .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax
-      let greenDR := fun p : ℝ =>
-         finiteCutoffContinuumBornDysonPauliCoefficient .z
-           .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax
-      let greenDA := fun p : ℝ =>
-         finiteCutoffContinuumBornDysonPauliCoefficient .z
-           .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax
-      let greenFirst := Complex.I * ((((-radius) / hbar : ℝ) : ℂ)) / 2
-      let greenSecondMoment := fun f : ℝ → ℂ =>
-         (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
-           ∫ p in (0 : ℝ)..pMax,
-             (p : ℂ) ^ 2 *
-               ((polarFourierZerothAngularKernel (p * (-radius) / hbar) -
-                 polarFourierSecondCosineAngularKernel (p * (-radius) / hbar)) * f p)
-      let greenZerothMoment := fun f : ℝ → ℂ =>
-         (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
-           ∫ p in (0 : ℝ)..pMax,
-             (p : ℂ) * (polarFourierZerothAngularKernel (p * (-radius) / hbar) * f p)
-      let greenScalarR :=
-         (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
-           ∫ p in (0 : ℝ)..pMax,
-             (p : ℂ) * (polarFourierZerothAngularKernel (p * (-radius) / hbar) *
-               finiteCutoffContinuumBornDysonScalarCoefficient
-                 .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax)
-      let greenScalarA :=
-         (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
-           ∫ p in (0 : ℝ)..pMax,
-             (p : ℂ) * (polarFourierZerothAngularKernel (p * (-radius) / hbar) *
-               finiteCutoffContinuumBornDysonScalarCoefficient
-                 .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax)
-      let greenZR :=
-         (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
-           ∫ p in (0 : ℝ)..pMax,
-             (p : ℂ) * (polarFourierZerothAngularKernel (p * (-radius) / hbar) *
-               finiteCutoffContinuumBornDysonPauliCoefficient .z
-                 .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax)
-      let greenZA :=
-         (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
-           ∫ p in (0 : ℝ)..pMax,
-             (p : ℂ) * (polarFourierZerothAngularKernel (p * (-radius) / hbar) *
-               finiteCutoffContinuumBornDysonPauliCoefficient .z
-                 .advanced v m p 0 probeEnergy broadening disorderStrength hbar pMax)
-      let transverseX :=
-         (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
-           ∫ p in (0 : ℝ)..pMax,
-             (p : ℂ) * (polarFourierZerothAngularKernel (p * radius / hbar) *
-               (Complex.I * ((retarded p).scalar * (advanced p).z - (advanced p).scalar * (retarded p).z) * factor))
-      let diagonalY := (isotropic - anisotropic) / 2
-      let greenXZ := greenFirst *
-         (greenSecondMoment greenBR * greenZerothMoment greenDA -
-           greenZerothMoment greenDR * greenSecondMoment greenBA)
-      let greenScalarX := greenFirst *
-         (greenScalarA * greenSecondMoment greenBR - greenScalarR * greenSecondMoment greenBA)
-      2 * Complex.I *
-        ((firstX * diagonalY - firstY * transverseX) *
-            greenXZ +
-          (greenScalarR * greenZA - greenScalarA * greenZR) *
-            ((isotropic ^ 2 - anisotropic ^ 2) / 4 + transverseX ^ 2) +
-          greenScalarX * (first * (diagonalY * zX - transverseX * zY))) := by
+      finiteCutoffContinuumBornDysonGaussianCrossedXFourierMomentKernel
+        v m probeEnergy broadening disorderStrength hbar pMax radius := by
+  unfold finiteCutoffContinuumBornDysonGaussianCrossedXFourierMomentKernel
   rw [finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_x_antisymmetric_eq_green_harmonic_minors
     v m probeEnergy broadening disorderStrength hbar pMax radius
     hbroadening hdisorder hpMax]
@@ -626,66 +701,9 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_psi_antis
         .psi v m probeEnergy broadening disorderStrength hbar pMax radius 0 1 -
       finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor
         .psi v m probeEnergy broadening disorderStrength hbar pMax radius 1 0) / 2 =
-      let factor := finiteCutoffContinuumBornDysonGaussianCrossedCurrentFactor
-         v m probeEnergy broadening disorderStrength hbar pMax
-      let advanced := fun p : ℝ =>
-         finiteCutoffContinuumBornDysonRadialPauliData
-           .advanced v m p probeEnergy broadening disorderStrength hbar pMax
-      let retarded := fun p : ℝ =>
-         finiteCutoffContinuumBornDysonRadialPauliData
-           .retarded v m p probeEnergy broadening disorderStrength hbar pMax
-      let isotropic :=
-         (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
-           ∫ p in (0 : ℝ)..pMax,
-             2 * (p : ℂ) *
-               (polarFourierZerothAngularKernel (p * radius / hbar) *
-                 (((advanced p).scalar * (retarded p).scalar - (advanced p).z * (retarded p).z) * factor))
-      let anisotropic :=
-         (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
-           ∫ p in (0 : ℝ)..pMax,
-             2 * (p : ℂ) *
-               (polarFourierSecondCosineAngularKernel (p * radius / hbar) *
-                 ((advanced p).x * (retarded p).x * factor))
-      let firstX :=
-         (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
-           ∫ p in (0 : ℝ)..pMax,
-             (p : ℂ) * (polarFourierFirstCosineAngularKernel (p * radius / hbar) *
-               (((retarded p).scalar * (advanced p).x + (advanced p).scalar * (retarded p).x) * factor))
-      let firstY :=
-         (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
-           ∫ p in (0 : ℝ)..pMax,
-             (p : ℂ) * (polarFourierFirstCosineAngularKernel (p * radius / hbar) *
-               ((-Complex.I * ((retarded p).x * (advanced p).z - (advanced p).x * (retarded p).z)) * factor))
-      let greenFirst := Complex.I * (((radius / hbar : ℝ) : ℂ)) / 2
-      let greenSecondMoment :=
-         (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
-           ∫ p in (0 : ℝ)..pMax,
-             (p : ℂ) ^ 2 *
-               ((polarFourierZerothAngularKernel (p * radius / hbar) -
-                 polarFourierSecondCosineAngularKernel (p * radius / hbar)) *
-                 finiteCutoffContinuumBornDysonPauliCoefficient .x
-                   .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax)
-      let greenScalar :=
-         (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
-           ∫ p in (0 : ℝ)..pMax,
-             (p : ℂ) * (polarFourierZerothAngularKernel (p * radius / hbar) *
-               finiteCutoffContinuumBornDysonScalarCoefficient
-                 .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax)
-      let greenZ :=
-         (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
-           ∫ p in (0 : ℝ)..pMax,
-             (p : ℂ) * (polarFourierZerothAngularKernel (p * radius / hbar) *
-               finiteCutoffContinuumBornDysonPauliCoefficient .z
-                 .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax)
-      let transverse :=
-         (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
-           ∫ p in (0 : ℝ)..pMax,
-             (p : ℂ) * (polarFourierZerothAngularKernel (p * radius / hbar) *
-               (Complex.I * ((retarded p).scalar * (advanced p).z - (advanced p).scalar * (retarded p).z) * factor))
-      let minor := (greenFirst * greenSecondMoment) *
-         (firstX * ((isotropic - anisotropic) / 2) - firstY * transverse) -
-         greenScalar * (transverse ^ 2 + (isotropic ^ 2 - anisotropic ^ 2) / 4)
-      ((-8 * (greenZ.re * minor.im + greenZ.im * minor.re) : ℝ) : ℂ) := by
+      finiteCutoffContinuumBornDysonGaussianCrossedPsiFourierMomentKernel
+        v m probeEnergy broadening disorderStrength hbar pMax radius := by
+  unfold finiteCutoffContinuumBornDysonGaussianCrossedPsiFourierMomentKernel
   rw [finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_psi_antisymmetric_eq_first_harmonic_minors
     v m probeEnergy broadening disorderStrength hbar pMax radius
     hbroadening hdisorder hpMax]
