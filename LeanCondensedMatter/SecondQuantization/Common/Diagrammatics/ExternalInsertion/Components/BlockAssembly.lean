@@ -1439,5 +1439,58 @@ noncomputable def ExternalInsertionBlockLayout.connectedAssemblyEquiv
       ExternalInsertionBlockLayout.assembleConnectedBlockFamily_surjective anchor⟩
 
 
+
+/-- Enumerate every independently assigned connected block family by
+transporting the finite set of vacuum-free physical diagrams through the
+exact assembly equivalence. This requires no arbitrary choice of a
+finiteness instance for the dependent layout type. -/
+noncomputable def ExternalInsertionBlockLayout.connectedAssemblyFiniteDomain
+    {ExternalLabel InternalLabel : Type*}
+    [Fintype ExternalLabel] [Fintype InternalLabel]
+    (anchor : Fin (2 * E)) :
+    Finset (Σ layout : ExternalInsertionBlockLayout E N,
+      layout.ConnectedBlockFamily (ExternalLabel := ExternalLabel)
+        (InternalLabel := InternalLabel)) := by
+  classical
+  exact (Finset.univ : Finset
+    {d : ExternalInsertionDiagram ExternalLabel InternalLabel E N
+      (Finset.univ : Finset (Fin N)) //
+        HasNoVacuumComponent d.vertexGraph}).image
+      (ExternalInsertionBlockLayout.connectedAssemblyEquiv anchor).symm
+
+open Classical in
+/-- Every finite weighted vacuum-free diagram sum is exactly reindexed by
+the full dependent family of connected local diagrams and their interaction
+vertex assignments. No layout is counted twice, and the weight is evaluated
+on the original assembled labelled pairing. -/
+theorem ExternalInsertionBlockLayout.sum_vacuumFree_eq_sum_connectedBlockFamilies
+    {ExternalLabel InternalLabel M : Type*}
+    [Fintype ExternalLabel] [Fintype InternalLabel] [AddCommMonoid M]
+    (anchor : Fin (2 * E))
+    (weight : ExternalInsertionDiagram ExternalLabel InternalLabel E N
+      (Finset.univ : Finset (Fin N)) → M) :
+    (∑ d : {d : ExternalInsertionDiagram ExternalLabel InternalLabel E N
+        (Finset.univ : Finset (Fin N)) //
+          HasNoVacuumComponent d.vertexGraph}, weight d.1) =
+      ∑ p ∈ ExternalInsertionBlockLayout.connectedAssemblyFiniteDomain
+          (ExternalLabel := ExternalLabel) (InternalLabel := InternalLabel) anchor,
+        weight (ExternalInsertionBlockLayout.assembleConnectedBlockFamily p).1 := by
+  classical
+  unfold ExternalInsertionBlockLayout.connectedAssemblyFiniteDomain
+  rw [Finset.sum_image]
+  · apply Finset.sum_congr rfl
+    intro d _
+    have h := (ExternalInsertionBlockLayout.connectedAssemblyEquiv
+      (ExternalLabel := ExternalLabel) (InternalLabel := InternalLabel)
+      anchor).apply_symm_apply d
+    exact (congrArg (fun x : {d : ExternalInsertionDiagram
+        ExternalLabel InternalLabel E N
+          (Finset.univ : Finset (Fin N)) //
+          HasNoVacuumComponent d.vertexGraph} => weight x.1) h).symm
+  · exact (ExternalInsertionBlockLayout.connectedAssemblyEquiv
+      (ExternalLabel := ExternalLabel) (InternalLabel := InternalLabel)
+      anchor).symm.injective
+
+
 end Common
 end SecondQuantization
