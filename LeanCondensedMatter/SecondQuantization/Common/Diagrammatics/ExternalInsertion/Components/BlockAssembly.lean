@@ -1340,15 +1340,14 @@ theorem ExternalInsertionBlockLayout.interactionOrderDecomposition_slot_owner
   classical
   rw [layout.interactionOrderDecomposition_slotVertex order B j]
   let v := (layout.interactionOrderDecompositionEquiv order).1 B j
-  have hmem : (v.1 : Fin N) ∈
-      layout.interactionBlock (Finset.univ : Finset (Fin N)) B := v.2
-  have howner := (Finset.mem_filter.mp hmem).2
-  have hv :
-      ((layout.interactionEquiv (Finset.univ : Finset (Fin N))).symm
-        ⟨B, v⟩).1 = v.1 := by
-    apply Subtype.ext
-    rfl
-  simpa only [hv] using howner
+  have hfst :=
+    congrArg Sigma.fst
+      ((layout.interactionEquiv (Finset.univ : Finset (Fin N))).apply_symm_apply
+        (⟨B, v⟩ : Σ C : layout.partition.parts,
+          ↥(layout.interactionBlock (Finset.univ : Finset (Fin N)) C)))
+  change layout.interactionOwner
+    ((layout.interactionEquiv (Finset.univ : Finset (Fin N))).symm ⟨B, v⟩).1 = B at hfst
+  exact hfst
 
 /-- An assembled Wick diagram retains the *actual quartic interaction
 label* at each local vertex when the ambient order is decomposed into
