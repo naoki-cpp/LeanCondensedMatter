@@ -199,7 +199,8 @@ theorem externalInsertionDysonAmplitude_sum_blockRespectingFixedLabels
             (layout.interactionBlock (Finset.univ : Finset (Fin n)) B) //
           ∀ B, (F B).externalLabel =
             fun i => labels (layout.sourceEquiv.symm ⟨B, i⟩)},
-        (layout.assembleDiagram (Finset.univ : Finset (Fin n)) F.1).dysonAmplitude
+        ExternalInsertionWickDiagram.dysonAmplitude
+          (layout.assembleDiagram (Finset.univ : Finset (Fin n)) F.1)
           ε β g times := by
   classical
   exact layout.sum_blockRespectingFixedLabels_eq_sum_local
