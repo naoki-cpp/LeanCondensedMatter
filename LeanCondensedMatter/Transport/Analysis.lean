@@ -6,6 +6,7 @@ import LeanCondensedMatter.Transport.Analysis.BesselYFormalWronskian
 import LeanCondensedMatter.Transport.Analysis.BesselYFormalCoefficients
 import LeanCondensedMatter.Transport.Analysis.BesselYFormalOrderOne
 import LeanCondensedMatter.Transport.Analysis.BesselYFormalAnalyticBridge
+import LeanCondensedMatter.Transport.Analysis.BesselJFormalAnalyticBridge
 import LeanCondensedMatter.Transport.Analysis.ContinuumMeasure
 import LeanCondensedMatter.Transport.Analysis.FourierGeometry
 import LeanCondensedMatter.Transport.Analysis.PolarFourier
