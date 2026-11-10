@@ -196,7 +196,7 @@ theorem massiveDiracRadialFourier_tendsto_uvValue_center
     exact hcenter
   have h := massiveDiracRadialFourier_tendsto_uvValue
     v c energy 0 hv hc hnonreal
-  simp only [massiveDiracRadialDenominator, zero_pow, sub_zero, hcenterEq] at h
+  simp only [massiveDiracRadialDenominator, hcenterEq] at h
   exact h
 
 end

@@ -36,24 +36,21 @@ private theorem integral_massiveDiracRadialFourierCenter_conj
       ∫ p in (0 : ℝ)..b,
         (p : ℂ) * polarFourierZerothAngularKernel (p * c) *
           (conj center - ((v ^ 2 * p ^ 2 : ℝ) : ℂ))⁻¹ := by
-  have hmove :
-      conj (∫ p in (0 : ℝ)..b,
-        (p : ℂ) * polarFourierZerothAngularKernel (p * c) *
-          (center - ((v ^ 2 * p ^ 2 : ℝ) : ℂ))⁻¹) =
-        ∫ p in (0 : ℝ)..b,
-          conj ((p : ℂ) * polarFourierZerothAngularKernel (p * c) *
-            (center - ((v ^ 2 * p ^ 2 : ℝ) : ℂ))⁻¹) := by
-    simpa using
-      ((Complex.conjLIE.toLinearIsometry).intervalIntegral_comp_comm
-        (f := fun p : ℝ =>
-          (p : ℂ) * polarFourierZerothAngularKernel (p * c) *
-            (center - ((v ^ 2 * p ^ 2 : ℝ) : ℂ))⁻¹)
-        (a := (0 : ℝ)) (b := b)).symm
-  rw [hmove]
-  apply intervalIntegral.integral_congr
-  intro p _
-  simp only [map_mul, Complex.conj_inv, Complex.conj_ofReal,
-    polarFourierZerothAngularKernel_conj, map_sub]
+  let f : ℝ → ℂ := fun p =>
+    (p : ℂ) * polarFourierZerothAngularKernel (p * c) *
+      (center - ((v ^ 2 * p ^ 2 : ℝ) : ℂ))⁻¹
+  change conj (∫ p in (0 : ℝ)..b, f p) = _
+  calc
+    conj (∫ p in (0 : ℝ)..b, f p) =
+        ∫ p in (0 : ℝ)..b, conj (f p) := by
+      simpa using
+        ((Complex.conjLIE.toLinearIsometry).intervalIntegral_comp_comm
+          (f := f) (a := (0 : ℝ)) (b := b)).symm
+    _ = _ := by
+      apply intervalIntegral.integral_congr
+      intro p _
+      simp only [f, map_mul, Complex.conj_inv, Complex.conj_ofReal,
+        polarFourierZerothAngularKernel_conj, map_sub]
 
 /-- The center-only UV value conjugates under Z ↦ conj Z, using
 the symmetry of its finite-cutoff Fourier integrals. -/
