@@ -219,6 +219,7 @@ private theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_x
       (finiteCutoffContinuumBornDysonGaussianCrossedRadialRealSpaceCurrentBlock
         1 v m probeEnergy broadening disorderStrength hbar pMax radius) .y)] at hdiag
   dsimp only at hdiag ⊢
+  dsimp only [finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentFourierMoments] at hdiag
   rw [hdiag]
   ring
 
@@ -466,7 +467,7 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_x_antisym
   dsimp only [finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliKernel] at hux
   simp only [ite_true] at hux
   dsimp only at hsr hsa hzr hza hux hwy ⊢
-  dsimp only [finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentFourierMoments] at ⊢
+  dsimp only [finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentFourierMoments] at hwy ⊢
   rw [hsr, hsa, hzr, hza, hux, hwy]
 
 
@@ -567,6 +568,7 @@ private theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_p
       hbroadening hdisorder hpMax
   dsimp only [finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient] at hdiag
   dsimp only at hdiag ⊢
+  dsimp only [finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentFourierMoments] at hdiag
   rw [hdiag]
 
 private theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_psi_antisymmetric_eq_first_harmonic_minors
@@ -643,6 +645,7 @@ private theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_p
     finiteCutoffContinuumBornDysonRadialGreenPauliCoefficient,
     finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient] at hs hgr
   dsimp only at hs hgr ⊢
+  dsimp only [finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentFourierMoments] at hs
   rw [hs, hgr]
 /-- The finite-regulator Psi antisymmetric radial trace in explicit K0/K1/K2 moments.
 No radial integration or regulator limit is asserted. -/
