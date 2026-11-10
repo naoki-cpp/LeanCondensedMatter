@@ -1343,6 +1343,7 @@ unique description as an independently assigned external-block layout
 together with one connected local labelled diagram per block.
 The equivalence includes interaction-vertex ownership and all pairing
 and label data; no quotient or diagram multiplicity is introduced. -/
+set_option maxHeartbeats 2000000 in
 noncomputable def ExternalInsertionBlockLayout.connectedAssemblyEquiv
     {ExternalLabel InternalLabel : Type*} (anchor : Fin (2 * E)) :
     (Σ layout : ExternalInsertionBlockLayout E N,
