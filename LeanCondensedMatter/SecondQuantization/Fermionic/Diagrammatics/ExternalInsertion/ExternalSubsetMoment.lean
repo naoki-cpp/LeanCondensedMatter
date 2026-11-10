@@ -173,6 +173,7 @@ theorem vacuumFreeExternalInsertionDysonCoefficient_eq_sum_externalPartitionFibe
   · intro d _
     rfl
 
+open Classical in
 /-- At each fixed perturbation order, the *integrated fermionic Dyson
 amplitude* sum over diagrams respecting a prescribed even external-block
 layout and a fixed family of external field labels is exactly the sum over
