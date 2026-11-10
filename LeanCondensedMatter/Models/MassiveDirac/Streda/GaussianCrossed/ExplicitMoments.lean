@@ -505,7 +505,6 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_x_antisym
   dsimp only [finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliKernel] at hux
   simp only [ite_true] at hux
   dsimp only [finiteCutoffContinuumBornDysonGaussianCrossedCurrentFourierMoments] at ⊢
-  dsimp only at hsr hsa hzr hza hux hwy ⊢
   rw [hsr, hsa, hzr, hza, hux, hwy]
 
 
@@ -721,7 +720,6 @@ theorem finiteCutoffContinuumBornDysonGaussianCrossedRadialTraceTensor_psi_antis
   dsimp only [finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliKernel] at htransverse
   simp only [ite_true] at htransverse
   dsimp only [finiteCutoffContinuumBornDysonGaussianCrossedCurrentFourierMoments] at ⊢
-  dsimp only at hscalar hz htransverse ⊢
   rw [hscalar, hz, htransverse]
 
 
