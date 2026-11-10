@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Transport.Analysis.BesselYFormalOrderOne
+import LeanCondensedMatter.Transport.Analysis.BesselY1Series
 
 set_option linter.style.header false
 
@@ -42,6 +43,15 @@ theorem besselY0HarmonicCorrection_eq_formalTsum (z : ℂ) :
   intro n
   exact besselY0HarmonicTerm_eq_formal z n
 
+/-- The coefficientwise evaluation of the formal H₀ series converges
+absolutely at every complex argument, by the already proved concrete
+Y₀ harmonic-term bound. -/
+theorem summable_besselFormalH0_eval (z : ℂ) :
+    Summable (fun n : ℕ =>
+      PowerSeries.coeff n besselFormalH0 * (-(z / 2) ^ 2) ^ n) := by
+  simpa only [← besselY0HarmonicTerm_eq_formal] using
+    (summable_besselY0HarmonicTerm z)
+
 /-- The n-th actual Y₁ harmonic correction summand is the
 corresponding order-one formal coefficient. -/
 theorem besselY1HarmonicTerm_eq_formal (z : ℂ) (n : ℕ) :
@@ -61,6 +71,14 @@ theorem besselY1HarmonicCorrection_eq_formalTsum (z : ℂ) :
   apply tsum_congr
   intro n
   exact besselY1HarmonicTerm_eq_formal z n
+
+/-- The coefficientwise evaluation of the formal H₁ series also
+converges absolutely at every complex argument. -/
+theorem summable_besselFormalH1_eval (z : ℂ) :
+    Summable (fun n : ℕ =>
+      PowerSeries.coeff n besselFormalH1 * (-(z / 2) ^ 2) ^ n) := by
+  simpa only [← besselY1HarmonicTerm_eq_formal] using
+    (summable_besselY1HarmonicTerm z)
 
 end
 
