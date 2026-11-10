@@ -115,38 +115,46 @@ theorem massiveDiracRadialFourier_tendsto_uvFinitePartAt
         (Complex.I * (c : ℂ)))))
   exact hsum.congr' (Filter.Eventually.of_forall fun b => (hsplit b).symm)
 
-/-- Independence of the arbitrary UV splitting scale. Both finite-part
-expressions are proved limits of **the same** physical K0 Fourier
-integral; their equality is not imposed as a renormalization axiom. -/
-theorem massiveDiracRadialFourierUVFinitePartCenter_eq_of_scales
-    (v c a b : ℝ) (energy mass : ℂ)
+/-- The fixed-spectral UV finite-part limit depends only on the
+quadratic center, without choosing an energy/mass decomposition. -/
+theorem massiveDiracRadialFourier_tendsto_uvFinitePartAt_center
+    (v c a : ℝ) (center : ℂ)
     (hv : v ≠ 0) (hc : c ≠ 0)
-    (hden : ∀ p : ℝ, massiveDiracRadialDenominator v p energy mass ≠ 0)
-    (ha : max (1 : ℝ) (2 * ‖energy ^ 2 - mass ^ 2‖ / v ^ 2) ≤ a)
-    (hb : max (1 : ℝ) (2 * ‖energy ^ 2 - mass ^ 2‖ / v ^ 2) ≤ b) :
-    massiveDiracRadialFourierUVFinitePartCenter v c a (energy ^ 2 - mass ^ 2) =
-      massiveDiracRadialFourierUVFinitePartCenter v c b (energy ^ 2 - mass ^ 2) := by
-  exact tendsto_nhds_unique
-    (massiveDiracRadialFourier_tendsto_uvFinitePartAt
-      v c a energy mass hv hc hden ha)
-    (massiveDiracRadialFourier_tendsto_uvFinitePartAt
-      v c b energy mass hv hc hden hb)
+    (hden : ∀ p : ℝ, center - ((v ^ 2 * p ^ 2 : ℝ) : ℂ) ≠ 0)
+    (ha : max (1 : ℝ) (2 * ‖center‖ / v ^ 2) ≤ a) :
+    Filter.Tendsto
+      (fun b : ℝ => ∫ p in (0 : ℝ)..b,
+        (p : ℂ) * polarFourierZerothAngularKernel (p * c) *
+          (center - ((v ^ 2 * p ^ 2 : ℝ) : ℂ))⁻¹)
+      Filter.atTop
+        (nhds (massiveDiracRadialFourierUVFinitePartCenter v c a center)) := by
+  let energy : ℂ := Complex.sqrt center
+  have hsq : (Complex.sqrt center) ^ 2 = center := by
+    simpa [Complex.sqrt] using (Complex.cpow_ofNat_inv_pow center 2)
+  have hcenterEq : energy ^ 2 - (0 : ℂ) ^ 2 = center := by
+    simpa [energy] using hsq
+  have hdenEM : ∀ p : ℝ, massiveDiracRadialDenominator v p energy 0 ≠ 0 := by
+    intro p
+    simpa only [massiveDiracRadialDenominator, hcenterEq] using hden p
+  have hlimit := massiveDiracRadialFourier_tendsto_uvFinitePartAt
+    v c a energy 0 hv hc hdenEM (by simpa only [hcenterEq] using ha)
+  simpa only [massiveDiracRadialDenominator, hcenterEq] using hlimit
 
-/-- A nonreal quadratic spectral center excludes real radial poles,
-without requiring the energy or mass to be individually nonreal. -/
-theorem massiveDiracRadialDenominator_ne_zero_of_center_im_ne_zero
-    (v p : ℝ) (energy mass : ℂ)
-    (hcenter : (energy ^ 2 - mass ^ 2).im ≠ 0) :
-    massiveDiracRadialDenominator v p energy mass ≠ 0 := by
-  intro hzero
-  have him :
-      (massiveDiracRadialDenominator v p energy mass).im =
-        (energy ^ 2 - mass ^ 2).im := by
-    unfold massiveDiracRadialDenominator
-    simp only [Complex.sub_im, Complex.ofReal_im, sub_zero]
-  have himzero := congrArg Complex.im hzero
-  rw [him] at himzero
-  exact hcenter (by simpa using himzero)
+/-- The auxiliary splitting scale does not affect the UV finite part:
+both expressions are limits of the same cutoff Fourier integral. -/
+theorem massiveDiracRadialFourierUVFinitePartCenter_eq_of_scales
+    (v c a b : ℝ) (center : ℂ)
+    (hv : v ≠ 0) (hc : c ≠ 0)
+    (hden : ∀ p : ℝ, center - ((v ^ 2 * p ^ 2 : ℝ) : ℂ) ≠ 0)
+    (ha : max (1 : ℝ) (2 * ‖center‖ / v ^ 2) ≤ a)
+    (hb : max (1 : ℝ) (2 * ‖center‖ / v ^ 2) ≤ b) :
+    massiveDiracRadialFourierUVFinitePartCenter v c a center =
+      massiveDiracRadialFourierUVFinitePartCenter v c b center := by
+  exact tendsto_nhds_unique
+    (massiveDiracRadialFourier_tendsto_uvFinitePartAt_center
+      v c a center hv hc hden ha)
+    (massiveDiracRadialFourier_tendsto_uvFinitePartAt_center
+      v c b center hv hc hden hb)
 
 /-- A canonical finite-part choice of scale, just above the proved
 quadratic-dominance threshold. The resulting value does not depend
@@ -156,29 +164,8 @@ noncomputable def massiveDiracRadialFourierUVCenter
   massiveDiracRadialFourierUVFinitePartCenter
     v c (max (1 : ℝ) (2 * ‖center‖ / v ^ 2)) center
 
-/-- Concrete, finite and cutoff-independent Fourier UV value at any
-nonzero spatial Fourier scale, provided the spectral center remains
-strictly away from the real axis. -/
-theorem massiveDiracRadialFourier_tendsto_uvValue
-    (v c : ℝ) (energy mass : ℂ)
-    (hv : v ≠ 0) (hc : c ≠ 0)
-    (hcenter : (energy ^ 2 - mass ^ 2).im ≠ 0) :
-    Filter.Tendsto
-      (fun b : ℝ => ∫ p in (0 : ℝ)..b,
-        (p : ℂ) * polarFourierZerothAngularKernel (p * c) *
-          (massiveDiracRadialDenominator v p energy mass)⁻¹)
-      Filter.atTop (nhds (massiveDiracRadialFourierUVCenter v c (energy ^ 2 - mass ^ 2))) := by
-  unfold massiveDiracRadialFourierUVCenter
-  exact massiveDiracRadialFourier_tendsto_uvFinitePartAt
-    v c (max (1 : ℝ) (2 * ‖energy ^ 2 - mass ^ 2‖ / v ^ 2))
-    energy mass hv hc
-    (fun p => massiveDiracRadialDenominator_ne_zero_of_center_im_ne_zero
-      v p energy mass hcenter)
-    le_rfl
-
-/-- The finite-cutoff zeroth-harmonic Fourier integral converges to its
-canonical UV value at a nonreal quadratic spectral center. The result
-does not depend on choosing a square-root branch. -/
+/-- The canonical UV Fourier value is the nonreal-center
+finite-part limit, without choosing a square-root branch. -/
 theorem massiveDiracRadialFourier_tendsto_uvValue_center
     (v c : ℝ) (center : ℂ)
     (hv : v ≠ 0) (hc : c ≠ 0) (hcenter : center.im ≠ 0) :
@@ -187,18 +174,18 @@ theorem massiveDiracRadialFourier_tendsto_uvValue_center
         (p : ℂ) * polarFourierZerothAngularKernel (p * c) *
           (center - ((v ^ 2 * p ^ 2 : ℝ) : ℂ))⁻¹)
       Filter.atTop (nhds (massiveDiracRadialFourierUVCenter v c center)) := by
-  let energy : ℂ := Complex.sqrt center
-  have hsq : (Complex.sqrt center) ^ 2 = center := by
-    simpa [Complex.sqrt] using (Complex.cpow_ofNat_inv_pow center 2)
-  have hcenterEq : energy ^ 2 - (0 : ℂ) ^ 2 = center := by
-    simpa [energy] using hsq
-  have hnonreal : (energy ^ 2 - (0 : ℂ) ^ 2).im ≠ 0 := by
-    rw [hcenterEq]
-    exact hcenter
-  have h := massiveDiracRadialFourier_tendsto_uvValue
-    v c energy 0 hv hc hnonreal
-  simp only [massiveDiracRadialDenominator, hcenterEq] at h
-  exact h
+  have hden (p : ℝ) :
+      center - ((v ^ 2 * p ^ 2 : ℝ) : ℂ) ≠ 0 := by
+    intro hzero
+    have him :
+        (center - ((v ^ 2 * p ^ 2 : ℝ) : ℂ)).im = center.im := by
+      simp only [Complex.sub_im, Complex.ofReal_im, sub_zero]
+    have himzero := congrArg Complex.im hzero
+    rw [him] at himzero
+    exact hcenter (by simpa using himzero)
+  unfold massiveDiracRadialFourierUVCenter
+  exact massiveDiracRadialFourier_tendsto_uvFinitePartAt_center
+    v c (max (1 : ℝ) (2 * ‖center‖ / v ^ 2)) center hv hc hden le_rfl
 
 /-- Evenness is inherited from the finite-cutoff angular kernel, without
 a choice of square-root branch or a running Born limit. -/
