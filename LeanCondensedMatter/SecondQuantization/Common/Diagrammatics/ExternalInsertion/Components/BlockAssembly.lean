@@ -1487,9 +1487,10 @@ theorem ExternalInsertionBlockLayout.sum_vacuumFree_eq_sum_connectedBlockFamilie
         ExternalLabel InternalLabel E N
           (Finset.univ : Finset (Fin N)) //
           HasNoVacuumComponent d.vertexGraph} => weight x.1) h).symm
-  · exact (ExternalInsertionBlockLayout.connectedAssemblyEquiv
+  · intro x _ y _ h
+    exact (ExternalInsertionBlockLayout.connectedAssemblyEquiv
       (ExternalLabel := ExternalLabel) (InternalLabel := InternalLabel)
-      anchor).symm.injective
+      anchor).symm.injective h
 
 
 end Common
