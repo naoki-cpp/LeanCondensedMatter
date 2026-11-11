@@ -90,7 +90,10 @@ theorem finiteProjectorBastinTrace_eq_band_sum
   rw [sub_mul, map_sub]
   rw [finiteProjectorTraceDoubleSum P (fun s => r s ^ 2) (fun t => r t - a t) J K,
     finiteProjectorTraceDoubleSum P (fun s => a s ^ 2) (fun t => r t - a t) K J]
-  simp only [Finset.sum_sub_distrib]
+  rw [← Finset.sum_sub_distrib]
+  apply Finset.sum_congr rfl
+  intro s _
+  rw [← Finset.sum_sub_distrib]
 
 
 /-- A finite real-energy spectral resolution replaces the canonical retarded
