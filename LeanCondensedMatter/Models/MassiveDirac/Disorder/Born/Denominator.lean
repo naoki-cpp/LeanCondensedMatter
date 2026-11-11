@@ -196,32 +196,26 @@ theorem integral_massiveDiracRadialDenominatorKernel_eq_log
   rw [hmain]
   field_simp
 
-/-- If the real part of the massive-Dirac spectral center is positive,
-a real-axis pole would exist whenever its imaginary part vanished.
-Thus nonvanishing of the quadratic denominator on the real momentum axis
-forces the center off the principal-log branch cut. -/
-theorem massiveDiracRadialDenominator_center_im_ne_zero_of_re_pos
-    (v : ℝ) (energy mass : ℂ) (hvelocity : v ≠ 0)
-    (hcenterRe : 0 < (energy ^ 2 - mass ^ 2).re)
-    (hden : ∀ p : ℝ, massiveDiracRadialDenominator v p energy mass ≠ 0) :
-    (energy ^ 2 - mass ^ 2).im ≠ 0 := by
+/-- A pole-free quadratic radial denominator with positive real spectral
+parameter has nonzero imaginary part. This uses only the radial pole
+parameter, not a particular effective-energy/mass decomposition. -/
+theorem massiveDiracRadialCenter_im_ne_zero_of_re_pos
+    (v : ℝ) (center : ℂ) (hvelocity : v ≠ 0)
+    (hcenterRe : 0 < center.re)
+    (hden : ∀ p : ℝ, center - ((v ^ 2 * p ^ 2 : ℝ) : ℂ) ≠ 0) :
+    center.im ≠ 0 := by
   intro him
-  let p : ℝ := Real.sqrt ((energy ^ 2 - mass ^ 2).re) / v
-  have hp : v ^ 2 * p ^ 2 = (energy ^ 2 - mass ^ 2).re := by
+  let p : ℝ := Real.sqrt center.re / v
+  have hp : v ^ 2 * p ^ 2 = center.re := by
     dsimp [p]
-    rw [div_pow]
-    have hpos : 0 ≤ (energy ^ 2).re - (mass ^ 2).re := by
-      simpa only [Complex.sub_re] using le_of_lt hcenterRe
-    rw [Real.sq_sqrt hpos]
+    rw [div_pow, Real.sq_sqrt (le_of_lt hcenterRe)]
     field_simp
-  have hzero : massiveDiracRadialDenominator v p energy mass = 0 := by
+  have hzero : center - ((v ^ 2 * p ^ 2 : ℝ) : ℂ) = 0 := by
     apply Complex.ext
-    · simp only [massiveDiracRadialDenominator, Complex.sub_re,
-        Complex.ofReal_re, Complex.zero_re]
-      rw [Complex.sub_re] at hp
+    · simp only [Complex.sub_re, Complex.ofReal_re, Complex.zero_re]
       linarith
-    · simpa only [massiveDiracRadialDenominator, Complex.sub_im,
-        Complex.ofReal_im, sub_zero, Complex.zero_im] using him
+    · simpa only [Complex.sub_im, Complex.ofReal_im, sub_zero, Complex.zero_im]
+        using him
   exact hden p hzero
 
 /-- Explicit arbitrary-regulator finite-cutoff evaluation of the shared denominator integral. -/
