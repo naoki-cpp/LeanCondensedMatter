@@ -325,8 +325,9 @@ theorem finiteCutoffContinuumBornDysonRadial_center_gap_ne_zero_of_re_pos
       .retarded v m p 0 probeEnergy broadening disorderStrength hbar pMax
       hbroadening hdisorder hpMax
   have him : (energyR ^ 2 - massR ^ 2).im ≠ 0 :=
-    massiveDiracRadialDenominator_center_im_ne_zero_of_re_pos
-      v energyR massR hvelocity hcenterR hden
+    massiveDiracRadialCenter_im_ne_zero_of_re_pos
+      v (energyR ^ 2 - massR ^ 2) hvelocity hcenterR
+      (fun p => by simpa only [massiveDiracRadialDenominator] using hden p)
   have hstar : star (energyR ^ 2 - massR ^ 2) = energyA ^ 2 - massA ^ 2 := by
     have hx := star_finiteCutoffContinuumBornDysonDenominator
       .retarded v m 0 0 probeEnergy broadening disorderStrength hbar pMax hbroadening
