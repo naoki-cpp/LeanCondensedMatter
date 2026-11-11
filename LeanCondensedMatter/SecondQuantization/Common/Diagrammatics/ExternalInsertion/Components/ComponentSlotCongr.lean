@@ -43,13 +43,12 @@ theorem ExternalInsertionDiagram.componentOrderedDiagram_eq_slotCongr
     change r.vertexLabel (T.orderIsoOfFin rfl v.1) =
       r.vertexLabel ((standardSlotEquiv T).symm v)
     congr 1
-    apply Subtype.ext
-    simpa [Finset.coe_orderIsoOfFin_apply] using
-      (standardSlotEquivOfCardEq_symm_coe T rfl v).symm
-  · change (Equiv.cast (by simp) r.pairing) =
-      r.pairing.transport
-        (externalInsertionLegCongr (E := d.externalPairCount B)
-          (standardSlotEquiv T)).symm
+  · change (Equiv.cast (show Pairing (2 * T.card + d.externalPairCount B) =
+          PairingOn (Fin (2 * (2 * (Finset.univ : Finset (Fin T.card)).card +
+            d.externalPairCount B))) from by simp [Pairing]) r.pairing) =
+        r.pairing.transport
+          (externalInsertionLegCongr (E := d.externalPairCount B)
+            (standardSlotEquiv T)).symm
     rw [externalInsertionLegCongr_standardize (E := d.externalPairCount B) T]
     apply PairingOn.ext
     funext p
