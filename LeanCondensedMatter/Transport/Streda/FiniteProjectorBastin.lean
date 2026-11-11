@@ -76,10 +76,10 @@ theorem finiteProjectorBastinTrace_eq_band_sum
           K * (∑ s, a s • P s) ^ 2 * J) *
         ((∑ t, r t • P t) - (∑ t, a t • P t))) =
       ∑ s, ∑ t,
-        r s ^ 2 * (r t - a t) *
+        (r s ^ 2 * (r t - a t) *
             finiteDimensionalOperatorTrace (H := H) (P t * J * P s * K) -
           a s ^ 2 * (r t - a t) *
-            finiteDimensionalOperatorTrace (H := H) (P t * K * P s * J) := by
+            finiteDimensionalOperatorTrace (H := H) (P t * K * P s * J)) := by
   have hdiff :
       (∑ t, r t • P t) - (∑ t, a t • P t) =
         ∑ t, (r t - a t) • P t := by
@@ -90,7 +90,6 @@ theorem finiteProjectorBastinTrace_eq_band_sum
   rw [sub_mul, map_sub]
   rw [finiteProjectorTraceDoubleSum P (fun s => r s ^ 2) (fun t => r t - a t) J K,
     finiteProjectorTraceDoubleSum P (fun s => a s ^ 2) (fun t => r t - a t) K J]
-  trace_state
   simp only [Finset.sum_sub_distrib]
 
 
