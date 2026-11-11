@@ -1477,7 +1477,8 @@ theorem ExternalInsertionBlockLayout.assembleDiagram_partner_at_shuffledInteract
           (E := (B : Finset (Fin (2 * E))).card / 2)
           ((layout.interactionOrderDecompositionEquiv order).1 B j) i⟩ := by
     rw [layout.interactionOrderDecomposition_slotVertex order B j]
-    simp only [layout.legEquiv_interactionLeg, Equiv.apply_symm_apply]
+    rw [layout.legEquiv_interactionLeg]
+    rw [(layout.interactionEquiv (Finset.univ : Finset (Fin N))).apply_symm_apply]
   have hglobal :
       externalInsertionInteractionLeg (E := E)
           (order ((layout.interactionOrderDecompositionEquiv order).2.slotEquiv
@@ -1522,7 +1523,11 @@ theorem ExternalInsertionBlockLayout.assembleDiagram_partner_at_externalLeg
           ((B : Finset (Fin (2 * E))).card / 2)
           (layout.interactionBlock (Finset.univ : Finset (Fin N)) B) i⟩ := by
     rw [layout.legEquiv_externalLeg]
-    simp only [Equiv.apply_symm_apply]
+    have hsource :=
+      (layout.sourceEquiv).apply_symm_apply
+        (⟨B, i⟩ : Σ C : layout.partition.parts,
+          Fin (2 * ((C : Finset (Fin (2 * E))).card / 2)))
+    rw [hsource]
   have hglobal :
       externalInsertionExternalLeg E (Finset.univ : Finset (Fin N))
         (layout.sourceEquiv.symm ⟨B, i⟩) =
