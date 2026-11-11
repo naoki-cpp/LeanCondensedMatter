@@ -1827,7 +1827,7 @@
       "imports": [
         "LeanCondensedMatter.Models.MassiveDirac.Model.Berry.Bridge",
         "LeanCondensedMatter.Models.MassiveDirac.Model.OperatorSpectral",
-        "LeanCondensedMatter.Transport.Streda.TraceKernel"
+        "LeanCondensedMatter.Transport.Streda.FiniteProjectorBastin"
       ],
       "externalImportCount": 0
     },
@@ -3206,7 +3206,7 @@
         "LeanCondensedMatter.Models.RashbaExchange.Current",
         "LeanCondensedMatter.Models.RashbaExchange.Model.Interband",
         "LeanCondensedMatter.Models.RashbaExchange.Model.OperatorSpectral",
-        "LeanCondensedMatter.Transport.Streda.TraceKernel"
+        "LeanCondensedMatter.Transport.Streda.FiniteProjectorBastin"
       ],
       "externalImportCount": 0
     },
@@ -8799,6 +8799,15 @@
       "externalImportCount": 1
     },
     {
+      "name": "LeanCondensedMatter.Transport.Streda.FiniteProjectorBastin",
+      "sourceFile": "LeanCondensedMatter/Transport/Streda/FiniteProjectorBastin.lean",
+      "imports": [
+        "LeanCondensedMatter.Transport.Resolvent.Spectral",
+        "LeanCondensedMatter.Transport.Streda.TraceKernel"
+      ],
+      "externalImportCount": 0
+    },
+    {
       "name": "LeanCondensedMatter.Transport.Streda.GeneralizedStatic",
       "sourceFile": "LeanCondensedMatter/Transport/Streda/GeneralizedStatic.lean",
       "imports": [
@@ -8913,6 +8922,7 @@
       "sourceFile": "LeanCondensedMatter/Transport/Streda.lean",
       "imports": [
         "LeanCondensedMatter.Transport.Streda.ConductivityNormalization",
+        "LeanCondensedMatter.Transport.Streda.FiniteProjectorBastin",
         "LeanCondensedMatter.Transport.Streda.GeneralizedStatic",
         "LeanCondensedMatter.Transport.Streda.Integration",
         "LeanCondensedMatter.Transport.Streda.InterbandPole",
