@@ -49,7 +49,7 @@ theorem massiveDiracRadialBesselJ_integral_scale_velocity
         (v : ℂ) ^ 2 * (center / (v : ℂ) ^ 2 - ((p ^ 2 : ℝ) : ℂ)) := by
     push_cast
     field_simp [hvC]
-    ring
+  dsimp only
   rw [hden, mul_inv_rev]
   ring
 
@@ -79,9 +79,18 @@ theorem massiveDiracRadialFourierUVCenter_scale_velocity
     exact div_ne_zero hcenter (pow_ne_zero 2 hv)
   have hvel := massiveDiracRadialFourier_tendsto_uvValue_center
     v c center hv hc hcenter
-  have hunit := massiveDiracRadialFourier_tendsto_uvValue_center
-    (1 : ℝ) c (center / (v : ℂ) ^ 2)
-    (by norm_num) hc hcenter'
+  have hunit :
+      Filter.Tendsto
+        (fun b : ℝ => ∫ p in (0 : ℝ)..b,
+          (p : ℂ) * polarFourierZerothAngularKernel (p * c) *
+            (center / (v : ℂ) ^ 2 - ((p ^ 2 : ℝ) : ℂ))⁻¹)
+        Filter.atTop
+        (nhds (massiveDiracRadialFourierUVCenter
+          1 c (center / (v : ℂ) ^ 2))) := by
+    simpa only [one_pow, one_mul] using
+      (massiveDiracRadialFourier_tendsto_uvValue_center
+        (1 : ℝ) c (center / (v : ℂ) ^ 2)
+        (by norm_num) hc hcenter')
   have hscaled :=
     hunit.const_mul (((v : ℂ) ^ 2)⁻¹)
   have heq (b : ℝ) :
@@ -92,10 +101,9 @@ theorem massiveDiracRadialFourierUVCenter_scale_velocity
         (∫ p in (0 : ℝ)..b,
           (p : ℂ) * polarFourierZerothAngularKernel (p * c) *
             (center / (v : ℂ) ^ 2 - ((p ^ 2 : ℝ) : ℂ))⁻¹) := by
-    rw [polarFourierZerothAngularKernel_eq_besselJ]
-    simp_rw [polarFourierZerothAngularKernel_eq_besselJ]
-    exact massiveDiracRadialBesselJ_integral_scale_velocity
-      v c b center hv
+    simpa only [polarFourierZerothAngularKernel_eq_besselJ] using
+      (massiveDiracRadialBesselJ_integral_scale_velocity
+        v c b center hv)
   exact tendsto_nhds_unique
     hvel (hscaled.congr' (Filter.Eventually.of_forall fun b => (heq b).symm))
 
