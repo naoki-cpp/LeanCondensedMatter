@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Models.RashbaExchange.Bastin.Berry
+import LeanCondensedMatter.Models.RashbaExchange.Response
 import LeanCondensedMatter.Transport.Streda.InterbandPole
 
 set_option linter.style.header false
@@ -10,6 +11,8 @@ The finite-projector Bastin trace is an exact ordered sum over source and
 target bands. The diagonal sector is retained at nonzero broadening; no
 clean-limit or momentum-integral interchange is asserted here. The scalar
 kinetic-energy shift remains explicit through the Rashba band energies.
+At zero broadening, the algebraic coefficient uses Lean's totalized complex
+inverse and is not the physical one-sided zero-broadening limit.
 -/
 
 namespace QuantumTheory.Models.RashbaExchange
@@ -48,18 +51,28 @@ noncomputable def interbandBastinTraceContribution
     bastinBandPairContribution params 0 1 band (oppositeBand band)
       px py probeEnergy broadening
 
-/-- The projector Bastin Hall trace is the sum over all ordered source/target
-band pairs, without dropping its diagonal contributions. -/
-theorem projectorBastinTraceIntegrand_eq_band_sum
-    (params : Parameters) (px py probeEnergy broadening : ℝ)
+/-- Direction-indexed finite-projector Bastin trace; the public Hall-oriented
+projector trace is its specialization to currents `(0, 1)`. -/
+noncomputable def projectorBastinTraceIntegrandFor
+    (params : Parameters) (μ ν : Fin 2)
+    (px py probeEnergy broadening : ℝ) : ℂ :=
+  finiteDimensionalOperatorTrace
+    (bastinOperatorKernelFromPropagators
+      (currentBoundedOperator params μ px py)
+      (currentBoundedOperator params ν px py)
+      (projectorResolvent (retardedSpectralParameter probeEnergy broadening) params px py)
+      (projectorResolvent (advancedSpectralParameter probeEnergy broadening) params px py))
+
+/-- Exact ordered source/target band-pair expansion for arbitrary current directions. -/
+theorem projectorBastinTraceIntegrandFor_eq_band_sum
+    (params : Parameters) (μ ν : Fin 2) (px py probeEnergy broadening : ℝ)
     (hE : spinOrbitEnergy params px py ≠ 0) :
-    projectorBastinTraceIntegrand params px py probeEnergy broadening =
+    projectorBastinTraceIntegrandFor params μ ν px py probeEnergy broadening =
       ∑ source : Band, ∑ target : Band,
-        bastinBandPairContribution params 0 1 source target
+        bastinBandPairContribution params μ ν source target
           px py probeEnergy broadening := by
-  unfold projectorBastinTraceIntegrand
-  dsimp only [projectorBastinOperatorIntegrand, bastinOperatorKernelFromPropagators]
-  unfold projectorResolvent
+  unfold projectorBastinTraceIntegrandFor bastinOperatorKernelFromPropagators
+    projectorResolvent
   simpa only [bastinBandPairContribution, currentBandBlockTrace,
     scalarSpectralDifferenceCoefficient] using
     (finiteProjectorBastinTrace_eq_band_sum
@@ -73,8 +86,36 @@ theorem projectorBastinTraceIntegrand_eq_band_sum
         scalarResolventCoefficient
           (advancedSpectralParameter probeEnergy broadening)
           (bandEnergy params band px py))
-      (currentBoundedOperator params 0 px py)
-      (currentBoundedOperator params 1 px py))
+      (currentBoundedOperator params μ px py)
+      (currentBoundedOperator params ν px py))
+
+/-- The existing x-y projector Bastin trace is the ordered band-pair sum. -/
+theorem projectorBastinTraceIntegrand_eq_band_sum
+    (params : Parameters) (px py probeEnergy broadening : ℝ)
+    (hE : spinOrbitEnergy params px py ≠ 0) :
+    projectorBastinTraceIntegrand params px py probeEnergy broadening =
+      ∑ source : Band, ∑ target : Band,
+        bastinBandPairContribution params 0 1 source target
+          px py probeEnergy broadening := by
+  change projectorBastinTraceIntegrandFor params 0 1 px py probeEnergy broadening = _
+  exact projectorBastinTraceIntegrandFor_eq_band_sum
+    params 0 1 px py probeEnergy broadening hE
+
+/-- Exact diagonal/interband decomposition for any ordered current directions. -/
+theorem projectorBastinTraceIntegrandFor_eq_diagonal_add_interband
+    (params : Parameters) (μ ν : Fin 2) (px py probeEnergy broadening : ℝ)
+    (hE : spinOrbitEnergy params px py ≠ 0) :
+    projectorBastinTraceIntegrandFor params μ ν px py probeEnergy broadening =
+      (∑ band : Band,
+        bastinBandPairContribution params μ ν band band
+          px py probeEnergy broadening) +
+      (∑ band : Band,
+        bastinBandPairContribution params μ ν band (oppositeBand band)
+          px py probeEnergy broadening) := by
+  rw [projectorBastinTraceIntegrandFor_eq_band_sum
+    params μ ν px py probeEnergy broadening hE]
+  simp only [sum_band, oppositeBand_lower, oppositeBand_upper]
+  ring
 
 /-- Exact finite-broadening diagonal/interband split of the projector trace. -/
 theorem projectorBastinTraceIntegrand_eq_diagonal_add_interband
@@ -83,13 +124,81 @@ theorem projectorBastinTraceIntegrand_eq_diagonal_add_interband
     projectorBastinTraceIntegrand params px py probeEnergy broadening =
       diagonalBastinTraceContribution params px py probeEnergy broadening +
         interbandBastinTraceContribution params px py probeEnergy broadening := by
-  rw [projectorBastinTraceIntegrand_eq_band_sum params px py probeEnergy broadening hE]
-  simp only [sum_band, diagonalBastinTraceContribution, interbandBastinTraceContribution,
-    oppositeBand_lower, oppositeBand_upper]
-  ring
+  change projectorBastinTraceIntegrandFor params 0 1 px py probeEnergy broadening =
+    (∑ band : Band,
+      bastinBandPairContribution params 0 1 band band
+        px py probeEnergy broadening) +
+    (∑ band : Band,
+      bastinBandPairContribution params 0 1 band (oppositeBand band)
+        px py probeEnergy broadening)
+  exact projectorBastinTraceIntegrandFor_eq_diagonal_add_interband
+    params 0 1 px py probeEnergy broadening hE
 
-/-- The canonical regularized Bastin Hall trace has the same exact diagonal
-plus interband decomposition at nonzero broadening. -/
+/-- The canonical regularized Bastin trace agrees with the direction-indexed
+projector trace away from spectral degeneracy and at nonzero broadening. -/
+theorem regularizedBastinTraceIntegrand_eq_projectorBastinTraceIntegrandFor
+    (params : Parameters) (μ ν : Fin 2) (px py probeEnergy broadening : ℝ)
+    (hE : spinOrbitEnergy params px py ≠ 0)
+    (hbroadening : broadening ≠ 0) :
+    regularizedBastinTraceIntegrand
+        (hamiltonianOperator params px py)
+        (currentBoundedOperator params μ px py)
+        (currentBoundedOperator params ν px py)
+        probeEnergy broadening =
+      projectorBastinTraceIntegrandFor params μ ν px py probeEnergy broadening := by
+  simpa only [projectorBastinTraceIntegrandFor, bastinOperatorKernelFromPropagators,
+    projectorResolvent] using
+    (QuantumTheory.Transport.regularizedBastinTraceIntegrand_eq_projectorSum
+      (hamiltonianOperator params px py) (hamiltonianOperator_isSelfAdjoint params px py)
+      (fun band : Band => bandProjectorOperator params band px py)
+      (fun band : Band => bandEnergy params band px py)
+      (bandProjectorOperator_completeOrthogonalIdempotents params px py hE).complete
+      (fun band : Band => hamiltonianOperator_mul_bandProjectorOperator params band px py hE)
+      (currentBoundedOperator params μ px py) (currentBoundedOperator params ν px py)
+      probeEnergy broadening hbroadening)
+
+/-- Direction-indexed canonical Bastin trace equals the ordered band-pair sum. -/
+theorem regularizedBastinTraceIntegrand_eq_band_sum
+    (params : Parameters) (μ ν : Fin 2) (px py probeEnergy broadening : ℝ)
+    (hE : spinOrbitEnergy params px py ≠ 0)
+    (hbroadening : broadening ≠ 0) :
+    regularizedBastinTraceIntegrand
+        (hamiltonianOperator params px py)
+        (currentBoundedOperator params μ px py)
+        (currentBoundedOperator params ν px py)
+        probeEnergy broadening =
+      ∑ source : Band, ∑ target : Band,
+        bastinBandPairContribution params μ ν source target
+          px py probeEnergy broadening := by
+  rw [regularizedBastinTraceIntegrand_eq_projectorBastinTraceIntegrandFor
+    params μ ν px py probeEnergy broadening hE hbroadening]
+  exact projectorBastinTraceIntegrandFor_eq_band_sum
+    params μ ν px py probeEnergy broadening hE
+
+/-- Direction-indexed canonical Bastin trace retains both diagonal and interband
+terms before any energy integral or broadening limit. -/
+theorem regularizedBastinTraceIntegrand_eq_diagonal_add_interbandFor
+    (params : Parameters) (μ ν : Fin 2) (px py probeEnergy broadening : ℝ)
+    (hE : spinOrbitEnergy params px py ≠ 0)
+    (hbroadening : broadening ≠ 0) :
+    regularizedBastinTraceIntegrand
+        (hamiltonianOperator params px py)
+        (currentBoundedOperator params μ px py)
+        (currentBoundedOperator params ν px py)
+        probeEnergy broadening =
+      (∑ band : Band,
+        bastinBandPairContribution params μ ν band band
+          px py probeEnergy broadening) +
+      (∑ band : Band,
+        bastinBandPairContribution params μ ν band (oppositeBand band)
+          px py probeEnergy broadening) := by
+  rw [regularizedBastinTraceIntegrand_eq_projectorBastinTraceIntegrandFor
+    params μ ν px py probeEnergy broadening hE hbroadening]
+  exact projectorBastinTraceIntegrandFor_eq_diagonal_add_interband
+    params μ ν px py probeEnergy broadening hE
+
+/-- The canonical regularized x-y Bastin trace has its original exact
+diagonal plus interband decomposition at nonzero broadening. -/
 theorem regularizedBastinTraceIntegrand_eq_diagonal_add_interband
     (params : Parameters) (px py probeEnergy broadening : ℝ)
     (hE : spinOrbitEnergy params px py ≠ 0)
@@ -101,10 +210,86 @@ theorem regularizedBastinTraceIntegrand_eq_diagonal_add_interband
         probeEnergy broadening =
       diagonalBastinTraceContribution params px py probeEnergy broadening +
         interbandBastinTraceContribution params px py probeEnergy broadening := by
-  rw [regularizedBastinTraceIntegrand_eq_projectorBastinTraceIntegrand
-    params px py probeEnergy broadening hE hbroadening]
-  exact projectorBastinTraceIntegrand_eq_diagonal_add_interband
-    params px py probeEnergy broadening hE
+  change regularizedBastinTraceIntegrand
+      (hamiltonianOperator params px py)
+      (currentBoundedOperator params 0 px py)
+      (currentBoundedOperator params 1 px py)
+      probeEnergy broadening =
+    (∑ band : Band,
+      bastinBandPairContribution params 0 1 band band
+        px py probeEnergy broadening) +
+    (∑ band : Band,
+      bastinBandPairContribution params 0 1 band (oppositeBand band)
+        px py probeEnergy broadening)
+  exact regularizedBastinTraceIntegrand_eq_diagonal_add_interbandFor
+    params 0 1 px py probeEnergy broadening hE hbroadening
+
+/-- The physical clean ordered Bastin energy integral equals the weighted
+band-pair integral on any finite energy window. No limit interchange occurs. -/
+theorem cleanBastinPointResponse_eq_integral_band_sum
+    (params : Parameters) (μ ν : Fin 2)
+    (px py lowerEnergy upperEnergy : ℝ) (occupation : ℝ → ℂ)
+    (hE : spinOrbitEnergy params px py ≠ 0)
+    (hbroadening : params.broadening ≠ 0) :
+    cleanBastinPointResponse params μ ν px py lowerEnergy upperEnergy occupation =
+      ∫ probeEnergy in lowerEnergy..upperEnergy,
+        occupation probeEnergy *
+          (∑ source : Band, ∑ target : Band,
+            bastinBandPairContribution params μ ν source target
+              px py probeEnergy params.broadening) := by
+  unfold cleanBastinPointResponse regularizedTracedBastinEnergyIntegral
+  apply intervalIntegral.integral_congr
+  intro probeEnergy _
+  rw [regularizedBastinTraceIntegrand_eq_band_sum
+    params μ ν px py probeEnergy params.broadening hE hbroadening]
+
+/-- The weighted finite-window Bastin energy response retains diagonal and
+interband contributions separately, for any ordered current directions. -/
+theorem cleanBastinPointResponse_eq_integral_diagonal_add_interband
+    (params : Parameters) (μ ν : Fin 2)
+    (px py lowerEnergy upperEnergy : ℝ) (occupation : ℝ → ℂ)
+    (hE : spinOrbitEnergy params px py ≠ 0)
+    (hbroadening : params.broadening ≠ 0) :
+    cleanBastinPointResponse params μ ν px py lowerEnergy upperEnergy occupation =
+      ∫ probeEnergy in lowerEnergy..upperEnergy,
+        occupation probeEnergy *
+          ((∑ band : Band,
+            bastinBandPairContribution params μ ν band band
+              px py probeEnergy params.broadening) +
+           (∑ band : Band,
+            bastinBandPairContribution params μ ν band (oppositeBand band)
+              px py probeEnergy params.broadening)) := by
+  unfold cleanBastinPointResponse regularizedTracedBastinEnergyIntegral
+  apply intervalIntegral.integral_congr
+  intro probeEnergy _
+  rw [regularizedBastinTraceIntegrand_eq_diagonal_add_interbandFor
+    params μ ν px py probeEnergy params.broadening hE hbroadening]
+
+/-- The antisymmetric clean Bastin response is exactly the difference of
+the two direction-ordered finite-window band-pair integrals. -/
+theorem antisymmetricCleanBastinPointResponse_eq_integral_band_sum
+    (params : Parameters) (μ ν : Fin 2)
+    (px py lowerEnergy upperEnergy : ℝ) (occupation : ℝ → ℂ)
+    (hE : spinOrbitEnergy params px py ≠ 0)
+    (hbroadening : params.broadening ≠ 0) :
+    antisymmetricCleanBastinPointResponse params μ ν px py
+        lowerEnergy upperEnergy occupation =
+      (1 / 2 : ℂ) *
+        ((∫ probeEnergy in lowerEnergy..upperEnergy,
+            occupation probeEnergy *
+              (∑ source : Band, ∑ target : Band,
+                bastinBandPairContribution params μ ν source target
+                  px py probeEnergy params.broadening)) -
+         (∫ probeEnergy in lowerEnergy..upperEnergy,
+            occupation probeEnergy *
+              (∑ source : Band, ∑ target : Band,
+                bastinBandPairContribution params ν μ source target
+                  px py probeEnergy params.broadening))) := by
+  unfold antisymmetricCleanBastinPointResponse
+  rw [cleanBastinPointResponse_eq_integral_band_sum
+      params μ ν px py lowerEnergy upperEnergy occupation hE hbroadening,
+    cleanBastinPointResponse_eq_integral_band_sum
+      params ν μ px py lowerEnergy upperEnergy occupation hE hbroadening]
 
 end
 
