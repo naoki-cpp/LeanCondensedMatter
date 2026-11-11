@@ -120,17 +120,6 @@ theorem massiveDiracRadialCenter_firstHarmonicBoundary_tendsto_zero
     · exact hlimit
   exact (tendsto_zero_iff_norm_tendsto_zero).2 hnorm
 
-/-- Energy/mass presentation of the center-indexed first-harmonic UV boundary. -/
-theorem massiveDiracRadialDenominator_firstHarmonicBoundary_tendsto_zero
-    (v c : ℝ) (energy mass : ℂ) (hv : v ≠ 0) :
-    Filter.Tendsto
-      (fun p : ℝ => (p : ℂ) *
-        polarFourierFirstCosineAngularKernel (p * c) *
-          (massiveDiracRadialDenominator v p energy mass)⁻¹)
-      Filter.atTop (nhds 0) := by
-  simpa only [massiveDiracRadialDenominator] using
-    massiveDiracRadialCenter_firstHarmonicBoundary_tendsto_zero
-      v c (energy ^ 2 - mass ^ 2) hv
 
 end
 
