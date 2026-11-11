@@ -56,7 +56,7 @@ theorem complexSqrt_div_positiveReal_sq (z : ℂ) (r : ℝ)
         (r : ℂ)⁻¹ := by
     calc
       _ = ((Real.exp (Real.log ((r⁻¹ : ℝ) ^ 2) / 2) : ℝ) : ℂ) := by
-        simp only [Complex.ofReal_div, Complex.ofReal_exp]
+        simp only [Complex.ofReal_div, Complex.ofReal_exp, Complex.ofReal_ofNat]
       _ = (((r⁻¹ : ℝ) : ℝ) : ℂ) := by
         rw [hlogscale, Real.exp_neg, Real.exp_log hr]
       _ = (r : ℂ)⁻¹ := by norm_cast
@@ -99,7 +99,6 @@ theorem massiveDiracRadialOutgoingHankelCandidate_scale_velocity
     ring
   unfold massiveDiracRadialOutgoingHankelCandidate
   rw [harg]
-  simp only [one_pow, div_one]
   simp only [div_eq_mul_inv]
   ring
 
