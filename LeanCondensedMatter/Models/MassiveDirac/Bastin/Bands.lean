@@ -68,7 +68,7 @@ theorem projectorBastinTraceIntegrand_eq_band_sum
       ∑ source : Band, ∑ target : Band,
         bastinBandPairContribution 0 1 source target e v m px py probeEnergy broadening := by
   unfold projectorBastinTraceIntegrand
-  dsimp only [projectorBastinOperatorIntegrand]
+  dsimp only [projectorBastinOperatorIntegrand, bastinOperatorKernelFromPropagators]
   unfold projectorResolvent
   simpa only [bastinBandPairContribution, currentBandBlockTrace,
     scalarSpectralDifferenceCoefficient] using
