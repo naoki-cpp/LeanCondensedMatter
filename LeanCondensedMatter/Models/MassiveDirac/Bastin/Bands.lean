@@ -1,5 +1,6 @@
 import LeanCondensedMatter.Models.MassiveDirac.Model.OperatorSpectral
 import LeanCondensedMatter.Models.MassiveDirac.Bastin.Berry
+import LeanCondensedMatter.Transport.Streda.InterbandPole
 
 set_option linter.style.header false
 
@@ -28,16 +29,6 @@ open QuantumTheory.Transport
 
 open ContinuousLinearMap
 
-/-- Difference of retarded and advanced scalar resolvent coefficients for one band. -/
-noncomputable def spectralDifferenceCoefficient
-    (band : Band) (v m px py probeEnergy broadening : ℝ) : ℂ :=
-  scalarResolventCoefficient
-      (retardedSpectralParameter probeEnergy broadening)
-      (bandEnergy band v m px py) -
-    scalarResolventCoefficient
-      (advancedSpectralParameter probeEnergy broadening)
-      (bandEnergy band v m px py)
-
 /-- Contribution of one ordered pair `(source,target)` to the projector-expanded Bastin trace for
 one ordered current-direction pair `(μ,ν)`. The reversed current ordering is kept in the same
 canonical direction-indexed object. -/
@@ -50,7 +41,8 @@ noncomputable def bastinBandPairContribution
   let a := scalarResolventCoefficient
     (advancedSpectralParameter probeEnergy broadening)
     (bandEnergy source v m px py)
-  let d := spectralDifferenceCoefficient target v m px py probeEnergy broadening
+  let d := scalarSpectralDifferenceCoefficient
+    (bandEnergy target v m px py) probeEnergy broadening
   r ^ 2 * d * currentBandBlockTrace μ ν source target e v m px py -
     a ^ 2 * d * currentBandBlockTrace ν μ source target e v m px py
 
@@ -95,7 +87,7 @@ theorem projectorBastinTraceIntegrand_eq_band_sum
     (fun band => bandProjectorOperator band v m px py)
     (bandProjectorOperator_completeOrthogonalIdempotents v m px py hE).toOrthogonalIdempotents]
   simp only [sum_band]
-  unfold bastinBandPairContribution spectralDifferenceCoefficient
+  unfold bastinBandPairContribution scalarSpectralDifferenceCoefficient
   simp only [add_mul, sub_mul, mul_add, mul_sub, mul_smul_comm, smul_mul_assoc]
   simp only [map_add, map_sub, map_smul, hblock]
   ring_nf
