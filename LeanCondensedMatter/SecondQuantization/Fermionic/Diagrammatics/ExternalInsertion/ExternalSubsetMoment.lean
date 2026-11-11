@@ -117,6 +117,46 @@ private theorem evenExternalSubsetRestriction_heq_of_eq
   rfl
 
 omit [LinearOrder Mode] [Fintype Mode] in
+/-- In a physical assembly of independently connected Wick blocks, the
+canonical standalone physical connected component has the same external
+source labels as the originally supplied local diagram, up to the
+dependent equality of its physically reconstructed external-pair count. -/
+theorem ExternalInsertionBlockLayout.assembleDiagram_componentOrderedDiagram_externalLabel
+    {n : ℕ} (layout : ExternalInsertionBlockLayout E n)
+    (F : ∀ B : layout.partition.parts,
+      ExternalInsertionDiagram (ExternalFieldLabel Mode) (QuarticVertexLabel Mode)
+        ((B : Finset (Fin (2 * E))).card / 2) n
+        (layout.interactionBlock (Finset.univ : Finset (Fin n)) B))
+    (hconnected : ∀ B, (F B).vertexGraph.Preconnected)
+    (e : Fin (2 * E)) :
+    HEq (F (layout.sourceEquiv e).1).externalLabel
+      ((layout.assembleDiagram (Finset.univ : Finset (Fin n)) F).componentOrderedDiagram
+        ⟨(layout.assembleDiagram (Finset.univ : Finset (Fin n)) F).vertexGraph.componentBlock
+            (Sum.inl e),
+          (layout.assembleDiagram (Finset.univ : Finset (Fin n)) F).vertexGraph.componentBlock_mem_componentPartition
+            (Sum.inl e)⟩).externalLabel := by
+  classical
+  let d := layout.assembleDiagram (Finset.univ : Finset (Fin n)) F
+  let B := (layout.sourceEquiv e).1
+  let C : d.vertexGraph.componentPartition.parts :=
+    ⟨d.vertexGraph.componentBlock (Sum.inl e),
+      d.vertexGraph.componentBlock_mem_componentPartition (Sum.inl e)⟩
+  have hsec : (B : Finset (Fin (2 * E))) =
+      (C.1 : Finset (ExternalInsertionVertex E (Finset.univ : Finset (Fin n)))).toLeft :=
+    (layout.assembleDiagram_componentExternalSector_external
+      (Finset.univ : Finset (Fin n)) F hconnected e).symm
+  have hlabels :
+      (F B).externalLabel =
+        evenExternalSubsetLabels d.externalLabel (B : Finset (Fin (2 * E)))
+          (layout.evenBlocks B) :=
+    layout.assembleDiagram_externalLabel_eq_evenExternalSubsetLabels F B
+  have htransport :=
+    evenExternalSubsetRestriction_heq_of_eq d.externalLabel
+      (layout.evenBlocks B) (d.externalSector_card_even C) hsec
+  have hcomponent := evenExternalSubsetLabels_componentOrderedDiagram (d := d) C
+  exact (heq_of_eq hlabels).trans (htransport.trans (heq_of_eq hcomponent))
+
+omit [LinearOrder Mode] [Fintype Mode] in
 /-- On each external-partition block of a vacuum-free diagram, the field
 labels used by the source-subset moment are exactly the labels of the
 canonical standalone connected-component diagram.
