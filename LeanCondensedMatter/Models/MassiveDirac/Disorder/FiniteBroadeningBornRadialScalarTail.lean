@@ -142,7 +142,7 @@ theorem finiteCutoffContinuumBornDysonRadialScalarKernel_by_parts
         side v m probeEnergy broadening disorderStrength hbar pMax) ^ 2)
     hcenter
   dsimp only
-  simpa only [finiteCutoffContinuumBornDysonDenominator_eq_radial,
+  simpa only [← finiteCutoffContinuumBornDysonDenominator_eq_radial,
     massiveDiracRadialDenominator] using h
 
 /-- A cutoff limit theorem for a quadratic massive-Dirac Fourier resolvent,
