@@ -70113,8 +70113,7 @@
       "QuantumTheory.Models.MassiveDirac.hamiltonianOperator_isSelfAdjoint",
       "QuantumTheory.Models.MassiveDirac.hamiltonian_isHermitian",
       "QuantumTheory.Models.MassiveDirac.hamiltonian_mul_self",
-      "_private.LeanCondensedMatter.Models.MassiveDirac.Model.Spectral.0.QuantumTheory.Models.MassiveDirac.bandProjector_eq_normalizedHamiltonian",
-      "_private.LeanCondensedMatter.Models.MassiveDirac.Model.Spectral.0.QuantumTheory.Models.MassiveDirac.hamiltonian_eq_energy_smul_normalizedHamiltonian"
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Model.Spectral.0.QuantumTheory.Models.MassiveDirac.bandProjector_eq_normalizedHamiltonian"
     ],
     "dependencies": [
       "InternalSpace.pauliCombination_eq_components"
@@ -70126,10 +70125,9 @@
       "QuantumTheory.Models.MassiveDirac.hamiltonianOperator_isSelfAdjoint",
       "QuantumTheory.Models.MassiveDirac.hamiltonian_isHermitian",
       "QuantumTheory.Models.MassiveDirac.hamiltonian_mul_self",
-      "_private.LeanCondensedMatter.Models.MassiveDirac.Model.Spectral.0.QuantumTheory.Models.MassiveDirac.bandProjector_eq_normalizedHamiltonian",
-      "_private.LeanCondensedMatter.Models.MassiveDirac.Model.Spectral.0.QuantumTheory.Models.MassiveDirac.hamiltonian_eq_energy_smul_normalizedHamiltonian"
+      "_private.LeanCondensedMatter.Models.MassiveDirac.Model.Spectral.0.QuantumTheory.Models.MassiveDirac.bandProjector_eq_normalizedHamiltonian"
     ],
-    "compiledConsumerCount": 6,
+    "compiledConsumerCount": 5,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -70214,7 +70212,6 @@
       "InternalSpace.involution_mul_one_add",
       "QuantumTheory.Models.MassiveDirac.bandSign_sq",
       "_private.LeanCondensedMatter.Models.MassiveDirac.Model.Spectral.0.QuantumTheory.Models.MassiveDirac.bandProjector_eq_normalizedHamiltonian",
-      "_private.LeanCondensedMatter.Models.MassiveDirac.Model.Spectral.0.QuantumTheory.Models.MassiveDirac.hamiltonian_eq_energy_smul_normalizedHamiltonian",
       "_private.LeanCondensedMatter.Models.MassiveDirac.Model.Spectral.0.QuantumTheory.Models.MassiveDirac.normalizedHamiltonian_mul_self"
     ],
     "crossModuleDirectWrapper": false,
@@ -84852,8 +84849,7 @@
       "QuantumTheory.Models.RashbaExchange.bandSign_sq",
       "QuantumTheory.Models.RashbaExchange.hamiltonian_eq_kinetic_add_spinHamiltonian",
       "_private.LeanCondensedMatter.Models.RashbaExchange.Model.Spectral.0.QuantumTheory.Models.RashbaExchange.bandProjector_eq_normalized",
-      "_private.LeanCondensedMatter.Models.RashbaExchange.Model.Spectral.0.QuantumTheory.Models.RashbaExchange.normalizedSpinHamiltonian_mul_self",
-      "_private.LeanCondensedMatter.Models.RashbaExchange.Model.Spectral.0.QuantumTheory.Models.RashbaExchange.spinHamiltonian_eq_energy_smul_normalized"
+      "_private.LeanCondensedMatter.Models.RashbaExchange.Model.Spectral.0.QuantumTheory.Models.RashbaExchange.normalizedSpinHamiltonian_mul_self"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -174264,50 +174260,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (v m px py : ℝ),\n  QuantumTheory.Models.MassiveDirac.energy v m px py ≠ 0 →\n    QuantumTheory.Models.MassiveDirac.hamiltonian v m px py =\n      ↑(QuantumTheory.Models.MassiveDirac.energy v m px py) •\n        QuantumTheory.Models.MassiveDirac.normalizedHamiltonian✝ v m px py",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Models.MassiveDirac.Model.Spectral.0.QuantumTheory.Models.MassiveDirac.hamiltonian_eq_energy_smul_normalizedHamiltonian",
-    "module": "LeanCondensedMatter.Models.MassiveDirac.Model.Spectral",
-    "externalAxioms": [],
-    "docString": "Away from the degeneracy, multiplying the normalized Hamiltonian by the positive energy\nrecovers the original Hamiltonian. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Models.MassiveDirac.hamiltonian_mul_bandProjector"
-    ],
-    "dependencies": [
-      "QuantumTheory.Models.MassiveDirac.hamiltonian_eq_pauliCombination"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Models.MassiveDirac.hamiltonian_mul_bandProjector"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ (v m px py : ℝ),\n  QuantumTheory.Models.MassiveDirac.energy v m px py ≠ 0 →\n    QuantumTheory.Models.MassiveDirac.normalizedHamiltonian✝ v m px py *\n        QuantumTheory.Models.MassiveDirac.normalizedHamiltonian✝ v m px py =\n      1",
     "standardAxioms": [
       "Classical.choice",
@@ -175742,48 +175694,6 @@
       "QuantumTheory.Models.RashbaExchange.hamiltonian_mul_bandProjector"
     ],
     "compiledConsumerCount": 2,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (params : QuantumTheory.Models.RashbaExchange.HamiltonianParameters) (px py : ℝ),\n  QuantumTheory.Models.RashbaExchange.spinOrbitEnergy params px py ≠ 0 →\n    QuantumTheory.Models.RashbaExchange.spinHamiltonian params px py =\n      ↑(QuantumTheory.Models.RashbaExchange.spinOrbitEnergy params px py) •\n        QuantumTheory.Models.RashbaExchange.normalizedSpinHamiltonian✝ params px py",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "_private.LeanCondensedMatter.Models.RashbaExchange.Model.Spectral.0.QuantumTheory.Models.RashbaExchange.spinHamiltonian_eq_energy_smul_normalized",
-    "module": "LeanCondensedMatter.Models.RashbaExchange.Model.Spectral",
-    "externalAxioms": [],
-    "docString": null,
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Models.RashbaExchange.hamiltonian_mul_bandProjector"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Models.RashbaExchange.hamiltonian_mul_bandProjector"
-    ],
-    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
