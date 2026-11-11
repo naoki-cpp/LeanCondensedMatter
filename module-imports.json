@@ -2082,7 +2082,8 @@
       "imports": [
         "LeanCondensedMatter.Models.MassiveDirac.Conductivity.Hall.NonCrossingMechanismClassification",
         "LeanCondensedMatter.QuantumTheory.PlanckConstant",
-        "LeanCondensedMatter.Transport.Analysis.BesselCrossedXMoment"
+        "LeanCondensedMatter.Transport.Analysis.BesselCrossedXMoment",
+        "LeanCondensedMatter.Transport.Analysis.BesselYAnalyticWronskian"
       ],
       "externalImportCount": 3
     },
@@ -2221,7 +2222,7 @@
       "name": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVBesselJ",
       "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Disorder/Born/RadialUVBesselJ.lean",
       "imports": [
-        "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVSpectralConjugation",
+        "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVFinitePart",
         "LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornRadialFrozenUV"
       ],
       "externalImportCount": 0
@@ -2241,7 +2242,7 @@
       "imports": [
         "LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornRadialScalarTail"
       ],
-      "externalImportCount": 1
+      "externalImportCount": 3
     },
     {
       "name": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVIntegrability",
@@ -2250,22 +2251,6 @@
         "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVBound"
       ],
       "externalImportCount": 6
-    },
-    {
-      "name": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVSpectralCenter",
-      "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Disorder/Born/RadialUVSpectralCenter.lean",
-      "imports": [
-        "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVFinitePart"
-      ],
-      "externalImportCount": 1
-    },
-    {
-      "name": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVSpectralConjugation",
-      "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Disorder/Born/RadialUVSpectralConjugation.lean",
-      "imports": [
-        "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVSpectralCenter"
-      ],
-      "externalImportCount": 1
     },
     {
       "name": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.SelfEnergy",
@@ -2609,8 +2594,6 @@
       "imports": [
         "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVBesselJ",
         "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVFinitePart",
-        "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVSpectralCenter",
-        "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVSpectralConjugation",
         "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.UltravioletSelfEnergy",
         "LeanCondensedMatter.Models.MassiveDirac.Disorder.BornCurrentVertexInfiniteCutoff",
         "LeanCondensedMatter.Models.MassiveDirac.Disorder.BornCurrentVertexWeakDisorder",
@@ -8337,12 +8320,86 @@
       "externalImportCount": 0
     },
     {
+      "name": "LeanCondensedMatter.Transport.Analysis.BesselFormalEntireEvaluation",
+      "sourceFile": "LeanCondensedMatter/Transport/Analysis/BesselFormalEntireEvaluation.lean",
+      "imports": [
+        "LeanCondensedMatter.Transport.Analysis.BesselJFormalAnalyticBridge",
+        "LeanCondensedMatter.Transport.Analysis.BesselYFormalAnalyticBridge"
+      ],
+      "externalImportCount": 2
+    },
+    {
+      "name": "LeanCondensedMatter.Transport.Analysis.BesselJFormalAnalyticBridge",
+      "sourceFile": "LeanCondensedMatter/Transport/Analysis/BesselJFormalAnalyticBridge.lean",
+      "imports": [
+        "LeanCondensedMatter.Transport.Analysis.BesselYFormalCoefficients",
+        "LeanCondensedMatter.Transport.Analysis.PolarFourier"
+      ],
+      "externalImportCount": 0
+    },
+    {
       "name": "LeanCondensedMatter.Transport.Analysis.BesselRadialMoments",
       "sourceFile": "LeanCondensedMatter/Transport/Analysis/BesselRadialMoments.lean",
       "imports": [
         "LeanCondensedMatter.Transport.Analysis.PolarFourier"
       ],
       "externalImportCount": 1
+    },
+    {
+      "name": "LeanCondensedMatter.Transport.Analysis.BesselY0Series",
+      "sourceFile": "LeanCondensedMatter/Transport/Analysis/BesselY0Series.lean",
+      "imports": [
+        "LeanCondensedMatter.Transport.Analysis.BesselRadialMoments"
+      ],
+      "externalImportCount": 8
+    },
+    {
+      "name": "LeanCondensedMatter.Transport.Analysis.BesselY1Series",
+      "sourceFile": "LeanCondensedMatter/Transport/Analysis/BesselY1Series.lean",
+      "imports": [
+        "LeanCondensedMatter.Transport.Analysis.BesselY0Series"
+      ],
+      "externalImportCount": 0
+    },
+    {
+      "name": "LeanCondensedMatter.Transport.Analysis.BesselYAnalyticWronskian",
+      "sourceFile": "LeanCondensedMatter/Transport/Analysis/BesselYAnalyticWronskian.lean",
+      "imports": [
+        "LeanCondensedMatter.Transport.Analysis.BesselCrossedXMoment",
+        "LeanCondensedMatter.Transport.Analysis.BesselFormalEntireEvaluation"
+      ],
+      "externalImportCount": 0
+    },
+    {
+      "name": "LeanCondensedMatter.Transport.Analysis.BesselYFormalAnalyticBridge",
+      "sourceFile": "LeanCondensedMatter/Transport/Analysis/BesselYFormalAnalyticBridge.lean",
+      "imports": [
+        "LeanCondensedMatter.Transport.Analysis.BesselY1Series",
+        "LeanCondensedMatter.Transport.Analysis.BesselYFormalOrderOne"
+      ],
+      "externalImportCount": 0
+    },
+    {
+      "name": "LeanCondensedMatter.Transport.Analysis.BesselYFormalCoefficients",
+      "sourceFile": "LeanCondensedMatter/Transport/Analysis/BesselYFormalCoefficients.lean",
+      "imports": [
+        "LeanCondensedMatter.Transport.Analysis.BesselYFormalWronskian"
+      ],
+      "externalImportCount": 3
+    },
+    {
+      "name": "LeanCondensedMatter.Transport.Analysis.BesselYFormalOrderOne",
+      "sourceFile": "LeanCondensedMatter/Transport/Analysis/BesselYFormalOrderOne.lean",
+      "imports": [
+        "LeanCondensedMatter.Transport.Analysis.BesselYFormalCoefficients"
+      ],
+      "externalImportCount": 0
+    },
+    {
+      "name": "LeanCondensedMatter.Transport.Analysis.BesselYFormalWronskian",
+      "sourceFile": "LeanCondensedMatter/Transport/Analysis/BesselYFormalWronskian.lean",
+      "imports": [],
+      "externalImportCount": 4
     },
     {
       "name": "LeanCondensedMatter.Transport.Analysis.ContinuumMeasure",
@@ -8410,7 +8467,16 @@
       "sourceFile": "LeanCondensedMatter/Transport/Analysis.lean",
       "imports": [
         "LeanCondensedMatter.Transport.Analysis.AngularHarmonics",
+        "LeanCondensedMatter.Transport.Analysis.BesselFormalEntireEvaluation",
+        "LeanCondensedMatter.Transport.Analysis.BesselJFormalAnalyticBridge",
         "LeanCondensedMatter.Transport.Analysis.BesselRadialMoments",
+        "LeanCondensedMatter.Transport.Analysis.BesselY0Series",
+        "LeanCondensedMatter.Transport.Analysis.BesselY1Series",
+        "LeanCondensedMatter.Transport.Analysis.BesselYAnalyticWronskian",
+        "LeanCondensedMatter.Transport.Analysis.BesselYFormalAnalyticBridge",
+        "LeanCondensedMatter.Transport.Analysis.BesselYFormalCoefficients",
+        "LeanCondensedMatter.Transport.Analysis.BesselYFormalOrderOne",
+        "LeanCondensedMatter.Transport.Analysis.BesselYFormalWronskian",
         "LeanCondensedMatter.Transport.Analysis.ContinuumMeasure",
         "LeanCondensedMatter.Transport.Analysis.FourierGeometry",
         "LeanCondensedMatter.Transport.Analysis.PolarFourier",
