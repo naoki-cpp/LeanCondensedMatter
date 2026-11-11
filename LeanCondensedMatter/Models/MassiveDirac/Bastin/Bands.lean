@@ -80,10 +80,7 @@ theorem projectorBastinTraceIntegrand_eq_band_sum
   unfold projectorBastinTraceIntegrand
   dsimp only [projectorBastinOperatorIntegrand]
   unfold projectorResolvent
-  rw [QuantumTheory.sum_smul_sq_of_orthogonalIdempotents
-    (fun band => bandProjectorOperator band v m px py)
-    (bandProjectorOperator_completeOrthogonalIdempotents v m px py hE).toOrthogonalIdempotents]
-  rw [QuantumTheory.sum_smul_sq_of_orthogonalIdempotents
+  simp only [QuantumTheory.sum_smul_sq_of_orthogonalIdempotents
     (fun band => bandProjectorOperator band v m px py)
     (bandProjectorOperator_completeOrthogonalIdempotents v m px py hE).toOrthogonalIdempotents]
   simp only [sum_band]
