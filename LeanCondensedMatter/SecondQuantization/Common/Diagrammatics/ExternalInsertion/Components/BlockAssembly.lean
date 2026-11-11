@@ -1425,6 +1425,73 @@ theorem ExternalInsertionBlockLayout.assembleDiagram_vertexLabel_orderProduct
       exact congrArg g
         (layout.assembleDiagram_vertexLabel_at_shuffledSlot F order B j)
 
+/-- A time attached to the global ordered-simplex slot of a
+block-local interaction vertex is exactly the time pulled back along
+the ambient interaction order to that vertex. No numerical re-sorting
+of external insertion times is involved. -/
+theorem ExternalInsertionBlockLayout.interactionOrderDecomposition_localTime
+    (layout : ExternalInsertionBlockLayout E N)
+    (order : QuarticVertexOrder (Finset.univ : Finset (Fin N)))
+    (τ : Fin (Finset.univ : Finset (Fin N)).card → ℝ)
+    (B : layout.partition.parts)
+    (j : Fin (layout.interactionBlock (Finset.univ : Finset (Fin N)) B).card) :
+    τ ((layout.interactionOrderDecompositionEquiv order).2.slotEquiv ⟨B, j⟩) =
+      τ (order.symm ((layout.interactionEquiv (Finset.univ : Finset (Fin N))).symm
+        ⟨B, (layout.interactionOrderDecompositionEquiv order).1 B j⟩)) := by
+  have h := congrArg (fun v : ↥(Finset.univ : Finset (Fin N)) =>
+    τ (order.symm v)) (layout.interactionOrderDecomposition_slotVertex order B j)
+  simpa only [Equiv.symm_apply_apply] using h
+
+/-- In a physically assembled Wick diagram, the actual global partner
+of any quartic leg at a shuffled interaction slot is precisely the
+inverse-leg transport of its original block-local partner. In particular,
+no propagator can cross between source-partition blocks after any
+interaction-time interleaving. -/
+theorem ExternalInsertionBlockLayout.assembleDiagram_partner_at_shuffledInteractionLeg
+    {ExternalLabel InternalLabel : Type*}
+    (layout : ExternalInsertionBlockLayout E N)
+    (F : ∀ B : layout.partition.parts,
+      ExternalInsertionDiagram ExternalLabel InternalLabel
+        ((B : Finset (Fin (2 * E))).card / 2) N
+        (layout.interactionBlock (Finset.univ : Finset (Fin N)) B))
+    (order : QuarticVertexOrder (Finset.univ : Finset (Fin N)))
+    (B : layout.partition.parts)
+    (j : Fin (layout.interactionBlock (Finset.univ : Finset (Fin N)) B).card)
+    (i : Fin 4) :
+    (layout.assembleDiagram (Finset.univ : Finset (Fin N)) F).pairing.partner
+      (externalInsertionInteractionLeg (E := E)
+        (order ((layout.interactionOrderDecompositionEquiv order).2.slotEquiv
+          ⟨B, j⟩)) i) =
+      (layout.legEquiv (Finset.univ : Finset (Fin N))).symm
+        ⟨B, (F B).pairing.partner
+          (externalInsertionInteractionLeg
+            (E := (B : Finset (Fin (2 * E))).card / 2)
+            ((layout.interactionOrderDecompositionEquiv order).1 B j) i)⟩ := by
+  classical
+  have hleg :
+      layout.legEquiv (Finset.univ : Finset (Fin N))
+        (externalInsertionInteractionLeg (E := E)
+          (order ((layout.interactionOrderDecompositionEquiv order).2.slotEquiv
+            ⟨B, j⟩)) i) =
+        ⟨B, externalInsertionInteractionLeg
+          (E := (B : Finset (Fin (2 * E))).card / 2)
+          ((layout.interactionOrderDecompositionEquiv order).1 B j) i⟩ := by
+    rw [layout.interactionOrderDecomposition_slotVertex order B j]
+    simp only [layout.legEquiv_interactionLeg, Equiv.apply_symm_apply]
+  have hglobal :
+      externalInsertionInteractionLeg (E := E)
+          (order ((layout.interactionOrderDecompositionEquiv order).2.slotEquiv
+            ⟨B, j⟩)) i =
+        (layout.legEquiv (Finset.univ : Finset (Fin N))).symm
+          ⟨B, externalInsertionInteractionLeg
+            (E := (B : Finset (Fin (2 * E))).card / 2)
+            ((layout.interactionOrderDecompositionEquiv order).1 B j) i⟩ := by
+    apply (layout.legEquiv (Finset.univ : Finset (Fin N))).injective
+    simpa only [Equiv.apply_symm_apply] using hleg
+  rw [hglobal]
+  exact layout.assembleDiagram_partner
+    (Finset.univ : Finset (Fin N)) F B _
+
 /-- Reindex a finite sum over every ambient interaction order by the
 independent local block orders and their interleavings, with no
 multiplicity or omission even for zero-interaction blocks. -/
