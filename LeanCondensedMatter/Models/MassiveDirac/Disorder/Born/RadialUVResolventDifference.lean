@@ -222,7 +222,7 @@ theorem massiveDiracUnitResolventDifferenceKernel_norm_le
       field_simp [ne_of_gt hp0]
       ring
     _ = (8 * Real.pi) * p ^ (-3 : ℝ) := by
-      rw [Real.rpow_neg hp0.le, Real.rpow_natCast]
+      rw [Real.rpow_neg hp0.le]
       ring
 
 /-- The two-resolvent spectral-difference kernel is genuinely Bochner
@@ -237,7 +237,7 @@ theorem massiveDiracUnitResolventDifferenceKernel_integrableOn
   have ha1 : (1 : ℝ) ≤ a := by
     dsimp [a]
     exact (le_max_left (1 : ℝ) (2 * ‖s‖)).trans
-      (le_max_left (max 1 (2 * ‖s‖)) (max 1 (2 * ‖t‖))
+      (le_max_left (max 1 (2 * ‖s‖)) (max 1 (2 * ‖t‖)))
   have ha0 : (0 : ℝ) < a := by linarith
   have hK : Continuous (fun p : ℝ =>
       polarFourierZerothAngularKernel (p * c)) :=
@@ -300,7 +300,7 @@ theorem massiveDiracUnitResolvent_UVCenter_sub_eq_integral
         Filter.atTop
         (nhds ((t - s) * (∫ p in Set.Ioi (0 : ℝ),
           massiveDiracUnitResolventDifferenceKernel c s t p))) :=
-    (intervalIntegral_tendsto_integral_Ioi 0 hint tendsto_id).const_mul _
+    (intervalIntegral_tendsto_integral_Ioi 0 hint Filter.tendsto_id).const_mul _
   exact tendsto_nhds_unique
     (massiveDiracUnitResolvent_difference_tendsto c s t hc hs ht)
     habs
