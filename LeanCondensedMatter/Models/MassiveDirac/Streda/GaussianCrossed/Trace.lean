@@ -40,9 +40,7 @@ inductive GaussianCrossedDiagram where
 
 instance : Fintype GaussianCrossedDiagram where
   elems := {.x, .psi}
-  complete := by
-    intro diagram
-    cases diagram <;> simp
+  complete := by intro diagram; cases diagram <;> simp
 
 /-- A finite sum over the two Gaussian crossed topologies is the `X` contribution plus the `Psi`
 contribution. -/

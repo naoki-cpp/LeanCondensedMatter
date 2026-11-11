@@ -23,8 +23,6 @@ namespace QuantumTheory.Models.MassiveDirac
 
 noncomputable section
 
-open QuantumTheory.Transport
-
 open Filter QuantumTheory.Transport
 
 /-- A fixed direction-indexed ordered Bastin band-pair contribution tends to zero when the probe
@@ -65,11 +63,10 @@ theorem tendsto_diagonalBastinTraceContribution_zero
       (fun broadening : ℝ =>
         diagonalBastinTraceContribution e v m px py probeEnergy broadening)
       (nhds 0) (nhds 0) := by
-  have hl := tendsto_bastinBandPairContribution_zero
-    0 1 .lower .lower e v m px py probeEnergy hlower hlower
-  have hu := tendsto_bastinBandPairContribution_zero
-    0 1 .upper .upper e v m px py probeEnergy hupper hupper
-  simpa only [diagonalBastinTraceContribution, sum_band, zero_add] using hl.add hu
+  simpa only [diagonalBastinTraceContribution, Finset.sum_const_zero] using
+    (tendsto_finsetSum Finset.univ (fun band _ =>
+      tendsto_bastinBandPairContribution_zero 0 1 band band e v m px py probeEnergy
+        (by cases band <;> assumption) (by cases band <;> assumption)))
 
 /-- The interband Hall sector also tends pointwise to zero away from both band energies. Its nonzero
 clean Hall weight therefore cannot be recovered by taking the pointwise limit before energy
@@ -82,12 +79,11 @@ theorem tendsto_interbandBastinTraceContribution_zero
       (fun broadening : ℝ =>
         interbandBastinTraceContribution e v m px py probeEnergy broadening)
       (nhds 0) (nhds 0) := by
-  have hlu := tendsto_bastinBandPairContribution_zero
-    0 1 .lower .upper e v m px py probeEnergy hlower hupper
-  have hul := tendsto_bastinBandPairContribution_zero
-    0 1 .upper .lower e v m px py probeEnergy hupper hlower
-  simpa only [interbandBastinTraceContribution, sum_band, oppositeBand_lower,
-    oppositeBand_upper, zero_add] using hlu.add hul
+  simpa only [interbandBastinTraceContribution, Finset.sum_const_zero] using
+    (tendsto_finsetSum Finset.univ (fun band _ =>
+      tendsto_bastinBandPairContribution_zero 0 1 band (oppositeBand band)
+        e v m px py probeEnergy
+        (by cases band <;> assumption) (by cases band <;> assumption)))
 
 /-- Away from the Dirac degeneracy and away from both band energies, the full projector-expanded
 Bastin trace tends pointwise to zero as `η → 0`. -/
@@ -100,16 +96,16 @@ theorem tendsto_projectorBastinTraceIntegrand_zero
       (fun broadening : ℝ =>
         projectorBastinTraceIntegrand e v m px py probeEnergy broadening)
       (nhds 0) (nhds 0) := by
-  have hdiag := tendsto_diagonalBastinTraceContribution_zero
-    e v m px py probeEnergy hlower hupper
-  have hinter := tendsto_interbandBastinTraceContribution_zero
-    e v m px py probeEnergy hlower hupper
   have hsum : Tendsto
       (fun broadening : ℝ =>
         diagonalBastinTraceContribution e v m px py probeEnergy broadening +
           interbandBastinTraceContribution e v m px py probeEnergy broadening)
       (nhds 0) (nhds 0) := by
-    simpa using hdiag.add hinter
+    simpa using
+      (tendsto_diagonalBastinTraceContribution_zero
+        e v m px py probeEnergy hlower hupper).add
+      (tendsto_interbandBastinTraceContribution_zero
+        e v m px py probeEnergy hlower hupper)
   refine hsum.congr' ?_
   filter_upwards with broadening
   exact (projectorBastinTraceIntegrand_eq_diagonal_add_interband
