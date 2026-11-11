@@ -113,16 +113,16 @@ def energy (v m px py : ℝ) : ℝ :=
 inductive Band where
   | lower
   | upper
-  deriving DecidableEq, Fintype
+  deriving DecidableEq
+
+instance : Fintype Band where
+  elems := {.lower, .upper}
+  complete := by intro band; cases band <;> simp
 
 /-- A finite sum over the massive-Dirac bands is the lower-band term plus the upper-band term. -/
 theorem sum_band {M : Type*} [AddCommMonoid M] (f : Band → M) :
     ∑ band : Band, f band = f .lower + f .upper := by
-  have h : (Finset.univ : Finset Band) = {.lower, .upper} := by
-    ext band
-    cases band <;> simp
-  change (Finset.univ : Finset Band).sum f = _
-  rw [h]
+  change ∑ band ∈ ({.lower, .upper} : Finset Band), f band = _
   simp
 
 /-- The other band in the two-band massive-Dirac model. -/

@@ -36,18 +36,18 @@ massive-Dirac anomalous Hall response. -/
 inductive GaussianCrossedDiagram where
   | x
   | psi
-  deriving DecidableEq, Fintype
+  deriving DecidableEq
+
+instance : Fintype GaussianCrossedDiagram where
+  elems := {.x, .psi}
+  complete := by intro diagram; cases diagram <;> simp
 
 /-- A finite sum over the two Gaussian crossed topologies is the `X` contribution plus the `Psi`
 contribution. -/
 theorem sum_gaussianCrossedDiagram {M : Type*} [AddCommMonoid M]
     (f : GaussianCrossedDiagram → M) :
     ∑ diagram : GaussianCrossedDiagram, f diagram = f .x + f .psi := by
-  have h : (Finset.univ : Finset GaussianCrossedDiagram) = {.x, .psi} := by
-    ext diagram
-    cases diagram <;> simp
-  change (Finset.univ : Finset GaussianCrossedDiagram).sum f = _
-  rw [h]
+  change ∑ diagram ∈ ({.x, .psi} : Finset GaussianCrossedDiagram), f diagram = _
   simp
 
 /-- Pointwise trace kernel for the two leading crossed Gaussian Hall topologies.
