@@ -47,6 +47,24 @@ noncomputable def scalarSpectralDifferenceCoefficient
     scalarResolventCoefficient
       (advancedSpectralParameter probeEnergy broadening) targetEnergy
 
+/-- Pointwise retarded-minus-advanced spectral coefficient vanishes away from a
+real spectral pole. This is a scalar statement; taking a limit before energy integration
+does not represent the distributional Hall response. -/
+theorem tendsto_scalarSpectralDifferenceCoefficient_zero
+    (targetEnergy probeEnergy : ℝ)
+    (hprobe : probeEnergy ≠ targetEnergy) :
+    Filter.Tendsto
+      (fun broadening : ℝ =>
+        scalarSpectralDifferenceCoefficient targetEnergy probeEnergy broadening)
+      (nhds 0) (nhds 0) := by
+  have hret := tendsto_scalarResolventCoefficient_spectralParameter_zero
+    .retarded probeEnergy targetEnergy hprobe
+  have hadv := tendsto_scalarResolventCoefficient_spectralParameter_zero
+    .advanced probeEnergy targetEnergy hprobe
+  simpa only [scalarSpectralDifferenceCoefficient, retardedSpectralParameter,
+    advancedSpectralParameter, spectralParameter_retarded_ofRegulator,
+    spectralParameter_advanced_ofRegulator, sub_self] using hret.sub hadv
+
 /-- The scalar retarded-minus-advanced coefficient is exactly the Lorentzian spectral pole. -/
 theorem scalarSpectralDifferenceCoefficient_eq_lorentzian
     (targetEnergy probeEnergy broadening : ℝ)
