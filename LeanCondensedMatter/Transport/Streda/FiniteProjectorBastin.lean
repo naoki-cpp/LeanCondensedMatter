@@ -28,6 +28,12 @@ variable {H ι : Type*}
 variable [NormedAddCommGroup H] [InnerProductSpace ℂ H]
 variable [FiniteDimensional ℂ H] [Fintype ι]
 
+/-- Bastin operator polynomial for supplied retarded and advanced propagators.
+Concrete models provide their currents and spectral projector resolvents. -/
+noncomputable def bastinOperatorKernelFromPropagators
+    (J K retarded advanced : H →L[ℂ] H) : H →L[ℂ] H :=
+  (J * retarded ^ 2 * K - K * advanced ^ 2 * J) * (retarded - advanced)
+
 /-- Expand a traced product containing two independently weighted finite
 projector sums. Moving the terminal projector to the front uses ordinary
 finite-dimensional cyclicity, not any assumption on the projectors. -/
