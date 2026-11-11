@@ -61,7 +61,15 @@ theorem ExternalInsertionDiagram.componentOrderedDiagram_eq_slotCongr
     have hback := Pairing.cast_partner hcard r.pairing p
     have hforward :=
       congrArg (finCongr (congrArg (fun k : ℕ => 2 * k) hcard)) hback
-    simpa [Fin.cast_trans] using hforward
+    have hsymm :
+        finCongr (congrArg (fun k : ℕ => 2 * k) hcard.symm) =
+          (finCongr (congrArg (fun k : ℕ => 2 * k) hcard)).symm := by
+      apply Equiv.ext
+      intro x
+      apply Fin.ext
+      rfl
+    rw [hsymm] at hforward
+    simpa only [Equiv.apply_symm_apply] using hforward
 
 end Common
 end SecondQuantization
