@@ -7,6 +7,12 @@
       "externalImportCount": 2
     },
     {
+      "name": "LeanCondensedMatter.Analysis.Algebra.ScalarResolvent",
+      "sourceFile": "LeanCondensedMatter/Analysis/Algebra/ScalarResolvent.lean",
+      "imports": [],
+      "externalImportCount": 2
+    },
+    {
       "name": "LeanCondensedMatter.Analysis.Calculus.AlgebraicDerivative",
       "sourceFile": "LeanCondensedMatter/Analysis/Calculus/AlgebraicDerivative.lean",
       "imports": [],
@@ -276,7 +282,7 @@
       "name": "LeanCondensedMatter.Analysis.InternalSpace.Pauli",
       "sourceFile": "LeanCondensedMatter/Analysis/InternalSpace/Pauli.lean",
       "imports": [],
-      "externalImportCount": 10
+      "externalImportCount": 11
     },
     {
       "name": "LeanCondensedMatter.Analysis.LatticeGeometry",
@@ -1810,7 +1816,8 @@
       "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Bastin/Bands.lean",
       "imports": [
         "LeanCondensedMatter.Models.MassiveDirac.Bastin.Berry",
-        "LeanCondensedMatter.Models.MassiveDirac.Model.OperatorSpectral"
+        "LeanCondensedMatter.Models.MassiveDirac.Model.OperatorSpectral",
+        "LeanCondensedMatter.Transport.Streda.InterbandPole"
       ],
       "externalImportCount": 0
     },
@@ -2216,7 +2223,7 @@
       "imports": [
         "LeanCondensedMatter.Models.MassiveDirac.Propagator.Basic"
       ],
-      "externalImportCount": 3
+      "externalImportCount": 2
     },
     {
       "name": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVBesselJ",
@@ -2245,12 +2252,38 @@
       "externalImportCount": 2
     },
     {
+      "name": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVHankelReduction",
+      "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Disorder/Born/RadialUVHankelReduction.lean",
+      "imports": [
+        "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVBesselJ",
+        "LeanCondensedMatter.Transport.Analysis.BesselY0Series"
+      ],
+      "externalImportCount": 1
+    },
+    {
+      "name": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVHankelUnitReduction",
+      "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Disorder/Born/RadialUVHankelUnitReduction.lean",
+      "imports": [
+        "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVHankelReduction",
+        "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVUnitVelocity"
+      ],
+      "externalImportCount": 2
+    },
+    {
       "name": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVIntegrability",
       "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Disorder/Born/RadialUVIntegrability.lean",
       "imports": [
         "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVBound"
       ],
       "externalImportCount": 6
+    },
+    {
+      "name": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVUnitVelocity",
+      "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Disorder/Born/RadialUVUnitVelocity.lean",
+      "imports": [
+        "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVBesselJ"
+      ],
+      "externalImportCount": 0
     },
     {
       "name": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.SelfEnergy",
@@ -2372,6 +2405,7 @@
       "name": "LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornRadialMoments",
       "sourceFile": "LeanCondensedMatter/Models/MassiveDirac/Disorder/FiniteBroadeningBornRadialMoments.lean",
       "imports": [
+        "LeanCondensedMatter.Analysis.Algebra.ScalarResolvent",
         "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.Denominator",
         "LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornInvertibility",
         "LeanCondensedMatter.Transport.Analysis.ContinuumMeasure"
@@ -2594,6 +2628,9 @@
       "imports": [
         "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVBesselJ",
         "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVFinitePart",
+        "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVHankelReduction",
+        "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVHankelUnitReduction",
+        "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVUnitVelocity",
         "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.UltravioletSelfEnergy",
         "LeanCondensedMatter.Models.MassiveDirac.Disorder.BornCurrentVertexInfiniteCutoff",
         "LeanCondensedMatter.Models.MassiveDirac.Disorder.BornCurrentVertexWeakDisorder",

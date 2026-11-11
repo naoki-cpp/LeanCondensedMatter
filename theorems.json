@@ -44,6 +44,48 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
+    "terminal": false,
+    "statement": "∀ {K : Type u_1} [inst : Field K] (a b x : K),\n  a - x ≠ 0 → b - x ≠ 0 → (b - a) * ((a - x) * (b - x))⁻¹ = (a - x)⁻¹ - (b - x)⁻¹",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "Algebra.scalarResolvent_gap_mul_inverse_product",
+    "module": "LeanCondensedMatter.Analysis.Algebra.ScalarResolvent",
+    "externalAxioms": [],
+    "docString": "A common scalar shift cancels from the two-resolvent difference.\nNo assumption that the spectral parameters are distinct is needed. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadial_ra_weighted_moment_mul_center_gap"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadial_ra_weighted_moment_mul_center_gap"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
     "terminal": true,
     "statement": "∀ {H : Type u_1} [inst : NormedAddCommGroup H] [inst_1 : InnerProductSpace ℂ H] [inst_2 : CompleteSpace H]\n  {ι : Type u_2} [inst_3 : Fintype ι] {κ : Type u_3} (data : BerryGeometry.PointwiseEigenbasisData κ ι H) (μ : κ)\n  (n : ι), (data.berryConnection μ n n).im = 0",
     "standardAxioms": [
@@ -24128,6 +24170,7 @@
       "InternalSpace.pauliShiftMatrix_mul_closedInverse",
       "InternalSpace.trace_four_antisymmetric_eq_xz_plane_minors",
       "InternalSpace.trace_four_pauliAffine_antisymmetric",
+      "InternalSpace.trace_oppositePauliProjectors_shiftedYX",
       "InternalSpace.trace_pauliBasis_mul_pauliCombination",
       "QuantumTheory.Models.MassiveDirac.hamiltonian_mul_self",
       "QuantumTheory.Models.MassiveDirac.polarPauliMatrix_inPlane_sandwich_eq_harmonics",
@@ -24146,6 +24189,7 @@
       "InternalSpace.pauliShiftMatrix_mul_closedInverse",
       "InternalSpace.trace_four_antisymmetric_eq_xz_plane_minors",
       "InternalSpace.trace_four_pauliAffine_antisymmetric",
+      "InternalSpace.trace_oppositePauliProjectors_shiftedYX",
       "InternalSpace.trace_pauliBasis_mul_pauliCombination",
       "QuantumTheory.Models.MassiveDirac.hamiltonian_mul_self",
       "QuantumTheory.Models.MassiveDirac.polarPauliMatrix_inPlane_sandwich_eq_harmonics",
@@ -24154,7 +24198,7 @@
       "_private.LeanCondensedMatter.Analysis.InternalSpace.Pauli.0.InternalSpace.pauliBasis_mul_pauliBasis",
       "_private.LeanCondensedMatter.Models.MassiveDirac.Model.FermiSurfaceOverlap.0.QuantumTheory.Models.MassiveDirac.upperBandProjectorOverlap_eq"
     ],
-    "compiledConsumerCount": 11,
+    "compiledConsumerCount": 12,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -24640,11 +24684,11 @@
     "dependents": [
       "InternalSpace.eq_pauliAffine_coefficients",
       "InternalSpace.pauliShiftMatrix_mul_closedInverse",
+      "InternalSpace.trace_oppositePauliProjectors_shiftedYX",
+      "InternalSpace.trace_oppositePauliProjectors_xy",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix_eq_scalarGenerator",
-      "QuantumTheory.Models.MassiveDirac.forceMatrixTraceNumerator_xy_eq",
       "QuantumTheory.Models.MassiveDirac.hamiltonian_eq_pauliCombination",
       "QuantumTheory.Models.MassiveDirac.polarPauliMatrix_inPlane_sandwich_eq_harmonics",
-      "QuantumTheory.Models.RashbaExchange.forceMatrixTraceNumerator_xy_eq",
       "QuantumTheory.SpinHalf.spinMatrix_cartesianBasisVector",
       "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.Radial.0.QuantumTheory.Models.MassiveDirac.trace_directionPauli_inPlane_eq"
     ],
@@ -24656,11 +24700,11 @@
     "compiledConsumers": [
       "InternalSpace.eq_pauliAffine_coefficients",
       "InternalSpace.pauliShiftMatrix_mul_closedInverse",
+      "InternalSpace.trace_oppositePauliProjectors_shiftedYX",
+      "InternalSpace.trace_oppositePauliProjectors_xy",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadialRealSpaceGreenMatrix_eq_scalarGenerator",
-      "QuantumTheory.Models.MassiveDirac.forceMatrixTraceNumerator_xy_eq",
       "QuantumTheory.Models.MassiveDirac.hamiltonian_eq_pauliCombination",
       "QuantumTheory.Models.MassiveDirac.polarPauliMatrix_inPlane_sandwich_eq_harmonics",
-      "QuantumTheory.Models.RashbaExchange.forceMatrixTraceNumerator_xy_eq",
       "QuantumTheory.SpinHalf.spinMatrix_cartesianBasisVector",
       "_private.LeanCondensedMatter.Models.MassiveDirac.Streda.BornLadder.Radial.0.QuantumTheory.Models.MassiveDirac.trace_directionPauli_inPlane_eq"
     ],
@@ -25459,6 +25503,95 @@
     "completedMention": false,
     "compiledConsumers": [
       "InternalSpace.trace_four_antisymmetric_eq_pauliCoefficients"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (u : InternalSpace.PauliAxis → ℂ) (cx cy a : ℂ),\n  u ⬝ᵥ u = 1 →\n    ((1 / 2) • (1 - InternalSpace.pauliCombination u) * (cx • 1 - a • InternalSpace.pauliY) *\n            (1 / 2) • (1 + InternalSpace.pauliCombination u) *\n          (cy • 1 + a • InternalSpace.pauliX)).trace =\n      a ^ 2 * (u InternalSpace.PauliAxis.x * u InternalSpace.PauliAxis.y) -\n        Complex.I * a ^ 2 * u InternalSpace.PauliAxis.z",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "InternalSpace.trace_oppositePauliProjectors_shiftedYX",
+    "module": "LeanCondensedMatter.Analysis.InternalSpace.Pauli",
+    "externalAxioms": [],
+    "docString": "Scalar velocity shifts cancel from a normalized complementary-projector\ntrace with transverse Pauli currents, independently of the physical model. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.RashbaExchange.forceMatrixTraceNumerator_xy_eq"
+    ],
+    "dependencies": [
+      "InternalSpace.dotProduct_pauliAxis",
+      "InternalSpace.pauliCombination_eq_components"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.RashbaExchange.forceMatrixTraceNumerator_xy_eq"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (u : InternalSpace.PauliAxis → ℂ) (a b : ℂ),\n  ((1 / 2) • (1 - InternalSpace.pauliCombination u) * a • InternalSpace.pauliX *\n          (1 / 2) • (1 + InternalSpace.pauliCombination u) *\n        b • InternalSpace.pauliY).trace =\n    a * b * (-(u InternalSpace.PauliAxis.x * u InternalSpace.PauliAxis.y) - Complex.I * u InternalSpace.PauliAxis.z)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "InternalSpace.trace_oppositePauliProjectors_xy",
+    "module": "LeanCondensedMatter.Analysis.InternalSpace.Pauli",
+    "externalAxioms": [],
+    "docString": "Model-independent interband x-y trace between complementary Pauli projectors.\nNo Bloch-vector normalization is needed for currents with no scalar component. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.MassiveDirac.forceMatrixTraceNumerator_xy_eq"
+    ],
+    "dependencies": [
+      "InternalSpace.pauliCombination_eq_components"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.forceMatrixTraceNumerator_xy_eq"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -57100,6 +57233,44 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
+    "terminal": true,
+    "statement": "∀ {v : ℝ}, QuantumTheory.Models.MassiveDirac.MassiveDiracUpperHalfPlaneHankelTransform v → v ≠ 0",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.MassiveDirac.MassiveDiracUpperHalfPlaneHankelTransform.velocity_ne_zero",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVHankelReduction",
+    "externalAxioms": [],
+    "docString": "A valid fixed-center Hankel-transform hypothesis necessarily has\nnonzero velocity, as required by the Fourier UV convergence theorem. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
     "terminal": false,
     "statement": "∀ (params : QuantumTheory.Models.MassiveDirac.ScalarImpurityParameters)\n  (greenLoop : QuantumTheory.Models.MassiveDirac.Matrix2) (hinvertible : IsUnit (params.shiftMatrix greenLoop)),\n  params.inverseShiftMatrix greenLoop hinvertible * params.shiftMatrix greenLoop = 1",
     "standardAxioms": [
@@ -58523,7 +58694,7 @@
       "QuantumTheory.Models.MassiveDirac.targetCenteredZeroTemperatureInterbandBastinPairIntegral_eq_neg_two_i_mul_poleIntegral"
     ],
     "dependencies": [
-      "QuantumTheory.Models.MassiveDirac.spectralDifferenceCoefficient_eq_lorentzian"
+      "QuantumTheory.Transport.scalarSpectralDifferenceCoefficient_eq_lorentzian"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -59221,6 +59392,48 @@
       "_private.LeanCondensedMatter.Models.MassiveDirac.Disorder.BornCurrentVertexRung.0.QuantumTheory.Models.MassiveDirac.continuumBornPauliGreenOperator_polar_eq"
     ],
     "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (z : ℂ) (r : ℝ), 0 < r → z ≠ 0 → (z / ↑r ^ 2).sqrt = z.sqrt / ↑r",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.MassiveDirac.complexSqrt_div_positiveReal_sq",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVHankelUnitReduction",
+    "externalAxioms": [],
+    "docString": "Scaling the argument by a strictly positive real preserves the\nprincipal square-root branch. Unlike the incorrect unrestricted complex\nsqrt-multiplication rule, this holds for every nonzero complex `z`\nbecause the scale is positive real. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialOutgoingHankelCandidate_scale_velocity"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialOutgoingHankelCandidate_scale_velocity"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -67034,9 +67247,9 @@
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadial_ra_pole_moment_mul_center_gap_eq_log"
     ],
     "dependencies": [
+      "Algebra.scalarResolvent_gap_mul_inverse_product",
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominator_eq_radial",
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominator_ne_zero",
-      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialDenominator_inv_product_mul_center_gap"
+      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonDenominator_ne_zero"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -69396,7 +69609,7 @@
       "QuantumTheory.Models.MassiveDirac.forceMatrixBerryCurvature_eq_berryCurvature"
     ],
     "dependencies": [
-      "InternalSpace.pauliCombination_eq_components",
+      "InternalSpace.trace_oppositePauliProjectors_xy",
       "QuantumTheory.Models.MassiveDirac.bandProjector_add_oppositeBand",
       "QuantumTheory.Models.MassiveDirac.bandProjector_eq_pauliCombination"
     ],
@@ -72534,6 +72747,48 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
+    "terminal": false,
+    "statement": "∀ (v c b : ℝ) (center : ℂ),\n  v ≠ 0 →\n    ∫ (p : ℝ) in 0..b, ↑p * (↑(2 * Real.pi) * Complex.besselJ 0 ↑(p * c)) * (center - ↑(v ^ 2 * p ^ 2))⁻¹ =\n      (↑v ^ 2)⁻¹ *\n        ∫ (p : ℝ) in 0..b, ↑p * (↑(2 * Real.pi) * Complex.besselJ 0 ↑(p * c)) * (center / ↑v ^ 2 - ↑(p ^ 2))⁻¹",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.MassiveDirac.massiveDiracRadialBesselJ_integral_scale_velocity",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVUnitVelocity",
+    "externalAxioms": [],
+    "docString": "Removing the velocity scale from the *finite-cutoff* resolvent\nradial Fourier integral is an exact algebraic identity. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVCenter_scale_velocity"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVCenter_scale_velocity"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
     "terminal": true,
     "statement": "∀ (v c : ℝ) (center : ℂ),\n  v ≠ 0 →\n    c ≠ 0 →\n      center.im ≠ 0 →\n        Filter.Tendsto\n          (fun b =>\n            ∫ (p : ℝ) in 0..b, ↑p * (↑(2 * Real.pi) * Complex.besselJ 0 ↑(p * c)) * (center - ↑(v ^ 2 * p ^ 2))⁻¹)\n          Filter.atTop (nhds (QuantumTheory.Models.MassiveDirac.massiveDiracRadialBesselJCenterUVValue v c center))",
     "standardAxioms": [
@@ -72754,48 +73009,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (v p : ℝ) (energyR massR energyA massA : ℂ),\n  QuantumTheory.Models.MassiveDirac.massiveDiracRadialDenominator v p energyR massR ≠ 0 →\n    QuantumTheory.Models.MassiveDirac.massiveDiracRadialDenominator v p energyA massA ≠ 0 →\n      (energyA ^ 2 - massA ^ 2 - (energyR ^ 2 - massR ^ 2)) *\n          (QuantumTheory.Models.MassiveDirac.massiveDiracRetardedAdvancedRadialDenominatorProduct v p energyR massR\n              energyA massA)⁻¹ =\n        (QuantumTheory.Models.MassiveDirac.massiveDiracRadialDenominator v p energyR massR)⁻¹ -\n          (QuantumTheory.Models.MassiveDirac.massiveDiracRadialDenominator v p energyA massA)⁻¹",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Models.MassiveDirac.massiveDiracRadialDenominator_inv_product_mul_center_gap",
-    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialKernel",
-    "externalAxioms": [],
-    "docString": "The gap between two radial Dyson denominator centers converts their\ntwo-pole inverse into the difference of single-side resolvents. The radial\nmomentum term cancels from the gap. No division by the center gap is needed. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadial_ra_weighted_moment_mul_center_gap"
-    ],
-    "dependencies": [],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonRadial_ra_weighted_moment_mul_center_gap"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ (v c : ℝ) (energy mass : ℂ),\n  v ≠ 0 →\n    c ≠ 0 →\n      (∀ (p : ℝ), QuantumTheory.Models.MassiveDirac.massiveDiracRadialDenominator v p energy mass ≠ 0) →\n        ∃ value,\n          Filter.Tendsto\n            (fun b =>\n              ∫ (p : ℝ) in 0..b,\n                ↑p * QuantumTheory.Transport.polarFourierZerothAngularKernel (p * c) *\n                  (QuantumTheory.Models.MassiveDirac.massiveDiracRadialDenominator v p energy mass)⁻¹)\n            Filter.atTop (nhds value)",
     "standardAxioms": [
       "Classical.choice",
@@ -72937,7 +73150,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": false,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -72949,7 +73162,8 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialBesselJCenterUVValue_conj"
+      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialBesselJCenterUVValue_conj",
+      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVCenter_eq_lowerHalfPlane_of_upper"
     ],
     "dependencies": [
       "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourier_tendsto_uvValue_center",
@@ -72958,9 +73172,10 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialBesselJCenterUVValue_conj"
+      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialBesselJCenterUVValue_conj",
+      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVCenter_eq_lowerHalfPlane_of_upper"
     ],
-    "compiledConsumerCount": 1,
+    "compiledConsumerCount": 2,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -73022,8 +73237,98 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": true,
-    "statement": "∀ (v c : ℝ) (center : ℂ),\n  v ≠ 0 →\n    c ≠ 0 →\n      center.im ≠ 0 →\n        QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVCenter v (-c) center =\n          QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVCenter v c center",
+    "terminal": false,
+    "statement": "∀ (v c : ℝ) (center : ℂ),\n  v ≠ 0 →\n    c ≠ 0 →\n      center.im ≠ 0 →\n        QuantumTheory.Models.MassiveDirac.MassiveDiracUpperHalfPlaneHankelTransform v →\n          QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVCenter v c center =\n            if 0 < center.im then QuantumTheory.Models.MassiveDirac.massiveDiracRadialOutgoingHankelCandidate v c center\n            else QuantumTheory.Models.MassiveDirac.massiveDiracRadialLowerHalfPlaneHankelCandidate v c center",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVCenter_eq_halfPlaneHankel_of_upper",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVHankelReduction",
+    "externalAxioms": [],
+    "docString": "Fixed-center half-plane Fourier–Hankel formula for nonreal quadratic\nspectral center, *conditional only on the single upper branch identity*.\nBoth the lower branch and negative radius are reduced to already\nproved symmetries. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVCenter_halfPlaneHankel_iff_upper"
+    ],
+    "dependencies": [
+      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVCenter_eq_lowerHalfPlane_of_upper",
+      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVCenter_eq_outgoing_of_upper"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVCenter_halfPlaneHankel_iff_upper"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (v c : ℝ) (center : ℂ),\n  v ≠ 0 →\n    c ≠ 0 →\n      center.im < 0 →\n        QuantumTheory.Models.MassiveDirac.MassiveDiracUpperHalfPlaneHankelTransform v →\n          QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVCenter v c center =\n            QuantumTheory.Models.MassiveDirac.massiveDiracRadialLowerHalfPlaneHankelCandidate v c center",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVCenter_eq_lowerHalfPlane_of_upper",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVHankelReduction",
+    "externalAxioms": [],
+    "docString": "The lower-half-plane fixed-center transform follows\n*without another contour integral*: Schwarz reflection of the exact\nFourier UV boundary turns the upper-plane expression into its\nlower-plane Schwarz reflection. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVCenter_eq_halfPlaneHankel_of_upper"
+    ],
+    "dependencies": [
+      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVCenter_conj",
+      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVCenter_eq_outgoing_of_upper"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVCenter_eq_halfPlaneHankel_of_upper"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (v c : ℝ) (center : ℂ),\n  v ≠ 0 →\n    c ≠ 0 →\n      0 < center.im →\n        QuantumTheory.Models.MassiveDirac.MassiveDiracUpperHalfPlaneHankelTransform v →\n          QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVCenter v c center =\n            QuantumTheory.Models.MassiveDirac.massiveDiracRadialOutgoingHankelCandidate v c center",
     "standardAxioms": [
       "Classical.choice",
       "Quot.sound",
@@ -73035,21 +73340,159 @@
     "retainedNeedsReview": false,
     "retainedMention": false,
     "projectAxioms": [],
+    "name": "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVCenter_eq_outgoing_of_upper",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVHankelReduction",
+    "externalAxioms": [],
+    "docString": "If the upper-half-plane Fourier–Hankel identity is established at\npositive radius, the result extends to *both signs* of every nonzero\nreal radius by the already-proved Fourier parity. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVCenter_eq_halfPlaneHankel_of_upper",
+      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVCenter_eq_lowerHalfPlane_of_upper"
+    ],
+    "dependencies": [
+      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVCenter_neg",
+      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialOutgoingHankelCandidate_neg"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVCenter_eq_halfPlaneHankel_of_upper",
+      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVCenter_eq_lowerHalfPlane_of_upper"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (v : ℝ),\n  v ≠ 0 →\n    ((∀ (c : ℝ) (center : ℂ),\n        c ≠ 0 →\n          center.im ≠ 0 →\n            QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVCenter v c center =\n              if 0 < center.im then\n                QuantumTheory.Models.MassiveDirac.massiveDiracRadialOutgoingHankelCandidate v c center\n              else QuantumTheory.Models.MassiveDirac.massiveDiracRadialLowerHalfPlaneHankelCandidate v c center) ↔\n      QuantumTheory.Models.MassiveDirac.MassiveDiracUpperHalfPlaneHankelTransform v)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVCenter_halfPlaneHankel_iff_upper",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVHankelReduction",
+    "externalAxioms": [],
+    "docString": "**Exact logical reduction:** the Fourier UV limit equals the half-plane\nHankel expression for all nonreal centers and nonzero radii if and only\nif the positive-radius upper-half-plane transform holds.\nThe forward implication specializes; the reverse uses parity and\nSchwarz reflection. No Fourier–Hankel integral is assumed proved. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVCenter_eq_halfPlaneHankel_of_upper"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (v c : ℝ) (center : ℂ),\n  v ≠ 0 →\n    c ≠ 0 →\n      center.im ≠ 0 →\n        QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVCenter v (-c) center =\n          QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVCenter v c center",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
     "name": "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVCenter_neg",
     "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVFinitePart",
     "externalAxioms": [],
     "docString": "Evenness is inherited from the finite-cutoff angular kernel, without\na choice of square-root branch or a running Born limit. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [],
+    "dependents": [
+      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVCenter_eq_outgoing_of_upper"
+    ],
     "dependencies": [
       "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourier_tendsto_uvValue_center",
       "QuantumTheory.Transport.polarFourierZerothAngularKernel_neg"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [],
-    "compiledConsumerCount": 0,
+    "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVCenter_eq_outgoing_of_upper"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (v c : ℝ) (center : ℂ),\n  v ≠ 0 →\n    c ≠ 0 →\n      center.im ≠ 0 →\n        QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVCenter v c center =\n          (↑v ^ 2)⁻¹ * QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVCenter 1 c (center / ↑v ^ 2)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVCenter_scale_velocity",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVUnitVelocity",
+    "externalAxioms": [],
+    "docString": "The UV Fourier value at arbitrary nonzero real velocity is\nthe unit-velocity UV value at rescaled quadratic spectral center.\nBoth UV values are defined as limits of the same cutoff integral,\nso no interchange of limits or arbitrary power-series evaluation\nis required. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.MassiveDirac.massiveDiracUpperHalfPlaneHankelTransform_of_unitVelocity"
+    ],
+    "dependencies": [
+      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialBesselJ_integral_scale_velocity",
+      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourier_tendsto_uvValue_center",
+      "QuantumTheory.Models.MassiveDirac.massiveDiracRadial_center_div_velocity_sq_im",
+      "QuantumTheory.Transport.polarFourierZerothAngularKernel_eq_besselJ"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.massiveDiracUpperHalfPlaneHankelTransform_of_unitVelocity"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -73267,7 +73710,8 @@
     "dependents": [
       "QuantumTheory.Models.MassiveDirac.massiveDiracRadialBesselJ_tendsto_uvValue",
       "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVCenter_conj",
-      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVCenter_neg"
+      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVCenter_neg",
+      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVCenter_scale_velocity"
     ],
     "dependencies": [
       "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourier_tendsto_uvFinitePartAt_center"
@@ -73277,9 +73721,224 @@
     "compiledConsumers": [
       "QuantumTheory.Models.MassiveDirac.massiveDiracRadialBesselJ_tendsto_uvValue",
       "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVCenter_conj",
-      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVCenter_neg"
+      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVCenter_neg",
+      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVCenter_scale_velocity"
     ],
-    "compiledConsumerCount": 3,
+    "compiledConsumerCount": 4,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (v c : ℝ) (center : ℂ),\n  QuantumTheory.Models.MassiveDirac.massiveDiracRadialLowerHalfPlaneHankelCandidate v (-c) center =\n    QuantumTheory.Models.MassiveDirac.massiveDiracRadialLowerHalfPlaneHankelCandidate v c center",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.MassiveDirac.massiveDiracRadialLowerHalfPlaneHankelCandidate_neg",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVHankelReduction",
+    "externalAxioms": [],
+    "docString": "The lower-half-plane candidate inherits the same radial parity. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialOutgoingHankelCandidate_neg"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (v c : ℝ) (center : ℂ),\n  QuantumTheory.Models.MassiveDirac.massiveDiracRadialOutgoingHankelCandidate v (-c) center =\n    QuantumTheory.Models.MassiveDirac.massiveDiracRadialOutgoingHankelCandidate v c center",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.MassiveDirac.massiveDiracRadialOutgoingHankelCandidate_neg",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVHankelReduction",
+    "externalAxioms": [],
+    "docString": "Outgoing Bessel/Hankel reference depends on radius only through\n`|c|`, just like the exact finite-cutoff Fourier transform. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVCenter_eq_outgoing_of_upper",
+      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialLowerHalfPlaneHankelCandidate_neg"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVCenter_eq_outgoing_of_upper",
+      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialLowerHalfPlaneHankelCandidate_neg"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (v c : ℝ) (center : ℂ),\n  v ≠ 0 →\n    center ≠ 0 →\n      QuantumTheory.Models.MassiveDirac.massiveDiracRadialOutgoingHankelCandidate v c center =\n        (↑v ^ 2)⁻¹ * QuantumTheory.Models.MassiveDirac.massiveDiracRadialOutgoingHankelCandidate 1 c (center / ↑v ^ 2)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.MassiveDirac.massiveDiracRadialOutgoingHankelCandidate_scale_velocity",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVHankelUnitReduction",
+    "externalAxioms": [],
+    "docString": "The outgoing candidate scales with velocity exactly as the\noriginal Fourier resolvent does, including the principal square root\nand logarithmic Y₀ branch. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.MassiveDirac.massiveDiracUpperHalfPlaneHankelTransform_of_unitVelocity"
+    ],
+    "dependencies": [
+      "QuantumTheory.Models.MassiveDirac.complexSqrt_div_positiveReal_sq"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.massiveDiracUpperHalfPlaneHankelTransform_of_unitVelocity"
+    ],
+    "compiledConsumerCount": 1,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (v : ℝ) (center : ℂ), (center / ↑v ^ 2).im = center.im / v ^ 2",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.MassiveDirac.massiveDiracRadial_center_div_velocity_sq_im",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVUnitVelocity",
+    "externalAxioms": [],
+    "docString": "Nonreal spectral centers stay nonreal when divided by a\nnonzero real squared velocity; the sign of their imaginary part is\nalso preserved. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVCenter_scale_velocity",
+      "QuantumTheory.Models.MassiveDirac.massiveDiracUpperHalfPlaneHankelTransform_of_unitVelocity"
+    ],
+    "dependencies": [],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVCenter_scale_velocity",
+      "QuantumTheory.Models.MassiveDirac.massiveDiracUpperHalfPlaneHankelTransform_of_unitVelocity"
+    ],
+    "compiledConsumerCount": 2,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": true,
+    "statement": "∀ (v : ℝ),\n  v ≠ 0 →\n    QuantumTheory.Models.MassiveDirac.MassiveDiracUpperHalfPlaneHankelTransform 1 →\n      QuantumTheory.Models.MassiveDirac.MassiveDiracUpperHalfPlaneHankelTransform v",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": false,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Models.MassiveDirac.massiveDiracUpperHalfPlaneHankelTransform_of_unitVelocity",
+    "module": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVHankelUnitReduction",
+    "externalAxioms": [],
+    "docString": "The whole upper-half-plane Fourier–Hankel identification is a\nunit-velocity problem: one proof at velocity 1 implies it at all\nnonzero real velocities, by exact Fourier scaling and principal-branch\ncompatibility. This does **not** prove the unit-velocity hypothesis. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [],
+    "dependencies": [
+      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVCenter_scale_velocity",
+      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialOutgoingHankelCandidate_scale_velocity",
+      "QuantumTheory.Models.MassiveDirac.massiveDiracRadial_center_div_velocity_sq_im"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -75817,50 +76476,6 @@
   },
   {
     "terminal": false,
-    "statement": "∀ (band : QuantumTheory.Models.MassiveDirac.Band) (v m px py probeEnergy broadening : ℝ),\n  broadening ≠ 0 →\n    QuantumTheory.Models.MassiveDirac.spectralDifferenceCoefficient band v m px py probeEnergy broadening =\n      -2 * Complex.I *\n        ↑(Lorentzian.spectralKernel (probeEnergy - QuantumTheory.Models.MassiveDirac.bandEnergy band v m px py)\n            broadening)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Models.MassiveDirac.spectralDifferenceCoefficient_eq_lorentzian",
-    "module": "LeanCondensedMatter.Models.MassiveDirac.Bastin.PoleFactor",
-    "externalAxioms": [],
-    "docString": "The scalar spectral difference in the two-band Bastin decomposition is exactly a Lorentzian\ncentered at the selected band energy. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Models.MassiveDirac.bastinBandPairContribution_opposite_source_eq_lorentzian"
-    ],
-    "dependencies": [
-      "QuantumTheory.Transport.scalarSpectralDifferenceCoefficient_eq_lorentzian"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Models.MassiveDirac.bastinBandPairContribution_opposite_source_eq_lorentzian"
-    ],
-    "compiledConsumerCount": 1,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
     "statement": "∀ (side : QuantumTheory.Transport.SpectralSide) (v m probeEnergy pMax : ℝ),\n  star\n      (QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDenominatorIntegralBoundaryValue side v m probeEnergy\n        pMax) =\n    QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDenominatorIntegralBoundaryValue side.opposite v m\n      probeEnergy pMax",
     "standardAxioms": [
       "Classical.choice",
@@ -76736,10 +77351,10 @@
       "QuantumTheory.Models.MassiveDirac.tendsto_interbandBastinTraceContribution_zero"
     ],
     "dependencies": [
-      "QuantumTheory.Models.MassiveDirac.tendsto_spectralDifferenceCoefficient_zero",
       "QuantumTheory.Transport.spectralParameter_advanced_ofRegulator",
       "QuantumTheory.Transport.spectralParameter_retarded_ofRegulator",
-      "QuantumTheory.Transport.tendsto_scalarResolventCoefficient_spectralParameter_zero"
+      "QuantumTheory.Transport.tendsto_scalarResolventCoefficient_spectralParameter_zero",
+      "QuantumTheory.Transport.tendsto_scalarSpectralDifferenceCoefficient_zero"
     ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
@@ -80007,52 +80622,6 @@
     "completedMention": false,
     "compiledConsumers": [],
     "compiledConsumerCount": 0,
-    "axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "definitionallyEquivalentTo": [],
-    "replacementCandidates": [],
-    "replacementCandidateCount": 0,
-    "mathlibDefinitionallyEquivalentTo": [],
-    "mathlibReplacementCandidates": [],
-    "mathlibReplacementCandidateCount": 0
-  },
-  {
-    "terminal": false,
-    "statement": "∀ (band : QuantumTheory.Models.MassiveDirac.Band) (v m px py probeEnergy : ℝ),\n  probeEnergy ≠ QuantumTheory.Models.MassiveDirac.bandEnergy band v m px py →\n    Filter.Tendsto\n      (fun broadening =>\n        QuantumTheory.Models.MassiveDirac.spectralDifferenceCoefficient band v m px py probeEnergy broadening)\n      (nhds 0) (nhds 0)",
-    "standardAxioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
-    "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
-    "simpLemma": false,
-    "retainedNeedsReview": false,
-    "retainedMention": false,
-    "projectAxioms": [],
-    "name": "QuantumTheory.Models.MassiveDirac.tendsto_spectralDifferenceCoefficient_zero",
-    "module": "LeanCondensedMatter.Models.MassiveDirac.Bastin.Limit",
-    "externalAxioms": [],
-    "docString": "Off the selected band energy, the retarded-minus-advanced scalar spectral coefficient tends to\nzero pointwise. ",
-    "directWrapperTargetModule": null,
-    "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Models.MassiveDirac.tendsto_bastinBandPairContribution_zero"
-    ],
-    "dependencies": [
-      "QuantumTheory.Transport.spectralParameter_advanced_ofRegulator",
-      "QuantumTheory.Transport.spectralParameter_retarded_ofRegulator",
-      "QuantumTheory.Transport.tendsto_scalarResolventCoefficient_spectralParameter_zero"
-    ],
-    "crossModuleDirectWrapper": false,
-    "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Models.MassiveDirac.tendsto_bastinBandPairContribution_zero"
-    ],
-    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -84016,7 +84585,7 @@
     ],
     "dependencies": [
       "InternalSpace.dotProduct_pauliAxis",
-      "InternalSpace.pauliCombination_eq_components",
+      "InternalSpace.trace_oppositePauliProjectors_shiftedYX",
       "QuantumTheory.Models.RashbaExchange.bandProjector_add_oppositeBand",
       "QuantumTheory.Models.RashbaExchange.bandProjector_eq_pauliCombination",
       "QuantumTheory.Models.RashbaExchange.bandSign_sq",
@@ -94949,6 +95518,7 @@
     "dependents": [
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient_diagonal_spectral_difference",
       "QuantumTheory.Models.MassiveDirac.massiveDiracRadialBesselJ_tendsto_uvValue",
+      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVCenter_scale_velocity",
       "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVFinitePartCenter_eq_besselJCenter",
       "QuantumTheory.Transport.integral_besselJ_one_sq_div",
       "QuantumTheory.Transport.polarFourierFirstCosineAngularKernel_eq_besselJ",
@@ -94968,6 +95538,7 @@
     "compiledConsumers": [
       "QuantumTheory.Models.MassiveDirac.finiteCutoffContinuumBornDysonGaussianCrossedRadialCurrentPauliCoefficient_diagonal_spectral_difference",
       "QuantumTheory.Models.MassiveDirac.massiveDiracRadialBesselJ_tendsto_uvValue",
+      "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVCenter_scale_velocity",
       "QuantumTheory.Models.MassiveDirac.massiveDiracRadialFourierUVFinitePartCenter_eq_besselJCenter",
       "QuantumTheory.Transport.integral_besselJ_one_sq_div",
       "QuantumTheory.Transport.polarFourierFirstCosineAngularKernel_eq_besselJ",
@@ -94975,7 +95546,7 @@
       "QuantumTheory.Transport.polarFourierZerothAngularKernel_neg",
       "_private.LeanCondensedMatter.Transport.Analysis.BesselRadialMoments.0.QuantumTheory.Transport.polarFourierHarmonicEnergy_eq_besselJ"
     ],
-    "compiledConsumerCount": 8,
+    "compiledConsumerCount": 9,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -96244,7 +96815,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Models.MassiveDirac.spectralDifferenceCoefficient_eq_lorentzian"
+      "QuantumTheory.Models.MassiveDirac.bastinBandPairContribution_opposite_source_eq_lorentzian"
     ],
     "dependencies": [
       "Lorentzian.inv_add_I_sub_inv_sub_I_eq_spectralKernel",
@@ -96254,7 +96825,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Models.MassiveDirac.spectralDifferenceCoefficient_eq_lorentzian"
+      "QuantumTheory.Models.MassiveDirac.bastinBandPairContribution_opposite_source_eq_lorentzian"
     ],
     "compiledConsumerCount": 1,
     "axioms": [
@@ -96450,12 +97021,12 @@
     "dependents": [
       "QuantumTheory.Models.MassiveDirac.regularizedBastinTraceIntegrand_eq_projectorBastinTraceIntegrand",
       "QuantumTheory.Models.MassiveDirac.tendsto_bastinBandPairContribution_zero",
-      "QuantumTheory.Models.MassiveDirac.tendsto_spectralDifferenceCoefficient_zero",
       "QuantumTheory.Models.RashbaExchange.regularizedBastinTraceIntegrand_eq_projectorBastinTraceIntegrand",
       "QuantumTheory.Transport.FiniteDisorderEnsemble.FiniteSCBASolution.resummedLadderVertex_charge_ward_consistency",
       "QuantumTheory.Transport.regularizedBastinTraceIntegrand_eq_spectral_sum",
       "QuantumTheory.Transport.scalarSpectralDifferenceCoefficient_eq_lorentzian",
       "QuantumTheory.Transport.spectralResolvent_advanced_ofRegulator",
+      "QuantumTheory.Transport.tendsto_scalarSpectralDifferenceCoefficient_zero",
       "SecondQuantization.Fermionic.Validation.twoLevel_scalarCurrent_spectralTraceSum",
       "SecondQuantization.Fermionic.Validation.twoLevel_scalarCurrent_spectralTraceSum_one_one"
     ],
@@ -96467,12 +97038,12 @@
     "compiledConsumers": [
       "QuantumTheory.Models.MassiveDirac.regularizedBastinTraceIntegrand_eq_projectorBastinTraceIntegrand",
       "QuantumTheory.Models.MassiveDirac.tendsto_bastinBandPairContribution_zero",
-      "QuantumTheory.Models.MassiveDirac.tendsto_spectralDifferenceCoefficient_zero",
       "QuantumTheory.Models.RashbaExchange.regularizedBastinTraceIntegrand_eq_projectorBastinTraceIntegrand",
       "QuantumTheory.Transport.FiniteDisorderEnsemble.FiniteSCBASolution.resummedLadderVertex_charge_ward_consistency",
       "QuantumTheory.Transport.regularizedBastinTraceIntegrand_eq_spectral_sum",
       "QuantumTheory.Transport.scalarSpectralDifferenceCoefficient_eq_lorentzian",
       "QuantumTheory.Transport.spectralResolvent_advanced_ofRegulator",
+      "QuantumTheory.Transport.tendsto_scalarSpectralDifferenceCoefficient_zero",
       "SecondQuantization.Fermionic.Validation.twoLevel_scalarCurrent_spectralTraceSum",
       "SecondQuantization.Fermionic.Validation.twoLevel_scalarCurrent_spectralTraceSum_one_one"
     ],
@@ -96596,7 +97167,6 @@
     "dependents": [
       "QuantumTheory.Models.MassiveDirac.regularizedBastinTraceIntegrand_eq_projectorBastinTraceIntegrand",
       "QuantumTheory.Models.MassiveDirac.tendsto_bastinBandPairContribution_zero",
-      "QuantumTheory.Models.MassiveDirac.tendsto_spectralDifferenceCoefficient_zero",
       "QuantumTheory.Models.RashbaExchange.regularizedBastinTraceIntegrand_eq_projectorBastinTraceIntegrand",
       "QuantumTheory.Transport.FiniteDisorderEnsemble.FiniteSCBASolution.resummedLadderVertex_charge_ward_consistency",
       "QuantumTheory.Transport.eigenbasisLehmannVertexTerm_eq_bastinSpectral",
@@ -96604,6 +97174,7 @@
       "QuantumTheory.Transport.regularizedBastinTraceIntegrand_eq_spectral_sum",
       "QuantumTheory.Transport.scalarSpectralDifferenceCoefficient_eq_lorentzian",
       "QuantumTheory.Transport.spectralResolvent_retarded_ofRegulator",
+      "QuantumTheory.Transport.tendsto_scalarSpectralDifferenceCoefficient_zero",
       "SecondQuantization.Fermionic.Validation.twoLevel_scalarCurrent_spectralTraceSum",
       "SecondQuantization.Fermionic.Validation.twoLevel_scalarCurrent_spectralTraceSum_one_one"
     ],
@@ -96615,7 +97186,6 @@
     "compiledConsumers": [
       "QuantumTheory.Models.MassiveDirac.regularizedBastinTraceIntegrand_eq_projectorBastinTraceIntegrand",
       "QuantumTheory.Models.MassiveDirac.tendsto_bastinBandPairContribution_zero",
-      "QuantumTheory.Models.MassiveDirac.tendsto_spectralDifferenceCoefficient_zero",
       "QuantumTheory.Models.RashbaExchange.regularizedBastinTraceIntegrand_eq_projectorBastinTraceIntegrand",
       "QuantumTheory.Transport.FiniteDisorderEnsemble.FiniteSCBASolution.resummedLadderVertex_charge_ward_consistency",
       "QuantumTheory.Transport.eigenbasisLehmannVertexTerm_eq_bastinSpectral",
@@ -96623,6 +97193,7 @@
       "QuantumTheory.Transport.regularizedBastinTraceIntegrand_eq_spectral_sum",
       "QuantumTheory.Transport.scalarSpectralDifferenceCoefficient_eq_lorentzian",
       "QuantumTheory.Transport.spectralResolvent_retarded_ofRegulator",
+      "QuantumTheory.Transport.tendsto_scalarSpectralDifferenceCoefficient_zero",
       "SecondQuantization.Fermionic.Validation.twoLevel_scalarCurrent_spectralTraceSum",
       "SecondQuantization.Fermionic.Validation.twoLevel_scalarCurrent_spectralTraceSum_one_one"
     ],
@@ -97850,7 +98421,7 @@
     "dependents": [
       "QuantumTheory.Models.MassiveDirac.tendsto_bastinBandPairContribution_zero",
       "QuantumTheory.Models.MassiveDirac.tendsto_oppositeBandCoefficient_at_bandPole",
-      "QuantumTheory.Models.MassiveDirac.tendsto_spectralDifferenceCoefficient_zero"
+      "QuantumTheory.Transport.tendsto_scalarSpectralDifferenceCoefficient_zero"
     ],
     "dependencies": [
       "_private.LeanCondensedMatter.Transport.Resolvent.Spectral.0.QuantumTheory.Transport.complex_spectral_offset_ne_zero"
@@ -97860,9 +98431,55 @@
     "compiledConsumers": [
       "QuantumTheory.Models.MassiveDirac.tendsto_bastinBandPairContribution_zero",
       "QuantumTheory.Models.MassiveDirac.tendsto_oppositeBandCoefficient_at_bandPole",
-      "QuantumTheory.Models.MassiveDirac.tendsto_spectralDifferenceCoefficient_zero"
+      "QuantumTheory.Transport.tendsto_scalarSpectralDifferenceCoefficient_zero"
     ],
     "compiledConsumerCount": 3,
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "definitionallyEquivalentTo": [],
+    "replacementCandidates": [],
+    "replacementCandidateCount": 0,
+    "mathlibDefinitionallyEquivalentTo": [],
+    "mathlibReplacementCandidates": [],
+    "mathlibReplacementCandidateCount": 0
+  },
+  {
+    "terminal": false,
+    "statement": "∀ (targetEnergy probeEnergy : ℝ),\n  probeEnergy ≠ targetEnergy →\n    Filter.Tendsto\n      (fun broadening =>\n        QuantumTheory.Transport.scalarSpectralDifferenceCoefficient targetEnergy probeEnergy broadening)\n      (nhds 0) (nhds 0)",
+    "standardAxioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "soleCompiledConsumerPrivate": false,
+    "singleCompiledConsumer": true,
+    "simpLemma": false,
+    "retainedNeedsReview": false,
+    "retainedMention": false,
+    "projectAxioms": [],
+    "name": "QuantumTheory.Transport.tendsto_scalarSpectralDifferenceCoefficient_zero",
+    "module": "LeanCondensedMatter.Transport.Streda.InterbandPole",
+    "externalAxioms": [],
+    "docString": "Pointwise retarded-minus-advanced spectral coefficient vanishes away from a\nreal spectral pole. This is a scalar statement; taking a limit before energy integration\ndoes not represent the distributional Hall response. ",
+    "directWrapperTargetModule": null,
+    "directWrapperOf": null,
+    "dependents": [
+      "QuantumTheory.Models.MassiveDirac.tendsto_bastinBandPairContribution_zero"
+    ],
+    "dependencies": [
+      "QuantumTheory.Transport.spectralParameter_advanced_ofRegulator",
+      "QuantumTheory.Transport.spectralParameter_retarded_ofRegulator",
+      "QuantumTheory.Transport.tendsto_scalarResolventCoefficient_spectralParameter_zero"
+    ],
+    "crossModuleDirectWrapper": false,
+    "completedMention": false,
+    "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.tendsto_bastinBandPairContribution_zero"
+    ],
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
