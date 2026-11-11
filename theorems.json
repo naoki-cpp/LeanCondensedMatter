@@ -58644,7 +58644,7 @@
     "mathlibReplacementCandidateCount": 0
   },
   {
-    "terminal": false,
+    "terminal": true,
     "statement": "∀ (band : QuantumTheory.Models.MassiveDirac.Band), QuantumTheory.Models.MassiveDirac.bandSign band ^ 2 = 1",
     "standardAxioms": [
       "Classical.choice",
@@ -58652,7 +58652,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": true,
+    "singleCompiledConsumer": false,
     "simpLemma": true,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -58663,16 +58663,12 @@
     "docString": "The two band signs square to one. ",
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
-    "dependents": [
-      "QuantumTheory.Models.MassiveDirac.hamiltonian_mul_bandProjector"
-    ],
+    "dependents": [],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
-    "compiledConsumers": [
-      "QuantumTheory.Models.MassiveDirac.hamiltonian_mul_bandProjector"
-    ],
-    "compiledConsumerCount": 1,
+    "compiledConsumers": [],
+    "compiledConsumerCount": 0,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -70210,7 +70206,6 @@
     ],
     "dependencies": [
       "InternalSpace.involution_mul_one_add",
-      "QuantumTheory.Models.MassiveDirac.bandSign_sq",
       "_private.LeanCondensedMatter.Models.MassiveDirac.Model.Spectral.0.QuantumTheory.Models.MassiveDirac.bandProjector_eq_normalizedHamiltonian",
       "_private.LeanCondensedMatter.Models.MassiveDirac.Model.Spectral.0.QuantumTheory.Models.MassiveDirac.normalizedHamiltonian_mul_self"
     ],
@@ -83766,7 +83761,7 @@
       "propext"
     ],
     "soleCompiledConsumerPrivate": false,
-    "singleCompiledConsumer": false,
+    "singleCompiledConsumer": true,
     "simpLemma": true,
     "retainedNeedsReview": false,
     "retainedMention": false,
@@ -83778,17 +83773,15 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
-      "QuantumTheory.Models.RashbaExchange.forceMatrixTraceNumerator_xy_eq",
-      "QuantumTheory.Models.RashbaExchange.hamiltonian_mul_bandProjector"
+      "QuantumTheory.Models.RashbaExchange.forceMatrixTraceNumerator_xy_eq"
     ],
     "dependencies": [],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
-      "QuantumTheory.Models.RashbaExchange.forceMatrixTraceNumerator_xy_eq",
-      "QuantumTheory.Models.RashbaExchange.hamiltonian_mul_bandProjector"
+      "QuantumTheory.Models.RashbaExchange.forceMatrixTraceNumerator_xy_eq"
     ],
-    "compiledConsumerCount": 2,
+    "compiledConsumerCount": 1,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -84846,7 +84839,6 @@
     ],
     "dependencies": [
       "InternalSpace.involution_mul_one_add",
-      "QuantumTheory.Models.RashbaExchange.bandSign_sq",
       "QuantumTheory.Models.RashbaExchange.hamiltonian_eq_kinetic_add_spinHamiltonian",
       "_private.LeanCondensedMatter.Models.RashbaExchange.Model.Spectral.0.QuantumTheory.Models.RashbaExchange.bandProjector_eq_normalized",
       "_private.LeanCondensedMatter.Models.RashbaExchange.Model.Spectral.0.QuantumTheory.Models.RashbaExchange.normalizedSpinHamiltonian_mul_self"
