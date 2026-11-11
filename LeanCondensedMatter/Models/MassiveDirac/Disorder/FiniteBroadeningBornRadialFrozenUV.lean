@@ -117,23 +117,35 @@ theorem finiteCutoffContinuumBornDysonRadialFrozenKernel_tendsto_uvValue
   exact hphysical.const_mul (((momentumMeasurePrefactor hbar : ℝ) : ℂ))
 
 
+/-- Explicit zero-disorder diagonal UV value of the physical scalar generator.
+The Born self-energy vanishes, so the outer momentum cutoff can be taken
+without a running-self-energy limit. The physical momentum measure occurs once. -/
+noncomputable def finiteCutoffContinuumBornDysonRadialScalarCleanUVValue
+    (side : SpectralSide)
+    (v m probeEnergy broadening hbar radius : ℝ) : ℂ :=
+  (((momentumMeasurePrefactor hbar : ℝ) : ℂ)) *
+    massiveDiracRadialFourierUVCenter v (radius / hbar)
+      ((spectralParameter side probeEnergy broadening) ^ 2 - (m : ℂ) ^ 2)
+
 /-- On the clean (`disorderStrength = 0`) slice, the *actual* finite-cutoff
-radial scalar Green generator converges when its Born and outer momentum
+radial scalar Green generator converges to the explicit spectral-center Fourier UV value when its Born and outer momentum
 cutoffs increase together. This is a diagonal cutoff limit, unlike the
 frozen-self-energy statement above: the dependence on `pMax` disappears
 because the Born self-energy vanishes identically.
 
 The conclusion is for nonzero real-space Fourier scale `radius / hbar`
 and nonzero external broadening. It makes no claim for finite disorder. -/
-theorem finiteCutoffContinuumBornDysonRadialScalarGreenGenerator_zero_disorder_tendsto_atTop
+theorem finiteCutoffContinuumBornDysonRadialScalarGreenGenerator_zero_disorder_tendsto_uvValue
     (side : SpectralSide)
     (v m probeEnergy broadening hbar radius : ℝ)
     (hv : v ≠ 0) (hhbar : hbar ≠ 0) (hradius : radius ≠ 0)
     (hbroadening : broadening ≠ 0) :
-    ∃ value : ℂ, Filter.Tendsto
+    Filter.Tendsto
       (fun pMax : ℝ => finiteCutoffContinuumBornDysonRadialScalarGreenGenerator
         side v m probeEnergy broadening 0 hbar pMax radius)
-      Filter.atTop (nhds value) := by
+      Filter.atTop
+        (nhds (finiteCutoffContinuumBornDysonRadialScalarCleanUVValue
+          side v m probeEnergy broadening hbar radius)) := by
   have hden (p : ℝ) :
       massiveDiracRadialDenominator v p
         (spectralParameter side probeEnergy broadening) (m : ℂ) ≠ 0 := by
@@ -143,10 +155,13 @@ theorem finiteCutoffContinuumBornDysonRadialScalarGreenGenerator_zero_disorder_t
     rw [← finiteCutoffContinuumBornDysonDenominator_eq_radial] at hphysical
     simpa [finiteCutoffContinuumBornEffectiveEnergy,
       finiteCutoffContinuumBornEffectiveMass] using hphysical
-  obtain ⟨limit, hlimit⟩ :=
-    massiveDiracRadialFourierKernel_tendsto_atTop v (radius / hbar)
-      (spectralParameter side probeEnergy broadening) (m : ℂ)
-      hv (div_ne_zero hradius hhbar) hden
+  have hlimit := massiveDiracRadialFourier_tendsto_uvFinitePartAt
+    v (radius / hbar)
+    (max (1 : ℝ)
+      (2 * ‖(spectralParameter side probeEnergy broadening) ^ 2 -
+        (m : ℂ) ^ 2‖ / v ^ 2))
+    (spectralParameter side probeEnergy broadening) (m : ℂ)
+    hv (div_ne_zero hradius hhbar) hden le_rfl
   have heq (pMax : ℝ) :
       finiteCutoffContinuumBornDysonRadialScalarGreenGenerator
         side v m probeEnergy broadening 0 hbar pMax radius =
@@ -167,13 +182,28 @@ theorem finiteCutoffContinuumBornDysonRadialScalarGreenGenerator_zero_disorder_t
       sub_zero, add_zero]
     rw [show p * radius / hbar = p * (radius / hbar) by ring]
     ring
-  have hconstant : Filter.Tendsto
-      (fun _ : ℝ => (((momentumMeasurePrefactor hbar : ℝ) : ℂ)))
-      Filter.atTop (nhds (((momentumMeasurePrefactor hbar : ℝ) : ℂ))) :=
-    tendsto_const_nhds
-  refine ⟨(((momentumMeasurePrefactor hbar : ℝ) : ℂ)) * limit, ?_⟩
-  exact (hconstant.mul hlimit).congr'
+  have hscaled := hlimit.const_mul (((momentumMeasurePrefactor hbar : ℝ) : ℂ))
+  unfold finiteCutoffContinuumBornDysonRadialScalarCleanUVValue massiveDiracRadialFourierUVCenter
+  exact hscaled.congr'
     (Filter.Eventually.of_forall fun pMax => (heq pMax).symm)
+
+
+/-- Compatibility: the explicitly identified clean UV limit supplies
+the previous existential diagonal-cutoff theorem without a second
+radial convergence proof. -/
+theorem finiteCutoffContinuumBornDysonRadialScalarGreenGenerator_zero_disorder_tendsto_atTop
+    (side : SpectralSide)
+    (v m probeEnergy broadening hbar radius : ℝ)
+    (hv : v ≠ 0) (hhbar : hbar ≠ 0) (hradius : radius ≠ 0)
+    (hbroadening : broadening ≠ 0) :
+    ∃ value : ℂ, Filter.Tendsto
+      (fun pMax : ℝ => finiteCutoffContinuumBornDysonRadialScalarGreenGenerator
+        side v m probeEnergy broadening 0 hbar pMax radius)
+      Filter.atTop (nhds value) := by
+  exact ⟨finiteCutoffContinuumBornDysonRadialScalarCleanUVValue
+      side v m probeEnergy broadening hbar radius,
+    finiteCutoffContinuumBornDysonRadialScalarGreenGenerator_zero_disorder_tendsto_uvValue
+      side v m probeEnergy broadening hbar radius hv hhbar hradius hbroadening⟩
 
 
 /-- The clean diagonal ultraviolet limit of the common scalar generator
