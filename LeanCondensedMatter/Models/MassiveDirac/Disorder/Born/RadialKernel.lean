@@ -1,5 +1,4 @@
 import LeanCondensedMatter.Models.MassiveDirac.Propagator.Basic
-import Mathlib.Tactic.FieldSimp
 import Mathlib.Tactic.Positivity
 import Mathlib.Tactic.Ring
 
@@ -34,27 +33,6 @@ def massiveDiracRetardedAdvancedRadialDenominatorProduct
     (retardedEnergy retardedMass advancedEnergy advancedMass : ℂ) : ℂ :=
   massiveDiracRadialDenominator v p retardedEnergy retardedMass *
     massiveDiracRadialDenominator v p advancedEnergy advancedMass
-
-/-- Two-center resolvent partial fractions: the momentum-dependent quadratic
-term cancels from the spectral-center gap. This is an identity at fixed
-momentum and requires no division by `centerA - centerR`. It applies to
-both finite-broadening Born–Dyson poles and weak-Born radial poles. -/
-theorem massiveDiracRadialCenter_inv_product_mul_center_gap
-    (v p : ℝ) (centerR centerA : ℂ)
-    (hR : centerR - ((v ^ 2 * p ^ 2 : ℝ) : ℂ) ≠ 0)
-    (hA : centerA - ((v ^ 2 * p ^ 2 : ℝ) : ℂ) ≠ 0) :
-    (centerA - centerR) *
-      ((centerR - ((v ^ 2 * p ^ 2 : ℝ) : ℂ)) *
-        (centerA - ((v ^ 2 * p ^ 2 : ℝ) : ℂ)))⁻¹ =
-      (centerR - ((v ^ 2 * p ^ 2 : ℝ) : ℂ))⁻¹ -
-        (centerA - ((v ^ 2 * p ^ 2 : ℝ) : ℂ))⁻¹ := by
-  have hgap :
-      centerA - centerR =
-        (centerA - ((v ^ 2 * p ^ 2 : ℝ) : ℂ)) -
-          (centerR - ((v ^ 2 * p ^ 2 : ℝ) : ℂ)) := by
-    ring
-  rw [hgap]
-  field_simp
 
 /-- Polar Jacobian divided by one radial massive-Dirac denominator. -/
 def massiveDiracRadialDenominatorKernel
