@@ -44,27 +44,21 @@ private theorem finiteProjectorTraceDoubleSum
         (J * (∑ s, c s • P s) * K * (∑ t, d t • P t)) =
       ∑ s, ∑ t, c s * d t *
         finiteDimensionalOperatorTrace (H := H) (P t * J * P s * K) := by
-  calc
-    finiteDimensionalOperatorTrace (H := H)
-        (J * (∑ s, c s • P s) * K * (∑ t, d t • P t)) =
-      ∑ s, ∑ t, finiteDimensionalOperatorTrace (H := H)
-        (J * (c s • P s) * K * (d t • P t)) := by
-          simp only [Finset.mul_sum, Finset.sum_mul, map_sum]
-          exact Finset.sum_comm
-    _ = _ := by
-      apply Finset.sum_congr rfl
-      intro s _
-      apply Finset.sum_congr rfl
-      intro t _
-      have hcyclic :
-          finiteDimensionalOperatorTrace (H := H) (J * P s * K * P t) =
-            finiteDimensionalOperatorTrace (H := H) (P t * J * P s * K) := by
-        simpa only [mul_assoc] using
-          (finiteDimensionalOperatorTrace_mul_comm (J * P s * K) (P t))
-      simp only [mul_smul_comm, smul_mul_assoc, smul_smul,
-        map_smul, smul_eq_mul, mul_assoc]
-      rw [hcyclic]
-      ring
+  simp only [Finset.mul_sum, Finset.sum_mul, map_sum]
+  rw [Finset.sum_comm]
+  apply Finset.sum_congr rfl
+  intro s _
+  apply Finset.sum_congr rfl
+  intro t _
+  simp only [mul_smul_comm, smul_mul_assoc, smul_smul,
+    map_smul, smul_eq_mul, mul_assoc]
+  have hcyclic :
+      finiteDimensionalOperatorTrace (H := H) (J * (P s * (K * P t))) =
+        finiteDimensionalOperatorTrace (H := H) (P t * (J * (P s * K))) := by
+    simpa only [mul_assoc] using
+      (finiteDimensionalOperatorTrace_mul_comm (J * P s * K) (P t))
+  rw [hcyclic]
+  ring
 
 /-- The finite-broadening projector Bastin trace is an exact sum of ordered
 source/target band blocks. Neither completeness nor band energies are needed;
