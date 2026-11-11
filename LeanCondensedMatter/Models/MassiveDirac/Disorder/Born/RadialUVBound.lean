@@ -64,36 +64,36 @@ theorem massiveDiracRadialCenter_inv_norm_le_half_quadratic_inv
   exact hden
 
 /-- The ultraviolet boundary term in the radial Fourier integration-by-parts
-identity vanishes for a quadratic massive-Dirac denominator with nonzero
+identity vanishes for a quadratic spectral-center denominator with nonzero
 velocity. The proof uses only the explicit quadratic resolvent bound and
 the uniform `2π` bound on the first angular harmonic, not Bessel asymptotics. -/
-theorem massiveDiracRadialDenominator_firstHarmonicBoundary_tendsto_zero
-    (v c : ℝ) (energy mass : ℂ) (hv : v ≠ 0) :
+theorem massiveDiracRadialCenter_firstHarmonicBoundary_tendsto_zero
+    (v c : ℝ) (center : ℂ) (hv : v ≠ 0) :
     Filter.Tendsto
       (fun p : ℝ => (p : ℂ) *
         polarFourierFirstCosineAngularKernel (p * c) *
-          (massiveDiracRadialDenominator v p energy mass)⁻¹)
+          ((center - ((v ^ 2 * p ^ 2 : ℝ) : ℂ)))⁻¹)
       Filter.atTop (nhds 0) := by
-  let cutoff : ℝ := max 1 (2 * ‖energy ^ 2 - mass ^ 2‖ / v ^ 2)
+  let cutoff : ℝ := max 1 (2 * ‖center‖ / v ^ 2)
   let coeff : ℝ := 4 * Real.pi / v ^ 2
   have hv2 : 0 < v ^ 2 := sq_pos_of_ne_zero hv
   have hpoint (p : ℝ) (hp : cutoff ≤ p) :
       ‖(p : ℂ) * polarFourierFirstCosineAngularKernel (p * c) *
-          (massiveDiracRadialDenominator v p energy mass)⁻¹‖ ≤
+          ((center - ((v ^ 2 * p ^ 2 : ℝ) : ℂ)))⁻¹‖ ≤
         coeff / p := by
     have hp1 : 1 ≤ p := (le_max_left _ _).trans hp
     have hp0 : 0 < p := by linarith
     have hK := polarFourierFirstCosineAngularKernel_norm_le (p * c)
     have hD := massiveDiracRadialCenter_inv_norm_le_half_quadratic_inv
-      v p (energy ^ 2 - mass ^ 2) hv hp
+      v p (center) hv hp
     calc
       ‖(p : ℂ) * polarFourierFirstCosineAngularKernel (p * c) *
-          (massiveDiracRadialDenominator v p energy mass)⁻¹‖ =
+          ((center - ((v ^ 2 * p ^ 2 : ℝ) : ℂ)))⁻¹‖ =
           p * ‖polarFourierFirstCosineAngularKernel (p * c)‖ *
-            ‖(massiveDiracRadialDenominator v p energy mass)⁻¹‖ := by
+            ‖((center - ((v ^ 2 * p ^ 2 : ℝ) : ℂ)))⁻¹‖ := by
         simp only [norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_pos hp0]
       _ ≤ p * (2 * Real.pi) *
-            ‖(massiveDiracRadialDenominator v p energy mass)⁻¹‖ := by
+            ‖((center - ((v ^ 2 * p ^ 2 : ℝ) : ℂ)))⁻¹‖ := by
         apply mul_le_mul_of_nonneg_right _ (norm_nonneg _)
         exact mul_le_mul_of_nonneg_left hK hp0.le
       _ ≤ p * (2 * Real.pi) * (v ^ 2 * p ^ 2 / 2)⁻¹ := by
@@ -111,7 +111,7 @@ theorem massiveDiracRadialDenominator_firstHarmonicBoundary_tendsto_zero
   have hnorm : Filter.Tendsto
       (fun p : ℝ => ‖(p : ℂ) *
         polarFourierFirstCosineAngularKernel (p * c) *
-          (massiveDiracRadialDenominator v p energy mass)⁻¹‖)
+          ((center - ((v ^ 2 * p ^ 2 : ℝ) : ℂ)))⁻¹‖)
       Filter.atTop (nhds 0) := by
     apply squeeze_zero'
     · exact Filter.Eventually.of_forall fun p => norm_nonneg _
@@ -119,6 +119,18 @@ theorem massiveDiracRadialDenominator_firstHarmonicBoundary_tendsto_zero
       exact hpoint p hp
     · exact hlimit
   exact (tendsto_zero_iff_norm_tendsto_zero).2 hnorm
+
+/-- Energy/mass presentation of the center-indexed first-harmonic UV boundary. -/
+theorem massiveDiracRadialDenominator_firstHarmonicBoundary_tendsto_zero
+    (v c : ℝ) (energy mass : ℂ) (hv : v ≠ 0) :
+    Filter.Tendsto
+      (fun p : ℝ => (p : ℂ) *
+        polarFourierFirstCosineAngularKernel (p * c) *
+          (massiveDiracRadialDenominator v p energy mass)⁻¹)
+      Filter.atTop (nhds 0) := by
+  simpa only [massiveDiracRadialDenominator] using
+    massiveDiracRadialCenter_firstHarmonicBoundary_tendsto_zero
+      v c (energy ^ 2 - mass ^ 2) hv
 
 end
 
