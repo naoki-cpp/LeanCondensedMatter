@@ -266,5 +266,59 @@ theorem ExternalInsertionBlockLayout.assembleConnectedBlocks_signedDysonShuffleO
       rw [← hsign, hpart]
 
 
+/-- The physical signed shuffle orbit of independently assembled connected
+Wick blocks, now written entirely in terms of the *canonical slot
+transport of the actual restricted components*. This removes the
+otherwise implicit consecutive-slot relabeling from each local factor.
+
+The subsequent identification of those restrictions with the original
+independent block-family data `F` remains a separate graph-component
+and pairing-fiber compatibility theorem. -/
+theorem ExternalInsertionBlockLayout.assembleConnectedBlocks_signedDysonShuffleOrbit_slotCongr
+    {E n : ℕ} (layout : ExternalInsertionBlockLayout E n)
+    (F : ∀ B : layout.partition.parts,
+      ExternalInsertionDiagram (ExternalFieldLabel Mode) (QuarticVertexLabel Mode)
+        ((B : Finset (Fin (2 * E))).card / 2) n
+        (layout.interactionBlock (Finset.univ : Finset (Fin n)) B))
+    (hconnected : ∀ B, (F B).vertexGraph.Preconnected)
+    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
+    (externalTime : Fin (2 * E) → ℝ) :
+    let d : ExternalInsertionWickDiagram Mode E n :=
+      layout.assembleDiagram (Finset.univ : Finset (Fin n)) F
+    (∑ shuffle : d.ComponentInteractionOrderShuffle,
+      d.orderedDysonAmplitude ε β g externalTime
+        (d.assembleInteractionOrder d.canonicalComponentInteractionOrders shuffle)) =
+      externalPartitionSourceSign layout.partition *
+        ∏ B : d.vertexGraph.componentPartition.parts,
+          ExternalInsertionWickDiagram.dysonAmplitude
+            ((d.restrictComponent B).slotCongr (Combinatorics.standardSlotEquiv
+              (interactionSector
+                (B : Finset (ExternalInsertionVertex E (Finset.univ : Finset (Fin n)))))))
+            ε β g (d.componentExternalTime externalTime B) := by
+  classical
+  let d : ExternalInsertionWickDiagram Mode E n :=
+    layout.assembleDiagram (Finset.univ : Finset (Fin n)) F
+  calc
+    (∑ shuffle : d.ComponentInteractionOrderShuffle,
+      d.orderedDysonAmplitude ε β g externalTime
+        (d.assembleInteractionOrder d.canonicalComponentInteractionOrders shuffle)) =
+      externalPartitionSourceSign layout.partition *
+        ∏ B : d.vertexGraph.componentPartition.parts,
+          ExternalInsertionWickDiagram.dysonAmplitude
+            (d.componentOrderedDiagram B) ε β g
+            (d.componentExternalTime externalTime B) :=
+      layout.assembleConnectedBlocks_signedDysonShuffleOrbit
+        F hconnected ε β g externalTime
+    _ = _ := by
+      congr 1
+      apply Finset.prod_congr rfl
+      intro B _
+      exact congrArg
+        (fun local =>
+          ExternalInsertionWickDiagram.dysonAmplitude local ε β g
+            (d.componentExternalTime externalTime B))
+        (d.componentOrderedDiagram_eq_slotCongr B)
+
+
 end Fermionic
 end SecondQuantization
