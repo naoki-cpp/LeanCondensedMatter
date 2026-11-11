@@ -99,7 +99,7 @@ theorem massiveDiracRadialOutgoingHankelCandidate_scale_velocity
     ring
   unfold massiveDiracRadialOutgoingHankelCandidate
   rw [harg]
-  simp only [div_eq_mul_inv]
+  simp only [div_eq_mul_inv, Complex.ofReal_one, inv_one, one_pow, mul_one]
   ring
 
 /-- The whole upper-half-plane Fourier–Hankel identification is a
