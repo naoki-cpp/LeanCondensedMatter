@@ -62,7 +62,7 @@ theorem besselFormalH1_coeff (n : ℕ) :
     rfl
   rw [hH, Nat.factorial_succ]
   push_cast
-  field_simp [hn, hf] <;> ring
+  field_simp [hn, hf]; ring
 
 /-- Precise formal derivative relation behind the order-one
 DLMF harmonic correction; no differentiation of a complex
