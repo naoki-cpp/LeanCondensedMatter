@@ -230,7 +230,7 @@ theorem ExternalInsertionBlockLayout.assembleConnectedBlocks_signedDysonShuffleO
         (d.assembleInteractionOrder d.canonicalComponentInteractionOrders shuffle)) =
       externalPartitionSourceSign layout.partition *
         ∏ B : d.vertexGraph.componentPartition.parts,
-          (d.componentOrderedDiagram B).dysonAmplitude ε β g
+          ExternalInsertionWickDiagram.dysonAmplitude (d.componentOrderedDiagram B) ε β g
             (d.componentExternalTime externalTime B) := by
   classical
   let d : ExternalInsertionWickDiagram Mode E n :=
@@ -256,11 +256,11 @@ theorem ExternalInsertionBlockLayout.assembleConnectedBlocks_signedDysonShuffleO
         (d.assembleInteractionOrder d.canonicalComponentInteractionOrders shuffle)) =
       componentExternalOrderSign d blockOrder *
         ∏ B : d.vertexGraph.componentPartition.parts,
-          (d.componentOrderedDiagram B).dysonAmplitude ε β g
+          ExternalInsertionWickDiagram.dysonAmplitude (d.componentOrderedDiagram B) ε β g
             (d.componentExternalTime externalTime B) := horbit
     _ = externalPartitionSourceSign layout.partition *
         ∏ B : d.vertexGraph.componentPartition.parts,
-          (d.componentOrderedDiagram B).dysonAmplitude ε β g
+          ExternalInsertionWickDiagram.dysonAmplitude (d.componentOrderedDiagram B) ε β g
             (d.componentExternalTime externalTime B) := by
       rw [← hsign, hpart]
 
