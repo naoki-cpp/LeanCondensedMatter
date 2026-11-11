@@ -2,6 +2,7 @@ import LeanCondensedMatter.Models.RashbaExchange.Model.OperatorSpectral
 import LeanCondensedMatter.Models.RashbaExchange.Current
 import LeanCondensedMatter.Models.RashbaExchange.Model.Interband
 import LeanCondensedMatter.Transport.Streda.FiniteProjectorBastin
+import LeanCondensedMatter.Transport.Streda.InterbandPole
 
 set_option linter.style.header false
 
