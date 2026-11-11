@@ -117,9 +117,7 @@ inductive Band where
 
 instance : Fintype Band where
   elems := {.lower, .upper}
-  complete := by
-    intro band
-    cases band <;> simp
+  complete := by intro band; cases band <;> simp
 
 /-- A finite sum over the massive-Dirac bands is the lower-band term plus the upper-band term. -/
 theorem sum_band {M : Type*} [AddCommMonoid M] (f : Band → M) :
