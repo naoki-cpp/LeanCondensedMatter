@@ -45,20 +45,6 @@ theorem projectorResolventCoefficient_targetOffset_oppositeBand
   push_cast
   ring
 
-/-- The scalar spectral difference in the two-band Bastin decomposition is exactly a Lorentzian
-centered at the selected band energy. -/
-theorem spectralDifferenceCoefficient_eq_lorentzian
-    (band : Band) (v m px py probeEnergy broadening : ℝ)
-    (hbroadening : broadening ≠ 0) :
-    spectralDifferenceCoefficient band v m px py probeEnergy broadening =
-      (-2 * Complex.I) *
-        (Lorentzian.spectralKernel
-          (probeEnergy - bandEnergy band v m px py) broadening : ℂ) := by
-  simpa [spectralDifferenceCoefficient, scalarSpectralDifferenceCoefficient,
-    scalarResolventCoefficient] using
-    scalarSpectralDifferenceCoefficient_eq_lorentzian
-      (bandEnergy band v m px py) probeEnergy broadening hbroadening
-
 /-- The regular current factor multiplying the target-band Lorentzian pole in an interband Bastin
 pair for an ordered current-direction pair `(μ,ν)`. The source band is fixed to the opposite band. -/
 noncomputable def interbandSpectatorCurrentFactor
@@ -86,8 +72,8 @@ theorem bastinBandPairContribution_opposite_source_eq_lorentzian
           band e v m px py probeEnergy broadening := by
   unfold bastinBandPairContribution interbandSpectatorCurrentFactor
   dsimp
-  rw [spectralDifferenceCoefficient_eq_lorentzian
-    band v m px py probeEnergy broadening hbroadening]
+  rw [scalarSpectralDifferenceCoefficient_eq_lorentzian
+    (bandEnergy band v m px py) probeEnergy broadening hbroadening]
   ring
 
 /-- At the target-band pole, the regular direction-indexed spectator/current factor converges to the

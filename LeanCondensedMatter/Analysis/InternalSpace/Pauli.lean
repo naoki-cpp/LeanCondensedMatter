@@ -5,6 +5,7 @@ import Mathlib.LinearAlgebra.Matrix.Notation
 import Mathlib.LinearAlgebra.LinearIndependent.Lemmas
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic
 import Mathlib.Tactic.FinCases
+import Mathlib.Tactic.LinearCombination
 import Mathlib.Tactic.Module
 import Mathlib.Tactic.NormNum
 import Mathlib.Tactic.Ring
@@ -573,6 +574,49 @@ theorem trace_four_eq_pauliCoefficients (A B C D : PauliMatrix) :
           rw [← eq_pauliAffine_coefficients A, ← eq_pauliAffine_coefficients B,
             ← eq_pauliAffine_coefficients C, ← eq_pauliAffine_coefficients D]
     _ = _ := trace_four_pauliAffine _ _ _ _ _ _ _ _
+
+
+/-- Model-independent interband x-y trace between complementary Pauli projectors.
+No Bloch-vector normalization is needed for currents with no scalar component. -/
+theorem trace_oppositePauliProjectors_xy
+    (u : PauliAxis → ℂ) (a b : ℂ) :
+    Matrix.trace
+        (((1 / 2 : ℂ) •
+            ((1 : PauliMatrix) - pauliCombination u)) *
+          (a • pauliX) *
+          ((1 / 2 : ℂ) •
+            ((1 : PauliMatrix) + pauliCombination u)) *
+          (b • pauliY)) =
+      a * b * (-(u .x * u .y) - Complex.I * u .z) := by
+  have hI : Complex.I ^ 2 = (-1 : ℂ) := by
+    simpa [pow_two] using Complex.I_mul_I
+  simp [Matrix.trace, Matrix.mul_apply, pauliCombination_eq_components,
+    pauliX, pauliY, pauliZ, sub_eq_add_neg]
+  ring_nf
+  simp [hI]
+
+/-- Scalar velocity shifts cancel from a normalized complementary-projector
+trace with transverse Pauli currents, independently of the physical model. -/
+theorem trace_oppositePauliProjectors_shiftedYX
+    (u : PauliAxis → ℂ) (cx cy a : ℂ)
+    (hnorm : dotProduct u u = 1) :
+    Matrix.trace
+        (((1 / 2 : ℂ) •
+            ((1 : PauliMatrix) - pauliCombination u)) *
+          (cx • (1 : PauliMatrix) - a • pauliY) *
+          ((1 / 2 : ℂ) •
+            ((1 : PauliMatrix) + pauliCombination u)) *
+          (cy • (1 : PauliMatrix) + a • pauliX)) =
+      a ^ 2 * (u .x * u .y) - Complex.I * a ^ 2 * u .z := by
+  have hI : Complex.I ^ 2 = (-1 : ℂ) := by
+    simpa [pow_two] using Complex.I_mul_I
+  rw [dotProduct_pauliAxis] at hnorm
+  simp [Matrix.trace, Matrix.mul_apply, pauliCombination_eq_components,
+    pauliX, pauliY, pauliZ, sub_eq_add_neg]
+  ring_nf
+  simp [hI]
+  ring_nf at hnorm
+  linear_combination -(cx * cy / 2) * hnorm
 
 /-- The square of a Pauli synthesis is its bilinear coefficient square times the identity. -/
 theorem pauliCombination_mul_self (u : PauliAxis → ℂ) :
