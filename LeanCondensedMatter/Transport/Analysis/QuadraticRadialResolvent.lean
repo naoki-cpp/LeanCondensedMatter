@@ -96,16 +96,9 @@ theorem integral_quadraticRadialJacobianKernel_eq_log
           quadraticRadialJacobianKernel v p center)
       volume 0 pMax :=
     (hkernelCont.const_mul ((-2 : ℂ) * (v : ℂ) ^ 2)).intervalIntegrable 0 pMax
-  have hmain :
-      ((-2 : ℂ) * (v : ℂ) ^ 2) *
-          (∫ p in (0 : ℝ)..pMax,
-            quadraticRadialJacobianKernel v p center) =
-        Complex.log (quadraticRadialDenominator v pMax center) -
-          Complex.log (quadraticRadialDenominator v 0 center) := by
-    have hftc := intervalIntegral.integral_eq_sub_of_hasDerivAt
-      (fun p _ => hlogDeriv p) hint
-    rw [← hftc]
-    rw [intervalIntegral.integral_const_mul]
+  have hmain := intervalIntegral.integral_eq_sub_of_hasDerivAt
+    (fun p _ => hlogDeriv p) hint
+  rw [intervalIntegral.integral_const_mul] at hmain
   have hv : (v : ℂ) ≠ 0 := Complex.ofReal_ne_zero.mpr hvelocity
   have hcoeff : ((-2 : ℂ) * (v : ℂ) ^ 2) ≠ 0 :=
     mul_ne_zero (by norm_num) (pow_ne_zero 2 hv)
