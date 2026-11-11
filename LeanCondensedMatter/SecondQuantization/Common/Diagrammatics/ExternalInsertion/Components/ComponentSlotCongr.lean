@@ -54,9 +54,14 @@ theorem ExternalInsertionDiagram.componentOrderedDiagram_eq_slotCongr
     apply Equiv.ext
     intro p
     simp only [PairingOn.transport_partner]
-    simpa using (Pairing.cast_partner (by
-      simp only [Finset.card_univ, Fintype.card_fin]
-      rfl) r.pairing p).symm
+    have hcard : 2 * T.card + d.externalPairCount B =
+        2 * (Finset.univ : Finset (Fin T.card)).card +
+          d.externalPairCount B := by
+      simp
+    have hback := Pairing.cast_partner hcard r.pairing p
+    have hforward :=
+      congrArg (finCongr (congrArg (fun k : ℕ => 2 * k) hcard)) hback
+    simpa [Fin.cast_trans] using hforward
 
 end Common
 end SecondQuantization
