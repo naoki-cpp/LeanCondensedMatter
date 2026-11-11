@@ -1,6 +1,7 @@
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVBesselJ
 import LeanCondensedMatter.Transport.Analysis.BesselYAnalyticWronskian
 import Mathlib.Tactic.Linarith
+import Mathlib.Analysis.RCLike.Sqrt
 
 set_option linter.style.header false
 
