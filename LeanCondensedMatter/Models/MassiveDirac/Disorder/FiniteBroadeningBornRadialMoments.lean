@@ -64,18 +64,9 @@ theorem finiteBroadeningBornDyson_singlePoleRadialIntegral_eq_log_of_center_re_p
       hbroadening hdisorder hpMax
   have him : (energy ^ 2 - mass ^ 2).im ≠ 0 :=
     quadraticRadialDenominator_center_im_ne_zero_of_re_pos
-      v (energy ^ 2 - mass ^ 2) hvelocity hcenterRe
-      (by
-        intro p
-        change massiveDiracRadialDenominator v p energy mass ≠ 0
-        exact hden p)
+      v (energy ^ 2 - mass ^ 2) hvelocity hcenterRe hden
   have hlog := integral_quadraticRadialJacobianKernel_eq_log
     v pMax (energy ^ 2 - mass ^ 2) hvelocity him
-  change (∫ p in (0 : ℝ)..pMax,
-      massiveDiracRadialDenominatorKernel v p energy mass) =
-    -(((2 : ℂ) * (v : ℂ) ^ 2)⁻¹) *
-      (Complex.log (massiveDiracRadialDenominator v pMax energy mass) -
-        Complex.log (massiveDiracRadialDenominator v 0 energy mass)) at hlog
   simpa only [massiveDiracRadialDenominatorKernel,
     ← finiteCutoffContinuumBornDysonDenominator_eq_radial] using hlog
 
