@@ -90,6 +90,7 @@ theorem finiteProjectorBastinTrace_eq_band_sum
   rw [sub_mul, map_sub]
   rw [finiteProjectorTraceDoubleSum P (fun s => r s ^ 2) (fun t => r t - a t) J K,
     finiteProjectorTraceDoubleSum P (fun s => a s ^ 2) (fun t => r t - a t) K J]
+  trace_state
   simp only [Finset.sum_sub_distrib]
 
 
