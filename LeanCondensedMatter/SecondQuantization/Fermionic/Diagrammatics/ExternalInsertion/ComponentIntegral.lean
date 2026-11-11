@@ -1,5 +1,6 @@
 import LeanCondensedMatter.Analysis.OrderedSimplex.FamilyShuffle
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.InteractionOrder
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.BlockAssembly
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ExternalInsertion.Components.ExternalPartition
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.Integral
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.ExternalInsertion.ComponentAmplitude
@@ -203,6 +204,66 @@ theorem ExternalInsertionWickDiagram.sum_componentInteractionOrderShuffle_ordere
     hVac ε β g externalTime blockOrder]
   rw [externalPartitionSourceSign_eq_componentExternalOrderSign_of_vacuumFree
     d hVac blockOrder]
+
+/-- For an *actually assembled* family of connected external blocks,
+the interaction-time shuffle orbit of the physical Wick diagram carries
+the prescribed external-source partition sign and factors into its
+standalone connected-component Dyson amplitudes.
+
+The components on the right are still indexed through the physical
+assembled graph. Identifying each one with the independently supplied
+local diagram, including its canonical slot relabelling, is the
+remaining diagram-to-coefficient bridge. -/
+theorem ExternalInsertionBlockLayout.assembleConnectedBlocks_signedDysonShuffleOrbit
+    {E n : ℕ} (layout : ExternalInsertionBlockLayout E n)
+    (F : ∀ B : layout.partition.parts,
+      ExternalInsertionDiagram (ExternalFieldLabel Mode) (QuarticVertexLabel Mode)
+        ((B : Finset (Fin (2 * E))).card / 2) n
+        (layout.interactionBlock (Finset.univ : Finset (Fin n)) B))
+    (hconnected : ∀ B, (F B).vertexGraph.Preconnected)
+    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
+    (externalTime : Fin (2 * E) → ℝ) :
+    let d : ExternalInsertionWickDiagram Mode E n :=
+      layout.assembleDiagram (Finset.univ : Finset (Fin n)) F
+    (∑ shuffle : d.ComponentInteractionOrderShuffle,
+      d.orderedDysonAmplitude ε β g externalTime
+        (d.assembleInteractionOrder d.canonicalComponentInteractionOrders shuffle)) =
+      externalPartitionSourceSign layout.partition *
+        ∏ B : d.vertexGraph.componentPartition.parts,
+          (d.componentOrderedDiagram B).dysonAmplitude ε β g
+            (d.componentExternalTime externalTime B) := by
+  classical
+  let d : ExternalInsertionWickDiagram Mode E n :=
+    layout.assembleDiagram (Finset.univ : Finset (Fin n)) F
+  let blockOrder : d.vertexGraph.componentPartition.parts ≃
+      Fin (Fintype.card d.vertexGraph.componentPartition.parts) :=
+    Fintype.equivFin d.vertexGraph.componentPartition.parts
+  have hVac : HasNoVacuumComponent d.vertexGraph :=
+    layout.hasNoVacuumComponent_assembleDiagram
+      (Finset.univ : Finset (Fin n)) F hconnected
+  have hpart : externalComponentPartition d.vertexGraph = layout.partition :=
+    layout.externalComponentPartition_assembleDiagram
+      (Finset.univ : Finset (Fin n)) F hconnected
+  have hsign :=
+    externalPartitionSourceSign_eq_componentExternalOrderSign_of_vacuumFree
+      d hVac blockOrder
+  have horbit :=
+    d.sum_componentInteractionOrderShuffle_orderedDysonAmplitude_eq_componentExternalOrderSign_mul_prod_components
+      ε β g externalTime blockOrder
+  calc
+    (∑ shuffle : d.ComponentInteractionOrderShuffle,
+      d.orderedDysonAmplitude ε β g externalTime
+        (d.assembleInteractionOrder d.canonicalComponentInteractionOrders shuffle)) =
+      componentExternalOrderSign d blockOrder *
+        ∏ B : d.vertexGraph.componentPartition.parts,
+          (d.componentOrderedDiagram B).dysonAmplitude ε β g
+            (d.componentExternalTime externalTime B) := horbit
+    _ = externalPartitionSourceSign layout.partition *
+        ∏ B : d.vertexGraph.componentPartition.parts,
+          (d.componentOrderedDiagram B).dysonAmplitude ε β g
+            (d.componentExternalTime externalTime B) := by
+      rw [← hsign, hpart]
+
 
 end Fermionic
 end SecondQuantization
