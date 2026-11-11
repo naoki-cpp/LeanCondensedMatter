@@ -88,7 +88,6 @@ theorem massiveDiracRadialFourierRemainder_integrableOn_uv_center
     hpow.const_mul _
   have hDcont : Continuous
       (fun p : ℝ => (center - ((v ^ 2 * p ^ 2 : ℝ) : ℂ))) := by
-    unfold massiveDiracRadialDenominator
     fun_prop
   have hInvCont : Continuous
       (fun p : ℝ => ((center - ((v ^ 2 * p ^ 2 : ℝ) : ℂ)))⁻¹) :=
@@ -106,7 +105,7 @@ theorem massiveDiracRadialFourierRemainder_integrableOn_uv_center
         (hInvCont.pow 2))
   apply hmajor.mono' hf.aestronglyMeasurable
   filter_upwards [ae_restrict_mem measurableSet_Ioi] with p hp
-  exact massiveDiracRadialFourierRemainder_norm_le_center v c p energy mass hv
+  exact massiveDiracRadialFourierRemainder_norm_le_center v c p center hv
     (ha.trans hp.le)
 
 /-- Energy/mass presentation of the spectral-center remainder majorant. -/
