@@ -676,6 +676,63 @@ theorem ExternalInsertionBlockLayout.assembleDiagram_componentExternalSector_ext
     _ = ((layout.sourceEquiv e).1 : Finset (Fin (2 * E))) :=
       (layout.sourceEquiv_fst e).symm
 
+/-- The interaction sector of the actual physical component containing
+an external insertion is exactly the set of ambient quartic vertices
+assigned to that source block. This is the interaction-side companion
+to `assembleDiagram_componentExternalSector_external`; both sector
+identities hold at the original vertex indices. -/
+theorem ExternalInsertionBlockLayout.assembleDiagram_componentInteractionSector_external
+    {ExternalLabel InternalLabel : Type*}
+    (layout : ExternalInsertionBlockLayout E N) (S : Finset (Fin N))
+    (F : ∀ B : layout.partition.parts,
+      ExternalInsertionDiagram ExternalLabel InternalLabel
+        ((B : Finset (Fin (2 * E))).card / 2) N (layout.interactionBlock S B))
+    (hconnected : ∀ B, (F B).vertexGraph.Preconnected)
+    (e : Fin (2 * E)) :
+    interactionSector ((layout.assembleDiagram S F).vertexGraph.componentBlock
+        (Sum.inl e)) =
+      layout.interactionBlock S (layout.sourceEquiv e).1 := by
+  classical
+  let d := layout.assembleDiagram S F
+  let B := (layout.sourceEquiv e).1
+  ext v
+  constructor
+  · intro hv
+    have hvS : v ∈ S := interactionSector_subset _ hv
+    let V : ↥S := ⟨v, hvS⟩
+    have hmem : (Sum.inr V : ExternalInsertionVertex E S) ∈
+        d.vertexGraph.componentBlock (Sum.inl e) :=
+      (mem_interactionSector_subtype _ V).1 hv
+    have hreach : d.vertexGraph.Reachable (Sum.inl e) (Sum.inr V) := by
+      have hr := (d.vertexGraph.mem_componentBlock).mp hmem
+      first | exact hr | exact hr.symm
+    have hblocks :=
+      (layout.assembleDiagram_reachable_iff_same_block S F hconnected
+        (Sum.inl e) (Sum.inr V)).1 hreach
+    have howner : layout.interactionOwner v = B := by
+      change B = layout.interactionOwner v at hblocks
+      exact hblocks.symm
+    change v ∈ S.filter (fun x => layout.interactionOwner x = B)
+    exact Finset.mem_filter.mpr ⟨hvS, howner⟩
+  · intro hv
+    have hfilter : v ∈ S ∧ layout.interactionOwner v = B := by
+      simpa only [ExternalInsertionBlockLayout.interactionBlock,
+        Finset.mem_filter] using hv
+    let V : ↥S := ⟨v, hfilter.1⟩
+    have hblocks :
+        (layout.vertexEquiv S (Sum.inl e)).1 =
+          (layout.vertexEquiv S (Sum.inr V)).1 := by
+      change B = layout.interactionOwner v
+      exact hfilter.2.symm
+    have hreach :=
+      (layout.assembleDiagram_reachable_iff_same_block S F hconnected
+        (Sum.inl e) (Sum.inr V)).2 hblocks
+    have hmem : (Sum.inr V : ExternalInsertionVertex E S) ∈
+        d.vertexGraph.componentBlock (Sum.inl e) := by
+      rw [d.vertexGraph.mem_componentBlock]
+      first | exact hreach | exact hreach.symm
+    exact (mem_interactionSector_subtype _ V).2 hmem
+
 /-- Connected local blocks also ensure that no internal-only vacuum
 component survives the assembly. Each prescribed partition part is
 nonempty and therefore supplies an external vertex reachable from all
