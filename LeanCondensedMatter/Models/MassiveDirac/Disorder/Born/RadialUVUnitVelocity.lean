@@ -1,12 +1,12 @@
-import LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVHankelReduction
+import LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVBesselJ
 
 set_option linter.style.header false
 
 /-!
 # Velocity scaling of the fixed-center UV Fourier resolvent
 
-The genuinely analytic Fourier–Hankel transform at general nonzero
-velocity reduces to an integral at unit velocity and spectral center
+The radial Fourier resolvent at general nonzero velocity reduces to
+the corresponding integral at unit velocity and spectral center
 `center / v²`. This file proves the exact finite-cutoff scaling and
 transports it to the already constructed ultraviolet limits.
 
