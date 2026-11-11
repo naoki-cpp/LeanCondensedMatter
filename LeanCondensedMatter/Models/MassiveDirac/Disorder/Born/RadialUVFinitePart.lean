@@ -1,6 +1,5 @@
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornRadialScalarTail
 import Mathlib.Tactic.FunProp
-import Mathlib.Analysis.RCLike.Sqrt
 import Mathlib.Analysis.Complex.Basic
 
 set_option linter.style.header false
@@ -56,33 +55,32 @@ noncomputable def massiveDiracRadialFourierUVFinitePartCenter
 original radial K0 Fourier integral, with no missing endpoint term.
 A genuine UV-integrability proof for the K1 remainder and the
 vanishing first-harmonic boundary term are both consumed here. -/
-theorem massiveDiracRadialFourier_tendsto_uvFinitePartAt
-    (v c a : ℝ) (energy mass : ℂ)
+theorem massiveDiracRadialFourier_tendsto_uvFinitePartAt_center
+    (v c a : ℝ) (center : ℂ)
     (hv : v ≠ 0) (hc : c ≠ 0)
-    (hden : ∀ p : ℝ, massiveDiracRadialDenominator v p energy mass ≠ 0)
-    (ha : max (1 : ℝ) (2 * ‖energy ^ 2 - mass ^ 2‖ / v ^ 2) ≤ a) :
+    (hden : ∀ p : ℝ, (center - ((v ^ 2 * p ^ 2 : ℝ) : ℂ)) ≠ 0)
+    (ha : max (1 : ℝ) (2 * ‖center‖ / v ^ 2) ≤ a) :
     Filter.Tendsto
       (fun b : ℝ => ∫ p in (0 : ℝ)..b,
         (p : ℂ) * polarFourierZerothAngularKernel (p * c) *
-          (massiveDiracRadialDenominator v p energy mass)⁻¹)
+          ((center - ((v ^ 2 * p ^ 2 : ℝ) : ℂ)))⁻¹)
       Filter.atTop (nhds
-        (massiveDiracRadialFourierUVFinitePartCenter v c a (energy ^ 2 - mass ^ 2))) := by
+        (massiveDiracRadialFourierUVFinitePartCenter v c a (center))) := by
   let f : ℝ → ℂ := fun p =>
     (p : ℂ) * polarFourierZerothAngularKernel (p * c) *
-      (massiveDiracRadialDenominator v p energy mass)⁻¹
+      ((center - ((v ^ 2 * p ^ 2 : ℝ) : ℂ)))⁻¹
   have htail :=
-    tendsto_integral_massiveDiracRadialDenominator_inv_fourierKernel_of_conditions
-      v c a energy mass hc hden
-      (massiveDiracRadialFourierRemainder_integrableOn_uv
-        v c a energy mass hv hden ha)
-      (massiveDiracRadialDenominator_firstHarmonicBoundary_tendsto_zero
-        v c energy mass hv)
+    tendsto_integral_massiveDiracRadialCenter_inv_fourierKernel_of_conditions
+      v c a center hc hden
+      (massiveDiracRadialFourierRemainder_integrableOn_uv_center
+        v c a center hv hden ha)
+      (massiveDiracRadialCenter_firstHarmonicBoundary_tendsto_zero
+        v c center hv)
   have hDcont :
-      Continuous (fun p : ℝ => massiveDiracRadialDenominator v p energy mass) := by
-    unfold massiveDiracRadialDenominator
+      Continuous (fun p : ℝ => (center - ((v ^ 2 * p ^ 2 : ℝ) : ℂ))) := by
     fun_prop
   have hInvCont :
-      Continuous (fun p : ℝ => (massiveDiracRadialDenominator v p energy mass)⁻¹) :=
+      Continuous (fun p : ℝ => ((center - ((v ^ 2 * p ^ 2 : ℝ) : ℂ)))⁻¹) :=
     hDcont.inv₀ hden
   have hKcont :
       Continuous (fun p : ℝ => polarFourierZerothAngularKernel (p * c)) :=
@@ -107,13 +105,33 @@ theorem massiveDiracRadialFourier_tendsto_uvFinitePartAt
     Filter.atTop
     (nhds ((∫ p in (0 : ℝ)..a, f p) +
       ((-((a : ℂ) * polarFourierFirstCosineAngularKernel (a * c) *
-          (massiveDiracRadialDenominator v a energy mass)⁻¹) -
+          ((center - ((v ^ 2 * a ^ 2 : ℝ) : ℂ)))⁻¹) -
         ∫ p in Set.Ioi a,
           (p : ℂ) * polarFourierFirstCosineAngularKernel (p * c) *
             ((2 : ℂ) * (v : ℂ) ^ 2 * (p : ℂ) *
-              (massiveDiracRadialDenominator v p energy mass)⁻¹ ^ 2)) /
+              ((center - ((v ^ 2 * p ^ 2 : ℝ) : ℂ)))⁻¹ ^ 2)) /
         (Complex.I * (c : ℂ)))))
   exact hsum.congr' (Filter.Eventually.of_forall fun b => (hsplit b).symm)
+
+
+/-- Energy/mass specialization of the center-indexed Fourier finite-part limit. -/
+theorem massiveDiracRadialFourier_tendsto_uvFinitePartAt
+    (v c a : ℝ) (energy mass : ℂ)
+    (hv : v ≠ 0) (hc : c ≠ 0)
+    (hden : ∀ p : ℝ, massiveDiracRadialDenominator v p energy mass ≠ 0)
+    (ha : max (1 : ℝ) (2 * ‖energy ^ 2 - mass ^ 2‖ / v ^ 2) ≤ a) :
+    Filter.Tendsto
+      (fun b : ℝ => ∫ p in (0 : ℝ)..b,
+        (p : ℂ) * polarFourierZerothAngularKernel (p * c) *
+          (massiveDiracRadialDenominator v p energy mass)⁻¹)
+      Filter.atTop (nhds
+        (massiveDiracRadialFourierUVFinitePartCenter v c a (energy ^ 2 - mass ^ 2))) := by
+  have hcenter (p : ℝ) :
+      energy ^ 2 - mass ^ 2 - ((v ^ 2 * p ^ 2 : ℝ) : ℂ) ≠ 0 := by
+    simpa only [massiveDiracRadialDenominator] using hden p
+  simpa only [massiveDiracRadialDenominator] using
+    massiveDiracRadialFourier_tendsto_uvFinitePartAt_center
+      v c a (energy ^ 2 - mass ^ 2) hv hc hcenter ha
 
 /-- The original existential Fourier UV limit follows from the explicit
 finite-part boundary, without repeating the low-momentum/tail split proof. -/
@@ -131,31 +149,6 @@ theorem massiveDiracRadialFourierKernel_tendsto_atTop
     massiveDiracRadialFourier_tendsto_uvFinitePartAt
       v c (max (1 : ℝ) (2 * ‖energy ^ 2 - mass ^ 2‖ / v ^ 2))
       energy mass hv hc hden le_rfl⟩
-
-/-- The fixed-spectral UV finite-part limit depends only on the
-quadratic center, without choosing an energy/mass decomposition. -/
-theorem massiveDiracRadialFourier_tendsto_uvFinitePartAt_center
-    (v c a : ℝ) (center : ℂ)
-    (hv : v ≠ 0) (hc : c ≠ 0)
-    (hden : ∀ p : ℝ, center - ((v ^ 2 * p ^ 2 : ℝ) : ℂ) ≠ 0)
-    (ha : max (1 : ℝ) (2 * ‖center‖ / v ^ 2) ≤ a) :
-    Filter.Tendsto
-      (fun b : ℝ => ∫ p in (0 : ℝ)..b,
-        (p : ℂ) * polarFourierZerothAngularKernel (p * c) *
-          (center - ((v ^ 2 * p ^ 2 : ℝ) : ℂ))⁻¹)
-      Filter.atTop
-        (nhds (massiveDiracRadialFourierUVFinitePartCenter v c a center)) := by
-  let energy : ℂ := Complex.sqrt center
-  have hsq : (Complex.sqrt center) ^ 2 = center := by
-    simpa [Complex.sqrt] using (Complex.cpow_ofNat_inv_pow center 2)
-  have hcenterEq : energy ^ 2 - (0 : ℂ) ^ 2 = center := by
-    simpa [energy] using hsq
-  have hdenEM : ∀ p : ℝ, massiveDiracRadialDenominator v p energy 0 ≠ 0 := by
-    intro p
-    simpa only [massiveDiracRadialDenominator, hcenterEq] using hden p
-  have hlimit := massiveDiracRadialFourier_tendsto_uvFinitePartAt
-    v c a energy 0 hv hc hdenEM (by simpa only [hcenterEq] using ha)
-  simpa only [massiveDiracRadialDenominator, hcenterEq] using hlimit
 
 /-- The auxiliary splitting scale does not affect the UV finite part:
 both expressions are limits of the same cutoff Fourier integral. -/

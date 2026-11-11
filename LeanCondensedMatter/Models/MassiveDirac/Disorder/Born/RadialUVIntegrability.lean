@@ -27,28 +27,27 @@ open MeasureTheory
 
 /-- The differentiated massive-Dirac resolvent remainder is at most
 `16π/(v²p²)` beyond the explicit quadratic-dominance threshold. -/
-theorem massiveDiracRadialFourierRemainder_norm_le
-    (v c p : ℝ) (energy mass : ℂ) (hv : v ≠ 0)
+theorem massiveDiracRadialFourierRemainder_norm_le_center
+    (v c p : ℝ) (center : ℂ) (hv : v ≠ 0)
     (hp : max (1 : ℝ)
-        (2 * ‖energy ^ 2 - mass ^ 2‖ / v ^ 2) ≤ p) :
+        (2 * ‖center‖ / v ^ 2) ≤ p) :
     ‖(p : ℂ) * polarFourierFirstCosineAngularKernel (p * c) *
         ((2 : ℂ) * (v : ℂ) ^ 2 * (p : ℂ) *
-          (massiveDiracRadialDenominator v p energy mass)⁻¹ ^ 2)‖ ≤
+          ((center - ((v ^ 2 * p ^ 2 : ℝ) : ℂ)))⁻¹ ^ 2)‖ ≤
       (16 * Real.pi / v ^ 2) * p ^ (-2 : ℝ) := by
   have hp1 : 1 ≤ p := (le_max_left _ _).trans hp
   have hp0 : 0 < p := by linarith
   have hv2 : 0 < v ^ 2 := sq_pos_of_ne_zero hv
   have hK := polarFourierFirstCosineAngularKernel_norm_le (p * c)
   have hD := massiveDiracRadialCenter_inv_norm_le_half_quadratic_inv
-    v p (energy ^ 2 - mass ^ 2) hv hp
-  change ‖(massiveDiracRadialDenominator v p energy mass)⁻¹‖ ≤ _ at hD
+    v p (center) hv hp
   have hnorm :
       ‖(p : ℂ) * polarFourierFirstCosineAngularKernel (p * c) *
           ((2 : ℂ) * (v : ℂ) ^ 2 * (p : ℂ) *
-            (massiveDiracRadialDenominator v p energy mass)⁻¹ ^ 2)‖ =
+            ((center - ((v ^ 2 * p ^ 2 : ℝ) : ℂ)))⁻¹ ^ 2)‖ =
       (p * ‖polarFourierFirstCosineAngularKernel (p * c)‖) *
         (2 * v ^ 2 * p) *
-        ‖(massiveDiracRadialDenominator v p energy mass)⁻¹‖ ^ 2 := by
+        ‖((center - ((v ^ 2 * p ^ 2 : ℝ) : ℂ)))⁻¹‖ ^ 2 := by
     simp only [norm_mul, norm_pow, Complex.norm_real, Real.norm_eq_abs,
       abs_of_pos hp0, Complex.norm_two]
     rw [sq_abs]
@@ -57,7 +56,7 @@ theorem massiveDiracRadialFourierRemainder_norm_le
   calc
     (p * ‖polarFourierFirstCosineAngularKernel (p * c)‖) *
         (2 * v ^ 2 * p) *
-        ‖(massiveDiracRadialDenominator v p energy mass)⁻¹‖ ^ 2 ≤
+        ‖((center - ((v ^ 2 * p ^ 2 : ℝ) : ℂ)))⁻¹‖ ^ 2 ≤
       (p * (2 * Real.pi)) * (2 * v ^ 2 * p) *
         ((v ^ 2 * p ^ 2 / 2)⁻¹) ^ 2 := by
       gcongr
@@ -68,16 +67,16 @@ theorem massiveDiracRadialFourierRemainder_norm_le
 
 /-- Integrability on any ultraviolet half-line beyond the explicit
 quadratic-dominance threshold. The complex spectral center is held fixed. -/
-theorem massiveDiracRadialFourierRemainder_integrableOn_uv
-    (v c a : ℝ) (energy mass : ℂ) (hv : v ≠ 0)
-    (hden : ∀ p : ℝ, massiveDiracRadialDenominator v p energy mass ≠ 0)
+theorem massiveDiracRadialFourierRemainder_integrableOn_uv_center
+    (v c a : ℝ) (center : ℂ) (hv : v ≠ 0)
+    (hden : ∀ p : ℝ, (center - ((v ^ 2 * p ^ 2 : ℝ) : ℂ)) ≠ 0)
     (ha : max (1 : ℝ)
-        (2 * ‖energy ^ 2 - mass ^ 2‖ / v ^ 2) ≤ a) :
+        (2 * ‖center‖ / v ^ 2) ≤ a) :
     IntegrableOn
       (fun p : ℝ =>
         (p : ℂ) * polarFourierFirstCosineAngularKernel (p * c) *
           ((2 : ℂ) * (v : ℂ) ^ 2 * (p : ℂ) *
-            (massiveDiracRadialDenominator v p energy mass)⁻¹ ^ 2))
+            ((center - ((v ^ 2 * p ^ 2 : ℝ) : ℂ)))⁻¹ ^ 2))
       (Set.Ioi a) := by
   have ha1 : 1 ≤ a := (le_max_left _ _).trans ha
   have ha0 : 0 < a := by linarith
@@ -88,11 +87,10 @@ theorem massiveDiracRadialFourierRemainder_integrableOn_uv
         (16 * Real.pi / v ^ 2) * p ^ (-2 : ℝ)) (Set.Ioi a) :=
     hpow.const_mul _
   have hDcont : Continuous
-      (fun p : ℝ => massiveDiracRadialDenominator v p energy mass) := by
-    unfold massiveDiracRadialDenominator
+      (fun p : ℝ => (center - ((v ^ 2 * p ^ 2 : ℝ) : ℂ))) := by
     fun_prop
   have hInvCont : Continuous
-      (fun p : ℝ => (massiveDiracRadialDenominator v p energy mass)⁻¹) :=
+      (fun p : ℝ => ((center - ((v ^ 2 * p ^ 2 : ℝ) : ℂ)))⁻¹) :=
     hDcont.inv₀ hden
   have hKcont : Continuous
       (fun p : ℝ => polarFourierFirstCosineAngularKernel (p * c)) :=
@@ -101,14 +99,16 @@ theorem massiveDiracRadialFourierRemainder_integrableOn_uv
   have hf : Continuous (fun p : ℝ =>
       (p : ℂ) * polarFourierFirstCosineAngularKernel (p * c) *
         ((2 : ℂ) * (v : ℂ) ^ 2 * (p : ℂ) *
-          (massiveDiracRadialDenominator v p energy mass)⁻¹ ^ 2)) :=
+          ((center - ((v ^ 2 * p ^ 2 : ℝ) : ℂ)))⁻¹ ^ 2)) :=
     ((Complex.continuous_ofReal.comp continuous_id).mul hKcont).mul
       ((continuous_const.mul (Complex.continuous_ofReal.comp continuous_id)).mul
         (hInvCont.pow 2))
   apply hmajor.mono' hf.aestronglyMeasurable
   filter_upwards [ae_restrict_mem measurableSet_Ioi] with p hp
-  exact massiveDiracRadialFourierRemainder_norm_le v c p energy mass hv
+  exact massiveDiracRadialFourierRemainder_norm_le_center v c p center hv
     (ha.trans hp.le)
+
+
 
 end
 
