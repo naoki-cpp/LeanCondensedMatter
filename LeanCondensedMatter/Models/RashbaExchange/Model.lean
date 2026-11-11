@@ -39,11 +39,8 @@ structure HamiltonianParameters where
 inductive Band where
   | lower
   | upper
-  deriving DecidableEq
+  deriving DecidableEq, Fintype
 
-instance : Fintype Band where
-  elems := {.lower, .upper}
-  complete := by intro band; cases band <;> simp
 
 /-- Eigenvalue-branch sign: -1 for lower and +1 for upper. -/
 def bandSign : Band → ℝ
