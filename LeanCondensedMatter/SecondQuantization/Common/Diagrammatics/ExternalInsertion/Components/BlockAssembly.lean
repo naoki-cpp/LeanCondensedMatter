@@ -705,7 +705,7 @@ theorem ExternalInsertionBlockLayout.assembleDiagram_componentInteractionSector_
       (mem_interactionSector_subtype _ V).1 hv
     have hreach : d.vertexGraph.Reachable (Sum.inl e) (Sum.inr V) := by
       have hr := (d.vertexGraph.mem_componentBlock (Sum.inl e) (Sum.inr V)).mp hmem
-      first | exact hr | exact hr.symm
+      exact hr.symm
     have hblocks :=
       (layout.assembleDiagram_reachable_iff_same_block S F hconnected
         (Sum.inl e) (Sum.inr V)).1 hreach
@@ -730,7 +730,7 @@ theorem ExternalInsertionBlockLayout.assembleDiagram_componentInteractionSector_
     have hmem : (Sum.inr V : ExternalInsertionVertex E S) ∈
         d.vertexGraph.componentBlock (Sum.inl e) := by
       rw [d.vertexGraph.mem_componentBlock]
-      first | exact hreach | exact hreach.symm
+      exact hreach.symm
     exact (mem_interactionSector_subtype _ V).2 hmem
 
 /-- Connected local blocks also ensure that no internal-only vacuum
