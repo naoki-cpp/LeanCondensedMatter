@@ -2242,7 +2242,7 @@
       "imports": [
         "LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornRadialScalarTail"
       ],
-      "externalImportCount": 3
+      "externalImportCount": 2
     },
     {
       "name": "LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVIntegrability",
