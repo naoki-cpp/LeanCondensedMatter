@@ -223,6 +223,7 @@ theorem massiveDiracUnitResolventDifferenceKernel_norm_le
       ring
     _ = (8 * Real.pi) * p ^ (-3 : ℝ) := by
       simp only [Real.rpow_neg hp0.le, div_eq_mul_inv]
+      rfl
 
 /-- The two-resolvent spectral-difference kernel is genuinely Bochner
 integrable over all positive momenta, unlike either single-center
