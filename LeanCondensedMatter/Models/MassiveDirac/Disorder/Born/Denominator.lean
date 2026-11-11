@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Transport.Analysis.QuadraticRadialResolvent
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.SelfEnergy
 import Mathlib.Analysis.SpecificLimits.Basic
 import Mathlib.Analysis.SpecialFunctions.Complex.Arg
@@ -134,9 +135,17 @@ private theorem finiteCutoffContinuumBornDenominatorIntegralOfRegulator_eq_log_s
     unfold massiveDiracRadialDenominator
     push_cast
     ring
-  have h := integral_massiveDiracRadialDenominatorKernel_eq_log
-    v pMax (spectralParameterOfRegulator probeEnergy regulator) (m : ℂ)
+  have h := integral_quadraticRadialJacobianKernel_eq_log
+    v pMax (spectralParameterOfRegulator probeEnergy regulator ^ 2 - (m : ℂ) ^ 2)
     hvelocity hcenter
+  change (∫ p in (0 : ℝ)..pMax,
+      massiveDiracRadialDenominatorKernel v p
+        (spectralParameterOfRegulator probeEnergy regulator) (m : ℂ)) =
+    -(((2 : ℂ) * (v : ℂ) ^ 2)⁻¹) *
+      (Complex.log (massiveDiracRadialDenominator v pMax
+        (spectralParameterOfRegulator probeEnergy regulator) (m : ℂ)) -
+       Complex.log (massiveDiracRadialDenominator v 0
+        (spectralParameterOfRegulator probeEnergy regulator) (m : ℂ))) at h
   simpa only [finiteCutoffContinuumBornDenominatorIntegralOfRegulator,
     continuumBornRadialDenominatorIntegrandOfRegulator, hden] using h
 
