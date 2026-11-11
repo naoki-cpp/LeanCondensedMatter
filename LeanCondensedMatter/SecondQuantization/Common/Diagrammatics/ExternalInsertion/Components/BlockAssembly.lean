@@ -733,6 +733,28 @@ theorem ExternalInsertionBlockLayout.assembleDiagram_componentInteractionSector_
       exact hreach.symm
     exact (mem_interactionSector_subtype _ V).2 hmem
 
+/-- The local external-pair parameter of an actual assembled graph component
+is the half-cardinality of its assigned source-partition block. This closes
+the dependent external-size index needed to identify physical component
+restriction with the independently supplied labelled Wick block. -/
+theorem ExternalInsertionBlockLayout.assembleDiagram_componentExternalPairCount_external
+    {ExternalLabel InternalLabel : Type*}
+    (layout : ExternalInsertionBlockLayout E N) (S : Finset (Fin N))
+    (F : ∀ B : layout.partition.parts,
+      ExternalInsertionDiagram ExternalLabel InternalLabel
+        ((B : Finset (Fin (2 * E))).card / 2) N (layout.interactionBlock S B))
+    (hconnected : ∀ B, (F B).vertexGraph.Preconnected)
+    (e : Fin (2 * E)) :
+    (layout.assembleDiagram S F).externalPairCount
+      ⟨(layout.assembleDiagram S F).vertexGraph.componentBlock (Sum.inl e),
+        (layout.assembleDiagram S F).vertexGraph.componentBlock_mem_componentPartition
+          (Sum.inl e)⟩ =
+      ((layout.sourceEquiv e).1.1.card / 2) := by
+  change (Finset.toLeft
+    ((layout.assembleDiagram S F).vertexGraph.componentBlock (Sum.inl e))).card / 2 =
+      ((layout.sourceEquiv e).1.1.card / 2)
+  rw [layout.assembleDiagram_componentExternalSector_external S F hconnected e]
+
 /-- Connected local blocks also ensure that no internal-only vacuum
 component survives the assembly. Each prescribed partition part is
 nonempty and therefore supplies an external vertex reachable from all
