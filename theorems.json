@@ -58052,7 +58052,10 @@
     "dependents": [
       "QuantumTheory.Models.MassiveDirac.pointwiseBerryCurvature_xy_eq_forceMatrixBerryCurvature"
     ],
-    "dependencies": [],
+    "dependencies": [
+      "QuantumTheory.Models.MassiveDirac.bandEnergy_lower",
+      "QuantumTheory.Models.MassiveDirac.bandEnergy_upper"
+    ],
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
@@ -58093,6 +58096,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "QuantumTheory.Models.MassiveDirac.bandEnergy_injective",
       "QuantumTheory.Models.MassiveDirac.lowerBand_isFilled_of_pos_fermiEnergy",
       "QuantumTheory.Models.MassiveDirac.tendsto_pointwiseDiagonalFockHallResponse_re",
       "QuantumTheory.Models.MassiveDirac.tendsto_pointwiseGrandCanonicalFockHallResponse_re",
@@ -58103,13 +58107,14 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.bandEnergy_injective",
       "QuantumTheory.Models.MassiveDirac.lowerBand_isFilled_of_pos_fermiEnergy",
       "QuantumTheory.Models.MassiveDirac.tendsto_pointwiseDiagonalFockHallResponse_re",
       "QuantumTheory.Models.MassiveDirac.tendsto_pointwiseGrandCanonicalFockHallResponse_re",
       "_private.LeanCondensedMatter.Models.MassiveDirac.Model.OperatorSpectral.BerryPointwise.0.QuantumTheory.Models.MassiveDirac.bandProjectorOperator_apply_pointwiseEigenbasis",
       "_private.LeanCondensedMatter.Models.MassiveDirac.Model.OperatorSpectral.BerryPointwise.0.QuantumTheory.Models.MassiveDirac.sortedEigenvalues_eq_bandEnergy"
     ],
-    "compiledConsumerCount": 5,
+    "compiledConsumerCount": 6,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -58187,6 +58192,7 @@
     "directWrapperTargetModule": null,
     "directWrapperOf": null,
     "dependents": [
+      "QuantumTheory.Models.MassiveDirac.bandEnergy_injective",
       "QuantumTheory.Models.MassiveDirac.bandEnergy_upper_lt_fermi_iff_lt_metallicFermiRadius",
       "QuantumTheory.Models.MassiveDirac.mem_upperBand_radialFermiSurface_iff_eq_metallicFermiRadius",
       "QuantumTheory.Models.MassiveDirac.tendsto_pointwiseDiagonalFockHallResponse_re",
@@ -58199,6 +58205,7 @@
     "crossModuleDirectWrapper": false,
     "completedMention": false,
     "compiledConsumers": [
+      "QuantumTheory.Models.MassiveDirac.bandEnergy_injective",
       "QuantumTheory.Models.MassiveDirac.bandEnergy_upper_lt_fermi_iff_lt_metallicFermiRadius",
       "QuantumTheory.Models.MassiveDirac.mem_upperBand_radialFermiSurface_iff_eq_metallicFermiRadius",
       "QuantumTheory.Models.MassiveDirac.tendsto_pointwiseDiagonalFockHallResponse_re",
@@ -58207,7 +58214,7 @@
       "_private.LeanCondensedMatter.Models.MassiveDirac.Model.OperatorSpectral.BerryPointwise.0.QuantumTheory.Models.MassiveDirac.bandProjectorOperator_apply_pointwiseEigenbasis",
       "_private.LeanCondensedMatter.Models.MassiveDirac.Model.OperatorSpectral.BerryPointwise.0.QuantumTheory.Models.MassiveDirac.sortedEigenvalues_eq_bandEnergy"
     ],
-    "compiledConsumerCount": 7,
+    "compiledConsumerCount": 8,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -70105,7 +70112,6 @@
       "QuantumTheory.Models.MassiveDirac.bandProjector_eq_pauliCombination",
       "QuantumTheory.Models.MassiveDirac.hamiltonianOperator_isSelfAdjoint",
       "QuantumTheory.Models.MassiveDirac.hamiltonian_isHermitian",
-      "QuantumTheory.Models.MassiveDirac.hamiltonian_mul_bandProjector",
       "QuantumTheory.Models.MassiveDirac.hamiltonian_mul_self",
       "_private.LeanCondensedMatter.Models.MassiveDirac.Model.Spectral.0.QuantumTheory.Models.MassiveDirac.bandProjector_eq_normalizedHamiltonian",
       "_private.LeanCondensedMatter.Models.MassiveDirac.Model.Spectral.0.QuantumTheory.Models.MassiveDirac.hamiltonian_eq_energy_smul_normalizedHamiltonian"
@@ -70119,12 +70125,11 @@
       "QuantumTheory.Models.MassiveDirac.bandProjector_eq_pauliCombination",
       "QuantumTheory.Models.MassiveDirac.hamiltonianOperator_isSelfAdjoint",
       "QuantumTheory.Models.MassiveDirac.hamiltonian_isHermitian",
-      "QuantumTheory.Models.MassiveDirac.hamiltonian_mul_bandProjector",
       "QuantumTheory.Models.MassiveDirac.hamiltonian_mul_self",
       "_private.LeanCondensedMatter.Models.MassiveDirac.Model.Spectral.0.QuantumTheory.Models.MassiveDirac.bandProjector_eq_normalizedHamiltonian",
       "_private.LeanCondensedMatter.Models.MassiveDirac.Model.Spectral.0.QuantumTheory.Models.MassiveDirac.hamiltonian_eq_energy_smul_normalizedHamiltonian"
     ],
-    "compiledConsumerCount": 7,
+    "compiledConsumerCount": 6,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -70208,7 +70213,6 @@
     "dependencies": [
       "InternalSpace.involution_mul_one_add",
       "QuantumTheory.Models.MassiveDirac.bandSign_sq",
-      "QuantumTheory.Models.MassiveDirac.hamiltonian_eq_pauliCombination",
       "_private.LeanCondensedMatter.Models.MassiveDirac.Model.Spectral.0.QuantumTheory.Models.MassiveDirac.bandProjector_eq_normalizedHamiltonian",
       "_private.LeanCondensedMatter.Models.MassiveDirac.Model.Spectral.0.QuantumTheory.Models.MassiveDirac.hamiltonian_eq_energy_smul_normalizedHamiltonian",
       "_private.LeanCondensedMatter.Models.MassiveDirac.Model.Spectral.0.QuantumTheory.Models.MassiveDirac.normalizedHamiltonian_mul_self"
