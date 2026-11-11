@@ -55,17 +55,11 @@ resolvents. -/
 noncomputable def projectorBastinOperatorIntegrand
     (params : Parameters) (px py probeEnergy broadening : ℝ) :
     EuclideanSpace ℂ (Fin 2) →L[ℂ] EuclideanSpace ℂ (Fin 2) :=
-  let retarded :=
-    projectorResolvent
-      (retardedSpectralParameter probeEnergy broadening) params px py
-  let advanced :=
-    projectorResolvent
-      (advancedSpectralParameter probeEnergy broadening) params px py
-  (currentBoundedOperator params 0 px py * retarded ^ 2 *
-      currentBoundedOperator params 1 px py -
-    currentBoundedOperator params 1 px py * advanced ^ 2 *
-      currentBoundedOperator params 0 px py) *
-    (retarded - advanced)
+  bastinOperatorKernelFromPropagators
+    (currentBoundedOperator params 0 px py)
+    (currentBoundedOperator params 1 px py)
+    (projectorResolvent (retardedSpectralParameter probeEnergy broadening) params px py)
+    (projectorResolvent (advancedSpectralParameter probeEnergy broadening) params px py)
 
 /-- Ordinary trace of the projector-expanded Bastin kernel. -/
 noncomputable def projectorBastinTraceIntegrand
@@ -86,7 +80,8 @@ theorem regularizedBastinTraceIntegrand_eq_projectorBastinTraceIntegrand
         probeEnergy broadening =
       projectorBastinTraceIntegrand params px py probeEnergy broadening := by
   simpa only [projectorBastinTraceIntegrand,
-    projectorBastinOperatorIntegrand, projectorResolvent] using
+    projectorBastinOperatorIntegrand, bastinOperatorKernelFromPropagators,
+    projectorResolvent] using
     (QuantumTheory.Transport.regularizedBastinTraceIntegrand_eq_projectorSum
       (hamiltonianOperator params px py) (hamiltonianOperator_isSelfAdjoint params px py)
       (fun band : Band => bandProjectorOperator params band px py)
