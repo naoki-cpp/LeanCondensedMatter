@@ -1,12 +1,11 @@
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.RadialUVBesselJ
-import LeanCondensedMatter.Transport.Analysis.BesselYAnalyticWronskian
-import Mathlib.Tactic.Linarith
+import LeanCondensedMatter.Transport.Analysis.BesselY0Series
 import Mathlib.Analysis.RCLike.Sqrt
 
 set_option linter.style.header false
 
 /-!
-# Fixed-center Fourier UV boundary: causal Hankel branch reduction
+# Fixed-center Fourier UV boundary: half-plane Hankel reduction
 
 This file records the correctly normalized proposed outgoing two-dimensional
 Helmholtz resolvent and rigorously reduces its identification with the
@@ -26,7 +25,7 @@ that is not in Mathlib, and **is not asserted or assumed unconditionally**.
 
 The existing evenness and Schwarz reflection of the Fourier UV value
 show that it suffices to prove the upper-half-plane identity at r>0.
-The lower-half-plane incoming candidate is defined as the reflection of
+The lower-half-plane candidate is defined as the Schwarz reflection of
 the upper-half-plane outgoing candidate, avoiding an unjustified
 choice of analytic continuation across the negative-real Bessel cut.
 
@@ -59,11 +58,14 @@ noncomputable def massiveDiracRadialOutgoingHankelCandidate
     (Complex.besselJ 0 (massiveDiracRadialHankelArgument v c center) +
       Complex.I * besselY0Series (massiveDiracRadialHankelArgument v c center))
 
-/-- Advanced/incoming candidate obtained by *causal reflection* from
-the upper-half-plane outgoing expression. This definition preserves the
+/-- Lower-half-plane candidate obtained by Schwarz reflection from
+the upper-half-plane outgoing expression. The *quadratic spectral center*
+may lie below the real axis even for a physically retarded Green function
+(e.g. at negative probe energy); lower/upper here do not label the
+retarded/advanced spectral side. This definition preserves the
 square-root and logarithmic branches and does not silently equate
 `conj (Y₀ z)` with `Y₀ (conj z)` on the branch cut. -/
-noncomputable def massiveDiracRadialIncomingHankelCandidate
+noncomputable def massiveDiracRadialLowerHalfPlaneHankelCandidate
     (v c : ℝ) (center : ℂ) : ℂ :=
   conj (massiveDiracRadialOutgoingHankelCandidate v c (conj center))
 
@@ -76,21 +78,28 @@ theorem massiveDiracRadialOutgoingHankelCandidate_neg
   simp [massiveDiracRadialOutgoingHankelCandidate,
     massiveDiracRadialHankelArgument, abs_neg]
 
-/-- The advanced candidate inherits the same radial parity. -/
-theorem massiveDiracRadialIncomingHankelCandidate_neg
+/-- The lower-half-plane candidate inherits the same radial parity. -/
+theorem massiveDiracRadialLowerHalfPlaneHankelCandidate_neg
     (v c : ℝ) (center : ℂ) :
-    massiveDiracRadialIncomingHankelCandidate v (-c) center =
-      massiveDiracRadialIncomingHankelCandidate v c center := by
-  simp only [massiveDiracRadialIncomingHankelCandidate,
+    massiveDiracRadialLowerHalfPlaneHankelCandidate v (-c) center =
+      massiveDiracRadialLowerHalfPlaneHankelCandidate v c center := by
+  simp only [massiveDiracRadialLowerHalfPlaneHankelCandidate,
     massiveDiracRadialOutgoingHankelCandidate_neg]
 
 /-- The *only genuinely new* Fourier–Hankel integral identity needed
 for a fixed velocity is the upper-half-plane identity at positive radius.
 This is an explicit proposition, not an axiom and not proved here. -/
 def MassiveDiracUpperHalfPlaneHankelTransform (v : ℝ) : Prop :=
-  ∀ (radius : ℝ) (center : ℂ), 0 < radius → 0 < center.im →
-    massiveDiracRadialFourierUVCenter v radius center =
-      massiveDiracRadialOutgoingHankelCandidate v radius center
+  v ≠ 0 ∧
+    ∀ (radius : ℝ) (center : ℂ), 0 < radius → 0 < center.im →
+      massiveDiracRadialFourierUVCenter v radius center =
+        massiveDiracRadialOutgoingHankelCandidate v radius center
+
+/-- A valid fixed-center Hankel-transform hypothesis necessarily has
+nonzero velocity, as required by the Fourier UV convergence theorem. -/
+theorem MassiveDiracUpperHalfPlaneHankelTransform.velocity_ne_zero
+    {v : ℝ} (h : MassiveDiracUpperHalfPlaneHankelTransform v) : v ≠ 0 :=
+  h.1
 
 /-- If the upper-half-plane Fourier–Hankel identity is established at
 positive radius, the result extends to *both signs* of every nonzero
@@ -103,10 +112,10 @@ theorem massiveDiracRadialFourierUVCenter_eq_outgoing_of_upper
       massiveDiracRadialOutgoingHankelCandidate v c center := by
   by_cases hcpos : 0 ≤ c
   · have hcstrict : 0 < c := lt_of_le_of_ne hcpos (Ne.symm hc)
-    exact hupper c center hcstrict hupperCenter
+    exact hupper.2 c center hcstrict hupperCenter
   · have hcneg : c < 0 := lt_of_not_ge hcpos
     have hpositive : 0 < -c := neg_pos.mpr hcneg
-    have hreference := hupper (-c) center hpositive hupperCenter
+    have hreference := hupper.2 (-c) center hpositive hupperCenter
     calc
       massiveDiracRadialFourierUVCenter v c center =
           massiveDiracRadialFourierUVCenter v (-c) center := by
@@ -117,16 +126,16 @@ theorem massiveDiracRadialFourierUVCenter_eq_outgoing_of_upper
       _ = massiveDiracRadialOutgoingHankelCandidate v c center :=
         massiveDiracRadialOutgoingHankelCandidate_neg v c center
 
-/-- The advanced/lower-half-plane fixed-center transform follows
+/-- The lower-half-plane fixed-center transform follows
 *without another contour integral*: Schwarz reflection of the exact
-Fourier UV boundary turns the upper outgoing expression into the
-lower incoming expression. -/
-theorem massiveDiracRadialFourierUVCenter_eq_incoming_of_upper
+Fourier UV boundary turns the upper-plane expression into its
+lower-plane Schwarz reflection. -/
+theorem massiveDiracRadialFourierUVCenter_eq_lowerHalfPlane_of_upper
     (v c : ℝ) (center : ℂ)
     (hv : v ≠ 0) (hc : c ≠ 0) (hlowerCenter : center.im < 0)
     (hupper : MassiveDiracUpperHalfPlaneHankelTransform v) :
     massiveDiracRadialFourierUVCenter v c center =
-      massiveDiracRadialIncomingHankelCandidate v c center := by
+      massiveDiracRadialLowerHalfPlaneHankelCandidate v c center := by
   have hconjIm : 0 < (conj center).im := by
     rw [Complex.conj_im]
     exact neg_pos.mpr hlowerCenter
@@ -142,20 +151,20 @@ theorem massiveDiracRadialFourierUVCenter_eq_incoming_of_upper
       simpa using hreflection.symm
     _ = conj (massiveDiracRadialOutgoingHankelCandidate v c (conj center)) :=
       congrArg conj hupperReflected
-    _ = massiveDiracRadialIncomingHankelCandidate v c center := rfl
+    _ = massiveDiracRadialLowerHalfPlaneHankelCandidate v c center := rfl
 
-/-- Fixed-center causal Fourier–Hankel formula for nonreal quadratic
+/-- Fixed-center half-plane Fourier–Hankel formula for nonreal quadratic
 spectral center, *conditional only on the single upper branch identity*.
 Both the lower branch and negative radius are reduced to already
 proved symmetries. -/
-theorem massiveDiracRadialFourierUVCenter_eq_causalHankel_of_upper
+theorem massiveDiracRadialFourierUVCenter_eq_halfPlaneHankel_of_upper
     (v c : ℝ) (center : ℂ)
     (hv : v ≠ 0) (hc : c ≠ 0) (hcenter : center.im ≠ 0)
     (hupper : MassiveDiracUpperHalfPlaneHankelTransform v) :
     massiveDiracRadialFourierUVCenter v c center =
       if 0 < center.im then
         massiveDiracRadialOutgoingHankelCandidate v c center
-      else massiveDiracRadialIncomingHankelCandidate v c center := by
+      else massiveDiracRadialLowerHalfPlaneHankelCandidate v c center := by
   by_cases him : 0 < center.im
   · simpa [him] using
       (massiveDiracRadialFourierUVCenter_eq_outgoing_of_upper
@@ -164,28 +173,30 @@ theorem massiveDiracRadialFourierUVCenter_eq_causalHankel_of_upper
       have hle : center.im ≤ 0 := le_of_not_gt him
       exact lt_of_le_of_ne hle hcenter
     simpa [him] using
-      (massiveDiracRadialFourierUVCenter_eq_incoming_of_upper
+      (massiveDiracRadialFourierUVCenter_eq_lowerHalfPlane_of_upper
         v c center hv hc hlower hupper)
 
-/-- **Exact logical reduction:** the Fourier UV limit equals the causal
+/-- **Exact logical reduction:** the Fourier UV limit equals the half-plane
 Hankel expression for all nonreal centers and nonzero radii if and only
 if the positive-radius upper-half-plane transform holds.
 The forward implication specializes; the reverse uses parity and
 Schwarz reflection. No Fourier–Hankel integral is assumed proved. -/
-theorem massiveDiracRadialFourierUVCenter_causalHankel_iff_upper
+theorem massiveDiracRadialFourierUVCenter_halfPlaneHankel_iff_upper
     (v : ℝ) (hv : v ≠ 0) :
     (∀ (c : ℝ) (center : ℂ), c ≠ 0 → center.im ≠ 0 →
       massiveDiracRadialFourierUVCenter v c center =
         if 0 < center.im then
           massiveDiracRadialOutgoingHankelCandidate v c center
-        else massiveDiracRadialIncomingHankelCandidate v c center) ↔
+        else massiveDiracRadialLowerHalfPlaneHankelCandidate v c center) ↔
       MassiveDiracUpperHalfPlaneHankelTransform v := by
   constructor
-  · intro h c center hc him
+  · intro h
+    refine ⟨hv, ?_⟩
+    intro c center hc him
     have hresult := h c center (ne_of_gt hc) (ne_of_gt him)
     simpa [him] using hresult
   · intro h c center hc him
-    exact massiveDiracRadialFourierUVCenter_eq_causalHankel_of_upper
+    exact massiveDiracRadialFourierUVCenter_eq_halfPlaneHankel_of_upper
       v c center hv hc him h
 
 end
