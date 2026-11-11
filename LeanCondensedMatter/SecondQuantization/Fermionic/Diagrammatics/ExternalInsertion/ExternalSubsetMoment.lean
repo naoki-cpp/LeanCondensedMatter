@@ -149,7 +149,7 @@ theorem ExternalInsertionBlockLayout.assembleDiagram_componentOrderedDiagram_ext
       (F B).externalLabel =
         evenExternalSubsetLabels d.externalLabel (B : Finset (Fin (2 * E)))
           (layout.evenBlocks B) :=
-    layout.assembleDiagram_externalLabel_eq_evenExternalSubsetLabels F B
+    ExternalInsertionBlockLayout.assembleDiagram_externalLabel_eq_evenExternalSubsetLabels layout F B
   have htransport :=
     evenExternalSubsetRestriction_heq_of_eq d.externalLabel
       (layout.evenBlocks B) (d.externalSector_card_even C) hsec
