@@ -1492,6 +1492,50 @@ theorem ExternalInsertionBlockLayout.assembleDiagram_partner_at_shuffledInteract
   exact layout.assembleDiagram_partner
     (Finset.univ : Finset (Fin N)) F B _
 
+/-- The original partner of an external source leg in an assembled
+diagram is the exact transport of the corresponding local external
+source leg's partner. Together with the interaction-leg theorem, this
+covers both kinds of atomic legs in a connected block. -/
+theorem ExternalInsertionBlockLayout.assembleDiagram_partner_at_externalLeg
+    {ExternalLabel InternalLabel : Type*}
+    (layout : ExternalInsertionBlockLayout E N)
+    (F : ∀ B : layout.partition.parts,
+      ExternalInsertionDiagram ExternalLabel InternalLabel
+        ((B : Finset (Fin (2 * E))).card / 2) N
+        (layout.interactionBlock (Finset.univ : Finset (Fin N)) B))
+    (B : layout.partition.parts)
+    (i : Fin (2 * ((B : Finset (Fin (2 * E))).card / 2))) :
+    (layout.assembleDiagram (Finset.univ : Finset (Fin N)) F).pairing.partner
+      (externalInsertionExternalLeg E (Finset.univ : Finset (Fin N))
+        (layout.sourceEquiv.symm ⟨B, i⟩)) =
+      (layout.legEquiv (Finset.univ : Finset (Fin N))).symm
+        ⟨B, (F B).pairing.partner
+          (externalInsertionExternalLeg
+            ((B : Finset (Fin (2 * E))).card / 2)
+            (layout.interactionBlock (Finset.univ : Finset (Fin N)) B) i)⟩ := by
+  classical
+  have hleg :
+      layout.legEquiv (Finset.univ : Finset (Fin N))
+        (externalInsertionExternalLeg E (Finset.univ : Finset (Fin N))
+          (layout.sourceEquiv.symm ⟨B, i⟩)) =
+        ⟨B, externalInsertionExternalLeg
+          ((B : Finset (Fin (2 * E))).card / 2)
+          (layout.interactionBlock (Finset.univ : Finset (Fin N)) B) i⟩ := by
+    rw [layout.legEquiv_externalLeg]
+    simp only [Equiv.apply_symm_apply]
+  have hglobal :
+      externalInsertionExternalLeg E (Finset.univ : Finset (Fin N))
+        (layout.sourceEquiv.symm ⟨B, i⟩) =
+      (layout.legEquiv (Finset.univ : Finset (Fin N))).symm
+        ⟨B, externalInsertionExternalLeg
+          ((B : Finset (Fin (2 * E))).card / 2)
+          (layout.interactionBlock (Finset.univ : Finset (Fin N)) B) i⟩ := by
+    apply (layout.legEquiv (Finset.univ : Finset (Fin N))).injective
+    simpa only [Equiv.apply_symm_apply] using hleg
+  rw [hglobal]
+  exact layout.assembleDiagram_partner
+    (Finset.univ : Finset (Fin N)) F B _
+
 /-- Reindex a finite sum over every ambient interaction order by the
 independent local block orders and their interleavings, with no
 multiplicity or omission even for zero-interaction blocks. -/
