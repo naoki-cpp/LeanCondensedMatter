@@ -593,32 +593,6 @@ theorem ExternalInsertionBlockLayout.assembleDiagram_componentBlock_external
     subst v
     simpa only [Equiv.apply_symm_apply]
 
-/-- The physical connected component's external sector is exactly
-the prescribed source-partition block. Together with the full-vertex
-component identity, this identifies both sectors of the assembled
-component without changing the fermionic source order. -/
-theorem ExternalInsertionBlockLayout.assembleDiagram_componentExternalSector_external
-    {ExternalLabel InternalLabel : Type*}
-    (layout : ExternalInsertionBlockLayout E N) (S : Finset (Fin N))
-    (F : ∀ B : layout.partition.parts,
-      ExternalInsertionDiagram ExternalLabel InternalLabel
-        ((B : Finset (Fin (2 * E))).card / 2) N (layout.interactionBlock S B))
-    (hconnected : ∀ B, (F B).vertexGraph.Preconnected)
-    (e : Fin (2 * E)) :
-    Finset.toLeft ((layout.assembleDiagram S F).vertexGraph.componentBlock
-        (Sum.inl e)) =
-      ((layout.sourceEquiv e).1 : Finset (Fin (2 * E))) := by
-  let d := layout.assembleDiagram S F
-  calc
-    (d.vertexGraph.componentBlock (Sum.inl e)).toLeft =
-        (externalComponentPartition d.vertexGraph).part e :=
-      (d.externalComponentPartition_part_eq_toLeft_componentBlock e).symm
-    _ = layout.partition.part e :=
-      congrArg (fun π : Finpartition (Finset.univ : Finset (Fin (2 * E))) =>
-        π.part e) (layout.externalComponentPartition_assembleDiagram S F hconnected)
-    _ = ((layout.sourceEquiv e).1 : Finset (Fin (2 * E))) :=
-      (layout.sourceEquiv_fst e).symm
-
 /-- The block selected by the increasing source-slot equivalence is
 precisely the part of the prescribed partition containing that source. -/
 @[simp]
@@ -675,6 +649,32 @@ theorem ExternalInsertionBlockLayout.externalComponentPartition_assembleDiagram
     rw [← he, ← hpart e]
     exact (externalComponentPartition (layout.assembleDiagram S F).vertexGraph).part_mem.2
       (Finset.mem_univ e)
+
+/-- The physical connected component's external sector is exactly
+the prescribed source-partition block. Together with the full-vertex
+component identity, this identifies both sectors of the assembled
+component without changing the fermionic source order. -/
+theorem ExternalInsertionBlockLayout.assembleDiagram_componentExternalSector_external
+    {ExternalLabel InternalLabel : Type*}
+    (layout : ExternalInsertionBlockLayout E N) (S : Finset (Fin N))
+    (F : ∀ B : layout.partition.parts,
+      ExternalInsertionDiagram ExternalLabel InternalLabel
+        ((B : Finset (Fin (2 * E))).card / 2) N (layout.interactionBlock S B))
+    (hconnected : ∀ B, (F B).vertexGraph.Preconnected)
+    (e : Fin (2 * E)) :
+    Finset.toLeft ((layout.assembleDiagram S F).vertexGraph.componentBlock
+        (Sum.inl e)) =
+      ((layout.sourceEquiv e).1 : Finset (Fin (2 * E))) := by
+  let d := layout.assembleDiagram S F
+  calc
+    (d.vertexGraph.componentBlock (Sum.inl e)).toLeft =
+        (externalComponentPartition d.vertexGraph).part e :=
+      (d.externalComponentPartition_part_eq_toLeft_componentBlock e).symm
+    _ = layout.partition.part e :=
+      congrArg (fun π : Finpartition (Finset.univ : Finset (Fin (2 * E))) =>
+        π.part e) (layout.externalComponentPartition_assembleDiagram S F hconnected)
+    _ = ((layout.sourceEquiv e).1 : Finset (Fin (2 * E))) :=
+      (layout.sourceEquiv_fst e).symm
 
 /-- Connected local blocks also ensure that no internal-only vacuum
 component survives the assembly. Each prescribed partition part is
