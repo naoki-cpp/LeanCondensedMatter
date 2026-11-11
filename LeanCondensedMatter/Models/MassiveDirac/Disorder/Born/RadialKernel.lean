@@ -35,26 +35,25 @@ def massiveDiracRetardedAdvancedRadialDenominatorProduct
   massiveDiracRadialDenominator v p retardedEnergy retardedMass *
     massiveDiracRadialDenominator v p advancedEnergy advancedMass
 
-/-- The gap between two radial Dyson denominator centers converts their
-two-pole inverse into the difference of single-side resolvents. The radial
-momentum term cancels from the gap. No division by the center gap is needed. -/
-theorem massiveDiracRadialDenominator_inv_product_mul_center_gap
-    (v p : ℝ) (energyR massR energyA massA : ℂ)
-    (hR : massiveDiracRadialDenominator v p energyR massR ≠ 0)
-    (hA : massiveDiracRadialDenominator v p energyA massA ≠ 0) :
-    (energyA ^ 2 - massA ^ 2 - (energyR ^ 2 - massR ^ 2)) *
-      (massiveDiracRetardedAdvancedRadialDenominatorProduct
-        v p energyR massR energyA massA)⁻¹ =
-      (massiveDiracRadialDenominator v p energyR massR)⁻¹ -
-        (massiveDiracRadialDenominator v p energyA massA)⁻¹ := by
+/-- Two-center resolvent partial fractions: the momentum-dependent quadratic
+term cancels from the spectral-center gap. This is an identity at fixed
+momentum and requires no division by `centerA - centerR`. It applies to
+both finite-broadening Born–Dyson poles and weak-Born radial poles. -/
+theorem massiveDiracRadialCenter_inv_product_mul_center_gap
+    (v p : ℝ) (centerR centerA : ℂ)
+    (hR : centerR - ((v ^ 2 * p ^ 2 : ℝ) : ℂ) ≠ 0)
+    (hA : centerA - ((v ^ 2 * p ^ 2 : ℝ) : ℂ) ≠ 0) :
+    (centerA - centerR) *
+      ((centerR - ((v ^ 2 * p ^ 2 : ℝ) : ℂ)) *
+        (centerA - ((v ^ 2 * p ^ 2 : ℝ) : ℂ)))⁻¹ =
+      (centerR - ((v ^ 2 * p ^ 2 : ℝ) : ℂ))⁻¹ -
+        (centerA - ((v ^ 2 * p ^ 2 : ℝ) : ℂ))⁻¹ := by
   have hgap :
-      energyA ^ 2 - massA ^ 2 - (energyR ^ 2 - massR ^ 2) =
-        massiveDiracRadialDenominator v p energyA massA -
-          massiveDiracRadialDenominator v p energyR massR := by
-    unfold massiveDiracRadialDenominator
+      centerA - centerR =
+        (centerA - ((v ^ 2 * p ^ 2 : ℝ) : ℂ)) -
+          (centerR - ((v ^ 2 * p ^ 2 : ℝ) : ℂ)) := by
     ring
   rw [hgap]
-  unfold massiveDiracRetardedAdvancedRadialDenominatorProduct
   field_simp
 
 /-- Polar Jacobian divided by one radial massive-Dirac denominator. -/
