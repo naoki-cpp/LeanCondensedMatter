@@ -704,7 +704,7 @@ theorem ExternalInsertionBlockLayout.assembleDiagram_componentInteractionSector_
         d.vertexGraph.componentBlock (Sum.inl e) :=
       (mem_interactionSector_subtype _ V).1 hv
     have hreach : d.vertexGraph.Reachable (Sum.inl e) (Sum.inr V) := by
-      have hr := (d.vertexGraph.mem_componentBlock).mp hmem
+      have hr := (d.vertexGraph.mem_componentBlock (Sum.inl e) (Sum.inr V)).mp hmem
       first | exact hr | exact hr.symm
     have hblocks :=
       (layout.assembleDiagram_reachable_iff_same_block S F hconnected
