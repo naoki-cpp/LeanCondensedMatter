@@ -130,7 +130,8 @@ theorem massiveDiracUnitResolvent_integral_sub
     _ = (t - s) *
           (∫ p in (0 : ℝ)..b,
             massiveDiracUnitResolventDifferenceKernel c s t p) :=
-      intervalIntegral.integral_const_mul
+      (intervalIntegral.integral_const_mul (t - s)
+        (massiveDiracUnitResolventDifferenceKernel c s t))
 
 /-- The already-proved oscillatory Fourier UV limits show that the
 difference of two centers converges to a *single* two-resolvent integral
@@ -169,7 +170,7 @@ theorem massiveDiracUnitResolvent_difference_tendsto
         1 c t (by norm_num) hc ht)
   exact (hUVs.sub hUVt).congr'
     (Filter.Eventually.of_forall fun b =>
-      (massiveDiracUnitResolvent_integral_sub c b s t hs ht).symm)
+      massiveDiracUnitResolvent_integral_sub c b s t hs ht)
 
 end
 
