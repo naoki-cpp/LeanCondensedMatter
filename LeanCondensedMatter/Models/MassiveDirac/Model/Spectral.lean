@@ -77,9 +77,7 @@ private theorem hamiltonian_eq_energy_smul_normalizedHamiltonian
       (((energy v m px py : ℝ) : ℂ)) • normalizedHamiltonian v m px py := by
   have hEc : (((energy v m px py : ℝ) : ℂ)) ≠ 0 := by
     exact_mod_cast hE
-  unfold normalizedHamiltonian
-  rw [smul_smul]
-  simp [hEc]
+  simpa [normalizedHamiltonian, smul_smul, hEc]
 
 /-- Rewrite the band projector as the `±1` spectral projector of the normalized Hamiltonian. -/
 private theorem bandProjector_eq_normalizedHamiltonian
@@ -94,9 +92,8 @@ private theorem bandProjector_eq_normalizedHamiltonian
 algebraic `E = 0` value of the definition. -/
 theorem sum_bandProjector_eq_one (v m px py : ℝ) :
     ∑ band : Band, bandProjector band v m px py = 1 := by
-  simp only [sum_band]
-  rw [bandProjector_eq_normalizedHamiltonian, bandProjector_eq_normalizedHamiltonian]
-  simp only [bandSign_lower, bandSign_upper]
+  simp only [sum_band, bandProjector_eq_normalizedHamiltonian,
+    bandSign_lower, bandSign_upper]
   push_cast
   module
 
@@ -115,17 +112,12 @@ theorem bandProjector_add_oppositeBand (band : Band) (v m px py : ℝ) :
 theorem bandEnergy_injective (v m px py : ℝ) (hE : energy v m px py ≠ 0) :
     Function.Injective (fun band : Band => bandEnergy band v m px py) := by
   intro a b hab
-  cases a <;> cases b
-  · rfl
-  · exfalso
+  cases a <;> cases b <;> try rfl
+  all_goals
+    exfalso
     simp [bandEnergy] at hab
     apply hE
     linarith
-  · exfalso
-    simp [bandEnergy] at hab
-    apply hE
-    linarith
-  · rfl
 
 /-- Away from the band degeneracy, `H₀ P_s = E_s P_s`. -/
 theorem hamiltonian_mul_bandProjector (band : Band) (v m px py : ℝ)
