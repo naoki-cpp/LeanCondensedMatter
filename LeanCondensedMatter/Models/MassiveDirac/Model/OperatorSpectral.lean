@@ -42,8 +42,9 @@ theorem bandProjectorOperator_ne_zero (band : Band) (v m px py : ℝ) :
     bandProjectorOperator band v m px py ≠ 0 := by
   intro hzero
   have htrace := congrArg (finiteDimensionalOperatorTrace (H := DiracHilbert)) hzero
-  simpa [bandProjectorOperator, matrixOperator,
-    finiteDimensionalOperatorTrace_toEuclideanCLM] using htrace
+  simp only [bandProjectorOperator, matrixOperator,
+    finiteDimensionalOperatorTrace_toEuclideanCLM, trace_bandProjector, map_zero,
+    one_ne_zero] at htrace
 
 /-- Ordered current band block `Tr(P_target j_μ P_source j_ν)` in the bounded-operator model. -/
 noncomputable def currentBandBlockTrace
