@@ -188,6 +188,7 @@ theorem cleanBastinPointResponse_eq_integral_band_sum
   unfold cleanBastinPointResponse regularizedTracedBastinEnergyIntegral
   apply intervalIntegral.integral_congr
   intro probeEnergy _
+  dsimp only
   rw [regularizedBastinTraceIntegrand_eq_band_sum
     params μ ν px py probeEnergy params.broadening hE hbroadening]
 
@@ -210,6 +211,7 @@ theorem cleanBastinPointResponse_eq_integral_diagonal_add_interband
   unfold cleanBastinPointResponse regularizedTracedBastinEnergyIntegral
   apply intervalIntegral.integral_congr
   intro probeEnergy _
+  dsimp only
   rw [regularizedBastinTraceIntegrand_eq_band_sum
     params μ ν px py probeEnergy params.broadening hE hbroadening]
   simp only [sum_band, oppositeBand_lower, oppositeBand_upper]
