@@ -8,6 +8,7 @@ import LeanCondensedMatter.Models.RashbaExchange.Current
 import LeanCondensedMatter.Models.RashbaExchange.Green
 import LeanCondensedMatter.Models.RashbaExchange.Response
 import LeanCondensedMatter.Models.RashbaExchange.Bastin.Berry
+import LeanCondensedMatter.Models.RashbaExchange.Bastin.Bands
 
 set_option linter.style.header false
 

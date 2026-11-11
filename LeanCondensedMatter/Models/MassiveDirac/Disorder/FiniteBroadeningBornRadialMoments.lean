@@ -62,8 +62,9 @@ theorem finiteBroadeningBornDyson_singlePoleRadialIntegral_eq_log_of_center_re_p
       side v m p 0 probeEnergy broadening disorderStrength hbar pMax
       hbroadening hdisorder hpMax
   have him : (energy ^ 2 - mass ^ 2).im ≠ 0 :=
-    massiveDiracRadialDenominator_center_im_ne_zero_of_re_pos
-      v energy mass hvelocity hcenterRe hden
+    massiveDiracRadialCenter_im_ne_zero_of_re_pos
+      v (energy ^ 2 - mass ^ 2) hvelocity hcenterRe
+      (fun p => by simpa only [massiveDiracRadialDenominator] using hden p)
   have hlog := integral_massiveDiracRadialDenominatorKernel_eq_log
     v pMax energy mass hvelocity him
   simpa only [massiveDiracRadialDenominatorKernel,
