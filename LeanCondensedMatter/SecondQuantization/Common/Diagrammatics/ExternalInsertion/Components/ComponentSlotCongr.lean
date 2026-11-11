@@ -54,7 +54,7 @@ theorem ExternalInsertionDiagram.componentOrderedDiagram_eq_slotCongr
     apply Equiv.ext
     intro p
     simp only [PairingOn.transport_partner]
-    simpa using (Pairing.cast_partner (by simp) r.pairing p).symm
+    simpa using (Pairing.cast_partner (by rfl) r.pairing p).symm
 
 end Common
 end SecondQuantization
