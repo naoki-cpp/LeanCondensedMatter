@@ -51,7 +51,8 @@ theorem ExternalInsertionDiagram.componentOrderedDiagram_eq_slotCongr
             (standardSlotEquiv T)).symm
     rw [externalInsertionLegCongr_standardize (E := d.externalPairCount B) T]
     apply PairingOn.ext
-    funext p
+    apply Equiv.ext
+    intro p
     simp only [PairingOn.transport_partner]
     simpa using (Pairing.cast_partner (by simp) r.pairing p).symm
 
