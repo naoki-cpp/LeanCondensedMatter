@@ -8,13 +8,17 @@ set_option linter.style.header false
 /-!
 # Resolvent difference of the unit-velocity Fourier UV Green function
 
-The key Fourier–Hankel integral for a single spectral center converges
-only *oscillatorily*. Taking a difference of two nonreal spectral centers
-cancels its leading large-momentum `p⁻²` behavior. The resulting
-two-resolvent integrand behaves as `p⁻³` after the radial measure
-and is **absolutely integrable**. That analytic improvement is the
-route to a normalized Stieltjes-transform proof of the outstanding
-upper-half-plane Fourier–Hankel identity.
+For nonzero real-space separation, the single-center Fourier–Hankel
+integral is already absolutely convergent by the classical decay
+`J₀(pc) = O(p⁻¹ᐟ²)`, though that Bessel asymptotic is not formalized
+here. At zero separation, the single-center UV integral instead has
+a logarithmic divergence. Taking a difference of two nonreal spectral
+centers cancels the leading `p⁻²` resolvent contribution and gives
+a `p⁻³` majorant after the radial measure, using only the uniform
+bound on the full-angle Fourier kernel. Thus the difference kernel
+is absolutely integrable even at zero separation, without assuming
+any Bessel asymptotics. This is a Stieltjes-transform route toward
+the outstanding upper-half-plane Fourier–Hankel identity.
 
 Here we prove the exact two-resolvent identity at every finite cutoff,
 the explicit UV norm bound, genuine absolute integrability on the
@@ -133,7 +137,7 @@ theorem massiveDiracUnitResolvent_integral_sub
       (intervalIntegral.integral_const_mul (t - s)
         (massiveDiracUnitResolventDifferenceKernel c s t))
 
-/-- The already-proved oscillatory Fourier UV limits show that the
+/-- The already-proved Fourier UV limits show that the
 difference of two centers converges to a *single* two-resolvent integral
 with the exact spectral difference prefactor.
 
@@ -225,8 +229,10 @@ theorem massiveDiracUnitResolventDifferenceKernel_norm_le
       simp only [Real.rpow_neg hp0.le, Real.rpow_ofNat, div_eq_mul_inv]
 
 /-- The two-resolvent spectral-difference kernel is genuinely Bochner
-integrable over all positive momenta, unlike either single-center
-oscillatory Fourier integral. -/
+integrable over all positive momenta, including at zero separation.
+Unlike a proof for a single center at nonzero separation, this proof
+needs no Bessel asymptotic: the angular-kernel bound gives a `p⁻³`
+majorant after cancellation of the leading resolvent term. -/
 theorem massiveDiracUnitResolventDifferenceKernel_integrableOn
     (c : ℝ) (s t : ℂ) (hs : s.im ≠ 0) (ht : t.im ≠ 0) :
     IntegrableOn
@@ -279,8 +285,13 @@ theorem massiveDiracUnitResolventDifferenceKernel_integrableOn
 is a single **absolutely convergent** complex Lebesgue integral.
 The proof uses a finite-cutoff resolvent identity and uniqueness
 of the two already established spectral-center UV limits.
-This is the analytic Stieltjes bridge toward the still-unproved
-individual Fourier–Hankel transform. -/
+The assumption `c ≠ 0` is needed for those single-center UV limit
+theorems, not for integrability of the difference kernel.
+The two nonreal spectral centers may lie in opposite half-planes.
+Matching an outgoing Hankel candidate should first restrict both
+centers to the upper half-plane; the lower half-plane requires
+Schwarz reflection. The individual Fourier–Hankel transform
+remains unproved. -/
 theorem massiveDiracUnitResolvent_UVCenter_sub_eq_integral
     (c : ℝ) (s t : ℂ)
     (hc : c ≠ 0) (hs : s.im ≠ 0) (ht : t.im ≠ 0) :
