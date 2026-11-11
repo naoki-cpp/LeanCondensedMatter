@@ -77,8 +77,7 @@ theorem norm_besselY1HarmonicTerm_le_two_expTerm (z : ℂ) (n : ℕ) :
             Real.norm_eq_abs _
           _ = _ := abs_of_nonneg hH.1
       simp only [besselY1HarmonicTerm, norm_div, norm_mul,
-        norm_pow, norm_neg, hnorm, Complex.norm_natCast,
-        Real.norm_eq_abs]
+        norm_pow, norm_neg, hnorm, Complex.norm_natCast]
     _ ≤ (2 * ((n + 1).factorial : ℝ)) *
           (‖z / 2‖ ^ 2) ^ n /
           ((n.factorial : ℝ) * ((n + 1).factorial : ℝ)) := by
