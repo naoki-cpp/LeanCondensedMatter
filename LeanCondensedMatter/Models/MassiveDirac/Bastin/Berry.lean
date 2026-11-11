@@ -1,6 +1,6 @@
 import LeanCondensedMatter.Models.MassiveDirac.Model.OperatorSpectral
 import LeanCondensedMatter.Models.MassiveDirac.Model.Berry.Bridge
-import LeanCondensedMatter.Transport.Streda.TraceKernel
+import LeanCondensedMatter.Transport.Streda.FiniteProjectorBastin
 
 set_option linter.style.header false
 
@@ -99,37 +99,16 @@ theorem regularizedBastinTraceIntegrand_eq_projectorBastinTraceIntegrand
         (hamiltonianOperator v m px py)
         (currentOperator 0 e v) (currentOperator 1 e v) probeEnergy broadening =
       projectorBastinTraceIntegrand e v m px py probeEnergy broadening := by
-  unfold regularizedBastinTraceIntegrand projectorBastinTraceIntegrand
-    projectorBastinOperatorIntegrand regularizedBastinOperatorIntegrand
-    retardedAdvancedResolventDifference
-  have hretarded :
-      retardedResolvent (hamiltonianOperator v m px py) probeEnergy broadening =
-        projectorResolvent (retardedSpectralParameter probeEnergy broadening) v m px py := by
-    simpa only [projectorResolvent, retardedResolvent, retardedSpectralParameter,
-      spectralResolvent_retarded_ofRegulator, spectralParameter_retarded_ofRegulator] using
-      resolvent_spectralParameterOfRegulator_eq_sum
-        (hamiltonianOperator v m px py) (hamiltonianOperator_isSelfAdjoint v m px py)
-        (fun band => bandProjectorOperator band v m px py)
-        (fun band => bandEnergy band v m px py)
-        (bandProjectorOperator_completeOrthogonalIdempotents v m px py hE).complete
-        (fun band => hamiltonianOperator_mul_bandProjectorOperator band v m px py hE)
-        probeEnergy broadening hbroadening
-  have hadvanced :
-      advancedResolvent (hamiltonianOperator v m px py) probeEnergy broadening =
-        projectorResolvent (advancedSpectralParameter probeEnergy broadening) v m px py := by
-    simpa only [projectorResolvent, advancedResolvent, advancedSpectralParameter,
-      spectralResolvent_advanced_ofRegulator, spectralParameter_advanced_ofRegulator] using
-      resolvent_spectralParameterOfRegulator_eq_sum
-        (hamiltonianOperator v m px py) (hamiltonianOperator_isSelfAdjoint v m px py)
-        (fun band => bandProjectorOperator band v m px py)
-        (fun band => bandEnergy band v m px py)
-        (bandProjectorOperator_completeOrthogonalIdempotents v m px py hE).complete
-        (fun band => hamiltonianOperator_mul_bandProjectorOperator band v m px py hE)
-        probeEnergy (-broadening)
-        (neg_ne_zero.mpr hbroadening)
-  rw [hretarded, hadvanced]
-  congr 1
-  noncomm_ring
+  simpa only [projectorBastinTraceIntegrand,
+    projectorBastinOperatorIntegrand, projectorResolvent] using
+    (QuantumTheory.Transport.regularizedBastinTraceIntegrand_eq_projectorSum
+      (hamiltonianOperator v m px py) (hamiltonianOperator_isSelfAdjoint v m px py)
+      (fun band : Band => bandProjectorOperator band v m px py)
+      (fun band : Band => bandEnergy band v m px py)
+      (bandProjectorOperator_completeOrthogonalIdempotents v m px py hE).complete
+      (fun band : Band => hamiltonianOperator_mul_bandProjectorOperator band v m px py hE)
+      (currentOperator 0 e v) (currentOperator 1 e v)
+      probeEnergy broadening hbroadening)
 
 end
 
