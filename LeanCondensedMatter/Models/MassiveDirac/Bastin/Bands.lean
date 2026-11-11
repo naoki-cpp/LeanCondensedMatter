@@ -1,7 +1,6 @@
 import LeanCondensedMatter.Models.MassiveDirac.Model.OperatorSpectral
 import LeanCondensedMatter.Models.MassiveDirac.Bastin.Berry
 import LeanCondensedMatter.Transport.Streda.InterbandPole
-import LeanCondensedMatter.Transport.Streda.FiniteProjectorBastin
 
 set_option linter.style.header false
 
@@ -67,23 +66,28 @@ theorem projectorBastinTraceIntegrand_eq_band_sum
     projectorBastinTraceIntegrand e v m px py probeEnergy broadening =
       ∑ source : Band, ∑ target : Band,
         bastinBandPairContribution 0 1 source target e v m px py probeEnergy broadening := by
+  have hblock (μ ν : Fin 2) (source target : Band) :
+      finiteDimensionalOperatorTrace
+          (currentOperator μ e v * bandProjectorOperator source v m px py *
+            currentOperator ν e v * bandProjectorOperator target v m px py) =
+        currentBandBlockTrace μ ν source target e v m px py := by
+    unfold currentBandBlockTrace
+    simpa only [mul_assoc] using
+      (finiteDimensionalOperatorTrace_mul_comm
+        (currentOperator μ e v * bandProjectorOperator source v m px py *
+          currentOperator ν e v)
+        (bandProjectorOperator target v m px py))
   unfold projectorBastinTraceIntegrand
   dsimp only [projectorBastinOperatorIntegrand, bastinOperatorKernelFromPropagators]
   unfold projectorResolvent
-  simpa only [bastinBandPairContribution, currentBandBlockTrace,
-    scalarSpectralDifferenceCoefficient] using
-    (finiteProjectorBastinTrace_eq_band_sum
-      (P := fun band : Band => bandProjectorOperator band v m px py)
-      (bandProjectorOperator_completeOrthogonalIdempotents v m px py hE).toOrthogonalIdempotents
-      (fun band : Band =>
-        scalarResolventCoefficient
-          (retardedSpectralParameter probeEnergy broadening)
-          (bandEnergy band v m px py))
-      (fun band : Band =>
-        scalarResolventCoefficient
-          (advancedSpectralParameter probeEnergy broadening)
-          (bandEnergy band v m px py))
-      (currentOperator 0 e v) (currentOperator 1 e v))
+  simp only [QuantumTheory.sum_smul_sq_of_orthogonalIdempotents
+    (fun band => bandProjectorOperator band v m px py)
+    (bandProjectorOperator_completeOrthogonalIdempotents v m px py hE).toOrthogonalIdempotents]
+  simp only [sum_band]
+  unfold bastinBandPairContribution scalarSpectralDifferenceCoefficient
+  simp only [add_mul, sub_mul, mul_add, mul_sub, mul_smul_comm, smul_mul_assoc]
+  simp only [map_add, map_sub, map_smul, hblock]
+  ring_nf
 
 /-- Exact finite-broadening separation into diagonal and interband sectors. -/
 theorem projectorBastinTraceIntegrand_eq_diagonal_add_interband
