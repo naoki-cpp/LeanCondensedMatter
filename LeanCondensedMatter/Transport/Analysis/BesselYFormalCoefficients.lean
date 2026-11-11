@@ -57,7 +57,7 @@ theorem besselFormalJ0_coeff_succ (n : ℕ) :
     exact_mod_cast Nat.factorial_ne_zero n
   rw [Nat.factorial_succ]
   push_cast
-  field_simp [hn, hf] <;> ring
+  field_simp [hn, hf]
 
 /-- The harmonic-number recurrence produces the inhomogeneous
 Frobenius equation for the Y₀ entire correction. -/
@@ -79,7 +79,7 @@ theorem besselFormalH0_coeff_succ (n : ℕ) :
     rfl
   rw [hH, Nat.factorial_succ]
   push_cast
-  field_simp [hn, hf] <;> ring
+  field_simp [hn, hf]
 
 /-- The concrete factorial series solves the homogeneous
 order-zero Frobenius equation in the formal power-series ring. -/
