@@ -115,7 +115,12 @@ theorem bandProjector_add_oppositeBand (band : Band) (v m px py : ℝ) :
 theorem bandEnergy_injective (v m px py : ℝ) (hE : energy v m px py ≠ 0) :
     Function.Injective (fun band : Band => bandEnergy band v m px py) := by
   intro a b hab
-  cases a <;> cases b <;> simp_all [bandEnergy, bandSign] <;> linarith
+  cases a <;> cases b <;> try rfl
+  all_goals
+    exfalso
+    apply hE
+    simp only [bandEnergy_lower, bandEnergy_upper] at hab
+    linarith
 
 /-- Away from the band degeneracy, `H₀ P_s = E_s P_s`. -/
 theorem hamiltonian_mul_bandProjector (band : Band) (v m px py : ℝ)
@@ -126,6 +131,7 @@ theorem hamiltonian_mul_bandProjector (band : Band) (v m px py : ℝ)
   let s : ℂ := ((bandSign band : ℝ) : ℂ)
   have hQ : Q * Q = 1 := normalizedHamiltonian_mul_self v m px py hE
   have hs : s ^ 2 = 1 := by
+    change (((bandSign band : ℝ) : ℂ) ^ 2) = 1
     exact_mod_cast (bandSign_sq band)
   have hH :
       hamiltonian v m px py = (((energy v m px py : ℝ) : ℂ)) • Q :=
