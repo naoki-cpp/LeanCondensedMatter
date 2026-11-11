@@ -30,7 +30,7 @@ theorem besselY0HarmonicTerm_eq_formal (z : ℂ) (n : ℕ) :
       PowerSeries.coeff n besselFormalH0 * (-(z / 2) ^ 2) ^ n := by
   simp only [besselY0HarmonicTerm, besselFormalH0, PowerSeries.coeff_mk]
   simp only [div_eq_mul_inv]
-  ring
+  ring_nf
 
 /-- A real, absolutely convergent second-kind Y₀ correction is
 the termwise sum of the **proved formal** harmonic coefficients. -/
@@ -59,7 +59,7 @@ theorem besselY1HarmonicTerm_eq_formal (z : ℂ) (n : ℕ) :
       PowerSeries.coeff n besselFormalH1 * (-(z / 2) ^ 2) ^ n := by
   simp only [besselY1HarmonicTerm, besselFormalH1, PowerSeries.coeff_mk]
   simp only [div_eq_mul_inv]
-  ring
+  ring_nf
 
 /-- The actual absolutely convergent Y₁ correction
 is the precise coefficientwise evaluation of its formal series. -/
