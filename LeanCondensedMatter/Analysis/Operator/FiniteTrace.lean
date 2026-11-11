@@ -66,6 +66,28 @@ theorem finiteDimensionalOperatorTrace_toEuclideanCLM
     Matrix.toEuclideanLin_eq_toLin_orthonormal]
   exact Matrix.trace_toLin_eq M (EuclideanSpace.basisFun (Fin n) ℂ).toBasis
 
+/-- Transporting two equally scaled matrix vertices to bounded operators
+factors out the square of their common scalar. No model or current convention
+enters this finite-dimensional trace identity. -/
+theorem finiteDimensionalOperatorTrace_two_smul_toEuclideanCLM
+    {n : ℕ} (target source velocity₁ velocity₂ : Matrix (Fin n) (Fin n) ℂ)
+    (charge : ℂ) :
+    let φ : Matrix (Fin n) (Fin n) ℂ ≃⋆ₐ[ℂ]
+      (EuclideanSpace ℂ (Fin n) →L[ℂ] EuclideanSpace ℂ (Fin n)) :=
+        Matrix.toEuclideanCLM
+    finiteDimensionalOperatorTrace
+        (φ target * φ (charge • velocity₁) * φ source * φ (charge • velocity₂)) =
+      charge ^ 2 * Matrix.trace (target * velocity₁ * source * velocity₂) := by
+  dsimp only
+  calc
+    _ = Matrix.trace (target * (charge • velocity₁) * source * (charge • velocity₂)) := by
+      simpa only [map_mul] using
+        (finiteDimensionalOperatorTrace_toEuclideanCLM
+          (target * (charge • velocity₁) * source * (charge • velocity₂)))
+    _ = _ := by
+      simp only [mul_smul_comm, smul_mul_assoc, smul_smul, Matrix.trace_smul, smul_eq_mul]
+      ring
+
 /-- Cyclicity of the bundled ordinary trace for two bounded endomorphisms. -/
 theorem finiteDimensionalOperatorTrace_mul_comm
     (left right : H →L[ℂ] H) :

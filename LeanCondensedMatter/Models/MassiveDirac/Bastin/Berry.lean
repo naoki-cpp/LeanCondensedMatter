@@ -1,6 +1,6 @@
 import LeanCondensedMatter.Models.MassiveDirac.Model.OperatorSpectral
 import LeanCondensedMatter.Models.MassiveDirac.Model.Berry.Bridge
-import LeanCondensedMatter.Transport.Streda.TraceKernel
+import LeanCondensedMatter.Transport.Streda.FiniteProjectorBastin
 
 set_option linter.style.header false
 
@@ -41,21 +41,12 @@ theorem currentBandBlockTrace_interband_eq_chargeSq_forceMatrixTraceNumerator
     (μ ν : Fin 2) (band : Band) (e v m px py : ℝ) :
     currentBandBlockTrace μ ν band (oppositeBand band) e v m px py =
       (((e ^ 2 : ℝ) : ℂ)) * forceMatrixTraceNumerator μ ν band v m px py := by
-  unfold currentBandBlockTrace
-  calc
-    finiteDimensionalOperatorTrace
-        (bandProjectorOperator (oppositeBand band) v m px py * currentOperator μ e v *
-          bandProjectorOperator band v m px py * currentOperator ν e v) =
-      Matrix.trace
-        (bandProjector (oppositeBand band) v m px py * current μ e v *
-          bandProjector band v m px py * current ν e v) := by
-      simpa [bandProjectorOperator, currentOperator, matrixOperator] using
-        finiteDimensionalOperatorTrace_toEuclideanCLM
-          (bandProjector (oppositeBand band) v m px py * current μ e v *
-            bandProjector band v m px py * current ν e v)
-    _ = (((e ^ 2 : ℝ) : ℂ)) * forceMatrixTraceNumerator μ ν band v m px py := by
-      simp [current, forceMatrixTraceNumerator]
-      ring
+  have htrace := finiteDimensionalOperatorTrace_two_smul_toEuclideanCLM
+    (bandProjector (oppositeBand band) v m px py)
+    (bandProjector band v m px py)
+    (velocity μ v) (velocity ν v) (((-e : ℝ) : ℂ))
+  simpa [currentBandBlockTrace, bandProjectorOperator, currentOperator,
+    matrixOperator, current, forceMatrixTraceNumerator, neg_sq] using htrace
 
 /-- Normalizing the Hall interband current block by the squared interband gap reproduces
 `e²` times the generic pointwise Berry curvature. This is the transport consumer of the canonical
@@ -76,13 +67,10 @@ projector expansions. -/
 noncomputable def projectorBastinOperatorIntegrand
     (e v m px py probeEnergy broadening : ℝ) :
     DiracHilbert →L[ℂ] DiracHilbert :=
-  let retarded :=
-    projectorResolvent (retardedSpectralParameter probeEnergy broadening) v m px py
-  let advanced :=
-    projectorResolvent (advancedSpectralParameter probeEnergy broadening) v m px py
-  (currentOperator 0 e v * retarded ^ 2 * currentOperator 1 e v -
-      currentOperator 1 e v * advanced ^ 2 * currentOperator 0 e v) *
-    (retarded - advanced)
+  bastinOperatorKernelFromPropagators
+    (currentOperator 0 e v) (currentOperator 1 e v)
+    (projectorResolvent (retardedSpectralParameter probeEnergy broadening) v m px py)
+    (projectorResolvent (advancedSpectralParameter probeEnergy broadening) v m px py)
 
 /-- Ordinary trace of the projector-expanded Bastin operator kernel. -/
 noncomputable def projectorBastinTraceIntegrand
@@ -99,37 +87,17 @@ theorem regularizedBastinTraceIntegrand_eq_projectorBastinTraceIntegrand
         (hamiltonianOperator v m px py)
         (currentOperator 0 e v) (currentOperator 1 e v) probeEnergy broadening =
       projectorBastinTraceIntegrand e v m px py probeEnergy broadening := by
-  unfold regularizedBastinTraceIntegrand projectorBastinTraceIntegrand
-    projectorBastinOperatorIntegrand regularizedBastinOperatorIntegrand
-    retardedAdvancedResolventDifference
-  have hretarded :
-      retardedResolvent (hamiltonianOperator v m px py) probeEnergy broadening =
-        projectorResolvent (retardedSpectralParameter probeEnergy broadening) v m px py := by
-    simpa only [projectorResolvent, retardedResolvent, retardedSpectralParameter,
-      spectralResolvent_retarded_ofRegulator, spectralParameter_retarded_ofRegulator] using
-      resolvent_spectralParameterOfRegulator_eq_sum
-        (hamiltonianOperator v m px py) (hamiltonianOperator_isSelfAdjoint v m px py)
-        (fun band => bandProjectorOperator band v m px py)
-        (fun band => bandEnergy band v m px py)
-        (bandProjectorOperator_completeOrthogonalIdempotents v m px py hE).complete
-        (fun band => hamiltonianOperator_mul_bandProjectorOperator band v m px py hE)
-        probeEnergy broadening hbroadening
-  have hadvanced :
-      advancedResolvent (hamiltonianOperator v m px py) probeEnergy broadening =
-        projectorResolvent (advancedSpectralParameter probeEnergy broadening) v m px py := by
-    simpa only [projectorResolvent, advancedResolvent, advancedSpectralParameter,
-      spectralResolvent_advanced_ofRegulator, spectralParameter_advanced_ofRegulator] using
-      resolvent_spectralParameterOfRegulator_eq_sum
-        (hamiltonianOperator v m px py) (hamiltonianOperator_isSelfAdjoint v m px py)
-        (fun band => bandProjectorOperator band v m px py)
-        (fun band => bandEnergy band v m px py)
-        (bandProjectorOperator_completeOrthogonalIdempotents v m px py hE).complete
-        (fun band => hamiltonianOperator_mul_bandProjectorOperator band v m px py hE)
-        probeEnergy (-broadening)
-        (neg_ne_zero.mpr hbroadening)
-  rw [hretarded, hadvanced]
-  congr 1
-  noncomm_ring
+  simpa only [projectorBastinTraceIntegrand,
+    projectorBastinOperatorIntegrand, bastinOperatorKernelFromPropagators,
+    projectorResolvent] using
+    (QuantumTheory.Transport.regularizedBastinTraceIntegrand_eq_projectorSum
+      (hamiltonianOperator v m px py) (hamiltonianOperator_isSelfAdjoint v m px py)
+      (fun band : Band => bandProjectorOperator band v m px py)
+      (fun band : Band => bandEnergy band v m px py)
+      (bandProjectorOperator_completeOrthogonalIdempotents v m px py hE).complete
+      (fun band : Band => hamiltonianOperator_mul_bandProjectorOperator band v m px py hE)
+      (currentOperator 0 e v) (currentOperator 1 e v)
+      probeEnergy broadening hbroadening)
 
 end
 

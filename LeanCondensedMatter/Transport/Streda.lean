@@ -11,6 +11,7 @@ import LeanCondensedMatter.Transport.Streda.ResponseMatrixRepresentation
 import LeanCondensedMatter.Transport.Streda.SpectralEnergyIntegral
 import LeanCondensedMatter.Transport.Streda.ConductivityNormalization
 import LeanCondensedMatter.Transport.Streda.InterbandPole
+import LeanCondensedMatter.Transport.Streda.FiniteProjectorBastin
 
 set_option linter.style.header false
 

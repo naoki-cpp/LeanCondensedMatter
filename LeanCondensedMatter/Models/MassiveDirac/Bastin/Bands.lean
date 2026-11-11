@@ -78,7 +78,7 @@ theorem projectorBastinTraceIntegrand_eq_band_sum
           currentOperator ν e v)
         (bandProjectorOperator target v m px py))
   unfold projectorBastinTraceIntegrand
-  dsimp only [projectorBastinOperatorIntegrand]
+  dsimp only [projectorBastinOperatorIntegrand, bastinOperatorKernelFromPropagators]
   unfold projectorResolvent
   simp only [QuantumTheory.sum_smul_sq_of_orthogonalIdempotents
     (fun band => bandProjectorOperator band v m px py)
