@@ -58,6 +58,7 @@ noncomputable def evenExternalSubsetTimes
 restricted external-source labels in canonical increasing order. This
 identifies the source-label part of the future actual-component/local-block
 comparison without imposing or changing any source sign. -/
+omit [LinearOrder Mode] [Fintype Mode] in
 theorem ExternalInsertionBlockLayout.assembleDiagram_externalLabel_eq_evenExternalSubsetLabels
     {n : ℕ} (layout : ExternalInsertionBlockLayout E n)
     (F : ∀ B : layout.partition.parts,
