@@ -114,27 +114,6 @@ theorem forceMatrixTraceNumerator_xy_eq
       rw [bandSign_sq, hsq]
       ring
     exact_mod_cast hreal
-  have htrace
-      (u : InternalSpace.PauliAxis → ℂ) (cx cy a : ℂ)
-      (hnorm : dotProduct u u = 1) :
-      Matrix.trace
-          (((1 / 2 : ℂ) •
-              ((1 : InternalSpace.PauliMatrix) - InternalSpace.pauliCombination u)) *
-            (cx • (1 : InternalSpace.PauliMatrix) - a • InternalSpace.pauliY) *
-            ((1 / 2 : ℂ) •
-              ((1 : InternalSpace.PauliMatrix) + InternalSpace.pauliCombination u)) *
-            (cy • (1 : InternalSpace.PauliMatrix) + a • InternalSpace.pauliX)) =
-        a ^ 2 * (u .x * u .y) - Complex.I * a ^ 2 * u .z := by
-    have hI : Complex.I ^ 2 = (-1 : ℂ) := by
-      simpa [pow_two] using Complex.I_mul_I
-    rw [InternalSpace.dotProduct_pauliAxis] at hnorm
-    simp [Matrix.trace, Matrix.mul_apply, InternalSpace.pauliCombination_eq_components,
-      InternalSpace.pauliX, InternalSpace.pauliY, InternalSpace.pauliZ,
-      sub_eq_add_neg]
-    ring_nf
-    simp [hI]
-    ring_nf at hnorm
-    linear_combination -(cx * cy / 2) * hnorm
   unfold forceMatrixTraceNumerator
   rw [hOppositeProjector, hProjector]
   change Matrix.trace
@@ -148,7 +127,7 @@ theorem forceMatrixTraceNumerator_xy_eq
         ((((py / params.effectiveMass : ℝ) : ℂ)) •
           (1 : InternalSpace.PauliMatrix) +
           ((params.rashbaVelocity : ℝ) : ℂ) • InternalSpace.pauliX)) = _
-  rw [htrace u
+  rw [InternalSpace.trace_oppositePauliProjectors_shiftedYX u
     (((px / params.effectiveMass : ℝ) : ℂ))
     (((py / params.effectiveMass : ℝ) : ℂ))
     (((params.rashbaVelocity : ℝ) : ℂ)) hnorm]
