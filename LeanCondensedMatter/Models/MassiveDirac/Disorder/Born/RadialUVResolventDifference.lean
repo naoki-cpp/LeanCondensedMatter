@@ -16,10 +16,10 @@ and is **absolutely integrable**. That analytic improvement is the
 route to a normalized Stieltjes-transform proof of the outstanding
 upper-half-plane Fourier–Hankel identity.
 
-Here we prove the exact two-resolvent identity at every finite cutoff
-and transport it through the existing proven UV limits. The
-absolute-integrability theorem is a separate next step, not silently
-inferred from pointwise asymptotics. No Hankel evaluation is assumed.
+Here we prove the exact two-resolvent identity at every finite cutoff,
+the explicit UV norm bound, genuine absolute integrability on the
+positive half-line, and equality with the difference of the existing
+proven UV values. No Hankel evaluation is assumed.
 -/
 
 namespace QuantumTheory.Models.MassiveDirac
@@ -222,7 +222,7 @@ theorem massiveDiracUnitResolventDifferenceKernel_norm_le
       field_simp [ne_of_gt hp0]
       ring
     _ = (8 * Real.pi) * p ^ (-3 : ℝ) := by
-      rw [Real.rpow_neg hp0.le]
+      rw [Real.rpow_neg hp0.le, inv_pow]
       ring
 
 /-- The two-resolvent spectral-difference kernel is genuinely Bochner
