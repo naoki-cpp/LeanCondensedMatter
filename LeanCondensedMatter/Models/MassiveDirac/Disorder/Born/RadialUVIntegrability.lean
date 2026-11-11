@@ -108,37 +108,6 @@ theorem massiveDiracRadialFourierRemainder_integrableOn_uv_center
   exact massiveDiracRadialFourierRemainder_norm_le_center v c p center hv
     (ha.trans hp.le)
 
-/-- Energy/mass presentation of the spectral-center remainder majorant. -/
-theorem massiveDiracRadialFourierRemainder_norm_le
-    (v c p : ℝ) (energy mass : ℂ) (hv : v ≠ 0)
-    (hp : max (1 : ℝ)
-        (2 * ‖energy ^ 2 - mass ^ 2‖ / v ^ 2) ≤ p) :
-    ‖(p : ℂ) * polarFourierFirstCosineAngularKernel (p * c) *
-        ((2 : ℂ) * (v : ℂ) ^ 2 * (p : ℂ) *
-          (massiveDiracRadialDenominator v p energy mass)⁻¹ ^ 2)‖ ≤
-      (16 * Real.pi / v ^ 2) * p ^ (-2 : ℝ) := by
-  simpa only [massiveDiracRadialDenominator] using
-    massiveDiracRadialFourierRemainder_norm_le_center
-      v c p (energy ^ 2 - mass ^ 2) hv hp
-
-/-- Energy/mass presentation of the center-indexed UV integrability. -/
-theorem massiveDiracRadialFourierRemainder_integrableOn_uv
-    (v c a : ℝ) (energy mass : ℂ) (hv : v ≠ 0)
-    (hden : ∀ p : ℝ, massiveDiracRadialDenominator v p energy mass ≠ 0)
-    (ha : max (1 : ℝ)
-        (2 * ‖energy ^ 2 - mass ^ 2‖ / v ^ 2) ≤ a) :
-    IntegrableOn
-      (fun p : ℝ =>
-        (p : ℂ) * polarFourierFirstCosineAngularKernel (p * c) *
-          ((2 : ℂ) * (v : ℂ) ^ 2 * (p : ℂ) *
-            (massiveDiracRadialDenominator v p energy mass)⁻¹ ^ 2))
-      (Set.Ioi a) := by
-  have hdenCenter (p : ℝ) :
-      energy ^ 2 - mass ^ 2 - ((v ^ 2 * p ^ 2 : ℝ) : ℂ) ≠ 0 := by
-    simpa only [massiveDiracRadialDenominator] using hden p
-  simpa only [massiveDiracRadialDenominator] using
-    massiveDiracRadialFourierRemainder_integrableOn_uv_center
-      v c a (energy ^ 2 - mass ^ 2) hv hdenCenter ha
 
 
 end
