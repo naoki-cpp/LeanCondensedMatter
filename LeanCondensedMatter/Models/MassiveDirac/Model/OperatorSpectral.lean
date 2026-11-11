@@ -41,12 +41,10 @@ noncomputable def bandProjectorOperator (band : Band) (v m px py : ℝ) :
 theorem bandProjectorOperator_ne_zero (band : Band) (v m px py : ℝ) :
     bandProjectorOperator band v m px py ≠ 0 := by
   intro hzero
-  have hmatrix : bandProjector band v m px py = 0 := by
-    apply (Matrix.toEuclideanCLM :
-      Matrix2 ≃⋆ₐ[ℂ] (DiracHilbert →L[ℂ] DiracHilbert)).injective
-    simpa [bandProjectorOperator, matrixOperator] using hzero
-  have htrace := congrArg Matrix.trace hmatrix
-  simpa using htrace
+  have htrace := congrArg (finiteDimensionalOperatorTrace (H := DiracHilbert)) hzero
+  simp only [bandProjectorOperator, matrixOperator,
+    finiteDimensionalOperatorTrace_toEuclideanCLM, trace_bandProjector, map_zero,
+    one_ne_zero] at htrace
 
 /-- Ordered current band block `Tr(P_target j_μ P_source j_ν)` in the bounded-operator model. -/
 noncomputable def currentBandBlockTrace
@@ -60,8 +58,7 @@ theorem currentBandBlockTrace_swap
     (μ ν : Fin 2) (source target : Band) (e v m px py : ℝ) :
     currentBandBlockTrace ν μ source target e v m px py =
       currentBandBlockTrace μ ν target source e v m px py := by
-  unfold currentBandBlockTrace
-  simpa only [mul_assoc] using
+  simpa only [currentBandBlockTrace, mul_assoc] using
     (finiteDimensionalOperatorTrace_mul_comm
       (bandProjectorOperator target v m px py * currentOperator ν e v)
       (bandProjectorOperator source v m px py * currentOperator μ e v))
