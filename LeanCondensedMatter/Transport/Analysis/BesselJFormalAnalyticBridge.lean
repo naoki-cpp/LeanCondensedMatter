@@ -98,7 +98,9 @@ theorem besselJOne_eq_regularizedHGTsum (z : ℂ) :
   calc
     Complex.besselJ 1 z =
         (z / 2) * Complex.regularizedHGFun 0 {(2 : ℂ)} (-(z / 2) ^ 2) := by
-      simp only [Complex.besselJ_def, Complex.cpow_one, one_add_one]
+      simp only [Complex.besselJ_def, Complex.cpow_one]
+      congr 1
+      norm_num
     _ = (z / 2) * (∑' n : ℕ,
           Complex.regularizedHGFunCoeff 0 {(2 : ℂ)} n *
             (-(z / 2) ^ 2) ^ n) := by
