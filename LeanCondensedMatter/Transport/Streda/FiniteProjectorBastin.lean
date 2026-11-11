@@ -1,5 +1,6 @@
 import LeanCondensedMatter.Transport.Streda.TraceKernel
 import LeanCondensedMatter.Analysis.Operator.Spectral.Resolvent
+import LeanCondensedMatter.Transport.Resolvent.Spectral
 
 set_option linter.style.header false
 
@@ -43,6 +44,7 @@ private theorem finiteProjectorTraceDoubleSum
       ∑ s, ∑ t, finiteDimensionalOperatorTrace (H := H)
         (J * (c s • P s) * K * (d t • P t)) := by
           simp only [Finset.mul_sum, Finset.sum_mul, map_sum]
+          exact Finset.sum_comm
     _ = _ := by
       apply Finset.sum_congr rfl
       intro s _
@@ -88,7 +90,51 @@ theorem finiteProjectorBastinTrace_eq_band_sum
   rw [sub_mul, map_sub]
   rw [finiteProjectorTraceDoubleSum P (fun s => r s ^ 2) (fun t => r t - a t) J K,
     finiteProjectorTraceDoubleSum P (fun s => a s ^ 2) (fun t => r t - a t) K J]
-  simp only [← Finset.sum_sub_distrib]
+  simp only [Finset.sum_sub_distrib]
+
+
+/-- A finite real-energy spectral resolution replaces the canonical retarded
+and advanced resolvents throughout the traced Bastin kernel. This is
+representation-independent: model consumers need only the completeness and
+diagonal Hamiltonian action of their projector family. -/
+theorem regularizedBastinTraceIntegrand_eq_projectorSum
+    [CompleteSpace H]
+    (hamiltonian : H →L[ℂ] H) (hself : IsSelfAdjoint hamiltonian)
+    (P : ι → H →L[ℂ] H) (eigenvalue : ι → ℝ)
+    (hcomplete : ∑ i, P i = 1)
+    (haction : ∀ i, hamiltonian * P i = (eigenvalue i : ℂ) • P i)
+    (J K : H →L[ℂ] H)
+    (probeEnergy broadening : ℝ) (hbroadening : broadening ≠ 0) :
+    regularizedBastinTraceIntegrand hamiltonian J K probeEnergy broadening =
+      let r := ∑ i, scalarResolventCoefficient
+        (retardedSpectralParameter probeEnergy broadening) (eigenvalue i) • P i
+      let a := ∑ i, scalarResolventCoefficient
+        (advancedSpectralParameter probeEnergy broadening) (eigenvalue i) • P i
+      finiteDimensionalOperatorTrace (H := H)
+        ((J * r ^ 2 * K - K * a ^ 2 * J) * (r - a)) := by
+  have hretarded :
+      retardedResolvent hamiltonian probeEnergy broadening =
+        ∑ i, scalarResolventCoefficient
+          (retardedSpectralParameter probeEnergy broadening) (eigenvalue i) • P i := by
+    simpa only [retardedResolvent, retardedSpectralParameter,
+      spectralResolvent_retarded_ofRegulator, spectralParameter_retarded_ofRegulator] using
+      resolvent_spectralParameterOfRegulator_eq_sum
+        hamiltonian hself P eigenvalue hcomplete haction
+        probeEnergy broadening hbroadening
+  have hadvanced :
+      advancedResolvent hamiltonian probeEnergy broadening =
+        ∑ i, scalarResolventCoefficient
+          (advancedSpectralParameter probeEnergy broadening) (eigenvalue i) • P i := by
+    simpa only [advancedResolvent, advancedSpectralParameter,
+      spectralResolvent_advanced_ofRegulator, spectralParameter_advanced_ofRegulator] using
+      resolvent_spectralParameterOfRegulator_eq_sum
+        hamiltonian hself P eigenvalue hcomplete haction
+        probeEnergy (-broadening) (neg_ne_zero.mpr hbroadening)
+  unfold regularizedBastinTraceIntegrand regularizedBastinOperatorIntegrand
+    retardedAdvancedResolventDifference
+  rw [hretarded, hadvanced]
+  congr 1
+  noncomm_ring
 
 end
 
