@@ -156,13 +156,13 @@ theorem massiveDiracRadialFourierUVCenter_eq_causalHankel_of_upper
         massiveDiracRadialOutgoingHankelCandidate v c center
       else massiveDiracRadialIncomingHankelCandidate v c center := by
   by_cases him : 0 < center.im
-  · simpa only [if_pos him] using
+  · simpa [him] using
       (massiveDiracRadialFourierUVCenter_eq_outgoing_of_upper
         v c center hv hc him hupper)
   · have hlower : center.im < 0 := by
       have hle : center.im ≤ 0 := le_of_not_gt him
       exact lt_of_le_of_ne hle hcenter
-    simpa only [if_neg him] using
+    simpa [him] using
       (massiveDiracRadialFourierUVCenter_eq_incoming_of_upper
         v c center hv hc hlower hupper)
 
@@ -182,7 +182,7 @@ theorem massiveDiracRadialFourierUVCenter_causalHankel_iff_upper
   constructor
   · intro h c center hc him
     have hresult := h c center (ne_of_gt hc) (ne_of_gt him)
-    simpa only [if_pos him] using hresult
+    simpa [him] using hresult
   · intro h c center hc him
     exact massiveDiracRadialFourierUVCenter_eq_causalHankel_of_upper
       v c center hv hc him h
