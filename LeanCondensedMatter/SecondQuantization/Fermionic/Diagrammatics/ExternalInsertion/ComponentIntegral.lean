@@ -307,15 +307,16 @@ theorem ExternalInsertionBlockLayout.assembleConnectedBlocks_signedDysonShuffleO
           ExternalInsertionWickDiagram.dysonAmplitude
             (d.componentOrderedDiagram B) ε β g
             (d.componentExternalTime externalTime B) :=
-      layout.assembleConnectedBlocks_signedDysonShuffleOrbit
-        F hconnected ε β g externalTime
+      ExternalInsertionBlockLayout.assembleConnectedBlocks_signedDysonShuffleOrbit
+        layout F hconnected ε β g externalTime
     _ = _ := by
-      congr 1
+      apply congrArg
+        (fun z : ℂ => externalPartitionSourceSign layout.partition * z)
       apply Finset.prod_congr rfl
       intro B _
       exact congrArg
-        (fun local =>
-          ExternalInsertionWickDiagram.dysonAmplitude local ε β g
+        (fun localDiagram =>
+          ExternalInsertionWickDiagram.dysonAmplitude localDiagram ε β g
             (d.componentExternalTime externalTime B))
         (d.componentOrderedDiagram_eq_slotCongr B)
 
