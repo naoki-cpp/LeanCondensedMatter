@@ -69,7 +69,7 @@ theorem ExternalInsertionDiagram.componentOrderedDiagram_eq_slotCongr
       apply Fin.ext
       rfl
     rw [hsymm] at hforward
-    simpa only [Equiv.apply_symm_apply] using hforward
+    simpa only [Equiv.symm_symm, Equiv.apply_symm_apply] using hforward
 
 end Common
 end SecondQuantization
