@@ -54,6 +54,28 @@ noncomputable def evenExternalSubsetTimes
     Fin (2 * (S.card / 2)) → ℝ :=
   fun i => times (evenExternalSubsetOrderIso S heven i).1
 
+/-- Independently assembled Wick blocks have exactly the physically
+restricted external-source labels in canonical increasing order. This
+identifies the source-label part of the future actual-component/local-block
+comparison without imposing or changing any source sign. -/
+theorem ExternalInsertionBlockLayout.assembleDiagram_externalLabel_eq_evenExternalSubsetLabels
+    {n : ℕ} (layout : ExternalInsertionBlockLayout E n)
+    (F : ∀ B : layout.partition.parts,
+      ExternalInsertionDiagram (ExternalFieldLabel Mode) (QuarticVertexLabel Mode)
+        ((B : Finset (Fin (2 * E))).card / 2) n
+        (layout.interactionBlock (Finset.univ : Finset (Fin n)) B))
+    (B : layout.partition.parts) :
+    (F B).externalLabel =
+      evenExternalSubsetLabels
+        (layout.assembleDiagram (Finset.univ : Finset (Fin n)) F).externalLabel
+        (B : Finset (Fin (2 * E))) (layout.evenBlocks B) := by
+  classical
+  funext i
+  simpa only [evenExternalSubsetLabels, evenExternalSubsetOrderIso,
+    layout.sourceEquiv_symm_apply] using
+    (layout.assembleDiagram_externalLabel
+      (Finset.univ : Finset (Fin n)) F B i).symm
+
 omit [LinearOrder Mode] [Fintype Mode] in
 /-- Restricting fixed external field labels by their canonical subset order
 agrees definitionally with the labels on the standalone connected component. -/
