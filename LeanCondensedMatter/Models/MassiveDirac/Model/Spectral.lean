@@ -59,27 +59,11 @@ private noncomputable def normalizedHamiltonian (v m px py : ℝ) : Matrix2 :=
 private theorem normalizedHamiltonian_mul_self
     (v m px py : ℝ) (hE : energy v m px py ≠ 0) :
     normalizedHamiltonian v m px py * normalizedHamiltonian v m px py = 1 := by
-  have hEc : (((energy v m px py : ℝ) : ℂ)) ≠ 0 := by
-    exact_mod_cast hE
-  have hEnergySq :
-      (((energySq v m px py : ℝ) : ℂ)) =
-        (((energy v m px py : ℝ) : ℂ) ^ 2) := by
-    exact_mod_cast (energy_sq v m px py).symm
   unfold normalizedHamiltonian
-  apply Algebra.inv_smul_mul_self_eq_one _ _ hEc
-  rw [hamiltonian_mul_self, hEnergySq]
-
-/-- Away from the degeneracy, multiplying the normalized Hamiltonian by the positive energy
-recovers the original Hamiltonian. -/
-private theorem hamiltonian_eq_energy_smul_normalizedHamiltonian
-    (v m px py : ℝ) (hE : energy v m px py ≠ 0) :
-    hamiltonian v m px py =
-      (((energy v m px py : ℝ) : ℂ)) • normalizedHamiltonian v m px py := by
-  have hEc : (((energy v m px py : ℝ) : ℂ)) ≠ 0 := by
-    exact_mod_cast hE
-  unfold normalizedHamiltonian
-  rw [smul_smul]
-  simp [hEc]
+  apply Algebra.inv_smul_mul_self_eq_one _ _ (by exact_mod_cast hE)
+  rw [hamiltonian_mul_self]
+  congr 1
+  exact_mod_cast (energy_sq v m px py).symm
 
 /-- Rewrite the band projector as the `±1` spectral projector of the normalized Hamiltonian. -/
 private theorem bandProjector_eq_normalizedHamiltonian
@@ -94,9 +78,8 @@ private theorem bandProjector_eq_normalizedHamiltonian
 algebraic `E = 0` value of the definition. -/
 theorem sum_bandProjector_eq_one (v m px py : ℝ) :
     ∑ band : Band, bandProjector band v m px py = 1 := by
-  simp only [sum_band]
-  rw [bandProjector_eq_normalizedHamiltonian, bandProjector_eq_normalizedHamiltonian]
-  simp only [bandSign_lower, bandSign_upper]
+  simp only [sum_band, bandProjector_eq_normalizedHamiltonian,
+    bandSign_lower, bandSign_upper]
   push_cast
   module
 
@@ -131,19 +114,17 @@ theorem hamiltonian_mul_bandProjector (band : Band) (v m px py : ℝ)
   let s : ℂ := ((bandSign band : ℝ) : ℂ)
   have hQ : Q * Q = 1 := normalizedHamiltonian_mul_self v m px py hE
   have hs : s ^ 2 = 1 := by
-    change (((bandSign band : ℝ) : ℂ) ^ 2) = 1
-    exact_mod_cast (bandSign_sq band)
+    cases band <;> norm_num [s, bandSign]
   have hH :
-      hamiltonian v m px py = (((energy v m px py : ℝ) : ℂ)) • Q :=
-    hamiltonian_eq_energy_smul_normalizedHamiltonian v m px py hE
-  have hP :
-      bandProjector band v m px py = (1 / 2 : ℂ) • ((1 : Matrix2) + s • Q) :=
-    bandProjector_eq_normalizedHamiltonian band v m px py
+      hamiltonian v m px py = (((energy v m px py : ℝ) : ℂ)) • Q := by
+    exact (smul_inv_smul₀ (show (((energy v m px py : ℝ) : ℂ)) ≠ 0 from
+      by exact_mod_cast hE) (hamiltonian v m px py)).symm
   have hbandEnergy :
       (((bandEnergy band v m px py : ℝ) : ℂ)) =
         s * (((energy v m px py : ℝ) : ℂ)) := by
     simp [bandEnergy, s]
-  rw [hH, hP, hbandEnergy]
+  simp only [bandProjector_eq_normalizedHamiltonian]
+  rw [hH, hbandEnergy]
   rw [smul_mul_assoc, mul_smul_comm, smul_smul,
     InternalSpace.involution_mul_one_add Q hQ s hs, smul_smul]
   module
@@ -160,16 +141,14 @@ theorem bandProjector_completeOrthogonalIdempotents
     exact InternalSpace.involution_projector_mul_self
       (normalizedHamiltonian v m px py) (normalizedHamiltonian_mul_self v m px py hE)
       (((bandSign Band.lower : ℝ) : ℂ)) (by norm_num [bandSign])
-  have hsum := sum_bandProjector_eq_one v m px py
-  rw [sum_band] at hsum
   have hUpper : bandProjector .upper v m px py =
-      1 - bandProjector .lower v m px py := eq_sub_of_add_eq' hsum
+      1 - bandProjector .lower v m px py :=
+    eq_sub_of_add_eq' (by simpa only [sum_band] using sum_bandProjector_eq_one v m px py)
   refine CompleteOrthogonalIdempotents.iff_ortho_complete.mpr
     ⟨?_, sum_bandProjector_eq_one v m px py⟩
   intro i j hij
-  cases i <;> cases j <;> try exact (hij rfl).elim
-  · rw [hUpper, mul_sub, mul_one, hLower.eq, sub_self]
-  · rw [hUpper, sub_mul, one_mul, hLower.eq, sub_self]
+  cases i <;> cases j <;>
+    simp_all [mul_sub, sub_mul, hLower.eq]
 
 end
 
