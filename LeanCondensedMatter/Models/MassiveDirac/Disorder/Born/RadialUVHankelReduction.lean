@@ -161,7 +161,7 @@ theorem massiveDiracRadialFourierUVCenter_eq_causalHankel_of_upper
         v c center hv hc him hupper)
   · have hlower : center.im < 0 := by
       have hle : center.im ≤ 0 := le_of_not_gt him
-      exact lt_of_le_of_ne hle (Ne.symm hcenter)
+      exact lt_of_le_of_ne hle hcenter
     simpa only [if_neg him] using
       (massiveDiracRadialFourierUVCenter_eq_incoming_of_upper
         v c center hv hc hlower hupper)
