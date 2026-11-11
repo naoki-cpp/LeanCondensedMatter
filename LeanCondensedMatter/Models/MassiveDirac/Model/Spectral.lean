@@ -165,7 +165,7 @@ theorem bandProjector_completeOrthogonalIdempotents
     ⟨?_, sum_bandProjector_eq_one v m px py⟩
   intro i j hij
   cases i <;> cases j <;>
-    simp_all [hUpper, mul_sub, sub_mul, hLower.eq]
+    simp_all [mul_sub, sub_mul, hLower.eq]
 
 end
 
