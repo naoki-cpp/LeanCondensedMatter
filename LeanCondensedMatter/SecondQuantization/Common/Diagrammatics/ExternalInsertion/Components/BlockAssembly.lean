@@ -69,6 +69,19 @@ noncomputable def ExternalInsertionBlockLayout.sourceEquiv
     ((B.1.orderIsoOfFin
       (Nat.two_mul_div_two_of_even (layout.evenBlocks B)).symm).symm).toEquiv)
 
+/-- The inverse block source equivalence is the canonical increasing
+enumeration of the partition block. In particular, component restriction
+does not introduce an additional permutation of the fermionic source legs. -/
+@[simp]
+theorem ExternalInsertionBlockLayout.sourceEquiv_symm_apply
+    (layout : ExternalInsertionBlockLayout E N)
+    (B : layout.partition.parts)
+    (i : Fin (2 * ((B : Finset (Fin (2 * E))).card / 2))) :
+    layout.sourceEquiv.symm ⟨B, i⟩ =
+      ((B.1.orderIsoOfFin
+        (Nat.two_mul_div_two_of_even (layout.evenBlocks B)).symm) i).1 := by
+  rfl
+
 /-- Any assignment of interaction vertices to external blocks partitions
 the interaction sector exactly, including empty local interaction sectors. -/
 noncomputable def ExternalInsertionBlockLayout.interactionEquiv
