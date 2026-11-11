@@ -56,20 +56,6 @@ theorem massiveDiracRadialCenter_inv_hasDerivAt
     ring
 
 
-/-- Energy/mass specialization of the center-indexed radial resolvent derivative. -/
-theorem massiveDiracRadialDenominator_inv_hasDerivAt
-    (v p : ℝ) (energy mass : ℂ)
-    (hden : massiveDiracRadialDenominator v p energy mass ≠ 0) :
-    HasDerivAt
-      (fun q : ℝ => (massiveDiracRadialDenominator v q energy mass)⁻¹)
-      ((2 : ℂ) * (v : ℂ) ^ 2 * (p : ℂ) *
-        (massiveDiracRadialDenominator v p energy mass)⁻¹ ^ 2) p := by
-  have hcenter :
-      energy ^ 2 - mass ^ 2 - ((v ^ 2 * p ^ 2 : ℝ) : ℂ) ≠ 0 := by
-    simpa only [massiveDiracRadialDenominator] using hden
-  simpa only [massiveDiracRadialDenominator] using
-    massiveDiracRadialCenter_inv_hasDerivAt
-      v p (energy ^ 2 - mass ^ 2) hcenter
 
 /-- Exact finite-interval integration by parts for a quadratic Dirac
 resolvent, stated without a Born approximation. The derivative factor on
@@ -111,28 +97,6 @@ theorem integral_massiveDiracRadialCenter_inv_fourierKernel_by_parts
     hDerivativeCont
 
 
-/-- Energy/mass specialization of spectral-center Fourier integration by parts. -/
-theorem integral_massiveDiracRadialDenominator_inv_fourierKernel_by_parts
-    (v c a b : ℝ) (energy mass : ℂ)
-    (hden : ∀ p : ℝ, massiveDiracRadialDenominator v p energy mass ≠ 0) :
-    (Complex.I * (c : ℂ)) *
-        (∫ p in a..b, (p : ℂ) *
-          polarFourierZerothAngularKernel (p * c) *
-            (massiveDiracRadialDenominator v p energy mass)⁻¹) =
-      ((b : ℂ) * polarFourierFirstCosineAngularKernel (b * c) *
-        (massiveDiracRadialDenominator v b energy mass)⁻¹) -
-      ((a : ℂ) * polarFourierFirstCosineAngularKernel (a * c) *
-        (massiveDiracRadialDenominator v a energy mass)⁻¹) -
-      (∫ p in a..b,
-        (p : ℂ) * polarFourierFirstCosineAngularKernel (p * c) *
-          ((2 : ℂ) * (v : ℂ) ^ 2 * (p : ℂ) *
-            (massiveDiracRadialDenominator v p energy mass)⁻¹ ^ 2)) := by
-  have hcenter (p : ℝ) :
-      energy ^ 2 - mass ^ 2 - ((v ^ 2 * p ^ 2 : ℝ) : ℂ) ≠ 0 := by
-    simpa only [massiveDiracRadialDenominator] using hden p
-  simpa only [massiveDiracRadialDenominator] using
-    integral_massiveDiracRadialCenter_inv_fourierKernel_by_parts
-      v c a b (energy ^ 2 - mass ^ 2) hcenter
 
 /-- The finite-broadening Born-Dyson scalar Fourier kernel inherits the
 exact ultraviolet integration-by-parts identity with the *physical*
@@ -163,15 +127,23 @@ theorem finiteCutoffContinuumBornDysonRadialScalarKernel_by_parts
     exact finiteCutoffContinuumBornDysonDenominator_ne_zero
       side v m p 0 probeEnergy broadening disorderStrength hbar pMax
       hbroadening hdisorder hpMax
-  have h := integral_massiveDiracRadialDenominator_inv_fourierKernel_by_parts
+  have hcenter (p : ℝ) :
+      (finiteCutoffContinuumBornEffectiveEnergy
+        side v m probeEnergy broadening disorderStrength hbar pMax) ^ 2 -
+      (finiteCutoffContinuumBornEffectiveMass
+        side v m probeEnergy broadening disorderStrength hbar pMax) ^ 2 -
+      ((v ^ 2 * p ^ 2 : ℝ) : ℂ) ≠ 0 := by
+    simpa only [massiveDiracRadialDenominator] using hden p
+  have h := integral_massiveDiracRadialCenter_inv_fourierKernel_by_parts
     v c a b
-    (finiteCutoffContinuumBornEffectiveEnergy
-      side v m probeEnergy broadening disorderStrength hbar pMax)
-    (finiteCutoffContinuumBornEffectiveMass
-      side v m probeEnergy broadening disorderStrength hbar pMax)
-    hden
+    ((finiteCutoffContinuumBornEffectiveEnergy
+      side v m probeEnergy broadening disorderStrength hbar pMax) ^ 2 -
+      (finiteCutoffContinuumBornEffectiveMass
+        side v m probeEnergy broadening disorderStrength hbar pMax) ^ 2)
+    hcenter
   dsimp only
-  simpa only [finiteCutoffContinuumBornDysonDenominator_eq_radial] using h
+  simpa only [finiteCutoffContinuumBornDysonDenominator_eq_radial,
+    massiveDiracRadialDenominator] using h
 
 /-- A cutoff limit theorem for a quadratic massive-Dirac Fourier resolvent,
 assuming exactly the two ultraviolet conditions isolated by the preceding
@@ -223,51 +195,6 @@ theorem tendsto_integral_massiveDiracRadialCenter_inv_fourierKernel_of_condition
       ((center - ((v ^ 2 * p ^ 2 : ℝ) : ℂ)))⁻¹ ^ 2)
     (fun p => massiveDiracRadialCenter_inv_hasDerivAt v p center (hden p))
     hDerivativeCont hint hboundary
-
-/-- Energy/mass specialization of the center-indexed conditional Fourier UV limit. -/
-theorem tendsto_integral_massiveDiracRadialDenominator_inv_fourierKernel_of_conditions
-    (v c a : ℝ) (energy mass : ℂ) (hc : c ≠ 0)
-    (hden : ∀ p : ℝ, massiveDiracRadialDenominator v p energy mass ≠ 0)
-    (hint : IntegrableOn (fun p : ℝ =>
-      (p : ℂ) * polarFourierFirstCosineAngularKernel (p * c) *
-        ((2 : ℂ) * (v : ℂ) ^ 2 * (p : ℂ) *
-          (massiveDiracRadialDenominator v p energy mass)⁻¹ ^ 2))
-      (Set.Ioi a))
-    (hboundary : Filter.Tendsto (fun b : ℝ =>
-      (b : ℂ) * polarFourierFirstCosineAngularKernel (b * c) *
-        (massiveDiracRadialDenominator v b energy mass)⁻¹)
-      Filter.atTop (nhds 0)) :
-    Filter.Tendsto
-      (fun b : ℝ => ∫ p in a..b,
-        (p : ℂ) * polarFourierZerothAngularKernel (p * c) *
-          (massiveDiracRadialDenominator v p energy mass)⁻¹)
-      Filter.atTop
-      (nhds ((-((a : ℂ) *
-          polarFourierFirstCosineAngularKernel (a * c) *
-          (massiveDiracRadialDenominator v a energy mass)⁻¹) -
-        ∫ p in Set.Ioi a, (p : ℂ) *
-          polarFourierFirstCosineAngularKernel (p * c) *
-          ((2 : ℂ) * (v : ℂ) ^ 2 * (p : ℂ) *
-            (massiveDiracRadialDenominator v p energy mass)⁻¹ ^ 2)) /
-        (Complex.I * (c : ℂ)))) := by
-  have hcenter (p : ℝ) :
-      energy ^ 2 - mass ^ 2 - ((v ^ 2 * p ^ 2 : ℝ) : ℂ) ≠ 0 := by
-    simpa only [massiveDiracRadialDenominator] using hden p
-  have hintCenter : IntegrableOn (fun p : ℝ =>
-      (p : ℂ) * polarFourierFirstCosineAngularKernel (p * c) *
-        ((2 : ℂ) * (v : ℂ) ^ 2 * (p : ℂ) *
-          (energy ^ 2 - mass ^ 2 - ((v ^ 2 * p ^ 2 : ℝ) : ℂ))⁻¹ ^ 2))
-      (Set.Ioi a) := by
-    simpa only [massiveDiracRadialDenominator] using hint
-  have hboundaryCenter : Filter.Tendsto (fun b : ℝ =>
-      (b : ℂ) * polarFourierFirstCosineAngularKernel (b * c) *
-        (energy ^ 2 - mass ^ 2 - ((v ^ 2 * b ^ 2 : ℝ) : ℂ))⁻¹)
-      Filter.atTop (nhds 0) := by
-    simpa only [massiveDiracRadialDenominator] using hboundary
-  simpa only [massiveDiracRadialDenominator] using
-    tendsto_integral_massiveDiracRadialCenter_inv_fourierKernel_of_conditions
-      v c a (energy ^ 2 - mass ^ 2) hc hcenter hintCenter hboundaryCenter
-
 
 
 end
