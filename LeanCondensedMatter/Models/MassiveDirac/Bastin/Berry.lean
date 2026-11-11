@@ -67,13 +67,10 @@ projector expansions. -/
 noncomputable def projectorBastinOperatorIntegrand
     (e v m px py probeEnergy broadening : ℝ) :
     DiracHilbert →L[ℂ] DiracHilbert :=
-  let retarded :=
-    projectorResolvent (retardedSpectralParameter probeEnergy broadening) v m px py
-  let advanced :=
-    projectorResolvent (advancedSpectralParameter probeEnergy broadening) v m px py
-  (currentOperator 0 e v * retarded ^ 2 * currentOperator 1 e v -
-      currentOperator 1 e v * advanced ^ 2 * currentOperator 0 e v) *
-    (retarded - advanced)
+  bastinOperatorKernelFromPropagators
+    (currentOperator 0 e v) (currentOperator 1 e v)
+    (projectorResolvent (retardedSpectralParameter probeEnergy broadening) v m px py)
+    (projectorResolvent (advancedSpectralParameter probeEnergy broadening) v m px py)
 
 /-- Ordinary trace of the projector-expanded Bastin operator kernel. -/
 noncomputable def projectorBastinTraceIntegrand
@@ -91,7 +88,8 @@ theorem regularizedBastinTraceIntegrand_eq_projectorBastinTraceIntegrand
         (currentOperator 0 e v) (currentOperator 1 e v) probeEnergy broadening =
       projectorBastinTraceIntegrand e v m px py probeEnergy broadening := by
   simpa only [projectorBastinTraceIntegrand,
-    projectorBastinOperatorIntegrand, projectorResolvent] using
+    projectorBastinOperatorIntegrand, bastinOperatorKernelFromPropagators,
+    projectorResolvent] using
     (QuantumTheory.Transport.regularizedBastinTraceIntegrand_eq_projectorSum
       (hamiltonianOperator v m px py) (hamiltonianOperator_isSelfAdjoint v m px py)
       (fun band : Band => bandProjectorOperator band v m px py)
