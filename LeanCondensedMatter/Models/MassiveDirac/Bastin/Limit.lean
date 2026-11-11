@@ -27,23 +27,6 @@ open QuantumTheory.Transport
 
 open Filter QuantumTheory.Transport
 
-/-- Off the selected band energy, the retarded-minus-advanced scalar spectral coefficient tends to
-zero pointwise. -/
-theorem tendsto_spectralDifferenceCoefficient_zero
-    (band : Band) (v m px py probeEnergy : ℝ)
-    (hprobe : probeEnergy ≠ bandEnergy band v m px py) :
-    Tendsto
-      (fun broadening : ℝ =>
-        spectralDifferenceCoefficient band v m px py probeEnergy broadening)
-      (nhds 0) (nhds 0) := by
-  have hret := tendsto_scalarResolventCoefficient_spectralParameter_zero
-    .retarded probeEnergy (bandEnergy band v m px py) hprobe
-  have hadv := tendsto_scalarResolventCoefficient_spectralParameter_zero
-    .advanced probeEnergy (bandEnergy band v m px py) hprobe
-  simpa only [spectralDifferenceCoefficient, retardedSpectralParameter,
-    advancedSpectralParameter, spectralParameter_retarded_ofRegulator,
-    spectralParameter_advanced_ofRegulator, sub_self] using hret.sub hadv
-
 /-- A fixed direction-indexed ordered Bastin band-pair contribution tends to zero when the probe
 energy avoids both its source and target band energies. -/
 theorem tendsto_bastinBandPairContribution_zero
@@ -58,8 +41,8 @@ theorem tendsto_bastinBandPairContribution_zero
     .retarded probeEnergy (bandEnergy source v m px py) hsource
   have hadv := tendsto_scalarResolventCoefficient_spectralParameter_zero
     .advanced probeEnergy (bandEnergy source v m px py) hsource
-  have hdiff := tendsto_spectralDifferenceCoefficient_zero
-    target v m px py probeEnergy htarget
+  have hdiff := tendsto_scalarSpectralDifferenceCoefficient_zero
+    (bandEnergy target v m px py) probeEnergy htarget
   have hretTerm := (((hret.mul hret).mul hdiff).mul
     (tendsto_const_nhds : Tendsto
       (fun _ : ℝ => currentBandBlockTrace μ ν source target e v m px py)
