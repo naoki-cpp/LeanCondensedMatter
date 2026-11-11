@@ -101,22 +101,6 @@ theorem projectorBastinTraceIntegrand_eq_band_sum
   exact projectorBastinTraceIntegrandFor_eq_band_sum
     params 0 1 px py probeEnergy broadening hE
 
-/-- Exact diagonal/interband decomposition for any ordered current directions. -/
-theorem projectorBastinTraceIntegrandFor_eq_diagonal_add_interband
-    (params : Parameters) (μ ν : Fin 2) (px py probeEnergy broadening : ℝ)
-    (hE : spinOrbitEnergy params px py ≠ 0) :
-    projectorBastinTraceIntegrandFor params μ ν px py probeEnergy broadening =
-      (∑ band : Band,
-        bastinBandPairContribution params μ ν band band
-          px py probeEnergy broadening) +
-      (∑ band : Band,
-        bastinBandPairContribution params μ ν band (oppositeBand band)
-          px py probeEnergy broadening) := by
-  rw [projectorBastinTraceIntegrandFor_eq_band_sum
-    params μ ν px py probeEnergy broadening hE]
-  simp only [sum_band, oppositeBand_lower, oppositeBand_upper]
-  ring
-
 /-- Exact finite-broadening diagonal/interband split of the projector trace. -/
 theorem projectorBastinTraceIntegrand_eq_diagonal_add_interband
     (params : Parameters) (px py probeEnergy broadening : ℝ)
@@ -124,15 +108,10 @@ theorem projectorBastinTraceIntegrand_eq_diagonal_add_interband
     projectorBastinTraceIntegrand params px py probeEnergy broadening =
       diagonalBastinTraceContribution params px py probeEnergy broadening +
         interbandBastinTraceContribution params px py probeEnergy broadening := by
-  change projectorBastinTraceIntegrandFor params 0 1 px py probeEnergy broadening =
-    (∑ band : Band,
-      bastinBandPairContribution params 0 1 band band
-        px py probeEnergy broadening) +
-    (∑ band : Band,
-      bastinBandPairContribution params 0 1 band (oppositeBand band)
-        px py probeEnergy broadening)
-  exact projectorBastinTraceIntegrandFor_eq_diagonal_add_interband
-    params 0 1 px py probeEnergy broadening hE
+  rw [projectorBastinTraceIntegrand_eq_band_sum params px py probeEnergy broadening hE]
+  simp only [sum_band, diagonalBastinTraceContribution, interbandBastinTraceContribution,
+    oppositeBand_lower, oppositeBand_upper]
+  ring
 
 /-- The canonical regularized Bastin trace agrees with the direction-indexed
 projector trace away from spectral degeneracy and at nonzero broadening. -/
@@ -175,28 +154,6 @@ theorem regularizedBastinTraceIntegrand_eq_band_sum
   exact projectorBastinTraceIntegrandFor_eq_band_sum
     params μ ν px py probeEnergy broadening hE
 
-/-- Direction-indexed canonical Bastin trace retains both diagonal and interband
-terms before any energy integral or broadening limit. -/
-theorem regularizedBastinTraceIntegrand_eq_diagonal_add_interbandFor
-    (params : Parameters) (μ ν : Fin 2) (px py probeEnergy broadening : ℝ)
-    (hE : spinOrbitEnergy params px py ≠ 0)
-    (hbroadening : broadening ≠ 0) :
-    regularizedBastinTraceIntegrand
-        (hamiltonianOperator params px py)
-        (currentBoundedOperator params μ px py)
-        (currentBoundedOperator params ν px py)
-        probeEnergy broadening =
-      (∑ band : Band,
-        bastinBandPairContribution params μ ν band band
-          px py probeEnergy broadening) +
-      (∑ band : Band,
-        bastinBandPairContribution params μ ν band (oppositeBand band)
-          px py probeEnergy broadening) := by
-  rw [regularizedBastinTraceIntegrand_eq_projectorBastinTraceIntegrandFor
-    params μ ν px py probeEnergy broadening hE hbroadening]
-  exact projectorBastinTraceIntegrandFor_eq_diagonal_add_interband
-    params μ ν px py probeEnergy broadening hE
-
 /-- The canonical regularized x-y Bastin trace has its original exact
 diagonal plus interband decomposition at nonzero broadening. -/
 theorem regularizedBastinTraceIntegrand_eq_diagonal_add_interband
@@ -210,19 +167,10 @@ theorem regularizedBastinTraceIntegrand_eq_diagonal_add_interband
         probeEnergy broadening =
       diagonalBastinTraceContribution params px py probeEnergy broadening +
         interbandBastinTraceContribution params px py probeEnergy broadening := by
-  change regularizedBastinTraceIntegrand
-      (hamiltonianOperator params px py)
-      (currentBoundedOperator params 0 px py)
-      (currentBoundedOperator params 1 px py)
-      probeEnergy broadening =
-    (∑ band : Band,
-      bastinBandPairContribution params 0 1 band band
-        px py probeEnergy broadening) +
-    (∑ band : Band,
-      bastinBandPairContribution params 0 1 band (oppositeBand band)
-        px py probeEnergy broadening)
-  exact regularizedBastinTraceIntegrand_eq_diagonal_add_interbandFor
-    params 0 1 px py probeEnergy broadening hE hbroadening
+  rw [regularizedBastinTraceIntegrand_eq_projectorBastinTraceIntegrand
+    params px py probeEnergy broadening hE hbroadening]
+  exact projectorBastinTraceIntegrand_eq_diagonal_add_interband
+    params px py probeEnergy broadening hE
 
 /-- The physical clean ordered Bastin energy integral equals the weighted
 band-pair integral on any finite energy window. No limit interchange occurs. -/
@@ -262,8 +210,10 @@ theorem cleanBastinPointResponse_eq_integral_diagonal_add_interband
   unfold cleanBastinPointResponse regularizedTracedBastinEnergyIntegral
   apply intervalIntegral.integral_congr
   intro probeEnergy _
-  rw [regularizedBastinTraceIntegrand_eq_diagonal_add_interbandFor
+  rw [regularizedBastinTraceIntegrand_eq_band_sum
     params μ ν px py probeEnergy params.broadening hE hbroadening]
+  simp only [sum_band, oppositeBand_lower, oppositeBand_upper]
+  ring
 
 /-- The antisymmetric clean Bastin response is exactly the difference of
 the two direction-ordered finite-window band-pair integrals. -/
