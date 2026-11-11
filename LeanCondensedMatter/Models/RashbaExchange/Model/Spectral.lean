@@ -111,15 +111,11 @@ private theorem normalizedSpinHamiltonian_mul_self
     (hE : spinOrbitEnergy params px py ≠ 0) :
     normalizedSpinHamiltonian params px py *
         normalizedSpinHamiltonian params px py = 1 := by
-  have hEc : (((spinOrbitEnergy params px py : ℝ) : ℂ)) ≠ 0 := by
-    exact_mod_cast hE
-  have hEnergySq :
-      (((spinOrbitEnergySq params px py : ℝ) : ℂ)) =
-        (((spinOrbitEnergy params px py : ℝ) : ℂ) ^ 2) := by
-    exact_mod_cast (spinOrbitEnergy_sq params px py).symm
   unfold normalizedSpinHamiltonian
-  apply Algebra.inv_smul_mul_self_eq_one _ _ hEc
-  rw [spinHamiltonian_mul_self, hEnergySq]
+  apply Algebra.inv_smul_mul_self_eq_one _ _ (by exact_mod_cast hE)
+  rw [spinHamiltonian_mul_self]
+  congr 1
+  exact_mod_cast (spinOrbitEnergy_sq params px py).symm
 
 private theorem bandProjector_eq_normalized
     (params : HamiltonianParameters) (band : Band) (px py : ℝ) :
@@ -176,8 +172,7 @@ theorem hamiltonian_mul_bandProjector
   have hQ : Q * Q = 1 := by
     simpa [Q] using normalizedSpinHamiltonian_mul_self params px py hE
   have hs : s ^ 2 = 1 := by
-    change (((bandSign band : ℝ) : ℂ) ^ 2) = 1
-    exact_mod_cast (bandSign_sq band)
+    cases band <;> norm_num [s, bandSign]
   have hSpin : spinHamiltonian params px py = E • Q := by
     exact (smul_inv_smul₀ (show (((spinOrbitEnergy params px py : ℝ) : ℂ)) ≠ 0 from
       by exact_mod_cast hE) (spinHamiltonian params px py)).symm

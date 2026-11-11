@@ -59,15 +59,11 @@ private noncomputable def normalizedHamiltonian (v m px py : ℝ) : Matrix2 :=
 private theorem normalizedHamiltonian_mul_self
     (v m px py : ℝ) (hE : energy v m px py ≠ 0) :
     normalizedHamiltonian v m px py * normalizedHamiltonian v m px py = 1 := by
-  have hEc : (((energy v m px py : ℝ) : ℂ)) ≠ 0 := by
-    exact_mod_cast hE
-  have hEnergySq :
-      (((energySq v m px py : ℝ) : ℂ)) =
-        (((energy v m px py : ℝ) : ℂ) ^ 2) := by
-    exact_mod_cast (energy_sq v m px py).symm
   unfold normalizedHamiltonian
-  apply Algebra.inv_smul_mul_self_eq_one _ _ hEc
-  rw [hamiltonian_mul_self, hEnergySq]
+  apply Algebra.inv_smul_mul_self_eq_one _ _ (by exact_mod_cast hE)
+  rw [hamiltonian_mul_self]
+  congr 1
+  exact_mod_cast (energy_sq v m px py).symm
 
 /-- Rewrite the band projector as the `±1` spectral projector of the normalized Hamiltonian. -/
 private theorem bandProjector_eq_normalizedHamiltonian
@@ -118,8 +114,7 @@ theorem hamiltonian_mul_bandProjector (band : Band) (v m px py : ℝ)
   let s : ℂ := ((bandSign band : ℝ) : ℂ)
   have hQ : Q * Q = 1 := normalizedHamiltonian_mul_self v m px py hE
   have hs : s ^ 2 = 1 := by
-    change (((bandSign band : ℝ) : ℂ) ^ 2) = 1
-    exact_mod_cast (bandSign_sq band)
+    cases band <;> norm_num [s, bandSign]
   have hH :
       hamiltonian v m px py = (((energy v m px py : ℝ) : ℂ)) • Q := by
     exact (smul_inv_smul₀ (show (((energy v m px py : ℝ) : ℂ)) ≠ 0 from
