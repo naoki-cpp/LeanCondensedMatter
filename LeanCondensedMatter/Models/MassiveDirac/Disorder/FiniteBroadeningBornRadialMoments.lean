@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Analysis.Algebra.ScalarResolvent
 import LeanCondensedMatter.Transport.Analysis.ContinuumMeasure
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.Born.Denominator
 import LeanCondensedMatter.Models.MassiveDirac.Disorder.FiniteBroadeningBornInvertibility
@@ -121,8 +122,9 @@ theorem finiteCutoffContinuumBornDysonRadial_ra_weighted_moment_mul_center_gap
         side v m p 0 probeEnergy broadening disorderStrength hbar pMax
         hbroadening hdisorder hpMax
     have hspectral :=
-      massiveDiracRadialCenter_inv_product_mul_center_gap
-        v p (energyR ^ 2 - massR ^ 2) (energyA ^ 2 - massA ^ 2)
+      Algebra.scalarResolvent_gap_mul_inverse_product
+        (energyR ^ 2 - massR ^ 2) (energyA ^ 2 - massA ^ 2)
+        (((v ^ 2 * p ^ 2 : ℝ) : ℂ))
         (by simpa only [massiveDiracRadialDenominator] using hnonzero .retarded)
         (by simpa only [massiveDiracRadialDenominator] using hnonzero .advanced)
     dsimp only [energyR, energyA, massR, massA] at hspectral
