@@ -121,18 +121,6 @@ private theorem normalizedSpinHamiltonian_mul_self
   apply Algebra.inv_smul_mul_self_eq_one _ _ hEc
   rw [spinHamiltonian_mul_self, hEnergySq]
 
-private theorem spinHamiltonian_eq_energy_smul_normalized
-    (params : HamiltonianParameters) (px py : ℝ)
-    (hE : spinOrbitEnergy params px py ≠ 0) :
-    spinHamiltonian params px py =
-      (((spinOrbitEnergy params px py : ℝ) : ℂ)) •
-        normalizedSpinHamiltonian params px py := by
-  have hEc : (((spinOrbitEnergy params px py : ℝ) : ℂ)) ≠ 0 := by
-    exact_mod_cast hE
-  unfold normalizedSpinHamiltonian
-  rw [smul_smul]
-  simp [hEc]
-
 private theorem bandProjector_eq_normalized
     (params : HamiltonianParameters) (band : Band) (px py : ℝ) :
     bandProjector params band px py =
@@ -145,9 +133,7 @@ private theorem bandProjector_eq_normalized
 theorem sum_bandProjector_eq_one
     (params : HamiltonianParameters) (px py : ℝ) :
     ∑ band : Band, bandProjector params band px py = 1 := by
-  simp only [sum_band]
-  rw [bandProjector_eq_normalized, bandProjector_eq_normalized]
-  simp only [bandSign]
+  simp only [sum_band, bandProjector_eq_normalized, bandSign]
   push_cast
   module
 
@@ -168,17 +154,12 @@ theorem bandEnergy_injective
     (hE : spinOrbitEnergy params px py ≠ 0) :
     Function.Injective (fun band : Band => bandEnergy params band px py) := by
   intro a b hab
-  cases a <;> cases b
-  · rfl
-  · exfalso
-    simp [bandEnergy, bandSign] at hab
+  cases a <;> cases b <;> try rfl
+  all_goals
+    exfalso
     apply hE
-    linarith
-  · exfalso
     simp [bandEnergy, bandSign] at hab
-    apply hE
     linarith
-  · rfl
 
 /-- Away from the degeneracy, the Hamiltonian acts on `P_s` with the corresponding shifted band
 energy `ε₀+sE`. -/
@@ -198,18 +179,16 @@ theorem hamiltonian_mul_bandProjector
     change (((bandSign band : ℝ) : ℂ) ^ 2) = 1
     exact_mod_cast (bandSign_sq band)
   have hSpin : spinHamiltonian params px py = E • Q := by
-    simpa [Q, E] using spinHamiltonian_eq_energy_smul_normalized params px py hE
+    exact (smul_inv_smul₀ (show (((spinOrbitEnergy params px py : ℝ) : ℂ)) ≠ 0 from
+      by exact_mod_cast hE) (spinHamiltonian params px py)).symm
   have hH :
       hamiltonian params px py = ε • (1 : InternalSpace.PauliMatrix) + E • Q := by
     rw [hamiltonian_eq_kinetic_add_spinHamiltonian, hSpin]
-  have hP :
-      bandProjector params band px py =
-        (1 / 2 : ℂ) • ((1 : InternalSpace.PauliMatrix) + s • Q) := by
-    simpa [Q, s] using bandProjector_eq_normalized params band px py
   have hEnergy :
       (((bandEnergy params band px py : ℝ) : ℂ)) = ε + s * E := by
     simp [bandEnergy, ε, s, E]
-  rw [hH, hP, hEnergy]
+  simp only [bandProjector_eq_normalized]
+  rw [hH, hEnergy]
   rw [add_mul, smul_mul_assoc, one_mul, smul_mul_assoc, mul_smul_comm]
   rw [InternalSpace.involution_mul_one_add Q hQ s hs]
   module
@@ -226,16 +205,14 @@ theorem bandProjector_completeOrthogonalIdempotents
     exact InternalSpace.involution_projector_mul_self
       (normalizedSpinHamiltonian params px py) (normalizedSpinHamiltonian_mul_self params px py hE)
       (((bandSign Band.lower : ℝ) : ℂ)) (by norm_num [bandSign])
-  have hsum := sum_bandProjector_eq_one params px py
-  rw [sum_band] at hsum
   have hUpper : bandProjector params .upper px py =
-      1 - bandProjector params .lower px py := eq_sub_of_add_eq' hsum
+      1 - bandProjector params .lower px py :=
+    eq_sub_of_add_eq' (by simpa only [sum_band] using sum_bandProjector_eq_one params px py)
   refine CompleteOrthogonalIdempotents.iff_ortho_complete.mpr
     ⟨?_, sum_bandProjector_eq_one params px py⟩
   intro i j hij
-  cases i <;> cases j <;> try exact (hij rfl).elim
-  · rw [hUpper, mul_sub, mul_one, hLower.eq, sub_self]
-  · rw [hUpper, sub_mul, one_mul, hLower.eq, sub_self]
+  cases i <;> cases j <;>
+    simp_all [mul_sub, sub_mul, hLower.eq]
 
 end
 
