@@ -38,13 +38,16 @@ inductive GaussianCrossedDiagram where
   | psi
   deriving DecidableEq, Fintype
 
-
 /-- A finite sum over the two Gaussian crossed topologies is the `X` contribution plus the `Psi`
 contribution. -/
 theorem sum_gaussianCrossedDiagram {M : Type*} [AddCommMonoid M]
     (f : GaussianCrossedDiagram → M) :
     ∑ diagram : GaussianCrossedDiagram, f diagram = f .x + f .psi := by
-  change ∑ diagram ∈ ({.x, .psi} : Finset GaussianCrossedDiagram), f diagram = _
+  have h : (Finset.univ : Finset GaussianCrossedDiagram) = {.x, .psi} := by
+    ext diagram
+    cases diagram <;> simp
+  change (Finset.univ : Finset GaussianCrossedDiagram).sum f = _
+  rw [h]
   simp
 
 /-- Pointwise trace kernel for the two leading crossed Gaussian Hall topologies.

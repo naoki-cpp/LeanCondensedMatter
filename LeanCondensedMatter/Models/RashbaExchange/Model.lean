@@ -41,7 +41,6 @@ inductive Band where
   | upper
   deriving DecidableEq, Fintype
 
-
 /-- Eigenvalue-branch sign: -1 for lower and +1 for upper. -/
 def bandSign : Band → ℝ
   | .lower => -1
@@ -50,7 +49,11 @@ def bandSign : Band → ℝ
 /-- A finite sum over the two Rashba-exchange bands. -/
 theorem sum_band {M : Type*} [AddCommMonoid M] (f : Band → M) :
     ∑ band : Band, f band = f .lower + f .upper := by
-  change ∑ band ∈ ({.lower, .upper} : Finset Band), f band = _
+  have h : (Finset.univ : Finset Band) = {.lower, .upper} := by
+    ext band
+    cases band <;> simp
+  change (Finset.univ : Finset Band).sum f = _
+  rw [h]
   simp
 
 /-- The opposite branch of the two-band spectrum. -/
