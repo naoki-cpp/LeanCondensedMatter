@@ -69,18 +69,6 @@ private theorem normalizedHamiltonian_mul_self
   apply Algebra.inv_smul_mul_self_eq_one _ _ hEc
   rw [hamiltonian_mul_self, hEnergySq]
 
-/-- Away from the degeneracy, multiplying the normalized Hamiltonian by the positive energy
-recovers the original Hamiltonian. -/
-private theorem hamiltonian_eq_energy_smul_normalizedHamiltonian
-    (v m px py : ℝ) (hE : energy v m px py ≠ 0) :
-    hamiltonian v m px py =
-      (((energy v m px py : ℝ) : ℂ)) • normalizedHamiltonian v m px py := by
-  have hEc : (((energy v m px py : ℝ) : ℂ)) ≠ 0 := by
-    exact_mod_cast hE
-  unfold normalizedHamiltonian
-  rw [smul_smul]
-  simp [hEc]
-
 /-- Rewrite the band projector as the `±1` spectral projector of the normalized Hamiltonian. -/
 private theorem bandProjector_eq_normalizedHamiltonian
     (band : Band) (v m px py : ℝ) :
@@ -133,8 +121,9 @@ theorem hamiltonian_mul_bandProjector (band : Band) (v m px py : ℝ)
     change (((bandSign band : ℝ) : ℂ) ^ 2) = 1
     exact_mod_cast (bandSign_sq band)
   have hH :
-      hamiltonian v m px py = (((energy v m px py : ℝ) : ℂ)) • Q :=
-    hamiltonian_eq_energy_smul_normalizedHamiltonian v m px py hE
+      hamiltonian v m px py = (((energy v m px py : ℝ) : ℂ)) • Q := by
+    exact (smul_inv_smul₀ (show (((energy v m px py : ℝ) : ℂ)) ≠ 0 from
+      by exact_mod_cast hE) (hamiltonian v m px py)).symm
   have hbandEnergy :
       (((bandEnergy band v m px py : ℝ) : ℂ)) =
         s * (((energy v m px py : ℝ) : ℂ)) := by
