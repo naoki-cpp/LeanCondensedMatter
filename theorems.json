@@ -76910,8 +76910,6 @@
       "QuantumTheory.Models.MassiveDirac.projectorBastinTraceIntegrand_eq_band_sum",
       "QuantumTheory.Models.MassiveDirac.projectorBastinTraceIntegrand_eq_diagonal_add_interband",
       "QuantumTheory.Models.MassiveDirac.sum_bandProjector_eq_one",
-      "QuantumTheory.Models.MassiveDirac.tendsto_diagonalBastinTraceContribution_zero",
-      "QuantumTheory.Models.MassiveDirac.tendsto_interbandBastinTraceContribution_zero",
       "QuantumTheory.Models.MassiveDirac.tendsto_pointwiseDiagonalFockHallResponse_re",
       "QuantumTheory.Models.MassiveDirac.tendsto_pointwiseFockHallResponse_re",
       "QuantumTheory.Models.MassiveDirac.tendsto_pointwiseGrandCanonicalFockHallResponse_re",
@@ -76928,15 +76926,13 @@
       "QuantumTheory.Models.MassiveDirac.projectorBastinTraceIntegrand_eq_band_sum",
       "QuantumTheory.Models.MassiveDirac.projectorBastinTraceIntegrand_eq_diagonal_add_interband",
       "QuantumTheory.Models.MassiveDirac.sum_bandProjector_eq_one",
-      "QuantumTheory.Models.MassiveDirac.tendsto_diagonalBastinTraceContribution_zero",
-      "QuantumTheory.Models.MassiveDirac.tendsto_interbandBastinTraceContribution_zero",
       "QuantumTheory.Models.MassiveDirac.tendsto_pointwiseDiagonalFockHallResponse_re",
       "QuantumTheory.Models.MassiveDirac.tendsto_pointwiseFockHallResponse_re",
       "QuantumTheory.Models.MassiveDirac.tendsto_pointwiseGrandCanonicalFockHallResponse_re",
       "QuantumTheory.Models.MassiveDirac.zeroTemperatureOccupiedBerryWeightCutoff_eq",
       "QuantumTheory.Models.MassiveDirac.zeroTemperatureOccupiedCleanInterbandBastinPairCutoff_eq"
     ],
-    "compiledConsumerCount": 13,
+    "compiledConsumerCount": 11,
     "axioms": [
       "Classical.choice",
       "Quot.sound",
@@ -77567,7 +77563,6 @@
       "QuantumTheory.Models.MassiveDirac.tendsto_projectorBastinTraceIntegrand_zero"
     ],
     "dependencies": [
-      "QuantumTheory.Models.MassiveDirac.sum_band",
       "QuantumTheory.Models.MassiveDirac.tendsto_bastinBandPairContribution_zero"
     ],
     "crossModuleDirectWrapper": false,
@@ -80250,7 +80245,6 @@
       "QuantumTheory.Models.MassiveDirac.tendsto_projectorBastinTraceIntegrand_zero"
     ],
     "dependencies": [
-      "QuantumTheory.Models.MassiveDirac.sum_band",
       "QuantumTheory.Models.MassiveDirac.tendsto_bastinBandPairContribution_zero"
     ],
     "crossModuleDirectWrapper": false,
